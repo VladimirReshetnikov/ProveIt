@@ -17,6 +17,7 @@ From FirstOrder Require Import Fol.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelector CanonicalSelectorPA FiniteBetaCoding.
+From BoundedPAConsistency Require Import RawCodedAssignment.
 
 Import ListNotations.
 
@@ -27,6 +28,7 @@ Import PAHierarchyReduction.
 Import PACanonicalSelector.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
+Import PABoundedRawCodedAssignment.
 
 Lemma raw_add_zero_right : forall (M : RawPAModel),
   RawPASatisfies M -> forall x : M,
@@ -57,6 +59,36 @@ Proof.
   intros M hPA bound.
   exists bound.
   exact (raw_add_zero_left M hPA (raw_succ M bound)).
+Qed.
+
+(** ------------------------------------------------------------------
+    Two order facts the coded-context descent needs.
+
+    Both follow from [raw_lt_succ_cases] together with transitivity and
+    [x < x + 1]; neither needs the additive definition of [rawLt] to be
+    unfolded, and neither needs definable induction. *)
+
+(** Successors reflect strict order. *)
+Lemma raw_lt_succ_succ_inv : forall (M : RawPAModel),
+  RawPASatisfies M -> forall x y : M,
+  rawLt M (raw_succ M x) (raw_succ M y) -> rawLt M x y.
+Proof.
+  intros M hPA x y hlt.
+  destruct (raw_lt_succ_cases M hPA (raw_succ M x) y hlt) as [h | h].
+  - exact (raw_assignment_lt_trans M hPA x (raw_succ M x) y
+      (raw_assignment_lt_self_succ M hPA x) h).
+  - rewrite <- h. exact (raw_assignment_lt_self_succ M hPA x).
+Qed.
+
+(** Strictly below something that is at most [z] is strictly below [z]. *)
+Lemma raw_lt_of_lt_of_lt_succ : forall (M : RawPAModel),
+  RawPASatisfies M -> forall x y z : M,
+  rawLt M x y -> rawLt M y (raw_succ M z) -> rawLt M x z.
+Proof.
+  intros M hPA x y z hxy hyz.
+  destruct (raw_lt_succ_cases M hPA y z hyz) as [h | h].
+  - exact (raw_assignment_lt_trans M hPA x y z hxy h).
+  - rewrite <- h. exact hxy.
 Qed.
 
 End PABoundedRawCodedAdditionLaws.

@@ -502,6 +502,150 @@ Proof.
 Qed.
 
 (** ------------------------------------------------------------------
+    Descending under one more assumption increments the depth.
+
+    This is the clause a proof-tree descent uses when it enters an [RP_impI]
+    or [RP_exE] node: the node's child context is the parent's with one local
+    assumption consed on, and the insertion point moves down by one. *)
+
+Theorem raw_contextInsertAt_cons : forall
+    (M : RawPAModel), RawPASatisfies M ->
+  forall head depth source target extra,
+  RawContextInsertAt M head depth source target ->
+  RawContextInsertAt M head (raw_succ M depth)
+    (rawListNode M extra source) (rawListNode M extra target).
+Proof.
+  intros M hPA head depth source target extra
+    (bound & sourceTailCode & sourceTailStep & sourceHeadCode &
+      sourceHeadStep & targetTailCode & targetTailStep &
+      targetHeadCode & targetHeadStep &
+      [hsource [htarget [hdepth [hlow [hheadRow hhigh]]]]]).
+  destruct (raw_contextListConsExtension_exists M hPA
+    source extra bound sourceTailCode sourceTailStep
+    sourceHeadCode sourceHeadStep hsource)
+    as (newSourceTailCode & newSourceTailStep & newSourceHeadCode &
+      newSourceHeadStep & _ & hsourcePrepend & hnewSource).
+  destruct (raw_contextListConsExtension_exists M hPA
+    target extra (raw_succ M bound) targetTailCode targetTailStep
+    targetHeadCode targetHeadStep htarget)
+    as (newTargetTailCode & newTargetTailStep & newTargetHeadCode &
+      newTargetHeadStep & _ & htargetPrepend & hnewTarget).
+  assert (hsourceDefined : RawCodedAssignmentDefinedThrough M
+      sourceHeadCode sourceHeadStep bound).
+  { exact (proj1 (proj2 (proj2 hsource))). }
+  assert (htargetDefined : RawCodedAssignmentDefinedThrough M
+      targetHeadCode targetHeadStep (raw_succ M bound)).
+  { exact (proj1 (proj2 (proj2 htarget))). }
+  exists (raw_succ M bound),
+    newSourceTailCode, newSourceTailStep,
+    newSourceHeadCode, newSourceHeadStep,
+    newTargetTailCode, newTargetTailStep,
+    newTargetHeadCode, newTargetHeadStep.
+  split; [exact hnewSource |].
+  split; [exact hnewTarget |].
+  split.
+  - apply raw_lt_succ_of_le; [exact hPA |].
+    exact (raw_succ_le_of_lt_pair M hPA depth (raw_succ M bound) hdepth).
+  - split.
+    + intros index hindex sourceFormula hsrc targetFormula htgt.
+      destruct (raw_assignment_zero_or_successor M hPA index)
+        as [-> | [predecessor ->]].
+      * rewrite (proj1 (raw_codedAssignmentPrepend_lookup_zero_iff M hPA
+          sourceHeadCode sourceHeadStep extra bound
+          newSourceHeadCode newSourceHeadStep sourceFormula
+          hsourcePrepend) hsrc).
+        exact (proj1 (raw_codedAssignmentPrepend_lookup_zero_iff M hPA
+          targetHeadCode targetHeadStep extra (raw_succ M bound)
+          newTargetHeadCode newTargetHeadStep targetFormula
+          htargetPrepend) htgt).
+      * assert (hpredDepth : rawLt M predecessor depth).
+        { exact (raw_lt_succ_succ_inv M hPA predecessor depth hindex). }
+        assert (hpredBound : rawLt M predecessor bound).
+        {
+          exact (raw_lt_of_lt_of_lt_succ M hPA predecessor depth bound
+            hpredDepth hdepth).
+        }
+        assert (hpredTargetBound :
+            rawLt M predecessor (raw_succ M bound)).
+        {
+          exact (raw_assignment_lt_trans M hPA predecessor bound
+            (raw_succ M bound) hpredBound
+            (raw_assignment_lt_self_succ M hPA bound)).
+        }
+        assert (holdSource : RawCodedAssignmentLookup M
+            sourceHeadCode sourceHeadStep predecessor sourceFormula).
+        {
+          exact (proj1 (raw_codedAssignmentPrepend_lookup_succ_iff M hPA
+            sourceHeadCode sourceHeadStep extra bound
+            newSourceHeadCode newSourceHeadStep hsourceDefined
+            hsourcePrepend predecessor hpredBound sourceFormula) hsrc).
+        }
+        assert (holdTarget : RawCodedAssignmentLookup M
+            targetHeadCode targetHeadStep predecessor targetFormula).
+        {
+          exact (proj1 (raw_codedAssignmentPrepend_lookup_succ_iff M hPA
+            targetHeadCode targetHeadStep extra (raw_succ M bound)
+            newTargetHeadCode newTargetHeadStep htargetDefined
+            htargetPrepend predecessor hpredTargetBound targetFormula)
+            htgt).
+        }
+        exact (hlow predecessor hpredDepth sourceFormula holdSource
+          targetFormula holdTarget).
+    + split.
+      * intros targetFormula htgt.
+        assert (holdTarget : RawCodedAssignmentLookup M
+            targetHeadCode targetHeadStep depth targetFormula).
+        {
+          exact (proj1 (raw_codedAssignmentPrepend_lookup_succ_iff M hPA
+            targetHeadCode targetHeadStep extra (raw_succ M bound)
+            newTargetHeadCode newTargetHeadStep htargetDefined
+            htargetPrepend depth hdepth targetFormula) htgt).
+        }
+        exact (hheadRow targetFormula holdTarget).
+      * intros index hindex sourceFormula hsrc targetFormula htgt.
+        destruct (raw_assignment_zero_or_successor M hPA index)
+          as [-> | [predecessor ->]].
+        -- left. exact (raw_lt_zero_succ M hPA depth).
+        -- destruct (classic (rawLt M predecessor depth))
+             as [hlt | hnlt].
+           ++ left.
+              apply raw_lt_succ_of_le; [exact hPA |].
+              exact (raw_succ_le_of_lt_pair M hPA predecessor depth hlt).
+           ++ right.
+              assert (hpredBound : rawLt M predecessor bound).
+              {
+                exact (raw_lt_succ_succ_inv M hPA predecessor bound
+                  hindex).
+              }
+              assert (holdSource : RawCodedAssignmentLookup M
+                  sourceHeadCode sourceHeadStep predecessor sourceFormula).
+              {
+                exact (proj1
+                  (raw_codedAssignmentPrepend_lookup_succ_iff M hPA
+                    sourceHeadCode sourceHeadStep extra bound
+                    newSourceHeadCode newSourceHeadStep hsourceDefined
+                    hsourcePrepend predecessor hpredBound sourceFormula)
+                  hsrc).
+              }
+              assert (holdTarget : RawCodedAssignmentLookup M
+                  targetHeadCode targetHeadStep (raw_succ M predecessor)
+                  targetFormula).
+              {
+                exact (proj1
+                  (raw_codedAssignmentPrepend_lookup_succ_iff M hPA
+                    targetHeadCode targetHeadStep extra (raw_succ M bound)
+                    newTargetHeadCode newTargetHeadStep htargetDefined
+                    htargetPrepend (raw_succ M predecessor) hindex
+                    targetFormula) htgt).
+              }
+              destruct (hhigh predecessor hpredBound sourceFormula
+                holdSource targetFormula holdTarget)
+                as [hcontradiction | heq].
+              ** exfalso. exact (hnlt hcontradiction).
+              ** exact heq.
+Qed.
+
+(** ------------------------------------------------------------------
     Membership transport.
 
     These are the facts the assumption-leaf constructor row consumes once the

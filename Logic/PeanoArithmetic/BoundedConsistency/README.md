@@ -1074,18 +1074,23 @@ carries the new formula, and rows from the point on move up one index.  The
 relation is a genuine PA formula with exact arbitrary-raw-model semantics,
 realizability transports in both directions, and the target is recorded as
 exactly one longer than the source — the fact that distinguishes insertion from
-shift, whose two traversals share one bound.  Insertion at depth zero is the
-single cons, and both membership transports are proved: the inserted formula
-belongs to the target, and so does every member of the source.  The successor
-case is the one clause still missing.  Insertion is deliberately *not* proved
+shift, whose two traversals share one bound.  The context layer is complete:
+insertion at depth zero is the single cons, the successor clause pushes an
+insertion underneath one more list node, and both membership transports are
+proved — the inserted formula belongs to the target, and so does every member
+of the source.  The representation layer is axiom-free; only the construction
+and transport theorems use classical logic.  Insertion is deliberately *not*
+proved
 functional: `RawContextShift` is not functional anywhere in this development
 either, and its consumers use it existentially, exactly as the transplant
 recursion will.
 
-`RawCodedAdditionLaws.v` supplies the small arithmetic these clauses need —
-both additive identities and `0 < succ b` in an arbitrary raw PA model.  The
-left identity needs no definable induction, since raw addition is already known
-to be commutative.
+`RawCodedAdditionLaws.v` supplies the small arithmetic and order facts these
+clauses need — both additive identities, `0 < succ b`, successor reflection for
+the order, and the lt-then-le step in the form the descent consumes, so the
+additive definition of the order is never unfolded at the use sites.  The left
+identity needs no definable induction, since raw addition is already known to be
+commutative.
 
 Neither Coq premise is blocked by Gödel's second theorem: every obligation asks
 for a proof *code*, never for uniform truth of the dynamic-soundness statement,
@@ -1262,8 +1267,7 @@ are premises of a stated headline theorem, and only in the Rocq/Coq port.
   constructor row that inspects the context.
 - [x] In Rocq/Coq, define the represented context-insertion-at-depth relation
   with exact arbitrary-model semantics, two-way realizability transport, the
-  depth-zero clause, and both membership transports.
-- [ ] In Rocq/Coq, prove the successor clause of context insertion at depth.
+  depth-zero and successor clauses, and both membership transports.
 - [ ] In Rocq/Coq, restate the transplant obligation over insertion-at-depth,
   re-derive the assumption-leaf row against it, and discharge the remaining
   sixteen structural rows through a well-founded internal recursion over proof

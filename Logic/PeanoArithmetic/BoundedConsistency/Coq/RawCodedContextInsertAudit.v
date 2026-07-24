@@ -28,6 +28,7 @@ Check raw_contextInsertAt_target_realizable.
 Check raw_contextInsertAt_target_bound.
 
 Check raw_contextInsertAt_zero.
+Check raw_contextInsertAt_cons.
 Check raw_contextInsertAt_head_member.
 Check raw_contextInsertAt_source_member.
 
@@ -41,3 +42,4 @@ Print Assumptions raw_contextInsertAt_target_bound.
 Print Assumptions raw_contextInsertAt_zero.
 Print Assumptions raw_contextInsertAt_head_member.
 Print Assumptions raw_contextInsertAt_source_member.
+Print Assumptions raw_contextInsertAt_cons.
