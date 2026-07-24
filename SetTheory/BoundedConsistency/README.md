@@ -195,8 +195,13 @@ same three reasons as in the arithmetic case:
   interface.  This is the enabling tool for everything below it: satisfaction
   must be defined by recursion on formula codes, which may be nonstandard, so
   the recursion has to be internal.
-- [ ] Formalize satisfaction for set-sized structures inside ZFC, by internal
-  recursion on coded formulas.
+- [x] Formalize satisfaction for set-sized structures inside ZFC as a
+  certificate relation: internal environments with binder extension, the local
+  Tarski step as a `Form` with an exact satisfaction spec, and single-valuedness
+  proved by induction over codes.
+- [ ] Prove totality of the satisfaction certificates, so that the relation
+  becomes a genuine satisfaction predicate rather than a single-valued partial
+  assignment.
 - [ ] Formalize soundness of the 17-rule calculus with respect to internal set
   models.
 - [ ] Prove the Levy reflection scheme inside ZFC: for each metatheoretic `n`,
@@ -283,11 +288,21 @@ Both of the remaining gaps are now supplied by
   induction runs on the bound alone, so no membership hypothesis on the smaller
   argument is needed.
 
-One item remains genuinely absent and the satisfaction layer will want it: there
-is no *internal* numeral function, i.e. no definable map from the metatheoretic
+One item remains genuinely absent and a later brick will want it: there is no
+*internal* numeral function, i.e. no definable map from the metatheoretic
 naturals into `omegaV`.  `Coding.natV` is an external recursion producing a
 separate closed term per external index, with no claim of internal definability.
 The recursion theorem is exactly the tool for building one.
+
+`BoundedZFCConsistency.InternalSat` adds one more, proved locally and belonging
+beside `nat_transitive`:
+
+- `∀ n, mem n (omegaV H) → (n = vempty H ∨ ∃ m, mem m (omegaV H) ∧ n = vsucc H m)`
+
+The internal arithmetic never says the successor is *onto* the nonzero naturals.
+That is exactly what makes a shifted environment total on the internal omega,
+and it cannot be supplied externally: a nonstandard natural is not reachable
+from zero in finitely many external steps.
 
 ## Scale
 
