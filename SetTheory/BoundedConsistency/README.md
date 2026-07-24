@@ -189,6 +189,12 @@ same three reasons as in the arithmetic case:
   all-occurrences rank bound, with absoluteness lemmas.
 - [ ] Define the object-level sentence `Con_n(ZFC)` for each metatheoretic `n`
   and prove its arbitrary-model characterization.
+- [x] Supply a step-parametric recursion theorem over internal omega,
+  generalizing the ZF development's `gstep`-specific finite recursion, together
+  with internal linearity of omega and an internal function/application
+  interface.  This is the enabling tool for everything below it: satisfaction
+  must be defined by recursion on formula codes, which may be nonstandard, so
+  the recursion has to be internal.
 - [ ] Formalize satisfaction for set-sized structures inside ZFC, by internal
   recursion on coded formulas.
 - [ ] Formalize soundness of the 17-rule calculus with respect to internal set
@@ -260,13 +266,28 @@ consumers of `ZF.Zf` late in a session.
 which belongs beside `kpair`.  Two further gaps were identified but deliberately
 *not* filled, since the chosen construction avoids needing them:
 
+Both of the remaining gaps are now supplied by
+`BoundedZFCConsistency.OmegaRecursion`, and both belong upstream:
+
 - a **step-parametric** finite recursion.  `Approx`, `Theta`, `Wimg`, and
-  `ClosureFO_of_ZF` hard-code `gstep`; there is no version taking an arbitrary
-  definable operation.  This is the missing generic tool, and a later brick that
-  genuinely needs staged recursion will have to supply it.
-- **internal linearity of omega**, together with its usual prerequisite about
-  successors.  The existing arithmetic stops at `nat_transitive`, `nat_no_self`,
-  `succ_le_lt`, `succ_not_le`, and `succ_inj_nat`.
+  `ClosureFO_of_ZF` hard-code `gstep`; the parametrized development gives
+  existence and uniqueness of the iteration sequence for any definable
+  operation.  Upstream's own machinery is now an *instance* of it — instantiating
+  the step at `gstep` discharges the graph hypothesis exactly — so roughly two
+  hundred lines of `ZF.Zf` could be replaced by that instantiation once the
+  module moves upstream.
+- **internal linearity of omega**, together with its prerequisite about
+  successors and the base case for zero.  The existing arithmetic stops at
+  `nat_transitive`, `nat_no_self`, `succ_le_lt`, `succ_not_le`, and
+  `succ_inj_nat`.  The successor lemma came out stronger than expected: the
+  induction runs on the bound alone, so no membership hypothesis on the smaller
+  argument is needed.
+
+One item remains genuinely absent and the satisfaction layer will want it: there
+is no *internal* numeral function, i.e. no definable map from the metatheoretic
+naturals into `omegaV`.  `Coding.natV` is an external recursion producing a
+separate closed term per external index, with no claim of internal definability.
+The recursion theorem is exactly the tool for building one.
 
 ## Scale
 

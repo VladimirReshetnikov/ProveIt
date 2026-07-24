@@ -4,6 +4,7 @@ import BoundedZFCConsistency.Coding
 import BoundedZFCConsistency.CodePredicate
 import BoundedZFCConsistency.Consistency
 import BoundedZFCConsistency.FormulaClosedSet
+import BoundedZFCConsistency.OmegaRecursion
 
 /-!
 # Bounded-complexity consistency for ZFC
