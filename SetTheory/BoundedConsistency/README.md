@@ -183,8 +183,8 @@ same three reasons as in the arithmetic case:
 - [x] Express “codes a formula” as a `Form` by the intersection presentation of
   an inductive definition, with a full satisfaction spec, quotation soundness,
   and a definability-relative induction principle.
-- [ ] Construct a formula-closed set, discharging the hypothesis that both
-  induction forms currently carry.
+- [x] Construct a formula-closed set, discharging the hypothesis that both
+  induction forms carried, and restate them unconditionally.
 - [ ] Code derivations inside the object theory and express the
   all-occurrences rank bound, with absoluteness lemmas.
 - [ ] Define the object-level sentence `Con_n(ZFC)` for each metatheoretic `n`
@@ -214,12 +214,26 @@ any external formula.  That is the intended behaviour, and it is exactly why the
 eventual argument must be carried out inside the model rather than by external
 recursion.
 
-**Both induction principles are relative to a definability witness and to the
-existence of a formula-closed set.**  Separation carves out subsets by a `Form`
-with parameters, not by an arbitrary Lean predicate, so the induction principle
-takes its property as a formula together with an environment.  And with no
-formula-closed set in the model the intersection is vacuous, so that hypothesis
-is not removable either; discharging it is the next brick.
+**The induction principles are relative to a definability witness.**  Separation
+carves out subsets by a `Form` with parameters, not by an arbitrary Lean
+predicate, so an induction principle takes its property as a formula together
+with an environment.  This is intrinsic, not an artefact: separation for
+arbitrary Lean predicates is not available and should not be.
+
+They no longer carry an existence hypothesis.  With no formula-closed set the
+intersection would be vacuous and no induction principle could hold, so
+`BoundedZFCConsistency.FormulaClosedSet` constructs one and restates both forms
+unconditionally.  The construction is worth recording, because the obvious route
+fails: taking a union of stages `C_0 = omega`, `C_{k+1} = C_k` plus its pairs
+does *not* give closure under a binary operation, since `a` and `b` may enter at
+different stages and directedness of the stages needs internal linearity of
+omega, which the ZF development does not have.  Instead the closure operator is
+applied as a black box to the unary step `v |-> v` union its pair image, and the
+resulting junk is removed by the same intersection presentation used for the
+code predicate.  That intersection is itself step-closed, hence least, so it
+carries its own induction principle relative only to definability — and two
+instances of it give directedness directly, with no stage recursion and no
+internal ordinal arithmetic.
 
 ## Upstream lemmas this project needed
 
@@ -238,6 +252,21 @@ rendering.  Without the pure form there is no way to write “is a natural numbe
 as a `Form` at all.  Moving both upstream is a small, safe refactor that was
 left out of this project's commits only to avoid destabilizing the other
 consumers of `ZF.Zf` late in a session.
+
+`BoundedZFCConsistency.FormulaClosedSet` adds a third:
+
+- a pair image, `∀ v, ∃ r, ∀ u, mem u r ↔ ∃ a b, mem a v ∧ mem b v ∧ u = kpair H a b`,
+
+which belongs beside `kpair`.  Two further gaps were identified but deliberately
+*not* filled, since the chosen construction avoids needing them:
+
+- a **step-parametric** finite recursion.  `Approx`, `Theta`, `Wimg`, and
+  `ClosureFO_of_ZF` hard-code `gstep`; there is no version taking an arbitrary
+  definable operation.  This is the missing generic tool, and a later brick that
+  genuinely needs staged recursion will have to supply it.
+- **internal linearity of omega**, together with its usual prerequisite about
+  successors.  The existing arithmetic stops at `nat_transitive`, `nat_no_self`,
+  `succ_le_lt`, `succ_not_le`, and `succ_inj_nat`.
 
 ## Scale
 

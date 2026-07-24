@@ -3,6 +3,7 @@ import BoundedZFCConsistency.Choice
 import BoundedZFCConsistency.Coding
 import BoundedZFCConsistency.CodePredicate
 import BoundedZFCConsistency.Consistency
+import BoundedZFCConsistency.FormulaClosedSet
 
 /-!
 # Bounded-complexity consistency for ZFC
