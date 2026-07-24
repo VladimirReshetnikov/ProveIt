@@ -1,0 +1,24 @@
+(** Assumption audit for the uniform-provability tightness equivalences. *)
+
+From BoundedPAConsistency Require Import
+  CompactPAUniformProvabilityTightness.
+
+Import PABoundedCompactPAUniformProvabilityTightness.
+
+Check raw_compactSelectorPackages_of_BProv.
+Check raw_restrictedPAConsistencyProofSuccessorInAllModels_of_BProv.
+Check raw_restrictedPAConsistencyCertificateSuccessorInAllModels_of_BProv.
+Check
+  PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_iff_proofSuccessor.
+Check
+  PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_iff_certificateSuccessor.
+Check raw_restrictedPAConsistencySuccessorInAllModels_equivalent.
+
+Print Assumptions raw_compactSelectorPackages_of_BProv.
+Print Assumptions
+  raw_restrictedPAConsistencyProofSuccessorInAllModels_of_BProv.
+Print Assumptions
+  PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_iff_proofSuccessor.
+Print Assumptions
+  PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_iff_certificateSuccessor.
+Print Assumptions raw_restrictedPAConsistencySuccessorInAllModels_equivalent.

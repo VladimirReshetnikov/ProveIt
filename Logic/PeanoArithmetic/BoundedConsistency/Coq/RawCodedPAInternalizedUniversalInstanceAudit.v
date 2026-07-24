@@ -1,0 +1,21 @@
+(** Assumption audit for the D1 plus internal universal-elimination engine. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPAInternalizedUniversalInstance.
+
+Import PABoundedRawCodedPAInternalizedUniversalInstance.
+
+Check rawQuotedFormulaCode_all.
+Check raw_codedPALocalProofOf_internalized_universal_instance.
+Check raw_codedPAProofOf_internalized_universal_instance.
+Check universalSelfEqualityFormula.
+Check universalSelfEqualityFormula_sentence.
+Check PA_BProv_universalSelfEqualityFormula.
+Check raw_codedPAProofOf_selfEquality_at_arbitrary_element.
+Check
+  raw_codedPAProofOf_dynamicSoundnessImplication_of_blocked_uniform_source.
+
+Print Assumptions raw_codedPALocalProofOf_internalized_universal_instance.
+Print Assumptions raw_codedPAProofOf_internalized_universal_instance.
+Print Assumptions PA_BProv_universalSelfEqualityFormula.
+Print Assumptions raw_codedPAProofOf_selfEquality_at_arbitrary_element.
