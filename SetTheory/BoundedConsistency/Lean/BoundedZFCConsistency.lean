@@ -1,5 +1,6 @@
 import BoundedZFCConsistency.Basic
 import BoundedZFCConsistency.Choice
+import BoundedZFCConsistency.Coding
 import BoundedZFCConsistency.Consistency
 
 /-!

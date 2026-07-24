@@ -17,14 +17,19 @@ the proof assistant before the resulting ZFC derivation is read; it must not be
 strengthened to the single object-level assertion `ZFC |- forall n, Con_n(ZFC)`,
 which would yield ordinary `Con(ZFC)` and contradict Gödel's second theorem.
 
-> **Current status.**  Early.  Phase one — the metatheoretic rank and
-> restricted-derivation development — is complete and checked:
+> **Current status.**  Early, but past the first internal brick.  Phase one —
+> the metatheoretic rank and restricted-derivation development — is complete and
+> checked:
 > `BoundedZFCConsistency.Basic` supplies the polarity ranks, the `Type`-valued
 > proof-tree mirror with erasure and completeness, the every-occurrence rank,
 > restricted provability with monotonicity and cofinality, and the
-> conclusion-only collapse.  Everything after that is open.  The object-level
-> theorem is **not** proved, and nothing in this project should be read as
-> claiming `ZFC |- Con_n(ZFC)`.
+> conclusion-only collapse.  The axiom of choice is formalized, giving `ZFCax`,
+> and `BoundedZFCConsistency.Coding` codes the syntax of `Form` inside an
+> arbitrary model of ZF, with quotation proved injective.  Everything after that
+> — “codes a formula” as an object-language predicate, coded derivations,
+> internal satisfaction, formalized soundness, and reflection — is open.  The
+> object-level theorem is **not** proved, and nothing in this project should be
+> read as claiming `ZFC |- Con_n(ZFC)`.
 
 ## Why this is not a port of the PA project
 
@@ -172,8 +177,13 @@ same three reasons as in the arithmetic case:
   together with its semantic bridge.
 - [x] Record the model-relative consistency statements for the restricted
   calculus, keeping the model hypothesis explicit.
-- [ ] Arithmetize the syntax of `Form` and of derivations inside the object
-  theory, as hereditarily finite sets, with absoluteness lemmas.
+- [x] Code the syntax of `Form` inside the object theory as hereditarily finite
+  sets: internal numerals in omega, a tagged Kuratowski-pair quotation map, and
+  injectivity of quotation.
+- [ ] Express “codes a formula” as a `Form`, using the closure and
+  finite-recursion machinery, with its satisfaction spec.
+- [ ] Code derivations inside the object theory and express the
+  all-occurrences rank bound, with absoluteness lemmas.
 - [ ] Define the object-level sentence `Con_n(ZFC)` for each metatheoretic `n`
   and prove its arbitrary-model characterization.
 - [ ] Formalize satisfaction for set-sized structures inside ZFC, by internal
