@@ -1,0 +1,51 @@
+import BoundedPAConsistency.DynamicTruthCrossLevelBaseRankProduction
+
+/-!
+# Audit: production base-rank cross-level induction
+
+This audit exposes the complete proof-producing path of the base
+cross-level transition: the standard second-level syntax, its quotation and
+semantic identifications, the PA proof of the ordinary coherence sentence,
+its D1 transport into an arbitrary ambient PA model, and the installation
+of the resulting universal theorem behind the induction-kernel interface
+under the staged certificate context.
+-/
+
+namespace LeanProofs.BoundedPAConsistency.DynamicTruthCrossLevelBaseRankProductionAudit
+
+open LO FirstOrder
+open LO.FirstOrder.Arithmetic
+open LO.FirstOrder.Arithmetic.Bootstrapping
+open LeanProofs.BoundedPAConsistency.DynamicTruthCrossLevelBaseRankProduction
+
+#check levelOneTruthSyntax
+#check typedQuote_levelOneTruthSyntax
+#check eval_levelOneTruthSyntax_iff
+#check standardBaseSuccessorCrossLevelSentence
+#check typedQuote_standardBaseSuccessorCrossLevelSentence
+#check standardBaseSuccessorCrossLevelProof
+#check baseSuccessorCrossLevelProof
+#check baseNextCrossLevelPredicate
+#check all_baseNextCrossLevelPredicate_eq_orbit
+#check all_baseNextCrossLevelPredicate_eq_crossLevel
+#check baseNextCrossLevelPredicate_eq_levelOne
+#check baseNextCrossLevelPredicate_shift
+#check baseCrossLevelUniversalProof
+#check baseCrossLevelStructuralUniversalProof
+#check baseCrossLevelInductionKernel
+#check proveBaseCrossFromBaseLocalContext
+#check stagedBaseCrossLevelInductionKernel
+#check stagedBaseCrossLevelInductionKernel_predicate
+
+#print axioms typedQuote_standardBaseSuccessorCrossLevelSentence
+#print axioms standardBaseSuccessorCrossLevelProof
+#print axioms baseSuccessorCrossLevelProof
+#print axioms all_baseNextCrossLevelPredicate_eq_crossLevel
+#print axioms baseNextCrossLevelPredicate_shift
+#print axioms baseCrossLevelUniversalProof
+#print axioms baseCrossLevelStructuralUniversalProof
+#print axioms baseCrossLevelInductionKernel
+#print axioms proveBaseCrossFromBaseLocalContext
+#print axioms stagedBaseCrossLevelInductionKernel
+
+end LeanProofs.BoundedPAConsistency.DynamicTruthCrossLevelBaseRankProductionAudit

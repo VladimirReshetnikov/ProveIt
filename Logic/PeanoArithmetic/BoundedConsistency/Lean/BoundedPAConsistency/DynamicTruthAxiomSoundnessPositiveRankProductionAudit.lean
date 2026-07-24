@@ -1,0 +1,51 @@
+import BoundedPAConsistency.DynamicTruthAxiomSoundnessPositiveRankProduction
+
+/-!
+# Audit: production positive-rank PA-axiom-soundness induction
+
+The declarations below expose the complete proof-code route from the
+congruence-safe one-predicate source theorem through the staged
+axiom-soundness kernel: the literal translation of the source law context,
+the closedness of both packed induction predicates, the compiled step, the
+supply of every context conjunct at a positive orbit index, and the final
+installation under the staged substitution context.
+-/
+
+namespace LeanProofs.BoundedPAConsistency.DynamicTruthAxiomSoundnessPositiveRankProductionAudit
+
+open LO FirstOrder
+open LO.FirstOrder.Arithmetic
+open LO.FirstOrder.Arithmetic.Bootstrapping
+open LeanProofs.BoundedPAConsistency.DynamicTruthAxiomSoundnessPositiveRankProduction
+
+#check translate_sourceInductionAxiom
+#check translate_sourceLevelAdjacency
+#check freeIndependencePredicateFormula
+#check closurePredicateFormula
+#check freeIndependencePredicateFormula_shift
+#check closurePredicateFormula_shift
+#check axiomSoundnessLawContextFormula
+#check translate_sourceAxiomSoundnessLawContext
+#check compiledAxiomSoundnessStepProof
+#check lowerExistentialLawsFormula_parameters
+#check levelAdjacencyProof
+#check proveOrbitLawContextFromSubstitutionContext
+#check orbitAxiomSoundnessStructuralUniversalProof
+#check stagedPositiveAxiomSoundnessInductionKernel
+#check stagedPositiveAxiomSoundnessInductionKernel_predicate
+#check all_nextAxiomSoundnessPredicate_eq_axiomSound
+
+#print axioms translate_sourceInductionAxiom
+#print axioms translate_sourceLevelAdjacency
+#print axioms freeIndependencePredicateFormula_shift
+#print axioms closurePredicateFormula_shift
+#print axioms translate_sourceAxiomSoundnessLawContext
+#print axioms compiledAxiomSoundnessStepProof
+#print axioms lowerExistentialLawsFormula_parameters
+#print axioms levelAdjacencyProof
+#print axioms proveOrbitLawContextFromSubstitutionContext
+#print axioms orbitAxiomSoundnessStructuralUniversalProof
+#print axioms stagedPositiveAxiomSoundnessInductionKernel
+#print axioms all_nextAxiomSoundnessPredicate_eq_axiomSound
+
+end LeanProofs.BoundedPAConsistency.DynamicTruthAxiomSoundnessPositiveRankProductionAudit

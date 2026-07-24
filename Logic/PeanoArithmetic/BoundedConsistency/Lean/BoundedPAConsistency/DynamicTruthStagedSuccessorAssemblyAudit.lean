@@ -1,0 +1,54 @@
+import BoundedPAConsistency.DynamicTruthStagedSuccessorAssembly
+
+/-!
+# Audit: assembly of the staged successor step
+
+This audit exposes the context-transport combinator, the closure equations
+that keep every transported context in orbit form, the branch-independent
+successor builder together with its target-code identification, the two
+rank-specific steps, and the resulting successor obligation of the staged
+direct package for the concrete dynamic truth family.
+-/
+
+namespace LeanProofs.BoundedPAConsistency.DynamicTruthStagedSuccessorAssemblyAudit
+
+open LO FirstOrder
+open LO.FirstOrder.Arithmetic
+open LO.FirstOrder.Arithmetic.Bootstrapping
+open LeanProofs.BoundedPAConsistency.TruthCertificateProofCompiler
+open LeanProofs.BoundedPAConsistency.DynamicTruthStagedSuccessorAssembly
+
+#check @PAInductionKernel.ofEq
+#check @PAInductionKernel.ofEq_predicate
+#check @stagedShiftInvariantInductionKernel_predicate
+#check @all_stagedShiftInvariantInductionKernel_predicate
+#check @stagedSubstitutionInvariantInductionKernel_predicate
+#check @all_stagedSubstitutionInvariantInductionKernel_predicate
+#check @stagedPositiveCrossLevelInductionKernel_predicate
+#check @stagedStepOfKernels
+#check @stagedStepOfKernels_target
+#check @stagedStepOfKernels_target_val
+#check @all_stagedBaseCrossLevelInductionKernel_predicate
+#check @all_stagedBaseAxiomSoundnessInductionKernel_predicate
+#check @all_stagedPositiveCrossLevelInductionKernel_predicate
+#check @all_stagedPositiveAxiomSoundnessInductionKernel_predicate
+#check @baseStagedStep
+#check @positiveStagedStep
+#check @compiledDynamicTruthCertificateFamily_hasStagedSuccessor
+
+#print axioms PAInductionKernel.ofEq
+#print axioms PAInductionKernel.ofEq_predicate
+#print axioms all_stagedShiftInvariantInductionKernel_predicate
+#print axioms all_stagedSubstitutionInvariantInductionKernel_predicate
+#print axioms stagedStepOfKernels
+#print axioms stagedStepOfKernels_target
+#print axioms stagedStepOfKernels_target_val
+#print axioms all_stagedBaseCrossLevelInductionKernel_predicate
+#print axioms all_stagedBaseAxiomSoundnessInductionKernel_predicate
+#print axioms all_stagedPositiveCrossLevelInductionKernel_predicate
+#print axioms all_stagedPositiveAxiomSoundnessInductionKernel_predicate
+#print axioms baseStagedStep
+#print axioms positiveStagedStep
+#print axioms compiledDynamicTruthCertificateFamily_hasStagedSuccessor
+
+end LeanProofs.BoundedPAConsistency.DynamicTruthStagedSuccessorAssemblyAudit

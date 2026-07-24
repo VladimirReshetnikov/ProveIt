@@ -1,0 +1,39 @@
+import BoundedPAConsistency.DynamicTruthRestrictedConsistencySource
+
+/-!
+# Audit: the falsity bridge to restricted consistency
+
+The declarations below expose the complete route from the represented
+derivation-soundness invariant to the certificate's forced final coordinate.
+The source implication is proved once, with the opaque relation's congruence
+kept as an explicit antecedent, and its arithmetic specialization is
+`paRestrictedConsistencyFormula` at the first named level.
+-/
+
+namespace LeanProofs.BoundedPAConsistency.DynamicTruthRestrictedConsistencySourceAudit
+
+open LO FirstOrder
+open LO.FirstOrder.Arithmetic
+open LO.FirstOrder.Arithmetic.Bootstrapping
+open LeanProofs.BoundedPAConsistency.DynamicTruthRestrictedConsistencySource
+
+#check sourceRestrictedConsistencySentence
+#check sourceConsistencyFromSoundnessSentence
+#check sourceCongruentConsistencyFromSoundnessSentence
+#check eval_sourceRestrictedConsistencySentence
+#check eval_allSourceDerivationSoundnessPredicate
+#check sourceCongruentConsistencyFromSoundnessProof
+#check translate_sourceRestrictedConsistencySentence
+#check translate_sourceConsistencyFromSoundnessSentence
+#check translate_sourceCongruentConsistencyFromSoundnessSentence
+#check compiledConsistencyFromSoundnessProof
+
+#print axioms eval_sourceRestrictedConsistencySentence
+#print axioms eval_allSourceDerivationSoundnessPredicate
+#print axioms sourceCongruentConsistencyFromSoundnessProof
+#print axioms translate_sourceRestrictedConsistencySentence
+#print axioms translate_sourceConsistencyFromSoundnessSentence
+#print axioms translate_sourceCongruentConsistencyFromSoundnessSentence
+#print axioms compiledConsistencyFromSoundnessProof
+
+end LeanProofs.BoundedPAConsistency.DynamicTruthRestrictedConsistencySourceAudit

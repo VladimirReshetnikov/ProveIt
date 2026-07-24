@@ -16,6 +16,7 @@ import BoundedPAConsistency.RestrictedConsistency
 import BoundedPAConsistency.TermEvaluationTransport
 import BoundedPAConsistency.TruthCertificateProofCompilerAudit
 import BoundedPAConsistency.UniformInternalProvability
+import BoundedPAConsistency.UniformInternalProvabilityTheorem
 import BoundedPAConsistency.UniformProofPackage
 
 /-!
@@ -178,3 +179,16 @@ open LeanProofs.BoundedPAConsistency
 #print axioms LeanProofs.BoundedPAConsistency.UniformInternalProvability.pa_proves_uniformRestrictedConsistencyProvability_iff_selectorInAllModels
 #print axioms LeanProofs.BoundedPAConsistency.UniformProofPackage.hasPARestrictedConsistencyProofPackage_definable
 #print axioms LeanProofs.BoundedPAConsistency.UniformProofPackage.paRestrictedConsistencyProofSelectorIn_of_package
+
+/-! ## The uniform object theorem
+
+The model-internal selector is constructed, so the literal sentence
+`PA ⊢ ∀ n, Prov_PA(⌜Con_n(PA)⌝)` is an unconditional theorem.  Its axiom
+listing is the trust boundary of the whole development. -/
+
+#check @LeanProofs.BoundedPAConsistency.UniformInternalProvabilityTheorem.paRestrictedConsistencyProofSelectorIn_compiled
+#check LeanProofs.BoundedPAConsistency.UniformInternalProvabilityTheorem.paRestrictedConsistencyProofSelectorInAllModels_compiled
+#check LeanProofs.BoundedPAConsistency.UniformInternalProvabilityTheorem.pa_proves_uniformRestrictedConsistencyProvability
+
+#print axioms LeanProofs.BoundedPAConsistency.UniformInternalProvabilityTheorem.paRestrictedConsistencyProofSelectorInAllModels_compiled
+#print axioms LeanProofs.BoundedPAConsistency.UniformInternalProvabilityTheorem.pa_proves_uniformRestrictedConsistencyProvability
