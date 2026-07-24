@@ -180,8 +180,11 @@ same three reasons as in the arithmetic case:
 - [x] Code the syntax of `Form` inside the object theory as hereditarily finite
   sets: internal numerals in omega, a tagged Kuratowski-pair quotation map, and
   injectivity of quotation.
-- [ ] Express “codes a formula” as a `Form`, using the closure and
-  finite-recursion machinery, with its satisfaction spec.
+- [x] Express “codes a formula” as a `Form` by the intersection presentation of
+  an inductive definition, with a full satisfaction spec, quotation soundness,
+  and a definability-relative induction principle.
+- [ ] Construct a formula-closed set, discharging the hypothesis that both
+  induction forms currently carry.
 - [ ] Code derivations inside the object theory and express the
   all-occurrences rank bound, with absoluteness lemmas.
 - [ ] Define the object-level sentence `Con_n(ZFC)` for each metatheoretic `n`
@@ -197,6 +200,44 @@ same three reasons as in the arithmetic case:
 - [ ] Apply `godel_completeness_for_theories` to obtain, for every metatheoretic
   `n`, the object-level derivation `ZFC |- Con_n(ZFC)`, and audit its
   assumptions.
+
+## Two facts about the coded-syntax layer
+
+Both are recorded in the modules and neither should be read away.
+
+**The code predicate is not claimed to have the quoted formulas as its exact
+extension.**  Quotation soundness — every externally quoted formula satisfies
+the predicate — is proved.  The converse is *false* in nonstandard models and is
+deliberately not attempted: the atomic clauses quantify over the model's own
+omega, so a nonstandard model has code-like elements that are not quotations of
+any external formula.  That is the intended behaviour, and it is exactly why the
+eventual argument must be carried out inside the model rather than by external
+recursion.
+
+**Both induction principles are relative to a definability witness and to the
+existence of a formula-closed set.**  Separation carves out subsets by a `Form`
+with parameters, not by an arbitrary Lean predicate, so the induction principle
+takes its property as a formula together with an environment.  And with no
+formula-closed set in the model the intersection is vacuous, so that hypothesis
+is not removable either; discharging it is the next brick.
+
+## Upstream lemmas this project needed
+
+Two facts about the internal omega are proved locally in
+`BoundedZFCConsistency.CodePredicate` but belong in `SetTheory/ZF/Lean/ZF/Zf.lean`
+beside `omega_spec`:
+
+- `inductiveV H (omegaV H)` — the internal omega is itself inductive;
+- `mem n (omegaV H) ↔ ∀ c, inductiveV H c → mem n c` — the *pure* intersection
+  characterization.
+
+The second matters more than it looks.  `omega_spec` states the conjunctive form
+`mem n (InfSet H) ∧ …`, whose first conjunct is redundant but drags the
+choice-dependent term `InfSet H` — which has no defining formula — into any
+rendering.  Without the pure form there is no way to write “is a natural number”
+as a `Form` at all.  Moving both upstream is a small, safe refactor that was
+left out of this project's commits only to avoid destabilizing the other
+consumers of `ZF.Zf` late in a session.
 
 ## Scale
 
