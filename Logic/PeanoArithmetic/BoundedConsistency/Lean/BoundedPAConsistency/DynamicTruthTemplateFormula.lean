@@ -1,5 +1,6 @@
 import BoundedPAConsistency.DynamicTruthFormula
 import BoundedPAConsistency.ModelCodedPredicateParameters
+import BoundedPAConsistency.FinFunext
 
 /-!
 # A source template for the dynamic truth-formula successor
@@ -125,16 +126,7 @@ variable [V↓[ℒₒᵣ] ⊧* ISigma 1]
   rw [apply₃, Semiformula.coe_subst_eq_subst_coe,
     ModelCodedPredicateParameters.translateFormula_subst]
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 @[simp] theorem translate_apply₂
     (lower : Bootstrapping.Semiformula V ℒₒᵣ 3)
@@ -152,13 +144,7 @@ variable [V↓[ℒₒᵣ] ⊧* ISigma 1]
   rw [apply₂, Semiformula.coe_subst_eq_subst_coe,
     ModelCodedPredicateParameters.translateFormula_subst]
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i => exact i.elim0
+  exact funext_fin2 rfl rfl
 
 @[simp] theorem translate_neg_apply₂
     (lower : Bootstrapping.Semiformula V ℒₒᵣ 3)

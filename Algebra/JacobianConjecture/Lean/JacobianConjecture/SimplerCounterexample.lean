@@ -186,12 +186,6 @@ theorem simplerFirst_stable_identity (R : Type u) [CommRing R] :
   simp [simplerFirst, baseP, sourceA, sourceB, factorP, factorQ]
   ring
 
-private theorem pderiv_ofNat {σ R : Type*} [CommSemiring R] {i : σ} (n : Nat)
-    [n.AtLeastTwo] :
-    pderiv i (ofNat(n) : MvPolynomial σ R) = 0 := by
-  rw [← map_ofNat (C : R →+* MvPolynomial σ R) n]
-  exact pderiv_C
-
 private noncomputable def rowReducedJacobian (R : Type u) [CommRing R] :
     Matrix I5 I5 (MvPolynomial I5 R) :=
   let A := jacobian (simplerCounterexample R)
@@ -238,20 +232,11 @@ private theorem splitReduced_bottomRight (R : Type u) [CommRing R] :
 
 private theorem det_rowReduced_eq_det_topLeft (R : Type u) [CommRing R] :
     (rowReducedJacobian R).det = (splitReduced R).toBlocks₁₁.det := by
-  let M := splitReduced R
-  have hM : M = Matrix.fromBlocks M.toBlocks₁₁ 0 M.toBlocks₂₁ 1 := by
-    calc
-      M = Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂
-          M.toBlocks₂₁ M.toBlocks₂₂ := (Matrix.fromBlocks_toBlocks M).symm
-      _ = Matrix.fromBlocks M.toBlocks₁₁ 0 M.toBlocks₂₁ 1 := by
-        rw [splitReduced_topRight R, splitReduced_bottomRight R]
   calc
-    (rowReducedJacobian R).det = M.det :=
+    (rowReducedJacobian R).det = (splitReduced R).det :=
       (Matrix.det_reindex_self splitEquiv (rowReducedJacobian R)).symm
-    _ = (Matrix.fromBlocks M.toBlocks₁₁ 0 M.toBlocks₂₁ 1).det :=
-      congrArg Matrix.det hM
-    _ = M.toBlocks₁₁.det := by
-      simp only [Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, mul_one]
+    _ = (splitReduced R).toBlocks₁₁.det :=
+      det_eq_det_toBlocks₁₁ _ (splitReduced_topRight R) (splitReduced_bottomRight R)
 
 private noncomputable def baseMap (R : Type u) [CommRing R] :
     I3 → MvPolynomial I5 R := ![baseP R, baseQ R, baseR R]
@@ -304,9 +289,7 @@ theorem collision₀_value (R : Type u) [CommRing R] :
   fin_cases i <;>
     norm_num [evalMap, simplerCounterexample, simplerFirst, baseQ, baseR,
       sourceA, sourceB, factorP, factorQ, collision₀, collisionValue,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-      Matrix.cons_val_three, Matrix.cons_val_four, Matrix.head_cons,
-      Matrix.tail_cons]
+      Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four]
 
 set_option maxHeartbeats 800000 in
 theorem collision₁_value (R : Type u) [CommRing R] :
@@ -315,9 +298,7 @@ theorem collision₁_value (R : Type u) [CommRing R] :
   fin_cases i <;>
     norm_num [evalMap, simplerCounterexample, simplerFirst, baseQ, baseR,
       sourceA, sourceB, factorP, factorQ, collision₁, collisionValue,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-      Matrix.cons_val_three, Matrix.cons_val_four, Matrix.head_cons,
-      Matrix.tail_cons]
+      Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four]
 
 theorem collision (R : Type u) [CommRing R] :
     evalMap (simplerCounterexample R) (collision₀ R) =
@@ -359,5 +340,42 @@ theorem jacobianConjectureInDimensionFive_false
 theorem jacobianConjectureInDimensionFive_false_over_complex :
     ¬ JacobianConjectureInDimension 5 ℂ :=
   jacobianConjectureInDimensionFive_false ℂ
+
+/-!
+## Equivariance
+
+The triangular shears preserve the symmetry of the three-variable witness:
+negating `x, y, a, b` in the source negates every image coordinate except the
+first.  Mirroring the collision through this symmetry yields a second integral
+collision with no new polynomial evaluation.
+-/
+
+/-- The source involution `(x, y, z, a, b) ↦ (-x, -y, z, -a, -b)`. -/
+def flipSource5 {R : Type u} [CommRing R] (p : I5 → R) : I5 → R :=
+  ![-p 0, -p 1, p 2, -p 3, -p 4]
+
+/-- The target involution `(v₀, …, v₄) ↦ (v₀, -v₁, -v₂, -v₃, -v₄)`. -/
+def flipTarget5 {R : Type u} [CommRing R] (v : I5 → R) : I5 → R :=
+  ![v 0, -v 1, -v 2, -v 3, -v 4]
+
+set_option maxHeartbeats 1600000 in
+/-- **Equivariance of the stable counterexample.** -/
+theorem simplerCounterexample_equivariant
+    (R : Type u) [CommRing R] (p : I5 → R) :
+    evalMap (simplerCounterexample R) (flipSource5 p) =
+      flipTarget5 (evalMap (simplerCounterexample R) p) := by
+  funext i
+  fin_cases i <;>
+    simp [evalMap, simplerCounterexample, simplerFirst, baseQ, baseR,
+      sourceA, sourceB, factorP, factorQ, flipSource5, flipTarget5] <;>
+    ring
+
+/-- Mirroring the integral collision yields another one, with no new
+polynomial evaluation. -/
+theorem mirrored_collision (R : Type u) [CommRing R] :
+    evalMap (simplerCounterexample R) (flipSource5 (collision₀ R)) =
+      evalMap (simplerCounterexample R) (flipSource5 (collision₁ R)) := by
+  rw [simplerCounterexample_equivariant, simplerCounterexample_equivariant,
+    collision₀_value, collision₁_value]
 
 end LeanProofs.JacobianSimplerCounterexample

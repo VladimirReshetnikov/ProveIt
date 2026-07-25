@@ -213,26 +213,32 @@ Proof.
   reflexivity.
 Qed.
 
-Theorem wolfram_characterizes_sheffer_on_bool
-    (op : bool -> bool -> bool) (h : WolframAxiom op) : IsBooleanSheffer op.
-Proof.
-  pose proof (@wolframAxiom_to_bool op h) as htable.
-  destruct (op false false) eqn:Hff;
-  destruct (op false true) eqn:Hft;
-  destruct (op true false) eqn:Htf;
-  destruct (op true true) eqn:Htt;
-  unfold wolframHoldsBool in htable;
+(* Once an axiom system has been reduced to the boolean fact that its truth
+   table evaluates to [true], identifying the operation is the same finite
+   case analysis for every such system: split on the four entries of [op],
+   propagate those equations into the table, and read off which of the two
+   Sheffer operations [op] agrees with.  Only the table being unfolded
+   differs, so the caller unfolds it and this tactic does the rest. *)
+Ltac characterize_sheffer_from_table op htable :=
+  destruct (op false false) eqn:?;
+  destruct (op false true) eqn:?;
+  destruct (op true false) eqn:?;
+  destruct (op true true) eqn:?;
   cbn in htable;
-  repeat match type of htable with
-  | context[op false false] => rewrite Hff in htable
-  | context[op false true] => rewrite Hft in htable
-  | context[op true false] => rewrite Htf in htable
-  | context[op true true] => rewrite Htt in htable
+  repeat match goal with
+  | H : op _ _ = _ |- _ => rewrite H in htable
   end;
   cbn in htable;
   try (left; prove_same_bool_op);
   try (right; prove_same_bool_op);
   discriminate.
+
+Theorem wolfram_characterizes_sheffer_on_bool
+    (op : bool -> bool -> bool) (h : WolframAxiom op) : IsBooleanSheffer op.
+Proof.
+  pose proof (@wolframAxiom_to_bool op h) as htable.
+  unfold wolframHoldsBool in htable.
+  characterize_sheffer_from_table op htable.
 Qed.
 
 Definition meredithHoldsBool (op : bool -> bool -> bool) : bool :=
@@ -268,22 +274,8 @@ Theorem meredith_characterizes_sheffer_on_bool
     (op : bool -> bool -> bool) (h : MeredithAxioms op) : IsBooleanSheffer op.
 Proof.
   pose proof (@meredithAxioms_to_bool op h) as htable.
-  destruct (op false false) eqn:Hff;
-  destruct (op false true) eqn:Hft;
-  destruct (op true false) eqn:Htf;
-  destruct (op true true) eqn:Htt;
-  unfold meredithHoldsBool in htable;
-  cbn in htable;
-  repeat match type of htable with
-  | context[op false false] => rewrite Hff in htable
-  | context[op false true] => rewrite Hft in htable
-  | context[op true false] => rewrite Htf in htable
-  | context[op true true] => rewrite Htt in htable
-  end;
-  cbn in htable;
-  try (left; prove_same_bool_op);
-  try (right; prove_same_bool_op);
-  discriminate.
+  unfold meredithHoldsBool in htable.
+  characterize_sheffer_from_table op htable.
 Qed.
 
 (* ------------------------------------------------------------------ *)
@@ -303,13 +295,19 @@ Proof.
   - rewrite IHp1, IHp2. apply hsame.
 Qed.
 
-Theorem wolfram_functionally_complete {A : Type}
-    (op : bool -> bool -> bool) (h : WolframAxiom op)
+(* Functional completeness depends on the operation only through the fact
+   that it is one of the two boolean Sheffer operations: the translation is
+   [toNand] or [toNor] accordingly, and [strokeEvalWith_same] transports the
+   correctness lemma along the pointwise agreement.  Proving it at that level
+   of generality lets each axiom system contribute only its own
+   characterization theorem. *)
+Theorem sheffer_functionally_complete {A : Type}
+    (op : bool -> bool -> bool) (h : IsBooleanSheffer op)
     (p : ClassicalFormula A) :
     exists q : StrokeFormula A,
       forall v : A -> bool, evalWith op v q = eval v p.
 Proof.
-  destruct (@wolfram_characterizes_sheffer_on_bool op h) as [hop | hop].
+  destruct h as [hop | hop].
   - exists (toNand p). intro v.
     rewrite (strokeEvalWith_same hop v (toNand p)).
     apply eval_toNand.
@@ -318,19 +316,24 @@ Proof.
     apply eval_toNor.
 Qed.
 
+Theorem wolfram_functionally_complete {A : Type}
+    (op : bool -> bool -> bool) (h : WolframAxiom op)
+    (p : ClassicalFormula A) :
+    exists q : StrokeFormula A,
+      forall v : A -> bool, evalWith op v q = eval v p.
+Proof.
+  exact (@sheffer_functionally_complete A op
+    (@wolfram_characterizes_sheffer_on_bool op h) p).
+Qed.
+
 Theorem meredith_functionally_complete {A : Type}
     (op : bool -> bool -> bool) (h : MeredithAxioms op)
     (p : ClassicalFormula A) :
     exists q : StrokeFormula A,
       forall v : A -> bool, evalWith op v q = eval v p.
 Proof.
-  destruct (@meredith_characterizes_sheffer_on_bool op h) as [hop | hop].
-  - exists (toNand p). intro v.
-    rewrite (strokeEvalWith_same hop v (toNand p)).
-    apply eval_toNand.
-  - exists (toNor p). intro v.
-    rewrite (strokeEvalWith_same hop v (toNor p)).
-    apply eval_toNor.
+  exact (@sheffer_functionally_complete A op
+    (@meredith_characterizes_sheffer_on_bool op h) p).
 Qed.
 
 (* ------------------------------------------------------------------ *)

@@ -14,7 +14,8 @@ prover version (9.2).  The installer pins a repair derived from upstream
 [`Install.ps1`](Install.ps1) installs two empty package-name adapters and pins
 the official Elpi and MathComp repositories at known Rocq-9.2-compatible
 revisions.  It then installs Rocq 9.2, its standalone standard library,
-Coquelicot, Interval, and MetaRocq into the selected opam switch.
+Coquelicot, Interval, Equations 1.3.2, stdpp 1.13, and MetaRocq into the
+selected opam switch.
 
 ```powershell
 pwsh -File Tools/Rocq92Compat/Install.ps1

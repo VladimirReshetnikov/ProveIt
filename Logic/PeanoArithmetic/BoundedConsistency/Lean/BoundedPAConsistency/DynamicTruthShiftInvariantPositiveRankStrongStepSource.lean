@@ -1,6 +1,7 @@
 import BoundedPAConsistency.DynamicTruthCrossLevelDerivedStrongStep
 import BoundedPAConsistency.DynamicTruthShiftInvariantPositiveRankStrongStep
 import BoundedPAConsistency.DynamicTruthShiftInvariantStrongStepSource
+import BoundedPAConsistency.FinFunext
 
 /-!
 # Congruence-safe fixed-source wrapper for the positive-rank shift step
@@ -177,13 +178,7 @@ include hArithmeticReduct in
               (#1 : ClosedSemiterm ℒₒᵣ 2)]) := by
     simp [DynamicTruthShiftInvariantStrongStepSource.sourcePrefixGuard,
       liftArithmeticFormula, Function.comp_def]
-    funext i
-    cases i using Fin.cases with
-    | zero => rfl
-    | succ i =>
-        cases i using Fin.cases with
-        | zero => rfl
-        | succ i => exact i.elim0
+    exact funext_fin2 rfl rfl
   rw [hguard]
   rw [eval_liftArithmeticFormula hArithmeticReduct]
   simp

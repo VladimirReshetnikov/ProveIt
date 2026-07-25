@@ -19,6 +19,94 @@ universe u
 namespace FiniteSkolemCut
 namespace ProgramTrace
 
+/-- The recurring child-bound obligation: hull numerals are `RawLt`-ordered
+like their standard codes.  Composes the ambient-to-hull order transport with
+the standard numeral order. -/
+private theorem hull_rawLt_numeralValue_of_lt {alpha : Type u}
+    (M : PA.PreModel alpha) (S : CanonicalSelectors M)
+    (rank : Nat) (generator : alpha) (hPA : RawPASatisfies M)
+    (hLtRank : formulaRank traceLtFormula ≤ rank)
+    {m n : Nat} (hmn : m < n) :
+    RawLt (preModel M S rank generator)
+      (PA.Term.numeralValue (preModel M S rank generator) m)
+      (PA.Term.numeralValue (preModel M S rank generator) n) := by
+  apply hull_rawLt_of_ambient M S rank generator
+    (by simpa [traceLtFormula] using hLtRank)
+  simpa only [hull_numeralValue_val_transport] using
+    rawLt_numeralValue_of_lt (m := m) (n := n) hPA hmn
+
+/-- Shared reconstruction of a binary (`add`/`mul`) row case from its
+witness fields; only the tag, the syntactic operator, and the hull
+operation differ between the two instantiations. -/
+private theorem sat_binaryCase_of_witness {alpha : Type u}
+    (M : PA.PreModel alpha) (S : CanonicalSelectors M)
+    (rank : Nat) (generator : alpha) (hPA : RawPASatisfies M)
+    (hLtRank : formulaRank traceLtFormula ≤ rank)
+    (target : Nat) (code value betaCode betaStep : PA.Term)
+    (e : Nat → Carrier M S rank generator)
+    (hcode : PA.Term.eval (preModel M S rank generator) e code =
+      PA.Term.numeralValue (preModel M S rank generator) target)
+    (tag : Nat) (op : PA.Term → PA.Term → PA.Term)
+    (opValue : Carrier M S rank generator → Carrier M S rank generator →
+      Carrier M S rank generator)
+    (hop : ∀ (e' : Nat → Carrier M S rank generator) (a b : PA.Term),
+      PA.Term.eval (preModel M S rank generator) e' (op a b) =
+        opValue (PA.Term.eval (preModel M S rank generator) e' a)
+          (PA.Term.eval (preModel M S rank generator) e' b))
+    (leftCode rightCode : Nat)
+    (leftValue rightValue : Carrier M S rank generator)
+    (target_eq : target = Program.nodeCode tag
+      (Program.nodeCode leftCode rightCode))
+    (hleft : RawBetaEntry (preModel M S rank generator) leftValue
+      (PA.Term.eval (preModel M S rank generator) e betaCode)
+      (PA.Term.eval (preModel M S rank generator) e betaStep)
+      (PA.Term.numeralValue (preModel M S rank generator) leftCode))
+    (hright : RawBetaEntry (preModel M S rank generator) rightValue
+      (PA.Term.eval (preModel M S rank generator) e betaCode)
+      (PA.Term.eval (preModel M S rank generator) e betaStep)
+      (PA.Term.numeralValue (preModel M S rank generator) rightCode))
+    (hvalue : PA.Term.eval (preModel M S rank generator) e value =
+      opValue leftValue rightValue) :
+    PA.Formula.Sat (preModel M S rank generator) e
+      (binaryCase tag op code value betaCode betaStep) := by
+  let KM := preModel M S rank generator
+  apply sat_binaryCase_of KM tag op opValue
+    code value betaCode betaStep (PA.Term.numeral leftCode)
+    (PA.Term.numeral rightCode) leftValue rightValue e hop
+  · have hinner := hull_eval_nodeTerm_standard M S rank generator hPA
+      (PA.Term.numeral leftCode) (PA.Term.numeral rightCode) e
+      leftCode rightCode (by simp only [PA.Term.eval_numeral])
+      (by simp only [PA.Term.eval_numeral])
+    calc
+      PA.Term.eval KM e code = PA.Term.numeralValue KM target := hcode
+      _ = PA.Term.numeralValue KM
+          (Program.nodeCode tag
+            (Program.nodeCode leftCode rightCode)) := by rw [target_eq]
+      _ = PA.Term.eval KM e
+          (nodeTerm (PA.Term.numeral tag)
+            (nodeTerm (PA.Term.numeral leftCode)
+              (PA.Term.numeral rightCode))) :=
+        (hull_eval_nodeTerm_standard M S rank generator hPA _ _ e tag
+          (Program.nodeCode leftCode rightCode)
+          (by simp only [PA.Term.eval_numeral]) hinner).symm
+  · simp only [PA.Term.eval_numeral]
+    rw [hcode]
+    exact hull_rawLt_numeralValue_of_lt M S rank generator hPA hLtRank (by
+      rw [target_eq]
+      exact Nat.lt_trans
+        (Program.left_lt_nodeCode leftCode rightCode)
+        (Program.right_lt_nodeCode tag _))
+  · simp only [PA.Term.eval_numeral]
+    rw [hcode]
+    exact hull_rawLt_numeralValue_of_lt M S rank generator hPA hLtRank (by
+      rw [target_eq]
+      exact Nat.lt_trans
+        (Program.right_lt_nodeCode leftCode rightCode)
+        (Program.right_lt_nodeCode tag _))
+  · simpa only [PA.Term.eval_numeral] using hleft
+  · simpa only [PA.Term.eval_numeral] using hright
+  · exact hvalue
+
 /-- Every normalized standard-row descriptor reconstructs a genuine
 `programCases` witness in the hull. -/
 theorem sat_programCases_of_standardRowWitness {alpha : Type u}
@@ -89,10 +177,7 @@ theorem sat_programCases_of_standardRowWitness {alpha : Type u}
               (by simp only [PA.Term.eval_numeral])).symm
       · simp only [PA.Term.eval_numeral]
         rw [hcode]
-        apply hull_rawLt_of_ambient M S rank generator
-          (by simpa [traceLtFormula] using hLtRank)
-        simpa only [KM, hull_numeralValue_val_transport] using
-          rawLt_numeralValue_of_lt (m := childCode) (n := target) hPA (by
+        exact hull_rawLt_numeralValue_of_lt M S rank generator hPA hLtRank (by
             rw [target_eq]
             exact Program.right_lt_nodeCode 2 childCode)
       · simpa only [PA.Term.eval_numeral] using hlookup
@@ -101,98 +186,18 @@ theorem sat_programCases_of_standardRowWitness {alpha : Type u}
       hleft hright hvalue =>
       refine ⟨binaryCase 3 PA.Term.add code value betaCode betaStep,
         by simp, ?_⟩
-      apply sat_binaryCase_of KM 3 PA.Term.add KM.add
-        code value betaCode betaStep (PA.Term.numeral leftCode)
-        (PA.Term.numeral rightCode) leftValue rightValue e
-      · intro e' a b
-        rfl
-      · have hinner := hull_eval_nodeTerm_standard M S rank generator hPA
-          (PA.Term.numeral leftCode) (PA.Term.numeral rightCode) e
-          leftCode rightCode (by simp only [PA.Term.eval_numeral])
-          (by simp only [PA.Term.eval_numeral])
-        calc
-          PA.Term.eval KM e code = PA.Term.numeralValue KM target := hcode
-          _ = PA.Term.numeralValue KM
-              (Program.nodeCode 3
-                (Program.nodeCode leftCode rightCode)) := by rw [target_eq]
-          _ = PA.Term.eval KM e
-              (nodeTerm (PA.Term.numeral 3)
-                (nodeTerm (PA.Term.numeral leftCode)
-                  (PA.Term.numeral rightCode))) :=
-            (hull_eval_nodeTerm_standard M S rank generator hPA _ _ e 3
-              (Program.nodeCode leftCode rightCode)
-              (by simp only [PA.Term.eval_numeral]) hinner).symm
-      · simp only [PA.Term.eval_numeral]
-        rw [hcode]
-        apply hull_rawLt_of_ambient M S rank generator
-          (by simpa [traceLtFormula] using hLtRank)
-        simpa only [KM, hull_numeralValue_val_transport] using
-          rawLt_numeralValue_of_lt (m := leftCode) (n := target) hPA (by
-            rw [target_eq]
-            exact Nat.lt_trans
-              (Program.left_lt_nodeCode leftCode rightCode)
-              (Program.right_lt_nodeCode 3 _))
-      · simp only [PA.Term.eval_numeral]
-        rw [hcode]
-        apply hull_rawLt_of_ambient M S rank generator
-          (by simpa [traceLtFormula] using hLtRank)
-        simpa only [KM, hull_numeralValue_val_transport] using
-          rawLt_numeralValue_of_lt (m := rightCode) (n := target) hPA (by
-            rw [target_eq]
-            exact Nat.lt_trans
-              (Program.right_lt_nodeCode leftCode rightCode)
-              (Program.right_lt_nodeCode 3 _))
-      · simpa only [PA.Term.eval_numeral] using hleft
-      · simpa only [PA.Term.eval_numeral] using hright
-      · exact hvalue
+      exact sat_binaryCase_of_witness M S rank generator hPA hLtRank
+        target code value betaCode betaStep e hcode 3 PA.Term.add
+        KM.add (fun _ _ _ => rfl) leftCode rightCode leftValue
+        rightValue target_eq hleft hright hvalue
   | mul leftCode rightCode leftValue rightValue target_eq
       hleft hright hvalue =>
       refine ⟨binaryCase 4 PA.Term.mul code value betaCode betaStep,
         by simp, ?_⟩
-      apply sat_binaryCase_of KM 4 PA.Term.mul KM.mul
-        code value betaCode betaStep (PA.Term.numeral leftCode)
-        (PA.Term.numeral rightCode) leftValue rightValue e
-      · intro e' a b
-        rfl
-      · have hinner := hull_eval_nodeTerm_standard M S rank generator hPA
-          (PA.Term.numeral leftCode) (PA.Term.numeral rightCode) e
-          leftCode rightCode (by simp only [PA.Term.eval_numeral])
-          (by simp only [PA.Term.eval_numeral])
-        calc
-          PA.Term.eval KM e code = PA.Term.numeralValue KM target := hcode
-          _ = PA.Term.numeralValue KM
-              (Program.nodeCode 4
-                (Program.nodeCode leftCode rightCode)) := by rw [target_eq]
-          _ = PA.Term.eval KM e
-              (nodeTerm (PA.Term.numeral 4)
-                (nodeTerm (PA.Term.numeral leftCode)
-                  (PA.Term.numeral rightCode))) :=
-            (hull_eval_nodeTerm_standard M S rank generator hPA _ _ e 4
-              (Program.nodeCode leftCode rightCode)
-              (by simp only [PA.Term.eval_numeral]) hinner).symm
-      · simp only [PA.Term.eval_numeral]
-        rw [hcode]
-        apply hull_rawLt_of_ambient M S rank generator
-          (by simpa [traceLtFormula] using hLtRank)
-        simpa only [KM, hull_numeralValue_val_transport] using
-          rawLt_numeralValue_of_lt (m := leftCode) (n := target) hPA (by
-            rw [target_eq]
-            exact Nat.lt_trans
-              (Program.left_lt_nodeCode leftCode rightCode)
-              (Program.right_lt_nodeCode 4 _))
-      · simp only [PA.Term.eval_numeral]
-        rw [hcode]
-        apply hull_rawLt_of_ambient M S rank generator
-          (by simpa [traceLtFormula] using hLtRank)
-        simpa only [KM, hull_numeralValue_val_transport] using
-          rawLt_numeralValue_of_lt (m := rightCode) (n := target) hPA (by
-            rw [target_eq]
-            exact Nat.lt_trans
-              (Program.right_lt_nodeCode leftCode rightCode)
-              (Program.right_lt_nodeCode 4 _))
-      · simpa only [PA.Term.eval_numeral] using hleft
-      · simpa only [PA.Term.eval_numeral] using hright
-      · exact hvalue
+      exact sat_binaryCase_of_witness M S rank generator hPA hLtRank
+        target code value betaCode betaStep e hcode 4 PA.Term.mul
+        KM.mul (fun _ _ _ => rfl) leftCode rightCode leftValue
+        rightValue target_eq hleft hright hvalue
   | exSkolem body hRank codes values target_eq hlookup hgraph =>
       refine ⟨exSkolemCase rank code value betaCode betaStep, by simp, ?_⟩
       rw [exSkolemCase, sat_disjunction]
@@ -241,10 +246,7 @@ theorem sat_programCases_of_standardRowWitness {alpha : Type u}
       · intro i
         simp only [PA.Term.eval_numeral]
         rw [hcode]
-        apply hull_rawLt_of_ambient M S rank generator
-          (by simpa [traceLtFormula] using hLtRank)
-        simpa only [KM, hull_numeralValue_val_transport] using
-          rawLt_numeralValue_of_lt (m := codes i) (n := target) hPA (by
+        exact hull_rawLt_numeralValue_of_lt M S rank generator hPA hLtRank (by
             rw [target_eq]
             exact Nat.lt_trans (Program.vector_entry_lt_code codes i)
               (Nat.lt_trans
@@ -303,10 +305,7 @@ theorem sat_programCases_of_standardRowWitness {alpha : Type u}
       · intro i
         simp only [PA.Term.eval_numeral]
         rw [hcode]
-        apply hull_rawLt_of_ambient M S rank generator
-          (by simpa [traceLtFormula] using hLtRank)
-        simpa only [KM, hull_numeralValue_val_transport] using
-          rawLt_numeralValue_of_lt (m := codes i) (n := target) hPA (by
+        exact hull_rawLt_numeralValue_of_lt M S rank generator hPA hLtRank (by
             rw [target_eq]
             exact Nat.lt_trans (Program.vector_entry_lt_code codes i)
               (Nat.lt_trans

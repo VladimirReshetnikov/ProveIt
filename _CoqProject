@@ -3,6 +3,7 @@
 -Q Analysis/ExponentialIdentities/Coq ExponentialIdentities
 -Q Combinatorics/ExpressionEnumeration/PowerTowers/Coq PowerTowers
 -Q Combinatorics/ExpressionEnumeration/RadicalExpressions/A158415/Coq A158415
+-Q Combinatorics/SquaredSquare/Coq SquaredSquare
 -Q Computability/BusyBeaver/Coq BusyBeaver
 -Q Computability/CombinatoryLogic/Coq CombinatoryLogic
 -Q Logic/FirstOrder/Coq FirstOrder
@@ -31,10 +32,14 @@
 -Q lib/Coq-BB5/BB3 CoqBB3
 -Q lib/Coq-BB5/BB4 CoqBB4
 -Q lib/Coq-Library-Undecidability-current/theories Undecidability
+-Q lib/Coq-Synthetic-Computability/theories SyntheticComputability
+-Q Computability/TuringDegrees/Coq TuringDegrees
 
 # Registered source list; `rocq makefile` resolves its dependency graph.
 
+Algebra/JacobianConjecture/Coq/Common.v
 Algebra/JacobianConjecture/Coq/Counterexample.v
+Algebra/JacobianConjecture/Coq/Scaling.v
 Algebra/JacobianConjecture/Coq/CollisionFamily.v
 Algebra/JacobianConjecture/Coq/SimplerCounterexample.v
 Algebra/JacobianConjecture/Coq/Audit.v
@@ -249,6 +254,13 @@ Combinatorics/ExpressionEnumeration/PowerTowers/Coq/A198683/N12/N12Symbolic.v
 Combinatorics/ExpressionEnumeration/PowerTowers/Coq/A198683/SmallValues/EightBounds.v
 Combinatorics/ExpressionEnumeration/PowerTowers/Coq/A199812.v
 Combinatorics/ExpressionEnumeration/RadicalExpressions/A158415/Coq/A158415.v
+Combinatorics/SquaredSquare/Coq/Defs.v
+Combinatorics/SquaredSquare/Coq/Duijvestijn.v
+Combinatorics/SquaredSquare/Coq/Intervals.v
+Combinatorics/SquaredSquare/Coq/Minimality.v
+Combinatorics/SquaredSquare/Coq/Scaling.v
+Combinatorics/SquaredSquare/Coq/MinimalOrder.v
+Combinatorics/SquaredSquare/Coq/Audit.v
 Computability/BusyBeaver/Coq/BusyBeaver.v
 Computability/BusyBeaver/Coq/BusyBeaverMathlib.v
 Computability/BusyBeaver/Coq/BusyBeaverKnownValues.v
@@ -420,6 +432,7 @@ Logic/Propositional/FiniteMatrixNoncharacterizability/Coq/ThreeValuedExample.v
 Logic/Propositional/FiniteMatrixNoncharacterizability/Coq/Audit.v
 Logic/Propositional/ShefferStroke/Coq/Nicod.v
 NumberTheory/DiophantineEquations/Coq/FermatFour.v
+NumberTheory/DiophantineEquations/Coq/Audit.v
 NumberTheory/IntegerSums/Coq/FloorSqrtSum.v
 NumberTheory/RationalEnumeration/Coq/RationalFloorOrbit.v
 NumberTheory/RiemannHypothesis/PAStatement/Coq/PAStatement.v
@@ -584,6 +597,10 @@ Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaShiftTreeRealization
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaShiftTreeRealizationAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaShiftTreeStandard.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaShiftTreeStandardAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedTermOperationTreeRealization.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedTermOperationTreeRealizationAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaOperationTreeRealization.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaOperationTreeRealizationAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedTargetFormulaShift.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedTargetFormulaShiftAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaOperations.v
@@ -711,8 +728,30 @@ Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPAFieldProjection
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPAFieldProjectionsAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessComposition.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessCompositionAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessSource.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessSourceAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessSourceScope.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessSubstitution.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessSubstitutionAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessInductionSyntax.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessInductionData.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessInductionDataAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessFieldScopes.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessRemainingFieldScopes.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedTargetContextScopes.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedTargetDomainContextScopes.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedTargetProofContextScopes.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedTargetOccurrenceContextScopes.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPAProjectedFieldRefutation.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPAProjectedFieldRefutationAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessProducer.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPADynamicSoundnessProducerAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedAdditionLaws.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedAdditionLawsAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedContextInsert.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedContextInsertAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPALocalProofConsTransplant.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPALocalProofConsTransplantAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAOpenProofConjunction.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAOpenProofConjunctionAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedProofUnaryConstructors.v
@@ -724,6 +763,8 @@ Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedProofAllIConstructorAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedProofAllEConstructor.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedProofAllEConstructorAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPALocalProofUniversalElimination.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAInternalizedUniversalInstance.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAInternalizedUniversalInstanceAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPALocalProofUniversalEliminationAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAUniversalClosurePrefixElimination.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAUniversalClosurePrefixEliminationAudit.v
@@ -737,6 +778,16 @@ Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedUniversalClosureDiagonalSub
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedUniversalClosureDiagonalSubstitutionAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaDiagonalOperationComposition.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaDiagonalOperationCompositionAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedScopedFormulaDiagonalSubstitution.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedScopedFormulaDiagonalSubstitutionAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedStandardFormulaScopeTransport.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedStandardFormulaScopeDecision.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedStandardFormulaScopeCombinators.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedBasicFormulaScopes.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedContextListScopes.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaOperationScopes.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAAxiomWitnessBoundScopes.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAAxiomWitnessScopes.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAClosureInductionCompiler.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAClosureInductionCompilerAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedProofLeafConstructors.v
@@ -769,16 +820,29 @@ Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedNumeralTermCode.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedNumeralTermCodeAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedNumeralTermShift.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedNumeralTermShiftAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedNumeralTermOpening.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedNumeralTermOpeningAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaOpeningAfterShift.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedFormulaOpeningAfterShiftAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPAConsistencyFormulaCode.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedRestrictedPAConsistencyFormulaCodeAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/CompactRestrictedPAConsistencyFormulaCodeGraph.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/CompactRestrictedPAConsistencyFormulaCodeGraphAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/CompactPAUniformProvability.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/CompactPAUniformProvabilityAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/CompactPAUniformProvabilityTightness.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/CompactPAUniformProvabilityTightnessAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAUniformProvability.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPAUniformProvabilityAudit.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPASelectorPackageInduction.v
 Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedPASelectorPackageInductionAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedCompactSelectorScopes.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedCompactSelectorScopesAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedCompactSelectorInductionSyntax.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedCompactSelectorInductionData.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedCompactSelectorInductionCases.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedCompactSelectorInductionCasesAudit.v
+Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedCompactSelectorInductionAudit.v
 SetTheory/ClosureAxiomatization/Coq/Forward.v
 SetTheory/ClosureAxiomatization/Coq/Reverse.v
 SetTheory/ZF/Coq/Zf.v
@@ -885,3 +949,13 @@ Computability/CombinatoryLogic/Coq/TuringCompleteness.v
 Computability/CombinatoryLogic/Coq/LambdaToSK.v
 Computability/CombinatoryLogic/Coq/IotaToLambda.v
 Computability/CombinatoryLogic/Coq/Audit.v
+Computability/TuringDegrees/Coq/Core.v
+Computability/TuringDegrees/Coq/Join.v
+Computability/TuringDegrees/Coq/Jump.v
+Computability/TuringDegrees/Coq/Structure.v
+Computability/TuringDegrees/Coq/ComputablyEnumerable.v
+Computability/TuringDegrees/Coq/DegreeNotions.v
+Computability/TuringDegrees/Coq/Limit.v
+Computability/TuringDegrees/Coq/PostTheorem.v
+Computability/TuringDegrees/Coq/PostProblem.v
+Computability/TuringDegrees/Coq/Audit.v

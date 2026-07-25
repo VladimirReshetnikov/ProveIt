@@ -198,11 +198,15 @@ Definition complete_for_IPC_theorems (M : finite_matrix) : Prop :=
 Definition characterizes_IPC (M : finite_matrix) : Prop :=
   forall p, matrix_valid M p <-> intuitionistically_derives [] p.
 
-Lemma matrix_eval_ext : forall M (rho sigma : nat -> value M) p,
-    (forall a, rho a = sigma a) ->
-    matrix_eval M rho p = matrix_eval M sigma p.
+(** Evaluating a renamed formula under [rho] agrees with evaluating the
+    original formula under any valuation that matches [fun a => rho (s a)]
+    pointwise.  The congruence and renaming laws below are both instances of
+    this single induction. *)
+Lemma matrix_eval_rename_ext : forall M (rho sigma : nat -> value M) s p,
+    (forall a, rho (s a) = sigma a) ->
+    matrix_eval M rho (rename s p) = matrix_eval M sigma p.
 Proof.
-  intros M rho sigma p Hext.
+  intros M rho sigma s p Hext.
   induction p; simpl.
   - apply Hext.
   - reflexivity.
@@ -211,16 +215,22 @@ Proof.
   - now rewrite IHp1, IHp2.
 Qed.
 
+Lemma matrix_eval_ext : forall M (rho sigma : nat -> value M) p,
+    (forall a, rho a = sigma a) ->
+    matrix_eval M rho p = matrix_eval M sigma p.
+Proof.
+  intros M rho sigma p Hext.
+  transitivity (matrix_eval M rho (rename (fun a => a) p)).
+  - symmetry. apply matrix_eval_rename_ext. intro a. reflexivity.
+  - apply matrix_eval_rename_ext. exact Hext.
+Qed.
+
 Lemma matrix_eval_rename : forall M rho s p,
     matrix_eval M rho (rename s p) =
     matrix_eval M (fun a => rho (s a)) p.
 Proof.
-  intros M rho s p. induction p; simpl.
-  - reflexivity.
-  - reflexivity.
-  - now rewrite IHp1, IHp2.
-  - now rewrite IHp1, IHp2.
-  - now rewrite IHp1, IHp2.
+  intros M rho s p.
+  apply matrix_eval_rename_ext. intro a. reflexivity.
 Qed.
 
 Lemma collapse_preserves_valuation : forall M (rho : nat -> value M) i j,
@@ -376,6 +386,18 @@ Definition context_forced {A W} (M : kripke_model A W)
     (w : W) (Gamma : context A) : Prop :=
   forall p, In p Gamma -> forces M w p.
 
+(** Extending a forced context by a forced formula keeps it forced. *)
+Lemma context_forced_cons : forall A W (M : kripke_model A W) w p Gamma,
+    forces M w p ->
+    context_forced M w Gamma ->
+    context_forced M w (p :: Gamma).
+Proof.
+  intros A W M w p Gamma Hp Hctx s Hs. simpl in Hs.
+  destruct Hs as [<- | Hs].
+  - exact Hp.
+  - apply Hctx. exact Hs.
+Qed.
+
 Lemma forces_monotone : forall A W (M : kripke_model A W) p u v,
     reachable M u v -> forces M u p -> forces M v p.
 Proof.
@@ -413,19 +435,16 @@ Proof.
   - left. apply IHHderives. exact Hctx.
   - right. apply IHHderives. exact Hctx.
   - destruct (IHHderives1 w Hctx) as [Hp | Hq].
-    + apply IHHderives2. intros s Hs. simpl in Hs.
-      destruct Hs as [<- | Hs].
+    + apply IHHderives2. apply context_forced_cons.
       * exact Hp.
-      * apply Hctx. exact Hs.
-    + apply IHHderives3. intros s Hs. simpl in Hs.
-      destruct Hs as [<- | Hs].
+      * exact Hctx.
+    + apply IHHderives3. apply context_forced_cons.
       * exact Hq.
-      * apply Hctx. exact Hs.
+      * exact Hctx.
   - intros v Hwv Hp.
-    apply IHHderives. intros s Hs. simpl in Hs.
-    destruct Hs as [<- | Hs].
+    apply IHHderives. apply context_forced_cons.
     + exact Hp.
-    + eapply forces_monotone.
+    + intros s Hs. eapply forces_monotone.
       * exact Hwv.
       * apply Hctx. exact Hs.
   - apply (IHHderives1 w Hctx w).
@@ -590,6 +609,19 @@ Definition matrix_context_designated (M : finite_matrix)
     (rho : nat -> value M) (Gamma : context nat) : Prop :=
   forall p, In p Gamma -> designated M (matrix_eval M rho p).
 
+(** The matrix analogue of [context_forced_cons]: extending a designated
+    context by a designated formula keeps it designated. *)
+Lemma matrix_context_designated_cons : forall M rho p Gamma,
+    designated M (matrix_eval M rho p) ->
+    matrix_context_designated M rho Gamma ->
+    matrix_context_designated M rho (p :: Gamma).
+Proof.
+  intros M rho p Gamma Hp Hctx s Hs. simpl in Hs.
+  destruct Hs as [<- | Hs].
+  - exact Hp.
+  - apply Hctx. exact Hs.
+Qed.
+
 Theorem rule_preservation_semantic_soundness : forall M,
     preserves_intuitionistic_rules M ->
     forall Gamma p,
@@ -610,13 +642,13 @@ Proof.
   - eapply (preserves_or_intro_right R); eauto.
   - eapply (preserves_or_elim R).
     + apply IHHderives1. exact Hctx.
-    + intro Hp. apply IHHderives2. intros s Hs. simpl in Hs.
-      destruct Hs as [<- | Hs]; [exact Hp | apply Hctx; exact Hs].
-    + intro Hq. apply IHHderives3. intros s Hs. simpl in Hs.
-      destruct Hs as [<- | Hs]; [exact Hq | apply Hctx; exact Hs].
+    + intro Hp. apply IHHderives2.
+      apply matrix_context_designated_cons; [exact Hp | exact Hctx].
+    + intro Hq. apply IHHderives3.
+      apply matrix_context_designated_cons; [exact Hq | exact Hctx].
   - apply (preserves_imp_intro R). intro Hp.
-    apply IHHderives. intros s Hs. simpl in Hs.
-    destruct Hs as [<- | Hs]; [exact Hp | apply Hctx; exact Hs].
+    apply IHHderives.
+    apply matrix_context_designated_cons; [exact Hp | exact Hctx].
   - eapply (preserves_imp_elim R).
     + apply IHHderives1. exact Hctx.
     + apply IHHderives2. exact Hctx.

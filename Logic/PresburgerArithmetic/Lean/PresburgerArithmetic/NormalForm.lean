@@ -17,11 +17,9 @@ def negate : Atom → Atom
   cases a with
   | le t =>
       by_cases h : 0 ≤ t.eval xs
-      · have hn : ¬ 0 ≤ -t.eval xs - 1 := by omega
-        simp [negate, eval, h, hn]
+      · simp [negate, eval, h]
         omega
-      · have hn : 0 ≤ -t.eval xs - 1 := by omega
-        simp [negate, eval, h, hn]
+      · simp [negate, eval, h]
         omega
   | dvd d hd t => simp [negate, eval]
   | ndvd d hd t => simp [negate, eval]

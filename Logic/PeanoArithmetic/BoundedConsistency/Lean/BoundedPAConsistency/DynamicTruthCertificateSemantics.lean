@@ -5,6 +5,7 @@ import BoundedPAConsistency.DynamicTruthAxiomSoundnessFormula
 import BoundedPAConsistency.DynamicTruthTemplateSemantics
 import BoundedPAConsistency.DynamicTruthShiftInvariantPositiveRankStrongStep
 import BoundedPAConsistency.DynamicTruthSubstitutionInvariantPositiveRankStrongStep
+import BoundedPAConsistency.FinFunext
 
 /-!
 # Semantics of the dynamic truth-certificate source fields
@@ -189,22 +190,7 @@ include hArithmeticReduct in
     Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i =>
-              cases i using Fin.cases with
-              | zero => rfl
-              | succ i =>
-                  cases i using Fin.cases with
-                  | zero => rfl
-                  | succ i => exact i.elim0
+  exact funext_fin5 rfl rfl rfl rfl rfl
 
 include hArithmeticReduct in
 @[simp] theorem eval_sourceSubstitutionInvariantPredicate (p : M) :

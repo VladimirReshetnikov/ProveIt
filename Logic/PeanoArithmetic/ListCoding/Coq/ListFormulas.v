@@ -89,75 +89,56 @@ Definition ListTraceFrom
       Formula.BetaEntry code step (S (start + i)) next /\
       cur = S (polynomialPair head next).
 
+(** Discharges every [eval_liftTerm_sconsN] goal uniformly: after the
+    rename/extensionality step the goal is [sconsN-env (i + N) = e i], and
+    normalizing [i + N] to [S (S (... i))] lets [scons] reduce away.  The
+    arity-generic statement is [eval_liftTerm] in [Representability]. *)
+Ltac solve_eval_liftTerm :=
+  intros; unfold liftTerm; rewrite Term.eval_rename;
+  apply Term.eval_ext; let i := fresh "i" in intro i;
+  repeat rewrite Nat.add_succ_r; rewrite Nat.add_0_r; reflexivity.
+
 Lemma eval_liftTerm_scons : forall x e t,
   Term.eval natModel (scons nat x e) (liftTerm 1 t) =
   Term.eval natModel e t.
-Proof.
-  intros x e t. unfold liftTerm. rewrite Term.eval_rename.
-  apply Term.eval_ext. intro i.
-  replace (i + 1) with (S i) by lia. reflexivity.
-Qed.
+Proof. solve_eval_liftTerm. Qed.
 
 Lemma eval_liftTerm_scons2 : forall a b e t,
   Term.eval natModel (scons nat a (scons nat b e)) (liftTerm 2 t) =
   Term.eval natModel e t.
-Proof.
-  intros a b e t. unfold liftTerm. rewrite Term.eval_rename.
-  apply Term.eval_ext. intro i.
-  replace (i + 2) with (S (S i)) by lia. reflexivity.
-Qed.
+Proof. solve_eval_liftTerm. Qed.
 
 Lemma eval_liftTerm_scons3 : forall a b c e t,
   Term.eval natModel (scons nat a (scons nat b (scons nat c e)))
     (liftTerm 3 t) = Term.eval natModel e t.
-Proof.
-  intros a b c e t. unfold liftTerm. rewrite Term.eval_rename.
-  apply Term.eval_ext. intro i.
-  replace (i + 3) with (S (S (S i))) by lia. reflexivity.
-Qed.
+Proof. solve_eval_liftTerm. Qed.
 
 Lemma eval_liftTerm_scons4 : forall a b c d e t,
   Term.eval natModel
     (scons nat a (scons nat b (scons nat c (scons nat d e))))
     (liftTerm 4 t) =
   Term.eval natModel e t.
-Proof.
-  intros a b c d e t. unfold liftTerm. rewrite Term.eval_rename.
-  apply Term.eval_ext. intro i.
-  replace (i + 4) with (S (S (S (S i)))) by lia. reflexivity.
-Qed.
+Proof. solve_eval_liftTerm. Qed.
 
 Lemma eval_liftTerm_scons5 : forall a b c d f e t,
   Term.eval natModel
     (scons nat a (scons nat b (scons nat c (scons nat d (scons nat f e)))))
     (liftTerm 5 t) = Term.eval natModel e t.
-Proof.
-  intros a b c d f e t. unfold liftTerm. rewrite Term.eval_rename.
-  apply Term.eval_ext. intro i.
-  replace (i + 5) with (S (S (S (S (S i))))) by lia. reflexivity.
-Qed.
+Proof. solve_eval_liftTerm. Qed.
 
 Lemma eval_liftTerm_scons6 : forall a b c d f g e t,
   Term.eval natModel
     (scons nat a (scons nat b (scons nat c
       (scons nat d (scons nat f (scons nat g e))))))
     (liftTerm 6 t) = Term.eval natModel e t.
-Proof.
-  intros a b c d f g e t. unfold liftTerm. rewrite Term.eval_rename.
-  apply Term.eval_ext. intro i.
-  replace (i + 6) with (S (S (S (S (S (S i)))))) by lia. reflexivity.
-Qed.
+Proof. solve_eval_liftTerm. Qed.
 
 Lemma eval_liftTerm_scons7 : forall a b c d f g h e t,
   Term.eval natModel
     (scons nat a (scons nat b (scons nat c (scons nat d
       (scons nat f (scons nat g (scons nat h e)))))))
     (liftTerm 7 t) = Term.eval natModel e t.
-Proof.
-  intros a b c d f g h e t. unfold liftTerm. rewrite Term.eval_rename.
-  apply Term.eval_ext. intro i.
-  replace (i + 7) with (S (S (S (S (S (S (S i))))))) by lia. reflexivity.
-Qed.
+Proof. solve_eval_liftTerm. Qed.
 
 Lemma listStepTermAt_nat : forall e cur next head code step index,
   Formula.Sat natModel e

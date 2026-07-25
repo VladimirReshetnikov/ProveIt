@@ -443,10 +443,7 @@ Lemma rename_ordinalCodeTraceAgreementAt : forall r
       (Term.rename r index).
 Proof.
   intros r sequenceCode1 sequenceStep1 sequenceCode2 sequenceStep2 index.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodeTraceAgreementAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodeTraceAgreementAt.
 Qed.
 
 (** Package two named beta values and their equality. *)

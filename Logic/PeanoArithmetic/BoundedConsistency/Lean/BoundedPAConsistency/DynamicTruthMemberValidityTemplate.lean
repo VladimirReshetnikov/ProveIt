@@ -1,5 +1,6 @@
 import BoundedPAConsistency.DynamicTruthOrbit
 import BoundedPAConsistency.DynamicTruthTemplateFormula
+import BoundedPAConsistency.FinFunext
 import Foundation.FirstOrder.Completeness
 
 /-!
@@ -118,19 +119,7 @@ variable [V↓[ℒₒᵣ] ⊧* ISigma 1]
   rw [apply₄, Semiformula.coe_subst_eq_subst_coe,
     ModelCodedPredicateParameters.translateFormula_subst]
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i =>
-              cases i using Fin.cases with
-              | zero => rfl
-              | succ i => exact i.elim0
+  exact funext_fin4 rfl rfl rfl rfl
 
 /-- Typed accepted-certificate data in the record-checking context. -/
 noncomputable def acceptedCertificateAtRecordFormula

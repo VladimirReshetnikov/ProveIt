@@ -131,6 +131,16 @@ Proof.
   intro n. destruct n; reflexivity.
 Qed.
 
+(* Satisfaction transport along that pointwise equality, in the form used
+   by both quantifier cases of [Sat_relativize]. *)
+Lemma Sat_relativize_scons {V : Type} {mem : V -> V -> Prop}
+    (a : form) (d : RelDomain mem) (e : nat -> RelDomain mem) :
+  Sat V mem (fun n => proj1_sig (scons (RelDomain mem) d e n)) a <->
+  Sat V mem (scons V (proj1_sig d) (fun n => proj1_sig (e n))) a.
+Proof.
+  apply Sat_ext. apply relDomain_scons_value.
+Qed.
+
 (* Relativizing a formula in the ambient structure is exactly the same as
    evaluating the original formula in the induced loop-free substructure. *)
 Theorem Sat_relativize :
@@ -154,17 +164,11 @@ Proof.
   - split.
     + intros H d.
       apply (proj1 (IHa (scons (RelDomain mem) d e))).
-      apply (proj2 (Sat_ext V mem (relativize a)
-        (fun n => proj1_sig (scons (RelDomain mem) d e n))
-        (scons V (proj1_sig d) (fun n => proj1_sig (e n)))
-        (relDomain_scons_value d e))).
+      apply (proj2 (Sat_relativize_scons (relativize a) d e)).
       apply H. exact (proj2_sig d).
     + intros H d hd.
       pose (d' := (exist _ d hd : RelDomain mem)).
-      apply (proj1 (Sat_ext V mem (relativize a)
-        (fun n => proj1_sig (scons (RelDomain mem) d' e n))
-        (scons V d (fun n => proj1_sig (e n)))
-        (relDomain_scons_value d' e))).
+      apply (proj1 (Sat_relativize_scons (relativize a) d' e)).
       apply (proj2 (IHa (scons (RelDomain mem) d' e))).
       exact (H d').
   - split.
@@ -172,17 +176,11 @@ Proof.
       pose (d' := (exist _ d hd : RelDomain mem)).
       exists d'.
       apply (proj1 (IHa (scons (RelDomain mem) d' e))).
-      apply (proj2 (Sat_ext V mem (relativize a)
-        (fun n => proj1_sig (scons (RelDomain mem) d' e n))
-        (scons V d (fun n => proj1_sig (e n)))
-        (relDomain_scons_value d' e))).
+      apply (proj2 (Sat_relativize_scons (relativize a) d' e)).
       exact H.
     + intros [d H].
       exists (proj1_sig d). split.
       * exact (proj2_sig d).
-      * apply (proj1 (Sat_ext V mem (relativize a)
-          (fun n => proj1_sig (scons (RelDomain mem) d e n))
-          (scons V (proj1_sig d) (fun n => proj1_sig (e n)))
-          (relDomain_scons_value d e))).
+      * apply (proj1 (Sat_relativize_scons (relativize a) d e)).
         apply (proj2 (IHa (scons (RelDomain mem) d e))). exact H.
 Qed.

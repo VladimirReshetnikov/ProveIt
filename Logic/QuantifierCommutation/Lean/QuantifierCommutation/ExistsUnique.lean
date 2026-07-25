@@ -1,3 +1,5 @@
+import QuantifierCommutation.Counterexample
+
 /-!
 # Nested unique-existence quantifiers do not commute
 
@@ -53,29 +55,36 @@ inductive uniqueRelation : Three → Three → Prop
   | bb : uniqueRelation .b .b
   | bc : uniqueRelation .b .c
 
-theorem rowA_unique : ExistsUnique fun y => uniqueRelation .a y := by
-  refine ⟨.a, .aa, ?_⟩
-  intro y hy
-  cases hy
-  rfl
+/-- Any witness together with a per-point uniqueness check yields unique
+existence over `Three`. -/
+theorem three_existsUnique_intro {P : Three → Prop} {w : Three}
+    (hw : P w)
+    (ha : P .a → Three.a = w)
+    (hb : P .b → Three.b = w)
+    (hc : P .c → Three.c = w) :
+    ExistsUnique P := by
+  refine ⟨w, hw, ?_⟩
+  intro t ht
+  cases t with
+  | a => exact ha ht
+  | b => exact hb ht
+  | c => exact hc ht
 
-theorem columnA_unique : ExistsUnique fun x => uniqueRelation x .a := by
-  refine ⟨.a, .aa, ?_⟩
-  intro x hx
-  cases hx
-  rfl
+theorem rowA_unique : ExistsUnique fun y => uniqueRelation .a y :=
+  three_existsUnique_intro .aa (fun _ => rfl)
+    (fun h => nomatch h) (fun h => nomatch h)
 
-theorem columnB_unique : ExistsUnique fun x => uniqueRelation x .b := by
-  refine ⟨.b, .bb, ?_⟩
-  intro x hx
-  cases hx
-  rfl
+theorem columnA_unique : ExistsUnique fun x => uniqueRelation x .a :=
+  three_existsUnique_intro .aa (fun _ => rfl)
+    (fun h => nomatch h) (fun h => nomatch h)
 
-theorem columnC_unique : ExistsUnique fun x => uniqueRelation x .c := by
-  refine ⟨.b, .bc, ?_⟩
-  intro x hx
-  cases hx
-  rfl
+theorem columnB_unique : ExistsUnique fun x => uniqueRelation x .b :=
+  three_existsUnique_intro .bb (fun h => nomatch h)
+    (fun _ => rfl) (fun h => nomatch h)
+
+theorem columnC_unique : ExistsUnique fun x => uniqueRelation x .c :=
+  three_existsUnique_intro .bc (fun h => nomatch h)
+    (fun _ => rfl) (fun h => nomatch h)
 
 /-- Only row `a` has a unique related element. -/
 theorem uniqueRelation_existsUniqueXY : ExistsUniqueXY uniqueRelation := by
@@ -109,12 +118,18 @@ theorem existsUnique_counterexample :
     ExistsUniqueXY uniqueRelation ∧ ¬ ExistsUniqueYX uniqueRelation :=
   ⟨uniqueRelation_existsUniqueXY, uniqueRelation_not_existsUniqueYX⟩
 
+/-- Thus even the forward implication needed to swap the two `∃!` binders
+fails. -/
+theorem existsUnique_swap_implication_fails :
+    ¬ (ExistsUniqueXY uniqueRelation → ExistsUniqueYX uniqueRelation) :=
+  implication_fails uniqueRelation_existsUniqueXY
+    uniqueRelation_not_existsUniqueYX
+
 /-- Therefore two adjacent `∃!` quantifiers cannot in general be swapped. -/
 theorem existsUnique_not_commutative :
-    ¬ (ExistsUniqueXY uniqueRelation ↔ ExistsUniqueYX uniqueRelation) := by
-  intro h
-  exact uniqueRelation_not_existsUniqueYX
-    (h.mp uniqueRelation_existsUniqueXY)
+    ¬ (ExistsUniqueXY uniqueRelation ↔ ExistsUniqueYX uniqueRelation) :=
+  not_equivalent uniqueRelation_existsUniqueXY
+    uniqueRelation_not_existsUniqueYX
 
 end QuantifierCommutation
 end LeanProofs

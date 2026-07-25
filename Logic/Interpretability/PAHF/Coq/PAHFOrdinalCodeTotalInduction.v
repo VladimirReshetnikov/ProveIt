@@ -384,10 +384,7 @@ Lemma rename_hfAdjoinExistsTermAt : forall r oldCode elemCode,
       (Term.rename r oldCode) (Term.rename r elemCode).
 Proof.
   intros r oldCode elemCode.
-  rewrite <- subst_var_rename.
-  rewrite subst_hfAdjoinExistsTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_hfAdjoinExistsTermAt.
 Qed.
 
 Lemma BProv_hfAdjoinExistsTermAt_of_term :

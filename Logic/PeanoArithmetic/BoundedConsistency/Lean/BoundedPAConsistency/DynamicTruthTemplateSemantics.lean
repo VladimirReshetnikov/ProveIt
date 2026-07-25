@@ -1,6 +1,7 @@
 import BoundedPAConsistency.DynamicTruthTemplateFormula
 import BoundedPAConsistency.DynamicTruthCrossLevelStrongStepSource
 import BoundedPAConsistency.ModelCodedPredicateEqualityQuotient
+import BoundedPAConsistency.FinFunext
 
 /-!
 # Semantics of the fixed dynamic-truth source template
@@ -137,16 +138,7 @@ include hArithmeticReduct in
     Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 /-- Evaluation of simultaneous binary application. -/
 @[simp] theorem eval_apply₂
@@ -161,13 +153,7 @@ include hArithmeticReduct in
     Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i => exact i.elim0
+  exact funext_fin2 rfl rfl
 
 /-- Evaluation of the opaque lower-truth atom. -/
 @[simp] theorem eval_lowerAtom
@@ -185,16 +171,7 @@ include hArithmeticReduct in
         t₂.valb (M := M) v]
   apply iff_of_eq
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 include hArithmeticReduct in
 @[simp] theorem eval_universalRecordBranch (v : Fin 3 → M) :

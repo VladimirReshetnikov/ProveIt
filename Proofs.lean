@@ -14,6 +14,7 @@ import BooleanAlgebra
 import PowerTowers
 import A158415
 import A290268
+import SquaredSquare
 import FirstOrder
 import ArbitraryLanguageCompactness
 import QuantifierCommutation
@@ -26,6 +27,7 @@ import ZF
 import ClosureAxiomatization
 import CombinatoryLogic
 import BusyBeaver
+import TuringDegrees
 
 /-!
 Repository-wide Lean import surface, organized by mathematical topic.
@@ -38,4 +40,6 @@ the `BusyBeaver` facade imports the semantic core and known witnesses only.
 The combinatory-logic facade includes the checked weak-lambda-to-SK-to-SKI-to-
 Iota universality chain, the faithful Iota-to-lambda operational embedding,
 and their assumption audit.
+The Turing-degree facade develops the set degrees, their least element and
+join-semilattice structure, and the c.e.-complete halting degree.
 -/

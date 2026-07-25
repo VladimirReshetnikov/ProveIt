@@ -1,6 +1,7 @@
 import BoundedPAConsistency.DynamicTruthLowerExistentialLawsFormula
 import BoundedPAConsistency.DynamicTruthOrbit
 import BoundedPAConsistency.TernaryCongruencePrototype
+import BoundedPAConsistency.FinFunext
 
 /-!
 # Source-PA proof of the lower successor's existential law
@@ -190,16 +191,7 @@ include hArithmeticReduct in
     Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 @[simp] private theorem eval_apply₂
     (p : Semisentence L 2)
@@ -212,13 +204,7 @@ include hArithmeticReduct in
     Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i => exact i.elim0
+  exact funext_fin2 rfl rfl
 
 @[simp] private theorem eval_lowerAtom
     (t₀ t₁ t₂ : ClosedSemiterm L n) (v : Fin n → M) :
@@ -233,16 +219,7 @@ include hArithmeticReduct in
         t₂.valb (M := M) v]
   apply iff_of_eq
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 include hArithmeticReduct in
 @[simp] private theorem eval_universalRecordBranch (v : Fin 3 → M) :

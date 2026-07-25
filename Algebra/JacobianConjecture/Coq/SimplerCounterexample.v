@@ -1,5 +1,6 @@
 From Stdlib Require Import Reals Ring Field Psatz.
 From Coquelicot Require Import Complex.
+From JacobianConjecture Require Export Common.
 
 Open Scope C_scope.
 
@@ -15,19 +16,14 @@ Open Scope C_scope.
   As in [Counterexample.v], [Poly5] is a small syntax with formal
   differentiation.  The determinant and collision certificates are checked
   entirely by Coq's kernel.
+
+  The stable shears preserve the equivariance of the three-variable map:
+  negating [x, y, a, b] negates all image coordinates except the first
+  ([simpler_counterexample_equivariant] below).
 *)
 
 Module LeanProofs.
 Module JacobianSimplerCounterexample.
-
-Definition c0 : C := RtoC 0.
-Definition c1 : C := RtoC 1.
-Definition c2 : C := RtoC 2.
-Definition c3 : C := RtoC 3.
-Definition c4 : C := RtoC 4.
-Definition c5 : C := RtoC 5.
-Definition c7 : C := RtoC 7.
-Definition c16 : C := RtoC 16.
 
 Inductive Var5 : Type := VX | VY | VZ | VA | VB.
 
@@ -218,35 +214,6 @@ Definition det5m (M : Var5 -> Var5 -> Poly5) : Poly5 :=
 Definition jacobian_det5 (f : PolyMap5) : Poly5 :=
   det5m (fun i j => partial5 j (poly_coordinate5 f i)).
 
-Theorem simpler_first_stable_identity (point : Point5) :
-  eval_poly5 simpler_first point =
-  eval_poly5 (PSub base_P (PMul source_a source_b)) point.
-Proof.
-  destruct point as [x y z a b].
-  cbv [simpler_first base_P base_u source_a source_b factor_p factor_q
-       PSub PSq PCube eval_poly5 coordinate5 one three four seven
-       px py pz pa pb xcoord5 ycoord5 zcoord5 acoord5 bcoord5
-       c1 c3 c4 c7].
-  ring.
-Qed.
-
-Theorem jacobian_det5_is_minus_two (point : Point5) :
-  eval_poly5 (jacobian_det5 simpler_counterexample) point = -c2.
-Proof.
-  destruct point as [x y z a b].
-  cbv [jacobian_det5 simpler_counterexample det5m det4m det3m
-       poly_coordinate5 simpler_first base_Q base_R base_u factor_p factor_q
-       source_a source_b PSub PSq PCube partial5 var5_eqb eval_poly5
-       coordinate5 one two three four px py pz pa pb coord1 coord2 coord3
-       coord4 coord5 xcoord5 ycoord5 zcoord5 acoord5 bcoord5
-       seven c0 c1 c2 c3 c4 c7].
-  ring.
-Qed.
-
-Definition collision0 : Point5 := point5 (-c1) c1 c5 c1 (-c5).
-Definition collision1 : Point5 := point5 c0 (-c2) (-c16) c0 c0.
-Definition collision_value : Point5 := point5 c0 (-c2) c0 c0 c0.
-
 Lemma point5_ext (p q : Point5) :
   xcoord5 p = xcoord5 q -> ycoord5 p = ycoord5 q ->
   zcoord5 p = zcoord5 q -> acoord5 p = acoord5 q ->
@@ -255,37 +222,86 @@ Proof.
   destruct p, q; cbn; intros; subst; reflexivity.
 Qed.
 
+(** Two points with different first coordinates are different. *)
+Lemma point5_neq_x (p q : Point5) : xcoord5 p <> xcoord5 q -> p <> q.
+Proof.
+  intros hx h; apply hx; rewrite h; reflexivity.
+Qed.
+
+(** The source and target involutions of the equivariance below. *)
+Definition flip5_source (p : Point5) : Point5 :=
+  point5 (- xcoord5 p) (- ycoord5 p) (zcoord5 p) (- acoord5 p) (- bcoord5 p).
+
+Definition flip5_target (p : Point5) : Point5 :=
+  point5 (xcoord5 p) (- ycoord5 p) (- zcoord5 p) (- acoord5 p) (- bcoord5 p).
+
+Definition collision0 : Point5 := point5 (-c1) c1 c5 c1 (-c5).
+Definition collision1 : Point5 := point5 c0 (-c2) (-c16) c0 c0.
+Definition collision_value : Point5 := point5 c0 (-c2) c0 c0 c0.
+
+(** Unfold the polynomial syntax, its evaluators, and every named constant
+    and point of this development, leaving only field arithmetic in [C]. *)
+Ltac eval5_c :=
+  cbv [eval_map5 jacobian_det5 det5m det4m det3m poly_coordinate5
+       simpler_counterexample simpler_first
+       base_P base_Q base_R base_u factor_p factor_q source_a source_b
+       partial5 var5_eqb PSub PSq PCube eval_poly5 coordinate5
+       one two three four seven px py pz pa pb
+       coord1 coord2 coord3 coord4 coord5
+       xcoord5 ycoord5 zcoord5 acoord5 bcoord5
+       flip5_source flip5_target
+       collision0 collision1 collision_value
+       c0 c1 c2 c3 c4 c5 c7 c16].
+
+Theorem simpler_first_stable_identity (point : Point5) :
+  eval_poly5 simpler_first point =
+  eval_poly5 (PSub base_P (PMul source_a source_b)) point.
+Proof.
+  destruct point as [x y z a b]; eval5_c; ring.
+Qed.
+
+Theorem jacobian_det5_is_minus_two (point : Point5) :
+  eval_poly5 (jacobian_det5 simpler_counterexample) point = -c2.
+Proof.
+  destruct point as [x y z a b]; eval5_c; ring.
+Qed.
+
+(** **Equivariance.**  The triangular shears preserve the symmetry of the
+    three-variable witness: negating [x, y, a, b] in the source negates every
+    image coordinate except the first. *)
+Theorem simpler_counterexample_equivariant (p : Point5) :
+  eval_map5 simpler_counterexample (flip5_source p) =
+  flip5_target (eval_map5 simpler_counterexample p).
+Proof.
+  destruct p as [x y z a b]; apply point5_ext; eval5_c; ring.
+Qed.
+
 Theorem collision0_value :
   eval_map5 simpler_counterexample collision0 = collision_value.
 Proof.
-  apply point5_ext;
-    cbv [eval_map5 simpler_counterexample collision0 collision_value
-         simpler_first base_Q base_R base_u factor_p factor_q source_a source_b
-         PSub PSq PCube eval_poly5 coordinate5 one two three four
-         px py pz pa pb coord1 coord2 coord3 coord4 coord5
-         xcoord5 ycoord5 zcoord5 acoord5 bcoord5
-         seven c0 c1 c2 c3 c4 c5 c7 c16]; ring.
+  apply point5_ext; eval5_c; ring.
 Qed.
 
 Theorem collision1_value :
   eval_map5 simpler_counterexample collision1 = collision_value.
 Proof.
-  apply point5_ext;
-    cbv [eval_map5 simpler_counterexample collision1 collision_value
-         simpler_first base_Q base_R base_u factor_p factor_q source_a source_b
-         PSub PSq PCube eval_poly5 coordinate5 one two three four
-         px py pz pa pb coord1 coord2 coord3 coord4 coord5
-         xcoord5 ycoord5 zcoord5 acoord5 bcoord5
-         seven c0 c1 c2 c3 c4 c5 c7 c16]; ring.
+  apply point5_ext; eval5_c; ring.
 Qed.
 
 Theorem collision_points_distinct : collision0 <> collision1.
 Proof.
-  intro h.
-  apply (f_equal xcoord5) in h.
-  apply (f_equal Re) in h.
-  cbv [collision0 collision1 xcoord5 c0 c1 RtoC Copp Re] in h.
-  cbn in h; lra.
+  apply point5_neq_x; re_neq.
+Qed.
+
+(** Mirroring the collision through the equivariance yields a second integral
+    collision with no new polynomial evaluation. *)
+Theorem mirrored_collision :
+  eval_map5 simpler_counterexample (flip5_source collision0) =
+  eval_map5 simpler_counterexample (flip5_source collision1).
+Proof.
+  rewrite !simpler_counterexample_equivariant,
+    collision0_value, collision1_value.
+  reflexivity.
 Qed.
 
 Definition PolynomialEq5 (p q : Poly5) : Prop :=
@@ -309,10 +325,7 @@ Theorem simpler_counterexample_has_nonzero_constant_jacobian :
 Proof.
   exists (-c2).
   split.
-  - intro h.
-    apply (f_equal Re) in h.
-    cbv [c0 c2 RtoC Copp Re] in h.
-    cbn in h; lra.
+  - re_neq.
   - intro p.
     cbn [eval_poly5].
     exact (jacobian_det5_is_minus_two p).

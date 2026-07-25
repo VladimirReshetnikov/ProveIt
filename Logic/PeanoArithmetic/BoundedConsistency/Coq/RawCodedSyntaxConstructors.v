@@ -395,7 +395,7 @@ Proof.
   pose proof (raw_eq_of_closed_bprov M hPA
     (tAdd (Term.numeral m) (Term.numeral n))
     (Term.numeral (m + n)) e
-    (Formula.BProv_Ax_s_addNumerals m n)) as h.
+    (Formula.BProv_Ax_s_addNumerals nil m n)) as h.
   cbn [raw_term_eval] in h.
   rewrite !raw_term_eval_numeral in h. exact h.
 Qed.

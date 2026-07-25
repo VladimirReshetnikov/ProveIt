@@ -132,6 +132,8 @@ if ($repositories -contains "proofs-rocq92") {
 Invoke-Opam install --switch=$Switch --jobs=2 -y `
     coq-coquelicot.3.4.4 `
     coq-interval.4.11.4 `
+    rocq-equations.1.3.2+9.2 `
+    rocq-stdpp.1.13.0 `
     rocq-metarocq-template.1.5.1+9.2
 
 $userPath = [Environment]::GetEnvironmentVariable("PATH", "User")

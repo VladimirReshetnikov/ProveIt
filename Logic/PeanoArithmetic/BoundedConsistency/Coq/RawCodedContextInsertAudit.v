@@ -1,0 +1,45 @@
+(** Assumption audit for the model-internal context-insertion relation. *)
+
+From BoundedPAConsistency Require Import RawCodedContextInsert.
+
+Import PABoundedRawCodedContextInsert.
+
+Check RawContextInsertLowRows.
+Check RawContextInsertHeadRow.
+Check RawContextInsertHighRows.
+Check RawContextInsertDepthBound.
+Check contextInsertLowRowsTermAt.
+Check contextInsertHeadRowTermAt.
+Check contextInsertHighRowsTermAt.
+Check contextInsertDepthBoundTermAt.
+Check raw_sat_contextInsertLowRowsTermAt_iff.
+Check raw_sat_contextInsertHeadRowTermAt_iff.
+Check raw_sat_contextInsertHighRowsTermAt_iff.
+Check raw_sat_contextInsertDepthBoundTermAt_iff.
+Check RawContextInsertWithTables.
+Check contextInsertWithTablesTermAt.
+Check raw_sat_contextInsertWithTablesTermAt_iff.
+Check RawContextInsertAt.
+Check contextInsertAtTermAt.
+Check raw_sat_contextInsertAtTermAt_iff.
+Check RawContextListTraversalBoundedBy.
+Check raw_contextInsertAt_source_realizable.
+Check raw_contextInsertAt_target_realizable.
+Check raw_contextInsertAt_target_bound.
+
+Check raw_contextInsertAt_zero.
+Check raw_contextInsertAt_cons.
+Check raw_contextInsertAt_head_member.
+Check raw_contextInsertAt_source_member.
+
+Print Assumptions raw_sat_contextInsertLowRowsTermAt_iff.
+Print Assumptions raw_sat_contextInsertHighRowsTermAt_iff.
+Print Assumptions raw_sat_contextInsertWithTablesTermAt_iff.
+Print Assumptions raw_sat_contextInsertAtTermAt_iff.
+Print Assumptions raw_contextInsertAt_source_realizable.
+Print Assumptions raw_contextInsertAt_target_realizable.
+Print Assumptions raw_contextInsertAt_target_bound.
+Print Assumptions raw_contextInsertAt_zero.
+Print Assumptions raw_contextInsertAt_head_member.
+Print Assumptions raw_contextInsertAt_source_member.
+Print Assumptions raw_contextInsertAt_cons.

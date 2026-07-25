@@ -1622,7 +1622,7 @@ theorem BProv_HFFin_hfCompositeAt_iff
         P a (fun G rawMap codedMap => ih G rawMap codedMap)
         G rawMap codedMap hrep
 
-def HFCompositeStructuralProofs_of_representationProofs
+theorem HFCompositeStructuralProofs_of_representationProofs
     (P : SetOrdinalRepresentationProofs) :
     HFCompositeStructuralProofs where
   toSetOrdinalRepresentationProofs := P
@@ -4523,7 +4523,7 @@ theorem BProv_HFFin_setOrdinalRep_range
 
 /-- Complete unconditional proof package for the internal set-to-ordinal
 representation relation. -/
-def setOrdinalRepresentationProofs : SetOrdinalRepresentationProofs where
+theorem setOrdinalRepresentationProofs : SetOrdinalRepresentationProofs where
   total := BProv_HFFin_setOrdinalRep_total
   range := BProv_HFFin_setOrdinalRep_range
   code_functional := BProv_HFFin_setOrdinalRep_code_functional

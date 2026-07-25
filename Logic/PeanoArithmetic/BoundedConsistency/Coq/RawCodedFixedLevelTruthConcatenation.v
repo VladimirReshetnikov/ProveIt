@@ -298,7 +298,7 @@ Proof.
   intros M hPA value.
   set (e := scons M value (fun _ : nat => raw_zero M)).
   pose proof (raw_sat_of_BProv_axs M _ hPA
-    (Formula.BProv_Ax_s_addZero_term (tVar 0)) e) as hadd.
+    (Formula.BProv_Ax_s_addZero_term nil (tVar 0)) e) as hadd.
   unfold e in hadd. cbn [raw_formula_sat raw_term_eval scons] in hadd.
   exact hadd.
 Qed.

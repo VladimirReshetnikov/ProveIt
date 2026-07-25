@@ -87,6 +87,13 @@ Proof.
   lia.
 Qed.
 
+(* Every immediate child of a polynomially coded node has a strictly smaller
+   code: the child's code bounds the pair it sits in, and the pair is strictly
+   below the node's payload bound.  [L] selects which side of the pair the
+   child occupies.  The caller first reduces the node to its pair form. *)
+Ltac polynomial_child_lt L :=
+  eapply Nat.le_lt_trans; [ apply L | apply polynomialNode_payload_lt ].
+
 Lemma polynomialNode_injective : forall tag payload tag' payload',
   polynomialNode tag payload = polynomialNode tag' payload' ->
   tag = tag' /\ payload = payload'.
@@ -150,72 +157,56 @@ Lemma skolemProgramCode_add_left : forall p q,
   skolemProgramCode p < skolemProgramCode (spAdd p q).
 Proof.
   intros p q. simpl.
-  eapply Nat.le_lt_trans.
-  - apply polynomialPair_left_le.
-  - apply polynomialNode_payload_lt.
+  polynomial_child_lt polynomialPair_left_le.
 Qed.
 
 Lemma skolemProgramCode_add_right : forall p q,
   skolemProgramCode q < skolemProgramCode (spAdd p q).
 Proof.
   intros p q. simpl.
-  eapply Nat.le_lt_trans.
-  - apply polynomialPair_right_le.
-  - apply polynomialNode_payload_lt.
+  polynomial_child_lt polynomialPair_right_le.
 Qed.
 
 Lemma skolemProgramCode_mul_left : forall p q,
   skolemProgramCode p < skolemProgramCode (spMul p q).
 Proof.
   intros p q. simpl.
-  eapply Nat.le_lt_trans.
-  - apply polynomialPair_left_le.
-  - apply polynomialNode_payload_lt.
+  polynomial_child_lt polynomialPair_left_le.
 Qed.
 
 Lemma skolemProgramCode_mul_right : forall p q,
   skolemProgramCode q < skolemProgramCode (spMul p q).
 Proof.
   intros p q. simpl.
-  eapply Nat.le_lt_trans.
-  - apply polynomialPair_right_le.
-  - apply polynomialNode_payload_lt.
+  polynomial_child_lt polynomialPair_right_le.
 Qed.
 
 Lemma skolemProgramCode_choose_index : forall i args,
   i < skolemProgramCode (spChoose i args).
 Proof.
   intros i args. simpl.
-  eapply Nat.le_lt_trans.
-  - apply polynomialPair_left_le.
-  - apply polynomialNode_payload_lt.
+  polynomial_child_lt polynomialPair_left_le.
 Qed.
 
 Lemma skolemProgramCode_choose_args : forall i args,
   skolemProgramArgsCode args < skolemProgramCode (spChoose i args).
 Proof.
   intros i args. simpl.
-  eapply Nat.le_lt_trans.
-  - apply polynomialPair_right_le.
-  - apply polynomialNode_payload_lt.
+  polynomial_child_lt polynomialPair_right_le.
 Qed.
 
 Lemma skolemProgramArgsCode_cons_head : forall p args,
   skolemProgramCode p < skolemProgramArgsCode (spaCons p args).
 Proof.
   intros p args. simpl.
-  eapply Nat.le_lt_trans.
-  - apply polynomialPair_left_le.
-  - apply polynomialNode_payload_lt.
+  polynomial_child_lt polynomialPair_left_le.
 Qed.
 
 Lemma skolemProgramArgsCode_cons_tail : forall p args,
   skolemProgramArgsCode args < skolemProgramArgsCode (spaCons p args).
 Proof.
   intros p args. simpl.
-  eapply Nat.le_lt_trans.
-  - apply polynomialPair_right_le.
-  - apply polynomialNode_payload_lt.
+  polynomial_child_lt polynomialPair_right_le.
 Qed.
 
 (** A deliberately simple, executable inverse: search the finite square

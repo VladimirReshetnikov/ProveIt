@@ -1,3 +1,4 @@
 import QuantifierCommutation.Commutation
+import QuantifierCommutation.Counterexample
 import QuantifierCommutation.NoExists
 import QuantifierCommutation.ExistsUnique

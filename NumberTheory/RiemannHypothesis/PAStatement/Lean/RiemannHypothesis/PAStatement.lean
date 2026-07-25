@@ -26,6 +26,11 @@ def shiftTerm (k : Nat) (t : Term) : Term :=
 def shiftFormula (k : Nat) (phi : Formula) : Formula :=
   rename (fun n => n + k) phi
 
+/-- `shiftTerm` fixes closed numerals. -/
+theorem shiftTerm_numeral (k n : Nat) :
+    shiftTerm k (Term.numeral n) = Term.numeral n :=
+  Term.rename_numeral _ n
+
 /-- Term-parametric divisibility. -/
 def dvdTermAt (a b : Term) : Formula :=
   ex (eq (Term.mul (Term.rename Nat.succ a) (Term.var 0))
@@ -278,85 +283,32 @@ theorem BProv_Ax_s_contradiction_one_lt_of_lt_two
         (G := eq d (Term.numeral 1) :: G) (Term.numeral 1))
   exact BProv_orE hcases hltBranch heqBranch
 
-theorem BProv_Ax_s_prime_two :
-    BProv Ax_s [] (primeTermAt (Term.numeral 2)) := by
-  have hgt1 : BProv Ax_s [] (ltTermAt (Term.numeral 1) (Term.numeral 2)) := by
-    simpa [ltTermAt, Term.rename] using
-      (BProv_Ax_s_ltConst_closed (G := []) (by decide : 1 < 2))
-  let p2s : Term := shiftTerm 1 (Term.numeral 2)
-  let cand : Formula := and
-    (ltTermAt (Term.numeral 1) (Term.var 0))
-    (ltTermAt (Term.var 0) p2s)
-  have hforall : BProv Ax_s []
-      (all (imp cand (properRemainderWitnessAt p2s (Term.var 0)))) := by
-    refine BProv_allI_of_sentences (B := Ax_s) Ax_s_sentences ?_
-    refine BProv_impI ?_
-    let C : List Formula := [cand]
-    have hcand : BProv Ax_s C cand :=
-      BProv_ass (B := Ax_s) (G := C) (by simp [C])
-    have h1d : BProv Ax_s C (ltTermAt (Term.numeral 1) (Term.var 0)) :=
-      BProv_andE1 hcand
-    have hd2s : BProv Ax_s C (ltTermAt (Term.var 0) p2s) :=
-      BProv_andE2 hcand
-    have hd2 : BProv Ax_s C (ltTermAt (Term.var 0) (Term.numeral 2)) := by
-      simpa [p2s, shiftTerm, Term.rename] using hd2s
-    exact BProv_botE (a := properRemainderWitnessAt p2s (Term.var 0))
-      (BProv_Ax_s_contradiction_one_lt_of_lt_two h1d hd2)
-  simpa [primeTermAt, p2s, cand] using BProv_andI hgt1 hforall
+/--
+Discharge any goal in a context whose head asserts `d < 2` while `1 < d` is
+already provable: the two bounds are contradictory.
+-/
+theorem BProv_Ax_s_of_head_lt_two
+    {G : List Formula} {d : Term} {a : Formula}
+    (h1d : BProv Ax_s G (ltTermAt (Term.numeral 1) d)) :
+    BProv Ax_s (ltTermAt d (Term.numeral 2) :: G) a :=
+  BProv_botE
+    (BProv_Ax_s_contradiction_one_lt_of_lt_two
+      (BProv_context_cons (B := Ax_s) (a := ltTermAt d (Term.numeral 2)) h1d)
+      (BProv_ass (B := Ax_s) (by simp)))
 
-theorem BProv_Ax_s_prime_three :
-    BProv Ax_s [] (primeTermAt (Term.numeral 3)) := by
-  have hgt1 : BProv Ax_s [] (ltTermAt (Term.numeral 1) (Term.numeral 3)) := by
-    simpa [ltTermAt, Term.rename] using
-      (BProv_Ax_s_ltConst_closed (G := []) (by decide : 1 < 3))
-  let p3s : Term := shiftTerm 1 (Term.numeral 3)
-  let cand : Formula := and
-    (ltTermAt (Term.numeral 1) (Term.var 0))
-    (ltTermAt (Term.var 0) p3s)
-  have hforall : BProv Ax_s []
-      (all (imp cand (properRemainderWitnessAt p3s (Term.var 0)))) := by
-    refine BProv_allI_of_sentences (B := Ax_s) Ax_s_sentences ?_
-    refine BProv_impI ?_
-    let C : List Formula := [cand]
-    have hcand : BProv Ax_s C cand :=
-      BProv_ass (B := Ax_s) (G := C) (by simp [C])
-    have h1d : BProv Ax_s C (ltTermAt (Term.numeral 1) (Term.var 0)) :=
-      BProv_andE1 hcand
-    have hd3s : BProv Ax_s C (ltTermAt (Term.var 0) p3s) :=
-      BProv_andE2 hcand
-    have hd3 : BProv Ax_s C (ltTermAt (Term.var 0) (Term.numeral 3)) := by
-      simpa [p3s, shiftTerm, Term.rename] using hd3s
-    have hcases : BProv Ax_s C
-        (or (ltTermAt (Term.var 0) (Term.numeral 2))
-          (eq (Term.var 0) (Term.numeral 2))) := by
-      simpa [Term.numeral] using
-        (BProv_Ax_s_ltTermAt_succ_right_cases
-          (G := C) (s := Term.var 0) (t := Term.numeral 2) hd3)
-    have hltBranch : BProv Ax_s (ltTermAt (Term.var 0) (Term.numeral 2) :: C)
-        (properRemainderWitnessAt p3s (Term.var 0)) := by
-      have h1d' : BProv Ax_s (ltTermAt (Term.var 0) (Term.numeral 2) :: C)
-          (ltTermAt (Term.numeral 1) (Term.var 0)) :=
-        BProv_context_cons (B := Ax_s)
-          (a := ltTermAt (Term.var 0) (Term.numeral 2)) h1d
-      have hd2 : BProv Ax_s (ltTermAt (Term.var 0) (Term.numeral 2) :: C)
-          (ltTermAt (Term.var 0) (Term.numeral 2)) :=
-        BProv_ass (B := Ax_s) (by simp)
-      exact BProv_botE (a := properRemainderWitnessAt p3s (Term.var 0))
-        (BProv_Ax_s_contradiction_one_lt_of_lt_two h1d' hd2)
-    have heqBranch : BProv Ax_s (eq (Term.var 0) (Term.numeral 2) :: C)
-        (properRemainderWitnessAt p3s (Term.var 0)) := by
-      have hmod : BProv Ax_s (eq (Term.var 0) (Term.numeral 2) :: C)
-          (eq (Term.var 0) (Term.numeral 2)) :=
-        BProv_ass (B := Ax_s) (by simp)
-      have hrem : BProv Ax_s (eq (Term.var 0) (Term.numeral 2) :: C)
-          (properRemainderWitnessAt (Term.numeral 3) (Term.var 0)) :=
-        BProv_Ax_s_properRemainderWitnessAt_numeral_of_modEq
-          (G := eq (Term.var 0) (Term.numeral 2) :: C)
-          (modulus := Term.var 0) (r := 1) (v := 3) (m := 2) (q := 1)
-          hmod (by decide) (by decide) (by decide)
-      simpa [p3s, shiftTerm, Term.rename] using hrem
-    exact BProv_orE hcases hltBranch heqBranch
-  simpa [primeTermAt, p3s, cand] using BProv_andI hgt1 hforall
+/--
+Remainder certificate against modulus `var 0` when the context head pins
+`var 0` to the numeral `m`.
+-/
+theorem BProv_Ax_s_properRemainderWitness_var_of_head_eq
+    {G : List Formula} {r v m q : Nat}
+    (hr : r < m) (hrpos : 0 < r) (hdiv : q * m + r = v) :
+    BProv Ax_s (eq (Term.var 0) (Term.numeral m) :: G)
+      (properRemainderWitnessAt (Term.numeral v) (Term.var 0)) :=
+  BProv_Ax_s_properRemainderWitnessAt_numeral_of_modEq
+    (G := eq (Term.var 0) (Term.numeral m) :: G)
+    (modulus := Term.var 0) (r := r) (v := v) (m := m) (q := q)
+    (BProv_ass (B := Ax_s) (by simp)) hr hrpos hdiv
 
 theorem BProv_Ax_s_square_of_eq_numeral
     {G : List Formula} {p : Term} {a : Nat}
@@ -365,170 +317,192 @@ theorem BProv_Ax_s_square_of_eq_numeral
   exact BProv_eqTrans (BProv_eq_congr_mul hp hp)
     (BProv_weaken_nil (G := G) (BProv_Ax_s_mulNumerals a a))
 
+/--
+Shared equality-branch body of the small squarefreeness certificates: when the
+context head pins `var 0` to the numeral `a` and `0 < v < a * a`, the value
+`v` leaves the proper remainder `v` modulo `var 0 * var 0`.
+-/
+theorem BProv_Ax_s_properRemainderWitness_square_of_head_eq
+    {G : List Formula} {a v : Nat} (hvpos : 0 < v) (hv : v < a * a) :
+    BProv Ax_s (eq (Term.var 0) (Term.numeral a) :: G)
+      (properRemainderWitnessAt (Term.numeral v)
+        (Term.mul (Term.var 0) (Term.var 0))) := by
+  have hpEq : BProv Ax_s (eq (Term.var 0) (Term.numeral a) :: G)
+      (eq (Term.var 0) (Term.numeral a)) :=
+    BProv_ass (B := Ax_s) (by simp)
+  exact BProv_Ax_s_properRemainderWitnessAt_numeral_of_modEq
+    (modulus := Term.mul (Term.var 0) (Term.var 0))
+    (r := v) (v := v) (m := a * a) (q := 0)
+    (BProv_Ax_s_square_of_eq_numeral hpEq) hv hvpos (by simp)
+
+/-- The opened bounded-divisor hypothesis of `primeTermAt` at a numeral. -/
+def primeDivisorHyp (p : Nat) : Formula :=
+  and (ltTermAt (Term.numeral 1) (Term.var 0))
+    (ltTermAt (Term.var 0) (Term.numeral p))
+
+theorem BProv_Ax_s_primeDivisorHyp_one_lt {G : List Formula} {p : Nat} :
+    BProv Ax_s (primeDivisorHyp p :: G)
+      (ltTermAt (Term.numeral 1) (Term.var 0)) := by
+  have hhyp : BProv Ax_s (primeDivisorHyp p :: G) (primeDivisorHyp p) :=
+    BProv_ass (B := Ax_s) (by simp)
+  simpa [primeDivisorHyp] using BProv_andE1 hhyp
+
+theorem BProv_Ax_s_primeDivisorHyp_lt {G : List Formula} {p : Nat} :
+    BProv Ax_s (primeDivisorHyp p :: G)
+      (ltTermAt (Term.var 0) (Term.numeral p)) := by
+  have hhyp : BProv Ax_s (primeDivisorHyp p :: G) (primeDivisorHyp p) :=
+    BProv_ass (B := Ax_s) (by simp)
+  simpa [primeDivisorHyp] using BProv_andE2 hhyp
+
+/--
+Shared scaffold of the small primality certificates: `primeTermAt` at a
+numeral follows from the closed bound `1 < p` plus the opened bounded-divisor
+obligation, taken in a context holding `primeDivisorHyp p`.
+-/
+theorem BProv_Ax_s_primeTermAt_numeral {p : Nat} (hp : 1 < p)
+    (hbody : BProv Ax_s [primeDivisorHyp p]
+      (properRemainderWitnessAt (Term.numeral p) (Term.var 0))) :
+    BProv Ax_s [] (primeTermAt (Term.numeral p)) := by
+  have hgt1 : BProv Ax_s [] (ltTermAt (Term.numeral 1) (Term.numeral p)) := by
+    simpa [ltTermAt, Term.rename] using
+      (BProv_Ax_s_ltConst_closed (G := []) hp)
+  have hforall : BProv Ax_s []
+      (all (imp
+        (and (ltTermAt (Term.numeral 1) (Term.var 0))
+          (ltTermAt (Term.var 0) (shiftTerm 1 (Term.numeral p))))
+        (properRemainderWitnessAt (shiftTerm 1 (Term.numeral p))
+          (Term.var 0)))) := by
+    refine BProv_allI_of_sentences (B := Ax_s) Ax_s_sentences ?_
+    rw [shiftTerm_numeral]
+    exact BProv_impI hbody
+  simpa [primeTermAt] using BProv_andI hgt1 hforall
+
+theorem BProv_Ax_s_prime_two :
+    BProv Ax_s [] (primeTermAt (Term.numeral 2)) := by
+  refine BProv_Ax_s_primeTermAt_numeral (by decide) ?_
+  exact BProv_botE
+    (BProv_Ax_s_contradiction_one_lt_of_lt_two
+      BProv_Ax_s_primeDivisorHyp_one_lt BProv_Ax_s_primeDivisorHyp_lt)
+
+theorem BProv_Ax_s_prime_three :
+    BProv Ax_s [] (primeTermAt (Term.numeral 3)) := by
+  refine BProv_Ax_s_primeTermAt_numeral (by decide) ?_
+  have hcases : BProv Ax_s [primeDivisorHyp 3]
+      (or (ltTermAt (Term.var 0) (Term.numeral 2))
+        (eq (Term.var 0) (Term.numeral 2))) := by
+    simpa [Term.numeral] using
+      (BProv_Ax_s_ltTermAt_succ_right_cases
+        (G := [primeDivisorHyp 3]) (s := Term.var 0) (t := Term.numeral 2)
+        BProv_Ax_s_primeDivisorHyp_lt)
+  exact BProv_orE hcases
+    (BProv_Ax_s_of_head_lt_two BProv_Ax_s_primeDivisorHyp_one_lt)
+    (BProv_Ax_s_properRemainderWitness_var_of_head_eq
+      (r := 1) (q := 1) (by decide) (by decide) (by decide))
+
+/-- The opened bounded-prime hypothesis of `squarefreeTermAt` at a numeral. -/
+def squarefreePrimeHyp (n : Nat) : Formula :=
+  and (ltTermAt (Term.var 0) (Term.numeral (n + 1)))
+    (primeTermAt (Term.var 0))
+
+theorem BProv_Ax_s_squarefreePrimeHyp_lt_bound {G : List Formula} {n : Nat} :
+    BProv Ax_s (squarefreePrimeHyp n :: G)
+      (ltTermAt (Term.var 0) (Term.numeral (n + 1))) := by
+  have hhyp : BProv Ax_s (squarefreePrimeHyp n :: G) (squarefreePrimeHyp n) :=
+    BProv_ass (B := Ax_s) (by simp)
+  simpa [squarefreePrimeHyp] using BProv_andE1 hhyp
+
+theorem BProv_Ax_s_squarefreePrimeHyp_one_lt {G : List Formula} {n : Nat} :
+    BProv Ax_s (squarefreePrimeHyp n :: G)
+      (ltTermAt (Term.numeral 1) (Term.var 0)) := by
+  have hhyp : BProv Ax_s (squarefreePrimeHyp n :: G) (squarefreePrimeHyp n) :=
+    BProv_ass (B := Ax_s) (by simp)
+  have hprime : BProv Ax_s (squarefreePrimeHyp n :: G)
+      (primeTermAt (Term.var 0)) := by
+    simpa [squarefreePrimeHyp] using BProv_andE2 hhyp
+  simpa [primeTermAt] using BProv_andE1 hprime
+
+/--
+Shared scaffold of the small squarefreeness certificates: `squarefreeTermAt`
+at a numeral reduces to the opened square-remainder obligation, taken in a
+context holding `squarefreePrimeHyp n`.
+-/
+theorem BProv_Ax_s_squarefreeTermAt_numeral {n : Nat}
+    (hbody : BProv Ax_s [squarefreePrimeHyp n]
+      (properRemainderWitnessAt (Term.numeral n)
+        (Term.mul (Term.var 0) (Term.var 0)))) :
+    BProv Ax_s [] (squarefreeTermAt (Term.numeral n)) := by
+  have hforall : BProv Ax_s []
+      (all (imp
+        (and (ltTermAt (Term.var 0)
+            (Term.succ (shiftTerm 1 (Term.numeral n))))
+          (primeTermAt (Term.var 0)))
+        (properRemainderWitnessAt (shiftTerm 1 (Term.numeral n))
+          (Term.mul (Term.var 0) (Term.var 0))))) := by
+    refine BProv_allI_of_sentences (B := Ax_s) Ax_s_sentences ?_
+    rw [shiftTerm_numeral]
+    exact BProv_impI hbody
+  simpa [squarefreeTermAt] using hforall
+
 theorem BProv_Ax_s_squarefree_one :
     BProv Ax_s [] (squarefreeTermAt (Term.numeral 1)) := by
-  let bound : Term := Term.succ (shiftTerm 1 (Term.numeral 1))
-  let hyp : Formula := and (ltTermAt (Term.var 0) bound) (primeTermAt (Term.var 0))
-  have hforall : BProv Ax_s [] (all (imp hyp
-      (properRemainderWitnessAt (shiftTerm 1 (Term.numeral 1))
-        (Term.mul (Term.var 0) (Term.var 0))))) := by
-    refine BProv_allI_of_sentences (B := Ax_s) Ax_s_sentences ?_
-    refine BProv_impI ?_
-    let C : List Formula := [hyp]
-    have hhyp : BProv Ax_s C hyp :=
-      BProv_ass (B := Ax_s) (G := C) (by simp [C])
-    have hpBound : BProv Ax_s C (ltTermAt (Term.var 0) bound) :=
-      BProv_andE1 hhyp
-    have hpBound2 : BProv Ax_s C (ltTermAt (Term.var 0) (Term.numeral 2)) := by
-      simpa [bound, shiftTerm, Term.rename, Term.numeral] using hpBound
-    have hprime : BProv Ax_s C (primeTermAt (Term.var 0)) :=
-      BProv_andE2 hhyp
-    have h1p : BProv Ax_s C (ltTermAt (Term.numeral 1) (Term.var 0)) := by
-      simpa [primeTermAt] using BProv_andE1 hprime
-    exact BProv_botE
-      (a := properRemainderWitnessAt (shiftTerm 1 (Term.numeral 1))
-        (Term.mul (Term.var 0) (Term.var 0)))
-      (BProv_Ax_s_contradiction_one_lt_of_lt_two h1p hpBound2)
-  simpa [squarefreeTermAt, hyp, bound] using hforall
+  refine BProv_Ax_s_squarefreeTermAt_numeral ?_
+  exact BProv_botE
+    (BProv_Ax_s_contradiction_one_lt_of_lt_two
+      BProv_Ax_s_squarefreePrimeHyp_one_lt
+      BProv_Ax_s_squarefreePrimeHyp_lt_bound)
 
 theorem BProv_Ax_s_squarefree_two :
     BProv Ax_s [] (squarefreeTermAt (Term.numeral 2)) := by
-  let bound : Term := Term.succ (shiftTerm 1 (Term.numeral 2))
-  let targetMod : Term := Term.mul (Term.var 0) (Term.var 0)
-  let hyp : Formula := and (ltTermAt (Term.var 0) bound) (primeTermAt (Term.var 0))
-  have hforall : BProv Ax_s [] (all (imp hyp
-      (properRemainderWitnessAt (shiftTerm 1 (Term.numeral 2)) targetMod))) := by
-    refine BProv_allI_of_sentences (B := Ax_s) Ax_s_sentences ?_
-    refine BProv_impI ?_
-    let C : List Formula := [hyp]
-    have hhyp : BProv Ax_s C hyp :=
-      BProv_ass (B := Ax_s) (G := C) (by simp [C])
-    have hpBound : BProv Ax_s C (ltTermAt (Term.var 0) bound) :=
-      BProv_andE1 hhyp
-    have hp3 : BProv Ax_s C (ltTermAt (Term.var 0) (Term.numeral 3)) := by
-      simpa [bound, shiftTerm, Term.rename, Term.numeral] using hpBound
-    have hprime : BProv Ax_s C (primeTermAt (Term.var 0)) :=
-      BProv_andE2 hhyp
-    have h1p : BProv Ax_s C (ltTermAt (Term.numeral 1) (Term.var 0)) := by
-      simpa [primeTermAt] using BProv_andE1 hprime
-    have hcases : BProv Ax_s C
+  refine BProv_Ax_s_squarefreeTermAt_numeral ?_
+  have hcases : BProv Ax_s [squarefreePrimeHyp 2]
+      (or (ltTermAt (Term.var 0) (Term.numeral 2))
+        (eq (Term.var 0) (Term.numeral 2))) := by
+    simpa [Term.numeral] using
+      (BProv_Ax_s_ltTermAt_succ_right_cases
+        (G := [squarefreePrimeHyp 2]) (s := Term.var 0) (t := Term.numeral 2)
+        BProv_Ax_s_squarefreePrimeHyp_lt_bound)
+  exact BProv_orE hcases
+    (BProv_Ax_s_of_head_lt_two BProv_Ax_s_squarefreePrimeHyp_one_lt)
+    (BProv_Ax_s_properRemainderWitness_square_of_head_eq
+      (by decide) (by decide))
+
+theorem BProv_Ax_s_squarefree_three :
+    BProv Ax_s [] (squarefreeTermAt (Term.numeral 3)) := by
+  refine BProv_Ax_s_squarefreeTermAt_numeral ?_
+  have hcases4 : BProv Ax_s [squarefreePrimeHyp 3]
+      (or (ltTermAt (Term.var 0) (Term.numeral 3))
+        (eq (Term.var 0) (Term.numeral 3))) := by
+    simpa [Term.numeral] using
+      (BProv_Ax_s_ltTermAt_succ_right_cases
+        (G := [squarefreePrimeHyp 3]) (s := Term.var 0) (t := Term.numeral 3)
+        BProv_Ax_s_squarefreePrimeHyp_lt_bound)
+  have hlt3Branch : BProv Ax_s
+      (ltTermAt (Term.var 0) (Term.numeral 3) :: [squarefreePrimeHyp 3])
+      (properRemainderWitnessAt (Term.numeral 3)
+        (Term.mul (Term.var 0) (Term.var 0))) := by
+    have hp3 : BProv Ax_s
+        (ltTermAt (Term.var 0) (Term.numeral 3) :: [squarefreePrimeHyp 3])
+        (ltTermAt (Term.var 0) (Term.numeral 3)) :=
+      BProv_ass (B := Ax_s) (by simp)
+    have hcases3 : BProv Ax_s
+        (ltTermAt (Term.var 0) (Term.numeral 3) :: [squarefreePrimeHyp 3])
         (or (ltTermAt (Term.var 0) (Term.numeral 2))
           (eq (Term.var 0) (Term.numeral 2))) := by
       simpa [Term.numeral] using
         (BProv_Ax_s_ltTermAt_succ_right_cases
-          (G := C) (s := Term.var 0) (t := Term.numeral 2) hp3)
-    have hltBranch : BProv Ax_s (ltTermAt (Term.var 0) (Term.numeral 2) :: C)
-        (properRemainderWitnessAt (shiftTerm 1 (Term.numeral 2)) targetMod) := by
-      have h1p' : BProv Ax_s (ltTermAt (Term.var 0) (Term.numeral 2) :: C)
-          (ltTermAt (Term.numeral 1) (Term.var 0)) :=
-        BProv_context_cons (B := Ax_s)
-          (a := ltTermAt (Term.var 0) (Term.numeral 2)) h1p
-      have hp2 : BProv Ax_s (ltTermAt (Term.var 0) (Term.numeral 2) :: C)
-          (ltTermAt (Term.var 0) (Term.numeral 2)) :=
-        BProv_ass (B := Ax_s) (by simp)
-      exact BProv_botE
-        (a := properRemainderWitnessAt (shiftTerm 1 (Term.numeral 2)) targetMod)
-        (BProv_Ax_s_contradiction_one_lt_of_lt_two h1p' hp2)
-    have heqBranch : BProv Ax_s (eq (Term.var 0) (Term.numeral 2) :: C)
-        (properRemainderWitnessAt (shiftTerm 1 (Term.numeral 2)) targetMod) := by
-      let D : List Formula := eq (Term.var 0) (Term.numeral 2) :: C
-      have hpEq : BProv Ax_s D (eq (Term.var 0) (Term.numeral 2)) :=
-        BProv_ass (B := Ax_s) (G := D) (by simp [D])
-      have hmod : BProv Ax_s D (eq targetMod (Term.numeral 4)) := by
-        simpa [targetMod] using
-          BProv_Ax_s_square_of_eq_numeral (G := D) (p := Term.var 0) (a := 2) hpEq
-      have hrem : BProv Ax_s D
-          (properRemainderWitnessAt (Term.numeral 2) targetMod) :=
-        BProv_Ax_s_properRemainderWitnessAt_numeral_of_modEq
-          (G := D) (modulus := targetMod) (r := 2) (v := 2) (m := 4) (q := 0)
-          hmod (by decide) (by decide) (by decide)
-      simpa [D, shiftTerm, Term.rename] using hrem
-    exact BProv_orE hcases hltBranch heqBranch
-  simpa [squarefreeTermAt, hyp, bound, targetMod] using hforall
-
-theorem BProv_Ax_s_squarefree_three :
-    BProv Ax_s [] (squarefreeTermAt (Term.numeral 3)) := by
-  let bound : Term := Term.succ (shiftTerm 1 (Term.numeral 3))
-  let targetMod : Term := Term.mul (Term.var 0) (Term.var 0)
-  let hyp : Formula := and (ltTermAt (Term.var 0) bound) (primeTermAt (Term.var 0))
-  have hforall : BProv Ax_s [] (all (imp hyp
-      (properRemainderWitnessAt (shiftTerm 1 (Term.numeral 3)) targetMod))) := by
-    refine BProv_allI_of_sentences (B := Ax_s) Ax_s_sentences ?_
-    refine BProv_impI ?_
-    let C : List Formula := [hyp]
-    have hhyp : BProv Ax_s C hyp :=
-      BProv_ass (B := Ax_s) (G := C) (by simp [C])
-    have hpBound : BProv Ax_s C (ltTermAt (Term.var 0) bound) :=
-      BProv_andE1 hhyp
-    have hp4 : BProv Ax_s C (ltTermAt (Term.var 0) (Term.numeral 4)) := by
-      simpa [bound, shiftTerm, Term.rename, Term.numeral] using hpBound
-    have hprime : BProv Ax_s C (primeTermAt (Term.var 0)) :=
-      BProv_andE2 hhyp
-    have h1p : BProv Ax_s C (ltTermAt (Term.numeral 1) (Term.var 0)) := by
-      simpa [primeTermAt] using BProv_andE1 hprime
-    have hcases4 : BProv Ax_s C
-        (or (ltTermAt (Term.var 0) (Term.numeral 3))
-          (eq (Term.var 0) (Term.numeral 3))) := by
-      simpa [Term.numeral] using
-        (BProv_Ax_s_ltTermAt_succ_right_cases
-          (G := C) (s := Term.var 0) (t := Term.numeral 3) hp4)
-    have hlt3Branch : BProv Ax_s (ltTermAt (Term.var 0) (Term.numeral 3) :: C)
-        (properRemainderWitnessAt (shiftTerm 1 (Term.numeral 3)) targetMod) := by
-      let C3 : List Formula := ltTermAt (Term.var 0) (Term.numeral 3) :: C
-      have h1p3 : BProv Ax_s C3 (ltTermAt (Term.numeral 1) (Term.var 0)) :=
-        BProv_context_cons (B := Ax_s)
-          (a := ltTermAt (Term.var 0) (Term.numeral 3)) h1p
-      have hp3 : BProv Ax_s C3 (ltTermAt (Term.var 0) (Term.numeral 3)) :=
-        BProv_ass (B := Ax_s) (G := C3) (by simp [C3])
-      have hcases3 : BProv Ax_s C3
-          (or (ltTermAt (Term.var 0) (Term.numeral 2))
-            (eq (Term.var 0) (Term.numeral 2))) := by
-        simpa [Term.numeral] using
-          (BProv_Ax_s_ltTermAt_succ_right_cases
-            (G := C3) (s := Term.var 0) (t := Term.numeral 2) hp3)
-      have hlt2Branch : BProv Ax_s (ltTermAt (Term.var 0) (Term.numeral 2) :: C3)
-          (properRemainderWitnessAt (shiftTerm 1 (Term.numeral 3)) targetMod) := by
-        have h1p2 : BProv Ax_s (ltTermAt (Term.var 0) (Term.numeral 2) :: C3)
-            (ltTermAt (Term.numeral 1) (Term.var 0)) :=
-          BProv_context_cons (B := Ax_s)
-            (a := ltTermAt (Term.var 0) (Term.numeral 2)) h1p3
-        have hp2 : BProv Ax_s (ltTermAt (Term.var 0) (Term.numeral 2) :: C3)
-            (ltTermAt (Term.var 0) (Term.numeral 2)) :=
-          BProv_ass (B := Ax_s) (by simp)
-        exact BProv_botE
-          (a := properRemainderWitnessAt (shiftTerm 1 (Term.numeral 3)) targetMod)
-          (BProv_Ax_s_contradiction_one_lt_of_lt_two h1p2 hp2)
-      have heq2Branch : BProv Ax_s (eq (Term.var 0) (Term.numeral 2) :: C3)
-          (properRemainderWitnessAt (shiftTerm 1 (Term.numeral 3)) targetMod) := by
-        let D : List Formula := eq (Term.var 0) (Term.numeral 2) :: C3
-        have hpEq : BProv Ax_s D (eq (Term.var 0) (Term.numeral 2)) :=
-          BProv_ass (B := Ax_s) (G := D) (by simp [D])
-        have hmod : BProv Ax_s D (eq targetMod (Term.numeral 4)) := by
-          simpa [targetMod] using
-            BProv_Ax_s_square_of_eq_numeral (G := D) (p := Term.var 0) (a := 2) hpEq
-        have hrem : BProv Ax_s D
-            (properRemainderWitnessAt (Term.numeral 3) targetMod) :=
-          BProv_Ax_s_properRemainderWitnessAt_numeral_of_modEq
-            (G := D) (modulus := targetMod) (r := 3) (v := 3) (m := 4) (q := 0)
-            hmod (by decide) (by decide) (by decide)
-        simpa [D, shiftTerm, Term.rename] using hrem
-      exact BProv_orE hcases3 hlt2Branch heq2Branch
-    have heq3Branch : BProv Ax_s (eq (Term.var 0) (Term.numeral 3) :: C)
-        (properRemainderWitnessAt (shiftTerm 1 (Term.numeral 3)) targetMod) := by
-      let D : List Formula := eq (Term.var 0) (Term.numeral 3) :: C
-      have hpEq : BProv Ax_s D (eq (Term.var 0) (Term.numeral 3)) :=
-        BProv_ass (B := Ax_s) (G := D) (by simp [D])
-      have hmod : BProv Ax_s D (eq targetMod (Term.numeral 9)) := by
-        simpa [targetMod] using
-          BProv_Ax_s_square_of_eq_numeral (G := D) (p := Term.var 0) (a := 3) hpEq
-      have hrem : BProv Ax_s D
-          (properRemainderWitnessAt (Term.numeral 3) targetMod) :=
-        BProv_Ax_s_properRemainderWitnessAt_numeral_of_modEq
-          (G := D) (modulus := targetMod) (r := 3) (v := 3) (m := 9) (q := 0)
-          hmod (by decide) (by decide) (by decide)
-      simpa [D, shiftTerm, Term.rename] using hrem
-    exact BProv_orE hcases4 hlt3Branch heq3Branch
-  simpa [squarefreeTermAt, hyp, bound, targetMod] using hforall
+          (G := ltTermAt (Term.var 0) (Term.numeral 3) ::
+            [squarefreePrimeHyp 3])
+          (s := Term.var 0) (t := Term.numeral 2) hp3)
+    exact BProv_orE hcases3
+      (BProv_Ax_s_of_head_lt_two
+        (BProv_context_cons (B := Ax_s)
+          (a := ltTermAt (Term.var 0) (Term.numeral 3))
+          BProv_Ax_s_squarefreePrimeHyp_one_lt))
+      (BProv_Ax_s_properRemainderWitness_square_of_head_eq
+        (by decide) (by decide))
+  exact BProv_orE hcases4 hlt3Branch
+    (BProv_Ax_s_properRemainderWitness_square_of_head_eq
+      (by decide) (by decide))
 
 theorem BProv_Ax_s_remTermTermAt_numeral_of_modEq
     {G : List Formula} {modulus : Term} {r v m q : Nat}
@@ -834,44 +808,41 @@ def mertensThreeEqNegOneStatement : Formula :=
   and (mertensCountsAt (Term.numeral 3) (Term.numeral 1) (Term.numeral 2))
     (eq (Term.numeral 2) (Term.add (Term.numeral 1) (Term.numeral 1)))
 
+/-- Closed numeral instances of `mertensCountsBaseAt` follow by reflexivity. -/
+theorem BProv_Ax_s_mertensCountsBase_numerals {G : List Formula}
+    (n pos neg : Nat) :
+    BProv Ax_s G (mertensCountsBaseAt
+      (Term.numeral n) (Term.numeral pos) (Term.numeral neg) n pos neg) :=
+  BProv_andI (BProv_eqRefl (B := Ax_s) (G := G) (Term.numeral n))
+    (BProv_andI (BProv_eqRefl (B := Ax_s) (G := G) (Term.numeral pos))
+      (BProv_eqRefl (B := Ax_s) (G := G) (Term.numeral neg)))
+
 theorem BProv_Ax_s_mertensCounts_one :
     BProv Ax_s [] (mertensCountsAt
-      (Term.numeral 1) (Term.numeral 1) (Term.numeral 0)) := by
-  have hbase : BProv Ax_s [] (mertensCountsBaseAt
-      (Term.numeral 1) (Term.numeral 1) (Term.numeral 0) 1 1 0) :=
-    BProv_andI (BProv_eqRefl (B := Ax_s) (G := []) (Term.numeral 1))
-      (BProv_andI (BProv_eqRefl (B := Ax_s) (G := []) (Term.numeral 1))
-        (BProv_eqRefl (B := Ax_s) (G := []) (Term.numeral 0)))
-  exact BProv_orI1 (B := Ax_s) (G := []) hbase
+      (Term.numeral 1) (Term.numeral 1) (Term.numeral 0)) :=
+  BProv_orI1 (B := Ax_s) (G := [])
+    (BProv_Ax_s_mertensCountsBase_numerals 1 1 0)
 
 theorem BProv_Ax_s_mertensCounts_two :
     BProv Ax_s [] (mertensCountsAt
-      (Term.numeral 2) (Term.numeral 1) (Term.numeral 1)) := by
-  have hbase : BProv Ax_s [] (mertensCountsBaseAt
-      (Term.numeral 2) (Term.numeral 1) (Term.numeral 1) 2 1 1) :=
-    BProv_andI (BProv_eqRefl (B := Ax_s) (G := []) (Term.numeral 2))
-      (BProv_andI (BProv_eqRefl (B := Ax_s) (G := []) (Term.numeral 1))
-        (BProv_eqRefl (B := Ax_s) (G := []) (Term.numeral 1)))
-  exact BProv_orI2 (B := Ax_s) (G := [])
+      (Term.numeral 2) (Term.numeral 1) (Term.numeral 1)) :=
+  BProv_orI2 (B := Ax_s) (G := [])
     (a := mertensCountsBaseAt
       (Term.numeral 2) (Term.numeral 1) (Term.numeral 1) 1 1 0)
-    (BProv_orI1 (B := Ax_s) (G := []) hbase)
+    (BProv_orI1 (B := Ax_s) (G := [])
+      (BProv_Ax_s_mertensCountsBase_numerals 2 1 1))
 
 theorem BProv_Ax_s_mertensCounts_three :
     BProv Ax_s [] (mertensCountsAt
-      (Term.numeral 3) (Term.numeral 1) (Term.numeral 2)) := by
-  have hbase : BProv Ax_s [] (mertensCountsBaseAt
-      (Term.numeral 3) (Term.numeral 1) (Term.numeral 2) 3 1 2) :=
-    BProv_andI (BProv_eqRefl (B := Ax_s) (G := []) (Term.numeral 3))
-      (BProv_andI (BProv_eqRefl (B := Ax_s) (G := []) (Term.numeral 1))
-        (BProv_eqRefl (B := Ax_s) (G := []) (Term.numeral 2)))
-  exact BProv_orI2 (B := Ax_s) (G := [])
+      (Term.numeral 3) (Term.numeral 1) (Term.numeral 2)) :=
+  BProv_orI2 (B := Ax_s) (G := [])
     (a := mertensCountsBaseAt
       (Term.numeral 3) (Term.numeral 1) (Term.numeral 2) 1 1 0)
     (BProv_orI2 (B := Ax_s) (G := [])
       (a := mertensCountsBaseAt
         (Term.numeral 3) (Term.numeral 1) (Term.numeral 2) 2 1 1)
-      (BProv_orI1 (B := Ax_s) (G := []) hbase))
+      (BProv_orI1 (B := Ax_s) (G := [])
+        (BProv_Ax_s_mertensCountsBase_numerals 3 1 2)))
 
 theorem BProv_Ax_s_mertens_one_eq_one :
     BProv Ax_s [] mertensOneEqOneStatement := by

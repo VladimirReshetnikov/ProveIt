@@ -314,14 +314,14 @@ theorem leastDefaultGraph_functional_of_pa {alpha : Type u}
 
 /-- The abstract selector interface used by the finite Skolem-hull
 construction is therefore available in every raw model of first-order PA. -/
-def canonicalSelectorsOfPA {alpha : Type u} {M : PA.PreModel alpha}
+theorem canonicalSelectorsOfPA {alpha : Type u} {M : PA.PreModel alpha}
     (hPA : RawPASatisfies M) : CanonicalSelectors M where
   graph_total := leastDefaultGraph_total_of_pa hPA
   graph_functional := leastDefaultGraph_functional_of_pa hPA
 
 /-- Unconditional selector package for the raw PA algebra extracted from an
 arbitrary first-order finite-adjunction model. -/
-noncomputable def fofamCanonicalSelectors {alpha : Type u}
+theorem fofamCanonicalSelectors {alpha : Type u}
     (M : AckermannHF.FirstOrderFiniteAdjunctionModel alpha) :
     CanonicalSelectors (AckermannHF.PAInHF.fofamPAPreModel M) :=
   canonicalSelectorsOfPA (fun e f hf =>

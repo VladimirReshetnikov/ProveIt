@@ -1,0 +1,41 @@
+import TuringDegrees
+
+open scoped SetTuring
+
+#check TuringDegrees.setTuringEquivalent_equivalence
+#check TuringDegrees.SetTuringDegree.instPartialOrder
+#check TuringDegrees.SetTuringDegree.of_eq_bot_iff
+#check TuringDegrees.join_reducible_iff
+#check TuringDegrees.SetTuringDegree.instSemilatticeSup
+#check TuringDegrees.compl_equivalent
+#check TuringDegrees.haltingSet_re
+#check TuringDegrees.haltingSet_not_computable
+#check TuringDegrees.SetTuringDegree.bot_lt_zeroJump
+#check TuringDegrees.re_iff_manyOneReducible_haltingSet
+#check TuringDegrees.SetTuringDegree.computablyEnumerable_le_zeroJump
+#check TuringDegrees.exactPair_no_lub
+#check TuringDegrees.IsNComputablyEnumerable.mono
+#check TuringDegrees.SetTuringDegree.IsNComputablyEnumerable.mono
+#check TuringDegrees.infinitely_many_representatives
+#check TuringDegrees.cardinal_degreeClass
+#check TuringDegrees.lowerDegrees_countable
+#check TuringDegrees.cardinal_setTuringDegree
+#check TuringDegrees.cardinal_strictUpperCone
+
+#print axioms TuringDegrees.setTuringEquivalent_equivalence
+#print axioms TuringDegrees.SetTuringDegree.of_eq_bot_iff
+#print axioms TuringDegrees.join_reducible_iff
+#print axioms TuringDegrees.compl_equivalent
+#print axioms TuringDegrees.haltingSet_re
+#print axioms TuringDegrees.haltingSet_not_computable
+#print axioms TuringDegrees.SetTuringDegree.bot_lt_zeroJump
+#print axioms TuringDegrees.re_iff_manyOneReducible_haltingSet
+#print axioms TuringDegrees.SetTuringDegree.computablyEnumerable_le_zeroJump
+#print axioms TuringDegrees.exactPair_no_lub
+#print axioms TuringDegrees.IsNComputablyEnumerable.mono
+#print axioms TuringDegrees.SetTuringDegree.IsNComputablyEnumerable.mono
+#print axioms TuringDegrees.infinitely_many_representatives
+#print axioms TuringDegrees.cardinal_degreeClass
+#print axioms TuringDegrees.lowerDegrees_countable
+#print axioms TuringDegrees.cardinal_setTuringDegree
+#print axioms TuringDegrees.cardinal_strictUpperCone

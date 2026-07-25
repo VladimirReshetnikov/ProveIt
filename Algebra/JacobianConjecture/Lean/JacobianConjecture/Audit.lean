@@ -30,11 +30,73 @@ open LeanProofs.JacobianCounterexample
 #check collisionFamily₁_value
 #check collisionFamily
 #check collisionFamily_points_distinct
+#check collisionFamily₀_at_neg_one
+#check collisionFamily₁_at_neg_one
+#check collisionFamilyValue_at_neg_one
 
 #print axioms collisionFamily₀_value
 #print axioms collisionFamily₁_value
 #print axioms collisionFamily
 #print axioms collisionFamily_points_distinct
+#print axioms collisionFamily₀_at_neg_one
+#print axioms collisionFamily₁_at_neg_one
+#print axioms collisionFamilyValue_at_neg_one
+
+#check counterexample_equivariant
+#check collision_of_flipTarget_fixed
+#check mirrored_integral_collision
+#check rationalCollision₀_value
+#check rationalCollision₁_value
+#check rationalCollision₂_eq_flip
+#check rationalCollision₂_value
+#check rationalCollisions_distinct
+#check counterexample_triple_collision
+#check collisionFamily₀_mirror
+#check collisionFamily₁_mirror
+#check collisionFamilyValue_mirror
+
+#print axioms counterexample_equivariant
+#print axioms collision_of_flipTarget_fixed
+#print axioms mirrored_integral_collision
+#print axioms rationalCollision₀_value
+#print axioms rationalCollision₁_value
+#print axioms rationalCollision₂_eq_flip
+#print axioms rationalCollision₂_value
+#print axioms rationalCollisions_distinct
+#print axioms counterexample_triple_collision
+#print axioms collisionFamily₀_mirror
+#print axioms collisionFamily₁_mirror
+#print axioms collisionFamilyValue_mirror
+
+#check counterexample_scaling
+#check collision_scaling
+#check scaleSource_comp
+#check scaleTarget_comp
+#check scaleSource_one
+#check scaleTarget_one
+#check flipSource_eq_scale
+#check flipTarget_eq_scale
+#check collisionFamily₀_eq_scale
+#check collisionFamily₁_eq_scale
+#check collisionFamilyValue_eq_scale
+#check scale_collisionFamily₀
+#check scale_collisionFamily₁
+#check scale_collisionFamilyValue
+
+#print axioms counterexample_scaling
+#print axioms collision_scaling
+#print axioms scaleSource_comp
+#print axioms scaleTarget_comp
+#print axioms scaleSource_one
+#print axioms scaleTarget_one
+#print axioms flipSource_eq_scale
+#print axioms flipTarget_eq_scale
+#print axioms collisionFamily₀_eq_scale
+#print axioms collisionFamily₁_eq_scale
+#print axioms collisionFamilyValue_eq_scale
+#print axioms scale_collisionFamily₀
+#print axioms scale_collisionFamily₁
+#print axioms scale_collisionFamilyValue
 
 open LeanProofs.JacobianSimplerCounterexample
 
@@ -52,7 +114,11 @@ open LeanProofs.JacobianSimplerCounterexample
 #check simplerCounterexample_has_no_polynomial_inverse
 #check jacobianConjectureInDimensionFive_false
 #check jacobianConjectureInDimensionFive_false_over_complex
+#check simplerCounterexample_equivariant
+#check LeanProofs.JacobianSimplerCounterexample.mirrored_collision
 
+#print axioms simplerCounterexample_equivariant
+#print axioms LeanProofs.JacobianSimplerCounterexample.mirrored_collision
 #print axioms simplerFirst_stable_identity
 #print axioms degreeExpressions_profile
 #print axioms degreeExpressions_toPolynomial
@@ -67,3 +133,35 @@ open LeanProofs.JacobianSimplerCounterexample
 #print axioms simplerCounterexample_has_no_polynomial_inverse
 #print axioms jacobianConjectureInDimensionFive_false
 #print axioms jacobianConjectureInDimensionFive_false_over_complex
+
+open LeanProofs.JacobianStabilization
+
+#check stabilized_castAdd
+#check stabilized_natAdd
+#check evalMap_stabilized_castAdd
+#check evalMap_stabilized_natAdd
+#check stabilized_collision₀_value
+#check stabilized_collision₁_value
+#check stabilized_collision
+#check stabilized_collision_points_distinct
+#check jacobianDet_stabilized
+#check stabilized_not_injective
+#check stabilized_has_nonzero_constant_jacobian
+#check stabilized_has_no_polynomial_inverse
+#check jacobianConjectureInDimension_false_of_three_le
+#check jacobianConjectureInDimension_false_of_three_le_over_complex
+
+#print axioms stabilized_castAdd
+#print axioms stabilized_natAdd
+#print axioms evalMap_stabilized_castAdd
+#print axioms evalMap_stabilized_natAdd
+#print axioms stabilized_collision₀_value
+#print axioms stabilized_collision₁_value
+#print axioms stabilized_collision
+#print axioms stabilized_collision_points_distinct
+#print axioms jacobianDet_stabilized
+#print axioms stabilized_not_injective
+#print axioms stabilized_has_nonzero_constant_jacobian
+#print axioms stabilized_has_no_polynomial_inverse
+#print axioms jacobianConjectureInDimension_false_of_three_le
+#print axioms jacobianConjectureInDimension_false_of_three_le_over_complex

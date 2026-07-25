@@ -101,10 +101,7 @@ Lemma rename_hfAddGraphTermAt : forall r out left right,
       (Term.rename r right).
 Proof.
   intros r out left right.
-  rewrite <- subst_var_rename.
-  rewrite subst_hfAddGraphTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_hfAddGraphTermAt.
 Qed.
 
 Lemma compositeAddCoreAt_eq_termAt : forall codedOut,
@@ -399,8 +396,7 @@ Proof.
       P G leftCode leftCode rightCode hrightEmpty
       (BProv_eqRefl Ax_s G leftCode)).
   }
-  pose proof (BProv_weaken_nil Ax_s G _
-    (BProv_Ax_s_addZero_term leftRaw)) as haddZero.
+  pose proof (BProv_Ax_s_addZero_term G leftRaw) as haddZero.
   assert (hforward : BProv Ax_s G
       (pImp
         (hfAddGraphTermAt out leftCode rightCode)
@@ -512,10 +508,7 @@ Lemma rename_ordinalCodeAddOutputTermAt : forall r
       (Term.rename r rightCode).
 Proof.
   intros r leftRaw leftCode rightRaw rightCode.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodeAddOutputTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodeAddOutputTermAt.
 Qed.
 
 Lemma BProv_Ax_s_ordinalCodeAddOutputTermAt_at : forall
@@ -584,10 +577,7 @@ Lemma rename_ordinalCodeAddPointTermAt : forall r
       (Term.rename r rightRaw).
 Proof.
   intros r leftRaw leftCode rightRaw.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodeAddPointTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodeAddPointTermAt.
 Qed.
 
 (** Successor step at already selected predecessor outputs.  In the forward
@@ -626,8 +616,7 @@ Proof.
     pose proof (BProv_andE2 Ax_s G _ _ hrightStep) as himp.
     exact (BProv_mp Ax_s G _ _ himp hrightSucc).
   }
-  pose proof (BProv_weaken_nil Ax_s G _
-    (BProv_Ax_s_addSucc_terms leftRaw rightRaw)) as haddSucc.
+  pose proof (BProv_Ax_s_addSucc_terms G leftRaw rightRaw) as haddSucc.
   assert (hforward : BProv Ax_s G
       (pImp
         (hfAddGraphTermAt out leftCode rightSuccCode)
@@ -768,9 +757,8 @@ Proof.
           (Term.rename S leftCode) (Term.rename S rightSuccCode)
           hrightSuccDomainD haddOutD haddKnown).
       }
-      pose proof (BProv_weaken_nil Ax_s D _
-        (BProv_Ax_s_addSucc_terms
-          (Term.rename S leftRaw) (Term.rename S rightRaw)))
+      pose proof (BProv_Ax_s_addSucc_terms D
+          (Term.rename S leftRaw) (Term.rename S rightRaw))
         as haddSuccD.
       pose proof (BProv_ordinalCodeGraphTermAt_congr
         Ax_s D

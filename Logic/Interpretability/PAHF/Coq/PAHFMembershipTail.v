@@ -229,17 +229,7 @@ Proof.
     - unfold betaTermTermAt, remTermTermAt, ltTermAt,
         betaModTermTerm.
       simpl.
-      repeat rewrite Term.subst_rename_succ_up.
-      repeat rewrite term_subst_instTerm_rename_succ.
-      repeat rewrite term_subst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_two_var_zero.
-      repeat rewrite term_subst_up_up_instTerm_rename_four_succ.
-      repeat rewrite term_subst_up_up_up_instTerm_rename_four_succ.
-      repeat rewrite term_subst_up_up_up_instTerm_rename_five_succ.
-      repeat rewrite Term.rename_comp.
+      normalize_subst_rename_comp.
       repeat rewrite
         (term_subst_three_instTerm_rename_add_three step cur next bit).
       repeat rewrite
@@ -269,17 +259,7 @@ Proof.
     - unfold betaTermTermAt, remTermTermAt, ltTermAt,
         betaModTermTerm.
       simpl.
-      repeat rewrite Term.subst_rename_succ_up.
-      repeat rewrite term_subst_instTerm_rename_succ.
-      repeat rewrite term_subst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_two_var_zero.
-      repeat rewrite term_subst_up_up_instTerm_rename_four_succ.
-      repeat rewrite term_subst_up_up_up_instTerm_rename_four_succ.
-      repeat rewrite term_subst_up_up_up_instTerm_rename_five_succ.
-      repeat rewrite Term.rename_comp.
+      normalize_subst_rename_comp.
       repeat rewrite
         (term_subst_three_instTerm_rename_add_three step cur next bit).
       repeat rewrite
@@ -304,16 +284,7 @@ Proof.
       simpl.
       repeat rewrite Term.subst_rename_succ_up.
       repeat rewrite term_rename_up_succ_rename_succ.
-      repeat rewrite term_subst_instTerm_rename_succ.
-      repeat rewrite term_subst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_two_var_zero.
-      repeat rewrite term_subst_up_up_instTerm_rename_four_succ.
-      repeat rewrite term_subst_up_up_up_instTerm_rename_four_succ.
-      repeat rewrite term_subst_up_up_up_instTerm_rename_five_succ.
-      repeat rewrite Term.rename_comp.
+      normalize_subst_rename_comp.
       reflexivity.
   }
   assert (htailBody : BProv Ax_s G
@@ -451,13 +422,7 @@ Proof.
     - unfold betaTermTermAt, remTermTermAt, ltTermAt,
         betaModTermTerm.
       simpl.
-      repeat rewrite Term.subst_rename_succ_up.
-      repeat rewrite term_subst_instTerm_rename_succ.
-      repeat rewrite term_subst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_three_succ.
-      repeat rewrite Term.rename_comp.
+      normalize_subst_rename_comp.
       repeat rewrite (term_subst_two_instTerm_rename_add_two code cur next).
       repeat rewrite (term_subst_two_instTerm_rename_add_two step cur next).
       repeat rewrite (term_subst_two_instTerm_rename_add_two idx cur next).
@@ -483,13 +448,7 @@ Proof.
     - unfold betaTermTermAt, remTermTermAt, ltTermAt,
         betaModTermTerm.
       simpl.
-      repeat rewrite Term.subst_rename_succ_up.
-      repeat rewrite term_subst_instTerm_rename_succ.
-      repeat rewrite term_subst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_three_succ.
-      repeat rewrite Term.rename_comp.
+      normalize_subst_rename_comp.
       repeat rewrite (term_subst_two_instTerm_rename_add_two code cur next).
       repeat rewrite (term_subst_two_instTerm_rename_add_two step cur next).
       repeat rewrite (term_subst_two_instTerm_rename_add_two idx cur next).
@@ -512,12 +471,7 @@ Proof.
       simpl.
       repeat rewrite Term.subst_rename_succ_up.
       repeat rewrite term_rename_up_succ_rename_succ.
-      repeat rewrite term_subst_instTerm_rename_succ.
-      repeat rewrite term_subst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_three_succ.
-      repeat rewrite Term.rename_comp.
+      normalize_subst_rename_comp.
       repeat rewrite (term_subst_two_instTerm_rename_add_two bit cur next).
       repeat rewrite Term.rename_comp.
       reflexivity.
@@ -1468,21 +1422,7 @@ Proof.
           intro t. apply Term.rename_ext. intro n. lia.
         }
         repeat rewrite hrename5.
-        repeat rewrite Term.subst_rename_succ_up.
-        repeat rewrite term_subst_instTerm_rename_succ.
-        repeat rewrite term_subst_instTerm_rename_two_succ.
-        repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-        repeat rewrite term_subst_upSubst_instTerm_rename_three_succ.
-        repeat rewrite term_subst_up_up_instTerm_rename_three_succ.
-        repeat rewrite term_subst_up_up_instTerm_rename_two_var_zero.
-        repeat rewrite term_subst_up_up_instTerm_rename_four_succ.
-        repeat rewrite term_subst_up_up_up_instTerm_rename_four_succ.
-        repeat rewrite term_subst_up_up_up_instTerm_rename_five_succ.
-        repeat rewrite term_subst_up_up_up_up_instTerm_rename_five_succ.
-        repeat rewrite term_subst_up_up_up_up_up_instTerm_rename_six_succ.
-        repeat rewrite term_subst_up_up_up_up_up_instTerm_rename_six_succ.
-        repeat rewrite term_subst_up_up_up_up_up_up_instTerm_rename_seven_succ.
-        repeat rewrite Term.rename_comp.
+        normalize_subst_rename_comp.
         reflexivity.
     }
     assert (hnewEx : BProv Ax_s C (pEx newBody)).
@@ -1663,9 +1603,7 @@ Proof.
     - unfold betaTermAt, betaTermTermAt, remTermAt, remTermTermAt,
         ltTermAt, betaModTerm, betaModTermTerm.
       simpl.
-      repeat rewrite Term.subst_rename_succ_up.
-      repeat rewrite term_subst_instTerm_rename_succ.
-      repeat rewrite term_subst_instTerm_rename_two_succ.
+      normalize_subst_rename.
       reflexivity.
   }
   assert (hbody : BProv Ax_s G (subst (instTerm idxTerm) body)).
@@ -2134,21 +2072,7 @@ Proof.
             Term.rename (fun n => S (S (S (S (S n))))) t).
         { intro t. apply Term.rename_ext. intro n. lia. }
         repeat rewrite hrename5.
-        repeat rewrite Term.subst_rename_succ_up.
-        repeat rewrite term_subst_instTerm_rename_succ.
-        repeat rewrite term_subst_instTerm_rename_two_succ.
-        repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-        repeat rewrite term_subst_upSubst_instTerm_rename_three_succ.
-        repeat rewrite term_subst_up_up_instTerm_rename_three_succ.
-        repeat rewrite term_subst_up_up_instTerm_rename_two_var_zero.
-        repeat rewrite term_subst_up_up_instTerm_rename_four_succ.
-        repeat rewrite term_subst_up_up_up_instTerm_rename_four_succ.
-        repeat rewrite term_subst_up_up_up_instTerm_rename_five_succ.
-        repeat rewrite term_subst_up_up_up_up_instTerm_rename_five_succ.
-        repeat rewrite term_subst_up_up_up_up_up_instTerm_rename_six_succ.
-        repeat rewrite term_subst_up_up_up_up_up_instTerm_rename_six_succ.
-        repeat rewrite term_subst_up_up_up_up_up_up_instTerm_rename_seven_succ.
-        repeat rewrite Term.rename_comp.
+        normalize_subst_rename_comp.
         reflexivity.
     }
     assert (hnewEx : BProv Ax_s C (pEx newBody)).

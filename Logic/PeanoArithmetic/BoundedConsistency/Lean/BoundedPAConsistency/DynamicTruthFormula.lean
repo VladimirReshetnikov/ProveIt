@@ -1,5 +1,6 @@
 import BoundedPAConsistency.FixedLevelTruthDefinability
 import BoundedPAConsistency.UniformInternalProvability
+import BoundedPAConsistency.FinFunext
 import Foundation.FirstOrder.Bootstrapping.Syntax.Proof.Typed
 
 /-!
@@ -314,16 +315,7 @@ noncomputable def standardApply₃ {n : ℕ}
   rw [standardApply₃, typedQuote_closedSubst]
   unfold apply₃
   congr
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 /-- Binary variant used for the membership and record-validity applications
 inside the standard successor formula. -/
@@ -342,13 +334,7 @@ noncomputable def standardApply₂ {n : ℕ}
           (⌜t₁⌝ : Semiterm V ℒₒᵣ n)] := by
   rw [standardApply₂, typedQuote_closedSubst]
   congr
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i => exact i.elim0
+  exact funext_fin2 rfl rfl
 
 /-- Standard syntax for the universal-record leaf after inserting a lower
 truth formula. -/

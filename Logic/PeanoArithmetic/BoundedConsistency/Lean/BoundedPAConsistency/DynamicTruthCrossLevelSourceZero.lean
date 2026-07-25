@@ -1,4 +1,5 @@
 import BoundedPAConsistency.DynamicTruthCrossLevelSourceTemplate
+import BoundedPAConsistency.FinFunext
 import Foundation.FirstOrder.Completeness
 
 /-!
@@ -101,36 +102,24 @@ noncomputable def sourceZeroProof :
       apply hzeroAt.1
       convert hdomain using 1
       congr 1
-      funext i
-      cases i using Fin.cases with
-      | zero =>
-          simp only [Function.comp_def, Rew.subst_bvar]
-          simp [currentLevel, namedParameterTerm, Matrix.empty_eq]
-      | succ i =>
-          cases i using Fin.cases with
-          | zero =>
-              simp [Function.comp_def]
-              rw [subst_q_q_bvar_two]
-              simp [FirstOrder.Semiterm.val_bShift,
-                FirstOrder.Semiterm.val_lMap, Matrix.empty_eq]
-          | succ i => exact i.elim0
+      refine funext_fin2 ?_ ?_
+      · simp only [Function.comp_def, Rew.subst_bvar]
+        simp [currentLevel, namedParameterTerm, Matrix.empty_eq]
+      · simp [Function.comp_def]
+        rw [subst_q_q_bvar_two]
+        simp [FirstOrder.Semiterm.val_bShift,
+          FirstOrder.Semiterm.val_lMap, Matrix.empty_eq]
     · intro hdomain
       exfalso
       apply hzeroAt.2
       convert hdomain using 1
       congr 1
-      funext i
-      cases i using Fin.cases with
-      | zero =>
-          simp only [Function.comp_def, Rew.subst_bvar]
-          simp [currentLevel, namedParameterTerm, Matrix.empty_eq]
-      | succ i =>
-          cases i using Fin.cases with
-          | zero =>
-              simp [Function.comp_def]
-              rw [subst_q_q_bvar_two]
-              simp [FirstOrder.Semiterm.val_bShift,
-                FirstOrder.Semiterm.val_lMap, Matrix.empty_eq]
-          | succ i => exact i.elim0).get
+      refine funext_fin2 ?_ ?_
+      · simp only [Function.comp_def, Rew.subst_bvar]
+        simp [currentLevel, namedParameterTerm, Matrix.empty_eq]
+      · simp [Function.comp_def]
+        rw [subst_q_q_bvar_two]
+        simp [FirstOrder.Semiterm.val_bShift,
+          FirstOrder.Semiterm.val_lMap, Matrix.empty_eq]).get
 
 end LeanProofs.BoundedPAConsistency.DynamicTruthCrossLevelSourceZero

@@ -1,0 +1,47 @@
+import BoundedPAConsistency.DynamicTruthAxiomSoundnessBaseRankProduction
+
+/-!
+# Audit: production base-rank PA-axiom-soundness induction
+
+This audit exposes the complete proof-producing path of the base
+axiom-soundness transition: the ordinary level-one soundness sentence, its
+quotation identity with the model-coded field, the PA proof obtained from
+fixed-level axiom soundness at external level one, its D1 transport into an
+arbitrary ambient PA model, and the installation of the resulting universal
+theorem behind the induction-kernel interface under the staged certificate
+context.
+-/
+
+namespace LeanProofs.BoundedPAConsistency.DynamicTruthAxiomSoundnessBaseRankProductionAudit
+
+open LO FirstOrder
+open LO.FirstOrder.Arithmetic
+open LO.FirstOrder.Arithmetic.Bootstrapping
+open LeanProofs.BoundedPAConsistency.DynamicTruthAxiomSoundnessBaseRankProduction
+
+#check standardOneAxiomBoundedDomainFormula
+#check standardBaseSuccessorAxiomSoundnessBody
+#check standardBaseSuccessorAxiomSoundnessSentence
+#check typedQuote_standardBaseSuccessorAxiomSoundnessSentence
+#check standardBaseSuccessorAxiomSoundnessProof
+#check baseSuccessorAxiomSoundnessProof
+#check nextAxiomSoundnessPredicate_zero_eq_levelOne
+#check baseAxiomSoundnessUniversalProof
+#check baseAxiomSoundnessStructuralUniversalProof
+#check baseAxiomSoundnessInductionKernel
+#check stagedBaseAxiomSoundnessInductionKernel
+#check stagedBaseAxiomSoundnessInductionKernel_predicate
+#check all_baseNextAxiomSoundnessPredicate_eq_orbit
+#check all_baseNextAxiomSoundnessPredicate_eq_axiomSound
+
+#print axioms typedQuote_standardBaseSuccessorAxiomSoundnessSentence
+#print axioms standardBaseSuccessorAxiomSoundnessProof
+#print axioms baseSuccessorAxiomSoundnessProof
+#print axioms nextAxiomSoundnessPredicate_zero_eq_levelOne
+#print axioms baseAxiomSoundnessUniversalProof
+#print axioms baseAxiomSoundnessStructuralUniversalProof
+#print axioms baseAxiomSoundnessInductionKernel
+#print axioms stagedBaseAxiomSoundnessInductionKernel
+#print axioms all_baseNextAxiomSoundnessPredicate_eq_axiomSound
+
+end LeanProofs.BoundedPAConsistency.DynamicTruthAxiomSoundnessBaseRankProductionAudit

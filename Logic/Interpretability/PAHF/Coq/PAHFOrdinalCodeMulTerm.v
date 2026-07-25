@@ -301,8 +301,7 @@ Proof.
   assert (hmulZero : BProv Ax_s G
       (pEq (tMul leftRaw tZero) tZero)).
   {
-    exact (BProv_weaken_nil Ax_s G _
-      (BProv_Ax_s_mulZero_term leftRaw)).
+    exact (BProv_Ax_s_mulZero_term G leftRaw).
   }
   assert (hzeroGraph : BProv Ax_s G
       (ordinalCodeGraphTermAt tZero tZero)).
@@ -419,8 +418,7 @@ Proof.
   assert (hmulSucc : BProv Ax_s G (pEq targetRaw sumRaw)).
   {
     unfold targetRaw, sumRaw.
-    exact (BProv_weaken_nil Ax_s G _
-      (BProv_Ax_s_mulSucc_terms leftRaw rightRaw)).
+    exact (BProv_Ax_s_mulSucc_terms G leftRaw rightRaw).
   }
   assert (hforward : BProv Ax_s G
       (pImp
@@ -583,9 +581,8 @@ Proof.
       {
         unfold targetRaw, sumRaw.
         cbn [Term.rename].
-        exact (BProv_weaken_nil Ax_s D _
-          (BProv_Ax_s_mulSucc_terms
-            (Term.rename S leftRaw) (Term.rename S rightRaw))).
+        exact (BProv_Ax_s_mulSucc_terms D
+            (Term.rename S leftRaw) (Term.rename S rightRaw)).
       }
       unfold graphBody in hsum.
       pose proof (BProv_ordinalCodeGraphTermAt_congr
@@ -710,10 +707,7 @@ Lemma rename_ordinalCodeMulOutputTermAt : forall r
       (Term.rename r rightCode).
 Proof.
   intros r leftRaw leftCode rightRaw rightCode.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodeMulOutputTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodeMulOutputTermAt.
 Qed.
 
 Lemma BProv_Ax_s_ordinalCodeMulOutputTermAt_at : forall
@@ -781,10 +775,7 @@ Lemma rename_ordinalCodeMulPointTermAt : forall r
       (Term.rename r rightRaw).
 Proof.
   intros r leftRaw leftCode rightRaw.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodeMulPointTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodeMulPointTermAt.
 Qed.
 
 

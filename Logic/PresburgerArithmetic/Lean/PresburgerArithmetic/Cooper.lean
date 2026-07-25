@@ -10,7 +10,7 @@ conjunction of divisibility atoms gives such a periodic predicate.
 -/
 
 theorem periodic_shift_of_mod
-    {P : Int → Prop} {m : Nat} (hm : 0 < m)
+    {P : Int → Prop} {m : Nat}
     (hper : ∀ x, P (x + m) ↔ P x) :
     ∀ x k : Int, P (x + k * m) ↔ P x := by
   have hplus : ∀ n : Nat, ∀ x : Int, P (x + n * m) ↔ P x := by
@@ -77,7 +77,7 @@ theorem periodic_interval
         rw [hkcast]
         dsimp [q]
         omega
-      have hp := periodic_shift_of_mod hm hper (lo + k) q
+      have hp := periodic_shift_of_mod hper (lo + k) q
       rw [heq] at hp
       exact hp.mp hx
   · rintro ⟨k, hk, hhi, hp⟩
@@ -102,7 +102,7 @@ theorem periodic_has_residue
       rw [hkcast]
       dsimp [q]
       omega
-    have hp := periodic_shift_of_mod hm hper (k : Int) q
+    have hp := periodic_shift_of_mod hper (k : Int) q
     rw [heq] at hp
     exact hp.mp hx
   · rintro ⟨k, _, hk⟩
@@ -190,8 +190,8 @@ theorem periodic_unbounded_above
         let q : Nat := Int.natAbs (maxFrom l ls - k) + 1
         let x : Int := k + q * m
         have hxP : P x := by
-          simpa [x, Int.ofNat_eq_coe] using
-            (periodic_shift_of_mod hm hper (k : Int) q).mpr hp
+          simpa [x, Int.ofNat_eq_natCast] using
+            (periodic_shift_of_mod hper (k : Int) q).mpr hp
         refine ⟨x, ?_, hxP⟩
         intro z hz
         have hzmax : z ≤ maxFrom l ls := by
@@ -229,8 +229,8 @@ theorem periodic_unbounded_below
         let q : Nat := Int.natAbs (k - minFrom h hs) + 1
         let x : Int := k - q * m
         have hxP : P x := by
-          convert (periodic_shift_of_mod hm hper (k : Int) (-(q : Int))).mpr hp using 1 <;>
-            simp [x] <;> ring
+          convert (periodic_shift_of_mod hper (k : Int) (-(q : Int))).mpr hp using 1
+          simp [x]; ring
         refine ⟨x, ?_, hxP⟩
         intro z hz
         have hminz : minFrom h hs ≤ z := by
@@ -266,17 +266,16 @@ theorem cooper_finite_criterion
           ∃ k : Nat, k < m ∧ l + k ≤ h ∧ P (l + k) := by
   cases los with
   | nil =>
-      simp only [List.isEmpty_nil, Bool.true_or, if_true, List.not_mem_nil,
-        forall_const]
+      simp only [List.isEmpty_nil, Bool.true_or, if_true, List.not_mem_nil]
       simpa [and_assoc] using periodic_unbounded_below hm hper his
   | cons l ls =>
       cases his with
       | nil =>
           simp only [List.isEmpty_cons, List.isEmpty_nil, Bool.or_true, if_true,
-            List.not_mem_nil, forall_const]
+            List.not_mem_nil]
           simpa [and_assoc] using periodic_unbounded_above hm hper (l :: ls)
       | cons h hs =>
-          simp only [List.isEmpty_cons, Bool.false_or, if_false]
+          simp only [List.isEmpty_cons, Bool.false_or]
           constructor
           · rintro ⟨x, hlo, hhi, hp⟩ lo hloMem hi hhiMem
             apply periodic_interval hm hper lo hi |>.mp

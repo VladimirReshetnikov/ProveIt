@@ -47,27 +47,31 @@ def eval (m : LogicalMatrix V) (v : α → V) : Formula α → V
 def Valid (m : LogicalMatrix V) (p : Formula α) : Prop :=
   ∀ v : α → V, m.designated (m.eval v p)
 
-/-- Pointwise-equal valuations evaluate every formula equally. -/
-theorem eval_congr (m : LogicalMatrix V) {v₁ v₂ : α → V}
-    (h : ∀ a, v₁ a = v₂ a) (p : Formula α) :
-    m.eval v₁ p = m.eval v₂ p := by
+/-- Evaluating a renamed formula under `v` agrees with evaluating the original
+formula under any valuation that matches `v ∘ r` pointwise.  The congruence and
+renaming laws below are both instances of this single induction. -/
+theorem eval_rename_congr (m : LogicalMatrix V) {v : β → V} {v' : α → V}
+    (r : α → β) (h : ∀ a, v (r a) = v' a) (p : Formula α) :
+    m.eval v (rename r p) = m.eval v' p := by
   induction p with
   | atom a => exact h a
-  | falsum => rfl
-  | conj p q ihp ihq => simp only [eval, ihp, ihq]
-  | disj p q ihp ihq => simp only [eval, ihp, ihq]
-  | impl p q ihp ihq => simp only [eval, ihp, ihq]
-
-/-- Syntactic atom renaming agrees with precomposition of a valuation. -/
-theorem eval_rename (m : LogicalMatrix V) (v : β → V) (r : α → β)
-    (p : Formula α) :
-    m.eval v (rename r p) = m.eval (fun a => v (r a)) p := by
-  induction p with
-  | atom a => rfl
   | falsum => rfl
   | conj p q ihp ihq => simp only [rename, eval, ihp, ihq]
   | disj p q ihp ihq => simp only [rename, eval, ihp, ihq]
   | impl p q ihp ihq => simp only [rename, eval, ihp, ihq]
+
+/-- Pointwise-equal valuations evaluate every formula equally. -/
+theorem eval_congr (m : LogicalMatrix V) {v₁ v₂ : α → V}
+    (h : ∀ a, v₁ a = v₂ a) (p : Formula α) :
+    m.eval v₁ p = m.eval v₂ p :=
+  (m.eval_rename_congr (fun a => a) (fun _ => rfl) p).symm.trans
+    (m.eval_rename_congr (fun a => a) h p)
+
+/-- Syntactic atom renaming agrees with precomposition of a valuation. -/
+theorem eval_rename (m : LogicalMatrix V) (v : β → V) (r : α → β)
+    (p : Formula α) :
+    m.eval v (rename r p) = m.eval (fun a => v (r a)) p :=
+  m.eval_rename_congr r (fun _ => rfl) p
 
 end LogicalMatrix
 

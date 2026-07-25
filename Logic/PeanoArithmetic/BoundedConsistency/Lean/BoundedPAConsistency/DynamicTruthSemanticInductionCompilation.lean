@@ -1,5 +1,6 @@
 import BoundedPAConsistency.DynamicTruthSemanticInductionSource
 import BoundedPAConsistency.ModelCodedInductionAxiom
+import BoundedPAConsistency.FinFunext
 import Foundation.FirstOrder.Completeness
 
 /-!
@@ -116,15 +117,10 @@ private def sourceOneValue : M :=
   simp only [sourceSuccValue, sourceSucc, sourceOne,
     FirstOrder.Semiterm.val_func]
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero =>
-          exact (val_sourceOne_raw (M := M) (x :> v)).trans
-            (val_sourceOne_raw (M := M) ![x]).symm
-      | succ i => exact i.elim0
+  refine funext_fin2 ?_ ?_
+  · rfl
+  · exact (val_sourceOne_raw (M := M) (x :> v)).trans
+      (val_sourceOne_raw (M := M) ![x]).symm
 
 /-- The dependency-light version of four-way application.  The public
 semantic module has a stronger theorem specialized to PA models; here only
@@ -140,19 +136,7 @@ private theorem eval_apply₄_raw
   simp [apply₄, Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i =>
-              cases i using Fin.cases with
-              | zero => rfl
-              | succ i => exact i.elim0
+  exact funext_fin4 rfl rfl rfl rfl
 
 @[simp] private theorem eval_sourceExtendedTruthAt_raw
     (x base free formula : ClosedSemiterm SourceLanguage n)

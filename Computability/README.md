@@ -1,5 +1,13 @@
 # Computability
 
+[`TuringDegrees/`](TuringDegrees/) formalizes Turing reducibility and
+equivalence for sets of natural numbers, the degree partial order and zero,
+the exact even/odd join, cardinality results, the halting degree and c.e.
+completeness in Lean, and jump, incomparability, limit, hierarchy, and Post-
+problem results in Rocq. Its
+[`coverage ledger`](TuringDegrees/COVERAGE.md) records theorem-by-theorem parity
+and every explicit logical or effective-enumeration hypothesis.
+
 [`CombinatoryLogic/`](CombinatoryLogic/) contains independent Lean and
 Rocq/Coq proofs that pure SK, SKI, and the one-combinator Iota calculus
 simulate closed weak untyped lambda calculus.  The checked chain includes

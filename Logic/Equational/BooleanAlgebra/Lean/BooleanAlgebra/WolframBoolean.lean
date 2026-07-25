@@ -210,21 +210,30 @@ theorem wolfram_characterizes_sheffer_on_bool
 
 /--
 On the two-element algebra, Meredith's two equations have exactly the same two
-Sheffer truth-table models: NAND and NOR.
+Sheffer truth-table models: NAND and NOR.  This is immediate from the
+equational derivation of Wolfram's axiom, so no second truth-table search is
+needed.
 -/
 theorem meredith_characterizes_sheffer_on_bool
-    (op : Bool → Bool → Bool) (h : MeredithAxioms op) : IsBooleanSheffer op := by
-  cases hff : op false false <;> cases hft : op false true <;>
-    cases htf : op true false <;> cases htt : op true true <;>
-    simp [MeredithAxioms, hff, hft, htf, htt] at h
-  · right
-    funext a b
-    cases a <;> cases b <;> simp [boolNor, hff, hft, htf, htt]
-  · left
-    funext a b
-    cases a <;> cases b <;> simp [boolNand, hff, hft, htf, htt]
+    (op : Bool → Bool → Bool) (h : MeredithAxioms op) : IsBooleanSheffer op :=
+  wolfram_characterizes_sheffer_on_bool op (meredith_derives_wolfram_axiom op h)
 
 /-! ## Functional completeness for ordinary connectives -/
+
+open Sheffer.ClassicalFormula in
+/--
+Either Boolean Sheffer operation expresses every ordinary classical connective,
+via the shared Sheffer-stroke translations: the translation is `toNand` or
+`toNor` according to which operation `op` agrees with.  Functional completeness
+depends on the operation only through this, so each axiom system below reduces
+to it through its own characterization theorem.
+-/
+theorem sheffer_functionally_complete
+    (op : Bool → Bool → Bool) (h : IsBooleanSheffer op) (p : ClassicalFormula α) :
+    ∃ q : StrokeFormula α, ∀ v : α → Bool, q.evalWith op v = eval v p := by
+  rcases h with hop | hop
+  · exact ⟨toNand p, fun v => by simp [hop, eval_toNand]⟩
+  · exact ⟨toNor p, fun v => by simp [hop, eval_toNor]⟩
 
 open Sheffer.ClassicalFormula in
 /--
@@ -233,10 +242,8 @@ classical connective, via the shared Sheffer-stroke translations.
 -/
 theorem wolfram_functionally_complete
     (op : Bool → Bool → Bool) (h : WolframAxiom op) (p : ClassicalFormula α) :
-    ∃ q : StrokeFormula α, ∀ v : α → Bool, q.evalWith op v = eval v p := by
-  rcases wolfram_characterizes_sheffer_on_bool op h with hop | hop
-  · exact ⟨toNand p, fun v => by simp [hop, eval_toNand]⟩
-  · exact ⟨toNor p, fun v => by simp [hop, eval_toNor]⟩
+    ∃ q : StrokeFormula α, ∀ v : α → Bool, q.evalWith op v = eval v p :=
+  sheffer_functionally_complete op (wolfram_characterizes_sheffer_on_bool op h) p
 
 open Sheffer.ClassicalFormula in
 /--
@@ -245,10 +252,8 @@ ordinary classical connective, via the shared Sheffer-stroke translations.
 -/
 theorem meredith_functionally_complete
     (op : Bool → Bool → Bool) (h : MeredithAxioms op) (p : ClassicalFormula α) :
-    ∃ q : StrokeFormula α, ∀ v : α → Bool, q.evalWith op v = eval v p := by
-  rcases meredith_characterizes_sheffer_on_bool op h with hop | hop
-  · exact ⟨toNand p, fun v => by simp [hop, eval_toNand]⟩
-  · exact ⟨toNor p, fun v => by simp [hop, eval_toNor]⟩
+    ∃ q : StrokeFormula α, ∀ v : α → Bool, q.evalWith op v = eval v p :=
+  sheffer_functionally_complete op (meredith_characterizes_sheffer_on_bool op h) p
 
 /-! ## Certified finite search for the six-operator lower bound
 

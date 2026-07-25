@@ -31,151 +31,99 @@ private lemma pi_div_two_eq_two_mul_u : Real.pi / 2 = 2 * u := by
   change Real.pi / 2 = 2 * (Real.pi / 4)
   ring
 
+/-- The arctangent addition law aimed at a stated target argument. -/
+private lemma arctan_add_eq {x y z : ℝ} (hxy : x * y < 1)
+    (h : (x + y) / (1 - x * y) = z) :
+    Real.arctan x + Real.arctan y = Real.arctan z := by
+  rw [Real.arctan_add hxy, h]
+
+/-- The arctangent duplication law aimed at a stated target argument. -/
+private lemma two_mul_arctan_eq {x z : ℝ} (h₁ : -1 < x) (h₂ : x < 1)
+    (h : 2 * x / (1 - x ^ 2) = z) :
+    2 * Real.arctan x = Real.arctan z := by
+  rw [Real.two_mul_arctan h₁ h₂, h]
+
+/-- `arctan 1` in `u = π / 4` units. -/
+private lemma arctan_one_eq_u : Real.arctan 1 = u := by
+  rw [Real.arctan_one]
+
+/-- Reciprocal complement in `u = π / 4` units. -/
+private lemma arctan_inv_compl {x : ℝ} (hx : 0 < x) :
+    Real.arctan (1 / x) = 2 * u - Real.arctan x := by
+  rw [one_div, Real.arctan_inv_of_pos hx, pi_div_two_eq_two_mul_u]
+
 private lemma arctan_two : Real.arctan (2 : ℝ) = 2 * u - a := by
-  have h := Real.arctan_inv_of_pos (x := (2 : ℝ)) (by norm_num)
-  have h' : a = Real.pi / 2 - Real.arctan (2 : ℝ) := by
-    simpa [a, one_div] using h
-  linarith [pi_div_two_eq_two_mul_u]
+  have h := arctan_inv_compl (x := 2) (by norm_num)
+  linarith
 
 private lemma arctan_three : Real.arctan (3 : ℝ) = u + a := by
-  change Real.arctan (3 : ℝ) = Real.pi / 4 + Real.arctan ((1 : ℝ) / 2)
-  rw [← Real.arctan_one]
-  rw [Real.arctan_add]
-  · congr 1
-    norm_num
-  · norm_num
+  have h := arctan_add_eq (x := 1) (y := (1 : ℝ) / 2) (z := 3)
+    (by norm_num) (by norm_num)
+  rw [arctan_one_eq_u] at h
+  linarith
 
 private lemma arctan_four : Real.arctan (4 : ℝ) = 2 * u - c := by
-  have h := Real.arctan_inv_of_pos (x := (4 : ℝ)) (by norm_num)
-  have h' : c = Real.pi / 2 - Real.arctan (4 : ℝ) := by
-    simpa [c, one_div] using h
-  linarith [pi_div_two_eq_two_mul_u]
+  have h := arctan_inv_compl (x := 4) (by norm_num)
+  linarith
 
 private lemma arctan_five : Real.arctan (5 : ℝ) = u + b := by
-  change Real.arctan (5 : ℝ) = Real.pi / 4 + Real.arctan ((2 : ℝ) / 3)
-  rw [← Real.arctan_one]
-  rw [Real.arctan_add]
-  · congr 1
-    norm_num
-  · norm_num
+  have h := arctan_add_eq (x := 1) (y := (2 : ℝ) / 3) (z := 5)
+    (by norm_num) (by norm_num)
+  rw [arctan_one_eq_u] at h
+  linarith
 
 private lemma arctan_seven : Real.arctan (7 : ℝ) = 3 * u - 2 * a := by
   have hinv := Real.two_mul_arctan_inv_2_sub_arctan_inv_7
   have hinv' : 2 * a - Real.arctan ((1 : ℝ) / 7) = u := by
     simpa [a, u, one_div] using hinv
-  have hrec := Real.arctan_inv_of_pos (x := (7 : ℝ)) (by norm_num)
-  have hrec' : Real.arctan ((1 : ℝ) / 7) = Real.pi / 2 - Real.arctan (7 : ℝ) := by
-    simpa [one_div] using hrec
-  linarith [pi_div_two_eq_two_mul_u]
-
-private lemma arctan_eight : Real.arctan (8 : ℝ) = 2 * u + a - b := by
-  have hsum : a + Real.arctan ((1 : ℝ) / 8) = b := by
-    change Real.arctan ((1 : ℝ) / 2) + Real.arctan ((1 : ℝ) / 8) =
-      Real.arctan ((2 : ℝ) / 3)
-    rw [Real.arctan_add]
-    · congr 1
-      norm_num
-    · norm_num
-  have hrec := Real.arctan_inv_of_pos (x := (8 : ℝ)) (by norm_num)
-  have hrec' : Real.arctan ((1 : ℝ) / 8) = Real.pi / 2 - Real.arctan (8 : ℝ) := by
-    simpa [one_div] using hrec
-  linarith [pi_div_two_eq_two_mul_u]
-
-private lemma arctan_thirteen : Real.arctan (13 : ℝ) = u + a + c := by
-  have h3 := arctan_three
-  have hsum : Real.arctan (3 : ℝ) + c = Real.arctan (13 : ℝ) := by
-    change Real.arctan (3 : ℝ) + Real.arctan ((1 : ℝ) / 4) =
-      Real.arctan (13 : ℝ)
-    rw [Real.arctan_add]
-    · congr 1
-      norm_num
-    · norm_num
+  have hrec := arctan_inv_compl (x := 7) (by norm_num)
   linarith
 
+private lemma arctan_eight : Real.arctan (8 : ℝ) = 2 * u + a - b := by
+  have hsum := arctan_add_eq (x := (1 : ℝ) / 2) (y := (1 : ℝ) / 8)
+    (z := (2 : ℝ) / 3) (by norm_num) (by norm_num)
+  have hrec := arctan_inv_compl (x := 8) (by norm_num)
+  linarith
+
+private lemma arctan_thirteen : Real.arctan (13 : ℝ) = u + a + c := by
+  have hsum := arctan_add_eq (x := 3) (y := (1 : ℝ) / 4) (z := 13)
+    (by norm_num) (by norm_num)
+  linarith [arctan_three]
+
 private lemma arctan_eighteen : Real.arctan (18 : ℝ) = 2 * a + b := by
-  have h2a : 2 * a = Real.arctan ((4 : ℝ) / 3) := by
-    change 2 * Real.arctan ((1 : ℝ) / 2) = Real.arctan ((4 : ℝ) / 3)
-    rw [Real.two_mul_arctan]
-    · congr 1
-      norm_num
-    · norm_num
-    · norm_num
-  have hsum : Real.arctan ((4 : ℝ) / 3) + b = Real.arctan (18 : ℝ) := by
-    change Real.arctan ((4 : ℝ) / 3) + Real.arctan ((2 : ℝ) / 3) =
-      Real.arctan (18 : ℝ)
-    rw [Real.arctan_add]
-    · congr 1
-      norm_num
-    · norm_num
+  have h2a := two_mul_arctan_eq (x := (1 : ℝ) / 2) (z := (4 : ℝ) / 3)
+    (by norm_num) (by norm_num) (by norm_num)
+  have hsum := arctan_add_eq (x := (4 : ℝ) / 3) (y := (2 : ℝ) / 3) (z := 18)
+    (by norm_num) (by norm_num)
   linarith
 
 private lemma arctan_twenty_one : Real.arctan (21 : ℝ) = 3 * u - b - c := by
-  have hbc : b + c = Real.arctan ((11 : ℝ) / 10) := by
-    change Real.arctan ((2 : ℝ) / 3) + Real.arctan ((1 : ℝ) / 4) =
-      Real.arctan ((11 : ℝ) / 10)
-    rw [Real.arctan_add]
-    · congr 1
-      norm_num
-    · norm_num
-  have huinv : u + Real.arctan ((1 : ℝ) / 21) = Real.arctan ((11 : ℝ) / 10) := by
-    change Real.pi / 4 + Real.arctan ((1 : ℝ) / 21) =
-      Real.arctan ((11 : ℝ) / 10)
-    rw [← Real.arctan_one]
-    rw [Real.arctan_add]
-    · congr 1
-      norm_num
-    · norm_num
-  have hrec := Real.arctan_inv_of_pos (x := (21 : ℝ)) (by norm_num)
-  have hrec' : Real.arctan ((1 : ℝ) / 21) = Real.pi / 2 - Real.arctan (21 : ℝ) := by
-    simpa [one_div] using hrec
-  linarith [pi_div_two_eq_two_mul_u]
+  have hbc := arctan_add_eq (x := (2 : ℝ) / 3) (y := (1 : ℝ) / 4)
+    (z := (11 : ℝ) / 10) (by norm_num) (by norm_num)
+  have huinv := arctan_add_eq (x := 1) (y := (1 : ℝ) / 21)
+    (z := (11 : ℝ) / 10) (by norm_num) (by norm_num)
+  rw [arctan_one_eq_u] at huinv
+  have hrec := arctan_inv_compl (x := 21) (by norm_num)
+  linarith
 
 private lemma arctan_thirty_eight : Real.arctan (38 : ℝ) = 2 * u + a - 2 * c := by
-  have h2c : 2 * c = Real.arctan ((8 : ℝ) / 15) := by
-    change 2 * Real.arctan ((1 : ℝ) / 4) = Real.arctan ((8 : ℝ) / 15)
-    rw [Real.two_mul_arctan]
-    · congr 1
-      norm_num
-    · norm_num
-    · norm_num
-  have hsum : a + Real.arctan ((1 : ℝ) / 38) = Real.arctan ((8 : ℝ) / 15) := by
-    change Real.arctan ((1 : ℝ) / 2) + Real.arctan ((1 : ℝ) / 38) =
-      Real.arctan ((8 : ℝ) / 15)
-    rw [Real.arctan_add]
-    · congr 1
-      norm_num
-    · norm_num
-  have hrec := Real.arctan_inv_of_pos (x := (38 : ℝ)) (by norm_num)
-  have hrec' : Real.arctan ((1 : ℝ) / 38) = Real.pi / 2 - Real.arctan (38 : ℝ) := by
-    simpa [one_div] using hrec
-  linarith [pi_div_two_eq_two_mul_u]
+  have h2c := two_mul_arctan_eq (x := (1 : ℝ) / 4) (z := (8 : ℝ) / 15)
+    (by norm_num) (by norm_num) (by norm_num)
+  have hsum := arctan_add_eq (x := (1 : ℝ) / 2) (y := (1 : ℝ) / 38)
+    (z := (8 : ℝ) / 15) (by norm_num) (by norm_num)
+  have hrec := arctan_inv_compl (x := 38) (by norm_num)
+  linarith
 
 private lemma arctan_forty_seven : Real.arctan (47 : ℝ) = 3 * u - a - b + c := by
-  have hab : a + b = Real.arctan ((7 : ℝ) / 4) := by
-    change Real.arctan ((1 : ℝ) / 2) + Real.arctan ((2 : ℝ) / 3) =
-      Real.arctan ((7 : ℝ) / 4)
-    rw [Real.arctan_add]
-    · congr 1
-      norm_num
-    · norm_num
-  have huc : u + c = Real.arctan ((5 : ℝ) / 3) := by
-    change Real.pi / 4 + Real.arctan ((1 : ℝ) / 4) =
-      Real.arctan ((5 : ℝ) / 3)
-    rw [← Real.arctan_one]
-    rw [Real.arctan_add]
-    · congr 1
-      norm_num
-    · norm_num
-  have hsum : Real.arctan ((5 : ℝ) / 3) + Real.arctan ((1 : ℝ) / 47) =
-      Real.arctan ((7 : ℝ) / 4) := by
-    rw [Real.arctan_add]
-    · congr 1
-      norm_num
-    · norm_num
-  have hrec := Real.arctan_inv_of_pos (x := (47 : ℝ)) (by norm_num)
-  have hrec' : Real.arctan ((1 : ℝ) / 47) = Real.pi / 2 - Real.arctan (47 : ℝ) := by
-    simpa [one_div] using hrec
-  linarith [pi_div_two_eq_two_mul_u]
+  have hab := arctan_add_eq (x := (1 : ℝ) / 2) (y := (2 : ℝ) / 3)
+    (z := (7 : ℝ) / 4) (by norm_num) (by norm_num)
+  have huc := arctan_add_eq (x := 1) (y := (1 : ℝ) / 4) (z := (5 : ℝ) / 3)
+    (by norm_num) (by norm_num)
+  rw [arctan_one_eq_u] at huc
+  have hsum := arctan_add_eq (x := (5 : ℝ) / 3) (y := (1 : ℝ) / 47)
+    (z := (7 : ℝ) / 4) (by norm_num) (by norm_num)
+  have hrec := arctan_inv_compl (x := 47) (by norm_num)
+  linarith
 
 /--
 The requested quadratic arctangent identity.

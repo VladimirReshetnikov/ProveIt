@@ -473,10 +473,7 @@ Lemma rename_ordinalCodePredEdgeTermAt : forall r raw coded,
       (Term.rename r raw) (Term.rename r coded).
 Proof.
   intros r raw coded.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodePredEdgeTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodePredEdgeTermAt.
 Qed.
 
 (** Invert a successor-stage code graph into its predecessor graph and its

@@ -315,28 +315,21 @@ theorem BProv_mono (B : Form → Prop) (G G' : List Form) (phi : Form)
   obtain ⟨Gb, hGb, hp⟩ := h
   refine ⟨Gb, hGb, ?_⟩
   apply Prov_weaken hp
-  intro x hx
-  rcases List.mem_append.mp hx with hx | hx
-  · exact List.mem_append.mpr (Or.inl hx)
-  · exact List.mem_append.mpr (Or.inr (hsub x hx))
+  exact List.forall_mem_append.mpr
+    ⟨fun x hx => List.mem_append_left _ hx,
+     fun x hx => List.mem_append_right _ (hsub x hx)⟩
 
 /-- A theory axiom is relatively provable from that theory. -/
 theorem BProv_ax {B : Form → Prop} {G : List Form} {phi : Form}
-    (hphi : B phi) : BProv B G phi := by
-  refine ⟨[phi], ?_, ?_⟩
-  · intro x hx
-    rw [List.mem_singleton] at hx
-    subst x
-    exact hphi
-  · exact Prov.P_ass _ _ (by simp)
+    (hphi : B phi) : BProv B G phi :=
+  ⟨[phi], fun x hx => List.mem_singleton.mp hx ▸ hphi, .P_ass _ _ (by simp)⟩
 
 /-- A bare finite-context proof is also a proof relative to any theory. -/
 theorem BProv_of_Prov {B : Form → Prop} {G : List Form} {phi : Form}
     (h : Prov G phi) : BProv B G phi := by
-  refine ⟨[], ?_, ?_⟩
-  · intro x hx
-    cases hx
-  · simpa using h
+  refine ⟨[], ?_, by simpa using h⟩
+  intro x hx
+  cases hx
 
 /-- A finite-context assumption is available in relative provability. -/
 theorem BProv_ass {B : Form → Prop} {G : List Form} {phi : Form}
@@ -353,21 +346,12 @@ theorem BProv_bound_list (B : Form → Prop) (D : List Form) :
   induction L with
   | nil =>
       intro _hL
-      refine ⟨[], ?_, ?_⟩
-      · intro x hx
-        cases hx
-      · intro x hx
-        cases hx
+      refine ⟨[], ?_, ?_⟩ <;> exact fun x hx => nomatch hx
   | cons a L ih =>
       intro hL
       rcases hL a (by simp) with ⟨La, hLa, hpa⟩
       rcases ih (fun x hx => hL x (by simp [hx])) with ⟨Lb, hLb, hpL⟩
-      refine ⟨La ++ Lb, ?_, ?_⟩
-      · intro x hx
-        rw [List.mem_append] at hx
-        rcases hx with hx | hx
-        · exact hLa x hx
-        · exact hLb x hx
+      refine ⟨La ++ Lb, List.forall_mem_append.mpr ⟨hLa, hLb⟩, ?_⟩
       · intro x hx
         rw [List.mem_cons] at hx
         rcases hx with rfl | hx
@@ -391,12 +375,8 @@ theorem BProv_lift {B C : Form → Prop} {G D : List Form} {phi : Form}
     (hB : ∀ b, B b → BProv C D b)
     (hG : ∀ g, g ∈ G → BProv C D g) : BProv C D phi := by
   rcases h with ⟨Lb, hLb, hp⟩
-  have hctx : ∀ x, x ∈ Lb ++ G → BProv C D x := by
-    intro x hx
-    rw [List.mem_append] at hx
-    rcases hx with hx | hx
-    · exact hB x (hLb x hx)
-    · exact hG x hx
+  have hctx : ∀ x, x ∈ Lb ++ G → BProv C D x :=
+    List.forall_mem_append.mpr ⟨fun x hx => hB x (hLb x hx), hG⟩
   rcases BProv_bound_list C D (Lb ++ G) hctx with ⟨Lc, hLc, hpctx⟩
   refine ⟨Lc, hLc, ?_⟩
   exact Prov_cut hp (Lc ++ D) hpctx
@@ -476,11 +456,8 @@ theorem soundness_BProv {α : Type u} {mem : α → α → Prop} {B : Form → P
     (hB : ∀ b, B b → Sat mem e b)
     (hG : ∀ g, g ∈ G → Sat mem e g) : Sat mem e phi := by
   rcases h with ⟨L, hL, hp⟩
-  exact soundness hp e (fun x hx => by
-    rw [List.mem_append] at hx
-    rcases hx with hx | hx
-    · exact hB x (hL x hx)
-    · exact hG x hx)
+  exact soundness hp e
+    (List.forall_mem_append.mpr ⟨fun x hx => hB x (hL x hx), hG⟩)
 
 theorem BCon_cons_or (B : Form → Prop) (L : List Form) (phi : Form)
     (hL : BCon B L) : BCon B (phi :: L) ∨ BCon B (fImp phi fBot :: L) := by
@@ -491,11 +468,7 @@ theorem BCon_cons_or (B : Form → Prop) (L : List Form) (phi : Form)
   obtain ⟨Gb1, hGb1, hbad1⟩ := h'
   intro ⟨Gb2, hGb2, hbad2⟩
   apply hL
-  refine ⟨Gb1 ++ Gb2, ?_, ?_⟩
-  · intro x hx
-    rcases List.mem_append.mp hx with hx | hx
-    · exact hGb1 x hx
-    · exact hGb2 x hx
+  refine ⟨Gb1 ++ Gb2, List.forall_mem_append.mpr ⟨hGb1, hGb2⟩, ?_⟩
   · apply Prov.P_impE _ (fImp phi fBot) fBot
     · apply Prov.P_impI
       apply Prov_weaken (Prov_exch (G := Gb2 ++ fImp phi fBot :: L)

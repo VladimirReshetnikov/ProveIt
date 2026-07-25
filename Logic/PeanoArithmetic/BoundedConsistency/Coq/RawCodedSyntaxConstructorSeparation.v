@@ -93,7 +93,7 @@ Proof.
   intros M hPA x y heq.
   set (e := scons M x (scons M y (fun _ : nat => raw_zero M))).
   pose proof (raw_sat_of_BProv_axs M _ hPA
-    (Formula.BProv_Ax_s_succInj_terms (tVar 0) (tVar 1)) e) as hinj.
+    (Formula.BProv_Ax_s_succInj_terms nil (tVar 0) (tVar 1)) e) as hinj.
   cbn [raw_formula_sat raw_term_eval scons] in hinj.
   exact (hinj heq).
 Qed.
@@ -104,7 +104,7 @@ Proof.
   intros M hPA x.
   set (e := scons M x (fun _ : nat => raw_zero M)).
   pose proof (raw_sat_of_BProv_axs M _ hPA
-    (Formula.BProv_Ax_s_zeroNotSucc_term (tVar 0)) e) as hnot.
+    (Formula.BProv_Ax_s_zeroNotSucc_term nil (tVar 0)) e) as hnot.
   cbn [raw_formula_sat raw_term_eval scons] in hnot.
   intro hzero. apply hnot. symmetry. exact hzero.
 Qed.

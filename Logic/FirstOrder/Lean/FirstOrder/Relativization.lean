@@ -101,6 +101,14 @@ private theorem relDomainVal_scons (d : RelDomain mem)
     (scons d e n).1 = scons d.1 (fun k => (e k).1) n := by
   cases n <;> rfl
 
+/-- Satisfaction transport along that pointwise equality, in the form used by
+both quantifier cases of `Sat_relativize`. -/
+private theorem Sat_scons_val (a : Form) (d : RelDomain mem)
+    (e : Nat → RelDomain mem) :
+    Sat mem (scons d.1 fun n => (e n).1) a ↔
+      Sat mem (fun n => (scons d e n).1) a :=
+  Sat_ext a _ _ (fun n => (relDomainVal_scons d e n).symm)
+
 /-- Fundamental semantic theorem for loop-free relativization.
 
 Evaluating the relativized formula in the ambient structure is equivalent to
@@ -139,37 +147,21 @@ theorem Sat_relativize (f : Form) : ∀ e : Nat → RelDomain mem,
       simp only [relativize, Sat]
       constructor
       · intro h d
-        apply (ih (scons d e)).mp
-        exact (Sat_ext (relativize a)
-          (scons d.1 (fun n => (e n).1))
-          (fun n => (scons d e n).1)
-          (fun n => (relDomainVal_scons d e n).symm)).mp
-            (h d.1 d.2)
+        exact (ih (scons d e)).mp ((Sat_scons_val (relativize a) d e).mp (h d.1 d.2))
       · intro h d hd
         let d' : RelDomain mem := ⟨d, hd⟩
-        have ha := (ih (scons d' e)).mpr (h d')
-        exact (Sat_ext (relativize a)
-          (scons d (fun n => (e n).1))
-          (fun n => (scons d' e n).1)
-          (fun n => (relDomainVal_scons d' e n).symm)).mpr ha
+        exact (Sat_scons_val (relativize a) d' e).mpr
+          ((ih (scons d' e)).mpr (h d'))
   | fEx a ih =>
       intro e
       simp only [relativize, Sat]
       constructor
       · rintro ⟨d, hd, ha⟩
         let d' : RelDomain mem := ⟨d, hd⟩
-        refine ⟨d', (ih (scons d' e)).mp ?_⟩
-        exact (Sat_ext (relativize a)
-          (scons d (fun n => (e n).1))
-          (fun n => (scons d' e n).1)
-          (fun n => (relDomainVal_scons d' e n).symm)).mp ha
+        exact ⟨d', (ih (scons d' e)).mp ((Sat_scons_val (relativize a) d' e).mp ha)⟩
       · rintro ⟨d, ha⟩
-        refine ⟨d.1, d.2, ?_⟩
-        have ha' := (ih (scons d e)).mpr ha
-        exact (Sat_ext (relativize a)
-          (scons d.1 (fun n => (e n).1))
-          (fun n => (scons d e n).1)
-          (fun n => (relDomainVal_scons d e n).symm)).mpr ha'
+        exact ⟨d.1, d.2, (Sat_scons_val (relativize a) d e).mpr
+          ((ih (scons d e)).mpr ha)⟩
 
 end Semantics
 

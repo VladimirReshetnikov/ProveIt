@@ -228,7 +228,7 @@ Proof.
     (pEq (tAdd d (tVar bit)) (tAdd d tZero))).
   { exact (BProv_eq_congr_add_right Ax_s G d _ _ hbit'). }
   assert (haddZero : BProv Ax_s G (pEq (tAdd d tZero) d)).
-  { exact (BProv_weaken_nil Ax_s G _ (BProv_Ax_s_addZero_term d)). }
+  { exact (BProv_Ax_s_addZero_term G d). }
   assert (hsum : BProv Ax_s G (pEq (tAdd d (tVar bit)) d)).
   { exact (BProv_eqTrans Ax_s G _ _ _ haddBit haddZero). }
   assert (heq : BProv Ax_s G

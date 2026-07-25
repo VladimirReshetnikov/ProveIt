@@ -1,5 +1,6 @@
 From Stdlib Require Import Reals Ring Field Psatz.
 From Coquelicot Require Import Complex.
+From JacobianConjecture Require Export Common.
 
 Open Scope C_scope.
 
@@ -17,19 +18,15 @@ Open Scope C_scope.
   functions.  The conjecture asks for a two-sided inverse represented by
   another [PolyMap3]; the explicit collision rules out even a set-theoretic
   left inverse.
+
+  The map is equivariant under an explicit pair of linear involutions
+  ([counterexample_equivariant] below), and that symmetry generates new
+  collisions from old ones; the third rational collision point is obtained
+  this way rather than by a separate computation.
 *)
 
 Module LeanProofs.
 Module JacobianCounterexample.
-
-Definition c0 : C := RtoC 0.
-Definition c1 : C := RtoC 1.
-Definition c2 : C := RtoC 2.
-Definition c3 : C := RtoC 3.
-Definition c4 : C := RtoC 4.
-Definition c5 : C := RtoC 5.
-Definition c13 : C := RtoC 13.
-Definition c16 : C := RtoC 16.
 
 Inductive Var3 : Type := VX | VY | VZ.
 
@@ -142,51 +139,103 @@ Proof.
   intros; subst; reflexivity.
 Qed.
 
-Theorem jacobian_det_is_minus_two (p : Point3) :
-  eval_poly (jacobian_det counterexample) p = - c2.
+(** Two points with different first coordinates are different. *)
+Lemma point3_neq_x (p q : Point3) : xcoord p <> xcoord q -> p <> q.
 Proof.
-  destruct p as [x y z].
-  cbv [jacobian_det counterexample det3 counterexample_1
-       counterexample_2 counterexample_3 Sub partial var_eqb
-       eval_poly coordinate u one two three four px py pz
-       first second third xcoord ycoord zcoord c0 c1 c2 c3 c4].
-  ring.
+  intros hx h; apply hx; rewrite h; reflexivity.
 Qed.
 
+(** The source and target involutions of the equivariance below. *)
+Definition flip_source (p : Point3) : Point3 :=
+  point3 (- xcoord p) (- ycoord p) (zcoord p).
+
+Definition flip_target (p : Point3) : Point3 :=
+  point3 (xcoord p) (- ycoord p) (- zcoord p).
+
+(** The rational triple collision. *)
 Definition collision_0 : Point3 := point3 c0 c0 (-c1 / c4).
 Definition collision_1 : Point3 := point3 c1 (-c3 / c2) (c13 / c2).
 Definition collision_2 : Point3 := point3 (-c1) (c3 / c2) (c13 / c2).
 Definition collision_value : Point3 := point3 (-c1 / c4) c0 c0.
 
+(** A second, denominator-free collision. *)
+Definition integral_collision_0 : Point3 := point3 (-c1) c1 c5.
+Definition integral_collision_1 : Point3 := point3 c0 (-c2) (-c16).
+Definition integral_collision_value : Point3 := point3 c0 (-c2) c0.
+
+(** Unfold the polynomial syntax, its evaluators, and every named constant
+    and point of this development, leaving only field arithmetic in [C]. *)
+Ltac eval_c :=
+  cbv [eval_map jacobian_det det3 counterexample
+       counterexample_1 counterexample_2 counterexample_3
+       partial var_eqb Sub eval_poly coordinate
+       u one two three four px py pz
+       first second third xcoord ycoord zcoord
+       flip_source flip_target
+       collision_0 collision_1 collision_2 collision_value
+       integral_collision_0 integral_collision_1 integral_collision_value
+       c0 c1 c2 c3 c4 c5 c13 c16].
+
+(** Distinguish two explicitly given points by real parts of x-coordinates. *)
+Ltac distinct_points := apply point3_neq_x; re_neq.
+
+Theorem jacobian_det_is_minus_two (p : Point3) :
+  eval_poly (jacobian_det counterexample) p = - c2.
+Proof.
+  destruct p as [x y z]; eval_c; ring.
+Qed.
+
+(** **Equivariance.**  Negating [x] and [y] in the source negates the second
+    and third coordinates of the image and fixes the first:
+    [F (-x, -y, z) = (P, -Q, -R) (x, y, z)].  *)
+Theorem counterexample_equivariant (p : Point3) :
+  eval_map counterexample (flip_source p) =
+  flip_target (eval_map counterexample p).
+Proof.
+  destruct p as [x y z]; apply point3_ext; eval_c; ring.
+Qed.
+
+(** A [flip_target]-fixed image value turns the equivariance into a fresh
+    collision between a point and its mirror. *)
+Theorem collision_of_flip_fixed_value (p : Point3)
+    (h : flip_target (eval_map counterexample p) = eval_map counterexample p) :
+  eval_map counterexample (flip_source p) = eval_map counterexample p.
+Proof.
+  rewrite (counterexample_equivariant p), h; reflexivity.
+Qed.
+
 Theorem collision_0_value :
   eval_map counterexample collision_0 = collision_value.
 Proof.
-  apply point3_ext;
-    cbv [eval_map counterexample collision_0 collision_value
-         counterexample_1 counterexample_2 counterexample_3 Sub
-         eval_poly coordinate u one two three four px py pz
-         first second third xcoord ycoord zcoord c0 c1 c2 c3 c4 c13];
-    field.
+  apply point3_ext; eval_c; field.
 Qed.
 
 Theorem collision_1_value :
   eval_map counterexample collision_1 = collision_value.
 Proof.
-  apply point3_ext;
-    cbv [eval_map counterexample collision_1 collision_value
-         counterexample_1 counterexample_2 counterexample_3 Sub
-         eval_poly coordinate u one two three four px py pz
-         first second third xcoord ycoord zcoord c0 c1 c2 c3 c4 c13]; field.
+  apply point3_ext; eval_c; field.
 Qed.
 
+(** The third rational collision point is the mirror of the second. *)
+Lemma collision_2_is_mirror : collision_2 = flip_source collision_1.
+Proof.
+  apply point3_ext; eval_c; field.
+Qed.
+
+(** The common value is fixed by the target involution. *)
+Lemma collision_value_flip_fixed : flip_target collision_value = collision_value.
+Proof.
+  apply point3_ext; eval_c; ring.
+Qed.
+
+(** Consequently no computation is needed for the third point: its value
+    follows from the second point's value by symmetry. *)
 Theorem collision_2_value :
   eval_map counterexample collision_2 = collision_value.
 Proof.
-  apply point3_ext;
-    cbv [eval_map counterexample collision_2 collision_value
-         counterexample_1 counterexample_2 counterexample_3 Sub
-         eval_poly coordinate u one two three four px py pz
-         first second third xcoord ycoord zcoord c0 c1 c2 c3 c4 c13]; field.
+  rewrite collision_2_is_mirror, counterexample_equivariant,
+    collision_1_value, collision_value_flip_fixed.
+  reflexivity.
 Qed.
 
 Theorem collision_points_distinct :
@@ -194,51 +243,36 @@ Theorem collision_points_distinct :
   collision_0 <> collision_2 /\
   collision_1 <> collision_2.
 Proof.
-  repeat split; intro h;
-    apply (f_equal xcoord) in h;
-    apply (f_equal Re) in h;
-    cbv [collision_0 collision_1 collision_2 xcoord c0 c1 RtoC Copp Re] in h.
-  all: cbn in h; lra.
+  repeat split; distinct_points.
 Qed.
-
-(** A second, denominator-free collision. *)
-Definition integral_collision_0 : Point3 := point3 (-c1) c1 c5.
-Definition integral_collision_1 : Point3 := point3 c0 (-c2) (-c16).
-Definition integral_collision_value : Point3 := point3 c0 (-c2) c0.
 
 Theorem integral_collision_0_value :
   eval_map counterexample integral_collision_0 = integral_collision_value.
 Proof.
-  apply point3_ext;
-    cbv [eval_map counterexample integral_collision_0 integral_collision_value
-         counterexample_1 counterexample_2 counterexample_3 Sub
-         eval_poly coordinate u one two three four px py pz
-         first second third xcoord ycoord zcoord
-         c0 c1 c2 c3 c4 c5 c13 c16];
-    ring.
+  apply point3_ext; eval_c; ring.
 Qed.
 
 Theorem integral_collision_1_value :
   eval_map counterexample integral_collision_1 = integral_collision_value.
 Proof.
-  apply point3_ext;
-    cbv [eval_map counterexample integral_collision_1 integral_collision_value
-         counterexample_1 counterexample_2 counterexample_3 Sub
-         eval_poly coordinate u one two three four px py pz
-         first second third xcoord ycoord zcoord
-         c0 c1 c2 c3 c4 c5 c13 c16];
-    ring.
+  apply point3_ext; eval_c; ring.
 Qed.
 
 Theorem integral_collision_points_distinct :
   integral_collision_0 <> integral_collision_1.
 Proof.
-  intro h.
-  apply (f_equal xcoord) in h.
-  apply (f_equal Re) in h.
-  cbv [integral_collision_0 integral_collision_1 xcoord c0 c1 RtoC Copp Re] in h.
-  cbn in h.
-  lra.
+  distinct_points.
+Qed.
+
+(** Mirroring the integral collision through the equivariance yields a third
+    integral collision, again with no new polynomial evaluation. *)
+Theorem mirrored_integral_collision :
+  eval_map counterexample (flip_source integral_collision_0) =
+  eval_map counterexample (flip_source integral_collision_1).
+Proof.
+  rewrite !counterexample_equivariant,
+    integral_collision_0_value, integral_collision_1_value.
+  reflexivity.
 Qed.
 
 Definition PolynomialEq (p q : Poly3) : Prop :=
@@ -265,11 +299,7 @@ Theorem counterexample_has_nonzero_constant_jacobian :
 Proof.
   exists (-c2).
   split.
-  - intro h.
-    apply (f_equal Re) in h.
-    cbv [c0 c2 RtoC Copp Re] in h.
-    cbn in h.
-    lra.
+  - re_neq.
   - intro p.
     cbn [eval_poly].
     exact (jacobian_det_is_minus_two p).

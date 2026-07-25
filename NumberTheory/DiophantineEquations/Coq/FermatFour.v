@@ -1,21 +1,26 @@
 (*
-  Coq port of the wrapper surface from DiophantineEquations.FermatFour.
+  Coq counterpart of DiophantineEquations.FermatFour.
 
   The Lean file imports mathlib's full descent proof of Fermat's Last Theorem
   for exponent 4 (`not_fermat_42` / `fermatLastTheoremFour`) and exposes two
   small project-local theorem names.  Coq's installed standard/contrib
-  libraries do not ship an equivalent theorem.  There is a historical
-  self-contained Coq formalization in rocq-archive/coq-contribs `fermat4`,
-  but it targets Coq 8.0 and is not a drop-in dependency for Rocq 9.0.
+  libraries do not ship an equivalent theorem, so this module constructs the
+  classical Fermat double descent from scratch: a number-theory toolkit
+  (prime divisors, coprime factors of squares), the parametrization of
+  primitive Pythagorean triples, and the odd-even descent core.
 
-  This module therefore proves the local wrapper layer under an explicit
-  descent-step parameter.  No global axiom is introduced: downstream users can
-  instantiate the section with the classical construction of a smaller
-  counterexample from any counterexample.
+  The development is layered.  Reduction theorems relate three descent-step
+  granularities (general, mixed-parity, odd-even) and derive the no-solution
+  statement from any of them; `Fermat42_odd_even_descent_step_holds` then
+  proves the strongest granularity outright, and the final theorems export
+  Fermat's Last Theorem for exponent 4 with no hypotheses:
+  `fermat_four_no_positive_nat_solutions` (natural-number form, matching the
+  Lean theorem name) and `fermat_four_no_square_right_int_solutions` (the
+  stronger integer form with a square right-hand side).
 *)
 
 From Stdlib Require Import Arith.PeanoNat.
-From Stdlib Require Import ZArith.
+From Stdlib Require Import ZArith Znumtheory.
 From Stdlib Require Import Wellfounded.
 From Stdlib Require Import Lia Ring.
 
@@ -385,122 +390,6 @@ Proof.
     ring.
 Qed.
 
-Section WithDescent.
-
-Variable descent_step : Fermat42_descent_step.
-
-Theorem no_square_right_int_solutions : Fermat42_descent_statement.
-Proof.
-  exact (Fermat42_descent_statement_of_step descent_step).
-Qed.
-
-Theorem fermat_four_no_square_right_int_solutions
-    {a b c : Z} (ha : a <> 0) (hb : b <> 0) :
-    ~ ((a ^ 4 + b ^ 4)%Z = (c ^ 2)%Z).
-Proof.
-  exact (fermat_four_no_square_right_int_solutions_of_statement
-    no_square_right_int_solutions ha hb).
-Qed.
-
-Theorem fermat_four_no_positive_nat_solutions
-    {a b c : nat}
-    (ha : (0 < a)%nat) (hb : (0 < b)%nat) (hc : (0 < c)%nat) :
-    (a ^ 4 + b ^ 4 <> c ^ 4)%nat.
-Proof.
-  exact (fermat_four_no_positive_nat_solutions_of_statement
-    no_square_right_int_solutions ha hb hc).
-Qed.
-
-End WithDescent.
-
-Section WithMixedParityDescent.
-
-Variable mixed_descent_step : Fermat42_mixed_parity_descent_step.
-
-Theorem no_square_right_int_solutions_of_mixed_parity_descent :
-    Fermat42_descent_statement.
-Proof.
-  exact (Fermat42_descent_statement_of_mixed_parity_step mixed_descent_step).
-Qed.
-
-Theorem fermat_four_no_square_right_int_solutions_of_mixed_parity_descent
-    {a b c : Z} (ha : a <> 0) (hb : b <> 0) :
-    ~ ((a ^ 4 + b ^ 4)%Z = (c ^ 2)%Z).
-Proof.
-  exact (fermat_four_no_square_right_int_solutions_of_statement
-    no_square_right_int_solutions_of_mixed_parity_descent ha hb).
-Qed.
-
-Theorem fermat_four_no_positive_nat_solutions_of_mixed_parity_descent
-    {a b c : nat}
-    (ha : (0 < a)%nat) (hb : (0 < b)%nat) (hc : (0 < c)%nat) :
-    (a ^ 4 + b ^ 4 <> c ^ 4)%nat.
-Proof.
-  exact (fermat_four_no_positive_nat_solutions_of_statement
-    no_square_right_int_solutions_of_mixed_parity_descent ha hb hc).
-Qed.
-
-End WithMixedParityDescent.
-
-Section WithOddEvenDescent.
-
-Variable odd_even_descent_step : Fermat42_odd_even_descent_step.
-
-Theorem no_square_right_int_solutions_of_odd_even_descent :
-    Fermat42_descent_statement.
-Proof.
-  exact (Fermat42_descent_statement_of_odd_even_step odd_even_descent_step).
-Qed.
-
-Theorem fermat_four_no_square_right_int_solutions_of_odd_even_descent
-    {a b c : Z} (ha : a <> 0) (hb : b <> 0) :
-    ~ ((a ^ 4 + b ^ 4)%Z = (c ^ 2)%Z).
-Proof.
-  exact (fermat_four_no_square_right_int_solutions_of_statement
-    no_square_right_int_solutions_of_odd_even_descent ha hb).
-Qed.
-
-Theorem fermat_four_no_positive_nat_solutions_of_odd_even_descent
-    {a b c : nat}
-    (ha : (0 < a)%nat) (hb : (0 < b)%nat) (hc : (0 < c)%nat) :
-    (a ^ 4 + b ^ 4 <> c ^ 4)%nat.
-Proof.
-  exact (fermat_four_no_positive_nat_solutions_of_statement
-    no_square_right_int_solutions_of_odd_even_descent ha hb hc).
-Qed.
-
-End WithOddEvenDescent.
-
-End FermatFour.
-End LeanProofs.
-
-(* ======================================================================
-   WIP (2026-07-08, parked): unconditional FLT-4 via from-scratch descent
-   ----------------------------------------------------------------------
-   The commented block below is an in-progress construction of the descent
-   step that the sections above take as a hypothesis: auxiliary coprime
-   square-factor lemmas, the parametrization of primitive Pythagorean
-   triples, the odd-even double-descent core, and the resulting
-   unconditional theorems (fermat_four_no_positive_nat_solutions_unconditional
-   and the square-right-hand-side form).
-
-   Status when parked:
-   - Verified through the Pythagorean parametrization region after three
-     repairs: two `nia` calls diverge in the full context and are
-     `clear`-scoped to the hypotheses they need, and one
-     `destruct (Z.Even_or_Odd n)` pattern needed disjunctive brackets.
-   - The end-to-end compile was NOT confirmed: the tail (the descent core
-     past `pythagorean_param`) may contain further nonlinear tactic calls
-     that need the same `clear`-scoping treatment, and its `coqc` run was
-     still in flight when the work was parked.
-
-   To resume: paste the block before the closing `End FermatFour.` above,
-   recompile with
-   `coqc -Q NumberTheory/DiophantineEquations/Coq DiophantineEquations
-      NumberTheory/DiophantineEquations/Coq/FermatFour.v`,
-   iterate on any slow `nia` with `clear`-scoping, and update the module
-   header to state that the descent is constructed rather than assumed.
-
 (* ==================== number-theory toolkit ====================
 
    Everything needed for the classical descent: existence of prime divisors,
@@ -856,8 +745,10 @@ Proof.
   destruct (pythagorean_param a n m ha hnpos hmpos hx2' haodd hneven hgcdan)
     as (r & s & hs0 & hsr & haeq & hneq & hmeq & hgcdrs).
   destruct hbeven as (b1 & hb1).
-  assert (hprod1 : m * (r * s) = b1 ^ 2) by nia.
-  assert (hrs_nonneg : 0 <= r * s) by nia.
+  (* Both nonlinear goals are immediate from three facts each; nia diverges
+     in the full context, so both calls are clear-scoped. *)
+  assert (hprod1 : m * (r * s) = b1 ^ 2) by (clear -hyeq hb1 hneq; nia).
+  assert (hrs_nonneg : 0 <= r * s) by (clear -hs0 hsr; nia).
   assert (hgcd_m_rs : Z.gcd m (r * s) = 1).
   { assert (h2 : (Z.gcd m (r * s) | n)).
     { rewrite hneq.
@@ -866,17 +757,19 @@ Proof.
     assert (hd : (Z.gcd m (r * s) | Z.gcd m n))
       by (apply Z.gcd_greatest; [apply Z.gcd_divide_l | exact h2]).
     rewrite hgcdmn in hd. apply Z.divide_1_r in hd.
-    pose proof (Z.gcd_nonneg m (r * s)). lia. }
-  destruct (coprime_square_factor m (r * s) b1 ltac:(lia) hprod1 hgcd_m_rs)
+    pose proof (Z.gcd_nonneg m (r * s)) as hnn.
+    clear -hd hnn. lia. }
+  destruct (coprime_square_factor m (r * s) b1 ltac:(clear -hmpos; lia)
+    hprod1 hgcd_m_rs)
     as (t & ht0 & htm).
-  assert (hprod2 : (r * s) * m = b1 ^ 2) by lia.
+  assert (hprod2 : (r * s) * m = b1 ^ 2) by (clear -hprod1; lia).
   assert (hgcd_rs_m : Z.gcd (r * s) m = 1)
     by (rewrite Z.gcd_comm; exact hgcd_m_rs).
   destruct (coprime_square_factor (r * s) m b1 hrs_nonneg hprod2 hgcd_rs_m)
     as (w & hw0 & hwrs).
-  destruct (coprime_square_factor r s w ltac:(lia) hwrs hgcdrs)
+  destruct (coprime_square_factor r s w ltac:(clear -hs0 hsr; lia) hwrs hgcdrs)
     as (u & hu0 & hur).
-  assert (hprod4 : s * r = w ^ 2) by lia.
+  assert (hprod4 : s * r = w ^ 2) by (clear -hwrs; lia).
   assert (hgcdsr : Z.gcd s r = 1) by (rewrite Z.gcd_comm; exact hgcdrs).
   destruct (coprime_square_factor s r w hs0 hprod4 hgcdsr)
     as (v & hv0 & hvs).
@@ -886,11 +779,12 @@ Proof.
     rewrite hmeq. ring. }
   split.
   - split; [| split].
-    + intro h0. nia.
-    + intro h0. nia.
+    + intro h0. clear -h0 hur hsr hs0. nia.
+    + intro h0. clear -h0 hvs hneq hnpos. nia.
     + exact hteq.
-  - assert (htpos : 0 < t) by nia.
+  - assert (htpos : 0 < t) by (clear -htm hmpos ht0; nia).
     rewrite Z.abs_eq by lia.
+    clear -htm hzeq hmpos hnpos htpos.
     nia.
 Qed.
 
@@ -926,7 +820,7 @@ Proof.
     split; [exact hsol |].
     unfold cMeasure.
     apply Z2Nat.inj_lt; [apply Z.abs_nonneg | apply Z.abs_nonneg |].
-    rewrite Z.abs_involutive.
+    (* [hlt] bounds [Z.abs c'] by [c0 := Z.abs c] definitionally. *)
     exact hlt.
   - assert (hg2 : 2 <= g) by lia.
     pose proof (Z.gcd_divide_l a0 b) as hga.
@@ -939,7 +833,7 @@ Proof.
       rewrite <- heq0, ha1, hb1. ring. }
     destruct (divide_of_divide_square (g ^ 2) c0 hdiv) as (c1 & hc1).
     assert (heq1 : a1 ^ 4 + b1 ^ 4 = c1 ^ 2).
-    { apply (Z.mul_cancel_r _ _ (g ^ 4)); [nia |].
+    { apply (Z.mul_cancel_r _ _ (g ^ 4)); [clear -hgpos; nia |].
       replace ((a1 ^ 4 + b1 ^ 4) * g ^ 4)
         with ((a1 * g) ^ 4 + (b1 * g) ^ 4) by ring.
       rewrite <- ha1, <- hb1.
@@ -949,14 +843,15 @@ Proof.
     exists a1, b1, c1.
     split.
     + split; [| split].
-      * intro h0. nia.
-      * intro h0. apply hb. nia.
+      * intro h0. clear -h0 ha1 ha0. nia.
+      * intro h0. apply hb. clear -h0 hb1. nia.
       * exact heq1.
     + unfold cMeasure.
       apply Z2Nat.inj_lt; [apply Z.abs_nonneg | apply Z.abs_nonneg |].
-      assert (hc1pos : 0 < c1) by nia.
+      assert (hc1pos : 0 < c1) by (clear -hc1 hc0 hgpos; nia).
       rewrite (Z.abs_eq c1) by lia.
       unfold c0 in hc1.
+      clear -hc1 hc1pos hg2.
       nia.
 Qed.
 
@@ -989,7 +884,7 @@ Proof.
 Qed.
 
 (* Fermat's Last Theorem for exponent 4, right-hand side a square, over Z. *)
-Theorem fermat_four_no_square_right_int_solutions_unconditional
+Theorem fermat_four_no_square_right_int_solutions
     {a b c : Z} (ha : a <> 0) (hb : b <> 0) :
     ~ ((a ^ 4 + b ^ 4)%Z = (c ^ 2)%Z).
 Proof.
@@ -998,7 +893,7 @@ Proof.
 Qed.
 
 (* Fermat's Last Theorem for exponent 4 over the positive naturals. *)
-Theorem fermat_four_no_positive_nat_solutions_unconditional
+Theorem fermat_four_no_positive_nat_solutions
     {a b c : nat}
     (ha : (0 < a)%nat) (hb : (0 < b)%nat) (hc : (0 < c)%nat) :
     (a ^ 4 + b ^ 4 <> c ^ 4)%nat.
@@ -1006,4 +901,6 @@ Proof.
   exact (fermat_four_no_positive_nat_solutions_of_statement
     Fermat42_descent_statement_holds ha hb hc).
 Qed.
-   ====================================================================== *)
+
+End FermatFour.
+End LeanProofs.

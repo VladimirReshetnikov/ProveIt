@@ -226,25 +226,23 @@ def pairRat (p : Nat × Nat) : Rat :=
 theorem intCast_rat_divInt_one (z : Int) : (z : Rat) = Rat.divInt z 1 := by
   simpa using (Rat.mk_eq_divInt (num := z) (den := 1) (nz := by omega) (c := by simp))
 
+/-- On a coprime pair with nonzero denominator, `pairRat` is literally the
+canonical `Rat` structure; `pairRat_num` and `pairRat_den` project it. -/
+theorem pairRat_eq_mk {a b : Nat} (hb : b ≠ 0) (hc : Nat.Coprime a b) :
+    pairRat (a, b) =
+      { num := (a : Int), den := b, den_nz := hb,
+        reduced := by simpa using hc } := by
+  simpa [pairRat] using
+    (Rat.mk_eq_divInt (num := (a : Int)) (den := b) (nz := hb)
+      (c := by simpa using hc)).symm
+
 theorem pairRat_num {a b : Nat} (hb : b ≠ 0) (hc : Nat.Coprime a b) :
     (pairRat (a, b)).num = a := by
-  have hmk :
-      ({ num := (a : Int), den := b, den_nz := hb,
-         reduced := by simpa using hc } : Rat) = pairRat (a, b) := by
-    simpa [pairRat] using
-      (Rat.mk_eq_divInt (num := (a : Int)) (den := b) (nz := hb)
-        (c := by simpa using hc))
-  rw [← hmk]
+  rw [pairRat_eq_mk hb hc]
 
 theorem pairRat_den {a b : Nat} (hb : b ≠ 0) (hc : Nat.Coprime a b) :
     (pairRat (a, b)).den = b := by
-  have hmk :
-      ({ num := (a : Int), den := b, den_nz := hb,
-         reduced := by simpa using hc } : Rat) = pairRat (a, b) := by
-    simpa [pairRat] using
-      (Rat.mk_eq_divInt (num := (a : Int)) (den := b) (nz := hb)
-        (c := by simpa using hc))
-  rw [← hmk]
+  rw [pairRat_eq_mk hb hc]
 
 theorem pairRat_floor {a b : Nat} (hb : b ≠ 0) (hc : Nat.Coprime a b) :
     (pairRat (a, b)).floor = ((a / b : Nat) : Int) := by

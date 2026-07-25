@@ -1,5 +1,6 @@
 import BoundedPAConsistency.DynamicTruthCrossLevelDerivedStrongStepSource
 import BoundedPAConsistency.ModelCodedTwoPredicateEqualityQuotient
+import BoundedPAConsistency.FinFunext
 
 /-!
 # Congruence-safe derived-level cross-level strong step
@@ -252,16 +253,7 @@ include hArithmeticReduct in
     Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 @[simp] theorem eval_apply₂
     (p : Semisentence CrossLevelSourceLanguage 2)
@@ -275,13 +267,7 @@ include hArithmeticReduct in
     Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i => exact i.elim0
+  exact funext_fin2 rfl rfl
 
 @[simp] private theorem eval_predecessorAtom
     (t₀ t₁ t₂ : ClosedSemiterm CrossLevelSourceLanguage n)
@@ -297,16 +283,7 @@ include hArithmeticReduct in
         t₂.valb (M := X) v]
   apply iff_of_eq
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 @[simp] theorem eval_currentAtom
     (t₀ t₁ t₂ : ClosedSemiterm CrossLevelSourceLanguage n)
@@ -322,16 +299,7 @@ include hArithmeticReduct in
         t₂.valb (M := X) v]
   apply iff_of_eq
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 include hArithmeticReduct in
 @[simp] private theorem eval_predecessorUniversalRecordBranch
@@ -508,13 +476,7 @@ include hArithmeticReduct in
               (#1 : ClosedSemiterm ℒₒᵣ 2)]) := by
     simp [sourceStrongPrefixGuard, liftArithmeticFormula,
       Function.comp_def]
-    funext i
-    cases i using Fin.cases with
-    | zero => rfl
-    | succ i =>
-        cases i using Fin.cases with
-        | zero => rfl
-        | succ i => exact i.elim0
+    exact funext_fin2 rfl rfl
   rw [hguard]
   rw [eval_liftArithmeticFormula hArithmeticReduct]
   simp

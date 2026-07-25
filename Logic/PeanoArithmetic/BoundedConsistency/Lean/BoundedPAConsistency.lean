@@ -27,6 +27,7 @@ import BoundedPAConsistency.RestrictedConsistency
 import BoundedPAConsistency.TermEvaluationTransport
 import BoundedPAConsistency.TruthCertificateProofCompiler
 import BoundedPAConsistency.UniformInternalProvability
+import BoundedPAConsistency.UniformInternalProvabilityTheorem
 import BoundedPAConsistency.UniformProofPackage
 
 /-!
@@ -56,9 +57,24 @@ quotation adequacy discharges every axiom recognized by the finite
 argument proves truth of every possibly nonstandard induction-axiom code,
 including a nonstandard number of leading universal quantifiers.  Splitting
 the complete PA recognizer and applying arithmetic completeness yields the
-object theorem `PA ⊢ Con_n(PA)` for every external natural number `n`.  See
-the project README for the exact statement and the remaining Rocq work. For
-the genuinely uniform sentence, existential Sigma-one proof packages reduce
-the missing model-internal selector to explicit base, successor, and final
-proof-extraction obligations without requiring a canonical compiler.
+object theorem `PA ⊢ Con_n(PA)` for every external natural number `n`.
+
+The genuinely uniform sentence is also proved.  A dynamic truth-certificate
+family carries, at every model element, the local, cross-level, shift,
+substitution, and axiom-soundness laws together with the corresponding
+bounded-consistency instance.  Index zero has a typed PA derivation of that
+master certificate, every index has a dependency-ordered successor step, and
+the master code has a Sigma-one graph, so Sigma-one induction inside an
+arbitrary PA model produces a proof code at every element, nonstandard ones
+included.  That is the model-internal selector, and completeness returns
+
+```
+PA ⊢ ∀ n, ∃ p, ssnum(p, ⌜Con_·(PA)⌝, n) ∧ Prov_PA(p).
+```
+
+The level quantifier is inside the object language; no induction on external
+natural numbers occurs in the chain.  This asserts uniform *provability* of the
+bounded-consistency instances, never their uniform truth, which is what Goedel's
+second theorem forbids.  See the project README for the exact statements and for
+the remaining Rocq/Coq obligations.
 -/

@@ -1,5 +1,6 @@
 import BoundedPAConsistency.DynamicTruthSubstitutionInvariantPositiveRankStrongStep
 import BoundedPAConsistency.ModelCodedPredicateEqualityQuotient
+import BoundedPAConsistency.FinFunext
 
 /-!
 # Fixed-source proof of the positive substitution strong step
@@ -165,16 +166,7 @@ appears when the large successor formula is unfolded all at once. -/
     Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 @[simp] private theorem eval_apply₂
     (p : Semisentence DynamicTruthTemplateFormula.SourceLanguage 2)
@@ -189,13 +181,7 @@ appears when the large successor formula is unfolded all at once. -/
     Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i => exact i.elim0
+  exact funext_fin2 rfl rfl
 
 @[simp] private theorem eval_apply₅
     (p : Semisentence DynamicTruthTemplateFormula.SourceLanguage 5)
@@ -213,22 +199,7 @@ appears when the large successor formula is unfolded all at once. -/
     Semiformula.eval_substs, Function.comp_def]
   apply iff_of_eq
   congr 2
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i =>
-              cases i using Fin.cases with
-              | zero => rfl
-              | succ i =>
-                  cases i using Fin.cases with
-                  | zero => rfl
-                  | succ i => exact i.elim0
+  exact funext_fin5 rfl rfl rfl rfl rfl
 
 /-- Evaluation of the opaque source atom without asking the simplifier to
 normalize a dependent three-vector under `Structure.rel`. -/
@@ -248,16 +219,7 @@ normalize a dependent three-vector under `Structure.rel`. -/
         t₂.valb (M := M) v]
   apply iff_of_eq
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 /- The universal-record leaf is the sole branch that invokes the opaque
 lower relation.  Isolating it also keeps the five existential binders from
@@ -385,13 +347,7 @@ include hArithmeticReduct in
       DynamicTruthSubstitutionInvariantStrongStepSource.sourcePrefixGuard,
       DynamicTruthTemplateFormula.liftArithmeticFormula,
       Function.comp_def]
-    funext i
-    cases i using Fin.cases with
-    | zero => rfl
-    | succ i =>
-        cases i using Fin.cases with
-        | zero => rfl
-        | succ i => exact i.elim0
+    exact funext_fin2 rfl rfl
   rw [hguard]
   rw [eval_liftArithmeticFormula hArithmeticReduct]
   simp

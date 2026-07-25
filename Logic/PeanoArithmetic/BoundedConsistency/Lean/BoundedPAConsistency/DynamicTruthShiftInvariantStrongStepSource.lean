@@ -3,6 +3,7 @@ import BoundedPAConsistency.DynamicTruthShiftInvariantStructuralSuccessor
 import BoundedPAConsistency.DynamicTruthCertificateFieldFamily
 import BoundedPAConsistency.DynamicTruthCrossLevelSourceSuccessor
 import BoundedPAConsistency.StagedTruthCertificateProofCompiler
+import BoundedPAConsistency.FinFunext
 import Foundation.FirstOrder.Completeness
 
 /-!
@@ -377,19 +378,14 @@ noncomputable def sourceQuantifierFreeStrongStepProof :
               (![DynamicTruthCrossLevelSourceSuccessor.sourceArithmeticZero
                     (n := 1),
                   (#0 : ClosedSemiterm SourceLanguage 1)] i)) := by
-        funext i
-        cases i using Fin.cases with
-        | zero =>
-            simp [Function.comp_def,
-              DynamicTruthCrossLevelSourceSuccessor.sourceArithmeticZero,
-              FirstOrder.Semiterm.val_lMap]
-            congr 1
-            funext j
-            exact j.elim0
-        | succ i =>
-            cases i using Fin.cases with
-            | zero => simp [Function.comp_def]
-            | succ i => exact i.elim0
+        refine funext_fin2 ?_ ?_
+        · simp [Function.comp_def,
+            DynamicTruthCrossLevelSourceSuccessor.sourceArithmeticZero,
+            FirstOrder.Semiterm.val_lMap]
+          congr 1
+          funext j
+          exact j.elim0
+        · simp [Function.comp_def]
       have hf :
           (FirstOrder.Semiterm.val
                 (s := _structure.lMap (arithmeticHom 3 3 3))
@@ -422,14 +418,10 @@ noncomputable def sourceQuantifierFreeStrongStepProof :
                 ![(#3 : ArithmeticSemiterm Empty 4),
                   (#1 : ArithmeticSemiterm Empty 4)]) ∘
               FirstOrder.Semiterm.bvar) := by
-        funext i
-        cases i using Fin.cases with
-        | zero => simp [oldLevel, levelTerm,
-            TwoPredicateSourceContextInductionKernel.namedParameterTerm]
-        | succ i =>
-            cases i using Fin.cases with
-            | zero => simp
-            | succ i => exact i.elim0
+        refine funext_fin2 ?_ ?_
+        · simp [oldLevel, levelTerm,
+          TwoPredicateSourceContextInductionKernel.namedParameterTerm]
+        · simp
       have hf :
           (FirstOrder.Semiterm.val
                 (s := _structure.lMap (arithmeticHom 3 3 3))
@@ -457,19 +449,14 @@ noncomputable def sourceQuantifierFreeStrongStepProof :
               (![DynamicTruthCrossLevelSourceSuccessor.sourceArithmeticZero
                     (n := 1),
                   (#0 : ClosedSemiterm SourceLanguage 1)] i)) := by
-        funext i
-        cases i using Fin.cases with
-        | zero =>
-            simp [Function.comp_def,
-              DynamicTruthCrossLevelSourceSuccessor.sourceArithmeticZero,
-              FirstOrder.Semiterm.val_lMap]
-            congr 1
-            funext j
-            exact j.elim0
-        | succ i =>
-            cases i using Fin.cases with
-            | zero => simp [Function.comp_def]
-            | succ i => exact i.elim0
+        refine funext_fin2 ?_ ?_
+        · simp [Function.comp_def,
+            DynamicTruthCrossLevelSourceSuccessor.sourceArithmeticZero,
+            FirstOrder.Semiterm.val_lMap]
+          congr 1
+          funext j
+          exact j.elim0
+        · simp [Function.comp_def]
       have hf :
           (FirstOrder.Semiterm.val
                 (s := _structure.lMap (arithmeticHom 3 3 3))
@@ -497,13 +484,9 @@ noncomputable def sourceQuantifierFreeStrongStepProof :
               ![q, bound, shifted, free, p] Empty.elim
               (![(#0 : ClosedSemiterm SourceLanguage 5),
                   (#4 : ClosedSemiterm SourceLanguage 5)] i)) := by
-        funext i
-        cases i using Fin.cases with
-        | zero => simp [Function.comp_def]
-        | succ i =>
-            cases i using Fin.cases with
-            | zero => simp [Function.comp_def]
-            | succ i => exact i.elim0
+        refine funext_fin2 ?_ ?_
+        · simp [Function.comp_def]
+        · simp [Function.comp_def]
       have hf :
           (FirstOrder.Semiterm.val
                 (s := _structure.lMap (arithmeticHom 3 3 3))
@@ -531,14 +514,10 @@ noncomputable def sourceQuantifierFreeStrongStepProof :
                 ![(#2 : ArithmeticSemiterm Empty 4),
                   (#1 : ArithmeticSemiterm Empty 4)]) ∘
               FirstOrder.Semiterm.bvar) := by
-        funext i
-        cases i using Fin.cases with
-        | zero => simp [currentLevel, levelTerm,
-            TwoPredicateSourceContextInductionKernel.namedParameterTerm]
-        | succ i =>
-            cases i using Fin.cases with
-            | zero => simp
-            | succ i => exact i.elim0
+        refine funext_fin2 ?_ ?_
+        · simp [currentLevel, levelTerm,
+          TwoPredicateSourceContextInductionKernel.namedParameterTerm]
+        · simp
       have hf :
           (FirstOrder.Semiterm.val
                 (s := _structure.lMap (arithmeticHom 3 3 3))
@@ -564,14 +543,10 @@ noncomputable def sourceQuantifierFreeStrongStepProof :
                 ![(#2 : ArithmeticSemiterm Empty 4),
                   (#0 : ArithmeticSemiterm Empty 4)]) ∘
               FirstOrder.Semiterm.bvar) := by
-        funext i
-        cases i using Fin.cases with
-        | zero => simp [currentLevel, levelTerm,
-            TwoPredicateSourceContextInductionKernel.namedParameterTerm]
-        | succ i =>
-            cases i using Fin.cases with
-            | zero => simp
-            | succ i => exact i.elim0
+        refine funext_fin2 ?_ ?_
+        · simp [currentLevel, levelTerm,
+          TwoPredicateSourceContextInductionKernel.namedParameterTerm]
+        · simp
       have hf :
           (FirstOrder.Semiterm.val
                 (s := _structure.lMap (arithmeticHom 3 3 3))
@@ -595,16 +570,7 @@ noncomputable def sourceQuantifierFreeStrongStepProof :
               (#2 : ClosedSemiterm SourceLanguage 5),
               (#0 : ClosedSemiterm SourceLanguage 5)] i)) =
           ![bound, shifted, q] := by
-      funext i
-      cases i using Fin.cases with
-      | zero => simp
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => simp
-          | succ i =>
-              cases i using Fin.cases with
-              | zero => simp
-              | succ i => exact i.elim0
+      refine funext_fin3 ?_ ?_ ?_ <;> simp
     have hfreeEnv :
         (fun i ↦ FirstOrder.Semiterm.val
           (s := _structure)
@@ -613,16 +579,7 @@ noncomputable def sourceQuantifierFreeStrongStepProof :
               (#3 : ClosedSemiterm SourceLanguage 5),
               (#4 : ClosedSemiterm SourceLanguage 5)] i)) =
           ![bound, free, p] := by
-      funext i
-      cases i using Fin.cases with
-      | zero => simp
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => simp
-          | succ i =>
-              cases i using Fin.cases with
-              | zero => simp
-              | succ i => exact i.elim0
+      refine funext_fin3 ?_ ?_ ?_ <;> simp
     simpa only [hshiftedEnv, hfreeEnv] using hcq.trans (by
       simpa [TwoPredicateSourceContextInductionKernel.secondAtom] using
         hcurrentToSuccessor)).get

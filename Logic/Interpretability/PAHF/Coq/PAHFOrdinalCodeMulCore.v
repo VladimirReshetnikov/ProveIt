@@ -64,10 +64,7 @@ Lemma rename_hfMulGraphTermAt_core : forall r out left right,
       (Term.rename r right).
 Proof.
   intros r out left right.
-  rewrite <- subst_var_rename.
-  rewrite subst_hfMulGraphTermAt_core.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_hfMulGraphTermAt_core.
 Qed.
 
 Lemma hfMulGraphAt_eq_termAt_core : forall out left right,

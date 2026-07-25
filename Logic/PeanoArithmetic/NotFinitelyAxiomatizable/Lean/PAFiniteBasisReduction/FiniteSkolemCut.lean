@@ -26,6 +26,13 @@ namespace FiniteSkolemCut
 
 /-! ## Rank bounds and canonical finite environments -/
 
+/-- The two symmetric bound steps used by every binary rank case below. -/
+private theorem lt_succ_max_left {i a b : Nat} (h : i < a) : i < max a b + 1 :=
+  Nat.lt_succ_of_le (Nat.le_trans (Nat.le_of_lt h) (Nat.le_max_left _ _))
+
+private theorem lt_succ_max_right {i a b : Nat} (h : i < b) : i < max a b + 1 :=
+  Nat.lt_succ_of_le (Nat.le_trans (Nat.le_of_lt h) (Nat.le_max_right _ _))
+
 theorem termFree_lt_rank {i : Nat} {t : PA.Term}
     (h : PA.Term.Free i t) : i < termRank t := by
   induction t with
@@ -43,18 +50,14 @@ theorem termFree_lt_rank {i : Nat} {t : PA.Term}
       simp only [PA.Term.Free] at h
       simp only [termRank]
       rcases h with h | h
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (iha h)) (Nat.le_max_left _ _))
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (ihb h)) (Nat.le_max_right _ _))
+      · exact lt_succ_max_left (iha h)
+      · exact lt_succ_max_right (ihb h)
   | mul a b iha ihb =>
       simp only [PA.Term.Free] at h
       simp only [termRank]
       rcases h with h | h
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (iha h)) (Nat.le_max_left _ _))
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (ihb h)) (Nat.le_max_right _ _))
+      · exact lt_succ_max_left (iha h)
+      · exact lt_succ_max_right (ihb h)
 
 theorem formulaFree_lt_rank {i : Nat} {phi : PA.Formula}
     (h : PA.Formula.Free i phi) : i < formulaRank phi := by
@@ -63,38 +66,28 @@ theorem formulaFree_lt_rank {i : Nat} {phi : PA.Formula}
       simp only [PA.Formula.Free] at h
       simp only [formulaRank]
       rcases h with h | h
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (termFree_lt_rank h))
-            (Nat.le_max_left _ _))
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (termFree_lt_rank h))
-            (Nat.le_max_right _ _))
+      · exact lt_succ_max_left (termFree_lt_rank h)
+      · exact lt_succ_max_right (termFree_lt_rank h)
   | bot =>
       cases h
   | imp a b iha ihb =>
       simp only [PA.Formula.Free] at h
       simp only [formulaRank]
       rcases h with h | h
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (iha h)) (Nat.le_max_left _ _))
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (ihb h)) (Nat.le_max_right _ _))
+      · exact lt_succ_max_left (iha h)
+      · exact lt_succ_max_right (ihb h)
   | and a b iha ihb =>
       simp only [PA.Formula.Free] at h
       simp only [formulaRank]
       rcases h with h | h
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (iha h)) (Nat.le_max_left _ _))
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (ihb h)) (Nat.le_max_right _ _))
+      · exact lt_succ_max_left (iha h)
+      · exact lt_succ_max_right (ihb h)
   | or a b iha ihb =>
       simp only [PA.Formula.Free] at h
       simp only [formulaRank]
       rcases h with h | h
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (iha h)) (Nat.le_max_left _ _))
-      · exact Nat.lt_succ_of_le
-          (Nat.le_trans (Nat.le_of_lt (ihb h)) (Nat.le_max_right _ _))
+      · exact lt_succ_max_left (iha h)
+      · exact lt_succ_max_right (ihb h)
   | all a ih =>
       simp only [PA.Formula.Free] at h
       simp only [formulaRank]
@@ -628,22 +621,14 @@ theorem code_injective {rank : Nat} : Function.Injective (@code rank) := by
   | succ p ih =>
       have hparts := code_eq_iff_tag_payload_eq.mp hcode
       cases q with
-      | star => simp [tag] at hparts
-      | zero => simp [tag] at hparts
       | succ q =>
           apply congrArg Program.succ
           apply ih
           simpa [payload] using hparts.2
-      | add q r => simp [tag] at hparts
-      | mul q r => simp [tag] at hparts
-      | exSkolem body hRank args => simp [tag] at hparts
-      | allSkolem body hRank args => simp [tag] at hparts
+      | _ => simp [tag] at hparts
   | add left right ihLeft ihRight =>
       have hparts := code_eq_iff_tag_payload_eq.mp hcode
       cases q with
-      | star => simp [tag] at hparts
-      | zero => simp [tag] at hparts
-      | succ r => simp [tag] at hparts
       | add r s =>
           have hpayload :
               nodeCode (code left) (code right) =
@@ -651,16 +636,10 @@ theorem code_injective {rank : Nat} : Function.Injective (@code rank) := by
             simpa [payload] using hparts.2
           rcases nodeCode_injective hpayload with ⟨hpr, hqs⟩
           rw [ihLeft hpr, ihRight hqs]
-      | mul r s => simp [tag] at hparts
-      | exSkolem body hRank args => simp [tag] at hparts
-      | allSkolem body hRank args => simp [tag] at hparts
+      | _ => simp [tag] at hparts
   | mul left right ihLeft ihRight =>
       have hparts := code_eq_iff_tag_payload_eq.mp hcode
       cases q with
-      | star => simp [tag] at hparts
-      | zero => simp [tag] at hparts
-      | succ r => simp [tag] at hparts
-      | add r s => simp [tag] at hparts
       | mul r s =>
           have hpayload :
               nodeCode (code left) (code right) =
@@ -668,16 +647,10 @@ theorem code_injective {rank : Nat} : Function.Injective (@code rank) := by
             simpa [payload] using hparts.2
           rcases nodeCode_injective hpayload with ⟨hpr, hqs⟩
           rw [ihLeft hpr, ihRight hqs]
-      | exSkolem body hRank args => simp [tag] at hparts
-      | allSkolem body hRank args => simp [tag] at hparts
+      | _ => simp [tag] at hparts
   | exSkolem body hRank args ih =>
       have hparts := code_eq_iff_tag_payload_eq.mp hcode
       cases q with
-      | star => simp [tag] at hparts
-      | zero => simp [tag] at hparts
-      | succ r => simp [tag] at hparts
-      | add r s => simp [tag] at hparts
-      | mul r s => simp [tag] at hparts
       | exSkolem body' hRank' args' =>
           have hpayload : nodeCode
                 (formulaIndex rank body)
@@ -704,17 +677,10 @@ theorem code_injective {rank : Nat} : Function.Injective (@code rank) := by
             exact ih i (congrFun hcodes i)
           subst args'
           rfl
-
-      | allSkolem body' hRank' args' => simp [tag] at hparts
+      | _ => simp [tag] at hparts
   | allSkolem body hRank args ih =>
       have hparts := code_eq_iff_tag_payload_eq.mp hcode
       cases q with
-      | star => simp [tag] at hparts
-      | zero => simp [tag] at hparts
-      | succ r => simp [tag] at hparts
-      | add r s => simp [tag] at hparts
-      | mul r s => simp [tag] at hparts
-      | exSkolem body' hRank' args' => simp [tag] at hparts
       | allSkolem body' hRank' args' =>
           have hpayload : nodeCode
                 (formulaIndex rank body)
@@ -741,6 +707,7 @@ theorem code_injective {rank : Nat} : Function.Injective (@code rank) := by
             exact ih i (congrFun hcodes i)
           subst args'
           rfl
+      | _ => simp [tag] at hparts
 
 /-- Meta-level partial decoder for the polynomial code image.  The later PA
 trace relation does not execute this decoder; it is provided here to state the

@@ -242,12 +242,7 @@ Lemma eval_liftTerm_scons8 : forall a b c d f g h i env t,
     (scons nat a (scons nat b (scons nat c (scons nat d
       (scons nat f (scons nat g (scons nat h (scons nat i env))))))))
     (liftTerm 8 t) = Term.eval natModel env t.
-Proof.
-  intros. unfold liftTerm. rewrite Term.eval_rename.
-  apply Term.eval_ext. intro j.
-  replace (j + 8) with (S (S (S (S (S (S (S (S j)))))))) by lia.
-  reflexivity.
-Qed.
+Proof. solve_eval_liftTerm. Qed.
 
 Lemma eval_liftTerm_scons9 : forall a b c d f g h i j env t,
   Term.eval natModel
@@ -255,12 +250,7 @@ Lemma eval_liftTerm_scons9 : forall a b c d f g h i j env t,
       (scons nat f (scons nat g (scons nat h
         (scons nat i (scons nat j env)))))))))
     (liftTerm 9 t) = Term.eval natModel env t.
-Proof.
-  intros. unfold liftTerm. rewrite Term.eval_rename.
-  apply Term.eval_ext. intro x.
-  replace (x + 9) with (S (S (S (S (S (S (S (S (S x))))))))) by lia.
-  reflexivity.
-Qed.
+Proof. solve_eval_liftTerm. Qed.
 
 (** * Prime factorization
 

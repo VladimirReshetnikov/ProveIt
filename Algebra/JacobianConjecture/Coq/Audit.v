@@ -1,11 +1,16 @@
 (* Kernel-assumption audit for both formal Jacobian counterexamples. *)
 
 From JacobianConjecture Require Import
-  Counterexample CollisionFamily SimplerCounterexample.
+  Counterexample CollisionFamily Scaling SimplerCounterexample.
 
 Import LeanProofs.JacobianCounterexample.
 
 Check jacobian_det_is_minus_two.
+Check counterexample_equivariant.
+Check collision_of_flip_fixed_value.
+Check collision_2_is_mirror.
+Check collision_value_flip_fixed.
+Check mirrored_integral_collision.
 Check collision_0_value.
 Check collision_1_value.
 Check collision_2_value.
@@ -19,6 +24,11 @@ Check counterexample_has_no_polynomial_inverse.
 Check jacobian_conjecture_dimension_three_is_false.
 
 Print Assumptions jacobian_det_is_minus_two.
+Print Assumptions counterexample_equivariant.
+Print Assumptions collision_of_flip_fixed_value.
+Print Assumptions collision_2_is_mirror.
+Print Assumptions collision_value_flip_fixed.
+Print Assumptions mirrored_integral_collision.
 Print Assumptions collision_0_value.
 Print Assumptions collision_1_value.
 Print Assumptions collision_2_value.
@@ -33,21 +43,67 @@ Print Assumptions jacobian_conjecture_dimension_three_is_false.
 
 Import CollisionFamily.
 
+Check collision_family_0_eq_scale.
+Check collision_family_1_eq_scale.
+Check collision_family_value_eq_scale.
 Check collision_family_0_value.
 Check collision_family_1_value.
 Check collision_family.
 Check collision_family_points_distinct.
+Check collision_family_0_mirror.
+Check collision_family_1_mirror.
+Check collision_family_value_mirror.
+Check scale_collision_family_0.
+Check scale_collision_family_1.
+Check scale_collision_family_value.
+Check collision_family_0_at_minus_one.
+Check collision_family_1_at_minus_one.
+Check collision_family_value_at_minus_one.
 
+Print Assumptions collision_family_0_eq_scale.
+Print Assumptions collision_family_1_eq_scale.
+Print Assumptions collision_family_value_eq_scale.
 Print Assumptions collision_family_0_value.
 Print Assumptions collision_family_1_value.
 Print Assumptions collision_family.
 Print Assumptions collision_family_points_distinct.
+Print Assumptions collision_family_0_mirror.
+Print Assumptions collision_family_1_mirror.
+Print Assumptions collision_family_value_mirror.
+Print Assumptions scale_collision_family_0.
+Print Assumptions scale_collision_family_1.
+Print Assumptions scale_collision_family_value.
+Print Assumptions collision_family_0_at_minus_one.
+Print Assumptions collision_family_1_at_minus_one.
+Print Assumptions collision_family_value_at_minus_one.
+
+Import Scaling.
+
+Check counterexample_scaling.
+Check collision_scaling.
+Check scale_source_comp.
+Check scale_target_comp.
+Check scale_source_one.
+Check scale_target_one.
+Check flip_source_eq_scale.
+Check flip_target_eq_scale.
+
+Print Assumptions counterexample_scaling.
+Print Assumptions collision_scaling.
+Print Assumptions scale_source_comp.
+Print Assumptions scale_target_comp.
+Print Assumptions scale_source_one.
+Print Assumptions scale_target_one.
+Print Assumptions flip_source_eq_scale.
+Print Assumptions flip_target_eq_scale.
 
 Import LeanProofs.JacobianSimplerCounterexample.
 
 Check simpler_counterexample_degree_profile.
 Check simpler_first_stable_identity.
 Check jacobian_det5_is_minus_two.
+Check simpler_counterexample_equivariant.
+Check mirrored_collision.
 Check collision0_value.
 Check collision1_value.
 Check collision_points_distinct.
@@ -59,6 +115,8 @@ Check jacobian_conjecture_dimension_five_is_false.
 Print Assumptions simpler_counterexample_degree_profile.
 Print Assumptions simpler_first_stable_identity.
 Print Assumptions jacobian_det5_is_minus_two.
+Print Assumptions simpler_counterexample_equivariant.
+Print Assumptions mirrored_collision.
 Print Assumptions collision0_value.
 Print Assumptions collision1_value.
 Print Assumptions collision_points_distinct.

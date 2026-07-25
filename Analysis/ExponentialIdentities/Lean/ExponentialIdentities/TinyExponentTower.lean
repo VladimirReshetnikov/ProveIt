@@ -40,44 +40,30 @@ private noncomputable def c : ℝ := (10 : ℝ) ^ v
 /-- The full tower on the left-hand side of the challenge identity. -/
 noncomputable def tinyExponentTower : ℝ := (10 : ℝ) ^ c
 
+/-- Enclose `x` near `target` through an intermediate approximation `S`:
+a series bound `|x - S| ≤ tail` plus the numeric check
+`|S - target| ≤ eps - tail` give `|x - target| ≤ eps`. -/
+private theorem abs_sub_le_of_approx {x S target tail eps : ℝ}
+    (hxS : |x - S| ≤ tail) (hSt : |S - target| ≤ eps - tail) :
+    |x - target| ≤ eps := by
+  calc
+    |x - target| ≤ |x - S| + |S - target| := _root_.abs_sub_le x S target
+    _ ≤ tail + (eps - tail) := add_le_add hxS hSt
+    _ = eps := by ring
+
 private theorem log_two_near_20 :
     |log 2 - (69314718055994530942 / 100000000000000000000 : ℝ)| ≤ 1 / 10 ^ 20 := by
-  suffices |log 2 - (69314718055994530942 / 100000000000000000000 : ℝ)| ≤
-      (1 / 2 : ℝ) ^ 85 / (1 - 1 / 2) +
-        (1 / 10 ^ 20 - (1 / 2 : ℝ) ^ 85 / (1 - 1 / 2)) by
-    norm_num1 at *
-    assumption
   have t_abs : |(2⁻¹ : ℝ)| = 2⁻¹ := by rw [abs_of_pos]; norm_num
   have z := Real.abs_log_sub_add_sum_range_le
     (show |(2⁻¹ : ℝ)| < 1 by rw [t_abs]; norm_num) 85
   rw [t_abs] at z
   norm_num1 at z
   rw [one_div (2 : ℝ), log_inv, ← sub_eq_add_neg, _root_.abs_sub_comm] at z
-  calc
-    |log 2 - (69314718055994530942 / 100000000000000000000 : ℝ)| ≤
-        |log 2 -
-          (6767419353446990359387534777193432446042710369441370775542121 /
-            9763322340833968061889948860843352247574157378090622884249600 : ℝ)| +
-          |(6767419353446990359387534777193432446042710369441370775542121 /
-            9763322340833968061889948860843352247574157378090622884249600 : ℝ) -
-            (69314718055994530942 / 100000000000000000000 : ℝ)| := by
-      exact _root_.abs_sub_le _ _ _
-    _ ≤ (1 / 38685626227668133590597632 : ℝ) +
-          (1 / 10 ^ 20 - 1 / 38685626227668133590597632 : ℝ) := by
-      apply add_le_add z
-      norm_num
-    _ = (1 / 2 : ℝ) ^ 85 / (1 - 1 / 2) +
-        (1 / 10 ^ 20 - (1 / 2 : ℝ) ^ 85 / (1 - 1 / 2)) := by
-      norm_num
+  exact abs_sub_le_of_approx z (by norm_num)
 
 private theorem log_five_four_near_20 :
     |log (5 / 4) - (22314355131420975577 / 100000000000000000000 : ℝ)| ≤
       1 / 10 ^ 20 := by
-  suffices |log (5 / 4) - (22314355131420975577 / 100000000000000000000 : ℝ)| ≤
-      (1 / 5 : ℝ) ^ 37 / (1 - 1 / 5) +
-        (1 / 10 ^ 20 - (1 / 5 : ℝ) ^ 37 / (1 - 1 / 5)) by
-    norm_num1 at *
-    assumption
   have t_abs : |(5⁻¹ : ℝ)| = 5⁻¹ := by rw [abs_of_pos]; norm_num
   have z := Real.abs_log_sub_add_sum_range_le
     (show |(5⁻¹ : ℝ)| < 1 by rw [t_abs]; norm_num) 36
@@ -85,22 +71,7 @@ private theorem log_five_four_near_20 :
   norm_num1 at z
   rw [show (4 / 5 : ℝ) = (5 / 4 : ℝ)⁻¹ by norm_num, log_inv,
     ← sub_eq_add_neg, _root_.abs_sub_comm] at z
-  calc
-    |log (5 / 4) - (22314355131420975577 / 100000000000000000000 : ℝ)| ≤
-        |log (5 / 4) -
-          (18756092534788904164500610557762072271 /
-            84053930415306240320205688476562500000 : ℝ)| +
-          |(18756092534788904164500610557762072271 /
-            84053930415306240320205688476562500000 : ℝ) -
-            (22314355131420975577 / 100000000000000000000 : ℝ)| := by
-      exact _root_.abs_sub_le _ _ _
-    _ ≤ (1 / 58207660913467407226562500 : ℝ) +
-          (1 / 10 ^ 20 - 1 / 58207660913467407226562500 : ℝ) := by
-      apply add_le_add z
-      norm_num
-    _ = (1 / 5 : ℝ) ^ 37 / (1 - 1 / 5) +
-        (1 / 10 ^ 20 - (1 / 5 : ℝ) ^ 37 / (1 - 1 / 5)) := by
-      norm_num
+  exact abs_sub_le_of_approx z (by norm_num)
 
 private theorem log_ten_eq : log (10 : ℝ) = 3 * log 2 + log (5 / 4 : ℝ) := by
   rw [show (10 : ℝ) = 2 ^ 3 * (5 / 4) by norm_num]
@@ -140,6 +111,14 @@ private theorem log_ten_bounds :
       L ≤ (230258509299404568407 / 100000000000000000000 : ℝ) := by
   have h := (abs_sub_le_iff.mp log_ten_near_20)
   constructor <;> linarith
+
+private theorem L_nonneg : 0 ≤ L := by
+  have h := log_ten_bounds.1
+  linarith
+
+private theorem L_le_three : L ≤ 3 := by
+  have h := log_ten_bounds.2
+  linarith
 
 private theorem main_derivative_bounds :
     (M : ℝ) + 2 / 5 < 10 ^ 11 * L ^ 4 ∧
@@ -185,6 +164,47 @@ private theorem t_le_pow100_inv : t ≤ (1 / 10 ^ 100 : ℝ) := by
 private theorem t_le_pow20_inv : t ≤ (1 / 10 ^ 20 : ℝ) := by
   exact t_le_pow100_inv.trans (by norm_num)
 
+/-- One exponential layer of the tower.  If an increment `w` satisfies
+`0 ≤ w ≤ K * t` for a moderate constant `K`, then the second-order remainder
+`exp (L * w) - 1 - L * w` is nonnegative and quadratically small, the scaled
+increment `L * w` is nonnegative, and the next increment
+`L * w + (exp (L * w) - 1 - L * w)` is again linearly controlled, with
+constant `4 * K`.  The three stacked exponentials of the tower are three
+instances of this lemma. -/
+private theorem exp_layer {w K : ℝ} (hK1 : 1 ≤ K) (hK : K ≤ 1000)
+    (hw0 : 0 ≤ w) (hwK : w ≤ K * t) :
+    0 ≤ exp (L * w) - 1 - L * w ∧
+      exp (L * w) - 1 - L * w ≤ 9 * K ^ 2 * t ^ 2 ∧
+      0 ≤ L * w ∧
+      L * w + (exp (L * w) - 1 - L * w) ≤ 4 * K * t := by
+  have ht0 : 0 ≤ t := t_pos.le
+  have htsmall : t ≤ (1 / 10 ^ 20 : ℝ) := t_le_pow20_inv
+  have hK0 : (0 : ℝ) ≤ K := le_trans zero_le_one hK1
+  have hKt0 : 0 ≤ K * t := mul_nonneg hK0 ht0
+  have hKt : K * t ≤ (1 / 10 ^ 17 : ℝ) := by
+    calc
+      K * t ≤ 1000 * (1 / 10 ^ 20 : ℝ) :=
+        mul_le_mul hK htsmall ht0 (by norm_num)
+      _ = (1 / 10 ^ 17 : ℝ) := by norm_num
+  have hx0 : 0 ≤ L * w := mul_nonneg L_nonneg hw0
+  have hxK : L * w ≤ 3 * (K * t) := by
+    calc
+      L * w ≤ 3 * w := mul_le_mul_of_nonneg_right L_le_three hw0
+      _ ≤ 3 * (K * t) := mul_le_mul_of_nonneg_left hwK (by norm_num)
+  have hx1 : L * w ≤ 1 := by linarith
+  have hr := exp_remainder_bounds hx0 hx1
+  have hx_sq : (L * w) ^ 2 ≤ (3 * (K * t)) ^ 2 := pow_le_pow_left₀ hx0 hxK 2
+  have hr_quad : exp (L * w) - 1 - L * w ≤ 9 * K ^ 2 * t ^ 2 := by
+    calc
+      exp (L * w) - 1 - L * w ≤ (L * w) ^ 2 := hr.2
+      _ ≤ (3 * (K * t)) ^ 2 := hx_sq
+      _ = 9 * K ^ 2 * t ^ 2 := by ring
+  have hr_lin : exp (L * w) - 1 - L * w ≤ K * t := by
+    have hKtKt : (K * t) * (K * t) ≤ (K * t) * (1 / 10 ^ 17 : ℝ) :=
+      mul_le_mul_of_nonneg_left hKt hKt0
+    nlinarith [hr.2, hx_sq, hKt0]
+  exact ⟨hr.1, hr_quad, hx0, by linarith⟩
+
 private theorem log_increment_bounds :
     (M : ℝ) * t ≤ L * (c - (N : ℝ)) ∧
       L * (c - (N : ℝ)) + (L * (c - (N : ℝ))) ^ 2 < ((M : ℝ) + 1) * t := by
@@ -193,11 +213,8 @@ private theorem log_increment_bounds :
   let r3 : ℝ := exp (L * (v - 10)) - 1 - L * (v - 10)
   let x : ℝ := L * (c - (N : ℝ))
   have ht0 : 0 ≤ t := t_pos.le
-  rcases log_ten_bounds with ⟨hLlo, hLhi⟩
-  have hL0 : 0 ≤ L := by
-    nlinarith
-  have hL3 : L ≤ 3 := by
-    nlinarith
+  have hL0 : 0 ≤ L := L_nonneg
+  have hL3 : L ≤ 3 := L_le_three
   have hL2 : L ^ 2 ≤ 9 := by
     have := pow_le_pow_left₀ hL0 hL3 2
     norm_num at this
@@ -206,24 +223,18 @@ private theorem log_increment_bounds :
     have := pow_le_pow_left₀ hL0 hL3 3
     norm_num at this
     exact this
-  have hL4_nonneg : 0 ≤ L ^ 4 := pow_nonneg hL0 4
-  have ht_le1 : t ≤ 1 := t_le_pow20_inv.trans (by norm_num)
-  have ht2_le_t : t ^ 2 ≤ t := by
-    nlinarith [mul_le_mul_of_nonneg_left ht_le1 ht0]
-  have hx1_nonneg : 0 ≤ L * t := mul_nonneg hL0 ht0
-  have hx1_le_one : L * t ≤ 1 := by
-    have hLt : L * t ≤ 3 * t := mul_le_mul_of_nonneg_right hL3 ht0
-    nlinarith [hLt, t_le_pow20_inv]
-  have hr1_bounds := exp_remainder_bounds hx1_nonneg hx1_le_one
-  have hr1_nonneg : 0 ≤ r1 := by
-    simpa [r1] using hr1_bounds.1
-  have hr1_le_sq : r1 ≤ (L * t) ^ 2 := by
-    simpa [r1] using hr1_bounds.2
+  -- Layer 1: increment `t`, constant `K = 1`.
+  obtain ⟨hr1_nonneg0, hr1_le0, hx1_nonneg, hsum1⟩ :=
+    exp_layer (K := 1) le_rfl (by norm_num) ht0 (le_of_eq (one_mul t).symm)
+  have hr1_nonneg : 0 ≤ r1 := by simpa [r1] using hr1_nonneg0
   have hr1_le : r1 ≤ 9 * t ^ 2 := by
-    calc
-      r1 ≤ (L * t) ^ 2 := hr1_le_sq
-      _ = L ^ 2 * t ^ 2 := by ring
-      _ ≤ 9 * t ^ 2 := mul_le_mul_of_nonneg_right hL2 (sq_nonneg t)
+    have h := hr1_le0
+    norm_num at h
+    simpa [r1] using h
+  have hsum1' : L * t + r1 ≤ 4 * t := by
+    have h := hsum1
+    norm_num at h
+    simpa [r1] using h
   have hu_eq : u = 1 + L * t + r1 := by
     dsimp [u, L, r1]
     rw [Real.rpow_def_of_pos (by norm_num : 0 < (10 : ℝ))]
@@ -231,34 +242,24 @@ private theorem log_increment_bounds :
   have hu_sub_eq : u - 1 = L * t + r1 := by
     rw [hu_eq]
     ring
-  have hr1_le_t : r1 ≤ t := by
-    have : 9 * t ^ 2 ≤ t := by nlinarith [t_le_pow20_inv, ht0]
-    exact hr1_le.trans this
   have hu_sub_nonneg : 0 ≤ u - 1 := by
     rw [hu_sub_eq]
-    nlinarith [hx1_nonneg, hr1_nonneg]
+    linarith [hx1_nonneg, hr1_nonneg]
   have hu_sub_le : u - 1 ≤ 4 * t := by
     rw [hu_sub_eq]
-    have hLt : L * t ≤ 3 * t := mul_le_mul_of_nonneg_right hL3 ht0
-    nlinarith [hLt, hr1_le_t]
-  have hx2_nonneg : 0 ≤ L * (u - 1) := mul_nonneg hL0 hu_sub_nonneg
-  have hx2_le : L * (u - 1) ≤ 12 * t := by
-    have := mul_le_mul hL3 hu_sub_le hu_sub_nonneg (by norm_num : (0 : ℝ) ≤ 3)
-    nlinarith
-  have hx2_le_one : L * (u - 1) ≤ 1 := by
-    nlinarith [hx2_le, t_le_pow20_inv]
-  have hr2_bounds := exp_remainder_bounds hx2_nonneg hx2_le_one
-  have hr2_nonneg : 0 ≤ r2 := by
-    simpa [r2] using hr2_bounds.1
-  have hr2_le_sq : r2 ≤ (L * (u - 1)) ^ 2 := by
-    simpa [r2] using hr2_bounds.2
+    exact hsum1'
+  -- Layer 2: increment `u - 1`, constant `K = 4`.
+  obtain ⟨hr2_nonneg0, hr2_le0, hx2_nonneg, hsum2⟩ :=
+    exp_layer (K := 4) (by norm_num) (by norm_num) hu_sub_nonneg hu_sub_le
+  have hr2_nonneg : 0 ≤ r2 := by simpa [r2] using hr2_nonneg0
   have hr2_le : r2 ≤ 144 * t ^ 2 := by
-    have hx2sq :=
-      mul_le_mul hx2_le hx2_le hx2_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 12) ht0)
-    calc
-      r2 ≤ (L * (u - 1)) ^ 2 := hr2_le_sq
-      _ ≤ (12 * t) ^ 2 := by simpa [pow_two] using hx2sq
-      _ = 144 * t ^ 2 := by ring
+    have h := hr2_le0
+    norm_num at h
+    simpa [r2] using h
+  have hsum2' : L * (u - 1) + r2 ≤ 16 * t := by
+    have h := hsum2
+    norm_num at h
+    simpa [r2] using h
   have hv_eq : v = 10 * (1 + L * (u - 1) + r2) := by
     dsimp [v, L, r2]
     rw [show u = 1 + (u - 1) by ring]
@@ -269,33 +270,20 @@ private theorem log_increment_bounds :
   have hv_sub_eq : v - 10 = 10 * (L * (u - 1) + r2) := by
     rw [hv_eq]
     ring
-  have hr2_le_8t : r2 ≤ 8 * t := by
-    have : 144 * t ^ 2 ≤ 8 * t := by nlinarith [t_le_pow20_inv, ht0]
-    exact hr2_le.trans this
   have hv_sub_nonneg : 0 ≤ v - 10 := by
     rw [hv_sub_eq]
-    nlinarith [hx2_nonneg, hr2_nonneg]
-  have hv_sub_le : v - 10 ≤ 200 * t := by
+    linarith [hx2_nonneg, hr2_nonneg]
+  have hv_sub_le : v - 10 ≤ 160 * t := by
     rw [hv_sub_eq]
-    nlinarith [hx2_le, hr2_le_8t]
-  have hx3_nonneg : 0 ≤ L * (v - 10) := mul_nonneg hL0 hv_sub_nonneg
-  have hx3_le : L * (v - 10) ≤ 600 * t := by
-    have := mul_le_mul hL3 hv_sub_le hv_sub_nonneg (by norm_num : (0 : ℝ) ≤ 3)
-    nlinarith
-  have hx3_le_one : L * (v - 10) ≤ 1 := by
-    nlinarith [hx3_le, t_le_pow20_inv]
-  have hr3_bounds := exp_remainder_bounds hx3_nonneg hx3_le_one
-  have hr3_nonneg : 0 ≤ r3 := by
-    simpa [r3] using hr3_bounds.1
-  have hr3_le_sq : r3 ≤ (L * (v - 10)) ^ 2 := by
-    simpa [r3] using hr3_bounds.2
-  have hr3_le : r3 ≤ 360000 * t ^ 2 := by
-    have hx3sq :=
-      mul_le_mul hx3_le hx3_le hx3_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 600) ht0)
-    calc
-      r3 ≤ (L * (v - 10)) ^ 2 := hr3_le_sq
-      _ ≤ (600 * t) ^ 2 := by simpa [pow_two] using hx3sq
-      _ = 360000 * t ^ 2 := by ring
+    linarith [hsum2']
+  -- Layer 3: increment `v - 10`, constant `K = 160`.
+  obtain ⟨hr3_nonneg0, hr3_le0, hx3_nonneg, _hsum3⟩ :=
+    exp_layer (K := 160) (by norm_num) (by norm_num) hv_sub_nonneg hv_sub_le
+  have hr3_nonneg : 0 ≤ r3 := by simpa [r3] using hr3_nonneg0
+  have hr3_le : r3 ≤ 230400 * t ^ 2 := by
+    have h := hr3_le0
+    norm_num at h
+    simpa [r3] using h
   have hc_eq : c = (N : ℝ) * (1 + L * (v - 10) + r3) := by
     dsimp [c, L, r3]
     rw [show v = 10 + (v - 10) by ring]
@@ -343,17 +331,17 @@ private theorem log_increment_bounds :
           mul_le_mul_of_nonneg_right (by norm_num : (129600000000000 : ℝ) ≤ 10 ^ 16)
             (sq_nonneg t)
   have hterm3_le : (N : ℝ) * L * r3 ≤ 2 * 10 ^ 16 * t ^ 2 := by
-    have hmul : L * r3 ≤ 3 * (360000 * t ^ 2) :=
+    have hmul : L * r3 ≤ 3 * (230400 * t ^ 2) :=
       mul_le_mul hL3 hr3_le hr3_nonneg (by norm_num : (0 : ℝ) ≤ 3)
     calc
       (N : ℝ) * L * r3 = (N : ℝ) * (L * r3) := by ring
-      _ ≤ (N : ℝ) * (3 * (360000 * t ^ 2)) :=
+      _ ≤ (N : ℝ) * (3 * (230400 * t ^ 2)) :=
           mul_le_mul_of_nonneg_left hmul (by positivity)
-      _ = (10800000000000000 : ℝ) * t ^ 2 := by
+      _ = (6912000000000000 : ℝ) * t ^ 2 := by
           norm_num [N]
           ring
       _ ≤ 2 * 10 ^ 16 * t ^ 2 :=
-          mul_le_mul_of_nonneg_right (by norm_num : (10800000000000000 : ℝ) ≤ 2 * 10 ^ 16)
+          mul_le_mul_of_nonneg_right (by norm_num : (6912000000000000 : ℝ) ≤ 2 * 10 ^ 16)
             (sq_nonneg t)
   have herror_le :
       (10 : ℝ) * (N : ℝ) * L ^ 3 * r1 +

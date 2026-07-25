@@ -1,5 +1,6 @@
 import BoundedPAConsistency.DynamicTruthCrossLevelFormula
 import BoundedPAConsistency.TwoPredicateSourceContextInductionKernel
+import BoundedPAConsistency.FinFunext
 
 /-!
 # Structural source context for positive cross-level coherence
@@ -247,16 +248,7 @@ native order is syntactically the identity. -/
   rw [apply₃, Semiformula.coe_subst_eq_subst_coe,
     translateFormula_subst]
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 @[simp] theorem translate_apply₂
     (predecessor current : Bootstrapping.Semiformula V ℒₒᵣ 3)
@@ -272,13 +264,7 @@ native order is syntactically the identity. -/
   rw [apply₂, Semiformula.coe_subst_eq_subst_coe,
     translateFormula_subst]
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i => exact i.elim0
+  exact funext_fin2 rfl rfl
 
 @[simp] theorem translate_predecessorAtom
     (predecessor current : Bootstrapping.Semiformula V ℒₒᵣ 3)
@@ -292,16 +278,7 @@ native order is syntactically the identity. -/
           translateTerm levels (Rew.emb t₂)] := by
   rw [predecessorAtom, translateFormula_firstAtom]
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 @[simp] theorem translate_currentAtom
     (predecessor current : Bootstrapping.Semiformula V ℒₒᵣ 3)
@@ -315,16 +292,7 @@ native order is syntactically the identity. -/
           translateTerm levels (Rew.emb t₂)] := by
   rw [currentAtom, translateFormula_secondAtom]
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i => exact i.elim0
+  exact funext_fin3 rfl rfl rfl
 
 /-! ## Typed prior context -/
 

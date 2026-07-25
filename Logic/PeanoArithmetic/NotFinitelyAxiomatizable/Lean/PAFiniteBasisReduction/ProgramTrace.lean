@@ -818,19 +818,19 @@ theorem bprov_pairTerm_normalize {a b : Nat} {s t : PA.Term}
       (PA.Formula.eq (pairTerm s t)
         (PA.Term.numeral (Program.pairCode a b))) := by
   have hsum0 := PA.Formula.BProv_eq_congr_add hs ht
-  have hsum1 := PA.Formula.BProv_Ax_s_addNumerals a b
+  have hsum1 := PA.Formula.BProv_Ax_s_addNumerals (G := []) a b
   have hsum : PA.Formula.BProv PA.Formula.Ax_s []
       (PA.Formula.eq (PA.Term.add s t) (PA.Term.numeral (a + b))) :=
     PA.Formula.BProv_eqTrans hsum0 hsum1
   have hsquare0 := PA.Formula.BProv_eq_congr_mul hsum hsum
-  have hsquare1 := PA.Formula.BProv_Ax_s_mulNumerals (a + b) (a + b)
+  have hsquare1 := PA.Formula.BProv_Ax_s_mulNumerals (G := []) (a + b) (a + b)
   have hsquare : PA.Formula.BProv PA.Formula.Ax_s []
       (PA.Formula.eq
         (PA.Term.mul (PA.Term.add s t) (PA.Term.add s t))
         (PA.Term.numeral ((a + b) * (a + b)))) :=
     PA.Formula.BProv_eqTrans hsquare0 hsquare1
   have hout0 := PA.Formula.BProv_eq_congr_add hsquare hs
-  have hout1 := PA.Formula.BProv_Ax_s_addNumerals
+  have hout1 := PA.Formula.BProv_Ax_s_addNumerals (G := [])
     ((a + b) * (a + b)) a
   have hout := PA.Formula.BProv_eqTrans hout0 hout1
   simpa [pairTerm, Program.pairCode] using hout

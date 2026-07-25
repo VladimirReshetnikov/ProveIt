@@ -174,10 +174,7 @@ Lemma rename_ordinalCodeGraphBodyExistsTermAt :
       (Term.rename r coded).
 Proof.
   intros r step raw coded.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodeGraphBodyExistsTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodeGraphBodyExistsTermAt.
 Qed.
 
 Lemma BProv_ordinalCodeGraphBodyExistsTermAt_of_term :
@@ -244,7 +241,6 @@ Proof.
     (pEq (tAdd lower1 (tSucc (tVar 0)))
       (tSucc (tAdd lower1 (tVar 0))))).
   {
-    apply BProv_weaken_nil.
     apply BProv_Ax_s_addSucc_terms.
   }
   pose proof (BProv_eqTrans Ax_s D _ _ _ hsuccAdd
@@ -363,7 +359,6 @@ Proof.
     (pEq (tAdd step (tSucc core))
       (tSucc (tAdd step core)))).
   {
-    apply BProv_weaken_nil.
     apply BProv_Ax_s_addSucc_terms.
   }
   assert (hmod : BProv Ax_s G
@@ -454,10 +449,7 @@ Lemma rename_ordinalCodeTraceCapacityTermAt :
       (Term.rename r capacity).
 Proof.
   intros r raw coded capacity.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodeTraceCapacityTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodeTraceCapacityTermAt.
 Qed.
 
 Lemma BProv_Ax_s_betaTermTermAt_zero_code_zero :
@@ -477,7 +469,6 @@ Proof.
   assert (haddZero : BProv Ax_s G
     (pEq (tAdd tZero tZero) tZero)).
   {
-    apply BProv_weaken_nil.
     apply BProv_Ax_s_addZero_term.
   }
   pose proof (BProv_eq_congr_add_left Ax_s G _ _ tZero hzeroMul)
@@ -921,7 +912,6 @@ Proof.
     (pEq (tMul oldCode (tSucc modulusPred))
       (tAdd (tMul oldCode modulusPred) oldCode))).
   {
-    apply BProv_weaken_nil.
     apply BProv_Ax_s_mulSucc_terms.
   }
   assert (hinner : BProv Ax_s G
@@ -1111,10 +1101,7 @@ Lemma rename_betaCodeExtensionExistsTermAt :
       (Term.rename r newOut).
 Proof.
   intros r oldCode step target newOut.
-  rewrite <- subst_var_rename.
-  rewrite subst_betaCodeExtensionExistsTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_betaCodeExtensionExistsTermAt.
 Qed.
 
 Lemma rename_succ_twice_betaPrefixDividesTermAt :

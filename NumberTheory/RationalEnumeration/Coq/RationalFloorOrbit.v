@@ -237,35 +237,30 @@ Proof.
   reflexivity.
 Qed.
 
+(* Unfolding one layer of [cwIndex] on a pair of distinct positive arguments
+   is the same work in both recursive branches: discharge the three "not
+   zero, not equal" guards, then take the [a <? b] branch and re-fold the
+   fuelled recursion.  Only the direction of that last test differs, so it is
+   passed in, together with the [ltb] lemma that decides it. *)
+Ltac cwIndex_step a b lt_val lt_lemma :=
+  unfold cwIndex at 1;
+  replace (a + b + 1) with (S (a + b)) by lia;
+  cbn [cwIndexFuel];
+  replace (a =? 0) with false by (symmetry; apply Nat.eqb_neq; lia);
+  replace (b =? 0) with false by (symmetry; apply Nat.eqb_neq; lia);
+  replace (a =? b) with false by (symmetry; apply Nat.eqb_neq; lia);
+  replace (a <? b) with lt_val by (symmetry; apply lt_lemma; lia);
+  cbn;
+  rewrite cwIndexFuel_ge by lia;
+  reflexivity.
+
 Theorem cwIndex_left {a b : nat} (ha : 0 < a) (h : a < b) :
     cwIndex a b = 2 * cwIndex a (b - a) + 1.
-Proof.
-  unfold cwIndex at 1.
-  replace (a + b + 1) with (S (a + b)) by lia.
-  cbn [cwIndexFuel].
-  replace (a =? 0) with false by (symmetry; apply Nat.eqb_neq; lia).
-  replace (b =? 0) with false by (symmetry; apply Nat.eqb_neq; lia).
-  replace (a =? b) with false by (symmetry; apply Nat.eqb_neq; lia).
-  replace (a <? b) with true by (symmetry; apply Nat.ltb_lt; lia).
-  cbn.
-  rewrite cwIndexFuel_ge by lia.
-  reflexivity.
-Qed.
+Proof. cwIndex_step a b true Nat.ltb_lt. Qed.
 
 Theorem cwIndex_right {a b : nat} (hb : 0 < b) (h : b < a) :
     cwIndex a b = 2 * cwIndex (a - b) b + 2.
-Proof.
-  unfold cwIndex at 1.
-  replace (a + b + 1) with (S (a + b)) by lia.
-  cbn [cwIndexFuel].
-  replace (a =? 0) with false by (symmetry; apply Nat.eqb_neq; lia).
-  replace (b =? 0) with false by (symmetry; apply Nat.eqb_neq; lia).
-  replace (a =? b) with false by (symmetry; apply Nat.eqb_neq; lia).
-  replace (a <? b) with false by (symmetry; apply Nat.ltb_ge; lia).
-  cbn.
-  rewrite cwIndexFuel_ge by lia.
-  reflexivity.
-Qed.
+Proof. cwIndex_step a b false Nat.ltb_ge. Qed.
 
 Theorem coprime_sub_right {a b : nat} (h : a < b) (hc : Coprime a b) :
     Coprime a (b - a).
@@ -318,25 +313,28 @@ Proof.
 Qed.
 
 (* The even/odd splits of [m] via [Nat.div2] recur four times in the two
-   proofs below; factor them into named lemmas. *)
+   proofs below; factor them into named lemmas.  Both are the one Euclidean
+   split below, read at the two possible parities: stating it with the parity
+   as a [b2n] summand lets each case be settled by [lia] after deciding
+   [Nat.odd m], instead of re-deriving the parity fact by hand. *)
+Lemma div2_split (m : nat) : m = 2 * (m / 2) + Nat.b2n (Nat.odd m).
+Proof.
+  pose proof (Nat.div2_odd m) as hsplit.
+  rewrite <- Nat.div2_div. lia.
+Qed.
+
 Lemma even_double {m : nat} (h : Nat.even m = true) : m = 2 * (m / 2).
 Proof.
-  assert (hodd : Nat.odd m = false).
-  { destruct (Nat.odd m) eqn:hodd; [|reflexivity].
-    rewrite <- Nat.negb_odd in h. rewrite hodd in h. discriminate. }
-  pose proof (Nat.div2_odd m) as hsplit.
-  rewrite hodd in hsplit. simpl in hsplit.
-  rewrite <- Nat.div2_div. lia.
+  pose proof (div2_split m) as hs.
+  rewrite <- Nat.negb_odd in h.
+  destruct (Nat.odd m); simpl in *; [discriminate | lia].
 Qed.
 
 Lemma odd_double {m : nat} (h : Nat.even m = false) : m = 2 * (m / 2) + 1.
 Proof.
-  assert (hodd : Nat.odd m = true).
-  { destruct (Nat.odd m) eqn:hodd; [reflexivity|].
-    rewrite <- Nat.negb_odd in h. rewrite hodd in h. discriminate. }
-  pose proof (Nat.div2_odd m) as hsplit.
-  rewrite hodd in hsplit. simpl in hsplit.
-  rewrite <- Nat.div2_div. lia.
+  pose proof (div2_split m) as hs.
+  rewrite <- Nat.negb_odd in h.
+  destruct (Nat.odd m); simpl in *; [lia | discriminate].
 Qed.
 
 Theorem cwIndex_cwPair (n : nat) :
@@ -514,51 +512,6 @@ Qed.
 
 Local Open Scope Q_scope.
 
-Theorem qOfNat_den_expr (a b k : nat)
-    (hle : (a <= (2 * k + 1) * b)%nat) :
-    qOfNat ((2 * k + 1) * b - a) ==
-      (2 * qOfNat k + 1) * qOfNat b - qOfNat a.
-Proof.
-  unfold qOfNat, Qeq, Qplus, Qminus, Qopp, Qmult, inject_Z.
-  cbn.
-  rewrite Nat2Z.inj_sub by lia.
-  rewrite Nat2Z.inj_mul.
-  repeat rewrite Nat2Z.inj_add.
-  replace
-    (match Z.of_nat k with
-     | 0%Z => 0%Z
-     | Z.pos y' => Z.pos y'~0
-     | Z.neg y' => Z.neg y'~0
-     end) with (2 * Z.of_nat k)%Z.
-  - ring.
-  - destruct k; reflexivity.
-Qed.
-
-Theorem rationalNext_pairRat (a b : nat) (hb : (0 < b)%nat) :
-    rationalNext (pairRat (a, b)) == pairRat (pairNext (a, b)).
-Proof.
-  unfold rationalNext.
-  rewrite qfloorNat_pairRat by lia.
-  setoid_rewrite (pairRat_eq_div a b hb).
-  unfold pairNext.
-  cbn [fst snd].
-  rewrite (pairRat_eq_div b ((2 * (a / b) + 1) * b - a))
-    by (apply pairNext_den_pos; lia).
-  change (/ (1 - qOfNat a / qOfNat b + 2 * qOfNat (a / b)) ==
-    qOfNat b / qOfNat ((2 * (a / b) + 1) * b - a)).
-  pose proof (div_lt_mul_add a b hb) as hlt.
-  assert (hle : (a <= (2 * (a / b) + 1) * b)%nat) by lia.
-  assert (hdpos : (0 < (2 * (a / b) + 1) * b - a)%nat) by lia.
-  pose proof (qOfNat_den_expr a b (a / b) hle) as hden.
-  rewrite hden.
-  field.
-  split.
-  - intro hzero.
-    apply (qOfNat_nonzero ((2 * (a / b) + 1) * b - a) hdpos).
-    eapply Qeq_trans; [exact hden | exact hzero].
-  - apply qOfNat_nonzero; lia.
-Qed.
-
 Theorem rationalNext_pairRat_eq (a b : nat) (hb : (0 < b)%nat) :
     rationalNext (pairRat (a, b)) = pairRat (pairNext (a, b)).
 Proof.
@@ -593,6 +546,14 @@ Proof.
   repeat rewrite Pos.mul_1_l.
   repeat rewrite Pos.mul_1_r.
   rewrite Zpos_positiveDenOfNat by exact hb.
+  reflexivity.
+Qed.
+
+(** The setoid form is a direct consequence of the syntactic identity. *)
+Theorem rationalNext_pairRat (a b : nat) (hb : (0 < b)%nat) :
+    rationalNext (pairRat (a, b)) == pairRat (pairNext (a, b)).
+Proof.
+  rewrite rationalNext_pairRat_eq by exact hb.
   reflexivity.
 Qed.
 

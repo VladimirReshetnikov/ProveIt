@@ -55,7 +55,7 @@ Proof.
       (pEq (tAdd h (tSucc h)) (tSucc double))).
   {
     unfold double.
-    exact (BProv_weaken_nil Ax_s G _ (BProv_Ax_s_addSucc_terms h h)).
+    exact (BProv_Ax_s_addSucc_terms G h h).
   }
   assert (hright : BProv Ax_s G
       (pEq (tSucc (tAdd h (tSucc h)))
@@ -93,12 +93,12 @@ Proof.
   { exact (BProv_eq_congr_succ Ax_s G _ _ hvalue). }
   assert (haddSucc : BProv Ax_s G
       (pEq (tAdd d (tSucc tZero)) (tSucc (tAdd d tZero)))).
-  { exact (BProv_weaken_nil Ax_s G _ (BProv_Ax_s_addSucc_terms d tZero)). }
+  { exact (BProv_Ax_s_addSucc_terms G d tZero). }
   assert (haddZero : BProv Ax_s G
       (pEq (tSucc (tAdd d tZero)) (tSucc d))).
   {
     exact (BProv_eq_congr_succ Ax_s G _ _
-      (BProv_weaken_nil Ax_s G _ (BProv_Ax_s_addZero_term d))).
+      (BProv_Ax_s_addZero_term G d)).
   }
   assert (hsum : BProv Ax_s G
       (pEq (tAdd d (tSucc tZero)) (tSucc d))).
@@ -137,7 +137,7 @@ Proof.
       G value half hodd).
   }
   assert (haddZero : BProv Ax_s G (pEq (tAdd d tZero) d)).
-  { exact (BProv_weaken_nil Ax_s G _ (BProv_Ax_s_addZero_term d)). }
+  { exact (BProv_Ax_s_addZero_term G d). }
   assert (heq : BProv Ax_s G
       (pEq (tSucc (tVar value)) (tAdd d tZero))).
   {
@@ -163,10 +163,7 @@ Proof.
   {
     unfold body, div2StepTermAt, boolTermAt.
     simpl.
-    repeat rewrite Term.rename_comp.
-    repeat rewrite term_subst_instTerm_rename_succ.
-    repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-    rewrite (term_subst_instTerm_rename_succ value bit).
+    normalize_subst_rename_comp.
     exact hstep.
   }
   assert (hhalf : BProv Ax_s G (subst (instTerm half) (pEx body))).
@@ -194,7 +191,7 @@ Proof.
     apply BProv_orI1.
     apply (BProv_Ax_s_doubleEqAt_of_div2StepAt_bit_zero
       (zeroAt bit :: G) value half bit).
-    - apply BProv_ass. simpl. left. reflexivity.
+    - apply BProv_ass_head.
     - apply BProv_context_cons. exact hstep.
   }
   assert (hone : BProv Ax_s (oneAt bit :: G)
@@ -203,7 +200,7 @@ Proof.
     apply BProv_orI2.
     apply (BProv_Ax_s_oddDoubleEqAt_of_div2StepAt_bit_one
       (oneAt bit :: G) value half bit).
-    - apply BProv_ass. simpl. left. reflexivity.
+    - apply BProv_ass_head.
     - apply BProv_context_cons. exact hstep.
   }
   exact (BProv_orE Ax_s G (zeroAt bit) (oneAt bit)
@@ -237,7 +234,7 @@ Proof.
     apply BProv_Ax_s_div2TotalTermAt_intro with
       (half := tVar half) (bit := tSucc tZero).
     apply BProv_Ax_s_div2StepTermAt_succ_of_doubleEqAt.
-    apply BProv_ass. simpl. left. reflexivity.
+    apply BProv_ass_head.
   }
   assert (hodd : BProv Ax_s (oddDoubleEqAt value half :: G)
       (div2TotalTermAt (tSucc (tVar value)))).
@@ -245,7 +242,7 @@ Proof.
     apply BProv_Ax_s_div2TotalTermAt_intro with
       (half := tSucc (tVar half)) (bit := tZero).
     apply BProv_Ax_s_div2StepTermAt_succ_of_oddDoubleEqAt.
-    apply BProv_ass. simpl. left. reflexivity.
+    apply BProv_ass_head.
   }
   exact (BProv_Ax_s_of_div2StepAt_double_odd_cases
     G value half bit (div2TotalTermAt (tSucc (tVar value)))
@@ -262,10 +259,10 @@ Proof.
     apply BProv_eqRefl.
   }
   assert (hzeroAdd : BProv Ax_s [] (pEq (tAdd tZero tZero) tZero)).
-  { exact (BProv_Ax_s_addZero_term tZero). }
+  { exact (BProv_Ax_s_addZero_term [] tZero). }
   assert (hsumZero : BProv Ax_s []
       (pEq (tAdd (tAdd tZero tZero) tZero) (tAdd tZero tZero))).
-  { exact (BProv_Ax_s_addZero_term (tAdd tZero tZero)). }
+  { exact (BProv_Ax_s_addZero_term [] (tAdd tZero tZero)). }
   assert (hsum : BProv Ax_s []
       (pEq (tAdd (tAdd tZero tZero) tZero) tZero)).
   { exact (BProv_eqTrans Ax_s [] _ _ _ hsumZero hzeroAdd). }
@@ -307,7 +304,7 @@ Proof.
     assert (hphi : BProv Ax_s [phi] (pEx inner)).
     {
       assert (hraw : BProv Ax_s [phi] phi).
-      { apply BProv_ass. simpl. left. reflexivity. }
+      { apply BProv_ass_head. }
       unfold phi, div2TotalAt, div2TotalTermAt in hraw.
       change (BProv Ax_s [phi] (pEx (pEx (div2StepAt 2 1 0)))) in hraw.
       unfold step, inner.
@@ -560,7 +557,7 @@ Lemma BProv_Ax_s_hfMembersBelowThroughTermAt_zero :
 Proof.
   set (belowOne := ltTermAt (tVar 0) (tSucc tZero)).
   assert (hlt : BProv Ax_s [belowOne] belowOne).
-  { apply BProv_ass. simpl. left. reflexivity. }
+  { apply BProv_ass_head. }
   assert (hleTerm : BProv Ax_s [belowOne]
       (leTermAt (tVar 0) tZero)).
   {
@@ -619,7 +616,7 @@ Proof.
       (hfMembersBelowThroughTermAt (tVar 0))).
   {
     unfold phi, hfMembersBelowThroughAt.
-    apply BProv_ass. simpl. left. reflexivity.
+    apply BProv_ass_head.
   }
   assert (hsuccTerm : BProv Ax_s [phi]
       (hfMembersBelowThroughTermAt (tSucc (tVar 0)))).

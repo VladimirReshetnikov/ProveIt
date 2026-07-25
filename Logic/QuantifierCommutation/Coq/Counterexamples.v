@@ -12,6 +12,23 @@ Set Implicit Arguments.
 
 Module QuantifierCounterexamples.
 
+(** * Separating two statements
+
+  Each counterexample below is packaged the same way: one nesting order is
+  proved to hold and the other to fail, and then three standard consequences
+  are recorded.  Those three consequences are pure propositional logic — they
+  say nothing about quantifiers — so they are proved once here and merely
+  instantiated twice further down. *)
+
+Lemma holds_and_fails (P Q : Prop) : P -> ~ Q -> P /\ ~ Q.
+Proof. intros hp hq. exact (conj hp hq). Qed.
+
+Lemma implication_fails (P Q : Prop) : P -> ~ Q -> ~ (P -> Q).
+Proof. intros hp hq h. exact (hq (h hp)). Qed.
+
+Lemma not_equivalent (P Q : Prop) : P -> ~ Q -> ~ (P <-> Q).
+Proof. intros hp hq h. exact (hq (proj1 h hp)). Qed.
+
 (** * Nested [no_exists] does not commute *)
 
 Inductive two : Type :=
@@ -38,25 +55,28 @@ Proof.
   intros [x Himpossible]. discriminate Himpossible.
 Qed.
 
+(** A concrete relation for which the two nesting orders have opposite
+    truth values. *)
+Theorem nested_no_exists_counterexample :
+    nested_no_exists_xy no_exists_relation /\
+    ~ nested_no_exists_yx no_exists_relation.
+Proof.
+  exact (holds_and_fails nested_no_exists_xy_holds nested_no_exists_yx_fails).
+Qed.
+
 (** Thus even the forward implication needed to swap the quantifiers fails. *)
 Theorem nested_no_exists_swap_implication_fails :
     ~ (nested_no_exists_xy no_exists_relation ->
        nested_no_exists_yx no_exists_relation).
 Proof.
-  intros Hswap.
-  apply nested_no_exists_yx_fails.
-  apply Hswap.
-  exact nested_no_exists_xy_holds.
+  exact (implication_fails nested_no_exists_xy_holds nested_no_exists_yx_fails).
 Qed.
 
 Theorem nested_no_exists_not_equivalent :
     ~ (nested_no_exists_xy no_exists_relation <->
        nested_no_exists_yx no_exists_relation).
 Proof.
-  intros Hequiv.
-  apply nested_no_exists_yx_fails.
-  apply (proj1 Hequiv).
-  exact nested_no_exists_xy_holds.
+  exact (not_equivalent nested_no_exists_xy_holds nested_no_exists_yx_fails).
 Qed.
 
 (** * Nested unique existence does not commute *)
@@ -87,16 +107,35 @@ Definition exists_unique_relation (x y : three) : Prop :=
   | _, _ => False
   end.
 
+(** Any witness together with a per-point uniqueness check yields unique
+    existence over [three]. *)
+Lemma three_exists_unique_intro (P : three -> Prop) (w : three) :
+    P w ->
+    (P point_a -> w = point_a) ->
+    (P point_b -> w = point_b) ->
+    (P point_c -> w = point_c) ->
+    exists! t, P t.
+Proof.
+  intros Hw Ha Hb Hc.
+  exists w. split.
+  - exact Hw.
+  - intros t Ht. destruct t.
+    + exact (Ha Ht).
+    + exact (Hb Ht).
+    + exact (Hc Ht).
+Qed.
+
+(** Each singleton row or column is settled the same way: offer the witness,
+    then simplify.  Every resulting goal is either the witness check [True],
+    an implication whose conclusion is [reflexivity], or one with an absurd
+    [False] hypothesis; [first] picks whichever applies. *)
+Ltac singleton_witness t :=
+  apply three_exists_unique_intro with (w := t); simpl;
+  first [ exact I | intros _; reflexivity | intros [] ].
+
 Lemma row_a_is_unique :
     exists! y, exists_unique_relation point_a y.
-Proof.
-  exists point_a. split.
-  - exact I.
-  - intros y Hy. destruct y; simpl in Hy.
-    + reflexivity.
-    + contradiction.
-    + contradiction.
-Qed.
+Proof. singleton_witness point_a. Qed.
 
 Lemma row_b_is_not_unique :
     ~ (exists! y, exists_unique_relation point_b y).
@@ -118,36 +157,15 @@ Qed.
 
 Lemma column_a_is_unique :
     exists! x, exists_unique_relation x point_a.
-Proof.
-  exists point_a. split.
-  - exact I.
-  - intros x Hx. destruct x; simpl in Hx.
-    + reflexivity.
-    + contradiction.
-    + contradiction.
-Qed.
+Proof. singleton_witness point_a. Qed.
 
 Lemma column_b_is_unique :
     exists! x, exists_unique_relation x point_b.
-Proof.
-  exists point_b. split.
-  - exact I.
-  - intros x Hx. destruct x; simpl in Hx.
-    + contradiction.
-    + reflexivity.
-    + contradiction.
-Qed.
+Proof. singleton_witness point_b. Qed.
 
 Lemma column_c_is_unique :
     exists! x, exists_unique_relation x point_c.
-Proof.
-  exists point_b. split.
-  - exact I.
-  - intros x Hx. destruct x; simpl in Hx.
-    + contradiction.
-    + reflexivity.
-    + contradiction.
-Qed.
+Proof. singleton_witness point_b. Qed.
 
 Theorem nested_exists_unique_xy_holds :
     nested_exists_unique_xy exists_unique_relation.
@@ -173,25 +191,31 @@ Proof.
   discriminate Hab.
 Qed.
 
+(** A concrete relation for which the two unique-existence nesting orders
+    have opposite truth values. *)
+Theorem nested_exists_unique_counterexample :
+    nested_exists_unique_xy exists_unique_relation /\
+    ~ nested_exists_unique_yx exists_unique_relation.
+Proof.
+  exact (holds_and_fails nested_exists_unique_xy_holds
+           nested_exists_unique_yx_fails).
+Qed.
+
 (** Again, the forward implication—and therefore equivalence—fails. *)
 Theorem nested_exists_unique_swap_implication_fails :
     ~ (nested_exists_unique_xy exists_unique_relation ->
        nested_exists_unique_yx exists_unique_relation).
 Proof.
-  intros Hswap.
-  apply nested_exists_unique_yx_fails.
-  apply Hswap.
-  exact nested_exists_unique_xy_holds.
+  exact (implication_fails nested_exists_unique_xy_holds
+           nested_exists_unique_yx_fails).
 Qed.
 
 Theorem nested_exists_unique_not_equivalent :
     ~ (nested_exists_unique_xy exists_unique_relation <->
        nested_exists_unique_yx exists_unique_relation).
 Proof.
-  intros Hequiv.
-  apply nested_exists_unique_yx_fails.
-  apply (proj1 Hequiv).
-  exact nested_exists_unique_xy_holds.
+  exact (not_equivalent nested_exists_unique_xy_holds
+           nested_exists_unique_yx_fails).
 Qed.
 
 End QuantifierCounterexamples.

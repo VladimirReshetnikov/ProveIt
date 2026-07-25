@@ -1219,7 +1219,7 @@ Proof.
   pose proof (raw_eq_of_closed_bprov M hPA
     (PA.tAdd (PA.tVar 0) (PA.tSucc (PA.tVar 1)))
     (PA.tSucc (PA.tAdd (PA.tVar 0) (PA.tVar 1))) e
-    (PA.Formula.BProv_Ax_s_addSucc_terms
+    (PA.Formula.BProv_Ax_s_addSucc_terms nil
       (PA.tVar 0) (PA.tVar 1))) as h.
   unfold e in h. cbn [raw_term_eval scons] in h. exact h.
 Qed.
@@ -1264,7 +1264,7 @@ Proof.
   pose proof (raw_eq_of_closed_bprov M hPA
     (PA.tMul (PA.Term.numeral m) (PA.Term.numeral n))
     (PA.Term.numeral (m * n)) e
-    (PA.Formula.BProv_Ax_s_mulNumerals m n)) as h.
+    (PA.Formula.BProv_Ax_s_mulNumerals nil m n)) as h.
   cbn [raw_term_eval] in h.
   rewrite !raw_term_eval_numeral in h. exact h.
 Qed.

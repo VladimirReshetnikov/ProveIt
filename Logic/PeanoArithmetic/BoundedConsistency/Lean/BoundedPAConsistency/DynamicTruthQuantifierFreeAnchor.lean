@@ -1,5 +1,6 @@
 import BoundedPAConsistency.DynamicTruthCompiledLocalBundle
 import BoundedPAConsistency.DynamicTruthCrossLevelSourceSuccessor
+import BoundedPAConsistency.FinFunext
 import Foundation.FirstOrder.Completeness
 
 /-!
@@ -166,16 +167,7 @@ noncomputable def sourceQuantifierFreeIntroductionProof :
               ![bound, free, p, upperLevel] Empty.elim ∘
             (Rew.subst ![#0, #1, #2]) ∘
             FirstOrder.Semiterm.bvar) = ![bound, free, p] := by
-        funext i
-        cases i using Fin.cases with
-        | zero => simp
-        | succ i =>
-            cases i using Fin.cases with
-            | zero => simp
-            | succ i =>
-                cases i using Fin.cases with
-                | zero => simp
-                | succ i => exact i.elim0
+        refine funext_fin3 ?_ ?_ ?_ <;> simp
       have hf :
           (FirstOrder.Semiterm.val
               (s := _structure.lMap (arithmeticHom 3 2))
@@ -196,19 +188,7 @@ noncomputable def sourceQuantifierFreeIntroductionProof :
               ![C, bound, free, p, upperLevel] Empty.elim ∘
             (Rew.subst ![#0, #1, #2, #3]) ∘
             FirstOrder.Semiterm.bvar) = ![C, bound, free, p] := by
-        funext i
-        cases i using Fin.cases with
-        | zero => simp
-        | succ i =>
-            cases i using Fin.cases with
-            | zero => simp
-            | succ i =>
-                cases i using Fin.cases with
-                | zero => simp
-                | succ i =>
-                    cases i using Fin.cases with
-                    | zero => simp
-                    | succ i => exact i.elim0
+        refine funext_fin4 ?_ ?_ ?_ ?_ <;> simp
       have hf :
           (FirstOrder.Semiterm.val
               (s := _structure.lMap (arithmeticHom 3 2))
@@ -228,13 +208,7 @@ noncomputable def sourceQuantifierFreeIntroductionProof :
               ![r, C, bound, free, p, upperLevel] Empty.elim ∘
             (Rew.subst ![#0, #1]) ∘
             FirstOrder.Semiterm.bvar) = ![r, C] := by
-        funext i
-        cases i using Fin.cases with
-        | zero => simp
-        | succ i =>
-            cases i using Fin.cases with
-            | zero => simp
-            | succ i => exact i.elim0
+        refine funext_fin2 ?_ ?_ <;> simp
       have hf :
           (FirstOrder.Semiterm.val
               (s := _structure.lMap (arithmeticHom 3 2))
@@ -256,16 +230,10 @@ noncomputable def sourceQuantifierFreeIntroductionProof :
             FirstOrder.Semiterm.bvar) =
               ![(parameterTerm (n := 2) (1 : Fin 2)).val
                   ![C, r] Empty.elim, C, r] := by
-        funext i
-        cases i using Fin.cases with
-        | zero => simp [upperLevel, parameterTerm]
-        | succ i =>
-            cases i using Fin.cases with
-            | zero => simp
-            | succ i =>
-                cases i using Fin.cases with
-                | zero => simp
-                | succ i => exact i.elim0
+        refine funext_fin3 ?_ ?_ ?_
+        · simp [upperLevel, parameterTerm]
+        · simp
+        · simp
       have hf :
           (FirstOrder.Semiterm.val
               (s := _structure.lMap (arithmeticHom 3 2))
@@ -285,13 +253,7 @@ noncomputable def sourceQuantifierFreeIntroductionProof :
                 ![r, C, bound, free, p, upperLevel] Empty.elim ∘
               (Rew.subst ![#1, #0]) ∘
               FirstOrder.Semiterm.bvar) = ![C, r] := by
-          funext i
-          cases i using Fin.cases with
-          | zero => simp
-          | succ i =>
-              cases i using Fin.cases with
-              | zero => simp
-              | succ i => exact i.elim0
+          refine funext_fin2 ?_ ?_ <;> simp
         have hf :
             (FirstOrder.Semiterm.val
                 (s := _structure.lMap (arithmeticHom 3 2))

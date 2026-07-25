@@ -1,6 +1,7 @@
 import BoundedPAConsistency.DynamicTruthOrbit
 import BoundedPAConsistency.DynamicTruthTemplateFormula
 import BoundedPAConsistency.TermEvaluationTransport
+import BoundedPAConsistency.FinFunext
 
 /-!
 # The model-coded simultaneous-substitution invariance field
@@ -284,22 +285,7 @@ noncomputable def substitutionInvariantFormula
   rw [apply₅, Semiformula.coe_subst_eq_subst_coe,
     ModelCodedPredicateParameters.translateFormula_subst]
   congr 1
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i =>
-              cases i using Fin.cases with
-              | zero => rfl
-              | succ i =>
-                  cases i using Fin.cases with
-                  | zero => rfl
-                  | succ i => exact i.elim0
+  exact funext_fin5 rfl rfl rfl rfl rfl
 
 @[simp] theorem translate_sourceSemitermVector
     (lower : Bootstrapping.Semiformula V ℒₒᵣ 3)

@@ -42,12 +42,56 @@ Both proof assistants also check the full one-parameter family, for `t ≠ 0`,
 F(t,-1/t,5/t^2) = F(0,2/t,-16/t^2) = (0,2/t,0).
 ```
 
-The integral collision is its `t=-1` instance.
+The integral collision is its `t=-1` instance; that identification is itself
+a checked lemma in both developments.
+
+## Equivariance
+
+Both developments also prove the exact symmetry
+
+```text
+F(-x, -y, z) = (P, -Q, -R)(x, y, z),
+```
+
+an equivariance between the linear involutions `(x,y,z) ↦ (-x,-y,z)` and
+`(u,v,w) ↦ (u,-v,-w)`.  Whenever the image of a point is fixed by the target
+involution, the point collides with its mirror.  The formalizations exploit
+this: the third rational collision point `(-1, 3/2, 13/2)` is the mirror of
+the second, so its image is obtained by rewriting rather than a fresh
+polynomial evaluation, and mirroring the integral collision produces a
+further integral collision `F(1,-1,5) = F(0,2,-16)` for free — the `t = 1`
+member of the family.  The rational family is closed under the symmetry,
+which acts on the parameter by `t ↦ -t`.  The two-variable stable shear
+respects the same symmetry once the added variables `a, b` are also negated,
+so the five-variable degree-six representative satisfies the analogous
+equivariance with target involution `(v₀,…,v₄) ↦ (v₀,-v₁,-v₂,-v₃,-v₄)`.
+
+The discrete symmetry is the `s = -1` slice of a full weighted torus action:
+`F` is homogeneous for the grading `weight(x,y,z) = (-1,1,2)`, and both
+developments prove
+
+```text
+F(x/s, sy, s²z) = (s²P, sQ, R/s)          (s ≠ 0),
+```
+
+and that scaling therefore carries collisions to collisions.  The family
+files are organized around this action: the parameter-`t` member is
+*defined up to one checked identification* as the scaling by `1/t` of the
+mirrored integral collision, and every family property — the common
+values, the collision, the mirror symmetry acting on the parameter by
+`t ↦ -t`, and the inverted parametrization — is derived from the torus
+action and the single integral collision by rewriting, with no further
+polynomial evaluation.
 
 Thus `F` is not injective and cannot have a set-theoretic left inverse, much
 less a polynomial two-sided inverse.  It refutes the dimension-three
 Jacobian conjecture over `C`; adjoining untouched coordinates gives the same
-conclusion in every dimension at least three.
+conclusion in every dimension at least three, and the Lean development
+formalizes that stabilization outright
+(`jacobianConjectureInDimension_false_of_three_le`): the padded map's
+Jacobian is block triangular with the renamed three-by-three Jacobian and an
+identity block, so its determinant is still `-2`, and the zero-padded
+collision still identifies two distinct points.
 
 ## A kernel-checked lower-degree representative
 
@@ -125,7 +169,11 @@ lake --dir Algebra/JacobianConjecture/Lean env lean `
   Algebra/JacobianConjecture/Lean/JacobianConjecture/Audit.lean
 
 coqc -Q Algebra/JacobianConjecture/Coq JacobianConjecture `
+  Algebra/JacobianConjecture/Coq/Common.v
+coqc -Q Algebra/JacobianConjecture/Coq JacobianConjecture `
   Algebra/JacobianConjecture/Coq/Counterexample.v
+coqc -Q Algebra/JacobianConjecture/Coq JacobianConjecture `
+  Algebra/JacobianConjecture/Coq/Scaling.v
 coqc -Q Algebra/JacobianConjecture/Coq JacobianConjecture `
   Algebra/JacobianConjecture/Coq/CollisionFamily.v
 coqc -Q Algebra/JacobianConjecture/Coq JacobianConjecture `
@@ -133,8 +181,8 @@ coqc -Q Algebra/JacobianConjecture/Coq JacobianConjecture `
 coqc -Q Algebra/JacobianConjecture/Coq JacobianConjecture `
   Algebra/JacobianConjecture/Coq/Audit.v
 coqchk -silent -Q Algebra/JacobianConjecture/Coq JacobianConjecture `
-  JacobianConjecture.Counterexample `
-  JacobianConjecture.CollisionFamily `
+  JacobianConjecture.Common JacobianConjecture.Counterexample `
+  JacobianConjecture.Scaling JacobianConjecture.CollisionFamily `
   JacobianConjecture.SimplerCounterexample JacobianConjecture.Audit
 
 python Algebra/JacobianConjecture/Research/verify_simpler.py

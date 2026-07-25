@@ -609,10 +609,7 @@ Lemma rename_hfAdjoinGraphTermAt :
       (Term.rename r elemCode).
 Proof.
   intros r newCode oldCode elemCode.
-  rewrite <- subst_var_rename.
-  rewrite subst_hfAdjoinGraphTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_hfAdjoinGraphTermAt.
 Qed.
 
 (** Equality transport in the old-code input of the Ackermann-adjoin graph. *)
@@ -770,10 +767,7 @@ Lemma rename_ordinalCodeStepWitnessTermAt :
       (Term.rename r index).
 Proof.
   intros r sequenceCode sequenceStep index.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodeStepWitnessTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodeStepWitnessTermAt.
 Qed.
 
 Lemma rename_ordinalCodeStepsTermAt :
@@ -785,10 +779,7 @@ Lemma rename_ordinalCodeStepsTermAt :
       (Term.rename r raw).
 Proof.
   intros r sequenceCode sequenceStep raw.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodeStepsTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodeStepsTermAt.
 Qed.
 
 Lemma rename_ordinalCodeGraphTermAt : forall r raw coded,
@@ -797,10 +788,7 @@ Lemma rename_ordinalCodeGraphTermAt : forall r raw coded,
       (Term.rename r raw) (Term.rename r coded).
 Proof.
   intros r raw coded.
-  rewrite <- subst_var_rename.
-  rewrite subst_ordinalCodeGraphTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_ordinalCodeGraphTermAt.
 Qed.
 
 (** Equality transport in the raw argument of the ordinal-code graph. *)

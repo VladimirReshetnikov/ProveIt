@@ -1,0 +1,20 @@
+(** Assumption audit for the dynamic-soundness producer reduction. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADynamicSoundnessProducer.
+
+Import PABoundedRawCodedRestrictedPADynamicSoundnessProducer.
+
+Check RawRestrictedPADynamicSoundnessProducer.
+Check RawRestrictedPADynamicSoundnessProducerInAllModels.
+Check
+  raw_restrictedPAProjectedFieldRefutationCompiler_of_dynamicSoundnessProducer.
+Check
+  raw_restrictedPAProjectedFieldRefutationCompilerInAllModels_of_dynamicSoundnessProducer.
+Check
+  PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dynamicSoundnessProducer.
+
+Print Assumptions
+  raw_restrictedPAProjectedFieldRefutationCompiler_of_dynamicSoundnessProducer.
+Print Assumptions
+  PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dynamicSoundnessProducer.

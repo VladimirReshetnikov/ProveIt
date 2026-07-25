@@ -9,10 +9,12 @@ Check forall_forall_commute.
 Check exists_exists_commute.
 Check nested_no_exists_xy_holds.
 Check nested_no_exists_yx_fails.
+Check nested_no_exists_counterexample.
 Check nested_no_exists_swap_implication_fails.
 Check nested_no_exists_not_equivalent.
 Check nested_exists_unique_xy_holds.
 Check nested_exists_unique_yx_fails.
+Check nested_exists_unique_counterexample.
 Check nested_exists_unique_swap_implication_fails.
 Check nested_exists_unique_not_equivalent.
 
@@ -20,7 +22,16 @@ Print Assumptions forall_forall_commute.
 Print Assumptions exists_exists_commute.
 Print Assumptions nested_no_exists_xy_holds.
 Print Assumptions nested_no_exists_yx_fails.
+Print Assumptions nested_no_exists_counterexample.
+Print Assumptions nested_no_exists_swap_implication_fails.
 Print Assumptions nested_no_exists_not_equivalent.
+Print Assumptions three_exists_unique_intro.
+Print Assumptions row_a_is_unique.
+Print Assumptions column_a_is_unique.
+Print Assumptions column_b_is_unique.
+Print Assumptions column_c_is_unique.
 Print Assumptions nested_exists_unique_xy_holds.
 Print Assumptions nested_exists_unique_yx_fails.
+Print Assumptions nested_exists_unique_counterexample.
+Print Assumptions nested_exists_unique_swap_implication_fails.
 Print Assumptions nested_exists_unique_not_equivalent.

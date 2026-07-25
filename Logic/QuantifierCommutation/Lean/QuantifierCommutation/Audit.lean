@@ -14,10 +14,12 @@ open LeanProofs.QuantifierCommutation
 #check firstColumn_noExistsXY
 #check firstColumn_not_noExistsYX
 #check noExists_counterexample
+#check noExists_swap_implication_fails
 #check noExists_not_commutative
 #check uniqueRelation_existsUniqueXY
 #check uniqueRelation_not_existsUniqueYX
 #check existsUnique_counterexample
+#check existsUnique_swap_implication_fails
 #check existsUnique_not_commutative
 
 #print axioms forall_forall_commute
@@ -29,7 +31,9 @@ open LeanProofs.QuantifierCommutation
 #print axioms firstColumn_noExistsXY
 #print axioms firstColumn_not_noExistsYX
 #print axioms noExists_counterexample
+#print axioms noExists_swap_implication_fails
 #print axioms noExists_not_commutative
+#print axioms three_existsUnique_intro
 #print axioms rowA_unique
 #print axioms columnA_unique
 #print axioms columnB_unique
@@ -37,4 +41,5 @@ open LeanProofs.QuantifierCommutation
 #print axioms uniqueRelation_existsUniqueXY
 #print axioms uniqueRelation_not_existsUniqueYX
 #print axioms existsUnique_counterexample
+#print axioms existsUnique_swap_implication_fails
 #print axioms existsUnique_not_commutative

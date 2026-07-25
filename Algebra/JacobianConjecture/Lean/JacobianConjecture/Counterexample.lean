@@ -1,5 +1,6 @@
 import Mathlib.Algebra.MvPolynomial.PDeriv
 import Mathlib.Data.Complex.Basic
+import Mathlib.Data.Matrix.Block
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.NormNum
@@ -29,6 +30,18 @@ namespace LeanProofs.JacobianCounterexample
 open Function Matrix MvPolynomial
 
 universe u
+
+/-- **Block lower-triangular determinant.**  A block matrix indexed by `m ⊕ n`
+whose upper-right block vanishes and whose lower-right block is the identity
+has determinant equal to that of its upper-left block.  Both the five-variable
+and the stabilized determinant calculations reduce to this fact. -/
+theorem det_eq_det_toBlocks₁₁ {m n : Type*} [Fintype m] [Fintype n]
+    [DecidableEq m] [DecidableEq n] {R : Type u} [CommRing R]
+    (M : Matrix (m ⊕ n) (m ⊕ n) R)
+    (h₁₂ : M.toBlocks₁₂ = 0) (h₂₂ : M.toBlocks₂₂ = 1) :
+    M.det = M.toBlocks₁₁.det := by
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks M, h₁₂, h₂₂]
+  rw [Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, mul_one]
 
 /-- An `n`-dimensional polynomial self-map over `R`. -/
 abbrev PolynomialMap (n : Nat) (R : Type u) [CommSemiring R] :=
@@ -99,7 +112,9 @@ private theorem det3_eq_det {R : Type u} [CommRing R] (A : Matrix I I R) :
   simp only [det3]
   ring
 
-private theorem pderiv_ofNat {σ R : Type*} [CommSemiring R] {i : σ} (n : Nat)
+/-- Numeric literals have vanishing formal partial derivatives.  Shared by
+the determinant calculations of this file and `SimplerCounterexample`. -/
+theorem pderiv_ofNat {σ R : Type*} [CommSemiring R] {i : σ} (n : Nat)
     [n.AtLeastTwo] :
     pderiv i (ofNat(n) : MvPolynomial σ R) = 0 := by
   rw [← map_ofNat (C : R →+* MvPolynomial σ R) n]
@@ -138,16 +153,14 @@ theorem collision₀_value (R : Type u) [CommRing R] :
   funext i
   fin_cases i <;>
     norm_num [evalMap, counterexample, collision₀, collisionValue,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-      Matrix.head_cons, Matrix.tail_cons]
+      Matrix.cons_val_two]
 
 theorem collision₁_value (R : Type u) [CommRing R] :
     evalMap (counterexample R) (collision₁ R) = collisionValue R := by
   funext i
   fin_cases i <;>
     norm_num [evalMap, counterexample, collision₁, collisionValue,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-      Matrix.head_cons, Matrix.tail_cons]
+      Matrix.cons_val_two]
 
 theorem collision (R : Type u) [CommRing R] :
     evalMap (counterexample R) (collision₀ R) =

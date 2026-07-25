@@ -1,0 +1,72 @@
+import BoundedPAConsistency.DynamicTruthRestrictedSoundnessProduction
+
+/-!
+# Audit: the final staged restricted-consistency transition
+
+The declarations below expose the complete proof-code route for the sixth
+staged obligation: identification of the source prefix with the generic
+represented strong-induction prefix, compilation of the audited source step,
+discharge of the adjacency and lower-existential antecedents, represented
+strong induction, the falsity bridge, and the base transition.
+
+The last declaration is the uniform staged implication consumed by
+`PAStagedTruthCertificateStep.proveFinalConsistency`.
+-/
+
+namespace LeanProofs.BoundedPAConsistency.DynamicTruthRestrictedSoundnessProductionAudit
+
+open LO FirstOrder
+open LO.FirstOrder.Arithmetic
+open LO.FirstOrder.Arithmetic.Bootstrapping
+open LeanProofs.BoundedPAConsistency.DynamicTruthRestrictedSoundnessProduction
+
+#check translate_sourceDerivationSoundnessPrefix
+#check soundnessLawContextFormula
+#check adjacentLevelsFormula
+#check adjacentLevelsFormula_of_positive
+#check translate_sourceSoundnessLawContext
+#check translate_sourceRestrictedSoundnessStrongStepSentence
+#check translate_sourceCongruentRestrictedSoundnessStrongStepSentence
+#check compiledRestrictedSoundnessStrongStepProof
+#check soundnessLawContextFormula_shift
+#check compiledDerivationSoundnessUniversalProof
+#check compiledRestrictedConsistencyProof
+#check lowerExistentialLawsFormula_levels
+#check orbitStagedSoundnessContext
+#check orbitStagedCrossProjection
+#check orbitStagedShiftProjection
+#check orbitStagedSubstitutionProjection
+#check orbitStagedAxiomProjection
+#check orbitAdjacentLevelsProof
+#check orbitLowerExistentialLawsAtProof
+#check orbitPositiveSoundnessLawContextProof
+#check orbitPositiveFinalConsistencyProof
+#check paRestrictedConsistencyFormula_zero_add_one
+#check baseFinalConsistencyAtLevelOneProof
+#check orbitBaseFinalConsistencyProof
+#check stagedFinalConsistencyProof
+
+#print axioms translate_sourceDerivationSoundnessPrefix
+#print axioms adjacentLevelsFormula_of_positive
+#print axioms translate_sourceSoundnessLawContext
+#print axioms translate_sourceRestrictedSoundnessStrongStepSentence
+#print axioms translate_sourceCongruentRestrictedSoundnessStrongStepSentence
+#print axioms compiledRestrictedSoundnessStrongStepProof
+#print axioms soundnessLawContextFormula_shift
+#print axioms compiledDerivationSoundnessUniversalProof
+#print axioms compiledRestrictedConsistencyProof
+#print axioms lowerExistentialLawsFormula_levels
+#print axioms orbitStagedCrossProjection
+#print axioms orbitStagedShiftProjection
+#print axioms orbitStagedSubstitutionProjection
+#print axioms orbitStagedAxiomProjection
+#print axioms orbitAdjacentLevelsProof
+#print axioms orbitLowerExistentialLawsAtProof
+#print axioms orbitPositiveSoundnessLawContextProof
+#print axioms orbitPositiveFinalConsistencyProof
+#print axioms paRestrictedConsistencyFormula_zero_add_one
+#print axioms baseFinalConsistencyAtLevelOneProof
+#print axioms orbitBaseFinalConsistencyProof
+#print axioms stagedFinalConsistencyProof
+
+end LeanProofs.BoundedPAConsistency.DynamicTruthRestrictedSoundnessProductionAudit

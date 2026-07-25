@@ -70,105 +70,86 @@ Proof.
   apply D_assumption. left. reflexivity.
 Qed.
 
-(* Intuitionistic specializations. *)
+(**
+  The twelve results below are the six generic theorems above read at the two
+  concrete axiom sets.  Both [intuitionistically_derives] and
+  [classically_derives] are by definition [derives] at a fixed axiom
+  predicate, so each specialization *is* the generic theorem: no proof step
+  beyond instantiating [axiom] is needed, and every proof is the corresponding
+  one-liner.
+*)
+
+(* Intuitionistic specializations: [axiom] is empty. *)
 
 Theorem intuitionistic_ex_falso : forall A (Gamma : context A) q,
     intuitionistically_derives Gamma Falsum ->
     intuitionistically_derives Gamma q.
-Proof.
-  intros A Gamma q H.
-  exact (@derives_ex_falso A (fun _ => False) Gamma q H).
-Qed.
+Proof. exact (fun A => @derives_ex_falso A (fun _ => False)). Qed.
 
 Theorem intuitionistic_explosion : forall A (Gamma : context A) p q,
     intuitionistically_derives Gamma p ->
     intuitionistically_derives Gamma (Neg p) ->
     intuitionistically_derives Gamma q.
-Proof.
-  intros A Gamma p q Hp Hnp.
-  exact (@derives_explosion A (fun _ => False) Gamma p q Hp Hnp).
-Qed.
+Proof. exact (fun A => @derives_explosion A (fun _ => False)). Qed.
 
 Theorem intuitionistic_explosion_from_conjunction :
     forall A (Gamma : context A) p q,
     intuitionistically_derives Gamma (Conj p (Neg p)) ->
     intuitionistically_derives Gamma q.
 Proof.
-  intros A Gamma p q H.
-  exact (@derives_explosion_from_conjunction A (fun _ => False) Gamma p q H).
+  exact (fun A => @derives_explosion_from_conjunction A (fun _ => False)).
 Qed.
 
 Theorem intuitionistic_explosion_sequent :
     forall A (Gamma : context A) p q,
     intuitionistically_derives (p :: Neg p :: Gamma) q.
-Proof.
-  intros A Gamma p q.
-  exact (@derives_explosion_sequent A (fun _ => False) Gamma p q).
-Qed.
+Proof. exact (fun A => @derives_explosion_sequent A (fun _ => False)). Qed.
 
 Theorem intuitionistic_explosion_conj_sequent :
     forall A (Gamma : context A) p q,
     intuitionistically_derives (Conj p (Neg p) :: Gamma) q.
 Proof.
-  intros A Gamma p q.
-  exact (@derives_explosion_conj_sequent A (fun _ => False) Gamma p q).
+  exact (fun A => @derives_explosion_conj_sequent A (fun _ => False)).
 Qed.
 
 Theorem intuitionistic_explosion_implication :
     forall A (Gamma : context A) p q,
     intuitionistically_derives Gamma (Impl (Conj p (Neg p)) q).
 Proof.
-  intros A Gamma p q.
-  exact (@derives_explosion_implication A (fun _ => False) Gamma p q).
+  exact (fun A => @derives_explosion_implication A (fun _ => False)).
 Qed.
 
-(* Classical specializations. *)
+(* Classical specializations: [axiom] is excluded middle. *)
 
 Theorem classical_ex_falso : forall A (Gamma : context A) q,
     classically_derives Gamma Falsum -> classically_derives Gamma q.
-Proof.
-  intros A Gamma q H.
-  exact (@derives_ex_falso A classical_axiom Gamma q H).
-Qed.
+Proof. exact (fun A => @derives_ex_falso A classical_axiom). Qed.
 
 Theorem classical_explosion : forall A (Gamma : context A) p q,
     classically_derives Gamma p ->
     classically_derives Gamma (Neg p) ->
     classically_derives Gamma q.
-Proof.
-  intros A Gamma p q Hp Hnp.
-  exact (@derives_explosion A classical_axiom Gamma p q Hp Hnp).
-Qed.
+Proof. exact (fun A => @derives_explosion A classical_axiom). Qed.
 
 Theorem classical_explosion_from_conjunction :
     forall A (Gamma : context A) p q,
     classically_derives Gamma (Conj p (Neg p)) ->
     classically_derives Gamma q.
 Proof.
-  intros A Gamma p q H.
-  exact (@derives_explosion_from_conjunction A classical_axiom Gamma p q H).
+  exact (fun A => @derives_explosion_from_conjunction A classical_axiom).
 Qed.
 
 Theorem classical_explosion_sequent : forall A (Gamma : context A) p q,
     classically_derives (p :: Neg p :: Gamma) q.
-Proof.
-  intros A Gamma p q.
-  exact (@derives_explosion_sequent A classical_axiom Gamma p q).
-Qed.
+Proof. exact (fun A => @derives_explosion_sequent A classical_axiom). Qed.
 
 Theorem classical_explosion_conj_sequent :
     forall A (Gamma : context A) p q,
     classically_derives (Conj p (Neg p) :: Gamma) q.
-Proof.
-  intros A Gamma p q.
-  exact (@derives_explosion_conj_sequent A classical_axiom Gamma p q).
-Qed.
+Proof. exact (fun A => @derives_explosion_conj_sequent A classical_axiom). Qed.
 
 Theorem classical_explosion_implication : forall A (Gamma : context A) p q,
     classically_derives Gamma (Impl (Conj p (Neg p)) q).
-Proof.
-  intros A Gamma p q.
-  exact (@derives_explosion_implication A classical_axiom Gamma p q).
-Qed.
+Proof. exact (fun A => @derives_explosion_implication A classical_axiom). Qed.
 
 End Explosion.

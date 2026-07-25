@@ -9,7 +9,7 @@ namespace Affine
 def substHead (t replacement : Affine) : Affine :=
   t.tail.add (replacement.scale t.head)
 
-@[simp] theorem eval_tail (t : Affine) (x : Int) (xs : List Int) :
+theorem eval_tail (t : Affine) (xs : List Int) :
     t.tail.eval xs = t.eval (0 :: xs) := by
   cases t with
   | mk c cs => cases cs <;> simp [tail, eval, dot]
@@ -17,7 +17,7 @@ def substHead (t replacement : Affine) : Affine :=
 @[simp] theorem eval_head (t : Affine) (x : Int) (xs : List Int) :
     t.eval (x :: xs) = t.head * x + t.tail.eval xs := by
   cases t with
-  | mk c cs => cases cs <;> simp [head, tail, eval, dot] <;> ring
+  | mk c cs => cases cs <;> simp [head, tail, eval, dot]; ring
 
 @[simp] theorem eval_substHead (t replacement : Affine) (xs : List Int) :
     (t.substHead replacement).eval xs =
@@ -58,10 +58,6 @@ end Atom
 
 namespace Cooper
 
-theorem decide_eq_decide_of_iff {p q : Prop} [Decidable p] [Decidable q]
-    (h : p ↔ q) : decide p = decide q := by
-  by_cases hp : p <;> by_cases hq : q <;> simp [hp, hq] at h ⊢
-
 def NormalAtom : Atom → Prop
   | .le t => t.head = -1 ∨ t.head = 0 ∨ t.head = 1
   | .dvd _ _ _ | .ndvd _ _ _ => True
@@ -93,9 +89,16 @@ theorem quotient_pos_of_mem {c : Clause} {a : Atom} (ha : a ∈ c)
   exact Nat.div_pos (Nat.le_of_dvd (commonCoefficient_pos c) hdvd)
     (Int.natAbs_pos.mpr hne)
 
+theorem natAbs_headCoeff_dvd_commonCoefficient {c : Clause} {a : Atom}
+    (ha : a ∈ c) (hne : a.headCoeff ≠ 0) :
+    a.headCoeff.natAbs ∣ commonCoefficient c := by
+  have hfactor : a.coefficientFactor = a.headCoeff.natAbs := by
+    simp [Atom.coefficientFactor, hne]
+  simpa [hfactor] using coefficientFactor_dvd_commonCoefficient ha
+
 def normalizeAffine (L : Nat) (t : Affine) : Affine :=
   let a := t.head
-  if ha : a = 0 then Affine.consCoeff 0 t.tail
+  if _ : a = 0 then Affine.consCoeff 0 t.tail
   else
     let s : Int := (L / a.natAbs : Nat)
     Affine.consCoeff a.sign (t.tail.scale s)
@@ -134,6 +137,26 @@ theorem eval_normalizeAffine_nonzero {L : Nat} {t : Affine}
     s * (t.head * x + t.tail.eval xs)
   rw [← mul_assoc, hcoeff]
   ring
+
+/-- The scaled divisibility constraint produced by atom normalization is
+equivalent to the original one.  Shared by the `dvd` and `ndvd` cases. -/
+theorem dvd_eval_normalizeAffine_iff {L d : Nat} {t : Affine}
+    (ht : t.head ≠ 0) (hdiv : t.head.natAbs ∣ L) (hL : 0 < L)
+    (x : Int) (xs : List Int) :
+    ((d * max 1 (L / t.head.natAbs) : Nat) : Int) ∣
+        (normalizeAffine L t).eval ((L : Int) * x :: xs) ↔
+      (d : Int) ∣ t.eval (x :: xs) := by
+  have hspos : 0 < L / t.head.natAbs :=
+    Nat.div_pos (Nat.le_of_dvd hL hdiv) (Int.natAbs_pos.mpr ht)
+  have hmax : max 1 (L / t.head.natAbs) = L / t.head.natAbs := by omega
+  rw [eval_normalizeAffine_nonzero ht hdiv x xs]
+  simpa [Nat.cast_mul, mul_comm, hmax] using
+    (Int.mul_dvd_mul_iff_left
+      (by exact_mod_cast (Nat.ne_of_gt hspos) :
+        ((L / t.head.natAbs : Nat) : Int) ≠ 0) :
+      (((L / t.head.natAbs : Nat) : Int) * d ∣
+          ((L / t.head.natAbs : Nat) : Int) * t.eval (x :: xs)) ↔
+        (d : Int) ∣ t.eval (x :: xs))
 
 def normalizeAtom (L : Nat) : Atom → Atom
   | .le t => .le (normalizeAffine L t)
@@ -181,66 +204,39 @@ theorem eval_normalizeAtom_of_mem {c : Clause} {a : Atom} (ha : a ∈ c)
     (x : Int) (xs : List Int) :
     (normalizeAtom (commonCoefficient c) a).eval
         ((commonCoefficient c : Int) * x :: xs) = a.eval (x :: xs) := by
-  let L := commonCoefficient c
-  have hL : 0 < L := commonCoefficient_pos c
+  have hL : 0 < commonCoefficient c := commonCoefficient_pos c
   cases a with
   | le t =>
       by_cases ht : t.head = 0
       · simp only [normalizeAtom, Atom.eval]
         rw [eval_normalizeAffine_zero ht]
-      · have hdiv : t.head.natAbs ∣ L := by
-          simpa [L, Atom.coefficientFactor, Atom.headCoeff, Atom.affine, ht] using
-            coefficientFactor_dvd_commonCoefficient ha
-        have hspos : 0 < L / t.head.natAbs := by
-          simpa [L, Atom.headCoeff, Atom.affine] using quotient_pos_of_mem ha ht
-        have heval := eval_normalizeAffine_nonzero ht hdiv x xs
+      · have hdiv : t.head.natAbs ∣ commonCoefficient c :=
+          natAbs_headCoeff_dvd_commonCoefficient ha ht
+        have hspos : 0 < commonCoefficient c / t.head.natAbs :=
+          quotient_pos_of_mem ha ht
         simp only [normalizeAtom, Atom.eval]
-        rw [heval]
-        exact decide_eq_decide_of_iff (by
+        rw [eval_normalizeAffine_nonzero ht hdiv x xs]
+        exact decide_eq_decide.mpr (by
           rw [mul_comm]
           exact Int.mul_nonneg_iff_of_pos_right (by exact_mod_cast hspos))
   | dvd d hd t =>
       by_cases ht : t.head = 0
       · rw [normalizeAtom, dif_pos ht]
         simp [Atom.eval, Affine.eval_head, ht]
-      · have hdiv : t.head.natAbs ∣ L := by
-          simpa [L, Atom.coefficientFactor, Atom.headCoeff, Atom.affine, ht] using
-            coefficientFactor_dvd_commonCoefficient ha
-        have hspos : 0 < L / t.head.natAbs := by
-          simpa [L, Atom.headCoeff, Atom.affine] using quotient_pos_of_mem ha ht
-        have hmax : max 1 (L / t.head.natAbs) = L / t.head.natAbs := by omega
-        have heval := eval_normalizeAffine_nonzero ht hdiv x xs
-        rw [normalizeAtom, dif_neg ht]
+      · rw [normalizeAtom, dif_neg ht]
         dsimp only
         simp only [Atom.eval]
-        rw [heval]
-        exact decide_eq_decide_of_iff (by
-          simpa [Nat.cast_mul, mul_comm, L, hmax] using
-            (Int.mul_dvd_mul_iff_left (by exact_mod_cast (Nat.ne_of_gt hspos)) :
-              (((L / t.head.natAbs : Nat) : Int) * d ∣
-                  ((L / t.head.natAbs : Nat) : Int) * t.eval (x :: xs)) ↔
-                (d : Int) ∣ t.eval (x :: xs)))
+        exact decide_eq_decide.mpr (dvd_eval_normalizeAffine_iff ht
+          (natAbs_headCoeff_dvd_commonCoefficient ha ht) hL x xs)
   | ndvd d hd t =>
       by_cases ht : t.head = 0
       · rw [normalizeAtom, dif_pos ht]
         simp [Atom.eval, Affine.eval_head, ht]
-      · have hdiv : t.head.natAbs ∣ L := by
-          simpa [L, Atom.coefficientFactor, Atom.headCoeff, Atom.affine, ht] using
-            coefficientFactor_dvd_commonCoefficient ha
-        have hspos : 0 < L / t.head.natAbs := by
-          simpa [L, Atom.headCoeff, Atom.affine] using quotient_pos_of_mem ha ht
-        have hmax : max 1 (L / t.head.natAbs) = L / t.head.natAbs := by omega
-        have heval := eval_normalizeAffine_nonzero ht hdiv x xs
-        rw [normalizeAtom, dif_neg ht]
+      · rw [normalizeAtom, dif_neg ht]
         dsimp only
         simp only [Atom.eval]
-        rw [heval]
-        exact decide_eq_decide_of_iff (not_congr (by
-          simpa [Nat.cast_mul, mul_comm, L, hmax] using
-            (Int.mul_dvd_mul_iff_left (by exact_mod_cast (Nat.ne_of_gt hspos)) :
-              (((L / t.head.natAbs : Nat) : Int) * d ∣
-                  ((L / t.head.natAbs : Nat) : Int) * t.eval (x :: xs)) ↔
-                (d : Int) ∣ t.eval (x :: xs))))
+        exact decide_eq_decide.mpr (not_congr (dvd_eval_normalizeAffine_iff ht
+          (natAbs_headCoeff_dvd_commonCoefficient ha ht) hL x xs))
 
 theorem eval_normalizeClause_forward (c : Clause) (x : Int) (xs : List Int)
     (hc : DNF.evalClause c (x :: xs) = true) :
@@ -325,6 +321,17 @@ theorem mem_of_mem_periodic_filter {c : Clause} {a : Atom}
   cases b <;> simp [periodic?] at hba
   all_goals subst a; exact hb
 
+/-- Shifting the head variable by a multiple of the divisor does not change a
+divisibility constraint.  Shared by the `dvd` and `ndvd` cases. -/
+theorem dvd_eval_shift_iff {d : Nat} {m : Int} (hdm : (d : Int) ∣ m)
+    (t : Affine) (x : Int) (xs : List Int) :
+    ((d : Int) ∣ t.eval ((x + m) :: xs)) ↔ (d : Int) ∣ t.eval (x :: xs) := by
+  have heval : t.eval ((x + m) :: xs) = t.eval (x :: xs) + t.head * m := by
+    simp [Affine.eval_head]
+    ring
+  rw [heval]
+  exact Int.dvd_add_left (dvd_mul_of_dvd_right hdm _)
+
 theorem eval_periodic_atom {c : Clause} {a : Atom}
     (ha : a ∈ c.filterMap periodic?)
     (x : Int) (xs : List Int) :
@@ -336,27 +343,15 @@ theorem eval_periodic_atom {c : Clause} {a : Atom}
       rcases ha with ⟨b, _, hb⟩
       cases b <;> simp [periodic?] at hb
   | dvd d hd t =>
-      have hdmNat : d ∣ period c := modulus_dvd_period hac
-      have hdm : (d : Int) ∣ (period c : Int) := by exact_mod_cast hdmNat
-      have hmul : (d : Int) ∣ t.head * (period c : Int) := dvd_mul_of_dvd_right hdm _
-      have heval : t.eval ((x + (period c : Int)) :: xs) =
-          t.eval (x :: xs) + t.head * (period c : Int) := by
-        simp [Affine.eval_head]
-        ring
+      have hdm : (d : Int) ∣ (period c : Int) := by
+        exact_mod_cast modulus_dvd_period hac
       simp only [Atom.eval]
-      rw [heval]
-      exact decide_eq_decide_of_iff (Int.dvd_add_left hmul)
+      exact decide_eq_decide.mpr (dvd_eval_shift_iff hdm t x xs)
   | ndvd d hd t =>
-      have hdmNat : d ∣ period c := modulus_dvd_period hac
-      have hdm : (d : Int) ∣ (period c : Int) := by exact_mod_cast hdmNat
-      have hmul : (d : Int) ∣ t.head * (period c : Int) := dvd_mul_of_dvd_right hdm _
-      have heval : t.eval ((x + (period c : Int)) :: xs) =
-          t.eval (x :: xs) + t.head * (period c : Int) := by
-        simp [Affine.eval_head]
-        ring
+      have hdm : (d : Int) ∣ (period c : Int) := by
+        exact_mod_cast modulus_dvd_period hac
       simp only [Atom.eval]
-      rw [heval]
-      exact decide_eq_decide_of_iff (not_congr (Int.dvd_add_left hmul))
+      exact decide_eq_decide.mpr (not_congr (dvd_eval_shift_iff hdm t x xs))
 
 theorem eval_periodic_filter (c : Clause) (x : Int) (xs : List Int) :
     DNF.evalClause (c.filterMap periodic?) ((x + (period c : Int)) :: xs) =
@@ -406,23 +401,17 @@ theorem eval_normalizedClause_iff (c : Clause) (hc : NormalClause c)
       | le t =>
           simp only [NormalAtom] at ha
           rcases ha with h | h | h
-          · have hineq : (0 ≤ t.eval (x :: xs)) ↔ x ≤ t.tail.eval xs := by
-              rw [Affine.eval_head, h]
-              omega
-            simp [DNF.evalClause, fixed?, lowerBound?, upperBound?, periodic?, h,
+          · simp [DNF.evalClause, fixed?, lowerBound?, upperBound?, periodic?, h,
               Atom.headCoeff, Atom.affine, Atom.eval, Affine.eval_head, Atom.substHead,
-              Atom.mapAffine, hineq] <;> tauto
-          · have hineq : (0 ≤ t.eval (x :: xs)) ↔ 0 ≤ t.tail.eval xs := by
-              rw [Affine.eval_head, h]
-              simp
-            simp [DNF.evalClause, fixed?, lowerBound?, upperBound?, periodic?, h,
+              Atom.mapAffine]; tauto
+          · simp [DNF.evalClause, fixed?, lowerBound?, upperBound?, periodic?, h,
               Atom.headCoeff, Atom.affine, Atom.eval, Affine.eval_head, Atom.substHead,
-              Atom.mapAffine, hineq] <;> tauto
+              Atom.mapAffine]; tauto
           · have hineq : (0 ≤ x + t.tail.eval xs) ↔ -t.tail.eval xs ≤ x := by
               omega
             simp [DNF.evalClause, fixed?, lowerBound?, upperBound?, periodic?, h,
               Atom.headCoeff, Atom.affine, Atom.eval, Affine.eval_head, Atom.substHead,
-              Atom.mapAffine, hineq] <;> tauto
+              Atom.mapAffine, hineq]; tauto
       | dvd d hd t =>
           by_cases h : t.head = 0
           · have hfixedEval :
@@ -431,9 +420,9 @@ theorem eval_normalizedClause_iff (c : Clause) (hc : NormalClause c)
               rw [Atom.eval_substHead]
               simp [Atom.eval, Affine.eval_head, h]
             simp [DNF.evalClause, fixed?, lowerBound?, upperBound?, periodic?, h,
-              Atom.headCoeff, Atom.affine, hfixedEval] <;> tauto
+              Atom.headCoeff, Atom.affine, hfixedEval]; tauto
           · simp [DNF.evalClause, fixed?, lowerBound?, upperBound?, periodic?, h,
-              Atom.headCoeff, Atom.affine, Atom.eval] <;> tauto
+              Atom.headCoeff, Atom.affine, Atom.eval]; tauto
       | ndvd d hd t =>
           by_cases h : t.head = 0
           · have hfixedEval :
@@ -442,27 +431,15 @@ theorem eval_normalizedClause_iff (c : Clause) (hc : NormalClause c)
               rw [Atom.eval_substHead]
               simp [Atom.eval, Affine.eval_head, h]
             simp [DNF.evalClause, fixed?, lowerBound?, upperBound?, periodic?, h,
-              Atom.headCoeff, Atom.affine, hfixedEval] <;> tauto
+              Atom.headCoeff, Atom.affine, hfixedEval]; tauto
           · simp [DNF.evalClause, fixed?, lowerBound?, upperBound?, periodic?, h,
-              Atom.headCoeff, Atom.affine, Atom.eval] <;> tauto
-
-theorem list_any_eq_true_iff_exists {A : Type} (as : List A) (f : A → Bool) :
-    as.any f = true ↔ ∃ a ∈ as, f a = true := by
-  induction as with
-  | nil => simp
-  | cons a as ih => simp [ih]
-
-theorem list_all_eq_true_iff_forall {A : Type} (as : List A) (f : A → Bool) :
-    as.all f = true ↔ ∀ a ∈ as, f a = true := by
-  induction as with
-  | nil => simp
-  | cons a as ih => simp [ih]
+              Atom.headCoeff, Atom.affine, Atom.eval]; tauto
 
 theorem eval_disjunction_map_iff {A : Type} (as : List A) (f : A → QF)
     (xs : List Int) :
     (QF.disjunction (as.map f)).eval xs = true ↔
       ∃ a ∈ as, (f a).eval xs = true := by
-  rw [QF.eval_disjunction, list_any_eq_true_iff_exists]
+  rw [QF.eval_disjunction, List.any_eq_true]
   constructor
   · rintro ⟨q, hq, hqtrue⟩
     rcases List.mem_map.mp hq with ⟨a, ha, rfl⟩
@@ -474,7 +451,7 @@ theorem eval_conjGrid_iff {A B : Type} (as : List A) (bs : List B)
     (f : A → B → QF) (xs : List Int) :
     (QF.conjList (as.flatMap fun a => bs.map (f a))).eval xs = true ↔
       ∀ a ∈ as, ∀ b ∈ bs, (f a b).eval xs = true := by
-  rw [QF.eval_conjList, list_all_eq_true_iff_forall]
+  rw [QF.eval_conjList, List.all_eq_true]
   constructor
   · intro hall a ha b hb
     exact hall (f a b) (List.mem_flatMap.mpr ⟨a, ha,
@@ -494,7 +471,7 @@ theorem eval_boundedPair_iff (ps : Clause) (m : Nat) (lo hi : Affine)
     (boundedPair ps m lo hi).eval xs = true ↔
       ∃ k : Nat, k < m ∧ lo.eval xs + k ≤ hi.eval xs ∧
         DNF.evalClause ps ((lo.eval xs + (k : Int)) :: xs) = true := by
-  rw [boundedPair, QF.eval_disjunction, list_any_eq_true_iff_exists]
+  rw [boundedPair, QF.eval_disjunction, List.any_eq_true]
   constructor
   · rintro ⟨q, hq, hqtrue⟩
     rcases List.mem_map.mp hq with ⟨k, hk, rfl⟩
@@ -681,19 +658,19 @@ theorem eliminate_correct (p : QF) (xs : List Int) :
   let d := DNF.ofPolarity true p
   constructor
   · intro he
-    rw [eliminate, QF.eval_disjunction, list_any_eq_true_iff_exists] at he
+    rw [eliminate, QF.eval_disjunction, List.any_eq_true] at he
     rcases he with ⟨q, hq, hqtrue⟩
     rcases List.mem_map.mp hq with ⟨c, hc, rfl⟩
     rcases (elimClause_correct c xs).mp hqtrue with ⟨x, hx⟩
     refine ⟨x, ?_⟩
     have hd : DNF.eval (DNF.ofPolarity true p) (x :: xs) = true :=
-      (list_any_eq_true_iff_exists _ _).mpr ⟨c, hc, hx⟩
+      List.any_eq_true.mpr ⟨c, hc, hx⟩
     simpa [DNF.eval_ofPolarity] using hd
   · rintro ⟨x, hx⟩
     have hd : DNF.eval (DNF.ofPolarity true p) (x :: xs) = true := by
       simpa [DNF.eval_ofPolarity] using hx
-    rcases (list_any_eq_true_iff_exists _ _).mp hd with ⟨c, hc, hcx⟩
-    rw [eliminate, QF.eval_disjunction, list_any_eq_true_iff_exists]
+    rcases List.any_eq_true.mp hd with ⟨c, hc, hcx⟩
+    rw [eliminate, QF.eval_disjunction, List.any_eq_true]
     exact ⟨elimClause c, List.mem_map.mpr ⟨c, hc, rfl⟩,
       (elimClause_correct c xs).mpr ⟨x, hcx⟩⟩
 

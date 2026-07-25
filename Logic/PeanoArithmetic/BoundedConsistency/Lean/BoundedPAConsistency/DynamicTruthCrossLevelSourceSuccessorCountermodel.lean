@@ -1,5 +1,6 @@
 import BoundedPAConsistency.DynamicTruthCrossLevelSourceSuccessor
 import BoundedPAConsistency.QuantifierFreeTransport
+import BoundedPAConsistency.FinFunext
 
 /-!
 # Countermodel audit for the current structural successor context
@@ -349,42 +350,33 @@ theorem sourceSuccessorSentence_not_valid :
       ((Rew.subst ![successorTerm 3 3 3]).q.q #x)
   have successorEnvironment_eq :
       successorEnvironment = ![0, 0, (^⊤ : ℕ)] := by
-    funext i
-    cases i using Fin.cases with
-    | zero =>
-        change FirstOrder.Semiterm.val
-          ![0, 0, (⟪2, 0⟫ : ℕ)] Empty.elim
-            ((Rew.subst ![successorTerm 3 3 3]).q.q
-              (#(0 : Fin 3))) = 0
-        rw [Rew.q_bvar_zero]
-        rfl
-    | succ i =>
-        cases i using Fin.cases with
-        | zero =>
-            change FirstOrder.Semiterm.val
-              ![0, 0, (⟪2, 0⟫ : ℕ)] Empty.elim
-                ((Rew.subst ![successorTerm 3 3 3]).q.q
-                  (#(1 : Fin 3))) = 0
-            rw [show (1 : Fin 3) = Fin.succ (0 : Fin 2) from rfl,
-              Rew.q_bvar_succ, Semiterm.val_bShift,
-              Rew.q_bvar_zero]
-            rfl
-        | succ i =>
-            cases i using Fin.cases with
-            | zero =>
-                change FirstOrder.Semiterm.val
-                  ![0, 0, (⟪2, 0⟫ : ℕ)] Empty.elim
-                    ((Rew.subst ![successorTerm 3 3 3]).q.q
-                      (#(2 : Fin 3))) = (^⊤ : ℕ)
-                rw [show (2 : Fin 3) = Fin.succ (1 : Fin 2) from rfl,
-                  Rew.q_bvar_succ, Semiterm.val_bShift,
-                  show (1 : Fin 2) = Fin.succ (0 : Fin 1) from rfl,
-                  Rew.q_bvar_succ, Semiterm.val_bShift,
-                  Rew.subst_bvar]
-                simpa [qqVerum] using
-                  (val_successorTerm_standard
-                    ![(⟪2, 0⟫ : ℕ)])
-            | succ i => exact i.elim0
+    refine funext_fin3 ?_ ?_ ?_
+    · change FirstOrder.Semiterm.val
+        ![0, 0, (⟪2, 0⟫ : ℕ)] Empty.elim
+          ((Rew.subst ![successorTerm 3 3 3]).q.q
+            (#(0 : Fin 3))) = 0
+      rw [Rew.q_bvar_zero]
+      rfl
+    · change FirstOrder.Semiterm.val
+        ![0, 0, (⟪2, 0⟫ : ℕ)] Empty.elim
+          ((Rew.subst ![successorTerm 3 3 3]).q.q
+            (#(1 : Fin 3))) = 0
+      rw [show (1 : Fin 3) = Fin.succ (0 : Fin 2) from rfl,
+        Rew.q_bvar_succ, Semiterm.val_bShift,
+        Rew.q_bvar_zero]
+      rfl
+    · change FirstOrder.Semiterm.val
+        ![0, 0, (⟪2, 0⟫ : ℕ)] Empty.elim
+          ((Rew.subst ![successorTerm 3 3 3]).q.q
+            (#(2 : Fin 3))) = (^⊤ : ℕ)
+      rw [show (2 : Fin 3) = Fin.succ (1 : Fin 2) from rfl,
+        Rew.q_bvar_succ, Semiterm.val_bShift,
+        show (1 : Fin 2) = Fin.succ (0 : Fin 1) from rfl,
+        Rew.q_bvar_succ, Semiterm.val_bShift,
+        Rew.subst_bvar]
+      simpa [qqVerum] using
+        (val_successorTerm_standard
+          ![(⟪2, 0⟫ : ℕ)])
   have hsigma := hbody.1
   rw [Semiformula.eval_rew] at hsigma
   change sourceNextSigmaClause.Evalb (M := ℕ)

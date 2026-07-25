@@ -339,10 +339,9 @@ Proof.
   { unfold eqConstAt in hbit. simpl in hbit. exact hbit. }
   pose proof (BProv_eq_congr_add_right Ax_s G d
     (tVar bit) (tSucc tZero) hbit') as hreplace.
-  pose proof (BProv_weaken_nil Ax_s G _
-    (BProv_Ax_s_addSucc_terms d tZero)) as haddSucc.
+  pose proof (BProv_Ax_s_addSucc_terms G d tZero) as haddSucc.
   pose proof (BProv_eq_congr_succ Ax_s G _ _
-    (BProv_weaken_nil Ax_s G _ (BProv_Ax_s_addZero_term d))) as haddZero.
+    (BProv_Ax_s_addZero_term G d)) as haddZero.
   pose proof (BProv_eqTrans Ax_s G _ _ _ hreplace
     (BProv_eqTrans Ax_s G _ _ _ haddSucc haddZero)) as hsum.
   pose proof (BProv_eqTrans Ax_s G _ _ _ hvalue
@@ -1521,7 +1520,7 @@ Proof.
     apply (BProv_Ax_s_betaPrependPrefixCodeExistsTermAt_succ_of_entry_exists
       (entryEx :: G) sourceCode sourceStep head currentCode targetStep bound).
     - exact (BProv_context_cons Ax_s G entryEx _ hprefix).
-    - apply BProv_ass. simpl. left. reflexivity.
+    - apply BProv_ass_head.
     - exact (BProv_context_cons Ax_s G entryEx _ hcommon).
     - exact (BProv_context_cons Ax_s G entryEx _ hlarge).
   }
@@ -1533,7 +1532,7 @@ Proof.
       (pImp entryEx pBot :: G)
       sourceCode sourceStep head currentCode targetStep bound).
     - exact (BProv_context_cons Ax_s G (pImp entryEx pBot) _ hprefix).
-    - apply BProv_ass. simpl. left. reflexivity.
+    - apply BProv_ass_head.
   }
   exact (BProv_orE Ax_s G entryEx (pImp entryEx pBot)
     (betaPrependPrefixCodeExistsTermAt
@@ -2055,10 +2054,7 @@ Lemma rename_div2StepTermAt : forall r value half bit,
       (Term.rename r bit).
 Proof.
   intros r value half bit.
-  rewrite <- subst_var_rename.
-  rewrite subst_div2StepTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_div2StepTermAt.
 Qed.
 
 Lemma rename_hfMemTermAt_zero_up : forall r setCode,
@@ -2114,10 +2110,7 @@ Lemma rename_betaDiv2StepWitnessTermAt :
       (Term.rename r code) (Term.rename r step) (Term.rename r idx).
 Proof.
   intros r code step idx.
-  rewrite <- subst_var_rename.
-  rewrite subst_betaDiv2StepWitnessTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_betaDiv2StepWitnessTermAt.
 Qed.
 
 Lemma subst_betaDiv2StepsThroughTermTermAt :
@@ -2144,10 +2137,7 @@ Lemma rename_betaDiv2StepsThroughTermTermAt :
       (Term.rename r code) (Term.rename r step) (Term.rename r last).
 Proof.
   intros r code step last.
-  rewrite <- subst_var_rename.
-  rewrite subst_betaDiv2StepsThroughTermTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_betaDiv2StepsThroughTermTermAt.
 Qed.
 
 (** Package the prepended head step and all transported source steps.  A
@@ -2313,10 +2303,7 @@ Lemma rename_betaDiv2BitTermAt :
       (Term.rename r step) (Term.rename r idx).
 Proof.
   intros r bit code step idx.
-  rewrite <- subst_var_rename.
-  rewrite subst_betaDiv2BitTermAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_betaDiv2BitTermAt.
 Qed.
 
 Lemma subst_betaDiv2BitOneTermExAt :
@@ -2342,10 +2329,7 @@ Lemma rename_betaDiv2BitOneTermExAt :
       (Term.rename r code) (Term.rename r step) (Term.rename r idx).
 Proof.
   intros r code step idx.
-  rewrite <- subst_var_rename.
-  rewrite subst_betaDiv2BitOneTermExAt.
-  repeat rewrite term_subst_var_rename.
-  reflexivity.
+  rename_from_subst subst_betaDiv2BitOneTermExAt.
 Qed.
 
 Lemma BProv_Ax_s_betaDiv2BitOneTermExAt_of_term :
@@ -2835,26 +2819,11 @@ Proof.
         remTermAt, remTermTermAt, ltTermAt,
         betaModTerm, betaModTermTerm, eqConstAt.
       simpl.
-      repeat rewrite Term.subst_rename_succ_up.
-      repeat rewrite term_subst_instTerm_rename_succ.
-      repeat rewrite term_subst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_three_succ.
-      repeat rewrite term_subst_up_up_instTerm_rename_two_var_zero.
-      repeat rewrite term_subst_up_up_instTerm_rename_four_succ.
-      repeat rewrite term_subst_up_up_up_instTerm_rename_four_succ.
-      repeat rewrite term_subst_up_up_up_instTerm_rename_five_succ.
-      repeat rewrite term_subst_up_up_up_up_instTerm_rename_five_succ.
-      repeat rewrite term_subst_up_up_up_up_up_instTerm_rename_six_succ.
-      repeat rewrite term_subst_up_up_up_up_up_up_instTerm_rename_seven_succ.
-      repeat rewrite Term.rename_comp.
+      normalize_subst_rename_comp.
       replace (Term.rename (fun n => S n + 2) setTerm)
         with (Term.rename (fun n => S (S (S n))) setTerm)
         by (apply Term.rename_ext; intro n; lia).
-      repeat rewrite term_subst_up_up_instTerm_rename_three_succ.
-      repeat rewrite term_subst_upSubst_instTerm_rename_two_succ.
-      repeat rewrite term_subst_instTerm_rename_succ.
+      normalize_subst_rename.
       reflexivity.
   }
   assert (hstepsTau : BProv Ax_s G
@@ -3833,8 +3802,7 @@ Proof.
         exact (BProv_eqTrans Ax_s D _ _ _
           (BProv_eqSym Ax_s D _ _ heq) hzero).
       }
-      pose proof (BProv_weaken_nil Ax_s D _
-        (BProv_Ax_s_zeroNotSucc_term (tVar elem))) as hnot.
+      pose proof (BProv_Ax_s_zeroNotSucc_term D (tVar elem)) as hnot.
       pose proof (BProv_mp Ax_s D _ pBot hnot hbad) as hbot.
       exact (BProv_botE Ax_s D newMem hbot).
     }
@@ -3969,8 +3937,7 @@ Proof.
       set (D := headEq :: C).
       assert (hhead : BProv Ax_s D headEq).
       { apply BProv_ass_head. }
-      pose proof (BProv_weaken_nil Ax_s D _
-        (BProv_Ax_s_succInj_terms (tVar 0) (tVar elem))) as hinj.
+      pose proof (BProv_Ax_s_succInj_terms D (tVar 0) (tVar elem)) as hinj.
       pose proof (BProv_mp Ax_s D headEq tailEq hinj hhead) as heq.
       assert (htailD : BProv Ax_s D
           (iffForm newTailMem (pOr oldTailMem tailEq))).
@@ -4203,8 +4170,7 @@ Proof.
       set (D := badEq :: C).
       assert (hbad : BProv Ax_s D badEq).
       { apply BProv_ass_head. }
-      pose proof (BProv_weaken_nil Ax_s D _
-        (BProv_Ax_s_zeroNotSucc_term (tVar 0))) as hnot.
+      pose proof (BProv_Ax_s_zeroNotSucc_term D (tVar 0)) as hnot.
       pose proof (BProv_mp Ax_s D badEq pBot hnot hbad) as hbot.
       exact (BProv_botE Ax_s D newSucc hbot).
     }
@@ -4604,7 +4570,7 @@ Proof.
     assert (htail : BProv Ax_s K (hfAdjoinGraphAt 0 2 4)).
     {
       unfold hfAdjoinGraphAt, K, graphBody.
-      apply BProv_ass. simpl. left. reflexivity.
+      apply BProv_ass_head.
     }
     pose proof (BProv_rename_of_sentences Ax_s sentence_ax_s H _
       holdStep S) as holdRen.

@@ -106,6 +106,10 @@ theorem Prov_weaken {G : List Form} {a : Form} (h : Prov G a) :
 theorem Prov_cons {G : List Form} {a b : Form} (h : Prov G b) : Prov (a :: G) b :=
   Prov_weaken h _ (fun _ hx => List.mem_cons.mpr (Or.inr hx))
 
+/-- The head of the context is provable. -/
+theorem Prov_ass_head {G : List Form} {a : Form} : Prov (a :: G) a :=
+  .P_ass _ _ (List.mem_cons.mpr (Or.inl rfl))
+
 /-- Disjunction elimination in implication form.  This derived rule is often
 more convenient for lifting finite derivations into relative provability,
 where all premises naturally share one context. -/
@@ -115,22 +119,22 @@ theorem Prov_orE_imp {G : List Form} {a b c : Form}
     (hb : Prov G (fImp b c)) : Prov G c :=
   .P_orE G a b c hor
     (.P_impE (a :: G) a c (Prov_cons ha)
-      (.P_ass _ _ (List.mem_cons.mpr (Or.inl rfl))))
+      Prov_ass_head)
     (.P_impE (b :: G) b c (Prov_cons hb)
-      (.P_ass _ _ (List.mem_cons.mpr (Or.inl rfl))))
+      Prov_ass_head)
 
 /-- Proof by contradiction. -/
 theorem Prov_byContra {G : List Form} {a : Form}
     (h : Prov (fImp a fBot :: G) fBot) : Prov G a :=
   .P_orE _ a (fImp a fBot) a (.P_lem _ _)
-    (.P_ass _ _ (List.mem_cons.mpr (Or.inl rfl)))
+    Prov_ass_head
     (.P_botE _ a h)
 
 /-- Double-negation elimination. -/
 theorem Prov_dne {G : List Form} {a : Form}
     (h : Prov G (fImp (fImp a fBot) fBot)) : Prov G a :=
   Prov_byContra (.P_impE _ (fImp a fBot) fBot (Prov_cons h)
-    (.P_ass _ _ (List.mem_cons.mpr (Or.inl rfl))))
+    Prov_ass_head)
 
 /-! ## [2] Consistency -/
 
@@ -247,7 +251,7 @@ theorem henkin_ex_core (G : List Form) (a : Form) (w : Nat)
     (hbad : Prov (rename (inst w) a :: fEx a :: G) fBot) :
     Prov (fEx a :: G) fBot := by
   apply Prov.P_exE (fEx a :: G) a fBot
-  · exact .P_ass _ _ (List.mem_cons.mpr (Or.inl rfl))
+  · exact Prov_ass_head
   · have hr := Prov_rename hbad (rho_w w)
     simp only [List.map_cons] at hr
     rw [rho_inst a w hwa] at hr
@@ -271,7 +275,7 @@ theorem henkin_all_core (G : List Form) (a : Form) (w : Nat)
       · exact hf
     · exact hwG g hg
   have hgen := generalize_fresh _ a w hwG' hwa hbad'
-  exact .P_impE _ (fAll a) fBot (.P_ass _ _ (List.mem_cons.mpr (Or.inl rfl)))
+  exact .P_impE _ (fAll a) fBot Prov_ass_head
     (.P_allI _ a hgen)
 
 /-! ## [4c] Cut: replacing assumptions by derivations -/
@@ -286,7 +290,7 @@ theorem Prov_cut {G : List Form} {phi : Form} (h : Prov G phi) :
     apply ih
     intro x hx
     rcases List.mem_cons.mp hx with rfl | hx
-    · exact .P_ass _ _ (List.mem_cons.mpr (Or.inl rfl))
+    · exact Prov_ass_head
     · exact Prov_cons (hD x hx)
   | P_impE G a b _ _ ihab iha =>
     intro De hD; exact .P_impE _ a b (ihab De hD) (iha De hD)
@@ -304,12 +308,12 @@ theorem Prov_cut {G : List Form} {phi : Form} (h : Prov G phi) :
     · apply iha
       intro x hx
       rcases List.mem_cons.mp hx with rfl | hx
-      · exact .P_ass _ _ (List.mem_cons.mpr (Or.inl rfl))
+      · exact Prov_ass_head
       · exact Prov_cons (hD x hx)
     · apply ihb
       intro x hx
       rcases List.mem_cons.mp hx with rfl | hx
-      · exact .P_ass _ _ (List.mem_cons.mpr (Or.inl rfl))
+      · exact Prov_ass_head
       · exact Prov_cons (hD x hx)
   | P_allI G a _ ih =>
     intro De hD
@@ -327,7 +331,7 @@ theorem Prov_cut {G : List Form} {phi : Form} (h : Prov G phi) :
     apply ihbody
     intro x hx
     rcases List.mem_cons.mp hx with rfl | hx
-    · exact .P_ass _ _ (List.mem_cons.mpr (Or.inl rfl))
+    · exact Prov_ass_head
     · rw [List.mem_map] at hx
       obtain ⟨x0, hx0, rfl⟩ := hx
       exact Prov_cons (Prov_rename (hD x0 hx0) Nat.succ)

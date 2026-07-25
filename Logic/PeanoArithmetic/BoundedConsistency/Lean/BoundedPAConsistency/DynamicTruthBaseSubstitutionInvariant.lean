@@ -1,5 +1,6 @@
 import BoundedPAConsistency.DynamicTruthSubstitutionInvariantFormula
 import BoundedPAConsistency.FixedLevelTruthSubstitution
+import BoundedPAConsistency.FinFunext
 
 /-!
 # A genuine PA proof of base substitution invariance
@@ -49,22 +50,7 @@ substitution-environment predicate. -/
           (⌜t₄⌝ : Bootstrapping.Semiterm V ℒₒᵣ n)] := by
   rw [standardApply₅, typedQuote_closedSubst]
   congr
-  funext i
-  cases i using Fin.cases with
-  | zero => rfl
-  | succ i =>
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          cases i using Fin.cases with
-          | zero => rfl
-          | succ i =>
-              cases i using Fin.cases with
-              | zero => rfl
-              | succ i =>
-                  cases i using Fin.cases with
-                  | zero => rfl
-                  | succ i => exact i.elim0
+  exact funext_fin5 rfl rfl rfl rfl rfl
 
 /-- The substituting vector is an arity-long vector of terms admitting the
 displayed number of bound variables. -/

@@ -61,6 +61,15 @@ theorem forcesContext_mono (K : KripkeModel α) {w w' : K.World}
   intro p hp
   exact K.forces_mono hww' p (hΓ hp)
 
+/-- Extending a forced context by a forced assumption keeps it forced. -/
+theorem forcesContext_cons (K : KripkeModel α) {w : K.World} {p : Formula α}
+    {Γ : Context α} (hp : K.Forces w p) (hΓ : K.ForcesContext w Γ) :
+    K.ForcesContext w (p :: Γ) := by
+  intro s hs
+  rcases List.mem_cons.mp hs with rfl | hs
+  · exact hp
+  · exact hΓ hs
+
 /-- Soundness of the shared intuitionistic natural-deduction calculus for
 Kripke semantics. -/
 theorem intuitionistic_sound {Γ : Context α} {p : Formula α}
@@ -77,23 +86,11 @@ theorem intuitionistic_sound {Γ : Context α} {p : Formula α}
   | orIntroRight _ ih => exact Or.inr (ih w hΓ)
   | orElim _ _ _ ihpq ihp ihq =>
       exact (ihpq w hΓ).elim
-        (fun hp => ihp w (by
-          intro s hs
-          rcases List.mem_cons.mp hs with rfl | hs
-          · exact hp
-          · exact hΓ hs))
-        (fun hq => ihq w (by
-          intro s hs
-          rcases List.mem_cons.mp hs with rfl | hs
-          · exact hq
-          · exact hΓ hs))
+        (fun hp => ihp w (K.forcesContext_cons hp hΓ))
+        (fun hq => ihq w (K.forcesContext_cons hq hΓ))
   | impIntro _ ih =>
       intro w' hww' hp
-      exact ih w' (by
-        intro s hs
-        rcases List.mem_cons.mp hs with rfl | hs
-        · exact hp
-        · exact K.forces_mono hww' s (hΓ hs))
+      exact ih w' (K.forcesContext_cons hp (K.forcesContext_mono hww' hΓ))
   | impElim _ _ ihpq ihp => exact ihpq w hΓ w (K.le_refl w) (ihp w hΓ)
 
 end KripkeModel

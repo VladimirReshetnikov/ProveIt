@@ -1,0 +1,103 @@
+diff --git a/theories/KolmogorovComplexity/Kolmogorov.v b/theories/KolmogorovComplexity/Kolmogorov.v
+index 66df548..a3ce41a 100644
+--- a/theories/KolmogorovComplexity/Kolmogorov.v
++++ b/theories/KolmogorovComplexity/Kolmogorov.v
+@@ -352,0 +353 @@ From stdpp Require Import base.
++From stdpp Require list.
+@@ -534 +535 @@ Proof.
+-      eapply list_relations.Forall2_Forall_r; eauto.
++      eapply list_relations.list.Forall2_Forall_r; eauto.
+@@ -538 +539 @@ Proof.
+-    assert (length l' = 2 ^ k). { erewrite <- list_relations.Forall2_length; eauto. }
++    assert (length l' = 2 ^ k). { erewrite <- list_relations.list.Forall2_length; eauto. }
+diff --git a/theories/KolmogorovComplexity/Kolmogorov_gen.v b/theories/KolmogorovComplexity/Kolmogorov_gen.v
+index c3a3386..39e6992 100644
+--- a/theories/KolmogorovComplexity/Kolmogorov_gen.v
++++ b/theories/KolmogorovComplexity/Kolmogorov_gen.v
+@@ -9,0 +10 @@ From stdpp Require Import base.
++From stdpp Require list.
+@@ -436 +437 @@ Proof.
+-      eapply list_relations.Forall2_Forall_r; eauto.
++      eapply list_relations.list.Forall2_Forall_r; eauto.
+@@ -440 +441 @@ Proof.
+-    assert (length l' = 2 ^ k). { erewrite <- list_relations.Forall2_length; eauto. }
++    assert (length l' = 2 ^ k). { erewrite <- list_relations.list.Forall2_length; eauto. }
+@@ -781 +782 @@ Module universal.
+-      if list_misc.list_find (fun x => x = false) l is Some (n, _)
++      if list_misc.list.list_find (fun x => x = false) l is Some (n, _)
+@@ -795,2 +796,2 @@ Module universal.
+-      erewrite list_misc.list_find_app_l.
+-      2:{ eapply list_misc.list_find_app_l.
++      erewrite list_misc.list.list_find_app_l.
++      2:{ eapply list_misc.list.list_find_app_l.
+@@ -798,2 +799,2 @@ Module universal.
+-          1:{ eapply list_misc.list_find_app_r.
+-              eapply list_misc.list_find_None.
++          1:{ eapply list_misc.list.list_find_app_r.
++              eapply list_misc.list.list_find_None.
+@@ -808,3 +809,3 @@ Module universal.
+-      rewrite list_basics.drop_app_le. 2: autorewrite with list; lia.
+-      rewrite !list_basics.drop_app_length.
+-      rewrite !list_basics.take_app_length.
++      rewrite list_basics.list.drop_app_le. 2: autorewrite with list; lia.
++      rewrite !list_basics.list.drop_app_length.
++      rewrite !list_basics.list.take_app_length.
+diff --git a/theories/PostsProblem/step_indexing.v b/theories/PostsProblem/step_indexing.v
+index 4dc028d..9f8ba4a 100644
+--- a/theories/PostsProblem/step_indexing.v
++++ b/theories/PostsProblem/step_indexing.v
+@@ -582 +582 @@ Section Step_Eval.
+-      by rewrite elem_of_list_singleton.
++      by rewrite list_elem_of_singleton.
+@@ -626 +626 @@ Section Step_Eval.
+-    destruct Hu as [Hu1| Hu2%elem_of_list_singleton]; last by rewrite Hu2, H4.
++    destruct Hu as [Hu1| Hu2%list_elem_of_singleton]; last by rewrite Hu2, H4.
+@@ -670 +670 @@ Proof.
+-  intros q' [|] Hqa'%elem_of_list_In; cbn; first by rewrite Hp.
++  intros q' [|] Hqa'%list_elem_of_In; cbn; first by rewrite Hp.
+@@ -711 +711 @@ Qed. *)
+-    intros q' [|] Hqa'%elem_of_list_In; cbn; first by rewrite HqP.
++    intros q' [|] Hqa'%list_elem_of_In; cbn; first by rewrite HqP.
+@@ -901 +901 @@ Section Step_Eval_Spec.
+-    intros q [i Hq]%elem_of_list_lookup_1. rewrite H1; first done.
++    intros q [i Hq]%list_elem_of_lookup_1. rewrite H1; first done.
+@@ -918 +918 @@ Section Step_Eval_Spec.
+-    intros q [i Hq]%elem_of_list_lookup_1. rewrite H1; first done.
++    intros q [i Hq]%list_elem_of_lookup_1. rewrite H1; first done.
+@@ -974 +974 @@ Section Step_Eval_Spec.
+-      { intros q Hq. destruct (H2 q). apply elem_of_list_lookup_1 in Hq.
++      { intros q Hq. destruct (H2 q). apply list_elem_of_lookup_1 in Hq.
+@@ -980,2 +980,2 @@ Section Step_Eval_Spec.
+-      { intros q a Hq. destruct (H2 q). rewrite <-elem_of_list_In in Hq.
+-        apply elem_of_list_lookup_1 in Hq. destruct Hq as [i Hi].
++      { intros q a Hq. destruct (H2 q). rewrite <-list_elem_of_In in Hq.
++        apply list_elem_of_lookup_1 in Hq. destruct Hq as [i Hi].
+@@ -1027 +1027 @@ Section Step_Eval_Spec.
+-    { intros q Hq. destruct (H2 q). apply elem_of_list_lookup_1 in Hq.
++    { intros q Hq. destruct (H2 q). apply list_elem_of_lookup_1 in Hq.
+@@ -1033,2 +1033,2 @@ Section Step_Eval_Spec.
+-      { intros q a Hq. destruct (H2 q). rewrite <-elem_of_list_In in Hq.
+-        apply elem_of_list_lookup_1 in Hq. destruct Hq as [i Hi].
++      { intros q a Hq. destruct (H2 q). rewrite <-list_elem_of_In in Hq.
++        apply list_elem_of_lookup_1 in Hq. destruct Hq as [i Hi].
+diff --git a/theories/ReducibilityDegrees/simple_construction.v b/theories/ReducibilityDegrees/simple_construction.v
+index 31f2963..bdd3898 100644
+--- a/theories/ReducibilityDegrees/simple_construction.v
++++ b/theories/ReducibilityDegrees/simple_construction.v
+@@ -832 +832 @@ Section S_Star.
+-    2:{ eapply list_relations.Forall2_length in H1.
++    2:{ eapply Forall2_length in H1.
+diff --git a/theories/Shared/FinitenessFacts.v b/theories/Shared/FinitenessFacts.v
+index 9c66336..b71811e 100644
+--- a/theories/Shared/FinitenessFacts.v
++++ b/theories/Shared/FinitenessFacts.v
+@@ -639 +639 @@ Proof.
+-    intros ? % elem_of_list_In % H. lia.
++    intros ? % list_elem_of_In % H. lia.
+diff --git a/theories/Shared/partial.v b/theories/Shared/partial.v
+index 88d0757..7914a57 100644
+--- a/theories/Shared/partial.v
++++ b/theories/Shared/partial.v
+@@ -483 +483 @@ Module implementation.
+-    intros H. eapply list_max_spec, elem_of_list_In, elem_of_list_lookup_2, H.
++    intros H. eapply list_max_spec, list_elem_of_In, list_elem_of_lookup_2, H.

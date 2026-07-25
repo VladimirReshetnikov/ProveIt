@@ -73,6 +73,37 @@ Proof.
     split; assumption.
 Qed.
 
+(** Forward membership in a [list_map2] enumeration: supply the two
+    components and close each membership obligation with [tac]. *)
+Ltac map2_member a b tac :=
+  apply in_list_map2_iff; exists a, b; repeat split; try reflexivity; tac.
+
+(** Inverse direction: unpack a [list_map2] membership hypothesis [H] and
+    bound the resulting binary rank through [IH] on both components. *)
+Ltac map2_rank_bound H IH :=
+  apply in_list_map2_iff in H;
+  let a := fresh "a" in let b := fresh "b" in
+  let ha := fresh "ha" in let hb := fresh "hb" in let hab := fresh "hab" in
+  destruct H as [a [b [ha [hb hab]]]];
+  subst; simpl;
+  apply (proj1 (Nat.succ_le_mono _ _));
+  apply Nat.max_lub; [exact (IH a ha) | exact (IH b hb)].
+
+(** Select the [n]-th summand (0-based) of a nested [app] enumeration:
+    step right [n] times, then descend left. *)
+Ltac in_app_pick n :=
+  lazymatch n with
+  | O => apply in_app_iff; left
+  | S ?m => apply in_app_iff; right; in_app_pick m
+  end.
+
+(** Select the final summand after [n] right steps. *)
+Ltac in_app_last n :=
+  lazymatch n with
+  | O => idtac
+  | S ?m => apply in_app_iff; right; in_app_last m
+  end.
+
 (** Concrete enumerations of all terms and formulas up to a rank bound.
     At successor rank, every immediate subterm/subformula comes from the
     preceding list.  Variable indices are bounded explicitly by [seq]. *)
@@ -122,22 +153,8 @@ Proof.
       simpl.
       apply (proj1 (Nat.succ_le_mono _ _)).
       exact (IH a hin).
-    + apply in_list_map2_iff in ht.
-      destruct ht as [a [b [ha [hb hab]]]].
-      subst t.
-      simpl.
-      apply (proj1 (Nat.succ_le_mono _ _)).
-      apply Nat.max_lub.
-      * exact (IH a ha).
-      * exact (IH b hb).
-    + apply in_list_map2_iff in ht.
-      destruct ht as [a [b [ha [hb hab]]]].
-      subst t.
-      simpl.
-      apply (proj1 (Nat.succ_le_mono _ _)).
-      apply Nat.max_lub.
-      * exact (IH a ha).
-      * exact (IH b hb).
+    + map2_rank_bound ht IH.
+    + map2_rank_bound ht IH.
 Qed.
 
 Lemma term_rank_enum_complete : forall n t,
@@ -146,40 +163,23 @@ Proof.
   induction n as [|n IH]; intros t ht.
   - destruct t; simpl in ht; lia.
   - destruct t as [i | | a | a b | a b]; simpl in ht.
-    + apply in_app_iff. left.
+    + in_app_pick 0.
       apply in_map_iff.
       exists i.
       split; [reflexivity |].
       apply in_seq. simpl. lia.
-    + apply in_app_iff. right.
-      apply in_app_iff. left.
+    + in_app_pick 1.
       simpl. auto.
-    + apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. left.
+    + in_app_pick 2.
       apply in_map_iff.
       exists a.
       split; [reflexivity |].
       apply IH.
       lia.
-    + apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. left.
-      apply in_list_map2_iff.
-      exists a, b.
-      repeat split.
-      * apply IH. lia.
-      * apply IH. lia.
-    + apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_list_map2_iff.
-      exists a, b.
-      repeat split.
-      * apply IH. lia.
-      * apply IH. lia.
+    + in_app_pick 3.
+      map2_member a b ltac:(apply IH; lia).
+    + in_app_last 4.
+      map2_member a b ltac:(apply IH; lia).
 Qed.
 
 Theorem term_rank_enum_spec : forall n t,
@@ -211,24 +211,9 @@ Proof.
     + simpl in hphi.
       destruct hphi as [hphi | []].
       subst phi. simpl. lia.
-    + apply in_list_map2_iff in hphi.
-      destruct hphi as [a [b [ha [hb hab]]]].
-      subst phi.
-      simpl.
-      apply (proj1 (Nat.succ_le_mono _ _)).
-      apply Nat.max_lub; [exact (IH a ha) | exact (IH b hb)].
-    + apply in_list_map2_iff in hphi.
-      destruct hphi as [a [b [ha [hb hab]]]].
-      subst phi.
-      simpl.
-      apply (proj1 (Nat.succ_le_mono _ _)).
-      apply Nat.max_lub; [exact (IH a ha) | exact (IH b hb)].
-    + apply in_list_map2_iff in hphi.
-      destruct hphi as [a [b [ha [hb hab]]]].
-      subst phi.
-      simpl.
-      apply (proj1 (Nat.succ_le_mono _ _)).
-      apply Nat.max_lub; [exact (IH a ha) | exact (IH b hb)].
+    + map2_rank_bound hphi IH.
+    + map2_rank_bound hphi IH.
+    + map2_rank_bound hphi IH.
     + apply in_map_iff in hphi.
       destruct hphi as [a [ha hin]].
       subst phi.
@@ -249,52 +234,22 @@ Proof.
   induction n as [|n IH]; intros phi hphi.
   - destruct phi; simpl in hphi; lia.
   - destruct phi as [a b | | a b | a b | a b | a | a]; simpl in hphi.
-    + apply in_app_iff. left.
-      apply in_list_map2_iff.
-      exists a, b.
-      repeat split.
-      * apply term_rank_enum_complete. lia.
-      * apply term_rank_enum_complete. lia.
-    + apply in_app_iff. right.
-      apply in_app_iff. left.
+    + in_app_pick 0.
+      map2_member a b ltac:(apply term_rank_enum_complete; lia).
+    + in_app_pick 1.
       simpl. auto.
-    + apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. left.
-      apply in_list_map2_iff.
-      exists a, b.
-      repeat split; try reflexivity; apply IH; lia.
-    + apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. left.
-      apply in_list_map2_iff.
-      exists a, b.
-      repeat split; try reflexivity; apply IH; lia.
-    + apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. left.
-      apply in_list_map2_iff.
-      exists a, b.
-      repeat split; try reflexivity; apply IH; lia.
-    + apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. left.
+    + in_app_pick 2.
+      map2_member a b ltac:(apply IH; lia).
+    + in_app_pick 3.
+      map2_member a b ltac:(apply IH; lia).
+    + in_app_pick 4.
+      map2_member a b ltac:(apply IH; lia).
+    + in_app_pick 5.
       apply in_map_iff.
       exists a.
       split; [reflexivity |].
       apply IH. lia.
-    + apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
-      apply in_app_iff. right.
+    + in_app_last 6.
       apply in_map_iff.
       exists a.
       split; [reflexivity |].
