@@ -38,6 +38,8 @@ import ZFCinPA.StagedSuccessor
 import ZFCinPA.StagedSuccessorAudit
 import ZFCinPA.StandardSuccessor
 import ZFCinPA.StandardSuccessorAudit
+import ZFCinPA.SuccessorSources
+import ZFCinPA.SuccessorSourcesAudit
 import ZFCinPA.LocalStepSuccessor
 import ZFCinPA.LocalStepSuccessorAudit
 import ZFCinPA.Endpoint

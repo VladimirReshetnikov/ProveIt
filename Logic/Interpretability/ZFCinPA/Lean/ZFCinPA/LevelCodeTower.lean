@@ -199,43 +199,49 @@ theorem free_lt_freeMax (f : SetTheory.Form) : ∀ n, Free n f → n < freeMax f
       omega
 
 /-! The fixed leaves of the successor spine, each evaluated by the kernel
-in its own declaration so no single heartbeat budget is shared. -/
+in its own declaration so no single heartbeat budget is shared.
+
+These bounds are **public**: each costs a ~1M-heartbeat kernel evaluation
+of `freeMax` on a concrete macro instance, so downstream modules that need
+a depth move at one of these leaves (for instance
+`ZFCinPA.SuccessorSources`, which writes out the closure-step spine at the
+source level) must reuse them rather than re-`decide` the same bound. -/
 
 set_option maxHeartbeats 1000000 in
-private theorem fm01 : freeMax (fTripleMemF 2 1 0 4) ≤ 5 := by decide
+theorem fm01 : freeMax (fTripleMemF 2 1 0 4) ≤ 5 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm02 : freeMax (fUnivEnvF 1) ≤ 2 := by decide
+theorem fm02 : freeMax (fUnivEnvF 1) ≤ 2 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm03 : freeMax (fNumF 1 0) ≤ 2 := by decide
+theorem fm03 : freeMax (fNumF 1 0) ≤ 2 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm04 : freeMax (fNumF 0 1) ≤ 1 := by decide
+theorem fm04 : freeMax (fNumF 0 1) ≤ 1 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm05 : freeMax (fTripleMemF 6 5 4 1) ≤ 7 := by decide
+theorem fm05 : freeMax (fTripleMemF 6 5 4 1) ≤ 7 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm06 : freeMax (fTripleMemF 7 6 4 1) ≤ 8 := by decide
+theorem fm06 : freeMax (fTripleMemF 7 6 4 1) ≤ 8 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm07 : freeMax (fTripleMemF 7 6 3 1) ≤ 8 := by decide
+theorem fm07 : freeMax (fTripleMemF 7 6 3 1) ≤ 8 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm08 : freeMax (fLevelImpF 4 3 2 6 1 0) ≤ 7 := by decide
+theorem fm08 : freeMax (fLevelImpF 4 3 2 6 1 0) ≤ 7 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm09 : freeMax (fLevelAndF 4 3 2 6 1 0) ≤ 7 := by decide
+theorem fm09 : freeMax (fLevelAndF 4 3 2 6 1 0) ≤ 7 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm10 : freeMax (fLevelOrF 4 3 2 6 1 0) ≤ 7 := by decide
+theorem fm10 : freeMax (fLevelOrF 4 3 2 6 1 0) ≤ 7 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm11 : freeMax (fTagUnF 5 6 0) ≤ 7 := by decide
+theorem fm11 : freeMax (fTagUnF 5 6 0) ≤ 7 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm12 : freeMax (fTagUnF 5 7 0) ≤ 8 := by decide
+theorem fm12 : freeMax (fTagUnF 5 7 0) ≤ 8 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm13 : freeMax (fPiBoundedF 6 5) ≤ 8 := by decide
+theorem fm13 : freeMax (fPiBoundedF 6 5) ≤ 8 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm14 : freeMax (fSigmaBoundedF 6 5) ≤ 8 := by decide
+theorem fm14 : freeMax (fSigmaBoundedF 6 5) ≤ 8 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm15 : freeMax (fShiftTripleMemF 1 0 5 8 0) ≤ 9 := by decide
+theorem fm15 : freeMax (fShiftTripleMemF 1 0 5 8 0) ≤ 9 := by decide
 set_option maxHeartbeats 1000000 in
-private theorem fm16 : freeMax (fShiftTripleMemF 1 0 5 8 1) ≤ 9 := by decide
+theorem fm16 : freeMax (fShiftTripleMemF 1 0 5 8 1) ≤ 9 := by decide
 
 set_option maxHeartbeats 2000000 in
-private theorem freeMax_closF_zero : freeMax (closF 0) ≤ 2 := by decide
+theorem freeMax_closF_zero : freeMax (closF 0) ≤ 2 := by decide
 
 /-- **The closure kernel has free slots below `2`** — uniformly in the
 level; this is the free-slot fact consumed by the depth moves under

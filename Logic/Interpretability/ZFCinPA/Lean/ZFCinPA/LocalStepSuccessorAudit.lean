@@ -14,10 +14,12 @@ The audit keeps three things visible.
   first certificate field is the specialization of one fixed source
   formula.
 * **The reduction.**  `localStepSuccessor_of_source` derives the
-  `localStep` field of `ZFCSuccessorImplications` from three explicit
+  `localStep` field of `ZFCSuccessorImplications` from two explicit
   inputs.  Its statement is the honest boundary of this module: the source
-  sentence, its specialization identity, the leaves' shift-fixedness, and
-  the source proof are *hypotheses*, not claims.
+  sentence together with its specialization identity, and the source
+  proof, are *hypotheses*, not claims.  Shift-fixedness of the two
+  model-coded leaves is no longer among them — it is proved in
+  `ZFCinPA.SuccessorSources` (`shift_levelLeaves`) and audited there.
 
 The `#print axioms` lines must show only Lean's three standard classical
 axioms.  In particular `previous_imp_localStep` — the one unconditional
@@ -52,6 +54,9 @@ open LeanProofs.ZFCinPA.LocalStepSuccessor
 #check @srcPiTrue
 #check @srcCanonAt
 #check @srcLocalStep
+#check @srcLocalStepSucc
+#check @srcLocalStepStepProp
+#check @srcLocalStepStep
 
 #check @translate_srcLevelSat
 #check @translate_srcSigmaTrue
@@ -60,11 +65,18 @@ open LeanProofs.ZFCinPA.LocalStepSuccessor
 #check @translate_srcCanonAt
 #check @translate_srcLocalStep
 #check @translate_srcLocalStep_formula
+#check @translate_srcLocalStepSucc
+#check @translate_srcLocalStepSucc_formula
+#check @translate_srcLocalStepStepProp
+#check @emb_srcLocalStepStep
+#check @translate_srcLocalStepStep
 
 /-! ## The reduction, with its explicit hypotheses -/
 
 #check @previous_imp_localStep
 #check @localStepSuccessor_of_source
+#check @localStepSuccessor_of_sourceProof
+#check @localStepSuccessor_of_derivation
 
 /-! ## Assumption audit -/
 
@@ -76,7 +88,11 @@ open LeanProofs.ZFCinPA.LocalStepSuccessor
 #print axioms translate_srcCanonAt
 #print axioms translate_srcLocalStep
 #print axioms translate_srcLocalStep_formula
+#print axioms translate_srcLocalStepSucc
+#print axioms emb_srcLocalStepStep
+#print axioms translate_srcLocalStepStep
 #print axioms previous_imp_localStep
 #print axioms localStepSuccessor_of_source
+#print axioms localStepSuccessor_of_derivation
 
 end LeanProofs.ZFCinPA.LocalStepSuccessorAudit

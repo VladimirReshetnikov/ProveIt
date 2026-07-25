@@ -1,5 +1,4 @@
-import ZFCinPA.SubstIdentity
-import ZFCinPA.StagedSuccessor
+import ZFCinPA.SuccessorSources
 
 /-!
 # The level tower as a two-placeholder proof template, and the local-step field
@@ -36,11 +35,13 @@ Lean proof over `templateZFC 2 ![1, 2]`, compiled once by
 `SetPlaceholders.compileSetTemplate`, yields an internal `𝗭𝗙𝗖` proof at
 *every* index simultaneously — nonstandard formula codes included.
 
-## What this module lands, and what it does not
+## The split with `ZFCinPA.SuccessorSources`
 
-Landed:
+Everything in the route that is *field-independent* now lives in
+`ZFCinPA.SuccessorSources` and is re-exported here, so nothing downstream
+sees the split:
 
-* the template setup (`levelArities`, `levelLeaves`) and the
+* the template setup (`levelArities`, `srcL`, `levelLeaves`) and the
   proposition-level placeholder atom `srcPlaceholder`, together with its
   reconciliation `translate_srcPlaceholder` — the first real use of
   `ZFCinPA.SubstIdentity`, since the leaves are spliced *raw* at ambient
@@ -49,16 +50,32 @@ Landed:
   (`srcLevelSat`, `srcSigmaTrue`, `srcPiFalse`, `srcPiTrue`) and for the
   canonical-slot gadget (`srcCanonAt`), each with its reconciliation
   lemma;
-* `srcLocalStep` and `translate_srcLocalStep`:
-  `translateFormula (levelLeaves x) srcLocalStep = localStepFormula x`
-  for every `x : V`.
+* **shift-fixedness of the two leaves** (`shift_levelLeaves`), which is
+  what `SetPlaceholders.compileSetTemplate` demands of any
+  interpretation;
+* the source counterparts of the two towers' successor steps
+  (`srcNumChainSucc`, `srcClosStep`) and the level tower one level up
+  (`srcLevelSatSucc`, `srcSigmaTrueSucc`, `srcPiFalseSucc`,
+  `srcPiTrueSucc`).
 
-Not landed, and deliberately not assumed anywhere: the *successor* source
-formula (whose leaves are `numChainCode (x+1)` and `closCode (x+1)`,
-hence require the closure-step spine to be written out at the source
-level), the source proof of the implication, and the compilation.  See the
-`Residue` section at the end of the file for the precise remaining steps
-and their cost.
+What this module itself lands is the first field, end to end except for
+one derivation:
+
+* `srcLocalStep`, `srcLocalStepSucc` and their reconciliations
+  (`translateFormula (levelLeaves x) srcLocalStep = localStepFormula x`
+  and the same one index up), at every `x : V`;
+* the source **sentence** `srcLocalStepStep` — the universal closure of
+  the free-variable-free implication `srcLocalStep 🡒 srcLocalStepSucc` — and
+  `translate_srcLocalStepStep`, which is precisely the specialization
+  hypothesis `hσ` of `localStepSuccessor_of_source`;
+* `localStepSuccessor_of_derivation`, which turns *one* ordinary Lean
+  proof `templateZFC 2 ![1, 2] ⊢! srcLocalStepStep` into the `localStep`
+  field of `ZFCSuccessorImplications` at every, possibly nonstandard,
+  index.
+
+Not landed, and deliberately not assumed anywhere: that derivation.  It is
+an explicit argument of `localStepSuccessor_of_derivation`; see the
+`Residue` section at the end of the file.
 
 ## Disciplines
 
@@ -83,167 +100,43 @@ open LeanProofs.ZFCinPA.SubstIdentity
 open BoundedZFCConsistency (fNumF fTripleMemF fUnivEnvF fIsFormCodeF
   fTaggedEmptyF)
 
-/-! ## The template language of the level tower -/
+/-! ## The shared source layer, re-exported
 
-/-- The two `x`-dependent leaves of every certificate field: the numeral
-chain (unary) and the closure kernel (binary). -/
-@[reducible] def levelArities : Fin 2 → ℕ := ![1, 2]
+`ZFCinPA.SuccessorSources` holds every part of the route that does not
+depend on which certificate field is being compiled.  The names are
+re-exported into this namespace so that existing consumers — and the
+audit — are unaffected by the extraction. -/
 
-/-- The placeholder-enlarged source language of the level tower. -/
-@[reducible] def srcL : Language := setTemplateLanguage 2 levelArities
+export LeanProofs.ZFCinPA.SuccessorSources
+  (ShiftFixed shiftFixed_leafCode shiftFixed_closStepCode
+   shift_numChainCode shiftFixed_numChainCode shift_closCode
+   shiftFixed_closCode
+   levelArities srcL srcPProp srcPlaceholder liftP srcNumAt srcClsAt
+   translate_srcPlaceholder translate_liftP translate_liftP_val
+   translate_and translate_or translate_all translate_exs
+   quote_toSet_eq_code quote_leaf_move
+   levelLeaves levelLeaves_zero levelLeaves_one shift_levelLeaves
+   translate_srcNumAt translate_srcClsAt
+   srcLvlInst srcLvlInstP translate_srcLvlInst translate_srcLvlInstP
+   srcLevelSat srcSigmaTrue srcPiFalse srcPiTrue srcCanonAt
+   translate_srcLevelSat translate_srcSigmaTrue translate_srcPiFalse
+   translate_srcPiTrue translate_srcCanonAt
+   srcNumChainSucc srcAllClause srcExClause srcJustRow srcClosStep
+   translate_srcNumChainSucc translate_srcAllClause translate_srcExClause
+   translate_srcJustRow translate_srcClosStep
+   srcLevelSatSucc srcSigmaTrueSucc srcPiFalseSucc srcPiTrueSucc
+   translate_srcLevelSatSucc translate_srcSigmaTrueSucc
+   translate_srcPiFalseSucc translate_srcPiTrueSucc
+   FvFree FvFree.and FvFree.or FvFree.imp FvFree.all FvFree.exs
+   fvFree_liftP fvFree_srcCanonAt fvFree_srcSigmaTrue
+   fvFree_srcPiTrue fvFree_srcSigmaTrueSucc fvFree_srcPiTrueSucc
+   emb_univCl_of_fvFree)
 
-section Source
+/-! ## The source form of the first field -/
 
-open SetTheory (Form Free)
-
-/-- Proposition-level placeholder atom.  `SetPlaceholders.srcP` is
-sentence-valued; the fixed `ℒₛₑₜ` leaves of the field spines are
-`toSet`-translations, which are `Semiproposition`s, so the whole source
-formula is assembled at the proposition level and closed at the very
-end. -/
-def srcPProp {n : ℕ} (i : Fin 2)
-    (ts : Fin (levelArities i) → SyntacticSemiterm srcL n) :
-    Semiproposition srcL n :=
-  .rel (placeholderRel i) ts
-
-/-- The `i`-th placeholder applied to the identity argument list
-`#0, …, #(levelArities i - 1)`, at an ambient arity that can accommodate
-it. -/
-def srcPlaceholder {n : ℕ} (i : Fin 2) (h : levelArities i ≤ n) :
-    Semiproposition srcL n :=
-  srcPProp i fun j ↦ #(Fin.castLE h j)
-
-/-- A fixed `ℒₛₑₜ` leaf, lifted into the source language. -/
-noncomputable def liftP {n : ℕ} (φ : SetTheorySemiproposition n) :
-    Semiproposition srcL n :=
-  φ.lMap (setHom 2 levelArities)
-
-end Source
-
-/-! ## Reconciliation of the two atom shapes -/
-
-section Translate
-
-variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+section SourceField
 
 open SetTheory (Form Free)
-
-/-- **The placeholder atom specializes to the raw leaf.**  This is the
-compiler-facing form of `ZFCinPA.SubstIdentity`: the translation always
-emits a substitution, and the identity bound-variable vector makes it
-vanish even though the leaf's own arity is smaller than the ambient one. -/
-theorem translate_srcPlaceholder {n : ℕ}
-    (Ks : (i : Fin 2) → Bootstrapping.Semiformula V ℒₛₑₜ (levelArities i))
-    (i : Fin 2) (h : levelArities i ≤ n) :
-    (translateFormula Ks (srcPlaceholder i h)).val = (Ks i).val := by
-  show ((Ks i).subst
-    (fun j ↦ translateTerm (V := V)
-      ((fun j ↦ #(Fin.castLE h j)) (Fin.cast rfl j)))).val = (Ks i).val
-  exact Semiformula.subst_bvarVec_val (Ks i) _ fun _ ↦ rfl
-
-/-- A lifted fixed leaf specializes to its quotation. -/
-theorem translate_liftP {n : ℕ}
-    (Ks : (i : Fin 2) → Bootstrapping.Semiformula V ℒₛₑₜ (levelArities i))
-    (φ : SetTheorySemiproposition n) :
-    translateFormula Ks (liftP φ) = (⌜φ⌝ : Bootstrapping.Semiformula V ℒₛₑₜ n) :=
-  translateFormula_lMap_set Ks φ
-
-/-- Raw-code form of `translate_liftP`. -/
-theorem translate_liftP_val {n : ℕ}
-    (Ks : (i : Fin 2) → Bootstrapping.Semiformula V ℒₛₑₜ (levelArities i))
-    (φ : SetTheorySemiproposition n) :
-    (translateFormula Ks (liftP φ)).val = (⌜φ⌝ : V) := by
-  rw [translate_liftP]; rfl
-
-/-- Specialization commutes with conjunction. -/
-theorem translate_and {n : ℕ}
-    (Ks : (i : Fin 2) → Bootstrapping.Semiformula V ℒₛₑₜ (levelArities i))
-    (p q : Semiproposition srcL n) :
-    translateFormula Ks (p ⋏ q) =
-      translateFormula Ks p ⋏ translateFormula Ks q := rfl
-
-/-- Specialization commutes with the universal quantifier. -/
-theorem translate_all {n : ℕ}
-    (Ks : (i : Fin 2) → Bootstrapping.Semiformula V ℒₛₑₜ (levelArities i))
-    (p : Semiproposition srcL (n + 1)) :
-    translateFormula Ks (∀⁰ p) = ∀⁰ translateFormula Ks p := rfl
-
-/-- Specialization commutes with the existential quantifier. -/
-theorem translate_exs {n : ℕ}
-    (Ks : (i : Fin 2) → Bootstrapping.Semiformula V ℒₛₑₜ (levelArities i))
-    (p : Semiproposition srcL (n + 1)) :
-    translateFormula Ks (∃⁰ p) = ∃⁰ translateFormula Ks p := rfl
-
-/-- **The depth move, packaged.**  A fixed leaf's quote at the ambient
-depth `k` is the named constant computed at the declared depth `d`,
-provided every free slot of the underlying `Form` lies below both.  This is
-the only way a concrete Gödel code is ever touched below — never by
-`simp`, never by evaluation. -/
-theorem quote_toSet_eq_code {φ : Form} {k d : ℕ}
-    (hk : ∀ i, Free i φ → i < k) (hd : ∀ i, Free i φ → i < d) :
-    (⌜toSet k φ⌝ : V) = (((toSet d φ).toNat : ℕ) : V) := by
-  rw [quote_toSet_congr hk hd, coe_toNat_eq_quote]
-
-end Translate
-
-/-! ## The two model-coded leaves -/
-
-section Leaves
-
-variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
-
-/-- The two `x`-dependent leaves of the level tower, typed at their own
-arities: the numeral chain and the closure kernel. -/
-noncomputable def levelLeaves (x : V) :
-    (i : Fin 2) → Bootstrapping.Semiformula V ℒₛₑₜ (levelArities i)
-  | ⟨0, _⟩ => ⟨numChainCode x, by simpa using isSemiformula_numChainCode x⟩
-  | ⟨1, _⟩ => ⟨closCode x, by simpa using isSemiformula_closCode x⟩
-
-@[simp] theorem levelLeaves_zero (x : V) :
-    (levelLeaves x 0).val = numChainCode x := rfl
-
-@[simp] theorem levelLeaves_one (x : V) :
-    (levelLeaves x 1).val = closCode x := rfl
-
-end Leaves
-
-/-! ## The source formulas of the level tower
-
-Each definition sits at the ambient arity its occurrence in the field
-spine forces: the canonical level instance at `5`, the Sigma/Pi readings at
-`4`, the canonical-slot gadget's payload at `4` and the gadget itself at
-`2`. -/
-
-section SourceTower
-
-open SetTheory (Form Free)
-
-/-- The unfolded canonical level instance at the *successor* index: two
-existentials over the numeral chain and the closure kernel, and the fixed
-membership atom.  Both placeholders carry the identity argument list, so
-their specializations are the raw leaves. -/
-noncomputable def srcLevelSat : Semiproposition srcL 5 :=
-  ∃⁰ ∃⁰ (srcPlaceholder 0 (by decide) ⋏
-    (srcPlaceholder 1 (by decide) ⋏ liftP (toSet 7 (fTripleMemF 4 3 2 1))))
-
-/-- Sigma-truth at the successor index, canonical slots. -/
-noncomputable def srcSigmaTrue : Semiproposition srcL 4 :=
-  ∃⁰ (liftP (toSet 5 (fNumF 0 1)) ⋏ srcLevelSat)
-
-/-- Pi-falsity at the successor index, canonical slots. -/
-noncomputable def srcPiFalse : Semiproposition srcL 4 :=
-  ∃⁰ (liftP (toSet 5 (fNumF 0 0)) ⋏ srcLevelSat)
-
-/-- Pi-truth at the successor index: the negation of Pi-falsity. -/
-noncomputable def srcPiTrue : Semiproposition srcL 4 :=
-  srcPiFalse 🡒 liftP (toSet 4 Form.fBot)
-
-/-- The canonical-slot gadget at the pair `(1, 0)`: two universal
-quantifiers over the two equality guards and the payload. -/
-noncomputable def srcCanonAt (inner : Semiproposition srcL 4) :
-    Semiproposition srcL 2 :=
-  ∀⁰ ∀⁰ (liftP (toSet 4 (Form.fEq 1 3)) 🡒
-    (liftP (toSet 4 (Form.fEq 0 2)) 🡒 inner))
 
 /-- **The source form of the local-step field.**  Its specialization at
 `levelLeaves x` is `localStepFormula x`, at every model index. -/
@@ -254,101 +147,95 @@ noncomputable def srcLocalStep : Proposition srcL :=
      (liftP (toSet 2 (fIsFormCodeF 1)) 🡒
         (srcCanonAt srcSigmaTrue 🡒 srcCanonAt srcPiTrue))))
 
-end SourceTower
+/-- **The source form of the local-step field one index up.**  The spine
+is literally `srcLocalStep`'s; only the two canonical-slot payloads move
+one level, to the successor readings of `ZFCinPA.SuccessorSources` — which
+is where the nineteen-leaf closure-step spine is discharged. -/
+noncomputable def srcLocalStepSucc : Proposition srcL :=
+  ∀⁰ ∀⁰ (liftP (toSet 2 (fUnivEnvF 0)) 🡒
+    ((liftP (toSet 2 (fTaggedEmptyF 1 2)) 🡒
+        (srcCanonAt srcSigmaTrueSucc 🡒 liftP (toSet 2 Form.fBot))) ⋏
+     (liftP (toSet 2 (fIsFormCodeF 1)) 🡒
+        (srcCanonAt srcSigmaTrueSucc 🡒 srcCanonAt srcPiTrueSucc))))
 
-/-! ## Free-slot bounds of the fixed leaves
+/-- **The source form of the whole local-step successor implication**, at
+the proposition level. -/
+noncomputable def srcLocalStepStepProp : Proposition srcL :=
+  srcLocalStep 🡒 srcLocalStepSucc
 
-Only leaves whose declared depth differs from their ambient depth need a
-bound.  There is exactly one such leaf in the level tower that is not
-already covered by a named lemma. -/
+/-! ### Free-slot bounds of this field's three own leaves
 
-section FreeBounds
+`ZFCinPA.CertificateFields` keeps its kernel evaluations of `freeMax` on
+`fUnivEnvF 0`, `fTaggedEmptyF 1 2` and `fIsFormCodeF 1` private.  They are
+not needed: closedness of the whole field, `not_free_localStepF`, already
+implies each of them, because `SetTheory.Free` is definitional on the
+spine — two universal quantifiers put every one of these leaves two slots
+up.  So no bound is re-`decide`d here. -/
 
-open SetTheory (Form Free)
+theorem free_univEnv0 {i : ℕ} (h : Free i (fUnivEnvF 0)) : i < 2 := by
+  by_contra hlt
+  obtain ⟨k, rfl⟩ : ∃ k, i = k + 2 := ⟨i - 2, by omega⟩
+  exact not_free_localStepF 0 k (Or.inl h)
 
-set_option maxHeartbeats 1000000 in
-private theorem freeMax_tripleMemCanon :
-    freeMax (fTripleMemF 4 3 2 1) ≤ 5 := by decide
+theorem free_taggedEmpty12 {i : ℕ} (h : Free i (fTaggedEmptyF 1 2)) :
+    i < 2 := by
+  by_contra hlt
+  obtain ⟨k, rfl⟩ : ∃ k, i = k + 2 := ⟨i - 2, by omega⟩
+  exact not_free_localStepF 0 k (Or.inr (Or.inl (Or.inl h)))
 
-private theorem free_tripleMemCanon {i : ℕ}
-    (h : Free i (fTripleMemF 4 3 2 1)) : i < 5 := by
-  have h1 := free_lt_freeMax _ i h
-  have h2 := freeMax_tripleMemCanon
-  omega
+theorem free_isFormCode1 {i : ℕ} (h : Free i (fIsFormCodeF 1)) : i < 2 := by
+  by_contra hlt
+  obtain ⟨k, rfl⟩ : ∃ k, i = k + 2 := ⟨i - 2, by omega⟩
+  exact not_free_localStepF 0 k (Or.inr (Or.inr (Or.inl h)))
 
-end FreeBounds
+/-! ### The field's source formulas are free-variable-free -/
 
-/-! ## Reconciliation, layer by layer -/
+theorem fvFree_srcLocalStep : FvFree srcLocalStep := by
+  refine FvFree.all (FvFree.all (FvFree.imp ?_ (FvFree.and
+    (FvFree.imp ?_ (FvFree.imp ?_ ?_)) (FvFree.imp ?_ (FvFree.imp ?_ ?_)))))
+  · exact fvFree_liftP (fun _ hi ↦ free_univEnv0 hi)
+  · exact fvFree_liftP (fun _ hi ↦ free_taggedEmpty12 hi)
+  · exact fvFree_srcCanonAt fvFree_srcSigmaTrue
+  · exact fvFree_liftP (fun _ hi ↦ absurd hi (by simp [Free]))
+  · exact fvFree_liftP (fun _ hi ↦ free_isFormCode1 hi)
+  · exact fvFree_srcCanonAt fvFree_srcSigmaTrue
+  · exact fvFree_srcCanonAt fvFree_srcPiTrue
+
+theorem fvFree_srcLocalStepSucc : FvFree srcLocalStepSucc := by
+  refine FvFree.all (FvFree.all (FvFree.imp ?_ (FvFree.and
+    (FvFree.imp ?_ (FvFree.imp ?_ ?_)) (FvFree.imp ?_ (FvFree.imp ?_ ?_)))))
+  · exact fvFree_liftP (fun _ hi ↦ free_univEnv0 hi)
+  · exact fvFree_liftP (fun _ hi ↦ free_taggedEmpty12 hi)
+  · exact fvFree_srcCanonAt fvFree_srcSigmaTrueSucc
+  · exact fvFree_liftP (fun _ hi ↦ absurd hi (by simp [Free]))
+  · exact fvFree_liftP (fun _ hi ↦ free_isFormCode1 hi)
+  · exact fvFree_srcCanonAt fvFree_srcSigmaTrueSucc
+  · exact fvFree_srcCanonAt fvFree_srcPiTrueSucc
+
+theorem fvFree_srcLocalStepStepProp : FvFree srcLocalStepStepProp :=
+  FvFree.imp fvFree_srcLocalStep fvFree_srcLocalStepSucc
+
+/-- **The source sentence of the local-step successor.**  The universal
+closure of a free-variable-free proposition, hence the same formula read
+as a `Sentence srcL` — which is what
+`SetPlaceholders.compileSetTemplate` consumes. -/
+noncomputable def srcLocalStepStep : Sentence srcL :=
+  FirstOrder.Semiformula.univCl srcLocalStepStepProp
+
+theorem emb_srcLocalStepStep :
+    (Rewriting.emb srcLocalStepStep : Proposition srcL) =
+      srcLocalStepStepProp :=
+  emb_univCl_of_fvFree fvFree_srcLocalStepStepProp
+
+end SourceField
+
+/-! ## Reconciliation of the first field -/
 
 section Reconcile
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 open SetTheory (Form Free)
-
-/-- The canonical level instance. -/
-theorem translate_srcLevelSat (x : V) :
-    (translateFormula (levelLeaves x) srcLevelSat).val = levelSatCode (x + 1) := by
-  rw [levelSatCode_succ, lvlInstPart]
-  simp only [srcLevelSat, translate_exs, translate_and,
-    Bootstrapping.Semiformula.val_exs, Bootstrapping.Semiformula.val_and,
-    translate_srcPlaceholder, translate_liftP_val, levelLeaves_zero,
-    levelLeaves_one]
-  rw [quote_toSet_eq_code (V := V)
-    (fun i hi ↦ by have := free_tripleMemCanon hi; omega)
-    (fun i hi ↦ free_tripleMemCanon hi)]
-  rfl
-
-/-- Sigma-truth at the successor index. -/
-theorem translate_srcSigmaTrue (x : V) :
-    (translateFormula (levelLeaves x) srcSigmaTrue).val =
-      sigmaTrueCode (x + 1) := by
-  rw [sigmaTrueCode, bitWitnessPart]
-  simp only [srcSigmaTrue, translate_exs, translate_and,
-    Bootstrapping.Semiformula.val_exs, Bootstrapping.Semiformula.val_and,
-    translate_liftP_val, translate_srcLevelSat]
-  rw [quote_toSet_eq_code (V := V) (d := 3)
-    (fun i hi ↦ by have := free_fNumF hi; omega)
-    (fun i hi ↦ by have := free_fNumF hi; omega)]
-  rfl
-
-/-- Pi-falsity at the successor index. -/
-theorem translate_srcPiFalse (x : V) :
-    (translateFormula (levelLeaves x) srcPiFalse).val =
-      piFalseCode (x + 1) := by
-  rw [piFalseCode, bitWitnessPart]
-  simp only [srcPiFalse, translate_exs, translate_and,
-    Bootstrapping.Semiformula.val_exs, Bootstrapping.Semiformula.val_and,
-    translate_liftP_val, translate_srcLevelSat]
-  rw [quote_toSet_eq_code (V := V) (d := 3)
-    (fun i hi ↦ by have := free_fNumF hi; omega)
-    (fun i hi ↦ by have := free_fNumF hi; omega)]
-  rfl
-
-/-- Pi-truth at the successor index. -/
-theorem translate_srcPiTrue (x : V) :
-    (translateFormula (levelLeaves x) srcPiTrue).val =
-      piTrueCode (x + 1) := by
-  rw [piTrueCode, piTruePart]
-  simp only [srcPiTrue, translateFormula_imp,
-    Bootstrapping.Semiformula.val_imp, translate_liftP_val,
-    translate_srcPiFalse]
-  rw [quote_toSet_eq_code (V := V) (d := 2)
-    (fun i hi ↦ absurd hi (by simp [Free]))
-    (fun i hi ↦ absurd hi (by simp [Free]))]
-  rfl
-
-/-- The canonical-slot gadget. -/
-theorem translate_srcCanonAt (x : V) (inner : Semiproposition srcL 4) :
-    (translateFormula (levelLeaves x) (srcCanonAt inner)).val =
-      canonAtPart (eqGuardCode 1 3) (eqGuardCode 0 2)
-        (translateFormula (levelLeaves x) inner).val := by
-  rw [canonAtPart]
-  simp only [srcCanonAt, translate_all, translateFormula_imp,
-    Bootstrapping.Semiformula.val_all, Bootstrapping.Semiformula.val_imp,
-    translate_liftP_val]
-  rw [quote_fEq_move (V := V) (show 1 < 4 by omega) (show 3 < 4 by omega),
-    quote_fEq_move (V := V) (show 0 < 4 by omega) (show 2 < 4 by omega)]
 
 /-- **The local-step field code is the specialization of a fixed source
 formula.**  At every model index `x`, standard or not. -/
@@ -376,6 +263,57 @@ field. -/
 theorem translate_srcLocalStep_formula (x : V) :
     translateFormula (levelLeaves x) srcLocalStep = localStepFormula x :=
   Bootstrapping.Semiformula.ext (translate_srcLocalStep x)
+
+/-- **The successor of the local-step field code is the specialization of
+a fixed source formula**, at every model index — the consequent half of
+what `localStepSuccessor_of_source` needs. -/
+theorem translate_srcLocalStepSucc (x : V) :
+    (translateFormula (levelLeaves x) srcLocalStepSucc).val =
+      localStepCode (x + 1) := by
+  rw [localStepCode, localStepPart,
+    show sigmaAtCode 1 0 (x + 1) =
+      canonAtPart (eqGuardCode 1 3) (eqGuardCode 0 2)
+        (sigmaTrueCode (x + 1 + 1)) from rfl,
+    show piTrueAtCode 1 0 (x + 1) =
+      canonAtPart (eqGuardCode 1 3) (eqGuardCode 0 2)
+        (piTrueCode (x + 1 + 1)) from rfl]
+  simp only [srcLocalStepSucc, translate_all, translate_and,
+    translateFormula_imp, Bootstrapping.Semiformula.val_all,
+    Bootstrapping.Semiformula.val_and, Bootstrapping.Semiformula.val_imp,
+    translate_liftP_val, translate_srcCanonAt, translate_srcSigmaTrueSucc,
+    translate_srcPiTrueSucc]
+  rw [← coe_toNat_eq_quote (V := V) (toSet 2 (fUnivEnvF 0)),
+    ← coe_toNat_eq_quote (V := V) (toSet 2 (fTaggedEmptyF 1 2)),
+    ← coe_toNat_eq_quote (V := V) (toSet 2 (fIsFormCodeF 1)),
+    ← coe_toNat_eq_quote (V := V) (toSet 2 (Form.fBot))]
+  rfl
+
+theorem translate_srcLocalStepSucc_formula (x : V) :
+    translateFormula (levelLeaves x) srcLocalStepSucc =
+      localStepFormula (x + 1) :=
+  Bootstrapping.Semiformula.ext (translate_srcLocalStepSucc x)
+
+/-- **The whole local-step successor implication is the specialization of
+one fixed source proposition.**  This is `hσ` of
+`localStepSuccessor_of_source`, at the proposition level: what remains
+between it and the sentence-level hypothesis is only the closure of a
+free-variable-free proposition into a `Sentence srcL`. -/
+theorem translate_srcLocalStepStepProp (x : V) :
+    translateFormula (levelLeaves x) srcLocalStepStepProp =
+      (localStepFormula x 🡒 localStepFormula (x + 1)) := by
+  show translateFormula (levelLeaves x) (srcLocalStep 🡒 srcLocalStepSucc) = _
+  rw [translateFormula_imp, translate_srcLocalStep_formula,
+    translate_srcLocalStepSucc_formula]
+
+/-- **The specialization identity for the source sentence.**  This is
+exactly the hypothesis `hσ` of `localStepSuccessor_of_source`, at
+`σ = srcLocalStepStep`, and it is now a theorem. -/
+theorem translate_srcLocalStepStep (x : V) :
+    translateFormula (levelLeaves x)
+        (Rewriting.emb srcLocalStepStep : Proposition srcL) =
+      (localStepFormula x 🡒 localStepFormula (x + 1)) := by
+  rw [emb_srcLocalStepStep]
+  exact translate_srcLocalStepStepProp x
 
 end Reconcile
 
@@ -409,16 +347,20 @@ section Reduction
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-/-- **From a source template to the local-step successor.**  Three inputs:
+/-- **From a source template to the local-step successor.**  Two inputs:
 
 * `hσ` — the source sentence specializes, at every index, to the field
   implication.  Its antecedent half is already proved
   (`translate_srcLocalStep_formula`); the consequent half needs the
-  successor spine (see the `Residue` note below);
-* `hshift` — the two model-coded leaves are shift-fixed, which is what
-  `SetPlaceholders.compileSetTemplate` demands of any interpretation;
+  successor spine, whose shared part (`srcClosStep`, `srcNumChainSucc`,
+  `srcSigmaTrueSucc`, `srcPiTrueSucc`) is proved in
+  `ZFCinPA.SuccessorSources`;
 * `d` — one ordinary Lean proof over the lifted theory
   `templateZFC 2 ![1, 2]`.
+
+Shift-fixedness of the two model-coded leaves — the third input of the
+previous version of this statement — is no longer a hypothesis: it is
+`SuccessorSources.shift_levelLeaves`.
 
 The conclusion is the `localStep` field of
 `ZFCinPA.StagedSuccessor.ZFCSuccessorImplications` at an arbitrary,
@@ -427,70 +369,94 @@ noncomputable def localStepSuccessor_of_source
     (σ : Sentence srcL)
     (hσ : ∀ x : V, translateFormula (levelLeaves x) (Rewriting.emb σ) =
       (localStepFormula x 🡒 localStepFormula (x + 1)))
-    (hshift : ∀ (x : V) (i : Fin 2),
-      Bootstrapping.shift ℒₛₑₜ (levelLeaves x i).val = (levelLeaves x i).val)
     (d : templateZFC 2 levelArities ⊢! σ)
     (n : V) (h : IsFormula ℒₛₑₜ (conZFCSetCodeFun n)) :
     (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
       ((concreteZFCTruthCertificateFamily (V := V)).fields n h).sentence 🡒
         localStepFormula (n + 1) := by
-  have hc := compileSetTemplate (levelLeaves n) (hshift n) d
+  have hc := compileSetTemplate (levelLeaves n) (shift_levelLeaves n) d
   rw [hσ n] at hc
   exact LO.Entailment.C_trans (previous_imp_localStep n h) hc
+
+/-- **The reduction, with the specialization identity discharged.**  Only
+two things are left: a *sentence* whose embedding is the source
+proposition `srcLocalStepStepProp` (a closure step: the proposition is
+free-variable-free, so it is the embedding of a sentence), and the source
+proof itself.  Both are explicit arguments; nothing here assumes
+either. -/
+noncomputable def localStepSuccessor_of_sourceProof
+    (σ : Sentence srcL)
+    (hemb : (Rewriting.emb σ : Proposition srcL) = srcLocalStepStepProp)
+    (d : templateZFC 2 levelArities ⊢! σ)
+    (n : V) (h : IsFormula ℒₛₑₜ (conZFCSetCodeFun n)) :
+    (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
+      ((concreteZFCTruthCertificateFamily (V := V)).fields n h).sentence 🡒
+        localStepFormula (n + 1) :=
+  localStepSuccessor_of_source σ
+    (fun x ↦ by rw [hemb]; exact translate_srcLocalStepStepProp x) d n h
+
+/-- **The first field's successor, reduced to one derivation.**  Every
+other ingredient — the source sentence, its specialization identity at
+every (possibly nonstandard) index, and shift-fixedness of the two
+model-coded leaves — is proved.  What remains for the `localStep` field is
+exactly one ordinary Lean proof of the fixed sentence `srcLocalStepStep`
+over the lifted theory `templateZFC 2 ![1, 2]`; it is an explicit
+argument, and nothing in this project assumes it. -/
+noncomputable def localStepSuccessor_of_derivation
+    (d : templateZFC 2 levelArities ⊢! srcLocalStepStep)
+    (n : V) (h : IsFormula ℒₛₑₜ (conZFCSetCodeFun n)) :
+    (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
+      ((concreteZFCTruthCertificateFamily (V := V)).fields n h).sentence 🡒
+        localStepFormula (n + 1) :=
+  localStepSuccessor_of_source srcLocalStepStep translate_srcLocalStepStep d n h
 
 end Reduction
 
 /-! ## Residue
 
-What is proved above is the *antecedent* half of `hσ`:
-`translateFormula (levelLeaves x) srcLocalStep = localStepFormula x`, at
-every index.  Three steps remain before `localStepSuccessor_of_source`
-can be applied, and their costs are known:
+The specialization side of the first field is complete:
+`translate_srcLocalStepStep` says that at *every* model index `x`,
+standard or not, the fixed source sentence `srcLocalStepStep` specializes
+to `localStepFormula x 🡒 localStepFormula (x + 1)`.  Together with
+`SuccessorSources.shift_levelLeaves` and
+`SetPlaceholders.compileSetTemplate` that reduces the `localStep` field of
+`ZFCSuccessorImplications` to exactly one obligation:
 
-1. **The successor spine.**  `localStepCode (x + 1)` has the same shape,
-   but its two `x`-dependent leaves are `numChainCode (x + 1)` and
-   `closCode (x + 1)`.  Both are *definitionally* built from the level-`x`
-   leaves — `numChainCode_succ` is one existential over a single fixed
-   leaf, and `closCode_succ = closStepCode (numChainCode x) (closCode x)`
-   is the nineteen-leaf `closStepPart`/`justRowPart`/`allClausePart`/
-   `exClausePart`/`lvlInstPart` spine of `ZFCinPA.LevelCodeTower`.  So the
-   successor source formula exists and needs no new idea; writing it out
-   costs one source definition per spine layer plus one depth move per
-   fixed leaf.  The depth moves need the free-slot bounds `fm01`–`fm16`
-   and `freeMax_closF_zero` of `LevelCodeTower`, which are `private` there
-   and would have to be re-`decide`d (or exported).
+> `templateZFC 2 levelArities ⊢! srcLocalStepStep`
 
-2. **Shift-fixedness of the two leaves.**  Two `𝚺₁` successor inductions in
-   the pattern of `ConcreteFamily.isSemiformula_numChainCode` /
-   `isSemiformula_closCode`, with the base and every fixed leaf handled by
-   `Semiformula.quote_shift` plus `freeVariables_toSet` — i.e. by the same
-   free-slot bounds as step 1.
+— one ordinary Lean proof, over a theory with no model and no index in it.
 
-3. **The source proof `d`.**  This is the genuine mathematics, and it is
-   *not* small.  The level-`(x+2)` local polarity laws do not follow from
-   arbitrary interpretations of the two placeholders — for an opaque
-   `Clos` the falsity code is trivially certifiable — so the previous
-   certificate really is consumed, exactly as the implication shape of
-   `ZFCSuccessorImplications` allows.  Concretely:
+That obligation is the genuine mathematics, and it is *not* small.  The
+level-`(x+2)` local polarity laws do not follow from arbitrary
+interpretations of the two placeholders — for an opaque `Clos` the falsity
+code is trivially certifiable — so the previous certificate really is
+consumed, exactly as the implication shape of `ZFCSuccessorImplications`
+allows (`srcLocalStepStep` has `srcLocalStep` as its antecedent).
+Concretely:
 
-   * the first conjunct (`sigmaTrue_bot` one level up) is goal 2's
-     `levelJustified_of_tag_low` argument: the justification row of the
-     falsity code can only be the delegation disjunct, because the five
-     structural disjuncts each force a head tag that the falsity code does
-     not have.  That argument is about the *fixed* macros `fLevelImpF`,
-     `fLevelAndF`, `fLevelOrF`, `fTagUnF`, so it transfers to an arbitrary
-     template structure;
-   * the second conjunct (`piTrue_of_sigmaTrue` one level up) is goal 2's
-     `sigmaTrue_not_piFalse`, whose proof is an induction over *form
-     codes* using the collapse lemmas.  A single level-`(x+1)` polarity
-     hypothesis is not enough for it; the source proof will need the
-     internal form-code induction of `ZFCinPA.SeparationKernel`
-     (`compileOmegaTemplate`) and, plausibly, the `crossLevel` conjunct of
-     the previous certificate as well.
+* the first conjunct (`sigmaTrue_bot` one level up) is goal 2's
+  `levelJustified_of_tag_low` argument: the justification row of the
+  falsity code can only be the delegation disjunct, because the five
+  structural disjuncts each force a head tag that the falsity code does
+  not have.  That argument is about the *fixed* macros `fLevelImpF`,
+  `fLevelAndF`, `fLevelOrF`, `fTagUnF`, so it transfers to an arbitrary
+  template structure;
+* the second conjunct (`piTrue_of_sigmaTrue` one level up) is goal 2's
+  `sigmaTrue_not_piFalse`, whose proof is an induction over *form codes*
+  using the collapse lemmas.  A single level-`(x+1)` polarity hypothesis
+  is not enough for it; the source proof will need the internal form-code
+  induction of `ZFCinPA.SeparationKernel` (`compileOmegaTemplate`) and,
+  plausibly, the `crossLevel` conjunct of the previous certificate as
+  well.  Should the latter be needed, the antecedent of the source
+  sentence has to be widened from `srcLocalStep` to the conjunction of the
+  two previous fields — which the implication shape of
+  `ZFCSuccessorImplications` still permits, via
+  `previous_imp_localStep`'s sibling `⋏`-eliminations, but which changes
+  `srcLocalStepStep`; nothing below assumes either shape.
 
-   Nothing above weakens `ZFCSuccessorImplications`, and no part of it is
-   assumed anywhere in this file: `localStepSuccessor_of_source` takes the
-   source proof as an explicit argument. -/
+Nothing above weakens `ZFCSuccessorImplications`, and no part of it is
+assumed anywhere in this file: `localStepSuccessor_of_derivation` takes
+the source proof as an explicit argument. -/
 
 end LocalStepSuccessor
 end ZFCinPA
