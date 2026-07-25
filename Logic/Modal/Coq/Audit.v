@@ -4,7 +4,8 @@ From FoundationModal Require Import
   Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK Kripke
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
-  CorrespondenceExtensions StandardTranslation Preservation Root Undefinability.
+  CorrespondenceExtensions StandardTranslation Preservation Root
+  WeakCorrespondence Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -180,6 +181,10 @@ Check point_generated_truth.
 Check point_generated_truth_at_root.
 Check point_trans_generated_trans_rooted.
 
+Check valid_WeakPoint2_atoms_iff_piecewise_convergent.
+Check frame_piecewise_connected_iff_distinct.
+Check valid_WeakPoint3_atoms_iff_piecewise_connected.
+
 Check bisimulation_invariance.
 Check p_morphism_truth.
 Check valid_of_surjective_p_morphism.
@@ -258,6 +263,8 @@ Print Assumptions generated_submodel_truth.
 Print Assumptions point_generated_truth.
 Print Assumptions point_generated_frame_rooted.
 Print Assumptions point_trans_generated_trans_rooted.
+Print Assumptions valid_WeakPoint2_atoms_iff_piecewise_convergent.
+Print Assumptions valid_WeakPoint3_atoms_iff_piecewise_connected.
 
 (** Filtration's finite list combinatorics is constructive.  Turning
     arbitrary semantic truth into Boolean data, selecting class

@@ -48,6 +48,8 @@ is being reconstructed:
   invariance through their bounded morphisms;
 - exact semantic correspondences for iterated 4, Ver, .4, H, and Grz, plus
   the McKinsey, Makinson, and Boolos-condition validity theorems;
+- exact weak-.2/piecewise-convergence and weak-.3/piecewise-connectedness
+  correspondences, including their stronger-frame corollaries;
 - bisimulation invariance, bounded-morphism truth preservation, and validity
   preservation by surjective bounded morphisms;
 - the p-morphism proof that irreflexivity is not definable by any basic modal
@@ -79,6 +81,7 @@ is being reconstructed:
 | `CorrespondenceExtensions.v` | `Modal/Kripke/Axiom{FourN,Grz,H,I,McK,Mk,Point4,Ver}.lean` | Further exact and directional named-axiom frame correspondences |
 | `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and bounded-morphism invariance/preservation |
 | `Root.v` | `Modal/Kripke/Root.lean` | Rooted and generated frames/models, structural inheritance, bounded morphisms, and truth invariance |
+| `WeakCorrespondence.v` | `Modal/Kripke/Axiom{WeakPoint2,WeakPoint3}.lean` | Exact weak-confluence and weak-connectedness frame correspondences |
 | `Undefinability.v` | `Modal/Kripke/Undefinability.lean` | Irreflexivity is not modally definable |
 | `StandardTranslation.v` | `Modal/VanBentham/StandardTranslation.lean` | Deep relational first-order translation and semantic correspondence |
 | `Audit.v` | — | Public checks and kernel-assumption reports |
@@ -153,6 +156,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalK `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
+  FoundationModal.WeakCorrespondence `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
 
