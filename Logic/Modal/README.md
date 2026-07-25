@@ -30,6 +30,11 @@ is being reconstructed:
   to canonical reflexivity/transitivity and full soundness/completeness for
   KT, K4, S4, and reflexive right-Euclidean S5, with explicit small-frame
   strictness witnesses for the first three;
+- schema-generic finite consistency over natural-number atoms, including the
+  two insertion criteria, singleton and union laws, deterministic
+  complement-closed extension, a finite-context Lindenbaum theorem,
+  derivability/complement/implication membership laws, and an explicit
+  powerset cover of the resulting context space;
 - finite words of box, diamond, and negation, including polarity and exact
   size splitting, exhaustive finite size layers, formula action and
   substitution, syntactic translation/equivalence algebra, and reduction
@@ -107,6 +112,7 @@ is being reconstructed:
 | `NNFormulaSemantics.v` | `Modal/Kripke/NNFormula.lean` | Direct NNF semantics, semantic negation, translation correctness, validity equivalences |
 | `HilbertKSoundness.v` | `Modal/Kripke/Hilbert.lean` | Framewise and contextual Kripke soundness for K, plus consistency |
 | `Complement.v` | `Modal/Formula/Complement.lean` | Syntactic complement, complement-closed finite contexts, constructive semantic incompatibility |
+| `FiniteMaximalContext.v` | `Modal/ComplementClosedConsistentFinset.lean`, `Modal/{Formula/Complement,MaximalConsistentSet}.lean` | Normal-schema finite consistency and insertion laws over nat atoms; deterministic complementary closure, finite Lindenbaum contexts, membership laws, and an explicit finite cover |
 | `ComplexityLimited.v` | `Modal/Kripke/ComplexityLimited.lean` | Complexity-bounded generated frames, strengthened truth lemma, subformula-target invariance |
 | `Filtration.v` | `Modal/Kripke/Filtration.lean` | Coarsest truth-profile filtration, explicit exponential cover, finite countermodels, semantic finite-model property |
 | `CanonicalK.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/K}.lean` | Concrete K Lindenbaum completion, maximal theories, canonical truth/countermodel arguments, completeness and finite completeness |
@@ -179,6 +185,17 @@ Lindenbaum dependency: its soundness and explicit countermodels use at most
 classical propositional logic, while maximal completion and completeness also
 use the standard definite-description principle.
 
+The finite complement-closed context layer keeps its boundary equally
+explicit.  The consistency insertion criteria, complement derivations, and
+membership/implication laws are closed under the global context.  Turning
+inconsistency back into a derivation uses classical double-negation
+elimination, while deterministic `finite_next`, enumeration, and the finite
+Lindenbaum construction use `Classical_Prop.classic` plus the standard
+definite-description principle.  Equality of proof-carrying extensional
+contexts uses functional and propositional extensionality with proof
+irrelevance; the concrete powerset cover combines those principles with the
+classical construction boundary.
+
 The modal-word syntax, decidable equality, size/splitting machinery, finite
 size layers, atom-instance substitution lifting, and generic reduction
 bootstrapping are constructive.  Generic syntactic congruence/equivalence is
@@ -223,7 +240,13 @@ giving exact parity for `K4_S4.lean`.  The coverage ledger remains conservative
 for `Boxdot/Basic.lean`: its semantic results are atom-polymorphic, but its Coq generic
 proof-translation theorem is nat-only, and distinct Lean
 big-conjunction/finite-set convenience surfaces are represented by list-based
-counterparts.  This project still does not claim finite completeness for
+counterparts.  Likewise, `FiniteMaximalContext.v` checks every mathematical
+theorem shape in `ComplementClosedConsistentFinset.lean` for the generic
+normal-schema calculus over natural-number atoms, but the ledger remains
+`partial` because Foundation quantifies over arbitrary decidable atom types
+and abstract classical entailments.  Lists are used only during construction;
+the resulting finite carriers and their equality are extensional.  This
+project still does not claim finite completeness for
 K4/S4, the source's universal-frame reformulation or strict-inclusion chain
 for S5, or completeness for GL, Grz, GL.3, Grz.3, or Triv.  Rooted
 filtration preservation for piecewise confluence and connectedness and modal
@@ -297,6 +320,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalK `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
   FoundationModal.CanonicalExtensions `
+  FoundationModal.FiniteMaximalContext `
   FoundationModal.Modality `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
   FoundationModal.FrameTransformations `

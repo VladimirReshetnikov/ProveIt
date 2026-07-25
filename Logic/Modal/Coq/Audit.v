@@ -5,7 +5,7 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert CanonicalExtensions
-  Modality StandardTranslation Preservation Root FrameTransformations StructuralFrames
+  FiniteMaximalContext Modality StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence Boxdot Undefinability.
 
 Check substitute_comp.
@@ -198,6 +198,31 @@ Check complementary_member_cases.
 Check complementary_mem_box.
 Check satisfies_complement_incompatible.
 Check satisfies_neg_complement_incompatible.
+
+(** Schema-generic finite consistency and complement-complete contexts over
+    natural-number atoms. *)
+Check finite_consistent_insert_iff.
+Check finite_consistent_insert_neg_iff.
+Check finite_provable_iff_insert_neg_inconsistent.
+Check finite_singleton_complement_consistent_iff_unprovable.
+Check finite_singleton_complement_inconsistent_iff_provable.
+Check finite_union_consistent_intro.
+Check normal_derives_complement_bottom.
+Check normal_derives_neg_complement_bottom.
+Check normal_derives_of_neg_complement.
+Check finite_next_consistent.
+Check finite_enumerate_origin.
+Check finite_exists_consistent_complementary_closed.
+Check fmc_equality_def.
+Check finite_context_lindenbaum.
+Check fmc_membership_iff_derivable.
+Check fmc_mem_top.
+Check fmc_bottom_absent.
+Check fmc_mem_iff_not_mem_complement.
+Check fmc_not_mem_iff_mem_complement.
+Check fmc_mem_imp_iff.
+Check fmc_not_mem_imp_iff.
+Check finite_maximal_context_explicit_cover.
 
 Check complexity_subformula_le.
 Check complexity_limited_truth_aux.
@@ -469,6 +494,23 @@ Print Assumptions s5_modal_reduction.
 Print Assumptions complement_cases.
 Print Assumptions complementary_mem_box.
 Print Assumptions satisfies_complement_incompatible.
+Print Assumptions normal_derives_complement_bottom.
+Print Assumptions normal_derives_neg_complement_bottom.
+Print Assumptions normal_derives_of_neg_complement.
+Print Assumptions finite_consistent_insert_iff.
+Print Assumptions finite_provable_iff_insert_neg_inconsistent.
+Print Assumptions finite_singleton_complement_consistent_iff_unprovable.
+Print Assumptions fmc_membership_iff_derivable.
+Print Assumptions fmc_mem_imp_iff.
+Print Assumptions fmc_not_mem_imp_iff.
+(** Deterministic extension uses informative excluded middle/classical
+    description.  Extensional context equality uses functional and
+    propositional extensionality plus proof irrelevance; the explicit cover
+    combines those two boundaries. *)
+Print Assumptions finite_next_consistent.
+Print Assumptions finite_exists_consistent_complementary_closed.
+Print Assumptions fmc_equality_def.
+Print Assumptions finite_maximal_context_explicit_cover.
 Print Assumptions complexity_limited_truth_aux.
 Print Assumptions complexity_limited_truth.
 Print Assumptions complexity_limited_subformula_closed.
