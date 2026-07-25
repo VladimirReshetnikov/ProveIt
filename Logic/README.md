@@ -1,5 +1,8 @@
 # Logic
 
+- [`FoundationPort/`](FoundationPort/) maintains the exhaustive, conservative
+  source-module ledger for the dependency-ordered Coq port of the pinned
+  FormalizedFormalLogic/Foundation tree.
 - [`FirstOrder/`](FirstOrder/) is a reusable one-binary-relation first-order
   syntax and semantics, natural-deduction calculus, soundness proof, Goedel
   completeness theorem, compactness lift, and deductive-transfer machinery.
