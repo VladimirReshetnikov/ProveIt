@@ -22,7 +22,8 @@ details.
 > `UniformInternalProvabilityTheorem.pa_proves_uniformRestrictedConsistencyProvability`.
 > Its audited assumptions are exactly Lean's three standard axioms
 > `[propext, Classical.choice, Quot.sound]`.  In Rocq/Coq the corresponding
-> sentence remains **conditional** on two explicitly named premises; see
+> sentence remains **conditional** on explicit proof-producing compiler
+> premises; see
 > [Internal provability of the bounded-consistency
 > instances](#internal-provability-of-the-bounded-consistency-instances) for
 > their exact statements and status.  The two ports therefore no longer have
@@ -1020,7 +1021,7 @@ therefore transports kernels along proved context equations
 (`PAInductionKernel.ofEq`) so every rewrite stays an equation between named
 formulas.
 
-### Rocq/Coq status: conditional, with the obligations named
+### Rocq/Coq status: conditional, with the constructive boundary named
 
 The Rocq modules `RawCodedPAProvability.v`,
 `RawCodedPAProvabilityRestrictedConsistency.v`,
@@ -1028,31 +1029,57 @@ The Rocq modules `RawCodedPAProvability.v`,
 the parallel transparent proof predicate, the fixed-standard-instance D1
 theorem, and the exact uniform target
 `compactUniformRestrictedPAConsistencyProvabilityFormula`.  The object-level
-derivation of that sentence is **not** established.  It is conditional on two
-premises, both stated as ordinary `Prop` definitions and consumed as
-hypotheses — neither is an axiom or an admitted theorem:
+derivation of that sentence is **not** established.  The older files expose a
+formally valid implication from
+`RawCodedPALocalProofConsTransplantInAllModels` and
+`RawRestrictedPADynamicSoundnessBaseProofInAllModels`, but those two premises
+are now retained as historical reduction seams rather than advertised as
+constructive endpoints.  Neither is an axiom or an admitted theorem, and
+neither has been proved.
 
-- `RawCodedPALocalProofConsTransplantInAllModels`
-  (`RawCodedPALocalProofConsTransplant.v`): push one assumption underneath a
-  finished model-coded derivation.  Reusable and theory-independent.  Of the
-  seventeen `RawProofEndpointCases` constructor rows, exactly one inspects the
-  context — the assumption leaf — and it is proved; the other sixteen carry
-  the context as data and await the recursion scaffold.
-- `RawRestrictedPADynamicSoundnessBaseProofInAllModels`
-  (`RawCodedRestrictedPADynamicSoundnessProducer.v`): a coded PA derivation of
-  the dynamic-soundness implication over a bare witnessed base at a possibly
-  nonstandard numeral code.  This is the genuinely arithmetical content.
+The unrestricted transplant quantifies over an arbitrary carrier value as the
+new assumption.  That is too broad for this encoding: All-I and Ex-E shift the
+whole context below a binder, while `RawCodedFormulaShift` is deliberately
+partial on malformed carrier values.  `RawCodedPALocalProofContextInsertInduction.v`
+therefore states the honest invariant with
+`RawCodedFormulaAtomicallyAdequate` as a guard, represents the complete
+below-proof-code predicate by a PA formula, and performs the strong induction
+inside every raw PA model.  The arbitrary-depth assumption-leaf case is
+proved.  The remaining constructor-local step needs unit-shift totality on
+adequate formula codes, a commuting square between context insertion and
+context shift, and coverage builders for the six proof constructors not yet
+covered by the generic unary/binary infrastructure.  Imp-I and both Or-E
+branches increment insertion depth; All-I shifts the inserted formula at the
+same depth; Ex-E first performs that shift and then increments depth for its
+body premise.
 
-Three results delimit that gap sharply.  `CompactPAUniformProvabilityTightness.v`
-proves the reduction targets are *equivalent* to the goal, so no further
-decomposition can help — only a construction can.
-`RawCodedPAInternalizedUniversalInstance.v` supplies the intended tool: one
-fixed object theorem `PA |- forall x, phi`, internalized once by D1 and then
-instantiated by internal universal elimination at an *arbitrary* carrier
-element, with no standardness hypothesis.  And the target context of the
-producer is shown, by `reflexivity`, to be a four-step cons extension of the
-caller's witnessed base, so only single-cons transplant is required rather
-than general weakening.
+The old dynamic-soundness base premise is also too rigid as a construction
+target.  It ranges over every witnessed base, including the empty context, but
+the raw local calculus has no PA-axiom rule: adding an induction axiom
+necessarily grows the witnessed assumption context.  The safe replacement is
+`RawRestrictedPAConsistencyGrowingOpenContradictionCompiler` in
+`RawCodedRestrictedPAConsistencyGrowingOpenCompiler.v`.  Its output may choose
+an enlarged, honestly witnessed and self-shifting PA base.  A verified bridge
+closes the open contradiction and feeds the compact certificate successor
+directly, without asserting a uniform dynamic-soundness truth formula and
+without transplanting an unrelated finished tree.
+
+The preferred final architecture now mirrors the completed Lean proof.  A
+model-internal induction package should retain six fields: five reusable
+dynamic-truth laws and a forced final bounded-consistency target.  The Coq
+module `RawCodedTruthCertificateFinalProjection.v` defines the corresponding
+right-associated six-field master code and proves that five checked And-E2
+steps project an ordinary PA certificate for its final coordinate while
+preserving the same witnessed axiom list and base context.  What remains is to
+port the represented master-code graph, base certificate, and staged successor
+compiler; their outputs are proof codes, never a uniform truth assertion.
+
+`CompactPAUniformProvabilityTightness.v` still proves that the compact selector
+successor is equivalent to the requested object theorem, so only a concrete
+proof-producing construction can close the endpoint.
+`RawCodedPAInternalizedUniversalInstance.v` remains available for fixed
+universally quantified helper theorems: it internalizes one object theorem by
+D1 and instantiates it at an arbitrary, possibly nonstandard, carrier element.
 
 What blocks the remaining work is recorded in the Coq sources themselves.  The
 beta-coded support certificate `RawProofRuleCoverageWithSupport` is keyed on
@@ -1061,10 +1088,8 @@ context changes every code: support cannot be transported, and re-indexing it
 would be the very map one is constructing.  That is not fatal, because the
 constructor-level coverage lemmas already build a parent's coverage from its
 children's, so a transplanted tree re-derives coverage bottom-up.  The
-transplant statement must, however, be indexed by an insertion *depth* that is
-itself a model element, since descending under an implication-introduction node
-pushes the insertion one layer down and a nonstandard proof code may have
-nonstandard depth.
+transplant statement is indexed by an insertion *depth* that is itself a model
+element, since a nonstandard proof code may have nonstandard nesting depth.
 
 `RawCodedContextInsert.v` supplies that missing relation.  Insertion at a
 carrier-valued depth is stated pointwise against the two head tables, exactly
@@ -1082,8 +1107,7 @@ of the source.  The representation layer is axiom-free; only the construction
 and transport theorems use classical logic.  Insertion is deliberately *not*
 proved
 functional: `RawContextShift` is not functional anywhere in this development
-either, and its consumers use it existentially, exactly as the transplant
-recursion will.
+either, and its consumers use it existentially.
 
 `RawCodedAdditionLaws.v` supplies the small arithmetic and order facts these
 clauses need — both additive identities, `0 < succ b`, successor reflection for
@@ -1092,19 +1116,17 @@ additive definition of the order is never unfolded at the use sites.  The left
 identity needs no definable induction, since raw addition is already known to be
 commutative.
 
-Neither Coq premise is blocked by Gödel's second theorem: every obligation asks
-for a proof *code*, never for uniform truth of the dynamic-soundness statement,
-which is what the theorem forbids.  The header of
-`RawCodedRestrictedPADynamicSoundnessInductionData.v` records the
-corresponding dead end explicitly.
+The corrected Coq interfaces stay on the safe side of Gödel's second theorem:
+every obligation asks for a proof *code*, never for uniform truth of a
+dynamic-soundness statement.  The header of
+`RawCodedRestrictedPADynamicSoundnessInductionData.v` records the latter dead
+end explicitly.
 
 ## Implementation checklist
 
 The numeralwise theorem is complete in both ports, and the uniform sentence is
-complete in Lean.  Unchecked items below are additional cross-library
-correspondence results, an alternate executable-checker route, or the two
-outstanding Rocq/Coq obligations for the uniform sentence.  Only the last two
-are premises of a stated headline theorem, and only in the Rocq/Coq port.
+complete in Lean.  Unchecked items below include the remaining constructive
+Rocq/Coq compiler work for the uniform sentence.
 
 - [x] Instantiate the existing Lean and Coq PA/HF formula and proof datatypes
   with independent restricted-proof wrappers.
@@ -1262,19 +1284,26 @@ are premises of a stated headline theorem, and only in the Rocq/Coq port.
 - [x] In Rocq/Coq, build and verify the internalization engine: one fixed
   universally quantified object theorem, internalized by D1 and instantiated
   by internal universal elimination at an arbitrary carrier element.
-- [x] In Rocq/Coq, reduce the uniform sentence to single-cons transplant plus a
-  context-free dynamic-soundness base proof, and discharge the one transplant
-  constructor row that inspects the context.
+- [x] In Rocq/Coq, record the historical reduction to single-cons transplant
+  plus an exact-context dynamic-soundness base proof, and identify why those
+  two unguarded premises are not suitable construction targets.
 - [x] In Rocq/Coq, define the represented context-insertion-at-depth relation
   with exact arbitrary-model semantics, two-way realizability transport, the
   depth-zero and successor clauses, and both membership transports.
-- [ ] In Rocq/Coq, restate the transplant obligation over insertion-at-depth,
-  re-derive the assumption-leaf row against it, and discharge the remaining
-  sixteen structural rows through a well-founded internal recursion over proof
-  codes.
-- [ ] In Rocq/Coq, construct the dynamic-soundness base derivation at a
-  possibly nonstandard numeral code, threading a growing witnessed axiom base
-  through the compact-selector induction, and thereby make the uniform object
+- [x] In Rocq/Coq, restate the transplant obligation over insertion-at-depth
+  with the necessary atomic-adequacy guard, represent its strong
+  below-proof-code invariant, run PA-definable induction, and re-derive the
+  arbitrary-depth assumption-leaf row.
+- [ ] If the generic transplant route is retained, prove adequate formula
+  unit-shift totality, the insertion/shift commuting square, and coverage
+  builders for Or-I1, Or-I2, Or-E, Ex-I, Eq-Refl, and Eq-Elim; then discharge
+  the constructor-local induction step.
+- [x] Replace the impossible exact-context base seam by a growing witnessed-base
+  open compiler, verify its bridge to certificate successor, and prove the
+  structural final projection from a six-field master PA certificate.
+- [ ] Port the six-field dynamic-truth master-code graph, checked base
+  certificate, and staged proof-code successor from Lean to Rocq/Coq; apply
+  internal PA induction and the final projection to make the uniform object
   theorem unconditional.
 
 ## Building the final theorem

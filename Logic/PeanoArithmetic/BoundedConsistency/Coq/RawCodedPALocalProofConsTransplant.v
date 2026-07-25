@@ -27,10 +27,15 @@
   base, with no descent assumptions in scope.  Together the two premises give
   the producer, hence the requested PA theorem.
 
-  Neither premise is established here.  The honest reading of this file is a
-  factorisation: it separates a reusable, theory-independent proof-theoretic
-  operation (the transplant) from the one genuinely arithmetical obligation
-  (the base proof).
+  Neither premise is established here.  Subsequent analysis sharpened this
+  historical factorisation further: the unrestricted transplant is too broad
+  for malformed carrier-valued heads, because binder rules must shift them,
+  and the exact-context base proof is too rigid when a compiler needs to add a
+  witnessed induction axiom.  The constructive replacements are
+  [RawCodedPALocalProofContextInsertInduction] (guarded by atomic formula
+  adequacy) and [RawCodedRestrictedPAConsistencyGrowingOpenCompiler].  The
+  implications in this file remain valid, but these two legacy premises are
+  not the interfaces future code should try to prove.
 *)
 
 From Stdlib Require Import List.
@@ -226,8 +231,9 @@ Proof.
       M hPA (htransplant M hPA) (hbase M hPA)).
 Qed.
 
-(** The requested PA theorem, now resting on exactly two premises: one
-    reusable proof-theoretic operation and one arithmetical construction. *)
+(** The historical two-premise implication.  Both premises are stronger than
+    the guarded/growing interfaces used by the current construction plan; the
+    theorem is retained because the implication itself is valid. *)
 Corollary
     PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_baseProof_and_transplant
     : RawCodedPALocalProofConsTransplantInAllModels ->
@@ -245,20 +251,19 @@ Qed.
 
 (** ** The one context-inspecting constructor case
 
-    [RawProofEndpointCases] has seventeen constructor rows.  Sixteen of them
-    are structural: their endpoint condition constrains the conclusion and the
-    premise fields, and the stored context is simply carried, so transplanting
-    them amounts to rebuilding the node over the extended context once the
-    children have been transplanted.  Exactly one row — the assumption leaf,
-    tag [0] — actually inspects the context, because its rule-coverage row
-    demands membership of the concluded formula.
+    [RawProofEndpointCases] has seventeen constructor rows.  Exactly one row —
+    the assumption leaf, tag [0] — directly tests context membership.  The
+    other rows are structural, but binder rules do more than carry the context:
+    All-I and Ex-E require a pointwise shifted context, while Imp-I, Or-E, and
+    Ex-E introduce local assumptions and therefore change insertion depth.
 
     That case is discharged here outright.  Membership survives a cons
     extension ([raw_contextList_cons_tail_member]), so the rebuilt leaf is an
-    honest covered proof over the extended context.  This is the only place in
-    the transplant where the context is more than carried data; the remaining
-    work is the model-internal recursion that rebuilds the sixteen structural
-    rows and re-certifies the traversal for the new tree. *)
+    honest covered proof over the extended context.  The guarded arbitrary-
+    depth version now appears in
+    [raw_codedPALocalProof_contextInsert_assumption]; the remaining work is the
+    constructor-local rebuilding step described in the newer induction
+    module. *)
 Theorem raw_codedPALocalProofOf_consTransplant_assumptionLeaf : forall
     (M : RawPAModel), RawPASatisfies M -> forall context head target,
   RawContextListMember M context target ->
@@ -324,7 +329,7 @@ Qed.
     certificate for the transplanted tree costs no more than building one for
     any tree assembled from the constructors.
 
-    *** 2. The obligation above is not yet inductive: it needs a depth.
+    *** 2. The root-only obligation needs a represented insertion depth.
 
     [RawCodedPALocalProofConsTransplant] inserts the new assumption at the
     *head* of the context.  That is the correct statement at the root, but it
@@ -337,12 +342,13 @@ Qed.
 
     Crucially that index is a *model element*, not a metatheoretic natural
     number: a nonstandard proof code may have nonstandard depth.  So the
-    needed relation "target is source with [head] inserted below [depth]
-    layers" has to be a represented graph, in the style of
-    [RawContextShift] — a paired row traversal over the two contexts, with
-    tables ([RawContextShiftRows], [RawContextShiftWithTables]).  No such
-    insertion relation exists yet; [RawCodedContextStructure] supplies only
-    the single-cons extension facts.
+    relation "target is source with [head] inserted below [depth] layers" is a
+    represented graph, in the style of [RawContextShift].
+    [RawCodedContextInsert] now supplies it, and
+    [RawCodedPALocalProofContextInsertInduction] represents the strong
+    below-proof-code invariant and applies PA induction.  Its honest statement
+    guards [head] by atomic formula adequacy, because binder descent must shift
+    it.  The remaining context theorem is the insertion/shift commuting square.
 
     *** 3. Closing the loop wants a growing witnessed base.
 
@@ -354,16 +360,12 @@ Qed.
     up from [baseContext] rather than across from an unrelated context.  So
     D1 does not plug into the base obligation directly.
 
-    The intended fix is to thread a *growing* witnessed base through the
-    compact-selector induction of [CompactPAUniformProvability] instead of
-    reusing one fixed base at every level: the level-[n+1] derivation needs
-    induction-axiom instances of complexity [n+1], and no fixed standard base
-    can contain them, whereas a witnessed base that gains one axiom per level
-    can.  [raw_codedPAAxiomWitnessContext_add_induction] is the operation
-    that extends such a base, and the transplant obligation above is exactly
-    what carries a level-[n] derivation into the extended base.  Threading it
-    keeps the weakest (single-cons) transplant form; the alternative — a
-    general containment transplant — is strictly more expensive and is not
-    needed. *)
+    The current safe interface is
+    [RawRestrictedPAConsistencyGrowingOpenContradictionCompiler]: it may return
+    an enlarged witnessed PA base and feeds the certificate successor directly.
+    The preferred final construction mirrors Lean's six-field master package,
+    retaining the reusable dynamic-truth laws and forcing bounded consistency
+    into the final coordinate.  This avoids trying to prove the exact-context
+    [RawRestrictedPADynamicSoundnessBaseProof] premise above. *)
 
 End PABoundedRawCodedPALocalProofConsTransplant.
