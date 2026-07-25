@@ -1,0 +1,24 @@
+(** Public surface and assumption audit for output-first graph combinators. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedOutputFirstFormulaGraphCombinators.
+
+Import PABoundedRawCodedOutputFirstFormulaGraphCombinators.
+
+Check RawOutputFirstFormulaBinaryKind.
+Check rawOutputFirstFormulaBinaryCode.
+Check outputFirstFormulaBinaryGraph.
+Check RawOutputFirstFormulaBinaryGraphAt.
+Check raw_sat_outputFirstFormulaBinaryGraph_iff.
+Check outputFirstFormulaBinaryGraph_raw_total.
+Check RawOutputFirstFormulaUnaryKind.
+Check rawOutputFirstFormulaUnaryCode.
+Check outputFirstFormulaUnaryGraph.
+Check RawOutputFirstFormulaUnaryGraphAt.
+Check raw_sat_outputFirstFormulaUnaryGraph_iff.
+Check outputFirstFormulaUnaryGraph_raw_total.
+
+Print Assumptions raw_sat_outputFirstFormulaBinaryGraph_iff.
+Print Assumptions outputFirstFormulaBinaryGraph_raw_total.
+Print Assumptions raw_sat_outputFirstFormulaUnaryGraph_iff.
+Print Assumptions outputFirstFormulaUnaryGraph_raw_total.

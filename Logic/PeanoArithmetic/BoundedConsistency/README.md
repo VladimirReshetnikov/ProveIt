@@ -1100,6 +1100,15 @@ quoted-code semantics, the base-totality interface above, and a convenience
 bridge from a standard closed `BProv` derivation to a graph-selected raw proof
 certificate.
 
+`RawCodedOutputFirstFormulaGraphCombinators.v` closes the corresponding
+constructor layer.  Given total output-first child graphs, it builds total
+output-first graphs for implication, conjunction, disjunction, universal
+quantification, and existential quantification.  Explicit de Bruijn maps keep
+each child at the common model-coded level and tail environment, while exact
+arbitrary-model semantics identify the selected output with the appropriate
+raw formula constructor code.  These combinators let the remaining dynamic
+fields be assembled structurally without decoding nonstandard syntax in Coq.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
