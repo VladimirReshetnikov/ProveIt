@@ -8,6 +8,8 @@ Import PABoundedRawCodedTruthCertificateMasterIntroduction.
 Check rawSixFieldMasterIntroductionRoot.
 Check raw_codedPALocalProofOf_sixFieldMaster_intro.
 Check raw_codedPAProofOf_sixFieldMaster_intro.
+Check raw_codedPAProofOf_sixFieldMaster_of_BProv.
 
 Print Assumptions raw_codedPALocalProofOf_sixFieldMaster_intro.
 Print Assumptions raw_codedPAProofOf_sixFieldMaster_intro.
+Print Assumptions raw_codedPAProofOf_sixFieldMaster_of_BProv.

@@ -1116,6 +1116,13 @@ right-associated master proof, then repackaged as an ordinary PA certificate.
 Thus the concrete zero stage only has to produce the six component roots in a
 common context; it need not rebuild the structural conjunction compiler.
 
+`RawCodedTruthCertificateMasterAssembler.v` now assembles any five concrete
+output-first field graphs with the compact restricted-consistency code graph.
+Its explicit de Bruijn remapping has exact arbitrary-model semantics, forces
+the resulting master witness to be the six-field conjunction code, supplies
+the decomposition callback used by the outer induction, and derives combined
+graph totality from totality of the five dynamic inputs.
+
 `CompactPAUniformProvabilityTightness.v` still proves that the compact selector
 successor is equivalent to the requested object theorem, so only a concrete
 proof-producing construction can close the endpoint.

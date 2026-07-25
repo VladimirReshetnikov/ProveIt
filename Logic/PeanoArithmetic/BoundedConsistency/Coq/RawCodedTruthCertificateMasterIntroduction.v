@@ -13,6 +13,8 @@
   possibly nonstandard, elements of a raw PA model.
 *)
 
+From Stdlib Require Import List.
+From FirstOrder Require Import Fol.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
@@ -26,6 +28,8 @@ From BoundedPAConsistency Require Import
   RawCodedTruthCertificateFinalProjection.
 
 Module PABoundedRawCodedTruthCertificateMasterIntroduction.
+
+Import ListNotations.
 
 Import PA.
 Import PAHierarchyReduction.
@@ -190,6 +194,57 @@ Proof.
   split; [reflexivity |].
   destruct hmaster as [hcoverage hendpoint].
   repeat split; assumption.
+Qed.
+
+(** For a standard zero stage it is often more convenient to prove the six
+    closed components separately in the metatheoretic [BProv] calculus.  This
+    corollary joins those derivations before quotation, so their possibly
+    different finite PA-axiom bases are merged by the ordinary calculus rather
+    than by a raw nonstandard weakening operation. *)
+Theorem raw_codedPAProofOf_sixFieldMaster_of_BProv : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      field1 field2 field3 field4 field5 finalField,
+  Formula.BProv Formula.Ax_s [] field1 ->
+  Formula.BProv Formula.Ax_s [] field2 ->
+  Formula.BProv Formula.Ax_s [] field3 ->
+  Formula.BProv Formula.Ax_s [] field4 ->
+  Formula.BProv Formula.Ax_s [] field5 ->
+  Formula.BProv Formula.Ax_s [] finalField ->
+  exists certificate : M,
+    RawCodedPAProofOf M
+      (rawSixFieldMasterCode M
+        (rawQuotedFormulaCode M field1)
+        (rawQuotedFormulaCode M field2)
+        (rawQuotedFormulaCode M field3)
+        (rawQuotedFormulaCode M field4)
+        (rawQuotedFormulaCode M field5)
+        (rawQuotedFormulaCode M finalField))
+      certificate.
+Proof.
+  intros M hPA field1 field2 field3 field4 field5 finalField
+    hfield1 hfield2 hfield3 hfield4 hfield5 hfinal.
+  set (masterFormula := pAnd field1
+    (pAnd field2
+      (pAnd field3
+        (pAnd field4 (pAnd field5 finalField))))).
+  assert (hmaster : Formula.BProv Formula.Ax_s [] masterFormula).
+  {
+    unfold masterFormula.
+    exact (Formula.BProv_andI Formula.Ax_s [] field1 _ hfield1
+      (Formula.BProv_andI Formula.Ax_s [] field2 _ hfield2
+        (Formula.BProv_andI Formula.Ax_s [] field3 _ hfield3
+          (Formula.BProv_andI Formula.Ax_s [] field4 _ hfield4
+            (Formula.BProv_andI Formula.Ax_s [] field5 finalField
+              hfield5 hfinal))))).
+  }
+  destruct (raw_codedPAProofOf_of_BProv M hPA masterFormula hmaster)
+    as [certificate hcertificate].
+  exists certificate.
+  rewrite <- (rawQuotedFormulaCode_standard M hPA masterFormula)
+    in hcertificate.
+  unfold masterFormula in hcertificate.
+  cbn [rawQuotedFormulaCode] in hcertificate.
+  exact hcertificate.
 Qed.
 
 End PABoundedRawCodedTruthCertificateMasterIntroduction.
