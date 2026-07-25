@@ -1080,8 +1080,18 @@ module `RawCodedTruthCertificateFinalProjection.v` defines the corresponding
 right-associated six-field master code and proves that five checked And-E2
 steps project an ordinary PA certificate for its final coordinate while
 preserving the same witnessed axiom list and base context.  What remains is to
-port the represented master-code graph, base certificate, and staged successor
-compiler; their outputs are proof codes, never a uniform truth assertion.
+port the five represented dynamic field graphs, base certificate, and staged
+successor compiler; their outputs are proof codes, never a uniform truth
+assertion.
+
+The structural outer graph is now represented explicitly by
+`RawCodedTruthCertificateMasterGraph.v`: four hidden conjunction-tail codes
+select exactly the right-associated six-field master code, and the associated
+direct package requires that very code to carry an ordinary PA proof
+certificate.  Its generic extraction theorem feeds the final projection
+above.  The still-missing graph work is therefore the five concrete
+level-indexed dynamic-truth field graphs, not the conjunction wrapper or the
+forced final-coordinate connection.
 
 `CompactPAUniformProvabilityTightness.v` still proves that the compact selector
 successor is equivalent to the requested object theorem, so only a concrete
@@ -1311,6 +1321,9 @@ Rocq/Coq compiler work for the uniform sentence.
 - [x] Replace the impossible exact-context base seam by a growing witnessed-base
   open compiler, verify its bridge to certificate successor, and prove the
   structural final projection from a six-field master PA certificate.
+- [x] Represent the structural six-field conjunction graph and its direct
+  PA-provability package, with exact arbitrary-model semantics and forced
+  final-field extraction.
 - [ ] Port the six-field dynamic-truth master-code graph, checked base
   certificate, and staged proof-code successor from Lean to Rocq/Coq; apply
   internal PA induction and the final projection to make the uniform object
