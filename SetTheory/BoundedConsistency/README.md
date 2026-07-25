@@ -55,10 +55,25 @@ routes are available:
    axioms, and push it through the derivation by internal induction.  This is
    the direct analogue of the PA argument.
 
-Route 1 is the intended one here.  It is more modular, it reuses “set model plus
-soundness” rather than building a truth class, and the intermediate statement it
-produces is of independent interest.  Route 2 remains available if the
-formalized-soundness step proves more awkward than the reflection step.
+Route 1 was the intended one initially.  **The project has since switched to
+route 2**, on the following reasoning.
+
+Route 1 needs internal ordinals, transfinite recursion, the cumulative
+hierarchy, and Powerset — none of which the current axiom bundle has — *and*
+then still needs a `Sigma_n` truth predicate over the universe in order to state
+`V_alpha ≺_{Sigma_n} V` uniformly in the infinitely many schema instances of
+bounded rank.  Route 2 needs the truth predicate and nothing else.  The truth
+predicate is therefore common to both routes, and everything route 1 adds on top
+of it is avoidable.
+
+Route 2 is also the architecture the repository's completed arithmetic project
+uses: partial truth predicates indexed by an *external* level, defined by
+recursion on that level rather than internally, so that no single formula
+defines truth for all levels and Tarski's theorem is not threatened.
+
+Because this syntax has no primitive bounded quantifier, the base case of the
+hierarchy is quantifier-free truth rather than `Delta_0` truth, which makes it
+simpler: atoms and Boolean combinations only.
 
 Note the contrast with PA: for ZFC the all-occurrences restriction is *less*
 load-bearing than it is for arithmetic, precisely because route 1 factors
@@ -185,8 +200,6 @@ same three reasons as in the arithmetic case:
   and a definability-relative induction principle.
 - [x] Construct a formula-closed set, discharging the hypothesis that both
   induction forms carried, and restate them unconditionally.
-- [ ] Code derivations inside the object theory and express the
-  all-occurrences rank bound, with absoluteness lemmas.
 - [x] Define the polarity ranks on codes internally, prove them total and
   single-valued, and prove they agree with the metatheoretic ranks on
   quotations.
@@ -226,13 +239,24 @@ same three reasons as in the arithmetic case:
   internal rank.
 - [x] Formalize soundness of the 17-rule calculus with respect to internal set
   models, including the eigenvariable rules via the shifted-context operation.
-- [ ] Prove the Levy reflection scheme inside ZFC: for each metatheoretic `n`,
-  ZFC proves that some `V_alpha` is `Sigma_n`-elementary in the universe.
-- [ ] Combine reflection with internal soundness to obtain
-  `Con(ZFC_{Sigma_n})`, and derive `Con_n(ZFC)` from it.
-- [ ] Apply `godel_completeness_for_theories` to obtain, for every metatheoretic
-  `n`, the object-level derivation `ZFC |- Con_n(ZFC)`, and audit its
-  assumptions.
+The remaining items follow route 2, partial satisfaction over the universe.  The
+reflection route's own entries — the Levy scheme and `Con(ZFC_{Sigma_n})` — are
+dropped, since route 2 reaches the target without a cumulative hierarchy; see
+“Why this is not a port of the PA project” above.
+
+- [ ] Define quantifier-free truth over the *universe* — the base case of the
+  externally indexed hierarchy, and simpler than `Delta_0` truth because this
+  syntax has no primitive bounded quantifier.
+- [ ] Define the externally indexed `Sigma`/`Pi` partial truth predicates over
+  the universe by recursion on the external level, with their Tarski clauses and
+  the polarity switches at quantifier heads.
+- [ ] Prove every internal ZFC axiom code of rank at most `n` true at level `n`,
+  including the nonstandard schema instances the internal axiom set contains.
+- [ ] Push partial truth through a bounded coded derivation and conclude that
+  falsity is not derivable, discharging the single remaining obligation
+  `zfcprov_conZFCForm_of_no_bounded_refutation`.
+- [ ] Assemble the object-level derivation `ZFC |- Con_n(ZFC)` for every
+  metatheoretic `n`, and audit its assumptions.
 
 ## The internal work is over a weaker theory than ZF, and reflection will notice
 
@@ -244,15 +268,17 @@ For everything built so far this is a strength rather than a limitation: coded
 syntax, the code predicate, the recursion theorem, internal satisfaction, and
 coded renaming all hold in models of that weaker theory.
 
-It becomes a real dependency at the reflection step.  The intended argument
-produces a `V_alpha` that is `Sigma_n`-elementary in the universe, and the
-cumulative hierarchy needs Powerset; rank arguments will also want Foundation.
-A later brick therefore has to extend the bundle — the axioms themselves are
-already present as `Form`s in the ZF development, including `Pow_form` and
-`Reg_form`, so what is missing is the semantic bundle and its bridges, not the
-axioms.  This is flagged here rather than discovered late, because it determines
-where the second route (partial satisfaction over the universe, which needs no
-`V_alpha`) becomes the cheaper option.
+It would have become a real dependency under the reflection route, whose
+`V_alpha` needs Powerset and whose rank arguments want Foundation.  That is one
+of the reasons the project switched to partial satisfaction over the universe,
+which needs neither: the remaining work can stay over the same weak bundle that
+everything so far is proved against.
+
+Should a later brick want the stronger bundle anyway, the axioms are already
+present as `Form`s in the ZF development, including `Pow_form` and `Reg_form`,
+and a model of the sealed sentence theory satisfies them; what is missing is
+only the semantic bundle and its extraction lemma, in the style of
+`zfAxioms_of_zfcModel`.
 
 One consequence already showed up.  The intersection presentation used for the
 code predicate does *not* transfer to renaming, even though the renaming clauses
