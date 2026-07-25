@@ -6,3 +6,5 @@ import ZFCinPA.ZFDelta1
 import ZFCinPA.InstancesAudit
 import ZFCinPA.Translation
 import ZFCinPA.TranslationAudit
+import ZFCinPA.UniformStatement
+import ZFCinPA.UniformStatementAudit
