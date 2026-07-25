@@ -34,6 +34,9 @@ is being reconstructed:
   properties, target termination, and converse well-foundedness results;
 - PLoN's formula-indexed relational semantics, including all validity and
   countermodel equivalences and failure of replacement of equivalents;
+- PLoN Hilbert soundness for arbitrary instantiated axioms, its explicit
+  Lindenbaum and canonical-model completeness construction, and soundness,
+  completeness, consistency, and strict-inclusion results for logic N;
 - coarsest filtration through a formula's subformula closure, with a full
   truth lemma, a finite cover of at most `2 ^ length (subformulas p)` worlds,
   bounded finite countermodels, and both validity- and
@@ -68,6 +71,7 @@ is being reconstructed:
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
 | `PLoN.v` | `Modal/PLoN/Basic.lean` | Formula-indexed frames/models, satisfaction, validity, countermodels, failure of replacement of equivalents |
+| `PLoNCompleteness.v` | `Modal/PLoN/{Hilbert,Completeness,Logic/N}.lean` | Generic PLoN Hilbert soundness/canonical completeness and complete logic-N metatheory, including strictness below EN and K |
 | `Axioms.v` | `Modal/Axioms.lean` | Complete named schema catalog, including normal, Geach, provability, McKinsey, and boxdot schemata |
 | `HilbertK.v` | `Modal/Hilbert/Normal/Basic.lean` | Constructive Hilbert K, substitution, derived classical rules, theories, deduction, consistency criteria, contextual boxing |
 | `Kripke.v` | `Modal/Kripke/Basic.lean` | Frames, valuations, satisfaction, substitution, relation/modal iteration, K validity |
@@ -120,6 +124,11 @@ elimination.  The Coq port keeps those lemmas separate:
   the converse Grz correspondence additionally exposes standard relational
   choice used to select an infinite counterexample chain.
 
+The independent PLoN canonical construction has the same sharply delimited
+Lindenbaum dependency: its soundness and explicit countermodels use at most
+classical propositional logic, while maximal completion and completeness also
+use the standard definite-description principle.
+
 `Audit.v` prints assumptions for representative theorems from both sides of
 this boundary.  There are no admitted results.
 
@@ -151,6 +160,7 @@ make -f Makefile.coq
 coqchk -silent -Q . FoundationModal `
   FoundationModal.Syntax FoundationModal.NNFormula FoundationModal.Axioms `
   FoundationModal.FormulaEncoding FoundationModal.PLoN `
+  FoundationModal.PLoNCompleteness `
   FoundationModal.Kripke FoundationModal.NNFormulaSemantics `
   FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
   FoundationModal.Complement `

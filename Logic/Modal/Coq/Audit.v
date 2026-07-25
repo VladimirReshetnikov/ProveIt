@@ -1,7 +1,7 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK Kripke
+  Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert StandardTranslation Preservation Root
@@ -41,6 +41,21 @@ Check plon_replacement_of_equivalents_fails.
 Check plon_frame_class_invalid_iff_frame.
 Check plon_frame_class_invalid_iff_model.
 Check plon_frame_class_invalid_iff_model_world.
+
+Check plon_soundness_frameclass.
+Check plon_consistent_of_nonempty_frameclass.
+Check plon_lindenbaum_extension.
+Check plon_mct_neg_iff.
+Check plon_mct_imp_iff.
+Check plon_canonical_truth_lemma.
+Check plon_canonical_countermodel.
+Check plon_complete_of_canonical_frame.
+Check plon_N_sound.
+Check plon_N_consistent.
+Check plon_N_complete.
+Check plon_N_sound_complete.
+Check plon_N_strictly_weaker_K.
+Check plon_N_strictly_weaker_EN.
 
 (** Complete named schema surface from Foundation/Modal/Axioms.lean. *)
 Check Axioms.DiaDuality.
@@ -243,6 +258,13 @@ Print Assumptions plon_not_satisfies_box.
 Print Assumptions plon_model_valid_elim_contra.
 Print Assumptions plon_replacement_of_equivalents_fails.
 Print Assumptions plon_frame_class_invalid_iff_model_world.
+Print Assumptions plon_soundness_frameclass.
+Print Assumptions plon_consistent_of_nonempty_frameclass.
+Print Assumptions plon_canonical_truth_lemma.
+Print Assumptions plon_complete_of_canonical_frame.
+Print Assumptions plon_N_sound_complete.
+Print Assumptions plon_N_strictly_weaker_K.
+Print Assumptions plon_N_strictly_weaker_EN.
 Print Assumptions valid_T_of_reflexive.
 Print Assumptions valid_D_of_serial.
 Print Assumptions valid_B_of_symmetric.
