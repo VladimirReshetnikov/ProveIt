@@ -3,8 +3,8 @@
 From FoundationModal Require Import
   Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK Kripke
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
-  Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties StandardTranslation
-  Preservation Undefinability.
+  Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
+  CorrespondenceExtensions StandardTranslation Preservation Root Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -147,6 +147,18 @@ Check valid_Point3_iff_piecewise_strong_connected.
 
 Check valid_Loeb_atom_iff_transitive_cwf.
 
+Check geach_convergent_four_n_iff_weakly_transitive.
+Check valid_FourN_atom_iff_weakly_transitive.
+Check valid_Ver_atom_iff_isolated.
+Check valid_Point4_atom_iff_sobocinski.
+Check valid_McK_of_mckinsey.
+Check valid_Mk_of_makinson.
+Check detour_free_iff_no_proper_detour.
+Check valid_H_atom_iff_detour_free.
+Check valid_I_of_transitive_boolos.
+Check weak_cwf_iff_cwf_irreflexive_reduction.
+Check valid_Grz_atom_iff_reflexive_transitive_weak_cwf.
+
 Check asymmetric_iff_irreflexive_and_antisymmetric.
 Check frame_refl_gen_partial_order_of_strict_preorder.
 Check frame_trans_gen_equivalence.
@@ -156,6 +168,17 @@ Check terminated_refl_trans_gen_iff.
 Check converse_well_founded_iff_well_founded_converse.
 Check converse_well_founded_trans_gen_iff.
 Check terminated_cwf_target_terminal.
+
+Check frame_root_unique_of_irreflexive_transitive.
+Check rooted_point_rooted_of_irreflexive_transitive.
+Check trans_rooted_rooted_of_transitive.
+Check point_generated_frame_rooted.
+Check point_generated_partial_order.
+Check point_generated_convergent.
+Check generated_submodel_truth.
+Check point_generated_truth.
+Check point_generated_truth_at_root.
+Check point_trans_generated_trans_rooted.
 
 Check bisimulation_invariance.
 Check p_morphism_truth.
@@ -223,6 +246,18 @@ Print Assumptions terminated_refl_trans_gen_iff.
 Print Assumptions converse_well_founded_iff_well_founded_converse.
 Print Assumptions converse_well_founded_trans_gen_iff.
 Print Assumptions terminated_cwf_target_terminal.
+Print Assumptions valid_FourN_atom_iff_weakly_transitive.
+Print Assumptions valid_Ver_atom_iff_isolated.
+Print Assumptions valid_Point4_atom_iff_sobocinski.
+Print Assumptions valid_McK_of_mckinsey.
+Print Assumptions valid_Mk_of_makinson.
+Print Assumptions valid_H_atom_iff_detour_free.
+Print Assumptions valid_I_of_transitive_boolos.
+Print Assumptions valid_Grz_atom_iff_reflexive_transitive_weak_cwf.
+Print Assumptions generated_submodel_truth.
+Print Assumptions point_generated_truth.
+Print Assumptions point_generated_frame_rooted.
+Print Assumptions point_trans_generated_trans_rooted.
 
 (** Filtration's finite list combinatorics is constructive.  Turning
     arbitrary semantic truth into Boolean data, selecting class

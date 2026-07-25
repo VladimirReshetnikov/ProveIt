@@ -43,6 +43,11 @@ is being reconstructed:
   5/right-Euclidean, Tc/coreflexive, and .2/strongly confluent;
 - the .3/piecewise-strong-connectedness correspondence;
 - the Kripke correspondence for Loeb's axiom;
+- roots and transitive roots, direct and positive-reachability generated
+  frames, inherited frame properties, generated submodels, and truth
+  invariance through their bounded morphisms;
+- exact semantic correspondences for iterated 4, Ver, .4, H, and Grz, plus
+  the McKinsey, Makinson, and Boolos-condition validity theorems;
 - bisimulation invariance, bounded-morphism truth preservation, and validity
   preservation by surjective bounded morphisms;
 - the p-morphism proof that irreflexivity is not definable by any basic modal
@@ -71,7 +76,9 @@ is being reconstructed:
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
 | `FrameProperties.v` | `Modal/Kripke/{Antisymmetric,Asymmetric,Closure,Irreflexive,Terminated}.lean` | Closure algebra, frame orders, termination, converse well-foundedness |
+| `CorrespondenceExtensions.v` | `Modal/Kripke/Axiom{FourN,Grz,H,I,McK,Mk,Point4,Ver}.lean` | Further exact and directional named-axiom frame correspondences |
 | `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and bounded-morphism invariance/preservation |
+| `Root.v` | `Modal/Kripke/Root.lean` | Rooted and generated frames/models, structural inheritance, bounded morphisms, and truth invariance |
 | `Undefinability.v` | `Modal/Kripke/Undefinability.lean` | Irreflexivity is not modally definable |
 | `StandardTranslation.v` | `Modal/VanBentham/StandardTranslation.lean` | Deep relational first-order translation and semantic correspondence |
 | `Audit.v` | — | Public checks and kernel-assumption reports |
@@ -101,7 +108,10 @@ elimination.  The Coq port keeps those lemmas separate:
   construction, and derived first-order existential semantics use
   `Classical_Prop.classic`.  The Lindenbaum construction also uses Coq's
   standard definite-description principle to turn formula enumeration into
-  a computable choice of consistent extension.
+  a computable choice of consistent extension.  Root comparison and some
+  generated-frame constructions use classical logic or proof irrelevance;
+  the converse Grz correspondence additionally exposes standard relational
+  choice used to select an infinite counterexample chain.
 
 `Audit.v` prints assumptions for representative theorems from both sides of
 this boundary.  There are no admitted results.
@@ -141,8 +151,8 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Filtration `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.CanonicalK `
-  FoundationModal.Loeb `
-  FoundationModal.StandardTranslation FoundationModal.Preservation `
+  FoundationModal.Loeb FoundationModal.CorrespondenceExtensions `
+  FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
 
