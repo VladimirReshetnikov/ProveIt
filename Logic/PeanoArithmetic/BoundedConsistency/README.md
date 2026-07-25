@@ -1141,6 +1141,15 @@ only explicit lower-level premise is total represented term opening on an
 internally syntax-realizable input; that exact term operation is isolated for
 the next construction rather than hidden behind a standard quotation.
 
+`RawCodedFormulaSingleSubstitutionAtomicAdequacy.v` proves that such a target
+remains in the same honest atomic-adequacy domain.  It inverts equality rows
+inside an arbitrary nonstandard operation trace, excludes every other syntax
+constructor by code separation, and transfers term-syntax certificates to
+both target equality fields.  Consequently three substitutions can be
+chained with adequate intermediate outputs.  The only remaining preservation
+premise is the exact term-level statement that represented opening after the
+replacement shift produces a syntax-realizable term under the target table.
+
 `RawCodedDynamicTruthFixedSyntaxFragments.v` supplies the fixed Coq-side
 syntax used around the orbit.  Coq stores local truth states in four
 synchronized beta tables rather than Lean's HFS record, so the module records
