@@ -1296,6 +1296,38 @@ renamings to expose `output :: level :: tail`.  Its exact semantics is
 law-free, and its dependent totality theorem transports an arbitrary indexed
 invariant from the source witness to the transformed output.
 
+`RawCodedDynamicTruthPairedGlobalSuccessorGraph.v` now performs the missing
+closure step directly.  It places both thirteen-slot local polarity rows
+under one four-beta-table traversal, restricts every stored row to mode zero
+or one, and selects the requested root polarity.  The ten existential table
+witnesses are intentionally reordered so that each local row can be inserted
+literally, without a carrier-code shift or metatheoretic decoding.  A
+transparent constructor polynomial computes both resulting global formula
+codes.  Exact graph semantics is law-free, while constructor closure turns
+atomic adequacy of the local pair into atomic adequacy of the global pair.
+The row-aligned rank-zero base is realized unconditionally in every PA model;
+although its witness order differs syntactically from the older native
+rank-zero certificates, explicit witness permutation proves the two
+presentations semantically equivalent.
+
+`RawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph.v` instantiates the
+adequacy-preserving paired carrier recursion with that global base and global
+successor.  Its public `globalSigmaCode :: globalPiCode :: level :: tail`
+coordinates therefore code complete ternary traversal predicates rather than
+free-table local rows.  Represented induction gives an atomically adequate
+pair at every carrier element, including nonstandard levels, and the exposed
+zero and successor views remain exact.
+
+`RawCodedDynamicTruthGlobalPolarityFormulaCodeGraphs.v` provides the two
+ordinary `output :: level :: tail` projections of the global orbit.  The
+Sigma projection performs the explicit hidden-coordinate transposition and
+the Pi projection hides Sigma directly.  Both projections have law-free
+semantics, concrete zero/successor views, and unconditional adequate totality
+at arbitrary carrier levels.  These are the closed truth-predicate graphs to
+be consumed by the five certificate-field constructors; atomic adequacy alone
+does not yet supply those proof certificates, so the final Coq endpoint
+remains deliberately conditional.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
