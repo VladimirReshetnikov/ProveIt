@@ -1100,6 +1100,15 @@ above.  The still-missing graph work is therefore the five concrete
 level-indexed dynamic-truth field graphs, not the conjunction wrapper or the
 forced final-coordinate connection.
 
+`RawCodedTruthCertificateMasterInduction.v` closes the generic outer
+induction as well.  For any fixed output-first master graph it represents the
+direct package “the graph-selected master code has a PA proof”, performs PA
+induction over arbitrary model elements from explicit zero and successor
+callbacks, decomposes the graph into six fields, and feeds the forced final
+field into the compact selector.  Raw-model completeness then yields the
+exact uniform object theorem conditional only on the concrete graph's
+decomposition, base, and successor callbacks.
+
 `CompactPAUniformProvabilityTightness.v` still proves that the compact selector
 successor is equivalent to the requested object theorem, so only a concrete
 proof-producing construction can close the endpoint.
@@ -1337,6 +1346,9 @@ Rocq/Coq compiler work for the uniform sentence.
 - [x] Represent the structural six-field conjunction graph and its direct
   PA-provability package, with exact arbitrary-model semantics and forced
   final-field extraction.
+- [x] Build the generic PA-internal master-package induction and its bridge to
+  the exact compact uniform theorem from graph decomposition, base, and
+  successor callbacks.
 - [ ] Port the six-field dynamic-truth master-code graph, checked base
   certificate, and staged proof-code successor from Lean to Rocq/Coq; apply
   internal PA induction and the final projection to make the uniform object
