@@ -5,7 +5,7 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert CanonicalExtensions
-  StandardTranslation Preservation Root FrameTransformations StructuralFrames
+  Modality StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence Boxdot Undefinability.
 
 Check substitute_comp.
@@ -166,6 +166,31 @@ Check K_strictly_weaker_KT.
 Check K_strictly_weaker_K4.
 Check KT_strictly_weaker_S4.
 Check K4_strictly_weaker_S4.
+
+(** Modal words, their finite size layers, generic reduction algebra, and
+    checked S5 canonical normalization. *)
+Check modality_eq_dec.
+Check modality_add_assoc.
+Check polarity_inv_involutive.
+Check modality_add_size.
+Check modality_split.
+Check modality_split_le.
+Check substitute_apply_modality.
+Check normal_proves_modality_congruence.
+Check modality_translation_of_atom.
+Check modality_equivalence_iff_bitranslation.
+Check modality_equivalence_expand_left.
+Check modalities_all_of_size_iff.
+Check modalities_all_of_size_le_iff.
+Check modal_reduction_all_of_reducible_to_max.
+Check Triv_box_modality_equivalence.
+Check S5_canonical_frame_reflexive.
+Check S5_canonical_frame_right_euclidean.
+Check S5_complete.
+Check S5_sound_complete.
+Check s5_normalize_mem.
+Check s5_normalize_equivalence.
+Check s5_modal_reduction.
 
 Check complement_neg.
 Check complement_cases.
@@ -426,6 +451,21 @@ Print Assumptions K_strictly_weaker_KT.
 Print Assumptions K_strictly_weaker_K4.
 Print Assumptions KT_strictly_weaker_S4.
 Print Assumptions K4_strictly_weaker_S4.
+
+(** Modality syntax, size splitting, atom-instance lifting, and the generic
+    finite reduction bootstrapping theorem are constructive.  Congruence and
+    equivalence formation are routed through checked K completeness and thus
+    inherit its classical/definite-description boundary.  S5 canonicality,
+    completeness, and normalization inherit the same explicit boundary. *)
+Print Assumptions modality_split.
+Print Assumptions modality_split_le.
+Print Assumptions modality_translation_of_atom.
+Print Assumptions modal_reduction_all_of_reducible_to_max.
+Print Assumptions normal_proves_modality_congruence.
+Print Assumptions S5_canonical_frame_right_euclidean.
+Print Assumptions S5_complete.
+Print Assumptions s5_normalize_equivalence.
+Print Assumptions s5_modal_reduction.
 Print Assumptions complement_cases.
 Print Assumptions complementary_mem_box.
 Print Assumptions satisfies_complement_incompatible.

@@ -28,7 +28,15 @@ is being reconstructed:
   consistency for KT, KD, KB, K4, K5, S4, S5, GL, and Grz;
 - a schema-generic Lindenbaum and canonical-model construction, specialized
   to canonical reflexivity/transitivity and full soundness/completeness for
-  KT, K4, and S4, with explicit small-frame strictness witnesses;
+  KT, K4, S4, and reflexive right-Euclidean S5, with explicit small-frame
+  strictness witnesses for the first three;
+- finite words of box, diamond, and negation, including polarity and exact
+  size splitting, exhaustive finite size layers, formula action and
+  substitution, syntactic translation/equivalence algebra, and reduction
+  bootstrapping from a bounded set of modal lengths;
+- a checked S5 normalizer sending every modal word to one of the six forms
+  `id`, `not`, `box`, `diamond`, `not box`, and `not diamond`, together with
+  actual S5 derivations of every returned equivalence and reduction;
 - Kripke satisfaction, semantic substitution, iterated box/diamond laws, and
   validity of K;
 - complexity-bounded generated models with a strengthened budgeted truth
@@ -104,6 +112,7 @@ is being reconstructed:
 | `CanonicalK.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/K}.lean` | Concrete K Lindenbaum completion, maximal theories, canonical truth/countermodel arguments, completeness and finite completeness |
 | `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
 | `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; KT/K4/S4 canonicality, completeness, and strictness |
+| `Modality.v` | `Modal/Modality/{Basic,S5}.lean`, `Modal/Kripke/Logic/S5.lean` | Modal-word algebra, size enumeration/splitting, syntactic translations and equivalences, generic finite reduction, S5 canonical completeness, and six-form normalization for every length |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -170,6 +179,15 @@ Lindenbaum dependency: its soundness and explicit countermodels use at most
 classical propositional logic, while maximal completion and completeness also
 use the standard definite-description principle.
 
+The modal-word syntax, decidable equality, size/splitting machinery, finite
+size layers, atom-instance substitution lifting, and generic reduction
+bootstrapping are constructive.  Generic syntactic congruence/equivalence is
+routed through the already checked K completeness theorem, while S5
+canonicality and the six-form normalizer use the schema-generic Lindenbaum
+construction.  Those proof-theoretic results therefore expose exactly
+`Classical_Prop.classic` and the standard definite-description principle;
+the semantic normalization on a supplied S5 frame uses only excluded middle.
+
 The doubled-frame relation preservation and p-morphism are constructive.
 Boxdot is built from the classically encoded derived conjunction, so its
 reflexive-closure and conjunction truth laws expose excluded middle.  Reverse
@@ -196,14 +214,18 @@ irrelevance—without functional or propositional extensionality.
 
 Concrete Hilbert K now has checked soundness, canonical completeness, and
 finite-frame completeness; KT, K4, and S4 also have checked canonical
-soundness/completeness.  The boxdot semantic core and all four K4/S4 theorem
-shapes are checked unconditionally for the named natural-number-atom logics,
+soundness/completeness, and S5 has checked canonical completeness on the
+class of reflexive right-Euclidean frames.  Every modal word has a checked
+S5 equivalence and reduction to the six canonical modalities.  The boxdot
+semantic core and all four K4/S4 theorem shapes are checked unconditionally
+for the named natural-number-atom logics,
 giving exact parity for `K4_S4.lean`.  The coverage ledger remains conservative
-for `Basic.lean`: its semantic results are atom-polymorphic, but its Coq generic
+for `Boxdot/Basic.lean`: its semantic results are atom-polymorphic, but its Coq generic
 proof-translation theorem is nat-only, and distinct Lean
 big-conjunction/finite-set convenience surfaces are represented by list-based
 counterparts.  This project still does not claim finite completeness for
-K4/S4 or completeness for S5, GL, Grz, GL.3, Grz.3, or Triv.  Rooted
+K4/S4, the source's universal-frame reformulation or strict-inclusion chain
+for S5, or completeness for GL, Grz, GL.3, Grz.3, or Triv.  Rooted
 filtration preservation for piecewise confluence and connectedness and modal
 companions also remain later work.
 
@@ -275,6 +297,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalK `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
   FoundationModal.CanonicalExtensions `
+  FoundationModal.Modality `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
   FoundationModal.FrameTransformations `
   FoundationModal.StructuralFrames `
