@@ -6,7 +6,7 @@ From FoundationModal Require Import
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert CanonicalExtensions
   StandardTranslation Preservation Root FrameTransformations StructuralFrames
-  WeakCorrespondence Undefinability.
+  WeakCorrespondence Boxdot Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -286,6 +286,63 @@ Check valid_WeakPoint2_atoms_iff_piecewise_convergent.
 Check frame_piecewise_connected_iff_distinct.
 Check valid_WeakPoint3_atoms_iff_piecewise_connected.
 
+(** Boxdot's basic semantic laws and the K4/S4 equivalence are unconditional.
+    The other named equivalences visibly quantify over their still-missing
+    completeness propositions; the Jeřábek results additionally quantify over
+    the isolated global-consequence bridge.  These are hypotheses in theorem
+    types, not declarations of completeness. *)
+Check boxdot_translate.
+Check normal_proves_boxdot_translation.
+Check iff_boxdotboxdot.
+Check boxdot_and.
+Check boxdotTranslate_lconj.
+Check iff_boxdotTranslateMultibox_boxdotTranslateBoxlt.
+Check iff_boxdot_reflexive_closure.
+Check iff_frame_boxdot_reflexive_closure.
+Check iff_reflexivize_irreflexivize.
+Check iff_reflexivize_irreflexivize'.
+Check provable_boxdotTranslated_K4_of_provable_S4.
+Check provable_S4_iff_boxdotTranslated.
+Check provable_S4_of_provable_boxdotTranslated_K4.
+Check iff_boxdotTranslatedK4_S4.
+Check finite_GL_to_reflexive_closure_finite_Grz.
+Check finite_Grz_to_irreflexivize_finite_GL.
+Check boxdot_GL_finite_complete.
+Check boxdot_Grz_finite_complete.
+Check iff_provable_boxdot_GL_provable_Grz.
+Check finite_GLPoint3_to_reflexive_closure_finite_GrzPoint3.
+Check finite_GrzPoint3_to_irreflexivize_finite_GLPoint3.
+Check boxdot_GLPoint3_finite_complete.
+Check boxdot_GrzPoint3_finite_complete.
+Check iff_boxdotTranslated_GLPoint3_GrzPoint3.
+Check provable_boxdotTranslated_Ver_of_Triv.
+Check boxdot_Triv_complete.
+Check iff_boxdotTranslated_Ver_Triv.
+Check frame_twice.
+Check frame_twice_p_morphism.
+Check frame_twice_valid_reflects.
+Check KT_frameclass_jerabek.
+Check KTB_frameclass_jerabek.
+Check S4_frameclass_jerabek.
+Check S4Point2_frameclass_jerabek.
+Check S4Point3_frameclass_jerabek.
+Check S5_frameclass_jerabek.
+Check atom_flag_boxdot_translated.
+Check satisfies_neither_flag.
+Check boxdot_preimage.
+Check BoxdotProperty.
+Check StrongBoxdotProperty.
+Check BDP_of_SBDP.
+Check jerabek_global_consequence_bridge.
+Check jerabek_SBDP.
+Check jerabek_BDP.
+Check KT_BDP.
+Check KTB_BDP.
+Check S4_BDP.
+Check S4Point2_BDP.
+Check S4Point3_BDP.
+Check S5_BDP.
+
 Check bisimulation_invariance.
 Check p_morphism_truth.
 Check valid_of_surjective_p_morphism.
@@ -438,6 +495,29 @@ Print Assumptions balloon_validates_Z_of_cwf.
 
 Print Assumptions valid_WeakPoint2_atoms_iff_piecewise_convergent.
 Print Assumptions valid_WeakPoint3_atoms_iff_piecewise_connected.
+
+(** The doubled-frame p-morphism is constructive.  Boxdot itself uses the
+    classically encoded derived conjunction, so its semantic truth laws expose
+    excluded middle.  The nat-atom Hilbert equivalence additionally inherits
+    the definite-description boundary of local K completeness.  Reverse
+    reflexivization and the logical SBDP argument also use excluded middle.
+    Explicit completeness/bridge arguments remain visible in the checked
+    theorem types above and are not kernel assumptions. *)
+Print Assumptions boxdot_reflexive_closure_truth.
+Print Assumptions boxdot_translate_idempotent_truth.
+Print Assumptions K4_boxdot_iff_S4.
+Print Assumptions finite_GL_to_reflexive_closure_finite_Grz.
+Print Assumptions finite_Grz_to_irreflexivize_finite_GL.
+Print Assumptions GL_boxdot_iff_Grz.
+Print Assumptions finite_GLPoint3_to_reflexive_closure_finite_GrzPoint3.
+Print Assumptions GLPoint3_boxdot_iff_GrzPoint3.
+Print Assumptions Triv_proves_to_Ver_boxdot.
+Print Assumptions Ver_boxdot_iff_Triv.
+Print Assumptions frame_twice_p_morphism.
+Print Assumptions frame_twice_valid_reflects.
+Print Assumptions S5_frameclass_jerabek.
+Print Assumptions jerabek_SBDP.
+Print Assumptions KT_BDP.
 
 (** Filtration's finite list combinatorics is constructive.  Turning
     arbitrary semantic truth into Boolean data, selecting class

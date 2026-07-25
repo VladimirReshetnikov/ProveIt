@@ -60,6 +60,15 @@ is being reconstructed:
   finite root extension with structural/tree laws, exact chain covers,
   embedding p-morphisms and truth preservation, added-root boxdot semantics,
   and finite-chain T-failure and witness theorems;
+- the boxdot translation's basic semantic algebra, reflexive-closure
+  characterization, and unconditional nat-atom K4/S4 preservation,
+  reflection, and equivalence; finite GL/Grz and GL.3/Grz.3 frame
+  transformations; the unconditional Triv-to-Ver direction; and explicitly
+  dependency-gated reverse/named equivalences;
+- Jeřábek's doubled-frame construction, its bounded morphism and six principal
+  frame-class closure results, flags and boxdot logic properties, together
+  with a precise explicit gate for the unavailable global finite-consequence
+  argument behind the strong boxdot theorem;
 - clusters and their (strict) skeletons, natural and explicitly finite
   bounded linear frames, immediate and transitive tree unravellings,
   algebraically specified frame ranks, one-root rank extension, and a
@@ -105,6 +114,7 @@ is being reconstructed:
 | `FrameTransformations.v` | `Modal/Kripke/{ExtendRoot,Irreflexivize}.lean` | Irreflexivization and reflexive truth transfer; finite added-root frames, trees, p-morphisms, exact covers, boxdot transfer, and T witnesses |
 | `StructuralFrames.v` | `Modal/Kripke/{Cluster,LinearFrame,Tree,Rank,Balloon}.lean` | Extensional clusters and skeletons; linear examples and Z/Dum validity; tree unravellings; specified ranks; corrected balloon results |
 | `WeakCorrespondence.v` | `Modal/Kripke/Axiom{WeakPoint2,WeakPoint3}.lean` | Exact weak-confluence and weak-connectedness frame correspondences |
+| `Boxdot.v` | `Modal/Boxdot/{Basic,K4_S4,GL_Grz,GLPoint3_GrzPoint3,Ver_Triv,Jerabek}.lean` | Basic translation semantics; unconditional nat-atom K4/S4 and Triv-to-Ver results; finite frame transformations; conditional named equivalences; doubled frames and dependency-gated Jeřábek BDP surfaces |
 | `Undefinability.v` | `Modal/Kripke/Undefinability.lean` | Irreflexivity is not modally definable |
 | `StandardTranslation.v` | `Modal/VanBentham/StandardTranslation.lean` | Deep relational first-order translation and semantic correspondence |
 | `Audit.v` | — | Public checks and kernel-assumption reports |
@@ -160,6 +170,17 @@ Lindenbaum dependency: its soundness and explicit countermodels use at most
 classical propositional logic, while maximal completion and completeness also
 use the standard definite-description principle.
 
+The doubled-frame relation preservation and p-morphism are constructive.
+Boxdot is built from the classically encoded derived conjunction, so its
+reflexive-closure and conjunction truth laws expose excluded middle.  Reverse
+reflexivization and finite-frame transformations that delete reflexive edges
+also use excluded middle.  The unconditional nat-atom K4/S4 proof-theoretic
+equivalence is routed through the local K completeness theorem and therefore
+additionally inherits the standard definite-description principle.  The
+abstract Jeřábek SBDP implication uses excluded middle; its global-consequence
+input and named completeness inputs are explicit arguments, not kernel
+assumptions or claimed theorems.
+
 `Audit.v` prints assumptions for representative theorems from both sides of
 this boundary.  There are no admitted results.
 
@@ -175,13 +196,36 @@ irrelevance—without functional or propositional extensionality.
 
 Concrete Hilbert K now has checked soundness, canonical completeness, and
 finite-frame completeness; KT, K4, and S4 also have checked canonical
-soundness/completeness.  This project does not yet claim finite completeness
-for K4/S4 or completeness for S5, GL, or Grz; rooted filtration preservation
-for piecewise confluence and connectedness; modal companions; or the remaining
-boxdot metatheory beyond the checked added-root transfer theorem.  Those later
-results require additional filtration or canonical-frame property arguments.
-The present modules provide the checked base on which those ports are being
-built.
+soundness/completeness.  The boxdot semantic core and all four K4/S4 theorem
+shapes are checked unconditionally for the named natural-number-atom logics,
+giving exact parity for `K4_S4.lean`.  The coverage ledger remains conservative
+for `Basic.lean`: its semantic results are atom-polymorphic, but its Coq generic
+proof-translation theorem is nat-only, and distinct Lean
+big-conjunction/finite-set convenience surfaces are represented by list-based
+counterparts.  This project still does not claim finite completeness for
+K4/S4 or completeness for S5, GL, Grz, GL.3, Grz.3, or Triv.  Rooted
+filtration preservation for piecewise confluence and connectedness and modal
+companions also remain later work.
+
+### Boxdot dependency gates
+
+The remaining Boxdot results are stated with their unavailable dependencies
+as ordinary propositions and hypotheses.  In particular:
+
+- `boxdot_GL_finite_complete` and `boxdot_Grz_finite_complete` gate the two
+  directions of the GL/Grz proof equivalence;
+- `boxdot_GLPoint3_finite_complete` and
+  `boxdot_GrzPoint3_finite_complete` similarly gate GL.3/Grz.3;
+- `boxdot_Triv_complete` gates only the Ver-to-Triv reflection direction—the
+  Triv-to-Ver translation is unconditional;
+- each named Jeřábek BDP corollary requires its `logic_complete_on` premise and
+  `jerabek_global_consequence_bridge`.  The latter isolates the source proof's
+  finite global-consequence, finite-context, subformula, and fresh-atom
+  construction, whose supporting APIs have not yet been ported.
+
+No inhabitant of any of these completeness or bridge propositions is declared
+or inferred.  Consequently the conditional equivalences must not be read as
+proofs of the missing completeness theorems.
 
 The structural-frame tranche deliberately records three representation or
 source boundaries.  Coq's local `frame` has no finite-world typeclass, so it
@@ -235,6 +279,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.FrameTransformations `
   FoundationModal.StructuralFrames `
   FoundationModal.WeakCorrespondence `
+  FoundationModal.Boxdot `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
 
