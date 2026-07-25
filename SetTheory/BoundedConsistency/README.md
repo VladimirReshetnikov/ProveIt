@@ -208,9 +208,11 @@ same three reasons as in the arithmetic case:
 - [x] Prove the substitution lemma for internal satisfaction: satisfaction of a
   renamed code equals satisfaction of the original under the permuted
   environment.
-- [ ] Code derivations inside the object theory, mirroring the 17 rules.
-- [ ] Formalize soundness of the 17-rule calculus with respect to internal set
-  models.
+- [x] Code contexts and derivations inside the object theory, mirroring the 17
+  rules, with derivations ranked so that premises are cited at strictly smaller
+  internal rank.
+- [x] Formalize soundness of the 17-rule calculus with respect to internal set
+  models, including the eigenvariable rules via the shifted-context operation.
 - [ ] Prove the Levy reflection scheme inside ZFC: for each metatheoretic `n`,
   ZFC proves that some `V_alpha` is `Sigma_n`-elementary in the universe.
 - [ ] Combine reflection with internal soundness to obtain
@@ -249,6 +251,33 @@ architecture instead, where it is strictly cheaper than for satisfaction: no
 clause quantifies over a carrier, so a compound certificate is a union plus one
 new triple, and neither totality nor single-valuedness needs the
 uniform-over-a-set strengthening.
+
+## Why coded derivations carry a rank
+
+A closure predicate — “this set is closed under the inference rules, and the
+node in question belongs to it” — is the presentation that worked for the code
+predicate and for renaming.  For derivations it is **unsound**, and the failure
+is not subtle once seen.
+
+Renaming and code formation are safe because every clause strictly decreases the
+code, so closure plus inversion already pins the relation down.  Inference rules
+move in both directions.  The three-element set containing `a`, `b` and their
+conjunction is closed: each member is justified by the others through
+conjunction introduction and the two eliminations.  Nothing in it need be
+derivable.  A bare closure predicate would therefore prove everything.
+
+Derivations are consequently certified with a **rank in the internal omega**,
+every premise cited at a strictly smaller rank.  Well-foundedness of the
+derivation then reduces to well-foundedness of membership on the von Neumann
+naturals, which definable induction supplies and which holds of nonstandard
+ranks too.
+
+Two further asymmetries shaped the same module.  Context membership *is* safe
+by certificates, because inversion comes free from tag disjointness — but it has
+no descent principle, so a member of a coded context is not known to be a code,
+and the shifted-context relation carries codehood of its source explicitly.  And
+each derivation clause states codehood of the formulas it introduces as rule
+parameters, because codehood of a compound does not yield codehood of its parts.
 
 ## How totality avoided a choice principle
 
