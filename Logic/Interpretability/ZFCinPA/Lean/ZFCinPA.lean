@@ -44,4 +44,6 @@ import ZFCinPA.LocalStepSuccessor
 import ZFCinPA.LocalStepSuccessorAudit
 import ZFCinPA.LocalStepDerivation
 import ZFCinPA.LocalStepDerivationAudit
+import ZFCinPA.EnlargedFields
+import ZFCinPA.EnlargedFieldsAudit
 import ZFCinPA.Endpoint
