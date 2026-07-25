@@ -1,0 +1,20 @@
+(** Public surface and assumption audit for the concrete master graph. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTruthCertificateMasterAssembler.
+
+Import PABoundedRawCodedTruthCertificateMasterAssembler.
+
+Check sixFieldAssemblerRenaming.
+Check raw_sat_sixFieldAssemblerRenamedGraph_iff.
+Check concreteSixFieldMasterGraph.
+Check RawConcreteSixFieldMasterGraphAt.
+Check raw_sat_concreteSixFieldMasterGraph_iff.
+Check concreteSixFieldMasterGraph_decomposition.
+Check RawOutputFirstFieldGraphTotal.
+Check concreteSixFieldMasterGraph_raw_total.
+
+Print Assumptions raw_sat_sixFieldAssemblerRenamedGraph_iff.
+Print Assumptions raw_sat_concreteSixFieldMasterGraph_iff.
+Print Assumptions concreteSixFieldMasterGraph_decomposition.
+Print Assumptions concreteSixFieldMasterGraph_raw_total.

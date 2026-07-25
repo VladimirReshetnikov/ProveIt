@@ -1,0 +1,18 @@
+(** Assumption audit for the model-internal coded-assignment tail shift. *)
+
+From BoundedPAConsistency Require Import RawCodedAssignmentShiftTail.
+
+Import PABoundedRawCodedAssignmentShiftTail.
+
+Check RawCodedAssignmentShiftTailThrough.
+Check codedAssignmentShiftTailThroughTermAt.
+Check codedAssignmentShiftTailExistsTermAt.
+Check raw_sat_codedAssignmentShiftTailThroughTermAt_iff.
+Check raw_sat_codedAssignmentShiftTailExistsTermAt_iff.
+Check BProv_Ax_s_codedAssignmentShiftTailExistsTermAt.
+Check raw_codedAssignmentShiftTail_exists.
+
+Print Assumptions raw_sat_codedAssignmentShiftTailThroughTermAt_iff.
+Print Assumptions raw_sat_codedAssignmentShiftTailExistsTermAt_iff.
+Print Assumptions BProv_Ax_s_codedAssignmentShiftTailExistsTermAt.
+Print Assumptions raw_codedAssignmentShiftTail_exists.

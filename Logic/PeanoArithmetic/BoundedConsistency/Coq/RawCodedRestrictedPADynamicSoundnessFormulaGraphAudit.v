@@ -1,0 +1,16 @@
+(** Public surface and assumption audit for the dynamic-soundness code graph. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADynamicSoundnessFormulaGraph.
+
+Import PABoundedRawCodedRestrictedPADynamicSoundnessFormulaGraph.
+
+Check restrictedPADynamicSoundnessFormulaCodeGraph.
+Check RawRestrictedPADynamicSoundnessFormulaCodeAt.
+Check restrictedPADynamicSoundnessFormulaCodeGraph_representation.
+Check raw_restrictedPADynamicSoundnessFormulaCodeGraph_exact.
+Check restrictedPADynamicSoundnessFormulaCodeGraph_raw_total.
+
+Print Assumptions restrictedPADynamicSoundnessFormulaCodeGraph_representation.
+Print Assumptions raw_restrictedPADynamicSoundnessFormulaCodeGraph_exact.
+Print Assumptions restrictedPADynamicSoundnessFormulaCodeGraph_raw_total.

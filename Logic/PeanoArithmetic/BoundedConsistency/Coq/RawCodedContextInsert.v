@@ -15,9 +15,11 @@
 
   Position zero is the ordinary cons already available from
   [RawCodedContextStructure], and the successor case pushes an insertion
-  underneath one more assumption.  Those two constructions are what a descent
-  through the proof tree consumes: the root inserts at depth zero, and each
-  [RP_impI] or [RP_exE] node it enters increments the depth.
+  underneath one more assumption.  Proof descent consumes that clause for
+  Imp-I, both branch premises of Or-E, and the body premise of Ex-E.  All-I
+  instead keeps the same depth while shifting the inserted formula; proving
+  that binder case requires a separate commuting square between this relation
+  and [RawContextShift].
 *)
 
 From Stdlib Require Import List Arith Lia Classical_Prop.
@@ -504,9 +506,10 @@ Qed.
 (** ------------------------------------------------------------------
     Descending under one more assumption increments the depth.
 
-    This is the clause a proof-tree descent uses when it enters an [RP_impI]
-    or [RP_exE] node: the node's child context is the parent's with one local
-    assumption consed on, and the insertion point moves down by one. *)
+    This is the clause a proof-tree descent uses for [RP_impI], for both local
+    branch contexts of [RP_orE], and after shifting the body context of
+    [RP_exE]: the child context is the parent's with one local assumption
+    consed on, and the insertion point moves down by one. *)
 
 Theorem raw_contextInsertAt_cons : forall
     (M : RawPAModel), RawPASatisfies M ->

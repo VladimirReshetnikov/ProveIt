@@ -1,0 +1,12 @@
+From BoundedPAConsistency Require Import
+  RawCodedTruthCertificateFinalProjection.
+
+Import PABoundedRawCodedTruthCertificateFinalProjection.
+
+Check rawSixFieldMasterCode.
+Check rawSixFieldFinalProjectionRoot.
+Check raw_codedPALocalProofOf_sixFieldMaster_final.
+Check raw_codedPAProofOf_sixFieldMaster_final.
+
+Print Assumptions raw_codedPALocalProofOf_sixFieldMaster_final.
+Print Assumptions raw_codedPAProofOf_sixFieldMaster_final.

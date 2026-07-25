@@ -1,0 +1,17 @@
+From BoundedPAConsistency Require Import RawCodedProofEqReflConstructor.
+
+Import PABoundedRawCodedProofEqReflConstructor.
+
+Check rawProofEqReflRoot.
+Check raw_proofEqReflRoot_list_view.
+Check raw_proofEqReflRoot_not_recursive_case.
+Check raw_proofEqReflRoot_constructor.
+Check raw_proofEqRefl_syntax_step.
+Check raw_proofEqRefl_endpoint_rule_complete.
+Check raw_proofEqRefl_endpoint.
+Check raw_proofEqRefl_ruleCoverage.
+
+Print Assumptions raw_proofEqReflRoot_constructor.
+Print Assumptions raw_proofEqRefl_endpoint.
+Print Assumptions raw_proofEqRefl_endpoint_rule_complete.
+Print Assumptions raw_proofEqRefl_ruleCoverage.

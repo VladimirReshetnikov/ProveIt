@@ -1,0 +1,24 @@
+(** Public surface and assumption audit for nonstandard trace splicing. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFormulaOperationTraceConcatenation.
+
+Import PABoundedRawCodedFormulaOperationTraceConcatenation.
+
+Check RawFormulaOperationTablePrefixExtension.
+Check raw_formulaOperationTriple_prefix_extend.
+Check raw_formulaOperationTraversalBundle_append.
+Check RawFormulaOperationOffsetEmbedding.
+Check raw_formulaOperationTraversalRow_offset.
+Check RawFormulaOperationCopyState.
+Check raw_formulaOperationCopyState_all.
+Check raw_formulaOperationTraces_concatenate.
+Check raw_codedFormulaShift_binary_composition.
+Check raw_codedFormulaShift_unary_composition.
+Check raw_codedFormulaShift_compositional.
+
+Print Assumptions raw_formulaOperationCopyState_all.
+Print Assumptions raw_formulaOperationTraces_concatenate.
+Print Assumptions raw_codedFormulaShift_binary_composition.
+Print Assumptions raw_codedFormulaShift_unary_composition.
+Print Assumptions raw_codedFormulaShift_compositional.

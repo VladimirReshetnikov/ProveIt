@@ -24,7 +24,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
 | [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
-| [`Logic/`](Logic/) | First-order logic and completeness, propositional/equational axiom systems, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
+| [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
 | [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`. |
 | [`lib/`](lib/) | Vendored third-party code only. |
@@ -62,6 +62,13 @@ is the broad Lean import surface.
   from-scratch independent Lean/Coq Henkin proofs for the repository's fixed
   countable relation language, plus arbitrary-language semantic compactness
   in Lean.
+- A [Rocq/Coq modal-logic development](Logic/Modal/README.md) porting a central
+  semantic slice of Foundation: generic Geach and named frame
+  correspondences, the exact Kripke characterization of Loeb's axiom,
+  bisimulation and bounded-morphism preservation, modal undefinability of
+  irreflexivity, coarsest/finest/transitive-closure filtrations with an
+  explicit exponential finite-model bound, and a deep first-order standard
+  translation.
 - Full deductive equivalence between the Closure axiomatization and ZF,
   checked independently in Lean and Coq.
 - A deductive bi-interpretation between PA and finite-generation hereditary
@@ -204,6 +211,11 @@ submodule. Its focused README documents the compatibility-patched dependency
 build and wrapper build; constructive principles and effective-enumeration
 hypotheses remain visible in theorem signatures.
 
+The modal project has no build-time dependency on Foundation: its Lean source
+is retained as a read-only reference, while the Coq statements and proofs are
+checked independently.  The focused modal README documents its constructive
+and classical boundaries and provides a `coqchk` command.
+
 ## Trust and status
 
 - Lean statements are checked by Lean's kernel. Sites using `native_decide`
@@ -233,6 +245,10 @@ license is retained.
 to `uds-psl/coq-synthetic-computability` commit `8fc0014f...`; its MIT license
 is retained, and the Turing-degree project owns a small, reproducible Rocq
 9.2/stdpp 1.13 compatibility patch rather than modifying the pin.
+[`lib/FormalizedFormalLogic-Foundation`](lib/FormalizedFormalLogic-Foundation/)
+is a read-only submodule of `FormalizedFormalLogic/Foundation`, pinned at
+commit `32e1a095...`; its Apache-2.0 license is retained.  The corresponding
+Coq port lives outside `lib/` under [`Logic/Modal/`](Logic/Modal/).
 
 ## License
 

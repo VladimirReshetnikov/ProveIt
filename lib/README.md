@@ -14,5 +14,11 @@ degree wrappers and the tracked Rocq 9.2/stdpp 1.13 compatibility patch live
 under [`../Computability/TuringDegrees/`](../Computability/TuringDegrees/),
 not inside the submodule.
 
+[`FormalizedFormalLogic-Foundation/`](FormalizedFormalLogic-Foundation/) is the
+read-only Apache-2.0-licensed `FormalizedFormalLogic/Foundation` submodule at
+commit `32e1a0956a8622fad067328ca1959729a7634428`.  It is retained as the source
+reference for the independent Coq port under [`../Logic/Modal/`](../Logic/Modal/);
+the port neither imports nor modifies the Lean checkout.
+
 Repository-authored Busy Beaver models, bridges, and score certificates live
 under [`../Computability/BusyBeaver/`](../Computability/BusyBeaver/), not here.

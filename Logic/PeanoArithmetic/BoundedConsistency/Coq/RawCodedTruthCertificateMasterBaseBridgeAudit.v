@@ -1,0 +1,24 @@
+(** Public surface and assumption audit for master-package base assembly. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTruthCertificateMasterBaseBridge.
+
+Import PABoundedRawCodedTruthCertificateMasterBaseBridge.
+
+Check RawSixFieldMasterZeroGraphWitnessesAt.
+Check RawSixFieldMasterCommonContextProofsOf.
+Check RawSixFieldMasterZeroRawComponentPackage.
+Check raw_sixFieldMasterPackageBase_of_raw_components.
+Check RawOutputFirstFieldGraphZeroTotal.
+Check RawOutputFirstFieldGraphStandardZeroView.
+Check RawOutputFirstFieldGraphStandardZeroWitness.
+Check raw_outputFirstFieldGraphStandardZeroWitness_of_total_view.
+Check RawSixFieldMasterZeroBProvComponentPackage.
+Check raw_sixFieldMasterPackageBase_of_BProv_components.
+Check RawSixFieldMasterZeroComponentPackage.
+Check raw_sixFieldMasterPackageBase_of_components.
+
+Print Assumptions raw_sixFieldMasterPackageBase_of_raw_components.
+Print Assumptions raw_outputFirstFieldGraphStandardZeroWitness_of_total_view.
+Print Assumptions raw_sixFieldMasterPackageBase_of_BProv_components.
+Print Assumptions raw_sixFieldMasterPackageBase_of_components.

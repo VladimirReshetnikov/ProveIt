@@ -1,0 +1,19 @@
+From BoundedPAConsistency Require Import RawCodedProofOrIConstructors.
+
+Import PABoundedRawCodedProofOrIConstructors.
+
+Check RawOrInjection.
+Check rawOrInjectionTag.
+Check rawOrInjectionPremise.
+Check rawProofOrIRoot.
+Check raw_proofOrIRoot_child_lt.
+Check raw_proofOrIRoot_list_view.
+Check raw_proofOrIRoot_recursive_children.
+Check raw_proofOrIRoot_constructor.
+Check raw_proofOrI_syntax_step.
+Check raw_proofOrI_endpoint_rule_complete.
+Check raw_proofOrI_endpoint.
+Check raw_proofOrI_ruleCoverage.
+
+Print Assumptions raw_proofOrI_endpoint_rule_complete.
+Print Assumptions raw_proofOrI_ruleCoverage.

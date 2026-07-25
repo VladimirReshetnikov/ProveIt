@@ -1,0 +1,21 @@
+From BoundedPAConsistency Require Import
+  RawCodedOutputFirstFormulaNegationGraph.
+
+Import PABoundedRawCodedOutputFirstFormulaNegationGraph.
+
+Check outputFirstFormulaBottomGraph.
+Check raw_sat_outputFirstFormulaBottomGraph_iff.
+Check outputFirstFormulaBottomGraph_raw_total.
+
+Check outputFirstNegationChildRenaming.
+Check raw_sat_outputFirstNegationChildRenamedGraph_iff.
+Check outputFirstFormulaNegationGraph.
+Check RawOutputFirstFormulaNegationGraphAt.
+Check raw_sat_outputFirstFormulaNegationGraph_iff.
+Check outputFirstFormulaNegationGraph_raw_total.
+
+Print Assumptions raw_sat_outputFirstFormulaBottomGraph_iff.
+Print Assumptions outputFirstFormulaBottomGraph_raw_total.
+Print Assumptions raw_sat_outputFirstNegationChildRenamedGraph_iff.
+Print Assumptions raw_sat_outputFirstFormulaNegationGraph_iff.
+Print Assumptions outputFirstFormulaNegationGraph_raw_total.
