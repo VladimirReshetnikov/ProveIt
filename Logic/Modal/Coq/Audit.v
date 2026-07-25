@@ -6,7 +6,7 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert CanonicalExtensions
-  FiniteMaximalContext Modality StandardTranslation Preservation Root FrameTransformations StructuralFrames
+  FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence Boxdot Undefinability.
 
 Check substitute_comp.
@@ -178,6 +178,22 @@ Check K_strictly_weaker_KT.
 Check K_strictly_weaker_K4.
 Check KT_strictly_weaker_S4.
 Check K4_strictly_weaker_S4.
+
+(** Canonical D/B/Five frame properties and complete KD/KB/K5 metatheory. *)
+Check normal_canonical_serial_of_schema_D.
+Check normal_canonical_symmetric_of_schema_B.
+Check normal_canonical_right_euclidean_of_schema_Five.
+Check KD_canonical_frame_serial.
+Check KB_canonical_frame_symmetric.
+Check K5_canonical_frame_right_euclidean.
+Check KD_sound_complete.
+Check KB_sound_complete.
+Check K5_sound_complete.
+Check KD_proves_P.
+Check normal_proves_P_of_schema_D.
+Check K_strictly_weaker_KD.
+Check K_strictly_weaker_KB.
+Check K_strictly_weaker_K5.
 
 (** Modal words, their finite size layers, generic reduction algebra, and
     checked S5 canonical normalization. *)
@@ -484,6 +500,16 @@ Print Assumptions K4_canonical_frame_transitive.
 Print Assumptions KT_sound_complete.
 Print Assumptions K4_sound_complete.
 Print Assumptions S4_sound_complete.
+Print Assumptions normal_canonical_serial_of_schema_D.
+Print Assumptions normal_canonical_symmetric_of_schema_B.
+Print Assumptions normal_canonical_right_euclidean_of_schema_Five.
+Print Assumptions KD_sound_complete.
+Print Assumptions KB_sound_complete.
+Print Assumptions K5_sound_complete.
+Print Assumptions normal_proves_P_of_schema_D.
+Print Assumptions K_strictly_weaker_KD.
+Print Assumptions K_strictly_weaker_KB.
+Print Assumptions K_strictly_weaker_K5.
 Print Assumptions K_strictly_weaker_KT.
 Print Assumptions K_strictly_weaker_K4.
 Print Assumptions KT_strictly_weaker_S4.

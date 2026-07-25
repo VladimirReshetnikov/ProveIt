@@ -27,9 +27,9 @@ is being reconstructed:
   modal axiom schemata, with weakening, K embedding, and soundness and
   consistency for KT, KD, KB, K4, K5, S4, S5, GL, and Grz;
 - a schema-generic Lindenbaum and canonical-model construction, specialized
-  to canonical reflexivity/transitivity and full soundness/completeness for
-  KT, K4, S4, and reflexive right-Euclidean S5, with explicit small-frame
-  strictness witnesses for the first three;
+  to canonical reflexivity, seriality, symmetry, transitivity, and right
+  Euclideanity, with full soundness/completeness for KT, KD, KB, K4, K5, S4,
+  and S5 and explicit small-frame strictness witnesses over K;
 - schema-generic finite consistency over natural-number atoms, including the
   two insertion criteria, singleton and union laws, deterministic
   complement-closed extension, a finite-context Lindenbaum theorem,
@@ -123,6 +123,7 @@ is being reconstructed:
 | `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
 | `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; KT/K4/S4 canonicality, completeness, and strictness |
 | `Modality.v` | `Modal/Modality/{Basic,S5}.lean`, `Modal/Kripke/Logic/S5.lean` | Modal-word algebra, size enumeration/splitting, syntactic translations and equivalences, generic finite reduction, S5 canonical completeness, and six-form normalization for every length |
+| `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -217,6 +218,13 @@ construction.  Those proof-theoretic results therefore expose exactly
 `Classical_Prop.classic` and the standard definite-description principle;
 the semantic normalization on a supplied S5 frame uses only excluded middle.
 
+The canonical seriality and right-Euclidean arguments for D and Five use the
+schema-generic successor/Lindenbaum construction and therefore expose
+excluded middle plus definite description.  Canonical symmetry from B is
+closed once maximal contexts are supplied.  KD/KB/K5 completeness inherits
+the common Lindenbaum boundary; their explicit strictness witnesses require
+only excluded middle through the exact frame correspondences.
+
 The doubled-frame relation preservation and p-morphism are constructive.
 Boxdot is built from the classically encoded derived conjunction, so its
 reflexive-closure and conjunction truth laws expose excluded middle.  Reverse
@@ -242,9 +250,8 @@ irrelevance—without functional or propositional extensionality.
 ## Parity boundary
 
 Concrete Hilbert K now has checked soundness, canonical completeness, and
-finite-frame completeness; KT, K4, and S4 also have checked canonical
-soundness/completeness, and S5 has checked canonical completeness on the
-class of reflexive right-Euclidean frames.  Every modal word has a checked
+finite-frame completeness; KT, KD, KB, K4, K5, S4, and S5 also have checked
+canonical soundness/completeness on their standard frame classes.  Every modal word has a checked
 S5 equivalence and reduction to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,
@@ -335,6 +342,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalExtensions `
   FoundationModal.FiniteMaximalContext `
   FoundationModal.Modality `
+  FoundationModal.CanonicalDB5 `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
   FoundationModal.FrameTransformations `
   FoundationModal.StructuralFrames `
