@@ -1198,6 +1198,14 @@ base and successor views, totality, and arbitrary carrier-level existence are
 all exposed in the public output convention `first :: second :: level ::
 tail`.
 
+`RawCodedDynamicTruthPairedBaseFormulaCodeGraph.v` supplies that orbit's exact
+rank-zero seed.  Its first coordinate is the ternary Sigma-truth predicate and
+its second coordinate is the distinct ternary Pi-falsity predicate; both are
+selected by literal internal formula-code numerals in the base environment.
+The graph has law-free numeral semantics and totality, agrees with structural
+formula quotation in every PA model, and includes the scoped Pi-base
+application lemma needed by the represented successor construction.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
