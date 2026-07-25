@@ -1132,6 +1132,14 @@ carrier semantics and standard PA-model witnesses.  Totality for an arbitrary
 nonstandard input remains dependent on the separate internally adequate
 single-substitution totality construction.
 
+`RawCodedDynamicTruthTernaryApplicationTotality.v` now connects that graph to
+the completed substitution construction.  The fixed replacement codes `#6`,
+`#4`, and `#0` receive internal term-syntax certificates from the universally
+defined zero assignment; three represented substitutions then produce two
+adequate intermediate codes and an adequate final output.  Consequently the
+actual output-first application graph is total on every atomically adequate,
+possibly nonstandard input formula code in an arbitrary PA model.
+
 `RawCodedFormulaSingleSubstitutionTotality.v` supplies the formula half of
 that construction.  It composes substitution traces at all binary and unary
 syntax constructors, runs PA-definable induction over the carrier-valued code
