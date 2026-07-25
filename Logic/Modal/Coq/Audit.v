@@ -2,6 +2,7 @@
 
 From FoundationModal Require Import
   Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
+  KripkeAlgebra
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert CanonicalExtensions
@@ -11,6 +12,17 @@ From FoundationModal Require Import
 Check substitute_comp.
 Check satisfies_substitute.
 Check valid_K.
+
+(** Relational complex algebras and their exact agreement with Kripke
+    satisfaction. *)
+Check complex_box_top.
+Check complex_box_intersection.
+Check complex_dia_dual.
+Check algebra_eval_dia.
+Check algebraic_satisfies.
+Check algebraic_valid_imp.
+Check algebraic_valid_iff.
+Check algebraic_valid.
 
 Check nnformula_eq_dec.
 Check nn_neg_involutive.
@@ -511,6 +523,17 @@ Print Assumptions finite_next_consistent.
 Print Assumptions finite_exists_consistent_complementary_closed.
 Print Assumptions fmc_equality_def.
 Print Assumptions finite_maximal_context_explicit_cover.
+(** The complex box laws, primitive evaluation/satisfaction theorem, and
+    implication/formula validity characterizations are constructive.  The
+    existential diamond dual and derived disjunction/equivalence readings
+    expose excluded middle, matching the derived modal syntax. *)
+Print Assumptions complex_box_top.
+Print Assumptions complex_box_intersection.
+Print Assumptions complex_dia_dual.
+Print Assumptions algebraic_satisfies.
+Print Assumptions algebraic_valid_imp.
+Print Assumptions algebraic_valid_iff.
+Print Assumptions algebraic_valid.
 Print Assumptions complexity_limited_truth_aux.
 Print Assumptions complexity_limited_truth.
 Print Assumptions complexity_limited_subformula_closed.

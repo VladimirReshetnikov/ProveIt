@@ -44,6 +44,9 @@ is being reconstructed:
   actual S5 derivations of every returned equivalence and reduction;
 - Kripke satisfaction, semantic substitution, iterated box/diamond laws, and
   validity of K;
+- the relational complex algebra of every Kripke frame, with box/diamond
+  laws, atom-polymorphic formula evaluation, and exact order/equality
+  characterizations of implication, equivalence, and formula validity;
 - complexity-bounded generated models with a strengthened budgeted truth
   lemma and invariance under changing the enclosing target formula;
 - reflexive, transitive, and reflexive-transitive frame closures, their order
@@ -109,6 +112,7 @@ is being reconstructed:
 | `Axioms.v` | `Modal/Axioms.lean` | Complete named schema catalog, including normal, Geach, provability, McKinsey, and boxdot schemata |
 | `HilbertK.v` | `Modal/Hilbert/Normal/Basic.lean` | Constructive Hilbert K, substitution, derived classical rules, theories, deduction, consistency criteria, contextual boxing |
 | `Kripke.v` | `Modal/Kripke/Basic.lean` | Frames, valuations, satisfaction, substitution, relation/modal iteration, K validity |
+| `KripkeAlgebra.v` | `Modal/Kripke/Algebra.lean` | Relational complex algebras, modal operations, algebraic evaluation/satisfaction equivalence, and validity as subset/extensional equality |
 | `NNFormulaSemantics.v` | `Modal/Kripke/NNFormula.lean` | Direct NNF semantics, semantic negation, translation correctness, validity equivalences |
 | `HilbertKSoundness.v` | `Modal/Kripke/Hilbert.lean` | Framewise and contextual Kripke soundness for K, plus consistency |
 | `Complement.v` | `Modal/Formula/Complement.lean` | Syntactic complement, complement-closed finite contexts, constructive semantic incompatibility |
@@ -184,6 +188,14 @@ The independent PLoN canonical construction has the same sharply delimited
 Lindenbaum dependency: its soundness and explicit countermodels use at most
 classical propositional logic, while maximal completion and completeness also
 use the standard definite-description principle.
+
+The Kripke complex algebra uses predicates on worlds and extensional
+equivalence as its set equality, so its box/top, box/intersection,
+evaluation/satisfaction, implication-order, and formula/top results are
+constructive and require no extensionality axiom.  Only the existential
+diamond dual and the derived disjunction/equivalence readings use excluded
+middle.  The Coq results are atom-polymorphic, strengthening the source's
+natural-number valuation statements.
 
 The finite complement-closed context layer keeps its boundary equally
 explicit.  The consistency insertion criteria, complement derivations, and
@@ -313,6 +325,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.PLoNCompleteness `
   FoundationModal.Kripke FoundationModal.NNFormulaSemantics `
   FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
+  FoundationModal.KripkeAlgebra `
   FoundationModal.Complement `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `
   FoundationModal.Filtration `
