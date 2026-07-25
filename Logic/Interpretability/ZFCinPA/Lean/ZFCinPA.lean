@@ -8,3 +8,9 @@ import ZFCinPA.Translation
 import ZFCinPA.TranslationAudit
 import ZFCinPA.UniformStatement
 import ZFCinPA.UniformStatementAudit
+import ZFCinPA.PackageInduction
+import ZFCinPA.PackageInductionAudit
+import ZFCinPA.LevelCodeTower
+import ZFCinPA.LevelCodeTowerAudit
+import ZFCinPA.SeparationKernel
+import ZFCinPA.SeparationKernelAudit
