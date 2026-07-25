@@ -52,4 +52,14 @@ import ZFCinPA.EnlargedFields
 import ZFCinPA.EnlargedFieldsAudit
 import ZFCinPA.LocalStepTransfer
 import ZFCinPA.LocalStepTransferAudit
+import ZFCinPA.NumeralOmega
+import ZFCinPA.NumeralOmegaAudit
+import ZFCinPA.TemplateEvaluation
+import ZFCinPA.TemplateEvaluationAudit
+import ZFCinPA.SpineEvaluation
+import ZFCinPA.SpineEvaluationAudit
+import ZFCinPA.TowerEvaluation
+import ZFCinPA.TowerSuccessorEvaluation
+import ZFCinPA.FieldEvaluation
+import ZFCinPA.FieldEvaluationAudit
 import ZFCinPA.Endpoint
