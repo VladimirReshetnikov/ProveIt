@@ -20,6 +20,9 @@ is being reconstructed:
   negation-normal formulas over natural-number atoms;
 - a concrete Hilbert calculus for K with substitution, deduction, consistency
   criteria, contextual boxing, Kripke soundness, and syntactic consistency;
+- a constructive-by-stages Lindenbaum extension for concrete K, maximal
+  consistent theories, the canonical successor and truth lemmas, canonical
+  countermodels, and soundness/completeness over all and finite frames;
 - Kripke satisfaction, semantic substitution, iterated box/diamond laws, and
   validity of K;
 - complexity-bounded generated models with a strengthened budgeted truth
@@ -63,6 +66,7 @@ is being reconstructed:
 | `Complement.v` | `Modal/Formula/Complement.lean` | Syntactic complement, complement-closed finite contexts, constructive semantic incompatibility |
 | `ComplexityLimited.v` | `Modal/Kripke/ComplexityLimited.lean` | Complexity-bounded generated frames, strengthened truth lemma, subformula-target invariance |
 | `Filtration.v` | `Modal/Kripke/Filtration.lean` | Coarsest truth-profile filtration, explicit exponential cover, finite countermodels, semantic finite-model property |
+| `CanonicalK.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/K}.lean` | Concrete K Lindenbaum completion, maximal theories, canonical truth/countermodel arguments, completeness and finite completeness |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -93,8 +97,11 @@ elimination.  The Coq port keeps those lemmas separate:
 - existential diamond elimination, the generic/named converse
   correspondences involving diamond, classical derived conjunction and
   disjunction, semantic NNF negation and translation, Loeb's maximal-element
-  characterization, PLoN countermodel extraction, and derived first-order
-  existential semantics use `Classical_Prop.classic`.
+  characterization, PLoN countermodel extraction, the canonical K
+  construction, and derived first-order existential semantics use
+  `Classical_Prop.classic`.  The Lindenbaum construction also uses Coq's
+  standard definite-description principle to turn formula enumeration into
+  a computable choice of consistent extension.
 
 `Audit.v` prints assumptions for representative theorems from both sides of
 this boundary.  There are no admitted results.
@@ -109,15 +116,13 @@ irrelevance—without functional or propositional extensionality.
 
 ## Parity boundary
 
-This project does not yet claim Coq parity for Foundation's Hilbert-system
-completeness theorems for K, S4, S5, GL, or Grz; rooted filtration
+Concrete Hilbert K now has checked soundness, canonical completeness, and
+finite-frame completeness.  This project does not yet claim Coq parity for
+Foundation's completeness theorems for S4, S5, GL, or Grz; rooted filtration
 preservation for piecewise confluence and connectedness; modal companions; or
-the boxdot results.  In particular, the semantic finite-model property proved
-here is not advertised as proof-theoretic finite completeness for a Hilbert
-calculus.  Those later results require extensions of the proof system, the
-canonical-model layer, and rooted-frame infrastructure and are deliberately
-not smuggled in as semantic hypotheses.  The present modules provide the
-checked base on which those ports are being built.
+the boxdot results.  Those later results require extensions of the proof
+system and canonical-frame property arguments.  The present modules provide
+the checked base on which those ports are being built.
 
 ## Checking
 
@@ -135,6 +140,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `
   FoundationModal.Filtration `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
+  FoundationModal.CanonicalK `
   FoundationModal.Loeb `
   FoundationModal.StandardTranslation FoundationModal.Preservation `
   FoundationModal.Undefinability FoundationModal.Audit

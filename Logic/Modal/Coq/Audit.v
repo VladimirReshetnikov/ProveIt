@@ -3,7 +3,7 @@
 From FoundationModal Require Import
   Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK Kripke
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
-  Correspondence FiltrationExtensions Loeb FrameProperties StandardTranslation
+  Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties StandardTranslation
   Preservation Undefinability.
 
 Check substitute_comp.
@@ -89,6 +89,17 @@ Check K_derives_box_from_unboxed.
 Check K_proves_sound_on_frame.
 Check K_derives_sound.
 Check K_is_consistent.
+
+Check lindenbaum_extension.
+Check mct_neg_iff.
+Check mct_derivable_mem.
+Check mct_imp_iff.
+Check canonical_successor_of_neg_box.
+Check canonical_truth_lemma.
+Check K_canonical_countermodel.
+Check K_complete.
+Check K_sound_complete.
+Check K_finite_sound_complete.
 
 Check complement_neg.
 Check complement_cases.
@@ -196,6 +207,10 @@ Print Assumptions K_derives_box_from_unboxed.
 Print Assumptions K_proves_sound_on_frame.
 Print Assumptions K_derives_sound.
 Print Assumptions K_is_consistent.
+Print Assumptions lindenbaum_extension.
+Print Assumptions canonical_truth_lemma.
+Print Assumptions K_complete.
+Print Assumptions K_finite_sound_complete.
 Print Assumptions complement_cases.
 Print Assumptions complementary_mem_box.
 Print Assumptions satisfies_complement_incompatible.
