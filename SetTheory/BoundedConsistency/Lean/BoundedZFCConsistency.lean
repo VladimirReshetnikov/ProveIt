@@ -10,6 +10,7 @@ import BoundedZFCConsistency.FormulaClosedSet
 import BoundedZFCConsistency.InternalSat
 import BoundedZFCConsistency.InternalSatTotality
 import BoundedZFCConsistency.InternalSoundness
+import BoundedZFCConsistency.LevelSoundness
 import BoundedZFCConsistency.OmegaRecursion
 import BoundedZFCConsistency.UniverseTruthLevel
 import BoundedZFCConsistency.UniverseTruthZero

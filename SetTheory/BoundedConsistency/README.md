@@ -251,9 +251,13 @@ dropped, since route 2 reaches the target without a cumulative hierarchy; see
 - [x] Define the externally indexed `Sigma`/`Pi` partial truth predicates over
   the universe by recursion on the external level, with their Tarski clauses and
   the polarity switches at quantifier heads.
+- [x] Prove the substitution lemmas at a fixed level, for both polarities, with
+  the shift and instantiation corollaries.
 - [ ] Prove the level-collapse theorem — that truth at level `n+1` on a code
-  bounded at `n` already holds at level `n` — which closes the elimination
-  halves of the two polarity-switch rows and upgrades `Pi` monotonicity.
+  bounded at `n` already holds at level `n`.  This closes the elimination halves
+  of the two polarity-switch rows, upgrades `Pi` monotonicity, and — as the
+  soundness brick discovered — is on the **critical path**, since two-valuedness
+  is what implication elimination needs.
 - [ ] Prove every internal ZFC axiom code of rank at most `n` true at level `n`,
   including the nonstandard schema instances the internal axiom set contains.
 - [ ] Push partial truth through a bounded coded derivation and conclude that
@@ -334,6 +338,29 @@ proved.  The converse is false and is not attempted.  This is not a weakness of
 the statement but a requirement on it: internal soundness will have to be
 applied to the internal axiom set, nonstandard instances included, or the
 argument would not cover the derivations `Con_n` actually quantifies over.
+
+## Where the remaining work is now concentrated
+
+`BoundedZFCConsistency.LevelSoundness` proves the fixed-level substitution
+lemmas and then names what is left, rather than assuming it.  Three obligations
+remain, and they are not independent:
+
+- `LevelSoundnessAt` — that a bounded coded derivation transports level-`n+1`
+  truth from its context to its conclusion.  Blocked on the next item.
+- `LevelTwoValuedAt` — that the two polarities agree on the codes a bounded
+  derivation can mention.  This follows from the level-collapse theorem.
+- `AxiomCodesTrueAt` — that every internal ZFC axiom code of bounded complexity
+  is true at the level.  This is where the content of the axioms finally enters,
+  and it is independent of the other two.
+
+The obstruction in the first is sharp and worth recording, because it says the
+level-collapse theorem is not optional.  Implication elimination has
+`SigmaTrue (n+1)` of an implication together with `SigmaTrue (n+1)` of its
+antecedent; the Tarski clause turns the former into a disjunction whose left
+half is `PiFalse (n+1)` of the antecedent, and only two-valuedness discharges
+it.  Reading truth as `PiTrue` throughout moves the same obligation to the other
+side of that rule, and reading it as the conjunction of both polarities moves it
+to disjunction elimination.  No formulation of the rule avoids it.
 
 ## The whole remaining obligation, in one statement
 
