@@ -1,0 +1,25 @@
+(** Assumption audit for the carried ternary-formula application graph. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthTernaryApplicationGraph.
+
+Import PABoundedRawCodedDynamicTruthTernaryApplicationGraph.
+
+Check dynamicTruthTernaryApplicationGraph.
+Check RawDynamicTruthTernaryApplication.
+Check raw_sat_dynamicTruthTernaryApplicationGraph_iff.
+
+Check standardDynamicTruthTernaryApplication.
+Check dynamicTruthTernaryApplicationRenaming.
+Check DynamicTruthTernaryScoped.
+Check standardDynamicTruthTernaryApplication_eq_rename.
+
+Check raw_dynamicTruthTernaryApplication_standard.
+Check dynamicTruthTernaryApplicationGraph_standard.
+Check dynamicTruthTernaryApplicationGraph_standard_rename.
+
+Print Assumptions raw_sat_dynamicTruthTernaryApplicationGraph_iff.
+Print Assumptions standardDynamicTruthTernaryApplication_eq_rename.
+Print Assumptions raw_dynamicTruthTernaryApplication_standard.
+Print Assumptions dynamicTruthTernaryApplicationGraph_standard.
+Print Assumptions dynamicTruthTernaryApplicationGraph_standard_rename.

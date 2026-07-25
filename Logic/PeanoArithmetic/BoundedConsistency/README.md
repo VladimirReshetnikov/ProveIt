@@ -1116,6 +1116,15 @@ selects the transparent implication-to-bottom code.  Exact semantics and
 totality are law-free and introduce no well-formedness or standardness side
 condition on that child.
 
+`RawCodedDynamicTruthTernaryApplicationGraph.v` represents the recurring
+application of a carried ternary truth-formula code beneath five binders.  Its
+three checked single-substitution steps use variable codes `#6`, `#4`, and
+`#0`; on ternary-scoped standard syntax their composite is proved literally
+equal to the intended `[#4,#3,#0]` renaming.  The graph has exact law-free
+carrier semantics and standard PA-model witnesses.  Totality for an arbitrary
+nonstandard input remains dependent on the separate internally adequate
+single-substitution totality construction.
+
 `RawCodedCarrierIndexedCodeOrbitGraph.v` supplies the model-internal recursion
 engine for those fields.  A three-witness Goedel-beta table starts from an
 arbitrary output-first base graph and checks a represented successor graph at
