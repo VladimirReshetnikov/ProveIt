@@ -5,7 +5,8 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert CanonicalExtensions
-  StandardTranslation Preservation Root WeakCorrespondence Undefinability.
+  StandardTranslation Preservation Root StructuralFrames WeakCorrespondence
+  Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -244,6 +245,26 @@ Check generated_submodel_truth.
 Check point_generated_truth.
 Check point_generated_truth_at_root.
 Check point_trans_generated_trans_rooted.
+Check point_generated_frame_finite.
+
+Check cluster_of_eq_iff.
+Check cluster_shape_trichotomy.
+Check skeleton_partial_order.
+Check skeleton_finite.
+Check bounded_nat_finite_cover.
+Check fin_lt_finite.
+Check fin_le_finite.
+Check nat_lt_validates_Z.
+Check nat_le_validates_Dum.
+Check trans_tree_is_tree.
+Check trans_tree_unravelling_truth_at_root.
+Check rank_eq_iff_iter_terminal.
+Check rank_lt_iff_satisfies_box_bottom.
+Check point_generated_rank_spec.
+Check balloon_covers_envelope.
+Check source_balloon_order_assumptions_inconsistent.
+Check nat_lt_has_no_farthest_bottom.
+Check balloon_validates_Z_of_cwf.
 
 Check valid_WeakPoint2_atoms_iff_piecewise_convergent.
 Check frame_piecewise_connected_iff_distinct.
@@ -356,6 +377,28 @@ Print Assumptions generated_submodel_truth.
 Print Assumptions point_generated_truth.
 Print Assumptions point_generated_frame_rooted.
 Print Assumptions point_trans_generated_trans_rooted.
+
+(** The inductive tree and algebraic rank kernels are constructive.  The
+    extensional cluster representation exposes functional/propositional
+    extensionality and proof irrelevance; duplicate-free bounded-subtype
+    enumeration uses only proof irrelevance.  Filtering a finite cover into a
+    point-generated subtype uses informative excluded middle, classical
+    description, and proof irrelevance.  Cluster classification, linear-frame
+    semantics, and corrected balloon maximality use classical propositional
+    logic. *)
+Print Assumptions point_generated_frame_finite.
+Print Assumptions cluster_shape_trichotomy.
+Print Assumptions skeleton_partial_order.
+Print Assumptions skeleton_finite.
+Print Assumptions bounded_nat_finite_cover.
+Print Assumptions nat_lt_validates_Z.
+Print Assumptions trans_tree_unravelling_truth_at_root.
+Print Assumptions rank_eq_iff_iter_terminal.
+Print Assumptions point_generated_rank_spec.
+Print Assumptions balloon_covers_envelope.
+Print Assumptions farthest_counterexample_of_not_box.
+Print Assumptions balloon_validates_Z_of_cwf.
+
 Print Assumptions valid_WeakPoint2_atoms_iff_piecewise_convergent.
 Print Assumptions valid_WeakPoint3_atoms_iff_piecewise_connected.
 

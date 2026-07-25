@@ -9,8 +9,10 @@
   truth results themselves are inherited from bounded-morphism invariance.
 
   Foundation also installs a finiteness type-class instance for a generated
-  subtype.  The local [frame] record has no finiteness field, so there is no
-  corresponding proposition to prove in this file.
+  subtype.  The local list-cover counterpart [finite_frame] is defined later
+  in [Filtration], so [StructuralFrames] supplies the companion
+  [point_generated_frame_finite] theorem without introducing a dependency
+  cycle here.
 *)
 
 From Stdlib Require Import Logic.Classical_Prop.

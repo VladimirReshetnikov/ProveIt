@@ -54,7 +54,12 @@ is being reconstructed:
 - the Kripke correspondence for Loeb's axiom;
 - roots and transitive roots, direct and positive-reachability generated
   frames, inherited frame properties, generated submodels, and truth
-  invariance through their bounded morphisms;
+  invariance through their bounded morphisms, including explicit inheritance
+  of finite list covers by direct point generation;
+- clusters and their (strict) skeletons, natural and explicitly finite
+  bounded linear frames, immediate and transitive tree unravellings,
+  algebraically specified frame ranks, one-root rank extension, and a
+  corrected theory of balloon frames;
 - exact semantic correspondences for iterated 4, Ver, .4, H, and Grz, plus
   the McKinsey, Makinson, and Boolos-condition validity theorems;
 - exact weak-.2/piecewise-convergence and weak-.3/piecewise-connectedness
@@ -93,6 +98,7 @@ is being reconstructed:
 | `CorrespondenceExtensions.v` | `Modal/Kripke/Axiom{FourN,Grz,H,I,McK,Mk,Point4,Ver}.lean` | Further exact and directional named-axiom frame correspondences |
 | `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and bounded-morphism invariance/preservation |
 | `Root.v` | `Modal/Kripke/Root.lean` | Rooted and generated frames/models, structural inheritance, bounded morphisms, and truth invariance |
+| `StructuralFrames.v` | `Modal/Kripke/{Cluster,LinearFrame,Tree,Rank,Balloon}.lean` | Extensional clusters and skeletons; linear examples and Z/Dum validity; tree unravellings; specified ranks; corrected balloon results |
 | `WeakCorrespondence.v` | `Modal/Kripke/Axiom{WeakPoint2,WeakPoint3}.lean` | Exact weak-confluence and weak-connectedness frame correspondences |
 | `Undefinability.v` | `Modal/Kripke/Undefinability.lean` | Irreflexivity is not modally definable |
 | `StandardTranslation.v` | `Modal/VanBentham/StandardTranslation.lean` | Deep relational first-order translation and semantic correspondence |
@@ -124,7 +130,17 @@ elimination.  The Coq port keeps those lemmas separate:
   `Classical_Prop.classic`.  The Lindenbaum construction also uses Coq's
   standard definite-description principle to turn formula enumeration into
   a computable choice of consistent extension.  Root comparison and some
-  generated-frame constructions use classical logic or proof irrelevance;
+  generated-frame constructions use classical logic or proof irrelevance.
+  The extensional representation of quotient clusters additionally uses
+  functional and propositional extensionality; its skeleton order laws need
+  only those extensionality principles and proof irrelevance, while cluster
+  shape classification, the natural linear-frame semantic examples, and
+  balloon maximality use excluded middle.  Equality of bounded-subtype
+  witnesses in the duplicate-free linear-frame cover uses proof irrelevance.
+  Filtering an arbitrary finite cover into a point-generated subtype uses
+  informative excluded middle, classical description, and proof irrelevance.
+  The inductive tree-unravelling and algebraic rank/path kernels remain
+  constructive;
   the converse Grz correspondence additionally exposes standard relational
   choice used to select an infinite counterexample chain.
 
@@ -155,6 +171,30 @@ results.  Those later results require additional filtration or canonical-frame
 property arguments.  The present modules provide the checked base on which
 those ports are being built.
 
+The structural-frame tranche deliberately records three representation or
+source boundaries.  Coq's local `frame` has no finite-world typeclass, so it
+uses explicit list covers instead: `StructuralFrames.v` supplies the finite
+cluster-skeleton and bounded-linear-frame counterparts, including a
+duplicate-free enumeration of each bounded carrier.  The source's finite
+tree-unravelling instance is not yet reconstructed.  Tree paths use
+inductive snoc constructors, making the source list-prefix/`IsChain` normal
+form intrinsic; rank results are proved from an exact `frame_rank_spec`,
+rather than reconstructing Foundation's finite converse-well-founded height
+machinery, and only the one-fresh-root case of the separately defined
+`extendRoot` API is included.  Conversely, Foundation's point-generated rank
+equality is an `axiom` at the pinned revision, whereas the corresponding Coq
+restriction theorem is proved.
+
+`Balloon.lean` also cannot be ported literally: its world relation is required
+to be a strict total order while its envelope is nondegenerate, assumptions
+that the cluster laws make inconsistent.  Moreover,
+`farthermost_point_of_not_box` is admitted upstream and false without a
+well-foundedness/finite hypothesis (the strict natural-number frame is an
+explicit Coq counterexample).  `StructuralFrames.v` proves the inconsistency,
+defines a coherent preorder-based balloon notion, and proves the intended
+farthest-counterexample and Z-validity results with converse well-foundedness
+stated explicitly.
+
 ## Checking
 
 From `Logic/Modal/Coq`:
@@ -176,6 +216,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
   FoundationModal.CanonicalExtensions `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
+  FoundationModal.StructuralFrames `
   FoundationModal.WeakCorrespondence `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
