@@ -1187,6 +1187,15 @@ universal leaf, with exact semantics, scoping, standard application, and an
 output-first base-code graph.  In particular, its rank bounds remain
 meaningful at nonstandard model levels.
 
+`RawCodedDynamicTruthSigmaSuccessorRowGraph.v` constructs the positive half of
+the native four-table successor.  Its output-first graph maps the preceding
+Pi-falsity predicate code to the next Sigma-truth predicate code, represents
+the eight-witness row and all positive constructor cases, and applies the
+lower predicate through three checked substitutions.  The large fixed domain
+template code is named opaquely only to keep kernel conversion bounded; exact
+law-free semantics and standard quotation agreement remain explicit, and
+nonstandard totality exposes the two genuine formula-operation inputs.
+
 `RawCodedDynamicTruthPiSuccessorRowGraph.v` constructs the genuine negative
 successor coordinate for that four-table certificate.  Its output-first graph
 maps the preceding Sigma-truth formula code to the next Pi-falsity formula
