@@ -1206,6 +1206,15 @@ base and successor views, totality, and arbitrary carrier-level existence are
 all exposed in the public output convention `first :: second :: level ::
 tail`.
 
+`RawCodedCarrierIndexedPairedAdequateCodeOrbitGraph.v` strengthens the same
+unchanged public graph with the invariant actually needed for represented
+formula substitution.  Its base produces two atomically adequate codes, and
+its successor is required only on the adequate coordinate pairs reachable
+from that base while returning adequate next codes.  Both adequacy assertions
+are part of the PA-definable existential induction formula, so the resulting
+totality theorem retains them at arbitrary nonstandard carrier levels without
+inventing a fallback result for malformed inputs.
+
 `RawCodedDynamicTruthPairedBaseFormulaCodeGraph.v` supplies that orbit's exact
 rank-zero seed.  Its first coordinate is the ternary Sigma-truth predicate and
 its second coordinate is the distinct ternary Pi-falsity predicate; both are
