@@ -187,8 +187,18 @@ same three reasons as in the arithmetic case:
   induction forms carried, and restate them unconditionally.
 - [ ] Code derivations inside the object theory and express the
   all-occurrences rank bound, with absoluteness lemmas.
+- [x] Define the polarity ranks on codes internally, prove them total and
+  single-valued, and prove they agree with the metatheoretic ranks on
+  quotations.
+- [x] Define the all-occurrences bound on coded derivations, and prove it really
+  does bound every formula-valued rule parameter and not merely conclusions and
+  contexts.
+- [ ] Express “codes a ZFC axiom” internally — the six fixed axioms by their
+  quotations, and the Separation and Replacement schemas by an existential over
+  the coded formula constructors.
 - [ ] Define the object-level sentence `Con_n(ZFC)` for each metatheoretic `n`
-  and prove its arbitrary-model characterization.
+  and prove its arbitrary-model characterization.  **A first attempt assembled
+  the sentence over the *empty* context; see the warning below.**
 - [x] Supply a step-parametric recursion theorem over internal omega,
   generalizing the ZF development's `gstep`-specific finite recursion, together
   with internal linearity of omega and an internal function/application
@@ -251,6 +261,30 @@ architecture instead, where it is strictly cheaper than for satisfaction: no
 clause quantifies over a carrier, so a compound certificate is a union plus one
 new triple, and neither totality nor single-valuedness needs the
 uniform-over-a-set strengthening.
+
+## A near miss: the sentence over the empty context
+
+`BoundedZFCConsistency.CodedRank` builds the internal rank machinery and then
+assembles a sentence from it.  That sentence, `logicConForm n`, constrains the
+derivation's context to be *empty*, so it expresses bounded consistency of pure
+first-order logic — not of ZFC.  It is deliberately named for what it is.
+
+Two things make the distinction worth stating loudly rather than quietly fixing.
+First, `logicConForm n` is already provable: internal soundness rules out any
+coded derivation of falsity from the empty context as soon as the model carries
+an internal set structure, and a trivial one always does.  A sentence that is
+provable for free is not the target — `Con_n(ZFC)` is not provable for free, and
+if it looked as though it were, something would be wrong.  Second, the gap is
+precisely one missing predicate: `Con_n(ZFC)` quantifies over derivations whose
+context consists of codes of ZFC axioms of rank at most `n`, and nothing yet
+expresses “codes a ZFC axiom” internally.  That predicate has to recognize the
+six fixed axioms by their quotations and the Separation and Replacement schemas
+by an existential over the coded formula constructors.
+
+Everything else in that module — the internal ranks, their agreement with the
+metatheoretic ranks on quotations, the all-occurrences bound, and the endpoint
+bridge through completeness — is exactly what the real sentence needs, and is
+unaffected.
 
 ## Why coded derivations carry a rank
 
