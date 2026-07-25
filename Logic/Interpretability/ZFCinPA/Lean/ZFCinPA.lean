@@ -32,8 +32,12 @@ import ZFCinPA.ConcreteFamily
 import ZFCinPA.ConcreteFamilyAudit
 import ZFCinPA.BaseCertificate
 import ZFCinPA.BaseCertificateAudit
+import ZFCinPA.SubstIdentity
+import ZFCinPA.SubstIdentityAudit
 import ZFCinPA.StagedSuccessor
 import ZFCinPA.StagedSuccessorAudit
 import ZFCinPA.StandardSuccessor
 import ZFCinPA.StandardSuccessorAudit
+import ZFCinPA.LocalStepSuccessor
+import ZFCinPA.LocalStepSuccessorAudit
 import ZFCinPA.Endpoint
