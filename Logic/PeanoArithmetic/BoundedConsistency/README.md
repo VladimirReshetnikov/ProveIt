@@ -1054,13 +1054,14 @@ Imp-I and both Or-E branches increment insertion depth; All-I shifts the
 inserted formula at the same depth; Ex-E first performs that shift and then
 increments depth for its body premise.
 
-The sole remaining input to this guarded transplant route is
-`RawCodedFormulaShiftCompositional`: concatenate the synchronized
-source/target/depth tables of two nonstandard binary child traces, or append
-one quantified parent row to a nonstandard unary child trace.
-`RawCodedFormulaShiftTotality.v` already proves arbitrary model-coded term
-shift totality and performs the complete represented formula-code induction
-conditional on exactly those two trace-splicing operations.
+`RawCodedFormulaOperationTraceConcatenation.v` closes the last generic input
+to this guarded transplant route.  A PA-definable copy-state induction
+concatenates the synchronized source/target/depth tables of two nonstandard
+binary child traces, offsets every edge in the copied trace while retaining
+the first root, and appends binary or quantified parent rows.  This proves
+`RawCodedFormulaShiftCompositional` in every raw PA model.  Together with
+`RawCodedFormulaShiftTotality.v`, arbitrary adequate formula unit shifts no
+longer depend on a trace-splicing callback.
 
 `RawCodedAssignmentShiftTail.v` also exposes PAHF's represented beta-tail
 shift through the raw assignment interface.  It constructs, inside every raw
@@ -1351,7 +1352,7 @@ Rocq/Coq compiler work for the uniform sentence.
 - [x] Prove arbitrary model-coded term-shift totality and reduce adequate
   formula unit-shift totality to the exact nonstandard trace-composition
   interface `RawCodedFormulaShiftCompositional`.
-- [ ] Prove `RawCodedFormulaShiftCompositional` by synchronized beta-table
+- [x] Prove `RawCodedFormulaShiftCompositional` by synchronized beta-table
   concatenation and parent append; this makes the guarded arbitrary-depth
   transplant unconditional.
 - [x] Replace the impossible exact-context base seam by a growing witnessed-base
