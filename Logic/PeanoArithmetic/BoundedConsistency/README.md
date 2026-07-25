@@ -1223,6 +1223,12 @@ The graph has law-free numeral semantics and totality, agrees with structural
 formula quotation in every PA model, and includes the scoped Pi-base
 application lemma needed by the represented successor construction.
 
+`RawCodedDynamicTruthPairedBaseAdequacy.v` proves the stronger base condition
+used by the adequacy-preserving orbit.  In a PA model the two literal numeral
+outputs are the structural quotations of the fixed Sigma and Pi predicates,
+so the existing quotation construction supplies internal atomic-adequacy
+certificates for both coordinates in the same checked base row.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
