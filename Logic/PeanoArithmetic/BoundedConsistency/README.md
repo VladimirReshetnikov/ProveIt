@@ -1267,9 +1267,10 @@ certificates for both coordinates in the same checked base row.
 recursion engine to that checked base and the mutually polarized successor
 row.  It exposes exact output-first semantics and literal zero/successor views
 for `sigmaCode :: piCode :: level :: tail`.  PA-definable induction yields
-adequate witnesses at every carrier level—including nonstandard levels—from
-the single explicit adequacy-preserving successor interface; all remaining
-coding, base, and induction obligations are discharged internally.
+adequate witnesses at every carrier level—including nonstandard levels.  The
+successor-adequacy construction now discharges its last explicit operation
+interface, so the public orbit totality theorem is unconditional in every raw
+PA model; all coding, base, successor, and induction obligations are internal.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but

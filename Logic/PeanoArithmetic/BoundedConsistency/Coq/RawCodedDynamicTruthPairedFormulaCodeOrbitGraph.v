@@ -23,7 +23,8 @@ From BoundedPAConsistency Require Import
   RawCodedCarrierIndexedPairedAdequateCodeOrbitGraph
   RawCodedDynamicTruthPairedBaseFormulaCodeGraph
   RawCodedDynamicTruthPairedBaseAdequacy
-  RawCodedDynamicTruthPairedSuccessorRowGraph.
+  RawCodedDynamicTruthPairedSuccessorRowGraph
+  RawCodedDynamicTruthPairedSuccessorAdequacy.
 
 Module PABoundedRawCodedDynamicTruthPairedFormulaCodeOrbitGraph.
 
@@ -36,6 +37,7 @@ Import PABoundedRawCodedCarrierIndexedPairedAdequateCodeOrbitGraph.
 Import PABoundedRawCodedDynamicTruthPairedBaseFormulaCodeGraph.
 Import PABoundedRawCodedDynamicTruthPairedBaseAdequacy.
 Import PABoundedRawCodedDynamicTruthPairedSuccessorRowGraph.
+Import PABoundedRawCodedDynamicTruthPairedSuccessorAdequacy.
 
 (** No new coding machinery is hidden here: this is the literal generic
     orbit instantiated by the two fixed dynamic-truth row graphs. *)
@@ -197,6 +199,25 @@ Proof.
       (dynamicTruthPairedBaseFormulaCodeGraph_adequate_total M hPA)
       hsuccessor) as horbitTotal.
   exact (horbitTotal tail level).
+Qed.
+
+(** All operation premises of the preceding theorem have now been discharged
+    by the adequacy-preserving paired successor.  This is the unconditional
+    carrier-facing truth-code orbit used by downstream field graphs. *)
+Corollary dynamicTruthPairedFormulaCodeOrbitGraph_raw_adequate_total : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      (tail : nat -> M) level,
+  exists sigmaCode piCode : M,
+    raw_formula_sat M
+      (scons M sigmaCode (scons M piCode (scons M level tail)))
+      dynamicTruthPairedFormulaCodeOrbitGraph /\
+    RawCodedFormulaAtomicallyAdequate M sigmaCode /\
+    RawCodedFormulaAtomicallyAdequate M piCode.
+Proof.
+  intros M hPA tail level.
+  exact (dynamicTruthPairedFormulaCodeOrbitGraph_adequate_total M hPA
+    (dynamicTruthPairedSuccessorRowGraph_raw_adequate_total M hPA)
+    tail level).
 Qed.
 
 End PABoundedRawCodedDynamicTruthPairedFormulaCodeOrbitGraph.
