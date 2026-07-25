@@ -1,7 +1,7 @@
 import ZFCinPA.CertificateFields
 
 /-!
-# Audit for the five variable certificate fields
+# Audit for the seven variable certificate fields
 
 The audit keeps the module's layers visible in their types:
 
@@ -137,5 +137,87 @@ beyond Lean's three standard axioms should appear, and in particular no
 #print axioms shiftInvariantCode_natCast
 #print axioms substitutionInvariantCode_natCast
 #print axioms axiomSoundCode_natCast
+
+/-! ## The two Tarski fields of the enlarged design
+
+The same four layers again, for `tarskiElimF`/`tarskiIntroF`: the three
+clause skeletons and the polarized gadget at the `Form` level, closedness,
+the new fixed leaf codes with the coded clause builders and their `𝚺₁`
+graphs, and standard-point agreement. -/
+
+#check @fPolarF
+#check @fPolarF_one
+#check @fPolarF_zero
+#check @polarAtF
+#check @polarAtF_one
+#check @polarAtF_zero
+#check @connClauseF
+#check @quantClauseF
+#check @botClauseF
+#check @tarskiElimF
+#check @tarskiIntroF
+
+#check @free_fPolarF_canonical
+#check @free_polarAtF
+#check @free_fOr_iff
+#check @free_fAnd_iff
+#check @freeMax_fTagPairF_imp
+#check @freeMax_fTagPairF_and
+#check @freeMax_fTagPairF_or
+#check @freeMax_fTagUnF_all
+#check @freeMax_fTagUnF_ex
+#check @not_free_connClauseF
+#check @not_free_quantClauseF
+#check @not_free_botClauseF
+#check @not_free_tarskiElimF
+#check @not_free_tarskiIntroF
+
+#check @bitWitnessCode
+#check @isFormCode2D4Code
+#check @tagPairD4Code
+#check @univEnv3D5Code
+#check @tagUnD5Code
+#check @econsQuantD5Code
+#check @univEnv1D2Code
+#check @taggedEmpty0D2Code
+
+#check @polarAtCode
+#check @polarAtGraph
+#check @polarAtCode.defined
+#check @connSpinePart
+#check @connElimOrPart
+#check @connElimOrPart.defined
+#check @connElimAndPart
+#check @connElimAndPart.defined
+#check @connIntroOrPart
+#check @connIntroOrPart.defined
+#check @connIntroAndPart
+#check @connIntroAndPart.defined
+#check @quantSpinePart
+#check @quantElimPart
+#check @quantElimPart.defined
+#check @quantIntroPart
+#check @quantIntroPart.defined
+#check @botPiPart
+#check @botPiPart.defined
+#check @tarskiElimCode
+#check @tarskiElimGraph
+#check @tarskiElimCode.defined
+#check @tarskiIntroCode
+#check @tarskiIntroGraph
+#check @tarskiIntroCode.defined
+
+#check @bitWitnessPart_natCast
+#check @quote_polarAtF
+#check @quote_connClauseF
+#check @quote_quantClauseF
+#check @quote_botClauseF
+#check @tarskiElimCode_natCast
+#check @tarskiIntroCode_natCast
+
+#print axioms not_free_tarskiElimF
+#print axioms not_free_tarskiIntroF
+#print axioms tarskiElimCode_natCast
+#print axioms tarskiIntroCode_natCast
 
 end LeanProofs.ZFCinPA.CertificateFieldsAudit

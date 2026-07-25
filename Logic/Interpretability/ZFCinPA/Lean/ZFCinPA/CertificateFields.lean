@@ -1,11 +1,17 @@
 import ZFCinPA.LevelCodeTower
 
 /-!
-# The five variable certificate fields of the concrete `𝗭𝗙𝗖` truth family
+# The seven variable certificate fields of the concrete `𝗭𝗙𝗖` truth family
 
-`ZFCinPA.CertificateFamily` fixes the shape of a level-indexed six-field
-`𝗭𝗙𝗖` truth certificate: five variable truth-construction fields plus the
-forced internalized `Conₓ(ZFC)`.  This module chooses the five fields.
+`ZFCinPA.CertificateFamily` fixes the shape of a level-indexed eight-field
+`𝗭𝗙𝗖` truth certificate: seven variable truth-construction fields plus the
+forced internalized `Conₓ(ZFC)`.  This module chooses the seven fields.
+
+The first five are the original design; the last two — `tarskiElim` and
+`tarskiIntro` — are the enlargement forced by
+`ZFCinPA.LocalStepDerivation.exclusivity_not_step_transferable` and
+verified semantically in `ZFCinPA.EnlargedFields`.  They are defined in the
+final part of this module; the first five are unchanged.
 
 ## The field design
 
@@ -84,7 +90,7 @@ open LO.FirstOrder.Arithmetic.Bootstrapping
 open BoundedZFCConsistency (fNumF fTripleMemF fUnivEnvF levelSatF
   fSigmaTrueF fPiFalseF fPiTrueF fIsFormCodeF fQuantBoundedF
   fZFCAxiomCodeF fTaggedEmptyF fVarMapF fRenamesF fCompF fEconsF
-  fSuccMapF)
+  fSuccMapF fTagPairF fTagUnF)
 
 /-! ## Form-level definitions
 
@@ -1090,6 +1096,945 @@ theorem axiomSoundCode_natCast (n : ℕ) :
   rfl
 
 end StandardPoints
+
+/-! # The two Tarski fields of the enlarged design
+
+`ZFCinPA.LocalStepDerivation` machine-checked that the five-field successor
+obligation is false, and `ZFCinPA.EnlargedFields` verified semantically that
+adding the Tarski **elimination** and **introduction** clauses repairs it:
+`EnlargedFields.exclusivity_step` derives the previously false transfer, and
+`EnlargedFields.levelLaws_levelSat` shows the enlarged laws are true of the
+real level predicates at every level.
+
+This part of the module internalizes those two bundles as two further
+`Form`-level sentences, in exactly the style of the five above.
+
+## The clause skeletons
+
+Every clause of either bundle has one of three shapes, so three skeletons
+suffice.
+
+* `connClauseF t prem concl` — the six connective rows.  Four binders, from
+  outermost in: the two immediate subcodes `a` (slot `3`) and `b` (slot
+  `2`), the environment `E` (slot `1`), and the compound code `c` (slot
+  `0`) pinned by the fixed tag guard `fTagPairF 0 t 3 2`, i.e.
+  `c = ⟨t, ⟨a, b⟩⟩` with `t = 3, 4, 5` for implication, conjunction and
+  disjunction.
+* `quantClauseF t prem concl` — the four quantifier rows.  Five binders:
+  the matrix `a` (slot `4`), the environment `E` (slot `3`), the witness
+  `d` (slot `2`), the compound code `c` (slot `1`) pinned by
+  `fTagUnF 1 t 4`, i.e. `c = ⟨t, a⟩` with `t = 6, 7`, and the extended
+  environment `E'` (slot `0`) pinned by `fEconsF 0 2 3`.
+* `botClauseF` — the single falsity row, two binders.
+
+## Polarity as a parameter
+
+The two bundles differ from the five older fields in that both polarities
+occur at every slot pair.  `fPolarF`/`polarAtF` therefore carry the truth
+bit as a parameter — `polarAtF n 1` is `sigmaAtF n` and `polarAtF n 0` is
+`piFalseAtF n`, both definitionally — and the coded gadget `polarAtCode`
+carries the corresponding bit-witness leaf code.  One coded clause builder
+per shape then serves three or more rows at once, so the two field graphs
+stay a plain conjunction of eight (resp. nine) sub-graph calls.
+-/
+
+/-! ## Form-level definitions of the two Tarski fields -/
+
+section TarskiFormLevel
+
+open SetTheory (Form Free)
+
+/-- The **polarized** level-truth leaf at the canonical slots: the bit-`b`
+witness around the canonical instance of the level family.  `fPolarF n 1`
+is `fSigmaTrueF n` and `fPolarF n 0` is `fPiFalseF n`, definitionally. -/
+def fPolarF (n b c_i e_i : ℕ) : SetTheory.Form :=
+  .fEx (.fAnd (fNumF 0 b) (levelSatF n (c_i + 1) (e_i + 1) 0))
+
+theorem fPolarF_one (n c_i e_i : ℕ) :
+    fPolarF n 1 c_i e_i = fSigmaTrueF n c_i e_i := rfl
+
+theorem fPolarF_zero (n c_i e_i : ℕ) :
+    fPolarF n 0 c_i e_i = fPiFalseF n c_i e_i := rfl
+
+/-- Bit-`b` truth at level `n+1` of the pair `(slot ci, slot ei)`, through
+the canonical-slot gadget. -/
+def polarAtF (n b ci ei : ℕ) : SetTheory.Form :=
+  canonAtF ci ei (fPolarF (n + 1) b 1 0)
+
+theorem polarAtF_one (n ci ei : ℕ) : polarAtF n 1 ci ei = sigmaAtF n ci ei :=
+  rfl
+
+theorem polarAtF_zero (n ci ei : ℕ) :
+    polarAtF n 0 ci ei = piFalseAtF n ci ei := rfl
+
+/-- **The connective clause skeleton.**  Binders, outermost first: the two
+immediate subcodes `a` (slot `3`), `b` (slot `2`), the environment `E`
+(slot `1`) and the compound code `c` (slot `0`), the last pinned by the
+tag guard `c = ⟨t, ⟨a, b⟩⟩`. -/
+def connClauseF (t : ℕ) (prem concl : SetTheory.Form) : SetTheory.Form :=
+  .fAll (.fAll (.fAll (.fAll
+    (.fImp (fIsFormCodeF 3) (.fImp (fIsFormCodeF 2) (.fImp (fUnivEnvF 1)
+      (.fImp (fTagPairF 0 t 3 2) (.fImp prem concl))))))))
+
+/-- **The quantifier clause skeleton.**  Binders, outermost first: the
+matrix `a` (slot `4`), the environment `E` (slot `3`), the witness `d`
+(slot `2`), the compound code `c` (slot `1`) pinned by `c = ⟨t, a⟩`, and
+the extended environment `E'` (slot `0`) pinned by `E' = econs d E`. -/
+def quantClauseF (t : ℕ) (prem concl : SetTheory.Form) : SetTheory.Form :=
+  .fAll (.fAll (.fAll (.fAll (.fAll
+    (.fImp (fIsFormCodeF 4) (.fImp (fUnivEnvF 3)
+      (.fImp (fTagUnF 1 t 4) (.fImp (fEconsF 0 2 3)
+        (.fImp prem concl)))))))))
+
+/-- **The falsity clause.**  For every universe environment `E` (slot `1`)
+and every code `c` (slot `0`) equal to the falsity code, `c` is Pi-false
+at level `n+1`.  Goal-2 counterpart: `piFalse_bot`. -/
+def botClauseF (n : ℕ) : SetTheory.Form :=
+  .fAll (.fAll (.fImp (fUnivEnvF 1)
+    (.fImp (fTaggedEmptyF 0 2) (polarAtF n 0 0 1))))
+
+/-- **New field 6, `tarskiElim`: the eight Tarski elimination clauses at
+level `n+1`.**  Rows, in order: implication on the Sigma and Pi sides,
+conjunction on both, disjunction on both, then the two side-condition-free
+quantifier eliminations.  Semantic counterpart:
+`ZFCinPA.EnlargedFields.TarskiElim`, proved of the real hierarchy by
+`EnlargedFields.tarskiElim_levelSat`. -/
+def tarskiElimF (n : ℕ) : SetTheory.Form :=
+  .fAnd
+    (connClauseF 3 (polarAtF n 1 0 1)
+      (.fOr (polarAtF n 0 3 1) (polarAtF n 1 2 1)))
+  (.fAnd
+    (connClauseF 3 (polarAtF n 0 0 1)
+      (.fAnd (polarAtF n 1 3 1) (polarAtF n 0 2 1)))
+  (.fAnd
+    (connClauseF 4 (polarAtF n 1 0 1)
+      (.fAnd (polarAtF n 1 3 1) (polarAtF n 1 2 1)))
+  (.fAnd
+    (connClauseF 4 (polarAtF n 0 0 1)
+      (.fOr (polarAtF n 0 3 1) (polarAtF n 0 2 1)))
+  (.fAnd
+    (connClauseF 5 (polarAtF n 1 0 1)
+      (.fOr (polarAtF n 1 3 1) (polarAtF n 1 2 1)))
+  (.fAnd
+    (connClauseF 5 (polarAtF n 0 0 1)
+      (.fAnd (polarAtF n 0 3 1) (polarAtF n 0 2 1)))
+  (.fAnd
+    (quantClauseF 6 (polarAtF n 1 1 3) (polarAtF n 1 4 0))
+    (quantClauseF 7 (polarAtF n 0 1 3) (polarAtF n 0 4 0))))))))
+
+/-- **New field 7, `tarskiIntro`: the nine Tarski introduction clauses at
+level `n+1`.**  Pi-falsity of the falsity code, the six connective
+introductions, and the two quantifier introductions.  Semantic
+counterpart: `ZFCinPA.EnlargedFields.TarskiIntro`, proved of the real
+hierarchy by `EnlargedFields.tarskiIntro_levelSat`. -/
+def tarskiIntroF (n : ℕ) : SetTheory.Form :=
+  .fAnd (botClauseF n)
+  (.fAnd
+    (connClauseF 3 (.fOr (polarAtF n 0 3 1) (polarAtF n 1 2 1))
+      (polarAtF n 1 0 1))
+  (.fAnd
+    (connClauseF 3 (.fAnd (polarAtF n 1 3 1) (polarAtF n 0 2 1))
+      (polarAtF n 0 0 1))
+  (.fAnd
+    (connClauseF 4 (.fAnd (polarAtF n 1 3 1) (polarAtF n 1 2 1))
+      (polarAtF n 1 0 1))
+  (.fAnd
+    (connClauseF 4 (.fOr (polarAtF n 0 3 1) (polarAtF n 0 2 1))
+      (polarAtF n 0 0 1))
+  (.fAnd
+    (connClauseF 5 (.fOr (polarAtF n 1 3 1) (polarAtF n 1 2 1))
+      (polarAtF n 1 0 1))
+  (.fAnd
+    (connClauseF 5 (.fAnd (polarAtF n 0 3 1) (polarAtF n 0 2 1))
+      (polarAtF n 0 0 1))
+  (.fAnd
+    (quantClauseF 6 (polarAtF n 0 4 0) (polarAtF n 0 1 3))
+    (quantClauseF 7 (polarAtF n 1 4 0) (polarAtF n 1 1 3)))))))))
+
+end TarskiFormLevel
+
+/-! ## Closedness of the two Tarski fields -/
+
+section TarskiFreeBounds
+
+open SetTheory (Form Free)
+
+/-! ### Kernel bounds for the new fixed macro leaves -/
+
+set_option maxHeartbeats 1000000 in
+private theorem fb17 : freeMax (fIsFormCodeF 2) ≤ 3 := by decide
+set_option maxHeartbeats 1000000 in
+private theorem fb18 : freeMax (fUnivEnvF 3) ≤ 4 := by decide
+set_option maxHeartbeats 1000000 in
+private theorem fb19 : freeMax (fEconsF 0 2 3) ≤ 4 := by decide
+set_option maxHeartbeats 1000000 in
+private theorem fb20 : freeMax (fTaggedEmptyF 0 2) ≤ 1 := by decide
+set_option maxHeartbeats 1000000 in
+theorem freeMax_fTagPairF_imp : freeMax (fTagPairF 0 3 3 2) ≤ 4 := by decide
+set_option maxHeartbeats 1000000 in
+theorem freeMax_fTagPairF_and : freeMax (fTagPairF 0 4 3 2) ≤ 4 := by decide
+set_option maxHeartbeats 1000000 in
+theorem freeMax_fTagPairF_or : freeMax (fTagPairF 0 5 3 2) ≤ 4 := by decide
+set_option maxHeartbeats 1000000 in
+theorem freeMax_fTagUnF_all : freeMax (fTagUnF 1 6 4) ≤ 5 := by decide
+set_option maxHeartbeats 1000000 in
+theorem freeMax_fTagUnF_ex : freeMax (fTagUnF 1 7 4) ≤ 5 := by decide
+
+/-! ### Structural bounds -/
+
+/-- The polarized canonical wrapper has free slots below `2`, at every
+level and on either polarity. -/
+theorem free_fPolarF_canonical {n b i : ℕ} (h : Free i (fPolarF n b 1 0)) :
+    i < 2 := by
+  simp only [fPolarF, SetTheory.Free] at h
+  rcases h with h | h
+  · have := free_fNumF h
+    omega
+  · have := free_levelSatF_canonical n h
+    omega
+
+/-- Free slots of the polarized gadget. -/
+theorem free_polarAtF {n b ci ei i : ℕ} (h : Free i (polarAtF n b ci ei)) :
+    i = ci ∨ i = ei :=
+  free_canonAtF (fun _ hj => free_fPolarF_canonical hj) h
+
+/-- Free slots of a disjunction, as a propositional equivalence. -/
+theorem free_fOr_iff {i : ℕ} {a b : Form} :
+    Free i (Form.fOr a b) ↔ Free i a ∨ Free i b := Iff.rfl
+
+/-- Free slots of a conjunction, as a propositional equivalence. -/
+theorem free_fAnd_iff {i : ℕ} {a b : Form} :
+    Free i (Form.fAnd a b) ↔ Free i a ∨ Free i b := Iff.rfl
+
+/-- **The connective clause skeleton is closed** whenever its premise and
+conclusion keep to the four slots it binds.  The tag guard's bound is an
+explicit argument, so the statement holds uniformly in the tag while the
+kernel evaluations stay per-declaration. -/
+theorem not_free_connClauseF (t : ℕ) (htp : freeMax (fTagPairF 0 t 3 2) ≤ 4)
+    {prem concl : Form} (hp : ∀ i, Free i prem → i < 4)
+    (hc : ∀ i, Free i concl → i < 4) :
+    ∀ i, ¬ Free i (connClauseF t prem concl) := by
+  intro i h
+  simp only [connClauseF, SetTheory.Free] at h
+  casesm* _ ∨ _
+  all_goals
+    first
+    | (have h2 := hp _ ‹_›; omega)
+    | (have h2 := hc _ ‹_›; omega)
+    | (have h2 := free_lt_freeMax _ _ ‹_›
+       first
+       | (have h3 := fb05; omega)
+       | (have h3 := fb17; omega)
+       | (have h3 := fb02; omega))
+
+/-- **The quantifier clause skeleton is closed.** -/
+theorem not_free_quantClauseF (t : ℕ) (htu : freeMax (fTagUnF 1 t 4) ≤ 5)
+    {prem concl : Form} (hp : ∀ i, Free i prem → i < 5)
+    (hc : ∀ i, Free i concl → i < 5) :
+    ∀ i, ¬ Free i (quantClauseF t prem concl) := by
+  intro i h
+  simp only [quantClauseF, SetTheory.Free] at h
+  casesm* _ ∨ _
+  all_goals
+    first
+    | (have h2 := hp _ ‹_›; omega)
+    | (have h2 := hc _ ‹_›; omega)
+    | (have h2 := free_lt_freeMax _ _ ‹_›
+       first
+       | (have h3 := fb06; omega)
+       | (have h3 := fb18; omega)
+       | (have h3 := fb19; omega))
+
+/-- **The falsity clause is closed.** -/
+theorem not_free_botClauseF (n : ℕ) : ∀ i, ¬ Free i (botClauseF n) := by
+  intro i h
+  simp only [botClauseF, SetTheory.Free] at h
+  casesm* _ ∨ _
+  all_goals
+    first
+    | (rcases free_polarAtF ‹_› with h2 | h2 <;> omega)
+    | (have h2 := free_lt_freeMax _ _ ‹_›
+       first
+       | (have h3 := fb02; omega)
+       | (have h3 := fb20; omega))
+
+section FieldClosedness
+
+variable (n : ℕ)
+
+/-- The polarized gadget keeps to any slot window containing its pair. -/
+private theorem polBound (b ci ei k : ℕ) (h1 : ci < k) (h2 : ei < k) :
+    ∀ j, Free j (polarAtF n b ci ei) → j < k := by
+  intro j hj
+  rcases free_polarAtF hj with rfl | rfl <;> omega
+
+private theorem orBound {a c : Form} {k : ℕ} (ha : ∀ j, Free j a → j < k)
+    (hc : ∀ j, Free j c → j < k) :
+    ∀ j, Free j (Form.fOr a c) → j < k :=
+  fun j hj => (free_fOr_iff.mp hj).elim (ha j) (hc j)
+
+private theorem andBound {a c : Form} {k : ℕ} (ha : ∀ j, Free j a → j < k)
+    (hc : ∀ j, Free j c → j < k) :
+    ∀ j, Free j (Form.fAnd a c) → j < k :=
+  fun j hj => (free_fAnd_iff.mp hj).elim (ha j) (hc j)
+
+/-- `tarskiElimF n` is closed. -/
+theorem not_free_tarskiElimF : ∀ i, ¬ Free i (tarskiElimF n) := by
+  intro i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 3 freeMax_fTagPairF_imp
+      (polBound n 1 0 1 4 (by omega) (by omega))
+      (orBound (polBound n 0 3 1 4 (by omega) (by omega))
+        (polBound n 1 2 1 4 (by omega) (by omega))) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 3 freeMax_fTagPairF_imp
+      (polBound n 0 0 1 4 (by omega) (by omega))
+      (andBound (polBound n 1 3 1 4 (by omega) (by omega))
+        (polBound n 0 2 1 4 (by omega) (by omega))) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 4 freeMax_fTagPairF_and
+      (polBound n 1 0 1 4 (by omega) (by omega))
+      (andBound (polBound n 1 3 1 4 (by omega) (by omega))
+        (polBound n 1 2 1 4 (by omega) (by omega))) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 4 freeMax_fTagPairF_and
+      (polBound n 0 0 1 4 (by omega) (by omega))
+      (orBound (polBound n 0 3 1 4 (by omega) (by omega))
+        (polBound n 0 2 1 4 (by omega) (by omega))) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 5 freeMax_fTagPairF_or
+      (polBound n 1 0 1 4 (by omega) (by omega))
+      (orBound (polBound n 1 3 1 4 (by omega) (by omega))
+        (polBound n 1 2 1 4 (by omega) (by omega))) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 5 freeMax_fTagPairF_or
+      (polBound n 0 0 1 4 (by omega) (by omega))
+      (andBound (polBound n 0 3 1 4 (by omega) (by omega))
+        (polBound n 0 2 1 4 (by omega) (by omega))) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_quantClauseF 6 freeMax_fTagUnF_all
+      (polBound n 1 1 3 5 (by omega) (by omega))
+      (polBound n 1 4 0 5 (by omega) (by omega)) i h
+  · exact not_free_quantClauseF 7 freeMax_fTagUnF_ex
+      (polBound n 0 1 3 5 (by omega) (by omega))
+      (polBound n 0 4 0 5 (by omega) (by omega)) i h
+
+/-- `tarskiIntroF n` is closed. -/
+theorem not_free_tarskiIntroF : ∀ i, ¬ Free i (tarskiIntroF n) := by
+  intro i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_botClauseF n i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 3 freeMax_fTagPairF_imp
+      (orBound (polBound n 0 3 1 4 (by omega) (by omega))
+        (polBound n 1 2 1 4 (by omega) (by omega)))
+      (polBound n 1 0 1 4 (by omega) (by omega)) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 3 freeMax_fTagPairF_imp
+      (andBound (polBound n 1 3 1 4 (by omega) (by omega))
+        (polBound n 0 2 1 4 (by omega) (by omega)))
+      (polBound n 0 0 1 4 (by omega) (by omega)) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 4 freeMax_fTagPairF_and
+      (andBound (polBound n 1 3 1 4 (by omega) (by omega))
+        (polBound n 1 2 1 4 (by omega) (by omega)))
+      (polBound n 1 0 1 4 (by omega) (by omega)) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 4 freeMax_fTagPairF_and
+      (orBound (polBound n 0 3 1 4 (by omega) (by omega))
+        (polBound n 0 2 1 4 (by omega) (by omega)))
+      (polBound n 0 0 1 4 (by omega) (by omega)) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 5 freeMax_fTagPairF_or
+      (orBound (polBound n 1 3 1 4 (by omega) (by omega))
+        (polBound n 1 2 1 4 (by omega) (by omega)))
+      (polBound n 1 0 1 4 (by omega) (by omega)) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_connClauseF 5 freeMax_fTagPairF_or
+      (andBound (polBound n 0 3 1 4 (by omega) (by omega))
+        (polBound n 0 2 1 4 (by omega) (by omega)))
+      (polBound n 0 0 1 4 (by omega) (by omega)) i h
+  rcases free_fAnd_iff.mp h with h | h
+  · exact not_free_quantClauseF 6 freeMax_fTagUnF_all
+      (polBound n 0 4 0 5 (by omega) (by omega))
+      (polBound n 0 1 3 5 (by omega) (by omega)) i h
+  · exact not_free_quantClauseF 7 freeMax_fTagUnF_ex
+      (polBound n 1 4 0 5 (by omega) (by omega))
+      (polBound n 1 1 3 5 (by omega) (by omega)) i h
+
+end FieldClosedness
+
+end TarskiFreeBounds
+
+/-! ## The new fixed codes -/
+
+section TarskiFixedCodes
+
+/-- Code of the bit-`b` witness `fNumF 0 b` at depth `3`.  At `b = 1` and
+`b = 0` this is `numOneWitnessCode`/`numZeroWitnessCode` of
+`ZFCinPA.LevelCodeTower`, definitionally. -/
+def bitWitnessCode (b : ℕ) : ℕ := (toSet 3 (fNumF 0 b)).toNat
+
+/-- Code of `fIsFormCodeF 2` at depth `4`. -/
+def isFormCode2D4Code : ℕ := (toSet 4 (fIsFormCodeF 2)).toNat
+
+/-- Code of the connective tag guard `fTagPairF 0 t 3 2` at depth `4`. -/
+def tagPairD4Code (t : ℕ) : ℕ := (toSet 4 (fTagPairF 0 t 3 2)).toNat
+
+/-- Code of `fUnivEnvF 3` at depth `5`. -/
+def univEnv3D5Code : ℕ := (toSet 5 (fUnivEnvF 3)).toNat
+
+/-- Code of the quantifier tag guard `fTagUnF 1 t 4` at depth `5`. -/
+def tagUnD5Code (t : ℕ) : ℕ := (toSet 5 (fTagUnF 1 t 4)).toNat
+
+/-- Code of the quantifier row's environment-extension guard
+`fEconsF 0 2 3` at depth `5`. -/
+def econsQuantD5Code : ℕ := (toSet 5 (fEconsF 0 2 3)).toNat
+
+/-- Code of `fUnivEnvF 1` at depth `2`. -/
+def univEnv1D2Code : ℕ := (toSet 2 (fUnivEnvF 1)).toNat
+
+/-- Code of the falsity-code guard `fTaggedEmptyF 0 2` at depth `2`. -/
+def taggedEmpty0D2Code : ℕ := (toSet 2 (fTaggedEmptyF 0 2)).toNat
+
+end TarskiFixedCodes
+
+/-! ## The internal builders of the two Tarski fields -/
+
+section TarskiInternalBuilder
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The coded polarized gadget at pair `(ci, ei)`: the bit-`w` witness
+around the canonical level instance at the *successor* of the index,
+wrapped by the canonical-slot gadget. -/
+noncomputable def polarAtCode (w ci ei : ℕ) (x : V) : V :=
+  canonAtPart (eqGuardCode 1 (ci + 2)) (eqGuardCode 0 (ei + 2))
+    (bitWitnessPart w (x + 1))
+
+/-- Graph of `polarAtCode w ci ei`, argument order `(value, index)`. -/
+noncomputable def polarAtGraph (w ci ei : ℕ) : 𝚺₁.Semisentence 2 := .mkSigma
+  “y x. ∃ s, !(bitWitnessGraphPart w) s (x + 1) ∧
+    !(canonAtGraph (eqGuardCode 1 (ci + 2)) (eqGuardCode 0 (ei + 2))) y s”
+
+instance polarAtCode.defined (w ci ei : ℕ) :
+    𝚺₁-Function₁ (polarAtCode w ci ei : V → V) via polarAtGraph w ci ei :=
+  .mk fun v ↦ by simp [polarAtGraph, polarAtCode]
+
+/-! ### The connective clause spine -/
+
+/-- The coded connective clause spine, with the fixed leaf codes and the
+clause body abstracted. -/
+noncomputable def connSpinePart (ifc3 ifc2 ue tp : ℕ) (body : V) : V :=
+  ^∀ (^∀ (^∀ (^∀ (Bootstrapping.imp ℒₛₑₜ ↑ifc3
+    (Bootstrapping.imp ℒₛₑₜ ↑ifc2
+      (Bootstrapping.imp ℒₛₑₜ ↑ue
+        (Bootstrapping.imp ℒₛₑₜ ↑tp body)))))))
+
+/-- The coded elimination row whose conclusion is a disjunction. -/
+noncomputable def connElimOrPart (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) (x : V) : V :=
+  connSpinePart ifc3 ifc2 ue tp
+    (Bootstrapping.imp ℒₛₑₜ (polarAtCode w0 0 1 x)
+      (polarAtCode w1 3 1 x ^⋎ polarAtCode w2 2 1 x))
+
+/-- Graph of `connElimOrPart`. -/
+noncomputable def connElimOrGraphPart (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) :
+    𝚺₁.Semisentence 2 := .mkSigma
+  “y x.
+    ∃ p, !(polarAtGraph w0 0 1) p x ∧
+    ∃ l, !(polarAtGraph w1 3 1) l x ∧
+    ∃ r, !(polarAtGraph w2 2 1) r x ∧
+    ∃ c, !qqOrDef c l r ∧
+    ∃ bd, !(Bootstrapping.impGraph ℒₛₑₜ) bd p c ∧
+    ∃ i1, !(Bootstrapping.impGraph ℒₛₑₜ) i1 ↑tp bd ∧
+    ∃ i2, !(Bootstrapping.impGraph ℒₛₑₜ) i2 ↑ue i1 ∧
+    ∃ i3, !(Bootstrapping.impGraph ℒₛₑₜ) i3 ↑ifc2 i2 ∧
+    ∃ i4, !(Bootstrapping.impGraph ℒₛₑₜ) i4 ↑ifc3 i3 ∧
+    ∃ u1, !qqAllDef u1 i4 ∧
+    ∃ u2, !qqAllDef u2 u1 ∧
+    ∃ u3, !qqAllDef u3 u2 ∧
+    !qqAllDef y u3”
+
+instance connElimOrPart.defined (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) :
+    𝚺₁-Function₁ (connElimOrPart ifc3 ifc2 ue tp w0 w1 w2 : V → V)
+      via connElimOrGraphPart ifc3 ifc2 ue tp w0 w1 w2 :=
+  .mk fun v ↦ by
+    simp [connElimOrGraphPart, connElimOrPart, connSpinePart,
+      numeral_eq_natCast]
+
+/-- The coded elimination row whose conclusion is a conjunction. -/
+noncomputable def connElimAndPart (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) (x : V) : V :=
+  connSpinePart ifc3 ifc2 ue tp
+    (Bootstrapping.imp ℒₛₑₜ (polarAtCode w0 0 1 x)
+      (polarAtCode w1 3 1 x ^⋏ polarAtCode w2 2 1 x))
+
+/-- Graph of `connElimAndPart`. -/
+noncomputable def connElimAndGraphPart (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) :
+    𝚺₁.Semisentence 2 := .mkSigma
+  “y x.
+    ∃ p, !(polarAtGraph w0 0 1) p x ∧
+    ∃ l, !(polarAtGraph w1 3 1) l x ∧
+    ∃ r, !(polarAtGraph w2 2 1) r x ∧
+    ∃ c, !qqAndDef c l r ∧
+    ∃ bd, !(Bootstrapping.impGraph ℒₛₑₜ) bd p c ∧
+    ∃ i1, !(Bootstrapping.impGraph ℒₛₑₜ) i1 ↑tp bd ∧
+    ∃ i2, !(Bootstrapping.impGraph ℒₛₑₜ) i2 ↑ue i1 ∧
+    ∃ i3, !(Bootstrapping.impGraph ℒₛₑₜ) i3 ↑ifc2 i2 ∧
+    ∃ i4, !(Bootstrapping.impGraph ℒₛₑₜ) i4 ↑ifc3 i3 ∧
+    ∃ u1, !qqAllDef u1 i4 ∧
+    ∃ u2, !qqAllDef u2 u1 ∧
+    ∃ u3, !qqAllDef u3 u2 ∧
+    !qqAllDef y u3”
+
+instance connElimAndPart.defined (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) :
+    𝚺₁-Function₁ (connElimAndPart ifc3 ifc2 ue tp w0 w1 w2 : V → V)
+      via connElimAndGraphPart ifc3 ifc2 ue tp w0 w1 w2 :=
+  .mk fun v ↦ by
+    simp [connElimAndGraphPart, connElimAndPart, connSpinePart,
+      numeral_eq_natCast]
+
+/-- The coded introduction row whose premise is a disjunction. -/
+noncomputable def connIntroOrPart (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) (x : V) : V :=
+  connSpinePart ifc3 ifc2 ue tp
+    (Bootstrapping.imp ℒₛₑₜ
+      (polarAtCode w1 3 1 x ^⋎ polarAtCode w2 2 1 x)
+      (polarAtCode w0 0 1 x))
+
+/-- Graph of `connIntroOrPart`. -/
+noncomputable def connIntroOrGraphPart (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) :
+    𝚺₁.Semisentence 2 := .mkSigma
+  “y x.
+    ∃ p, !(polarAtGraph w0 0 1) p x ∧
+    ∃ l, !(polarAtGraph w1 3 1) l x ∧
+    ∃ r, !(polarAtGraph w2 2 1) r x ∧
+    ∃ c, !qqOrDef c l r ∧
+    ∃ bd, !(Bootstrapping.impGraph ℒₛₑₜ) bd c p ∧
+    ∃ i1, !(Bootstrapping.impGraph ℒₛₑₜ) i1 ↑tp bd ∧
+    ∃ i2, !(Bootstrapping.impGraph ℒₛₑₜ) i2 ↑ue i1 ∧
+    ∃ i3, !(Bootstrapping.impGraph ℒₛₑₜ) i3 ↑ifc2 i2 ∧
+    ∃ i4, !(Bootstrapping.impGraph ℒₛₑₜ) i4 ↑ifc3 i3 ∧
+    ∃ u1, !qqAllDef u1 i4 ∧
+    ∃ u2, !qqAllDef u2 u1 ∧
+    ∃ u3, !qqAllDef u3 u2 ∧
+    !qqAllDef y u3”
+
+instance connIntroOrPart.defined (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) :
+    𝚺₁-Function₁ (connIntroOrPart ifc3 ifc2 ue tp w0 w1 w2 : V → V)
+      via connIntroOrGraphPart ifc3 ifc2 ue tp w0 w1 w2 :=
+  .mk fun v ↦ by
+    simp [connIntroOrGraphPart, connIntroOrPart, connSpinePart,
+      numeral_eq_natCast]
+
+/-- The coded introduction row whose premise is a conjunction. -/
+noncomputable def connIntroAndPart (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) (x : V) : V :=
+  connSpinePart ifc3 ifc2 ue tp
+    (Bootstrapping.imp ℒₛₑₜ
+      (polarAtCode w1 3 1 x ^⋏ polarAtCode w2 2 1 x)
+      (polarAtCode w0 0 1 x))
+
+/-- Graph of `connIntroAndPart`. -/
+noncomputable def connIntroAndGraphPart (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) :
+    𝚺₁.Semisentence 2 := .mkSigma
+  “y x.
+    ∃ p, !(polarAtGraph w0 0 1) p x ∧
+    ∃ l, !(polarAtGraph w1 3 1) l x ∧
+    ∃ r, !(polarAtGraph w2 2 1) r x ∧
+    ∃ c, !qqAndDef c l r ∧
+    ∃ bd, !(Bootstrapping.impGraph ℒₛₑₜ) bd c p ∧
+    ∃ i1, !(Bootstrapping.impGraph ℒₛₑₜ) i1 ↑tp bd ∧
+    ∃ i2, !(Bootstrapping.impGraph ℒₛₑₜ) i2 ↑ue i1 ∧
+    ∃ i3, !(Bootstrapping.impGraph ℒₛₑₜ) i3 ↑ifc2 i2 ∧
+    ∃ i4, !(Bootstrapping.impGraph ℒₛₑₜ) i4 ↑ifc3 i3 ∧
+    ∃ u1, !qqAllDef u1 i4 ∧
+    ∃ u2, !qqAllDef u2 u1 ∧
+    ∃ u3, !qqAllDef u3 u2 ∧
+    !qqAllDef y u3”
+
+instance connIntroAndPart.defined (ifc3 ifc2 ue tp w0 w1 w2 : ℕ) :
+    𝚺₁-Function₁ (connIntroAndPart ifc3 ifc2 ue tp w0 w1 w2 : V → V)
+      via connIntroAndGraphPart ifc3 ifc2 ue tp w0 w1 w2 :=
+  .mk fun v ↦ by
+    simp [connIntroAndGraphPart, connIntroAndPart, connSpinePart,
+      numeral_eq_natCast]
+
+/-! ### The quantifier clause spine -/
+
+/-- The coded quantifier clause spine. -/
+noncomputable def quantSpinePart (ifc ue tu ec : ℕ) (body : V) : V :=
+  ^∀ (^∀ (^∀ (^∀ (^∀ (Bootstrapping.imp ℒₛₑₜ ↑ifc
+    (Bootstrapping.imp ℒₛₑₜ ↑ue
+      (Bootstrapping.imp ℒₛₑₜ ↑tu
+        (Bootstrapping.imp ℒₛₑₜ ↑ec body))))))))
+
+/-- The coded quantifier elimination row. -/
+noncomputable def quantElimPart (ifc ue tu ec w : ℕ) (x : V) : V :=
+  quantSpinePart ifc ue tu ec
+    (Bootstrapping.imp ℒₛₑₜ (polarAtCode w 1 3 x) (polarAtCode w 4 0 x))
+
+/-- Graph of `quantElimPart`. -/
+noncomputable def quantElimGraphPart (ifc ue tu ec w : ℕ) :
+    𝚺₁.Semisentence 2 := .mkSigma
+  “y x.
+    ∃ p, !(polarAtGraph w 1 3) p x ∧
+    ∃ c, !(polarAtGraph w 4 0) c x ∧
+    ∃ bd, !(Bootstrapping.impGraph ℒₛₑₜ) bd p c ∧
+    ∃ i1, !(Bootstrapping.impGraph ℒₛₑₜ) i1 ↑ec bd ∧
+    ∃ i2, !(Bootstrapping.impGraph ℒₛₑₜ) i2 ↑tu i1 ∧
+    ∃ i3, !(Bootstrapping.impGraph ℒₛₑₜ) i3 ↑ue i2 ∧
+    ∃ i4, !(Bootstrapping.impGraph ℒₛₑₜ) i4 ↑ifc i3 ∧
+    ∃ u1, !qqAllDef u1 i4 ∧
+    ∃ u2, !qqAllDef u2 u1 ∧
+    ∃ u3, !qqAllDef u3 u2 ∧
+    ∃ u4, !qqAllDef u4 u3 ∧
+    !qqAllDef y u4”
+
+instance quantElimPart.defined (ifc ue tu ec w : ℕ) :
+    𝚺₁-Function₁ (quantElimPart ifc ue tu ec w : V → V)
+      via quantElimGraphPart ifc ue tu ec w :=
+  .mk fun v ↦ by
+    simp [quantElimGraphPart, quantElimPart, quantSpinePart,
+      numeral_eq_natCast]
+
+/-- The coded quantifier introduction row. -/
+noncomputable def quantIntroPart (ifc ue tu ec w : ℕ) (x : V) : V :=
+  quantSpinePart ifc ue tu ec
+    (Bootstrapping.imp ℒₛₑₜ (polarAtCode w 4 0 x) (polarAtCode w 1 3 x))
+
+/-- Graph of `quantIntroPart`. -/
+noncomputable def quantIntroGraphPart (ifc ue tu ec w : ℕ) :
+    𝚺₁.Semisentence 2 := .mkSigma
+  “y x.
+    ∃ p, !(polarAtGraph w 1 3) p x ∧
+    ∃ c, !(polarAtGraph w 4 0) c x ∧
+    ∃ bd, !(Bootstrapping.impGraph ℒₛₑₜ) bd c p ∧
+    ∃ i1, !(Bootstrapping.impGraph ℒₛₑₜ) i1 ↑ec bd ∧
+    ∃ i2, !(Bootstrapping.impGraph ℒₛₑₜ) i2 ↑tu i1 ∧
+    ∃ i3, !(Bootstrapping.impGraph ℒₛₑₜ) i3 ↑ue i2 ∧
+    ∃ i4, !(Bootstrapping.impGraph ℒₛₑₜ) i4 ↑ifc i3 ∧
+    ∃ u1, !qqAllDef u1 i4 ∧
+    ∃ u2, !qqAllDef u2 u1 ∧
+    ∃ u3, !qqAllDef u3 u2 ∧
+    ∃ u4, !qqAllDef u4 u3 ∧
+    !qqAllDef y u4”
+
+instance quantIntroPart.defined (ifc ue tu ec w : ℕ) :
+    𝚺₁-Function₁ (quantIntroPart ifc ue tu ec w : V → V)
+      via quantIntroGraphPart ifc ue tu ec w :=
+  .mk fun v ↦ by
+    simp [quantIntroGraphPart, quantIntroPart, quantSpinePart,
+      numeral_eq_natCast]
+
+/-! ### The falsity row -/
+
+/-- The coded falsity row. -/
+noncomputable def botPiPart (ue te w : ℕ) (x : V) : V :=
+  ^∀ (^∀ (Bootstrapping.imp ℒₛₑₜ ↑ue
+    (Bootstrapping.imp ℒₛₑₜ ↑te (polarAtCode w 0 1 x))))
+
+/-- Graph of `botPiPart`. -/
+noncomputable def botPiGraphPart (ue te w : ℕ) : 𝚺₁.Semisentence 2 := .mkSigma
+  “y x.
+    ∃ p, !(polarAtGraph w 0 1) p x ∧
+    ∃ i1, !(Bootstrapping.impGraph ℒₛₑₜ) i1 ↑te p ∧
+    ∃ i2, !(Bootstrapping.impGraph ℒₛₑₜ) i2 ↑ue i1 ∧
+    ∃ u1, !qqAllDef u1 i2 ∧ !qqAllDef y u1”
+
+instance botPiPart.defined (ue te w : ℕ) :
+    𝚺₁-Function₁ (botPiPart ue te w : V → V) via botPiGraphPart ue te w :=
+  .mk fun v ↦ by simp [botPiGraphPart, botPiPart, numeral_eq_natCast]
+
+/-! ### The two assembled field codes -/
+
+/-- The coded elimination field at the concrete leaf codes. -/
+noncomputable def tarskiElimCode (x : V) : V :=
+  connElimOrPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 3) (bitWitnessCode 1) (bitWitnessCode 0)
+      (bitWitnessCode 1) x ^⋏
+  (connElimAndPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 3) (bitWitnessCode 0) (bitWitnessCode 1)
+      (bitWitnessCode 0) x ^⋏
+  (connElimAndPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 4) (bitWitnessCode 1) (bitWitnessCode 1)
+      (bitWitnessCode 1) x ^⋏
+  (connElimOrPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 4) (bitWitnessCode 0) (bitWitnessCode 0)
+      (bitWitnessCode 0) x ^⋏
+  (connElimOrPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 5) (bitWitnessCode 1) (bitWitnessCode 1)
+      (bitWitnessCode 1) x ^⋏
+  (connElimAndPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 5) (bitWitnessCode 0) (bitWitnessCode 0)
+      (bitWitnessCode 0) x ^⋏
+  (quantElimPart isFormCode4D5Code univEnv3D5Code (tagUnD5Code 6)
+      econsQuantD5Code (bitWitnessCode 1) x ^⋏
+   quantElimPart isFormCode4D5Code univEnv3D5Code (tagUnD5Code 7)
+      econsQuantD5Code (bitWitnessCode 0) x))))))
+
+/-- Graph of `tarskiElimCode`. -/
+noncomputable def tarskiElimGraph : 𝚺₁.Semisentence 2 := .mkSigma
+  “y x.
+    ∃ c1, !(connElimOrGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 3) (bitWitnessCode 1) (bitWitnessCode 0)
+      (bitWitnessCode 1)) c1 x ∧
+    ∃ c2, !(connElimAndGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 3) (bitWitnessCode 0) (bitWitnessCode 1)
+      (bitWitnessCode 0)) c2 x ∧
+    ∃ c3, !(connElimAndGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 4) (bitWitnessCode 1) (bitWitnessCode 1)
+      (bitWitnessCode 1)) c3 x ∧
+    ∃ c4, !(connElimOrGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 4) (bitWitnessCode 0) (bitWitnessCode 0)
+      (bitWitnessCode 0)) c4 x ∧
+    ∃ c5, !(connElimOrGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 5) (bitWitnessCode 1) (bitWitnessCode 1)
+      (bitWitnessCode 1)) c5 x ∧
+    ∃ c6, !(connElimAndGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 5) (bitWitnessCode 0) (bitWitnessCode 0)
+      (bitWitnessCode 0)) c6 x ∧
+    ∃ c7, !(quantElimGraphPart isFormCode4D5Code univEnv3D5Code
+      (tagUnD5Code 6) econsQuantD5Code (bitWitnessCode 1)) c7 x ∧
+    ∃ c8, !(quantElimGraphPart isFormCode4D5Code univEnv3D5Code
+      (tagUnD5Code 7) econsQuantD5Code (bitWitnessCode 0)) c8 x ∧
+    ∃ a7, !qqAndDef a7 c7 c8 ∧
+    ∃ a6, !qqAndDef a6 c6 a7 ∧
+    ∃ a5, !qqAndDef a5 c5 a6 ∧
+    ∃ a4, !qqAndDef a4 c4 a5 ∧
+    ∃ a3, !qqAndDef a3 c3 a4 ∧
+    ∃ a2, !qqAndDef a2 c2 a3 ∧
+    !qqAndDef y c1 a2”
+
+instance tarskiElimCode.defined :
+    𝚺₁-Function₁ (tarskiElimCode : V → V) via tarskiElimGraph :=
+  .mk fun v ↦ by simp [tarskiElimGraph, tarskiElimCode]
+
+/-- The coded introduction field at the concrete leaf codes. -/
+noncomputable def tarskiIntroCode (x : V) : V :=
+  botPiPart univEnv1D2Code taggedEmpty0D2Code (bitWitnessCode 0) x ^⋏
+  (connIntroOrPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 3) (bitWitnessCode 1) (bitWitnessCode 0)
+      (bitWitnessCode 1) x ^⋏
+  (connIntroAndPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 3) (bitWitnessCode 0) (bitWitnessCode 1)
+      (bitWitnessCode 0) x ^⋏
+  (connIntroAndPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 4) (bitWitnessCode 1) (bitWitnessCode 1)
+      (bitWitnessCode 1) x ^⋏
+  (connIntroOrPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 4) (bitWitnessCode 0) (bitWitnessCode 0)
+      (bitWitnessCode 0) x ^⋏
+  (connIntroOrPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 5) (bitWitnessCode 1) (bitWitnessCode 1)
+      (bitWitnessCode 1) x ^⋏
+  (connIntroAndPart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+      (tagPairD4Code 5) (bitWitnessCode 0) (bitWitnessCode 0)
+      (bitWitnessCode 0) x ^⋏
+  (quantIntroPart isFormCode4D5Code univEnv3D5Code (tagUnD5Code 6)
+      econsQuantD5Code (bitWitnessCode 0) x ^⋏
+   quantIntroPart isFormCode4D5Code univEnv3D5Code (tagUnD5Code 7)
+      econsQuantD5Code (bitWitnessCode 1) x)))))))
+
+/-- Graph of `tarskiIntroCode`. -/
+noncomputable def tarskiIntroGraph : 𝚺₁.Semisentence 2 := .mkSigma
+  “y x.
+    ∃ c0, !(botPiGraphPart univEnv1D2Code taggedEmpty0D2Code
+      (bitWitnessCode 0)) c0 x ∧
+    ∃ c1, !(connIntroOrGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 3) (bitWitnessCode 1) (bitWitnessCode 0)
+      (bitWitnessCode 1)) c1 x ∧
+    ∃ c2, !(connIntroAndGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 3) (bitWitnessCode 0) (bitWitnessCode 1)
+      (bitWitnessCode 0)) c2 x ∧
+    ∃ c3, !(connIntroAndGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 4) (bitWitnessCode 1) (bitWitnessCode 1)
+      (bitWitnessCode 1)) c3 x ∧
+    ∃ c4, !(connIntroOrGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 4) (bitWitnessCode 0) (bitWitnessCode 0)
+      (bitWitnessCode 0)) c4 x ∧
+    ∃ c5, !(connIntroOrGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 5) (bitWitnessCode 1) (bitWitnessCode 1)
+      (bitWitnessCode 1)) c5 x ∧
+    ∃ c6, !(connIntroAndGraphPart isFormCode3D4Code isFormCode2D4Code
+      univEnv1D4Code (tagPairD4Code 5) (bitWitnessCode 0) (bitWitnessCode 0)
+      (bitWitnessCode 0)) c6 x ∧
+    ∃ c7, !(quantIntroGraphPart isFormCode4D5Code univEnv3D5Code
+      (tagUnD5Code 6) econsQuantD5Code (bitWitnessCode 0)) c7 x ∧
+    ∃ c8, !(quantIntroGraphPart isFormCode4D5Code univEnv3D5Code
+      (tagUnD5Code 7) econsQuantD5Code (bitWitnessCode 1)) c8 x ∧
+    ∃ a7, !qqAndDef a7 c7 c8 ∧
+    ∃ a6, !qqAndDef a6 c6 a7 ∧
+    ∃ a5, !qqAndDef a5 c5 a6 ∧
+    ∃ a4, !qqAndDef a4 c4 a5 ∧
+    ∃ a3, !qqAndDef a3 c3 a4 ∧
+    ∃ a2, !qqAndDef a2 c2 a3 ∧
+    ∃ a1, !qqAndDef a1 c1 a2 ∧
+    !qqAndDef y c0 a1”
+
+instance tarskiIntroCode.defined :
+    𝚺₁-Function₁ (tarskiIntroCode : V → V) via tarskiIntroGraph :=
+  .mk fun v ↦ by simp [tarskiIntroGraph, tarskiIntroCode]
+
+end TarskiInternalBuilder
+
+/-! ## Standard points of the two Tarski fields -/
+
+section TarskiStandardPoints
+
+open SetTheory (Form Free)
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The bit-witness wrapper agrees with the quotation of the polarized
+canonical leaf, at either polarity.  This is `sigmaTrueCode_natCast` with
+the bit abstracted. -/
+theorem bitWitnessPart_natCast (b m : ℕ) :
+    bitWitnessPart (bitWitnessCode b) ((m : ℕ) : V) =
+      ⌜toSet 2 (fPolarF m b 1 0)⌝ := by
+  have hq : (⌜toSet 2 (fPolarF m b 1 0)⌝ : V) =
+      ^∃ ((⌜toSet 3 (fNumF 0 b)⌝ : V) ^⋏
+        (⌜toSet 3 (levelSatF m 2 1 0)⌝ : V)) := by
+    rw [show fPolarF m b 1 0 =
+        Form.fEx (.fAnd (fNumF 0 b) (levelSatF m 2 1 0)) from rfl]
+    simp [toSet]
+  rw [hq, ← levelSatCode_natCast,
+    ← coe_toNat_eq_quote (V := V) (toSet 3 (fNumF 0 b))]
+  rfl
+
+/-- The polarized gadget's quote is the coded polarized gadget. -/
+theorem quote_polarAtF (n b : ℕ) {k : ℕ} (ci ei : ℕ)
+    (hci : ci < k) (hei : ei < k) :
+    (⌜toSet k (polarAtF n b ci ei)⌝ : V) =
+      polarAtCode (bitWitnessCode b) ci ei ((n : ℕ) : V) := by
+  rw [show polarAtF n b ci ei = canonAtF ci ei (fPolarF (n + 1) b 1 0)
+      from rfl,
+    quote_canonAtF ci ei hci hei _
+      (fun j hj => free_fPolarF_canonical hj),
+    ← bitWitnessPart_natCast (V := V) b (n + 1), Nat.cast_succ]
+  rfl
+
+/-! ### The gadget quotes at the depths the three skeletons use -/
+
+theorem quote_polarAt01D4 (n b : ℕ) :
+    (⌜toSet 4 (polarAtF n b 0 1)⌝ : V) =
+      polarAtCode (bitWitnessCode b) 0 1 ((n : ℕ) : V) :=
+  quote_polarAtF n b 0 1 (by omega) (by omega)
+
+theorem quote_polarAt31D4 (n b : ℕ) :
+    (⌜toSet 4 (polarAtF n b 3 1)⌝ : V) =
+      polarAtCode (bitWitnessCode b) 3 1 ((n : ℕ) : V) :=
+  quote_polarAtF n b 3 1 (by omega) (by omega)
+
+theorem quote_polarAt21D4 (n b : ℕ) :
+    (⌜toSet 4 (polarAtF n b 2 1)⌝ : V) =
+      polarAtCode (bitWitnessCode b) 2 1 ((n : ℕ) : V) :=
+  quote_polarAtF n b 2 1 (by omega) (by omega)
+
+theorem quote_polarAt13D5 (n b : ℕ) :
+    (⌜toSet 5 (polarAtF n b 1 3)⌝ : V) =
+      polarAtCode (bitWitnessCode b) 1 3 ((n : ℕ) : V) :=
+  quote_polarAtF n b 1 3 (by omega) (by omega)
+
+theorem quote_polarAt40D5 (n b : ℕ) :
+    (⌜toSet 5 (polarAtF n b 4 0)⌝ : V) =
+      polarAtCode (bitWitnessCode b) 4 0 ((n : ℕ) : V) :=
+  quote_polarAtF n b 4 0 (by omega) (by omega)
+
+theorem quote_polarAt01D2 (n b : ℕ) :
+    (⌜toSet 2 (polarAtF n b 0 1)⌝ : V) =
+      polarAtCode (bitWitnessCode b) 0 1 ((n : ℕ) : V) :=
+  quote_polarAtF n b 0 1 (by omega) (by omega)
+
+/-! ### The three skeleton quotes -/
+
+/-- **Quotation of the connective clause skeleton.**  The premise and
+conclusion sit at exactly the depth the four binders create, so no depth
+move is needed for them. -/
+theorem quote_connClauseF (t : ℕ) (prem concl : Form) :
+    (⌜toSet 0 (connClauseF t prem concl)⌝ : V) =
+      connSpinePart isFormCode3D4Code isFormCode2D4Code univEnv1D4Code
+        (tagPairD4Code t)
+        (Bootstrapping.imp ℒₛₑₜ (⌜toSet 4 prem⌝ : V)
+          (⌜toSet 4 concl⌝ : V)) := by
+  rw [show connClauseF t prem concl =
+        Form.fAll (.fAll (.fAll (.fAll
+          (.fImp (fIsFormCodeF 3) (.fImp (fIsFormCodeF 2)
+            (.fImp (fUnivEnvF 1)
+              (.fImp (fTagPairF 0 t 3 2) (.fImp prem concl)))))))) from rfl,
+    quote_toSet_fAll' (show 0 + 1 = 1 from rfl),
+    quote_toSet_fAll' (show 1 + 1 = 2 from rfl),
+    quote_toSet_fAll' (show 2 + 1 = 3 from rfl),
+    quote_toSet_fAll' (show 3 + 1 = 4 from rfl),
+    quote_toSet_fImp, quote_toSet_fImp, quote_toSet_fImp, quote_toSet_fImp,
+    quote_toSet_fImp,
+    ← coe_toNat_eq_quote (V := V) (toSet 4 (fIsFormCodeF 3)),
+    ← coe_toNat_eq_quote (V := V) (toSet 4 (fIsFormCodeF 2)),
+    ← coe_toNat_eq_quote (V := V) (toSet 4 (fUnivEnvF 1)),
+    ← coe_toNat_eq_quote (V := V) (toSet 4 (fTagPairF 0 t 3 2))]
+  rfl
+
+/-- **Quotation of the quantifier clause skeleton.** -/
+theorem quote_quantClauseF (t : ℕ) (prem concl : Form) :
+    (⌜toSet 0 (quantClauseF t prem concl)⌝ : V) =
+      quantSpinePart isFormCode4D5Code univEnv3D5Code (tagUnD5Code t)
+        econsQuantD5Code
+        (Bootstrapping.imp ℒₛₑₜ (⌜toSet 5 prem⌝ : V)
+          (⌜toSet 5 concl⌝ : V)) := by
+  rw [show quantClauseF t prem concl =
+        Form.fAll (.fAll (.fAll (.fAll (.fAll
+          (.fImp (fIsFormCodeF 4) (.fImp (fUnivEnvF 3)
+            (.fImp (fTagUnF 1 t 4) (.fImp (fEconsF 0 2 3)
+              (.fImp prem concl))))))))) from rfl,
+    quote_toSet_fAll' (show 0 + 1 = 1 from rfl),
+    quote_toSet_fAll' (show 1 + 1 = 2 from rfl),
+    quote_toSet_fAll' (show 2 + 1 = 3 from rfl),
+    quote_toSet_fAll' (show 3 + 1 = 4 from rfl),
+    quote_toSet_fAll' (show 4 + 1 = 5 from rfl),
+    quote_toSet_fImp, quote_toSet_fImp, quote_toSet_fImp, quote_toSet_fImp,
+    quote_toSet_fImp,
+    ← coe_toNat_eq_quote (V := V) (toSet 5 (fIsFormCodeF 4)),
+    ← coe_toNat_eq_quote (V := V) (toSet 5 (fUnivEnvF 3)),
+    ← coe_toNat_eq_quote (V := V) (toSet 5 (fTagUnF 1 t 4)),
+    ← coe_toNat_eq_quote (V := V) (toSet 5 (fEconsF 0 2 3))]
+  rfl
+
+/-- **Quotation of the falsity row.** -/
+theorem quote_botClauseF (n : ℕ) :
+    (⌜toSet 0 (botClauseF n)⌝ : V) =
+      botPiPart univEnv1D2Code taggedEmpty0D2Code (bitWitnessCode 0)
+        ((n : ℕ) : V) := by
+  rw [show botClauseF n =
+        Form.fAll (.fAll (.fImp (fUnivEnvF 1)
+          (.fImp (fTaggedEmptyF 0 2) (polarAtF n 0 0 1)))) from rfl,
+    quote_toSet_fAll' (show 0 + 1 = 1 from rfl),
+    quote_toSet_fAll' (show 1 + 1 = 2 from rfl),
+    quote_toSet_fImp, quote_toSet_fImp,
+    quote_polarAt01D2 (V := V) n 0,
+    ← coe_toNat_eq_quote (V := V) (toSet 2 (fUnivEnvF 1)),
+    ← coe_toNat_eq_quote (V := V) (toSet 2 (fTaggedEmptyF 0 2))]
+  rfl
+
+/-! ### The two field builders at standard points -/
+
+set_option maxRecDepth 4000 in
+/-- **`tarskiElimCode` agrees with the quotation of `tarskiElimF`.** -/
+theorem tarskiElimCode_natCast (n : ℕ) :
+    tarskiElimCode ((n : ℕ) : V) = ⌜toSet 0 (tarskiElimF n)⌝ := by
+  simp only [tarskiElimF, quote_toSet_fAnd, quote_connClauseF,
+    quote_quantClauseF, quote_toSet_fOr, quote_polarAt01D4,
+    quote_polarAt31D4, quote_polarAt21D4, quote_polarAt13D5,
+    quote_polarAt40D5]
+  rfl
+
+set_option maxRecDepth 4000 in
+/-- **`tarskiIntroCode` agrees with the quotation of `tarskiIntroF`.** -/
+theorem tarskiIntroCode_natCast (n : ℕ) :
+    tarskiIntroCode ((n : ℕ) : V) = ⌜toSet 0 (tarskiIntroF n)⌝ := by
+  simp only [tarskiIntroF, quote_toSet_fAnd, quote_botClauseF,
+    quote_connClauseF, quote_quantClauseF, quote_toSet_fOr,
+    quote_polarAt01D4, quote_polarAt31D4, quote_polarAt21D4,
+    quote_polarAt13D5, quote_polarAt40D5]
+  rfl
+
+end TarskiStandardPoints
 
 end ZFCinPA
 end LeanProofs

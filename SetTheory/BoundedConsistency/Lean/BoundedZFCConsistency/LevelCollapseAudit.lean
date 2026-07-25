@@ -35,6 +35,10 @@ open LeanProofs.BoundedZFCConsistency
 #check @sigmaBounded_ex
 #check @piBounded_of_sigmaBounded_all
 #check @sigmaBounded_of_piBounded_ex
+#check @piBounded_of_sigmaBounded_all_succ
+#check @sigmaBounded_of_piBounded_ex_succ
+#check @piBounded_of_sigmaBounded_all_eq_succ
+#check @sigmaBounded_of_piBounded_ex_eq_succ
 #check @not_sigmaBounded_zero_all
 #check @not_piBounded_zero_ex
 
@@ -42,6 +46,8 @@ open LeanProofs.BoundedZFCConsistency
 #print axioms piBounded_imp
 #print axioms piBounded_of_sigmaBounded_all
 #print axioms sigmaBounded_of_piBounded_ex
+#print axioms piBounded_of_sigmaBounded_all_succ
+#print axioms sigmaBounded_of_piBounded_ex_succ
 
 /-! ## The introduction halves at level zero -/
 

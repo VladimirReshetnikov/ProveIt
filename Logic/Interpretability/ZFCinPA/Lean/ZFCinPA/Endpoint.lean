@@ -10,7 +10,7 @@ mathematics: every ingredient is proved in the modules it imports.
 ## The chain
 
 ```
-ZFCSuccessorImplicationsInAllModels          (six flat internal implications)
+ZFCSuccessorImplicationsInAllModels          (eight flat internal implications)
   → ZFCStagedSuccessorInAllModels            (StagedSuccessor)
   → ZFCProofSelectorInAllModels              (BaseCertificate / StagedCompiler)
   → Peano ⊢ paUniformZFCProvabilitySentence  (UniformStatement, completeness)
@@ -19,7 +19,7 @@ ZFCSuccessorImplicationsInAllModels          (six flat internal implications)
 Everything below the first arrow is proved.  The first arrow is proved
 here as well: `ZFCinPA.StagedSuccessor` reduces the staged successor —
 four `UniversalKernel`s at four cumulative contexts plus two direct
-implications — to six flat implications out of one and the same
+implications — to eight flat implications out of one and the same
 antecedent.
 
 ## The residue
@@ -32,7 +32,7 @@ them:
   `ZFCinPA.StagedCompiler` for the concrete family, in every model of PA;
 * `ZFCSuccessorImplicationsInAllModels` — its flat form: at every model
   index `n`, internal `𝗭𝗙𝗖` proofs that the level-`n` master certificate
-  implies each of the five level-`(n+1)` truth laws and the internalized
+  implies each of the seven level-`(n+1)` truth laws and the internalized
   `Con_{n+1}(ZFC)`.
 
 `zfcStagedSuccessorInAllModels_iff_successorImplications` proves the two
@@ -74,7 +74,7 @@ def ZFCStagedSuccessorInAllModels : Prop :=
   ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* Peano] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
     HasStagedSuccessor (concreteZFCTruthCertificateFamily (V := V))
 
-/-- **The remaining obligation, flat form.**  Six internal `𝗭𝗙𝗖`
+/-- **The remaining obligation, flat form.**  Eight internal `𝗭𝗙𝗖`
 implications out of the level-`n` master certificate, at every index of
 every model of PA. -/
 def ZFCSuccessorImplicationsInAllModels : Prop :=
@@ -122,7 +122,7 @@ theorem peano_proves_uniformZFCProvability_of_stagedSuccessor
   peano_proves_uniformZFCProvability_of_selectorInAllModels
     (zfcProofSelectorInAllModels_of_stagedSuccessor H)
 
-/-- **The target, from the six flat implications.**  This is the complete
+/-- **The target, from the eight flat implications.**  This is the complete
 current reduction of the project. -/
 theorem peano_proves_uniformZFCProvability_of_successorImplications
     (H : ZFCSuccessorImplicationsInAllModels) :

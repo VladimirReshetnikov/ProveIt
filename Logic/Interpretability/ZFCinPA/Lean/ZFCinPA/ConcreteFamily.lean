@@ -4,22 +4,22 @@ import ZFCinPA.CertificateFamily
 /-!
 # The concrete `𝗭𝗙𝗖` truth-certificate family
 
-`ZFCinPA.CertificateFields` builds the five variable field-code functions
+`ZFCinPA.CertificateFields` builds the seven variable field-code functions
 and their `𝚺₁` graphs; `ZFCinPA.CertificateFamily` demands *typed*
 model-coded formulas (`Bootstrapping.Formula V ℒₛₑₜ`).  This module closes
 the gap and assembles the family.
 
 ## The typed-wrapper design decision
 
-The family structure fixes the five variable fields to be typed formulas
-at *every* model index, so — unlike the forced sixth field, whose
+The family structure fixes the seven variable fields to be typed formulas
+at *every* model index, so — unlike the forced eighth field, whose
 well-formedness `CertificateFamily` recovers from incoming proofs — the
-five fields need `IsFormula` witnesses outright.  The witnesses are proved
+seven fields need `IsFormula` witnesses outright.  The witnesses are proved
 here, once and for all indices, by the same route goal 1's
 `DynamicTruthOrbit` used for its truth-formula orbit: model-internal `𝚺₁`
 successor induction (`ISigma1.sigma1_succ_induction`) along each `PR`
 tower of `ZFCinPA.LevelCodeTower`, followed by pure spine decomposition
-for the five fixed splices.
+for the seven fixed splices.
 
 Every fixed leaf is well-formed at exactly the arity of its named code:
 the per-constant lemmas below are `coe_toNat_eq_quote` plus the quotation
@@ -27,7 +27,7 @@ well-formedness fact, and they respect the parameter firewall — the
 constants are matched by one definitional unfolding, never evaluated.
 The two tower leaves enter through arity monotonicity of `IsSemiformula`.
 
-The five `𝚺₁` graphs are then exactly the shape
+The seven `𝚺₁` graphs are then exactly the shape
 `ZFCTruthCertificateFamily.code_definable_of_fields` consumes: the typed
 wrappers' `.val` projections are the raw builders definitionally. -/
 
@@ -43,7 +43,7 @@ open LO.FirstOrder.Arithmetic.Bootstrapping
 open BoundedZFCConsistency (fNumF fTripleMemF fUnivEnvF levelSatF
   fLevelImpF fLevelAndF fLevelOrF fTagUnF fPiBoundedF fSigmaBoundedF
   fShiftTripleMemF fIsFormCodeF fQuantBoundedF fZFCAxiomCodeF
-  fTaggedEmptyF fVarMapF fRenamesF fCompF fEconsF fSuccMapF)
+  fTaggedEmptyF fVarMapF fRenamesF fCompF fEconsF fSuccMapF fTagPairF)
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
@@ -240,6 +240,40 @@ private lemma wf_compD5 :
     IsSemiformula ℒₛₑₜ ((5 : ℕ) : V) ((compD5Code : ℕ) : V) :=
   leafArity (V := V) (toSet 5 (fCompF 0 1 3))
 
+/-! ### The fixed leaves of the two Tarski fields -/
+
+private lemma wf_bitWitness (b : ℕ) :
+    IsSemiformula ℒₛₑₜ ((3 : ℕ) : V) ((bitWitnessCode b : ℕ) : V) :=
+  leafArity (V := V) (toSet 3 (fNumF 0 b))
+
+private lemma wf_isFormCode2D4 :
+    IsSemiformula ℒₛₑₜ ((4 : ℕ) : V) ((isFormCode2D4Code : ℕ) : V) :=
+  leafArity (V := V) (toSet 4 (fIsFormCodeF 2))
+
+private lemma wf_tagPairD4 (t : ℕ) :
+    IsSemiformula ℒₛₑₜ ((4 : ℕ) : V) ((tagPairD4Code t : ℕ) : V) :=
+  leafArity (V := V) (toSet 4 (fTagPairF 0 t 3 2))
+
+private lemma wf_univEnv3D5 :
+    IsSemiformula ℒₛₑₜ ((5 : ℕ) : V) ((univEnv3D5Code : ℕ) : V) :=
+  leafArity (V := V) (toSet 5 (fUnivEnvF 3))
+
+private lemma wf_tagUnD5 (t : ℕ) :
+    IsSemiformula ℒₛₑₜ ((5 : ℕ) : V) ((tagUnD5Code t : ℕ) : V) :=
+  leafArity (V := V) (toSet 5 (fTagUnF 1 t 4))
+
+private lemma wf_econsQuantD5 :
+    IsSemiformula ℒₛₑₜ ((5 : ℕ) : V) ((econsQuantD5Code : ℕ) : V) :=
+  leafArity (V := V) (toSet 5 (fEconsF 0 2 3))
+
+private lemma wf_univEnv1D2 :
+    IsSemiformula ℒₛₑₜ ((2 : ℕ) : V) ((univEnv1D2Code : ℕ) : V) :=
+  leafArity (V := V) (toSet 2 (fUnivEnvF 1))
+
+private lemma wf_taggedEmpty0D2 :
+    IsSemiformula ℒₛₑₜ ((2 : ℕ) : V) ((taggedEmpty0D2Code : ℕ) : V) :=
+  leafArity (V := V) (toSet 2 (fTaggedEmptyF 0 2))
+
 /- The parameter firewall, enforced at the unification level: with the
 leaf lemmas in place, nothing below may ever delta-unfold a named code
 constant — a failed unification attempt against one would otherwise try
@@ -255,7 +289,8 @@ attribute [local irreducible] tripleMemHeadCode univEnvLeafCode
   univEnv1D5Code taggedEmptyD2Code isFormCode1D2Code isFormCode3D4Code
   isFormCode4D5Code zfcAxiomCodeD2Code quantBoundedD3Code succMapD5Code
   renamesShiftD5Code econsD5Code varMap3D5Code renamesSubstD5Code
-  compD5Code
+  compD5Code bitWitnessCode isFormCode2D4Code tagPairD4Code univEnv3D5Code
+  tagUnD5Code econsQuantD5Code univEnv1D2Code taggedEmpty0D2Code
 
 /-! ## Well-formedness along the towers
 
@@ -372,7 +407,7 @@ theorem isSemiformula_piTrueCode (x : V) :
   exact ⟨isSemiformula_piFalseCode x,
     isSemiformula_of_le wf_botCanon (by norm_num)⟩
 
-/-! ## Well-formedness of the five field codes
+/-! ## Well-formedness of the seven field codes
 
 Pure spine decomposition — no induction: the towers enter through the
 invariants above and arity monotonicity, every fixed leaf at exactly its
@@ -483,6 +518,84 @@ theorem isFormula_axiomSoundCode (x : V) :
     | exact isSemiformula_of_le wf_univEnv0D2 (by norm_num)
     | exact isSemiformula_of_le wf_quantBoundedD3 (by norm_num)
 
+/-! ### The two Tarski fields
+
+Same pure spine decomposition; the only new ingredient is that the level
+towers enter through the *polarized* gadget `polarAtCode`, whose bit
+witness is a fixed leaf like any other. -/
+
+set_option maxHeartbeats 1000000 in
+/-- The Tarski-elimination field is a sentence code at every index. -/
+theorem isFormula_tarskiElimCode (x : V) :
+    IsFormula ℒₛₑₜ (tarskiElimCode x) := by
+  simp only [tarskiElimCode, connElimOrPart, connElimAndPart, quantElimPart,
+    connSpinePart, quantSpinePart, polarAtCode, canonAtPart, bitWitnessPart,
+    IsSemiformula.all, IsSemiformula.exs, IsSemiformula.imp,
+    IsSemiformula.and, IsSemiformula.or]
+  and_intros
+  all_goals
+    first
+    | exact isSemiformula_of_le (isSemiformula_levelSatCode (x + 1))
+        (by norm_num)
+    | exact isSemiformula_of_le (wf_bitWitness 1) (by norm_num)
+    | exact isSemiformula_of_le (wf_bitWitness 0) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 1 2) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 1 3) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 1 4) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 1 5) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 1 6) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 0 2) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 0 3) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 0 5) (by norm_num)
+    | exact isSemiformula_of_le wf_isFormCode3D4 (by norm_num)
+    | exact isSemiformula_of_le wf_isFormCode2D4 (by norm_num)
+    | exact isSemiformula_of_le wf_univEnv1D4 (by norm_num)
+    | exact isSemiformula_of_le (wf_tagPairD4 3) (by norm_num)
+    | exact isSemiformula_of_le (wf_tagPairD4 4) (by norm_num)
+    | exact isSemiformula_of_le (wf_tagPairD4 5) (by norm_num)
+    | exact isSemiformula_of_le wf_isFormCode4D5 (by norm_num)
+    | exact isSemiformula_of_le wf_univEnv3D5 (by norm_num)
+    | exact isSemiformula_of_le (wf_tagUnD5 6) (by norm_num)
+    | exact isSemiformula_of_le (wf_tagUnD5 7) (by norm_num)
+    | exact isSemiformula_of_le wf_econsQuantD5 (by norm_num)
+
+set_option maxHeartbeats 1000000 in
+/-- The Tarski-introduction field is a sentence code at every index. -/
+theorem isFormula_tarskiIntroCode (x : V) :
+    IsFormula ℒₛₑₜ (tarskiIntroCode x) := by
+  simp only [tarskiIntroCode, connIntroOrPart, connIntroAndPart,
+    quantIntroPart, botPiPart, connSpinePart, quantSpinePart, polarAtCode,
+    canonAtPart, bitWitnessPart, IsSemiformula.all, IsSemiformula.exs,
+    IsSemiformula.imp, IsSemiformula.and, IsSemiformula.or]
+  and_intros
+  all_goals
+    first
+    | exact isSemiformula_of_le (isSemiformula_levelSatCode (x + 1))
+        (by norm_num)
+    | exact isSemiformula_of_le (wf_bitWitness 1) (by norm_num)
+    | exact isSemiformula_of_le (wf_bitWitness 0) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 1 2) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 1 3) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 1 4) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 1 5) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 1 6) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 0 2) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 0 3) (by norm_num)
+    | exact isSemiformula_of_le (wf_eqGuard 0 5) (by norm_num)
+    | exact isSemiformula_of_le wf_isFormCode3D4 (by norm_num)
+    | exact isSemiformula_of_le wf_isFormCode2D4 (by norm_num)
+    | exact isSemiformula_of_le wf_univEnv1D4 (by norm_num)
+    | exact isSemiformula_of_le (wf_tagPairD4 3) (by norm_num)
+    | exact isSemiformula_of_le (wf_tagPairD4 4) (by norm_num)
+    | exact isSemiformula_of_le (wf_tagPairD4 5) (by norm_num)
+    | exact isSemiformula_of_le wf_isFormCode4D5 (by norm_num)
+    | exact isSemiformula_of_le wf_univEnv3D5 (by norm_num)
+    | exact isSemiformula_of_le (wf_tagUnD5 6) (by norm_num)
+    | exact isSemiformula_of_le (wf_tagUnD5 7) (by norm_num)
+    | exact isSemiformula_of_le wf_econsQuantD5 (by norm_num)
+    | exact isSemiformula_of_le wf_univEnv1D2 (by norm_num)
+    | exact isSemiformula_of_le wf_taggedEmpty0D2 (by norm_num)
+
 /-! ## The typed field formulas -/
 
 /-- Typed view of the local-step field. -/
@@ -523,10 +636,24 @@ noncomputable def axiomSoundFormula (x : V) : Bootstrapping.Formula V ℒₛₑ�
 @[simp] theorem axiomSoundFormula_val (x : V) :
     (axiomSoundFormula x).val = axiomSoundCode x := rfl
 
+/-- Typed view of the Tarski-elimination field. -/
+noncomputable def tarskiElimFormula (x : V) : Bootstrapping.Formula V ℒₛₑₜ :=
+  ⟨tarskiElimCode x, by simpa using isFormula_tarskiElimCode x⟩
+
+@[simp] theorem tarskiElimFormula_val (x : V) :
+    (tarskiElimFormula x).val = tarskiElimCode x := rfl
+
+/-- Typed view of the Tarski-introduction field. -/
+noncomputable def tarskiIntroFormula (x : V) : Bootstrapping.Formula V ℒₛₑₜ :=
+  ⟨tarskiIntroCode x, by simpa using isFormula_tarskiIntroCode x⟩
+
+@[simp] theorem tarskiIntroFormula_val (x : V) :
+    (tarskiIntroFormula x).val = tarskiIntroCode x := rfl
+
 /-! ## The assembled family -/
 
-/-- **The concrete `𝗭𝗙𝗖` truth-certificate family**: the five internalized
-level-`x+1` truth laws of `ZFCinPA.CertificateFields`.  The forced sixth
+/-- **The concrete `𝗭𝗙𝗖` truth-certificate family**: the seven internalized
+level-`x+1` truth laws of `ZFCinPA.CertificateFields`.  The forced eighth
 coordinate — the internalized `Conₓ(ZFC)` — is inserted by
 `ZFCTruthCertificateFamily.fields` itself. -/
 noncomputable def concreteZFCTruthCertificateFamily :
@@ -536,6 +663,8 @@ noncomputable def concreteZFCTruthCertificateFamily :
   shiftInvariant := shiftInvariantFormula
   substitutionInvariant := substitutionInvariantFormula
   axiomSound := axiomSoundFormula
+  tarskiElim := tarskiElimFormula
+  tarskiIntro := tarskiIntroFormula
 
 @[simp] theorem concreteZFCTruthCertificateFamily_localStep (x : V) :
     (concreteZFCTruthCertificateFamily (V := V)).localStep x =
@@ -558,7 +687,15 @@ noncomputable def concreteZFCTruthCertificateFamily :
     (concreteZFCTruthCertificateFamily (V := V)).axiomSound x =
       axiomSoundFormula x := rfl
 
-/-! ## The five `𝚺₁` field-code graphs, in the endpoint's shape
+@[simp] theorem concreteZFCTruthCertificateFamily_tarskiElim (x : V) :
+    (concreteZFCTruthCertificateFamily (V := V)).tarskiElim x =
+      tarskiElimFormula x := rfl
+
+@[simp] theorem concreteZFCTruthCertificateFamily_tarskiIntro (x : V) :
+    (concreteZFCTruthCertificateFamily (V := V)).tarskiIntro x =
+      tarskiIntroFormula x := rfl
+
+/-! ## The seven `𝚺₁` field-code graphs, in the endpoint's shape
 
 The typed wrappers' `.val` projections are the raw builders
 definitionally, so each graph is the `via` instance of
@@ -608,7 +745,23 @@ theorem concreteFamily_axiomSound_definable :
   change HierarchySymbol.sigmaOne.DefinableFunction₁ (axiomSoundCode : V → V)
   exact axiomSoundCode.defined.to_definable
 
-/-- The assembled six-field master code — including the forced
+/-- `𝚺₁` graph of the Tarski-elimination field codes. -/
+theorem concreteFamily_tarskiElim_definable :
+    HierarchySymbol.sigmaOne.DefinableFunction₁
+      (fun x : V ↦
+        ((concreteZFCTruthCertificateFamily (V := V)).tarskiElim x).val) := by
+  change HierarchySymbol.sigmaOne.DefinableFunction₁ (tarskiElimCode : V → V)
+  exact tarskiElimCode.defined.to_definable
+
+/-- `𝚺₁` graph of the Tarski-introduction field codes. -/
+theorem concreteFamily_tarskiIntro_definable :
+    HierarchySymbol.sigmaOne.DefinableFunction₁
+      (fun x : V ↦
+        ((concreteZFCTruthCertificateFamily (V := V)).tarskiIntro x).val) := by
+  change HierarchySymbol.sigmaOne.DefinableFunction₁ (tarskiIntroCode : V → V)
+  exact tarskiIntroCode.defined.to_definable
+
+/-- The assembled eight-field master code — including the forced
 internalized-consistency coordinate — has one `𝚺₁` graph. -/
 theorem concreteFamily_code_definable :
     HierarchySymbol.sigmaOne.DefinableFunction₁
@@ -619,6 +772,8 @@ theorem concreteFamily_code_definable :
     concreteFamily_shiftInvariant_definable
     concreteFamily_substitutionInvariant_definable
     concreteFamily_axiomSound_definable
+    concreteFamily_tarskiElim_definable
+    concreteFamily_tarskiIntro_definable
 
 end ZFCinPA
 end LeanProofs

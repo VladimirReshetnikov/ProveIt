@@ -1,12 +1,13 @@
 import ZFCinPA.ConcreteFamily
 import ZFCinPA.StagedCompiler
+import ZFCinPA.TarskiFieldSemantics
 
 /-!
 # The base master certificate of the concrete family
 
 The staged endpoint
 `zfcProofSelectorIn_of_stagedCertificates_and_fieldCodes` consumes a typed
-internal `𝗭𝗙𝗖` proof of the concrete family's six-field master sentence at
+internal `𝗭𝗙𝗖` proof of the concrete family's eight-field master sentence at
 level `0`.  This module produces it, by the external route promised in
 `ZFCinPA.CertificateFields`:
 
@@ -25,7 +26,7 @@ level `0`.  This module produces it, by the external route promised in
    inside an arbitrary model of `𝗜𝚺₁`, and the standard-point agreement
    theorems of `ZFCinPA.CertificateFields` identify the resulting codes
    with the family's typed fields at index `0`.
-4. **Assembly.**  `ZFCTruthCertificateFields.intro` packs the six typed
+4. **Assembly.**  `ZFCTruthCertificateFields.intro` packs the eight typed
    proofs into the master certificate, and the endpoint corollary states
    the *exact* remaining obligation of the uniform internal-provability
    project: the staged successor for this concrete family.
@@ -100,7 +101,7 @@ theorem sat_boundedAtF (H : ZFAxioms mem) (n : ℕ) (ee : ℕ → W) (ci : ℕ) 
     exact ⟨natV H n, (fNumF_spec H n 0 (scons (natV H n) ee)).mpr rfl,
       (fQuantBoundedF_spec H (scons (natV H n) ee) 0 (ci + 1)).mpr h⟩
 
-/-! ## Satisfaction of the five field sentences
+/-! ## Satisfaction of the five original field sentences
 
 Every structure carrying the nine-axiom bundle satisfies every field
 sentence at every level. -/
@@ -226,9 +227,190 @@ theorem sat_axiomSoundF (K : ZFCAxioms mem) (n : ℕ) (e : ℕ → W) :
   exact ⟨(sat_sigmaAtF K.toZFAxioms n (scons E (scons c e)) 1 0).mpr h.1,
     (sat_piTrueAtF K.toZFAxioms n (scons E (scons c e)) 1 0).mpr h.2⟩
 
+local notation "kpair'" => _root_.SetTheory.kpair
+
+/-! ## Satisfaction of the two Tarski fields
+
+The polarized gadget is the two old ones read at a literal bit, and the
+three clause skeletons of `ZFCinPA.CertificateFields` are discharged once
+each; the seventeen rows are then exactly the seventeen clauses of
+`ZFCinPA.TarskiFieldSemantics`'s `tarskiElim_levelSat` and
+`tarskiIntro_levelSat`. -/
+
+/-- The polarized gadget at bit `1` is the Sigma gadget. -/
+theorem sat_polarAtF_one (H : ZFAxioms mem) (n : ℕ) (ee : ℕ → W)
+    (ci ei : ℕ) :
+    Sat mem ee (polarAtF n 1 ci ei) ↔ SigmaTrue H (n + 1) (ee ci) (ee ei) :=
+  sat_sigmaAtF H n ee ci ei
+
+/-- The polarized gadget at bit `0` is the Pi-falsity gadget. -/
+theorem sat_polarAtF_zero (H : ZFAxioms mem) (n : ℕ) (ee : ℕ → W)
+    (ci ei : ℕ) :
+    Sat mem ee (polarAtF n 0 ci ei) ↔ PiFalse H (n + 1) (ee ci) (ee ei) :=
+  sat_piFalseAtF H n ee ci ei
+
+/-- **Satisfaction of the connective clause skeleton.**  The four guards
+are read through their rendering specs; the compound code is pinned to the
+tag shape the semantic clauses expect. -/
+theorem sat_connClauseF (K : ZFCAxioms mem) (t : ℕ) (prem concl : Form)
+    (e : ℕ → W)
+    (hcl : ∀ a b E : W, IsFormCodeSem K.toZFAxioms a →
+      IsFormCodeSem K.toZFAxioms b → IsUnivEnv K.toZFAxioms E →
+      Sat mem (scons (kpair' K.toZFAxioms (natV K.toZFAxioms t)
+          (kpair' K.toZFAxioms a b)) (scons E (scons b (scons a e)))) prem →
+      Sat mem (scons (kpair' K.toZFAxioms (natV K.toZFAxioms t)
+          (kpair' K.toZFAxioms a b)) (scons E (scons b (scons a e)))) concl) :
+    Sat mem e (connClauseF t prem concl) := by
+  intro a b E c hca hcb hE htag
+  have htag' : c = kpair' K.toZFAxioms (natV K.toZFAxioms t)
+      (kpair' K.toZFAxioms a b) :=
+    (fTagPairF_spec K.toZFAxioms (scons c (scons E (scons b (scons a e))))
+      0 t 3 2).mp htag
+  subst htag'
+  exact hcl a b E
+    ((fIsFormCodeF_spec K.toZFAxioms _ 3).mp hca)
+    ((fIsFormCodeF_spec K.toZFAxioms _ 2).mp hcb)
+    ((fUnivEnvF_spec K.toZFAxioms _ 1).mp hE)
+
+/-- **Satisfaction of the quantifier clause skeleton.** -/
+theorem sat_quantClauseF (K : ZFCAxioms mem) (t : ℕ) (prem concl : Form)
+    (e : ℕ → W)
+    (hcl : ∀ a E d : W, IsFormCodeSem K.toZFAxioms a →
+      IsUnivEnv K.toZFAxioms E →
+      Sat mem (scons (econs K.toZFAxioms d E)
+          (scons (kpair' K.toZFAxioms (natV K.toZFAxioms t) a)
+            (scons d (scons E (scons a e))))) prem →
+      Sat mem (scons (econs K.toZFAxioms d E)
+          (scons (kpair' K.toZFAxioms (natV K.toZFAxioms t) a)
+            (scons d (scons E (scons a e))))) concl) :
+    Sat mem e (quantClauseF t prem concl) := by
+  intro a E d c E' hca hE htag hec
+  have hE' : IsUnivEnv K.toZFAxioms E :=
+    (fUnivEnvF_spec K.toZFAxioms
+      (scons E' (scons c (scons d (scons E (scons a e))))) 3).mp hE
+  have hca' : IsFormCodeSem K.toZFAxioms a :=
+    (fIsFormCodeF_spec K.toZFAxioms
+      (scons E' (scons c (scons d (scons E (scons a e))))) 4).mp hca
+  have htag' : c = kpair' K.toZFAxioms (natV K.toZFAxioms t) a :=
+    (fTagUnF_spec K.toZFAxioms
+      (scons E' (scons c (scons d (scons E (scons a e))))) 1 t 4).mp htag
+  have hec' : E' = econs K.toZFAxioms d E :=
+    (fEconsF_spec K.toZFAxioms
+      (scons E' (scons c (scons d (scons E (scons a e))))) 0 2 3
+      (fun x y y' hy hy' => hE'.1 x y y' hy hy')).mp hec
+  subst htag'
+  subst hec'
+  exact hcl a E d hca' hE'
+
+/-- **Satisfaction of the falsity row.** -/
+theorem sat_botClauseF (K : ZFCAxioms mem) (n : ℕ) (e : ℕ → W) :
+    Sat mem e (botClauseF n) := by
+  intro E c hE htag
+  have hE' : IsUnivEnv K.toZFAxioms E :=
+    (fUnivEnvF_spec K.toZFAxioms (scons c (scons E e)) 1).mp hE
+  have htag' : c = kpair' K.toZFAxioms (natV K.toZFAxioms 2)
+      (vempty K.toZFAxioms) :=
+    (fTaggedEmptyF_spec K.toZFAxioms (scons c (scons E e)) 0 2).mp htag
+  subst htag'
+  exact (sat_polarAtF_zero K.toZFAxioms n (scons _ (scons E e)) 0 1).mpr
+    ((EnlargedFields.tarskiIntro_levelSat K.toZFAxioms n).botPi E hE')
+
+set_option maxHeartbeats 1000000 in
+/-- **The eight Tarski elimination clauses hold** at every level, in every
+structure carrying the nine-axiom bundle.  Each row is the corresponding
+clause of `EnlargedFields.tarskiElim_levelSat`, rendered. -/
+theorem sat_tarskiElimF (K : ZFCAxioms mem) (n : ℕ) (e : ℕ → W) :
+    Sat mem e (tarskiElimF n) := by
+  have E := EnlargedFields.tarskiElim_levelSat K.toZFAxioms (n + 1)
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · refine sat_connClauseF K 3 _ _ e fun a b F hca hcb hF hp => ?_
+    rcases E.impSigma a b F hca hcb hF
+        ((sat_polarAtF_one K.toZFAxioms n _ 0 1).mp hp) with k | k
+    · exact Or.inl ((sat_polarAtF_zero K.toZFAxioms n _ 3 1).mpr k)
+    · exact Or.inr ((sat_polarAtF_one K.toZFAxioms n _ 2 1).mpr k)
+  · refine sat_connClauseF K 3 _ _ e fun a b F hca hcb hF hp => ?_
+    obtain ⟨k1, k2⟩ := E.impPi a b F hca hcb hF
+      ((sat_polarAtF_zero K.toZFAxioms n _ 0 1).mp hp)
+    exact ⟨(sat_polarAtF_one K.toZFAxioms n _ 3 1).mpr k1,
+      (sat_polarAtF_zero K.toZFAxioms n _ 2 1).mpr k2⟩
+  · refine sat_connClauseF K 4 _ _ e fun a b F hca hcb hF hp => ?_
+    obtain ⟨k1, k2⟩ := E.andSigma a b F hca hcb hF
+      ((sat_polarAtF_one K.toZFAxioms n _ 0 1).mp hp)
+    exact ⟨(sat_polarAtF_one K.toZFAxioms n _ 3 1).mpr k1,
+      (sat_polarAtF_one K.toZFAxioms n _ 2 1).mpr k2⟩
+  · refine sat_connClauseF K 4 _ _ e fun a b F hca hcb hF hp => ?_
+    rcases E.andPi a b F hca hcb hF
+        ((sat_polarAtF_zero K.toZFAxioms n _ 0 1).mp hp) with k | k
+    · exact Or.inl ((sat_polarAtF_zero K.toZFAxioms n _ 3 1).mpr k)
+    · exact Or.inr ((sat_polarAtF_zero K.toZFAxioms n _ 2 1).mpr k)
+  · refine sat_connClauseF K 5 _ _ e fun a b F hca hcb hF hp => ?_
+    rcases E.orSigma a b F hca hcb hF
+        ((sat_polarAtF_one K.toZFAxioms n _ 0 1).mp hp) with k | k
+    · exact Or.inl ((sat_polarAtF_one K.toZFAxioms n _ 3 1).mpr k)
+    · exact Or.inr ((sat_polarAtF_one K.toZFAxioms n _ 2 1).mpr k)
+  · refine sat_connClauseF K 5 _ _ e fun a b F hca hcb hF hp => ?_
+    obtain ⟨k1, k2⟩ := E.orPi a b F hca hcb hF
+      ((sat_polarAtF_zero K.toZFAxioms n _ 0 1).mp hp)
+    exact ⟨(sat_polarAtF_zero K.toZFAxioms n _ 3 1).mpr k1,
+      (sat_polarAtF_zero K.toZFAxioms n _ 2 1).mpr k2⟩
+  · refine sat_quantClauseF K 6 _ _ e fun a F d hca hF hp => ?_
+    exact (sat_polarAtF_one K.toZFAxioms n _ 4 0).mpr
+      (E.allSigma a F d hca hF ((sat_polarAtF_one K.toZFAxioms n _ 1 3).mp hp))
+  · refine sat_quantClauseF K 7 _ _ e fun a F d hca hF hp => ?_
+    exact (sat_polarAtF_zero K.toZFAxioms n _ 4 0).mpr
+      (E.exPi a F d hca hF ((sat_polarAtF_zero K.toZFAxioms n _ 1 3).mp hp))
+
+set_option maxHeartbeats 1000000 in
+/-- **The nine Tarski introduction clauses hold** at every level.  Each row
+is the corresponding clause of `EnlargedFields.tarskiIntro_levelSat`,
+rendered. -/
+theorem sat_tarskiIntroF (K : ZFCAxioms mem) (n : ℕ) (e : ℕ → W) :
+    Sat mem e (tarskiIntroF n) := by
+  have I := EnlargedFields.tarskiIntro_levelSat K.toZFAxioms n
+  refine ⟨sat_botClauseF K n e, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · refine sat_connClauseF K 3 _ _ e fun a b F hca hcb hF hp => ?_
+    refine (sat_polarAtF_one K.toZFAxioms n _ 0 1).mpr
+      (I.impSigma a b F hca hcb hF ?_)
+    rcases hp with k | k
+    · exact Or.inl ((sat_polarAtF_zero K.toZFAxioms n _ 3 1).mp k)
+    · exact Or.inr ((sat_polarAtF_one K.toZFAxioms n _ 2 1).mp k)
+  · refine sat_connClauseF K 3 _ _ e fun a b F hca hcb hF hp => ?_
+    exact (sat_polarAtF_zero K.toZFAxioms n _ 0 1).mpr
+      (I.impPi a b F hca hcb hF
+        ((sat_polarAtF_one K.toZFAxioms n _ 3 1).mp hp.1)
+        ((sat_polarAtF_zero K.toZFAxioms n _ 2 1).mp hp.2))
+  · refine sat_connClauseF K 4 _ _ e fun a b F hca hcb hF hp => ?_
+    exact (sat_polarAtF_one K.toZFAxioms n _ 0 1).mpr
+      (I.andSigma a b F hca hcb hF
+        ((sat_polarAtF_one K.toZFAxioms n _ 3 1).mp hp.1)
+        ((sat_polarAtF_one K.toZFAxioms n _ 2 1).mp hp.2))
+  · refine sat_connClauseF K 4 _ _ e fun a b F hca hcb hF hp => ?_
+    refine (sat_polarAtF_zero K.toZFAxioms n _ 0 1).mpr
+      (I.andPi a b F hca hcb hF ?_)
+    rcases hp with k | k
+    · exact Or.inl ((sat_polarAtF_zero K.toZFAxioms n _ 3 1).mp k)
+    · exact Or.inr ((sat_polarAtF_zero K.toZFAxioms n _ 2 1).mp k)
+  · refine sat_connClauseF K 5 _ _ e fun a b F hca hcb hF hp => ?_
+    refine (sat_polarAtF_one K.toZFAxioms n _ 0 1).mpr
+      (I.orSigma a b F hca hcb hF ?_)
+    rcases hp with k | k
+    · exact Or.inl ((sat_polarAtF_one K.toZFAxioms n _ 3 1).mp k)
+    · exact Or.inr ((sat_polarAtF_one K.toZFAxioms n _ 2 1).mp k)
+  · refine sat_connClauseF K 5 _ _ e fun a b F hca hcb hF hp => ?_
+    exact (sat_polarAtF_zero K.toZFAxioms n _ 0 1).mpr
+      (I.orPi a b F hca hcb hF
+        ((sat_polarAtF_zero K.toZFAxioms n _ 3 1).mp hp.1)
+        ((sat_polarAtF_zero K.toZFAxioms n _ 2 1).mp hp.2))
+  · refine sat_quantClauseF K 6 _ _ e fun a F d hca hF hp => ?_
+    exact (sat_polarAtF_zero K.toZFAxioms n _ 1 3).mpr
+      (I.allPi a F d hca hF ((sat_polarAtF_zero K.toZFAxioms n _ 4 0).mp hp))
+  · refine sat_quantClauseF K 7 _ _ e fun a F d hca hF hp => ?_
+    exact (sat_polarAtF_one K.toZFAxioms n _ 1 3).mpr
+      (I.exSigma a F d hca hF ((sat_polarAtF_one K.toZFAxioms n _ 4 0).mp hp))
+
 end SatGadgets
 
-/- The five field sentences contain the large concrete goal-2 macros, and
+/- The seven field sentences contain the large concrete goal-2 macros, and
 reducing a universal closure evaluates `freeVariables` over the whole
 translated formula.  Nothing below needs to see through a macro — every
 fact enters through a rendering spec or a named lemma — and the elaborator
@@ -239,7 +421,8 @@ attribute [local irreducible] BoundedZFCConsistency.fQuantBoundedF
   BoundedZFCConsistency.fUnivEnvF BoundedZFCConsistency.fTaggedEmptyF
   BoundedZFCConsistency.fRenamesF BoundedZFCConsistency.fVarMapF
   BoundedZFCConsistency.fCompF BoundedZFCConsistency.fEconsF
-  BoundedZFCConsistency.fSuccMapF
+  BoundedZFCConsistency.fSuccMapF BoundedZFCConsistency.fTagPairF
+  BoundedZFCConsistency.fTagUnF
 
 /- `conZFCForm n` unfolds to the sealed closure of a large body, and
 reducing the closure evaluates `bound` over the whole of it.  The final
@@ -268,6 +451,14 @@ def substitutionInvariantSet (n : ℕ) : SetTheorySentence :=
 /-- The axiom-soundness field, as a Foundation sentence. -/
 def axiomSoundSet (n : ℕ) : SetTheorySentence :=
   (toSet 0 (axiomSoundF n)).univCl
+
+/-- The Tarski-elimination field, as a Foundation sentence. -/
+def tarskiElimSet (n : ℕ) : SetTheorySentence :=
+  (toSet 0 (tarskiElimF n)).univCl
+
+/-- The Tarski-introduction field, as a Foundation sentence. -/
+def tarskiIntroSet (n : ℕ) : SetTheorySentence :=
+  (toSet 0 (tarskiIntroF n)).univCl
 
 section Provability
 
@@ -325,6 +516,26 @@ theorem zfc_proves_axiomSoundSet (n : ℕ) : 𝗭𝗙𝗖 ⊢ axiomSoundSet n :=
     (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
     (sat_axiomSoundF zfcAxioms_of_models n f)
 
+/-- **`𝗭𝗙𝗖` derives every Tarski-elimination field sentence.** -/
+theorem zfc_proves_tarskiElimSet (n : ℕ) : 𝗭𝗙𝗖 ⊢ tarskiElimSet n := by
+  refine SetTheory.provable_of_models.{0} 𝗭𝗙𝗖 (tarskiElimSet n) ?_
+  intro W _ _ _
+  show W↓[ℒₛₑₜ] ⊧ (toSet 0 (tarskiElimF n)).univCl
+  refine models_iff_proposition.mpr fun f => ?_
+  exact (eval_toSet (tarskiElimF n) 0 ![] f f
+    (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
+    (sat_tarskiElimF zfcAxioms_of_models n f)
+
+/-- **`𝗭𝗙𝗖` derives every Tarski-introduction field sentence.** -/
+theorem zfc_proves_tarskiIntroSet (n : ℕ) : 𝗭𝗙𝗖 ⊢ tarskiIntroSet n := by
+  refine SetTheory.provable_of_models.{0} 𝗭𝗙𝗖 (tarskiIntroSet n) ?_
+  intro W _ _ _
+  show W↓[ℒₛₑₜ] ⊧ (toSet 0 (tarskiIntroF n)).univCl
+  refine models_iff_proposition.mpr fun f => ?_
+  exact (eval_toSet (tarskiIntroF n) 0 ![] f f
+    (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
+    (sat_tarskiIntroF zfcAxioms_of_models n f)
+
 end Provability
 
 /-! ## Quotation of the field sentences
@@ -379,6 +590,19 @@ theorem quote_axiomSoundSet (n : ℕ) :
     (⌜axiomSoundSet n⌝ : V) = axiomSoundCode ((n : ℕ) : V) := by
   rw [axiomSoundSet, quote_univCl_of_closed (not_free_axiomSoundF n),
     axiomSoundCode_natCast]
+
+/-- The Tarski-elimination sentence's quote is the field builder's value. -/
+theorem quote_tarskiElimSet (n : ℕ) :
+    (⌜tarskiElimSet n⌝ : V) = tarskiElimCode ((n : ℕ) : V) := by
+  rw [tarskiElimSet, quote_univCl_of_closed (not_free_tarskiElimF n),
+    tarskiElimCode_natCast]
+
+/-- The Tarski-introduction sentence's quote is the field builder's
+value. -/
+theorem quote_tarskiIntroSet (n : ℕ) :
+    (⌜tarskiIntroSet n⌝ : V) = tarskiIntroCode ((n : ℕ) : V) := by
+  rw [tarskiIntroSet, quote_univCl_of_closed (not_free_tarskiIntroF n),
+    tarskiIntroCode_natCast]
 
 end Quotation
 
@@ -465,10 +689,40 @@ noncomputable def baseAxiomSoundProof :
   exact h
 
 set_option backward.isDefEq.respectTransparency false in
+/-- A typed internal `𝗭𝗙𝗖` proof of the Tarski-elimination field at index
+`0`. -/
+noncomputable def baseTarskiElimProof :
+    (𝗭𝗙𝗖 : SetTheory).internalize V ⊢! tarskiElimFormula (0 : V) := by
+  have h := (internal_provable_of_outer_provable (V := V)
+    (zfc_proves_tarskiElimSet 0)).get
+  have heq : (⌜tarskiElimSet 0⌝ : Bootstrapping.Formula V ℒₛₑₜ) =
+      tarskiElimFormula 0 := by
+    apply Semiformula.ext
+    show (⌜tarskiElimSet 0⌝ : V) = tarskiElimCode (0 : V)
+    rw [show (0 : V) = ((0 : ℕ) : V) by simp, quote_tarskiElimSet]
+  rw [← heq]
+  exact h
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A typed internal `𝗭𝗙𝗖` proof of the Tarski-introduction field at index
+`0`. -/
+noncomputable def baseTarskiIntroProof :
+    (𝗭𝗙𝗖 : SetTheory).internalize V ⊢! tarskiIntroFormula (0 : V) := by
+  have h := (internal_provable_of_outer_provable (V := V)
+    (zfc_proves_tarskiIntroSet 0)).get
+  have heq : (⌜tarskiIntroSet 0⌝ : Bootstrapping.Formula V ℒₛₑₜ) =
+      tarskiIntroFormula 0 := by
+    apply Semiformula.ext
+    show (⌜tarskiIntroSet 0⌝ : V) = tarskiIntroCode (0 : V)
+    rw [show (0 : V) = ((0 : ℕ) : V) by simp, quote_tarskiIntroSet]
+  rw [← heq]
+  exact h
+
+set_option backward.isDefEq.respectTransparency false in
 /-- A typed internal `𝗭𝗙𝗖` proof of the forced final field at index `0`:
 the internalized `Con₀(ZFC)`, by D1 from `zfc_proves_conZFCSet`.
 
-Unlike the five variable fields, this proof goes through the *raw*
+Unlike the seven variable fields, this proof goes through the *raw*
 provability predicate (`provable_conZFCSet_standard_point`) and rebuilds
 the typed proof by the `toTProof` pattern: the quotation identity of the
 sealed consistency sentence enters only as a propositional rewrite, never
@@ -486,7 +740,7 @@ noncomputable def baseFinalConsistencyProof :
 /-! ## The assembled base master certificate -/
 
 /-- **The base master certificate**: a typed internal `𝗭𝗙𝗖` proof of the
-concrete family's complete six-field sentence at level `0`. -/
+concrete family's complete eight-field sentence at level `0`. -/
 noncomputable def baseZFCMasterCertificate :
     (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
       ((concreteZFCTruthCertificateFamily (V := V)).fields 0
@@ -494,6 +748,7 @@ noncomputable def baseZFCMasterCertificate :
   ZFCTruthCertificateFields.intro _
     baseLocalStepProof baseCrossLevelProof baseShiftInvariantProof
     baseSubstitutionInvariantProof baseAxiomSoundProof
+    baseTarskiElimProof baseTarskiIntroProof
     baseFinalConsistencyProof
 
 end BaseProofs
@@ -526,6 +781,8 @@ theorem zfcProofSelectorIn_of_concreteStagedSuccessor
     concreteFamily_shiftInvariant_definable
     concreteFamily_substitutionInvariant_definable
     concreteFamily_axiomSound_definable
+    concreteFamily_tarskiElim_definable
+    concreteFamily_tarskiIntro_definable
     baseZFCMasterCertificate
     successorTemplates
 

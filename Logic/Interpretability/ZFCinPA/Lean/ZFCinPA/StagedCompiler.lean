@@ -6,7 +6,7 @@ import ZFCinPA.CertificateFamily
 
 This is the `ℒₛₑₜ` mirror of the arithmetic
 `BoundedPAConsistency.StagedTruthCertificateProofCompiler` together with its
-direct-package plumbing (`StagedDirectTruthCertificatePackage`).  The six
+direct-package plumbing (`StagedDirectTruthCertificatePackage`).  The eight
 laws of a truth certificate are not logically independent: a concrete
 construction first proves the local clauses, uses them while proving
 cross-level coherence, then uses the accumulated laws for substitution and
@@ -27,9 +27,9 @@ proofs, but the compiler itself only consumes their compiled implications.
 
 The endpoint `zfcProofSelectorIn_of_stagedCertificates` feeds the compiled
 successor codes to `ZFCinPA.PackageInduction`'s direct master-proof
-induction: the package witness is the actual proof code of the six-field
+induction: the package witness is the actual proof code of the eight-field
 master certificate, the master-code function is the `𝚺₁`-definable
-`ZFCTruthCertificateFamily.code`, and final extraction is the forced sixth
+`ZFCTruthCertificateFamily.code`, and final extraction is the forced eighth
 field.  The remaining obligations of the whole uniform-provability project
 are thereby exactly: one concrete `ZFCTruthCertificateFamily` with `𝚺₁`
 field-code graphs, a base certificate at level `0`, and a staged successor
@@ -77,7 +77,8 @@ noncomputable def substitutionContext
     Bootstrapping.Formula V ℒₛₑₜ :=
   shiftContext previous localField cross shift ⋏ substitution
 
-/-- Complete soundness context, immediately before final consistency. -/
+/-- Context after axiom soundness, immediately before the Tarski
+elimination clauses. -/
 noncomputable def soundnessContext
     (previous : ZFCTruthCertificateFields (V := V))
     (localField cross shift substitution axiomSound :
@@ -85,6 +86,25 @@ noncomputable def soundnessContext
     Bootstrapping.Formula V ℒₛₑₜ :=
   substitutionContext previous localField cross shift substitution ⋏
     axiomSound
+
+/-- Context after the Tarski elimination clauses have been proved. -/
+noncomputable def tarskiElimContext
+    (previous : ZFCTruthCertificateFields (V := V))
+    (localField cross shift substitution axiomSound tarskiElim :
+      Bootstrapping.Formula V ℒₛₑₜ) :
+    Bootstrapping.Formula V ℒₛₑₜ :=
+  soundnessContext previous localField cross shift substitution axiomSound ⋏
+    tarskiElim
+
+/-- Complete context, immediately before final consistency. -/
+noncomputable def tarskiIntroContext
+    (previous : ZFCTruthCertificateFields (V := V))
+    (localField cross shift substitution axiomSound tarskiElim tarskiIntro :
+      Bootstrapping.Formula V ℒₛₑₜ) :
+    Bootstrapping.Formula V ℒₛₑₜ :=
+  tarskiElimContext previous localField cross shift substitution axiomSound
+      tarskiElim ⋏
+    tarskiIntro
 
 /-! ## A dependency-aware successor step -/
 
@@ -116,19 +136,35 @@ structure ZFCStagedCertificateStep
       (∀⁰ shiftInvariant.predicate)
       (∀⁰ substitutionInvariant.predicate))
 
-  finalConsistency : Bootstrapping.Formula V ℒₛₑₜ
-  proveFinalConsistency : T ⊢!
+  tarskiElim : Bootstrapping.Formula V ℒₛₑₜ
+  proveTarskiElim : T ⊢!
     soundnessContext previous localStep
       (∀⁰ crossLevel.predicate)
       (∀⁰ shiftInvariant.predicate)
       (∀⁰ substitutionInvariant.predicate)
-      (∀⁰ axiomSound.predicate) 🡒 finalConsistency
+      (∀⁰ axiomSound.predicate) 🡒 tarskiElim
+
+  tarskiIntro : Bootstrapping.Formula V ℒₛₑₜ
+  proveTarskiIntro : T ⊢!
+    tarskiElimContext previous localStep
+      (∀⁰ crossLevel.predicate)
+      (∀⁰ shiftInvariant.predicate)
+      (∀⁰ substitutionInvariant.predicate)
+      (∀⁰ axiomSound.predicate) tarskiElim 🡒 tarskiIntro
+
+  finalConsistency : Bootstrapping.Formula V ℒₛₑₜ
+  proveFinalConsistency : T ⊢!
+    tarskiIntroContext previous localStep
+      (∀⁰ crossLevel.predicate)
+      (∀⁰ shiftInvariant.predicate)
+      (∀⁰ substitutionInvariant.predicate)
+      (∀⁰ axiomSound.predicate) tarskiElim tarskiIntro 🡒 finalConsistency
 
 namespace ZFCStagedCertificateStep
 
 variable {T : InternalTheory V ℒₛₑₜ}
 
-/-- The public six fields produced by a staged successor step. -/
+/-- The public eight fields produced by a staged successor step. -/
 noncomputable def target
     {previous : ZFCTruthCertificateFields (V := V)}
     (step : ZFCStagedCertificateStep T previous) :
@@ -138,9 +174,11 @@ noncomputable def target
   shiftInvariant := ∀⁰ step.shiftInvariant.predicate
   substitutionInvariant := ∀⁰ step.substitutionInvariant.predicate
   axiomSound := ∀⁰ step.axiomSound.predicate
+  tarskiElim := step.tarskiElim
+  tarskiIntro := step.tarskiIntro
   finalConsistency := step.finalConsistency
 
-/-- Compile all six stages into one typed proof of the successor master
+/-- Compile all eight stages into one typed proof of the successor master
 certificate.
 
 The intermediate conjunctions are retained only as proof objects used to
@@ -185,9 +223,28 @@ noncomputable def compile
         (∀⁰ step.substitutionInvariant.predicate)
         (∀⁰ step.axiomSound.predicate) :=
     Entailment.K_intro hsubstitutionContext haxiom
+  let helim : T ⊢! step.tarskiElim :=
+    TProof.modusPonens step.proveTarskiElim hsoundness
+  let helimContext : T ⊢!
+      tarskiElimContext previous step.localStep
+        (∀⁰ step.crossLevel.predicate)
+        (∀⁰ step.shiftInvariant.predicate)
+        (∀⁰ step.substitutionInvariant.predicate)
+        (∀⁰ step.axiomSound.predicate) step.tarskiElim :=
+    Entailment.K_intro hsoundness helim
+  let hintro : T ⊢! step.tarskiIntro :=
+    TProof.modusPonens step.proveTarskiIntro helimContext
+  let hintroContext : T ⊢!
+      tarskiIntroContext previous step.localStep
+        (∀⁰ step.crossLevel.predicate)
+        (∀⁰ step.shiftInvariant.predicate)
+        (∀⁰ step.substitutionInvariant.predicate)
+        (∀⁰ step.axiomSound.predicate) step.tarskiElim step.tarskiIntro :=
+    Entailment.K_intro helimContext hintro
   let hfinal : T ⊢! step.finalConsistency :=
-    TProof.modusPonens step.proveFinalConsistency hsoundness
-  exact step.target.intro hlocal hcross hshift hsubstitution haxiom hfinal
+    TProof.modusPonens step.proveFinalConsistency hintroContext
+  exact step.target.intro hlocal hcross hshift hsubstitution haxiom helim
+    hintro hfinal
 
 /-- The staged compiler's value is recognized by the internalized proof
 predicate of the underlying theory. -/
@@ -262,7 +319,7 @@ give the model-internal proof selector.
 
 The induction is `PackageInduction`'s `𝚺₁` direct master-proof induction
 inside the ambient model; this theorem contributes only the successor
-witness construction above, and final extraction is the forced sixth
+witness construction above, and final extraction is the forced eighth
 certificate field. -/
 theorem zfcProofSelectorIn_of_stagedCertificates
     (family : ZFCTruthCertificateFamily (V := V))
@@ -303,8 +360,8 @@ theorem zfcProofSelectorIn_of_stagedTypedCertificates
 
 /-- Public staged endpoint for a concrete dynamic truth family.
 
-The five premises represent exactly the variable field-code functions; the
-sixth field's graph is `conZFCSetCodeGraph`, discharged by
+The seven premises represent exactly the variable field-code functions; the
+eighth field's graph is `conZFCSetCodeGraph`, discharged by
 `CertificateFamily`.  Together with the typed base certificate and staged
 successor witnesses this is the complete remaining interface of the uniform
 internal-provability project. -/
@@ -325,6 +382,12 @@ theorem zfcProofSelectorIn_of_stagedCertificates_and_fieldCodes
     (axiomSoundDefinable :
       HierarchySymbol.sigmaOne.DefinableFunction₁
         (fun n : V ↦ (family.axiomSound n).val))
+    (tarskiElimDefinable :
+      HierarchySymbol.sigmaOne.DefinableFunction₁
+        (fun n : V ↦ (family.tarskiElim n).val))
+    (tarskiIntroDefinable :
+      HierarchySymbol.sigmaOne.DefinableFunction₁
+        (fun n : V ↦ (family.tarskiIntro n).val))
     (baseCertificate : (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
       (family.fields 0 isFormula_conZFCSetCodeFun_zero).sentence)
     (successorTemplates : HasStagedSuccessor family) :
@@ -332,7 +395,8 @@ theorem zfcProofSelectorIn_of_stagedCertificates_and_fieldCodes
   apply zfcProofSelectorIn_of_stagedTypedCertificates family
     (family.code_definable_of_fields
       localStepDefinable crossLevelDefinable shiftInvariantDefinable
-      substitutionInvariantDefinable axiomSoundDefinable)
+      substitutionInvariantDefinable axiomSoundDefinable
+      tarskiElimDefinable tarskiIntroDefinable)
     baseCertificate successorTemplates
 
 end ZFCinPA

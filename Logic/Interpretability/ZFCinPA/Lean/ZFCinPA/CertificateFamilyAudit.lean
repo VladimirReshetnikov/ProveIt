@@ -64,5 +64,7 @@ should appear, and in particular no `sorry` and no theory-specific axiom. -/
 #print axioms ZFCTruthCertificateFamily.toTProof
 #print axioms ZFCTruthCertificateFamily.exists_finalProof_of_masterProof
 #print axioms ZFCTruthCertificateFamily.code_definable_of_fields
+#print axioms ZFCTruthCertificateFields.tarskiElimProof
+#print axioms ZFCTruthCertificateFields.tarskiIntroProof
 
 end LeanProofs.ZFCinPA.CertificateFamilyAudit

@@ -1,7 +1,7 @@
 import ZFCinPA.BaseCertificate
 
 /-!
-# The staged successor of the concrete family, from six flat implications
+# The staged successor of the concrete family, from eight flat implications
 
 `ZFCinPA.StagedCompiler` states the last obligation of the uniform
 internal-provability project as `HasStagedSuccessor`: at every model index
@@ -11,7 +11,7 @@ recursive slots are `UniversalKernel`s stated at four different cumulative
 contexts, and the two direct slots are implications out of the previous
 certificate and out of the complete new soundness context.
 
-Mathematically, however, all six successor obligations of the concrete
+Mathematically, however, all eight successor obligations of the concrete
 family have the *same* antecedent — the level-`n` master certificate — and
 the staged contexts only make more hypotheses available than each stage
 needs.  This module performs that reduction once and for all:
@@ -21,7 +21,7 @@ needs.  This module performs that reduction once and for all:
   universal closure is the field itself.  The peeling is generic
   (`peelAll`) and takes its well-formedness from the field's own
   `IsFormula` invariant, so no new internal induction is needed;
-* `ZFCSuccessorImplications n h` records the six flat implications
+* `ZFCSuccessorImplications n h` records the eight flat implications
   `previous.sentence 🡒 field (n + 1)` together with the well-formedness
   witness for the successor consistency code;
 * `stagedStepOfImplications` builds the staged step, weakening each
@@ -31,7 +31,7 @@ needs.  This module performs that reduction once and for all:
   `family.code (n + 1)`.
 
 The upshot, `hasStagedSuccessor_of_successorImplications`, is that the
-remaining mathematical content of the project is exactly six internal `𝗭𝗙𝗖`
+remaining mathematical content of the project is exactly eight internal `𝗭𝗙𝗖`
 implications at every (possibly nonstandard) index.  Nothing here weakens
 `HasStagedSuccessor`, assumes it, or introduces a premise that the staged
 compiler did not already demand — and the final section proves the
@@ -265,7 +265,7 @@ noncomputable def substitutionContext_imp
   LO.Entailment.C_trans LO.Entailment.and₁
     (shiftContext_imp previous localField cross shift)
 
-/-- The complete staged soundness context implies the previous master
+/-- The staged soundness context implies the previous master
 certificate. -/
 noncomputable def soundnessContext_imp
     (previous : ZFCTruthCertificateFields (V := V))
@@ -275,6 +275,30 @@ noncomputable def soundnessContext_imp
         axiomSound 🡒 previous.sentence :=
   LO.Entailment.C_trans LO.Entailment.and₁
     (substitutionContext_imp previous localField cross shift substitution)
+
+/-- The staged Tarski-elimination context implies the previous master
+certificate. -/
+noncomputable def tarskiElimContext_imp
+    (previous : ZFCTruthCertificateFields (V := V))
+    (localField cross shift substitution axiomSound tarskiElim :
+      Bootstrapping.Formula V ℒₛₑₜ) :
+    T ⊢! tarskiElimContext previous localField cross shift substitution
+        axiomSound tarskiElim 🡒 previous.sentence :=
+  LO.Entailment.C_trans LO.Entailment.and₁
+    (soundnessContext_imp previous localField cross shift substitution
+      axiomSound)
+
+/-- The complete staged context implies the previous master
+certificate. -/
+noncomputable def tarskiIntroContext_imp
+    (previous : ZFCTruthCertificateFields (V := V))
+    (localField cross shift substitution axiomSound tarskiElim tarskiIntro :
+      Bootstrapping.Formula V ℒₛₑₜ) :
+    T ⊢! tarskiIntroContext previous localField cross shift substitution
+        axiomSound tarskiElim tarskiIntro 🡒 previous.sentence :=
+  LO.Entailment.C_trans LO.Entailment.and₁
+    (tarskiElimContext_imp previous localField cross shift substitution
+      axiomSound tarskiElim)
 
 /-- Install a kernel whose compiled conclusion is a named field, from a
 context weakening and a flat implication out of the previous certificate.
@@ -303,16 +327,16 @@ noncomputable def kernelOfImplication
 
 end Contexts
 
-/-! ## The six flat successor implications -/
+/-! ## The eight flat successor implications -/
 
 /-- **The remaining mathematical obligation of the project, at one model
 index.**
 
 Six internal `𝗭𝗙𝗖` implications out of the level-`n` master certificate:
-the five level-`(n+1)` truth laws of the concrete family, and the
+the seven level-`(n+1)` truth laws of the concrete family, and the
 internalized `Con_{n+1}(ZFC)`.  The extra field `conFormula` is the
 well-formedness witness for the successor consistency code, which the
-sixth implication's typed statement needs and which any actual proof of it
+eighth implication's typed statement needs and which any actual proof of it
 would supply. -/
 structure ZFCSuccessorImplications (n : V)
     (h : IsFormula ℒₛₑₜ (conZFCSetCodeFun n)) where
@@ -338,6 +362,14 @@ structure ZFCSuccessorImplications (n : V)
   axiomSound : (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
     ((concreteZFCTruthCertificateFamily (V := V)).fields n h).sentence 🡒
       axiomSoundFormula (n + 1)
+  /-- The eight Tarski elimination clauses at level `n + 2`. -/
+  tarskiElim : (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
+    ((concreteZFCTruthCertificateFamily (V := V)).fields n h).sentence 🡒
+      tarskiElimFormula (n + 1)
+  /-- The nine Tarski introduction clauses at level `n + 2`. -/
+  tarskiIntro : (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
+    ((concreteZFCTruthCertificateFamily (V := V)).fields n h).sentence 🡒
+      tarskiIntroFormula (n + 1)
   /-- The internalized `Con_{n+1}(ZFC)`. -/
   finalConsistency : (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
     ((concreteZFCTruthCertificateFamily (V := V)).fields n h).sentence 🡒
@@ -345,7 +377,7 @@ structure ZFCSuccessorImplications (n : V)
 
 /-! ## The staged step built from them -/
 
-/-- Assemble a dependency-ordered staged successor step out of the six flat
+/-- Assemble a dependency-ordered staged successor step out of the eight flat
 implications.  Each stage weakens its cumulative context back to the
 previous master certificate and then applies the corresponding
 implication. -/
@@ -372,12 +404,18 @@ noncomputable def stagedStepOfImplications (n : V)
     kernelOfImplication (axiomSoundPredicate (n + 1))
       (all_axiomSoundPredicate (n + 1))
       (substitutionContext_imp _ _ _ _ _) S.axiomSound
+  tarskiElim := tarskiElimFormula (n + 1)
+  proveTarskiElim :=
+    LO.Entailment.C_trans (soundnessContext_imp _ _ _ _ _ _) S.tarskiElim
+  tarskiIntro := tarskiIntroFormula (n + 1)
+  proveTarskiIntro :=
+    LO.Entailment.C_trans (tarskiElimContext_imp _ _ _ _ _ _ _) S.tarskiIntro
   finalConsistency := conZFCSetFormula (n + 1) S.conFormula
   proveFinalConsistency :=
-    LO.Entailment.C_trans (soundnessContext_imp _ _ _ _ _ _)
+    LO.Entailment.C_trans (tarskiIntroContext_imp _ _ _ _ _ _ _ _)
       S.finalConsistency
 
-/-- The step's public six-field target is exactly the concrete family at
+/-- The step's public eight-field target is exactly the concrete family at
 the next index. -/
 theorem stagedStepOfImplications_target (n : V)
     (h : IsFormula ℒₛₑₜ (conZFCSetCodeFun n))
@@ -393,7 +431,9 @@ theorem stagedStepOfImplications_target (n : V)
     concreteZFCTruthCertificateFamily_crossLevel,
     concreteZFCTruthCertificateFamily_shiftInvariant,
     concreteZFCTruthCertificateFamily_substitutionInvariant,
-    concreteZFCTruthCertificateFamily_axiomSound]
+    concreteZFCTruthCertificateFamily_axiomSound,
+    concreteZFCTruthCertificateFamily_tarskiElim,
+    concreteZFCTruthCertificateFamily_tarskiIntro]
 
 /-- Raw-code form of the target identification, as the staged package
 relation requires. -/
@@ -410,9 +450,9 @@ theorem stagedStepOfImplications_target_val (n : V)
 
 /-! ## The reduction -/
 
-/-- **The staged successor obligation reduces to the six flat
+/-- **The staged successor obligation reduces to the eight flat
 implications.**  Given, at every model index, internal `𝗭𝗙𝗖` proofs that
-the level-`n` master certificate implies each of the six level-`(n+1)`
+the level-`n` master certificate implies each of the eight level-`(n+1)`
 fields, the concrete family has a staged successor — and therefore, by
 `zfcProofSelectorIn_of_concreteStagedSuccessor`, a model-internal proof
 selector. -/
@@ -424,7 +464,7 @@ theorem hasStagedSuccessor_of_successorImplications
   exact ⟨stagedStepOfImplications n h (S n h),
     stagedStepOfImplications_target_val n h (S n h)⟩
 
-/-- Propositional form of the reduction: only the existence of the six
+/-- Propositional form of the reduction: only the existence of the eight
 implications matters. -/
 theorem hasStagedSuccessor_of_nonempty_successorImplications
     (S : ∀ (n : V) (h : IsFormula ℒₛₑₜ (conZFCSetCodeFun n)),
@@ -435,7 +475,7 @@ theorem hasStagedSuccessor_of_nonempty_successorImplications
   exact ⟨stagedStepOfImplications n h s,
     stagedStepOfImplications_target_val n h s⟩
 
-/-- The whole project, reduced to the six flat implications. -/
+/-- The whole project, reduced to the eight flat implications. -/
 theorem zfcProofSelectorIn_of_successorImplications
     (S : ∀ (n : V) (h : IsFormula ℒₛₑₜ (conZFCSetCodeFun n)),
       Nonempty (ZFCSuccessorImplications n h)) :
@@ -446,13 +486,13 @@ theorem zfcProofSelectorIn_of_successorImplications
 /-! ## The converse: nothing is lost by flattening
 
 A staged step whose public target code is the family's next master
-certificate already contains the six flat implications.  Its four kernels
+certificate already contains the eight flat implications.  Its four kernels
 are stated at cumulative contexts, but each context is reached from the
 previous certificate by the implications proved *before* it, so the whole
-staircase collapses.  The code equality forces the five field
-identifications by injectivity of the coded conjunction, and the sixth
+staircase collapses.  The code equality forces the seven field
+identifications by injectivity of the coded conjunction, and the eighth
 conjunct's well-formedness — the one datum `ZFCSuccessorImplications`
-carries besides the six proofs — is read off the step's own typed final
+carries besides the eight proofs — is read off the step's own typed final
 field. -/
 
 section Converse
@@ -467,16 +507,20 @@ theorem stagedStep_target_sentence_val
         ((∀⁰ step.shiftInvariant.predicate).val ^⋏
           ((∀⁰ step.substitutionInvariant.predicate).val ^⋏
             ((∀⁰ step.axiomSound.predicate).val ^⋏
-              step.finalConsistency.val)))) := rfl
+              (step.tarskiElim.val ^⋏
+                (step.tarskiIntro.val ^⋏
+                  step.finalConsistency.val)))))) := rfl
 
 /-- The concrete family's master code, decomposed. -/
 theorem concreteFamily_code_eq (x : V) :
     (concreteZFCTruthCertificateFamily (V := V)).code x =
       localStepCode x ^⋏ (crossLevelCode x ^⋏ (shiftInvariantCode x ^⋏
         (substitutionInvariantCode x ^⋏
-          (axiomSoundCode x ^⋏ conZFCSetCodeFun x)))) := rfl
+          (axiomSoundCode x ^⋏
+            (tarskiElimCode x ^⋏
+              (tarskiIntroCode x ^⋏ conZFCSetCodeFun x)))))) := rfl
 
-/-- **Every staged successor step yields the six flat implications.** -/
+/-- **Every staged successor step yields the eight flat implications.** -/
 noncomputable def successorImplicationsOfStagedStep (n : V)
     (h : IsFormula ℒₛₑₜ (conZFCSetCodeFun n))
     (step : ZFCStagedCertificateStep ((𝗭𝗙𝗖 : SetTheory).internalize V)
@@ -487,8 +531,8 @@ noncomputable def successorImplicationsOfStagedStep (n : V)
   classical
   rw [stagedStep_target_sentence_val, concreteFamily_code_eq] at htarget
   simp only [qqAnd_inj] at htarget
-  obtain ⟨e1, e2, e3, e4, e5, e6⟩ := htarget
-  -- the five field identifications, typed
+  obtain ⟨e1, e2, e3, e4, e5, e6, e7, e8⟩ := htarget
+  -- the seven field identifications, typed
   have f1 : step.localStep = localStepFormula (n + 1) :=
     Bootstrapping.Semiformula.ext e1
   have f2 : (∀⁰ step.crossLevel.predicate) = crossLevelFormula (n + 1) :=
@@ -501,13 +545,17 @@ noncomputable def successorImplicationsOfStagedStep (n : V)
     Bootstrapping.Semiformula.ext e4
   have f5 : (∀⁰ step.axiomSound.predicate) = axiomSoundFormula (n + 1) :=
     Bootstrapping.Semiformula.ext e5
+  have f6 : step.tarskiElim = tarskiElimFormula (n + 1) :=
+    Bootstrapping.Semiformula.ext e6
+  have f7 : step.tarskiIntro = tarskiIntroFormula (n + 1) :=
+    Bootstrapping.Semiformula.ext e7
   -- well-formedness of the successor consistency code, from the step
   have hcon : IsFormula ℒₛₑₜ (conZFCSetCodeFun (n + 1)) := by
     have hs := step.finalConsistency.isSemiformula_zero
-    rw [e6] at hs
+    rw [e8] at hs
     simpa using hs
-  have f6 : step.finalConsistency = conZFCSetFormula (n + 1) hcon :=
-    Bootstrapping.Semiformula.ext e6
+  have f8 : step.finalConsistency = conZFCSetFormula (n + 1) hcon :=
+    Bootstrapping.Semiformula.ext e8
   -- collapse the staircase of cumulative contexts
   have w1 : (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
       ((concreteZFCTruthCertificateFamily (V := V)).fields n h).sentence 🡒
@@ -547,7 +595,27 @@ noncomputable def successorImplicationsOfStagedStep (n : V)
           (∀⁰ step.substitutionInvariant.predicate)
           (∀⁰ step.axiomSound.predicate) :=
     LO.Entailment.right_K_intro w4 c5
-  have c6 := LO.Entailment.C_trans w5 step.proveFinalConsistency
+  have c6 := LO.Entailment.C_trans w5 step.proveTarskiElim
+  have w6 : (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
+      ((concreteZFCTruthCertificateFamily (V := V)).fields n h).sentence 🡒
+        tarskiElimContext
+          ((concreteZFCTruthCertificateFamily (V := V)).fields n h)
+          step.localStep (∀⁰ step.crossLevel.predicate)
+          (∀⁰ step.shiftInvariant.predicate)
+          (∀⁰ step.substitutionInvariant.predicate)
+          (∀⁰ step.axiomSound.predicate) step.tarskiElim :=
+    LO.Entailment.right_K_intro w5 c6
+  have c7 := LO.Entailment.C_trans w6 step.proveTarskiIntro
+  have w7 : (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
+      ((concreteZFCTruthCertificateFamily (V := V)).fields n h).sentence 🡒
+        tarskiIntroContext
+          ((concreteZFCTruthCertificateFamily (V := V)).fields n h)
+          step.localStep (∀⁰ step.crossLevel.predicate)
+          (∀⁰ step.shiftInvariant.predicate)
+          (∀⁰ step.substitutionInvariant.predicate)
+          (∀⁰ step.axiomSound.predicate) step.tarskiElim step.tarskiIntro :=
+    LO.Entailment.right_K_intro w6 c7
+  have c8 := LO.Entailment.C_trans w7 step.proveFinalConsistency
   exact
     { conFormula := hcon
       localStep := LO.Entailment.cast step.proveLocalStep (by rw [f1])
@@ -555,10 +623,12 @@ noncomputable def successorImplicationsOfStagedStep (n : V)
       shiftInvariant := LO.Entailment.cast c3 (by rw [f3])
       substitutionInvariant := LO.Entailment.cast c4 (by rw [f4])
       axiomSound := LO.Entailment.cast c5 (by rw [f5])
-      finalConsistency := LO.Entailment.cast c6 (by rw [f6]) }
+      tarskiElim := LO.Entailment.cast c6 (by rw [f6])
+      tarskiIntro := LO.Entailment.cast c7 (by rw [f7])
+      finalConsistency := LO.Entailment.cast c8 (by rw [f8]) }
 
 /-- **The reduction is exact.**  The staged successor obligation for the
-concrete family and the six flat implications at every index are
+concrete family and the eight flat implications at every index are
 equivalent; neither direction loses information. -/
 theorem hasStagedSuccessor_iff_successorImplications :
     HasStagedSuccessor (concreteZFCTruthCertificateFamily (V := V)) ↔

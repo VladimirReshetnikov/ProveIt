@@ -79,11 +79,22 @@ beyond Lean's three standard axioms should appear, and in particular no
 #print axioms sat_shiftInvariantF
 #print axioms sat_substitutionInvariantF
 #print axioms sat_axiomSoundF
+#print axioms sat_connClauseF
+#print axioms sat_quantClauseF
+#print axioms sat_botClauseF
+#print axioms sat_tarskiElimF
+#print axioms sat_tarskiIntroF
 #print axioms zfc_proves_localStepSet
 #print axioms zfc_proves_crossLevelSet
 #print axioms zfc_proves_shiftInvariantSet
 #print axioms zfc_proves_substitutionInvariantSet
 #print axioms zfc_proves_axiomSoundSet
+#print axioms zfc_proves_tarskiElimSet
+#print axioms zfc_proves_tarskiIntroSet
+#print axioms quote_tarskiElimSet
+#print axioms quote_tarskiIntroSet
+#print axioms baseTarskiElimProof
+#print axioms baseTarskiIntroProof
 #print axioms baseZFCMasterCertificate
 #print axioms zfcProofSelectorIn_of_concreteStagedSuccessor
 

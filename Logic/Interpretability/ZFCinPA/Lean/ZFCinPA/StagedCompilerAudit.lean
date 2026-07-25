@@ -45,6 +45,9 @@ Foundation's arithmetic is classical, so `Classical.choice`, `propext` and
 `Quot.sound` are expected; nothing beyond Lean's three standard axioms
 should appear, and in particular no `sorry` and no theory-specific axiom. -/
 
+#check @tarskiElimContext
+#check @tarskiIntroContext
+
 #print axioms ZFCStagedCertificateStep.compile
 #print axioms ZFCStagedCertificateStep.compile_isProof
 #print axioms ZFCStagedCertificateStep.compile_isZFCProof

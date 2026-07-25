@@ -1,9 +1,9 @@
 import ZFCinPA.StagedSuccessor
 
 /-!
-# The six successor implications at the standard indices
+# The eight successor implications at the standard indices
 
-`ZFCinPA.StagedSuccessor` reduces the project's last obligation to six flat
+`ZFCinPA.StagedSuccessor` reduces the project's last obligation to eight flat
 internal `𝗭𝗙𝗖` implications at every model index.  This module discharges
 them at every *standard* index `↑n`, by exactly the route
 `ZFCinPA.BaseCertificate` used at index `0`:
@@ -16,7 +16,7 @@ them at every *standard* index `↑n`, by exactly the route
 3. the standard-point agreement theorems of `ZFCinPA.CertificateFields`
    identify the resulting codes with the family's typed fields at
    `↑n + 1`;
-4. weakening (`C_of_conseq`) turns each of the six internal proofs into an
+4. weakening (`C_of_conseq`) turns each of the eight internal proofs into an
    implication out of the level-`↑n` master certificate.
 
 Two things this module is *not*.  It does not prove `HasStagedSuccessor`:
@@ -31,7 +31,7 @@ consumed.
 
 What the module does buy is a check that
 `ZFCinPA.StagedSuccessor.ZFCSuccessorImplications` is the right interface:
-its six typed statements are exactly what goal 2 plus D1 already deliver
+its eight typed statements are exactly what goal 2 plus D1 already deliver
 along the standard cut.
 -/
 
@@ -58,7 +58,7 @@ theorem isFormula_conZFCSetCodeFun_natCast_succ (n : ℕ) :
   rw [← Nat.cast_succ]
   exact isFormula_conZFCSetCodeFun_natCast (n + 1)
 
-/-! ## The six typed internal proofs at a standard successor index -/
+/-! ## The eight typed internal proofs at a standard successor index -/
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The local-step field at `↑n + 1`, by completeness and D1. -/
@@ -140,6 +140,36 @@ noncomputable def standardAxiomSoundProof (n : ℕ) :
   exact h
 
 set_option backward.isDefEq.respectTransparency false in
+/-- The Tarski-elimination field at `↑n + 1`. -/
+noncomputable def standardTarskiElimProof (n : ℕ) :
+    (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
+      tarskiElimFormula (((n : ℕ) : V) + 1) := by
+  have h := (internal_provable_of_outer_provable (V := V)
+    (zfc_proves_tarskiElimSet (n + 1))).get
+  have heq : (⌜tarskiElimSet (n + 1)⌝ : Bootstrapping.Formula V ℒₛₑₜ) =
+      tarskiElimFormula (((n : ℕ) : V) + 1) := by
+    apply Semiformula.ext
+    show (⌜tarskiElimSet (n + 1)⌝ : V) = tarskiElimCode (((n : ℕ) : V) + 1)
+    rw [← Nat.cast_succ, quote_tarskiElimSet]
+  rw [← heq]
+  exact h
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The Tarski-introduction field at `↑n + 1`. -/
+noncomputable def standardTarskiIntroProof (n : ℕ) :
+    (𝗭𝗙𝗖 : SetTheory).internalize V ⊢!
+      tarskiIntroFormula (((n : ℕ) : V) + 1) := by
+  have h := (internal_provable_of_outer_provable (V := V)
+    (zfc_proves_tarskiIntroSet (n + 1))).get
+  have heq : (⌜tarskiIntroSet (n + 1)⌝ : Bootstrapping.Formula V ℒₛₑₜ) =
+      tarskiIntroFormula (((n : ℕ) : V) + 1) := by
+    apply Semiformula.ext
+    show (⌜tarskiIntroSet (n + 1)⌝ : V) = tarskiIntroCode (((n : ℕ) : V) + 1)
+    rw [← Nat.cast_succ, quote_tarskiIntroSet]
+  rw [← heq]
+  exact h
+
+set_option backward.isDefEq.respectTransparency false in
 /-- The internalized `Con_{↑n+1}(ZFC)`, by D1 from `zfc_proves_conZFCSet`.
 As at the base index, the quotation identity of the sealed consistency
 sentence enters only as a propositional rewrite. -/
@@ -155,7 +185,7 @@ noncomputable def standardFinalConsistencyProof (n : ℕ) :
 
 /-! ## The assembled standard-index successor implications -/
 
-/-- **The six flat successor implications at a standard index.**  Each is
+/-- **The eight flat successor implications at a standard index.**  Each is
 the corresponding internal proof weakened with the level-`↑n` master
 certificate as a vacuous antecedent. -/
 noncomputable def standardSuccessorImplications (n : ℕ) :
@@ -169,6 +199,8 @@ noncomputable def standardSuccessorImplications (n : ℕ) :
   substitutionInvariant :=
     LO.Entailment.C_of_conseq (standardSubstitutionInvariantProof n)
   axiomSound := LO.Entailment.C_of_conseq (standardAxiomSoundProof n)
+  tarskiElim := LO.Entailment.C_of_conseq (standardTarskiElimProof n)
+  tarskiIntro := LO.Entailment.C_of_conseq (standardTarskiIntroProof n)
   finalConsistency :=
     LO.Entailment.C_of_conseq (standardFinalConsistencyProof n)
 

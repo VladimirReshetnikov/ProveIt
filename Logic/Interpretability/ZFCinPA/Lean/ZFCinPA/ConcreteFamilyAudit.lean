@@ -77,6 +77,10 @@ beyond Lean's three standard axioms should appear, and in particular no
 #print axioms isFormula_shiftInvariantCode
 #print axioms isFormula_substitutionInvariantCode
 #print axioms isFormula_axiomSoundCode
+#print axioms isFormula_tarskiElimCode
+#print axioms isFormula_tarskiIntroCode
+#print axioms concreteFamily_tarskiElim_definable
+#print axioms concreteFamily_tarskiIntro_definable
 #print axioms concreteFamily_code_definable
 
 end LeanProofs.ZFCinPA.ConcreteFamilyAudit

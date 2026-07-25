@@ -32,6 +32,8 @@ open LeanProofs.ZFCinPA
 #check @standardShiftInvariantProof
 #check @standardSubstitutionInvariantProof
 #check @standardAxiomSoundProof
+#check @standardTarskiElimProof
+#check @standardTarskiIntroProof
 #check @standardFinalConsistencyProof
 
 /-! ## Assembly -/

@@ -92,6 +92,8 @@ in particular no `sorry` and no theory-specific axiom. -/
 #print axioms hasStagedSuccessor_of_nonempty_successorImplications
 #print axioms zfcProofSelectorIn_of_successorImplications
 #print axioms successorImplicationsOfStagedStep
+#print axioms tarskiElimContext_imp
+#print axioms tarskiIntroContext_imp
 #print axioms hasStagedSuccessor_iff_successorImplications
 
 end LeanProofs.ZFCinPA.StagedSuccessorAudit

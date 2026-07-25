@@ -30,6 +30,8 @@ import ZFCinPA.CertificateFields
 import ZFCinPA.CertificateFieldsAudit
 import ZFCinPA.ConcreteFamily
 import ZFCinPA.ConcreteFamilyAudit
+import ZFCinPA.TarskiFieldSemantics
+import ZFCinPA.TarskiFieldSemanticsAudit
 import ZFCinPA.BaseCertificate
 import ZFCinPA.BaseCertificateAudit
 import ZFCinPA.SubstIdentity

@@ -258,6 +258,66 @@ theorem sigmaBounded_of_piBounded_ex (H : ZFAxioms mem) {a : V} {m : Nat}
   subst hp
   exact ⟨_, _, hr, leN_pred_of_succ H hle⟩
 
+/-! #### The same peeling at an arbitrary internal successor
+
+The two lemmas above peel a successor off the *numeral* of an external
+natural, which is all the externally indexed development needs.  A
+level-by-level argument carried out **inside** a model — as the successor
+step of an internalized truth certificate must be — reaches the same two
+rows at `vsucc H b` for an arbitrary `b ∈ ω`, with no external `m` in
+sight.  The generalization is the same two lines: `succ_le_lt` peels a
+successor off a `LeN` bound whenever the target is an internal natural,
+and `omega_succ` supplies that for `vsucc H b`.  The numeral versions are
+the special case `b = natV H m`, since `natV H (m+1)` *is* `vsucc H
+(natV H m)`. -/
+
+/-- Peeling one successor off an internal-natural bound. -/
+private theorem leN_pred_of_succ_omega (H : ZFAxioms mem) {x b : V}
+    (hb : mem b (omegaV H)) (h : LeN H (vsucc H x) (vsucc H b)) :
+    LeN H x b :=
+  succ_le_lt H (vsucc H b) (omega_succ H b hb) x
+    ((leN_iff H (vsucc H x) (vsucc H b)).mp h)
+
+/-- **A universal code Sigma-bounded at `vsucc H b` is Pi-bounded at `b`**,
+for an arbitrary internal natural `b`.  This is
+`piBounded_of_sigmaBounded_all` with the external numeral replaced by an
+element of `ω`. -/
+theorem piBounded_of_sigmaBounded_all_succ (H : ZFAxioms mem) {a b : V}
+    (hb : mem b (omegaV H))
+    (h : SigmaBounded H (vsucc H b) (kpair H (natV H 6) a)) :
+    PiBounded H b (kpair H (natV H 6) a) := by
+  obtain ⟨s, p, hr, hle⟩ := h
+  obtain ⟨sa, pa, ha, hs, hp⟩ := ranks_all_inv H hr
+  subst hs
+  subst hp
+  exact ⟨_, _, hr, leN_pred_of_succ_omega H hb hle⟩
+
+/-- **An existential code Pi-bounded at `vsucc H b` is Sigma-bounded at
+`b`**, for an arbitrary internal natural `b`. -/
+theorem sigmaBounded_of_piBounded_ex_succ (H : ZFAxioms mem) {a b : V}
+    (hb : mem b (omegaV H))
+    (h : PiBounded H (vsucc H b) (kpair H (natV H 7) a)) :
+    SigmaBounded H b (kpair H (natV H 7) a) := by
+  obtain ⟨s, p, hr, hle⟩ := h
+  obtain ⟨sa, pa, ha, hs, hp⟩ := ranks_ex_inv H hr
+  subst hs
+  subst hp
+  exact ⟨_, _, hr, leN_pred_of_succ_omega H hb hle⟩
+
+/-- The numeral version is the internal one at `b = natV H m`. -/
+theorem piBounded_of_sigmaBounded_all_eq_succ (H : ZFAxioms mem) {a : V}
+    {m : Nat}
+    (h : SigmaBounded H (natV H (m + 1)) (kpair H (natV H 6) a)) :
+    PiBounded H (natV H m) (kpair H (natV H 6) a) :=
+  piBounded_of_sigmaBounded_all_succ H (natV_mem_omega H m) h
+
+/-- The numeral version of the existential row, likewise. -/
+theorem sigmaBounded_of_piBounded_ex_eq_succ (H : ZFAxioms mem) {a : V}
+    {m : Nat}
+    (h : PiBounded H (natV H (m + 1)) (kpair H (natV H 7) a)) :
+    SigmaBounded H (natV H m) (kpair H (natV H 7) a) :=
+  sigmaBounded_of_piBounded_ex_succ H (natV_mem_omega H m) h
+
 /-- **No universal code is Sigma-bounded by zero**, the companion of
 `not_piBounded_zero_all`. -/
 theorem not_sigmaBounded_zero_all (H : ZFAxioms mem) {a : V} :
