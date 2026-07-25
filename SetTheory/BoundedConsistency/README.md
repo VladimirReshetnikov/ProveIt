@@ -193,12 +193,15 @@ same three reasons as in the arithmetic case:
 - [x] Define the all-occurrences bound on coded derivations, and prove it really
   does bound every formula-valued rule parameter and not merely conclusions and
   contexts.
-- [ ] Express “codes a ZFC axiom” internally — the six fixed axioms by their
+- [x] Express “codes a ZFC axiom” internally — the seven fixed axioms by their
   quotations, and the Separation and Replacement schemas by an existential over
   the coded formula constructors.
-- [ ] Define the object-level sentence `Con_n(ZFC)` for each metatheoretic `n`
-  and prove its arbitrary-model characterization.  **A first attempt assembled
-  the sentence over the *empty* context; see the warning below.**
+- [x] Define the object-level sentence `Con_n(ZFC)` for each metatheoretic `n`,
+  over contexts consisting of axiom codes, and prove its arbitrary-model
+  characterization.  (A first attempt assembled the sentence over the *empty*
+  context; see the warning below.)
+- [x] Reduce the target to a single semantic obligation via
+  `godel_completeness_for_theories`.
 - [x] Supply a step-parametric recursion theorem over internal omega,
   generalizing the ZF development's `gstep`-specific finite recursion, together
   with internal linearity of omega and an internal function/application
@@ -285,6 +288,36 @@ Everything else in that module — the internal ranks, their agreement with the
 metatheoretic ranks on quotations, the all-occurrences bound, and the endpoint
 bridge through completeness — is exactly what the real sentence needs, and is
 unaffected.
+
+`BoundedZFCConsistency.AxiomCode` closes the gap.  Its `conZFCForm n` quantifies
+over the derivation's context and constrains every member to be an axiom code,
+so it is the intended statement.  The internal axiom-code predicate recognizes
+the seven fixed axioms by their quotations and the two schemas by an existential
+over the internal code predicate.
+
+Note what that existential means, since it is deliberate: because the code
+predicate's atomic clauses range over the model's own omega, a nonstandard model
+contains Separation and Replacement codes that quote no external instance.  The
+internal axiom set is therefore properly larger than the quotations of the
+external one, and only the direction `ZFCax f → IsZFCAxiomCode (formCode f)` is
+proved.  The converse is false and is not attempted.  This is not a weakness of
+the statement but a requirement on it: internal soundness will have to be
+applied to the internal axiom set, nonstandard instances included, or the
+argument would not cover the derivations `Con_n` actually quantifies over.
+
+## The whole remaining obligation, in one statement
+
+With that sentence in place the project reduces to a single hypothesis:
+
+```text
+for every model of the ZF axioms, there is no coded derivation of falsity
+from a context of axiom codes, with every occurrence bounded by the numeral
+of n.
+```
+
+`zfcprov_conZFCForm_of_no_bounded_refutation` turns exactly that into
+`ZFC |- Con_n(ZFC)` through Gödel completeness.  Discharging it is the
+reflection layer's job, and is the only mathematics the project still owes.
 
 ## Why coded derivations carry a rank
 
