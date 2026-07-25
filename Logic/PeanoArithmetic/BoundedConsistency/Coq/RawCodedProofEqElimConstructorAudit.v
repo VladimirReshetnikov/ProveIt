@@ -1,0 +1,18 @@
+From BoundedPAConsistency Require Import RawCodedProofEqElimConstructor.
+
+Import PABoundedRawCodedProofEqElimConstructor.
+
+Check rawProofEqElimRoot.
+Check raw_proofEqElimRoot_equality_child_lt.
+Check raw_proofEqElimRoot_body_child_lt.
+Check raw_proofEqElimRoot_list_view.
+Check raw_proofEqElimRoot_recursive_children.
+Check raw_proofEqElimRoot_constructor.
+Check raw_proofEqElim_syntax_step.
+Check raw_proofEqElim_endpoint_rule_complete.
+Check raw_proofEqElim_endpoint.
+Check raw_proofEqElim_ruleCoverage.
+
+Print Assumptions raw_proofEqElim_endpoint_rule_complete.
+Print Assumptions raw_proofEqElim_endpoint.
+Print Assumptions raw_proofEqElim_ruleCoverage.
