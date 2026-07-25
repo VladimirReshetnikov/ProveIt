@@ -1272,6 +1272,14 @@ successor-adequacy construction now discharges its last explicit operation
 interface, so the public orbit totality theorem is unconditional in every raw
 PA model; all coding, base, successor, and induction obligations are internal.
 
+`RawCodedDynamicTruthPolarityFormulaCodeGraphs.v` exposes ordinary
+`output :: level :: tail` graphs for consumers needing only one coordinate.
+The Sigma projection explicitly swaps its hidden Pi witness back into the
+paired order, while the Pi projection can use the existential body directly.
+Both have exact law-free semantics and zero/successor views, and both now have
+unconditional arbitrary-model totality with atomic adequacy of the selected
+possibly nonstandard formula code.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
