@@ -1,0 +1,15 @@
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofContextInsertRootStep.
+
+Import PABoundedRawCodedPALocalProofContextInsertRootStep.
+
+Check RawAdequateUnitFormulaShiftExists.
+Check RawContextInsertUnitShiftSquare.
+Check raw_contextInsert_unitShift_square.
+Check raw_codedPALocalProof_recursive_child.
+Check raw_codedPALocalProof_contextInsertRootStep_of_binder_callbacks.
+
+Print Assumptions raw_contextInsert_unitShift_square.
+Print Assumptions raw_codedPALocalProof_recursive_child.
+Print Assumptions
+  raw_codedPALocalProof_contextInsertRootStep_of_binder_callbacks.

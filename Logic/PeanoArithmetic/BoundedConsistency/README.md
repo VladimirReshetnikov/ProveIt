@@ -1045,15 +1045,22 @@ therefore states the honest invariant with
 `RawCodedFormulaAtomicallyAdequate` as a guard, represents the complete
 below-proof-code predicate by a PA formula, and performs the strong induction
 inside every raw PA model.  The arbitrary-depth assumption-leaf case is
-proved.  The remaining constructor-local step needs unit-shift totality on
-adequate formula codes, a commuting square between context insertion and
-context shift, and the constructor-local assembly that consumes them.
-Dedicated coverage-certified constructors now handle Or-I1, Or-I2, Or-E,
-Ex-I, Eq-Refl, and Eq-Elim in addition to the older generic unary/binary
-infrastructure.  Imp-I and both Or-E
-branches increment insertion depth; All-I shifts the inserted formula at the
-same depth; Ex-E first performs that shift and then increments depth for its
-body premise.
+proved.  `RawCodedContextInsertShiftCommutation.v` now proves the full binder
+commuting square by another represented induction over the carrier-valued
+depth.  `RawCodedPALocalProofContextInsertRootStep.v` then rebuilds all
+seventeen rules, using the dedicated Or-I1, Or-I2, Or-E, Ex-I, Eq-Refl, and
+Eq-Elim coverage constructors alongside the older generic infrastructure.
+Imp-I and both Or-E branches increment insertion depth; All-I shifts the
+inserted formula at the same depth; Ex-E first performs that shift and then
+increments depth for its body premise.
+
+The sole remaining input to this guarded transplant route is
+`RawCodedFormulaShiftCompositional`: concatenate the synchronized
+source/target/depth tables of two nonstandard binary child traces, or append
+one quantified parent row to a nonstandard unary child trace.
+`RawCodedFormulaShiftTotality.v` already proves arbitrary model-coded term
+shift totality and performs the complete represented formula-code induction
+conditional on exactly those two trace-splicing operations.
 
 `RawCodedAssignmentShiftTail.v` also exposes PAHF's represented beta-tail
 shift through the raw assignment interface.  It constructs, inside every raw
@@ -1315,9 +1322,15 @@ Rocq/Coq compiler work for the uniform sentence.
   arbitrary-depth assumption-leaf row.
 - [x] Add coverage-certified raw constructors for Or-I1, Or-I2, Or-E, Ex-I,
   Eq-Refl, and Eq-Elim, including exact endpoint and support-extension audits.
-- [ ] If the generic transplant route is retained, prove adequate formula
-  unit-shift totality and the insertion/shift commuting square; then discharge
-  the constructor-local induction step.
+- [x] Prove the insertion/unit-shift commuting square at every carrier-valued
+  depth and assemble all seventeen constructor cases into the represented
+  proof-code induction.
+- [x] Prove arbitrary model-coded term-shift totality and reduce adequate
+  formula unit-shift totality to the exact nonstandard trace-composition
+  interface `RawCodedFormulaShiftCompositional`.
+- [ ] Prove `RawCodedFormulaShiftCompositional` by synchronized beta-table
+  concatenation and parent append; this makes the guarded arbitrary-depth
+  transplant unconditional.
 - [x] Replace the impossible exact-context base seam by a growing witnessed-base
   open compiler, verify its bridge to certificate successor, and prove the
   structural final projection from a six-field master PA certificate.

@@ -16,11 +16,12 @@
   genuine formula code, while an unguarded weakening theorem for arbitrary
   carrier values would be too strong for this proof encoding.
 
-  What remains after this file is deliberately constructor-local: at root
-  [r], assume every proof code strictly below [r] is transplantable, inspect
-  the covered rule at [r], transplant its recursive children, and rebuild the
-  same rule over the target context.  No global proof-tree recursion remains
-  in that obligation.
+  The downstream root-step module performs the deliberately constructor-local
+  remainder: at root [r], it assumes every strictly smaller proof code is
+  transplantable, inspects the covered rule, and rebuilds all seventeen rule
+  forms over the target context.  The only remaining input to that assembled
+  theorem is formula-shift trace composition; no global proof-tree recursion
+  remains.
 *)
 
 From Stdlib Require Import Arith Lia.

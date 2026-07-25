@@ -348,7 +348,9 @@ Qed.
     [RawCodedPALocalProofContextInsertInduction] represents the strong
     below-proof-code invariant and applies PA induction.  Its honest statement
     guards [head] by atomic formula adequacy, because binder descent must shift
-    it.  The remaining context theorem is the insertion/shift commuting square.
+    it.  The insertion/shift commuting square and all constructor cases are now
+    proved downstream; only synchronized formula-trace composition remains
+    before that guarded transplant is unconditional.
 
     *** 3. Closing the loop wants a growing witnessed base.
 

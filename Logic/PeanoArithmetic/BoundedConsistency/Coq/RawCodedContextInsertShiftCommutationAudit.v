@@ -1,0 +1,25 @@
+From BoundedPAConsistency Require Import
+  RawCodedContextInsertShiftCommutation.
+
+Import PABoundedRawCodedContextInsertShiftCommutation.
+
+Check raw_contextInsertShift_succ_lt_succ.
+Check raw_contextListTraversal_succ_tail_exists.
+Check raw_contextShift_cons_invert.
+Check raw_contextInsertAt_succ_invert.
+Check raw_contextInsertAt_zero_shift_tail.
+Check RawContextInsertShiftCommutesAt.
+Check contextInsertShiftCommutesAtTermAt.
+Check raw_sat_contextInsertShiftCommutesAtTermAt_iff.
+Check raw_contextInsertShiftCommutesAt_zero.
+Check raw_contextInsertShiftCommutesAt_succ.
+Check raw_contextInsertShiftCommutesAt_all.
+Check raw_contextInsertAt_shift_commutes.
+
+Print Assumptions raw_contextListTraversal_succ_tail_exists.
+Print Assumptions raw_contextShift_cons_invert.
+Print Assumptions raw_contextInsertAt_succ_invert.
+Print Assumptions raw_contextInsertAt_zero_shift_tail.
+Print Assumptions raw_sat_contextInsertShiftCommutesAtTermAt_iff.
+Print Assumptions raw_contextInsertShiftCommutesAt_all.
+Print Assumptions raw_contextInsertAt_shift_commutes.
