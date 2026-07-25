@@ -1196,6 +1196,14 @@ transparent master conjunction.  Both routes assemble the concrete package
 successor while preventing an unrelated proof target or standard-only `BProv`
 instance from entering the carrier-indexed step.
 
+`RawCodedTruthCertificateConcreteEndpoint.v` connects that successor bridge,
+the zero bridge, the concrete assembler, and the generic PA-internal
+induction.  Its single remaining all-model premise is exactly the five-field
+zero component package plus either checked component-successor interface.
+Discharging that premise yields the literal compact `BProv` theorem; no
+additional graph decomposition, induction, projection, or completeness seam
+remains after it.
+
 `CompactPAUniformProvabilityTightness.v` still proves that the compact selector
 successor is equivalent to the requested object theorem, so only a concrete
 proof-producing construction can close the endpoint.
