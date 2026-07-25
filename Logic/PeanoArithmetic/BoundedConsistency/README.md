@@ -1047,9 +1047,10 @@ below-proof-code predicate by a PA formula, and performs the strong induction
 inside every raw PA model.  The arbitrary-depth assumption-leaf case is
 proved.  The remaining constructor-local step needs unit-shift totality on
 adequate formula codes, a commuting square between context insertion and
-context shift, and coverage builders for Or-E and Eq-Elim.  Dedicated
-coverage-certified constructors now handle Or-I1, Or-I2, Ex-I, and Eq-Refl in
-addition to the older generic unary/binary infrastructure.  Imp-I and both Or-E
+context shift, and the constructor-local assembly that consumes them.
+Dedicated coverage-certified constructors now handle Or-I1, Or-I2, Or-E,
+Ex-I, Eq-Refl, and Eq-Elim in addition to the older generic unary/binary
+infrastructure.  Imp-I and both Or-E
 branches increment insertion depth; All-I shifts the inserted formula at the
 same depth; Ex-E first performs that shift and then increments depth for its
 body premise.
@@ -1302,12 +1303,11 @@ Rocq/Coq compiler work for the uniform sentence.
   with the necessary atomic-adequacy guard, represent its strong
   below-proof-code invariant, run PA-definable induction, and re-derive the
   arbitrary-depth assumption-leaf row.
-- [x] Add coverage-certified raw constructors for Or-I1, Or-I2, Ex-I, and
-  Eq-Refl, including exact endpoint and support-extension audits.
+- [x] Add coverage-certified raw constructors for Or-I1, Or-I2, Or-E, Ex-I,
+  Eq-Refl, and Eq-Elim, including exact endpoint and support-extension audits.
 - [ ] If the generic transplant route is retained, prove adequate formula
-  unit-shift totality, the insertion/shift commuting square, and coverage
-  builders for Or-E and Eq-Elim; then discharge the constructor-local
-  induction step.
+  unit-shift totality and the insertion/shift commuting square; then discharge
+  the constructor-local induction step.
 - [x] Replace the impossible exact-context base seam by a growing witnessed-base
   open compiler, verify its bridge to certificate successor, and prove the
   structural final projection from a six-field master PA certificate.
