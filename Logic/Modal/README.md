@@ -56,6 +56,10 @@ is being reconstructed:
   frames, inherited frame properties, generated submodels, and truth
   invariance through their bounded morphisms, including explicit inheritance
   of finite list covers by direct point generation;
+- irreflexivization with exact reflexive-closure truth/validity transfer, and
+  finite root extension with structural/tree laws, exact chain covers,
+  embedding p-morphisms and truth preservation, added-root boxdot semantics,
+  and finite-chain T-failure and witness theorems;
 - clusters and their (strict) skeletons, natural and explicitly finite
   bounded linear frames, immediate and transitive tree unravellings,
   algebraically specified frame ranks, one-root rank extension, and a
@@ -98,6 +102,7 @@ is being reconstructed:
 | `CorrespondenceExtensions.v` | `Modal/Kripke/Axiom{FourN,Grz,H,I,McK,Mk,Point4,Ver}.lean` | Further exact and directional named-axiom frame correspondences |
 | `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and bounded-morphism invariance/preservation |
 | `Root.v` | `Modal/Kripke/Root.lean` | Rooted and generated frames/models, structural inheritance, bounded morphisms, and truth invariance |
+| `FrameTransformations.v` | `Modal/Kripke/{ExtendRoot,Irreflexivize}.lean` | Irreflexivization and reflexive truth transfer; finite added-root frames, trees, p-morphisms, exact covers, boxdot transfer, and T witnesses |
 | `StructuralFrames.v` | `Modal/Kripke/{Cluster,LinearFrame,Tree,Rank,Balloon}.lean` | Extensional clusters and skeletons; linear examples and Z/Dum validity; tree unravellings; specified ranks; corrected balloon results |
 | `WeakCorrespondence.v` | `Modal/Kripke/Axiom{WeakPoint2,WeakPoint3}.lean` | Exact weak-confluence and weak-connectedness frame correspondences |
 | `Undefinability.v` | `Modal/Kripke/Undefinability.lean` | Irreflexivity is not modally definable |
@@ -140,7 +145,13 @@ elimination.  The Coq port keeps those lemmas separate:
   Filtering an arbitrary finite cover into a point-generated subtype uses
   informative excluded middle, classical description, and proof irrelevance.
   The inductive tree-unravelling and algebraic rank/path kernels remain
-  constructive;
+  constructive.  The relation algebra, embedding p-morphism, embedded-world
+  truth theorem, chain enumeration, and exact finite cover for added-root
+  frames are also constructive.  Irreflexivized piecewise connectedness,
+  reverse reflexivization validity, unique-root selection, and added-root
+  boxdot transfer use excluded middle; deriving converse well-foundedness
+  from finite transitive irreflexive frames and the finite-chain T witnesses
+  additionally uses relational and dependent unique choice;
   the converse Grz correspondence additionally exposes standard relational
   choice used to select an infinite counterexample chain.
 
@@ -166,10 +177,11 @@ Concrete Hilbert K now has checked soundness, canonical completeness, and
 finite-frame completeness; KT, K4, and S4 also have checked canonical
 soundness/completeness.  This project does not yet claim finite completeness
 for K4/S4 or completeness for S5, GL, or Grz; rooted filtration preservation
-for piecewise confluence and connectedness; modal companions; or the boxdot
-results.  Those later results require additional filtration or canonical-frame
-property arguments.  The present modules provide the checked base on which
-those ports are being built.
+for piecewise confluence and connectedness; modal companions; or the remaining
+boxdot metatheory beyond the checked added-root transfer theorem.  Those later
+results require additional filtration or canonical-frame property arguments.
+The present modules provide the checked base on which those ports are being
+built.
 
 The structural-frame tranche deliberately records three representation or
 source boundaries.  Coq's local `frame` has no finite-world typeclass, so it
@@ -180,10 +192,14 @@ tree-unravelling instance is not yet reconstructed.  Tree paths use
 inductive snoc constructors, making the source list-prefix/`IsChain` normal
 form intrinsic; rank results are proved from an exact `frame_rank_spec`,
 rather than reconstructing Foundation's finite converse-well-founded height
-machinery, and only the one-fresh-root case of the separately defined
-`extendRoot` API is included.  Conversely, Foundation's point-generated rank
-equality is an `axiom` at the pinned revision, whereas the corresponding Coq
-restriction theorem is proved.
+machinery.  Its rank development needs only a one-fresh-root construction;
+independently, `FrameTransformations.v` checks the complete pinned
+`extendRoot` theorem surface for the general `Fin n + F` carrier.  Lean's
+finite-world, tree, and finite-set wrappers are represented by explicit Coq
+conjunctions, duplicate-free list covers, and extensional cardinality
+predicates; these are representation changes, not mathematical omissions.
+Foundation's point-generated rank equality is an `axiom` at the pinned
+revision, whereas the corresponding Coq restriction theorem is proved.
 
 `Balloon.lean` also cannot be ported literally: its world relation is required
 to be a strict total order while its envelope is nondegenerate, assumptions
@@ -216,6 +232,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
   FoundationModal.CanonicalExtensions `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
+  FoundationModal.FrameTransformations `
   FoundationModal.StructuralFrames `
   FoundationModal.WeakCorrespondence `
   FoundationModal.Undefinability FoundationModal.Audit

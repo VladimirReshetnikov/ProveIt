@@ -5,8 +5,8 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert CanonicalExtensions
-  StandardTranslation Preservation Root StructuralFrames WeakCorrespondence
-  Undefinability.
+  StandardTranslation Preservation Root FrameTransformations StructuralFrames
+  WeakCorrespondence Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -247,6 +247,22 @@ Check point_generated_truth_at_root.
 Check point_trans_generated_trans_rooted.
 Check point_generated_frame_finite.
 
+Check irreflexivize_irreflexive.
+Check irreflexivize_transitive.
+Check irreflexivize_piecewise_connected.
+Check irreflexivize_reflexive_valid_iff.
+Check extend_root_point_rooted.
+Check extend_root_transitive.
+Check extend_root_embedding_p_morphism.
+Check extend_root_embed_rel_iter_iff.
+Check extend_root_embedded_truth.
+Check extend_root_added_boxdot_truth.
+Check extend_root_chain_pairwise.
+Check extend_root_finite_cover_exact.
+Check extend_root_converse_well_founded.
+Check atmost_one_T_failure_on_chain.
+Check extend_root_T_conjunction_witness.
+
 Check cluster_of_eq_iff.
 Check cluster_shape_trichotomy.
 Check skeleton_partial_order.
@@ -377,6 +393,27 @@ Print Assumptions generated_submodel_truth.
 Print Assumptions point_generated_truth.
 Print Assumptions point_generated_frame_rooted.
 Print Assumptions point_trans_generated_trans_rooted.
+
+(** Irreflexivization and the added-root relation algebra, embedding
+    p-morphism, embedded-world truth theorem, ordered chain, and exact finite
+    cover are constructive.  The reverse reflexivization-validity theorem,
+    piecewise-connected inheritance, unique-root selection, and added-root
+    boxdot theorem use propositional excluded middle.  Extracting converse
+    well-foundedness from finite transitive irreflexivity and the finite-chain
+    T witnesses additionally exposes Coq's relational and dependent unique
+    choice principles. *)
+Print Assumptions irreflexivize_irreflexive.
+Print Assumptions irreflexivize_piecewise_connected.
+Print Assumptions irreflexivize_reflexive_valid_iff.
+Print Assumptions extend_root_embedding_p_morphism.
+Print Assumptions extend_root_embed_rel_iter_iff.
+Print Assumptions extend_root_embedded_truth.
+Print Assumptions extend_root_added_boxdot_truth.
+Print Assumptions extend_root_chain_pairwise.
+Print Assumptions extend_root_finite_cover_exact.
+Print Assumptions finite_transitive_irreflexive_cwf.
+Print Assumptions atmost_one_T_failure_on_chain.
+Print Assumptions extend_root_T_conjunction_witness.
 
 (** The inductive tree and algebraic rank kernels are constructive.  The
     extensional cluster representation exposes functional/propositional
