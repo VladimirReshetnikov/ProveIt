@@ -1224,6 +1224,14 @@ base and successor views, totality, and arbitrary carrier-level existence are
 all exposed in the public output convention `first :: second :: level ::
 tail`.
 
+`RawCodedDynamicTruthPairedSuccessorRowGraph.v` combines the two polarity
+transformers in the paired-orbit convention.  Its explicit de Bruijn
+projections send `previousPi` only to the Sigma row and `previousSigma` only
+to the Pi row, while forwarding the common lower level and tail unchanged.
+The exact law-free relation therefore retains both cross-dependencies, and
+paired totality follows from precisely the four visible domain-substitution
+and lower-application interfaces of the component graphs.
+
 `RawCodedCarrierIndexedPairedAdequateCodeOrbitGraph.v` strengthens the same
 unchanged public graph with the invariant actually needed for represented
 formula substitution.  Its base produces two atomically adequate codes, and
