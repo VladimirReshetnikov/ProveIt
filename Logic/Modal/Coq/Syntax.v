@@ -48,6 +48,10 @@ Definition Iff {AtomType} (p q : formula AtomType) : formula AtomType :=
 Definition Dia {AtomType} (p : formula AtomType) : formula AtomType :=
   Neg (Box (Neg p)).
 
+(** Foundation's boxdot modality [p /\ box p]. *)
+Definition Boxdot {AtomType} (p : formula AtomType) : formula AtomType :=
+  And p (Box p).
+
 Fixpoint box_iter {AtomType} (n : nat) (p : formula AtomType)
   : formula AtomType :=
   match n with
@@ -124,6 +128,11 @@ Proof. reflexivity. Qed.
 Lemma substitute_dia :
   forall (A B : Type) (sigma : A -> formula B) (p : formula A),
     substitute sigma (Dia p) = Dia (substitute sigma p).
+Proof. reflexivity. Qed.
+
+Lemma substitute_boxdot :
+  forall (A B : Type) (sigma : A -> formula B) (p : formula A),
+    substitute sigma (Boxdot p) = Boxdot (substitute sigma p).
 Proof. reflexivity. Qed.
 
 Lemma substitute_box_iter :

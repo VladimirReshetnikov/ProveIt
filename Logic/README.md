@@ -10,9 +10,9 @@
   semantic core: Kripke semantics; the general Geach correspondence and its
   T, D, B, 4, 5, Tc, and .2 instances; the .3 correspondence; the Kripke-frame
   characterization of Löb's axiom; bisimulation and bounded-morphism
-  preservation; irreflexivity undefinability; coarsest filtration and the
-  semantic finite-model property; and the deep first-order standard
-  translation.
+  preservation; irreflexivity undefinability; coarsest, finest, and
+  transitive-closure filtrations with the semantic finite-model property; and
+  the deep first-order standard translation.
 - [`QuantifierCommutation/`](QuantifierCommutation/) proves constructive
   commutation laws for adjacent `∀` and `∃`, with finite counterexamples for
   nested `∄` and `∃!`, in Lean and Rocq/Coq.

@@ -178,7 +178,7 @@ Proof.
   pose (V := (fun _ _ => True) : valuation nat F).
   assert (Hdia : satisfies F V x (Dia (Atom 0))).
   {
-    apply (Hvalid V x). intros y Hxy. exact I.
+    apply (Hvalid V x). intros y Hxy. constructor.
   }
   destruct (@satisfies_dia_elim _ F V x _ Hdia) as [y [Hxy _]].
   now exists y.
