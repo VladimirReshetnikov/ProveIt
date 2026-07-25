@@ -253,11 +253,10 @@ dropped, since route 2 reaches the target without a cumulative hierarchy; see
   the polarity switches at quantifier heads.
 - [x] Prove the substitution lemmas at a fixed level, for both polarities, with
   the shift and instantiation corollaries.
-- [ ] Prove the level-collapse theorem — that truth at level `n+1` on a code
-  bounded at `n` already holds at level `n`.  This closes the elimination halves
-  of the two polarity-switch rows, upgrades `Pi` monotonicity, and — as the
-  soundness brick discovered — is on the **critical path**, since two-valuedness
-  is what implication elimination needs.
+- [x] Prove the level-collapse theorem — that truth at level `n+1` on a code
+  bounded at `n` already holds at level `n` — closing the polarity-switch
+  eliminations, upgrading `Pi` monotonicity, and discharging two-valuedness,
+  which implication elimination needs.
 - [ ] Prove every internal ZFC axiom code of rank at most `n` true at level `n`,
   including the nonstandard schema instances the internal axiom set contains.
 - [ ] Push partial truth through a bounded coded derivation and conclude that
@@ -346,21 +345,31 @@ lemmas and then names what is left, rather than assuming it.  Three obligations
 remain, and they are not independent:
 
 - `LevelSoundnessAt` — that a bounded coded derivation transports level-`n+1`
-  truth from its context to its conclusion.  Blocked on the next item.
-- `LevelTwoValuedAt` — that the two polarities agree on the codes a bounded
-  derivation can mention.  This follows from the level-collapse theorem.
+  truth from its context to its conclusion.  **Open, but no longer blocked**:
+  the two-valuedness it needed is now proved.
+- `LevelTwoValuedAt` — **discharged** by `BoundedZFCConsistency.LevelCollapse`.
 - `AxiomCodesTrueAt` — that every internal ZFC axiom code of bounded complexity
   is true at the level.  This is where the content of the axioms finally enters,
   and it is independent of the other two.
 
-The obstruction in the first is sharp and worth recording, because it says the
-level-collapse theorem is not optional.  Implication elimination has
-`SigmaTrue (n+1)` of an implication together with `SigmaTrue (n+1)` of its
-antecedent; the Tarski clause turns the former into a disjunction whose left
-half is `PiFalse (n+1)` of the antecedent, and only two-valuedness discharges
-it.  Reading truth as `PiTrue` throughout moves the same obligation to the other
-side of that rule, and reading it as the conjunction of both polarities moves it
-to disjunction elimination.  No formulation of the rule avoids it.
+The obstruction in the first was sharp and is worth keeping on record, because
+it is what showed the level-collapse theorem to be load-bearing rather than a
+loose end.  Implication elimination has `SigmaTrue (n+1)` of an implication
+together with `SigmaTrue (n+1)` of its antecedent; the Tarski clause turns the
+former into a disjunction whose left half is `PiFalse (n+1)` of the antecedent,
+and only two-valuedness discharges it.  Reading truth as `PiTrue` throughout
+moves the same obligation to the other side of that rule, and reading it as the
+conjunction of both polarities moves it to disjunction elimination.  No
+formulation of the rule avoids it.
+
+Two facts from the collapse proof are worth carrying forward.  The *elimination*
+halves of the polarity switches need no rank bound at all — the leftover
+disjunct is discharged by exclusivity, not by the collapse — so only the
+introduction directions carry the oriented bound.  And exclusivity and totality
+are independent: exclusivity is an induction on the level with a code induction
+inside and is the sole consumer of the collapse, whereas totality is a code
+induction needing neither, its quantifier cases requiring no inductive
+hypothesis at all.
 
 ## The whole remaining obligation, in one statement
 
