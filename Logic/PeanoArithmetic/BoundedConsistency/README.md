@@ -1132,6 +1132,15 @@ carrier semantics and standard PA-model witnesses.  Totality for an arbitrary
 nonstandard input remains dependent on the separate internally adequate
 single-substitution totality construction.
 
+`RawCodedFormulaSingleSubstitutionTotality.v` supplies the formula half of
+that construction.  It composes substitution traces at all binary and unary
+syntax constructors, runs PA-definable induction over the carrier-valued code
+bound, and obtains a substitution output for every atomically adequate
+possibly nonstandard formula code and syntax-realizable replacement.  Its
+only explicit lower-level premise is total represented term opening on an
+internally syntax-realizable input; that exact term operation is isolated for
+the next construction rather than hidden behind a standard quotation.
+
 `RawCodedCarrierIndexedCodeOrbitGraph.v` supplies the model-internal recursion
 engine for those fields.  A three-witness Goedel-beta table starts from an
 arbitrary output-first base graph and checks a represented successor graph at
