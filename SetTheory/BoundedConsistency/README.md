@@ -244,9 +244,10 @@ reflection route's own entries — the Levy scheme and `Con(ZFC_{Sigma_n})` — 
 dropped, since route 2 reaches the target without a cumulative hierarchy; see
 “Why this is not a port of the PA project” above.
 
-- [ ] Define quantifier-free truth over the *universe* — the base case of the
+- [x] Define quantifier-free truth over the *universe* — the base case of the
   externally indexed hierarchy, and simpler than `Delta_0` truth because this
-  syntax has no primitive bounded quantifier.
+  syntax has no primitive bounded quantifier — with its Tarski clauses and
+  agreement with the metatheory on quotations.
 - [ ] Define the externally indexed `Sigma`/`Pi` partial truth predicates over
   the universe by recursion on the external level, with their Tarski clauses and
   the polarity switches at quantifier heads.
