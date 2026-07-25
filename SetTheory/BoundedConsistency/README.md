@@ -17,19 +17,29 @@ the proof assistant before the resulting ZFC derivation is read; it must not be
 strengthened to the single object-level assertion `ZFC |- forall n, Con_n(ZFC)`,
 which would yield ordinary `Con(ZFC)` and contradict Gödel's second theorem.
 
-> **Current status.**  Early, but past the first internal brick.  Phase one —
-> the metatheoretic rank and restricted-derivation development — is complete and
-> checked:
-> `BoundedZFCConsistency.Basic` supplies the polarity ranks, the `Type`-valued
-> proof-tree mirror with erasure and completeness, the every-occurrence rank,
-> restricted provability with monotonicity and cofinality, and the
-> conclusion-only collapse.  The axiom of choice is formalized, giving `ZFCax`,
-> and `BoundedZFCConsistency.Coding` codes the syntax of `Form` inside an
-> arbitrary model of ZF, with quotation proved injective.  Everything after that
-> — “codes a formula” as an object-language predicate, coded derivations,
-> internal satisfaction, formalized soundness, and reflection — is open.  The
-> object-level theorem is **not** proved, and nothing in this project should be
-> read as claiming `ZFC |- Con_n(ZFC)`.
+> **Current status.**  **The target is proved.**  For every metatheoretic
+> natural number `n`, `BoundedZFCConsistency.Endpoint.zfc_proves_conZFC` derives
+> `Con_n(ZFC)` from ZFC, audited to depend on exactly Lean's three standard
+> axioms `[propext, Classical.choice, Quot.sound]` — no `sorry`, no project
+> axiom, and no surviving premise.  The parameter `n` is an ordinary Lean
+> `Nat`, so this is a numeralwise family of derivations, one per metatheoretic
+> level, and not a derivation of a universally quantified sentence.
+>
+> Two points of precision.  ZFC is presented as the sealed sentence theory
+> `ZFCax_s`, the universal closures of the axiom formulas, which is the standard
+> sentence presentation; a syntactic de-sealing lemma relating it to the
+> unsealed `ZFCprov` is still absent from the first-order development.  And
+> truth of the axiom codes is proved relative to `ZFCAxioms`, the semantic
+> bundle extended with Powerset, Foundation and Choice — necessary because the
+> axiom-code predicate lists all nine axioms while the weaker bundle has six,
+> and legitimate because the endpoint quantifies over models of ZFC, which
+> satisfy all of them.
+>
+> Everything below records how it was reached, including two wrong turns kept on
+> the record: a sentence first assembled over the empty context, which expressed
+> bounded consistency of pure logic rather than of ZFC, and an intended route
+> through Levy reflection that was abandoned as the more expensive of two
+> options.
 
 ## Why this is not a port of the PA project
 
@@ -75,11 +85,12 @@ Because this syntax has no primitive bounded quantifier, the base case of the
 hierarchy is quantifier-free truth rather than `Delta_0` truth, which makes it
 simpler: atoms and Boolean combinations only.
 
-Note the contrast with PA: for ZFC the all-occurrences restriction is *less*
-load-bearing than it is for arithmetic, precisely because route 1 factors
-through consistency of a fragment rather than through a restriction on
-derivations.  The all-occurrences form is still what is stated and proved, since
-it is the weaker and therefore safer reading.
+That earlier note said the all-occurrences restriction would be *less*
+load-bearing here than in arithmetic, because route 1 factors through
+consistency of a fragment.  Route 2 was taken instead, and on it the restriction
+is fully load-bearing: fixed-level soundness consumes the bound on rule
+parameters in four of the seventeen rules, so a conclusions-only or even a
+conclusions-and-contexts-only bound would not have sufficed.
 
 ## Base development
 
@@ -257,11 +268,12 @@ dropped, since route 2 reaches the target without a cumulative hierarchy; see
   bounded at `n` already holds at level `n` — closing the polarity-switch
   eliminations, upgrading `Pi` monotonicity, and discharging two-valuedness,
   which implication elimination needs.
-- [ ] Prove every internal ZFC axiom code of rank at most `n` true at level `n`,
-  including the nonstandard schema instances the internal axiom set contains.
+- [x] Prove every internal ZFC axiom code of rank at most `n` true at level `n`,
+  including the nonstandard schema instances the internal axiom set contains,
+  relative to the axiom bundle extended with Powerset, Foundation and Choice.
 - [x] Push partial truth through a bounded coded derivation — all seventeen
   rules — and conclude that falsity is not derivable, given axiom truth.
-- [ ] Assemble the object-level derivation `ZFC |- Con_n(ZFC)` for every
+- [x] Assemble the object-level derivation `ZFC |- Con_n(ZFC)` for every
   metatheoretic `n`, and audit its assumptions.
 
 ## The internal work is over a weaker theory than ZF, and reflection will notice
@@ -369,19 +381,30 @@ inside and is the sole consumer of the collapse, whereas totality is a code
 induction needing neither, its quantifier cases requiring no inductive
 hypothesis at all.
 
-## The whole remaining obligation, in one statement
+## How the last obligation was discharged
 
-With that sentence in place the project reduces to a single hypothesis:
-
-```text
-for every model of the ZF axioms, there is no coded derivation of falsity
-from a context of axiom codes, with every occurrence bounded by the numeral
-of n.
-```
-
+With the sentence in place the project reduced to a single hypothesis: that no
+model of ZFC admits a bounded coded refutation from a context of axiom codes.
 `zfcprov_conZFCForm_of_no_bounded_refutation` turns exactly that into
-`ZFC |- Con_n(ZFC)` through Gödel completeness.  Discharging it is the
-reflection layer's job, and is the only mathematics the project still owes.
+`ZFC |- Con_n(ZFC)` through Gödel completeness.
+
+It was discharged in three steps, each a separate module.  Two-valuedness came
+from the level-collapse theorem.  Fixed-level soundness then went through for
+all seventeen rules.  Truth of the axiom codes closed the rest: the seven fixed
+axioms reduce to metatheoretic satisfaction through a general
+quotation-agreement theorem, and the two schemas are proved for *internal*
+codes, nonstandard instances included, by instantiating Separation's and
+Replacement's own `Form` parameter at the truth predicate — which is precisely
+what the hierarchy was built to license.
+
+Two details of that last step are worth keeping.  The carved biconditional of a
+Separation instance needs Sigma-truth in one direction and Pi-truth in the
+other, and exclusivity supplies the second with no rank bound, so no
+two-valuedness is needed there.  And Replacement splits, by excluded middle in
+the metatheory, on whether the coded relation is functional at the level the
+bound leaves: if not, the functionality clause is refuted by recording a
+counterexample; if so, Replacement applies.  Making the split at the lower level
+is what keeps the collapse theorem out of that argument entirely.
 
 ## The truth hierarchy: certificates within a level, recursion across levels
 
@@ -560,9 +583,15 @@ is one application of it.
 
 ## Scale
 
-This is a research-scale formalization, not a short development.  The
-arithmetic counterpart required roughly two hundred Lean modules, and the
-set-theoretic ingredients above — internal coded syntax, internal satisfaction,
-formalized soundness, and reflection — are each a multi-module project in their
-own right.  The checklist is ordered so that every entry is independently
-meaningful and independently checkable.
+Sixteen modules with their audits.  The checklist is ordered so that every entry
+is independently meaningful and independently checkable, and each was built and
+audited before the next began.
+
+The endpoint is `BoundedZFCConsistency.Endpoint`, which adds no mathematics: it
+states the target in one place, gives it once more with the derivability
+predicate unfolded so that no notation hides the claim, and prints the
+assumptions.  It sets `autoImplicit false` deliberately — during verification an
+out-of-scope identifier was silently absorbed as an implicit variable, turning
+the headline statement into a vacuous one whose assumption listing looked
+clean.  That is a failure mode worth guarding against in any module whose only
+job is to state a result.

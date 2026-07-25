@@ -1,5 +1,7 @@
 import BoundedZFCConsistency.AxiomCode
+import BoundedZFCConsistency.AxiomTruth
 import BoundedZFCConsistency.Basic
+import BoundedZFCConsistency.Endpoint
 import BoundedZFCConsistency.Choice
 import BoundedZFCConsistency.CodedDerivation
 import BoundedZFCConsistency.CodedRank
@@ -26,14 +28,15 @@ first-order set-theoretic syntax, that same measure applied at *every*
 judgement node of a derivation, the axiom set of ZFC, and the model-relative
 consistency statements which follow.
 
-The intended theorem — for every metatheoretic `n`, an object-level derivation
-`ZFC |- Con_n(ZFC)` — is **not** proved here.  Reaching it requires arithmetized
-syntax inside the object theory, internal satisfaction for set-sized
-structures, formalized soundness, and the Levy reflection scheme.  The project
-README states the plan and the outstanding obligations.
+The intended theorem is proved.  For every metatheoretic `n`,
+`Endpoint.zfc_proves_conZFC` derives `Con_n(ZFC)` from ZFC.  The route runs
+through coded syntax inside the object theory, internal satisfaction, coded
+derivations with their soundness, and an externally indexed partial truth
+hierarchy over the universe — not through Levy reflection, which the project
+README explains was abandoned as the more expensive of the two options.
 
-Two properties of the present layer are easy to misread, so both are stated
-precisely here and proved in the modules:
+Two properties of the metatheoretic layer are easy to misread, so both are
+stated precisely here and proved in the modules:
 
 * The rank counts *every* quantifier, because this syntax has no primitive
   bounded quantifier.  It is therefore strictly finer than the Levy hierarchy,
