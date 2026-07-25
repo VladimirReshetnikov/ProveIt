@@ -1,0 +1,16 @@
+(** Public surface and assumption audit for the connected six-field endpoint. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTruthCertificateConcreteEndpoint.
+
+Import PABoundedRawCodedTruthCertificateConcreteEndpoint.
+
+Check RawSixFieldMasterComponentSuccessor.
+Check RawConcreteSixFieldMasterComponentsInAllModels.
+Check raw_sixFieldMasterInductionCallbacks_of_components.
+Check
+  PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_components.
+
+Print Assumptions raw_sixFieldMasterInductionCallbacks_of_components.
+Print Assumptions
+  PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_components.

@@ -1,0 +1,20 @@
+From BoundedPAConsistency Require Import RawCodedProofOrEConstructor.
+
+Import PABoundedRawCodedProofOrEConstructor.
+
+Check rawProofOrERoot.
+Check raw_proofOrERoot_disjunction_child_lt.
+Check raw_proofOrERoot_left_child_lt.
+Check raw_proofOrERoot_right_child_lt.
+Check raw_proofOrERoot_list_view.
+Check raw_proofOrERoot_recursive_children.
+Check raw_proofOrERoot_constructor.
+Check raw_proofOrE_syntax_step.
+Check raw_proofOrE_endpoint_rule_complete.
+Check raw_proofOrE_endpoint.
+Check raw_proofTernary_ruleCoverage.
+Check raw_proofOrE_ruleCoverage.
+
+Print Assumptions raw_proofTernary_ruleCoverage.
+Print Assumptions raw_proofOrE_endpoint_rule_complete.
+Print Assumptions raw_proofOrE_ruleCoverage.

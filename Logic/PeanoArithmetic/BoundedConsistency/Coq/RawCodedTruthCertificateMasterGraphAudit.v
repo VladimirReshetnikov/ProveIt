@@ -1,0 +1,20 @@
+From BoundedPAConsistency Require Import RawCodedTruthCertificateMasterGraph.
+
+Import PABoundedRawCodedTruthCertificateMasterGraph.
+
+Check masterGraphAnd5.
+Check masterGraphEx4.
+Check sixFieldMasterCodeTermAt.
+Check RawSixFieldMasterCodeAt.
+Check raw_sat_sixFieldMasterCodeTermAt_iff.
+Check raw_sixFieldMasterCodeAt_total.
+Check raw_sixFieldMasterCodeAt_functional.
+Check sixFieldMasterProvabilityTermAt.
+Check raw_sat_sixFieldMasterProvabilityTermAt_iff.
+Check raw_sixFieldMasterProvability_final.
+
+Print Assumptions raw_sat_sixFieldMasterCodeTermAt_iff.
+Print Assumptions raw_sixFieldMasterCodeAt_total.
+Print Assumptions raw_sixFieldMasterCodeAt_functional.
+Print Assumptions raw_sat_sixFieldMasterProvabilityTermAt_iff.
+Print Assumptions raw_sixFieldMasterProvability_final.
