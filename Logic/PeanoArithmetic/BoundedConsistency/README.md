@@ -1116,6 +1116,13 @@ selects the transparent implication-to-bottom code.  Exact semantics and
 totality are law-free and introduce no well-formedness or standardness side
 condition on that child.
 
+`RawCodedNumeralTermCodeOutputFirstGraph.v` exposes the existing nonstandard
+numeral-term beta trace in the common `output :: input :: tail` convention.
+Its representation theorem is exact in arbitrary raw structures, PA proves
+totality for every carrier input, and the zero and successor lemmas provide
+canonical base output and existential orbit closure without rebuilding the
+underlying trace.
+
 `RawCodedDynamicTruthTernaryApplicationGraph.v` represents the recurring
 application of a carried ternary truth-formula code beneath five binders.  Its
 three checked single-substitution steps use variable codes `#6`, `#4`, and

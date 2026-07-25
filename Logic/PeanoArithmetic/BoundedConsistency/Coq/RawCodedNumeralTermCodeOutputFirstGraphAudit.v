@@ -1,0 +1,22 @@
+(** Assumption audit for the output-first numeral-term-code graph. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedNumeralTermCodeOutputFirstGraph.
+
+Import PABoundedRawCodedNumeralTermCodeOutputFirstGraph.
+
+Check numeralTermCodeOutputFirstGraph.
+Check RawNumeralTermCodeOutputFirstAt.
+Check raw_sat_numeralTermCodeOutputFirstGraph_iff.
+Check numeralTermCodeOutputFirstGraph_raw_total.
+Check raw_numeralTermCodeAt_zero_output.
+Check numeralTermCodeOutputFirstGraph_zero_iff.
+Check numeralTermCodeOutputFirstGraph_zero.
+Check numeralTermCodeOutputFirstGraph_succ_closed.
+
+Print Assumptions raw_sat_numeralTermCodeOutputFirstGraph_iff.
+Print Assumptions numeralTermCodeOutputFirstGraph_raw_total.
+Print Assumptions raw_numeralTermCodeAt_zero_output.
+Print Assumptions numeralTermCodeOutputFirstGraph_zero_iff.
+Print Assumptions numeralTermCodeOutputFirstGraph_zero.
+Print Assumptions numeralTermCodeOutputFirstGraph_succ_closed.
