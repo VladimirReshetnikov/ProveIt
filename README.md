@@ -24,9 +24,9 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
 | [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
-| [`Logic/`](Logic/) | First-order logic and completeness, propositional/equational axiom systems, PA infinitude, and PA/HF interpretability. |
+| [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
-| [`SetTheory/`](SetTheory/) | First-order ZF and the Closure axiomatization's equivalence with ZF. |
+| [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`. |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
 Repository-wide configuration remains at the root. [`Proofs.lean`](Proofs.lean)
@@ -62,6 +62,13 @@ is the broad Lean import surface.
   from-scratch independent Lean/Coq Henkin proofs for the repository's fixed
   countable relation language, plus arbitrary-language semantic compactness
   in Lean.
+- A [Rocq/Coq modal-logic development](Logic/Modal/README.md) porting a central
+  semantic slice of Foundation: generic Geach and named frame
+  correspondences, the exact Kripke characterization of Loeb's axiom,
+  bisimulation and bounded-morphism preservation, modal undefinability of
+  irreflexivity, coarsest/finest/transitive-closure filtrations with an
+  explicit exponential finite-model bound, and a deep first-order standard
+  translation.
 - Full deductive equivalence between the Closure axiomatization and ZF,
   checked independently in Lean and Coq.
 - A deductive bi-interpretation between PA and finite-generation hereditary
@@ -92,6 +99,22 @@ is the broad Lean import surface.
 - Lean/Coq proofs that first-order Peano arithmetic has two non-isomorphic
   models, separating the numeral-generated standard model from a compactness
   model with an element above every standard numeral.
+- A Lean/Rocq [bounded-consistency development for PA](Logic/PeanoArithmetic/BoundedConsistency/README.md):
+  Peano arithmetic proves the single arithmetic sentence asserting that *for
+  every* `n` — nonstandard elements included — PA proves its own
+  bounded-complexity consistency statement `Conₙ(PA)`.  The construction is a
+  model-indexed dynamic truth-certificate family rather than an external
+  recursion, which is what makes it one sentence with one derivation instead of
+  a schema.  Tarski's theorem is respected structurally: truth levels recurse
+  externally, so each level is a separate, strictly larger formula.
+- The set-theoretic counterpart, in two parts.  [`SetTheory/BoundedConsistency`](SetTheory/BoundedConsistency/README.md)
+  proves in Lean that `ZFC ⊢ Conₙ(ZFC)` for every metatheoretic `n`, via a
+  partial satisfaction predicate over the universe with ranked internal
+  certificates for derivations.  [`Logic/Interpretability/ZFCinPA`](Logic/Interpretability/ZFCinPA/README.md)
+  is the in-progress syntactic version, `PA ⊢ ∀ n, Prov_ZFC(⌜Conₙ(ZFC)⌝)`; its
+  reduction to eight internal implications is proved and is an equivalence, and
+  those implications are discharged at standard indices, so the endpoint is at
+  present **conditional** — see that project's status table.
 - Independent Lean and Rocq/Coq proofs that pure SK, SKI, and Iota simulate
   closed weak untyped lambda calculus by compositional positive-step compilers,
   and that Iota embeds faithfully back into closed lambda terms.
@@ -188,6 +211,11 @@ submodule. Its focused README documents the compatibility-patched dependency
 build and wrapper build; constructive principles and effective-enumeration
 hypotheses remain visible in theorem signatures.
 
+The modal project has no build-time dependency on Foundation: its Lean source
+is retained as a read-only reference, while the Coq statements and proofs are
+checked independently.  The focused modal README documents its constructive
+and classical boundaries and provides a `coqchk` command.
+
 ## Trust and status
 
 - Lean statements are checked by Lean's kernel. Sites using `native_decide`
@@ -217,6 +245,10 @@ license is retained.
 to `uds-psl/coq-synthetic-computability` commit `8fc0014f...`; its MIT license
 is retained, and the Turing-degree project owns a small, reproducible Rocq
 9.2/stdpp 1.13 compatibility patch rather than modifying the pin.
+[`lib/FormalizedFormalLogic-Foundation`](lib/FormalizedFormalLogic-Foundation/)
+is a read-only submodule of `FormalizedFormalLogic/Foundation`, pinned at
+commit `32e1a095...`; its Apache-2.0 license is retained.  The corresponding
+Coq port lives outside `lib/` under [`Logic/Modal/`](Logic/Modal/).
 
 ## License
 

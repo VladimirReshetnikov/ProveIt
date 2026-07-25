@@ -1,8 +1,18 @@
 # Logic
 
+- [`FoundationPort/`](FoundationPort/) maintains the exhaustive, conservative
+  source-module ledger for the dependency-ordered Coq port of the pinned
+  FormalizedFormalLogic/Foundation tree.
 - [`FirstOrder/`](FirstOrder/) is a reusable one-binary-relation first-order
   syntax and semantics, natural-deduction calculus, soundness proof, Goedel
   completeness theorem, compactness lift, and deductive-transfer machinery.
+- [`Modal/`](Modal/) is an independent Rocq/Coq port of Foundation's modal
+  semantic core: Kripke semantics; the general Geach correspondence and its
+  T, D, B, 4, 5, Tc, and .2 instances; the .3 correspondence; the Kripke-frame
+  characterization of Löb's axiom; bisimulation and bounded-morphism
+  preservation; irreflexivity undefinability; coarsest, finest, and
+  transitive-closure filtrations with the semantic finite-model property; and
+  the deep first-order standard translation.
 - [`QuantifierCommutation/`](QuantifierCommutation/) proves constructive
   commutation laws for adjacent `∀` and `∃`, with finite counterexamples for
   nested `∄` and `∃!`, in Lean and Rocq/Coq.
