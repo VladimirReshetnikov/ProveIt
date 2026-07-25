@@ -1187,6 +1187,15 @@ the compact sixth component is supplied by the proved level-zero consistency
 theorem.  The standard route deliberately requires quoted-code witnesses and
 never identifies an arbitrary nonstandard graph output with a quotation.
 
+`RawCodedTruthCertificateMasterSuccessorBridge.v` gives the matching
+nonstandard-safe successor interface.  A component compiler consumes the
+current concrete master graph assertion and a coded PA proof of that exact
+selected master, and must return six successor graph witnesses together with
+either common-context local proofs or an ordinary proof targeted at their
+transparent master conjunction.  Both routes assemble the concrete package
+successor while preventing an unrelated proof target or standard-only `BProv`
+instance from entering the carrier-indexed step.
+
 `CompactPAUniformProvabilityTightness.v` still proves that the compact selector
 successor is equivalent to the requested object theorem, so only a concrete
 proof-producing construction can close the endpoint.

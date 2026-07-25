@@ -1,0 +1,22 @@
+(** Public surface and assumption audit for component-level master successor
+    assembly. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTruthCertificateMasterSuccessorBridge.
+
+Import PABoundedRawCodedTruthCertificateMasterSuccessorBridge.
+
+Check RawSixFieldMasterGraphWitnessesAt.
+Check RawSixFieldMasterExactProofOf.
+Check raw_sixFieldMasterDirectPackage_of_components.
+Check raw_sixFieldMasterExactProofOf_of_common_context.
+Check RawSixFieldMasterRawComponentSuccessor.
+Check RawSixFieldMasterExactProofComponentSuccessor.
+Check raw_sixFieldMasterPackageSuccessor_of_raw_components.
+Check raw_sixFieldMasterPackageSuccessor_of_exact_proof_components.
+
+Print Assumptions raw_sixFieldMasterDirectPackage_of_components.
+Print Assumptions raw_sixFieldMasterExactProofOf_of_common_context.
+Print Assumptions raw_sixFieldMasterPackageSuccessor_of_raw_components.
+Print Assumptions
+  raw_sixFieldMasterPackageSuccessor_of_exact_proof_components.
