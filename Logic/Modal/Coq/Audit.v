@@ -1,8 +1,9 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax Axioms Kripke Complement Filtration Correspondence
-  FiltrationExtensions Loeb StandardTranslation Preservation Undefinability.
+  Syntax Axioms HilbertK Kripke HilbertKSoundness Complement
+  ComplexityLimited Filtration Correspondence FiltrationExtensions Loeb
+  FrameProperties StandardTranslation Preservation Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -43,12 +44,32 @@ Check Axioms.H.
 Check Axioms.Geach.
 Check Axioms.I.
 
+Check K_proves_fold.
+Check K_proves_substitute.
+Check K_proves_identity.
+Check K_proves_dne.
+Check K_derives_empty_iff.
+Check K_derives_deduction_iff.
+Check theory_consistent_insert_iff.
+Check theory_consistent_insert_neg_iff.
+Check K_derives_boxed.
+Check K_derives_box_from_unboxed.
+Check K_proves_sound_on_frame.
+Check K_derives_sound.
+Check K_is_consistent.
+
 Check complement_neg.
 Check complement_cases.
 Check complementary_member_cases.
 Check complementary_mem_box.
 Check satisfies_complement_incompatible.
 Check satisfies_neg_complement_incompatible.
+
+Check complexity_subformula_le.
+Check complexity_limited_truth_aux.
+Check complexity_limited_truth.
+Check complexity_limited_subformula_closed_aux.
+Check complexity_limited_subformula_closed.
 
 Check coarsest_filtration_truth.
 Check coarsest_filtration_truth_at_class.
@@ -83,6 +104,16 @@ Check valid_Point3_iff_piecewise_strong_connected.
 
 Check valid_Loeb_atom_iff_transitive_cwf.
 
+Check asymmetric_iff_irreflexive_and_antisymmetric.
+Check frame_refl_gen_partial_order_of_strict_preorder.
+Check frame_trans_gen_equivalence.
+Check frame_refl_trans_gen_equivalence.
+Check terminated_iff_directly_terminated_of_transitive.
+Check terminated_refl_trans_gen_iff.
+Check converse_well_founded_iff_well_founded_converse.
+Check converse_well_founded_trans_gen_iff.
+Check terminated_cwf_target_terminal.
+
 Check bisimulation_invariance.
 Check p_morphism_truth.
 Check valid_of_surjective_p_morphism.
@@ -108,9 +139,26 @@ Print Assumptions valid_of_surjective_p_morphism.
 Print Assumptions irreflexivity_not_modally_definable.
 Print Assumptions standard_translation_correct.
 Print Assumptions standard_translation_model_validity.
+Print Assumptions K_proves_substitute.
+Print Assumptions K_proves_dne.
+Print Assumptions K_derives_deduction_iff.
+Print Assumptions theory_consistent_insert_neg_iff.
+Print Assumptions K_derives_box_from_unboxed.
+Print Assumptions K_proves_sound_on_frame.
+Print Assumptions K_derives_sound.
+Print Assumptions K_is_consistent.
 Print Assumptions complement_cases.
 Print Assumptions complementary_mem_box.
 Print Assumptions satisfies_complement_incompatible.
+Print Assumptions complexity_limited_truth_aux.
+Print Assumptions complexity_limited_truth.
+Print Assumptions complexity_limited_subformula_closed.
+Print Assumptions asymmetric_iff_irreflexive_and_antisymmetric.
+Print Assumptions frame_refl_gen_partial_order_of_strict_preorder.
+Print Assumptions terminated_refl_trans_gen_iff.
+Print Assumptions converse_well_founded_iff_well_founded_converse.
+Print Assumptions converse_well_founded_trans_gen_iff.
+Print Assumptions terminated_cwf_target_terminal.
 
 (** Filtration's finite list combinatorics is constructive.  Turning
     arbitrary semantic truth into Boolean data, selecting class

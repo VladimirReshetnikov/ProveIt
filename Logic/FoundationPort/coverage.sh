@@ -30,10 +30,17 @@ while IFS=$'\t' read -r source status artifact notes; do
     echo "Mapped Foundation source does not exist: $source" >&2
     exit 1
   fi
-  if [[ ! -f "$repo_root/$artifact" ]]; then
-    echo "Mapped Coq artifact does not exist: $artifact" >&2
+  IFS=';' read -r -a artifact_paths <<< "$artifact"
+  if [[ ${#artifact_paths[@]} -eq 0 ]]; then
+    echo "Coverage mapping has no Coq artifact: $source" >&2
     exit 1
   fi
+  for artifact_path in "${artifact_paths[@]}"; do
+    if [[ -z "$artifact_path" || ! -f "$repo_root/$artifact_path" ]]; then
+      echo "Mapped Coq artifact does not exist: $artifact_path" >&2
+      exit 1
+    fi
+  done
   mapped_status["$source"]="$status"
   mapped_artifact["$source"]="$artifact"
   mapped_notes["$source"]="$notes"

@@ -9,13 +9,19 @@ The source is pinned read-only at commit
 modifies the Lean development.
 
 The port focuses on results that are both central to Foundation's modal-logic
-library and reusable without first recreating its full Hilbert-calculus and
-canonical-model stack:
+library and reusable while its larger named-system and canonical-model stack
+is being reconstructed:
 
 - primitive modal syntax, derived connectives, substitution, iteration,
   complexity, degree, subformulas, and complement-closed finite contexts;
+- a concrete Hilbert calculus for K with substitution, deduction, consistency
+  criteria, contextual boxing, Kripke soundness, and syntactic consistency;
 - Kripke satisfaction, semantic substitution, iterated box/diamond laws, and
   validity of K;
+- complexity-bounded generated models with a strengthened budgeted truth
+  lemma and invariance under changing the enclosing target formula;
+- reflexive, transitive, and reflexive-transitive frame closures, their order
+  properties, target termination, and converse well-foundedness results;
 - coarsest filtration through a formula's subformula closure, with a full
   truth lemma, a finite cover of at most `2 ^ length (subformulas p)` worlds,
   bounded finite countermodels, and both validity- and
@@ -41,12 +47,16 @@ canonical-model stack:
 | --- | --- | --- |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `Axioms.v` | `Modal/Axioms.lean` | Complete named schema catalog, including normal, Geach, provability, McKinsey, and boxdot schemata |
+| `HilbertK.v` | `Modal/Hilbert/Normal/Basic.lean` | Constructive Hilbert K, substitution, derived classical rules, theories, deduction, consistency criteria, contextual boxing |
 | `Kripke.v` | `Modal/Kripke/Basic.lean` | Frames, valuations, satisfaction, substitution, relation/modal iteration, K validity |
+| `HilbertKSoundness.v` | `Modal/Kripke/Hilbert.lean` | Framewise and contextual Kripke soundness for K, plus consistency |
 | `Complement.v` | `Modal/Formula/Complement.lean` | Syntactic complement, complement-closed finite contexts, constructive semantic incompatibility |
+| `ComplexityLimited.v` | `Modal/Kripke/ComplexityLimited.lean` | Complexity-bounded generated frames, strengthened truth lemma, subformula-target invariance |
 | `Filtration.v` | `Modal/Kripke/Filtration.lean` | Coarsest truth-profile filtration, explicit exponential cover, finite countermodels, semantic finite-model property |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
+| `FrameProperties.v` | `Modal/Kripke/{Antisymmetric,Asymmetric,Closure,Irreflexive,Terminated}.lean` | Closure algebra, frame orders, termination, converse well-foundedness |
 | `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and bounded-morphism invariance/preservation |
 | `Undefinability.v` | `Modal/Kripke/Undefinability.lean` | Irreflexivity is not modally definable |
 | `StandardTranslation.v` | `Modal/VanBentham/StandardTranslation.lean` | Deep relational first-order translation and semantic correspondence |
@@ -67,7 +77,9 @@ elimination.  The Coq port keeps those lemmas separate:
 
 - box semantics, substitution, K, direct forward frame-validity proofs,
   bisimulation invariance, bounded-morphism preservation, and the
-  irreflexivity undefinability theorem are constructive;
+  irreflexivity undefinability theorem are constructive; the Hilbert K
+  calculus, deduction theorem, soundness proof, and consistency theorem also
+  introduce no meta-level classical axioms;
 - existential diamond elimination, the generic/named converse
   correspondences involving diamond, classical derived conjunction and
   disjunction, Loeb's maximal-element characterization, and derived
@@ -91,10 +103,10 @@ completeness theorems for K, S4, S5, GL, or Grz; rooted filtration
 preservation for piecewise confluence and connectedness; modal companions; or
 the boxdot results.  In particular, the semantic finite-model property proved
 here is not advertised as proof-theoretic finite completeness for a Hilbert
-calculus.  Those later results require the proof-system/canonical-model and
-rooted-frame layers and are deliberately not smuggled in as semantic
-hypotheses.  The present modules provide the syntax and semantic infrastructure
-on which such ports can be built.
+calculus.  Those later results require extensions of the proof system, the
+canonical-model layer, and rooted-frame infrastructure and are deliberately
+not smuggled in as semantic hypotheses.  The present modules provide the
+checked base on which those ports are being built.
 
 ## Checking
 
@@ -105,7 +117,9 @@ rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
 coqchk -silent -Q . FoundationModal `
   FoundationModal.Syntax FoundationModal.Axioms FoundationModal.Kripke `
+  FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
   FoundationModal.Complement `
+  FoundationModal.ComplexityLimited FoundationModal.FrameProperties `
   FoundationModal.Filtration `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.Loeb `
