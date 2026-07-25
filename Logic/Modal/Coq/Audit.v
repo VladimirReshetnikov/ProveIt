@@ -1,8 +1,8 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax Axioms Kripke Filtration Correspondence FiltrationExtensions Loeb
-  StandardTranslation Preservation Undefinability.
+  Syntax Axioms Kripke Complement Filtration Correspondence
+  FiltrationExtensions Loeb StandardTranslation Preservation Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -42,6 +42,13 @@ Check Axioms.Mk.
 Check Axioms.H.
 Check Axioms.Geach.
 Check Axioms.I.
+
+Check complement_neg.
+Check complement_cases.
+Check complementary_member_cases.
+Check complementary_mem_box.
+Check satisfies_complement_incompatible.
+Check satisfies_neg_complement_incompatible.
 
 Check coarsest_filtration_truth.
 Check coarsest_filtration_truth_at_class.
@@ -101,6 +108,9 @@ Print Assumptions valid_of_surjective_p_morphism.
 Print Assumptions irreflexivity_not_modally_definable.
 Print Assumptions standard_translation_correct.
 Print Assumptions standard_translation_model_validity.
+Print Assumptions complement_cases.
+Print Assumptions complementary_mem_box.
+Print Assumptions satisfies_complement_incompatible.
 
 (** Filtration's finite list combinatorics is constructive.  Turning
     arbitrary semantic truth into Boolean data, selecting class

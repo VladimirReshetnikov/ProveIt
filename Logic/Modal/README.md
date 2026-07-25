@@ -13,7 +13,7 @@ library and reusable without first recreating its full Hilbert-calculus and
 canonical-model stack:
 
 - primitive modal syntax, derived connectives, substitution, iteration,
-  complexity, degree, and subformulas;
+  complexity, degree, subformulas, and complement-closed finite contexts;
 - Kripke satisfaction, semantic substitution, iterated box/diamond laws, and
   validity of K;
 - coarsest filtration through a formula's subformula closure, with a full
@@ -42,6 +42,7 @@ canonical-model stack:
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `Axioms.v` | `Modal/Axioms.lean` | Complete named schema catalog, including normal, Geach, provability, McKinsey, and boxdot schemata |
 | `Kripke.v` | `Modal/Kripke/Basic.lean` | Frames, valuations, satisfaction, substitution, relation/modal iteration, K validity |
+| `Complement.v` | `Modal/Formula/Complement.lean` | Syntactic complement, complement-closed finite contexts, constructive semantic incompatibility |
 | `Filtration.v` | `Modal/Kripke/Filtration.lean` | Coarsest truth-profile filtration, explicit exponential cover, finite countermodels, semantic finite-model property |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
@@ -104,6 +105,7 @@ rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
 coqchk -silent -Q . FoundationModal `
   FoundationModal.Syntax FoundationModal.Axioms FoundationModal.Kripke `
+  FoundationModal.Complement `
   FoundationModal.Filtration `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.Loeb `
