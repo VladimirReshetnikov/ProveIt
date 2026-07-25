@@ -202,6 +202,13 @@ same three reasons as in the arithmetic case:
 - [x] Prove totality of the satisfaction certificates and derive the internal
   satisfaction relation `SatIn` together with its Tarski clauses for atoms,
   falsity, the three connectives, and both quantifiers.
+- [x] Define internal renaming of coded formulas along a coded variable map,
+  with totality, single-valuedness, and agreement with the metatheoretic
+  renaming on quotations.
+- [x] Prove the substitution lemma for internal satisfaction: satisfaction of a
+  renamed code equals satisfaction of the original under the permuted
+  environment.
+- [ ] Code derivations inside the object theory, mirroring the 17 rules.
 - [ ] Formalize soundness of the 17-rule calculus with respect to internal set
   models.
 - [ ] Prove the Levy reflection scheme inside ZFC: for each metatheoretic `n`,
@@ -211,6 +218,37 @@ same three reasons as in the arithmetic case:
 - [ ] Apply `godel_completeness_for_theories` to obtain, for every metatheoretic
   `n`, the object-level derivation `ZFC |- Con_n(ZFC)`, and audit its
   assumptions.
+
+## The internal work is over a weaker theory than ZF, and reflection will notice
+
+`ZFAxioms`, the semantic bundle every internal result is relative to, is
+Extensionality, Separation, Pairing, Union, Infinity and Replacement.  It has
+**no Powerset and no Foundation**.
+
+For everything built so far this is a strength rather than a limitation: coded
+syntax, the code predicate, the recursion theorem, internal satisfaction, and
+coded renaming all hold in models of that weaker theory.
+
+It becomes a real dependency at the reflection step.  The intended argument
+produces a `V_alpha` that is `Sigma_n`-elementary in the universe, and the
+cumulative hierarchy needs Powerset; rank arguments will also want Foundation.
+A later brick therefore has to extend the bundle — the axioms themselves are
+already present as `Form`s in the ZF development, including `Pow_form` and
+`Reg_form`, so what is missing is the semantic bundle and its bridges, not the
+axioms.  This is flagged here rather than discovered late, because it determines
+where the second route (partial satisfaction over the universe, which needs no
+`V_alpha`) becomes the cheaper option.
+
+One consequence already showed up.  The intersection presentation used for the
+code predicate does *not* transfer to renaming, even though the renaming clauses
+are monotone: its induction principle says nothing until some closed set exists,
+and a set closed under the renaming clauses would have to record a triple for
+every variable map — and the variable maps are subsets of `omega x omega`, which
+without Powerset need not form a set.  Renaming therefore uses the certificate
+architecture instead, where it is strictly cheaper than for satisfaction: no
+clause quantifies over a carrier, so a compound certificate is a union plus one
+new triple, and neither totality nor single-valuedness needs the
+uniform-over-a-set strengthening.
 
 ## How totality avoided a choice principle
 
@@ -324,6 +362,17 @@ The internal arithmetic never says the successor is *onto* the nonzero naturals.
 That is exactly what makes a shifted environment total on the internal omega,
 and it cannot be supplied externally: a nonstandard natural is not reachable
 from zero in finitely many external steps.
+
+`BoundedZFCConsistency.InternalSoundness` adds a further one, beside
+`IsFunctionOn`/`applyV`:
+
+- **internal function extensionality**, `IsFunctionOn H F d → IsFunctionOn H F' d
+  → (∀ n ∈ d, applyV H F n = applyV H F' n) → F = F'`.
+
+The ZF development proves uniqueness of its recursion sequence by an internal
+induction and never states the general fact, so every equation between internal
+functions has to be reproved by hand; each composition identity of that module
+is one application of it.
 
 ## Scale
 

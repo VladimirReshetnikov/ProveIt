@@ -6,6 +6,7 @@ import BoundedZFCConsistency.Consistency
 import BoundedZFCConsistency.FormulaClosedSet
 import BoundedZFCConsistency.InternalSat
 import BoundedZFCConsistency.InternalSatTotality
+import BoundedZFCConsistency.InternalSoundness
 import BoundedZFCConsistency.OmegaRecursion
 
 /-!
