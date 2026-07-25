@@ -1,0 +1,38 @@
+(** Assumption audit for arbitrary-code term-opening totality. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTermOpeningTotality
+  RawCodedTermOpeningTotalityDischarge.
+
+Import PABoundedRawCodedTermOpeningTotality.
+Import PABoundedRawCodedTermOpeningTotalityDischarge.
+
+Check raw_termOpeningTraversalRow_prefix_extend.
+Check RawTermOpeningTraversalBundle.
+Check raw_termOpeningTraversalBundle_append.
+Check RawTermOpeningTraversalCopyState.
+Check termOpeningTraversalCopyStateTermAt.
+Check raw_sat_termOpeningTraversalCopyStateTermAt_iff.
+Check raw_termOpeningTraversalCopyState_all.
+Check raw_termOpeningTraces_concatenate.
+Check raw_codedTermOpening_variable_exists.
+Check raw_codedTermOpening_succ.
+Check raw_codedTermOpening_add.
+Check raw_codedTermOpening_mul.
+Check RawCodedTermOpeningTotalBelow.
+Check codedTermOpeningTotalBelowTermAt.
+Check raw_sat_codedTermOpeningTotalBelowTermAt_iff.
+Check RawCodedTermOpeningTotalWithin.
+Check codedTermOpeningTotalWithinTermAt.
+Check raw_sat_codedTermOpeningTotalWithinTermAt_iff.
+Check raw_codedTermOpeningTotalWithin_all.
+Check raw_codedTermOpening_exists_of_syntax_realizable.
+Check raw_codedTermOpening_total.
+Check raw_codedFormulaSingleSubstitution_exists_of_atomically_adequate_total.
+
+Print Assumptions raw_termOpeningTraces_concatenate.
+Print Assumptions raw_codedTermOpeningTotalWithin_all.
+Print Assumptions raw_codedTermOpening_exists_of_syntax_realizable.
+Print Assumptions raw_codedTermOpening_total.
+Print Assumptions
+  raw_codedFormulaSingleSubstitution_exists_of_atomically_adequate_total.

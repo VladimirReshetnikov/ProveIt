@@ -1141,6 +1141,15 @@ only explicit lower-level premise is total represented term opening on an
 internally syntax-realizable input; that exact term operation is isolated for
 the next construction rather than hidden behind a standard quotation.
 
+`RawCodedTermOpeningTotality.v` now discharges that premise.  It first copies
+and offsets arbitrary represented opening traces so independently built child
+traces can be concatenated, then performs a second PA-definable induction over
+the internal term-syntax support.  The resulting theorem opens every
+syntax-realizable possibly nonstandard term code at an arbitrary carrier
+cutoff with an arbitrary lifted replacement.  The discharge module packages
+this as `RawCodedTermOpeningTotal` and makes adequate formula substitution
+existence unconditional in every raw PA model.
+
 `RawCodedFormulaSingleSubstitutionAtomicAdequacy.v` proves that such a target
 remains in the same honest atomic-adequacy domain.  It inverts equality rows
 inside an arbitrary nonstandard operation trace, excludes every other syntax
