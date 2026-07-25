@@ -174,3 +174,29 @@ Lemma subformulas_box :
   forall (AtomType : Type) (p q : formula AtomType),
     In q (subformulas p) -> In q (subformulas (Box p)).
 Proof. intros; simpl; auto. Qed.
+
+(** Subformula membership is transitive.  This is the closure property used
+    by filtration: once a formula belongs to a closed target, all of its own
+    subformulas belong to that target as well. *)
+Lemma subformulas_trans :
+  forall (AtomType : Type) (p q r : formula AtomType),
+    In q (subformulas p) ->
+    In r (subformulas q) ->
+    In r (subformulas p).
+Proof.
+  intros AtomType p; induction p as [a | | p IHp q IHq | p IHp];
+    intros s r Hs Hr; simpl in Hs |- *.
+  - destruct Hs as [Hs | []].
+    subst s. exact Hr.
+  - destruct Hs as [Hs | []].
+    subst s. exact Hr.
+  - destruct Hs as [Hs | Hs].
+    + subst s. exact Hr.
+    + right. apply in_app_iff in Hs. apply in_app_iff.
+      destruct Hs as [Hs | Hs].
+      * left. eapply IHp; eauto.
+      * right. eapply IHq; eauto.
+  - destruct Hs as [Hs | Hs].
+    + subst s. exact Hr.
+    + right. eapply IHp; eauto.
+Qed.

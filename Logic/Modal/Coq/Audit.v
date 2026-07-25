@@ -1,12 +1,20 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax Axioms Kripke Correspondence Loeb StandardTranslation
+  Syntax Axioms Kripke Filtration Correspondence Loeb StandardTranslation
   Preservation Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
 Check valid_K.
+
+Check coarsest_filtration_truth.
+Check coarsest_filtration_truth_at_class.
+Check filtered_world_cover_bound.
+Check finite_countermodel.
+Check modal_finite_model_property.
+Check satisfiable_has_finite_model.
+Check not_valid_has_finite_countermodel.
 
 Check valid_Geach_atom_iff_geach_convergent.
 Check valid_T_iff_reflexive.
@@ -45,6 +53,18 @@ Print Assumptions valid_of_surjective_p_morphism.
 Print Assumptions irreflexivity_not_modally_definable.
 Print Assumptions standard_translation_correct.
 Print Assumptions standard_translation_model_validity.
+
+(** Filtration's finite list combinatorics is constructive.  Turning
+    arbitrary semantic truth into Boolean data, selecting class
+    representatives, and identifying subtype proofs are explicitly audited
+    below. *)
+Print Assumptions subformulas_trans.
+Print Assumptions bool_profiles_complete.
+Print Assumptions coarsest_filtration_truth.
+Print Assumptions filtered_world_cover_bound.
+Print Assumptions finite_countermodel.
+Print Assumptions modal_finite_model_property.
+Print Assumptions satisfiable_has_finite_model.
 
 (** Intentional classical boundary: diamond is defined as [~ box ~], so
     extracting witnesses and classical derived connectives uses excluded
