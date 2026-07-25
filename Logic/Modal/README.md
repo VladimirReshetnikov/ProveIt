@@ -26,6 +26,9 @@ is being reconstructed:
 - a reusable normal Hilbert calculus parameterized by substitution-closed
   modal axiom schemata, with weakening, K embedding, and soundness and
   consistency for KT, KD, KB, K4, K5, S4, S5, GL, and Grz;
+- a schema-generic Lindenbaum and canonical-model construction, specialized
+  to canonical reflexivity/transitivity and full soundness/completeness for
+  KT, K4, and S4, with explicit small-frame strictness witnesses;
 - Kripke satisfaction, semantic substitution, iterated box/diamond laws, and
   validity of K;
 - complexity-bounded generated models with a strengthened budgeted truth
@@ -82,6 +85,7 @@ is being reconstructed:
 | `Filtration.v` | `Modal/Kripke/Filtration.lean` | Coarsest truth-profile filtration, explicit exponential cover, finite countermodels, semantic finite-model property |
 | `CanonicalK.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/K}.lean` | Concrete K Lindenbaum completion, maximal theories, canonical truth/countermodel arguments, completeness and finite completeness |
 | `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
+| `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; KT/K4/S4 canonicality, completeness, and strictness |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -143,12 +147,13 @@ irrelevance—without functional or propositional extensionality.
 ## Parity boundary
 
 Concrete Hilbert K now has checked soundness, canonical completeness, and
-finite-frame completeness.  This project does not yet claim Coq parity for
-Foundation's completeness theorems for S4, S5, GL, or Grz; rooted filtration
-preservation for piecewise confluence and connectedness; modal companions; or
-the boxdot results.  Those later results require extensions of the proof
-system and canonical-frame property arguments.  The present modules provide
-the checked base on which those ports are being built.
+finite-frame completeness; KT, K4, and S4 also have checked canonical
+soundness/completeness.  This project does not yet claim finite completeness
+for K4/S4 or completeness for S5, GL, or Grz; rooted filtration preservation
+for piecewise confluence and connectedness; modal companions; or the boxdot
+results.  Those later results require additional filtration or canonical-frame
+property arguments.  The present modules provide the checked base on which
+those ports are being built.
 
 ## Checking
 
@@ -169,6 +174,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.CanonicalK `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
+  FoundationModal.CanonicalExtensions `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
   FoundationModal.WeakCorrespondence `
   FoundationModal.Undefinability FoundationModal.Audit

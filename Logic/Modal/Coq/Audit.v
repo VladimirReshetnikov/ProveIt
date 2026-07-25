@@ -4,8 +4,8 @@ From FoundationModal Require Import
   Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
-  CorrespondenceExtensions NormalHilbert StandardTranslation Preservation Root
-  WeakCorrespondence Undefinability.
+  CorrespondenceExtensions NormalHilbert CanonicalExtensions
+  StandardTranslation Preservation Root WeakCorrespondence Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -144,6 +144,27 @@ Check S4_is_consistent.
 Check S5_is_consistent.
 Check GL_is_consistent.
 Check Grz_is_consistent.
+
+Check normal_derives_deduction.
+Check normal_theory_consistent_insert_neg_iff.
+Check normal_derives_box_from_unboxed.
+Check normal_lindenbaum_extension.
+Check normal_mct_neg_iff.
+Check normal_mct_imp_iff.
+Check normal_canonical_successor_of_neg_box.
+Check normal_canonical_truth_lemma.
+Check normal_complete_of_canonical_frame.
+Check KT_canonical_frame_reflexive.
+Check K4_canonical_frame_transitive.
+Check S4_canonical_frame_reflexive.
+Check S4_canonical_frame_transitive.
+Check KT_sound_complete.
+Check K4_sound_complete.
+Check S4_sound_complete.
+Check K_strictly_weaker_KT.
+Check K_strictly_weaker_K4.
+Check KT_strictly_weaker_S4.
+Check K4_strictly_weaker_S4.
 
 Check complement_neg.
 Check complement_cases.
@@ -299,6 +320,18 @@ Print Assumptions S4_is_consistent.
 Print Assumptions S5_is_consistent.
 Print Assumptions GL_is_consistent.
 Print Assumptions Grz_is_consistent.
+Print Assumptions normal_derives_deduction.
+Print Assumptions normal_lindenbaum_extension.
+Print Assumptions normal_canonical_truth_lemma.
+Print Assumptions KT_canonical_frame_reflexive.
+Print Assumptions K4_canonical_frame_transitive.
+Print Assumptions KT_sound_complete.
+Print Assumptions K4_sound_complete.
+Print Assumptions S4_sound_complete.
+Print Assumptions K_strictly_weaker_KT.
+Print Assumptions K_strictly_weaker_K4.
+Print Assumptions KT_strictly_weaker_S4.
+Print Assumptions K4_strictly_weaker_S4.
 Print Assumptions complement_cases.
 Print Assumptions complementary_mem_box.
 Print Assumptions satisfies_complement_incompatible.
