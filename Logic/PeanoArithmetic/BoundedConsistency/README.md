@@ -1109,6 +1109,13 @@ arbitrary-model semantics identify the selected output with the appropriate
 raw formula constructor code.  These combinators let the remaining dynamic
 fields be assembled structurally without decoding nonstandard syntax in Coq.
 
+`RawCodedOutputFirstFormulaNegationGraph.v` adds the constant bottom graph and
+the derived negation graph needed by the truth successor.  It forwards a
+possibly nonstandard child code through an explicit binder renaming and then
+selects the transparent implication-to-bottom code.  Exact semantics and
+totality are law-free and introduce no well-formedness or standardness side
+condition on that child.
+
 `RawCodedCarrierIndexedCodeOrbitGraph.v` supplies the model-internal recursion
 engine for those fields.  A three-witness Goedel-beta table starts from an
 arbitrary output-first base graph and checks a represented successor graph at
