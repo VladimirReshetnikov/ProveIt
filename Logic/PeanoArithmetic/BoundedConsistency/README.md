@@ -1255,6 +1255,14 @@ outputs are the structural quotations of the fixed Sigma and Pi predicates,
 so the existing quotation construction supplies internal atomic-adequacy
 certificates for both coordinates in the same checked base row.
 
+`RawCodedDynamicTruthPairedFormulaCodeOrbitGraph.v` specializes the paired
+recursion engine to that checked base and the mutually polarized successor
+row.  It exposes exact output-first semantics and literal zero/successor views
+for `sigmaCode :: piCode :: level :: tail`.  PA-definable induction yields
+adequate witnesses at every carrier level—including nonstandard levels—from
+the single explicit adequacy-preserving successor interface; all remaining
+coding, base, and induction obligations are discharged internally.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
