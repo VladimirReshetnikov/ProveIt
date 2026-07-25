@@ -1159,6 +1159,16 @@ chained with adequate intermediate outputs.  The only remaining preservation
 premise is the exact term-level statement that represented opening after the
 replacement shift produces a syntax-realizable term under the target table.
 
+`RawCodedTermOpeningAfterShiftSyntaxStability.v` discharges that preservation
+premise without restricting the opened term to a standard quotation.  It
+constructs a PA-definable merged support table containing both the target
+trace occurrences and the guarded support of the shifted replacement; the
+guard is essential because a represented operation trace may contain rows
+disconnected from its selected root.  Thus opening after shift preserves
+syntax realizability in every raw PA model, and the exact three-substitution
+chain now has unconditional totality and adequate intermediate outputs on
+possibly nonstandard formula codes.
+
 `RawCodedDynamicTruthFixedSyntaxFragments.v` supplies the fixed Coq-side
 syntax used around the orbit.  Coq stores local truth states in four
 synchronized beta tables rather than Lean's HFS record, so the module records
@@ -1177,6 +1187,16 @@ prefix preservation, and lookup functionality prove the exact zero and
 successor equations.  PA-definable induction then proves graph totality at
 every model element, including nonstandard indices; all fixed parameters are
 forwarded unchanged in the graph's tail environment.
+
+`RawCodedCarrierIndexedPairedCodeOrbitGraph.v` lifts that recursion engine to
+two visible coordinates, as required by Coq's mutually polarized Sigma-truth
+and Pi-falsity hierarchy.  The implementation stores each adjacent pair with
+the transparent polynomial pair term but performs PA induction on the public
+two-coordinate invariant; this avoids the invalid assumption that the
+injective pairing polynomial is surjective on a nonstandard model.  Exact
+base and successor views, totality, and arbitrary carrier-level existence are
+all exposed in the public output convention `first :: second :: level ::
+tail`.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
