@@ -1,9 +1,10 @@
 source	status	coq_artifact	notes
 Foundation/Modal/Axioms.lean	ported	Logic/Modal/Coq/Axioms.v	The complete named schema surface is represented over the primitive Coq modal syntax.
-Foundation/Modal/Formula/Basic.lean	partial	Logic/Modal/Coq/Syntax.v	Primitive syntax, derived connectives, substitution, complexity, degree, and subformula closure are checked; upstream convenience and serialization lemmas remain.
+Foundation/Modal/Formula/Basic.lean	partial	Logic/Modal/Coq/Syntax.v;Logic/Modal/Coq/FormulaEncoding.v	Primitive syntax, derived connectives, substitution, complexity, degree, subformula closure, and a surjective enumeration over nat atoms are checked; upstream generic convenience APIs remain.
 Foundation/Modal/Formula/Complement.lean	partial	Logic/Modal/Coq/Complement.v	Syntactic complement and complement-closed finite contexts are checked; Hilbert derivability lemmas await the entailment layer.
-Foundation/Modal/Formula/NNFormula.lean	partial	Logic/Modal/Coq/NNFormula.v	NNF syntax, decidable equality, structural negation, translations, degree, and modal CNF/DNF predicates are checked generically; numeric encoding remains for the canonical enumeration layer.
+Foundation/Modal/Formula/NNFormula.lean	partial	Logic/Modal/Coq/NNFormula.v;Logic/Modal/Coq/FormulaEncoding.v	NNF syntax, decidable equality, structural negation, translations, degree, modal CNF/DNF predicates, and a surjective enumeration over nat atoms are checked; Lean-specific generic encoding instances remain.
 Foundation/Modal/LogicSymbol.lean	partial	Logic/Modal/Coq/Syntax.v	The concrete modal connectives and boxdot operation are represented; upstream abstract connective typeclasses remain.
+Foundation/Modal/PLoN/Basic.lean	ported	Logic/Modal/Coq/PLoN.v	Formula-indexed frames/models, full satisfaction algebra, validity and countermodel equivalences, sound structural rules, and failure of replacement of equivalents are checked.
 Foundation/Modal/Hilbert/Normal/Basic.lean	partial	Logic/Modal/Coq/HilbertK.v	The concrete normal calculus K, substitution, derived classical rules, predicate theories, deduction, consistency criteria, and contextual boxing are checked; arbitrary named-axiom extensions remain.
 Foundation/Modal/Kripke/AxiomGeach.lean	partial	Logic/Modal/Coq/Correspondence.v	The general semantic correspondence and named instances are checked; canonical-frame instances await the Hilbert layer.
 Foundation/Modal/Kripke/AxiomL.lean	partial	Logic/Modal/Coq/Loeb.v	The exact atomic frame correspondence is checked; finite-frame convenience instances remain.

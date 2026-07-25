@@ -16,6 +16,8 @@ is being reconstructed:
   complexity, degree, subformulas, and complement-closed finite contexts;
 - negation-normal syntax, structural De Morgan negation, modal CNF/DNF shape,
   direct semantics, and truth-preserving translations in both directions;
+- executable Cantor encodings and surjective enumerations of ordinary and
+  negation-normal formulas over natural-number atoms;
 - a concrete Hilbert calculus for K with substitution, deduction, consistency
   criteria, contextual boxing, Kripke soundness, and syntactic consistency;
 - Kripke satisfaction, semantic substitution, iterated box/diamond laws, and
@@ -24,6 +26,8 @@ is being reconstructed:
   lemma and invariance under changing the enclosing target formula;
 - reflexive, transitive, and reflexive-transitive frame closures, their order
   properties, target termination, and converse well-foundedness results;
+- PLoN's formula-indexed relational semantics, including all validity and
+  countermodel equivalences and failure of replacement of equivalents;
 - coarsest filtration through a formula's subformula closure, with a full
   truth lemma, a finite cover of at most `2 ^ length (subformulas p)` worlds,
   bounded finite countermodels, and both validity- and
@@ -49,6 +53,8 @@ is being reconstructed:
 | --- | --- | --- |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
+| `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
+| `PLoN.v` | `Modal/PLoN/Basic.lean` | Formula-indexed frames/models, satisfaction, validity, countermodels, failure of replacement of equivalents |
 | `Axioms.v` | `Modal/Axioms.lean` | Complete named schema catalog, including normal, Geach, provability, McKinsey, and boxdot schemata |
 | `HilbertK.v` | `Modal/Hilbert/Normal/Basic.lean` | Constructive Hilbert K, substitution, derived classical rules, theories, deduction, consistency criteria, contextual boxing |
 | `Kripke.v` | `Modal/Kripke/Basic.lean` | Frames, valuations, satisfaction, substitution, relation/modal iteration, K validity |
@@ -87,8 +93,8 @@ elimination.  The Coq port keeps those lemmas separate:
 - existential diamond elimination, the generic/named converse
   correspondences involving diamond, classical derived conjunction and
   disjunction, semantic NNF negation and translation, Loeb's maximal-element
-  characterization, and derived first-order existential semantics use
-  `Classical_Prop.classic`.
+  characterization, PLoN countermodel extraction, and derived first-order
+  existential semantics use `Classical_Prop.classic`.
 
 `Audit.v` prints assumptions for representative theorems from both sides of
 this boundary.  There are no admitted results.
@@ -122,6 +128,7 @@ rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
 coqchk -silent -Q . FoundationModal `
   FoundationModal.Syntax FoundationModal.NNFormula FoundationModal.Axioms `
+  FoundationModal.FormulaEncoding FoundationModal.PLoN `
   FoundationModal.Kripke FoundationModal.NNFormulaSemantics `
   FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
   FoundationModal.Complement `

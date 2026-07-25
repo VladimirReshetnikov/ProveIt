@@ -1,10 +1,10 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax NNFormula Axioms HilbertK Kripke NNFormulaSemantics
-  HilbertKSoundness Complement ComplexityLimited Filtration Correspondence
-  FiltrationExtensions Loeb FrameProperties StandardTranslation Preservation
-  Undefinability.
+  Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK Kripke
+  NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
+  Correspondence FiltrationExtensions Loeb FrameProperties StandardTranslation
+  Preservation Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -25,6 +25,21 @@ Check nn_to_formula_valid.
 Check formula_to_nnf_valid.
 Check formula_nnf_round_trip.
 Check nn_formula_round_trip.
+
+Check modal_formula_decode_code.
+Check modal_formula_enum_surjective.
+Check nnformula_decode_code.
+Check nnformula_enum_surjective.
+
+Check plon_satisfies_box.
+Check plon_not_satisfies_box.
+Check plon_model_valid_elim_contra.
+Check plon_model_valid_nec.
+Check plon_model_valid_mp.
+Check plon_replacement_of_equivalents_fails.
+Check plon_frame_class_invalid_iff_frame.
+Check plon_frame_class_invalid_iff_model.
+Check plon_frame_class_invalid_iff_model_world.
 
 (** Complete named schema surface from Foundation/Modal/Axioms.lean. *)
 Check Axioms.DiaDuality.
@@ -152,6 +167,15 @@ Print Assumptions nn_satisfies_neg.
 Print Assumptions nn_to_formula_correct.
 Print Assumptions formula_to_nnf_correct.
 Print Assumptions formula_nnf_round_trip.
+Print Assumptions modal_formula_decode_code.
+Print Assumptions modal_formula_enum_surjective.
+Print Assumptions nnformula_decode_code.
+Print Assumptions nnformula_enum_surjective.
+Print Assumptions plon_satisfies_box.
+Print Assumptions plon_not_satisfies_box.
+Print Assumptions plon_model_valid_elim_contra.
+Print Assumptions plon_replacement_of_equivalents_fails.
+Print Assumptions plon_frame_class_invalid_iff_model_world.
 Print Assumptions valid_T_of_reflexive.
 Print Assumptions valid_D_of_serial.
 Print Assumptions valid_B_of_symmetric.
