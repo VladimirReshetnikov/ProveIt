@@ -1141,6 +1141,16 @@ only explicit lower-level premise is total represented term opening on an
 internally syntax-realizable input; that exact term operation is isolated for
 the next construction rather than hidden behind a standard quotation.
 
+`RawCodedDynamicTruthFixedSyntaxFragments.v` supplies the fixed Coq-side
+syntax used around the orbit.  Coq stores local truth states in four
+synchronized beta tables rather than Lean's HFS record, so the module records
+the semantic correspondence without asserting a false equality of concrete
+codes.  It defines the ternary rank-zero truth base, carrier-term-indexed
+Sigma/Pi domains, state membership, positive constructor branches, and the
+universal leaf, with exact semantics, scoping, standard application, and an
+output-first base-code graph.  In particular, its rank bounds remain
+meaningful at nonstandard model levels.
+
 `RawCodedCarrierIndexedCodeOrbitGraph.v` supplies the model-internal recursion
 engine for those fields.  A three-witness Goedel-beta table starts from an
 arbitrary output-first base graph and checks a represented successor graph at
