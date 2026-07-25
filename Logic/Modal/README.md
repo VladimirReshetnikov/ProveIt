@@ -14,6 +14,8 @@ is being reconstructed:
 
 - primitive modal syntax, derived connectives, substitution, iteration,
   complexity, degree, subformulas, and complement-closed finite contexts;
+- negation-normal syntax, structural De Morgan negation, modal CNF/DNF shape,
+  direct semantics, and truth-preserving translations in both directions;
 - a concrete Hilbert calculus for K with substitution, deduction, consistency
   criteria, contextual boxing, Kripke soundness, and syntactic consistency;
 - Kripke satisfaction, semantic substitution, iterated box/diamond laws, and
@@ -46,9 +48,11 @@ is being reconstructed:
 | Coq module | Main Foundation source | Ported boundary |
 | --- | --- | --- |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
+| `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `Axioms.v` | `Modal/Axioms.lean` | Complete named schema catalog, including normal, Geach, provability, McKinsey, and boxdot schemata |
 | `HilbertK.v` | `Modal/Hilbert/Normal/Basic.lean` | Constructive Hilbert K, substitution, derived classical rules, theories, deduction, consistency criteria, contextual boxing |
 | `Kripke.v` | `Modal/Kripke/Basic.lean` | Frames, valuations, satisfaction, substitution, relation/modal iteration, K validity |
+| `NNFormulaSemantics.v` | `Modal/Kripke/NNFormula.lean` | Direct NNF semantics, semantic negation, translation correctness, validity equivalences |
 | `HilbertKSoundness.v` | `Modal/Kripke/Hilbert.lean` | Framewise and contextual Kripke soundness for K, plus consistency |
 | `Complement.v` | `Modal/Formula/Complement.lean` | Syntactic complement, complement-closed finite contexts, constructive semantic incompatibility |
 | `ComplexityLimited.v` | `Modal/Kripke/ComplexityLimited.lean` | Complexity-bounded generated frames, strengthened truth lemma, subformula-target invariance |
@@ -82,8 +86,9 @@ elimination.  The Coq port keeps those lemmas separate:
   introduce no meta-level classical axioms;
 - existential diamond elimination, the generic/named converse
   correspondences involving diamond, classical derived conjunction and
-  disjunction, Loeb's maximal-element characterization, and derived
-  first-order existential semantics use `Classical_Prop.classic`.
+  disjunction, semantic NNF negation and translation, Loeb's maximal-element
+  characterization, and derived first-order existential semantics use
+  `Classical_Prop.classic`.
 
 `Audit.v` prints assumptions for representative theorems from both sides of
 this boundary.  There are no admitted results.
@@ -116,7 +121,8 @@ From `Logic/Modal/Coq`:
 rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
 coqchk -silent -Q . FoundationModal `
-  FoundationModal.Syntax FoundationModal.Axioms FoundationModal.Kripke `
+  FoundationModal.Syntax FoundationModal.NNFormula FoundationModal.Axioms `
+  FoundationModal.Kripke FoundationModal.NNFormulaSemantics `
   FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
   FoundationModal.Complement `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `

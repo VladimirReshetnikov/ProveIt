@@ -1,13 +1,30 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax Axioms HilbertK Kripke HilbertKSoundness Complement
-  ComplexityLimited Filtration Correspondence FiltrationExtensions Loeb
-  FrameProperties StandardTranslation Preservation Undefinability.
+  Syntax NNFormula Axioms HilbertK Kripke NNFormulaSemantics
+  HilbertKSoundness Complement ComplexityLimited Filtration Correspondence
+  FiltrationExtensions Loeb FrameProperties StandardTranslation Preservation
+  Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
 Check valid_K.
+
+Check nnformula_eq_dec.
+Check nn_neg_involutive.
+Check nn_neg_injective.
+Check nn_degree_neg.
+Check nn_degree_to_formula.
+Check nn_dnf_part_degree_zero.
+Check nn_modal_cnf_box.
+Check nn_modal_dnf_dia.
+Check nn_satisfies_neg.
+Check nn_to_formula_correct.
+Check formula_to_nnf_correct.
+Check nn_to_formula_valid.
+Check formula_to_nnf_valid.
+Check formula_nnf_round_trip.
+Check nn_formula_round_trip.
 
 (** Complete named schema surface from Foundation/Modal/Axioms.lean. *)
 Check Axioms.DiaDuality.
@@ -127,6 +144,14 @@ Check standard_translation_diamond_is_existential.
 Print Assumptions substitute_comp.
 Print Assumptions satisfies_substitute.
 Print Assumptions valid_K.
+Print Assumptions nn_neg_involutive.
+Print Assumptions nn_degree_to_formula.
+Print Assumptions nn_dnf_part_degree_zero.
+Print Assumptions nn_satisfies_atom.
+Print Assumptions nn_satisfies_neg.
+Print Assumptions nn_to_formula_correct.
+Print Assumptions formula_to_nnf_correct.
+Print Assumptions formula_nnf_round_trip.
 Print Assumptions valid_T_of_reflexive.
 Print Assumptions valid_D_of_serial.
 Print Assumptions valid_B_of_symmetric.
