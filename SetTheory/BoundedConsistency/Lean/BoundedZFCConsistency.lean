@@ -11,6 +11,7 @@ import BoundedZFCConsistency.InternalSat
 import BoundedZFCConsistency.InternalSatTotality
 import BoundedZFCConsistency.InternalSoundness
 import BoundedZFCConsistency.OmegaRecursion
+import BoundedZFCConsistency.UniverseTruthLevel
 import BoundedZFCConsistency.UniverseTruthZero
 
 /-!

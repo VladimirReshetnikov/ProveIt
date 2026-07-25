@@ -248,9 +248,12 @@ dropped, since route 2 reaches the target without a cumulative hierarchy; see
   externally indexed hierarchy, and simpler than `Delta_0` truth because this
   syntax has no primitive bounded quantifier — with its Tarski clauses and
   agreement with the metatheory on quotations.
-- [ ] Define the externally indexed `Sigma`/`Pi` partial truth predicates over
+- [x] Define the externally indexed `Sigma`/`Pi` partial truth predicates over
   the universe by recursion on the external level, with their Tarski clauses and
   the polarity switches at quantifier heads.
+- [ ] Prove the level-collapse theorem — that truth at level `n+1` on a code
+  bounded at `n` already holds at level `n` — which closes the elimination
+  halves of the two polarity-switch rows and upgrades `Pi` monotonicity.
 - [ ] Prove every internal ZFC axiom code of rank at most `n` true at level `n`,
   including the nonstandard schema instances the internal axiom set contains.
 - [ ] Push partial truth through a bounded coded derivation and conclude that
@@ -345,6 +348,30 @@ of n.
 `zfcprov_conZFCForm_of_no_bounded_refutation` turns exactly that into
 `ZFC |- Con_n(ZFC)` through Gödel completeness.  Discharging it is the
 reflection layer's job, and is the only mathematics the project still owes.
+
+## The truth hierarchy: certificates within a level, recursion across levels
+
+The two mechanisms this project uses for recursion are combined in the fixed-level
+truth predicates, and the split is forced.
+
+*Across* levels the recursion is external: the level is a metatheoretic natural
+consumed outside the object language, so each level is a separate definition
+producing a separate, strictly larger formula — the successor level's formula
+textually embeds its predecessor's.  The level never appears as a de Bruijn slot
+and never as an element of the model.  That is what keeps Tarski's theorem
+satisfied, and it is visible in the types rather than asserted in a comment.
+
+*Within* a level the recursion over a possibly nonstandard code is carried by an
+internal certificate, exactly as for the quantifier-free base and for internal
+satisfaction.  External recursion cannot reach inside a nonstandard code.
+
+One asymmetry in the step table is worth recording, because it looks arbitrary
+and is not.  A record is a code, an environment and a bit, with the bit read as
+a polarity: one means Sigma-true, zero means Pi-false.  The existential head is
+certified by recording a *witness*; the universal head by recording a
+*counterexample*.  The two polarity-switch rows go the other way and are guarded
+by the oriented rank bounds.  A witness is a single element and can be recorded;
+its absence is a statement about a proper class and cannot be.
 
 ## Why coded derivations carry a rank
 
