@@ -4,7 +4,7 @@ From FoundationModal Require Import
   Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK Kripke
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
-  CorrespondenceExtensions StandardTranslation Preservation Root
+  CorrespondenceExtensions NormalHilbert StandardTranslation Preservation Root
   WeakCorrespondence Undefinability.
 
 Check substitute_comp.
@@ -101,6 +101,34 @@ Check K_canonical_countermodel.
 Check K_complete.
 Check K_sound_complete.
 Check K_finite_sound_complete.
+
+Check normal_proves_weaken.
+Check normal_proves_substitute.
+Check empty_normal_proves_iff_K.
+Check K_proves_normal.
+Check KT_weaker_than_S4.
+Check K4_weaker_than_S4.
+Check KT_weaker_than_S5.
+Check K5_weaker_than_S5.
+Check normal_proves_sound_on_frame.
+Check KT_proves_sound_on_reflexive_frame.
+Check KD_proves_sound_on_serial_frame.
+Check KB_proves_sound_on_symmetric_frame.
+Check K4_proves_sound_on_transitive_frame.
+Check K5_proves_sound_on_right_euclidean_frame.
+Check S4_proves_sound_on_preorder_frame.
+Check S5_proves_sound_on_reflexive_euclidean_frame.
+Check GL_proves_sound_on_transitive_cwf_frame.
+Check Grz_proves_sound_on_reflexive_transitive_weak_cwf_frame.
+Check KT_is_consistent.
+Check KD_is_consistent.
+Check KB_is_consistent.
+Check K4_is_consistent.
+Check K5_is_consistent.
+Check S4_is_consistent.
+Check S5_is_consistent.
+Check GL_is_consistent.
+Check Grz_is_consistent.
 
 Check complement_neg.
 Check complement_cases.
@@ -239,6 +267,16 @@ Print Assumptions lindenbaum_extension.
 Print Assumptions canonical_truth_lemma.
 Print Assumptions K_complete.
 Print Assumptions K_finite_sound_complete.
+Print Assumptions normal_proves_substitute.
+Print Assumptions normal_proves_sound_on_frame.
+Print Assumptions S4_proves_sound_on_preorder_frame.
+Print Assumptions S5_proves_sound_on_reflexive_euclidean_frame.
+Print Assumptions GL_proves_sound_on_transitive_cwf_frame.
+Print Assumptions Grz_proves_sound_on_reflexive_transitive_weak_cwf_frame.
+Print Assumptions S4_is_consistent.
+Print Assumptions S5_is_consistent.
+Print Assumptions GL_is_consistent.
+Print Assumptions Grz_is_consistent.
 Print Assumptions complement_cases.
 Print Assumptions complementary_mem_box.
 Print Assumptions satisfies_complement_incompatible.

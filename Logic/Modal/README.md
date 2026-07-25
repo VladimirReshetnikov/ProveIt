@@ -23,6 +23,9 @@ is being reconstructed:
 - a constructive-by-stages Lindenbaum extension for concrete K, maximal
   consistent theories, the canonical successor and truth lemmas, canonical
   countermodels, and soundness/completeness over all and finite frames;
+- a reusable normal Hilbert calculus parameterized by substitution-closed
+  modal axiom schemata, with weakening, K embedding, and soundness and
+  consistency for KT, KD, KB, K4, K5, S4, S5, GL, and Grz;
 - Kripke satisfaction, semantic substitution, iterated box/diamond laws, and
   validity of K;
 - complexity-bounded generated models with a strengthened budgeted truth
@@ -74,6 +77,7 @@ is being reconstructed:
 | `ComplexityLimited.v` | `Modal/Kripke/ComplexityLimited.lean` | Complexity-bounded generated frames, strengthened truth lemma, subformula-target invariance |
 | `Filtration.v` | `Modal/Kripke/Filtration.lean` | Coarsest truth-profile filtration, explicit exponential cover, finite countermodels, semantic finite-model property |
 | `CanonicalK.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/K}.lean` | Concrete K Lindenbaum completion, maximal theories, canonical truth/countermodel arguments, completeness and finite completeness |
+| `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -154,7 +158,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Filtration `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.CanonicalK `
-  FoundationModal.Loeb FoundationModal.CorrespondenceExtensions `
+  FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
   FoundationModal.WeakCorrespondence `
   FoundationModal.Undefinability FoundationModal.Audit
