@@ -1084,6 +1084,15 @@ six-premise implication code as a witness.  This graph is reusable by a
 concrete master family, although it is not by itself the five-field
 Lean-style successor package.
 
+`RawCodedDynamicLocalFieldGraph.v` supplies the exact model-indexed splice
+needed by the first Lean-style field: a fixed zero graph is selected at zero,
+while every successor exposes its predecessor and evaluates a positive-orbit
+graph there.  The de Bruijn remapping, arbitrary-model totality reduction,
+and exact zero/successor views are complete.  Its honest concrete inputs are
+still missing: model-coded truth-formula output graphs and code graphs for the
+four augmented-local laws.  The existing fixed-level Coq syntax is indexed by
+external `nat`, so it cannot be substituted for those nonstandard graphs.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
@@ -1137,6 +1146,14 @@ Its explicit de Bruijn remapping has exact arbitrary-model semantics, forces
 the resulting master witness to be the six-field conjunction code, supplies
 the decomposition callback used by the outer induction, and derives combined
 graph totality from totality of the five dynamic inputs.
+
+`RawCodedTruthCertificateMasterBaseBridge.v` reduces the concrete zero
+callback to component-level data without losing the selected codes.  It
+supports either six raw local proofs in one witnessed PA-axiom context, or
+five standard closed `BProv` derivations accompanied by explicit graph views;
+the compact sixth component is supplied by the proved level-zero consistency
+theorem.  The standard route deliberately requires quoted-code witnesses and
+never identifies an arbitrary nonstandard graph output with a quotation.
 
 `CompactPAUniformProvabilityTightness.v` still proves that the compact selector
 successor is equivalent to the requested object theorem, so only a concrete

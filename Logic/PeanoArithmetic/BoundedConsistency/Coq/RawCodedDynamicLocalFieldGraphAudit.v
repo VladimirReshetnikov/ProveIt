@@ -1,0 +1,22 @@
+(** Public surface and assumption audit for the dynamic local-field splice. *)
+
+From BoundedPAConsistency Require Import RawCodedDynamicLocalFieldGraph.
+
+Import PABoundedRawCodedDynamicLocalFieldGraph.
+
+Check dynamicLocalPositiveRenaming.
+Check raw_sat_dynamicLocalPositiveRenamedGraph_iff.
+Check dynamicLocalFieldGraph.
+Check RawDynamicLocalFieldGraphAt.
+Check raw_sat_dynamicLocalFieldGraph_iff.
+Check RawDynamicLocalBaseGraphTotal.
+Check RawDynamicLocalPositiveGraphTotal.
+Check RawDynamicLocalFieldGraphTotal.
+Check raw_dynamicLocalFieldGraph_total.
+Check raw_dynamicLocalFieldGraph_zero_iff.
+Check raw_dynamicLocalFieldGraph_succ_iff.
+
+Print Assumptions raw_sat_dynamicLocalFieldGraph_iff.
+Print Assumptions raw_dynamicLocalFieldGraph_total.
+Print Assumptions raw_dynamicLocalFieldGraph_zero_iff.
+Print Assumptions raw_dynamicLocalFieldGraph_succ_iff.
