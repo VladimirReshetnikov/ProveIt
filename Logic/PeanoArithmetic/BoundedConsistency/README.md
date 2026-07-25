@@ -1109,6 +1109,15 @@ arbitrary-model semantics identify the selected output with the appropriate
 raw formula constructor code.  These combinators let the remaining dynamic
 fields be assembled structurally without decoding nonstandard syntax in Coq.
 
+`RawCodedCarrierIndexedCodeOrbitGraph.v` supplies the model-internal recursion
+engine for those fields.  A three-witness Goedel-beta table starts from an
+arbitrary output-first base graph and checks a represented successor graph at
+every adjacent pair through a carrier-valued bound.  Explicit row append,
+prefix preservation, and lookup functionality prove the exact zero and
+successor equations.  PA-definable induction then proves graph totality at
+every model element, including nonstandard indices; all fixed parameters are
+forwarded unchanged in the graph's tail environment.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
