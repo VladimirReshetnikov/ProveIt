@@ -1093,6 +1093,13 @@ still missing: model-coded truth-formula output graphs and code graphs for the
 four augmented-local laws.  The existing fixed-level Coq syntax is indexed by
 external `nat`, so it cannot be substituted for those nonstandard graphs.
 
+`RawCodedStandardClosedFormulaCodeGraph.v` discharges the generic fixed-base
+half of such splices.  Any external formula has a canonical output-first graph
+for its exact internal quotation, with law-free numeral totality, PA-model
+quoted-code semantics, the base-totality interface above, and a convenience
+bridge from a standard closed `BProv` derivation to a graph-selected raw proof
+certificate.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
