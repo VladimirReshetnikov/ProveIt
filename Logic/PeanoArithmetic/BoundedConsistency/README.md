@@ -1187,6 +1187,15 @@ universal leaf, with exact semantics, scoping, standard application, and an
 output-first base-code graph.  In particular, its rank bounds remain
 meaningful at nonstandard model levels.
 
+`RawCodedDynamicTruthPiSuccessorRowGraph.v` constructs the genuine negative
+successor coordinate for that four-table certificate.  Its output-first graph
+maps the preceding Sigma-truth formula code to the next Pi-falsity formula
+code, represents all six native Pi branches, and applies the lower predicate
+through three checked substitutions beneath the row binders.  Exact semantics
+is law-free at carrier-valued levels; the totality theorem exposes the domain
+substitution and lower-Sigma application operations explicitly instead of
+using a dummy polarity or default code.
+
 `RawCodedCarrierIndexedCodeOrbitGraph.v` supplies the model-internal recursion
 engine for those fields.  A three-witness Goedel-beta table starts from an
 arbitrary output-first base graph and checks a represented successor graph at
