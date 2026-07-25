@@ -26,3 +26,9 @@ import ZFCinPA.SetPlaceholderQuotient
 import ZFCinPA.SetPlaceholderQuotientAudit
 import ZFCinPA.SetCongruence
 import ZFCinPA.SetCongruenceAudit
+import ZFCinPA.CertificateFields
+import ZFCinPA.CertificateFieldsAudit
+import ZFCinPA.ConcreteFamily
+import ZFCinPA.ConcreteFamilyAudit
+import ZFCinPA.BaseCertificate
+import ZFCinPA.BaseCertificateAudit
