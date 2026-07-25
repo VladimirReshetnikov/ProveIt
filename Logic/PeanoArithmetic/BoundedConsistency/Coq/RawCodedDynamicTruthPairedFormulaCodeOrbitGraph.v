@@ -1,9 +1,10 @@
 (**
-  The carrier-indexed orbit of the paired dynamic-truth formula codes.
+  The carrier-indexed syntactic orbit of paired *local-row* formula codes.
 
-  The rank-zero Sigma/Pi codes and the mutually recursive successor row
-  have already been represented separately.  This file merely specializes
-  the generic two-coordinate carrier orbit to those checked components.
+  The rank-zero local Sigma/Pi codes and the mutually recursive local
+  successor row have already been represented separately.  This file merely
+  specializes the generic two-coordinate carrier orbit to those checked
+  components.
   Its public, output-first environment convention is
 
       sigmaCode :: piCode :: level :: tail.
@@ -11,6 +12,14 @@
   In particular, [level] is an element of an arbitrary PA model.  Totality
   below is therefore obtained by represented PA induction and covers
   nonstandard levels; it is not a meta-level recursion over [nat].
+
+  Important representation boundary: a positive iterate is the code of an
+  eight-witness row predicate whose free variables still name the four beta
+  tables and the current state.  It is *not* the code of the globally closed
+  ten-witness truth certificate.  The historical public names in this module
+  are retained for compatibility, but certificate-field graphs must first
+  pass these local row codes through the separate global-wrapper
+  construction; they must not consume this orbit directly.
 *)
 
 From FirstOrder Require Import Fol.
@@ -40,7 +49,7 @@ Import PABoundedRawCodedDynamicTruthPairedSuccessorRowGraph.
 Import PABoundedRawCodedDynamicTruthPairedSuccessorAdequacy.
 
 (** No new coding machinery is hidden here: this is the literal generic
-    orbit instantiated by the two fixed dynamic-truth row graphs. *)
+    orbit instantiated by the two fixed local dynamic-truth row graphs. *)
 Definition dynamicTruthPairedFormulaCodeOrbitGraph : formula :=
   carrierIndexedPairedCodeOrbitGraph
     dynamicTruthPairedBaseFormulaCodeGraph
@@ -75,7 +84,7 @@ Proof.
     tail level sigmaCode piCode).
 Qed.
 
-(** At zero, the orbit is exactly the paired base row. *)
+(** At zero, the orbit is exactly the paired local rank-zero row. *)
 Theorem raw_dynamicTruthPairedFormulaCodeOrbitAt_zero_iff : forall
     (M : RawPAModel), RawPASatisfies M -> forall
       tail sigmaCode piCode,
@@ -94,7 +103,7 @@ Proof.
 Qed.
 
 (** The successor view exposes the preceding pair and the genuine paired
-    row relation.  No choice of a successor code is made by this theorem. *)
+    *local* row relation.  No choice of a successor code is made here. *)
 Theorem raw_dynamicTruthPairedFormulaCodeOrbitAt_succ_iff : forall
     (M : RawPAModel), RawPASatisfies M -> forall
       tail level nextSigmaCode nextPiCode,
@@ -202,8 +211,11 @@ Proof.
 Qed.
 
 (** All operation premises of the preceding theorem have now been discharged
-    by the adequacy-preserving paired successor.  This is the unconditional
-    carrier-facing truth-code orbit used by downstream field graphs. *)
+    by the adequacy-preserving paired successor.  The conclusion is an
+    unconditional carrier-facing orbit of atomically adequate local-row
+    syntax codes.  It deliberately makes no claim that those codes are the
+    globally closed truth predicates required by downstream certificate
+    fields. *)
 Corollary dynamicTruthPairedFormulaCodeOrbitGraph_raw_adequate_total : forall
     (M : RawPAModel), RawPASatisfies M -> forall
       (tail : nat -> M) level,

@@ -1,14 +1,14 @@
 (**
-  Ordinary output-first projections of the paired dynamic-truth code orbit.
+  Ordinary output-first projections of the paired local-row code iteration.
 
   The mutually recursive construction naturally produces both coordinates
   at once:
 
       sigmaCode :: piCode :: level :: tail.
 
-  Consumers of one polarity should not need to expose the other coordinate.
-  This file therefore defines two ordinary output-first graphs, each read
-  under
+  Diagnostic consumers of one local polarity should not need to expose the
+  other coordinate.  This file therefore defines two ordinary output-first
+  graphs, each read under
 
       output :: level :: tail.
 
@@ -24,6 +24,13 @@
   Both projections retain exact arbitrary-model semantics.  Their totality
   results simply project the adequate paired orbit: no coordinate is decoded,
   recomputed, or replaced by a fallback value.
+
+  As in the paired module, the exported names predate the distinction made
+  explicit here.  These graphs select codes of local table-row predicates,
+  not codes of the globally closed ten-witness Sigma/Pi certificates.  They
+  are therefore unsuitable as the truth-predicate inputs of the five final
+  certificate fields; those fields must use projections of the separately
+  wrapped global orbit.
 *)
 
 From Stdlib Require Import Arith Lia.
@@ -149,8 +156,8 @@ Proof.
 Qed.
 
 (** ------------------------------------------------------------------
-    Zero views.  These expose the genuine paired base graph while retaining
-    only the requested public coordinate. *)
+    Zero views.  These expose the genuine paired *local* base graph while
+    retaining only the requested public coordinate. *)
 
 Theorem raw_dynamicTruthSigmaFormulaCodeAt_zero_iff : forall
     (M : RawPAModel), RawPASatisfies M -> forall tail sigmaCode,
@@ -358,8 +365,9 @@ Proof.
 Qed.
 
 (** The concrete paired successor now discharges the conditional interface,
-    so downstream field graphs may use either polarity without supplying any
-    additional operation callback. *)
+    so local-row diagnostics may select either polarity without supplying an
+    additional operation callback.  Global certificate fields still require
+    the wrapper described in the module header. *)
 Corollary dynamicTruthSigmaFormulaCodeGraph_raw_adequate_total : forall
     (M : RawPAModel), RawPASatisfies M -> forall
       (tail : nat -> M) level,

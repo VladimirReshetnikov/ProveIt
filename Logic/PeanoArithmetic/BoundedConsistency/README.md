@@ -1249,13 +1249,16 @@ both three-step lower-polarity applications preserve adequacy; the transparent
 Sigma/Pi row assemblers do as well.  Hence every adequate preceding pair has
 a checked adequate paired successor, with no operation premise left open.
 
-`RawCodedDynamicTruthPairedBaseFormulaCodeGraph.v` supplies that orbit's exact
-rank-zero seed.  Its first coordinate is the ternary Sigma-truth predicate and
-its second coordinate is the distinct ternary Pi-falsity predicate; both are
-selected by literal internal formula-code numerals in the base environment.
-The graph has law-free numeral semantics and totality, agrees with structural
-formula quotation in every PA model, and includes the scoped Pi-base
-application lemma needed by the represented successor construction.
+`RawCodedDynamicTruthPairedBaseFormulaCodeGraph.v` supplies the exact seed for
+the local-row iteration.  Its first coordinate is the ternary local
+Sigma-zero predicate and its second coordinate is the distinct ternary local
+Pi-zero predicate; both are selected by literal internal formula-code
+numerals in the base environment.  The graph has law-free numeral semantics
+and totality, agrees with structural formula quotation in every PA model, and
+includes the scoped Pi-base application lemma needed by the represented
+successor construction.  These two formulas still refer to the surrounding
+four-table state and are not yet the globally closed ten-witness truth
+certificates.
 
 `RawCodedDynamicTruthPairedBaseAdequacy.v` proves the stronger base condition
 used by the adequacy-preserving orbit.  In a PA model the two literal numeral
@@ -1264,21 +1267,34 @@ so the existing quotation construction supplies internal atomic-adequacy
 certificates for both coordinates in the same checked base row.
 
 `RawCodedDynamicTruthPairedFormulaCodeOrbitGraph.v` specializes the paired
-recursion engine to that checked base and the mutually polarized successor
-row.  It exposes exact output-first semantics and literal zero/successor views
-for `sigmaCode :: piCode :: level :: tail`.  PA-definable induction yields
-adequate witnesses at every carrier level—including nonstandard levels.  The
-successor-adequacy construction now discharges its last explicit operation
-interface, so the public orbit totality theorem is unconditional in every raw
-PA model; all coding, base, successor, and induction obligations are internal.
+recursion engine to that checked local base and the mutually polarized local
+successor row.  It exposes exact output-first semantics and literal
+zero/successor views for `sigmaCode :: piCode :: level :: tail`.
+PA-definable induction yields adequate syntax-code witnesses at every carrier
+level—including nonstandard levels—and the successor-adequacy construction
+discharges its last explicit operation interface.  This is a genuine internal
+orbit, but its positive iterates code eight-witness row predicates with free
+table/state variables.  They are not the globally closed ten-witness truth
+predicates and must not be wired directly into the five certificate fields.
 
 `RawCodedDynamicTruthPolarityFormulaCodeGraphs.v` exposes ordinary
-`output :: level :: tail` graphs for consumers needing only one coordinate.
-The Sigma projection explicitly swaps its hidden Pi witness back into the
-paired order, while the Pi projection can use the existential body directly.
-Both have exact law-free semantics and zero/successor views, and both now have
+`output :: level :: tail` projections of that same local-row iteration.  The
+Sigma projection explicitly swaps its hidden Pi witness back into the paired
+order, while the Pi projection can use the existential body directly.  Both
+have exact law-free semantics and zero/successor views, and both have
 unconditional arbitrary-model totality with atomic adequacy of the selected
-possibly nonstandard formula code.
+possibly nonstandard local-row code.  These projections are useful audits,
+not the final truth-predicate graphs; the latter must project a paired orbit
+whose base and successor have first been closed by the global four-table
+wrapper.
+
+`RawCodedOutputFirstFormulaGraphComposition.v` provides the generic one-step
+plumbing needed for such wrappers and later field graphs.  It existentially
+composes `intermediate :: level :: tail` with
+`output :: intermediate :: level :: tail`, using explicit de Bruijn
+renamings to expose `output :: level :: tail`.  Its exact semantics is
+law-free, and its dependent totality theorem transports an arbitrary indexed
+invariant from the source witness to the transformed output.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but

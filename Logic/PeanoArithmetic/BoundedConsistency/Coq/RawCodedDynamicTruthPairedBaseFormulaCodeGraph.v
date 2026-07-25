@@ -1,10 +1,13 @@
 (**
-  The two-code base row for carrier-indexed dynamic truth.
+  The two-code *local* base row for carrier-indexed dynamic truth.
 
   Coq's fixed-level truth certificates are mutually polarized: Sigma truth
   and Pi falsity are separate ternary predicates, and each positive-level
   constructor refers to the opposite predicate at the preceding level.  The
-  dynamic orbit must therefore start with both rank-zero formula codes.
+  local-row iteration must therefore start with both rank-zero formula codes.
+  These predicates still take the surrounding four-table state through free
+  variables; a globally closed dynamic truth orbit must wrap them in the
+  ten existential table witnesses before using them as certificate fields.
 
   The public base-graph convention is
 
