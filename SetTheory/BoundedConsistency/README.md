@@ -199,9 +199,9 @@ same three reasons as in the arithmetic case:
   certificate relation: internal environments with binder extension, the local
   Tarski step as a `Form` with an exact satisfaction spec, and single-valuedness
   proved by induction over codes.
-- [ ] Prove totality of the satisfaction certificates, so that the relation
-  becomes a genuine satisfaction predicate rather than a single-valued partial
-  assignment.
+- [x] Prove totality of the satisfaction certificates and derive the internal
+  satisfaction relation `SatIn` together with its Tarski clauses for atoms,
+  falsity, the three connectives, and both quantifiers.
 - [ ] Formalize soundness of the 17-rule calculus with respect to internal set
   models.
 - [ ] Prove the Levy reflection scheme inside ZFC: for each metatheoretic `n`,
@@ -211,6 +211,27 @@ same three reasons as in the arithmetic case:
 - [ ] Apply `godel_completeness_for_theories` to obtain, for every metatheoretic
   `n`, the object-level derivation `ZFC |- Con_n(ZFC)`, and audit its
   assumptions.
+
+## How totality avoided a choice principle
+
+The quantifier cases of totality look as though they need a certificate chosen
+for each element of the carrier, collected by Replacement — and a *definable*
+choice of certificate is not available.
+
+The fix is to strengthen the induction hypothesis rather than to choose.  The
+property carried through code induction is not “a certificate exists at this
+environment” but “**one** certificate serves every environment in a given set”.
+A quantifier case then applies the induction hypothesis exactly once, at the set
+of environments extended by every carrier element, and never selects anything.
+No choice principle is used at either level, and the resulting satisfaction
+relation is genuinely a relation rather than a selected function.
+
+Two smaller points fell out of the same proof.  Single-valuedness of subcode
+bits is not needed for totality, because the Boolean clauses are existential in
+the subbits — so the two halves of the satisfaction layer are independent.  And
+`certificate_total` is stated over a set structure only because that is the
+intended interface: the proof never uses it, since an empty carrier is settled
+by the universal side of the quantifier clause.
 
 ## Two facts about the coded-syntax layer
 
