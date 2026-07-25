@@ -1063,12 +1063,26 @@ the first root, and appends binary or quantified parent rows.  This proves
 `RawCodedFormulaShiftTotality.v`, arbitrary adequate formula unit shifts no
 longer depend on a trace-splicing callback.
 
+`RawCodedPALocalProofContextInsertUnconditional.v` instantiates the complete
+seventeen-rule proof induction with that theorem.  Adequate unit formula
+shifts, arbitrary carrier-depth context insertion, and the guarded
+single-cons transplant are therefore unconditional in every raw PA model.
+
 `RawCodedAssignmentShiftTail.v` also exposes PAHF's represented beta-tail
 shift through the raw assignment interface.  It constructs, inside every raw
 model and through an arbitrary carrier-valued bound, a target table whose row
 `k` is the source table's row `k + 1`.  This is the table operation needed to
 compare context traversals after descending through a binder; it does not
 decode a nonstandard context in Rocq.
+
+The pre-existing fixed dynamic-soundness source is now exposed through
+`RawCodedRestrictedPADynamicSoundnessFormulaGraph.v` as an output-first field
+graph.  It internally chooses a numeral-term code for an arbitrary model
+element and performs represented substitution into the fixed source; the
+explicit substitution tree proves graph totality with the intended
+six-premise implication code as a witness.  This graph is reusable by a
+concrete master family, although it is not by itself the five-field
+Lean-style successor package.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but

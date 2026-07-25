@@ -1,0 +1,14 @@
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofContextInsertUnconditional.
+
+Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
+
+Check raw_adequateUnitFormulaShiftExists.
+Check raw_codedFormulaUnitShift_exists.
+Check raw_codedPALocalProofContextInsertAt.
+Check raw_codedPALocalProof_adequateConsTransplant.
+
+Print Assumptions raw_adequateUnitFormulaShiftExists.
+Print Assumptions raw_codedFormulaUnitShift_exists.
+Print Assumptions raw_codedPALocalProofContextInsertAt.
+Print Assumptions raw_codedPALocalProof_adequateConsTransplant.
