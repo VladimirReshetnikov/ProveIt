@@ -1241,6 +1241,14 @@ are part of the PA-definable existential induction formula, so the resulting
 totality theorem retains them at arbitrary nonstandard carrier levels without
 inventing a fallback result for malformed inputs.
 
+`RawCodedDynamicTruthPairedSuccessorAdequacy.v` discharges that strengthened
+successor interface.  It proves PA-internal identity shifts by zero and uses
+them to derive constructor closure of atomic adequacy without decoding a
+nonstandard formula code.  Represented successor-numeral substitution and
+both three-step lower-polarity applications preserve adequacy; the transparent
+Sigma/Pi row assemblers do as well.  Hence every adequate preceding pair has
+a checked adequate paired successor, with no operation premise left open.
+
 `RawCodedDynamicTruthPairedBaseFormulaCodeGraph.v` supplies that orbit's exact
 rank-zero seed.  Its first coordinate is the ternary Sigma-truth predicate and
 its second coordinate is the distinct ternary Pi-falsity predicate; both are
