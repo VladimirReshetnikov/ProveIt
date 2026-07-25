@@ -456,7 +456,35 @@ Concretely:
 
 Nothing above weakens `ZFCSuccessorImplications`, and no part of it is
 assumed anywhere in this file: `localStepSuccessor_of_derivation` takes
-the source proof as an explicit argument. -/
+the source proof as an explicit argument.
+
+**Update (`ZFCinPA.LocalStepDerivation`).**  The two guesses recorded in
+this section have since been settled, and one of them was wrong.
+
+* The first conjunct does transfer, exactly as expected, and the transfer
+  is now machine-checked at an arbitrary previous-level relation:
+  `LocalStepDerivation.bot_notSigma_step`.
+* The second conjunct does **not** transfer, and the internal form-code
+  induction is *not* what is missing: the induction predicate can carry
+  the two witnessing sets as parameters, so it is an ordinary `ℒₛₑₜ`
+  Separation instance.  What is missing is the Tarski *elimination*
+  clauses at level `x+1`, which are not among the five certificate
+  fields.  `LocalStepDerivation.exclusivity_not_step_transferable`
+  exhibits a previous level satisfying both conjuncts of `srcLocalStep`
+  (and the `crossLevel` conjunct) for which level-`(x+2)` exclusivity
+  fails at the form code `⊥ 🡒 ⊥`.  Consequently
+  `templateZFC 2 levelArities ⊬ srcLocalStepStep` relative to
+  `Con(𝗭𝗙𝗖)`, and widening the antecedent to `srcLocalStep ⋏ srcCrossLevel`
+  does not help.  See that module's header for the two countermodels.
+* Separately, the interface stated here is too narrow: the completeness
+  route can only yield `templateZFC … ⊢! congruence 🡒 σ`, whose antecedent
+  is discharged after translation, not at source level.
+  `LocalStepDerivation.localStepSuccessor_of_congruentDerivation` is the
+  corrected reduction; its hypothesis is strictly weaker than
+  `localStepSuccessor_of_derivation`'s and its conclusion identical.
+
+None of this weakens `ZFCSuccessorImplications`, and nothing in the
+project assumes any of the source derivations discussed. -/
 
 end LocalStepSuccessor
 end ZFCinPA

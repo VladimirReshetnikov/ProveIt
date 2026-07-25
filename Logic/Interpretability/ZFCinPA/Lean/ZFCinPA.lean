@@ -42,4 +42,6 @@ import ZFCinPA.SuccessorSources
 import ZFCinPA.SuccessorSourcesAudit
 import ZFCinPA.LocalStepSuccessor
 import ZFCinPA.LocalStepSuccessorAudit
+import ZFCinPA.LocalStepDerivation
+import ZFCinPA.LocalStepDerivationAudit
 import ZFCinPA.Endpoint
