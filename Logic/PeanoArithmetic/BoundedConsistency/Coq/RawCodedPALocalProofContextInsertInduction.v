@@ -37,6 +37,7 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruthTotality
   RawCodedProofEndpoints
   RawCodedProofRuleCoverage
+  RawCodedProofAssumptionLeaf
   RawCodedPALocalProofExistential.
 
 Module PABoundedRawCodedPALocalProofContextInsertInduction.
@@ -55,6 +56,7 @@ Import PABoundedRawCodedContextInsert.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedProofEndpoints.
 Import PABoundedRawCodedProofRuleCoverage.
+Import PABoundedRawCodedProofAssumptionLeaf.
 Import PABoundedRawCodedPALocalProofExistential.
 
 (** The conjunction is repeated locally rather than importing the later
@@ -203,6 +205,31 @@ Lemma raw_codedPALocalProofContextInsertBelow_zero : forall
 Proof.
   intros M hPA root hroot.
   exfalso. exact (raw_not_lt_zero M hPA root hroot).
+Qed.
+
+(** The sole rule row that reads its context is already stable under an
+    insertion at any model-internal depth.  The original assumption remains
+    a member of the target context, and the canonical target-context leaf
+    rebuilds both coverage and its exact endpoint. *)
+Theorem raw_codedPALocalProof_contextInsert_assumption : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      head depth source target conclusion,
+  RawContextInsertAt M head depth source target ->
+  RawContextListMember M source conclusion ->
+  RawCodedPALocalProofOf M target conclusion
+    (rawProofAssumptionRoot M target conclusion).
+Proof.
+  intros M hPA head depth source target conclusion
+    hinsertion hmember.
+  assert (htargetMember : RawContextListMember M target conclusion).
+  {
+    exact (raw_contextInsertAt_source_member M hPA
+      head depth source target conclusion hinsertion hmember).
+  }
+  split.
+  - exact (raw_proofAssumption_ruleCoverage M hPA
+      target conclusion htargetMember).
+  - exact (raw_proofAssumption_endpoint M target conclusion).
 Qed.
 
 (** The only proof-specific input needed by the represented induction: a
