@@ -42,10 +42,14 @@ import ZFCinPA.StandardSuccessor
 import ZFCinPA.StandardSuccessorAudit
 import ZFCinPA.SuccessorSources
 import ZFCinPA.SuccessorSourcesAudit
+import ZFCinPA.TarskiSources
+import ZFCinPA.TarskiSourcesAudit
 import ZFCinPA.LocalStepSuccessor
 import ZFCinPA.LocalStepSuccessorAudit
 import ZFCinPA.LocalStepDerivation
 import ZFCinPA.LocalStepDerivationAudit
 import ZFCinPA.EnlargedFields
 import ZFCinPA.EnlargedFieldsAudit
+import ZFCinPA.LocalStepTransfer
+import ZFCinPA.LocalStepTransferAudit
 import ZFCinPA.Endpoint
