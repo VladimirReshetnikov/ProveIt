@@ -62,4 +62,12 @@ import ZFCinPA.TowerEvaluation
 import ZFCinPA.TowerSuccessorEvaluation
 import ZFCinPA.FieldEvaluation
 import ZFCinPA.FieldEvaluationAudit
+import ZFCinPA.TarskiEvaluation
+import ZFCinPA.TarskiEvaluationAudit
+import ZFCinPA.CrossLevelSource
+import ZFCinPA.CrossLevelSourceAudit
+import ZFCinPA.NumeralUnique
+import ZFCinPA.NumeralUniqueAudit
+import ZFCinPA.CodeInductionSource
+import ZFCinPA.CodeInductionSourceAudit
 import ZFCinPA.Endpoint

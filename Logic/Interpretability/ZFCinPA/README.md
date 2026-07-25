@@ -166,6 +166,10 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `SpineEvaluation` | bridge part 2: the closure spine |
 | `TowerEvaluation`, `TowerSuccessorEvaluation` | bridge part 2(b), 2(c): the level tower, and one index up |
 | `FieldEvaluation` | bridge part 3: certificate fields; carries the residue list |
+| `TarskiEvaluation` | bridge part 4: the two Tarski fields, at both levels |
+| `CrossLevelSource` | the `decided` conjunct as a source field, and its reading |
+| `NumeralUnique` | pins the numeral placeholder; uniqueness discharged internally |
+| `CodeInductionSource` | code-induction at `StepGood` as a Separation antecedent |
 | `Endpoint` | the target, the chain to it, and its exact residue |
 
 ## Building
@@ -219,14 +223,46 @@ Two conventions guard against false confidence, both learned the hard way:
 ## Residue
 
 The open work is enumerated precisely in the residue sections of
-[`FieldEvaluation.lean`](Lean/ZFCinPA/FieldEvaluation.lean) and
-[`LocalStepTransfer.lean`](Lean/ZFCinPA/LocalStepTransfer.lean). In summary:
-the two Tarski field readings; a source `crossLevel` field (the decidedness
-conjunct, for which no source formula yet exists); a `Num`-uniqueness
-antecedent pinning the level bound, which the successor reading needs because
-it existentially quantifies that bound while exclusivity needs the *same*
-witness at both polarities; a source form of code-induction at `StepGood`; and
-the final assembly.
+[`FieldEvaluation.lean`](Lean/ZFCinPA/FieldEvaluation.lean),
+[`LocalStepTransfer.lean`](Lean/ZFCinPA/LocalStepTransfer.lean) and each new
+module. The state as of the last commit:
+
+**Done.** All four prerequisites of the `localStep` assembly now exist and
+build: the two Tarski field readings (`TarskiEvaluation`), the `crossLevel`
+source field (`CrossLevelSource`), the `Num`-uniqueness antecedent
+(`NumeralUnique`), and the source code-induction antecedent
+(`CodeInductionSource`).
+
+**Open, in dependency order.**
+
+1. *One vocabulary mismatch, mechanical but unwritten.*
+   `NumeralOmega.zfcInternal_numChain_omega` lives over the one-placeholder
+   `SeparationKernel.setTemplateLanguage`, while `srcNumUnique` lives over the
+   two-placeholder `SuccessorSources.srcL`. Both specialize the numeral
+   placeholder to the same `numChainCode x`, so restating ω-membership as an
+   `srcL` source formula is a code-identity exercise — but it exists nowhere,
+   and the assembler needs both antecedents in one sentence.
+2. *The assembly.* Build
+   `(srcNumOmega ⋏ srcNumUnique ⋏ srcCodeInduction ⋏ srcLaws) 🡒 srcLocalStepSucc`,
+   transport it by `complete_underSetPlaceholderCongruence`, and discharge each
+   antecedent after translation. This yields `localStep` at arbitrary `n : V` —
+   **one** of the eight implications.
+3. *Four fields with no source formula at all*: `shiftInvariant`,
+   `substitutionInvariant`, `axiomSound`, and `finalConsistency` (with its
+   `conFormula` well-formedness obligation). Each needs the same five
+   deliverables — source formula, translation identity, `FvFree`, evaluation
+   reading, derivation. The good news is that the closure spine they recurse
+   through (`srcLevelSat`, `srcSigmaTrue`, `srcPiFalse`, `srcPiTrue` and their
+   successor forms) is field-*independent* and already proved, so the marginal
+   cost per field does not include the apparatus.
+
+A reusable tool for step 3, found while writing `CodeInductionSource`:
+`shift_translateFormula_of_fvFree` establishes shift-fixedness of the
+translation of *any* free-variable-free source proposition in a few lines, from
+`SetPlaceholders.translateFormula_shift` and `Semiformula.rew_eq_self_of`. It is
+strictly more general than mirroring `LevelCodeTower.shift_closCode`'s
+per-formula spine walk, and it reuses the `FvFree` fact needed anyway to close a
+`Proposition srcL` into a `Sentence srcL`.
 
 ## Related projects
 
