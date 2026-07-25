@@ -1109,6 +1109,13 @@ field into the compact selector.  Raw-model completeness then yields the
 exact uniform object theorem conditional only on the concrete graph's
 decomposition, base, and successor callbacks.
 
+`RawCodedTruthCertificateMasterIntroduction.v` supplies the complementary
+constructor direction.  Six component proofs over one witnessed PA-axiom
+context are combined by five coverage-certified And-I nodes into the exact
+right-associated master proof, then repackaged as an ordinary PA certificate.
+Thus the concrete zero stage only has to produce the six component roots in a
+common context; it need not rebuild the structural conjunction compiler.
+
 `CompactPAUniformProvabilityTightness.v` still proves that the compact selector
 successor is equivalent to the requested object theorem, so only a concrete
 proof-producing construction can close the endpoint.
