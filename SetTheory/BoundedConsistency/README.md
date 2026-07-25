@@ -259,9 +259,8 @@ dropped, since route 2 reaches the target without a cumulative hierarchy; see
   which implication elimination needs.
 - [ ] Prove every internal ZFC axiom code of rank at most `n` true at level `n`,
   including the nonstandard schema instances the internal axiom set contains.
-- [ ] Push partial truth through a bounded coded derivation and conclude that
-  falsity is not derivable, discharging the single remaining obligation
-  `zfcprov_conZFCForm_of_no_bounded_refutation`.
+- [x] Push partial truth through a bounded coded derivation — all seventeen
+  rules — and conclude that falsity is not derivable, given axiom truth.
 - [ ] Assemble the object-level derivation `ZFC |- Con_n(ZFC)` for every
   metatheoretic `n`, and audit its assumptions.
 
@@ -344,13 +343,12 @@ argument would not cover the derivations `Con_n` actually quantifies over.
 lemmas and then names what is left, rather than assuming it.  Three obligations
 remain, and they are not independent:
 
-- `LevelSoundnessAt` — that a bounded coded derivation transports level-`n+1`
-  truth from its context to its conclusion.  **Open, but no longer blocked**:
-  the two-valuedness it needed is now proved.
 - `LevelTwoValuedAt` — **discharged** by `BoundedZFCConsistency.LevelCollapse`.
-- `AxiomCodesTrueAt` — that every internal ZFC axiom code of bounded complexity
-  is true at the level.  This is where the content of the axioms finally enters,
-  and it is independent of the other two.
+- `LevelSoundnessAt` — **discharged** by
+  `BoundedZFCConsistency.LevelSoundnessProof`, all seventeen rules.
+- `AxiomCodesTrueAt` — **the only one left.**  Every internal ZFC axiom code of
+  bounded complexity is true at the level.  This is where the content of the
+  axioms finally enters, and it is independent of the other two.
 
 The obstruction in the first was sharp and is worth keeping on record, because
 it is what showed the level-collapse theorem to be load-bearing rather than a
