@@ -8,7 +8,8 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
-  GLUnnecessitation GLModalDisjunction GLIndependence KHenIncompleteness
+  GLUnnecessitation GLModalDisjunction GLIndependence GLPlusBoxBot
+  KHenIncompleteness
   CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations KD4Point3Z CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
@@ -212,6 +213,20 @@ Check GL_proves_box_or_box_neg_of_not_independency.
 Check GL_unprovable_not_independency_of_consistency.
 Check GL_unprovable_higher_independency_of_consistency.
 Check GL_unprovable_not_higher_independency_of_consistency.
+(** The quasi-normal GL plus iterated boxed falsity hierarchy. *)
+Check GLPlusBoxBot_axiom.
+Check GLPlusBoxBot.
+Check GLPlusBoxBot_quasi_normal.
+Check GL_weaker_than_GLPlusBoxBot.
+Check GLPlusBoxBot_boxbot.
+Check substitute_GLPlusBoxBot_axiom.
+Check iff_provable_GLPlusBoxBot_provable_GL.
+Check eq_GLPlusBoxBot_omega_GL.
+Check GL_proves_box_iter_regularity.
+Check GL_proves_boxbot_successor.
+Check GLPlusBoxBot_weakerThan_succ.
+Check GLPlusBoxBot_weakerThan_add.
+Check GLPlusBoxBot_weakerThan_lt.
 (** Cresswell's KHen model and the resulting Kripke incompleteness. *)
 Check schema_Hen_substitution_closed.
 Check KHen_proves_substitute.
@@ -969,6 +984,12 @@ Print Assumptions GL_unprovable_independency.
 Print Assumptions GL_unprovable_not_independency_of_consistency.
 Print Assumptions GL_unprovable_higher_independency_of_consistency.
 Print Assumptions GL_unprovable_not_higher_independency_of_consistency.
+Print Assumptions GLPlusBoxBot_quasi_normal.
+Print Assumptions iff_provable_GLPlusBoxBot_provable_GL.
+Print Assumptions GL_proves_boxbot_successor.
+Print Assumptions GLPlusBoxBot_weakerThan_succ.
+Print Assumptions GLPlusBoxBot_weakerThan_add.
+Print Assumptions GLPlusBoxBot_weakerThan_lt.
 Print Assumptions valid_atomic_Loeb_iff_valid_atomic_Hen.
 Print Assumptions valid_atomic_Four_of_valid_atomic_Hen.
 Print Assumptions cresswell_eventually_true_or_false.
