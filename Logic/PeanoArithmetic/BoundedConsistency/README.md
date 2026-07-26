@@ -1448,6 +1448,18 @@ selected ordinary global Sigma/Pi orbit pair together with both cutoff-three
 root certificates.  The bridge retains the local callback as a visible
 premise and does not strengthen either fixed-cutoff certificate.
 
+The stronger invariant is now represented separately in
+`RawCodedTernaryPredicateDeepClosure.v`.  Its PA formula quantifies over every
+carrier cutoff and amount for shifts and over every carrier depth and honestly
+represented replacement for substitution, guarding both operations by the
+cutoff bound three.  Exact raw semantics confirms that these are genuine
+object-language quantifiers, so they include nonstandard parameters.  For a
+standard ternary-scoped quotation, the module builds an identity term-shift
+tree at an arbitrary carrier cutoff and lifts it structurally to a diagonal
+formula trace; together with arbitrary-depth scoped substitution this proves
+the full deep certificate.  A final bridge projects deep closure to the older
+root certificate, while the converse is deliberately absent.
+
 `RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
 Sigma successor-row syntax: eight existential table witnesses around a domain
 check and a seven-way disjunction, whose final branch contains the opaque
