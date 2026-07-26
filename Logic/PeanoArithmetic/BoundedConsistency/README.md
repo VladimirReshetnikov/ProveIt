@@ -1671,6 +1671,16 @@ ordinary PA certificate selected by the public field graph.  This remains a
 restricted-universal component: it does not upgrade the branch to the full
 seven-way local law.
 
+`RawCodedDynamicTruthSigmaDomainProjectionTransformGraph.v` returns to the
+genuine full Sigma row.  Its output-first transform selects the successor
+numeral, native domain instance, and lower-Pi application, then emits the
+exact thirteen-closed certificate for `full Or7 row -> Ex^8 domain`.  The
+transform composes with the paired global orbit into a predecessor-indexed
+positive field.  Its sharp endpoint reuses the restricted-universal direct
+compiler only along an adequate orbit and therefore needs shift/opening
+interchange only for the actually selected Pi code.  This is a full-row
+domain eliminator, not yet the branch-by-branch local decision law.
+
 `RawCodedDynamicTruthDeepClosedRestrictedLocalProofFields.v` selects the
 actual deeply closed paired-orbit witness instead of transporting closure to
 an arbitrary adequate witness.  The concrete shift and opening commutation
