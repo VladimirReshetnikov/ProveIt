@@ -1794,6 +1794,17 @@ has a represented PA proof; proof totality at a possibly nonstandard carrier
 index remains conditional only on the explicit
 `RawDynamicTruthNativeCrossLevelCoherenceProofCompiler`.
 
+`RawCodedDynamicTruthNativeShiftPositiveGraph.v` constructs the third native
+positive coordinate.  It selects the genuine paired truth orbit at `S p`,
+builds the six source/target domain and certificate applications through
+represented substitution traces, and assembles the literal eight-variable
+formula-shift Tarski law.  Exact graph semantics is law free, while PA proves
+adequacy-preserving relational totality and genuine certificates at every
+standard level.  The public proof-total endpoint retains atomic adequacy of
+the selected field code and depends only on the explicit
+`RawDynamicTruthNativeShiftProofCompiler` for possibly nonstandard carrier
+indices; semantic validity is never converted into proof syntax.
+
 `RawCodedDynamicTruthNativeSubstitutionCarrier.v` fixes the exact syntax for
 the fourth positive master coordinate.  Its transparent polynomial closes
 exactly the seven single-substitution parameters and combines the carried

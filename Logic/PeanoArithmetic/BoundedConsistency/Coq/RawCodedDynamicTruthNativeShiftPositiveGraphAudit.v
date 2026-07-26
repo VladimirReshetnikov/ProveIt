@@ -1,0 +1,85 @@
+(**
+  Kernel-facing surface and assumption audit for the native positive
+  formula-shift-invariance graph.
+
+  The carrier field is the literal eight-parameter universal closure of the
+  represented shift law.  Standard predecessor [p] is aligned with truth
+  level [S p], while arbitrary (possibly nonstandard) carrier indices stop
+  only at the explicit object-proof compiler interface.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeShiftPositiveGraph.
+
+Module PABoundedRawCodedDynamicTruthNativeShiftPositiveGraphAudit.
+
+Import PABoundedRawCodedDynamicTruthNativeShiftPositiveGraph.
+
+(** Exact target formula and transparent carrier-code polynomial. *)
+Check dynamicTruthNativeShiftStepCarrierFormula.
+Check dynamicTruthNativeShiftFieldCarrierFormula.
+Check dynamicTruthNativeShiftStepCarrierFormula_fixedLevel.
+Check dynamicTruthNativeShiftFixedLevelFieldFormula.
+Check dynamicTruthNativeShiftFieldCarrierFormula_fixedLevel.
+Check dynamicTruthNativeShiftFieldCodeTerm.
+Check rawDynamicTruthNativeShiftFieldCode.
+Check raw_eval_dynamicTruthNativeShiftFieldCodeTerm.
+Check raw_sat_dynamicTruthNativeShiftFieldCodeTermAt_iff.
+Check rawDynamicTruthNativeShiftFieldCode_quoted.
+Check rawDynamicTruthNativeShiftFieldCode_quoted_successor_level.
+
+(** Genuine standard fixed-level PA proof alignment. *)
+Check dynamicTruthNativeShiftFixedLevelFieldFormula_closeN.
+Check PA_proves_dynamicTruthNativeShiftFixedLevelFieldFormula.
+Check raw_dynamicTruthNativeShiftFixedLevelField_quoted_proof.
+Check rawDynamicTruthNativeShiftFieldCode_standard_proof.
+
+(** Law-free represented application and the shifted genuine orbit. *)
+Check dynamicTruthNativeShiftApplicationTermAt.
+Check RawDynamicTruthNativeShiftApplication.
+Check raw_sat_dynamicTruthNativeShiftApplicationTermAt_iff.
+Check raw_dynamicTruthNativeShiftApplication_exists_adequate.
+Check dynamicTruthNativeShiftInputOrbitGraph.
+Check RawDynamicTruthNativeShiftInputOrbitAt.
+Check raw_sat_dynamicTruthNativeShiftInputOrbitGraph_iff.
+Check raw_sat_dynamicTruthNativeShiftInputOrbitGraph_standard_iff.
+
+(** Native transform: exact semantics and adequacy-preserving totality. *)
+Check dynamicTruthNativeShiftFieldTransformGraph.
+Check RawDynamicTruthNativeShiftFieldTransformAt.
+Check raw_sat_dynamicTruthNativeShiftFieldTransformGraph_iff.
+Check rawDynamicTruthNativeShiftFieldCode_atomically_adequate.
+Check RawDynamicTruthNativeShiftFieldTransformTotalOnAdequate.
+Check dynamicTruthNativeShiftFieldTransformGraph_raw_total_on_adequate.
+
+(** Output-first composition and the exact remaining proof seam. *)
+Check dynamicTruthNativeShiftPositiveGraph.
+Check RawDynamicTruthNativeShiftPositiveAt.
+Check raw_sat_dynamicTruthNativeShiftPositiveGraph_iff.
+Check RawDynamicTruthNativeShiftPositiveAdequateTotal.
+Check dynamicTruthNativeShiftPositiveGraph_raw_adequate_total.
+Check RawDynamicTruthNativeShiftPositiveTotal.
+Check dynamicTruthNativeShiftPositiveGraph_raw_total.
+Check RawDynamicTruthNativeShiftProofCompiler.
+Check RawDynamicTruthNativeShiftPositiveProofTotal.
+Check dynamicTruthNativeShiftPositiveGraph_raw_proof_total_of_compiler.
+
+Print Assumptions dynamicTruthNativeShiftFieldCarrierFormula_fixedLevel.
+Print Assumptions raw_sat_dynamicTruthNativeShiftApplicationTermAt_iff.
+Print Assumptions rawDynamicTruthNativeShiftFieldCode_quoted.
+Print Assumptions rawDynamicTruthNativeShiftFieldCode_quoted_successor_level.
+Print Assumptions PA_proves_dynamicTruthNativeShiftFixedLevelFieldFormula.
+Print Assumptions raw_dynamicTruthNativeShiftFixedLevelField_quoted_proof.
+Print Assumptions rawDynamicTruthNativeShiftFieldCode_standard_proof.
+Print Assumptions raw_sat_dynamicTruthNativeShiftInputOrbitGraph_iff.
+Print Assumptions raw_sat_dynamicTruthNativeShiftFieldTransformGraph_iff.
+Print Assumptions rawDynamicTruthNativeShiftFieldCode_atomically_adequate.
+Print Assumptions
+  dynamicTruthNativeShiftFieldTransformGraph_raw_total_on_adequate.
+Print Assumptions raw_sat_dynamicTruthNativeShiftPositiveGraph_iff.
+Print Assumptions dynamicTruthNativeShiftPositiveGraph_raw_adequate_total.
+Print Assumptions dynamicTruthNativeShiftPositiveGraph_raw_total.
+Print Assumptions
+  dynamicTruthNativeShiftPositiveGraph_raw_proof_total_of_compiler.
+
+End PABoundedRawCodedDynamicTruthNativeShiftPositiveGraphAudit.
