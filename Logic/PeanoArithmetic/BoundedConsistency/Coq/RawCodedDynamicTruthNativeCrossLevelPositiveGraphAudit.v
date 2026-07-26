@@ -1,0 +1,87 @@
+(**
+  Kernel-facing surface and assumption audit for the native positive
+  adjacent-level coherence graph.
+
+  The standard alignment facts deliberately show all three indices:
+  predecessor [p], current truth level [S p], and next truth level
+  [S (S p)].  Proof totality remains conditional only at the genuinely
+  nonstandard object-proof compiler boundary.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeCrossLevelPositiveGraph.
+
+Module PABoundedRawCodedDynamicTruthNativeCrossLevelPositiveGraphAudit.
+
+Import PABoundedRawCodedDynamicTruthNativeCrossLevelPositiveGraph.
+
+(** Exact target and transparent carrier polynomial. *)
+Check dynamicTruthNativeCrossLevelGuardedEquivalenceFormula.
+Check dynamicTruthNativeCrossLevelCoherenceCarrierFormula.
+Check dynamicTruthNativeCrossLevelCoherenceCarrierFormula_fixedLevel.
+Check dynamicTruthNativeCrossLevelGuardedEquivalenceCodeTerm.
+Check dynamicTruthNativeCrossLevelCoherenceFieldCodeTerm.
+Check rawDynamicTruthNativeCrossLevelCoherenceFieldCode.
+Check raw_eval_dynamicTruthNativeCrossLevelCoherenceFieldCodeTerm.
+Check raw_sat_dynamicTruthNativeCrossLevelCoherenceFieldCodeTermAt_iff.
+Check rawDynamicTruthNativeCrossLevelCoherenceFieldCode_quoted.
+Check
+  rawDynamicTruthNativeCrossLevelCoherenceFieldCode_quoted_successor_levels.
+
+(** Existing fixed-level proof compiler: complete at every external level. *)
+Check raw_fixedLevelCrossLevelCoherence_quoted_proof.
+Check rawDynamicTruthNativeCrossLevelCoherenceFieldCode_standard_proof.
+
+(** Genuine orbit and native current-to-next transform. *)
+Check dynamicTruthNativeCrossLevelInputOrbitGraph.
+Check RawDynamicTruthNativeCrossLevelInputOrbitAt.
+Check raw_sat_dynamicTruthNativeCrossLevelInputOrbitGraph_iff.
+Check raw_sat_dynamicTruthNativeCrossLevelInputOrbitGraph_standard_iff.
+Check dynamicTruthNativeCrossLevelFieldTransformGraph.
+Check RawDynamicTruthNativeCrossLevelFieldTransformAt.
+Check raw_sat_dynamicTruthNativeCrossLevelFieldTransformGraph_iff.
+Check raw_dynamicTruthNativeCrossLevelFieldTransformAt_exposes_rows.
+Check raw_dynamicTruthNativeCrossLevelFieldTransformAt_row_code_polynomials.
+Check RawDynamicTruthNativeCrossLevelFieldTransformTotalOnAdequate.
+Check
+  dynamicTruthNativeCrossLevelFieldTransformGraph_raw_total_on_adequate.
+
+(** Output-first composition and exact remaining proof compiler seam. *)
+Check dynamicTruthNativeCrossLevelPositiveGraph.
+Check RawDynamicTruthNativeCrossLevelPositiveAt.
+Check raw_sat_dynamicTruthNativeCrossLevelPositiveGraph_iff.
+Check RawDynamicTruthNativeCrossLevelPositiveTotal.
+Check dynamicTruthNativeCrossLevelPositiveGraph_raw_total.
+Check RawDynamicTruthNativeCrossLevelCoherenceProofCompiler.
+Check RawDynamicTruthNativeCrossLevelPositiveProofTotal.
+Check
+  dynamicTruthNativeCrossLevelPositiveGraph_raw_proof_total_of_compiler.
+
+Print Assumptions
+  dynamicTruthNativeCrossLevelCoherenceCarrierFormula_fixedLevel.
+Print Assumptions
+  raw_sat_dynamicTruthNativeCrossLevelCoherenceFieldCodeTermAt_iff.
+Print Assumptions
+  rawDynamicTruthNativeCrossLevelCoherenceFieldCode_quoted.
+Print Assumptions
+  rawDynamicTruthNativeCrossLevelCoherenceFieldCode_quoted_successor_levels.
+Print Assumptions raw_fixedLevelCrossLevelCoherence_quoted_proof.
+Print Assumptions
+  rawDynamicTruthNativeCrossLevelCoherenceFieldCode_standard_proof.
+Print Assumptions
+  raw_sat_dynamicTruthNativeCrossLevelInputOrbitGraph_iff.
+Print Assumptions
+  raw_sat_dynamicTruthNativeCrossLevelFieldTransformGraph_iff.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelFieldTransformAt_exposes_rows.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelFieldTransformAt_row_code_polynomials.
+Print Assumptions
+  dynamicTruthNativeCrossLevelFieldTransformGraph_raw_total_on_adequate.
+Print Assumptions
+  raw_sat_dynamicTruthNativeCrossLevelPositiveGraph_iff.
+Print Assumptions dynamicTruthNativeCrossLevelPositiveGraph_raw_total.
+Print Assumptions
+  dynamicTruthNativeCrossLevelPositiveGraph_raw_proof_total_of_compiler.
+
+End PABoundedRawCodedDynamicTruthNativeCrossLevelPositiveGraphAudit.

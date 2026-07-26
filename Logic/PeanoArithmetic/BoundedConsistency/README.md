@@ -1783,6 +1783,17 @@ conditional on the sharply stated compiler that must return a represented PA
 proof of this exact selected carrier code; semantic validity is not used as a
 substitute for that compiler.
 
+`RawCodedDynamicTruthNativeCrossLevelPositiveGraph.v` constructs the adjacent-
+level coherence coordinate with the same native indexing discipline.  For a
+carrier predecessor `p`, it selects the genuine current orbit at `S p`, runs
+the actual paired successor to `S(S p)`, applies all four global predicates,
+and transparently builds the exact guarded Sigma/Pi coherence formula.  The
+graph has law-free exact semantics, exposes the native successor rows, and is
+relationally total in every PA model.  Every externally fixed standard level
+has a represented PA proof; proof totality at a possibly nonstandard carrier
+index remains conditional only on the explicit
+`RawDynamicTruthNativeCrossLevelCoherenceProofCompiler`.
+
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
 use the same formula and assignment inputs but demand rank-zero outputs one
