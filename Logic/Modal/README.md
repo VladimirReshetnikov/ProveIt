@@ -50,6 +50,8 @@ is being reconstructed:
   the complete pinned strict-predecessor hierarchy;
 - the generic canonical McKinsey special-successor construction and complete
   canonical metatheory for K4McK and S4McK, including all pinned strictness;
+- canonical completeness for S4.2McK and S4.3McK, including all four pinned
+  strict predecessors with explicit finite separators;
 - canonical completeness for S4.4McK by combining the Point4 and McKinsey
   canonical arguments, with both pinned strict predecessors;
 - canonical completeness for coreflexive KTc and canonical plus finite
@@ -157,8 +159,10 @@ is being reconstructed:
 | `CanonicalPoint4.v` | `Modal/Kripke/{AxiomPoint4,Logic/S4Point4}.lean` | Generic Sobocinski canonicality; S4.4 soundness-completeness; strict S4.3 inclusion with a finite chain separator |
 | `CanonicalS5.v` | `Modal/Kripke/Logic/S5.lean` | Point-generated universal-frame characterization and completeness; strict KTB, KD45, KB4, S4.4, S4, and KT predecessors |
 | `CanonicalMcK.v` | `Modal/Kripke/{AxiomMcK,Logic/{K4McK,S4McK}}.lean` | Generic terminal-successor canonical construction; K4McK/S4McK soundness-completeness and complete strictness surface |
+| `CanonicalPoint2McK.v` | `Modal/Kripke/Logic/S4Point2McK.lean` | Combined strong-confluence/McKinsey canonical completeness; strict S4McK and S4.2 predecessors with finite fork and universal-frame separators |
+| `CanonicalPoint3McK.v` | `Modal/Kripke/Logic/S4Point3McK.lean` | Combined connectedness/McKinsey canonical completeness; strict S4.2McK and S4.3 predecessors with finite diamond and universal-frame separators |
 | `CanonicalTrivVer.v` | `Modal/{Entailment,Kripke/Logic}/{KTc,Triv,Ver}.lean`, `Modal/Boxdot/Ver_Triv.lean` | Coreflexive/equality/isolated canonical metatheory; finite Triv/Ver completeness; all entailments and strictness results; unconditional Boxdot equivalence |
-| `CanonicalPoint4McK.v` | `Modal/Kripke/Logic/{S4Point3McK,S4Point4McK}.lean` | Complete S4.4McK canonical metatheory and strictness; S4.3McK schema/frame/soundness boundary used by the inclusion |
+| `CanonicalPoint4McK.v` | `Modal/Kripke/Logic/S4Point4McK.lean` | Complete S4.4McK canonical metatheory and strictness, reusing the complete S4.3McK predecessor API |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -328,6 +332,13 @@ proof-irrelevance, definite-description, and classical boundary.  Its strict
 S4.3McK predecessor uses the same completeness boundary; the direct
 S4.4-to-S4.4McK finite separator uses only excluded middle.
 
+S4.2McK canonicality combines the audited Point2 and McKinsey constructions
+and has the same canonical-model boundary; its direct soundness, consistency,
+and two finite strictness witnesses use only excluded middle.
+S4.3McK similarly combines the Point3 and McKinsey constructions.  Its
+S4.2McK predecessor proof uses canonical completeness, while the direct
+S4.3 separator uses only excluded middle.
+
 The KTc/DiaT entailment equivalence, the derived 4 and 5 axioms, the direct
 Triv/Ver consequences, and the elementary frame inclusions are closed under
 the global context.  Ver canonical completeness uses excluded middle and
@@ -405,9 +416,10 @@ are checked.  S5 now has full pinned parity too: universal-frame completeness
 and all six strict predecessors complement its canonical completeness and
 modal normalizer.  K4McK and S4McK likewise have full parity, including the
 generic canonical McKinsey construction and all three strict inclusions.
-S4Point4McK also has full parity, with both source strictness results; the
-S4Point3McK support currently stops at its schema, frames, soundness, and the
-inclusion boundary used by S4Point4McK.
+S4Point2McK and S4Point3McK likewise have full parity, including their
+combined canonical frames and all four source strictness results.
+S4Point4McK also has full parity, with both source strictness results and a
+shared import of the complete S4Point3McK predecessor.
 Every modal word has a checked S5 equivalence and reduction
 to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
@@ -513,6 +525,8 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalPoint4 `
   FoundationModal.CanonicalS5 `
   FoundationModal.CanonicalMcK `
+  FoundationModal.CanonicalPoint2McK `
+  FoundationModal.CanonicalPoint3McK `
   FoundationModal.CanonicalTrivVer `
   FoundationModal.CanonicalPoint4McK `
   FoundationModal.Undefinability FoundationModal.Audit

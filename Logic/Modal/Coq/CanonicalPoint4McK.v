@@ -6,6 +6,8 @@
   soundness were introduced earlier by [CanonicalTrivVer].  Canonicality
   combines the Point4/Sobocinski theorem from [CanonicalPoint4] with the
   proved generic McKinsey special-successor construction from [CanonicalMcK].
+  The imported S4.3McK boundary and its own completeness theorem live in
+  [CanonicalPoint3McK].
 *)
 
 From Stdlib Require Import Lists.List Logic.Classical_Prop.
@@ -13,54 +15,11 @@ From FoundationModal Require Import
   Syntax Axioms HilbertK Kripke Correspondence CorrespondenceExtensions
   NormalHilbert CanonicalExtensions CanonicalCombinations Boxdot Modality
   CanonicalPoint2 CanonicalPoint3 CanonicalPoint4 CanonicalMcK
-  CanonicalTrivVer.
+  CanonicalTrivVer CanonicalPoint3McK.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
-
-(** * The imported S4.3McK boundary *)
-
-(** Foundation's S4.4McK file imports S4.3McK.  The latter calculus has not
-    otherwise needed a Coq name yet, so the few definitions and the soundness
-    theorem used by the source-facing strict inclusion are recorded here. *)
-Definition S4Point3McK_schema : modal_axiom_schema :=
-  schema_union
-    (schema_union (schema_union schema_T schema_Four) schema_McK)
-    schema_Point3.
-
-Definition S4Point3McK_proves {AtomType} : formula AtomType -> Prop :=
-  @normal_proves S4Point3McK_schema AtomType.
-
-Definition S4Point3McK_frame_class (F : frame) : Prop :=
-  frame_reflexive F /\ frame_transitive F /\
-  frame_piecewise_strongly_connected F /\ frame_mckinsey F.
-
-Lemma S4Point3McK_schema_substitution_closed :
-  schema_substitution_closed S4Point3McK_schema.
-Proof.
-  repeat apply schema_union_substitution_closed.
-  - exact schema_T_substitution_closed.
-  - exact schema_Four_substitution_closed.
-  - exact schema_McK_substitution_closed.
-  - exact schema_Point3_substitution_closed.
-Qed.
-
-Theorem S4Point3McK_proves_sound_on_frame :
-  forall (AtomType : Type) (F : frame) (p : formula AtomType),
-    S4Point3McK_frame_class F ->
-    S4Point3McK_proves p -> valid F p.
-Proof.
-  intros AtomType F p [HR [HT [HC HM]]] Hp.
-  eapply normal_proves_sound_on_frame; [| exact Hp].
-  apply schema_union_valid_on_frame.
-  - apply schema_union_valid_on_frame.
-    + apply schema_union_valid_on_frame.
-      * now apply schema_T_valid_on_reflexive.
-      * now apply schema_Four_valid_on_transitive.
-    + now apply schema_McK_valid_on_mckinsey.
-  - now apply schema_Point3_valid_on_piecewise_strongly_connected.
-Qed.
 
 Lemma S4Point4McK_frame_is_S4Point3McK :
   forall F,

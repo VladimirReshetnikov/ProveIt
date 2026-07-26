@@ -9,7 +9,7 @@ From FoundationModal Require Import
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalPoint4 CanonicalS5 CanonicalMcK CanonicalTrivVer
-  CanonicalPoint4McK Undefinability.
+  CanonicalPoint2McK CanonicalPoint3McK CanonicalPoint4McK Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -357,8 +357,24 @@ Check K4_strictly_weaker_K4McK.
 Check S4_strictly_weaker_S4McK.
 Check K4McK_strictly_weaker_S4McK.
 
-(** Canonical S4.4McK, with the S4.3McK boundary needed by its source
-    inclusion theorem. *)
+(** Canonical S4.2McK and both pinned strict predecessors. *)
+Check S4Point2McK_schema_substitution_closed.
+Check S4Point2McK_frame_is_S4McK.
+Check S4Point2McK_frame_is_S4Point2.
+Check S4Point2McK_canonical_frame.
+Check S4Point2McK_sound_complete.
+Check S4McK_strictly_weaker_S4Point2McK.
+Check S4Point2_strictly_weaker_S4Point2McK.
+
+(** Canonical S4.3McK and both pinned strict predecessors. *)
+Check S4Point3McK_schema_substitution_closed.
+Check S4Point3McK_frame_is_S4Point2McK.
+Check S4Point3McK_canonical_frame.
+Check S4Point3McK_sound_complete.
+Check S4Point2McK_strictly_weaker_S4Point3McK.
+Check S4Point3_strictly_weaker_S4Point3McK.
+
+(** Canonical S4.4McK and its S4.3McK inclusion. *)
 Check S4Point3McK_schema_substitution_closed.
 Check S4Point3McK_proves_sound_on_frame.
 Check S4Point4McK_frame_is_S4Point3McK.
@@ -800,7 +816,16 @@ Print Assumptions S4McK_complete.
 Print Assumptions K4_strictly_weaker_K4McK.
 Print Assumptions S4_strictly_weaker_S4McK.
 Print Assumptions K4McK_strictly_weaker_S4McK.
+Print Assumptions S4Point2McK_schema_substitution_closed.
+Print Assumptions S4Point2McK_canonical_frame.
+Print Assumptions S4Point2McK_complete.
+Print Assumptions S4McK_strictly_weaker_S4Point2McK.
+Print Assumptions S4Point2_strictly_weaker_S4Point2McK.
 Print Assumptions S4Point3McK_schema_substitution_closed.
+Print Assumptions S4Point3McK_canonical_frame.
+Print Assumptions S4Point3McK_complete.
+Print Assumptions S4Point2McK_strictly_weaker_S4Point3McK.
+Print Assumptions S4Point3_strictly_weaker_S4Point3McK.
 Print Assumptions S4Point4McK_canonical_frame.
 Print Assumptions S4Point4McK_complete.
 Print Assumptions S4Point3McK_strictly_weaker_S4Point4McK.
