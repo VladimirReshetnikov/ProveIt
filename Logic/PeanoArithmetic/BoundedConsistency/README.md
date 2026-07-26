@@ -1701,6 +1701,16 @@ theorem to become unconditional in every PA model.  They are still only the
 two advertised restricted branches, not the complete local
 decision/exclusivity field.
 
+`RawCodedDynamicTruthDeepClosedDomainProjectionFields.v` applies the same
+selected-witness discipline to the two full-row domain projections.  For the
+actual deeply closed paired orbit, it constructs concrete PA proof codes for
+both the Sigma `Or7 -> Ex^8` eliminator and its Pi `Or6 -> Ex^8` dual.  The
+deep-closure and substitution-algebra theorems discharge all structural
+premises, so both projection graphs are proof-total in every PA model without
+an extra orbit-wide interchange hypothesis.  This closes the two full-row
+domain coordinates only; assembling every constructor branch into the local
+decision/exclusivity field remains a separate obligation.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
