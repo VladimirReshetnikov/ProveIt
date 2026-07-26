@@ -1790,6 +1790,16 @@ three-assumption endpoints.  The predecessor-state exclusivity root remains
 an explicit obligation: this module neither identifies table membership with
 a global-predicate application nor claims the completed matrix.
 
+`RawCodedDynamicTruthBooleanBranchExclusivity.v` proves the two remaining
+same-level Boolean cells under that identical predecessor invariant.  Sigma
+conjunction supplies both positive children while Pi conjunction supplies one
+negative child; Sigma disjunction supplies one positive child while Pi
+disjunction supplies both negative children.  And/Or constructor injectivity
+aligns the selected child codes, after which the predecessor law closes the
+collision.  Both conditional cells have exact quotation-aligned carrier
+codes, represented PA certificates, and literal common-context collision
+endpoints.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
