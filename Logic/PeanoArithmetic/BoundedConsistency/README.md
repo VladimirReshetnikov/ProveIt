@@ -1861,6 +1861,17 @@ an explicit object-proof premise because compiling them for an opaque
 carrier formula requires checked formula/context shift traces; no semantic
 truth assumption is substituted for that missing compiler.
 
+`RawCodedDynamicTruthBinderPrincipalProjectionCompilation.v` compiles those
+eight branch projections with one transparent repeated-existential selection
+template.  Lower-independent branches need no dynamic premise; Sigma-All and
+Pi-Ex use direct structural translations whose single designated opaque atom
+is the selected lower application.  The module returns both projection roots
+for every classified cell in the exact existing PA context, with concrete
+adapters from native selector traces and from deep ternary closure.  Thus the
+projection logic itself is complete; the operational boundary is precisely
+the represented shift/open commutation used to construct the direct inputs,
+not a semantic truth or completeness assumption.
+
 `RawCodedDynamicTruthQuantifierBranchExclusivity.v` isolates the two
 same-constructor quantifier cells.  Sigma-Ex versus Pi-Ex is conditional on
 the exact adjacent-level fact that the positive existential branch supplies
