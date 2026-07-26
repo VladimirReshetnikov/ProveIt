@@ -1335,7 +1335,14 @@ decision/exclusivity bundle, while
 `RawCodedDynamicTruthTransportFieldBaseGraphs.v` quotes the native
 cross-level, formula-shift, and single-substitution laws.  Every base graph
 pins its output to the exact formula code accepted by a concrete
-`RawCodedPAProofOf` certificate.  For the positive local field,
+`RawCodedPAProofOf` certificate.
+`RawCodedDynamicTruthAxiomSoundnessBaseGraph.v` supplies the fifth base
+coordinate as the genuine first truth transition: every transparently
+witnessed PA axiom in the level-zero admissible domain has a level-one Sigma
+truth certificate under Coq's total zero beta assignment.  Its derivation
+uses the unconditional nonstandard induction-axiom truth theorem, then quotes
+the exact sentence into the standard zero graph; it is not a placeholder
+tautology.  For the positive local field,
 `RawCodedOutputFirstPairedFormulaGraphComposition.v` preserves the joint
 Sigma/Pi orbit witness while composing a proof-producing transform, and
 `RawCodedDynamicTruthLocalProofFieldGraph.v` specializes that construction
