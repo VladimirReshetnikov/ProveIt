@@ -1085,6 +1085,16 @@ leaf is certified against its exact carrier-coded context, and the exported
 closed rule and open elimination rule require neither decoding nor an
 adequacy premise on the branch codes.
 
+`RawCodedPALocalProofFiniteDisjunctionDerivedCases.v` applies those finite
+case trees when the row and every branch implication have already been
+derived in one arbitrary carrier-coded context.  Each Or-E child is rebuilt
+by the guarded cons-transplant theorem.  The recursive resource predicate
+therefore requests realizability of the original context and atomic adequacy
+of exactly the branch and suffix-disjunction codes that become new context
+heads; empty and singleton rows require no such resources.  Generic and
+literal six-/seven-way endpoints preserve the original context and avoid any
+decoder or unrestricted weakening principle.
+
 `RawCodedAssignmentShiftTail.v` also exposes PAHF's represented beta-tail
 shift through the raw assignment interface.  It constructs, inside every raw
 model and through an arbitrary carrier-valued bound, a target table whose row
