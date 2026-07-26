@@ -8,7 +8,7 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
-  CanonicalPoint3 CanonicalPoint4 CanonicalTrivVer Undefinability.
+  CanonicalPoint3 CanonicalPoint4 CanonicalS5 CanonicalTrivVer Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -319,6 +319,23 @@ Check S4Point4_sound_complete.
 Check S4Point3_weaker_than_S4Point4.
 Check point4_three_chain_not_sobocinski.
 Check S4Point3_strictly_weaker_S4Point4.
+
+(** Universal-frame S5 completeness and the complete pinned predecessor
+    hierarchy. *)
+Check frame_universal.
+Check point_generated_universal_of_s5.
+Check valid_on_universal_frames_iff_valid_on_s5_frames.
+Check S5_universal_sound_complete.
+Check S5_frame_is_KTB.
+Check S5_frame_is_KD45.
+Check S5_frame_is_KB4.
+Check S5_frame_is_S4Point4.
+Check KTB_strictly_weaker_S5.
+Check KD45_strictly_weaker_S5.
+Check KB4_strictly_weaker_S5.
+Check S4Point4_strictly_weaker_S5.
+Check S4_strictly_weaker_S5.
+Check KT_strictly_weaker_S5.
 
 (** Coreflexive KTc, equality-frame Triv, and isolated-frame Ver, including
     their source-local entailments, finite completeness, and strictness
@@ -732,6 +749,14 @@ Print Assumptions normal_canonical_sobocinski_of_schema_Point4.
 Print Assumptions S4Point4_complete.
 Print Assumptions S4Point3_weaker_than_S4Point4.
 Print Assumptions S4Point3_strictly_weaker_S4Point4.
+Print Assumptions valid_on_universal_frames_iff_valid_on_s5_frames.
+Print Assumptions S5_universal_complete.
+Print Assumptions KTB_strictly_weaker_S5.
+Print Assumptions KD45_strictly_weaker_S5.
+Print Assumptions KB4_strictly_weaker_S5.
+Print Assumptions S4Point4_strictly_weaker_S5.
+Print Assumptions S4_strictly_weaker_S5.
+Print Assumptions KT_strictly_weaker_S5.
 Print Assumptions schema_DiaT_substitution_closed.
 Print Assumptions KTc_proves_DiaT.
 Print Assumptions KTc_prime_proves_Tc.
