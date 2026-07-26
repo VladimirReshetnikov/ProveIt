@@ -1471,6 +1471,15 @@ tree at an arbitrary carrier cutoff and lifts it structurally to a diagonal
 formula trace; together with arbitrary-depth scoped substitution this proves
 the full deep certificate.  A final bridge projects deep closure to the older
 root certificate, while the converse is deliberately absent.
+`RawCodedTernaryPredicateDeepClosureShiftInterchange.v` combines this
+all-cutoff fixedness with the concrete `FormulaShift` laws.  Since ternary
+application opens three arguments, the required predicate cutoff is exactly
+three successors above the client cutoff; PA proves that this is at least
+three even for a nonstandard client value.  The resulting theorem discharges
+the complete unguarded ternary shift-interchange contract.  No parallel
+unguarded opening theorem is asserted, because that older contract admits an
+arbitrary replacement carrier value rather than an honestly represented
+term.
 
 `RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
 Sigma successor-row syntax: eight existential table witnesses around a domain
