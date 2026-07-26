@@ -1494,8 +1494,18 @@ Rocq's different encoding.
 template's designated lower- and upper-level names at arbitrary carrier
 elements.  Represented numeral-code totality selects both possibly
 nonstandard numeral terms, and the package exposes their exact validity plus
-the direct translator's complete term shift/open fields.  Only the separate
-opaque-predicate operation traces remain to form the full direct input.
+the direct translator's complete term shift/open fields.
+
+`RawCodedDynamicTruthTemplateDirectInputs.v` supplies the remaining opaque
+interpretation.  Predicate zero at exactly three arguments is the selected
+lower-Pi ternary application; every other predicate or arity is mapped to a
+transparent bottom fallback with one-node operation traces.  The record asks
+only for shift/opening commutation on honest structural syntax and proves
+that all source, renamed, and opened terms meet that guard.  Its exact code
+equations identify the translated Sigma-domain leaf with the native domain
+substitution and the opaque atom with the native lower-Pi application.  Deep
+closure now discharges the shift half of this guarded record; the honest
+opening half remains the explicit seam.
 
 `RawCodedDynamicTruthUniversalLeafProofCompilation.v` sends the honest
 eight-witness restricted projection through that direct relational
