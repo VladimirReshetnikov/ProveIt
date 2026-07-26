@@ -1095,6 +1095,17 @@ heads; empty and singleton rows require no such resources.  Generic and
 literal six-/seven-way endpoints preserve the original context and avoid any
 decoder or unrestricted weakening principle.
 
+`RawCodedPALocalProofFiniteDisjunctionMatrix.v` nests that eliminator for two
+rows already proved in one carrier-coded context.  Given a local proof of
+every curried pair implication `Ai -> Bj -> C`, it derives `C` from the two
+right-associated rows without decoding either row.  The resource predicate
+is shape-sensitive: empty dimensions use bottom elimination, the one-by-one
+case uses two direct implication eliminations, and every larger matrix tracks
+only the context realizability and atomic adequacy needed by the guarded
+temporary-assumption transplants.  Its concrete seven-by-six endpoint is the
+structural assembler for the native Sigma/Pi successor collision matrix; the
+individual constructor-pair proofs remain explicit inputs.
+
 `RawCodedAssignmentShiftTail.v` also exposes PAHF's represented beta-tail
 shift through the raw assignment interface.  It constructs, inside every raw
 model and through an arbitrary carrier-valued bound, a target table whose row
