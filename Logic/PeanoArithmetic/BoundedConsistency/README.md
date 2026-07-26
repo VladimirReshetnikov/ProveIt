@@ -1610,6 +1610,14 @@ identification, and universally closes the thirteen ambient row columns.
 The exported certificate remains a proof of that restricted final branch;
 it is not presented as a consequence of the full six-way Pi disjunction.
 
+`RawCodedDynamicTruthPiDomainProjectionProofCompilation.v` supplies the
+genuine full-row dual: `Ex^8 (domain /\ Or6 branches)` entails `Ex^8 domain`.
+It preserves Pi's six-way polarity-specific syntax, closes the result over
+the thirteen native row columns, and retargets the direct template proof to
+the exact native Pi polynomial.  Together with the Sigma projection this
+closes both domain eliminators, while the remaining full-disjunction case
+analysis is still explicit work.
+
 `RawCodedDynamicTruthUniversalLeafTransformGraph.v` exposes that restricted
 certificate as an output-first transform over the paired global Sigma/Pi
 truth-code orbit.  The graph selects the successor numeral, the instantiated

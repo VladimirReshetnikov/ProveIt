@@ -1,0 +1,37 @@
+(** Kernel-facing audit for the full Pi-row domain projection. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPiDomainProjectionProofCompilation.
+
+Import PABoundedRawCodedDynamicTruthPiDomainProjectionProofCompilation.
+
+Check coqDynamicTruthPiDomainProjectionFormula.
+Check coqDynamicTruthPiDomainProjectionProof.
+Check coqDynamicTruthPiDomainProjectionProof_derives.
+Check coqDynamicTruthPiDomainProjectionFieldFormula.
+Check coqDynamicTruthPiDomainProjectionFieldProof.
+Check coqDynamicTruthPiDomainProjectionFieldProof_derives.
+
+Check rawCoqDynamicTruthPiDomainProjectionCode.
+Check rawDynamicTruthPiDomainProjectionCode.
+Check rawCoqDynamicTruthPiDomainProjectionFieldCode.
+Check rawDynamicTruthPiDomainProjectionFieldCode.
+Check rawDirect_coqDynamicTruthPiDomainProjection_identified.
+Check rawDirect_coqDynamicTruthPiDomainProjectionField_identified.
+Check rawCoqDynamicTruthPiDomainProjectionFieldCode_eq_native.
+
+Check rawCoqDynamicTruthPiDomainProjectionFieldCertificate.
+Check raw_codedPAProofOf_coqDynamicTruthPiDomainProjectionField.
+Check
+  raw_codedPAProofOf_dynamicTruthPiDomainProjectionField_identified.
+
+Print Assumptions coqDynamicTruthPiDomainProjectionProof_derives.
+Print Assumptions coqDynamicTruthPiDomainProjectionFieldProof_derives.
+Print Assumptions
+  rawDirect_coqDynamicTruthPiDomainProjection_identified.
+Print Assumptions
+  rawCoqDynamicTruthPiDomainProjectionFieldCode_eq_native.
+Print Assumptions
+  raw_codedPAProofOf_coqDynamicTruthPiDomainProjectionField.
+Print Assumptions
+  raw_codedPAProofOf_dynamicTruthPiDomainProjectionField_identified.
