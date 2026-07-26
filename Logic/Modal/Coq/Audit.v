@@ -8,7 +8,8 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
-  GLUnnecessitation GLModalDisjunction GLIndependence QuasiNormalS GLPlusBoxBot
+  GLUnnecessitation GLModalDisjunction GLIndependence QuasiNormalS QuasiNormalD
+  GLPlusBoxBot
   KHenIncompleteness GLAlternativeSystems
   CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
@@ -226,6 +227,31 @@ Check GL_strictly_weaker_S.
 Check S_derivation_iff.
 Check S_proves_induction.
 Check S_rec.
+(** The syntactic core of the quasinormal extension D. *)
+Check Dz.
+Check D_atomic_axiom.
+Check D_proves.
+Check D_quasi_normal.
+Check GL_weaker_than_D.
+Check D_proves_P.
+Check D_proves_atomic_Dz.
+Check D_proves_Dz.
+Check D_proves_substitute.
+Check GL_strictly_weaker_D.
+Check D_derivation_iff.
+Check D_proves_induction.
+Check D_rec.
+Check D_list_disj.
+Check D_boxed_list_disj.
+Check D_list_Dz.
+Check GL_proves_boxed_list_disj_Four.
+Check D_proves_list_Dz.
+Check D_proves_C4.
+Check D_dz_subformula_list.
+Check D_dz_subformula_conj.
+Check D_dz_subformula_list_spec.
+Check D_proves_dz_subformula_member.
+Check D_proves_dz_subformula_conj.
 (** The quasi-normal GL plus iterated boxed falsity hierarchy. *)
 Check GLPlusBoxBot_axiom.
 Check GLPlusBoxBot.
@@ -1079,6 +1105,15 @@ Print Assumptions GL_unprovable_atomic_T.
 Print Assumptions GL_strictly_weaker_S.
 Print Assumptions S_derivation_iff.
 Print Assumptions S_proves_induction.
+Print Assumptions D_proves_Dz.
+Print Assumptions GL_strictly_weaker_D.
+Print Assumptions D_derivation_iff.
+Print Assumptions D_proves_induction.
+Print Assumptions GL_proves_boxed_list_disj_Four.
+Print Assumptions D_proves_list_Dz.
+Print Assumptions D_proves_C4.
+Print Assumptions D_dz_subformula_list_spec.
+Print Assumptions D_proves_dz_subformula_conj.
 Print Assumptions GLPlusBoxBot_quasi_normal.
 Print Assumptions iff_provable_GLPlusBoxBot_provable_GL.
 Print Assumptions GL_proves_boxbot_successor.
