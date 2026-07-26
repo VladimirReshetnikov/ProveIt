@@ -1,0 +1,20 @@
+(** Kernel-facing audit for fixed PA templates above a witnessed tail. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplatePAEmbeddingSelfShiftTail.
+
+Module PABoundedRawCodedTemplatePAEmbeddingSelfShiftTailAudit.
+
+Import PABoundedRawCodedTemplatePAEmbeddingSelfShiftTail.
+
+Check raw_templateContextCodeOnTail_embedPAAxiomWitnesses.
+Check raw_codedTemplatePALocalProofOf_on_witnessed_tail.
+Check raw_codedTemplatePALocalProofOf_of_BProv_on_witnessed_tail.
+
+Print Assumptions
+  raw_templateContextCodeOnTail_embedPAAxiomWitnesses.
+Print Assumptions raw_codedTemplatePALocalProofOf_on_witnessed_tail.
+Print Assumptions
+  raw_codedTemplatePALocalProofOf_of_BProv_on_witnessed_tail.
+
+End PABoundedRawCodedTemplatePAEmbeddingSelfShiftTailAudit.

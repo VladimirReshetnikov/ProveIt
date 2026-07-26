@@ -1410,6 +1410,13 @@ over that exact extended context, and the strongest endpoint returns the
 extended witness traversal and proof root together.  Prefix concatenation
 laws let independently selected finite axiom batches be accumulated without
 decoding the nonstandard base.
+`RawCodedTemplatePAEmbeddingSelfShiftTail.v` joins these two operations.  Any
+fixed ordinary `BProv` theorem is converted to a finite raw proof tree,
+compiled above the caller's witnessed PA context, and returned together with
+the exact synchronized prefix of standard axiom witnesses used by that tree.
+Agreement of the template translation with ordinary quotation proves literal
+equality of the compiler's context and the extended witnessed context; no
+post-hoc context identification or unrelated proof certificate is used.
 `RawCodedTemplateLogicalSchemas.v` records the small
 finite source trees needed by the dynamic fields—conjunction projection and
 introduction, existential projection, and universal specialization followed
