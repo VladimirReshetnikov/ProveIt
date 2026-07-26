@@ -1409,9 +1409,19 @@ any quoted ternary-scoped formula is fixed by both the depth-three shift and
 depth-three substitution operations.  Applying this interface to the exact
 row-aligned global rank-zero quotations,
 `RawCodedDynamicTruthGlobalBaseRootClosure.v` proves root closure for both
-outputs of the paired global base graph.  The corresponding preservation
-theorem for the nonstandard successor orbit is still required before the
-opaque application laws are available at every carrier level.
+outputs of the paired global base graph.
+
+`RawCodedDynamicTruthGlobalSuccessorRootClosure.v` proves the corresponding
+constructor and wrapper preservation theorem without decoding either
+possibly nonstandard local row.  The ten existential traversal witnesses and
+five universal row witnesses move the two local leaves from the public root
+cutoff three to cutoff eighteen.  Fixed standard wrapper leaves are closed at
+their checked scopes, and the existing adequate successor graph supplies
+atomic adequacy of the local rows.  The resulting relation-level theorem and
+orbit callback therefore assume exactly that the actual local Sigma and Pi
+rows are operationally fixed at cutoff eighteen.  This is a fixed-cutoff
+successor result, not a promotion of root closure to every deeper cutoff; the
+all-depth opaque-application obligation remains separate.
 
 `RawCodedTernaryPredicateRootClosureFormula.v` now makes that carrier-level
 root certificate an actual formula of PA, including the explicit lift across
