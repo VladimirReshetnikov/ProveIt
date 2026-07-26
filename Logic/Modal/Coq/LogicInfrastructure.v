@@ -310,22 +310,50 @@ Proof.
   intro rho; unfold Top, Neg; simpl; tauto.
 Qed.
 
+Definition logic_inconsistent {AtomType}
+    (L : modal_logic_set AtomType) : Prop :=
+  forall p, L p.
+
+(** This matches Foundation's generic notion: a logic is consistent when it
+    does not prove every formula.  For a classical logic this is equivalent
+    to the familiar specialization [~ L Bottom], proved below. *)
 Definition logic_consistent {AtomType}
-    (L : modal_logic_set AtomType) : Prop := ~ L Bottom.
+    (L : modal_logic_set AtomType) : Prop := ~ logic_inconsistent L.
+
+Lemma logic_consistent_iff_exists_unprovable :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    logic_consistent L <-> exists p, ~ L p.
+Proof.
+  intros AtomType L; unfold logic_consistent, logic_inconsistent; split.
+  - intro Hconsistent.
+    destruct (classic (exists p, ~ L p)) as [Hex | Hnone]; [exact Hex |].
+    exfalso; apply Hconsistent; intro p.
+    apply NNPP; intro Hnot.
+    apply Hnone; now exists p.
+  - intros [p Hp] Hall; exact (Hp (Hall p)).
+Qed.
 
 Lemma logic_exists_unprovable :
   forall (AtomType : Type) (L : modal_logic_set AtomType),
     logic_consistent L -> exists p, ~ L p.
-Proof. intros AtomType L H; exists Bottom; exact H. Qed.
+Proof.
+  intros AtomType L H.
+  now apply logic_consistent_iff_exists_unprovable.
+Qed.
 
 Lemma logic_no_bot :
   forall (AtomType : Type) (L : modal_logic_set AtomType),
-    logic_consistent L -> ~ L Bottom.
-Proof. firstorder. Qed.
+    classical_logic L -> logic_consistent L -> ~ L Bottom.
+Proof.
+  intros AtomType L Hclass Hconsistent Hbot.
+  apply Hconsistent; intro p.
+  eapply (logic_modus_ponens Hclass); [|exact Hbot].
+  apply (logic_classical_tautology Hclass); intro rho; simpl; tauto.
+Qed.
 
 Lemma logic_not_mem_bot :
   forall (AtomType : Type) (L : modal_logic_set AtomType),
-    logic_consistent L -> ~ L Bottom.
+    classical_logic L -> logic_consistent L -> ~ L Bottom.
 Proof. exact logic_no_bot. Qed.
 
 Lemma logic_not_neg_of :
@@ -334,7 +362,7 @@ Lemma logic_not_neg_of :
     forall p, L p -> ~ L (Neg p).
 Proof.
   intros AtomType L Hclass Hconsistent p Hp Hneg.
-  apply Hconsistent.
+  apply (logic_no_bot Hclass Hconsistent).
   exact (logic_modus_ponens Hclass Hneg Hp).
 Qed.
 
@@ -351,7 +379,8 @@ Lemma logic_strictly_weaker_full :
     logic_consistent L -> logic_strictly_weaker L logic_full.
 Proof.
   intros AtomType L Hconsistent; split; [apply logic_weaker_full |].
-  exists Bottom; split; [constructor | exact Hconsistent].
+  destruct (logic_exists_unprovable Hconsistent) as [p Hp].
+  exists p; split; [constructor | exact Hp].
 Qed.
 
 (** * Finite conjunction and substitution *)
@@ -363,6 +392,21 @@ Fixpoint logic_list_conj {AtomType}
   | p :: rest => And p (logic_list_conj rest)
   end.
 
+(** Foundation's [List.conj2] removes the trailing top from singleton lists.
+    Keeping this exact presentation beside [logic_list_conj] lets the global
+    development use the structurally convenient version while exposing a
+    formally equivalent source-facing API. *)
+Fixpoint logic_list_conj2 {AtomType}
+    (Gamma : list (formula AtomType)) : formula AtomType :=
+  match Gamma with
+  | [] => Top
+  | p :: rest =>
+      match rest with
+      | [] => p
+      | _ => And p (logic_list_conj2 rest)
+      end
+  end.
+
 Lemma substitute_logic_list_conj :
   forall (A B : Type) (sigma : A -> formula B) Gamma,
     substitute sigma (logic_list_conj Gamma) =
@@ -371,6 +415,17 @@ Proof.
   intros A B sigma Gamma; induction Gamma as [|p Gamma IH]; simpl.
   - reflexivity.
   - now rewrite IH.
+Qed.
+
+Lemma substitute_logic_list_conj2 :
+  forall (A B : Type) (sigma : A -> formula B) Gamma,
+    substitute sigma (logic_list_conj2 Gamma) =
+    logic_list_conj2 (map (substitute sigma) Gamma).
+Proof.
+  intros A B sigma Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - reflexivity.
+  - destruct Gamma as [|q Gamma]; simpl in *; [reflexivity |].
+    now rewrite IH.
 Qed.
 
 Lemma logic_lconj_subst :
@@ -385,7 +440,19 @@ Proof.
   apply logic_identity; exact Hclass.
 Qed.
 
-Definition logic_fconj_subst := logic_lconj_subst.
+Lemma logic_lconj2_subst :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    classical_logic L ->
+    forall (sigma : AtomType -> formula AtomType) Gamma,
+      L (Imp (logic_list_conj2 (map (substitute sigma) Gamma))
+             (substitute sigma (logic_list_conj2 Gamma))).
+Proof.
+  intros AtomType L Hclass sigma Gamma.
+  rewrite substitute_logic_list_conj2.
+  apply logic_identity; exact Hclass.
+Qed.
+
+Definition logic_fconj_subst := logic_lconj2_subst.
 
 Lemma classical_eval_list_conj :
   forall (AtomType : Type) (rho : formula AtomType -> Prop) Gamma,
@@ -409,6 +476,65 @@ Proof.
         apply Hnot; intros _; exact HnGamma.
     + intros [Hp HGamma] Himp.
       exact (Himp Hp HGamma).
+Qed.
+
+Lemma classical_eval_list_conj2 :
+  forall (AtomType : Type) (rho : formula AtomType -> Prop) Gamma,
+    classical_eval rho (logic_list_conj2 Gamma) <->
+    Forall (classical_eval rho) Gamma.
+Proof.
+  intros AtomType rho Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - unfold Top, Neg; simpl; split.
+    + intros _; constructor.
+    + intros _ Hfalse; exact Hfalse.
+  - destruct Gamma as [|q Gamma].
+    + simpl; split.
+      * intro Hp; constructor; [exact Hp | constructor].
+      * intro Hforall; inversion Hforall; assumption.
+    + simpl in IH |- *.
+      unfold And, Neg; simpl. rewrite IH.
+      rewrite !Forall_cons_iff.
+      split.
+      * intro Hnot; split.
+        -- apply NNPP; intro Hnp.
+           apply Hnot; intros Hp; contradiction.
+        -- apply NNPP; intro Hnrest.
+           apply Hnot; intros _; exact Hnrest.
+      * intros [Hp Hrest] Himp.
+        exact (Himp Hp Hrest).
+Qed.
+
+Lemma logic_list_conj_to_conj2 :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    classical_logic L -> forall Gamma,
+    L (Imp (logic_list_conj Gamma) (logic_list_conj2 Gamma)).
+Proof.
+  intros AtomType L Hclass Gamma.
+  apply (logic_classical_tautology Hclass); intro rho; simpl.
+  rewrite classical_eval_list_conj, classical_eval_list_conj2; tauto.
+Qed.
+
+Lemma logic_list_conj2_to_conj :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    classical_logic L -> forall Gamma,
+    L (Imp (logic_list_conj2 Gamma) (logic_list_conj Gamma)).
+Proof.
+  intros AtomType L Hclass Gamma.
+  apply (logic_classical_tautology Hclass); intro rho; simpl.
+  rewrite classical_eval_list_conj, classical_eval_list_conj2; tauto.
+Qed.
+
+Lemma logic_list_conj_equivalence :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    classical_logic L -> forall Gamma,
+    L (Iff (logic_list_conj Gamma) (logic_list_conj2 Gamma)).
+Proof.
+  intros AtomType L Hclass Gamma.
+  unfold Iff.
+  eapply logic_and_intro.
+  - exact Hclass.
+  - now apply logic_list_conj_to_conj2.
+  - now apply logic_list_conj2_to_conj.
 Qed.
 
 Lemma logic_list_conj_intro :
@@ -1206,6 +1332,28 @@ Proof.
   - now apply (normal_nec Hnormal).
 Qed.
 
+Lemma logic_box_and_collect :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> forall p q,
+    L (Imp (And (Box p) (Box q)) (Box (And p q))).
+Proof.
+  intros AtomType L Hnormal p q.
+  pose proof (quasi_classical (normal_quasi Hnormal)) as Hclass.
+  assert (Hintro : L (Imp p (Imp q (And p q)))).
+  { apply (logic_classical_tautology Hclass).
+    intro rho; unfold And, Neg; simpl; tauto. }
+  pose proof (normal_nec Hnormal Hintro) as Hboxed.
+  pose proof
+    (logic_modus_ponens Hclass
+      (quasi_modal_K (normal_quasi Hnormal) p (Imp q (And p q)))
+      Hboxed) as Hfirst.
+  pose proof (quasi_modal_K (normal_quasi Hnormal) q (And p q)) as Hsecond.
+  pose proof (logic_imp_trans Hclass Hfirst Hsecond) as Hcurried.
+  eapply (logic_modus_ponens Hclass); [|exact Hcurried].
+  apply (logic_classical_tautology Hclass).
+  intro rho; unfold And, Neg; simpl; tauto.
+Qed.
+
 (** [global_box_le n p] is an idiomatic cumulative presentation of the
     finite conjunction [p /\ box p /\ ... /\ box^n p].  It is K-equivalent
     to Foundation's [boxLe], while its successor equation makes contextual
@@ -1217,6 +1365,15 @@ Fixpoint global_box_le {AtomType} (n : nat) (p : formula AtomType)
   | S k => And (global_box_le k p) (Box (global_box_le k p))
   end.
 
+(** A source-facing presentation of Foundation's [boxLe]: the conjunction
+    contains the individual iterates [p], [box p], ..., [box^n p]. *)
+Fixpoint foundation_box_le {AtomType} (n : nat) (p : formula AtomType)
+    : formula AtomType :=
+  match n with
+  | 0 => p
+  | S k => And (foundation_box_le k p) (box_iter (S k) p)
+  end.
+
 Lemma substitute_global_box_le :
   forall (A B : Type) (sigma : A -> formula B) n p,
     substitute sigma (global_box_le n p) =
@@ -1224,6 +1381,56 @@ Lemma substitute_global_box_le :
 Proof.
   intros A B sigma n; induction n as [|n IH]; intros p; simpl; auto.
   now rewrite IH.
+Qed.
+
+Lemma substitute_foundation_box_le :
+  forall (A B : Type) (sigma : A -> formula B) n p,
+    substitute sigma (foundation_box_le n p) =
+    foundation_box_le n (substitute sigma p).
+Proof.
+  intros A B sigma n; induction n as [|n IH]; intros p; simpl; auto.
+  now rewrite IH, substitute_box_iter.
+Qed.
+
+Lemma logic_foundation_box_le_last :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    classical_logic L -> forall n p,
+    L (Imp (foundation_box_le n p) (box_iter n p)).
+Proof.
+  intros AtomType L Hclass n; destruct n as [|n]; intro p; simpl.
+  - now apply logic_identity.
+  - now apply logic_and_elim_right_imp.
+Qed.
+
+Lemma logic_foundation_box_le_collect_next :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> forall n p,
+    L (Imp (foundation_box_le (S n) p)
+           (Box (foundation_box_le n p))).
+Proof.
+  intros AtomType L Hnormal n; induction n as [|n IH]; intro p.
+  - simpl; now apply logic_and_elim_right_imp,
+      (quasi_classical (normal_quasi Hnormal)).
+  - pose proof (quasi_classical (normal_quasi Hnormal)) as Hclass.
+    change
+      (L (Imp
+        (And (foundation_box_le (S n) p) (box_iter (S (S n)) p))
+        (Box (foundation_box_le (S n) p)))).
+    pose proof
+      (logic_and_elim_left_imp Hclass
+        (foundation_box_le (S n) p) (box_iter (S (S n)) p)) as Hleft.
+    pose proof (logic_imp_trans Hclass Hleft (IH p)) as Hboxed_left.
+    pose proof
+      (logic_and_elim_right_imp Hclass
+        (foundation_box_le (S n) p) (box_iter (S (S n)) p)) as Hboxed_right.
+    pose proof
+      (logic_imp_and_intro Hclass Hboxed_left Hboxed_right) as Hpair.
+    eapply logic_imp_trans; [exact Hclass | exact Hpair |].
+    change
+      (L (Imp
+        (And (Box (foundation_box_le n p)) (Box (box_iter (S n) p)))
+        (Box (And (foundation_box_le n p) (box_iter (S n) p))))).
+    now apply logic_box_and_collect.
 Qed.
 
 Lemma logic_global_box_le_regularity :
@@ -1242,6 +1449,84 @@ Proof.
     + eapply logic_imp_trans; [exact Hclass | |].
       * now apply logic_and_elim_right_imp.
       * now apply logic_box_regularity, IH.
+Qed.
+
+Lemma logic_global_box_le_to_foundation :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> forall n p,
+    L (Imp (global_box_le n p) (foundation_box_le n p)).
+Proof.
+  intros AtomType L Hnormal n; induction n as [|n IH]; intro p.
+  - simpl; now apply logic_identity,
+      (quasi_classical (normal_quasi Hnormal)).
+  - pose proof (quasi_classical (normal_quasi Hnormal)) as Hclass.
+    change
+      (L (Imp
+        (And (global_box_le n p) (Box (global_box_le n p)))
+        (And (foundation_box_le n p) (box_iter (S n) p)))).
+    pose proof
+      (logic_and_elim_left_imp Hclass
+        (global_box_le n p) (Box (global_box_le n p))) as Hleft.
+    pose proof (logic_imp_trans Hclass Hleft (IH p)) as Hto_foundation.
+    pose proof
+      (logic_and_elim_right_imp Hclass
+        (global_box_le n p) (Box (global_box_le n p))) as Hright.
+    pose proof
+      (logic_imp_trans Hclass (IH p)
+        (logic_foundation_box_le_last Hclass n p)) as Hto_last.
+    pose proof (logic_box_regularity Hnormal Hto_last) as Hboxed_last.
+    pose proof (logic_imp_trans Hclass Hright Hboxed_last) as Hto_boxed_last.
+    now apply logic_imp_and_intro.
+Qed.
+
+Lemma logic_foundation_box_le_to_global :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> forall n p,
+    L (Imp (foundation_box_le n p) (global_box_le n p)).
+Proof.
+  intros AtomType L Hnormal n; induction n as [|n IH]; intro p.
+  - simpl; now apply logic_identity,
+      (quasi_classical (normal_quasi Hnormal)).
+  - pose proof (quasi_classical (normal_quasi Hnormal)) as Hclass.
+    change
+      (L (Imp
+        (And (foundation_box_le n p) (box_iter (S n) p))
+        (And (global_box_le n p) (Box (global_box_le n p))))).
+    pose proof
+      (logic_and_elim_left_imp Hclass
+        (foundation_box_le n p) (box_iter (S n) p)) as Hleft.
+    pose proof (logic_imp_trans Hclass Hleft (IH p)) as Hto_global.
+    pose proof (logic_foundation_box_le_collect_next Hnormal n p) as Hcollect.
+    pose proof (logic_box_regularity Hnormal (IH p)) as Hboxed_IH.
+    pose proof (logic_imp_trans Hclass Hcollect Hboxed_IH) as Hto_boxed_global.
+    now apply logic_imp_and_intro.
+Qed.
+
+Lemma logic_global_foundation_box_le_equivalence :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> forall n p,
+    L (Iff (global_box_le n p) (foundation_box_le n p)).
+Proof.
+  intros AtomType L Hnormal n p; unfold Iff.
+  eapply logic_and_intro.
+  - exact (quasi_classical (normal_quasi Hnormal)).
+  - now apply logic_global_box_le_to_foundation.
+  - now apply logic_foundation_box_le_to_global.
+Qed.
+
+Lemma logic_foundation_box_le_regularity :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> forall n p q,
+    L (Imp p q) ->
+    L (Imp (foundation_box_le n p) (foundation_box_le n q)).
+Proof.
+  intros AtomType L Hnormal n p q Hpq.
+  pose proof (quasi_classical (normal_quasi Hnormal)) as Hclass.
+  eapply logic_imp_trans; [exact Hclass | |].
+  - now apply logic_foundation_box_le_to_global.
+  - eapply logic_imp_trans; [exact Hclass | |].
+    + exact (logic_global_box_le_regularity Hnormal n Hpq).
+    + exact (logic_global_box_le_to_foundation Hnormal n q).
 Qed.
 
 Lemma logic_global_box_le_depth_add :
@@ -1531,4 +1816,70 @@ Proof.
   intros AtomType L Hnormal X p; split.
   - now apply global_consequence_finite_box_le_provable.
   - now apply global_consequence_of_finite_box_le_provable.
+Qed.
+
+(** The exact source-facing form of Jeřábek's Fact 2.7.  It uses
+    singleton-normalized conjunction and the conjunction of the individual
+    box iterates, rather than the cumulative implementation conveniences. *)
+Definition global_finite_foundation_box_le_provable {AtomType}
+    (L : modal_logic_set AtomType) (X : theory AtomType)
+    (p : formula AtomType) : Prop :=
+  exists Gamma : list (formula AtomType), exists n : nat,
+    (forall q, In q Gamma -> X q) /\
+    L (Imp (foundation_box_le n (logic_list_conj2 Gamma)) p).
+
+Lemma global_consequence_finite_foundation_box_le_provable :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> forall X p,
+    global_consequence L X p ->
+    global_finite_foundation_box_le_provable L X p.
+Proof.
+  intros AtomType L Hnormal X p Hglobal.
+  pose proof (quasi_classical (normal_quasi Hnormal)) as Hclass.
+  destruct
+    (global_consequence_finite_box_le_provable Hnormal Hglobal)
+    as [Gamma [n [HGamma Himp]]].
+  exists Gamma, n; split; [exact HGamma |].
+  eapply logic_imp_trans; [exact Hclass | |].
+  - exact
+      (logic_foundation_box_le_to_global Hnormal n
+        (logic_list_conj2 Gamma)).
+  - eapply logic_imp_trans; [exact Hclass | |exact Himp].
+    exact
+      (logic_global_box_le_regularity Hnormal n
+        (logic_list_conj2_to_conj Hclass Gamma)).
+Qed.
+
+Lemma global_consequence_of_finite_foundation_box_le_provable :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> forall X p,
+    global_finite_foundation_box_le_provable L X p ->
+    global_consequence L X p.
+Proof.
+  intros AtomType L Hnormal X p [Gamma [n [HGamma Himp]]].
+  pose proof (quasi_classical (normal_quasi Hnormal)) as Hclass.
+  assert (Hcurrent : global_finite_box_le_provable L X p).
+  { exists Gamma, n; split; [exact HGamma |].
+    eapply logic_imp_trans; [exact Hclass | |].
+    - exact
+        (logic_global_box_le_regularity Hnormal n
+          (logic_list_conj_to_conj2 Hclass Gamma)).
+    - eapply logic_imp_trans; [exact Hclass | |exact Himp].
+      exact
+        (logic_global_box_le_to_foundation Hnormal n
+          (logic_list_conj2 Gamma)). }
+  exact
+    (@global_consequence_of_finite_box_le_provable
+      AtomType L Hnormal X p Hcurrent).
+Qed.
+
+Theorem global_consequence_iff_finite_foundation_box_le_provable :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> forall X p,
+    global_consequence L X p <->
+    global_finite_foundation_box_le_provable L X p.
+Proof.
+  intros AtomType L Hnormal X p; split.
+  - now apply global_consequence_finite_foundation_box_le_provable.
+  - now apply global_consequence_of_finite_foundation_box_le_provable.
 Qed.

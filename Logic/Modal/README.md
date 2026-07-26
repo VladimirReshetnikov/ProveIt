@@ -232,13 +232,17 @@ only excluded middle through the exact frame correspondences.
 The predicate-valued logic structures and the inductive sum recursors are
 constructive.  Equality of predicate logics and symmetric or nested-union sum
 equalities use functional and propositional extensionality; their extensional
-equivalence forms remain constructive.  The finite-basis characterization
-uses excluded middle for the derived conjunction semantics.  Instantiating
-the abstract normal-logic interface with the concrete schema calculus is
-routed through K completeness and therefore exposes excluded middle plus
-definite description.  The forward global-consequence characterization uses
-excluded middle, while its reverse direction uses extensionality to contract
-the exact union-indexed contexts; the final equivalence exposes both.
+equivalence forms remain constructive.  Generic consistency is nontriviality,
+exactly as in Foundation; extracting a particular unprovable formula uses
+excluded middle, while bottom-unprovability for classical logics is
+constructive.  The singleton-normalized and trailing-top conjunctions, and the
+individual-iterate and cumulative `boxLe` forms, are linked by checked
+normal-logic equivalences using excluded middle.  Instantiating the abstract
+normal-logic interface with the concrete schema calculus is routed through K
+completeness and therefore additionally exposes definite description.  The
+forward global-consequence characterization uses excluded middle, while its
+reverse direction uses extensionality to contract the exact union-indexed
+contexts; the final equivalence exposes both.
 
 The doubled-frame relation preservation and p-morphism are constructive.
 Boxdot is built from the classically encoded derived conjunction, so its
@@ -267,11 +271,11 @@ irrelevance—without functional or propositional extensionality.
 Concrete Hilbert K now has checked soundness, canonical completeness, and
 finite-frame completeness; KT, KD, KB, K4, K5, S4, and S5 also have checked
 canonical soundness/completeness on their standard frame classes.  The normal
-and quasinormal sum modules have complete mathematical parity.  The basic and
-global-logic ledger entries remain conservative: lists replace both Lean list
-and finite-set conjunctions (retaining a trailing top), and cumulative
-`global_box_le` is K-equivalent rather than syntactically identical to the
-source's conjunction of individual box iterates.  Every modal word has a
+and quasinormal sum modules, predicate-logic basics, and global consequence
+have complete mathematical parity.  Predicates and duplicate-insensitive lists
+replace Lean sets and finite sets; explicit theorems connect the trailing-top
+and singleton-normalized conjunctions and the cumulative and individual-box
+presentations used in the implementation and source.  Every modal word has a
 checked S5 equivalence and reduction to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,

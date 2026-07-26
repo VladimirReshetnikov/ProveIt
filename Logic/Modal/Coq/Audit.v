@@ -161,6 +161,9 @@ Check Grz_is_consistent.
 (** Predicate-valued logics, normal and quasinormal sums, and global
     consequence. *)
 Check logic_eq_iff_equiv.
+Check logic_consistent_iff_exists_unprovable.
+Check logic_no_bot.
+Check logic_list_conj_equivalence.
 Check normal_proves_logic_is_normal.
 Check normal_logic_contains_K.
 Check logic_sum_normal_sym.
@@ -177,6 +180,8 @@ Check global_consequence_weaken.
 Check global_consequence_finite_box_le_provable.
 Check global_consequence_of_finite_box_le_provable.
 Check global_consequence_iff_finite_box_le_provable.
+Check logic_global_foundation_box_le_equivalence.
+Check global_consequence_iff_finite_foundation_box_le_provable.
 
 Check normal_derives_deduction.
 Check normal_theory_consistent_insert_neg_iff.
@@ -513,6 +518,9 @@ Print Assumptions S5_is_consistent.
 Print Assumptions GL_is_consistent.
 Print Assumptions Grz_is_consistent.
 Print Assumptions logic_eq_iff_equiv.
+Print Assumptions logic_consistent_iff_exists_unprovable.
+Print Assumptions logic_no_bot.
+Print Assumptions logic_list_conj_equivalence.
 Print Assumptions normal_proves_logic_is_normal.
 Print Assumptions normal_logic_contains_K.
 Print Assumptions logic_sum_normal_sym.
@@ -524,6 +532,8 @@ Print Assumptions logic_sum_quasi_normal_rec_letterless_expansion.
 Print Assumptions global_consequence_finite_box_le_provable.
 Print Assumptions global_consequence_of_finite_box_le_provable.
 Print Assumptions global_consequence_iff_finite_box_le_provable.
+Print Assumptions logic_global_foundation_box_le_equivalence.
+Print Assumptions global_consequence_iff_finite_foundation_box_le_provable.
 Print Assumptions normal_derives_deduction.
 Print Assumptions normal_lindenbaum_extension.
 Print Assumptions normal_canonical_truth_lemma.
