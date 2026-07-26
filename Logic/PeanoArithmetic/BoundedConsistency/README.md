@@ -1800,6 +1800,19 @@ collision.  Both conditional cells have exact quotation-aligned carrier
 codes, represented PA certificates, and literal common-context collision
 endpoints.
 
+`RawCodedDynamicTruthConstructorBranchDisjointness.v` discharges the
+lower-independent off-diagonal portion of the native collision matrix.
+Binary/unary arity separation and distinct principal tags yield one generic
+PA theorem, then a checked finite classification identifies exactly sixteen
+matrix-ready cells.  Their formulas and carrier codes are independent of the
+metatheoretic lower-formula parameters, and the module supplies represented
+certificates plus common-context collision endpoints.  The classification is
+deliberately strict: the eight off-diagonal cells touching Sigma-All or Pi-Ex
+still embed a preceding truth formula, so the generic theorem gives only
+standard-formula instances for those cells.  Turning their arbitrary carrier
+codes into principal-constructor proof roots remains part of the dynamic
+binder compiler rather than being hidden behind this result.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
