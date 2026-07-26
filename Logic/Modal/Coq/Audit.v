@@ -227,7 +227,8 @@ Check GL_strictly_weaker_S.
 Check S_derivation_iff.
 Check S_proves_induction.
 Check S_rec.
-(** The syntactic core of the quasinormal extension D. *)
+(** The quasinormal extension D, its tail semantics, and exact GL
+    reduction. *)
 Check Dz.
 Check D_atomic_axiom.
 Check D_proves.
@@ -252,6 +253,45 @@ Check D_dz_subformula_conj.
 Check D_dz_subformula_list_spec.
 Check D_proves_dz_subformula_member.
 Check D_proves_dz_subformula_conj.
+Check D_finite_transitive_irreflexive_cwf.
+Check D_tail_rel.
+Check D_tail_frame.
+Check D_tail_root.
+Check D_tail_rooted.
+Check D_tail_point_rooted.
+Check D_tail_transitive.
+Check D_tail_converse_well_founded.
+Check D_tail_original_p_morphism.
+Check D_tail_original_truth.
+Check D_tail_box_from_root.
+Check D_tail_extend_root_p_morphism.
+Check D_satisfies_valuation_iff.
+Check D_tail_extend_root_truth.
+Check D_tail_extend_root_original_truth.
+Check D_tail_extend_root_nat_truth.
+Check D_tail_model_point_rooted.
+Check D_T_subformula_list.
+Check D_T_subformula_conj.
+Check D_tail_nat_subformula_truth.
+Check D_tail_valid.
+Check D_cwf_tail_valid.
+Check D_proves_sound_on_cwf_tail.
+Check D_proves_sound_on_tail.
+Check D_failed_box_list_spec.
+Check D_failed_boxes_have_common_witness.
+Check D_point_generated_T_subformula_context.
+Check D_tail_reduction_subformula_truth.
+Check D_GL_reduction.
+Check D_rooted_GL_reduction_valid.
+Check D_tail_valid_implies_rooted_GL_reduction_valid.
+Check iff_provable_D_provable_GL.
+Check D_proves_iff_tail_valid.
+Check D_tail_valid_iff_rooted_GL_reduction_valid.
+Check D_rooted_GL_reduction_valid_iff_GL_proves.
+Check GL_D_TFAE.
+Check D_unprovable_T.
+Check D_weaker_than_S.
+Check D_strictly_weaker_S.
 (** The quasi-normal GL plus iterated boxed falsity hierarchy. *)
 Check GLPlusBoxBot_axiom.
 Check GLPlusBoxBot.
@@ -1122,6 +1162,20 @@ Print Assumptions D_proves_list_Dz.
 Print Assumptions D_proves_C4.
 Print Assumptions D_dz_subformula_list_spec.
 Print Assumptions D_proves_dz_subformula_conj.
+Print Assumptions D_tail_transitive.
+Print Assumptions D_tail_converse_well_founded.
+Print Assumptions D_tail_original_truth.
+Print Assumptions D_tail_extend_root_truth.
+Print Assumptions D_tail_nat_subformula_truth.
+Print Assumptions D_proves_sound_on_cwf_tail.
+Print Assumptions D_proves_sound_on_tail.
+Print Assumptions D_failed_boxes_have_common_witness.
+Print Assumptions D_tail_reduction_subformula_truth.
+Print Assumptions iff_provable_D_provable_GL.
+Print Assumptions GL_D_TFAE.
+Print Assumptions D_unprovable_T.
+Print Assumptions D_weaker_than_S.
+Print Assumptions D_strictly_weaker_S.
 Print Assumptions GLPlusBoxBot_quasi_normal.
 Print Assumptions iff_provable_GLPlusBoxBot_provable_GL.
 Print Assumptions GL_proves_boxbot_successor.
