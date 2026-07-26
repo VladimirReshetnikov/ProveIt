@@ -1531,6 +1531,17 @@ substitution and the opaque atom with the native lower-Pi application.  Deep
 closure now discharges the shift half of this guarded record; the honest
 opening half remains the explicit seam.
 
+`RawCodedDynamicTruthPiTemplateDirectInputs.v` provides the polarity-dual
+identification without reusing the Sigma row as a dummy.  The shared numeric
+parameter and predicate names are audited by literal equalities, the direct
+translator's Pi-domain opening trace is identified with the native domain
+substitution by cross-trace functionality, and the designated lower-Sigma
+atom is transported through the exact Pi/Sigma application equivalence.  The
+resulting package identifies both the full native Pi successor-row code and
+the restricted existential projection code.  Its only remaining operation
+input is the same honest-syntax commuting record used by the Sigma direct
+translator.
+
 `RawCodedDynamicTruthUniversalLeafProofCompilation.v` sends the honest
 eight-witness restricted projection through that direct relational
 translator and the closed-template packer.  It produces an exact ordinary PA
