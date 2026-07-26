@@ -1,0 +1,15 @@
+(** Assumption audit for concrete deep ternary opening commutation. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTernaryPredicateDeepClosureOpeningCommuting.
+
+Import PABoundedRawCodedTernaryPredicateDeepClosureOpeningCommuting.
+
+Check raw_codedTernaryApplicationOpeningInterchange_of_deepClosed_concrete.
+Check
+  rawTernaryApplicationSelector_opening_commuting_on_syntax_of_deepClosed_concrete.
+
+Print Assumptions
+  raw_codedTernaryApplicationOpeningInterchange_of_deepClosed_concrete.
+Print Assumptions
+  rawTernaryApplicationSelector_opening_commuting_on_syntax_of_deepClosed_concrete.

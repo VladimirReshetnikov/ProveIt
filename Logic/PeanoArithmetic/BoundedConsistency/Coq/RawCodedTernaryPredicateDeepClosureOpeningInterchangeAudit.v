@@ -1,0 +1,25 @@
+(** Assumption audit for the guarded deep-opening bridge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTernaryPredicateDeepClosureOpeningInterchange.
+
+Import PABoundedRawCodedTernaryPredicateDeepClosureOpeningInterchange.
+
+Check RawCodedFormulaSubstitutionAtomConcreteLawsOnSyntax.
+Check RawCodedFormulaSubstitutionAtomSourceSyntax.
+Check RawCodedTernaryApplicationOpeningInterchangeOnRealizableReplacement.
+Check raw_deepOpening_three_le_triple_succ.
+Check raw_codedFormulaSubstitutionAtom_target_syntax_of_realizable.
+Check
+  raw_codedTernaryApplicationOpeningInterchangeOnRealizableReplacement_of_deepClosed.
+Check raw_codedTernaryApplicationOpeningInterchange_of_deepClosed.
+Check
+  rawTernaryApplicationSelector_opening_commuting_on_syntax_of_deepClosed.
+
+Print Assumptions raw_codedFormulaSubstitutionAtom_target_syntax_of_realizable.
+Print Assumptions
+  raw_codedTernaryApplicationOpeningInterchangeOnRealizableReplacement_of_deepClosed.
+Print Assumptions
+  raw_codedTernaryApplicationOpeningInterchange_of_deepClosed.
+Print Assumptions
+  rawTernaryApplicationSelector_opening_commuting_on_syntax_of_deepClosed.

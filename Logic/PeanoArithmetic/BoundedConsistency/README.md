@@ -1483,10 +1483,22 @@ all-cutoff fixedness with the concrete `FormulaShift` laws.  Since ternary
 application opens three arguments, the required predicate cutoff is exactly
 three successors above the client cutoff; PA proves that this is at least
 three even for a nonstandard client value.  The resulting theorem discharges
-the complete unguarded ternary shift-interchange contract.  No parallel
-unguarded opening theorem is asserted, because that older contract admits an
-arbitrary replacement carrier value rather than an honestly represented
-term.
+the complete unguarded ternary shift-interchange contract.
+
+The parallel opening algebra is now discharged by
+`RawCodedTermShiftAmountComposition.v`, the term-opening protection,
+opening/opening interchange and lift-cancellation modules, and the
+represented seventeen-parameter formula induction in
+`RawCodedFormulaSubstitutionAtomSubstitutionInterchange{Invariant,Induction}.v`.
+`RawCodedFormulaSubstitutionAtomConcreteLaws.v` packages the resulting
+protective and single-substitution laws.  The legacy opening relation is
+sound even though it displays an arbitrary carrier replacement: any incoming
+substitution atom itself recovers represented source syntax, so malformed
+values cannot satisfy its antecedent.
+`RawCodedTernaryPredicateDeepClosureOpeningCommuting.v` therefore proves both
+the unguarded relation-level opening interchange and the exact honest-domain
+selector law from PA satisfaction and deep closure alone.  No outstanding
+opening-commutation premise remains.
 
 `RawCodedCarrierIndexedPairedDeepClosedCodeOrbitGraph.v` uses the represented
 deep formula, rather than the fixed root formula, as a paired orbit invariant
