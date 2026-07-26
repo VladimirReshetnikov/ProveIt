@@ -1521,6 +1521,14 @@ cutoff 26 onward.  The proof uses the concrete single-substitution
 interchange laws and numeral fixedness, so both native Sigma and Pi domain
 witnesses are deeply closed without a standardness assumption.
 
+`RawCodedDynamicTruthLowerApplicationDeepClosure.v` handles the second opaque
+piece.  It identifies each native three-opening chain with the public ternary
+application at variables `#9`, `#1`, and `#0`; deep predicate commutation and
+application functionality then show that the native output is fixed by every
+operation above cutoff 26.  Both the lower-Pi application in a Sigma row and
+the lower-Sigma application in a Pi row therefore inherit deep closure from
+the preceding global predicate.
+
 `RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
 Sigma successor-row syntax: eight existential table witnesses around a domain
 check and a seven-way disjunction, whose final branch contains the opaque

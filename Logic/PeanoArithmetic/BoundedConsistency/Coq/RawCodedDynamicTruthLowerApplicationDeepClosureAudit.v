@@ -1,0 +1,25 @@
+(** Assumption and API audit for native lower-application deep closure. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthLowerApplicationDeepClosure.
+
+Import PABoundedRawCodedDynamicTruthLowerApplicationDeepClosure.
+
+Check raw_dynamicTruthCoqLowerApplication_as_ternaryApplication.
+Check raw_dynamicTruthPiCoqLowerApplication_as_ternaryApplication.
+Check raw_codedTermShift_standard_identity_from_twenty_six.
+Check raw_codedFormulaSubstitutionAtom_standard_identity_from_twenty_six.
+Check raw_fixedLowerTernaryApplication_deep_closed_from_twenty_six.
+Check raw_dynamicTruthCoqLowerApplication_deep_closed_from_twenty_six.
+Check raw_dynamicTruthPiCoqLowerApplication_deep_closed_from_twenty_six.
+
+Print Assumptions
+  raw_dynamicTruthCoqLowerApplication_as_ternaryApplication.
+Print Assumptions
+  raw_dynamicTruthPiCoqLowerApplication_as_ternaryApplication.
+Print Assumptions
+  raw_fixedLowerTernaryApplication_deep_closed_from_twenty_six.
+Print Assumptions
+  raw_dynamicTruthCoqLowerApplication_deep_closed_from_twenty_six.
+Print Assumptions
+  raw_dynamicTruthPiCoqLowerApplication_deep_closed_from_twenty_six.
