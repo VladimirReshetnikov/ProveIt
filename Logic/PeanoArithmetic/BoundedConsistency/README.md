@@ -1402,6 +1402,14 @@ literal: it embeds all seventeen ordinary raw-proof constructors, proves
 context/conclusion/validity preservation, and attaches the unchanged finite
 list of witnessed ordinary PA axioms to the compiled template tree.  Opaque
 template atoms therefore cannot leak into the PA axiom base.
+`RawCodedPAAxiomWitnessPrefix.v` supplies the corresponding common-context
+operation.  A finite metatheoretic batch of standard PA-axiom witnesses is
+folded over arbitrary carrier-valued witness-list and context tails in
+lockstep.  Iterated guarded cons transplant rebuilds an existing local proof
+over that exact extended context, and the strongest endpoint returns the
+extended witness traversal and proof root together.  Prefix concatenation
+laws let independently selected finite axiom batches be accumulated without
+decoding the nonstandard base.
 `RawCodedTemplateLogicalSchemas.v` records the small
 finite source trees needed by the dynamic fields—conjunction projection and
 introduction, existential projection, and universal specialization followed

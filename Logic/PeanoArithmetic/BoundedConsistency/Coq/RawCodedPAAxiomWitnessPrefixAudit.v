@@ -1,0 +1,35 @@
+(** Kernel-facing audit for finite standard PA-axiom witness prefixes. *)
+
+From BoundedPAConsistency Require Import RawCodedPAAxiomWitnessPrefix.
+
+Module PABoundedRawCodedPAAxiomWitnessPrefixAudit.
+
+Import PABoundedRawCodedPAAxiomWitnessPrefix.
+
+Check StandardPAAxiomWitnessPrefix.
+Check standardPAAxiomWitnessPrefixEmpty.
+Check standardPAAxiomWitnessPrefixCons.
+Check rawStandardPAAxiomWitnessPrefixWitnessListCode.
+Check rawStandardPAAxiomWitnessPrefixContextCode.
+Check rawStandardPAAxiomWitnessPrefixWitnessListCode_app.
+Check rawStandardPAAxiomWitnessPrefixContextCode_app.
+
+Check raw_codedPAAxiomWitnessContext_standardPrefix.
+Check raw_codedPAAxiomWitnessPrefix_context_realizable_of_witnessed.
+Check raw_codedPAAxiomWitnessContext_standardPrefix_realizable.
+Check raw_standardPAAxiomWitnessPrefix_context_realizable.
+Check raw_codedPALocalProofOf_standardPAAxiomWitnessPrefix.
+Check raw_codedPAAxiomWitnessPrefix_sharedContext.
+
+Print Assumptions rawStandardPAAxiomWitnessPrefixWitnessListCode_app.
+Print Assumptions rawStandardPAAxiomWitnessPrefixContextCode_app.
+Print Assumptions raw_codedPAAxiomWitnessContext_standardPrefix.
+Print Assumptions
+  raw_codedPAAxiomWitnessPrefix_context_realizable_of_witnessed.
+Print Assumptions
+  raw_codedPAAxiomWitnessContext_standardPrefix_realizable.
+Print Assumptions raw_standardPAAxiomWitnessPrefix_context_realizable.
+Print Assumptions raw_codedPALocalProofOf_standardPAAxiomWitnessPrefix.
+Print Assumptions raw_codedPAAxiomWitnessPrefix_sharedContext.
+
+End PABoundedRawCodedPAAxiomWitnessPrefixAudit.
