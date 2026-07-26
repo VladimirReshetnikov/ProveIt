@@ -1,0 +1,94 @@
+(** Kernel-facing audit for the structural template translation. *)
+
+From PAHF Require Import PAHF.
+From PAFiniteBasisReduction Require Import
+  HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
+From BoundedPAConsistency Require Import
+  RawCodedTemplateSyntax RawCodedTemplateProofCompiler
+  RawCodedTemplateStructuralTranslation.
+
+Module PABoundedRawCodedTemplateStructuralTranslationAudit.
+
+Import PA.
+Import PAHierarchyReduction.
+Import PACanonicalSelectorPA.
+Import PAFiniteBetaCoding.
+Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateStructuralTranslation.
+
+Check RawCodedTemplateStructuralSymbols.
+Check rawStructuralTemplateParameterCode.
+Check rawStructuralTemplateOpaqueCode.
+Check rawStructuralTemplateTermWith.
+Check rawStructuralTemplateFormulaWith.
+Check templateShiftRenamingAt.
+Check templateShiftRenamingAt_succ.
+Check templateFormulaRename_shift_succ.
+Check templateFormulaRename_shift_zero.
+Check templateOpeningSubstAt.
+
+Check RawCodedTemplateStructuralInputs.
+Check rawStructuralTemplateTermShiftAt.
+Check rawStructuralTemplateTermOpeningAt.
+Check rawStructuralTemplateOpaqueShiftTree.
+Check rawStructuralTemplateOpaqueShiftTree_depth.
+Check rawStructuralTemplateOpaqueShiftTree_source.
+Check rawStructuralTemplateOpaqueShiftTree_target.
+Check rawStructuralTemplateOpaqueShiftTree_valid.
+Check rawStructuralTemplateOpaqueOpenTree.
+Check rawStructuralTemplateOpaqueOpenTree_depth.
+Check rawStructuralTemplateOpaqueOpenTree_source.
+Check rawStructuralTemplateOpaqueOpenTree_target.
+Check rawStructuralTemplateOpaqueOpenTree_valid.
+
+Check rawStructuralTemplateTerm.
+Check rawStructuralTemplateFormula.
+Check rawStructuralTemplateShiftTree.
+Check rawStructuralTemplateShiftTree_depth.
+Check rawStructuralTemplateShiftTree_source.
+Check rawStructuralTemplateShiftTree_target.
+Check rawStructuralTemplateShiftTree_valid.
+Check rawStructuralTemplateOpenTree.
+Check rawStructuralTemplateOpenTree_depth.
+Check rawStructuralTemplateOpenTree_source.
+Check rawStructuralTemplateOpenTree_target.
+Check rawStructuralTemplateOpenTree_valid.
+Check rawStructuralTemplateFormula_shift.
+Check rawStructuralTemplateFormula_open.
+Check rawStructuralTemplateTranslation.
+
+Section InstantiationTypeAudit.
+
+Variable M : RawPAModel.
+Variable hPA : RawPASatisfies M.
+Variable inputs : RawCodedTemplateStructuralInputs M.
+
+(** The concrete specialization has exactly the compiler-facing type. *)
+Check (rawStructuralTemplateTranslation M hPA inputs)
+  : RawCodedTemplateTranslation M.
+
+(** Its relational projections expose the structurally assembled traces. *)
+Check (rawTemplateFormula_shift
+  (rawStructuralTemplateTranslation M hPA inputs)).
+Check (rawTemplateFormula_open
+  (rawStructuralTemplateTranslation M hPA inputs)).
+
+End InstantiationTypeAudit.
+
+Print Assumptions templateShiftRenamingAt_succ.
+Print Assumptions templateFormulaRename_shift_succ.
+Print Assumptions templateFormulaRename_shift_zero.
+Print Assumptions rawStructuralTemplateShiftTree_depth.
+Print Assumptions rawStructuralTemplateShiftTree_source.
+Print Assumptions rawStructuralTemplateShiftTree_target.
+Print Assumptions rawStructuralTemplateShiftTree_valid.
+Print Assumptions rawStructuralTemplateOpenTree_depth.
+Print Assumptions rawStructuralTemplateOpenTree_source.
+Print Assumptions rawStructuralTemplateOpenTree_target.
+Print Assumptions rawStructuralTemplateOpenTree_valid.
+Print Assumptions rawStructuralTemplateFormula_shift.
+Print Assumptions rawStructuralTemplateFormula_open.
+Print Assumptions rawStructuralTemplateTranslation.
+
+End PABoundedRawCodedTemplateStructuralTranslationAudit.
