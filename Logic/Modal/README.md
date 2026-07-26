@@ -33,6 +33,9 @@ is being reconstructed:
   to canonical reflexivity, seriality, symmetry, transitivity, and right
   Euclideanity, with full soundness/completeness for KT, KD, KB, K4, K5, S4,
   and S5 and explicit small-frame strictness witnesses over K;
+- generic canonical completeness for every weakly n-transitive K4n logic,
+  with an exact iterated-accessibility theorem, saturating counterframes, the
+  full strict hierarchy, and its infinite pairwise-inequivalent family;
 - complete canonical metatheory for K45, KD4, KD5, KDB, KB4, KB5, and KD45,
   including every pinned strict-inclusion result and the K4Point3 comparison;
 - canonical and finite completeness for reflexive-symmetric KTB and
@@ -150,6 +153,7 @@ is being reconstructed:
 | `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
 | `LogicInfrastructure.v` | `Modal/Logic/{Basic,SumNormal,SumQuasiNormal,Global}.lean` | Predicate-valued logic structure; normal/quasinormal sums and recursors; finite bases, substitution omission, and global consequence |
 | `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; KT/K4/S4 canonicality, completeness, and strictness |
+| `CanonicalK4n.v` | `Modal/Kripke/{AxiomFourN,Logic/K4n}.lean` | Generic iterated-accessibility canonical theorem; weak-n-transitive soundness-completeness; saturating counterframes, strict hierarchy, and infinite family |
 | `Modality.v` | `Modal/Modality/{Basic,S5}.lean`, `Modal/Kripke/Logic/S5.lean` | Modal-word algebra, size enumeration/splitting, syntactic translations and equivalences, generic finite reduction, S5 canonical completeness, and six-form normalization for every length |
 | `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
 | `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
@@ -326,6 +330,12 @@ only excluded middle.  The AxiomMcK ledger row remains conservative because
 the exact reverse switch equivalence and list/finite-set convenience theorems
 are not yet stated, although all machinery needed by canonicality is checked.
 
+The K4n schema closure and its zero/one identifications are constructive.
+The finite-support Lindenbaum bridge for arbitrary iterated accessibility
+inherits functional and propositional extensionality, definite description,
+and excluded middle from the normal canonical-model layer.  The explicit
+saturating counterframes and hierarchy strictness use only excluded middle.
+
 S4.4McK canonicality combines the already audited Point4 and McKinsey
 canonical-frame theorems and therefore inherits the latter's extensionality,
 proof-irrelevance, definite-description, and classical boundary.  Its strict
@@ -416,6 +426,9 @@ are checked.  S5 now has full pinned parity too: universal-frame completeness
 and all six strict predecessors complement its canonical completeness and
 modal normalizer.  K4McK and S4McK likewise have full parity, including the
 generic canonical McKinsey construction and all three strict inclusions.
+K4n and the generic AxiomFourN canonical theorem now have full parity as well,
+including the exact zero/one levels, every strictness form, and the injective
+infinite family represented without Lean typeclass wrappers.
 S4Point2McK and S4Point3McK likewise have full parity, including their
 combined canonical frames and all four source strictness results.
 S4Point4McK also has full parity, with both source strictness results and a
@@ -526,8 +539,9 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalS5 `
   FoundationModal.CanonicalMcK `
   FoundationModal.CanonicalPoint2McK `
-  FoundationModal.CanonicalPoint3McK `
   FoundationModal.CanonicalTrivVer `
+  FoundationModal.CanonicalK4n `
+  FoundationModal.CanonicalPoint3McK `
   FoundationModal.CanonicalPoint4McK `
   FoundationModal.Undefinability FoundationModal.Audit
 ```

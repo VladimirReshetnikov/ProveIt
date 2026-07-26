@@ -9,7 +9,8 @@ From FoundationModal Require Import
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalPoint4 CanonicalS5 CanonicalMcK CanonicalTrivVer
-  CanonicalPoint2McK CanonicalPoint3McK CanonicalPoint4McK Undefinability.
+  CanonicalK4n CanonicalPoint2McK CanonicalPoint3McK CanonicalPoint4McK
+  Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -309,6 +310,22 @@ Check S4Point2_strictly_weaker_S4Point3.
 Check S4_strictly_weaker_S4Point3.
 Check K4Point3_strictly_weaker_S4Point3.
 Check KT_strictly_weaker_S4Point3.
+
+(** Canonical weak-n transitivity and the infinite strict K4n hierarchy. *)
+Check schema_FourN_substitution_closed.
+Check normal_canonical_rel_iter_iff_box_iter.
+Check normal_canonical_weakly_transitive_of_schema_FourN.
+Check K4n_canonical_frame.
+Check K4n_sound_complete.
+Check K4n_frame_class_zero_iff_KTc.
+Check K4n_frame_class_one_iff_transitive.
+Check K4n_zero_equiv_KTc.
+Check K4n_one_equiv_K4.
+Check k4n_counter_rel_iter_iff.
+Check K_strictly_weaker_K4n.
+Check K4n_strictly_weaker_of_lt.
+Check K4n_family_pairwise_inequivalent.
+Check K4n_family_injective.
 
 (** Canonical S4.4 and its exact Sobocinski frame condition. *)
 Check S4Point4_axiom_schema_substitution_closed.
@@ -793,6 +810,15 @@ Print Assumptions S4Point3_finite_complete.
 Print Assumptions K4_strictly_weaker_K4Point3.
 Print Assumptions S4Point2_strictly_weaker_S4Point3.
 Print Assumptions K4Point3_strictly_weaker_S4Point3.
+Print Assumptions schema_FourN_substitution_closed.
+Print Assumptions normal_canonical_rel_iter_iff_box_iter.
+Print Assumptions normal_canonical_weakly_transitive_of_schema_FourN.
+Print Assumptions K4n_complete.
+Print Assumptions K4n_zero_equiv_KTc.
+Print Assumptions K4n_one_equiv_K4.
+Print Assumptions K_strictly_weaker_K4n.
+Print Assumptions K4n_strictly_weaker_of_lt.
+Print Assumptions K4n_family_injective.
 Print Assumptions S4Point4_axiom_schema_substitution_closed.
 Print Assumptions normal_canonical_sobocinski_of_schema_Point4.
 Print Assumptions S4Point4_complete.
