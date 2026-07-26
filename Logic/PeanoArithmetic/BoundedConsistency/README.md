@@ -1570,6 +1570,14 @@ the graph's exact witnesses and returns an ordinary PA proof targeted at that
 same output.  This is one checked restricted-row field, not yet the complete
 local decision/exclusivity field required by the six-field master.
 
+`RawCodedDynamicTruthPiExistentialLeafTransformGraph.v` provides the dual
+output-first transform without swapping away the polarity.  Its lower opaque
+application consumes the selected global Sigma code, its domain is the native
+Pi-domain substitution at the successor numeral, and its transparent output
+is the thirteen-fold closure compiled by the restricted Pi proof module.
+Relational totality and proof-producing totality again remain separate, with
+the latter requiring direct inputs that identify the graph's exact witnesses.
+
 `RawCodedDynamicTruthRestrictedUniversalLocalProofFieldGraph.v` composes that
 transform with the genuine paired global Sigma/Pi orbit and requires its
 proof-producing compiler only for the Pi codes selected by an actual adequate
