@@ -1328,6 +1328,22 @@ be consumed by the five certificate-field constructors; atomic adequacy alone
 does not yet supply those proof certificates, so the final Coq endpoint
 remains deliberately conditional.
 
+The first proof-producing master-field slices are now explicit rather than
+hidden behind that remaining condition.  At level zero,
+`RawCodedDynamicTruthLocalDecisionExclusiveBase.v` quotes the native local
+decision/exclusivity bundle, while
+`RawCodedDynamicTruthTransportFieldBaseGraphs.v` quotes the native
+cross-level, formula-shift, and single-substitution laws.  Every base graph
+pins its output to the exact formula code accepted by a concrete
+`RawCodedPAProofOf` certificate.  For the positive local field,
+`RawCodedOutputFirstPairedFormulaGraphComposition.v` preserves the joint
+Sigma/Pi orbit witness while composing a proof-producing transform, and
+`RawCodedDynamicTruthLocalProofFieldGraph.v` specializes that construction
+to the globally closed paired orbit.  The transform remains intentionally
+parametric: compiling the carrier-coded positive law formula and its raw PA
+proof is the next honest proof obligation, not a consequence of semantic
+truth-code adequacy.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom

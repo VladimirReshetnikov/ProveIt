@@ -1,0 +1,15 @@
+(** Public surface and assumption audit for the local proof-field graph. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthLocalProofFieldGraph.
+
+Import PABoundedRawCodedDynamicTruthLocalProofFieldGraph.
+
+Check dynamicTruthLocalProofFieldGraph.
+Check RawDynamicTruthLocalProofFieldGraphAt.
+Check raw_sat_dynamicTruthLocalProofFieldGraph_iff.
+Check RawDynamicTruthLocalLawTransformProofTotal.
+Check dynamicTruthLocalProofFieldGraph_raw_proof_total.
+
+Print Assumptions raw_sat_dynamicTruthLocalProofFieldGraph_iff.
+Print Assumptions dynamicTruthLocalProofFieldGraph_raw_proof_total.

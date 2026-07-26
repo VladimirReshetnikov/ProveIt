@@ -1,0 +1,43 @@
+(** Public surface and assumption audit for the checked transport-field
+    level-zero graphs. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthTransportFieldBaseGraphs.
+
+Import PABoundedRawCodedDynamicTruthTransportFieldBaseGraphs.
+
+Check dynamicTruthCrossLevelBaseFieldFormula.
+Check dynamicTruthShiftBaseFieldFormula.
+Check dynamicTruthSubstitutionBaseFieldFormula.
+
+Check dynamicTruthCrossLevelBaseFieldGraph.
+Check dynamicTruthShiftBaseFieldGraph.
+Check dynamicTruthSubstitutionBaseFieldGraph.
+
+Check PA_proves_dynamicTruthCrossLevelBaseFieldFormula.
+Check PA_proves_dynamicTruthShiftBaseFieldFormula.
+Check PA_proves_dynamicTruthSubstitutionBaseFieldFormula.
+
+Check dynamicTruthCrossLevelBaseFieldGraph_zero_iff.
+Check dynamicTruthShiftBaseFieldGraph_zero_iff.
+Check dynamicTruthSubstitutionBaseFieldGraph_zero_iff.
+
+Check dynamicTruthCrossLevelBaseFieldGraph_standard_zero_witness.
+Check dynamicTruthShiftBaseFieldGraph_standard_zero_witness.
+Check dynamicTruthSubstitutionBaseFieldGraph_standard_zero_witness.
+
+Check raw_dynamicTruthCrossLevelBaseFieldGraph_proof.
+Check raw_dynamicTruthShiftBaseFieldGraph_proof.
+Check raw_dynamicTruthSubstitutionBaseFieldGraph_proof.
+
+Print Assumptions PA_proves_dynamicTruthCrossLevelBaseFieldFormula.
+Print Assumptions PA_proves_dynamicTruthShiftBaseFieldFormula.
+Print Assumptions PA_proves_dynamicTruthSubstitutionBaseFieldFormula.
+
+Print Assumptions dynamicTruthCrossLevelBaseFieldGraph_zero_iff.
+Print Assumptions dynamicTruthShiftBaseFieldGraph_zero_iff.
+Print Assumptions dynamicTruthSubstitutionBaseFieldGraph_zero_iff.
+
+Print Assumptions raw_dynamicTruthCrossLevelBaseFieldGraph_proof.
+Print Assumptions raw_dynamicTruthShiftBaseFieldGraph_proof.
+Print Assumptions raw_dynamicTruthSubstitutionBaseFieldGraph_proof.

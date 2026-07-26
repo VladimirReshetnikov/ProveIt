@@ -1,0 +1,28 @@
+(**
+  Public surface and assumption audit for the proof-producing zero slice of
+  the dynamic local decision/exclusivity field.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthLocalDecisionExclusiveBase.
+
+Import PABoundedRawCodedDynamicTruthLocalDecisionExclusiveBase.
+
+Check fixedLevelLocalDecisionExclusiveBundleFormula.
+Check RawFixedLevelLocalDecisionExclusiveBundleAt.
+Check raw_sat_fixedLevelLocalDecisionExclusiveBundleFormula_iff.
+Check PA_proves_fixedLevelLocalDecisionExclusiveBundleFormula.
+Check dynamicTruthLocalDecisionExclusiveBaseFormula.
+Check dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph.
+Check dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph_representation.
+Check dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph_raw_total.
+Check raw_dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph_provable.
+
+Print Assumptions raw_sat_fixedLevelLocalDecisionExclusiveBundleFormula_iff.
+Print Assumptions PA_proves_fixedLevelLocalDecisionExclusiveBundleFormula.
+Print Assumptions
+  dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph_representation.
+Print Assumptions
+  dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph_raw_total.
+Print Assumptions
+  raw_dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph_provable.
