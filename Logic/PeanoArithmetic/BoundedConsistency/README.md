@@ -1763,6 +1763,15 @@ the concrete master graph.  This closes the current-package decomposition
 seam needed by a staged successor compiler; it does not manufacture any next
 field or merge independently chosen proof contexts.
 
+`RawCodedDynamicTruthMasterSplicedSuccessorBridge.v` packages the remaining
+successor obligation at the right abstraction boundary.  After projecting
+the current master, a staged compiler receives its six selected codes and
+common-context roots and must return five positive predecessor-graph
+witnesses, the next compact target, and six next roots in one honestly chosen
+context.  The bridge applies all five splice successor equations and yields
+the exact public master-package successor callback.  It performs no positive
+field construction itself.
+
 `RawCodedTruthCertificateConcreteEndpoint.v` connects that successor bridge,
 the zero bridge, the concrete assembler, and the generic PA-internal
 induction.  Its single remaining all-model premise is exactly the five-field
