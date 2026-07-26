@@ -1344,6 +1344,25 @@ parametric: compiling the carrier-coded positive law formula and its raw PA
 proof is the next honest proof obligation, not a consequence of semantic
 truth-code adequacy.
 
+Positive fields cannot soundly be compiled by reserving a sentinel inside
+ordinary PA syntax: a closed sentinel is itself a substitution instance of
+other PA syntax, so replacing it by an arbitrary predicate or carrier
+parameter would break the substitution equations used by quantifier and
+equality rules.  `RawCodedTemplateSyntax.v` therefore supplies an honest
+extended source language with named carrier parameters, opaque finite-arity
+predicate applications, capture-avoiding renaming/substitution, an embedding
+of ordinary PA syntax, and an unindexed tree for all seventeen natural-
+deduction constructors.  `RawCodedTemplateProofCompiler.v` translates such a
+fixed finite tree under an abstract model-coded specialization and builds
+every raw proof node through the coverage-certified constructors.  Its public
+result is an exact `RawCodedPALocalProofOf`; nonstandard predicate codes are
+never decoded.  `RawCodedTranslatedProofCompiler.v` provides the corresponding
+homomorphic compiler for ordinary PA proof trees and will be used by the
+lifted-PA axiom bridge.  What remains at this layer is the concrete one- and
+two-predicate specialization, including represented shift/opening traces for
+opaque applications; atomic adequacy alone is intentionally not mistaken for
+that scope-sensitive operation contract.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
@@ -1663,6 +1682,9 @@ Rocq/Coq compiler work for the uniform sentence.
 - [x] Build the generic PA-internal master-package induction and its bridge to
   the exact compact uniform theorem from graph decomposition, base, and
   successor callbacks.
+- [x] Add an honest extended proof-template syntax and compile every one of
+  its seventeen natural-deduction constructors to exact coverage-certified
+  raw PA local proofs under an abstract model-coded specialization.
 - [ ] Port the six-field dynamic-truth master-code graph, checked base
   certificate, and staged proof-code successor from Lean to Rocq/Coq; apply
   internal PA induction and the final projection to make the uniform object
