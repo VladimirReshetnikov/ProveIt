@@ -1,0 +1,18 @@
+(** Assumption audit for stability and threefold represented substitution. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFormulaSingleSubstitutionAtomicAdequacy.
+
+Import PABoundedRawCodedFormulaSingleSubstitutionAtomicAdequacy.
+
+Check RawCodedTermOpeningAfterShiftSyntaxStable.
+Check raw_codedFormulaSubstitutionAtom_target_syntax_of_opening_stable.
+Check raw_formulaOperation_eq_row_of_target.
+Check raw_codedFormulaSingleSubstitution_target_atomically_adequate.
+Check raw_codedFormulaSingleSubstitution_exists_atomically_adequate.
+Check raw_codedFormulaSingleSubstitution_three_exists.
+
+Print Assumptions raw_formulaOperation_eq_row_of_target.
+Print Assumptions raw_codedFormulaSingleSubstitution_target_atomically_adequate.
+Print Assumptions raw_codedFormulaSingleSubstitution_exists_atomically_adequate.
+Print Assumptions raw_codedFormulaSingleSubstitution_three_exists.

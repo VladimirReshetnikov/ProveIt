@@ -1,0 +1,18 @@
+(** Assumption audit for arbitrary-code ternary application totality. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthTernaryApplicationTotality.
+
+Import PABoundedRawCodedDynamicTruthTernaryApplicationTotality.
+
+Check raw_dynamicTruthApplication_fixedReplacement_syntax.
+Check RawDynamicTruthTernaryApplicationAdequateChain.
+Check raw_dynamicTruthTernaryApplication_exists_adequate.
+Check raw_dynamicTruthTernaryApplication_total.
+Check RawDynamicTruthTernaryApplicationGraphTotalOnAdequate.
+Check dynamicTruthTernaryApplicationGraph_raw_total_on_adequate.
+
+Print Assumptions raw_dynamicTruthApplication_fixedReplacement_syntax.
+Print Assumptions raw_dynamicTruthTernaryApplication_exists_adequate.
+Print Assumptions raw_dynamicTruthTernaryApplication_total.
+Print Assumptions dynamicTruthTernaryApplicationGraph_raw_total_on_adequate.

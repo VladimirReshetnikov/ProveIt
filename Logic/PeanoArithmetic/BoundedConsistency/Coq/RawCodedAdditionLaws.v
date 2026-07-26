@@ -38,7 +38,7 @@ Proof.
   set (e := scons M x (fun _ : nat => raw_zero M)).
   pose proof (raw_eq_of_closed_bprov M hPA
     (PA.tAdd (PA.tVar 0) PA.tZero) (PA.tVar 0) e
-    (PA.Formula.BProv_Ax_s_addZero_term (PA.tVar 0))) as h.
+    (PA.Formula.BProv_Ax_s_addZero_term [] (PA.tVar 0))) as h.
   unfold e in h. cbn [raw_term_eval scons] in h. exact h.
 Qed.
 

@@ -1,0 +1,28 @@
+(** Assumption audit for the genuine Pi-falsity successor row graph. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPiSuccessorRowGraph.
+
+Import PABoundedRawCodedDynamicTruthPiSuccessorRowGraph.
+
+Check dynamicTruthPiCoqLowerApplicationTermAt.
+Check RawDynamicTruthPiCoqLowerApplication.
+Check raw_sat_dynamicTruthPiCoqLowerApplicationTermAt_iff.
+Check standardDynamicTruthPiCoqLowerApplication_eq_rename.
+Check raw_dynamicTruthPiCoqLowerApplication_standard_rename.
+Check dynamicTruthPiSuccessorRowFormula.
+Check rawDynamicTruthPiSuccessorRowCode.
+Check rawDynamicTruthPiSuccessorRowCode_quoted.
+Check dynamicTruthPiSuccessorRowGraph.
+Check RawDynamicTruthPiSuccessorRowAt.
+Check raw_sat_dynamicTruthPiSuccessorRowGraph_iff.
+Check RawDynamicTruthPiDomainStepTotal.
+Check RawDynamicTruthPiCoqLowerApplicationTotal.
+Check dynamicTruthPiSuccessorRowGraph_raw_total.
+
+Print Assumptions raw_sat_dynamicTruthPiCoqLowerApplicationTermAt_iff.
+Print Assumptions standardDynamicTruthPiCoqLowerApplication_eq_rename.
+Print Assumptions raw_dynamicTruthPiCoqLowerApplication_standard_rename.
+Print Assumptions rawDynamicTruthPiSuccessorRowCode_quoted.
+Print Assumptions raw_sat_dynamicTruthPiSuccessorRowGraph_iff.
+Print Assumptions dynamicTruthPiSuccessorRowGraph_raw_total.

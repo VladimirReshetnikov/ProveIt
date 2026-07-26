@@ -1,0 +1,20 @@
+(** Assumption audit for the mutually polarized successor-row graph. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPairedSuccessorRowGraph.
+
+Import PABoundedRawCodedDynamicTruthPairedSuccessorRowGraph.
+
+Check dynamicTruthPairedSigmaSuccessorRenaming.
+Check dynamicTruthPairedPiSuccessorRenaming.
+Check raw_sat_dynamicTruthPairedSigmaSuccessorRenamed_iff.
+Check raw_sat_dynamicTruthPairedPiSuccessorRenamed_iff.
+Check dynamicTruthPairedSuccessorRowGraph.
+Check RawDynamicTruthPairedSuccessorRowAt.
+Check raw_sat_dynamicTruthPairedSuccessorRowGraph_iff.
+Check dynamicTruthPairedSuccessorRowGraph_raw_total.
+
+Print Assumptions raw_sat_dynamicTruthPairedSigmaSuccessorRenamed_iff.
+Print Assumptions raw_sat_dynamicTruthPairedPiSuccessorRenamed_iff.
+Print Assumptions raw_sat_dynamicTruthPairedSuccessorRowGraph_iff.
+Print Assumptions dynamicTruthPairedSuccessorRowGraph_raw_total.

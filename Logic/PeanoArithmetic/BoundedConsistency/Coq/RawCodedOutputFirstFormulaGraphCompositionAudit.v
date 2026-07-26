@@ -1,0 +1,28 @@
+(** Assumption audit for existential output-first graph composition. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedOutputFirstFormulaGraphComposition.
+
+Import PABoundedRawCodedOutputFirstFormulaGraphComposition.
+
+Check outputFirstFormulaGraphCompositionEnvironment.
+Check outputFirstFormulaGraphCompositionSourceRenaming.
+Check outputFirstFormulaGraphCompositionTransformRenaming.
+Check raw_sat_outputFirstFormulaGraphCompositionSourceRenamed_iff.
+Check raw_sat_outputFirstFormulaGraphCompositionTransformRenamed_iff.
+Check outputFirstFormulaGraphComposition.
+Check RawOutputFirstFormulaGraphCompositionAt.
+Check raw_sat_outputFirstFormulaGraphComposition_iff.
+
+Check RawOutputFirstFormulaGraphTotalWithInvariant.
+Check RawOutputFirstFormulaTransformTotalFromInvariant.
+Check outputFirstFormulaGraphComposition_raw_dependent_total.
+Check outputFirstFormulaGraphComposition_raw_total.
+
+Print Assumptions
+  raw_sat_outputFirstFormulaGraphCompositionSourceRenamed_iff.
+Print Assumptions
+  raw_sat_outputFirstFormulaGraphCompositionTransformRenamed_iff.
+Print Assumptions raw_sat_outputFirstFormulaGraphComposition_iff.
+Print Assumptions outputFirstFormulaGraphComposition_raw_dependent_total.
+Print Assumptions outputFirstFormulaGraphComposition_raw_total.
