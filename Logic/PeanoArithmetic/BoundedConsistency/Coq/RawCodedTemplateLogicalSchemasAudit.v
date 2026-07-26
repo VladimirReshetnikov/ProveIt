@@ -1,0 +1,18 @@
+From BoundedPAConsistency Require Import RawCodedTemplateLogicalSchemas.
+
+Import PABoundedRawCodedTemplateLogicalSchemas.
+
+Check templateTermSubst_rename_cancel.
+Check templateFormulaSubst_rename_cancel.
+Check templateFormulaOpen_binderShift_zero.
+
+Check templateAndLeftImpProof_derives.
+Check templateAndRightImpProof_derives.
+Check templateAndIntroductionProof_derives.
+Check templateExistsAndLeftImpProof_derives.
+Check templateUniversalModusPonensProof_derives.
+
+Print Assumptions templateFormulaOpen_binderShift_zero.
+Print Assumptions templateAndLeftImpProof_derives.
+Print Assumptions templateExistsAndLeftImpProof_derives.
+Print Assumptions templateUniversalModusPonensProof_derives.

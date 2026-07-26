@@ -1358,10 +1358,14 @@ every raw proof node through the coverage-certified constructors.  Its public
 result is an exact `RawCodedPALocalProofOf`; nonstandard predicate codes are
 never decoded.  `RawCodedTranslatedProofCompiler.v` provides the corresponding
 homomorphic compiler for ordinary PA proof trees and will be used by the
-lifted-PA axiom bridge.  What remains at this layer is the concrete one- and
-two-predicate specialization, including represented shift/opening traces for
-opaque applications; atomic adequacy alone is intentionally not mistaken for
-that scope-sensitive operation contract.
+lifted-PA axiom bridge.  `RawCodedTemplateLogicalSchemas.v` records the small
+finite source trees needed by the dynamic fields—conjunction projection and
+introduction, existential projection, and universal specialization followed
+by modus ponens—so their model-coded proofs do not rely on an unexposed
+semantic-completeness step.  What remains at this layer is the concrete one-
+and two-predicate specialization, including represented shift/opening traces
+for opaque applications; atomic adequacy alone is intentionally not mistaken
+for that scope-sensitive operation contract.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
