@@ -8,7 +8,8 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
-  CanonicalPoint3 CanonicalPoint4 CanonicalS5 CanonicalTrivVer Undefinability.
+  CanonicalPoint3 CanonicalPoint4 CanonicalS5 CanonicalMcK CanonicalTrivVer
+  Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -336,6 +337,25 @@ Check KB4_strictly_weaker_S5.
 Check S4Point4_strictly_weaker_S5.
 Check S4_strictly_weaker_S5.
 Check KT_strictly_weaker_S5.
+
+(** Canonical McKinsey successors and K4McK/S4McK completeness. *)
+Check McK_axiom_schema_substitution_closed.
+Check K4McK_schema_substitution_closed.
+Check S4McK_schema_substitution_closed.
+Check normal_proves_base_mck_switch_possible.
+Check normal_proves_base_mck_jointly_possible.
+Check normal_derives_base_mck_seed_partition.
+Check base_mck_seed_theory_consistent.
+Check normal_canonical_mckinsey_of_K4McK_schemas.
+Check normal_canonical_mckinsey_of_schema_K4McK.
+Check K4McK_canonical_frame.
+Check S4McK_canonical_frame.
+Check K4McK_sound_complete.
+Check S4McK_sound_complete.
+Check K_weaker_than_K4McK.
+Check K4_strictly_weaker_K4McK.
+Check S4_strictly_weaker_S4McK.
+Check K4McK_strictly_weaker_S4McK.
 
 (** Coreflexive KTc, equality-frame Triv, and isolated-frame Ver, including
     their source-local entailments, finite completeness, and strictness
@@ -757,6 +777,16 @@ Print Assumptions KB4_strictly_weaker_S5.
 Print Assumptions S4Point4_strictly_weaker_S5.
 Print Assumptions S4_strictly_weaker_S5.
 Print Assumptions KT_strictly_weaker_S5.
+Print Assumptions McK_axiom_schema_substitution_closed.
+Print Assumptions normal_proves_base_mck_switch_possible.
+Print Assumptions normal_proves_base_mck_jointly_possible.
+Print Assumptions base_mck_seed_theory_consistent.
+Print Assumptions normal_canonical_mckinsey_of_K4McK_schemas.
+Print Assumptions K4McK_complete.
+Print Assumptions S4McK_complete.
+Print Assumptions K4_strictly_weaker_K4McK.
+Print Assumptions S4_strictly_weaker_S4McK.
+Print Assumptions K4McK_strictly_weaker_S4McK.
 Print Assumptions schema_DiaT_substitution_closed.
 Print Assumptions KTc_proves_DiaT.
 Print Assumptions KTc_prime_proves_Tc.

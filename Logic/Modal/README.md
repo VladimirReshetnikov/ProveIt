@@ -48,6 +48,8 @@ is being reconstructed:
   Point4 canonical theorem and strict extension of S4.3;
 - S5 completeness over universal frames via point generation, together with
   the complete pinned strict-predecessor hierarchy;
+- the generic canonical McKinsey special-successor construction and complete
+  canonical metatheory for K4McK and S4McK, including all pinned strictness;
 - canonical completeness for coreflexive KTc and canonical plus finite
   completeness for equality-frame Triv and isolated-frame Ver, including the
   complete KTc/Triv/Ver entailment surfaces and all pinned strict inclusions;
@@ -152,6 +154,7 @@ is being reconstructed:
 | `CanonicalPoint3.v` | `Modal/Kripke/{Axiom{WeakPoint3,Point3},Logic/{K4Point3,S4Point3}}.lean` | Weak/strong connectedness canonicality; linear-preorder and rooted finite S4.3 completeness; full source strictness chains |
 | `CanonicalPoint4.v` | `Modal/Kripke/{AxiomPoint4,Logic/S4Point4}.lean` | Generic Sobocinski canonicality; S4.4 soundness-completeness; strict S4.3 inclusion with a finite chain separator |
 | `CanonicalS5.v` | `Modal/Kripke/Logic/S5.lean` | Point-generated universal-frame characterization and completeness; strict KTB, KD45, KB4, S4.4, S4, and KT predecessors |
+| `CanonicalMcK.v` | `Modal/Kripke/{AxiomMcK,Logic/{K4McK,S4McK}}.lean` | Generic terminal-successor canonical construction; K4McK/S4McK soundness-completeness and complete strictness surface |
 | `CanonicalTrivVer.v` | `Modal/{Entailment,Kripke/Logic}/{KTc,Triv,Ver}.lean`, `Modal/Boxdot/Ver_Triv.lean` | Coreflexive/equality/isolated canonical metatheory; finite Triv/Ver completeness; all entailments and strictness results; unconditional Boxdot equivalence |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
@@ -307,6 +310,15 @@ completeness.  The finite predecessor separators use only excluded middle;
 all inclusions routed through S5 completeness inherit its same two-principle
 boundary, while the syntactic KT inclusion avoids definite description.
 
+The McKinsey schema and its substitution closure are constructive.  Building
+the canonical terminal successor uses excluded middle and definite
+description together with functional and propositional extensionality and
+proof irrelevance from maximal-theory equality.  K4McK and S4McK completeness
+inherit that boundary; their three explicit finite strictness separators use
+only excluded middle.  The AxiomMcK ledger row remains conservative because
+the exact reverse switch equivalence and list/finite-set convenience theorems
+are not yet stated, although all machinery needed by canonicality is checked.
+
 The KTc/DiaT entailment equivalence, the derived 4 and 5 axioms, the direct
 Triv/Ver consequences, and the elementary frame inclusions are closed under
 the global context.  Ver canonical completeness uses excluded middle and
@@ -382,7 +394,9 @@ completeness theorems, both singleton finite-completeness arguments, their
 entailment modules, six strict inclusions, and the Ver/Triv boxdot equivalence
 are checked.  S5 now has full pinned parity too: universal-frame completeness
 and all six strict predecessors complement its canonical completeness and
-modal normalizer.  Every modal word has a checked S5 equivalence and reduction
+modal normalizer.  K4McK and S4McK likewise have full parity, including the
+generic canonical McKinsey construction and all three strict inclusions.
+Every modal word has a checked S5 equivalence and reduction
 to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,
@@ -486,6 +500,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalPoint3 `
   FoundationModal.CanonicalPoint4 `
   FoundationModal.CanonicalS5 `
+  FoundationModal.CanonicalMcK `
   FoundationModal.CanonicalTrivVer `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
