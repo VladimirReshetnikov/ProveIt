@@ -1367,7 +1367,11 @@ template atoms therefore cannot leak into the PA axiom base.
 finite source trees needed by the dynamic fields—conjunction projection and
 introduction, existential projection, and universal specialization followed
 by modus ponens—so their model-coded proofs do not rely on an unexposed
-semantic-completeness step.  `RawCodedTemplateStructuralTranslation.v`
+semantic-completeness step.  `RawCodedTemplateProjectionSchemas.v` extends
+those atoms with transparent arbitrary conjunction selection/repacking,
+witness-preserving existential towers, universal closure, and the exact
+two-universal/five-existential projection used by the dynamic universal-leaf
+law.  `RawCodedTemplateStructuralTranslation.v`
 recurses over the honest syntax and grafts client-supplied operation trees at
 opaque leaves, thereby realizing full represented shift and opening traces
 without decoding a carrier formula.  Its companion PA-agreement module proves
