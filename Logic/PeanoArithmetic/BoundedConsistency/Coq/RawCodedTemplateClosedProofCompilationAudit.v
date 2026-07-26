@@ -1,0 +1,15 @@
+(** Assumption audit for closed template proof packaging. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplateClosedProofCompilation.
+
+Import PABoundedRawCodedTemplateClosedProofCompilation.
+
+Check rawClosedTemplateProofCertificate.
+Check raw_codedPAProofOf_closedTemplate.
+Check templateUniversalLeafProjectionFormula.
+Check rawUniversalLeafProjectionProofCertificate.
+Check raw_codedPAProofOf_universalLeafProjectionTemplate.
+
+Print Assumptions raw_codedPAProofOf_closedTemplate.
+Print Assumptions raw_codedPAProofOf_universalLeafProjectionTemplate.

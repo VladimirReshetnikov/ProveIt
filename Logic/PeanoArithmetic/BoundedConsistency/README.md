@@ -1371,7 +1371,10 @@ semantic-completeness step.  `RawCodedTemplateProjectionSchemas.v` extends
 those atoms with transparent arbitrary conjunction selection/repacking,
 witness-preserving existential towers, universal closure, and the exact
 two-universal/five-existential projection used by the dynamic universal-leaf
-law.  `RawCodedTemplateStructuralTranslation.v`
+law.  `RawCodedTemplateClosedProofCompilation.v` packages any closed compiled
+template tree as an ordinary `RawCodedPAProofOf` with a literally empty
+witnessed-axiom list, and exposes that exact universal-leaf certificate.
+`RawCodedTemplateStructuralTranslation.v`
 recurses over the honest syntax and grafts client-supplied operation trees at
 opaque leaves, thereby realizing full represented shift and opening traces
 without decoding a carrier formula.  Its companion PA-agreement module proves
