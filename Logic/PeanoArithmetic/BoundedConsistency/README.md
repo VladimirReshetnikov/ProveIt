@@ -1681,6 +1681,16 @@ compiler only along an adequate orbit and therefore needs shift/opening
 interchange only for the actually selected Pi code.  This is a full-row
 domain eliminator, not yet the branch-by-branch local decision law.
 
+`RawCodedDynamicTruthPiDomainProjectionTransformGraph.v` is the polarity-dual
+full-row field.  It compiles `full Or6 row -> Ex^8 domain`, with the lower
+application taken from the selected global Sigma code, and composes it with
+the same paired orbit at the predecessor level.  Its strongest proof-total
+endpoint likewise reuses the restricted-existential structural compiler only
+along an adequate orbit and is discharged by guarded interchange for the
+selected Sigma code.  The symmetric pair now supplies honest positive graph
+witnesses for both domain eliminators; the remaining row branches and their
+decision/exclusivity assembly are still separate obligations.
+
 `RawCodedDynamicTruthDeepClosedRestrictedLocalProofFields.v` selects the
 actual deeply closed paired-orbit witness instead of transporting closure to
 an arbitrary adequate witness.  The concrete shift and opening commutation
