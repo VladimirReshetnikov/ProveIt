@@ -1730,6 +1730,14 @@ master induction.  This is deliberately only the level-zero package; it does
 not stand in for the carrier-indexed component families still needed at
 positive, possibly nonstandard, levels.
 
+`RawCodedDynamicTruthMasterSplicedBasePackage.v` lifts the same five checked
+zero coordinates through `dynamicLocalFieldGraph`, parameterized by arbitrary
+future positive/predecessor graphs.  Its exact zero views and `BProv`
+derivations therefore establish the master-induction base callback for the
+eventual nonstandard-safe field splices without assuming any positive
+totality or successor compiler.  This is the base graph actually compatible
+with the remaining carrier-indexed construction.
+
 `RawCodedTruthCertificateMasterSuccessorBridge.v` gives the matching
 nonstandard-safe successor interface.  A component compiler consumes the
 current concrete master graph assertion and a coded PA proof of that exact
