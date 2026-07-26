@@ -1068,6 +1068,14 @@ seventeen-rule proof induction with that theorem.  Adequate unit formula
 shifts, arbitrary carrier-depth context insertion, and the guarded
 single-cons transplant are therefore unconditional in every raw PA model.
 
+`RawCodedPALocalProofPropositionalRules.v` exposes implication introduction
+and both disjunction introductions and elimination directly at the
+`RawCodedPALocalProofOf` interface.  These rules retain arbitrary carrier-
+coded contexts literally, including the two distinct cons contexts required
+by disjunction elimination.  They let the dynamic successor compiler perform
+case analysis over nonstandard formula codes without routing a purely
+propositional tree through formula shift or opening infrastructure.
+
 `RawCodedAssignmentShiftTail.v` also exposes PAHF's represented beta-tail
 shift through the raw assignment interface.  It constructs, inside every raw
 model and through an arbitrary carrier-valued bound, a target table whose row

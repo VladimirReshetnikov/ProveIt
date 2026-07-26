@@ -1,0 +1,20 @@
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofPropositionalRules.
+
+Module PABoundedRawCodedPALocalProofPropositionalRulesAudit.
+
+Import PABoundedRawCodedPALocalProofPropositionalRules.
+
+Check raw_codedPALocalProofOf_impI.
+Check raw_codedPALocalProofOf_orI.
+Check raw_codedPALocalProofOf_orI1.
+Check raw_codedPALocalProofOf_orI2.
+Check raw_codedPALocalProofOf_orE.
+
+Print Assumptions raw_codedPALocalProofOf_impI.
+Print Assumptions raw_codedPALocalProofOf_orI.
+Print Assumptions raw_codedPALocalProofOf_orI1.
+Print Assumptions raw_codedPALocalProofOf_orI2.
+Print Assumptions raw_codedPALocalProofOf_orE.
+
+End PABoundedRawCodedPALocalProofPropositionalRulesAudit.
