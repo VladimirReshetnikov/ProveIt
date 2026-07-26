@@ -26,6 +26,9 @@ is being reconstructed:
 - a reusable normal Hilbert calculus parameterized by substitution-closed
   modal axiom schemata, with weakening, K embedding, and soundness and
   consistency for KT, KD, KB, K4, K5, S4, S5, GL, and Grz;
+- predicate-valued classical, quasinormal, and normal logics, their least
+  normal and quasinormal sums, finite-basis and letterless omission theorems,
+  and an exact finite boxed-context characterization of global consequence;
 - a schema-generic Lindenbaum and canonical-model construction, specialized
   to canonical reflexivity, seriality, symmetry, transitivity, and right
   Euclideanity, with full soundness/completeness for KT, KD, KB, K4, K5, S4,
@@ -121,6 +124,7 @@ is being reconstructed:
 | `Filtration.v` | `Modal/Kripke/Filtration.lean` | Coarsest truth-profile filtration, explicit exponential cover, finite countermodels, semantic finite-model property |
 | `CanonicalK.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/K}.lean` | Concrete K Lindenbaum completion, maximal theories, canonical truth/countermodel arguments, completeness and finite completeness |
 | `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
+| `LogicInfrastructure.v` | `Modal/Logic/{Basic,SumNormal,SumQuasiNormal,Global}.lean` | Predicate-valued logic structure; normal/quasinormal sums and recursors; finite bases, substitution omission, and global consequence |
 | `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; KT/K4/S4 canonicality, completeness, and strictness |
 | `Modality.v` | `Modal/Modality/{Basic,S5}.lean`, `Modal/Kripke/Logic/S5.lean` | Modal-word algebra, size enumeration/splitting, syntactic translations and equivalences, generic finite reduction, S5 canonical completeness, and six-form normalization for every length |
 | `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
@@ -225,6 +229,17 @@ closed once maximal contexts are supplied.  KD/KB/K5 completeness inherits
 the common Lindenbaum boundary; their explicit strictness witnesses require
 only excluded middle through the exact frame correspondences.
 
+The predicate-valued logic structures and the inductive sum recursors are
+constructive.  Equality of predicate logics and symmetric or nested-union sum
+equalities use functional and propositional extensionality; their extensional
+equivalence forms remain constructive.  The finite-basis characterization
+uses excluded middle for the derived conjunction semantics.  Instantiating
+the abstract normal-logic interface with the concrete schema calculus is
+routed through K completeness and therefore exposes excluded middle plus
+definite description.  The forward global-consequence characterization uses
+excluded middle, while its reverse direction uses extensionality to contract
+the exact union-indexed contexts; the final equivalence exposes both.
+
 The doubled-frame relation preservation and p-morphism are constructive.
 Boxdot is built from the classically encoded derived conjunction, so its
 reflexive-closure and conjunction truth laws expose excluded middle.  Reverse
@@ -251,8 +266,13 @@ irrelevance—without functional or propositional extensionality.
 
 Concrete Hilbert K now has checked soundness, canonical completeness, and
 finite-frame completeness; KT, KD, KB, K4, K5, S4, and S5 also have checked
-canonical soundness/completeness on their standard frame classes.  Every modal word has a checked
-S5 equivalence and reduction to the six canonical modalities.  The boxdot
+canonical soundness/completeness on their standard frame classes.  The normal
+and quasinormal sum modules have complete mathematical parity.  The basic and
+global-logic ledger entries remain conservative: lists replace both Lean list
+and finite-set conjunctions (retaining a trailing top), and cumulative
+`global_box_le` is K-equivalent rather than syntactically identical to the
+source's conjunction of individual box iterates.  Every modal word has a
+checked S5 equivalence and reduction to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,
 giving exact parity for `K4_S4.lean`.  The coverage ledger remains conservative
@@ -339,6 +359,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.CanonicalK `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
+  FoundationModal.LogicInfrastructure `
   FoundationModal.CanonicalExtensions `
   FoundationModal.FiniteMaximalContext `
   FoundationModal.Modality `

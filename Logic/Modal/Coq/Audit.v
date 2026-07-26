@@ -5,7 +5,7 @@ From FoundationModal Require Import
   KripkeAlgebra
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
-  CorrespondenceExtensions NormalHilbert CanonicalExtensions
+  CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence Boxdot Undefinability.
 
@@ -157,6 +157,26 @@ Check S4_is_consistent.
 Check S5_is_consistent.
 Check GL_is_consistent.
 Check Grz_is_consistent.
+
+(** Predicate-valued logics, normal and quasinormal sums, and global
+    consequence. *)
+Check logic_eq_iff_equiv.
+Check normal_proves_logic_is_normal.
+Check normal_logic_contains_K.
+Check logic_sum_normal_sym.
+Check logic_sum_normal_normal_left.
+Check logic_sum_quasi_normal_sym.
+Check logic_sum_quasi_normal_iff_subset.
+Check logic_sum_quasi_normal_sum_union.
+Check logic_sum_quasi_normal_iff_finite_provable.
+Check logic_sum_quasi_normal_iff_finite_provable_letterless.
+Check logic_sum_quasi_normal_eq_alt.
+Check logic_sum_quasi_normal_rec_omit_substitution_strong.
+Check logic_sum_quasi_normal_rec_letterless_expansion.
+Check global_consequence_weaken.
+Check global_consequence_finite_box_le_provable.
+Check global_consequence_of_finite_box_le_provable.
+Check global_consequence_iff_finite_box_le_provable.
 
 Check normal_derives_deduction.
 Check normal_theory_consistent_insert_neg_iff.
@@ -492,6 +512,18 @@ Print Assumptions S4_is_consistent.
 Print Assumptions S5_is_consistent.
 Print Assumptions GL_is_consistent.
 Print Assumptions Grz_is_consistent.
+Print Assumptions logic_eq_iff_equiv.
+Print Assumptions normal_proves_logic_is_normal.
+Print Assumptions normal_logic_contains_K.
+Print Assumptions logic_sum_normal_sym.
+Print Assumptions logic_sum_quasi_normal_sum_union.
+Print Assumptions logic_sum_quasi_normal_iff_finite_provable.
+Print Assumptions logic_sum_quasi_normal_iff_finite_provable_letterless.
+Print Assumptions logic_sum_quasi_normal_eq_alt.
+Print Assumptions logic_sum_quasi_normal_rec_letterless_expansion.
+Print Assumptions global_consequence_finite_box_le_provable.
+Print Assumptions global_consequence_of_finite_box_le_provable.
+Print Assumptions global_consequence_iff_finite_box_le_provable.
 Print Assumptions normal_derives_deduction.
 Print Assumptions normal_lindenbaum_extension.
 Print Assumptions normal_canonical_truth_lemma.
