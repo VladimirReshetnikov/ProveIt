@@ -130,6 +130,9 @@ is being reconstructed:
   corrected theory of balloon frames;
 - exact semantic correspondences for iterated 4, Ver, .4, H, and Grz, plus
   the McKinsey, Makinson, and Boolos-condition validity theorems;
+- KTMk soundness and consistency, its exact collapse to Four on every finite
+  model, the infinite recession countermodel and resulting failure of the
+  finite model property, and the strict hierarchy `KT < KTMk < S4`;
 - exact weak-.2/piecewise-convergence and weak-.3/piecewise-connectedness
   correspondences, including their stronger-frame corollaries;
 - bisimulation invariance, bounded-morphism truth preservation, and validity
@@ -180,6 +183,7 @@ is being reconstructed:
 | `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
 | `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
 | `KD4Point3Z.v` | `Modal/Kripke/Logic/KD4Point3Z.lean` | Substitution-closed D/Four/weak-.3/Z calculus and generic semantic class; Z lifted from its atomic theorem by uniform substitution; exact soundness and consistency on the strict natural-number frame |
+| `KTMkFiniteModelFailure.v` | `Modal/Kripke/Logic/KTMk.lean`, `Modal/Kripke/AxiomMk.lean` | Substitution-closed KTMk calculus, soundness, consistency, exact finite-model Four theorem, recession countermodel, no finite model property, and strict `KT < KTMk < S4`; canonical completeness is intentionally omitted because the pinned Mk canonical-frame proof is `sorry` |
 | `CanonicalTB.v` | `Modal/Kripke/Logic/{KTB,KT4B}.lean` | Reflexive-symmetric and equivalence-frame canonical/finite completeness; S5 equivalence; strict KT/KDB inclusions |
 | `CanonicalPoint2.v` | `Modal/Kripke/{Axiom{WeakPoint2,Point2},Logic/{K4Point2,S4Point2}}.lean` | Generic weak/strong confluence canonicality; rooted finite filtration for S4.2; full source strictness chains |
 | `CanonicalPoint3.v` | `Modal/Kripke/{Axiom{WeakPoint3,Point3},Logic/{K4Point3,S4Point3}}.lean` | Weak/strong connectedness canonicality; linear-preorder and rooted finite S4.3 completeness; full source strictness chains |
@@ -316,6 +320,16 @@ combination completeness theorem additionally inherits definite description
 from the common canonical construction; inclusions proved semantically from
 those completeness theorems, including K4Point3 below K45 and K45 below KB4,
 inherit the same boundary.
+
+KTMk schema closure and its elementary frame arguments are closed under the
+global context.  The fixed-model proof that every finite KTMk model validates
+Four uses excluded middle and classical choice to select one world at every
+box depth; the duplicate-free finite-cover contradiction is otherwise
+explicit.  The recession counterframe and no-FMP witness inherit that finite
+argument.  The `KTMk < S4` inclusion is routed through checked S4 completeness
+and therefore inherits its definite-description boundary.  No KTMk
+canonical-completeness theorem is exposed: the corresponding pinned
+`AxiomMk.lean` canonical-frame instance is proved with `sorry` upstream.
 
 The KTB/KT4B schema inclusions, elementary frame conversions, and canonical
 frame properties are closed.  Frame soundness and the direct KT strictness
@@ -618,6 +632,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.WeakCorrespondence `
   FoundationModal.CanonicalCombinations `
   FoundationModal.KD4Point3Z `
+  FoundationModal.KTMkFiniteModelFailure `
   FoundationModal.CanonicalTB `
   FoundationModal.Boxdot `
   FoundationModal.CanonicalPoint2 `

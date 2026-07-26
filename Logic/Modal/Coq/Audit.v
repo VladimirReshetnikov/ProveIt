@@ -11,7 +11,8 @@ From FoundationModal Require Import
   GLUnnecessitation GLModalDisjunction GLIndependence GLPlusBoxBot
   KHenIncompleteness
   CanonicalGrz StructuralFrames
-  WeakCorrespondence CanonicalCombinations KD4Point3Z CanonicalTB Boxdot CanonicalPoint2
+  WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
+  CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer CanonicalS5Grz
   CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
@@ -376,6 +377,31 @@ Check schema_Z_valid_on_nat_lt.
 Check nat_lt_is_KD4Point3Z_frame.
 Check KD4Point3Z_proves_sound_on_nat_lt.
 Check KD4Point3Z_is_consistent.
+
+(** KTMk's finite-model collapse, recession countermodel, and strict
+    KT--KTMk--S4 hierarchy. *)
+Check Mk_axiom_schema_substitution_closed.
+Check KTMk_schema_substitution_closed.
+Check KTMk_frame_class.
+Check KTMk_proves_sound_on_frame.
+Check KTMk_proves_sound_on_class.
+Check KTMk_is_consistent.
+Check KTMk_model_valid_T.
+Check KTMk_model_valid_Mk.
+Check KTMk_model_box_level_step.
+Check KTMk_box_levels_distinct.
+Check KTMk_validate_Four_of_finite_model.
+Check KTMk_finite_frame_valid_Four.
+Check KTMk_finite_frame_transitive.
+Check KTMk_model_infinite_of_not_Four.
+Check recession_frame_is_KTMk.
+Check recession_frame_not_transitive.
+Check recession_frame_not_valid_Four_atom.
+Check KTMk_exists_unprovable_Four.
+Check KTMk_no_finite_model_property.
+Check KTMk_non_theorem_valid_in_every_finite_model.
+Check KT_strictly_weaker_KTMk.
+Check KTMk_strictly_weaker_S4.
 
 (** Reflexive-symmetric KTB and equivalence-frame KT4B, including finite
     completeness and the S5 comparison. *)
@@ -1056,6 +1082,15 @@ Print Assumptions KD45_sound_complete.
 Print Assumptions schema_Z_valid_on_nat_lt.
 Print Assumptions KD4Point3Z_proves_sound_on_nat_lt.
 Print Assumptions KD4Point3Z_is_consistent.
+Print Assumptions KTMk_proves_sound_on_frame.
+Print Assumptions KTMk_is_consistent.
+Print Assumptions KTMk_model_box_level_step.
+Print Assumptions KTMk_validate_Four_of_finite_model.
+Print Assumptions KTMk_finite_frame_transitive.
+Print Assumptions KTMk_exists_unprovable_Four.
+Print Assumptions KTMk_no_finite_model_property.
+Print Assumptions KT_strictly_weaker_KTMk.
+Print Assumptions KTMk_strictly_weaker_S4.
 Print Assumptions K4Point3_strictly_weaker_K45.
 Print Assumptions K5_strictly_weaker_K45.
 Print Assumptions K45_strictly_weaker_KB4.
