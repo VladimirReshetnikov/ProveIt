@@ -14,7 +14,7 @@ From FoundationModal Require Import
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
-  CanonicalGrzMcK CanonicalTrivVer CanonicalS5Grz
+  CanonicalGrzMcK CanonicalTrivVer GLPoint3PlusBoxBot CanonicalS5Grz
   CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
   CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
@@ -513,6 +513,31 @@ Check GrzPoint3_proves_to_GLPoint3_boxdot_unconditional.
 Check GLPoint3_boxdot_iff_GrzPoint3_from_Grz_finite_completeness.
 Check GL_strictly_weaker_GLPoint3.
 Check K4Point3_strictly_weaker_GLPoint3.
+
+(** The normal GL.3 plus iterated boxed-falsity hierarchy, including its
+    first three exact stages. *)
+Check GLPoint3PlusBoxBot_normal.
+Check GLPoint3_weaker_than_GLPoint3PlusBoxBot.
+Check GLPoint3PlusBoxBot_boxbot.
+Check GLPoint3PlusBoxBot_axiomNVer.
+Check iff_provable_GLPoint3PlusBoxBot_provable_GLPoint3.
+Check eq_GLPoint3PlusBoxBot_omega_GLPoint3.
+Check GLPoint3PlusBoxBot_weakerThan_succ.
+Check GLPoint3PlusBoxBot_weakerThan_add.
+Check GLPoint3PlusBoxBot_weakerThan_lt.
+Check GLPoint3PlusBoxBot_strictlyWeakerThan_GLPoint3.
+Check eq_GLPoint3PlusBoxBot_0_full.
+Check eq_GLPoint3PlusBoxBot_1_Ver.
+Check GLPoint2_schema_substitution_closed.
+Check GLPoint2_normal_logic.
+Check GLPoint2_provable_boxboxbot.
+Check GLPoint2_provable_dia_boxdot_implies_box.
+Check GLPoint2_provable_WeakPoint3.
+Check GLPoint3PlusBoxBot_provable_WeakPoint2_in_2.
+Check GLPoint2_weaker_than_GLPoint3PlusBoxBot_2.
+Check GLPoint3_weaker_than_GLPoint2.
+Check GLPoint3PlusBoxBot_2_weaker_than_GLPoint2.
+Check eq_GLPoint3PlusBoxBot_2_GLPoint2.
 
 (** Finite Grz.2 completeness and the complete proved Grz.3 surface.  The
     pinned Grz.3 completeness declaration is admitted upstream and is
@@ -1190,6 +1215,15 @@ Print Assumptions GrzPoint3_proves_to_GLPoint3_boxdot_unconditional.
 Print Assumptions GLPoint3_boxdot_iff_GrzPoint3_from_Grz_finite_completeness.
 Print Assumptions GL_strictly_weaker_GLPoint3.
 Print Assumptions K4Point3_strictly_weaker_GLPoint3.
+Print Assumptions GLPoint3PlusBoxBot_normal.
+Print Assumptions iff_provable_GLPoint3PlusBoxBot_provable_GLPoint3.
+Print Assumptions GLPoint3PlusBoxBot_strictlyWeakerThan_GLPoint3.
+Print Assumptions eq_GLPoint3PlusBoxBot_0_full.
+Print Assumptions eq_GLPoint3PlusBoxBot_1_Ver.
+Print Assumptions GLPoint2_provable_boxboxbot.
+Print Assumptions GLPoint2_provable_WeakPoint3.
+Print Assumptions GLPoint3PlusBoxBot_provable_WeakPoint2_in_2.
+Print Assumptions eq_GLPoint3PlusBoxBot_2_GLPoint2.
 Print Assumptions GrzPoint2_schema_substitution_closed.
 Print Assumptions GrzPoint2_proves_sound_on_finite_frame.
 Print Assumptions grzpoint2_root_atom_agreement.

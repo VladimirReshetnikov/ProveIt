@@ -39,6 +39,10 @@ is being reconstructed:
 - the quasinormal logic S as GL plus a single atomic T generator, including
   all substituted T instances, its substitution-free recursor, and the strict
   inclusion `GL < S`;
+- the option-indexed normal hierarchy GL.3 plus `box^n bottom`, with an exact
+  finite-stage deduction theorem, strict finite stages, omega stage GL.3, and
+  the concrete identifications stage zero = full logic, stage one = Ver, and
+  stage two = GL.2;
 - a schema-generic Lindenbaum and canonical-model construction, specialized
   to canonical reflexivity, seriality, symmetry, transitivity, and right
   Euclideanity, with full soundness/completeness for KT, KD, KB, K4, K5, S4,
@@ -182,6 +186,7 @@ is being reconstructed:
 | `KHenIncompleteness.v` | `Modal/Kripke/Logic/KHen.lean`, `Modal/Hilbert/Normal/Basic.lean` | KHen calculus and inclusions; atomic Henkin/Loeb validity equivalence; exact two-column Cresswell model with eventual truth classification; Henkin validity, Four counterexample, no characterizing frame class, and strict `K < KHen < GL` |
 | `GLAlternativeSystems.v` | `Modal/Entailment/{K4Loeb,K4Henkin,K4Hen}.lean`, `Modal/Hilbert/GL_K4Loeb_K4Henkin_K4Hen.lean` | Concrete K4 Loeb-rule and Henkin-rule calculi, K4+Hen normal calculus, substitution and derived rule/axiom bridges, full four-way equivalence with GL, and strict `K4 < GL` |
 | `CanonicalGLPoint3.v` | `Modal/Kripke/Logic/GLPoint3.lean`, `Modal/Boxdot/GLPoint3_GrzPoint3.lean` | Selective finite canonical GL.3 model; connected and piecewise-connected soundness-completeness; strict GL/K4.3 predecessors; checked Boxdot GL.3 gate and unconditional forward translation |
+| `GLPoint3PlusBoxBot.v` | `Modal/Logic/GLPoint3OplusBoxBot/Basic.lean` | Complete option-indexed normal GL.3-plus-`box^n bottom` hierarchy; exact finite-stage deduction, strict finite stages, and the exact stage-zero/full, stage-one/Ver, and stage-two/GL.2 identifications |
 | `CanonicalGrz.v` | `Modal/Kripke/Logic/Grz/{Soundness,Completeness}.lean` | Finite partial-order mini-canonical Grz model and truth lemma; finite/full soundness-completeness; finite partial orders validate McKinsey |
 | `CanonicalGrzMcK.v` | `Modal/Kripke/Logic/Grz/Completeness.lean` | Finite partial-order inclusion and the pinned three-world separator proving strict `S4McK < Grz` and `S4 < Grz` |
 | `CanonicalGrzPoint2.v` | `Modal/Kripke/Logic/GrzPoint2.lean` | Guarded finite Grz reduction, point generation, and a truth-preserving adjoined terminal; finite Grz.2 soundness-completeness; full strict predecessor hierarchy |
@@ -317,6 +322,14 @@ syntactic once K4 proves `box (L p) -> L p`; this one auxiliary theorem is
 obtained from checked K4 completeness and therefore inherits excluded middle
 and definite description.  The direct reflexive-singleton witness for strict
 `K4 < GL` uses only excluded middle through Kripke soundness.
+
+The GL.3-plus-boxed-falsity hierarchy is structurally normal at every stage.
+Its exact finite-stage deduction theorem and the zero/one stage calculations
+are syntactic.  Strictness uses explicit finite irreflexive chains and only
+excluded middle through GL.3 soundness.  The direct GL.2 proofs of boxed
+boxed falsity and WeakPoint3 are syntactic; the stage-two WeakPoint2 theorem
+uses GL.3 finite completeness and therefore inherits its audited classical,
+description, extensionality, and proof-irrelevance boundary.
 
 The modal-word syntax, decidable equality, size/splitting machinery, finite
 size layers, atom-instance substitution lifting, and generic reduction
@@ -670,6 +683,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalGrzPoint2 `
   FoundationModal.CanonicalGrzPoint3Strict `
   FoundationModal.CanonicalTrivVer `
+  FoundationModal.GLPoint3PlusBoxBot `
   FoundationModal.CanonicalS5Grz `
   FoundationModal.CanonicalK4n `
   FoundationModal.CanonicalPoint3McK `
