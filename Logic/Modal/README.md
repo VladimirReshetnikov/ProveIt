@@ -38,6 +38,9 @@ is being reconstructed:
 - canonical and finite completeness for reflexive-symmetric KTB and
   equivalence-frame KT4B, including the exact S5/KT4B equivalence and strict
   KTB extensions of KT and KDB;
+- canonical completeness for transitive weakly convergent K4.2 and canonical
+  plus finite completeness for reflexive transitive strongly convergent S4.2,
+  together with their full strict-inclusion chains;
 - schema-generic finite consistency over natural-number atoms, including the
   two insertion criteria, singleton and union laws, deterministic
   complement-closed extension, a finite-context Lindenbaum theorem,
@@ -135,6 +138,7 @@ is being reconstructed:
 | `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
 | `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
 | `CanonicalTB.v` | `Modal/Kripke/Logic/{KTB,KT4B}.lean` | Reflexive-symmetric and equivalence-frame canonical/finite completeness; S5 equivalence; strict KT/KDB inclusions |
+| `CanonicalPoint2.v` | `Modal/Kripke/Logic/{K4Point2,S4Point2}.lean` | Weak/strong confluence canonicality; rooted finite filtration for S4.2; full source strictness chains |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -253,6 +257,17 @@ the canonical construction.  Their finite-completeness proofs pass through
 the checked filtration quotient and therefore additionally expose
 constructive indefinite description and proof irrelevance.
 
+The Point2 schema and elementary frame inclusions are constructive.  The
+canonical strong-confluence argument uses excluded middle and definite
+description.  WeakPoint2 canonicality additionally uses functional and
+propositional extensionality plus proof irrelevance to identify extensionally
+equal maximal theories.  S4.2 finite completeness uses excluded middle and
+definite description through canonical completeness, and constructive
+indefinite description plus proof irrelevance through the truth-profile
+filtration.  The strict finite separators themselves use only excluded middle;
+the semantic K4.2-to-S4.2 inclusion inherits S4.2 completeness's definite
+description boundary.
+
 The predicate-valued logic structures and the inductive sum recursors are
 constructive.  Equality of predicate logics and symmetric or nested-union sum
 equalities use functional and propositional extensionality; their extensional
@@ -303,7 +318,9 @@ presentations used in the implementation and source.  All seven pinned
 combination-logic modules are fully represented, including their strict
 inclusion chains.  The KTB and KT4B modules likewise have full parity,
 including finite completeness, the S5 equivalence, and both KTB strictness
-results.  Every modal word has a
+results.  K4Point2 and S4Point2 also have full parity, including the source's
+rooted finite-completeness construction for S4Point2 and all four strictness
+statements.  Every modal word has a
 checked S5 equivalence and reduction to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,
@@ -318,10 +335,10 @@ normal-schema calculus over natural-number atoms, but the ledger remains
 and abstract classical entailments.  Lists are used only during construction;
 the resulting finite carriers and their equality are extensional.  This
 project still does not claim finite completeness for
-K4/S4, the source's universal-frame reformulation or strict-inclusion chain
+plain K4/S4, the source's universal-frame reformulation or strict-inclusion chain
 for S5, or completeness for GL, Grz, GL.3, Grz.3, or Triv.  Rooted
-filtration preservation for piecewise confluence and connectedness and modal
-companions also remain later work.
+filtration preservation for connectedness and other modal companions remains
+later work; the strong-convergence case needed by S4Point2 is checked locally.
 
 ### Boxdot dependency gates
 
@@ -403,6 +420,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalCombinations `
   FoundationModal.CanonicalTB `
   FoundationModal.Boxdot `
+  FoundationModal.CanonicalPoint2 `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
 

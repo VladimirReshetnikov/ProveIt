@@ -7,7 +7,8 @@ From FoundationModal Require Import
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
-  WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot Undefinability.
+  WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
+  Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -268,6 +269,24 @@ Check KT4B_finite_sound_complete.
 Check S5_KT4B_equivalent.
 Check KT_strictly_weaker_KTB.
 Check KDB_strictly_weaker_KTB.
+
+(** Canonical K4.2 and S4.2, including the rooted finite-filtration argument
+    for S4.2. *)
+Check K4Point2_schema_substitution_closed.
+Check S4Point2_schema_substitution_closed.
+Check normal_canonical_piecewise_convergent_of_schema_WeakPoint2.
+Check normal_canonical_strongly_confluent_of_schema_Point2.
+Check K4Point2_canonical_frame.
+Check S4Point2_canonical_frame.
+Check K4Point2_sound_complete.
+Check S4Point2_sound_complete.
+Check finest_tc_preserves_piecewise_strongly_convergent.
+Check S4Point2_finite_sound_complete.
+Check S4Point2_frame_is_K4Point2.
+Check K4_strictly_weaker_K4Point2.
+Check S4_strictly_weaker_S4Point2.
+Check K4Point2_strictly_weaker_S4Point2.
+Check KT_strictly_weaker_S4Point2.
 
 (** Modal words, their finite size layers, generic reduction algebra, and
     checked S5 canonical normalization. *)
@@ -621,6 +640,15 @@ Print Assumptions KT4B_finite_complete.
 Print Assumptions S5_KT4B_equivalent.
 Print Assumptions KT_strictly_weaker_KTB.
 Print Assumptions KDB_strictly_weaker_KTB.
+Print Assumptions K4Point2_schema_substitution_closed.
+Print Assumptions normal_canonical_piecewise_convergent_of_schema_WeakPoint2.
+Print Assumptions normal_canonical_strongly_confluent_of_schema_Point2.
+Print Assumptions K4Point2_complete.
+Print Assumptions S4Point2_complete.
+Print Assumptions finest_tc_preserves_piecewise_strongly_convergent.
+Print Assumptions S4Point2_finite_complete.
+Print Assumptions K4_strictly_weaker_K4Point2.
+Print Assumptions K4Point2_strictly_weaker_S4Point2.
 Print Assumptions K_strictly_weaker_KT.
 Print Assumptions K_strictly_weaker_K4.
 Print Assumptions KT_strictly_weaker_S4.
