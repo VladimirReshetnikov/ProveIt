@@ -41,6 +41,9 @@ is being reconstructed:
 - canonical completeness for transitive weakly convergent K4.2 and canonical
   plus finite completeness for reflexive transitive strongly convergent S4.2,
   together with their full strict-inclusion chains;
+- canonical completeness for coreflexive KTc and canonical plus finite
+  completeness for equality-frame Triv and isolated-frame Ver, including the
+  complete KTc/Triv/Ver entailment surfaces and all pinned strict inclusions;
 - schema-generic finite consistency over natural-number atoms, including the
   two insertion criteria, singleton and union laws, deterministic
   complement-closed extension, a finite-context Lindenbaum theorem,
@@ -90,8 +93,8 @@ is being reconstructed:
 - the boxdot translation's basic semantic algebra, reflexive-closure
   characterization, and unconditional nat-atom K4/S4 preservation,
   reflection, and equivalence; finite GL/Grz and GL.3/Grz.3 frame
-  transformations; the unconditional Triv-to-Ver direction; and explicitly
-  dependency-gated reverse/named equivalences;
+  transformations; the unconditional Triv/Ver proof-theoretic equivalence;
+  and explicitly dependency-gated remaining named equivalences;
 - Jeřábek's doubled-frame construction, its bounded morphism and six principal
   frame-class closure results, flags and boxdot logic properties, together
   with a precise explicit gate for the unavailable global finite-consequence
@@ -139,6 +142,7 @@ is being reconstructed:
 | `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
 | `CanonicalTB.v` | `Modal/Kripke/Logic/{KTB,KT4B}.lean` | Reflexive-symmetric and equivalence-frame canonical/finite completeness; S5 equivalence; strict KT/KDB inclusions |
 | `CanonicalPoint2.v` | `Modal/Kripke/Logic/{K4Point2,S4Point2}.lean` | Weak/strong confluence canonicality; rooted finite filtration for S4.2; full source strictness chains |
+| `CanonicalTrivVer.v` | `Modal/{Entailment,Kripke/Logic}/{KTc,Triv,Ver}.lean`, `Modal/Boxdot/Ver_Triv.lean` | Coreflexive/equality/isolated canonical metatheory; finite Triv/Ver completeness; all entailments and strictness results; unconditional Boxdot equivalence |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -149,7 +153,7 @@ is being reconstructed:
 | `FrameTransformations.v` | `Modal/Kripke/{ExtendRoot,Irreflexivize}.lean` | Irreflexivization and reflexive truth transfer; finite added-root frames, trees, p-morphisms, exact covers, boxdot transfer, and T witnesses |
 | `StructuralFrames.v` | `Modal/Kripke/{Cluster,LinearFrame,Tree,Rank,Balloon}.lean` | Extensional clusters and skeletons; linear examples and Z/Dum validity; tree unravellings; specified ranks; corrected balloon results |
 | `WeakCorrespondence.v` | `Modal/Kripke/Axiom{WeakPoint2,WeakPoint3}.lean` | Exact weak-confluence and weak-connectedness frame correspondences |
-| `Boxdot.v` | `Modal/Boxdot/{Basic,K4_S4,GL_Grz,GLPoint3_GrzPoint3,Ver_Triv,Jerabek}.lean` | Basic translation semantics; unconditional nat-atom K4/S4 and Triv-to-Ver results; finite frame transformations; conditional named equivalences; doubled frames and dependency-gated Jeřábek BDP surfaces |
+| `Boxdot.v` | `Modal/Boxdot/{Basic,K4_S4,GL_Grz,GLPoint3_GrzPoint3,Ver_Triv,Jerabek}.lean` | Basic translation semantics; unconditional nat-atom K4/S4 results; finite frame transformations; conditional GL/Grz equivalences; doubled frames and dependency-gated Jeřábek BDP surfaces |
 | `Undefinability.v` | `Modal/Kripke/Undefinability.lean` | Irreflexivity is not modally definable |
 | `StandardTranslation.v` | `Modal/VanBentham/StandardTranslation.lean` | Deep relational first-order translation and semantic correspondence |
 | `Audit.v` | — | Public checks and kernel-assumption reports |
@@ -268,6 +272,17 @@ filtration.  The strict finite separators themselves use only excluded middle;
 the semantic K4.2-to-S4.2 inclusion inherits S4.2 completeness's definite
 description boundary.
 
+The KTc/DiaT entailment equivalence, the derived 4 and 5 axioms, the direct
+Triv/Ver consequences, and the elementary frame inclusions are closed under
+the global context.  Ver canonical completeness uses excluded middle and
+definite description.  Identifying extensionally equal maximal theories in
+the KTc and Triv canonical frames additionally uses functional and
+propositional extensionality.  Triv and Ver finite completeness reduce each
+chosen world directly to a checked singleton frame and add no filtration
+choice principle.  Discharging `boxdot_Triv_complete` therefore exposes the
+same canonical-completeness assumptions and makes the Ver/Triv boxdot
+equivalence unconditional.
+
 The predicate-valued logic structures and the inductive sum recursors are
 constructive.  Equality of predicate logics and symmetric or nested-union sum
 equalities use functional and propositional extensionality; their extensional
@@ -290,6 +305,8 @@ reflexivization and finite-frame transformations that delete reflexive edges
 also use excluded middle.  The unconditional nat-atom K4/S4 proof-theoretic
 equivalence is routed through the local K completeness theorem and therefore
 additionally inherits the standard definite-description principle.  The
+Ver/Triv equivalence is also unconditional now that `CanonicalTrivVer.v`
+inhabits the formerly explicit Triv-completeness proposition.  The
 abstract Jeřábek SBDP implication uses excluded middle; its global-consequence
 input and named completeness inputs are explicit arguments, not kernel
 assumptions or claimed theorems.
@@ -320,7 +337,10 @@ inclusion chains.  The KTB and KT4B modules likewise have full parity,
 including finite completeness, the S5 equivalence, and both KTB strictness
 results.  K4Point2 and S4Point2 also have full parity, including the source's
 rooted finite-completeness construction for S4Point2 and all four strictness
-statements.  Every modal word has a
+statements.  KTc, Triv, and Ver have full parity as well: all three canonical
+completeness theorems, both singleton finite-completeness arguments, their
+entailment modules, six strict inclusions, and the Ver/Triv boxdot equivalence
+are checked.  Every modal word has a
 checked S5 equivalence and reduction to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,
@@ -336,7 +356,7 @@ and abstract classical entailments.  Lists are used only during construction;
 the resulting finite carriers and their equality are extensional.  This
 project still does not claim finite completeness for
 plain K4/S4, the source's universal-frame reformulation or strict-inclusion chain
-for S5, or completeness for GL, Grz, GL.3, Grz.3, or Triv.  Rooted
+for S5, or completeness for GL, Grz, GL.3, or Grz.3.  Rooted
 filtration preservation for connectedness and other modal companions remains
 later work; the strong-convergence case needed by S4Point2 is checked locally.
 
@@ -349,16 +369,16 @@ as ordinary propositions and hypotheses.  In particular:
   directions of the GL/Grz proof equivalence;
 - `boxdot_GLPoint3_finite_complete` and
   `boxdot_GrzPoint3_finite_complete` similarly gate GL.3/Grz.3;
-- `boxdot_Triv_complete` gates only the Ver-to-Triv reflection direction—the
-  Triv-to-Ver translation is unconditional;
+- `boxdot_Triv_complete` is now inhabited by `Triv_complete`, so the
+  Ver-to-Triv reflection and both source-facing iff results are unconditional;
 - each named Jeřábek BDP corollary requires its `logic_complete_on` premise and
   `jerabek_global_consequence_bridge`.  The latter isolates the source proof's
   finite global-consequence, finite-context, subformula, and fresh-atom
   construction, whose supporting APIs have not yet been ported.
 
-No inhabitant of any of these completeness or bridge propositions is declared
-or inferred.  Consequently the conditional equivalences must not be read as
-proofs of the missing completeness theorems.
+No inhabitant of the remaining GL/Grz, GL.3/Grz.3, or Jeřábek bridge
+propositions is declared or inferred.  Consequently those conditional
+equivalences must not be read as proofs of the missing completeness theorems.
 
 The structural-frame tranche deliberately records three representation or
 source boundaries.  Coq's local `frame` has no finite-world typeclass, so it
@@ -421,6 +441,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalTB `
   FoundationModal.Boxdot `
   FoundationModal.CanonicalPoint2 `
+  FoundationModal.CanonicalTrivVer `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
 

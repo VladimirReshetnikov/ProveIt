@@ -8,7 +8,7 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
-  Undefinability.
+  CanonicalTrivVer Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -288,6 +288,39 @@ Check S4_strictly_weaker_S4Point2.
 Check K4Point2_strictly_weaker_S4Point2.
 Check KT_strictly_weaker_S4Point2.
 
+(** Coreflexive KTc, equality-frame Triv, and isolated-frame Ver, including
+    their source-local entailments, finite completeness, and strictness
+    chains. *)
+Check schema_Tc_substitution_closed.
+Check schema_DiaT_substitution_closed.
+Check schema_Ver_substitution_closed.
+Check Triv_schema_substitution_closed.
+Check KTc_proves_Four.
+Check KTc_proves_Five.
+Check KTc_proves_DiaT.
+Check KTc_prime_proves_Tc.
+Check KTc_canonical.
+Check Triv_canonical.
+Check Ver_canonical.
+Check KTc_sound_complete.
+Check Triv_sound_complete.
+Check Ver_sound_complete.
+Check Triv_finite_sound_complete.
+Check Ver_finite_sound_complete.
+Check Triv_proves_Grz.
+Check Ver_proves_bot_of_dia.
+Check Ver_proves_Tc.
+Check Ver_proves_L.
+Check boxdot_Triv_complete_checked.
+Check Ver_boxdot_proves_to_Triv_unconditional.
+Check Ver_boxdot_iff_Triv_unconditional.
+Check KB4_strictly_weaker_KTc.
+Check KTc_strictly_weaker_Triv.
+Check KTc_strictly_weaker_Ver.
+Check GrzPoint3_strictly_weaker_Triv.
+Check S4Point4McK_strictly_weaker_Triv.
+Check GLPoint3_strictly_weaker_Ver.
+
 (** Modal words, their finite size layers, generic reduction algebra, and
     checked S5 canonical normalization. *)
 Check modality_eq_dec.
@@ -457,11 +490,11 @@ Check valid_WeakPoint2_atoms_iff_piecewise_convergent.
 Check frame_piecewise_connected_iff_distinct.
 Check valid_WeakPoint3_atoms_iff_piecewise_connected.
 
-(** Boxdot's basic semantic laws and the K4/S4 equivalence are unconditional.
-    The other named equivalences visibly quantify over their still-missing
-    completeness propositions; the Jeřábek results additionally quantify over
-    the isolated global-consequence bridge.  These are hypotheses in theorem
-    types, not declarations of completeness. *)
+(** Boxdot's basic semantic laws, K4/S4 equivalence, and Ver/Triv equivalence
+    are unconditional.  The remaining named equivalences visibly quantify
+    over their still-missing completeness propositions; the Jeřábek results
+    additionally quantify over the isolated global-consequence bridge.  These
+    are hypotheses in theorem types, not declarations of completeness. *)
 Check boxdot_translate.
 Check normal_proves_boxdot_translation.
 Check iff_boxdotboxdot.
@@ -489,6 +522,8 @@ Check iff_boxdotTranslated_GLPoint3_GrzPoint3.
 Check provable_boxdotTranslated_Ver_of_Triv.
 Check boxdot_Triv_complete.
 Check iff_boxdotTranslated_Ver_Triv.
+Check boxdot_Triv_complete_checked.
+Check iff_boxdotTranslated_Ver_Triv_unconditional.
 Check frame_twice.
 Check frame_twice_p_morphism.
 Check frame_twice_valid_reflects.
@@ -649,6 +684,24 @@ Print Assumptions finest_tc_preserves_piecewise_strongly_convergent.
 Print Assumptions S4Point2_finite_complete.
 Print Assumptions K4_strictly_weaker_K4Point2.
 Print Assumptions K4Point2_strictly_weaker_S4Point2.
+Print Assumptions schema_DiaT_substitution_closed.
+Print Assumptions KTc_proves_DiaT.
+Print Assumptions KTc_prime_proves_Tc.
+Print Assumptions KTc_complete.
+Print Assumptions Triv_complete.
+Print Assumptions Ver_complete.
+Print Assumptions Triv_finite_complete.
+Print Assumptions Ver_finite_complete.
+Print Assumptions Triv_proves_Grz.
+Print Assumptions Ver_proves_L.
+Print Assumptions boxdot_Triv_complete_checked.
+Print Assumptions Ver_boxdot_iff_Triv_unconditional.
+Print Assumptions KB4_strictly_weaker_KTc.
+Print Assumptions KTc_strictly_weaker_Triv.
+Print Assumptions KTc_strictly_weaker_Ver.
+Print Assumptions GrzPoint3_strictly_weaker_Triv.
+Print Assumptions S4Point4McK_strictly_weaker_Triv.
+Print Assumptions GLPoint3_strictly_weaker_Ver.
 Print Assumptions K_strictly_weaker_KT.
 Print Assumptions K_strictly_weaker_K4.
 Print Assumptions KT_strictly_weaker_S4.
@@ -783,6 +836,7 @@ Print Assumptions finite_GLPoint3_to_reflexive_closure_finite_GrzPoint3.
 Print Assumptions GLPoint3_boxdot_iff_GrzPoint3.
 Print Assumptions Triv_proves_to_Ver_boxdot.
 Print Assumptions Ver_boxdot_iff_Triv.
+Print Assumptions Ver_boxdot_iff_Triv_unconditional.
 Print Assumptions frame_twice_p_morphism.
 Print Assumptions frame_twice_valid_reflects.
 Print Assumptions S5_frameclass_jerabek.
