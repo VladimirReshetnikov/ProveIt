@@ -1794,6 +1794,17 @@ has a represented PA proof; proof totality at a possibly nonstandard carrier
 index remains conditional only on the explicit
 `RawDynamicTruthNativeCrossLevelCoherenceProofCompiler`.
 
+`RawCodedDynamicTruthNativeSubstitutionCarrier.v` fixes the exact syntax for
+the fourth positive master coordinate.  Its transparent polynomial closes
+exactly the seven single-substitution parameters and combines the carried
+Sigma/Pi source domains and certificate applications with the represented
+substitution, assignment, target-admissibility, and rank-agreement relations.
+At every standard predecessor `p` this code is literally the quotation of the
+existing fixed-level substitution Tarski law at `S p`, and the module supplies
+its represented PA proof.  The genuine arbitrary-carrier orbit transform and
+uniform proof compiler are intentionally left to the subsequent positive
+graph rather than inferred from this standard family.
+
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
 use the same formula and assignment inputs but demand rank-zero outputs one
