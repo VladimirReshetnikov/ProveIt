@@ -1551,6 +1551,14 @@ separate from the operational opaque traces, and the endpoint deliberately
 continues to name the restricted universal branch rather than the full
 seven-way disjunction.
 
+`RawCodedDynamicTruthPiExistentialLeafProofCompilation.v` supplies the exact
+polarity-dual compiler.  It transports the honest eight-witness projection
+of the explicitly restricted existential branch through the direct
+translator, retargets the proof by the native Pi domain and lower-Sigma
+identification, and universally closes the thirteen ambient row columns.
+The exported certificate remains a proof of that restricted final branch;
+it is not presented as a consequence of the full six-way Pi disjunction.
+
 `RawCodedDynamicTruthUniversalLeafTransformGraph.v` exposes that restricted
 certificate as an output-first transform over the paired global Sigma/Pi
 truth-code orbit.  The graph selects the successor numeral, the instantiated
