@@ -1,0 +1,30 @@
+(** Kernel-facing audit for the concrete root-closed global orbit bridge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitBridge.
+
+Module
+  PABoundedRawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitBridgeAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitBridge.
+
+Check
+  dynamicTruthPairedGlobalOrbitRootClosedSuccessorTotal_of_local_closure.
+Check dynamicTruthPairedGlobalSuccessorGraph_preserves_root_closure.
+Check
+  dynamicTruthPairedGlobalRootClosedFormulaCodeOrbitExists_all_of_local_closure.
+Check
+  dynamicTruthPairedGlobalFormulaCodeOrbitGraph_raw_root_closed_total_of_local_closure.
+
+Print Assumptions
+  dynamicTruthPairedGlobalOrbitRootClosedSuccessorTotal_of_local_closure.
+Print Assumptions
+  dynamicTruthPairedGlobalSuccessorGraph_preserves_root_closure.
+Print Assumptions
+  dynamicTruthPairedGlobalRootClosedFormulaCodeOrbitExists_all_of_local_closure.
+Print Assumptions
+  dynamicTruthPairedGlobalFormulaCodeOrbitGraph_raw_root_closed_total_of_local_closure.
+
+End
+  PABoundedRawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitBridgeAudit.

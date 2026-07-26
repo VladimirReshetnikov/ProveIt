@@ -1439,6 +1439,15 @@ depth three.  It is not the stronger all-cutoff property needed by the
 opaque-leaf commuting diagrams, so no arbitrary-depth interchange theorem is
 inferred from it.
 
+`RawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitBridge.v` connects
+the concrete wrapper-preservation theorem to that represented invariant.  An
+actual successor edge transports both predecessor root certificates, and the
+cutoff-eighteen local-row callback supplies the guarded successor interface
+expected by paired-orbit induction.  Consequently every carrier level has a
+selected ordinary global Sigma/Pi orbit pair together with both cutoff-three
+root certificates.  The bridge retains the local callback as a visible
+premise and does not strengthen either fixed-cutoff certificate.
+
 `RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
 Sigma successor-row syntax: eight existential table witnesses around a domain
 check and a seven-way disjunction, whose final branch contains the opaque
