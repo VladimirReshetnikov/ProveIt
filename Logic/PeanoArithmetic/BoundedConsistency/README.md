@@ -1780,6 +1780,16 @@ and exposes both common-context modus ponens and guarded nested-assumption
 endpoints.  It deliberately claims only the QF/QF collision; the remaining
 constructor pairs and the full decision/exclusivity assembly are still open.
 
+`RawCodedDynamicTruthImpBranchExclusivity.v` adds the two same-constructor
+implication cells.  Sigma's false-left and true-right branches each collide
+with Pi's false-implication branch once an explicit exclusivity law for the
+synchronized predecessor-state table is supplied.  Constructor injectivity
+aligns the relevant child codes, and fixed PA proofs of the two conditional
+cells are exposed as exact carrier codes with common-context and guarded
+three-assumption endpoints.  The predecessor-state exclusivity root remains
+an explicit obligation: this module neither identifies table membership with
+a global-predicate application nor claims the completed matrix.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
