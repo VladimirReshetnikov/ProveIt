@@ -160,7 +160,7 @@ is being reconstructed:
 | `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
 | `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
 | `CanonicalTB.v` | `Modal/Kripke/Logic/{KTB,KT4B}.lean` | Reflexive-symmetric and equivalence-frame canonical/finite completeness; S5 equivalence; strict KT/KDB inclusions |
-| `CanonicalPoint2.v` | `Modal/Kripke/Logic/{K4Point2,S4Point2}.lean` | Weak/strong confluence canonicality; rooted finite filtration for S4.2; full source strictness chains |
+| `CanonicalPoint2.v` | `Modal/Kripke/{Axiom{WeakPoint2,Point2},Logic/{K4Point2,S4Point2}}.lean` | Generic weak/strong confluence canonicality; rooted finite filtration for S4.2; full source strictness chains |
 | `CanonicalPoint3.v` | `Modal/Kripke/{Axiom{WeakPoint3,Point3},Logic/{K4Point3,S4Point3}}.lean` | Weak/strong connectedness canonicality; linear-preorder and rooted finite S4.3 completeness; full source strictness chains |
 | `CanonicalPoint4.v` | `Modal/Kripke/{AxiomPoint4,Logic/S4Point4}.lean` | Generic Sobocinski canonicality; S4.4 soundness-completeness; strict S4.3 inclusion with a finite chain separator |
 | `CanonicalS4H.v` | `Modal/Kripke/{AxiomH,Logic/S4H}.lean` | Generic separator-based detour-free canonicality; S4H soundness-completeness; finite Grz-frame inclusion and strict Grz predecessor |
@@ -168,7 +168,7 @@ is being reconstructed:
 | `CanonicalMcK.v` | `Modal/Kripke/{AxiomMcK,Logic/{K4McK,S4McK}}.lean` | Generic terminal-successor canonical construction; K4McK/S4McK soundness-completeness and complete strictness surface |
 | `CanonicalPoint2McK.v` | `Modal/Kripke/Logic/S4Point2McK.lean` | Combined strong-confluence/McKinsey canonical completeness; strict S4McK and S4.2 predecessors with finite fork and universal-frame separators |
 | `CanonicalPoint3McK.v` | `Modal/Kripke/Logic/S4Point3McK.lean` | Combined connectedness/McKinsey canonical completeness; strict S4.2McK and S4.3 predecessors with finite diamond and universal-frame separators |
-| `CanonicalTrivVer.v` | `Modal/{Entailment,Kripke/Logic}/{KTc,Triv,Ver}.lean`, `Modal/Boxdot/Ver_Triv.lean` | Coreflexive/equality/isolated canonical metatheory; finite Triv/Ver completeness; all entailments and strictness results; unconditional Boxdot equivalence |
+| `CanonicalTrivVer.v` | `Modal/{Entailment,Kripke/Logic}/{KTc,Triv,Ver}.lean`, `Modal/Kripke/AxiomVer.lean`, `Modal/Boxdot/Ver_Triv.lean` | Generic Ver/isolated canonicality; coreflexive/equality/isolated metatheory; finite Triv/Ver completeness; all entailments and strictness results; unconditional Boxdot equivalence |
 | `CanonicalPoint4McK.v` | `Modal/Kripke/Logic/S4Point4McK.lean` | Complete S4.4McK canonical metatheory and strictness, reusing the complete S4.3McK predecessor API |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
@@ -423,7 +423,8 @@ presentations used in the implementation and source.  All seven pinned
 combination-logic modules are fully represented, including their strict
 inclusion chains.  The KTB and KT4B modules likewise have full parity,
 including finite completeness, the S5 equivalence, and both KTB strictness
-results.  K4Point2 and S4Point2 also have full parity, including the source's
+results.  AxiomWeakPoint2, K4Point2, and S4Point2 also have full parity,
+including the generic weak-convergence canonical theorem, the source's
 rooted finite-completeness construction for S4Point2 and all four strictness
 statements.  K4Point3 and S4Point3 likewise have full parity, including the
 source's linear-preorder characterization, rooted finite-completeness proof,
@@ -432,8 +433,8 @@ statements.  S4Point4 and the generic Point4 canonical theorem have full
 parity as well, including the strict S4.3-to-S4.4 inclusion.  AxiomH and all
 proved S4H results are represented too, including canonical completeness and
 Grz strictness; only the source's admitted finite-completeness declaration is
-intentionally absent.  KTc, Triv, and
-Ver have full parity as well: all three canonical
+intentionally absent.  AxiomVer, KTc, Triv, and Ver have full parity as well:
+the generic isolated-canonical-frame theorem, all three canonical
 completeness theorems, both singleton finite-completeness arguments, their
 entailment modules, six strict inclusions, and the Ver/Triv boxdot equivalence
 are checked.  S5 now has full pinned parity too: universal-frame completeness

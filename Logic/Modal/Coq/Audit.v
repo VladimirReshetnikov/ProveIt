@@ -430,6 +430,7 @@ Check KTc_proves_DiaT.
 Check KTc_prime_proves_Tc.
 Check KTc_canonical.
 Check Triv_canonical.
+Check normal_canonical_isolated_of_schema_Ver.
 Check Ver_canonical.
 Check KTc_sound_complete.
 Check Triv_sound_complete.
@@ -885,6 +886,7 @@ Print Assumptions KTc_proves_DiaT.
 Print Assumptions KTc_prime_proves_Tc.
 Print Assumptions KTc_complete.
 Print Assumptions Triv_complete.
+Print Assumptions normal_canonical_isolated_of_schema_Ver.
 Print Assumptions Ver_complete.
 Print Assumptions Triv_finite_complete.
 Print Assumptions Ver_finite_complete.

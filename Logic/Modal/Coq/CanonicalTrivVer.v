@@ -477,14 +477,24 @@ Proof.
   - exact Triv_canonical_frame_coreflexive.
 Qed.
 
+Theorem normal_canonical_isolated_of_schema_Ver :
+  forall Ax,
+    schema_included schema_Ver Ax ->
+    frame_isolated (normal_canonical_frame Ax).
+Proof.
+  intros Ax HVer M N HMN.
+  apply (@normal_mct_bottom_absent Ax N).
+  apply HMN with (p := Bottom).
+  apply normal_mct_derivable_mem.
+  apply ND_theorem. apply Np_extra. apply HVer.
+  exists Bottom. reflexivity.
+Qed.
+
 Lemma Ver_canonical_frame_isolated :
   frame_isolated (normal_canonical_frame schema_Ver).
 Proof.
-  intros M N HMN.
-  apply (@normal_mct_bottom_absent schema_Ver N).
-  apply HMN with (p := Bottom).
-  apply normal_mct_derivable_mem.
-  apply ND_theorem. apply Np_extra. exists Bottom. reflexivity.
+  apply normal_canonical_isolated_of_schema_Ver.
+  intros AtomType p Hp. exact Hp.
 Qed.
 
 Theorem Ver_canonical :
