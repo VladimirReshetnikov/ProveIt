@@ -1513,6 +1513,14 @@ rank-zero base unconditionally and carries both deep certificates through the
 ordinary global orbit at every, including nonstandard, hierarchy level under
 that explicit local-row premise.
 
+`RawCodedDynamicTruthSuccessorDomainDeepClosure.v` handles the first opaque
+piece of each genuine local row.  It proves that substituting an honestly
+represented, possibly nonstandard numeral into either fixed successor-domain
+template is invariant under every shift and substitution operation from
+cutoff 26 onward.  The proof uses the concrete single-substitution
+interchange laws and numeral fixedness, so both native Sigma and Pi domain
+witnesses are deeply closed without a standardness assumption.
+
 `RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
 Sigma successor-row syntax: eight existential table witnesses around a domain
 check and a seven-way disjunction, whose final branch contains the opaque
