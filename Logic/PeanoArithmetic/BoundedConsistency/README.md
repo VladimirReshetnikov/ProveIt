@@ -1413,6 +1413,22 @@ outputs of the paired global base graph.  The corresponding preservation
 theorem for the nonstandard successor orbit is still required before the
 opaque application laws are available at every carrier level.
 
+`RawCodedTernaryPredicateRootClosureFormula.v` now makes that carrier-level
+root certificate an actual formula of PA, including the explicit lift across
+the three binders used to recognize honestly represented replacement terms.
+`RawCodedCarrierIndexedPairedRootClosedCodeOrbitGraph.v` uses this formula as
+the invariant of `raw_definable_induction`, so a closure-preserving base and
+successor select both orbit coordinates at every element of an arbitrary PA
+model, including its nonstandard elements.  The dynamic specialization in
+`RawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitGraph.v` discharges
+the concrete rank-zero base and retains the ordinary global orbit together
+with both root certificates; its successor hypothesis is deliberately
+guarded by closure of the actual predecessor pair.  This invariant still
+means exactly unit shift at cutoff three and represented substitution at
+depth three.  It is not the stronger all-cutoff property needed by the
+opaque-leaf commuting diagrams, so no arbitrary-depth interchange theorem is
+inferred from it.
+
 `RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
 Sigma successor-row syntax: eight existential table witnesses around a domain
 check and a seven-way disjunction, whose final branch contains the opaque
