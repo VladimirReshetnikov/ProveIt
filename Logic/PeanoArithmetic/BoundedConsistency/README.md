@@ -1490,6 +1490,17 @@ five-witness, conjunction-only candidate is not this table row.  Concrete
 instantiation therefore cannot silently identify the Lean-shaped schema with
 Rocq's different encoding.
 
+`RawCodedDynamicTruthPiUniversalLeafSourceTemplate.v` records the genuine
+dual source rather than erasing polarity.  Its native Pi-falsity row has the
+same eight table witnesses but six alternatives; the last is the existential
+case and applies the preceding Sigma-truth predicate at variables `#9`, `#1`,
+and `#0`.  Structural translation is proved equal to a transparent carrier
+polynomial and, in PA models, to the existing native Pi row code.  The module
+also supplies an honest restricted-existential projection from an explicitly
+selected final branch.  As on the Sigma side, it does not project that branch
+from the full disjunction and does not assume commutation for the nonstandard
+opaque atom.
+
 `RawCodedDynamicTruthTemplateNumeralParameters.v` instantiates the source
 template's designated lower- and upper-level names at arbitrary carrier
 elements.  Represented numeral-code totality selects both possibly
