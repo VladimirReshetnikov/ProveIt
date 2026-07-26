@@ -664,6 +664,24 @@ Proof.
   now apply normal_proves_union_right.
 Qed.
 
+Lemma KD4_weaker_than_S4 :
+  forall p : formula nat, KD4_proves p -> S4_proves p.
+Proof.
+  intros p Hp. apply S4_complete.
+  intros F [HR HT].
+  apply KD4_proves_sound_on_frame.
+  - intro x. exists x. apply HR.
+  - exact HT.
+  - exact Hp.
+Qed.
+
+Lemma KD_weaker_than_S4 :
+  forall p : formula nat, KD_proves p -> S4_proves p.
+Proof.
+  intros p Hp. apply KD4_weaker_than_S4.
+  now apply KD_weaker_than_KD4.
+Qed.
+
 Lemma KD_weaker_than_KD5 :
   forall (AtomType : Type) (p : formula AtomType),
     KD_proves p -> KD5_proves p.
@@ -884,6 +902,14 @@ Definition combo_sink_frame : frame :=
 Lemma combo_sink_transitive : frame_transitive combo_sink_frame.
 Proof. intros x y z _ Hz. exact Hz. Qed.
 
+Lemma combo_sink_serial : frame_serial combo_sink_frame.
+Proof. intro x. exists DB1. reflexivity. Qed.
+
+Lemma combo_sink_not_reflexive : ~ frame_reflexive combo_sink_frame.
+Proof.
+  intro HR. specialize (HR DB0). discriminate.
+Qed.
+
 Lemma combo_sink_right_euclidean :
   frame_right_euclidean combo_sink_frame.
 Proof. intros x y z _ Hz. exact Hz. Qed.
@@ -986,6 +1012,34 @@ Proof.
         irreflexive_singleton_transitive HK4) as Hvalid.
       apply irreflexive_singleton_not_serial.
       now apply (proj1 (valid_D_iff_serial irreflexive_singleton_frame)).
+Qed.
+
+Theorem KD4_strictly_weaker_S4 :
+  normal_strictly_weaker KD4_proves S4_proves.
+Proof.
+  split.
+  - exact KD4_weaker_than_S4.
+  - exists (T (Atom 0)); split.
+    + apply Np_extra. left. exists (Atom 0). reflexivity.
+    + intro HKD4.
+      pose proof (KD4_proves_sound_on_frame combo_sink_serial
+        combo_sink_transitive HKD4) as Hvalid.
+      apply combo_sink_not_reflexive.
+      now apply (proj1 (valid_T_iff_reflexive combo_sink_frame)).
+Qed.
+
+Theorem KD_strictly_weaker_S4 :
+  normal_strictly_weaker KD_proves S4_proves.
+Proof.
+  split.
+  - exact KD_weaker_than_S4.
+  - exists (T (Atom 0)); split.
+    + apply Np_extra. left. exists (Atom 0). reflexivity.
+    + intro HKD.
+      pose proof (KD_proves_sound_on_serial_frame combo_sink_serial HKD)
+        as Hvalid.
+      apply combo_sink_not_reflexive.
+      now apply (proj1 (valid_T_iff_reflexive combo_sink_frame)).
 Qed.
 
 Theorem KD_strictly_weaker_KD5 :

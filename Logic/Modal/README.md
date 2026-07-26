@@ -26,6 +26,10 @@ is being reconstructed:
 - a reusable normal Hilbert calculus parameterized by substitution-closed
   modal axiom schemata, with weakening, K embedding, and soundness and
   consistency for KT, KD, KB, K4, K5, S4, S5, GL, and Grz;
+- the active GL and Grz derived entailment APIs, finite mini-canonical models,
+  truth lemmas, finite and unrestricted soundness/completeness, and GL's
+  finite rooted countermodel characterization, together with the strict
+  hierarchy `S4 < S4McK < Grz`;
 - predicate-valued classical, quasinormal, and normal logics, their least
   normal and quasinormal sums, finite-basis and letterless omission theorems,
   and an exact finite boxed-context characterization of global consequence;
@@ -33,13 +37,43 @@ is being reconstructed:
   to canonical reflexivity, seriality, symmetry, transitivity, and right
   Euclideanity, with full soundness/completeness for KT, KD, KB, K4, K5, S4,
   and S5 and explicit small-frame strictness witnesses over K;
+- generic canonical completeness for every weakly n-transitive K4n logic,
+  with an exact iterated-accessibility theorem, saturating counterframes, the
+  full strict hierarchy, and its infinite pairwise-inequivalent family;
 - complete canonical metatheory for K45, KD4, KD5, KDB, KB4, KB5, and KD45,
   including every pinned strict-inclusion result and the K4Point3 comparison;
+- canonical and finite completeness for reflexive-symmetric KTB and
+  equivalence-frame KT4B, including the exact S5/KT4B equivalence and strict
+  KTB extensions of KT and KDB;
+- canonical completeness for transitive weakly convergent K4.2 and canonical
+  plus finite completeness for reflexive transitive strongly convergent S4.2,
+  together with their full strict-inclusion chains;
+- canonical completeness for transitive piecewise-connected K4.3 and
+  canonical, linear-preorder, and finite completeness for reflexive transitive
+  piecewise-strongly-connected S4.3, with every pinned strict inclusion;
+- canonical completeness for Sobocinski-frame S4.4, including its generic
+  Point4 canonical theorem and strict extension of S4.3;
+- generic H/detour-free canonicality and S4H completeness, with the proved
+  strict extension of Grz and an explicit three-world separator;
+- S5 completeness over universal frames via point generation, together with
+  the complete pinned strict-predecessor hierarchy;
+- the generic canonical McKinsey special-successor construction and complete
+  canonical metatheory for K4McK and S4McK, including all pinned strictness;
+- canonical completeness for S4.2McK and S4.3McK, including all four pinned
+  strict predecessors with explicit finite separators;
+- canonical completeness for S4.4McK by combining the Point4 and McKinsey
+  canonical arguments, with both pinned strict predecessors;
+- canonical completeness for coreflexive KTc and canonical plus finite
+  completeness for equality-frame Triv and isolated-frame Ver, including the
+  complete KTc/Triv/Ver entailment surfaces and all pinned strict inclusions;
 - schema-generic finite consistency over natural-number atoms, including the
   two insertion criteria, singleton and union laws, deterministic
   complement-closed extension, a finite-context Lindenbaum theorem,
   derivability/complement/implication membership laws, and an explicit
   powerset cover of the resulting context space;
+- reusable finite canonical support for boxed/unboxed contexts, contextual
+  cut, weakening, necessitation, substitution, relevant-box selectors,
+  extensional finite-context equality, and Grz's enriched subformula closure;
 - finite words of box, diamond, and negation, including polarity and exact
   size splitting, exhaustive finite size layers, formula action and
   substitution, syntactic translation/equivalence algebra, and reduction
@@ -84,8 +118,8 @@ is being reconstructed:
 - the boxdot translation's basic semantic algebra, reflexive-closure
   characterization, and unconditional nat-atom K4/S4 preservation,
   reflection, and equivalence; finite GL/Grz and GL.3/Grz.3 frame
-  transformations; the unconditional Triv-to-Ver direction; and explicitly
-  dependency-gated reverse/named equivalences;
+  transformations; unconditional GL/Grz and Triv/Ver proof-theoretic
+  equivalences; and explicitly dependency-gated GL.3/Grz.3 results;
 - Jeřábek's doubled-frame construction, its bounded morphism and six principal
   frame-class closure results, flags and boxdot logic properties, together
   with a precise explicit gate for the unavailable global finite-consequence
@@ -127,21 +161,38 @@ is being reconstructed:
 | `CanonicalK.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/K}.lean` | Concrete K Lindenbaum completion, maximal theories, canonical truth/countermodel arguments, completeness and finite completeness |
 | `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
 | `LogicInfrastructure.v` | `Modal/Logic/{Basic,SumNormal,SumQuasiNormal,Global}.lean` | Predicate-valued logic structure; normal/quasinormal sums and recursors; finite bases, substitution omission, and global consequence |
-| `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; KT/K4/S4 canonicality, completeness, and strictness |
+| `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; complete KT/K4/S4 canonical metatheory; finite K4/S4 filtrations and strict predecessors |
+| `GLGrzDerivations.v` | `Modal/Entailment/{GL,Grz}.lean` | Derived GL and Grz proof theory, including Four, Henkin, Z, Gödel II, T/Dum, and the syntactic boxdot translation of Grz in GL |
+| `FiniteCanonicalSupport.v` | `Modal/Kripke/Logic/{GL,Grz}/Completeness.lean` | Shared finite boxed-context operations, structural derivability laws, relevant-box selectors, extensional equality, and Grz closure enrichment |
+| `CanonicalGL.v` | `Modal/Kripke/Logic/GL/Completeness.lean` | Finite mini-canonical GL frame and truth lemma; finite/full completeness; finite rooted countermodel and root-validity characterizations |
+| `CanonicalGrz.v` | `Modal/Kripke/Logic/Grz/{Soundness,Completeness}.lean` | Finite partial-order mini-canonical Grz model and truth lemma; finite/full soundness-completeness; finite partial orders validate McKinsey |
+| `CanonicalGrzMcK.v` | `Modal/Kripke/Logic/Grz/Completeness.lean` | Finite partial-order inclusion and the pinned three-world separator proving strict `S4McK < Grz` and `S4 < Grz` |
+| `CanonicalK4n.v` | `Modal/Kripke/{AxiomFourN,Logic/K4n}.lean` | Generic iterated-accessibility canonical theorem; weak-n-transitive soundness-completeness; saturating counterframes, strict hierarchy, and infinite family |
 | `Modality.v` | `Modal/Modality/{Basic,S5}.lean`, `Modal/Kripke/Logic/S5.lean` | Modal-word algebra, size enumeration/splitting, syntactic translations and equivalences, generic finite reduction, S5 canonical completeness, and six-form normalization for every length |
 | `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
 | `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
+| `CanonicalTB.v` | `Modal/Kripke/Logic/{KTB,KT4B}.lean` | Reflexive-symmetric and equivalence-frame canonical/finite completeness; S5 equivalence; strict KT/KDB inclusions |
+| `CanonicalPoint2.v` | `Modal/Kripke/{Axiom{WeakPoint2,Point2},Logic/{K4Point2,S4Point2}}.lean` | Generic weak/strong confluence canonicality; rooted finite filtration for S4.2; full source strictness chains |
+| `CanonicalPoint3.v` | `Modal/Kripke/{Axiom{WeakPoint3,Point3},Logic/{K4Point3,S4Point3}}.lean` | Weak/strong connectedness canonicality; linear-preorder and rooted finite S4.3 completeness; full source strictness chains |
+| `CanonicalPoint4.v` | `Modal/Kripke/{AxiomPoint4,Logic/S4Point4}.lean` | Generic Sobocinski canonicality; S4.4 soundness-completeness; strict S4.3 inclusion with a finite chain separator |
+| `CanonicalS4H.v` | `Modal/Kripke/{AxiomH,Logic/S4H}.lean` | Generic separator-based detour-free canonicality; S4H soundness-completeness; finite Grz-frame inclusion and strict Grz predecessor |
+| `CanonicalS5.v` | `Modal/Kripke/Logic/S5.lean` | Point-generated universal-frame characterization and completeness; strict KTB, KD45, KB4, S4.4, S4, and KT predecessors |
+| `CanonicalMcK.v` | `Modal/Kripke/{AxiomMcK,Logic/{K4McK,S4McK}}.lean` | Pure-K switch equivalence and finite conjunction laws; generic terminal-successor construction; K4McK/S4McK completeness and strictness |
+| `CanonicalPoint2McK.v` | `Modal/Kripke/Logic/S4Point2McK.lean` | Combined strong-confluence/McKinsey canonical completeness; strict S4McK and S4.2 predecessors with finite fork and universal-frame separators |
+| `CanonicalPoint3McK.v` | `Modal/Kripke/Logic/S4Point3McK.lean` | Combined connectedness/McKinsey canonical completeness; strict S4.2McK and S4.3 predecessors with finite diamond and universal-frame separators |
+| `CanonicalTrivVer.v` | `Modal/{Entailment,Kripke/Logic}/{KTc,Triv,Ver}.lean`, `Modal/Kripke/AxiomVer.lean`, `Modal/Boxdot/Ver_Triv.lean` | Generic Ver/isolated canonicality; coreflexive/equality/isolated metatheory; finite Triv/Ver completeness; all entailments and strictness results; unconditional Boxdot equivalence |
+| `CanonicalPoint4McK.v` | `Modal/Kripke/Logic/S4Point4McK.lean` | Complete S4.4McK canonical metatheory and strictness, reusing the complete S4.3McK predecessor API |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
-| `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
-| `FrameProperties.v` | `Modal/Kripke/{Antisymmetric,Asymmetric,Closure,Irreflexive,Terminated}.lean` | Closure algebra, frame orders, termination, converse well-foundedness |
+| `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness, including finite strict-preorder validity |
+| `FrameProperties.v` | `Modal/Kripke/{Antisymmetric,Asymmetric,Closure,Irreflexive,Terminated}.lean` | Closure algebra, frame orders, termination, converse well-foundedness, and finite strict-order maximality |
 | `CorrespondenceExtensions.v` | `Modal/Kripke/Axiom{FourN,Grz,H,I,McK,Mk,Point4,Ver}.lean` | Further exact and directional named-axiom frame correspondences |
 | `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and bounded-morphism invariance/preservation |
 | `Root.v` | `Modal/Kripke/Root.lean` | Rooted and generated frames/models, structural inheritance, bounded morphisms, and truth invariance |
 | `FrameTransformations.v` | `Modal/Kripke/{ExtendRoot,Irreflexivize}.lean` | Irreflexivization and reflexive truth transfer; finite added-root frames, trees, p-morphisms, exact covers, boxdot transfer, and T witnesses |
 | `StructuralFrames.v` | `Modal/Kripke/{Cluster,LinearFrame,Tree,Rank,Balloon}.lean` | Extensional clusters and skeletons; linear examples and Z/Dum validity; tree unravellings; specified ranks; corrected balloon results |
 | `WeakCorrespondence.v` | `Modal/Kripke/Axiom{WeakPoint2,WeakPoint3}.lean` | Exact weak-confluence and weak-connectedness frame correspondences |
-| `Boxdot.v` | `Modal/Boxdot/{Basic,K4_S4,GL_Grz,GLPoint3_GrzPoint3,Ver_Triv,Jerabek}.lean` | Basic translation semantics; unconditional nat-atom K4/S4 and Triv-to-Ver results; finite frame transformations; conditional named equivalences; doubled frames and dependency-gated Jeřábek BDP surfaces |
+| `Boxdot.v` | `Modal/Boxdot/{Basic,K4_S4,GL_Grz,GLPoint3_GrzPoint3,Ver_Triv,Jerabek}.lean` | Basic translation semantics; unconditional nat-atom K4/S4, GL/Grz, and Ver/Triv results; finite frame transformations; doubled frames and dependency-gated GL.3/Grz.3 and Jeřábek BDP surfaces |
 | `Undefinability.v` | `Modal/Kripke/Undefinability.lean` | Irreflexivity is not modally definable |
 | `StandardTranslation.v` | `Modal/VanBentham/StandardTranslation.lean` | Deep relational first-order translation and semantic correspondence |
 | `Audit.v` | — | Public checks and kernel-assumption reports |
@@ -186,9 +237,10 @@ elimination.  The Coq port keeps those lemmas separate:
   truth theorem, chain enumeration, and exact finite cover for added-root
   frames are also constructive.  Irreflexivized piecewise connectedness,
   reverse reflexivization validity, unique-root selection, and added-root
-  boxdot transfer use excluded middle; deriving converse well-foundedness
-  from finite transitive irreflexive frames and the finite-chain T witnesses
-  additionally uses relational and dependent unique choice;
+  boxdot transfer use excluded middle.  The direct finite-cover proof that
+  transitive irreflexive frames are converse well founded also uses only
+  excluded middle; the separate finite-chain T witnesses additionally use
+  relational and dependent unique choice;
   the converse Grz correspondence additionally exposes standard relational
   choice used to select an infinite counterexample chain.
 
@@ -216,6 +268,20 @@ contexts uses functional and propositional extensionality with proof
 irrelevance; the concrete powerset cover combines those principles with the
 classical construction boundary.
 
+The shared GL/Grz finite-canonical support adds only list presentations and
+structural context lemmas at the constructive layer.  Selecting relevant
+members inherits the existing classical/definite-description boundary, while
+extensional equality of finite maximal contexts additionally exposes
+functional and propositional extensionality plus proof irrelevance.  The GL
+and Grz seed, successor, and truth arguments use those same audited
+principles; finite and unrestricted completeness introduce no further
+assumptions.  The elementary conversion from finite partial orders to the
+McKinsey frame condition is constructive once the finite maximal-element
+theorem is supplied.
+The semantic `S4McK`-to-Grz inclusion inherits the Grz completeness boundary;
+the three-world separating frame is structural, and its atomic Grz failure
+uses only excluded middle through the exact correspondence theorem.
+
 The modal-word syntax, decidable equality, size/splitting machinery, finite
 size layers, atom-instance substitution lifting, and generic reduction
 bootstrapping are constructive.  Generic syntactic congruence/equivalence is
@@ -241,6 +307,98 @@ from the common canonical construction; inclusions proved semantically from
 those completeness theorems, including K4Point3 below K45 and K45 below KB4,
 inherit the same boundary.
 
+The KTB/KT4B schema inclusions, elementary frame conversions, and canonical
+frame properties are closed.  Frame soundness and the direct KT strictness
+witness use excluded middle.  Ordinary completeness, the S5/KT4B equivalence,
+and the semantic KDB inclusion additionally inherit definite description from
+the canonical construction.  Their finite-completeness proofs pass through
+the checked filtration quotient and therefore additionally expose
+constructive indefinite description and proof irrelevance.
+
+The Point2 schema and elementary frame inclusions are constructive.  The
+canonical strong-confluence argument uses excluded middle and definite
+description.  WeakPoint2 canonicality additionally uses functional and
+propositional extensionality plus proof irrelevance to identify extensionally
+equal maximal theories.  S4.2 finite completeness uses excluded middle and
+definite description through canonical completeness, and constructive
+indefinite description plus proof irrelevance through the truth-profile
+filtration.  The strict finite separators themselves use only excluded middle;
+the semantic K4.2-to-S4.2 inclusion inherits S4.2 completeness's definite
+description boundary.
+
+The direct Point3 canonical argument uses excluded middle and definite
+description through the canonical truth lemma.  WeakPoint3 canonicality also
+uses functional and propositional extensionality plus proof irrelevance to
+separate unequal maximal theories.  Point generation gives S4.3 completeness
+over linear preorders; its subtype equality adds proof irrelevance.  The
+finite S4.3 proof then uses constructive indefinite description to choose
+filtration representatives, while the finest transitive-closure filtration
+preserves global strong connectedness by a direct representative comparison.
+The K4-to-K4.3 separator uses only excluded middle; inclusions routed through
+S4.3 completeness inherit its definite-description boundary.
+
+The Point4 schema and its substitution closure are constructive.  The generic
+Sobocinski canonical argument inherits classical logic, definite description,
+functional and propositional extensionality, and proof irrelevance from the
+canonical maximal-theory separator.  S4.4 completeness has the same boundary;
+the explicit three-world separator itself adds no non-Stdlib assumptions,
+while the full strict-inclusion theorem inherits the completeness boundary.
+
+The generic H canonical theorem uses maximal-theory separators and therefore
+inherits the canonical layer's extensionality, proof-irrelevance, definite-
+description, and classical assumptions.  S4H completeness and the Grz
+inclusion inherit that boundary; the concrete three-world H countermodel uses
+only excluded middle.  Foundation's pinned finite-S4H completeness proof is
+`sorry`, so this port records the proved finite frame-class inclusion but does
+not expose a finite-completeness theorem or assumption.
+
+The point-generated equivalence between universal-frame validity and S5-frame
+validity is closed under the global context.  Universal-frame completeness
+then inherits excluded middle and definite description from S5 canonical
+completeness.  The finite predecessor separators use only excluded middle;
+all inclusions routed through S5 completeness inherit its same two-principle
+boundary, while the syntactic KT inclusion avoids definite description.
+
+The McKinsey schema and its substitution closure are constructive.  Building
+the canonical terminal successor uses excluded middle and definite
+description together with functional and propositional extensionality and
+proof irrelevance from maximal-theory equality.  K4McK and S4McK completeness
+inherit that boundary; their three explicit finite strictness separators use
+only excluded middle.  The pure-K switch equivalence and the two modal
+conjunction laws are recovered semantically through K completeness and hence
+use excluded middle plus definite description; their binary, nonempty-list,
+and finite-set possibility corollaries inherit that same boundary.
+
+The K4n schema closure and its zero/one identifications are constructive.
+The finite-support Lindenbaum bridge for arbitrary iterated accessibility
+inherits functional and propositional extensionality, definite description,
+and excluded middle from the normal canonical-model layer.  The explicit
+saturating counterframes and hierarchy strictness use only excluded middle.
+
+S4.4McK canonicality combines the already audited Point4 and McKinsey
+canonical-frame theorems and therefore inherits the latter's extensionality,
+proof-irrelevance, definite-description, and classical boundary.  Its strict
+S4.3McK predecessor uses the same completeness boundary; the direct
+S4.4-to-S4.4McK finite separator uses only excluded middle.
+
+S4.2McK canonicality combines the audited Point2 and McKinsey constructions
+and has the same canonical-model boundary; its direct soundness, consistency,
+and two finite strictness witnesses use only excluded middle.
+S4.3McK similarly combines the Point3 and McKinsey constructions.  Its
+S4.2McK predecessor proof uses canonical completeness, while the direct
+S4.3 separator uses only excluded middle.
+
+The KTc/DiaT entailment equivalence, the derived 4 and 5 axioms, the direct
+Triv/Ver consequences, and the elementary frame inclusions are closed under
+the global context.  Ver canonical completeness uses excluded middle and
+definite description.  Identifying extensionally equal maximal theories in
+the KTc and Triv canonical frames additionally uses functional and
+propositional extensionality.  Triv and Ver finite completeness reduce each
+chosen world directly to a checked singleton frame and add no filtration
+choice principle.  Discharging `boxdot_Triv_complete` therefore exposes the
+same canonical-completeness assumptions and makes the Ver/Triv boxdot
+equivalence unconditional.
+
 The predicate-valued logic structures and the inductive sum recursors are
 constructive.  Equality of predicate logics and symmetric or nested-union sum
 equalities use functional and propositional extensionality; their extensional
@@ -263,9 +421,13 @@ reflexivization and finite-frame transformations that delete reflexive edges
 also use excluded middle.  The unconditional nat-atom K4/S4 proof-theoretic
 equivalence is routed through the local K completeness theorem and therefore
 additionally inherits the standard definite-description principle.  The
-abstract Jeřábek SBDP implication uses excluded middle; its global-consequence
-input and named completeness inputs are explicit arguments, not kernel
-assumptions or claimed theorems.
+GL/Grz equivalence is unconditional now that the finite mini-canonical
+developments inhabit both formerly explicit completeness propositions; its
+forward direction also has a direct syntactic proof.  The Ver/Triv equivalence
+is likewise unconditional through `CanonicalTrivVer.v`.  The abstract Jeřábek
+SBDP implication uses excluded middle; its global-consequence input and named
+completeness inputs are explicit arguments, not kernel assumptions or claimed
+theorems.
 
 `Audit.v` prints assumptions for representative theorems from both sides of
 this boundary.  There are no admitted results.
@@ -282,15 +444,55 @@ irrelevance—without functional or propositional extensionality.
 
 Concrete Hilbert K now has checked soundness, canonical completeness, and
 finite-frame completeness; KT, KD, KB, K4, K5, S4, and S5 also have checked
-canonical soundness/completeness on their standard frame classes.  The normal
+canonical soundness/completeness on their standard frame classes.  The pinned
+KT, K4, and S4 logic modules have full parity: this includes KD below KT,
+finite K4/S4 completeness through the finest transitive-closure filtration,
+and the complete KT/KD4/KD predecessor chain below S4.  The normal
 and quasinormal sum modules, predicate-logic basics, and global consequence
 have complete mathematical parity.  Predicates and duplicate-insensitive lists
 replace Lean sets and finite sets; explicit theorems connect the trailing-top
 and singleton-normalized conjunctions and the cumulative and individual-box
 presentations used in the implementation and source.  All seven pinned
 combination-logic modules are fully represented, including their strict
-inclusion chains.  Every modal word has a
-checked S5 equivalence and reduction to the six canonical modalities.  The boxdot
+inclusion chains.  The KTB and KT4B modules likewise have full parity,
+including finite completeness, the S5 equivalence, and both KTB strictness
+results.  AxiomWeakPoint2, K4Point2, and S4Point2 also have full parity,
+including the generic weak-convergence canonical theorem, the source's
+rooted finite-completeness construction for S4Point2 and all four strictness
+statements.  K4Point3 and S4Point3 likewise have full parity, including the
+source's linear-preorder characterization, rooted finite-completeness proof,
+generic weak/strong connectedness canonical lemmas, and all five strictness
+statements.  S4Point4 and the generic Point4 canonical theorem have full
+parity as well, including the strict S4.3-to-S4.4 inclusion.  AxiomH and all
+proved S4H results are represented too, including canonical completeness and
+Grz strictness; only the source's admitted finite-completeness declaration is
+intentionally absent.  AxiomVer, KTc, Triv, and Ver have full parity as well:
+the generic isolated-canonical-frame theorem, all three canonical
+completeness theorems, both singleton finite-completeness arguments, their
+entailment modules, six strict inclusions, and the Ver/Triv boxdot equivalence
+are checked.  S5 now has full pinned parity too: universal-frame completeness
+and all six strict predecessors complement its canonical completeness and
+modal normalizer.  K4McK and S4McK likewise have full parity, including the
+generic canonical McKinsey construction and all three strict inclusions;
+AxiomMcK's pure-K switch equivalence and binary/list/finite-set conjunction
+conveniences are checked as well.  AxiomL and AxiomGrz now have full active
+pinned parity, including their finite strict-order and partial-order validity
+instances from a direct finite maximal-element construction.
+The active GL and Grz entailment and completeness surfaces are checked as
+well: this includes the derived proof rules, both finite mini-canonical truth
+lemmas, finite and unrestricted soundness-completeness, and GL's finite rooted
+countermodel characterization.  Grz completeness also closes the pinned
+strict `S4McK < Grz` and `S4 < Grz` hierarchy through the source's finite
+three-world separator.
+K4n and the generic AxiomFourN canonical theorem now have full parity as well,
+including the exact zero/one levels, every strictness form, and the injective
+infinite family represented without Lean typeclass wrappers.
+S4Point2McK and S4Point3McK likewise have full parity, including their
+combined canonical frames and all four source strictness results.
+S4Point4McK also has full parity, with both source strictness results and a
+shared import of the complete S4Point3McK predecessor.
+Every modal word has a checked S5 equivalence and reduction
+to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,
 giving exact parity for `K4_S4.lean`.  The coverage ledger remains conservative
@@ -303,31 +505,32 @@ normal-schema calculus over natural-number atoms, but the ledger remains
 `partial` because Foundation quantifies over arbitrary decidable atom types
 and abstract classical entailments.  Lists are used only during construction;
 the resulting finite carriers and their equality are extensional.  This
-project still does not claim finite completeness for
-K4/S4, the source's universal-frame reformulation or strict-inclusion chain
-for S5, or completeness for GL, Grz, GL.3, Grz.3, or Triv.  Rooted
-filtration preservation for piecewise confluence and connectedness and modal
-companions also remain later work.
+project still does not claim completeness for GL.3 or Grz.3.  Rooted
+filtration preservation for other modal companions remains later work; the
+strong-convergence and strong-connectedness cases needed by S4Point2 and
+S4Point3 are checked locally.
 
 ### Boxdot dependency gates
 
-The remaining Boxdot results are stated with their unavailable dependencies
-as ordinary propositions and hypotheses.  In particular:
+The remaining dependency-gated Boxdot results state unavailable inputs as
+ordinary propositions and hypotheses.  In particular:
 
-- `boxdot_GL_finite_complete` and `boxdot_Grz_finite_complete` gate the two
-  directions of the GL/Grz proof equivalence;
+- `boxdot_GL_finite_complete` and `boxdot_Grz_finite_complete` are retained as
+  compatibility interfaces and inhabited by
+  `boxdot_GL_finite_complete_checked` and
+  `boxdot_Grz_finite_complete_checked`; GL/Grz is unconditional;
 - `boxdot_GLPoint3_finite_complete` and
   `boxdot_GrzPoint3_finite_complete` similarly gate GL.3/Grz.3;
-- `boxdot_Triv_complete` gates only the Ver-to-Triv reflection direction—the
-  Triv-to-Ver translation is unconditional;
+- `boxdot_Triv_complete` is now inhabited by `Triv_complete`, so the
+  Ver-to-Triv reflection and both source-facing iff results are unconditional;
 - each named Jeřábek BDP corollary requires its `logic_complete_on` premise and
   `jerabek_global_consequence_bridge`.  The latter isolates the source proof's
   finite global-consequence, finite-context, subformula, and fresh-atom
   construction, whose supporting APIs have not yet been ported.
 
-No inhabitant of any of these completeness or bridge propositions is declared
-or inferred.  Consequently the conditional equivalences must not be read as
-proofs of the missing completeness theorems.
+No inhabitant of the remaining GL.3/Grz.3 or Jeřábek bridge propositions is
+declared or inferred.  Consequently those conditional equivalences must not
+be read as proofs of the missing completeness theorems.
 
 The structural-frame tranche deliberately records three representation or
 source boundaries.  Coq's local `frame` has no finite-world typeclass, so it
@@ -387,7 +590,19 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.StructuralFrames `
   FoundationModal.WeakCorrespondence `
   FoundationModal.CanonicalCombinations `
+  FoundationModal.CanonicalTB `
   FoundationModal.Boxdot `
+  FoundationModal.CanonicalPoint2 `
+  FoundationModal.CanonicalPoint3 `
+  FoundationModal.CanonicalPoint4 `
+  FoundationModal.CanonicalS4H `
+  FoundationModal.CanonicalS5 `
+  FoundationModal.CanonicalMcK `
+  FoundationModal.CanonicalPoint2McK `
+  FoundationModal.CanonicalTrivVer `
+  FoundationModal.CanonicalK4n `
+  FoundationModal.CanonicalPoint3McK `
+  FoundationModal.CanonicalPoint4McK `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
 

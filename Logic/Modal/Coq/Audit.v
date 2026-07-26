@@ -6,8 +6,14 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
-  FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
-  WeakCorrespondence CanonicalCombinations Boxdot Undefinability.
+  FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
+  FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
+  CanonicalGrz StructuralFrames
+  WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
+  CanonicalPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
+  CanonicalGrzMcK CanonicalTrivVer
+  CanonicalK4n CanonicalPoint2McK CanonicalPoint3McK CanonicalPoint4McK
+  Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -158,6 +164,29 @@ Check S5_is_consistent.
 Check GL_is_consistent.
 Check Grz_is_consistent.
 
+(** Derived GL/Grz proof theory and finite mini-canonical completeness. *)
+Check GL_proves_Four.
+Check GL_proves_Hen.
+Check GL_proves_Z.
+Check GL_proves_godel2.
+Check GL_proves_boxdot_translated_Grz.
+Check Grz_proves_T.
+Check Grz_proves_Four.
+Check Grz_proves_Dum.
+Check GL_mini_canonical_countermodel.
+Check GL_finite_sound_complete.
+Check GL_sound_complete.
+Check GL_unprovable_iff_exists_finite_rooted_countermodel.
+Check GL_finite_rooted_sound_complete.
+Check grz_mini_countermodel.
+Check Grz_finite_sound_complete.
+Check Grz_sound_complete.
+Check finite_partial_order_mckinsey.
+Check S4McK_weaker_than_Grz.
+Check grz_mck_three_not_valid_Grz_atom.
+Check S4McK_strictly_weaker_Grz.
+Check S4_strictly_weaker_Grz.
+
 (** Predicate-valued logics, normal and quasinormal sums, and global
     consequence. *)
 Check logic_eq_iff_equiv.
@@ -199,10 +228,18 @@ Check S4_canonical_frame_transitive.
 Check KT_sound_complete.
 Check K4_sound_complete.
 Check S4_sound_complete.
+Check K4_finite_sound_complete.
+Check S4_finite_sound_complete.
 Check K_strictly_weaker_KT.
 Check K_strictly_weaker_K4.
 Check KT_strictly_weaker_S4.
 Check K4_strictly_weaker_S4.
+Check KD_weaker_than_KT.
+Check KD_strictly_weaker_KT.
+Check KD4_weaker_than_S4.
+Check KD_weaker_than_S4.
+Check KD4_strictly_weaker_S4.
+Check KD_strictly_weaker_S4.
 
 (** Canonical D/B/Five frame properties and complete KD/KB/K5 metatheory. *)
 Check normal_canonical_serial_of_schema_D.
@@ -252,6 +289,211 @@ Check KB_strictly_weaker_KB4.
 Check KD4_strictly_weaker_KD45.
 Check KD5_strictly_weaker_KD45.
 Check K45_strictly_weaker_KD45.
+
+(** Reflexive-symmetric KTB and equivalence-frame KT4B, including finite
+    completeness and the S5 comparison. *)
+Check KTB_schema_substitution_closed.
+Check KT4B_schema_substitution_closed.
+Check KTB_frame_is_serial_symmetric.
+Check KT4B_frame_class_iff_S5_frame_class.
+Check KTB_canonical.
+Check KT4B_canonical.
+Check KTB_sound_complete.
+Check KT4B_sound_complete.
+Check KTB_finite_sound_complete.
+Check KT4B_finite_sound_complete.
+Check S5_KT4B_equivalent.
+Check KT_strictly_weaker_KTB.
+Check KDB_strictly_weaker_KTB.
+
+(** Canonical K4.2 and S4.2, including the rooted finite-filtration argument
+    for S4.2. *)
+Check K4Point2_schema_substitution_closed.
+Check S4Point2_schema_substitution_closed.
+Check normal_canonical_piecewise_convergent_of_schema_WeakPoint2.
+Check normal_canonical_strongly_confluent_of_schema_Point2.
+Check K4Point2_canonical_frame.
+Check S4Point2_canonical_frame.
+Check K4Point2_sound_complete.
+Check S4Point2_sound_complete.
+Check finest_tc_preserves_piecewise_strongly_convergent.
+Check S4Point2_finite_sound_complete.
+Check S4Point2_frame_is_K4Point2.
+Check K4_strictly_weaker_K4Point2.
+Check S4_strictly_weaker_S4Point2.
+Check K4Point2_strictly_weaker_S4Point2.
+Check KT_strictly_weaker_S4Point2.
+
+(** Canonical K4.3 and S4.3, including linear-preorder completeness and the
+    rooted finite transitive-closure filtration for S4.3. *)
+Check schema_Point3_substitution_closed.
+Check S4Point3_schema_substitution_closed.
+Check normal_canonical_piecewise_connected_of_schema_WeakPoint3.
+Check normal_canonical_piecewise_strongly_connected_of_schema_Point3.
+Check K4Point3_canonical_frame.
+Check S4Point3_canonical_frame.
+Check K4Point3_sound_complete.
+Check S4Point3_sound_complete.
+Check S4Point3_linear_preorder_sound_complete.
+Check finest_tc_preserves_strongly_connected.
+Check S4Point3_finite_sound_complete.
+Check S4Point3_frame_is_S4Point2.
+Check S4Point3_frame_is_K4Point3.
+Check K4_strictly_weaker_K4Point3.
+Check S4Point2_strictly_weaker_S4Point3.
+Check S4_strictly_weaker_S4Point3.
+Check K4Point3_strictly_weaker_S4Point3.
+Check KT_strictly_weaker_S4Point3.
+
+(** Canonical weak-n transitivity and the infinite strict K4n hierarchy. *)
+Check schema_FourN_substitution_closed.
+Check normal_canonical_rel_iter_iff_box_iter.
+Check normal_canonical_weakly_transitive_of_schema_FourN.
+Check K4n_canonical_frame.
+Check K4n_sound_complete.
+Check K4n_frame_class_zero_iff_KTc.
+Check K4n_frame_class_one_iff_transitive.
+Check K4n_zero_equiv_KTc.
+Check K4n_one_equiv_K4.
+Check k4n_counter_rel_iter_iff.
+Check K_strictly_weaker_K4n.
+Check K4n_strictly_weaker_of_lt.
+Check K4n_family_pairwise_inequivalent.
+Check K4n_family_injective.
+
+(** Generic H canonicality, canonical S4H completeness, and the proved
+    Grz-to-S4H strict comparison. *)
+Check schema_H_substitution_closed.
+Check schema_H_normal_proves_sound_on_frame.
+Check schema_H_is_consistent.
+Check point_generated_detour_free.
+Check detour_free_weak_converse_well_founded.
+Check normal_canonical_detour_free_of_schema_H.
+Check S4H_canonical_frame.
+Check S4H_sound_complete.
+Check finite_S4H_frame_is_finite_Grz_frame.
+Check Grz_weaker_than_S4H.
+Check Grz_strictly_weaker_S4H.
+
+(** Canonical S4.4 and its exact Sobocinski frame condition. *)
+Check S4Point4_axiom_schema_substitution_closed.
+Check S4Point4_schema_substitution_closed.
+Check S4Point4_frame_is_S4Point3.
+Check normal_canonical_sobocinski_of_schema_Point4.
+Check S4Point4_canonical_frame.
+Check S4Point4_sound_complete.
+Check S4Point3_weaker_than_S4Point4.
+Check point4_three_chain_not_sobocinski.
+Check S4Point3_strictly_weaker_S4Point4.
+
+(** Universal-frame S5 completeness and the complete pinned predecessor
+    hierarchy. *)
+Check frame_universal.
+Check point_generated_universal_of_s5.
+Check valid_on_universal_frames_iff_valid_on_s5_frames.
+Check S5_universal_sound_complete.
+Check S5_frame_is_KTB.
+Check S5_frame_is_KD45.
+Check S5_frame_is_KB4.
+Check S5_frame_is_S4Point4.
+Check KTB_strictly_weaker_S5.
+Check KD45_strictly_weaker_S5.
+Check KB4_strictly_weaker_S5.
+Check S4Point4_strictly_weaker_S5.
+Check S4_strictly_weaker_S5.
+Check KT_strictly_weaker_S5.
+
+(** Canonical McKinsey successors and K4McK/S4McK completeness. *)
+Check McK_axiom_schema_substitution_closed.
+Check K4McK_schema_substitution_closed.
+Check S4McK_schema_substitution_closed.
+Check normal_proves_base_mck_axiom_to_switch_possible.
+Check normal_proves_base_mck_switch_possible_to_axiom.
+Check normal_proves_base_mck_axiom_switch_iff.
+Check normal_proves_base_mck_switch_possible.
+Check normal_proves_base_mck_dia_box_to_dia_and.
+Check normal_proves_base_mck_dia_box_elim.
+Check normal_proves_base_mck_box_dia_elim.
+Check normal_proves_base_mck_jointly_possible.
+Check normal_proves_base_mck_nonempty_list_jointly_possible.
+Check normal_proves_base_mck_switch_list_conjunction_possible.
+Check base_mck_switch_finset_conjunction.
+Check normal_proves_base_mck_switch_finset_conjunction_possible.
+Check normal_derives_base_mck_seed_partition.
+Check base_mck_seed_theory_consistent.
+Check normal_canonical_mckinsey_of_K4McK_schemas.
+Check normal_canonical_mckinsey_of_schema_K4McK.
+Check K4McK_canonical_frame.
+Check S4McK_canonical_frame.
+Check K4McK_sound_complete.
+Check S4McK_sound_complete.
+Check K_weaker_than_K4McK.
+Check K4_strictly_weaker_K4McK.
+Check S4_strictly_weaker_S4McK.
+Check K4McK_strictly_weaker_S4McK.
+
+(** Canonical S4.2McK and both pinned strict predecessors. *)
+Check S4Point2McK_schema_substitution_closed.
+Check S4Point2McK_frame_is_S4McK.
+Check S4Point2McK_frame_is_S4Point2.
+Check S4Point2McK_canonical_frame.
+Check S4Point2McK_sound_complete.
+Check S4McK_strictly_weaker_S4Point2McK.
+Check S4Point2_strictly_weaker_S4Point2McK.
+
+(** Canonical S4.3McK and both pinned strict predecessors. *)
+Check S4Point3McK_schema_substitution_closed.
+Check S4Point3McK_frame_is_S4Point2McK.
+Check S4Point3McK_canonical_frame.
+Check S4Point3McK_sound_complete.
+Check S4Point2McK_strictly_weaker_S4Point3McK.
+Check S4Point3_strictly_weaker_S4Point3McK.
+
+(** Canonical S4.4McK and its S4.3McK inclusion. *)
+Check S4Point3McK_schema_substitution_closed.
+Check S4Point3McK_proves_sound_on_frame.
+Check S4Point4McK_frame_is_S4Point3McK.
+Check S4Point4McK_is_consistent.
+Check S4Point4McK_canonical_frame.
+Check S4Point4McK_sound_complete.
+Check S4Point3McK_weaker_than_S4Point4McK.
+Check S4Point3McK_strictly_weaker_S4Point4McK.
+Check S4Point4_weaker_than_S4Point4McK.
+Check S4Point4_strictly_weaker_S4Point4McK.
+
+(** Coreflexive KTc, equality-frame Triv, and isolated-frame Ver, including
+    their source-local entailments, finite completeness, and strictness
+    chains. *)
+Check schema_Tc_substitution_closed.
+Check schema_DiaT_substitution_closed.
+Check schema_Ver_substitution_closed.
+Check Triv_schema_substitution_closed.
+Check KTc_proves_Four.
+Check KTc_proves_Five.
+Check KTc_proves_DiaT.
+Check KTc_prime_proves_Tc.
+Check KTc_canonical.
+Check Triv_canonical.
+Check normal_canonical_isolated_of_schema_Ver.
+Check Ver_canonical.
+Check KTc_sound_complete.
+Check Triv_sound_complete.
+Check Ver_sound_complete.
+Check Triv_finite_sound_complete.
+Check Ver_finite_sound_complete.
+Check Triv_proves_Grz.
+Check Ver_proves_bot_of_dia.
+Check Ver_proves_Tc.
+Check Ver_proves_L.
+Check boxdot_Triv_complete_checked.
+Check Ver_boxdot_proves_to_Triv_unconditional.
+Check Ver_boxdot_iff_Triv_unconditional.
+Check KB4_strictly_weaker_KTc.
+Check KTc_strictly_weaker_Triv.
+Check KTc_strictly_weaker_Ver.
+Check GrzPoint3_strictly_weaker_Triv.
+Check S4Point4McK_strictly_weaker_Triv.
+Check GLPoint3_strictly_weaker_Ver.
 
 (** Modal words, their finite size layers, generic reduction algebra, and
     checked S5 canonical normalization. *)
@@ -309,6 +551,12 @@ Check fmc_not_mem_iff_mem_complement.
 Check fmc_mem_imp_iff.
 Check fmc_not_mem_imp_iff.
 Check finite_maximal_context_explicit_cover.
+Check formula_list_unbox_spec.
+Check formula_list_box_spec.
+Check normal_derives_finite_context_cut.
+Check fmc_relevant_boxed_spec_closed.
+Check fmc_equality_on_base.
+Check grz_subformulas_generated.
 
 Check complexity_subformula_le.
 Check complexity_limited_truth_aux.
@@ -348,6 +596,8 @@ Check valid_Point2_iff_strong_confluence.
 Check valid_Point3_iff_piecewise_strong_connected.
 
 Check valid_Loeb_atom_iff_transitive_cwf.
+Check finite_transitive_irreflexive_cwf.
+Check valid_Loeb_of_finite_transitive_irreflexive.
 
 Check geach_convergent_four_n_iff_weakly_transitive.
 Check valid_FourN_atom_iff_weakly_transitive.
@@ -359,6 +609,9 @@ Check detour_free_iff_no_proper_detour.
 Check valid_H_atom_iff_detour_free.
 Check valid_I_of_transitive_boolos.
 Check weak_cwf_iff_cwf_irreflexive_reduction.
+Check finite_transitive_antisymmetric_weak_cwf.
+Check valid_Grz_of_finite_partial_order.
+Check valid_Grz_atom_of_finite_partial_order.
 Check valid_Grz_atom_iff_reflexive_transitive_weak_cwf.
 
 Check asymmetric_iff_irreflexive_and_antisymmetric.
@@ -422,11 +675,10 @@ Check valid_WeakPoint2_atoms_iff_piecewise_convergent.
 Check frame_piecewise_connected_iff_distinct.
 Check valid_WeakPoint3_atoms_iff_piecewise_connected.
 
-(** Boxdot's basic semantic laws and the K4/S4 equivalence are unconditional.
-    The other named equivalences visibly quantify over their still-missing
-    completeness propositions; the Jeřábek results additionally quantify over
-    the isolated global-consequence bridge.  These are hypotheses in theorem
-    types, not declarations of completeness. *)
+(** Boxdot's basic semantic laws and K4/S4, GL/Grz, and Ver/Triv
+    equivalences are unconditional.  The GL.3/Grz.3 results still expose
+    their completeness inputs, while the Jeřábek results additionally expose
+    the isolated global-consequence bridge. *)
 Check boxdot_translate.
 Check normal_proves_boxdot_translation.
 Check iff_boxdotboxdot.
@@ -445,6 +697,8 @@ Check finite_GL_to_reflexive_closure_finite_Grz.
 Check finite_Grz_to_irreflexivize_finite_GL.
 Check boxdot_GL_finite_complete.
 Check boxdot_Grz_finite_complete.
+Check boxdot_GL_finite_complete_checked.
+Check boxdot_Grz_finite_complete_checked.
 Check iff_provable_boxdot_GL_provable_Grz.
 Check finite_GLPoint3_to_reflexive_closure_finite_GrzPoint3.
 Check finite_GrzPoint3_to_irreflexivize_finite_GLPoint3.
@@ -454,6 +708,8 @@ Check iff_boxdotTranslated_GLPoint3_GrzPoint3.
 Check provable_boxdotTranslated_Ver_of_Triv.
 Check boxdot_Triv_complete.
 Check iff_boxdotTranslated_Ver_Triv.
+Check boxdot_Triv_complete_checked.
+Check iff_boxdotTranslated_Ver_Triv_unconditional.
 Check frame_twice.
 Check frame_twice_p_morphism.
 Check frame_twice_valid_reflects.
@@ -550,6 +806,23 @@ Print Assumptions S4_is_consistent.
 Print Assumptions S5_is_consistent.
 Print Assumptions GL_is_consistent.
 Print Assumptions Grz_is_consistent.
+Print Assumptions GL_proves_Four.
+Print Assumptions GL_proves_godel2.
+Print Assumptions GL_proves_boxdot_translated_Grz.
+Print Assumptions Grz_proves_T_and_Four.
+Print Assumptions Grz_proves_Dum.
+Print Assumptions GL_mini_canonical_countermodel.
+Print Assumptions GL_finite_sound_complete.
+Print Assumptions GL_sound_complete.
+Print Assumptions GL_unprovable_iff_exists_finite_rooted_countermodel.
+Print Assumptions Grz_finite_sound_complete.
+Print Assumptions Grz_sound_complete.
+Print Assumptions finite_partial_order_mckinsey.
+Print Assumptions grz_mck_three_in_S4McK_frame_class.
+Print Assumptions grz_mck_three_not_valid_Grz_atom.
+Print Assumptions S4McK_weaker_than_Grz.
+Print Assumptions S4McK_strictly_weaker_Grz.
+Print Assumptions S4_strictly_weaker_Grz.
 Print Assumptions logic_eq_iff_equiv.
 Print Assumptions logic_consistent_iff_exists_unprovable.
 Print Assumptions logic_no_bot.
@@ -575,6 +848,11 @@ Print Assumptions K4_canonical_frame_transitive.
 Print Assumptions KT_sound_complete.
 Print Assumptions K4_sound_complete.
 Print Assumptions S4_sound_complete.
+Print Assumptions K4_finite_complete.
+Print Assumptions S4_finite_complete.
+Print Assumptions KD_strictly_weaker_KT.
+Print Assumptions KD4_strictly_weaker_S4.
+Print Assumptions KD_strictly_weaker_S4.
 Print Assumptions normal_canonical_serial_of_schema_D.
 Print Assumptions normal_canonical_symmetric_of_schema_B.
 Print Assumptions normal_canonical_right_euclidean_of_schema_Five.
@@ -595,6 +873,117 @@ Print Assumptions K4Point3_strictly_weaker_K45.
 Print Assumptions K5_strictly_weaker_K45.
 Print Assumptions K45_strictly_weaker_KB4.
 Print Assumptions KD5_strictly_weaker_KD45.
+Print Assumptions KTB_schema_substitution_closed.
+Print Assumptions KTB_proves_sound_on_frame.
+Print Assumptions KTB_canonical.
+Print Assumptions KTB_complete.
+Print Assumptions KTB_finite_complete.
+Print Assumptions KT4B_complete.
+Print Assumptions KT4B_finite_complete.
+Print Assumptions S5_KT4B_equivalent.
+Print Assumptions KT_strictly_weaker_KTB.
+Print Assumptions KDB_strictly_weaker_KTB.
+Print Assumptions K4Point2_schema_substitution_closed.
+Print Assumptions normal_canonical_piecewise_convergent_of_schema_WeakPoint2.
+Print Assumptions normal_canonical_strongly_confluent_of_schema_Point2.
+Print Assumptions K4Point2_complete.
+Print Assumptions S4Point2_complete.
+Print Assumptions finest_tc_preserves_piecewise_strongly_convergent.
+Print Assumptions S4Point2_finite_complete.
+Print Assumptions K4_strictly_weaker_K4Point2.
+Print Assumptions K4Point2_strictly_weaker_S4Point2.
+Print Assumptions schema_Point3_substitution_closed.
+Print Assumptions normal_canonical_piecewise_connected_of_schema_WeakPoint3.
+Print Assumptions normal_canonical_piecewise_strongly_connected_of_schema_Point3.
+Print Assumptions K4Point3_complete.
+Print Assumptions S4Point3_complete.
+Print Assumptions S4Point3_linear_preorder_complete.
+Print Assumptions finest_tc_preserves_strongly_connected.
+Print Assumptions S4Point3_finite_complete.
+Print Assumptions K4_strictly_weaker_K4Point3.
+Print Assumptions S4Point2_strictly_weaker_S4Point3.
+Print Assumptions K4Point3_strictly_weaker_S4Point3.
+Print Assumptions schema_FourN_substitution_closed.
+Print Assumptions normal_canonical_rel_iter_iff_box_iter.
+Print Assumptions normal_canonical_weakly_transitive_of_schema_FourN.
+Print Assumptions K4n_complete.
+Print Assumptions K4n_zero_equiv_KTc.
+Print Assumptions K4n_one_equiv_K4.
+Print Assumptions K_strictly_weaker_K4n.
+Print Assumptions K4n_strictly_weaker_of_lt.
+Print Assumptions K4n_family_injective.
+Print Assumptions schema_H_substitution_closed.
+Print Assumptions schema_H_normal_proves_sound_on_frame.
+Print Assumptions schema_H_is_consistent.
+Print Assumptions point_generated_detour_free.
+Print Assumptions detour_free_weak_converse_well_founded.
+Print Assumptions normal_canonical_detour_free_of_schema_H.
+Print Assumptions S4H_complete.
+Print Assumptions finite_S4H_frame_is_finite_Grz_frame.
+Print Assumptions Grz_weaker_than_S4H.
+Print Assumptions Grz_strictly_weaker_S4H.
+Print Assumptions S4Point4_axiom_schema_substitution_closed.
+Print Assumptions normal_canonical_sobocinski_of_schema_Point4.
+Print Assumptions S4Point4_complete.
+Print Assumptions S4Point3_weaker_than_S4Point4.
+Print Assumptions S4Point3_strictly_weaker_S4Point4.
+Print Assumptions valid_on_universal_frames_iff_valid_on_s5_frames.
+Print Assumptions S5_universal_complete.
+Print Assumptions KTB_strictly_weaker_S5.
+Print Assumptions KD45_strictly_weaker_S5.
+Print Assumptions KB4_strictly_weaker_S5.
+Print Assumptions S4Point4_strictly_weaker_S5.
+Print Assumptions S4_strictly_weaker_S5.
+Print Assumptions KT_strictly_weaker_S5.
+Print Assumptions McK_axiom_schema_substitution_closed.
+Print Assumptions normal_proves_base_mck_axiom_switch_iff.
+Print Assumptions normal_proves_base_mck_switch_possible.
+Print Assumptions normal_proves_base_mck_dia_box_elim.
+Print Assumptions normal_proves_base_mck_box_dia_elim.
+Print Assumptions normal_proves_base_mck_jointly_possible.
+Print Assumptions normal_proves_base_mck_nonempty_list_jointly_possible.
+Print Assumptions normal_proves_base_mck_switch_list_conjunction_possible.
+Print Assumptions normal_proves_base_mck_switch_finset_conjunction_possible.
+Print Assumptions base_mck_seed_theory_consistent.
+Print Assumptions normal_canonical_mckinsey_of_K4McK_schemas.
+Print Assumptions K4McK_complete.
+Print Assumptions S4McK_complete.
+Print Assumptions K4_strictly_weaker_K4McK.
+Print Assumptions S4_strictly_weaker_S4McK.
+Print Assumptions K4McK_strictly_weaker_S4McK.
+Print Assumptions S4Point2McK_schema_substitution_closed.
+Print Assumptions S4Point2McK_canonical_frame.
+Print Assumptions S4Point2McK_complete.
+Print Assumptions S4McK_strictly_weaker_S4Point2McK.
+Print Assumptions S4Point2_strictly_weaker_S4Point2McK.
+Print Assumptions S4Point3McK_schema_substitution_closed.
+Print Assumptions S4Point3McK_canonical_frame.
+Print Assumptions S4Point3McK_complete.
+Print Assumptions S4Point2McK_strictly_weaker_S4Point3McK.
+Print Assumptions S4Point3_strictly_weaker_S4Point3McK.
+Print Assumptions S4Point4McK_canonical_frame.
+Print Assumptions S4Point4McK_complete.
+Print Assumptions S4Point3McK_strictly_weaker_S4Point4McK.
+Print Assumptions S4Point4_strictly_weaker_S4Point4McK.
+Print Assumptions schema_DiaT_substitution_closed.
+Print Assumptions KTc_proves_DiaT.
+Print Assumptions KTc_prime_proves_Tc.
+Print Assumptions KTc_complete.
+Print Assumptions Triv_complete.
+Print Assumptions normal_canonical_isolated_of_schema_Ver.
+Print Assumptions Ver_complete.
+Print Assumptions Triv_finite_complete.
+Print Assumptions Ver_finite_complete.
+Print Assumptions Triv_proves_Grz.
+Print Assumptions Ver_proves_L.
+Print Assumptions boxdot_Triv_complete_checked.
+Print Assumptions Ver_boxdot_iff_Triv_unconditional.
+Print Assumptions KB4_strictly_weaker_KTc.
+Print Assumptions KTc_strictly_weaker_Triv.
+Print Assumptions KTc_strictly_weaker_Ver.
+Print Assumptions GrzPoint3_strictly_weaker_Triv.
+Print Assumptions S4Point4McK_strictly_weaker_Triv.
+Print Assumptions GLPoint3_strictly_weaker_Ver.
 Print Assumptions K_strictly_weaker_KT.
 Print Assumptions K_strictly_weaker_K4.
 Print Assumptions KT_strictly_weaker_S4.
@@ -634,6 +1023,10 @@ Print Assumptions finite_next_consistent.
 Print Assumptions finite_exists_consistent_complementary_closed.
 Print Assumptions fmc_equality_def.
 Print Assumptions finite_maximal_context_explicit_cover.
+Print Assumptions normal_derives_finite_context_cut.
+Print Assumptions fmc_relevant_boxed_spec_closed.
+Print Assumptions fmc_equality_on_base.
+Print Assumptions grz_subformulas_generated.
 (** The complex box laws, primitive evaluation/satisfaction theorem, and
     implication/formula validity characterizations are constructive.  The
     existential diamond dual and derived disjunction/equivalence readings
@@ -661,20 +1054,23 @@ Print Assumptions valid_McK_of_mckinsey.
 Print Assumptions valid_Mk_of_makinson.
 Print Assumptions valid_H_atom_iff_detour_free.
 Print Assumptions valid_I_of_transitive_boolos.
+Print Assumptions valid_Loeb_of_finite_transitive_irreflexive.
+Print Assumptions finite_transitive_antisymmetric_weak_cwf.
+Print Assumptions valid_Grz_of_finite_partial_order.
 Print Assumptions valid_Grz_atom_iff_reflexive_transitive_weak_cwf.
 Print Assumptions generated_submodel_truth.
 Print Assumptions point_generated_truth.
 Print Assumptions point_generated_frame_rooted.
 Print Assumptions point_trans_generated_trans_rooted.
 
-(** Irreflexivization and the added-root relation algebra, embedding
+(** Irreflexivization, the finite strict-order maximal-element construction,
+    and the added-root relation algebra, embedding
     p-morphism, embedded-world truth theorem, ordered chain, and exact finite
     cover are constructive.  The reverse reflexivization-validity theorem,
-    piecewise-connected inheritance, unique-root selection, and added-root
-    boxdot theorem use propositional excluded middle.  Extracting converse
-    well-foundedness from finite transitive irreflexivity and the finite-chain
-    T witnesses additionally exposes Coq's relational and dependent unique
-    choice principles. *)
+    piecewise-connected inheritance, finite maximal-element selection,
+    unique-root selection, and added-root boxdot theorem use propositional
+    excluded middle.  The finite-chain T witnesses additionally expose Coq's
+    relational and dependent unique-choice principles. *)
 Print Assumptions irreflexivize_irreflexive.
 Print Assumptions irreflexivize_piecewise_connected.
 Print Assumptions irreflexivize_reflexive_valid_iff.
@@ -717,18 +1113,21 @@ Print Assumptions valid_WeakPoint3_atoms_iff_piecewise_connected.
     excluded middle.  The nat-atom Hilbert equivalence additionally inherits
     the definite-description boundary of local K completeness.  Reverse
     reflexivization and the logical SBDP argument also use excluded middle.
-    Explicit completeness/bridge arguments remain visible in the checked
-    theorem types above and are not kernel assumptions. *)
+    GL/Grz completeness is now checked above; the remaining GL.3/Grz.3 and
+    Jeřábek bridge arguments stay visible in their theorem types. *)
 Print Assumptions boxdot_reflexive_closure_truth.
 Print Assumptions boxdot_translate_idempotent_truth.
 Print Assumptions K4_boxdot_iff_S4.
 Print Assumptions finite_GL_to_reflexive_closure_finite_Grz.
 Print Assumptions finite_Grz_to_irreflexivize_finite_GL.
+Print Assumptions boxdot_GL_finite_complete_checked.
+Print Assumptions boxdot_Grz_finite_complete_checked.
 Print Assumptions GL_boxdot_iff_Grz.
 Print Assumptions finite_GLPoint3_to_reflexive_closure_finite_GrzPoint3.
 Print Assumptions GLPoint3_boxdot_iff_GrzPoint3.
 Print Assumptions Triv_proves_to_Ver_boxdot.
 Print Assumptions Ver_boxdot_iff_Triv.
+Print Assumptions Ver_boxdot_iff_Triv_unconditional.
 Print Assumptions frame_twice_p_morphism.
 Print Assumptions frame_twice_valid_reflects.
 Print Assumptions S5_frameclass_jerabek.

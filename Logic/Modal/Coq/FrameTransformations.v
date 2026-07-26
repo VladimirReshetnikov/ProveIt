@@ -802,79 +802,15 @@ Proof.
   - now apply extend_root_finite.
 Qed.
 
-(** Every finite irreflexive transitive frame is converse well-founded.  This
-    is the list-cover counterpart of Foundation's finite type-class instance. *)
-Theorem finite_transitive_irreflexive_cwf :
-  forall F,
+(** Compatibility re-export: the reusable finite maximal-element theorem now
+    lives with the elementary frame properties, before this transformation
+    layer. *)
+Corollary finite_transitive_irreflexive_cwf :
+  forall F : frame,
     finite_frame F -> frame_transitive F -> frame_irreflexive F ->
     frame_converse_well_founded F.
 Proof.
-  intros F [cover Hcover] Htrans Hirr X [x0 Hx0].
-  destruct (classic (exists m, X m /\
-      forall y, X y -> ~ Rel F m y)) as [Hmax | Hno_max];
-    [exact Hmax |].
-  exfalso.
-  assert (Hsuccessor : forall a, X a ->
-      exists b, X b /\ Rel F a b).
-  {
-    intros a Ha. apply NNPP. intro Hnone.
-    apply Hno_max. exists a; split; [exact Ha |].
-    intros b Hb Rab. apply Hnone. exists b; auto.
-  }
-  assert (Htotal : forall a : World F,
-      exists b : World F, X a -> X b /\ Rel F a b).
-  {
-    intro a. destruct (classic (X a)) as [Ha | Hna].
-    - destruct (Hsuccessor a Ha) as [b Hb]. exists b. tauto.
-    - exists x0. tauto.
-  }
-  destruct (@choice (World F) (World F)
-    (fun a b => X a -> X b /\ Rel F a b) Htotal)
-    as [next Hnext].
-  pose (f := fun n : nat => Nat.iter n next x0).
-  assert (HfX : forall n, X (f n)).
-  {
-    intro n; induction n as [|n IH].
-    - exact Hx0.
-    - change (X (next (f n))). exact (proj1 (Hnext (f n) IH)).
-  }
-  assert (Hfstep : forall n, Rel F (f n) (f (S n))).
-  {
-    intro n. change (Rel F (f n) (next (f n))).
-    exact (proj2 (Hnext (f n) (HfX n))).
-  }
-  assert (Hchain : forall j i, i < j -> Rel F (f i) (f j)).
-  {
-    intro j; induction j as [|j IH]; intros i Hij; [lia |].
-    destruct (Nat.eq_dec i j) as [-> | Hneq].
-    - apply Hfstep.
-    - eapply Htrans; [apply IH; lia | apply Hfstep].
-  }
-  assert (Hdistinct : forall i j, i <> j -> f i <> f j).
-  {
-    intros i j Hij Heq.
-    destruct (Nat.lt_trichotomy i j) as [Hij' | [Hij' | Hji]].
-    - pose proof (Hchain j i Hij') as Rij. rewrite Heq in Rij.
-      exact (Hirr (f j) Rij).
-    - contradiction.
-    - pose proof (Hchain i j Hji) as Rji. rewrite Heq in Rji.
-      exact (Hirr (f j) Rji).
-  }
-  pose (prefix := map f (seq 0 (S (length cover)))).
-  assert (Hprefix_nodup : NoDup prefix).
-  {
-    unfold prefix. apply NoDup_map_on.
-    - apply seq_NoDup.
-    - intros i j _ _ Heq.
-      destruct (Nat.eq_dec i j) as [Hij | Hij]; [exact Hij |].
-      exfalso. exact (Hdistinct i j Hij Heq).
-  }
-  assert (Hprefix_incl : incl prefix cover).
-  {
-    intros x _. apply Hcover.
-  }
-  pose proof (NoDup_incl_length Hprefix_nodup Hprefix_incl) as Hlen.
-  unfold prefix in Hlen. rewrite length_map, length_seq in Hlen. lia.
+  exact FoundationModal.FrameProperties.finite_transitive_irreflexive_cwf.
 Qed.
 
 Corollary extend_root_converse_well_founded :
