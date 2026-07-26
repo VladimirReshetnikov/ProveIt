@@ -1481,6 +1481,19 @@ unguarded opening theorem is asserted, because that older contract admits an
 arbitrary replacement carrier value rather than an honestly represented
 term.
 
+`RawCodedCarrierIndexedPairedDeepClosedCodeOrbitGraph.v` uses the represented
+deep formula, rather than the fixed root formula, as a paired orbit invariant
+and proves its all-carrier totality by `raw_definable_induction`.
+`RawCodedDynamicTruthGlobalSuccessorDeepClosure.v` proves every transparent
+global wrapper constructor and its five-, seven-, and ten-node folds preserve
+arbitrary-cutoff closure.  Atomic adequacy of actual local rows comes from the
+successor relation itself; the remaining callback asks only that those two
+rows are operationally fixed for every shift cutoff/amount and substitution
+depth at least eighteen.  The dynamic specialization discharges the quoted
+rank-zero base unconditionally and carries both deep certificates through the
+ordinary global orbit at every, including nonstandard, hierarchy level under
+that explicit local-row premise.
+
 `RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
 Sigma successor-row syntax: eight existential table witnesses around a domain
 check and a seven-way disjunction, whose final branch contains the opaque
