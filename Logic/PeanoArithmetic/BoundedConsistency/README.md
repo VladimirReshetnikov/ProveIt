@@ -1378,7 +1378,14 @@ semantic-completeness step.  `RawCodedTemplateProjectionSchemas.v` extends
 those atoms with transparent arbitrary conjunction selection/repacking,
 witness-preserving existential towers, universal closure, and the exact
 two-universal/five-existential projection used by the dynamic universal-leaf
-law.  `RawCodedTemplateClosedProofCompilation.v` packages any closed compiled
+law.  `RawCodedTemplateDisjunctionCaseSchemas.v` supplies the complementary
+all-branch rule for a right-associated finite disjunction.  Its transparent
+tree proves `(A1 or ... or Ak) -> (A1 -> C) -> ... -> (Ak -> C) -> C`, with
+named seven- and six-branch wrappers matching the native Sigma and Pi rows.
+This closes the structural case split without assuming that a represented
+row is metatheoretically decidable; each branch-specific implication remains
+an explicit input to the positive local compiler.
+`RawCodedTemplateClosedProofCompilation.v` packages any closed compiled
 template tree as an ordinary `RawCodedPAProofOf` with a literally empty
 witnessed-axiom list, and exposes that exact universal-leaf certificate.
 `RawCodedTemplateStructuralTranslation.v`
