@@ -1578,6 +1578,14 @@ is the thirteen-fold closure compiled by the restricted Pi proof module.
 Relational totality and proof-producing totality again remain separate, with
 the latter requiring direct inputs that identify the graph's exact witnesses.
 
+`RawCodedDynamicTruthRestrictedExistentialLocalProofFieldGraph.v` composes
+that transform with the actual paired global truth-code orbit.  The hidden
+Sigma and Pi codes therefore come from one adequate orbit witness, and the
+direct compiler is required only along such witnesses.  A guarded ternary
+shift/opening interchange package for the selected global Sigma coordinate
+yields the exact proof-producing local field.  As with its Sigma dual, this
+is still a restricted row component rather than the complete local law.
+
 `RawCodedDynamicTruthRestrictedUniversalLocalProofFieldGraph.v` composes that
 transform with the genuine paired global Sigma/Pi orbit and requires its
 proof-producing compiler only for the Pi codes selected by an actual adequate
