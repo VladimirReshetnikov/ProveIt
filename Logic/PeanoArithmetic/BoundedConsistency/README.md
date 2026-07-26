@@ -1816,6 +1816,17 @@ its represented PA proof.  The genuine arbitrary-carrier orbit transform and
 uniform proof compiler are intentionally left to the subsequent positive
 graph rather than inferred from this standard family.
 
+`RawCodedDynamicTruthNativeSubstitutionPositiveGraph.v` supplies that genuine
+orbit transform.  At predecessor `p` it selects the paired global Sigma/Pi
+codes at `S p`, constructs the source applications `#1,#3,#4` and target
+applications `#2,#5,#6` through their literal sequential replacement traces,
+instantiates both current-level domains, and assembles the carrier polynomial.
+Its graph semantics is law free, and PA proves adequacy-preserving relational
+totality plus represented proofs at every externally fixed standard level.
+The arbitrary-carrier proof-total endpoint retains field-code adequacy and is
+conditional only on `RawDynamicTruthNativeSubstitutionProofCompiler`; it does
+not infer proof syntax from semantic validity.
+
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
 use the same formula and assignment inputs but demand rank-zero outputs one
