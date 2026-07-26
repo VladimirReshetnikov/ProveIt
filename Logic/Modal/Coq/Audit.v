@@ -8,7 +8,7 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
-  GLUnnecessitation CanonicalGrz StructuralFrames
+  GLUnnecessitation GLModalDisjunction CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer CanonicalS5Grz
@@ -183,6 +183,25 @@ Check imply_boxdot_plain_of_imply_box_box.
 Check GL_unnecessitation.
 Check logic_unnecessitation.
 Check GL_unnecessitation_instance.
+Check mdp_counterexample_frame_asymmetric.
+Check mdp_counterexample_frame_irreflexive.
+Check mdp_counterexample_frame_transitive.
+Check mdp_counterexample_frame_point_rooted.
+Check mdp_counterexample_frame_finite.
+Check mdp_left_p_morphism.
+Check mdp_right_p_morphism.
+Check mdp_through_original_root.
+Check mdp_left_truth.
+Check mdp_right_truth.
+Check GL_MDP_boxed_antecedent.
+Check normal_derives_finite_support.
+Check GL_MDP_Aux_finite.
+Check GL_MDP_Aux.
+Check MDP_Aux.
+Check modal_disjunctive.
+Check GL_modal_disjunction.
+Check GL_modal_disjunctive.
+Check GL_modal_disjunctive_instance.
 Check grz_mini_countermodel.
 Check Grz_finite_sound_complete.
 Check Grz_sound_complete.
@@ -889,6 +908,14 @@ Print Assumptions GL_mini_canonical_countermodel.
 Print Assumptions GL_finite_sound_complete.
 Print Assumptions GL_sound_complete.
 Print Assumptions GL_unprovable_iff_exists_finite_rooted_countermodel.
+Print Assumptions imply_boxdot_plain_of_imply_box_box.
+Print Assumptions GL_unnecessitation.
+Print Assumptions mdp_left_p_morphism.
+Print Assumptions mdp_left_truth.
+Print Assumptions normal_derives_finite_support.
+Print Assumptions GL_MDP_boxed_antecedent.
+Print Assumptions GL_MDP_Aux.
+Print Assumptions GL_modal_disjunction.
 Print Assumptions Grz_finite_sound_complete.
 Print Assumptions Grz_sound_complete.
 Print Assumptions finite_partial_order_mckinsey.
