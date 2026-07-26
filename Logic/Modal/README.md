@@ -177,6 +177,7 @@ is being reconstructed:
 | `Modality.v` | `Modal/Modality/{Basic,S5}.lean`, `Modal/Kripke/Logic/S5.lean` | Modal-word algebra, size enumeration/splitting, syntactic translations and equivalences, generic finite reduction, S5 canonical completeness, and six-form normalization for every length |
 | `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
 | `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
+| `KD4Point3Z.v` | `Modal/Kripke/Logic/KD4Point3Z.lean` | Substitution-closed D/Four/weak-.3/Z calculus and generic semantic class; Z lifted from its atomic theorem by uniform substitution; exact soundness and consistency on the strict natural-number frame |
 | `CanonicalTB.v` | `Modal/Kripke/Logic/{KTB,KT4B}.lean` | Reflexive-symmetric and equivalence-frame canonical/finite completeness; S5 equivalence; strict KT/KDB inclusions |
 | `CanonicalPoint2.v` | `Modal/Kripke/{Axiom{WeakPoint2,Point2},Logic/{K4Point2,S4Point2}}.lean` | Generic weak/strong confluence canonicality; rooted finite filtration for S4.2; full source strictness chains |
 | `CanonicalPoint3.v` | `Modal/Kripke/{Axiom{WeakPoint3,Point3},Logic/{K4Point3,S4Point3}}.lean` | Weak/strong connectedness canonicality; linear-preorder and rooted finite S4.3 completeness; full source strictness chains |
@@ -612,6 +613,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.StructuralFrames `
   FoundationModal.WeakCorrespondence `
   FoundationModal.CanonicalCombinations `
+  FoundationModal.KD4Point3Z `
   FoundationModal.CanonicalTB `
   FoundationModal.Boxdot `
   FoundationModal.CanonicalPoint2 `

@@ -9,7 +9,7 @@ From FoundationModal Require Import
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
   GLUnnecessitation GLModalDisjunction GLIndependence CanonicalGrz StructuralFrames
-  WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
+  WeakCorrespondence CanonicalCombinations KD4Point3Z CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer CanonicalS5Grz
   CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
@@ -322,6 +322,18 @@ Check KB_strictly_weaker_KB4.
 Check KD4_strictly_weaker_KD45.
 Check KD5_strictly_weaker_KD45.
 Check K45_strictly_weaker_KD45.
+
+(** KD4.3Z soundness and consistency on the strict natural frame. *)
+Check schema_Z.
+Check schema_Z_substitution_closed.
+Check KD4Point3Z_schema_substitution_closed.
+Check KD4Point3Z_frame_class.
+Check KD4Point3Z_schema_valid_on_frame.
+Check KD4Point3Z_proves_sound_on_frame.
+Check schema_Z_valid_on_nat_lt.
+Check nat_lt_is_KD4Point3Z_frame.
+Check KD4Point3Z_proves_sound_on_nat_lt.
+Check KD4Point3Z_is_consistent.
 
 (** Reflexive-symmetric KTB and equivalence-frame KT4B, including finite
     completeness and the S5 comparison. *)
@@ -984,6 +996,9 @@ Print Assumptions K45_sound_complete.
 Print Assumptions KD4_sound_complete.
 Print Assumptions KB5_sound_complete.
 Print Assumptions KD45_sound_complete.
+Print Assumptions schema_Z_valid_on_nat_lt.
+Print Assumptions KD4Point3Z_proves_sound_on_nat_lt.
+Print Assumptions KD4Point3Z_is_consistent.
 Print Assumptions K4Point3_strictly_weaker_K45.
 Print Assumptions K5_strictly_weaker_K45.
 Print Assumptions K45_strictly_weaker_KB4.
