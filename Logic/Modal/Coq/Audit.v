@@ -202,10 +202,18 @@ Check S4_canonical_frame_transitive.
 Check KT_sound_complete.
 Check K4_sound_complete.
 Check S4_sound_complete.
+Check K4_finite_sound_complete.
+Check S4_finite_sound_complete.
 Check K_strictly_weaker_KT.
 Check K_strictly_weaker_K4.
 Check KT_strictly_weaker_S4.
 Check K4_strictly_weaker_S4.
+Check KD_weaker_than_KT.
+Check KD_strictly_weaker_KT.
+Check KD4_weaker_than_S4.
+Check KD_weaker_than_S4.
+Check KD4_strictly_weaker_S4.
+Check KD_strictly_weaker_S4.
 
 (** Canonical D/B/Five frame properties and complete KD/KB/K5 metatheory. *)
 Check normal_canonical_serial_of_schema_D.
@@ -373,8 +381,18 @@ Check KT_strictly_weaker_S5.
 Check McK_axiom_schema_substitution_closed.
 Check K4McK_schema_substitution_closed.
 Check S4McK_schema_substitution_closed.
+Check normal_proves_base_mck_axiom_to_switch_possible.
+Check normal_proves_base_mck_switch_possible_to_axiom.
+Check normal_proves_base_mck_axiom_switch_iff.
 Check normal_proves_base_mck_switch_possible.
+Check normal_proves_base_mck_dia_box_to_dia_and.
+Check normal_proves_base_mck_dia_box_elim.
+Check normal_proves_base_mck_box_dia_elim.
 Check normal_proves_base_mck_jointly_possible.
+Check normal_proves_base_mck_nonempty_list_jointly_possible.
+Check normal_proves_base_mck_switch_list_conjunction_possible.
+Check base_mck_switch_finset_conjunction.
+Check normal_proves_base_mck_switch_finset_conjunction_possible.
 Check normal_derives_base_mck_seed_partition.
 Check base_mck_seed_theory_consistent.
 Check normal_canonical_mckinsey_of_K4McK_schemas.
@@ -546,6 +564,8 @@ Check valid_Point2_iff_strong_confluence.
 Check valid_Point3_iff_piecewise_strong_connected.
 
 Check valid_Loeb_atom_iff_transitive_cwf.
+Check finite_transitive_irreflexive_cwf.
+Check valid_Loeb_of_finite_transitive_irreflexive.
 
 Check geach_convergent_four_n_iff_weakly_transitive.
 Check valid_FourN_atom_iff_weakly_transitive.
@@ -557,6 +577,9 @@ Check detour_free_iff_no_proper_detour.
 Check valid_H_atom_iff_detour_free.
 Check valid_I_of_transitive_boolos.
 Check weak_cwf_iff_cwf_irreflexive_reduction.
+Check finite_transitive_antisymmetric_weak_cwf.
+Check valid_Grz_of_finite_partial_order.
+Check valid_Grz_atom_of_finite_partial_order.
 Check valid_Grz_atom_iff_reflexive_transitive_weak_cwf.
 
 Check asymmetric_iff_irreflexive_and_antisymmetric.
@@ -775,6 +798,11 @@ Print Assumptions K4_canonical_frame_transitive.
 Print Assumptions KT_sound_complete.
 Print Assumptions K4_sound_complete.
 Print Assumptions S4_sound_complete.
+Print Assumptions K4_finite_complete.
+Print Assumptions S4_finite_complete.
+Print Assumptions KD_strictly_weaker_KT.
+Print Assumptions KD4_strictly_weaker_S4.
+Print Assumptions KD_strictly_weaker_S4.
 Print Assumptions normal_canonical_serial_of_schema_D.
 Print Assumptions normal_canonical_symmetric_of_schema_B.
 Print Assumptions normal_canonical_right_euclidean_of_schema_Five.
@@ -858,8 +886,14 @@ Print Assumptions S4Point4_strictly_weaker_S5.
 Print Assumptions S4_strictly_weaker_S5.
 Print Assumptions KT_strictly_weaker_S5.
 Print Assumptions McK_axiom_schema_substitution_closed.
+Print Assumptions normal_proves_base_mck_axiom_switch_iff.
 Print Assumptions normal_proves_base_mck_switch_possible.
+Print Assumptions normal_proves_base_mck_dia_box_elim.
+Print Assumptions normal_proves_base_mck_box_dia_elim.
 Print Assumptions normal_proves_base_mck_jointly_possible.
+Print Assumptions normal_proves_base_mck_nonempty_list_jointly_possible.
+Print Assumptions normal_proves_base_mck_switch_list_conjunction_possible.
+Print Assumptions normal_proves_base_mck_switch_finset_conjunction_possible.
 Print Assumptions base_mck_seed_theory_consistent.
 Print Assumptions normal_canonical_mckinsey_of_K4McK_schemas.
 Print Assumptions K4McK_complete.
@@ -966,20 +1000,23 @@ Print Assumptions valid_McK_of_mckinsey.
 Print Assumptions valid_Mk_of_makinson.
 Print Assumptions valid_H_atom_iff_detour_free.
 Print Assumptions valid_I_of_transitive_boolos.
+Print Assumptions valid_Loeb_of_finite_transitive_irreflexive.
+Print Assumptions finite_transitive_antisymmetric_weak_cwf.
+Print Assumptions valid_Grz_of_finite_partial_order.
 Print Assumptions valid_Grz_atom_iff_reflexive_transitive_weak_cwf.
 Print Assumptions generated_submodel_truth.
 Print Assumptions point_generated_truth.
 Print Assumptions point_generated_frame_rooted.
 Print Assumptions point_trans_generated_trans_rooted.
 
-(** Irreflexivization and the added-root relation algebra, embedding
+(** Irreflexivization, the finite strict-order maximal-element construction,
+    and the added-root relation algebra, embedding
     p-morphism, embedded-world truth theorem, ordered chain, and exact finite
     cover are constructive.  The reverse reflexivization-validity theorem,
-    piecewise-connected inheritance, unique-root selection, and added-root
-    boxdot theorem use propositional excluded middle.  Extracting converse
-    well-foundedness from finite transitive irreflexivity and the finite-chain
-    T witnesses additionally exposes Coq's relational and dependent unique
-    choice principles. *)
+    piecewise-connected inheritance, finite maximal-element selection,
+    unique-root selection, and added-root boxdot theorem use propositional
+    excluded middle.  The finite-chain T witnesses additionally expose Coq's
+    relational and dependent unique-choice principles. *)
 Print Assumptions irreflexivize_irreflexive.
 Print Assumptions irreflexivize_piecewise_connected.
 Print Assumptions irreflexivize_reflexive_valid_iff.

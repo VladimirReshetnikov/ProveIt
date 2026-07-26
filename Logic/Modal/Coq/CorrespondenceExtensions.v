@@ -2,7 +2,7 @@
   Further Kripke-frame correspondences for named modal axioms.
 
   This file ports the semantic, non-canonical content of the pinned
-  Foundation modules [AxiomFourN], [AxiomGrz], [AxiomH], [AxiomI],
+  Foundation modules [AxiomFourN], [AxiomL], [AxiomGrz], [AxiomH], [AxiomI],
   [AxiomMcK], [AxiomMk], [AxiomPoint4], and [AxiomVer].  The proofs are
   independent Coq proofs against the local syntax and semantics.
 
@@ -18,7 +18,7 @@
 From Stdlib Require Import Arith.PeanoNat Lia.
 From Stdlib Require Import Logic.Classical_Prop Logic.ClassicalChoice.
 From FoundationModal Require Import
-  Syntax Axioms Kripke Correspondence Loeb FrameProperties.
+  Syntax Axioms Kripke Correspondence Filtration Loeb FrameProperties.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -72,6 +72,20 @@ Proof.
           frame_weakly_transitive F n).
   rewrite valid_Geach_atom_iff_geach_convergent.
   apply geach_convergent_four_n_iff_weakly_transitive.
+Qed.
+
+(** * Loeb / finite strict preorders *)
+
+(** Foundation's finite-frame convenience theorem follows from the generic
+    Loeb correspondence and the finite maximal-element theorem. *)
+Corollary valid_Loeb_of_finite_transitive_irreflexive :
+  forall AtomType (F : frame) (p : formula AtomType),
+    finite_frame F -> frame_transitive F -> frame_irreflexive F ->
+    valid F (Loeb p).
+Proof.
+  intros AtomType F p Hfinite Htrans Hirr.
+  apply valid_Loeb_of_transitive_cwf; [exact Htrans |].
+  now apply finite_transitive_irreflexive_cwf.
 Qed.
 
 (** * Ver / isolated frames *)
@@ -386,6 +400,26 @@ Proof.
     + symmetry. apply (Hmax x); [now left | exact Ryx].
 Qed.
 
+(** A finite transitive antisymmetric frame is weakly converse
+    well-founded.  Equivalently, deleting its reflexive edges produces a
+    finite transitive irreflexive frame. *)
+Theorem finite_transitive_antisymmetric_weak_cwf :
+  forall F : frame,
+    finite_frame F -> frame_transitive F -> frame_antisymmetric F ->
+    frame_weak_converse_well_founded F.
+Proof.
+  intros F Hfinite Htrans Hanti.
+  apply (proj2 (weak_cwf_iff_cwf_irreflexive_reduction F)).
+  apply finite_transitive_irreflexive_cwf.
+  - destruct Hfinite as [cover Hcover].
+    exists cover. exact Hcover.
+  - intros x y z [Rxy Hxy] [Ryz Hyz]. split.
+    + eapply Htrans; eauto.
+    + intro Hxz. subst z.
+      apply Hxy. now apply (Hanti x y Rxy Ryz).
+  - intros x [Rxx Hxx]. exact (Hxx eq_refl).
+Qed.
+
 Lemma valid_Grz_of_reflexive_transitive_weak_cwf :
   forall AtomType (F : frame) (p : formula AtomType),
     frame_reflexive F -> frame_transitive F ->
@@ -406,6 +440,30 @@ Proof.
     subst z.
     pose proof (@weak_cwf_antisymmetric F Hwcwf m y Rmy Ryz) as Hmy.
     subst y. contradiction.
+Qed.
+
+(** The finite partial-order specialization from Foundation.  The first
+    statement retains the arbitrary formula supported by the semantic
+    proof; the second records the exact atomic source theorem. *)
+Corollary valid_Grz_of_finite_partial_order :
+  forall AtomType (F : frame) (p : formula AtomType),
+    finite_frame F -> frame_is_partial_order F -> valid F (Grz p).
+Proof.
+  intros AtomType F p Hfinite [Hrefl [Htrans Hanti]].
+  apply valid_Grz_of_reflexive_transitive_weak_cwf.
+  - exact Hrefl.
+  - exact Htrans.
+  - now apply finite_transitive_antisymmetric_weak_cwf.
+Qed.
+
+Corollary valid_Grz_atom_of_finite_partial_order :
+  forall F : frame,
+    finite_frame F -> frame_is_partial_order F ->
+    valid F (Grz (Atom 0)).
+Proof.
+  intros F Hfinite Horder.
+  exact (@valid_Grz_of_finite_partial_order nat F (Atom 0)
+    Hfinite Horder).
 Qed.
 
 Lemma reflexive_of_valid_Grz_atom :

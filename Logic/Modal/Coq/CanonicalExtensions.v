@@ -18,7 +18,7 @@ From Stdlib Require Import Arith.PeanoNat Lia.
 From Stdlib Require Import Logic.ClassicalDescription Logic.Classical_Prop.
 From FoundationModal Require Import
   Syntax FormulaEncoding Axioms HilbertK Kripke HilbertKSoundness
-  Correspondence NormalHilbert.
+  Correspondence Filtration FiltrationExtensions NormalHilbert.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -643,6 +643,12 @@ Qed.
 Definition frame_preorder_class (F : frame) : Prop :=
   frame_reflexive F /\ frame_transitive F.
 
+Definition K4_finite_frame_class (F : frame) : Prop :=
+  finite_frame F /\ frame_transitive F.
+
+Definition S4_finite_frame_class (F : frame) : Prop :=
+  finite_frame F /\ frame_preorder_class F.
+
 Theorem S4_complete :
   forall p : formula nat,
     normal_valid_on_class frame_preorder_class p -> S4_proves p.
@@ -682,6 +688,84 @@ Proof.
   - apply S4_complete.
 Qed.
 
+(** * Finite-frame completeness for K4 and S4 *)
+
+Theorem K4_finite_complete :
+  forall p : formula nat,
+    normal_valid_on_class K4_finite_frame_class p -> K4_proves p.
+Proof.
+  intros p Hfinite. apply K4_complete.
+  intros F HT V w.
+  pose (Q := @finest_tc_filtered_frame nat F V p).
+  pose (VQ := @finest_tc_filtered_valuation nat F V p).
+  assert (HsatQ : satisfies Q VQ
+    (@profile_class nat F V p w) p).
+  {
+    apply (Hfinite Q). split.
+    - unfold Q. apply finest_tc_filtered_frame_finite.
+    - unfold Q. apply finest_tc_is_transitive.
+  }
+  apply (proj1 (@finest_tc_filtration_truth_at_class
+    nat F V p HT p (subformulas_self p) w)).
+  exact HsatQ.
+Qed.
+
+Theorem K4_finite_sound :
+  forall p : formula nat,
+    K4_proves p -> normal_valid_on_class K4_finite_frame_class p.
+Proof.
+  intros p Hp F [_ HT].
+  now apply K4_proves_sound_on_transitive_frame.
+Qed.
+
+Theorem K4_finite_sound_complete :
+  forall p : formula nat,
+    K4_proves p <-> normal_valid_on_class K4_finite_frame_class p.
+Proof.
+  intro p; split.
+  - apply K4_finite_sound.
+  - apply K4_finite_complete.
+Qed.
+
+Theorem S4_finite_complete :
+  forall p : formula nat,
+    normal_valid_on_class S4_finite_frame_class p -> S4_proves p.
+Proof.
+  intros p Hfinite. apply S4_complete.
+  intros F [HR HT] V w.
+  pose (Q := @finest_tc_filtered_frame nat F V p).
+  pose (VQ := @finest_tc_filtered_valuation nat F V p).
+  assert (HsatQ : satisfies Q VQ
+    (@profile_class nat F V p w) p).
+  {
+    apply (Hfinite Q). split.
+    - unfold Q. apply finest_tc_filtered_frame_finite.
+    - split.
+      + unfold Q. now apply finest_tc_preserves_reflexive.
+      + unfold Q. apply finest_tc_is_transitive.
+  }
+  apply (proj1 (@finest_tc_filtration_truth_at_class
+    nat F V p HT p (subformulas_self p) w)).
+  exact HsatQ.
+Qed.
+
+Theorem S4_finite_sound :
+  forall p : formula nat,
+    S4_proves p -> normal_valid_on_class S4_finite_frame_class p.
+Proof.
+  intros p Hp F [_ [HR HT]].
+  now apply S4_proves_sound_on_preorder_frame.
+Qed.
+
+Theorem S4_finite_sound_complete :
+  forall p : formula nat,
+    S4_proves p <-> normal_valid_on_class S4_finite_frame_class p.
+Proof.
+  intro p; split.
+  - apply S4_finite_sound.
+  - apply S4_finite_complete.
+Qed.
+
 (** * Strict inclusions witnessed by small frames *)
 
 Definition normal_strictly_weaker
@@ -689,6 +773,20 @@ Definition normal_strictly_weaker
   (forall p, P p -> Q p) /\ exists p, Q p /\ ~ P p.
 
 Inductive three_world : Type := W0 | W1 | W2.
+
+Inductive kt_sink_world : Type := KT0 | KT1.
+
+Definition kt_sink_frame : frame :=
+  {| World := kt_sink_world;
+     Rel := fun _ y => y = KT1 |}.
+
+Lemma kt_sink_serial : frame_serial kt_sink_frame.
+Proof. intro x. exists KT1. reflexivity. Qed.
+
+Lemma kt_sink_not_reflexive : ~ frame_reflexive kt_sink_frame.
+Proof.
+  intro HR. specialize (HR KT0). discriminate.
+Qed.
 
 Definition three_chain_relation (x y : three_world) : Prop :=
   (x = W0 /\ y = W1) \/ (x = W1 /\ y = W2).
@@ -735,6 +833,30 @@ Proof.
       pose proof (proj1 (valid_T_iff_reflexive
         irreflexive_singleton_frame) Hvalid) as Hrefl.
       exact (Hrefl tt).
+Qed.
+
+Theorem KD_weaker_than_KT :
+  forall p : formula nat, KD_proves p -> KT_proves p.
+Proof.
+  intros p Hp. apply KT_complete.
+  intros F HR.
+  apply KD_proves_sound_on_serial_frame.
+  - intro x. exists x. apply HR.
+  - exact Hp.
+Qed.
+
+Theorem KD_strictly_weaker_KT :
+  normal_strictly_weaker KD_proves KT_proves.
+Proof.
+  split.
+  - exact KD_weaker_than_KT.
+  - exists (T (Atom 0)); split.
+    + apply Np_extra. exists (Atom 0). reflexivity.
+    + intro HKD.
+      pose proof (KD_proves_sound_on_serial_frame kt_sink_serial HKD)
+        as Hvalid.
+      apply kt_sink_not_reflexive.
+      now apply (proj1 (valid_T_iff_reflexive kt_sink_frame)).
 Qed.
 
 Theorem K_strictly_weaker_K4 :

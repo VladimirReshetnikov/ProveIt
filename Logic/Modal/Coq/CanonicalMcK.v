@@ -22,7 +22,7 @@ From Stdlib Require Import Lists.List Logic.Classical_Prop.
 From FoundationModal Require Import
   Syntax Axioms HilbertK Kripke Correspondence CorrespondenceExtensions
   HilbertKSoundness NormalHilbert CanonicalExtensions CanonicalPoint2
-  CanonicalCombinations Modality.
+  CanonicalCombinations Modality LogicInfrastructure.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -154,8 +154,49 @@ Qed.
 Definition base_mck_switch (p : formula nat) : formula nat :=
   Imp (Dia p) (Box p).
 
-(** McK implies that its switch formula is possible.  This is the only
-    direction of Foundation's K-equivalence needed below. *)
+(** Foundation first proves in pure K that McK is equivalent to the
+    possibility of its switch formula.  We expose both directions as well
+    as the packaged biconditional; the forward direction is the one used by
+    the special-successor construction below. *)
+Lemma normal_proves_base_mck_axiom_to_switch_possible :
+  forall Ax (p : formula nat),
+    normal_proves Ax (Imp (McK p) (Dia (base_mck_switch p))).
+Proof.
+  intros Ax p. apply normal_proves_of_valid_on_all_frames.
+  intros F V w Hmck.
+  destruct (classic (satisfies F V w (Box (Dia p))))
+    as [Hboxdia | Hnotboxdia].
+  - destruct (@satisfies_dia_elim nat F V w (Box p) (Hmck Hboxdia))
+      as [y [Rwy Hboxp]].
+    apply satisfies_dia_intro. exists y; split; [exact Rwy |].
+    unfold base_mck_switch. intros _. exact Hboxp.
+  - apply satisfies_dia_intro. apply NNPP. intro Hnone.
+    apply Hnotboxdia. intros y Rwy. apply NNPP. intro Hnotdia.
+    apply Hnone. exists y; split; [exact Rwy |].
+    unfold base_mck_switch. intro Hdia. exfalso. exact (Hnotdia Hdia).
+Qed.
+
+Lemma normal_proves_base_mck_switch_possible_to_axiom :
+  forall Ax (p : formula nat),
+    normal_proves Ax (Imp (Dia (base_mck_switch p)) (McK p)).
+Proof.
+  intros Ax p. apply normal_proves_of_valid_on_all_frames.
+  intros F V w Hswitch Hboxdia.
+  destruct (satisfies_dia_elim Hswitch) as [y [Rwy HswitchY]].
+  apply satisfies_dia_intro. exists y; split; [exact Rwy |].
+  unfold base_mck_switch in HswitchY.
+  exact (HswitchY (Hboxdia y Rwy)).
+Qed.
+
+Theorem normal_proves_base_mck_axiom_switch_iff :
+  forall Ax (p : formula nat),
+    normal_proves Ax (Iff (McK p) (Dia (base_mck_switch p))).
+Proof.
+  intros Ax p. apply normal_proves_iff_intro_modality.
+  - apply normal_proves_base_mck_axiom_to_switch_possible.
+  - apply normal_proves_base_mck_switch_possible_to_axiom.
+Qed.
+
 Lemma normal_proves_base_mck_switch_possible :
   forall Ax,
     schema_included McK_axiom_schema Ax ->
@@ -164,19 +205,26 @@ Lemma normal_proves_base_mck_switch_possible :
 Proof.
   intros Ax HMcK p.
   eapply (Np_mp (p := McK p)).
-  - apply normal_proves_of_valid_on_all_frames.
-    intros F V w Hmck.
-    destruct (classic (satisfies F V w (Box (Dia p))))
-      as [Hboxdia | Hnotboxdia].
-    + destruct (@satisfies_dia_elim nat F V w (Box p) (Hmck Hboxdia))
-        as [y [Rwy Hboxp]].
-      apply satisfies_dia_intro. exists y; split; [exact Rwy |].
-      intros _. exact Hboxp.
-    + apply satisfies_dia_intro. apply NNPP. intro Hnone.
-      apply Hnotboxdia. intros y Rwy. apply NNPP. intro Hnotdia.
-      apply Hnone. exists y; split; [exact Rwy |].
-      intros Hdia. exfalso. exact (Hnotdia Hdia).
+  - apply normal_proves_base_mck_axiom_to_switch_possible.
   - apply Np_extra. apply HMcK. exists p. reflexivity.
+Qed.
+
+(** The two K-valid ways of commuting one possible and one necessary
+    conjunct.  The following elimination corollaries match Foundation's
+    theorem-level conveniences. *)
+Lemma normal_proves_base_mck_dia_box_to_dia_and :
+  forall Ax (p q : formula nat),
+    normal_proves Ax
+      (Imp (And (Dia p) (Box q)) (Dia (And p q))).
+Proof.
+  intros Ax p q. apply normal_proves_of_valid_on_all_frames.
+  intros F V w Hand.
+  destruct (proj1 (@satisfies_and nat F V w (Dia p) (Box q)) Hand)
+    as [Hdiap Hboxq].
+  destruct (satisfies_dia_elim Hdiap) as [y [Rwy Hpy]].
+  apply satisfies_dia_intro. exists y; split; [exact Rwy |].
+  apply (proj2 (@satisfies_and nat F V y p q)).
+  split; [exact Hpy | now apply Hboxq].
 Qed.
 
 Lemma normal_proves_base_mck_dia_box_and_box_dia :
@@ -206,6 +254,26 @@ Proof.
   apply satisfies_dia_intro. exists y; split; [exact Rwy |].
   apply (proj2 (@satisfies_and nat F V y p q)).
   split; [now apply Hboxp | exact Hqy].
+Qed.
+
+Corollary normal_proves_base_mck_dia_box_elim :
+  forall Ax (p q : formula nat),
+    normal_proves Ax (And (Dia p) (Box q)) ->
+    normal_proves Ax (Dia (And p q)).
+Proof.
+  intros Ax p q Hand. eapply Np_mp.
+  - apply normal_proves_base_mck_dia_box_to_dia_and.
+  - exact Hand.
+Qed.
+
+Corollary normal_proves_base_mck_box_dia_elim :
+  forall Ax (p q : formula nat),
+    normal_proves Ax (And (Box p) (Dia q)) ->
+    normal_proves Ax (Dia (And p q)).
+Proof.
+  intros Ax p q Hand. eapply Np_mp.
+  - apply normal_proves_base_mck_box_dia_to_dia_and.
+  - exact Hand.
 Qed.
 
 Lemma normal_proves_base_mck_dia_collapse_of_Four :
@@ -265,6 +333,93 @@ Proof.
   eapply Np_mp.
   - now apply normal_proves_base_mck_dia_collapse_of_Four.
   - exact HdiaDia.
+Qed.
+
+(** The binary combination theorem iterates over every nonempty list.  The
+    singleton case retains [logic_list_conj]'s trailing top, just as
+    Foundation's [List.conj] does. *)
+Lemma normal_proves_base_mck_nonempty_list_jointly_possible :
+  forall Ax,
+    schema_included schema_Four Ax ->
+    schema_included McK_axiom_schema Ax ->
+    forall Gamma : list (formula nat),
+      Gamma <> nil ->
+      (forall p, In p Gamma -> normal_proves Ax (Dia p)) ->
+      normal_proves Ax (Dia (logic_list_conj Gamma)).
+Proof.
+  intros Ax HFour HMcK Gamma.
+  induction Gamma as [|p Gamma IH]; intros Hnonempty Hall.
+  - contradiction.
+  - destruct Gamma as [|q Gamma].
+    + change (normal_proves Ax (Dia (And p Top))).
+      eapply Np_mp.
+      * apply normal_proves_dia_regularity_modality.
+        apply normal_proves_of_valid_on_all_frames.
+        intros F V w Hp.
+        apply (proj2 (@satisfies_and nat F V w p Top)).
+        split; [exact Hp | apply satisfies_top].
+      * apply Hall. now left.
+    + change (normal_proves Ax
+        (Dia (And p (logic_list_conj (q :: Gamma))))).
+      apply normal_proves_base_mck_jointly_possible;
+        [exact HFour | exact HMcK | |].
+      * apply Hall. now left.
+      * apply IH.
+        -- discriminate.
+        -- intros r Hr. apply Hall. now right.
+Qed.
+
+Definition base_mck_switch_conjunction (Gamma : list (formula nat))
+    : formula nat :=
+  logic_list_conj (map base_mck_switch Gamma).
+
+Definition base_mck_switch_finset_conjunction
+    (Gamma : list (formula nat)) : formula nat :=
+  logic_list_conj2 (map base_mck_switch Gamma).
+
+Lemma normal_proves_base_mck_switch_list_conjunction_possible :
+  forall Ax,
+    schema_included schema_Four Ax ->
+    schema_included McK_axiom_schema Ax ->
+    forall Gamma : list (formula nat),
+      Gamma <> nil ->
+      normal_proves Ax (Dia (base_mck_switch_conjunction Gamma)).
+Proof.
+  intros Ax HFour HMcK Gamma Hnonempty.
+  unfold base_mck_switch_conjunction.
+  apply normal_proves_base_mck_nonempty_list_jointly_possible;
+    [exact HFour | exact HMcK | |].
+  - intro Hmap. destruct Gamma as [|p Gamma].
+    + contradiction.
+    + discriminate.
+  - intros q Hq. apply in_map_iff in Hq.
+    destruct Hq as [p [<- _]].
+    now apply normal_proves_base_mck_switch_possible.
+Qed.
+
+(** Lean's [Finset] is represented throughout this port by an extensional
+    list.  Accordingly [image] is [map]; the conclusion holds for every
+    enumeration, so order and repetitions do not affect the theorem. *)
+Corollary normal_proves_base_mck_switch_finset_conjunction_possible :
+  forall Ax,
+    schema_included schema_Four Ax ->
+    schema_included McK_axiom_schema Ax ->
+    forall Gamma : list (formula nat),
+      Gamma <> nil ->
+      normal_proves Ax
+        (Dia (base_mck_switch_finset_conjunction Gamma)).
+Proof.
+  intros Ax HFour HMcK Gamma Hnonempty.
+  unfold base_mck_switch_finset_conjunction.
+  eapply Np_mp.
+  - apply normal_proves_dia_regularity_modality.
+    apply (@logic_list_conj_to_conj2 nat (@normal_proves Ax nat)).
+    constructor.
+    + intros p Htaut. apply normal_proves_of_valid_on_all_frames.
+      now apply classical_tautology_valid.
+    + intros p q; apply Np_mp.
+  - exact (normal_proves_base_mck_switch_list_conjunction_possible
+      HFour HMcK Hnonempty).
 Qed.
 
 (** * The special canonical successor *)

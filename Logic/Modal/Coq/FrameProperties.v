@@ -20,12 +20,13 @@
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lia.
+From Stdlib Require Import Lists.List.
 From Stdlib Require Import Logic.Classical_Prop.
 From Stdlib Require Import Relations.Relation_Definitions.
 From Stdlib Require Import Relations.Relation_Operators.
 From Stdlib Require Import Wellfounded.Inclusion.
 From Stdlib Require Import Wellfounded.Transitive_Closure.
-From FoundationModal Require Import Kripke Correspondence Loeb.
+From FoundationModal Require Import Kripke Correspondence Filtration Loeb.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -602,6 +603,57 @@ Proof.
   destruct (Hcwf (fun y => y = x)) as [m [Hm Hmax]].
   - now exists x.
   - subst m. exact (Hmax x eq_refl).
+Qed.
+
+(** Every finite transitive irreflexive frame is converse well-founded.
+    This is the list-cover counterpart of Foundation's finite type-class
+    instance.  The proof chooses a maximal member directly by induction on
+    the cover; neither dependent choice nor an infinite-chain argument is
+    needed. *)
+Theorem finite_transitive_irreflexive_cwf :
+  forall F : frame,
+    finite_frame F -> frame_transitive F -> frame_irreflexive F ->
+    frame_converse_well_founded F.
+Proof.
+  intros F [cover Hcover] Htrans Hirr X [x0 Hx0].
+  assert (Hfinite_max : forall xs : list (World F),
+      (exists x, In x xs /\ X x) ->
+      exists m, In m xs /\ X m /\
+        forall y, In y xs -> X y -> ~ Rel F m y).
+  {
+    intro xs; induction xs as [|a xs IH]; intros Hinh.
+    - destruct Hinh as [x [Hin _]]. inversion Hin.
+    - destruct (classic (exists x, In x xs /\ X x))
+        as [Htail | Hno_tail].
+      + destruct (IH Htail) as [m [Hmin [HmX Hmax]]].
+        destruct (classic (X a /\ Rel F m a))
+          as [[Ha Rma] | Hnot_ma].
+        * exists a; split; [now left |].
+          split; [exact Ha |].
+          intros y Hyin HyX Ray.
+          destruct Hyin as [Hya | Hyin].
+          -- subst y. exact (Hirr a Ray).
+          -- apply (Hmax y Hyin HyX).
+             eapply Htrans; eauto.
+        * exists m; split; [now right |].
+          split; [exact HmX |].
+          intros y Hyin HyX Rmy.
+          destruct Hyin as [Hya | Hyin].
+          -- subst y. apply Hnot_ma. now split.
+          -- exact (Hmax y Hyin HyX Rmy).
+      + destruct Hinh as [x [[Hax | Hxin] HxX]].
+        * subst x. exists a; split; [now left |].
+          split; [exact HxX |].
+          intros y Hyin HyX Ray.
+          destruct Hyin as [Hya | Hyin].
+          -- subst y. exact (Hirr a Ray).
+          -- exfalso. apply Hno_tail. now exists y.
+        * exfalso. apply Hno_tail. now exists x.
+  }
+  destruct (Hfinite_max cover) as [m [_ [Hm Hmax]]].
+  - exists x0; split; [apply Hcover | exact Hx0].
+  - exists m; split; [exact Hm |].
+    intros y Hy Rmy. exact (Hmax y (Hcover y) Hy Rmy).
 Qed.
 
 Lemma converse_well_founded_asymmetric :
