@@ -1770,6 +1770,19 @@ an extra orbit-wide interchange hypothesis.  This closes the two full-row
 domain coordinates only; assembling every constructor branch into the local
 decision/exclusivity field remains a separate obligation.
 
+`RawCodedDynamicTruthNativeLocalPositiveGraph.v` now constructs the exact
+carrier-indexed target for that complete positive local field.  A predecessor
+`p` selects the genuine paired global orbit at `S p`; one real paired
+successor then exposes the native Sigma `Or7` and Pi `Or6` evidence rows at
+`S(S p)`.  Represented numeral substitution and ternary application build
+the two input domains and evidence applications, and a transparent formula
+polynomial assembles the literal decision/exclusivity bundle.  The module
+proves exact law-free semantics, standard-index alignment, row exposure,
+adequacy, and relational totality.  Its proof-total endpoint remains
+conditional on the sharply stated compiler that must return a represented PA
+proof of this exact selected carrier code; semantic validity is not used as a
+substitute for that compiler.
+
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
 use the same formula and assignment inputs but demand rank-zero outputs one
