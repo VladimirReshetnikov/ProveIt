@@ -1750,6 +1750,16 @@ an extra orbit-wide interchange hypothesis.  This closes the two full-row
 domain coordinates only; assembling every constructor branch into the local
 decision/exclusivity field remains a separate obligation.
 
+`RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
+that constructor matrix.  The native Sigma and Pi quantifier-free branches
+use the same formula and assignment inputs but demand rank-zero outputs one
+and zero, so the represented functionality theorem yields their exact
+curried contradiction.  The construction tracks the literal eight-witness
+branch closures, proves the corresponding fixed PA theorem and carrier code,
+and exposes both common-context modus ponens and guarded nested-assumption
+endpoints.  It deliberately claims only the QF/QF collision; the remaining
+constructor pairs and the full decision/exclusivity assembly are still open.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
