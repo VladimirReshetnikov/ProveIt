@@ -8,7 +8,7 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
-  CanonicalPoint3 CanonicalPoint4 CanonicalS5 CanonicalMcK CanonicalTrivVer
+  CanonicalPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK CanonicalTrivVer
   CanonicalK4n CanonicalPoint2McK CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
 
@@ -326,6 +326,20 @@ Check K_strictly_weaker_K4n.
 Check K4n_strictly_weaker_of_lt.
 Check K4n_family_pairwise_inequivalent.
 Check K4n_family_injective.
+
+(** Generic H canonicality, canonical S4H completeness, and the proved
+    Grz-to-S4H strict comparison. *)
+Check schema_H_substitution_closed.
+Check schema_H_normal_proves_sound_on_frame.
+Check schema_H_is_consistent.
+Check point_generated_detour_free.
+Check detour_free_weak_converse_well_founded.
+Check normal_canonical_detour_free_of_schema_H.
+Check S4H_canonical_frame.
+Check S4H_sound_complete.
+Check finite_S4H_frame_is_finite_Grz_frame.
+Check Grz_weaker_than_S4H.
+Check Grz_strictly_weaker_S4H.
 
 (** Canonical S4.4 and its exact Sobocinski frame condition. *)
 Check S4Point4_axiom_schema_substitution_closed.
@@ -819,6 +833,16 @@ Print Assumptions K4n_one_equiv_K4.
 Print Assumptions K_strictly_weaker_K4n.
 Print Assumptions K4n_strictly_weaker_of_lt.
 Print Assumptions K4n_family_injective.
+Print Assumptions schema_H_substitution_closed.
+Print Assumptions schema_H_normal_proves_sound_on_frame.
+Print Assumptions schema_H_is_consistent.
+Print Assumptions point_generated_detour_free.
+Print Assumptions detour_free_weak_converse_well_founded.
+Print Assumptions normal_canonical_detour_free_of_schema_H.
+Print Assumptions S4H_complete.
+Print Assumptions finite_S4H_frame_is_finite_Grz_frame.
+Print Assumptions Grz_weaker_than_S4H.
+Print Assumptions Grz_strictly_weaker_S4H.
 Print Assumptions S4Point4_axiom_schema_substitution_closed.
 Print Assumptions normal_canonical_sobocinski_of_schema_Point4.
 Print Assumptions S4Point4_complete.

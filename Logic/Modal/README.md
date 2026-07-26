@@ -49,6 +49,8 @@ is being reconstructed:
   piecewise-strongly-connected S4.3, with every pinned strict inclusion;
 - canonical completeness for Sobocinski-frame S4.4, including its generic
   Point4 canonical theorem and strict extension of S4.3;
+- generic H/detour-free canonicality and S4H completeness, with the proved
+  strict extension of Grz and an explicit three-world separator;
 - S5 completeness over universal frames via point generation, together with
   the complete pinned strict-predecessor hierarchy;
 - the generic canonical McKinsey special-successor construction and complete
@@ -161,6 +163,7 @@ is being reconstructed:
 | `CanonicalPoint2.v` | `Modal/Kripke/Logic/{K4Point2,S4Point2}.lean` | Weak/strong confluence canonicality; rooted finite filtration for S4.2; full source strictness chains |
 | `CanonicalPoint3.v` | `Modal/Kripke/{Axiom{WeakPoint3,Point3},Logic/{K4Point3,S4Point3}}.lean` | Weak/strong connectedness canonicality; linear-preorder and rooted finite S4.3 completeness; full source strictness chains |
 | `CanonicalPoint4.v` | `Modal/Kripke/{AxiomPoint4,Logic/S4Point4}.lean` | Generic Sobocinski canonicality; S4.4 soundness-completeness; strict S4.3 inclusion with a finite chain separator |
+| `CanonicalS4H.v` | `Modal/Kripke/{AxiomH,Logic/S4H}.lean` | Generic separator-based detour-free canonicality; S4H soundness-completeness; finite Grz-frame inclusion and strict Grz predecessor |
 | `CanonicalS5.v` | `Modal/Kripke/Logic/S5.lean` | Point-generated universal-frame characterization and completeness; strict KTB, KD45, KB4, S4.4, S4, and KT predecessors |
 | `CanonicalMcK.v` | `Modal/Kripke/{AxiomMcK,Logic/{K4McK,S4McK}}.lean` | Generic terminal-successor canonical construction; K4McK/S4McK soundness-completeness and complete strictness surface |
 | `CanonicalPoint2McK.v` | `Modal/Kripke/Logic/S4Point2McK.lean` | Combined strong-confluence/McKinsey canonical completeness; strict S4McK and S4.2 predecessors with finite fork and universal-frame separators |
@@ -314,6 +317,14 @@ canonical maximal-theory separator.  S4.4 completeness has the same boundary;
 the explicit three-world separator itself adds no non-Stdlib assumptions,
 while the full strict-inclusion theorem inherits the completeness boundary.
 
+The generic H canonical theorem uses maximal-theory separators and therefore
+inherits the canonical layer's extensionality, proof-irrelevance, definite-
+description, and classical assumptions.  S4H completeness and the Grz
+inclusion inherit that boundary; the concrete three-world H countermodel uses
+only excluded middle.  Foundation's pinned finite-S4H completeness proof is
+`sorry`, so this port records the proved finite frame-class inclusion but does
+not expose a finite-completeness theorem or assumption.
+
 The point-generated equivalence between universal-frame validity and S5-frame
 validity is closed under the global context.  Universal-frame completeness
 then inherits excluded middle and definite description from S5 canonical
@@ -418,7 +429,10 @@ statements.  K4Point3 and S4Point3 likewise have full parity, including the
 source's linear-preorder characterization, rooted finite-completeness proof,
 generic weak/strong connectedness canonical lemmas, and all five strictness
 statements.  S4Point4 and the generic Point4 canonical theorem have full
-parity as well, including the strict S4.3-to-S4.4 inclusion.  KTc, Triv, and
+parity as well, including the strict S4.3-to-S4.4 inclusion.  AxiomH and all
+proved S4H results are represented too, including canonical completeness and
+Grz strictness; only the source's admitted finite-completeness declaration is
+intentionally absent.  KTc, Triv, and
 Ver have full parity as well: all three canonical
 completeness theorems, both singleton finite-completeness arguments, their
 entailment modules, six strict inclusions, and the Ver/Triv boxdot equivalence
@@ -536,6 +550,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalPoint2 `
   FoundationModal.CanonicalPoint3 `
   FoundationModal.CanonicalPoint4 `
+  FoundationModal.CanonicalS4H `
   FoundationModal.CanonicalS5 `
   FoundationModal.CanonicalMcK `
   FoundationModal.CanonicalPoint2McK `
