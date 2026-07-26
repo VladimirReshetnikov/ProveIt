@@ -33,6 +33,8 @@ is being reconstructed:
   to canonical reflexivity, seriality, symmetry, transitivity, and right
   Euclideanity, with full soundness/completeness for KT, KD, KB, K4, K5, S4,
   and S5 and explicit small-frame strictness witnesses over K;
+- complete canonical metatheory for K45, KD4, KD5, KDB, KB4, KB5, and KD45,
+  including every pinned strict-inclusion result and the K4Point3 comparison;
 - schema-generic finite consistency over natural-number atoms, including the
   two insertion criteria, singleton and union laws, deterministic
   complement-closed extension, a finite-context Lindenbaum theorem,
@@ -128,6 +130,7 @@ is being reconstructed:
 | `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; KT/K4/S4 canonicality, completeness, and strictness |
 | `Modality.v` | `Modal/Modality/{Basic,S5}.lean`, `Modal/Kripke/Logic/S5.lean` | Modal-word algebra, size enumeration/splitting, syntactic translations and equivalences, generic finite reduction, S5 canonical completeness, and six-form normalization for every length |
 | `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
+| `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -229,6 +232,15 @@ closed once maximal contexts are supplied.  KD/KB/K5 completeness inherits
 the common Lindenbaum boundary; their explicit strictness witnesses require
 only excluded middle through the exact frame correspondences.
 
+The combined-schema definitions, substitution closure, transitive and
+symmetric canonical-frame arguments, and elementary frame conversions are
+closed.  Relational soundness and the explicit finite strictness witnesses
+use excluded middle through the derived-connective correspondences.  Every
+combination completeness theorem additionally inherits definite description
+from the common canonical construction; inclusions proved semantically from
+those completeness theorems, including K4Point3 below K45 and K45 below KB4,
+inherit the same boundary.
+
 The predicate-valued logic structures and the inductive sum recursors are
 constructive.  Equality of predicate logics and symmetric or nested-union sum
 equalities use functional and propositional extensionality; their extensional
@@ -275,7 +287,9 @@ and quasinormal sum modules, predicate-logic basics, and global consequence
 have complete mathematical parity.  Predicates and duplicate-insensitive lists
 replace Lean sets and finite sets; explicit theorems connect the trailing-top
 and singleton-normalized conjunctions and the cumulative and individual-box
-presentations used in the implementation and source.  Every modal word has a
+presentations used in the implementation and source.  All seven pinned
+combination-logic modules are fully represented, including their strict
+inclusion chains.  Every modal word has a
 checked S5 equivalence and reduction to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,
@@ -372,6 +386,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.FrameTransformations `
   FoundationModal.StructuralFrames `
   FoundationModal.WeakCorrespondence `
+  FoundationModal.CanonicalCombinations `
   FoundationModal.Boxdot `
   FoundationModal.Undefinability FoundationModal.Audit
 ```

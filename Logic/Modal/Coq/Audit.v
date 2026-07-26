@@ -7,7 +7,7 @@ From FoundationModal Require Import
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
-  WeakCorrespondence Boxdot Undefinability.
+  WeakCorrespondence CanonicalCombinations Boxdot Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -219,6 +219,39 @@ Check normal_proves_P_of_schema_D.
 Check K_strictly_weaker_KD.
 Check K_strictly_weaker_KB.
 Check K_strictly_weaker_K5.
+
+(** Canonical combinations of D, B, Four, Five, and WeakPoint3. *)
+Check K45_schema_substitution_closed.
+Check KD45_schema_substitution_closed.
+Check K4Point3_schema_substitution_closed.
+Check K45_frame_class_in_K4Point3.
+Check K45_canonical_frame.
+Check KD4_canonical_frame.
+Check KD5_canonical_frame.
+Check KDB_canonical_frame.
+Check KB4_canonical_frame.
+Check KB5_canonical_frame.
+Check KD45_canonical_frame.
+Check K45_sound_complete.
+Check KD4_sound_complete.
+Check KD5_sound_complete.
+Check KDB_sound_complete.
+Check KB4_sound_complete.
+Check KB5_sound_complete.
+Check KD45_sound_complete.
+Check K4Point3_strictly_weaker_K45.
+Check K5_strictly_weaker_K45.
+Check KD_strictly_weaker_KD4.
+Check K4_strictly_weaker_KD4.
+Check KD_strictly_weaker_KD5.
+Check K5_strictly_weaker_KD5.
+Check KD_strictly_weaker_KDB.
+Check KB_strictly_weaker_KDB.
+Check K45_strictly_weaker_KB4.
+Check KB_strictly_weaker_KB4.
+Check KD4_strictly_weaker_KD45.
+Check KD5_strictly_weaker_KD45.
+Check K45_strictly_weaker_KD45.
 
 (** Modal words, their finite size layers, generic reduction algebra, and
     checked S5 canonical normalization. *)
@@ -552,6 +585,16 @@ Print Assumptions normal_proves_P_of_schema_D.
 Print Assumptions K_strictly_weaker_KD.
 Print Assumptions K_strictly_weaker_KB.
 Print Assumptions K_strictly_weaker_K5.
+Print Assumptions normal_canonical_transitive_of_schema_Four.
+Print Assumptions K45_frame_class_in_K4Point3.
+Print Assumptions K45_sound_complete.
+Print Assumptions KD4_sound_complete.
+Print Assumptions KB5_sound_complete.
+Print Assumptions KD45_sound_complete.
+Print Assumptions K4Point3_strictly_weaker_K45.
+Print Assumptions K5_strictly_weaker_K45.
+Print Assumptions K45_strictly_weaker_KB4.
+Print Assumptions KD5_strictly_weaker_KD45.
 Print Assumptions K_strictly_weaker_KT.
 Print Assumptions K_strictly_weaker_K4.
 Print Assumptions KT_strictly_weaker_S4.
