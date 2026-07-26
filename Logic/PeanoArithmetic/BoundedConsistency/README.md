@@ -1924,6 +1924,16 @@ six-field common-context package can be extended with the proved QF helper
 while retaining one exact synchronized witnessed context for all seven
 roots.
 
+`RawCodedTruthCertificateMasterFixedHelperBatchExtension.v` generalizes that
+operation to an ordered finite batch of fixed ordinary PA theorems.  Each
+dependent batch entry carries the proof of its own formula.  When compiling a
+new entry chooses a finite axiom prefix, the construction transplants all six
+master roots and every earlier helper root through that one exact prefix, so
+the final family has one root per helper and one literal synchronized context
+for the entire package.  A concrete first batch contains the unconditional QF
+collision and both conditional implication cells; it deliberately does not
+discharge their predecessor-state premise.
+
 `RawCodedTruthCertificateConcreteEndpoint.v` connects that successor bridge,
 the zero bridge, the concrete assembler, and the generic PA-internal
 induction.  Its single remaining all-model premise is exactly the five-field
