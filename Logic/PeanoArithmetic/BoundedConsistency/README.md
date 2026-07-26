@@ -1401,6 +1401,18 @@ operation library does not yet expose.  What remains at this layer is that
 interchange theorem; atomic adequacy alone is intentionally not mistaken for
 the missing scope-sensitive operation contract.
 
+`RawCodedTernaryPredicateRootClosure.v` strengthens the standard scoped
+substitution identity from numeral replacements to every honestly
+represented, possibly nonstandard term.  Represented shift totality chooses
+the unused lifted replacement; a structural diagonal trace then proves that
+any quoted ternary-scoped formula is fixed by both the depth-three shift and
+depth-three substitution operations.  Applying this interface to the exact
+row-aligned global rank-zero quotations,
+`RawCodedDynamicTruthGlobalBaseRootClosure.v` proves root closure for both
+outputs of the paired global base graph.  The corresponding preservation
+theorem for the nonstandard successor orbit is still required before the
+opaque application laws are available at every carrier level.
+
 `RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
 Sigma successor-row syntax: eight existential table witnesses around a domain
 check and a seven-way disjunction, whose final branch contains the opaque

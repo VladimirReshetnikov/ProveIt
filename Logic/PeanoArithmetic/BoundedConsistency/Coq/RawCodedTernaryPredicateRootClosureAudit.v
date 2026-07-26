@@ -1,0 +1,20 @@
+(** Public surface and kernel-assumption audit for ternary root closure. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTernaryPredicateRootClosure.
+
+Module PABoundedRawCodedTernaryPredicateRootClosureAudit.
+
+Import PABoundedRawCodedTernaryPredicateRootClosure.
+
+Check raw_codedFormulaSubstitutionAtom_standard_identity_below_of_syntax.
+Check raw_codedFormulaDiagonalSubstitution_standard_scoped_of_syntax.
+Check raw_quotedFormula_ternaryPredicateRootClosed.
+
+Print Assumptions
+  raw_codedFormulaSubstitutionAtom_standard_identity_below_of_syntax.
+Print Assumptions
+  raw_codedFormulaDiagonalSubstitution_standard_scoped_of_syntax.
+Print Assumptions raw_quotedFormula_ternaryPredicateRootClosed.
+
+End PABoundedRawCodedTernaryPredicateRootClosureAudit.
