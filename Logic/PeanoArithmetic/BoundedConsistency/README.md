@@ -1379,10 +1379,16 @@ recurses over the honest syntax and grafts client-supplied operation trees at
 opaque leaves, thereby realizing full represented shift and opening traces
 without decoding a carrier formula.  Its companion PA-agreement module proves
 that this structural interpretation is exactly ordinary quotation on the PA
-fragment.  What remains at this layer is to supply the concrete one- and
-two-predicate opaque leaves and model-internal numeral parameters; atomic
-adequacy alone is intentionally not mistaken for that scope-sensitive
-operation contract.
+fragment.  `RawCodedTemplateTernaryApplication.v` supplies the honest
+five-trace application relation for a possibly nonstandard ternary formula,
+proves totality and preservation of atomic adequacy on represented term
+syntax, and names the exact shift/opening commuting diagrams required at an
+opaque leaf.  Those diagrams are intentionally left as contracts: proving
+them needs cross-trace substitution/shift interchange, which the current raw
+operation library does not yet expose.  What remains at this layer is that
+interchange theorem together with the model-internal numeral-parameter term
+traces; atomic adequacy alone is intentionally not mistaken for the missing
+scope-sensitive operation contract.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
