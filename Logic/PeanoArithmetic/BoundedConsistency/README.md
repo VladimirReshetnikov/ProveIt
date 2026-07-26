@@ -1398,6 +1398,15 @@ operation library does not yet expose.  What remains at this layer is that
 interchange theorem; atomic adequacy alone is intentionally not mistaken for
 the missing scope-sensitive operation contract.
 
+`RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
+Sigma successor-row syntax: eight existential table witnesses around a domain
+check and a seven-way disjunction, whose final branch contains the opaque
+lower-Pi application.  It supplies an honest eight-witness projection from an
+explicitly restricted universal row and proves in the kernel that the older
+five-witness, conjunction-only candidate is not this table row.  Concrete
+instantiation therefore cannot silently identify the Lean-shaped schema with
+Rocq's different encoding.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
