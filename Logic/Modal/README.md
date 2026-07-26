@@ -115,7 +115,8 @@ is being reconstructed:
   satisfiability-oriented semantic finite-model theorems;
 - finest filtration and its nonempty-transitive-closure variant, including
   their truth lemmas, the same explicit finite bound, and preservation of
-  reflexivity, seriality, symmetry, preorders, and equivalence frames;
+  reflexivity, seriality, symmetry, preorders, equivalence frames, and the
+  rooted piecewise-strong convergence and connectedness properties;
 - the general Geach axiom/frame-condition correspondence, with exact
   specializations T/reflexive, D/serial, B/symmetric, 4/transitive,
   5/right-Euclidean, Tc/coreflexive, and .2/strongly confluent;
@@ -215,7 +216,7 @@ is being reconstructed:
 | `CanonicalS5Grz.v` | `Modal/Entailment/S5Grz.lean`, `Modal/Kripke/Logic/S5Grz.lean`, `Modal/Hilbert/Normal/Basic.lean` | Polymorphic S5Grz calculus; direct DiaT and Tc derivations; proof-theoretic equivalence with Triv; direct finite-Triv soundness and consistency; strict S5 and Grz predecessors and the derived strict S4-to-Triv inclusion |
 | `CanonicalPoint4McK.v` | `Modal/Kripke/Logic/S4Point4McK.lean` | Complete S4.4McK canonical metatheory and strictness, reusing the complete S4.3McK predecessor API |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
-| `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
+| `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation, and both rooted piecewise-strong convergence/connectedness theorems through point generation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness, including finite strict-preorder validity |
 | `FrameProperties.v` | `Modal/Kripke/{Antisymmetric,Asymmetric,Closure,Irreflexive,Terminated}.lean` | Closure algebra, frame orders, termination, converse well-foundedness, and finite strict-order maximality |
 | `CorrespondenceExtensions.v` | `Modal/Kripke/Axiom{FourN,Grz,H,I,McK,Mk,Point4,Ver}.lean` | Further exact and directional named-axiom frame correspondences |
@@ -513,7 +514,10 @@ truth profiles use excluded middle, representatives of realized profiles use
 profile inhabitants in the finite cover uses proof irrelevance.  The audit
 shows that the structural list enumeration itself is constructive, the truth
 lemma needs the first two principles, and the finite cover adds only proof
-irrelevance—without functional or propositional extensionality.
+irrelevance—without functional or propositional extensionality.  The rooted
+strong-convergence and strong-connectedness corollaries reuse representative
+selection and point-generated subtypes and therefore expose exactly these
+same three principles.
 
 ## Parity boundary
 
@@ -591,9 +595,9 @@ the resulting finite carriers and their equality are extensional.  GL.3 now
 has a checked selective finite canonical model and exact finite connected and
 piecewise-connected soundness-completeness.  The project still does not claim
 completeness for Grz.3, whose pinned Foundation declaration is admitted.
-Rooted filtration preservation for other modal companions remains later work;
-the strong-convergence and strong-connectedness cases needed by S4Point2 and
-S4Point3 are checked locally.
+The two rooted filtration preservation theorems are now checked generically
+through point-generated frames, subsuming the local S4Point2 and S4Point3
+uses and completing the pinned filtration theorem surface.
 
 ### Boxdot dependency gates
 

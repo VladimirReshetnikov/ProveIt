@@ -854,6 +854,14 @@ Check finest_tc_filtered_frame_cover_bound.
 Check finest_tc_is_transitive.
 Check finest_tc_preserves_preorder.
 Check finest_tc_preserves_equivalence.
+Check finest_tc_filtered_rel_of_representatives.
+Check finest_tc_filtered_rel_to_profile_class.
+Check finest_tc_preserves_strongly_convergent.
+Check FiltrationExtensions.finest_tc_preserves_strongly_connected.
+Check finest_tc_point_generated_preserves_piecewise_strongly_convergent.
+Check finest_tc_point_generated_preserves_piecewise_strongly_connected.
+Check finest_tc_rooted_is_piecewise_strongly_convergent.
+Check finest_tc_rooted_is_piecewise_strongly_connected.
 
 Check valid_Geach_atom_iff_geach_convergent.
 Check valid_T_iff_reflexive.
@@ -1533,6 +1541,12 @@ Print Assumptions finest_filtered_frame_cover_bound.
 Print Assumptions finest_tc_filtration_truth.
 Print Assumptions finest_tc_filtered_frame_cover_bound.
 Print Assumptions finest_tc_preserves_equivalence.
+Print Assumptions finest_tc_preserves_strongly_convergent.
+Print Assumptions FiltrationExtensions.finest_tc_preserves_strongly_connected.
+Print Assumptions
+  finest_tc_point_generated_preserves_piecewise_strongly_convergent.
+Print Assumptions
+  finest_tc_point_generated_preserves_piecewise_strongly_connected.
 
 (** Intentional classical boundary: diamond is defined as [~ box ~], so
     extracting witnesses and classical derived connectives uses excluded
