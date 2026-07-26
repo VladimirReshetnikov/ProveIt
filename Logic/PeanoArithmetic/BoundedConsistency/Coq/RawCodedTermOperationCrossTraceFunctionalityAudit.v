@@ -1,0 +1,31 @@
+(** Standalone assumption audit for arbitrary-code term-operation
+    functionality across independently represented traces. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTermOperationCrossTraceFunctionality.
+
+Import PABoundedRawCodedTermOperationCrossTraceFunctionality.
+
+Check raw_shiftedIndex_functional.
+Check raw_codedTermShiftVariableRow_functional.
+Check raw_codedTermShiftTrace_reroot.
+Check raw_codedTermShift_reroot.
+Check RawCodedTermShiftIndexFunctionalBelow.
+Check raw_codedTermShiftIndexFunctionalBelow_all.
+Check raw_codedTermShift_functional.
+
+Check raw_codedTermOpeningVariableRow_functional.
+Check raw_codedTermOpeningTrace_reroot.
+Check raw_codedTermOpening_reroot.
+Check RawCodedTermOpeningIndexFunctionalBelow.
+Check raw_codedTermOpeningIndexFunctionalBelow_all.
+Check raw_codedTermOpening_functional.
+
+Check RawCodedFormulaOperationAtomFunctional.
+Check raw_codedFormulaShiftAtom_functional.
+Check raw_codedFormulaSubstitutionAtom_functional.
+
+Print Assumptions raw_codedTermShift_functional.
+Print Assumptions raw_codedTermOpening_functional.
+Print Assumptions raw_codedFormulaShiftAtom_functional.
+Print Assumptions raw_codedFormulaSubstitutionAtom_functional.

@@ -1,0 +1,23 @@
+(** Standalone assumption audit for arbitrary-code formula-operation
+    functionality across independently represented traces. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFormulaOperationCrossTraceFunctionality.
+
+Import PABoundedRawCodedFormulaOperationCrossTraceFunctionality.
+
+Check raw_codedFormulaOperationTrace_reroot_exact.
+Check raw_codedFormulaOperation_reroot.
+Check RawCodedFormulaOperationIndexFunctionalBelow.
+Check raw_codedFormulaOperationIndexFunctionalBelow_all.
+Check raw_codedFormulaOperation_functional.
+Check raw_codedFormulaShift_functional.
+Check raw_codedFormulaSubstitution_functional.
+Check raw_codedFormulaSingleSubstitution_functional.
+
+Print Assumptions raw_codedFormulaOperationTrace_reroot_exact.
+Print Assumptions raw_codedFormulaOperationIndexFunctionalBelow_all.
+Print Assumptions raw_codedFormulaOperation_functional.
+Print Assumptions raw_codedFormulaShift_functional.
+Print Assumptions raw_codedFormulaSubstitution_functional.
+Print Assumptions raw_codedFormulaSingleSubstitution_functional.

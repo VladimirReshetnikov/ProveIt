@@ -1395,11 +1395,23 @@ opened terms, in the honest syntax domain required by opaque selectors.
 five-trace application relation for a possibly nonstandard ternary formula,
 proves totality and preservation of atomic adequacy on represented term
 syntax, and names the exact shift/opening commuting diagrams required at an
-opaque leaf.  Those diagrams are intentionally left as contracts: proving
-them needs cross-trace substitution/shift interchange, which the current raw
-operation library does not yet expose.  What remains at this layer is that
-interchange theorem; atomic adequacy alone is intentionally not mistaken for
-the missing scope-sensitive operation contract.
+opaque leaf.  `RawCodedTermOperationCrossTraceFunctionality.v` and
+`RawCodedFormulaOperationCrossTraceFunctionality.v` prove that arbitrary
+successful represented traces for the same operation inputs agree, and the
+ternary specialization gives unique selector outputs on honest term syntax.
+`RawCodedTermShiftProtection.v` and
+`RawCodedTermOpeningShiftInterchange.v` establish the term-level protection
+and opening/shift square over arbitrary carrier parameters.  The formula
+square is proved by a seventeen-parameter represented invariant and
+`raw_definable_induction` in
+`RawCodedFormulaShiftSubstitutionInterchange{Invariant,Induction}.v`.
+`RawCodedFormulaOperationConcreteLaws.v` packages the result as protective
+stability and single-substitution interchange for `FormulaShift`.  These laws
+solve the shift-operation side of an opaque application once the predicate is
+deeply closed.  The legacy unguarded opening contract still permits an
+arbitrary replacement carrier value, so its corresponding concrete law is
+kept separate rather than inferred from atomic adequacy or honest-syntax deep
+closure.
 
 `RawCodedTernaryPredicateRootClosure.v` strengthens the standard scoped
 substitution identity from numeral replacements to every honestly
