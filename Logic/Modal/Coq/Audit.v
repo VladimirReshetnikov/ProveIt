@@ -7,7 +7,7 @@ From FoundationModal Require Import
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
-  WeakCorrespondence CanonicalCombinations Boxdot Undefinability.
+  WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -252,6 +252,22 @@ Check KB_strictly_weaker_KB4.
 Check KD4_strictly_weaker_KD45.
 Check KD5_strictly_weaker_KD45.
 Check K45_strictly_weaker_KD45.
+
+(** Reflexive-symmetric KTB and equivalence-frame KT4B, including finite
+    completeness and the S5 comparison. *)
+Check KTB_schema_substitution_closed.
+Check KT4B_schema_substitution_closed.
+Check KTB_frame_is_serial_symmetric.
+Check KT4B_frame_class_iff_S5_frame_class.
+Check KTB_canonical.
+Check KT4B_canonical.
+Check KTB_sound_complete.
+Check KT4B_sound_complete.
+Check KTB_finite_sound_complete.
+Check KT4B_finite_sound_complete.
+Check S5_KT4B_equivalent.
+Check KT_strictly_weaker_KTB.
+Check KDB_strictly_weaker_KTB.
 
 (** Modal words, their finite size layers, generic reduction algebra, and
     checked S5 canonical normalization. *)
@@ -595,6 +611,16 @@ Print Assumptions K4Point3_strictly_weaker_K45.
 Print Assumptions K5_strictly_weaker_K45.
 Print Assumptions K45_strictly_weaker_KB4.
 Print Assumptions KD5_strictly_weaker_KD45.
+Print Assumptions KTB_schema_substitution_closed.
+Print Assumptions KTB_proves_sound_on_frame.
+Print Assumptions KTB_canonical.
+Print Assumptions KTB_complete.
+Print Assumptions KTB_finite_complete.
+Print Assumptions KT4B_complete.
+Print Assumptions KT4B_finite_complete.
+Print Assumptions S5_KT4B_equivalent.
+Print Assumptions KT_strictly_weaker_KTB.
+Print Assumptions KDB_strictly_weaker_KTB.
 Print Assumptions K_strictly_weaker_KT.
 Print Assumptions K_strictly_weaker_K4.
 Print Assumptions KT_strictly_weaker_S4.

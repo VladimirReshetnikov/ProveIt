@@ -35,6 +35,9 @@ is being reconstructed:
   and S5 and explicit small-frame strictness witnesses over K;
 - complete canonical metatheory for K45, KD4, KD5, KDB, KB4, KB5, and KD45,
   including every pinned strict-inclusion result and the K4Point3 comparison;
+- canonical and finite completeness for reflexive-symmetric KTB and
+  equivalence-frame KT4B, including the exact S5/KT4B equivalence and strict
+  KTB extensions of KT and KDB;
 - schema-generic finite consistency over natural-number atoms, including the
   two insertion criteria, singleton and union laws, deterministic
   complement-closed extension, a finite-context Lindenbaum theorem,
@@ -131,6 +134,7 @@ is being reconstructed:
 | `Modality.v` | `Modal/Modality/{Basic,S5}.lean`, `Modal/Kripke/Logic/S5.lean` | Modal-word algebra, size enumeration/splitting, syntactic translations and equivalences, generic finite reduction, S5 canonical completeness, and six-form normalization for every length |
 | `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
 | `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
+| `CanonicalTB.v` | `Modal/Kripke/Logic/{KTB,KT4B}.lean` | Reflexive-symmetric and equivalence-frame canonical/finite completeness; S5 equivalence; strict KT/KDB inclusions |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -241,6 +245,14 @@ from the common canonical construction; inclusions proved semantically from
 those completeness theorems, including K4Point3 below K45 and K45 below KB4,
 inherit the same boundary.
 
+The KTB/KT4B schema inclusions, elementary frame conversions, and canonical
+frame properties are closed.  Frame soundness and the direct KT strictness
+witness use excluded middle.  Ordinary completeness, the S5/KT4B equivalence,
+and the semantic KDB inclusion additionally inherit definite description from
+the canonical construction.  Their finite-completeness proofs pass through
+the checked filtration quotient and therefore additionally expose
+constructive indefinite description and proof irrelevance.
+
 The predicate-valued logic structures and the inductive sum recursors are
 constructive.  Equality of predicate logics and symmetric or nested-union sum
 equalities use functional and propositional extensionality; their extensional
@@ -289,7 +301,9 @@ replace Lean sets and finite sets; explicit theorems connect the trailing-top
 and singleton-normalized conjunctions and the cumulative and individual-box
 presentations used in the implementation and source.  All seven pinned
 combination-logic modules are fully represented, including their strict
-inclusion chains.  Every modal word has a
+inclusion chains.  The KTB and KT4B modules likewise have full parity,
+including finite completeness, the S5 equivalence, and both KTB strictness
+results.  Every modal word has a
 checked S5 equivalence and reduction to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,
@@ -387,6 +401,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.StructuralFrames `
   FoundationModal.WeakCorrespondence `
   FoundationModal.CanonicalCombinations `
+  FoundationModal.CanonicalTB `
   FoundationModal.Boxdot `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
