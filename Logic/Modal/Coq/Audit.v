@@ -12,7 +12,8 @@ From FoundationModal Require Import
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer
-  CanonicalK4n CanonicalPoint2McK CanonicalPoint3McK CanonicalPoint4McK
+  CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
+  CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
 
 Check substitute_comp.
@@ -362,6 +363,32 @@ Check GrzPoint3_proves_to_GLPoint3_boxdot_unconditional.
 Check GLPoint3_boxdot_iff_GrzPoint3_from_Grz_finite_completeness.
 Check GL_strictly_weaker_GLPoint3.
 Check K4Point3_strictly_weaker_GLPoint3.
+
+(** Finite Grz.2 completeness and the complete proved Grz.3 surface.  The
+    pinned Grz.3 completeness declaration is admitted upstream and is
+    deliberately not reproduced here. *)
+Check finite_frame_exists_nonempty_cover.
+Check frame_exists_reflexive_terminal.
+Check satisfies_box_at_reflexive_terminal.
+Check GrzPoint2_schema_substitution_closed.
+Check GrzPoint2_finite_frame_class.
+Check GrzPoint2_finite_frame_is_S4Point2McK.
+Check grzpoint2_root_atom_agreement.
+Check grzpoint2_terminal_top_truth.
+Check grzpoint2_adjoin_terminal_truth.
+Check GrzPoint2_finite_sound_complete.
+Check Grz_strictly_weaker_GrzPoint2.
+Check S4Point2McK_strictly_weaker_GrzPoint2.
+Check S4Point2_strictly_weaker_GrzPoint2.
+Check GrzPoint3_finite_frame_class.
+Check GrzPoint3_finite_frame_class'.
+Check GrzPoint3_finite_frame_is_GrzPoint2.
+Check GrzPoint3_proves_sound_on_finite_strong_frame.
+Check GrzPoint3_proves_sound_on_finite_piecewise_strong_frame.
+Check GrzPoint3_is_consistent.
+Check GrzPoint2_weaker_than_GrzPoint3.
+Check GrzPoint2_strictly_weaker_GrzPoint3.
+Check S4Point3_strictly_weaker_GrzPoint3.
 
 (** Canonical weak-n transitivity and the infinite strict K4n hierarchy. *)
 Check schema_FourN_substitution_closed.
@@ -932,6 +959,21 @@ Print Assumptions GrzPoint3_proves_to_GLPoint3_boxdot_unconditional.
 Print Assumptions GLPoint3_boxdot_iff_GrzPoint3_from_Grz_finite_completeness.
 Print Assumptions GL_strictly_weaker_GLPoint3.
 Print Assumptions K4Point3_strictly_weaker_GLPoint3.
+Print Assumptions GrzPoint2_schema_substitution_closed.
+Print Assumptions GrzPoint2_proves_sound_on_finite_frame.
+Print Assumptions grzpoint2_root_atom_agreement.
+Print Assumptions grzpoint2_terminal_top_truth.
+Print Assumptions grzpoint2_adjoin_terminal_truth.
+Print Assumptions GrzPoint2_finite_complete.
+Print Assumptions Grz_strictly_weaker_GrzPoint2.
+Print Assumptions S4Point2McK_strictly_weaker_GrzPoint2.
+Print Assumptions S4Point2_strictly_weaker_GrzPoint2.
+Print Assumptions GrzPoint3_finite_frame_is_GrzPoint2.
+Print Assumptions GrzPoint3_proves_sound_on_finite_strong_frame.
+Print Assumptions GrzPoint3_is_consistent.
+Print Assumptions GrzPoint2_weaker_than_GrzPoint3.
+Print Assumptions GrzPoint2_strictly_weaker_GrzPoint3.
+Print Assumptions S4Point3_strictly_weaker_GrzPoint3.
 Print Assumptions schema_FourN_substitution_closed.
 Print Assumptions normal_canonical_rel_iter_iff_box_iter.
 Print Assumptions normal_canonical_weakly_transitive_of_schema_FourN.

@@ -168,6 +168,8 @@ is being reconstructed:
 | `CanonicalGLPoint3.v` | `Modal/Kripke/Logic/GLPoint3.lean`, `Modal/Boxdot/GLPoint3_GrzPoint3.lean` | Selective finite canonical GL.3 model; connected and piecewise-connected soundness-completeness; strict GL/K4.3 predecessors; checked Boxdot GL.3 gate and unconditional forward translation |
 | `CanonicalGrz.v` | `Modal/Kripke/Logic/Grz/{Soundness,Completeness}.lean` | Finite partial-order mini-canonical Grz model and truth lemma; finite/full soundness-completeness; finite partial orders validate McKinsey |
 | `CanonicalGrzMcK.v` | `Modal/Kripke/Logic/Grz/Completeness.lean` | Finite partial-order inclusion and the pinned three-world separator proving strict `S4McK < Grz` and `S4 < Grz` |
+| `CanonicalGrzPoint2.v` | `Modal/Kripke/Logic/GrzPoint2.lean` | Guarded finite Grz reduction, point generation, and a truth-preserving adjoined terminal; finite Grz.2 soundness-completeness; full strict predecessor hierarchy |
+| `CanonicalGrzPoint3Strict.v` | `Modal/Kripke/Logic/GrzPoint3.lean` | Both finite Grz.3 soundness classes, consistency, Grz.2 frame inclusion, and strict Grz.2/S4.3 predecessors; intentionally omits the pinned admitted completeness declaration |
 | `CanonicalK4n.v` | `Modal/Kripke/{AxiomFourN,Logic/K4n}.lean` | Generic iterated-accessibility canonical theorem; weak-n-transitive soundness-completeness; saturating counterframes, strict hierarchy, and infinite family |
 | `Modality.v` | `Modal/Modality/{Basic,S5}.lean`, `Modal/Kripke/Logic/S5.lean` | Modal-word algebra, size enumeration/splitting, syntactic translations and equivalences, generic finite reduction, S5 canonical completeness, and six-form normalization for every length |
 | `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
@@ -485,6 +487,14 @@ lemmas, finite and unrestricted soundness-completeness, and GL's finite rooted
 countermodel characterization.  Grz completeness also closes the pinned
 strict `S4McK < Grz` and `S4 < Grz` hierarchy through the source's finite
 three-world separator.
+Grz.2 likewise has full pinned parity: finite partial-order/convergence
+soundness-completeness is obtained by guarding a finite Grz countermodel and
+adjoining one truth-preserving universal terminal, and the strict Grz,
+S4.2McK, and S4.2 predecessors are all checked.  Every non-placeholder result
+from the pinned Grz.3 module is represented as well, including both finite
+soundness classes and the strict `Grz.2 < Grz.3` and `S4.3 < Grz.3`
+comparisons.  Its completeness declaration is deliberately absent because
+the pinned Lean proof is `sorry`.
 K4n and the generic AxiomFourN canonical theorem now have full parity as well,
 including the exact zero/one levels, every strictness form, and the injective
 infinite family represented without Lean typeclass wrappers.
@@ -605,6 +615,8 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalS5 `
   FoundationModal.CanonicalMcK `
   FoundationModal.CanonicalPoint2McK `
+  FoundationModal.CanonicalGrzPoint2 `
+  FoundationModal.CanonicalGrzPoint3Strict `
   FoundationModal.CanonicalTrivVer `
   FoundationModal.CanonicalK4n `
   FoundationModal.CanonicalPoint3McK `
