@@ -1358,7 +1358,12 @@ every raw proof node through the coverage-certified constructors.  Its public
 result is an exact `RawCodedPALocalProofOf`; nonstandard predicate codes are
 never decoded.  `RawCodedTranslatedProofCompiler.v` provides the corresponding
 homomorphic compiler for ordinary PA proof trees and will be used by the
-lifted-PA axiom bridge.  `RawCodedTemplateLogicalSchemas.v` records the small
+lifted-PA axiom bridge.  `RawCodedTemplatePAEmbedding.v` makes that bridge
+literal: it embeds all seventeen ordinary raw-proof constructors, proves
+context/conclusion/validity preservation, and attaches the unchanged finite
+list of witnessed ordinary PA axioms to the compiled template tree.  Opaque
+template atoms therefore cannot leak into the PA axiom base.
+`RawCodedTemplateLogicalSchemas.v` records the small
 finite source trees needed by the dynamic fields—conjunction projection and
 introduction, existential projection, and universal specialization followed
 by modus ponens—so their model-coded proofs do not rely on an unexposed
