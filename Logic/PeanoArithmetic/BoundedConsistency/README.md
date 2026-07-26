@@ -1947,6 +1947,16 @@ for the entire package.  A concrete first batch contains the unconditional QF
 collision and both conditional implication cells; it deliberately does not
 discharge their predecessor-state premise.
 
+`RawCodedTruthCertificateMasterCollisionHelperBatch.v` expands that concrete
+prefix to all twenty-one collision theorems currently ready for common-context
+use: QF/QF, the two conditional implication cells, the conditional And/Or
+cells, and the sixteen lower-independent constructor cells.  A generic map
+lemma identifies every translated target with its ordinary PA quotation, and
+the batch theorem places all twenty-one helper roots beside the six current
+master roots in one literal witnessed context.  The count is intentionally
+not forty-two: the conditional antecedents, carrier-sensitive binder cells,
+and mixed QF/non-QF cells remain separate proof-producing obligations.
+
 `RawCodedTruthCertificateConcreteEndpoint.v` connects that successor bridge,
 the zero bridge, the concrete assembler, and the generic PA-internal
 induction.  Its single remaining all-model premise is exactly the five-field
