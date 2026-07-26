@@ -1866,6 +1866,14 @@ context.  The bridge applies all five splice successor equations and yields
 the exact public master-package successor callback.  It performs no positive
 field construction itself.
 
+`RawCodedTruthCertificateMasterFixedHelperExtension.v` lets that staged
+compiler add one fixed ordinary PA helper without breaking the shared-context
+invariant.  It compiles the helper above the current witnessed PA base, uses
+the one selected finite axiom prefix to transplant all six existing roots,
+and returns the original six proofs plus the helper proof in literally one
+extended witnessed context.  This is directly applicable to fixed lemmas
+such as the native quantifier-free branch collision.
+
 `RawCodedTruthCertificateConcreteEndpoint.v` connects that successor bridge,
 the zero bridge, the concrete assembler, and the generic PA-internal
 induction.  Its single remaining all-model premise is exactly the five-field
