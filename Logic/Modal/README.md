@@ -165,6 +165,7 @@ is being reconstructed:
 | `GLGrzDerivations.v` | `Modal/Entailment/{GL,Grz}.lean` | Derived GL and Grz proof theory, including Four, Henkin, Z, Gödel II, T/Dum, and the syntactic boxdot translation of Grz in GL |
 | `FiniteCanonicalSupport.v` | `Modal/Kripke/Logic/{GL,Grz}/Completeness.lean` | Shared finite boxed-context operations, structural derivability laws, relevant-box selectors, extensional equality, and Grz closure enrichment |
 | `CanonicalGL.v` | `Modal/Kripke/Logic/GL/Completeness.lean` | Finite mini-canonical GL frame and truth lemma; finite/full completeness; finite rooted countermodel and root-validity characterizations |
+| `CanonicalGLPoint3.v` | `Modal/Kripke/Logic/GLPoint3.lean`, `Modal/Boxdot/GLPoint3_GrzPoint3.lean` | Selective finite canonical GL.3 model; connected and piecewise-connected soundness-completeness; strict GL/K4.3 predecessors; checked Boxdot GL.3 gate and unconditional forward translation |
 | `CanonicalGrz.v` | `Modal/Kripke/Logic/Grz/{Soundness,Completeness}.lean` | Finite partial-order mini-canonical Grz model and truth lemma; finite/full soundness-completeness; finite partial orders validate McKinsey |
 | `CanonicalGrzMcK.v` | `Modal/Kripke/Logic/Grz/Completeness.lean` | Finite partial-order inclusion and the pinned three-world separator proving strict `S4McK < Grz` and `S4 < Grz` |
 | `CanonicalK4n.v` | `Modal/Kripke/{AxiomFourN,Logic/K4n}.lean` | Generic iterated-accessibility canonical theorem; weak-n-transitive soundness-completeness; saturating counterframes, strict hierarchy, and infinite family |
@@ -504,10 +505,12 @@ theorem shape in `ComplementClosedConsistentFinset.lean` for the generic
 normal-schema calculus over natural-number atoms, but the ledger remains
 `partial` because Foundation quantifies over arbitrary decidable atom types
 and abstract classical entailments.  Lists are used only during construction;
-the resulting finite carriers and their equality are extensional.  This
-project still does not claim completeness for GL.3 or Grz.3.  Rooted
-filtration preservation for other modal companions remains later work; the
-strong-convergence and strong-connectedness cases needed by S4Point2 and
+the resulting finite carriers and their equality are extensional.  GL.3 now
+has a checked selective finite canonical model and exact finite connected and
+piecewise-connected soundness-completeness.  The project still does not claim
+completeness for Grz.3, whose pinned Foundation declaration is admitted.
+Rooted filtration preservation for other modal companions remains later work;
+the strong-convergence and strong-connectedness cases needed by S4Point2 and
 S4Point3 are checked locally.
 
 ### Boxdot dependency gates
@@ -519,8 +522,10 @@ ordinary propositions and hypotheses.  In particular:
   compatibility interfaces and inhabited by
   `boxdot_GL_finite_complete_checked` and
   `boxdot_Grz_finite_complete_checked`; GL/Grz is unconditional;
-- `boxdot_GLPoint3_finite_complete` and
-  `boxdot_GrzPoint3_finite_complete` similarly gate GL.3/Grz.3;
+- `boxdot_GLPoint3_finite_complete` is inhabited by
+  `boxdot_GLPoint3_finite_complete_checked`, making the Grz.3-to-boxdot-GL.3
+  direction unconditional; `boxdot_GrzPoint3_finite_complete` remains the
+  explicit gate for the reverse direction and final equivalence;
 - `boxdot_Triv_complete` is now inhabited by `Triv_complete`, so the
   Ver-to-Triv reflection and both source-facing iff results are unconditional;
 - each named Jeřábek BDP corollary requires its `logic_complete_on` premise and
@@ -528,7 +533,7 @@ ordinary propositions and hypotheses.  In particular:
   finite global-consequence, finite-context, subformula, and fresh-atom
   construction, whose supporting APIs have not yet been ported.
 
-No inhabitant of the remaining GL.3/Grz.3 or Jeřábek bridge propositions is
+No inhabitant of the remaining Grz.3 or Jeřábek bridge propositions is
 declared or inferred.  Consequently those conditional equivalences must not
 be read as proofs of the missing completeness theorems.
 
@@ -594,6 +599,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Boxdot `
   FoundationModal.CanonicalPoint2 `
   FoundationModal.CanonicalPoint3 `
+  FoundationModal.CanonicalGLPoint3 `
   FoundationModal.CanonicalPoint4 `
   FoundationModal.CanonicalS4H `
   FoundationModal.CanonicalS5 `

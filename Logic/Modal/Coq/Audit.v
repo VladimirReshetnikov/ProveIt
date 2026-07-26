@@ -10,7 +10,7 @@ From FoundationModal Require Import
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
   CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
-  CanonicalPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
+  CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer
   CanonicalK4n CanonicalPoint2McK CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
@@ -344,6 +344,24 @@ Check S4Point2_strictly_weaker_S4Point3.
 Check S4_strictly_weaker_S4Point3.
 Check K4Point3_strictly_weaker_S4Point3.
 Check KT_strictly_weaker_S4Point3.
+
+(** Selective finite canonical completeness for GL.3, its exact connected
+    and piecewise-connected finite semantics, Boxdot specialization, and
+    both strict predecessors. *)
+Check GLPoint3_schema_substitution_closed.
+Check GLPoint3_finite_frame_class.
+Check GLPoint3_finite_piecewise_frame_class.
+Check GLPoint3_proves_sound_on_transitive_cwf_piecewise_frame.
+Check GLPoint3_unprovable_exists_finite_connected_countermodel.
+Check GLPoint3_finite_sound_complete.
+Check GLPoint3_finite_piecewise_sound_complete.
+Check boxdot_GLPoint3_finite_complete_checked.
+Check GLPoint3_proves_boxdot_Grz_axiom_unconditional.
+Check GLPoint3_proves_boxdot_Point3_axiom_unconditional.
+Check GrzPoint3_proves_to_GLPoint3_boxdot_unconditional.
+Check GLPoint3_boxdot_iff_GrzPoint3_from_Grz_finite_completeness.
+Check GL_strictly_weaker_GLPoint3.
+Check K4Point3_strictly_weaker_GLPoint3.
 
 (** Canonical weak-n transitivity and the infinite strict K4n hierarchy. *)
 Check schema_FourN_substitution_closed.
@@ -704,6 +722,7 @@ Check finite_GLPoint3_to_reflexive_closure_finite_GrzPoint3.
 Check finite_GrzPoint3_to_irreflexivize_finite_GLPoint3.
 Check boxdot_GLPoint3_finite_complete.
 Check boxdot_GrzPoint3_finite_complete.
+Check boxdot_GLPoint3_finite_complete_checked.
 Check iff_boxdotTranslated_GLPoint3_GrzPoint3.
 Check provable_boxdotTranslated_Ver_of_Triv.
 Check boxdot_Triv_complete.
@@ -903,6 +922,16 @@ Print Assumptions S4Point3_finite_complete.
 Print Assumptions K4_strictly_weaker_K4Point3.
 Print Assumptions S4Point2_strictly_weaker_S4Point3.
 Print Assumptions K4Point3_strictly_weaker_S4Point3.
+Print Assumptions GLPoint3_schema_substitution_closed.
+Print Assumptions glpoint3_terminal_successor_unique.
+Print Assumptions glpoint3_filtered_truth_lemma.
+Print Assumptions GLPoint3_finite_complete.
+Print Assumptions GLPoint3_finite_piecewise_complete.
+Print Assumptions boxdot_GLPoint3_finite_complete_checked.
+Print Assumptions GrzPoint3_proves_to_GLPoint3_boxdot_unconditional.
+Print Assumptions GLPoint3_boxdot_iff_GrzPoint3_from_Grz_finite_completeness.
+Print Assumptions GL_strictly_weaker_GLPoint3.
+Print Assumptions K4Point3_strictly_weaker_GLPoint3.
 Print Assumptions schema_FourN_substitution_closed.
 Print Assumptions normal_canonical_rel_iter_iff_box_iter.
 Print Assumptions normal_canonical_weakly_transitive_of_schema_FourN.
@@ -1113,8 +1142,8 @@ Print Assumptions valid_WeakPoint3_atoms_iff_piecewise_connected.
     excluded middle.  The nat-atom Hilbert equivalence additionally inherits
     the definite-description boundary of local K completeness.  Reverse
     reflexivization and the logical SBDP argument also use excluded middle.
-    GL/Grz completeness is now checked above; the remaining GL.3/Grz.3 and
-    Jeřábek bridge arguments stay visible in their theorem types. *)
+    GL/Grz and GL.3 completeness are now checked above; the remaining Grz.3
+    and Jeřábek bridge arguments stay visible in their theorem types. *)
 Print Assumptions boxdot_reflexive_closure_truth.
 Print Assumptions boxdot_translate_idempotent_truth.
 Print Assumptions K4_boxdot_iff_S4.
@@ -1124,6 +1153,7 @@ Print Assumptions boxdot_GL_finite_complete_checked.
 Print Assumptions boxdot_Grz_finite_complete_checked.
 Print Assumptions GL_boxdot_iff_Grz.
 Print Assumptions finite_GLPoint3_to_reflexive_closure_finite_GrzPoint3.
+Print Assumptions boxdot_GLPoint3_finite_complete_checked.
 Print Assumptions GLPoint3_boxdot_iff_GrzPoint3.
 Print Assumptions Triv_proves_to_Ver_boxdot.
 Print Assumptions Ver_boxdot_iff_Triv.
