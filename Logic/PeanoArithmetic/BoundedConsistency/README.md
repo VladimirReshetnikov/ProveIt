@@ -1529,6 +1529,14 @@ operation above cutoff 26.  Both the lower-Pi application in a Sigma row and
 the lower-Sigma application in a Pi row therefore inherit deep closure from
 the preceding global predicate.
 
+`RawCodedDynamicTruthPairedSuccessorLocalDeepClosure.v` assembles those two
+opaque leaves with the transparent row constructors.  It tracks the genuine
+eight existential row witnesses and the three extra binders around the lower
+application, weakens cutoff-26 closure to cutoff 29 where required, and
+proves both actual local successor rows operationally fixed from the global
+wrapper's cutoff 18.  The formerly explicit paired local-row callback is
+therefore now an unconditional consequence of `RawPASatisfies`.
+
 `RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
 Sigma successor-row syntax: eight existential table witnesses around a domain
 check and a seven-way disjunction, whose final branch contains the opaque

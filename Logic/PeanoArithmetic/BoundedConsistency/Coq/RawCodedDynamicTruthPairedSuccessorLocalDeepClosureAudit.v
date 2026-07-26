@@ -1,0 +1,26 @@
+(** Assumption audit for unconditional paired local-successor deep closure. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPairedSuccessorLocalDeepClosure.
+
+Import PABoundedRawCodedDynamicTruthPairedSuccessorLocalDeepClosure.
+
+Check rawCodedFormulaDeepClosedFrom_weaken.
+Check rawCodedFormulaDeepClosedFrom_twenty_six_to_twenty_nine.
+
+Check rawDynamicTruthSigmaNoBinderCode_deep_closed_from_twenty_six.
+Check rawDynamicTruthSigmaBranchesCode_deep_closed_from_twenty_six.
+Check rawDynamicTruthSigmaSuccessorRowCode_deep_closed.
+
+Check rawDynamicTruthPiNoBinderCode_deep_closed_from_twenty_six.
+Check rawDynamicTruthPiBranchesCode_deep_closed_from_twenty_six.
+Check rawDynamicTruthPiSuccessorRowCode_deep_closed.
+
+Check raw_dynamicTruthPairedGlobalSuccessorLocalDeepClosure.
+Check raw_dynamicTruthPairedGlobalSuccessorLocalDeepClosure_of_PA.
+
+Print Assumptions rawDynamicTruthSigmaSuccessorRowCode_deep_closed.
+Print Assumptions rawDynamicTruthPiSuccessorRowCode_deep_closed.
+Print Assumptions raw_dynamicTruthPairedGlobalSuccessorLocalDeepClosure.
+Print Assumptions
+  raw_dynamicTruthPairedGlobalSuccessorLocalDeepClosure_of_PA.
