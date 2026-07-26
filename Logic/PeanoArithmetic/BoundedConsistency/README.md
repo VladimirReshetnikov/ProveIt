@@ -1426,6 +1426,17 @@ separate from the operational opaque traces, and the endpoint deliberately
 continues to name the restricted universal branch rather than the full
 seven-way disjunction.
 
+`RawCodedDynamicTruthUniversalLeafTransformGraph.v` exposes that restricted
+certificate as an output-first transform over the paired global Sigma/Pi
+truth-code orbit.  The graph selects the successor numeral, the instantiated
+native Sigma-domain code, and the lower-Pi ternary application, then equates
+its output with the transparent thirteen-times-universally-closed projection
+code.  Its law-free semantics and relational totality are proved separately
+from proof totality: the latter consumes direct structural inputs identifying
+the graph's exact witnesses and returns an ordinary PA proof targeted at that
+same output.  This is one checked restricted-row field, not yet the complete
+local decision/exclusivity field required by the six-field master.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
