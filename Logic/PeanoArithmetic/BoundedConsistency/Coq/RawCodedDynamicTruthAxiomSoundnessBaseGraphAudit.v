@@ -1,0 +1,36 @@
+(** Public surface and kernel-assumption audit for the exact level-zero
+    PA-axiom-soundness field graph. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthAxiomSoundnessBaseGraph.
+
+Import PABoundedRawCodedDynamicTruthAxiomSoundnessBaseGraph.
+
+Check witnessedPAAxiomRecognitionTermAt.
+Check RawWitnessedPAAxiomRecognition.
+Check raw_sat_witnessedPAAxiomRecognitionTermAt_iff.
+
+Check dynamicTruthAxiomSoundnessBaseBodyFormula.
+Check RawDynamicTruthAxiomSoundnessBaseAt.
+Check raw_sat_dynamicTruthAxiomSoundnessBaseBodyFormula_iff.
+
+Check dynamicTruthAxiomSoundnessBaseFieldFormula.
+Check raw_sat_dynamicTruthAxiomSoundnessBaseFieldFormula_iff.
+Check dynamicTruthAxiomSoundnessBaseFieldFormula_sentence.
+Check raw_dynamicTruthAxiomSoundnessBase_all.
+Check dynamicTruthAxiomSoundnessBaseFieldFormula_raw_valid.
+Check PA_proves_dynamicTruthAxiomSoundnessBaseFieldFormula.
+
+Check dynamicTruthAxiomSoundnessBaseFieldGraph.
+Check dynamicTruthAxiomSoundnessBaseFieldGraph_zero_iff.
+Check dynamicTruthAxiomSoundnessBaseFieldGraph_standard_zero_witness.
+Check raw_dynamicTruthAxiomSoundnessBaseFieldGraph_proof.
+
+Print Assumptions raw_sat_witnessedPAAxiomRecognitionTermAt_iff.
+Print Assumptions raw_sat_dynamicTruthAxiomSoundnessBaseFieldFormula_iff.
+Print Assumptions raw_dynamicTruthAxiomSoundnessBase_all.
+Print Assumptions PA_proves_dynamicTruthAxiomSoundnessBaseFieldFormula.
+Print Assumptions dynamicTruthAxiomSoundnessBaseFieldGraph_zero_iff.
+Print Assumptions
+  dynamicTruthAxiomSoundnessBaseFieldGraph_standard_zero_witness.
+Print Assumptions raw_dynamicTruthAxiomSoundnessBaseFieldGraph_proof.

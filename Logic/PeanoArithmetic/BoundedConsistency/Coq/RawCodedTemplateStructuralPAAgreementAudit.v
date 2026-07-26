@@ -1,0 +1,16 @@
+(** Assumption audit for ordinary PA agreement of structural templates. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplateStructuralPAAgreement.
+
+Import PABoundedRawCodedTemplateStructuralPAAgreement.
+
+Check rawStructuralTemplateTermWith_embedPA.
+Check rawStructuralTemplateFormulaWith_embedPA.
+Check rawStructuralTemplateTerm_embedPA.
+Check rawStructuralTemplateFormula_embedPA.
+Check rawStructuralTemplatePAAgreement.
+
+Print Assumptions rawStructuralTemplateTermWith_embedPA.
+Print Assumptions rawStructuralTemplateFormulaWith_embedPA.
+Print Assumptions rawStructuralTemplatePAAgreement.

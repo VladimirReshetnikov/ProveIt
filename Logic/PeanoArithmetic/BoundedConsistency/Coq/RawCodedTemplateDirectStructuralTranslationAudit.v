@@ -1,0 +1,23 @@
+(** Audit for direct structural translation over opaque formula traces. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplateDirectStructuralTranslation.
+
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+
+Check RawCodedTemplateDirectStructuralInputs.
+Check rawDirectTemplateTermShiftAt.
+Check rawDirectTemplateTermOpeningAt.
+Check rawDirectTemplateOpaqueShiftAt.
+Check rawDirectTemplateOpaqueOpeningAt.
+Check rawDirectTemplateFormula_shiftAt.
+Check rawDirectTemplateFormula_openingAt.
+Check rawDirectTemplateFormula_shift.
+Check rawDirectTemplateFormula_open.
+Check rawDirectStructuralTemplateTranslation.
+
+Print Assumptions rawDirectTemplateFormula_shiftAt.
+Print Assumptions rawDirectTemplateFormula_openingAt.
+Print Assumptions rawDirectTemplateFormula_shift.
+Print Assumptions rawDirectTemplateFormula_open.
+Print Assumptions rawDirectStructuralTemplateTranslation.

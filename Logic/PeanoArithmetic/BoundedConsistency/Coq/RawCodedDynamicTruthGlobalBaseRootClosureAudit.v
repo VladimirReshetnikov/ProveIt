@@ -1,0 +1,22 @@
+(** Kernel audit for rank-zero global truth-predicate root closure. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthGlobalBaseRootClosure.
+
+Module PABoundedRawCodedDynamicTruthGlobalBaseRootClosureAudit.
+
+Import PABoundedRawCodedDynamicTruthGlobalBaseRootClosure.
+
+Check dynamicTruthGlobalSigmaZeroRowFormula_scoped.
+Check dynamicTruthGlobalPiZeroRowFormula_scoped.
+Check dynamicTruthGlobalSigmaBaseFormula_scoped.
+Check dynamicTruthGlobalPiBaseFormula_scoped.
+Check rawDynamicTruthGlobalSigmaBaseCode_root_closed.
+Check rawDynamicTruthGlobalPiBaseCode_root_closed.
+Check dynamicTruthPairedGlobalBaseAt_root_closed.
+
+Print Assumptions rawDynamicTruthGlobalSigmaBaseCode_root_closed.
+Print Assumptions rawDynamicTruthGlobalPiBaseCode_root_closed.
+Print Assumptions dynamicTruthPairedGlobalBaseAt_root_closed.
+
+End PABoundedRawCodedDynamicTruthGlobalBaseRootClosureAudit.

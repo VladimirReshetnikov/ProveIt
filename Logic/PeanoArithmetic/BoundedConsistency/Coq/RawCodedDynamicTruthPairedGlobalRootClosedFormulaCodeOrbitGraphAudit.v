@@ -1,0 +1,39 @@
+(**
+  Kernel-facing audit for the root-closed global dynamic-truth orbit.
+
+  The final assumptions check is intentionally attached to the expanded
+  graph-facing endpoint.  It makes visible that the successor preservation
+  callback is a theorem premise, rather than an axiom hidden by the orbit
+  construction.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitGraph.
+
+Module
+  PABoundedRawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitGraphAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitGraph.
+
+Check RawDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitAt.
+Check dynamicTruthPairedGlobalRootClosedFormulaCodeOrbitExistsFormula.
+Check
+  raw_sat_dynamicTruthPairedGlobalRootClosedFormulaCodeOrbitExistsFormula_iff.
+Check dynamicTruthPairedGlobalOrbitBaseGraph_raw_root_closed_total.
+Check RawDynamicTruthPairedGlobalOrbitRootClosedSuccessorTotal.
+Check dynamicTruthPairedGlobalRootClosedFormulaCodeOrbitExists_all.
+Check
+  dynamicTruthPairedGlobalFormulaCodeOrbitGraph_raw_root_closed_total.
+
+Print Assumptions
+  raw_sat_dynamicTruthPairedGlobalRootClosedFormulaCodeOrbitExistsFormula_iff.
+Print Assumptions
+  dynamicTruthPairedGlobalOrbitBaseGraph_raw_root_closed_total.
+Print Assumptions
+  dynamicTruthPairedGlobalRootClosedFormulaCodeOrbitExists_all.
+Print Assumptions
+  dynamicTruthPairedGlobalFormulaCodeOrbitGraph_raw_root_closed_total.
+
+End
+  PABoundedRawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitGraphAudit.

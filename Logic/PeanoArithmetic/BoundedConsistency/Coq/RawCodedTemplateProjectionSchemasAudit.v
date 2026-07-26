@@ -1,0 +1,44 @@
+(** Kernel-facing audit for the transparent template projection schemas. *)
+
+From Stdlib Require Import List.
+From BoundedPAConsistency Require Import RawCodedTemplateSyntax.
+From BoundedPAConsistency Require Import RawCodedTemplateProjectionSchemas.
+
+Import ListNotations.
+
+Module PABoundedRawCodedTemplateProjectionSchemasAudit.
+
+Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateProjectionSchemas.
+
+Check templateRightConjunction.
+Check templateRightConjunctionSelect.
+Check templateSelectedRightConjunction.
+Check templateRightConjunctionProjectFrom.
+Check templateRightConjunctionProjectFrom_derives.
+Check templateRightConjunctionPackFrom.
+Check templateRightConjunctionPackFrom_derives.
+Check templateRightConjunctionSelectionProof.
+Check templateRightConjunctionSelectionProof_derives.
+Check templateRepeatedExists.
+Check templateRepeatedExistsSelectionFrom.
+Check templateRepeatedExistsSelectionFrom_derives.
+Check templateRepeatedExistsSelectionProof.
+Check templateRepeatedExistsSelectionProof_derives.
+Check templateRepeatedForall.
+Check templateUniversalCloseProof.
+Check templateUniversalCloseProof_derives.
+Check templateClosedRepeatedExistsSelectionProof.
+Check templateClosedRepeatedExistsSelectionProof_derives.
+Check templateUniversalLeafProjectionProof.
+Check templateUniversalLeafProjectionProof_derives.
+
+Print Assumptions templateRightConjunctionProjectFrom_derives.
+Print Assumptions templateRightConjunctionPackFrom_derives.
+Print Assumptions templateRepeatedExistsSelectionFrom_derives.
+Print Assumptions templateRepeatedExistsSelectionProof_derives.
+Print Assumptions templateUniversalCloseProof_derives.
+Print Assumptions templateClosedRepeatedExistsSelectionProof_derives.
+Print Assumptions templateUniversalLeafProjectionProof_derives.
+
+End PABoundedRawCodedTemplateProjectionSchemasAudit.

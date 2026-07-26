@@ -1,0 +1,13 @@
+(** Assumption audit for deep-closure shift interchange. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTernaryPredicateDeepClosureShiftInterchange.
+
+Import PABoundedRawCodedTernaryPredicateDeepClosureShiftInterchange.
+
+Check raw_deepClosure_three_le_triple_succ.
+Check raw_codedTernaryApplicationShiftInterchange_of_deepClosed.
+
+Print Assumptions raw_deepClosure_three_le_triple_succ.
+Print Assumptions
+  raw_codedTernaryApplicationShiftInterchange_of_deepClosed.

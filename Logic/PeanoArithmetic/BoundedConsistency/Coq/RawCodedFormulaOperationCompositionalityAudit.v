@@ -1,0 +1,16 @@
+(** Assumption audit for generic formula-operation compositionality. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFormulaOperationCompositionality.
+
+Import PABoundedRawCodedFormulaOperationCompositionality.
+
+Check raw_codedFormulaOperation_binary_composition.
+Check raw_codedFormulaOperation_unary_composition.
+Check raw_codedFormulaSubstitution_binary_composition.
+Check raw_codedFormulaSubstitution_unary_composition.
+
+Print Assumptions raw_codedFormulaOperation_binary_composition.
+Print Assumptions raw_codedFormulaOperation_unary_composition.
+Print Assumptions raw_codedFormulaSubstitution_binary_composition.
+Print Assumptions raw_codedFormulaSubstitution_unary_composition.

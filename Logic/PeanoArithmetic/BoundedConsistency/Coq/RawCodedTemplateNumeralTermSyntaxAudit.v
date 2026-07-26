@@ -1,0 +1,18 @@
+(** Kernel audit for numeral-parameter template-term syntax. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplateNumeralTermSyntax.
+
+Module PABoundedRawCodedTemplateNumeralTermSyntaxAudit.
+
+Import PABoundedRawCodedTemplateNumeralTermSyntax.
+
+Check raw_numeralTemplateTerm_syntax.
+Check raw_numeralTemplateTerm_renamed_syntax.
+Check raw_numeralTemplateTerm_opened_syntax.
+
+Print Assumptions raw_numeralTemplateTerm_syntax.
+Print Assumptions raw_numeralTemplateTerm_renamed_syntax.
+Print Assumptions raw_numeralTemplateTerm_opened_syntax.
+
+End PABoundedRawCodedTemplateNumeralTermSyntaxAudit.

@@ -1335,7 +1335,14 @@ decision/exclusivity bundle, while
 `RawCodedDynamicTruthTransportFieldBaseGraphs.v` quotes the native
 cross-level, formula-shift, and single-substitution laws.  Every base graph
 pins its output to the exact formula code accepted by a concrete
-`RawCodedPAProofOf` certificate.  For the positive local field,
+`RawCodedPAProofOf` certificate.
+`RawCodedDynamicTruthAxiomSoundnessBaseGraph.v` supplies the fifth base
+coordinate as the genuine first truth transition: every transparently
+witnessed PA axiom in the level-zero admissible domain has a level-one Sigma
+truth certificate under Coq's total zero beta assignment.  Its derivation
+uses the unconditional nonstandard induction-axiom truth theorem, then quotes
+the exact sentence into the standard zero graph; it is not a placeholder
+tautology.  For the positive local field,
 `RawCodedOutputFirstPairedFormulaGraphComposition.v` preserves the joint
 Sigma/Pi orbit witness while composing a proof-producing transform, and
 `RawCodedDynamicTruthLocalProofFieldGraph.v` specializes that construction
@@ -1343,6 +1350,313 @@ to the globally closed paired orbit.  The transform remains intentionally
 parametric: compiling the carrier-coded positive law formula and its raw PA
 proof is the next honest proof obligation, not a consequence of semantic
 truth-code adequacy.
+
+Positive fields cannot soundly be compiled by reserving a sentinel inside
+ordinary PA syntax: a closed sentinel is itself a substitution instance of
+other PA syntax, so replacing it by an arbitrary predicate or carrier
+parameter would break the substitution equations used by quantifier and
+equality rules.  `RawCodedTemplateSyntax.v` therefore supplies an honest
+extended source language with named carrier parameters, opaque finite-arity
+predicate applications, capture-avoiding renaming/substitution, an embedding
+of ordinary PA syntax, and an unindexed tree for all seventeen natural-
+deduction constructors.  `RawCodedTemplateProofCompiler.v` translates such a
+fixed finite tree under an abstract model-coded specialization and builds
+every raw proof node through the coverage-certified constructors.  Its public
+result is an exact `RawCodedPALocalProofOf`; nonstandard predicate codes are
+never decoded.  `RawCodedTranslatedProofCompiler.v` provides the corresponding
+homomorphic compiler for ordinary PA proof trees and will be used by the
+lifted-PA axiom bridge.  `RawCodedTemplatePAEmbedding.v` makes that bridge
+literal: it embeds all seventeen ordinary raw-proof constructors, proves
+context/conclusion/validity preservation, and attaches the unchanged finite
+list of witnessed ordinary PA axioms to the compiled template tree.  Opaque
+template atoms therefore cannot leak into the PA axiom base.
+`RawCodedTemplateLogicalSchemas.v` records the small
+finite source trees needed by the dynamic fields—conjunction projection and
+introduction, existential projection, and universal specialization followed
+by modus ponens—so their model-coded proofs do not rely on an unexposed
+semantic-completeness step.  `RawCodedTemplateProjectionSchemas.v` extends
+those atoms with transparent arbitrary conjunction selection/repacking,
+witness-preserving existential towers, universal closure, and the exact
+two-universal/five-existential projection used by the dynamic universal-leaf
+law.  `RawCodedTemplateClosedProofCompilation.v` packages any closed compiled
+template tree as an ordinary `RawCodedPAProofOf` with a literally empty
+witnessed-axiom list, and exposes that exact universal-leaf certificate.
+`RawCodedTemplateStructuralTranslation.v`
+recurses over the honest syntax and grafts client-supplied operation trees at
+opaque leaves, thereby realizing full represented shift and opening traces
+without decoding a carrier formula.  Its companion PA-agreement module proves
+that this structural interpretation is exactly ordinary quotation on the PA
+fragment.  That finite-tree interface applies when an opaque leaf itself has
+a metatheoretic finite decomposition.  For genuinely nonstandard opaque
+formula codes, `RawCodedFormulaOperationCompositionality.v` generalizes trace
+concatenation to arbitrary represented formula operations, while
+`RawCodedTemplateDirectStructuralTranslation.v` assembles the finite
+surrounding template directly from relational opaque shift/opening traces.
+No nonstandard opaque leaf is decoded into a Coq inductive tree.
+`RawCodedTemplateNumeralParameters.v` separately builds exact term shift and
+opening traces for named parameters represented by model-internal numeral
+codes.  `RawCodedTemplateNumeralTermSyntax.v` uses the zero-shift instance of
+those traces to place every interpreted template term, including renamed and
+opened terms, in the honest syntax domain required by opaque selectors.
+`RawCodedTemplateTernaryApplication.v` supplies the honest
+five-trace application relation for a possibly nonstandard ternary formula,
+proves totality and preservation of atomic adequacy on represented term
+syntax, and names the exact shift/opening commuting diagrams required at an
+opaque leaf.  `RawCodedTermOperationCrossTraceFunctionality.v` and
+`RawCodedFormulaOperationCrossTraceFunctionality.v` prove that arbitrary
+successful represented traces for the same operation inputs agree, and the
+ternary specialization gives unique selector outputs on honest term syntax.
+`RawCodedTermShiftProtection.v` and
+`RawCodedTermOpeningShiftInterchange.v` establish the term-level protection
+and opening/shift square over arbitrary carrier parameters.  The formula
+square is proved by a seventeen-parameter represented invariant and
+`raw_definable_induction` in
+`RawCodedFormulaShiftSubstitutionInterchange{Invariant,Induction}.v`.
+`RawCodedFormulaOperationConcreteLaws.v` packages the result as protective
+stability and single-substitution interchange for `FormulaShift`.  These laws
+solve the shift-operation side of an opaque application once the predicate is
+deeply closed.  The legacy unguarded opening contract still permits an
+arbitrary replacement carrier value, so its corresponding concrete law is
+kept separate rather than inferred from atomic adequacy or honest-syntax deep
+closure.
+
+`RawCodedTernaryPredicateRootClosure.v` strengthens the standard scoped
+substitution identity from numeral replacements to every honestly
+represented, possibly nonstandard term.  Represented shift totality chooses
+the unused lifted replacement; a structural diagonal trace then proves that
+any quoted ternary-scoped formula is fixed by both the depth-three shift and
+depth-three substitution operations.  Applying this interface to the exact
+row-aligned global rank-zero quotations,
+`RawCodedDynamicTruthGlobalBaseRootClosure.v` proves root closure for both
+outputs of the paired global base graph.
+
+`RawCodedDynamicTruthGlobalSuccessorRootClosure.v` proves the corresponding
+constructor and wrapper preservation theorem without decoding either
+possibly nonstandard local row.  The ten existential traversal witnesses and
+five universal row witnesses move the two local leaves from the public root
+cutoff three to cutoff eighteen.  Fixed standard wrapper leaves are closed at
+their checked scopes, and the existing adequate successor graph supplies
+atomic adequacy of the local rows.  The resulting relation-level theorem and
+orbit callback therefore assume exactly that the actual local Sigma and Pi
+rows are operationally fixed at cutoff eighteen.  This is a fixed-cutoff
+successor result, not a promotion of root closure to every deeper cutoff; the
+all-depth opaque-application obligation remains separate.
+
+`RawCodedTernaryPredicateRootClosureFormula.v` now makes that carrier-level
+root certificate an actual formula of PA, including the explicit lift across
+the three binders used to recognize honestly represented replacement terms.
+`RawCodedCarrierIndexedPairedRootClosedCodeOrbitGraph.v` uses this formula as
+the invariant of `raw_definable_induction`, so a closure-preserving base and
+successor select both orbit coordinates at every element of an arbitrary PA
+model, including its nonstandard elements.  The dynamic specialization in
+`RawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitGraph.v` discharges
+the concrete rank-zero base and retains the ordinary global orbit together
+with both root certificates; its successor hypothesis is deliberately
+guarded by closure of the actual predecessor pair.  This invariant still
+means exactly unit shift at cutoff three and represented substitution at
+depth three.  It is not the stronger all-cutoff property needed by the
+opaque-leaf commuting diagrams, so no arbitrary-depth interchange theorem is
+inferred from it.
+
+`RawCodedDynamicTruthPairedGlobalRootClosedFormulaCodeOrbitBridge.v` connects
+the concrete wrapper-preservation theorem to that represented invariant.  An
+actual successor edge transports both predecessor root certificates, and the
+cutoff-eighteen local-row callback supplies the guarded successor interface
+expected by paired-orbit induction.  Consequently every carrier level has a
+selected ordinary global Sigma/Pi orbit pair together with both cutoff-three
+root certificates.  The bridge retains the local callback as a visible
+premise and does not strengthen either fixed-cutoff certificate.
+
+The stronger invariant is now represented separately in
+`RawCodedTernaryPredicateDeepClosure.v`.  Its PA formula quantifies over every
+carrier cutoff and amount for shifts and over every carrier depth and honestly
+represented replacement for substitution, guarding both operations by the
+cutoff bound three.  Exact raw semantics confirms that these are genuine
+object-language quantifiers, so they include nonstandard parameters.  For a
+standard ternary-scoped quotation, the module builds an identity term-shift
+tree at an arbitrary carrier cutoff and lifts it structurally to a diagonal
+formula trace; together with arbitrary-depth scoped substitution this proves
+the full deep certificate.  A final bridge projects deep closure to the older
+root certificate, while the converse is deliberately absent.
+`RawCodedTernaryPredicateDeepClosureShiftInterchange.v` combines this
+all-cutoff fixedness with the concrete `FormulaShift` laws.  Since ternary
+application opens three arguments, the required predicate cutoff is exactly
+three successors above the client cutoff; PA proves that this is at least
+three even for a nonstandard client value.  The resulting theorem discharges
+the complete unguarded ternary shift-interchange contract.
+
+The parallel opening algebra is now discharged by
+`RawCodedTermShiftAmountComposition.v`, the term-opening protection,
+opening/opening interchange and lift-cancellation modules, and the
+represented seventeen-parameter formula induction in
+`RawCodedFormulaSubstitutionAtomSubstitutionInterchange{Invariant,Induction}.v`.
+`RawCodedFormulaSubstitutionAtomConcreteLaws.v` packages the resulting
+protective and single-substitution laws.  The legacy opening relation is
+sound even though it displays an arbitrary carrier replacement: any incoming
+substitution atom itself recovers represented source syntax, so malformed
+values cannot satisfy its antecedent.
+`RawCodedTernaryPredicateDeepClosureOpeningCommuting.v` therefore proves both
+the unguarded relation-level opening interchange and the exact honest-domain
+selector law from PA satisfaction and deep closure alone.  No outstanding
+opening-commutation premise remains.
+
+`RawCodedCarrierIndexedPairedDeepClosedCodeOrbitGraph.v` uses the represented
+deep formula, rather than the fixed root formula, as a paired orbit invariant
+and proves its all-carrier totality by `raw_definable_induction`.
+`RawCodedDynamicTruthGlobalSuccessorDeepClosure.v` proves every transparent
+global wrapper constructor and its five-, seven-, and ten-node folds preserve
+arbitrary-cutoff closure.  Atomic adequacy of actual local rows comes from the
+successor relation itself; the remaining callback asks only that those two
+rows are operationally fixed for every shift cutoff/amount and substitution
+depth at least eighteen.  The dynamic specialization discharges the quoted
+rank-zero base unconditionally and carries both deep certificates through the
+ordinary global orbit at every, including nonstandard, hierarchy level under
+that explicit local-row premise.
+
+`RawCodedDynamicTruthSuccessorDomainDeepClosure.v` handles the first opaque
+piece of each genuine local row.  It proves that substituting an honestly
+represented, possibly nonstandard numeral into either fixed successor-domain
+template is invariant under every shift and substitution operation from
+cutoff 26 onward.  The proof uses the concrete single-substitution
+interchange laws and numeral fixedness, so both native Sigma and Pi domain
+witnesses are deeply closed without a standardness assumption.
+
+`RawCodedDynamicTruthLowerApplicationDeepClosure.v` handles the second opaque
+piece.  It identifies each native three-opening chain with the public ternary
+application at variables `#9`, `#1`, and `#0`; deep predicate commutation and
+application functionality then show that the native output is fixed by every
+operation above cutoff 26.  Both the lower-Pi application in a Sigma row and
+the lower-Sigma application in a Pi row therefore inherit deep closure from
+the preceding global predicate.
+
+`RawCodedDynamicTruthPairedSuccessorLocalDeepClosure.v` assembles those two
+opaque leaves with the transparent row constructors.  It tracks the genuine
+eight existential row witnesses and the three extra binders around the lower
+application, weakens cutoff-26 closure to cutoff 29 where required, and
+proves both actual local successor rows operationally fixed from the global
+wrapper's cutoff 18.  The formerly explicit paired local-row callback is
+therefore now an unconditional consequence of `RawPASatisfies`.
+
+`RawCodedDynamicTruthUniversalLeafSourceTemplate.v` records the actual Rocq
+Sigma successor-row syntax: eight existential table witnesses around a domain
+check and a seven-way disjunction, whose final branch contains the opaque
+lower-Pi application.  It supplies an honest eight-witness projection from an
+explicitly restricted universal row and proves in the kernel that the older
+five-witness, conjunction-only candidate is not this table row.  Concrete
+instantiation therefore cannot silently identify the Lean-shaped schema with
+Rocq's different encoding.
+
+`RawCodedDynamicTruthPiUniversalLeafSourceTemplate.v` records the genuine
+dual source rather than erasing polarity.  Its native Pi-falsity row has the
+same eight table witnesses but six alternatives; the last is the existential
+case and applies the preceding Sigma-truth predicate at variables `#9`, `#1`,
+and `#0`.  Structural translation is proved equal to a transparent carrier
+polynomial and, in PA models, to the existing native Pi row code.  The module
+also supplies an honest restricted-existential projection from an explicitly
+selected final branch.  As on the Sigma side, it does not project that branch
+from the full disjunction and does not assume commutation for the nonstandard
+opaque atom.
+
+`RawCodedDynamicTruthTemplateNumeralParameters.v` instantiates the source
+template's designated lower- and upper-level names at arbitrary carrier
+elements.  Represented numeral-code totality selects both possibly
+nonstandard numeral terms, and the package exposes their exact validity plus
+the direct translator's complete term shift/open fields.
+
+`RawCodedDynamicTruthTemplateDirectInputs.v` supplies the remaining opaque
+interpretation.  Predicate zero at exactly three arguments is the selected
+lower-Pi ternary application; every other predicate or arity is mapped to a
+transparent bottom fallback with one-node operation traces.  The record asks
+only for shift/opening commutation on honest structural syntax and proves
+that all source, renamed, and opened terms meet that guard.  Its exact code
+equations identify the translated Sigma-domain leaf with the native domain
+substitution and the opaque atom with the native lower-Pi application.  Deep
+closure now discharges the shift half of this guarded record; the honest
+opening half remains the explicit seam.
+
+`RawCodedDynamicTruthPiTemplateDirectInputs.v` provides the polarity-dual
+identification without reusing the Sigma row as a dummy.  The shared numeric
+parameter and predicate names are audited by literal equalities, the direct
+translator's Pi-domain opening trace is identified with the native domain
+substitution by cross-trace functionality, and the designated lower-Sigma
+atom is transported through the exact Pi/Sigma application equivalence.  The
+resulting package identifies both the full native Pi successor-row code and
+the restricted existential projection code.  Its only remaining operation
+input is the same honest-syntax commuting record used by the Sigma direct
+translator.
+
+`RawCodedDynamicTruthUniversalLeafProofCompilation.v` sends the honest
+eight-witness restricted projection through that direct relational
+translator and the closed-template packer.  It produces an exact ordinary PA
+certificate both before and after the native thirteen-variable row
+environment is universally closed.  Code-identification equalities remain
+separate from the operational opaque traces, and the endpoint deliberately
+continues to name the restricted universal branch rather than the full
+seven-way disjunction.
+
+`RawCodedDynamicTruthSigmaDomainProjectionProofCompilation.v` begins the
+honest passage back to that full row.  A fixed template proof projects
+`Ex^8 (domain /\ Or7 branches)` to `Ex^8 domain`, preserving all eight table
+witnesses and discarding only the branch disjunction.  Direct structural
+translation, thirteen-variable closure, and native-code identification yield
+an exact coded PA proof of the resulting Sigma domain field; this is one
+full-row eliminator, not yet the complete local bundle.
+
+`RawCodedDynamicTruthPiExistentialLeafProofCompilation.v` supplies the exact
+polarity-dual compiler.  It transports the honest eight-witness projection
+of the explicitly restricted existential branch through the direct
+translator, retargets the proof by the native Pi domain and lower-Sigma
+identification, and universally closes the thirteen ambient row columns.
+The exported certificate remains a proof of that restricted final branch;
+it is not presented as a consequence of the full six-way Pi disjunction.
+
+`RawCodedDynamicTruthUniversalLeafTransformGraph.v` exposes that restricted
+certificate as an output-first transform over the paired global Sigma/Pi
+truth-code orbit.  The graph selects the successor numeral, the instantiated
+native Sigma-domain code, and the lower-Pi ternary application, then equates
+its output with the transparent thirteen-times-universally-closed projection
+code.  Its law-free semantics and relational totality are proved separately
+from proof totality: the latter consumes direct structural inputs identifying
+the graph's exact witnesses and returns an ordinary PA proof targeted at that
+same output.  This is one checked restricted-row field, not yet the complete
+local decision/exclusivity field required by the six-field master.
+
+`RawCodedDynamicTruthPiExistentialLeafTransformGraph.v` provides the dual
+output-first transform without swapping away the polarity.  Its lower opaque
+application consumes the selected global Sigma code, its domain is the native
+Pi-domain substitution at the successor numeral, and its transparent output
+is the thirteen-fold closure compiled by the restricted Pi proof module.
+Relational totality and proof-producing totality again remain separate, with
+the latter requiring direct inputs that identify the graph's exact witnesses.
+
+`RawCodedDynamicTruthRestrictedExistentialLocalProofFieldGraph.v` composes
+that transform with the actual paired global truth-code orbit.  The hidden
+Sigma and Pi codes therefore come from one adequate orbit witness, and the
+direct compiler is required only along such witnesses.  A guarded ternary
+shift/opening interchange package for the selected global Sigma coordinate
+yields the exact proof-producing local field.  As with its Sigma dual, this
+is still a restricted row component rather than the complete local law.
+
+`RawCodedDynamicTruthRestrictedUniversalLocalProofFieldGraph.v` composes that
+transform with the genuine paired global Sigma/Pi orbit and requires its
+proof-producing compiler only for the Pi codes selected by an actual adequate
+orbit witness.  Cross-trace functionality identifies both the native domain
+substitution and lower application with the direct-template outputs before
+the closed compiler is invoked.  The strongest endpoint consumes shift and
+opening interchange only along those orbit witnesses and returns the exact
+ordinary PA certificate selected by the public field graph.  This remains a
+restricted-universal component: it does not upgrade the branch to the full
+seven-way local law.
+
+`RawCodedDynamicTruthDeepClosedRestrictedLocalProofFields.v` selects the
+actual deeply closed paired-orbit witness instead of transporting closure to
+an arbitrary adequate witness.  The concrete shift and opening commutation
+theorems then discharge both restricted compilers directly, without an orbit
+functionality or uniqueness assumption.  The resulting Sigma-universal and
+Pi-existential proof fields combine with the concrete paired-row closure
+theorem to become unconditional in every PA model.  They are still only the
+two advertised restricted branches, not the complete local
+decision/exclusivity field.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
@@ -1405,6 +1719,16 @@ five standard closed `BProv` derivations accompanied by explicit graph views;
 the compact sixth component is supplied by the proved level-zero consistency
 theorem.  The standard route deliberately requires quoted-code witnesses and
 never identifies an arbitrary nonstandard graph output with a quotation.
+
+`RawCodedDynamicTruthMasterBasePackage.v` instantiates that bridge with the
+five concrete level-zero dynamic-truth slices, in the master constructor's
+exact order: local decision/exclusivity, adjacent-level coherence, shift
+invariance, substitution invariance, and witnessed PA-axiom soundness.  Each
+slice contributes both its standard quoted-code graph witness and its closed
+`BProv` theorem, yielding the exact unconditional base callback consumed by
+master induction.  This is deliberately only the level-zero package; it does
+not stand in for the carrier-indexed component families still needed at
+positive, possibly nonstandard, levels.
 
 `RawCodedTruthCertificateMasterSuccessorBridge.v` gives the matching
 nonstandard-safe successor interface.  A component compiler consumes the
@@ -1663,6 +1987,9 @@ Rocq/Coq compiler work for the uniform sentence.
 - [x] Build the generic PA-internal master-package induction and its bridge to
   the exact compact uniform theorem from graph decomposition, base, and
   successor callbacks.
+- [x] Add an honest extended proof-template syntax and compile every one of
+  its seventeen natural-deduction constructors to exact coverage-certified
+  raw PA local proofs under an abstract model-coded specialization.
 - [ ] Port the six-field dynamic-truth master-code graph, checked base
   certificate, and staged proof-code successor from Lean to Rocq/Coq; apply
   internal PA induction and the final projection to make the uniform object

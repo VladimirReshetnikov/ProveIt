@@ -1,0 +1,24 @@
+(** Assumption audit for successor-domain deep closure. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthSuccessorDomainDeepClosure.
+
+Import PABoundedRawCodedDynamicTruthSuccessorDomainDeepClosure.
+
+Check dynamicTruthSigmaRowDomainTemplate_scoped_12.
+Check dynamicTruthPiRowDomainTemplate_scoped_12.
+Check raw_dynamicTruth_scope_twelve_below_successor_of_twenty_six.
+Check raw_codedFormulaSubstitutionAtom_numeral_identity_of_syntax.
+Check raw_codedSuccessorDomain_deep_closed.
+Check raw_dynamicTruthSigmaSuccessorDomain_deep_closed.
+Check raw_dynamicTruthPiSuccessorDomain_deep_closed.
+
+Print Assumptions dynamicTruthSigmaRowDomainTemplate_scoped_12.
+Print Assumptions dynamicTruthPiRowDomainTemplate_scoped_12.
+Print Assumptions
+  raw_dynamicTruth_scope_twelve_below_successor_of_twenty_six.
+Print Assumptions
+  raw_codedFormulaSubstitutionAtom_numeral_identity_of_syntax.
+Print Assumptions raw_codedSuccessorDomain_deep_closed.
+Print Assumptions raw_dynamicTruthSigmaSuccessorDomain_deep_closed.
+Print Assumptions raw_dynamicTruthPiSuccessorDomain_deep_closed.

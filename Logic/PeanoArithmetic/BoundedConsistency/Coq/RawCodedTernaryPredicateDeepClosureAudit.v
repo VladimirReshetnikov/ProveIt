@@ -1,0 +1,29 @@
+(** Assumption and API audit for deep ternary-predicate closure. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTernaryPredicateDeepClosure.
+
+Import PABoundedRawCodedTernaryPredicateDeepClosure.
+
+Check RawCodedTernaryPredicateDeepClosed.
+Check codedTernaryPredicateDeepClosedTermAt.
+Check codedTernaryPredicateDeepClosedFormula.
+Check raw_sat_codedTernaryPredicateDeepClosedTermAt_iff.
+Check raw_sat_codedTernaryPredicateDeepClosedFormula_iff.
+
+Check rawStandardTermShiftIdentityTree_valid.
+Check raw_codedTermShift_of_valid_tree.
+Check raw_codedTermShift_standard_scoped_identity.
+Check raw_codedFormulaDiagonalShift_eq_identity_of_shifts.
+Check raw_codedFormulaDiagonalShift_standard_scoped_identity.
+Check raw_codedFormulaShift_standard_scoped_identity_at_raw_cutoff.
+
+Check raw_quotedFormula_ternaryPredicateDeepClosed.
+Check raw_codedTernaryPredicateDeepClosed_rootClosed.
+
+Print Assumptions raw_sat_codedTernaryPredicateDeepClosedTermAt_iff.
+Print Assumptions raw_sat_codedTernaryPredicateDeepClosedFormula_iff.
+Print Assumptions raw_codedTermShift_standard_scoped_identity.
+Print Assumptions raw_codedFormulaDiagonalShift_standard_scoped_identity.
+Print Assumptions raw_quotedFormula_ternaryPredicateDeepClosed.
+Print Assumptions raw_codedTernaryPredicateDeepClosed_rootClosed.
