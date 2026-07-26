@@ -1826,6 +1826,19 @@ standard-formula instances for those cells.  Turning their arbitrary carrier
 codes into principal-constructor proof roots remains part of the dynamic
 binder compiler rather than being hidden behind this result.
 
+`RawCodedDynamicTruthBinderOffDiagonalExclusivity.v` gives those eight cells
+their literal arbitrary-carrier shape.  Sigma-All and Pi-Ex branch codes are
+built directly from the native row polynomials with the opaque lower
+application left as a model element; the module enumerates exactly the eight
+off-diagonal cells touching either branch and proves their atomic adequacy.
+Fixed principal-witness formulas supply PA proofs of all eight constructor
+collisions, and a checked local composition theorem turns two exact
+branch-to-principal projection roots plus that fixed collision root into the
+curried pair required by the 7-by-6 matrix.  The Ex8 projection roots remain
+an explicit object-proof premise because compiling them for an opaque
+carrier formula requires checked formula/context shift traces; no semantic
+truth assumption is substituted for that missing compiler.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
