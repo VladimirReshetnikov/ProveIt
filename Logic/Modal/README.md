@@ -167,6 +167,7 @@ is being reconstructed:
 | `CanonicalGL.v` | `Modal/Kripke/Logic/GL/Completeness.lean` | Finite mini-canonical GL frame and truth lemma; finite/full completeness; finite rooted countermodel and root-validity characterizations |
 | `GLUnnecessitation.v` | `Modal/Kripke/Logic/GL/Unnecessitation.lean` | Fresh-root countermodel transfer from `boxdot p -> q` to `box p -> box q`; the resulting checked GL unnecessitation rule and predicate-valued instance analogue |
 | `GLModalDisjunction.v` | `Modal/Kripke/Logic/GL/MDP.lean` | Finite fresh-root coproduct with explicit cover and component bounded morphisms; exact arbitrary boxed-context MDP auxiliary theorem via constructive finite-support extraction; GL modal disjunction through unnecessitation |
+| `GLIndependence.v` | `Modal/Logic/GL/Independency.lean` | Independence and iterated-independence formulas; singleton countermodel for unprovability of negated boxes; all five active consistency-iteration unprovability theorems via GL modal disjunction and unnecessitation |
 | `CanonicalGLPoint3.v` | `Modal/Kripke/Logic/GLPoint3.lean`, `Modal/Boxdot/GLPoint3_GrzPoint3.lean` | Selective finite canonical GL.3 model; connected and piecewise-connected soundness-completeness; strict GL/K4.3 predecessors; checked Boxdot GL.3 gate and unconditional forward translation |
 | `CanonicalGrz.v` | `Modal/Kripke/Logic/Grz/{Soundness,Completeness}.lean` | Finite partial-order mini-canonical Grz model and truth lemma; finite/full soundness-completeness; finite partial orders validate McKinsey |
 | `CanonicalGrzMcK.v` | `Modal/Kripke/Logic/Grz/Completeness.lean` | Finite partial-order inclusion and the pinned three-world separator proving strict `S4McK < Grz` and `S4 < Grz` |
@@ -603,6 +604,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.FiniteMaximalContext `
   FoundationModal.GLUnnecessitation `
   FoundationModal.GLModalDisjunction `
+  FoundationModal.GLIndependence `
   FoundationModal.Modality `
   FoundationModal.CanonicalDB5 `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `

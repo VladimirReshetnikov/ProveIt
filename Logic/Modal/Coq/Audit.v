@@ -8,7 +8,7 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
-  GLUnnecessitation GLModalDisjunction CanonicalGrz StructuralFrames
+  GLUnnecessitation GLModalDisjunction GLIndependence CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer CanonicalS5Grz
@@ -202,6 +202,15 @@ Check modal_disjunctive.
 Check GL_modal_disjunction.
 Check GL_modal_disjunctive.
 Check GL_modal_disjunctive_instance.
+Check independency.
+Check higher_independency.
+Check higherIndependency.
+Check GL_unprovable_notbox.
+Check GL_unprovable_independency.
+Check GL_proves_box_or_box_neg_of_not_independency.
+Check GL_unprovable_not_independency_of_consistency.
+Check GL_unprovable_higher_independency_of_consistency.
+Check GL_unprovable_not_higher_independency_of_consistency.
 Check grz_mini_countermodel.
 Check Grz_finite_sound_complete.
 Check Grz_sound_complete.
@@ -916,6 +925,11 @@ Print Assumptions normal_derives_finite_support.
 Print Assumptions GL_MDP_boxed_antecedent.
 Print Assumptions GL_MDP_Aux.
 Print Assumptions GL_modal_disjunction.
+Print Assumptions GL_unprovable_notbox.
+Print Assumptions GL_unprovable_independency.
+Print Assumptions GL_unprovable_not_independency_of_consistency.
+Print Assumptions GL_unprovable_higher_independency_of_consistency.
+Print Assumptions GL_unprovable_not_higher_independency_of_consistency.
 Print Assumptions Grz_finite_sound_complete.
 Print Assumptions Grz_sound_complete.
 Print Assumptions finite_partial_order_mckinsey.
