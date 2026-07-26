@@ -1679,6 +1679,16 @@ the compact sixth component is supplied by the proved level-zero consistency
 theorem.  The standard route deliberately requires quoted-code witnesses and
 never identifies an arbitrary nonstandard graph output with a quotation.
 
+`RawCodedDynamicTruthMasterBasePackage.v` instantiates that bridge with the
+five concrete level-zero dynamic-truth slices, in the master constructor's
+exact order: local decision/exclusivity, adjacent-level coherence, shift
+invariance, substitution invariance, and witnessed PA-axiom soundness.  Each
+slice contributes both its standard quoted-code graph witness and its closed
+`BProv` theorem, yielding the exact unconditional base callback consumed by
+master induction.  This is deliberately only the level-zero package; it does
+not stand in for the carrier-indexed component families still needed at
+positive, possibly nonstandard, levels.
+
 `RawCodedTruthCertificateMasterSuccessorBridge.v` gives the matching
 nonstandard-safe successor interface.  A component compiler consumes the
 current concrete master graph assertion and a coded PA proof of that exact

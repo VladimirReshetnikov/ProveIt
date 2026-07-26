@@ -1,0 +1,24 @@
+(** Public surface and kernel-assumption audit for the complete five-slice
+    dynamic-truth master base package. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthMasterBasePackage.
+
+Import PABoundedRawCodedDynamicTruthMasterBasePackage.
+
+Check PA_proves_dynamicTruthLocalDecisionExclusiveBaseFormula.
+Check dynamicTruthLocalDecisionExclusiveBaseGraph_standard_zero_witness.
+
+Check raw_dynamicTruthMasterBaseBProvComponentPackage.
+Check raw_dynamicTruthMasterBaseComponentPackage.
+
+Check dynamicTruthMasterBaseGraph.
+Check raw_dynamicTruthMasterPackageBase.
+
+Print Assumptions
+  PA_proves_dynamicTruthLocalDecisionExclusiveBaseFormula.
+Print Assumptions
+  dynamicTruthLocalDecisionExclusiveBaseGraph_standard_zero_witness.
+Print Assumptions raw_dynamicTruthMasterBaseBProvComponentPackage.
+Print Assumptions raw_dynamicTruthMasterBaseComponentPackage.
+Print Assumptions raw_dynamicTruthMasterPackageBase.
