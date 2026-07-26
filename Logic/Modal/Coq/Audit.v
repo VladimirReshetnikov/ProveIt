@@ -9,7 +9,7 @@ From FoundationModal Require Import
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
   GLUnnecessitation GLModalDisjunction GLIndependence QuasiNormalS GLPlusBoxBot
-  KHenIncompleteness
+  KHenIncompleteness GLAlternativeSystems
   CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
@@ -266,6 +266,32 @@ Check KHen_unprovable_atomic_Four.
 Check KHen_Kripke_incomplete.
 Check K_strictly_weaker_KHen.
 Check KHen_strictly_weaker_GL.
+(** Equivalent axiom/rule presentations of GL. *)
+Check K4Loeb_proves_substitute.
+Check K4Loeb_normal_logic.
+Check K4Henkin_proves_substitute.
+Check K4Henkin_normal_logic.
+Check K4Hen_schema_substitution_closed.
+Check K4Hen_normal_logic.
+Check K4_proves_box_L_implies_L.
+Check K4Loeb_proves_L.
+Check K4Henkin_loeb_rule.
+Check K4Henkin_proves_L.
+Check K4Hen_henkin_rule.
+Check K4Hen_loeb_rule.
+Check K4Hen_proves_L.
+Check GL_loeb_rule.
+Check GL_henkin_rule.
+Check provable_GL_K4Loeb_iff.
+Check provable_GL_K4Henkin_iff.
+Check provable_GL_K4Hen_iff.
+Check provable_GL_TFAE.
+Check GL_equiv_K4Loeb.
+Check GL_equiv_K4Henkin.
+Check GL_equiv_K4Hen.
+Check K4_unprovable_atomic_L.
+Check K4_strictly_weaker_GL.
+Check not_S4_weakerThan_GL.
 Check grz_mini_countermodel.
 Check Grz_finite_sound_complete.
 Check Grz_sound_complete.
@@ -1043,6 +1069,17 @@ Print Assumptions KHen_unprovable_atomic_Four.
 Print Assumptions KHen_Kripke_incomplete.
 Print Assumptions K_strictly_weaker_KHen.
 Print Assumptions KHen_strictly_weaker_GL.
+Print Assumptions K4_proves_box_L_implies_L.
+Print Assumptions K4Loeb_proves_L.
+Print Assumptions K4Henkin_loeb_rule.
+Print Assumptions K4Hen_henkin_rule.
+Print Assumptions provable_GL_TFAE.
+Print Assumptions GL_equiv_K4Loeb.
+Print Assumptions GL_equiv_K4Henkin.
+Print Assumptions GL_equiv_K4Hen.
+Print Assumptions K4_unprovable_atomic_L.
+Print Assumptions K4_strictly_weaker_GL.
+Print Assumptions not_S4_weakerThan_GL.
 Print Assumptions Grz_finite_sound_complete.
 Print Assumptions Grz_sound_complete.
 Print Assumptions finite_partial_order_mckinsey.

@@ -30,6 +30,9 @@ is being reconstructed:
   truth lemmas, finite and unrestricted soundness/completeness, and GL's
   finite rooted countermodel characterization, together with the strict
   hierarchy `S4 < S4McK < Grz`;
+- the equivalence of GL's Loeb-axiom presentation with K4 plus the Loeb rule,
+  K4 plus the Henkin rule, and K4 plus the Henkin axiom, together with the
+  strict predecessor `K4 < GL`;
 - predicate-valued classical, quasinormal, and normal logics, their least
   normal and quasinormal sums, finite-basis and letterless omission theorems,
   and an exact finite boxed-context characterization of global consequence;
@@ -177,6 +180,7 @@ is being reconstructed:
 | `QuasiNormalS.v` | `Modal/Logic/S/Basic.lean` | Least quasinormal sum of GL with one atomic T generator; all T instances by substitution, strict `GL < S`, exact substitution-free derivation characterization, and source-equivalent induction principle |
 | `GLPlusBoxBot.v` | `Modal/Logic/GLPlusBoxBot/Basic.lean` | Option-indexed quasi-normal extensions `GL + box^n bottom`; exact deduction equivalence with a GL implication; omega stage; successor, addition, and strict-order weakening hierarchy |
 | `KHenIncompleteness.v` | `Modal/Kripke/Logic/KHen.lean`, `Modal/Hilbert/Normal/Basic.lean` | KHen calculus and inclusions; atomic Henkin/Loeb validity equivalence; exact two-column Cresswell model with eventual truth classification; Henkin validity, Four counterexample, no characterizing frame class, and strict `K < KHen < GL` |
+| `GLAlternativeSystems.v` | `Modal/Entailment/{K4Loeb,K4Henkin,K4Hen}.lean`, `Modal/Hilbert/GL_K4Loeb_K4Henkin_K4Hen.lean` | Concrete K4 Loeb-rule and Henkin-rule calculi, K4+Hen normal calculus, substitution and derived rule/axiom bridges, full four-way equivalence with GL, and strict `K4 < GL` |
 | `CanonicalGLPoint3.v` | `Modal/Kripke/Logic/GLPoint3.lean`, `Modal/Boxdot/GLPoint3_GrzPoint3.lean` | Selective finite canonical GL.3 model; connected and piecewise-connected soundness-completeness; strict GL/K4.3 predecessors; checked Boxdot GL.3 gate and unconditional forward translation |
 | `CanonicalGrz.v` | `Modal/Kripke/Logic/Grz/{Soundness,Completeness}.lean` | Finite partial-order mini-canonical Grz model and truth lemma; finite/full soundness-completeness; finite partial orders validate McKinsey |
 | `CanonicalGrzMcK.v` | `Modal/Kripke/Logic/Grz/Completeness.lean` | Finite partial-order inclusion and the pinned three-world separator proving strict `S4McK < Grz` and `S4 < Grz` |
@@ -306,6 +310,13 @@ predicate-logic infrastructure.  Quasinormality inherits the already audited
 GL normal-logic interface.  The strictness witness is syntactic: an assumed
 GL proof of atomic T would specialize to `box bottom -> bottom`, and Loeb's
 axiom would contradict the checked consistency of GL.
+
+The Loeb-rule, Henkin-rule, and K4+Hen calculi are structurally closed under
+substitution by direct induction.  Their translations to and from GL are
+syntactic once K4 proves `box (L p) -> L p`; this one auxiliary theorem is
+obtained from checked K4 completeness and therefore inherits excluded middle
+and definite description.  The direct reflexive-singleton witness for strict
+`K4 < GL` uses only excluded middle through Kripke soundness.
 
 The modal-word syntax, decidable equality, size/splitting machinery, finite
 size layers, atom-instance substitution lifting, and generic reduction
@@ -636,6 +647,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.QuasiNormalS `
   FoundationModal.GLPlusBoxBot `
   FoundationModal.KHenIncompleteness `
+  FoundationModal.GLAlternativeSystems `
   FoundationModal.Modality `
   FoundationModal.CanonicalDB5 `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
