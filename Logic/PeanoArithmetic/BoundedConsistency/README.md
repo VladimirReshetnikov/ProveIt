@@ -1407,6 +1407,13 @@ five-witness, conjunction-only candidate is not this table row.  Concrete
 instantiation therefore cannot silently identify the Lean-shaped schema with
 Rocq's different encoding.
 
+`RawCodedDynamicTruthTemplateNumeralParameters.v` instantiates the source
+template's designated lower- and upper-level names at arbitrary carrier
+elements.  Represented numeral-code totality selects both possibly
+nonstandard numeral terms, and the package exposes their exact validity plus
+the direct translator's complete term shift/open fields.  Only the separate
+opaque-predicate operation traces remain to form the full direct input.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
