@@ -11,7 +11,7 @@ From FoundationModal Require Import
   GLUnnecessitation CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
-  CanonicalGrzMcK CanonicalTrivVer
+  CanonicalGrzMcK CanonicalTrivVer CanonicalS5Grz
   CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
   CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
@@ -544,6 +544,30 @@ Check GrzPoint3_strictly_weaker_Triv.
 Check S4Point4McK_strictly_weaker_Triv.
 Check GLPoint3_strictly_weaker_Ver.
 
+(** S5 plus Grzegorczyk collapses proof-theoretically to Triv. *)
+Check S5Grz_schema_substitution_closed.
+Check S5Grz_proves_substitute.
+Check S5Grz_proves_T.
+Check S5Grz_proves_Five.
+Check S5Grz_proves_Grz.
+Check S5_weaker_than_S5Grz.
+Check Grz_weaker_than_S5Grz.
+Check S5_proves_dia_box_to_box.
+Check S5Grz_proves_DiaT.
+Check S5Grz_proves_Tc.
+Check KTc_weaker_than_S5Grz.
+Check S5Grz_proves_sound_on_Triv_frame.
+Check S5Grz_proves_sound_on_finite_Triv_frame.
+Check S5Grz_is_consistent.
+Check S5Grz_weaker_than_Triv.
+Check Triv_weaker_than_S5Grz.
+Check S5Grz_Triv_provable_iff.
+Check S5Grz_equiv_Triv.
+Check S5Grz_finite_Triv_sound.
+Check S5_strictly_weaker_S5Grz.
+Check Grz_strictly_weaker_S5Grz.
+Check S4_strictly_weaker_Triv.
+
 (** Modal words, their finite size layers, generic reduction algebra, and
     checked S5 canonical normalization. *)
 Check modality_eq_dec.
@@ -1059,6 +1083,17 @@ Print Assumptions KTc_strictly_weaker_Ver.
 Print Assumptions GrzPoint3_strictly_weaker_Triv.
 Print Assumptions S4Point4McK_strictly_weaker_Triv.
 Print Assumptions GLPoint3_strictly_weaker_Ver.
+(** S5Grz's DiaT/Tc collapse inherits only the established classical S5
+    completeness boundary; the direct frame soundness and finite separators
+    expose no project-local assumptions. *)
+Print Assumptions S5Grz_proves_DiaT.
+Print Assumptions S5Grz_proves_Tc.
+Print Assumptions S5Grz_equiv_Triv.
+Print Assumptions S5Grz_proves_sound_on_finite_Triv_frame.
+Print Assumptions S5Grz_is_consistent.
+Print Assumptions S5_strictly_weaker_S5Grz.
+Print Assumptions Grz_strictly_weaker_S5Grz.
+Print Assumptions S4_strictly_weaker_Triv.
 Print Assumptions K_strictly_weaker_KT.
 Print Assumptions K_strictly_weaker_K4.
 Print Assumptions KT_strictly_weaker_S4.

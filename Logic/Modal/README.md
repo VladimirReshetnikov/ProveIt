@@ -185,6 +185,7 @@ is being reconstructed:
 | `CanonicalPoint2McK.v` | `Modal/Kripke/Logic/S4Point2McK.lean` | Combined strong-confluence/McKinsey canonical completeness; strict S4McK and S4.2 predecessors with finite fork and universal-frame separators |
 | `CanonicalPoint3McK.v` | `Modal/Kripke/Logic/S4Point3McK.lean` | Combined connectedness/McKinsey canonical completeness; strict S4.2McK and S4.3 predecessors with finite diamond and universal-frame separators |
 | `CanonicalTrivVer.v` | `Modal/{Entailment,Kripke/Logic}/{KTc,Triv,Ver}.lean`, `Modal/Kripke/AxiomVer.lean`, `Modal/Boxdot/Ver_Triv.lean` | Generic Ver/isolated canonicality; coreflexive/equality/isolated metatheory; finite Triv/Ver completeness; all entailments and strictness results; unconditional Boxdot equivalence |
+| `CanonicalS5Grz.v` | `Modal/Entailment/S5Grz.lean`, `Modal/Kripke/Logic/S5Grz.lean`, `Modal/Hilbert/Normal/Basic.lean` | Polymorphic S5Grz calculus; direct DiaT and Tc derivations; proof-theoretic equivalence with Triv; direct finite-Triv soundness and consistency; strict S5 and Grz predecessors and the derived strict S4-to-Triv inclusion |
 | `CanonicalPoint4McK.v` | `Modal/Kripke/Logic/S4Point4McK.lean` | Complete S4.4McK canonical metatheory and strictness, reusing the complete S4.3McK predecessor API |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
@@ -599,6 +600,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.LogicInfrastructure `
   FoundationModal.CanonicalExtensions `
   FoundationModal.FiniteMaximalContext `
+  FoundationModal.GLUnnecessitation `
   FoundationModal.Modality `
   FoundationModal.CanonicalDB5 `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
@@ -619,6 +621,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalGrzPoint2 `
   FoundationModal.CanonicalGrzPoint3Strict `
   FoundationModal.CanonicalTrivVer `
+  FoundationModal.CanonicalS5Grz `
   FoundationModal.CanonicalK4n `
   FoundationModal.CanonicalPoint3McK `
   FoundationModal.CanonicalPoint4McK `
