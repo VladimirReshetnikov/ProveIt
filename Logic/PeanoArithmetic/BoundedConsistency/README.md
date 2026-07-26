@@ -1076,6 +1076,15 @@ by disjunction elimination.  They let the dynamic successor compiler perform
 case analysis over nonstandard formula codes without routing a purely
 propositional tree through formula shift or opening infrastructure.
 
+`RawCodedPALocalProofFiniteDisjunction.v` builds that case analysis for an
+arbitrary metatheoretic finite list of carrier formula codes.  It represents
+the empty disjunction by bottom, preserves a singleton literally, and folds
+longer rows into a genuine right-associated Or tree, so the native six- and
+seven-branch rows acquire no artificial trailing case.  Every assumption
+leaf is certified against its exact carrier-coded context, and the exported
+closed rule and open elimination rule require neither decoding nor an
+adequacy premise on the branch codes.
+
 `RawCodedAssignmentShiftTail.v` also exposes PAHF's represented beta-tail
 shift through the raw assignment interface.  It constructs, inside every raw
 model and through an arbitrary carrier-valued bound, a target table whose row
