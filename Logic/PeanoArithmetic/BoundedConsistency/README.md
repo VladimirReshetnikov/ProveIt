@@ -1755,6 +1755,14 @@ transparent master conjunction.  Both routes assemble the concrete package
 successor while preventing an unrelated proof target or standard-only `BProv`
 instance from entering the carrier-indexed step.
 
+`RawCodedTruthCertificateMasterComponentProjection.v` opens an exact current
+master certificate with checked And-elimination trees and recovers all six
+component proofs in the certificate's original witnessed PA context.  Its
+graph-facing theorem simultaneously exposes the six coordinates selected by
+the concrete master graph.  This closes the current-package decomposition
+seam needed by a staged successor compiler; it does not manufacture any next
+field or merge independently chosen proof contexts.
+
 `RawCodedTruthCertificateConcreteEndpoint.v` connects that successor bridge,
 the zero bridge, the concrete assembler, and the generic PA-internal
 induction.  Its single remaining all-model premise is exactly the five-field
