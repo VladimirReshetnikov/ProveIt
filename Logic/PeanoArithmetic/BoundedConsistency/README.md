@@ -1594,6 +1594,14 @@ separate from the operational opaque traces, and the endpoint deliberately
 continues to name the restricted universal branch rather than the full
 seven-way disjunction.
 
+`RawCodedDynamicTruthSigmaDomainProjectionProofCompilation.v` begins the
+honest passage back to that full row.  A fixed template proof projects
+`Ex^8 (domain /\ Or7 branches)` to `Ex^8 domain`, preserving all eight table
+witnesses and discarding only the branch disjunction.  Direct structural
+translation, thirteen-variable closure, and native-code identification yield
+an exact coded PA proof of the resulting Sigma domain field; this is one
+full-row eliminator, not yet the complete local bundle.
+
 `RawCodedDynamicTruthPiExistentialLeafProofCompilation.v` supplies the exact
 polarity-dual compiler.  It transports the honest eight-witness projection
 of the explicitly restricted existential branch through the direct
