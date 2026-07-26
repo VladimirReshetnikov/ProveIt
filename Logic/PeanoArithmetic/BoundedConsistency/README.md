@@ -1388,7 +1388,10 @@ surrounding template directly from relational opaque shift/opening traces.
 No nonstandard opaque leaf is decoded into a Coq inductive tree.
 `RawCodedTemplateNumeralParameters.v` separately builds exact term shift and
 opening traces for named parameters represented by model-internal numeral
-codes.  `RawCodedTemplateTernaryApplication.v` supplies the honest
+codes.  `RawCodedTemplateNumeralTermSyntax.v` uses the zero-shift instance of
+those traces to place every interpreted template term, including renamed and
+opened terms, in the honest syntax domain required by opaque selectors.
+`RawCodedTemplateTernaryApplication.v` supplies the honest
 five-trace application relation for a possibly nonstandard ternary formula,
 proves totality and preservation of atomic adequacy on represented term
 syntax, and names the exact shift/opening commuting diagrams required at an
