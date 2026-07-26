@@ -33,6 +33,9 @@ is being reconstructed:
 - predicate-valued classical, quasinormal, and normal logics, their least
   normal and quasinormal sums, finite-basis and letterless omission theorems,
   and an exact finite boxed-context characterization of global consequence;
+- the quasinormal logic S as GL plus a single atomic T generator, including
+  all substituted T instances, its substitution-free recursor, and the strict
+  inclusion `GL < S`;
 - a schema-generic Lindenbaum and canonical-model construction, specialized
   to canonical reflexivity, seriality, symmetry, transitivity, and right
   Euclideanity, with full soundness/completeness for KT, KD, KB, K4, K5, S4,
@@ -171,6 +174,7 @@ is being reconstructed:
 | `GLUnnecessitation.v` | `Modal/Kripke/Logic/GL/Unnecessitation.lean` | Fresh-root countermodel transfer from `boxdot p -> q` to `box p -> box q`; the resulting checked GL unnecessitation rule and predicate-valued instance analogue |
 | `GLModalDisjunction.v` | `Modal/Kripke/Logic/GL/MDP.lean` | Finite fresh-root coproduct with explicit cover and component bounded morphisms; exact arbitrary boxed-context MDP auxiliary theorem via constructive finite-support extraction; GL modal disjunction through unnecessitation |
 | `GLIndependence.v` | `Modal/Logic/GL/Independency.lean` | Independence and iterated-independence formulas; singleton countermodel for unprovability of negated boxes; all five active consistency-iteration unprovability theorems via GL modal disjunction and unnecessitation |
+| `QuasiNormalS.v` | `Modal/Logic/S/Basic.lean` | Least quasinormal sum of GL with one atomic T generator; all T instances by substitution, strict `GL < S`, exact substitution-free derivation characterization, and source-equivalent induction principle |
 | `GLPlusBoxBot.v` | `Modal/Logic/GLPlusBoxBot/Basic.lean` | Option-indexed quasi-normal extensions `GL + box^n bottom`; exact deduction equivalence with a GL implication; omega stage; successor, addition, and strict-order weakening hierarchy |
 | `KHenIncompleteness.v` | `Modal/Kripke/Logic/KHen.lean`, `Modal/Hilbert/Normal/Basic.lean` | KHen calculus and inclusions; atomic Henkin/Loeb validity equivalence; exact two-column Cresswell model with eventual truth classification; Henkin validity, Four counterexample, no characterizing frame class, and strict `K < KHen < GL` |
 | `CanonicalGLPoint3.v` | `Modal/Kripke/Logic/GLPoint3.lean`, `Modal/Boxdot/GLPoint3_GrzPoint3.lean` | Selective finite canonical GL.3 model; connected and piecewise-connected soundness-completeness; strict GL/K4.3 predecessors; checked Boxdot GL.3 gate and unconditional forward translation |
@@ -295,6 +299,13 @@ theorem is supplied.
 The semantic `S4McK`-to-Grz inclusion inherits the Grz completeness boundary;
 the three-world separating frame is structural, and its atomic Grz failure
 uses only excluded middle through the exact correspondence theorem.
+
+The definition of S, its T substitution instances, and its normalized
+GL/T/modus-ponens recursor add no new assumptions beyond the common
+predicate-logic infrastructure.  Quasinormality inherits the already audited
+GL normal-logic interface.  The strictness witness is syntactic: an assumed
+GL proof of atomic T would specialize to `box bottom -> bottom`, and Loeb's
+axiom would contradict the checked consistency of GL.
 
 The modal-word syntax, decidable equality, size/splitting machinery, finite
 size layers, atom-instance substitution lifting, and generic reduction
@@ -622,6 +633,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.GLUnnecessitation `
   FoundationModal.GLModalDisjunction `
   FoundationModal.GLIndependence `
+  FoundationModal.QuasiNormalS `
   FoundationModal.GLPlusBoxBot `
   FoundationModal.KHenIncompleteness `
   FoundationModal.Modality `

@@ -8,7 +8,7 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
-  GLUnnecessitation GLModalDisjunction GLIndependence GLPlusBoxBot
+  GLUnnecessitation GLModalDisjunction GLIndependence QuasiNormalS GLPlusBoxBot
   KHenIncompleteness
   CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
@@ -214,6 +214,18 @@ Check GL_proves_box_or_box_neg_of_not_independency.
 Check GL_unprovable_not_independency_of_consistency.
 Check GL_unprovable_higher_independency_of_consistency.
 Check GL_unprovable_not_higher_independency_of_consistency.
+(** The least quasinormal extension of GL containing T. *)
+Check S_atomic_T_axiom.
+Check S_quasi_normal.
+Check GL_weaker_than_S.
+Check S_proves_atomic_T.
+Check S_proves_T.
+Check S_proves_substitute.
+Check GL_unprovable_atomic_T.
+Check GL_strictly_weaker_S.
+Check S_derivation_iff.
+Check S_proves_induction.
+Check S_rec.
 (** The quasi-normal GL plus iterated boxed falsity hierarchy. *)
 Check GLPlusBoxBot_axiom.
 Check GLPlusBoxBot.
@@ -1010,6 +1022,12 @@ Print Assumptions GL_unprovable_independency.
 Print Assumptions GL_unprovable_not_independency_of_consistency.
 Print Assumptions GL_unprovable_higher_independency_of_consistency.
 Print Assumptions GL_unprovable_not_higher_independency_of_consistency.
+Print Assumptions S_quasi_normal.
+Print Assumptions S_proves_T.
+Print Assumptions GL_unprovable_atomic_T.
+Print Assumptions GL_strictly_weaker_S.
+Print Assumptions S_derivation_iff.
+Print Assumptions S_proves_induction.
 Print Assumptions GLPlusBoxBot_quasi_normal.
 Print Assumptions iff_provable_GLPlusBoxBot_provable_GL.
 Print Assumptions GL_proves_boxbot_successor.
