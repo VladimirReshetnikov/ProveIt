@@ -9,7 +9,7 @@ From FoundationModal Require Import
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalPoint4 CanonicalS5 CanonicalMcK CanonicalTrivVer
-  Undefinability.
+  CanonicalPoint4McK Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -356,6 +356,19 @@ Check K_weaker_than_K4McK.
 Check K4_strictly_weaker_K4McK.
 Check S4_strictly_weaker_S4McK.
 Check K4McK_strictly_weaker_S4McK.
+
+(** Canonical S4.4McK, with the S4.3McK boundary needed by its source
+    inclusion theorem. *)
+Check S4Point3McK_schema_substitution_closed.
+Check S4Point3McK_proves_sound_on_frame.
+Check S4Point4McK_frame_is_S4Point3McK.
+Check S4Point4McK_is_consistent.
+Check S4Point4McK_canonical_frame.
+Check S4Point4McK_sound_complete.
+Check S4Point3McK_weaker_than_S4Point4McK.
+Check S4Point3McK_strictly_weaker_S4Point4McK.
+Check S4Point4_weaker_than_S4Point4McK.
+Check S4Point4_strictly_weaker_S4Point4McK.
 
 (** Coreflexive KTc, equality-frame Triv, and isolated-frame Ver, including
     their source-local entailments, finite completeness, and strictness
@@ -787,6 +800,11 @@ Print Assumptions S4McK_complete.
 Print Assumptions K4_strictly_weaker_K4McK.
 Print Assumptions S4_strictly_weaker_S4McK.
 Print Assumptions K4McK_strictly_weaker_S4McK.
+Print Assumptions S4Point3McK_schema_substitution_closed.
+Print Assumptions S4Point4McK_canonical_frame.
+Print Assumptions S4Point4McK_complete.
+Print Assumptions S4Point3McK_strictly_weaker_S4Point4McK.
+Print Assumptions S4Point4_strictly_weaker_S4Point4McK.
 Print Assumptions schema_DiaT_substitution_closed.
 Print Assumptions KTc_proves_DiaT.
 Print Assumptions KTc_prime_proves_Tc.
