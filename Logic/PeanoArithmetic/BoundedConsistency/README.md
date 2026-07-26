@@ -1390,7 +1390,12 @@ deduction constructors.  `RawCodedTemplateProofCompiler.v` translates such a
 fixed finite tree under an abstract model-coded specialization and builds
 every raw proof node through the coverage-certified constructors.  Its public
 result is an exact `RawCodedPALocalProofOf`; nonstandard predicate codes are
-never decoded.  `RawCodedTranslatedProofCompiler.v` provides the corresponding
+never decoded.  `RawCodedTemplateProofCompilerSelfShiftTail.v` generalizes
+that compiler from the raw-zero context tail to an arbitrary realizable,
+self-shifting carrier-coded tail.  All seventeen constructor cases are
+rebuilt with their literal tail-based contexts; a witnessed PA-axiom context
+supplies both tail hypotheses, including the binder-rule self-shift invariant.
+`RawCodedTranslatedProofCompiler.v` provides the corresponding
 homomorphic compiler for ordinary PA proof trees and will be used by the
 lifted-PA axiom bridge.  `RawCodedTemplatePAEmbedding.v` makes that bridge
 literal: it embeds all seventeen ordinary raw-proof constructors, proves
