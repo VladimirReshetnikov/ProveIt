@@ -165,6 +165,7 @@ is being reconstructed:
 | `GLGrzDerivations.v` | `Modal/Entailment/{GL,Grz}.lean` | Derived GL and Grz proof theory, including Four, Henkin, Z, Gödel II, T/Dum, and the syntactic boxdot translation of Grz in GL |
 | `FiniteCanonicalSupport.v` | `Modal/Kripke/Logic/{GL,Grz}/Completeness.lean` | Shared finite boxed-context operations, structural derivability laws, relevant-box selectors, extensional equality, and Grz closure enrichment |
 | `CanonicalGL.v` | `Modal/Kripke/Logic/GL/Completeness.lean` | Finite mini-canonical GL frame and truth lemma; finite/full completeness; finite rooted countermodel and root-validity characterizations |
+| `GLUnnecessitation.v` | `Modal/Kripke/Logic/GL/Unnecessitation.lean` | Fresh-root countermodel transfer from `boxdot p -> q` to `box p -> box q`; the resulting checked GL unnecessitation rule and predicate-valued instance analogue |
 | `CanonicalGLPoint3.v` | `Modal/Kripke/Logic/GLPoint3.lean`, `Modal/Boxdot/GLPoint3_GrzPoint3.lean` | Selective finite canonical GL.3 model; connected and piecewise-connected soundness-completeness; strict GL/K4.3 predecessors; checked Boxdot GL.3 gate and unconditional forward translation |
 | `CanonicalGrz.v` | `Modal/Kripke/Logic/Grz/{Soundness,Completeness}.lean` | Finite partial-order mini-canonical Grz model and truth lemma; finite/full soundness-completeness; finite partial orders validate McKinsey |
 | `CanonicalGrzMcK.v` | `Modal/Kripke/Logic/Grz/Completeness.lean` | Finite partial-order inclusion and the pinned three-world separator proving strict `S4McK < Grz` and `S4 < Grz` |

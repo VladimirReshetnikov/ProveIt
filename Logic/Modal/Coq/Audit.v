@@ -8,7 +8,7 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
-  CanonicalGrz StructuralFrames
+  GLUnnecessitation CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer
@@ -179,6 +179,10 @@ Check GL_finite_sound_complete.
 Check GL_sound_complete.
 Check GL_unprovable_iff_exists_finite_rooted_countermodel.
 Check GL_finite_rooted_sound_complete.
+Check imply_boxdot_plain_of_imply_box_box.
+Check GL_unnecessitation.
+Check logic_unnecessitation.
+Check GL_unnecessitation_instance.
 Check grz_mini_countermodel.
 Check Grz_finite_sound_complete.
 Check Grz_sound_complete.
