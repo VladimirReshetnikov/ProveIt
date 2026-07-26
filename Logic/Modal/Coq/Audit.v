@@ -2,15 +2,27 @@
 
 From FoundationModal Require Import
   Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
+  KripkeAlgebra
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
-  CorrespondenceExtensions NormalHilbert CanonicalExtensions
-  Modality StandardTranslation Preservation Root FrameTransformations StructuralFrames
-  WeakCorrespondence Boxdot Undefinability.
+  CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
+  FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
+  WeakCorrespondence CanonicalCombinations Boxdot Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
 Check valid_K.
+
+(** Relational complex algebras and their exact agreement with Kripke
+    satisfaction. *)
+Check complex_box_top.
+Check complex_box_intersection.
+Check complex_dia_dual.
+Check algebra_eval_dia.
+Check algebraic_satisfies.
+Check algebraic_valid_imp.
+Check algebraic_valid_iff.
+Check algebraic_valid.
 
 Check nnformula_eq_dec.
 Check nn_neg_involutive.
@@ -146,6 +158,31 @@ Check S5_is_consistent.
 Check GL_is_consistent.
 Check Grz_is_consistent.
 
+(** Predicate-valued logics, normal and quasinormal sums, and global
+    consequence. *)
+Check logic_eq_iff_equiv.
+Check logic_consistent_iff_exists_unprovable.
+Check logic_no_bot.
+Check logic_list_conj_equivalence.
+Check normal_proves_logic_is_normal.
+Check normal_logic_contains_K.
+Check logic_sum_normal_sym.
+Check logic_sum_normal_normal_left.
+Check logic_sum_quasi_normal_sym.
+Check logic_sum_quasi_normal_iff_subset.
+Check logic_sum_quasi_normal_sum_union.
+Check logic_sum_quasi_normal_iff_finite_provable.
+Check logic_sum_quasi_normal_iff_finite_provable_letterless.
+Check logic_sum_quasi_normal_eq_alt.
+Check logic_sum_quasi_normal_rec_omit_substitution_strong.
+Check logic_sum_quasi_normal_rec_letterless_expansion.
+Check global_consequence_weaken.
+Check global_consequence_finite_box_le_provable.
+Check global_consequence_of_finite_box_le_provable.
+Check global_consequence_iff_finite_box_le_provable.
+Check logic_global_foundation_box_le_equivalence.
+Check global_consequence_iff_finite_foundation_box_le_provable.
+
 Check normal_derives_deduction.
 Check normal_theory_consistent_insert_neg_iff.
 Check normal_derives_box_from_unboxed.
@@ -166,6 +203,55 @@ Check K_strictly_weaker_KT.
 Check K_strictly_weaker_K4.
 Check KT_strictly_weaker_S4.
 Check K4_strictly_weaker_S4.
+
+(** Canonical D/B/Five frame properties and complete KD/KB/K5 metatheory. *)
+Check normal_canonical_serial_of_schema_D.
+Check normal_canonical_symmetric_of_schema_B.
+Check normal_canonical_right_euclidean_of_schema_Five.
+Check KD_canonical_frame_serial.
+Check KB_canonical_frame_symmetric.
+Check K5_canonical_frame_right_euclidean.
+Check KD_sound_complete.
+Check KB_sound_complete.
+Check K5_sound_complete.
+Check KD_proves_P.
+Check normal_proves_P_of_schema_D.
+Check K_strictly_weaker_KD.
+Check K_strictly_weaker_KB.
+Check K_strictly_weaker_K5.
+
+(** Canonical combinations of D, B, Four, Five, and WeakPoint3. *)
+Check K45_schema_substitution_closed.
+Check KD45_schema_substitution_closed.
+Check K4Point3_schema_substitution_closed.
+Check K45_frame_class_in_K4Point3.
+Check K45_canonical_frame.
+Check KD4_canonical_frame.
+Check KD5_canonical_frame.
+Check KDB_canonical_frame.
+Check KB4_canonical_frame.
+Check KB5_canonical_frame.
+Check KD45_canonical_frame.
+Check K45_sound_complete.
+Check KD4_sound_complete.
+Check KD5_sound_complete.
+Check KDB_sound_complete.
+Check KB4_sound_complete.
+Check KB5_sound_complete.
+Check KD45_sound_complete.
+Check K4Point3_strictly_weaker_K45.
+Check K5_strictly_weaker_K45.
+Check KD_strictly_weaker_KD4.
+Check K4_strictly_weaker_KD4.
+Check KD_strictly_weaker_KD5.
+Check K5_strictly_weaker_KD5.
+Check KD_strictly_weaker_KDB.
+Check KB_strictly_weaker_KDB.
+Check K45_strictly_weaker_KB4.
+Check KB_strictly_weaker_KB4.
+Check KD4_strictly_weaker_KD45.
+Check KD5_strictly_weaker_KD45.
+Check K45_strictly_weaker_KD45.
 
 (** Modal words, their finite size layers, generic reduction algebra, and
     checked S5 canonical normalization. *)
@@ -198,6 +284,31 @@ Check complementary_member_cases.
 Check complementary_mem_box.
 Check satisfies_complement_incompatible.
 Check satisfies_neg_complement_incompatible.
+
+(** Schema-generic finite consistency and complement-complete contexts over
+    natural-number atoms. *)
+Check finite_consistent_insert_iff.
+Check finite_consistent_insert_neg_iff.
+Check finite_provable_iff_insert_neg_inconsistent.
+Check finite_singleton_complement_consistent_iff_unprovable.
+Check finite_singleton_complement_inconsistent_iff_provable.
+Check finite_union_consistent_intro.
+Check normal_derives_complement_bottom.
+Check normal_derives_neg_complement_bottom.
+Check normal_derives_of_neg_complement.
+Check finite_next_consistent.
+Check finite_enumerate_origin.
+Check finite_exists_consistent_complementary_closed.
+Check fmc_equality_def.
+Check finite_context_lindenbaum.
+Check fmc_membership_iff_derivable.
+Check fmc_mem_top.
+Check fmc_bottom_absent.
+Check fmc_mem_iff_not_mem_complement.
+Check fmc_not_mem_iff_mem_complement.
+Check fmc_mem_imp_iff.
+Check fmc_not_mem_imp_iff.
+Check finite_maximal_context_explicit_cover.
 
 Check complexity_subformula_le.
 Check complexity_limited_truth_aux.
@@ -439,6 +550,23 @@ Print Assumptions S4_is_consistent.
 Print Assumptions S5_is_consistent.
 Print Assumptions GL_is_consistent.
 Print Assumptions Grz_is_consistent.
+Print Assumptions logic_eq_iff_equiv.
+Print Assumptions logic_consistent_iff_exists_unprovable.
+Print Assumptions logic_no_bot.
+Print Assumptions logic_list_conj_equivalence.
+Print Assumptions normal_proves_logic_is_normal.
+Print Assumptions normal_logic_contains_K.
+Print Assumptions logic_sum_normal_sym.
+Print Assumptions logic_sum_quasi_normal_sum_union.
+Print Assumptions logic_sum_quasi_normal_iff_finite_provable.
+Print Assumptions logic_sum_quasi_normal_iff_finite_provable_letterless.
+Print Assumptions logic_sum_quasi_normal_eq_alt.
+Print Assumptions logic_sum_quasi_normal_rec_letterless_expansion.
+Print Assumptions global_consequence_finite_box_le_provable.
+Print Assumptions global_consequence_of_finite_box_le_provable.
+Print Assumptions global_consequence_iff_finite_box_le_provable.
+Print Assumptions logic_global_foundation_box_le_equivalence.
+Print Assumptions global_consequence_iff_finite_foundation_box_le_provable.
 Print Assumptions normal_derives_deduction.
 Print Assumptions normal_lindenbaum_extension.
 Print Assumptions normal_canonical_truth_lemma.
@@ -447,6 +575,26 @@ Print Assumptions K4_canonical_frame_transitive.
 Print Assumptions KT_sound_complete.
 Print Assumptions K4_sound_complete.
 Print Assumptions S4_sound_complete.
+Print Assumptions normal_canonical_serial_of_schema_D.
+Print Assumptions normal_canonical_symmetric_of_schema_B.
+Print Assumptions normal_canonical_right_euclidean_of_schema_Five.
+Print Assumptions KD_sound_complete.
+Print Assumptions KB_sound_complete.
+Print Assumptions K5_sound_complete.
+Print Assumptions normal_proves_P_of_schema_D.
+Print Assumptions K_strictly_weaker_KD.
+Print Assumptions K_strictly_weaker_KB.
+Print Assumptions K_strictly_weaker_K5.
+Print Assumptions normal_canonical_transitive_of_schema_Four.
+Print Assumptions K45_frame_class_in_K4Point3.
+Print Assumptions K45_sound_complete.
+Print Assumptions KD4_sound_complete.
+Print Assumptions KB5_sound_complete.
+Print Assumptions KD45_sound_complete.
+Print Assumptions K4Point3_strictly_weaker_K45.
+Print Assumptions K5_strictly_weaker_K45.
+Print Assumptions K45_strictly_weaker_KB4.
+Print Assumptions KD5_strictly_weaker_KD45.
 Print Assumptions K_strictly_weaker_KT.
 Print Assumptions K_strictly_weaker_K4.
 Print Assumptions KT_strictly_weaker_S4.
@@ -469,6 +617,34 @@ Print Assumptions s5_modal_reduction.
 Print Assumptions complement_cases.
 Print Assumptions complementary_mem_box.
 Print Assumptions satisfies_complement_incompatible.
+Print Assumptions normal_derives_complement_bottom.
+Print Assumptions normal_derives_neg_complement_bottom.
+Print Assumptions normal_derives_of_neg_complement.
+Print Assumptions finite_consistent_insert_iff.
+Print Assumptions finite_provable_iff_insert_neg_inconsistent.
+Print Assumptions finite_singleton_complement_consistent_iff_unprovable.
+Print Assumptions fmc_membership_iff_derivable.
+Print Assumptions fmc_mem_imp_iff.
+Print Assumptions fmc_not_mem_imp_iff.
+(** Deterministic extension uses informative excluded middle/classical
+    description.  Extensional context equality uses functional and
+    propositional extensionality plus proof irrelevance; the explicit cover
+    combines those two boundaries. *)
+Print Assumptions finite_next_consistent.
+Print Assumptions finite_exists_consistent_complementary_closed.
+Print Assumptions fmc_equality_def.
+Print Assumptions finite_maximal_context_explicit_cover.
+(** The complex box laws, primitive evaluation/satisfaction theorem, and
+    implication/formula validity characterizations are constructive.  The
+    existential diamond dual and derived disjunction/equivalence readings
+    expose excluded middle, matching the derived modal syntax. *)
+Print Assumptions complex_box_top.
+Print Assumptions complex_box_intersection.
+Print Assumptions complex_dia_dual.
+Print Assumptions algebraic_satisfies.
+Print Assumptions algebraic_valid_imp.
+Print Assumptions algebraic_valid_iff.
+Print Assumptions algebraic_valid.
 Print Assumptions complexity_limited_truth_aux.
 Print Assumptions complexity_limited_truth.
 Print Assumptions complexity_limited_subformula_closed.

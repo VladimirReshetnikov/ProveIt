@@ -26,10 +26,20 @@ is being reconstructed:
 - a reusable normal Hilbert calculus parameterized by substitution-closed
   modal axiom schemata, with weakening, K embedding, and soundness and
   consistency for KT, KD, KB, K4, K5, S4, S5, GL, and Grz;
+- predicate-valued classical, quasinormal, and normal logics, their least
+  normal and quasinormal sums, finite-basis and letterless omission theorems,
+  and an exact finite boxed-context characterization of global consequence;
 - a schema-generic Lindenbaum and canonical-model construction, specialized
-  to canonical reflexivity/transitivity and full soundness/completeness for
-  KT, K4, S4, and reflexive right-Euclidean S5, with explicit small-frame
-  strictness witnesses for the first three;
+  to canonical reflexivity, seriality, symmetry, transitivity, and right
+  Euclideanity, with full soundness/completeness for KT, KD, KB, K4, K5, S4,
+  and S5 and explicit small-frame strictness witnesses over K;
+- complete canonical metatheory for K45, KD4, KD5, KDB, KB4, KB5, and KD45,
+  including every pinned strict-inclusion result and the K4Point3 comparison;
+- schema-generic finite consistency over natural-number atoms, including the
+  two insertion criteria, singleton and union laws, deterministic
+  complement-closed extension, a finite-context Lindenbaum theorem,
+  derivability/complement/implication membership laws, and an explicit
+  powerset cover of the resulting context space;
 - finite words of box, diamond, and negation, including polarity and exact
   size splitting, exhaustive finite size layers, formula action and
   substitution, syntactic translation/equivalence algebra, and reduction
@@ -39,6 +49,9 @@ is being reconstructed:
   actual S5 derivations of every returned equivalence and reduction;
 - Kripke satisfaction, semantic substitution, iterated box/diamond laws, and
   validity of K;
+- the relational complex algebra of every Kripke frame, with box/diamond
+  laws, atom-polymorphic formula evaluation, and exact order/equality
+  characterizations of implication, equivalence, and formula validity;
 - complexity-bounded generated models with a strengthened budgeted truth
   lemma and invariance under changing the enclosing target formula;
 - reflexive, transitive, and reflexive-transitive frame closures, their order
@@ -104,15 +117,20 @@ is being reconstructed:
 | `Axioms.v` | `Modal/Axioms.lean` | Complete named schema catalog, including normal, Geach, provability, McKinsey, and boxdot schemata |
 | `HilbertK.v` | `Modal/Hilbert/Normal/Basic.lean` | Constructive Hilbert K, substitution, derived classical rules, theories, deduction, consistency criteria, contextual boxing |
 | `Kripke.v` | `Modal/Kripke/Basic.lean` | Frames, valuations, satisfaction, substitution, relation/modal iteration, K validity |
+| `KripkeAlgebra.v` | `Modal/Kripke/Algebra.lean` | Relational complex algebras, modal operations, algebraic evaluation/satisfaction equivalence, and validity as subset/extensional equality |
 | `NNFormulaSemantics.v` | `Modal/Kripke/NNFormula.lean` | Direct NNF semantics, semantic negation, translation correctness, validity equivalences |
 | `HilbertKSoundness.v` | `Modal/Kripke/Hilbert.lean` | Framewise and contextual Kripke soundness for K, plus consistency |
 | `Complement.v` | `Modal/Formula/Complement.lean` | Syntactic complement, complement-closed finite contexts, constructive semantic incompatibility |
+| `FiniteMaximalContext.v` | `Modal/ComplementClosedConsistentFinset.lean`, `Modal/{Formula/Complement,MaximalConsistentSet}.lean` | Normal-schema finite consistency and insertion laws over nat atoms; deterministic complementary closure, finite Lindenbaum contexts, membership laws, and an explicit finite cover |
 | `ComplexityLimited.v` | `Modal/Kripke/ComplexityLimited.lean` | Complexity-bounded generated frames, strengthened truth lemma, subformula-target invariance |
 | `Filtration.v` | `Modal/Kripke/Filtration.lean` | Coarsest truth-profile filtration, explicit exponential cover, finite countermodels, semantic finite-model property |
 | `CanonicalK.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/K}.lean` | Concrete K Lindenbaum completion, maximal theories, canonical truth/countermodel arguments, completeness and finite completeness |
 | `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
+| `LogicInfrastructure.v` | `Modal/Logic/{Basic,SumNormal,SumQuasiNormal,Global}.lean` | Predicate-valued logic structure; normal/quasinormal sums and recursors; finite bases, substitution omission, and global consequence |
 | `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; KT/K4/S4 canonicality, completeness, and strictness |
 | `Modality.v` | `Modal/Modality/{Basic,S5}.lean`, `Modal/Kripke/Logic/S5.lean` | Modal-word algebra, size enumeration/splitting, syntactic translations and equivalences, generic finite reduction, S5 canonical completeness, and six-form normalization for every length |
+| `CanonicalDB5.v` | `Modal/Entailment/{KD,KB,K5}.lean`, `Modal/Kripke/Logic/{KD,KB,K5}.lean` | Schema-generic D/B/Five canonicality; KD/KB/K5 soundness-completeness, D-to-P, and strictness over K |
+| `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness |
@@ -179,6 +197,25 @@ Lindenbaum dependency: its soundness and explicit countermodels use at most
 classical propositional logic, while maximal completion and completeness also
 use the standard definite-description principle.
 
+The Kripke complex algebra uses predicates on worlds and extensional
+equivalence as its set equality, so its box/top, box/intersection,
+evaluation/satisfaction, implication-order, and formula/top results are
+constructive and require no extensionality axiom.  Only the existential
+diamond dual and the derived disjunction/equivalence readings use excluded
+middle.  The Coq results are atom-polymorphic, strengthening the source's
+natural-number valuation statements.
+
+The finite complement-closed context layer keeps its boundary equally
+explicit.  The consistency insertion criteria, complement derivations, and
+membership/implication laws are closed under the global context.  Turning
+inconsistency back into a derivation uses classical double-negation
+elimination, while deterministic `finite_next`, enumeration, and the finite
+Lindenbaum construction use `Classical_Prop.classic` plus the standard
+definite-description principle.  Equality of proof-carrying extensional
+contexts uses functional and propositional extensionality with proof
+irrelevance; the concrete powerset cover combines those principles with the
+classical construction boundary.
+
 The modal-word syntax, decidable equality, size/splitting machinery, finite
 size layers, atom-instance substitution lifting, and generic reduction
 bootstrapping are constructive.  Generic syntactic congruence/equivalence is
@@ -187,6 +224,37 @@ canonicality and the six-form normalizer use the schema-generic Lindenbaum
 construction.  Those proof-theoretic results therefore expose exactly
 `Classical_Prop.classic` and the standard definite-description principle;
 the semantic normalization on a supplied S5 frame uses only excluded middle.
+
+The canonical seriality and right-Euclidean arguments for D and Five use the
+schema-generic successor/Lindenbaum construction and therefore expose
+excluded middle plus definite description.  Canonical symmetry from B is
+closed once maximal contexts are supplied.  KD/KB/K5 completeness inherits
+the common Lindenbaum boundary; their explicit strictness witnesses require
+only excluded middle through the exact frame correspondences.
+
+The combined-schema definitions, substitution closure, transitive and
+symmetric canonical-frame arguments, and elementary frame conversions are
+closed.  Relational soundness and the explicit finite strictness witnesses
+use excluded middle through the derived-connective correspondences.  Every
+combination completeness theorem additionally inherits definite description
+from the common canonical construction; inclusions proved semantically from
+those completeness theorems, including K4Point3 below K45 and K45 below KB4,
+inherit the same boundary.
+
+The predicate-valued logic structures and the inductive sum recursors are
+constructive.  Equality of predicate logics and symmetric or nested-union sum
+equalities use functional and propositional extensionality; their extensional
+equivalence forms remain constructive.  Generic consistency is nontriviality,
+exactly as in Foundation; extracting a particular unprovable formula uses
+excluded middle, while bottom-unprovability for classical logics is
+constructive.  The singleton-normalized and trailing-top conjunctions, and the
+individual-iterate and cumulative `boxLe` forms, are linked by checked
+normal-logic equivalences using excluded middle.  Instantiating the abstract
+normal-logic interface with the concrete schema calculus is routed through K
+completeness and therefore additionally exposes definite description.  The
+forward global-consequence characterization uses excluded middle, while its
+reverse direction uses extensionality to contract the exact union-indexed
+contexts; the final equivalence exposes both.
 
 The doubled-frame relation preservation and p-morphism are constructive.
 Boxdot is built from the classically encoded derived conjunction, so its
@@ -213,17 +281,29 @@ irrelevance—without functional or propositional extensionality.
 ## Parity boundary
 
 Concrete Hilbert K now has checked soundness, canonical completeness, and
-finite-frame completeness; KT, K4, and S4 also have checked canonical
-soundness/completeness, and S5 has checked canonical completeness on the
-class of reflexive right-Euclidean frames.  Every modal word has a checked
-S5 equivalence and reduction to the six canonical modalities.  The boxdot
+finite-frame completeness; KT, KD, KB, K4, K5, S4, and S5 also have checked
+canonical soundness/completeness on their standard frame classes.  The normal
+and quasinormal sum modules, predicate-logic basics, and global consequence
+have complete mathematical parity.  Predicates and duplicate-insensitive lists
+replace Lean sets and finite sets; explicit theorems connect the trailing-top
+and singleton-normalized conjunctions and the cumulative and individual-box
+presentations used in the implementation and source.  All seven pinned
+combination-logic modules are fully represented, including their strict
+inclusion chains.  Every modal word has a
+checked S5 equivalence and reduction to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,
 giving exact parity for `K4_S4.lean`.  The coverage ledger remains conservative
 for `Boxdot/Basic.lean`: its semantic results are atom-polymorphic, but its Coq generic
 proof-translation theorem is nat-only, and distinct Lean
 big-conjunction/finite-set convenience surfaces are represented by list-based
-counterparts.  This project still does not claim finite completeness for
+counterparts.  Likewise, `FiniteMaximalContext.v` checks every mathematical
+theorem shape in `ComplementClosedConsistentFinset.lean` for the generic
+normal-schema calculus over natural-number atoms, but the ledger remains
+`partial` because Foundation quantifies over arbitrary decidable atom types
+and abstract classical entailments.  Lists are used only during construction;
+the resulting finite carriers and their equality are extensional.  This
+project still does not claim finite completeness for
 K4/S4, the source's universal-frame reformulation or strict-inclusion chain
 for S5, or completeness for GL, Grz, GL.3, Grz.3, or Triv.  Rooted
 filtration preservation for piecewise confluence and connectedness and modal
@@ -290,18 +370,23 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.PLoNCompleteness `
   FoundationModal.Kripke FoundationModal.NNFormulaSemantics `
   FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
+  FoundationModal.KripkeAlgebra `
   FoundationModal.Complement `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `
   FoundationModal.Filtration `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.CanonicalK `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
+  FoundationModal.LogicInfrastructure `
   FoundationModal.CanonicalExtensions `
+  FoundationModal.FiniteMaximalContext `
   FoundationModal.Modality `
+  FoundationModal.CanonicalDB5 `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
   FoundationModal.FrameTransformations `
   FoundationModal.StructuralFrames `
   FoundationModal.WeakCorrespondence `
+  FoundationModal.CanonicalCombinations `
   FoundationModal.Boxdot `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
