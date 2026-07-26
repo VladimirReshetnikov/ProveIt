@@ -1414,6 +1414,15 @@ nonstandard numeral terms, and the package exposes their exact validity plus
 the direct translator's complete term shift/open fields.  Only the separate
 opaque-predicate operation traces remain to form the full direct input.
 
+`RawCodedDynamicTruthUniversalLeafProofCompilation.v` sends the honest
+eight-witness restricted projection through that direct relational
+translator and the closed-template packer.  It produces an exact ordinary PA
+certificate both before and after the native thirteen-variable row
+environment is universally closed.  Code-identification equalities remain
+separate from the operational opaque traces, and the endpoint deliberately
+continues to name the restricted universal branch rather than the full
+seven-way disjunction.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
