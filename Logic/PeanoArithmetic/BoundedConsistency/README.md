@@ -1997,6 +1997,15 @@ master roots in one literal witnessed context.  The count is intentionally
 not forty-two: the conditional antecedents, carrier-sensitive binder cells,
 and mixed QF/non-QF cells remain separate proof-producing obligations.
 
+`RawCodedTruthCertificateMasterBinderPrincipalHelperBatch.v` appends the
+eight fixed constructor facts needed by the carrier-sensitive binder cells to
+that synchronized helper family.  The resulting twenty-nine roots share the
+same witnessed context as all six master fields and have quotation-aligned
+target codes.  The final eight roots are deliberately principal collision
+facts rather than completed matrix cells: each still needs a compiler that
+projects its opaque Sigma-All or Pi-Ex branch to the corresponding principal
+constructor before the fixed fact can be applied.
+
 `RawCodedTruthCertificateConcreteEndpoint.v` connects that successor bridge,
 the zero bridge, the concrete assembler, and the generic PA-internal
 induction.  Its single remaining all-model premise is exactly the five-field
