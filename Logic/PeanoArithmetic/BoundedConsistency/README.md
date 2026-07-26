@@ -1839,6 +1839,20 @@ an explicit object-proof premise because compiling them for an opaque
 carrier formula requires checked formula/context shift traces; no semantic
 truth assumption is substituted for that missing compiler.
 
+`RawCodedDynamicTruthQuantifierBranchExclusivity.v` isolates the two
+same-constructor quantifier cells.  Sigma-Ex versus Pi-Ex is conditional on
+the exact adjacent-level fact that the positive existential branch supplies
+the lower-Sigma counterexample rejected by Pi; Sigma-All versus Pi-All uses
+the polarity-dual premise.  Both premises, native branch formulas, and
+conditional cell codes are given as literal carrier polynomials, with PA
+proofs and represented certificates for every standard lower-application
+formula.  At arbitrary carrier codes the module exposes the conditional-cell
+compiler and cross-level proof root rather than decoding the code.  Once
+those exact roots and the two selected branch roots share a context, three
+checked implication eliminations derive bottom.  Restricted Sigma-universal
+and Pi-existential projection helpers connect the cells to the existing
+native template compilers.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
