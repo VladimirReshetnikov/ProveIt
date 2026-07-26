@@ -1106,6 +1106,15 @@ temporary-assumption transplants.  Its concrete seven-by-six endpoint is the
 structural assembler for the native Sigma/Pi successor collision matrix; the
 individual constructor-pair proofs remain explicit inputs.
 
+`RawCodedPALocalProofTripleUniversalElimination.v` packages the matching
+three-binder consumer.  Three explicit represented substitution traces build
+three checked All-E nodes without decoding the intermediate formula codes or
+changing the carrier-coded proof context.  Companion endpoints first project
+either conjunct and then specialize it, so a current local
+decision/exclusivity certificate can be instantiated at one concrete formula
+and assignment triple while all later matrix proofs remain in the same
+witnessed PA context.
+
 `RawCodedAssignmentShiftTail.v` also exposes PAHF's represented beta-tail
 shift through the raw assignment interface.  It constructs, inside every raw
 model and through an arbitrary carrier-valued bound, a target table whose row

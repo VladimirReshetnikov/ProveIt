@@ -1,0 +1,19 @@
+(** Kernel-facing audit for three-binder local-proof specialization. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofTripleUniversalElimination.
+
+Module PABoundedRawCodedPALocalProofTripleUniversalEliminationAudit.
+
+Import PABoundedRawCodedPALocalProofTripleUniversalElimination.
+
+Check rawProofTripleAllERoot.
+Check raw_codedPALocalProofOf_tripleAllE.
+Check raw_codedPALocalProofOf_andE1_tripleAllE.
+Check raw_codedPALocalProofOf_andE2_tripleAllE.
+
+Print Assumptions raw_codedPALocalProofOf_tripleAllE.
+Print Assumptions raw_codedPALocalProofOf_andE1_tripleAllE.
+Print Assumptions raw_codedPALocalProofOf_andE2_tripleAllE.
+
+End PABoundedRawCodedPALocalProofTripleUniversalEliminationAudit.
