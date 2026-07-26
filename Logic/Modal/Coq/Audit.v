@@ -8,7 +8,7 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
-  CanonicalTrivVer Undefinability.
+  CanonicalPoint3 CanonicalTrivVer Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -287,6 +287,27 @@ Check K4_strictly_weaker_K4Point2.
 Check S4_strictly_weaker_S4Point2.
 Check K4Point2_strictly_weaker_S4Point2.
 Check KT_strictly_weaker_S4Point2.
+
+(** Canonical K4.3 and S4.3, including linear-preorder completeness and the
+    rooted finite transitive-closure filtration for S4.3. *)
+Check schema_Point3_substitution_closed.
+Check S4Point3_schema_substitution_closed.
+Check normal_canonical_piecewise_connected_of_schema_WeakPoint3.
+Check normal_canonical_piecewise_strongly_connected_of_schema_Point3.
+Check K4Point3_canonical_frame.
+Check S4Point3_canonical_frame.
+Check K4Point3_sound_complete.
+Check S4Point3_sound_complete.
+Check S4Point3_linear_preorder_sound_complete.
+Check finest_tc_preserves_strongly_connected.
+Check S4Point3_finite_sound_complete.
+Check S4Point3_frame_is_S4Point2.
+Check S4Point3_frame_is_K4Point3.
+Check K4_strictly_weaker_K4Point3.
+Check S4Point2_strictly_weaker_S4Point3.
+Check S4_strictly_weaker_S4Point3.
+Check K4Point3_strictly_weaker_S4Point3.
+Check KT_strictly_weaker_S4Point3.
 
 (** Coreflexive KTc, equality-frame Triv, and isolated-frame Ver, including
     their source-local entailments, finite completeness, and strictness
@@ -684,6 +705,17 @@ Print Assumptions finest_tc_preserves_piecewise_strongly_convergent.
 Print Assumptions S4Point2_finite_complete.
 Print Assumptions K4_strictly_weaker_K4Point2.
 Print Assumptions K4Point2_strictly_weaker_S4Point2.
+Print Assumptions schema_Point3_substitution_closed.
+Print Assumptions normal_canonical_piecewise_connected_of_schema_WeakPoint3.
+Print Assumptions normal_canonical_piecewise_strongly_connected_of_schema_Point3.
+Print Assumptions K4Point3_complete.
+Print Assumptions S4Point3_complete.
+Print Assumptions S4Point3_linear_preorder_complete.
+Print Assumptions finest_tc_preserves_strongly_connected.
+Print Assumptions S4Point3_finite_complete.
+Print Assumptions K4_strictly_weaker_K4Point3.
+Print Assumptions S4Point2_strictly_weaker_S4Point3.
+Print Assumptions K4Point3_strictly_weaker_S4Point3.
 Print Assumptions schema_DiaT_substitution_closed.
 Print Assumptions KTc_proves_DiaT.
 Print Assumptions KTc_prime_proves_Tc.

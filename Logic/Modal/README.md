@@ -41,6 +41,9 @@ is being reconstructed:
 - canonical completeness for transitive weakly convergent K4.2 and canonical
   plus finite completeness for reflexive transitive strongly convergent S4.2,
   together with their full strict-inclusion chains;
+- canonical completeness for transitive piecewise-connected K4.3 and
+  canonical, linear-preorder, and finite completeness for reflexive transitive
+  piecewise-strongly-connected S4.3, with every pinned strict inclusion;
 - canonical completeness for coreflexive KTc and canonical plus finite
   completeness for equality-frame Triv and isolated-frame Ver, including the
   complete KTc/Triv/Ver entailment surfaces and all pinned strict inclusions;
@@ -142,6 +145,7 @@ is being reconstructed:
 | `CanonicalCombinations.v` | `Modal/Kripke/Logic/{K45,KD4,KD5,KDB,KB4,KB5,KD45}.lean` | Complete combined-schema soundness/completeness; K4Point3 support; all source strict inclusions and finite separators |
 | `CanonicalTB.v` | `Modal/Kripke/Logic/{KTB,KT4B}.lean` | Reflexive-symmetric and equivalence-frame canonical/finite completeness; S5 equivalence; strict KT/KDB inclusions |
 | `CanonicalPoint2.v` | `Modal/Kripke/Logic/{K4Point2,S4Point2}.lean` | Weak/strong confluence canonicality; rooted finite filtration for S4.2; full source strictness chains |
+| `CanonicalPoint3.v` | `Modal/Kripke/{Axiom{WeakPoint3,Point3},Logic/{K4Point3,S4Point3}}.lean` | Weak/strong connectedness canonicality; linear-preorder and rooted finite S4.3 completeness; full source strictness chains |
 | `CanonicalTrivVer.v` | `Modal/{Entailment,Kripke/Logic}/{KTc,Triv,Ver}.lean`, `Modal/Boxdot/Ver_Triv.lean` | Coreflexive/equality/isolated canonical metatheory; finite Triv/Ver completeness; all entailments and strictness results; unconditional Boxdot equivalence |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation |
@@ -272,6 +276,17 @@ filtration.  The strict finite separators themselves use only excluded middle;
 the semantic K4.2-to-S4.2 inclusion inherits S4.2 completeness's definite
 description boundary.
 
+The direct Point3 canonical argument uses excluded middle and definite
+description through the canonical truth lemma.  WeakPoint3 canonicality also
+uses functional and propositional extensionality plus proof irrelevance to
+separate unequal maximal theories.  Point generation gives S4.3 completeness
+over linear preorders; its subtype equality adds proof irrelevance.  The
+finite S4.3 proof then uses constructive indefinite description to choose
+filtration representatives, while the finest transitive-closure filtration
+preserves global strong connectedness by a direct representative comparison.
+The K4-to-K4.3 separator uses only excluded middle; inclusions routed through
+S4.3 completeness inherit its definite-description boundary.
+
 The KTc/DiaT entailment equivalence, the derived 4 and 5 axioms, the direct
 Triv/Ver consequences, and the elementary frame inclusions are closed under
 the global context.  Ver canonical completeness uses excluded middle and
@@ -337,6 +352,9 @@ inclusion chains.  The KTB and KT4B modules likewise have full parity,
 including finite completeness, the S5 equivalence, and both KTB strictness
 results.  K4Point2 and S4Point2 also have full parity, including the source's
 rooted finite-completeness construction for S4Point2 and all four strictness
+statements.  K4Point3 and S4Point3 likewise have full parity, including the
+source's linear-preorder characterization, rooted finite-completeness proof,
+generic weak/strong connectedness canonical lemmas, and all five strictness
 statements.  KTc, Triv, and Ver have full parity as well: all three canonical
 completeness theorems, both singleton finite-completeness arguments, their
 entailment modules, six strict inclusions, and the Ver/Triv boxdot equivalence
@@ -357,8 +375,9 @@ the resulting finite carriers and their equality are extensional.  This
 project still does not claim finite completeness for
 plain K4/S4, the source's universal-frame reformulation or strict-inclusion chain
 for S5, or completeness for GL, Grz, GL.3, or Grz.3.  Rooted
-filtration preservation for connectedness and other modal companions remains
-later work; the strong-convergence case needed by S4Point2 is checked locally.
+filtration preservation for other modal companions remains later work; the
+strong-convergence and strong-connectedness cases needed by S4Point2 and
+S4Point3 are checked locally.
 
 ### Boxdot dependency gates
 
@@ -441,6 +460,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalTB `
   FoundationModal.Boxdot `
   FoundationModal.CanonicalPoint2 `
+  FoundationModal.CanonicalPoint3 `
   FoundationModal.CanonicalTrivVer `
   FoundationModal.Undefinability FoundationModal.Audit
 ```
