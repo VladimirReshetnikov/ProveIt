@@ -5,10 +5,10 @@
   This file ports the mathematical surfaces of Foundation's pinned
   [Modal/Boxdot] directory.  The local development already defines the
   recursive translation in [FrameTransformations]; it is reused here rather
-  than duplicated.  Results whose upstream proofs depend on named canonical
-  completeness or the global finite-consequence API are exposed with those
-  dependencies as explicit hypotheses near the end of the file.  Nothing is
-  postulated.
+  than duplicated.  The GL/Grz equivalence uses the finite mini-canonical
+  completeness developments imported below.  Results which still depend on
+  the global finite-consequence API retain that dependency as an explicit
+  hypothesis near the end of the file.  Nothing is postulated.
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lia.
@@ -17,7 +17,8 @@ From Stdlib Require Import Logic.Classical_Prop.
 From FoundationModal Require Import
   Syntax Axioms Kripke Correspondence CorrespondenceExtensions
   FrameProperties FrameTransformations Preservation Root WeakCorrespondence
-  HilbertK CanonicalK NormalHilbert Filtration Loeb.
+  HilbertK CanonicalK NormalHilbert Filtration Loeb GLGrzDerivations
+  CanonicalGL CanonicalGrz.
 
 Import ListNotations.
 
@@ -425,13 +426,7 @@ Proof.
   split; [apply K4_boxdot_proves_to_S4 | apply S4_proves_to_K4_boxdot].
 Qed.
 
-(** * GL / Grz
-
-    The upstream equivalence uses finite-frame completeness of both named
-    calculi.  [NormalHilbert] currently supplies their soundness but not
-    those two completeness theorems.  We therefore prove all frame
-    transformations unconditionally and make the missing completeness
-    statements ordinary, explicit hypotheses of the proof-theoretic results. *)
+(** * GL / Grz *)
 
 Definition boxdot_GL_frame (F : frame) : Prop :=
   frame_transitive F /\ frame_converse_well_founded F.
@@ -510,29 +505,44 @@ Definition boxdot_Grz_finite_complete : Prop :=
   forall p : formula nat,
     (forall F, boxdot_finite_Grz_frame F -> valid F p) -> Grz_proves p.
 
-Lemma GL_proves_boxdot_Grz_axiom :
-  boxdot_GL_finite_complete ->
-  forall p : formula nat, GL_proves (boxdot_translate (Grz p)).
+(** The former explicit completeness interfaces are retained for downstream
+    clients.  They are now inhabited by checked mini-canonical theorems. *)
+Theorem boxdot_GL_finite_complete_checked :
+  boxdot_GL_finite_complete.
 Proof.
-  intros Hcomplete p; apply Hcomplete.
-  intros F HGL.
-  apply (proj2 (boxdot_reflexive_closure_valid_iff F (Grz p))).
-  destruct (@finite_GL_to_reflexive_closure_finite_Grz F HGL)
-    as [_ [Hrefl [Htrans Hweak]]].
-  now apply valid_Grz_of_reflexive_transitive_weak_cwf.
+  intros p Hvalid. apply GL_finite_complete.
+  intros F [Hfinite [Htrans Hirr]]. apply Hvalid.
+  split; [exact Hfinite |]. split; [exact Htrans |].
+  now apply finite_transitive_irreflexive_cwf.
 Qed.
 
+Theorem boxdot_Grz_finite_complete_checked :
+  boxdot_Grz_finite_complete.
+Proof.
+  intros p Hvalid. apply Grz_finite_complete.
+  intros F [Hfinite [Hrefl [Htrans Hanti]]]. apply Hvalid.
+  split; [exact Hfinite |]. repeat split.
+  - exact Hrefl.
+  - exact Htrans.
+  - now apply finite_transitive_antisymmetric_weak_cwf.
+Qed.
+
+(** The forward translation is proof-theoretic: GL derives the boxdot
+    translation of every Grz axiom instance, independently of completeness. *)
+Lemma GL_proves_boxdot_Grz_axiom :
+  forall p : formula nat, GL_proves (boxdot_translate (Grz p)).
+Proof. apply GL_proves_boxdot_translated_Grz. Qed.
+
 Theorem Grz_proves_to_GL_boxdot :
-  boxdot_GL_finite_complete ->
   forall p : formula nat,
     Grz_proves p -> GL_proves (boxdot_translate p).
 Proof.
-  intros Hcomplete p Hp.
+  intros p Hp.
   eapply normal_proves_boxdot_translation; [|exact Hp].
-  intros q [r ->]. now apply GL_proves_boxdot_Grz_axiom.
+  intros q [r ->]. apply GL_proves_boxdot_Grz_axiom.
 Qed.
 
-Theorem GL_boxdot_proves_to_Grz :
+Lemma GL_boxdot_proves_to_Grz_from_finite_completeness :
   boxdot_Grz_finite_complete ->
   forall p : formula nat,
     GL_proves (boxdot_translate p) -> Grz_proves p.
@@ -553,12 +563,19 @@ Proof.
   now apply (proj2 (@irreflexivize_reflexive_valid_iff nat F p Hrefl)).
 Qed.
 
+Theorem GL_boxdot_proves_to_Grz :
+  forall p : formula nat,
+    GL_proves (boxdot_translate p) -> Grz_proves p.
+Proof.
+  apply GL_boxdot_proves_to_Grz_from_finite_completeness.
+  exact boxdot_Grz_finite_complete_checked.
+Qed.
+
 Theorem GL_boxdot_iff_Grz :
-  boxdot_GL_finite_complete -> boxdot_Grz_finite_complete ->
   forall p : formula nat,
     GL_proves (boxdot_translate p) <-> Grz_proves p.
 Proof.
-  intros HGL HGrz p; split.
+  intro p; split.
   - now apply GL_boxdot_proves_to_Grz.
   - now apply Grz_proves_to_GL_boxdot.
 Qed.

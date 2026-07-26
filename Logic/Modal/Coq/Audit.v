@@ -6,9 +6,12 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
-  FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
+  FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
+  FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
+  CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
-  CanonicalPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK CanonicalTrivVer
+  CanonicalPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
+  CanonicalGrzMcK CanonicalTrivVer
   CanonicalK4n CanonicalPoint2McK CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
 
@@ -160,6 +163,29 @@ Check S4_is_consistent.
 Check S5_is_consistent.
 Check GL_is_consistent.
 Check Grz_is_consistent.
+
+(** Derived GL/Grz proof theory and finite mini-canonical completeness. *)
+Check GL_proves_Four.
+Check GL_proves_Hen.
+Check GL_proves_Z.
+Check GL_proves_godel2.
+Check GL_proves_boxdot_translated_Grz.
+Check Grz_proves_T.
+Check Grz_proves_Four.
+Check Grz_proves_Dum.
+Check GL_mini_canonical_countermodel.
+Check GL_finite_sound_complete.
+Check GL_sound_complete.
+Check GL_unprovable_iff_exists_finite_rooted_countermodel.
+Check GL_finite_rooted_sound_complete.
+Check grz_mini_countermodel.
+Check Grz_finite_sound_complete.
+Check Grz_sound_complete.
+Check finite_partial_order_mckinsey.
+Check S4McK_weaker_than_Grz.
+Check grz_mck_three_not_valid_Grz_atom.
+Check S4McK_strictly_weaker_Grz.
+Check S4_strictly_weaker_Grz.
 
 (** Predicate-valued logics, normal and quasinormal sums, and global
     consequence. *)
@@ -525,6 +551,12 @@ Check fmc_not_mem_iff_mem_complement.
 Check fmc_mem_imp_iff.
 Check fmc_not_mem_imp_iff.
 Check finite_maximal_context_explicit_cover.
+Check formula_list_unbox_spec.
+Check formula_list_box_spec.
+Check normal_derives_finite_context_cut.
+Check fmc_relevant_boxed_spec_closed.
+Check fmc_equality_on_base.
+Check grz_subformulas_generated.
 
 Check complexity_subformula_le.
 Check complexity_limited_truth_aux.
@@ -643,11 +675,10 @@ Check valid_WeakPoint2_atoms_iff_piecewise_convergent.
 Check frame_piecewise_connected_iff_distinct.
 Check valid_WeakPoint3_atoms_iff_piecewise_connected.
 
-(** Boxdot's basic semantic laws, K4/S4 equivalence, and Ver/Triv equivalence
-    are unconditional.  The remaining named equivalences visibly quantify
-    over their still-missing completeness propositions; the Jeřábek results
-    additionally quantify over the isolated global-consequence bridge.  These
-    are hypotheses in theorem types, not declarations of completeness. *)
+(** Boxdot's basic semantic laws and K4/S4, GL/Grz, and Ver/Triv
+    equivalences are unconditional.  The GL.3/Grz.3 results still expose
+    their completeness inputs, while the Jeřábek results additionally expose
+    the isolated global-consequence bridge. *)
 Check boxdot_translate.
 Check normal_proves_boxdot_translation.
 Check iff_boxdotboxdot.
@@ -666,6 +697,8 @@ Check finite_GL_to_reflexive_closure_finite_Grz.
 Check finite_Grz_to_irreflexivize_finite_GL.
 Check boxdot_GL_finite_complete.
 Check boxdot_Grz_finite_complete.
+Check boxdot_GL_finite_complete_checked.
+Check boxdot_Grz_finite_complete_checked.
 Check iff_provable_boxdot_GL_provable_Grz.
 Check finite_GLPoint3_to_reflexive_closure_finite_GrzPoint3.
 Check finite_GrzPoint3_to_irreflexivize_finite_GLPoint3.
@@ -773,6 +806,23 @@ Print Assumptions S4_is_consistent.
 Print Assumptions S5_is_consistent.
 Print Assumptions GL_is_consistent.
 Print Assumptions Grz_is_consistent.
+Print Assumptions GL_proves_Four.
+Print Assumptions GL_proves_godel2.
+Print Assumptions GL_proves_boxdot_translated_Grz.
+Print Assumptions Grz_proves_T_and_Four.
+Print Assumptions Grz_proves_Dum.
+Print Assumptions GL_mini_canonical_countermodel.
+Print Assumptions GL_finite_sound_complete.
+Print Assumptions GL_sound_complete.
+Print Assumptions GL_unprovable_iff_exists_finite_rooted_countermodel.
+Print Assumptions Grz_finite_sound_complete.
+Print Assumptions Grz_sound_complete.
+Print Assumptions finite_partial_order_mckinsey.
+Print Assumptions grz_mck_three_in_S4McK_frame_class.
+Print Assumptions grz_mck_three_not_valid_Grz_atom.
+Print Assumptions S4McK_weaker_than_Grz.
+Print Assumptions S4McK_strictly_weaker_Grz.
+Print Assumptions S4_strictly_weaker_Grz.
 Print Assumptions logic_eq_iff_equiv.
 Print Assumptions logic_consistent_iff_exists_unprovable.
 Print Assumptions logic_no_bot.
@@ -973,6 +1023,10 @@ Print Assumptions finite_next_consistent.
 Print Assumptions finite_exists_consistent_complementary_closed.
 Print Assumptions fmc_equality_def.
 Print Assumptions finite_maximal_context_explicit_cover.
+Print Assumptions normal_derives_finite_context_cut.
+Print Assumptions fmc_relevant_boxed_spec_closed.
+Print Assumptions fmc_equality_on_base.
+Print Assumptions grz_subformulas_generated.
 (** The complex box laws, primitive evaluation/satisfaction theorem, and
     implication/formula validity characterizations are constructive.  The
     existential diamond dual and derived disjunction/equivalence readings
@@ -1059,13 +1113,15 @@ Print Assumptions valid_WeakPoint3_atoms_iff_piecewise_connected.
     excluded middle.  The nat-atom Hilbert equivalence additionally inherits
     the definite-description boundary of local K completeness.  Reverse
     reflexivization and the logical SBDP argument also use excluded middle.
-    Explicit completeness/bridge arguments remain visible in the checked
-    theorem types above and are not kernel assumptions. *)
+    GL/Grz completeness is now checked above; the remaining GL.3/Grz.3 and
+    Jeřábek bridge arguments stay visible in their theorem types. *)
 Print Assumptions boxdot_reflexive_closure_truth.
 Print Assumptions boxdot_translate_idempotent_truth.
 Print Assumptions K4_boxdot_iff_S4.
 Print Assumptions finite_GL_to_reflexive_closure_finite_Grz.
 Print Assumptions finite_Grz_to_irreflexivize_finite_GL.
+Print Assumptions boxdot_GL_finite_complete_checked.
+Print Assumptions boxdot_Grz_finite_complete_checked.
 Print Assumptions GL_boxdot_iff_Grz.
 Print Assumptions finite_GLPoint3_to_reflexive_closure_finite_GrzPoint3.
 Print Assumptions GLPoint3_boxdot_iff_GrzPoint3.
