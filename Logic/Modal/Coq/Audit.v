@@ -8,7 +8,7 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root FrameTransformations StructuralFrames
   WeakCorrespondence CanonicalCombinations CanonicalTB Boxdot CanonicalPoint2
-  CanonicalPoint3 CanonicalTrivVer Undefinability.
+  CanonicalPoint3 CanonicalPoint4 CanonicalTrivVer Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
@@ -308,6 +308,17 @@ Check S4Point2_strictly_weaker_S4Point3.
 Check S4_strictly_weaker_S4Point3.
 Check K4Point3_strictly_weaker_S4Point3.
 Check KT_strictly_weaker_S4Point3.
+
+(** Canonical S4.4 and its exact Sobocinski frame condition. *)
+Check S4Point4_axiom_schema_substitution_closed.
+Check S4Point4_schema_substitution_closed.
+Check S4Point4_frame_is_S4Point3.
+Check normal_canonical_sobocinski_of_schema_Point4.
+Check S4Point4_canonical_frame.
+Check S4Point4_sound_complete.
+Check S4Point3_weaker_than_S4Point4.
+Check point4_three_chain_not_sobocinski.
+Check S4Point3_strictly_weaker_S4Point4.
 
 (** Coreflexive KTc, equality-frame Triv, and isolated-frame Ver, including
     their source-local entailments, finite completeness, and strictness
@@ -716,6 +727,11 @@ Print Assumptions S4Point3_finite_complete.
 Print Assumptions K4_strictly_weaker_K4Point3.
 Print Assumptions S4Point2_strictly_weaker_S4Point3.
 Print Assumptions K4Point3_strictly_weaker_S4Point3.
+Print Assumptions S4Point4_axiom_schema_substitution_closed.
+Print Assumptions normal_canonical_sobocinski_of_schema_Point4.
+Print Assumptions S4Point4_complete.
+Print Assumptions S4Point3_weaker_than_S4Point4.
+Print Assumptions S4Point3_strictly_weaker_S4Point4.
 Print Assumptions schema_DiaT_substitution_closed.
 Print Assumptions KTc_proves_DiaT.
 Print Assumptions KTc_prime_proves_Tc.
