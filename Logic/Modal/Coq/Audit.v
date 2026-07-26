@@ -8,7 +8,8 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
-  GLUnnecessitation GLModalDisjunction GLIndependence CanonicalGrz StructuralFrames
+  GLUnnecessitation GLModalDisjunction GLIndependence KHenIncompleteness
+  CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations KD4Point3Z CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer CanonicalS5Grz
@@ -211,6 +212,32 @@ Check GL_proves_box_or_box_neg_of_not_independency.
 Check GL_unprovable_not_independency_of_consistency.
 Check GL_unprovable_higher_independency_of_consistency.
 Check GL_unprovable_not_higher_independency_of_consistency.
+(** Cresswell's KHen model and the resulting Kripke incompleteness. *)
+Check schema_Hen_substitution_closed.
+Check KHen_proves_substitute.
+Check KHen_proves_Hen.
+Check K_weaker_than_KHen.
+Check KHen_weaker_than_GL.
+Check valid_atomic_Hen_of_valid_atomic_Loeb.
+Check valid_atomic_Loeb_of_valid_atomic_Hen.
+Check valid_atomic_Loeb_iff_valid_atomic_Hen.
+Check valid_atomic_Four_of_valid_atomic_Hen.
+Check cresswell_sharp_to_flat.
+Check cresswell_not_flat_to_sharp.
+Check cresswell_sharp_to_sharp.
+Check cresswell_flat_to_flat.
+Check cresswell_rel_trichotomy.
+Check cresswell_not_satisfies_Four_at_two_sharp.
+Check cresswell_model_not_valid_Four.
+Check cresswell_eventually_true_or_false.
+Check eventually_true_has_last_counterexample.
+Check counterexample_has_first.
+Check cresswell_model_valid_Hen.
+Check KHen_proves_valid_on_cresswell_model.
+Check KHen_unprovable_atomic_Four.
+Check KHen_Kripke_incomplete.
+Check K_strictly_weaker_KHen.
+Check KHen_strictly_weaker_GL.
 Check grz_mini_countermodel.
 Check Grz_finite_sound_complete.
 Check Grz_sound_complete.
@@ -942,6 +969,15 @@ Print Assumptions GL_unprovable_independency.
 Print Assumptions GL_unprovable_not_independency_of_consistency.
 Print Assumptions GL_unprovable_higher_independency_of_consistency.
 Print Assumptions GL_unprovable_not_higher_independency_of_consistency.
+Print Assumptions valid_atomic_Loeb_iff_valid_atomic_Hen.
+Print Assumptions valid_atomic_Four_of_valid_atomic_Hen.
+Print Assumptions cresswell_eventually_true_or_false.
+Print Assumptions cresswell_model_valid_Hen.
+Print Assumptions KHen_proves_valid_on_cresswell_model.
+Print Assumptions KHen_unprovable_atomic_Four.
+Print Assumptions KHen_Kripke_incomplete.
+Print Assumptions K_strictly_weaker_KHen.
+Print Assumptions KHen_strictly_weaker_GL.
 Print Assumptions Grz_finite_sound_complete.
 Print Assumptions Grz_sound_complete.
 Print Assumptions finite_partial_order_mckinsey.
