@@ -1875,6 +1875,17 @@ checked implication eliminations derive bottom.  Restricted Sigma-universal
 and Pi-existential projection helpers connect the cells to the existing
 native template compilers.
 
+`RawCodedDynamicTruthQuantifierConditionalCellCompilation.v` replaces the
+standard-only proof of those two conditional cells by finite structural proof
+trees.  A generic matched All-E/Ex-E kernel proves the repeated-quantifier
+collision, and its two exact eight-binder native instances compile to both
+ordinary represented PA certificates and local roots in an existing
+self-shifting common context.  The sole remaining input is sharply limited to
+the represented shift/open trace package for the selected opaque lower
+application; native ternary selectors and commuting traces adapt directly to
+that package.  Atomic adequacy alone is not claimed to manufacture these
+traces, and no semantic-validity-to-proof shortcut is used.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
