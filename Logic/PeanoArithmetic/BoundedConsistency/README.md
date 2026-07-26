@@ -1527,6 +1527,18 @@ the graph's exact witnesses and returns an ordinary PA proof targeted at that
 same output.  This is one checked restricted-row field, not yet the complete
 local decision/exclusivity field required by the six-field master.
 
+`RawCodedDynamicTruthRestrictedUniversalLocalProofFieldGraph.v` composes that
+transform with the genuine paired global Sigma/Pi orbit and requires its
+proof-producing compiler only for the Pi codes selected by an actual adequate
+orbit witness.  Cross-trace functionality identifies both the native domain
+substitution and lower application with the direct-template outputs before
+the closed compiler is invoked.  The strongest endpoint consumes shift and
+opening interchange only along those orbit witnesses and returns the exact
+ordinary PA certificate selected by the public field graph.  This remains a
+conditional restricted-universal component: it neither upgrades the branch
+to the full seven-way local law nor hides the outstanding opening-interchange
+premise.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
