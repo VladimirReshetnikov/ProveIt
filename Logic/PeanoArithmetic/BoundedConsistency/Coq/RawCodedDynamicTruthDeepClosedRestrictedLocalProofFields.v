@@ -40,6 +40,7 @@ From BoundedPAConsistency Require Import
   RawCodedTernaryPredicateDeepClosureOpeningCommuting
   RawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph
   RawCodedDynamicTruthGlobalSuccessorDeepClosure
+  RawCodedDynamicTruthPairedSuccessorLocalDeepClosure
   RawCodedDynamicTruthPairedGlobalDeepClosedFormulaCodeOrbitGraph
   RawCodedDynamicTruthRestrictedUniversalLocalProofFieldGraph
   RawCodedDynamicTruthRestrictedExistentialLocalProofFieldGraph.
@@ -71,6 +72,7 @@ Import PABoundedRawCodedTernaryPredicateDeepClosureShiftInterchange.
 Import PABoundedRawCodedTernaryPredicateDeepClosureOpeningCommuting.
 Import PABoundedRawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph.
 Import PABoundedRawCodedDynamicTruthGlobalSuccessorDeepClosure.
+Import PABoundedRawCodedDynamicTruthPairedSuccessorLocalDeepClosure.
 Import
   PABoundedRawCodedDynamicTruthPairedGlobalDeepClosedFormulaCodeOrbitGraph.
 Import
@@ -346,6 +348,46 @@ Proof.
       M hPA hlocalClosure
       (raw_codedTernaryPredicateDeepClosedOpeningInterchangeTotal_of_PA
         M hPA)).
+Qed.
+
+(** Final unconditional endpoints for the two restricted row components.
+    The preceding module now derives the only remaining local-closure input
+    directly from PA, so callers no longer have to supply an operation law. *)
+Corollary
+    dynamicTruthSigmaRestrictedUniversalLocalProofFieldGraph_raw_proof_total_unconditional
+  : forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthSigmaRestrictedUniversalLocalProofFieldTotal M.
+Proof.
+  intros M hPA.
+  exact
+    (dynamicTruthSigmaRestrictedUniversalLocalProofFieldGraph_raw_proof_total_of_local_closure
+      M hPA
+      (raw_dynamicTruthPairedGlobalSuccessorLocalDeepClosure M hPA)).
+Qed.
+
+Corollary
+    dynamicTruthPiRestrictedExistentialLocalProofFieldGraph_raw_proof_total_unconditional
+  : forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthPiRestrictedExistentialLocalProofFieldTotal M.
+Proof.
+  intros M hPA.
+  exact
+    (dynamicTruthPiRestrictedExistentialLocalProofFieldGraph_raw_proof_total_of_local_closure
+      M hPA
+      (raw_dynamicTruthPairedGlobalSuccessorLocalDeepClosure M hPA)).
+Qed.
+
+Corollary
+    dynamicTruthDeepClosedRestrictedLocalProofFields_raw_proof_total_unconditional
+  : forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthSigmaRestrictedUniversalLocalProofFieldTotal M /\
+  RawDynamicTruthPiRestrictedExistentialLocalProofFieldTotal M.
+Proof.
+  intros M hPA.
+  exact
+    (dynamicTruthDeepClosedRestrictedLocalProofFields_raw_proof_total_of_local_closure
+      M hPA
+      (raw_dynamicTruthPairedGlobalSuccessorLocalDeepClosure M hPA)).
 Qed.
 
 End

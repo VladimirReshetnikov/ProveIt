@@ -1645,9 +1645,10 @@ actual deeply closed paired-orbit witness instead of transporting closure to
 an arbitrary adequate witness.  The concrete shift and opening commutation
 theorems then discharge both restricted compilers directly, without an orbit
 functionality or uniqueness assumption.  The resulting Sigma-universal and
-Pi-existential proof fields are unconditional once the genuine paired local
-rows are deeply closed; they are still only the two advertised restricted
-branches, not the complete local decision/exclusivity field.
+Pi-existential proof fields combine with the concrete paired-row closure
+theorem to become unconditional in every PA model.  They are still only the
+two advertised restricted branches, not the complete local
+decision/exclusivity field.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
