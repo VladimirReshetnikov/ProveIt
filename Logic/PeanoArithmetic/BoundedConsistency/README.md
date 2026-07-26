@@ -1885,6 +1885,16 @@ and returns the original six proofs plus the helper proof in literally one
 extended witnessed context.  This is directly applicable to fixed lemmas
 such as the native quantifier-free branch collision.
 
+`RawCodedTruthCertificateMasterQFHelperExtension.v` performs that concrete
+specialization.  Its seventh root concludes the literal native Ex8 QF/QF
+collision code, and its public theorem needs no abstract template translation
+parameter.  A represented zero-term trace and bottom fallback for opaque
+template atoms construct a PA-agreeing structural translation internally;
+ordinary embedded PA syntax never visits either fallback case.  Thus every
+six-field common-context package can be extended with the proved QF helper
+while retaining one exact synchronized witnessed context for all seven
+roots.
+
 `RawCodedTruthCertificateConcreteEndpoint.v` connects that successor bridge,
 the zero bridge, the concrete assembler, and the generic PA-internal
 induction.  Its single remaining all-model premise is exactly the five-field
