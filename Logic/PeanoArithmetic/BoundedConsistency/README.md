@@ -2034,6 +2034,18 @@ graph target while preserving the original witnessed base.  The source-
 linked implication compiler remains explicit; no uniform semantic soundness
 or consistency-successor premise is asserted.
 
+`RawCodedDynamicTruthNativeFinalUniversalSoundnessComposition.v` refines that
+single final residual into the three proof roots used by the Lean argument,
+all in the exact canonical candidate-proof context: a proof of one concrete
+universal derivation-soundness code, an implication from that code to the
+trace-selected `nextFinal`, and an implication from `nextFinal` to falsity.
+Two checked implication eliminations and one bottom elimination compose those
+roots into the existing source-linked six-premise endpoint.  This is a strict
+syntactic decomposition, not a discharge: arbitrary-carrier soundness
+induction, the fixed consistency-from-soundness source compiler, and the
+structural opening/refutation of the sealed target remain the three explicit
+proof-producing obligations.
+
 `RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.v` connects these
 stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,

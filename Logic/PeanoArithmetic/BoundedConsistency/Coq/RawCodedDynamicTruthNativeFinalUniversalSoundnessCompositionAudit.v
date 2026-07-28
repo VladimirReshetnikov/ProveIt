@@ -1,0 +1,19 @@
+(** Audit surface for the exact universal-soundness-to-final-root seam. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalUniversalSoundnessComposition.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalUniversalSoundnessComposition.
+
+Check rawRestrictedPADynamicSoundnessFromUniversalRoot.
+Check
+  raw_restrictedPADynamicSoundnessImplicationProof_of_universal_soundness.
+Check RawDynamicTruthNativeFinalUniversalSoundnessCompositionCompiler.
+Check
+  raw_dynamicTruthNativeFinalSourceLinkedImplicationRootCompiler_of_universal_soundness.
+
+Print Assumptions
+  raw_restrictedPADynamicSoundnessImplicationProof_of_universal_soundness.
+Print Assumptions
+  raw_dynamicTruthNativeFinalSourceLinkedImplicationRootCompiler_of_universal_soundness.
