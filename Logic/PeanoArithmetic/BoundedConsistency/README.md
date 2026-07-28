@@ -1995,6 +1995,20 @@ shift existence under nested binders.  It is proved for a top-level witnessed
 target but intentionally remains explicit for arbitrary temporary contexts,
 where formula shift is partial on malformed carrier codes.
 
+`RawCodedPALocalProofWitnessedContextMergeTransportComplete.v` eliminates
+that last premise at the witnessed endpoint without asserting that malformed
+arbitrary contexts can be shifted.  Its representable `RawContextBinderReady`
+invariant says that every concrete source shift can be mirrored in the target
+while preserving inclusion.  The invariant survives adding the same temporary
+assumption to both contexts.  After a binder, the shifted target is entirely
+atomically adequate; a PA-definable reverse traversal therefore constructs
+its next unit shift and regenerates binder readiness.  Object-level strong
+induction applies the invariant to all seventeen rule cases, including
+nonstandard proof roots.  The resulting theorems give unconditional witnessed
+context inclusion weakening, merge two independently witnessed proof
+contexts, and synchronize all six ordinary master-field proofs in one literal
+witnessed context.
+
 `RawCodedDynamicTruthNativeMasterSuccessorTransportComplete.v` applies that
 theorem to the staged native successor.  Its public adapters no longer ask
 for any context transport or common-context lift: they require only the five
