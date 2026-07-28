@@ -1922,6 +1922,19 @@ code and supplied witnessed context remain literal; only the proof root is
 rebuilt.  This proves the exact empty-to-witnessed transport interface in
 every PA model without decoding a context or assuming semantic completeness.
 
+`RawCodedPALocalProofWitnessedContextMerge.v` handles the genuinely harder
+case of two independently chosen, possibly nonstandard witnessed contexts.
+A PA-definable reverse fold prefixes the complete left witness/axiom traversal
+onto the right package, proves represented membership inclusion for both
+inputs, and unconditionally transports every proof from the literal right
+context into the merged context.  The opposite direction is isolated as the
+single named `RawCodedPALocalProofWitnessedContextInclusionWeakening`
+operation: rebuilding a proof over an inclusive witnessed target must also
+handle binder-induced context shifts.  Conditional only on that exact
+syntactic operation, a fixed five-step fold synchronizes all six ordinary
+master-field certificates while preserving their literal conclusions.  The
+module does not claim an assumption-free arbitrary-context merge.
+
 `RawCodedDynamicTruthNativeMasterSuccessorTransportComplete.v` applies that
 theorem to the staged native successor.  Its public adapters no longer ask
 for any context transport or common-context lift: they require only the five
