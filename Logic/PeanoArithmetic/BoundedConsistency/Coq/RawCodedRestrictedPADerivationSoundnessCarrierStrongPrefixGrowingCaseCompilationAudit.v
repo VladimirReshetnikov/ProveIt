@@ -1,0 +1,22 @@
+(** Kernel audit for the unconditional growing strong-prefix case compiler. *)
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingCaseCompilation.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingCaseCompilation.
+
+Check coqCarrierStrongPrefixNoLtZero_bprov.
+Check coqCarrierStrongPrefixLtKernel_bprov.
+Check coqCarrierStrongPrefixCaseArithmetic_bprov.
+Check coqCarrierStrongPrefixCaseCompilationRoot_valid.
+Check raw_codedPALocalProofOf_coqCarrierStrongPrefixCaseCompilation.
+Check raw_codedPALocalProofOf_coqCarrierStrongPrefixCases_from_roots.
+Check raw_codedPAProofOf_coqCarrierStrongPrefixNoLtZero.
+Check raw_codedPAProofOf_coqCarrierStrongPrefixLtKernel.
+Check RawCoqCarrierStrongPrefixGrowingCasePackageOf.
+Check raw_coqCarrierStrongPrefixGrowingCasePackage.
+
+Print Assumptions coqCarrierStrongPrefixCaseCompilationRoot_valid.
+Print Assumptions
+  raw_codedPALocalProofOf_coqCarrierStrongPrefixCases_from_roots.
+Print Assumptions raw_coqCarrierStrongPrefixGrowingCasePackage.

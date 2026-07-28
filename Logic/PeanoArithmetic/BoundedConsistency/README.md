@@ -2318,6 +2318,30 @@ the final certificate.  The endpoint remains honestly conditional on the
 separate strong-prefix case compiler; it removes the fixed-context finalizer
 boundary but does not disguise the still-unconstructed zero/successor cases.
 
+`RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingCaseCompilation.v`
+constructs those two cases without a fixed-context assumption.  PA proves the
+closed arithmetic kernels `forall e, not (e < 0)` and
+`x < e -> e < S d -> x < d`; an explicit template proof uses them to derive
+`K(0)` and `forall d, K(d) -> K(S d)` from the genuine strong step.  The
+compiler selects one finite standard-axiom prefix for both kernels, transports
+the incoming strong-step root and both arithmetic roots through the same
+adjoined induction context, and returns the exact pair required by the shell.
+Its substitution and renaming lemmas record finite support structurally, so
+kernel checking does not normalize the large soundness predicate merely to
+verify a de Bruijn identity.
+
+`RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingIntegration.v`
+composes that growing case package with the growing finalizer directly.  It
+chooses the finalizer's arithmetic prefix above the case prefix, transports
+the strong step and both case roots through that common extension, and
+flattens the two witnessed bases to the single prefix
+`finalizerPrefix ++ casePrefix`.  The compact corollary now produces an
+ordinary PA certificate of the universal derivation-soundness formula without
+the former separate case-compiler premise.  This is still not the unconditional
+Coq headline: the concrete carrier truth interpretation, the nonstandard
+closure remainder, and the genuine recursive strong-step proof remain explicit
+inputs to the later soundness construction.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
