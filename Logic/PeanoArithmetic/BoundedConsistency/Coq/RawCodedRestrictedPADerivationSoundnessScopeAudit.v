@@ -1,0 +1,32 @@
+(** Audit surface for the metatheoretic scope closure of the fixed-level
+    proof-code soundness predicate. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessScope.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessScope.
+
+Check fixedLevelSigmaSuccessorWitnessRowTermAt_scoped.
+Check fixedLevelPiSuccessorWitnessRowTermAt_scoped.
+Check fixedLevelClosedSuccessorRowTermAt_scoped.
+Check fixedLevelZeroTruthTraversalRowsTermAt_scoped.
+Check fixedLevelSuccessorTruthTraversalRowsTermAt_scoped.
+Check fixedLevelZeroTruthTraversalTermAt_scoped.
+Check fixedLevelSuccessorTruthTraversalTermAt_scoped.
+
+Check fixedLevelTruthCertificateTermAt_scoped.
+Check fixedLevelSigmaTruthCertificateTermAt_scoped.
+Check fixedLevelPiFalsityCertificateTermAt_scoped.
+
+Check fixedLevelTruthAdmissibleTermAt_scoped.
+Check contextAllSigmaTrueWithTablesTermAt_scoped.
+Check contextAllSigmaTrueTermAt_scoped.
+Check restrictedProofTermAt_scoped.
+Check proofRuleValidTermAt_scoped.
+Check restrictedPADerivationSoundnessPredicateTermAt_scoped.
+Check restrictedPADerivationSoundnessPrefixTermAt_scoped.
+Check restrictedPADerivationSoundnessPrefix_scoped.
+
+Print Assumptions fixedLevelTruthCertificateTermAt_scoped.
+Print Assumptions restrictedPADerivationSoundnessPrefix_scoped.

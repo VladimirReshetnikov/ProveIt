@@ -2155,6 +2155,17 @@ a standard-`nat` level slice: it neither replaces `level` by an arbitrary
 model carrier nor supplies the opaque successor-truth application needed by
 the uniform nonstandard theorem.
 
+`RawCodedRestrictedPADerivationSoundnessScope.v` discharges exactly that
+metatheoretic formula-scope premise for every external fixed truth level.  It
+proves the Sigma/Pi truth-certificate scopes simultaneously, composes them
+through admissibility and context truth, and then closes the complete
+restricted-proof checker and strong-prefix formula.  The large proof
+constructor table is handled through list-level scope lemmas so that its
+arithmetic graphs are not repeatedly expanded.  This removes a syntactic
+premise from the represented proof-code induction interface, but deliberately
+does not turn the external `nat` level into an arbitrary element of a
+nonstandard PA model.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
