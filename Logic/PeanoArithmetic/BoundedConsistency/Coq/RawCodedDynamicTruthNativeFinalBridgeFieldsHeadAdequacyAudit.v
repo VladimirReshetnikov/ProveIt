@@ -1,0 +1,29 @@
+(** Kernel-facing audit for final bridge-head atomic adequacy. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalBridgeFieldsHeadAdequacy.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeFinalBridgeFieldsHeadAdequacyAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalBridgeFieldsHeadAdequacy.
+
+Check restrictedFields_standardTermShift_identity_of_scoped.
+Check restrictedFields_standardFormulaShift_identity_of_scoped.
+Check
+  rawRestrictedTargetTermContextIteratedShiftCode_scoped_identity.
+Check
+  rawRestrictedTargetFormulaContextIteratedShiftCode_scoped_identity.
+Check raw_restrictedPAOccurrenceBoundFieldCode_atomically_adequate.
+Check raw_restrictedPAProofFieldsCode_atomically_adequate.
+Check raw_dynamicTruthNativeFinalBridgeFieldsHeadAdequacyCompiler.
+
+Print Assumptions
+  raw_restrictedPAOccurrenceBoundFieldCode_atomically_adequate.
+Print Assumptions raw_restrictedPAProofFieldsCode_atomically_adequate.
+Print Assumptions
+  raw_dynamicTruthNativeFinalBridgeFieldsHeadAdequacyCompiler.
+
+End
+  PABoundedRawCodedDynamicTruthNativeFinalBridgeFieldsHeadAdequacyAudit.

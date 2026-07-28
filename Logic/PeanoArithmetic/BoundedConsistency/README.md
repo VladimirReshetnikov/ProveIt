@@ -2094,6 +2094,17 @@ from selected pointwise axiom soundness to witnessed-context truth and the
 bottom-truth refutation law.  It proves no semantic truth producer and does
 not discard any graph or staged prerequisite.
 
+`RawCodedDynamicTruthNativeFinalBridgeFieldsHeadAdequacy.v` discharges that
+last syntactic transport premise.  Six checker fields are ordinary quoted PA
+formulae.  For the seventh, occurrence-bound field, the existing restricted-
+target shift tree realizes the arbitrary-carrier numeral instance as a shift
+target; scope below cutoff three proves that this shift leaves the field code
+unchanged.  Shift-target adequacy and conjunction closure then prove atomic
+adequacy of the exact seven-field head, and the graph trace supplies its
+nonstandard numeral witness.  Consequently the selected-axiom transport now
+has no residual premise beyond the two explicitly named truth-coherence proof
+roots.
+
 `RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.v` connects these
 stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,
