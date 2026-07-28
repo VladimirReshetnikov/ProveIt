@@ -161,9 +161,10 @@ Print Assumptions list_prune_insert_subset.
 Print Assumptions generic_consequence_compact.
 Print Assumptions generic_compact_cumulative.
 
-(** The first forty-eight declarations from Logic/Entailment.lean retain
+(** The first seventy-eight declarations from Logic/Entailment.lean retain
     Type-valued formal proofs, inhabited provability, heterogeneous strength
-    comparison, strictness, equivalence, and incomparability. *)
+    comparison, consistency, explosion, syntactic completeness, independence,
+    and incompleteness. *)
 Check generic_entailment.
 Check generic_provable.
 Check generic_unprovable.
@@ -212,6 +213,36 @@ Check generic_strict_equiv_trans.
 Check generic_strictly_weaker_iff_weaker_not_equiv.
 Check generic_incomparable.
 Check generic_incomparable_of_unprovable.
+Check generic_provable_set_theory.
+Check generic_inconsistent.
+Check generic_consistent.
+Check generic_inconsistent_def.
+Check generic_inconsistent_iff_theory_universal.
+Check generic_not_inconsistent_iff_consistent.
+Check generic_consistent_not_inconsistent.
+Check generic_not_consistent_iff_inconsistent.
+Check generic_inconsistent_not_consistent.
+Check generic_consistent_iff_exists_unprovable.
+Check generic_consistent_exists_unprovable.
+Check generic_consistent_of_unprovable.
+Check generic_inconsistent_iff_theory_universal_alias.
+Check generic_inconsistent_theory_universal.
+Check generic_inconsistent_of_ge.
+Check generic_consistent_of_le.
+Check generic_deductive_explosion.
+Check generic_deductive_explosion_provable.
+Check generic_inconsistent_iff_provable_bottom.
+Check generic_inconsistent_of_provable_bottom.
+Check generic_consistent_iff_unprovable_bottom.
+Check generic_consistent_not_bottom.
+Check generic_syntactically_complete.
+Check generic_independent.
+Check generic_incomplete.
+Check generic_syntactically_complete_def.
+Check generic_incomplete_def.
+Check generic_not_complete_iff_incomplete.
+Check generic_not_incomplete_iff_complete.
+Check generic_consistent_of_incomplete.
 
 (** Informative proof extraction, functional choice, and classical
     counterexample extraction remain three separate audited boundaries. *)
@@ -225,6 +256,21 @@ Print Assumptions generic_strictly_weaker_than_iff_witness.
 Print Assumptions generic_entailment_equiv_iff_mutual_weaker.
 Print Assumptions generic_strictly_weaker_iff_weaker_not_equiv.
 Print Assumptions generic_incomparable_of_unprovable.
+(** The consistency/completeness tranche uses excluded middle only for the
+    five source commands that eliminate double negation or extract an
+    unprovable/independent formula.  Direct transport and explosion arguments
+    remain constructive. *)
+Print Assumptions generic_not_consistent_iff_inconsistent.
+Print Assumptions generic_consistent_iff_exists_unprovable.
+Print Assumptions generic_consistent_exists_unprovable.
+Print Assumptions generic_not_complete_iff_incomplete.
+Print Assumptions generic_not_incomplete_iff_complete.
+Print Assumptions generic_inconsistent_iff_theory_universal.
+Print Assumptions generic_inconsistent_not_consistent.
+Print Assumptions generic_consistent_of_le.
+Print Assumptions generic_deductive_explosion_provable.
+Print Assumptions generic_consistent_iff_unprovable_bottom.
+Print Assumptions generic_consistent_of_incomplete.
 
 (** Complete source-facing Kripke semantic surface: local satisfaction,
     fixed-model validity, frame validity, and frame-class counterexamples. *)

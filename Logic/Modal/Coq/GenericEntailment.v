@@ -1,9 +1,9 @@
 (**
   Generic proof systems and their provability-strength order.
 
-  This module ports declarations 1--48 of the 138 active declaration-producing
+  This module ports declarations 1--78 of the 138 active declaration-producing
   commands in the pinned [Foundation/Logic/Entailment.lean], through
-  [Incomparable.of_unprovable].  Foundation distinguishes a Type-valued formal
+  [consistent_of_incomplete].  Foundation distinguishes a Type-valued formal
   proof from the proposition that such a proof is inhabited; that distinction
   is retained here.  In particular, selecting a raw proof from provability is
   deliberately isolated behind informative classical description.
@@ -566,4 +566,377 @@ Proof.
   constructor.
   - intro Hst. apply Hntp. exact (generic_weaker_subset Hst p Hsp).
   - intro Hts. apply Hnsq. exact (generic_weaker_subset Hts q Htq).
+Qed.
+
+(** * Consistency, explosion, and syntactic completeness *)
+
+(** Source declaration 49/138: [provableSet_theory]. *)
+Lemma generic_provable_set_theory :
+  forall (S F : Type) (E : generic_entailment S F) (s : S),
+    generic_provable_set E s (generic_entailment_theory E s).
+Proof.
+  intros S F E s p Hp. exact Hp.
+Qed.
+
+(** Source declaration 50/138: [Inconsistent]. *)
+Definition generic_inconsistent {S F : Type}
+    (E : generic_entailment S F) (s : S) : Prop :=
+  forall p, generic_provable E s p.
+
+(** Source declaration 51/138: [Consistent]. *)
+Record generic_consistent {S F : Type}
+    (E : generic_entailment S F) (s : S) : Prop := {
+  generic_consistent_not_inconsistent_field :
+    ~ generic_inconsistent E s
+}.
+
+Arguments generic_consistent_not_inconsistent_field
+  {S F E s} _ _.
+
+(** Source declaration 52/138: [inconsistent_def]. *)
+Lemma generic_inconsistent_def :
+  forall (S F : Type) (E : generic_entailment S F) (s : S),
+    generic_inconsistent E s <->
+    forall p, generic_provable E s p.
+Proof. reflexivity. Qed.
+
+(** Source declaration 53/138: [inconsistent_iff_theory_eq].  Predicate
+    equality is represented pointwise, as it was for system equivalence above;
+    this removes the source theorem's extensionality boundary. *)
+Lemma generic_inconsistent_iff_theory_universal :
+  forall (S F : Type) (E : generic_entailment S F) (s : S),
+    generic_inconsistent E s <->
+    forall p, generic_entailment_theory E s p <-> True.
+Proof.
+  intros S F E s; split.
+  - intros H p; split.
+    + intros _. exact I.
+    + intros _. exact (H p).
+  - intros H p. apply (proj2 (H p)). exact I.
+Qed.
+
+(** Source declaration 54/138: [not_inconsistent_iff_consistent]. *)
+Lemma generic_not_inconsistent_iff_consistent :
+  forall (S F : Type) (E : generic_entailment S F) (s : S),
+    ~ generic_inconsistent E s <-> generic_consistent E s.
+Proof.
+  intros S F E s; split.
+  - intro H. now constructor.
+  - intros [H]. exact H.
+Qed.
+
+(** Source declaration 55/138: alias [Consistent.not_inc]. *)
+Definition generic_consistent_not_inconsistent
+    {S F : Type} {E : generic_entailment S F} {s : S}
+    (H : generic_consistent E s) : ~ generic_inconsistent E s :=
+  generic_consistent_not_inconsistent_field H.
+
+(** Source declaration 56/138: [not_consistent_iff_inconsistent].
+    Only the forward implication is classical double-negation elimination. *)
+Lemma generic_not_consistent_iff_inconsistent :
+  forall (S F : Type) (E : generic_entailment S F) (s : S),
+    ~ generic_consistent E s <-> generic_inconsistent E s.
+Proof.
+  intros S F E s; split.
+  - intro Hnot.
+    apply NNPP. intro Hnot_inconsistent.
+    apply Hnot. constructor. exact Hnot_inconsistent.
+  - intros Hinc Hcon.
+    exact (generic_consistent_not_inconsistent Hcon Hinc).
+Qed.
+
+(** Source declaration 57/138: alias [Inconsistent.not_con].  This direction
+    is proved directly so it does not inherit declaration 56's classical
+    dependency. *)
+Lemma generic_inconsistent_not_consistent :
+  forall (S F : Type) (E : generic_entailment S F) (s : S),
+    generic_inconsistent E s -> ~ generic_consistent E s.
+Proof.
+  intros S F E s Hinc Hcon.
+  exact (generic_consistent_not_inconsistent Hcon Hinc).
+Qed.
+
+(** Source declaration 58/138: [consistent_iff_exists_unprovable].  The
+    counterexample-extraction direction reuses the single classical predicate
+    inclusion helper from declaration 22. *)
+Lemma generic_consistent_iff_exists_unprovable :
+  forall (S F : Type) (E : generic_entailment S F) (s : S),
+    generic_consistent E s <->
+    exists p, generic_unprovable E s p.
+Proof.
+  intros S F E s; split.
+  - intros Hcon.
+    assert (Hnot_subset :
+      ~ (forall p : F, True -> generic_provable E s p)).
+    { intro Hall. apply (generic_consistent_not_inconsistent Hcon).
+      intro p. exact (Hall p I). }
+    apply (proj1 (@generic_not_subset_iff_counterexample F
+      (fun _ => True) (fun p => generic_provable E s p))) in Hnot_subset.
+    destruct Hnot_subset as [p [_ Hnot]]. now exists p.
+  - intros [p Hnot]. constructor. intro Hinc.
+    exact (Hnot (Hinc p)).
+Qed.
+
+(** Source declaration 59/138: alias [Consistent.exists_unprovable]. *)
+Definition generic_consistent_exists_unprovable
+    {S F : Type} {E : generic_entailment S F} {s : S}
+    (H : generic_consistent E s) :
+    exists p, generic_unprovable E s p :=
+  proj1 (generic_consistent_iff_exists_unprovable E s) H.
+
+(** Source declaration 60/138: [Consistent.of_unprovable]. *)
+Lemma generic_consistent_of_unprovable :
+  forall (S F : Type) (E : generic_entailment S F) (s : S) (p : F),
+    generic_unprovable E s p -> generic_consistent E s.
+Proof.
+  intros S F E s p Hnot. constructor. intro Hinc.
+  exact (Hnot (Hinc p)).
+Qed.
+
+(** Source declaration 61/138: [inconsistent_iff_theory_eq_univ].  This is
+    the source's second name for declaration 53. *)
+Lemma generic_inconsistent_iff_theory_universal_alias :
+  forall (S F : Type) (E : generic_entailment S F) (s : S),
+    generic_inconsistent E s <->
+    forall p, generic_entailment_theory E s p <-> True.
+Proof. exact generic_inconsistent_iff_theory_universal. Qed.
+
+(** Source declaration 62/138: alias [Inconsistent.theory_eq]. *)
+Lemma generic_inconsistent_theory_universal :
+  forall (S F : Type) (E : generic_entailment S F) (s : S),
+    generic_inconsistent E s ->
+    forall p, generic_entailment_theory E s p <-> True.
+Proof.
+  intros S F E s Hinc p; split.
+  - intros _. exact I.
+  - intros _. exact (Hinc p).
+Qed.
+
+(** Source declaration 63/138: [Inconsistent.of_ge]. *)
+Lemma generic_inconsistent_of_ge :
+  forall (S T F : Type)
+         (ES : generic_entailment S F) (ET : generic_entailment T F)
+         (s : S) (t : T),
+    generic_inconsistent ES s ->
+    generic_weaker_than ES ET s t ->
+    generic_inconsistent ET t.
+Proof.
+  intros S T F ES ET s t Hinc Hweak p.
+  exact (generic_weaker_subset Hweak p (Hinc p)).
+Qed.
+
+(** Source declaration 64/138: [Consistent.of_le].  A direct contrapositive
+    proof avoids the classical double-negation theorem at declaration 56. *)
+Lemma generic_consistent_of_le :
+  forall (S T F : Type)
+         (ES : generic_entailment S F) (ET : generic_entailment T F)
+         (s : S) (t : T),
+    generic_consistent ES s ->
+    generic_weaker_than ET ES t s ->
+    generic_consistent ET t.
+Proof.
+  intros S T F ES ET s t Hcon Hweak. constructor. intro Hinc_t.
+  apply (generic_consistent_not_inconsistent Hcon).
+  intro p. exact (generic_weaker_subset Hweak p (Hinc_t p)).
+Qed.
+
+(** Source declaration 65/138: [DeductiveExplosion].  The capability is
+    generalized from a full logical-connective package to the sole operation
+    it uses: a distinguished bottom formula. *)
+Record generic_deductive_explosion {S F : Type}
+    (E : generic_entailment S F) (bottom : F) : Type := {
+  generic_deductive_explosion_raw :
+    forall s : S,
+      generic_proof E s bottom ->
+      forall p : F, generic_proof E s p
+}.
+
+Arguments generic_deductive_explosion_raw
+  {S F E bottom} _ _ _ _.
+
+(** Source declaration 66/138: [DeductiveExplosion.dexp!]. *)
+Lemma generic_deductive_explosion_provable :
+  forall (S F : Type) (E : generic_entailment S F) (bottom : F),
+    generic_deductive_explosion E bottom ->
+    forall (s : S),
+      generic_provable E s bottom ->
+      forall p : F, generic_provable E s p.
+Proof.
+  intros S F E bottom Hexplosion s [b] p. constructor.
+  exact (generic_deductive_explosion_raw Hexplosion s b p).
+Qed.
+
+(** Source declaration 67/138: [inconsistent_iff_provable_bot]. *)
+Lemma generic_inconsistent_iff_provable_bottom :
+  forall (S F : Type) (E : generic_entailment S F) (bottom : F),
+    generic_deductive_explosion E bottom ->
+    forall s : S,
+      generic_inconsistent E s <-> generic_provable E s bottom.
+Proof.
+  intros S F E bottom Hexplosion s; split.
+  - intro Hinc. exact (Hinc bottom).
+  - intros Hbottom p.
+    exact (@generic_deductive_explosion_provable
+      S F E bottom Hexplosion s Hbottom p).
+Qed.
+
+(** Source declaration 68/138: alias [inconsistent_of_provable]. *)
+Lemma generic_inconsistent_of_provable_bottom :
+  forall (S F : Type) (E : generic_entailment S F) (bottom : F),
+    generic_deductive_explosion E bottom ->
+    forall s : S,
+      generic_provable E s bottom -> generic_inconsistent E s.
+Proof.
+  intros S F E bottom Hexplosion s Hbottom p.
+  exact (@generic_deductive_explosion_provable
+    S F E bottom Hexplosion s Hbottom p).
+Qed.
+
+(** Source declaration 69/138: [consistent_iff_unprovable_bot].  Both
+    directions are direct and constructive. *)
+Lemma generic_consistent_iff_unprovable_bottom :
+  forall (S F : Type) (E : generic_entailment S F) (bottom : F),
+    generic_deductive_explosion E bottom ->
+    forall s : S,
+      generic_consistent E s <-> generic_unprovable E s bottom.
+Proof.
+  intros S F E bottom Hexplosion s; split.
+  - intros Hcon Hbottom.
+    apply (generic_consistent_not_inconsistent Hcon).
+    intro p.
+    exact (@generic_deductive_explosion_provable
+      S F E bottom Hexplosion s Hbottom p).
+  - intro Hnot_bottom. constructor. intro Hinc.
+    exact (Hnot_bottom (Hinc bottom)).
+Qed.
+
+(** Source declaration 70/138: alias [Consistent.not_bot].  This is proved
+    directly rather than projected through another theorem. *)
+Lemma generic_consistent_not_bottom :
+  forall (S F : Type) (E : generic_entailment S F) (bottom : F),
+    generic_deductive_explosion E bottom ->
+    forall s : S,
+      generic_consistent E s -> generic_unprovable E s bottom.
+Proof.
+  intros S F E bottom Hexplosion s Hcon Hbottom.
+  apply (generic_consistent_not_inconsistent Hcon).
+  intro p.
+  exact (@generic_deductive_explosion_provable
+    S F E bottom Hexplosion s Hbottom p).
+Qed.
+
+(** Source declaration 71/138: syntactic [Complete].  The capability is
+    generalized from all connectives to the sole operation it uses. *)
+Record generic_syntactically_complete {S F : Type}
+    (E : generic_entailment S F) (neg : F -> F) (s : S) : Prop := {
+  generic_syntactically_complete_cases :
+    forall p, generic_provable E s p \/ generic_provable E s (neg p)
+}.
+
+Arguments generic_syntactically_complete_cases
+  {S F E neg s} _ _.
+
+(** Source declaration 72/138: [Independent]. *)
+Definition generic_independent {S F : Type}
+    (E : generic_entailment S F) (neg : F -> F) (s : S) (p : F) : Prop :=
+  generic_unprovable E s p /\ generic_unprovable E s (neg p).
+
+(** Source declaration 73/138: [Incomplete]. *)
+Record generic_incomplete {S F : Type}
+    (E : generic_entailment S F) (neg : F -> F) (s : S) : Prop := {
+  generic_incomplete_independent :
+    exists p, generic_independent E neg s p
+}.
+
+Arguments generic_incomplete_independent
+  {S F E neg s} _.
+
+(** Source declaration 74/138: [complete_def]. *)
+Lemma generic_syntactically_complete_def :
+  forall (S F : Type) (E : generic_entailment S F)
+         (neg : F -> F) (s : S),
+    generic_syntactically_complete E neg s <->
+    forall p, generic_provable E s p \/ generic_provable E s (neg p).
+Proof.
+  intros S F E neg s; split.
+  - exact generic_syntactically_complete_cases.
+  - now constructor.
+Qed.
+
+(** Source declaration 75/138: [incomplete_def]. *)
+Lemma generic_incomplete_def :
+  forall (S F : Type) (E : generic_entailment S F)
+         (neg : F -> F) (s : S),
+    generic_incomplete E neg s <->
+    exists p, generic_independent E neg s p.
+Proof.
+  intros S F E neg s; split.
+  - exact generic_incomplete_independent.
+  - now constructor.
+Qed.
+
+(** Source declaration 76/138: [not_complete_iff_incomplete].  Only
+    extraction of the formula at which the universal decision property fails
+    is classical. *)
+Lemma generic_not_complete_iff_incomplete :
+  forall (S F : Type) (E : generic_entailment S F)
+         (neg : F -> F) (s : S),
+    ~ generic_syntactically_complete E neg s <->
+    generic_incomplete E neg s.
+Proof.
+  intros S F E neg s; split.
+  - intro Hnot_complete.
+    assert (Hnot_subset :
+      ~ (forall p : F, True ->
+        generic_provable E s p \/ generic_provable E s (neg p))).
+    { intro Hall. apply Hnot_complete. constructor.
+      intro p. exact (Hall p I). }
+    apply (proj1 (@generic_not_subset_iff_counterexample F
+      (fun _ => True)
+      (fun p => generic_provable E s p \/
+                generic_provable E s (neg p)))) in Hnot_subset.
+    destruct Hnot_subset as [p [_ Hneither]]. constructor. exists p.
+    split.
+    + intro Hp. apply Hneither. now left.
+    + intro Hneg. apply Hneither. now right.
+  - intros [Hindependent] [Hcases].
+    destruct Hindependent as [p [Hnot_p Hnot_neg]].
+    destruct (Hcases p) as [Hp | Hneg].
+    + exact (Hnot_p Hp).
+    + exact (Hnot_neg Hneg).
+Qed.
+
+(** Source declaration 77/138: [not_incomplete_iff_complete].  Constructing
+    each disjunction from the absence of an independent formula is classical
+    double-negation elimination. *)
+Lemma generic_not_incomplete_iff_complete :
+  forall (S F : Type) (E : generic_entailment S F)
+         (neg : F -> F) (s : S),
+    ~ generic_incomplete E neg s <->
+    generic_syntactically_complete E neg s.
+Proof.
+  intros S F E neg s; split.
+  - intro Hnot_incomplete. constructor. intro p.
+    apply NNPP. intro Hneither.
+    apply Hnot_incomplete. constructor. exists p. split.
+    + intro Hp. apply Hneither. now left.
+    + intro Hneg. apply Hneither. now right.
+  - intros [Hcases] [Hindependent].
+    destruct Hindependent as [p [Hnot_p Hnot_neg]].
+    destruct (Hcases p) as [Hp | Hneg].
+    + exact (Hnot_p Hp).
+    + exact (Hnot_neg Hneg).
+Qed.
+
+(** Source declaration 78/138: [consistent_of_incomplete].  The explicit
+    independent witness gives consistency directly, so this result does not
+    inherit declaration 58's classical counterexample extraction. *)
+Lemma generic_consistent_of_incomplete :
+  forall (S F : Type) (E : generic_entailment S F)
+         (neg : F -> F) (s : S),
+    generic_incomplete E neg s -> generic_consistent E s.
+Proof.
+  intros S F E neg s [Hindependent].
+  destruct Hindependent as [p [Hnot_p _]].
+  exact (@generic_consistent_of_unprovable S F E s p Hnot_p).
 Qed.
