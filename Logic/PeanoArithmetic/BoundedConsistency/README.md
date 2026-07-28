@@ -2046,6 +2046,16 @@ implication compiler.  Thus the callback has no additional context or graph-
 coherence premise; its only remaining proof-producing input is the explicit
 trace-linked cross-level arithmetic kernel.
 
+`RawCodedDynamicTruthNativeShiftStagedCallbackCompilation.v` exposes the third
+public callback from the trace-linked staged shift implication.  It merges the
+local certificate into the current six-root context and then accumulates the
+cross-level certificate, transporting every preceding root into one literal
+witnessed context.  One adequate paired-global orbit and one exact shift
+transform are retained for both the positive graph assertion and the carried
+proof compiler.  The callback therefore adds no graph equality or context
+identification premise; its only proof-producing residual is
+`RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler`.
+
 `RawCodedDynamicTruthNativeAxiomStagedCallbackCompilation.v` exposes the fifth
 public callback from the linked staged axiom kernel.  It keeps one adequate
 paired-global orbit, its exact axiom transform, and the resulting positive
