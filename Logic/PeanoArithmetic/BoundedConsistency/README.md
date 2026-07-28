@@ -2539,6 +2539,19 @@ semantic rule-law package and the existing nonstandard closure remainder as
 inputs; it does not reinterpret a carrier-valued induction axiom as finite
 template syntax or assume the requested universal proof.
 
+`RawCodedRestrictedPAConsistencyFromUniversalSoundnessDirect.v` removes the
+next representation mismatch.  The restricted-target translation theorem is
+now proved over arbitrary structural symbols, which is sufficient because the
+target contains no opaque leaves.  The module therefore identifies the exact
+direct restricted-consistency target and the implication from the direct
+universal-soundness code without decoding a nonstandard truth formula into a
+finite tree.  It also packages the selected axiom/context-truth and
+bottom-refutation roots in the literal bridge context and verifies implication
+introduction from an explicit open-body compiler.  The remaining premise is
+substantive: it must instantiate universal soundness and compile the two
+dynamic-truth coherence laws; it is no longer hidden behind an invalid
+direct-to-finite conversion.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
