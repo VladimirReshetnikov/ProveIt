@@ -1953,6 +1953,17 @@ exactly two lower-dependent clauses, Pi-Ex at an arbitrary lower-Sigma
 application and Sigma-All at an arbitrary lower-Pi application, packaged by
 `RawDynamicTruthMixedQFOpaqueQuantifierCellProofCompiler`.
 
+`RawCodedDynamicTruthLocalCollisionMatrixAssembly.v` assembles the complete
+seven-by-six exclusivity matrix from the individual cell compilers.  It fixes
+the literal Sigma and Pi branch orders, audits all forty-two classifications,
+and produces both every curried pair contradiction and the corresponding
+finite-disjunction pair family.  Given proofs of the actual right-associated
+`Or7` and `Or6` branch rows, the generic matrix eliminator now derives bottom
+in the same represented context.  The input record deliberately exposes the
+remaining replay, cross-level, binder-projection, fixed-helper, traversal, and
+row-root obligations; this finite assembly does not claim to project an
+actual successor row or to complete the whole local decision compiler.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
