@@ -1,0 +1,94 @@
+(**
+  Audit surface for the dependency-aware native local staged compiler.
+
+  The checks below deliberately expose the exact-row linkage, the positional
+  fixed-pair extraction, the seven-field current kernel, and both visible
+  compilation endpoints.  [Print Assumptions] is kept at the public boundary
+  so an accidental semantic or classical shortcut is immediately visible in
+  the build log.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthLocalCollisionMatrixAssembly
+  RawCodedDynamicTruthNativeLocalStagedRootCompilation.
+
+Module PABoundedRawCodedDynamicTruthNativeLocalStagedRootCompilationAudit.
+
+Import PABoundedRawCodedDynamicTruthNativeLocalStagedRootCompilation.
+Import PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssembly.
+
+Check rawDynamicTruthNativeLocalClose3RootOn.
+Check raw_codedPALocalProofOf_dynamicTruthNativeLocal_close3_on.
+Check RawDynamicTruthNativeLocalFieldRootOn.
+Check raw_dynamicTruthNativeLocalFieldRootOn_of_leaf_roots.
+
+Check RawDynamicTruthNativeLocalExactRowParametersAt.
+Check raw_dynamicTruthNativeLocalProofTraceAt_exposes_exact_rows.
+Check raw_dynamicTruthNativeLocalExactRows_linked.
+Check RawDynamicTruthNativeLocalTraceAdequacyAt.
+Check raw_dynamicTruthNativeLocalProofTraceAt_linked_adequacy.
+
+Check raw_finiteRightDisjunctionCode_atomically_adequate_of_members.
+Check raw_finiteDisjunctionConsTransplantAdequate_of_members.
+Check raw_finiteDisjunctionDerivedCaseResources_of_members.
+Check raw_finiteDisjunctionMatrixResources_of_members.
+Check raw_dynamicTruthLocalSigmaBranches_member_adequate.
+Check raw_dynamicTruthLocalPiBranches_member_adequate.
+Check raw_dynamicTruthLocalCollisionMatrixResources_of_adequacy.
+
+Check raw_dynamicTruthNativeLocal_fixed_helper_root_to_local.
+Check raw_dynamicTruthNativeLocal_fixedPairs_of_40_helpers.
+Check RawDynamicTruthNativeLocalCurrentKernelInputsAt.
+Check rawDynamicTruthNativeLocalCurrentKernel_predecessorRoot.
+Check rawDynamicTruthNativeLocalCurrentKernel_binderProjections.
+Check rawDynamicTruthNativeLocalCurrentKernel_sigmaExTrace.
+Check rawDynamicTruthNativeLocalCurrentKernel_sigmaAllTrace.
+Check rawDynamicTruthNativeLocalCurrentKernel_sigmaExCrossRoot.
+Check rawDynamicTruthNativeLocalCurrentKernel_sigmaAllCrossRoot.
+Check rawDynamicTruthNativeLocalCurrentKernel_mixedReplayRoot.
+Check
+  raw_dynamicTruthNativeLocalCollisionResidualInputsAt_of_current_kernel.
+
+Check RawDynamicTruthNativeLocalStagedRootsAt.
+Check
+  raw_dynamicTruthNativeLocalLeafRootsOn_of_staged_roots_and_40_helpers.
+Check
+  raw_dynamicTruthNativeLocalFieldRootOn_of_staged_roots_and_40_helpers.
+
+Check RawDynamicTruthNativeLocalVisibleStagedRootCompilerOn.
+Check RawDynamicTruthNativeLocalVisibleLeafRootCompilerOn.
+Check RawDynamicTruthNativeLocalExactStagedRootBuilderOn.
+Check
+  raw_dynamicTruthNativeLocalVisibleLeafRootCompilerOn_of_staged_roots.
+Check
+  raw_dynamicTruthNativeLocalVisibleStagedRootCompilerOn_of_exact_builder.
+
+(** The literal finite rows used by the generic matrix constructor retain
+    their surveyed 7-by-6 shape. *)
+Goal forall M lowerPi,
+  length (rawDynamicTruthLocalSigmaBranches M lowerPi) = 7.
+Proof. exact rawDynamicTruthLocalSigmaBranches_length. Qed.
+
+Goal forall M lowerSigma,
+  length (rawDynamicTruthLocalPiBranches M lowerSigma) = 6.
+Proof. exact rawDynamicTruthLocalPiBranches_length. Qed.
+
+Print Assumptions
+  raw_dynamicTruthNativeLocalProofTraceAt_exposes_exact_rows.
+Print Assumptions
+  raw_dynamicTruthNativeLocalProofTraceAt_linked_adequacy.
+Print Assumptions
+  raw_dynamicTruthNativeLocal_fixed_helper_root_to_local.
+Print Assumptions raw_dynamicTruthNativeLocal_fixedPairs_of_40_helpers.
+Print Assumptions
+  raw_dynamicTruthNativeLocalCollisionResidualInputsAt_of_current_kernel.
+Print Assumptions
+  raw_dynamicTruthNativeLocalLeafRootsOn_of_staged_roots_and_40_helpers.
+Print Assumptions
+  raw_dynamicTruthNativeLocalFieldRootOn_of_staged_roots_and_40_helpers.
+Print Assumptions
+  raw_dynamicTruthNativeLocalVisibleLeafRootCompilerOn_of_staged_roots.
+Print Assumptions
+  raw_dynamicTruthNativeLocalVisibleStagedRootCompilerOn_of_exact_builder.
+
+End PABoundedRawCodedDynamicTruthNativeLocalStagedRootCompilationAudit.
