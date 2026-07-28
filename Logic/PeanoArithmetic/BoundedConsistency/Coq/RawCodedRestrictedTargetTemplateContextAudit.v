@@ -1,0 +1,25 @@
+(** Audit surface for the carrier-level restricted-target/template bridge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedTargetTemplateContext.
+
+Import PABoundedRawCodedRestrictedTargetTemplateContext.
+
+Check restrictedTargetTemplateTermContext.
+Check restrictedTargetTemplateCloseN.
+Check restrictedTargetTemplateFormulaContext.
+
+Check restrictedTargetTemplateCloseN_embedPA.
+Check restrictedTargetTemplateTermContext_embedPA.
+Check restrictedTargetTemplateFormulaContext_embedPA.
+
+Check rawStructural_restrictedTargetTemplateCloseN.
+Check rawStructural_restrictedTargetTemplateTermContext.
+Check rawStructural_restrictedTargetTemplateFormulaContext.
+Check rawStructural_restrictedTargetProofTemplate.
+Check rawStructural_restrictedPAConsistencyTemplate.
+
+Print Assumptions restrictedTargetTemplateFormulaContext_embedPA.
+Print Assumptions rawStructural_restrictedTargetTemplateFormulaContext.
+Print Assumptions rawStructural_restrictedTargetProofTemplate.
+Print Assumptions rawStructural_restrictedPAConsistencyTemplate.

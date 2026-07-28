@@ -99,14 +99,17 @@ is the broad Lean import surface.
 - Lean/Coq proofs that first-order Peano arithmetic has two non-isomorphic
   models, separating the numeral-generated standard model from a compactness
   model with an element above every standard numeral.
-- A Lean/Rocq [bounded-consistency development for PA](Logic/PeanoArithmetic/BoundedConsistency/README.md):
-  Peano arithmetic proves the single arithmetic sentence asserting that *for
-  every* `n` — nonstandard elements included — PA proves its own
-  bounded-complexity consistency statement `Conₙ(PA)`.  The construction is a
-  model-indexed dynamic truth-certificate family rather than an external
-  recursion, which is what makes it one sentence with one derivation instead of
-  a schema.  Tarski's theorem is respected structurally: truth levels recurse
-  externally, so each level is a separate, strictly larger formula.
+- A Lean/Rocq [bounded-consistency development for PA](Logic/PeanoArithmetic/BoundedConsistency/README.md).
+  Lean proves the single arithmetic sentence asserting that *for every* `n`
+  — nonstandard elements included — PA proves its own bounded-complexity
+  consistency statement `Conₙ(PA)`.  Its construction is a model-indexed
+  dynamic truth-certificate family rather than an external recursion, which
+  is what makes it one sentence with one derivation instead of a schema.
+  Rocq/Coq proves every externally indexed instance and currently exposes an
+  exact conditional compiler boundary for the stronger single sentence; it
+  does not yet prove that uniform endpoint unconditionally.  Tarski's theorem
+  is respected structurally: truth levels recurse externally, so each level
+  is a separate, strictly larger formula.
 - The set-theoretic counterpart, in two parts.  [`SetTheory/BoundedConsistency`](SetTheory/BoundedConsistency/README.md)
   proves in Lean that `ZFC ⊢ Conₙ(ZFC)` for every metatheoretic `n`, via a
   partial satisfaction predicate over the universe with ranked internal

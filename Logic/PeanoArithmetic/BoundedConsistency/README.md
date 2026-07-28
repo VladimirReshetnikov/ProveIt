@@ -1447,6 +1447,15 @@ optional semantic-completeness corollary separately exposes the classical
 assumptions inherited from the generic first-order completeness theorem.  The
 fixed opaque binary predicate is only a source-proof interface, not the still
 missing arbitrary-carrier dynamic-truth soundness construction.
+`RawCodedRestrictedTargetTemplateContext.v` connects the transparent
+restricted-consistency syntax family to the same template language.  It
+fills the family's distinguished restriction-level hole with an arbitrary
+template term and proves that structural translation is exactly
+`rawRestrictedTargetFormulaContextCode` at the translated term code.  Thus a
+named carrier parameter yields the genuine nonstandard restricted-proof and
+consistency shapes without decoding it as a host numeral.  A separate theorem
+recovers ordinary context instantiation only for closed host terms, keeping
+the arbitrary-carrier and standard-quotation boundaries distinct.
 `RawCodedTemplateLogicalSchemas.v` records the small
 finite source trees needed by the dynamic fields—conjunction projection and
 introduction, existential projection, and universal specialization followed
@@ -2119,6 +2128,17 @@ family, the positive master successor, and—under an all-model instance—the
 compact headline.  This is an exact conditional endpoint, not the missing
 unconditional Coq theorem: every arithmetic residual, especially the final
 source-linked derivation-soundness compiler, remains visible in the bundle.
+
+`RawCodedDynamicTruthNativeDependencyOrderedUniversalSoundnessBoundary.v`
+sharpens that complete conditional boundary at its final coordinate.  The
+translation agreement and the local, cross-level, shift, substitution, and
+axiom kernels are unchanged, while the last source-linked compiler is
+replaced by the three exact same-context roots above.  The module reconnects
+this refined bundle to the literal callback family, positive master
+successor, and compact headline.  It remains conditional on every listed
+kernel; its value is that the headline boundary now exposes universal
+derivation soundness, consistency-from-soundness, and target refutation
+separately instead of hiding them behind one final premise.
 
 `RawCodedRestrictedPADerivationSoundnessPredicate.v` isolates the first exact
 proof-code induction slice behind that final compiler.  For each fixed
