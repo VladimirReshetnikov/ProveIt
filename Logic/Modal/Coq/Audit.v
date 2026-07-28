@@ -14,7 +14,8 @@ From FoundationModal Require Import
   HilbertNormalTransitiveBaseSystems HilbertNormalMcKSystems
   HilbertNormalK4PointSystems HilbertNormalMixedSystems
   HilbertNormalD45SymmetricSystems HilbertNormalS4Systems
-  HilbertNormalS4PointMcKSystems HilbertNormalFiveSystems
+  HilbertNormalS4PointMcKSystems HilbertNormalS4PointSystems
+  HilbertNormalFiveSystems
   HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
@@ -1284,6 +1285,32 @@ Check normal_S4Point4McK_axioms_has_Point4.
 Check normal_S4Point4McK.
 Check normal_S4Point4McK_entailment.
 Check normal_K4McK_weaker_than_normal_S4Point4McK.
+
+(** Exact raw S4Point2/3/4 systems from the Normal catalogue. *)
+Check structural_s4point2_entailment.
+Check structural_s4point3_entailment.
+Check structural_s4point4_entailment.
+Check normal_S4Point2_axioms.
+Check normal_S4Point2_axioms_has_K.
+Check normal_S4Point2_axioms_has_T.
+Check normal_S4Point2_axioms_has_Four.
+Check normal_S4Point2_axioms_has_Point2.
+Check normal_S4Point2.
+Check normal_S4Point2_entailment.
+Check normal_S4Point3_axioms.
+Check normal_S4Point3_axioms_has_K.
+Check normal_S4Point3_axioms_has_T.
+Check normal_S4Point3_axioms_has_Four.
+Check normal_S4Point3_axioms_has_Point3.
+Check normal_S4Point3.
+Check normal_S4Point3_entailment.
+Check normal_S4Point4_axioms.
+Check normal_S4Point4_axioms_has_K.
+Check normal_S4Point4_axioms_has_T.
+Check normal_S4Point4_axioms_has_Four.
+Check normal_S4Point4_axioms_has_Point4.
+Check normal_S4Point4.
+Check normal_S4Point4_entailment.
 
 (** Exact raw K5/S5 systems from the Normal catalogue. *)
 Check structural_k5_entailment.
@@ -2983,6 +3010,23 @@ Print Assumptions normal_S4Point4McK_axioms_has_McK.
 Print Assumptions normal_S4Point4McK_axioms_has_Point4.
 Print Assumptions normal_S4Point4McK_entailment.
 Print Assumptions normal_K4McK_weaker_than_normal_S4Point4McK.
+(** The plain S4 point systems and all raw witnesses are constructive and
+    closed under the global context. *)
+Print Assumptions normal_S4Point2_axioms_has_K.
+Print Assumptions normal_S4Point2_axioms_has_T.
+Print Assumptions normal_S4Point2_axioms_has_Four.
+Print Assumptions normal_S4Point2_axioms_has_Point2.
+Print Assumptions normal_S4Point2_entailment.
+Print Assumptions normal_S4Point3_axioms_has_K.
+Print Assumptions normal_S4Point3_axioms_has_T.
+Print Assumptions normal_S4Point3_axioms_has_Four.
+Print Assumptions normal_S4Point3_axioms_has_Point3.
+Print Assumptions normal_S4Point3_entailment.
+Print Assumptions normal_S4Point4_axioms_has_K.
+Print Assumptions normal_S4Point4_axioms_has_T.
+Print Assumptions normal_S4Point4_axioms_has_Four.
+Print Assumptions normal_S4Point4_axioms_has_Point4.
+Print Assumptions normal_S4Point4_entailment.
 (** K5 and S5 remain constructive raw systems with closed witnesses and
     structural bundles. *)
 Print Assumptions normal_K5_axioms_has_K.
