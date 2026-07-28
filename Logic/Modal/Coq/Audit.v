@@ -17,7 +17,7 @@ From FoundationModal Require Import
   HilbertNormalS4PointMcKSystems HilbertNormalS4PointSystems
   HilbertNormalFiveSystems HilbertNormalGLSystems HilbertNormalZSystems
   HilbertNormalHenkinGrzSystems HilbertNormalDumSystems
-  HilbertNormalSpecialSystems
+  HilbertNormalSpecialSystems HilbertNormalTerminalSystems
   HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
@@ -1508,6 +1508,38 @@ Check normal_S4H_axioms_has_Four.
 Check normal_S4H_axioms_has_H1.
 Check normal_S4H.
 Check normal_S4H_entailment.
+
+(** Exact terminal Ver/Triv/S5Grz/N/NP catalogue surface, including the
+    closed S5Grz/Triv equivalence and source-selective N/NP absences. *)
+Check structural_ver_entailment.
+Check structural_triv_entailment.
+Check structural_s5grz_entailment.
+Check normal_Ver_axioms.
+Check normal_Ver_axioms_has_K.
+Check normal_Ver_axioms_has_Ver.
+Check normal_Ver.
+Check normal_Ver_entailment.
+Check normal_Triv_axioms.
+Check normal_Triv_axioms_has_K.
+Check normal_Triv_axioms_has_T.
+Check normal_Triv_axioms_has_Tc.
+Check normal_Triv.
+Check normal_Triv_entailment.
+Check normal_K4_weaker_than_normal_Triv.
+Check normal_S5Grz_axioms.
+Check normal_S5Grz.
+Check normal_S5Grz_axioms_has_K.
+Check normal_S5Grz_axioms_has_T.
+Check normal_S5Grz_axioms_has_Five.
+Check normal_S5Grz_axioms_has_Grz.
+Check normal_S5Grz_entailment.
+Check normal_S5Grz_equiv_normal_Triv.
+Check normal_N_axioms.
+Check normal_N.
+Check normal_NP_axioms.
+Check normal_NP_axioms_has_P.
+Check normal_NP.
+Check normal_NP_has_P.
 
 (** Complete 17-declaration raw-axiom calculus with the Henkin rule. *)
 Check henkin_rule.
@@ -3341,6 +3373,24 @@ Print Assumptions normal_S4H_axioms_has_T.
 Print Assumptions normal_S4H_axioms_has_Four.
 Print Assumptions normal_S4H_axioms_has_H1.
 Print Assumptions normal_S4H_entailment.
+(** The terminal catalogue systems and the direct S5Grz/Triv equivalence
+    remain proof-theoretic and closed under the global context. *)
+Print Assumptions normal_Ver_axioms_has_K.
+Print Assumptions normal_Ver_axioms_has_Ver.
+Print Assumptions normal_Ver_entailment.
+Print Assumptions normal_Triv_axioms_has_K.
+Print Assumptions normal_Triv_axioms_has_T.
+Print Assumptions normal_Triv_axioms_has_Tc.
+Print Assumptions normal_Triv_entailment.
+Print Assumptions normal_K4_weaker_than_normal_Triv.
+Print Assumptions normal_S5Grz_axioms_has_K.
+Print Assumptions normal_S5Grz_axioms_has_T.
+Print Assumptions normal_S5Grz_axioms_has_Five.
+Print Assumptions normal_S5Grz_axioms_has_Grz.
+Print Assumptions normal_S5Grz_entailment.
+Print Assumptions normal_S5Grz_equiv_normal_Triv.
+Print Assumptions normal_NP_axioms_has_P.
+Print Assumptions normal_NP_has_P.
 (** Both rule calculi, including their raw-template adapters and concrete
     structural bundles, are constructive. *)
 Print Assumptions with_henkin_axm_substituted.
