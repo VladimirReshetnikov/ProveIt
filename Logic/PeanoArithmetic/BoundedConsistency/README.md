@@ -1629,9 +1629,11 @@ witnesses are deeply closed without a standardness assumption.
 piece.  It identifies each native three-opening chain with the public ternary
 application at variables `#9`, `#1`, and `#0`; deep predicate commutation and
 application functionality then show that the native output is fixed by every
-operation above cutoff 26.  Both the lower-Pi application in a Sigma row and
-the lower-Sigma application in a Pi row therefore inherit deep closure from
-the preceding global predicate.
+operation above cutoff 26.  The underlying lemma is stated at an arbitrary
+root scope and accepts three independently scoped standard terms; the older
+cutoff-26 result is only its compatibility instance.  Both the lower-Pi
+application in a Sigma row and the lower-Sigma application in a Pi row
+therefore inherit deep closure from the preceding global predicate.
 
 `RawCodedDynamicTruthPairedSuccessorLocalDeepClosure.v` assembles those two
 opaque leaves with the transparent row constructors.  It tracks the genuine
@@ -2358,14 +2360,20 @@ ports the same `P`/`K` induction graph to direct opaque traces.  It proves the
 shift, successor-opening, and zero-opening fields, projects only the genuinely
 nonstandard bound/closure/self-instantiation remainder, and packages supplied
 case and finalizer roots as an ordinary PA certificate of the exact direct
-universal-soundness code.  The companion direct growing-case module reuses
-the already checked 1,630-line finite case metaproof through the generic
-template compiler, then selects and transports one honest finite PA-axiom
-prefix for both arithmetic kernels.  It does not infer a finite structural
-tree from a direct trace.  These modules remove a translation mismatch but do
-not yet construct the context-truth selector, the recursive strong-step root,
-or the arbitrary-carrier closure remainder; the Coq headline therefore
-remains conditional.
+universal-soundness code.  The direct finalizer compiler ports and checks the
+same two-stage universal-elimination tree, proves both represented opening edges
+and the closed temporary context shift, and reduces finalization to the exact
+local arithmetic leaf `d < S d`.  The companion direct growing-case module
+reuses the already checked 1,630-line finite case metaproof through the
+generic template compiler, then selects and transports one honest finite
+PA-axiom prefix for both arithmetic kernels.  The direct growing integration
+then selects the finalizer prefix above that case prefix, exposes their exact
+flattening as `finalizerPrefix ++ casePrefix`, and returns an ordinary PA
+certificate for the direct universal-soundness code.  None of these modules
+infers a finite structural tree from a direct trace.  They remove a
+translation mismatch but do not yet construct the context-truth selector,
+the recursive strong-step root, or the arbitrary-carrier closure remainder;
+the Coq headline therefore remains conditional.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For

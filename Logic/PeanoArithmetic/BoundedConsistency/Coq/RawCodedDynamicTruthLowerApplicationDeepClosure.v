@@ -133,9 +133,186 @@ Qed.
 (** ------------------------------------------------------------------
     Identity operations on the three quoted arguments. *)
 
-(** A standard term scoped below [scope <= 26] is fixed by every shift whose
-    carrier-valued cutoff lies above the displayed root twenty six.  Factoring
-    this elementary weakening out keeps the two closure halves symmetric. *)
+(** A standard term whose own scope is below an arbitrary displayed root is
+    fixed by every shift whose carrier-valued cutoff lies above that root.
+    Keeping [scope] separate from [rootScope] avoids forcing clients to weaken
+    their metatheoretic scoping derivations before invoking this lemma. *)
+Lemma raw_codedTermShift_standard_identity_from_root_scope : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      rootScope scope cutoff amount input,
+  StandardTermScoped scope input ->
+  scope <= rootScope ->
+  rawLe M (rawNumeralValue M rootScope) cutoff ->
+  RawCodedTermShift M cutoff amount
+    (rawQuotedTermCode M input) (rawQuotedTermCode M input).
+Proof.
+  intros M hPA rootScope scope cutoff amount input
+    hscoped hscope hcutoff.
+  apply (raw_codedTermShift_standard_scoped_identity
+    M hPA scope cutoff amount input hscoped).
+  exact (raw_le_trans M hPA
+    (rawNumeralValue M scope) (rawNumeralValue M rootScope) cutoff
+    (rawLe_numerals_of_le M hPA scope rootScope hscope) hcutoff).
+Qed.
+
+(** For substitution, honest syntax of the arbitrary replacement first
+    supplies its lift to [depth].  Since the quoted argument lies below that
+    depth, the following opening is the identity.  Notice that no standardness
+    assumption is made about the replacement or depth. *)
+Lemma raw_codedFormulaSubstitutionAtom_standard_identity_from_root_scope :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+      rootScope replacement assignmentCode assignmentStep depth scope input,
+  RawTermSyntaxRealizable M replacement assignmentCode assignmentStep ->
+  StandardTermScoped scope input ->
+  scope <= rootScope ->
+  rawLe M (rawNumeralValue M rootScope) depth ->
+  RawCodedFormulaSubstitutionAtom M replacement depth
+    (rawQuotedTermCode M input) (rawQuotedTermCode M input).
+Proof.
+  intros M hPA rootScope replacement assignmentCode assignmentStep
+    depth scope input hreplacement hscoped hscope hdepth.
+  destruct (raw_codedTermShift_exists_of_syntax_realizable M hPA
+    replacement assignmentCode assignmentStep hreplacement
+    (raw_zero M) depth) as [liftedReplacement hlift].
+  exists liftedReplacement. split.
+  - exact hlift.
+  - apply (raw_codedTermOpening_standard_identity_below
+    M hPA scope depth liftedReplacement input hscoped).
+    exact (raw_le_trans M hPA
+      (rawNumeralValue M scope) (rawNumeralValue M rootScope) depth
+      (rawLe_numerals_of_le M hPA scope rootScope hscope) hdepth).
+Qed.
+
+(** Applying a deeply closed ternary predicate to three quoted standard terms
+    produces a formula deeply closed above any common root of their scopes.
+    The three scopes remain independent: this is useful when the arguments
+    occupy very different de Bruijn ranges, as in the native lower rows. *)
+Theorem raw_standardTernaryApplication_deep_closed_from_root_scope : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      rootScope predicate
+      firstScope firstInput secondScope secondInput thirdScope thirdInput
+      output,
+  RawCodedTernaryPredicateDeepClosed M predicate ->
+  StandardTermScoped firstScope firstInput ->
+  firstScope <= rootScope ->
+  StandardTermScoped secondScope secondInput ->
+  secondScope <= rootScope ->
+  StandardTermScoped thirdScope thirdInput ->
+  thirdScope <= rootScope ->
+  RawCodedTernaryApplication M predicate
+    (rawQuotedTermCode M firstInput)
+    (rawQuotedTermCode M secondInput)
+    (rawQuotedTermCode M thirdInput) output ->
+  RawCodedFormulaAtomicallyAdequate M output ->
+  RawCodedFormulaDeepClosedFrom M (rawNumeralValue M rootScope) output.
+Proof.
+  intros M hPA rootScope predicate
+    firstScope firstInput secondScope secondInput thirdScope thirdInput
+    output hpredicate
+    hfirstScoped hfirstScope
+    hsecondScoped hsecondScope
+    hthirdScoped hthirdScope
+    happlication hadequate.
+  split; [exact hadequate |]. split.
+  - intros cutoff amount hcutoff.
+    assert (hfirst : RawCodedTermShift M cutoff amount
+        (rawQuotedTermCode M firstInput)
+        (rawQuotedTermCode M firstInput)).
+    {
+      exact (raw_codedTermShift_standard_identity_from_root_scope
+        M hPA rootScope firstScope cutoff amount firstInput
+        hfirstScoped hfirstScope hcutoff).
+    }
+    assert (hsecond : RawCodedTermShift M cutoff amount
+        (rawQuotedTermCode M secondInput)
+        (rawQuotedTermCode M secondInput)).
+    {
+      exact (raw_codedTermShift_standard_identity_from_root_scope
+        M hPA rootScope secondScope cutoff amount secondInput
+        hsecondScoped hsecondScope hcutoff).
+    }
+    assert (hthird : RawCodedTermShift M cutoff amount
+        (rawQuotedTermCode M thirdInput)
+        (rawQuotedTermCode M thirdInput)).
+    {
+      exact (raw_codedTermShift_standard_identity_from_root_scope
+        M hPA rootScope thirdScope cutoff amount thirdInput
+        hthirdScoped hthirdScope hcutoff).
+    }
+    destruct
+      (raw_codedTernaryApplicationShiftInterchange_of_deepClosed
+        M hPA predicate hpredicate
+        cutoff amount
+        (rawQuotedTermCode M firstInput)
+        (rawQuotedTermCode M firstInput)
+        (rawQuotedTermCode M secondInput)
+        (rawQuotedTermCode M secondInput)
+        (rawQuotedTermCode M thirdInput)
+        (rawQuotedTermCode M thirdInput)
+        output hfirst hsecond hthird happlication)
+      as (target & htargetApplication & hshift).
+    pose proof (raw_codedTernaryApplication_functional M hPA
+      predicate
+      (rawQuotedTermCode M firstInput)
+      (rawQuotedTermCode M secondInput)
+      (rawQuotedTermCode M thirdInput)
+      target output htargetApplication happlication) as htarget.
+    subst target. exact hshift.
+  - intros replacement assignmentCode assignmentStep depth
+      hreplacement hdepth.
+    assert (hfirst : RawCodedFormulaSubstitutionAtom M replacement depth
+        (rawQuotedTermCode M firstInput)
+        (rawQuotedTermCode M firstInput)).
+    {
+      exact
+        (raw_codedFormulaSubstitutionAtom_standard_identity_from_root_scope
+          M hPA rootScope replacement assignmentCode assignmentStep depth
+          firstScope firstInput hreplacement
+          hfirstScoped hfirstScope hdepth).
+    }
+    assert (hsecond : RawCodedFormulaSubstitutionAtom M replacement depth
+        (rawQuotedTermCode M secondInput)
+        (rawQuotedTermCode M secondInput)).
+    {
+      exact
+        (raw_codedFormulaSubstitutionAtom_standard_identity_from_root_scope
+          M hPA rootScope replacement assignmentCode assignmentStep depth
+          secondScope secondInput hreplacement
+          hsecondScoped hsecondScope hdepth).
+    }
+    assert (hthird : RawCodedFormulaSubstitutionAtom M replacement depth
+        (rawQuotedTermCode M thirdInput)
+        (rawQuotedTermCode M thirdInput)).
+    {
+      exact
+        (raw_codedFormulaSubstitutionAtom_standard_identity_from_root_scope
+          M hPA rootScope replacement assignmentCode assignmentStep depth
+          thirdScope thirdInput hreplacement
+          hthirdScoped hthirdScope hdepth).
+    }
+    destruct
+      (raw_codedTernaryApplicationOpeningInterchange_of_deepClosed_concrete
+        M hPA predicate hpredicate
+        replacement depth
+        (rawQuotedTermCode M firstInput)
+        (rawQuotedTermCode M firstInput)
+        (rawQuotedTermCode M secondInput)
+        (rawQuotedTermCode M secondInput)
+        (rawQuotedTermCode M thirdInput)
+        (rawQuotedTermCode M thirdInput)
+        output hfirst hsecond hthird happlication)
+      as (target & htargetApplication & hopening).
+    pose proof (raw_codedTernaryApplication_functional M hPA
+      predicate
+      (rawQuotedTermCode M firstInput)
+      (rawQuotedTermCode M secondInput)
+      (rawQuotedTermCode M thirdInput)
+      target output htargetApplication happlication) as htarget.
+    subst target. exact hopening.
+Qed.
+
+(** Compatibility wrappers for the original fixed root.  Their proofs expose
+    that twenty six is merely a client-chosen common upper scope. *)
 Lemma raw_codedTermShift_standard_identity_from_twenty_six : forall
     (M : RawPAModel), RawPASatisfies M -> forall
       scope cutoff amount input,
@@ -146,17 +323,10 @@ Lemma raw_codedTermShift_standard_identity_from_twenty_six : forall
     (rawQuotedTermCode M input) (rawQuotedTermCode M input).
 Proof.
   intros M hPA scope cutoff amount input hscoped hscope hcutoff.
-  apply (raw_codedTermShift_standard_scoped_identity
-    M hPA scope cutoff amount input hscoped).
-  exact (raw_le_trans M hPA
-    (rawNumeralValue M scope) (rawNumeralValue M 26) cutoff
-    (rawLe_numerals_of_le M hPA scope 26 hscope) hcutoff).
+  exact (raw_codedTermShift_standard_identity_from_root_scope
+    M hPA 26 scope cutoff amount input hscoped hscope hcutoff).
 Qed.
 
-(** For substitution, honest syntax of the arbitrary replacement first
-    supplies its lift to [depth].  Since the quoted argument lies below that
-    depth, the following opening is the identity.  Notice that no standardness
-    assumption is made about the replacement or depth. *)
 Lemma
     raw_codedFormulaSubstitutionAtom_standard_identity_from_twenty_six :
   forall (M : RawPAModel), RawPASatisfies M -> forall
@@ -170,22 +340,14 @@ Lemma
 Proof.
   intros M hPA replacement assignmentCode assignmentStep
     depth scope input hreplacement hscoped hscope hdepth.
-  destruct (raw_codedTermShift_exists_of_syntax_realizable M hPA
-    replacement assignmentCode assignmentStep hreplacement
-    (raw_zero M) depth) as [liftedReplacement hlift].
-  exists liftedReplacement. split.
-  - exact hlift.
-  - apply (raw_codedTermOpening_standard_identity_below
-      M hPA scope depth liftedReplacement input hscoped).
-    exact (raw_le_trans M hPA
-      (rawNumeralValue M scope) (rawNumeralValue M 26) depth
-      (rawLe_numerals_of_le M hPA scope 26 hscope) hdepth).
+  exact
+    (raw_codedFormulaSubstitutionAtom_standard_identity_from_root_scope
+      M hPA 26 replacement assignmentCode assignmentStep depth scope input
+      hreplacement hscoped hscope hdepth).
 Qed.
 
-(** A relation-level lower application of the fixed variables is deeply
-    closed from twenty six whenever its predicate is a deeply closed ternary
-    predicate.  This common argument is deliberately separated from the two
-    native wrappers below. *)
+(** The historical lower-row theorem is now just the instance for the three
+    variables [#9], [#1], and [#0] below the displayed root twenty six. *)
 Theorem raw_fixedLowerTernaryApplication_deep_closed_from_twenty_six : forall
     (M : RawPAModel), RawPASatisfies M -> forall predicate output,
   RawCodedTernaryPredicateDeepClosed M predicate ->
@@ -197,114 +359,17 @@ Theorem raw_fixedLowerTernaryApplication_deep_closed_from_twenty_six : forall
   RawCodedFormulaDeepClosedFrom M (rawNumeralValue M 26) output.
 Proof.
   intros M hPA predicate output hpredicate happlication hadequate.
-  split; [exact hadequate |]. split.
-  - intros cutoff amount hcutoff.
-    assert (hfirst : RawCodedTermShift M cutoff amount
-        (rawQuotedTermCode M (tVar 9))
-        (rawQuotedTermCode M (tVar 9))).
-    {
-      apply (raw_codedTermShift_standard_identity_from_twenty_six
-        M hPA 10 cutoff amount (tVar 9)).
-      - intros index hfree. cbn in hfree. lia.
-      - lia.
-      - exact hcutoff.
-    }
-    assert (hsecond : RawCodedTermShift M cutoff amount
-        (rawQuotedTermCode M (tVar 1))
-        (rawQuotedTermCode M (tVar 1))).
-    {
-      apply (raw_codedTermShift_standard_identity_from_twenty_six
-        M hPA 2 cutoff amount (tVar 1)).
-      - intros index hfree. cbn in hfree. lia.
-      - lia.
-      - exact hcutoff.
-    }
-    assert (hthird : RawCodedTermShift M cutoff amount
-        (rawQuotedTermCode M (tVar 0))
-        (rawQuotedTermCode M (tVar 0))).
-    {
-      apply (raw_codedTermShift_standard_identity_from_twenty_six
-        M hPA 1 cutoff amount (tVar 0)).
-      - intros index hfree. cbn in hfree. lia.
-      - lia.
-      - exact hcutoff.
-    }
-    destruct
-      (raw_codedTernaryApplicationShiftInterchange_of_deepClosed
-        M hPA predicate hpredicate
-        cutoff amount
-        (rawQuotedTermCode M (tVar 9))
-        (rawQuotedTermCode M (tVar 9))
-        (rawQuotedTermCode M (tVar 1))
-        (rawQuotedTermCode M (tVar 1))
-        (rawQuotedTermCode M (tVar 0))
-        (rawQuotedTermCode M (tVar 0))
-        output hfirst hsecond hthird happlication)
-      as (target & htargetApplication & hshift).
-    pose proof (raw_codedTernaryApplication_functional M hPA
-      predicate
-      (rawQuotedTermCode M (tVar 9))
-      (rawQuotedTermCode M (tVar 1))
-      (rawQuotedTermCode M (tVar 0))
-      target output htargetApplication happlication) as htarget.
-    subst target. exact hshift.
-  - intros replacement assignmentCode assignmentStep depth
-      hreplacement hdepth.
-    assert (hfirst : RawCodedFormulaSubstitutionAtom M replacement depth
-        (rawQuotedTermCode M (tVar 9))
-        (rawQuotedTermCode M (tVar 9))).
-    {
-      apply
-        (raw_codedFormulaSubstitutionAtom_standard_identity_from_twenty_six
-          M hPA replacement assignmentCode assignmentStep depth
-          10 (tVar 9) hreplacement).
-      - intros index hfree. cbn in hfree. lia.
-      - lia.
-      - exact hdepth.
-    }
-    assert (hsecond : RawCodedFormulaSubstitutionAtom M replacement depth
-        (rawQuotedTermCode M (tVar 1))
-        (rawQuotedTermCode M (tVar 1))).
-    {
-      apply
-        (raw_codedFormulaSubstitutionAtom_standard_identity_from_twenty_six
-          M hPA replacement assignmentCode assignmentStep depth
-          2 (tVar 1) hreplacement).
-      - intros index hfree. cbn in hfree. lia.
-      - lia.
-      - exact hdepth.
-    }
-    assert (hthird : RawCodedFormulaSubstitutionAtom M replacement depth
-        (rawQuotedTermCode M (tVar 0))
-        (rawQuotedTermCode M (tVar 0))).
-    {
-      apply
-        (raw_codedFormulaSubstitutionAtom_standard_identity_from_twenty_six
-          M hPA replacement assignmentCode assignmentStep depth
-          1 (tVar 0) hreplacement).
-      - intros index hfree. cbn in hfree. lia.
-      - lia.
-      - exact hdepth.
-    }
-    destruct
-      (raw_codedTernaryApplicationOpeningInterchange_of_deepClosed_concrete
-        M hPA predicate hpredicate
-        replacement depth
-        (rawQuotedTermCode M (tVar 9))
-        (rawQuotedTermCode M (tVar 9))
-        (rawQuotedTermCode M (tVar 1))
-        (rawQuotedTermCode M (tVar 1))
-        (rawQuotedTermCode M (tVar 0))
-        (rawQuotedTermCode M (tVar 0))
-        output hfirst hsecond hthird happlication)
-      as (target & htargetApplication & hopening).
-    pose proof (raw_codedTernaryApplication_functional M hPA
-      predicate
-      (rawQuotedTermCode M (tVar 9))
-      (rawQuotedTermCode M (tVar 1))
-      (rawQuotedTermCode M (tVar 0))
-      target output htargetApplication happlication) as htarget.
-    subst target. exact hopening.
+  apply (raw_standardTernaryApplication_deep_closed_from_root_scope
+    M hPA 26 predicate
+    10 (tVar 9) 2 (tVar 1) 1 (tVar 0) output hpredicate).
+  - intros index hfree. cbn in hfree. lia.
+  - lia.
+  - intros index hfree. cbn in hfree. lia.
+  - lia.
+  - intros index hfree. cbn in hfree. lia.
+  - lia.
+  - exact happlication.
+  - exact hadequate.
 Qed.
 
 (** ------------------------------------------------------------------
