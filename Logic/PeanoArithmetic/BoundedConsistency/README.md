@@ -2492,6 +2492,29 @@ binder-context and dynamic elimination laws.  Their audited arbitrary-tail
 roots contain all finite projections, transports, and implication shells and
 assume neither the desired branch conclusion nor the enclosing strong step.
 
+Equality elimination completes the seventeenth and final exact dispatcher
+slot.  It projects the constructor-code equation, target and source
+single-substitution rows, equality-formula code, and both child endpoints;
+then it transports their common witness-context truth, opens the recursive
+predicate at the equality and source-instance conclusions, and builds the
+full equality/substitution truth spine.  Its exact residual package,
+`RawCoqRestrictedPADirectStrongStepEqualityEliminationSemanticRoots`, contains
+only two honest child-interface laws (one for each recursive child) and the
+dynamic equality/substitution truth law.  It assumes neither the constructor
+branch result, the requested conclusion, nor the enclosing strong step.
+
+`RawCodedRestrictedPADerivationSoundnessDirectRuleCases.v` aggregates all
+seventeen exact slots through the residual-only 23-field package
+`RawCoqRestrictedPADirectRuleCaseSemanticRoots`.  The theorem
+`raw_coqRestrictedPADirectStrongStepRuleCaseImplicationRoots_of_semantic_roots`
+exhausts the finite rule tag to construct the exact 17-way implication-root
+family, and
+`raw_codedPALocalProofOf_coqRestrictedPADirectStrongStep_of_rule_case_semantic_roots`
+passes that family to the verified shell to obtain the strong-step local
+proof.  The package contains only the constructor modules' advertised
+semantic-law roots, not branch results, requested conclusions, or a completed
+strong-step proof.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
