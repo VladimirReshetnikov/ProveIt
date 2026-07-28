@@ -2082,6 +2082,18 @@ the compiler that opens the universal invariant and on the compiler that
 constructs those selected-axiom support proofs; neither obligation is hidden
 or manufactured.
 
+`RawCodedDynamicTruthNativeFinalSelectedAxiomSupportTransport.v` removes the
+context mismatch from the selected-axiom part of that support boundary.  It
+extracts the staged `nextAxiomSoundness` root from the witnessed base,
+reconstructs the three canonical existential-descent shifts, proves inclusion
+of the base through the four final bridge heads, and uses binder-ready checked
+weakening to transport the root to the exact fields context.  The adapter
+leaves only atomic adequacy of the last fields head as a separate syntactic
+premise, together with the two genuine truth-coherence roots: the implication
+from selected pointwise axiom soundness to witnessed-context truth and the
+bottom-truth refutation law.  It proves no semantic truth producer and does
+not discard any graph or staged prerequisite.
+
 `RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.v` connects these
 stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,
@@ -2209,6 +2221,21 @@ PA induction compilers to the exact soundness codes.  Those compiler theorems
 remain conditional on explicit local proofs of the zero instance and the
 universally quantified successor step; they expose rather than manufacture
 the two remaining proof-producing obligations.
+
+`RawCodedRestrictedPADerivationSoundnessCarrierInductionShell.v` performs the
+corresponding finite syntactic assembly for the arbitrary-carrier soundness
+template.  It derives the shifted, successor, zero, universally quantified,
+and compound induction codes from one structural translation, packages the
+three genuinely nonstandard closure operations as an explicit remainder, and
+turns supplied zero and successor roots into an ordinary PA proof certificate
+of the exact universal soundness code.  Returning an ordinary certificate is
+essential: its witnessed context may contain the newly introduced induction
+axiom and can later be merged with the staged final base.  This shell remains
+conditional plumbing, not the soundness proof itself.  In particular, its
+direct successor premise `forall d, P(d) -> P(S d)` is not silently identified
+with the strong-prefix premise naturally supplied by recursive proof
+soundness, and neither induction case nor the three closure operations is
+manufactured here.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
