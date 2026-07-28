@@ -1836,6 +1836,15 @@ obligation.  The module deliberately makes no unrestricted fixed-level
 opening claim, semantic truth-to-proof inference, or empty-context
 identification.
 
+`RawCodedDynamicTruthNativeCrossLevelStagedRootCompilation.v` carries that
+same body to the graph-facing certificate boundary.  It applies the staged
+implication in the literal shared context, retains the witnessed PA-axiom
+package while introducing the three universal binders, and proves an
+ordinary represented certificate of the exact code selected by the native
+cross-level transform.  Thus body decomposition and empty-base repackaging
+are no longer needed by the successor assembler; the only remaining
+cross-level content is still the explicitly named trace-linked staged kernel.
+
 `RawCodedDynamicTruthNativeShiftPositiveGraph.v` constructs the third native
 positive coordinate.  It selects the genuine paired truth orbit at `S p`,
 builds the six source/target domain and certificate applications through

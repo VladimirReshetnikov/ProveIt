@@ -1,0 +1,22 @@
+(** Audit for carried staged cross-level certificate packaging. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeCrossLevelStagedRootCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeCrossLevelStagedRootCompilation.
+
+Check raw_dynamicTruthNativeCrossLevelStagedBodyRoot_of_implication.
+Check rawDynamicTruthNativeCrossLevelStagedProofCertificate.
+Check raw_codedPAProofOf_dynamicTruthNativeCrossLevelField_of_body_root_on.
+Check
+  raw_dynamicTruthNativeCrossLevelStagedFieldProof_of_body_implication.
+Check
+  raw_dynamicTruthNativeCrossLevelStagedTransformProof_of_body_implication.
+
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelStagedBodyRoot_of_implication.
+Print Assumptions
+  raw_codedPAProofOf_dynamicTruthNativeCrossLevelField_of_body_root_on.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelStagedTransformProof_of_body_implication.
