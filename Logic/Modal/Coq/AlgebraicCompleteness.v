@@ -30,7 +30,7 @@ From FoundationModal Require Import
   Syntax HilbertK LogicInfrastructure EntailmentExtensions
   HilbertAxiom HilbertNormal HilbertNormalAxiomAdapters
   HilbertWithREClassicalCompleteness CanonicalK ModalAlgebra
-  AlgebraicSemantics HilbertNormalBaseSystems.
+  LindenbaumAlgebra AlgebraicSemantics HilbertNormalBaseSystems.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -148,140 +148,9 @@ Proof.
   - intros p q Hpq Hp. exact (NH_mp Hpq Hp).
 Defined.
 
-(** * The formula presentation of the Lindenbaum modal algebra *)
-
-Local Definition lindenbaum_equiv {AtomType}
-    (L : modal_logic_set AtomType)
-    (p q : formula AtomType) : Prop :=
-  L (Iff p q).
-
-Local Definition lindenbaum_le {AtomType}
-    (L : modal_logic_set AtomType)
-    (p q : formula AtomType) : Prop :=
-  L (Imp p q).
-
 Local Ltac solve_classical Hclass :=
   apply (logic_classical_tautology Hclass);
   intro rho; unfold Iff, And, Or, Neg, Top; simpl; tauto.
-
-Local Lemma lindenbaum_imp_respects_equiv :
-  forall (AtomType : Type) (L : modal_logic_set AtomType),
-    classical_logic L -> forall p p' q q',
-    lindenbaum_equiv L p p' ->
-    lindenbaum_equiv L q q' ->
-    lindenbaum_equiv L (Imp p q) (Imp p' q').
-Proof.
-  intros AtomType L Hclass p p' q q' Hpp Hqq.
-  unfold lindenbaum_equiv in *.
-  eapply (logic_modus_ponens Hclass); [|exact Hqq].
-  eapply (logic_modus_ponens Hclass); [|exact Hpp].
-  solve_classical Hclass.
-Qed.
-
-Local Lemma lindenbaum_and_respects_equiv :
-  forall (AtomType : Type) (L : modal_logic_set AtomType),
-    classical_logic L -> forall p p' q q',
-    lindenbaum_equiv L p p' ->
-    lindenbaum_equiv L q q' ->
-    lindenbaum_equiv L (And p q) (And p' q').
-Proof.
-  intros AtomType L Hclass p p' q q' Hpp Hqq.
-  unfold lindenbaum_equiv in *.
-  eapply (logic_modus_ponens Hclass); [|exact Hqq].
-  eapply (logic_modus_ponens Hclass); [|exact Hpp].
-  solve_classical Hclass.
-Qed.
-
-Local Lemma lindenbaum_or_respects_equiv :
-  forall (AtomType : Type) (L : modal_logic_set AtomType),
-    classical_logic L -> forall p p' q q',
-    lindenbaum_equiv L p p' ->
-    lindenbaum_equiv L q q' ->
-    lindenbaum_equiv L (Or p q) (Or p' q').
-Proof.
-  intros AtomType L Hclass p p' q q' Hpp Hqq.
-  unfold lindenbaum_equiv in *.
-  eapply (logic_modus_ponens Hclass); [|exact Hqq].
-  eapply (logic_modus_ponens Hclass); [|exact Hpp].
-  solve_classical Hclass.
-Qed.
-
-Local Definition lindenbaum_boolean_algebra
-    (AtomType : Type) (L : modal_logic_set AtomType)
-    (Hclass : classical_logic L) :
-    boolean_algebra (formula AtomType).
-Proof.
-  refine
-    {| ba_equiv := lindenbaum_equiv L;
-       ba_le := lindenbaum_le L;
-       ba_top := Top;
-       ba_bottom := Bottom;
-       ba_meet := And;
-       ba_join := Or;
-       ba_compl := Neg;
-       ba_imp := Imp |}.
-  - split.
-    + intro p. unfold lindenbaum_equiv.
-      apply logic_iff_intro; [exact Hclass | |]; apply logic_identity;
-        exact Hclass.
-    + intros p q Hpq. unfold lindenbaum_equiv in *.
-      now apply (logic_iff_sym Hclass).
-    + intros p q r Hpq Hqr. unfold lindenbaum_equiv in *.
-      eapply logic_iff_trans; eauto.
-  - split.
-    + intro p. unfold lindenbaum_le. now apply logic_identity.
-    + intros p q r Hpq Hqr. unfold lindenbaum_le in *.
-      eapply logic_imp_trans; eauto.
-  - intros p q Hpq Hqp. unfold lindenbaum_equiv, lindenbaum_le in *.
-    now apply (logic_iff_intro Hclass).
-  - intros p p' Hpp q q' Hqq; split; intro Hpq;
-      unfold lindenbaum_equiv, lindenbaum_le in *.
-    + eapply logic_imp_trans; [exact Hclass | |].
-      * exact (@logic_iff_elim_right AtomType L Hclass p p' Hpp).
-      * eapply logic_imp_trans; [exact Hclass | exact Hpq |].
-        exact (@logic_iff_elim_left AtomType L Hclass q q' Hqq).
-    + eapply logic_imp_trans; [exact Hclass | |].
-      * exact (@logic_iff_elim_left AtomType L Hclass p p' Hpp).
-      * eapply logic_imp_trans; [exact Hclass | exact Hpq |].
-        exact (@logic_iff_elim_right AtomType L Hclass q q' Hqq).
-  - intros p p' Hpp q q' Hqq.
-    now apply (lindenbaum_and_respects_equiv Hclass).
-  - intros p p' Hpp q q' Hqq.
-    now apply (lindenbaum_or_respects_equiv Hclass).
-  - intros p q Hpq. unfold lindenbaum_equiv in *.
-    now apply (logic_neg_iff Hclass).
-  - intros p p' Hpp q q' Hqq.
-    now apply (lindenbaum_imp_respects_equiv Hclass).
-  - intro p. unfold lindenbaum_le. solve_classical Hclass.
-  - intro p. unfold lindenbaum_le. solve_classical Hclass.
-  - intros p q. unfold lindenbaum_le. solve_classical Hclass.
-  - intros p q. unfold lindenbaum_le. solve_classical Hclass.
-  - intros p q r Hpq Hpr. unfold lindenbaum_le in *.
-    now apply (logic_imp_and_intro Hclass).
-  - intros p q. unfold lindenbaum_le. solve_classical Hclass.
-  - intros p q. unfold lindenbaum_le. solve_classical Hclass.
-  - intros p q r Hpr Hqr. unfold lindenbaum_le in *.
-    eapply (logic_modus_ponens Hclass); [|exact Hqr].
-    eapply (logic_modus_ponens Hclass); [|exact Hpr].
-    solve_classical Hclass.
-  - intros p q. unfold lindenbaum_equiv. solve_classical Hclass.
-  - intros p q. unfold lindenbaum_equiv. solve_classical Hclass.
-  - intros p q r. unfold lindenbaum_equiv. solve_classical Hclass.
-  - intro p. unfold lindenbaum_equiv. solve_classical Hclass.
-  - intros p q Hpq. unfold lindenbaum_le in *.
-    now apply (logic_contraposition Hclass).
-  - unfold lindenbaum_equiv. solve_classical Hclass.
-  - unfold lindenbaum_equiv. solve_classical Hclass.
-  - intro p. unfold lindenbaum_equiv. solve_classical Hclass.
-  - intro p. unfold lindenbaum_equiv. solve_classical Hclass.
-  - intros p q. unfold lindenbaum_equiv. solve_classical Hclass.
-  - intros p q. unfold lindenbaum_equiv. solve_classical Hclass.
-  - intros p q. unfold lindenbaum_equiv. solve_classical Hclass.
-  - intros x p q; split; intro H; unfold lindenbaum_le in *.
-    + now apply (logic_curry Hclass).
-    + eapply (logic_modus_ponens Hclass); [|exact H].
-      solve_classical Hclass.
-Defined.
 
 (** * The five source declarations that equip the Lindenbaum algebra *)
 

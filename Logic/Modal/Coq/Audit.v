@@ -20,7 +20,7 @@ From FoundationModal Require Import
   HilbertNormalHenkinGrzSystems HilbertNormalDumSystems
   HilbertNormalSpecialSystems HilbertNormalTerminalSystems
   HilbertWithHenkin HilbertWithLoeb
-  HilbertWithREClassicalCompleteness AlgebraicCompleteness
+  HilbertWithREClassicalCompleteness LindenbaumAlgebra AlgebraicCompleteness
   HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
   HilbertWithRESystems HilbertWithRESymmetrySystems
@@ -225,6 +225,32 @@ Check algebraic_mod_models_iff.
 Check normal_hilbert_algebraic_sound.
 Check normal_hilbert_algebraic_sound_instance.
 
+(** Reusable classical formula/setoid specialization of the 29-declaration
+    Logic/LindenbaumAlgebra.lean surface. *)
+Check lindenbaum_equiv.
+Check lindenbaum_le.
+Check lindenbaum_equiv_refl.
+Check lindenbaum_equiv_sym.
+Check lindenbaum_equiv_trans.
+Check lindenbaum_imp_respects_equiv.
+Check lindenbaum_and_respects_equiv.
+Check lindenbaum_or_respects_equiv.
+Check lindenbaum_boolean_algebra.
+Check lindenbaum_equiv_readback.
+Check lindenbaum_order_readback.
+Check lindenbaum_top_beta.
+Check lindenbaum_bottom_beta.
+Check lindenbaum_meet_beta.
+Check lindenbaum_join_beta.
+Check lindenbaum_imp_beta.
+Check lindenbaum_compl_beta.
+Check lindenbaum_provable_iff_top.
+Check lindenbaum_trivial.
+Check lindenbaum_nontrivial.
+Check lindenbaum_inconsistent_iff_trivial.
+Check lindenbaum_consistent_iff_nontrivial.
+Check lindenbaum_nontrivial_of_consistent.
+
 (** Quotient-free setoid Lindenbaum algebra and algebraic completeness:
     the remaining 13 declarations from Modal/Algebra/Basic.lean. *)
 Check lindenbaum_box.
@@ -265,6 +291,29 @@ Print Assumptions algebraic_satisfies_mdp.
 Print Assumptions algebraic_mod_models_iff.
 Print Assumptions normal_hilbert_algebraic_sound.
 Print Assumptions normal_hilbert_algebraic_sound_instance.
+Print Assumptions lindenbaum_equiv.
+Print Assumptions lindenbaum_le.
+Print Assumptions lindenbaum_equiv_refl.
+Print Assumptions lindenbaum_equiv_sym.
+Print Assumptions lindenbaum_equiv_trans.
+Print Assumptions lindenbaum_imp_respects_equiv.
+Print Assumptions lindenbaum_and_respects_equiv.
+Print Assumptions lindenbaum_or_respects_equiv.
+Print Assumptions lindenbaum_boolean_algebra.
+Print Assumptions lindenbaum_equiv_readback.
+Print Assumptions lindenbaum_order_readback.
+Print Assumptions lindenbaum_top_beta.
+Print Assumptions lindenbaum_bottom_beta.
+Print Assumptions lindenbaum_meet_beta.
+Print Assumptions lindenbaum_join_beta.
+Print Assumptions lindenbaum_imp_beta.
+Print Assumptions lindenbaum_compl_beta.
+Print Assumptions lindenbaum_provable_iff_top.
+Print Assumptions lindenbaum_trivial.
+Print Assumptions lindenbaum_nontrivial.
+Print Assumptions lindenbaum_inconsistent_iff_trivial.
+Print Assumptions lindenbaum_consistent_iff_nontrivial.
+Print Assumptions lindenbaum_nontrivial_of_consistent.
 Print Assumptions lindenbaum_box.
 Print Assumptions lindenbaum_dia.
 Print Assumptions lindenbaum_box_beta.
