@@ -2425,6 +2425,17 @@ premises are deliberately narrow truth-interface laws (membership truth,
 the Boolean excluded-middle clause, and reflexive atomic truth), never the
 constructor case, its desired conclusion, or the strong step itself.
 
+The implication-introduction and bottom-elimination modules begin the
+recursive constructor tranche.  Implication introduction projects the child
+endpoint and principal formula, transports truth to the witness context, and
+reduces the branch to one recursive child law plus the dynamic implication
+truth clause.  Bottom elimination additionally projects the literal strong
+prefix and restricted-proof assumptions, transports witness-context truth,
+and uses checked object-level bottom elimination; its one residual packages
+only proof descent, child instantiation, and refutation of the selected bottom
+truth.  Both public roots again inhabit their exact arbitrary-tail dispatcher
+slots and exclude the desired conclusion from their premises.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
