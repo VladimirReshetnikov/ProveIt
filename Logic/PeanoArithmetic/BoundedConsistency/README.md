@@ -1941,6 +1941,18 @@ application; native ternary selectors and commuting traces adapt directly to
 that package.  Atomic adequacy alone is not claimed to manufacture these
 traces, and no semantic-validity-to-proof shortcut is used.
 
+`RawCodedDynamicTruthMixedQFBranchExclusivity.v` completes the eleven matrix
+cells having exactly one quantifier-free branch.  Seven Boolean cells are
+conditional only on the exact synchronized rank-zero replay root; the four
+quantifier cells are unconditional because a rank-zero traversal has no
+quantifier production rule.  All eleven have fixed PA theorems, standard
+represented proofs, and common-context collision eliminators.  Nine cell
+codes ignore their carrier-valued lower inputs and therefore already have
+arbitrary-carrier represented proofs.  The remaining boundary consists of
+exactly two lower-dependent clauses, Pi-Ex at an arbitrary lower-Sigma
+application and Sigma-All at an arbitrary lower-Pi application, packaged by
+`RawDynamicTruthMixedQFOpaqueQuantifierCellProofCompiler`.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
