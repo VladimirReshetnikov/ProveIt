@@ -549,6 +549,32 @@ Arguments generated_submodel AtomType F1 V1 F2 V2 : clear implicits.
 Arguments generated_submodel_frame
   {AtomType F1 V1 F2 V2} _.
 
+(** Package a generated frame embedding whose valuation agrees on atoms.
+    This is Foundation's [Model.GeneratedSub.ofAtomic] constructor. *)
+Definition generated_submodel_of_atomic
+    {AtomType : Type}
+    {F1 : frame} {V1 : valuation AtomType F1}
+    {F2 : frame} {V2 : valuation AtomType F2}
+    (G : generated_subframe F1 F2)
+    (Hatoms : forall (a : AtomType) (x : World F1),
+       V1 a x <->
+       V2 a (pmap (generated_subframe_morphism G) x))
+    : generated_submodel AtomType F1 V1 F2 V2 :=
+  {| generated_submodel_frame := G;
+     generated_submodel_atoms := Hatoms |}.
+
+(** Forget only the injectivity witness, retaining the full model bounded
+    morphism and its atomic equivalence. *)
+Definition generated_submodel_p_morphism
+    {AtomType : Type}
+    {F1 : frame} {V1 : valuation AtomType F1}
+    {F2 : frame} {V2 : valuation AtomType F2}
+    (G : generated_submodel AtomType F1 V1 F2 V2)
+    : model_p_morphism AtomType F1 V1 F2 V2 :=
+  @model_p_morphism_of_atomic AtomType F1 V1 F2 V2
+    (generated_subframe_morphism (generated_submodel_frame G))
+    (generated_submodel_atoms G).
+
 Definition generated_submodel_bisimulation
     {AtomType : Type}
     {F1 : frame} {V1 : valuation AtomType F1}
@@ -583,6 +609,20 @@ Proof.
   eapply bisimulation_invariance
     with (Z := generated_submodel_bisimulation G).
   reflexivity.
+Qed.
+
+Corollary generated_submodel_modal_equivalence :
+  forall (AtomType : Type)
+         (F1 : frame) (V1 : valuation AtomType F1)
+         (F2 : frame) (V2 : valuation AtomType F2)
+         (G : generated_submodel AtomType F1 V1 F2 V2)
+         (x : World F1),
+    modal_equivalent V1 x V2
+      (pmap (generated_subframe_morphism (generated_submodel_frame G)) x).
+Proof.
+  intros AtomType F1 V1 F2 V2 G x.
+  exact (model_p_morphism_modal_equivalence
+           (generated_submodel_p_morphism G) x).
 Qed.
 
 Definition point_generated_valuation {AtomType}

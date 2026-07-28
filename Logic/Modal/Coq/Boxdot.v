@@ -129,6 +129,30 @@ Proof.
   now rewrite boxdot_translate_list_conj.
 Qed.
 
+(** Foundation also uses [List.conj2], whose singleton case is the formula
+    itself rather than a conjunction with [top].  The recursive translation
+    commutes with that presentation just as it does with [formula_list_conj]. *)
+Lemma boxdot_translate_list_conj2 :
+  forall (AtomType : Type) (ps : list (formula AtomType)),
+    boxdot_translate (logic_list_conj2 ps) =
+    logic_list_conj2 (map boxdot_translate ps).
+Proof.
+  intros AtomType ps; induction ps as [|p ps IH]; simpl.
+  - reflexivity.
+  - destruct ps as [|q ps]; simpl in *; [reflexivity |].
+    now rewrite IH.
+Qed.
+
+Lemma boxdot_translate_list_conj2_truth :
+  forall (AtomType : Type) (F : frame) (V : valuation AtomType F)
+         x (ps : list (formula AtomType)),
+    satisfies F V x (boxdot_translate (logic_list_conj2 ps)) <->
+    satisfies F V x (logic_list_conj2 (map boxdot_translate ps)).
+Proof.
+  intros AtomType F V x ps.
+  now rewrite boxdot_translate_list_conj2.
+Qed.
+
 (** [box_upto] is an inductive list-free presentation of Foundation's
     finite conjunction [box^0 p /\ ... /\ box^n p].  Distributing box over
     conjunction makes the two presentations semantically identical. *)
@@ -138,6 +162,55 @@ Fixpoint box_upto {AtomType} (n : nat) (p : formula AtomType)
   | 0 => p
   | S k => And (box_upto k p) (Box (box_upto k p))
   end.
+
+Local Lemma satisfies_box_upto_iff_iterates :
+  forall (AtomType : Type) (F : frame) (V : valuation AtomType F)
+         (p : formula AtomType) n x,
+    satisfies F V x (box_upto n p) <->
+    forall k, k <= n -> satisfies F V x (box_iter k p).
+Proof.
+  intros AtomType F V p n; induction n as [|n IH]; intro x.
+  - split.
+    + intros Hp k Hk. assert (k = 0) by lia. now subst k.
+    + intro Hall. exact (Hall 0 (Nat.le_refl 0)).
+  - change
+      (satisfies F V x (And (box_upto n p) (Box (box_upto n p))) <->
+       forall k, k <= S n -> satisfies F V x (box_iter k p)).
+    rewrite satisfies_and. split.
+    + intros [Hlocal Hbox] k Hk.
+      destruct (Nat.eq_dec k (S n)) as [-> | Hneq].
+      * simpl. intros y Rxy.
+        apply (proj1 (IH y) (Hbox y Rxy) n (Nat.le_refl n)).
+      * apply (proj1 (IH x) Hlocal k). lia.
+    + intro Hall; split.
+      * apply (proj2 (IH x)). intros k Hk. apply Hall. lia.
+      * intros y Rxy. apply (proj2 (IH y)). intros k Hk.
+        specialize (Hall (S k) ltac:(lia)).
+        simpl in Hall. exact (Hall y Rxy).
+Qed.
+
+Local Lemma satisfies_foundation_box_le_iff_iterates :
+  forall (AtomType : Type) (F : frame) (V : valuation AtomType F)
+         (p : formula AtomType) n x,
+    satisfies F V x (foundation_box_le n p) <->
+    forall k, k <= n -> satisfies F V x (box_iter k p).
+Proof.
+  intros AtomType F V p n; induction n as [|n IH]; intro x.
+  - split.
+    + intros Hp k Hk. assert (k = 0) by lia. now subst k.
+    + intro Hall. exact (Hall 0 (Nat.le_refl 0)).
+  - change
+      (satisfies F V x
+        (And (foundation_box_le n p) (box_iter (S n) p)) <->
+       forall k, k <= S n -> satisfies F V x (box_iter k p)).
+    rewrite satisfies_and. split.
+    + intros [Hprefix Hlast] k Hk.
+      destruct (Nat.eq_dec k (S n)) as [-> | Hneq]; [exact Hlast |].
+      apply (proj1 (IH x) Hprefix k). lia.
+    + intro Hall; split.
+      * apply (proj2 (IH x)). intros k Hk. apply Hall. lia.
+      * apply Hall, Nat.le_refl.
+Qed.
 
 Lemma boxdot_translate_box_iter_truth :
   forall (AtomType : Type) (F : frame) (V : valuation AtomType F)
@@ -161,6 +234,21 @@ Proof.
     + intros [Hlocal Hbox]; split.
       * apply (proj2 (IH x p)); exact Hlocal.
       * intros y Rxy. apply (proj2 (IH y p)); exact (Hbox y Rxy).
+Qed.
+
+(** Exact source-facing form: [foundation_box_le] is Foundation's finite
+    conjunction [p /\ box p /\ ... /\ box^n p]. *)
+Lemma boxdot_translate_box_iter_foundation_truth :
+  forall (AtomType : Type) (F : frame) (V : valuation AtomType F)
+         n x (p : formula AtomType),
+    satisfies F V x (boxdot_translate (box_iter n p)) <->
+    satisfies F V x (foundation_box_le n (boxdot_translate p)).
+Proof.
+  intros AtomType F V n x p.
+  etransitivity; [apply boxdot_translate_box_iter_truth |].
+  rewrite satisfies_box_upto_iff_iterates,
+    satisfies_foundation_box_le_iff_iterates.
+  reflexivity.
 Qed.
 
 (** Foundation's reflexivize-after-irreflexivize theorem is already the
@@ -319,12 +407,93 @@ Proof.
   - intros u Rwu; exact (proj2 Himp u Rwu (proj2 Hp u Rwu)).
 Qed.
 
-Theorem normal_proves_boxdot_translation :
+(** A closed K theorem over natural-number atoms may be instantiated by
+    arbitrary formulas before it is embedded into a normal extension.  This
+    is the small bridge needed below: unlike substitution of a derivation in
+    the target system, it requires no closure condition on the extra axiom
+    schema. *)
+Local Lemma normal_proves_substituted_K_valid :
+  forall (AtomType : Type) Ax (sigma : nat -> formula AtomType)
+         (p : formula nat),
+    valid_on_all_frames p ->
+    normal_proves Ax (substitute sigma p).
+Proof.
+  intros AtomType Ax sigma p Hvalid.
+  apply K_proves_normal, K_proves_substitute, K_complete; exact Hvalid.
+Qed.
+
+Local Lemma normal_proves_boxdot_nec_polymorphic :
+  forall (AtomType : Type) Ax (p : formula AtomType),
+    normal_proves Ax p -> normal_proves Ax (Boxdot p).
+Proof.
+  intros AtomType Ax p Hp.
+  pose proof
+    (@normal_proves_substituted_K_valid AtomType Ax
+      (fun n => match n with 0 => p | S _ => Box p end)
+      (Imp (Atom 0) (Imp (Atom 1) (And (Atom 0) (Atom 1))))
+      (fun F V w Hp' Hbox =>
+        proj2 (@satisfies_and nat F V w (Atom 0) (Atom 1))
+          (conj Hp' Hbox))) as Hcollect.
+  change
+    (normal_proves Ax (Imp p (Imp (Box p) (And p (Box p)))))
+    in Hcollect.
+  eapply Np_mp.
+  - eapply Np_mp; [exact Hcollect | exact Hp].
+  - now apply Np_nec.
+Qed.
+
+Local Lemma normal_proves_boxdot_axiom_K_polymorphic :
+  forall (AtomType : Type) Ax (p q : formula AtomType),
+    normal_proves Ax (boxdot_translate (K p q)).
+Proof.
+  intros AtomType Ax p q.
+  pose (p' := boxdot_translate p).
+  pose (q' := boxdot_translate q).
+  pose proof
+    (@normal_proves_substituted_K_valid AtomType Ax
+      (fun n =>
+        match n with
+        | 0 => p'
+        | 1 => q'
+        | 2 => Box (Imp p' q')
+        | 3 => Box p'
+        | _ => Box q'
+        end)
+      (Imp
+        (Imp (Atom 2) (Imp (Atom 3) (Atom 4)))
+        (Imp
+          (And (Imp (Atom 0) (Atom 1)) (Atom 2))
+          (Imp
+            (And (Atom 0) (Atom 3))
+            (And (Atom 1) (Atom 4)))))
+      (fun F V w HK Himp Hp =>
+        let Himp' :=
+          proj1 (@satisfies_and nat F V w
+            (Imp (Atom 0) (Atom 1)) (Atom 2)) Himp in
+        let Hp' :=
+          proj1 (@satisfies_and nat F V w (Atom 0) (Atom 3)) Hp in
+        proj2 (@satisfies_and nat F V w (Atom 1) (Atom 4))
+          (conj (proj1 Himp' (proj1 Hp'))
+                (HK (proj2 Himp') (proj2 Hp'))))) as Hcombine.
+  change
+    (normal_proves Ax
+      (Imp (K p' q')
+        (Imp (Boxdot (Imp p' q'))
+          (Imp (Boxdot p') (Boxdot q')))))
+    in Hcombine.
+  change
+    (normal_proves Ax
+      (Imp (Boxdot (Imp p' q'))
+        (Imp (Boxdot p') (Boxdot q')))).
+  eapply Np_mp; [exact Hcombine | apply Np_modal_K].
+Qed.
+
+Theorem normal_proves_boxdot_translation {AtomType : Type} :
   forall (AxSource AxTarget : modal_axiom_schema),
-    (forall p : formula nat,
-      AxSource nat p ->
+    (forall p : formula AtomType,
+      AxSource AtomType p ->
       normal_proves AxTarget (boxdot_translate p)) ->
-    forall p : formula nat,
+    forall p : formula AtomType,
       normal_proves AxSource p ->
       normal_proves AxTarget (boxdot_translate p).
 Proof.
@@ -332,10 +501,10 @@ Proof.
   - apply Np_imply_K.
   - apply Np_imply_S.
   - apply Np_elim_contra.
-  - apply normal_proves_boxdot_axiom_K.
+  - apply normal_proves_boxdot_axiom_K_polymorphic.
   - now apply Hextra.
   - eapply Np_mp; eauto.
-  - now apply normal_proves_boxdot_nec.
+  - now apply normal_proves_boxdot_nec_polymorphic.
 Qed.
 
 (** * K4 / S4 *)
@@ -1356,8 +1525,13 @@ Qed.
 Definition iff_boxdotboxdot := boxdot_translate_idempotent_truth.
 Definition boxdot_and := boxdot_translate_and_truth.
 Definition boxdotTranslate_lconj := boxdot_translate_list_conj_truth.
+Definition boxdotTranslate_lconj2 := boxdot_translate_list_conj2_truth.
+(** Finite sets are represented by duplicate-insensitive lists in this port;
+    the list theorem is strictly more general than the source's Finset image
+    convenience lemma. *)
+Definition boxdotTranslate_fconj2 := boxdot_translate_list_conj2_truth.
 Definition iff_boxdotTranslateMultibox_boxdotTranslateBoxlt :=
-  boxdot_translate_box_iter_truth.
+  boxdot_translate_box_iter_foundation_truth.
 Definition iff_boxdot_reflexive_closure :=
   boxdot_reflexive_closure_truth.
 Definition iff_frame_boxdot_reflexive_closure :=
