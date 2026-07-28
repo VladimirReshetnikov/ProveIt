@@ -1,0 +1,18 @@
+(** Public surface and assumption audit for the spliced successor bridge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthMasterSplicedSuccessorBridge.
+
+Import PABoundedRawCodedDynamicTruthMasterSplicedSuccessorBridge.
+
+Check RawDynamicTruthSplicedMasterPositiveGraphWitnessesAt.
+Check RawDynamicTruthSplicedMasterRawPositiveComponentSuccessor.
+Check
+  raw_dynamicTruthSplicedMasterRawComponentSuccessor_of_positive_components.
+Check
+  raw_dynamicTruthSplicedMasterPackageSuccessor_of_positive_components.
+
+Print Assumptions
+  raw_dynamicTruthSplicedMasterRawComponentSuccessor_of_positive_components.
+Print Assumptions
+  raw_dynamicTruthSplicedMasterPackageSuccessor_of_positive_components.

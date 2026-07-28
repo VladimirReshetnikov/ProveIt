@@ -1,0 +1,12 @@
+(** Assumption audit for exact current-master component projection. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTruthCertificateMasterComponentProjection.
+
+Import PABoundedRawCodedTruthCertificateMasterComponentProjection.
+
+Check raw_codedPAProofOf_sixFieldMaster_common_context.
+Check raw_sixFieldMaster_current_components_of_graph_and_proof.
+
+Print Assumptions raw_codedPAProofOf_sixFieldMaster_common_context.
+Print Assumptions raw_sixFieldMaster_current_components_of_graph_and_proof.

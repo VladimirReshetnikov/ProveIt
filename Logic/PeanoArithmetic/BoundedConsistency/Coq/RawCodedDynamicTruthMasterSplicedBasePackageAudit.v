@@ -1,0 +1,23 @@
+(** Assumption and public-surface audit for the five spliced base fields. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthMasterSplicedBasePackage.
+
+Import PABoundedRawCodedDynamicTruthMasterSplicedBasePackage.
+
+Check dynamicTruthSplicedLocalFieldGraph.
+Check dynamicTruthSplicedCrossLevelFieldGraph.
+Check dynamicTruthSplicedShiftFieldGraph.
+Check dynamicTruthSplicedSubstitutionFieldGraph.
+Check dynamicTruthSplicedAxiomSoundnessFieldGraph.
+
+Check raw_dynamicTruthSplicedField_zero_of_base.
+Check raw_dynamicTruthMasterSplicedBaseBProvComponentPackage.
+Check raw_dynamicTruthMasterSplicedBaseComponentPackage.
+Check dynamicTruthSplicedMasterGraph.
+Check raw_dynamicTruthSplicedMasterPackageBase.
+
+Print Assumptions raw_dynamicTruthSplicedField_zero_of_base.
+Print Assumptions raw_dynamicTruthMasterSplicedBaseBProvComponentPackage.
+Print Assumptions raw_dynamicTruthMasterSplicedBaseComponentPackage.
+Print Assumptions raw_dynamicTruthSplicedMasterPackageBase.

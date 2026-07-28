@@ -3,7 +3,7 @@
 This directory is a vendored copy of the modular `BB4/` proof from
 [`ccz181078/Coq-BB5` at commit `9142e219...`](https://github.com/ccz181078/Coq-BB5/tree/9142e219229baf2245d3f70851947230ea28a318/CoqBB5/BB4),
 used as a Rocq-side certificate for the four-state busy-beaver time bound in
-Proofs.
+ProveIt.
 
 Repository-local change: `BB4_TNF_Enumeration.v` replaces upstream's
 `native_compute`/`native_cast_no_check` cache equation with `vm_compute` and a
@@ -12,7 +12,7 @@ kernel-checked `reflexivity` proof. The upstream MIT license is included in
 
 The companion
 [`SetTheory/BusyBeaverBB4Bridge.v`](../SetTheory/BusyBeaverBB4Bridge.v)
-transports this time bound into Proofs' local machine model and proves
+transports this time bound into ProveIt's local machine model and proves
 `ExactBusyBeaverTime 4 107`. A separate local chain beginning with
 [`SetTheory/BusyBeaverBB4Score.v`](../SetTheory/BusyBeaverBB4Score.v) propagates
 a marked-cell invariant through the same TNF enumeration. Its bridge accounts

@@ -1,0 +1,35 @@
+(** Kernel-facing audit for carrier-coded finite disjunction elimination. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofFiniteDisjunction.
+
+Module PABoundedRawCodedPALocalProofFiniteDisjunctionAudit.
+
+Import PABoundedRawCodedPALocalProofFiniteDisjunction.
+
+Check rawFiniteRightDisjunctionCode.
+Check rawFiniteDisjunctionCaseChainCode.
+Check rawFiniteDisjunctionCaseRuleCode.
+Check rawFiniteRightDisjunctionCode_six.
+Check rawFiniteRightDisjunctionCode_seven.
+
+Check raw_contextList_rawListCode_realizable.
+Check raw_contextList_rawListCode_member.
+Check raw_codedPALocalProofOf_rawListCode_assumption.
+
+Check rawFiniteDisjunctionEliminationRoot.
+Check raw_codedPALocalProofOf_finiteDisjunctionElimination.
+Check rawFiniteDisjunctionCaseIntroductionRoot.
+Check raw_codedPALocalProofOf_finiteDisjunctionCaseIntroduction.
+Check rawFiniteDisjunctionCaseRuleProofRoot.
+Check raw_codedPALocalProofOf_finiteDisjunctionCaseRule.
+
+Print Assumptions raw_contextList_rawListCode_realizable.
+Print Assumptions raw_contextList_rawListCode_member.
+Print Assumptions raw_codedPALocalProofOf_rawListCode_assumption.
+Print Assumptions raw_codedPALocalProofOf_finiteDisjunctionElimination.
+Print Assumptions
+  raw_codedPALocalProofOf_finiteDisjunctionCaseIntroduction.
+Print Assumptions raw_codedPALocalProofOf_finiteDisjunctionCaseRule.
+
+End PABoundedRawCodedPALocalProofFiniteDisjunctionAudit.

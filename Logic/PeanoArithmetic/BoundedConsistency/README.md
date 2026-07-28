@@ -1068,6 +1068,53 @@ seventeen-rule proof induction with that theorem.  Adequate unit formula
 shifts, arbitrary carrier-depth context insertion, and the guarded
 single-cons transplant are therefore unconditional in every raw PA model.
 
+`RawCodedPALocalProofPropositionalRules.v` exposes implication introduction
+and both disjunction introductions and elimination directly at the
+`RawCodedPALocalProofOf` interface.  These rules retain arbitrary carrier-
+coded contexts literally, including the two distinct cons contexts required
+by disjunction elimination.  They let the dynamic successor compiler perform
+case analysis over nonstandard formula codes without routing a purely
+propositional tree through formula shift or opening infrastructure.
+
+`RawCodedPALocalProofFiniteDisjunction.v` builds that case analysis for an
+arbitrary metatheoretic finite list of carrier formula codes.  It represents
+the empty disjunction by bottom, preserves a singleton literally, and folds
+longer rows into a genuine right-associated Or tree, so the native six- and
+seven-branch rows acquire no artificial trailing case.  Every assumption
+leaf is certified against its exact carrier-coded context, and the exported
+closed rule and open elimination rule require neither decoding nor an
+adequacy premise on the branch codes.
+
+`RawCodedPALocalProofFiniteDisjunctionDerivedCases.v` applies those finite
+case trees when the row and every branch implication have already been
+derived in one arbitrary carrier-coded context.  Each Or-E child is rebuilt
+by the guarded cons-transplant theorem.  The recursive resource predicate
+therefore requests realizability of the original context and atomic adequacy
+of exactly the branch and suffix-disjunction codes that become new context
+heads; empty and singleton rows require no such resources.  Generic and
+literal six-/seven-way endpoints preserve the original context and avoid any
+decoder or unrestricted weakening principle.
+
+`RawCodedPALocalProofFiniteDisjunctionMatrix.v` nests that eliminator for two
+rows already proved in one carrier-coded context.  Given a local proof of
+every curried pair implication `Ai -> Bj -> C`, it derives `C` from the two
+right-associated rows without decoding either row.  The resource predicate
+is shape-sensitive: empty dimensions use bottom elimination, the one-by-one
+case uses two direct implication eliminations, and every larger matrix tracks
+only the context realizability and atomic adequacy needed by the guarded
+temporary-assumption transplants.  Its concrete seven-by-six endpoint is the
+structural assembler for the native Sigma/Pi successor collision matrix; the
+individual constructor-pair proofs remain explicit inputs.
+
+`RawCodedPALocalProofTripleUniversalElimination.v` packages the matching
+three-binder consumer.  Three explicit represented substitution traces build
+three checked All-E nodes without decoding the intermediate formula codes or
+changing the carrier-coded proof context.  Companion endpoints first project
+either conjunct and then specialize it, so a current local
+decision/exclusivity certificate can be instantiated at one concrete formula
+and assignment triple while all later matrix proofs remain in the same
+witnessed PA context.
+
 `RawCodedAssignmentShiftTail.v` also exposes PAHF's represented beta-tail
 shift through the raw assignment interface.  It constructs, inside every raw
 model and through an arbitrary carrier-valued bound, a target table whose row
@@ -1363,13 +1410,33 @@ deduction constructors.  `RawCodedTemplateProofCompiler.v` translates such a
 fixed finite tree under an abstract model-coded specialization and builds
 every raw proof node through the coverage-certified constructors.  Its public
 result is an exact `RawCodedPALocalProofOf`; nonstandard predicate codes are
-never decoded.  `RawCodedTranslatedProofCompiler.v` provides the corresponding
+never decoded.  `RawCodedTemplateProofCompilerSelfShiftTail.v` generalizes
+that compiler from the raw-zero context tail to an arbitrary realizable,
+self-shifting carrier-coded tail.  All seventeen constructor cases are
+rebuilt with their literal tail-based contexts; a witnessed PA-axiom context
+supplies both tail hypotheses, including the binder-rule self-shift invariant.
+`RawCodedTranslatedProofCompiler.v` provides the corresponding
 homomorphic compiler for ordinary PA proof trees and will be used by the
 lifted-PA axiom bridge.  `RawCodedTemplatePAEmbedding.v` makes that bridge
 literal: it embeds all seventeen ordinary raw-proof constructors, proves
 context/conclusion/validity preservation, and attaches the unchanged finite
 list of witnessed ordinary PA axioms to the compiled template tree.  Opaque
 template atoms therefore cannot leak into the PA axiom base.
+`RawCodedPAAxiomWitnessPrefix.v` supplies the corresponding common-context
+operation.  A finite metatheoretic batch of standard PA-axiom witnesses is
+folded over arbitrary carrier-valued witness-list and context tails in
+lockstep.  Iterated guarded cons transplant rebuilds an existing local proof
+over that exact extended context, and the strongest endpoint returns the
+extended witness traversal and proof root together.  Prefix concatenation
+laws let independently selected finite axiom batches be accumulated without
+decoding the nonstandard base.
+`RawCodedTemplatePAEmbeddingSelfShiftTail.v` joins these two operations.  Any
+fixed ordinary `BProv` theorem is converted to a finite raw proof tree,
+compiled above the caller's witnessed PA context, and returned together with
+the exact synchronized prefix of standard axiom witnesses used by that tree.
+Agreement of the template translation with ordinary quotation proves literal
+equality of the compiler's context and the extended witnessed context; no
+post-hoc context identification or unrelated proof certificate is used.
 `RawCodedTemplateLogicalSchemas.v` records the small
 finite source trees needed by the dynamic fields—conjunction projection and
 introduction, existential projection, and universal specialization followed
@@ -1378,7 +1445,14 @@ semantic-completeness step.  `RawCodedTemplateProjectionSchemas.v` extends
 those atoms with transparent arbitrary conjunction selection/repacking,
 witness-preserving existential towers, universal closure, and the exact
 two-universal/five-existential projection used by the dynamic universal-leaf
-law.  `RawCodedTemplateClosedProofCompilation.v` packages any closed compiled
+law.  `RawCodedTemplateDisjunctionCaseSchemas.v` supplies the complementary
+all-branch rule for a right-associated finite disjunction.  Its transparent
+tree proves `(A1 or ... or Ak) -> (A1 -> C) -> ... -> (Ak -> C) -> C`, with
+named seven- and six-branch wrappers matching the native Sigma and Pi rows.
+This closes the structural case split without assuming that a represented
+row is metatheoretically decidable; each branch-specific implication remains
+an explicit input to the positive local compiler.
+`RawCodedTemplateClosedProofCompilation.v` packages any closed compiled
 template tree as an ordinary `RawCodedPAProofOf` with a literally empty
 witnessed-axiom list, and exposes that exact universal-leaf certificate.
 `RawCodedTemplateStructuralTranslation.v`
@@ -1610,6 +1684,14 @@ identification, and universally closes the thirteen ambient row columns.
 The exported certificate remains a proof of that restricted final branch;
 it is not presented as a consequence of the full six-way Pi disjunction.
 
+`RawCodedDynamicTruthPiDomainProjectionProofCompilation.v` supplies the
+genuine full-row dual: `Ex^8 (domain /\ Or6 branches)` entails `Ex^8 domain`.
+It preserves Pi's six-way polarity-specific syntax, closes the result over
+the thirteen native row columns, and retargets the direct template proof to
+the exact native Pi polynomial.  Together with the Sigma projection this
+closes both domain eliminators, while the remaining full-disjunction case
+analysis is still explicit work.
+
 `RawCodedDynamicTruthUniversalLeafTransformGraph.v` exposes that restricted
 certificate as an output-first transform over the paired global Sigma/Pi
 truth-code orbit.  The graph selects the successor numeral, the instantiated
@@ -1648,6 +1730,26 @@ ordinary PA certificate selected by the public field graph.  This remains a
 restricted-universal component: it does not upgrade the branch to the full
 seven-way local law.
 
+`RawCodedDynamicTruthSigmaDomainProjectionTransformGraph.v` returns to the
+genuine full Sigma row.  Its output-first transform selects the successor
+numeral, native domain instance, and lower-Pi application, then emits the
+exact thirteen-closed certificate for `full Or7 row -> Ex^8 domain`.  The
+transform composes with the paired global orbit into a predecessor-indexed
+positive field.  Its sharp endpoint reuses the restricted-universal direct
+compiler only along an adequate orbit and therefore needs shift/opening
+interchange only for the actually selected Pi code.  This is a full-row
+domain eliminator, not yet the branch-by-branch local decision law.
+
+`RawCodedDynamicTruthPiDomainProjectionTransformGraph.v` is the polarity-dual
+full-row field.  It compiles `full Or6 row -> Ex^8 domain`, with the lower
+application taken from the selected global Sigma code, and composes it with
+the same paired orbit at the predecessor level.  Its strongest proof-total
+endpoint likewise reuses the restricted-existential structural compiler only
+along an adequate orbit and is discharged by guarded interchange for the
+selected Sigma code.  The symmetric pair now supplies honest positive graph
+witnesses for both domain eliminators; the remaining row branches and their
+decision/exclusivity assembly are still separate obligations.
+
 `RawCodedDynamicTruthDeepClosedRestrictedLocalProofFields.v` selects the
 actual deeply closed paired-orbit witness instead of transporting closure to
 an arbitrary adequate witness.  The concrete shift and opening commutation
@@ -1657,6 +1759,165 @@ Pi-existential proof fields combine with the concrete paired-row closure
 theorem to become unconditional in every PA model.  They are still only the
 two advertised restricted branches, not the complete local
 decision/exclusivity field.
+
+`RawCodedDynamicTruthDeepClosedDomainProjectionFields.v` applies the same
+selected-witness discipline to the two full-row domain projections.  For the
+actual deeply closed paired orbit, it constructs concrete PA proof codes for
+both the Sigma `Or7 -> Ex^8` eliminator and its Pi `Or6 -> Ex^8` dual.  The
+deep-closure and substitution-algebra theorems discharge all structural
+premises, so both projection graphs are proof-total in every PA model without
+an extra orbit-wide interchange hypothesis.  This closes the two full-row
+domain coordinates only; assembling every constructor branch into the local
+decision/exclusivity field remains a separate obligation.
+
+`RawCodedDynamicTruthNativeLocalPositiveGraph.v` now constructs the exact
+carrier-indexed target for that complete positive local field.  A predecessor
+`p` selects the genuine paired global orbit at `S p`; one real paired
+successor then exposes the native Sigma `Or7` and Pi `Or6` evidence rows at
+`S(S p)`.  Represented numeral substitution and ternary application build
+the two input domains and evidence applications, and a transparent formula
+polynomial assembles the literal decision/exclusivity bundle.  The module
+proves exact law-free semantics, standard-index alignment, row exposure,
+adequacy, and relational totality.  Its proof-total endpoint remains
+conditional on the sharply stated compiler that must return a represented PA
+proof of this exact selected carrier code; semantic validity is not used as a
+substitute for that compiler.
+
+`RawCodedDynamicTruthNativeCrossLevelPositiveGraph.v` constructs the adjacent-
+level coherence coordinate with the same native indexing discipline.  For a
+carrier predecessor `p`, it selects the genuine current orbit at `S p`, runs
+the actual paired successor to `S(S p)`, applies all four global predicates,
+and transparently builds the exact guarded Sigma/Pi coherence formula.  The
+graph has law-free exact semantics, exposes the native successor rows, and is
+relationally total in every PA model.  Every externally fixed standard level
+has a represented PA proof; proof totality at a possibly nonstandard carrier
+index remains conditional only on the explicit
+`RawDynamicTruthNativeCrossLevelCoherenceProofCompiler`.
+
+`RawCodedDynamicTruthNativeShiftPositiveGraph.v` constructs the third native
+positive coordinate.  It selects the genuine paired truth orbit at `S p`,
+builds the six source/target domain and certificate applications through
+represented substitution traces, and assembles the literal eight-variable
+formula-shift Tarski law.  Exact graph semantics is law free, while PA proves
+adequacy-preserving relational totality and genuine certificates at every
+standard level.  The public proof-total endpoint retains atomic adequacy of
+the selected field code and depends only on the explicit
+`RawDynamicTruthNativeShiftProofCompiler` for possibly nonstandard carrier
+indices; semantic validity is never converted into proof syntax.
+
+`RawCodedDynamicTruthNativeSubstitutionCarrier.v` fixes the exact syntax for
+the fourth positive master coordinate.  Its transparent polynomial closes
+exactly the seven single-substitution parameters and combines the carried
+Sigma/Pi source domains and certificate applications with the represented
+substitution, assignment, target-admissibility, and rank-agreement relations.
+At every standard predecessor `p` this code is literally the quotation of the
+existing fixed-level substitution Tarski law at `S p`, and the module supplies
+its represented PA proof.  The genuine arbitrary-carrier orbit transform and
+uniform proof compiler are intentionally left to the subsequent positive
+graph rather than inferred from this standard family.
+
+`RawCodedDynamicTruthNativeSubstitutionPositiveGraph.v` supplies that genuine
+orbit transform.  At predecessor `p` it selects the paired global Sigma/Pi
+codes at `S p`, constructs the source applications `#1,#3,#4` and target
+applications `#2,#5,#6` through their literal sequential replacement traces,
+instantiates both current-level domains, and assembles the carrier polynomial.
+Its graph semantics is law free, and PA proves adequacy-preserving relational
+totality plus represented proofs at every externally fixed standard level.
+The arbitrary-carrier proof-total endpoint retains field-code adequacy and is
+conditional only on `RawDynamicTruthNativeSubstitutionProofCompiler`; it does
+not infer proof syntax from semantic validity.
+
+`RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
+that constructor matrix.  The native Sigma and Pi quantifier-free branches
+use the same formula and assignment inputs but demand rank-zero outputs one
+and zero, so the represented functionality theorem yields their exact
+curried contradiction.  The construction tracks the literal eight-witness
+branch closures, proves the corresponding fixed PA theorem and carrier code,
+and exposes both common-context modus ponens and guarded nested-assumption
+endpoints.  It deliberately claims only the QF/QF collision; the remaining
+constructor pairs and the full decision/exclusivity assembly are still open.
+
+`RawCodedDynamicTruthImpBranchExclusivity.v` adds the two same-constructor
+implication cells.  Sigma's false-left and true-right branches each collide
+with Pi's false-implication branch once an explicit exclusivity law for the
+synchronized predecessor-state table is supplied.  Constructor injectivity
+aligns the relevant child codes, and fixed PA proofs of the two conditional
+cells are exposed as exact carrier codes with common-context and guarded
+three-assumption endpoints.  The predecessor-state exclusivity root remains
+an explicit obligation: this module neither identifies table membership with
+a global-predicate application nor claims the completed matrix.
+
+`RawCodedDynamicTruthBooleanBranchExclusivity.v` proves the two remaining
+same-level Boolean cells under that identical predecessor invariant.  Sigma
+conjunction supplies both positive children while Pi conjunction supplies one
+negative child; Sigma disjunction supplies one positive child while Pi
+disjunction supplies both negative children.  And/Or constructor injectivity
+aligns the selected child codes, after which the predecessor law closes the
+collision.  Both conditional cells have exact quotation-aligned carrier
+codes, represented PA certificates, and literal common-context collision
+endpoints.
+
+`RawCodedDynamicTruthConstructorBranchDisjointness.v` discharges the
+lower-independent off-diagonal portion of the native collision matrix.
+Binary/unary arity separation and distinct principal tags yield one generic
+PA theorem, then a checked finite classification identifies exactly sixteen
+matrix-ready cells.  Their formulas and carrier codes are independent of the
+metatheoretic lower-formula parameters, and the module supplies represented
+certificates plus common-context collision endpoints.  The classification is
+deliberately strict: the eight off-diagonal cells touching Sigma-All or Pi-Ex
+still embed a preceding truth formula, so the generic theorem gives only
+standard-formula instances for those cells.  Turning their arbitrary carrier
+codes into principal-constructor proof roots remains part of the dynamic
+binder compiler rather than being hidden behind this result.
+
+`RawCodedDynamicTruthBinderOffDiagonalExclusivity.v` gives those eight cells
+their literal arbitrary-carrier shape.  Sigma-All and Pi-Ex branch codes are
+built directly from the native row polynomials with the opaque lower
+application left as a model element; the module enumerates exactly the eight
+off-diagonal cells touching either branch and proves their atomic adequacy.
+Fixed principal-witness formulas supply PA proofs of all eight constructor
+collisions, and a checked local composition theorem turns two exact
+branch-to-principal projection roots plus that fixed collision root into the
+curried pair required by the 7-by-6 matrix.  The Ex8 projection roots remain
+an explicit object-proof premise because compiling them for an opaque
+carrier formula requires checked formula/context shift traces; no semantic
+truth assumption is substituted for that missing compiler.
+
+`RawCodedDynamicTruthBinderPrincipalProjectionCompilation.v` compiles those
+eight branch projections with one transparent repeated-existential selection
+template.  Lower-independent branches need no dynamic premise; Sigma-All and
+Pi-Ex use direct structural translations whose single designated opaque atom
+is the selected lower application.  The module returns both projection roots
+for every classified cell in the exact existing PA context, with concrete
+adapters from native selector traces and from deep ternary closure.  Thus the
+projection logic itself is complete; the operational boundary is precisely
+the represented shift/open commutation used to construct the direct inputs,
+not a semantic truth or completeness assumption.
+
+`RawCodedDynamicTruthQuantifierBranchExclusivity.v` isolates the two
+same-constructor quantifier cells.  Sigma-Ex versus Pi-Ex is conditional on
+the exact adjacent-level fact that the positive existential branch supplies
+the lower-Sigma counterexample rejected by Pi; Sigma-All versus Pi-All uses
+the polarity-dual premise.  Both premises, native branch formulas, and
+conditional cell codes are given as literal carrier polynomials, with PA
+proofs and represented certificates for every standard lower-application
+formula.  At arbitrary carrier codes the module exposes the conditional-cell
+compiler and cross-level proof root rather than decoding the code.  Once
+those exact roots and the two selected branch roots share a context, three
+checked implication eliminations derive bottom.  Restricted Sigma-universal
+and Pi-existential projection helpers connect the cells to the existing
+native template compilers.
+
+`RawCodedDynamicTruthQuantifierConditionalCellCompilation.v` replaces the
+standard-only proof of those two conditional cells by finite structural proof
+trees.  A generic matched All-E/Ex-E kernel proves the repeated-quantifier
+collision, and its two exact eight-binder native instances compile to both
+ordinary represented PA certificates and local roots in an existing
+self-shifting common context.  The sole remaining input is sharply limited to
+the represented shift/open trace package for the selected opaque lower
+application; native ternary selectors and commuting traces adapt directly to
+that package.  Atomic adequacy alone is not claimed to manufacture these
+traces, and no semantic-validity-to-proof shortcut is used.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
@@ -1730,6 +1991,14 @@ master induction.  This is deliberately only the level-zero package; it does
 not stand in for the carrier-indexed component families still needed at
 positive, possibly nonstandard, levels.
 
+`RawCodedDynamicTruthMasterSplicedBasePackage.v` lifts the same five checked
+zero coordinates through `dynamicLocalFieldGraph`, parameterized by arbitrary
+future positive/predecessor graphs.  Its exact zero views and `BProv`
+derivations therefore establish the master-induction base callback for the
+eventual nonstandard-safe field splices without assuming any positive
+totality or successor compiler.  This is the base graph actually compatible
+with the remaining carrier-indexed construction.
+
 `RawCodedTruthCertificateMasterSuccessorBridge.v` gives the matching
 nonstandard-safe successor interface.  A component compiler consumes the
 current concrete master graph assertion and a coded PA proof of that exact
@@ -1738,6 +2007,70 @@ either common-context local proofs or an ordinary proof targeted at their
 transparent master conjunction.  Both routes assemble the concrete package
 successor while preventing an unrelated proof target or standard-only `BProv`
 instance from entering the carrier-indexed step.
+
+`RawCodedTruthCertificateMasterComponentProjection.v` opens an exact current
+master certificate with checked And-elimination trees and recovers all six
+component proofs in the certificate's original witnessed PA context.  Its
+graph-facing theorem simultaneously exposes the six coordinates selected by
+the concrete master graph.  This closes the current-package decomposition
+seam needed by a staged successor compiler; it does not manufacture any next
+field or merge independently chosen proof contexts.
+
+`RawCodedDynamicTruthMasterSplicedSuccessorBridge.v` packages the remaining
+successor obligation at the right abstraction boundary.  After projecting
+the current master, a staged compiler receives its six selected codes and
+common-context roots and must return five positive predecessor-graph
+witnesses, the next compact target, and six next roots in one honestly chosen
+context.  The bridge applies all five splice successor equations and yields
+the exact public master-package successor callback.  It performs no positive
+field construction itself.
+
+`RawCodedTruthCertificateMasterFixedHelperExtension.v` lets that staged
+compiler add one fixed ordinary PA helper without breaking the shared-context
+invariant.  It compiles the helper above the current witnessed PA base, uses
+the one selected finite axiom prefix to transplant all six existing roots,
+and returns the original six proofs plus the helper proof in literally one
+extended witnessed context.  This is directly applicable to fixed lemmas
+such as the native quantifier-free branch collision.
+
+`RawCodedTruthCertificateMasterQFHelperExtension.v` performs that concrete
+specialization.  Its seventh root concludes the literal native Ex8 QF/QF
+collision code, and its public theorem needs no abstract template translation
+parameter.  A represented zero-term trace and bottom fallback for opaque
+template atoms construct a PA-agreeing structural translation internally;
+ordinary embedded PA syntax never visits either fallback case.  Thus every
+six-field common-context package can be extended with the proved QF helper
+while retaining one exact synchronized witnessed context for all seven
+roots.
+
+`RawCodedTruthCertificateMasterFixedHelperBatchExtension.v` generalizes that
+operation to an ordered finite batch of fixed ordinary PA theorems.  Each
+dependent batch entry carries the proof of its own formula.  When compiling a
+new entry chooses a finite axiom prefix, the construction transplants all six
+master roots and every earlier helper root through that one exact prefix, so
+the final family has one root per helper and one literal synchronized context
+for the entire package.  A concrete first batch contains the unconditional QF
+collision and both conditional implication cells; it deliberately does not
+discharge their predecessor-state premise.
+
+`RawCodedTruthCertificateMasterCollisionHelperBatch.v` expands that concrete
+prefix to all twenty-one collision theorems currently ready for common-context
+use: QF/QF, the two conditional implication cells, the conditional And/Or
+cells, and the sixteen lower-independent constructor cells.  A generic map
+lemma identifies every translated target with its ordinary PA quotation, and
+the batch theorem places all twenty-one helper roots beside the six current
+master roots in one literal witnessed context.  The count is intentionally
+not forty-two: the conditional antecedents, carrier-sensitive binder cells,
+and mixed QF/non-QF cells remain separate proof-producing obligations.
+
+`RawCodedTruthCertificateMasterBinderPrincipalHelperBatch.v` appends the
+eight fixed constructor facts needed by the carrier-sensitive binder cells to
+that synchronized helper family.  The resulting twenty-nine roots share the
+same witnessed context as all six master fields and have quotation-aligned
+target codes.  The final eight roots are deliberately principal collision
+facts rather than completed matrix cells: each still needs a compiler that
+projects its opaque Sigma-All or Pi-Ex branch to the corresponding principal
+constructor before the fixed fact can be applied.
 
 `RawCodedTruthCertificateConcreteEndpoint.v` connects that successor bridge,
 the zero bridge, the concrete assembler, and the generic PA-internal

@@ -1,0 +1,29 @@
+From BoundedPAConsistency Require Import
+  RawCodedTemplateDisjunctionCaseSchemas.
+
+Module PABoundedRawCodedTemplateDisjunctionCaseSchemasAudit.
+
+Import PABoundedRawCodedTemplateDisjunctionCaseSchemas.
+
+Check templateRightDisjunction.
+Check templateRightDisjunctionBranches.
+Check templateRightDisjunctionCasesFrom.
+Check templateRightDisjunctionCasesFrom_derives.
+Check templateCaseImplicationChain.
+Check templateRightDisjunctionCaseImplicationsFrom.
+Check templateRightDisjunctionCaseImplicationsFrom_derives.
+Check templateRightDisjunctionCaseRuleFormula.
+Check templateRightDisjunctionCaseRuleProof.
+Check templateRightDisjunctionCaseRuleProof_derives.
+Check templateOr7CaseRuleProof.
+Check templateOr6CaseRuleProof.
+Check templateOr7CaseRuleProof_derives.
+Check templateOr6CaseRuleProof_derives.
+
+Print Assumptions templateRightDisjunctionCasesFrom_derives.
+Print Assumptions templateRightDisjunctionCaseImplicationsFrom_derives.
+Print Assumptions templateRightDisjunctionCaseRuleProof_derives.
+Print Assumptions templateOr7CaseRuleProof_derives.
+Print Assumptions templateOr6CaseRuleProof_derives.
+
+End PABoundedRawCodedTemplateDisjunctionCaseSchemasAudit.

@@ -1,0 +1,88 @@
+(** Public-surface and kernel-assumption audit for the native QF collision. *)
+
+From PAHF Require Import PAHF.
+From PAFiniteBasisReduction Require Import HierarchyReduction.
+From BoundedPAConsistency Require Import
+  RawCodedSyntaxConstructors
+  RawCodedFixedLevelTruth
+  RawCodedDynamicTruthSigmaSuccessorRowGraph
+  RawCodedDynamicTruthPiSuccessorRowGraph
+  RawCodedDynamicTruthQFBranchExclusivity.
+
+Import PA.
+Import PAHierarchyReduction.
+Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedFixedLevelTruth.
+Import PABoundedRawCodedDynamicTruthSigmaSuccessorRowGraph.
+Import PABoundedRawCodedDynamicTruthPiSuccessorRowGraph.
+Import PABoundedRawCodedDynamicTruthQFBranchExclusivity.
+
+Check dynamicTruthAlignedSigmaQFFormula.
+Check dynamicTruthAlignedPiQFFormula.
+Check dynamicTruthQFBranchExclusivityFormula.
+Check dynamicTruthQFRowBranchExclusivityFormula.
+Check dynamicTruthSigmaQFEx8BranchFormula.
+Check dynamicTruthPiQFEx8BranchFormula.
+Check dynamicTruthQFEx8BranchExclusivityFormula.
+
+Check dynamicTruthAlignedSigmaQFFormula_row_rename.
+Check dynamicTruthAlignedPiQFFormula_row_rename.
+Check dynamicTruthQFBranchExclusivityFormula_row_rename.
+Check raw_sat_dynamicTruthQFBranchExclusivityFormula_iff.
+Check dynamicTruthQFBranchExclusivityFormula_raw_valid.
+Check raw_sat_dynamicTruthSigmaQFEx8BranchFormula_iff.
+Check raw_sat_dynamicTruthPiQFEx8BranchFormula_iff.
+Check raw_sat_dynamicTruthQFEx8BranchExclusivityFormula_iff.
+Check dynamicTruthQFEx8BranchExclusivityFormula_raw_valid.
+
+Check PA_proves_dynamicTruthQFBranchExclusivityFormula.
+Check PA_proves_dynamicTruthQFRowBranchExclusivityFormula.
+Check PA_proves_dynamicTruthQFEx8BranchExclusivityFormula_closed.
+Check PA_proves_dynamicTruthQFEx8BranchExclusivityFormula.
+
+Check rawDynamicTruthSigmaQFRowCode.
+Check rawDynamicTruthPiQFRowCode.
+Check rawDynamicTruthQFRowBranchExclusivityCode.
+Check rawDynamicTruthSigmaQFEx8BranchCode.
+Check rawDynamicTruthPiQFEx8BranchCode.
+Check rawDynamicTruthQFEx8BranchExclusivityCode.
+Check rawDynamicTruthQFRowBranchExclusivityCode_eq_quoted.
+Check rawDynamicTruthQFEx8BranchExclusivityCode_eq_quoted.
+
+Check raw_codedPAProofOf_dynamicTruthQFRowBranchExclusivity.
+Check raw_codedPAProofOf_dynamicTruthQFEx8BranchExclusivity.
+Check rawDynamicTruthQFBranchCollisionRoot.
+Check raw_codedPALocalProofOf_dynamicTruthQFBranchCollision.
+Check rawDynamicTruthQFEx8BranchCollisionRoot.
+Check raw_codedPALocalProofOf_dynamicTruthQFEx8BranchCollision.
+Check raw_dynamicTruthQFBranchCollision_under_assumptions.
+Check raw_dynamicTruthQFEx8BranchCollision_under_assumptions.
+Check raw_dynamicTruthQFEx8BranchExclusivity_local_base.
+Check raw_dynamicTruthQFEx8BranchCollision_in_witnessed_base.
+
+(** The exact formula and carrier-code shapes are definitionally fixed. *)
+Goal dynamicTruthQFEx8BranchExclusivityFormula =
+  pImp (fixedLevelEx8 dynamicTruthSigmaRowQfFormula)
+    (pImp (fixedLevelEx8 dynamicTruthPiRowQfFormula) pBot).
+Proof. reflexivity. Qed.
+
+Goal forall M : RawPAModel,
+  rawDynamicTruthQFEx8BranchExclusivityCode M =
+  rawFormulaImpCode M
+    (rawFormulaEx8Code M
+      (rawFixedFormulaNumeralCode M dynamicTruthSigmaRowQfFormula))
+    (rawFormulaImpCode M
+      (rawFormulaEx8Code M
+        (rawDynamicTruthPiFixedFormulaNumeralCode M
+          dynamicTruthPiRowQfFormula))
+      (rawFormulaBotCode M)).
+Proof. reflexivity. Qed.
+
+Print Assumptions dynamicTruthQFBranchExclusivityFormula_raw_valid.
+Print Assumptions dynamicTruthQFEx8BranchExclusivityFormula_raw_valid.
+Print Assumptions PA_proves_dynamicTruthQFBranchExclusivityFormula.
+Print Assumptions PA_proves_dynamicTruthQFEx8BranchExclusivityFormula.
+Print Assumptions raw_codedPAProofOf_dynamicTruthQFEx8BranchExclusivity.
+Print Assumptions raw_codedPALocalProofOf_dynamicTruthQFEx8BranchCollision.
+Print Assumptions raw_dynamicTruthQFEx8BranchCollision_under_assumptions.
+Print Assumptions raw_dynamicTruthQFEx8BranchCollision_in_witnessed_base.

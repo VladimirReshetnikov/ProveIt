@@ -3,7 +3,7 @@
 This directory is a vendored copy of the `BB3/` proof from
 <https://github.com/ccz181078/Coq-BB5>, upstream commit
 `9142e219229baf2245d3f70851947230ea28a318`, used as a Rocq-side certificate
-for the three-state busy-beaver time bound in Proofs.
+for the three-state busy-beaver time bound in ProveIt.
 
 Repository-local change: `BB3_TNF_Enumeration.v` replaces upstream's
 `native_compute`/`native_cast_no_check` cache equation with `vm_compute` and a

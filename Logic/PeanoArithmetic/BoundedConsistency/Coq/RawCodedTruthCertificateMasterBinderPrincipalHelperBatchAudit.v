@@ -1,0 +1,50 @@
+(** Audit for the synchronized binder-principal helper batch. *)
+
+From Stdlib Require Import List.
+From BoundedPAConsistency Require Import
+  RawCodedTruthCertificateMasterFixedHelperBatchExtension
+  RawCodedTruthCertificateMasterCollisionHelperBatch
+  RawCodedDynamicTruthBinderOffDiagonalExclusivity
+  RawCodedTruthCertificateMasterBinderPrincipalHelperBatch.
+
+Import ListNotations.
+Import PABoundedRawCodedTruthCertificateMasterFixedHelperBatchExtension.
+Import PABoundedRawCodedTruthCertificateMasterCollisionHelperBatch.
+Import PABoundedRawCodedDynamicTruthBinderOffDiagonalExclusivity.
+Import PABoundedRawCodedTruthCertificateMasterBinderPrincipalHelperBatch.
+
+Check rawDynamicTruthBinderPrincipalCollisionPAHelper.
+Check rawDynamicTruthBinderPrincipalCollisionPAHelpers.
+Check rawDynamicTruthBinderPrincipalCollisionPAHelpers_length.
+Check rawDynamicTruthReadyAndBinderPrincipalPAHelpers.
+Check rawDynamicTruthReadyAndBinderPrincipalPAHelpers_length.
+Check rawDynamicTruthReadyAndBinderPrincipalPAHelperTargets_eq_quoted.
+Check
+  raw_sixFieldMasterCommonContextProofsWithReadyAndBinderPrincipalHelpers.
+
+Goal length rawDynamicTruthBinderPrincipalCollisionPAHelpers = 8.
+Proof.
+  exact rawDynamicTruthBinderPrincipalCollisionPAHelpers_length.
+Qed.
+
+Goal length rawDynamicTruthReadyAndBinderPrincipalPAHelpers = 29.
+Proof.
+  exact rawDynamicTruthReadyAndBinderPrincipalPAHelpers_length.
+Qed.
+
+(** The final eight formulas correspond position-for-position to the public
+    carrier-sensitive cell enumeration. *)
+Goal map rawFixedPAHelperFormula
+    rawDynamicTruthBinderPrincipalCollisionPAHelpers =
+  map dynamicTruthBinderPrincipalCollisionFormula
+    dynamicTruthBinderOffDiagonalCells.
+Proof. reflexivity. Qed.
+
+Print Assumptions
+  rawDynamicTruthBinderPrincipalCollisionPAHelpers_length.
+Print Assumptions
+  rawDynamicTruthReadyAndBinderPrincipalPAHelpers_length.
+Print Assumptions
+  rawDynamicTruthReadyAndBinderPrincipalPAHelperTargets_eq_quoted.
+Print Assumptions
+  raw_sixFieldMasterCommonContextProofsWithReadyAndBinderPrincipalHelpers.

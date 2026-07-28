@@ -1,8 +1,8 @@
-# Proofs
+# ProveIt
 
 **Machine-checked mathematics in Lean 4 and Rocq/Coq, organized by subject.**
 
-`Proofs` contains formal mathematics, executable proof certificates, and the
+`ProveIt` contains formal mathematics, executable proof certificates, and the
 research artifacts needed to reproduce difficult certificates. Lean 4 with
 mathlib is the primary environment; Rocq/Coq developments provide independent
 or complementary checks. Generated data and exploratory computations are not
@@ -29,7 +29,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`. |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
-Repository-wide configuration remains at the root. [`Proofs.lean`](Proofs.lean)
+Repository-wide configuration remains at the root. [`ProveIt.lean`](ProveIt.lean)
 is the broad Lean import surface.
 
 ## Highlights

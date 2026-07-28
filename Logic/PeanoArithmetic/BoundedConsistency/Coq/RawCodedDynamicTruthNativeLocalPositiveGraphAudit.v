@@ -1,0 +1,84 @@
+(**
+  Kernel-facing surface and assumption audit for the native positive local
+  decision/exclusivity graph.
+
+  In particular, this audit keeps visible the two distinct successor levels:
+  predecessor [p] selects the genuine global orbit at [S p], while the native
+  Sigma/Pi successor rows used as evidence live at [S (S p)].  The final
+  proof-producing theorem is intentionally conditional on the explicit proof
+  compiler interface; relational totality alone is not used as a proof
+  compiler.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeLocalPositiveGraph.
+
+Module PABoundedRawCodedDynamicTruthNativeLocalPositiveGraphAudit.
+
+Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+
+(** Exact target formula and its transparent carrier-code polynomial. *)
+Check dynamicTruthLocalAdmissibleFormula.
+Check dynamicTruthLocalDecisionExclusiveCarrierFormula.
+Check dynamicTruthLocalDecisionExclusiveCarrierFormula_fixedLevel.
+Check rawDynamicTruthLocalDecisionExclusiveFieldCode.
+Check raw_eval_dynamicTruthLocalDecisionExclusiveFieldCodeTerm.
+Check raw_sat_dynamicTruthLocalDecisionExclusiveFieldCodeTermAt_iff.
+Check rawDynamicTruthLocalDecisionExclusiveFieldCode_quoted.
+Check rawDynamicTruthLocalDecisionExclusiveFieldCode_quoted_successor_level.
+
+(** Law-free represented ternary application and the shifted genuine orbit. *)
+Check dynamicTruthLocalTernaryApplicationTermAt.
+Check RawDynamicTruthLocalTernaryApplication.
+Check raw_sat_dynamicTruthLocalTernaryApplicationTermAt_iff.
+Check raw_dynamicTruthLocalTernaryApplication_exists_adequate.
+Check dynamicTruthNativeLocalInputOrbitGraph.
+Check RawDynamicTruthNativeLocalInputOrbitAt.
+Check raw_sat_dynamicTruthNativeLocalInputOrbitGraph_iff.
+Check raw_sat_dynamicTruthNativeLocalInputOrbitGraph_standard_iff.
+
+(** Native transform: exact semantics, explicit Or7/Or6 rows, and totality. *)
+Check dynamicTruthNativeLocalFieldTransformGraph.
+Check RawDynamicTruthNativeLocalFieldTransformAt.
+Check raw_sat_dynamicTruthNativeLocalFieldTransformGraph_iff.
+Check raw_dynamicTruthNativeLocalFieldTransformAt_exposes_rows.
+Check raw_dynamicTruthNativeLocalFieldTransformAt_row_code_polynomials.
+Check RawDynamicTruthNativeLocalFieldTransformTotalOnAdequate.
+Check dynamicTruthNativeLocalFieldTransformGraph_raw_total_on_adequate.
+
+(** Output-first positive splice and its honest proof-producing boundary. *)
+Check dynamicTruthNativeLocalPositiveGraph.
+Check RawDynamicTruthNativeLocalPositiveAt.
+Check raw_sat_dynamicTruthNativeLocalPositiveGraph_iff.
+Check RawDynamicTruthNativeLocalPositiveTotal.
+Check dynamicTruthNativeLocalPositiveGraph_raw_total.
+Check RawDynamicTruthNativeLocalDecisionExclusiveProofCompiler.
+Check RawDynamicTruthNativeLocalPositiveProofTotal.
+Check dynamicTruthNativeLocalPositiveGraph_raw_proof_total_of_compiler.
+
+Print Assumptions
+  dynamicTruthLocalDecisionExclusiveCarrierFormula_fixedLevel.
+Print Assumptions
+  raw_sat_dynamicTruthLocalTernaryApplicationTermAt_iff.
+Print Assumptions
+  rawDynamicTruthLocalDecisionExclusiveFieldCode_quoted.
+Print Assumptions
+  rawDynamicTruthLocalDecisionExclusiveFieldCode_quoted_successor_level.
+Print Assumptions
+  raw_sat_dynamicTruthNativeLocalInputOrbitGraph_iff.
+Print Assumptions
+  raw_sat_dynamicTruthNativeLocalFieldTransformGraph_iff.
+Print Assumptions
+  raw_dynamicTruthNativeLocalFieldTransformAt_exposes_rows.
+Print Assumptions
+  raw_dynamicTruthNativeLocalFieldTransformAt_row_code_polynomials.
+Print Assumptions
+  dynamicTruthNativeLocalFieldTransformGraph_raw_total_on_adequate.
+Print Assumptions
+  raw_sat_dynamicTruthNativeLocalPositiveGraph_iff.
+Print Assumptions
+  dynamicTruthNativeLocalPositiveGraph_raw_total.
+Print Assumptions
+  dynamicTruthNativeLocalPositiveGraph_raw_proof_total_of_compiler.
+
+End PABoundedRawCodedDynamicTruthNativeLocalPositiveGraphAudit.
