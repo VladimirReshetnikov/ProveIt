@@ -12,6 +12,9 @@ The port focuses on results that are both central to Foundation's modal-logic
 library and reusable while its larger named-system and canonical-model stack
 is being reconstructed:
 
+- formula- and model-polymorphic Tarski semantics for all six propositional
+  connectives, including exact truth readbacks for ordinary and
+  singleton-normalized list and finite-set conjunctions and disjunctions;
 - primitive modal syntax, derived connectives, substitution, iteration,
   complexity, degree, subformulas, and complement-closed finite contexts;
 - negation-normal syntax, structural De Morgan negation, modal CNF/DNF shape,
@@ -194,6 +197,7 @@ is being reconstructed:
 
 | Coq module | Main Foundation source | Ported boundary |
 | --- | --- | --- |
+| `GenericSemantics.v` | `Logic/Semantics.lean` | First 20 active declarations: generic satisfaction, six connective clauses, their Tarski package, equivalence readback, and ordinary/singleton-normalized list and finite-set conjunction/disjunction truth laws; theory, satisfiability, consequence, cumulative, and compactness layers remain |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
@@ -422,6 +426,14 @@ audited classical metatheory as modal-K completeness.  The resulting model
 gives the exact truth/provability equivalence and proves algebraic
 completeness even without assuming consistency, with the inconsistent case
 handled directly.
+
+`GenericSemantics.v` is independent of modal syntax and constructive.  It
+keeps Foundation's logical-connective signature separate from the models-only
+semantics record, and the six clause records retain the source's
+per-connective capability boundaries.  Source `Finset` values are represented
+by lists whose readback statements depend only on membership, so ordering and
+duplicates are semantically irrelevant.  The ordinary and singleton-normalized
+folds remain distinct exactly where they are distinct in Foundation.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
@@ -963,6 +975,7 @@ rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
 coqchk -silent -Q . FoundationModal `
   FoundationModal.Syntax FoundationModal.NNFormula FoundationModal.Axioms `
+  FoundationModal.GenericSemantics `
   FoundationModal.FormulaEncoding FoundationModal.PLoN `
   FoundationModal.PLoNCompleteness `
   FoundationModal.Kripke FoundationModal.KripkeSemantics FoundationModal.NNFormulaSemantics `

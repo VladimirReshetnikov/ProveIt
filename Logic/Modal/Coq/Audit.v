@@ -1,7 +1,7 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
+  Syntax GenericSemantics NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
@@ -43,6 +43,45 @@ From FoundationModal Require Import
 Check substitute_comp.
 Check satisfies_substitute.
 Check valid_K.
+
+(** Generic Tarski semantics: the first twenty active declarations from
+    Logic/Semantics.lean, including both ordinary and singleton-normalized
+    finite connective folds. *)
+Check generic_connectives.
+Check generic_semantics.
+Check generic_not_models.
+Check generic_semantics_top.
+Check generic_semantics_bottom.
+Check generic_semantics_and.
+Check generic_semantics_or.
+Check generic_semantics_imp.
+Check generic_semantics_neg.
+Check generic_tarski.
+Check generic_models_iff.
+Check generic_models_list_conj.
+Check generic_list_conj2.
+Check generic_models_list_conj2.
+Check generic_models_list_conj_map.
+Check generic_models_finset_conj.
+Check generic_models_finset_conj_map.
+Check generic_models_list_disj.
+Check generic_list_disj2.
+Check generic_models_list_disj2.
+Check generic_models_list_disj_map.
+Check generic_models_finset_disj.
+Check generic_models_finset_disj_map.
+
+Print Assumptions generic_models_iff.
+Print Assumptions generic_models_list_conj.
+Print Assumptions generic_models_list_conj2.
+Print Assumptions generic_models_list_conj_map.
+Print Assumptions generic_models_finset_conj.
+Print Assumptions generic_models_finset_conj_map.
+Print Assumptions generic_models_list_disj.
+Print Assumptions generic_models_list_disj2.
+Print Assumptions generic_models_list_disj_map.
+Print Assumptions generic_models_finset_disj.
+Print Assumptions generic_models_finset_disj_map.
 
 (** Complete source-facing Kripke semantic surface: local satisfaction,
     fixed-model validity, frame validity, and frame-class counterexamples. *)
