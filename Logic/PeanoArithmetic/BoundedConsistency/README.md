@@ -2314,6 +2314,19 @@ roots with the trace-linked row and matrix packages without reintroducing the
 older all-carrier decision callback.  The two dynamic rank-case roots remain
 the precise decision obligation.
 
+`RawCodedDynamicTruthNativeLocalStagedRootCompilation.v` reunites those two
+local leaves over a visible witnessed base without forcing that base to be
+empty.  One exact successor trace supplies the linked row domains, lower
+applications, adequacy facts, and positional parameters.  The synchronized
+forty-helper batch discharges all sixteen valid fixed constructor pairs, and
+generic `Or7`-by-`Or6` resources build the finite collision matrix.  The
+remaining staged package records only the two domain-case roots, two actual
+row roots, seven genuinely current-field kernel components, two dependent
+row-projection packages, and the three temporary-context self-shifts.  From
+that package checked implication and universal introduction construct the
+carried local field root.  No proof equality, unlinked row choice, semantic
+truth-to-proof conversion, or hidden empty-context transport is used.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
