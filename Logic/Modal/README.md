@@ -200,7 +200,7 @@ is being reconstructed:
 | --- | --- | --- |
 | `GenericSemantics.v` | `Logic/Semantics.lean` | Complete 67-declaration surface: generic satisfaction and minimal connective clauses; ordinary/singleton-normalized finite truth laws; model sets, validity, satisfiability, theories, meaningfulness, lifted set semantics, consequence, cumulative theories, exact compactness, finite consequence extraction, and cumulative-union compactness |
 | `GenericAdjunctiveSet.v` | `Vorspiel/AdjunctiveSet.lean` | Constructive pointwise context interface with empty/adjoin laws, inclusion algebra, list-backed finiteness and conversion, and predicate/list realizations; no decidable formula equality or predicate extensionality |
-| `GenericEntailment.v` | `Logic/Entailment.lean` | First 101 of 138 active declarations: Type-valued formal proofs and inhabited provability, proof sets and controlled proof extraction, heterogeneous strength order and equivalence, consistency and explosion, syntactic completeness/incompleteness, axiomatized contexts, and heterogeneous strong cut |
+| `GenericEntailment.v` | `Logic/Entailment.lean` | Complete 138-declaration surface: Type-valued formal proofs and inhabited provability, proof sets and controlled extraction, heterogeneous strength order/equivalence, consistency, explosion, completeness/incompleteness, axiomatized and compact contexts, deduction, semantic soundness/completeness, and pullback |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
@@ -472,6 +472,17 @@ and consistency transport are constructive.  Strong cut is generalized to
 distinct context and entailment types; only its inhabited wrapper and the
 derived theory comparison need functional choice, while the raw cut interface
 remains constructive and informative description is avoided.
+
+The remaining generic entailment surface is complete.  Proof-directed
+compact cores yield the exact finite inconsistency and consistency laws
+constructively.  Deduction is parameterized only by implication and context
+extension.  Soundness and semantic completeness are stated for arbitrary
+entailment and semantics dictionaries, with heterogeneous theory comparison;
+direct witness and vacuous-consequence proofs keep every declaration through
+the countermodel theorem constructive.  Exactly three later declarations use
+excluded middle to extract a semantic counterexample or model from consistency.
+Entailment pullback along an arbitrary formula map is entirely constructive,
+including literal definitional equality of its theory predicate.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
