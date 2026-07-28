@@ -1812,6 +1812,18 @@ the field certificate or its semantic validity; the exact residual seam is a
 local-root compiler indexed by the adequate orbit and literal construction
 trace.
 
+`RawCodedDynamicTruthNativeCrossLevelLeafRootCompilation.v` exposes the
+actual successor rows behind that construction trace, retaining their row
+domains, lower applications, shared global wrapper, and all four ternary
+applications in one linked relation.  The trace supplies every atomic-
+adequacy fact needed by the proof constructors.  One represented guarded-
+equivalence root per polarity is then compiled, over an arbitrary visible
+base tail, into the four directional leaves by checked context insertion,
+assumption, implication-elimination, and conjunction-elimination nodes.  The
+literal-empty adapter consequently reduces the original field compiler to
+exactly two trace-linked guarded roots; no successor relation is mistaken for
+a proof and no nonempty witnessed context is erased.
+
 `RawCodedDynamicTruthNativeShiftPositiveGraph.v` constructs the third native
 positive coordinate.  It selects the genuine paired truth orbit at `S p`,
 builds the six source/target domain and certificate applications through

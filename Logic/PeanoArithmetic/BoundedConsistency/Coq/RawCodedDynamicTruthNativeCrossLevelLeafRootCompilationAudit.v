@@ -1,0 +1,84 @@
+(** Kernel-facing audit for trace-linked native cross-level leaf roots. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeCrossLevelLeafRootCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeCrossLevelLeafRootCompilation.
+
+(** The row relation retains the successor-row polynomials, global wrapper,
+    domain substitutions, and all four applications in one synchronized
+    object. *)
+Check RawDynamicTruthNativeCrossLevelLinkedRowsAt.
+Check raw_dynamicTruthNativeCrossLevelProofTraceAt_exposes_linked_rows.
+Check raw_dynamicTruthNativeCrossLevelProofTraceAt_of_linked_rows.
+Check raw_dynamicTruthNativeCrossLevelProofTraceAt_linked_rows_iff.
+
+(** Atomic adequacy is derived from operation traces, including adequacy of
+    the actual next global pair through its actual wrapper. *)
+Check raw_dynamicTruthLocalTernaryApplication_target_atomically_adequate.
+Check raw_dynamicTruthLocalAdmissibleCode_atomically_adequate.
+Check RawDynamicTruthNativeCrossLevelTraceAdequacyAt.
+Check raw_dynamicTruthNativeCrossLevelLinkedRowsAt_adequacy.
+Check raw_dynamicTruthNativeCrossLevelProofTraceAt_formula_adequacy.
+
+(** The generalized contexts retain their base literally. *)
+Check rawDynamicTruthNativeCrossLevelAdmissibleContextOn.
+Check rawDynamicTruthNativeCrossLevelDomainContextOn.
+Check rawDynamicTruthNativeCrossLevelDirectionalContextOn.
+Check RawDynamicTruthNativeCrossLevelGuardRootOn.
+Check RawDynamicTruthNativeCrossLevelDirectionalRootsOn.
+Check raw_dynamicTruthNativeCrossLevelDirectionalRootsOn_of_guard_root.
+
+(** Polarity specialization and the definitional empty-base adapters. *)
+Check RawDynamicTruthNativeCrossLevelSigmaGuardRootOn.
+Check RawDynamicTruthNativeCrossLevelPiGuardRootOn.
+Check RawDynamicTruthNativeCrossLevelSigmaLocalRootsOn.
+Check RawDynamicTruthNativeCrossLevelPiLocalRootsOn.
+Check raw_dynamicTruthNativeCrossLevelSigmaLocalRootsOn_of_guard_root.
+Check raw_dynamicTruthNativeCrossLevelPiLocalRootsOn_of_guard_root.
+Check raw_dynamicTruthNativeCrossLevelSigmaLocalRootsAt_of_empty_base.
+Check raw_dynamicTruthNativeCrossLevelPiLocalRootsAt_of_empty_base.
+
+(** These two interfaces are the sole residual represented-proof boundary.
+    The final theorem has exactly the original local-root compiler endpoint. *)
+Check
+  RawDynamicTruthNativeCrossLevelLinkedGuardRootInterfaceAtEmptyBase.
+Check RawDynamicTruthNativeCrossLevelLinkedGuardRootCompiler.
+Check
+  raw_dynamicTruthNativeCrossLevelLinkedGuardRootInterface_of_compiler.
+Check
+  raw_dynamicTruthNativeCrossLevelLocalRootCompiler_of_linked_guards.
+Check
+  raw_dynamicTruthNativeCrossLevelLocalRootCompiler_of_linked_compiler.
+
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelProofTraceAt_exposes_linked_rows.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelProofTraceAt_of_linked_rows.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelProofTraceAt_linked_rows_iff.
+Print Assumptions
+  raw_dynamicTruthLocalTernaryApplication_target_atomically_adequate.
+Print Assumptions
+  raw_dynamicTruthLocalAdmissibleCode_atomically_adequate.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelLinkedRowsAt_adequacy.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelProofTraceAt_formula_adequacy.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelDirectionalRootsOn_of_guard_root.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelSigmaLocalRootsOn_of_guard_root.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelPiLocalRootsOn_of_guard_root.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelSigmaLocalRootsAt_of_empty_base.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelPiLocalRootsAt_of_empty_base.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelLinkedGuardRootInterface_of_compiler.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelLocalRootCompiler_of_linked_guards.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelLocalRootCompiler_of_linked_compiler.
