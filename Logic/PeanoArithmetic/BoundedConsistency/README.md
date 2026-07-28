@@ -2475,8 +2475,18 @@ induction to construct normalized source and bound beta columns through the
 arbitrary carrier limit `S input`, placing a harmless zero-term row at every
 unsupported code.  It then extracts `RawCodedTermBound` at the represented
 root.  This is an all-carrier construction and does not decode the input into
-a metatheoretic term; the remaining open part is the analogous formula table
-whose equality case can now invoke this checked term theorem.
+a metatheoretic term; it supplies the equality case of the corresponding
+formula construction.
+
+`RawCodedFormulaBoundAtomicallyAdequateTotality.v` completes that formula
+construction and proves the exact
+`RawCodedFormulaBoundAtomicallyAdequateTotal` interface.  It builds normalized
+source and bound beta columns by PA-definable induction over every carrier
+code, uses strict constructor-code descent to reuse earlier child rows, and
+invokes the checked term theorem at equality atoms.  Unsupported codes again
+receive a harmless bottom/zero row.  Thus every atomically adequate formula,
+including every direct template formula, now has a represented formula-bound
+certificate without being decoded into a metatheoretic syntax tree.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For

@@ -1,0 +1,30 @@
+From BoundedPAConsistency Require Import
+  RawCodedFormulaBoundAtomicallyAdequateTotality.
+
+Import PABoundedRawCodedFormulaBoundAtomicallyAdequateTotality.
+
+(** Audit the represented prefix, its structural append step, genuine PA
+    induction, and the exact proposition required by the closure remainder. *)
+Check RawCodedFormulaBoundPrefixRows.
+Check RawCodedFormulaBoundPrefixNormalized.
+Check RawCodedFormulaBoundPrefix.
+Check RawCodedFormulaBoundPrefixExists.
+
+Check raw_formulaBoundTraversalRow_prefix_extend.
+Check raw_codedFormulaBoundPrefix_append.
+Check raw_codedFormulaAtomicallyAdequate_child_at.
+Check raw_codedFormulaBoundPrefix_zero.
+Check raw_codedFormulaBoundPrefix_succ.
+Check raw_codedFormulaBoundPrefix_all.
+Check raw_codedFormulaBound_atomically_adequate_total.
+
+Print Assumptions raw_sat_codedFormulaBoundPrefixRowsTermAt_iff.
+Print Assumptions raw_sat_codedFormulaBoundPrefixNormalizedTermAt_iff.
+Print Assumptions raw_sat_codedFormulaBoundPrefixTermAt_iff.
+Print Assumptions raw_sat_codedFormulaBoundPrefixExistsTermAt_iff.
+Print Assumptions raw_formulaBoundTraversalRow_prefix_extend.
+Print Assumptions raw_codedFormulaBoundPrefix_append.
+Print Assumptions raw_codedFormulaAtomicallyAdequate_child_at.
+Print Assumptions raw_codedFormulaBoundPrefix_succ.
+Print Assumptions raw_codedFormulaBoundPrefix_all.
+Print Assumptions raw_codedFormulaBound_atomically_adequate_total.
