@@ -5,7 +5,7 @@ From FoundationModal Require Import
   KripkeAlgebra ModalAlgebra
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
-  CorrespondenceExtensions NormalHilbert LogicInfrastructure
+  RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
   KripkeSemantics KripkeHilbert CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
@@ -1117,6 +1117,94 @@ Check converse_well_founded_iff_well_founded_converse.
 Check converse_well_founded_trans_gen_iff.
 Check terminated_cwf_target_terminal.
 
+(** Complete generic surface of Foundation/Vorspiel/Rel: iteration and
+    closure generators followed by the elementary named properties. *)
+Check rel_iter_positive_succ_iff.
+Check rel_iter_succ_left.
+Check rel_iter_equality_iff.
+Check rel_iter_succ_right_iff.
+Check rel_iter_true_of_eq.
+Check rel_iter_congr_index.
+Check rel_iter_comp_iff.
+Check rel_iter_unwrap_transitive_succ.
+Check rel_iter_unwrap_transitive_positive.
+Check rel_iter_unwrap_reflexive_transitive.
+Check rel_iter_prefix_transitive_positive.
+Check relation_refl_gen_reflexive.
+Check relation_refl_gen_transitive.
+Check relation_refl_gen_symmetric.
+Check relation_irreflexive.
+Check relation_refl_gen_antisymmetric.
+Check relation_partial_order.
+Check relation_refl_gen_partial_order.
+Check relation_trans_gen_transitive.
+Check relation_trans_gen_trans.
+Check relation_trans_gen_single.
+Check relation_trans_gen_head.
+Check relation_trans_gen_tail.
+Check relation_trans_gen_exists_iterate.
+Check relation_trans_gen_remove_iterate.
+Check relation_trans_gen_unwrap.
+Check relation_trans_gen_unwrap_iff.
+Check relation_trans_gen_reflexive.
+Check relation_trans_gen_symmetric.
+Check relation_trans_gen_antisymmetric.
+Check relation_refl_trans_gen_reflexive.
+Check relation_refl_trans_gen_transitive.
+Check relation_refl_trans_gen_exists_iterate.
+Check relation_refl_trans_gen_remove_iterate.
+Check relation_refl_trans_gen_unwrap.
+Check relation_refl_trans_gen_symmetric.
+Check relation_irreflexive_generator.
+Check relation_irreflexive_generator_irreflexive.
+Check relation_irreflexive_generator_transitive.
+Check relation_strict_order.
+Check relation_irreflexive_generator_strict_order.
+Check relation_coreflexive.
+Check relation_coreflexive_of_symmetric_antisymmetric.
+Check relation_coreflexive_transitive.
+Check relation_coreflexive_symmetric.
+Check relation_eq_coreflexive.
+Check relation_equality.
+Check relation_equality_iff.
+Check relation_equality_symmetric.
+Check relation_equality_antisymmetric.
+Check relation_equality_transitive.
+Check relation_piecewise_strongly_connected.
+Check relation_equality_piecewise_strongly_connected.
+Check relation_eq_is_equality.
+Check relation_serial.
+Check relation_reflexive_serial.
+Check relation_reflexive_of_symmetric_transitive_serial.
+Check relation_right_euclidean.
+Check relation_left_euclidean.
+Check relation_right_euclidean_of_symmetric_transitive.
+Check relation_symmetric_of_reflexive_right_euclidean.
+Check relation_transitive_of_symmetric_right_euclidean.
+Check relation_transitive_of_reflexive_right_euclidean.
+Check relation_convergent.
+Check relation_strongly_convergent.
+Check relation_strongly_convergent_convergent.
+Check relation_piecewise_convergent.
+Check relation_piecewise_strongly_convergent.
+Check relation_piecewise_strongly_convergent_convergent.
+Check relation_piecewise_connected.
+Check relation_piecewise_connected_distinct.
+Check relation_piecewise_connected_of_trichotomous.
+Check relation_piecewise_connected_of_right_euclidean.
+Check relation_piecewise_strongly_connected_of_total.
+Check relation_piecewise_strongly_connected_of_reflexive_connected.
+Check relation_piecewise_connected_of_strongly_connected.
+Check relation_piecewise_strongly_convergent_of_reflexive_connected.
+Check relation_isolated.
+Check relation_isolated_elim.
+Check relation_isolated_coreflexive.
+Check relation_isolated_irreflexive.
+Check relation_isolated_transitive.
+Check relation_universal.
+Check relation_universal_reflexive.
+Check relation_universal_right_euclidean.
+
 Check frame_root_unique_of_irreflexive_transitive.
 Check rooted_point_rooted_of_irreflexive_transitive.
 Check trans_rooted_rooted_of_transitive.
@@ -1819,6 +1907,19 @@ Print Assumptions balloon_validates_Z_of_cwf.
 
 Print Assumptions valid_WeakPoint2_atoms_iff_piecewise_convergent.
 Print Assumptions valid_WeakPoint3_atoms_iff_piecewise_connected.
+
+(** The complete elementary relation layer is constructive. *)
+Print Assumptions rel_iter_prefix_transitive_positive.
+Print Assumptions relation_refl_gen_partial_order.
+Print Assumptions relation_trans_gen_remove_iterate.
+Print Assumptions relation_refl_trans_gen_remove_iterate.
+Print Assumptions relation_irreflexive_generator_strict_order.
+Print Assumptions relation_equality_piecewise_strongly_connected.
+Print Assumptions relation_reflexive_of_symmetric_transitive_serial.
+Print Assumptions relation_transitive_of_reflexive_right_euclidean.
+Print Assumptions relation_piecewise_strongly_convergent_of_reflexive_connected.
+Print Assumptions relation_isolated_transitive.
+Print Assumptions relation_universal_right_euclidean.
 
 (** The doubled-frame p-morphism is constructive.  Boxdot itself uses the
     classically encoded derived conjunction, so its semantic truth laws expose

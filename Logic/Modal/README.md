@@ -115,6 +115,10 @@ is being reconstructed:
   lemma and invariance under changing the enclosing target formula;
 - reflexive, transitive, and reflexive-transitive frame closures, their order
   properties, target termination, and converse well-foundedness results;
+- the complete elementary relation toolkit: finite iteration and closure
+  generators, strict and non-strict order inheritance, coreflexive, serial,
+  Euclidean, convergent, connected, equality, isolated, and universal
+  relations, with every source class implication exposed constructively;
 - PLoN's formula-indexed relational semantics, including all validity and
   countermodel equivalences and failure of replacement of equivalents;
 - PLoN Hilbert soundness for arbitrary instantiated axioms, its explicit
@@ -238,6 +242,7 @@ is being reconstructed:
 | `FiltrationExtensions.v` | `Modal/Kripke/Filtration.lean` | Finest and transitive-closure filtrations, truth, finite bounds, elementary frame-property preservation, and both rooted piecewise-strong convergence/connectedness theorems through point generation |
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness, including finite strict-preorder validity |
 | `FrameProperties.v` | `Modal/Kripke/{Antisymmetric,Asymmetric,Closure,Irreflexive,Terminated}.lean` | Closure algebra, frame orders, termination, converse well-foundedness, and finite strict-order maximality |
+| `RelationProperties.v` | `Vorspiel/Rel/{Basic,Coreflexive,Serial,Euclidean,Convergent,Connected,Equality,Isolated,Universal}.lean` | Complete generic relation-iteration, closure-generator, order-inheritance, and elementary relation-property surface |
 | `CorrespondenceExtensions.v` | `Modal/Kripke/Axiom{FourN,Grz,H,I,McK,Mk,Point4,Ver}.lean` | Further exact and directional named-axiom frame correspondences |
 | `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and modal equivalence; frame/model bounded morphisms; transitive-closure lifting; injective edge/path reflection; truth and formula-predicate validity transfer |
 | `Root.v` | `Modal/Kripke/Root.lean` | Rooted and generated frames/models, structural inheritance, bounded morphisms, and truth invariance |
@@ -324,6 +329,11 @@ predicate sets preserves extensional equivalence and introduces no
 functional or propositional extensionality; the concrete Boolean complement
 and box/diamond duality proofs use `Classical_Prop.classic`, matching the
 existing Kripke complex-algebra boundary.
+
+The generic elementary relation layer in `RelationProperties.v` is entirely
+constructive.  It reuses the existing finite-path and closure predicates and
+flattens Lean's one-field property classes into predicates plus implication
+lemmas; this representational change introduces no axioms.
 
 The finite complement-closed context layer keeps its boundary equally
 explicit.  The consistency insertion criteria, complement derivations, and
@@ -714,6 +724,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.KripkeAlgebra FoundationModal.ModalAlgebra `
   FoundationModal.Complement `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `
+  FoundationModal.RelationProperties `
   FoundationModal.Filtration `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.CanonicalK `
