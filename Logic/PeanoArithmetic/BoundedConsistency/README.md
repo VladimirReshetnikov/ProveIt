@@ -1920,6 +1920,19 @@ adequate orbit and the actual successor, numeral, substitution, and
 application trace.  This smaller interface asks for neither the final field
 certificate nor semantic validity.
 
+`RawCodedDynamicTruthNativeAxiomSoundnessLeafRootCompilation.v` exposes the
+actual paired-successor rows, lower applications, wrapper, domain
+substitutions, and next-Sigma application behind that trace.  It derives all
+needed adequacy, projects the recognition, atomic-syntax, assignment, and
+domain-disjunction conjuncts, and constructs every formula shift required by
+the eigenvariable rule.  Represented `Or-E` splits the two lower-domain cases;
+inside each case a represented `Ex-E` opens the actual PA-axiom witness body.
+The exact residual is therefore two trace-linked proof leaves in the fully
+shifted witness contexts.  The witnessed-tail endpoint uses the PA context's
+proved self-shift, while a separate conditional adapter handles the literal
+empty base; neither path erases a nonempty context or converts semantic truth
+into proof syntax.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
