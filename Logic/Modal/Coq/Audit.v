@@ -15,7 +15,7 @@ From FoundationModal Require Import
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 JerabekBoxdot CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
-  CanonicalGrzMcK CanonicalTrivVer GLPoint3PlusBoxBot CanonicalS5Grz
+  CanonicalGrzMcK CanonicalTrivVer MaximalTranslations GLPoint3PlusBoxBot CanonicalS5Grz
   CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
   CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
@@ -355,6 +355,32 @@ Check provable_GL_TFAE.
 Check GL_equiv_K4Loeb.
 Check GL_equiv_K4Henkin.
 Check GL_equiv_K4Hen.
+(** Maximal Triv/Ver translations and their classical cores. *)
+Check triv_translate.
+Check ver_translate.
+Check triv_translate_degree_zero.
+Check ver_translate_degree_zero.
+Check triv_translate_toIP_eq.
+Check ver_translate_toIP_eq.
+Check triv_translate_truth_on_Triv_frame.
+Check ver_translate_truth_on_Ver_frame.
+Check normal_proves_of_classical_tautology.
+Check Triv_proves_iff_triv_translate.
+Check Ver_proves_iff_ver_translate.
+Check Triv_proves_iff_classical_tautology.
+Check Ver_proves_iff_classical_tautology.
+Check Triv_iff_trivTranslated.
+Check Triv_iff_provable_Cl.
+Check Triv_iff_tautology.
+Check Ver_iff_verTranslated.
+Check Ver_iff_provable_Cl.
+Check Ver_iff_tautology.
+Check Triv_unprovable_atomic_L.
+Check Ver_unprovable_P.
+Check K4_proves_triv_translate_classical_tautology.
+Check GL_proves_ver_translate_classical_tautology.
+Check K4_unprovable_AxiomL.
+Check GL_unprovable_AxiomT.
 Check K4_unprovable_atomic_L.
 Check K4_strictly_weaker_GL.
 Check not_S4_weakerThan_GL.
@@ -1224,6 +1250,18 @@ Print Assumptions provable_GL_TFAE.
 Print Assumptions GL_equiv_K4Loeb.
 Print Assumptions GL_equiv_K4Henkin.
 Print Assumptions GL_equiv_K4Hen.
+Print Assumptions triv_translate_degree_zero.
+Print Assumptions Triv_proves_iff_triv_translate.
+Print Assumptions Ver_proves_iff_ver_translate.
+Print Assumptions normal_proves_of_classical_tautology.
+Print Assumptions Triv_proves_iff_classical_tautology.
+Print Assumptions Ver_proves_iff_classical_tautology.
+Print Assumptions Triv_unprovable_atomic_L.
+Print Assumptions Ver_unprovable_P.
+Print Assumptions K4_proves_triv_translate_classical_tautology.
+Print Assumptions GL_proves_ver_translate_classical_tautology.
+Print Assumptions K4_unprovable_AxiomL.
+Print Assumptions GL_unprovable_AxiomT.
 Print Assumptions K4_unprovable_atomic_L.
 Print Assumptions K4_strictly_weaker_GL.
 Print Assumptions not_S4_weakerThan_GL.

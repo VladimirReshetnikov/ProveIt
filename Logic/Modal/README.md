@@ -80,6 +80,9 @@ is being reconstructed:
 - canonical completeness for coreflexive KTc and canonical plus finite
   completeness for equality-frame Triv and isolated-frame Ver, including the
   complete KTc/Triv/Ver entailment surfaces and all pinned strict inclusions;
+- the maximal Triv and Ver formula translations, their degree-zero
+  propositional cores and exact provability/tautology characterizations,
+  together with every pinned Triv, Ver, K4, and GL unprovability consequence;
 - schema-generic finite consistency over natural-number atoms, including the
   two insertion criteria, singleton and union laws, deterministic
   complement-closed extension, a finite-context Lindenbaum theorem,
@@ -213,6 +216,7 @@ is being reconstructed:
 | `CanonicalPoint2McK.v` | `Modal/Kripke/Logic/S4Point2McK.lean` | Combined strong-confluence/McKinsey canonical completeness; strict S4McK and S4.2 predecessors with finite fork and universal-frame separators |
 | `CanonicalPoint3McK.v` | `Modal/Kripke/Logic/S4Point3McK.lean` | Combined connectedness/McKinsey canonical completeness; strict S4.2McK and S4.3 predecessors with finite diamond and universal-frame separators |
 | `CanonicalTrivVer.v` | `Modal/{Entailment,Kripke/Logic}/{KTc,Triv,Ver}.lean`, `Modal/Kripke/AxiomVer.lean`, `Modal/Boxdot/Ver_Triv.lean` | Generic Ver/isolated canonicality; coreflexive/equality/isolated metatheory; finite Triv/Ver completeness; all entailments and strictness results; unconditional Boxdot equivalence |
+| `MaximalTranslations.v` | `Modal/Maximal/{Basic,Unprovability}.lean` | Atom-polymorphic Triv/Ver translations and degree-zero laws; exact formula and classical-tautology characterizations; universal atomic Loeb/T and P unprovability; translated K4/GL classical cores |
 | `CanonicalS5Grz.v` | `Modal/Entailment/S5Grz.lean`, `Modal/Kripke/Logic/S5Grz.lean`, `Modal/Hilbert/Normal/Basic.lean` | Polymorphic S5Grz calculus; direct DiaT and Tc derivations; proof-theoretic equivalence with Triv; direct finite-Triv soundness and consistency; strict S5 and Grz predecessors and the derived strict S4-to-Triv inclusion |
 | `CanonicalPoint4McK.v` | `Modal/Kripke/Logic/S4Point4McK.lean` | Complete S4.4McK canonical metatheory and strictness, reusing the complete S4.3McK predecessor API |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
@@ -478,6 +482,12 @@ chosen world directly to a checked singleton frame and add no filtration
 choice principle.  Discharging `boxdot_Triv_complete` therefore exposes the
 same canonical-completeness assumptions and makes the Ver/Triv boxdot
 equivalence unconditional.
+
+The maximal Triv/Ver formula equivalences and the forward translated-core
+theorems are direct syntactic inductions.  Their reverse classical-tautology
+directions reuse K completeness and therefore inherit excluded middle and
+constructive definite description.  The explicit Triv, Ver, K4, and GL
+unprovability countervaluations use only the corresponding forward invariants.
 
 The predicate-valued logic structures and the inductive sum recursors are
 constructive.  Equality of predicate logics and symmetric or nested-union sum
