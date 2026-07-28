@@ -1,0 +1,26 @@
+(** Assumption audit for dependency-aware native axiom witness-body roots. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeAxiomWitnessBodyRootCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeAxiomWitnessBodyRootCompilation.
+
+Check rawDynamicTruthNativeAxiomWitnessBodyKernelCode.
+Check RawDynamicTruthNativeAxiomWitnessBodyKernelRootOn.
+Check RawDynamicTruthNativeAxiomLinkedWitnessBodyKernelRootCompiler.
+Check raw_dynamicTruthNativeAxiomWitnessBodyCode_atomically_adequate.
+Check raw_dynamicTruthNativeAxiomWitnessBodyLeaf_of_kernel_root.
+Check
+  raw_dynamicTruthNativeAxiomLinkedWitnessBodyLeafRootCompiler_of_kernel.
+Check
+  raw_dynamicTruthNativeAxiomSoundnessLocalRootCompiler_of_linked_witness_body_kernel.
+
+Print Assumptions
+  raw_dynamicTruthNativeAxiomWitnessBodyCode_atomically_adequate.
+Print Assumptions
+  raw_dynamicTruthNativeAxiomWitnessBodyLeaf_of_kernel_root.
+Print Assumptions
+  raw_dynamicTruthNativeAxiomLinkedWitnessBodyLeafRootCompiler_of_kernel.
+Print Assumptions
+  raw_dynamicTruthNativeAxiomSoundnessLocalRootCompiler_of_linked_witness_body_kernel.

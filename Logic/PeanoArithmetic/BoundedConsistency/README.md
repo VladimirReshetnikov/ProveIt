@@ -1933,6 +1933,18 @@ proved self-shift, while a separate conditional adapter handles the literal
 empty base; neither path erases a nonempty context or converts semantic truth
 into proof syntax.
 
+`RawCodedDynamicTruthNativeAxiomWitnessBodyRootCompilation.v` identifies the
+Lean-aligned dependency boundary behind those two leaves.  One synchronized
+kernel root over the visible shifted base proves the curried implication from
+the shifted axiom-soundness antecedent and the opened witness body to the
+shifted next-Sigma application.  Adequacy-guarded context insertion,
+assumption leaves, and two checked implication eliminations specialize that
+single root to both the Sigma- and Pi-domain witness branches.  Every row,
+application, wrapper, context shift, and formula shift remains tied to the
+same trace.  The module deliberately leaves construction of this one staged
+kernel root explicit; it asserts neither an empty-base instance nor a
+semantic truth-to-proof conversion.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
@@ -1994,6 +2006,20 @@ remaining `RawContextListIncludedTargetShiftExists` premise is exactly target
 shift existence under nested binders.  It is proved for a top-level witnessed
 target but intentionally remains explicit for arbitrary temporary contexts,
 where formula shift is partial on malformed carrier codes.
+
+`RawCodedPALocalProofWitnessedContextMergeTransportComplete.v` eliminates
+that last premise at the witnessed endpoint without asserting that malformed
+arbitrary contexts can be shifted.  Its representable `RawContextBinderReady`
+invariant says that every concrete source shift can be mirrored in the target
+while preserving inclusion.  The invariant survives adding the same temporary
+assumption to both contexts.  After a binder, the shifted target is entirely
+atomically adequate; a PA-definable reverse traversal therefore constructs
+its next unit shift and regenerates binder readiness.  Object-level strong
+induction applies the invariant to all seventeen rule cases, including
+nonstandard proof roots.  The resulting theorems give unconditional witnessed
+context inclusion weakening, merge two independently witnessed proof
+contexts, and synchronize all six ordinary master-field proofs in one literal
+witnessed context.
 
 `RawCodedDynamicTruthNativeMasterSuccessorTransportComplete.v` applies that
 theorem to the staged native successor.  Its public adapters no longer ask
