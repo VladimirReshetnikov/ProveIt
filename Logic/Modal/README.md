@@ -127,6 +127,8 @@ is being reconstructed:
   generators, strict and non-strict order inheritance, coreflexive, serial,
   Euclidean, convergent, connected, equality, isolated, and universal
   relations, with every source class implication exposed constructively;
+- complete generic converse- and weak-converse-well-founded APIs, including
+  finite heights, maximality, antisymmetry, and finite-order constructions;
 - PLoN's formula-indexed relational semantics, including all validity and
   countermodel equivalences and failure of replacement of equivalents;
 - PLoN Hilbert soundness for arbitrary instantiated axioms, its explicit
@@ -280,6 +282,7 @@ is being reconstructed:
 | `FrameProperties.v` | `Modal/Kripke/{Antisymmetric,Asymmetric,Closure,Irreflexive,Terminated}.lean` | Closure algebra, frame orders, termination, converse well-foundedness, and finite strict-order maximality |
 | `RelationProperties.v` | `Vorspiel/Rel/{Basic,Coreflexive,Serial,Euclidean,Convergent,Connected,Equality,Isolated,Universal}.lean` | Complete generic relation-iteration, closure-generator, order-inheritance, and elementary relation-property surface |
 | `ConverseWellFounded.v` | `Vorspiel/Rel/CWF.lean` | Complete 17-declaration generic surface: maximal-element characterization, finite strict-order CWF, noncomputable finite height, exact recurrence and level realization, and invariance under relation equivalence |
+| `WeakConverseWellFounded.v` | `Vorspiel/Rel/WCWF.lean` | Complete eight-declaration generic surface: irreflexive-reduction definition, chain choice, finite-map collision, antisymmetry, and finite transitive antisymmetric weak CWF |
 | `CorrespondenceExtensions.v` | `Modal/Kripke/Axiom{FourN,Grz,H,I,McK,Mk,Point4,Ver}.lean` | Further exact and directional named-axiom frame correspondences |
 | `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and modal equivalence; frame/model bounded morphisms; transitive-closure lifting; injective edge/path reflection; truth and formula-predicate validity transfer |
 | `Root.v` | `Modal/Kripke/Root.lean` | Rooted and generated frames/models, structural inheritance, bounded morphisms, and truth invariance |
@@ -371,6 +374,12 @@ The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
 flattens Lean's one-field property classes into predicates plus implication
 lemmas; this representational change introduces no axioms.
+
+`ConverseWellFounded.v` and `WeakConverseWellFounded.v` complete the generic
+CWF/WCWF relation layer.  Proposition-valued finite covers remain distinct
+from the data-carrying enumerations needed to define height.  The exact chain
+helper inherits relational choice; maximality, finite-order results, and the
+noncomputable height otherwise expose only the source's classical boundary.
 
 The substitution-free entailment hierarchy in `EntailmentExtensions.v`
 keeps Foundation's E and K capabilities distinct from `normal_logic`, whose
@@ -882,6 +891,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Complement `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `
   FoundationModal.RelationProperties FoundationModal.ConverseWellFounded `
+  FoundationModal.WeakConverseWellFounded `
   FoundationModal.Filtration `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.CanonicalK FoundationModal.HilbertNNFormula `

@@ -6,8 +6,8 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
   FrameProperties
-  RelationProperties ConverseWellFounded CorrespondenceExtensions NormalHilbert
-  LogicInfrastructure
+  RelationProperties ConverseWellFounded WeakConverseWellFounded
+  CorrespondenceExtensions NormalHilbert LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
   EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
@@ -2181,6 +2181,16 @@ Check cwf_height_eq_succ_cwf_height.
 Check cwf_height_lt.
 Check cwf_height_congr.
 
+(** Complete generic weak-converse-well-founded surface. *)
+Check weakly_converse_well_founded.
+Check is_weakly_converse_well_founded.
+Check wcwf_dependent_choice.
+Check finite_exists_ne_map_eq_of_infinite_lt.
+Check antisymmetric_of_weakly_converse_well_founded.
+Check weakly_converse_well_founded_is_antisymmetric.
+Check weakly_converse_well_founded_of_finite_transitive_antisymmetric.
+Check finite_transitive_antisymmetric_is_weakly_converse_well_founded.
+
 Check frame_root_unique_of_irreflexive_transitive.
 Check rooted_point_rooted_of_irreflexive_transitive.
 Check trans_rooted_rooted_of_transitive.
@@ -3172,6 +3182,17 @@ Print Assumptions cwf_height_eq_succ.
 Print Assumptions cwf_height_eq_succ_cwf_height.
 Print Assumptions cwf_height_lt.
 Print Assumptions cwf_height_congr.
+
+(** Choice is confined to the exact source chain-construction helper.  The
+    other nonconstructive WCWF results use only excluded middle. *)
+Print Assumptions weakly_converse_well_founded.
+Print Assumptions is_weakly_converse_well_founded.
+Print Assumptions wcwf_dependent_choice.
+Print Assumptions finite_exists_ne_map_eq_of_infinite_lt.
+Print Assumptions antisymmetric_of_weakly_converse_well_founded.
+Print Assumptions weakly_converse_well_founded_is_antisymmetric.
+Print Assumptions weakly_converse_well_founded_of_finite_transitive_antisymmetric.
+Print Assumptions finite_transitive_antisymmetric_is_weakly_converse_well_founded.
 
 (** The doubled-frame p-morphism is constructive.  Boxdot itself uses the
     classically encoded derived conjunction, so its semantic truth laws expose
