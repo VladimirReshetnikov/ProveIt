@@ -1824,6 +1824,18 @@ literal-empty adapter consequently reduces the original field compiler to
 exactly two trace-linked guarded roots; no successor relation is mistaken for
 a proof and no nonempty witnessed context is erased.
 
+`RawCodedDynamicTruthNativeCrossLevelGuardRootCompilation.v` joins those two
+guards at the dependency boundary used by Lean.  One coherence-body root over
+an arbitrary visible base yields both polarity guards structurally.  In the
+staged form, the current six-field master and the newly proved local field
+already share one witnessed PA context; their checked conjunction is applied
+to a single trace-linked implication whose consequent is the coherence body.
+This produces both guard roots without changing that context.  Construction
+of the implication root remains the exact positive cross-level kernel
+obligation.  The module deliberately makes no unrestricted fixed-level
+opening claim, semantic truth-to-proof inference, or empty-context
+identification.
+
 `RawCodedDynamicTruthNativeShiftPositiveGraph.v` constructs the third native
 positive coordinate.  It selects the genuine paired truth orbit at `S p`,
 builds the six source/target domain and certificate applications through
