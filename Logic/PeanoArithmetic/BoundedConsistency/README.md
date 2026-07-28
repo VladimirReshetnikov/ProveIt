@@ -1970,6 +1970,17 @@ proof totality is isolated in the explicit
 `RawDynamicTruthNativeAxiomSoundnessProofCompiler`; model truth is not treated
 as a coded PA derivation.
 
+Its three sequential openings now make the de Bruijn argument order explicit:
+the surviving axiom variable enters the first opening as `#2`, followed by two
+closed zero terms, so the resulting application is exactly the global truth
+predicate at `(axiom, 0, 0)`.  The definitional regression theorem records this
+order, and
+`RawCodedDynamicTruthNativeAxiomApplicationTernaryAlignment.v` proves that the
+native trace is equivalent to the repository's generic represented ternary
+application.  The reverse implication uses represented term-shift
+functionality, so it also covers arbitrary witnesses of the relational shift
+graphs rather than only their canonical quotations.
+
 `RawCodedDynamicTruthPairedGlobalOrbitFunctionality.v` proves that the five
 positive graphs really do refer to one paired global orbit.  Numeral and
 substitution functionality make each Sigma/Pi successor row deterministic;
@@ -2281,6 +2292,19 @@ of the two induction cases from the genuine strong step, the nonstandard
 bound/closure/self-opening remainder, and the finalizer that instantiates
 `K(S d)` and uses `d < S d`.  In particular, it never assumes the unavailable
 direct implication `P(d) -> P(S d)`.
+
+`RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixFinalizerCompilation.v`
+checks that finalizer's complete logical proof tree.  Under the assumed
+`forall d, K(d)`, it performs represented universal elimination first at
+`S d` and then at `d`, applies the resulting guarded conclusion to
+`d < S d`, and closes the eigenvariable and implication with literal All-I
+and Imp-I constructors.  Both substitution traces and the open context's
+self-shift are proved.  PA's ordinary proof of `d < S d` is also compiled to
+a raw certificate, leaving only the precise context-alignment question:
+placing that arithmetic root in the already fixed context containing the
+strong-prefix premise and the freshly adjoined induction axiom.  Thus the old
+finalizer hypothesis is reduced to a strictly smaller syntactic arithmetic
+leaf and is never assumed circularly.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
