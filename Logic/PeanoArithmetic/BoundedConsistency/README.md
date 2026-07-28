@@ -1922,6 +1922,19 @@ code and supplied witnessed context remain literal; only the proof root is
 rebuilt.  This proves the exact empty-to-witnessed transport interface in
 every PA model without decoding a context or assuming semantic completeness.
 
+`RawCodedPALocalProofWitnessedContextMerge.v` handles the genuinely harder
+case of two independently chosen, possibly nonstandard witnessed contexts.
+A PA-definable reverse fold prefixes the complete left witness/axiom traversal
+onto the right package, proves represented membership inclusion for both
+inputs, and unconditionally transports every proof from the literal right
+context into the merged context.  The opposite direction is isolated as the
+single named `RawCodedPALocalProofWitnessedContextInclusionWeakening`
+operation: rebuilding a proof over an inclusive witnessed target must also
+handle binder-induced context shifts.  Conditional only on that exact
+syntactic operation, a fixed five-step fold synchronizes all six ordinary
+master-field certificates while preserving their literal conclusions.  The
+module does not claim an assumption-free arbitrary-context merge.
+
 `RawCodedDynamicTruthNativeMasterSuccessorTransportComplete.v` applies that
 theorem to the staged native successor.  Its public adapters no longer ask
 for any context transport or common-context lift: they require only the five
@@ -2088,6 +2101,20 @@ transported arbitrary-cell roots can inhabit one literal witnessed context.
 Ordinary and adequacy-indexed compilers require only their exact direct
 shift/open trace; the all-carrier interface honestly retains the stronger
 trace-totality premise rather than deriving it from atomic adequacy.
+
+`RawCodedDynamicTruthNativeLocalLeafRootCompiler.v` moves the local-field
+assembly to the correct witnessed-tail boundary.  It extracts the fixed
+collision roots from the synchronized forty-helper batch, builds both opaque
+mixed-QF cells in that same context, transports the complete matrix package
+through the admissibility and evidence assumptions, projects concrete Sigma
+and Pi successor rows to `Or7` and `Or6`, and runs the full seven-by-six
+eliminator.  The residual record explicitly retains only carrier-dependent
+replay, projection, trace, adequacy, and fixed-pair resources.  Its literal
+empty-tail endpoint is a conditional adapter: no nonempty witnessed PA
+context is erased.  The module's broad row-root callback is intentionally
+parametric in four row values and is therefore stronger than the eventual
+trace-linked evidence compiler; the exact concrete endpoint consumes row
+roots and matrix resources indexed by the same values.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
