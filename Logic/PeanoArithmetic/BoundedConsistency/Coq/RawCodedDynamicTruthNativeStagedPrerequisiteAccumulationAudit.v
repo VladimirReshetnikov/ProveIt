@@ -10,6 +10,7 @@ Check
 Check raw_dynamicTruthNativeShiftStagedPrerequisites_add_crossLevel.
 Check raw_dynamicTruthNativeSubstitutionStagedPrerequisites_add_shift.
 Check raw_dynamicTruthNativeAxiomStagedPrerequisites_add_substitution.
+Check raw_dynamicTruthNativeFinalStagedPrerequisites_add_axiomSoundness.
 
 Print Assumptions
   raw_dynamicTruthNativeCrossLevelStagedPrerequisites_of_current_and_local.
@@ -19,3 +20,5 @@ Print Assumptions
   raw_dynamicTruthNativeSubstitutionStagedPrerequisites_add_shift.
 Print Assumptions
   raw_dynamicTruthNativeAxiomStagedPrerequisites_add_substitution.
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedPrerequisites_add_axiomSoundness.

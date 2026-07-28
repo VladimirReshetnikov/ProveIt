@@ -2017,7 +2017,9 @@ stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,
 it opens and merges the local certificate to construct the cross-level
 prerequisite package, then incrementally adds the cross-level, shift, and
-substitution certificates to construct the next three packages.  At every
+substitution certificates to construct the next three packages, and finally
+adds the axiom-soundness certificate to construct the eleven-root final
+package.  At every
 step all existing roots are rebuilt in the newly merged witnessed context
 before the record is formed.  Consequently no later staged implication may
 conjoin proof roots taken from unrelated hidden certificate contexts.

@@ -28,7 +28,8 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeCrossLevelGuardRootCompilation
   RawCodedDynamicTruthNativeShiftStagedRootCompilation
   RawCodedDynamicTruthNativeSubstitutionStagedRootCompilation
-  RawCodedDynamicTruthNativeAxiomStagedRootCompilation.
+  RawCodedDynamicTruthNativeAxiomStagedRootCompilation
+  RawCodedDynamicTruthNativeFinalStagedRootCompilation.
 
 Module PABoundedRawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.
 
@@ -45,6 +46,7 @@ Import PABoundedRawCodedDynamicTruthNativeCrossLevelGuardRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeShiftStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeSubstitutionStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeAxiomStagedRootCompilation.
+Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
 
 (** Add the first successor certificate to the current master context. *)
 Theorem
@@ -337,6 +339,97 @@ Proof.
     mergedNextLocalRoot, mergedNextCrossLevelRoot, mergedNextShiftRoot,
     mergedNextSubstitutionRoot.
   constructor; assumption.
+Qed.
+
+(** Add the selected axiom-soundness certificate and retain the complete
+    eleven-root prefix consumed by the sixth/final stage. *)
+Theorem
+    raw_dynamicTruthNativeFinalStagedPrerequisites_add_axiomSoundness :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      witnessList baseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      currentLocalRoot currentCrossLevelRoot currentShiftRoot
+      currentSubstitutionRoot currentAxiomSoundnessRoot currentFinalRoot
+      nextLocalRoot nextCrossLevelRoot nextShiftRoot nextSubstitutionRoot
+      axiomSoundnessCertificate,
+  RawDynamicTruthNativeAxiomStagedPrerequisitesAt M
+    witnessList baseContext
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution
+    currentLocalRoot currentCrossLevelRoot currentShiftRoot
+    currentSubstitutionRoot currentAxiomSoundnessRoot currentFinalRoot
+    nextLocalRoot nextCrossLevelRoot nextShiftRoot nextSubstitutionRoot ->
+  RawCodedPAProofOf M nextAxiomSoundness axiomSoundnessCertificate ->
+  exists mergedWitnessList mergedContext
+      mergedCurrentLocalRoot mergedCurrentCrossLevelRoot
+      mergedCurrentShiftRoot mergedCurrentSubstitutionRoot
+      mergedCurrentAxiomSoundnessRoot mergedCurrentFinalRoot
+      mergedNextLocalRoot mergedNextCrossLevelRoot mergedNextShiftRoot
+      mergedNextSubstitutionRoot mergedNextAxiomSoundnessRoot : M,
+    RawDynamicTruthNativeFinalStagedPrerequisitesAt M
+      mergedWitnessList mergedContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      mergedCurrentLocalRoot mergedCurrentCrossLevelRoot
+      mergedCurrentShiftRoot mergedCurrentSubstitutionRoot
+      mergedCurrentAxiomSoundnessRoot mergedCurrentFinalRoot
+      mergedNextLocalRoot mergedNextCrossLevelRoot mergedNextShiftRoot
+      mergedNextSubstitutionRoot mergedNextAxiomSoundnessRoot.
+Proof.
+  intros M hPA witnessList baseContext
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    currentLocalRoot currentCrossLevelRoot currentShiftRoot
+    currentSubstitutionRoot currentAxiomSoundnessRoot currentFinalRoot
+    nextLocalRoot nextCrossLevelRoot nextShiftRoot nextSubstitutionRoot
+    axiomSoundnessCertificate hprefix haxiomSoundnessCertificate.
+  destruct hprefix as
+    [hwitnessed hcurrentLocal hcurrentCrossLevel hcurrentShift
+      hcurrentSubstitution hcurrentAxiomSoundness hcurrentFinal
+      hnextLocal hnextCrossLevel hnextShift hnextSubstitution].
+  destruct (raw_codedPAProofOf_add_to_witnessed_context_complete
+    M hPA nextAxiomSoundness axiomSoundnessCertificate
+    witnessList baseContext haxiomSoundnessCertificate hwitnessed) as
+    (mergedWitnessList & mergedContext & mergedNextAxiomSoundnessRoot &
+      hmergedWitnessed & htransport & hmergedNextAxiomSoundness).
+  destruct (htransport currentLocal currentLocalRoot hcurrentLocal) as
+    [mergedCurrentLocalRoot hmergedCurrentLocal].
+  destruct (htransport currentCrossLevel currentCrossLevelRoot
+    hcurrentCrossLevel) as
+    [mergedCurrentCrossLevelRoot hmergedCurrentCrossLevel].
+  destruct (htransport currentShift currentShiftRoot hcurrentShift) as
+    [mergedCurrentShiftRoot hmergedCurrentShift].
+  destruct (htransport currentSubstitution currentSubstitutionRoot
+    hcurrentSubstitution) as
+    [mergedCurrentSubstitutionRoot hmergedCurrentSubstitution].
+  destruct (htransport currentAxiomSoundness currentAxiomSoundnessRoot
+    hcurrentAxiomSoundness) as
+    [mergedCurrentAxiomSoundnessRoot hmergedCurrentAxiomSoundness].
+  destruct (htransport currentFinal currentFinalRoot hcurrentFinal) as
+    [mergedCurrentFinalRoot hmergedCurrentFinal].
+  destruct (htransport nextLocal nextLocalRoot hnextLocal) as
+    [mergedNextLocalRoot hmergedNextLocal].
+  destruct (htransport nextCrossLevel nextCrossLevelRoot hnextCrossLevel) as
+    [mergedNextCrossLevelRoot hmergedNextCrossLevel].
+  destruct (htransport nextShift nextShiftRoot hnextShift) as
+    [mergedNextShiftRoot hmergedNextShift].
+  destruct (htransport nextSubstitution nextSubstitutionRoot
+    hnextSubstitution) as
+    [mergedNextSubstitutionRoot hmergedNextSubstitution].
+  exists mergedWitnessList, mergedContext,
+    mergedCurrentLocalRoot, mergedCurrentCrossLevelRoot,
+    mergedCurrentShiftRoot, mergedCurrentSubstitutionRoot,
+    mergedCurrentAxiomSoundnessRoot, mergedCurrentFinalRoot,
+    mergedNextLocalRoot, mergedNextCrossLevelRoot, mergedNextShiftRoot,
+    mergedNextSubstitutionRoot, mergedNextAxiomSoundnessRoot.
+  constructor.
+  - constructor; assumption.
+  - exact hmergedNextAxiomSoundness.
 Qed.
 
 End PABoundedRawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.
