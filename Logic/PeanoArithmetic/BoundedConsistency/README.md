@@ -1437,6 +1437,16 @@ the exact synchronized prefix of standard axiom witnesses used by that tree.
 Agreement of the template translation with ordinary quotation proves literal
 equality of the compiler's context and the extended witnessed context; no
 post-hoc context identification or unrelated proof certificate is used.
+`RawCodedFolTemplateProofCompiler.v` supplies the reusable source-side bridge
+into this template language.  It structurally embeds the repository's generic
+first-order formulas (equality plus one binary membership relation), proves
+the required de Bruijn renaming, opening, and context-shift equations, and
+compiles every constructor of `FirstOrder.Calculus.Prov` to an explicit finite
+valid `TemplateRawProof`.  The structural compiler is constructive; its
+optional semantic-completeness corollary separately exposes the classical
+assumptions inherited from the generic first-order completeness theorem.  The
+fixed opaque binary predicate is only a source-proof interface, not the still
+missing arbitrary-carrier dynamic-truth soundness construction.
 `RawCodedTemplateLogicalSchemas.v` records the small
 finite source trees needed by the dynamic fields—conjunction projection and
 introduction, existential projection, and universal specialization followed
@@ -2097,6 +2107,21 @@ family, the positive master successor, and—under an all-model instance—the
 compact headline.  This is an exact conditional endpoint, not the missing
 unconditional Coq theorem: every arithmetic residual, especially the final
 source-linked derivation-soundness compiler, remains visible in the bundle.
+
+`RawCodedRestrictedPADerivationSoundnessPredicate.v` isolates the first exact
+proof-code induction slice behind that final compiler.  For each fixed
+metatheoretic `level`, it defines the unary invariant `P(d)` saying that every
+admissible endpoint of a restricted derivation code preserves Sigma truth,
+defines the literal strong prefix `K(d) = forall e < d, P(e)`, and proves its
+arbitrary-model semantics and equivalence to the existing constructor-local
+soundness invariant.  The module then quotes `K` and constructs the complete
+diagonal-substitution and closure-induction data consumed by the represented
+PA induction compiler.  Its formula-scope premise remains explicit because
+the recursively expanded fixed-level Sigma/Pi truth formulas do not yet have
+scope lemmas uniform in the external level.  More importantly, this is still
+a standard-`nat` level slice: it neither replaces `level` by an arbitrary
+model carrier nor supplies the opaque successor-truth application needed by
+the uniform nonstandard theorem.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
