@@ -162,6 +162,72 @@ the implicit `import Init` even when it lists explicit imports (verified), so
 this needs `prelude` to control the import prefix — but no core declaration is
 displaced.
 
+## The worst mechanism: the kernel fabricates an inhabitant of an empty type
+
+`Logic/KernelSoundness/Lean/StringLitFabrication.lean` is not a "two rules
+disagree" bug at all. `string_lit_to_constructor` (`src/kernel/inductive.cpp`)
+assembles a term **entirely out of hard-coded names**:
+
+```cpp
+expr r = *g_list_nil_char;                     // List.nil.{0} Char
+while (i > 0) { i--;
+  r = mk_app(*g_list_cons_char,                // List.cons.{0} Char
+             mk_app(*g_char_of_nat,            // Char.ofNat
+                    mk_lit(literal(cs[i]))), r);
+}
+return mk_app(*g_string_mk, r);                // String.ofList
+```
+
+and `inductive_reduce_rec` (`src/kernel/inductive.h`) feeds it straight to the
+recursor rule:
+
+```cpp
+else if (is_string_lit(major)) major = whnf(string_lit_to_constructor(major));
+optional<recursor_rule> rule = get_rec_rule_for(rec_val, major);
+...
+rhs = mk_app(rhs, rule->get_nfields(), major_args.data() + nparams);
+```
+
+**Nothing type-checks the assembled term.** So `String.rec`'s minor premise is
+applied to that character list whatever `String.ofList`'s field type actually is.
+Declare it to be `Empty` — a type with no constructors — and the kernel hands you
+an inhabitant:
+
+```lean
+prelude
+inductive False : Prop
+inductive Empty : Type
+inductive String : Type where
+  | ofList : Empty → String
+
+noncomputable def Q (s : String) : Prop :=
+  @String.rec (fun _ => Prop) (fun _ => False) s
+
+theorem extract (s : String) : Q s :=
+  @String.rec (fun s => Q s) (fun e => @Empty.rec (fun _ => False) e) s
+
+theorem boom : False := extract "a"
+```
+
+`extract` is entirely legitimate — it only says "a `String` carries an `Empty`,
+so eliminate it", which is vacuous in any honest environment. The unsoundness is
+wholly on the kernel's side. Trigger: a bare string literal. No `Nat`, no
+numerals, no `OfNat`, no arithmetic accelerator, and no `List` or `Char`
+declarations at all — those names are never resolved, precisely because the
+kernel never infers the type of the term it just built.
+
+Verified: `lean` exit 0, `#print axioms boom` reports nothing, `leanchecker
+--fresh` accepts.
+
+For real Lean this is harmless, because core's `String.ofList` genuinely is that
+constructor with that field type. But that is an *unchecked assumption about the
+ambient environment* — the same root cause as the arithmetic accelerators, with a
+strictly worse failure mode: not "arithmetic comes out wrong" but "the kernel
+manufactures an inhabitant of an empty type".
+
+The same shape applies to `nat_lit_to_constructor`, which builds
+`Nat.succ (lit (n-1))` without checking `Nat.succ`'s signature.
+
 ## A different mechanism: the native hook, and an axiom-tracking hole
 
 `Logic/KernelSoundness/Lean/ReduceBoolFreeName.lean` defines the free name

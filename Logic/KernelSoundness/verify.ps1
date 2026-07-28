@@ -26,6 +26,7 @@ $expected = [ordered]@{
   'NatAddAccelerator'  = 'accept'   # own `Nat`, own `Nat.add`
   'NatBeqAccelerator'  = 'accept'   # own `Nat`, own `Nat.beq`
   'NatGcdFreeName'     = 'accept'   # real core `Nat`; only *defines* the free name `Nat.gcd`
+  'StringLitFabrication' = 'accept' # kernel fabricates an inhabitant of `Empty` from a string literal
   'ReduceBoolFreeName' = 'reject'   # `lean` accepts it, but the native hook cannot be replayed
   'NegativeControl'    = 'reject'   # control: built with debug.skipKernelTC
 }

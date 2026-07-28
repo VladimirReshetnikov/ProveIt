@@ -26,6 +26,26 @@ it holds two disagreeing reduction rules for one term: delta-reduction
 the extension (fires once the arguments are literals, or a nullary constant).
 Chaining the two through `Eq.rec` gives `False`.
 
+## The worst case: the kernel fabricates an inhabitant of an empty type
+
+`StringLitFabrication.lean` is qualitatively different from the arithmetic
+exhibits. There, two reduction rules disagreed about a definition I wrote. Here
+the kernel simply **builds a term that is not well typed, and never checks it**.
+
+`string_lit_to_constructor` assembles `String.ofList (List.cons (Char.ofNat 97)
+List.nil)` out of names, and `inductive_reduce_rec` hands the result straight to
+`String.rec`'s computation rule. Nothing type-checks the assembled term. So if
+`String.ofList`'s field type happens to be `Empty` — a type with **no
+constructors** — the kernel produces an inhabitant of it, and `False` follows in
+three lines. A bare string literal `"a"` is the whole trigger: no `Nat`, no
+numerals, no `OfNat`, and no `List` or `Char` declarations at all (those names
+are never resolved, precisely because the term is never inferred).
+
+For real Lean this is harmless, because core's `String.ofList` genuinely is that
+constructor. But that is an *unchecked assumption about the ambient environment*,
+which is the same root cause as the arithmetic accelerators — with a much worse
+failure mode.
+
 ## The interesting part: you do not have to redefine anything
 
 The obvious objection to this — and the reason it was dismissed when it was first
@@ -55,6 +75,7 @@ it appears to be genuinely vacuous.
 | File | What it is | `leanchecker` |
 | --- | --- | --- |
 | `Lean/NatGcdFreeName.lean` | **Strongest.** Redefines nothing; imports `Init.Prelude` and defines the free name `Nat.gcd`. `theorem boom : False` about the *genuine* core `Nat`. `#print axioms` reports nothing. | accepts |
+| `Lean/StringLitFabrication.lean` | **Worst failure mode.** Nothing "disagrees" with anything: expanding a *string literal* makes the kernel assemble a term by name and feed it to a recursor rule **without type-checking it**, fabricating an inhabitant of `Empty` — a type with no constructors. Trigger is a bare `"a"`; no `Nat`, numerals, `OfNat`, `List` or `Char` needed. | accepts |
 | `Lean/NatAddAccelerator.lean` | `theorem boom : False` via a module-local `Nat` and a non-standard `Nat.add`. | accepts |
 | `Lean/NatBeqAccelerator.lean` | The same, via `Nat.beq` (whose accelerator returns the constants named `Bool.true`/`Bool.false`). | accepts |
 | `Lean/ReduceBoolFreeName.lean` | Different mechanism: the kernel's *native* hook. Defining the free name `Lean.reduceBool` makes the kernel run compiled code and believe it — with **no** `Lean.ofReduceBool`, no `native_decide`, no `@[implemented_by]`. `lean` exits 0 and `#print axioms` reports nothing, so this is an axiom-*tracking* hole. | **rejects** (the interpreter cannot replay `probe`) |
