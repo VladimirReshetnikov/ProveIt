@@ -2401,6 +2401,17 @@ template.  Its public residual is therefore exactly one open local
 `case -> conclusion truth` PA root for each real proof constructor; it assumes
 neither a conclusion proof nor the original undifferentiated strong step.
 
+`RawCodedRestrictedPADerivationSoundnessDirectStrongStepShell.v` closes every
+logical layer around that dispatcher.  It introduces the restricted-proof
+and endpoint implications in their literal order, compiles all eight endpoint
+existential eliminations, introduces the four endpoint universals, then
+introduces `K(d)` and the outer derivation bound.  Its sole residual is the
+finite family of seventeen deepest constructor implications.  The public view
+prints their exact witness-body context and renamed suffix; a separate
+binder-ready transport corollary makes every eigenvariable-sensitive context
+extension explicit instead of treating ordinary membership inclusion as
+sufficient weakening.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled

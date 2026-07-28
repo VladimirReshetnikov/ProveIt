@@ -1,0 +1,50 @@
+(** Kernel-facing audit for the exact direct strong-step outer shell. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectStrongStepShell.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectStrongStepShellAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectStrongStepShell.
+
+Check rawCoqTemplateContextShiftN.
+Check rawCoqTemplateAllN.
+Check raw_codedPALocalProofOf_templateAllNIntroduction.
+
+Check rawCoqRestrictedPADirectStrongStepRemainingTemplate.
+Check rawCoqRestrictedPADirectStrongStepFourBinderContext.
+Check rawCoqRestrictedPADirectStrongStepEndpointTail.
+
+Check RawCoqRestrictedPADirectStrongStepRuleCaseImplicationRoots.
+Check raw_coqRestrictedPADirectStrongStepRuleCaseImplicationRoots_view.
+Check raw_coqRestrictedPADirectStrongStep_predicate_shape.
+Check raw_coqRestrictedPADirectStrongStep_template_shape.
+
+Check RawCoqRestrictedPADirectStrongStepBinderShifts.
+Check raw_coqRestrictedPADirectStrongStepBinderShifts.
+
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectStrongStepPredicateBody.
+Check raw_codedPALocalProofOf_coqRestrictedPADirectStrongStep.
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectStrongStep_in_binderReady_context.
+
+(** The final theorem must depend only on the relational choice principles
+    already inherited by raw model-coded PA proof construction.  In
+    particular there is no new strong-step, conclusion-truth, or rule-case
+    axiom introduced by this shell. *)
+Print Assumptions
+  raw_codedPALocalProofOf_templateAllNIntroduction.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepRuleCaseImplicationRoots_view.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectStrongStepPredicateBody.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectStrongStep.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectStrongStep_in_binderReady_context.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectStrongStepShellAudit.
