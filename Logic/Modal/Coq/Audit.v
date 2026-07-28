@@ -2,7 +2,7 @@
 
 From FoundationModal Require Import
   Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
-  KripkeAlgebra ModalAlgebra
+  KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
@@ -183,6 +183,179 @@ Print Assumptions dia_trans.
 Print Assumptions box_trans.
 Print Assumptions complex_boolean_algebra.
 Print Assumptions complex_modal_algebra.
+
+(** Complete coherence-space and stable-function surfaces. *)
+Check coherence_space.
+Check incoherent.
+Check strictly_incoherent.
+Check strictly_coherent.
+Check coherence_refl.
+Check coherence_sym.
+Check coherence_sym_iff.
+Check incoherence_refl.
+Check incoherence_sym.
+Check incoherence_sym_iff.
+Check strictly_incoherent_iff_incoherent_ne.
+Check incoherent_iff_strictly_incoherent_or_eq.
+Check strictly_incoherent_sym.
+Check strictly_incoherent_sym_iff.
+Check strictly_coherent_iff_coherent_ne.
+Check coherent_iff_strictly_coherent_or_eq.
+Check strictly_coherent_sym.
+Check strictly_coherent_sym_iff.
+Check coherence_trichotomy.
+Check coherence_set.
+Check set_included.
+Check set_equiv.
+Check set_empty.
+Check set_singleton.
+Check set_insert.
+Check set_intersection.
+Check set_union.
+Check set_big_union.
+Check is_clique.
+Check is_coclique.
+Check clique_empty.
+Check clique_singleton.
+Check clique_of_subset.
+Check clique_insert_iff.
+Check set_doubleton.
+Check clique_doubleton_iff.
+Check clique_big_union_of_pairwise_union.
+Check point.
+Check point_included.
+Check point_equiv.
+Check point_equiv_refl.
+Check point_equiv_sym.
+Check point_equiv_trans.
+Check point_equiv_equivalence.
+Check point_included_refl.
+Check point_included_trans.
+Check point_included_preorder.
+Check point_equiv_iff_mutual_inclusion.
+Check point_included_respects_equiv.
+Check point_empty.
+Check point_singleton.
+Check point_meet.
+Check point_meet_member.
+Check point_clique.
+Check point_le_def.
+Check directed_on.
+Check directed_on_of_terminal_element.
+Check raw_clique_colimit.
+Check point_colimit.
+Check raw_clique_colimit_member.
+Check point_colimit_member.
+Check discrete_coherence_space.
+Check total_coherence_space.
+Check coherence_top.
+Check coherence_zero.
+Check coherence_one.
+Check coherence_bottom.
+Check coherence_top_space.
+Check coherence_zero_space.
+Check coherence_one_space.
+Check coherence_bottom_space.
+Check empty_type_coherence_space.
+Check unit_coherence_space.
+Check bool_coherence_space.
+Check lneg.
+Check lneg_coherent.
+Check lneg_space.
+Check lneg_coherence_def.
+Check lneg_mk_coherent_iff.
+Check lneg_mk_strictly_coherent_iff.
+Check lneg_mk_incoherent_iff.
+Check lneg_mk_strictly_incoherent_iff.
+Check tensor.
+Check tensor_coherent.
+Check tensor_space.
+Check tensor_coherence_def.
+Check tensor_mk_coherent_iff.
+Check par.
+Check par_to_pair.
+Check par_coherent.
+Check par_space.
+Check par_coherence_def.
+Check par_mk_coherent_iff.
+Check par_mk_strictly_coherent_iff.
+Check arrow_par_coherent.
+Check arrow_par_space.
+Check arrow_par_coherence_def.
+Check arrow_par_coherent_iff.
+Check arrow_par_strictly_coherent_iff.
+Check lolli.
+Check lolli_space.
+Check lolli_identity_member.
+Check lolli_identity_clique.
+Check lolli_identity.
+Check with_space_type.
+Check with_coherent.
+Check additive_with_space.
+Check with_coherence_def.
+Check big_with.
+Check big_with_coherent.
+Check additive_big_with_space.
+Check big_with_coherence_def.
+Check plus_space_type.
+Check plus_coherent.
+Check additive_plus_space.
+Check plus_coherence_def.
+Check big_plus.
+Check big_plus_coherent.
+Check additive_big_plus_space.
+Check big_plus_coherence_def.
+Check stable_function.
+Check stable_function_equiv.
+Check stable_function_equiv_refl.
+Check stable_function_equiv_sym.
+Check stable_function_equiv_trans.
+Check stable_function_equiv_equivalence.
+Check stable_monotone.
+Check stable_respects_equiv.
+Check stable_colimit.
+Check stable_pullback.
+Check point_union_of_clique.
+Check point_left_included_union.
+Check point_right_included_union.
+Check stable_union_clique.
+Check stable_function_extensional.
+Check stable_image.
+Check stable_image_directed.
+Check stable_colimit_equiv.
+Check stable_identity.
+Check stable_identity_apply.
+Check stable_compose.
+Check stable_compose_apply.
+Check stable_identity_compose.
+Check stable_compose_identity.
+Check stable_compose_associative.
+
+(** Extensional points avoid function/proposition extensionality.  Classical
+    logic is confined to DNE-based strict-coherence and duality laws; the
+    stable-function/category layer is constructive. *)
+Print Assumptions coherence_sym_iff.
+Print Assumptions strictly_incoherent_iff_incoherent_ne.
+Print Assumptions strictly_coherent_iff_coherent_ne.
+Print Assumptions coherent_iff_strictly_coherent_or_eq.
+Print Assumptions coherence_trichotomy.
+Print Assumptions clique_big_union_of_pairwise_union.
+Print Assumptions point_colimit_member.
+Print Assumptions lneg_mk_strictly_coherent_iff.
+Print Assumptions lneg_mk_incoherent_iff.
+Print Assumptions tensor_mk_coherent_iff.
+Print Assumptions par_mk_strictly_coherent_iff.
+Print Assumptions arrow_par_strictly_coherent_iff.
+Print Assumptions lolli_identity_clique.
+Print Assumptions big_with_coherence_def.
+Print Assumptions big_plus_coherence_def.
+Print Assumptions stable_union_clique.
+Print Assumptions stable_respects_equiv.
+Print Assumptions stable_colimit_equiv.
+Print Assumptions stable_identity.
+Print Assumptions stable_compose.
+Print Assumptions stable_identity_compose.
+Print Assumptions stable_compose_associative.
 
 Check nnformula_eq_dec.
 Check nn_neg_involutive.

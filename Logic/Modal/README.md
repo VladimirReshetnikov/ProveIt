@@ -111,6 +111,9 @@ is being reconstructed:
   complement, join, and monotonicity laws, together with Magari algebras and
   their derived diamond/box transitivity; every Kripke complex algebra is an
   instance without assuming extensional equality of predicates;
+- coherence spaces, cliques and directed colimits, the complete multiplicative
+  and additive connective constructions, linear identity points, and stable
+  functions with extensional identity, composition, and category laws;
 - complexity-bounded generated models with a strengthened budgeted truth
   lemma and invariance under changing the enclosing target formula;
 - reflexive, transitive, and reflexive-transitive frame closures, their order
@@ -191,6 +194,8 @@ is being reconstructed:
 | `KripkeSemantics.v` | `Modal/Kripke/Basic.lean` | Complete source-facing local/model/frame/class semantic API: singleton frames, connective/list/iteration truth laws, congruence and duality, counterexamples, closure, and K insertion |
 | `KripkeAlgebra.v` | `Modal/Kripke/Algebra.lean` | Relational complex algebras, modal operations, algebraic evaluation/satisfaction equivalence, and validity as subset/extensional equality |
 | `ModalAlgebra.v` | `Semantics/Algebra/Modal/{Basic,Magari}.lean` | Setoid Boolean and modal algebras, the complete derived K/duality/monotonicity surface, Magari diagonal and transitivity theorems, and the Kripke complex-algebra adapter |
+| `CoherenceSpace.v` | `Semantics/CoherenceSpace/Basic.lean` | Complete coherence/incoherence, clique/point/colimit, base-space, linear-negation, tensor, par, lolli, and additive connective surface |
+| `CoherenceStableFunction.v` | `Semantics/CoherenceSpace/StableFunction.lean` | Stable maps, monotonicity, directed-colimit and pullback preservation, compatible unions, extensional identity/composition, and category laws |
 | `NNFormulaSemantics.v` | `Modal/Kripke/NNFormula.lean` | Direct NNF semantics, semantic negation, translation correctness, validity equivalences |
 | `HilbertKSoundness.v` | `Modal/Kripke/Hilbert.lean` | Framewise and contextual Kripke soundness for K, plus consistency |
 | `KripkeHilbert.v` | `Modal/Kripke/Hilbert.lean` | Axiom-validity soundness packages for frames/classes, inhabited-frame consistency, and semantic comparison of normal systems over nested classes |
@@ -334,6 +339,14 @@ The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
 flattens Lean's one-field property classes into predicates plus implication
 lemmas; this representational change introduces no axioms.
+
+Coherence-space points and stable functions use explicit extensional
+equivalences, so their order, colimit, pullback, identity, composition, and
+category laws need neither functional nor propositional extensionality.  The
+stable-function layer is constructive.  In the basic layer, extracting
+positive coherence from a negated incoherence and the corresponding linear
+negation/par characterizations use propositional excluded middle; the direct
+coherence, clique, colimit, and connective construction laws are constructive.
 
 The finite complement-closed context layer keeps its boundary equally
 explicit.  The consistency insertion criteria, complement derivations, and
@@ -722,6 +735,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Kripke FoundationModal.KripkeSemantics FoundationModal.NNFormulaSemantics `
   FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
   FoundationModal.KripkeAlgebra FoundationModal.ModalAlgebra `
+  FoundationModal.CoherenceSpace FoundationModal.CoherenceStableFunction `
   FoundationModal.Complement `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `
   FoundationModal.RelationProperties `
