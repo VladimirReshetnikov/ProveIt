@@ -1486,6 +1486,17 @@ concatenation to arbitrary represented formula operations, while
 `RawCodedTemplateDirectStructuralTranslation.v` assembles the finite
 surrounding template directly from relational opaque shift/opening traces.
 No nonstandard opaque leaf is decoded into a Coq inductive tree.
+`RawCodedTemplateDirectStructuralPAAgreement.v` proves that this direct
+translation still agrees with ordinary PA quotation on embedded PA syntax:
+parameters and opaque leaves cannot occur there, so the existing transparent
+constructor recursion applies unchanged.  The restricted-soundness adapter
+`RawCodedRestrictedPADerivationSoundnessTemplateDirectInputs.v` then packages
+two exact five-argument selectors, one for context truth and one for
+conclusion truth, together with numeral-parameter term traces.  Predicate
+names zero and one dispatch to those selectors only at the advertised arity;
+every malformed arity and every unused name is represented by bottom.  This
+is an abstract operation interface, not an existence or semantic-adequacy
+claim for either truth selector.
 `RawCodedTemplateNumeralParameters.v` separately builds exact term shift and
 opening traces for named parameters represented by model-internal numeral
 codes.  `RawCodedTemplateNumeralTermSyntax.v` uses the zero-shift instance of
@@ -2341,6 +2352,20 @@ the former separate case-compiler premise.  This is still not the unconditional
 Coq headline: the concrete carrier truth interpretation, the nonstandard
 closure remainder, and the genuine recursive strong-step proof remain explicit
 inputs to the later soundness construction.
+
+`RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell.v`
+ports the same `P`/`K` induction graph to direct opaque traces.  It proves the
+shift, successor-opening, and zero-opening fields, projects only the genuinely
+nonstandard bound/closure/self-instantiation remainder, and packages supplied
+case and finalizer roots as an ordinary PA certificate of the exact direct
+universal-soundness code.  The companion direct growing-case module reuses
+the already checked 1,630-line finite case metaproof through the generic
+template compiler, then selects and transports one honest finite PA-axiom
+prefix for both arithmetic kernels.  It does not infer a finite structural
+tree from a direct trace.  These modules remove a translation mismatch but do
+not yet construct the context-truth selector, the recursive strong-step root,
+or the arbitrary-carrier closure remainder; the Coq headline therefore
+remains conditional.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
