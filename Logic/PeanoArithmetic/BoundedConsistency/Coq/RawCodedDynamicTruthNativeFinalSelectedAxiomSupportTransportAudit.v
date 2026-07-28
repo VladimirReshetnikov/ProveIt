@@ -1,0 +1,23 @@
+(** Kernel audit for transport of the staged selected axiom-soundness root. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalSelectedAxiomSupportTransport.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalSelectedAxiomSupportTransport.
+
+Check RawCoqRestrictedPASelectedAxiomContextTruthResidualSupport.
+Check raw_dynamicTruthNativeFinal_nextAxiomSoundnessRoot_to_bridge.
+Check raw_coqRestrictedPASelectedAxiomContextTruthSupport_of_residual.
+Check RawDynamicTruthNativeFinalBridgeFieldsHeadAdequacyCompiler.
+Check
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthResidualSupportCompiler.
+Check
+  raw_dynamicTruthNativeFinalSelectedAxiomContextTruthSupportCompiler_of_residual.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinal_nextAxiomSoundnessRoot_to_bridge.
+Print Assumptions
+  raw_coqRestrictedPASelectedAxiomContextTruthSupport_of_residual.
+Print Assumptions
+  raw_dynamicTruthNativeFinalSelectedAxiomContextTruthSupportCompiler_of_residual.
