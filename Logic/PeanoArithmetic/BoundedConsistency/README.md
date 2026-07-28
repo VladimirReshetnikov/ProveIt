@@ -1783,6 +1783,15 @@ conditional on the sharply stated compiler that must return a represented PA
 proof of this exact selected carrier code; semantic validity is not used as a
 substitute for that compiler.
 
+`RawCodedDynamicTruthNativeLocalProofCompilation.v` compiles the complete
+logical shell of that local field.  It explicitly introduces the
+admissibility and evidence implications, closes both bodies under three
+universal binders, and joins decision with exclusivity by conjunction.  Its
+replacement compiler asks only for two same-context leaves: the evidence
+disjunction under admissibility and bottom under admissibility plus both
+evidence assumptions.  An exact trace adapter then discharges the original
+nonstandard-index field compiler from this narrower interface.
+
 `RawCodedDynamicTruthNativeCrossLevelPositiveGraph.v` constructs the adjacent-
 level coherence coordinate with the same native indexing discipline.  For a
 carrier predecessor `p`, it selects the genuine current orbit at `S p`, runs
@@ -1793,6 +1802,15 @@ relationally total in every PA model.  Every externally fixed standard level
 has a represented PA proof; proof totality at a possibly nonstandard carrier
 index remains conditional only on the explicit
 `RawDynamicTruthNativeCrossLevelCoherenceProofCompiler`.
+
+`RawCodedDynamicTruthNativeCrossLevelProofCompilation.v` compiles the complete
+outer shell of that coherence field.  Four same-context directional roots—
+the forward and backward implications for each polarity—are combined with
+explicit implication, conjunction, and universal-introduction proof nodes.
+The resulting adapter discharges the original field compiler without assuming
+the field certificate or its semantic validity; the exact residual seam is a
+local-root compiler indexed by the adequate orbit and literal construction
+trace.
 
 `RawCodedDynamicTruthNativeShiftPositiveGraph.v` constructs the third native
 positive coordinate.  It selects the genuine paired truth orbit at `S p`,
@@ -1826,6 +1844,15 @@ totality plus represented proofs at every externally fixed standard level.
 The arbitrary-carrier proof-total endpoint retains field-code adequacy and is
 conditional only on `RawDynamicTruthNativeSubstitutionProofCompiler`; it does
 not infer proof syntax from semantic validity.
+
+`RawCodedDynamicTruthNativeSubstitutionProofCompilation.v` compiles the
+seven-variable substitution field around four directional transport leaves.
+All four leaves share the literal side-condition context; explicit
+conjunction and implication nodes assemble the two equivalences, seven
+universal-introduction nodes close the field, and an empty witnessed context
+packages the result as an ordinary PA certificate.  The exact trace adapter
+reduces the former field compiler to these four roots without mentioning the
+finished field code or assuming its truth.
 
 `RawCodedDynamicTruthNativeAxiomSoundnessPositiveGraph.v` constructs the fifth
 native positive coordinate from the same genuine paired orbit.  At predecessor
@@ -1975,6 +2002,16 @@ remaining replay, cross-level, binder-projection, fixed-helper, traversal, and
 row-root obligations; this finite assembly does not claim to project an
 actual successor row or to complete the whole local decision compiler.
 
+`RawCodedDynamicTruthSuccessorRowBranchDisjunctionCompilation.v` supplies the
+missing structural row projection.  A generic raw template proof distributes
+an arbitrary existential tower over a finite right-associated disjunction;
+its exact eight-binder Sigma and Pi instances project the branch component of
+the literal successor row and produce the matrix's `Or7` and `Or6` codes in
+the same represented context.  The carrier compiler requires only context
+realizability, a self-shift, the existing direct structural traces, and the
+literal domain/lower-application identification—never a semantic decoding of
+the row.
+
 `RawCodedTruthCertificateMasterMixedQFHelperBatch.v` synchronizes every fixed
 cell needed so far.  It appends exactly the nine carrier-independent mixed-QF
 theorems to the existing twenty-nine collision and binder-principal helpers,
@@ -1983,6 +2020,21 @@ arbitrary lower inputs, and places all thirty-eight helper roots together with
 the six current master roots in one literal witnessed context.  The two
 lower-dependent mixed cells are explicitly absent, so their structural
 compilers remain measurable rather than being folded into a quoted helper.
+
+`RawCodedTruthCertificateMasterHelperLookup.v` supplies the structural
+eliminator for those synchronized batches.  Membership of a named fixed
+helper now recovers its corresponding local proof root without destructing
+all thirty-eight roots or changing the shared represented context.  The
+lemma follows the helper and root lists position-for-position and introduces
+no proof, weakening, or semantic premise of its own.
+
+`RawCodedDynamicTruthMixedQFHelperRootExtraction.v` applies that lookup to the
+mixed quantifier-free suffix.  It recovers the exact nine carrier-independent
+cell roots from the synchronized helper batch, and then exposes a finite
+adapter from those roots plus the two explicitly lower-dependent opaque roots
+to the complete eleven-cell family required by the local collision matrix.
+The module therefore records, without hiding it in a broad interface, the
+precise two-cell boundary still requiring structural compilation.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but

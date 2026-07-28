@@ -1,0 +1,21 @@
+(** Kernel-facing audit for mixed-QF helper-root extraction. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthMixedQFHelperRootExtraction.
+
+Module PABoundedRawCodedDynamicTruthMixedQFHelperRootExtractionAudit.
+
+Import PABoundedRawCodedDynamicTruthMixedQFHelperRootExtraction.
+
+Check RawDynamicTruthMixedQFFixedCellRootsAt.
+Check raw_dynamicTruthMixedQFFixedCellRootsAt_of_helper_batch.
+Check RawDynamicTruthMixedQFOpaqueCellRootsAt.
+Check RawDynamicTruthMixedQFAllCellRootsAt.
+Check raw_dynamicTruthMixedQFAllCellRootsAt_of_fixed_and_opaque.
+Check raw_dynamicTruthMixedQFAllCellRootsAt_of_helper_batch.
+
+Print Assumptions raw_dynamicTruthMixedQFFixedCellRootsAt_of_helper_batch.
+Print Assumptions raw_dynamicTruthMixedQFAllCellRootsAt_of_fixed_and_opaque.
+Print Assumptions raw_dynamicTruthMixedQFAllCellRootsAt_of_helper_batch.
+
+End PABoundedRawCodedDynamicTruthMixedQFHelperRootExtractionAudit.
