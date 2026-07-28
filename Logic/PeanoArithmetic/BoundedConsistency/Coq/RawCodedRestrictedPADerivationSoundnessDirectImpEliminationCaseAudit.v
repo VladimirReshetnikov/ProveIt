@@ -1,0 +1,42 @@
+(** Kernel-facing audit for the direct implication-elimination branch. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectImpEliminationCase.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectImpEliminationCaseAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectImpEliminationCase.
+
+Check coqRestrictedPADirectImpEDeepContext.
+Check coqRestrictedPADirectImpECaseTemplate.
+Check coqRestrictedPADirectImpE_case_shape.
+Check coqRestrictedPADirectImpEStrongPrefixTemplate.
+Check coqRestrictedPADirectImpERestrictedProofTemplate.
+
+Check coqRestrictedPADirectImpEContextTransportRoot_valid.
+Check coqRestrictedPADirectImpEConclusionTransportRoot_valid.
+Check coqRestrictedPADirectImpECompletionRoot_valid.
+Check coqRestrictedPADirectImpE_remaining_shape.
+
+(** This is the sole semantic residual: the two recursive IH applications
+    and the dynamic truth implication law, ending at witness-consequent
+    truth rather than the outer conclusion. *)
+Check coqRestrictedPADirectImpERecursiveModusPonensLawTemplate.
+Check RawCoqRestrictedPADirectImpERecursiveModusPonensLawRoot.
+
+Check raw_codedPALocalProofOf_coqRestrictedPADirectImpEliminationCase.
+Check raw_coqRestrictedPADirectStrongStepImpEliminationCaseRoot.
+
+Print Assumptions coqRestrictedPADirectImpE_case_shape.
+Print Assumptions coqRestrictedPADirectImpEContextTransportRoot_valid.
+Print Assumptions coqRestrictedPADirectImpEConclusionTransportRoot_valid.
+Print Assumptions coqRestrictedPADirectImpECompletionRoot_valid.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectImpEliminationCase.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepImpEliminationCaseRoot.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectImpEliminationCaseAudit.

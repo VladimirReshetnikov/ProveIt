@@ -2436,6 +2436,19 @@ only proof descent, child instantiation, and refutation of the selected bottom
 truth.  Both public roots again inhabit their exact arbitrary-tail dispatcher
 slots and exclude the desired conclusion from their premises.
 
+Implication elimination and both conjunction eliminations now occupy three
+more recursive dispatcher slots.  Implication elimination projects the two
+child endpoints and the witnessed implication code, transports both context
+and conclusion truth along the literal endpoint equalities, and compiles the
+object-level modus-ponens completion spine; its sole residual combines the two
+recursive descents with the dynamic implication law.  Each conjunction
+elimination projects its child endpoint and principal `And` code, transports
+the witness-context truth, selects the appropriate left or right truth field,
+and transports that field to the outer conclusion.  Their residuals are only
+the recursive child truth and the corresponding dynamic conjunction
+projection law.  All three roots retain the caller's arbitrary template tail
+and assume neither their constructor result nor the enclosing strong step.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
