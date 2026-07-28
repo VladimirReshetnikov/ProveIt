@@ -13,7 +13,7 @@ From FoundationModal Require Import
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
   HilbertNormalTransitiveBaseSystems HilbertNormalMcKSystems
   HilbertNormalK4PointSystems HilbertNormalMixedSystems
-  HilbertNormalD45SymmetricSystems
+  HilbertNormalD45SymmetricSystems HilbertNormalS4Systems
   HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
@@ -1232,6 +1232,25 @@ Check normal_KB5_axioms_has_B.
 Check normal_KB5_axioms_has_Five.
 Check normal_KB5.
 Check normal_KB5_entailment.
+
+(** Exact raw S4/S4McK systems and their source inclusions. *)
+Check structural_s4_entailment.
+Check structural_s4mck_entailment.
+Check normal_S4_axioms.
+Check normal_S4_axioms_has_K.
+Check normal_S4_axioms_has_T.
+Check normal_S4_axioms_has_Four.
+Check normal_S4.
+Check normal_S4_entailment.
+Check normal_K4_weaker_than_normal_S4.
+Check normal_S4McK_axioms.
+Check normal_S4McK_axioms_has_K.
+Check normal_S4McK_axioms_has_T.
+Check normal_S4McK_axioms_has_Four.
+Check normal_S4McK_axioms_has_McK.
+Check normal_S4McK.
+Check normal_S4McK_entailment.
+Check normal_K4McK_weaker_than_normal_S4McK.
 
 (** Complete 17-declaration raw-axiom calculus with the Henkin rule. *)
 Check henkin_rule.
@@ -2880,6 +2899,19 @@ Print Assumptions normal_KB5_axioms_has_K.
 Print Assumptions normal_KB5_axioms_has_B.
 Print Assumptions normal_KB5_axioms_has_Five.
 Print Assumptions normal_KB5_entailment.
+(** S4, S4McK, and both source inclusions are wholly syntactic and closed
+    under the global context. *)
+Print Assumptions normal_S4_axioms_has_K.
+Print Assumptions normal_S4_axioms_has_T.
+Print Assumptions normal_S4_axioms_has_Four.
+Print Assumptions normal_S4_entailment.
+Print Assumptions normal_K4_weaker_than_normal_S4.
+Print Assumptions normal_S4McK_axioms_has_K.
+Print Assumptions normal_S4McK_axioms_has_T.
+Print Assumptions normal_S4McK_axioms_has_Four.
+Print Assumptions normal_S4McK_axioms_has_McK.
+Print Assumptions normal_S4McK_entailment.
+Print Assumptions normal_K4McK_weaker_than_normal_S4McK.
 (** Both rule calculi, including their raw-template adapters and concrete
     structural bundles, are constructive. *)
 Print Assumptions with_henkin_axm_substituted.
