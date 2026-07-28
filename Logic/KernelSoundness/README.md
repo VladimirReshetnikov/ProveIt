@@ -17,6 +17,13 @@ Full write-up:
 > [`leanprover/comparator`](https://github.com/leanprover/comparator), the Lean
 > FRO's trustworthy proof judge, against a `theorem boom : False := sorry`
 > challenge. **All four are rejected**; an honest control solution is accepted.
+>
+> However, `Comparator/evade/` **is accepted** (exit 0, `Your solution is okay!`,
+> `#print axioms boom` reporting nothing). It exploits the fact that comparator
+> checks only that the challenge and solution *agree* on the kernel primitives,
+> never that those primitives are the real ones — so a challenge that does not
+> import `Init` gets no protection from that mechanism, a precondition comparator
+> documents but does not enforce. A normally-written challenge is unaffected.
 > See [`Comparator/README.md`](Comparator/README.md) for the runs and messages.
 >
 > Comparator's own regression suite already contains this attack:

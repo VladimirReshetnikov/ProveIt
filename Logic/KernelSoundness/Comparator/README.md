@@ -10,7 +10,11 @@ module claiming to prove it, comparator guarantees the solution's theorem
 3. is accepted by the Lean kernel.
 
 **Every exhibit in `../Lean/` is rejected by comparator.** That is the correct
-outcome, and it is the honest bottom line for this whole line of work.
+outcome.
+
+**But `evade/` is accepted** — a proof of `False` that comparator passes, exit 0,
+`Your solution is okay!`, with `#print axioms boom` reporting nothing. See
+[The evasion](#the-evasion) below for what it does and does not show.
 
 ## Results
 
@@ -65,7 +69,86 @@ constant used in the challenge statement, then transitively demands full
 environments. A solution that supplies its own `Nat.gcd` — or its own `False`,
 or its own `String.ofList` — differs on one of those constants and is rejected.
 
-## A gap in the list (not exploitable as far as I could get)
+## The evasion
+
+`evade/` contains a `Challenge`/`Solution` pair that comparator **accepts**:
+
+```
+Running Lean default kernel on solution.
+Lean default kernel accepts the solution
+Your solution is okay!
+EXIT=0
+```
+
+`Solution.lean` proves `theorem boom : False`, and `#print axioms boom` reports
+*'boom' does not depend on any axioms*. Every one of comparator's three
+guarantees is formally satisfied: the statement matches the challenge's, no
+axioms beyond the permitted (empty) list are used, and the Lean kernel accepts
+the replayed environment.
+
+### The idea
+
+`Main.lean:primitiveTargets` carries this comment:
+
+> The challenge needs to have all the built-in constants of the kernel, as the
+> kernel makes no guarantees when fed other definitions here.
+
+and the README's step 4 states:
+
+> This always includes the declarations from `Init` with special meaning to the
+> kernel. **Both `Challenge` and `Solution` therefore need to import the default
+> prelude.**
+
+**Nothing enforces that.** `compareAt` checks only that the challenge and the
+solution *agree* on those constants — never that they are the *real* ones. So if
+the challenge is itself a `prelude` module that never imports `Init`, the entire
+primitive mechanism is vacuous: challenge and solution agree perfectly on a set
+of primitives that are not Lean's.
+
+`evade/Challenge.lean` and `evade/Solution.lean` share a byte-identical preamble
+declaring `False`, `Nat`, `Bool`, `List`, `String`, the 15 `primitiveTargets`
+constants — and
+
+```lean
+inductive Char : Type where
+  | ofNat : Empty -> Char
+```
+
+`Char.ofNat` is the name the kernel uses when expanding a string literal
+(`string_lit_to_constructor` builds `String.ofList (List.cons (Char.ofNat 97)
+List.nil)` by name, unchecked). Here its field type is `Empty`, so evaluating a
+bare `"a"` makes the kernel fabricate an inhabitant of a type with no
+constructors. The rest is three lines of `rec`.
+
+Note it is *identical* in both modules, so even a complete primitive list that
+compared `Char.ofNat` would not have caught this. What would catch it is
+comparing the primitives against the **checker's own** `Init`, rather than
+against the challenge.
+
+### What this does and does not show
+
+* It does **not** break comparator's logic. It defeats a *documented
+  precondition* that comparator neither enforces nor warns about, and it relies
+  on the kernel bug that README assumption 5 ("The Lean kernel is correct")
+  explicitly excludes.
+* It does **not** affect a normally-written challenge. An AIMO-style challenge
+  that imports `Init` has core's `Char.ofNat : Nat → Char`, and a solution
+  cannot displace it — I verified that every kernel-hooked name comes bundled
+  with the primitives in the import graph (see below).
+* It **does** show that a challenge author gets no protection from the primitive
+  mechanism unless they import the standard prelude, and that comparator will
+  not tell them so. The same construction works with any kernel-hooked name,
+  including `Nat.zero`/`Nat.succ` (commented out of `primitiveTargets`), because
+  agreement is all that is ever required.
+
+### Suggested fix
+
+Have comparator validate the primitives against the `Init` of the Lean
+installation it is running under, or at minimum assert that both modules
+transitively import `Init` — instead of only checking challenge/solution
+agreement.
+
+## A gap in the list (not exploitable against a normal challenge)
 
 `primitiveTargets` omits several names the kernel really does hard-code:
 
