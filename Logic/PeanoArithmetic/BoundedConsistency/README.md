@@ -1885,6 +1885,18 @@ packages the result as an ordinary PA certificate.  The exact trace adapter
 reduces the former field compiler to these four roots without mentioning the
 finished field code or assuming its truth.
 
+`RawCodedDynamicTruthNativeSubstitutionLeafRootCompilation.v` refines those
+four roots over an arbitrary visible base tail.  The construction trace
+supplies adequacy for both current global predicates, both numeral-instantiated
+domains, and all four application outputs; concrete assumption and
+conjunction-elimination nodes project the five substitution side conditions.
+Four directional target leaves are discharged by implication introduction,
+after which three conjunction nodes and the outer implication assemble the
+complete open substitution body over the same tail.  A resource-explicit
+adapter ties every remaining leaf to one trace and hands it all derivable
+adequacy and side-condition roots.  Literal-empty adapters remain conditional,
+and the witnessed-tail endpoints never erase their PA context.
+
 `RawCodedDynamicTruthNativeAxiomSoundnessPositiveGraph.v` constructs the fifth
 native positive coordinate from the same genuine paired orbit.  At predecessor
 `p` it reads the lower domains at `S p`, takes the actual paired successor to

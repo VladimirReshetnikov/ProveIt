@@ -1,0 +1,146 @@
+(**
+  Kernel-facing audit for trace-linked native substitution leaves.
+
+  The goals below check that the visible-tail contexts reduce literally to
+  the historical empty-tail contexts.  The assumption reports cover every
+  proof-producing layer: represented-substitution adequacy, projection of
+  the five antecedent conjuncts, implication introduction, and both the
+  witnessed-tail and conditional empty-tail adapters.
+*)
+
+From PAHF Require Import PAHF.
+From PAFiniteBasisReduction Require Import HierarchyReduction.
+From BoundedPAConsistency Require Import
+  RawCodedSyntaxConstructors
+  RawCodedDynamicTruthNativeSubstitutionProofCompilation
+  RawCodedDynamicTruthNativeSubstitutionLeafRootCompilation.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeSubstitutionLeafRootCompilationAudit.
+
+Import PA.
+Import PAHierarchyReduction.
+Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedDynamicTruthNativeSubstitutionProofCompilation.
+Import PABoundedRawCodedDynamicTruthNativeSubstitutionLeafRootCompilation.
+
+(** Visible contexts and their literal empty-tail specializations. *)
+Check rawDynamicTruthNativeSubstitutionCommonContextOn.
+Check rawDynamicTruthNativeSubstitutionDirectionalContextOn.
+Check rawDynamicTruthNativeSubstitutionCommonContextOn_empty.
+Check raw_dynamicTruthNativeSubstitutionCommonContextOn_realizable.
+Check raw_dynamicTruthNativeSubstitutionDirectionalContextOn_realizable.
+
+Goal forall (M : RawPAModel) sigmaDomain piDomain,
+  rawDynamicTruthNativeSubstitutionCommonContextOn M (raw_zero M)
+      sigmaDomain piDomain =
+  rawDynamicTruthNativeSubstitutionCommonContext M sigmaDomain piDomain.
+Proof. reflexivity. Qed.
+
+(** Exact adequacy extracted from numeral substitution and all four
+    trace-linked represented applications. *)
+Check
+  raw_dynamicTruthNativeSubstitutionApplication_target_atomically_adequate.
+Check raw_dynamicTruthNativeSubstitutionDomain_target_atomically_adequate.
+Check RawDynamicTruthNativeSubstitutionProofTraceAdequacyAt.
+Check rawDynamicTruthNativeSubstitution_currentGlobalSigma_adequate.
+Check rawDynamicTruthNativeSubstitution_currentGlobalPi_adequate.
+Check rawDynamicTruthNativeSubstitution_sigmaDomain_adequate.
+Check rawDynamicTruthNativeSubstitution_piDomain_adequate.
+Check rawDynamicTruthNativeSubstitution_sourceSigma_adequate.
+Check rawDynamicTruthNativeSubstitution_targetSigma_adequate.
+Check rawDynamicTruthNativeSubstitution_sourcePi_adequate.
+Check rawDynamicTruthNativeSubstitution_targetPi_adequate.
+Check raw_dynamicTruthNativeSubstitutionProofTraceAt_adequacy.
+
+(** Five concrete conjunct projections from the literal antecedent. *)
+Check rawDynamicTruthNativeSubstitutionFormulaConditionCode.
+Check rawDynamicTruthNativeSubstitutionAssignmentConditionCode.
+Check rawDynamicTruthNativeSubstitutionTargetAdmissibleConditionCode.
+Check rawDynamicTruthNativeSubstitutionRankAgreementConditionCode.
+Check RawDynamicTruthNativeSubstitutionSideConditionRootsOn.
+Check raw_dynamicTruthNativeSubstitutionSideConditionRootsOn.
+
+(** Directional leaves and all four implication-introduction shells. *)
+Check RawDynamicTruthNativeSubstitutionSigmaDirectionalLeavesOn.
+Check RawDynamicTruthNativeSubstitutionPiDirectionalLeavesOn.
+Check RawDynamicTruthNativeSubstitutionSigmaLocalRootsOn.
+Check RawDynamicTruthNativeSubstitutionPiLocalRootsOn.
+Check
+  raw_dynamicTruthNativeSubstitutionSigmaLocalRootsOn_of_directional_leaves.
+Check
+  raw_dynamicTruthNativeSubstitutionPiLocalRootsOn_of_directional_leaves.
+Check rawDynamicTruthNativeSubstitutionTransportRootOn.
+Check rawDynamicTruthNativeSubstitutionBodyRootOn.
+Check rawDynamicTruthNativeSubstitutionTransportRootOn_empty.
+Check rawDynamicTruthNativeSubstitutionBodyRootOn_empty.
+Check RawDynamicTruthNativeSubstitutionBodyLocalRootOn.
+Check
+  raw_dynamicTruthNativeSubstitutionBodyLocalRootOn_of_polarity_roots.
+
+Goal forall (M : RawPAModel) sigmaDomain piDomain sourceSigma targetSigma,
+  RawDynamicTruthNativeSubstitutionSigmaLocalRootsOn M (raw_zero M)
+      sigmaDomain piDomain sourceSigma targetSigma <->
+  RawDynamicTruthNativeSubstitutionSigmaLocalRootsAt M
+      sigmaDomain piDomain sourceSigma targetSigma.
+Proof. reflexivity. Qed.
+
+Goal forall (M : RawPAModel)
+    sigmaDomain piDomain sourceSigma targetSigma sourcePi targetPi,
+  RawDynamicTruthNativeSubstitutionBodyLocalRootOn M (raw_zero M)
+      sigmaDomain piDomain sourceSigma targetSigma sourcePi targetPi <->
+  RawDynamicTruthNativeSubstitutionBodyLocalRootAt M
+      sigmaDomain piDomain sourceSigma targetSigma sourcePi targetPi.
+Proof. reflexivity. Qed.
+
+Goal forall (M : RawPAModel) sigmaDomain piDomain sourcePi targetPi,
+  RawDynamicTruthNativeSubstitutionPiLocalRootsOn M (raw_zero M)
+      sigmaDomain piDomain sourcePi targetPi <->
+  RawDynamicTruthNativeSubstitutionPiLocalRootsAt M
+      sigmaDomain piDomain sourcePi targetPi.
+Proof. reflexivity. Qed.
+
+(** Exact residual boundary and context-honest adapters. *)
+Check RawDynamicTruthNativeSubstitutionDirectionalLeafRootCompilerOn.
+Check
+  RawDynamicTruthNativeSubstitutionTraceLinkedDirectionalLeafCompilerOn.
+Check
+  raw_dynamicTruthNativeSubstitutionDirectionalLeafRootCompilerOn_of_trace_linked.
+Check
+  raw_dynamicTruthNativeSubstitutionLocalRootsOn_of_directional_leaf_compiler.
+Check
+  raw_dynamicTruthNativeSubstitutionBodyLocalRootOn_of_directional_leaf_compiler.
+Check
+  raw_dynamicTruthNativeSubstitutionLocalRootCompiler_of_empty_directional_leaves.
+Check
+  raw_dynamicTruthNativeSubstitutionLocalRootCompiler_of_empty_trace_linked_leaves.
+Check
+  RawDynamicTruthNativeSubstitutionWitnessedDirectionalLeafRootInterface.
+Check
+  raw_dynamicTruthNativeSubstitutionWitnessedLocalRoots_of_directional_leaves.
+Check
+  raw_dynamicTruthNativeSubstitutionWitnessedBodyLocalRoot_of_directional_leaves.
+
+Print Assumptions
+  raw_dynamicTruthNativeSubstitutionApplication_target_atomically_adequate.
+Print Assumptions
+  raw_dynamicTruthNativeSubstitutionDomain_target_atomically_adequate.
+Print Assumptions raw_dynamicTruthNativeSubstitutionProofTraceAt_adequacy.
+Print Assumptions raw_dynamicTruthNativeSubstitutionSideConditionRootsOn.
+Print Assumptions
+  raw_dynamicTruthNativeSubstitutionSigmaLocalRootsOn_of_directional_leaves.
+Print Assumptions
+  raw_dynamicTruthNativeSubstitutionPiLocalRootsOn_of_directional_leaves.
+Print Assumptions
+  raw_dynamicTruthNativeSubstitutionBodyLocalRootOn_of_polarity_roots.
+Print Assumptions
+  raw_dynamicTruthNativeSubstitutionDirectionalLeafRootCompilerOn_of_trace_linked.
+Print Assumptions
+  raw_dynamicTruthNativeSubstitutionLocalRootCompiler_of_empty_trace_linked_leaves.
+Print Assumptions
+  raw_dynamicTruthNativeSubstitutionWitnessedLocalRoots_of_directional_leaves.
+Print Assumptions
+  raw_dynamicTruthNativeSubstitutionWitnessedBodyLocalRoot_of_directional_leaves.
+
+End
+  PABoundedRawCodedDynamicTruthNativeSubstitutionLeafRootCompilationAudit.
