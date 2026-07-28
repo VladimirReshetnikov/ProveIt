@@ -1812,6 +1812,18 @@ the field certificate or its semantic validity; the exact residual seam is a
 local-root compiler indexed by the adequate orbit and literal construction
 trace.
 
+`RawCodedDynamicTruthNativeCrossLevelLeafRootCompilation.v` exposes the
+actual successor rows behind that construction trace, retaining their row
+domains, lower applications, shared global wrapper, and all four ternary
+applications in one linked relation.  The trace supplies every atomic-
+adequacy fact needed by the proof constructors.  One represented guarded-
+equivalence root per polarity is then compiled, over an arbitrary visible
+base tail, into the four directional leaves by checked context insertion,
+assumption, implication-elimination, and conjunction-elimination nodes.  The
+literal-empty adapter consequently reduces the original field compiler to
+exactly two trace-linked guarded roots; no successor relation is mistaken for
+a proof and no nonempty witnessed context is erased.
+
 `RawCodedDynamicTruthNativeShiftPositiveGraph.v` constructs the third native
 positive coordinate.  It selects the genuine paired truth orbit at `S p`,
 builds the six source/target domain and certificate applications through
@@ -1831,6 +1843,16 @@ common assumption, and eight universal-introduction nodes close the field.
 The trace adapter retains the adequate orbit, numeral, domain substitutions,
 and four application traces while eliminating any premise that already
 mentions a completed field certificate.
+
+`RawCodedDynamicTruthNativeShiftLeafRootCompilation.v` retains an arbitrary
+visible base tail beneath that one-assumption context.  It derives adequacy
+for both global predicates, both input domains, and all four trace-selected
+application outputs, then projects each of the five nested shift-data members
+with concrete assumption and conjunction-elimination roots.  Represented
+implication introduction reduces the two Sigma/Pi equivalences to exactly
+four trace-indexed directional leaves.  The empty-tail endpoint remains a
+conditional specialization of those leaves, while the witnessed-tail form
+keeps its PA context literal rather than silently discarding it.
 
 `RawCodedDynamicTruthNativeSubstitutionCarrier.v` fixes the exact syntax for
 the fourth positive master coordinate.  Its transparent polynomial closes
@@ -1862,6 +1884,18 @@ universal-introduction nodes close the field, and an empty witnessed context
 packages the result as an ordinary PA certificate.  The exact trace adapter
 reduces the former field compiler to these four roots without mentioning the
 finished field code or assuming its truth.
+
+`RawCodedDynamicTruthNativeSubstitutionLeafRootCompilation.v` refines those
+four roots over an arbitrary visible base tail.  The construction trace
+supplies adequacy for both current global predicates, both numeral-instantiated
+domains, and all four application outputs; concrete assumption and
+conjunction-elimination nodes project the five substitution side conditions.
+Four directional target leaves are discharged by implication introduction,
+after which three conjunction nodes and the outer implication assemble the
+complete open substitution body over the same tail.  A resource-explicit
+adapter ties every remaining leaf to one trace and hands it all derivable
+adequacy and side-condition roots.  Literal-empty adapters remain conditional,
+and the witnessed-tail endpoints never erase their PA context.
 
 `RawCodedDynamicTruthNativeAxiomSoundnessPositiveGraph.v` constructs the fifth
 native positive coordinate from the same genuine paired orbit.  At predecessor
@@ -1934,6 +1968,19 @@ handle binder-induced context shifts.  Conditional only on that exact
 syntactic operation, a fixed five-step fold synchronizes all six ordinary
 master-field certificates while preserving their literal conclusions.  The
 module does not claim an assumption-free arbitrary-context merge.
+
+`RawCodedPALocalProofWitnessedContextInclusionWeakening.v` expands that
+single proof-tree operation into all seventeen raw natural-deduction rule
+cases.  Assumptions use literal membership inclusion; propositional,
+quantifier-elimination, and equality rules recursively rebuild their checked
+children; `All-I` and the body branch of `Ex-E` alone require a shifted target
+context.  Parallel source/target shifts preserve membership inclusion by
+represented formula-shift functionality, and PA-definable strong induction
+then covers every carrier-valued proof root, including nonstandard ones.  The
+remaining `RawContextListIncludedTargetShiftExists` premise is exactly target
+shift existence under nested binders.  It is proved for a top-level witnessed
+target but intentionally remains explicit for arbitrary temporary contexts,
+where formula shift is partial on malformed carrier codes.
 
 `RawCodedDynamicTruthNativeMasterSuccessorTransportComplete.v` applies that
 theorem to the staged native successor.  Its public adapters no longer ask

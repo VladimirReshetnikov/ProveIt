@@ -1,0 +1,42 @@
+(** Audit surface for the syntactic witnessed-context weakening reduction.
+
+    The final endpoint remains deliberately conditional on
+    [RawContextListIncludedTargetShiftExists].  The audit checks that every
+    other part of weakening—including all seventeen rule cases and the
+    nonstandard proof-root induction—is a theorem rather than an assumption.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofWitnessedContextInclusionWeakening.
+
+Import PABoundedRawCodedPALocalProofWitnessedContextInclusionWeakening.
+
+Check RawContextListIncludedTargetShiftExists.
+Check raw_contextListIncluded_of_parallel_shifts.
+Check raw_contextListIncluded_binder_lift.
+Check raw_contextListIncludedTargetShiftExists_witnessed_target.
+
+Check RawCodedPALocalProofContextInclusionAt.
+Check codedPALocalProofContextInclusionAtTermAt.
+Check raw_sat_codedPALocalProofContextInclusionAtTermAt_iff.
+Check RawCodedPALocalProofContextInclusionBelow.
+Check codedPALocalProofContextInclusionBelowTermAt.
+Check raw_sat_codedPALocalProofContextInclusionBelowTermAt_iff.
+Check RawCodedPALocalProofContextInclusionRootStep.
+
+Check raw_codedPALocalProof_contextInclusionRootStep_of_targetShift.
+Check raw_codedPALocalProofContextInclusionBelow_all.
+Check raw_codedPALocalProofContextInclusionAt_all.
+Check raw_codedPALocalProof_contextInclusionWeakening_of_targetShift.
+Check
+  raw_codedPALocalProofWitnessedContextInclusionWeakening_of_targetShift.
+Check raw_sixFieldMasterOrdinaryProofsCommonContextLift_of_targetShift.
+
+Print Assumptions raw_contextListIncluded_of_parallel_shifts.
+Print Assumptions
+  raw_codedPALocalProof_contextInclusionRootStep_of_targetShift.
+Print Assumptions raw_codedPALocalProofContextInclusionBelow_all.
+Print Assumptions
+  raw_codedPALocalProofWitnessedContextInclusionWeakening_of_targetShift.
+Print Assumptions
+  raw_sixFieldMasterOrdinaryProofsCommonContextLift_of_targetShift.
