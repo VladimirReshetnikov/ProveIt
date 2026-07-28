@@ -210,6 +210,14 @@ Recorded so the search is not repeated:
   `Sigma`, `Quot`, and a mutual block; plus `Type`-in-`Type` via an `inductive`
   and via a `structure` field. All rejected, most by the kernel rather than the
   elaborator.
+* **`isDefEq` never contradicted the kernel's own `whnf`.** A pool of 100 closed
+  `Bool`-valued terms — honest projections, projections with 32-bit-truncating
+  indices, projections carrying a *mismatched* `proj_sname`, `Nat.beq`/`Nat.ble`
+  at accelerator boundaries, `Quot.mk`/`Quot.lift`, `Bool.rec`, and `Eq.rec`
+  including K-like reduction — produced 3,354 ordered pairs whose kernel `whnf`
+  values differ. `Lean.Kernel.isDefEq` accepted **none** of them. (Had it
+  accepted one, `rfl : a = true` and `rfl : b = false` would both typecheck
+  while `a ≡ b`.)
 * **Compiler/kernel differential test found no divergence.** 72 closed
   `Bool`-valued terms over `String` (including UTF-8 boundary and out-of-range
   `Pos` cases), `Char`, `Nat` accelerator edge cases (`gcd 0 0`, `n / 0`,

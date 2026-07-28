@@ -38,6 +38,17 @@ two through `Eq.rec` gives `False`.
 | `Lean/NegativeControl.lean` | Control experiment. Uses `set_option debug.skipKernelTC true` to smuggle a blatantly ill-typed `bogus : False` into an `.olean`. `leanchecker` **rejects** this module — which is what makes acceptance of the other two meaningful. |
 | `Lean/NativeDecideContrast.lean` | For contrast: the *already documented* `native_decide` / `@[implemented_by]` trust boundary. Unlike the two above, it does show up in `#print axioms`. |
 
+`Fuzz/` holds the audit harnesses used to search for a hole that does *not*
+require `prelude`. All three came up empty, which is the useful part of their
+output; they are kept because they are reusable. Run any of them with plain
+`lean <file>` (they `import Lean`; they are not part of the Lake build).
+
+| File | What it checks |
+| --- | --- |
+| `Fuzz/LevelFuzzer.lean` | Kernel `Sort a ≡ Sort b` against denotational equality of the level expressions. 880 random levels, 774,400 pairs — 0 unsound, 162 incompleteness cases. |
+| `Fuzz/DefEqFuzzer.lean` | That `Kernel.isDefEq a b` never holds when the kernel's own `whnf` gives `a` and `b` different `Bool` constants. 3,354 differing pairs — 0 unsound. |
+| `Fuzz/CompilerKernelDiff.lean` | `Lean.Kernel.whnf` against the compiler (`Meta.evalExpr`) on closed terms over `String`/`Char`/`Nat`/`Int`/`UInt`/`BitVec`/`List`/`Array`. 72 terms — 0 divergences. |
+
 ## Reproducing
 
 The modules are `prelude`, so they need no Lake package and no mathlib. From a
