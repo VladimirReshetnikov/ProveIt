@@ -2129,6 +2129,17 @@ compact headline.  This is an exact conditional endpoint, not the missing
 unconditional Coq theorem: every arithmetic residual, especially the final
 source-linked derivation-soundness compiler, remains visible in the bundle.
 
+`RawCodedDynamicTruthNativeDependencyOrderedUniversalSoundnessBoundary.v`
+sharpens that complete conditional boundary at its final coordinate.  The
+translation agreement and the local, cross-level, shift, substitution, and
+axiom kernels are unchanged, while the last source-linked compiler is
+replaced by the three exact same-context roots above.  The module reconnects
+this refined bundle to the literal callback family, positive master
+successor, and compact headline.  It remains conditional on every listed
+kernel; its value is that the headline boundary now exposes universal
+derivation soundness, consistency-from-soundness, and target refutation
+separately instead of hiding them behind one final premise.
+
 `RawCodedRestrictedPADerivationSoundnessPredicate.v` isolates the first exact
 proof-code induction slice behind that final compiler.  For each fixed
 metatheoretic `level`, it defines the unary invariant `P(d)` saying that every
