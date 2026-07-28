@@ -9,6 +9,20 @@ no `native_decide`, and **no axioms at all** (`#print axioms` reports none). The
 resulting `.olean` also passes `leanchecker --fresh`, the independent replay
 checker shipped with the toolchain.
 
+> **Bottom line — Lean's official judge rejects all of these.** Every exhibit was
+> run through [`leanprover/comparator`](https://github.com/leanprover/comparator)
+> against a `theorem boom : False := sorry` challenge; all four are rejected,
+> while an honest control is accepted. Comparator's *own regression suite*
+> already contains this attack (`tests/projects/primitive_issue`, asserting
+> `"exit_code": 1`), and it is essentially identical to `NatGcdFreeName.lean`.
+> Details and exact messages:
+> [`Logic/KernelSoundness/Comparator/README.md`](../../Logic/KernelSoundness/Comparator/README.md).
+>
+> Two gates are needed and neither suffices alone: with
+> `set_option debug.skipKernelTC true` a bypassed declaration still reports
+> *"does not depend on any axioms"*, and `leanchecker --fresh` happily replays a
+> plain `axiom sneaky : False` (exit 0). This is precisely why comparator exists.
+
 > **Prior art — this is a rediscovery.** The technique below (redefine `Nat.add`
 > in a `prelude` module, then play the kernel's GMP accelerator off against
 > delta-reduction) was demonstrated publicly by Joachim Breitner, a Lean core

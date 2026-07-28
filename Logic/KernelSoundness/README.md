@@ -11,6 +11,21 @@
 Full write-up:
 [`docs/reports/2026-07-28-lean-kernel-nat-accelerator-unsoundness.md`](../../docs/reports/2026-07-28-lean-kernel-nat-accelerator-unsoundness.md).
 
+> ## Bottom line: Lean's official judge rejects all of these
+>
+> Every exhibit here was run through
+> [`leanprover/comparator`](https://github.com/leanprover/comparator), the Lean
+> FRO's trustworthy proof judge, against a `theorem boom : False := sorry`
+> challenge. **All four are rejected**; an honest control solution is accepted.
+> See [`Comparator/README.md`](Comparator/README.md) for the runs and messages.
+>
+> Comparator's own regression suite already contains this attack:
+> `tests/projects/primitive_issue` is essentially identical to
+> `Lean/NatGcdFreeName.lean`, with `"exit_code": 1` asserted. So this is a known
+> attack class with a deployed countermeasure — which is also the reason
+> comparator exists, since `#print axioms` plus `leanchecker` demonstrably are
+> **not** sufficient on their own.
+
 ## The hole in one paragraph
 
 The Lean kernel has hard-wired normalizer extensions that compute `Nat`
