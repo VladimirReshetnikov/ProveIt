@@ -1783,6 +1783,15 @@ conditional on the sharply stated compiler that must return a represented PA
 proof of this exact selected carrier code; semantic validity is not used as a
 substitute for that compiler.
 
+`RawCodedDynamicTruthNativeLocalProofCompilation.v` compiles the complete
+logical shell of that local field.  It explicitly introduces the
+admissibility and evidence implications, closes both bodies under three
+universal binders, and joins decision with exclusivity by conjunction.  Its
+replacement compiler asks only for two same-context leaves: the evidence
+disjunction under admissibility and bottom under admissibility plus both
+evidence assumptions.  An exact trace adapter then discharges the original
+nonstandard-index field compiler from this narrower interface.
+
 `RawCodedDynamicTruthNativeCrossLevelPositiveGraph.v` constructs the adjacent-
 level coherence coordinate with the same native indexing discipline.  For a
 carrier predecessor `p`, it selects the genuine current orbit at `S p`, runs
