@@ -214,6 +214,9 @@ is being reconstructed:
 | `LogicInfrastructure.v` | `Modal/Logic/{Basic,SumNormal,SumQuasiNormal,Global}.lean` | Predicate-valued logic structure; normal/quasinormal sums and recursors; finite bases, substitution omission, and global consequence |
 | `EntailmentExtensions.v` | `Modal/Entailment/{DiaDuality,E,EM,EN,EMC,EMCN,AxiomGeach}.lean` | Complete substitution-free duality, replacement, M/C/N/K capability equivalences, iterated box/diamond laws, and dual Geach schemata; minimal supporting records from `Entailment/Basic.lean` |
 | `EntailmentNamedExtensions.v` | `Modal/Entailment/{EMK,END,ET,ETB,ET5,KP,N}.lean` | Complete 26-declaration substitution-free surface: the C, P, D, N, B, Point2, and Four derivations and all named capability conversions |
+| `EntailmentKT.v` | `Modal/Entailment/KT.lean` | Complete seven-declaration surface: equivalence of T and its diamond presentation at K strength, KT-to-ET/KD projections, and arbitrary iterated-box reduction |
+| `EntailmentS4.v` | `Modal/Entailment/S4.lean` | Complete four-declaration surface: atom-polymorphic box/boxdot and diamond/diadot equivalences, with raw/wrapped aliases |
+| `EntailmentS5.v` | `Modal/Entailment/S5.lean` | Complete ten-declaration derived-rule surface: diamond-box elimination, its applications, and both S5Grz implication-lifting helpers |
 | `HilbertWithRE.v` | `Modal/Hilbert/WithRE/Basic.lean` | Faithful generic six-constructor replacement-of-equivalents calculus, substitution and weakening, Lukasiewicz basis, and all ten schematic-axiom adapters |
 | `HilbertWithREClassicalCompleteness.v` | `Modal/Hilbert/WithRE/Basic.lean` | Classical completeness of the raw K/S/EC basis via finite propositional skeletons, modal-K completeness, box erasure, and cross-atom substitution; unconditional classical and E adapters |
 | `HilbertWithREBaseSystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact E, EM, EC, EN, EMC, EMN, ECN, and EK raw systems and their unconditional entailment instances |
@@ -370,6 +373,11 @@ additional modal principle is hidden in the E/EM/EN/EMC/EMCN conversions.
 The named EMK/END/ET/ETB/ET5/KP layer preserves that same boundary: in
 particular, ETB derives necessitation from T, B, and replacement, while KP
 derives D from K and P without importing the stronger normal-logic record.
+The source-facing KT, S4, and S5 modules retain the substitution-free K
+capability and complete all 21 active declarations, including arbitrary
+iterated-box reduction and the boxdot/diadot and diamond-box rules.  Their
+only nonconstructive assumption is the existing classical propositional
+entailment boundary.
 
 `HilbertWithRE.v` keeps Foundation's raw calculus at exactly six constructors:
 substituted axioms, modus ponens, replacement of equivalents, and the
@@ -808,7 +816,9 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
   FoundationModal.KripkeHilbert `
   FoundationModal.LogicInfrastructure FoundationModal.EntailmentExtensions `
-  FoundationModal.EntailmentNamedExtensions FoundationModal.HilbertWithRE `
+  FoundationModal.EntailmentNamedExtensions FoundationModal.EntailmentKT `
+  FoundationModal.EntailmentS4 FoundationModal.EntailmentS5 `
+  FoundationModal.HilbertWithRE `
   FoundationModal.HilbertWithREClassicalCompleteness `
   FoundationModal.HilbertWithREBaseSystems FoundationModal.HilbertWithREUnarySystems `
   FoundationModal.HilbertWithRETKSystems FoundationModal.HilbertWithREFourSystems `

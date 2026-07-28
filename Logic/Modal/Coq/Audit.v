@@ -7,7 +7,8 @@ From FoundationModal Require Import
   Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
   FrameProperties
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
-  EntailmentExtensions EntailmentNamedExtensions HilbertWithRE
+  EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
+  EntailmentS5 HilbertWithRE
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
   HilbertWithRESystems HilbertWithRESymmetrySystems
@@ -911,6 +912,36 @@ Check has_Point2_of_ET5.
 Check has_Four_of_ET5.
 Check KP_axiomD.
 Check has_D_of_KP.
+
+(** Complete KT/S4/S5 substitution-free derived-rule surfaces. *)
+Check kd_entailment.
+Check kt_entailment.
+Check kt_prime_entailment.
+Check has_T_of_KT_prime.
+Check KT_of_KT_prime.
+Check KP_of_KT_prime.
+Check KD_of_KT_prime.
+Check ET_of_KT.
+Check KD_of_KT.
+Check reduce_box_in_CAnt_bang.
+Check s4_entailment.
+Check Diadot.
+Check iff_box_boxdot_raw.
+Check iff_box_boxdot.
+Check iff_dia_diadot_raw.
+Check iff_dia_diadot.
+Check s5_entailment.
+Check s5_E.
+Check diabox_box_raw.
+Check diabox_box.
+Check diabox_box_applied_raw.
+Check diabox_box_applied.
+Check rm_diabox_raw.
+Check rm_diabox.
+Check rm_diabox_applied_raw.
+Check rm_diabox_applied.
+Check lem1_diaT_of_S5Grz.
+Check lem2_diaT_of_S5Grz.
 
 (** Faithful generic WithRE calculus core and source-schema adapters. *)
 Check with_re_axiom.
@@ -2252,6 +2283,21 @@ Print Assumptions diabot_raw.
 Print Assumptions necessitation_of_ETB.
 Print Assumptions has_Four_of_ET5.
 Print Assumptions KP_axiomD.
+Print Assumptions has_T_of_KT_prime.
+Print Assumptions KT_of_KT_prime.
+Print Assumptions KP_of_KT_prime.
+Print Assumptions KD_of_KT_prime.
+Print Assumptions ET_of_KT.
+Print Assumptions KD_of_KT.
+Print Assumptions reduce_box_in_CAnt_bang.
+Print Assumptions iff_box_boxdot_raw.
+Print Assumptions iff_dia_diadot_raw.
+Print Assumptions diabox_box_raw.
+Print Assumptions diabox_box_applied_raw.
+Print Assumptions rm_diabox_raw.
+Print Assumptions rm_diabox_applied_raw.
+Print Assumptions lem1_diaT_of_S5Grz.
+Print Assumptions lem2_diaT_of_S5Grz.
 Print Assumptions with_re_lukasiewicz.
 Print Assumptions with_re_proves_substitute.
 Print Assumptions with_re_weaker_of_provable_axioms.
