@@ -974,7 +974,10 @@ Check trans_rooted_rooted_of_transitive.
 Check point_generated_frame_rooted.
 Check point_generated_partial_order.
 Check point_generated_convergent.
+Check generated_submodel_of_atomic.
+Check generated_submodel_p_morphism.
 Check generated_submodel_truth.
+Check generated_submodel_modal_equivalence.
 Check point_generated_truth.
 Check point_generated_truth_at_root.
 Check point_trans_generated_trans_rooted.
@@ -1106,8 +1109,21 @@ Check S4Point3_BDP_unconditional.
 Check S5_BDP_unconditional.
 
 Check bisimulation_invariance.
+Check modal_equivalent_of_bisimilar.
+Check modal_equivalent_symmetry.
+Check p_morphism_id.
+Check p_morphism_comp.
+Check p_morphism_transitive_closure.
+Check p_morphism_rel_iff_of_injective.
+Check p_morphism_rel_iter_iff_of_injective.
 Check p_morphism_truth.
+Check model_p_morphism_id.
+Check model_p_morphism_comp.
+Check model_p_morphism_bisimulation.
+Check model_p_morphism_modal_equivalence.
+Check model_p_morphism_truth.
 Check valid_of_surjective_p_morphism.
+Check validates_predicate_of_surjective_p_morphism.
 Check irreflexivity_not_modally_definable.
 
 Check standard_translation_correct.
@@ -1150,7 +1166,12 @@ Print Assumptions valid_Five_of_right_euclidean.
 Print Assumptions valid_Tc_of_coreflexive.
 Print Assumptions valid_Point2_of_strong_confluence.
 Print Assumptions bisimulation_invariance.
+Print Assumptions p_morphism_transitive_closure.
+Print Assumptions p_morphism_rel_iff_of_injective.
+Print Assumptions p_morphism_rel_iter_iff_of_injective.
+Print Assumptions model_p_morphism_modal_equivalence.
 Print Assumptions valid_of_surjective_p_morphism.
+Print Assumptions validates_predicate_of_surjective_p_morphism.
 Print Assumptions irreflexivity_not_modally_definable.
 Print Assumptions standard_translation_correct.
 Print Assumptions standard_translation_model_validity.
@@ -1565,7 +1586,9 @@ Print Assumptions valid_Loeb_of_finite_transitive_irreflexive.
 Print Assumptions finite_transitive_antisymmetric_weak_cwf.
 Print Assumptions valid_Grz_of_finite_partial_order.
 Print Assumptions valid_Grz_atom_iff_reflexive_transitive_weak_cwf.
+Print Assumptions generated_submodel_p_morphism.
 Print Assumptions generated_submodel_truth.
+Print Assumptions generated_submodel_modal_equivalence.
 Print Assumptions point_generated_truth.
 Print Assumptions point_generated_frame_rooted.
 Print Assumptions point_trans_generated_trans_rooted.

@@ -153,8 +153,10 @@ is being reconstructed:
   finite model property, and the strict hierarchy `KT < KTMk < S4`;
 - exact weak-.2/piecewise-convergence and weak-.3/piecewise-connectedness
   correspondences, including their stronger-frame corollaries;
-- bisimulation invariance, bounded-morphism truth preservation, and validity
-  preservation by surjective bounded morphisms;
+- bisimulation and modal-equivalence invariance, frame/model bounded-morphism
+  identity and composition, transitive-closure lifting, exact edge/path
+  reflection for injective maps, and formula/theory validity preservation by
+  surjective bounded morphisms;
 - the p-morphism proof that irreflexivity is not definable by any basic modal
   formula; and
 - the deep first-order standard translation, including universal closure and
@@ -224,7 +226,7 @@ is being reconstructed:
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness, including finite strict-preorder validity |
 | `FrameProperties.v` | `Modal/Kripke/{Antisymmetric,Asymmetric,Closure,Irreflexive,Terminated}.lean` | Closure algebra, frame orders, termination, converse well-foundedness, and finite strict-order maximality |
 | `CorrespondenceExtensions.v` | `Modal/Kripke/Axiom{FourN,Grz,H,I,McK,Mk,Point4,Ver}.lean` | Further exact and directional named-axiom frame correspondences |
-| `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and bounded-morphism invariance/preservation |
+| `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and modal equivalence; frame/model bounded morphisms; transitive-closure lifting; injective edge/path reflection; truth and formula-predicate validity transfer |
 | `Root.v` | `Modal/Kripke/Root.lean` | Rooted and generated frames/models, structural inheritance, bounded morphisms, and truth invariance |
 | `FrameTransformations.v` | `Modal/Kripke/{ExtendRoot,Irreflexivize}.lean` | Irreflexivization and reflexive truth transfer; finite added-root frames, trees, p-morphisms, exact covers, boxdot transfer, and T witnesses |
 | `StructuralFrames.v` | `Modal/Kripke/{Cluster,LinearFrame,Tree,Rank,Balloon}.lean` | Extensional clusters and skeletons; linear examples and Z/Dum validity; tree unravellings; specified ranks; corrected balloon results |
