@@ -12,6 +12,7 @@ From FoundationModal Require Import
   EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
   HilbertNormalTransitiveBaseSystems HilbertNormalMcKSystems
+  HilbertNormalK4PointSystems
   HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
@@ -1159,6 +1160,22 @@ Check normal_K4McK_axioms_has_McK.
 Check normal_K4McK.
 Check normal_K4McK_entailment.
 Check normal_K4McK_entailment_of_subset.
+
+(** Exact raw K4Point2/K4Point3 systems from the Normal catalogue. *)
+Check structural_k4point2_entailment.
+Check structural_k4point3_entailment.
+Check normal_K4Point2_axioms.
+Check normal_K4Point2_axioms_has_K.
+Check normal_K4Point2_axioms_has_Four.
+Check normal_K4Point2_axioms_has_WeakPoint2.
+Check normal_K4Point2.
+Check normal_K4Point2_entailment.
+Check normal_K4Point3_axioms.
+Check normal_K4Point3_axioms_has_K.
+Check normal_K4Point3_axioms_has_Four.
+Check normal_K4Point3_axioms_has_WeakPoint3.
+Check normal_K4Point3.
+Check normal_K4Point3_entailment.
 
 (** Complete 17-declaration raw-axiom calculus with the Henkin rule. *)
 Check henkin_rule.
@@ -2730,6 +2747,16 @@ Print Assumptions normal_K4McK_axioms_has_Four.
 Print Assumptions normal_K4McK_axioms_has_McK.
 Print Assumptions normal_K4McK_entailment.
 Print Assumptions normal_K4McK_entailment_of_subset.
+(** The two weak-point raw systems and their structural bundles are also
+    constructive and closed under the global context. *)
+Print Assumptions normal_K4Point2_axioms_has_K.
+Print Assumptions normal_K4Point2_axioms_has_Four.
+Print Assumptions normal_K4Point2_axioms_has_WeakPoint2.
+Print Assumptions normal_K4Point2_entailment.
+Print Assumptions normal_K4Point3_axioms_has_K.
+Print Assumptions normal_K4Point3_axioms_has_Four.
+Print Assumptions normal_K4Point3_axioms_has_WeakPoint3.
+Print Assumptions normal_K4Point3_entailment.
 (** Both rule calculi, including their raw-template adapters and concrete
     structural bundles, are constructive. *)
 Print Assumptions with_henkin_axm_substituted.
