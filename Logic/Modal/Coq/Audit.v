@@ -1,7 +1,7 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax GenericSemantics NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
+  Syntax GenericSemantics GenericEntailment NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
@@ -160,6 +160,71 @@ Print Assumptions generic_compact_unsatisfiable_iff_finite.
 Print Assumptions list_prune_insert_subset.
 Print Assumptions generic_consequence_compact.
 Print Assumptions generic_compact_cumulative.
+
+(** The first forty-eight declarations from Logic/Entailment.lean retain
+    Type-valued formal proofs, inhabited provability, heterogeneous strength
+    comparison, strictness, equivalence, and incomparability. *)
+Check generic_entailment.
+Check generic_provable.
+Check generic_unprovable.
+Check generic_proof_set.
+Check generic_provable_set.
+Check generic_entailment_theory.
+Check generic_proof_cast.
+Check generic_provable_cast.
+Check generic_unprovable_iff_empty_proof.
+Check generic_provable_get.
+Check generic_provable_set_iff_inhabited.
+Check generic_provable_set_get.
+Check generic_weaker_than.
+Check generic_strictly_weaker_than.
+Check generic_entailment_equiv.
+Check generic_weaker_than_refl.
+Check generic_weaker_than_weaken.
+Check generic_weaker_than_provable.
+Check generic_weaker_than_trans.
+Check generic_weaker_than_trans_instance.
+Check generic_weaker_than_iff.
+Check generic_not_weaker_than_iff.
+Check generic_strictly_weaker_than_iff_witness.
+Check generic_strict_weaker_weaker_trans.
+Check generic_weaker_strict_weaker_trans.
+Check generic_weaker_than_of_strictly_weaker.
+Check generic_strictly_weaker_than_trans.
+Check generic_strict_weaker_weaker_trans_instance.
+Check generic_weaker_strict_weaker_trans_instance.
+Check generic_strictly_weaker_than_trans_instance.
+Check generic_weakening.
+Check generic_strictly_weaker_of_unprovable_provable.
+Check generic_entailment_equiv_iff.
+Check generic_entailment_equiv_refl.
+Check generic_entailment_equiv_sym.
+Check generic_entailment_equiv_trans.
+Check generic_entailment_equiv_iff_mutual_weaker.
+Check generic_entailment_equiv_of_mutual_weaker.
+Check generic_weaker_than_of_equiv.
+Check generic_entailment_equiv_trans_instance.
+Check generic_equiv_weaker_trans.
+Check generic_equiv_equiv_weaker_trans.
+Check generic_weaker_equiv_trans.
+Check generic_equiv_strict_trans.
+Check generic_strict_equiv_trans.
+Check generic_strictly_weaker_iff_weaker_not_equiv.
+Check generic_incomparable.
+Check generic_incomparable_of_unprovable.
+
+(** Informative proof extraction, functional choice, and classical
+    counterexample extraction remain three separate audited boundaries. *)
+Print Assumptions generic_provable_get.
+Print Assumptions generic_provable_set_iff_inhabited.
+Print Assumptions generic_provable_set_get.
+Print Assumptions generic_not_weaker_than_iff.
+Print Assumptions generic_strictly_weaker_than_iff_witness.
+(** Pointwise theory equivalence removes the source representation's need for
+    functional/propositional extensionality; its order laws stay closed. *)
+Print Assumptions generic_entailment_equiv_iff_mutual_weaker.
+Print Assumptions generic_strictly_weaker_iff_weaker_not_equiv.
+Print Assumptions generic_incomparable_of_unprovable.
 
 (** Complete source-facing Kripke semantic surface: local satisfaction,
     fixed-model validity, frame validity, and frame-class counterexamples. *)

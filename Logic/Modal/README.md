@@ -199,6 +199,7 @@ is being reconstructed:
 | Coq module | Main Foundation source | Ported boundary |
 | --- | --- | --- |
 | `GenericSemantics.v` | `Logic/Semantics.lean` | Complete 67-declaration surface: generic satisfaction and minimal connective clauses; ordinary/singleton-normalized finite truth laws; model sets, validity, satisfiability, theories, meaningfulness, lifted set semantics, consequence, cumulative theories, exact compactness, finite consequence extraction, and cumulative-union compactness |
+| `GenericEntailment.v` | `Logic/Entailment.lean` | First 48 of 138 active declarations: Type-valued formal proofs and inhabited provability, proof sets and controlled proof extraction, heterogeneous weaker/strictly-weaker/equivalent systems, all mixed transitivity laws, witness characterizations, and incomparability |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
@@ -445,6 +446,17 @@ meaningfulness, finite unsatisfiability, both set-meaningfulness laws, the
 reverse consequence/unsatisfiability direction, and compact finite
 consequence.  The remaining numbered declarations are constructive, and none
 uses choice or extensionality.
+
+`GenericEntailment.v` begins the generic proof-system layer directly above
+those semantics.  It preserves Foundation's distinction between a formal
+derivation in `Type` and the proposition that one is inhabited.  Selecting a
+raw proof therefore uses informative description, while packaging pointwise
+proofs into one dependent proof function uses only functional choice; these
+boundaries are audited separately.  Provability-strength equivalence is
+pointwise rather than equality of theory predicates, eliminating functional
+and propositional extensionality.  All strength, mixed-transitivity, and
+incomparability laws are constructive except the two witness
+characterizations that extract a formula from failed theory inclusion.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
@@ -986,7 +998,7 @@ rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
 coqchk -silent -Q . FoundationModal `
   FoundationModal.Syntax FoundationModal.NNFormula FoundationModal.Axioms `
-  FoundationModal.GenericSemantics `
+  FoundationModal.GenericSemantics FoundationModal.GenericEntailment `
   FoundationModal.FormulaEncoding FoundationModal.PLoN `
   FoundationModal.PLoNCompleteness `
   FoundationModal.Kripke FoundationModal.KripkeSemantics FoundationModal.NNFormulaSemantics `
