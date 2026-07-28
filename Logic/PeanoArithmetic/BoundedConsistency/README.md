@@ -2412,6 +2412,19 @@ binder-ready transport corollary makes every eigenvariable-sensitive context
 extension explicit instead of treating ordinary membership inclusion as
 sufficient weakening.
 
+The first three genuine constructor modules now inhabit literal members of
+that residual family.  The assumption branch projects context membership and
+uses two compiled equality eliminations to align the witness context and
+formula with the outer endpoint.  The excluded-middle branch projects its
+bottom, implication, and disjunction code equations and reinstates the unused
+context-truth premise by a checked tautology.  Equality reflexivity projects
+its atomic equality-code equation and compiles the full implication shell.
+Each theorem is quantified over the caller's arbitrary template tail and
+lands in exactly the dispatcher's eight-witness context.  Their remaining
+premises are deliberately narrow truth-interface laws (membership truth,
+the Boolean excluded-middle clause, and reflexive atomic truth), never the
+constructor case, its desired conclusion, or the strong step itself.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
@@ -2476,6 +2489,18 @@ totality chooses the lower parameter at the trace's current truth stage
 with those same parameters.  Both stages remain arbitrary model elements;
 the adapter neither decodes them into metatheoretic naturals nor weakens the
 dependent sharing of the successor Sigma selector.
+
+`RawCodedRestrictedPADerivationSoundnessNativeDirectClosureRemainder.v`
+joins that coherent native package to the completed ordinary closure folds.
+It fixes the represented quoted-zero term as the protected replacement,
+proves its syntax certificate from the all-zero assignment columns, derives
+all-depth body identity from the package's two exact ternary-leaf equations,
+and chooses both the nonstandard closure count and sealed induction axiom.
+The refined endpoint retains the same dependent Sigma/context selectors,
+truth families, structural input, graph edge, leaf equations, and native
+application evidence while adjoining the exact closure remainder consumed by
+the growing strong-prefix compiler.  Thus no closure-specific premise remains
+after a native axiom-soundness trace has been supplied.
 
 `RawCodedUniversalClosureAllCarrierTotality.v` instantiates the generic
 PA-internal carrier orbit with base `input` and successor `forall`, proving
