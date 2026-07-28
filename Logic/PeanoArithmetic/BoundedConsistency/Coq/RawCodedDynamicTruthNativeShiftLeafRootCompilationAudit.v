@@ -1,0 +1,75 @@
+(** Assumption and public-interface audit for the trace-linked native shift
+    leaf compiler. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeShiftLeafRootCompilation.
+
+Import PABoundedRawCodedDynamicTruthNativeShiftLeafRootCompilation.
+
+(** Visible-tail contexts and their structural realizability. *)
+Check rawDynamicTruthNativeShiftCommonContextOn.
+Check rawDynamicTruthNativeShiftDirectionalContextOn.
+Check rawDynamicTruthNativeShiftCommonContextOn_empty.
+Check raw_dynamicTruthNativeShiftCommonContextOn_realizable.
+Check raw_dynamicTruthNativeShiftDirectionalContextOn_realizable.
+
+(** Adequacy extracted from represented substitutions and the adequate
+    paired orbit, rather than from semantic validity. *)
+Check raw_dynamicTruthNativeShiftApplication_target_atomically_adequate.
+Check raw_dynamicTruthNativeShiftDomain_target_atomically_adequate.
+Check RawDynamicTruthNativeShiftProofTraceAdequacyAt.
+Check raw_dynamicTruthNativeShiftProofTraceAt_adequacy.
+
+(** Literal five-way side-condition projection. *)
+Check rawDynamicTruthNativeShiftFormulaShiftConditionCode.
+Check rawDynamicTruthNativeShiftAssignmentShiftConditionCode.
+Check rawDynamicTruthNativeShiftTargetAdmissibleConditionCode.
+Check rawDynamicTruthNativeShiftRankAgreementConditionCode.
+Check rawDynamicTruthNativeShiftSideConditionAssumptionRoot.
+Check rawDynamicTruthNativeShiftSideConditionTail1Root.
+Check rawDynamicTruthNativeShiftSideConditionTail2Root.
+Check rawDynamicTruthNativeShiftSideConditionTail3Root.
+Check rawDynamicTruthNativeShiftFormulaShiftConditionRoot.
+Check rawDynamicTruthNativeShiftAssignmentShiftConditionRoot.
+Check rawDynamicTruthNativeShiftSourceAdmissibleConditionRoot.
+Check rawDynamicTruthNativeShiftTargetAdmissibleConditionRoot.
+Check rawDynamicTruthNativeShiftRankAgreementConditionRoot.
+Check RawDynamicTruthNativeShiftSideConditionRootsOn.
+Check raw_dynamicTruthNativeShiftSideConditionRootsOn.
+
+(** Exact directional residual and concrete implication compilation. *)
+Check RawDynamicTruthNativeShiftSigmaDirectionalLeavesOn.
+Check RawDynamicTruthNativeShiftPiDirectionalLeavesOn.
+Check RawDynamicTruthNativeShiftSigmaLocalRootsOn.
+Check RawDynamicTruthNativeShiftPiLocalRootsOn.
+Check raw_dynamicTruthNativeShiftSigmaLocalRootsOn_of_directional_leaves.
+Check raw_dynamicTruthNativeShiftPiLocalRootsOn_of_directional_leaves.
+Check raw_dynamicTruthNativeShiftSigmaLocalRootsAt_of_directional_leaves.
+Check raw_dynamicTruthNativeShiftPiLocalRootsAt_of_directional_leaves.
+Check RawDynamicTruthNativeShiftDirectionalLeafRootCompilerOn.
+Check raw_dynamicTruthNativeShiftLocalRootsOn_of_directional_leaf_compiler.
+Check raw_dynamicTruthNativeShiftLocalRootCompiler_of_empty_directional_leaves.
+Check RawDynamicTruthNativeShiftWitnessedDirectionalLeafRootInterface.
+Check raw_dynamicTruthNativeShiftWitnessedLocalRoots_of_directional_leaves.
+
+(** These prints must expose only assumptions already used by the represented
+    raw proof/coding infrastructure.  In particular, this module introduces
+    no completeness, proof-irrelevance, or field-proof assumption. *)
+Print Assumptions
+  raw_dynamicTruthNativeShiftApplication_target_atomically_adequate.
+Print Assumptions raw_dynamicTruthNativeShiftProofTraceAt_adequacy.
+Print Assumptions raw_dynamicTruthNativeShiftSideConditionRootsOn.
+Print Assumptions
+  raw_dynamicTruthNativeShiftSigmaLocalRootsOn_of_directional_leaves.
+Print Assumptions
+  raw_dynamicTruthNativeShiftPiLocalRootsOn_of_directional_leaves.
+Print Assumptions
+  raw_dynamicTruthNativeShiftSigmaLocalRootsAt_of_directional_leaves.
+Print Assumptions
+  raw_dynamicTruthNativeShiftPiLocalRootsAt_of_directional_leaves.
+Print Assumptions
+  raw_dynamicTruthNativeShiftLocalRootsOn_of_directional_leaf_compiler.
+Print Assumptions
+  raw_dynamicTruthNativeShiftLocalRootCompiler_of_empty_directional_leaves.
+Print Assumptions
+  raw_dynamicTruthNativeShiftWitnessedLocalRoots_of_directional_leaves.

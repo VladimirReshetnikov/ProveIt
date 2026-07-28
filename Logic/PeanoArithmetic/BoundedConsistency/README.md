@@ -1844,6 +1844,16 @@ The trace adapter retains the adequate orbit, numeral, domain substitutions,
 and four application traces while eliminating any premise that already
 mentions a completed field certificate.
 
+`RawCodedDynamicTruthNativeShiftLeafRootCompilation.v` retains an arbitrary
+visible base tail beneath that one-assumption context.  It derives adequacy
+for both global predicates, both input domains, and all four trace-selected
+application outputs, then projects each of the five nested shift-data members
+with concrete assumption and conjunction-elimination roots.  Represented
+implication introduction reduces the two Sigma/Pi equivalences to exactly
+four trace-indexed directional leaves.  The empty-tail endpoint remains a
+conditional specialization of those leaves, while the witnessed-tail form
+keeps its PA context literal rather than silently discarding it.
+
 `RawCodedDynamicTruthNativeSubstitutionCarrier.v` fixes the exact syntax for
 the fourth positive master coordinate.  Its transparent polynomial closes
 exactly the seven single-substitution parameters and combines the carried
