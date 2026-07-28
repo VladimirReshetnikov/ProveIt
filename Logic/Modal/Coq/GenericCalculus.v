@@ -1,9 +1,10 @@
 (**
   Generic one-sided classical sequent calculi.
 
-  This first tranche ports declarations 1--15 of the forty-three active
+  This module currently ports declarations 1--34 of the forty-three active
   declarations in the pinned Foundation module [Logic/Calculus.lean].  The
-  calculus is Type-valued, so derivations retain their computational content.
+  calculus and its principal entailments are Type-valued, so derivations
+  retain their computational content.
 
   Foundation assumes De Morgan and involutive-negation type classes at the
   namespace boundary.  None of the first fifteen declarations uses those
@@ -20,10 +21,18 @@
   first rotates the head behind the tail, recursion folds the tail, exchange
   restores the head, and the primitive disjunction rule finishes.  Thus the
   result is strengthened to every cut-free one-sided calculus.
+
+  Contextual entailment is represented by a dependent finite witness: its
+  formulas carry pointwise evidence that they belong to the ambient
+  adjunctive set, while the corresponding one-sided derivation remains in
+  [Type].  The representation and structural transport require only an
+  arbitrary negation operation; the axiom adapter adds precisely the base LK
+  dictionary needed to derive identity.
 *)
 
 From Stdlib Require Import Lists.List.
-From FoundationModal Require Import GenericSemantics GenericAdjunctiveSet.
+From FoundationModal Require Import
+  GenericSemantics GenericAdjunctiveSet GenericEntailment.
 
 Import ListNotations.
 
@@ -357,3 +366,849 @@ Arguments generic_lk_extended_cut {F C D} H
   {p q gamma delta} _ _ _.
 Arguments generic_lk_disj2 {F C D} H gamma delta _.
 Arguments generic_lk_conj2 {F C D} H gamma delta _.
+
+(** * Entailment adapters *)
+
+(** A universe-polymorphic equivalence of raw proof types.  The laws are
+    retained because Foundation's [Equiv] is stronger than merely having a
+    map in each direction. *)
+Record generic_type_equiv (A B : Type) : Type := {
+  generic_equiv_to : A -> B;
+  generic_equiv_from : B -> A;
+  generic_equiv_to_from :
+    forall y, generic_equiv_to (generic_equiv_from y) = y;
+  generic_equiv_from_to :
+    forall x, generic_equiv_from (generic_equiv_to x) = x
+}.
+
+Arguments generic_equiv_to {A B} _ _.
+Arguments generic_equiv_from {A B} _ _.
+Arguments generic_equiv_to_from {A B} _ _.
+Arguments generic_equiv_from_to {A B} _ _.
+
+(** Each connective equation is exposed independently so downstream rules
+    can state exactly the normalization laws they use. *)
+Definition generic_neg_involutive_law {F : Type}
+    (C : generic_connectives F) : Prop :=
+  forall p, generic_neg C (generic_neg C p) = p.
+
+Definition generic_neg_top_law {F : Type}
+    (C : generic_connectives F) : Prop :=
+  generic_neg C (generic_top C) = generic_bottom C.
+
+Definition generic_neg_bottom_law {F : Type}
+    (C : generic_connectives F) : Prop :=
+  generic_neg C (generic_bottom C) = generic_top C.
+
+Definition generic_imp_as_or_law {F : Type}
+    (C : generic_connectives F) : Prop :=
+  forall p q,
+    generic_imp C p q = generic_or C (generic_neg C p) q.
+
+Definition generic_neg_and_law {F : Type}
+    (C : generic_connectives F) : Prop :=
+  forall p q,
+    generic_neg C (generic_and C p q) =
+    generic_or C (generic_neg C p) (generic_neg C q).
+
+Definition generic_neg_or_law {F : Type}
+    (C : generic_connectives F) : Prop :=
+  forall p q,
+    generic_neg C (generic_or C p q) =
+    generic_and C (generic_neg C p) (generic_neg C q).
+
+(** Infrastructure corresponding to Foundation's imported raw modus-ponens
+    capability. *)
+Record generic_modus_ponens {S F : Type}
+    (E : generic_entailment S F)
+    (C : generic_connectives F) (s : S) : Type := {
+  generic_modus_ponens_raw :
+    forall p q,
+      generic_proof E s (generic_imp C p q) ->
+      generic_proof E s p ->
+      generic_proof E s q
+}.
+
+Arguments generic_modus_ponens_raw {S F E C s} _ _ _ _ _.
+
+(** Source declaration 16/43: [OneSidedLK.PrincipalEntailment]. *)
+Record generic_principal_entailment {P F : Type}
+    (E : generic_entailment P F)
+    (D : list F -> Type) (theory : P) : Type := {
+  generic_principal_equiv :
+    forall p, generic_type_equiv (generic_proof E theory p) (D [p])
+}.
+
+Arguments generic_principal_equiv {P F E D theory} _ _.
+
+(** Source declaration 17/43: [PrincipalEntailment.provable_iff].  As in the
+    source, this result is independent of every connective operation. *)
+Lemma generic_principal_provable_iff :
+  forall (P F : Type) (E : generic_entailment P F)
+         (D : list F -> Type) (theory : P),
+    generic_principal_entailment E D theory ->
+    forall p,
+      generic_provable E theory p <-> inhabited (D [p]).
+Proof.
+  intros P F E D theory Hprincipal p; split.
+  - intros [b]. constructor.
+    exact (generic_equiv_to (generic_principal_equiv Hprincipal p) b).
+  - intros [d]. constructor.
+    exact (generic_equiv_from (generic_principal_equiv Hprincipal p) d).
+Qed.
+
+(** Source declaration 18/43: the principal [Entailment.ModusPonens]
+    instance.  Only implication-as-disjunction, negated-disjunction De Morgan,
+    and involutive negation are required. *)
+Definition generic_principal_modus_ponens {P F : Type}
+    {E : generic_entailment P F} (C : generic_connectives F)
+    {D : list F -> Type} {theory : P}
+    (Hprincipal : generic_principal_entailment E D theory)
+    (Hinv : generic_neg_involutive_law C)
+    (Himp : generic_imp_as_or_law C)
+    (Hneg_or : generic_neg_or_law C)
+    (K : generic_one_sided_lk_cut C D) :
+    generic_modus_ponens E C theory.
+Proof.
+  constructor. intros p q bpq bp.
+  apply (generic_equiv_from (generic_principal_equiv Hprincipal q)).
+  pose proof (generic_lk_tensor (generic_lk_cut_base K)
+    (generic_lk_identity (generic_lk_cut_base K) p)
+    (generic_lk_identity (generic_lk_cut_base K) (generic_neg C q)))
+    as dcontra.
+  assert (econtra :
+    generic_and C p (generic_neg C q) ::
+      [generic_neg C p; generic_neg C (generic_neg C q)] =
+    [generic_neg C (generic_imp C p q); generic_neg C p; q]).
+  { simpl. rewrite (Hinv q), (Himp p q), (Hneg_or (generic_neg C p) q).
+    rewrite (Hinv p). reflexivity. }
+  pose proof (@generic_lk_cast F D _ _ dcontra econtra) as dcontra'.
+  pose proof (generic_equiv_to
+    (generic_principal_equiv Hprincipal (generic_imp C p q)) bpq) as dpq.
+  pose proof (generic_equiv_to
+    (generic_principal_equiv Hprincipal p) bp) as dp.
+  pose proof (generic_lk_cut_raw K (generic_imp C p q) []
+    [generic_neg C p; q] dpq dcontra') as d1.
+  pose proof (generic_lk_cut_raw K p [] [q] dp d1) as d2.
+  exact d2.
+Defined.
+
+(** Formula shapes from Foundation's imported classical-entailment
+    interface.  Keeping them explicit makes declaration 19 usable for an
+    arbitrary formula representation. *)
+Definition generic_formula_iff {F : Type}
+    (C : generic_connectives F) (p q : F) : F :=
+  generic_and C (generic_imp C p q) (generic_imp C q p).
+
+Definition generic_axiom_neg_equiv {F : Type}
+    (C : generic_connectives F) (p : F) : F :=
+  generic_formula_iff C (generic_neg C p)
+    (generic_imp C p (generic_bottom C)).
+
+Definition generic_axiom_K {F : Type}
+    (C : generic_connectives F) (p q : F) : F :=
+  generic_imp C p (generic_imp C q p).
+
+Definition generic_axiom_S {F : Type}
+    (C : generic_connectives F) (p q r : F) : F :=
+  generic_imp C (generic_imp C p (generic_imp C q r))
+    (generic_imp C (generic_imp C p q) (generic_imp C p r)).
+
+Definition generic_axiom_and1 {F : Type}
+    (C : generic_connectives F) (p q : F) : F :=
+  generic_imp C (generic_and C p q) p.
+
+Definition generic_axiom_and2 {F : Type}
+    (C : generic_connectives F) (p q : F) : F :=
+  generic_imp C (generic_and C p q) q.
+
+Definition generic_axiom_and3 {F : Type}
+    (C : generic_connectives F) (p q : F) : F :=
+  generic_imp C p (generic_imp C q (generic_and C p q)).
+
+Definition generic_axiom_or1 {F : Type}
+    (C : generic_connectives F) (p q : F) : F :=
+  generic_imp C p (generic_or C p q).
+
+Definition generic_axiom_or2 {F : Type}
+    (C : generic_connectives F) (p q : F) : F :=
+  generic_imp C q (generic_or C p q).
+
+Definition generic_axiom_or3 {F : Type}
+    (C : generic_connectives F) (p q r : F) : F :=
+  generic_imp C (generic_imp C p r)
+    (generic_imp C (generic_imp C q r)
+      (generic_imp C (generic_or C p q) r)).
+
+Definition generic_axiom_dne {F : Type}
+    (C : generic_connectives F) (p : F) : F :=
+  generic_imp C (generic_neg C (generic_neg C p)) p.
+
+Record generic_classical_entailment {S F : Type}
+    (E : generic_entailment S F)
+    (C : generic_connectives F) (s : S) : Type := {
+  generic_classical_mdp : generic_modus_ponens E C s;
+  generic_classical_neg_equiv :
+    forall p, generic_proof E s (generic_axiom_neg_equiv C p);
+  generic_classical_verum :
+    generic_proof E s (generic_top C);
+  generic_classical_K :
+    forall p q, generic_proof E s (generic_axiom_K C p q);
+  generic_classical_S :
+    forall p q r, generic_proof E s (generic_axiom_S C p q r);
+  generic_classical_and1 :
+    forall p q, generic_proof E s (generic_axiom_and1 C p q);
+  generic_classical_and2 :
+    forall p q, generic_proof E s (generic_axiom_and2 C p q);
+  generic_classical_and3 :
+    forall p q, generic_proof E s (generic_axiom_and3 C p q);
+  generic_classical_or1 :
+    forall p q, generic_proof E s (generic_axiom_or1 C p q);
+  generic_classical_or2 :
+    forall p q, generic_proof E s (generic_axiom_or2 C p q);
+  generic_classical_or3 :
+    forall p q r, generic_proof E s (generic_axiom_or3 C p q r);
+  generic_classical_dne :
+    forall p, generic_proof E s (generic_axiom_dne C p)
+}.
+
+(** These eleven sequents are shared by declarations 19 and 39.  Factoring
+    them keeps both entailment adapters as transparent transports rather than
+    duplicating the nontrivial LK derivations. *)
+Record generic_lk_classical_derivations {F : Type}
+    (C : generic_connectives F) (D : list F -> Type) : Type := {
+  generic_lk_classical_neg_equiv :
+    forall p, D [generic_axiom_neg_equiv C p];
+  generic_lk_classical_verum : D [generic_top C];
+  generic_lk_classical_K : forall p q, D [generic_axiom_K C p q];
+  generic_lk_classical_S : forall p q r, D [generic_axiom_S C p q r];
+  generic_lk_classical_and1 : forall p q, D [generic_axiom_and1 C p q];
+  generic_lk_classical_and2 : forall p q, D [generic_axiom_and2 C p q];
+  generic_lk_classical_and3 : forall p q, D [generic_axiom_and3 C p q];
+  generic_lk_classical_or1 : forall p q, D [generic_axiom_or1 C p q];
+  generic_lk_classical_or2 : forall p q, D [generic_axiom_or2 C p q];
+  generic_lk_classical_or3 : forall p q r, D [generic_axiom_or3 C p q r];
+  generic_lk_classical_dne : forall p, D [generic_axiom_dne C p]
+}.
+
+(** Construct all source classical axioms once at the sequent level.  This
+    is object-logic classicality proved constructively; it assumes no
+    meta-level excluded middle. *)
+Definition generic_lk_classical {F : Type}
+    (C : generic_connectives F) (D : list F -> Type)
+    (Hinv : generic_neg_involutive_law C)
+    (Hneg_bottom : generic_neg_bottom_law C)
+    (Himp : generic_imp_as_or_law C)
+    (Hneg_and : generic_neg_and_law C)
+    (Hneg_or : generic_neg_or_law C)
+    (K : generic_one_sided_lk C D) :
+    generic_lk_classical_derivations C D.
+Proof.
+  constructor.
+  - intro p.
+    assert (dleft : D [generic_or C p
+      (generic_or C (generic_neg C p) (generic_bottom C))]).
+    { apply (generic_lk_or K p
+        (generic_or C (generic_neg C p) (generic_bottom C)) []).
+      apply (generic_lk_swap1 K).
+      apply (generic_lk_or K (generic_neg C p) (generic_bottom C) [p]).
+      apply (generic_lk_close K p).
+      + now right; right; left.
+      + now left. }
+    assert (dright : D [generic_or C
+      (generic_and C p (generic_top C)) (generic_neg C p)]).
+    { apply (generic_lk_or K
+        (generic_and C p (generic_top C)) (generic_neg C p) []).
+      apply (generic_lk_and K p (generic_top C) [generic_neg C p]).
+      + exact (generic_lk_identity K p).
+      + apply (generic_lk_top K). now left. }
+    pose proof (generic_lk_and K
+      (generic_or C p (generic_or C (generic_neg C p) (generic_bottom C)))
+      (generic_or C (generic_and C p (generic_top C)) (generic_neg C p))
+      [] dleft dright) as d.
+    apply (@generic_lk_cast F D _ _ d).
+    unfold generic_axiom_neg_equiv, generic_formula_iff.
+    rewrite !Himp, (Hinv p), Hneg_or, (Hinv p), Hneg_bottom.
+    reflexivity.
+  - exact (generic_lk_verum K).
+  - intros p q.
+    pose proof (generic_lk_close K p
+      (gamma := [generic_neg C q; p; generic_neg C p])
+      (or_intror (or_introl eq_refl))
+      (or_intror (or_intror (or_introl eq_refl)))) as d.
+    pose proof (generic_lk_or K (generic_neg C q) p
+      [generic_neg C p] d) as d1.
+    pose proof (generic_lk_swap1 K d1) as d2.
+    pose proof (generic_lk_or K (generic_neg C p)
+      (generic_or C (generic_neg C q) p) [] d2) as d3.
+    apply (@generic_lk_cast F D _ _ d3).
+    unfold generic_axiom_K. rewrite !Himp. reflexivity.
+  - intros p q r.
+    set (A := generic_and C p (generic_and C q (generic_neg C r))).
+    set (B := generic_and C p (generic_neg C q)).
+    set (N := generic_neg C p).
+    assert (dB : D [B; q; N; r]).
+    { unfold B, N.
+      apply (generic_lk_and K p (generic_neg C q) [q; generic_neg C p; r]).
+      + apply (generic_lk_close K p); [now left | now right; right; left].
+      + apply (generic_lk_close K q); [now right; left | now left]. }
+    pose proof (generic_lk_swap3 K dB) as dq.
+    assert (dnr : D [generic_neg C r; N; r; B]).
+    { apply (generic_lk_close K r); [now right; right; left | now left]. }
+    assert (dright : D [generic_and C q (generic_neg C r); N; r; B]).
+    { exact (generic_lk_and K q (generic_neg C r) [N; r; B] dq dnr). }
+    assert (dp : D [p; N; r; B]).
+    { apply (generic_lk_close K p); [now left | now right; left]. }
+    assert (dA : D [A; N; r; B]).
+    { unfold A. exact (generic_lk_and K p
+        (generic_and C q (generic_neg C r)) [N; r; B] dp dright). }
+    pose proof (generic_lk_swap3 K dA) as d0.
+    pose proof (generic_lk_or K N r [B; A] d0) as d1.
+    pose proof (generic_lk_swap1 K d1) as d2.
+    pose proof (generic_lk_or K B (generic_or C N r) [A] d2) as d3.
+    pose proof (generic_lk_swap1 K d3) as d4.
+    pose proof (generic_lk_or K A
+      (generic_or C B (generic_or C N r)) [] d4) as d5.
+    apply (@generic_lk_cast F D _ _ d5).
+    unfold generic_axiom_S, A, B, N.
+    rewrite !Himp, !Hneg_or, !Hinv. reflexivity.
+  - intros p q.
+    pose proof (generic_lk_close K p
+      (gamma := [generic_neg C p; generic_neg C q; p])
+      (or_intror (or_intror (or_introl eq_refl)))
+      (or_introl eq_refl)) as d.
+    pose proof (generic_lk_or K (generic_neg C p) (generic_neg C q) [p] d)
+      as d1.
+    pose proof (generic_lk_or K
+      (generic_or C (generic_neg C p) (generic_neg C q)) p [] d1)
+      as d2.
+    apply (@generic_lk_cast F D _ _ d2).
+    unfold generic_axiom_and1. rewrite Himp, Hneg_and. reflexivity.
+  - intros p q.
+    pose proof (generic_lk_close K q
+      (gamma := [generic_neg C p; generic_neg C q; q])
+      (or_intror (or_intror (or_introl eq_refl)))
+      (or_intror (or_introl eq_refl))) as d.
+    pose proof (generic_lk_or K (generic_neg C p) (generic_neg C q) [q] d)
+      as d1.
+    pose proof (generic_lk_or K
+      (generic_or C (generic_neg C p) (generic_neg C q)) q [] d1)
+      as d2.
+    apply (@generic_lk_cast F D _ _ d2).
+    unfold generic_axiom_and2. rewrite Himp, Hneg_and. reflexivity.
+  - intros p q.
+    assert (dand : D [generic_and C p q; generic_neg C q; generic_neg C p]).
+    { apply (generic_lk_and K p q [generic_neg C q; generic_neg C p]).
+      + apply (generic_lk_close K p); [now left | now right; right; left].
+      + apply (generic_lk_close K q); [now left | now right; left]. }
+    pose proof (generic_lk_swap1 K dand) as d1.
+    pose proof (generic_lk_or K (generic_neg C q) (generic_and C p q)
+      [generic_neg C p] d1) as d2.
+    pose proof (generic_lk_swap1 K d2) as d3.
+    pose proof (generic_lk_or K (generic_neg C p)
+      (generic_or C (generic_neg C q) (generic_and C p q)) [] d3)
+      as d4.
+    apply (@generic_lk_cast F D _ _ d4).
+    unfold generic_axiom_and3. rewrite !Himp. reflexivity.
+  - intros p q.
+    apply (@generic_lk_cast F D _ _
+      (generic_lk_or K (generic_neg C p) (generic_or C p q) []
+        (generic_lk_swap1 K
+          (generic_lk_or K p q [generic_neg C p]
+            (generic_lk_close K p
+              (gamma := [p; q; generic_neg C p])
+              (or_introl eq_refl)
+              (or_intror (or_intror (or_introl eq_refl)))))))).
+    unfold generic_axiom_or1. rewrite Himp. reflexivity.
+  - intros p q.
+    apply (@generic_lk_cast F D _ _
+      (generic_lk_or K (generic_neg C q) (generic_or C p q) []
+        (generic_lk_swap1 K
+          (generic_lk_or K p q [generic_neg C q]
+            (generic_lk_close K q
+              (gamma := [p; q; generic_neg C q])
+              (or_intror (or_introl eq_refl))
+              (or_intror (or_intror (or_introl eq_refl)))))))).
+    unfold generic_axiom_or2. rewrite Himp. reflexivity.
+  - intros p q r.
+    set (A := generic_and C p (generic_neg C r)).
+    set (B := generic_and C q (generic_neg C r)).
+    set (N := generic_and C (generic_neg C p) (generic_neg C q)).
+    assert (dA : D [A; generic_neg C p; r; B]).
+    { unfold A.
+      apply (generic_lk_and K p (generic_neg C r)
+        [generic_neg C p; r; B]).
+      + apply (generic_lk_close K p); [now left | now right; left].
+      + apply (generic_lk_close K r); [now right; right; left | now left]. }
+    pose proof (generic_lk_swap3 K dA) as dnp.
+    assert (dB : D [B; generic_neg C q; r; A]).
+    { unfold B.
+      apply (generic_lk_and K q (generic_neg C r)
+        [generic_neg C q; r; A]).
+      + apply (generic_lk_close K q); [now left | now right; left].
+      + apply (generic_lk_close K r); [now right; right; left | now left]. }
+    pose proof (generic_lk_swap2 K dB) as dnq.
+    pose proof (generic_lk_and K (generic_neg C p) (generic_neg C q)
+      [r; B; A] dnp dnq) as dN.
+    pose proof (generic_lk_or K N r [B; A] dN) as d1.
+    pose proof (generic_lk_swap1 K d1) as d2.
+    pose proof (generic_lk_or K B (generic_or C N r) [A] d2) as d3.
+    pose proof (generic_lk_swap1 K d3) as d4.
+    pose proof (generic_lk_or K A
+      (generic_or C B (generic_or C N r)) [] d4) as d5.
+    apply (@generic_lk_cast F D _ _ d5).
+    unfold generic_axiom_or3, A, B, N.
+    rewrite !Himp, !Hneg_or, !Hinv. reflexivity.
+  - intro p.
+    pose proof (generic_lk_or K (generic_neg C p) p []
+      (generic_lk_swap1 K (generic_lk_identity K p))) as d.
+    apply (@generic_lk_cast F D _ _ d).
+    unfold generic_axiom_dne. rewrite Himp, (Hinv (generic_neg C p)).
+    reflexivity.
+Defined.
+
+(** Source declaration 19/43: the principal [Entailment.Cl] instance.  The
+    eleven Hilbert sequents are constructive; Cut is used only by the bundled
+    modus-ponens rule. *)
+Definition generic_principal_classical {P F : Type}
+    {E : generic_entailment P F} (C : generic_connectives F)
+    {D : list F -> Type} {theory : P}
+    (Hprincipal : generic_principal_entailment E D theory)
+    (Hinv : generic_neg_involutive_law C)
+    (Hneg_bottom : generic_neg_bottom_law C)
+    (Himp : generic_imp_as_or_law C)
+    (Hneg_and : generic_neg_and_law C)
+    (Hneg_or : generic_neg_or_law C)
+    (K : generic_one_sided_lk_cut C D) :
+    generic_classical_entailment E C theory.
+Proof.
+  pose proof (@generic_lk_classical F C D Hinv Hneg_bottom Himp
+    Hneg_and Hneg_or (generic_lk_cut_base K)) as Hclassical.
+  constructor.
+  - exact (@generic_principal_modus_ponens P F E C D theory Hprincipal
+      Hinv Himp Hneg_or K).
+  - intro p. apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_axiom_neg_equiv C p))).
+    exact (generic_lk_classical_neg_equiv Hclassical p).
+  - apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_top C))).
+    exact (generic_lk_classical_verum Hclassical).
+  - intros p q. apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_axiom_K C p q))).
+    exact (generic_lk_classical_K Hclassical p q).
+  - intros p q r. apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_axiom_S C p q r))).
+    exact (generic_lk_classical_S Hclassical p q r).
+  - intros p q. apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_axiom_and1 C p q))).
+    exact (generic_lk_classical_and1 Hclassical p q).
+  - intros p q. apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_axiom_and2 C p q))).
+    exact (generic_lk_classical_and2 Hclassical p q).
+  - intros p q. apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_axiom_and3 C p q))).
+    exact (generic_lk_classical_and3 Hclassical p q).
+  - intros p q. apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_axiom_or1 C p q))).
+    exact (generic_lk_classical_or1 Hclassical p q).
+  - intros p q. apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_axiom_or2 C p q))).
+    exact (generic_lk_classical_or2 Hclassical p q).
+  - intros p q r. apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_axiom_or3 C p q r))).
+    exact (generic_lk_classical_or3 Hclassical p q r).
+  - intro p. apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_axiom_dne C p))).
+    exact (generic_lk_classical_dne Hclassical p).
+Defined.
+
+(** Membership in a mapped list has a source witness propositionally; no
+    injectivity or decidable equality is needed. *)
+Lemma generic_list_member_map_elim :
+  forall (A B : Type) (f : A -> B) (y : B) (xs : list A),
+    generic_list_member y (map f xs) ->
+    exists x,
+      generic_list_member x xs /\ f x = y.
+Proof.
+  intros A B f y xs; induction xs as [|x xs IH]; simpl.
+  - contradiction.
+  - intros [Hy | Hy].
+    + exists x. split; [now left | now symmetry].
+    + destruct (IH Hy) as [z [Hz Heq]].
+      exists z. split; [now right | exact Heq].
+Qed.
+
+(** A mapped-negation membership can be reflected after one more negation.
+    Unlike existential preimage extraction, this proof can be consumed while
+    constructing a Type-valued derivation without eliminating Prop into Type. *)
+Lemma generic_list_member_map_neg_back :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_involutive_law C ->
+    forall (r : F) (xs : list F),
+      generic_list_member r (map (generic_neg C) xs) ->
+      generic_list_member (generic_neg C r) xs.
+Proof.
+  intros F C Hinv r xs; induction xs as [|q qs IH]; simpl.
+  - contradiction.
+  - intros [Hr | Hr].
+    + left. rewrite <- (Hinv q). now rewrite Hr.
+    + right. exact (IH Hr).
+Qed.
+
+(** Singleton-normalized finite De Morgan for disjunction. *)
+Lemma generic_neg_list_disj2 :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_bottom_law C ->
+    generic_neg_or_law C ->
+    forall xs : list F,
+      generic_neg C (generic_list_disj2 C xs) =
+      generic_list_conj2 C (map (generic_neg C) xs).
+Proof.
+  intros F C Hneg_bottom Hneg_or xs.
+  induction xs as [|p ps IH].
+  - simpl. exact Hneg_bottom.
+  - destruct ps as [|q qs].
+    + reflexivity.
+    + simpl in IH |- *. rewrite Hneg_or, IH. reflexivity.
+Qed.
+
+(** Source declaration 20/43:
+    [PrincipalEntailment.derivable_iff_provable_disj]. *)
+Lemma generic_principal_derivable_iff_provable_disj :
+  forall (P F : Type) (E : generic_entailment P F)
+         (C : generic_connectives F) (D : list F -> Type)
+         (theory : P),
+    generic_principal_entailment E D theory ->
+    generic_neg_involutive_law C ->
+    generic_neg_bottom_law C ->
+    generic_neg_or_law C ->
+    generic_one_sided_lk_cut C D ->
+    forall gamma : list F,
+      inhabited (D gamma) <->
+      generic_provable E theory (generic_list_disj2 C gamma).
+Proof.
+  intros P F E C D theory Hprincipal Hinv Hneg_bottom Hneg_or K gamma.
+  split.
+  - intros [d]. constructor.
+    apply (generic_equiv_from
+      (generic_principal_equiv Hprincipal (generic_list_disj2 C gamma))).
+    apply (generic_lk_disj2 (generic_lk_cut_base K) gamma []).
+    exact (generic_lk_cast D d (eq_sym (app_nil_r gamma))).
+  - intros [b].
+    pose proof (generic_equiv_to
+      (generic_principal_equiv Hprincipal (generic_list_disj2 C gamma)) b)
+      as ddisj.
+    assert (dneg :
+      D (generic_list_conj2 C (map (generic_neg C) gamma) :: gamma)).
+    { apply (generic_lk_conj2 (generic_lk_cut_base K)
+        (map (generic_neg C) gamma) gamma).
+      intros r Hr.
+      apply (generic_lk_close (generic_lk_cut_base K) r
+        (gamma := r :: gamma)).
+      + now left.
+      + right. exact (@generic_list_member_map_neg_back
+          F C Hinv r gamma Hr). }
+    constructor.
+    exact (generic_lk_extended_cut K ddisj dneg
+      (@generic_neg_list_disj2 F C Hneg_bottom Hneg_or gamma)).
+Qed.
+
+(** * Pullback along a formula translation *)
+
+(** The one-sided kernel uses exactly these four preservation laws.  In
+    particular its pullback does not depend on implication or bottom. *)
+Record generic_lk_connective_hom {F G : Type}
+    (CF : generic_connectives F) (CG : generic_connectives G)
+    (f : G -> F) : Prop := {
+  generic_lk_hom_top :
+    f (generic_top CG) = generic_top CF;
+  generic_lk_hom_neg :
+    forall p, f (generic_neg CG p) = generic_neg CF (f p);
+  generic_lk_hom_and :
+    forall p q,
+      f (generic_and CG p q) = generic_and CF (f p) (f q);
+  generic_lk_hom_or :
+    forall p q,
+      f (generic_or CG p q) = generic_or CF (f p) (f q)
+}.
+
+Arguments generic_lk_hom_top {F G CF CG f} _.
+Arguments generic_lk_hom_neg {F G CF CG f} _ _.
+Arguments generic_lk_hom_and {F G CF CG f} _ _ _.
+Arguments generic_lk_hom_or {F G CF CG f} _ _ _.
+
+Lemma generic_list_member_map_intro :
+  forall (A B : Type) (f : A -> B) (x : A) (xs : list A),
+    generic_list_member x xs ->
+    generic_list_member (f x) (map f xs).
+Proof.
+  intros A B f x xs; induction xs as [|y ys IH]; simpl.
+  - contradiction.
+  - intros [Hx | Hx].
+    + left. now rewrite Hx.
+    + right. now apply IH.
+Qed.
+
+Lemma generic_list_map_subset :
+  forall (A B : Type) (f : A -> B) (xs ys : list A),
+    generic_list_subset xs ys ->
+    generic_list_subset (map f xs) (map f ys).
+Proof.
+  intros A B f xs ys Hsubset y Hy.
+  destruct (@generic_list_member_map_elim A B f y xs Hy)
+    as [x [Hx <-]].
+  apply (@generic_list_member_map_intro A B f x ys).
+  exact (Hsubset x Hx).
+Qed.
+
+(** Source declaration 21/43: [OneSidedLK.Pullback]. *)
+Definition generic_lk_pullback {F G : Type}
+    (D : list F -> Type) (f : G -> F) : list G -> Type :=
+  fun gamma => D (map f gamma).
+
+(** Source declaration 22/43: [Pullback.cast]. *)
+Definition generic_lk_pullback_cast {F G : Type}
+    (D : list F -> Type) (f : G -> F)
+    {delta : list F} {gamma : list G}
+    (d : D delta) (e : delta = map f gamma) :
+    generic_lk_pullback D f gamma :=
+  eq_rect delta D d (map f gamma) e.
+
+(** Source declaration 23/43: [Pullback.uncast]. *)
+Definition generic_lk_pullback_uncast {F G : Type}
+    (D : list F -> Type) (f : G -> F)
+    {delta : list F} {gamma : list G}
+    (d : generic_lk_pullback D f gamma)
+    (e : delta = map f gamma) : D delta :=
+  eq_rect (map f gamma) D d delta (eq_sym e).
+
+(** Source declaration 24/43: pullback [OneSidedLK] instance. *)
+Definition generic_lk_pullback_one_sided {F G : Type}
+    {CF : generic_connectives F} {CG : generic_connectives G}
+    {D : list F -> Type} {f : G -> F}
+    (Hhom : generic_lk_connective_hom CF CG f)
+    (Hlk : generic_one_sided_lk CF D) :
+    generic_one_sided_lk CG (generic_lk_pullback D f).
+Proof.
+  constructor.
+  - intro p. unfold generic_lk_pullback. simpl.
+    refine (generic_lk_cast D (generic_lk_identity Hlk (f p)) _).
+    exact (f_equal (fun x => [f p; x])
+      (eq_sym (generic_lk_hom_neg Hhom p))).
+  - intros delta gamma d Hsubset.
+    exact (generic_lk_contraction Hlk (map f delta) (map f gamma) d
+      (@generic_list_map_subset G F f delta gamma Hsubset)).
+  - unfold generic_lk_pullback. simpl.
+    refine (generic_lk_cast D (generic_lk_verum Hlk) _).
+    exact (f_equal (fun x => [x])
+      (eq_sym (generic_lk_hom_top Hhom))).
+  - intros p q gamma dp dq. unfold generic_lk_pullback in *; simpl in *.
+    refine (generic_lk_cast D
+      (generic_lk_and Hlk (f p) (f q) (map f gamma) dp dq) _).
+    exact (f_equal (fun x => x :: map f gamma)
+      (eq_sym (generic_lk_hom_and Hhom p q))).
+  - intros p q gamma d. unfold generic_lk_pullback in *; simpl in *.
+    refine (generic_lk_cast D
+      (generic_lk_or Hlk (f p) (f q) (map f gamma) d) _).
+    exact (f_equal (fun x => x :: map f gamma)
+      (eq_sym (generic_lk_hom_or Hhom p q))).
+Defined.
+
+(** Source declaration 25/43: pullback [Cut] instance. *)
+Definition generic_lk_pullback_cut {F G : Type}
+    {CF : generic_connectives F} {CG : generic_connectives G}
+    {D : list F -> Type} {f : G -> F}
+    (Hhom : generic_lk_connective_hom CF CG f)
+    (Hcut : generic_one_sided_lk_cut CF D) :
+    generic_one_sided_lk_cut CG (generic_lk_pullback D f).
+Proof.
+  refine {| generic_lk_cut_base :=
+      generic_lk_pullback_one_sided Hhom (generic_lk_cut_base Hcut) |}.
+  intros p gamma delta dp dn.
+  unfold generic_lk_pullback in *; simpl in *.
+  pose (dn' := generic_lk_cast D dn
+    (f_equal (fun x => x :: map f delta)
+      (generic_lk_hom_neg Hhom p))).
+  refine (generic_lk_cast D
+    (generic_lk_cut_raw Hcut (f p) (map f gamma) (map f delta) dp dn') _).
+  symmetry. apply map_app.
+Defined.
+
+(** Source declaration 26/43: pullback [PrincipalEntailment] instance.
+    No connective-preservation law is needed because singleton mapping is
+    definitional. *)
+Definition generic_lk_pullback_principal {P F G : Type}
+    {E : generic_entailment P F} {D : list F -> Type}
+    {theory : P} (f : G -> F)
+    (Hprincipal : generic_principal_entailment E D theory) :
+    generic_principal_entailment
+      (generic_pullback_entailment E f)
+      (generic_lk_pullback D f)
+      (generic_pullback_of theory f).
+Proof.
+  constructor. intro p.
+  exact (generic_principal_equiv Hprincipal (f p)).
+Defined.
+
+(** Source declaration 27/43: [Pullback.nonempty_iff]. *)
+Lemma generic_lk_pullback_inhabited_iff :
+  forall (F G : Type) (D : list F -> Type) (f : G -> F)
+         (gamma : list G),
+    inhabited (generic_lk_pullback D f gamma) <->
+    inhabited (D (map f gamma)).
+Proof. reflexivity. Qed.
+
+(** Source declaration 28/43: [Pullback.isEmpty_iff]. *)
+Lemma generic_lk_pullback_empty_iff :
+  forall (F G : Type) (D : list F -> Type) (f : G -> F)
+         (gamma : list G),
+    generic_empty_type (generic_lk_pullback D f gamma) <->
+    generic_empty_type (D (map f gamma)).
+Proof. reflexivity. Qed.
+
+Arguments generic_lk_pullback_cast {F G} D f {delta gamma} _ _.
+Arguments generic_lk_pullback_uncast {F G} D f {delta gamma} _ _.
+Arguments generic_lk_pullback_one_sided {F G CF CG D f} _ _.
+Arguments generic_lk_pullback_cut {F G CF CG D f} _ _.
+Arguments generic_lk_pullback_principal {P F G E D theory} f _.
+
+(** * Contextual entailment *)
+
+(** A finite context witness carries precisely the pointwise membership
+    evidence needed by contextual derivability. *)
+Definition generic_context_witness {F S : Type}
+    (A : generic_adjunctive_set F S) (s : S) : Type :=
+  { gamma : list F |
+      forall p, generic_list_member p gamma ->
+                generic_adjunctive_member A p s }.
+
+Definition generic_context_witness_formulas {F S : Type}
+    {A : generic_adjunctive_set F S} {s : S}
+    (w : generic_context_witness A s) : list F :=
+  proj1_sig w.
+
+Definition generic_context_witness_covers {F S : Type}
+    {A : generic_adjunctive_set F S} {s : S}
+    (w : generic_context_witness A s) :
+    forall p,
+      generic_list_member p (generic_context_witness_formulas w) ->
+      generic_adjunctive_member A p s :=
+  proj2_sig w.
+
+(** Source declaration 29/43: [ContextualEntailment].  Only the raw
+    negation operation is used by the contextual representation. *)
+Record generic_contextual_entailment {S F : Type}
+    (E : generic_entailment S F)
+    (A : generic_adjunctive_set F S)
+    (neg : F -> F) (D : list F -> Type) : Type := {
+  generic_contextual_equiv :
+    forall (s : S) (p : F),
+      generic_type_equiv
+        (generic_proof E s p)
+        { w : generic_context_witness A s &
+          D (p :: map neg (generic_context_witness_formulas w)) }
+}.
+
+Arguments generic_contextual_equiv {S F E A neg D} _ _ _.
+
+(** Source declaration 30/43: [ContextualEntailment.provable_iff]. *)
+Lemma generic_contextual_provable_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S)
+         (neg : F -> F) (D : list F -> Type),
+    generic_contextual_entailment E A neg D ->
+    forall (s : S) (p : F),
+      generic_provable E s p <->
+      exists gamma : list F,
+        (forall q,
+          generic_list_member q gamma -> generic_adjunctive_member A q s) /\
+        inhabited (D (p :: map neg gamma)).
+Proof.
+  intros S F E A neg D Hcontext s p; split.
+  - intros [b].
+    destruct (generic_equiv_to
+      (generic_contextual_equiv Hcontext s p) b) as [w d].
+    exists (generic_context_witness_formulas w). split.
+    + exact (@generic_context_witness_covers F S A s w).
+    + now constructor.
+  - intros [gamma [Hgamma [d]]]. constructor.
+    apply (generic_equiv_from (generic_contextual_equiv Hcontext s p)).
+    exact (existT _ (exist _ gamma Hgamma) d).
+Qed.
+
+(** Source declaration 31/43: [ContextualEntailment.toProof]. *)
+Definition generic_contextual_to_proof {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    {neg : F -> F} {D : list F -> Type}
+    (Hcontext : generic_contextual_entailment E A neg D)
+    (s : S) (p : F) (d : D [p]) : generic_proof E s p.
+Proof.
+  apply (generic_equiv_from (generic_contextual_equiv Hcontext s p)).
+  refine (existT _ (exist _ [] _) d).
+  intros q Hq. contradiction.
+Defined.
+
+(** Source declaration 32/43: [ContextualEntailment.ofAxiom]. *)
+Definition generic_contextual_of_axiom {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    {C : generic_connectives F} {D : list F -> Type}
+    (Hcontext : generic_contextual_entailment E A (generic_neg C) D)
+    (Hlk : generic_one_sided_lk C D)
+    (s : S) (p : F) (Hp : generic_adjunctive_member A p s) :
+    generic_proof E s p.
+Proof.
+  apply (generic_equiv_from (generic_contextual_equiv Hcontext s p)).
+  refine (existT _ (exist _ [p] _) (generic_lk_identity Hlk p)).
+  intros q [Hq | Hq].
+  - now subst q.
+  - contradiction.
+Defined.
+
+(** Source declaration 33/43: [ContextualEntailment.ofAxiomSubset]. *)
+Definition generic_contextual_of_axiom_subset {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    {neg : F -> F} {D : list F -> Type}
+    (Hcontext : generic_contextual_entailment E A neg D)
+    (s t : S) (p : F)
+    (b : generic_proof E s p)
+    (Hsubset : generic_adjunctive_subset A s t) :
+    generic_proof E t p.
+Proof.
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext s p) b) as [w d].
+  apply (generic_equiv_from (generic_contextual_equiv Hcontext t p)).
+  refine (existT _
+    (exist _ (generic_context_witness_formulas w) _) d).
+  intros q Hq.
+  exact (Hsubset q (@generic_context_witness_covers F S A s w q Hq)).
+Defined.
+
+(** Source declaration 34/43: the contextual [Entailment.Axiomatized]
+    instance. *)
+Definition generic_contextual_axiomatized {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    {C : generic_connectives F} {D : list F -> Type}
+    (Hcontext : generic_contextual_entailment E A (generic_neg C) D)
+    (Hlk : generic_one_sided_lk C D) :
+    generic_axiomatized E A.
+Proof.
+  constructor.
+  - intros s p Hp.
+    exact (@generic_contextual_of_axiom S F E A C D
+      Hcontext Hlk s p Hp).
+  - intros s t Hsubset p b.
+    exact (@generic_contextual_of_axiom_subset S F E A (generic_neg C) D
+      Hcontext s t p b Hsubset).
+Defined.
+
+Arguments generic_context_witness_formulas {F S A s} _.
+Arguments generic_context_witness_covers {F S A s} _ _ _.
+Arguments generic_contextual_to_proof {S F E A neg D} _ _ _ _.
+Arguments generic_contextual_of_axiom {S F E A C D} _ _ _ _ _.
+Arguments generic_contextual_of_axiom_subset {S F E A neg D}
+  _ _ _ _ _ _.
+Arguments generic_contextual_axiomatized {S F E A C D} _ _.

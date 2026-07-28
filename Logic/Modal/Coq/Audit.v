@@ -488,6 +488,84 @@ Print Assumptions generic_lk_swap3.
 Print Assumptions generic_lk_extended_cut.
 Print Assumptions generic_lk_disj2.
 Print Assumptions generic_lk_conj2.
+Check generic_type_equiv.
+Check generic_equiv_to.
+Check generic_equiv_from.
+Check generic_neg_involutive_law.
+Check generic_neg_top_law.
+Check generic_neg_bottom_law.
+Check generic_imp_as_or_law.
+Check generic_neg_and_law.
+Check generic_neg_or_law.
+Check generic_modus_ponens.
+Check generic_principal_entailment.
+Check generic_principal_provable_iff.
+Check generic_principal_modus_ponens.
+Check generic_formula_iff.
+Check generic_axiom_neg_equiv.
+Check generic_axiom_K.
+Check generic_axiom_S.
+Check generic_axiom_and1.
+Check generic_axiom_and2.
+Check generic_axiom_and3.
+Check generic_axiom_or1.
+Check generic_axiom_or2.
+Check generic_axiom_or3.
+Check generic_axiom_dne.
+Check generic_classical_entailment.
+Check generic_lk_classical_derivations.
+Check generic_lk_classical.
+Check generic_principal_classical.
+Check generic_list_member_map_elim.
+Check generic_list_member_map_neg_back.
+Check generic_neg_list_disj2.
+Check generic_principal_derivable_iff_provable_disj.
+Print Assumptions generic_principal_provable_iff.
+Print Assumptions generic_principal_modus_ponens.
+Print Assumptions generic_lk_classical.
+Print Assumptions generic_principal_classical.
+Print Assumptions generic_list_member_map_elim.
+Print Assumptions generic_list_member_map_neg_back.
+Print Assumptions generic_neg_list_disj2.
+Print Assumptions generic_principal_derivable_iff_provable_disj.
+Check generic_lk_connective_hom.
+Check generic_lk_hom_top.
+Check generic_lk_hom_neg.
+Check generic_lk_hom_and.
+Check generic_lk_hom_or.
+Check generic_list_member_map_intro.
+Check generic_list_map_subset.
+Check generic_lk_pullback.
+Check generic_lk_pullback_cast.
+Check generic_lk_pullback_uncast.
+Check generic_lk_pullback_one_sided.
+Check generic_lk_pullback_cut.
+Check generic_lk_pullback_principal.
+Check generic_lk_pullback_inhabited_iff.
+Check generic_lk_pullback_empty_iff.
+Print Assumptions generic_list_map_subset.
+Print Assumptions generic_lk_pullback_cast.
+Print Assumptions generic_lk_pullback_uncast.
+Print Assumptions generic_lk_pullback_one_sided.
+Print Assumptions generic_lk_pullback_cut.
+Print Assumptions generic_lk_pullback_principal.
+Print Assumptions generic_lk_pullback_inhabited_iff.
+Print Assumptions generic_lk_pullback_empty_iff.
+Check generic_context_witness.
+Check generic_context_witness_formulas.
+Check generic_context_witness_covers.
+Check generic_contextual_entailment.
+Check generic_contextual_equiv.
+Check generic_contextual_provable_iff.
+Check generic_contextual_to_proof.
+Check generic_contextual_of_axiom.
+Check generic_contextual_of_axiom_subset.
+Check generic_contextual_axiomatized.
+Print Assumptions generic_contextual_provable_iff.
+Print Assumptions generic_contextual_to_proof.
+Print Assumptions generic_contextual_of_axiom.
+Print Assumptions generic_contextual_of_axiom_subset.
+Print Assumptions generic_contextual_axiomatized.
 
 (** The complete 20-declaration ForcingRelation surface is constructive over
     arbitrary world, formula, context, and accessibility types.  Ordinary and
