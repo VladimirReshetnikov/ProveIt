@@ -2415,6 +2415,17 @@ roots of two ordinary deep-closure traces does not identify those existential
 tables.  Thus this checkpoint exposes rather than assumes away the remaining
 shared-table construction.
 
+`RawCodedRestrictedPADerivationSoundnessDirectOrdinaryClosure.v` proves the
+weaker operation fact actually consumed by universal-closure opening.  A
+finite scoping judgment makes every transparent template term invariant under
+shift and substitution at arbitrary carrier depths; formula constructors then
+propagate that invariant through the complete strong-prefix body.  For the two
+opaque truth leaves, deep closure of their ternary predicates and the exact
+five-argument leaf equations give the required formula closure, while every
+wrong predicate name or arity reduces to bottom.  The resulting theorem gives
+ordinary all-depth substitution identity for any represented replacement and
+does not require one beta table to be shared between different depths.
+
 `RawCodedRestrictedPADerivationSoundnessDirectOrdinaryClosureRemainder.v`
 uses the weaker ordinary-substitution theorem to bypass that shared-table
 construction for the actual induction consumer.  Formula-bound totality
