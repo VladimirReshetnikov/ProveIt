@@ -24,7 +24,7 @@ From FoundationModal Require Import
   GLUnnecessitation GLModalDisjunction GLIndependence QuasiNormalS QuasiNormalD
   GLPlusBoxBot
   KHenIncompleteness GLAlternativeSystems HilbertRuleSystemBridges
-  CanonicalGrz StructuralFrames
+  CanonicalGrz StructuralFrames FiniteCWFFrameRank
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 JerabekBoxdot CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
@@ -2253,6 +2253,39 @@ Check trans_tree_unravelling_truth_at_root.
 Check rank_eq_iff_iter_terminal.
 Check rank_lt_iff_satisfies_box_bottom.
 Check point_generated_rank_spec.
+
+(** Complete canonical finite-CWF adapter for the pinned Rank module. *)
+Check finite_enumeration_frame_finite.
+Check frame_cwf_as_converse_well_founded.
+Check frame_rank_spec_converse_well_founded.
+Check finite_cwf_frame_rank.
+Check finite_cwf_frame_height.
+Check finite_cwf_frame_rank_spec.
+Check frame_rank_spec_unique.
+Check point_generated_finite_enumeration.
+Check point_generated_frame_is_tree.
+Check finite_cwf_point_generated_relation_cwf.
+Check finite_cwf_point_generated_rank.
+Check finite_cwf_point_generated_rank_spec.
+Check finite_cwf_point_generated_rank_original.
+Check fin_value_of_nat_lt.
+Check extend_root_finite_enumeration.
+Check finite_cwf_extend_root_relation_cwf.
+Check finite_cwf_extend_root_rank.
+Check finite_cwf_extend_root_rank_spec.
+Check finite_cwf_extend_root_embedded_rank.
+Check finite_cwf_extend_root_embedded_rank_spec.
+Check finite_cwf_extend_root_rank_original.
+Check extend_root_algebraic_rank.
+Check extend_root_algebraic_rank_spec.
+Check finite_cwf_extend_root_rank_eq_algebraic.
+Check finite_cwf_extend_root_height.
+Check finite_cwf_extend_root_height_unfold.
+Check finite_cwf_extend_root_height_eq.
+Check finite_cwf_extend_root_height_positive.
+Check finite_cwf_one_root_height_successor.
+Check finite_cwf_extend_root_rank_base_root.
+Check finite_cwf_extend_root_eq_base_height_iff.
 Check balloon_covers_envelope.
 Check source_balloon_order_assumptions_inconsistent.
 Check nat_lt_has_no_farthest_bottom.
@@ -3169,6 +3202,23 @@ Print Assumptions nat_lt_validates_Z.
 Print Assumptions trans_tree_unravelling_truth_at_root.
 Print Assumptions rank_eq_iff_iter_terminal.
 Print Assumptions point_generated_rank_spec.
+(** Canonical finite ranks inherit only the explicit classical height and
+    finite-subtype selection boundaries audited below.  Algebraic rank
+    uniqueness and the direct extension laws add no project-local axiom; in
+    particular, Foundation's point-generated rank axiom is a theorem here. *)
+Print Assumptions frame_rank_spec_converse_well_founded.
+Print Assumptions finite_cwf_frame_rank_spec.
+Print Assumptions frame_rank_spec_unique.
+Print Assumptions point_generated_finite_enumeration.
+Print Assumptions point_generated_frame_is_tree.
+Print Assumptions finite_cwf_point_generated_rank_original.
+Print Assumptions extend_root_finite_enumeration.
+Print Assumptions finite_cwf_extend_root_rank_original.
+Print Assumptions extend_root_algebraic_rank_spec.
+Print Assumptions finite_cwf_extend_root_rank_eq_algebraic.
+Print Assumptions finite_cwf_extend_root_height_eq.
+Print Assumptions finite_cwf_one_root_height_successor.
+Print Assumptions finite_cwf_extend_root_eq_base_height_iff.
 Print Assumptions balloon_covers_envelope.
 Print Assumptions farthest_counterexample_of_not_box.
 Print Assumptions balloon_validates_Z_of_cwf.

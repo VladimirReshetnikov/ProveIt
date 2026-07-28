@@ -289,6 +289,7 @@ is being reconstructed:
 | `Root.v` | `Modal/Kripke/Root.lean` | Rooted and generated frames/models, structural inheritance, bounded morphisms, and truth invariance |
 | `FrameTransformations.v` | `Modal/Kripke/{ExtendRoot,Irreflexivize}.lean` | Irreflexivization and reflexive truth transfer; finite added-root frames, trees, p-morphisms, exact covers, boxdot transfer, and T witnesses |
 | `StructuralFrames.v` | `Modal/Kripke/{Cluster,LinearFrame,Tree,Rank,Balloon}.lean` | Extensional clusters and skeletons; linear examples and Z/Dum validity; tree unravellings; specified ranks; corrected balloon results |
+| `FiniteCWFFrameRank.v` | `Modal/Kripke/Rank.lean` | Complete 24-declaration canonical finite-CWF rank surface: direct height construction, path and terminal laws, exact `Fin n + F` added-root ranks and heights, modal characterizations, and a proof of the source's point-generated rank axiom |
 | `WeakCorrespondence.v` | `Modal/Kripke/Axiom{WeakPoint2,WeakPoint3}.lean` | Exact weak-confluence and weak-connectedness frame correspondences |
 | `Boxdot.v` | `Modal/Boxdot/{Basic,K4_S4,GL_Grz,GLPoint3_GrzPoint3,Ver_Triv,Jerabek}.lean` | Atom-polymorphic basic translation semantics and proof transport; exact finite conjunction/box laws; unconditional nat-atom K4/S4, GL/Grz, and Ver/Triv results; finite frame transformations; doubled frames; compatibility gates for GL.3/Grz.3 and the former Jeřábek bridge |
 | `JerabekBoxdot.v` | `Modal/Boxdot/Jerabek.lean` | Fresh-atom finite context, global-consequence deduction, doubled-model truth and counterexample lift, general unconditional SBDP/BDP, and the unconditional KT, KTB, S4, S4.2, S4.3, and S5 boxdot properties |
@@ -854,17 +855,19 @@ duplicate-free enumeration of each bounded carrier.  The source's finite
 tree-unravelling instance is not yet reconstructed.  Tree paths use
 inductive snoc constructors, making the source list-prefix/`IsChain` normal
 form intrinsic.  `ConverseWellFounded.v` now reconstructs Foundation's generic
-finite converse-well-founded height machinery in full, while the existing
-frame-specialized rank results remain factored through an exact
-`frame_rank_spec` pending their direct adapter to that generic height.  The
-current rank development needs only a one-fresh-root construction;
-independently, `FrameTransformations.v` checks the complete pinned
-`extendRoot` theorem surface for the general `Fin n + F` carrier.  Lean's
+finite converse-well-founded height machinery in full.
+`FiniteCWFFrameRank.v` closes the direct adapter to that height, proves
+uniqueness of exact rank specifications, and completes all 24 active
+`Rank.lean` declarations.  Its added-root laws use
+`FrameTransformations.extend_root_frame` directly on the source's general
+`Fin n + F` carrier, including rank preservation at old worlds without a
+rootedness premise and the exact base-height-plus-`n` law.  Lean's
 finite-world, tree, and finite-set wrappers are represented by explicit Coq
 conjunctions, duplicate-free list covers, and extensional cardinality
 predicates; these are representation changes, not mathematical omissions.
 Foundation's point-generated rank equality is an `axiom` at the pinned
-revision, whereas the corresponding Coq restriction theorem is proved.
+revision, whereas the corresponding canonical Coq equality is proved by rank
+uniqueness.
 
 `Balloon.lean` also cannot be ported literally: its world relation is required
 to be a strict total order while its envelope is nondegenerate, assumptions
@@ -934,6 +937,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
   FoundationModal.FrameTransformations `
   FoundationModal.StructuralFrames `
+  FoundationModal.FiniteCWFFrameRank `
   FoundationModal.WeakCorrespondence `
   FoundationModal.CanonicalCombinations `
   FoundationModal.KD4Point3Z `
