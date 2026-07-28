@@ -2056,6 +2056,16 @@ proof compiler.  The callback therefore adds no graph equality or context
 identification premise; its only proof-producing residual is
 `RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler`.
 
+`RawCodedDynamicTruthNativeSubstitutionStagedCallbackCompilation.v` exposes
+the fourth public callback from the linked staged substitution implication.
+It accumulates current-plus-local, cross-level, and shift certificates in
+that order, transporting the whole prefix after each witnessed-context merge.
+One adequate paired-global orbit and one exact substitution transform remain
+shared between graph membership and proof compilation.  Consequently the
+adapter's only arithmetic residual is
+`RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler`;
+it assumes neither context equality nor semantic validity.
+
 `RawCodedDynamicTruthNativeAxiomStagedCallbackCompilation.v` exposes the fifth
 public callback from the linked staged axiom kernel.  It keeps one adequate
 paired-global orbit, its exact axiom transform, and the resulting positive
