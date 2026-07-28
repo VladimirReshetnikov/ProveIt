@@ -1,0 +1,40 @@
+(**
+  Assumption audit for empty-context local-proof transport.
+
+  In addition to the exact public endpoint, this audit exposes the two
+  syntactic ingredients separately: adequacy of witnessed PA-axiom contexts
+  and PA-definable reverse traversal of a possibly nonstandard context table.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofEmptyContextTransport.
+
+Module PABoundedRawCodedPALocalProofEmptyContextTransportAudit.
+
+Import PABoundedRawCodedPALocalProofEmptyContextTransport.
+
+Check raw_codedPAAxiomWitness_axiom_atomically_adequate.
+Check raw_codedPAAxiomWitnessContext_context_all_atomically_adequate.
+
+Check RawCodedPALocalProofSuffixTransportState.
+Check codedPALocalProofSuffixTransportStateTermAt.
+Check raw_sat_codedPALocalProofSuffixTransportStateTermAt_iff.
+Check raw_codedPALocalProofSuffixTransportState_zero.
+Check raw_codedPALocalProofSuffixTransportState_succ.
+Check raw_codedPALocalProofSuffixTransportState_all.
+
+Check raw_codedPALocalProof_emptyContext_to_atomicallyAdequateContext.
+Check raw_codedPAEmptyContextToWitnessedContextTransport.
+
+Print Assumptions raw_codedPAAxiomWitness_axiom_atomically_adequate.
+Print Assumptions
+  raw_codedPAAxiomWitnessContext_context_all_atomically_adequate.
+Print Assumptions raw_sat_codedPALocalProofSuffixTransportStateTermAt_iff.
+Print Assumptions raw_codedPALocalProofSuffixTransportState_zero.
+Print Assumptions raw_codedPALocalProofSuffixTransportState_succ.
+Print Assumptions raw_codedPALocalProofSuffixTransportState_all.
+Print Assumptions
+  raw_codedPALocalProof_emptyContext_to_atomicallyAdequateContext.
+Print Assumptions raw_codedPAEmptyContextToWitnessedContextTransport.
+
+End PABoundedRawCodedPALocalProofEmptyContextTransportAudit.
