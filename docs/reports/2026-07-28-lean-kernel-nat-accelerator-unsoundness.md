@@ -129,6 +129,66 @@ bootstrap hygiene, copied from `Init/Prelude.lean`'s own `Nat`.
 instance through `Nat.beq`, whose accelerator (`reduce_bin_nat_pred`) returns the
 constants named `Bool.true` / `Bool.false` — also by name.
 
+## Strengthening: nothing has to be redefined
+
+The objection above ("you replaced part of the system") turns out not to be
+load-bearing. `Logic/KernelSoundness/Lean/NatGcdFreeName.lean` imports
+`Init.Prelude` and uses the **genuine** core `Nat`, `Nat.add`, `Eq`, `rfl`,
+`True`, `False`, `Nat.rec` and numeric literals, entirely unmodified. It only
+*defines* `Nat.gcd`, which `Init.Prelude` does not claim — core defines it far
+downstream in `Init.Data.Nat.Gcd`:
+
+```lean
+prelude
+import Init.Prelude
+
+def Nat.gcd (a : Nat) (_b : Nat) : Nat := a
+
+theorem gcd_left (a b : Nat) : Eq (Nat.gcd a b) a := rfl   -- delta
+theorem gcd_lit : Eq (Nat.gcd 0 1) 1 := rfl                -- GMP accelerator
+theorem zero_eq_one : Eq 0 1 :=
+  @Eq.rec Nat (Nat.gcd 0 1) (fun x _ => Eq x 1) gcd_lit 0 (gcd_left 0 1)
+```
+
+`Lean/FreeNameSurvey.lean` enumerates the surface: under `Init.Prelude` **nine**
+kernel-special-cased names are free — `Nat.gcd`, `Nat.land`, `Nat.lor`,
+`Nat.xor`, `Nat.shiftLeft`, `Nat.shiftRight`, `Lean.reduceBool`,
+`Lean.reduceNat`, `eagerReduce`. The hazard is therefore not "a module that
+redefines `Nat`" but "a module that defines a name the kernel has already
+claimed but the prelude has not yet reached".
+
+Note the asymmetry with the compiler: a module *without* `prelude` always gets
+the implicit `import Init` even when it lists explicit imports (verified), so
+this needs `prelude` to control the import prefix — but no core declaration is
+displaced.
+
+## A different mechanism: the native hook, and an axiom-tracking hole
+
+`Logic/KernelSoundness/Lean/ReduceBoolFreeName.lean` defines the free name
+`Lean.reduceBool`. The kernel's `reduce_native` matches it by name, runs the
+*compiled code* of a nullary constant argument, and believes the result — while
+delta-reduction on a free-variable argument gives the declared body. Same
+two-rule disagreement, different extension.
+
+What makes this one interesting is what is missing: no `Lean.ofReduceBool`, no
+`native_decide`, no `@[implemented_by]`, no `@[extern]`. The axiom
+`Lean.ofReduceBool` exists precisely so that reliance on compiled code is visible
+in `#print axioms`; owning the name bypasses that tracking entirely. `lean` exits
+0 and `#print axioms boom` reports nothing.
+
+This one does **not** survive `leanchecker`, which replays into an environment
+where the interpreter cannot find `probe`:
+
+```
+leanchecker found a problem in ReduceBoolFreeName
+uncaught exception: while replaying declaration 'rb_native':
+(kernel) (interpreter) unknown declaration 'probe'
+```
+
+So it is an axiom-*tracking* hole rather than a kernel hole — closely related to
+[lean4#7463](https://github.com/leanprover/lean4/issues/7463) (`@[csimp]` can
+smuggle axioms past `#print axioms`), but reachable without any axiom at all.
+
 ## Verification
 
 | Step | Result |
