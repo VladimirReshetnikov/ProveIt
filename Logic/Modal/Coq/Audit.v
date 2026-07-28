@@ -12,7 +12,8 @@ From FoundationModal Require Import
   EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
   HilbertNormalTransitiveBaseSystems HilbertNormalMcKSystems
-  HilbertNormalK4PointSystems
+  HilbertNormalK4PointSystems HilbertNormalMixedSystems
+  HilbertNormalD45SymmetricSystems HilbertNormalS4Systems
   HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
@@ -1176,6 +1177,80 @@ Check normal_K4Point3_axioms_has_Four.
 Check normal_K4Point3_axioms_has_WeakPoint3.
 Check normal_K4Point3.
 Check normal_K4Point3_entailment.
+
+(** Exact raw KT4B/K45/KD4/KD5 systems from the Normal catalogue. *)
+Check structural_kt4b_entailment.
+Check structural_k45_entailment.
+Check structural_kd4_entailment.
+Check structural_kd5_entailment.
+Check normal_KT4B_axioms.
+Check normal_KT4B_axioms_has_K.
+Check normal_KT4B_axioms_has_T.
+Check normal_KT4B_axioms_has_Four.
+Check normal_KT4B_axioms_has_B.
+Check normal_KT4B.
+Check normal_KT4B_entailment.
+Check normal_K45_axioms.
+Check normal_K45_axioms_has_K.
+Check normal_K45_axioms_has_Four.
+Check normal_K45_axioms_has_Five.
+Check normal_K45.
+Check normal_K45_entailment.
+Check normal_KD4_axioms.
+Check normal_KD4_axioms_has_K.
+Check normal_KD4_axioms_has_D.
+Check normal_KD4_axioms_has_Four.
+Check normal_KD4.
+Check normal_KD4_entailment.
+Check normal_KD5_axioms.
+Check normal_KD5_axioms_has_K.
+Check normal_KD5_axioms_has_D.
+Check normal_KD5_axioms_has_Five.
+Check normal_KD5.
+Check normal_KD5_entailment.
+
+(** Exact raw KD45/KB4/KB5 systems from the Normal catalogue. *)
+Check structural_kd45_entailment.
+Check structural_kb4_entailment.
+Check structural_kb5_entailment.
+Check normal_KD45_axioms.
+Check normal_KD45_axioms_has_K.
+Check normal_KD45_axioms_has_D.
+Check normal_KD45_axioms_has_Four.
+Check normal_KD45_axioms_has_Five.
+Check normal_KD45.
+Check normal_KD45_entailment.
+Check normal_KB4_axioms.
+Check normal_KB4_axioms_has_K.
+Check normal_KB4_axioms_has_B.
+Check normal_KB4_axioms_has_Four.
+Check normal_KB4.
+Check normal_KB4_entailment.
+Check normal_KB5_axioms.
+Check normal_KB5_axioms_has_K.
+Check normal_KB5_axioms_has_B.
+Check normal_KB5_axioms_has_Five.
+Check normal_KB5.
+Check normal_KB5_entailment.
+
+(** Exact raw S4/S4McK systems and their source inclusions. *)
+Check structural_s4_entailment.
+Check structural_s4mck_entailment.
+Check normal_S4_axioms.
+Check normal_S4_axioms_has_K.
+Check normal_S4_axioms_has_T.
+Check normal_S4_axioms_has_Four.
+Check normal_S4.
+Check normal_S4_entailment.
+Check normal_K4_weaker_than_normal_S4.
+Check normal_S4McK_axioms.
+Check normal_S4McK_axioms_has_K.
+Check normal_S4McK_axioms_has_T.
+Check normal_S4McK_axioms_has_Four.
+Check normal_S4McK_axioms_has_McK.
+Check normal_S4McK.
+Check normal_S4McK_entailment.
+Check normal_K4McK_weaker_than_normal_S4McK.
 
 (** Complete 17-declaration raw-axiom calculus with the Henkin rule. *)
 Check henkin_rule.
@@ -2790,6 +2865,53 @@ Print Assumptions normal_K4Point3_axioms_has_K.
 Print Assumptions normal_K4Point3_axioms_has_Four.
 Print Assumptions normal_K4Point3_axioms_has_WeakPoint3.
 Print Assumptions normal_K4Point3_entailment.
+(** The exact KT4B, K45, KD4, and KD5 witnesses and bundles are likewise
+    constructive and closed under the global context. *)
+Print Assumptions normal_KT4B_axioms_has_K.
+Print Assumptions normal_KT4B_axioms_has_T.
+Print Assumptions normal_KT4B_axioms_has_Four.
+Print Assumptions normal_KT4B_axioms_has_B.
+Print Assumptions normal_KT4B_entailment.
+Print Assumptions normal_K45_axioms_has_K.
+Print Assumptions normal_K45_axioms_has_Four.
+Print Assumptions normal_K45_axioms_has_Five.
+Print Assumptions normal_K45_entailment.
+Print Assumptions normal_KD4_axioms_has_K.
+Print Assumptions normal_KD4_axioms_has_D.
+Print Assumptions normal_KD4_axioms_has_Four.
+Print Assumptions normal_KD4_entailment.
+Print Assumptions normal_KD5_axioms_has_K.
+Print Assumptions normal_KD5_axioms_has_D.
+Print Assumptions normal_KD5_axioms_has_Five.
+Print Assumptions normal_KD5_entailment.
+(** The exact KD45, KB4, and KB5 raw witnesses and structural bundles are
+    constructive and closed under the global context. *)
+Print Assumptions normal_KD45_axioms_has_K.
+Print Assumptions normal_KD45_axioms_has_D.
+Print Assumptions normal_KD45_axioms_has_Four.
+Print Assumptions normal_KD45_axioms_has_Five.
+Print Assumptions normal_KD45_entailment.
+Print Assumptions normal_KB4_axioms_has_K.
+Print Assumptions normal_KB4_axioms_has_B.
+Print Assumptions normal_KB4_axioms_has_Four.
+Print Assumptions normal_KB4_entailment.
+Print Assumptions normal_KB5_axioms_has_K.
+Print Assumptions normal_KB5_axioms_has_B.
+Print Assumptions normal_KB5_axioms_has_Five.
+Print Assumptions normal_KB5_entailment.
+(** S4, S4McK, and both source inclusions are wholly syntactic and closed
+    under the global context. *)
+Print Assumptions normal_S4_axioms_has_K.
+Print Assumptions normal_S4_axioms_has_T.
+Print Assumptions normal_S4_axioms_has_Four.
+Print Assumptions normal_S4_entailment.
+Print Assumptions normal_K4_weaker_than_normal_S4.
+Print Assumptions normal_S4McK_axioms_has_K.
+Print Assumptions normal_S4McK_axioms_has_T.
+Print Assumptions normal_S4McK_axioms_has_Four.
+Print Assumptions normal_S4McK_axioms_has_McK.
+Print Assumptions normal_S4McK_entailment.
+Print Assumptions normal_K4McK_weaker_than_normal_S4McK.
 (** Both rule calculi, including their raw-template adapters and concrete
     structural bundles, are constructive. *)
 Print Assumptions with_henkin_axm_substituted.
