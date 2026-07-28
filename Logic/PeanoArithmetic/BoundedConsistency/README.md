@@ -2387,6 +2387,18 @@ translation mismatch, but the recursive strong-step root and two genuine
 syntax folds in its closure data remain; the Coq headline therefore remains
 conditional.
 
+`RawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier.v`
+opens that recursive strong-step root at its exact proof-rule boundary.  A
+named finite type enumerates all seventeen constructors in the literal order
+of `proofRuleValidCasesTermAt`, and a reflexive shape theorem identifies the
+endpoint predicate with eight existential witnesses around that disjunction.
+The checked dispatcher projects the disjunction from the endpoint witness
+body, derives all finite-Or context-transplant resources from direct PA
+agreement and atomic adequacy, and handles the terminal bottom branch
+internally.  Its public residual is therefore exactly one open local
+`case -> conclusion truth` PA root for each real proof constructor; it assumes
+neither a conclusion proof nor the original undifferentiated strong step.
+
 `RawCodedRestrictedPADerivationSoundnessConclusionTruthDirectSelector.v`
 constructs the companion five-argument conclusion selector from the native
 axiom-soundness trace.  Orbit functionality aligns an independently selected
