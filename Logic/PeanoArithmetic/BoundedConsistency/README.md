@@ -1437,6 +1437,16 @@ the exact synchronized prefix of standard axiom witnesses used by that tree.
 Agreement of the template translation with ordinary quotation proves literal
 equality of the compiler's context and the extended witnessed context; no
 post-hoc context identification or unrelated proof certificate is used.
+`RawCodedFolTemplateProofCompiler.v` supplies the reusable source-side bridge
+into this template language.  It structurally embeds the repository's generic
+first-order formulas (equality plus one binary membership relation), proves
+the required de Bruijn renaming, opening, and context-shift equations, and
+compiles every constructor of `FirstOrder.Calculus.Prov` to an explicit finite
+valid `TemplateRawProof`.  The structural compiler is constructive; its
+optional semantic-completeness corollary separately exposes the classical
+assumptions inherited from the generic first-order completeness theorem.  The
+fixed opaque binary predicate is only a source-proof interface, not the still
+missing arbitrary-carrier dynamic-truth soundness construction.
 `RawCodedTemplateLogicalSchemas.v` records the small
 finite source trees needed by the dynamic fields—conjunction projection and
 introduction, existential projection, and universal specialization followed
