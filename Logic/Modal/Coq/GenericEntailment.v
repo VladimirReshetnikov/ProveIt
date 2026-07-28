@@ -1,9 +1,9 @@
 (**
   Generic proof systems and their provability-strength order.
 
-  This module ports declarations 1--101 of the 138 active declaration-producing
+  This module ports all 138 active declaration-producing
   commands in the pinned [Foundation/Logic/Entailment.lean], through
-  [WeakerThan.ofSubset].  Foundation distinguishes a Type-valued formal
+  [Pullback.consistent].  Foundation distinguishes a Type-valued formal
   proof from the proposition that such a proof is inhabited; that distinction
   is retained here.  In particular, selecting a raw proof from provability is
   deliberately isolated behind informative classical description.
@@ -1203,3 +1203,543 @@ Qed.
 (** Source declaration 101/138: [WeakerThan.ofSubset]. *)
 Definition generic_weaker_than_of_context_subset :=
   @generic_axiomatized_weaker_of_subset.
+
+(** * Compactness and deduction *)
+
+(** Source declaration 102/138: [Compact].  The core is chosen from a raw
+    proof, so the capability remains informative and lives in [Type]. *)
+Record generic_compact_entailment {S F : Type}
+    (E : generic_entailment S F)
+    (A : generic_adjunctive_set F S) : Type := {
+  generic_compact_core :
+    forall (s : S) (p : F), generic_proof E s p -> S;
+  generic_compact_core_proof :
+    forall (s : S) (p : F) (b : generic_proof E s p),
+      generic_proof E (generic_compact_core (s := s) (p := p) b) p;
+  generic_compact_core_subset :
+    forall (s : S) (p : F) (b : generic_proof E s p),
+      generic_adjunctive_subset A
+        (generic_compact_core (s := s) (p := p) b) s;
+  generic_compact_core_finite :
+    forall (s : S) (p : F) (b : generic_proof E s p),
+      generic_adjunctive_finite A
+        (generic_compact_core (s := s) (p := p) b)
+}.
+
+Arguments generic_compact_core
+  {S F E A} _ _ _ _.
+Arguments generic_compact_core_proof
+  {S F E A} _ _ _ _.
+Arguments generic_compact_core_subset
+  {S F E A} _ _ _ _.
+Arguments generic_compact_core_finite
+  {S F E A} _ _ _ _.
+
+(** Source declaration 103/138: [Compact.finite_provable]. *)
+Lemma generic_compact_finite_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S),
+    generic_compact_entailment E A ->
+    forall (s : S) (p : F),
+      generic_provable E s p ->
+      exists finite_context : S,
+        generic_adjunctive_subset A finite_context s /\
+        generic_adjunctive_finite A finite_context /\
+        generic_provable E finite_context p.
+Proof.
+  intros S F E A Hcompact s p [b].
+  exists (@generic_compact_core S F E A Hcompact s p b).
+  split.
+  - exact (@generic_compact_core_subset S F E A Hcompact s p b).
+  - split.
+    + exact (@generic_compact_core_finite S F E A Hcompact s p b).
+    + constructor.
+      exact (@generic_compact_core_proof S F E A Hcompact s p b).
+Qed.
+
+(** Source declaration 104/138: [inconsistent_compact]. *)
+Lemma generic_inconsistent_compact :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S) (bottom : F),
+    generic_deductive_explosion E bottom ->
+    generic_axiomatized E A ->
+    generic_compact_entailment E A ->
+    forall s : S,
+      generic_inconsistent E s <->
+      exists finite_context : S,
+        generic_adjunctive_subset A finite_context s /\
+        generic_adjunctive_finite A finite_context /\
+        generic_inconsistent E finite_context.
+Proof.
+  intros S F E A bottom Hexplosion Haxiom Hcompact s; split.
+  - intro Hinc.
+    destruct (@generic_compact_finite_provable
+      S F E A Hcompact s bottom (Hinc bottom))
+      as [finite_context [Hsub [Hfinite Hbottom]]].
+    exists finite_context. split; [exact Hsub |].
+    split; [exact Hfinite |].
+    exact (@generic_inconsistent_of_provable_bottom
+      S F E bottom Hexplosion finite_context Hbottom).
+  - intros [finite_context [Hsub [_ Hinc]]].
+    exact (@generic_inconsistent_of_context_superset
+      S F E A Haxiom finite_context s Hinc Hsub).
+Qed.
+
+(** Source declaration 105/138: [consistent_compact].  Both directions have
+    direct constructive proofs; no classical negation normalization is
+    needed. *)
+Lemma generic_consistent_compact :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S) (bottom : F),
+    generic_deductive_explosion E bottom ->
+    generic_axiomatized E A ->
+    generic_compact_entailment E A ->
+    forall s : S,
+      generic_consistent E s <->
+      forall finite_context : S,
+        generic_adjunctive_subset A finite_context s ->
+        generic_adjunctive_finite A finite_context ->
+        generic_consistent E finite_context.
+Proof.
+  intros S F E A bottom Hexplosion Haxiom Hcompact s; split.
+  - intros Hcon finite_context Hsub _.
+    exact (@generic_consistent_of_context_subset
+      S F E A Haxiom s finite_context Hcon Hsub).
+  - intro Hall. constructor. intro Hinc.
+    destruct (proj1 (@generic_inconsistent_compact
+      S F E A bottom Hexplosion Haxiom Hcompact s) Hinc)
+      as [finite_context [Hsub [Hfinite Hinc_finite]]].
+    exact (generic_consistent_not_inconsistent
+      (Hall finite_context Hsub Hfinite) Hinc_finite).
+Qed.
+
+(** Source declaration 106/138: [Deduction].  Only implication and context
+    extension are used, so both operations are explicit instead of requiring
+    full connective or adjunctive-context packages. *)
+Record generic_deduction {S F : Type}
+    (E : generic_entailment S F)
+    (imp : F -> F -> F) (adjoin : F -> S -> S) : Type := {
+  generic_deduction_forward_raw :
+    forall (s : S) (p q : F),
+      generic_proof E (adjoin p s) q ->
+      generic_proof E s (imp p q);
+  generic_deduction_inverse_raw :
+    forall (s : S) (p q : F),
+      generic_proof E s (imp p q) ->
+      generic_proof E (adjoin p s) q
+}.
+
+Arguments generic_deduction_forward_raw
+  {S F E imp adjoin} _ _ _ _ _.
+Arguments generic_deduction_inverse_raw
+  {S F E imp adjoin} _ _ _ _ _.
+
+(** Source declaration 107/138: alias [deduction]. *)
+Definition generic_deduction_raw := @generic_deduction_forward_raw.
+
+(** Source declaration 108/138: [Deduction.of_insert!]. *)
+Lemma generic_deduction_forward :
+  forall (S F : Type) (E : generic_entailment S F)
+         (imp : F -> F -> F) (adjoin : F -> S -> S),
+    generic_deduction E imp adjoin ->
+    forall (s : S) (p q : F),
+      generic_provable E (adjoin p s) q ->
+      generic_provable E s (imp p q).
+Proof.
+  intros S F E imp adjoin Hdeduction s p q [b]. constructor.
+  exact (generic_deduction_forward_raw Hdeduction s p q b).
+Qed.
+
+(** Source declaration 109/138: alias [deduction!]. *)
+Definition generic_deduction_provable := @generic_deduction_forward.
+
+(** Source declaration 110/138: [Deduction.inv!]. *)
+Lemma generic_deduction_inverse :
+  forall (S F : Type) (E : generic_entailment S F)
+         (imp : F -> F -> F) (adjoin : F -> S -> S),
+    generic_deduction E imp adjoin ->
+    forall (s : S) (p q : F),
+      generic_provable E s (imp p q) ->
+      generic_provable E (adjoin p s) q.
+Proof.
+  intros S F E imp adjoin Hdeduction s p q [b]. constructor.
+  exact (generic_deduction_inverse_raw Hdeduction s p q b).
+Qed.
+
+(** Source declaration 111/138: [deduction_iff]. *)
+Lemma generic_deduction_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (imp : F -> F -> F) (adjoin : F -> S -> S),
+    generic_deduction E imp adjoin ->
+    forall (s : S) (p q : F),
+      generic_provable E (adjoin p s) q <->
+      generic_provable E s (imp p q).
+Proof.
+  intros S F E imp adjoin Hdeduction s p q; split.
+  - exact (@generic_deduction_forward
+      S F E imp adjoin Hdeduction s p q).
+  - exact (@generic_deduction_inverse
+      S F E imp adjoin Hdeduction s p q).
+Qed.
+
+(** * Soundness and semantic completeness *)
+
+(** Source declaration 112/138: [Sound]. *)
+Record generic_sound {S M F : Type}
+    (E : generic_entailment S F) (V : generic_semantics M F)
+    (s : S) (m : M) : Prop := {
+  generic_sound_provable :
+    forall p : F,
+      generic_provable E s p -> generic_models V m p
+}.
+
+(** Source declaration 113/138: semantic [Complete]. *)
+Record generic_complete {S M F : Type}
+    (E : generic_entailment S F) (V : generic_semantics M F)
+    (s : S) (m : M) : Prop := {
+  generic_complete_models :
+    forall p : F,
+      generic_models V m p -> generic_provable E s p
+}.
+
+Arguments generic_sound_provable
+  {S M F E V s m} _ _ _.
+Arguments generic_complete_models
+  {S M F E V s m} _ _ _.
+
+(** Source declaration 114/138: [Sound.not_provable_of_countermodel]. *)
+Lemma generic_sound_unprovable_of_countermodel :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (m : M),
+    generic_sound E V s m ->
+    forall p : F,
+      generic_not_models V m p -> generic_unprovable E s p.
+Proof.
+  intros S M F E V s m Hsound p Hcounter Hprovable.
+  exact (Hcounter (generic_sound_provable Hsound p Hprovable)).
+Qed.
+
+(** Source declaration 115/138: [Sound.consistent_of_meaningful]. *)
+Lemma generic_sound_consistent_of_meaningful :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (m : M),
+    generic_sound E V s m ->
+    generic_meaningful V m -> generic_consistent E s.
+Proof.
+  intros S M F E V s m Hsound [Hcounter].
+  destruct Hcounter as [p Hnot_models].
+  exact (@generic_consistent_of_unprovable S F E s p
+    (@generic_sound_unprovable_of_countermodel
+      S M F E V s m Hsound p Hnot_models)).
+Qed.
+
+(** Source declaration 116/138: [Sound.consistent_of_model].  Only a bottom
+    formula and its semantic falsity law are required. *)
+Lemma generic_sound_consistent_of_bottom_model :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (V : generic_semantics M F),
+    generic_semantics_bottom C V ->
+    forall (s : S) (m : M),
+      generic_sound E V s m -> generic_consistent E s.
+Proof.
+  intros S M F E C V Hbottom s m Hsound.
+  exact (@generic_sound_consistent_of_meaningful
+    S M F E V s m Hsound
+    (@generic_meaningful_of_bottom M F C V Hbottom m)).
+Qed.
+
+(** Source declaration 117/138: [Sound.modelsSet_of_prfSet].  Despite the
+    source name, its premise is pointwise inhabited provability. *)
+Lemma generic_sound_models_set_of_provable_set :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (m : M),
+    generic_sound E V s m ->
+    forall T : F -> Prop,
+      generic_provable_set E s T -> generic_models_set V m T.
+Proof.
+  intros S M F E V s m Hsound T Hprovable. constructor.
+  intros p Hp. exact (generic_sound_provable Hsound p (Hprovable p Hp)).
+Qed.
+
+(** Source declaration 118/138: [Sound.consequence_of_provable]. *)
+Lemma generic_sound_consequence_of_provable :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (T : F -> Prop),
+    generic_sound E (generic_set_semantics V)
+      s (generic_model_set V T) ->
+    forall p : F,
+      generic_provable E s p -> generic_consequence V T p.
+Proof.
+  intros S M F E V s T Hsound p Hprovable.
+  exact (generic_sound_provable Hsound p Hprovable).
+Qed.
+
+(** Source declaration 119/138: [Sound.consistent_of_satisfiable].  A direct
+    witness proof uses only the forward satisfiability direction and avoids
+    the classical set-meaningfulness equivalence. *)
+Lemma generic_sound_consistent_of_satisfiable :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (T : F -> Prop),
+    (forall m : M, generic_meaningful V m) ->
+    generic_sound E (generic_set_semantics V)
+      s (generic_model_set V T) ->
+    generic_satisfiable V T -> generic_consistent E s.
+Proof.
+  intros S M F E V s T Hall_meaningful Hsound [m Hmodels].
+  constructor. intro Hinc.
+  destruct (Hall_meaningful m) as [Hcounter].
+  destruct Hcounter as [p Hnot_models]. apply Hnot_models.
+  pose proof (generic_sound_provable Hsound p (Hinc p)) as Hset_models.
+  exact (Hset_models m Hmodels).
+Qed.
+
+(** Source declaration 120/138:
+    [Complete.exists_countermodel_of_not_provable].  The direct implication
+    is constructive; contraposition normalization is unnecessary. *)
+Lemma generic_complete_countermodel_of_unprovable :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (m : M),
+    generic_complete E V s m ->
+    forall p : F,
+      generic_unprovable E s p -> generic_not_models V m p.
+Proof.
+  intros S M F E V s m Hcomplete p Hunprovable Hmodels.
+  exact (Hunprovable (generic_complete_models Hcomplete p Hmodels)).
+Qed.
+
+(** Source declaration 121/138: [Complete.meaningful_of_consistent].  A
+    countermodel formula must be extracted from consistency, which is the
+    exact excluded-middle boundary already isolated at declaration 58. *)
+Lemma generic_complete_meaningful_of_consistent :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (m : M),
+    generic_complete E V s m ->
+    generic_consistent E s -> generic_meaningful V m.
+Proof.
+  intros S M F E V s m Hcomplete Hconsistent.
+  destruct (generic_consistent_exists_unprovable Hconsistent)
+    as [p Hunprovable].
+  constructor. exists p.
+  exact (@generic_complete_countermodel_of_unprovable
+    S M F E V s m Hcomplete p Hunprovable).
+Qed.
+
+(** Source declaration 122/138: [Complete.provable_of_consequence]. *)
+Lemma generic_complete_provable_of_consequence :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (T : F -> Prop),
+    generic_complete E (generic_set_semantics V)
+      s (generic_model_set V T) ->
+    forall p : F,
+      generic_consequence V T p -> generic_provable E s p.
+Proof.
+  intros S M F E V s T Hcomplete p Hconsequence.
+  exact (generic_complete_models Hcomplete p Hconsequence).
+Qed.
+
+(** Source declaration 123/138: [Complete.provable_iff_consequence]. *)
+Lemma generic_complete_provable_iff_consequence :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (T : F -> Prop),
+    generic_complete E (generic_set_semantics V)
+      s (generic_model_set V T) ->
+    generic_sound E (generic_set_semantics V)
+      s (generic_model_set V T) ->
+    forall p : F,
+      generic_consequence V T p <-> generic_provable E s p.
+Proof.
+  intros S M F E V s T Hcomplete Hsound p; split.
+  - exact (@generic_complete_provable_of_consequence
+      S M F E V s T Hcomplete p).
+  - exact (@generic_sound_consequence_of_provable
+      S M F E V s T Hsound p).
+Qed.
+
+(** Source declaration 124/138: [Complete.satisfiable_of_consistent]. *)
+Lemma generic_complete_satisfiable_of_consistent :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (T : F -> Prop),
+    (forall m : M, generic_meaningful V m) ->
+    generic_complete E (generic_set_semantics V)
+      s (generic_model_set V T) ->
+    generic_consistent E s -> generic_satisfiable V T.
+Proof.
+  intros S M F E V s T Hall_meaningful Hcomplete Hconsistent.
+  apply (proj2 (@generic_meaningful_iff_satisfiable M F V
+    Hall_meaningful T)).
+  exact (@generic_complete_meaningful_of_consistent
+    S (M -> Prop) F E (generic_set_semantics V)
+    s (generic_model_set V T) Hcomplete Hconsistent).
+Qed.
+
+(** Source declaration 125/138: [Complete.inconsistent_of_unsatisfiable].
+    Unsatisfiability makes every consequence vacuous, yielding inconsistency
+    constructively and without the source section's unused connective and
+    meaningfulness hypotheses. *)
+Lemma generic_complete_inconsistent_of_unsatisfiable :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (T : F -> Prop),
+    generic_complete E (generic_set_semantics V)
+      s (generic_model_set V T) ->
+    ~ generic_satisfiable V T -> generic_inconsistent E s.
+Proof.
+  intros S M F E V s T Hcomplete Hunsatisfiable p.
+  apply (generic_complete_models Hcomplete p).
+  intros m Hmodels. exfalso. apply Hunsatisfiable.
+  now exists m.
+Qed.
+
+(** Source declaration 126/138: [Complete.consistent_iff_satisfiable]. *)
+Lemma generic_complete_consistent_iff_satisfiable :
+  forall (S M F : Type) (E : generic_entailment S F)
+         (V : generic_semantics M F) (s : S) (T : F -> Prop),
+    (forall m : M, generic_meaningful V m) ->
+    generic_complete E (generic_set_semantics V)
+      s (generic_model_set V T) ->
+    generic_sound E (generic_set_semantics V)
+      s (generic_model_set V T) ->
+    generic_consistent E s <-> generic_satisfiable V T.
+Proof.
+  intros S M F E V s T Hall_meaningful Hcomplete Hsound; split.
+  - exact (@generic_complete_satisfiable_of_consistent
+      S M F E V s T Hall_meaningful Hcomplete).
+  - exact (@generic_sound_consistent_of_satisfiable
+      S M F E V s T Hall_meaningful Hsound).
+Qed.
+
+(** Source declaration 127/138: [Complete.weakerthan_of_models].  Making the
+    two entailment structures and context types independent strengthens the
+    source theorem without changing its semantic inclusion direction. *)
+Lemma generic_complete_weaker_than_of_models :
+  forall (S T M F : Type)
+         (ES : generic_entailment S F) (ET : generic_entailment T F)
+         (V : generic_semantics M F)
+         (s : S) (t : T) (source_theory target_theory : F -> Prop),
+    generic_complete ES (generic_set_semantics V)
+      s (generic_model_set V source_theory) ->
+    generic_sound ET (generic_set_semantics V)
+      t (generic_model_set V target_theory) ->
+    (forall m : M,
+      generic_models_set V m source_theory ->
+      generic_models_set V m target_theory) ->
+    generic_weaker_than ET ES t s.
+Proof.
+  intros S T M F ES ET V s t source_theory target_theory
+    Hcomplete Hsound Hmodels. constructor.
+  intros p Hprovable.
+  apply (generic_complete_models Hcomplete p).
+  intros m Hsource.
+  pose proof (generic_sound_provable Hsound p Hprovable) as Htarget_models.
+  exact (Htarget_models m (Hmodels m Hsource)).
+Qed.
+
+(** * Entailment pullback *)
+
+(** Source declaration 128/138: [Entailment.Pullback]. *)
+Record generic_pullback (S : Type) {F G : Type} (f : G -> F) : Type := {
+  generic_pullback_base : S
+}.
+
+Arguments generic_pullback_base {S F G f} _.
+
+(** Source declaration 129/138: [Entailment.pullback]. *)
+Definition generic_pullback_of {S F G : Type}
+    (s : S) (f : G -> F) : generic_pullback S f :=
+  {| generic_pullback_base := s |}.
+
+(** Source declaration 130/138: the pullback [Entailment] instance. *)
+Definition generic_pullback_entailment
+    {S F G : Type} (E : generic_entailment S F) (f : G -> F) :
+    generic_entailment (generic_pullback S f) G :=
+  {| generic_proof :=
+       fun s p => generic_proof E (generic_pullback_base s) (f p) |}.
+
+(** Source declaration 131/138: [Pullback.pullback_forget]. *)
+Lemma generic_pullback_forget :
+  forall (S F G : Type) (s : S) (f : G -> F),
+    generic_pullback_base (generic_pullback_of s f) = s.
+Proof. reflexivity. Qed.
+
+(** Source declaration 132/138: [Pullback.provable_iff]. *)
+Lemma generic_pullback_provable_iff :
+  forall (S F G : Type) (E : generic_entailment S F)
+         (s : S) (f : G -> F) (p : G),
+    generic_provable (generic_pullback_entailment E f)
+      (generic_pullback_of s f) p <->
+    generic_provable E s (f p).
+Proof. reflexivity. Qed.
+
+(** Source declaration 133/138: [Pullback.unprovable_iff]. *)
+Lemma generic_pullback_unprovable_iff :
+  forall (S F G : Type) (E : generic_entailment S F)
+         (s : S) (f : G -> F) (p : G),
+    generic_unprovable (generic_pullback_entailment E f)
+      (generic_pullback_of s f) p <->
+    generic_unprovable E s (f p).
+Proof. reflexivity. Qed.
+
+(** Source declaration 134/138: [Pullback.provableSet_iff]. *)
+Lemma generic_pullback_provable_set_iff :
+  forall (S F G : Type) (E : generic_entailment S F)
+         (s : S) (f : G -> F) (T : G -> Prop),
+    generic_provable_set (generic_pullback_entailment E f)
+      (generic_pullback_of s f) T <->
+    generic_provable_set E s
+      (fun q : F => exists p : G, T p /\ f p = q).
+Proof.
+  intros S F G E s f T; split.
+  - intros H q [p [Hp Heq]]. destruct Heq. exact (H p Hp).
+  - intros H p Hp. apply (H (f p)). exists p. now split.
+Qed.
+
+(** Source declaration 135/138: [Pullback.theory_eq].  Here the source's
+    literal predicate equality is definitional, so it is retained without
+    functional or propositional extensionality. *)
+Lemma generic_pullback_theory_eq :
+  forall (S F G : Type) (E : generic_entailment S F)
+         (s : S) (f : G -> F),
+    generic_entailment_theory (generic_pullback_entailment E f)
+      (generic_pullback_of s f) =
+    (fun p : G => generic_entailment_theory E s (f p)).
+Proof. reflexivity. Qed.
+
+(** Source declaration 136/138: [Pullback.weakerThan].  The context and
+    entailment types may differ, strengthening the source's homogeneous
+    presentation. *)
+Lemma generic_pullback_weaker_than :
+  forall (S T F G : Type)
+         (ES : generic_entailment S F) (ET : generic_entailment T F)
+         (s : S) (t : T) (f : G -> F),
+    generic_weaker_than ES ET s t ->
+    generic_weaker_than
+      (generic_pullback_entailment ES f)
+      (generic_pullback_entailment ET f)
+      (generic_pullback_of s f) (generic_pullback_of t f).
+Proof.
+  intros S T F G ES ET s t f Hweak. constructor.
+  intros p Hp. exact (generic_weaker_subset Hweak (f p) Hp).
+Qed.
+
+(** Source declaration 137/138: [Pullback.inconsistent]. *)
+Lemma generic_pullback_inconsistent :
+  forall (S F G : Type) (E : generic_entailment S F)
+         (s : S) (f : G -> F),
+    generic_inconsistent E s ->
+    generic_inconsistent (generic_pullback_entailment E f)
+      (generic_pullback_of s f).
+Proof.
+  intros S F G E s f Hinc p. exact (Hinc (f p)).
+Qed.
+
+(** Source declaration 138/138: [Pullback.consistent]. *)
+Lemma generic_pullback_consistent :
+  forall (S F G : Type) (E : generic_entailment S F)
+         (s : S) (f : G -> F),
+    generic_consistent (generic_pullback_entailment E f)
+      (generic_pullback_of s f) ->
+    generic_consistent E s.
+Proof.
+  intros S F G E s f Hconsistent. constructor. intro Hinc.
+  apply (generic_consistent_not_inconsistent Hconsistent).
+  exact (@generic_pullback_inconsistent S F G E s f Hinc).
+Qed.

@@ -161,10 +161,11 @@ Print Assumptions list_prune_insert_subset.
 Print Assumptions generic_consequence_compact.
 Print Assumptions generic_compact_cumulative.
 
-(** The first one hundred one declarations from Logic/Entailment.lean retain
+(** All one hundred thirty-eight declarations from Logic/Entailment.lean retain
     Type-valued formal proofs, inhabited provability, heterogeneous strength
     comparison, consistency, explosion, syntactic completeness, independence,
-    incompleteness, axiomatized contexts, and heterogeneous strong cut. *)
+    incompleteness, axiomatized contexts, compactness, deduction, semantic
+    adequacy, and entailment pullback. *)
 Check generic_entailment.
 Check generic_provable.
 Check generic_unprovable.
@@ -281,6 +282,43 @@ Check generic_inconsistent_of_context_superset.
 Check generic_strong_cut_provable.
 Check generic_weaker_than_of_axioms.
 Check generic_weaker_than_of_context_subset.
+Check generic_compact_entailment.
+Check generic_compact_finite_provable.
+Check generic_inconsistent_compact.
+Check generic_consistent_compact.
+Check generic_deduction.
+Check generic_deduction_raw.
+Check generic_deduction_forward.
+Check generic_deduction_provable.
+Check generic_deduction_inverse.
+Check generic_deduction_iff.
+Check generic_sound.
+Check generic_complete.
+Check generic_sound_unprovable_of_countermodel.
+Check generic_sound_consistent_of_meaningful.
+Check generic_sound_consistent_of_bottom_model.
+Check generic_sound_models_set_of_provable_set.
+Check generic_sound_consequence_of_provable.
+Check generic_sound_consistent_of_satisfiable.
+Check generic_complete_countermodel_of_unprovable.
+Check generic_complete_meaningful_of_consistent.
+Check generic_complete_provable_of_consequence.
+Check generic_complete_provable_iff_consequence.
+Check generic_complete_satisfiable_of_consistent.
+Check generic_complete_inconsistent_of_unsatisfiable.
+Check generic_complete_consistent_iff_satisfiable.
+Check generic_complete_weaker_than_of_models.
+Check generic_pullback.
+Check generic_pullback_of.
+Check generic_pullback_entailment.
+Check generic_pullback_forget.
+Check generic_pullback_provable_iff.
+Check generic_pullback_unprovable_iff.
+Check generic_pullback_provable_set_iff.
+Check generic_pullback_theory_eq.
+Check generic_pullback_weaker_than.
+Check generic_pullback_inconsistent.
+Check generic_pullback_consistent.
 
 (** Informative proof extraction, functional choice, and classical
     counterexample extraction remain three separate audited boundaries. *)
@@ -323,6 +361,34 @@ Print Assumptions generic_inconsistent_of_context_superset.
 Print Assumptions generic_strong_cut_provable.
 Print Assumptions generic_weaker_than_of_axioms.
 Print Assumptions generic_weaker_than_of_context_subset.
+(** Compactness, deduction, and soundness through declaration 120 admit
+    direct constructive proofs.  In particular finite-core consistency and
+    satisfiable sound systems avoid the source proofs' classical rewrites. *)
+Print Assumptions generic_compact_finite_provable.
+Print Assumptions generic_inconsistent_compact.
+Print Assumptions generic_consistent_compact.
+Print Assumptions generic_deduction_iff.
+Print Assumptions generic_sound_unprovable_of_countermodel.
+Print Assumptions generic_sound_consistent_of_meaningful.
+Print Assumptions generic_sound_consistent_of_bottom_model.
+Print Assumptions generic_sound_models_set_of_provable_set.
+Print Assumptions generic_sound_consequence_of_provable.
+Print Assumptions generic_sound_consistent_of_satisfiable.
+Print Assumptions generic_complete_countermodel_of_unprovable.
+(** Exactly declarations 121, 124, and 126 in the final semantic tranche
+    use excluded middle.  The remaining semantic comparisons and every
+    pullback declaration are closed. *)
+Print Assumptions generic_complete_meaningful_of_consistent.
+Print Assumptions generic_complete_provable_of_consequence.
+Print Assumptions generic_complete_provable_iff_consequence.
+Print Assumptions generic_complete_satisfiable_of_consistent.
+Print Assumptions generic_complete_inconsistent_of_unsatisfiable.
+Print Assumptions generic_complete_consistent_iff_satisfiable.
+Print Assumptions generic_complete_weaker_than_of_models.
+Print Assumptions generic_pullback_provable_set_iff.
+Print Assumptions generic_pullback_theory_eq.
+Print Assumptions generic_pullback_weaker_than.
+Print Assumptions generic_pullback_consistent.
 
 (** Complete source-facing Kripke semantic surface: local satisfaction,
     fixed-model validity, frame validity, and frame-class counterexamples. *)
