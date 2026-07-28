@@ -103,6 +103,10 @@ is being reconstructed:
 - the relational complex algebra of every Kripke frame, with box/diamond
   laws, atom-polymorphic formula evaluation, and exact order/equality
   characterizations of implication, equivalence, and formula validity;
+- abstract setoid Boolean modal algebras, with the derived K, duality,
+  complement, join, and monotonicity laws, together with Magari algebras and
+  their derived diamond/box transitivity; every Kripke complex algebra is an
+  instance without assuming extensional equality of predicates;
 - complexity-bounded generated models with a strengthened budgeted truth
   lemma and invariance under changing the enclosing target formula;
 - reflexive, transitive, and reflexive-transitive frame closures, their order
@@ -177,6 +181,7 @@ is being reconstructed:
 | `HilbertK.v` | `Modal/Hilbert/Normal/Basic.lean` | Constructive Hilbert K, substitution, derived classical rules, theories, deduction, consistency criteria, contextual boxing |
 | `Kripke.v` | `Modal/Kripke/Basic.lean` | Frames, valuations, satisfaction, substitution, relation/modal iteration, K validity |
 | `KripkeAlgebra.v` | `Modal/Kripke/Algebra.lean` | Relational complex algebras, modal operations, algebraic evaluation/satisfaction equivalence, and validity as subset/extensional equality |
+| `ModalAlgebra.v` | `Semantics/Algebra/Modal/{Basic,Magari}.lean` | Setoid Boolean and modal algebras, the complete derived K/duality/monotonicity surface, Magari diagonal and transitivity theorems, and the Kripke complex-algebra adapter |
 | `NNFormulaSemantics.v` | `Modal/Kripke/NNFormula.lean` | Direct NNF semantics, semantic negation, translation correctness, validity equivalences |
 | `HilbertKSoundness.v` | `Modal/Kripke/Hilbert.lean` | Framewise and contextual Kripke soundness for K, plus consistency |
 | `Complement.v` | `Modal/Formula/Complement.lean` | Syntactic complement, complement-closed finite contexts, constructive semantic incompatibility |
@@ -298,6 +303,13 @@ constructive and require no extensionality axiom.  Only the existential
 diamond dual and the derived disjunction/equivalence readings use excluded
 middle.  The Coq results are atom-polymorphic, strengthening the source's
 natural-number valuation statements.
+
+The abstract Boolean/modal and Magari laws in `ModalAlgebra.v` are setoid
+theorems and are closed under Coq's global context.  Instantiating them with
+predicate sets preserves extensional equivalence and introduces no
+functional or propositional extensionality; the concrete Boolean complement
+and box/diamond duality proofs use `Classical_Prop.classic`, matching the
+existing Kripke complex-algebra boundary.
 
 The finite complement-closed context layer keeps its boundary equally
 explicit.  The consistency insertion criteria, complement derivations, and
@@ -685,7 +697,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.PLoNCompleteness `
   FoundationModal.Kripke FoundationModal.NNFormulaSemantics `
   FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
-  FoundationModal.KripkeAlgebra `
+  FoundationModal.KripkeAlgebra FoundationModal.ModalAlgebra `
   FoundationModal.Complement `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `
   FoundationModal.Filtration `

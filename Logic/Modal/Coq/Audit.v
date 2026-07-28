@@ -2,7 +2,7 @@
 
 From FoundationModal Require Import
   Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
-  KripkeAlgebra
+  KripkeAlgebra ModalAlgebra
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
@@ -34,6 +34,43 @@ Check algebraic_satisfies.
 Check algebraic_valid_imp.
 Check algebraic_valid_iff.
 Check algebraic_valid.
+
+(** Abstract Boolean modal algebras and the complete Magari layer. *)
+Check boolean_algebra.
+Check ba_imp_adjoint.
+Check modal_algebra.
+Check modal_box_top.
+Check modal_box_meet.
+Check modal_dia_dual.
+Check dual_box.
+Check compl_box.
+Check compl_dia.
+Check dia_bot.
+Check box_imp_le_box_imp_box.
+Check box_axiomK.
+Check dia_or.
+Check dia_monotone.
+Check box_monotone.
+Check transitive_modal_algebra.
+Check reflexive_modal_algebra.
+Check magari_algebra.
+Check magari_box_diag.
+Check box_diag.
+Check dia_diag.
+Check dia_trans.
+Check box_trans.
+Check magari_transitive_modal_algebra.
+Check complex_boolean_algebra.
+Check complex_modal_algebra.
+Check complex_boolean_order_iff.
+Check complex_boolean_equiv_iff.
+
+Print Assumptions box_imp_le_box_imp_box.
+Print Assumptions dia_or.
+Print Assumptions dia_trans.
+Print Assumptions box_trans.
+Print Assumptions complex_boolean_algebra.
+Print Assumptions complex_modal_algebra.
 
 Check nnformula_eq_dec.
 Check nn_neg_involutive.
