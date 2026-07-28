@@ -528,6 +528,29 @@ Print Assumptions generic_list_member_map_elim.
 Print Assumptions generic_list_member_map_neg_back.
 Print Assumptions generic_neg_list_disj2.
 Print Assumptions generic_principal_derivable_iff_provable_disj.
+Check generic_lk_connective_hom.
+Check generic_lk_hom_top.
+Check generic_lk_hom_neg.
+Check generic_lk_hom_and.
+Check generic_lk_hom_or.
+Check generic_list_member_map_intro.
+Check generic_list_map_subset.
+Check generic_lk_pullback.
+Check generic_lk_pullback_cast.
+Check generic_lk_pullback_uncast.
+Check generic_lk_pullback_one_sided.
+Check generic_lk_pullback_cut.
+Check generic_lk_pullback_principal.
+Check generic_lk_pullback_inhabited_iff.
+Check generic_lk_pullback_empty_iff.
+Print Assumptions generic_list_map_subset.
+Print Assumptions generic_lk_pullback_cast.
+Print Assumptions generic_lk_pullback_uncast.
+Print Assumptions generic_lk_pullback_one_sided.
+Print Assumptions generic_lk_pullback_cut.
+Print Assumptions generic_lk_pullback_principal.
+Print Assumptions generic_lk_pullback_inhabited_iff.
+Print Assumptions generic_lk_pullback_empty_iff.
 
 (** The complete 20-declaration ForcingRelation surface is constructive over
     arbitrary world, formula, context, and accessibility types.  Ordinary and

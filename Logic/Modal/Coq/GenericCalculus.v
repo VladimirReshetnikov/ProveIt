@@ -1,7 +1,7 @@
 (**
   Generic one-sided classical sequent calculi.
 
-  This module currently ports declarations 1--20 of the forty-three active
+  This module currently ports declarations 1--28 of the forty-three active
   declarations in the pinned Foundation module [Logic/Calculus.lean].  The
   calculus and its principal entailments are Type-valued, so derivations
   retain their computational content.
@@ -905,3 +905,162 @@ Proof.
     exact (generic_lk_extended_cut K ddisj dneg
       (@generic_neg_list_disj2 F C Hneg_bottom Hneg_or gamma)).
 Qed.
+
+(** * Pullback along a formula translation *)
+
+(** The one-sided kernel uses exactly these four preservation laws.  In
+    particular its pullback does not depend on implication or bottom. *)
+Record generic_lk_connective_hom {F G : Type}
+    (CF : generic_connectives F) (CG : generic_connectives G)
+    (f : G -> F) : Prop := {
+  generic_lk_hom_top :
+    f (generic_top CG) = generic_top CF;
+  generic_lk_hom_neg :
+    forall p, f (generic_neg CG p) = generic_neg CF (f p);
+  generic_lk_hom_and :
+    forall p q,
+      f (generic_and CG p q) = generic_and CF (f p) (f q);
+  generic_lk_hom_or :
+    forall p q,
+      f (generic_or CG p q) = generic_or CF (f p) (f q)
+}.
+
+Arguments generic_lk_hom_top {F G CF CG f} _.
+Arguments generic_lk_hom_neg {F G CF CG f} _ _.
+Arguments generic_lk_hom_and {F G CF CG f} _ _ _.
+Arguments generic_lk_hom_or {F G CF CG f} _ _ _.
+
+Lemma generic_list_member_map_intro :
+  forall (A B : Type) (f : A -> B) (x : A) (xs : list A),
+    generic_list_member x xs ->
+    generic_list_member (f x) (map f xs).
+Proof.
+  intros A B f x xs; induction xs as [|y ys IH]; simpl.
+  - contradiction.
+  - intros [Hx | Hx].
+    + left. now rewrite Hx.
+    + right. now apply IH.
+Qed.
+
+Lemma generic_list_map_subset :
+  forall (A B : Type) (f : A -> B) (xs ys : list A),
+    generic_list_subset xs ys ->
+    generic_list_subset (map f xs) (map f ys).
+Proof.
+  intros A B f xs ys Hsubset y Hy.
+  destruct (@generic_list_member_map_elim A B f y xs Hy)
+    as [x [Hx <-]].
+  apply (@generic_list_member_map_intro A B f x ys).
+  exact (Hsubset x Hx).
+Qed.
+
+(** Source declaration 21/43: [OneSidedLK.Pullback]. *)
+Definition generic_lk_pullback {F G : Type}
+    (D : list F -> Type) (f : G -> F) : list G -> Type :=
+  fun gamma => D (map f gamma).
+
+(** Source declaration 22/43: [Pullback.cast]. *)
+Definition generic_lk_pullback_cast {F G : Type}
+    (D : list F -> Type) (f : G -> F)
+    {delta : list F} {gamma : list G}
+    (d : D delta) (e : delta = map f gamma) :
+    generic_lk_pullback D f gamma :=
+  eq_rect delta D d (map f gamma) e.
+
+(** Source declaration 23/43: [Pullback.uncast]. *)
+Definition generic_lk_pullback_uncast {F G : Type}
+    (D : list F -> Type) (f : G -> F)
+    {delta : list F} {gamma : list G}
+    (d : generic_lk_pullback D f gamma)
+    (e : delta = map f gamma) : D delta :=
+  eq_rect (map f gamma) D d delta (eq_sym e).
+
+(** Source declaration 24/43: pullback [OneSidedLK] instance. *)
+Definition generic_lk_pullback_one_sided {F G : Type}
+    {CF : generic_connectives F} {CG : generic_connectives G}
+    {D : list F -> Type} {f : G -> F}
+    (Hhom : generic_lk_connective_hom CF CG f)
+    (Hlk : generic_one_sided_lk CF D) :
+    generic_one_sided_lk CG (generic_lk_pullback D f).
+Proof.
+  constructor.
+  - intro p. unfold generic_lk_pullback. simpl.
+    refine (generic_lk_cast D (generic_lk_identity Hlk (f p)) _).
+    exact (f_equal (fun x => [f p; x])
+      (eq_sym (generic_lk_hom_neg Hhom p))).
+  - intros delta gamma d Hsubset.
+    exact (generic_lk_contraction Hlk (map f delta) (map f gamma) d
+      (@generic_list_map_subset G F f delta gamma Hsubset)).
+  - unfold generic_lk_pullback. simpl.
+    refine (generic_lk_cast D (generic_lk_verum Hlk) _).
+    exact (f_equal (fun x => [x])
+      (eq_sym (generic_lk_hom_top Hhom))).
+  - intros p q gamma dp dq. unfold generic_lk_pullback in *; simpl in *.
+    refine (generic_lk_cast D
+      (generic_lk_and Hlk (f p) (f q) (map f gamma) dp dq) _).
+    exact (f_equal (fun x => x :: map f gamma)
+      (eq_sym (generic_lk_hom_and Hhom p q))).
+  - intros p q gamma d. unfold generic_lk_pullback in *; simpl in *.
+    refine (generic_lk_cast D
+      (generic_lk_or Hlk (f p) (f q) (map f gamma) d) _).
+    exact (f_equal (fun x => x :: map f gamma)
+      (eq_sym (generic_lk_hom_or Hhom p q))).
+Defined.
+
+(** Source declaration 25/43: pullback [Cut] instance. *)
+Definition generic_lk_pullback_cut {F G : Type}
+    {CF : generic_connectives F} {CG : generic_connectives G}
+    {D : list F -> Type} {f : G -> F}
+    (Hhom : generic_lk_connective_hom CF CG f)
+    (Hcut : generic_one_sided_lk_cut CF D) :
+    generic_one_sided_lk_cut CG (generic_lk_pullback D f).
+Proof.
+  refine {| generic_lk_cut_base :=
+      generic_lk_pullback_one_sided Hhom (generic_lk_cut_base Hcut) |}.
+  intros p gamma delta dp dn.
+  unfold generic_lk_pullback in *; simpl in *.
+  pose (dn' := generic_lk_cast D dn
+    (f_equal (fun x => x :: map f delta)
+      (generic_lk_hom_neg Hhom p))).
+  refine (generic_lk_cast D
+    (generic_lk_cut_raw Hcut (f p) (map f gamma) (map f delta) dp dn') _).
+  symmetry. apply map_app.
+Defined.
+
+(** Source declaration 26/43: pullback [PrincipalEntailment] instance.
+    No connective-preservation law is needed because singleton mapping is
+    definitional. *)
+Definition generic_lk_pullback_principal {P F G : Type}
+    {E : generic_entailment P F} {D : list F -> Type}
+    {theory : P} (f : G -> F)
+    (Hprincipal : generic_principal_entailment E D theory) :
+    generic_principal_entailment
+      (generic_pullback_entailment E f)
+      (generic_lk_pullback D f)
+      (generic_pullback_of theory f).
+Proof.
+  constructor. intro p.
+  exact (generic_principal_equiv Hprincipal (f p)).
+Defined.
+
+(** Source declaration 27/43: [Pullback.nonempty_iff]. *)
+Lemma generic_lk_pullback_inhabited_iff :
+  forall (F G : Type) (D : list F -> Type) (f : G -> F)
+         (gamma : list G),
+    inhabited (generic_lk_pullback D f gamma) <->
+    inhabited (D (map f gamma)).
+Proof. reflexivity. Qed.
+
+(** Source declaration 28/43: [Pullback.isEmpty_iff]. *)
+Lemma generic_lk_pullback_empty_iff :
+  forall (F G : Type) (D : list F -> Type) (f : G -> F)
+         (gamma : list G),
+    generic_empty_type (generic_lk_pullback D f gamma) <->
+    generic_empty_type (D (map f gamma)).
+Proof. reflexivity. Qed.
+
+Arguments generic_lk_pullback_cast {F G} D f {delta gamma} _ _.
+Arguments generic_lk_pullback_uncast {F G} D f {delta gamma} _ _.
+Arguments generic_lk_pullback_one_sided {F G CF CG D f} _ _.
+Arguments generic_lk_pullback_cut {F G CF CG D f} _ _.
+Arguments generic_lk_pullback_principal {P F G E D theory} f _.
