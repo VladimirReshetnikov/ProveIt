@@ -2468,6 +2468,18 @@ right-formula witness rather than reusing the neighboring assumption slot.
 The audited public roots leave only those two local truth laws and contain all
 remaining structural and implication-shell work.
 
+Disjunction elimination and universal elimination extend the dispatcher with
+the first three-child case and the first substitution-sensitive case.
+Disjunction elimination projects all three endpoints, composes the three
+recursive truth continuations with one dynamic `Or` elimination law, and
+transports the selected branch conclusion back to the outer endpoint.
+Universal elimination projects its single-substitution and `All`-code rows,
+uses recursive truth of the quantified child, and leaves only the matching
+dynamic opening law.  The exact substitution output is already the lifted
+outer conclusion, so its compiled transport does not invent a stronger code
+equality.  Both arbitrary-tail roots include every projection, transport,
+modus-ponens step, and surrounding implication introduction.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
