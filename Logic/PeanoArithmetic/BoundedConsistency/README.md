@@ -1999,6 +1999,16 @@ explicit.  The staged implication compiler is intentionally still a
 premise: the module performs the complete proof-code assembly after that
 arithmetic kernel without claiming to have constructed the kernel itself.
 
+`RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.v` connects these
+stage-local interfaces to the ordinary certificates returned by the public
+dependency-ordered callbacks.  Starting with the six current master roots,
+it opens and merges the local certificate to construct the cross-level
+prerequisite package, then incrementally adds the cross-level, shift, and
+substitution certificates to construct the next three packages.  At every
+step all existing roots are rebuilt in the newly merged witnessed context
+before the record is formed.  Consequently no later staged implication may
+conjoin proof roots taken from unrelated hidden certificate contexts.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
