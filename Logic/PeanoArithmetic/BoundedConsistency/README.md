@@ -1975,6 +1975,15 @@ remaining replay, cross-level, binder-projection, fixed-helper, traversal, and
 row-root obligations; this finite assembly does not claim to project an
 actual successor row or to complete the whole local decision compiler.
 
+`RawCodedTruthCertificateMasterMixedQFHelperBatch.v` synchronizes every fixed
+cell needed so far.  It appends exactly the nine carrier-independent mixed-QF
+theorems to the existing twenty-nine collision and binder-principal helpers,
+proves position-by-position equality with their native carrier codes for
+arbitrary lower inputs, and places all thirty-eight helper roots together with
+the six current master roots in one literal witnessed context.  The two
+lower-dependent mixed cells are explicitly absent, so their structural
+compilers remain measurable rather than being folded into a quoted helper.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
