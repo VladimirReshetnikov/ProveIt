@@ -1,0 +1,44 @@
+(**
+  Kernel audit for the growing-context strong-prefix finalizer.
+
+  The checks below keep the selected PA prefix, both context-transport
+  certificates, the case roots, and the final ordinary PA certificate on the
+  public audit surface.  In particular, the compact endpoint is checked only
+  after the stronger package theorem from which it is projected.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingFinalizer.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingFinalizer.
+
+Check raw_contextListIncluded_standardPAAxiomWitnessPrefix_base.
+Check
+  raw_coqRestrictedPADerivationSoundnessCarrierStrongPrefixAll_selfShift.
+Check raw_contextBinderReady_cons_target_of_head_shift.
+Check
+  raw_coqRestrictedPADerivationSoundnessCarrierStrongPrefixAll_cons_binderReady.
+
+Check
+  rawCoqRestrictedPADerivationSoundnessCarrierGrowingBaseWitnessList.
+Check rawCoqRestrictedPADerivationSoundnessCarrierGrowingBaseContext.
+Check
+  RawCoqRestrictedPADerivationSoundnessCarrierGrowingFinalizationPackageOf.
+
+Check
+  raw_coqRestrictedPADerivationSoundnessCarrierGrowingFinalizationPackage_of_strongPrefix_cases.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversal_of_growing_strongPrefix_cases.
+
+Print Assumptions
+  raw_contextListIncluded_standardPAAxiomWitnessPrefix_base.
+Print Assumptions
+  raw_coqRestrictedPADerivationSoundnessCarrierStrongPrefixAll_selfShift.
+Print Assumptions raw_contextBinderReady_cons_target_of_head_shift.
+Print Assumptions
+  raw_coqRestrictedPADerivationSoundnessCarrierStrongPrefixAll_cons_binderReady.
+Print Assumptions
+  raw_coqRestrictedPADerivationSoundnessCarrierGrowingFinalizationPackage_of_strongPrefix_cases.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversal_of_growing_strongPrefix_cases.
