@@ -246,17 +246,36 @@ Check generic_not_incomplete_iff_complete.
 Check generic_consistent_of_incomplete.
 Check generic_adjunctive_set.
 Check generic_adjunctive_carrier.
+Check generic_adjunctive_member_carrier_iff.
 Check generic_adjunctive_subset.
+Check generic_adjunctive_subset_iff_carrier_subset.
 Check generic_adjunctive_subset_refl.
 Check generic_adjunctive_subset_trans.
 Check generic_adjunctive_subset_antisymm_pointwise.
 Check generic_adjunctive_empty_subset.
+Check generic_adjunctive_carrier_empty_iff.
 Check generic_adjunctive_mem_adjoin_self.
+Check generic_adjunctive_mem_adjoin_old.
 Check generic_adjunctive_subset_adjoin.
+Check generic_adjunctive_carrier_adjoin_iff.
+Check generic_adjunctive_adjoin_monotone.
+Check generic_list_member.
 Check generic_adjunctive_finite.
+Check generic_adjunctive_add_list.
+Check generic_adjunctive_member_add_list_iff.
+Check generic_adjunctive_from_list.
+Check generic_adjunctive_from_list_as_add_list.
 Check generic_adjunctive_member_from_list_iff.
+Check generic_adjunctive_empty_finite.
+Check generic_adjunctive_finite_of_subset.
+Check generic_adjunctive_adjoin_finite.
+Check generic_adjunctive_adjoin_finite_iff.
+Check generic_adjunctive_add_list_finite.
 Check generic_adjunctive_from_list_finite.
 Check generic_predicate_adjunctive_set.
+Check generic_predicate_adjunctive_adjoin_eq.
+Check generic_predicate_adjunctive_carrier_eq.
+Check generic_predicate_adjunctive_finite_iff.
 Check generic_list_adjunctive_set.
 Check generic_list_adjunctive_finite.
 Check generic_axiomatized.
@@ -347,12 +366,31 @@ Print Assumptions generic_consistent_of_le.
 Print Assumptions generic_deductive_explosion_provable.
 Print Assumptions generic_consistent_iff_unprovable_bottom.
 Print Assumptions generic_consistent_of_incomplete.
-(** Adjunctive contexts and declarations 79--98/101 are constructive and
-    require neither decidable formula equality nor set extensionality.
+(** All 35 AdjunctiveSet source declarations, and entailment declarations
+    79--98/101, are represented constructively.  Finite contexts use finite
+    covers, which make subset closure and adjoin finiteness axiom-free; the
+    source's Multiset/Finset conveniences are generalized through the common
+    duplicate-tolerant list enumeration.  None of this layer requires
+    decidable formula equality or set extensionality.
     Propositional strong cut at declarations 99--100 reuses declaration 11's
     functional choice, without crossing the informative-description boundary. *)
+Print Assumptions generic_adjunctive_member_carrier_iff.
+Print Assumptions generic_adjunctive_subset_iff_carrier_subset.
+Print Assumptions generic_adjunctive_subset_antisymm_pointwise.
+Print Assumptions generic_adjunctive_carrier_empty_iff.
 Print Assumptions generic_adjunctive_mem_adjoin_self.
 Print Assumptions generic_adjunctive_subset_adjoin.
+Print Assumptions generic_adjunctive_carrier_adjoin_iff.
+Print Assumptions generic_adjunctive_member_add_list_iff.
+Print Assumptions generic_adjunctive_finite_of_subset.
+Print Assumptions generic_adjunctive_adjoin_finite_iff.
+Print Assumptions generic_adjunctive_add_list_finite.
+Print Assumptions generic_adjunctive_member_from_list_iff.
+Print Assumptions generic_adjunctive_from_list_finite.
+Print Assumptions generic_predicate_adjunctive_adjoin_eq.
+Print Assumptions generic_predicate_adjunctive_carrier_eq.
+Print Assumptions generic_predicate_adjunctive_finite_iff.
+Print Assumptions generic_list_adjunctive_finite.
 Print Assumptions generic_axiomatized_by_axiom.
 Print Assumptions generic_axiomatized_weaker_of_subset.
 Print Assumptions generic_axiomatized_to_adjoin.
