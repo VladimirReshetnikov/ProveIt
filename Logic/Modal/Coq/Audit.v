@@ -7,7 +7,7 @@ From FoundationModal Require Import
   Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
   FrameProperties
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
-  EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
+  HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
   EntailmentS5 HilbertWithRE
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
@@ -749,6 +749,38 @@ Check global_consequence_of_finite_box_le_provable.
 Check global_consequence_iff_finite_box_le_provable.
 Check logic_global_foundation_box_le_equivalence.
 Check global_consequence_iff_finite_foundation_box_le_provable.
+
+(** Complete raw Hilbert axiom-template and capability surface. *)
+Check raw_modal_axiom.
+Check raw_axiom_instances.
+Check raw_axiom_instance_of_mem.
+Check raw_axioms_has_M.
+Check raw_axioms_has_C.
+Check raw_axioms_has_N.
+Check raw_axioms_has_K.
+Check raw_axioms_has_T.
+Check raw_axioms_has_D.
+Check raw_axioms_has_P.
+Check raw_axioms_has_B.
+Check raw_axioms_has_Four.
+Check raw_axioms_has_FourN.
+Check raw_axioms_has_Five.
+Check raw_axioms_has_Point2.
+Check raw_axioms_has_WeakPoint2.
+Check raw_axioms_has_Point3.
+Check raw_axioms_has_WeakPoint3.
+Check raw_axioms_has_Point4.
+Check raw_axioms_has_L.
+Check raw_axioms_has_Z.
+Check raw_axioms_has_Grz.
+Check raw_axioms_has_Dum.
+Check raw_axioms_has_Tc.
+Check raw_axioms_has_Ver.
+Check raw_axioms_has_Hen.
+Check raw_axioms_has_McK.
+Check raw_axioms_has_Mk.
+Check raw_axioms_has_H1.
+Check raw_axioms_has_Geach.
 
 (** Complete substitution-free E/EM/EN/EMC/EMCN entailment, duality, and
     Geach-duality surfaces. *)
@@ -2259,6 +2291,10 @@ Print Assumptions global_consequence_of_finite_box_le_provable.
 Print Assumptions global_consequence_iff_finite_box_le_provable.
 Print Assumptions logic_global_foundation_box_le_equivalence.
 Print Assumptions global_consequence_iff_finite_foundation_box_le_provable.
+(** The raw axiom API and membership-to-instance construction are entirely
+    constructive.  Witness-bearing records live in Type to permit clients to
+    build substitutions from their atoms. *)
+Print Assumptions raw_axiom_instance_of_mem.
 (** The capability hierarchy adds no substitution premise.  Classical
     propositional reasoning is visible only through the existing
     Prop-valued [classical_tautology] representation. *)

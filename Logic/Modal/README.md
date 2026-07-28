@@ -210,8 +210,9 @@ is being reconstructed:
 | `ComplexityLimited.v` | `Modal/Kripke/ComplexityLimited.lean` | Complexity-bounded generated frames, strengthened truth lemma, subformula-target invariance |
 | `Filtration.v` | `Modal/Kripke/Filtration.lean` | Coarsest truth-profile filtration, explicit exponential cover, finite countermodels, semantic finite-model property |
 | `CanonicalK.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/K}.lean` | Concrete K Lindenbaum completion, maximal theories, canonical truth/countermodel arguments, completeness and finite completeness |
-| `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
+| `NormalHilbert.v` | `Modal/Hilbert/Normal/Basic.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
 | `LogicInfrastructure.v` | `Modal/Logic/{Basic,SumNormal,SumQuasiNormal,Global}.lean` | Predicate-valued logic structure; normal/quasinormal sums and recursors; finite bases, substitution omission, and global consequence |
+| `HilbertAxiom.v` | `Modal/Hilbert/Axiom.lean` | Complete 30-declaration raw-template API: same-atom substitution instances, constructive membership introduction, and all 27 witness-carrying named-schema capabilities |
 | `EntailmentExtensions.v` | `Modal/Entailment/{DiaDuality,E,EM,EN,EMC,EMCN,AxiomGeach}.lean` | Complete substitution-free duality, replacement, M/C/N/K capability equivalences, iterated box/diamond laws, and dual Geach schemata; minimal supporting records from `Entailment/Basic.lean` |
 | `EntailmentNamedExtensions.v` | `Modal/Entailment/{EMK,END,ET,ETB,ET5,KP,N}.lean` | Complete 26-declaration substitution-free surface: the C, P, D, N, B, Point2, and Four derivations and all named capability conversions |
 | `EntailmentKT.v` | `Modal/Entailment/KT.lean` | Complete seven-declaration surface: equivalence of T and its diamond presentation at K strength, KT-to-ET/KD projections, and arbitrary iterated-box reduction |
@@ -378,6 +379,14 @@ capability and complete all 21 active declarations, including arbitrary
 iterated-box reduction and the boxdot/diadot and diamond-box rules.  Their
 only nonconstructive assumption is the existing classical propositional
 entailment boundary.
+
+`HilbertAxiom.v` keeps raw axiom templates distinct from already-instantiated
+normal schemata.  Its instance predicate substitutes only over the fixed atom
+type and preserves the source equality orientation.  Atom-carrying capability
+records live in `Type`, so their witnesses may construct substitutions; the
+atom-free N and P records remain proof-only.  This complete API is
+constructive.  The earlier ten WithRE-prefixed records remain as compatibility
+duplicates for the established concrete-system catalogue.
 
 `HilbertWithRE.v` keeps Foundation's raw calculus at exactly six constructors:
 substituted axioms, modus ponens, replacement of equivalents, and the
@@ -815,7 +824,8 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalK FoundationModal.HilbertNNFormula `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
   FoundationModal.KripkeHilbert `
-  FoundationModal.LogicInfrastructure FoundationModal.EntailmentExtensions `
+  FoundationModal.LogicInfrastructure FoundationModal.HilbertAxiom `
+  FoundationModal.EntailmentExtensions `
   FoundationModal.EntailmentNamedExtensions FoundationModal.EntailmentKT `
   FoundationModal.EntailmentS4 FoundationModal.EntailmentS5 `
   FoundationModal.HilbertWithRE `
