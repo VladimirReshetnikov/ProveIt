@@ -1,0 +1,36 @@
+(**
+  Kernel-facing audit for native axiom-soundness proof compilation.
+
+  The assumption report distinguishes the concrete [allI]/[impI] shell from
+  the named local-root compiler that remains to be constructed by the
+  nonstandard structural induction.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeAxiomSoundnessProofCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeAxiomSoundnessProofCompilation.
+
+Check rawDynamicTruthNativeAxiomSoundnessAntecedentCode.
+Check rawDynamicTruthNativeAxiomSoundnessFieldCode_as_all_imp.
+Check RawDynamicTruthNativeAxiomSoundnessLocalRootAt.
+Check RawDynamicTruthNativeAxiomSoundnessProofTraceAt.
+Check RawDynamicTruthNativeAxiomSoundnessLocalRootCompiler.
+Check rawDynamicTruthNativeAxiomSoundnessProofCertificate.
+Check raw_dynamicTruthNativeAxiomSoundness_empty_witness_context.
+Check
+  raw_codedPAProofOf_dynamicTruthNativeAxiomSoundnessField_of_local_root.
+Check raw_dynamicTruthNativeAxiomSoundnessProofTraceAt_of_transform.
+Check raw_dynamicTruthNativeAxiomSoundnessProofCompiler_of_local_roots.
+Check
+  dynamicTruthNativeAxiomSoundnessPositiveGraph_raw_proof_total_of_local_roots.
+
+Print Assumptions
+  raw_codedPAProofOf_dynamicTruthNativeAxiomSoundnessField_of_local_root.
+Print Assumptions
+  raw_dynamicTruthNativeAxiomSoundnessProofTraceAt_of_transform.
+Print Assumptions
+  raw_dynamicTruthNativeAxiomSoundnessProofCompiler_of_local_roots.
+Print Assumptions
+  dynamicTruthNativeAxiomSoundnessPositiveGraph_raw_proof_total_of_local_roots.
