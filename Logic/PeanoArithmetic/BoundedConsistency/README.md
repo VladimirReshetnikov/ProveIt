@@ -2515,6 +2515,18 @@ proof.  The package contains only the constructor modules' advertised
 semantic-law roots, not branch results, requested conclusions, or a completed
 strong-step proof.
 
+The public direct invariant now carries the proof-wide data required by those
+recursive cases, without changing its root-plus-four-endpoint binder skeleton.
+Its restricted-proof premise contains the dynamic occurrence restriction,
+proof atomic adequacy, existential formula coverage, and rule coverage.  Its
+admissibility premise retains the conclusion-local truth guard and additionally
+stores one existential formula-coverage bound linked to the current assignment.
+Consequently a recursive-child compiler can soundly reroot all three proof-wide
+certificates, recover rule validity from the child's displayed endpoint, and
+reuse the same assignment bound for child admissibility.  The earlier, weaker
+premise supplied only occurrence restriction and could not justify those
+operations in a nonstandard proof tree.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
