@@ -1935,6 +1935,19 @@ syntactic operation, a fixed five-step fold synchronizes all six ordinary
 master-field certificates while preserving their literal conclusions.  The
 module does not claim an assumption-free arbitrary-context merge.
 
+`RawCodedPALocalProofWitnessedContextInclusionWeakening.v` expands that
+single proof-tree operation into all seventeen raw natural-deduction rule
+cases.  Assumptions use literal membership inclusion; propositional,
+quantifier-elimination, and equality rules recursively rebuild their checked
+children; `All-I` and the body branch of `Ex-E` alone require a shifted target
+context.  Parallel source/target shifts preserve membership inclusion by
+represented formula-shift functionality, and PA-definable strong induction
+then covers every carrier-valued proof root, including nonstandard ones.  The
+remaining `RawContextListIncludedTargetShiftExists` premise is exactly target
+shift existence under nested binders.  It is proved for a top-level witnessed
+target but intentionally remains explicit for arbitrary temporary contexts,
+where formula shift is partial on malformed carrier codes.
+
 `RawCodedDynamicTruthNativeMasterSuccessorTransportComplete.v` applies that
 theorem to the staged native successor.  Its public adapters no longer ask
 for any context transport or common-context lift: they require only the five
