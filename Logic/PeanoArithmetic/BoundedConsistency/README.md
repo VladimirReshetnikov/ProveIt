@@ -2046,6 +2046,16 @@ implication compiler.  Thus the callback has no additional context or graph-
 coherence premise; its only remaining proof-producing input is the explicit
 trace-linked cross-level arithmetic kernel.
 
+`RawCodedDynamicTruthNativeFinalStagedCallbackCompilation.v` exposes the
+sixth public callback from the final source-linked implication compiler alone.
+It opens the five preceding graph/proof pairs, preserves their graph halves,
+and feeds their ordinary certificates through the complete accumulation chain
+in production order.  The resulting eleven roots inhabit one witnessed
+context and are passed to the carried final wrapper, which returns the exact
+compact-target graph/proof pair.  Every merge and transport is already proved;
+the adapter adds no context equality, empty-base replacement, or semantic
+premise beyond the named source-linked kernel.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
