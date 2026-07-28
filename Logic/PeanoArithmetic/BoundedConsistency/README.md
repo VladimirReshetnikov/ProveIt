@@ -2118,6 +2118,14 @@ in the caller's original context.  Atomic adequacy of the projected-fields
 head, exact lower-level alignment, the ordinary universal-soundness
 certificate, and the existing consistency compiler remain explicit inputs.
 
+`RawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridgeAdequacy.v`
+specializes that honest enlarged-context endpoint to the final staged graph.
+It invokes the unconditional fields-head adequacy compiler on the very same
+trace and eleven-root prerequisite package, thereby removing the remaining
+atomic-adequacy parameter without changing either returned context or proof
+target.  The exact ordinary universal-soundness certificate, lower-level
+code alignment, and consistency-from-soundness compiler remain explicit.
+
 `RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.v` connects these
 stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,

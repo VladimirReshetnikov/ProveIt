@@ -1,0 +1,13 @@
+(** Kernel audit for automatic final bridge fields-head adequacy. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridgeAdequacy.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridgeAdequacy.
+
+Check
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessBridge_of_ordinary_complete_fields.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessBridge_of_ordinary_complete_fields.
