@@ -1904,6 +1904,15 @@ This endpoint is intentionally conditional: it pins the remaining work to the
 common-context successor compiler without hiding a truth, completeness, or
 proof-transplant assumption.
 
+`RawCodedDynamicTruthNativeMasterSuccessorFromProofTotals.v` assembles the
+strongest successor currently justified by the five native proof totals and
+the compact-consistency certificate successor.  It produces the exact six
+next graph targets and six ordinary proofs unconditionally.  Its sharper
+adapter keeps the five native roots in the empty context, opens only the
+sixth certificate's witnessed context, and isolates the remaining operation
+as transport of one empty-context local proof into that supplied context.
+No identification or implicit merge of existentially chosen contexts is used.
+
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
 use the same formula and assignment inputs but demand rank-zero outputs one
@@ -2052,6 +2061,17 @@ adapter from those roots plus the two explicitly lower-dependent opaque roots
 to the complete eleven-cell family required by the local collision matrix.
 The module therefore records, without hiding it in a broad interface, the
 precise two-cell boundary still requiring structural compilation.
+
+`RawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.v` closes that
+two-cell structural boundary.  A transparent proof preserves all eight outer
+witnesses while replacing an opaque negative three-binder lower application
+by the fixed-bottom instance, without decoding the carrier formula.  The two
+fixed-bottom PA theorems are explicit seeds appended after the synchronized
+thirty-eight-helper batch, so the six master roots, forty helpers, and both
+transported arbitrary-cell roots can inhabit one literal witnessed context.
+Ordinary and adequacy-indexed compilers require only their exact direct
+shift/open trace; the all-carrier interface honestly retains the stronger
+trace-totality premise rather than deriving it from atomic adequacy.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
