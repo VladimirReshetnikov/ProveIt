@@ -1886,6 +1886,14 @@ adequate orbit and the actual successor, numeral, substitution, and
 application trace.  This smaller interface asks for neither the final field
 certificate nor semantic validity.
 
+`RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
+individual endpoints in the form required for common-context assembly.  For
+each native positive graph it selects the actual carrier field and returns a
+proof root in the literal empty context, then bundles all five totals.  The
+construction uses the same adequate orbit and exact transform trace consumed
+by each local-root compiler; it never opens an ordinary certificate or merges
+independently chosen proof contexts.
+
 `RawCodedDynamicTruthNativeMasterEndpoint.v` fixes all five native graphs in
 the previously verified zero/positive splice and six-field master assembler.
 It discharges the complete level-zero callback and shows that the single exact
