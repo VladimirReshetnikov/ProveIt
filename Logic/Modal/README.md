@@ -15,7 +15,8 @@ is being reconstructed:
 - primitive modal syntax, derived connectives, substitution, iteration,
   complexity, degree, subformulas, and complement-closed finite contexts;
 - negation-normal syntax, structural De Morgan negation, modal CNF/DNF shape,
-  direct semantics, and truth-preserving translations in both directions;
+  direct semantics, truth-preserving translations, and K-provable
+  normalization in both directions;
 - executable Cantor encodings and surjective enumerations of ordinary and
   negation-normal formulas over natural-number atoms;
 - a concrete Hilbert calculus for K with substitution, deduction, consistency
@@ -201,6 +202,7 @@ is being reconstructed:
 | `CoherenceSpace.v` | `Semantics/CoherenceSpace/Basic.lean` | Complete coherence/incoherence, clique/point/colimit, base-space, linear-negation, tensor, par, lolli, and additive connective surface |
 | `CoherenceStableFunction.v` | `Semantics/CoherenceSpace/StableFunction.lean` | Stable maps, monotonicity, directed-colimit and pullback preservation, compatible unions, extensional identity/composition, and category laws |
 | `NNFormulaSemantics.v` | `Modal/Kripke/NNFormula.lean` | Direct NNF semantics, semantic negation, translation correctness, validity equivalences |
+| `HilbertNNFormula.v` | `Modal/Hilbert/NNFormula.lean` | Complete three-theorem Hilbert surface: NNF negation equivalence, existence of a K-equivalent NNF, and preservation of K-provability |
 | `HilbertKSoundness.v` | `Modal/Kripke/Hilbert.lean` | Framewise and contextual Kripke soundness for K, plus consistency |
 | `KripkeHilbert.v` | `Modal/Kripke/Hilbert.lean` | Axiom-validity soundness packages for frames/classes, inhabited-frame consistency, and semantic comparison of normal systems over nested classes |
 | `Complement.v` | `Modal/Formula/Complement.lean` | Syntactic complement, complement-closed finite contexts, constructive semantic incompatibility |
@@ -659,6 +661,8 @@ here by a proposition-valued fold because Coq restricts elimination from
 `Prop` into arbitrary `Sort`—keeps
 `WithRE/Basic.lean` partial.  `WithRE_Normal.lean` has full 4/4 parity: the
 generic bridge and all three unconditional K/KT/S4 equivalences are checked.
+`Hilbert/NNFormula.lean` also has full three-declaration parity through the
+checked NNF truth correspondence and K completeness.
 The seven pinned
 combination-logic modules are fully represented, including their strict
 inclusion chains.  The KTB and KT4B modules likewise have full parity,
@@ -800,7 +804,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.RelationProperties `
   FoundationModal.Filtration `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
-  FoundationModal.CanonicalK `
+  FoundationModal.CanonicalK FoundationModal.HilbertNNFormula `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
   FoundationModal.KripkeHilbert `
   FoundationModal.LogicInfrastructure FoundationModal.EntailmentExtensions `

@@ -4,7 +4,8 @@ From FoundationModal Require Import
   Syntax NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
-  Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
+  Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
+  FrameProperties
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
   EntailmentExtensions EntailmentNamedExtensions HilbertWithRE
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
@@ -377,6 +378,9 @@ Check nn_to_formula_valid.
 Check formula_to_nnf_valid.
 Check formula_nnf_round_trip.
 Check nn_formula_round_trip.
+Check K_proves_nnformula_iff_neg.
+Check K_proves_exists_nnformula_iff.
+Check K_proves_exists_nnformula_of_provable.
 
 Check modal_formula_decode_code.
 Check modal_formula_enum_surjective.
@@ -2097,6 +2101,9 @@ Print Assumptions lindenbaum_extension.
 Print Assumptions canonical_truth_lemma.
 Print Assumptions K_complete.
 Print Assumptions K_finite_sound_complete.
+Print Assumptions K_proves_nnformula_iff_neg.
+Print Assumptions K_proves_exists_nnformula_iff.
+Print Assumptions K_proves_exists_nnformula_of_provable.
 Print Assumptions normal_proves_substitute.
 Print Assumptions normal_proves_sound_on_frame.
 Print Assumptions S4_proves_sound_on_preorder_frame.
