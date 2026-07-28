@@ -1447,6 +1447,15 @@ optional semantic-completeness corollary separately exposes the classical
 assumptions inherited from the generic first-order completeness theorem.  The
 fixed opaque binary predicate is only a source-proof interface, not the still
 missing arbitrary-carrier dynamic-truth soundness construction.
+`RawCodedRestrictedTargetTemplateContext.v` connects the transparent
+restricted-consistency syntax family to the same template language.  It
+fills the family's distinguished restriction-level hole with an arbitrary
+template term and proves that structural translation is exactly
+`rawRestrictedTargetFormulaContextCode` at the translated term code.  Thus a
+named carrier parameter yields the genuine nonstandard restricted-proof and
+consistency shapes without decoding it as a host numeral.  A separate theorem
+recovers ordinary context instantiation only for closed host terms, keeping
+the arbitrary-carrier and standard-quotation boundaries distinct.
 `RawCodedTemplateLogicalSchemas.v` records the small
 finite source trees needed by the dynamic fields—conjunction projection and
 introduction, existential projection, and universal specialization followed
