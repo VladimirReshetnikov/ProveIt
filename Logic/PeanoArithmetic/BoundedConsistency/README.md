@@ -1823,6 +1823,15 @@ the selected field code and depends only on the explicit
 `RawDynamicTruthNativeShiftProofCompiler` for possibly nonstandard carrier
 indices; semantic validity is never converted into proof syntax.
 
+`RawCodedDynamicTruthNativeShiftProofCompilation.v` compiles the complete
+eight-variable shift-law shell.  Four Sigma/Pi forward and backward leaves
+share the exact one-assumption `shift-data` context; explicit conjunction
+nodes build the two equivalences, implication introduction discharges that
+common assumption, and eight universal-introduction nodes close the field.
+The trace adapter retains the adequate orbit, numeral, domain substitutions,
+and four application traces while eliminating any premise that already
+mentions a completed field certificate.
+
 `RawCodedDynamicTruthNativeSubstitutionCarrier.v` fixes the exact syntax for
 the fourth positive master coordinate.  Its transparent polynomial closes
 exactly the seven single-substitution parameters and combines the carried
@@ -1876,6 +1885,14 @@ to `RawDynamicTruthNativeAxiomSoundnessLocalRootCompiler`, indexed only by the
 adequate orbit and the actual successor, numeral, substitution, and
 application trace.  This smaller interface asks for neither the final field
 certificate nor semantic validity.
+
+`RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
+individual endpoints in the form required for common-context assembly.  For
+each native positive graph it selects the actual carrier field and returns a
+proof root in the literal empty context, then bundles all five totals.  The
+construction uses the same adequate orbit and exact transform trace consumed
+by each local-root compiler; it never opens an ordinary certificate or merges
+independently chosen proof contexts.
 
 `RawCodedDynamicTruthNativeMasterEndpoint.v` fixes all five native graphs in
 the previously verified zero/positive splice and six-field master assembler.
