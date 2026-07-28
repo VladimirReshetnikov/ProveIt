@@ -337,11 +337,11 @@ Definition restrictedPADerivationSoundnessInductionAxiomFormula
   Formula.sealPA
     (restrictedPADerivationSoundnessInductionBodyFormula level).
 
-(** The following hypothesis isolates a purely syntactic fact.  It is kept
-    explicit here because the current scope library has no compositional
-    scope theorem for the recursively expanded fixed-level truth traversal.
-    For each metatheoretic [level] the proposition is decidable by
-    [standardFormulaScopedb]; it is not a semantic assumption. *)
+(** The following hypothesis isolates a purely syntactic fact from the
+    induction-data construction.  Keeping it explicit in this base module
+    avoids a dependency cycle; the downstream
+    [RawCodedRestrictedPADerivationSoundnessScope] module proves it uniformly
+    for every external [level].  It is not a semantic assumption. *)
 Definition RestrictedPADerivationSoundnessPrefixScoped
     (level : nat) : Prop :=
   StandardFormulaScoped 1
