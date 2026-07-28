@@ -2153,6 +2153,15 @@ kernel; its value is that the headline boundary now exposes universal
 derivation soundness, consistency-from-soundness, and target refutation
 separately instead of hiding them behind one final premise.
 
+`RawCodedDynamicTruthNativeDependencyOrderedUniversalSoundnessBridgeBoundary.v`
+uses the canonical final target-refutation compiler to discharge the third of
+those roots.  Its refined final interface preserves one shared soundness code
+and asks only for a proof of universal restricted-derivation soundness and a
+proof of the implication from that same code to the selected consistency
+target.  All earlier staged kernels remain explicit, so the resulting compact
+headline is still conditional precisely on those kernels and these two final
+proof-producing obligations.
+
 `RawCodedRestrictedPADerivationSoundnessPredicate.v` isolates the first exact
 proof-code induction slice behind that final compiler.  For each fixed
 metatheoretic `level`, it defines the unary invariant `P(d)` saying that every
@@ -2162,11 +2171,11 @@ arbitrary-model semantics and equivalence to the existing constructor-local
 soundness invariant.  The module then quotes `K` and constructs the complete
 diagonal-substitution and closure-induction data consumed by the represented
 PA induction compiler.  Its formula-scope premise remains explicit because
-the recursively expanded fixed-level Sigma/Pi truth formulas do not yet have
-scope lemmas uniform in the external level.  More importantly, this is still
-a standard-`nat` level slice: it neither replaces `level` by an arbitrary
-model carrier nor supplies the opaque successor-truth application needed by
-the uniform nonstandard theorem.
+the downstream scope development cannot be imported here without creating a
+dependency cycle.  More importantly, this is still a standard-`nat` level
+slice: it neither replaces `level` by an arbitrary model carrier nor supplies
+the opaque successor-truth application needed by the uniform nonstandard
+theorem.
 
 `RawCodedRestrictedPADerivationSoundnessScope.v` discharges exactly that
 metatheoretic formula-scope premise for every external fixed truth level.  It
