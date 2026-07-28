@@ -1,9 +1,9 @@
 (**
   Generic proof systems and their provability-strength order.
 
-  This module ports declarations 1--78 of the 138 active declaration-producing
+  This module ports declarations 1--101 of the 138 active declaration-producing
   commands in the pinned [Foundation/Logic/Entailment.lean], through
-  [consistent_of_incomplete].  Foundation distinguishes a Type-valued formal
+  [WeakerThan.ofSubset].  Foundation distinguishes a Type-valued formal
   proof from the proposition that such a proof is inhabited; that distinction
   is retained here.  In particular, selecting a raw proof from provability is
   deliberately isolated behind informative classical description.
@@ -17,7 +17,7 @@
 From Stdlib Require Import
   Logic.Classical_Prop Logic.ClassicalChoice Logic.ClassicalEpsilon
   Logic.ChoiceFacts.
-From FoundationModal Require Import GenericSemantics.
+From FoundationModal Require Import GenericSemantics GenericAdjunctiveSet.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -940,3 +940,266 @@ Proof.
   destruct Hindependent as [p [Hnot_p _]].
   exact (@generic_consistent_of_unprovable S F E s p Hnot_p).
 Qed.
+
+(** * Axiomatized entailments and strong cut *)
+
+(** Source declaration 79/138: [Axiomatized].  Inclusion is supplied by the
+    adjunctive-context interface rather than stored as a second primitive
+    relation. *)
+Record generic_axiomatized {S F : Type}
+    (E : generic_entailment S F)
+    (A : generic_adjunctive_set F S) : Type := {
+  generic_axiomatized_raw_axioms :
+    forall s : S,
+      generic_proof_set E s (generic_adjunctive_carrier A s);
+  generic_axiomatized_raw_weakening :
+    forall s t : S,
+      generic_adjunctive_subset A s t ->
+      forall p : F,
+        generic_proof E s p -> generic_proof E t p
+}.
+
+Arguments generic_axiomatized_raw_axioms
+  {S F E A} _ _ _ _.
+Arguments generic_axiomatized_raw_weakening
+  {S F E A} _ _ _ _ _ _.
+
+(** Source declaration 80/138: alias [wk]. *)
+Definition generic_axiomatized_weaken_raw
+    {S F : Type} {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (Haxiom : generic_axiomatized E A)
+    {s t : S} (Hsub : generic_adjunctive_subset A s t)
+    {p : F} (b : generic_proof E s p) : generic_proof E t p :=
+  generic_axiomatized_raw_weakening Haxiom s t Hsub p b.
+
+(** Source declaration 81/138: [StrongCut].  Like the source, this preserves
+    heterogeneous source and target context types while also making both
+    entailment structures explicit. *)
+Record generic_strong_cut {S T F : Type}
+    (ES : generic_entailment S F) (ET : generic_entailment T F)
+    (AT : generic_adjunctive_set F T) : Type := {
+  generic_strong_cut_raw :
+    forall (s : S) (t : T) (p : F),
+      generic_proof_set ES s (generic_adjunctive_carrier AT t) ->
+      generic_proof ET t p ->
+      generic_proof ES s p
+}.
+
+Arguments generic_strong_cut_raw
+  {S T F ES ET AT} _ _ _ _ _ _.
+
+(** Source declaration 82/138: [Axiomatized.byAxm]. *)
+Definition generic_axiomatized_by_axiom_raw
+    {S F : Type} {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (Haxiom : generic_axiomatized E A)
+    {s : S} {p : F} (Hp : generic_adjunctive_member A p s) :
+    generic_proof E s p :=
+  generic_axiomatized_raw_axioms Haxiom s p Hp.
+
+(** Source declaration 83/138: [Axiomatized.by_axm]. *)
+Lemma generic_axiomatized_by_axiom :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    forall (s : S) (p : F),
+      generic_adjunctive_member A p s -> generic_provable E s p.
+Proof.
+  intros S F E A Haxiom s p Hp. constructor.
+  exact (generic_axiomatized_by_axiom_raw Haxiom Hp).
+Qed.
+
+(** Source declaration 84/138: [Axiomatized.provable_refl]. *)
+Lemma generic_axiomatized_provable_refl :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    forall s : S,
+      generic_provable_set E s (generic_adjunctive_carrier A s).
+Proof.
+  intros S F E A Haxiom s p Hp.
+  exact (@generic_axiomatized_by_axiom S F E A Haxiom s p Hp).
+Qed.
+
+(** Source declaration 85/138: [Axiomatized.axm_subset]. *)
+Lemma generic_axiomatized_axioms_subset_theory :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    forall (s : S) (p : F),
+      generic_adjunctive_carrier A s p ->
+      generic_entailment_theory E s p.
+Proof.
+  intros S F E A Haxiom s.
+  exact (@generic_axiomatized_provable_refl S F E A Haxiom s).
+Qed.
+
+(** Source declaration 86/138: protected [Axiomatized.adjoin]. *)
+Definition generic_axiomatized_adjoin_raw
+    {S F : Type} {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (Haxiom : generic_axiomatized E A)
+    (p : F) (s : S) :
+    generic_proof E (generic_adjunctive_adjoin A p s) p :=
+  generic_axiomatized_by_axiom_raw Haxiom
+    (@generic_adjunctive_mem_adjoin_self F S A s p).
+
+(** Source declaration 87/138: [Axiomatized.adjoin!]. *)
+Lemma generic_axiomatized_adjoin :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    forall (p : F) (s : S),
+      generic_provable E (generic_adjunctive_adjoin A p s) p.
+Proof.
+  intros S F E A Haxiom p s. constructor.
+  exact (generic_axiomatized_adjoin_raw Haxiom p s).
+Qed.
+
+(** Source declaration 88/138: [Axiomatized.le_of_subset]. *)
+Lemma generic_axiomatized_weaker_of_subset :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    forall s t : S,
+      generic_adjunctive_subset A s t ->
+      generic_weaker_than E E s t.
+Proof.
+  intros S F E A Haxiom s t Hsub. constructor.
+  intros p [b]. constructor.
+  exact (generic_axiomatized_weaken_raw Haxiom Hsub b).
+Qed.
+
+(** Source declaration 89/138: [Axiomatized.weakening!]. *)
+Lemma generic_axiomatized_weaken :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    forall s t : S,
+      generic_adjunctive_subset A s t ->
+      forall p : F,
+        generic_provable E s p -> generic_provable E t p.
+Proof.
+  intros S F E A Haxiom s t Hsub p [b]. constructor.
+  exact (generic_axiomatized_weaken_raw Haxiom Hsub b).
+Qed.
+
+(** Source declaration 90/138: [Axiomatized.weakerThanOfSubset]. *)
+Definition generic_axiomatized_weaker_of_subset_alias :=
+  @generic_axiomatized_weaker_of_subset.
+
+(** Source declaration 91/138: [Axiomatized.toAdjoin]. *)
+Definition generic_axiomatized_to_adjoin_raw
+    {S F : Type} {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (Haxiom : generic_axiomatized E A)
+    (added : F) {s : S} {p : F}
+    (b : generic_proof E s p) :
+    generic_proof E (generic_adjunctive_adjoin A added s) p :=
+  generic_axiomatized_weaken_raw Haxiom
+    (@generic_adjunctive_subset_adjoin F S A s added) b.
+
+(** Source declaration 92/138: [Axiomatized.to_adjoin]. *)
+Lemma generic_axiomatized_to_adjoin :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    forall (added : F) (s : S) (p : F),
+      generic_provable E s p ->
+      generic_provable E (generic_adjunctive_adjoin A added s) p.
+Proof.
+  intros S F E A Haxiom added s p [b]. constructor.
+  exact (generic_axiomatized_to_adjoin_raw Haxiom added b).
+Qed.
+
+(** Source declaration 93/138: alias [byAxm]. *)
+Definition generic_by_axiom_raw := @generic_axiomatized_by_axiom_raw.
+
+(** Source declaration 94/138: alias [by_axm]. *)
+Definition generic_by_axiom := @generic_axiomatized_by_axiom.
+
+(** Source declaration 95/138: alias [wk!]. *)
+Definition generic_axiomatized_weaken_alias := @generic_axiomatized_weaken.
+
+(** Source declaration 96/138: [FiniteAxiomatizable]. *)
+Definition generic_finitely_axiomatizable
+    {S F : Type} (E : generic_entailment S F)
+    (A : generic_adjunctive_set F S) (s : S) : Prop :=
+  exists finite_context : S,
+    generic_adjunctive_finite A finite_context /\
+    generic_entailment_equiv E E finite_context s.
+
+(** Source declaration 97/138: [Consistent.of_subset]. *)
+Lemma generic_consistent_of_context_subset :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    forall s t : S,
+      generic_consistent E s ->
+      generic_adjunctive_subset A t s ->
+      generic_consistent E t.
+Proof.
+  intros S F E A Haxiom s t Hcon Hsub.
+  apply (@generic_consistent_of_le S S F E E s t Hcon).
+  exact (@generic_axiomatized_weaker_of_subset
+    S F E A Haxiom t s Hsub).
+Qed.
+
+(** Source declaration 98/138: [Inconsistent.of_supset]. *)
+Lemma generic_inconsistent_of_context_superset :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    forall s t : S,
+      generic_inconsistent E s ->
+      generic_adjunctive_subset A s t ->
+      generic_inconsistent E t.
+Proof.
+  intros S F E A Haxiom s t Hinc Hsub.
+  apply (@generic_inconsistent_of_ge S S F E E s t Hinc).
+  exact (@generic_axiomatized_weaker_of_subset
+    S F E A Haxiom s t Hsub).
+Qed.
+
+(** Source declaration 99/138: [StrongCut.cut!].  Converting pointwise
+    inhabitation into one dependent raw-proof family is exactly declaration
+    11's functional-choice boundary; informative description is unnecessary. *)
+Lemma generic_strong_cut_provable :
+  forall (S T F : Type)
+         (ES : generic_entailment S F) (ET : generic_entailment T F)
+         (AT : generic_adjunctive_set F T),
+    generic_strong_cut ES ET AT ->
+    forall (s : S) (t : T) (p : F),
+      generic_provable_set ES s (generic_adjunctive_carrier AT t) ->
+      generic_provable ET t p ->
+      generic_provable ES s p.
+Proof.
+  intros S T F ES ET AT Hcut s t p Haxioms [b].
+  destruct (proj1
+    (@generic_provable_set_iff_inhabited S F ES s
+      (generic_adjunctive_carrier AT t)) Haxioms) as [B].
+  constructor. exact (generic_strong_cut_raw Hcut s t p B b).
+Qed.
+
+(** Source declaration 100/138: [WeakerThan.ofAxm!].  The source uses one
+    context type; orienting heterogeneous strong cut exposes the more general
+    theorem for distinct context representations and entailments. *)
+Lemma generic_weaker_than_of_axioms :
+  forall (S T F : Type)
+         (ES : generic_entailment S F) (ET : generic_entailment T F)
+         (AS : generic_adjunctive_set F S),
+    generic_strong_cut ET ES AS ->
+    forall (s : S) (t : T),
+      generic_provable_set ET t (generic_adjunctive_carrier AS s) ->
+      generic_weaker_than ES ET s t.
+Proof.
+  intros S T F ES ET AS Hcut s t Haxioms. constructor.
+  intros p Hp.
+  exact (@generic_strong_cut_provable T S F ET ES AS
+    Hcut t s p Haxioms Hp).
+Qed.
+
+(** Source declaration 101/138: [WeakerThan.ofSubset]. *)
+Definition generic_weaker_than_of_context_subset :=
+  @generic_axiomatized_weaker_of_subset.
