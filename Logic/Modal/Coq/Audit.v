@@ -7,8 +7,10 @@ From FoundationModal Require Import
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
   EntailmentExtensions EntailmentNamedExtensions HilbertWithRE
-  HilbertWithREClassicalCompleteness HilbertWithRESystems HilbertWithRENormal
-  HilbertWithREEquivalences
+  HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
+  HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
+  HilbertWithRESystems HilbertWithRESymmetrySystems
+  HilbertWithRENormal HilbertWithREEquivalences
   KripkeSemantics KripkeHilbert CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
@@ -980,6 +982,44 @@ Check with_re_classical_complete_weaken.
 Check with_re_classical_logic_from_basis.
 Check with_re_e_entailment_from_basis.
 
+(** Empty and elementary M/C/N/K concrete WithRE systems. *)
+Check ec_entailment.
+Check emn_entailment.
+Check ecn_entailment.
+Check ek_entailment.
+Check with_re_E.
+Check with_re_EM_axioms.
+Check with_re_EM_axioms_has_M.
+Check with_re_EM.
+Check with_re_EM_entailment.
+Check with_re_EC_axioms.
+Check with_re_EC_axioms_has_C.
+Check with_re_EC.
+Check with_re_EC_entailment.
+Check with_re_EN_axioms.
+Check with_re_EN_axioms_has_N.
+Check with_re_EN.
+Check with_re_EN_entailment.
+Check with_re_EMC_axioms.
+Check with_re_EMC_axioms_has_M.
+Check with_re_EMC_axioms_has_C.
+Check with_re_EMC.
+Check with_re_EMC_entailment.
+Check with_re_EMN_axioms.
+Check with_re_EMN_axioms_has_M.
+Check with_re_EMN_axioms_has_N.
+Check with_re_EMN.
+Check with_re_EMN_entailment.
+Check with_re_ECN_axioms.
+Check with_re_ECN_axioms_has_C.
+Check with_re_ECN_axioms_has_N.
+Check with_re_ECN.
+Check with_re_ECN_entailment.
+Check with_re_EK_axioms.
+Check with_re_EK_axioms_has_K.
+Check with_re_EK.
+Check with_re_EK_entailment.
+
 (** Exact EMCN, EMCNT, and EMCNT4 raw systems and entailment adapters. *)
 Check with_re_EMCN_axioms.
 Check with_re_EMCN_axioms_has_M.
@@ -1009,6 +1049,148 @@ Check with_re_EMCNT4_emc_entailment_of_classical_complete.
 Check with_re_EMCNT4_emc_entailment.
 Check with_re_EMCNT4_en_entailment_of_classical_complete.
 Check with_re_EMCNT4_en_entailment.
+
+(** Unary/nullary Four, D, and P catalogue systems. *)
+Check e4_entailment.
+Check with_re_E4_axioms.
+Check with_re_E4_axioms_has_Four.
+Check with_re_E4.
+Check with_re_E4_e4_entailment.
+Check with_re_EN4_axioms.
+Check with_re_EN4_axioms_has_N.
+Check with_re_EN4_axioms_has_Four.
+Check with_re_EN4.
+Check with_re_EN4_en_entailment.
+Check with_re_EN4_e4_entailment.
+Check with_re_E4_weaker_than_EN4.
+Check with_re_ET4_axioms.
+Check with_re_ET4_axioms_has_Four.
+Check with_re_ET4_axioms_has_T.
+Check with_re_ET4.
+Check with_re_ET4_e_entailment.
+Check with_re_ET4_et_entailment.
+Check with_re_ET4_e4_entailment.
+Check with_re_ENT4_axioms.
+Check with_re_ENT4_axioms_has_N.
+Check with_re_ENT4_axioms_has_T.
+Check with_re_ENT4_axioms_has_Four.
+Check with_re_ENT4.
+Check with_re_ENT4_en_entailment.
+Check with_re_ENT4_et_entailment.
+Check with_re_ENT4_e4_entailment.
+Check with_re_ED_axioms.
+Check with_re_ED_axioms_has_D.
+Check with_re_ED.
+Check with_re_ED_has_D.
+Check with_re_END_axioms.
+Check with_re_END_axioms_has_N.
+Check with_re_END_axioms_has_D.
+Check with_re_END.
+Check with_re_END_entailment.
+Check with_re_END4_axioms.
+Check with_re_END4_axioms_has_N.
+Check with_re_END4_axioms_has_D.
+Check with_re_END4_axioms_has_Four.
+Check with_re_END4.
+Check with_re_END4_source_END_entailment.
+Check with_re_END4_e4_entailment.
+Check with_re_EMND4_axioms.
+Check with_re_EMND4_axioms_has_M.
+Check with_re_EMND4_axioms_has_N.
+Check with_re_EMND4_axioms_has_D.
+Check with_re_EMND4_axioms_has_Four.
+Check with_re_EMND4.
+Check with_re_EMND4_source_END_entailment.
+Check with_re_EMND4_em_entailment.
+Check with_re_EMND4_e4_entailment.
+Check with_re_EP_axioms.
+Check with_re_EP_axioms_has_P.
+Check with_re_EP.
+Check with_re_EP_has_P.
+
+(** B/Five systems and the exact ETB/ENTB equivalence. *)
+Check with_re_EB_axioms.
+Check with_re_EB_axioms_has_B.
+Check with_re_EB.
+Check with_re_EB_entailment.
+Check with_re_ETB_axioms.
+Check with_re_ETB_axioms_has_B.
+Check with_re_ETB_axioms_has_T.
+Check with_re_ETB.
+Check with_re_ETB_entailment.
+Check with_re_ETB_en_entailment.
+Check with_re_ENTB_axioms.
+Check with_re_ENTB_axioms_has_N.
+Check with_re_ENTB_axioms_has_T.
+Check with_re_ENTB_axioms_has_B.
+Check with_re_ENTB.
+Check with_re_ENTB_etb_entailment.
+Check with_re_ENTB_en_entailment.
+Check with_re_ETB_equiv_ENTB.
+Check with_re_E5_axioms.
+Check with_re_E5_axioms_has_Five.
+Check with_re_E5.
+Check with_re_E5_entailment.
+Check with_re_ET5_axioms.
+Check with_re_ET5_axioms_has_Five.
+Check with_re_ET5_axioms_has_T.
+Check with_re_ET5.
+Check with_re_ET5_entailment.
+
+(** T/K and mixed Four-system remainder of the concrete catalogue. *)
+Check emt_entailment.
+Check with_re_ET_axioms.
+Check with_re_ET_axioms_has_T.
+Check with_re_ET.
+Check with_re_ET_entailment.
+Check with_re_EMT_axioms.
+Check with_re_EMT_axioms_has_M.
+Check with_re_EMT_axioms_has_T.
+Check with_re_EMT.
+Check with_re_EMT_entailment.
+Check with_re_EMK_axioms.
+Check with_re_EMK_axioms_has_M.
+Check with_re_EMK_axioms_has_K.
+Check with_re_EMK.
+Check with_re_EMK_entailment.
+Check with_re_EMCK_axioms.
+Check with_re_EMCK_axioms_has_M.
+Check with_re_EMCK_axioms_has_C.
+Check with_re_EMCK_axioms_has_K.
+Check with_re_EMCK.
+Check with_re_EMK_equiv_EMCK.
+Check with_re_EMC_equiv_EMCK.
+Check emt4_entailment.
+Check emc4_entailment.
+Check with_re_EMT4_axioms.
+Check with_re_EMT4_axioms_has_M.
+Check with_re_EMT4_axioms_has_T.
+Check with_re_EMT4_axioms_has_Four.
+Check with_re_EMT4.
+Check with_re_EMT4_entailment.
+Check with_re_EMNT4_axioms.
+Check with_re_EMNT4_axioms_has_M.
+Check with_re_EMNT4_axioms_has_N.
+Check with_re_EMNT4_axioms_has_T.
+Check with_re_EMNT4_axioms_has_Four.
+Check with_re_EMNT4.
+Check with_re_EMNT4_em_entailment.
+Check with_re_EMNT4_en_entailment.
+Check with_re_EMNT4_et_entailment.
+Check with_re_EMNT4_e4_entailment.
+Check with_re_EMC4_axioms.
+Check with_re_EMC4_axioms_has_M.
+Check with_re_EMC4_axioms_has_C.
+Check with_re_EMC4_axioms_has_Four.
+Check with_re_EMC4.
+Check with_re_EMC4_entailment.
+Check with_re_EMCN4_axioms.
+Check with_re_EMCN4_axioms_has_M.
+Check with_re_EMCN4_axioms_has_C.
+Check with_re_EMCN4_axioms_has_N.
+Check with_re_EMCN4_axioms_has_Four.
+Check with_re_EMCN4.
+Check with_re_EMCN4_emc_entailment.
 
 (** Generic WithRE/normal bridge and all three source named equivalences. *)
 Check with_re_axiom_instances_provable_in_normal.
@@ -2079,6 +2261,42 @@ Print Assumptions with_re_EMCNT_emc_entailment.
 Print Assumptions with_re_EMCNT_en_entailment.
 Print Assumptions with_re_EMCNT4_emc_entailment.
 Print Assumptions with_re_EMCNT4_en_entailment.
+Print Assumptions with_re_EM_entailment.
+Print Assumptions with_re_EC_entailment.
+Print Assumptions with_re_EN_entailment.
+Print Assumptions with_re_EMC_entailment.
+Print Assumptions with_re_EMN_entailment.
+Print Assumptions with_re_ECN_entailment.
+Print Assumptions with_re_EK_entailment.
+Print Assumptions with_re_E4_e4_entailment.
+Print Assumptions with_re_EN4_en_entailment.
+Print Assumptions with_re_E4_weaker_than_EN4.
+Print Assumptions with_re_ET4_et_entailment.
+Print Assumptions with_re_ENT4_e4_entailment.
+Print Assumptions with_re_ED_has_D.
+Print Assumptions with_re_END_entailment.
+Print Assumptions with_re_END4_source_END_entailment.
+Print Assumptions with_re_EMND4_em_entailment.
+Print Assumptions with_re_EP_has_P.
+Print Assumptions with_re_EB_entailment.
+Print Assumptions with_re_ETB_entailment.
+Print Assumptions with_re_ETB_en_entailment.
+Print Assumptions with_re_ENTB_en_entailment.
+Print Assumptions with_re_ETB_equiv_ENTB.
+Print Assumptions with_re_E5_entailment.
+Print Assumptions with_re_ET5_entailment.
+Print Assumptions with_re_ET_entailment.
+Print Assumptions with_re_EMT_entailment.
+Print Assumptions with_re_EMK_entailment.
+Print Assumptions with_re_EMK_equiv_EMCK.
+Print Assumptions with_re_EMC_equiv_EMCK.
+Print Assumptions with_re_EMT4_entailment.
+Print Assumptions with_re_EMNT4_em_entailment.
+Print Assumptions with_re_EMNT4_en_entailment.
+Print Assumptions with_re_EMNT4_et_entailment.
+Print Assumptions with_re_EMNT4_e4_entailment.
+Print Assumptions with_re_EMC4_entailment.
+Print Assumptions with_re_EMCN4_emc_entailment.
 Print Assumptions with_re_normal_equiv_of_provable_generators.
 Print Assumptions with_re_EMCN_equiv_K.
 Print Assumptions with_re_EMCNT_equiv_KT.

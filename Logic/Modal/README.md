@@ -214,7 +214,12 @@ is being reconstructed:
 | `EntailmentNamedExtensions.v` | `Modal/Entailment/{EMK,END,ET,ETB,ET5,KP,N}.lean` | Complete 26-declaration substitution-free surface: the C, P, D, N, B, Point2, and Four derivations and all named capability conversions |
 | `HilbertWithRE.v` | `Modal/Hilbert/WithRE/Basic.lean` | Faithful generic six-constructor replacement-of-equivalents calculus, substitution and weakening, Lukasiewicz basis, and all ten schematic-axiom adapters |
 | `HilbertWithREClassicalCompleteness.v` | `Modal/Hilbert/WithRE/Basic.lean` | Classical completeness of the raw K/S/EC basis via finite propositional skeletons, modal-K completeness, box erasure, and cross-atom substitution; unconditional classical and E adapters |
+| `HilbertWithREBaseSystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact E, EM, EC, EN, EMC, EMN, ECN, and EK raw systems and their unconditional entailment instances |
+| `HilbertWithREUnarySystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact E4, EN4, ET4, ENT4, ED, END, END4, EMND4, and EP declarations, including E4-to-EN4 inclusion and literal accounting for two upstream target typos |
+| `HilbertWithRETKSystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact ET, EMT, EMK, and EMCK declarations, including the EMK/EMCK and EMC/EMCK proof-theoretic equivalences |
+| `HilbertWithREFourSystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact EMT4, EMNT4, EMC4, and EMCN4 raw systems with the source's deliberately selective entailment instances |
 | `HilbertWithRESystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact EMCN, EMCNT, and EMCNT4 raw axiom predicates, capability witnesses, logics, and all source-facing entailment instances |
+| `HilbertWithRESymmetrySystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact EB, ETB, ENTB, E5, and ET5 declarations, including derived EN structure and the ETB/ENTB equivalence |
 | `HilbertWithRENormal.v` | `Modal/Hilbert/WithRE_Normal.lean` | Generic proof-theoretic equivalence between a WithRE calculus and a normal Hilbert calculus under the source's two generator-translation premises |
 | `HilbertWithREEquivalences.v` | `Modal/Hilbert/WithRE_Normal.lean` | Unconditional EMCN/K, EMCNT/KT, and EMCNT4/S4 proof-theoretic equivalences |
 | `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; complete KT/K4/S4 canonical metatheory; finite K4/S4 filtrations and strict predecessors |
@@ -372,10 +377,14 @@ needed classical-basis completeness instead: it replaces atoms and whole boxed
 subformulas by a finite natural-number skeleton, invokes the checked modal-K
 completeness theorem, erases boxes from that proof, and decodes the skeleton by
 empty-calculus substitution.  Consequently the classical and E adapters, the
-EMCN/EMCNT/EMCNT4 entailment instances, and their K/KT/S4 equivalences are
-unconditional.  The construction uses excluded middle and the standard
+concrete-system entailment instances, and the K/KT/S4 equivalences are
+unconditional.  All 33 source systems and all 187 concrete declarations are
+represented, including the E4-to-EN4 inclusion and all three source
+equivalences.  The construction uses excluded middle and the standard
 definite-description principle, but no extensionality, proof irrelevance,
-admissions, or extra WithRE constructor.
+admissions, or extra WithRE constructor.  Two apparent upstream instance
+target typos in the END4 and EMND4 blocks are retained as explicitly named
+source-accounting declarations rather than silently strengthened.
 
 Coherence-space points and stable functions use explicit extensional
 equivalences, so their order, colimit, pullback, identity, composition, and
@@ -644,8 +653,10 @@ declaration-level parity.  Their small supporting
 capability slice is recorded conservatively as a partial port of the much
 larger `Entailment/Basic.lean` API.  The generic `WithRE` six-constructor core,
 substitution, weakening, ten named-axiom adapters, unconditional classical/E
-bridge, and the exact 23-declaration EMCN/EMCNT/EMCNT4 slice are checked.  The
-remaining 30 concrete systems and source's proof-dependent `Sort` recursor keep
+bridge, and all 33 concrete systems with all 187 corresponding declarations
+are checked.  Only the source's proof-dependent `Sort` recursor—represented
+here by a proposition-valued fold because Coq restricts elimination from
+`Prop` into arbitrary `Sort`—keeps
 `WithRE/Basic.lean` partial.  `WithRE_Normal.lean` has full 4/4 parity: the
 generic bridge and all three unconditional K/KT/S4 equivalences are checked.
 The seven pinned
@@ -795,7 +806,10 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.LogicInfrastructure FoundationModal.EntailmentExtensions `
   FoundationModal.EntailmentNamedExtensions FoundationModal.HilbertWithRE `
   FoundationModal.HilbertWithREClassicalCompleteness `
-  FoundationModal.HilbertWithRESystems FoundationModal.HilbertWithRENormal `
+  FoundationModal.HilbertWithREBaseSystems FoundationModal.HilbertWithREUnarySystems `
+  FoundationModal.HilbertWithRETKSystems FoundationModal.HilbertWithREFourSystems `
+  FoundationModal.HilbertWithRESystems `
+  FoundationModal.HilbertWithRESymmetrySystems FoundationModal.HilbertWithRENormal `
   FoundationModal.HilbertWithREEquivalences `
   FoundationModal.CanonicalExtensions `
   FoundationModal.FiniteMaximalContext `
