@@ -1839,6 +1839,17 @@ proof totality is isolated in the explicit
 `RawDynamicTruthNativeAxiomSoundnessProofCompiler`; model truth is not treated
 as a coded PA derivation.
 
+`RawCodedDynamicTruthNativeAxiomSoundnessProofCompilation.v` compiles the
+non-dynamic shell of that remaining proof.  From a covered local proof of the
+selected next-Sigma evidence under the literal singleton axiom/admissibility
+antecedent, checked implication- and universal-introduction constructors build
+an ordinary represented proof of the exact carrier field code over an empty
+witness context.  The original arbitrary-carrier compiler is thereby reduced
+to `RawDynamicTruthNativeAxiomSoundnessLocalRootCompiler`, indexed only by the
+adequate orbit and the actual successor, numeral, substitution, and
+application trace.  This smaller interface asks for neither the final field
+certificate nor semantic validity.
+
 `RawCodedDynamicTruthNativeMasterEndpoint.v` fixes all five native graphs in
 the previously verified zero/positive splice and six-field master assembler.
 It discharges the complete level-zero callback and shows that the single exact
