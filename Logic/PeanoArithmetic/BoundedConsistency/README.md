@@ -2116,6 +2116,18 @@ parametric in four row values and is therefore stronger than the eventual
 trace-linked evidence compiler; the exact concrete endpoint consumes row
 roots and matrix resources indexed by the same values.
 
+`RawCodedDynamicTruthNativeGlobalEvidenceRootCompilation.v` replaces that
+broad callback with the exact trace-linked boundary.  Destructing the paired
+global successor exposes the actual Sigma/Pi row domains and lower-predicate
+applications together with their wrapper and ternary-application links.  A
+corrected evidence compiler may return roots only for those existentially
+selected rows, and a dependent resource callback must build the collision
+matrix at precisely the same four parameters.  General witnessed-tail and
+literal-empty-base adapters feed this package into the completed local leaf
+compiler.  The module does not manufacture the two row proofs: their
+represented global-evidence elimination remains an explicit compiler rather
+than an invalid request for every arbitrary row.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
