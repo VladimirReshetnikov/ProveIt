@@ -1,0 +1,20 @@
+(** Audit for ordinary substitution identity propagated through universal
+    closure. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedUniversalClosureOrdinarySubstitution.
+
+Import PABoundedRawCodedUniversalClosureOrdinarySubstitution.
+
+Check RawCodedFormulaSubstitutionIdentityAtAllDepths.
+Check codedFormulaSubstitutionIdentityAtAllDepthsTermAt.
+Check raw_sat_codedFormulaSubstitutionIdentityAtAllDepthsTermAt_iff.
+Check RawCodedUniversalClosureSubstitutionIdentityAt.
+Check codedUniversalClosureSubstitutionIdentityAtTermAt.
+Check raw_sat_codedUniversalClosureSubstitutionIdentityAtTermAt_iff.
+Check raw_codedUniversalClosureSubstitutionIdentityAt_all.
+Check raw_codedUniversalClosureSelfInstantiationThrough_of_identity.
+
+Print Assumptions raw_codedUniversalClosureSubstitutionIdentityAt_all.
+Print Assumptions
+  raw_codedUniversalClosureSelfInstantiationThrough_of_identity.

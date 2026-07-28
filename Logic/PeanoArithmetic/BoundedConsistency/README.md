@@ -2457,6 +2457,17 @@ existence and the complete self-instantiation orbit are constructed rather
 than assumed.  Turning the nonstandard well-formed traversal into those last
 two fold certificates remains explicit.
 
+`RawCodedUniversalClosureOrdinarySubstitution.v` shows that the closure
+consumer does not actually require a shared-table diagonal trace.  It
+represents ordinary self-substitution at every carrier depth and propagates
+that invariant by PA-definable induction through an arbitrary, possibly
+nonstandard, universal-closure count.  At a successor, ordinary formula
+operation compositionality adds the new `forall` row using the predecessor's
+identity at successor depth.  Projecting depth zero gives the exact
+`RawCodedUniversalClosureSelfInstantiationThrough` interface, so downstream
+closure assembly may use independently witnessed operation tables at each
+depth.
+
 `RawCodedFormulaBoundAllCarrierBoundary.v` sharpens that domain to atomic
 adequacy: a formula-shift source carries represented term syntax at every
 equality leaf, so every direct template and the exact strong-prefix induction
