@@ -135,10 +135,10 @@ is being reconstructed:
   reflection, and equivalence; finite GL/Grz and GL.3/Grz.3 frame
   transformations; unconditional GL/Grz and Triv/Ver proof-theoretic
   equivalences; and explicitly dependency-gated GL.3/Grz.3 results;
-- Jeřábek's doubled-frame construction, its bounded morphism and six principal
-  frame-class closure results, flags and boxdot logic properties, together
-  with a precise explicit gate for the unavailable global finite-consequence
-  argument behind the strong boxdot theorem;
+- Jeřábek's complete boxdot theorem: doubled frames and their bounded
+  morphism, six frame-class closure results, fresh-atom finite contexts, the
+  global finite-consequence reduction and doubled countermodel, the general
+  strong and ordinary boxdot properties, and all six named corollaries;
 - clusters and their (strict) skeletons, natural and explicitly finite
   bounded linear frames, immediate and transitive tree unravellings,
   algebraically specified frame ranks, one-root rank extension, and a
@@ -225,7 +225,8 @@ is being reconstructed:
 | `FrameTransformations.v` | `Modal/Kripke/{ExtendRoot,Irreflexivize}.lean` | Irreflexivization and reflexive truth transfer; finite added-root frames, trees, p-morphisms, exact covers, boxdot transfer, and T witnesses |
 | `StructuralFrames.v` | `Modal/Kripke/{Cluster,LinearFrame,Tree,Rank,Balloon}.lean` | Extensional clusters and skeletons; linear examples and Z/Dum validity; tree unravellings; specified ranks; corrected balloon results |
 | `WeakCorrespondence.v` | `Modal/Kripke/Axiom{WeakPoint2,WeakPoint3}.lean` | Exact weak-confluence and weak-connectedness frame correspondences |
-| `Boxdot.v` | `Modal/Boxdot/{Basic,K4_S4,GL_Grz,GLPoint3_GrzPoint3,Ver_Triv,Jerabek}.lean` | Basic translation semantics; unconditional nat-atom K4/S4, GL/Grz, and Ver/Triv results; finite frame transformations; doubled frames and dependency-gated GL.3/Grz.3 and Jeřábek BDP surfaces |
+| `Boxdot.v` | `Modal/Boxdot/{Basic,K4_S4,GL_Grz,GLPoint3_GrzPoint3,Ver_Triv,Jerabek}.lean` | Basic translation semantics; unconditional nat-atom K4/S4, GL/Grz, and Ver/Triv results; finite frame transformations; doubled frames; compatibility gates for GL.3/Grz.3 and the former Jeřábek bridge |
+| `JerabekBoxdot.v` | `Modal/Boxdot/Jerabek.lean` | Fresh-atom finite context, global-consequence deduction, doubled-model truth and counterexample lift, general unconditional SBDP/BDP, and the unconditional KT, KTB, S4, S4.2, S4.3, and S5 boxdot properties |
 | `Undefinability.v` | `Modal/Kripke/Undefinability.lean` | Irreflexivity is not modally definable |
 | `StandardTranslation.v` | `Modal/VanBentham/StandardTranslation.lean` | Deep relational first-order translation and semantic correspondence |
 | `Audit.v` | — | Public checks and kernel-assumption reports |
@@ -503,10 +504,12 @@ additionally inherits the standard definite-description principle.  The
 GL/Grz equivalence is unconditional now that the finite mini-canonical
 developments inhabit both formerly explicit completeness propositions; its
 forward direction also has a direct syntactic proof.  The Ver/Triv equivalence
-is likewise unconditional through `CanonicalTrivVer.v`.  The abstract Jeřábek
-SBDP implication uses excluded middle; its global-consequence input and named
-completeness inputs are explicit arguments, not kernel assumptions or claimed
-theorems.
+is likewise unconditional through `CanonicalTrivVer.v`.  Jeřábek's theorem is
+now unconditional as well: the fresh-atom context and subformula induction
+feed the checked finite global-consequence theorem, and the doubled-model
+counterexample discharges the former bridge.  The general SBDP argument uses
+excluded middle; finite-consequence extraction and filtration expose the
+classical selection principles already audited for those libraries.
 
 `Audit.v` prints assumptions for representative theorems from both sides of
 this boundary.  There are no admitted results.
@@ -617,14 +620,15 @@ ordinary propositions and hypotheses.  In particular:
   explicit gate for the reverse direction and final equivalence;
 - `boxdot_Triv_complete` is now inhabited by `Triv_complete`, so the
   Ver-to-Triv reflection and both source-facing iff results are unconditional;
-- each named Jeřábek BDP corollary requires its `logic_complete_on` premise and
-  `jerabek_global_consequence_bridge`.  The latter isolates the source proof's
-  finite global-consequence, finite-context, subformula, and fresh-atom
-  construction, whose supporting APIs have not yet been ported.
+- the former Jeřábek `jerabek_global_consequence_bridge` remains as a
+  compatibility interface, but `JerabekBoxdot.v` now supplies
+  `jerabek_global_consequence_bridge_checked`, the general unconditional
+  SBDP/BDP results, and all six named corollaries.  Universe-stable named
+  completeness adapters use the repository's finite filtrations.
 
-No inhabitant of the remaining Grz.3 or Jeřábek bridge propositions is
-declared or inferred.  Consequently those conditional equivalences must not
-be read as proofs of the missing completeness theorems.
+No inhabitant of the remaining Grz.3 completeness proposition is declared or
+inferred.  Consequently that conditional equivalence must not be read as a
+proof of the missing completeness theorem.
 
 The structural-frame tranche deliberately records three representation or
 source boundaries.  Coq's local `frame` has no finite-world typeclass, so it

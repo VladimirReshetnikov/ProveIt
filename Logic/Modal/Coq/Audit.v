@@ -14,7 +14,7 @@ From FoundationModal Require Import
   CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
-  CanonicalPoint3 CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
+  CanonicalPoint3 JerabekBoxdot CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer GLPoint3PlusBoxBot CanonicalS5Grz
   CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
   CanonicalPoint3McK CanonicalPoint4McK
@@ -993,10 +993,9 @@ Check valid_WeakPoint2_atoms_iff_piecewise_convergent.
 Check frame_piecewise_connected_iff_distinct.
 Check valid_WeakPoint3_atoms_iff_piecewise_connected.
 
-(** Boxdot's basic semantic laws and K4/S4, GL/Grz, and Ver/Triv
-    equivalences are unconditional.  The GL.3/Grz.3 results still expose
-    their completeness inputs, while the Jeřábek results additionally expose
-    the isolated global-consequence bridge. *)
+(** Boxdot's basic semantic laws and K4/S4, GL/Grz, Ver/Triv, and Jeřábek
+    results are unconditional.  The GL.3/Grz.3 results still expose their
+    remaining Grz.3 completeness input. *)
 Check boxdot_translate.
 Check normal_proves_boxdot_translation.
 Check iff_boxdotboxdot.
@@ -1053,6 +1052,32 @@ Check S4_BDP.
 Check S4Point2_BDP.
 Check S4Point3_BDP.
 Check S5_BDP.
+Check jerabek_fresh_atom_not_subformula.
+Check jerabek_context_spec.
+Check boxdot_translate_logic_list_conj2.
+Check boxdot_translate_box_iter_global.
+Check jerabek_global_boxdot_T.
+Check jerabek_subformula_boxdot_equiv.
+Check jerabek_global_boxdot_target.
+Check jerabek_doubled_subformula_truth.
+Check jerabek_doubled_context_true.
+Check jerabek_counterexample_lift.
+Check jerabek_global_consequence_bridge_checked.
+Check jerabek_SBDP_unconditional.
+Check jerabek_BDP_unconditional.
+Check KT_logic_complete_jerabek.
+Check KTB_logic_complete_jerabek.
+Check S4_logic_complete_jerabek.
+Check S4Point2_logic_complete_jerabek.
+Check S4Point3_logic_complete_jerabek.
+Check S5_logic_complete_jerabek.
+Check KT_BDP_unconditional.
+Check boxdot_conjecture_unconditional.
+Check KTB_BDP_unconditional.
+Check S4_BDP_unconditional.
+Check S4Point2_BDP_unconditional.
+Check S4Point3_BDP_unconditional.
+Check S5_BDP_unconditional.
 
 Check bisimulation_invariance.
 Check p_morphism_truth.
@@ -1557,8 +1582,9 @@ Print Assumptions valid_WeakPoint3_atoms_iff_piecewise_connected.
     excluded middle.  The nat-atom Hilbert equivalence additionally inherits
     the definite-description boundary of local K completeness.  Reverse
     reflexivization and the logical SBDP argument also use excluded middle.
-    GL/Grz and GL.3 completeness are now checked above; the remaining Grz.3
-    and Jeřábek bridge arguments stay visible in their theorem types. *)
+    GL/Grz and GL.3 completeness are now checked above.  The remaining Grz.3
+    argument stays visible in its theorem type.  Jeřábek's discharged bridge
+    uses the global-consequence and filtration boundaries audited below. *)
 Print Assumptions boxdot_reflexive_closure_truth.
 Print Assumptions boxdot_translate_idempotent_truth.
 Print Assumptions K4_boxdot_iff_S4.
@@ -1578,6 +1604,15 @@ Print Assumptions frame_twice_valid_reflects.
 Print Assumptions S5_frameclass_jerabek.
 Print Assumptions jerabek_SBDP.
 Print Assumptions KT_BDP.
+Print Assumptions jerabek_doubled_subformula_truth.
+Print Assumptions jerabek_counterexample_lift.
+Print Assumptions jerabek_global_consequence_bridge_checked.
+Print Assumptions jerabek_SBDP_unconditional.
+Print Assumptions jerabek_BDP_unconditional.
+Print Assumptions KT_logic_complete_jerabek.
+Print Assumptions S5_logic_complete_jerabek.
+Print Assumptions KT_BDP_unconditional.
+Print Assumptions S5_BDP_unconditional.
 
 (** Filtration's finite list combinatorics is constructive.  Turning
     arbitrary semantic truth into Boolean data, selecting class
