@@ -2179,6 +2179,14 @@ premise from the represented proof-code induction interface, but deliberately
 does not turn the external `nat` level into an arbitrary element of a
 nonstandard PA model.
 
+`RawCodedRestrictedPADerivationSoundnessScopeDischarge.v` applies that theorem
+to the quoted closure-induction data, eliminating the scope argument from its
+public fixed-level adapter.  It also specializes the generic local and global
+PA induction compilers to the exact soundness codes.  Those compiler theorems
+remain conditional on explicit local proofs of the zero instance and the
+universally quantified successor step; they expose rather than manufacture
+the two remaining proof-producing obligations.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
