@@ -1,0 +1,17 @@
+(** Kernel-facing audit for the transport-complete native successor. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeMasterSuccessorTransportComplete.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeMasterSuccessorTransportComplete.
+
+Check
+  raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_local_proof_totals.
+Check
+  raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_local_roots.
+
+Print Assumptions
+  raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_local_proof_totals.
+Print Assumptions
+  raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_local_roots.

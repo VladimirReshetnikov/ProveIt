@@ -1922,6 +1922,13 @@ code and supplied witnessed context remain literal; only the proof root is
 rebuilt.  This proves the exact empty-to-witnessed transport interface in
 every PA model without decoding a context or assuming semantic completeness.
 
+`RawCodedDynamicTruthNativeMasterSuccessorTransportComplete.v` applies that
+theorem to the staged native successor.  Its public adapters no longer ask
+for any context transport or common-context lift: they require only the five
+named native leaf compilers and the nonstandard compact-consistency
+certificate successor.  Those remaining proof-producing inputs stay visible;
+the module does not repackage them as an unconditional endpoint.
+
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
 use the same formula and assignment inputs but demand rank-zero outputs one
