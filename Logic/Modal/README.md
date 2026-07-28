@@ -211,6 +211,8 @@ is being reconstructed:
 | `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
 | `LogicInfrastructure.v` | `Modal/Logic/{Basic,SumNormal,SumQuasiNormal,Global}.lean` | Predicate-valued logic structure; normal/quasinormal sums and recursors; finite bases, substitution omission, and global consequence |
 | `EntailmentExtensions.v` | `Modal/Entailment/{DiaDuality,E,EM,EN,EMC,EMCN,AxiomGeach}.lean` | Complete substitution-free duality, replacement, M/C/N/K capability equivalences, iterated box/diamond laws, and dual Geach schemata; minimal supporting records from `Entailment/Basic.lean` |
+| `EntailmentNamedExtensions.v` | `Modal/Entailment/{EMK,END,ET,ETB,ET5,KP,N}.lean` | Complete 26-declaration substitution-free surface: the C, P, D, N, B, Point2, and Four derivations and all named capability conversions |
+| `HilbertWithRE.v` | `Modal/Hilbert/WithRE/Basic.lean` | Generic six-constructor replacement-of-equivalents calculus, substitution and weakening, Lukasiewicz basis, schematic-axiom adapters, and an explicit completeness-gated bridge to the repository's semantic classical interface |
 | `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; complete KT/K4/S4 canonical metatheory; finite K4/S4 filtrations and strict predecessors |
 | `GLGrzDerivations.v` | `Modal/Entailment/{GL,Grz}.lean` | Derived GL and Grz proof theory, including Four, Henkin, Z, Gödel II, T/Dum, and the syntactic boxdot translation of Grz in GL |
 | `FiniteCanonicalSupport.v` | `Modal/Kripke/Logic/{GL,Grz}/Completeness.lean` | Shared finite boxed-context operations, structural derivability laws, relevant-box selectors, extensional equality, and Grz closure enrichment |
@@ -354,6 +356,18 @@ Because derived conjunction and double negation are interpreted by the
 existing Prop-valued `classical_tautology`, their propositional adapters expose
 `Classical_Prop.classic`; no substitution, extensionality, choice, or
 additional modal principle is hidden in the E/EM/EN/EMC/EMCN conversions.
+The named EMK/END/ET/ETB/ET5/KP layer preserves that same boundary: in
+particular, ETB derives necessitation from T, B, and replacement, while KP
+derives D from K and P without importing the stronger normal-logic record.
+
+`HilbertWithRE.v` keeps Foundation's raw calculus at exactly six constructors:
+substituted axioms, modus ponens, replacement of equivalents, and the
+Lukasiewicz K/S/EC basis.  It does not add necessitation, modal K, or a generic
+tautology constructor.  Because this repository's `classical_logic` record
+asks for every semantically classical tautology, the adapter to
+`e_entailment` takes the missing Hilbert-basis completeness theorem as an
+explicit premise.  This keeps the partial-port boundary visible while the
+named WithRE system catalogue and normal-system equivalences are developed.
 
 Coherence-space points and stable functions use explicit extensional
 equivalences, so their order, colimit, pullback, identity, composition, and
@@ -615,11 +629,15 @@ and quasinormal sum modules, predicate-logic basics, and global consequence
 have complete mathematical parity.  Predicates and duplicate-insensitive lists
 replace Lean sets and finite sets; explicit theorems connect the trailing-top
 and singleton-normalized conjunctions and the cumulative and individual-box
-presentations used in the implementation and source.  The seven pinned
-`DiaDuality`, `E`, `EM`, `EN`, `EMC`, `EMCN`, and `AxiomGeach` entailment
-modules also have full declaration-level parity.  Their small supporting
+presentations used in the implementation and source.  The fourteen pinned
+`DiaDuality`, `E`, `EM`, `EN`, `EMC`, `EMCN`, `AxiomGeach`, `EMK`, `END`,
+`ET`, `ETB`, `ET5`, `KP`, and `N` entailment modules also have full
+declaration-level parity.  Their small supporting
 capability slice is recorded conservatively as a partial port of the much
-larger `Entailment/Basic.lean` API.  The seven pinned
+larger `Entailment/Basic.lean` API.  The generic `WithRE` six-constructor core,
+substitution, weakening, and ten named-axiom adapters are checked too; its
+large concrete-system catalogue and unconditional classical-basis bridge
+remain, so `WithRE/Basic.lean` is recorded as partial.  The seven pinned
 combination-logic modules are fully represented, including their strict
 inclusion chains.  The KTB and KT4B modules likewise have full parity,
 including finite completeness, the S5 equivalence, and both KTB strictness
@@ -764,6 +782,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
   FoundationModal.KripkeHilbert `
   FoundationModal.LogicInfrastructure FoundationModal.EntailmentExtensions `
+  FoundationModal.EntailmentNamedExtensions FoundationModal.HilbertWithRE `
   FoundationModal.CanonicalExtensions `
   FoundationModal.FiniteMaximalContext `
   FoundationModal.GLUnnecessitation `

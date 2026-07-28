@@ -6,7 +6,7 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
-  EntailmentExtensions
+  EntailmentExtensions EntailmentNamedExtensions HilbertWithRE
   KripkeSemantics KripkeHilbert CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
@@ -865,6 +865,94 @@ Check axiom_Four_dual_raw.
 Check axiom_Four_dual.
 Check axiom_Five_dual_raw.
 Check axiom_Five_dual.
+
+(** Complete named substitution-free EMK/END/ET/ETB/ET5/KP surfaces. *)
+Check has_D.
+Check has_B.
+Check has_Point2.
+Check minimal_implication_entailment.
+Check minimal_implication_of_classical.
+Check et_entailment.
+Check ed_entailment.
+Check eb_entailment.
+Check e5_entailment.
+Check kp_entailment.
+Check emk_entailment.
+Check has_C_of_EMK.
+Check end_entailment.
+Check has_P_of_END.
+Check diabot_raw.
+Check diabot.
+Check has_D_of_ET.
+Check ED_of_ET.
+Check C_of_raw.
+Check C_of.
+Check etb_entailment.
+Check ET_of_ETB.
+Check EB_of_ETB.
+Check necessitation_of_ETB.
+Check has_N_of_ETB.
+Check EN_of_ETB.
+Check et5_entailment.
+Check ET_of_ET5.
+Check E5_of_ET5.
+Check has_B_of_ET5.
+Check ETB_of_ET5.
+Check EN_of_ET5.
+Check has_Point2_of_ET5.
+Check has_Four_of_ET5.
+Check KP_axiomD.
+Check has_D_of_KP.
+
+(** Faithful generic WithRE calculus core and source-schema adapters. *)
+Check with_re_axiom.
+Check with_re_proves.
+Check WRE_axm.
+Check WRE_mp.
+Check WRE_re.
+Check WRE_imply_K.
+Check WRE_imply_S.
+Check WRE_elim_contra.
+Check with_re_axm_substituted.
+Check with_re_axm.
+Check lukasiewicz_entailment.
+Check with_re_lukasiewicz.
+Check with_re_proves_substitute.
+Check with_re_substitution_closed.
+Check with_re_proves_fold.
+Check with_re_weaker_of_provable_axioms.
+Check with_re_weaker_of_subset_axioms.
+Check with_re_classical_complete.
+Check with_re_classical_logic.
+Check with_re_e_entailment.
+Check with_re_axioms_has_M.
+Check with_re_axioms_has_C.
+Check with_re_axioms_has_N.
+Check with_re_axioms_has_K.
+Check with_re_axioms_has_T.
+Check with_re_axioms_has_D.
+Check with_re_axioms_has_P.
+Check with_re_axioms_has_Four.
+Check with_re_axioms_has_B.
+Check with_re_axioms_has_Five.
+Check atom_decidable_equality.
+Check with_re_single_substitution.
+Check with_re_double_substitution.
+Check with_re_single_substitution_at.
+Check with_re_double_substitution_left.
+Check with_re_double_substitution_right.
+Check with_re_instantiate_unary.
+Check with_re_instantiate_binary.
+Check with_re_has_M.
+Check with_re_has_C.
+Check with_re_has_N.
+Check with_re_has_K.
+Check with_re_has_T.
+Check with_re_has_D.
+Check with_re_has_P.
+Check with_re_has_Four.
+Check with_re_has_B.
+Check with_re_has_Five.
 
 Check normal_derives_deduction.
 Check normal_theory_consistent_insert_neg_iff.
@@ -1898,6 +1986,20 @@ Print Assumptions has_Geach_dual.
 Print Assumptions axiom_T_dual.
 Print Assumptions axiom_Four_dual.
 Print Assumptions axiom_Five_dual.
+Print Assumptions has_C_of_EMK.
+Print Assumptions has_P_of_END.
+Print Assumptions diabot_raw.
+Print Assumptions necessitation_of_ETB.
+Print Assumptions has_Four_of_ET5.
+Print Assumptions KP_axiomD.
+Print Assumptions with_re_lukasiewicz.
+Print Assumptions with_re_proves_substitute.
+Print Assumptions with_re_weaker_of_provable_axioms.
+Print Assumptions with_re_e_entailment.
+Print Assumptions with_re_has_M.
+Print Assumptions with_re_has_D.
+Print Assumptions with_re_has_B.
+Print Assumptions with_re_has_Five.
 Print Assumptions normal_derives_deduction.
 Print Assumptions normal_lindenbaum_extension.
 Print Assumptions normal_canonical_truth_lemma.
