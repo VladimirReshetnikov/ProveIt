@@ -2,7 +2,7 @@
 
 From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
-  GenericEntailment GenericEmbedding
+  GenericEntailment GenericEmbedding GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -442,6 +442,52 @@ Check generic_faithfully_embeddable_trans.
 Print Assumptions generic_faithfully_embeddable_fun_exists.
 Print Assumptions generic_faithfully_embeddable_refl.
 Print Assumptions generic_faithfully_embeddable_trans.
+
+(** The first fifteen declarations from Logic/Calculus.lean retain raw,
+    Type-valued derivations while relaxing the source's namespace-wide
+    De Morgan and involutive-negation assumptions.  Pointwise list inclusion
+    factors exchange, weakening, and contraction; disjunction folding is
+    strengthened from Cut to the base one-sided calculus. *)
+Check generic_list_subset.
+Check generic_list_member_app_iff.
+Check generic_list_subset_refl.
+Check generic_list_subset_trans.
+Check generic_list_subset_cons_append_right.
+Check generic_list_subset_cons_append_left.
+Check generic_list_subset_rotate.
+Check generic_list_subset_swap_two.
+Check generic_list_subset_move_third.
+Check generic_list_subset_move_fourth.
+Check generic_list_subset_rotate_across.
+Check generic_one_sided_lk.
+Check generic_one_sided_lk_cut.
+Check generic_lk_cast.
+Check generic_lk_contra.
+Check generic_lk_rotate.
+Check generic_lk_close.
+Check generic_lk_top.
+Check generic_lk_tensor.
+Check generic_lk_swap1.
+Check generic_lk_swap2.
+Check generic_lk_swap3.
+Check generic_lk_cut.
+Check generic_lk_extended_cut.
+Check generic_lk_disj2.
+Check generic_lk_conj2.
+Print Assumptions generic_list_member_app_iff.
+Print Assumptions generic_list_subset_rotate_across.
+Print Assumptions generic_lk_cast.
+Print Assumptions generic_lk_contra.
+Print Assumptions generic_lk_rotate.
+Print Assumptions generic_lk_close.
+Print Assumptions generic_lk_top.
+Print Assumptions generic_lk_tensor.
+Print Assumptions generic_lk_swap1.
+Print Assumptions generic_lk_swap2.
+Print Assumptions generic_lk_swap3.
+Print Assumptions generic_lk_extended_cut.
+Print Assumptions generic_lk_disj2.
+Print Assumptions generic_lk_conj2.
 
 (** The complete 20-declaration ForcingRelation surface is constructive over
     arbitrary world, formula, context, and accessibility types.  Ordinary and
