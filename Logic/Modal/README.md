@@ -278,6 +278,7 @@ is being reconstructed:
 | `Loeb.v` | `Modal/Kripke/AxiomL.lean` | Loeb validity iff transitivity plus converse well-foundedness, including finite strict-preorder validity |
 | `FrameProperties.v` | `Modal/Kripke/{Antisymmetric,Asymmetric,Closure,Irreflexive,Terminated}.lean` | Closure algebra, frame orders, termination, converse well-foundedness, and finite strict-order maximality |
 | `RelationProperties.v` | `Vorspiel/Rel/{Basic,Coreflexive,Serial,Euclidean,Convergent,Connected,Equality,Isolated,Universal}.lean` | Complete generic relation-iteration, closure-generator, order-inheritance, and elementary relation-property surface |
+| `ConverseWellFounded.v` | `Vorspiel/Rel/CWF.lean` | Complete 17-declaration generic surface: maximal-element characterization, finite strict-order CWF, noncomputable finite height, exact recurrence and level realization, and invariance under relation equivalence |
 | `CorrespondenceExtensions.v` | `Modal/Kripke/Axiom{FourN,Grz,H,I,McK,Mk,Point4,Ver}.lean` | Further exact and directional named-axiom frame correspondences |
 | `Preservation.v` | `Modal/Kripke/Preservation.lean` | Bisimulation and modal equivalence; frame/model bounded morphisms; transitive-closure lifting; injective edge/path reflection; truth and formula-predicate validity transfer |
 | `Root.v` | `Modal/Kripke/Root.lean` | Rooted and generated frames/models, structural inheritance, bounded morphisms, and truth invariance |
@@ -835,9 +836,11 @@ cluster-skeleton and bounded-linear-frame counterparts, including a
 duplicate-free enumeration of each bounded carrier.  The source's finite
 tree-unravelling instance is not yet reconstructed.  Tree paths use
 inductive snoc constructors, making the source list-prefix/`IsChain` normal
-form intrinsic; rank results are proved from an exact `frame_rank_spec`,
-rather than reconstructing Foundation's finite converse-well-founded height
-machinery.  Its rank development needs only a one-fresh-root construction;
+form intrinsic.  `ConverseWellFounded.v` now reconstructs Foundation's generic
+finite converse-well-founded height machinery in full, while the existing
+frame-specialized rank results remain factored through an exact
+`frame_rank_spec` pending their direct adapter to that generic height.  The
+current rank development needs only a one-fresh-root construction;
 independently, `FrameTransformations.v` checks the complete pinned
 `extendRoot` theorem surface for the general `Fin n + F` carrier.  Lean's
 finite-world, tree, and finite-set wrappers are represented by explicit Coq
@@ -873,7 +876,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CoherenceSpace FoundationModal.CoherenceStableFunction `
   FoundationModal.Complement `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `
-  FoundationModal.RelationProperties `
+  FoundationModal.RelationProperties FoundationModal.ConverseWellFounded `
   FoundationModal.Filtration `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.CanonicalK FoundationModal.HilbertNNFormula `

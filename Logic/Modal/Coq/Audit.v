@@ -6,7 +6,8 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
   FrameProperties
-  RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
+  RelationProperties ConverseWellFounded CorrespondenceExtensions NormalHilbert
+  LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
   EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
@@ -2145,6 +2146,25 @@ Check relation_universal.
 Check relation_universal_reflexive.
 Check relation_universal_right_euclidean.
 
+(** Complete generic converse-well-founded and finite-height surface. *)
+Check converse_well_founded.
+Check is_converse_well_founded.
+Check converse_well_founded_iff_has_max.
+Check converse_well_founded_has_max.
+Check finite_converse_well_founded_of_transitive_irreflexive.
+Check finite_transitive_irreflexive_is_converse_well_founded.
+Check cwf_height.
+Check cwf_height_eq.
+Check cwf_height_gt_of.
+Check cwf_height_eq_zero_iff.
+Check cwf_height_le.
+Check lt_cwf_height.
+Check cwf_height_eq_of_lt_of_le.
+Check cwf_height_eq_succ.
+Check cwf_height_eq_succ_cwf_height.
+Check cwf_height_lt.
+Check cwf_height_congr.
+
 Check frame_root_unique_of_irreflexive_transitive.
 Check rooted_point_rooted_of_irreflexive_transitive.
 Check trans_rooted_rooted_of_transitive.
@@ -3105,6 +3125,27 @@ Print Assumptions relation_transitive_of_reflexive_right_euclidean.
 Print Assumptions relation_piecewise_strongly_convergent_of_reflexive_connected.
 Print Assumptions relation_isolated_transitive.
 Print Assumptions relation_universal_right_euclidean.
+
+(** Maximality and finite CWF use excluded middle.  The noncomputable height
+    additionally uses definite description to filter an explicit finite
+    cover; no proof irrelevance or functional extensionality is inherited. *)
+Print Assumptions converse_well_founded.
+Print Assumptions is_converse_well_founded.
+Print Assumptions converse_well_founded_iff_has_max.
+Print Assumptions converse_well_founded_has_max.
+Print Assumptions finite_converse_well_founded_of_transitive_irreflexive.
+Print Assumptions finite_transitive_irreflexive_is_converse_well_founded.
+Print Assumptions cwf_height.
+Print Assumptions cwf_height_eq.
+Print Assumptions cwf_height_gt_of.
+Print Assumptions cwf_height_eq_zero_iff.
+Print Assumptions cwf_height_le.
+Print Assumptions lt_cwf_height.
+Print Assumptions cwf_height_eq_of_lt_of_le.
+Print Assumptions cwf_height_eq_succ.
+Print Assumptions cwf_height_eq_succ_cwf_height.
+Print Assumptions cwf_height_lt.
+Print Assumptions cwf_height_congr.
 
 (** The doubled-frame p-morphism is constructive.  Boxdot itself uses the
     classically encoded derived conjunction, so its semantic truth laws expose
