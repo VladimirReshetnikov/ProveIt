@@ -1987,6 +1987,18 @@ same trace.  The module deliberately leaves construction of this one staged
 kernel root explicit; it asserts neither an empty-base instance nor a
 semantic truth-to-proof conversion.
 
+`RawCodedDynamicTruthNativeAxiomStagedRootCompilation.v` carries that boundary
+through the actual dependency order of the native successor.  In one
+witnessed PA-axiom context it conjoins the six current master roots with the
+already compiled local, cross-level, shift, and substitution roots, applies
+one trace-linked implication from this ten-root prefix to the curried
+witness-body kernel, and then reuses the checked `Ex-E`, `Or-E`, `Imp-I`, and
+`All-I` shell to obtain an ordinary proof of the exact transform-selected
+axiom field.  All formula shifts and the witnessed context self-shift remain
+explicit.  The staged implication compiler is intentionally still a
+premise: the module performs the complete proof-code assembly after that
+arithmetic kernel without claiming to have constructed the kernel itself.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
