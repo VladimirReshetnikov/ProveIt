@@ -2401,6 +2401,17 @@ template.  Its public residual is therefore exactly one open local
 `case -> conclusion truth` PA root for each real proof constructor; it assumes
 neither a conclusion proof nor the original undifferentiated strong step.
 
+`RawCodedRestrictedPADerivationSoundnessDirectStrongStepShell.v` closes every
+logical layer around that dispatcher.  It introduces the restricted-proof
+and endpoint implications in their literal order, compiles all eight endpoint
+existential eliminations, introduces the four endpoint universals, then
+introduces `K(d)` and the outer derivation bound.  Its sole residual is the
+finite family of seventeen deepest constructor implications.  The public view
+prints their exact witness-body context and renamed suffix; a separate
+binder-ready transport corollary makes every eigenvariable-sensitive context
+extension explicit instead of treating ordinary membership inclusion as
+sufficient weakening.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
@@ -2414,6 +2425,17 @@ diagonal trace shares its entire source/target table, and equality of the
 roots of two ordinary deep-closure traces does not identify those existential
 tables.  Thus this checkpoint exposes rather than assumes away the remaining
 shared-table construction.
+
+`RawCodedRestrictedPADerivationSoundnessDirectOrdinaryClosure.v` proves the
+weaker operation fact actually consumed by universal-closure opening.  A
+finite scoping judgment makes every transparent template term invariant under
+shift and substitution at arbitrary carrier depths; formula constructors then
+propagate that invariant through the complete strong-prefix body.  For the two
+opaque truth leaves, deep closure of their ternary predicates and the exact
+five-argument leaf equations give the required formula closure, while every
+wrong predicate name or arity reduces to bottom.  The resulting theorem gives
+ordinary all-depth substitution identity for any represented replacement and
+does not require one beta table to be shared between different depths.
 
 `RawCodedRestrictedPADerivationSoundnessDirectOrdinaryClosureRemainder.v`
 uses the weaker ordinary-substitution theorem to bypass that shared-table
