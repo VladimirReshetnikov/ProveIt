@@ -2306,6 +2306,18 @@ strong-prefix premise and the freshly adjoined induction axiom.  Thus the old
 finalizer hypothesis is reduced to a strictly smaller syntactic arithmetic
 leaf and is never assumed circularly.
 
+`RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingFinalizer.v`
+resolves that context mismatch by allowing PA's proof of `d < S d` to choose
+its finite standard axiom prefix first.  It lifts the incoming strong-step
+root through the same induction axiom into the enlarged witnessed context,
+moves the arithmetic root beneath the temporary closed `forall d, K(d)`
+premise using an explicit binder-readiness square, invokes the checked
+finalizer tree, and returns an ordinary proof of `forall d, P(d)`.  Its full
+package exposes the prefix, all transported roots, both induction cases, and
+the final certificate.  The endpoint remains honestly conditional on the
+separate strong-prefix case compiler; it removes the fixed-context finalizer
+boundary but does not disguise the still-unconstructed zero/successor cases.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
