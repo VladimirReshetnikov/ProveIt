@@ -20,7 +20,8 @@ From FoundationModal Require Import
   HilbertNormalHenkinGrzSystems HilbertNormalDumSystems
   HilbertNormalSpecialSystems HilbertNormalTerminalSystems
   HilbertWithHenkin HilbertWithLoeb
-  HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
+  HilbertWithREClassicalCompleteness AlgebraicCompleteness
+  HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
   HilbertWithRESystems HilbertWithRESymmetrySystems
   HilbertWithRENormal HilbertWithREEquivalences
@@ -224,6 +225,22 @@ Check algebraic_mod_models_iff.
 Check normal_hilbert_algebraic_sound.
 Check normal_hilbert_algebraic_sound_instance.
 
+(** Quotient-free setoid Lindenbaum algebra and algebraic completeness:
+    the remaining 13 declarations from Modal/Algebra/Basic.lean. *)
+Check lindenbaum_box.
+Check lindenbaum_dia.
+Check lindenbaum_box_beta.
+Check lindenbaum_dia_beta.
+Check lindenbaum_modal_algebra.
+Check algebraic_lindenbaum.
+Check algebraic_lindenbaum_value.
+Check algebraic_lindenbaum_complete_iff.
+Check algebraic_lindenbaum_sound_instance.
+Check algebraic_lindenbaum_complete_instance.
+Check normal_hilbert_algebraic_complete.
+Check normal_hilbert_algebraic_complete_instance.
+Check normal_K_algebraic_complete_instance.
+
 Print Assumptions box_imp_le_box_imp_box.
 Print Assumptions dia_or.
 Print Assumptions dia_trans.
@@ -248,6 +265,19 @@ Print Assumptions algebraic_satisfies_mdp.
 Print Assumptions algebraic_mod_models_iff.
 Print Assumptions normal_hilbert_algebraic_sound.
 Print Assumptions normal_hilbert_algebraic_sound_instance.
+Print Assumptions lindenbaum_box.
+Print Assumptions lindenbaum_dia.
+Print Assumptions lindenbaum_box_beta.
+Print Assumptions lindenbaum_dia_beta.
+Print Assumptions lindenbaum_modal_algebra.
+Print Assumptions algebraic_lindenbaum.
+Print Assumptions algebraic_lindenbaum_value.
+Print Assumptions algebraic_lindenbaum_complete_iff.
+Print Assumptions algebraic_lindenbaum_sound_instance.
+Print Assumptions algebraic_lindenbaum_complete_instance.
+Print Assumptions normal_hilbert_algebraic_complete.
+Print Assumptions normal_hilbert_algebraic_complete_instance.
+Print Assumptions normal_K_algebraic_complete_instance.
 
 (** Complete coherence-space and stable-function surfaces. *)
 Check coherence_space.

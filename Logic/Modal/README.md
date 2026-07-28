@@ -206,6 +206,7 @@ is being reconstructed:
 | `KripkeAlgebra.v` | `Modal/Kripke/Algebra.lean` | Relational complex algebras, modal operations, algebraic evaluation/satisfaction equivalence, and validity as subset/extensional equality |
 | `ModalAlgebra.v` | `Semantics/Algebra/Modal/{Basic,Magari}.lean` | Setoid Boolean and modal algebras, the complete derived K/duality/monotonicity surface, Magari diagonal and transitivity theorems, and the Kripke complex-algebra adapter |
 | `AlgebraicSemantics.v` | `Modal/Algebra/Basic.lean` | Exact 26-declaration generic semantics/soundness tranche: primitive-operation evaluation, all eight derived-connective equations, nontrivial algebraic models, implication/order, MP, necessitation, instantiated-axiom model classes, and raw Normal soundness |
+| `AlgebraicCompleteness.v` | `Modal/Algebra/Basic.lean` | Exact remaining 13 declarations: generic K-entailment Lindenbaum modal algebra, quotient-free syntactic algebraic model, truth/provability equivalence, singleton packages, raw-Normal algebraic completeness, and the named K instance; together with `AlgebraicSemantics.v`, this closes all 39 active declarations |
 | `CoherenceSpace.v` | `Semantics/CoherenceSpace/Basic.lean` | Complete coherence/incoherence, clique/point/colimit, base-space, linear-negation, tensor, par, lolli, and additive connective surface |
 | `CoherenceStableFunction.v` | `Semantics/CoherenceSpace/StableFunction.lean` | Stable maps, monotonicity, directed-colimit and pullback preservation, compatible unions, extensional identity/composition, and category laws |
 | `NNFormulaSemantics.v` | `Modal/Kripke/NNFormula.lean` | Direct NNF semantics, semantic negation, translation correctness, validity equivalences |
@@ -394,8 +395,20 @@ algebraic equalities and represents nontriviality by two inequivalent
 elements.  Its generic evaluator needs only primitive bottom, implication,
 and box operations, while the model laws and Hilbert soundness specialize to
 modal algebras.  The K, S, and contraposition-elimination cases are direct
-constructive Boolean-order proofs; this tranche does not depend on Kripke
-completeness or on the deferred quotient/Lindenbaum construction.
+constructive Boolean-order proofs.
+
+`AlgebraicCompleteness.v` finishes the source module with a quotient-free
+Lindenbaum construction.  Formulas remain representatives and provable
+biconditional is the Boolean algebra's setoid equality, so the quotient beta
+laws and evaluator theorem strengthen to literal Coq equalities and no
+decidable equality on atoms is needed.  The first five declarations remain
+generic over any K-entailment and use no substitution closure.  For raw
+Normal systems, classical propositional completeness is derived through the
+existing finite-skeleton and box-erasure pipeline; this exposes the same
+audited classical metatheory as modal-K completeness.  The resulting model
+gives the exact truth/provability equivalence and proves algebraic
+completeness even without assuming consistency, with the inconsistent case
+handled directly.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
@@ -943,6 +956,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
   FoundationModal.KripkeAlgebra FoundationModal.ModalAlgebra `
   FoundationModal.AlgebraicSemantics `
+  FoundationModal.AlgebraicCompleteness `
   FoundationModal.CoherenceSpace FoundationModal.CoherenceStableFunction `
   FoundationModal.Complement `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `
