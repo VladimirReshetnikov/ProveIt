@@ -11,7 +11,7 @@ From FoundationModal Require Import
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
   EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
-  HilbertNormalTransitiveBaseSystems
+  HilbertNormalTransitiveBaseSystems HilbertNormalMcKSystems
   HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
@@ -1143,6 +1143,22 @@ Check normal_K4_to_K4_proves.
 Check K4_proves_to_normal_K4.
 Check normal_K4_iff_K4_proves.
 Check normal_K4_equiv_K4_proves.
+
+(** Exact raw KMcK/K4McK systems and the generic source capability lift. *)
+Check structural_kmck_entailment.
+Check structural_k4mck_entailment.
+Check normal_KMcK_axioms.
+Check normal_KMcK_axioms_has_K.
+Check normal_KMcK_axioms_has_McK.
+Check normal_KMcK.
+Check normal_KMcK_entailment.
+Check normal_K4McK_axioms.
+Check normal_K4McK_axioms_has_K.
+Check normal_K4McK_axioms_has_Four.
+Check normal_K4McK_axioms_has_McK.
+Check normal_K4McK.
+Check normal_K4McK_entailment.
+Check normal_K4McK_entailment_of_subset.
 
 (** Complete 17-declaration raw-axiom calculus with the Henkin rule. *)
 Check henkin_rule.
@@ -2694,6 +2710,16 @@ Print Assumptions normal_K4_to_K4_proves.
 Print Assumptions K4_proves_to_normal_K4.
 Print Assumptions normal_K4_iff_K4_proves.
 Print Assumptions normal_K4_equiv_K4_proves.
+(** Both McKinsey systems and the generic theorem-inclusion lift are
+    constructive and closed under the global context. *)
+Print Assumptions normal_KMcK_axioms_has_K.
+Print Assumptions normal_KMcK_axioms_has_McK.
+Print Assumptions normal_KMcK_entailment.
+Print Assumptions normal_K4McK_axioms_has_K.
+Print Assumptions normal_K4McK_axioms_has_Four.
+Print Assumptions normal_K4McK_axioms_has_McK.
+Print Assumptions normal_K4McK_entailment.
+Print Assumptions normal_K4McK_entailment_of_subset.
 (** Both rule calculi, including their raw-template adapters and concrete
     structural bundles, are constructive. *)
 Print Assumptions with_henkin_axm_substituted.
