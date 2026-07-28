@@ -2438,8 +2438,17 @@ module names the missing fold as
 the all-depth diagonal certificate, constructs the complete closure
 remainder.  The missing fold must build normalized code-indexed source and
 bound columns through `S input` (including default rows between genuine
-subcodes), plus the analogous term-bound fold at equality atoms; the existing
-occurrence-indexed syntax traversal is not definitionally that table.
+subcodes); the existing occurrence-indexed syntax traversal is not
+definitionally that table.
+
+`RawCodedFormulaBoundAllCarrierTotality.v` discharges the equality-atom
+foundation of that fold.  From represented term syntax it uses PA-definable
+induction to construct normalized source and bound beta columns through the
+arbitrary carrier limit `S input`, placing a harmless zero-term row at every
+unsupported code.  It then extracts `RawCodedTermBound` at the represented
+root.  This is an all-carrier construction and does not decode the input into
+a metatheoretic term; the remaining open part is the analogous formula table
+whose equality case can now invoke this checked term theorem.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
