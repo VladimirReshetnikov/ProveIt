@@ -2108,6 +2108,21 @@ compact headline.  This is an exact conditional endpoint, not the missing
 unconditional Coq theorem: every arithmetic residual, especially the final
 source-linked derivation-soundness compiler, remains visible in the bundle.
 
+`RawCodedRestrictedPADerivationSoundnessPredicate.v` isolates the first exact
+proof-code induction slice behind that final compiler.  For each fixed
+metatheoretic `level`, it defines the unary invariant `P(d)` saying that every
+admissible endpoint of a restricted derivation code preserves Sigma truth,
+defines the literal strong prefix `K(d) = forall e < d, P(e)`, and proves its
+arbitrary-model semantics and equivalence to the existing constructor-local
+soundness invariant.  The module then quotes `K` and constructs the complete
+diagonal-substitution and closure-induction data consumed by the represented
+PA induction compiler.  Its formula-scope premise remains explicit because
+the recursively expanded fixed-level Sigma/Pi truth formulas do not yet have
+scope lemmas uniform in the external level.  More importantly, this is still
+a standard-`nat` level slice: it neither replaces `level` by an arbitrary
+model carrier nor supplies the opaque successor-truth application needed by
+the uniform nonstandard theorem.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
