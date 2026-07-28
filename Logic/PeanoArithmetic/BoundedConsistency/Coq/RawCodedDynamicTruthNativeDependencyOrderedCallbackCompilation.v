@@ -1,0 +1,178 @@
+(**
+  Assemble the six native staged callbacks from their exact kernel seams.
+
+  The field-specific callback files deliberately stop at one explicit
+  arithmetic residual each.  This module collects precisely those residuals,
+  in dependency order, and applies the six proved structural adapters.  The
+  local field additionally needs a concrete template translation together
+  with its PA-quotation agreement; the translation is therefore an explicit
+  parameter of the model-local bundle rather than an implicit global choice.
+
+  The resulting theorem is conditional.  In particular, the bundle still
+  contains the final source-linked dynamic-soundness implication compiler.
+  Nothing here assumes semantic truth-to-proof conversion, an unrestricted
+  soundness producer, or a compact-consistency successor certificate.
+*)
+
+From Stdlib Require Import List.
+From FirstOrder Require Import Fol.
+From PAHF Require Import PAHF.
+From PAFiniteBasisReduction Require Import
+  HierarchyReduction CanonicalSelectorPA.
+From BoundedPAConsistency Require Import
+  RawCodedTemplateProofCompiler
+  RawCodedTemplatePAEmbedding
+  RawCodedDynamicTruthNativeCrossLevelGuardRootCompilation
+  RawCodedDynamicTruthNativeShiftStagedRootCompilation
+  RawCodedDynamicTruthNativeSubstitutionStagedRootCompilation
+  RawCodedDynamicTruthNativeAxiomStagedRootCompilation
+  RawCodedDynamicTruthNativeFinalStagedRootCompilation
+  CompactPAUniformProvability
+  RawCodedDynamicTruthNativeMasterEndpoint
+  RawCodedDynamicTruthNativeStagedPositiveSuccessor
+  RawCodedDynamicTruthNativeLocalStagedCallbackCompilation
+  RawCodedDynamicTruthNativeCrossLevelStagedCallbackCompilation
+  RawCodedDynamicTruthNativeShiftStagedCallbackCompilation
+  RawCodedDynamicTruthNativeSubstitutionStagedCallbackCompilation
+  RawCodedDynamicTruthNativeAxiomStagedCallbackCompilation
+  RawCodedDynamicTruthNativeFinalStagedCallbackCompilation.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeDependencyOrderedCallbackCompilation.
+
+Import ListNotations.
+Import PA.
+Import PAHierarchyReduction.
+Import PACanonicalSelectorPA.
+Import PABoundedCompactPAUniformProvability.
+Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
+Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedDynamicTruthNativeCrossLevelGuardRootCompilation.
+Import PABoundedRawCodedDynamicTruthNativeShiftStagedRootCompilation.
+Import PABoundedRawCodedDynamicTruthNativeSubstitutionStagedRootCompilation.
+Import PABoundedRawCodedDynamicTruthNativeAxiomStagedRootCompilation.
+Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
+Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalStagedCallbackCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeCrossLevelStagedCallbackCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeShiftStagedCallbackCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeSubstitutionStagedCallbackCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeAxiomStagedCallbackCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalStagedCallbackCompilation.
+
+(** The exact model-local kernel boundary.  The conjunction order mirrors
+    the order in which the public staged successor invokes its callbacks. *)
+Definition RawDynamicTruthNativeDependencyOrderedKernelCompilers
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  RawCodedTemplatePAAgreement M translation /\
+  RawDynamicTruthNativeLocalCurrentStagedRootBuilder M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments RawDynamicTruthNativeDependencyOrderedKernelCompilers
+  M translation : clear implicits.
+
+(** Apply each field-specific adapter once.  The conclusion is the literal
+    callback bundle consumed by dependency-ordered successor assembly. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_kernel_compilers
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeDependencyOrderedKernelCompilers M translation ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacks M.
+Proof.
+  intros M hPA translation
+    (htranslationAgreement & hlocal & hcrossLevel & hshift &
+      hsubstitution & haxiomSoundness & hfinal).
+  repeat split.
+  - exact
+      (raw_dynamicTruthNativeStagedNextLocalCompiler_of_current_builder
+        M hPA translation htranslationAgreement hlocal).
+  - exact
+      (raw_dynamicTruthNativeStagedNextCrossLevelCompiler_of_body_implication
+        M hPA hcrossLevel).
+  - exact
+      (raw_dynamicTruthNativeStagedNextShiftCompiler_of_body_implication
+        M hPA hshift).
+  - exact
+      (raw_dynamicTruthNativeStagedNextSubstitutionCompiler_of_body_implication
+        M hPA hsubstitution).
+  - exact
+      (raw_dynamicTruthNativeStagedNextAxiomSoundnessCompiler_of_kernel_implication
+        M hPA haxiomSoundness).
+  - exact
+      (raw_dynamicTruthNativeStagedNextFinalCompiler_of_source_linked_implication
+        M hPA hfinal).
+Qed.
+
+(** Model-local positive-component successor.  All context synchronization,
+    target preservation, and six-field assembly are discharged by the
+    previously proved dependency-ordered endpoint. *)
+Corollary
+    raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_kernel_compilers
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeDependencyOrderedKernelCompilers M translation ->
+  RawDynamicTruthNativeSplicedMasterPositiveComponentSuccessor M.
+Proof.
+  intros M hPA translation hkernels.
+  exact
+    (raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_dependency_ordered_callbacks
+      M hPA
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_kernel_compilers
+        M hPA translation hkernels)).
+Qed.
+
+(** The all-model form permits the concrete template translation to depend on
+    the raw PA model.  Its existential witness is opened only to construct
+    the model-local callback bundle. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel), RawPASatisfies M ->
+    exists translation : RawCodedTemplateTranslation M,
+      RawDynamicTruthNativeDependencyOrderedKernelCompilers M translation.
+
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels.
+Proof.
+  intros hkernels M hPA.
+  destruct (hkernels M hPA) as [translation hmodelKernels].
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_kernel_compilers
+      M hPA translation hmodelKernels).
+Qed.
+
+(** Exact conditional compact headline.  This does not discharge any member
+    of the kernel bundle; it states that no further structural assumption is
+    required after those six source-level seams have been compiled. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hkernels.
+  exact
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers
+        hkernels)).
+Qed.
+
+End
+  PABoundedRawCodedDynamicTruthNativeDependencyOrderedCallbackCompilation.

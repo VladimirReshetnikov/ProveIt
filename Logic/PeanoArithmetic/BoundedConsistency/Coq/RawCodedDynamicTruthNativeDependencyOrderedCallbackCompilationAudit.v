@@ -1,0 +1,39 @@
+(** Kernel-facing audit of the exact dependency-ordered callback bundle. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeDependencyOrderedCallbackCompilation.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeDependencyOrderedCallbackCompilationAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeDependencyOrderedCallbackCompilation.
+
+(** The bundle retains the concrete translation agreement and all six
+    explicit arithmetic seams, including the final dynamic-soundness one. *)
+Check RawDynamicTruthNativeDependencyOrderedKernelCompilers.
+Check
+  raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_kernel_compilers.
+Check
+  raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_kernel_compilers.
+
+(** The all-model wrapper is conditional on a per-model translation and
+    kernel bundle; the final theorem is therefore not an unconditional
+    consistency-provability theorem. *)
+Check RawDynamicTruthNativeDependencyOrderedKernelCompilersInAllModels.
+Check
+  raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers.
+Check
+  PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_kernel_compilers.
+
+Print Assumptions
+  raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_kernel_compilers.
+Print Assumptions
+  raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_kernel_compilers.
+Print Assumptions
+  raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers.
+Print Assumptions
+  PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_kernel_compilers.
+
+End
+  PABoundedRawCodedDynamicTruthNativeDependencyOrderedCallbackCompilationAudit.

@@ -2088,6 +2088,16 @@ compact-target graph/proof pair.  Every merge and transport is already proved;
 the adapter adds no context equality, empty-base replacement, or semantic
 premise beyond the named source-linked kernel.
 
+`RawCodedDynamicTruthNativeDependencyOrderedCallbackCompilation.v` collects
+the exact six residual kernels behind the public adapters.  A model-local
+bundle contains the concrete template translation agreement, the local staged
+root builder, and the linked cross-level, shift, substitution, axiom, and
+final compilers.  From that bundle the module derives the literal six-callback
+family, the positive master successor, and—under an all-model instance—the
+compact headline.  This is an exact conditional endpoint, not the missing
+unconditional Coq theorem: every arithmetic residual, especially the final
+source-linked derivation-soundness compiler, remains visible in the bundle.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
