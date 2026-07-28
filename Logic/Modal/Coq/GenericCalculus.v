@@ -1,7 +1,7 @@
 (**
   Generic one-sided classical sequent calculi.
 
-  This module currently ports declarations 1--34 of the forty-three active
+  This module currently ports declarations 1--38 of the forty-three active
   declarations in the pinned Foundation module [Logic/Calculus.lean].  The
   calculus and its principal entailments are Type-valued, so derivations
   retain their computational content.
@@ -1212,3 +1212,260 @@ Arguments generic_contextual_of_axiom {S F E A C D} _ _ _ _ _.
 Arguments generic_contextual_of_axiom_subset {S F E A neg D}
   _ _ _ _ _ _.
 Arguments generic_contextual_axiomatized {S F E A C D} _ _.
+
+(** Source declaration 35/43: the contextual [Entailment.ModusPonens]
+    instance.  The proof uses only involutive negation, implication as
+    disjunction, and De Morgan for a negated disjunction. *)
+Definition generic_contextual_modus_ponens {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Hinv : generic_neg_involutive_law C)
+    (Himp : generic_imp_as_or_law C)
+    (Hneg_or : generic_neg_or_law C)
+    (K : generic_one_sided_lk_cut C D)
+    (s : S) : generic_modus_ponens E C s.
+Proof.
+  constructor. intros p q bpq bp.
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext s (generic_imp C p q)) bpq)
+    as [wimp dimp].
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext s p) bp)
+    as [wp dp].
+  apply (generic_equiv_from (generic_contextual_equiv Hcontext s q)).
+  assert (Hcovers : forall r,
+    generic_list_member r
+      (generic_context_witness_formulas wimp ++
+       generic_context_witness_formulas wp) ->
+    generic_adjunctive_member A r s).
+  { intros r Hr.
+    apply (proj1 (@generic_list_member_app_iff F r
+      (generic_context_witness_formulas wimp)
+      (generic_context_witness_formulas wp))) in Hr.
+    destruct Hr as [Hr | Hr].
+    + exact (generic_context_witness_covers wimp r Hr).
+    + exact (generic_context_witness_covers wp r Hr). }
+  refine (existT _
+    (exist _
+      (generic_context_witness_formulas wimp ++
+       generic_context_witness_formulas wp) Hcovers)
+    _).
+  pose proof (generic_lk_tensor (generic_lk_cut_base K)
+      (generic_lk_identity (generic_lk_cut_base K) p)
+      (generic_lk_identity (generic_lk_cut_base K) (generic_neg C q)))
+      as dcontra.
+  assert (econtra :
+    generic_and C p (generic_neg C q) ::
+      [generic_neg C p; generic_neg C (generic_neg C q)] =
+    [generic_neg C (generic_imp C p q); generic_neg C p; q]).
+  { simpl. rewrite (Hinv q), (Himp p q),
+      (Hneg_or (generic_neg C p) q), (Hinv p).
+    reflexivity. }
+  pose proof (@generic_lk_cast F D _ _ dcontra econtra) as dcontra'.
+  pose proof (generic_lk_cut_raw K (generic_imp C p q)
+    (map (generic_neg C) (generic_context_witness_formulas wimp))
+    [generic_neg C p; q] dimp dcontra') as d1.
+  assert (Hreorder1 : generic_list_subset
+    (map (generic_neg C) (generic_context_witness_formulas wimp) ++
+     [generic_neg C p; q])
+    (generic_neg C p :: q ::
+     map (generic_neg C) (generic_context_witness_formulas wimp))).
+  { intros r Hr.
+    apply (proj1 (@generic_list_member_app_iff F r
+      (map (generic_neg C) (generic_context_witness_formulas wimp))
+      [generic_neg C p; q])) in Hr.
+    destruct Hr as [Hr | [Hr | [Hr | Hfalse]]].
+    - now right; right.
+    - now left.
+    - now right; left.
+    - contradiction. }
+  pose proof (generic_lk_contra (generic_lk_cut_base K) d1 Hreorder1)
+    as d1'.
+  pose proof (generic_lk_cut_raw K p
+    (map (generic_neg C) (generic_context_witness_formulas wp))
+    (q :: map (generic_neg C)
+      (generic_context_witness_formulas wimp))
+    dp d1') as d2.
+  refine (@generic_lk_contra F C D (generic_lk_cut_base K)
+    (map (generic_neg C) (generic_context_witness_formulas wp) ++
+     q :: map (generic_neg C) (generic_context_witness_formulas wimp))
+    (q :: map (generic_neg C)
+      (generic_context_witness_formulas wimp ++
+       generic_context_witness_formulas wp)) d2 _).
+  rewrite map_app.
+  intros r Hr.
+  apply (proj1 (@generic_list_member_app_iff F r
+    (map (generic_neg C) (generic_context_witness_formulas wp))
+    (q :: map (generic_neg C)
+      (generic_context_witness_formulas wimp)))) in Hr.
+  destruct Hr as [Hr | [Hr | Hr]].
+  - right. apply (proj2 (@generic_list_member_app_iff F r
+      (map (generic_neg C) (generic_context_witness_formulas wimp))
+      (map (generic_neg C) (generic_context_witness_formulas wp)))).
+    now right.
+  - now left.
+  - right. apply (proj2 (@generic_list_member_app_iff F r
+      (map (generic_neg C) (generic_context_witness_formulas wimp))
+      (map (generic_neg C) (generic_context_witness_formulas wp)))).
+    now left.
+Defined.
+
+(** The recursion underlying source declaration 36 is more general than the
+    exported adapter: it needs only one-sided disjunction, implication's
+    normalization equation, and an already available modus-ponens rule. *)
+Fixpoint generic_contextual_cut_list
+    {S F : Type} {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Himp : generic_imp_as_or_law C)
+    (Hlk : generic_one_sided_lk C D)
+    (source : S)
+    (Hmp : generic_modus_ponens E C source)
+    (gamma : list F) {struct gamma} :
+    forall target : S,
+      (forall r, generic_list_member r gamma ->
+                 generic_adjunctive_member A r target) ->
+      generic_proof_set E source (generic_adjunctive_carrier A target) ->
+      forall chi : F,
+        D (chi :: map (generic_neg C) gamma) ->
+        generic_proof E source chi :=
+  match gamma as gamma0 return
+    forall target : S,
+      (forall r, generic_list_member r gamma0 ->
+                 generic_adjunctive_member A r target) ->
+      generic_proof_set E source (generic_adjunctive_carrier A target) ->
+      forall chi : F,
+        D (chi :: map (generic_neg C) gamma0) ->
+        generic_proof E source chi
+  with
+  | [] => fun _ _ _ chi d =>
+      generic_contextual_to_proof Hcontext source chi d
+  | psi :: tail => fun target Hmembers bs chi d =>
+      let dor := generic_lk_or Hlk (generic_neg C psi) chi
+        (map (generic_neg C) tail) (generic_lk_swap1 Hlk d) in
+      let bor := @generic_contextual_cut_list S F E A C D Hcontext
+        Himp Hlk source Hmp tail target
+        (fun r Hr => Hmembers r (or_intror Hr)) bs
+        (generic_or C (generic_neg C psi) chi) dor in
+      let bimp := @generic_proof_cast S F E source
+        (generic_or C (generic_neg C psi) chi)
+        (generic_imp C psi chi) bor (eq_sym (Himp psi chi)) in
+      let bpsi := bs psi (Hmembers psi (or_introl eq_refl)) in
+      generic_modus_ponens_raw Hmp psi chi bimp bpsi
+  end.
+
+(** Source declaration 36/43: the contextual [Entailment.StrongCut]
+    instance.  No bottom, top, or negated-conjunction law is used. *)
+Definition generic_contextual_strong_cut {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Hinv : generic_neg_involutive_law C)
+    (Himp : generic_imp_as_or_law C)
+    (Hneg_or : generic_neg_or_law C)
+    (K : generic_one_sided_lk_cut C D) :
+    generic_strong_cut E E A.
+Proof.
+  constructor. intros source target p bs b.
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext target p) b) as [w d].
+  exact (@generic_contextual_cut_list S F E A C D Hcontext
+    Himp (generic_lk_cut_base K) source
+    (@generic_contextual_modus_ponens
+      S F E A C D Hcontext Hinv Himp Hneg_or K source)
+    (generic_context_witness_formulas w) target
+    (generic_context_witness_covers w) bs p d).
+Defined.
+
+(** Source declaration 37/43: the contextual
+    [Entailment.DeductiveExplosion] instance.  Bottom elimination requires
+    only [neg bottom = top] in addition to cut. *)
+Definition generic_contextual_deductive_explosion {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Hneg_bottom : generic_neg_bottom_law C)
+    (K : generic_one_sided_lk_cut C D) :
+    generic_deductive_explosion E (generic_bottom C).
+Proof.
+  constructor. intros s b p.
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext s (generic_bottom C)) b)
+    as [w d].
+  assert (dnot_bottom : D [generic_neg C (generic_bottom C)]).
+  { apply (@generic_lk_cast F D _ _
+      (generic_lk_verum (generic_lk_cut_base K))).
+    now rewrite Hneg_bottom. }
+  pose proof (generic_lk_cut_raw K (generic_bottom C)
+    (map (generic_neg C) (generic_context_witness_formulas w)) []
+    d dnot_bottom) as dcut0.
+  pose proof (@generic_lk_cast F D _ _ dcut0
+    (app_nil_r (map (generic_neg C)
+      (generic_context_witness_formulas w)))) as dcut.
+  apply (generic_equiv_from (generic_contextual_equiv Hcontext s p)).
+  refine (existT _ w _).
+  apply (generic_lk_contra (generic_lk_cut_base K) dcut).
+  intros r Hr. now right.
+Defined.
+
+(** Source declaration 38/43: [ContextualEntailment.inconsistent_iff].
+    This characterization is constructive and inherits only the single
+    bottom-negation equation used by contextual explosion. *)
+Lemma generic_contextual_inconsistent_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S)
+         (C : generic_connectives F) (D : list F -> Type),
+    generic_contextual_entailment E A (generic_neg C) D ->
+    generic_neg_bottom_law C ->
+    generic_one_sided_lk_cut C D ->
+    forall s : S,
+      generic_inconsistent E s <->
+      exists gamma : list F,
+        (forall r, generic_list_member r gamma ->
+                   generic_adjunctive_member A r s) /\
+        inhabited (D (map (generic_neg C) gamma)).
+Proof.
+  intros S F E A C D Hcontext Hneg_bottom K s; split.
+  - intro Hinc.
+    destruct (proj1 (generic_contextual_provable_iff Hcontext s
+      (generic_bottom C)) (Hinc (generic_bottom C)))
+      as [gamma [Hgamma [d]]].
+    assert (dnot_bottom : D [generic_neg C (generic_bottom C)]).
+    { apply (@generic_lk_cast F D _ _
+        (generic_lk_verum (generic_lk_cut_base K))).
+      now rewrite Hneg_bottom. }
+    pose proof (generic_lk_cut_raw K (generic_bottom C)
+      (map (generic_neg C) gamma) [] d dnot_bottom) as dcut0.
+    pose proof (@generic_lk_cast F D _ _ dcut0
+      (app_nil_r (map (generic_neg C) gamma))) as dcut.
+    exists gamma. split; [exact Hgamma | now constructor].
+  - intros [gamma [Hgamma [d]]].
+    assert (Hbottom : generic_provable E s (generic_bottom C)).
+    { apply (proj2 (generic_contextual_provable_iff Hcontext s
+        (generic_bottom C))).
+      exists gamma. split; [exact Hgamma |]. constructor.
+      apply (generic_lk_contra (generic_lk_cut_base K) d).
+      intros r Hr. now right. }
+    exact (@generic_inconsistent_of_provable_bottom S F E
+      (generic_bottom C)
+      (@generic_contextual_deductive_explosion
+        S F E A C D Hcontext Hneg_bottom K) s Hbottom).
+Qed.
+
+Arguments generic_contextual_modus_ponens
+  {S F E A} C {D} _ _ _ _ _ _.
+Arguments generic_contextual_cut_list
+  {S F E A} C {D} _ _ _ _ _ _ _ _ _ _ _.
+Arguments generic_contextual_strong_cut
+  {S F E A} C {D} _ _ _ _ _.
+Arguments generic_contextual_deductive_explosion
+  {S F E A} C {D} _ _ _.
