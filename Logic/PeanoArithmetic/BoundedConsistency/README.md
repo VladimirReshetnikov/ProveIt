@@ -1984,6 +1984,16 @@ remaining replay, cross-level, binder-projection, fixed-helper, traversal, and
 row-root obligations; this finite assembly does not claim to project an
 actual successor row or to complete the whole local decision compiler.
 
+`RawCodedDynamicTruthSuccessorRowBranchDisjunctionCompilation.v` supplies the
+missing structural row projection.  A generic raw template proof distributes
+an arbitrary existential tower over a finite right-associated disjunction;
+its exact eight-binder Sigma and Pi instances project the branch component of
+the literal successor row and produce the matrix's `Or7` and `Or6` codes in
+the same represented context.  The carrier compiler requires only context
+realizability, a self-shift, the existing direct structural traces, and the
+literal domain/lower-application identification—never a semantic decoding of
+the row.
+
 `RawCodedTruthCertificateMasterMixedQFHelperBatch.v` synchronizes every fixed
 cell needed so far.  It appends exactly the nine carrier-independent mixed-QF
 theorems to the existing twenty-nine collision and binder-principal helpers,
