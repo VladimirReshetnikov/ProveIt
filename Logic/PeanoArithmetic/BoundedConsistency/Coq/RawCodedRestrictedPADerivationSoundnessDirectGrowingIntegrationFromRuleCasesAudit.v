@@ -1,0 +1,19 @@
+(** Assumption audit for the rule-case-to-growing-integration adapter. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectGrowingIntegrationFromRuleCases.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectGrowingIntegrationFromRuleCasesAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectGrowingIntegrationFromRuleCases.
+
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_rule_case_semantic_roots.
+
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_rule_case_semantic_roots.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectGrowingIntegrationFromRuleCasesAudit.
