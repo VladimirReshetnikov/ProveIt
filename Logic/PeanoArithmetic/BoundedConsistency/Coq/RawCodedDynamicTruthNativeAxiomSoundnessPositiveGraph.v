@@ -40,6 +40,7 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruthTraversal
   RawCodedFixedLevelTruthTotality
   RawCodedFormulaShiftAtomicAdequacy
+  RawCodedTemplateTernaryApplication
   RawCodedPAAxiomTruth
   RawCodedDynamicTruthAxiomSoundnessBaseGraph
   RawCodedDynamicTruthFixedSyntaxFragments
@@ -75,6 +76,7 @@ Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFixedLevelTruthTraversal.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedFormulaShiftAtomicAdequacy.
+Import PABoundedRawCodedTemplateTernaryApplication.
 Import PABoundedRawCodedPAAxiomTruth.
 Import PABoundedRawCodedDynamicTruthAxiomSoundnessBaseGraph.
 Import PABoundedRawCodedDynamicTruthFixedSyntaxFragments.
@@ -399,18 +401,19 @@ Qed.
 (** ------------------------------------------------------------------
     Application of the next global Sigma predicate to [(axiom,0,0)].
 
-    Single substitution always removes free variable zero.  The first two
-    replacements are closed zero terms.  The final [#0] replaces the original
-    code argument after the original assignment variables have been removed.
-    Hence the resulting formula has exactly the universally bound axiom as
-    its sole possible free variable. *)
+    The global predicate interface is [#0 = formula], [#1 = assignment
+    code], and [#2 = assignment step].  Each represented substitution removes
+    free variable zero.  The axiom variable must therefore enter the first
+    substitution as [#2]: the two subsequent zero substitutions lower it to
+    the surviving [#0].  This is the sequential-substitution realization of
+    the generic ternary application at [(#0, 0, 0)]. *)
 
 Definition dynamicTruthNativeAxiomApplicationFirstReplacement : term :=
-  tZero.
+  tVar 2.
 Definition dynamicTruthNativeAxiomApplicationSecondReplacement : term :=
   tZero.
 Definition dynamicTruthNativeAxiomApplicationThirdReplacement : term :=
-  tVar 0.
+  tZero.
 
 Definition dynamicTruthNativeAxiomApplicationTermAt
     (input output : term) : formula :=
@@ -507,6 +510,17 @@ Definition standardDynamicTruthNativeAxiomApplication
         (Formula.instTerm dynamicTruthNativeAxiomApplicationFirstReplacement)
         input)).
 
+(** Regression guard for the argument order above.  In particular, the
+    custom three-opening graph is not application at [(0,0,#0)]. *)
+Theorem standardDynamicTruthNativeAxiomApplication_correct_order : forall
+    input,
+  standardDynamicTruthNativeAxiomApplication input =
+  standardTernaryApplication input (tVar 0) tZero tZero.
+Proof.
+  intro input.
+  reflexivity.
+Qed.
+
 Theorem raw_dynamicTruthNativeAxiomApplication_standard : forall
     (M : RawPAModel), RawPASatisfies M -> forall input,
   RawDynamicTruthNativeAxiomApplication M
@@ -549,16 +563,16 @@ Corollary raw_dynamicTruthNativeAxiomApplication_fixedLevelSigma_standard :
   RawDynamicTruthNativeAxiomApplication M
     (rawQuotedFormulaCode M
       (fixedLevelSigmaTruthCertificateTermAt level
-        (tVar 2) (tVar 1) (tVar 0)))
+        (tVar 0) (tVar 1) (tVar 2)))
     (rawQuotedFormulaCode M
       (standardDynamicTruthNativeAxiomApplication
         (fixedLevelSigmaTruthCertificateTermAt level
-          (tVar 2) (tVar 1) (tVar 0)))).
+          (tVar 0) (tVar 1) (tVar 2)))).
 Proof.
   intros M hPA level.
   exact (raw_dynamicTruthNativeAxiomApplication_standard M hPA
     (fixedLevelSigmaTruthCertificateTermAt level
-      (tVar 2) (tVar 1) (tVar 0))).
+      (tVar 0) (tVar 1) (tVar 2))).
 Qed.
 
 (** ------------------------------------------------------------------

@@ -1970,6 +1970,17 @@ proof totality is isolated in the explicit
 `RawDynamicTruthNativeAxiomSoundnessProofCompiler`; model truth is not treated
 as a coded PA derivation.
 
+Its three sequential openings now make the de Bruijn argument order explicit:
+the surviving axiom variable enters the first opening as `#2`, followed by two
+closed zero terms, so the resulting application is exactly the global truth
+predicate at `(axiom, 0, 0)`.  The definitional regression theorem records this
+order, and
+`RawCodedDynamicTruthNativeAxiomApplicationTernaryAlignment.v` proves that the
+native trace is equivalent to the repository's generic represented ternary
+application.  The reverse implication uses represented term-shift
+functionality, so it also covers arbitrary witnesses of the relational shift
+graphs rather than only their canonical quotations.
+
 `RawCodedDynamicTruthPairedGlobalOrbitFunctionality.v` proves that the five
 positive graphs really do refer to one paired global orbit.  Numeral and
 substitution functionality make each Sigma/Pi successor row deterministic;
