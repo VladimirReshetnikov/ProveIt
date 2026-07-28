@@ -13,15 +13,19 @@
   filtration, and preservation of transitivity together with the corresponding
   elementary frame properties by the transitive-closure filtration.
 
-  Foundation additionally proves rooted preservation results for piecewise
-  strong confluence and connectedness.  They are intentionally not stated
-  here: this Coq semantic layer has no rooted-frame/restriction API yet.  No
-  weaker unrooted replacement is presented as if it were that result.
+  The final two theorems cover Foundation's rooted preservation results for
+  piecewise strong confluence and connectedness.  Its model restriction
+  [M↾r] is represented by [point_generated_frame] together with
+  [point_generated_valuation].  The proofs factor through reusable facts:
+  global strong convergence and connectedness pass to the transitive-closure
+  filtration, while a point-generated preorder turns the corresponding
+  piecewise property into its global form.
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lia.
 From Stdlib Require Import Lists.List.
-From FoundationModal Require Import Syntax Kripke Filtration Correspondence.
+From FoundationModal Require Import
+  Syntax Kripke Filtration Correspondence Root.
 
 Import ListNotations.
 
@@ -487,6 +491,70 @@ Proof.
   now apply finest_preserves_symmetric.
 Qed.
 
+(** A direct edge between representatives induces a one-step edge between
+    their filtered worlds. *)
+Lemma finest_tc_filtered_rel_of_representatives :
+  forall X Y,
+    Rel F (@representative AtomType F V target X)
+          (@representative AtomType F V target Y) ->
+    finest_tc_filtered_rel X Y.
+Proof.
+  intros X Y HXY. apply positive_closure_single.
+  exists (@representative AtomType F V target X),
+         (@representative AtomType F V target Y).
+  split.
+  - symmetry. apply representative_spec.
+  - split.
+    + symmetry. apply representative_spec.
+    + exact HXY.
+Qed.
+
+(** A direct edge from the representative of a filtered world to an original
+    world likewise induces an edge to that world's profile class.  Keeping
+    the source class arbitrary avoids quotient/proof-irrelevance bookkeeping
+    in the convergence argument below. *)
+Lemma finest_tc_filtered_rel_to_profile_class :
+  forall X (y : World F),
+    Rel F (@representative AtomType F V target X) y ->
+    finest_tc_filtered_rel X
+      (@profile_class AtomType F V target y).
+Proof.
+  intros X y Hxy. apply positive_closure_single.
+  exists (@representative AtomType F V target X), y.
+  split.
+  - symmetry. apply representative_spec.
+  - split; [reflexivity | exact Hxy].
+Qed.
+
+(** Global strong convergence and connectedness are inherited by the
+    transitive-closure filtration.  Foundation only needs the point-generated
+    corollaries below, but these stronger forms are simpler and reusable. *)
+Lemma finest_tc_preserves_strongly_convergent :
+  frame_strongly_convergent F ->
+  frame_strongly_convergent finest_tc_filtered_frame.
+Proof.
+  intros Hconvergent X Y.
+  destruct (Hconvergent
+    (@representative AtomType F V target X)
+    (@representative AtomType F V target Y))
+    as [u [HXu HYu]].
+  exists (@profile_class AtomType F V target u); split.
+  - now apply finest_tc_filtered_rel_to_profile_class.
+  - now apply finest_tc_filtered_rel_to_profile_class.
+Qed.
+
+Lemma finest_tc_preserves_strongly_connected :
+  frame_strongly_connected F ->
+  frame_strongly_connected finest_tc_filtered_frame.
+Proof.
+  intros Hconnected X Y.
+  destruct (Hconnected
+    (@representative AtomType F V target X)
+    (@representative AtomType F V target Y)) as [HXY | HYX].
+  - left. now apply finest_tc_filtered_rel_of_representatives.
+  - right. now apply finest_tc_filtered_rel_of_representatives.
+Qed.
+
 Definition frame_preorder (G : frame) : Prop :=
   frame_reflexive G /\ frame_transitive G.
 
@@ -511,3 +579,75 @@ Proof.
 Qed.
 
 End FinestFiltration.
+
+(** * Rooted preservation *)
+
+Section RootedFiltration.
+
+Context {AtomType : Type} (F : frame) (V : valuation AtomType F)
+        (target : formula AtomType).
+
+(** Foundation's [rooted_isPiecewiseStronglyConvergent].  The restricted
+    model [M↾r] is the direct point-generated submodel at [r]. *)
+Theorem finest_tc_point_generated_preserves_piecewise_strongly_convergent
+    (r : World F) :
+  frame_preorder F ->
+  frame_piecewise_strongly_convergent F ->
+  frame_piecewise_strongly_convergent
+    (@finest_tc_filtered_frame AtomType
+      (point_generated_frame F r)
+      (point_generated_valuation V r) target).
+Proof.
+  intros [Hrefl Htrans] Hpiece X Y Z _ _.
+  pose proof (@point_generated_strongly_convergent F r
+    Hrefl Htrans Hpiece) as Hgenerated.
+  exact (@finest_tc_preserves_strongly_convergent AtomType
+    (point_generated_frame F r) (point_generated_valuation V r)
+    target Hgenerated Y Z).
+Qed.
+
+(** Foundation's [rooted_isPiecewiseStronglyConnected]. *)
+Theorem finest_tc_point_generated_preserves_piecewise_strongly_connected
+    (r : World F) :
+  frame_preorder F ->
+  frame_piecewise_strongly_connected F ->
+  frame_piecewise_strongly_connected
+    (@finest_tc_filtered_frame AtomType
+      (point_generated_frame F r)
+      (point_generated_valuation V r) target).
+Proof.
+  intros [Hrefl _] Hpiece X Y Z _ _.
+  pose proof (@point_generated_strongly_connected_of_piecewise F r
+    Hrefl Hpiece) as Hgenerated.
+  exact (@finest_tc_preserves_strongly_connected AtomType
+    (point_generated_frame F r) (point_generated_valuation V r)
+    target Hgenerated Y Z).
+Qed.
+
+(** Source-name aliases for the two final instances in
+    [Foundation/Modal/Kripke/Filtration.lean]. *)
+Corollary finest_tc_rooted_is_piecewise_strongly_convergent
+    (r : World F) :
+  frame_preorder F ->
+  frame_piecewise_strongly_convergent F ->
+  frame_piecewise_strongly_convergent
+    (@finest_tc_filtered_frame AtomType
+      (point_generated_frame F r)
+      (point_generated_valuation V r) target).
+Proof.
+  apply finest_tc_point_generated_preserves_piecewise_strongly_convergent.
+Qed.
+
+Corollary finest_tc_rooted_is_piecewise_strongly_connected
+    (r : World F) :
+  frame_preorder F ->
+  frame_piecewise_strongly_connected F ->
+  frame_piecewise_strongly_connected
+    (@finest_tc_filtered_frame AtomType
+      (point_generated_frame F r)
+      (point_generated_valuation V r) target).
+Proof.
+  apply finest_tc_point_generated_preserves_piecewise_strongly_connected.
+Qed.
+
+End RootedFiltration.

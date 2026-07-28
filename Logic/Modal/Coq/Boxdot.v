@@ -18,7 +18,7 @@ From FoundationModal Require Import
   Syntax Axioms Kripke Correspondence CorrespondenceExtensions
   FrameProperties FrameTransformations Preservation Root WeakCorrespondence
   HilbertK CanonicalK NormalHilbert Filtration Loeb GLGrzDerivations
-  CanonicalGL CanonicalGrz.
+  CanonicalGL CanonicalGrz LogicInfrastructure.
 
 Import ListNotations.
 
@@ -1022,10 +1022,10 @@ Proof. intros AtomType F V w p []; simpl; tauto. Qed.
 
 (** * Logic-level boxdot properties
 
-    A logic is represented extensionally as a predicate on formulas.  The
-    small [boxdot_normal_logic] interface is exactly what the boxdot
-    properties quantify over: containment of K, modus ponens, and
-    necessitation. *)
+    A logic is represented extensionally as a predicate on formulas.
+    Foundation's normal-logical interface also includes uniform
+    substitution.  Recording it here is essential for the genuine global
+    consequence theorem used by Jeřábek's argument below. *)
 
 Definition modal_logic := formula nat -> Prop.
 
@@ -1038,17 +1038,43 @@ Definition boxdot_preimage (L : modal_logic) : modal_logic :=
 Record boxdot_normal_logic (L : modal_logic) : Prop := {
   boxdot_normal_contains_K : forall p, K_proves p -> L p;
   boxdot_normal_mp : forall p q, L (Imp p q) -> L p -> L q;
-  boxdot_normal_nec : forall p, L p -> L (Box p)
+  boxdot_normal_nec : forall p, L p -> L (Box p);
+  boxdot_normal_substitution : logic_substitution_closed L
 }.
 
 Lemma normal_system_is_boxdot_normal :
   forall Ax,
+    schema_substitution_closed Ax ->
     boxdot_normal_logic (@normal_proves Ax nat).
 Proof.
-  intro Ax; constructor.
+  intros Ax Hclosed; constructor.
   - intros p Hp; now apply K_proves_normal.
   - intros p q; apply Np_mp.
   - intros p; apply Np_nec.
+  - intros sigma p Hp.
+    now apply normal_proves_substitute.
+Qed.
+
+(** The strengthened source-facing interface is exactly the repository's
+    generic normal-logic structure on natural-number atoms. *)
+Lemma boxdot_normal_to_normal_logic :
+  forall L, boxdot_normal_logic L -> normal_logic L.
+Proof.
+  intros L Hnormal; constructor.
+  - constructor.
+    + constructor.
+      * intros p Htaut.
+        apply (boxdot_normal_contains_K Hnormal), K_complete.
+        now apply classical_tautology_valid.
+      * intros p q; now apply (boxdot_normal_mp Hnormal).
+    + intros p q.
+      apply (boxdot_normal_contains_K Hnormal), Kp_modal_K.
+    + intro p.
+      apply (boxdot_normal_contains_K Hnormal), K_complete,
+        classical_tautology_valid.
+      intro rho; unfold DiaDuality, Iff, And, Dia, Neg; simpl; tauto.
+    + exact (boxdot_normal_substitution Hnormal).
+  - intros p Hp; now apply (boxdot_normal_nec Hnormal).
 Qed.
 
 Definition BoxdotProperty (L0 : modal_logic) : Prop :=
