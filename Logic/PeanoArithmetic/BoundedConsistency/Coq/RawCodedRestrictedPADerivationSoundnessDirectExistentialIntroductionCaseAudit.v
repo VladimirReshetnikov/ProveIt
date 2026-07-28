@@ -1,0 +1,54 @@
+(** Audit surface for the exact direct existential-introduction branch. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectExistentialIntroductionCase.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialIntroductionCase.
+
+(** Literal constructor and shell shapes. *)
+Check coqRestrictedPADirectExistentialIntroduction_case_shape.
+Check coqRestrictedPADirectExistentialIntroduction_context_truth_agreement.
+Check coqRestrictedPADirectExistentialIntroduction_remaining_shape.
+Check coqRestrictedPADirectExistentialIntroduction_ready_restricted_in.
+Check coqRestrictedPADirectExistentialIntroduction_ready_prefix_in.
+
+(** Every displayed constructor field has its own checked projection. *)
+Check coqRestrictedPADirectExistentialIntroductionCodeEqualityRootAt_valid.
+Check coqRestrictedPADirectExistentialIntroductionFormulaCodeRootAt_valid.
+Check coqRestrictedPADirectExistentialIntroductionSubstitutionRootAt_valid.
+Check coqRestrictedPADirectExistentialIntroductionChildEndpointRootAt_valid.
+
+(** The residuals expose semantic operations rather than a branch proof. *)
+Check
+  coqRestrictedPADirectExistentialIntroductionChildInterfaceResultTemplate.
+Check coqRestrictedPADirectExistentialIntroductionChildInterfaceLawTemplate.
+Check coqRestrictedPADirectExistentialIntroductionDynamicTruthLawTemplate.
+Check
+  RawCoqRestrictedPADirectExistentialIntroductionChildInterfaceLawRootAt.
+Check RawCoqRestrictedPADirectExistentialIntroductionDynamicTruthLawRootAt.
+Check
+  RawCoqRestrictedPADirectStrongStepExistentialIntroductionSemanticRoots.
+
+(** Open-root composition, child-IH application, and the exact dispatcher
+    slot remain independently inspectable. *)
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectExistentialIntroductionChildInterface.
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectExistentialIntroductionConclusionAt.
+Check
+  raw_coqRestrictedPADirectStrongStepExistentialIntroductionCaseImplicationRoot.
+
+(** Finite projections are constructive.  The compiled semantic plumbing
+    inherits only the classical/extensional dependencies of the shared raw
+    model and template compiler stack. *)
+Print Assumptions
+  coqRestrictedPADirectExistentialIntroductionCodeEqualityRootAt_valid.
+Print Assumptions
+  coqRestrictedPADirectExistentialIntroductionChildEndpointRootAt_valid.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectExistentialIntroductionChildInterface.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectExistentialIntroductionConclusionAt.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepExistentialIntroductionCaseImplicationRoot.

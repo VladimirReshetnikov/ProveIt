@@ -2480,6 +2480,18 @@ outer conclusion, so its compiled transport does not invent a stronger code
 equality.  Both arbitrary-tail roots include every projection, transport,
 modus-ponens step, and surrounding implication introduction.
 
+Universal introduction and both existential constructors now fill the other
+quantified dispatcher slots.  Universal introduction projects its `All` code,
+represented context shift, and child endpoint, leaving one implication-valued
+eigenvariable law for the shifted recursive child and universal truth.
+Existential introduction leaves only its recursive-child interface and the
+dynamic truth law after projecting the `Ex` code, substitution, and endpoint.
+Existential elimination projects both endpoints plus the context and conclusion
+shifts, then composes two recursive continuations through explicit
+binder-context and dynamic elimination laws.  Their audited arbitrary-tail
+roots contain all finite projections, transports, and implication shells and
+assume neither the desired branch conclusion nor the enclosing strong step.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
