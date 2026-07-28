@@ -2405,9 +2405,17 @@ packages the resulting structural inputs.  Its endpoint retains the literal
 context and conclusion `tfOpaque` leaf equations and the native application
 witness, so an independently chosen truth predicate cannot enter through the
 context side.  This is deliberately a fixed-stage structural package:
-downstream code must still relate the two numeral parameters to the trace's
-predecessor and successor levels; the theorem does not claim a uniform
-level-dependent selector while ignoring those parameters.
+the theorem does not claim a uniform level-dependent selector while ignoring
+the two displayed numeral parameters.
+
+`RawCodedRestrictedPADerivationSoundnessNativeCoherentDirectTruthInputs.v`
+now supplies that fixed-stage parameter link.  Represented numeral-code
+totality chooses the lower parameter at the trace's current truth stage
+`S predecessorLevel` and the upper parameter at its literal successor stage
+`S (S predecessorLevel)`, then invokes the shared native selector package
+with those same parameters.  Both stages remain arbitrary model elements;
+the adapter neither decodes them into metatheoretic naturals nor weakens the
+dependent sharing of the successor Sigma selector.
 
 `RawCodedUniversalClosureAllCarrierTotality.v` instantiates the generic
 PA-internal carrier orbit with base `input` and successor `forall`, proving
