@@ -1794,6 +1794,15 @@ has a represented PA proof; proof totality at a possibly nonstandard carrier
 index remains conditional only on the explicit
 `RawDynamicTruthNativeCrossLevelCoherenceProofCompiler`.
 
+`RawCodedDynamicTruthNativeCrossLevelProofCompilation.v` compiles the complete
+outer shell of that coherence field.  Four same-context directional roots—
+the forward and backward implications for each polarity—are combined with
+explicit implication, conjunction, and universal-introduction proof nodes.
+The resulting adapter discharges the original field compiler without assuming
+the field certificate or its semantic validity; the exact residual seam is a
+local-root compiler indexed by the adequate orbit and literal construction
+trace.
+
 `RawCodedDynamicTruthNativeShiftPositiveGraph.v` constructs the third native
 positive coordinate.  It selects the genuine paired truth orbit at `S p`,
 builds the six source/target domain and certificate applications through
