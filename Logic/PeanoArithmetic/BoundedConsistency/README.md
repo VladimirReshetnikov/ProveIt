@@ -2415,6 +2415,16 @@ roots of two ordinary deep-closure traces does not identify those existential
 tables.  Thus this checkpoint exposes rather than assumes away the remaining
 shared-table construction.
 
+`RawCodedRestrictedPADerivationSoundnessDirectOrdinaryClosureRemainder.v`
+uses the weaker ordinary-substitution theorem to bypass that shared-table
+construction for the actual induction consumer.  Formula-bound totality
+chooses the possibly nonstandard closure count, universal-closure totality
+chooses the closed axiom code, and ordinary all-depth identity supplies every
+prefix self-instantiation.  The resulting exact direct closure remainder has
+only one body-specific premise—ordinary substitution identity at all carrier
+depths—and no longer assumes either a bound, a closure orbit, or a diagonal
+trace.
+
 `RawCodedRestrictedPADerivationSoundnessConclusionTruthDirectSelector.v`
 constructs the companion five-argument conclusion selector from the native
 axiom-soundness trace.  Orbit functionality aligns an independently selected
