@@ -6,6 +6,7 @@ From FoundationModal Require Import
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
+  EntailmentExtensions
   KripkeSemantics KripkeHilbert CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
@@ -739,6 +740,131 @@ Check global_consequence_of_finite_box_le_provable.
 Check global_consequence_iff_finite_box_le_provable.
 Check logic_global_foundation_box_le_equivalence.
 Check global_consequence_iff_finite_foundation_box_le_provable.
+
+(** Complete substitution-free E/EM/EN/EMC/EMCN entailment, duality, and
+    Geach-duality surfaces. *)
+Check replacement_of_equivalents.
+Check box_regularity.
+Check necessitation.
+Check has_M.
+Check has_C.
+Check has_N.
+Check has_K.
+Check has_T.
+Check has_DiaTc.
+Check has_P.
+Check has_Four.
+Check has_Five.
+Check has_Geach.
+Check has_DiaDuality.
+Check dia_dual_entailment.
+Check dia_dual_axiom.
+Check e_entailment.
+Check dia_dual_of_E.
+Check em_entailment.
+Check en_entailment.
+Check emc_entailment.
+Check emcn_entailment.
+Check k_entailment.
+Check logic_iff_intro.
+Check logic_iff_elim_left.
+Check logic_iff_elim_right.
+Check logic_iff_sym.
+Check logic_iff_trans.
+Check logic_contraposition.
+Check logic_neg_iff.
+Check logic_double_neg_iff.
+Check logic_double_neg_iff_rev.
+Check logic_iff_top_left_from.
+Check logic_iff_not_top_bottom.
+Check conj_cons.
+Check iff_top_left_raw.
+Check iff_top_left.
+Check iff_symm.
+Check iff_top_right.
+Check iff_not_bot_top.
+Check EMNLN_raw.
+Check EMNLN.
+Check IMNLN_raw.
+Check IMNLN.
+Check NLN_of_M.
+Check INLNM_raw.
+Check INLNM.
+Check M_of_NLN_raw.
+Check M_of_NLN.
+Check has_DiaTc_of_E_T.
+Check has_P_of_T.
+Check multire_raw.
+Check multire.
+Check multi_ELLNN_raw.
+Check multi_ELLNN.
+Check ELLNN_raw.
+Check ELLNN.
+Check ILLNN_raw.
+Check ILLNN.
+Check box_dni.
+Check box_dni_bang.
+Check ILNNL_raw.
+Check ILNNL.
+Check box_dne.
+Check box_dne_bang.
+Check box_dne_applied_raw.
+Check box_dne_applied.
+Check INMNL_raw.
+Check INMNL.
+Check INLMN_raw.
+Check INLMN.
+Check multiDiaDuality.
+Check diaItr_duality.
+Check diaItrDuality_mp.
+Check diaDuality_mp.
+Check diaItrDuality_mpr.
+Check diaDuality_mpr.
+Check diaDuality_prime_mp.
+Check diaDuality_prime_mpr.
+Check diaItr_duality_mp.
+Check dia_duality_mp.
+Check diaItr_duality_mpr.
+Check dia_duality_mpr.
+Check dia_duality_iff.
+Check diaItr_duality_iff.
+Check boxItrDuality.
+Check boxItr_duality.
+Check boxItrDuality_mp.
+Check boxDuality_mp.
+Check boxItrDuality_mpr.
+Check boxDuality_mpr.
+Check boxItr_duality_mp.
+Check boxItr_duality_mp_applied.
+Check boxItr_duality_mpr.
+Check boxItr_duality_mpr_applied.
+Check boxDuality.
+Check box_duality.
+Check boxDuality_mp_wrapped.
+Check boxDuality_mp_applied_raw.
+Check boxDuality_mp_applied.
+Check boxDuality_mpr_wrapped.
+Check boxDuality_mpr_applied_raw.
+Check boxDuality_mpr_applied.
+Check logic_curry.
+Check box_regularity_of_EM.
+Check EM_of_E_box_regularity.
+Check necessitation_of_EN.
+Check has_N_of_necessitation.
+Check has_K_of_EMC.
+Check box_regularity_of_k.
+Check e_entailment_of_k.
+Check has_C_of_k.
+Check k_entailment_of_EMCN.
+Check EMCN_of_k_entailment.
+Check geach_dual.
+Check has_Geach_dual.
+Check axiom_T_dual_raw.
+Check axiom_T_dual.
+Check axiom_Four_dual_raw.
+Check axiom_Four_dual.
+Check axiom_Five_dual_raw.
+Check axiom_Five_dual.
 
 Check normal_derives_deduction.
 Check normal_theory_consistent_insert_neg_iff.
@@ -1754,6 +1880,24 @@ Print Assumptions global_consequence_of_finite_box_le_provable.
 Print Assumptions global_consequence_iff_finite_box_le_provable.
 Print Assumptions logic_global_foundation_box_le_equivalence.
 Print Assumptions global_consequence_iff_finite_foundation_box_le_provable.
+(** The capability hierarchy adds no substitution premise.  Classical
+    propositional reasoning is visible only through the existing
+    Prop-valued [classical_tautology] representation. *)
+Print Assumptions conj_cons.
+Print Assumptions has_DiaTc_of_E_T.
+Print Assumptions multiDiaDuality.
+Print Assumptions boxItrDuality.
+Print Assumptions box_regularity_of_EM.
+Print Assumptions EM_of_E_box_regularity.
+Print Assumptions necessitation_of_EN.
+Print Assumptions has_N_of_necessitation.
+Print Assumptions has_K_of_EMC.
+Print Assumptions k_entailment_of_EMCN.
+Print Assumptions EMCN_of_k_entailment.
+Print Assumptions has_Geach_dual.
+Print Assumptions axiom_T_dual.
+Print Assumptions axiom_Four_dual.
+Print Assumptions axiom_Five_dual.
 Print Assumptions normal_derives_deduction.
 Print Assumptions normal_lindenbaum_extension.
 Print Assumptions normal_canonical_truth_lemma.

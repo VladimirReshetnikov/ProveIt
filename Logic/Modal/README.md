@@ -40,6 +40,10 @@ is being reconstructed:
 - predicate-valued classical, quasinormal, and normal logics, their least
   normal and quasinormal sums, finite-basis and letterless omission theorems,
   and an exact finite boxed-context characterization of global consequence;
+- substitution-free modal entailment capabilities, the complete iterated
+  box/diamond duality and replacement-of-equivalents APIs, the equivalences
+  `EM = E + regularity`, `EN = E + necessitation`, and `EMCN = K`, and the
+  generic duality of Geach tuples;
 - the quasinormal logic S as GL plus a single atomic T generator, including
   all substituted T instances, its substitution-free recursor, and the strict
   inclusion `GL < S`;
@@ -206,6 +210,7 @@ is being reconstructed:
 | `CanonicalK.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/K}.lean` | Concrete K Lindenbaum completion, maximal theories, canonical truth/countermodel arguments, completeness and finite completeness |
 | `NormalHilbert.v` | `Modal/Hilbert/{Axiom,Normal/Basic}.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
 | `LogicInfrastructure.v` | `Modal/Logic/{Basic,SumNormal,SumQuasiNormal,Global}.lean` | Predicate-valued logic structure; normal/quasinormal sums and recursors; finite bases, substitution omission, and global consequence |
+| `EntailmentExtensions.v` | `Modal/Entailment/{DiaDuality,E,EM,EN,EMC,EMCN,AxiomGeach}.lean` | Complete substitution-free duality, replacement, M/C/N/K capability equivalences, iterated box/diamond laws, and dual Geach schemata; minimal supporting records from `Entailment/Basic.lean` |
 | `CanonicalExtensions.v` | `Modal/{Tableau,MaximalConsistentSet}.lean`, `Modal/Kripke/{Completeness,Logic/{KT,K4,S4}}.lean` | Generic normal-extension canonical model; complete KT/K4/S4 canonical metatheory; finite K4/S4 filtrations and strict predecessors |
 | `GLGrzDerivations.v` | `Modal/Entailment/{GL,Grz}.lean` | Derived GL and Grz proof theory, including Four, Henkin, Z, Gödel II, T/Dum, and the syntactic boxdot translation of Grz in GL |
 | `FiniteCanonicalSupport.v` | `Modal/Kripke/Logic/{GL,Grz}/Completeness.lean` | Shared finite boxed-context operations, structural derivability laws, relevant-box selectors, extensional equality, and Grz closure enrichment |
@@ -339,6 +344,16 @@ The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
 flattens Lean's one-field property classes into predicates plus implication
 lemmas; this representational change introduces no axioms.
+
+The substitution-free entailment hierarchy in `EntailmentExtensions.v`
+keeps Foundation's E and K capabilities distinct from `normal_logic`, whose
+substitution field is strictly stronger.  All modal steps use only explicit
+replacement, necessitation, or named M/C/N/K fields; the lower DiaDuality
+surface requires classical entailment and duality but no replacement.
+Because derived conjunction and double negation are interpreted by the
+existing Prop-valued `classical_tautology`, their propositional adapters expose
+`Classical_Prop.classic`; no substitution, extensionality, choice, or
+additional modal principle is hidden in the E/EM/EN/EMC/EMCN conversions.
 
 Coherence-space points and stable functions use explicit extensional
 equivalences, so their order, colimit, pullback, identity, composition, and
@@ -600,7 +615,11 @@ and quasinormal sum modules, predicate-logic basics, and global consequence
 have complete mathematical parity.  Predicates and duplicate-insensitive lists
 replace Lean sets and finite sets; explicit theorems connect the trailing-top
 and singleton-normalized conjunctions and the cumulative and individual-box
-presentations used in the implementation and source.  All seven pinned
+presentations used in the implementation and source.  The seven pinned
+`DiaDuality`, `E`, `EM`, `EN`, `EMC`, `EMCN`, and `AxiomGeach` entailment
+modules also have full declaration-level parity.  Their small supporting
+capability slice is recorded conservatively as a partial port of the much
+larger `Entailment/Basic.lean` API.  The seven pinned
 combination-logic modules are fully represented, including their strict
 inclusion chains.  The KTB and KT4B modules likewise have full parity,
 including finite completeness, the S5 equivalence, and both KTB strictness
@@ -744,7 +763,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.CanonicalK `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
   FoundationModal.KripkeHilbert `
-  FoundationModal.LogicInfrastructure `
+  FoundationModal.LogicInfrastructure FoundationModal.EntailmentExtensions `
   FoundationModal.CanonicalExtensions `
   FoundationModal.FiniteMaximalContext `
   FoundationModal.GLUnnecessitation `
