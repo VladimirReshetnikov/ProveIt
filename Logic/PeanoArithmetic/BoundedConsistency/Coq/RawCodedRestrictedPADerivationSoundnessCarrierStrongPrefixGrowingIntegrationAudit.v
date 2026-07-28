@@ -1,0 +1,16 @@
+(** Kernel audit for growing strong-prefix case/finalizer integration. *)
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingIntegration.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingIntegration.
+
+Check
+  raw_coqRestrictedPADerivationSoundnessCarrierGrowingFinalizationPackage_of_growing_case_package.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversal_of_growing_case_and_finalizer.
+
+Print Assumptions
+  raw_coqRestrictedPADerivationSoundnessCarrierGrowingFinalizationPackage_of_growing_case_package.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversal_of_growing_case_and_finalizer.
