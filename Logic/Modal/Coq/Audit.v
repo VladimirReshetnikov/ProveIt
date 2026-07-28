@@ -9,7 +9,8 @@ From FoundationModal Require Import
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
   EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
-  HilbertNormalBaseSystems HilbertWithHenkin HilbertWithLoeb
+  HilbertNormalBaseSystems HilbertNormalTransitiveBaseSystems
+  HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
   HilbertWithRESystems HilbertWithRESymmetrySystems
@@ -1088,6 +1089,24 @@ Check normal_KD_to_KD_proves.
 Check KD_proves_to_normal_KD.
 Check normal_KD_iff_KD_proves.
 Check normal_KD_equiv_KD_proves.
+
+(** Exact raw K4 and indexed K4n systems from the Normal catalogue. *)
+Check structural_k4_entailment.
+Check structural_k4n_entailment.
+Check normal_K4_axioms.
+Check normal_K4_axioms_has_K.
+Check normal_K4_axioms_has_Four.
+Check normal_K4.
+Check normal_K4_entailment.
+Check normal_K4n_axioms.
+Check normal_K4n_axioms_has_K.
+Check normal_K4n_axioms_has_FourN.
+Check normal_K4n.
+Check normal_K4n_entailment.
+Check normal_K4_to_K4_proves.
+Check K4_proves_to_normal_K4.
+Check normal_K4_iff_K4_proves.
+Check normal_K4_equiv_K4_proves.
 
 (** Complete 17-declaration raw-axiom calculus with the Henkin rule. *)
 Check henkin_rule.
@@ -2587,6 +2606,18 @@ Print Assumptions normal_KD_to_KD_proves.
 Print Assumptions KD_proves_to_normal_KD.
 Print Assumptions normal_KD_iff_KD_proves.
 Print Assumptions normal_KD_equiv_KD_proves.
+(** K4/K4n witnesses, structural bundles, and the K4 bridge are likewise
+    closed and syntactic. *)
+Print Assumptions normal_K4_axioms_has_K.
+Print Assumptions normal_K4_axioms_has_Four.
+Print Assumptions normal_K4_entailment.
+Print Assumptions normal_K4n_axioms_has_K.
+Print Assumptions normal_K4n_axioms_has_FourN.
+Print Assumptions normal_K4n_entailment.
+Print Assumptions normal_K4_to_K4_proves.
+Print Assumptions K4_proves_to_normal_K4.
+Print Assumptions normal_K4_iff_K4_proves.
+Print Assumptions normal_K4_equiv_K4_proves.
 (** Both rule calculi, including their raw-template adapters and concrete
     structural bundles, are constructive. *)
 Print Assumptions with_henkin_axm_substituted.
