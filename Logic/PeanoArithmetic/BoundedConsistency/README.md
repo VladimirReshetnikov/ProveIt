@@ -2046,6 +2046,18 @@ implication compiler.  Thus the callback has no additional context or graph-
 coherence premise; its only remaining proof-producing input is the explicit
 trace-linked cross-level arithmetic kernel.
 
+`RawCodedDynamicTruthNativeAxiomStagedCallbackCompilation.v` exposes the fifth
+public callback from the linked staged axiom kernel.  It keeps one adequate
+paired-global orbit, its exact axiom transform, and the resulting positive
+graph target in a single package, then accumulates the local, cross-level,
+shift, and substitution certificates in dependency order.  The carried axiom
+root compiler receives those ten synchronized roots and returns the ordinary
+certificate for that same transform-selected target.  Its sole remaining
+proof-producing premise is
+`RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler`; no
+context equality, empty-base replacement, or semantic truth-to-proof
+principle is introduced by the adapter.
+
 `RawCodedDynamicTruthNativeFinalStagedCallbackCompilation.v` exposes the
 sixth public callback from the final source-linked implication compiler alone.
 It opens the five preceding graph/proof pairs, preserves their graph halves,
