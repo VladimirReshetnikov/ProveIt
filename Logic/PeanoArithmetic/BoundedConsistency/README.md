@@ -1951,6 +1951,18 @@ proof totality is isolated in the explicit
 `RawDynamicTruthNativeAxiomSoundnessProofCompiler`; model truth is not treated
 as a coded PA derivation.
 
+`RawCodedDynamicTruthPairedGlobalOrbitFunctionality.v` proves that the five
+positive graphs really do refer to one paired global orbit.  Numeral and
+substitution functionality make each Sigma/Pi successor row deterministic;
+the transparent wrapper then makes the paired global successor deterministic.
+A represented definable-induction invariant propagates pair uniqueness to
+every carrier level, including nonstandard ones, and adequate totality upgrades
+any law-free orbit witness to the adequate view.  Consequently five
+independently exposed local, cross-level, shift, substitution, and axiom-
+soundness graph witnesses can be rewritten onto one common adequate orbit and
+their exact transforms.  This is relational coherence only: it assumes no
+proof-producing field compiler or soundness principle.
+
 `RawCodedDynamicTruthNativeAxiomSoundnessProofCompilation.v` compiles the
 non-dynamic shell of that remaining proof.  From a covered local proof of the
 selected next-Sigma evidence under the literal singleton axiom/admissibility
