@@ -1,0 +1,34 @@
+(** Assumption and exact-slot audit for the direct equality-reflexivity
+    constructor case. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityReflexivityCase.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityReflexivityCaseAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityReflexivityCase.
+
+Check coqRestrictedPADirectEqualityReflexivityCaseTemplate.
+Check coqRestrictedPADirectEqualityReflexivity_case_shape.
+Check coqRestrictedPADirectEqualityReflexivityFormulaCodeTemplate.
+Check coqRestrictedPADirectEqualityReflexivity_remaining_shape.
+Check coqRestrictedPADirectEqualityReflexivityDeepContext.
+Check coqRestrictedPADirectEqualityReflexivity_deep_context_shape.
+
+Check RawCoqRestrictedPADirectEqualityReflexivityAtomicTruthLawRoot.
+Check coqRestrictedPADirectEqualityReflexivityFormulaCodeRoot_valid.
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectEqualityReflexivityCase.
+Check raw_coqRestrictedPADirectStrongStepEqualityReflexivityCaseRoot.
+
+Print Assumptions
+  coqRestrictedPADirectEqualityReflexivityFormulaCodeRoot_valid.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectEqualityReflexivityCase.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepEqualityReflexivityCaseRoot.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityReflexivityCaseAudit.

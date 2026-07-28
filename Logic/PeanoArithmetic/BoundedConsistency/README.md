@@ -2412,6 +2412,19 @@ binder-ready transport corollary makes every eigenvariable-sensitive context
 extension explicit instead of treating ordinary membership inclusion as
 sufficient weakening.
 
+The first three genuine constructor modules now inhabit literal members of
+that residual family.  The assumption branch projects context membership and
+uses two compiled equality eliminations to align the witness context and
+formula with the outer endpoint.  The excluded-middle branch projects its
+bottom, implication, and disjunction code equations and reinstates the unused
+context-truth premise by a checked tautology.  Equality reflexivity projects
+its atomic equality-code equation and compiles the full implication shell.
+Each theorem is quantified over the caller's arbitrary template tail and
+lands in exactly the dispatcher's eight-witness context.  Their remaining
+premises are deliberately narrow truth-interface laws (membership truth,
+the Boolean excluded-middle clause, and reflexive atomic truth), never the
+constructor case, its desired conclusion, or the strong step itself.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
