@@ -44,9 +44,9 @@ Check substitute_comp.
 Check satisfies_substitute.
 Check valid_K.
 
-(** Generic Tarski semantics: the first twenty active declarations from
-    Logic/Semantics.lean, including both ordinary and singleton-normalized
-    finite connective folds. *)
+(** The first sixty-one active declarations from Logic/Semantics.lean:
+    generic Tarski clauses, ordinary and singleton-normalized finite folds,
+    model sets, validity, satisfiability, meaningfulness, and consequence. *)
 Check generic_connectives.
 Check generic_semantics.
 Check generic_not_models.
@@ -70,6 +70,48 @@ Check generic_models_list_disj2.
 Check generic_models_list_disj_map.
 Check generic_models_finset_disj.
 Check generic_models_finset_disj_map.
+Check generic_models_set.
+Check generic_valid.
+Check generic_satisfiable.
+Check generic_model_set.
+Check generic_theory.
+Check generic_meaningful.
+Check generic_meaningful_of_bottom.
+Check generic_meaningful_iff.
+Check generic_not_meaningful_iff.
+Check generic_models_set_iff.
+Check generic_models_theory.
+Check generic_theory_satisfiable.
+Check finite_not_forall_iff_exists_not.
+Check generic_not_satisfiable_finset.
+Check generic_satisfiable_conj2.
+Check generic_satisfiable_finset_conj.
+Check generic_satisfiable_iff_models_nonempty.
+Check generic_models_set_models.
+Check generic_models_set_of_subset.
+Check generic_models_set_of_subset_implicit.
+Check generic_models_set_empty_instance.
+Check generic_models_set_empty.
+Check generic_models_set_singleton_iff.
+Check generic_models_set_insert_iff.
+Check generic_models_set_union_iff.
+Check generic_models_set_image_iff.
+Check generic_models_set_range_iff.
+Check generic_models_set_predicate_iff.
+Check generic_valid_neg_iff.
+Check generic_satisfiable_of_subset.
+Check generic_set_semantics.
+Check generic_empty_models.
+Check generic_consequence.
+Check generic_set_models_iff.
+Check generic_set_semantics_top.
+Check generic_set_meaningful_iff_nonempty.
+Check generic_meaningful_iff_satisfiable.
+Check generic_consequence_iff.
+Check generic_consequence_iff_explicit.
+Check generic_consequence_iff_not_satisfiable.
+Check generic_consequence_weakening.
+Check generic_consequence_of_mem.
 
 Print Assumptions generic_models_iff.
 Print Assumptions generic_models_list_conj.
@@ -82,6 +124,21 @@ Print Assumptions generic_models_list_disj2.
 Print Assumptions generic_models_list_disj_map.
 Print Assumptions generic_models_finset_disj.
 Print Assumptions generic_models_finset_disj_map.
+(** Only the five source commands reported below use excluded middle; the
+    intervening finite helper isolates the classical counterexample
+    extraction used by declaration 33. *)
+Print Assumptions generic_not_meaningful_iff.
+Print Assumptions finite_not_forall_iff_exists_not.
+Print Assumptions generic_not_satisfiable_finset.
+Print Assumptions generic_set_meaningful_iff_nonempty.
+Print Assumptions generic_meaningful_iff_satisfiable.
+Print Assumptions generic_consequence_iff_not_satisfiable.
+(** Representative generalized neighbors remain constructive. *)
+Print Assumptions generic_satisfiable_conj2.
+Print Assumptions generic_models_set_image_iff.
+Print Assumptions generic_valid_neg_iff.
+Print Assumptions generic_consequence_weakening.
+Print Assumptions generic_consequence_of_mem.
 
 (** Complete source-facing Kripke semantic surface: local satisfaction,
     fixed-model validity, frame validity, and frame-class counterexamples. *)

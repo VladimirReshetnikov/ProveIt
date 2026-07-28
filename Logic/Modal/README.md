@@ -13,8 +13,8 @@ library and reusable while its larger named-system and canonical-model stack
 is being reconstructed:
 
 - formula- and model-polymorphic Tarski semantics for all six propositional
-  connectives, including exact truth readbacks for ordinary and
-  singleton-normalized list and finite-set conjunctions and disjunctions;
+  connectives; exact finite-connective truth readbacks; and generic model-set,
+  validity, satisfiability, meaningfulness, and semantic-consequence APIs;
 - primitive modal syntax, derived connectives, substitution, iteration,
   complexity, degree, subformulas, and complement-closed finite contexts;
 - negation-normal syntax, structural De Morgan negation, modal CNF/DNF shape,
@@ -197,7 +197,7 @@ is being reconstructed:
 
 | Coq module | Main Foundation source | Ported boundary |
 | --- | --- | --- |
-| `GenericSemantics.v` | `Logic/Semantics.lean` | First 20 active declarations: generic satisfaction, six connective clauses, their Tarski package, equivalence readback, and ordinary/singleton-normalized list and finite-set conjunction/disjunction truth laws; theory, satisfiability, consequence, cumulative, and compactness layers remain |
+| `GenericSemantics.v` | `Logic/Semantics.lean` | First 61 active declarations: generic satisfaction and minimal connective clauses; ordinary/singleton-normalized finite truth laws; model sets, validity, satisfiability, theories, meaningfulness, lifted set semantics, and consequence; the six cumulative/compactness declarations remain |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
@@ -427,13 +427,18 @@ gives the exact truth/provability equivalence and proves algebraic
 completeness even without assuming consistency, with the inconsistent case
 handled directly.
 
-`GenericSemantics.v` is independent of modal syntax and constructive.  It
-keeps Foundation's logical-connective signature separate from the models-only
-semantics record, and the six clause records retain the source's
-per-connective capability boundaries.  Source `Finset` values are represented
-by lists whose readback statements depend only on membership, so ordering and
-duplicates are semantically irrelevant.  The ordinary and singleton-normalized
-folds remain distinct exactly where they are distinct in Foundation.
+`GenericSemantics.v` is independent of modal syntax.  It keeps Foundation's
+logical-connective signature separate from the models-only semantics record,
+and every theorem takes only the connective clauses its proof uses; this
+strictly relaxes the source's aggregate-Tarski hypotheses.  Predicate sets and
+lifted set semantics give generic theories, satisfiability, meaningfulness,
+and semantic consequence without extensionality.  Source `Finset` values are
+represented by membership-extensional lists, eliminating decidable formula
+equality while preserving the distinct ordinary and singleton-normalized
+folds.  The Tarski and model-set core is constructive.  Exactly the negated
+meaningfulness law, finite counterexample extraction, set-meaningfulness laws,
+and the reverse consequence/unsatisfiability direction use excluded middle;
+none uses choice or extensionality.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
