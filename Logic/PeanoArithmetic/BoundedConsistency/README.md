@@ -1823,6 +1823,15 @@ the selected field code and depends only on the explicit
 `RawDynamicTruthNativeShiftProofCompiler` for possibly nonstandard carrier
 indices; semantic validity is never converted into proof syntax.
 
+`RawCodedDynamicTruthNativeShiftProofCompilation.v` compiles the complete
+eight-variable shift-law shell.  Four Sigma/Pi forward and backward leaves
+share the exact one-assumption `shift-data` context; explicit conjunction
+nodes build the two equivalences, implication introduction discharges that
+common assumption, and eight universal-introduction nodes close the field.
+The trace adapter retains the adequate orbit, numeral, domain substitutions,
+and four application traces while eliminating any premise that already
+mentions a completed field certificate.
+
 `RawCodedDynamicTruthNativeSubstitutionCarrier.v` fixes the exact syntax for
 the fourth positive master coordinate.  Its transparent polynomial closes
 exactly the seven single-substitution parameters and combines the carried
