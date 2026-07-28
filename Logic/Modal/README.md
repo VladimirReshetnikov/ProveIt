@@ -221,6 +221,7 @@ is being reconstructed:
 | `HilbertWithRE.v` | `Modal/Hilbert/WithRE/Basic.lean` | Faithful generic six-constructor replacement-of-equivalents calculus, exact proof-indexed Prop recursor, substitution and weakening, Lukasiewicz basis, and all ten schematic-axiom adapters |
 | `HilbertNormal.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact ten-declaration generic core: six raw constructors without hardwired modal K, all axiom aliases and structural instances, a proof-indexed Prop fold, substitution, and both weakening principles |
 | `HilbertNormalAxiomAdapters.v` | `Modal/Hilbert/Normal/Basic.lean` | Complete 25-declaration generic raw-template adapter block, including the exact structural Normal capability with a constructive proof of definitional diamond duality and all 24 named schema adapters |
+| `HilbertNormalBaseSystems.v` | `Modal/Hilbert/Normal/Basic.lean` | First 15 declarations of the named catalogue: exact raw K, KT, and KD predicates, capability witnesses, named logics, structural bundles, K minimality, and constructorwise compatibility with the established presentations |
 | `HilbertWithHenkin.v` | `Modal/Hilbert/WithHenkin/Basic.lean` | Complete 17-declaration atom-polymorphic raw-axiom calculus: seven constructors, exact proof-indexed Prop fold, substitution and weakening, K/Four adapters, the exact two-template K4 system, and its structural K4Henkin bundle |
 | `HilbertWithLoeb.v` | `Modal/Hilbert/WithLoeb/Basic.lean` | Complete 17-declaration atom-polymorphic raw-axiom calculus with Loeb's rule, including the exact fold, substitution and weakening, K/Four adapters, the exact K4 system, and its structural K4Loeb bundle |
 | `HilbertRuleSystemBridges.v` | `Modal/Hilbert/{WithHenkin,WithLoeb}/Basic.lean`, `Modal/Hilbert/GL_K4Loeb_K4Henkin_K4Hen.lean` | Constructor-by-constructor equivalences between both exact raw K/Four calculi and the established concrete presentations, plus their GL equivalences |
@@ -393,19 +394,24 @@ atom-free N and P records remain proof-only.  This complete API is
 constructive.  The earlier ten WithRE-prefixed records remain as compatibility
 duplicates for the established concrete-system catalogue.
 
-`HilbertNormal.v` and `HilbertNormalAxiomAdapters.v` now supply the faithful
-raw core that the older schema-polymorphic `normal_proves` abstraction could
-not represent: raw axioms enter only through endosubstitution, and modal K is
-present only when selected by the axiom set.  All first 35 generic
-declarations are checked: the ten-declaration calculus core, substitution and
-both weakening theorems, followed by the complete 25-declaration capability
-block.  The structural Normal adapter exposes Lukasiewicz, K, diamond
-duality, substitution, and necessitation; its definitionally reflexive
-diamond-duality proof is derived syntactically from K/S, without semantic
-completeness.  The proof-indexed fold is exactly Prop-valued: Lean elaborates
-the source's bare `Sort` codomain as `Sort 0`, not as a
-universe-polymorphic result.  Consolidation of the source's 365-declaration
-named catalogue remains the principal parity work in `Normal/Basic.lean`.
+`HilbertNormal.v`, `HilbertNormalAxiomAdapters.v`, and
+`HilbertNormalBaseSystems.v` supply the faithful raw layer that the older
+schema-polymorphic `normal_proves` abstraction could not represent: raw
+axioms enter only through endosubstitution, and modal K is present only when
+selected by the axiom set.  The first 35 generic declarations are checked:
+the ten-declaration calculus core, substitution and both weakening theorems,
+followed by the complete 25-declaration capability block.  The next 15 named
+declarations give the exact singleton-K and K-plus-T/D raw systems, their
+capability witnesses and structural bundles, and K's minimality among normal
+nat-atom logics.  Constructorwise bridges identify all three with the
+established `K_normal_proves`, `KT_proves`, and `KD_proves` presentations.
+The structural Normal adapter exposes Lukasiewicz, K, diamond duality,
+substitution, and necessitation; its definitionally reflexive diamond-duality
+proof is derived syntactically from K/S, without semantic completeness.  The
+proof-indexed fold is exactly Prop-valued: Lean elaborates the source's bare
+`Sort` codomain as `Sort 0`, not as a universe-polymorphic result.  The
+remaining 350 declarations in the named catalogue are the principal parity
+work in `Normal/Basic.lean`.
 
 `HilbertWithHenkin.v` and `HilbertWithLoeb.v` close both pinned rule-calculus
 files at 17/17 declarations.  Each port keeps the arbitrary atom type and raw
@@ -872,6 +878,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.EntailmentS4 FoundationModal.EntailmentS5 `
   FoundationModal.HilbertWithRE FoundationModal.HilbertNormal `
   FoundationModal.HilbertNormalAxiomAdapters `
+  FoundationModal.HilbertNormalBaseSystems `
   FoundationModal.HilbertWithHenkin FoundationModal.HilbertWithLoeb `
   FoundationModal.HilbertWithREClassicalCompleteness `
   FoundationModal.HilbertWithREBaseSystems FoundationModal.HilbertWithREUnarySystems `

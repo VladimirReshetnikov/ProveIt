@@ -9,7 +9,7 @@ From FoundationModal Require Import
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
   EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
-  HilbertWithHenkin HilbertWithLoeb
+  HilbertNormalBaseSystems HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
   HilbertWithRESystems HilbertWithRESymmetrySystems
@@ -1054,6 +1054,40 @@ Check normal_hilbert_has_McK.
 Check normal_hilbert_has_Mk.
 Check normal_hilbert_has_H.
 Check normal_hilbert_has_Geach.
+
+(** First 15 declarations of the raw Normal named-system catalogue: exact
+    K, KT, and KD plus syntactic compatibility with the legacy systems. *)
+Check structural_k_entailment.
+Check structural_kt_entailment.
+Check structural_kd_entailment.
+Check structural_k_of_normal.
+Check normal_K_axioms.
+Check normal_K_axioms_has_K.
+Check normal_K.
+Check normal_K_entailment.
+Check normal_K_weaker_than_structural_normal.
+Check normal_KT_axioms.
+Check normal_KT_axioms_has_K.
+Check normal_KT_axioms_has_T.
+Check normal_KT.
+Check normal_KT_entailment.
+Check normal_KD_axioms.
+Check normal_KD_axioms_has_K.
+Check normal_KD_axioms_has_D.
+Check normal_KD.
+Check normal_KD_entailment.
+Check normal_K_to_K_normal_proves.
+Check K_normal_proves_to_normal_K.
+Check normal_K_iff_K_normal_proves.
+Check normal_K_equiv_K_normal_proves.
+Check normal_KT_to_KT_proves.
+Check KT_proves_to_normal_KT.
+Check normal_KT_iff_KT_proves.
+Check normal_KT_equiv_KT_proves.
+Check normal_KD_to_KD_proves.
+Check KD_proves_to_normal_KD.
+Check normal_KD_iff_KD_proves.
+Check normal_KD_equiv_KD_proves.
 
 (** Complete 17-declaration raw-axiom calculus with the Henkin rule. *)
 Check henkin_rule.
@@ -2529,6 +2563,30 @@ Print Assumptions normal_hilbert_has_McK.
 Print Assumptions normal_hilbert_has_Mk.
 Print Assumptions normal_hilbert_has_H.
 Print Assumptions normal_hilbert_has_Geach.
+(** The first three named raw systems and all their compatibility bridges are
+    constructorwise and closed under the global context. *)
+Print Assumptions structural_k_of_normal.
+Print Assumptions normal_K_axioms_has_K.
+Print Assumptions normal_K_entailment.
+Print Assumptions normal_K_weaker_than_structural_normal.
+Print Assumptions normal_KT_axioms_has_K.
+Print Assumptions normal_KT_axioms_has_T.
+Print Assumptions normal_KT_entailment.
+Print Assumptions normal_KD_axioms_has_K.
+Print Assumptions normal_KD_axioms_has_D.
+Print Assumptions normal_KD_entailment.
+Print Assumptions normal_K_to_K_normal_proves.
+Print Assumptions K_normal_proves_to_normal_K.
+Print Assumptions normal_K_iff_K_normal_proves.
+Print Assumptions normal_K_equiv_K_normal_proves.
+Print Assumptions normal_KT_to_KT_proves.
+Print Assumptions KT_proves_to_normal_KT.
+Print Assumptions normal_KT_iff_KT_proves.
+Print Assumptions normal_KT_equiv_KT_proves.
+Print Assumptions normal_KD_to_KD_proves.
+Print Assumptions KD_proves_to_normal_KD.
+Print Assumptions normal_KD_iff_KD_proves.
+Print Assumptions normal_KD_equiv_KD_proves.
 (** Both rule calculi, including their raw-template adapters and concrete
     structural bundles, are constructive. *)
 Print Assumptions with_henkin_axm_substituted.
