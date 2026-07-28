@@ -1,7 +1,8 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax GenericSemantics GenericAdjunctiveSet GenericEntailment GenericEmbedding
+  Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
+  GenericEntailment GenericEmbedding
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -441,6 +442,65 @@ Check generic_faithfully_embeddable_trans.
 Print Assumptions generic_faithfully_embeddable_fun_exists.
 Print Assumptions generic_faithfully_embeddable_refl.
 Print Assumptions generic_faithfully_embeddable_trans.
+
+(** The complete 20-declaration ForcingRelation surface is constructive over
+    arbitrary world, formula, context, and accessibility types.  Ordinary and
+    weak forcing reuse models-only semantics, while relation-indexed
+    implication/negation stay distinct from point-local Tarski clauses. *)
+Check generic_forcing_relation.
+Check generic_forces.
+Check generic_forcing_exists.
+Check generic_exists_forces.
+Check generic_forcing_not_forces.
+Check generic_forcing_basic_semantics.
+Check generic_forcing_basic_top.
+Check generic_forcing_basic_and.
+Check generic_forcing_basic_or.
+Check generic_forcing_monotone.
+Check generic_forcing_persistent.
+Check generic_forcing_imp.
+Check generic_forcing_imp_clause.
+Check generic_forcing_neg.
+Check generic_forcing_neg_clause.
+Check generic_int_kripke.
+Check generic_int_kripke_basic.
+Check generic_int_kripke_monotone.
+Check generic_int_kripke_imp.
+Check generic_int_kripke_bottom.
+Check generic_int_kripke_neg.
+Check generic_forcing_models_iff.
+Check generic_all_forces.
+Check generic_all_forces_context.
+Check generic_all_forces_context_iff_models_set.
+Check generic_all_forces_top.
+Check generic_all_forces_and.
+Check generic_weak_forcing_relation.
+Check generic_weakly_forces.
+Check generic_weak_forcing_not_forces.
+Check generic_weak_forcing_basic_semantics.
+Check generic_weak_forcing_basic_top.
+Check generic_weak_forcing_basic_bottom.
+Check generic_weak_forcing_basic_and.
+Check generic_classical_kripke.
+Check generic_classical_kripke_basic.
+Check generic_classical_kripke_or.
+Check generic_classical_kripke_neg.
+Check generic_classical_kripke_imp.
+Check generic_classical_kripke_monotone.
+Check generic_classical_kripke_generic.
+Check generic_weak_all_forces.
+Check generic_weak_all_forces_context.
+Check generic_weak_all_forces_top.
+Check generic_all_forces_bottom_of_inhabited.
+Check generic_weak_all_forces_bottom.
+Check generic_weak_all_forces_and.
+Print Assumptions generic_forcing_models_iff.
+Print Assumptions generic_all_forces_context_iff_models_set.
+Print Assumptions generic_all_forces_top.
+Print Assumptions generic_all_forces_and.
+Print Assumptions generic_weak_all_forces_top.
+Print Assumptions generic_weak_all_forces_bottom.
+Print Assumptions generic_weak_all_forces_and.
 
 (** Complete source-facing Kripke semantic surface: local satisfaction,
     fixed-model validity, frame validity, and frame-class counterexamples. *)

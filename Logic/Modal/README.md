@@ -199,8 +199,10 @@ is being reconstructed:
 | Coq module | Main Foundation source | Ported boundary |
 | --- | --- | --- |
 | `GenericSemantics.v` | `Logic/Semantics.lean` | Complete 67-declaration surface: generic satisfaction and minimal connective clauses; ordinary/singleton-normalized finite truth laws; model sets, validity, satisfiability, theories, meaningfulness, lifted set semantics, consequence, cumulative theories, exact compactness, finite consequence extraction, and cumulative-union compactness |
-| `GenericAdjunctiveSet.v` | `Vorspiel/AdjunctiveSet.lean` | Constructive pointwise context interface with empty/adjoin laws, inclusion algebra, list-backed finiteness and conversion, and predicate/list realizations; no decidable formula equality or predicate extensionality |
+| `GenericAdjunctiveSet.v` | `Vorspiel/AdjunctiveSet.lean` | Complete 35-declaration surface: constructive pointwise contexts, empty/adjoin and inclusion laws, subset-closed finite covers, generic list extension/conversion, and predicate/list realizations; multiset/finset conveniences are generalized through duplicate-tolerant enumerations |
+| `GenericForcingRelation.v` | `Logic/ForcingRelation.lean` | Complete 20-declaration surface: ordinary/existence/weak forcing dictionaries, factored persistence and future-world implication/negation, intuitionistic and classical Kripke bundles, global/context forcing, and minimally hypothesized connective laws |
 | `GenericEntailment.v` | `Logic/Entailment.lean` | Complete 138-declaration surface: Type-valued formal proofs and inhabited provability, proof sets and controlled extraction, heterogeneous strength order/equivalence, consistency, explosion, completeness/incompleteness, axiomatized and compact contexts, deduction, semantic soundness/completeness, and pullback |
+| `GenericEmbedding.v` | `Logic/Embedding.lean` | Complete five-declaration surface: faithful provability translations between heterogeneous systems, explicit witnesses, identity, and composition, all constructively |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
@@ -447,6 +449,28 @@ meaningfulness, finite unsatisfiability, both set-meaningfulness laws, the
 reverse consequence/unsatisfiability direction, and compact finite
 consequence.  The remaining numbered declarations are constructive, and none
 uses choice or extensionality.
+
+`GenericAdjunctiveSet.v` supplies the generic context boundary without a
+primitive subset field: inclusion is pointwise and mutual inclusion yields
+pointwise carrier equivalence.  Its finite-cover presentation is closed under
+arbitrary subsets constructively, unlike exact enumeration, while canonical
+list-built contexts retain exact membership readback.  Duplicate-tolerant
+enumerations subsume the source's list, multiset, and finite-set conveniences
+without a decidable formula equality.
+
+`GenericForcingRelation.v` reuses the models-only semantic dictionary for
+ordinary and weak forcing while keeping world-domain existence nominally
+separate.  Persistence and future-world implication/negation are shared
+capabilities, so they cannot be confused with same-world Tarski clauses.
+Intuitionistic and weak/classical Kripke bundles assume no order laws.  The
+biconditional and global top/conjunction results take only the clauses they
+use, and global falsum over an inhabited world type is proved without the
+source's classical choice.
+
+`GenericEmbedding.v` adds faithful formula translations between proof systems
+whose formula and system types may all differ.  Translation witnesses,
+identity, and composition are entirely constructive; the source module's
+classical propositional import is not needed.
 
 `GenericEntailment.v` begins the generic proof-system layer directly above
 those semantics.  It preserves Foundation's distinction between a formal
@@ -1024,7 +1048,9 @@ rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
 coqchk -silent -Q . FoundationModal `
   FoundationModal.Syntax FoundationModal.NNFormula FoundationModal.Axioms `
-  FoundationModal.GenericSemantics FoundationModal.GenericEntailment `
+  FoundationModal.GenericSemantics FoundationModal.GenericAdjunctiveSet `
+  FoundationModal.GenericForcingRelation FoundationModal.GenericEntailment `
+  FoundationModal.GenericEmbedding `
   FoundationModal.FormulaEncoding FoundationModal.PLoN `
   FoundationModal.PLoNCompleteness `
   FoundationModal.Kripke FoundationModal.KripkeSemantics FoundationModal.NNFormulaSemantics `
