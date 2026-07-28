@@ -1,7 +1,7 @@
 (**
   Generic one-sided classical sequent calculi.
 
-  This module currently ports declarations 1--34 of the forty-three active
+  This module currently ports declarations 1--42 of the forty-three active
   declarations in the pinned Foundation module [Logic/Calculus.lean].  The
   calculus and its principal entailments are Type-valued, so derivations
   retain their computational content.
@@ -1212,3 +1212,581 @@ Arguments generic_contextual_of_axiom {S F E A C D} _ _ _ _ _.
 Arguments generic_contextual_of_axiom_subset {S F E A neg D}
   _ _ _ _ _ _.
 Arguments generic_contextual_axiomatized {S F E A C D} _ _.
+
+(** Source declaration 35/43: the contextual [Entailment.ModusPonens]
+    instance.  The proof uses only involutive negation, implication as
+    disjunction, and De Morgan for a negated disjunction. *)
+Definition generic_contextual_modus_ponens {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Hinv : generic_neg_involutive_law C)
+    (Himp : generic_imp_as_or_law C)
+    (Hneg_or : generic_neg_or_law C)
+    (K : generic_one_sided_lk_cut C D)
+    (s : S) : generic_modus_ponens E C s.
+Proof.
+  constructor. intros p q bpq bp.
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext s (generic_imp C p q)) bpq)
+    as [wimp dimp].
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext s p) bp)
+    as [wp dp].
+  apply (generic_equiv_from (generic_contextual_equiv Hcontext s q)).
+  assert (Hcovers : forall r,
+    generic_list_member r
+      (generic_context_witness_formulas wimp ++
+       generic_context_witness_formulas wp) ->
+    generic_adjunctive_member A r s).
+  { intros r Hr.
+    apply (proj1 (@generic_list_member_app_iff F r
+      (generic_context_witness_formulas wimp)
+      (generic_context_witness_formulas wp))) in Hr.
+    destruct Hr as [Hr | Hr].
+    + exact (generic_context_witness_covers wimp r Hr).
+    + exact (generic_context_witness_covers wp r Hr). }
+  refine (existT _
+    (exist _
+      (generic_context_witness_formulas wimp ++
+       generic_context_witness_formulas wp) Hcovers)
+    _).
+  pose proof (generic_lk_tensor (generic_lk_cut_base K)
+      (generic_lk_identity (generic_lk_cut_base K) p)
+      (generic_lk_identity (generic_lk_cut_base K) (generic_neg C q)))
+      as dcontra.
+  assert (econtra :
+    generic_and C p (generic_neg C q) ::
+      [generic_neg C p; generic_neg C (generic_neg C q)] =
+    [generic_neg C (generic_imp C p q); generic_neg C p; q]).
+  { simpl. rewrite (Hinv q), (Himp p q),
+      (Hneg_or (generic_neg C p) q), (Hinv p).
+    reflexivity. }
+  pose proof (@generic_lk_cast F D _ _ dcontra econtra) as dcontra'.
+  pose proof (generic_lk_cut_raw K (generic_imp C p q)
+    (map (generic_neg C) (generic_context_witness_formulas wimp))
+    [generic_neg C p; q] dimp dcontra') as d1.
+  assert (Hreorder1 : generic_list_subset
+    (map (generic_neg C) (generic_context_witness_formulas wimp) ++
+     [generic_neg C p; q])
+    (generic_neg C p :: q ::
+     map (generic_neg C) (generic_context_witness_formulas wimp))).
+  { intros r Hr.
+    apply (proj1 (@generic_list_member_app_iff F r
+      (map (generic_neg C) (generic_context_witness_formulas wimp))
+      [generic_neg C p; q])) in Hr.
+    destruct Hr as [Hr | [Hr | [Hr | Hfalse]]].
+    - now right; right.
+    - now left.
+    - now right; left.
+    - contradiction. }
+  pose proof (generic_lk_contra (generic_lk_cut_base K) d1 Hreorder1)
+    as d1'.
+  pose proof (generic_lk_cut_raw K p
+    (map (generic_neg C) (generic_context_witness_formulas wp))
+    (q :: map (generic_neg C)
+      (generic_context_witness_formulas wimp))
+    dp d1') as d2.
+  refine (@generic_lk_contra F C D (generic_lk_cut_base K)
+    (map (generic_neg C) (generic_context_witness_formulas wp) ++
+     q :: map (generic_neg C) (generic_context_witness_formulas wimp))
+    (q :: map (generic_neg C)
+      (generic_context_witness_formulas wimp ++
+       generic_context_witness_formulas wp)) d2 _).
+  rewrite map_app.
+  intros r Hr.
+  apply (proj1 (@generic_list_member_app_iff F r
+    (map (generic_neg C) (generic_context_witness_formulas wp))
+    (q :: map (generic_neg C)
+      (generic_context_witness_formulas wimp)))) in Hr.
+  destruct Hr as [Hr | [Hr | Hr]].
+  - right. apply (proj2 (@generic_list_member_app_iff F r
+      (map (generic_neg C) (generic_context_witness_formulas wimp))
+      (map (generic_neg C) (generic_context_witness_formulas wp)))).
+    now right.
+  - now left.
+  - right. apply (proj2 (@generic_list_member_app_iff F r
+      (map (generic_neg C) (generic_context_witness_formulas wimp))
+      (map (generic_neg C) (generic_context_witness_formulas wp)))).
+    now left.
+Defined.
+
+(** The recursion underlying source declaration 36 is more general than the
+    exported adapter: it needs only one-sided disjunction, implication's
+    normalization equation, and an already available modus-ponens rule. *)
+Fixpoint generic_contextual_cut_list
+    {S F : Type} {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Himp : generic_imp_as_or_law C)
+    (Hlk : generic_one_sided_lk C D)
+    (source : S)
+    (Hmp : generic_modus_ponens E C source)
+    (gamma : list F) {struct gamma} :
+    forall target : S,
+      (forall r, generic_list_member r gamma ->
+                 generic_adjunctive_member A r target) ->
+      generic_proof_set E source (generic_adjunctive_carrier A target) ->
+      forall chi : F,
+        D (chi :: map (generic_neg C) gamma) ->
+        generic_proof E source chi :=
+  match gamma as gamma0 return
+    forall target : S,
+      (forall r, generic_list_member r gamma0 ->
+                 generic_adjunctive_member A r target) ->
+      generic_proof_set E source (generic_adjunctive_carrier A target) ->
+      forall chi : F,
+        D (chi :: map (generic_neg C) gamma0) ->
+        generic_proof E source chi
+  with
+  | [] => fun _ _ _ chi d =>
+      generic_contextual_to_proof Hcontext source chi d
+  | psi :: tail => fun target Hmembers bs chi d =>
+      let dor := generic_lk_or Hlk (generic_neg C psi) chi
+        (map (generic_neg C) tail) (generic_lk_swap1 Hlk d) in
+      let bor := @generic_contextual_cut_list S F E A C D Hcontext
+        Himp Hlk source Hmp tail target
+        (fun r Hr => Hmembers r (or_intror Hr)) bs
+        (generic_or C (generic_neg C psi) chi) dor in
+      let bimp := @generic_proof_cast S F E source
+        (generic_or C (generic_neg C psi) chi)
+        (generic_imp C psi chi) bor (eq_sym (Himp psi chi)) in
+      let bpsi := bs psi (Hmembers psi (or_introl eq_refl)) in
+      generic_modus_ponens_raw Hmp psi chi bimp bpsi
+  end.
+
+(** Source declaration 36/43: the contextual [Entailment.StrongCut]
+    instance.  No bottom, top, or negated-conjunction law is used. *)
+Definition generic_contextual_strong_cut {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Hinv : generic_neg_involutive_law C)
+    (Himp : generic_imp_as_or_law C)
+    (Hneg_or : generic_neg_or_law C)
+    (K : generic_one_sided_lk_cut C D) :
+    generic_strong_cut E E A.
+Proof.
+  constructor. intros source target p bs b.
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext target p) b) as [w d].
+  exact (@generic_contextual_cut_list S F E A C D Hcontext
+    Himp (generic_lk_cut_base K) source
+    (@generic_contextual_modus_ponens
+      S F E A C D Hcontext Hinv Himp Hneg_or K source)
+    (generic_context_witness_formulas w) target
+    (generic_context_witness_covers w) bs p d).
+Defined.
+
+(** Source declaration 37/43: the contextual
+    [Entailment.DeductiveExplosion] instance.  Bottom elimination requires
+    only [neg bottom = top] in addition to cut. *)
+Definition generic_contextual_deductive_explosion {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Hneg_bottom : generic_neg_bottom_law C)
+    (K : generic_one_sided_lk_cut C D) :
+    generic_deductive_explosion E (generic_bottom C).
+Proof.
+  constructor. intros s b p.
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext s (generic_bottom C)) b)
+    as [w d].
+  assert (dnot_bottom : D [generic_neg C (generic_bottom C)]).
+  { apply (@generic_lk_cast F D _ _
+      (generic_lk_verum (generic_lk_cut_base K))).
+    now rewrite Hneg_bottom. }
+  pose proof (generic_lk_cut_raw K (generic_bottom C)
+    (map (generic_neg C) (generic_context_witness_formulas w)) []
+    d dnot_bottom) as dcut0.
+  pose proof (@generic_lk_cast F D _ _ dcut0
+    (app_nil_r (map (generic_neg C)
+      (generic_context_witness_formulas w)))) as dcut.
+  apply (generic_equiv_from (generic_contextual_equiv Hcontext s p)).
+  refine (existT _ w _).
+  apply (generic_lk_contra (generic_lk_cut_base K) dcut).
+  intros r Hr. now right.
+Defined.
+
+(** Source declaration 38/43: [ContextualEntailment.inconsistent_iff].
+    This characterization is constructive and inherits only the single
+    bottom-negation equation used by contextual explosion. *)
+Lemma generic_contextual_inconsistent_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S)
+         (C : generic_connectives F) (D : list F -> Type),
+    generic_contextual_entailment E A (generic_neg C) D ->
+    generic_neg_bottom_law C ->
+    generic_one_sided_lk_cut C D ->
+    forall s : S,
+      generic_inconsistent E s <->
+      exists gamma : list F,
+        (forall r, generic_list_member r gamma ->
+                   generic_adjunctive_member A r s) /\
+        inhabited (D (map (generic_neg C) gamma)).
+Proof.
+  intros S F E A C D Hcontext Hneg_bottom K s; split.
+  - intro Hinc.
+    destruct (proj1 (generic_contextual_provable_iff Hcontext s
+      (generic_bottom C)) (Hinc (generic_bottom C)))
+      as [gamma [Hgamma [d]]].
+    assert (dnot_bottom : D [generic_neg C (generic_bottom C)]).
+    { apply (@generic_lk_cast F D _ _
+        (generic_lk_verum (generic_lk_cut_base K))).
+      now rewrite Hneg_bottom. }
+    pose proof (generic_lk_cut_raw K (generic_bottom C)
+      (map (generic_neg C) gamma) [] d dnot_bottom) as dcut0.
+    pose proof (@generic_lk_cast F D _ _ dcut0
+      (app_nil_r (map (generic_neg C) gamma))) as dcut.
+    exists gamma. split; [exact Hgamma | now constructor].
+  - intros [gamma [Hgamma [d]]].
+    assert (Hbottom : generic_provable E s (generic_bottom C)).
+    { apply (proj2 (generic_contextual_provable_iff Hcontext s
+        (generic_bottom C))).
+      exists gamma. split; [exact Hgamma |]. constructor.
+      apply (generic_lk_contra (generic_lk_cut_base K) d).
+      intros r Hr. now right. }
+    exact (@generic_inconsistent_of_provable_bottom S F E
+      (generic_bottom C)
+      (@generic_contextual_deductive_explosion
+        S F E A C D Hcontext Hneg_bottom K) s Hbottom).
+Qed.
+
+Arguments generic_contextual_modus_ponens
+  {S F E A} C {D} _ _ _ _ _ _.
+Arguments generic_contextual_cut_list
+  {S F E A} C {D} _ _ _ _ _ _ _ _ _ _ _.
+Arguments generic_contextual_strong_cut
+  {S F E A} C {D} _ _ _ _ _.
+Arguments generic_contextual_deductive_explosion
+  {S F E A} C {D} _ _ _.
+
+(** Source declaration 39/43: the contextual [Entailment.Cl] instance.
+    All nontrivial axiom sequents are shared with declaration 19 through
+    [generic_lk_classical]; only transport through the contextual
+    equivalence is new here. *)
+Definition generic_contextual_classical {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Hinv : generic_neg_involutive_law C)
+    (Hneg_bottom : generic_neg_bottom_law C)
+    (Himp : generic_imp_as_or_law C)
+    (Hneg_and : generic_neg_and_law C)
+    (Hneg_or : generic_neg_or_law C)
+    (K : generic_one_sided_lk_cut C D)
+    (s : S) : generic_classical_entailment E C s.
+Proof.
+  pose proof (@generic_lk_classical F C D Hinv Hneg_bottom Himp
+    Hneg_and Hneg_or (generic_lk_cut_base K)) as Hclassical.
+  constructor.
+  - exact (@generic_contextual_modus_ponens S F E A C D Hcontext
+      Hinv Himp Hneg_or K s).
+  - intro p. exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_axiom_neg_equiv C p)
+      (generic_lk_classical_neg_equiv Hclassical p)).
+  - exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_top C)
+      (generic_lk_classical_verum Hclassical)).
+  - intros p q. exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_axiom_K C p q)
+      (generic_lk_classical_K Hclassical p q)).
+  - intros p q r. exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_axiom_S C p q r)
+      (generic_lk_classical_S Hclassical p q r)).
+  - intros p q. exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_axiom_and1 C p q)
+      (generic_lk_classical_and1 Hclassical p q)).
+  - intros p q. exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_axiom_and2 C p q)
+      (generic_lk_classical_and2 Hclassical p q)).
+  - intros p q. exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_axiom_and3 C p q)
+      (generic_lk_classical_and3 Hclassical p q)).
+  - intros p q. exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_axiom_or1 C p q)
+      (generic_lk_classical_or1 Hclassical p q)).
+  - intros p q. exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_axiom_or2 C p q)
+      (generic_lk_classical_or2 Hclassical p q)).
+  - intros p q r. exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_axiom_or3 C p q r)
+      (generic_lk_classical_or3 Hclassical p q r)).
+  - intro p. exact (@generic_contextual_to_proof S F E A
+      (generic_neg C) D Hcontext s (generic_axiom_dne C p)
+      (generic_lk_classical_dne Hclassical p)).
+Defined.
+
+(** Source declaration 40/43:
+    [ContextualEntailment.empty_provable_iff_eprovable].  This argument is
+    independent of every connective and calculus rule. *)
+Lemma generic_contextual_empty_provable_iff_principal :
+  forall (S P F : Type)
+         (E : generic_entailment S F)
+         (EP : generic_entailment P F)
+         (A : generic_adjunctive_set F S)
+         (neg : F -> F) (D : list F -> Type),
+    generic_contextual_entailment E A neg D ->
+    forall theory : P,
+      generic_principal_entailment EP D theory ->
+      forall p : F,
+        generic_provable E (generic_adjunctive_empty A) p <->
+        generic_provable EP theory p.
+Proof.
+  intros S P F E EP A neg D Hcontext theory Hprincipal p; split.
+  - intros [b].
+    destruct (generic_equiv_to
+      (generic_contextual_equiv Hcontext
+        (generic_adjunctive_empty A) p) b) as [[gamma Hgamma] d].
+    assert (Hnil : gamma = []).
+    { destruct gamma as [|q qs].
+      - reflexivity.
+      - exfalso. exact (generic_adjunctive_not_mem_empty A q
+          (Hgamma q (or_introl eq_refl))). }
+    subst gamma. simpl in d.
+    constructor.
+    exact (generic_equiv_from (generic_principal_equiv Hprincipal p) d).
+  - intros [b]. constructor.
+    apply (generic_equiv_from (generic_contextual_equiv Hcontext
+      (generic_adjunctive_empty A) p)).
+    pose (wempty :=
+      (@exist (list F)
+        (fun gamma => forall q,
+          generic_list_member q gamma ->
+          generic_adjunctive_member A q (generic_adjunctive_empty A)) []
+        (fun (q : F) (Hq : generic_list_member q []) =>
+          False_rect _ Hq) :
+       generic_context_witness A (generic_adjunctive_empty A))).
+    exact (existT _ wempty
+      (generic_equiv_to (generic_principal_equiv Hprincipal p) b)).
+Qed.
+
+(** Finite De Morgan for singleton-normalized conjunction.  Declaration 41
+    is the only consumer; exposing the lemma makes its exact law boundary
+    explicit. *)
+Lemma generic_neg_list_conj2 :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_top_law C ->
+    generic_neg_and_law C ->
+    forall gamma : list F,
+      generic_neg C (generic_list_conj2 C gamma) =
+      generic_list_disj2 C (map (generic_neg C) gamma).
+Proof.
+  intros F C Hneg_top Hneg_and gamma.
+  induction gamma as [|p ps IH].
+  - simpl. exact Hneg_top.
+  - destruct ps as [|q qs].
+    + reflexivity.
+    + simpl in IH |- *. rewrite Hneg_and, IH. reflexivity.
+Qed.
+
+(** Double negation through a mapped singleton-normalized disjunction. *)
+Lemma generic_neg_mapped_list_disj2 :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_involutive_law C ->
+    generic_neg_bottom_law C ->
+    generic_neg_or_law C ->
+    forall gamma : list F,
+      generic_neg C
+        (generic_list_disj2 C (map (generic_neg C) gamma)) =
+      generic_list_conj2 C gamma.
+Proof.
+  intros F C Hinv Hneg_bottom Hneg_or gamma.
+  rewrite (@generic_neg_list_disj2 F C Hneg_bottom Hneg_or
+    (map (generic_neg C) gamma)), map_map.
+  induction gamma as [|p ps IH].
+  - reflexivity.
+  - destruct ps as [|q qs].
+    + simpl. rewrite (Hinv p). reflexivity.
+    + simpl in IH |- *. rewrite (Hinv p), IH. reflexivity.
+Qed.
+
+(** Type-valued finite-context proof used by source declaration 41. *)
+Record generic_principal_context_proof {P F : Type}
+    (E : generic_entailment P F)
+    (C : generic_connectives F)
+    (theory : P) (T : F -> Prop) (p : F) : Type := {
+  generic_principal_context_formulas : list F;
+  generic_principal_context_covers :
+    forall q,
+      generic_list_member q generic_principal_context_formulas -> T q;
+  generic_principal_context_raw :
+    generic_proof E theory
+      (generic_imp C
+        (generic_list_conj2 C generic_principal_context_formulas) p)
+}.
+
+Arguments generic_principal_context_formulas
+  {P F E C theory T p} _.
+Arguments generic_principal_context_covers
+  {P F E C theory T p} _ _ _.
+Arguments generic_principal_context_raw
+  {P F E C theory T p} _.
+
+(** Source declaration 41/43: [ContextualEntailment.iff_context]. *)
+Lemma generic_contextual_iff_principal_context :
+  forall (S P F : Type)
+         (E : generic_entailment S F)
+         (EP : generic_entailment P F)
+         (A : generic_adjunctive_set F S)
+         (C : generic_connectives F) (D : list F -> Type),
+    generic_contextual_entailment E A (generic_neg C) D ->
+    forall theory : P,
+      generic_principal_entailment EP D theory ->
+      generic_neg_involutive_law C ->
+      generic_neg_top_law C ->
+      generic_neg_bottom_law C ->
+      generic_imp_as_or_law C ->
+      generic_neg_and_law C ->
+      generic_neg_or_law C ->
+      generic_one_sided_lk_cut C D ->
+      forall (s : S) (p : F),
+        generic_provable E s p <->
+        inhabited (generic_principal_context_proof EP C theory
+          (generic_adjunctive_carrier A s) p).
+Proof.
+  intros S P F E EP A C D Hcontext theory Hprincipal
+    Hinv Hneg_top Hneg_bottom Himp Hneg_and Hneg_or K s p; split.
+  - intros [b].
+    destruct (generic_equiv_to
+      (generic_contextual_equiv Hcontext s p) b) as [w d].
+    pose proof (generic_lk_rotate (generic_lk_cut_base K) d) as drot.
+    pose proof (generic_lk_disj2 (generic_lk_cut_base K)
+      (map (generic_neg C) (generic_context_witness_formulas w)) [p]
+      drot) as ddisj.
+    pose proof (generic_lk_or (generic_lk_cut_base K)
+      (generic_list_disj2 C
+        (map (generic_neg C) (generic_context_witness_formulas w)))
+      p [] ddisj) as dnormalized.
+    assert (enormalized :
+      generic_or C
+        (generic_list_disj2 C
+          (map (generic_neg C) (generic_context_witness_formulas w))) p =
+      generic_imp C
+        (generic_list_conj2 C (generic_context_witness_formulas w)) p).
+    { rewrite Himp,
+        (@generic_neg_list_conj2 F C Hneg_top Hneg_and
+          (generic_context_witness_formulas w)).
+      reflexivity. }
+    pose proof (@generic_lk_cast F D _ _ dnormalized
+      (f_equal (fun r => [r]) enormalized)) as dimp.
+    constructor.
+    refine {| generic_principal_context_formulas :=
+                generic_context_witness_formulas w;
+              generic_principal_context_raw :=
+                generic_equiv_from
+                  (generic_principal_equiv Hprincipal
+                    (generic_imp C
+                      (generic_list_conj2 C
+                        (generic_context_witness_formulas w)) p))
+                  dimp |}.
+    exact (generic_context_witness_covers w).
+  - intros [w]. constructor.
+    apply (generic_equiv_from (generic_contextual_equiv Hcontext s p)).
+    refine (existT _
+      (exist _ (generic_principal_context_formulas w)
+        (generic_principal_context_covers w)) _).
+    pose proof (generic_equiv_to
+      (generic_principal_equiv Hprincipal
+        (generic_imp C
+          (generic_list_conj2 C
+            (generic_principal_context_formulas w)) p))
+      (generic_principal_context_raw w)) as dimp.
+    assert (eformula :
+      generic_imp C
+        (generic_list_conj2 C
+          (generic_principal_context_formulas w)) p =
+      generic_or C
+        (generic_list_disj2 C
+          (map (generic_neg C)
+            (generic_principal_context_formulas w))) p).
+    { rewrite Himp,
+        (@generic_neg_list_conj2 F C Hneg_top Hneg_and
+          (generic_principal_context_formulas w)).
+      reflexivity. }
+    pose proof (@generic_lk_cast F D _ _ dimp
+      (f_equal (fun r => [r]) eformula)) as dformula.
+    assert (dconj : D
+      (generic_list_conj2 C (generic_principal_context_formulas w) ::
+       map (generic_neg C) (generic_principal_context_formulas w))).
+    { apply (generic_lk_conj2 (generic_lk_cut_base K)
+        (generic_principal_context_formulas w)
+        (map (generic_neg C) (generic_principal_context_formulas w))).
+      intros q Hq.
+      apply (generic_lk_close (generic_lk_cut_base K) q).
+      + now left.
+      + right. exact (@generic_list_member_map_intro F F
+          (generic_neg C) q (generic_principal_context_formulas w) Hq). }
+    pose proof (generic_lk_rotate (generic_lk_cut_base K)
+      (generic_lk_identity (generic_lk_cut_base K) p)) as dpair.
+    pose proof (generic_lk_tensor (generic_lk_cut_base K) dconj dpair)
+      as dcontra0.
+    assert (Hreorder : generic_list_subset
+      (generic_and C
+        (generic_list_conj2 C (generic_principal_context_formulas w))
+        (generic_neg C p) ::
+       map (generic_neg C) (generic_principal_context_formulas w) ++ [p])
+      (generic_and C
+        (generic_list_conj2 C (generic_principal_context_formulas w))
+        (generic_neg C p) ::
+       p :: map (generic_neg C)
+         (generic_principal_context_formulas w))).
+    { intros r [Hr | Hr].
+      - now left.
+      - right. apply (proj1 (@generic_list_member_app_iff F r
+          (map (generic_neg C) (generic_principal_context_formulas w))
+          [p])) in Hr.
+        destruct Hr as [Hr | [Hr | Hfalse]].
+        + now right.
+        + now left.
+        + contradiction. }
+    pose proof (generic_lk_contra (generic_lk_cut_base K)
+      dcontra0 Hreorder) as dcontra.
+    apply (generic_lk_extended_cut K dformula dcontra).
+    rewrite Hneg_or,
+      (@generic_neg_mapped_list_disj2 F C Hinv Hneg_bottom Hneg_or
+        (generic_principal_context_formulas w)).
+    reflexivity.
+Qed.
+
+(** Source declaration 42/43:
+    [ContextualEntailment.of_principal_provable].  Direct empty-support
+    transport removes every connective and Cut premise used by the source's
+    route through declaration 41. *)
+Lemma generic_contextual_of_principal_provable :
+  forall (S P F : Type)
+         (E : generic_entailment S F)
+         (EP : generic_entailment P F)
+         (A : generic_adjunctive_set F S)
+         (neg : F -> F) (D : list F -> Type),
+    generic_contextual_entailment E A neg D ->
+    forall theory : P,
+      generic_principal_entailment EP D theory ->
+      forall (s : S) (p : F),
+        generic_provable EP theory p -> generic_provable E s p.
+Proof.
+  intros S P F E EP A neg D Hcontext theory Hprincipal s p [b].
+  constructor.
+  exact (@generic_contextual_to_proof S F E A neg D Hcontext s p
+    (generic_equiv_to (generic_principal_equiv Hprincipal p) b)).
+Qed.
+
+Arguments generic_contextual_classical
+  {S F E A} C {D} _ _ _ _ _ _ _ _.
+Arguments generic_contextual_empty_provable_iff_principal
+  {S P F} E EP A neg D _ theory _ p.
+Arguments generic_contextual_iff_principal_context
+  {S P F} E EP A C D _ theory _ _ _ _ _ _ _ _ _ _.
+Arguments generic_contextual_of_principal_provable
+  {S P F} E EP A neg D _ theory _ s p _.

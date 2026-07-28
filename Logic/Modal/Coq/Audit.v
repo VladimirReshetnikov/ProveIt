@@ -566,6 +566,32 @@ Print Assumptions generic_contextual_to_proof.
 Print Assumptions generic_contextual_of_axiom.
 Print Assumptions generic_contextual_of_axiom_subset.
 Print Assumptions generic_contextual_axiomatized.
+Check generic_contextual_modus_ponens.
+Check generic_contextual_cut_list.
+Check generic_contextual_strong_cut.
+Check generic_contextual_deductive_explosion.
+Check generic_contextual_inconsistent_iff.
+Print Assumptions generic_contextual_modus_ponens.
+Print Assumptions generic_contextual_cut_list.
+Print Assumptions generic_contextual_strong_cut.
+Print Assumptions generic_contextual_deductive_explosion.
+Print Assumptions generic_contextual_inconsistent_iff.
+Check generic_contextual_classical.
+Check generic_contextual_empty_provable_iff_principal.
+Check generic_neg_list_conj2.
+Check generic_neg_mapped_list_disj2.
+Check generic_principal_context_proof.
+Check generic_principal_context_formulas.
+Check generic_principal_context_covers.
+Check generic_principal_context_raw.
+Check generic_contextual_iff_principal_context.
+Check generic_contextual_of_principal_provable.
+Print Assumptions generic_contextual_classical.
+Print Assumptions generic_contextual_empty_provable_iff_principal.
+Print Assumptions generic_neg_list_conj2.
+Print Assumptions generic_neg_mapped_list_disj2.
+Print Assumptions generic_contextual_iff_principal_context.
+Print Assumptions generic_contextual_of_principal_provable.
 
 (** The complete 20-declaration ForcingRelation surface is constructive over
     arbitrary world, formula, context, and accessibility types.  Ordinary and
