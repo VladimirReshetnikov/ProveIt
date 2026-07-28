@@ -73,7 +73,22 @@ Expected: `leanchecker found a problem in NegativeControl`, exit code `1`.
 * Lean `4.32.0` (`x86_64-w64-windows-gnu`, commit `8c9756b28d64`)
 * Lean `4.31.0` — the toolchain this repository pins
 
-## Status
+## Status and prior art
 
-Reported behaviour is present in both toolchains above; no matching upstream
-issue was found on `leanprover/lean4` at the time of writing.
+**This is a rediscovery, not a new finding.** The same technique — using
+`prelude` to redefine `Nat.add` and play the kernel's GMP accelerator off
+against delta-reduction — was demonstrated publicly by Joachim Breitner
+(a Lean core developer) in the comment thread of the Manifold market
+["Is the Lean kernel unsound?"](https://manifold.markets/tfae/is-the-lean-kernel-unsound).
+It was ruled out there as a "shenanigan", on the grounds that redefining core
+types and operations amounts to *replacing part of the system* rather than
+finding an inherent hole in it. That is a reasonable position, and it is the
+right way to read these artifacts.
+
+What the artifacts here add is a self-contained, minimal, end-to-end verified
+reproduction: exit code `0`, `#print axioms` reporting nothing, `leanchecker
+--fresh` accepting, and a negative control proving the checker is not
+no-opping. No matching issue exists on the `leanprover/lean4` tracker, so the
+behaviour is not fixed — only deemed out of scope.
+
+The behaviour is present in both toolchains listed above.

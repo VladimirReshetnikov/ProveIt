@@ -9,6 +9,19 @@ no `native_decide`, and **no axioms at all** (`#print axioms` reports none). The
 resulting `.olean` also passes `leanchecker --fresh`, the independent replay
 checker shipped with the toolchain.
 
+> **Prior art — this is a rediscovery.** The technique below (redefine `Nat.add`
+> in a `prelude` module, then play the kernel's GMP accelerator off against
+> delta-reduction) was demonstrated publicly by Joachim Breitner, a Lean core
+> developer, in the comment thread of the Manifold market
+> ["Is the Lean kernel unsound?"](https://manifold.markets/tfae/is-the-lean-kernel-unsound),
+> where it was ruled out as a "shenanigan" because redefining core types and
+> operations amounts to *replacing part of the system* rather than finding an
+> inherent hole in it. That reading is reasonable and should be applied here.
+> The contribution of this report is a minimal, self-contained, end-to-end
+> verified reproduction plus the negative results and hardening observations in
+> the later sections. There is no issue for it on the `leanprover/lean4` tracker,
+> so the behaviour is unfixed — but it is known, and was not treated as a bug.
+
 The cause is that the kernel's built-in `Nat` normalizer extension is keyed on
 *names only* and is never validated against the declaration it fires on, while a
 `prelude` module may legitimately own those names.
@@ -153,6 +166,15 @@ The kernel's `Nat` extension is documented as a trust assumption in the sense
 that GMP is trusted to implement arithmetic; it is *not* documented that the
 extension will apply itself to an unrelated declaration that happens to share a
 name.
+
+The counter-argument, and the reason this was dismissed when Breitner raised it,
+is that a module which redefines `Nat` has replaced part of the system rather
+than exploited it: the kernel's arithmetic extension is a *specification* that
+the ambient environment is expected to satisfy, in the same way that
+`kernel/quot.cpp` expects a particular `Eq`. The difference is that `quot.cpp`
+actually *checks* its expectation (`check_eq_type`) before arming the feature,
+and the `Nat` extension does not. So the disagreement is really about whether an
+unchecked precondition counts as a soundness bug, not about the facts.
 
 ## Suggested remedies
 
