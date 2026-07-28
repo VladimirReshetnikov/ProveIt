@@ -1,0 +1,45 @@
+(** Kernel-facing audit for the direct bottom-elimination rule case. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectBottomEliminationCase.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectBottomEliminationCaseAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectBottomEliminationCase.
+
+Check raw_coqRestrictedPADirectBottom_contextShiftN_inherited.
+Check raw_coqRestrictedPADirectBottom_nestedExContext_inherited.
+
+Check coqRestrictedPADirectBottomDeepContext.
+Check coqRestrictedPADirectBottomCaseTemplate.
+Check coqRestrictedPADirectBottomCaseContext.
+Check coqRestrictedPADirectBottomStrongPrefixTemplate.
+Check coqRestrictedPADirectBottomRestrictedProofTemplate.
+Check coqRestrictedPADirectBottom_case_shape.
+
+Check coqRestrictedPADirectBottomOuterContextTruthTemplate.
+Check coqRestrictedPADirectBottomWitnessContextTruthTemplate.
+Check coqRestrictedPADirectBottom_remaining_shape.
+Check coqRestrictedPADirectBottomContextTruthTransportRoot_valid.
+Check coqRestrictedPADirectBottomCompletionRoot_valid.
+
+(** The sole mathematical residual ends in object-level bottom and does not
+    mention the desired conclusion-truth formula. *)
+Check coqRestrictedPADirectBottomRecursiveContradictionLawTemplate.
+Check RawCoqRestrictedPADirectBottomRecursiveContradictionLawRoot.
+
+Check raw_codedPALocalProofOf_coqRestrictedPADirectBottomEliminationCase.
+Check raw_coqRestrictedPADirectStrongStepBottomEliminationCaseRoot.
+
+Print Assumptions coqRestrictedPADirectBottom_case_shape.
+Print Assumptions coqRestrictedPADirectBottomContextTruthTransportRoot_valid.
+Print Assumptions coqRestrictedPADirectBottomCompletionRoot_valid.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectBottomEliminationCase.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepBottomEliminationCaseRoot.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectBottomEliminationCaseAudit.
