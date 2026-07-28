@@ -2055,6 +2055,19 @@ induction, the fixed consistency-from-soundness source compiler, and the
 structural opening/refutation of the sealed target remain the three explicit
 proof-producing obligations.
 
+`RawCodedDynamicTruthNativeFinalTargetRefutationCompilation.v` discharges the
+third of those roots without adding a compiler premise.  The final graph
+trace identifies `nextFinal` with the exact sealed restricted-consistency
+target.  In the canonical third-existential context, the module assumes that
+target, removes its fixed closure prefix using represented identity
+substitutions, instantiates the genuine certificate quantifier with object
+variable `3`, and applies the result to the literal three-times-shifted proof
+assumption already present in the context.  Implication elimination and
+introduction yield the required local proof of `nextFinal -> bottom`.  No
+carrier decoding, semantic truth-to-proof conversion, dynamic-soundness
+producer, or consistency successor is used; the universal-soundness and
+consistency-from-soundness roots remain separate obligations.
+
 `RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.v` connects these
 stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,
@@ -2154,6 +2167,17 @@ scope lemmas uniform in the external level.  More importantly, this is still
 a standard-`nat` level slice: it neither replaces `level` by an arbitrary
 model carrier nor supplies the opaque successor-truth application needed by
 the uniform nonstandard theorem.
+
+`RawCodedRestrictedPADerivationSoundnessScope.v` discharges exactly that
+metatheoretic formula-scope premise for every external fixed truth level.  It
+proves the Sigma/Pi truth-certificate scopes simultaneously, composes them
+through admissibility and context truth, and then closes the complete
+restricted-proof checker and strong-prefix formula.  The large proof
+constructor table is handled through list-level scope lemmas so that its
+arithmetic graphs are not repeatedly expanded.  This removes a syntactic
+premise from the represented proof-code induction interface, but deliberately
+does not turn the external `nat` level into an arbitrary element of a
+nonstandard PA model.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
