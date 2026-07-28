@@ -2449,6 +2449,25 @@ the recursive child truth and the corresponding dynamic conjunction
 projection law.  All three roots retain the caller's arbitrary template tail
 and assume neither their constructor result nor the enclosing strong step.
 
+Conjunction introduction supplies the first completed two-child strong-prefix
+case.  It projects both displayed endpoints, specializes the inherited strong
+induction hypothesis to each child, and opens all four child predicate
+binders before applying the dynamic conjunction truth law.  Its residual
+package is limited to two child-interface laws—each returning descent,
+restrictedness, endpoint validity, and admissibility—and the final dynamic
+`And` law; the recursive applications and outer shell are checked proof
+trees.
+
+The two disjunction-introduction modules fill the corresponding left and
+right dispatcher slots without conflating their witness indices.  Each one
+projects its exact proof-code equation, principal `Or` code, and displayed
+child endpoint; transports outer context truth to the witness context; then
+composes recursive child soundness with the appropriate dynamic `Or`
+introduction law.  In particular, the right branch explicitly selects its
+right-formula witness rather than reusing the neighboring assumption slot.
+The audited public roots leave only those two local truth laws and contain all
+remaining structural and implication-shell work.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
