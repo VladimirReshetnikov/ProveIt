@@ -27,6 +27,8 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateStructuralTranslation
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateNumeralParameters
+  RawCodedTemplateNumeralTermSyntax
+  RawCodedTemplateTernaryApplication
   RawCodedRestrictedPAConsistencyFromUniversalSoundness.
 
 Import ListNotations.
@@ -45,6 +47,8 @@ Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateNumeralParameters.
+Import PABoundedRawCodedTemplateNumeralTermSyntax.
+Import PABoundedRawCodedTemplateTernaryApplication.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 
 (** ------------------------------------------------------------------
@@ -83,6 +87,62 @@ Arguments rawCoqRestrictedPADerivationSoundnessTemplateTermView
   M _ _ : clear implicits.
 Arguments rawCoqRestrictedPADerivationSoundnessTemplateTermsView
   M _ _ : clear implicits.
+
+(** These three facts are shared by every adapter from a deeply closed
+    ternary predicate to the five-argument truth interface.  Keeping them at
+    the selector-independent term view prevents the context and conclusion
+    adapters from carrying parallel copies of the same syntax argument. *)
+Lemma rawCoqRestrictedPADerivationSoundnessTemplateTermView_syntax : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      (parameters : RawCodedTemplateNumeralParameters M) input,
+  RawCodedTermSyntax M
+    (rawCoqRestrictedPADerivationSoundnessTemplateTermView
+      M parameters input).
+Proof.
+  intros M hPA parameters input.
+  unfold rawCoqRestrictedPADerivationSoundnessTemplateTermView,
+    rawCoqRestrictedPADerivationSoundnessTermViewSymbols.
+  apply raw_numeralTemplateTerm_syntax.
+  exact hPA.
+Qed.
+
+Lemma rawCoqRestrictedPADerivationSoundnessTemplateTermView_shift : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      (parameters : RawCodedTemplateNumeralParameters M) depth input,
+  RawCodedTermShift M
+    (rawNumeralValue M depth) (rawNumeralValue M 1)
+    (rawCoqRestrictedPADerivationSoundnessTemplateTermView
+      M parameters input)
+    (rawCoqRestrictedPADerivationSoundnessTemplateTermView M parameters
+      (templateTermRename (templateShiftRenamingAt depth) input)).
+Proof.
+  intros M hPA parameters depth input.
+  unfold rawCoqRestrictedPADerivationSoundnessTemplateTermView,
+    rawCoqRestrictedPADerivationSoundnessTermViewSymbols.
+  apply raw_numeralTemplateTerm_shift.
+  exact hPA.
+Qed.
+
+Lemma rawCoqRestrictedPADerivationSoundnessTemplateTermView_opening : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      (parameters : RawCodedTemplateNumeralParameters M)
+      depth replacement input,
+  RawCodedFormulaSubstitutionAtom M
+    (rawCoqRestrictedPADerivationSoundnessTemplateTermView
+      M parameters replacement)
+    (rawNumeralValue M depth)
+    (rawCoqRestrictedPADerivationSoundnessTemplateTermView
+      M parameters input)
+    (rawCoqRestrictedPADerivationSoundnessTemplateTermView M parameters
+      (templateTermSubst
+        (templateOpeningSubstAt depth replacement) input)).
+Proof.
+  intros M hPA parameters depth replacement input.
+  unfold rawCoqRestrictedPADerivationSoundnessTemplateTermView,
+    rawCoqRestrictedPADerivationSoundnessTermViewSymbols.
+  apply raw_numeralTemplateTerm_substitutionAtom.
+  exact hPA.
+Qed.
 
 (** ------------------------------------------------------------------
     Abstract direct selectors for the two opaque truth families. *)

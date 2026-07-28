@@ -1635,6 +1635,18 @@ cutoff-26 result is only its compatibility instance.  Both the lower-Pi
 application in a Sigma row and the lower-Sigma application in a Pi row
 therefore inherit deep closure from the preceding global predicate.
 
+`RawCodedDynamicContextTruthSelector.v` gives context truth an explicit
+pointwise construction.  Its semantic layer proves, relative to an arbitrary
+ternary `Sigma` relation, that one honest context-spine traversal exists and
+that every formula in a live head-table slot satisfies `Sigma` under the
+displayed assignment.  Its carrier-code layer does not decode a possibly
+nonstandard Sigma code: it applies a selected deeply closed ternary predicate
+at the innermost leaf, surrounds that leaf with quoted traversal and lookup
+syntax, and proves the resulting code deeply closed from the ternary root.
+`RawCodedDynamicContextTruthDirectSelector.v` then adapts that code to the
+exact five-argument context leaf, with shift and opening fields obtained from
+the genuine ternary interchange laws on honest template-term syntax.
+
 `RawCodedDynamicTruthPairedSuccessorLocalDeepClosure.v` assembles those two
 opaque leaves with the transparent row constructors.  It tracks the genuine
 eight existential row witnesses and the three extra binders around the lower
@@ -2371,9 +2383,55 @@ then selects the finalizer prefix above that case prefix, exposes their exact
 flattening as `finalizerPrefix ++ casePrefix`, and returns an ordinary PA
 certificate for the direct universal-soundness code.  None of these modules
 infers a finite structural tree from a direct trace.  They remove a
-translation mismatch but do not yet construct the context-truth selector,
-the recursive strong-step root, or the arbitrary-carrier closure remainder;
-the Coq headline therefore remains conditional.
+translation mismatch, but the recursive strong-step root and two genuine
+syntax folds in its closure data remain; the Coq headline therefore remains
+conditional.
+
+`RawCodedRestrictedPADerivationSoundnessConclusionTruthDirectSelector.v`
+constructs the companion five-argument conclusion selector from the native
+axiom-soundness trace.  Orbit functionality aligns an independently selected
+deep-closed orbit with that trace, deep closure propagates across the trace's
+literal successor edge, and ternary-application functionality identifies the
+native evidence with application of that same `nextGlobalSigma`.  The lower
+and upper arguments are ignored only after the surrounding trace has fixed
+this particular successor predicate; the construction does not treat levels
+as semantically irrelevant.
+
+`RawCodedRestrictedPADerivationSoundnessNativeDirectTruthInputs.v` closes the
+selector-coherence seam.  From one native axiom-soundness trace it returns one
+successor Sigma application selector, builds context truth from that same
+dependent selector, constructs both five-argument direct families, and
+packages the resulting structural inputs.  Its endpoint retains the literal
+context and conclusion `tfOpaque` leaf equations and the native application
+witness, so an independently chosen truth predicate cannot enter through the
+context side.  This is deliberately a fixed-stage structural package:
+downstream code must still relate the two numeral parameters to the trace's
+predecessor and successor levels; the theorem does not claim a uniform
+level-dependent selector while ignoring those parameters.
+
+`RawCodedUniversalClosureAllCarrierTotality.v` instantiates the generic
+PA-internal carrier orbit with base `input` and successor `forall`, proving
+existence and uniqueness of iterated universal closure for every carrier
+count, including nonstandard counts.  It also projects a well-formed source
+formula traversal from any represented formula-operation trace, so every
+direct template formula is in the honest syntax domain.  Consequently the
+three-field direct closure remainder now follows from only a formula-bound
+certificate and an all-depth diagonal-substitution certificate: closure
+existence and the complete self-instantiation orbit are constructed rather
+than assumed.  Turning the nonstandard well-formed traversal into those last
+two fold certificates remains explicit.
+
+`RawCodedFormulaBoundAllCarrierBoundary.v` sharpens that domain to atomic
+adequacy: a formula-shift source carries represented term syntax at every
+equality leaf, so every direct template and the exact strong-prefix induction
+body satisfy the smallest honest premise for formula-bound discovery.  The
+module names the missing fold as
+`RawCodedFormulaBoundAtomicallyAdequateTotal` and shows that it, together with
+the all-depth diagonal certificate, constructs the complete closure
+remainder.  The missing fold must build normalized code-indexed source and
+bound columns through `S input` (including default rows between genuine
+subcodes), plus the analogous term-bound fold at equality atoms; the existing
+occurrence-indexed syntax traversal is not definitionally that table.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
