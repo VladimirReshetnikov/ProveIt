@@ -44,9 +44,10 @@ Check substitute_comp.
 Check satisfies_substitute.
 Check valid_K.
 
-(** The first sixty-one active declarations from Logic/Semantics.lean:
+(** The complete sixty-seven-declaration Logic/Semantics.lean surface:
     generic Tarski clauses, ordinary and singleton-normalized finite folds,
-    model sets, validity, satisfiability, meaningfulness, and consequence. *)
+    model sets, validity, satisfiability, meaningfulness, consequence,
+    cumulative theories, and semantic compactness. *)
 Check generic_connectives.
 Check generic_semantics.
 Check generic_not_models.
@@ -112,6 +113,16 @@ Check generic_consequence_iff_explicit.
 Check generic_consequence_iff_not_satisfiable.
 Check generic_consequence_weakening.
 Check generic_consequence_of_mem.
+Check generic_cumulative.
+Check generic_cumulative_subset_of_le.
+Check generic_cumulative_subsets_at_max.
+Check generic_cumulative_list_common_stage.
+Check generic_compact.
+Check generic_compact_iff.
+Check generic_compact_unsatisfiable_iff_finite.
+Check list_prune_insert_subset.
+Check generic_consequence_compact.
+Check generic_compact_cumulative.
 
 Print Assumptions generic_models_iff.
 Print Assumptions generic_models_list_conj.
@@ -139,6 +150,16 @@ Print Assumptions generic_models_set_image_iff.
 Print Assumptions generic_valid_neg_iff.
 Print Assumptions generic_consequence_weakening.
 Print Assumptions generic_consequence_of_mem.
+(** Compactness adds one classical source theorem and one reusable classical
+    finite-witness adapter.  Cumulative bounds, proof-directed list pruning,
+    and cumulative-union compactness remain constructive. *)
+Print Assumptions generic_cumulative_subset_of_le.
+Print Assumptions generic_cumulative_subsets_at_max.
+Print Assumptions generic_cumulative_list_common_stage.
+Print Assumptions generic_compact_unsatisfiable_iff_finite.
+Print Assumptions list_prune_insert_subset.
+Print Assumptions generic_consequence_compact.
+Print Assumptions generic_compact_cumulative.
 
 (** Complete source-facing Kripke semantic surface: local satisfaction,
     fixed-model validity, frame validity, and frame-class counterexamples. *)

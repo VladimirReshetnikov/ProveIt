@@ -14,7 +14,8 @@ is being reconstructed:
 
 - formula- and model-polymorphic Tarski semantics for all six propositional
   connectives; exact finite-connective truth readbacks; and generic model-set,
-  validity, satisfiability, meaningfulness, and semantic-consequence APIs;
+  validity, satisfiability, meaningfulness, semantic consequence, cumulative
+  theory, and semantic compactness APIs;
 - primitive modal syntax, derived connectives, substitution, iteration,
   complexity, degree, subformulas, and complement-closed finite contexts;
 - negation-normal syntax, structural De Morgan negation, modal CNF/DNF shape,
@@ -197,7 +198,7 @@ is being reconstructed:
 
 | Coq module | Main Foundation source | Ported boundary |
 | --- | --- | --- |
-| `GenericSemantics.v` | `Logic/Semantics.lean` | First 61 active declarations: generic satisfaction and minimal connective clauses; ordinary/singleton-normalized finite truth laws; model sets, validity, satisfiability, theories, meaningfulness, lifted set semantics, and consequence; the six cumulative/compactness declarations remain |
+| `GenericSemantics.v` | `Logic/Semantics.lean` | Complete 67-declaration surface: generic satisfaction and minimal connective clauses; ordinary/singleton-normalized finite truth laws; model sets, validity, satisfiability, theories, meaningfulness, lifted set semantics, consequence, cumulative theories, exact compactness, finite consequence extraction, and cumulative-union compactness |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
@@ -435,10 +436,15 @@ lifted set semantics give generic theories, satisfiability, meaningfulness,
 and semantic consequence without extensionality.  Source `Finset` values are
 represented by membership-extensional lists, eliminating decidable formula
 equality while preserving the distinct ordinary and singleton-normalized
-folds.  The Tarski and model-set core is constructive.  Exactly the negated
-meaningfulness law, finite counterexample extraction, set-meaningfulness laws,
-and the reverse consequence/unsatisfiability direction use excluded middle;
-none uses choice or extensionality.
+folds.  Cumulative finite contexts are lifted to one stage constructively via
+`Nat.max`.  Exact compactness yields finite consequence through reusable
+finite-unsatisfiability and proof-directed list-pruning lemmas; the latter
+removes the source's final decidable-equality premise without adding choice.
+Exactly six numbered declarations use excluded middle: negated
+meaningfulness, finite unsatisfiability, both set-meaningfulness laws, the
+reverse consequence/unsatisfiability direction, and compact finite
+consequence.  The remaining numbered declarations are constructive, and none
+uses choice or extensionality.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
