@@ -2382,6 +2382,17 @@ context inclusion weakening, merge two independently witnessed proof
 contexts, and synchronize all six ordinary master-field proofs in one literal
 witnessed context.
 
+`RawCodedPALocalProofAdjoinedContextTransport.v` packages the two context
+extensions needed by carrier-level induction compilers.  It lifts witnessed
+base inclusion and proof weakening through the same newly adjoined induction
+axiom.  It also transports a proof beneath a temporary open-context head from
+an explicit unit-shift trace for that head, which supplies the precise binder
+readiness needed by All-I and Ex-E descendants.  Combined endpoints handle an
+induction extension followed by a closed temporary premise, while keeping the
+premise distinct from PA-axiom witnessing.  These lemmas support honest
+grow-the-witnessed-base-first constructions; they do not assert that an
+arbitrary fixed or empty axiom context already proves every PA theorem.
+
 `RawCodedPAOrdinaryProofWitnessedContextAccumulation.v` exposes the incremental
 form needed by dependency-ordered callbacks.  It opens one ordinary proof
 certificate, merges the hidden witnessed axiom context with an existing
