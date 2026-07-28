@@ -1836,6 +1836,15 @@ obligation.  The module deliberately makes no unrestricted fixed-level
 opening claim, semantic truth-to-proof inference, or empty-context
 identification.
 
+`RawCodedDynamicTruthNativeCrossLevelStagedRootCompilation.v` carries that
+same body to the graph-facing certificate boundary.  It applies the staged
+implication in the literal shared context, retains the witnessed PA-axiom
+package while introducing the three universal binders, and proves an
+ordinary represented certificate of the exact code selected by the native
+cross-level transform.  Thus body decomposition and empty-base repackaging
+are no longer needed by the successor assembler; the only remaining
+cross-level content is still the explicitly named trace-linked staged kernel.
+
 `RawCodedDynamicTruthNativeShiftPositiveGraph.v` constructs the third native
 positive coordinate.  It selects the genuine paired truth orbit at `S p`,
 builds the six source/target domain and certificate applications through
@@ -1865,6 +1874,17 @@ implication introduction reduces the two Sigma/Pi equivalences to exactly
 four trace-indexed directional leaves.  The empty-tail endpoint remains a
 conditional specialization of those leaves, while the witnessed-tail form
 keeps its PA context literal rather than silently discarding it.
+
+`RawCodedDynamicTruthNativeShiftStagedRootCompilation.v` places that shell at
+the dependency boundary used by the staged successor.  The current six-field
+master, next local field, and next cross-level field are assembled in their
+one witnessed PA context and applied to a single trace-linked implication
+whose consequent is the synchronized shift body.  Checked decomposition
+recovers all four directional laws, while eight universal-introduction nodes
+retain the witnessed tail and package an ordinary proof of the exact
+transform-selected field.  The one remaining arithmetic obligation is named
+`RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler`; no
+empty-context erasure or semantic truth-to-proof step is used.
 
 `RawCodedDynamicTruthNativeSubstitutionCarrier.v` fixes the exact syntax for
 the fourth positive master coordinate.  Its transparent polynomial closes
@@ -1908,6 +1928,16 @@ complete open substitution body over the same tail.  A resource-explicit
 adapter ties every remaining leaf to one trace and hands it all derivable
 adequacy and side-condition roots.  Literal-empty adapters remain conditional,
 and the witnessed-tail endpoints never erase their PA context.
+
+`RawCodedDynamicTruthNativeSubstitutionStagedRootCompilation.v` installs that
+body after the exact dependency prefix `(((current master /\ next local) /\
+next cross-level) /\ next shift)`.  One trace-linked implication in the
+shared witnessed context yields the complete body; checked projections
+recover all four directional resources and replay the public leaf shell.
+Seven carried universal introductions then package an ordinary proof of the
+literal transform-selected substitution field.  The sole remaining
+mathematical seam is the named staged body-implication compiler, rather than
+four unrelated empty-context leaf compilers.
 
 `RawCodedDynamicTruthNativeAxiomSoundnessPositiveGraph.v` constructs the fifth
 native positive coordinate from the same genuine paired orbit.  At predecessor
@@ -1956,6 +1986,18 @@ application, wrapper, context shift, and formula shift remains tied to the
 same trace.  The module deliberately leaves construction of this one staged
 kernel root explicit; it asserts neither an empty-base instance nor a
 semantic truth-to-proof conversion.
+
+`RawCodedDynamicTruthNativeAxiomStagedRootCompilation.v` carries that boundary
+through the actual dependency order of the native successor.  In one
+witnessed PA-axiom context it conjoins the six current master roots with the
+already compiled local, cross-level, shift, and substitution roots, applies
+one trace-linked implication from this ten-root prefix to the curried
+witness-body kernel, and then reuses the checked `Ex-E`, `Or-E`, `Imp-I`, and
+`All-I` shell to obtain an ordinary proof of the exact transform-selected
+axiom field.  All formula shifts and the witnessed context self-shift remain
+explicit.  The staged implication compiler is intentionally still a
+premise: the module performs the complete proof-code assembly after that
+arithmetic kernel without claiming to have constructed the kernel itself.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
