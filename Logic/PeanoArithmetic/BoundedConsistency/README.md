@@ -1866,6 +1866,17 @@ four trace-indexed directional leaves.  The empty-tail endpoint remains a
 conditional specialization of those leaves, while the witnessed-tail form
 keeps its PA context literal rather than silently discarding it.
 
+`RawCodedDynamicTruthNativeShiftStagedRootCompilation.v` places that shell at
+the dependency boundary used by the staged successor.  The current six-field
+master, next local field, and next cross-level field are assembled in their
+one witnessed PA context and applied to a single trace-linked implication
+whose consequent is the synchronized shift body.  Checked decomposition
+recovers all four directional laws, while eight universal-introduction nodes
+retain the witnessed tail and package an ordinary proof of the exact
+transform-selected field.  The one remaining arithmetic obligation is named
+`RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler`; no
+empty-context erasure or semantic truth-to-proof step is used.
+
 `RawCodedDynamicTruthNativeSubstitutionCarrier.v` fixes the exact syntax for
 the fourth positive master coordinate.  Its transparent polynomial closes
 exactly the seven single-substitution parameters and combines the carried
