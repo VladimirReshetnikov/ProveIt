@@ -1845,6 +1845,15 @@ The arbitrary-carrier proof-total endpoint retains field-code adequacy and is
 conditional only on `RawDynamicTruthNativeSubstitutionProofCompiler`; it does
 not infer proof syntax from semantic validity.
 
+`RawCodedDynamicTruthNativeSubstitutionProofCompilation.v` compiles the
+seven-variable substitution field around four directional transport leaves.
+All four leaves share the literal side-condition context; explicit
+conjunction and implication nodes assemble the two equivalences, seven
+universal-introduction nodes close the field, and an empty witnessed context
+packages the result as an ordinary PA certificate.  The exact trace adapter
+reduces the former field compiler to these four roots without mentioning the
+finished field code or assuming its truth.
+
 `RawCodedDynamicTruthNativeAxiomSoundnessPositiveGraph.v` constructs the fifth
 native positive coordinate from the same genuine paired orbit.  At predecessor
 `p` it reads the lower domains at `S p`, takes the actual paired successor to
