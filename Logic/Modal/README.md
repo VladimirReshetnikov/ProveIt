@@ -222,6 +222,7 @@ is being reconstructed:
 | `HilbertNormal.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact ten-declaration generic core: six raw constructors without hardwired modal K, all axiom aliases and structural instances, a proof-indexed Prop fold, substitution, and both weakening principles |
 | `HilbertNormalAxiomAdapters.v` | `Modal/Hilbert/Normal/Basic.lean` | Complete 25-declaration generic raw-template adapter block, including the exact structural Normal capability with a constructive proof of definitional diamond duality and all 24 named schema adapters |
 | `HilbertNormalBaseSystems.v` | `Modal/Hilbert/Normal/Basic.lean` | First 15 declarations of the named catalogue: exact raw K, KT, and KD predicates, capability witnesses, named logics, structural bundles, K minimality, and constructorwise compatibility with the established presentations |
+| `HilbertNormalClassicalBaseSystems.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact 23-declaration KP/KB/KDB/KTB tranche, including the source's syntactic KP/KD equivalence and a constructorwise bridge for the established KB presentation |
 | `HilbertNormalTransitiveBaseSystems.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact ten-declaration raw K4/K4n catalogue tranche: K/Four and indexed FourN predicates, witnesses, structural bundles, and a syntactic K4 compatibility equivalence |
 | `HilbertWithHenkin.v` | `Modal/Hilbert/WithHenkin/Basic.lean` | Complete 17-declaration atom-polymorphic raw-axiom calculus: seven constructors, exact proof-indexed Prop fold, substitution and weakening, K/Four adapters, the exact two-template K4 system, and its structural K4Henkin bundle |
 | `HilbertWithLoeb.v` | `Modal/Hilbert/WithLoeb/Basic.lean` | Complete 17-declaration atom-polymorphic raw-axiom calculus with Loeb's rule, including the exact fold, substitution and weakening, K/Four adapters, the exact K4 system, and its structural K4Loeb bundle |
@@ -396,7 +397,8 @@ constructive.  The earlier ten WithRE-prefixed records remain as compatibility
 duplicates for the established concrete-system catalogue.
 
 `HilbertNormal.v`, `HilbertNormalAxiomAdapters.v`,
-`HilbertNormalBaseSystems.v`, and `HilbertNormalTransitiveBaseSystems.v`
+`HilbertNormalBaseSystems.v`, `HilbertNormalClassicalBaseSystems.v`, and
+`HilbertNormalTransitiveBaseSystems.v`
 supply the faithful raw layer that the older schema-polymorphic
 `normal_proves` abstraction could not represent: raw axioms enter only
 through endosubstitution, and modal K is present only when selected by the
@@ -405,15 +407,17 @@ calculus core, substitution and both weakening theorems, followed by the
 complete 25-declaration capability block.  Fifteen initial named declarations
 give the exact singleton-K and K-plus-T/D raw systems, their capability
 witnesses and structural bundles, and K's minimality among normal nat-atom
-logics.  Ten further declarations give the raw K4 and indexed K4n systems.
-Constructorwise bridges identify K, KT, KD, and K4 with the corresponding
+logics.  Twenty-three additional catalogue declarations give exact KP, KB,
+KDB, and KTB systems, including a wholly syntactic proof that KP and KD are
+equivalent.  Ten further declarations give the raw K4 and indexed K4n systems.
+Constructorwise bridges identify K, KT, KD, KB, and K4 with the corresponding
 established presentations.
 The structural Normal adapter exposes Lukasiewicz, K, diamond duality,
 substitution, and necessitation; its definitionally reflexive diamond-duality
 proof is derived syntactically from K/S, without semantic completeness.  The
 proof-indexed fold is exactly Prop-valued: Lean elaborates the source's bare
 `Sort` codomain as `Sort 0`, not as a universe-polymorphic result.  The
-remaining 340 declarations in the named catalogue are the principal parity
+remaining 317 declarations in the named catalogue are the principal parity
 work in `Normal/Basic.lean`.
 
 `HilbertWithHenkin.v` and `HilbertWithLoeb.v` close both pinned rule-calculus
@@ -882,6 +886,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.HilbertWithRE FoundationModal.HilbertNormal `
   FoundationModal.HilbertNormalAxiomAdapters `
   FoundationModal.HilbertNormalBaseSystems `
+  FoundationModal.HilbertNormalClassicalBaseSystems `
   FoundationModal.HilbertNormalTransitiveBaseSystems `
   FoundationModal.HilbertWithHenkin FoundationModal.HilbertWithLoeb `
   FoundationModal.HilbertWithREClassicalCompleteness `

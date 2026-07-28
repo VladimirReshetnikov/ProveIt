@@ -9,7 +9,8 @@ From FoundationModal Require Import
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
   EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
-  HilbertNormalBaseSystems HilbertNormalTransitiveBaseSystems
+  HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
+  HilbertNormalTransitiveBaseSystems
   HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
@@ -1089,6 +1090,40 @@ Check normal_KD_to_KD_proves.
 Check KD_proves_to_normal_KD.
 Check normal_KD_iff_KD_proves.
 Check normal_KD_equiv_KD_proves.
+
+(** Exact KP, KB, KDB, and KTB raw systems, including the wholly syntactic
+    KP/KD equivalence and the constructorwise KB compatibility bridge. *)
+Check structural_kp_entailment.
+Check structural_kb_entailment.
+Check structural_kdb_entailment.
+Check structural_ktb_entailment.
+Check normal_KP_axioms.
+Check normal_KP_axioms_has_K.
+Check normal_KP_axioms_has_P.
+Check normal_KP.
+Check normal_KP_entailment.
+Check normal_KP_equiv_KD.
+Check normal_KB_axioms.
+Check normal_KB_axioms_has_K.
+Check normal_KB_axioms_has_B.
+Check normal_KB.
+Check normal_KB_entailment.
+Check normal_KDB_axioms.
+Check normal_KDB_axioms_has_K.
+Check normal_KDB_axioms_has_D.
+Check normal_KDB_axioms_has_B.
+Check normal_KDB.
+Check normal_KDB_entailment.
+Check normal_KTB_axioms.
+Check normal_KTB_axioms_has_K.
+Check normal_KTB_axioms_has_T.
+Check normal_KTB_axioms_has_B.
+Check normal_KTB.
+Check normal_KTB_entailment.
+Check normal_KB_to_KB_proves.
+Check KB_proves_to_normal_KB.
+Check normal_KB_iff_KB_proves.
+Check normal_KB_equiv_KB_proves.
 
 (** Exact raw K4 and indexed K4n systems from the Normal catalogue. *)
 Check structural_k4_entailment.
@@ -2606,6 +2641,27 @@ Print Assumptions normal_KD_to_KD_proves.
 Print Assumptions KD_proves_to_normal_KD.
 Print Assumptions normal_KD_iff_KD_proves.
 Print Assumptions normal_KD_equiv_KD_proves.
+(** KP, KB, KDB, and KTB use only the raw calculus.  The KP/KD equivalence
+    and KB compatibility bridge are closed, syntactic translations. *)
+Print Assumptions normal_KP_axioms_has_K.
+Print Assumptions normal_KP_axioms_has_P.
+Print Assumptions normal_KP_entailment.
+Print Assumptions normal_KP_equiv_KD.
+Print Assumptions normal_KB_axioms_has_K.
+Print Assumptions normal_KB_axioms_has_B.
+Print Assumptions normal_KB_entailment.
+Print Assumptions normal_KDB_axioms_has_K.
+Print Assumptions normal_KDB_axioms_has_D.
+Print Assumptions normal_KDB_axioms_has_B.
+Print Assumptions normal_KDB_entailment.
+Print Assumptions normal_KTB_axioms_has_K.
+Print Assumptions normal_KTB_axioms_has_T.
+Print Assumptions normal_KTB_axioms_has_B.
+Print Assumptions normal_KTB_entailment.
+Print Assumptions normal_KB_to_KB_proves.
+Print Assumptions KB_proves_to_normal_KB.
+Print Assumptions normal_KB_iff_KB_proves.
+Print Assumptions normal_KB_equiv_KB_proves.
 (** K4/K4n witnesses, structural bundles, and the K4 bridge are likewise
     closed and syntactic. *)
 Print Assumptions normal_K4_axioms_has_K.
