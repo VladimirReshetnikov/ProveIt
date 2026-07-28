@@ -1,7 +1,7 @@
 (**
   Generic one-sided classical sequent calculi.
 
-  This module currently ports declarations 1--28 of the forty-three active
+  This module currently ports declarations 1--34 of the forty-three active
   declarations in the pinned Foundation module [Logic/Calculus.lean].  The
   calculus and its principal entailments are Type-valued, so derivations
   retain their computational content.
@@ -21,6 +21,13 @@
   first rotates the head behind the tail, recursion folds the tail, exchange
   restores the head, and the primitive disjunction rule finishes.  Thus the
   result is strengthened to every cut-free one-sided calculus.
+
+  Contextual entailment is represented by a dependent finite witness: its
+  formulas carry pointwise evidence that they belong to the ambient
+  adjunctive set, while the corresponding one-sided derivation remains in
+  [Type].  The representation and structural transport require only an
+  arbitrary negation operation; the axiom adapter adds precisely the base LK
+  dictionary needed to derive identity.
 *)
 
 From Stdlib Require Import Lists.List.
@@ -1064,3 +1071,144 @@ Arguments generic_lk_pullback_uncast {F G} D f {delta gamma} _ _.
 Arguments generic_lk_pullback_one_sided {F G CF CG D f} _ _.
 Arguments generic_lk_pullback_cut {F G CF CG D f} _ _.
 Arguments generic_lk_pullback_principal {P F G E D theory} f _.
+
+(** * Contextual entailment *)
+
+(** A finite context witness carries precisely the pointwise membership
+    evidence needed by contextual derivability. *)
+Definition generic_context_witness {F S : Type}
+    (A : generic_adjunctive_set F S) (s : S) : Type :=
+  { gamma : list F |
+      forall p, generic_list_member p gamma ->
+                generic_adjunctive_member A p s }.
+
+Definition generic_context_witness_formulas {F S : Type}
+    {A : generic_adjunctive_set F S} {s : S}
+    (w : generic_context_witness A s) : list F :=
+  proj1_sig w.
+
+Definition generic_context_witness_covers {F S : Type}
+    {A : generic_adjunctive_set F S} {s : S}
+    (w : generic_context_witness A s) :
+    forall p,
+      generic_list_member p (generic_context_witness_formulas w) ->
+      generic_adjunctive_member A p s :=
+  proj2_sig w.
+
+(** Source declaration 29/43: [ContextualEntailment].  Only the raw
+    negation operation is used by the contextual representation. *)
+Record generic_contextual_entailment {S F : Type}
+    (E : generic_entailment S F)
+    (A : generic_adjunctive_set F S)
+    (neg : F -> F) (D : list F -> Type) : Type := {
+  generic_contextual_equiv :
+    forall (s : S) (p : F),
+      generic_type_equiv
+        (generic_proof E s p)
+        { w : generic_context_witness A s &
+          D (p :: map neg (generic_context_witness_formulas w)) }
+}.
+
+Arguments generic_contextual_equiv {S F E A neg D} _ _ _.
+
+(** Source declaration 30/43: [ContextualEntailment.provable_iff]. *)
+Lemma generic_contextual_provable_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S)
+         (neg : F -> F) (D : list F -> Type),
+    generic_contextual_entailment E A neg D ->
+    forall (s : S) (p : F),
+      generic_provable E s p <->
+      exists gamma : list F,
+        (forall q,
+          generic_list_member q gamma -> generic_adjunctive_member A q s) /\
+        inhabited (D (p :: map neg gamma)).
+Proof.
+  intros S F E A neg D Hcontext s p; split.
+  - intros [b].
+    destruct (generic_equiv_to
+      (generic_contextual_equiv Hcontext s p) b) as [w d].
+    exists (generic_context_witness_formulas w). split.
+    + exact (@generic_context_witness_covers F S A s w).
+    + now constructor.
+  - intros [gamma [Hgamma [d]]]. constructor.
+    apply (generic_equiv_from (generic_contextual_equiv Hcontext s p)).
+    exact (existT _ (exist _ gamma Hgamma) d).
+Qed.
+
+(** Source declaration 31/43: [ContextualEntailment.toProof]. *)
+Definition generic_contextual_to_proof {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    {neg : F -> F} {D : list F -> Type}
+    (Hcontext : generic_contextual_entailment E A neg D)
+    (s : S) (p : F) (d : D [p]) : generic_proof E s p.
+Proof.
+  apply (generic_equiv_from (generic_contextual_equiv Hcontext s p)).
+  refine (existT _ (exist _ [] _) d).
+  intros q Hq. contradiction.
+Defined.
+
+(** Source declaration 32/43: [ContextualEntailment.ofAxiom]. *)
+Definition generic_contextual_of_axiom {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    {C : generic_connectives F} {D : list F -> Type}
+    (Hcontext : generic_contextual_entailment E A (generic_neg C) D)
+    (Hlk : generic_one_sided_lk C D)
+    (s : S) (p : F) (Hp : generic_adjunctive_member A p s) :
+    generic_proof E s p.
+Proof.
+  apply (generic_equiv_from (generic_contextual_equiv Hcontext s p)).
+  refine (existT _ (exist _ [p] _) (generic_lk_identity Hlk p)).
+  intros q [Hq | Hq].
+  - now subst q.
+  - contradiction.
+Defined.
+
+(** Source declaration 33/43: [ContextualEntailment.ofAxiomSubset]. *)
+Definition generic_contextual_of_axiom_subset {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    {neg : F -> F} {D : list F -> Type}
+    (Hcontext : generic_contextual_entailment E A neg D)
+    (s t : S) (p : F)
+    (b : generic_proof E s p)
+    (Hsubset : generic_adjunctive_subset A s t) :
+    generic_proof E t p.
+Proof.
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext s p) b) as [w d].
+  apply (generic_equiv_from (generic_contextual_equiv Hcontext t p)).
+  refine (existT _
+    (exist _ (generic_context_witness_formulas w) _) d).
+  intros q Hq.
+  exact (Hsubset q (@generic_context_witness_covers F S A s w q Hq)).
+Defined.
+
+(** Source declaration 34/43: the contextual [Entailment.Axiomatized]
+    instance. *)
+Definition generic_contextual_axiomatized {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    {C : generic_connectives F} {D : list F -> Type}
+    (Hcontext : generic_contextual_entailment E A (generic_neg C) D)
+    (Hlk : generic_one_sided_lk C D) :
+    generic_axiomatized E A.
+Proof.
+  constructor.
+  - intros s p Hp.
+    exact (@generic_contextual_of_axiom S F E A C D
+      Hcontext Hlk s p Hp).
+  - intros s t Hsubset p b.
+    exact (@generic_contextual_of_axiom_subset S F E A (generic_neg C) D
+      Hcontext s t p b Hsubset).
+Defined.
+
+Arguments generic_context_witness_formulas {F S A s} _.
+Arguments generic_context_witness_covers {F S A s} _ _ _.
+Arguments generic_contextual_to_proof {S F E A neg D} _ _ _ _.
+Arguments generic_contextual_of_axiom {S F E A C D} _ _ _ _ _.
+Arguments generic_contextual_of_axiom_subset {S F E A neg D}
+  _ _ _ _ _ _.
+Arguments generic_contextual_axiomatized {S F E A C D} _ _.

@@ -203,7 +203,7 @@ is being reconstructed:
 | `GenericForcingRelation.v` | `Logic/ForcingRelation.lean` | Complete 20-declaration surface: ordinary/existence/weak forcing dictionaries, factored persistence and future-world implication/negation, intuitionistic and classical Kripke bundles, global/context forcing, and minimally hypothesized connective laws |
 | `GenericEntailment.v` | `Logic/Entailment.lean` | Complete 138-declaration surface: Type-valued formal proofs and inhabited provability, proof sets and controlled extraction, heterogeneous strength order/equivalence, consistency, explosion, completeness/incompleteness, axiomatized and compact contexts, deduction, semantic soundness/completeness, and pullback |
 | `GenericEmbedding.v` | `Logic/Embedding.lean` | Complete five-declaration surface: faithful provability translations between heterogeneous systems, explicit witnesses, identity, and composition, all constructively |
-| `GenericCalculus.v` | `Logic/Calculus.lean` | Declarations 1--28 of 43: universe-polymorphic Type-valued one-sided LK/Cut and principal-entailment dictionaries, structural combinators, strengthened finite folds, the complete classical Hilbert interface, and structure-preserving pullback of derivations, Cut, and principal entailment |
+| `GenericCalculus.v` | `Logic/Calculus.lean` | Declarations 1--34 of 43: universe-polymorphic Type-valued one-sided LK/Cut, principal- and contextual-entailment dictionaries, structural combinators, strengthened finite folds, the complete classical Hilbert interface, structure-preserving pullback, and contextual axiom/weakening adapters |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
@@ -527,7 +527,12 @@ context.  Pullback along a formula translation preserves the base calculus,
 Cut, and principal entailment; the LK adapter assumes preservation of only
 top, negation, conjunction, and disjunction, while the principal adapter needs
 no connective law at all.  Its list-map proof requires neither injectivity nor
-choice.  All twenty-eight declarations are closed under the global context.
+choice.  Contextual entailment packages a finite list with pointwise ambient
+membership evidence and its raw one-sided derivation in a dependent [Type].
+Provability, singleton proofs, axiom introduction, and context weakening then
+transport through that equivalence.  The representation and weakening use
+only raw negation; axiom introduction adds only the base LK dictionary.  All
+thirty-four declarations are closed under the global context.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and

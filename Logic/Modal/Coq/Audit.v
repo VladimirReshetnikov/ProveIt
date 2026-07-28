@@ -551,6 +551,21 @@ Print Assumptions generic_lk_pullback_cut.
 Print Assumptions generic_lk_pullback_principal.
 Print Assumptions generic_lk_pullback_inhabited_iff.
 Print Assumptions generic_lk_pullback_empty_iff.
+Check generic_context_witness.
+Check generic_context_witness_formulas.
+Check generic_context_witness_covers.
+Check generic_contextual_entailment.
+Check generic_contextual_equiv.
+Check generic_contextual_provable_iff.
+Check generic_contextual_to_proof.
+Check generic_contextual_of_axiom.
+Check generic_contextual_of_axiom_subset.
+Check generic_contextual_axiomatized.
+Print Assumptions generic_contextual_provable_iff.
+Print Assumptions generic_contextual_to_proof.
+Print Assumptions generic_contextual_of_axiom.
+Print Assumptions generic_contextual_of_axiom_subset.
+Print Assumptions generic_contextual_axiomatized.
 
 (** The complete 20-declaration ForcingRelation surface is constructive over
     arbitrary world, formula, context, and accessibility types.  Ordinary and
