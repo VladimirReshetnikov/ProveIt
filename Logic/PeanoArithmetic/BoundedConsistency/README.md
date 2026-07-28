@@ -2055,6 +2055,19 @@ induction, the fixed consistency-from-soundness source compiler, and the
 structural opening/refutation of the sealed target remain the three explicit
 proof-producing obligations.
 
+`RawCodedDynamicTruthNativeFinalTargetRefutationCompilation.v` discharges the
+third of those roots without adding a compiler premise.  The final graph
+trace identifies `nextFinal` with the exact sealed restricted-consistency
+target.  In the canonical third-existential context, the module assumes that
+target, removes its fixed closure prefix using represented identity
+substitutions, instantiates the genuine certificate quantifier with object
+variable `3`, and applies the result to the literal three-times-shifted proof
+assumption already present in the context.  Implication elimination and
+introduction yield the required local proof of `nextFinal -> bottom`.  No
+carrier decoding, semantic truth-to-proof conversion, dynamic-soundness
+producer, or consistency successor is used; the universal-soundness and
+consistency-from-soundness roots remain separate obligations.
+
 `RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.v` connects these
 stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,
