@@ -2248,6 +2248,19 @@ with the strong-prefix premise naturally supplied by recursive proof
 soundness, and neither induction case nor the three closure operations is
 manufactured here.
 
+`RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixInductionShell.v`
+replaces that direct induction shape with the one required by recursive proof
+soundness.  It defines `K(d) = forall e, e < d -> P(e)`, represents the genuine
+strong step `forall d, K(d) -> P(d)`, and assembles ordinary PA induction on
+`K`.  Supplied `K(0)` and `forall d, K(d) -> K(S d)` roots produce an ordinary
+certificate of `forall d, K(d)`; a separately supplied, exact finalizer root
+then yields the bridge's literal `forall d, P(d)` code.  The module exposes
+three honest remaining interfaces rather than conflating them: construction
+of the two induction cases from the genuine strong step, the nonstandard
+bound/closure/self-opening remainder, and the finalizer that instantiates
+`K(S d)` and uses `d < S d`.  In particular, it never assumes the unavailable
+direct implication `P(d) -> P(S d)`.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
