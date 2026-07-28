@@ -1824,6 +1824,18 @@ literal-empty adapter consequently reduces the original field compiler to
 exactly two trace-linked guarded roots; no successor relation is mistaken for
 a proof and no nonempty witnessed context is erased.
 
+`RawCodedDynamicTruthNativeCrossLevelGuardRootCompilation.v` joins those two
+guards at the dependency boundary used by Lean.  One coherence-body root over
+an arbitrary visible base yields both polarity guards structurally.  In the
+staged form, the current six-field master and the newly proved local field
+already share one witnessed PA context; their checked conjunction is applied
+to a single trace-linked implication whose consequent is the coherence body.
+This produces both guard roots without changing that context.  Construction
+of the implication root remains the exact positive cross-level kernel
+obligation.  The module deliberately makes no unrestricted fixed-level
+opening claim, semantic truth-to-proof inference, or empty-context
+identification.
+
 `RawCodedDynamicTruthNativeShiftPositiveGraph.v` constructs the third native
 positive coordinate.  It selects the genuine paired truth orbit at `S p`,
 builds the six source/target domain and certificate applications through
@@ -2027,6 +2039,20 @@ for any context transport or common-context lift: they require only the five
 named native leaf compilers and the nonstandard compact-consistency
 certificate successor.  Those remaining proof-producing inputs stay visible;
 the module does not repackage them as an unconditional endpoint.
+
+`RawCodedDynamicTruthNativeStagedPositiveSuccessor.v` removes the circular
+compact-consistency-successor premise from the assembly boundary.  Six exact
+callbacks follow Lean's dependency order: local receives the current master;
+cross-level also receives local; shift also receives cross-level;
+substitution also receives shift; axiom soundness also receives substitution;
+and the final callback receives all five new fields and directly returns the
+graph-selected next consistency target with its proof.  The callbacks may
+choose dependent targets and certificates, so none must work in isolation.
+After all six stages, completed witnessed-context merging synchronizes those
+same ordinary proofs without changing a target.  The module derives the
+native positive component successor and the requested PA headline from this
+non-circular, all-model callback family; construction of the six represented
+stage producers remains explicit.
 
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
