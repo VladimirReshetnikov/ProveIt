@@ -1,7 +1,7 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax GenericSemantics GenericEntailment NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
+  Syntax GenericSemantics GenericAdjunctiveSet GenericEntailment NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
@@ -161,10 +161,10 @@ Print Assumptions list_prune_insert_subset.
 Print Assumptions generic_consequence_compact.
 Print Assumptions generic_compact_cumulative.
 
-(** The first seventy-eight declarations from Logic/Entailment.lean retain
+(** The first one hundred one declarations from Logic/Entailment.lean retain
     Type-valued formal proofs, inhabited provability, heterogeneous strength
     comparison, consistency, explosion, syntactic completeness, independence,
-    and incompleteness. *)
+    incompleteness, axiomatized contexts, and heterogeneous strong cut. *)
 Check generic_entailment.
 Check generic_provable.
 Check generic_unprovable.
@@ -243,6 +243,44 @@ Check generic_incomplete_def.
 Check generic_not_complete_iff_incomplete.
 Check generic_not_incomplete_iff_complete.
 Check generic_consistent_of_incomplete.
+Check generic_adjunctive_set.
+Check generic_adjunctive_carrier.
+Check generic_adjunctive_subset.
+Check generic_adjunctive_subset_refl.
+Check generic_adjunctive_subset_trans.
+Check generic_adjunctive_subset_antisymm_pointwise.
+Check generic_adjunctive_empty_subset.
+Check generic_adjunctive_mem_adjoin_self.
+Check generic_adjunctive_subset_adjoin.
+Check generic_adjunctive_finite.
+Check generic_adjunctive_member_from_list_iff.
+Check generic_adjunctive_from_list_finite.
+Check generic_predicate_adjunctive_set.
+Check generic_list_adjunctive_set.
+Check generic_list_adjunctive_finite.
+Check generic_axiomatized.
+Check generic_axiomatized_weaken_raw.
+Check generic_strong_cut.
+Check generic_axiomatized_by_axiom_raw.
+Check generic_axiomatized_by_axiom.
+Check generic_axiomatized_provable_refl.
+Check generic_axiomatized_axioms_subset_theory.
+Check generic_axiomatized_adjoin_raw.
+Check generic_axiomatized_adjoin.
+Check generic_axiomatized_weaker_of_subset.
+Check generic_axiomatized_weaken.
+Check generic_axiomatized_weaker_of_subset_alias.
+Check generic_axiomatized_to_adjoin_raw.
+Check generic_axiomatized_to_adjoin.
+Check generic_by_axiom_raw.
+Check generic_by_axiom.
+Check generic_axiomatized_weaken_alias.
+Check generic_finitely_axiomatizable.
+Check generic_consistent_of_context_subset.
+Check generic_inconsistent_of_context_superset.
+Check generic_strong_cut_provable.
+Check generic_weaker_than_of_axioms.
+Check generic_weaker_than_of_context_subset.
 
 (** Informative proof extraction, functional choice, and classical
     counterexample extraction remain three separate audited boundaries. *)
@@ -271,6 +309,20 @@ Print Assumptions generic_consistent_of_le.
 Print Assumptions generic_deductive_explosion_provable.
 Print Assumptions generic_consistent_iff_unprovable_bottom.
 Print Assumptions generic_consistent_of_incomplete.
+(** Adjunctive contexts and declarations 79--98/101 are constructive and
+    require neither decidable formula equality nor set extensionality.
+    Propositional strong cut at declarations 99--100 reuses declaration 11's
+    functional choice, without crossing the informative-description boundary. *)
+Print Assumptions generic_adjunctive_mem_adjoin_self.
+Print Assumptions generic_adjunctive_subset_adjoin.
+Print Assumptions generic_axiomatized_by_axiom.
+Print Assumptions generic_axiomatized_weaker_of_subset.
+Print Assumptions generic_axiomatized_to_adjoin.
+Print Assumptions generic_consistent_of_context_subset.
+Print Assumptions generic_inconsistent_of_context_superset.
+Print Assumptions generic_strong_cut_provable.
+Print Assumptions generic_weaker_than_of_axioms.
+Print Assumptions generic_weaker_than_of_context_subset.
 
 (** Complete source-facing Kripke semantic surface: local satisfaction,
     fixed-model validity, frame validity, and frame-class counterexamples. *)

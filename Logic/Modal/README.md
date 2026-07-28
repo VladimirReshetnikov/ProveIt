@@ -199,7 +199,8 @@ is being reconstructed:
 | Coq module | Main Foundation source | Ported boundary |
 | --- | --- | --- |
 | `GenericSemantics.v` | `Logic/Semantics.lean` | Complete 67-declaration surface: generic satisfaction and minimal connective clauses; ordinary/singleton-normalized finite truth laws; model sets, validity, satisfiability, theories, meaningfulness, lifted set semantics, consequence, cumulative theories, exact compactness, finite consequence extraction, and cumulative-union compactness |
-| `GenericEntailment.v` | `Logic/Entailment.lean` | First 78 of 138 active declarations: Type-valued formal proofs and inhabited provability, proof sets and controlled proof extraction, heterogeneous strength order and equivalence, consistency and explosion, syntactic completeness, independence, and incompleteness |
+| `GenericAdjunctiveSet.v` | `Vorspiel/AdjunctiveSet.lean` | Constructive pointwise context interface with empty/adjoin laws, inclusion algebra, list-backed finiteness and conversion, and predicate/list realizations; no decidable formula equality or predicate extensionality |
+| `GenericEntailment.v` | `Logic/Entailment.lean` | First 101 of 138 active declarations: Type-valued formal proofs and inhabited provability, proof sets and controlled proof extraction, heterogeneous strength order and equivalence, consistency and explosion, syntactic completeness/incompleteness, axiomatized contexts, and heterogeneous strong cut |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
@@ -463,7 +464,14 @@ distinguished bottom formula, and syntactic completeness only by a negation
 operation.  Exactly five declarations in this second tranche use excluded
 middle to eliminate double negation or extract an unprovable/independent
 formula; consistency transport, bottom characterizations, and the
-incomplete-to-consistent theorem remain constructive.
+incomplete-to-consistent theorem remain constructive.  The next tranche uses
+`GenericAdjunctiveSet.v` to express context membership and inclusion
+pointwise, eliminating both a redundant primitive subset relation and every
+decidable-equality premise.  Axiomatized weakening, finite axiomatizability,
+and consistency transport are constructive.  Strong cut is generalized to
+distinct context and entailment types; only its inhabited wrapper and the
+derived theory comparison need functional choice, while the raw cut interface
+remains constructive and informative description is avoided.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
