@@ -1827,6 +1827,28 @@ The arbitrary-carrier proof-total endpoint retains field-code adequacy and is
 conditional only on `RawDynamicTruthNativeSubstitutionProofCompiler`; it does
 not infer proof syntax from semantic validity.
 
+`RawCodedDynamicTruthNativeAxiomSoundnessPositiveGraph.v` constructs the fifth
+native positive coordinate from the same genuine paired orbit.  At predecessor
+`p` it reads the lower domains at `S p`, takes the actual paired successor to
+obtain the Sigma predicate at `S(S p)`, and forms the literal universal claim
+that every transparently recognized PA axiom in the lower domain has a next-
+Sigma certificate at arguments `(axiom, 0, 0)`.  The graph has law-free exact
+semantics, adequate relational totality, and represented PA proofs for every
+externally fixed standard predecessor.  At an arbitrary carrier predecessor,
+proof totality is isolated in the explicit
+`RawDynamicTruthNativeAxiomSoundnessProofCompiler`; model truth is not treated
+as a coded PA derivation.
+
+`RawCodedDynamicTruthNativeMasterEndpoint.v` fixes all five native graphs in
+the previously verified zero/positive splice and six-field master assembler.
+It discharges the complete level-zero callback and shows that the single exact
+all-model positive-component successor compiler implies the literal Coq
+headline
+`Formula.BProv Formula.Ax_s [] compactUniformRestrictedPAConsistencyProvabilityFormula`.
+This endpoint is intentionally conditional: it pins the remaining work to the
+common-context successor compiler without hiding a truth, completeness, or
+proof-transplant assumption.
+
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
 use the same formula and assignment inputs but demand rank-zero outputs one
@@ -1918,6 +1940,29 @@ the represented shift/open trace package for the selected opaque lower
 application; native ternary selectors and commuting traces adapt directly to
 that package.  Atomic adequacy alone is not claimed to manufacture these
 traces, and no semantic-validity-to-proof shortcut is used.
+
+`RawCodedDynamicTruthMixedQFBranchExclusivity.v` completes the eleven matrix
+cells having exactly one quantifier-free branch.  Seven Boolean cells are
+conditional only on the exact synchronized rank-zero replay root; the four
+quantifier cells are unconditional because a rank-zero traversal has no
+quantifier production rule.  All eleven have fixed PA theorems, standard
+represented proofs, and common-context collision eliminators.  Nine cell
+codes ignore their carrier-valued lower inputs and therefore already have
+arbitrary-carrier represented proofs.  The remaining boundary consists of
+exactly two lower-dependent clauses, Pi-Ex at an arbitrary lower-Sigma
+application and Sigma-All at an arbitrary lower-Pi application, packaged by
+`RawDynamicTruthMixedQFOpaqueQuantifierCellProofCompiler`.
+
+`RawCodedDynamicTruthLocalCollisionMatrixAssembly.v` assembles the complete
+seven-by-six exclusivity matrix from the individual cell compilers.  It fixes
+the literal Sigma and Pi branch orders, audits all forty-two classifications,
+and produces both every curried pair contradiction and the corresponding
+finite-disjunction pair family.  Given proofs of the actual right-associated
+`Or7` and `Or6` branch rows, the generic matrix eliminator now derives bottom
+in the same represented context.  The input record deliberately exposes the
+remaining replay, cross-level, binder-projection, fixed-helper, traversal, and
+row-root obligations; this finite assembly does not claim to project an
+actual successor row or to complete the whole local decision compiler.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
