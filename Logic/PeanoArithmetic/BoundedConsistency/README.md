@@ -1929,6 +1929,16 @@ adapter ties every remaining leaf to one trace and hands it all derivable
 adequacy and side-condition roots.  Literal-empty adapters remain conditional,
 and the witnessed-tail endpoints never erase their PA context.
 
+`RawCodedDynamicTruthNativeSubstitutionStagedRootCompilation.v` installs that
+body after the exact dependency prefix `(((current master /\ next local) /\
+next cross-level) /\ next shift)`.  One trace-linked implication in the
+shared witnessed context yields the complete body; checked projections
+recover all four directional resources and replay the public leaf shell.
+Seven carried universal introductions then package an ordinary proof of the
+literal transform-selected substitution field.  The sole remaining
+mathematical seam is the named staged body-implication compiler, rather than
+four unrelated empty-context leaf compilers.
+
 `RawCodedDynamicTruthNativeAxiomSoundnessPositiveGraph.v` constructs the fifth
 native positive coordinate from the same genuine paired orbit.  At predecessor
 `p` it reads the lower domains at `S p`, takes the actual paired successor to
