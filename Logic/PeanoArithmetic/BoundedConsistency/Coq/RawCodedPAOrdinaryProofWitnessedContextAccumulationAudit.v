@@ -1,0 +1,15 @@
+(** Audit for ordinary-proof accumulation into a witnessed PA context. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPAOrdinaryProofWitnessedContextAccumulation.
+
+Import PABoundedRawCodedPAOrdinaryProofWitnessedContextAccumulation.
+
+Check RawCodedPALocalProofFamilyOn.
+Check raw_codedPALocalProofContextTransport_family.
+Check raw_codedPAProofOf_add_to_witnessed_context_complete.
+Check raw_codedPAProofOf_accumulate_local_family_complete.
+
+Print Assumptions raw_codedPALocalProofContextTransport_family.
+Print Assumptions raw_codedPAProofOf_add_to_witnessed_context_complete.
+Print Assumptions raw_codedPAProofOf_accumulate_local_family_complete.

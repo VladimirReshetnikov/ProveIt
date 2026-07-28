@@ -2075,6 +2075,16 @@ context inclusion weakening, merge two independently witnessed proof
 contexts, and synchronize all six ordinary master-field proofs in one literal
 witnessed context.
 
+`RawCodedPAOrdinaryProofWitnessedContextAccumulation.v` exposes the incremental
+form needed by dependency-ordered callbacks.  It opens one ordinary proof
+certificate, merges the hidden witnessed axiom context with an existing
+witnessed base, and returns both the new local root and a uniform transport
+for every root already in that base.  A fixed metatheoretic `Forall2` helper
+moves a finite family of old roots together; it never recurses over a coded,
+possibly nonstandard context.  Thus later successor fields may consume exact
+earlier field certificates in one literal context without identifying their
+original hidden contexts or assuming an empty-context proof.
+
 `RawCodedDynamicTruthNativeMasterSuccessorTransportComplete.v` applies that
 theorem to the staged native successor.  Its public adapters no longer ask
 for any context transport or common-context lift: they require only the five
