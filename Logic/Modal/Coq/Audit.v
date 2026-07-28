@@ -1,7 +1,8 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax GenericSemantics GenericAdjunctiveSet GenericEntailment NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
+  Syntax GenericSemantics GenericAdjunctiveSet GenericEntailment GenericEmbedding
+  NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
@@ -427,6 +428,19 @@ Print Assumptions generic_pullback_provable_set_iff.
 Print Assumptions generic_pullback_theory_eq.
 Print Assumptions generic_pullback_weaker_than.
 Print Assumptions generic_pullback_consistent.
+
+(** All five declarations from Logic/Embedding.lean are represented over
+    heterogeneous system and formula types.  Identity and composition are
+    wholly constructive despite the source module's stronger import. *)
+Check generic_is_faithful_embedding.
+Check generic_faithfully_embeddable.
+Check generic_faithfully_embeddable_prop.
+Check generic_faithfully_embeddable_fun_exists.
+Check generic_faithfully_embeddable_refl.
+Check generic_faithfully_embeddable_trans.
+Print Assumptions generic_faithfully_embeddable_fun_exists.
+Print Assumptions generic_faithfully_embeddable_refl.
+Print Assumptions generic_faithfully_embeddable_trans.
 
 (** Complete source-facing Kripke semantic surface: local satisfaction,
     fixed-model validity, frame validity, and frame-class counterexamples. *)
