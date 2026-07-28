@@ -20,6 +20,10 @@ is being reconstructed:
   negation-normal formulas over natural-number atoms;
 - a concrete Hilbert calculus for K with substitution, deduction, consistency
   criteria, contextual boxing, Kripke soundness, and syntactic consistency;
+- the complete active Kripke semantic interface from local satisfaction
+  through model, frame, and frame-class validity, including finite-connective
+  truth laws, counterexample equivalences, K insertion, and generic
+  frame-class Hilbert soundness, consistency, and logic comparison;
 - a constructive-by-stages Lindenbaum extension for concrete K, maximal
   consistent theories, the canonical successor and truth lemmas, canonical
   countermodels, and soundness/completeness over all and finite frames;
@@ -179,11 +183,13 @@ is being reconstructed:
 | `PLoNCompleteness.v` | `Modal/PLoN/{Hilbert,Completeness,Logic/N}.lean` | Generic PLoN Hilbert soundness/canonical completeness and complete logic-N metatheory, including strictness below EN and K |
 | `Axioms.v` | `Modal/Axioms.lean` | Complete named schema catalog, including normal, Geach, provability, McKinsey, and boxdot schemata |
 | `HilbertK.v` | `Modal/Hilbert/Normal/Basic.lean` | Constructive Hilbert K, substitution, derived classical rules, theories, deduction, consistency criteria, contextual boxing |
-| `Kripke.v` | `Modal/Kripke/Basic.lean` | Frames, valuations, satisfaction, substitution, relation/modal iteration, K validity |
+| `Kripke.v` | `Modal/Kripke/Basic.lean` | Core frames, valuations, recursive satisfaction, substitution, relation/modal iteration, and K validity |
+| `KripkeSemantics.v` | `Modal/Kripke/Basic.lean` | Complete source-facing local/model/frame/class semantic API: singleton frames, connective/list/iteration truth laws, congruence and duality, counterexamples, closure, and K insertion |
 | `KripkeAlgebra.v` | `Modal/Kripke/Algebra.lean` | Relational complex algebras, modal operations, algebraic evaluation/satisfaction equivalence, and validity as subset/extensional equality |
 | `ModalAlgebra.v` | `Semantics/Algebra/Modal/{Basic,Magari}.lean` | Setoid Boolean and modal algebras, the complete derived K/duality/monotonicity surface, Magari diagonal and transitivity theorems, and the Kripke complex-algebra adapter |
 | `NNFormulaSemantics.v` | `Modal/Kripke/NNFormula.lean` | Direct NNF semantics, semantic negation, translation correctness, validity equivalences |
 | `HilbertKSoundness.v` | `Modal/Kripke/Hilbert.lean` | Framewise and contextual Kripke soundness for K, plus consistency |
+| `KripkeHilbert.v` | `Modal/Kripke/Hilbert.lean` | Axiom-validity soundness packages for frames/classes, inhabited-frame consistency, and semantic comparison of normal systems over nested classes |
 | `Complement.v` | `Modal/Formula/Complement.lean` | Syntactic complement, complement-closed finite contexts, constructive semantic incompatibility |
 | `FiniteMaximalContext.v` | `Modal/ComplementClosedConsistentFinset.lean`, `Modal/{Formula/Complement,MaximalConsistentSet}.lean` | Normal-schema finite consistency and insertion laws over nat atoms; deterministic complementary closure, finite Lindenbaum contexts, membership laws, and an explicit finite cover |
 | `ComplexityLimited.v` | `Modal/Kripke/ComplexityLimited.lean` | Complexity-bounded generated frames, strengthened truth lemma, subformula-target invariance |
@@ -256,6 +262,14 @@ Foundation defines diamond from box as `not (box (not p))`.  In constructive
 type theory, a concrete successor introduces a diamond, but extracting a
 successor from an arbitrary diamond needs classical double-negation
 elimination.  The Coq port keeps those lemmas separate:
+
+Foundation also bundles a nonempty world type into every Kripke frame, while
+the repository's more general `frame` record permits an empty `World`.
+Accordingly, the source's model/frame bottom-invalidity and semantic
+consistency results carry an explicit `inhabited_frame` premise in Coq.
+Counterexample equivalences remain valid on empty frames and do not need that
+premise.  Source `Finset` connectives use duplicate-insensitive lists, and a
+bundled model is represented by dependent frame/valuation binders.
 
 - box semantics, substitution, K, direct forward frame-validity proofs,
   bisimulation invariance, bounded-morphism preservation, and the
@@ -695,7 +709,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Syntax FoundationModal.NNFormula FoundationModal.Axioms `
   FoundationModal.FormulaEncoding FoundationModal.PLoN `
   FoundationModal.PLoNCompleteness `
-  FoundationModal.Kripke FoundationModal.NNFormulaSemantics `
+  FoundationModal.Kripke FoundationModal.KripkeSemantics FoundationModal.NNFormulaSemantics `
   FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
   FoundationModal.KripkeAlgebra FoundationModal.ModalAlgebra `
   FoundationModal.Complement `
@@ -704,6 +718,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Correspondence FoundationModal.FiltrationExtensions `
   FoundationModal.CanonicalK `
   FoundationModal.Loeb FoundationModal.CorrespondenceExtensions FoundationModal.NormalHilbert `
+  FoundationModal.KripkeHilbert `
   FoundationModal.LogicInfrastructure `
   FoundationModal.CanonicalExtensions `
   FoundationModal.FiniteMaximalContext `

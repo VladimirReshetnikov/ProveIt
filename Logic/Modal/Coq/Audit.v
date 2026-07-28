@@ -5,7 +5,8 @@ From FoundationModal Require Import
   KripkeAlgebra ModalAlgebra
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
-  CorrespondenceExtensions NormalHilbert LogicInfrastructure CanonicalExtensions
+  CorrespondenceExtensions NormalHilbert LogicInfrastructure
+  KripkeSemantics KripkeHilbert CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
   GLUnnecessitation GLModalDisjunction GLIndependence QuasiNormalS QuasiNormalD
@@ -23,6 +24,117 @@ From FoundationModal Require Import
 Check substitute_comp.
 Check satisfies_substitute.
 Check valid_K.
+
+(** Complete source-facing Kripke semantic surface: local satisfaction,
+    fixed-model validity, frame validity, and frame-class counterexamples. *)
+Check inhabited_frame.
+Check kripke_frame_class.
+Check kripke_frame_class_valid.
+Check kripke_frame_class_validates.
+Check kripke_frame_class_validates_schema.
+Check whitepoint_frame.
+Check blackpoint_frame.
+Check whitepoint_inhabited.
+Check blackpoint_inhabited.
+Check whitepoint_finite.
+Check blackpoint_finite.
+Check blackpoint_irreflexive.
+Check blackpoint_transitive.
+Check blackpoint_strict_order.
+Check kripke_satisfies_atom.
+Check kripke_satisfies_bottom.
+Check kripke_satisfies_imp.
+Check kripke_not_satisfies_imp.
+Check kripke_satisfies_imp_or.
+Check kripke_satisfies_or.
+Check kripke_satisfies_and.
+Check kripke_satisfies_neg.
+Check kripke_satisfies_top.
+Check kripke_satisfies_box.
+Check kripke_not_satisfies_box.
+Check kripke_satisfies_dia.
+Check kripke_not_satisfies_dia.
+Check kripke_satisfies_iff.
+Check kripke_satisfies_negneg.
+Check kripke_not_satisfies_and.
+Check kripke_satisfies_box_iter_negneg.
+Check kripke_satisfies_box_negneg.
+Check kripke_satisfies_dia_iter_negneg.
+Check kripke_satisfies_dia_negneg.
+Check kripke_list_disj.
+Check kripke_satisfies_list_conj.
+Check kripke_satisfies_list_conj2.
+Check kripke_satisfies_list_disj.
+Check kripke_satisfies_indexed_list_conj.
+Check kripke_not_satisfies_indexed_list_conj.
+Check kripke_satisfies_indexed_list_disj.
+Check kripke_not_satisfies_indexed_list_disj.
+Check kripke_satisfies_imp_trans.
+Check kripke_satisfies_mp.
+Check kripke_neg_semiequiv.
+Check kripke_box_iter_semiequiv.
+Check kripke_box_semiequiv.
+Check kripke_dia_iter_semiequiv.
+Check kripke_dia_semiequiv.
+Check kripke_neg_equiv.
+Check kripke_box_iter_equiv.
+Check kripke_box_equiv.
+Check kripke_dia_iter_equiv.
+Check kripke_dia_equiv.
+Check kripke_dia_dual.
+Check kripke_dia_iter_dual.
+Check kripke_box_dual.
+Check kripke_box_iter_dual.
+Check kripke_not_imp_iff_and_neg.
+Check kripke_satisfies_substitute.
+Check kripke_model_valid_iff.
+Check kripke_model_valid_top.
+Check kripke_model_valid_bottom.
+Check kripke_model_invalid_iff_exists_world.
+Check kripke_model_valid_mp.
+Check kripke_model_valid_nec.
+Check kripke_model_valid_multinec.
+Check kripke_model_valid_Hilbert_imply_K.
+Check kripke_model_valid_Hilbert_imply_S.
+Check kripke_model_valid_Hilbert_elim_contra.
+Check kripke_model_valid_K.
+Check kripke_frame_validates.
+Check kripke_valid_iff.
+Check kripke_frame_validates_iff.
+Check kripke_valid_top.
+Check kripke_valid_bottom.
+Check kripke_not_valid_iff_exists_valuation.
+Check kripke_not_valid_iff_exists_valuation_world.
+Check kripke_not_valid_iff_exists_model_world.
+Check kripke_valid_mp.
+Check kripke_valid_nec.
+Check kripke_valid_substitute.
+Check kripke_valid_Hilbert_imply_K.
+Check kripke_valid_Hilbert_imply_S.
+Check kripke_valid_Hilbert_elim_contra.
+Check kripke_valid_K.
+Check kripke_frame_logic.
+Check kripke_frame_class_logic.
+Check kripke_frame_class_invalid_iff_exists_frame.
+Check kripke_frame_class_invalid_iff_exists_model.
+Check kripke_frame_class_invalid_iff_exists_model_world.
+Check kripke_frame_class_invalid_iff_exists_valuation_world.
+Check kripke_frame_class_validates_with_K.
+Check kripke_frame_class_validates_with_K_nat.
+
+(** Frame and frame-class Hilbert packaging. *)
+Check normal_frame_class_sound.
+Check normal_frame_sound.
+Check normal_frame_class_complete.
+Check normal_weaker_than.
+Check normal_consistent_all_atoms.
+Check normal_soundness_of_frame_class_validates_axioms.
+Check normal_frame_class_sound_of_validates_axioms.
+Check normal_soundness_of_frame_validates_axioms.
+Check normal_frame_sound_of_validates_axioms.
+Check normal_consistent_of_sound_frame_class.
+Check normal_consistent_of_sound_frame.
+Check normal_weaker_than_of_subset_frame_class.
 
 (** Relational complex algebras and their exact agreement with Kripke
     satisfaction. *)
@@ -1175,6 +1287,35 @@ Check standard_translation_diamond_is_existential.
 Print Assumptions substitute_comp.
 Print Assumptions satisfies_substitute.
 Print Assumptions valid_K.
+(** Primitive box/implication laws, model/frame closure, substitution, and
+    inhabited-frame bottom counterexamples are constructive.  Quantifier
+    counterexample extraction, derived diamond/Boolean readings, and modal
+    duality expose exactly propositional excluded middle. *)
+Print Assumptions whitepoint_finite.
+Print Assumptions blackpoint_strict_order.
+Print Assumptions kripke_satisfies_imp.
+Print Assumptions kripke_not_satisfies_box.
+Print Assumptions kripke_satisfies_list_conj.
+Print Assumptions kripke_not_satisfies_indexed_list_conj.
+Print Assumptions kripke_box_iter_equiv.
+Print Assumptions kripke_dia_iter_dual.
+Print Assumptions kripke_satisfies_substitute.
+Print Assumptions kripke_model_valid_bottom.
+Print Assumptions kripke_model_invalid_iff_exists_world.
+Print Assumptions kripke_model_valid_multinec.
+Print Assumptions kripke_valid_bottom.
+Print Assumptions kripke_not_valid_iff_exists_valuation_world.
+Print Assumptions kripke_valid_substitute.
+Print Assumptions kripke_frame_class_invalid_iff_exists_model_world.
+Print Assumptions kripke_frame_class_validates_with_K_nat.
+(** Soundness packages inherit the classical propositional Hilbert basis;
+    consistency from an inhabited sound frame and class comparison are
+    otherwise closed. *)
+Print Assumptions normal_soundness_of_frame_class_validates_axioms.
+Print Assumptions normal_frame_class_sound_of_validates_axioms.
+Print Assumptions normal_consistent_of_sound_frame_class.
+Print Assumptions normal_consistent_of_sound_frame.
+Print Assumptions normal_weaker_than_of_subset_frame_class.
 Print Assumptions nn_neg_involutive.
 Print Assumptions nn_degree_to_formula.
 Print Assumptions nn_dnf_part_degree_zero.
