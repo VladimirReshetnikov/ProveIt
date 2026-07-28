@@ -1,7 +1,7 @@
 (**
   Generic Tarski semantics for propositional connectives.
 
-  This file ports the first sixty-one active declarations at lines 25--277 of
+  This file ports all sixty-seven active declarations at lines 25--353 of
   the pinned Foundation module [Logic/Semantics.lean].  The development is
   independent of modal syntax: [generic_connectives] supplies an arbitrary
   formula type's six propositional operations, while [generic_semantics]
@@ -14,14 +14,17 @@
   port.  Their readback statements use only [In], so order and duplicate
   multiplicity are semantically irrelevant.  The two singleton-normalized
   folds are exposed as infrastructure helpers; the numbered declarations
-  remain an exact 1--61 source mapping.
+  remain an exact 1--67 source mapping.
 
   The Tarski and model-set core is constructive.  [Classical_Prop] is used
   only where the source extracts a counterexample from a negated universal or
-  eliminates double negation of an arbitrary satisfaction proposition.
+  eliminates double negation of an arbitrary satisfaction proposition.  In
+  the final compactness section, extracting a finite unsatisfiable witness and
+  compact consequence are classical; cumulative finite support and compactness
+  of a cumulative union remain constructive.
 *)
 
-From Stdlib Require Import Lists.List Logic.Classical_Prop.
+From Stdlib Require Import Lists.List Logic.Classical_Prop Arith.PeanoNat.
 
 Import ListNotations.
 
@@ -897,4 +900,207 @@ Lemma generic_consequence_of_mem :
 Proof.
   intros M F S T p Hp m Hmodels.
   exact (generic_models_set_elim Hmodels Hp).
+Qed.
+
+(** * Cumulative theories and semantic compactness *)
+
+(** Source declaration 62/67: [LO.Cumulative]. *)
+Definition generic_cumulative {F : Type}
+    (T : nat -> F -> Prop) : Prop :=
+  forall (n : nat) (p : F), T n p -> T (S n) p.
+
+(** Source declaration 63/67: [Cumulative.subset_of_le]. *)
+Lemma generic_cumulative_subset_of_le :
+  forall (F : Type) (T : nat -> F -> Prop),
+    generic_cumulative T ->
+    forall n k : nat, n <= k ->
+    forall p : F, T n p -> T k p.
+Proof.
+  intros F T Hcumulative n k Hle.
+  induction Hle as [|k Hle IH].
+  - intros p Hp. exact Hp.
+  - intros p Hp. apply Hcumulative. now apply IH.
+Qed.
+
+(** Unnumbered infrastructure: both stages embed in their maximum stage.
+    This factors the only max-index calculation needed by finite common-stage
+    arguments. *)
+Lemma generic_cumulative_subsets_at_max :
+  forall (F : Type) (T : nat -> F -> Prop),
+    generic_cumulative T ->
+    forall n k : nat,
+    (forall p : F, T n p -> T (Nat.max n k) p) /\
+    (forall p : F, T k p -> T (Nat.max n k) p).
+Proof.
+  intros F T Hcumulative n k; split; intros p Hp.
+  - eapply generic_cumulative_subset_of_le; eauto using Nat.le_max_l.
+  - eapply generic_cumulative_subset_of_le; eauto using Nat.le_max_r.
+Qed.
+
+(** Source declaration 64/67: [Cumulative.finset_mem].  A source Finset is
+    represented by a list.  No decidable equality is needed: duplicates are
+    harmless and induction directly produces a common stage. *)
+Lemma generic_cumulative_list_common_stage :
+  forall (F : Type) (T : nat -> F -> Prop),
+    generic_cumulative T ->
+    forall u : list F,
+    (forall p : F, In p u -> exists n : nat, T n p) ->
+    exists n : nat, forall p : F, In p u -> T n p.
+Proof.
+  intros F T Hcumulative u.
+  induction u as [|p u IH].
+  - intros _. exists 0. intros q Hq. contradiction.
+  - intro Hall.
+    destruct (Hall p (or_introl eq_refl)) as [n Hp].
+    destruct (IH (fun q Hq => Hall q (or_intror Hq)))
+      as [k Hk].
+    destruct (generic_cumulative_subsets_at_max Hcumulative n k)
+      as [Hn Hkmax].
+    exists (Nat.max n k). intros q [Hq | Hq].
+    + subst q. now apply Hn.
+    + apply Hkmax. now apply Hk.
+Qed.
+
+(** Source declaration 65/67: [LO.Compact].  Finite subsets are extensional
+    lists, so the record quantifies over a list and its predicate inclusion in
+    the ambient theory. *)
+Record generic_compact {M F : Type}
+    (S : generic_semantics M F) : Prop := {
+  generic_compact_iff :
+    forall T : F -> Prop,
+      generic_satisfiable S T <->
+      forall u : list F,
+        (forall p : F, In p u -> T p) ->
+        generic_satisfiable S (fun p => In p u)
+}.
+
+(** Unnumbered infrastructure: the contrapositive finite-witness reading of
+    compactness.  Its forward direction is classical because it extracts a
+    list from a negated universal over all finite contexts; the reverse
+    direction is constructive. *)
+Lemma generic_compact_unsatisfiable_iff_finite :
+  forall (M F : Type) (S : generic_semantics M F),
+    generic_compact S -> forall T : F -> Prop,
+    ~ generic_satisfiable S T <->
+    exists u : list F,
+      (forall p : F, In p u -> T p) /\
+      ~ generic_satisfiable S (fun p => In p u).
+Proof.
+  intros M F S [Hcompact] T; split.
+  - intro Hunsat.
+    destruct (classic
+      (exists u : list F,
+        (forall p : F, In p u -> T p) /\
+        ~ generic_satisfiable S (fun p => In p u)))
+      as [Hwitness | Hnone]; [exact Hwitness |].
+    exfalso. apply Hunsat. apply (proj2 (Hcompact T)).
+    intros u Hu. apply NNPP. intro Hbad.
+    apply Hnone. exists u. now split.
+  - intros [u [Hu Hbad]] Hsat.
+    apply Hbad. eapply generic_satisfiable_of_subset.
+    + exact Hsat.
+    + exact Hu.
+Qed.
+
+(** Unnumbered infrastructure for declaration 66: prune a distinguished
+    formula constructively.  The supplied membership proof already decides,
+    for every list element, whether it is distinguished or belongs to the
+    ambient theory, so no decidable equality on formulas is needed. *)
+Lemma list_prune_insert_subset :
+  forall (F : Type) (distinguished : F) (T : F -> Prop) (u : list F),
+    (forall p : F, In p u -> p = distinguished \/ T p) ->
+    exists v : list F,
+      (forall p : F, In p v -> T p) /\
+      (forall p : F, In p u -> p = distinguished \/ In p v).
+Proof.
+  intros F distinguished T u.
+  induction u as [|x u IH].
+  - intro Hsubset. exists nil. split; intros p Hp; contradiction.
+  - intro Hsubset.
+    assert (Htail : forall p : F, In p u -> p = distinguished \/ T p).
+    { intros p Hp. apply Hsubset. now right. }
+    destruct (IH Htail) as [v [HvSubset HvCover]].
+    destruct (Hsubset x (or_introl eq_refl)) as [Hxd | HxT].
+    + exists v. split.
+      * exact HvSubset.
+      * intros p [Hpx | Hpu].
+        -- subst p. left. exact Hxd.
+        -- exact (HvCover p Hpu).
+    + exists (x :: v). split.
+      * intros p [Hpx | Hpv].
+        -- subst p. exact HxT.
+        -- exact (HvSubset p Hpv).
+      * intros p [Hpx | Hpu].
+        -- subst p. right. now left.
+        -- destruct (HvCover p Hpu) as [Hpd | Hpv].
+           ++ now left.
+           ++ right. now right.
+Qed.
+
+(** Source declaration 66/67: [Compact.conseq_compact].  Only negation's
+    Tarski clause is required.  The source's decidable-equality hypothesis is
+    generalized away by constructively pruning the finite witness using its
+    supplied inclusion proof.  Classical logic is used only through the
+    finite unsatisfiable-witness helper above (and the already classical
+    consequence/countertheory equivalence). *)
+Lemma generic_consequence_compact :
+  forall (M F : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_compact S ->
+    generic_semantics_neg C S ->
+    forall (T : F -> Prop) (p : F),
+    generic_consequence S T p <->
+    exists u : list F,
+      (forall q : F, In q u -> T q) /\
+      generic_consequence S (fun q => In q u) p.
+Proof.
+  intros M F C S Hcompact Hneg T p; split.
+  - intro Hconsequence.
+    pose proof (proj1
+      (generic_consequence_iff_not_satisfiable Hneg T p)
+      Hconsequence) as Hunsat.
+    destruct (proj1 (generic_compact_unsatisfiable_iff_finite
+      Hcompact (fun q => q = generic_neg C p \/ T q)) Hunsat)
+      as [x [HxSubset HxUnsat]].
+    destruct (list_prune_insert_subset
+      (distinguished := generic_neg C p) (T := T) (u := x) HxSubset)
+      as [u [HuSubset HxCover]].
+    exists u. split.
+    + exact HuSubset.
+    + apply (proj2 (generic_consequence_iff_not_satisfiable
+        Hneg (fun q => In q u) p)).
+      intro HinsertSat. apply HxUnsat.
+      eapply generic_satisfiable_of_subset.
+      * exact HinsertSat.
+      * exact HxCover.
+  - intros [u [HuSubset HuConsequence]].
+    eapply generic_consequence_weakening.
+    + exact HuConsequence.
+    + exact HuSubset.
+Qed.
+
+(** Source declaration 67/67: [Compact.compact_cumulative].  Predicate union
+    is existential stage membership.  The proof is constructive: compactness
+    is consumed as a hypothesis, and the list common-stage lemma needs no
+    choice or decidable equality. *)
+Lemma generic_compact_cumulative :
+  forall (M F : Type) (S : generic_semantics M F),
+    generic_compact S ->
+    forall T : nat -> F -> Prop,
+    generic_cumulative T ->
+    generic_satisfiable S (fun p => exists n : nat, T n p) <->
+    forall n : nat, generic_satisfiable S (T n).
+Proof.
+  intros M F S [Hcompact] T Hcumulative; split.
+  - intros Hunion n. eapply generic_satisfiable_of_subset.
+    + exact Hunion.
+    + intros p Hp. now exists n.
+  - intro Hall. apply (proj2 (Hcompact
+      (fun p => exists n : nat, T n p))).
+    intros u Hu.
+    destruct (generic_cumulative_list_common_stage
+      Hcumulative (u := u) Hu) as [n Hstage].
+    eapply generic_satisfiable_of_subset.
+    + exact (Hall n).
+    + exact Hstage.
 Qed.
