@@ -15,7 +15,8 @@ From FoundationModal Require Import
   HilbertNormalK4PointSystems HilbertNormalMixedSystems
   HilbertNormalD45SymmetricSystems HilbertNormalS4Systems
   HilbertNormalS4PointMcKSystems HilbertNormalS4PointSystems
-  HilbertNormalFiveSystems
+  HilbertNormalFiveSystems HilbertNormalGLSystems HilbertNormalZSystems
+  HilbertNormalHenkinGrzSystems HilbertNormalSpecialSystems
   HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
@@ -1326,6 +1327,141 @@ Check normal_S5_axioms_has_T.
 Check normal_S5_axioms_has_Five.
 Check normal_S5.
 Check normal_S5_entailment.
+
+(** Exact raw GL/GL.2/GL.3 systems, including Foundation's duplicate
+    entailment-instance commands and the literal GL-to-GL.2 inclusion. *)
+Check structural_gl_entailment.
+Check structural_glpoint2_entailment.
+Check structural_glpoint3_entailment.
+Check normal_GL_axioms.
+Check normal_GL_axioms_has_K.
+Check normal_GL_axioms_has_L.
+Check normal_GL.
+Check normal_GL_entailment.
+Check normal_GL_entailment_duplicate.
+Check normal_GLPoint2_axioms.
+Check normal_GLPoint2_axioms_has_K.
+Check normal_GLPoint2_axioms_has_L.
+Check normal_GLPoint2_axioms_has_WeakPoint2.
+Check normal_GLPoint2.
+Check normal_GLPoint2_entailment.
+Check normal_GLPoint2_entailment_duplicate.
+Check normal_GL_weaker_than_normal_GLPoint2.
+Check normal_GLPoint3_axioms.
+Check normal_GLPoint3_axioms_has_K.
+Check normal_GLPoint3_axioms_has_L.
+Check normal_GLPoint3_axioms_has_WeakPoint3.
+Check normal_GLPoint3.
+Check normal_GLPoint3_entailment.
+
+(** Exact raw K4Z/K4.2Z/K4.3Z systems and every explicit or inferred source
+    inclusion, including the repeated K4.2Z target at source line 715. *)
+Check structural_k4z_entailment.
+Check structural_k4point2z_entailment.
+Check structural_k4point3z_entailment.
+Check normal_K4Z_axioms.
+Check normal_K4Z_axioms_has_K.
+Check normal_K4Z_axioms_has_Four.
+Check normal_K4Z_axioms_has_Z.
+Check normal_K4Z.
+Check normal_K4Z_entailment.
+Check normal_K4_weaker_than_normal_K4Z.
+Check normal_K4_weaker_than_normal_K4Z_duplicate.
+Check normal_K4Z_weaker_than_normal_GL.
+Check normal_K4Z_weaker_than_normal_GL_duplicate.
+Check normal_K4Point2Z_axioms.
+Check normal_K4Point2Z_axioms_has_K.
+Check normal_K4Point2Z_axioms_has_Four.
+Check normal_K4Point2Z_axioms_has_Z.
+Check normal_K4Point2Z_axioms_has_WeakPoint2.
+Check normal_K4Point2Z.
+Check normal_K4Point2Z_entailment.
+Check normal_K4Point2_weaker_than_normal_K4Point2Z.
+Check normal_K4Point2_weaker_than_normal_K4Point2Z_duplicate.
+Check normal_K4Z_weaker_than_normal_K4Point2Z.
+Check normal_K4Point2_weaker_than_normal_K4Point2Z_repeated.
+Check normal_K4Point2Z_weaker_than_normal_GLPoint2.
+Check normal_K4Point2Z_weaker_than_normal_GLPoint2_duplicate.
+Check normal_K4Point3Z_axioms.
+Check normal_K4Point3Z_axioms_has_K.
+Check normal_K4Point3Z_axioms_has_Four.
+Check normal_K4Point3Z_axioms_has_Z.
+Check normal_K4Point3Z_axioms_has_WeakPoint3.
+Check normal_K4Point3Z.
+Check normal_K4Point3Z_entailment.
+Check normal_K4Point3_weaker_than_normal_K4Point3Z.
+Check normal_K4Point3_weaker_than_normal_K4Point3Z_duplicate.
+Check normal_K4Z_weaker_than_normal_K4Point3Z.
+Check normal_K4Z_weaker_than_normal_K4Point3Z_duplicate.
+Check normal_K4Point3Z_weaker_than_normal_GLPoint3.
+Check normal_K4Point3Z_weaker_than_normal_GLPoint3_duplicate.
+
+(** Exact raw Henkin and Grzegorczyk systems, with the source-selective KHen
+    surface and the constructive KT-to-Grz inclusion. *)
+Check structural_k4hen_entailment.
+Check structural_grz_entailment.
+Check structural_grzpoint2_entailment.
+Check structural_grzpoint3_entailment.
+Check normal_KHen_axioms.
+Check normal_KHen_axioms_has_K.
+Check normal_KHen_axioms_has_Hen.
+Check normal_KHen.
+Check normal_K4Hen_axioms.
+Check normal_K4Hen_axioms_has_K.
+Check normal_K4Hen_axioms_has_Four.
+Check normal_K4Hen_axioms_has_Hen.
+Check normal_K4Hen.
+Check normal_K4Hen_entailment.
+Check normal_Grz_axioms.
+Check normal_Grz_axioms_has_K.
+Check normal_Grz_axioms_has_Grz.
+Check normal_Grz.
+Check normal_Grz_entailment.
+Check normal_KT_weaker_than_normal_Grz.
+Check normal_GrzPoint2_axioms.
+Check normal_GrzPoint2_axioms_has_K.
+Check normal_GrzPoint2_axioms_has_Grz.
+Check normal_GrzPoint2_axioms_has_Point2.
+Check normal_GrzPoint2.
+Check normal_GrzPoint2_entailment.
+Check normal_GrzPoint3_axioms.
+Check normal_GrzPoint3_axioms_has_K.
+Check normal_GrzPoint3_axioms_has_Grz.
+Check normal_GrzPoint3_axioms_has_Point3.
+Check normal_GrzPoint3.
+Check normal_GrzPoint3_entailment.
+
+(** Exact raw KTc, KD4.3Z, KTMk, and S4H systems. *)
+Check structural_ktc_entailment.
+Check structural_kd4point3z_entailment.
+Check structural_ktmk_entailment.
+Check structural_s4h_entailment.
+Check normal_KTc_axioms.
+Check normal_KTc_axioms_has_K.
+Check normal_KTc_axioms_has_Tc.
+Check normal_KTc.
+Check normal_KTc_entailment.
+Check normal_KD4Point3Z_axioms.
+Check normal_KD4Point3Z_axioms_has_K.
+Check normal_KD4Point3Z_axioms_has_D.
+Check normal_KD4Point3Z_axioms_has_Four.
+Check normal_KD4Point3Z_axioms_has_WeakPoint3.
+Check normal_KD4Point3Z_axioms_has_Z.
+Check normal_KD4Point3Z.
+Check normal_KD4Point3Z_entailment.
+Check normal_KTMk_axioms.
+Check normal_KTMk_axioms_has_K.
+Check normal_KTMk_axioms_has_T.
+Check normal_KTMk_axioms_has_Mk.
+Check normal_KTMk.
+Check normal_KTMk_entailment.
+Check normal_S4H_axioms.
+Check normal_S4H_axioms_has_K.
+Check normal_S4H_axioms_has_T.
+Check normal_S4H_axioms_has_Four.
+Check normal_S4H_axioms_has_H1.
+Check normal_S4H.
+Check normal_S4H_entailment.
 
 (** Complete 17-declaration raw-axiom calculus with the Henkin rule. *)
 Check henkin_rule.
@@ -3036,6 +3172,94 @@ Print Assumptions normal_S5_axioms_has_K.
 Print Assumptions normal_S5_axioms_has_T.
 Print Assumptions normal_S5_axioms_has_Five.
 Print Assumptions normal_S5_entailment.
+(** GL/GL.2/GL.3 and the duplicate source instance aliases remain
+    constructive, raw, and closed under the global context. *)
+Print Assumptions normal_GL_axioms_has_K.
+Print Assumptions normal_GL_axioms_has_L.
+Print Assumptions normal_GL_entailment.
+Print Assumptions normal_GL_entailment_duplicate.
+Print Assumptions normal_GLPoint2_axioms_has_K.
+Print Assumptions normal_GLPoint2_axioms_has_L.
+Print Assumptions normal_GLPoint2_axioms_has_WeakPoint2.
+Print Assumptions normal_GLPoint2_entailment.
+Print Assumptions normal_GLPoint2_entailment_duplicate.
+Print Assumptions normal_GL_weaker_than_normal_GLPoint2.
+Print Assumptions normal_GLPoint3_axioms_has_K.
+Print Assumptions normal_GLPoint3_axioms_has_L.
+Print Assumptions normal_GLPoint3_axioms_has_WeakPoint3.
+Print Assumptions normal_GLPoint3_entailment.
+(** All Z-family witnesses, explicit inclusions, inferred aliases, and the
+    literal source-line-715 repetition are syntactic and closed. *)
+Print Assumptions normal_K4Z_axioms_has_K.
+Print Assumptions normal_K4Z_axioms_has_Four.
+Print Assumptions normal_K4Z_axioms_has_Z.
+Print Assumptions normal_K4Z_entailment.
+Print Assumptions normal_K4_weaker_than_normal_K4Z.
+Print Assumptions normal_K4_weaker_than_normal_K4Z_duplicate.
+Print Assumptions normal_K4Z_weaker_than_normal_GL.
+Print Assumptions normal_K4Z_weaker_than_normal_GL_duplicate.
+Print Assumptions normal_K4Point2Z_axioms_has_K.
+Print Assumptions normal_K4Point2Z_axioms_has_Four.
+Print Assumptions normal_K4Point2Z_axioms_has_Z.
+Print Assumptions normal_K4Point2Z_axioms_has_WeakPoint2.
+Print Assumptions normal_K4Point2Z_entailment.
+Print Assumptions normal_K4Point2_weaker_than_normal_K4Point2Z.
+Print Assumptions normal_K4Point2_weaker_than_normal_K4Point2Z_duplicate.
+Print Assumptions normal_K4Z_weaker_than_normal_K4Point2Z.
+Print Assumptions normal_K4Point2_weaker_than_normal_K4Point2Z_repeated.
+Print Assumptions normal_K4Point2Z_weaker_than_normal_GLPoint2.
+Print Assumptions normal_K4Point2Z_weaker_than_normal_GLPoint2_duplicate.
+Print Assumptions normal_K4Point3Z_axioms_has_K.
+Print Assumptions normal_K4Point3Z_axioms_has_Four.
+Print Assumptions normal_K4Point3Z_axioms_has_Z.
+Print Assumptions normal_K4Point3Z_axioms_has_WeakPoint3.
+Print Assumptions normal_K4Point3Z_entailment.
+Print Assumptions normal_K4Point3_weaker_than_normal_K4Point3Z.
+Print Assumptions normal_K4Point3_weaker_than_normal_K4Point3Z_duplicate.
+Print Assumptions normal_K4Z_weaker_than_normal_K4Point3Z.
+Print Assumptions normal_K4Z_weaker_than_normal_K4Point3Z_duplicate.
+Print Assumptions normal_K4Point3Z_weaker_than_normal_GLPoint3.
+Print Assumptions normal_K4Point3Z_weaker_than_normal_GLPoint3_duplicate.
+(** The Henkin/Grzegorczyk witnesses, structural bundles, and direct
+    KT-to-Grz derivation are constructive and closed. *)
+Print Assumptions normal_KHen_axioms_has_K.
+Print Assumptions normal_KHen_axioms_has_Hen.
+Print Assumptions normal_K4Hen_axioms_has_K.
+Print Assumptions normal_K4Hen_axioms_has_Four.
+Print Assumptions normal_K4Hen_axioms_has_Hen.
+Print Assumptions normal_K4Hen_entailment.
+Print Assumptions normal_Grz_axioms_has_K.
+Print Assumptions normal_Grz_axioms_has_Grz.
+Print Assumptions normal_Grz_entailment.
+Print Assumptions normal_KT_weaker_than_normal_Grz.
+Print Assumptions normal_GrzPoint2_axioms_has_K.
+Print Assumptions normal_GrzPoint2_axioms_has_Grz.
+Print Assumptions normal_GrzPoint2_axioms_has_Point2.
+Print Assumptions normal_GrzPoint2_entailment.
+Print Assumptions normal_GrzPoint3_axioms_has_K.
+Print Assumptions normal_GrzPoint3_axioms_has_Grz.
+Print Assumptions normal_GrzPoint3_axioms_has_Point3.
+Print Assumptions normal_GrzPoint3_entailment.
+(** The four specialized systems expose only their selected raw
+    capabilities and remain closed under the global context. *)
+Print Assumptions normal_KTc_axioms_has_K.
+Print Assumptions normal_KTc_axioms_has_Tc.
+Print Assumptions normal_KTc_entailment.
+Print Assumptions normal_KD4Point3Z_axioms_has_K.
+Print Assumptions normal_KD4Point3Z_axioms_has_D.
+Print Assumptions normal_KD4Point3Z_axioms_has_Four.
+Print Assumptions normal_KD4Point3Z_axioms_has_WeakPoint3.
+Print Assumptions normal_KD4Point3Z_axioms_has_Z.
+Print Assumptions normal_KD4Point3Z_entailment.
+Print Assumptions normal_KTMk_axioms_has_K.
+Print Assumptions normal_KTMk_axioms_has_T.
+Print Assumptions normal_KTMk_axioms_has_Mk.
+Print Assumptions normal_KTMk_entailment.
+Print Assumptions normal_S4H_axioms_has_K.
+Print Assumptions normal_S4H_axioms_has_T.
+Print Assumptions normal_S4H_axioms_has_Four.
+Print Assumptions normal_S4H_axioms_has_H1.
+Print Assumptions normal_S4H_entailment.
 (** Both rule calculi, including their raw-template adapters and concrete
     structural bundles, are constructive. *)
 Print Assumptions with_henkin_axm_substituted.
