@@ -203,6 +203,7 @@ is being reconstructed:
 | `GenericForcingRelation.v` | `Logic/ForcingRelation.lean` | Complete 20-declaration surface: ordinary/existence/weak forcing dictionaries, factored persistence and future-world implication/negation, intuitionistic and classical Kripke bundles, global/context forcing, and minimally hypothesized connective laws |
 | `GenericEntailment.v` | `Logic/Entailment.lean` | Complete 138-declaration surface: Type-valued formal proofs and inhabited provability, proof sets and controlled extraction, heterogeneous strength order/equivalence, consistency, explosion, completeness/incompleteness, axiomatized and compact contexts, deduction, semantic soundness/completeness, and pullback |
 | `GenericEmbedding.v` | `Logic/Embedding.lean` | Complete five-declaration surface: faithful provability translations between heterogeneous systems, explicit witnesses, identity, and composition, all constructively |
+| `GenericCalculus.v` | `Logic/Calculus.lean` | Declarations 1--15 of 43: universe-polymorphic Type-valued one-sided LK and Cut dictionaries, dependent cast, contraction/exchange/weakening combinators, extended cut, and singleton-normalized conjunction/disjunction folds; the disjunction rule is strengthened to the cut-free kernel |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
@@ -507,6 +508,16 @@ the countermodel theorem constructive.  Exactly three later declarations use
 excluded middle to extract a semantic counterexample or model from consistency.
 Entailment pullback along an arbitrary formula map is entirely constructive,
 including literal definitional equality of its theory predicate.
+
+`GenericCalculus.v` starts Foundation's generic one-sided sequent-calculus
+layer without importing modal syntax.  Its Type-valued derivation family,
+identity, structural contraction, truth, conjunction, disjunction, and Cut
+rules require only the raw connective operations: the source's ambient De
+Morgan and involutive-negation laws are unused in this tranche.  Reusable
+pointwise list-inclusion lemmas discharge exchange and weakening uniformly.
+The singleton-normalized conjunction fold is constructive, and a rotated-tail
+recursion strengthens the source disjunction fold from Cut to the base LK
+dictionary.  All fifteen declarations are closed under the global context.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
