@@ -1,0 +1,18 @@
+(** Kernel-facing audit for structural lookup in a fixed-helper batch. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTruthCertificateMasterHelperLookup.
+
+Module PABoundedRawCodedTruthCertificateMasterHelperLookupAudit.
+
+Import PABoundedRawCodedTruthCertificateMasterHelperLookup.
+
+Check raw_fixedPAHelperBatchLocalProofs_member.
+Check raw_fixedPAHelperBatchLocalProofs_member_app_left.
+Check raw_fixedPAHelperBatchLocalProofs_member_app_right.
+
+Print Assumptions raw_fixedPAHelperBatchLocalProofs_member.
+Print Assumptions raw_fixedPAHelperBatchLocalProofs_member_app_left.
+Print Assumptions raw_fixedPAHelperBatchLocalProofs_member_app_right.
+
+End PABoundedRawCodedTruthCertificateMasterHelperLookupAudit.

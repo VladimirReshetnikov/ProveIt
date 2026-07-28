@@ -1984,6 +1984,13 @@ the six current master roots in one literal witnessed context.  The two
 lower-dependent mixed cells are explicitly absent, so their structural
 compilers remain measurable rather than being folded into a quoted helper.
 
+`RawCodedTruthCertificateMasterHelperLookup.v` supplies the structural
+eliminator for those synchronized batches.  Membership of a named fixed
+helper now recovers its corresponding local proof root without destructing
+all thirty-eight roots or changing the shared represented context.  The
+lemma follows the helper and root lists position-for-position and introduces
+no proof, weakening, or semantic premise of its own.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
