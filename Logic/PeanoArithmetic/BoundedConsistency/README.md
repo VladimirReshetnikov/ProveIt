@@ -2401,6 +2401,20 @@ template.  Its public residual is therefore exactly one open local
 `case -> conclusion truth` PA root for each real proof constructor; it assumes
 neither a conclusion proof nor the original undifferentiated strong step.
 
+`RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
+finite scoping for the direct template and lifts it to genuinely
+carrier-valued operation depths.  Represented numeral parameters are handled
+through their beta-coded traces, so scoped template terms are fixed by
+shift, opening, and substitution without decoding nonstandard data.  Deeply
+closed ternary selectors then give ordinary deep closure for scoped opaque
+applications, while transparent formula constructors propagate all-depth
+diagonal substitution to the exact strong-prefix induction body.  The final
+diagonal theorem honestly retains one stronger opaque-leaf premise: a
+diagonal trace shares its entire source/target table, and equality of the
+roots of two ordinary deep-closure traces does not identify those existential
+tables.  Thus this checkpoint exposes rather than assumes away the remaining
+shared-table construction.
+
 `RawCodedRestrictedPADerivationSoundnessConclusionTruthDirectSelector.v`
 constructs the companion five-argument conclusion selector from the native
 axiom-soundness trace.  Orbit functionality aligns an independently selected

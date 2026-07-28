@@ -1,0 +1,51 @@
+(** Audit for the direct all-depth diagonal-closure boundary. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectDiagonalClosureAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.
+
+Check CoqRestrictedPATemplateTermScoped.
+Check CoqRestrictedPATemplateTermsScoped.
+Check CoqRestrictedPATemplateFormulaScoped.
+
+Check raw_coqRestrictedPATemplateTerm_shift_identity_from_scope.
+Check raw_coqRestrictedPATemplateTerm_opening_identity_from_scope.
+Check raw_coqRestrictedPATemplateTerm_substitution_identity_from_scope.
+
+Check
+  raw_coqRestrictedPATernaryApplication_deep_closed_from_template_scope.
+
+Check RawCoqRestrictedPAOpaqueDeepClosedFromTemplateScopes.
+Check RawCoqRestrictedPAOpaqueDiagonalFromTemplateScopes.
+
+Check raw_coqRestrictedPADirectTemplateFormula_diagonal_from_scope.
+Check
+  raw_coqRestrictedPADirectTemplateFormula_diagonal_at_positive_depths.
+Check raw_coqRestrictedPADirectTemplateFormula_diagonal_at_all_depths.
+
+Check
+  coqRestrictedPADerivationSoundnessCarrierStrongPrefixTemplate_scoped.
+Check
+  coqRestrictedPADerivationSoundnessCarrierStrongPrefixSuccessorTemplate_scoped.
+Check
+  coqRestrictedPADerivationSoundnessCarrierStrongPrefixZeroTemplate_scoped.
+
+Check
+  raw_coqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyDirect_diagonal_of_opaque_diagonal.
+
+Print Assumptions
+  raw_coqRestrictedPATemplateTerm_substitution_identity_from_scope.
+Print Assumptions
+  raw_coqRestrictedPATernaryApplication_deep_closed_from_template_scope.
+Print Assumptions
+  raw_coqRestrictedPADirectTemplateFormula_diagonal_from_scope.
+Print Assumptions
+  raw_coqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyDirect_diagonal_of_opaque_diagonal.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectDiagonalClosureAudit.
