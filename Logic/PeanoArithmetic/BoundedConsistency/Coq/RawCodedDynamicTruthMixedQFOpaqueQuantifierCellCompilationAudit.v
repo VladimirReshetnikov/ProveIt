@@ -1,0 +1,138 @@
+(** Audit for the transparent opaque-quantifier mixed-QF compiler. *)
+
+From Stdlib Require Import List.
+From PAHF Require Import PAHF.
+From PAFiniteBasisReduction Require Import
+  HierarchyReduction CanonicalSelectorPA.
+From BoundedPAConsistency Require Import
+  RawCodedSyntaxConstructors
+  RawCodedTemplateProofCompiler
+  RawCodedTemplatePAEmbedding
+  RawCodedTruthCertificateMasterFixedHelperBatchExtension
+  RawCodedTruthCertificateMasterMixedQFHelperBatch
+  RawCodedDynamicTruthQuantifierConditionalCellCompilation
+  RawCodedDynamicTruthMixedQFBranchExclusivity
+  RawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.
+
+Import ListNotations.
+
+Module PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilationAudit.
+
+Import PA.
+Import PAHierarchyReduction.
+Import PACanonicalSelectorPA.
+Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedDynamicTruthMixedQFBranchExclusivity.
+Import PABoundedRawCodedDynamicTruthQuantifierConditionalCellCompilation.
+Import PABoundedRawCodedTruthCertificateMasterFixedHelperBatchExtension.
+Import PABoundedRawCodedTruthCertificateMasterMixedQFHelperBatch.
+Import PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.
+
+(** The generic proof terms are explicit trees, including both existential
+    towers and the arbitrary negative source formula. *)
+Check templateRepeatedExistsBottomFrom.
+Check templateRepeatedExistsBottomFrom_derives.
+Check templateNoBottomCounterexampleProof.
+Check templateNoBottomCounterexampleProof_derives.
+Check templateRepeatedExistsFixBottomNegativeFrom.
+Check templateRepeatedExistsFixBottomNegativeFrom_derives.
+
+Check coqDynamicTruthPiExistentialOpaqueToFixedFrom_derives.
+Check coqDynamicTruthSigmaUniversalOpaqueToFixedFrom_derives.
+Check coqDynamicTruthSigmaQFPiExOpaqueCellTransportProof_derives.
+Check coqDynamicTruthSigmaAllPiQFOpaqueCellTransportProof_derives.
+
+(** Both fixed and opaque endpoints are identified with literal native cell
+    codes under the same direct structural trace. *)
+Check rawDirect_dynamicTruthSigmaQFPiExFixedBottomCellTemplate_identified.
+Check rawDirect_dynamicTruthSigmaQFPiExOpaqueCellTemplate_identified.
+Check rawDirect_dynamicTruthSigmaAllPiQFFixedBottomCellTemplate_identified.
+Check rawDirect_dynamicTruthSigmaAllPiQFOpaqueCellTemplate_identified.
+Check rawDirect_dynamicTruthSigmaQFPiExOpaqueCellTransport_identified.
+Check rawDirect_dynamicTruthSigmaAllPiQFOpaqueCellTransport_identified.
+
+(** Same-context compilation exposes realizability, self-shift, the direct
+    trace, and the fixed-bottom seed root separately. *)
+Check raw_codedPALocalProofOf_dynamicTruthSigmaQFPiExOpaqueTransport.
+Check raw_codedPALocalProofOf_dynamicTruthSigmaAllPiQFOpaqueTransport.
+Check raw_codedPALocalProofOf_dynamicTruthSigmaQFPiExOpaqueCell_direct.
+Check raw_codedPALocalProofOf_dynamicTruthSigmaAllPiQFOpaqueCell_direct.
+Check raw_codedPALocalProofOf_dynamicTruthSigmaQFPiExOpaqueCell_witnessed.
+Check raw_codedPALocalProofOf_dynamicTruthSigmaAllPiQFOpaqueCell_witnessed.
+
+(** Exact 38+2 helper order and target alignment. *)
+Goal rawDynamicTruthMixedQFOpaqueTransportSeedPAHelpers =
+  [ rawDynamicTruthSigmaQFPiExTransportSeedPAHelper;
+    rawDynamicTruthSigmaAllPiQFTransportSeedPAHelper ].
+Proof. reflexivity. Qed.
+
+Goal length rawDynamicTruthMixedQFOpaqueTransportSeedPAHelpers = 2.
+Proof. exact rawDynamicTruthMixedQFOpaqueTransportSeedPAHelpers_length. Qed.
+
+Goal rawDynamicTruthReadyAndAllMixedQFPAHelpers =
+  rawDynamicTruthReadyBinderPrincipalAndMixedQFPAHelpers ++
+  [ rawDynamicTruthSigmaQFPiExTransportSeedPAHelper;
+    rawDynamicTruthSigmaAllPiQFTransportSeedPAHelper ].
+Proof. exact rawDynamicTruthReadyAndAllMixedQFPAHelpers_order. Qed.
+
+Goal length rawDynamicTruthReadyAndAllMixedQFPAHelpers = 40.
+Proof. exact rawDynamicTruthReadyAndAllMixedQFPAHelpers_length. Qed.
+
+Goal forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  rawFixedPAHelperBatchTranslatedTargetCodes M translation
+    rawDynamicTruthReadyAndAllMixedQFPAHelpers =
+  rawFixedPAHelperBatchTranslatedTargetCodes M translation
+    rawDynamicTruthReadyBinderPrincipalAndMixedQFPAHelpers ++
+  [ rawDynamicTruthMixedQFCellCode M DTMQFSigmaQFPiEx
+      (rawFormulaBotCode M) (rawFormulaBotCode M);
+    rawDynamicTruthMixedQFCellCode M DTMQFSigmaAllPiQF
+      (rawFormulaBotCode M) (rawFormulaBotCode M) ].
+Proof. exact rawDynamicTruthReadyAndAllMixedQFPAHelperTargets_order. Qed.
+
+Check raw_fixedPAHelperBatchLocalProofs_app_split.
+Check raw_mixedQFOpaqueTransportSeedRoots_of_40helper_roots.
+Check raw_sixFieldMasterCommonContextProofsWithAllMixedQFHelpers.
+Check RawSixFieldMasterCommonContextProofsWithAllMixedQFOpaqueRootsOf.
+Check raw_sixFieldMasterCommonContextProofsWithAllMixedQFOpaqueRoots.
+
+(** Ordinary proofs are unconditional once an individual trace is supplied.
+    Existing trace totality produces the adequacy-indexed interface.  The
+    stronger original all-carrier interface retains its exact stronger trace
+    premise rather than silently deriving traces from atomic adequacy. *)
+Check raw_codedPAProofOf_dynamicTruthSigmaQFPiExOpaqueCell_direct.
+Check raw_codedPAProofOf_dynamicTruthSigmaAllPiQFOpaqueCell_direct.
+Check RawDynamicTruthMixedQFOpaqueQuantifierAdequateCellProofCompiler.
+Check
+  rawDynamicTruthMixedQFOpaqueQuantifierAdequateCellProofCompiler_of_trace.
+Check RawDynamicTruthMixedQFLowerApplicationDirectTraceTotal.
+Check rawDynamicTruthMixedQFOpaqueQuantifierCellProofCompiler_of_trace.
+Check raw_dynamicTruthMixedQFCellProofCompilerTotal_of_trace.
+
+Print Assumptions templateRepeatedExistsFixBottomNegativeFrom_derives.
+Print Assumptions
+  coqDynamicTruthSigmaQFPiExOpaqueCellTransportProof_derives.
+Print Assumptions
+  coqDynamicTruthSigmaAllPiQFOpaqueCellTransportProof_derives.
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthSigmaQFPiExOpaqueCell_direct.
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthSigmaAllPiQFOpaqueCell_direct.
+Print Assumptions
+  raw_mixedQFOpaqueTransportSeedRoots_of_40helper_roots.
+Print Assumptions
+  raw_sixFieldMasterCommonContextProofsWithAllMixedQFOpaqueRoots.
+Print Assumptions
+  raw_codedPAProofOf_dynamicTruthSigmaQFPiExOpaqueCell_direct.
+Print Assumptions
+  raw_codedPAProofOf_dynamicTruthSigmaAllPiQFOpaqueCell_direct.
+Print Assumptions
+  rawDynamicTruthMixedQFOpaqueQuantifierAdequateCellProofCompiler_of_trace.
+Print Assumptions
+  rawDynamicTruthMixedQFOpaqueQuantifierCellProofCompiler_of_trace.
+Print Assumptions raw_dynamicTruthMixedQFCellProofCompilerTotal_of_trace.
+
+End PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilationAudit.
