@@ -2040,6 +2040,20 @@ named native leaf compilers and the nonstandard compact-consistency
 certificate successor.  Those remaining proof-producing inputs stay visible;
 the module does not repackage them as an unconditional endpoint.
 
+`RawCodedDynamicTruthNativeStagedPositiveSuccessor.v` removes the circular
+compact-consistency-successor premise from the assembly boundary.  Six exact
+callbacks follow Lean's dependency order: local receives the current master;
+cross-level also receives local; shift also receives cross-level;
+substitution also receives shift; axiom soundness also receives substitution;
+and the final callback receives all five new fields and directly returns the
+graph-selected next consistency target with its proof.  The callbacks may
+choose dependent targets and certificates, so none must work in isolation.
+After all six stages, completed witnessed-context merging synchronizes those
+same ordinary proofs without changing a target.  The module derives the
+native positive component successor and the requested PA headline from this
+non-circular, all-model callback family; construction of the six represented
+stage producers remains explicit.
+
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
 use the same formula and assignment inputs but demand rank-zero outputs one
