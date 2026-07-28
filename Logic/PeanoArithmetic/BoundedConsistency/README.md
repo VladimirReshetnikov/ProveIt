@@ -2105,6 +2105,19 @@ nonstandard numeral witness.  Consequently the selected-axiom transport now
 has no residual premise beyond the two explicitly named truth-coherence proof
 roots.
 
+`RawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridge.v` handles the
+different witnessed context hidden by an ordinary proof of the exact
+universal-soundness code.  It opens that certificate, merges its witnessed
+PA-axiom context with the eleven-root final staged context, and transports all
+eleven existing roots into the merged base.  It then weakens the accumulated
+soundness root through the canonical shifted proof contexts and regenerates
+the consistency-from-soundness root over that same merged base.  The endpoint
+is deliberately existential in the enlarged context: it does not pretend
+that an induction axiom used by the ordinary certificate was already present
+in the caller's original context.  Atomic adequacy of the projected-fields
+head, exact lower-level alignment, the ordinary universal-soundness
+certificate, and the existing consistency compiler remain explicit inputs.
+
 `RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.v` connects these
 stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,

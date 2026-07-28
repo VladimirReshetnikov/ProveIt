@@ -1,0 +1,18 @@
+(** Kernel audit for the grown-base universal-soundness bridge adapter. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridge.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridge.
+
+Check raw_codedPALocalProof_to_restrictedPABridgeContext.
+Check raw_dynamicTruthNativeFinalStagedPrerequisites_add_proof.
+Check RawDynamicTruthNativeFinalGrowingUniversalSoundnessBridgeAt.
+Check
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessBridge_of_ordinary.
+
+Print Assumptions raw_codedPALocalProof_to_restrictedPABridgeContext.
+Print Assumptions raw_dynamicTruthNativeFinalStagedPrerequisites_add_proof.
+Print Assumptions
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessBridge_of_ordinary.
