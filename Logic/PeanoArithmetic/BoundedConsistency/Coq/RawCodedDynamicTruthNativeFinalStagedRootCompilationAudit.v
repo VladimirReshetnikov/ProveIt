@@ -1,0 +1,48 @@
+(** Kernel-facing audit for the dependency-aware sixth native stage. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalStagedRootCompilation.
+
+Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
+
+(** The literal dependency prefix contains the current six-field master and
+    all five already selected positive successor fields in one witnessed
+    context. *)
+Check rawDynamicTruthNativeFinalStagedAntecedentCode.
+Check RawDynamicTruthNativeFinalStagedPrerequisitesAt.
+Check RawDynamicTruthNativeFinalStagedPrerequisitesOn.
+Check rawDynamicTruthNativeFinalStagedAntecedentRoot.
+Check raw_dynamicTruthNativeFinalStagedAntecedentRoot_of_prerequisites.
+Check raw_dynamicTruthNativeFinal_currentCommonContext_of_prerequisites.
+
+(** The trace binds the compact target and the instantiated fixed
+    dynamic-soundness source to one successor numeral code. *)
+Check RawDynamicTruthNativeFinalSourceTraceAt.
+Check RawDynamicTruthNativeFinalStagedGraphTraceAt.
+Check raw_dynamicTruthNativeFinalStagedGraphTrace_of_graphs.
+
+(** This is the sole conditional proof-producing boundary.  Its result is
+    the exact implication root in the canonical third-existential context. *)
+Check RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler.
+
+(** All steps after that residual are concrete proof-code constructors. *)
+Check rawDynamicTruthNativeFinalStagedClosedRoot.
+Check raw_dynamicTruthNativeFinalStagedClosedRoot_local.
+Check RawDynamicTruthNativeFinalStagedLocalProofAt.
+Check
+  raw_dynamicTruthNativeFinalStagedLocalProof_of_source_linked_implication.
+Check raw_dynamicTruthNativeFinalStagedLocalProof_exists.
+Check raw_codedPAProofOf_dynamicTruthNativeFinal_of_carried_root.
+Check raw_dynamicTruthNativeFinalStagedNextFinalProof_exists.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedAntecedentRoot_of_prerequisites.
+Print Assumptions
+  raw_dynamicTruthNativeFinal_currentCommonContext_of_prerequisites.
+Print Assumptions raw_dynamicTruthNativeFinalStagedGraphTrace_of_graphs.
+Print Assumptions raw_dynamicTruthNativeFinalStagedClosedRoot_local.
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedLocalProof_of_source_linked_implication.
+Print Assumptions raw_dynamicTruthNativeFinalStagedLocalProof_exists.
+Print Assumptions raw_codedPAProofOf_dynamicTruthNativeFinal_of_carried_root.
+Print Assumptions raw_dynamicTruthNativeFinalStagedNextFinalProof_exists.

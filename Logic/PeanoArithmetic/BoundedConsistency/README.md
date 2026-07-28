@@ -1999,6 +1999,19 @@ explicit.  The staged implication compiler is intentionally still a
 premise: the module performs the complete proof-code assembly after that
 arithmetic kernel without claiming to have constructed the kernel itself.
 
+`RawCodedDynamicTruthNativeFinalStagedRootCompilation.v` extends that prefix
+by the selected next axiom-soundness root, yielding the literal eleven-root
+antecedent for the sixth field.  One graph trace binds the current and next
+compact-consistency targets, the successor numeral code, and substitution in
+the fixed dynamic-soundness source.  The sole residual compiler returns the
+source-linked six-premise implication root in the canonical third-
+existential context.  After that boundary, represented field projections,
+six implication eliminations, triple existential descent, and carried
+implication/universal closure produce an ordinary proof of the exact compact
+graph target while preserving the original witnessed base.  The source-
+linked implication compiler remains explicit; no uniform semantic soundness
+or consistency-successor premise is asserted.
+
 `RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.v` connects these
 stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,
