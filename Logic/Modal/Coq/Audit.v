@@ -9,6 +9,7 @@ From FoundationModal Require Import
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
   EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
+  HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
   HilbertWithRESystems HilbertWithRESymmetrySystems
@@ -18,7 +19,7 @@ From FoundationModal Require Import
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
   GLUnnecessitation GLModalDisjunction GLIndependence QuasiNormalS QuasiNormalD
   GLPlusBoxBot
-  KHenIncompleteness GLAlternativeSystems
+  KHenIncompleteness GLAlternativeSystems HilbertRuleSystemBridges
   CanonicalGrz StructuralFrames
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
@@ -683,6 +684,16 @@ Check GL_henkin_rule.
 Check provable_GL_K4Loeb_iff.
 Check provable_GL_K4Henkin_iff.
 Check provable_GL_K4Hen_iff.
+(** Constructor-by-constructor bridges from the exact raw calculi to the
+    established concrete GL presentations. *)
+Check with_henkin_K4_weaker_than_K4Henkin.
+Check K4Henkin_weaker_than_with_henkin_K4.
+Check provable_with_henkin_K4_K4Henkin_iff.
+Check provable_GL_with_henkin_K4_iff.
+Check with_loeb_K4_weaker_than_K4Loeb.
+Check K4Loeb_weaker_than_with_loeb_K4.
+Check provable_with_loeb_K4_K4Loeb_iff.
+Check provable_GL_with_loeb_K4_iff.
 Check provable_GL_TFAE.
 Check GL_equiv_K4Loeb.
 Check GL_equiv_K4Henkin.
@@ -1043,6 +1054,70 @@ Check normal_hilbert_has_McK.
 Check normal_hilbert_has_Mk.
 Check normal_hilbert_has_H.
 Check normal_hilbert_has_Geach.
+
+(** Complete 17-declaration raw-axiom calculus with the Henkin rule. *)
+Check henkin_rule.
+Check with_henkin_proves.
+Check WH_axm.
+Check WH_mp.
+Check WH_nec.
+Check WH_henkin.
+Check WH_imply_K.
+Check WH_imply_S.
+Check WH_elim_contra.
+Check with_henkin_axm_substituted.
+Check with_henkin_axm.
+Check with_henkin_lukasiewicz.
+Check with_henkin_necessitation.
+Check with_henkin_henkin_rule.
+Check with_henkin_proves_substitute.
+Check with_henkin_proves_fold.
+Check with_henkin_weaker_of_provable_axioms.
+Check with_henkin_weaker_of_subset_axioms.
+Check with_henkin_instantiate_unary.
+Check with_henkin_instantiate_binary.
+Check with_henkin_has_K.
+Check with_henkin_has_Four.
+Check with_henkin_identity.
+Check with_henkin_imply_intro.
+Check with_henkin_under_mp.
+Check with_henkin_and_intro.
+Check with_henkin_iff_refl.
+Check with_henkin_has_DiaDuality.
+Check with_henkin_K4_axioms.
+Check with_henkin_K4_axioms_has_K.
+Check with_henkin_K4_axioms_has_Four.
+Check with_henkin_K4.
+Check structural_k4_henkin_entailment.
+Check with_henkin_K4_entailment.
+
+(** Complete 17-declaration raw-axiom calculus with Loeb's rule. *)
+Check loeb_rule.
+Check structural_k4loeb_entailment.
+Check with_loeb_proves.
+Check WL_axm.
+Check WL_mp.
+Check WL_nec.
+Check WL_loeb.
+Check WL_imply_K.
+Check WL_imply_S.
+Check WL_elim_contra.
+Check with_loeb_axm_substituted.
+Check with_loeb_axm.
+Check with_loeb_lukasiewicz.
+Check with_loeb_necessitation.
+Check with_loeb_loeb_rule.
+Check with_loeb_proves_substitute.
+Check with_loeb_proves_fold.
+Check with_loeb_weaker_of_provable_axioms.
+Check with_loeb_weaker_of_subset_axioms.
+Check with_loeb_has_K.
+Check with_loeb_has_Four.
+Check with_loeb_K4_axioms.
+Check with_loeb_K4_axioms_has_K.
+Check with_loeb_K4_axioms_has_Four.
+Check with_loeb_K4_proves.
+Check with_loeb_K4Loeb_entailment.
 
 (** Faithful generic WithRE calculus core and source-schema adapters. *)
 Check with_re_axiom.
@@ -2317,6 +2392,14 @@ Print Assumptions K4_proves_box_L_implies_L.
 Print Assumptions K4Loeb_proves_L.
 Print Assumptions K4Henkin_loeb_rule.
 Print Assumptions K4Hen_henkin_rule.
+Print Assumptions with_henkin_K4_weaker_than_K4Henkin.
+Print Assumptions K4Henkin_weaker_than_with_henkin_K4.
+Print Assumptions provable_with_henkin_K4_K4Henkin_iff.
+Print Assumptions provable_GL_with_henkin_K4_iff.
+Print Assumptions with_loeb_K4_weaker_than_K4Loeb.
+Print Assumptions K4Loeb_weaker_than_with_loeb_K4.
+Print Assumptions provable_with_loeb_K4_K4Loeb_iff.
+Print Assumptions provable_GL_with_loeb_K4_iff.
 Print Assumptions provable_GL_TFAE.
 Print Assumptions GL_equiv_K4Loeb.
 Print Assumptions GL_equiv_K4Henkin.
@@ -2446,6 +2529,41 @@ Print Assumptions normal_hilbert_has_McK.
 Print Assumptions normal_hilbert_has_Mk.
 Print Assumptions normal_hilbert_has_H.
 Print Assumptions normal_hilbert_has_Geach.
+(** Both rule calculi, including their raw-template adapters and concrete
+    structural bundles, are constructive. *)
+Print Assumptions with_henkin_axm_substituted.
+Print Assumptions with_henkin_axm.
+Print Assumptions with_henkin_lukasiewicz.
+Print Assumptions with_henkin_necessitation.
+Print Assumptions with_henkin_henkin_rule.
+Print Assumptions with_henkin_proves_substitute.
+Print Assumptions with_henkin_proves_fold.
+Print Assumptions with_henkin_weaker_of_provable_axioms.
+Print Assumptions with_henkin_weaker_of_subset_axioms.
+Print Assumptions with_henkin_instantiate_unary.
+Print Assumptions with_henkin_instantiate_binary.
+Print Assumptions with_henkin_has_K.
+Print Assumptions with_henkin_has_Four.
+Print Assumptions with_henkin_identity.
+Print Assumptions with_henkin_and_intro.
+Print Assumptions with_henkin_has_DiaDuality.
+Print Assumptions with_henkin_K4_axioms_has_K.
+Print Assumptions with_henkin_K4_axioms_has_Four.
+Print Assumptions with_henkin_K4_entailment.
+Print Assumptions with_loeb_axm_substituted.
+Print Assumptions with_loeb_axm.
+Print Assumptions with_loeb_lukasiewicz.
+Print Assumptions with_loeb_necessitation.
+Print Assumptions with_loeb_loeb_rule.
+Print Assumptions with_loeb_proves_substitute.
+Print Assumptions with_loeb_proves_fold.
+Print Assumptions with_loeb_weaker_of_provable_axioms.
+Print Assumptions with_loeb_weaker_of_subset_axioms.
+Print Assumptions with_loeb_has_K.
+Print Assumptions with_loeb_has_Four.
+Print Assumptions with_loeb_K4_axioms_has_K.
+Print Assumptions with_loeb_K4_axioms_has_Four.
+Print Assumptions with_loeb_K4Loeb_entailment.
 Print Assumptions with_re_lukasiewicz.
 Print Assumptions with_re_proves_substitute.
 Print Assumptions with_re_proves_dependent_fold.

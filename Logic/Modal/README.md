@@ -221,6 +221,9 @@ is being reconstructed:
 | `HilbertWithRE.v` | `Modal/Hilbert/WithRE/Basic.lean` | Faithful generic six-constructor replacement-of-equivalents calculus, exact proof-indexed Prop recursor, substitution and weakening, Lukasiewicz basis, and all ten schematic-axiom adapters |
 | `HilbertNormal.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact ten-declaration generic core: six raw constructors without hardwired modal K, all axiom aliases and structural instances, a proof-indexed Prop fold, substitution, and both weakening principles |
 | `HilbertNormalAxiomAdapters.v` | `Modal/Hilbert/Normal/Basic.lean` | Complete 25-declaration generic raw-template adapter block, including the exact structural Normal capability with a constructive proof of definitional diamond duality and all 24 named schema adapters |
+| `HilbertWithHenkin.v` | `Modal/Hilbert/WithHenkin/Basic.lean` | Complete 17-declaration atom-polymorphic raw-axiom calculus: seven constructors, exact proof-indexed Prop fold, substitution and weakening, K/Four adapters, the exact two-template K4 system, and its structural K4Henkin bundle |
+| `HilbertWithLoeb.v` | `Modal/Hilbert/WithLoeb/Basic.lean` | Complete 17-declaration atom-polymorphic raw-axiom calculus with Loeb's rule, including the exact fold, substitution and weakening, K/Four adapters, the exact K4 system, and its structural K4Loeb bundle |
+| `HilbertRuleSystemBridges.v` | `Modal/Hilbert/{WithHenkin,WithLoeb}/Basic.lean`, `Modal/Hilbert/GL_K4Loeb_K4Henkin_K4Hen.lean` | Constructor-by-constructor equivalences between both exact raw K/Four calculi and the established concrete presentations, plus their GL equivalences |
 | `HilbertWithREClassicalCompleteness.v` | `Modal/Hilbert/WithRE/Basic.lean` | Classical completeness of the raw K/S/EC basis via finite propositional skeletons, modal-K completeness, box erasure, and cross-atom substitution; unconditional classical and E adapters |
 | `HilbertWithREBaseSystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact E, EM, EC, EN, EMC, EMN, ECN, and EK raw systems and their unconditional entailment instances |
 | `HilbertWithREUnarySystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact E4, EN4, ET4, ENT4, ED, END, END4, EMND4, and EP declarations, including E4-to-EN4 inclusion and literal accounting for two upstream target typos |
@@ -403,6 +406,24 @@ completeness.  The proof-indexed fold is exactly Prop-valued: Lean elaborates
 the source's bare `Sort` codomain as `Sort 0`, not as a
 universe-polymorphic result.  Consolidation of the source's 365-declaration
 named catalogue remains the principal parity work in `Normal/Basic.lean`.
+
+`HilbertWithHenkin.v` and `HilbertWithLoeb.v` close both pinned rule-calculus
+files at 17/17 declarations.  Each port keeps the arbitrary atom type and raw
+axiom predicate, admits templates only through same-atom endosubstitution,
+retains the proof index in the exact Prop-valued fold, and proves substitution
+and both weakening principles directly by induction.  The generic K/Four
+adapters instantiate the witness-carrying raw templates without strengthening
+the source interface to this repository's extensional `normal_logic`.
+Definitional diamond duality for the final structural bundles is derived
+constructively from K/S and modus ponens.
+
+`HilbertRuleSystemBridges.v` translates every constructor in both directions
+between those exact two-template systems and the older concrete
+`K4Henkin_proves` and `K4Loeb_proves` presentations.  The six direct bridge
+and exact/legacy equivalence theorems are closed under the global context.
+The two final GL corollaries only compose the existing equivalences and inherit
+their existing excluded-middle and definite-description assumptions; the new
+translation layer adds none.
 
 `HilbertWithRE.v` keeps Foundation's raw calculus at exactly six constructors:
 substituted axioms, modus ponens, replacement of equivalents, and the
@@ -851,6 +872,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.EntailmentS4 FoundationModal.EntailmentS5 `
   FoundationModal.HilbertWithRE FoundationModal.HilbertNormal `
   FoundationModal.HilbertNormalAxiomAdapters `
+  FoundationModal.HilbertWithHenkin FoundationModal.HilbertWithLoeb `
   FoundationModal.HilbertWithREClassicalCompleteness `
   FoundationModal.HilbertWithREBaseSystems FoundationModal.HilbertWithREUnarySystems `
   FoundationModal.HilbertWithRETKSystems FoundationModal.HilbertWithREFourSystems `
@@ -867,6 +889,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.GLPlusBoxBot `
   FoundationModal.KHenIncompleteness `
   FoundationModal.GLAlternativeSystems `
+  FoundationModal.HilbertRuleSystemBridges `
   FoundationModal.Modality `
   FoundationModal.CanonicalDB5 `
   FoundationModal.StandardTranslation FoundationModal.Preservation FoundationModal.Root `
