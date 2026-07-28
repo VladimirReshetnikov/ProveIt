@@ -2515,6 +2515,30 @@ proof.  The package contains only the constructor modules' advertised
 semantic-law roots, not branch results, requested conclusions, or a completed
 strong-step proof.
 
+The public direct invariant now carries the proof-wide data required by those
+recursive cases, without changing its root-plus-four-endpoint binder skeleton.
+Its restricted-proof premise contains the dynamic occurrence restriction,
+proof atomic adequacy, existential formula coverage, and rule coverage.  Its
+admissibility premise retains the conclusion-local truth guard and additionally
+stores one existential formula-coverage bound linked to the current assignment.
+Consequently a recursive-child compiler can soundly reroot all three proof-wide
+certificates, recover rule validity from the child's displayed endpoint, and
+reuse the same assignment bound for child admissibility.  The earlier, weaker
+premise supplied only occurrence restriction and could not justify those
+operations in a nonstandard proof tree.
+
+`RawCodedRestrictedPADerivationSoundnessDirectGrowingIntegrationFromRuleCases.v`
+connects the completed finite dispatcher to the previously verified growing
+strong-prefix induction.  It compiles the 23-field semantic package at the
+empty finite template tail, uses the closure remainder to certify the literal
+carrier-valued induction context as a witnessed PA context, and transports the
+strong-step proof into that context with the binder-ready weakening theorem.
+The growing case and finalizer then return an ordinary represented PA proof of
+the exact direct universal-soundness code.  This adapter leaves precisely the
+semantic rule-law package and the existing nonstandard closure remainder as
+inputs; it does not reinterpret a carrier-valued induction axiom as finite
+template syntax or assume the requested universal proof.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled

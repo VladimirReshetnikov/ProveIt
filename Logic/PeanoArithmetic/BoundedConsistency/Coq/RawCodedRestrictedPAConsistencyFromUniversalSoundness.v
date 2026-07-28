@@ -14,10 +14,13 @@
 
   This module gives the missing invariant an honest finite
   [TemplateFormula].  Named parameters carry the two model-internal levels.
-  The restricted-proof predicate, endpoint relation, atomic adequacy,
-  assignment coverage, and quantifier-bound guard use the existing
-  structural PA syntax.  Only the two relations which genuinely depend on
-  the dynamically selected successor-truth formula remain opaque:
+  The restricted-proof predicate, endpoint relation, proof-wide atomic,
+  formula-coverage and rule-coverage certificates, assignment coverage, and
+  quantifier-bound guard use the existing structural PA syntax.  The same
+  proof-wide formula-coverage bound is linked to the current assignment so
+  that recursive children inherit an honest admissibility witness.  Only the
+  two relations which genuinely depend on the dynamically selected
+  successor-truth formula remain opaque:
 
     - truth of every member of a proof context; and
     - truth of the conclusion formula.
@@ -69,6 +72,8 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruthTotality
   RawCodedContextBounds
   RawCodedProofAtomicAdequacy
+  RawCodedProofFormulaCoverage
+  RawCodedProofRuleCoverage
   RawCodedRestrictedPAProof
   RawCodedTemplateSyntax
   RawCodedTemplateStructuralTranslation
@@ -98,6 +103,8 @@ Import PABoundedRawCodedProofRules.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedContextBounds.
 Import PABoundedRawCodedProofAtomicAdequacy.
+Import PABoundedRawCodedProofFormulaCoverage.
+Import PABoundedRawCodedProofRuleCoverage.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateStructuralTranslation.
@@ -140,21 +147,44 @@ Definition coqRestrictedPASoundnessUpperLevelTerm : TemplateTerm :=
 
     Hence, in the body, those values are [#3], [#2], [#1], and [#0], while
     the outer proof root has shifted to [#4]. *)
-Definition coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+
+(** The occurrence-level restriction is kept as a named core because direct
+    rule compilers still need to project precisely this dynamic-rank fact.
+    The public premise below additionally carries the three proof-wide
+    certificates which are stable under recursive-child descent. *)
+Definition coqRestrictedPADerivationSoundnessRestrictedProofCoreTemplate
     : TemplateFormula :=
   restrictedTargetTemplateFormulaContext
     coqRestrictedPASoundnessLowerLevelTerm
     (restrictedTargetProofContext (tVar 4)).
+
+Definition coqRestrictedPADerivationSoundnessProofWideCertificatesTemplate
+    : TemplateFormula :=
+  tfAnd
+    (embedPAFormula
+      (proofAtomicallyAdequateTermAt (tVar 4)))
+    (tfAnd
+      (embedPAFormula
+        (proofHasFormulaCoverageTermAt (tVar 4)))
+      (embedPAFormula
+        (proofRuleCoverageTermAt (tVar 4)))).
+
+Definition coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    : TemplateFormula :=
+  tfAnd
+    coqRestrictedPADerivationSoundnessRestrictedProofCoreTemplate
+    coqRestrictedPADerivationSoundnessProofWideCertificatesTemplate.
 
 Definition coqRestrictedPADerivationSoundnessEndpointTemplate
     : TemplateFormula :=
   embedPAFormula
     (proofRuleValidTermAt (tVar 4) (tVar 3) (tVar 2)).
 
-(** Dynamic counterpart of [fixedLevelTruthAdmissibleTermAt].  All fixed
-    syntax remains embedded PA syntax.  Only the hierarchy-level hole in the
+(** Dynamic counterpart of [fixedLevelTruthAdmissibleTermAt].  Keep the
+    former conclusion-local condition available as a named core.  All fixed
+    syntax remains embedded PA syntax; only the hierarchy-level hole in the
     Sigma/Pi domain test is filled by the named carrier parameter. *)
-Definition coqRestrictedPADerivationSoundnessAdmissibleTemplate
+Definition coqRestrictedPADerivationSoundnessAdmissibleCoreTemplate
     : TemplateFormula :=
   tfAnd
     (embedPAFormula
@@ -166,6 +196,29 @@ Definition coqRestrictedPADerivationSoundnessAdmissibleTemplate
       (restrictedTargetTemplateFormulaContext
         coqRestrictedPASoundnessLowerLevelTerm
         (restrictedTargetFormulaQuantifierBoundedContext (tVar 2)))).
+
+(** A single hidden bound covers every formula in the proof and is also in
+    the domain of the current beta assignment.  Before [pEx], the proof root
+    and assignment pair occupy [#4], [#1], and [#0].  The fresh coverage
+    witness occupies [#0]; the body therefore refers to those lifted outer
+    values as [#5], [#2], and [#1], respectively. *)
+Definition coqRestrictedPADerivationSoundnessCommonCoverageTemplate
+    : TemplateFormula :=
+  embedPAFormula
+    (pEx
+      (pAnd
+        (proofFormulaCoverageTermAt
+          (tVar 5) (tVar 0))
+        (codedAssignmentDefinedThroughTermAt
+          (tVar 2)
+          (tVar 1)
+          (tVar 0)))).
+
+Definition coqRestrictedPADerivationSoundnessAdmissibleTemplate
+    : TemplateFormula :=
+  tfAnd
+    coqRestrictedPADerivationSoundnessAdmissibleCoreTemplate
+    coqRestrictedPADerivationSoundnessCommonCoverageTemplate.
 
 (** These are the only opaque atoms.  Both explicitly carry the two named
     levels.  A concrete structural translation may close over the selected
