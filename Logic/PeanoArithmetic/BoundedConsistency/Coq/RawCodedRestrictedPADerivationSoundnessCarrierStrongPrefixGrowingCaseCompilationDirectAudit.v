@@ -1,0 +1,20 @@
+(** Kernel audit for the direct growing strong-prefix case compiler. *)
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingCaseCompilationDirect.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixGrowingCaseCompilationDirect.
+
+Check rawCoqCarrierStrongPrefixCaseCompilationDirectRoot.
+Check
+  raw_codedPALocalProofOf_coqCarrierStrongPrefixCaseCompilationDirect.
+Check
+  raw_codedPALocalProofOf_coqCarrierStrongPrefixCasesDirect_from_roots.
+Check RawCoqCarrierStrongPrefixGrowingCasePackageOfDirect.
+Check raw_coqCarrierStrongPrefixGrowingCasePackageDirect.
+
+Print Assumptions
+  raw_codedPALocalProofOf_coqCarrierStrongPrefixCaseCompilationDirect.
+Print Assumptions
+  raw_codedPALocalProofOf_coqCarrierStrongPrefixCasesDirect_from_roots.
+Print Assumptions raw_coqCarrierStrongPrefixGrowingCasePackageDirect.
