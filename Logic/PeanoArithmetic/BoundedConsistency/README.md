@@ -2128,6 +2128,18 @@ compiler.  The module does not manufacture the two row proofs: their
 represented global-evidence elimination remains an explicit compiler rather
 than an invalid request for every arbitrary row.
 
+`RawCodedDynamicTruthNativeLocalDecisionRootCompilation.v` compiles the
+propositional shell of the other local leaf.  From the literal admissibility
+assumption it performs two checked conjunction-right projections to recover
+the rank-domain disjunction, then applies represented `Or-E` to two
+trace-linked case roots.  Crucially, each rank case proves the same target
+`sigmaEvidence or piEvidence`; a rank-domain formula is not confused with a
+truth polarity.  Realizable, witnessed, and literal-empty-base endpoints are
+separated explicitly.  The final empty-base adapter combines these case
+roots with the trace-linked row and matrix packages without reintroducing the
+older all-carrier decision callback.  The two dynamic rank-case roots remain
+the precise decision obligation.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
