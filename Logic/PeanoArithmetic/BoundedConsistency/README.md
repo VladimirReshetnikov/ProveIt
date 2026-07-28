@@ -2009,6 +2009,16 @@ step all existing roots are rebuilt in the newly merged witnessed context
 before the record is formed.  Consequently no later staged implication may
 conjoin proof roots taken from unrelated hidden certificate contexts.
 
+`RawCodedDynamicTruthNativeCrossLevelStagedCallbackCompilation.v` carries the
+first accumulated package all the way to the public dependency-ordered
+cross-level callback.  It selects one adequate paired-global orbit and one
+cross-level transform output together, uses those same witnesses to certify
+the positive graph and the exact proof target, merges the preceding local
+certificate into the current master context, and invokes the staged body-
+implication compiler.  Thus the callback has no additional context or graph-
+coherence premise; its only remaining proof-producing input is the explicit
+trace-linked cross-level arithmetic kernel.
+
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
 each native positive graph it selects the actual carrier field and returns a
