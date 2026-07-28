@@ -1,0 +1,17 @@
+(** Kernel-facing audit for trace-coherent direct truth inputs. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessNativeCoherentDirectTruthInputs.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessNativeCoherentDirectTruthInputs.
+
+Check RawCoqRestrictedPANativeDirectTruthInputsAt.
+Check raw_coqRestrictedPANativeDirectTruthInputsAt_of_trace.
+Check RawCoqRestrictedPANativeCoherentDirectTruthInputsAt.
+Check raw_coqRestrictedPANativeCoherentDirectTruthInputsAt_of_trace.
+
+Print Assumptions
+  raw_coqRestrictedPANativeDirectTruthInputsAt_of_trace.
+Print Assumptions
+  raw_coqRestrictedPANativeCoherentDirectTruthInputsAt_of_trace.
