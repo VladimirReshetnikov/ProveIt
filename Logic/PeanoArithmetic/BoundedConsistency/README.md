@@ -2364,6 +2364,17 @@ that package checked implication and universal introduction construct the
 carried local field root.  No proof equality, unlinked row choice, semantic
 truth-to-proof conversion, or hidden empty-context transport is used.
 
+`RawCodedDynamicTruthNativeLocalStagedCallbackCompilation.v` connects that
+carried root to the first public dependency-ordered callback.  It extends the
+actual current six-field proof package with the ordered forty-helper batch,
+retaining one witnessed context and all current graph witnesses.  The exact
+residual builder sees this package, the one selected local transform trace,
+and its linked row parameters, and returns only the staged root package.
+Adequate orbit selection, transform extraction, carried-root certificate
+packaging, and positive-graph satisfaction are then concrete.  Thus the
+callback neither assumes an empty-base leaf compiler nor permits an unrelated
+helper context.
+
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
 the raw local calculus has no PA-axiom rule: adding an induction axiom
