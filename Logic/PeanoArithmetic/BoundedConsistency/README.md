@@ -2477,6 +2477,18 @@ with those same parameters.  Both stages remain arbitrary model elements;
 the adapter neither decodes them into metatheoretic naturals nor weakens the
 dependent sharing of the successor Sigma selector.
 
+`RawCodedRestrictedPADerivationSoundnessNativeDirectClosureRemainder.v`
+joins that coherent native package to the completed ordinary closure folds.
+It fixes the represented quoted-zero term as the protected replacement,
+proves its syntax certificate from the all-zero assignment columns, derives
+all-depth body identity from the package's two exact ternary-leaf equations,
+and chooses both the nonstandard closure count and sealed induction axiom.
+The refined endpoint retains the same dependent Sigma/context selectors,
+truth families, structural input, graph edge, leaf equations, and native
+application evidence while adjoining the exact closure remainder consumed by
+the growing strong-prefix compiler.  Thus no closure-specific premise remains
+after a native axiom-soundness trace has been supplied.
+
 `RawCodedUniversalClosureAllCarrierTotality.v` instantiates the generic
 PA-internal carrier orbit with base `input` and successor `forall`, proving
 existence and uniqueness of iterated universal closure for every carrier

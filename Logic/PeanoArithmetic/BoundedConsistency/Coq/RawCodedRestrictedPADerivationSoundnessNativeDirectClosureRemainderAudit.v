@@ -1,0 +1,31 @@
+(** Audit for the native direct truth/closure package. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessNativeDirectClosureRemainder.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessNativeDirectClosureRemainderAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessNativeDirectClosureRemainder.
+
+Check rawCoqRestrictedPADirectClosureReplacement.
+Check raw_coqRestrictedPADirectClosureReplacement_realizable.
+Check
+  raw_coqRestrictedPADirectClosureRemainder_exists_of_ternary_leaf_equations.
+Check RawCoqRestrictedPANativeDirectTruthInputsWithClosureAt.
+Check raw_coqRestrictedPANativeDirectTruthInputsWithClosureAt_of_inputs.
+Check RawCoqRestrictedPANativeCoherentDirectTruthInputsWithClosureAt.
+Check
+  raw_coqRestrictedPANativeCoherentDirectTruthInputsWithClosureAt_of_trace.
+
+Print Assumptions raw_coqRestrictedPADirectClosureReplacement_realizable.
+Print Assumptions
+  raw_coqRestrictedPADirectClosureRemainder_exists_of_ternary_leaf_equations.
+Print Assumptions
+  raw_coqRestrictedPANativeDirectTruthInputsWithClosureAt_of_inputs.
+Print Assumptions
+  raw_coqRestrictedPANativeCoherentDirectTruthInputsWithClosureAt_of_trace.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessNativeDirectClosureRemainderAudit.
