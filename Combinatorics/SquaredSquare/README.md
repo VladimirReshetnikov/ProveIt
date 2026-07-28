@@ -123,7 +123,7 @@ Combinatorics/SquaredSquare/
 Lean (root workspace, serial as per local guidance):
 
 ```powershell
-cd C:\Proofs
+cd C:\ProveIt
 lake build +SquaredSquare
 ```
 

@@ -53,7 +53,7 @@ mathlib dependency. Foundation is registered directly as a source library so
 the proof build does not load Foundation's unrelated documentation tooling.
 The root Lake workspace exposes `PAUndecidable` and its audit as default
 targets, but deliberately does not import them into the monolithic
-`Proofs.lean` facade: Foundation's `Vorspiel.Matrix` and mathlib's broader
+`ProveIt.lean` facade: Foundation's `Vorspiel.Matrix` and mathlib's broader
 linear-algebra surface both declare `Matrix.map`, so those two module worlds
 cannot inhabit one Lean environment without changing vendored namespaces.
 

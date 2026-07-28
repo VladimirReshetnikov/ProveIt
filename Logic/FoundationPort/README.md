@@ -28,7 +28,7 @@ Status meanings:
   dependency layer from the source module remains;
 - `unported`: no module-level parity claim has been reviewed yet.
 
-The ledger is conservative.  Existing Coq developments elsewhere in `Proofs`
+The ledger is conservative.  Existing Coq developments elsewhere in `ProveIt`
 may establish mathematically related results, but they are not marked as a
 Foundation module port until their statements and dependency boundary have
 been compared explicitly.
