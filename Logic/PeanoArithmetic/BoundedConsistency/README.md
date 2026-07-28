@@ -1904,6 +1904,15 @@ This endpoint is intentionally conditional: it pins the remaining work to the
 common-context successor compiler without hiding a truth, completeness, or
 proof-transplant assumption.
 
+`RawCodedDynamicTruthNativeMasterSuccessorFromProofTotals.v` assembles the
+strongest successor currently justified by the five native proof totals and
+the compact-consistency certificate successor.  It produces the exact six
+next graph targets and six ordinary proofs unconditionally.  Its sharper
+adapter keeps the five native roots in the empty context, opens only the
+sixth certificate's witnessed context, and isolates the remaining operation
+as transport of one empty-context local proof into that supplied context.
+No identification or implicit merge of existentially chosen contexts is used.
+
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
 use the same formula and assignment inputs but demand rank-zero outputs one
