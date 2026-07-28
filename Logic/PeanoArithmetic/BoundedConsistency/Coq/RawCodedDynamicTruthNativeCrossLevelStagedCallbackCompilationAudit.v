@@ -1,0 +1,15 @@
+(** Audit for the public staged cross-level callback. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeCrossLevelStagedCallbackCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeCrossLevelStagedCallbackCompilation.
+
+Check raw_dynamicTruthNativeCrossLevel_staged_graph_selection.
+Check
+  raw_dynamicTruthNativeStagedNextCrossLevelCompiler_of_body_implication.
+
+Print Assumptions raw_dynamicTruthNativeCrossLevel_staged_graph_selection.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextCrossLevelCompiler_of_body_implication.
