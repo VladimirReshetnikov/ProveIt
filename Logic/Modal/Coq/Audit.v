@@ -7,6 +7,8 @@ From FoundationModal Require Import
   Correspondence FiltrationExtensions CanonicalK Loeb FrameProperties
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
   EntailmentExtensions EntailmentNamedExtensions HilbertWithRE
+  HilbertWithREClassicalCompleteness HilbertWithRESystems HilbertWithRENormal
+  HilbertWithREEquivalences
   KripkeSemantics KripkeHilbert CanonicalExtensions
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
@@ -953,6 +955,75 @@ Check with_re_has_P.
 Check with_re_has_Four.
 Check with_re_has_B.
 Check with_re_has_Five.
+
+(** The finite propositional skeleton closes the classical-basis gap without
+    changing the faithful six-constructor calculus. *)
+Check with_re_empty_axioms.
+Check with_re_erase_boxes.
+Check with_re_empty_identity.
+Check with_re_empty_top.
+Check K_proves_erase_boxes_with_re.
+Check with_re_empty_substitute_between.
+Check with_re_propositional_support.
+Check with_re_classical_eq_dec.
+Check with_re_support_index.
+Check with_re_nth_support_index.
+Check with_re_propositional_skeleton.
+Check with_re_support_decode.
+Check with_re_skeleton_classical_eval.
+Check with_re_skeleton_tautology.
+Check with_re_erase_skeleton.
+Check with_re_decode_skeleton.
+Check with_re_decode_own_skeleton.
+Check with_re_empty_classical_complete.
+Check with_re_classical_complete_weaken.
+Check with_re_classical_logic_from_basis.
+Check with_re_e_entailment_from_basis.
+
+(** Exact EMCN, EMCNT, and EMCNT4 raw systems and entailment adapters. *)
+Check with_re_EMCN_axioms.
+Check with_re_EMCN_axioms_has_M.
+Check with_re_EMCN_axioms_has_C.
+Check with_re_EMCN_axioms_has_N.
+Check with_re_EMCN.
+Check with_re_EMCN_entailment_of_classical_complete.
+Check with_re_EMCN_entailment.
+Check with_re_EMCNT_axioms.
+Check with_re_EMCNT_axioms_has_M.
+Check with_re_EMCNT_axioms_has_C.
+Check with_re_EMCNT_axioms_has_N.
+Check with_re_EMCNT_axioms_has_T.
+Check with_re_EMCNT.
+Check with_re_EMCNT_emc_entailment_of_classical_complete.
+Check with_re_EMCNT_emc_entailment.
+Check with_re_EMCNT_en_entailment_of_classical_complete.
+Check with_re_EMCNT_en_entailment.
+Check with_re_EMCNT4_axioms.
+Check with_re_EMCNT4_axioms_has_M.
+Check with_re_EMCNT4_axioms_has_C.
+Check with_re_EMCNT4_axioms_has_N.
+Check with_re_EMCNT4_axioms_has_T.
+Check with_re_EMCNT4_axioms_has_Four.
+Check with_re_EMCNT4.
+Check with_re_EMCNT4_emc_entailment_of_classical_complete.
+Check with_re_EMCNT4_emc_entailment.
+Check with_re_EMCNT4_en_entailment_of_classical_complete.
+Check with_re_EMCNT4_en_entailment.
+
+(** Generic WithRE/normal bridge and all three source named equivalences. *)
+Check with_re_axiom_instances_provable_in_normal.
+Check normal_generator.
+Check normal_generator_modal_K.
+Check normal_generator_extra.
+Check normal_generators_provable_in_with_re.
+Check with_re_normal_equiv_of_provable_generators.
+Check equiv_WithRE_Normal_of_provable_axiomInstances.
+Check with_re_EMCN_equiv_K_of_classical_complete.
+Check with_re_EMCNT_equiv_KT_of_classical_complete.
+Check with_re_EMCNT4_equiv_S4_of_classical_complete.
+Check with_re_EMCN_equiv_K.
+Check with_re_EMCNT_equiv_KT.
+Check with_re_EMCNT4_equiv_S4.
 
 Check normal_derives_deduction.
 Check normal_theory_consistent_insert_neg_iff.
@@ -2000,6 +2071,18 @@ Print Assumptions with_re_has_M.
 Print Assumptions with_re_has_D.
 Print Assumptions with_re_has_B.
 Print Assumptions with_re_has_Five.
+Print Assumptions with_re_empty_classical_complete.
+Print Assumptions with_re_classical_complete_weaken.
+Print Assumptions with_re_e_entailment_from_basis.
+Print Assumptions with_re_EMCN_entailment.
+Print Assumptions with_re_EMCNT_emc_entailment.
+Print Assumptions with_re_EMCNT_en_entailment.
+Print Assumptions with_re_EMCNT4_emc_entailment.
+Print Assumptions with_re_EMCNT4_en_entailment.
+Print Assumptions with_re_normal_equiv_of_provable_generators.
+Print Assumptions with_re_EMCN_equiv_K.
+Print Assumptions with_re_EMCNT_equiv_KT.
+Print Assumptions with_re_EMCNT4_equiv_S4.
 Print Assumptions normal_derives_deduction.
 Print Assumptions normal_lindenbaum_extension.
 Print Assumptions normal_canonical_truth_lemma.
