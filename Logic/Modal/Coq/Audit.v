@@ -16,7 +16,8 @@ From FoundationModal Require Import
   HilbertNormalD45SymmetricSystems HilbertNormalS4Systems
   HilbertNormalS4PointMcKSystems HilbertNormalS4PointSystems
   HilbertNormalFiveSystems HilbertNormalGLSystems HilbertNormalZSystems
-  HilbertNormalHenkinGrzSystems HilbertNormalSpecialSystems
+  HilbertNormalHenkinGrzSystems HilbertNormalDumSystems
+  HilbertNormalSpecialSystems
   HilbertWithHenkin HilbertWithLoeb
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
@@ -1430,6 +1431,51 @@ Check normal_GrzPoint3_axioms_has_Grz.
 Check normal_GrzPoint3_axioms_has_Point3.
 Check normal_GrzPoint3.
 Check normal_GrzPoint3_entailment.
+
+(** Exact raw Dum/Dum.2/Dum.3 systems, all duplicate source instances, and
+    every literal-subset or target-provable inclusion boundary. *)
+Check structural_dum_entailment.
+Check structural_dumpoint2_entailment.
+Check structural_dumpoint3_entailment.
+Check normal_Dum_axioms.
+Check normal_Dum_axioms_has_K.
+Check normal_Dum_axioms_has_T.
+Check normal_Dum_axioms_has_Four.
+Check normal_Dum_axioms_has_Dum.
+Check normal_Dum.
+Check normal_Dum_entailment.
+Check normal_S4_weaker_than_normal_Dum.
+Check normal_S4_weaker_than_normal_Dum_duplicate.
+Check normal_Dum_weaker_than_normal_Grz.
+Check normal_Dum_weaker_than_normal_Grz_duplicate.
+Check normal_DumPoint2_axioms.
+Check normal_DumPoint2_axioms_has_K.
+Check normal_DumPoint2_axioms_has_T.
+Check normal_DumPoint2_axioms_has_Four.
+Check normal_DumPoint2_axioms_has_Dum.
+Check normal_DumPoint2_axioms_has_Point2.
+Check normal_DumPoint2.
+Check normal_DumPoint2_entailment.
+Check normal_Dum_weaker_than_normal_DumPoint2.
+Check normal_Dum_weaker_than_normal_DumPoint2_duplicate.
+Check normal_S4Point2_weaker_than_normal_DumPoint2.
+Check normal_S4Point2_weaker_than_normal_DumPoint2_duplicate.
+Check normal_DumPoint2_weaker_than_normal_GrzPoint2.
+Check normal_DumPoint2_weaker_than_normal_GrzPoint2_duplicate.
+Check normal_DumPoint3_axioms.
+Check normal_DumPoint3_axioms_has_K.
+Check normal_DumPoint3_axioms_has_T.
+Check normal_DumPoint3_axioms_has_Four.
+Check normal_DumPoint3_axioms_has_Dum.
+Check normal_DumPoint3_axioms_has_Point3.
+Check normal_DumPoint3.
+Check normal_DumPoint3_entailment.
+Check normal_Dum_weaker_than_normal_DumPoint3.
+Check normal_Dum_weaker_than_normal_DumPoint3_duplicate.
+Check normal_S4Point3_weaker_than_normal_DumPoint3.
+Check normal_S4Point3_weaker_than_normal_DumPoint3_duplicate.
+Check normal_DumPoint3_weaker_than_normal_GrzPoint3.
+Check normal_DumPoint3_weaker_than_normal_GrzPoint3_duplicate.
 
 (** Exact raw KTc, KD4.3Z, KTMk, and S4H systems. *)
 Check structural_ktc_entailment.
@@ -3240,6 +3286,41 @@ Print Assumptions normal_GrzPoint3_axioms_has_K.
 Print Assumptions normal_GrzPoint3_axioms_has_Grz.
 Print Assumptions normal_GrzPoint3_axioms_has_Point3.
 Print Assumptions normal_GrzPoint3_entailment.
+(** The Dum families retain all source weakening boundaries; their direct
+    Grz consequences, raw witnesses, entailments, and aliases are closed. *)
+Print Assumptions normal_Dum_axioms_has_K.
+Print Assumptions normal_Dum_axioms_has_T.
+Print Assumptions normal_Dum_axioms_has_Four.
+Print Assumptions normal_Dum_axioms_has_Dum.
+Print Assumptions normal_Dum_entailment.
+Print Assumptions normal_S4_weaker_than_normal_Dum.
+Print Assumptions normal_S4_weaker_than_normal_Dum_duplicate.
+Print Assumptions normal_Dum_weaker_than_normal_Grz.
+Print Assumptions normal_Dum_weaker_than_normal_Grz_duplicate.
+Print Assumptions normal_DumPoint2_axioms_has_K.
+Print Assumptions normal_DumPoint2_axioms_has_T.
+Print Assumptions normal_DumPoint2_axioms_has_Four.
+Print Assumptions normal_DumPoint2_axioms_has_Dum.
+Print Assumptions normal_DumPoint2_axioms_has_Point2.
+Print Assumptions normal_DumPoint2_entailment.
+Print Assumptions normal_Dum_weaker_than_normal_DumPoint2.
+Print Assumptions normal_Dum_weaker_than_normal_DumPoint2_duplicate.
+Print Assumptions normal_S4Point2_weaker_than_normal_DumPoint2.
+Print Assumptions normal_S4Point2_weaker_than_normal_DumPoint2_duplicate.
+Print Assumptions normal_DumPoint2_weaker_than_normal_GrzPoint2.
+Print Assumptions normal_DumPoint2_weaker_than_normal_GrzPoint2_duplicate.
+Print Assumptions normal_DumPoint3_axioms_has_K.
+Print Assumptions normal_DumPoint3_axioms_has_T.
+Print Assumptions normal_DumPoint3_axioms_has_Four.
+Print Assumptions normal_DumPoint3_axioms_has_Dum.
+Print Assumptions normal_DumPoint3_axioms_has_Point3.
+Print Assumptions normal_DumPoint3_entailment.
+Print Assumptions normal_Dum_weaker_than_normal_DumPoint3.
+Print Assumptions normal_Dum_weaker_than_normal_DumPoint3_duplicate.
+Print Assumptions normal_S4Point3_weaker_than_normal_DumPoint3.
+Print Assumptions normal_S4Point3_weaker_than_normal_DumPoint3_duplicate.
+Print Assumptions normal_DumPoint3_weaker_than_normal_GrzPoint3.
+Print Assumptions normal_DumPoint3_weaker_than_normal_GrzPoint3_duplicate.
 (** The four specialized systems expose only their selected raw
     capabilities and remain closed under the global context. *)
 Print Assumptions normal_KTc_axioms_has_K.
