@@ -1827,6 +1827,28 @@ The arbitrary-carrier proof-total endpoint retains field-code adequacy and is
 conditional only on `RawDynamicTruthNativeSubstitutionProofCompiler`; it does
 not infer proof syntax from semantic validity.
 
+`RawCodedDynamicTruthNativeAxiomSoundnessPositiveGraph.v` constructs the fifth
+native positive coordinate from the same genuine paired orbit.  At predecessor
+`p` it reads the lower domains at `S p`, takes the actual paired successor to
+obtain the Sigma predicate at `S(S p)`, and forms the literal universal claim
+that every transparently recognized PA axiom in the lower domain has a next-
+Sigma certificate at arguments `(axiom, 0, 0)`.  The graph has law-free exact
+semantics, adequate relational totality, and represented PA proofs for every
+externally fixed standard predecessor.  At an arbitrary carrier predecessor,
+proof totality is isolated in the explicit
+`RawDynamicTruthNativeAxiomSoundnessProofCompiler`; model truth is not treated
+as a coded PA derivation.
+
+`RawCodedDynamicTruthNativeMasterEndpoint.v` fixes all five native graphs in
+the previously verified zero/positive splice and six-field master assembler.
+It discharges the complete level-zero callback and shows that the single exact
+all-model positive-component successor compiler implies the literal Coq
+headline
+`Formula.BProv Formula.Ax_s [] compactUniformRestrictedPAConsistencyProvabilityFormula`.
+This endpoint is intentionally conditional: it pins the remaining work to the
+common-context successor compiler without hiding a truth, completeness, or
+proof-transplant assumption.
+
 `RawCodedDynamicTruthQFBranchExclusivity.v` closes the first genuine cell of
 that constructor matrix.  The native Sigma and Pi quantifier-free branches
 use the same formula and assignment inputs but demand rank-zero outputs one
