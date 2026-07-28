@@ -1029,7 +1029,11 @@ Check boxdot_translate.
 Check normal_proves_boxdot_translation.
 Check iff_boxdotboxdot.
 Check boxdot_and.
+Check boxdot_translate_list_conj2.
 Check boxdotTranslate_lconj.
+Check boxdotTranslate_lconj2.
+Check boxdotTranslate_fconj2.
+Check boxdot_translate_box_iter_foundation_truth.
 Check iff_boxdotTranslateMultibox_boxdotTranslateBoxlt.
 Check iff_boxdot_reflexive_closure.
 Check iff_frame_boxdot_reflexive_closure.
@@ -1640,14 +1644,18 @@ Print Assumptions valid_WeakPoint3_atoms_iff_piecewise_connected.
 
 (** The doubled-frame p-morphism is constructive.  Boxdot itself uses the
     classically encoded derived conjunction, so its semantic truth laws expose
-    excluded middle.  The nat-atom Hilbert equivalence additionally inherits
-    the definite-description boundary of local K completeness.  Reverse
+    excluded middle.  The atom-polymorphic Hilbert translation additionally
+    inherits the definite-description boundary of local K completeness.
+    Reverse
     reflexivization and the logical SBDP argument also use excluded middle.
     GL/Grz and GL.3 completeness are now checked above.  The remaining Grz.3
     argument stays visible in its theorem type.  Jeřábek's discharged bridge
     uses the global-consequence and filtration boundaries audited below. *)
 Print Assumptions boxdot_reflexive_closure_truth.
 Print Assumptions boxdot_translate_idempotent_truth.
+Print Assumptions boxdot_translate_list_conj2.
+Print Assumptions boxdot_translate_box_iter_foundation_truth.
+Print Assumptions normal_proves_boxdot_translation.
 Print Assumptions K4_boxdot_iff_S4.
 Print Assumptions finite_GL_to_reflexive_closure_finite_Grz.
 Print Assumptions finite_Grz_to_irreflexivize_finite_GL.

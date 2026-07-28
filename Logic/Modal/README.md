@@ -133,8 +133,10 @@ is being reconstructed:
   finite root extension with structural/tree laws, exact chain covers,
   embedding p-morphisms and truth preservation, added-root boxdot semantics,
   and finite-chain T-failure and witness theorems;
-- the boxdot translation's basic semantic algebra, reflexive-closure
-  characterization, and unconditional nat-atom K4/S4 preservation,
+- the boxdot translation's atom-polymorphic semantic algebra and generic
+  Hilbert proof transport, both finite-list conjunction presentations, exact
+  cumulative-box semantics, reflexive-closure characterization, and
+  unconditional nat-atom K4/S4 preservation,
   reflection, and equivalence; finite GL/Grz and GL.3/Grz.3 frame
   transformations; unconditional GL/Grz and Triv/Ver proof-theoretic
   equivalences; and explicitly dependency-gated GL.3/Grz.3 results;
@@ -231,7 +233,7 @@ is being reconstructed:
 | `FrameTransformations.v` | `Modal/Kripke/{ExtendRoot,Irreflexivize}.lean` | Irreflexivization and reflexive truth transfer; finite added-root frames, trees, p-morphisms, exact covers, boxdot transfer, and T witnesses |
 | `StructuralFrames.v` | `Modal/Kripke/{Cluster,LinearFrame,Tree,Rank,Balloon}.lean` | Extensional clusters and skeletons; linear examples and Z/Dum validity; tree unravellings; specified ranks; corrected balloon results |
 | `WeakCorrespondence.v` | `Modal/Kripke/Axiom{WeakPoint2,WeakPoint3}.lean` | Exact weak-confluence and weak-connectedness frame correspondences |
-| `Boxdot.v` | `Modal/Boxdot/{Basic,K4_S4,GL_Grz,GLPoint3_GrzPoint3,Ver_Triv,Jerabek}.lean` | Basic translation semantics; unconditional nat-atom K4/S4, GL/Grz, and Ver/Triv results; finite frame transformations; doubled frames; compatibility gates for GL.3/Grz.3 and the former Jeřábek bridge |
+| `Boxdot.v` | `Modal/Boxdot/{Basic,K4_S4,GL_Grz,GLPoint3_GrzPoint3,Ver_Triv,Jerabek}.lean` | Atom-polymorphic basic translation semantics and proof transport; exact finite conjunction/box laws; unconditional nat-atom K4/S4, GL/Grz, and Ver/Triv results; finite frame transformations; doubled frames; compatibility gates for GL.3/Grz.3 and the former Jeřábek bridge |
 | `JerabekBoxdot.v` | `Modal/Boxdot/Jerabek.lean` | Fresh-atom finite context, global-consequence deduction, doubled-model truth and counterexample lift, general unconditional SBDP/BDP, and the unconditional KT, KTB, S4, S4.2, S4.3, and S5 boxdot properties |
 | `Undefinability.v` | `Modal/Kripke/Undefinability.lean` | Irreflexivity is not modally definable |
 | `StandardTranslation.v` | `Modal/VanBentham/StandardTranslation.lean` | Deep relational first-order translation and semantic correspondence |
@@ -600,13 +602,13 @@ Every modal word has a checked S5 equivalence and reduction
 to the six canonical modalities.  The boxdot
 semantic core and all four K4/S4 theorem shapes are checked unconditionally
 for the named natural-number-atom logics,
-giving exact parity for `K4_S4.lean`.  The coverage ledger remains conservative
-for `Boxdot/Basic.lean`: its semantic results are atom-polymorphic, but its Coq generic
-proof-translation theorem is nat-only, and distinct Lean
-big-conjunction/finite-set convenience surfaces are represented by list-based
-counterparts.  Likewise, `FiniteMaximalContext.v` checks every mathematical
-theorem shape in `ComplementClosedConsistentFinset.lean` for the generic
-normal-schema calculus over natural-number atoms, but the ledger remains
+giving exact parity for `K4_S4.lean`.  `Boxdot/Basic.lean` also has full parity:
+its generic proof translation is atom-polymorphic, both Lean list-conjunction
+presentations and the exact finite iterated-box conjunction are exposed, and
+the Finset convenience theorem collapses to the port's explicit-list finite
+context representation.  Likewise, `FiniteMaximalContext.v` checks every
+mathematical theorem shape in `ComplementClosedConsistentFinset.lean` for the
+generic normal-schema calculus over natural-number atoms, but the ledger remains
 `partial` because Foundation quantifies over arbitrary decidable atom types
 and abstract classical entailments.  Lists are used only during construction;
 the resulting finite carriers and their equality are extensional.  GL.3 now
