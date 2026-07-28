@@ -232,6 +232,7 @@ is being reconstructed:
 | `HilbertNormalD45SymmetricSystems.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact 19-declaration KD45/KB4/KB5 tranche: raw predicates, K/D/Four/Five/B witnesses, named logics, and source-facing structural bundles |
 | `HilbertNormalS4Systems.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact 15-declaration S4/S4McK tranche: raw predicates and witnesses, structural bundles, literal K4 inclusion, and constructive K4McK inclusion through provable-axiom weakening |
 | `HilbertNormalS4PointMcKSystems.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact 27-declaration S4Point2/3/4McK tranche: raw predicates and witnesses, structural bundles, and all three constructive K4McK inclusions |
+| `HilbertNormalS4PointSystems.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact 21-declaration S4Point2/3/4 tranche: raw predicates, all K/T/Four/Point witnesses, named logics, and source-facing structural bundles |
 | `HilbertNormalFiveSystems.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact 11-declaration K5/S5 tranche: raw predicates, K/T/Five witnesses, named logics, and source-facing structural bundles |
 | `HilbertWithHenkin.v` | `Modal/Hilbert/WithHenkin/Basic.lean` | Complete 17-declaration atom-polymorphic raw-axiom calculus: seven constructors, exact proof-indexed Prop fold, substitution and weakening, K/Four adapters, the exact two-template K4 system, and its structural K4Henkin bundle |
 | `HilbertWithLoeb.v` | `Modal/Hilbert/WithLoeb/Basic.lean` | Complete 17-declaration atom-polymorphic raw-axiom calculus with Loeb's rule, including the exact fold, substitution and weakening, K/Four adapters, the exact K4 system, and its structural K4Loeb bundle |
@@ -420,7 +421,8 @@ duplicates for the established concrete-system catalogue.
 `HilbertNormalMcKSystems.v`, `HilbertNormalK4PointSystems.v`,
 `HilbertNormalMixedSystems.v`, `HilbertNormalD45SymmetricSystems.v`, and
 `HilbertNormalS4Systems.v`, together with
-`HilbertNormalS4PointMcKSystems.v` and `HilbertNormalFiveSystems.v`,
+`HilbertNormalS4PointMcKSystems.v`, `HilbertNormalS4PointSystems.v`, and
+`HilbertNormalFiveSystems.v`,
 supply the faithful raw layer that the older schema-polymorphic
 `normal_proves` abstraction could not represent: raw axioms enter only
 through endosubstitution, and modal K is present only when selected by the
@@ -442,7 +444,9 @@ D, Four, Five, and B capability witnesses.  Fifteen declarations then give
 the exact raw S4 and S4McK systems plus the source's constructive K4 and
 K4McK inclusions.  Twenty-seven declarations add the exact S4Point2McK,
 S4Point3McK, and S4Point4McK systems with all three constructive K4McK
-inclusions.  Eleven further declarations give exact K5 and S5 raw systems.
+inclusions.  Twenty-one declarations give the corresponding exact plain
+S4Point2, S4Point3, and S4Point4 systems.  Eleven further declarations give
+exact K5 and S5 raw systems.
 Constructorwise bridges identify K, KT, KD, KB, and K4 with the corresponding
 established presentations.
 The structural Normal adapter exposes Lukasiewicz, K, diamond duality,
@@ -450,7 +454,7 @@ substitution, and necessitation; its definitionally reflexive diamond-duality
 proof is derived syntactically from K/S, without semantic completeness.  The
 proof-indexed fold is exactly Prop-valued: Lean elaborates the source's bare
 `Sort` codomain as `Sort 0`, not as a universe-polymorphic result.  The
-remaining 196 declarations in the named catalogue are the principal parity
+remaining 175 declarations in the named catalogue are the principal parity
 work in `Normal/Basic.lean`.
 
 `HilbertWithHenkin.v` and `HilbertWithLoeb.v` close both pinned rule-calculus
@@ -763,7 +767,7 @@ Coq fold.  Thus `WithRE/Basic.lean` has full parity.
 generic bridge and all three unconditional K/KT/S4 equivalences are checked.
 The raw `Hilbert/Normal/Basic.lean` port now has exact parity for its first 35
 generic declarations: the ten-member calculus core and the complete 25-member
-raw-axiom adapter block.  One hundred sixty-nine declarations from its
+raw-axiom adapter block.  One hundred ninety declarations from its
 365-declaration named
 catalogue now have exact raw presentations and source-facing structural
 bundles.  The module remains conservatively partial while that catalogue is
@@ -934,6 +938,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.HilbertNormalD45SymmetricSystems `
   FoundationModal.HilbertNormalS4Systems `
   FoundationModal.HilbertNormalS4PointMcKSystems `
+  FoundationModal.HilbertNormalS4PointSystems `
   FoundationModal.HilbertNormalFiveSystems `
   FoundationModal.HilbertWithHenkin FoundationModal.HilbertWithLoeb `
   FoundationModal.HilbertWithREClassicalCompleteness `
