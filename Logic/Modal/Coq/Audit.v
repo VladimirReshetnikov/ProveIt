@@ -8,7 +8,7 @@ From FoundationModal Require Import
   FrameProperties
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
-  EntailmentS5 HilbertWithRE
+  EntailmentS5 HilbertWithRE HilbertNormal
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
   HilbertWithRESystems HilbertWithRESymmetrySystems
@@ -975,6 +975,24 @@ Check rm_diabox_applied.
 Check lem1_diaT_of_S5Grz.
 Check lem2_diaT_of_S5Grz.
 
+(** Faithful ten-declaration generic core of raw Hilbert.Normal. *)
+Check normal_hilbert_proves.
+Check NH_axm.
+Check NH_mp.
+Check NH_nec.
+Check NH_imply_K.
+Check NH_imply_S.
+Check NH_elim_contra.
+Check normal_hilbert_axm.
+Check normal_hilbert_axm_substituted.
+Check normal_hilbert_axm_bang.
+Check normal_hilbert_lukasiewicz.
+Check normal_hilbert_necessitation.
+Check normal_hilbert_proves_substitute.
+Check normal_hilbert_proves_fold.
+Check normal_hilbert_weaker_of_provable_axioms.
+Check normal_hilbert_weaker_of_subset_axioms.
+
 (** Faithful generic WithRE calculus core and source-schema adapters. *)
 Check with_re_axiom.
 Check with_re_proves.
@@ -991,6 +1009,7 @@ Check with_re_lukasiewicz.
 Check with_re_proves_substitute.
 Check with_re_substitution_closed.
 Check with_re_proves_fold.
+Check with_re_proves_dependent_fold.
 Check with_re_weaker_of_provable_axioms.
 Check with_re_weaker_of_subset_axioms.
 Check with_re_classical_complete.
@@ -2334,8 +2353,18 @@ Print Assumptions rm_diabox_raw.
 Print Assumptions rm_diabox_applied_raw.
 Print Assumptions lem1_diaT_of_S5Grz.
 Print Assumptions lem2_diaT_of_S5Grz.
+Print Assumptions normal_hilbert_axm.
+Print Assumptions normal_hilbert_axm_substituted.
+Print Assumptions normal_hilbert_axm_bang.
+Print Assumptions normal_hilbert_lukasiewicz.
+Print Assumptions normal_hilbert_necessitation.
+Print Assumptions normal_hilbert_proves_substitute.
+Print Assumptions normal_hilbert_proves_fold.
+Print Assumptions normal_hilbert_weaker_of_provable_axioms.
+Print Assumptions normal_hilbert_weaker_of_subset_axioms.
 Print Assumptions with_re_lukasiewicz.
 Print Assumptions with_re_proves_substitute.
+Print Assumptions with_re_proves_dependent_fold.
 Print Assumptions with_re_weaker_of_provable_axioms.
 Print Assumptions with_re_e_entailment.
 Print Assumptions with_re_has_M.

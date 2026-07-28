@@ -218,7 +218,8 @@ is being reconstructed:
 | `EntailmentKT.v` | `Modal/Entailment/KT.lean` | Complete seven-declaration surface: equivalence of T and its diamond presentation at K strength, KT-to-ET/KD projections, and arbitrary iterated-box reduction |
 | `EntailmentS4.v` | `Modal/Entailment/S4.lean` | Complete four-declaration surface: atom-polymorphic box/boxdot and diamond/diadot equivalences, with raw/wrapped aliases |
 | `EntailmentS5.v` | `Modal/Entailment/S5.lean` | Complete ten-declaration derived-rule surface: diamond-box elimination, its applications, and both S5Grz implication-lifting helpers |
-| `HilbertWithRE.v` | `Modal/Hilbert/WithRE/Basic.lean` | Faithful generic six-constructor replacement-of-equivalents calculus, substitution and weakening, Lukasiewicz basis, and all ten schematic-axiom adapters |
+| `HilbertWithRE.v` | `Modal/Hilbert/WithRE/Basic.lean` | Faithful generic six-constructor replacement-of-equivalents calculus, exact proof-indexed Prop recursor, substitution and weakening, Lukasiewicz basis, and all ten schematic-axiom adapters |
+| `HilbertNormal.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact ten-declaration generic core: six raw constructors without hardwired modal K, all axiom aliases and structural instances, a proof-indexed Prop fold, substitution, and both weakening principles |
 | `HilbertWithREClassicalCompleteness.v` | `Modal/Hilbert/WithRE/Basic.lean` | Classical completeness of the raw K/S/EC basis via finite propositional skeletons, modal-K completeness, box erasure, and cross-atom substitution; unconditional classical and E adapters |
 | `HilbertWithREBaseSystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact E, EM, EC, EN, EMC, EMN, ECN, and EK raw systems and their unconditional entailment instances |
 | `HilbertWithREUnarySystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact E4, EN4, ET4, ENT4, ED, END, END4, EMND4, and EP declarations, including E4-to-EN4 inclusion and literal accounting for two upstream target typos |
@@ -387,6 +388,16 @@ records live in `Type`, so their witnesses may construct substitutions; the
 atom-free N and P records remain proof-only.  This complete API is
 constructive.  The earlier ten WithRE-prefixed records remain as compatibility
 duplicates for the established concrete-system catalogue.
+
+`HilbertNormal.v` now supplies the faithful raw core that the older
+schema-polymorphic `normal_proves` abstraction could not represent: raw axioms
+enter only through endosubstitution, and modal K is present only when selected
+by the axiom set.  All first ten generic declarations are checked, including
+substitution and both weakening theorems.  Its proof-indexed fold is exactly
+Prop-valued: Lean elaborates the source's bare `Sort` codomain as `Sort 0`,
+not as a universe-polymorphic result.
+The later 25 raw capability adapters and the source's 365-declaration named
+catalogue remain the principal parity work in `Normal/Basic.lean`.
 
 `HilbertWithRE.v` keeps Foundation's raw calculus at exactly six constructors:
 substituted axioms, modus ponens, replacement of equivalents, and the
@@ -673,10 +684,10 @@ capability slice is recorded conservatively as a partial port of the much
 larger `Entailment/Basic.lean` API.  The generic `WithRE` six-constructor core,
 substitution, weakening, ten named-axiom adapters, unconditional classical/E
 bridge, and all 33 concrete systems with all 187 corresponding declarations
-are checked.  Only the source's proof-dependent `Sort` recursor—represented
-here by a proposition-valued fold because Coq restricts elimination from
-`Prop` into arbitrary `Sort`—keeps
-`WithRE/Basic.lean` partial.  `WithRE_Normal.lean` has full 4/4 parity: the
+are checked.  The source's proof-dependent recursor also has exact parity:
+Lean elaborates its bare `Sort` codomain as `Sort 0` (`Prop`), matching the
+Coq fold.  Thus `WithRE/Basic.lean` has full parity.
+`WithRE_Normal.lean` has full 4/4 parity: the
 generic bridge and all three unconditional K/KT/S4 equivalences are checked.
 `Hilbert/NNFormula.lean` also has full three-declaration parity through the
 checked NNF truth correspondence and K completeness.
@@ -828,7 +839,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.EntailmentExtensions `
   FoundationModal.EntailmentNamedExtensions FoundationModal.EntailmentKT `
   FoundationModal.EntailmentS4 FoundationModal.EntailmentS5 `
-  FoundationModal.HilbertWithRE `
+  FoundationModal.HilbertWithRE FoundationModal.HilbertNormal `
   FoundationModal.HilbertWithREClassicalCompleteness `
   FoundationModal.HilbertWithREBaseSystems FoundationModal.HilbertWithREUnarySystems `
   FoundationModal.HilbertWithRETKSystems FoundationModal.HilbertWithREFourSystems `

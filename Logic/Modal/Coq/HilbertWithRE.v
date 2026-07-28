@@ -144,6 +144,46 @@ Proof.
   induction Hp; eauto.
 Qed.
 
+(** Foundation's [WithRE.rec!] has a proof-indexed motive whose bare [Sort]
+    codomain elaborates in Lean as [Sort 0] ([Prop]).  This dependent fold is
+    therefore the exact source-facing recursor.  The formula-indexed fold
+    above remains a convenient nondependent specialization. *)
+Lemma with_re_proves_dependent_fold :
+  forall (AtomType : Type) (Ax : with_re_axiom AtomType)
+         (P : forall p, with_re_proves Ax p -> Prop),
+    (forall p sigma (h : Ax p),
+      P (substitute sigma p) (@WRE_axm AtomType Ax p sigma h)) ->
+    (forall p q
+       (hpq : with_re_proves Ax (Imp p q))
+       (hp : with_re_proves Ax p),
+      P (Imp p q) hpq -> P p hp ->
+      P q (@WRE_mp AtomType Ax p q hpq hp)) ->
+    (forall p q (hpq : with_re_proves Ax (Iff p q)),
+      P (Iff p q) hpq ->
+      P (Iff (Box p) (Box q)) (@WRE_re AtomType Ax p q hpq)) ->
+    (forall p q,
+      P (Hilbert_imply_K p q) (@WRE_imply_K AtomType Ax p q)) ->
+    (forall p q r,
+      P (Hilbert_imply_S p q r) (@WRE_imply_S AtomType Ax p q r)) ->
+    (forall p q,
+      P (Hilbert_elim_contra p q) (@WRE_elim_contra AtomType Ax p q)) ->
+    forall p (d : with_re_proves Ax p), P p d.
+Proof.
+  intros AtomType Ax P Hax Hmp Hre HK HS HEC p d.
+  exact ((fix fold p0 (d0 : with_re_proves Ax p0) {struct d0}
+      : P p0 d0 :=
+    match d0 as d1 in with_re_proves _ p1 return P p1 d1 with
+    | @WRE_axm _ _ q sigma h => Hax q sigma h
+    | @WRE_mp _ _ q r hqr hq =>
+        Hmp q r hqr hq (fold (Imp q r) hqr) (fold q hq)
+    | @WRE_re _ _ q r hqr =>
+        Hre q r hqr (fold (Iff q r) hqr)
+    | @WRE_imply_K _ _ q r => HK q r
+    | @WRE_imply_S _ _ q r s => HS q r s
+    | @WRE_elim_contra _ _ q r => HEC q r
+    end) p d).
+Qed.
+
 (** Weakening where each source axiom is already provable in the target.
     Substitution closure supplies the substituted instance used by [WRE_axm]. *)
 Lemma with_re_weaker_of_provable_axioms :
