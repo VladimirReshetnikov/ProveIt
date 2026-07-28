@@ -116,6 +116,10 @@ is being reconstructed:
   complement, join, and monotonicity laws, together with Magari algebras and
   their derived diamond/box transitivity; every Kripke complex algebra is an
   instance without assuming extensional equality of predicates;
+- generic algebraic formula evaluation and nontrivial modal-algebra models,
+  with exact truth laws for the derived connectives, implication as order,
+  same-model modus ponens and necessitation, and constructive soundness of
+  every raw axiom-parametric normal Hilbert calculus;
 - coherence spaces, cliques and directed colimits, the complete multiplicative
   and additive connective constructions, linear identity points, and stable
   functions with extensional identity, composition, and category laws;
@@ -201,6 +205,7 @@ is being reconstructed:
 | `KripkeSemantics.v` | `Modal/Kripke/Basic.lean` | Complete source-facing local/model/frame/class semantic API: singleton frames, connective/list/iteration truth laws, congruence and duality, counterexamples, closure, and K insertion |
 | `KripkeAlgebra.v` | `Modal/Kripke/Algebra.lean` | Relational complex algebras, modal operations, algebraic evaluation/satisfaction equivalence, and validity as subset/extensional equality |
 | `ModalAlgebra.v` | `Semantics/Algebra/Modal/{Basic,Magari}.lean` | Setoid Boolean and modal algebras, the complete derived K/duality/monotonicity surface, Magari diagonal and transitivity theorems, and the Kripke complex-algebra adapter |
+| `AlgebraicSemantics.v` | `Modal/Algebra/Basic.lean` | Exact 26-declaration generic semantics/soundness tranche: primitive-operation evaluation, all eight derived-connective equations, nontrivial algebraic models, implication/order, MP, necessitation, instantiated-axiom model classes, and raw Normal soundness |
 | `CoherenceSpace.v` | `Semantics/CoherenceSpace/Basic.lean` | Complete coherence/incoherence, clique/point/colimit, base-space, linear-negation, tensor, par, lolli, and additive connective surface |
 | `CoherenceStableFunction.v` | `Semantics/CoherenceSpace/StableFunction.lean` | Stable maps, monotonicity, directed-colimit and pullback preservation, compatible unions, extensional identity/composition, and category laws |
 | `NNFormulaSemantics.v` | `Modal/Kripke/NNFormula.lean` | Direct NNF semantics, semantic negation, translation correctness, validity equivalences |
@@ -383,6 +388,14 @@ predicate sets preserves extensional equivalence and introduces no
 functional or propositional extensionality; the concrete Boolean complement
 and box/diamond duality proofs use `Classical_Prop.classic`, matching the
 existing Kripke complex-algebra boundary.
+
+`AlgebraicSemantics.v` uses that same setoid equality for the source's
+algebraic equalities and represents nontriviality by two inequivalent
+elements.  Its generic evaluator needs only primitive bottom, implication,
+and box operations, while the model laws and Hilbert soundness specialize to
+modal algebras.  The K, S, and contraposition-elimination cases are direct
+constructive Boolean-order proofs; this tranche does not depend on Kripke
+completeness or on the deferred quotient/Lindenbaum construction.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
@@ -929,6 +942,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.Kripke FoundationModal.KripkeSemantics FoundationModal.NNFormulaSemantics `
   FoundationModal.HilbertK FoundationModal.HilbertKSoundness `
   FoundationModal.KripkeAlgebra FoundationModal.ModalAlgebra `
+  FoundationModal.AlgebraicSemantics `
   FoundationModal.CoherenceSpace FoundationModal.CoherenceStableFunction `
   FoundationModal.Complement `
   FoundationModal.ComplexityLimited FoundationModal.FrameProperties `

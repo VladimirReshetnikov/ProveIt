@@ -9,7 +9,8 @@ From FoundationModal Require Import
   RelationProperties ConverseWellFounded WeakConverseWellFounded
   CorrespondenceExtensions NormalHilbert LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
-  EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
+  EntailmentS5 HilbertWithRE HilbertNormal AlgebraicSemantics
+  HilbertNormalAxiomAdapters
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
   HilbertNormalTransitiveBaseSystems HilbertNormalMcKSystems
   HilbertNormalK4PointSystems HilbertNormalMixedSystems
@@ -194,12 +195,59 @@ Check complex_modal_algebra.
 Check complex_boolean_order_iff.
 Check complex_boolean_equiv_iff.
 
+(** Generic algebraic evaluation, model semantics, and raw-normal
+    soundness: exact 26-declaration tranche from Modal/Algebra/Basic.lean. *)
+Check algebraic_formula_value.
+Check algebraic_formula_value_top.
+Check algebraic_formula_value_bottom.
+Check algebraic_formula_value_imp.
+Check algebraic_formula_value_and.
+Check algebraic_formula_value_or.
+Check algebraic_formula_value_neg.
+Check algebraic_formula_value_box.
+Check algebraic_formula_value_dia.
+Check algebraic_semantics.
+Check algebraic_semantics_sort.
+Check algebraic_semantics_valuation.
+Check algebraic_semantics_modal.
+Check algebraic_semantics_nontrivial.
+Check algebraic_semantics_satisfies.
+Check algebraic_satisfies_iff.
+Check algebraic_satisfies_top.
+Check algebraic_not_satisfies_bottom.
+Check algebraic_satisfies_and.
+Check algebraic_satisfies_imp.
+Check algebraic_satisfies_nec.
+Check algebraic_satisfies_mdp.
+Check algebraic_mod.
+Check algebraic_mod_models_iff.
+Check normal_hilbert_algebraic_sound.
+Check normal_hilbert_algebraic_sound_instance.
+
 Print Assumptions box_imp_le_box_imp_box.
 Print Assumptions dia_or.
 Print Assumptions dia_trans.
 Print Assumptions box_trans.
 Print Assumptions complex_boolean_algebra.
 Print Assumptions complex_modal_algebra.
+Print Assumptions algebraic_formula_value_top.
+Print Assumptions algebraic_formula_value_bottom.
+Print Assumptions algebraic_formula_value_imp.
+Print Assumptions algebraic_formula_value_and.
+Print Assumptions algebraic_formula_value_or.
+Print Assumptions algebraic_formula_value_neg.
+Print Assumptions algebraic_formula_value_box.
+Print Assumptions algebraic_formula_value_dia.
+Print Assumptions algebraic_satisfies_iff.
+Print Assumptions algebraic_satisfies_top.
+Print Assumptions algebraic_not_satisfies_bottom.
+Print Assumptions algebraic_satisfies_and.
+Print Assumptions algebraic_satisfies_imp.
+Print Assumptions algebraic_satisfies_nec.
+Print Assumptions algebraic_satisfies_mdp.
+Print Assumptions algebraic_mod_models_iff.
+Print Assumptions normal_hilbert_algebraic_sound.
+Print Assumptions normal_hilbert_algebraic_sound_instance.
 
 (** Complete coherence-space and stable-function surfaces. *)
 Check coherence_space.
