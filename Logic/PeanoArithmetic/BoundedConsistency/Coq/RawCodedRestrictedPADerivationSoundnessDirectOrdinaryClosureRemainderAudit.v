@@ -1,0 +1,18 @@
+(** Audit the direct closure remainder assembled from ordinary, rather than
+    diagonal/shared-table, substitution identity. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectOrdinaryClosureRemainder.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrdinaryClosureRemainder.
+
+Check
+  raw_coqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder_exists_of_ordinary_identity.
+Check
+  raw_coqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder_exists_of_ordinary_identity_total.
+
+Print Assumptions
+  raw_coqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder_exists_of_ordinary_identity.
+Print Assumptions
+  raw_coqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder_exists_of_ordinary_identity_total.

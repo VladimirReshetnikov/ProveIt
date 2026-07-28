@@ -2387,6 +2387,44 @@ translation mismatch, but the recursive strong-step root and two genuine
 syntax folds in its closure data remain; the Coq headline therefore remains
 conditional.
 
+`RawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier.v`
+opens that recursive strong-step root at its exact proof-rule boundary.  A
+named finite type enumerates all seventeen constructors in the literal order
+of `proofRuleValidCasesTermAt`, and a reflexive shape theorem identifies the
+endpoint predicate with eight existential witnesses around that disjunction.
+The checked dispatcher projects the disjunction from the endpoint witness
+body, derives all finite-Or context-transplant resources from direct PA
+agreement and atomic adequacy, and handles the terminal bottom branch
+internally.  A final generic nested-existential eliminator opens all eight
+endpoint witnesses and reconnects the result to the literal endpoint
+template.  Its public residual is therefore exactly one open local
+`case -> conclusion truth` PA root for each real proof constructor; it assumes
+neither a conclusion proof nor the original undifferentiated strong step.
+
+`RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
+finite scoping for the direct template and lifts it to genuinely
+carrier-valued operation depths.  Represented numeral parameters are handled
+through their beta-coded traces, so scoped template terms are fixed by
+shift, opening, and substitution without decoding nonstandard data.  Deeply
+closed ternary selectors then give ordinary deep closure for scoped opaque
+applications, while transparent formula constructors propagate all-depth
+diagonal substitution to the exact strong-prefix induction body.  The final
+diagonal theorem honestly retains one stronger opaque-leaf premise: a
+diagonal trace shares its entire source/target table, and equality of the
+roots of two ordinary deep-closure traces does not identify those existential
+tables.  Thus this checkpoint exposes rather than assumes away the remaining
+shared-table construction.
+
+`RawCodedRestrictedPADerivationSoundnessDirectOrdinaryClosureRemainder.v`
+uses the weaker ordinary-substitution theorem to bypass that shared-table
+construction for the actual induction consumer.  Formula-bound totality
+chooses the possibly nonstandard closure count, universal-closure totality
+chooses the closed axiom code, and ordinary all-depth identity supplies every
+prefix self-instantiation.  The resulting exact direct closure remainder has
+only one body-specific premise—ordinary substitution identity at all carrier
+depths—and no longer assumes either a bound, a closure orbit, or a diagonal
+trace.
+
 `RawCodedRestrictedPADerivationSoundnessConclusionTruthDirectSelector.v`
 constructs the companion five-argument conclusion selector from the native
 axiom-soundness trace.  Orbit functionality aligns an independently selected
@@ -2429,6 +2467,17 @@ existence and the complete self-instantiation orbit are constructed rather
 than assumed.  Turning the nonstandard well-formed traversal into those last
 two fold certificates remains explicit.
 
+`RawCodedUniversalClosureOrdinarySubstitution.v` shows that the closure
+consumer does not actually require a shared-table diagonal trace.  It
+represents ordinary self-substitution at every carrier depth and propagates
+that invariant by PA-definable induction through an arbitrary, possibly
+nonstandard, universal-closure count.  At a successor, ordinary formula
+operation compositionality adds the new `forall` row using the predecessor's
+identity at successor depth.  Projecting depth zero gives the exact
+`RawCodedUniversalClosureSelfInstantiationThrough` interface, so downstream
+closure assembly may use independently witnessed operation tables at each
+depth.
+
 `RawCodedFormulaBoundAllCarrierBoundary.v` sharpens that domain to atomic
 adequacy: a formula-shift source carries represented term syntax at every
 equality leaf, so every direct template and the exact strong-prefix induction
@@ -2438,8 +2487,27 @@ module names the missing fold as
 the all-depth diagonal certificate, constructs the complete closure
 remainder.  The missing fold must build normalized code-indexed source and
 bound columns through `S input` (including default rows between genuine
-subcodes), plus the analogous term-bound fold at equality atoms; the existing
-occurrence-indexed syntax traversal is not definitionally that table.
+subcodes); the existing occurrence-indexed syntax traversal is not
+definitionally that table.
+
+`RawCodedFormulaBoundAllCarrierTotality.v` discharges the equality-atom
+foundation of that fold.  From represented term syntax it uses PA-definable
+induction to construct normalized source and bound beta columns through the
+arbitrary carrier limit `S input`, placing a harmless zero-term row at every
+unsupported code.  It then extracts `RawCodedTermBound` at the represented
+root.  This is an all-carrier construction and does not decode the input into
+a metatheoretic term; it supplies the equality case of the corresponding
+formula construction.
+
+`RawCodedFormulaBoundAtomicallyAdequateTotality.v` completes that formula
+construction and proves the exact
+`RawCodedFormulaBoundAtomicallyAdequateTotal` interface.  It builds normalized
+source and bound beta columns by PA-definable induction over every carrier
+code, uses strict constructor-code descent to reuse earlier child rows, and
+invokes the checked term theorem at equality atoms.  Unsupported codes again
+receive a harmless bottom/zero row.  Thus every atomically adequate formula,
+including every direct template formula, now has a represented formula-bound
+certificate without being decoded into a metatheoretic syntax tree.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
