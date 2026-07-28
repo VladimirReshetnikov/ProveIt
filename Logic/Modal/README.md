@@ -220,6 +220,7 @@ is being reconstructed:
 | `EntailmentS5.v` | `Modal/Entailment/S5.lean` | Complete ten-declaration derived-rule surface: diamond-box elimination, its applications, and both S5Grz implication-lifting helpers |
 | `HilbertWithRE.v` | `Modal/Hilbert/WithRE/Basic.lean` | Faithful generic six-constructor replacement-of-equivalents calculus, exact proof-indexed Prop recursor, substitution and weakening, Lukasiewicz basis, and all ten schematic-axiom adapters |
 | `HilbertNormal.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact ten-declaration generic core: six raw constructors without hardwired modal K, all axiom aliases and structural instances, a proof-indexed Prop fold, substitution, and both weakening principles |
+| `HilbertNormalAxiomAdapters.v` | `Modal/Hilbert/Normal/Basic.lean` | Complete 25-declaration generic raw-template adapter block, including the exact structural Normal capability with a constructive proof of definitional diamond duality and all 24 named schema adapters |
 | `HilbertWithREClassicalCompleteness.v` | `Modal/Hilbert/WithRE/Basic.lean` | Classical completeness of the raw K/S/EC basis via finite propositional skeletons, modal-K completeness, box erasure, and cross-atom substitution; unconditional classical and E adapters |
 | `HilbertWithREBaseSystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact E, EM, EC, EN, EMC, EMN, ECN, and EK raw systems and their unconditional entailment instances |
 | `HilbertWithREUnarySystems.v` | `Modal/Hilbert/WithRE/Basic.lean` | Exact E4, EN4, ET4, ENT4, ED, END, END4, EMND4, and EP declarations, including E4-to-EN4 inclusion and literal accounting for two upstream target typos |
@@ -389,15 +390,19 @@ atom-free N and P records remain proof-only.  This complete API is
 constructive.  The earlier ten WithRE-prefixed records remain as compatibility
 duplicates for the established concrete-system catalogue.
 
-`HilbertNormal.v` now supplies the faithful raw core that the older
-schema-polymorphic `normal_proves` abstraction could not represent: raw axioms
-enter only through endosubstitution, and modal K is present only when selected
-by the axiom set.  All first ten generic declarations are checked, including
-substitution and both weakening theorems.  Its proof-indexed fold is exactly
-Prop-valued: Lean elaborates the source's bare `Sort` codomain as `Sort 0`,
-not as a universe-polymorphic result.
-The later 25 raw capability adapters and the source's 365-declaration named
-catalogue remain the principal parity work in `Normal/Basic.lean`.
+`HilbertNormal.v` and `HilbertNormalAxiomAdapters.v` now supply the faithful
+raw core that the older schema-polymorphic `normal_proves` abstraction could
+not represent: raw axioms enter only through endosubstitution, and modal K is
+present only when selected by the axiom set.  All first 35 generic
+declarations are checked: the ten-declaration calculus core, substitution and
+both weakening theorems, followed by the complete 25-declaration capability
+block.  The structural Normal adapter exposes Lukasiewicz, K, diamond
+duality, substitution, and necessitation; its definitionally reflexive
+diamond-duality proof is derived syntactically from K/S, without semantic
+completeness.  The proof-indexed fold is exactly Prop-valued: Lean elaborates
+the source's bare `Sort` codomain as `Sort 0`, not as a
+universe-polymorphic result.  Consolidation of the source's 365-declaration
+named catalogue remains the principal parity work in `Normal/Basic.lean`.
 
 `HilbertWithRE.v` keeps Foundation's raw calculus at exactly six constructors:
 substituted axioms, modus ponens, replacement of equivalents, and the
@@ -689,6 +694,11 @@ Lean elaborates its bare `Sort` codomain as `Sort 0` (`Prop`), matching the
 Coq fold.  Thus `WithRE/Basic.lean` has full parity.
 `WithRE_Normal.lean` has full 4/4 parity: the
 generic bridge and all three unconditional K/KT/S4 equivalences are checked.
+The raw `Hilbert/Normal/Basic.lean` port now has exact parity for its first 35
+generic declarations: the ten-member calculus core and the complete 25-member
+raw-axiom adapter block.  The module remains conservatively partial while its
+365-declaration named-system catalogue is consolidated against the extensive
+existing concrete-system development.
 `Hilbert/NNFormula.lean` also has full three-declaration parity through the
 checked NNF truth correspondence and K completeness.
 The seven pinned
@@ -840,6 +850,7 @@ coqchk -silent -Q . FoundationModal `
   FoundationModal.EntailmentNamedExtensions FoundationModal.EntailmentKT `
   FoundationModal.EntailmentS4 FoundationModal.EntailmentS5 `
   FoundationModal.HilbertWithRE FoundationModal.HilbertNormal `
+  FoundationModal.HilbertNormalAxiomAdapters `
   FoundationModal.HilbertWithREClassicalCompleteness `
   FoundationModal.HilbertWithREBaseSystems FoundationModal.HilbertWithREUnarySystems `
   FoundationModal.HilbertWithRETKSystems FoundationModal.HilbertWithREFourSystems `

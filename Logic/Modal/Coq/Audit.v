@@ -8,7 +8,7 @@ From FoundationModal Require Import
   FrameProperties
   RelationProperties CorrespondenceExtensions NormalHilbert LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
-  EntailmentS5 HilbertWithRE HilbertNormal
+  EntailmentS5 HilbertWithRE HilbertNormal HilbertNormalAxiomAdapters
   HilbertWithREClassicalCompleteness HilbertWithREBaseSystems
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
   HilbertWithRESystems HilbertWithRESymmetrySystems
@@ -992,6 +992,57 @@ Check normal_hilbert_proves_substitute.
 Check normal_hilbert_proves_fold.
 Check normal_hilbert_weaker_of_provable_axioms.
 Check normal_hilbert_weaker_of_subset_axioms.
+
+(** Complete 25-declaration raw-axiom adapter block of Hilbert.Normal. *)
+Check has_FourN.
+Check has_L.
+Check has_Z.
+Check has_Hen.
+Check has_WeakPoint2.
+Check has_Point3.
+Check has_WeakPoint3.
+Check has_Point4.
+Check has_Grz.
+Check has_Dum.
+Check has_Tc.
+Check has_Ver.
+Check has_McK.
+Check has_Mk.
+Check has_H.
+Check structural_normal_entailment.
+Check normal_hilbert_identity.
+Check normal_hilbert_imply_intro.
+Check normal_hilbert_under_mp.
+Check normal_hilbert_and_intro.
+Check normal_hilbert_iff_refl.
+Check normal_hilbert_has_DiaDuality.
+Check normal_hilbert_instantiate_unary.
+Check normal_hilbert_instantiate_binary.
+Check normal_hilbert_has_K.
+Check normal_hilbert_is_normal.
+Check normal_hilbert_has_T.
+Check normal_hilbert_has_D.
+Check normal_hilbert_has_P.
+Check normal_hilbert_has_B.
+Check normal_hilbert_has_Four.
+Check normal_hilbert_has_FourN.
+Check normal_hilbert_has_Five.
+Check normal_hilbert_has_L.
+Check normal_hilbert_has_Z.
+Check normal_hilbert_has_Hen.
+Check normal_hilbert_has_Point2.
+Check normal_hilbert_has_WeakPoint2.
+Check normal_hilbert_has_Point3.
+Check normal_hilbert_has_WeakPoint3.
+Check normal_hilbert_has_Point4.
+Check normal_hilbert_has_Grz.
+Check normal_hilbert_has_Dum.
+Check normal_hilbert_has_Tc.
+Check normal_hilbert_has_Ver.
+Check normal_hilbert_has_McK.
+Check normal_hilbert_has_Mk.
+Check normal_hilbert_has_H.
+Check normal_hilbert_has_Geach.
 
 (** Faithful generic WithRE calculus core and source-schema adapters. *)
 Check with_re_axiom.
@@ -2362,6 +2413,39 @@ Print Assumptions normal_hilbert_proves_substitute.
 Print Assumptions normal_hilbert_proves_fold.
 Print Assumptions normal_hilbert_weaker_of_provable_axioms.
 Print Assumptions normal_hilbert_weaker_of_subset_axioms.
+(** The source's definitional diamond-duality instance and all 25 raw-schema
+    adapters are derived solely from the six raw constructors and template
+    membership; no semantic completeness bridge is used. *)
+Print Assumptions normal_hilbert_identity.
+Print Assumptions normal_hilbert_and_intro.
+Print Assumptions normal_hilbert_has_DiaDuality.
+Print Assumptions normal_hilbert_instantiate_unary.
+Print Assumptions normal_hilbert_instantiate_binary.
+Print Assumptions normal_hilbert_has_K.
+Print Assumptions normal_hilbert_is_normal.
+Print Assumptions normal_hilbert_has_T.
+Print Assumptions normal_hilbert_has_D.
+Print Assumptions normal_hilbert_has_P.
+Print Assumptions normal_hilbert_has_B.
+Print Assumptions normal_hilbert_has_Four.
+Print Assumptions normal_hilbert_has_FourN.
+Print Assumptions normal_hilbert_has_Five.
+Print Assumptions normal_hilbert_has_L.
+Print Assumptions normal_hilbert_has_Z.
+Print Assumptions normal_hilbert_has_Hen.
+Print Assumptions normal_hilbert_has_Point2.
+Print Assumptions normal_hilbert_has_WeakPoint2.
+Print Assumptions normal_hilbert_has_Point3.
+Print Assumptions normal_hilbert_has_WeakPoint3.
+Print Assumptions normal_hilbert_has_Point4.
+Print Assumptions normal_hilbert_has_Grz.
+Print Assumptions normal_hilbert_has_Dum.
+Print Assumptions normal_hilbert_has_Tc.
+Print Assumptions normal_hilbert_has_Ver.
+Print Assumptions normal_hilbert_has_McK.
+Print Assumptions normal_hilbert_has_Mk.
+Print Assumptions normal_hilbert_has_H.
+Print Assumptions normal_hilbert_has_Geach.
 Print Assumptions with_re_lukasiewicz.
 Print Assumptions with_re_proves_substitute.
 Print Assumptions with_re_proves_dependent_fold.
