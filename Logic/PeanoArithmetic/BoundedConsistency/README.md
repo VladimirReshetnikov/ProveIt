@@ -2068,6 +2068,20 @@ carrier decoding, semantic truth-to-proof conversion, dynamic-soundness
 producer, or consistency successor is used; the universal-soundness and
 consistency-from-soundness roots remain separate obligations.
 
+`RawCodedRestrictedPAConsistencyFromUniversalSoundness.v` gives the middle
+root an arbitrary-carrier structural formula instead of reusing the
+metatheoretically expanded fixed-level invariant.  Its two opaque truth atoms
+carry two named carrier-level parameters explicitly.  Because the
+invariant preserves truth from a proof context rather than asserting truth of
+PA axioms by itself, the boundary also requires the graph-selected
+`nextAxiomSoundness` proof, its implication to the witnessed PA-context truth
+law, and a bottom-truth refutation law in the exact implication-tail context.
+The final adapter consumes the graph trace and all staged prerequisites and
+produces only the consistency-from-soundness root.  It remains conditional on
+the compiler that opens the universal invariant and on the compiler that
+constructs those selected-axiom support proofs; neither obligation is hidden
+or manufactured.
+
 `RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.v` connects these
 stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,
