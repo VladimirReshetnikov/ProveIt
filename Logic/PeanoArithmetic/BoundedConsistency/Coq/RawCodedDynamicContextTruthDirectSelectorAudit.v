@@ -1,0 +1,13 @@
+(** Assumption audit for the five-argument dynamic-context adapter. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicContextTruthDirectSelector.
+
+Import PABoundedRawCodedDynamicContextTruthDirectSelector.
+
+Check rawDynamicContextTruthDirectSelector.
+Check rawDynamicContextTruthDirectSelector_output.
+Check raw_dynamicContextTruthDirectSelector_exists.
+
+Print Assumptions rawDynamicContextTruthDirectSelector_output.
+Print Assumptions raw_dynamicContextTruthDirectSelector_exists.

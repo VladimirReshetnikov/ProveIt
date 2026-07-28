@@ -1,0 +1,28 @@
+(** Audit for the concrete direct conclusion-truth selector. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessConclusionTruthDirectSelector.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessConclusionTruthDirectSelector.
+
+Check rawCoqRestrictedPAConclusionTruthDirectSelector_of_ternary.
+Check rawCoqRestrictedPAConclusionTruthDirectSelector_output.
+Check rawCoqRestrictedPAConclusionTruthDirectSelector_output_unique.
+Check
+  rawCoqRestrictedPADerivationSoundnessConclusionTruthTemplate_ternary_view.
+Check raw_coqRestrictedPAConclusionTruth_quotedTerm_syntax.
+
+Check
+  raw_coqRestrictedPAConclusionTruthDirectSelector_exists_of_native_trace.
+Check
+  raw_coqRestrictedPAConclusionTruthDirectSelector_native_output_exists.
+
+Print Assumptions
+  rawCoqRestrictedPAConclusionTruthDirectSelector_of_ternary.
+Print Assumptions
+  rawCoqRestrictedPADerivationSoundnessConclusionTruthTemplate_ternary_view.
+Print Assumptions
+  raw_coqRestrictedPAConclusionTruthDirectSelector_exists_of_native_trace.
+Print Assumptions
+  raw_coqRestrictedPAConclusionTruthDirectSelector_native_output_exists.

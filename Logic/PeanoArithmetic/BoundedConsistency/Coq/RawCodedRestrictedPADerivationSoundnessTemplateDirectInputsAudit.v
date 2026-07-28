@@ -34,6 +34,9 @@ Import
 Check rawCoqRestrictedPADerivationSoundnessTermViewSymbols.
 Check rawCoqRestrictedPADerivationSoundnessTemplateTermView.
 Check rawCoqRestrictedPADerivationSoundnessTemplateTermsView.
+Check rawCoqRestrictedPADerivationSoundnessTemplateTermView_syntax.
+Check rawCoqRestrictedPADerivationSoundnessTemplateTermView_shift.
+Check rawCoqRestrictedPADerivationSoundnessTemplateTermView_opening.
 
 Check RawCoqRestrictedPATruthDirectSelector.
 Check rawCoqRestrictedPATruthDirectOutput.
@@ -64,6 +67,13 @@ Check rawCoqRestrictedPADerivationSoundnessContextTruthTemplate_view.
 Check rawCoqRestrictedPADerivationSoundnessConclusionTruthTemplate_view.
 Check
   raw_coqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs_exists.
+
+Print Assumptions
+  rawCoqRestrictedPADerivationSoundnessTemplateTermView_syntax.
+Print Assumptions
+  rawCoqRestrictedPADerivationSoundnessTemplateTermView_shift.
+Print Assumptions
+  rawCoqRestrictedPADerivationSoundnessTemplateTermView_opening.
 
 Section ExactBoundary.
 
