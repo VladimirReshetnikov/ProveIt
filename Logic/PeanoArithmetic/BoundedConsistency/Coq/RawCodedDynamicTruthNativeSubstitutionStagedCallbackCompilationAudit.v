@@ -1,0 +1,16 @@
+(** Audit for the public staged substitution callback. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeSubstitutionStagedCallbackCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeSubstitutionStagedCallbackCompilation.
+
+Check raw_dynamicTruthNativeSubstitution_staged_graph_selection.
+Check
+  raw_dynamicTruthNativeStagedNextSubstitutionCompiler_of_body_implication.
+
+Print Assumptions
+  raw_dynamicTruthNativeSubstitution_staged_graph_selection.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextSubstitutionCompiler_of_body_implication.

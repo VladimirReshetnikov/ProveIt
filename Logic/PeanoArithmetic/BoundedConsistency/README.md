@@ -1951,6 +1951,18 @@ proof totality is isolated in the explicit
 `RawDynamicTruthNativeAxiomSoundnessProofCompiler`; model truth is not treated
 as a coded PA derivation.
 
+`RawCodedDynamicTruthPairedGlobalOrbitFunctionality.v` proves that the five
+positive graphs really do refer to one paired global orbit.  Numeral and
+substitution functionality make each Sigma/Pi successor row deterministic;
+the transparent wrapper then makes the paired global successor deterministic.
+A represented definable-induction invariant propagates pair uniqueness to
+every carrier level, including nonstandard ones, and adequate totality upgrades
+any law-free orbit witness to the adequate view.  Consequently five
+independently exposed local, cross-level, shift, substitution, and axiom-
+soundness graph witnesses can be rewritten onto one common adequate orbit and
+their exact transforms.  This is relational coherence only: it assumes no
+proof-producing field compiler or soundness principle.
+
 `RawCodedDynamicTruthNativeAxiomSoundnessProofCompilation.v` compiles the
 non-dynamic shell of that remaining proof.  From a covered local proof of the
 selected next-Sigma evidence under the literal singleton axiom/admissibility
@@ -2017,7 +2029,9 @@ stage-local interfaces to the ordinary certificates returned by the public
 dependency-ordered callbacks.  Starting with the six current master roots,
 it opens and merges the local certificate to construct the cross-level
 prerequisite package, then incrementally adds the cross-level, shift, and
-substitution certificates to construct the next three packages.  At every
+substitution certificates to construct the next three packages, and finally
+adds the axiom-soundness certificate to construct the eleven-root final
+package.  At every
 step all existing roots are rebuilt in the newly merged witnessed context
 before the record is formed.  Consequently no later staged implication may
 conjoin proof roots taken from unrelated hidden certificate contexts.
@@ -2031,6 +2045,58 @@ certificate into the current master context, and invokes the staged body-
 implication compiler.  Thus the callback has no additional context or graph-
 coherence premise; its only remaining proof-producing input is the explicit
 trace-linked cross-level arithmetic kernel.
+
+`RawCodedDynamicTruthNativeShiftStagedCallbackCompilation.v` exposes the third
+public callback from the trace-linked staged shift implication.  It merges the
+local certificate into the current six-root context and then accumulates the
+cross-level certificate, transporting every preceding root into one literal
+witnessed context.  One adequate paired-global orbit and one exact shift
+transform are retained for both the positive graph assertion and the carried
+proof compiler.  The callback therefore adds no graph equality or context
+identification premise; its only proof-producing residual is
+`RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler`.
+
+`RawCodedDynamicTruthNativeSubstitutionStagedCallbackCompilation.v` exposes
+the fourth public callback from the linked staged substitution implication.
+It accumulates current-plus-local, cross-level, and shift certificates in
+that order, transporting the whole prefix after each witnessed-context merge.
+One adequate paired-global orbit and one exact substitution transform remain
+shared between graph membership and proof compilation.  Consequently the
+adapter's only arithmetic residual is
+`RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler`;
+it assumes neither context equality nor semantic validity.
+
+`RawCodedDynamicTruthNativeAxiomStagedCallbackCompilation.v` exposes the fifth
+public callback from the linked staged axiom kernel.  It keeps one adequate
+paired-global orbit, its exact axiom transform, and the resulting positive
+graph target in a single package, then accumulates the local, cross-level,
+shift, and substitution certificates in dependency order.  The carried axiom
+root compiler receives those ten synchronized roots and returns the ordinary
+certificate for that same transform-selected target.  Its sole remaining
+proof-producing premise is
+`RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler`; no
+context equality, empty-base replacement, or semantic truth-to-proof
+principle is introduced by the adapter.
+
+`RawCodedDynamicTruthNativeFinalStagedCallbackCompilation.v` exposes the
+sixth public callback from the final source-linked implication compiler alone.
+It opens the five preceding graph/proof pairs, preserves their graph halves,
+and feeds their ordinary certificates through the complete accumulation chain
+in production order.  The resulting eleven roots inhabit one witnessed
+context and are passed to the carried final wrapper, which returns the exact
+compact-target graph/proof pair.  Every merge and transport is already proved;
+the adapter adds no context equality, empty-base replacement, or semantic
+premise beyond the named source-linked kernel.
+
+`RawCodedDynamicTruthNativeDependencyOrderedCallbackCompilation.v` collects
+the exact six residual kernels behind the public adapters.  A model-local
+bundle contains the concrete template translation agreement, the local staged
+root builder, and the linked cross-level, shift, substitution, axiom, and
+final compilers.  From that bundle the module derives the literal six-callback
+family, the positive master successor, and—under an all-model instance—the
+compact headline.  This is an exact conditional endpoint, not the missing
+unconditional Coq theorem: every arithmetic residual, especially the final
+source-linked derivation-soundness compiler, remains visible in the bundle.
 
 `RawCodedDynamicTruthNativePositiveLocalProofTotals.v` strengthens the five
 individual endpoints in the form required for common-context assembly.  For
@@ -2349,6 +2415,17 @@ row-projection packages, and the three temporary-context self-shifts.  From
 that package checked implication and universal introduction construct the
 carried local field root.  No proof equality, unlinked row choice, semantic
 truth-to-proof conversion, or hidden empty-context transport is used.
+
+`RawCodedDynamicTruthNativeLocalStagedCallbackCompilation.v` connects that
+carried root to the first public dependency-ordered callback.  It extends the
+actual current six-field proof package with the ordered forty-helper batch,
+retaining one witnessed context and all current graph witnesses.  The exact
+residual builder sees this package, the one selected local transform trace,
+and its linked row parameters, and returns only the staged root package.
+Adequate orbit selection, transform extraction, carried-root certificate
+packaging, and positive-graph satisfaction are then concrete.  Thus the
+callback neither assumes an empty-base leaf compiler nor permits an unrelated
+helper context.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but

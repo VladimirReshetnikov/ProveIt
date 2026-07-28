@@ -1,0 +1,66 @@
+(** Kernel-facing audit for the current-package-linked local callback. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeStagedPositiveSuccessor
+  RawCodedDynamicTruthNativeLocalStagedCallbackCompilation.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeLocalStagedCallbackCompilationAudit.
+
+Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalStagedCallbackCompilation.
+
+(** A carried proof is packaged with its original witness list and context;
+    neither theorem has an empty-context premise. *)
+Check raw_codedPAProofOf_dynamicTruthNativeLocal_of_witnessed_root.
+Check raw_codedPAProofOf_dynamicTruthNativeLocalFieldRootOn.
+
+(** The exact helper context contains the actual staged current package and
+    is produced automatically from it by the forty-helper extension. *)
+Check RawDynamicTruthNativeLocalCurrentHelperContextAt.
+Check raw_dynamicTruthNativeLocalCurrentHelperContextAt_exists.
+
+Goal forall M translation tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots,
+  RawDynamicTruthNativeLocalCurrentHelperContextAt M translation
+    tail level currentLocal currentCrossLevel currentShift
+    currentSubstitution currentAxiomSoundness currentFinal
+    witnessList baseContext helperRoots ->
+  RawDynamicTruthNativeStagedPositiveCurrentAt M tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal.
+Proof.
+  intros M translation tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    [hcurrent _].
+  exact hcurrent.
+Qed.
+
+(** The only residual is the exact current/trace-linked staged root builder.
+    Adequate positive selection and ordinary-certificate construction are
+    concrete adapters. *)
+Check RawDynamicTruthNativeLocalCurrentStagedRootBuilder.
+Check RawDynamicTruthNativeLocalDecisionExclusiveProofCompilerAt.
+Check
+  raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_current_builder.
+Check raw_dynamicTruthNativeLocalPositiveProof_exists_of_compilerAt.
+Check raw_dynamicTruthNativeStagedNextLocalCompiler_of_current_builder.
+
+Print Assumptions
+  raw_codedPAProofOf_dynamicTruthNativeLocal_of_witnessed_root.
+Print Assumptions
+  raw_codedPAProofOf_dynamicTruthNativeLocalFieldRootOn.
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentHelperContextAt_exists.
+Print Assumptions
+  raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_current_builder.
+Print Assumptions
+  raw_dynamicTruthNativeLocalPositiveProof_exists_of_compilerAt.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextLocalCompiler_of_current_builder.
+
+End
+  PABoundedRawCodedDynamicTruthNativeLocalStagedCallbackCompilationAudit.

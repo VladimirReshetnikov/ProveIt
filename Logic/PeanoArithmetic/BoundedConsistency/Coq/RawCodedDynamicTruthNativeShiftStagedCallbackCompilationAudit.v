@@ -1,0 +1,60 @@
+(** Kernel-facing audit for the public staged shift callback. *)
+
+From PAFiniteBasisReduction Require Import
+  HierarchyReduction CanonicalSelectorPA.
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeStagedPositiveSuccessor
+  RawCodedDynamicTruthNativeShiftStagedRootCompilation
+  RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation
+  RawCodedDynamicTruthNativeShiftStagedCallbackCompilation.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeShiftStagedCallbackCompilationAudit.
+
+Import PAHierarchyReduction.
+Import PACanonicalSelectorPA.
+Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
+Import PABoundedRawCodedDynamicTruthNativeShiftStagedRootCompilation.
+Import PABoundedRawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.
+Import PABoundedRawCodedDynamicTruthNativeShiftStagedCallbackCompilation.
+
+(** The dependency inputs retain their graph assertion and ordinary proof at
+    one target; prerequisite accumulation consumes those exact pairs. *)
+Check RawDynamicTruthNativeStagedPositiveCurrentAt.
+Check RawDynamicTruthNativeStagedNextLocalProofAt.
+Check RawDynamicTruthNativeStagedNextCrossLevelProofAt.
+Check RawDynamicTruthNativeStagedNextShiftProofAt.
+Check
+  raw_dynamicTruthNativeCrossLevelStagedPrerequisites_of_current_and_local.
+Check raw_dynamicTruthNativeShiftStagedPrerequisites_add_crossLevel.
+Check
+  raw_dynamicTruthNativeShiftStagedPrerequisites_of_callback_inputs.
+
+(** One adequate orbit and one exact transform feed both the public graph
+    witness and the existing staged transform proof theorem. *)
+Check
+  raw_dynamicTruthNativeShiftStagedTransformProof_of_body_implication.
+Check raw_dynamicTruthNativeShiftStagedNextProof_exists.
+
+(** The public callback has exactly one proof-producing residual. *)
+Check RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler.
+Check raw_dynamicTruthNativeStagedNextShiftCompiler_of_body_implication.
+
+Goal forall M,
+  RawPASatisfies M ->
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M ->
+  RawDynamicTruthNativeStagedNextShiftCompiler M.
+Proof.
+  exact raw_dynamicTruthNativeStagedNextShiftCompiler_of_body_implication.
+Qed.
+
+Print Assumptions
+  raw_dynamicTruthNativeShiftStagedPrerequisites_of_callback_inputs.
+Print Assumptions
+  raw_dynamicTruthNativeShiftStagedTransformProof_of_body_implication.
+Print Assumptions raw_dynamicTruthNativeShiftStagedNextProof_exists.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextShiftCompiler_of_body_implication.
+
+End
+  PABoundedRawCodedDynamicTruthNativeShiftStagedCallbackCompilationAudit.
