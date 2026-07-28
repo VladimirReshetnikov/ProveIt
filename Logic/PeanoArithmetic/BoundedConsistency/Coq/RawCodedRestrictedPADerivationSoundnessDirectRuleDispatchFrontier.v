@@ -800,5 +800,73 @@ Proof.
       hcaseRoots).
 Qed.
 
+Definition rawCoqRestrictedPADirectEndpointDeepContext
+    (tail : TemplateContext) : TemplateContext :=
+  rawCoqTemplateNestedExContext 8
+    rawCoqRestrictedPADirectEndpointWitnessBodyTemplate tail.
+
+Definition rawCoqRestrictedPADirectEndpointDeepTail
+    (tail : TemplateContext) : TemplateContext :=
+  match rawCoqRestrictedPADirectEndpointDeepContext tail with
+  | [] => []
+  | _ :: deepTail => deepTail
+  end.
+
+Lemma raw_coqRestrictedPADirectEndpointDeepContext_shape : forall tail,
+  rawCoqRestrictedPADirectEndpointDeepContext tail =
+  rawCoqRestrictedPADirectEndpointWitnessBodyTemplate ::
+    rawCoqRestrictedPADirectEndpointDeepTail tail.
+Proof. reflexivity. Qed.
+
+Lemma raw_coqTemplateExN_eight : forall body,
+  rawCoqTemplateExN 8 body = rawCoqTemplateEx8 body.
+Proof. reflexivity. Qed.
+
+Definition RawCoqRestrictedPADirectDeepEndpointRuleCaseImplicationRoots
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    (tail : TemplateContext) (conclusion : TemplateFormula) : Prop :=
+  RawCoqRestrictedPADirectEndpointRuleCaseImplicationRoots M hPA inputs
+    (rawCoqRestrictedPADirectEndpointDeepTail tail)
+    (rawCoqTemplateRenameN 8 conclusion).
+
+Arguments RawCoqRestrictedPADirectDeepEndpointRuleCaseImplicationRoots
+  M hPA inputs tail conclusion : clear implicits.
+
+(** Eliminate both levels of the exact endpoint relation: first its
+    seventeen constructor alternatives, then its eight field witnesses. *)
+Theorem
+    raw_codedPALocalProofOf_coqRestrictedPADirectEndpointFromRuleCases :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    tail conclusion,
+  RawCoqRestrictedPADirectDeepEndpointRuleCaseImplicationRoots
+    M hPA inputs tail conclusion ->
+  exists resultRoot : M,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (coqRestrictedPADerivationSoundnessEndpointTemplate :: tail))
+      (rawDirectTemplateFormula inputs conclusion)
+      resultRoot.
+Proof.
+  intros M hPA inputs tail conclusion hcaseRoots.
+  destruct
+    (raw_codedPALocalProofOf_coqRestrictedPADirectEndpointRuleDispatch
+      M hPA inputs
+      (rawCoqRestrictedPADirectEndpointDeepTail tail)
+      (rawCoqTemplateRenameN 8 conclusion)
+      hcaseRoots) as [deepRoot hdeep].
+  rewrite <- raw_coqRestrictedPADirectEndpointDeepContext_shape in hdeep.
+  destruct (raw_codedPALocalProofOf_templateNestedExElimination
+    M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+    8 rawCoqRestrictedPADirectEndpointWitnessBodyTemplate
+    conclusion tail deepRoot hdeep) as [outerRoot houter].
+  exists outerRoot.
+  rewrite raw_coqRestrictedPADerivationSoundnessEndpointTemplate_rule_shape.
+  rewrite <- raw_coqTemplateExN_eight.
+  exact houter.
+Qed.
+
 End
   PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier.

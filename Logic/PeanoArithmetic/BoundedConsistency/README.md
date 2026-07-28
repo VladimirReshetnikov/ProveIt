@@ -2395,7 +2395,9 @@ endpoint predicate with eight existential witnesses around that disjunction.
 The checked dispatcher projects the disjunction from the endpoint witness
 body, derives all finite-Or context-transplant resources from direct PA
 agreement and atomic adequacy, and handles the terminal bottom branch
-internally.  Its public residual is therefore exactly one open local
+internally.  A final generic nested-existential eliminator opens all eight
+endpoint witnesses and reconnects the result to the literal endpoint
+template.  Its public residual is therefore exactly one open local
 `case -> conclusion truth` PA root for each real proof constructor; it assumes
 neither a conclusion proof nor the original undifferentiated strong step.
 
