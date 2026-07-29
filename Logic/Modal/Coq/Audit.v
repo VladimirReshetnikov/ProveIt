@@ -5,6 +5,7 @@ From FoundationModal Require Import
   GenericEntailment GenericDecidability GenericDisjunctive
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
+  PropositionalLogic PropositionalHilbert
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst GenericCalculus PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
@@ -890,6 +891,113 @@ Print Assumptions pnn_de_morgan_laws.
 Print Assumptions pnn_complexity_neg.
 Print Assumptions pnnformula_eq_dec.
 Print Assumptions pnn_ne_of_ne_complexity.
+
+(** Propositional/Logic/Basic abstract logics. *)
+Check pformula_logic.
+Check pformula_logic_theorems.
+Check pformula_logic_substitute.
+Check pformula_logic_mdp.
+Check pformula_logic_trivial.
+Check pformula_logic_is_trivial.
+Check pformula_logic_trivial_is_trivial.
+Check pformula_logic_extension.
+Check pformula_logic_extension_logic.
+Check pformula_logic_extension_includes.
+Check pformula_logic_subset.
+Check pformula_logic_subset_refl.
+Check pformula_logic_subset_trans.
+Print Assumptions pformula_logic_trivial_is_trivial.
+Print Assumptions pformula_logic_subset_trans.
+
+(** Propositional/Hilbert/Minimal/Basic schema-generated systems. *)
+Check ph_axiom_K.
+Check ph_axiom_S.
+Check ph_axiom_and1.
+Check ph_axiom_and2.
+Check ph_axiom_and3.
+Check ph_axiom_or1.
+Check ph_axiom_or2.
+Check ph_axiom_or3.
+Check ph_axiom_efq.
+Check ph_axiom_wlem.
+Check ph_axiom_dummett.
+Check ph_axiom_kreisel_putnam.
+Check ph_axiom_lem.
+Check ph_hilbert.
+Check ph_hilbert_min.
+Check ph_hilbert_int.
+Check ph_hilbert_kc.
+Check ph_hilbert_lc.
+Check ph_hilbert_kp.
+Check ph_hilbert_cl.
+Check ph_hilbert_int_le_kc.
+Check ph_hilbert_int_le_lc.
+Check ph_hilbert_int_le_kp.
+Check ph_hilbert_int_le_cl.
+Check ph_hilbert_proof.
+Check PHPAxiom.
+Check PHPModusPonens.
+Check PHPVerum.
+Check PHPImplyS.
+Check PHPImplyK.
+Check PHPAndElimL.
+Check PHPAndElimR.
+Check PHPAndIntro.
+Check PHPOrIntroL.
+Check PHPOrIntroR.
+Check PHPOrElim.
+Check ph_hilbert_entailment.
+Check ph_hilbert_provable.
+Check ph_hilbert_of_schema.
+Check ph_hilbert_modus_ponens.
+Check ph_hilbert_identity.
+Check ph_hilbert_dhyp.
+Check ph_hilbert_under_apply.
+Check ph_hilbert_imp_trans.
+Check ph_hilbert_and_intro_raw.
+Check ph_hilbert_neg_equiv.
+Check ph_hilbert_minimal_capabilities.
+Check ph_hilbert_minimal.
+Check ph_hilbert_proof_map.
+Check ph_hilbert_proof_of_schema_inclusion.
+Check ph_hilbert_provable_of_schema_inclusion.
+Check ph_hilbert_proof_substitute.
+Check ph_hilbert_provable_substitute.
+Check ph_hilbert_proof_of_provable_schema.
+Check ph_inhabited_get.
+Check ph_hilbert_provable_of_provable_schema.
+Check ph_hilbert_int_efq.
+Check ph_hilbert_kc_wlem.
+Check ph_hilbert_lc_dummett.
+Check ph_hilbert_kp_axiom.
+Check ph_hilbert_cl_efq.
+Check ph_hilbert_cl_lem.
+Check ph_hilbert_cl_dne.
+Check ph_hilbert_cl_classical.
+Check ph_hilbert_logic.
+Check ph_hilbert_logic_iff_provable.
+Check ph_hilbert_logic_subset_of_schema_inclusion.
+Check ph_hilbert_logic_subset_of_provable_schema.
+Check ph_logic_int.
+Check ph_logic_kc.
+Check ph_logic_lc.
+Check ph_logic_kreisel_putnam.
+Check ph_logic_cl.
+Print Assumptions ph_hilbert_int_le_cl.
+Print Assumptions ph_hilbert_identity.
+Print Assumptions ph_hilbert_neg_equiv.
+Print Assumptions ph_hilbert_minimal.
+Print Assumptions ph_hilbert_proof_map.
+Print Assumptions ph_hilbert_provable_of_schema_inclusion.
+Print Assumptions ph_hilbert_proof_substitute.
+Print Assumptions ph_hilbert_provable_substitute.
+Print Assumptions ph_hilbert_proof_of_provable_schema.
+Print Assumptions ph_inhabited_get.
+Print Assumptions ph_hilbert_provable_of_provable_schema.
+Print Assumptions ph_hilbert_cl_dne.
+Print Assumptions ph_hilbert_cl_classical.
+Print Assumptions ph_hilbert_logic_subset_of_schema_inclusion.
+Print Assumptions ph_hilbert_logic_subset_of_provable_schema.
 
 (** Propositional/Translation syntax bridges. *)
 Check pformula_to_pnn.
