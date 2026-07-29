@@ -5,6 +5,7 @@ From BoundedPAConsistency Require Import
 
 Import PABoundedRawCodedFourStateTableAppendRowLtSuccCases.
 
+Check raw_codedPALocalProofOf_templateEqTransport_reverse_head.
 Check raw_templateContextCode_embedPAAxiomWitnesses.
 Check raw_fourStateTableAppendRowContext_witnessed_tail_code.
 Check raw_fourStateTableAppendRow_combined_witnessed_tail.
@@ -16,6 +17,7 @@ Check
 Check
   raw_codedPALocalProofOf_four_state_table_append_row_predecessor_branch_lookup.
 
+Print Assumptions raw_codedPALocalProofOf_templateEqTransport_reverse_head.
 Print Assumptions raw_templateContextCode_embedPAAxiomWitnesses.
 Print Assumptions raw_fourStateTableAppendRowContext_witnessed_tail_code.
 Print Assumptions raw_fourStateTableAppendRow_combined_witnessed_tail.
