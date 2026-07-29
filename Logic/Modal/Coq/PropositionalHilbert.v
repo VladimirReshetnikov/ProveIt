@@ -10,7 +10,7 @@
 From Stdlib Require Import Logic.ClassicalEpsilon.
 From FoundationModal Require Import
   GenericSemantics GenericLogicSymbol GenericEntailment GenericCalculus
-  PropositionalFormula PropositionalLogic.
+  PropositionalEntailmentAxioms PropositionalFormula PropositionalLogic.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -213,32 +213,39 @@ Proof. constructor. intros p q. exact (@PHPModusPonens Atom H p q). Defined.
 Definition ph_hilbert_identity {Atom : Type}
     (H : ph_hilbert Atom) (p : pformula Atom) :
     ph_hilbert_proof H (PImp p p) :=
-  PHPModusPonens
-    (PHPModusPonens
-      (PHPImplyS p (PImp p p) p)
-      (PHPImplyK p (PImp p p)))
-    (PHPImplyK p p).
+  @generic_imp_identity_raw (ph_hilbert Atom) (pformula Atom)
+    (ph_hilbert_entailment Atom) (pformula_connectives Atom) H
+    (ph_hilbert_modus_ponens H)
+    (fun a b => PHPImplyK a b)
+    (fun a b c => PHPImplyS a b c) p.
 
 Definition ph_hilbert_dhyp {Atom : Type}
     (H : ph_hilbert Atom) (p q : pformula Atom)
     (d : ph_hilbert_proof H p) :
     ph_hilbert_proof H (PImp q p) :=
-  PHPModusPonens (PHPImplyK p q) d.
+  @generic_dhyp_raw (ph_hilbert Atom) (pformula Atom)
+    (ph_hilbert_entailment Atom) (pformula_connectives Atom) H
+    (ph_hilbert_modus_ponens H) (fun a b => PHPImplyK a b) p q d.
 
 Definition ph_hilbert_under_apply {Atom : Type}
     (H : ph_hilbert Atom) (a b c : pformula Atom)
     (df : ph_hilbert_proof H (PImp a (PImp b c)))
     (dx : ph_hilbert_proof H (PImp a b)) :
     ph_hilbert_proof H (PImp a c) :=
-  PHPModusPonens (PHPModusPonens (PHPImplyS a b c) df) dx.
+  @generic_under_apply_raw (ph_hilbert Atom) (pformula Atom)
+    (ph_hilbert_entailment Atom) (pformula_connectives Atom) H
+    (ph_hilbert_modus_ponens H)
+    (fun x y z => PHPImplyS x y z) a b c df dx.
 
 Definition ph_hilbert_imp_trans {Atom : Type}
     (H : ph_hilbert Atom) (a b c : pformula Atom)
     (dab : ph_hilbert_proof H (PImp a b))
     (dbc : ph_hilbert_proof H (PImp b c)) :
     ph_hilbert_proof H (PImp a c) :=
-  @ph_hilbert_under_apply Atom H a b c
-    (@ph_hilbert_dhyp Atom H (PImp b c) a dbc) dab.
+  @generic_imp_trans_raw (ph_hilbert Atom) (pformula Atom)
+    (ph_hilbert_entailment Atom) (pformula_connectives Atom) H
+    (ph_hilbert_modus_ponens H) (fun x y => PHPImplyK x y)
+    (fun x y z => PHPImplyS x y z) a b c dab dbc.
 
 Definition ph_hilbert_and_intro_raw {Atom : Type}
     (H : ph_hilbert Atom) (p q : pformula Atom)
@@ -443,30 +450,16 @@ Definition ph_hilbert_cl_dne {Atom : Type} (p : pformula Atom) :
       (generic_axiom_dne (pformula_connectives Atom) p).
 Proof.
   set (H := ph_hilbert_cl Atom).
-  set (n := pneg p).
-  set (nn := pneg n).
-  assert (defq : ph_hilbert_proof H (PImp PFalsum p)).
-  { exact (ph_hilbert_cl_efq p). }
-  assert (dn_to_bot_to_p :
-    ph_hilbert_proof H (PImp n (PImp PFalsum p))).
-  { exact (@ph_hilbert_dhyp Atom H (PImp PFalsum p) n defq). }
-  assert (dbranch : ph_hilbert_proof H (PImp nn (PImp n p))).
-  { exact (PHPModusPonens (PHPImplyS n PFalsum p) dn_to_bot_to_p). }
-  assert (dcases : ph_hilbert_proof H (ph_axiom_or3 p n p)).
-  { exact (PHPOrElim p n p). }
-  pose (d0 := @ph_hilbert_dhyp Atom H
-    (ph_axiom_or3 p n p) nn dcases).
-  pose (did := @ph_hilbert_identity Atom H p).
-  pose (d1 := @ph_hilbert_under_apply Atom H nn (PImp p p)
-    (PImp (PImp n p) (PImp (POr p n) p)) d0
-    (@ph_hilbert_dhyp Atom H (PImp p p) nn did)).
-  pose (d2 := @ph_hilbert_under_apply Atom H nn (PImp n p)
-    (PImp (POr p n) p) d1 dbranch).
-  assert (dlem : ph_hilbert_proof H (POr p n)).
-  { exact (ph_hilbert_cl_lem p). }
-  pose (d3 := @ph_hilbert_under_apply Atom H nn (POr p n) p d2
-    (@ph_hilbert_dhyp Atom H (POr p n) nn dlem)).
-  exact d3.
+  apply (@generic_dne_of_lem_efq_raw
+    (ph_hilbert Atom) (pformula Atom) (ph_hilbert_entailment Atom)
+    (pformula_connectives Atom) H).
+  - exact (ph_hilbert_modus_ponens H).
+  - exact (fun a b => PHPImplyK a b).
+  - exact (fun a b c => PHPImplyS a b c).
+  - exact (fun a b c => PHPOrElim a b c).
+  - constructor. exact ph_hilbert_cl_lem.
+  - constructor. exact ph_hilbert_cl_efq.
+  - intro q. exact (@ph_hilbert_identity Atom H (pneg q)).
 Defined.
 
 Definition ph_hilbert_cl_classical (Atom : Type) :
