@@ -9,7 +9,7 @@ From FoundationModal Require Import
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
   GenericCalculus PropositionalEntailmentAxioms
-  PropositionalEntailmentMinimal PropositionalTait
+  PropositionalEntailmentMinimal PropositionalEntailmentInt PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -1515,6 +1515,31 @@ Print Assumptions ph_hilbert_type_context_deduction.
 Print Assumptions ph_hilbert_type_context_to_finite.
 Print Assumptions ph_hilbert_double_neg_imp_distribution.
 Print Assumptions ph_hilbert_and_or_cut.
+
+(** Propositional/Entailment/Int/Basic: the ex-falso extension, explosion,
+    reverse stable implication, and normalized finite-disjunction algebra are
+    constructive over their explicit intuitionistic capability. *)
+Check generic_intuitionistic_entailment.
+Check generic_intuitionistic_efq_elim_raw.
+Check generic_intuitionistic_imp_neg_explosion_raw.
+Check generic_intuitionistic_neg_imp_explosion_raw.
+Check generic_intuitionistic_neg_or_to_imp_raw.
+Check generic_intuitionistic_double_neg_imp_converse_raw.
+Check generic_intuitionistic_list_disj2_elim_raw.
+Check generic_intuitionistic_list_disj2_append_iff_raw.
+Check generic_intuitionistic_list_disj2_unique_raw.
+Check generic_intuitionistic_list_disj2_cons_iff_raw.
+Check ph_hilbert_generic_intuitionistic.
+Check ph_hilbert_int_intuitionistic.
+Check ph_hilbert_int_double_neg_imp_converse.
+Check ph_hilbert_int_list_disj2_append_iff.
+Print Assumptions generic_intuitionistic_neg_or_to_imp_raw.
+Print Assumptions generic_intuitionistic_double_neg_imp_converse_raw.
+Print Assumptions generic_intuitionistic_list_disj2_elim_raw.
+Print Assumptions generic_intuitionistic_list_disj2_append_iff_raw.
+Print Assumptions generic_intuitionistic_list_disj2_unique_raw.
+Print Assumptions ph_hilbert_int_double_neg_imp_converse.
+Print Assumptions ph_hilbert_int_list_disj2_append_iff.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
