@@ -1635,10 +1635,37 @@ Check generic_has_axiom_dne_of_lukasiewicz.
 Check generic_lukasiewicz_dni_raw.
 Check generic_lukasiewicz_explosion_raw.
 Check generic_lukasiewicz_inconsistent_of_provable_neg.
+Check generic_lukasiewicz_neg_to_imp_bottom_raw.
+Check generic_lukasiewicz_imp_bottom_to_neg_raw.
+Check generic_lukasiewicz_verum_raw.
+Check generic_lukasiewicz_efq_raw.
+Check generic_has_axiom_efq_of_lukasiewicz.
+Check generic_lukasiewicz_imp_swap_raw.
+Check generic_lukasiewicz_explosion_axiom_raw.
+Check generic_lukasiewicz_contraposition_axiom_raw.
+Check generic_lukasiewicz_contraposition_raw.
+Check generic_lukasiewicz_and1_raw.
+Check generic_lukasiewicz_and2_raw.
+Check generic_lukasiewicz_and3_raw.
+Check generic_lukasiewicz_or1_raw.
+Check generic_lukasiewicz_or2_raw.
+Check generic_lukasiewicz_or3_raw.
+Check generic_lukasiewicz_neg_equiv_raw.
+Check generic_classical_of_lukasiewicz.
 Print Assumptions generic_lukasiewicz_dne_raw.
 Print Assumptions generic_lukasiewicz_dni_raw.
 Print Assumptions generic_lukasiewicz_explosion_raw.
 Print Assumptions generic_lukasiewicz_inconsistent_of_provable_neg.
+Print Assumptions generic_lukasiewicz_efq_raw.
+Print Assumptions generic_lukasiewicz_contraposition_axiom_raw.
+Print Assumptions generic_lukasiewicz_and1_raw.
+Print Assumptions generic_lukasiewicz_and2_raw.
+Print Assumptions generic_lukasiewicz_and3_raw.
+Print Assumptions generic_lukasiewicz_or1_raw.
+Print Assumptions generic_lukasiewicz_or2_raw.
+Print Assumptions generic_lukasiewicz_or3_raw.
+Print Assumptions generic_lukasiewicz_neg_equiv_raw.
+Print Assumptions generic_classical_of_lukasiewicz.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
