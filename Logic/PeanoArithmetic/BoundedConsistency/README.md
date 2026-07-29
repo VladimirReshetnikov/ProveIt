@@ -4671,3 +4671,14 @@ append packages, so the append source resources now yield Sigma and Pi global
 roots in one literal joint-state context.  What remains is to eliminate the
 ten global existential witnesses, project the seven traversal fields, and
 instantiate the selected row to obtain the admissibility and evidence roots.
+
+The ten-witness elimination boundary is now compiled over that literal state
+context.  The two state-member assumptions are represented as a template
+prefix over the witnessed PA tail, rather than incorrectly treated as a raw
+self-shifting tail, so every eigenvariable step shifts both assumptions.  A
+single endpoint computes the ten deep contexts, performs the complete
+existential-elimination chain, and transports the resulting conclusion back
+to the predecessor joint-state context.  The remaining continuation begins
+only after all ten global witnesses have been opened: it must project the
+seven traversal fields and instantiate the selected row to construct the
+admissibility and Sigma/Pi evidence roots.
