@@ -42,6 +42,36 @@ Lemma fin_two_second : forall A (x y : A),
   fin_two x y (Fin.FS Fin.F1) = y.
 Proof. reflexivity. Qed.
 
+Lemma fin_one_eta : forall A (v : Fin.t 1 -> A),
+  v = fin_one (v Fin.F1).
+Proof.
+  intros. apply functional_extensionality. intro i.
+  refine (@Fin.caseS' 0 i (fun j => v j = fin_one (v Fin.F1) j)
+    eq_refl _).
+  intros q; inversion q.
+Qed.
+
+Lemma fin_two_eta : forall A (v : Fin.t 2 -> A),
+  v = fin_two (v Fin.F1) (v (Fin.FS Fin.F1)).
+Proof.
+  intros. apply functional_extensionality. intro i.
+  refine (@Fin.caseS' 1 i
+    (fun j => v j = fin_two (v Fin.F1) (v (Fin.FS Fin.F1)) j)
+    eq_refl _).
+  intro j. refine (@Fin.caseS' 0 j
+    (fun q => v (Fin.FS q) =
+      fin_two (v Fin.F1) (v (Fin.FS Fin.F1)) (Fin.FS q))
+    eq_refl _).
+  intros q; inversion q.
+Qed.
+
+Fixpoint fin_to_list {A : Type} (n : nat) :
+    (Fin.t n -> A) -> list A :=
+  match n as k return (Fin.t k -> A) -> list A with
+  | 0 => fun _ => []
+  | S k => fun v => v Fin.F1 :: @fin_to_list A k (fun i => v (Fin.FS i))
+  end.
+
 (** * Semiterm operators *)
 
 Record semiterm_operator (L : language) (arity : nat) : Type := {
@@ -218,6 +248,34 @@ Proof.
     + intros q; inversion q.
 Qed.
 
+(** The positive-arity branch follows the source exactly: the fold starts at
+    the first variable and traverses the remaining variables in finite-index
+    order. *)
+Definition semiterm_operator_iterr {L}
+    (f : semiterm_operator L 2) (z : semiterm_const_operator L)
+    (n : nat) : semiterm_operator L n :=
+  match n as k return semiterm_operator L k with
+  | 0 => z
+  | S k => semiterm_operator_foldr f
+      (semiterm_operator_bvar (L := L) Fin.F1)
+      (@fin_to_list (semiterm_operator L (S k)) k
+        (fun i => semiterm_operator_bvar (L := L) (Fin.FS i)))
+  end.
+
+Lemma semiterm_operator_iterr_zero : forall L
+    (f : semiterm_operator L 2) (z : semiterm_const_operator L),
+  semiterm_operator_iterr f z 0 = z.
+Proof. reflexivity. Qed.
+
+Lemma semiterm_operator_iterr_succ : forall L
+    (f : semiterm_operator L 2) (z : semiterm_const_operator L) n,
+  semiterm_operator_iterr f z (S n) =
+  semiterm_operator_foldr f
+    (semiterm_operator_bvar (L := L) Fin.F1)
+    (@fin_to_list (semiterm_operator L (S n)) n
+      (fun i => semiterm_operator_bvar (L := L) (Fin.FS i))).
+Proof. reflexivity. Qed.
+
 (** * Named term-operator capabilities *)
 
 Record semiterm_has_zero_operator (L : language) : Type :=
@@ -230,8 +288,15 @@ Record semiterm_has_mul_operator (L : language) : Type :=
   { semiterm_mul_operator : semiterm_operator L 2 }.
 Record semiterm_has_exp_operator (L : language) : Type :=
   { semiterm_exp_operator : semiterm_operator L 1 }.
+Record semiterm_has_sub_operator (L : language) : Type :=
+  { semiterm_sub_operator : semiterm_operator L 2 }.
+Record semiterm_has_div_operator (L : language) : Type :=
+  { semiterm_div_operator : semiterm_operator L 2 }.
 Record semiterm_has_star_operator (L : language) : Type :=
   { semiterm_star_operator : semiterm_const_operator L }.
+
+Record semiterm_godel_number_operator (L : language) (A : Type) : Type :=
+  { semiterm_godel_number : A -> semiterm_const_operator L }.
 
 Definition semiterm_zero_operator_of_language {L}
     (H : language_has_zero L) : semiterm_has_zero_operator L :=
@@ -364,6 +429,135 @@ Lemma semiterm_operator_numeral_succ_succ : forall L Hz Ho Ha n,
       (semiterm_one_operator Ho)).
 Proof.
   intros. apply semiterm_operator_numeral_succ_nonzero. discriminate.
+Qed.
+
+Definition semiterm_godel_number_of_encoding {L A}
+    (Hz : semiterm_has_zero_operator L)
+    (Ho : semiterm_has_one_operator L)
+    (Ha : semiterm_has_add_operator L) (E : encoding A) :
+    semiterm_godel_number_operator L A :=
+  {| semiterm_godel_number :=
+       fun a => semiterm_operator_numeral Hz Ho Ha (encode E a) |}.
+
+(** Unary natural powers, again parameterized by abstract one and
+    multiplication operators. *)
+Definition semiterm_operator_npow {L}
+    (Ho : semiterm_has_one_operator L)
+    (Hm : semiterm_has_mul_operator L) (n : nat) : semiterm_operator L 1 :=
+  semiterm_operator_foldr (semiterm_mul_operator Hm)
+    (semiterm_operator_comp (semiterm_one_operator Ho) fin_zero)
+    (repeat (semiterm_operator_bvar (L := L) Fin.F1) n).
+
+Lemma semiterm_operator_npow_zero : forall L Ho Hm,
+  @semiterm_operator_npow L Ho Hm 0 =
+  semiterm_operator_comp (semiterm_one_operator Ho) fin_zero.
+Proof. reflexivity. Qed.
+
+Lemma semiterm_operator_npow_succ : forall L Ho Hm n,
+  @semiterm_operator_npow L Ho Hm (S n) =
+  semiterm_operator_comp (semiterm_mul_operator Hm)
+    (fin_two (@semiterm_operator_npow L Ho Hm n)
+      (semiterm_operator_bvar (L := L) Fin.F1)).
+Proof. reflexivity. Qed.
+
+Lemma semiterm_operator_npow_positive : forall L X n
+    (Ho : semiterm_has_one_operator L) (Hm : language_has_mul L)
+    (t : semiterm L X (S n)) k,
+  semiterm_positive
+    (semiterm_operator_apply
+      (@semiterm_operator_npow L Ho
+        (semiterm_mul_operator_of_language Hm) k) (fin_one t)) <->
+  k = 0 \/ semiterm_positive t.
+Proof.
+  intros L X n Ho Hm t k; induction k as [|k IH].
+  - rewrite semiterm_operator_npow_zero, semiterm_operator_comp_apply.
+    split; [intro; now left | intros _].
+    replace
+      (fun i : Fin.t 0 =>
+        semiterm_operator_apply (fin_zero i) (fin_one t))
+      with (@fin_zero (semiterm L X (S n))).
+    + apply semiterm_const_operator_positive.
+    + apply functional_extensionality. intro i; inversion i.
+  - rewrite semiterm_operator_npow_succ, semiterm_operator_comp_apply.
+    replace
+      (fun i : Fin.t 2 =>
+        semiterm_operator_apply
+          (fin_two
+            (@semiterm_operator_npow L Ho
+              (semiterm_mul_operator_of_language Hm) k)
+            (semiterm_operator_bvar (L := L) Fin.F1) i)
+          (fin_one t))
+      with
+      (fin_two
+        (semiterm_operator_apply
+          (@semiterm_operator_npow L Ho
+            (semiterm_mul_operator_of_language Hm) k) (fin_one t)) t).
+    + rewrite semiterm_mul_operator_positive, IH. split.
+      * intros [_ Hp]. now right.
+      * intros [H | Hp]; [discriminate H |].
+        split; [now right | exact Hp].
+    + apply functional_extensionality. intro i.
+      refine (@Fin.caseS' 1 i (fun j => _) eq_refl _).
+      intro j. refine (@Fin.caseS' 0 j (fun q => _) _ _).
+      * symmetry. apply semiterm_operator_bvar_apply.
+      * intros q; inversion q.
+Qed.
+
+(** Exact complexities for the canonical primitive arithmetic operators. *)
+Lemma fin_max_two : forall (v : Fin.t 2 -> nat),
+  @fin_max 2 v = Nat.max (v Fin.F1) (v (Fin.FS Fin.F1)).
+Proof.
+  intro v. simpl. now rewrite Nat.max_0_r.
+Qed.
+
+Lemma semiterm_zero_operator_complexity : forall L X n
+    (H : language_has_zero L),
+  semiterm_complexity
+    (@semiterm_operator_const_apply L X n
+      (semiterm_zero_operator
+        (semiterm_zero_operator_of_language H))) = 1.
+Proof. reflexivity. Qed.
+
+Lemma semiterm_one_operator_complexity : forall L X n
+    (H : language_has_one L),
+  semiterm_complexity
+    (@semiterm_operator_const_apply L X n
+      (semiterm_one_operator
+        (semiterm_one_operator_of_language H))) = 1.
+Proof. reflexivity. Qed.
+
+Lemma semiterm_add_operator_complexity : forall L X n
+    (H : language_has_add L) (t u : semiterm L X n),
+  semiterm_complexity
+    (semiterm_operator_apply
+      (semiterm_add_operator
+        (semiterm_add_operator_of_language H)) (fin_two t u)) =
+  S (Nat.max (semiterm_complexity t) (semiterm_complexity u)).
+Proof.
+  intros. change
+    (semiterm_complexity
+      (semiterm_operator_apply
+        (semiterm_operator_fn (language_add_symbol H)) (fin_two t u)) =
+     S (Nat.max (semiterm_complexity t) (semiterm_complexity u))).
+  rewrite semiterm_operator_fn_apply, semiterm_complexity_func.
+  now rewrite fin_max_two.
+Qed.
+
+Lemma semiterm_mul_operator_complexity : forall L X n
+    (H : language_has_mul L) (t u : semiterm L X n),
+  semiterm_complexity
+    (semiterm_operator_apply
+      (semiterm_mul_operator
+        (semiterm_mul_operator_of_language H)) (fin_two t u)) =
+  S (Nat.max (semiterm_complexity t) (semiterm_complexity u)).
+Proof.
+  intros. change
+    (semiterm_complexity
+      (semiterm_operator_apply
+        (semiterm_operator_fn (language_mul_symbol H)) (fin_two t u)) =
+     S (Nat.max (semiterm_complexity t) (semiterm_complexity u))).
+  rewrite semiterm_operator_fn_apply, semiterm_complexity_func.
+  now rewrite fin_max_two.
 Qed.
 
 (** * Semiformula operators *)
@@ -547,6 +741,119 @@ Lemma semiformula_le_operator_apply : forall L X n
     (Semiformula_rel (language_eq Heq) (fin_two t u))
     (Semiformula_rel (language_lt Hlt) (fin_two t u)).
 Proof. reflexivity. Qed.
+
+(** * Rewrite preimages of binary atoms *)
+
+Definition semiformula_outer_relation_arity {L X n}
+    (p : semiformula L X n) : option nat :=
+  match p with
+  | @Semiformula_rel _ _ _ k _ _ => Some k
+  | _ => None
+  end.
+
+Lemma semiformula_rel_arity_injective : forall L X n k l
+    (r : language_rel L k) (v : Fin.t k -> semiterm L X n)
+    (s : language_rel L l) (w : Fin.t l -> semiterm L X n),
+  Semiformula_rel r v = Semiformula_rel s w -> k = l.
+Proof.
+  intros L X n k l r v s w H.
+  pose proof (f_equal semiformula_outer_relation_arity H) as Ha.
+  simpl in Ha. now injection Ha.
+Qed.
+
+(** This single constructive theorem strictly generalizes the source's three
+    equality/LT/membership lemmas.  It works for every binary relation symbol,
+    every rewrite, and needs no decidable equality on symbols. *)
+Lemma semiformula_rewrite_binary_relation_preimage : forall
+    L X n Y m (w : rew L X n Y m) (p : semiformula L X n)
+    (r : language_rel L 2) (t u : semiterm L Y m),
+  semiformula_rewrite w p = Semiformula_rel r (fin_two t u) <->
+  exists t' u' : semiterm L X n,
+    rew_apply w t' = t /\ rew_apply w u' = u /\
+    p = Semiformula_rel r (fin_two t' u').
+Proof.
+  intros L X n Y m w p r t u. split.
+  - intro H. destruct p as
+      [n0 | n0 | n0 k s v | n0 k s v |
+       n0 p q | n0 p q | n0 p | n0 p];
+      simpl in H; try discriminate H.
+    destruct k as [|k].
+    + pose proof (semiformula_rel_arity_injective H) as Hk.
+      discriminate Hk.
+    + destruct k as [|k].
+      * pose proof (semiformula_rel_arity_injective H) as Hk.
+        discriminate Hk.
+      * destruct k as [|k].
+        -- destruct (semiformula_rel_injective_same_arity H) as [Hs Hv].
+           exists (v Fin.F1), (v (Fin.FS Fin.F1)).
+           split.
+           ++ exact (f_equal (fun a => a Fin.F1) Hv).
+           ++ split.
+              ** exact (f_equal (fun a => a (Fin.FS Fin.F1)) Hv).
+              ** subst s. f_equal. apply fin_two_eta.
+        -- pose proof (semiformula_rel_arity_injective H) as Hk.
+           discriminate Hk.
+  - intros [t' [u' [Ht [Hu ->]]]]. simpl.
+    f_equal. apply functional_extensionality. intro i.
+    refine (@Fin.caseS' 1 i
+      (fun j => rew_apply w (fin_two t' u' j) = fin_two t u j)
+      Ht _).
+    intro j. refine (@Fin.caseS' 0 j
+      (fun q => rew_apply w (fin_two t' u' (Fin.FS q)) =
+        fin_two t u (Fin.FS q)) Hu _).
+    intros q; inversion q.
+Qed.
+
+Lemma semiformula_rewrite_eq_operator_preimage : forall
+    L X n Y m (w : rew L X n Y m) (p : semiformula L X n)
+    (H : language_has_eq L) (t u : semiterm L Y m),
+  semiformula_rewrite w p =
+    semiformula_operator_apply
+      (semiformula_eq_operator (semiformula_eq_operator_of_language H))
+      (fin_two t u) <->
+  exists t' u' : semiterm L X n,
+    rew_apply w t' = t /\ rew_apply w u' = u /\
+    p = semiformula_operator_apply
+      (semiformula_eq_operator (semiformula_eq_operator_of_language H))
+      (fin_two t' u').
+Proof.
+  intros. rewrite !semiformula_eq_operator_apply.
+  apply semiformula_rewrite_binary_relation_preimage.
+Qed.
+
+Lemma semiformula_rewrite_lt_operator_preimage : forall
+    L X n Y m (w : rew L X n Y m) (p : semiformula L X n)
+    (H : language_has_lt L) (t u : semiterm L Y m),
+  semiformula_rewrite w p =
+    semiformula_operator_apply
+      (semiformula_lt_operator (semiformula_lt_operator_of_language H))
+      (fin_two t u) <->
+  exists t' u' : semiterm L X n,
+    rew_apply w t' = t /\ rew_apply w u' = u /\
+    p = semiformula_operator_apply
+      (semiformula_lt_operator (semiformula_lt_operator_of_language H))
+      (fin_two t' u').
+Proof.
+  intros. rewrite !semiformula_lt_operator_apply.
+  apply semiformula_rewrite_binary_relation_preimage.
+Qed.
+
+Lemma semiformula_rewrite_mem_operator_preimage : forall
+    L X n Y m (w : rew L X n Y m) (p : semiformula L X n)
+    (H : language_has_mem L) (t u : semiterm L Y m),
+  semiformula_rewrite w p =
+    semiformula_operator_apply
+      (semiformula_mem_operator (semiformula_mem_operator_of_language H))
+      (fin_two t u) <->
+  exists t' u' : semiterm L X n,
+    rew_apply w t' = t /\ rew_apply w u' = u /\
+    p = semiformula_operator_apply
+      (semiformula_mem_operator (semiformula_mem_operator_of_language H))
+      (fin_two t' u').
+Proof.
+  intros. rewrite !semiformula_mem_operator_apply.
+  apply semiformula_rewrite_binary_relation_preimage.
+Qed.
 
 (** A single arity-two constructor theorem supplies equality, order, and
     membership injectivity, avoiding three copies of the same finite-vector
