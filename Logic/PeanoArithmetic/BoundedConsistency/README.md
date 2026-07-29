@@ -2587,6 +2587,18 @@ eleven-root staged context.  Its conclusion contains the direct soundness
 root and matching consistency implication over one grown literal context;
 neither root nor an intermediate certificate is accepted as a premise.
 
+The first recursive semantic residual is now decomposed in
+`RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftRecursiveChildCompilation.v`.
+For Or-I-left it projects the strengthened restricted premise into its
+restriction core, atomic adequacy, formula coverage, and rule coverage;
+projects admissibility into its local core and common coverage existential;
+and fixes the exact eigenvariable context in which those resources must yield
+the four child facts consumed by the represented prefix induction.  The file
+also isolates the first genuinely absent arithmetic root: rerooting the
+restriction certificate at a recursive child for a carrier-valued hierarchy
+parameter.  The older metatheoretic theorem fixes a standard Rocq `nat`, so it
+cannot fill this direct root without a PA-internal uniformization theorem.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
