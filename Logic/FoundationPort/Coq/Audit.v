@@ -1,6 +1,7 @@
 (** Public surface and kernel-assumption audit for the generic Foundation port. *)
 
-From Foundation.Syntax.Predicate Require Import Language Term.
+From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
+From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 
 Check language.
 Check language_relational.
@@ -70,6 +71,56 @@ Check semiterm_index_of_free_variable.
 Check semiterm_enumerate_free_variable.
 Check semiterm_enumerate_index_of_free_variable.
 
+Check polarity_alt_involutive.
+Check sigma_pi_delta_alt_involutive.
+Check sigma_pi_delta_alt_polarity.
+Check first_universal_quantifier.
+Check first_existential_quantifier.
+Check first_quantifiers.
+Check first_connectives_with_quantifiers.
+Check first_all_closure.
+Check first_all_iter.
+Check first_exists_closure.
+Check first_exists_iter.
+Check first_bounded_all.
+Check first_bounded_exists.
+Check second_universal_quantifier.
+Check second_existential_quantifier.
+Check second_quantifiers.
+Check second_connectives_with_quantifiers.
+Check second_all_closure.
+Check second_all_iter.
+Check second_exists_closure.
+Check second_exists_iter.
+Check second_bounded_all.
+Check second_bounded_exists.
+
+Check semiformula.
+Check semiformula_connectives.
+Check semiformula_lcwq.
+Check semiformula_neg_involutive.
+Check semiformula_neg_all_closure.
+Check semiformula_neg_exists_closure.
+Check semiformula_neg_bounded_all.
+Check semiformula_all_closure_injective.
+Check semiformula_all_iter_injective.
+Check semiformula_complexity.
+Check semiformula_quantifier_rank.
+Check semiformula_open.
+Check semiformula_eq_dec.
+Check semiformula_free_occurs.
+Check semiformula_free_variable_list_spec.
+Check semiformula_fv_sup_fresh.
+Check semiformula_language_map.
+Check semiformula_language_connective_hom.
+Check semiformula_language_map_free_occurs.
+Check semiformula_language_map_id.
+Check semiformula_language_map_comp.
+Check semiformula_language_map_all_iter.
+Check semiformula_language_map_free_variable_list.
+Check semiformula_enumerate_index_of_free_variable.
+Check theory_language_map.
+
 Print Assumptions language_hom_ext.
 Print Assumptions language_hom_comp_assoc.
 Print Assumptions oring_function_symbols_complete.
@@ -81,3 +132,19 @@ Print Assumptions semiterm_language_map_positive.
 Print Assumptions semiterm_language_map_comp.
 Print Assumptions semiterm_free_variable_list_spec.
 Print Assumptions semiterm_enumerate_index_of_free_variable.
+Print Assumptions semiterm_language_map_free_variable_list.
+Print Assumptions polarity_alt_involutive.
+Print Assumptions first_all_iter_succ.
+Print Assumptions first_exists_iter_succ.
+Print Assumptions second_all_iter_succ.
+Print Assumptions second_exists_iter_succ.
+Print Assumptions semiformula_neg_involutive.
+Print Assumptions semiformula_neg_all_closure.
+Print Assumptions semiformula_all_iter_injective.
+Print Assumptions semiformula_eq_dec.
+Print Assumptions semiformula_fv_sup_fresh.
+Print Assumptions semiformula_language_connective_hom.
+Print Assumptions semiformula_language_map_free_occurs.
+Print Assumptions semiformula_language_map_id.
+Print Assumptions semiformula_language_map_comp.
+Print Assumptions semiformula_enumerate_index_of_free_variable.
