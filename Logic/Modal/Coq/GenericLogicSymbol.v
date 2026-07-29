@@ -14,7 +14,7 @@
   records merely because their underlying functions agree.
 *)
 
-From Stdlib Require Import Lists.List Arith.PeanoNat.
+From Stdlib Require Import Lists.List Arith.PeanoNat Vectors.Fin.
 From FoundationModal Require Import GenericSemantics.
 
 Import ListNotations.
@@ -470,4 +470,238 @@ Lemma generic_connective_hom_list_disj_map :
 Proof.
   intros I F G CF CG h f xs. unfold generic_list_disj_map.
   rewrite generic_connective_hom_list_disj2, map_map. reflexivity.
+Qed.
+
+(** * Finite-vector folds *)
+
+(** Foundation [Matrix.conj].  An arbitrary finite vector is represented by
+    its lookup function on [Fin.t n], preserving the source's extensional
+    interface without a separate vector container. *)
+Fixpoint generic_matrix_conj {F : Type}
+    (C : generic_connectives F) (n : nat) : (Fin.t n -> F) -> F :=
+  match n as n0 return (Fin.t n0 -> F) -> F with
+  | 0 => fun _ => generic_top C
+  | S k => fun v =>
+      generic_and C (v Fin.F1)
+        (@generic_matrix_conj F C k (fun i => v (Fin.FS i)))
+  end.
+
+Arguments generic_matrix_conj {F} C n v.
+
+Lemma generic_matrix_conj_zero :
+  forall (F : Type) (C : generic_connectives F)
+         (v : Fin.t 0 -> F),
+    generic_matrix_conj C 0 v = generic_top C.
+Proof. reflexivity. Qed.
+
+Lemma generic_matrix_conj_succ :
+  forall (F : Type) (C : generic_connectives F)
+         (n : nat) (v : Fin.t (S n) -> F),
+    generic_matrix_conj C (S n) v =
+    generic_and C (v Fin.F1)
+      (generic_matrix_conj C n (fun i => v (Fin.FS i))).
+Proof. reflexivity. Qed.
+
+Fixpoint generic_matrix_disj {F : Type}
+    (C : generic_connectives F) (n : nat) : (Fin.t n -> F) -> F :=
+  match n as n0 return (Fin.t n0 -> F) -> F with
+  | 0 => fun _ => generic_bottom C
+  | S k => fun v =>
+      generic_or C (v Fin.F1)
+        (@generic_matrix_disj F C k (fun i => v (Fin.FS i)))
+  end.
+
+Arguments generic_matrix_disj {F} C n v.
+
+Lemma generic_matrix_disj_zero :
+  forall (F : Type) (C : generic_connectives F)
+         (v : Fin.t 0 -> F),
+    generic_matrix_disj C 0 v = generic_bottom C.
+Proof. reflexivity. Qed.
+
+Lemma generic_matrix_disj_succ :
+  forall (F : Type) (C : generic_connectives F)
+         (n : nat) (v : Fin.t (S n) -> F),
+    generic_matrix_disj C (S n) v =
+    generic_or C (v Fin.F1)
+      (generic_matrix_disj C n (fun i => v (Fin.FS i))).
+Proof. reflexivity. Qed.
+
+Lemma generic_connective_hom_matrix_conj :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG)
+         (n : nat) (v : Fin.t n -> F),
+    generic_connective_hom_apply h (generic_matrix_conj CF n v) =
+    generic_matrix_conj CG n
+      (fun i => generic_connective_hom_apply h (v i)).
+Proof.
+  intros F G CF CG h n; induction n as [|n IH]; intro v; simpl.
+  - exact (generic_connective_hom_top h).
+  - rewrite (generic_connective_hom_and h), IH. reflexivity.
+Qed.
+
+Lemma generic_connective_hom_matrix_disj :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG)
+         (n : nat) (v : Fin.t n -> F),
+    generic_connective_hom_apply h (generic_matrix_disj CF n v) =
+    generic_matrix_disj CG n
+      (fun i => generic_connective_hom_apply h (v i)).
+Proof.
+  intros F G CF CG h n; induction n as [|n IH]; intro v; simpl.
+  - exact (generic_connective_hom_bottom h).
+  - rewrite (generic_connective_hom_or h), IH. reflexivity.
+Qed.
+
+(** * List negation and De Morgan laws *)
+
+Definition generic_list_neg {F : Type}
+    (C : generic_connectives F) (gamma : list F) : list F :=
+  map (generic_neg C) gamma.
+
+Lemma generic_list_neg_nil :
+  forall (F : Type) (C : generic_connectives F),
+    generic_list_neg C [] = [].
+Proof. reflexivity. Qed.
+
+Lemma generic_list_neg_cons :
+  forall (F : Type) (C : generic_connectives F)
+         (p : F) (gamma : list F),
+    generic_list_neg C (p :: gamma) =
+    generic_neg C p :: generic_list_neg C gamma.
+Proof. reflexivity. Qed.
+
+Lemma generic_list_neg_app :
+  forall (F : Type) (C : generic_connectives F)
+         (gamma delta : list F),
+    generic_list_neg C (gamma ++ delta) =
+    generic_list_neg C gamma ++ generic_list_neg C delta.
+Proof.
+  intros F C gamma delta. unfold generic_list_neg. apply map_app.
+Qed.
+
+Lemma generic_list_member_neg_iff :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_involutive_law C ->
+    forall (p : F) (gamma : list F),
+      In p (generic_list_neg C gamma) <->
+      In (generic_neg C p) gamma.
+Proof.
+  intros F C Hinv p gamma; split.
+  - intro Hp. unfold generic_list_neg in Hp.
+    apply in_map_iff in Hp. destruct Hp as [q [Hqp Hq]].
+    assert (Hneg : generic_neg C p = q).
+    { pose proof (f_equal (generic_neg C) Hqp) as H.
+      rewrite (Hinv q) in H. exact (eq_sym H). }
+    now rewrite Hneg.
+  - intro Hp. unfold generic_list_neg. apply in_map_iff.
+    exists (generic_neg C p). split.
+    + exact (Hinv p).
+    + exact Hp.
+Qed.
+
+Lemma generic_list_neg_involutive :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_involutive_law C ->
+    forall gamma : list F,
+      generic_list_neg C (generic_list_neg C gamma) = gamma.
+Proof.
+  intros F C Hinv gamma; induction gamma as [|p gamma IH]; simpl.
+  - reflexivity.
+  - now rewrite (Hinv p), IH.
+Qed.
+
+Lemma generic_neg_list_disj :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_bottom_law C ->
+    generic_neg_or_law C ->
+    forall gamma : list F,
+      generic_neg C (generic_list_disj C gamma) =
+      generic_list_conj C (generic_list_neg C gamma).
+Proof.
+  intros F C Hneg_bottom Hneg_or gamma.
+  induction gamma as [|p gamma IH]; simpl.
+  - exact Hneg_bottom.
+  - now rewrite Hneg_or, IH.
+Qed.
+
+Lemma generic_neg_list_conj :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_top_law C ->
+    generic_neg_and_law C ->
+    forall gamma : list F,
+      generic_neg C (generic_list_conj C gamma) =
+      generic_list_disj C (generic_list_neg C gamma).
+Proof.
+  intros F C Hneg_top Hneg_and gamma.
+  induction gamma as [|p gamma IH]; simpl.
+  - exact Hneg_top.
+  - now rewrite Hneg_and, IH.
+Qed.
+
+(** Singleton-normalized list De Morgan, corresponding to source
+    [List.tilde_conj2] and [List.tilde_disj2]. *)
+Lemma generic_neg_list_disj2 :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_bottom_law C ->
+    generic_neg_or_law C ->
+    forall gamma : list F,
+      generic_neg C (generic_list_disj2 C gamma) =
+      generic_list_conj2 C (generic_list_neg C gamma).
+Proof.
+  intros F C Hneg_bottom Hneg_or gamma.
+  induction gamma as [|p ps IH].
+  - simpl. exact Hneg_bottom.
+  - destruct ps as [|q qs].
+    + reflexivity.
+    + simpl in IH |- *. rewrite Hneg_or, IH. reflexivity.
+Qed.
+
+Lemma generic_neg_list_conj2 :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_top_law C ->
+    generic_neg_and_law C ->
+    forall gamma : list F,
+      generic_neg C (generic_list_conj2 C gamma) =
+      generic_list_disj2 C (generic_list_neg C gamma).
+Proof.
+  intros F C Hneg_top Hneg_and gamma.
+  induction gamma as [|p ps IH].
+  - simpl. exact Hneg_top.
+  - destruct ps as [|q qs].
+    + reflexivity.
+    + simpl in IH |- *. rewrite Hneg_and, IH. reflexivity.
+Qed.
+
+Lemma generic_neg_mapped_list_disj2 :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_involutive_law C ->
+    generic_neg_bottom_law C ->
+    generic_neg_or_law C ->
+    forall gamma : list F,
+      generic_neg C
+        (generic_list_disj2 C (map (generic_neg C) gamma)) =
+      generic_list_conj2 C gamma.
+Proof.
+  intros F C Hinv Hneg_bottom Hneg_or gamma.
+  change (generic_neg C
+    (generic_list_disj2 C (generic_list_neg C gamma)) =
+    generic_list_conj2 C gamma).
+  rewrite (@generic_neg_list_disj2 F C Hneg_bottom Hneg_or
+    (generic_list_neg C gamma)).
+  rewrite generic_list_neg_involutive; [reflexivity | exact Hinv].
+Qed.
+
+Lemma generic_connective_hom_list_neg :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG) (gamma : list F),
+    map (generic_connective_hom_apply h) (generic_list_neg CF gamma) =
+    generic_list_neg CG (map (generic_connective_hom_apply h) gamma).
+Proof.
+  intros F G CF CG h gamma; induction gamma as [|p gamma IH]; simpl.
+  - reflexivity.
+  - now rewrite (generic_connective_hom_neg h), IH.
 Qed.

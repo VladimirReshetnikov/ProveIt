@@ -205,7 +205,7 @@ is being reconstructed:
 | `GenericDecidability.v` | `Logic/Decidability.lean` | Complete four-declaration surface: executable theory decision procedures, undecidability, essential undecidability under extension, and the constant decider for inconsistent theories; direct computation replaces formula coding |
 | `GenericDisjunctive.v` | `Logic/Disjunctive.lean` | Complete four-declaration surface: disjunctive entailments and the exact completeness equivalence, generalized from full classical entailment plus decidable formula equality to excluded middle and left resolution alone |
 | `GenericEmbedding.v` | `Logic/Embedding.lean` | Complete five-declaration surface: faithful provability translations between heterogeneous systems, explicit witnesses, identity, and composition, all constructively |
-| `GenericLogicSymbol.v` | `Logic/LogicSymbol.lean` | Connective core plus natural-arity and list layers: independent involution/De Morgan/abbreviation laws, negation injectivity, derived biconditional, full homomorphisms with identity/composition, closed predicates, indexed folds, ordinary/singleton-normalized list folds, and homomorphism preservation; vector and finite-set layers remain |
+| `GenericLogicSymbol.v` | `Logic/LogicSymbol.lean` | Connective core plus natural-arity, finite-vector, and list layers: independent laws/abbreviations, negation injectivity, full homomorphisms, closed predicates, all indexed/vector/list folds, homomorphism preservation, list negation, and variadic De Morgan laws; finite-set conveniences remain |
 | `GenericCalculus.v` | `Logic/Calculus.lean` | Complete 43-declaration surface: universe-polymorphic Type-valued one-sided LK/Cut, principal- and contextual-entailment dictionaries, structural combinators, strengthened finite folds, the complete classical Hilbert interface, structure-preserving pullback, contextual structural/classical adapters, strong cut, explosion, inconsistency, principal-context equivalence, and deduction |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
@@ -573,7 +573,11 @@ equality of proof-carrying homomorphism records, avoiding extensionality.  The
 natural-arity preservation theorems are generalized from proposition-valued
 homomorphisms to arbitrary targets.  Ordinary, singleton-normalized, and
 indexed list folds reuse the existing semantic fold definitions and commute
-with every full connective homomorphism.  Vector and finite-set layers remain.
+with every full connective homomorphism.  Finite vectors use lookup functions
+over `Fin.t`, and their conjunction/disjunction folds satisfy the same general
+preservation theorem.  List negation is involutive, reflects membership, and
+satisfies ordinary and singleton-normalized variadic De Morgan laws.  These
+laws now live here rather than in Calculus.  Finite-set conveniences remain.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and

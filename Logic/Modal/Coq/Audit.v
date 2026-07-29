@@ -533,6 +533,36 @@ Print Assumptions generic_connective_hom_list_conj2.
 Print Assumptions generic_connective_hom_list_disj2.
 Print Assumptions generic_connective_hom_list_conj_map.
 Print Assumptions generic_connective_hom_list_disj_map.
+Check generic_matrix_conj.
+Check generic_matrix_conj_zero.
+Check generic_matrix_conj_succ.
+Check generic_matrix_disj.
+Check generic_matrix_disj_zero.
+Check generic_matrix_disj_succ.
+Check generic_connective_hom_matrix_conj.
+Check generic_connective_hom_matrix_disj.
+Check generic_list_neg.
+Check generic_list_neg_nil.
+Check generic_list_neg_cons.
+Check generic_list_neg_app.
+Check generic_list_member_neg_iff.
+Check generic_list_neg_involutive.
+Check generic_neg_list_disj.
+Check generic_neg_list_conj.
+Check generic_neg_list_disj2.
+Check generic_neg_list_conj2.
+Check generic_neg_mapped_list_disj2.
+Check generic_connective_hom_list_neg.
+Print Assumptions generic_connective_hom_matrix_conj.
+Print Assumptions generic_connective_hom_matrix_disj.
+Print Assumptions generic_list_member_neg_iff.
+Print Assumptions generic_list_neg_involutive.
+Print Assumptions generic_neg_list_disj.
+Print Assumptions generic_neg_list_conj.
+Print Assumptions generic_neg_list_disj2.
+Print Assumptions generic_neg_list_conj2.
+Print Assumptions generic_neg_mapped_list_disj2.
+Print Assumptions generic_connective_hom_list_neg.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
