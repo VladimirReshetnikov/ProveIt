@@ -7,6 +7,7 @@ From FoundationModal Require Import
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalKripkeCanonical PropositionalKripkeFinite PropositionalGlivenko
+  PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
   GenericCalculus PropositionalEntailmentAxioms
@@ -1130,6 +1131,17 @@ Check ph_glivenko_classical_to_int_double_neg.
 Check ph_glivenko_int_double_neg_to_classical_raw.
 Check ph_glivenko.
 Check ph_neg_provable_int_iff_cl.
+Check pkripke_frame_kreisel_putnam.
+Check pkripke_KP_valid_of_condition.
+Check pkripke_kreisel_putnam_of_strongly_convergent.
+Check ph_hilbert_kp_pkripke_sound.
+Check ph_hilbert_kp_consistent_via_pkripke.
+Check pkripke_fork_kreisel_putnam.
+Check pkripke_fork_not_strongly_convergent.
+Check ph_hilbert_kp_logic_included_kc.
+Check ph_hilbert_kp_strictly_included_kc.
+Check pkripke_kp5_refutes_KP_axiom.
+Check ph_hilbert_int_strictly_included_kp.
 Print Assumptions pki_limit_derivation_stage_raw.
 Print Assumptions pki_partition_member.
 Print Assumptions pki_list_derivation_bind_raw.
@@ -1165,6 +1177,14 @@ Print Assumptions ph_hilbert_double_neg_lem_raw.
 Print Assumptions ph_glivenko_classical_to_int_double_neg.
 Print Assumptions ph_glivenko.
 Print Assumptions ph_neg_provable_int_iff_cl.
+Print Assumptions pkripke_KP_valid_of_condition.
+Print Assumptions pkripke_kreisel_putnam_of_strongly_convergent.
+Print Assumptions ph_hilbert_kp_pkripke_sound.
+Print Assumptions ph_hilbert_kp_consistent_via_pkripke.
+Print Assumptions pkripke_fork_kreisel_putnam.
+Print Assumptions ph_hilbert_kp_strictly_included_kc.
+Print Assumptions pkripke_kp5_refutes_KP_axiom.
+Print Assumptions ph_hilbert_int_strictly_included_kp.
 
 (** Propositional/Translation syntax bridges. *)
 Check pformula_to_pnn.
