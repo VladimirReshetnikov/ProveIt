@@ -9,7 +9,7 @@ From FoundationModal Require Import
   PropositionalKripkePreservation PropositionalKripkeCanonical
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
   PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
-  PropositionalKripke2Hilbert PropositionalHilbertFExtensions
+  PropositionalKripke2Hilbert PropositionalHilbertFExtensions PropositionalFMT
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1471,6 +1471,70 @@ Print Assumptions phf_F_Tra1_disjunctive.
 Print Assumptions phf_deduction_empty_iff.
 Print Assumptions phf_weak_deduction_iff.
 Print Assumptions phf_deduction_finite_list_support.
+
+(** Formula-indexed rooted semantics and elementary NT-seriality. *)
+Check fmt_frame.
+Check fmt_valuation.
+Check fmt_model.
+Check fmt_forces.
+Check fmt_forces_atom.
+Check fmt_forces_bottom.
+Check fmt_forces_top.
+Check fmt_forces_and.
+Check fmt_not_forces_and.
+Check fmt_forces_or.
+Check fmt_not_forces_or.
+Check fmt_forces_imp.
+Check fmt_not_forces_imp.
+Check fmt_forces_neg.
+Check fmt_not_forces_neg.
+Check fmt_iff.
+Check fmt_forces_iff.
+Check fmt_not_forces_iff.
+Check fmt_model_valid.
+Check fmt_frame_valid.
+Check fmt_frame_class_valid.
+Check fmt_model_class_valid.
+Check fmt_model_valid_top.
+Check fmt_model_not_valid_bottom.
+Check fmt_model_valid_at_root.
+Check fmt_frame_valid_top.
+Check fmt_frame_not_valid_bottom.
+Check fmt_model_not_valid_iff.
+Check fmt_frame_not_valid_iff.
+Check fmt_frame_not_valid_iff_world.
+Check fmt_frame_class_not_valid_iff_frame.
+Check fmt_frame_class_not_valid_iff_model.
+Check fmt_frame_class_not_valid_iff_model_world.
+Check fmt_model_class_not_valid_iff_model.
+Check fmt_model_class_not_valid_iff_world.
+Check fmt_collect_or_and.
+Check fmt_valid_and1.
+Check fmt_valid_and2.
+Check fmt_valid_or1.
+Check fmt_valid_or2.
+Check fmt_valid_distribute_and_or.
+Check fmt_valid_collect_or_and.
+Check fmt_valid_identity.
+Check fmt_valid_efq.
+Check fmt_valid_mdp.
+Check fmt_valid_afortiori.
+Check fmt_valid_and_rule.
+Check fmt_valid_rule_D.
+Check fmt_valid_rule_C.
+Check fmt_valid_rule_I.
+Check fmt_nt_serial.
+Check fmt_valid_ser_of_nt_serial.
+Check fmt_nt_serial_of_valid_neg_top.
+Check fmt_valid_ser_of_valid_neg_top.
+Print Assumptions fmt_not_forces_imp.
+Print Assumptions fmt_not_forces_iff.
+Print Assumptions fmt_frame_class_not_valid_iff_model_world.
+Print Assumptions fmt_model_class_not_valid_iff_world.
+Print Assumptions fmt_valid_mdp.
+Print Assumptions fmt_valid_rule_I.
+Print Assumptions fmt_valid_ser_of_nt_serial.
+Print Assumptions fmt_nt_serial_of_valid_neg_top.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
