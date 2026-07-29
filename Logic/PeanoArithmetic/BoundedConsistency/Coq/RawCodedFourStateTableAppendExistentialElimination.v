@@ -19,6 +19,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofComposition
   RawCodedPALocalProofConjunction
   RawCodedTemplateSyntax
+  RawCodedTemplateRenamingSubstitution
   RawCodedTemplateProofCompiler
   RawCodedFixedLevelTruth
   RawCodedFixedLevelTruthTotality
@@ -40,6 +41,7 @@ Import PABoundedRawCodedProofAssumptionLeaf.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofConjunction.
 Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateRenamingSubstitution.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFixedLevelTruthTotality.
@@ -1023,6 +1025,152 @@ Proof.
     hfirstConclusion hsecondConclusion hthirdConclusion hfourthConclusion).
 Qed.
 
+(** Named instances of the four preservation laws at one candidate row. *)
+Definition coqFourStateTableAppendModePreservationAtTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowMode : TemplateTerm) : TemplateFormula :=
+  coqFourStateTableAppendPreservationAtTemplate
+    (coqFourStateTableAppendModePreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    index rowMode.
+
+Definition coqFourStateTableAppendFormulaPreservationAtTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowFormula : TemplateTerm) : TemplateFormula :=
+  coqFourStateTableAppendPreservationAtTemplate
+    (coqFourStateTableAppendFormulaPreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    index rowFormula.
+
+Definition coqFourStateTableAppendAssignmentCodePreservationAtTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowAssignmentCode : TemplateTerm) : TemplateFormula :=
+  coqFourStateTableAppendPreservationAtTemplate
+    (coqFourStateTableAppendAssignmentCodePreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    index rowAssignmentCode.
+
+Definition coqFourStateTableAppendAssignmentStepPreservationAtTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowAssignmentStep : TemplateTerm) : TemplateFormula :=
+  coqFourStateTableAppendPreservationAtTemplate
+    (coqFourStateTableAppendAssignmentStepPreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    index rowAssignmentStep.
+
+(** The shared arithmetic guards and the old/new four-column lookup rows. *)
+Definition coqFourStateTableAppendPredecessorCurrentBoundTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowMode : TemplateTerm) : TemplateFormula :=
+  templateImpAntecedent
+    (coqFourStateTableAppendModePreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep index rowMode).
+
+Definition coqFourStateTableAppendPredecessorOldBoundTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowMode : TemplateTerm) : TemplateFormula :=
+  templateImp3SecondPremise
+    (coqFourStateTableAppendModePreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep index rowMode).
+
+Definition coqFourStateTableAppendPredecessorOldStateLookupTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+      : TemplateTerm) : TemplateFormula :=
+  templateFormulaMapAnd4 templateImp3ThirdPremise
+    (coqFourStateTableAppendModePreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep index rowMode)
+    (coqFourStateTableAppendFormulaPreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep index rowFormula)
+    (coqFourStateTableAppendAssignmentCodePreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowAssignmentCode)
+    (coqFourStateTableAppendAssignmentStepPreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowAssignmentStep).
+
+Definition coqFourStateTableAppendPredecessorNewStateLookupTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+      : TemplateTerm) : TemplateFormula :=
+  templateFormulaMapAnd4 templateImp3Conclusion
+    (coqFourStateTableAppendModePreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep index rowMode)
+    (coqFourStateTableAppendFormulaPreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep index rowFormula)
+    (coqFourStateTableAppendAssignmentCodePreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowAssignmentCode)
+    (coqFourStateTableAppendAssignmentStepPreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowAssignmentStep).
+
 (** The extension body itself is immediately available as an assumption in
     the deepest context.  Later code can project its four append-prefix
     components without reconstructing the nested context layout. *)
@@ -1623,6 +1771,179 @@ Proof.
   split; [exact hmodeAt |].
   split; [exact hformulaAt |].
   split; [exact hassignmentCodeAt | exact hassignmentStepAt].
+Qed.
+
+(** Compile the predecessor branch of the successor traversal row.  The six
+    equalities are deliberately structural: a concrete client proves them
+    for its fixed de Bruijn row variables, while this theorem remains valid
+    for arbitrary template terms and translations. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_predecessor_state_lookup :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+    currentBoundRoot oldBoundRoot oldStateLookupRoot,
+  let witnessContext := coqFourStateTableAppendWitnessContext
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep context in
+  let modeAt := coqFourStateTableAppendModePreservationAtTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep index rowMode in
+  let formulaAt := coqFourStateTableAppendFormulaPreservationAtTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep index rowFormula in
+  let assignmentCodeAt :=
+    coqFourStateTableAppendAssignmentCodePreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowAssignmentCode in
+  let assignmentStepAt :=
+    coqFourStateTableAppendAssignmentStepPreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowAssignmentStep in
+  templateImpAntecedent formulaAt = templateImpAntecedent modeAt ->
+  templateImpAntecedent assignmentCodeAt = templateImpAntecedent modeAt ->
+  templateImpAntecedent assignmentStepAt = templateImpAntecedent modeAt ->
+  templateImp3SecondPremise formulaAt =
+    templateImp3SecondPremise modeAt ->
+  templateImp3SecondPremise assignmentCodeAt =
+    templateImp3SecondPremise modeAt ->
+  templateImp3SecondPremise assignmentStepAt =
+    templateImp3SecondPremise modeAt ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCode translation witnessContext)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendPredecessorCurrentBoundTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep index rowMode))
+    currentBoundRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCode translation witnessContext)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendPredecessorOldBoundTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep index rowMode))
+    oldBoundRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCode translation witnessContext)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendPredecessorOldStateLookupTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep
+        index rowMode rowFormula rowAssignmentCode rowAssignmentStep))
+    oldStateLookupRoot ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation witnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendPredecessorNewStateLookupTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep
+          index rowMode rowFormula rowAssignmentCode rowAssignmentStep)) root.
+Proof.
+  intros M hPA translation context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+    currentBoundRoot oldBoundRoot oldStateLookupRoot
+    witnessContext modeAt formulaAt assignmentCodeAt assignmentStepAt
+    hformulaFirst hassignmentCodeFirst hassignmentStepFirst
+    hformulaSecond hassignmentCodeSecond hassignmentStepSecond
+    hcurrentBound holdBound holdStateLookup.
+  cbn zeta in *.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_preservation_at
+      M hPA translation context
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowMode rowFormula rowAssignmentCode rowAssignmentStep)
+    as (modeRoot & formulaRoot & assignmentCodeRoot & assignmentStepRoot &
+        hmode & hformula & hassignmentCode & hassignmentStep).
+  destruct (coqFourStateTableAppendPreservationAt_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep)
+    as [hmodeShape [hformulaShape
+      [hassignmentCodeShape hassignmentStepShape]]].
+  apply (raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4
+    M hPA translation
+    (rawTemplateContextCode translation
+      (coqFourStateTableAppendWitnessContext
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep context))
+    (coqFourStateTableAppendModePreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep index rowMode)
+    (coqFourStateTableAppendFormulaPreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep index rowFormula)
+    (coqFourStateTableAppendAssignmentCodePreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowAssignmentCode)
+    (coqFourStateTableAppendAssignmentStepPreservationAtTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      index rowAssignmentStep)
+    modeRoot formulaRoot assignmentCodeRoot assignmentStepRoot
+    currentBoundRoot oldBoundRoot oldStateLookupRoot).
+  - exact hmodeShape.
+  - exact hformulaShape.
+  - exact hassignmentCodeShape.
+  - exact hassignmentStepShape.
+  - exact hformulaFirst.
+  - exact hassignmentCodeFirst.
+  - exact hassignmentStepFirst.
+  - exact hformulaSecond.
+  - exact hassignmentCodeSecond.
+  - exact hassignmentStepSecond.
+  - exact hmode.
+  - exact hformula.
+  - exact hassignmentCode.
+  - exact hassignmentStep.
+  - exact hcurrentBound.
+  - exact holdBound.
+  - exact holdStateLookup.
 Qed.
 
 (** Assemble the exact first four right-associated fields of the global
