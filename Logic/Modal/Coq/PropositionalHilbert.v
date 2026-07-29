@@ -10,7 +10,8 @@
 From Stdlib Require Import Logic.ClassicalEpsilon.
 From FoundationModal Require Import
   GenericSemantics GenericLogicSymbol GenericEntailment GenericCalculus
-  PropositionalEntailmentAxioms PropositionalFormula PropositionalLogic.
+  PropositionalEntailmentAxioms PropositionalEntailmentMinimal
+  PropositionalFormula PropositionalLogic.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -300,6 +301,18 @@ Proof.
   - exact PHPOrIntroL.
   - exact PHPOrIntroR.
   - exact PHPOrElim.
+Defined.
+
+(** The system-specific compatibility record predates the generic minimal
+    layer.  This transparent adapter keeps that API stable while making every
+    Hilbert system an immediate client of the shared derived-rule library. *)
+Definition ph_hilbert_generic_minimal {Atom : Type} (H : ph_hilbert Atom) :
+    generic_minimal_entailment
+      (ph_hilbert_entailment Atom) (pformula_connectives Atom) H.
+Proof.
+  destruct (ph_hilbert_minimal H) as
+    [Hmp Hneg Htop HK HS Hand1 Hand2 Hand3 Hor1 Hor2 Hor3].
+  constructor; assumption.
 Defined.
 
 (** One recursor factors inclusion and arbitrary proof-schema translations. *)

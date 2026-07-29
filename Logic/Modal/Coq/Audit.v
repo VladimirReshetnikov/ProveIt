@@ -8,7 +8,8 @@ From FoundationModal Require Import
   PropositionalLogic PropositionalHilbert
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
-  GenericCalculus PropositionalEntailmentAxioms PropositionalTait
+  GenericCalculus PropositionalEntailmentAxioms
+  PropositionalEntailmentMinimal PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -1251,6 +1252,57 @@ Print Assumptions generic_has_axiom_wlem_map.
 Print Assumptions generic_has_axiom_dummett_map.
 Print Assumptions generic_has_axiom_kreisel_putnam_map.
 Print Assumptions generic_has_axiom_scott_map.
+
+(** Propositional/Entailment/Minimal/Basic core proof algebra. *)
+Check generic_minimal_entailment.
+Check generic_minimal_of_classical.
+Check generic_minimal_mdp_raw.
+Check generic_minimal_mdp_provable.
+Check generic_minimal_axioms_provable.
+Check generic_minimal_identity_raw.
+Check generic_minimal_dhyp_raw.
+Check generic_minimal_under_apply_raw.
+Check generic_minimal_imp_trans_raw.
+Check generic_minimal_imp_replace_raw.
+Check generic_minimal_imp_swap_raw.
+Check generic_minimal_imp_contract_raw.
+Check generic_minimal_and_elim_left_raw.
+Check generic_minimal_and_elim_right_raw.
+Check generic_minimal_and_intro_raw.
+Check generic_minimal_or_intro_left_raw.
+Check generic_minimal_or_intro_right_raw.
+Check generic_minimal_or_elim_raw.
+Check generic_minimal_or_cases_raw.
+Check generic_minimal_iff_intro_raw.
+Check generic_minimal_iff_refl_raw.
+Check generic_minimal_iff_symm_raw.
+Check generic_minimal_iff_trans_raw.
+Check generic_minimal_imp_bottom_of_neg_raw.
+Check generic_minimal_neg_of_imp_bottom_raw.
+Check generic_minimal_right_and_intro_raw.
+Check generic_minimal_and_swap_axiom_raw.
+Check generic_minimal_iff_swap_axiom_raw.
+Check generic_minimal_to_verum_raw.
+Check generic_minimal_curry_raw.
+Check generic_minimal_uncurry_raw.
+Check generic_minimal_curry_axiom_raw.
+Check generic_minimal_uncurry_axiom_raw.
+Check generic_minimal_curry_iff_raw.
+Check generic_minimal_connective_rules_provable.
+Check generic_minimal_negation_provable_iff.
+Check generic_minimal_curry_provable_iff.
+Check ph_hilbert_generic_minimal.
+Print Assumptions generic_minimal_imp_swap_raw.
+Print Assumptions generic_minimal_imp_contract_raw.
+Print Assumptions generic_minimal_iff_trans_raw.
+Print Assumptions generic_minimal_imp_bottom_of_neg_raw.
+Print Assumptions generic_minimal_right_and_intro_raw.
+Print Assumptions generic_minimal_curry_raw.
+Print Assumptions generic_minimal_uncurry_raw.
+Print Assumptions generic_minimal_curry_iff_raw.
+Print Assumptions generic_minimal_connective_rules_provable.
+Print Assumptions generic_minimal_negation_provable_iff.
+Print Assumptions ph_hilbert_generic_minimal.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
