@@ -2616,3 +2616,151 @@ Proof.
   - apply Hnot. exact (proj2 hpq Hproof).
   - apply Hnot. exact (proj1 hpq Hproof).
 Qed.
+
+(** * Positional conjunction insertion *)
+
+Definition generic_raw_list_member_skip_insert {F : Type}
+    {p q : F} (gamma delta : list F)
+    (h : generic_raw_list_member q (gamma ++ delta)) :
+    generic_raw_list_member q (gamma ++ p :: delta) :=
+  match @generic_raw_list_member_app_split F q gamma delta h with
+  | inl hl => generic_raw_list_member_app_left (p :: delta) hl
+  | inr hr => generic_raw_list_member_app_right gamma (GRLM_there p hr)
+  end.
+
+Definition generic_minimal_list_conj2_insert_to_and_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s)
+    (gamma delta : list F) (p : F) :
+    generic_proof E s
+      (generic_imp C (generic_list_conj2 C (gamma ++ p :: delta))
+        (generic_and C (generic_list_conj2 C (gamma ++ delta)) p)) :=
+  generic_minimal_right_and_intro_raw H
+    (generic_list_conj2 C (gamma ++ p :: delta))
+    (generic_list_conj2 C (gamma ++ delta)) p
+    (generic_minimal_list_conj2_subset_raw H
+      (gamma ++ delta) (gamma ++ p :: delta)
+      (fun q hq =>
+        @generic_raw_list_member_skip_insert F p q gamma delta hq))
+    (generic_minimal_list_conj2_elim_raw H
+      (generic_raw_list_member_app_right gamma (GRLM_here delta))).
+
+Arguments generic_minimal_list_conj2_insert_to_and_raw {S F E C s}
+  _ _ _ _.
+
+Definition generic_minimal_and_conj2_insert_member_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s)
+    (gamma delta : list F) (p : F) {q : F}
+    (h : generic_raw_list_member q (gamma ++ p :: delta)) :
+    generic_proof E s
+      (generic_imp C
+        (generic_and C (generic_list_conj2 C (gamma ++ delta)) p) q).
+Proof.
+  destruct (@generic_raw_list_member_app_split F q gamma (p :: delta) h)
+    as [hl | hr].
+  - exact (generic_minimal_imp_trans_raw H _
+      (generic_list_conj2 C (gamma ++ delta)) q
+      (generic_minimal_and1 H (generic_list_conj2 C (gamma ++ delta)) p)
+      (generic_minimal_list_conj2_elim_raw H
+        (generic_raw_list_member_app_left delta hl))).
+  - dependent destruction hr.
+    + exact (generic_minimal_and2 H
+        (generic_list_conj2 C (gamma ++ delta)) p).
+    + exact (generic_minimal_imp_trans_raw H _
+        (generic_list_conj2 C (gamma ++ delta)) q
+        (generic_minimal_and1 H (generic_list_conj2 C (gamma ++ delta)) p)
+        (generic_minimal_list_conj2_elim_raw H
+          (generic_raw_list_member_app_right gamma hr))).
+Defined.
+
+Arguments generic_minimal_and_conj2_insert_member_raw {S F E C s}
+  _ _ _ _ {q} _.
+
+Definition generic_minimal_and_to_list_conj2_insert_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s)
+    (gamma delta : list F) (p : F) :
+    generic_proof E s
+      (generic_imp C
+        (generic_and C (generic_list_conj2 C (gamma ++ delta)) p)
+        (generic_list_conj2 C (gamma ++ p :: delta))) :=
+  generic_minimal_list_conj2_right_intro_raw H
+    (generic_and C (generic_list_conj2 C (gamma ++ delta)) p)
+    (gamma ++ p :: delta)
+    (fun q hq =>
+      generic_minimal_and_conj2_insert_member_raw H gamma delta p hq).
+
+Arguments generic_minimal_and_to_list_conj2_insert_raw {S F E C s}
+  _ _ _ _.
+
+Definition generic_minimal_list_conj2_insert_iff_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s)
+    (gamma delta : list F) (p : F) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_list_conj2 C (gamma ++ p :: delta))
+        (generic_and C (generic_list_conj2 C (gamma ++ delta)) p)) :=
+  generic_minimal_iff_intro_raw H _ _
+    (generic_minimal_list_conj2_insert_to_and_raw H gamma delta p)
+    (generic_minimal_and_to_list_conj2_insert_raw H gamma delta p).
+
+Arguments generic_minimal_list_conj2_insert_iff_raw {S F E C s}
+  _ _ _ _.
+
+(** If every occurrence in a finite conjunction is propositionally the same
+    formula, one copy entails the whole fold.  Equality is supplied only for
+    the occurrences actually visited, so no global equality decision is
+    required. *)
+Definition generic_minimal_list_conj2_unique_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F) (gamma : list F)
+    (same : forall q, generic_raw_list_member q gamma -> q = p) :
+    generic_proof E s (generic_imp C p (generic_list_conj2 C gamma)).
+Proof.
+  apply (generic_minimal_list_conj2_right_intro_raw H p gamma).
+  intros q hq. destruct (same q hq).
+  exact (generic_minimal_identity_raw H q).
+Defined.
+
+Arguments generic_minimal_list_conj2_unique_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_imp_of_list_conj2_unique_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) (gamma : list F)
+    (same : forall r, generic_raw_list_member r gamma -> r = p)
+    (d : generic_proof E s
+      (generic_imp C (generic_list_conj2 C gamma) q)) :
+    generic_proof E s (generic_imp C p q) :=
+  generic_minimal_imp_trans_raw H p (generic_list_conj2 C gamma) q
+    (generic_minimal_list_conj2_unique_raw H p gamma same) d.
+
+Arguments generic_minimal_imp_of_list_conj2_unique_raw {S F E C s}
+  _ _ _ _ _ _.
+
+Definition generic_minimal_list_conj2_cons_iff_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F) (gamma : list F) :
+    generic_proof E s
+      (generic_formula_iff C (generic_list_conj2 C (p :: gamma))
+        (generic_and C p (generic_list_conj2 C gamma))) :=
+  generic_minimal_list_conj2_append_iff_raw H [p] gamma.
+
+Arguments generic_minimal_list_conj2_cons_iff_raw {S F E C s} _ _ _.
+
+Lemma generic_minimal_list_conj2_cons_imp_provable_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q gamma,
+      generic_provable E s
+        (generic_imp C (generic_list_conj2 C (p :: gamma)) q) <->
+      generic_provable E s
+        (generic_imp C (generic_and C p (generic_list_conj2 C gamma)) q).
+Proof.
+  intros S F E C s H p q gamma.
+  apply (@generic_minimal_provable_iff_of_raw_iff S F E C s H).
+  exact (generic_minimal_imp_iff_congr_raw H _ _ q q
+    (generic_minimal_list_conj2_cons_iff_raw H p gamma)
+    (generic_minimal_iff_refl_raw H q)).
+Qed.

@@ -375,6 +375,36 @@ Definition ph_hilbert_list_disj2_intro {Atom : Type}
   generic_minimal_list_disj2_intro_raw
     (ph_hilbert_generic_minimal H) h.
 
+(** Inserting a selected formula at any position is equivalent to retaining
+    the surrounding conjunction and conjoining that formula separately.
+    This positional statement remains valid with duplicates and needs no
+    equality decision on formulas. *)
+Definition ph_hilbert_list_conj2_insert_iff {Atom : Type}
+    (H : ph_hilbert Atom) (gamma delta : list (pformula Atom))
+    (p : pformula Atom) :
+    ph_hilbert_proof H
+      (generic_formula_iff (pformula_connectives Atom)
+        (generic_list_conj2 (pformula_connectives Atom)
+          (gamma ++ p :: delta))
+        (PAnd
+          (generic_list_conj2 (pformula_connectives Atom)
+            (gamma ++ delta)) p)) :=
+  generic_minimal_list_conj2_insert_iff_raw
+    (ph_hilbert_generic_minimal H) gamma delta p.
+
+(** A conjunction whose every recorded occurrence is [p] follows from one
+    proof of [p].  The occurrence-indexed equality premise subsumes the
+    source's unique finite-set case without imposing [DecidableEq]. *)
+Definition ph_hilbert_list_conj2_unique {Atom : Type}
+    (H : ph_hilbert Atom) (p : pformula Atom)
+    (gamma : list (pformula Atom))
+    (same : forall q, generic_raw_list_member q gamma -> q = p) :
+    ph_hilbert_proof H
+      (PImp p
+        (generic_list_conj2 (pformula_connectives Atom) gamma)) :=
+  generic_minimal_list_conj2_unique_raw
+    (ph_hilbert_generic_minimal H) p gamma same.
+
 (** Finite Hilbert contexts are represented by the same Type-valued raw
     derivations as the generic layer.  The two conversions below show that
     this structural presentation is exactly implication from the normalized

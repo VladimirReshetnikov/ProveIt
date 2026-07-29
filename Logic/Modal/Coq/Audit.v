@@ -1361,6 +1361,14 @@ Check generic_minimal_list_conj_map_elim_raw.
 Check generic_minimal_list_disj_map_intro_raw.
 Check generic_raw_list_member_app_split.
 Check generic_minimal_list_conj2_append_iff_raw.
+Check generic_raw_list_member_skip_insert.
+Check generic_minimal_list_conj2_insert_to_and_raw.
+Check generic_minimal_and_to_list_conj2_insert_raw.
+Check generic_minimal_list_conj2_insert_iff_raw.
+Check generic_minimal_list_conj2_unique_raw.
+Check generic_minimal_imp_of_list_conj2_unique_raw.
+Check generic_minimal_list_conj2_cons_iff_raw.
+Check generic_minimal_list_conj2_cons_imp_provable_iff.
 Check generic_minimal_list_conj_provable_iff.
 Check generic_minimal_list_conj2_provable_iff.
 Check generic_minimal_list_disj_intro_provable.
@@ -1414,6 +1422,8 @@ Check ph_hilbert_or_assoc_iff.
 Check ph_hilbert_and_assoc_iff.
 Check ph_hilbert_list_conj2_elim.
 Check ph_hilbert_list_disj2_intro.
+Check ph_hilbert_list_conj2_insert_iff.
+Check ph_hilbert_list_conj2_unique.
 Check ph_hilbert_context_proof.
 Check ph_hilbert_context_to_conj2.
 Check ph_hilbert_context_of_conj2.
@@ -1460,6 +1470,10 @@ Print Assumptions generic_minimal_list_conj2_elim_raw.
 Print Assumptions generic_minimal_list_disj2_intro_raw.
 Print Assumptions generic_minimal_list_conj_map_right_intro_raw.
 Print Assumptions generic_minimal_list_conj2_append_iff_raw.
+Print Assumptions generic_minimal_list_conj2_insert_iff_raw.
+Print Assumptions generic_minimal_list_conj2_unique_raw.
+Print Assumptions generic_minimal_imp_of_list_conj2_unique_raw.
+Print Assumptions generic_minimal_list_conj2_cons_imp_provable_iff.
 Print Assumptions generic_minimal_list_conj2_provable_iff.
 Print Assumptions generic_list_derivation_weaken_raw.
 Print Assumptions generic_list_derivation_append_mdp_raw.
@@ -1493,6 +1507,8 @@ Print Assumptions ph_hilbert_or_assoc_iff.
 Print Assumptions ph_hilbert_and_assoc_iff.
 Print Assumptions ph_hilbert_list_conj2_elim.
 Print Assumptions ph_hilbert_list_disj2_intro.
+Print Assumptions ph_hilbert_list_conj2_insert_iff.
+Print Assumptions ph_hilbert_list_conj2_unique.
 Print Assumptions ph_hilbert_context_to_conj2.
 Print Assumptions ph_hilbert_context_of_conj2.
 Print Assumptions ph_hilbert_type_context_deduction.
