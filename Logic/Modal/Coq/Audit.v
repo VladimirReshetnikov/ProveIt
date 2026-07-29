@@ -728,6 +728,47 @@ Print Assumptions generic_list_iter_image_elim.
 Print Assumptions generic_list_iter_image_subset_mono.
 Print Assumptions generic_list_box_iter_image_add.
 Print Assumptions generic_list_dia_iter_image_subset_mono.
+Check generic_list_preimage_capability.
+Check generic_list_iter_preimage_apply.
+Check generic_list_iter_preimage_spec.
+Check generic_list_iter_preimage_nil.
+Check generic_list_iter_image_preimage_reflect.
+Check generic_list_iter_image_preimage_intro.
+Check generic_list_iter_preimage_singleton_extensional.
+Check generic_list_filter_dec.
+Check generic_list_filter_dec_member_iff.
+Check generic_list_restricted_iter_preimage.
+Check generic_list_restricted_iter_preimage_member_iff.
+Check generic_list_restricted_iter_preimage_nil.
+Check generic_list_box_iter_preimage.
+Check generic_list_box_preimage.
+Check generic_list_box_iter_preimage_nil.
+Check generic_list_box_iter_image_preimage_reflect.
+Check generic_list_box_iter_image_preimage_intro.
+Check generic_list_dia_iter_preimage.
+Check generic_list_dia_filter.
+Check generic_list_dia_iter_preimage_member_iff.
+Check generic_list_dia_iter_preimage_nil.
+Check generic_finset_box_iter_image.
+Check generic_finset_box_image.
+Check generic_finset_dia_iter_image.
+Check generic_finset_dia_image.
+Check generic_finset_box_iter_to_list_member_iff.
+Check generic_finset_dia_iter_to_list_member_iff.
+Check generic_finset_box_iter_image_intro.
+Check generic_finset_box_iter_image_elim.
+Check generic_finset_dia_iter_image_intro.
+Check generic_finset_dia_iter_image_elim.
+Print Assumptions generic_list_iter_preimage_nil.
+Print Assumptions generic_list_iter_image_preimage_reflect.
+Print Assumptions generic_list_iter_image_preimage_intro.
+Print Assumptions generic_list_iter_preimage_singleton_extensional.
+Print Assumptions generic_list_filter_dec_member_iff.
+Print Assumptions generic_list_restricted_iter_preimage_member_iff.
+Print Assumptions generic_list_box_iter_image_preimage_reflect.
+Print Assumptions generic_list_dia_iter_preimage_member_iff.
+Print Assumptions generic_finset_box_iter_to_list_member_iff.
+Print Assumptions generic_finset_dia_iter_image_elim.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide

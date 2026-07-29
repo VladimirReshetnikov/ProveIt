@@ -611,3 +611,269 @@ Lemma generic_list_dia_iter_image_subset_mono :
       (generic_list_dia_iter_image dia n s)
       (generic_list_dia_iter_image dia n t).
 Proof. exact generic_list_iter_image_subset_mono. Qed.
+
+(** * Constructive finite preimages *)
+
+(** Lean constructs finite preimages noncomputably from injectivity.  Coq
+    makes that choice operation explicit: a capability supplies an enumerator
+    and its exact extensional membership law.  All consumers below remain
+    constructive and need neither decidable equality nor global choice. *)
+Record generic_list_preimage_capability {F : Type}
+    (op : F -> F) : Type := {
+  generic_list_iter_preimage_apply : nat -> list F -> list F;
+  generic_list_iter_preimage_spec :
+    forall (n : nat) (s : list F) (p : F),
+      In p (generic_list_iter_preimage_apply n s) <->
+      In (generic_modal_iter op n p) s
+}.
+
+Arguments generic_list_iter_preimage_apply {F op} _ _ _.
+Arguments generic_list_iter_preimage_spec {F op} _ _ _ _.
+
+Lemma generic_list_iter_preimage_nil :
+  forall (F : Type) (op : F -> F)
+         (P : generic_list_preimage_capability op) (n : nat),
+    generic_list_iter_preimage_apply P n [] = [].
+Proof.
+  intros F op P n.
+  remember (generic_list_iter_preimage_apply P n []) as ps eqn:Hps.
+  destruct ps as [|p ps]; [reflexivity |].
+  exfalso.
+  assert (Hp : In p (generic_list_iter_preimage_apply P n [])).
+  { rewrite <- Hps. now left. }
+  apply (proj1 (generic_list_iter_preimage_spec P n [] p)) in Hp.
+  exact Hp.
+Qed.
+
+Lemma generic_list_iter_image_preimage_reflect :
+  forall (F : Type) (op : F -> F)
+         (P : generic_list_preimage_capability op)
+         (n : nat) (s : list F) (p : F),
+    In p (generic_list_iter_image op n
+      (generic_list_iter_preimage_apply P n s)) ->
+    In p s.
+Proof.
+  intros F op P n s p Hp.
+  destruct (generic_list_iter_image_elim Hp) as [q [Hq Heq]].
+  apply (proj1 (generic_list_iter_preimage_spec P n s q)) in Hq.
+  now rewrite Heq in Hq.
+Qed.
+
+Lemma generic_list_iter_image_preimage_intro :
+  forall (F : Type) (op : F -> F)
+         (P : generic_list_preimage_capability op)
+         (n : nat) (s : list F) (p : F),
+    In (generic_modal_iter op n p) s ->
+    In (generic_modal_iter op n p)
+      (generic_list_iter_image op n
+        (generic_list_iter_preimage_apply P n s)).
+Proof.
+  intros F op P n s p Hp.
+  apply generic_list_iter_image_intro.
+  apply (proj2 (generic_list_iter_preimage_spec P n s p)).
+  exact Hp.
+Qed.
+
+Lemma generic_list_iter_preimage_singleton_extensional :
+  forall (F : Type) (op : F -> F),
+    generic_injective op ->
+    forall (P : generic_list_preimage_capability op)
+           (n : nat) (p q : F),
+      In q (generic_list_iter_preimage_apply P n
+        [generic_modal_iter op n p]) <-> q = p.
+Proof.
+  intros F op Hop P n p q.
+  rewrite (generic_list_iter_preimage_spec P n
+    [generic_modal_iter op n p] q).
+  simpl. split.
+  - intros [Heq | Hfalse]; [|contradiction].
+    exact (eq_sym (@generic_modal_iter_injective F op Hop n p q Heq)).
+  - intros ->. now left.
+Qed.
+
+(** A decidable filter gives the source's restricted diamond preimage without
+    assuming equality on the carrier. *)
+Fixpoint generic_list_filter_dec {F : Type}
+    (Q : F -> Prop) (dec : forall p, {Q p} + {~ Q p})
+    (s : list F) : list F :=
+  match s with
+  | [] => []
+  | p :: ps =>
+      if dec p then p :: @generic_list_filter_dec F Q dec ps
+      else @generic_list_filter_dec F Q dec ps
+  end.
+
+Arguments generic_list_filter_dec {F} Q dec s.
+
+Lemma generic_list_filter_dec_member_iff :
+  forall (F : Type) (Q : F -> Prop)
+         (dec : forall p, {Q p} + {~ Q p})
+         (s : list F) (p : F),
+    In p (generic_list_filter_dec Q dec s) <-> In p s /\ Q p.
+Proof.
+  intros F Q dec s; induction s as [|q s IH]; intro p; simpl.
+  - tauto.
+  - destruct (dec q) as [Hq | Hq]; simpl; rewrite IH.
+    + split.
+      * intros [-> | [Hp HQ]]; [now split; [left |] |].
+        split; [now right | exact HQ].
+      * intros [[-> | Hp] HQ]; [now left | right; now split].
+    + split.
+      * intros [Hp HQ]. split; [now right | exact HQ].
+      * intros [[-> | Hp] HQ]; [contradiction | now split].
+Qed.
+
+Definition generic_list_restricted_iter_preimage {F : Type}
+    (op : F -> F) (n : nat) (s : list F)
+    (dec : forall p,
+      {In (generic_modal_iter op n p) s} +
+      {~ In (generic_modal_iter op n p) s}) : list F :=
+  generic_list_filter_dec
+    (fun p => In (generic_modal_iter op n p) s) dec s.
+
+Arguments generic_list_restricted_iter_preimage {F} op n s dec.
+
+Lemma generic_list_restricted_iter_preimage_member_iff :
+  forall (F : Type) (op : F -> F) (n : nat) (s : list F)
+         (dec : forall p,
+           {In (generic_modal_iter op n p) s} +
+           {~ In (generic_modal_iter op n p) s}) (p : F),
+    In p (generic_list_restricted_iter_preimage op n s dec) <->
+    In p s /\ In (generic_modal_iter op n p) s.
+Proof.
+  intros F op n s dec p. unfold generic_list_restricted_iter_preimage.
+  apply generic_list_filter_dec_member_iff.
+Qed.
+
+Lemma generic_list_restricted_iter_preimage_nil :
+  forall (F : Type) (op : F -> F) (n : nat)
+         (dec : forall p : F,
+           {In (generic_modal_iter op n p) []} +
+           {~ In (generic_modal_iter op n p) []}),
+    generic_list_restricted_iter_preimage op n [] dec = [].
+Proof. reflexivity. Qed.
+
+(** Box preimage wrappers. *)
+Definition generic_list_box_iter_preimage {F : Type}
+    (box : F -> F) (P : generic_list_preimage_capability box) :=
+  generic_list_iter_preimage_apply P.
+
+Arguments generic_list_box_iter_preimage {F} box P n s.
+
+Definition generic_list_box_preimage {F : Type}
+    (box : F -> F) (P : generic_list_preimage_capability box) :=
+  @generic_list_box_iter_preimage F box P 1.
+
+Arguments generic_list_box_preimage {F} box P s.
+
+Lemma generic_list_box_iter_preimage_nil :
+  forall (F : Type) (box : F -> F)
+         (P : generic_list_preimage_capability box) (n : nat),
+    generic_list_box_iter_preimage box P n [] = [].
+Proof. exact generic_list_iter_preimage_nil. Qed.
+
+Lemma generic_list_box_iter_image_preimage_reflect :
+  forall (F : Type) (box : F -> F)
+         (P : generic_list_preimage_capability box)
+         (n : nat) (s : list F) (p : F),
+    In p (generic_list_box_iter_image box n
+      (generic_list_box_iter_preimage box P n s)) -> In p s.
+Proof. exact generic_list_iter_image_preimage_reflect. Qed.
+
+Lemma generic_list_box_iter_image_preimage_intro :
+  forall (F : Type) (box : F -> F)
+         (P : generic_list_preimage_capability box)
+         (n : nat) (s : list F) (p : F),
+    In (generic_box_iter box n p) s ->
+    In (generic_box_iter box n p)
+      (generic_list_box_iter_image box n
+        (generic_list_box_iter_preimage box P n s)).
+Proof. exact generic_list_iter_image_preimage_intro. Qed.
+
+(** Diamond restricted-preimage and filtered-image wrappers. *)
+Definition generic_list_dia_iter_preimage {F : Type}
+    (dia : F -> F) (n : nat) (s : list F)
+    (dec : forall p,
+      {In (generic_dia_iter dia n p) s} +
+      {~ In (generic_dia_iter dia n p) s}) : list F :=
+  generic_list_restricted_iter_preimage dia n s dec.
+
+Arguments generic_list_dia_iter_preimage {F} dia n s dec.
+
+Definition generic_list_dia_filter {F : Type}
+    (dia : F -> F) (n : nat) (s : list F)
+    (dec : forall p,
+      {In (generic_dia_iter dia n p) s} +
+      {~ In (generic_dia_iter dia n p) s}) : list F :=
+  generic_list_dia_iter_image dia n
+    (generic_list_dia_iter_preimage dia n s dec).
+
+Lemma generic_list_dia_iter_preimage_member_iff :
+  forall (F : Type) (dia : F -> F) (n : nat) (s : list F)
+         (dec : forall p,
+           {In (generic_dia_iter dia n p) s} +
+           {~ In (generic_dia_iter dia n p) s}) (p : F),
+    In p (generic_list_dia_iter_preimage dia n s dec) <->
+    In p s /\ In (generic_dia_iter dia n p) s.
+Proof. exact generic_list_restricted_iter_preimage_member_iff. Qed.
+
+Lemma generic_list_dia_iter_preimage_nil :
+  forall (F : Type) (dia : F -> F) (n : nat)
+         (dec : forall p : F,
+           {In (generic_dia_iter dia n p) []} +
+           {~ In (generic_dia_iter dia n p) []}),
+    generic_list_dia_iter_preimage dia n [] dec = [].
+Proof. reflexivity. Qed.
+
+(** * List-backed finite-set bridges *)
+
+(** Finite sets and lists share a representation in this port.  The bridge
+    theorems are therefore literal equivalences rather than conversions. *)
+Definition generic_finset_box_iter_image := @generic_list_box_iter_image.
+Definition generic_finset_box_image := @generic_list_box_image.
+Definition generic_finset_dia_iter_image := @generic_list_dia_iter_image.
+Definition generic_finset_dia_image := @generic_list_dia_image.
+
+Lemma generic_finset_box_iter_to_list_member_iff :
+  forall (F : Type) (box : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p (generic_finset_box_iter_image box n s) <->
+    In p (generic_list_box_iter_image box n s).
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_dia_iter_to_list_member_iff :
+  forall (F : Type) (dia : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p (generic_finset_dia_iter_image dia n s) <->
+    In p (generic_list_dia_iter_image dia n s).
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_box_iter_image_intro :
+  forall (F : Type) (box : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p s ->
+    In (generic_box_iter box n p)
+      (generic_finset_box_iter_image box n s).
+Proof. exact generic_list_box_iter_image_intro. Qed.
+
+Lemma generic_finset_box_iter_image_elim :
+  forall (F : Type) (box : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p (generic_finset_box_iter_image box n s) ->
+    exists q, In q s /\ generic_box_iter box n q = p.
+Proof. exact generic_list_box_iter_image_elim. Qed.
+
+Lemma generic_finset_dia_iter_image_intro :
+  forall (F : Type) (dia : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p s ->
+    In (generic_dia_iter dia n p)
+      (generic_finset_dia_iter_image dia n s).
+Proof. exact generic_list_dia_iter_image_intro. Qed.
+
+Lemma generic_finset_dia_iter_image_elim :
+  forall (F : Type) (dia : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p (generic_finset_dia_iter_image dia n s) ->
+    exists q, In q s /\ generic_dia_iter dia n q = p.
+Proof. exact generic_list_dia_iter_image_elim. Qed.
