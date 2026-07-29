@@ -2628,6 +2628,21 @@ equivalent to overriding the selected named parameter by that value.  This
 allows validity of the large fixed reroot source to be proved compositionally
 without normalizing its expanded syntax.
 
+`RawCodedRestrictedTargetTemplateSemantics.v` specializes that semantics to
+the seal-free restricted-proof context family.  It interprets the hierarchy
+hole as an arbitrary fixed carrier value through nested quantifiers and
+proves exact agreement with a named template parameter.  Independent
+seal-freedom lemmas cover the bounded-formula, bounded-context, proof-node,
+traversal, certificate, and full restricted-proof contexts.
+
+`RawCodedCarrierRestrictedProofReroot.v` exposes the restricted-proof
+traversal at an arbitrary carrier hierarchy value.  It proves that Or-I-left
+descent reuses the parent node predicates and support tables while shrinking
+only the arithmetic traversal prefix.  The resulting compact-context theorem
+has no standardness hypothesis and works under one shared surrounding
+assignment.  Transport between the differently shifted assignments in the
+fixed universal reroot source is the next remaining semantic step.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
