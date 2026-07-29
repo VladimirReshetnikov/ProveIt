@@ -4092,3 +4092,9 @@ atomically adequate template prefix.  Its standard PA witnesses stay in the
 tail, while both branches retain the caller's temporary assumptions in their
 original order.  This is the interface used for the append-witness and
 five-row-variable context of the dynamic-truth successor construction.
+
+For that specialization, the Coq append layer identifies the temporary row
+prefix explicitly and proves its context affine in a witnessed PA tail.  The
+eight append eliminations plus five row introductions shift an arbitrary tail
+thirteen times; embedded witnessed PA axioms are sentences, so this particular
+tail remains literally unchanged.
