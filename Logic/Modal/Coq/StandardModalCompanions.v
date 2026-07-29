@@ -359,6 +359,67 @@ Proof.
   - exact (S4Point2_proves_godel_translated_WLEM p0).
 Qed.
 
+Lemma ph_kc_complete_from_convergent_pkripke_models :
+  forall p : pformula nat,
+    (forall M : pkripke_model nat,
+      pkripke_frame_strongly_convergent (pkripke_model_frame M) ->
+      generic_all_forces (pkripke_forcing_relation M) p) ->
+    ph_hilbert_provable (ph_hilbert_kc nat) p.
+Proof.
+  intros p Hall. apply ph_hilbert_kc_pkripke_complete.
+  intros F HF V w.
+  apply (Hall
+    {| pkripke_model_frame := F; pkripke_model_valuation := V |}).
+  exact HF.
+Qed.
+
+Lemma S4Point2_sound_on_convergent_pkripke_forcing_models :
+  forall f : formula nat, S4Point2_proves f ->
+    forall M : pkripke_model nat,
+    pkripke_frame_strongly_convergent (pkripke_model_frame M) ->
+    @model_valid nat
+      (forcing_modal_frame
+        (pkripke_access (pkripke_model_frame M)))
+      (@forcing_modal_valuation
+        (pkripke_world (pkripke_model_frame M)) nat
+        (pkripke_forcing_relation M)
+        (pkripke_access (pkripke_model_frame M))) f.
+Proof.
+  intros f Hf M HC.
+  pose (R := pkripke_access (pkripke_model_frame M)).
+  assert (HR : frame_reflexive (forcing_modal_frame R)).
+  { intro w. apply pkripke_access_refl. }
+  assert (HT : frame_transitive (forcing_modal_frame R)).
+  { intros x y z. apply pkripke_access_trans. }
+  exact ((@S4Point2_proves_sound_on_frame nat
+    (forcing_modal_frame R) f HR HT HC Hf)
+    (@forcing_modal_valuation
+      (pkripke_world (pkripke_model_frame M)) nat
+      (pkripke_forcing_relation M) R)).
+Qed.
+
+Theorem ph_kc_modal_companion_S4Point2 :
+  godel_modal_companion
+    (ph_hilbert_provable (ph_hilbert_kc nat))
+    (@S4Point2_proves nat).
+Proof.
+  eapply (@godel_modal_companion_via_forcing_semantics
+    nat (pkripke_model nat)
+    (fun M => pkripke_world (pkripke_model_frame M))
+    (fun M => pkripke_forcing_relation M)
+    (fun M => pkripke_access (pkripke_model_frame M))
+    (fun M => pkripke_frame_strongly_convergent
+      (pkripke_model_frame M))
+    (ph_hilbert_provable (ph_hilbert_kc nat))
+    (@S4Point2_proves nat)).
+  - intros M w. apply pkripke_access_refl.
+  - intros M x y z. apply pkripke_access_trans.
+  - intro M. apply pkripke_generic_int_forcing.
+  - apply ph_kc_provable_godel_S4Point2.
+  - apply ph_kc_complete_from_convergent_pkripke_models.
+  - apply S4Point2_sound_on_convergent_pkripke_forcing_models.
+Qed.
+
 Lemma ph_kc_provable_godel_GrzPoint2 :
   forall p : pformula nat,
     ph_hilbert_provable (ph_hilbert_kc nat) p ->

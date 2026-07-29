@@ -1042,6 +1042,7 @@ Check pkripke_strongly_convergent_of_WLEM_valid.
 Check pkripke_Dummett_valid_of_strongly_connected.
 Check pkripke_strongly_connected_of_Dummett_valid.
 Check ph_hilbert_kc_pkripke_sound.
+Check ph_hilbert_kc_consistent_via_pkripke.
 Check ph_hilbert_lc_pkripke_sound.
 Check ph_hilbert_lc_consistent_via_pkripke.
 Print Assumptions pkripke_forces_persistent.
@@ -1057,14 +1058,19 @@ Print Assumptions pkripke_strongly_convergent_of_WLEM_valid.
 Print Assumptions pkripke_Dummett_valid_of_strongly_connected.
 Print Assumptions pkripke_strongly_connected_of_Dummett_valid.
 Print Assumptions ph_hilbert_kc_pkripke_sound.
+Print Assumptions ph_hilbert_kc_consistent_via_pkripke.
 Print Assumptions ph_hilbert_lc_pkripke_sound.
 Print Assumptions ph_hilbert_lc_consistent_via_pkripke.
 
-(** Enumerated prime-theory construction and canonical completeness.  The
-    single indefinite-description boundary selects a finite stage witnessing
-    use of assumptions from the increasing union. *)
+(** Enumerated prime-theory construction and canonical completeness.
+    Indefinite description selects a finite stage witnessing use of assumptions
+    from the increasing union and reifies positional membership after the
+    classical KC support partition. *)
 Check pki_context.
 Check pki_limit_derivation_stage_raw.
+Check pki_partition.
+Check pki_partition_member.
+Check pki_list_derivation_bind_raw.
 Check pki_limit_avoids.
 Check pki_limit_maximal.
 Check pki_limit_derivably_closed.
@@ -1072,10 +1078,12 @@ Check pki_prime_theory.
 Check pki_prime_extension.
 Check pki_prime_and_iff.
 Check pki_prime_or_iff.
+Check pki_prime_list_conj2.
 Check pki_canonical_frame.
 Check pki_canonical_model.
 Check pki_prime_imp_counterextension.
 Check pki_canonical_frame_strongly_connected.
+Check pki_canonical_frame_strongly_convergent.
 Check pki_canonical_truth_lemma.
 Check pki_empty_derives_iff_provable.
 Check pki_canonical_model_valid_iff_provable.
@@ -1087,13 +1095,18 @@ Check ph_hilbert_int_pkripke_complete.
 Check ph_hilbert_int_pkripke_sound_complete.
 Check ph_hilbert_lc_pkripke_complete.
 Check ph_hilbert_lc_pkripke_sound_complete.
+Check ph_hilbert_kc_pkripke_complete.
+Check ph_hilbert_kc_pkripke_sound_complete.
 Print Assumptions pki_limit_derivation_stage_raw.
+Print Assumptions pki_partition_member.
+Print Assumptions pki_list_derivation_bind_raw.
 Print Assumptions pki_limit_avoids.
 Print Assumptions pki_limit_maximal.
 Print Assumptions pki_limit_derivably_closed.
 Print Assumptions pki_prime_extension.
 Print Assumptions pki_prime_imp_counterextension.
 Print Assumptions pki_canonical_frame_strongly_connected.
+Print Assumptions pki_canonical_frame_strongly_convergent.
 Print Assumptions pki_canonical_truth_lemma.
 Print Assumptions pki_canonical_model_valid_iff_provable.
 Print Assumptions ph_hilbert_pkripke_complete_of_canonical.
@@ -1101,6 +1114,8 @@ Print Assumptions ph_hilbert_int_pkripke_complete.
 Print Assumptions ph_hilbert_int_pkripke_sound_complete.
 Print Assumptions ph_hilbert_lc_pkripke_complete.
 Print Assumptions ph_hilbert_lc_pkripke_sound_complete.
+Print Assumptions ph_hilbert_kc_pkripke_complete.
+Print Assumptions ph_hilbert_kc_pkripke_sound_complete.
 
 (** Propositional/Translation syntax bridges. *)
 Check pformula_to_pnn.
@@ -3326,6 +3341,9 @@ Check ph_int_modal_companion_S4.
 Check ph_int_provable_godel_Grz.
 Check S4Point2_proves_godel_translated_WLEM.
 Check ph_kc_provable_godel_S4Point2.
+Check ph_kc_complete_from_convergent_pkripke_models.
+Check S4Point2_sound_on_convergent_pkripke_forcing_models.
+Check ph_kc_modal_companion_S4Point2.
 Check ph_kc_provable_godel_GrzPoint2.
 Check S4Point3_proves_godel_translated_Dummett.
 Check ph_lc_provable_godel_S4Point3.
@@ -5446,6 +5464,9 @@ Print Assumptions ph_int_modal_companion_S4.
 Print Assumptions ph_int_provable_godel_Grz.
 Print Assumptions S4Point2_proves_godel_translated_WLEM.
 Print Assumptions ph_kc_provable_godel_S4Point2.
+Print Assumptions ph_kc_complete_from_convergent_pkripke_models.
+Print Assumptions S4Point2_sound_on_convergent_pkripke_forcing_models.
+Print Assumptions ph_kc_modal_companion_S4Point2.
 Print Assumptions ph_kc_provable_godel_GrzPoint2.
 Print Assumptions S4Point3_proves_godel_translated_Dummett.
 Print Assumptions ph_lc_provable_godel_S4Point3.

@@ -6,10 +6,14 @@
     deductive closure, primeness, the implication extension lemma, the truth
     lemma, and completeness. *)
 
-From Stdlib Require Import Logic.ClassicalEpsilon Arith.PeanoNat.
+From Stdlib Require Import
+  Logic.ClassicalEpsilon Arith.PeanoNat Lists.List Program.Equality.
 From FoundationModal Require Import
-  PropositionalFormula PropositionalEntailmentMinimal
+  GenericSemantics PropositionalFormula PropositionalEntailmentAxioms
+  PropositionalEntailmentMinimal
   PropositionalHilbert PropositionalKripke.
+
+Import ListNotations.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -24,6 +28,9 @@ Definition pki_theory_empty : pki_theory := fun _ => False.
 
 Definition pki_theory_insert (T : pki_theory) (p : pformula nat) :
     pki_theory := fun q => q = p \/ T q.
+
+Definition pki_theory_union (T U : pki_theory) : pki_theory :=
+  fun p => T p \/ U p.
 
 Definition pki_context (T : pki_theory) : pformula nat -> Type :=
   generic_proof_relevant_context T.
@@ -46,6 +53,110 @@ Proof.
   - apply GTCA_there. exists u. destruct Hq as [Heq | Hq].
     + contradiction.
     + exact Hq.
+Defined.
+
+(** A classical partition retains formulas known to lie in its left theory;
+    every other occurrence is sent right.  Lists keep the proof-facing
+    positional membership, while ordinary membership makes the partition
+    algebra independent of proof equality. *)
+Definition pki_partition_left (T : pki_theory)
+    (gamma : list (pformula nat)) : list (pformula nat) :=
+  filter (fun p => if excluded_middle_informative (T p)
+                   then true else false) gamma.
+
+Definition pki_partition_right (T : pki_theory)
+    (gamma : list (pformula nat)) : list (pformula nat) :=
+  filter (fun p => if excluded_middle_informative (T p)
+                   then false else true) gamma.
+
+Definition pki_partition (T : pki_theory) (gamma : list (pformula nat))
+    : list (pformula nat) * list (pformula nat) :=
+  (pki_partition_left T gamma, pki_partition_right T gamma).
+
+Fixpoint pki_raw_member_in {q : pformula nat} {gamma}
+    (h : generic_raw_list_member q gamma) : In q gamma :=
+  match h with
+  | GRLM_here _ => or_introl eq_refl
+  | GRLM_there p h' => or_intror (pki_raw_member_in h')
+  end.
+
+Lemma pki_raw_member_inhabited :
+  forall (q : pformula nat) (gamma : list (pformula nat)),
+    In q gamma -> inhabited (generic_raw_list_member q gamma).
+Proof.
+  intros q gamma Hq; induction gamma as [|p rest IH].
+  - contradiction.
+  - destruct Hq as [-> | Hq].
+    + constructor. apply GRLM_here.
+    + destruct (IH Hq) as [h]. constructor. now apply GRLM_there.
+Qed.
+
+Definition pki_raw_member_of_in {q : pformula nat} {gamma}
+    (h : In q gamma) : generic_raw_list_member q gamma :=
+  ph_inhabited_get (pki_raw_member_inhabited h).
+
+Lemma pki_partition_left_holds :
+  forall T gamma q,
+    generic_raw_list_member q (fst (pki_partition T gamma)) -> T q.
+Proof.
+  intros T gamma q Hq.
+  pose proof (pki_raw_member_in Hq) as Hin.
+  unfold pki_partition, pki_partition_left in Hin; cbn in Hin.
+  apply filter_In in Hin as [_ Htest].
+  destruct (excluded_middle_informative (T q)); [assumption | discriminate].
+Qed.
+
+Lemma pki_partition_right_not_left :
+  forall T gamma q,
+    generic_raw_list_member q (snd (pki_partition T gamma)) -> ~ T q.
+Proof.
+  intros T gamma q Hq.
+  pose proof (pki_raw_member_in Hq) as Hin.
+  unfold pki_partition, pki_partition_right in Hin; cbn in Hin.
+  apply filter_In in Hin as [_ Htest].
+  destruct (excluded_middle_informative (T q)); [discriminate | assumption].
+Qed.
+
+Lemma pki_partition_right_origin :
+  forall T gamma q,
+    generic_raw_list_member q (snd (pki_partition T gamma)) ->
+    generic_raw_list_member q gamma.
+Proof.
+  intros T gamma q Hq. apply pki_raw_member_of_in.
+  pose proof (pki_raw_member_in Hq) as Hin.
+  unfold pki_partition, pki_partition_right in Hin; cbn in Hin.
+  apply filter_In in Hin as [Horigin _].
+  exact Horigin.
+Qed.
+
+Lemma pki_partition_member :
+  forall T gamma q, generic_raw_list_member q gamma ->
+    (generic_raw_list_member q (fst (pki_partition T gamma)) * T q) +
+    (generic_raw_list_member q (snd (pki_partition T gamma)) * ~ T q).
+Proof.
+  intros T gamma q Hq.
+  destruct (excluded_middle_informative (T q)) as [HqT | HqT].
+  - left. split; [|exact HqT]. apply pki_raw_member_of_in.
+    apply filter_In. split; [exact (pki_raw_member_in Hq) |].
+    destruct (excluded_middle_informative (T q)); [reflexivity | contradiction].
+  - right. split; [|exact HqT]. apply pki_raw_member_of_in.
+    apply filter_In. split; [exact (pki_raw_member_in Hq) |].
+    destruct (excluded_middle_informative (T q)); [contradiction | reflexivity].
+Defined.
+
+Fixpoint pki_list_derivation_bind_raw (H : ph_hilbert nat)
+    {gamma : list (pformula nat)} {T : pformula nat -> Type}
+    (replace : forall q, generic_raw_list_member q gamma ->
+      ph_hilbert_type_context_proof H T q)
+    {p} (d : ph_hilbert_context_proof H gamma p) :
+    ph_hilbert_type_context_proof H T p.
+Proof.
+  destruct d as [p Hp | p d | p q dpq dp].
+  - exact (replace p Hp).
+  - apply GTCD_theorem. change (ph_hilbert_proof H p). exact d.
+  - exact (GTCD_mdp
+      (@pki_list_derivation_bind_raw H gamma T replace (PImp p q) dpq)
+      (@pki_list_derivation_bind_raw H gamma T replace p dp)).
 Defined.
 
 Definition pki_derives (H : ph_hilbert nat) (T : pki_theory)
@@ -255,6 +366,9 @@ Definition pki_has_efq (H : ph_hilbert nat) : Prop :=
 Definition pki_has_dummett (H : ph_hilbert nat) : Prop :=
   forall p q, ph_hilbert_provable H (ph_axiom_dummett p q).
 
+Definition pki_has_wlem (H : ph_hilbert nat) : Prop :=
+  forall p, ph_hilbert_provable H (ph_axiom_wlem p).
+
 Record pki_prime_theory (H : ph_hilbert nat) : Type := {
   pki_prime_carrier : pki_theory;
   pki_prime_closed : forall p, pki_derives H pki_prime_carrier p ->
@@ -371,6 +485,20 @@ Proof.
       now constructor; apply PHPOrIntroR.
 Qed.
 
+Lemma pki_prime_list_conj2 :
+  forall H (T : pki_prime_theory H) gamma,
+    (forall q, generic_raw_list_member q gamma -> pki_prime_mem T q) ->
+    pki_prime_mem T
+      (generic_list_conj2 (pformula_connectives nat) gamma).
+Proof.
+  intros H T gamma Hall. apply pki_prime_closed. constructor.
+  eapply generic_type_context_of_list_derivation_raw.
+  - intros q Hq. exists tt. change (pki_prime_mem T q).
+    exact (Hall q Hq).
+  - exact (generic_minimal_list_conj2_context_raw
+      (ph_hilbert_generic_minimal H) gamma).
+Qed.
+
 Definition pki_canonical_frame (H : ph_hilbert nat) : pkripke_frame :=
   {| pkripke_world := pki_prime_theory H;
      pkripke_access := fun T U => pki_theory_included T U;
@@ -444,6 +572,87 @@ Proof.
     + apply HpV. eapply pki_prime_mdp.
       * exact (HTV _ Hqp).
       * exact HqV.
+Qed.
+
+(** WLEM makes every pair of canonical extensions compatible.  A hypothetical
+    derivation of bottom from their union has finite support.  Partition that
+    support, compress both halves to conjunctions [A] and [B], and derive
+    [A -> ~B].  Since [B] belongs to the right theory, WLEM at the common root
+    selects [~~B]; contraposition then puts [~A] in the left theory, contrary
+    to [A]. *)
+Theorem pki_canonical_frame_strongly_convergent :
+  forall H, pki_has_efq H -> pki_has_wlem H ->
+    pkripke_frame_strongly_convergent (pki_canonical_frame H).
+Proof.
+  intros H Hefq HW T U V HTU HTV.
+  set (seed := pki_theory_union (pki_prime_mem U) (pki_prime_mem V)).
+  assert (Hseed : ~ pki_derives H seed PFalsum).
+  { intros [d].
+    destruct (ph_hilbert_type_context_to_finite d)
+      as [gamma cover dgamma].
+    set (lefts := fst (pki_partition (pki_prime_mem U) gamma)).
+    set (rights := snd (pki_partition (pki_prime_mem U) gamma)).
+    set (A := generic_list_conj2 (pformula_connectives nat) lefts).
+    set (B := generic_list_conj2 (pformula_connectives nat) rights).
+    assert (HA : pki_prime_mem U A).
+    { apply pki_prime_list_conj2. intros q Hq.
+      apply (pki_partition_left_holds
+        (T := pki_prime_mem U) (gamma := gamma)). exact Hq. }
+    assert (HB : pki_prime_mem V B).
+    { apply pki_prime_list_conj2. intros q Hq.
+      pose proof (pki_partition_right_origin
+        (T := pki_prime_mem U) (gamma := gamma) Hq) as Horigin.
+      destruct (cover q Horigin) as [u Hunion].
+      assert (HnotU : ~ pki_prime_mem U q).
+      { apply (pki_partition_right_not_left
+          (T := pki_prime_mem U) (gamma := gamma)). exact Hq. }
+      unfold seed, pki_theory_union in Hunion.
+      destruct Hunion as [HqU | HqV].
+      - contradiction.
+      - exact HqV. }
+    pose (empty := @generic_empty_type_context (pformula nat)).
+    pose (ctxA := generic_type_context_adjoin A empty).
+    pose (ctxAB := generic_type_context_adjoin B ctxA).
+    assert (dAB : ph_hilbert_type_context_proof H ctxAB PFalsum).
+    { refine (@pki_list_derivation_bind_raw H gamma ctxAB _
+        PFalsum dgamma).
+      intros q Hq.
+      destruct (pki_partition_member (pki_prime_mem U) Hq)
+        as [[Hleft _] | [Hright _]].
+      - refine (@GTCD_mdp _ _ _ _ _ _ A q _ _).
+        + apply GTCD_theorem. change (ph_hilbert_proof H (PImp A q)).
+          exact (ph_hilbert_list_conj2_elim H Hleft).
+        + exact (GTCD_assumption (GTCA_there GTCA_here)).
+      - refine (@GTCD_mdp _ _ _ _ _ _ B q _ _).
+        + apply GTCD_theorem. change (ph_hilbert_proof H (PImp B q)).
+          exact (ph_hilbert_list_conj2_elim H Hright).
+        + exact (GTCD_assumption GTCA_here). }
+    pose proof (ph_hilbert_type_context_deduction dAB) as dB.
+    pose proof (ph_hilbert_type_context_deduction dB) as dA.
+    assert (dAnB : ph_hilbert_proof H (PImp A (pneg B))).
+    { exact (generic_empty_type_context_derivation_raw
+        (ph_hilbert_modus_ponens H) dA). }
+    assert (HWmem : pki_prime_mem T (ph_axiom_wlem B)).
+    { apply pki_prime_contains_theorems, HW. }
+    destruct (proj1 (pki_prime_or_iff T (pneg B) (pneg (pneg B)))
+      HWmem) as [HnB | HnnB].
+    - apply (@pki_prime_proper H V).
+      eapply pki_prime_mdp.
+      + exact (HTV _ HnB).
+      + exact HB.
+    - assert (HnA : pki_prime_mem T (pneg A)).
+      { eapply pki_prime_mdp.
+        - apply pki_prime_contains_theorems. constructor.
+          exact (ph_hilbert_contraposition dAnB).
+        - exact HnnB. }
+      apply (@pki_prime_proper H U).
+      eapply pki_prime_mdp.
+      + exact (HTU _ HnA).
+      + exact HA. }
+  destruct (pki_prime_extension Hefq Hseed) as [W [Hincl _]].
+  exists W. split.
+  - intros p Hp. apply Hincl. now left.
+  - intros p Hp. apply Hincl. now right.
 Qed.
 
 Theorem pki_canonical_truth_lemma :
@@ -554,6 +763,12 @@ Definition pki_lc_has_efq : pki_has_efq (ph_hilbert_lc nat) :=
 Definition pki_lc_has_dummett : pki_has_dummett (ph_hilbert_lc nat) :=
   fun p q => inhabits (ph_hilbert_lc_dummett p q).
 
+Definition pki_kc_has_efq : pki_has_efq (ph_hilbert_kc nat) :=
+  fun p => inhabits (ph_hilbert_kc_efq p).
+
+Definition pki_kc_has_wlem : pki_has_wlem (ph_hilbert_kc nat) :=
+  fun p => inhabits (ph_hilbert_kc_wlem p).
+
 Theorem ph_hilbert_int_pkripke_complete :
   pkripke_complete (ph_hilbert_int nat) (fun _ => True).
 Proof. exact (ph_hilbert_pkripke_complete pki_int_has_efq). Qed.
@@ -585,4 +800,24 @@ Proof.
   intro p; split.
   - apply ph_hilbert_lc_pkripke_sound.
   - apply ph_hilbert_lc_pkripke_complete.
+Qed.
+
+Theorem ph_hilbert_kc_pkripke_complete :
+  pkripke_complete (ph_hilbert_kc nat)
+    pkripke_frame_strongly_convergent.
+Proof.
+  apply ph_hilbert_pkripke_complete_of_canonical.
+  - exact pki_kc_has_efq.
+  - exact (pki_canonical_frame_strongly_convergent
+      pki_kc_has_efq pki_kc_has_wlem).
+Qed.
+
+Theorem ph_hilbert_kc_pkripke_sound_complete :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_kc nat) p <->
+    pkripke_frame_class_valid pkripke_frame_strongly_convergent p.
+Proof.
+  intro p; split.
+  - apply ph_hilbert_kc_pkripke_sound.
+  - apply ph_hilbert_kc_pkripke_complete.
 Qed.
