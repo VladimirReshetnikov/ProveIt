@@ -6,9 +6,6 @@ Import
 
 Check coqRestrictedPADirectStrongStepAssumptionReadyContext_app_witnesses.
 Check raw_coqRestrictedPADirectStrongStepAssumptionLaw_on_selected_tail.
-Check raw_assumption_standardPrefix_target_included.
-Check
-  raw_assumption_directEmbeddedPAAxiomWitnessContext_surrounded_included.
 Check raw_assumptionLawRoot_surround_witnessed_tail.
 
 Print Assumptions
