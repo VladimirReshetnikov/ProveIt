@@ -1292,6 +1292,49 @@ Check generic_minimal_connective_rules_provable.
 Check generic_minimal_negation_provable_iff.
 Check generic_minimal_curry_provable_iff.
 Check ph_hilbert_generic_minimal.
+Check generic_minimal_imp_lift_right_raw.
+Check generic_minimal_imp_lift_left_raw.
+Check generic_minimal_imp_iff_congr_raw.
+Check generic_minimal_and_map_raw.
+Check generic_minimal_and_map_axiom_raw.
+Check generic_minimal_and_iff_congr_raw.
+Check generic_minimal_or_map_raw.
+Check generic_minimal_or_map_axiom_raw.
+Check generic_minimal_or_iff_congr_raw.
+Check generic_minimal_or_swap_axiom_raw.
+Check generic_minimal_inner_mdp_raw.
+Check generic_minimal_neg_mdp_raw.
+Check generic_minimal_dni_raw.
+Check generic_minimal_dni_elim_raw.
+Check generic_minimal_contraposition_raw.
+Check generic_minimal_contraposition_axiom_raw.
+Check generic_minimal_double_neg_map_raw.
+Check generic_minimal_double_neg_map_axiom_raw.
+Check generic_minimal_neg_iff_congr_raw.
+Check generic_minimal_negated_imp_swap_raw.
+Check generic_minimal_negated_imp_swap_axiom_raw.
+Check generic_minimal_triple_neg_elim_raw.
+Check generic_minimal_triple_neg_iff_raw.
+Check generic_minimal_neg_bottom_raw.
+Check generic_minimal_double_neg_bottom_elim_raw.
+Check generic_minimal_double_neg_bottom_iff_raw.
+Check generic_minimal_double_neg_expansion_iff_raw.
+Check generic_minimal_contradiction_axiom_raw.
+Check generic_minimal_contradiction_raw.
+Check generic_minimal_or_neg_to_neg_and_raw.
+Check generic_minimal_and_neg_to_neg_or_raw.
+Check generic_minimal_neg_or_to_and_neg_raw.
+Check generic_minimal_neg_or_iff_and_neg_raw.
+Check generic_minimal_or_double_neg_map_raw.
+Check generic_minimal_and_double_neg_map_raw.
+Check generic_minimal_dni_provable.
+Check generic_minimal_contraposition_provable.
+Check generic_minimal_double_neg_map_provable.
+Check generic_minimal_binary_iff_congruence_provable.
+Check generic_minimal_neg_or_iff_and_neg_provable.
+Check ph_hilbert_dni.
+Check ph_hilbert_contraposition.
+Check ph_hilbert_neg_or_iff_and_neg.
 Print Assumptions generic_minimal_imp_swap_raw.
 Print Assumptions generic_minimal_imp_contract_raw.
 Print Assumptions generic_minimal_iff_trans_raw.
@@ -1303,6 +1346,24 @@ Print Assumptions generic_minimal_curry_iff_raw.
 Print Assumptions generic_minimal_connective_rules_provable.
 Print Assumptions generic_minimal_negation_provable_iff.
 Print Assumptions ph_hilbert_generic_minimal.
+Print Assumptions generic_minimal_imp_iff_congr_raw.
+Print Assumptions generic_minimal_and_iff_congr_raw.
+Print Assumptions generic_minimal_or_iff_congr_raw.
+Print Assumptions generic_minimal_dni_raw.
+Print Assumptions generic_minimal_contraposition_raw.
+Print Assumptions generic_minimal_contraposition_axiom_raw.
+Print Assumptions generic_minimal_double_neg_map_axiom_raw.
+Print Assumptions generic_minimal_negated_imp_swap_axiom_raw.
+Print Assumptions generic_minimal_triple_neg_iff_raw.
+Print Assumptions generic_minimal_double_neg_bottom_iff_raw.
+Print Assumptions generic_minimal_double_neg_expansion_iff_raw.
+Print Assumptions generic_minimal_contradiction_axiom_raw.
+Print Assumptions generic_minimal_or_neg_to_neg_and_raw.
+Print Assumptions generic_minimal_neg_or_iff_and_neg_raw.
+Print Assumptions generic_minimal_binary_iff_congruence_provable.
+Print Assumptions ph_hilbert_dni.
+Print Assumptions ph_hilbert_contraposition.
+Print Assumptions ph_hilbert_neg_or_iff_and_neg.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.

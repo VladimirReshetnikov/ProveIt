@@ -315,6 +315,29 @@ Proof.
   constructor; assumption.
 Defined.
 
+(** Representative generic consequences are available in every concrete
+    schema system, independently of which optional intermediate axiom schema
+    it carries. *)
+Definition ph_hilbert_dni {Atom : Type} (H : ph_hilbert Atom)
+    (p : pformula Atom) :
+    ph_hilbert_proof H (PImp p (pneg (pneg p))) :=
+  generic_minimal_dni_raw (ph_hilbert_generic_minimal H) p.
+
+Definition ph_hilbert_contraposition {Atom : Type} (H : ph_hilbert Atom)
+    (p q : pformula Atom)
+    (d : ph_hilbert_proof H (PImp p q)) :
+    ph_hilbert_proof H (PImp (pneg q) (pneg p)) :=
+  generic_minimal_contraposition_raw
+    (ph_hilbert_generic_minimal H) p q d.
+
+Definition ph_hilbert_neg_or_iff_and_neg {Atom : Type}
+    (H : ph_hilbert Atom) (p q : pformula Atom) :
+    ph_hilbert_proof H
+      (generic_formula_iff (pformula_connectives Atom)
+        (pneg (POr p q)) (PAnd (pneg p) (pneg q))) :=
+  generic_minimal_neg_or_iff_and_neg_raw
+    (ph_hilbert_generic_minimal H) p q.
+
 (** One recursor factors inclusion and arbitrary proof-schema translations. *)
 Fixpoint ph_hilbert_proof_map {Atom : Type}
     {H K : ph_hilbert Atom}

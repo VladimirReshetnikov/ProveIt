@@ -618,3 +618,644 @@ Proof.
   - exact (generic_minimal_curry_raw H p q r d).
   - exact (generic_minimal_uncurry_raw H p q r d).
 Qed.
+
+(** * Functoriality of implication and binary connectives *)
+
+Definition generic_minimal_imp_lift_right_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q c : F)
+    (d : generic_proof E s (generic_imp C p q)) :
+    generic_proof E s
+      (generic_imp C (generic_imp C c p) (generic_imp C c q)) :=
+  generic_minimal_mdp_raw H _ _ (generic_minimal_S H c p q)
+    (generic_minimal_dhyp_raw H _ c d).
+
+Arguments generic_minimal_imp_lift_right_raw {S F E C s} _ _ _ _ _.
+
+Definition generic_minimal_imp_lift_left_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q r : F)
+    (d : generic_proof E s (generic_imp C q p)) :
+    generic_proof E s
+      (generic_imp C (generic_imp C p r) (generic_imp C q r)).
+Proof.
+  set (f := generic_imp C p r).
+  assert (dq : generic_list_derivation E s C [q; f] q).
+  { exact (GLD_assumption (GRLM_here [f])). }
+  assert (df : generic_list_derivation E s C [q; f] f).
+  { exact (GLD_assumption (GRLM_there q (GRLM_here []))). }
+  pose (dp := GLD_mdp (GLD_theorem d) dq).
+  pose (dr := GLD_mdp df dp).
+  exact (generic_empty_derivation_raw (generic_minimal_mdp H)
+    (generic_list_deduction (generic_minimal_mdp H)
+      (generic_minimal_K H) (generic_minimal_S H)
+      (generic_list_deduction (generic_minimal_mdp H)
+        (generic_minimal_K H) (generic_minimal_S H) dr))).
+Defined.
+
+Arguments generic_minimal_imp_lift_left_raw {S F E C s} _ _ _ _ _.
+
+Definition generic_minimal_imp_iff_congr_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p1 p2 q1 q2 : F)
+    (hp : generic_proof E s (generic_formula_iff C p1 p2))
+    (hq : generic_proof E s (generic_formula_iff C q1 q2)) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_imp C p1 q1) (generic_imp C p2 q2)).
+Proof.
+  apply (generic_minimal_iff_intro_raw H).
+  - exact (generic_minimal_imp_trans_raw H _ _ _
+      (generic_minimal_imp_lift_left_raw H p1 p2 q1
+        (generic_minimal_iff_elim_right_raw H p1 p2 hp))
+      (generic_minimal_imp_lift_right_raw H q1 q2 p2
+        (generic_minimal_iff_elim_left_raw H q1 q2 hq))).
+  - exact (generic_minimal_imp_trans_raw H _ _ _
+      (generic_minimal_imp_lift_left_raw H p2 p1 q2
+        (generic_minimal_iff_elim_left_raw H p1 p2 hp))
+      (generic_minimal_imp_lift_right_raw H q2 q1 p1
+        (generic_minimal_iff_elim_right_raw H q1 q2 hq))).
+Defined.
+
+Arguments generic_minimal_imp_iff_congr_raw {S F E C s}
+  _ _ _ _ _ _ _.
+
+Definition generic_minimal_and_map_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p1 p2 q1 q2 : F)
+    (d : generic_proof E s (generic_and C p1 q1))
+    (hp : generic_proof E s (generic_imp C p1 p2))
+    (hq : generic_proof E s (generic_imp C q1 q2)) :
+    generic_proof E s (generic_and C p2 q2) :=
+  generic_minimal_and_intro_raw H p2 q2
+    (generic_minimal_mdp_raw H p1 p2 hp
+      (generic_minimal_and_elim_left_raw H p1 q1 d))
+    (generic_minimal_mdp_raw H q1 q2 hq
+      (generic_minimal_and_elim_right_raw H p1 q1 d)).
+
+Arguments generic_minimal_and_map_raw {S F E C s}
+  _ _ _ _ _ _ _ _.
+
+Definition generic_minimal_and_map_axiom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p1 p2 q1 q2 : F)
+    (hp : generic_proof E s (generic_imp C p1 p2))
+    (hq : generic_proof E s (generic_imp C q1 q2)) :
+    generic_proof E s
+      (generic_imp C (generic_and C p1 q1) (generic_and C p2 q2)) :=
+  generic_minimal_right_and_intro_raw H (generic_and C p1 q1) p2 q2
+    (generic_minimal_imp_trans_raw H _ p1 p2
+      (generic_minimal_and1 H p1 q1) hp)
+    (generic_minimal_imp_trans_raw H _ q1 q2
+      (generic_minimal_and2 H p1 q1) hq).
+
+Arguments generic_minimal_and_map_axiom_raw {S F E C s}
+  _ _ _ _ _ _ _.
+
+Definition generic_minimal_and_iff_congr_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p1 p2 q1 q2 : F)
+    (hp : generic_proof E s (generic_formula_iff C p1 p2))
+    (hq : generic_proof E s (generic_formula_iff C q1 q2)) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_and C p1 q1) (generic_and C p2 q2)) :=
+  generic_minimal_iff_intro_raw H _ _
+    (generic_minimal_and_map_axiom_raw H p1 p2 q1 q2
+      (generic_minimal_iff_elim_left_raw H p1 p2 hp)
+      (generic_minimal_iff_elim_left_raw H q1 q2 hq))
+    (generic_minimal_and_map_axiom_raw H p2 p1 q2 q1
+      (generic_minimal_iff_elim_right_raw H p1 p2 hp)
+      (generic_minimal_iff_elim_right_raw H q1 q2 hq)).
+
+Arguments generic_minimal_and_iff_congr_raw {S F E C s}
+  _ _ _ _ _ _ _.
+
+Definition generic_minimal_or_map_axiom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p1 p2 q1 q2 : F)
+    (hp : generic_proof E s (generic_imp C p1 p2))
+    (hq : generic_proof E s (generic_imp C q1 q2)) :
+    generic_proof E s
+      (generic_imp C (generic_or C p1 q1) (generic_or C p2 q2)) :=
+  generic_minimal_or_elim_raw H p1 q1 (generic_or C p2 q2)
+    (generic_minimal_imp_trans_raw H p1 p2 _ hp
+      (generic_minimal_or1 H p2 q2))
+    (generic_minimal_imp_trans_raw H q1 q2 _ hq
+      (generic_minimal_or2 H p2 q2)).
+
+Arguments generic_minimal_or_map_axiom_raw {S F E C s}
+  _ _ _ _ _ _ _.
+
+Definition generic_minimal_or_map_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p1 p2 q1 q2 : F)
+    (d : generic_proof E s (generic_or C p1 q1))
+    (hp : generic_proof E s (generic_imp C p1 p2))
+    (hq : generic_proof E s (generic_imp C q1 q2)) :
+    generic_proof E s (generic_or C p2 q2) :=
+  generic_minimal_mdp_raw H _ _
+    (generic_minimal_or_map_axiom_raw H p1 p2 q1 q2 hp hq) d.
+
+Arguments generic_minimal_or_map_raw {S F E C s}
+  _ _ _ _ _ _ _ _.
+
+Definition generic_minimal_or_iff_congr_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p1 p2 q1 q2 : F)
+    (hp : generic_proof E s (generic_formula_iff C p1 p2))
+    (hq : generic_proof E s (generic_formula_iff C q1 q2)) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_or C p1 q1) (generic_or C p2 q2)) :=
+  generic_minimal_iff_intro_raw H _ _
+    (generic_minimal_or_map_axiom_raw H p1 p2 q1 q2
+      (generic_minimal_iff_elim_left_raw H p1 p2 hp)
+      (generic_minimal_iff_elim_left_raw H q1 q2 hq))
+    (generic_minimal_or_map_axiom_raw H p2 p1 q2 q1
+      (generic_minimal_iff_elim_right_raw H p1 p2 hp)
+      (generic_minimal_iff_elim_right_raw H q1 q2 hq)).
+
+Arguments generic_minimal_or_iff_congr_raw {S F E C s}
+  _ _ _ _ _ _ _.
+
+Definition generic_minimal_or_swap_axiom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s (generic_imp C (generic_or C p q) (generic_or C q p)) :=
+  generic_minimal_or_elim_raw H p q (generic_or C q p)
+    (generic_minimal_or2 H q p) (generic_minimal_or1 H q p).
+
+Arguments generic_minimal_or_swap_axiom_raw {S F E C s} _ _ _.
+
+Definition generic_minimal_inner_mdp_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C (generic_and C p (generic_imp C p q)) q) :=
+  generic_minimal_under_apply_raw H (generic_and C p (generic_imp C p q))
+    p q (generic_minimal_and2 H p (generic_imp C p q))
+    (generic_minimal_and1 H p (generic_imp C p q)).
+
+Arguments generic_minimal_inner_mdp_raw {S F E C s} _ _ _.
+
+(** * Constructive negation algebra *)
+
+Definition generic_minimal_neg_mdp_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F)
+    (dn : generic_proof E s (generic_neg C p))
+    (dp : generic_proof E s p) : generic_proof E s (generic_bottom C) :=
+  generic_minimal_mdp_raw H p (generic_bottom C)
+    (generic_minimal_imp_bottom_of_neg_raw H p dn) dp.
+
+Arguments generic_minimal_neg_mdp_raw {S F E C s} _ _ _ _.
+
+(** Foundation's proof uses equality-decided finite contexts.  Raw positional
+    membership shows that double-negation introduction is valid over every
+    minimal entailment, with no equality or classical hypothesis. *)
+Definition generic_minimal_dni_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F) :
+    generic_proof E s (generic_imp C p (generic_neg C (generic_neg C p))).
+Proof.
+  set (n := generic_neg C p).
+  assert (dn : generic_list_derivation E s C [n; p] n).
+  { exact (GLD_assumption (GRLM_here [p])). }
+  assert (dp : generic_list_derivation E s C [n; p] p).
+  { exact (GLD_assumption (GRLM_there n (GRLM_here []))). }
+  pose (dnpb := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H p))) dn).
+  pose (dbot := GLD_mdp dnpb dp).
+  pose (dnb := generic_list_deduction (generic_minimal_mdp H)
+    (generic_minimal_K H) (generic_minimal_S H) dbot).
+  pose (dnn := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_right_raw H _ _
+      (generic_minimal_neg_equiv H n))) dnb).
+  exact (@generic_empty_derivation_raw S F E s C
+    (generic_minimal_mdp H) _
+    (generic_list_deduction (generic_minimal_mdp H)
+      (generic_minimal_K H) (generic_minimal_S H) dnn)).
+Defined.
+
+Arguments generic_minimal_dni_raw {S F E C s} _ _.
+
+Definition generic_minimal_dni_elim_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F)
+    (d : generic_proof E s p) :
+    generic_proof E s (generic_neg C (generic_neg C p)) :=
+  generic_minimal_mdp_raw H p _ (generic_minimal_dni_raw H p) d.
+
+Arguments generic_minimal_dni_elim_raw {S F E C s} _ _ _.
+
+(** Contraposition likewise needs only positional deduction and the two
+    directions of negation equivalence. *)
+Definition generic_minimal_contraposition_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F)
+    (d : generic_proof E s (generic_imp C p q)) :
+    generic_proof E s
+      (generic_imp C (generic_neg C q) (generic_neg C p)).
+Proof.
+  set (nq := generic_neg C q).
+  assert (dp : generic_list_derivation E s C [p; nq] p).
+  { exact (GLD_assumption (GRLM_here [nq])). }
+  assert (dnq : generic_list_derivation E s C [p; nq] nq).
+  { exact (GLD_assumption (GRLM_there p (GRLM_here []))). }
+  pose (dq := GLD_mdp (GLD_theorem d) dp).
+  pose (dqbot := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H q))) dnq).
+  pose (dbot := GLD_mdp dqbot dq).
+  pose (dpbot := generic_list_deduction (generic_minimal_mdp H)
+    (generic_minimal_K H) (generic_minimal_S H) dbot).
+  pose (dnp := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_right_raw H _ _
+      (generic_minimal_neg_equiv H p))) dpbot).
+  exact (@generic_singleton_deduction_raw S F E s C
+    (generic_minimal_mdp H) (generic_minimal_K H) (generic_minimal_S H)
+    nq (generic_neg C p) dnp).
+Defined.
+
+Arguments generic_minimal_contraposition_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_contraposition_axiom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C (generic_imp C p q)
+        (generic_imp C (generic_neg C q) (generic_neg C p))).
+Proof.
+  set (f := generic_imp C p q).
+  set (nq := generic_neg C q).
+  assert (dp : generic_list_derivation E s C [p; nq; f] p).
+  { exact (GLD_assumption (GRLM_here [nq; f])). }
+  assert (dnq : generic_list_derivation E s C [p; nq; f] nq).
+  { exact (GLD_assumption (GRLM_there p (GRLM_here [f]))). }
+  assert (df : generic_list_derivation E s C [p; nq; f] f).
+  { exact (GLD_assumption
+      (GRLM_there p (GRLM_there nq (GRLM_here [])))). }
+  pose (dq := GLD_mdp df dp).
+  pose (dqbot := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H q))) dnq).
+  pose (dbot := GLD_mdp dqbot dq).
+  pose (dpbot := generic_list_deduction (generic_minimal_mdp H)
+    (generic_minimal_K H) (generic_minimal_S H) dbot).
+  pose (dnp := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_right_raw H _ _
+      (generic_minimal_neg_equiv H p))) dpbot).
+  exact (generic_empty_derivation_raw (generic_minimal_mdp H)
+    (generic_list_deduction (generic_minimal_mdp H)
+      (generic_minimal_K H) (generic_minimal_S H)
+      (generic_list_deduction (generic_minimal_mdp H)
+        (generic_minimal_K H) (generic_minimal_S H) dnp))).
+Defined.
+
+Arguments generic_minimal_contraposition_axiom_raw {S F E C s} _ _ _.
+
+Definition generic_minimal_double_neg_map_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F)
+    (d : generic_proof E s (generic_imp C p q)) :
+    generic_proof E s
+      (generic_imp C (generic_neg C (generic_neg C p))
+        (generic_neg C (generic_neg C q))) :=
+  generic_minimal_contraposition_raw H (generic_neg C q) (generic_neg C p)
+    (generic_minimal_contraposition_raw H p q d).
+
+Arguments generic_minimal_double_neg_map_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_double_neg_map_axiom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C (generic_imp C p q)
+        (generic_imp C (generic_neg C (generic_neg C p))
+          (generic_neg C (generic_neg C q)))) :=
+  generic_minimal_imp_trans_raw H _
+    (generic_imp C (generic_neg C q) (generic_neg C p)) _
+    (generic_minimal_contraposition_axiom_raw H p q)
+    (generic_minimal_contraposition_axiom_raw H
+      (generic_neg C q) (generic_neg C p)).
+
+Arguments generic_minimal_double_neg_map_axiom_raw {S F E C s} _ _ _.
+
+Definition generic_minimal_neg_iff_congr_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F)
+    (d : generic_proof E s (generic_formula_iff C p q)) :
+    generic_proof E s
+      (generic_formula_iff C (generic_neg C p) (generic_neg C q)) :=
+  generic_minimal_iff_intro_raw H _ _
+    (generic_minimal_contraposition_raw H q p
+      (generic_minimal_iff_elim_right_raw H p q d))
+    (generic_minimal_contraposition_raw H p q
+      (generic_minimal_iff_elim_left_raw H p q d)).
+
+Arguments generic_minimal_neg_iff_congr_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_negated_imp_swap_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F)
+    (d : generic_proof E s (generic_imp C p (generic_neg C q))) :
+    generic_proof E s (generic_imp C q (generic_neg C p)) :=
+  generic_minimal_imp_trans_raw H q
+    (generic_neg C (generic_neg C q)) (generic_neg C p)
+    (generic_minimal_dni_raw H q)
+    (generic_minimal_contraposition_raw H p (generic_neg C q) d).
+
+Arguments generic_minimal_negated_imp_swap_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_negated_imp_swap_axiom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C (generic_imp C p (generic_neg C q))
+        (generic_imp C q (generic_neg C p))) :=
+  generic_minimal_imp_trans_raw H _
+    (generic_imp C (generic_neg C (generic_neg C q)) (generic_neg C p)) _
+    (generic_minimal_contraposition_axiom_raw H p (generic_neg C q))
+    (generic_minimal_imp_lift_left_raw H
+      (generic_neg C (generic_neg C q)) q (generic_neg C p)
+      (generic_minimal_dni_raw H q)).
+
+Arguments generic_minimal_negated_imp_swap_axiom_raw {S F E C s} _ _ _.
+
+Definition generic_minimal_triple_neg_elim_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F) :
+    generic_proof E s
+      (generic_imp C (generic_neg C (generic_neg C (generic_neg C p)))
+        (generic_neg C p)) :=
+  generic_minimal_contraposition_raw H p
+    (generic_neg C (generic_neg C p)) (generic_minimal_dni_raw H p).
+
+Arguments generic_minimal_triple_neg_elim_raw {S F E C s} _ _.
+
+Definition generic_minimal_triple_neg_iff_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_neg C (generic_neg C (generic_neg C p)))
+        (generic_neg C p)) :=
+  generic_minimal_iff_intro_raw H _ _
+    (generic_minimal_triple_neg_elim_raw H p)
+    (generic_minimal_dni_raw H (generic_neg C p)).
+
+Arguments generic_minimal_triple_neg_iff_raw {S F E C s} _ _.
+
+Definition generic_minimal_neg_bottom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) :
+    generic_proof E s (generic_neg C (generic_bottom C)) :=
+  generic_minimal_neg_of_imp_bottom_raw H (generic_bottom C)
+    (generic_minimal_identity_raw H (generic_bottom C)).
+
+Definition generic_minimal_double_neg_bottom_elim_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) :
+    generic_proof E s
+      (generic_imp C
+        (generic_neg C (generic_neg C (generic_bottom C)))
+        (generic_bottom C)) :=
+  generic_minimal_under_apply_raw H
+    (generic_neg C (generic_neg C (generic_bottom C)))
+    (generic_neg C (generic_bottom C)) (generic_bottom C)
+    (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H
+        (generic_neg C (generic_bottom C))))
+    (generic_minimal_dhyp_raw H _ _ (generic_minimal_neg_bottom_raw H)).
+
+Definition generic_minimal_double_neg_bottom_iff_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_neg C (generic_neg C (generic_bottom C)))
+        (generic_bottom C)) :=
+  generic_minimal_iff_intro_raw H _ _
+    (generic_minimal_double_neg_bottom_elim_raw H)
+    (generic_minimal_dni_raw H (generic_bottom C)).
+
+Definition generic_minimal_double_neg_expansion_iff_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_neg C (generic_neg C p))
+        (generic_imp C (generic_imp C p (generic_bottom C))
+          (generic_bottom C))) :=
+  generic_minimal_iff_trans_raw H _ (generic_neg C
+    (generic_imp C p (generic_bottom C))) _
+    (generic_minimal_neg_iff_congr_raw H _ _
+      (generic_minimal_neg_equiv H p))
+    (generic_minimal_neg_equiv H
+      (generic_imp C p (generic_bottom C))).
+
+Arguments generic_minimal_double_neg_expansion_iff_raw {S F E C s} _ _.
+
+(** * Constructive contradiction and De Morgan directions *)
+
+Definition generic_minimal_contradiction_axiom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F) :
+    generic_proof E s
+      (generic_imp C (generic_and C p (generic_neg C p))
+        (generic_bottom C)) :=
+  generic_minimal_under_apply_raw H (generic_and C p (generic_neg C p))
+    p (generic_bottom C)
+    (generic_minimal_imp_trans_raw H _ (generic_neg C p) _
+      (generic_minimal_and2 H p (generic_neg C p))
+      (generic_minimal_iff_elim_left_raw H _ _
+        (generic_minimal_neg_equiv H p)))
+    (generic_minimal_and1 H p (generic_neg C p)).
+
+Arguments generic_minimal_contradiction_axiom_raw {S F E C s} _ _.
+
+Definition generic_minimal_contradiction_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F)
+    (d : generic_proof E s (generic_and C p (generic_neg C p))) :
+    generic_proof E s (generic_bottom C) :=
+  generic_minimal_mdp_raw H _ _
+    (generic_minimal_contradiction_axiom_raw H p) d.
+
+Arguments generic_minimal_contradiction_raw {S F E C s} _ _ _.
+
+Definition generic_minimal_or_neg_to_neg_and_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C (generic_or C (generic_neg C p) (generic_neg C q))
+        (generic_neg C (generic_and C p q))) :=
+  generic_minimal_or_elim_raw H (generic_neg C p) (generic_neg C q)
+    (generic_neg C (generic_and C p q))
+    (generic_minimal_contraposition_raw H (generic_and C p q) p
+      (generic_minimal_and1 H p q))
+    (generic_minimal_contraposition_raw H (generic_and C p q) q
+      (generic_minimal_and2 H p q)).
+
+Arguments generic_minimal_or_neg_to_neg_and_raw {S F E C s} _ _ _.
+
+Definition generic_minimal_and_neg_to_neg_or_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C (generic_and C (generic_neg C p) (generic_neg C q))
+        (generic_neg C (generic_or C p q))).
+Proof.
+  set (a := generic_and C (generic_neg C p) (generic_neg C q)).
+  pose (dpb := generic_minimal_imp_trans_raw H a (generic_neg C p)
+    (generic_imp C p (generic_bottom C))
+    (generic_minimal_and1 H (generic_neg C p) (generic_neg C q))
+    (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H p))).
+  pose (dqb := generic_minimal_imp_trans_raw H a (generic_neg C q)
+    (generic_imp C q (generic_bottom C))
+    (generic_minimal_and2 H (generic_neg C p) (generic_neg C q))
+    (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H q))).
+  pose (d0 := generic_minimal_dhyp_raw H _ a
+    (generic_minimal_or3 H p q (generic_bottom C))).
+  pose (d1 := generic_minimal_under_apply_raw H a
+    (generic_imp C p (generic_bottom C))
+    (generic_imp C (generic_imp C q (generic_bottom C))
+      (generic_imp C (generic_or C p q) (generic_bottom C))) d0 dpb).
+  pose (dorbot := generic_minimal_under_apply_raw H a
+    (generic_imp C q (generic_bottom C))
+    (generic_imp C (generic_or C p q) (generic_bottom C)) d1 dqb).
+  exact (generic_minimal_imp_trans_raw H a _ _ dorbot
+    (generic_minimal_iff_elim_right_raw H _ _
+      (generic_minimal_neg_equiv H (generic_or C p q)))).
+Defined.
+
+Arguments generic_minimal_and_neg_to_neg_or_raw {S F E C s} _ _ _.
+
+Definition generic_minimal_neg_or_to_and_neg_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C (generic_neg C (generic_or C p q))
+        (generic_and C (generic_neg C p) (generic_neg C q))) :=
+  generic_minimal_right_and_intro_raw H (generic_neg C (generic_or C p q))
+    (generic_neg C p) (generic_neg C q)
+    (generic_minimal_contraposition_raw H p (generic_or C p q)
+      (generic_minimal_or1 H p q))
+    (generic_minimal_contraposition_raw H q (generic_or C p q)
+      (generic_minimal_or2 H p q)).
+
+Arguments generic_minimal_neg_or_to_and_neg_raw {S F E C s} _ _ _.
+
+Definition generic_minimal_neg_or_iff_and_neg_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_formula_iff C (generic_neg C (generic_or C p q))
+        (generic_and C (generic_neg C p) (generic_neg C q))) :=
+  generic_minimal_iff_intro_raw H _ _
+    (generic_minimal_neg_or_to_and_neg_raw H p q)
+    (generic_minimal_and_neg_to_neg_or_raw H p q).
+
+Arguments generic_minimal_neg_or_iff_and_neg_raw {S F E C s} _ _ _.
+
+Definition generic_minimal_or_double_neg_map_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F)
+    (d : generic_proof E s (generic_or C p q)) :
+    generic_proof E s
+      (generic_or C (generic_neg C (generic_neg C p))
+        (generic_neg C (generic_neg C q))) :=
+  generic_minimal_or_map_raw H p (generic_neg C (generic_neg C p))
+    q (generic_neg C (generic_neg C q)) d
+    (generic_minimal_dni_raw H p) (generic_minimal_dni_raw H q).
+
+Arguments generic_minimal_or_double_neg_map_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_and_double_neg_map_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F)
+    (d : generic_proof E s (generic_and C p q)) :
+    generic_proof E s
+      (generic_and C (generic_neg C (generic_neg C p))
+        (generic_neg C (generic_neg C q))) :=
+  generic_minimal_and_map_raw H p (generic_neg C (generic_neg C p))
+    q (generic_neg C (generic_neg C q)) d
+    (generic_minimal_dni_raw H p) (generic_minimal_dni_raw H q).
+
+Arguments generic_minimal_and_double_neg_map_raw {S F E C s} _ _ _ _.
+
+(** * Inhabited theorem views *)
+
+Lemma generic_minimal_dni_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p,
+      generic_provable E s
+        (generic_imp C p (generic_neg C (generic_neg C p))).
+Proof.
+  intros S F E C s H p. constructor. exact (generic_minimal_dni_raw H p).
+Qed.
+
+Lemma generic_minimal_contraposition_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q,
+      generic_provable E s (generic_imp C p q) ->
+      generic_provable E s
+        (generic_imp C (generic_neg C q) (generic_neg C p)).
+Proof.
+  intros S F E C s H p q [d]. constructor.
+  exact (generic_minimal_contraposition_raw H p q d).
+Qed.
+
+Lemma generic_minimal_double_neg_map_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q,
+      generic_provable E s (generic_imp C p q) ->
+      generic_provable E s
+        (generic_imp C (generic_neg C (generic_neg C p))
+          (generic_neg C (generic_neg C q))).
+Proof.
+  intros S F E C s H p q [d]. constructor.
+  exact (generic_minimal_double_neg_map_raw H p q d).
+Qed.
+
+Lemma generic_minimal_binary_iff_congruence_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p1 p2 q1 q2,
+      generic_provable E s (generic_formula_iff C p1 p2) ->
+      generic_provable E s (generic_formula_iff C q1 q2) ->
+      generic_provable E s
+        (generic_formula_iff C (generic_and C p1 q1)
+          (generic_and C p2 q2)) /\
+      generic_provable E s
+        (generic_formula_iff C (generic_or C p1 q1)
+          (generic_or C p2 q2)) /\
+      generic_provable E s
+        (generic_formula_iff C (generic_imp C p1 q1)
+          (generic_imp C p2 q2)).
+Proof.
+  intros S F E C s H p1 p2 q1 q2 [hp] [hq].
+  split; [|split]; constructor.
+  - exact (generic_minimal_and_iff_congr_raw H p1 p2 q1 q2 hp hq).
+  - exact (generic_minimal_or_iff_congr_raw H p1 p2 q1 q2 hp hq).
+  - exact (generic_minimal_imp_iff_congr_raw H p1 p2 q1 q2 hp hq).
+Qed.
+
+Lemma generic_minimal_neg_or_iff_and_neg_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q,
+      generic_provable E s
+        (generic_formula_iff C (generic_neg C (generic_or C p q))
+          (generic_and C (generic_neg C p) (generic_neg C q))).
+Proof.
+  intros S F E C s H p q. constructor.
+  exact (generic_minimal_neg_or_iff_and_neg_raw H p q).
+Qed.
