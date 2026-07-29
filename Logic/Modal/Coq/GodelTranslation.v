@@ -6,7 +6,8 @@
     substitution-free S4 capability rather than a concrete Hilbert system. *)
 
 From FoundationModal Require Import
-  Syntax Kripke LogicInfrastructure EntailmentExtensions EntailmentS4
+  Syntax Kripke GenericForcingRelation LogicInfrastructure
+  EntailmentExtensions EntailmentS4
   PropositionalFormula PropositionalHilbert.
 
 Set Implicit Arguments.
@@ -353,4 +354,85 @@ Proof.
     + right. exact (IHq x y Hq Rxy).
   - intros z Ryz.
     exact (Hsat z (Htrans x y z Rxy Ryz)).
+Qed.
+
+(** * Intuitionistic forcing as modal truth *)
+
+Definition forcing_modal_frame {W : Type} (R : W -> W -> Prop) : frame :=
+  {| World := W; Rel := R |}.
+
+Definition forcing_modal_valuation {W AtomType : Type}
+    (K : generic_forcing_relation W (pformula AtomType))
+    (R : W -> W -> Prop) :
+    valuation AtomType (forcing_modal_frame R) :=
+  fun a w => generic_forces K w (PAtom a).
+
+(** The central semantic lemma behind the standard modal-companion theorem.
+    The assumptions are reduced to the reusable forcing dictionary and the
+    two relation laws actually used by translated atoms and implications. *)
+Theorem godel_translate_forcing_iff_modal_satisfies :
+  forall (W AtomType : Type)
+      (K : generic_forcing_relation W (pformula AtomType))
+      (R : W -> W -> Prop),
+    (forall w, R w w) ->
+    (forall x y z, R x y -> R y z -> R x z) ->
+    generic_int_kripke (pformula_connectives AtomType) K R ->
+    forall (p : pformula AtomType) w,
+    generic_forces K w p <->
+    satisfies (forcing_modal_frame R)
+      (@forcing_modal_valuation W AtomType K R) w
+      (godel_translate p).
+Proof.
+  intros W AtomType K R Hrefl Htrans HIK.
+  destruct HIK as [Hbasic Hmono Himp Hbottom Hneg].
+  destruct Hbasic as [Htop Hand Hor].
+  destruct Hmono as [Hpersistent].
+  destruct Himp as [Himp].
+  destruct Hbottom as [Hbottom].
+  destruct Hand as [Hand].
+  destruct Hor as [Hor].
+  intros p; induction p as
+      [a| |p IHp q IHq|p IHp q IHq|p IHp q IHq]; intro w.
+  - cbn [godel_translate satisfies forcing_modal_valuation
+      forcing_modal_frame]. split.
+    + intros Ha v Rwv. exact (Hpersistent w (PAtom a) Ha v Rwv).
+    + intro Hbox. exact (Hbox w (Hrefl w)).
+  - cbn [godel_translate satisfies]. split.
+    + intro Hfalse. exact (Hbottom w Hfalse).
+    + contradiction.
+  - cbn [godel_translate].
+    rewrite (Hand w p q), satisfies_and, IHp, IHq. tauto.
+  - cbn [godel_translate].
+    rewrite (Hor w p q), satisfies_or, IHp, IHq. tauto.
+  - cbn [godel_translate satisfies forcing_modal_frame].
+    rewrite (Himp w p q).
+    split.
+    + intros H v Rwv Hvp.
+      apply (proj1 (IHq v)).
+      apply (H v Rwv).
+      exact (proj2 (IHp v) Hvp).
+    + intros H v Rwv Hvp.
+      apply (proj2 (IHq v)).
+      apply (H v Rwv).
+      exact (proj1 (IHp v) Hvp).
+Qed.
+
+Corollary godel_translate_global_forcing_iff_modal_truth :
+  forall (W AtomType : Type)
+      (K : generic_forcing_relation W (pformula AtomType))
+      (R : W -> W -> Prop),
+    (forall w, R w w) ->
+    (forall x y z, R x y -> R y z -> R x z) ->
+    generic_int_kripke (pformula_connectives AtomType) K R ->
+    forall p,
+    generic_all_forces K p <->
+    @model_valid AtomType (forcing_modal_frame R)
+      (@forcing_modal_valuation W AtomType K R)
+      (godel_translate p).
+Proof.
+  intros W AtomType K R Hrefl Htrans HIK p; split; intros H w.
+  - apply (proj1 (godel_translate_forcing_iff_modal_satisfies
+      Hrefl Htrans HIK p w)), H.
+  - apply (proj2 (godel_translate_forcing_iff_modal_satisfies
+      Hrefl Htrans HIK p w)), H.
 Qed.

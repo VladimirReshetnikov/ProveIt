@@ -3175,6 +3175,10 @@ Check godel_translate_hilbert_proof.
 Check godel_translate_hilbert_provable.
 Check godel_translate_int_provable.
 Check godel_translate_persistent.
+Check forcing_modal_frame.
+Check forcing_modal_valuation.
+Check godel_translate_forcing_iff_modal_satisfies.
+Check godel_translate_global_forcing_iff_modal_truth.
 Check s5_entailment.
 Check s5_E.
 Check diabox_box_raw.
@@ -5259,6 +5263,8 @@ Print Assumptions godel_translate_efq.
 Print Assumptions godel_translate_hilbert_proof.
 Print Assumptions godel_translate_int_provable.
 Print Assumptions godel_translate_persistent.
+Print Assumptions godel_translate_forcing_iff_modal_satisfies.
+Print Assumptions godel_translate_global_forcing_iff_modal_truth.
 Print Assumptions diabox_box_raw.
 Print Assumptions diabox_box_applied_raw.
 Print Assumptions rm_diabox_raw.
