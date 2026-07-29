@@ -20,6 +20,7 @@ From FoundationModal Require Import
   RelationProperties ConverseWellFounded WeakConverseWellFounded
   CorrespondenceExtensions NormalHilbert LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentK4 EntailmentS4
+  GodelTranslation
   EntailmentS5 HilbertWithRE HilbertNormal AlgebraicSemantics
   HilbertNormalAxiomAdapters
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
@@ -3153,6 +3154,12 @@ Check iff_box_boxdot_raw.
 Check iff_box_boxdot.
 Check iff_dia_diadot_raw.
 Check iff_dia_diadot.
+Check godel_translate.
+Check godel_translate_rename.
+Check godel_translate_stable.
+Check godel_translate_modus_ponens.
+Check godel_translate_efq.
+Check godel_translate_persistent.
 Check s5_entailment.
 Check s5_E.
 Check diabox_box_raw.
@@ -5227,6 +5234,11 @@ Print Assumptions iff_Boxdot_BoxdotBoxdot_raw.
 Print Assumptions boxdot_axiomFour_raw.
 Print Assumptions iff_box_boxdot_raw.
 Print Assumptions iff_dia_diadot_raw.
+Print Assumptions godel_translate_rename.
+Print Assumptions godel_translate_stable.
+Print Assumptions godel_translate_modus_ponens.
+Print Assumptions godel_translate_efq.
+Print Assumptions godel_translate_persistent.
 Print Assumptions diabox_box_raw.
 Print Assumptions diabox_box_applied_raw.
 Print Assumptions rm_diabox_raw.
