@@ -3,6 +3,7 @@
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
+From Foundation.Syntax.Predicate Require Import Relational.
 
 Check language.
 Check language_relational.
@@ -129,6 +130,7 @@ Check rew_comp.
 Check rew_comp_assoc.
 Check rew_bind.
 Check rew_eta.
+Check rew_equiv_of_variables.
 Check rew_rewrite.
 Check rew_rewrite_map.
 Check rew_map.
@@ -142,12 +144,46 @@ Check rew_q_bshift_apply.
 Check rew_q_comp_apply.
 Check rew_q_respects_equiv.
 Check rew_qpow.
+Check rew_shift.
+Check rew_free.
+Check rew_fix.
+Check rew_shift_injective.
+Check rew_free_comp_fix.
+Check rew_fix_comp_free.
+Check rew_free_bshift_eq_shift.
+Check rew_bshift_positive.
+Check rew_bshift_free_occurs.
+Check rew_free_occurs_sources.
+Check semiterm_language_map_rew_bind.
+Check semiterm_language_map_rew_bshift.
+Check semiterm_language_map_rew_shift.
+Check semiterm_language_map_rew_free.
+Check semiterm_language_map_rew_fix.
+Check rew_q_shift.
 Check semiformula_rewrite.
 Check semiformula_rewrite_connective_hom.
 Check semiformula_rewrite_all.
 Check semiformula_rewrite_ext.
 Check semiformula_rewrite_id.
 Check semiformula_rewrite_comp.
+Check semiformula_rewrite_all_iter.
+Check semiformula_rewrite_exists_iter.
+Check semiformula_rewrite_bounded_all.
+Check semiformula_substitute.
+Check semiformula_substitute_id.
+Check semiformula_substitute_comp.
+Check semiformula_shift_injective.
+Check semiformula_free_fix.
+Check semiformula_fix_free.
+
+Check semiterm_bvar_or_fvar_relational.
+Check term_fvar_relational.
+Check fin_cons.
+Check semiterm_relational_val.
+Check semiterm_relational_val_bvar.
+Check semiterm_relational_val_fvar.
+Check semiterm_relational_val_rew.
+Check semiterm_relational_val_bshift.
 
 Print Assumptions language_hom_ext.
 Print Assumptions language_hom_comp_assoc.
@@ -178,10 +214,26 @@ Print Assumptions semiformula_language_map_comp.
 Print Assumptions semiformula_enumerate_index_of_free_variable.
 Print Assumptions rew_comp_assoc.
 Print Assumptions rew_eta.
+Print Assumptions rew_equiv_of_variables.
 Print Assumptions rew_subst_comp_subst.
 Print Assumptions rew_q_bshift_apply.
 Print Assumptions rew_q_comp_apply.
+Print Assumptions rew_shift_injective.
+Print Assumptions rew_free_comp_fix.
+Print Assumptions rew_fix_comp_free.
+Print Assumptions rew_bshift_positive.
+Print Assumptions rew_free_occurs_sources.
+Print Assumptions semiterm_language_map_rew_bind.
 Print Assumptions semiformula_rewrite_connective_hom.
 Print Assumptions semiformula_rewrite_ext.
 Print Assumptions semiformula_rewrite_id.
 Print Assumptions semiformula_rewrite_comp.
+Print Assumptions semiformula_rewrite_all_iter.
+Print Assumptions semiformula_substitute_comp.
+Print Assumptions semiformula_shift_injective.
+Print Assumptions semiformula_free_fix.
+Print Assumptions semiformula_fix_free.
+Print Assumptions semiterm_bvar_or_fvar_relational.
+Print Assumptions term_fvar_relational.
+Print Assumptions semiterm_relational_val_rew.
+Print Assumptions semiterm_relational_val_bshift.

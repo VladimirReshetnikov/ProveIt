@@ -111,6 +111,20 @@ Proof.
   apply functional_extensionality. exact IH.
 Qed.
 
+Lemma rew_equiv_of_variables : forall L X n Y m
+    (w v : rew L X n Y m),
+  (forall i, rew_apply w (Semiterm_bvar i) =
+             rew_apply v (Semiterm_bvar i)) ->
+  (forall x, rew_apply w (Semiterm_fvar x) =
+             rew_apply v (Semiterm_fvar x)) ->
+  rew_equiv w v.
+Proof.
+  intros L X n Y m w v Hb Hf t.
+  induction t as [i | x | k f a IH]; [apply Hb | apply Hf |].
+  rewrite (rew_apply_func w f a), (rew_apply_func v f a).
+  f_equal. apply functional_extensionality. exact IH.
+Qed.
+
 Definition rew_rewrite {L X Y n}
     (e : X -> semiterm L Y n) : rew L X n Y n :=
   rew_bind (fun i => Semiterm_bvar i) e.
@@ -284,6 +298,291 @@ Fixpoint rew_qpow {L X n Y m} (w : rew L X n Y m) (k : nat) :
   | S j => rew_q (@rew_qpow L X n Y m w j)
   end.
 
+(** * Standard syntactic rewrites *)
+
+Definition rew_shift {L n} : syntactic_rew L n n :=
+  rew_map (fun i => i) Nat.succ.
+
+Definition rew_unshift {L n} : syntactic_rew L n n :=
+  rew_map (fun i => i) Nat.pred.
+
+Definition rew_free_bound {L n} (i : Fin.t (n + 1)) :
+    syntactic_semiterm L n :=
+  @Fin.case_L_R' n 1 (fun _ => syntactic_semiterm L n) i
+    (fun j => Semiterm_bvar j)
+    (fun _ => Semiterm_fvar 0).
+
+Definition rew_free {L n} : syntactic_rew L (n + 1) n :=
+  rew_bind rew_free_bound (fun x => Semiterm_fvar (S x)).
+
+Definition rew_fix {L n} : syntactic_rew L n (n + 1) :=
+  rew_bind (fun i => Semiterm_bvar (Fin.L 1 i))
+    (fun x => match x with
+      | 0 => Semiterm_bvar (Fin.R n Fin.F1)
+      | S y => Semiterm_fvar y
+      end).
+
+Lemma fin_one_eq_f1 : forall i : Fin.t 1, i = Fin.F1.
+Proof.
+  intro i. refine (@Fin.caseS' 0 i (fun j => j = Fin.F1) eq_refl _).
+  intro j. exact (Fin.case0 (fun u => Fin.FS u = Fin.F1) j).
+Qed.
+
+Lemma rew_shift_bvar : forall L n (i : Fin.t n),
+  rew_apply (@rew_shift L n) (Semiterm_bvar i) = Semiterm_bvar i.
+Proof. reflexivity. Qed.
+
+Lemma rew_shift_fvar : forall L n x,
+  rew_apply (@rew_shift L n) (Semiterm_fvar x) = Semiterm_fvar (S x).
+Proof. reflexivity. Qed.
+
+Lemma rew_unshift_shift : forall L n,
+  rew_equiv (rew_comp (@rew_unshift L n) rew_shift) rew_id.
+Proof.
+  intros. apply rew_equiv_of_variables; intros; reflexivity.
+Qed.
+
+Lemma rew_shift_injective : forall L n,
+  forall t u : syntactic_semiterm L n,
+    rew_apply rew_shift t = rew_apply rew_shift u -> t = u.
+Proof.
+  intros L n t u H.
+  apply (f_equal (rew_apply (@rew_unshift L n))) in H.
+  change (rew_apply (rew_comp rew_unshift rew_shift) t =
+          rew_apply (rew_comp rew_unshift rew_shift) u) in H.
+  now rewrite (@rew_unshift_shift L n t), (@rew_unshift_shift L n u) in H.
+Qed.
+
+Lemma rew_free_bound_old : forall L n (i : Fin.t n),
+  @rew_free_bound L n (Fin.L 1 i) = Semiterm_bvar i.
+Proof.
+  intros L n i. unfold rew_free_bound.
+  rewrite Fin.case_L_R'_L. reflexivity.
+Qed.
+
+Lemma rew_free_bound_last : forall L n (i : Fin.t 1),
+  @rew_free_bound L n (Fin.R n i) = Semiterm_fvar 0.
+Proof.
+  intros L n i. unfold rew_free_bound.
+  rewrite Fin.case_L_R'_R. reflexivity.
+Qed.
+
+Lemma rew_free_bvar_old : forall L n (i : Fin.t n),
+  rew_apply (@rew_free L n) (Semiterm_bvar (Fin.L 1 i)) = Semiterm_bvar i.
+Proof. intros; apply rew_free_bound_old. Qed.
+
+Lemma rew_free_bvar_last : forall L n,
+  rew_apply (@rew_free L n) (Semiterm_bvar (Fin.R n Fin.F1)) =
+  Semiterm_fvar 0.
+Proof. intros; apply rew_free_bound_last. Qed.
+
+Lemma rew_free_fvar : forall L n x,
+  rew_apply (@rew_free L n) (Semiterm_fvar x) = Semiterm_fvar (S x).
+Proof. reflexivity. Qed.
+
+Lemma rew_fix_bvar : forall L n (i : Fin.t n),
+  rew_apply (@rew_fix L n) (Semiterm_bvar i) =
+  Semiterm_bvar (Fin.L 1 i).
+Proof. reflexivity. Qed.
+
+Lemma rew_fix_fvar_zero : forall L n,
+  rew_apply (@rew_fix L n) (Semiterm_fvar 0) =
+  Semiterm_bvar (Fin.R n Fin.F1).
+Proof. reflexivity. Qed.
+
+Lemma rew_fix_fvar_succ : forall L n x,
+  rew_apply (@rew_fix L n) (Semiterm_fvar (S x)) = Semiterm_fvar x.
+Proof. reflexivity. Qed.
+
+Lemma rew_free_comp_fix : forall L n,
+  rew_equiv (rew_comp (@rew_free L n) rew_fix) rew_id.
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i; cbn. apply rew_free_bound_old.
+  - intros [|x]; [apply rew_free_bound_last | reflexivity].
+Qed.
+
+Lemma rew_fix_free_bound : forall L n (i : Fin.t (n + 1)),
+  rew_apply (@rew_fix L n) (@rew_free_bound L n i) = Semiterm_bvar i.
+Proof.
+  intros L n i.
+  refine (@Fin.case_L_R' n 1
+    (fun j => rew_apply rew_fix (rew_free_bound j) = Semiterm_bvar j)
+    i _ _).
+  - intro j. rewrite rew_free_bound_old. reflexivity.
+  - intro j. rewrite rew_free_bound_last.
+    assert (Hj : j = Fin.F1) by apply fin_one_eq_f1.
+    now subst j.
+Qed.
+
+Lemma rew_fix_comp_free : forall L n,
+  rew_equiv (rew_comp (@rew_fix L n) rew_free) rew_id.
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - apply rew_fix_free_bound.
+  - intro x; reflexivity.
+Qed.
+
+Lemma rew_free_bshift_eq_shift : forall L,
+  rew_equiv (rew_comp (@rew_free L 0) rew_bshift) rew_shift.
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i. exact (Fin.case0 (fun _ => _ = _) i).
+  - intro x; reflexivity.
+Qed.
+
+Lemma fin_value_fs_positive : forall n (i : Fin.t n),
+  0 < fin_value (Fin.FS i).
+Proof.
+  intros n i. apply Nat.neq_0_lt_0. intro Hz.
+  assert (Heq : fin_value (Fin.FS i) =
+      fin_value (@Fin.F1 n)).
+  { rewrite Hz. reflexivity. }
+  apply Fin.to_nat_inj in Heq. discriminate.
+Qed.
+
+Lemma rew_bshift_positive : forall L X n (t : semiterm L X n),
+  semiterm_positive (rew_apply rew_bshift t).
+Proof.
+  intros L X n t; induction t as [i | x | k f a IH].
+  - unfold semiterm_positive; simpl. intros j H; subst j.
+    apply fin_value_fs_positive.
+  - unfold semiterm_positive; simpl; tauto.
+  - cbn. apply (proj2 (semiterm_positive_func f
+      (fun i => rew_apply rew_bshift (a i)))); exact IH.
+Qed.
+
+Lemma rew_bshift_free_occurs : forall L X n x (t : semiterm L X n),
+  semiterm_free_occurs x (rew_apply rew_bshift t) <->
+  semiterm_free_occurs x t.
+Proof.
+  intros L X n x t; induction t as [i | y | k f a IH]; simpl;
+    try reflexivity.
+  split; intros [j Hj]; exists j;
+    [apply (proj1 (IH j)) | apply (proj2 (IH j))]; exact Hj.
+Qed.
+
+Lemma rew_free_occurs_sources : forall L X n Y m
+    (w : rew L X n Y m) (t : semiterm L X n) y,
+  semiterm_free_occurs y (rew_apply w t) ->
+  (exists i : Fin.t n,
+      semiterm_free_occurs y (rew_apply w (Semiterm_bvar i))) \/
+  (exists x : X,
+      semiterm_free_occurs x t /\
+      semiterm_free_occurs y (rew_apply w (Semiterm_fvar x))).
+Proof.
+  intros L X n Y m w t; induction t as [i | x | k f a IH]; intro y.
+  - intro H; left; now exists i.
+  - intro H; right; exists x; split; [reflexivity|exact H].
+  - rewrite rew_apply_func. simpl. intros [j Hj].
+    destruct (IH j y Hj) as [[i Hi] | [x [Hx Hy]]].
+    + left; now exists i.
+    + right; exists x; split; [now exists j|exact Hy].
+Qed.
+
+(** Language maps commute with syntactic rewrites. *)
+
+Lemma semiterm_language_map_rew_bind : forall L M X n Y m
+    (h : language_hom L M)
+    (b : Fin.t n -> semiterm L Y m) (e : X -> semiterm L Y m)
+    (t : semiterm L X n),
+  semiterm_language_map h (rew_apply (rew_bind b e) t) =
+  rew_apply (rew_bind
+    (fun i => semiterm_language_map h (b i))
+    (fun x => semiterm_language_map h (e x)))
+    (semiterm_language_map h t).
+Proof.
+  intros L M X n Y m h b e t.
+  induction t as [i | x | k f a IH]; simpl; try reflexivity.
+  f_equal. apply functional_extensionality. exact IH.
+Qed.
+
+Lemma semiterm_language_map_rew_map : forall L M X n Y m
+    (h : language_hom L M) (b : Fin.t n -> Fin.t m) (e : X -> Y)
+    (t : semiterm L X n),
+  semiterm_language_map h (rew_apply (rew_map b e) t) =
+  rew_apply (rew_map b e) (semiterm_language_map h t).
+Proof.
+  intros. unfold rew_map. apply semiterm_language_map_rew_bind.
+Qed.
+
+Lemma semiterm_language_map_rew_bshift : forall L M X n
+    (h : language_hom L M) (t : semiterm L X n),
+  semiterm_language_map h (rew_apply rew_bshift t) =
+  rew_apply rew_bshift (semiterm_language_map h t).
+Proof. intros; apply semiterm_language_map_rew_map. Qed.
+
+Lemma semiterm_language_map_rew_shift : forall L M n
+    (h : language_hom L M) (t : syntactic_semiterm L n),
+  semiterm_language_map h (rew_apply rew_shift t) =
+  rew_apply rew_shift (semiterm_language_map h t).
+Proof. intros; apply semiterm_language_map_rew_map. Qed.
+
+Lemma semiterm_language_map_rew_free_bound : forall L M n
+    (h : language_hom L M) (i : Fin.t (n + 1)),
+  semiterm_language_map h (@rew_free_bound L n i) =
+  @rew_free_bound M n i.
+Proof.
+  intros L M n h i.
+  refine (@Fin.case_L_R' n 1
+    (fun j => semiterm_language_map h (rew_free_bound j) = rew_free_bound j)
+    i _ _).
+  - intro j. now rewrite !rew_free_bound_old.
+  - intro j. now rewrite !rew_free_bound_last.
+Qed.
+
+Lemma semiterm_language_map_rew_free : forall L M n
+    (h : language_hom L M) (t : syntactic_semiterm L (n + 1)),
+  semiterm_language_map h (rew_apply rew_free t) =
+  rew_apply rew_free (semiterm_language_map h t).
+Proof.
+  intros. unfold rew_free. rewrite semiterm_language_map_rew_bind.
+  assert (Hb :
+    (fun i => semiterm_language_map h (@rew_free_bound L n i)) =
+    (@rew_free_bound M n)).
+  { apply functional_extensionality; intro i.
+    apply semiterm_language_map_rew_free_bound. }
+  now rewrite Hb.
+Qed.
+
+Lemma semiterm_language_map_rew_fix : forall L M n
+    (h : language_hom L M) (t : syntactic_semiterm L n),
+  semiterm_language_map h (rew_apply rew_fix t) =
+  rew_apply rew_fix (semiterm_language_map h t).
+Proof.
+  intros. unfold rew_fix. rewrite semiterm_language_map_rew_bind.
+  assert (Hb :
+    (fun i => semiterm_language_map h (Semiterm_bvar (Fin.L 1 i))) =
+    (fun i => @Semiterm_bvar M nat (n + 1) (Fin.L 1 i))).
+  { apply functional_extensionality; intro i; reflexivity. }
+  assert (He :
+    (fun x => semiterm_language_map h
+      (match x with
+       | 0 => Semiterm_bvar (Fin.R n Fin.F1)
+       | S y => Semiterm_fvar y
+       end)) =
+    (fun x =>
+      match x with
+      | 0 => @Semiterm_bvar M nat (n + 1) (Fin.R n Fin.F1)
+      | S y => @Semiterm_fvar M nat (n + 1) y
+      end)).
+  { apply functional_extensionality; intros [|x]; reflexivity. }
+  now rewrite Hb, He.
+Qed.
+
+Lemma rew_q_shift : forall L n,
+  rew_equiv (rew_q (@rew_shift L n)) (@rew_shift L (S n)).
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i. refine (@Fin.caseS' n i
+      (fun j =>
+        rew_apply (rew_q rew_shift) (Semiterm_bvar j) =
+        rew_apply rew_shift (Semiterm_bvar j))
+      eq_refl _).
+    intro j; reflexivity.
+  - intro x; reflexivity.
+Qed.
+
 (** * Formula action *)
 
 Fixpoint semiformula_rewrite {L X n Y m}
@@ -394,4 +693,130 @@ Proof.
       (semiformula_rewrite (rew_comp (rew_q v) (rew_q w)) p).
     + apply semiformula_rewrite_ext. intro t. apply rew_q_comp_apply.
     + apply IHp.
+Qed.
+
+Lemma semiformula_rewrite_all_iter : forall L X n Y m
+    (w : rew L X n Y m) k (p : semiformula L X (k + n)),
+  semiformula_rewrite w
+    (first_all_iter (semiformula_universal_quantifier L X) k n p) =
+  first_all_iter (semiformula_universal_quantifier L Y) k m
+    (semiformula_rewrite (rew_qpow w k) p).
+Proof.
+  intros L X n Y m w k; induction k as [|k IH]; intro p; simpl.
+  - reflexivity.
+  - rewrite IH. reflexivity.
+Qed.
+
+Lemma semiformula_rewrite_exists_iter : forall L X n Y m
+    (w : rew L X n Y m) k (p : semiformula L X (k + n)),
+  semiformula_rewrite w
+    (first_exists_iter (semiformula_existential_quantifier L X) k n p) =
+  first_exists_iter (semiformula_existential_quantifier L Y) k m
+    (semiformula_rewrite (rew_qpow w k) p).
+Proof.
+  intros L X n Y m w k; induction k as [|k IH]; intro p; simpl.
+  - reflexivity.
+  - rewrite IH. reflexivity.
+Qed.
+
+Lemma semiformula_rewrite_bounded_all : forall L X n Y m
+    (w : rew L X n Y m) (p q : semiformula L X (S n)),
+  semiformula_rewrite w (semiformula_bounded_all p q) =
+  semiformula_bounded_all (semiformula_rewrite (rew_q w) p)
+    (semiformula_rewrite (rew_q w) q).
+Proof.
+  intros; unfold semiformula_bounded_all, semiformula_imp; simpl.
+  now rewrite semiformula_rewrite_neg.
+Qed.
+
+Lemma semiformula_rewrite_bounded_exists : forall L X n Y m
+    (w : rew L X n Y m) (p q : semiformula L X (S n)),
+  semiformula_rewrite w (semiformula_bounded_exists p q) =
+  semiformula_bounded_exists (semiformula_rewrite (rew_q w) p)
+    (semiformula_rewrite (rew_q w) q).
+Proof. reflexivity. Qed.
+
+Definition semiformula_substitute {L X n m}
+    (b : Fin.t n -> semiterm L X m) (p : semiformula L X n) :
+    semiformula L X m :=
+  semiformula_rewrite (rew_subst b) p.
+
+Definition semiformula_shift {L n} (p : semiproposition L n) :
+    semiproposition L n :=
+  semiformula_rewrite rew_shift p.
+
+Definition semiformula_unshift {L n} (p : semiproposition L n) :
+    semiproposition L n :=
+  semiformula_rewrite rew_unshift p.
+
+Definition semiformula_free {L n} (p : semiproposition L (n + 1)) :
+    semiproposition L n :=
+  semiformula_rewrite rew_free p.
+
+Definition semiformula_fix {L n} (p : semiproposition L n) :
+    semiproposition L (n + 1) :=
+  semiformula_rewrite rew_fix p.
+
+Lemma rew_subst_variables_id : forall L X n,
+  rew_equiv (@rew_subst L X n n (fun i => Semiterm_bvar i)) rew_id.
+Proof.
+  intros. apply rew_equiv_of_variables; intros; reflexivity.
+Qed.
+
+Lemma semiformula_substitute_id : forall L X n (p : semiformula L X n),
+  semiformula_substitute (fun i => Semiterm_bvar i) p = p.
+Proof.
+  intros; unfold semiformula_substitute.
+  transitivity (semiformula_rewrite rew_id p).
+  - apply semiformula_rewrite_ext, rew_subst_variables_id.
+  - apply semiformula_rewrite_id.
+Qed.
+
+Lemma semiformula_substitute_comp : forall L X l k n
+    (v : Fin.t l -> semiterm L X k)
+    (w : Fin.t k -> semiterm L X n) (p : semiformula L X l),
+  semiformula_substitute w (semiformula_substitute v p) =
+  semiformula_substitute
+    (fun i => rew_apply (rew_subst w) (v i)) p.
+Proof.
+  intros; unfold semiformula_substitute.
+  rewrite <- semiformula_rewrite_comp.
+  apply semiformula_rewrite_ext, rew_subst_comp_subst.
+Qed.
+
+Lemma semiformula_shift_injective : forall L n
+    (p q : semiproposition L n),
+  semiformula_shift p = semiformula_shift q -> p = q.
+Proof.
+  intros L n p q H.
+  apply (f_equal semiformula_unshift) in H.
+  unfold semiformula_unshift, semiformula_shift in H.
+  rewrite <- !semiformula_rewrite_comp in H.
+  assert (Hu : forall r : semiproposition L n,
+      semiformula_rewrite (rew_comp rew_unshift rew_shift) r = r).
+  { intro r. transitivity (semiformula_rewrite rew_id r).
+    - apply semiformula_rewrite_ext, rew_unshift_shift.
+    - apply semiformula_rewrite_id. }
+  now rewrite !Hu in H.
+Qed.
+
+Lemma semiformula_free_fix : forall L n (p : semiproposition L n),
+  semiformula_free (semiformula_fix p) = p.
+Proof.
+  intros; unfold semiformula_free, semiformula_fix.
+  rewrite <- semiformula_rewrite_comp.
+  transitivity (semiformula_rewrite rew_id p).
+  - apply semiformula_rewrite_ext, rew_free_comp_fix.
+  - apply semiformula_rewrite_id.
+Qed.
+
+Lemma semiformula_fix_free : forall L n
+    (p : semiproposition L (n + 1)),
+  semiformula_fix (semiformula_free p) = p.
+Proof.
+  intros; unfold semiformula_free, semiformula_fix.
+  rewrite <- semiformula_rewrite_comp.
+  transitivity (semiformula_rewrite rew_id p).
+  - apply semiformula_rewrite_ext, rew_fix_comp_free.
+  - apply semiformula_rewrite_id.
 Qed.
