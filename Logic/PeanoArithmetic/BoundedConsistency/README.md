@@ -2971,6 +2971,25 @@ endpoint without requiring the full successor edge again.  This is the
 carrier-parametric substitution/row interface on which the proof-producing
 Or-row traversal append can now operate.
 
+`RawCodedPALocalProofUniversalEliminationChain.v` extracts the repeated
+proof-root assembly for a finite sequence of represented universal
+eliminations.  Its relational chain keeps every checked substitution
+endpoint dependent on the preceding one, and its compiler preserves one
+literal coded context throughout.  A fixed-template traversal computes any
+finite list of leading openings and automatically realizes the corresponding
+operation traces.  The witnessed-tail endpoint composes this with an
+arbitrary fixed PA theorem, selecting its finite axiom prefix once before
+performing all carrier-valued instances.
+
+`RawCodedAssignmentAppendProofCompilation.v` applies that generic chain to
+PA's already proved arbitrary-value beta-table append theorem.  It opens the
+four universal binders in the order old code, old step, bound, and new value,
+and emits a genuine local proof of the specialized append implication on a
+standard witnessed PA tail.  Both arbitrary-base and empty-base forms are
+available.  This supplies the first proof-producing arithmetic primitive for
+extending the four synchronized tables inside the normalized global-Sigma
+Or-row construction.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
