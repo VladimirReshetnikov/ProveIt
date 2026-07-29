@@ -3014,6 +3014,9 @@ defined-table conjunction, the compiler transports it through the selected
 standard PA prefix and applies the specialized implication.  Its endpoint is
 a local proof of the shared eight-witness existential, so subsequent
 existential eliminations can introduce all four extended tables together.
+The antecedent also has audited stable projections for its four literal
+right-associated components, plus a reusable local-proof constructor that
+combines four component roots with three represented conjunction rules.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
