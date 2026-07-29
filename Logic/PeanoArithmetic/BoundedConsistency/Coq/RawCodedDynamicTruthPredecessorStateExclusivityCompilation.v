@@ -27,10 +27,14 @@ From BoundedPAConsistency Require Import
   RawCodedContextStructure
   RawCodedContextShift
   RawCodedProofImpIConstructor
+  RawCodedRestrictedPAProof
+  RawCodedPAAxiomContextSelfShift
   RawCodedPALocalProofExistential
   RawCodedPALocalProofComposition
   RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofContextInsertUnconditional
+  RawCodedPALocalProofWitnessedContextMerge
+  RawCodedPALocalProofWitnessedContextMergeTransportComplete
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedPALocalProofTripleUniversalIntroduction
   RawCodedUniversalClosureDiagonalSubstitution
@@ -58,10 +62,15 @@ Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedContextStructure.
 Import PABoundedRawCodedContextShift.
 Import PABoundedRawCodedProofImpIConstructor.
+Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedPAAxiomContextSelfShift.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
+Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import
+  PABoundedRawCodedPALocalProofWitnessedContextMergeTransportComplete.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPALocalProofTripleUniversalIntroduction.
 Import PABoundedRawCodedUniversalClosureDiagonalSubstitution.
@@ -610,6 +619,64 @@ Proof.
         hbridge)).
 Qed.
 
+(** Context-growing form of the template closure.  The carried exclusivity
+    proof may have been compiled before a later traversal added PA witnesses.
+    It therefore lives in an arbitrary realizable source context.  A witnessed
+    target context containing that source is enough to transport the proof,
+    and also supplies the realizability and self-shift facts needed to close
+    the two predecessor-state assumptions there.
+
+    Notice that no witness package or self-shift is required for the source
+    context.  This is the weakest interface exposed by the completed
+    binder-safe weakening theorem and is useful for all growing compilers,
+    not just the native-trace corollary below. *)
+Theorem
+    raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_local_exclusive_template_on_witnessed_extension :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      sourceContext targetWitnessList targetContext
+      sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot,
+  RawContextListRealizable M sourceContext ->
+  RawCodedPAAxiomWitnessContext M targetWitnessList targetContext ->
+  RawContextListIncluded M sourceContext targetContext ->
+  RawCodedPALocalProofOf M sourceContext
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalExclusiveCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence)) sourceRoot ->
+  RawDynamicTruthPredecessorStateTemplateApplicationBridgeAt M targetContext
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M targetContext
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA sourceContext targetWitnessList targetContext
+    sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot
+    hsourceContext htargetWitnessed hincluded hsource hbridge.
+  assert (htargetContext : RawContextListRealizable M targetContext).
+  {
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      targetWitnessList targetContext htargetWitnessed).
+  }
+  destruct
+    (raw_codedPALocalProof_contextInclusionWeakening_of_binderReady
+      M hPA sourceContext targetContext
+      (rawDynamicTruthLocalFormulaAll3Code M
+        (rawDynamicTruthLocalExclusiveCode M
+          sigmaDomain piDomain sigmaEvidence piEvidence))
+      sourceRoot hsourceContext htargetContext hincluded
+      (raw_contextBinderReady_witnessed_target M hPA
+        sourceContext targetContext targetWitnessList
+        hincluded htargetWitnessed)
+      hsource) as [transportedRoot htransported].
+  exact
+    (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_local_exclusive_template
+      M hPA targetContext sigmaDomain piDomain sigmaEvidence piEvidence
+      transportedRoot htargetContext
+      (raw_codedPAAxiomWitnessContext_selfShift M hPA
+        targetWitnessList targetContext htargetWitnessed)
+      htransported hbridge).
+Qed.
+
 (** Native traces can be eliminated safely here because the final result is
     a proposition.  This avoids any forbidden large elimination from the
     trace's existentially selected [Type]-valued translation witness while
@@ -700,6 +767,53 @@ Proof.
         M baseContext sigmaDomain piDomain sigmaEvidence piEvidence hroots)
       (rawDynamicTruthPredecessorLogicalRoots_piEvidence
         M baseContext sigmaDomain piDomain sigmaEvidence piEvidence hroots)).
+Qed.
+
+(** Native-trace endpoint matching the output shape of growing global-
+    traversal compilers.  The local exclusivity proof is transported from its
+    earlier context, while the three logical roots are consumed directly in
+    the common witnessed extension where the traversal produced them. *)
+Corollary
+    raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_native_trace_on_witnessed_extension_logical_roots :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (tail : nat -> M) predecessorLevel inputGlobalSigma inputGlobalPi
+      sourceContext targetWitnessList targetContext
+      sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot,
+  RawContextListRealizable M sourceContext ->
+  RawCodedPAAxiomWitnessContext M targetWitnessList targetContext ->
+  RawContextListIncluded M sourceContext targetContext ->
+  RawCodedPALocalProofOf M sourceContext
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalExclusiveCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence)) sourceRoot ->
+  RawDynamicTruthNativeLocalProofTraceAt M tail predecessorLevel
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence ->
+  RawDynamicTruthPredecessorStateLogicalRootsAt M targetContext
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M targetContext
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+    sourceContext targetWitnessList targetContext
+    sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot
+    hsourceContext htargetWitnessed hincluded hsource htrace hroots.
+  destruct
+    (raw_coqDynamicTruthLocalExclusiveTemplateIdentification_of_native_trace
+      M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence htrace) as
+    [inputs hidentification].
+  apply
+    (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_local_exclusive_template_on_witnessed_extension
+      M hPA sourceContext targetWitnessList targetContext
+      sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot
+      hsourceContext htargetWitnessed hincluded hsource).
+  exact
+    (raw_dynamicTruthPredecessorStateTemplateApplicationBridgeAt_of_direct_logical_roots
+      M hPA targetContext sigmaDomain piDomain sigmaEvidence piEvidence
+      inputs hidentification hroots).
 Qed.
 
 End PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.

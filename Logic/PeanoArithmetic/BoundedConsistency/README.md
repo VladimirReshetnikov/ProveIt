@@ -4638,3 +4638,15 @@ returns `dynamicTruthGlobalFormula` on the empty prefix.  Neither an externally
 assembled row proof nor a prefix-equivalence premise survives in this
 interface; the next integration boundary consists only of extracting those
 three genuine proof resources from the current master-successor package.
+
+The predecessor-exclusivity client now accepts those resources in the context
+shape actually produced by growing traversal compilers.  Its reusable
+template closure transports a carried local-exclusivity proof from any
+realizable source context into any witnessed target context containing it;
+the source no longer needs its own PA-witness package or self-shift premise.
+The native-trace and aligned-callback endpoints consume the three logical
+roots directly in that target extension and return predecessor exclusivity in
+the same extension.  This removes the former fixed-context equality obstacle:
+the remaining traversal integration may freely adjoin the PA witnesses needed
+to construct admissibility and the opened Sigma/Pi evidence, provided it
+retains the existing base-context inclusion certificate.

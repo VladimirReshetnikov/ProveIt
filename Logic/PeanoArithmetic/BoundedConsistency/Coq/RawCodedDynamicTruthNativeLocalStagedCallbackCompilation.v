@@ -35,6 +35,7 @@ From BoundedPAConsistency Require Import
   RawCodedContextShift
   RawCodedRestrictedPAProof
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofWitnessedContextMerge
   RawCodedPAProvability
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
@@ -76,6 +77,7 @@ Import PABoundedRawCodedContextStructure.
 Import PABoundedRawCodedContextShift.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedPAProvability.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -823,6 +825,94 @@ Proof.
       (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
         predecessorLevel baseContext currentLocal
         nextInputGlobalSigma nextInputGlobalPi aligned) hroots).
+Qed.
+
+(** Growing-context counterpart of the package-shaped callback.  Alignment
+    remains indexed by the source context, because that is where the carried
+    local-field projection was compiled.  The global traversal may construct
+    its three logical roots only after adjoining further PA witnesses; this
+    endpoint transports the projection into that exact witnessed extension
+    before closing predecessor exclusivity. *)
+Corollary
+    raw_dynamicTruthNativeLocalAligned_predecessorRoot_on_witnessed_extension_logical_roots :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  forall (tail : nat -> M) predecessorLevel sourceContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi
+      (aligned : RawDynamicTruthNativeLocalAlignedPredecessorAt M tail
+        predecessorLevel sourceContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi)
+      targetWitnessList targetContext,
+  RawContextListRealizable M sourceContext ->
+  RawCodedPAAxiomWitnessContext M targetWitnessList targetContext ->
+  RawContextListIncluded M sourceContext targetContext ->
+  RawDynamicTruthPredecessorStateLogicalRootsAt M targetContext
+    (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+      predecessorLevel sourceContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned)
+    (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+      predecessorLevel sourceContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned)
+    (rawDynamicTruthNativeLocalAligned_currentSigmaEvidence M tail
+      predecessorLevel sourceContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned)
+    (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
+      predecessorLevel sourceContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned) ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M targetContext
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA tail predecessorLevel sourceContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi aligned
+    targetWitnessList targetContext hsourceContext htargetWitnessed
+    hincluded hroots.
+  exact
+    (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_native_trace_on_witnessed_extension_logical_roots
+      M hPA tail predecessorLevel
+      (rawDynamicTruthNativeLocalAligned_currentInputGlobalSigma M tail
+        predecessorLevel sourceContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentInputGlobalPi M tail
+        predecessorLevel sourceContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      sourceContext targetWitnessList targetContext
+      (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+        predecessorLevel sourceContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+        predecessorLevel sourceContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentSigmaEvidence M tail
+        predecessorLevel sourceContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
+        predecessorLevel sourceContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthLocalExclusiveProjectionRoot M sourceContext
+        (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+          predecessorLevel sourceContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+          predecessorLevel sourceContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentSigmaEvidence M tail
+          predecessorLevel sourceContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
+          predecessorLevel sourceContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentLocalRoot M tail
+          predecessorLevel sourceContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned))
+      hsourceContext htargetWitnessed hincluded
+      (rawDynamicTruthNativeLocalAligned_exclusiveProjection M tail
+        predecessorLevel sourceContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentTrace M tail
+        predecessorLevel sourceContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      hroots).
 Qed.
 
 (** Enrich the exhaustive current-field cases with the next trace.  The zero
