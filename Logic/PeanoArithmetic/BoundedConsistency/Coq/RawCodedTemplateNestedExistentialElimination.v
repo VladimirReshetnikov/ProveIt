@@ -95,4 +95,55 @@ Proof.
         innerRoot hinner).
 Qed.
 
+(** General first step.  The existential source may have been proved anywhere
+    in [context], rather than being its head assumption.  Once that first
+    source is eliminated, all remaining existential bodies are head
+    assumptions and the preceding constructor applies unchanged. *)
+Definition rawCoqTemplateNestedExEliminationFromRoot
+    (count : nat) (body conclusion : TemplateFormula)
+    (context : TemplateContext) (existentialRoot innerRoot : TemplateRawProof)
+    : TemplateRawProof :=
+  match count with
+  | 0 => innerRoot
+  | S remaining =>
+      trpExE context (rawCoqTemplateExN remaining body) conclusion
+        existentialRoot
+        (rawCoqTemplateNestedExEliminationRoot remaining body
+          (templateFormulaRename S conclusion)
+          (templateContextShift context) innerRoot)
+  end.
+
+Arguments rawCoqTemplateNestedExEliminationFromRoot
+  count body conclusion context existentialRoot innerRoot : clear implicits.
+
+Theorem rawCoqTemplateNestedExEliminationFromRoot_derives : forall
+    count body conclusion context existentialRoot innerRoot,
+  TemplateRawDerives context (rawCoqTemplateExN count body)
+    existentialRoot ->
+  TemplateRawDerives
+    (match count with
+     | 0 => context
+     | S remaining =>
+         rawCoqTemplateNestedExContext remaining body
+           (templateContextShift context)
+     end)
+    (rawCoqTemplateRenameN count conclusion) innerRoot ->
+  TemplateRawDerives context conclusion
+    (rawCoqTemplateNestedExEliminationFromRoot
+      count body conclusion context existentialRoot innerRoot).
+Proof.
+  intros [|remaining] body conclusion context
+    existentialRoot innerRoot hexistential hinner.
+  - cbn [rawCoqTemplateExN rawCoqTemplateRenameN
+      rawCoqTemplateNestedExEliminationFromRoot] in *.
+    exact hinner.
+  - cbn [rawCoqTemplateExN] in hexistential.
+    cbn [rawCoqTemplateRenameN] in hinner.
+    cbn [rawCoqTemplateNestedExEliminationFromRoot].
+    apply templateRawDerives_exE; [exact hexistential |].
+    exact (rawCoqTemplateNestedExEliminationRoot_derives
+      remaining body (templateFormulaRename S conclusion)
+      (templateContextShift context) innerRoot hinner).
+Qed.
+
 End PABoundedRawCodedTemplateNestedExistentialElimination.

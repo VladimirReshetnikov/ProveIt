@@ -77,7 +77,7 @@ Proof.
     {| rawCoqRestrictedPATruthDirectOutput :=
          fun _lower _upper context assignmentCode assignmentStep =>
            rawTernaryApplicationOutput contextSelector
-             context assignmentCode assignmentStep;
+             assignmentStep assignmentCode context;
        rawCoqRestrictedPATruthDirectShiftAt := _;
        rawCoqRestrictedPATruthDirectOpeningAt := _ |}.
   - intros depth lower upper context assignmentCode assignmentStep.
@@ -128,8 +128,13 @@ Defined.
 Arguments rawDynamicContextTruthDirectSelector
   M _ _ _ _ _ : clear implicits.
 
-(** Exact leaf view: the hierarchy arguments disappear definitionally and
-    the three semantic arguments are passed in their advertised order. *)
+(** Exact leaf view: the hierarchy arguments disappear definitionally.
+    The context predicate's public de Bruijn layout is
+
+        context = #2, assignmentCode = #1, assignmentStep = #0,
+
+    whereas ternary application substitutes its first argument for [#0].
+    The carrier arguments are therefore deliberately reversed here. *)
 Lemma rawDynamicContextTruthDirectSelector_output : forall
     (M : RawPAModel) (hPA : RawPASatisfies M)
     (parameters : RawCodedTemplateNumeralParameters M)
@@ -141,7 +146,7 @@ Lemma rawDynamicContextTruthDirectSelector_output : forall
       M hPA parameters contextCode contextSelector contextDeep)
     lower upper context assignmentCode assignmentStep =
   rawTernaryApplicationOutput contextSelector
-    context assignmentCode assignmentStep.
+    assignmentStep assignmentCode context.
 Proof. reflexivity. Qed.
 
 (** End-to-end constructor from a deeply closed Sigma predicate.  The first
@@ -163,7 +168,7 @@ Theorem raw_dynamicContextTruthDirectSelector_exists : forall
         rawCoqRestrictedPATruthDirectOutput directSelector
           lower upper context assignmentCode assignmentStep =
         rawTernaryApplicationOutput contextSelector
-          context assignmentCode assignmentStep.
+          assignmentStep assignmentCode context.
 Proof.
   intros M hPA parameters sigmaCode sigmaSelector hsigma.
   destruct (raw_dynamicContextAllSigmaApplicationSelector_exists

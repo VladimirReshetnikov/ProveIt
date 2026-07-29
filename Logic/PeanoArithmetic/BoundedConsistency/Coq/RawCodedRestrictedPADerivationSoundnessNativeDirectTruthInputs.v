@@ -107,7 +107,7 @@ Theorem
         rawCoqRestrictedPATruthDirectOutput contextTruth
           lower upper context assignmentCode assignmentStep =
         rawTernaryApplicationOutput contextApplicationSelector
-          context assignmentCode assignmentStep) /\
+          assignmentStep assignmentCode context) /\
 
       (** Exact carrier output of predicate name one, using the very Sigma
           selector displayed in the outer existential. *)
@@ -124,11 +124,11 @@ Theorem
             [first; second; third; fourth; fifth]) =
         rawTernaryApplicationOutput contextApplicationSelector
           (rawCoqRestrictedPADerivationSoundnessTemplateTermView
-            M parameters third)
+            M parameters fifth)
           (rawCoqRestrictedPADerivationSoundnessTemplateTermView
             M parameters fourth)
           (rawCoqRestrictedPADerivationSoundnessTemplateTermView
-            M parameters fifth)) /\
+            M parameters third)) /\
 
       (** Literal five-argument conclusion leaf after direct translation. *)
       (forall first second third fourth fifth,

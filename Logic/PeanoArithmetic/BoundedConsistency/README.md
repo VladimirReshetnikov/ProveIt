@@ -2791,7 +2791,13 @@ proves literal equality with `rawDynamicContextAllSigmaCode`, transports the
 native dependent selector across that equality, and derives the end-to-end
 equation identifying every native context-truth leaf with the instantiated
 five-existential template.  The Assumption compiler can therefore eliminate
-the real context-truth structure using ordinary represented proof rules.
+the real context-truth structure using ordinary represented proof rules.  The
+native adapter records one important de Bruijn convention explicitly: the
+context predicate exposes context, assignment code, and assignment step at
+`#2`, `#1`, and `#0`, respectively, so ternary application receives those
+carrier arguments in the reverse order.  This boundary equation prevents the
+semantic five-argument truth interface from silently permuting its context
+and assignment-step inputs.
 
 The membership-transfer theorem now also retains an explicit twelve-times
 universally quantified source as a public theorem, carrier proof certificate,
@@ -2804,8 +2810,10 @@ depending on ambient de Bruijn positions or the generic `sealPA` bound.
 logical bookkeeping.  From any template proof in the literal deepest witness
 context, it builds an arbitrary-length `trpExE` tree and proves the exact
 outer endpoint, including every intermediate shifted existential assumption
-and one conclusion renaming per binder.  The Assumption branch uses it for
-both five-witness packages; later quantified branches can reuse the same
+and one conclusion renaming per binder.  A second constructor allows the
+first existential source to be proved in an arbitrary ambient context before
+the remaining head-based eliminations proceed.  The Assumption branch uses it
+for both five-witness packages; later quantified branches can reuse the same
 closed-under-the-global-context constructor.
 
 `RawCodedTemplateRepeatedUniversalElimination.v` provides the dual reusable
@@ -2817,6 +2825,15 @@ uses it at the Assumption branch's ten-witness depth: context and formula are
 `#17` and `#16`, the context-truth traversal tuple is `#4..#0`, and the public
 membership tuple is `#9..#5`.  The audited twelve-step result is exactly the
 three-premise traversal-transfer implication needed by the branch.
+
+`RawCodedRestrictedPADerivationSoundnessAssumptionWitnessShapes.v` connects
+those generic proof constructors to the two concrete five-witness packages.
+It opens public membership first, shifts context truth through those five
+binders, then opens the five context witnesses and checks definitionally that
+the final traversal and membership projections are exactly the terms used by
+the twelve-argument transfer instance.  These small audited shape equalities
+also catch argument-order mistakes before they become hidden inside a large
+represented proof tree.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
