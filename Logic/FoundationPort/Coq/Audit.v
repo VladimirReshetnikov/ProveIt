@@ -541,9 +541,18 @@ Check first_order_definable_retraction.
 Check fin_graph_retraction.
 Check fin_graph_retraction_head.
 Check fin_graph_retraction_tail.
+Check fin_graph_retraction_map.
+Check fin_graph_retraction_map_head.
+Check fin_graph_retraction_map_tail.
+Check first_order_definable_graph_family_map.
 Check first_order_definable_graph_family.
 Check first_order_definable_substitution_witness.
 Check first_order_definable_substitution.
+Check fin_function_graph_retraction.
+Check fin_function_graph_retraction_head.
+Check fin_function_graph_retraction_tail.
+Check first_order_definable_function_substitution_witness.
+Check first_order_definable_function_substitution.
 Check first_order_definable_operator_relation.
 Check first_order_definable_operator_relation_terms.
 Check first_order_definable_eq.
@@ -743,8 +752,11 @@ Print Assumptions fin_env_append_right.
 Print Assumptions fin_env_append_left_eta.
 Print Assumptions fin_env_append_right_eta.
 Print Assumptions first_order_definable_graph_family.
+Print Assumptions first_order_definable_graph_family_map.
 Print Assumptions first_order_definable_substitution_witness.
 Print Assumptions first_order_definable_substitution.
+Print Assumptions first_order_definable_function_substitution_witness.
+Print Assumptions first_order_definable_function_substitution.
 Print Assumptions first_order_definable_operator_relation.
 Print Assumptions first_order_definable_operator_relation_terms.
 Print Assumptions first_order_definable_eq.
