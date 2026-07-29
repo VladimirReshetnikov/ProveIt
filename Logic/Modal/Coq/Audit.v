@@ -8,6 +8,7 @@ From FoundationModal Require Import
   PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalKripkePreservation PropositionalKripkeCanonical
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
+  PropositionalSlash
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1290,6 +1291,19 @@ Check p_dialectica_realizes_top.
 Check p_dialectica_realizes_neg.
 Check p_dialectica_valid_identity.
 Check p_dialectica_excluded_middle_not_valid.
+Check p_aczel_slash.
+Check p_aczel_slash_atom.
+Check p_aczel_slash_falsum.
+Check p_aczel_slash_or.
+Check p_aczel_slash_and.
+Check p_aczel_slash_imp.
+Check p_aczel_slash_neg.
+Check p_aczel_slash_top.
+Check p_aczel_slash_modus_ponens.
+Check pformula_predicate_disjunctive.
+Check pformula_disjunctive_of_aczel_slash_iff.
+Check pformula_logic_aczel_slash.
+Check pformula_logic_disjunctive_of_aczel_slash_iff.
 Check pkripke_frame_kreisel_putnam.
 Check pkripke_KP_valid_of_condition.
 Check pkripke_kreisel_putnam_of_strongly_convergent.
@@ -1339,6 +1353,9 @@ Print Assumptions ph_neg_provable_int_iff_cl.
 Print Assumptions p_dialectica_not_valid_iff.
 Print Assumptions p_dialectica_valid_identity.
 Print Assumptions p_dialectica_excluded_middle_not_valid.
+Print Assumptions p_aczel_slash_modus_ponens.
+Print Assumptions pformula_disjunctive_of_aczel_slash_iff.
+Print Assumptions pformula_logic_disjunctive_of_aczel_slash_iff.
 Print Assumptions pkripke_KP_valid_of_condition.
 Print Assumptions pkripke_kreisel_putnam_of_strongly_convergent.
 Print Assumptions ph_hilbert_kp_pkripke_sound.
