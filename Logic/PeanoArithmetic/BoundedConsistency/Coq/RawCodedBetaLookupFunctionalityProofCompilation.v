@@ -20,6 +20,7 @@ From BoundedPAConsistency Require Import
   RawCodedPAAxiomWitnessPrefix
   RawCodedRestrictedPAProof
   RawCodedTemplateSyntax
+  RawCodedTemplateRenamingSubstitution
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
@@ -43,6 +44,7 @@ Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateRenamingSubstitution.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
@@ -191,6 +193,37 @@ Proof.
   reflexivity.
 Qed.
 
+(** The final projected consequent is the literal output equality.  Exposing
+    this small shape lemma prevents clients from unfolding the five nested
+    universal openings merely to type the proof root they receive. *)
+Lemma coqBetaLookupFunctionalityEqualityTemplate_eq : forall
+    out1 out2 code step index,
+  coqBetaLookupFunctionalityEqualityTemplate out1 out2 code step index =
+    tfEq out2 out1.
+Proof.
+  intros out1 out2 code step index.
+  unfold coqBetaLookupFunctionalityEqualityTemplate,
+    coqBetaLookupFunctionalityAfterFirstTemplate,
+    coqBetaLookupFunctionalityInstanceTemplate,
+    templateImpAntecedent, templateImpConsequent,
+    templateUniversalOpenManyOrBot,
+    codedBetaLookupFunctionalityFormula.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst].
+  repeat first
+    [ rewrite templateTermSubst_comp
+    | rewrite templateTermSubst_rename ].
+  cbn [embedPATerm templateTermSubst
+    templateTermRename templateTermUpSubst templateInstTerm].
+  repeat first
+    [ rewrite templateTermSubst_comp
+    | rewrite templateTermSubst_rename ].
+  cbn [templateTermSubst templateTermRename
+    templateTermUpSubst templateInstTerm].
+  rewrite !templateTermSubst_id.
+  reflexivity.
+Qed.
+
 Lemma coqBetaLookupFunctionalityInstanceOf_shape : forall arguments,
   coqBetaLookupFunctionalityInstanceOf arguments =
     tfImp (coqBetaLookupFunctionalityFirstLookupOf arguments)
@@ -199,6 +232,16 @@ Lemma coqBetaLookupFunctionalityInstanceOf_shape : forall arguments,
 Proof.
   intros [out1 out2 code step index].
   exact (coqBetaLookupFunctionalityInstanceTemplate_shape
+    out1 out2 code step index).
+Qed.
+
+Lemma coqBetaLookupFunctionalityEqualityOf_eq : forall arguments,
+  coqBetaLookupFunctionalityEqualityOf arguments =
+    tfEq (coqBetaLookupFunctionalityOut2 arguments)
+      (coqBetaLookupFunctionalityOut1 arguments).
+Proof.
+  intros [out1 out2 code step index].
+  exact (coqBetaLookupFunctionalityEqualityTemplate_eq
     out1 out2 code step index).
 Qed.
 

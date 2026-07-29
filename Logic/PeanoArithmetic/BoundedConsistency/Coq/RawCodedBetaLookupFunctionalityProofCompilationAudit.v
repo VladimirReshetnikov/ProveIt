@@ -19,6 +19,8 @@ Check coqBetaLookupFunctionalityEqualityOf.
 Check coqBetaLookupFunctionalityInstanceOf_open.
 Check coqBetaLookupFunctionalityInstanceOf_shape.
 Check coqBetaLookupFunctionalityInstanceTemplate_shape.
+Check coqBetaLookupFunctionalityEqualityTemplate_eq.
+Check coqBetaLookupFunctionalityEqualityOf_eq.
 Check
   raw_codedPALocalProofOf_beta_lookup_functionality_instance_on_witnessed_tail.
 Check
@@ -37,6 +39,8 @@ Print Assumptions coqBetaLookupFunctionalityInstanceTemplate_open.
 Print Assumptions coqBetaLookupFunctionalityInstanceOf_open.
 Print Assumptions coqBetaLookupFunctionalityInstanceOf_shape.
 Print Assumptions coqBetaLookupFunctionalityInstanceTemplate_shape.
+Print Assumptions coqBetaLookupFunctionalityEqualityTemplate_eq.
+Print Assumptions coqBetaLookupFunctionalityEqualityOf_eq.
 Print Assumptions
   raw_codedPALocalProofOf_beta_lookup_functionality_instance_on_witnessed_tail.
 Print Assumptions
