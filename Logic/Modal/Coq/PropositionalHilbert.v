@@ -10,7 +10,8 @@
 From Stdlib Require Import Logic.ClassicalEpsilon.
 From FoundationModal Require Import
   GenericSemantics GenericLogicSymbol GenericEntailment GenericCalculus
-  PropositionalEntailmentAxioms PropositionalFormula PropositionalLogic.
+  PropositionalEntailmentAxioms PropositionalEntailmentMinimal
+  PropositionalFormula PropositionalLogic.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -301,6 +302,105 @@ Proof.
   - exact PHPOrIntroR.
   - exact PHPOrElim.
 Defined.
+
+(** The system-specific compatibility record predates the generic minimal
+    layer.  This transparent adapter keeps that API stable while making every
+    Hilbert system an immediate client of the shared derived-rule library. *)
+Definition ph_hilbert_generic_minimal {Atom : Type} (H : ph_hilbert Atom) :
+    generic_minimal_entailment
+      (ph_hilbert_entailment Atom) (pformula_connectives Atom) H.
+Proof.
+  destruct (ph_hilbert_minimal H) as
+    [Hmp Hneg Htop HK HS Hand1 Hand2 Hand3 Hor1 Hor2 Hor3].
+  constructor; assumption.
+Defined.
+
+(** Representative generic consequences are available in every concrete
+    schema system, independently of which optional intermediate axiom schema
+    it carries. *)
+Definition ph_hilbert_dni {Atom : Type} (H : ph_hilbert Atom)
+    (p : pformula Atom) :
+    ph_hilbert_proof H (PImp p (pneg (pneg p))) :=
+  generic_minimal_dni_raw (ph_hilbert_generic_minimal H) p.
+
+Definition ph_hilbert_contraposition {Atom : Type} (H : ph_hilbert Atom)
+    (p q : pformula Atom)
+    (d : ph_hilbert_proof H (PImp p q)) :
+    ph_hilbert_proof H (PImp (pneg q) (pneg p)) :=
+  generic_minimal_contraposition_raw
+    (ph_hilbert_generic_minimal H) p q d.
+
+Definition ph_hilbert_neg_or_iff_and_neg {Atom : Type}
+    (H : ph_hilbert Atom) (p q : pformula Atom) :
+    ph_hilbert_proof H
+      (generic_formula_iff (pformula_connectives Atom)
+        (pneg (POr p q)) (PAnd (pneg p) (pneg q))) :=
+  generic_minimal_neg_or_iff_and_neg_raw
+    (ph_hilbert_generic_minimal H) p q.
+
+Definition ph_hilbert_or_assoc_iff {Atom : Type}
+    (H : ph_hilbert Atom) (p q r : pformula Atom) :
+    ph_hilbert_proof H
+      (generic_formula_iff (pformula_connectives Atom)
+        (POr p (POr q r)) (POr (POr p q) r)) :=
+  generic_minimal_or_assoc_iff_raw
+    (ph_hilbert_generic_minimal H) p q r.
+
+Definition ph_hilbert_and_assoc_iff {Atom : Type}
+    (H : ph_hilbert Atom) (p q r : pformula Atom) :
+    ph_hilbert_proof H
+      (generic_formula_iff (pformula_connectives Atom)
+        (PAnd (PAnd p q) r) (PAnd p (PAnd q r))) :=
+  generic_minimal_and_assoc_iff_raw
+    (ph_hilbert_generic_minimal H) p q r.
+
+(** Concrete views of the generic finite-fold rules.  Positional membership
+    records the selected occurrence, so repeated formulas need no equality
+    decision procedure. *)
+Definition ph_hilbert_list_conj2_elim {Atom : Type}
+    (H : ph_hilbert Atom) {p : pformula Atom}
+    {gamma : list (pformula Atom)}
+    (h : generic_raw_list_member p gamma) :
+    ph_hilbert_proof H
+      (PImp (generic_list_conj2 (pformula_connectives Atom) gamma) p) :=
+  generic_minimal_list_conj2_elim_raw
+    (ph_hilbert_generic_minimal H) h.
+
+Definition ph_hilbert_list_disj2_intro {Atom : Type}
+    (H : ph_hilbert Atom) {p : pformula Atom}
+    {gamma : list (pformula Atom)}
+    (h : generic_raw_list_member p gamma) :
+    ph_hilbert_proof H
+      (PImp p (generic_list_disj2 (pformula_connectives Atom) gamma)) :=
+  generic_minimal_list_disj2_intro_raw
+    (ph_hilbert_generic_minimal H) h.
+
+(** Finite Hilbert contexts are represented by the same Type-valued raw
+    derivations as the generic layer.  The two conversions below show that
+    this structural presentation is exactly implication from the normalized
+    conjunction of the context. *)
+Definition ph_hilbert_context_proof {Atom : Type}
+    (H : ph_hilbert Atom) (gamma : list (pformula Atom))
+    (p : pformula Atom) : Type :=
+  generic_list_derivation (ph_hilbert_entailment Atom) H
+    (pformula_connectives Atom) gamma p.
+
+Definition ph_hilbert_context_to_conj2 {Atom : Type}
+    (H : ph_hilbert Atom) {gamma : list (pformula Atom)}
+    {p : pformula Atom} (d : ph_hilbert_context_proof H gamma p) :
+    ph_hilbert_proof H
+      (PImp (generic_list_conj2 (pformula_connectives Atom) gamma) p) :=
+  generic_minimal_list_derivation_to_conj2_raw
+    (ph_hilbert_generic_minimal H) d.
+
+Definition ph_hilbert_context_of_conj2 {Atom : Type}
+    (H : ph_hilbert Atom) (gamma : list (pformula Atom))
+    (p : pformula Atom)
+    (d : ph_hilbert_proof H
+      (PImp (generic_list_conj2 (pformula_connectives Atom) gamma) p)) :
+    ph_hilbert_context_proof H gamma p :=
+  generic_minimal_list_derivation_of_conj2_raw
+    (ph_hilbert_generic_minimal H) gamma p d.
 
 (** One recursor factors inclusion and arbitrary proof-schema translations. *)
 Fixpoint ph_hilbert_proof_map {Atom : Type}

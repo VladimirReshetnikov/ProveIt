@@ -8,7 +8,8 @@ From FoundationModal Require Import
   PropositionalLogic PropositionalHilbert
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
-  GenericCalculus PropositionalEntailmentAxioms PropositionalTait
+  GenericCalculus PropositionalEntailmentAxioms
+  PropositionalEntailmentMinimal PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -1207,6 +1208,17 @@ Check generic_under_apply_raw.
 Check generic_imp_trans_raw.
 Check generic_dne_of_lem_efq_raw.
 Check generic_dne_of_lem_efq_provable.
+Check generic_raw_list_member.
+Check generic_list_derivation.
+Check GLD_assumption.
+Check GLD_theorem.
+Check GLD_mdp.
+Check generic_list_deduction.
+Check generic_empty_derivation_raw.
+Check generic_singleton_deduction_raw.
+Check generic_wlem_of_dummett_raw.
+Check generic_wlem_of_dummett_provable.
+Check generic_has_axiom_wlem_of_dummett.
 Check generic_raw_proof_translation.
 Check generic_has_axiom_dne_map.
 Check generic_has_axiom_efq_map.
@@ -1224,6 +1236,11 @@ Print Assumptions generic_imp_identity_raw.
 Print Assumptions generic_imp_trans_raw.
 Print Assumptions generic_dne_of_lem_efq_raw.
 Print Assumptions generic_dne_of_lem_efq_provable.
+Print Assumptions generic_list_deduction.
+Print Assumptions generic_empty_derivation_raw.
+Print Assumptions generic_wlem_of_dummett_raw.
+Print Assumptions generic_wlem_of_dummett_provable.
+Print Assumptions generic_has_axiom_wlem_of_dummett.
 Print Assumptions generic_has_axiom_dne_map.
 Print Assumptions generic_has_axiom_efq_map.
 Print Assumptions generic_has_axiom_elim_contra_map.
@@ -1235,6 +1252,200 @@ Print Assumptions generic_has_axiom_wlem_map.
 Print Assumptions generic_has_axiom_dummett_map.
 Print Assumptions generic_has_axiom_kreisel_putnam_map.
 Print Assumptions generic_has_axiom_scott_map.
+
+(** Propositional/Entailment/Minimal/Basic core proof algebra. *)
+Check generic_minimal_entailment.
+Check generic_minimal_of_classical.
+Check generic_minimal_mdp_raw.
+Check generic_minimal_mdp_provable.
+Check generic_minimal_axioms_provable.
+Check generic_minimal_identity_raw.
+Check generic_minimal_dhyp_raw.
+Check generic_minimal_under_apply_raw.
+Check generic_minimal_imp_trans_raw.
+Check generic_minimal_imp_replace_raw.
+Check generic_minimal_imp_swap_raw.
+Check generic_minimal_imp_contract_raw.
+Check generic_minimal_and_elim_left_raw.
+Check generic_minimal_and_elim_right_raw.
+Check generic_minimal_and_intro_raw.
+Check generic_minimal_or_intro_left_raw.
+Check generic_minimal_or_intro_right_raw.
+Check generic_minimal_or_elim_raw.
+Check generic_minimal_or_cases_raw.
+Check generic_minimal_iff_intro_raw.
+Check generic_minimal_iff_refl_raw.
+Check generic_minimal_iff_symm_raw.
+Check generic_minimal_iff_trans_raw.
+Check generic_minimal_imp_bottom_of_neg_raw.
+Check generic_minimal_neg_of_imp_bottom_raw.
+Check generic_minimal_right_and_intro_raw.
+Check generic_minimal_and_swap_axiom_raw.
+Check generic_minimal_iff_swap_axiom_raw.
+Check generic_minimal_to_verum_raw.
+Check generic_minimal_curry_raw.
+Check generic_minimal_uncurry_raw.
+Check generic_minimal_curry_axiom_raw.
+Check generic_minimal_uncurry_axiom_raw.
+Check generic_minimal_curry_iff_raw.
+Check generic_minimal_connective_rules_provable.
+Check generic_minimal_negation_provable_iff.
+Check generic_minimal_curry_provable_iff.
+Check ph_hilbert_generic_minimal.
+Check generic_minimal_imp_lift_right_raw.
+Check generic_minimal_imp_lift_left_raw.
+Check generic_minimal_imp_iff_congr_raw.
+Check generic_minimal_and_map_raw.
+Check generic_minimal_and_map_axiom_raw.
+Check generic_minimal_and_iff_congr_raw.
+Check generic_minimal_or_map_raw.
+Check generic_minimal_or_map_axiom_raw.
+Check generic_minimal_or_iff_congr_raw.
+Check generic_minimal_or_swap_axiom_raw.
+Check generic_minimal_or_assoc_left_raw.
+Check generic_minimal_or_assoc_right_raw.
+Check generic_minimal_or_assoc_iff_raw.
+Check generic_minimal_and_assoc_left_raw.
+Check generic_minimal_and_assoc_right_raw.
+Check generic_minimal_and_assoc_iff_raw.
+Check generic_minimal_inner_mdp_raw.
+Check generic_minimal_neg_mdp_raw.
+Check generic_minimal_dni_raw.
+Check generic_minimal_dni_elim_raw.
+Check generic_minimal_contraposition_raw.
+Check generic_minimal_contraposition_axiom_raw.
+Check generic_minimal_double_neg_map_raw.
+Check generic_minimal_double_neg_map_axiom_raw.
+Check generic_minimal_neg_iff_congr_raw.
+Check generic_minimal_negated_imp_swap_raw.
+Check generic_minimal_negated_imp_swap_axiom_raw.
+Check generic_minimal_triple_neg_elim_raw.
+Check generic_minimal_triple_neg_iff_raw.
+Check generic_minimal_neg_bottom_raw.
+Check generic_minimal_double_neg_bottom_elim_raw.
+Check generic_minimal_double_neg_bottom_iff_raw.
+Check generic_minimal_double_neg_expansion_iff_raw.
+Check generic_minimal_contradiction_axiom_raw.
+Check generic_minimal_contradiction_raw.
+Check generic_minimal_or_neg_to_neg_and_raw.
+Check generic_minimal_and_neg_to_neg_or_raw.
+Check generic_minimal_neg_or_to_and_neg_raw.
+Check generic_minimal_neg_or_iff_and_neg_raw.
+Check generic_minimal_or_double_neg_map_raw.
+Check generic_minimal_and_double_neg_map_raw.
+Check generic_minimal_dni_provable.
+Check generic_minimal_contraposition_provable.
+Check generic_minimal_double_neg_map_provable.
+Check generic_minimal_binary_iff_congruence_provable.
+Check generic_minimal_neg_or_iff_and_neg_provable.
+Check generic_minimal_provable_iff_of_raw_iff.
+Check generic_minimal_provable_iff_of_formula_iff.
+Check generic_minimal_or_assoc_iff_provable.
+Check generic_minimal_or_assoc_provable_iff.
+Check generic_minimal_and_assoc_iff_provable.
+Check generic_minimal_and_assoc_provable_iff.
+Check generic_raw_list_member_map.
+Check generic_minimal_list_conj_intro_raw.
+Check generic_minimal_list_conj_right_intro_raw.
+Check generic_minimal_list_conj_elim_raw.
+Check generic_minimal_list_conj_subset_raw.
+Check generic_minimal_list_conj2_intro_raw.
+Check generic_minimal_list_conj2_right_intro_raw.
+Check generic_minimal_list_conj2_elim_raw.
+Check generic_minimal_list_conj2_subset_raw.
+Check generic_minimal_list_conj_iff_conj2_raw.
+Check generic_minimal_list_disj_intro_raw.
+Check generic_minimal_list_disj2_intro_raw.
+Check generic_minimal_list_conj_map_right_intro_raw.
+Check generic_minimal_list_conj_map_elim_raw.
+Check generic_minimal_list_disj_map_intro_raw.
+Check generic_raw_list_member_app_split.
+Check generic_minimal_list_conj2_append_iff_raw.
+Check generic_minimal_list_conj_provable_iff.
+Check generic_minimal_list_conj2_provable_iff.
+Check generic_minimal_list_disj_intro_provable.
+Check generic_minimal_list_disj2_intro_provable.
+Check generic_list_derivable.
+Check generic_list_derivation_weaken_raw.
+Check generic_list_derivation_append_mdp_raw.
+Check generic_list_deduction_inverse_raw.
+Check generic_minimal_list_deduction_raw.
+Check generic_minimal_list_conj2_derivation_intro_raw.
+Check generic_minimal_list_conj2_context_raw.
+Check generic_minimal_list_derivation_to_conj2_raw.
+Check generic_minimal_list_derivation_of_conj2_raw.
+Check generic_minimal_list_derivation_deduction_iff.
+Check generic_minimal_empty_derivation_provable_iff.
+Check generic_minimal_list_derivation_conj2_iff.
+Check generic_list_derivation_weaken.
+Check generic_list_derivation_append_mdp.
+Check ph_hilbert_dni.
+Check ph_hilbert_contraposition.
+Check ph_hilbert_neg_or_iff_and_neg.
+Check ph_hilbert_or_assoc_iff.
+Check ph_hilbert_and_assoc_iff.
+Check ph_hilbert_list_conj2_elim.
+Check ph_hilbert_list_disj2_intro.
+Check ph_hilbert_context_proof.
+Check ph_hilbert_context_to_conj2.
+Check ph_hilbert_context_of_conj2.
+Print Assumptions generic_minimal_imp_swap_raw.
+Print Assumptions generic_minimal_imp_contract_raw.
+Print Assumptions generic_minimal_iff_trans_raw.
+Print Assumptions generic_minimal_imp_bottom_of_neg_raw.
+Print Assumptions generic_minimal_right_and_intro_raw.
+Print Assumptions generic_minimal_curry_raw.
+Print Assumptions generic_minimal_uncurry_raw.
+Print Assumptions generic_minimal_curry_iff_raw.
+Print Assumptions generic_minimal_connective_rules_provable.
+Print Assumptions generic_minimal_negation_provable_iff.
+Print Assumptions ph_hilbert_generic_minimal.
+Print Assumptions generic_minimal_imp_iff_congr_raw.
+Print Assumptions generic_minimal_and_iff_congr_raw.
+Print Assumptions generic_minimal_or_iff_congr_raw.
+Print Assumptions generic_minimal_or_assoc_iff_raw.
+Print Assumptions generic_minimal_and_assoc_iff_raw.
+Print Assumptions generic_minimal_dni_raw.
+Print Assumptions generic_minimal_contraposition_raw.
+Print Assumptions generic_minimal_contraposition_axiom_raw.
+Print Assumptions generic_minimal_double_neg_map_axiom_raw.
+Print Assumptions generic_minimal_negated_imp_swap_axiom_raw.
+Print Assumptions generic_minimal_triple_neg_iff_raw.
+Print Assumptions generic_minimal_double_neg_bottom_iff_raw.
+Print Assumptions generic_minimal_double_neg_expansion_iff_raw.
+Print Assumptions generic_minimal_contradiction_axiom_raw.
+Print Assumptions generic_minimal_or_neg_to_neg_and_raw.
+Print Assumptions generic_minimal_neg_or_iff_and_neg_raw.
+Print Assumptions generic_minimal_binary_iff_congruence_provable.
+Print Assumptions generic_minimal_provable_iff_of_formula_iff.
+Print Assumptions generic_minimal_or_assoc_provable_iff.
+Print Assumptions generic_minimal_and_assoc_provable_iff.
+Print Assumptions generic_minimal_list_conj_intro_raw.
+Print Assumptions generic_minimal_list_conj_elim_raw.
+Print Assumptions generic_minimal_list_conj2_intro_raw.
+Print Assumptions generic_minimal_list_conj2_elim_raw.
+Print Assumptions generic_minimal_list_disj2_intro_raw.
+Print Assumptions generic_minimal_list_conj_map_right_intro_raw.
+Print Assumptions generic_minimal_list_conj2_append_iff_raw.
+Print Assumptions generic_minimal_list_conj2_provable_iff.
+Print Assumptions generic_list_derivation_weaken_raw.
+Print Assumptions generic_list_derivation_append_mdp_raw.
+Print Assumptions generic_minimal_list_deduction_raw.
+Print Assumptions generic_minimal_list_conj2_context_raw.
+Print Assumptions generic_minimal_list_derivation_to_conj2_raw.
+Print Assumptions generic_minimal_list_derivation_of_conj2_raw.
+Print Assumptions generic_minimal_list_derivation_deduction_iff.
+Print Assumptions generic_minimal_empty_derivation_provable_iff.
+Print Assumptions generic_minimal_list_derivation_conj2_iff.
+Print Assumptions ph_hilbert_dni.
+Print Assumptions ph_hilbert_contraposition.
+Print Assumptions ph_hilbert_neg_or_iff_and_neg.
+Print Assumptions ph_hilbert_or_assoc_iff.
+Print Assumptions ph_hilbert_and_assoc_iff.
+Print Assumptions ph_hilbert_list_conj2_elim.
+Print Assumptions ph_hilbert_list_disj2_intro.
+Print Assumptions ph_hilbert_context_to_conj2.
+Print Assumptions ph_hilbert_context_of_conj2.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
