@@ -1,0 +1,25 @@
+(** Audit surface for context-safe native successor-row projections. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeLocalRowProjectionCompilation.
+
+Import PABoundedRawCodedDynamicTruthNativeLocalRowProjectionCompilation.
+
+Check raw_dynamicTruthNativeLocalSigma_orbit_interchange.
+Check raw_dynamicTruthNativeLocalPi_orbit_interchange.
+Check
+  raw_dynamicTruthNativeLocalExactRows_branch_projection_inputs_on_witnessed_base.
+Check RawDynamicTruthNativeLocalProjectedRowRootsAt.
+Check raw_dynamicTruthNativeLocalProjectedRowRootsAt_of_exact_rows.
+Check RawDynamicTruthNativeLocalReducedStagedRootsAt.
+Check
+  raw_dynamicTruthNativeLocalFieldRootOn_of_reduced_staged_roots_and_40_helpers.
+
+Print Assumptions raw_dynamicTruthNativeLocalSigma_orbit_interchange.
+Print Assumptions raw_dynamicTruthNativeLocalPi_orbit_interchange.
+Print Assumptions
+  raw_dynamicTruthNativeLocalExactRows_branch_projection_inputs_on_witnessed_base.
+Print Assumptions
+  raw_dynamicTruthNativeLocalProjectedRowRootsAt_of_exact_rows.
+Print Assumptions
+  raw_dynamicTruthNativeLocalFieldRootOn_of_reduced_staged_roots_and_40_helpers.

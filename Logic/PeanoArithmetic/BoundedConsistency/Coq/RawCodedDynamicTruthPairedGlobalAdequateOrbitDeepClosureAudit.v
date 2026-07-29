@@ -1,0 +1,15 @@
+(** Assumption audit for deep closure of ordinary paired orbit witnesses. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPairedGlobalAdequateOrbitDeepClosure.
+
+Import
+  PABoundedRawCodedDynamicTruthPairedGlobalAdequateOrbitDeepClosure.
+
+Check raw_dynamicTruthPairedGlobalFormulaCodeAdequateOrbitAt_deep_closed.
+Check raw_dynamicTruthPairedGlobalFormulaCodeOrbitAt_deep_closed.
+
+Print Assumptions
+  raw_dynamicTruthPairedGlobalFormulaCodeAdequateOrbitAt_deep_closed.
+Print Assumptions
+  raw_dynamicTruthPairedGlobalFormulaCodeOrbitAt_deep_closed.
