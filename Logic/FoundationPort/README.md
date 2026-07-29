@@ -32,3 +32,14 @@ The ledger is conservative.  Existing Coq developments elsewhere in `ProveIt`
 may establish mathematically related results, but they are not marked as a
 Foundation module port until their statements and dependency boundary have
 been compared explicitly.
+
+Generic ports that are shared across Foundation's first-order, second-order,
+and linear-logic trees live under `Coq/` with logical root `Foundation`.  Build
+and kernel-check that project independently with:
+
+```powershell
+coq_makefile -f Logic/FoundationPort/Coq/_CoqProject `
+  -o Logic/FoundationPort/Coq/Makefile.coq
+make -C Logic/FoundationPort/Coq -f Makefile.coq Audit.vo
+rocqchk -Q Logic/FoundationPort/Coq Foundation Foundation.Audit
+```
