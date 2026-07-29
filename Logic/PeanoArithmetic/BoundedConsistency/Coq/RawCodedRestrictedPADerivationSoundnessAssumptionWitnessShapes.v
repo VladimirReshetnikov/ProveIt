@@ -184,13 +184,22 @@ Definition coqRestrictedPADirectAssumptionNativeWitnessFormulaTruthTemplate
      coqRestrictedPADirectAssumptionWitnessFormulaTerm;
      ttVar 9; ttVar 8].
 
-Definition coqRestrictedPADirectAssumptionFinalPointwiseAfterIndexTemplate
+Definition coqRestrictedPADirectAssumptionShiftedFinalPointwiseTemplate
     : TemplateFormula :=
-  match templateFormulaRename S
-      coqRestrictedPADirectAssumptionFinalPointwiseTemplate with
-  | tfAll body => templateFormulaOpen (ttVar 0) body
+  templateFormulaRename S
+    coqRestrictedPADirectAssumptionFinalPointwiseTemplate.
+
+Definition coqRestrictedPADirectAssumptionFinalPointwiseIndexBodyTemplate
+    : TemplateFormula :=
+  match coqRestrictedPADirectAssumptionShiftedFinalPointwiseTemplate with
+  | tfAll body => body
   | _ => tfBot
   end.
+
+Definition coqRestrictedPADirectAssumptionFinalPointwiseAfterIndexTemplate
+    : TemplateFormula :=
+  templateFormulaOpen (ttVar 0)
+    coqRestrictedPADirectAssumptionFinalPointwiseIndexBodyTemplate.
 
 Definition coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate
     : TemplateFormula :=
@@ -199,10 +208,18 @@ Definition coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate
   | _ => tfBot
   end.
 
+Definition coqRestrictedPADirectAssumptionFinalPointwiseFormulaBodyTemplate
+    : TemplateFormula :=
+  match coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate with
+  | tfAll body => body
+  | _ => tfBot
+  end.
+
 Definition coqRestrictedPADirectAssumptionFinalPointwiseAfterFormulaTemplate
     : TemplateFormula :=
   match coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate with
-  | tfAll body => templateFormulaOpen (ttVar 17) body
+  | tfAll _ => templateFormulaOpen (ttVar 17)
+      coqRestrictedPADirectAssumptionFinalPointwiseFormulaBodyTemplate
   | _ => tfBot
   end.
 
@@ -219,13 +236,14 @@ Lemma coqRestrictedPADirectAssumptionFinalPointwiseAfterIndex_shape :
     coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate.
 Proof. vm_compute. reflexivity. Qed.
 
+Lemma coqRestrictedPADirectAssumptionShiftedFinalPointwise_shape :
+  coqRestrictedPADirectAssumptionShiftedFinalPointwiseTemplate =
+  tfAll coqRestrictedPADirectAssumptionFinalPointwiseIndexBodyTemplate.
+Proof. vm_compute. reflexivity. Qed.
+
 Lemma coqRestrictedPADirectAssumptionFinalPointwiseAfterLive_shape :
   coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate =
-  tfAll
-    (match coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate with
-     | tfAll body => body
-     | _ => tfBot
-     end).
+  tfAll coqRestrictedPADirectAssumptionFinalPointwiseFormulaBodyTemplate.
 Proof. vm_compute. reflexivity. Qed.
 
 Lemma coqRestrictedPADirectAssumptionFinalPointwiseAfterFormula_shape :
