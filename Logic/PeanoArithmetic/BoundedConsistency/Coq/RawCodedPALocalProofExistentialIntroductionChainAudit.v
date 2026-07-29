@@ -1,0 +1,13 @@
+(** Exact-interface and assumption audit for finite existential introduction. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofExistentialIntroductionChain.
+
+Import PABoundedRawCodedPALocalProofExistentialIntroductionChain.
+
+Check templateExistentialOpenMany.
+Check raw_codedPALocalProofOf_templateExI.
+Check raw_codedPALocalProofOf_templateExistentialOpenMany.
+
+Print Assumptions raw_codedPALocalProofOf_templateExI.
+Print Assumptions raw_codedPALocalProofOf_templateExistentialOpenMany.

@@ -6,5 +6,7 @@ From BoundedPAConsistency Require Import
 Import PABoundedRawCodedPALocalProofAndIntroduction.
 
 Check raw_codedPALocalProofOf_andI.
+Check raw_codedPALocalProofOf_and7I.
 
 Print Assumptions raw_codedPALocalProofOf_andI.
+Print Assumptions raw_codedPALocalProofOf_and7I.
