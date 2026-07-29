@@ -1,0 +1,16 @@
+(** Assumption audit for successor-bound splitting in an appended row. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFourStateTableAppendRowLtSuccCases.
+
+Import PABoundedRawCodedFourStateTableAppendRowLtSuccCases.
+
+Check raw_templateContextCode_embedPAAxiomWitnesses.
+Check raw_fourStateTableAppendRowContext_witnessed_tail_code.
+Check
+  raw_codedPALocalProofOf_four_state_table_append_row_lt_succ_cases.
+
+Print Assumptions raw_templateContextCode_embedPAAxiomWitnesses.
+Print Assumptions raw_fourStateTableAppendRowContext_witnessed_tail_code.
+Print Assumptions
+  raw_codedPALocalProofOf_four_state_table_append_row_lt_succ_cases.

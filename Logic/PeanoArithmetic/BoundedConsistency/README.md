@@ -4098,3 +4098,9 @@ prefix explicitly and proves its context affine in a witnessed PA tail.  The
 eight append eliminations plus five row introductions shift an arbitrary tail
 thirteen times; embedded witnessed PA axioms are sentences, so this particular
 tail remains literally unchanged.
+
+`RawCodedFourStateTableAppendRowLtSuccCases` joins this context equation to
+the prefix-general arithmetic compiler.  Given the row proof of `i < S b`, it
+returns an honest local proof of `i < b \/ i = b` under the same append and row
+assumptions, extending only the synchronized witnessed-PA tail selected by the
+fixed helper theorem.
