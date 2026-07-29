@@ -79,6 +79,78 @@ Proof.
   exact (PHFPModusPonens (PHFPAxiomC p q r) (PHFPAndRule Hpq Hpr)).
 Qed.
 
+(** * Raw Corsi-rule combinators
+
+    Hilbert F presents C, D, and I as axioms, whereas Hilbert VF/WF presents
+    them as rules.  These raw combinators factor the corresponding modus-
+    ponens steps and the Restall derivation used by replacement of
+    equivalents. *)
+
+Definition phf_iff {Atom : Type}
+    (p q : pformula Atom) : pformula Atom :=
+  PAnd (PImp p q) (PImp q p).
+
+Definition phf_proof_rule_C {Atom : Type} {H : phf_hilbert Atom}
+    {p q r : pformula Atom}
+    (Hpq : phf_proof H (PImp p q))
+    (Hpr : phf_proof H (PImp p r)) :
+    phf_proof H (PImp p (PAnd q r)) :=
+  PHFPModusPonens (PHFPAxiomC p q r) (PHFPAndRule Hpq Hpr).
+
+Definition phf_proof_rule_D {Atom : Type} {H : phf_hilbert Atom}
+    {p q r : pformula Atom}
+    (Hpr : phf_proof H (PImp p r))
+    (Hqr : phf_proof H (PImp q r)) :
+    phf_proof H (PImp (POr p q) r) :=
+  PHFPModusPonens (PHFPAxiomD p q r) (PHFPAndRule Hpr Hqr).
+
+Definition phf_proof_rule_I {Atom : Type} {H : phf_hilbert Atom}
+    {p q r : pformula Atom}
+    (Hpq : phf_proof H (PImp p q))
+    (Hqr : phf_proof H (PImp q r)) :
+    phf_proof H (PImp p r) :=
+  PHFPModusPonens (PHFPAxiomI p q r) (PHFPAndRule Hpq Hqr).
+
+Definition phf_proof_iff_left {Atom : Type} {H : phf_hilbert Atom}
+    {p q : pformula Atom} (Hiff : phf_proof H (phf_iff p q)) :
+    phf_proof H (PImp p q) :=
+  PHFPModusPonens (PHFPAndElimL (PImp p q) (PImp q p)) Hiff.
+
+Definition phf_proof_iff_right {Atom : Type} {H : phf_hilbert Atom}
+    {p q : pformula Atom} (Hiff : phf_proof H (phf_iff p q)) :
+    phf_proof H (PImp q p) :=
+  PHFPModusPonens (PHFPAndElimR (PImp p q) (PImp q p)) Hiff.
+
+Definition phf_proof_restall {Atom : Type} {H : phf_hilbert Atom}
+    {p q r s : pformula Atom}
+    (Hpq : phf_proof H (PImp p q))
+    (Hrs : phf_proof H (PImp r s)) :
+    phf_proof H (PImp (PImp q r) (PImp p s)).
+Proof.
+  refine (@phf_proof_rule_I Atom H (PImp q r)
+    (PAnd (PImp p r) (PImp r s)) (PImp p s) _ (PHFPAxiomI p r s)).
+  apply phf_proof_rule_C.
+  - refine (@phf_proof_rule_I Atom H (PImp q r)
+      (PAnd (PImp p q) (PImp q r)) (PImp p r) _ (PHFPAxiomI p q r)).
+    apply phf_proof_rule_C.
+    + exact (PHFPAFortiori (PImp q r) Hpq).
+    + apply PHFPIdentity.
+  - exact (PHFPAFortiori (PImp q r) Hrs).
+Defined.
+
+Definition phf_proof_rule_E {Atom : Type} {H : phf_hilbert Atom}
+    {p q r s : pformula Atom}
+    (Hpq : phf_proof H (phf_iff p q))
+    (Hrs : phf_proof H (phf_iff r s)) :
+    phf_proof H (phf_iff (PImp p r) (PImp q s)).
+Proof.
+  apply PHFPAndRule.
+  - exact (phf_proof_restall (phf_proof_iff_right Hpq)
+      (phf_proof_iff_left Hrs)).
+  - exact (phf_proof_restall (phf_proof_iff_left Hpq)
+      (phf_proof_iff_right Hrs)).
+Defined.
+
 (** * Aczel slash and disjunctivity *)
 
 Theorem phf_provable_of_aczel_slash :

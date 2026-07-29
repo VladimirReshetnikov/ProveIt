@@ -9,7 +9,8 @@
 
 From FoundationModal Require Import
   PropositionalFormula PropositionalLogic PropositionalHilbert
-  PropositionalHilbertVF.
+  PropositionalHilbertVF PropositionalKripke2Hilbert
+  PropositionalHilbertFExtensions.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -34,7 +35,7 @@ Definition phwf_hilbert_WF (Atom : Type) : phwf_hilbert Atom :=
 
 Definition phwf_iff {Atom : Type}
     (p q : pformula Atom) : pformula Atom :=
-  PAnd (PImp p q) (PImp q p).
+  phf_iff p q.
 
 (** * Faithful WF proofs *)
 
@@ -314,5 +315,64 @@ Corollary phvf_VF_included_phwf_WF : forall Atom : Type,
   phvf_phwf_included (phvf_hilbert_VF Atom) (phwf_hilbert_WF Atom).
 Proof.
   intro Atom. apply phvf_phwf_included_of_provable_schema.
+  intros p H; contradiction.
+Qed.
+
+(** * WF-to-F transport *)
+
+Fixpoint phwf_proof_to_phf {Atom : Type}
+    {Hw : phwf_hilbert Atom} {Hf : phf_hilbert Atom}
+    (Hschema : forall p, phwf_schema Hw p -> phf_proof Hf p)
+    {p} (d : phwf_proof Hw p) : phf_proof Hf p.
+Proof.
+  destruct d.
+  - now apply Hschema.
+  - apply PHFPAndElimL.
+  - apply PHFPAndElimR.
+  - apply PHFPOrIntroL.
+  - apply PHFPOrIntroR.
+  - apply PHFPDistributeAndOr.
+  - apply PHFPIdentity.
+  - apply PHFPEfq.
+  - exact (PHFPModusPonens
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d1)
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d2)).
+  - exact (PHFPAFortiori _
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d)).
+  - exact (PHFPAndRule
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d1)
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d2)).
+  - exact (phf_proof_rule_C
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d1)
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d2)).
+  - exact (phf_proof_rule_D
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d1)
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d2)).
+  - exact (phf_proof_rule_I
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d1)
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d2)).
+  - exact (phf_proof_rule_E
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d1)
+      (@phwf_proof_to_phf Atom Hw Hf Hschema _ d2)).
+Defined.
+
+Definition phwf_phf_included {Atom : Type}
+    (Hw : phwf_hilbert Atom) (Hf : phf_hilbert Atom) : Prop :=
+  forall p, phwf_provable Hw p -> phf_provable Hf p.
+
+Theorem phwf_phf_included_of_provable_schema :
+  forall (Atom : Type) (Hw : phwf_hilbert Atom) (Hf : phf_hilbert Atom),
+    (forall p, phwf_schema Hw p -> phf_provable Hf p) ->
+    phwf_phf_included Hw Hf.
+Proof.
+  intros Atom Hw Hf Hschema p [d]. constructor.
+  exact (@phwf_proof_to_phf Atom Hw Hf
+    (fun q Hq => ph_inhabited_get (Hschema q Hq)) p d).
+Qed.
+
+Corollary phwf_WF_included_phf_F : forall Atom : Type,
+  phwf_phf_included (phwf_hilbert_WF Atom) (phf_hilbert_F Atom).
+Proof.
+  intro Atom. apply phwf_phf_included_of_provable_schema.
   intros p H; contradiction.
 Qed.
