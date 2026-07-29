@@ -1444,6 +1444,14 @@ Check phf_provable_or_left.
 Check phf_provable_or_right.
 Check phf_provable_imp_trans.
 Check phf_provable_imp_and.
+Check phf_iff.
+Check phf_proof_rule_C.
+Check phf_proof_rule_D.
+Check phf_proof_rule_I.
+Check phf_proof_iff_left.
+Check phf_proof_iff_right.
+Check phf_proof_restall.
+Check phf_proof_rule_E.
 Check phf_provable_of_aczel_slash.
 Check phf_aczel_slash_of_proof.
 Check phf_aczel_slash_iff_provable.
@@ -1462,6 +1470,11 @@ Check phf_deduction_weaken.
 Check phf_weak_deduction_iff.
 Check phf_deduction_finite_list_support.
 Print Assumptions phf_provable_imp_trans.
+Print Assumptions phf_proof_rule_C.
+Print Assumptions phf_proof_rule_D.
+Print Assumptions phf_proof_rule_I.
+Print Assumptions phf_proof_restall.
+Print Assumptions phf_proof_rule_E.
 Print Assumptions phf_aczel_slash_of_proof.
 Print Assumptions phf_aczel_slash_iff_provable.
 Print Assumptions phf_disjunctive_of_schema_aczel_slash.
@@ -1645,6 +1658,10 @@ Check phvf_proof_to_phwf.
 Check phvf_phwf_included.
 Check phvf_phwf_included_of_provable_schema.
 Check phvf_VF_included_phwf_WF.
+Check phwf_proof_to_phf.
+Check phwf_phf_included.
+Check phwf_phf_included_of_provable_schema.
+Check phwf_WF_included_phf_F.
 Print Assumptions phwf_schema_substitute.
 Print Assumptions phwf_proof_of_schema_inclusion.
 Print Assumptions phwf_proof_substitute.
@@ -1653,6 +1670,9 @@ Print Assumptions phwf_hilbert_logic_subset_of_schema_inclusion.
 Print Assumptions phvf_proof_to_phwf.
 Print Assumptions phvf_phwf_included_of_provable_schema.
 Print Assumptions phvf_VF_included_phwf_WF.
+Print Assumptions phwf_proof_to_phf.
+Print Assumptions phwf_phf_included_of_provable_schema.
+Print Assumptions phwf_WF_included_phf_F.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
