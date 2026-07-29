@@ -584,6 +584,93 @@ Proof.
     now rewrite <- Hys.
 Defined.
 
+(** * Common composition interfaces *)
+
+Definition first_order_definable_unary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M) : Type :=
+  first_order_definable_function Str
+    (fun v : Fin.t 1 -> M => F (v Fin.F1)).
+
+Definition first_order_definable_binary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M -> M) : Type :=
+  first_order_definable_function Str
+    (fun v : Fin.t 2 -> M => F (v Fin.F1) (v (Fin.FS Fin.F1))).
+
+Definition fin_two_definable_function_family {L M l}
+    {Str : first_order_structure L M}
+    (f g : (Fin.t l -> M) -> M)
+    (Hf : first_order_definable_function Str f)
+    (Hg : first_order_definable_function Str g) :
+    forall i, first_order_definable_function Str (fin_two f g i).
+Proof.
+  intro i.
+  refine (@Fin.caseS' 1 i
+    (fun j => first_order_definable_function Str (fin_two f g j)) Hf _).
+  intro j.
+  refine (@Fin.caseS' 0 j
+    (fun q => first_order_definable_function Str (fin_two f g (Fin.FS q)))
+    Hg _).
+  intros q; inversion q.
+Defined.
+
+Definition first_order_definable_predicate_comp {L M l}
+    {Str : first_order_structure L M} (P : M -> Prop)
+    (f : (Fin.t l -> M) -> M)
+    (HP : first_order_definable_predicate Str P)
+    (Hf : first_order_definable_function Str f) :
+    first_order_definable Str (fun z => P (f z)).
+Proof.
+  refine (first_order_definable_of_iff
+    (first_order_definable_substitution
+      (P := fun v : Fin.t 1 -> M => P (v Fin.F1))
+      (f := fun _ => f) HP (fun _ => Hf)) _).
+  intro z. reflexivity.
+Defined.
+
+Definition first_order_definable_relation_comp {L M l}
+    {Str : first_order_structure L M} (R : M -> M -> Prop)
+    (f g : (Fin.t l -> M) -> M)
+    (HR : first_order_definable_relation Str R)
+    (Hf : first_order_definable_function Str f)
+    (Hg : first_order_definable_function Str g) :
+    first_order_definable Str (fun z => R (f z) (g z)).
+Proof.
+  refine (first_order_definable_of_iff
+    (first_order_definable_substitution
+      (P := fun v : Fin.t 2 -> M =>
+        R (v Fin.F1) (v (Fin.FS Fin.F1)))
+      (f := fin_two f g) HR
+      (fin_two_definable_function_family (f := f) (g := g) Hf Hg)) _).
+  intro z. reflexivity.
+Defined.
+
+Definition first_order_definable_unary_function_comp {L M l}
+    {Str : first_order_structure L M} (F : M -> M)
+    (f : (Fin.t l -> M) -> M)
+    (HF : first_order_definable_unary_function Str F)
+    (Hf : first_order_definable_function Str f) :
+    first_order_definable_function Str (fun z => F (f z)).
+Proof.
+  refine (first_order_definable_function_substitution
+    (F := fun v : Fin.t 1 -> M => F (v Fin.F1))
+    (f := fun _ => f) HF (fun _ => Hf)).
+Defined.
+
+Definition first_order_definable_binary_function_comp {L M l}
+    {Str : first_order_structure L M} (F : M -> M -> M)
+    (f g : (Fin.t l -> M) -> M)
+    (HF : first_order_definable_binary_function Str F)
+    (Hf : first_order_definable_function Str f)
+    (Hg : first_order_definable_function Str g) :
+    first_order_definable_function Str (fun z => F (f z) (g z)).
+Proof.
+  refine (first_order_definable_function_substitution
+    (F := fun v : Fin.t 2 -> M =>
+      F (v Fin.F1) (v (Fin.FS Fin.F1)))
+    (f := fin_two f g) HF
+    (fin_two_definable_function_family (f := f) (g := g) Hf Hg)).
+Defined.
+
 (** * Primitive and arbitrary relation operators *)
 
 Definition first_order_definable_operator_relation {L M}
