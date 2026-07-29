@@ -424,6 +424,22 @@ Definition ph_hilbert_type_context_to_finite {Atom : Type}
       (ph_hilbert_entailment Atom) H (pformula_connectives Atom) T p :=
   generic_type_context_to_finite_witness_raw d.
 
+Definition ph_hilbert_double_neg_imp_distribution {Atom : Type}
+    (H : ph_hilbert Atom) (p q : pformula Atom) :
+    ph_hilbert_proof H
+      (PImp (pneg (pneg (PImp p q)))
+        (PImp (pneg (pneg p)) (pneg (pneg q)))) :=
+  generic_minimal_double_neg_imp_distribution_raw
+    (ph_hilbert_generic_minimal H) p q.
+
+Definition ph_hilbert_and_or_cut {Atom : Type}
+    (H : ph_hilbert Atom) (p1 p2 cut q1 q2 : pformula Atom)
+    (d1 : ph_hilbert_proof H (PImp (PAnd p1 cut) q1))
+    (d2 : ph_hilbert_proof H (PImp p2 (POr cut q2))) :
+    ph_hilbert_proof H (PImp (PAnd p1 p2) (POr q1 q2)) :=
+  generic_minimal_and_or_cut_raw
+    (ph_hilbert_generic_minimal H) p1 p2 cut q1 q2 d1 d2.
+
 (** One recursor factors inclusion and arbitrary proof-schema translations. *)
 Fixpoint ph_hilbert_proof_map {Atom : Type}
     {H K : ph_hilbert Atom}

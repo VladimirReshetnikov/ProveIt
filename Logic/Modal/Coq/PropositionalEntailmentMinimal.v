@@ -2432,3 +2432,187 @@ Proof.
       (generic_minimal_mdp H) d).
   - exact (GTCD_theorem d).
 Qed.
+
+(** * Remaining stable and cut consequences *)
+
+(** Double-negated implication distributes over double-negated antecedent and
+    consequent in minimal logic.  Foundation proves this through
+    equality-decided finite contexts; positional deduction makes the proof
+    constructive for arbitrary formula types. *)
+Definition generic_minimal_double_neg_imp_distribution_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C
+        (generic_neg C (generic_neg C (generic_imp C p q)))
+        (generic_imp C (generic_neg C (generic_neg C p))
+          (generic_neg C (generic_neg C q)))).
+Proof.
+  set (f := generic_imp C p q).
+  set (nf := generic_neg C f).
+  set (nnf := generic_neg C nf).
+  set (np := generic_neg C p).
+  set (nnp := generic_neg C np).
+  set (nq := generic_neg C q).
+  set (nnq := generic_neg C nq).
+  assert (df : generic_list_derivation E s C [f; nq; nnp; nnf] f).
+  { exact (GLD_assumption (GRLM_here [nq; nnp; nnf])). }
+  assert (dnq : generic_list_derivation E s C [f; nq; nnp; nnf] nq).
+  { exact (GLD_assumption (GRLM_there f (GRLM_here [nnp; nnf]))). }
+  assert (dnnp : generic_list_derivation E s C [f; nq; nnp; nnf] nnp).
+  { exact (GLD_assumption
+      (GRLM_there f (GRLM_there nq (GRLM_here [nnf])))). }
+  pose (dnqnp := GLD_mdp
+    (GLD_theorem (generic_minimal_contraposition_axiom_raw H p q)) df).
+  pose (dnp := GLD_mdp dnqnp dnq).
+  pose (dnpbot := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H np))) dnnp).
+  pose (dbot_with_f := GLD_mdp dnpbot dnp).
+  pose (dfbot := generic_list_deduction (generic_minimal_mdp H)
+    (generic_minimal_K H) (generic_minimal_S H) dbot_with_f).
+  pose (dnf := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_right_raw H _ _
+      (generic_minimal_neg_equiv H f))) dfbot).
+  assert (dnnf : generic_list_derivation E s C [nq; nnp; nnf] nnf).
+  { exact (GLD_assumption
+      (GRLM_there nq (GRLM_there nnp (GRLM_here [])))). }
+  pose (dnfbot := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H nf))) dnnf).
+  pose (dbot := GLD_mdp dnfbot dnf).
+  pose (dnqbot := generic_list_deduction (generic_minimal_mdp H)
+    (generic_minimal_K H) (generic_minimal_S H) dbot).
+  pose (dnnq := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_right_raw H _ _
+      (generic_minimal_neg_equiv H nq))) dnqbot).
+  exact (generic_empty_derivation_raw (generic_minimal_mdp H)
+    (generic_list_deduction (generic_minimal_mdp H)
+      (generic_minimal_K H) (generic_minimal_S H)
+      (generic_list_deduction (generic_minimal_mdp H)
+        (generic_minimal_K H) (generic_minimal_S H) dnnq))).
+Defined.
+
+Arguments generic_minimal_double_neg_imp_distribution_raw {S F E C s}
+  _ _ _.
+
+Definition generic_minimal_double_neg_imp_map_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F)
+    (d : generic_proof E s
+      (generic_neg C (generic_neg C (generic_imp C p q)))) :
+    generic_proof E s
+      (generic_imp C (generic_neg C (generic_neg C p))
+        (generic_neg C (generic_neg C q))) :=
+  generic_minimal_mdp_raw H _ _
+    (generic_minimal_double_neg_imp_distribution_raw H p q) d.
+
+Arguments generic_minimal_double_neg_imp_map_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_top_to_neg_bottom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) :
+    generic_proof E s
+      (generic_imp C (generic_top C) (generic_neg C (generic_bottom C))) :=
+  generic_minimal_dhyp_raw H (generic_neg C (generic_bottom C))
+    (generic_top C) (generic_minimal_neg_bottom_raw H).
+
+(** A generalized cut between a conjunctive premise and a disjunctive result.
+    The proof uses only one positional assumption and a temporary cut-formula
+    assumption, so Foundation's [DecidableEq] premise is unnecessary. *)
+Definition generic_minimal_and_or_cut_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s)
+    (p1 p2 cut q1 q2 : F)
+    (d1 : generic_proof E s
+      (generic_imp C (generic_and C p1 cut) q1))
+    (d2 : generic_proof E s
+      (generic_imp C p2 (generic_or C cut q2))) :
+    generic_proof E s
+      (generic_imp C (generic_and C p1 p2) (generic_or C q1 q2)).
+Proof.
+  set (a := generic_and C p1 p2).
+  set (goal := generic_or C q1 q2).
+  assert (dcut : generic_list_derivation E s C [cut; a] cut).
+  { exact (GLD_assumption (GRLM_here [a])). }
+  assert (da2 : generic_list_derivation E s C [cut; a] a).
+  { exact (GLD_assumption (GRLM_there cut (GRLM_here []))). }
+  pose (dp1 := GLD_mdp (GLD_theorem (generic_minimal_and1 H p1 p2)) da2).
+  pose (dp1cut := GLD_mdp
+    (GLD_mdp (GLD_theorem (generic_minimal_and3 H p1 cut)) dp1) dcut).
+  pose (dq1 := GLD_mdp (GLD_theorem d1) dp1cut).
+  pose (dgoal_cut := GLD_mdp
+    (GLD_theorem (generic_minimal_or1 H q1 q2)) dq1).
+  pose (branch_cut := generic_list_deduction (generic_minimal_mdp H)
+    (generic_minimal_K H) (generic_minimal_S H) dgoal_cut).
+  assert (da : generic_list_derivation E s C [a] a).
+  { exact (GLD_assumption (GRLM_here [])). }
+  pose (dp2 := GLD_mdp (GLD_theorem (generic_minimal_and2 H p1 p2)) da).
+  pose (dc_or_q2 := GLD_mdp (GLD_theorem d2) dp2).
+  pose (dcase := GLD_mdp
+    (GLD_mdp (GLD_theorem (generic_minimal_or3 H cut q2 goal)) branch_cut)
+    (GLD_theorem (generic_minimal_or2 H q1 q2))).
+  pose (dgoal := GLD_mdp dcase dc_or_q2).
+  exact (@generic_singleton_deduction_raw S F E s C
+    (generic_minimal_mdp H) (generic_minimal_K H) (generic_minimal_S H)
+    a goal dgoal).
+Defined.
+
+Arguments generic_minimal_and_or_cut_raw {S F E C s}
+  _ _ _ _ _ _ _ _.
+
+Lemma generic_minimal_double_neg_imp_distribution_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q,
+      generic_provable E s
+        (generic_imp C
+          (generic_neg C (generic_neg C (generic_imp C p q)))
+          (generic_imp C (generic_neg C (generic_neg C p))
+            (generic_neg C (generic_neg C q)))).
+Proof.
+  intros S F E C s H p q. constructor.
+  exact (generic_minimal_double_neg_imp_distribution_raw H p q).
+Qed.
+
+Lemma generic_minimal_and_or_cut_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p1 p2 cut q1 q2,
+      generic_provable E s
+        (generic_imp C (generic_and C p1 cut) q1) ->
+      generic_provable E s
+        (generic_imp C p2 (generic_or C cut q2)) ->
+      generic_provable E s
+        (generic_imp C (generic_and C p1 p2) (generic_or C q1 q2)).
+Proof.
+  intros S F E C s H p1 p2 cut q1 q2 [d1] [d2]. constructor.
+  exact (generic_minimal_and_or_cut_raw H p1 p2 cut q1 q2 d1 d2).
+Qed.
+
+Lemma generic_minimal_unprovable_imp_trans :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q r,
+      generic_provable E s (generic_imp C p q) ->
+      generic_unprovable E s (generic_imp C p r) ->
+      generic_unprovable E s (generic_imp C q r).
+Proof.
+  intros S F E C s H p q r [dpq] Hnot [dqr]. apply Hnot. constructor.
+  exact (generic_minimal_imp_trans_raw H p q r dpq dqr).
+Qed.
+
+Lemma generic_minimal_unprovable_iff_of_formula_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q,
+      generic_provable E s (generic_formula_iff C p q) ->
+      (generic_unprovable E s p <-> generic_unprovable E s q).
+Proof.
+  intros S F E C s H p q de.
+  pose proof (@generic_minimal_provable_iff_of_formula_iff
+    S F E C s H p q de) as hpq.
+  split; intros Hnot Hproof.
+  - apply Hnot. exact (proj2 hpq Hproof).
+  - apply Hnot. exact (proj1 hpq Hproof).
+Qed.
