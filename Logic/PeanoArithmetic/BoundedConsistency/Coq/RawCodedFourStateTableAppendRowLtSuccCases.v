@@ -25,6 +25,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofExistential
   RawCodedPALocalProofComposition
   RawCodedPALocalProofContextInsertUnconditional
+  RawCodedPALocalProofWitnessedContextMerge
   RawCodedPALocalProofEquality
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedPALocalProofExistentialEliminationChain
@@ -65,6 +66,7 @@ Import PABoundedRawCodedProofAssumptionLeaf.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
+Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedPALocalProofEquality.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
@@ -1084,6 +1086,210 @@ Proof.
   reflexivity.
 Qed.
 
+(** The inherited traversal is universally quantified in the literal row
+    order index, mode, formula, assignment code, assignment step. *)
+Definition coqFourStateTableAppendConcreteRowVariables
+    : list TemplateTerm :=
+  [ttVar 4; ttVar 3; ttVar 2; ttVar 1; ttVar 0].
+
+(** Compile the predecessor production from an inherited traversal root.
+    The exact opening equation remains visible because the traversal body is
+    supplied by the outer global-code client; all proof-root assembly is
+    independent of that syntax. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_inherited_row_production :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context inheritedTraversal below oldLookup result
+    traversalRoot belowRoot oldLookupRoot,
+  templateUniversalOpenMany inheritedTraversal
+    coqFourStateTableAppendConcreteRowVariables =
+    Some (tfImp below (tfImp oldLookup result)) ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation inheritedTraversal) traversalRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation below) belowRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation oldLookup) oldLookupRoot ->
+  exists resultRoot,
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation result) resultRoot.
+Proof.
+  intros M hPA translation context inheritedTraversal
+    below oldLookup result traversalRoot belowRoot oldLookupRoot
+    hopen htraversal hbelow holdLookup.
+  exact
+    (raw_codedPALocalProofOf_templateUniversalOpenMany_impE2
+      M hPA translation context inheritedTraversal
+      coqFourStateTableAppendConcreteRowVariables
+      below oldLookup result traversalRoot belowRoot oldLookupRoot
+      hopen htraversal hbelow holdLookup).
+Qed.
+
+(** Proof roots consumed by the inherited predecessor production in one
+    literal branch context. *)
+Definition RawFourStateTableAppendInheritedProductionInputsAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (context : M) (prefix : TemplateContext)
+    (inheritedTraversal below oldLookup : TemplateFormula) : Prop :=
+  exists traversalRoot belowRoot oldLookupRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation context prefix)
+      (rawTemplateFormula translation inheritedTraversal) traversalRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation context prefix)
+      (rawTemplateFormula translation below) belowRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation context prefix)
+      (rawTemplateFormula translation oldLookup) oldLookupRoot.
+
+Arguments RawFourStateTableAppendInheritedProductionInputsAt
+  M translation context prefix inheritedTraversal below oldLookup
+  : clear implicits.
+
+(** The two predecessor proofs that genuinely exist before the arithmetic
+    branch is chosen. *)
+Definition RawFourStateTableAppendInheritedLocalRootsAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (context : M) (prefix : TemplateContext)
+    (inheritedTraversal oldLookup : TemplateFormula) : Prop :=
+  exists traversalRoot oldLookupRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation context prefix)
+      (rawTemplateFormula translation inheritedTraversal) traversalRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation context prefix)
+      (rawTemplateFormula translation oldLookup) oldLookupRoot.
+
+Arguments RawFourStateTableAppendInheritedLocalRootsAt
+  M translation context prefix inheritedTraversal oldLookup
+  : clear implicits.
+
+(** Construct the predecessor package from proofs available before the case
+    split.  The adequate [below] formula is inserted once above the shared
+    prefix; inherited traversal and lookup roots are rebuilt beneath it, and
+    the bound premise is the literal represented assumption leaf. *)
+Theorem
+    raw_fourStateTableAppendInheritedProductionInputsAt_of_local_roots :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext prefix inheritedTraversal below oldLookup
+    traversalRoot oldLookupRoot,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation below) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawTemplateFormula translation inheritedTraversal) traversalRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawTemplateFormula translation oldLookup) oldLookupRoot ->
+  RawFourStateTableAppendInheritedProductionInputsAt M translation
+    sourceContext (below :: prefix)
+    inheritedTraversal below oldLookup.
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext prefix
+    inheritedTraversal below oldLookup traversalRoot oldLookupRoot
+    hsource hbelowAdequate htraversal holdLookup.
+  set (fullContext :=
+    rawTemplateContextCodeOnTail translation sourceContext prefix).
+  assert (hfullContext : RawContextListRealizable M fullContext).
+  {
+    unfold fullContext.
+    apply (raw_templateContextOnTail_realizable M hPA).
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      sourceWitnessList sourceContext hsource).
+  }
+  assert (hbelowPrefix :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation [below]).
+  {
+    intros formula [hformula | hformula].
+    - subst formula. exact hbelowAdequate.
+    - contradiction.
+  }
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation fullContext [below]
+    (rawTemplateFormula translation inheritedTraversal)
+    traversalRoot hfullContext hbelowPrefix htraversal)
+    as [shiftedTraversalRoot hshiftedTraversal].
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation fullContext [below]
+    (rawTemplateFormula translation oldLookup)
+    oldLookupRoot hfullContext hbelowPrefix holdLookup)
+    as [shiftedLookupRoot hshiftedLookup].
+  pose proof (raw_codedPALocalProofOf_assumption M hPA
+    fullContext (rawTemplateFormula translation below) hfullContext)
+    as hbelowAssumption.
+  exists shiftedTraversalRoot,
+    (rawProofAssumptionRoot M
+      (rawListNode M (rawTemplateFormula translation below) fullContext)
+      (rawTemplateFormula translation below)),
+    shiftedLookupRoot.
+  cbn in hshiftedTraversal, hshiftedLookup |- *.
+  split; [exact hshiftedTraversal |].
+  split; [exact hbelowAssumption | exact hshiftedLookup].
+Qed.
+
+Corollary
+    raw_fourStateTableAppendInheritedProductionInputsAt_of_local_root_package :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext prefix inheritedTraversal below oldLookup,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation below) ->
+  RawFourStateTableAppendInheritedLocalRootsAt M translation
+    sourceContext prefix inheritedTraversal oldLookup ->
+  RawFourStateTableAppendInheritedProductionInputsAt M translation
+    sourceContext (below :: prefix)
+    inheritedTraversal below oldLookup.
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext prefix
+    inheritedTraversal below oldLookup hsource hbelow
+    (traversalRoot & oldLookupRoot & htraversal & holdLookup).
+  exact
+    (raw_fourStateTableAppendInheritedProductionInputsAt_of_local_roots
+      M hPA translation sourceWitnessList sourceContext prefix
+      inheritedTraversal below oldLookup traversalRoot oldLookupRoot
+      hsource hbelow htraversal holdLookup).
+Qed.
+
+(** Package the five-open/two-application result as a no-growth callback.
+    This is the exact predecessor dual of the growing equality assembler. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_inherited_row_production_growing_tail :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext prefix
+    inheritedTraversal below oldLookup result,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  templateUniversalOpenMany inheritedTraversal
+    coqFourStateTableAppendConcreteRowVariables =
+    Some (tfImp below (tfImp oldLookup result)) ->
+  RawFourStateTableAppendInheritedProductionInputsAt M translation
+    sourceContext prefix inheritedTraversal below oldLookup ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix
+    (rawTemplateFormula translation result).
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext prefix
+    inheritedTraversal below oldLookup result hsource hopen
+    (traversalRoot & belowRoot & oldLookupRoot &
+      htraversal & hbelow & holdLookup).
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_inherited_row_production
+      M hPA translation
+      (rawTemplateContextCodeOnTail translation sourceContext prefix)
+      inheritedTraversal below oldLookup result
+      traversalRoot belowRoot oldLookupRoot
+      hopen htraversal hbelow holdLookup)
+    as [resultRoot hresult].
+  unfold RawCodedPAGrowingTemplateLocalProofAt.
+  exists sourceWitnessList, sourceContext, resultRoot.
+  split; [exact hsource |].
+  split; [apply raw_contextListIncluded_refl | exact hresult].
+Qed.
+
 (** Assemble the equality branch for an arbitrary production over the four
     fixed appended fields.  The production root is first weakened across the
     single witness extension chosen by beta functionality.  The four literal
@@ -1603,6 +1809,116 @@ Proof.
   eapply raw_codedPAGrowingTemplateLocalProofAt_conclusion_eq.
   - exact hcode.
   - exact hnamed.
+Qed.
+
+(** Fully staged predecessor client.  Instead of accepting an arbitrary
+    below-branch callback, this endpoint opens the inherited five-variable
+    traversal and applies its bound and old-lookup premises in the literal
+    [i < b] branch context.  The equality branch remains the concrete beta
+    functionality package assembled above. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_concrete_closed_row_of_inherited_traversal_on_growing_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName rowBound antecedentRoot
+    sigmaProduction piProduction inheritedTraversal oldLookup,
+  let fixedResult :=
+    coqFourStateTableAppendNamedClosedRowProductionTemplate
+      sigmaProduction piProduction in
+  let result :=
+    coqFourStateTableAppendConcreteClosedRowProductionTemplate
+      sigmaProduction piProduction in
+  templateUniversalOpenMany inheritedTraversal
+    coqFourStateTableAppendConcreteRowVariables =
+    Some (tfImp
+      (coqLtSuccCasesBelowTemplate (ttVar 4) rowBound)
+      (tfImp oldLookup result)) ->
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation
+      (coqLtSuccCasesEqualTemplate (ttVar 4) rowBound)) ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  coqFourStateTableAppendRowModeParameterName <> boundName ->
+  coqFourStateTableAppendRowFormulaParameterName <> boundName ->
+  coqFourStateTableAppendRowAssignmentCodeParameterName <> boundName ->
+  coqFourStateTableAppendRowAssignmentStepParameterName <> boundName ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqLtSuccCasesAntecedentTemplate (ttVar 4) rowBound))
+    antecedentRoot ->
+  (forall sourceWitnessList sourceContext,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+    RawFourStateTableAppendInheritedProductionInputsAt M translation
+      sourceContext
+      (coqLtSuccCasesBelowTemplate (ttVar 4) rowBound :: prefix)
+      inheritedTraversal
+      (coqLtSuccCasesBelowTemplate (ttVar 4) rowBound)
+      oldLookup) ->
+  (forall sourceWitnessList sourceContext,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+    RawFourStateTableAppendEqualityProductionInputsAt M translation
+      sourceContext
+      (coqLtSuccCasesEqualTemplate (ttVar 4) rowBound :: prefix)
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      boundName
+      coqFourStateTableAppendRowModeParameterName
+      coqFourStateTableAppendRowFormulaParameterName
+      coqFourStateTableAppendRowAssignmentCodeParameterName
+      coqFourStateTableAppendRowAssignmentStepParameterName
+      (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+      fixedResult) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    baseWitnessList baseContext prefix
+    (rawTemplateFormula translation result).
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext prefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName rowBound antecedentRoot
+    sigmaProduction piProduction inheritedTraversal oldLookup
+    fixedResult result hopen hprefix hequalHead hbase
+    hmodeFresh hformulaFresh hassignmentCodeFresh hassignmentStepFresh
+    hantecedent hpredecessorInputs hequalInputs.
+  cbn zeta in *.
+  eapply
+    (raw_codedPALocalProofOf_four_state_table_append_concrete_closed_row_cases_on_growing_witnessed_tail_under_prefix
+      M hPA translation hagreement
+      baseWitnessList baseContext prefix
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      boundName rowBound antecedentRoot sigmaProduction piProduction).
+  - exact hprefix.
+  - exact hequalHead.
+  - exact hbase.
+  - exact hmodeFresh.
+  - exact hformulaFresh.
+  - exact hassignmentCodeFresh.
+  - exact hassignmentStepFresh.
+  - exact hantecedent.
+  - intros sourceWitnessList sourceContext hsource.
+    exact
+      (raw_codedPALocalProofOf_four_state_table_append_inherited_row_production_growing_tail
+        M hPA translation sourceWitnessList sourceContext
+        (coqLtSuccCasesBelowTemplate (ttVar 4) rowBound :: prefix)
+        inheritedTraversal
+        (coqLtSuccCasesBelowTemplate (ttVar 4) rowBound)
+        oldLookup
+        (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+          sigmaProduction piProduction)
+        hsource hopen
+        (hpredecessorInputs sourceWitnessList sourceContext hsource)).
+  - exact hequalInputs.
 Qed.
 
 (** Agreement on embedded PA syntax identifies the metatheoretic witnessed

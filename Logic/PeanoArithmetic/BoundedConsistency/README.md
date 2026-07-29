@@ -4309,6 +4309,26 @@ occurrence inside both arbitrary polarity bodies.  The specialized growing
 case theorem returns this concrete production and leaves only the honest
 predecessor producer and the three equality-branch roots to its caller.
 
+The predecessor producer is now compiled too.  A translation-generic helper
+opens any finite universal prefix and applies a two-premise implication body
+in one unchanged local context.  Its append specialization fixes the opening
+tuple to `[#4,#3,#2,#1,#0]`, consumes the inherited traversal root together
+with the literal `i < b` and old-state lookup roots, and packages the result
+as a no-growth callback.  The most specialized closed-row theorem therefore
+accepts only the inherited traversal opening equation, its three branch-local
+roots, and the equality branch's three-root package; both branches are then
+assembled into the concrete successor-row production on one final witnessed
+tail.
+
+The predecessor branch no longer asks its outer caller to manufacture roots
+below the arithmetic head.  A two-root pre-branch package contains only the
+inherited traversal proof and old-state lookup proof.  Given honest tail
+witnesses and atomic adequacy of `i < b`, the compiler weakens both roots
+beneath that head and builds the bound premise from the represented
+assumption constructor, yielding the exact three-root predecessor package.
+Thus the remaining append client work is concentrated on the equality-side
+context view and the outer existential/universal closure.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
