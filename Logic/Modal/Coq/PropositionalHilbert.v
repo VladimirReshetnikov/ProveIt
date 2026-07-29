@@ -338,6 +338,27 @@ Definition ph_hilbert_neg_or_iff_and_neg {Atom : Type}
   generic_minimal_neg_or_iff_and_neg_raw
     (ph_hilbert_generic_minimal H) p q.
 
+(** Concrete views of the generic finite-fold rules.  Positional membership
+    records the selected occurrence, so repeated formulas need no equality
+    decision procedure. *)
+Definition ph_hilbert_list_conj2_elim {Atom : Type}
+    (H : ph_hilbert Atom) {p : pformula Atom}
+    {gamma : list (pformula Atom)}
+    (h : generic_raw_list_member p gamma) :
+    ph_hilbert_proof H
+      (PImp (generic_list_conj2 (pformula_connectives Atom) gamma) p) :=
+  generic_minimal_list_conj2_elim_raw
+    (ph_hilbert_generic_minimal H) h.
+
+Definition ph_hilbert_list_disj2_intro {Atom : Type}
+    (H : ph_hilbert Atom) {p : pformula Atom}
+    {gamma : list (pformula Atom)}
+    (h : generic_raw_list_member p gamma) :
+    ph_hilbert_proof H
+      (PImp p (generic_list_disj2 (pformula_connectives Atom) gamma)) :=
+  generic_minimal_list_disj2_intro_raw
+    (ph_hilbert_generic_minimal H) h.
+
 (** One recursor factors inclusion and arbitrary proof-schema translations. *)
 Fixpoint ph_hilbert_proof_map {Atom : Type}
     {H K : ph_hilbert Atom}

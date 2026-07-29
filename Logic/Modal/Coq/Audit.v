@@ -1332,9 +1332,32 @@ Check generic_minimal_contraposition_provable.
 Check generic_minimal_double_neg_map_provable.
 Check generic_minimal_binary_iff_congruence_provable.
 Check generic_minimal_neg_or_iff_and_neg_provable.
+Check generic_raw_list_member_map.
+Check generic_minimal_list_conj_intro_raw.
+Check generic_minimal_list_conj_right_intro_raw.
+Check generic_minimal_list_conj_elim_raw.
+Check generic_minimal_list_conj_subset_raw.
+Check generic_minimal_list_conj2_intro_raw.
+Check generic_minimal_list_conj2_right_intro_raw.
+Check generic_minimal_list_conj2_elim_raw.
+Check generic_minimal_list_conj2_subset_raw.
+Check generic_minimal_list_conj_iff_conj2_raw.
+Check generic_minimal_list_disj_intro_raw.
+Check generic_minimal_list_disj2_intro_raw.
+Check generic_minimal_list_conj_map_right_intro_raw.
+Check generic_minimal_list_conj_map_elim_raw.
+Check generic_minimal_list_disj_map_intro_raw.
+Check generic_raw_list_member_app_split.
+Check generic_minimal_list_conj2_append_iff_raw.
+Check generic_minimal_list_conj_provable_iff.
+Check generic_minimal_list_conj2_provable_iff.
+Check generic_minimal_list_disj_intro_provable.
+Check generic_minimal_list_disj2_intro_provable.
 Check ph_hilbert_dni.
 Check ph_hilbert_contraposition.
 Check ph_hilbert_neg_or_iff_and_neg.
+Check ph_hilbert_list_conj2_elim.
+Check ph_hilbert_list_disj2_intro.
 Print Assumptions generic_minimal_imp_swap_raw.
 Print Assumptions generic_minimal_imp_contract_raw.
 Print Assumptions generic_minimal_iff_trans_raw.
@@ -1361,9 +1384,19 @@ Print Assumptions generic_minimal_contradiction_axiom_raw.
 Print Assumptions generic_minimal_or_neg_to_neg_and_raw.
 Print Assumptions generic_minimal_neg_or_iff_and_neg_raw.
 Print Assumptions generic_minimal_binary_iff_congruence_provable.
+Print Assumptions generic_minimal_list_conj_intro_raw.
+Print Assumptions generic_minimal_list_conj_elim_raw.
+Print Assumptions generic_minimal_list_conj2_intro_raw.
+Print Assumptions generic_minimal_list_conj2_elim_raw.
+Print Assumptions generic_minimal_list_disj2_intro_raw.
+Print Assumptions generic_minimal_list_conj_map_right_intro_raw.
+Print Assumptions generic_minimal_list_conj2_append_iff_raw.
+Print Assumptions generic_minimal_list_conj2_provable_iff.
 Print Assumptions ph_hilbert_dni.
 Print Assumptions ph_hilbert_contraposition.
 Print Assumptions ph_hilbert_neg_or_iff_and_neg.
+Print Assumptions ph_hilbert_list_conj2_elim.
+Print Assumptions ph_hilbert_list_disj2_intro.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
