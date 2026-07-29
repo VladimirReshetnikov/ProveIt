@@ -5,7 +5,7 @@ From FoundationModal Require Import
   GenericEntailment GenericDecidability GenericDisjunctive
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
-  PropositionalBoolean GenericCalculus
+  PropositionalBoolean PropositionalBooleanNNFormula GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -943,6 +943,37 @@ Print Assumptions pboolean_and_tautology_iff.
 Print Assumptions pboolean_bottom_not_tautology.
 Print Assumptions pboolean_letterless_tautology_of_not_neg_tautology.
 Print Assumptions pboolean_neg_tautology_of_letterless_not_tautology.
+
+(** Propositional/Boolean/NNFormula algebraic and Boolean evaluation. *)
+Check pnn_eval_aux.
+Check pnn_eval_aux_neg.
+Check pnn_eval_hom.
+Check pnn_eval_atom.
+Check pnn_eval_neg_atom.
+Check pnn_prop_connectives.
+Check pnn_boolean_eval.
+Check pnn_boolean_semantics.
+Check pnn_boolean_models_iff_eval.
+Check pnn_boolean_eval_neg.
+Check pnn_boolean_tarski_top.
+Check pnn_boolean_tarski_bottom.
+Check pnn_boolean_tarski_and.
+Check pnn_boolean_tarski_or.
+Check pnn_boolean_tarski_neg.
+Check pnn_boolean_tarski_imp.
+Check pnn_boolean_tarski.
+Check pnn_boolean_models_atom.
+Check pnn_boolean_models_neg_atom.
+Check pnn_to_pformula_eval.
+Check pformula_to_pnn_eval.
+Print Assumptions pnn_eval_aux_neg.
+Print Assumptions pnn_eval_hom.
+Print Assumptions pnn_boolean_eval_neg.
+Print Assumptions pnn_boolean_tarski_neg.
+Print Assumptions pnn_boolean_tarski_imp.
+Print Assumptions pnn_boolean_tarski.
+Print Assumptions pnn_to_pformula_eval.
+Print Assumptions pformula_to_pnn_eval.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
