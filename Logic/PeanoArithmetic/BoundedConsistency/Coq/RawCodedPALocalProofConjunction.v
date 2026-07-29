@@ -139,4 +139,26 @@ Proof.
   end.
 Qed.
 
+(** The path [left; right; left] occurs in constructor certificates whose
+    first component has a head field followed by two auxiliary fields. *)
+Corollary raw_codedPALocalProofOf_andE121 : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context first second third rest child,
+  RawCodedPALocalProofOf M context
+    (rawFormulaAndCode M
+      (rawFormulaAndCode M first
+        (rawFormulaAndCode M second third)) rest) child ->
+  exists root, RawCodedPALocalProofOf M context second root.
+Proof.
+  intros M hPA context first second third rest child hchild.
+  pose proof (raw_codedPALocalProofOf_andE1 M hPA context
+    (rawFormulaAndCode M first (rawFormulaAndCode M second third))
+    rest child hchild) as hleft.
+  lazymatch type of hleft with
+  | RawCodedPALocalProofOf _ _ _ ?leftRoot =>
+      exact (raw_codedPALocalProofOf_andE21 M hPA context
+        first second third leftRoot hleft)
+  end.
+Qed.
+
 End PABoundedRawCodedPALocalProofConjunction.
