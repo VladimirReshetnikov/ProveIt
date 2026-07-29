@@ -1256,6 +1256,95 @@ Proof.
       (k_dia_regularity HK IH) (k_not_dia_bottom HK)).
 Qed.
 
+Lemma k_dia_iter_list_conj2_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n Gamma,
+    L (Imp (dia_iter n (logic_list_conj2 Gamma))
+      (logic_list_conj2 (map (dia_iter n) Gamma))).
+Proof.
+  intros AtomType L HK n Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - apply (logic_classical_tautology (k_classical HK)).
+    intro rho; unfold Top, Neg; simpl; tauto.
+  - destruct Gamma as [|q Gamma].
+    + simpl. now apply logic_identity, k_classical.
+    + simpl in IH |- *.
+      pose proof (k_classical HK) as Hclass.
+      pose proof
+        (k_dia_iter_and_distribute HK n p
+          (logic_list_conj2 (q :: Gamma))) as Hdist.
+      apply logic_imp_and_intro; [exact Hclass | |].
+      * eapply logic_imp_trans; [exact Hclass | exact Hdist |].
+        now apply logic_and_elim_left_imp.
+      * eapply logic_imp_trans; [exact Hclass | exact Hdist |].
+        eapply logic_imp_trans; [exact Hclass | |exact IH].
+        now apply logic_and_elim_right_imp.
+Qed.
+
+Lemma k_dia_iter_list_disj2_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n Gamma,
+    L (Imp (dia_iter n (logic_list_disj2 Gamma))
+      (logic_list_disj2 (map (dia_iter n) Gamma))).
+Proof.
+  intros AtomType L HK n Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - exact (k_not_dia_iter_bottom HK n).
+  - destruct Gamma as [|q Gamma].
+    + simpl. now apply logic_identity, k_classical.
+    + simpl in IH |- *.
+      pose proof (k_classical HK) as Hclass.
+      eapply logic_imp_trans; [exact Hclass | |].
+      * exact (k_dia_iter_or_distribute HK n p
+          (logic_list_disj2 (q :: Gamma))).
+      * eapply (logic_modus_ponens Hclass); [|exact IH].
+        apply (logic_classical_tautology Hclass).
+        intro rho; unfold Or, Neg; simpl; tauto.
+Qed.
+
+(** Foundation's specialized [lemma_Grz1].  The auxiliary formula packages
+    the candidate Four instance.  K alone turns a hypothetical progressive
+    proof of that package into the required boxed implication. *)
+Lemma lemma_Grz1_raw :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p,
+    let psi := And p (Imp (Box p) (Box (Box p))) in
+    L (Imp (Box p)
+      (Box (Imp (Box (Imp psi (Box psi))) psi))).
+Proof.
+  intros AtomType L HK p.
+  set (psi := And p (Imp (Box p) (Box (Box p)))).
+  change (L (Imp (Box p)
+    (Box (Imp (Box (Imp psi (Box psi))) psi)))).
+  pose proof (k_classical HK) as Hclass.
+  assert (Hpsi_p : L (Imp psi p)).
+  { unfold psi. now apply logic_and_elim_left_imp. }
+  pose proof (box_regularity_of_k HK Hpsi_p) as Hboxpsi_boxp.
+  assert (Hprogress :
+      L (Imp (Imp psi (Box psi)) (Imp p (Box p)))).
+  { eapply (logic_modus_ponens Hclass); [|exact Hboxpsi_boxp].
+    apply (logic_classical_tautology Hclass).
+    intro rho; unfold psi, And, Neg; simpl; tauto. }
+  pose proof (box_regularity_of_k HK Hprogress) as Hboxed_progress.
+  pose proof
+    (logic_imp_trans Hclass Hboxed_progress
+      (has_K_axiom (k_axiom HK) p (Box p))) as Hfour.
+  assert (Hpackage :
+      L (Imp p (Imp (Box (Imp psi (Box psi))) psi))).
+  { eapply (logic_modus_ponens Hclass); [|exact Hfour].
+    apply (logic_classical_tautology Hclass).
+    intro rho; unfold psi, And, Neg; simpl; tauto. }
+  exact (box_regularity_of_k HK Hpackage).
+Qed.
+
+(** Prop-valued theoremhood identifies Foundation's proof-object and wrapped
+    spellings, while both source declarations retain public Coq names. *)
+Lemma lemma_Grz1 :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p,
+    let psi := And p (Imp (Box p) (Box (Box p))) in
+    L (Imp (Box p)
+      (Box (Imp (Box (Imp psi (Box psi))) psi))).
+Proof. exact lemma_Grz1_raw. Qed.
+
 (** EMCN.lean, forward instance. *)
 Lemma k_entailment_of_EMCN :
   forall (AtomType : Type) (L : modal_logic_set AtomType),

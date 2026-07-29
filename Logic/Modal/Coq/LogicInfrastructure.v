@@ -407,6 +407,20 @@ Fixpoint logic_list_conj2 {AtomType}
       end
   end.
 
+(** The singleton-normalized finite disjunction dual to
+    [logic_list_conj2].  Empty and singleton enumerations avoid a redundant
+    trailing bottom, matching Foundation's [List.disj2]. *)
+Fixpoint logic_list_disj2 {AtomType}
+    (Gamma : list (formula AtomType)) : formula AtomType :=
+  match Gamma with
+  | [] => Bottom
+  | p :: rest =>
+      match rest with
+      | [] => p
+      | _ => Or p (logic_list_disj2 rest)
+      end
+  end.
+
 Lemma substitute_logic_list_conj :
   forall (A B : Type) (sigma : A -> formula B) Gamma,
     substitute sigma (logic_list_conj Gamma) =
@@ -502,6 +516,28 @@ Proof.
            apply Hnot; intros _; exact Hnrest.
       * intros [Hp Hrest] Himp.
         exact (Himp Hp Hrest).
+Qed.
+
+Lemma classical_eval_list_disj2 :
+  forall (AtomType : Type) (rho : formula AtomType -> Prop) Gamma,
+    classical_eval rho (logic_list_disj2 Gamma) <->
+    Exists (classical_eval rho) Gamma.
+Proof.
+  intros AtomType rho Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - split; [contradiction | intro H; inversion H].
+  - destruct Gamma as [|q Gamma].
+    + simpl; split.
+      * intro Hp; now constructor.
+      * intro H; inversion H as [x l Hp | x l Hnone]; subst.
+        -- exact Hp.
+        -- inversion Hnone.
+    + simpl in IH |- *.
+      unfold Or, Neg; simpl. rewrite IH.
+      split.
+      * intro Hor. destruct (classic (classical_eval rho p)) as [Hp | Hnp].
+        -- now constructor.
+        -- right. apply Hor. exact Hnp.
+      * intros Hex Hnp. inversion Hex; subst; [contradiction | assumption].
 Qed.
 
 Lemma logic_list_conj_to_conj2 :
