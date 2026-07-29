@@ -1715,6 +1715,20 @@ Check phvf_saturated_bottom_not_positive.
 Check phvf_saturated_top_positive.
 Check phvf_saturated_and_iff.
 Check phvf_saturated_or_iff.
+Check phvf_fmt_hintikka_access.
+Check phvf_fmt_hintikka_frame.
+Check phvf_fmt_hintikka_model.
+Check phvf_hintikka_imp_seed.
+Check phvf_hintikka_imp_seed_consistent.
+Check phvf_fmt_hintikka_truth.
+Check phvf_hintikka_counter_seed.
+Check phvf_hintikka_counter_seed_consistent.
+Check phvf_provable_of_fmt_hintikka_valid.
+Check phvf_fmt_complete_all_frames.
+Check phvf_fmt_hintikka_nt_serial_of_ser.
+Check phvf_fmt_complete_nt_serial_of_ser.
+Check phvf_VF_fmt_complete.
+Check phvf_VF_Ser_fmt_complete.
 Print Assumptions phvf_proof_hintikka_collapse.
 Print Assumptions phvf_hintikka_either_consistent.
 Print Assumptions phvf_hintikka_next_consistent.
@@ -1723,6 +1737,15 @@ Print Assumptions phvf_saturated_not_both.
 Print Assumptions phvf_saturated_imp_closed.
 Print Assumptions phvf_saturated_and_iff.
 Print Assumptions phvf_saturated_or_iff.
+Print Assumptions phvf_hintikka_imp_seed_consistent.
+Print Assumptions phvf_fmt_hintikka_truth.
+Print Assumptions phvf_hintikka_counter_seed_consistent.
+Print Assumptions phvf_provable_of_fmt_hintikka_valid.
+Print Assumptions phvf_fmt_complete_all_frames.
+Print Assumptions phvf_fmt_hintikka_nt_serial_of_ser.
+Print Assumptions phvf_fmt_complete_nt_serial_of_ser.
+Print Assumptions phvf_VF_fmt_complete.
+Print Assumptions phvf_VF_Ser_fmt_complete.
 
 (** Hilbert WF and heterogeneous VF-to-WF transport. *)
 Check phwf_hilbert.

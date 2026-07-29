@@ -9,12 +9,14 @@
 From Stdlib Require Import Lists.List Logic.Classical_Prop
   Logic.ClassicalDescription.
 From FoundationModal Require Import
-  PropositionalFormula PropositionalHilbertVF PropositionalHilbertVFCorsi.
+  PropositionalFormula PropositionalFMT PropositionalHilbertVF
+  PropositionalHilbertVFCorsi.
 
 Import ListNotations.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
+Set Universe Polymorphism.
 
 Record phvf_hintikka_pair (Atom : Type) : Type := {
   phvf_hintikka_positive : list (pformula Atom);
@@ -424,4 +426,247 @@ Proof.
     + eapply (@phvf_saturated_imp_closed Atom H target W q (POr p q));
         [exact HqSub | exact Hsub | | exact Hq].
       constructor. apply PHVFPOrIntroR.
+Qed.
+
+(** * Formula-indexed Hintikka model
+
+    A fresh semantic root sees every world.  Saturated pairs never access the
+    fresh root, so their forcing behavior is governed solely by the Corsi
+    implication relation.  This replaces the source's filtered circular root
+    and removes its disjunction-property premise from the truth lemma. *)
+
+Definition phvf_fmt_hintikka_access (H : phvf_hilbert@{Set} nat)
+    (target indexed : pformula@{Set} nat)
+    (x y : option (@phvf_saturated_hintikka_pair nat H target)) : Prop :=
+  match x, y with
+  | None, _ => True
+  | Some _, None => False
+  | Some X, Some Y =>
+      match indexed with
+      | PImp p q =>
+          ~ pformula_is_subformula (PImp p q) target \/
+          In (PImp p q)
+            (phvf_hintikka_negative (phvf_saturated_pair X)) \/
+          In p (phvf_hintikka_negative (phvf_saturated_pair Y)) \/
+          In q (phvf_hintikka_positive (phvf_saturated_pair Y))
+      | _ => True
+      end
+  end.
+
+Arguments phvf_fmt_hintikka_access H target indexed x y : clear implicits.
+
+Definition phvf_fmt_hintikka_frame
+    (H : phvf_hilbert@{Set} nat) (target : pformula@{Set} nat) : fmt_frame :=
+  {| fmt_world := option (@phvf_saturated_hintikka_pair nat H target);
+     fmt_access := phvf_fmt_hintikka_access H target;
+     fmt_root := None;
+     fmt_root_access := fun _ _ => I |}.
+
+Arguments phvf_fmt_hintikka_frame H target : clear implicits.
+
+Definition phvf_fmt_hintikka_model
+    (H : phvf_hilbert@{Set} nat) (target : pformula@{Set} nat) : fmt_model :=
+  {| fmt_model_frame := phvf_fmt_hintikka_frame H target;
+     fmt_model_valuation := fun a x =>
+       match x with
+       | None => False
+       | Some W => In (PAtom a)
+           (phvf_hintikka_positive (phvf_saturated_pair W))
+       end |}.
+
+Arguments phvf_fmt_hintikka_model H target : clear implicits.
+
+Definition phvf_hintikka_imp_seed (p q : pformula@{Set} nat) :
+    phvf_hintikka_pair nat :=
+  {| phvf_hintikka_positive := [p];
+     phvf_hintikka_negative := [q] |}.
+
+Lemma phvf_hintikka_imp_seed_consistent :
+  forall (H : phvf_hilbert@{Set} nat) target
+      (W : @phvf_saturated_hintikka_pair nat H target) p q,
+    pformula_is_subformula (PImp p q) target ->
+    ~ In (PImp p q)
+        (phvf_hintikka_positive (phvf_saturated_pair W)) ->
+    phvf_hintikka_consistent H (phvf_hintikka_imp_seed p q).
+Proof.
+  intros H target W p q Hsub Hnotpos Hseed.
+  pose proof (@phvf_saturated_negative_of_not_positive
+    nat H target W (PImp p q) Hsub Hnotpos) as Hnegative.
+  unfold phvf_hintikka_consistent, phvf_hintikka_imp_seed in Hseed.
+  cbn in Hseed.
+  destruct Hseed as [Hseed].
+  assert (Hpq : phvf_proof H (PImp p q)).
+  { refine (PHVFPRuleI
+      (PHVFPRuleC (PHVFPIdentity p)
+        (PHVFPFortiori p (PHVFPIdentity PFalsum))) _).
+    refine (PHVFPRuleI Hseed _).
+    exact (PHVFPRuleD (PHVFPIdentity q) (PHVFPEfq q)). }
+  apply (@phvf_saturated_consistent nat H target W).
+  destruct (@phvf_provable_list_disj_member nat H
+    (phvf_hintikka_negative (phvf_saturated_pair W))
+    (PImp p q) Hnegative) as [HimpD].
+  constructor. exact (PHVFPRuleI
+    (PHVFPFortiori
+      (phvf_list_conj
+        (phvf_hintikka_positive (phvf_saturated_pair W))) Hpq)
+    HimpD).
+Qed.
+
+Theorem phvf_fmt_hintikka_truth :
+  forall (H : phvf_hilbert@{Set} nat) target p,
+    pformula_is_subformula p target ->
+    forall W : @phvf_saturated_hintikka_pair nat H target,
+      In p (phvf_hintikka_positive (phvf_saturated_pair W)) <->
+      fmt_forces (phvf_fmt_hintikka_model H target) (Some W) p.
+Proof.
+  intros H target p. induction p as
+      [a| |p IHp q IHq|p IHp q IHq|p IHp q IHq];
+    intros Hsub W; cbn [phvf_fmt_hintikka_model].
+  - reflexivity.
+  - split.
+    + exact (fun Hp => False_rect _
+        (@phvf_saturated_bottom_not_positive nat H target W Hsub Hp)).
+    + contradiction.
+  - rewrite (@phvf_saturated_and_iff nat H target W p q Hsub).
+    destruct (@pformula_subformula_and_components nat target p q Hsub)
+      as [HpSub HqSub].
+    rewrite (IHp HpSub W), (IHq HqSub W). reflexivity.
+  - rewrite (@phvf_saturated_or_iff nat H target W p q Hsub).
+    destruct (@pformula_subformula_or_components nat target p q Hsub)
+      as [HpSub HqSub].
+    rewrite (IHp HpSub W), (IHq HqSub W). reflexivity.
+  - destruct (@pformula_subformula_imp_components nat target p q Hsub)
+      as [HpSub HqSub]. split.
+    + intros Himp Y Haccess Hpforce. destruct Y as [Y|].
+      * cbn [phvf_fmt_hintikka_frame phvf_fmt_hintikka_access] in Haccess.
+        destruct Haccess as [Hnotsub | [Hnegative | [Hpnegative | Hqpositive]]].
+        -- exact (False_rect _ (Hnotsub Hsub)).
+        -- exact (False_rect _
+             (@phvf_saturated_not_both nat H target W (PImp p q)
+               (conj Himp Hnegative))).
+        -- pose proof (proj2 (IHp HpSub Y) Hpforce) as Hppositive.
+           exact (False_rect _
+             (@phvf_saturated_not_both nat H target Y p
+               (conj Hppositive Hpnegative))).
+        -- exact (proj1 (IHq HqSub Y) Hqpositive).
+      * exact (False_rect _ Haccess).
+    + intro Hforces. apply NNPP. intro Hnotpos.
+      pose proof (@phvf_hintikka_imp_seed_consistent
+        H target W p q Hsub Hnotpos) as Hseed.
+      set (Y := @phvf_hintikka_lindenbaum nat H target
+        (phvf_hintikka_imp_seed p q) Hseed).
+      assert (Hppositive : In p
+        (phvf_hintikka_positive (phvf_saturated_pair Y))).
+      { apply (@phvf_hintikka_lindenbaum_positive nat H target
+          (phvf_hintikka_imp_seed p q) Hseed p). cbn. auto. }
+      assert (Hqnegative : In q
+        (phvf_hintikka_negative (phvf_saturated_pair Y))).
+      { apply (@phvf_hintikka_lindenbaum_negative nat H target
+          (phvf_hintikka_imp_seed p q) Hseed q). cbn. auto. }
+      assert (Haccess : fmt_access
+        (fmt_model_frame (phvf_fmt_hintikka_model H target))
+        (PImp p q) (Some W) (Some Y)).
+      { cbn [phvf_fmt_hintikka_model phvf_fmt_hintikka_frame
+          phvf_fmt_hintikka_access].
+        right. left. now apply (@phvf_saturated_negative_of_not_positive
+          nat H target W (PImp p q) Hsub). }
+      pose proof (Hforces (Some Y) Haccess
+        (proj1 (IHp HpSub Y) Hppositive)) as Hqforces.
+      pose proof (proj2 (IHq HqSub Y) Hqforces) as Hqpositive.
+      exact (@phvf_saturated_not_both nat H target Y q
+        (conj Hqpositive Hqnegative)).
+Qed.
+
+Definition phvf_hintikka_counter_seed (target : pformula@{Set} nat) :
+    phvf_hintikka_pair nat :=
+  {| phvf_hintikka_positive := [];
+     phvf_hintikka_negative := [target] |}.
+
+Lemma phvf_hintikka_counter_seed_consistent :
+  forall (H : phvf_hilbert@{Set} nat) target,
+    ~ phvf_provable H target ->
+    phvf_hintikka_consistent H (phvf_hintikka_counter_seed target).
+Proof.
+  intros H target Hnot Hseed.
+  unfold phvf_hintikka_consistent, phvf_hintikka_counter_seed in Hseed.
+  cbn in Hseed. destruct Hseed as [Hseed].
+  apply Hnot. constructor.
+  exact (PHVFPModusPonens
+    (PHVFPRuleD (PHVFPIdentity target) (PHVFPEfq target))
+    (PHVFPModusPonens Hseed (PHVFPIdentity PFalsum))).
+Qed.
+
+Theorem phvf_provable_of_fmt_hintikka_valid :
+  forall (H : phvf_hilbert@{Set} nat) target,
+    fmt_model_valid (phvf_fmt_hintikka_model H target) target ->
+    phvf_provable H target.
+Proof.
+  intros H target Hvalid. apply NNPP. intro Hnot.
+  pose proof (@phvf_hintikka_counter_seed_consistent H target Hnot) as Hseed.
+  set (W := @phvf_hintikka_lindenbaum nat H target
+    (phvf_hintikka_counter_seed target) Hseed).
+  assert (Hnegative : In target
+    (phvf_hintikka_negative (phvf_saturated_pair W))).
+  { apply (@phvf_hintikka_lindenbaum_negative nat H target
+      (phvf_hintikka_counter_seed target) Hseed target). cbn. auto. }
+  pose proof (proj2 (@phvf_fmt_hintikka_truth H target target
+    (pformula_subformulas_self target) W) (Hvalid (Some W))) as Hpositive.
+  exact (@phvf_saturated_not_both nat H target W target
+    (conj Hpositive Hnegative)).
+Qed.
+
+Theorem phvf_fmt_complete_all_frames :
+  forall H : phvf_hilbert@{Set} nat,
+    phvf_fmt_frame_complete H (fun _ => True).
+Proof.
+  intros H target Hvalid.
+  apply (@phvf_provable_of_fmt_hintikka_valid H target).
+  intro W. exact (Hvalid (phvf_fmt_hintikka_frame H target) I
+    (@fmt_model_valuation (phvf_fmt_hintikka_model H target)) W).
+Qed.
+
+Theorem phvf_fmt_hintikka_nt_serial_of_ser :
+  forall (H : phvf_hilbert@{Set} nat) target,
+    phvf_provable H phvf_axiom_ser ->
+    fmt_nt_serial (phvf_fmt_hintikka_frame H target).
+Proof.
+  intros H target Hser [W|].
+  - exists (Some W).
+    cbn [phvf_fmt_hintikka_frame phvf_fmt_hintikka_access].
+    destruct (classic (pformula_is_subformula (pneg ptop) target))
+      as [Hsub | Hnotsub].
+    + right. left.
+      apply (@phvf_saturated_negative_of_not_positive
+        nat H target W (pneg ptop) Hsub).
+      intro Hpositive.
+      destruct (@pformula_subformula_imp_components nat target ptop PFalsum Hsub)
+        as [_ HbotSub].
+      pose proof (@phvf_saturated_imp_closed nat H target W
+        (pneg ptop) PFalsum Hsub HbotSub Hser Hpositive) as Hbot.
+      exact (@phvf_saturated_bottom_not_positive nat H target W HbotSub Hbot).
+    + now left.
+  - exists None. exact I.
+Qed.
+
+Theorem phvf_fmt_complete_nt_serial_of_ser :
+  forall (H : phvf_hilbert@{Set} nat),
+    phvf_provable H phvf_axiom_ser ->
+    phvf_fmt_frame_complete H fmt_nt_serial.
+Proof.
+  intros H Hser target Hvalid.
+  apply (@phvf_provable_of_fmt_hintikka_valid H target).
+  intro W. exact (Hvalid (phvf_fmt_hintikka_frame H target)
+    (@phvf_fmt_hintikka_nt_serial_of_ser H target Hser)
+    (@fmt_model_valuation (phvf_fmt_hintikka_model H target)) W).
+Qed.
+
+Corollary phvf_VF_fmt_complete :
+  phvf_fmt_frame_complete (phvf_hilbert_VF nat) (fun _ => True).
+Proof. apply phvf_fmt_complete_all_frames. Qed.
+
+Corollary phvf_VF_Ser_fmt_complete :
+  phvf_fmt_frame_complete (phvf_hilbert_VF_Ser nat) fmt_nt_serial.
+Proof.
+  apply phvf_fmt_complete_nt_serial_of_ser.
+  apply phvf_VF_Ser_provable_ser.
 Qed.
