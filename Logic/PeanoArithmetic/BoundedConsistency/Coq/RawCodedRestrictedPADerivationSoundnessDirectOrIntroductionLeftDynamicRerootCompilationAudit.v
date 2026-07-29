@@ -1,0 +1,14 @@
+(** Audit surface for proof-code compilation of dynamic Or-I-left rerooting. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootCompilation.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootCompilation.
+
+Check raw_codedPALocalProof_directTemplatePrefix.
+Check raw_codedPALocalProof_dynamicRestrictedRerootLaw_on_witnessed_base.
+
+Print Assumptions raw_codedPALocalProof_directTemplatePrefix.
+Print Assumptions
+  raw_codedPALocalProof_dynamicRestrictedRerootLaw_on_witnessed_base.
