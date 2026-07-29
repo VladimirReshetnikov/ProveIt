@@ -3,7 +3,7 @@
 From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
-  GenericEmbedding GenericLogicSymbol GenericCalculus
+  GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -614,6 +614,74 @@ Print Assumptions generic_finset_conj_union_models_iff.
 Print Assumptions generic_finset_disj_union_models_iff.
 Print Assumptions generic_finset_uconj_complete_models_iff.
 Print Assumptions generic_finset_udisj_complete_models_iff.
+
+(** Representation-independent Modal/LogicSymbol iteration and set layer. *)
+Check generic_modal_iter.
+Check generic_modal_iter_zero.
+Check generic_modal_iter_succ.
+Check generic_modal_iter_add.
+Check generic_box_iter.
+Check generic_box_iter_zero.
+Check generic_box_iter_succ.
+Check generic_box_iter_add.
+Check generic_dia_iter.
+Check generic_dia_iter_zero.
+Check generic_dia_iter_succ.
+Check generic_dia_iter_add.
+Check generic_box_le.
+Check generic_dia_le.
+Check generic_box_le_zero.
+Check generic_dia_le_zero.
+Check generic_boxdot.
+Check generic_diadot.
+Check generic_modal_connectives.
+Check generic_dia_by_box_law.
+Check generic_box_by_dia_law.
+Check generic_modal_de_morgan_laws.
+Check generic_injective.
+Check generic_modal_iter_injective.
+Check generic_box_iter_injective.
+Check generic_dia_iter_injective.
+Check generic_set_subset.
+Check generic_iter_image.
+Check generic_iter_preimage.
+Check generic_iter_image_subset_mono.
+Check generic_iter_preimage_subset_mono.
+Check generic_iter_image_intro.
+Check generic_iter_image_elim.
+Check generic_iter_preimage_member_iff.
+Check generic_iter_image_reflect.
+Check generic_iter_image_change_depth.
+Check generic_set_box_iter_image.
+Check generic_set_box_iter_preimage.
+Check generic_set_box_image.
+Check generic_set_box_preimage.
+Check generic_set_box_iter_image_subset_mono.
+Check generic_set_box_iter_preimage_subset_mono.
+Check generic_set_box_iter_image_intro.
+Check generic_set_box_iter_image_elim.
+Check generic_set_box_iter_preimage_member_iff.
+Check generic_set_box_iter_image_reflect.
+Check generic_set_box_iter_image_change_depth.
+Check generic_set_dia_iter_image.
+Check generic_set_dia_iter_preimage.
+Check generic_set_dia_image.
+Check generic_set_dia_preimage.
+Check generic_set_dia_iter_image_subset_mono.
+Check generic_set_dia_iter_preimage_subset_mono.
+Check generic_set_dia_iter_image_intro.
+Check generic_set_dia_iter_image_elim.
+Check generic_set_dia_iter_preimage_member_iff.
+Print Assumptions generic_modal_iter_add.
+Print Assumptions generic_box_le_zero.
+Print Assumptions generic_dia_le_zero.
+Print Assumptions generic_modal_iter_injective.
+Print Assumptions generic_iter_image_subset_mono.
+Print Assumptions generic_iter_preimage_subset_mono.
+Print Assumptions generic_iter_image_reflect.
+Print Assumptions generic_iter_image_change_depth.
+Print Assumptions generic_set_box_iter_image_change_depth.
+Print Assumptions generic_set_dia_iter_image_elim.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
