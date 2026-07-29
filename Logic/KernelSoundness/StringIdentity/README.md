@@ -11,10 +11,21 @@ smuggled past the one that is doing the checking.
 `String`s, so this class of bug would be soundness-relevant here. This directory
 records the investigation.
 
-**Result: no soundness loophole.** Lean is byte-exact and *uniform* everywhere I
-could probe. The genuine disagreements are all at the boundary between Lean and
-the outside world (the filesystem, and Unicode's own notion of equivalence), and
-they are auditing hazards rather than kernel unsoundness.
+**Result: no soundness loophole, and no checker break.** Lean is byte-exact and
+*uniform* internally, and every decision path in `leanprover/comparator` carries
+names as structural `Lean.Name` — no normalisation, case folding, collation or
+dot-splitting anywhere. Every disagreement found fails **closed**.
+
+One finding is nevertheless a genuine machine-level defect rather than a hazard
+for human readers: **`Name.toString` is not injective, and it is reachable from
+ordinary Lean source.** See [`NameToString.md`](NameToString.md).
+
+The headline lexical result is a *negative* one, and it is the reassuring answer
+to the question that motivated this study: **no character that Lean accepts in a
+bare identifier is one that collation-, NFKC- or `Cf`-stripping comparison would
+treat as equal to its absence** — 0 of the 43 invisible/ignorable characters
+tested. Every such character requires French quotes `«…»`, which are
+conspicuous in source.
 
 ## Confirmed disagreements (Lean vs. its environment)
 
@@ -106,6 +117,61 @@ APFS/HFS+ are case-insensitive, and HFS+ normalises to NFD. On Windows,
 spellings appear in one file, but a lone mis-cased import resolves to a module
 other than the one written.
 
+## Systematic lexer sweep
+
+79 candidate characters x 4 probes each, one probe per file (316 `lean`
+invocations, since Lean's error recovery mis-attributes columns when probes are
+batched). Behaviour is entirely **position-independent**, and there were **zero**
+"has already been declared" collisions across all 158 baseline/variant pairs:
+
+| | bare (first/middle/last) | inside `«…»` | collides with plain spelling |
+| --- | --- | --- | --- |
+| 43 characters | `error: expected token` | accepted | never |
+| 36 characters | accepted | accepted | never |
+
+**Rejected bare (43).** All 23 `Cf` tested (SOFT HYPHEN, ZWSP, ZWNJ, ZWJ, WORD
+JOINER, BOM, ARABIC LETTER MARK, LRM/RLM, all bidi overrides and isolates,
+INVISIBLE TIMES/SEPARATOR/PLUS), 7 `Mn` (CGJ, variation selectors, combining
+acute/dot/ring), 3 Hangul fillers, 4 `Zs` (NBSP, FIGURE SPACE, MMSP, IDEOGRAPHIC
+SPACE), U+2065, the DŽ digraphs, MIDDLE DOT, HYPHENATION POINT, and **U+0640
+ARABIC TATWEEL**.
+
+**Accepted bare (36).** Exactly `isIdFirst`/`isIdRest` and nothing else:
+Letterlike U+2100-214F (including U+212A KELVIN, U+2126 OHM, U+212B ANGSTROM,
+and the `So` symbols No and TM), Math Alphanumerics, Latin-1 Supplement, Latin
+Extended-A, Greek. `Lean.Parser.Basic:563 whitespace` skips only
+`' ' | '	' | '' | '
+'`; there is no normalising or stripping pre-pass.
+
+Re-run under Lean 4.33.0-rc1 (comparator's pinned toolchain) for 15
+representative characters: identical results.
+
+### The "equal to another character" half does bite — for auditors only
+
+Exhaustive scan over all **981 bare-legal codepoints**: exactly 7 have
+`NFC(c) != c` with a bare-legal NFC image — U+212A/`K`, U+2126/`Ω`, U+212B/`Å`,
+U+1F79/`ό`, U+1F7B/`ύ`, U+1F7D/`ώ`, U+1FBE/`ι`. Both spellings are legal bare,
+both declare fine, and the pretty-printer emits the raw character unescaped, so
+the two `#check` lines are byte-identical on screen. Beyond that, **82 NFKC
+classes** (404 codepoints) and **254 case-folding classes** (520 codepoints)
+contain more than one bare-legal member: `Foo𝔄`/`Foo𝒜`/`Foo𝔸`/`FooA` are four
+distinct constants that UAX-31 NFKC identifier folding collapses into one, and
+`h₁` vs `h1` likewise.
+
+Measured on .NET 10.0.9 / ICU:
+
+| pair | Ordinal | OrdinalIgnoreCase | InvariantCollate | +IgnoreCase |
+| --- | --- | --- | --- | --- |
+| `ς` vs `σ` | False | **True** | False | True |
+| U+212A vs `K`, U+2126 vs `Ω`, U+212B vs `Å` | False | False | **True** | True |
+| U+1FBE vs `ι` | False | **True** | **True** | True |
+| Math alphanumerics, `ℕ`/`N`, `No`, `TM`, `₁`/`1` | False | False | False | **True** |
+| `ſ`/`s`, `ß`/`ss`, `ı`/`I` | False | False | False | False |
+
+Note the first row: `OrdinalIgnoreCase` — the comparison people reach for
+*because* they believe it is the culture-free safe one — conflates `ς` and `σ`,
+both of which are legal bare Lean identifier characters.
+
 ## Negative results
 
 * **Embedded NUL does not split the kernel from the compiler.**
@@ -130,6 +196,28 @@ other than the one written.
   as `foo.5` while `Name.mkStr foo "5"` prints as `foo.«5»`; both survive
   `toString ∘ toName`, and they stay distinct. (This is the hazard comparator's
   `numeric_namespace` regression test covers.)
+* **The export payload is clean** — and this is why nothing escalates to
+  soundness. It is the one boundary a solution author controls, and it carries
+  names structurally as `{"str":{"pre":idx,"str":s}}`. A fuzz over all 1,112,064
+  code points found 0 JSON round-trip mismatches and 0 distinct characters
+  rendering to identical JSON text.
+* **The `«…»` wrapper itself is robust.** `Name.mkStr .anonymous ("q"++c++"z")`
+  for all 1,112,064 code points, checking `n.toString.toName == n`: **2
+  failures**, U+00BB `»` and U+271D `✝`. NUL, newline, tab, quotes, backticks,
+  all CJK and all astral planes round trip exactly. Every other round-trip
+  failure lives in the code paths that *suppress* the wrapper.
+* **The filesystem does not conflate homoglyphs.** 13 pairs (U+212A/K, U+2126/Ω,
+  U+212B/Å, `ſ`/`S`, `ſ`/`s`, `ς`/`σ`, `ı`/`I`, `İ`/`I`, Math-A/`A`, `ℕ`/`N`,
+  `ß`/`ss`, NFC/NFD `Å` and `é`) each produced **2 distinct files** on NTFS. Only
+  ASCII `A`/`a` collapsed, so the `import FOO` case-insensitivity does not extend
+  to any homoglyph.
+* **A UTF-8 BOM is not silently stripped** — `expected token` at 1:0, and a
+  UTF-16LE file is rejected outright. No editor-writes-BOM / Lean-ignores-BOM
+  divergence.
+* **The NFD direction is closed.** 395 of the 981 bare-legal codepoints have a
+  multi-codepoint NFD, but every such decomposition ends in a combining mark and
+  all `Mn` are rejected bare. Bare `é` can only collide with `«e◌́»`, never with
+  another bare spelling.
 * **No Cyrillic.** `isLetterLike` admits Greek, Coptic, Greek Extended,
   Letterlike Symbols, Mathematical Alphanumerics, Latin-1 Supplement and Latin
   Extended-A — but *not* Cyrillic, which rules out the most familiar homoglyph
@@ -146,4 +234,5 @@ lean StringIdentity/NameIdentity.lean         # Name identity and hashing
 lean StringIdentity/NormalizationForms.lean   # expect exactly 2 errors, at the NFD-bare and NFC-quoted lines
 lean StringIdentity/TatweelIdentifiers.lean   # expect exactly 2 errors, at the two BARE tatweel lines
 lean StringIdentity/NameRoundTrip.lean        # expect 3 round-trip failures, all involving »
+lean StringIdentity/NameToStringCollision.lean # two distinct constants, one printed form
 ```
