@@ -1945,3 +1945,218 @@ Proof.
           (generic_list_disj2 C (r :: tail)) _ d
           (generic_minimal_or2 H q (generic_list_disj2 C (r :: tail)))).
 Qed.
+
+(** * Constructive finite contexts *)
+
+Definition generic_list_derivable {S F : Type}
+    (E : generic_entailment S F) (s : S) (C : generic_connectives F)
+    (gamma : list F) (p : F) : Prop :=
+  inhabited (generic_list_derivation E s C gamma p).
+
+Fixpoint generic_list_derivation_weaken_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    {gamma delta : list F}
+    (incl : forall p, generic_raw_list_member p gamma ->
+      generic_raw_list_member p delta) {p : F}
+    (d : generic_list_derivation E s C gamma p) :
+    generic_list_derivation E s C delta p.
+Proof.
+  destruct d as [p hp | p b | p q dpq dp].
+  - exact (GLD_assumption (incl p hp)).
+  - exact (GLD_theorem b).
+  - exact (GLD_mdp
+      (@generic_list_derivation_weaken_raw S F E s C gamma delta incl
+        (generic_imp C p q) dpq)
+      (@generic_list_derivation_weaken_raw S F E s C gamma delta incl p dp)).
+Defined.
+
+Arguments generic_list_derivation_weaken_raw {S F E s C gamma delta}
+  _ {p} _.
+
+Definition generic_list_derivation_append_mdp_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    {gamma delta : list F} {p q : F}
+    (dpq : generic_list_derivation E s C gamma (generic_imp C p q))
+    (dp : generic_list_derivation E s C delta p) :
+    generic_list_derivation E s C (gamma ++ delta) q :=
+  GLD_mdp
+    (generic_list_derivation_weaken_raw
+      (fun r hr => generic_raw_list_member_app_left delta hr) dpq)
+    (generic_list_derivation_weaken_raw
+      (fun r hr => generic_raw_list_member_app_right gamma hr) dp).
+
+Arguments generic_list_derivation_append_mdp_raw {S F E s C gamma delta p q}
+  _ _.
+
+Definition generic_list_deduction_inverse_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    {gamma : list F} {a p : F}
+    (d : generic_list_derivation E s C gamma (generic_imp C a p)) :
+    generic_list_derivation E s C (a :: gamma) p :=
+  GLD_mdp
+    (generic_list_derivation_weaken_raw
+      (fun q hq => GRLM_there a hq) d)
+    (GLD_assumption (GRLM_here gamma)).
+
+Arguments generic_list_deduction_inverse_raw {S F E s C gamma a p} _.
+
+Definition generic_minimal_list_deduction_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) {gamma : list F} {a p : F}
+    (d : generic_list_derivation E s C (a :: gamma) p) :
+    generic_list_derivation E s C gamma (generic_imp C a p) :=
+  generic_list_deduction (generic_minimal_mdp H)
+    (generic_minimal_K H) (generic_minimal_S H) d.
+
+Arguments generic_minimal_list_deduction_raw {S F E C s}
+  _ {gamma a p} _.
+
+(** Fold introduction is generalized from closed proofs to derivations over an
+    arbitrary ambient context.  The finite-context identity derivation below
+    is just the instance where source and ambient contexts coincide. *)
+Fixpoint generic_minimal_list_conj2_derivation_nonempty_intro_raw
+    {S F : Type} {E : generic_entailment S F}
+    {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (ambient : list F)
+    (head : F) (tail : list F)
+    (b : forall p, generic_raw_list_member p (head :: tail) ->
+      generic_list_derivation E s C ambient p) {struct tail} :
+    generic_list_derivation E s C ambient
+      (generic_list_conj2 C (head :: tail)) :=
+  match tail as xs return
+      (forall p, generic_raw_list_member p (head :: xs) ->
+        generic_list_derivation E s C ambient p) ->
+      generic_list_derivation E s C ambient
+        (generic_list_conj2 C (head :: xs))
+  with
+  | [] => fun all => all head (GRLM_here [])
+  | q :: rest => fun all =>
+      GLD_mdp
+        (GLD_mdp (GLD_theorem
+          (generic_minimal_and3 H head
+            (generic_list_conj2 C (q :: rest))))
+          (all head (GRLM_here (q :: rest))))
+        (@generic_minimal_list_conj2_derivation_nonempty_intro_raw
+          S F E C s H ambient q rest
+          (fun r hr => all r (GRLM_there head hr)))
+  end b.
+
+Definition generic_minimal_list_conj2_derivation_intro_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (ambient gamma : list F)
+    (b : forall p, generic_raw_list_member p gamma ->
+      generic_list_derivation E s C ambient p) :
+    generic_list_derivation E s C ambient (generic_list_conj2 C gamma) :=
+  match gamma as xs return
+      (forall p, generic_raw_list_member p xs ->
+        generic_list_derivation E s C ambient p) ->
+      generic_list_derivation E s C ambient (generic_list_conj2 C xs)
+  with
+  | [] => fun _ => GLD_theorem (generic_minimal_verum H)
+  | p :: tail => fun all =>
+      @generic_minimal_list_conj2_derivation_nonempty_intro_raw
+        S F E C s H ambient p tail all
+  end b.
+
+Arguments generic_minimal_list_conj2_derivation_intro_raw {S F E C s}
+  _ _ _ _.
+
+Definition generic_minimal_list_conj2_context_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (gamma : list F) :
+    generic_list_derivation E s C gamma (generic_list_conj2 C gamma) :=
+  generic_minimal_list_conj2_derivation_intro_raw H gamma gamma
+    (fun p hp => GLD_assumption hp).
+
+Arguments generic_minimal_list_conj2_context_raw {S F E C s} _ _.
+
+Fixpoint generic_minimal_list_derivation_to_conj2_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) {gamma : list F} {p : F}
+    (d : generic_list_derivation E s C gamma p) :
+    generic_proof E s (generic_imp C (generic_list_conj2 C gamma) p).
+Proof.
+  destruct d as [p hp | p b | p q dpq dp].
+  - exact (generic_minimal_list_conj2_elim_raw H hp).
+  - exact (generic_minimal_dhyp_raw H p (generic_list_conj2 C gamma) b).
+  - exact (generic_minimal_under_apply_raw H
+      (generic_list_conj2 C gamma) p q
+      (@generic_minimal_list_derivation_to_conj2_raw
+        S F E C s H gamma (generic_imp C p q) dpq)
+      (@generic_minimal_list_derivation_to_conj2_raw
+        S F E C s H gamma p dp)).
+Defined.
+
+Arguments generic_minimal_list_derivation_to_conj2_raw {S F E C s}
+  _ {gamma p} _.
+
+Definition generic_minimal_list_derivation_of_conj2_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (gamma : list F) (p : F)
+    (d : generic_proof E s
+      (generic_imp C (generic_list_conj2 C gamma) p)) :
+    generic_list_derivation E s C gamma p :=
+  GLD_mdp (GLD_theorem d)
+    (generic_minimal_list_conj2_context_raw H gamma).
+
+Arguments generic_minimal_list_derivation_of_conj2_raw {S F E C s}
+  _ _ _ _.
+
+Lemma generic_minimal_list_derivation_deduction_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall gamma a p,
+      generic_list_derivable E s C (a :: gamma) p <->
+      generic_list_derivable E s C gamma (generic_imp C a p).
+Proof.
+  intros S F E C s H gamma a p. split; intros [d]; constructor.
+  - exact (generic_minimal_list_deduction_raw H d).
+  - exact (generic_list_deduction_inverse_raw d).
+Qed.
+
+Lemma generic_minimal_empty_derivation_provable_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p,
+      generic_list_derivable E s C [] p <-> generic_provable E s p.
+Proof.
+  intros S F E C s H p. split; intros [d]; constructor.
+  - exact (generic_empty_derivation_raw (generic_minimal_mdp H) d).
+  - exact (GLD_theorem d).
+Qed.
+
+Lemma generic_minimal_list_derivation_conj2_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall gamma p,
+      generic_list_derivable E s C gamma p <->
+      generic_provable E s
+        (generic_imp C (generic_list_conj2 C gamma) p).
+Proof.
+  intros S F E C s H gamma p. split; intros [d]; constructor.
+  - exact (generic_minimal_list_derivation_to_conj2_raw H d).
+  - exact (generic_minimal_list_derivation_of_conj2_raw H gamma p d).
+Qed.
+
+Lemma generic_list_derivation_weaken :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S) gamma delta,
+    (forall p, generic_raw_list_member p gamma ->
+      generic_raw_list_member p delta) -> forall p,
+      generic_list_derivable E s C gamma p ->
+      generic_list_derivable E s C delta p.
+Proof.
+  intros S F E C s gamma delta incl p [d]. constructor.
+  exact (generic_list_derivation_weaken_raw incl d).
+Qed.
+
+Lemma generic_list_derivation_append_mdp :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S) gamma delta p q,
+    generic_list_derivable E s C gamma (generic_imp C p q) ->
+    generic_list_derivable E s C delta p ->
+    generic_list_derivable E s C (gamma ++ delta) q.
+Proof.
+  intros S F E C s gamma delta p q [dpq] [dp]. constructor.
+  exact (generic_list_derivation_append_mdp_raw dpq dp).
+Qed.

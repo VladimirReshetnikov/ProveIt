@@ -1365,6 +1365,20 @@ Check generic_minimal_list_conj_provable_iff.
 Check generic_minimal_list_conj2_provable_iff.
 Check generic_minimal_list_disj_intro_provable.
 Check generic_minimal_list_disj2_intro_provable.
+Check generic_list_derivable.
+Check generic_list_derivation_weaken_raw.
+Check generic_list_derivation_append_mdp_raw.
+Check generic_list_deduction_inverse_raw.
+Check generic_minimal_list_deduction_raw.
+Check generic_minimal_list_conj2_derivation_intro_raw.
+Check generic_minimal_list_conj2_context_raw.
+Check generic_minimal_list_derivation_to_conj2_raw.
+Check generic_minimal_list_derivation_of_conj2_raw.
+Check generic_minimal_list_derivation_deduction_iff.
+Check generic_minimal_empty_derivation_provable_iff.
+Check generic_minimal_list_derivation_conj2_iff.
+Check generic_list_derivation_weaken.
+Check generic_list_derivation_append_mdp.
 Check ph_hilbert_dni.
 Check ph_hilbert_contraposition.
 Check ph_hilbert_neg_or_iff_and_neg.
@@ -1372,6 +1386,9 @@ Check ph_hilbert_or_assoc_iff.
 Check ph_hilbert_and_assoc_iff.
 Check ph_hilbert_list_conj2_elim.
 Check ph_hilbert_list_disj2_intro.
+Check ph_hilbert_context_proof.
+Check ph_hilbert_context_to_conj2.
+Check ph_hilbert_context_of_conj2.
 Print Assumptions generic_minimal_imp_swap_raw.
 Print Assumptions generic_minimal_imp_contract_raw.
 Print Assumptions generic_minimal_iff_trans_raw.
@@ -1411,6 +1428,15 @@ Print Assumptions generic_minimal_list_disj2_intro_raw.
 Print Assumptions generic_minimal_list_conj_map_right_intro_raw.
 Print Assumptions generic_minimal_list_conj2_append_iff_raw.
 Print Assumptions generic_minimal_list_conj2_provable_iff.
+Print Assumptions generic_list_derivation_weaken_raw.
+Print Assumptions generic_list_derivation_append_mdp_raw.
+Print Assumptions generic_minimal_list_deduction_raw.
+Print Assumptions generic_minimal_list_conj2_context_raw.
+Print Assumptions generic_minimal_list_derivation_to_conj2_raw.
+Print Assumptions generic_minimal_list_derivation_of_conj2_raw.
+Print Assumptions generic_minimal_list_derivation_deduction_iff.
+Print Assumptions generic_minimal_empty_derivation_provable_iff.
+Print Assumptions generic_minimal_list_derivation_conj2_iff.
 Print Assumptions ph_hilbert_dni.
 Print Assumptions ph_hilbert_contraposition.
 Print Assumptions ph_hilbert_neg_or_iff_and_neg.
@@ -1418,6 +1444,8 @@ Print Assumptions ph_hilbert_or_assoc_iff.
 Print Assumptions ph_hilbert_and_assoc_iff.
 Print Assumptions ph_hilbert_list_conj2_elim.
 Print Assumptions ph_hilbert_list_disj2_intro.
+Print Assumptions ph_hilbert_context_to_conj2.
+Print Assumptions ph_hilbert_context_of_conj2.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.

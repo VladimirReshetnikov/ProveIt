@@ -375,6 +375,33 @@ Definition ph_hilbert_list_disj2_intro {Atom : Type}
   generic_minimal_list_disj2_intro_raw
     (ph_hilbert_generic_minimal H) h.
 
+(** Finite Hilbert contexts are represented by the same Type-valued raw
+    derivations as the generic layer.  The two conversions below show that
+    this structural presentation is exactly implication from the normalized
+    conjunction of the context. *)
+Definition ph_hilbert_context_proof {Atom : Type}
+    (H : ph_hilbert Atom) (gamma : list (pformula Atom))
+    (p : pformula Atom) : Type :=
+  generic_list_derivation (ph_hilbert_entailment Atom) H
+    (pformula_connectives Atom) gamma p.
+
+Definition ph_hilbert_context_to_conj2 {Atom : Type}
+    (H : ph_hilbert Atom) {gamma : list (pformula Atom)}
+    {p : pformula Atom} (d : ph_hilbert_context_proof H gamma p) :
+    ph_hilbert_proof H
+      (PImp (generic_list_conj2 (pformula_connectives Atom) gamma) p) :=
+  generic_minimal_list_derivation_to_conj2_raw
+    (ph_hilbert_generic_minimal H) d.
+
+Definition ph_hilbert_context_of_conj2 {Atom : Type}
+    (H : ph_hilbert Atom) (gamma : list (pformula Atom))
+    (p : pformula Atom)
+    (d : ph_hilbert_proof H
+      (PImp (generic_list_conj2 (pformula_connectives Atom) gamma) p)) :
+    ph_hilbert_context_proof H gamma p :=
+  generic_minimal_list_derivation_of_conj2_raw
+    (ph_hilbert_generic_minimal H) gamma p d.
+
 (** One recursor factors inclusion and arbitrary proof-schema translations. *)
 Fixpoint ph_hilbert_proof_map {Atom : Type}
     {H K : ph_hilbert Atom}
