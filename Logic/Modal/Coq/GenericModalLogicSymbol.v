@@ -365,3 +365,249 @@ Lemma generic_set_dia_iter_preimage_member_iff :
     generic_set_dia_iter_preimage dia n s p <->
     s (generic_dia_iter dia n p).
 Proof. reflexivity. Qed.
+
+(** * List-backed finite collection images *)
+
+Definition generic_list_collection_subset {F : Type}
+    (s t : list F) : Prop :=
+  forall p, In p s -> In p t.
+
+Definition generic_list_iter_image {F : Type}
+    (op : F -> F) (n : nat) (s : list F) : list F :=
+  map (generic_modal_iter op n) s.
+
+Definition generic_list_image {F : Type}
+    (op : F -> F) (s : list F) : list F :=
+  generic_list_iter_image op 1 s.
+
+Lemma generic_list_iter_image_zero :
+  forall (F : Type) (op : F -> F) (s : list F),
+    generic_list_iter_image op 0 s = s.
+Proof.
+  intros F op s; induction s as [|p s IH]; simpl; [reflexivity |].
+  now rewrite IH.
+Qed.
+
+Lemma generic_list_iter_image_nil :
+  forall (F : Type) (op : F -> F) (n : nat),
+    generic_list_iter_image op n [] = [].
+Proof. reflexivity. Qed.
+
+Lemma generic_list_iter_image_singleton :
+  forall (F : Type) (op : F -> F) (n : nat) (p : F),
+    generic_list_iter_image op n [p] = [generic_modal_iter op n p].
+Proof. reflexivity. Qed.
+
+Lemma generic_list_iter_image_cons :
+  forall (F : Type) (op : F -> F) (n : nat)
+         (p : F) (s : list F),
+    generic_list_iter_image op n (p :: s) =
+    generic_modal_iter op n p :: generic_list_iter_image op n s.
+Proof. reflexivity. Qed.
+
+Lemma generic_list_iter_image_nonempty :
+  forall (F : Type) (op : F -> F) (n : nat) (s : list F),
+    s <> [] -> generic_list_iter_image op n s <> [].
+Proof.
+  intros F op n [|p s] H; [now exfalso; apply H | discriminate].
+Qed.
+
+Lemma generic_list_iter_image_cons_member_iff :
+  forall (F : Type) (op : F -> F) (n : nat)
+         (p q : F) (s : list F),
+    In p (generic_list_iter_image op n (q :: s)) <->
+    p = generic_modal_iter op n q \/
+    In p (generic_list_iter_image op n s).
+Proof.
+  intros F op n p q s. unfold generic_list_iter_image. simpl.
+  split.
+  - intros [H | H]; [left; now symmetry | now right].
+  - intros [H | H]; [left; now symmetry | now right].
+Qed.
+
+Lemma generic_list_iter_image_add :
+  forall (F : Type) (op : F -> F) (m n : nat) (s : list F),
+    generic_list_iter_image op (m + n) s =
+    generic_list_iter_image op n (generic_list_iter_image op m s).
+Proof.
+  intros F op m n s; induction s as [|p s IH]; simpl.
+  - reflexivity.
+  - rewrite IH, (generic_modal_iter_add op n m p), Nat.add_comm.
+    reflexivity.
+Qed.
+
+Lemma generic_list_iter_image_intro :
+  forall (F : Type) (op : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p s ->
+    In (generic_modal_iter op n p) (generic_list_iter_image op n s).
+Proof.
+  intros F op n s p Hp. unfold generic_list_iter_image.
+  now apply in_map.
+Qed.
+
+Lemma generic_list_iter_image_elim :
+  forall (F : Type) (op : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p (generic_list_iter_image op n s) ->
+    exists q, In q s /\ generic_modal_iter op n q = p.
+Proof.
+  intros F op n s p Hp. unfold generic_list_iter_image in Hp.
+  apply in_map_iff in Hp. destruct Hp as [q [Heq Hq]].
+  exists q. split; [exact Hq | exact Heq].
+Qed.
+
+Lemma generic_list_iter_image_subset_mono :
+  forall (F : Type) (op : F -> F) (n : nat)
+         (s t : list F),
+    generic_list_collection_subset s t ->
+    generic_list_collection_subset
+      (generic_list_iter_image op n s)
+      (generic_list_iter_image op n t).
+Proof.
+  unfold generic_list_collection_subset.
+  intros F op n s t Hsub p Hp.
+  destruct (generic_list_iter_image_elim Hp) as [q [Hq Heq]].
+  rewrite <- Heq.
+  apply generic_list_iter_image_intro. now apply Hsub.
+Qed.
+
+(** Box list API. *)
+Definition generic_list_box_iter_image := @generic_list_iter_image.
+Definition generic_list_box_image := @generic_list_image.
+
+Lemma generic_list_box_iter_image_zero :
+  forall (F : Type) (box : F -> F) (s : list F),
+    generic_list_box_iter_image box 0 s = s.
+Proof. exact generic_list_iter_image_zero. Qed.
+
+Lemma generic_list_box_iter_image_nonempty :
+  forall (F : Type) (box : F -> F) (n : nat) (s : list F),
+    s <> [] -> generic_list_box_iter_image box n s <> [].
+Proof. exact generic_list_iter_image_nonempty. Qed.
+
+Lemma generic_list_box_iter_image_nil :
+  forall (F : Type) (box : F -> F) (n : nat),
+    generic_list_box_iter_image box n [] = [].
+Proof. reflexivity. Qed.
+
+Lemma generic_list_box_iter_image_singleton :
+  forall (F : Type) (box : F -> F) (n : nat) (p : F),
+    generic_list_box_iter_image box n [p] = [generic_box_iter box n p].
+Proof. reflexivity. Qed.
+
+Lemma generic_list_box_iter_image_cons :
+  forall (F : Type) (box : F -> F) (n : nat)
+         (p : F) (s : list F),
+    generic_list_box_iter_image box n (p :: s) =
+    generic_box_iter box n p :: generic_list_box_iter_image box n s.
+Proof. reflexivity. Qed.
+
+Lemma generic_list_box_iter_image_cons_member_iff :
+  forall (F : Type) (box : F -> F) (n : nat)
+         (p q : F) (s : list F),
+    In p (generic_list_box_iter_image box n (q :: s)) <->
+    p = generic_box_iter box n q \/
+    In p (generic_list_box_iter_image box n s).
+Proof. exact generic_list_iter_image_cons_member_iff. Qed.
+
+Lemma generic_list_box_iter_image_add :
+  forall (F : Type) (box : F -> F) (m n : nat) (s : list F),
+    generic_list_box_iter_image box (m + n) s =
+    generic_list_box_iter_image box n
+      (generic_list_box_iter_image box m s).
+Proof. exact generic_list_iter_image_add. Qed.
+
+Lemma generic_list_box_iter_image_intro :
+  forall (F : Type) (box : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p s ->
+    In (generic_box_iter box n p)
+      (generic_list_box_iter_image box n s).
+Proof. exact generic_list_iter_image_intro. Qed.
+
+Lemma generic_list_box_iter_image_elim :
+  forall (F : Type) (box : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p (generic_list_box_iter_image box n s) ->
+    exists q, In q s /\ generic_box_iter box n q = p.
+Proof. exact generic_list_iter_image_elim. Qed.
+
+Lemma generic_list_box_iter_image_subset_mono :
+  forall (F : Type) (box : F -> F) (n : nat)
+         (s t : list F),
+    generic_list_collection_subset s t ->
+    generic_list_collection_subset
+      (generic_list_box_iter_image box n s)
+      (generic_list_box_iter_image box n t).
+Proof. exact generic_list_iter_image_subset_mono. Qed.
+
+(** Diamond list API. *)
+Definition generic_list_dia_iter_image := @generic_list_iter_image.
+Definition generic_list_dia_image := @generic_list_image.
+
+Lemma generic_list_dia_iter_image_zero :
+  forall (F : Type) (dia : F -> F) (s : list F),
+    generic_list_dia_iter_image dia 0 s = s.
+Proof. exact generic_list_iter_image_zero. Qed.
+
+Lemma generic_list_dia_iter_image_nonempty :
+  forall (F : Type) (dia : F -> F) (n : nat) (s : list F),
+    s <> [] -> generic_list_dia_iter_image dia n s <> [].
+Proof. exact generic_list_iter_image_nonempty. Qed.
+
+Lemma generic_list_dia_iter_image_nil :
+  forall (F : Type) (dia : F -> F) (n : nat),
+    generic_list_dia_iter_image dia n [] = [].
+Proof. reflexivity. Qed.
+
+Lemma generic_list_dia_iter_image_singleton :
+  forall (F : Type) (dia : F -> F) (n : nat) (p : F),
+    generic_list_dia_iter_image dia n [p] = [generic_dia_iter dia n p].
+Proof. reflexivity. Qed.
+
+Lemma generic_list_dia_iter_image_cons :
+  forall (F : Type) (dia : F -> F) (n : nat)
+         (p : F) (s : list F),
+    generic_list_dia_iter_image dia n (p :: s) =
+    generic_dia_iter dia n p :: generic_list_dia_iter_image dia n s.
+Proof. reflexivity. Qed.
+
+Lemma generic_list_dia_iter_image_cons_member_iff :
+  forall (F : Type) (dia : F -> F) (n : nat)
+         (p q : F) (s : list F),
+    In p (generic_list_dia_iter_image dia n (q :: s)) <->
+    p = generic_dia_iter dia n q \/
+    In p (generic_list_dia_iter_image dia n s).
+Proof. exact generic_list_iter_image_cons_member_iff. Qed.
+
+Lemma generic_list_dia_iter_image_add :
+  forall (F : Type) (dia : F -> F) (m n : nat) (s : list F),
+    generic_list_dia_iter_image dia (m + n) s =
+    generic_list_dia_iter_image dia n
+      (generic_list_dia_iter_image dia m s).
+Proof. exact generic_list_iter_image_add. Qed.
+
+Lemma generic_list_dia_iter_image_intro :
+  forall (F : Type) (dia : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p s ->
+    In (generic_dia_iter dia n p)
+      (generic_list_dia_iter_image dia n s).
+Proof. exact generic_list_iter_image_intro. Qed.
+
+Lemma generic_list_dia_iter_image_elim :
+  forall (F : Type) (dia : F -> F) (n : nat)
+         (s : list F) (p : F),
+    In p (generic_list_dia_iter_image dia n s) ->
+    exists q, In q s /\ generic_dia_iter dia n q = p.
+Proof. exact generic_list_iter_image_elim. Qed.
+
+Lemma generic_list_dia_iter_image_subset_mono :
+  forall (F : Type) (dia : F -> F) (n : nat)
+         (s t : list F),
+    generic_list_collection_subset s t ->
+    generic_list_collection_subset
+      (generic_list_dia_iter_image dia n s)
+      (generic_list_dia_iter_image dia n t).
+Proof. exact generic_list_iter_image_subset_mono. Qed.

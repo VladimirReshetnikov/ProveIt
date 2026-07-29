@@ -682,6 +682,52 @@ Print Assumptions generic_iter_image_reflect.
 Print Assumptions generic_iter_image_change_depth.
 Print Assumptions generic_set_box_iter_image_change_depth.
 Print Assumptions generic_set_dia_iter_image_elim.
+Check generic_list_collection_subset.
+Check generic_list_iter_image.
+Check generic_list_image.
+Check generic_list_iter_image_zero.
+Check generic_list_iter_image_nil.
+Check generic_list_iter_image_singleton.
+Check generic_list_iter_image_cons.
+Check generic_list_iter_image_nonempty.
+Check generic_list_iter_image_cons_member_iff.
+Check generic_list_iter_image_add.
+Check generic_list_iter_image_intro.
+Check generic_list_iter_image_elim.
+Check generic_list_iter_image_subset_mono.
+Check generic_list_box_iter_image.
+Check generic_list_box_image.
+Check generic_list_box_iter_image_zero.
+Check generic_list_box_iter_image_nonempty.
+Check generic_list_box_iter_image_nil.
+Check generic_list_box_iter_image_singleton.
+Check generic_list_box_iter_image_cons.
+Check generic_list_box_iter_image_cons_member_iff.
+Check generic_list_box_iter_image_add.
+Check generic_list_box_iter_image_intro.
+Check generic_list_box_iter_image_elim.
+Check generic_list_box_iter_image_subset_mono.
+Check generic_list_dia_iter_image.
+Check generic_list_dia_image.
+Check generic_list_dia_iter_image_zero.
+Check generic_list_dia_iter_image_nonempty.
+Check generic_list_dia_iter_image_nil.
+Check generic_list_dia_iter_image_singleton.
+Check generic_list_dia_iter_image_cons.
+Check generic_list_dia_iter_image_cons_member_iff.
+Check generic_list_dia_iter_image_add.
+Check generic_list_dia_iter_image_intro.
+Check generic_list_dia_iter_image_elim.
+Check generic_list_dia_iter_image_subset_mono.
+Print Assumptions generic_list_iter_image_zero.
+Print Assumptions generic_list_iter_image_nonempty.
+Print Assumptions generic_list_iter_image_cons_member_iff.
+Print Assumptions generic_list_iter_image_add.
+Print Assumptions generic_list_iter_image_intro.
+Print Assumptions generic_list_iter_image_elim.
+Print Assumptions generic_list_iter_image_subset_mono.
+Print Assumptions generic_list_box_iter_image_add.
+Print Assumptions generic_list_dia_iter_image_subset_mono.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
