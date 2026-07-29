@@ -6,6 +6,7 @@ From FoundationModal Require Import
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
+  PropositionalKripkeCanonical
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
   GenericCalculus PropositionalEntailmentAxioms
@@ -1053,6 +1054,42 @@ Print Assumptions pkripke_Dummett_valid_of_strongly_connected.
 Print Assumptions pkripke_strongly_connected_of_Dummett_valid.
 Print Assumptions ph_hilbert_kc_pkripke_sound.
 Print Assumptions ph_hilbert_lc_pkripke_sound.
+
+(** Enumerated prime-theory construction and canonical completeness.  The
+    single indefinite-description boundary selects a finite stage witnessing
+    use of assumptions from the increasing union. *)
+Check pki_context.
+Check pki_limit_derivation_stage_raw.
+Check pki_limit_avoids.
+Check pki_limit_maximal.
+Check pki_limit_derivably_closed.
+Check pki_prime_theory.
+Check pki_prime_extension.
+Check pki_prime_and_iff.
+Check pki_prime_or_iff.
+Check pki_canonical_frame.
+Check pki_canonical_model.
+Check pki_prime_imp_counterextension.
+Check pki_canonical_truth_lemma.
+Check pki_empty_derives_iff_provable.
+Check pki_canonical_model_valid_iff_provable.
+Check pki_canonical_for_class.
+Check ph_hilbert_pkripke_complete_of_canonical.
+Check ph_hilbert_pkripke_complete.
+Check pki_unprovable_has_canonical_countermodel.
+Check ph_hilbert_int_pkripke_complete.
+Check ph_hilbert_int_pkripke_sound_complete.
+Print Assumptions pki_limit_derivation_stage_raw.
+Print Assumptions pki_limit_avoids.
+Print Assumptions pki_limit_maximal.
+Print Assumptions pki_limit_derivably_closed.
+Print Assumptions pki_prime_extension.
+Print Assumptions pki_prime_imp_counterextension.
+Print Assumptions pki_canonical_truth_lemma.
+Print Assumptions pki_canonical_model_valid_iff_provable.
+Print Assumptions ph_hilbert_pkripke_complete_of_canonical.
+Print Assumptions ph_hilbert_int_pkripke_complete.
+Print Assumptions ph_hilbert_int_pkripke_sound_complete.
 
 (** Propositional/Translation syntax bridges. *)
 Check pformula_to_pnn.
