@@ -5,7 +5,7 @@ From FoundationModal Require Import
   GenericEntailment GenericDecidability GenericDisjunctive
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
-  PropositionalLogic PropositionalHilbert
+  PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
   GenericCalculus PropositionalEntailmentAxioms
@@ -1004,6 +1004,55 @@ Print Assumptions ph_hilbert_cl_dne.
 Print Assumptions ph_hilbert_cl_classical.
 Print Assumptions ph_hilbert_logic_subset_of_schema_inclusion.
 Print Assumptions ph_hilbert_logic_subset_of_provable_schema.
+
+(** Generalized propositional Kripke semantics and Hilbert soundness. *)
+Check pkripke_frame.
+Check pkripke_valuation.
+Check pkripke_model.
+Check pkripke_forces.
+Check pkripke_forces_atom.
+Check pkripke_forces_bottom.
+Check pkripke_forces_and.
+Check pkripke_forces_or.
+Check pkripke_forces_imp.
+Check pkripke_forces_neg.
+Check pkripke_forces_persistent.
+Check pkripke_substitution_model.
+Check pkripke_forces_substitute.
+Check pkripke_model_valid.
+Check pkripke_frame_valid.
+Check pkripke_frame_class_valid.
+Check pkripke_sound.
+Check pkripke_complete.
+Check ph_hilbert_logic_included.
+Check pkripke_frame_valid_substitute.
+Check ph_hilbert_proof_pkripke_sound.
+Check ph_hilbert_pkripke_sound.
+Check ph_hilbert_consistent_of_nonempty_pkripke_class.
+Check ph_hilbert_included_of_pkripke_class_subset.
+Check ph_hilbert_int_pkripke_sound.
+Check ph_hilbert_int_consistent_via_pkripke.
+Check pkripke_frame_strongly_convergent.
+Check pkripke_frame_strongly_connected.
+Check pkripke_WLEM_valid_of_strongly_convergent.
+Check pkripke_strongly_convergent_of_WLEM_valid.
+Check pkripke_Dummett_valid_of_strongly_connected.
+Check pkripke_strongly_connected_of_Dummett_valid.
+Check ph_hilbert_kc_pkripke_sound.
+Check ph_hilbert_lc_pkripke_sound.
+Print Assumptions pkripke_forces_persistent.
+Print Assumptions pkripke_forces_substitute.
+Print Assumptions ph_hilbert_proof_pkripke_sound.
+Print Assumptions ph_hilbert_consistent_of_nonempty_pkripke_class.
+Print Assumptions ph_hilbert_included_of_pkripke_class_subset.
+Print Assumptions ph_hilbert_int_pkripke_sound.
+Print Assumptions ph_hilbert_int_consistent_via_pkripke.
+Print Assumptions pkripke_WLEM_valid_of_strongly_convergent.
+Print Assumptions pkripke_strongly_convergent_of_WLEM_valid.
+Print Assumptions pkripke_Dummett_valid_of_strongly_connected.
+Print Assumptions pkripke_strongly_connected_of_Dummett_valid.
+Print Assumptions ph_hilbert_kc_pkripke_sound.
+Print Assumptions ph_hilbert_lc_pkripke_sound.
 
 (** Propositional/Translation syntax bridges. *)
 Check pformula_to_pnn.
