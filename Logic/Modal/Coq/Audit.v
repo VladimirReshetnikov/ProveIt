@@ -1399,6 +1399,14 @@ Check generic_type_context_finite_iff.
 Check generic_empty_type_context.
 Check generic_empty_type_context_derivation_raw.
 Check generic_minimal_empty_type_context_provable_iff.
+Check generic_minimal_double_neg_imp_distribution_raw.
+Check generic_minimal_double_neg_imp_map_raw.
+Check generic_minimal_top_to_neg_bottom_raw.
+Check generic_minimal_and_or_cut_raw.
+Check generic_minimal_double_neg_imp_distribution_provable.
+Check generic_minimal_and_or_cut_provable.
+Check generic_minimal_unprovable_imp_trans.
+Check generic_minimal_unprovable_iff_of_formula_iff.
 Check ph_hilbert_dni.
 Check ph_hilbert_contraposition.
 Check ph_hilbert_neg_or_iff_and_neg.
@@ -1412,6 +1420,8 @@ Check ph_hilbert_context_of_conj2.
 Check ph_hilbert_type_context_proof.
 Check ph_hilbert_type_context_deduction.
 Check ph_hilbert_type_context_to_finite.
+Check ph_hilbert_double_neg_imp_distribution.
+Check ph_hilbert_and_or_cut.
 Print Assumptions generic_minimal_imp_swap_raw.
 Print Assumptions generic_minimal_imp_contract_raw.
 Print Assumptions generic_minimal_iff_trans_raw.
@@ -1468,6 +1478,14 @@ Print Assumptions generic_type_context_to_finite_witness_raw.
 Print Assumptions generic_type_context_of_finite_witness_raw.
 Print Assumptions generic_type_context_finite_iff.
 Print Assumptions generic_minimal_empty_type_context_provable_iff.
+Print Assumptions generic_minimal_double_neg_imp_distribution_raw.
+Print Assumptions generic_minimal_double_neg_imp_map_raw.
+Print Assumptions generic_minimal_top_to_neg_bottom_raw.
+Print Assumptions generic_minimal_and_or_cut_raw.
+Print Assumptions generic_minimal_double_neg_imp_distribution_provable.
+Print Assumptions generic_minimal_and_or_cut_provable.
+Print Assumptions generic_minimal_unprovable_imp_trans.
+Print Assumptions generic_minimal_unprovable_iff_of_formula_iff.
 Print Assumptions ph_hilbert_dni.
 Print Assumptions ph_hilbert_contraposition.
 Print Assumptions ph_hilbert_neg_or_iff_and_neg.
@@ -1479,6 +1497,8 @@ Print Assumptions ph_hilbert_context_to_conj2.
 Print Assumptions ph_hilbert_context_of_conj2.
 Print Assumptions ph_hilbert_type_context_deduction.
 Print Assumptions ph_hilbert_type_context_to_finite.
+Print Assumptions ph_hilbert_double_neg_imp_distribution.
+Print Assumptions ph_hilbert_and_or_cut.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
