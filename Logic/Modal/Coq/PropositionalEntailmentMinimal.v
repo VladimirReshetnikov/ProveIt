@@ -2020,6 +2020,27 @@ Proof.
       (generic_minimal_list_conj_to_conj2_raw H gamma) d).
 Qed.
 
+(** Indexed finite conjunctions retain the positions of their indices.  This
+    is the choice-free, duplicate-tolerant counterpart of Foundation's
+    finite-set theorem: a mapped conjunction is provable exactly when every
+    enumerated component is provable. *)
+Lemma generic_minimal_list_conj_map_provable_iff :
+  forall (S I F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall (f : I -> F) xs,
+      generic_provable E s (generic_list_conj_map C f xs) <->
+      forall i, In i xs -> generic_provable E s (f i).
+Proof.
+  intros S I F E C s H f xs.
+  unfold generic_list_conj_map.
+  rewrite (generic_minimal_list_conj2_provable_iff H (map f xs)).
+  split.
+  - intros all i hi. apply (all (f i)).
+    apply in_map. exact hi.
+  - intros all p hp. apply in_map_iff in hp.
+    destruct hp as [i [<- hi]]. exact (all i hi).
+Qed.
+
 Lemma generic_minimal_list_disj_intro_provable :
   forall (S F : Type) (E : generic_entailment S F)
          (C : generic_connectives F) (s : S),
@@ -2545,6 +2566,79 @@ Proof.
   - exact (GTCD_theorem d).
 Qed.
 
+(** * Minimal inheritance by proof-relevant contexts *)
+
+Definition generic_list_derivation_entailment {S F : Type}
+    (E : generic_entailment S F) (s : S) (C : generic_connectives F) :
+    generic_entailment (list F) F :=
+  {| generic_proof := fun gamma p =>
+       generic_list_derivation E s C gamma p |}.
+
+Definition generic_type_context_derivation_entailment {S F : Type}
+    (E : generic_entailment S F) (s : S) (C : generic_connectives F) :
+    generic_entailment (F -> Type) F :=
+  {| generic_proof := fun T p =>
+       generic_type_context_derivation E s C T p |}.
+
+Definition generic_minimal_list_derivation {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (gamma : list F) :
+    generic_minimal_entailment
+      (generic_list_derivation_entailment E s C) C gamma.
+Proof.
+  constructor.
+  - refine {| generic_modus_ponens_raw := _ |}.
+    intros p q dpq dp. exact (GLD_mdp dpq dp).
+  - intro p. exact (GLD_theorem (generic_minimal_neg_equiv H p)).
+  - exact (GLD_theorem (generic_minimal_verum H)).
+  - intros p q. exact (GLD_theorem (generic_minimal_K H p q)).
+  - intros p q r. exact (GLD_theorem (generic_minimal_S H p q r)).
+  - intros p q. exact (GLD_theorem (generic_minimal_and1 H p q)).
+  - intros p q. exact (GLD_theorem (generic_minimal_and2 H p q)).
+  - intros p q. exact (GLD_theorem (generic_minimal_and3 H p q)).
+  - intros p q. exact (GLD_theorem (generic_minimal_or1 H p q)).
+  - intros p q. exact (GLD_theorem (generic_minimal_or2 H p q)).
+  - intros p q r. exact (GLD_theorem (generic_minimal_or3 H p q r)).
+Defined.
+
+Definition generic_minimal_type_context_derivation {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (T : F -> Type) :
+    generic_minimal_entailment
+      (generic_type_context_derivation_entailment E s C) C T.
+Proof.
+  constructor.
+  - refine {| generic_modus_ponens_raw := _ |}.
+    intros p q dpq dp. exact (GTCD_mdp dpq dp).
+  - intro p. exact (GTCD_theorem (generic_minimal_neg_equiv H p)).
+  - exact (GTCD_theorem (generic_minimal_verum H)).
+  - intros p q. exact (GTCD_theorem (generic_minimal_K H p q)).
+  - intros p q r. exact (GTCD_theorem (generic_minimal_S H p q r)).
+  - intros p q. exact (GTCD_theorem (generic_minimal_and1 H p q)).
+  - intros p q. exact (GTCD_theorem (generic_minimal_and2 H p q)).
+  - intros p q. exact (GTCD_theorem (generic_minimal_and3 H p q)).
+  - intros p q. exact (GTCD_theorem (generic_minimal_or1 H p q)).
+  - intros p q. exact (GTCD_theorem (generic_minimal_or2 H p q)).
+  - intros p q r. exact (GTCD_theorem (generic_minimal_or3 H p q r)).
+Defined.
+
+(** A proof-relevant context containing a formula and its negation derives
+    bottom.  This is Foundation's set-context contradiction theorem without
+    either decidable formula equality or proof-irrelevant membership. *)
+Definition generic_minimal_type_context_bottom_of_neg_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (T : F -> Type) (p : F)
+    (hp : T p) (hnp : T (generic_neg C p)) :
+    generic_type_context_derivation E s C T (generic_bottom C) :=
+  GTCD_mdp
+    (generic_minimal_imp_bottom_of_neg_raw
+      (generic_minimal_type_context_derivation H T) p
+      (GTCD_assumption hnp))
+    (GTCD_assumption hp).
+
+Arguments generic_minimal_type_context_bottom_of_neg_raw {S F E C s}
+  _ _ _ _ _.
+
 (** * Remaining stable and cut consequences *)
 
 (** Double-negated implication distributes over double-negated antecedent and
@@ -2695,6 +2789,56 @@ Definition generic_minimal_conj2_to_disj2_of_or_member_raw {S F : Type}
       (generic_minimal_list_disj2_intro_raw H hq)).
 
 Arguments generic_minimal_conj2_to_disj2_of_or_member_raw
+  {S F E C s} _ _ _ _ _ _ _ _.
+
+(** If two enumerated assumptions form an enumerated alternative, their
+    conjunction carries the entire premise fold into the conclusion fold.
+    Unlike Foundation's finite-set wrapper, positions may repeat and formula
+    equality is never inspected. *)
+Definition generic_minimal_conj2_to_disj2_of_and_member_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s)
+    (gamma delta : list F) (p q : F)
+    (hp : generic_raw_list_member p gamma)
+    (hq : generic_raw_list_member q gamma)
+    (hand : generic_raw_list_member (generic_and C p q) delta) :
+    generic_proof E s
+      (generic_imp C (generic_list_conj2 C gamma)
+        (generic_list_disj2 C delta)) :=
+  generic_minimal_imp_trans_raw H
+    (generic_list_conj2 C gamma) (generic_and C p q)
+    (generic_list_disj2 C delta)
+    (generic_minimal_right_and_intro_raw H
+      (generic_list_conj2 C gamma) p q
+      (generic_minimal_list_conj2_elim_raw H hp)
+      (generic_minimal_list_conj2_elim_raw H hq))
+    (generic_minimal_list_disj2_intro_raw H hand).
+
+Arguments generic_minimal_conj2_to_disj2_of_and_member_raw
+  {S F E C s} _ _ _ _ _ _ _ _.
+
+(** Internal modus ponens is another finite conjunctive-to-disjunctive cut:
+    extracting [p] and [p -> q] from the premise fold yields any conclusion
+    fold that contains [q]. *)
+Definition generic_minimal_conj2_to_disj2_of_mdp_members_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s)
+    (gamma delta : list F) (p q : F)
+    (hp : generic_raw_list_member p gamma)
+    (hpq : generic_raw_list_member (generic_imp C p q) gamma)
+    (hq : generic_raw_list_member q delta) :
+    generic_proof E s
+      (generic_imp C (generic_list_conj2 C gamma)
+        (generic_list_disj2 C delta)) :=
+  generic_minimal_imp_trans_raw H
+    (generic_list_conj2 C gamma) q (generic_list_disj2 C delta)
+    (generic_minimal_under_apply_raw H
+      (generic_list_conj2 C gamma) p q
+      (generic_minimal_list_conj2_elim_raw H hpq)
+      (generic_minimal_list_conj2_elim_raw H hp))
+    (generic_minimal_list_disj2_intro_raw H hq).
+
+Arguments generic_minimal_conj2_to_disj2_of_mdp_members_raw
   {S F E C s} _ _ _ _ _ _ _ _.
 
 Lemma generic_minimal_double_neg_imp_distribution_provable :
