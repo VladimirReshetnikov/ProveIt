@@ -25,6 +25,8 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofPropositionalRules
+  RawCodedPALocalProofComposition
   RawCodedPALocalProofUniversalElimination
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
@@ -44,6 +46,8 @@ Import PABoundedRawCodedProofAllEConstructor.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofPropositionalRules.
+Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofUniversalElimination.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -182,6 +186,55 @@ Proof.
     (raw_templateUniversalOpenMany_elimination_chain
       M translation source replacements target hopen)
       sourceRoot hsource).
+Qed.
+
+(** Open any finite universal prefix and immediately consume a two-premise
+    implication body.  This is the inherited-traversal pattern used by the
+    predecessor branch of a table append, but the compiler is independent of
+    tables, binder count, and template translation. *)
+Theorem raw_codedPALocalProofOf_templateUniversalOpenMany_impE2 : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context source replacements first second conclusion
+    sourceRoot firstRoot secondRoot,
+  templateUniversalOpenMany source replacements =
+    Some (tfImp first (tfImp second conclusion)) ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation source) sourceRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation first) firstRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation second) secondRoot ->
+  exists resultRoot,
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation conclusion) resultRoot.
+Proof.
+  intros M hPA translation context source replacements
+    first second conclusion sourceRoot firstRoot secondRoot
+    hopen hsource hfirst hsecond.
+  destruct (raw_codedPALocalProofOf_templateUniversalOpenMany
+    M hPA translation context source replacements
+    (tfImp first (tfImp second conclusion)) sourceRoot hopen hsource)
+    as [openedRoot hopened].
+  rewrite !rawTemplateFormula_imp in hopened.
+  pose proof (raw_codedPALocalProofOf_impE M hPA context
+    (rawTemplateFormula translation first)
+    (rawFormulaImpCode M
+      (rawTemplateFormula translation second)
+      (rawTemplateFormula translation conclusion))
+    openedRoot firstRoot hopened hfirst) as hsecondImplication.
+  lazymatch type of hsecondImplication with
+  | RawCodedPALocalProofOf _ _ _ ?secondImplicationRoot =>
+      pose proof (raw_codedPALocalProofOf_impE M hPA context
+        (rawTemplateFormula translation second)
+        (rawTemplateFormula translation conclusion)
+        secondImplicationRoot secondRoot hsecondImplication hsecond)
+        as hresult;
+      lazymatch type of hresult with
+      | RawCodedPALocalProofOf _ _ _ ?resultRoot =>
+          exists resultRoot; exact hresult
+      end
+  end.
 Qed.
 
 (** Reuse one represented universally quantified proof for any finite list
