@@ -13,6 +13,8 @@ Check
   raw_codedPALocalProofOf_four_state_table_append_row_lt_succ_cases.
 Check
   raw_codedPALocalProofOf_four_state_table_append_row_lt_succ_cases_eliminate.
+Check
+  raw_codedPALocalProofOf_four_state_table_append_row_predecessor_branch_lookup.
 
 Print Assumptions raw_templateContextCode_embedPAAxiomWitnesses.
 Print Assumptions raw_fourStateTableAppendRowContext_witnessed_tail_code.
@@ -22,3 +24,5 @@ Print Assumptions
   raw_codedPALocalProofOf_four_state_table_append_row_lt_succ_cases.
 Print Assumptions
   raw_codedPALocalProofOf_four_state_table_append_row_lt_succ_cases_eliminate.
+Print Assumptions
+  raw_codedPALocalProofOf_four_state_table_append_row_predecessor_branch_lookup.

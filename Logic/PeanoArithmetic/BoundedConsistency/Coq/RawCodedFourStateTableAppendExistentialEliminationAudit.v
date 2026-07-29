@@ -67,6 +67,8 @@ Check templateImp3Conclusion.
 Check templateFormulaMapAnd4.
 Check templateFormulaMapAnd4_shape.
 Check raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4.
+Check
+  raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4_under_adequate_head.
 Check coqFourStateTableAppendModePreservationAtTemplate.
 Check coqFourStateTableAppendFormulaPreservationAtTemplate.
 Check coqFourStateTableAppendAssignmentCodePreservationAtTemplate.
@@ -94,6 +96,8 @@ Check
 Check raw_codedPALocalProofOf_four_state_table_append_row_preservation_at.
 Check
   raw_codedPALocalProofOf_four_state_table_append_row_predecessor_state_lookup.
+Check
+  raw_codedPALocalProofOf_four_state_table_append_row_predecessor_state_lookup_under_adequate_head.
 Check raw_codedPALocalProofOf_four_state_table_append_preservation_at.
 Check
   raw_codedPALocalProofOf_four_state_table_append_predecessor_state_lookup.
@@ -130,6 +134,8 @@ Print Assumptions templateFormulaMapAnd4_shape.
 Print Assumptions
   raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4.
 Print Assumptions
+  raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4_under_adequate_head.
+Print Assumptions
   raw_codedPALocalProofOf_four_state_table_append_extension_assumption.
 Print Assumptions
   raw_codedPALocalProofOf_four_state_table_append_extension_components.
@@ -146,6 +152,8 @@ Print Assumptions
 Print Assumptions coqFourStateTableAppendRowPreservationAt_shapes.
 Print Assumptions
   raw_codedPALocalProofOf_four_state_table_append_row_predecessor_state_lookup.
+Print Assumptions
+  raw_codedPALocalProofOf_four_state_table_append_row_predecessor_state_lookup_under_adequate_head.
 Print Assumptions
   raw_codedPALocalProofOf_four_state_table_append_preservation_at.
 Print Assumptions
