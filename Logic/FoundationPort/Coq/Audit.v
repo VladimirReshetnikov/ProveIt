@@ -215,6 +215,14 @@ Check rew_q_emb.
 Check semiformula_to_closed.
 Check semiformula_emb_to_closed.
 Check semiformula_emb_no_free_occurs.
+Check semiformula_free_bound.
+Check semiformula_fix_all_free.
+Check semiformula_fix_all_free_no_free.
+Check semiformula_universal_closure_open.
+Check semiformula_universal_closure_open_no_free.
+Check semiformula_universal_closure.
+Check semiformula_emb_universal_closure.
+Check semiformula_universal_closure_open_id.
 
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
@@ -300,6 +308,10 @@ Print Assumptions semiformula_fix_free.
 Print Assumptions rew_q_emb.
 Print Assumptions semiformula_emb_to_closed.
 Print Assumptions semiformula_emb_no_free_occurs.
+Print Assumptions semiformula_fix_all_free_no_free.
+Print Assumptions semiformula_universal_closure_open_no_free.
+Print Assumptions semiformula_emb_universal_closure.
+Print Assumptions semiformula_universal_closure_open_id.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
