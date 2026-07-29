@@ -29,6 +29,8 @@ Check raw_dynamicTruthNativeLocalAligned_predecessorRoot_of_bridge.
 Check
   raw_dynamicTruthNativeLocalAligned_predecessorRoot_of_diagonal_bridge.
 Check
+  raw_dynamicTruthNativeLocalAligned_predecessorRoot_of_template_bridge.
+Check
   raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases_aligned_with_next.
 Check raw_dynamicTruthNativeLocalCurrentHelperContextAt_exists.
 
