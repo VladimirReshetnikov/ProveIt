@@ -2,6 +2,7 @@
 
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
+From Foundation.Syntax.Predicate Require Import Rew.
 
 Check language.
 Check language_relational.
@@ -121,6 +122,33 @@ Check semiformula_language_map_free_variable_list.
 Check semiformula_enumerate_index_of_free_variable.
 Check theory_language_map.
 
+Check rew.
+Check rew_equiv.
+Check rew_id.
+Check rew_comp.
+Check rew_comp_assoc.
+Check rew_bind.
+Check rew_eta.
+Check rew_rewrite.
+Check rew_rewrite_map.
+Check rew_map.
+Check rew_subst.
+Check rew_emb.
+Check rew_subst_comp_subst.
+Check rew_rewrite_comp_rewrite.
+Check rew_bshift.
+Check rew_q.
+Check rew_q_bshift_apply.
+Check rew_q_comp_apply.
+Check rew_q_respects_equiv.
+Check rew_qpow.
+Check semiformula_rewrite.
+Check semiformula_rewrite_connective_hom.
+Check semiformula_rewrite_all.
+Check semiformula_rewrite_ext.
+Check semiformula_rewrite_id.
+Check semiformula_rewrite_comp.
+
 Print Assumptions language_hom_ext.
 Print Assumptions language_hom_comp_assoc.
 Print Assumptions oring_function_symbols_complete.
@@ -148,3 +176,12 @@ Print Assumptions semiformula_language_map_free_occurs.
 Print Assumptions semiformula_language_map_id.
 Print Assumptions semiformula_language_map_comp.
 Print Assumptions semiformula_enumerate_index_of_free_variable.
+Print Assumptions rew_comp_assoc.
+Print Assumptions rew_eta.
+Print Assumptions rew_subst_comp_subst.
+Print Assumptions rew_q_bshift_apply.
+Print Assumptions rew_q_comp_apply.
+Print Assumptions semiformula_rewrite_connective_hom.
+Print Assumptions semiformula_rewrite_ext.
+Print Assumptions semiformula_rewrite_id.
+Print Assumptions semiformula_rewrite_comp.
