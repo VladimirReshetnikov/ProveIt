@@ -98,6 +98,28 @@ either Lean's arbitrary-degree Selmer theorem or the generic fixed-field
 construction.  The padding, rational all-roots, and generic all-roots theorems
 therefore have deliberately distinct scopes.
 
+## Deciding an individual integer quintic
+
+The companion external mathematical proof
+[`Decidability.md`](Decidability.md) shows that it is recursive—in fact,
+primitive recursive—to decide whether every root of a given
+integer-coefficient quintic is expressible in radicals. It gives a completely
+bounded coefficient algorithm: monicize the polynomial, detect reducibility by
+enumerating bounded linear and quadratic factors, and in the irreducible case
+apply Dummit's explicit Frobenius sextic and a bounded rational-root search.
+
+The Rocq file
+[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v) provides
+the kernel-checked semantic bridge. It reflects the exact all-roots
+`algterm rat` predicate to a Boolean for degree-five integer polynomials and
+for their natural-number encodings. The explicit coefficient algorithm and
+its primitive-recursiveness proof are not formalized or extracted in either
+prover; that external argument, not the opaque splitting-field construction
+behind the reflector, establishes the recursive/Turing-machine claim. No
+parallel Lean computability theorem is claimed: the available mathlib Galois
+API is noncomputable and lacks the converse solvability criterion needed for
+such a theorem.
+
 ## Calculator interface and scope
 
 The solver functions are ordinary reducible definitions.  For example, the

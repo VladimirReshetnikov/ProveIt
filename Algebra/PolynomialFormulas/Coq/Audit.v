@@ -1,5 +1,6 @@
 From PolynomialFormulas Require Import
-  Basic Cubic CubicComplex Quartic AbelRuffini AbelRuffiniRootwise.
+  Basic Cubic CubicComplex Quartic AbelRuffini AbelRuffiniRootwise
+  QuinticRadicalDecidability.
 
 (** Kernel-assumption audit for the degree-one-through-four solver theorems
     and the Abel--Ruffini obstruction above degree four. *)
@@ -9,6 +10,7 @@ Import LeanProofs.PolynomialFormulasCubic.
 Import LeanProofs.PolynomialFormulasQuartic.
 Import LeanProofs.PolynomialFormulasAbelRuffini.
 Import PolynomialFormulasAbelRuffiniRootwise.
+Import PolynomialFormulasQuinticRadicalDecidability.
 
 Check solve_linear_correct.
 Check solve_quadratic_correct.
@@ -32,6 +34,12 @@ Check monic_padded_counterexample.
 Check degree_gt_four_counterexample.
 Check not_every_degree_gt_four_solvable_by_radicals.
 Check no_radical_formula_degree_gt_four.
+Check galois_solvableP.
+Check every_root_has_radical_expressionP.
+Check quintic_every_root_has_radical_expressionP.
+Check integer_radical_decisionP.
+Check quintic_radical_decision_codeK.
+Check quintic_radical_decision_codeP.
 
 Print Assumptions solve_linear_correct.
 Print Assumptions solve_quadratic_correct.
@@ -55,3 +63,9 @@ Print Assumptions monic_padded_counterexample.
 Print Assumptions degree_gt_four_counterexample.
 Print Assumptions not_every_degree_gt_four_solvable_by_radicals.
 Print Assumptions no_radical_formula_degree_gt_four.
+Print Assumptions galois_solvableP.
+Print Assumptions every_root_has_radical_expressionP.
+Print Assumptions quintic_every_root_has_radical_expressionP.
+Print Assumptions integer_radical_decisionP.
+Print Assumptions quintic_radical_decision_codeK.
+Print Assumptions quintic_radical_decision_codeP.
