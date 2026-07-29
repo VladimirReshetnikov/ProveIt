@@ -788,6 +788,115 @@ Definition generic_minimal_or_swap_axiom_raw {S F : Type}
 
 Arguments generic_minimal_or_swap_axiom_raw {S F E C s} _ _ _.
 
+(** Associativity is derived directly from the connective rules.  These raw
+    implications strengthen Foundation's theoremhood-only disjunction law and
+    avoid its detour through finite contexts. *)
+Definition generic_minimal_or_assoc_left_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q r : F) :
+    generic_proof E s
+      (generic_imp C (generic_or C p (generic_or C q r))
+        (generic_or C (generic_or C p q) r)) :=
+  generic_minimal_or_elim_raw H p (generic_or C q r)
+    (generic_or C (generic_or C p q) r)
+    (generic_minimal_imp_trans_raw H p (generic_or C p q) _
+      (generic_minimal_or1 H p q)
+      (generic_minimal_or1 H (generic_or C p q) r))
+    (generic_minimal_or_elim_raw H q r
+      (generic_or C (generic_or C p q) r)
+      (generic_minimal_imp_trans_raw H q (generic_or C p q) _
+        (generic_minimal_or2 H p q)
+        (generic_minimal_or1 H (generic_or C p q) r))
+      (generic_minimal_or2 H (generic_or C p q) r)).
+
+Arguments generic_minimal_or_assoc_left_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_or_assoc_right_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q r : F) :
+    generic_proof E s
+      (generic_imp C (generic_or C (generic_or C p q) r)
+        (generic_or C p (generic_or C q r))) :=
+  generic_minimal_or_elim_raw H (generic_or C p q) r
+    (generic_or C p (generic_or C q r))
+    (generic_minimal_or_elim_raw H p q
+      (generic_or C p (generic_or C q r))
+      (generic_minimal_or1 H p (generic_or C q r))
+      (generic_minimal_imp_trans_raw H q (generic_or C q r) _
+        (generic_minimal_or1 H q r)
+        (generic_minimal_or2 H p (generic_or C q r))))
+    (generic_minimal_imp_trans_raw H r (generic_or C q r) _
+      (generic_minimal_or2 H q r)
+      (generic_minimal_or2 H p (generic_or C q r))).
+
+Arguments generic_minimal_or_assoc_right_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_or_assoc_iff_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q r : F) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_or C p (generic_or C q r))
+        (generic_or C (generic_or C p q) r)) :=
+  generic_minimal_iff_intro_raw H _ _
+    (generic_minimal_or_assoc_left_raw H p q r)
+    (generic_minimal_or_assoc_right_raw H p q r).
+
+Arguments generic_minimal_or_assoc_iff_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_and_assoc_left_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q r : F) :
+    generic_proof E s
+      (generic_imp C (generic_and C (generic_and C p q) r)
+        (generic_and C p (generic_and C q r))) :=
+  generic_minimal_right_and_intro_raw H
+    (generic_and C (generic_and C p q) r) p (generic_and C q r)
+    (generic_minimal_imp_trans_raw H _ (generic_and C p q) p
+      (generic_minimal_and1 H (generic_and C p q) r)
+      (generic_minimal_and1 H p q))
+    (generic_minimal_right_and_intro_raw H
+      (generic_and C (generic_and C p q) r) q r
+      (generic_minimal_imp_trans_raw H _ (generic_and C p q) q
+        (generic_minimal_and1 H (generic_and C p q) r)
+        (generic_minimal_and2 H p q))
+      (generic_minimal_and2 H (generic_and C p q) r)).
+
+Arguments generic_minimal_and_assoc_left_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_and_assoc_right_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q r : F) :
+    generic_proof E s
+      (generic_imp C (generic_and C p (generic_and C q r))
+        (generic_and C (generic_and C p q) r)) :=
+  generic_minimal_right_and_intro_raw H
+    (generic_and C p (generic_and C q r)) (generic_and C p q) r
+    (generic_minimal_right_and_intro_raw H
+      (generic_and C p (generic_and C q r)) p q
+      (generic_minimal_and1 H p (generic_and C q r))
+      (generic_minimal_imp_trans_raw H _ (generic_and C q r) q
+        (generic_minimal_and2 H p (generic_and C q r))
+        (generic_minimal_and1 H q r)))
+    (generic_minimal_imp_trans_raw H _ (generic_and C q r) r
+      (generic_minimal_and2 H p (generic_and C q r))
+      (generic_minimal_and2 H q r)).
+
+Arguments generic_minimal_and_assoc_right_raw {S F E C s} _ _ _ _.
+
+Definition generic_minimal_and_assoc_iff_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q r : F) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_and C (generic_and C p q) r)
+        (generic_and C p (generic_and C q r))) :=
+  generic_minimal_iff_intro_raw H _ _
+    (generic_minimal_and_assoc_left_raw H p q r)
+    (generic_minimal_and_assoc_right_raw H p q r).
+
+Arguments generic_minimal_and_assoc_iff_raw {S F E C s} _ _ _ _.
+
 Definition generic_minimal_inner_mdp_raw {S F : Type}
     {E : generic_entailment S F} {C : generic_connectives F} {s : S}
     (H : generic_minimal_entailment E C s) (p q : F) :
@@ -1189,6 +1298,85 @@ Definition generic_minimal_and_double_neg_map_raw {S F : Type}
 Arguments generic_minimal_and_double_neg_map_raw {S F E C s} _ _ _ _.
 
 (** * Inhabited theorem views *)
+
+(** A single bridge turns any raw internal equivalence into an external
+    theoremhood equivalence.  It factors the repeated extraction/application
+    pattern used by associativity and later replacement laws. *)
+Lemma generic_minimal_provable_iff_of_raw_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q,
+      generic_proof E s (generic_formula_iff C p q) ->
+      (generic_provable E s p <-> generic_provable E s q).
+Proof.
+  intros S F E C s H p q de. split; intros [d]; constructor.
+  - exact (generic_minimal_mdp_raw H p q
+      (generic_minimal_iff_elim_left_raw H p q de) d).
+  - exact (generic_minimal_mdp_raw H q p
+      (generic_minimal_iff_elim_right_raw H p q de) d).
+Qed.
+
+Lemma generic_minimal_provable_iff_of_formula_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q,
+      generic_provable E s (generic_formula_iff C p q) ->
+      (generic_provable E s p <-> generic_provable E s q).
+Proof.
+  intros S F E C s H p q [de].
+  exact (@generic_minimal_provable_iff_of_raw_iff
+    S F E C s H p q de).
+Qed.
+
+Lemma generic_minimal_or_assoc_iff_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q r,
+      generic_provable E s
+        (generic_formula_iff C
+          (generic_or C p (generic_or C q r))
+          (generic_or C (generic_or C p q) r)).
+Proof.
+  intros S F E C s H p q r. constructor.
+  exact (generic_minimal_or_assoc_iff_raw H p q r).
+Qed.
+
+Lemma generic_minimal_or_assoc_provable_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q r,
+      generic_provable E s (generic_or C p (generic_or C q r)) <->
+      generic_provable E s (generic_or C (generic_or C p q) r).
+Proof.
+  intros S F E C s H p q r.
+  exact (@generic_minimal_provable_iff_of_raw_iff
+    S F E C s H _ _ (generic_minimal_or_assoc_iff_raw H p q r)).
+Qed.
+
+Lemma generic_minimal_and_assoc_iff_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q r,
+      generic_provable E s
+        (generic_formula_iff C
+          (generic_and C (generic_and C p q) r)
+          (generic_and C p (generic_and C q r))).
+Proof.
+  intros S F E C s H p q r. constructor.
+  exact (generic_minimal_and_assoc_iff_raw H p q r).
+Qed.
+
+Lemma generic_minimal_and_assoc_provable_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p q r,
+      generic_provable E s (generic_and C (generic_and C p q) r) <->
+      generic_provable E s (generic_and C p (generic_and C q r)).
+Proof.
+  intros S F E C s H p q r.
+  exact (@generic_minimal_provable_iff_of_raw_iff
+    S F E C s H _ _ (generic_minimal_and_assoc_iff_raw H p q r)).
+Qed.
 
 Lemma generic_minimal_dni_provable :
   forall (S F : Type) (E : generic_entailment S F)

@@ -338,6 +338,22 @@ Definition ph_hilbert_neg_or_iff_and_neg {Atom : Type}
   generic_minimal_neg_or_iff_and_neg_raw
     (ph_hilbert_generic_minimal H) p q.
 
+Definition ph_hilbert_or_assoc_iff {Atom : Type}
+    (H : ph_hilbert Atom) (p q r : pformula Atom) :
+    ph_hilbert_proof H
+      (generic_formula_iff (pformula_connectives Atom)
+        (POr p (POr q r)) (POr (POr p q) r)) :=
+  generic_minimal_or_assoc_iff_raw
+    (ph_hilbert_generic_minimal H) p q r.
+
+Definition ph_hilbert_and_assoc_iff {Atom : Type}
+    (H : ph_hilbert Atom) (p q r : pformula Atom) :
+    ph_hilbert_proof H
+      (generic_formula_iff (pformula_connectives Atom)
+        (PAnd (PAnd p q) r) (PAnd p (PAnd q r))) :=
+  generic_minimal_and_assoc_iff_raw
+    (ph_hilbert_generic_minimal H) p q r.
+
 (** Concrete views of the generic finite-fold rules.  Positional membership
     records the selected occurrence, so repeated formulas need no equality
     decision procedure. *)
