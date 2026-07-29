@@ -4248,6 +4248,17 @@ extended witnessed tail.  The beta compiler exposes the generic fact that
 its projected conclusion is exactly `out2 = out1`, so this unpacking does not
 reopen or reduce the closed arithmetic source.
 
+Represented equality transport is now factored independently of the table
+construction.  One generic theorem replaces a named template parameter from
+a proof of `replacement = parameter`; a list-level theorem iterates this for
+any finite ordered family of bindings and equality roots in one literal
+context.  The append-row equality assembler specializes that compiler to the
+four state fields.  It weakens an arbitrary fixed appended-row production to
+the beta compiler's selected witnessed tail and transports the production to
+the independently bound row values, so later clients need only identify their
+concrete successor-row formula with this capture-avoiding four-parameter
+replacement.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a

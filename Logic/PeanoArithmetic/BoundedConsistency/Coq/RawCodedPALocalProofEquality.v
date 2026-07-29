@@ -1,5 +1,6 @@
 (** Local-proof wrappers for represented equality elimination. *)
 
+From Stdlib Require Import List.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
@@ -13,6 +14,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofExistential
   RawCodedTemplateSyntax
   RawCodedTemplateRenamingSubstitution
+  RawCodedTemplateParameterAbstraction
   RawCodedTemplateProofCompiler.
 
 Module PABoundedRawCodedPALocalProofEquality.
@@ -30,7 +32,10 @@ Import PABoundedRawCodedProofEqElimConstructor.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateRenamingSubstitution.
+Import PABoundedRawCodedTemplateParameterAbstraction.
 Import PABoundedRawCodedTemplateProofCompiler.
+
+Import ListNotations.
 
 (** Premise-free represented equality reflexivity. *)
 Theorem raw_codedPALocalProofOf_eqRefl : forall
@@ -171,6 +176,99 @@ Proof.
   specialize (htransport hreflTemplate).
   rewrite templateEqualitySymmetryMotive_open in htransport.
   eexists. exact htransport.
+Qed.
+
+(** Replace one named parameter using an equality oriented from the desired
+    replacement to that parameter.  Equality symmetry and elimination both
+    occur in the represented calculus.  Parameter abstraction supplies the
+    capture-avoiding one-variable motive, and its round trip identifies the
+    already-proved source instance literally with [input]. *)
+Theorem
+    raw_codedPALocalProofOf_templateParameterTransport_reverse : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context name replacement input equalityRoot inputRoot,
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (tfEq replacement (ttParameter name))) equalityRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation input) inputRoot ->
+  exists root,
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation
+        (templateFormulaOpen replacement
+          (templateFormulaAbstractParameter name input))) root.
+Proof.
+  intros M hPA translation context name replacement input
+    equalityRoot inputRoot hequality hinput.
+  destruct
+    (raw_codedPALocalProofOf_templateEqSymmetry
+      M hPA translation context replacement (ttParameter name)
+      equalityRoot hequality)
+    as [symmetryRoot hsymmetry].
+  pose proof
+    (raw_codedPALocalProofOf_templateEqElim
+      M hPA translation context
+      (ttParameter name) replacement
+      (templateFormulaAbstractParameter name input)
+      symmetryRoot inputRoot hsymmetry) as htransport.
+  rewrite templateFormulaAbstractParameter_open in htransport.
+  specialize (htransport hinput).
+  eexists. exact htransport.
+Qed.
+
+(** Capture-avoiding replacement of any finite sequence of named template
+    parameters.  Bindings are applied from left to right, matching the order
+    in which the represented equality roots are consumed. *)
+Fixpoint templateFormulaReplaceParameters
+    (bindings : list (TemplateParameterName * TemplateTerm))
+    (input : TemplateFormula) : TemplateFormula :=
+  match bindings with
+  | [] => input
+  | (name, replacement) :: remaining =>
+      templateFormulaReplaceParameters remaining
+        (templateFormulaOpen replacement
+          (templateFormulaAbstractParameter name input))
+  end.
+
+(** Iterate reverse parameter transport for an arbitrary finite family.
+    Every equality root and every intermediate proof remains in one literal
+    context; no adequacy, freshness, or context-extension hypothesis is
+    needed by equality elimination itself. *)
+Theorem
+    raw_codedPALocalProofOf_templateParameterTransports_reverse : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context bindings equalityRoots input inputRoot,
+  Forall2
+    (fun binding equalityRoot =>
+      RawCodedPALocalProofOf M context
+        (rawTemplateFormula translation
+          (tfEq (snd binding) (ttParameter (fst binding)))) equalityRoot)
+    bindings equalityRoots ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation input) inputRoot ->
+  exists root,
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation
+        (templateFormulaReplaceParameters bindings input)) root.
+Proof.
+  intros M hPA translation context bindings equalityRoots
+    input inputRoot hequalities hinput.
+  revert input inputRoot hinput.
+  induction hequalities as
+      [|binding equalityRoot remainingBindings remainingRoots
+        hequality hequalities ih];
+    intros input inputRoot hinput.
+  - exists inputRoot. exact hinput.
+  - destruct binding as [name replacement].
+    cbn [fst snd templateFormulaReplaceParameters] in hequality |- *.
+    destruct
+      (raw_codedPALocalProofOf_templateParameterTransport_reverse
+        M hPA translation context name replacement input
+        equalityRoot inputRoot hequality hinput)
+      as [transportedRoot htransported].
+    exact (ih _ transportedRoot htransported).
 Qed.
 
 End PABoundedRawCodedPALocalProofEquality.
