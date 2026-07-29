@@ -4187,3 +4187,10 @@ compiler packages each five-term lookup instance and uses this interface for
 an arbitrary finite family.  In particular, the four state columns can share
 one literal witnessed tail instead of attempting to reconcile four separately
 chosen witness prefixes.
+
+The shared-prefix transport layer likewise has list-level forms now.  A finite
+family of local proofs can be placed beneath one adequate temporary prefix or
+moved pointwise across one witnessed-tail inclusion, preserving each distinct
+conclusion while sharing the target context.  These lemmas remove the repeated
+root-by-root weakening that the four beta premises and four resulting field
+equalities would otherwise require.
