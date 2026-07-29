@@ -4242,7 +4242,11 @@ fresh bound parameter is replaced capture-avoidantly by the traversal index.
 The append-row functionality callback now takes only the four honest
 field-versus-bound freshness hypotheses and constructs both conjunction
 contracts internally; no caller-supplied syntactic matching assumption
-remains.
+remains.  A client-facing corollary also unpacks the family result into four
+named roots proving the literal row-value equalities, all under the same
+extended witnessed tail.  The beta compiler exposes the generic fact that
+its projected conclusion is exactly `out2 = out1`, so this unpacking does not
+reopen or reduce the closed arithmetic source.
 
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
