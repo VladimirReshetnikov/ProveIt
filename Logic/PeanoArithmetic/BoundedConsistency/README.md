@@ -2957,6 +2957,20 @@ theorem shows that compiling this one linked native law, together with the
 twenty remaining fields, is sufficient to produce the exact ordinary direct
 universal-soundness certificate.
 
+`RawCodedDynamicTruthGlobalSigmaTernaryApplicationView.v` opens the linked
+native law's next structural layer without decoding nonstandard formula
+codes.  It proves a bidirectional normalization between an application of
+the public successor-Sigma coordinate and the same five-operation ternary
+application of the transparent ten-witness global wrapper.  The normalized
+view retains the exact paired local rows and both wrapper equations; a second
+projection exposes the successor numeral, instantiated Sigma domain, lower
+global-Pi application, and literal Sigma-row code polynomial chosen by that
+same edge.  Honest selectors enter the view automatically, and a relaxed
+functionality corollary identifies any independently constructed normalized
+endpoint without requiring the full successor edge again.  This is the
+carrier-parametric substitution/row interface on which the proof-producing
+Or-row traversal append can now operate.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
