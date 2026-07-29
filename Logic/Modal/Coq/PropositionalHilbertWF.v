@@ -7,10 +7,12 @@
     nevertheless defined directly over WF proofs, allowing translated schema
     proofs themselves to use Rule E. *)
 
+From Stdlib Require Import Arith.PeanoNat Lia.
 From FoundationModal Require Import
   PropositionalFormula PropositionalLogic PropositionalHilbert
   PropositionalHilbertVF PropositionalKripke2Hilbert
-  PropositionalHilbertFExtensions.
+  PropositionalHilbertFExtensions PropositionalFMT
+  PropositionalFMTCompleteness.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -375,4 +377,146 @@ Corollary phwf_WF_included_phf_F : forall Atom : Type,
 Proof.
   intro Atom. apply phwf_phf_included_of_provable_schema.
   intros p H; contradiction.
+Qed.
+
+(** * Strict VF-below-WF separation *)
+
+Definition phwf_separation_left : pformula nat :=
+  PImp ptop (PAnd (PAtom 0) (PAtom 1)).
+
+Definition phwf_separation_right : pformula nat :=
+  PImp ptop (PAnd (PAtom 1) (PAtom 0)).
+
+Definition phwf_separation_formula : pformula nat :=
+  phwf_iff phwf_separation_left phwf_separation_right.
+
+Definition phwf_proof_separation :
+  phwf_proof (phwf_hilbert_WF nat) phwf_separation_formula.
+Proof.
+  apply PHWFPRuleE.
+  - apply PHWFPAndRule; apply PHWFPIdentity.
+  - apply PHWFPAndRule.
+    + exact (PHWFPRuleC
+        (PHWFPAndElimR (PAtom 0) (PAtom 1))
+        (PHWFPAndElimL (PAtom 0) (PAtom 1))).
+    + exact (PHWFPRuleC
+        (PHWFPAndElimR (PAtom 1) (PAtom 0))
+        (PHWFPAndElimL (PAtom 1) (PAtom 0))).
+Defined.
+
+Theorem phwf_WF_provable_separation :
+  phwf_provable (phwf_hilbert_WF nat) phwf_separation_formula.
+Proof. constructor; exact phwf_proof_separation. Qed.
+
+Inductive phwf_separation_world : Type :=
+| PHWFSRoot | PHWFSGap | PHWFSEnd.
+
+Lemma phwf_separation_left_neq_right :
+  phwf_separation_left <> phwf_separation_right.
+Proof. unfold phwf_separation_left, phwf_separation_right; congruence. Qed.
+
+Definition phwf_separation_access (indexed : pformula nat)
+    (x y : phwf_separation_world) : Prop :=
+  if pformula_eq_dec Nat.eq_dec indexed phwf_separation_right
+  then x = PHWFSRoot \/ (x = PHWFSGap /\ y = PHWFSEnd)
+  else if pformula_eq_dec Nat.eq_dec indexed phwf_separation_left
+  then x = PHWFSRoot
+  else True.
+
+Lemma phwf_separation_root_access : forall indexed y,
+  phwf_separation_access indexed PHWFSRoot y.
+Proof.
+  intros indexed y. unfold phwf_separation_access.
+  destruct (pformula_eq_dec Nat.eq_dec indexed phwf_separation_right);
+    [now left |].
+  destruct (pformula_eq_dec Nat.eq_dec indexed phwf_separation_left);
+    [reflexivity | exact I].
+Qed.
+
+Definition phwf_separation_frame : fmt_frame :=
+  {| fmt_world := phwf_separation_world;
+     fmt_access := phwf_separation_access;
+     fmt_root := PHWFSRoot;
+     fmt_root_access := phwf_separation_root_access |}.
+
+Definition phwf_separation_model : fmt_model :=
+  {| fmt_model_frame := phwf_separation_frame;
+     fmt_model_valuation := fun a x => x = PHWFSEnd /\ a = 0 |}.
+
+Lemma phwf_separation_no_left_from_gap : forall y,
+  ~ phwf_separation_access phwf_separation_left PHWFSGap y.
+Proof.
+  intro y. unfold phwf_separation_access.
+  destruct (pformula_eq_dec Nat.eq_dec
+    phwf_separation_left phwf_separation_right) as [Heq | Hne].
+  - contradiction phwf_separation_left_neq_right.
+  - destruct (pformula_eq_dec Nat.eq_dec
+      phwf_separation_left phwf_separation_left) as [_ | Hfalse].
+    + discriminate.
+    + contradiction Hfalse; reflexivity.
+Qed.
+
+Lemma phwf_separation_right_gap_end :
+  phwf_separation_access phwf_separation_right PHWFSGap PHWFSEnd.
+Proof.
+  unfold phwf_separation_access.
+  destruct (pformula_eq_dec Nat.eq_dec
+    phwf_separation_right phwf_separation_right) as [_ | Hfalse].
+  - now right.
+  - contradiction Hfalse; reflexivity.
+Qed.
+
+Lemma phwf_separation_forces_left_gap :
+  fmt_forces phwf_separation_model PHWFSGap phwf_separation_left.
+Proof.
+  intros y Haccess _. exfalso.
+  change phwf_separation_world in y.
+  change (phwf_separation_access
+    phwf_separation_left PHWFSGap y) in Haccess.
+  exact (@phwf_separation_no_left_from_gap y Haccess).
+Qed.
+
+Lemma phwf_separation_not_forces_right_gap :
+  ~ fmt_forces phwf_separation_model PHWFSGap phwf_separation_right.
+Proof.
+  intro Hright.
+  specialize (Hright PHWFSEnd phwf_separation_right_gap_end
+    (@fmt_forces_top phwf_separation_model PHWFSEnd)).
+  destruct Hright as [Hatom1 _]. cbn in Hatom1. lia.
+Qed.
+
+Theorem phwf_separation_countermodel :
+  ~ fmt_forces phwf_separation_model PHWFSRoot phwf_separation_formula.
+Proof.
+  unfold phwf_separation_formula, phwf_iff, phf_iff.
+  intros [Hforward _]. apply phwf_separation_not_forces_right_gap.
+  exact (Hforward PHWFSGap
+    (phwf_separation_root_access
+      (PImp phwf_separation_left phwf_separation_right) PHWFSGap)
+    phwf_separation_forces_left_gap).
+Qed.
+
+Theorem phvf_VF_unprovable_phwf_separation :
+  ~ phvf_provable (phvf_hilbert_VF nat) phwf_separation_formula.
+Proof.
+  intro Hprov. apply phwf_separation_countermodel.
+  exact (@phvf_VF_fmt_sound phwf_separation_formula Hprov
+    phwf_separation_frame I
+    (@fmt_model_valuation phwf_separation_model) PHWFSRoot).
+Qed.
+
+Definition phvf_phwf_strictly_included {Atom : Type}
+    (Hv : phvf_hilbert Atom) (Hw : phwf_hilbert Atom) : Prop :=
+  phvf_phwf_included Hv Hw /\
+  exists p, phwf_provable Hw p /\ ~ phvf_provable Hv p.
+
+Theorem phvf_VF_strictly_included_phwf_WF :
+  phvf_phwf_strictly_included
+    (phvf_hilbert_VF nat) (phwf_hilbert_WF nat).
+Proof.
+  split.
+  - apply phvf_VF_included_phwf_WF.
+  - exists phwf_separation_formula. split.
+    + apply phwf_WF_provable_separation.
+    + apply phvf_VF_unprovable_phwf_separation.
 Qed.
