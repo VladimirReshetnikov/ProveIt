@@ -4418,6 +4418,15 @@ row formula.  The remaining local successor seam is therefore no longer the
 global record or either existential block; it is the syntactic/proof bridge
 from the completed row-implication compiler to that extracted row field.
 
+That seventh field is now decomposed exactly as well.  A partial inverse to a
+finite universal prefix certifies its five literal binders, and the resulting
+body is definitionally `i < S b -> rowLookup -> production`.  In particular,
+the less-than-successor compiler receives the old bound `b` (its antecedent
+constructor supplies the successor), and the four-column lookup is identical
+to the row compiler's equality-side lookup.  Only the final local polarity
+production remains to be identified with the concrete closed-row production;
+the binder, arithmetic, and lookup layers are no longer part of that seam.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a

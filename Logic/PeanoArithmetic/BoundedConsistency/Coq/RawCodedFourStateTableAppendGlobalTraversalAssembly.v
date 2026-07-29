@@ -17,6 +17,7 @@ From BoundedPAConsistency Require Import
   CodedProof
   RawCodedRestrictedPAProof
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofComposition
   RawCodedPAAxiomWitnessPrefix
   RawCodedSyntaxConstructors
   RawCodedFixedLevelTruth
@@ -49,6 +50,7 @@ Import PAFiniteBetaCoding.
 Import PABoundedCodedProof.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedFixedLevelTruth.
@@ -256,6 +258,79 @@ Definition templateAnd7Seventh (source : TemplateFormula)
     : TemplateFormula :=
   templateAndSecond (templateAndSecond (templateAndSecond
     (templateAndSecond (templateAndSecond (templateAndSecond source))))).
+
+(** Partial inverse of a finite universal prefix.  This is kept separate from
+    [templateFormulaAllMany]: success certifies the literal binder count. *)
+Fixpoint templateUniversalBodyMany
+    (count : nat) (source : TemplateFormula) : option TemplateFormula :=
+  match count with
+  | 0 => Some source
+  | S smaller =>
+      match source with
+      | tfAll body => templateUniversalBodyMany smaller body
+      | _ => None
+      end
+  end.
+
+Definition coqFourStateTableAppendOpenedGlobalRowsTemplate
+    (rootMode : nat) (localSigma localPi : formula)
+    (bound : TemplateTerm) : TemplateFormula :=
+  templateAnd7Seventh
+    (coqFourStateTableAppendOpenedGlobalFormulaTemplate
+      rootMode localSigma localPi bound).
+
+Definition coqFourStateTableAppendOpenedGlobalRowBodyTemplate
+    (rootMode : nat) (localSigma localPi : formula)
+    (bound : TemplateTerm) : TemplateFormula :=
+  match templateUniversalBodyMany 5
+    (coqFourStateTableAppendOpenedGlobalRowsTemplate
+      rootMode localSigma localPi bound) with
+  | Some body => body
+  | None => tfBot
+  end.
+
+Definition coqFourStateTableAppendOpenedGlobalRowProductionTemplate
+    (rootMode : nat) (localSigma localPi : formula)
+    (bound : TemplateTerm) : TemplateFormula :=
+  templateImpConsequent (templateImpConsequent
+    (coqFourStateTableAppendOpenedGlobalRowBodyTemplate
+      rootMode localSigma localPi bound)).
+
+Lemma coqFourStateTableAppendOpenedGlobalRowsTemplate_success : forall
+    rootMode localSigma localPi bound,
+  templateUniversalBodyMany 5
+    (coqFourStateTableAppendOpenedGlobalRowsTemplate
+      rootMode localSigma localPi bound) =
+  Some (coqFourStateTableAppendOpenedGlobalRowBodyTemplate
+    rootMode localSigma localPi bound).
+Proof.
+  intros. reflexivity.
+Qed.
+
+(** The extracted row has exactly the premise spine compiled earlier:
+    [i < S b], followed by lookup of all four row values.  Only the final
+    polarity production remains abstract in this theorem. *)
+Lemma coqFourStateTableAppendOpenedGlobalRowsTemplate_shape : forall
+    rootMode localSigma localPi boundName,
+  coqFourStateTableAppendOpenedGlobalRowsTemplate
+    rootMode localSigma localPi (ttParameter boundName) =
+  templateFormulaAllMany 5
+    (tfImp
+      (coqLtSuccCasesAntecedentTemplate
+        (ttVar 4) (ttParameter boundName))
+      (tfImp
+        (coqFourStateTableAppendEqualityRowLookupTemplate
+          coqFourStateTableAppendRowModeParameterName
+          coqFourStateTableAppendRowFormulaParameterName
+          coqFourStateTableAppendRowAssignmentCodeParameterName
+          coqFourStateTableAppendRowAssignmentStepParameterName
+          (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+        (coqFourStateTableAppendOpenedGlobalRowProductionTemplate
+          rootMode localSigma localPi (ttParameter boundName)))).
+Proof.
+  intros.
+  reflexivity.
+Qed.
 
 Lemma coqFourStateTableAppendOpenedGlobalFormulaTemplate_and7_shape : forall
     rootMode localSigma localPi bound,
