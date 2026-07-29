@@ -182,6 +182,12 @@ Check semiterm_language_map_rew_shift.
 Check semiterm_language_map_rew_free.
 Check semiterm_language_map_rew_fix.
 Check rew_q_shift.
+Check rew_fix_iter.
+Check rew_fix_iter_zero.
+Check rew_fix_iter_succ.
+Check rew_fix_iter_bvar.
+Check rew_fix_iter_fvar_ge.
+Check rew_fix_iter_fvar_lt.
 Check semiformula_rewrite.
 Check semiformula_rewrite_connective_hom.
 Check semiformula_rewrite_all.
@@ -257,6 +263,10 @@ Print Assumptions rew_emb_substs_bound_occurs.
 Print Assumptions rew_emb_substs_positive.
 Print Assumptions rew_q_bshift_apply.
 Print Assumptions rew_q_comp_apply.
+Print Assumptions rew_fix_iter_zero.
+Print Assumptions rew_fix_iter_bvar.
+Print Assumptions rew_fix_iter_fvar_ge.
+Print Assumptions rew_fix_iter_fvar_lt.
 Print Assumptions rew_shift_injective.
 Print Assumptions rew_free_comp_fix.
 Print Assumptions rew_fix_comp_free.
