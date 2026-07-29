@@ -25,7 +25,8 @@ From FoundationModal Require Import
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
-  Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
+  Correspondence FiltrationExtensions PropositionalKripkeFiltration
+  CanonicalK HilbertNNFormula Loeb
   FrameProperties
   RelationProperties ConverseWellFounded WeakConverseWellFounded
   CorrespondenceExtensions NormalHilbert LogicInfrastructure
@@ -1076,6 +1077,47 @@ Print Assumptions ph_hilbert_kc_pkripke_sound.
 Print Assumptions ph_hilbert_kc_consistent_via_pkripke.
 Print Assumptions ph_hilbert_lc_pkripke_sound.
 Print Assumptions ph_hilbert_lc_consistent_via_pkripke.
+
+(** Finite truth-profile filtrations for intuitionistic propositional models. *)
+Check pfilter_truth_profile.
+Check pfilter_profile_agreement.
+Check pfilter_class_agreement.
+Check pfilter_class_representative_eq.
+Check pfilter_world_eq_of_agreement.
+Check pfilter_world_cover.
+Check pfilter_world_cover_complete.
+Check pfilter_world_cover_nodup.
+Check pfilter_world_cover_bound.
+Check pfiltration_data.
+Check pfiltration_model.
+Check pfiltration_truth.
+Check pcoarsest_filtration_rel.
+Check pcoarsest_filtration_data.
+Check pcoarsest_filtration_antisymmetric.
+Check pcoarsest_filtration_model.
+Check pcoarsest_filtration_truth.
+Check pfinest_filtration_edge.
+Check pfilter_path.
+Check pfilter_path_trans.
+Check pfinest_filtration_rel.
+Check pfinest_edge_preserves.
+Check pfinest_path_preserves.
+Check pfinest_filtration_data.
+Check pfinest_filtration_model.
+Check pfinest_filtration_truth.
+Check pfinest_filtration_rel_in_coarsest.
+Check pfinest_filtration_antisymmetric.
+Check pcoarsest_subformula_filtration_truth.
+Check pfinest_subformula_filtration_truth.
+Print Assumptions pfilter_profile_agreement.
+Print Assumptions pfilter_world_cover_complete.
+Print Assumptions pfilter_world_cover_bound.
+Print Assumptions pfiltration_truth.
+Print Assumptions pcoarsest_filtration_antisymmetric.
+Print Assumptions pcoarsest_filtration_truth.
+Print Assumptions pfinest_path_preserves.
+Print Assumptions pfinest_filtration_truth.
+Print Assumptions pfinest_filtration_antisymmetric.
 
 (** Excluded middle over preorder Kripke frames.  Symmetry and right
     Euclideanness coincide; one atomic LEM instance defines them.  The
