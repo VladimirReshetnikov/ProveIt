@@ -67,6 +67,8 @@ Check templateImp3Conclusion.
 Check templateFormulaMapAnd4.
 Check templateFormulaMapAnd4_shape.
 Check raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4.
+Check
+  raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4_under_adequate_head.
 Check coqFourStateTableAppendModePreservationAtTemplate.
 Check coqFourStateTableAppendFormulaPreservationAtTemplate.
 Check coqFourStateTableAppendAssignmentCodePreservationAtTemplate.
@@ -129,6 +131,8 @@ Print Assumptions coqFourStateTableAppendPreservationAt_shapes.
 Print Assumptions templateFormulaMapAnd4_shape.
 Print Assumptions
   raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4.
+Print Assumptions
+  raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4_under_adequate_head.
 Print Assumptions
   raw_codedPALocalProofOf_four_state_table_append_extension_assumption.
 Print Assumptions

@@ -4109,3 +4109,9 @@ Its elimination endpoint performs represented disjunction elimination without
 leaving that operational context view.  The predecessor and equality callbacks
 each receive their branch formula as the literal context head and share the
 same newly selected PA-witness batch, ready for the two successor-row branches.
+
+The shared-premise four-column implication compiler also has a mixed-context
+form for those callbacks.  It transports the four preservation laws, current
+bound, and old lookup beneath one atomically adequate branch head, while taking
+the old-bound proof directly in that extended context.  This isolates all
+proof-root transplantation from the table-specific predecessor construction.

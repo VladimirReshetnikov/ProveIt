@@ -16,10 +16,12 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   CodedProof
   RawCodedSyntaxConstructors
+  RawCodedContextLists
   RawCodedPALocalProofExistential
   RawCodedProofAssumptionLeaf
   RawCodedPALocalProofComposition
   RawCodedPALocalProofConjunction
+  RawCodedPALocalProofContextInsertUnconditional
   RawCodedTemplateSyntax
   RawCodedTemplateRenamingSubstitution
   RawCodedTemplateProofCompiler
@@ -41,9 +43,11 @@ Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedProofAssumptionLeaf.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofConjunction.
+Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateRenamingSubstitution.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -1596,6 +1600,112 @@ Proof.
     (templateFormulaMapAnd4_shape templateImp3Conclusion
       firstSource secondSource thirdSource fourthSource)
     hfirstConclusion hsecondConclusion hthirdConclusion hfourthConclusion).
+Qed.
+
+(** Mixed-context form used by a represented case branch.  Four implication
+    proofs, the shared first premise, and the four third premises are lifted
+    beneath one adequate branch assumption; the shared second premise is
+    supplied directly in that extended context. *)
+Theorem
+    raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4_under_adequate_head :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context head firstSource secondSource thirdSource fourthSource
+    firstImpRoot secondImpRoot thirdImpRoot fourthImpRoot
+    firstRoot secondRoot thirdPremisesRoot,
+  TemplateImp3Shape firstSource ->
+  TemplateImp3Shape secondSource ->
+  TemplateImp3Shape thirdSource ->
+  TemplateImp3Shape fourthSource ->
+  templateImpAntecedent secondSource =
+    templateImpAntecedent firstSource ->
+  templateImpAntecedent thirdSource =
+    templateImpAntecedent firstSource ->
+  templateImpAntecedent fourthSource =
+    templateImpAntecedent firstSource ->
+  templateImp3SecondPremise secondSource =
+    templateImp3SecondPremise firstSource ->
+  templateImp3SecondPremise thirdSource =
+    templateImp3SecondPremise firstSource ->
+  templateImp3SecondPremise fourthSource =
+    templateImp3SecondPremise firstSource ->
+  RawCodedFormulaAtomicallyAdequate M head ->
+  RawContextListRealizable M context ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation firstSource) firstImpRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation secondSource) secondImpRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation thirdSource) thirdImpRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation fourthSource) fourthImpRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateImpAntecedent firstSource)) firstRoot ->
+  RawCodedPALocalProofOf M (rawListNode M head context)
+    (rawTemplateFormula translation
+      (templateImp3SecondPremise firstSource)) secondRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateFormulaMapAnd4 templateImp3ThirdPremise
+        firstSource secondSource thirdSource fourthSource))
+    thirdPremisesRoot ->
+  exists root,
+    RawCodedPALocalProofOf M (rawListNode M head context)
+      (rawTemplateFormula translation
+        (templateFormulaMapAnd4 templateImp3Conclusion
+          firstSource secondSource thirdSource fourthSource)) root.
+Proof.
+  intros M hPA translation context head
+    firstSource secondSource thirdSource fourthSource
+    firstImpRoot secondImpRoot thirdImpRoot fourthImpRoot
+    firstRoot secondRoot thirdPremisesRoot
+    hfirstShape hsecondShape hthirdShape hfourthShape
+    hsecondFirst hthirdFirst hfourthFirst
+    hsecondSecond hthirdSecond hfourthSecond
+    hhead hcontext
+    hfirstImp hsecondImp hthirdImp hfourthImp
+    hfirst hsecond hthirdPremises.
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    context head (rawTemplateFormula translation firstSource)
+    firstImpRoot hhead hcontext hfirstImp)
+    as [firstImpAtHead hfirstImpAtHead].
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    context head (rawTemplateFormula translation secondSource)
+    secondImpRoot hhead hcontext hsecondImp)
+    as [secondImpAtHead hsecondImpAtHead].
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    context head (rawTemplateFormula translation thirdSource)
+    thirdImpRoot hhead hcontext hthirdImp)
+    as [thirdImpAtHead hthirdImpAtHead].
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    context head (rawTemplateFormula translation fourthSource)
+    fourthImpRoot hhead hcontext hfourthImp)
+    as [fourthImpAtHead hfourthImpAtHead].
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    context head
+    (rawTemplateFormula translation
+      (templateImpAntecedent firstSource))
+    firstRoot hhead hcontext hfirst)
+    as [firstAtHead hfirstAtHead].
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    context head
+    (rawTemplateFormula translation
+      (templateFormulaMapAnd4 templateImp3ThirdPremise
+        firstSource secondSource thirdSource fourthSource))
+    thirdPremisesRoot hhead hcontext hthirdPremises)
+    as [thirdPremisesAtHead hthirdPremisesAtHead].
+  exact
+    (raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4
+      M hPA translation (rawListNode M head context)
+      firstSource secondSource thirdSource fourthSource
+      firstImpAtHead secondImpAtHead thirdImpAtHead fourthImpAtHead
+      firstAtHead secondRoot thirdPremisesAtHead
+      hfirstShape hsecondShape hthirdShape hfourthShape
+      hsecondFirst hthirdFirst hfourthFirst
+      hsecondSecond hthirdSecond hfourthSecond
+      hfirstImpAtHead hsecondImpAtHead hthirdImpAtHead hfourthImpAtHead
+      hfirstAtHead hsecond hthirdPremisesAtHead).
 Qed.
 
 (** Named instances of the four preservation laws at one candidate row. *)
