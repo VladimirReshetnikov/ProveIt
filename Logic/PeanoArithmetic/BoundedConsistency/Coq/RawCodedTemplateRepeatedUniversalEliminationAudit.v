@@ -1,0 +1,13 @@
+From BoundedPAConsistency Require Import
+  RawCodedTemplateRepeatedUniversalElimination.
+
+Import PABoundedRawCodedTemplateRepeatedUniversalElimination.
+
+Check RawCoqTemplateAllEListReady.
+Check rawCoqTemplateAllEListResult.
+Check rawCoqTemplateAllEListRoot.
+Check templateRawDerives_allE.
+Check rawCoqTemplateAllEListRoot_derives.
+
+Print Assumptions templateRawDerives_allE.
+Print Assumptions rawCoqTemplateAllEListRoot_derives.
