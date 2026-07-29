@@ -46,6 +46,106 @@ Fixpoint pct_raw_member_in {F : Type} {p : F} {gamma : list F}
   | GRLM_there _ h' => or_intror (pct_raw_member_in h')
   end.
 
+Lemma pct_raw_member_inhabited :
+  forall (F : Type) (p : F) gamma,
+    In p gamma -> inhabited (generic_raw_list_member p gamma).
+Proof.
+  intros F p gamma Hp. induction gamma as [|q gamma IH].
+  - contradiction.
+  - destruct Hp as [-> | Hp].
+    + constructor. apply GRLM_here.
+    + destruct (IH Hp) as [h]. constructor. now apply GRLM_there.
+Qed.
+
+Definition pct_raw_member_of_in {F : Type} {p : F} {gamma : list F}
+    (h : In p gamma) : generic_raw_list_member p gamma :=
+  ph_inhabited_get (pct_raw_member_inhabited h).
+
+(** Classical predicate partitioning is factored once for the canonical
+    constructions.  The lists retain positional proof objects, so converting
+    ordinary filtered membership back to raw membership exposes exactly the
+    existing informative-description boundary. *)
+Definition pct_partition_left {F : Type} (T : F -> Prop)
+    (gamma : list F) : list F :=
+  filter (fun p => if excluded_middle_informative (T p)
+                   then true else false) gamma.
+
+Definition pct_partition_right {F : Type} (T : F -> Prop)
+    (gamma : list F) : list F :=
+  filter (fun p => if excluded_middle_informative (T p)
+                   then false else true) gamma.
+
+Definition pct_partition {F : Type} (T : F -> Prop) (gamma : list F) :
+    list F * list F :=
+  (pct_partition_left T gamma, pct_partition_right T gamma).
+
+Lemma pct_partition_left_holds :
+  forall (F : Type) (T : F -> Prop) gamma p,
+    generic_raw_list_member p (fst (pct_partition T gamma)) -> T p.
+Proof.
+  intros F T gamma p Hp.
+  pose proof (pct_raw_member_in Hp) as Hin.
+  unfold pct_partition, pct_partition_left in Hin; cbn in Hin.
+  apply filter_In in Hin as [_ Htest].
+  destruct (excluded_middle_informative (T p)); [assumption | discriminate].
+Qed.
+
+Lemma pct_partition_right_not_left :
+  forall (F : Type) (T : F -> Prop) gamma p,
+    generic_raw_list_member p (snd (pct_partition T gamma)) -> ~ T p.
+Proof.
+  intros F T gamma p Hp.
+  pose proof (pct_raw_member_in Hp) as Hin.
+  unfold pct_partition, pct_partition_right in Hin; cbn in Hin.
+  apply filter_In in Hin as [_ Htest].
+  destruct (excluded_middle_informative (T p)); [discriminate | assumption].
+Qed.
+
+Lemma pct_partition_left_origin :
+  forall (F : Type) (T : F -> Prop) gamma p,
+    generic_raw_list_member p (fst (pct_partition T gamma)) ->
+    generic_raw_list_member p gamma.
+Proof.
+  intros F T gamma p Hp. apply pct_raw_member_of_in.
+  pose proof (pct_raw_member_in Hp) as Hin.
+  unfold pct_partition, pct_partition_left in Hin; cbn in Hin.
+  now apply filter_In in Hin as [Hin _].
+Qed.
+
+Lemma pct_partition_right_origin :
+  forall (F : Type) (T : F -> Prop) gamma p,
+    generic_raw_list_member p (snd (pct_partition T gamma)) ->
+    generic_raw_list_member p gamma.
+Proof.
+  intros F T gamma p Hp. apply pct_raw_member_of_in.
+  pose proof (pct_raw_member_in Hp) as Hin.
+  unfold pct_partition, pct_partition_right in Hin; cbn in Hin.
+  now apply filter_In in Hin as [Hin _].
+Qed.
+
+Definition pct_partition_member {F : Type} (T : F -> Prop)
+    {gamma : list F} {p : F} (hp : generic_raw_list_member p gamma) :
+    (generic_raw_list_member p (fst (pct_partition T gamma)) * T p) +
+    (generic_raw_list_member p (snd (pct_partition T gamma)) * ~ T p).
+Proof.
+  destruct (excluded_middle_informative (T p)) as [Hp | Hp].
+  - left. split; [|exact Hp]. apply pct_raw_member_of_in.
+    apply filter_In. split; [exact (pct_raw_member_in hp) |].
+    destruct (excluded_middle_informative (T p)); [reflexivity | contradiction].
+  - right. split; [|exact Hp]. apply pct_raw_member_of_in.
+    apply filter_In. split; [exact (pct_raw_member_in hp) |].
+    destruct (excluded_middle_informative (T p)); [contradiction | reflexivity].
+Defined.
+
+Definition pct_partition_original_included {F : Type} (T : F -> Prop)
+    {gamma : list F} {p : F} (hp : generic_raw_list_member p gamma) :
+    generic_raw_list_member p
+      (fst (pct_partition T gamma) ++ snd (pct_partition T gamma)) :=
+  match pct_partition_member T hp with
+  | inl (hl, _) => generic_raw_list_member_app_left _ hl
+  | inr (hr, _) => generic_raw_list_member_app_right _ hr
+  end.
+
 Lemma pct_list_covered_nil :
   forall (F : Type) (T : F -> Prop), pct_list_covered T [].
 Proof. intros F T p h; inversion h. Qed.
