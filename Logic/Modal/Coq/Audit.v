@@ -12,6 +12,7 @@ From FoundationModal Require Import
   PropositionalKripke2Hilbert PropositionalHilbertFExtensions PropositionalFMT
   PropositionalHilbertVF PropositionalHilbertVFCorsi
   PropositionalFMTCompleteness PropositionalHilbertWF PropositionalNeighborhoodNB
+  PropositionalHeytingSemantics
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1904,6 +1905,55 @@ Print Assumptions phwf_WF_unprovable_axiom_D.
 Print Assumptions nb_I_countermodel.
 Print Assumptions phwf_WF_unprovable_axiom_I.
 Print Assumptions phwf_WF_strictly_included_phf_F.
+
+(** Setoid Heyting semantics, soundness, and quotient-free completeness. *)
+Check pha_equiv.
+Check pha_le.
+Check pha_imp_top_iff_le.
+Check pha_meet_top_iff.
+Check pha_bottom_not_top.
+Check pha_meet_join_cases.
+Check pheyting_eval.
+Check pheyting_eval_top.
+Check pheyting_eval_neg.
+Check pheyting_semantics.
+Check pheyting_value.
+Check pheyting_satisfies.
+Check pheyting_satisfies_imp_iff.
+Check pheyting_satisfies_and_iff.
+Check pheyting_satisfies_iff_iff.
+Check pheyting_satisfies_neg_iff.
+Check pheyting_satisfies_top.
+Check pheyting_not_satisfies_bottom.
+Check pheyting_valid_K.
+Check pheyting_valid_S.
+Check pheyting_valid_and1.
+Check pheyting_valid_and2.
+Check pheyting_valid_and3.
+Check pheyting_valid_or1.
+Check pheyting_valid_or2.
+Check pheyting_valid_or3.
+Check pheyting_valid_mdp.
+Check pheyting_hilbert_proof_sound.
+Check pheyting_models_schema.
+Check pheyting_mod_valid.
+Check pheyting_hilbert_sound.
+Check pheyting_intuitionistic.
+Check pheyting_consistent.
+Check pheyting_lindenbaum_laws.
+Check pheyting_lindenbaum_int_laws.
+Check pheyting_lindenbaum_model.
+Check pheyting_lindenbaum_value_eq.
+Check pheyting_lindenbaum_satisfies_iff.
+Check pheyting_hilbert_complete.
+Print Assumptions pha_imp_top_iff_le.
+Print Assumptions pha_meet_join_cases.
+Print Assumptions pheyting_hilbert_proof_sound.
+Print Assumptions pheyting_hilbert_sound.
+Print Assumptions pheyting_lindenbaum_laws.
+Print Assumptions pheyting_lindenbaum_model.
+Print Assumptions pheyting_lindenbaum_satisfies_iff.
+Print Assumptions pheyting_hilbert_complete.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
