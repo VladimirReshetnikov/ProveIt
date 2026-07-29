@@ -48,6 +48,10 @@ Check closed_semiterm.
 Check syntactic_term.
 Check semiterm_from_free_default.
 Check semiterm_from_constant.
+Check fin_pointwise_eq_dec.
+Check fin_function_eq_dec.
+Check fin_function_pointwise_eq_dec.
+Check semiterm_eq_dec.
 Check semiterm_complexity.
 Check semiterm_complexity_func_lt.
 Check semiterm_bound_occurs.
@@ -70,6 +74,8 @@ Print Assumptions language_hom_ext.
 Print Assumptions language_hom_comp_assoc.
 Print Assumptions oring_function_symbols_complete.
 Print Assumptions oring_language_finite.
+Print Assumptions fin_function_pointwise_eq_dec.
+Print Assumptions semiterm_eq_dec.
 Print Assumptions semiterm_complexity_func_lt.
 Print Assumptions semiterm_language_map_positive.
 Print Assumptions semiterm_language_map_comp.

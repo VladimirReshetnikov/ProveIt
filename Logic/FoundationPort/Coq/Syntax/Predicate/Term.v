@@ -9,6 +9,7 @@
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lia Lists.List Vectors.Fin.
+From Stdlib Require Import Logic.Eqdep_dec.
 From Stdlib Require Import Logic.FunctionalExtensionality.
 From Foundation.Syntax.Predicate Require Import Language.
 
@@ -43,6 +44,143 @@ Definition semiterm_from_free_default {L X n} (x : X) : semiterm L X n :=
 Definition semiterm_from_constant {L X n}
     (c : language_constant_inhabited L) : semiterm L X n :=
   Semiterm_func c (fun i : Fin.t 0 => match i with end).
+
+(** * Executable equality over finite vectors and semiterms *)
+
+Fixpoint fin_pointwise_eq_dec (n : nat) :
+  forall (A : Type) (f g : Fin.t n -> A),
+    (forall i, {f i = g i} + {f i <> g i}) ->
+    {forall i, f i = g i} + {~ forall i, f i = g i}.
+Proof.
+  destruct n as [|n].
+  - intros A f g decisions. left. intro i; inversion i.
+  - intros A f g decisions.
+    destruct (decisions Fin.F1) as [Hhead | Hhead].
+    + destruct (@fin_pointwise_eq_dec n A
+        (fun i => f (Fin.FS i)) (fun i => g (Fin.FS i))
+        (fun i => decisions (Fin.FS i)))
+        as [Htail | Htail].
+      * left. intro i.
+        refine (@Fin.caseS' n i (fun j => f j = g j) Hhead _).
+        exact Htail.
+      * right. intro Hall. apply Htail. intro i. apply Hall.
+    + right. intro Hall. apply Hhead. apply Hall.
+Defined.
+
+Definition fin_function_eq_dec (n : nat) (A : Type)
+    (eq_dec : forall x y : A, {x = y} + {x <> y})
+    (f g : Fin.t n -> A) : {f = g} + {f <> g}.
+Proof.
+  destruct (@fin_pointwise_eq_dec n A f g (fun i => eq_dec (f i) (g i)))
+    as [Hpointwise | Hneq].
+  - left. apply functional_extensionality. exact Hpointwise.
+  - right. intro Heq. apply Hneq. intro i. now rewrite Heq.
+Defined.
+
+Definition fin_function_pointwise_eq_dec (n : nat) (A : Type)
+    (f g : Fin.t n -> A)
+    (decisions : forall i, {f i = g i} + {f i <> g i}) :
+    {f = g} + {f <> g}.
+Proof.
+  destruct (@fin_pointwise_eq_dec n A f g decisions)
+    as [Hpointwise | Hneq].
+  - left. apply functional_extensionality. exact Hpointwise.
+  - right. intro Heq. apply Hneq. intro i. now rewrite Heq.
+Defined.
+
+Definition semiterm_outer_arity {L X n} (t : semiterm L X n) : option nat :=
+  match t with
+  | @Semiterm_func _ _ _ k _ _ => Some k
+  | _ => None
+  end.
+
+Definition semiterm_function_payload (L : language) (X : Type) (n : nat) :=
+  {k : nat &
+    (language_func L k * (Fin.t k -> semiterm L X n))%type}.
+
+Definition semiterm_outer_function_payload {L X n} (t : semiterm L X n) :
+    option (semiterm_function_payload L X n) :=
+  match t with
+  | @Semiterm_func _ _ _ k f v => Some (existT _ k (f, v))
+  | _ => None
+  end.
+
+Lemma option_some_injective :
+  forall A (x y : A), Some x = Some y -> x = y.
+Proof. intros A x y H; now injection H. Qed.
+
+Lemma semiterm_func_arity_injective :
+  forall L X n k l (f : language_func L k)
+         (v : Fin.t k -> semiterm L X n)
+         (g : language_func L l)
+         (w : Fin.t l -> semiterm L X n),
+    Semiterm_func f v = Semiterm_func g w -> k = l.
+Proof.
+  intros L X n k l f v g w Heq.
+  pose proof (f_equal semiterm_outer_arity Heq) as Harity.
+  simpl in Harity. now injection Harity.
+Qed.
+
+Lemma semiterm_func_injective_same_arity :
+  forall L X n k (f g : language_func L k)
+         (v w : Fin.t k -> semiterm L X n),
+    Semiterm_func f v = Semiterm_func g w -> f = g /\ v = w.
+Proof.
+  intros L X n k f g v w Heq.
+  pose proof (f_equal semiterm_outer_function_payload Heq) as Hpayload.
+  simpl in Hpayload.
+  assert (Hsigma :
+    existT (fun j =>
+      (language_func L j * (Fin.t j -> semiterm L X n))%type)
+      k (f, v) =
+    existT (fun j =>
+      (language_func L j * (Fin.t j -> semiterm L X n))%type)
+      k (g, w)).
+  { exact (option_some_injective Hpayload). }
+  apply (@inj_pair2_eq_dec nat Nat.eq_dec
+    (fun j => (language_func L j *
+      (Fin.t j -> semiterm L X n))%type)
+    k (f, v) (g, w)) in Hsigma.
+  now injection Hsigma.
+Qed.
+
+Definition semiterm_eq_dec {L X n}
+    (func_eq_dec : forall k (f g : language_func L k), {f = g} + {f <> g})
+    (free_eq_dec : forall x y : X, {x = y} + {x <> y})
+    (t u : semiterm L X n) : {t = u} + {t <> u}.
+Proof.
+  revert u.
+  refine (@semiterm_rect L X n
+    (fun t => forall u, {t = u} + {t <> u}) _ _ _ t).
+  - intros i u; destruct u as [j | y | l g w].
+    + destruct (Fin.eq_dec i j) as [-> | Hneq].
+      * left; reflexivity.
+      * right; intro Heq; inversion Heq; contradiction.
+    + right; discriminate.
+    + right; discriminate.
+  - intros x u; destruct u as [j | y | l g w].
+    + right; discriminate.
+    + destruct (free_eq_dec x y) as [-> | Hneq].
+      * left; reflexivity.
+      * right; intro Heq; inversion Heq; contradiction.
+    + right; discriminate.
+  - intros k f v IH u; destruct u as [j | y | l g w].
+    + right; discriminate.
+    + right; discriminate.
+    + destruct (Nat.eq_dec k l) as [Harity | Harity].
+      * subst l.
+        destruct (func_eq_dec k f g) as [Hsymbol | Hsymbol].
+        { subst g.
+          destruct (@fin_function_pointwise_eq_dec k (semiterm L X n)
+            v w (fun i => IH i (w i))) as [Hargs | Hargs].
+          - subst w. left; reflexivity.
+          - right; intro Heq. apply Hargs.
+            exact (proj2 (semiterm_func_injective_same_arity Heq)). }
+        { right; intro Heq. apply Hsymbol.
+          exact (proj1 (semiterm_func_injective_same_arity Heq)). }
+      * right; intro Heq. apply Harity.
+        exact (semiterm_func_arity_injective Heq).
+Defined.
 
 (** * Finite maxima and complexity *)
 
