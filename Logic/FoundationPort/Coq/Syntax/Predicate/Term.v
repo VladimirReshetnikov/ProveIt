@@ -420,6 +420,20 @@ Fixpoint semiterm_free_variable_list {L X n} (t : semiterm L X n) : list X :=
       flat_map (fun i => semiterm_free_variable_list (v i)) (fin_enum k)
   end.
 
+Lemma semiterm_language_map_free_variable_list :
+  forall L M X n (h : language_hom L M) (t : semiterm L X n),
+    semiterm_free_variable_list (semiterm_language_map h t) =
+    semiterm_free_variable_list t.
+Proof.
+  intros L M X n h t; induction t as [i | x | k f v IH]; simpl;
+    try reflexivity.
+  assert (Hfunctions :
+    (fun i => semiterm_free_variable_list (semiterm_language_map h (v i))) =
+    (fun i => semiterm_free_variable_list (v i))).
+  { apply functional_extensionality. exact IH. }
+  now rewrite Hfunctions.
+Qed.
+
 Lemma semiterm_free_variable_list_spec :
   forall L X n (t : semiterm L X n) x,
     In x (semiterm_free_variable_list t) <-> semiterm_free_occurs x t.
