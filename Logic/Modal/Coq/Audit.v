@@ -820,6 +820,30 @@ Print Assumptions pformula_subformulas_closed.
 Print Assumptions pformula_substitute_id.
 Print Assumptions pformula_substitute_compose.
 Print Assumptions pformula_substitute_letterless.
+Check pformula_atom_codec.
+Check pformula_atom_encode.
+Check pformula_atom_decode.
+Check pformula_atom_decode_encode.
+Check pformula_code.
+Check pformula_decode.
+Check pformula_decode_code.
+Check pformula_enum.
+Check pformula_enum_surjective.
+Check pformula_predicate_subformula_closed.
+Check pformula_subformula_predicate_closed.
+Check pformula_closed_and_components.
+Check pformula_closed_or_components.
+Check pformula_closed_imp_components.
+Check pzero_substitution.
+Check pzero_substitution_apply.
+Check pzero_substitution_letterless.
+Check pformula_zero_substitution_letterless.
+Check pformula_substitution_closed.
+Print Assumptions pformula_decode_code.
+Print Assumptions pformula_enum_surjective.
+Print Assumptions pformula_subformula_predicate_closed.
+Print Assumptions pformula_closed_and_components.
+Print Assumptions pformula_zero_substitution_letterless.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide

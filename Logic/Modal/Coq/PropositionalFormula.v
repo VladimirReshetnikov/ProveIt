@@ -11,7 +11,7 @@
   the structural API.
 *)
 
-From Stdlib Require Import Lists.List Arith.PeanoNat.
+From Stdlib Require Import Lists.List Arith.PeanoNat Cantor Lia.
 From FoundationModal Require Import GenericSemantics GenericLogicSymbol.
 
 Import ListNotations.
@@ -411,3 +411,215 @@ Lemma pformula_substitute_letterless :
 Proof.
   intros A B sigma Hsigma p; induction p; simpl; auto; now split.
 Qed.
+
+(** * Executable atom-parametric coding *)
+
+Record pformula_atom_codec (Atom : Type) := {
+  pformula_atom_encode : Atom -> nat;
+  pformula_atom_decode : nat -> option Atom;
+  pformula_atom_decode_encode : forall a,
+    pformula_atom_decode (pformula_atom_encode a) = Some a
+}.
+
+Arguments pformula_atom_encode {Atom} _ _.
+Arguments pformula_atom_decode {Atom} _ _.
+Arguments pformula_atom_decode_encode {Atom} _ _.
+
+Fixpoint pformula_code {Atom : Type}
+    (K : pformula_atom_codec Atom) (p : pformula Atom) : nat :=
+  match p with
+  | PFalsum => Cantor.to_nat (0, 0)
+  | PAtom a => Cantor.to_nat (1, pformula_atom_encode K a)
+  | PImp q r =>
+      Cantor.to_nat
+        (2, Cantor.to_nat (pformula_code K q, pformula_code K r))
+  | PAnd q r =>
+      Cantor.to_nat
+        (3, Cantor.to_nat (pformula_code K q, pformula_code K r))
+  | POr q r =>
+      Cantor.to_nat
+        (4, Cantor.to_nat (pformula_code K q, pformula_code K r))
+  end.
+
+Fixpoint pformula_decode {Atom : Type}
+    (K : pformula_atom_codec Atom) (fuel code : nat) :
+    option (pformula Atom) :=
+  match fuel with
+  | 0 => None
+  | S fuel' =>
+      let tag := fst (Cantor.of_nat code) in
+      let payload := snd (Cantor.of_nat code) in
+      match tag with
+      | 0 => Some PFalsum
+      | 1 =>
+          match pformula_atom_decode K payload with
+          | Some a => Some (PAtom a)
+          | None => None
+          end
+      | 2 =>
+          match pformula_decode K fuel' (fst (Cantor.of_nat payload)),
+                pformula_decode K fuel' (snd (Cantor.of_nat payload)) with
+          | Some q, Some r => Some (PImp q r)
+          | _, _ => None
+          end
+      | 3 =>
+          match pformula_decode K fuel' (fst (Cantor.of_nat payload)),
+                pformula_decode K fuel' (snd (Cantor.of_nat payload)) with
+          | Some q, Some r => Some (PAnd q r)
+          | _, _ => None
+          end
+      | 4 =>
+          match pformula_decode K fuel' (fst (Cantor.of_nat payload)),
+                pformula_decode K fuel' (snd (Cantor.of_nat payload)) with
+          | Some q, Some r => Some (POr q r)
+          | _, _ => None
+          end
+      | _ => None
+      end
+  end.
+
+Theorem pformula_decode_code :
+  forall (Atom : Type) (K : pformula_atom_codec Atom)
+         (p : pformula Atom) fuel,
+    pformula_code K p < fuel ->
+    pformula_decode K fuel (pformula_code K p) = Some p.
+Proof.
+  intros Atom K p; induction p as
+    [a | | p IHp q IHq | p IHp q IHq | p IHp q IHq];
+    intros fuel Hfuel; destruct fuel as [|fuel'];
+    try (cbn [pformula_code] in Hfuel; lia).
+  - cbn [pformula_decode pformula_code].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    rewrite pformula_atom_decode_encode. reflexivity.
+  - cbn [pformula_decode pformula_code].
+    rewrite !Cantor.cancel_of_to. reflexivity.
+  - cbn [pformula_decode pformula_code].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    cbn [pformula_code] in Hfuel.
+    pose proof
+      (Cantor.to_nat_non_decreasing 3
+        (Cantor.to_nat (pformula_code K p, pformula_code K q))) as Houter.
+    pose proof
+      (Cantor.to_nat_non_decreasing
+        (pformula_code K p) (pformula_code K q)) as Hinner.
+    rewrite (IHp fuel' ltac:(lia)), (IHq fuel' ltac:(lia)).
+    reflexivity.
+  - cbn [pformula_decode pformula_code].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    cbn [pformula_code] in Hfuel.
+    pose proof
+      (Cantor.to_nat_non_decreasing 4
+        (Cantor.to_nat (pformula_code K p, pformula_code K q))) as Houter.
+    pose proof
+      (Cantor.to_nat_non_decreasing
+        (pformula_code K p) (pformula_code K q)) as Hinner.
+    rewrite (IHp fuel' ltac:(lia)), (IHq fuel' ltac:(lia)).
+    reflexivity.
+  - cbn [pformula_decode pformula_code].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    cbn [pformula_code] in Hfuel.
+    pose proof
+      (Cantor.to_nat_non_decreasing 2
+        (Cantor.to_nat (pformula_code K p, pformula_code K q))) as Houter.
+    pose proof
+      (Cantor.to_nat_non_decreasing
+        (pformula_code K p) (pformula_code K q)) as Hinner.
+    rewrite (IHp fuel' ltac:(lia)), (IHq fuel' ltac:(lia)).
+    reflexivity.
+Qed.
+
+Definition pformula_enum {Atom : Type}
+    (K : pformula_atom_codec Atom) (n : nat) : pformula Atom :=
+  match pformula_decode K (S n) n with
+  | Some p => p
+  | None => PFalsum
+  end.
+
+Theorem pformula_enum_surjective :
+  forall (Atom : Type) (K : pformula_atom_codec Atom)
+         (p : pformula Atom),
+    exists n, pformula_enum K n = p.
+Proof.
+  intros Atom K p. exists (pformula_code K p).
+  unfold pformula_enum.
+  rewrite (@pformula_decode_code Atom K p
+    (S (pformula_code K p)) ltac:(lia)).
+  reflexivity.
+Qed.
+
+(** * Predicate contexts and zero substitutions *)
+
+Definition pformula_predicate_subformula_closed {Atom : Type}
+    (T : pformula Atom -> Prop) : Prop :=
+  forall p q, T p -> pformula_is_subformula q p -> T q.
+
+Lemma pformula_subformula_predicate_closed :
+  forall (Atom : Type) (p : pformula Atom),
+    pformula_predicate_subformula_closed
+      (fun q => pformula_is_subformula q p).
+Proof.
+  intros Atom p q r Hq Hr.
+  exact (pformula_subformula_trans Hq Hr).
+Qed.
+
+Lemma pformula_closed_and_components :
+  forall (Atom : Type) (Gamma : list (pformula Atom)),
+    pformula_subformula_closed Gamma ->
+    forall p q, In (PAnd p q) Gamma -> In p Gamma /\ In q Gamma.
+Proof.
+  intros Atom Gamma Hclosed p q Hpq; split; apply (Hclosed (PAnd p q)).
+  - exact Hpq.
+  - exact (proj1 (pformula_subformulas_left p q)).
+  - exact Hpq.
+  - exact (proj1 (pformula_subformulas_right p q)).
+Qed.
+
+Lemma pformula_closed_or_components :
+  forall (Atom : Type) (Gamma : list (pformula Atom)),
+    pformula_subformula_closed Gamma ->
+    forall p q, In (POr p q) Gamma -> In p Gamma /\ In q Gamma.
+Proof.
+  intros Atom Gamma Hclosed p q Hpq; split; apply (Hclosed (POr p q)).
+  - exact Hpq.
+  - exact (proj1 (proj2 (pformula_subformulas_left p q))).
+  - exact Hpq.
+  - exact (proj1 (proj2 (pformula_subformulas_right p q))).
+Qed.
+
+Lemma pformula_closed_imp_components :
+  forall (Atom : Type) (Gamma : list (pformula Atom)),
+    pformula_subformula_closed Gamma ->
+    forall p q, In (PImp p q) Gamma -> In p Gamma /\ In q Gamma.
+Proof.
+  intros Atom Gamma Hclosed p q Hpq; split; apply (Hclosed (PImp p q)).
+  - exact Hpq.
+  - exact (proj2 (proj2 (pformula_subformulas_left p q))).
+  - exact Hpq.
+  - exact (proj2 (proj2 (pformula_subformulas_right p q))).
+Qed.
+
+Record pzero_substitution (A B : Type) := {
+  pzero_substitution_apply : psubstitution A B;
+  pzero_substitution_letterless : forall a,
+    pformula_letterless (pzero_substitution_apply a)
+}.
+
+Arguments pzero_substitution_apply {A B} _ _.
+
+Lemma pformula_zero_substitution_letterless :
+  forall (A B : Type) (sigma : pzero_substitution A B)
+         (p : pformula A),
+    pformula_letterless
+      (pformula_substitute (pzero_substitution_apply sigma) p).
+Proof.
+  intros A B sigma p. apply pformula_substitute_letterless.
+  apply pzero_substitution_letterless.
+Qed.
+
+Definition pformula_substitution_closed {Atom : Type}
+    (T : pformula Atom -> Prop) : Prop :=
+  forall p, T p -> forall sigma : psubstitution Atom Atom,
+    T (pformula_substitute sigma p).
