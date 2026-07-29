@@ -8,6 +8,7 @@
   ordinary seven-way conjunction constructor.
 *)
 
+From Stdlib Require Import List.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
@@ -18,6 +19,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofExistential
   RawCodedPALocalProofAndIntroduction
   RawCodedPALocalProofWitnessedContextMerge
+  RawCodedPALocalProofWitnessedContextMergeTransportComplete
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
@@ -26,6 +28,7 @@ From BoundedPAConsistency Require Import
 
 Module PABoundedRawCodedPAGrowingTemplateConjunction.
 
+Import ListNotations.
 Import PA.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
@@ -36,11 +39,70 @@ Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofAndIntroduction.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import
+  PABoundedRawCodedPALocalProofWitnessedContextMergeTransportComplete.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
+
+(** A pair of independently growing empty-prefix proofs after synchronization.
+    The package keeps the original-tail inclusion because later clients must
+    also transport roots which were compiled before either growing branch. *)
+Definition RawCodedPAGrowingTemplateLocalProofPairAtEmpty
+    (M : RawPAModel) (sourceContext leftConclusion rightConclusion : M)
+    : Prop :=
+  exists targetWitnessList targetContext leftRoot rightRoot : M,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M targetContext leftConclusion leftRoot /\
+    RawCodedPALocalProofOf M targetContext rightConclusion rightRoot.
+
+Arguments RawCodedPAGrowingTemplateLocalProofPairAtEmpty
+  M sourceContext leftConclusion rightConclusion : clear implicits.
+
+(** Merge two independently selected growing tails.  Empty template prefixes
+    are essential here: their operational proof contexts reduce literally to
+    the selected PA tails, so the completed witnessed-context merge applies
+    without any prefix-code equation.  Inclusion of the original source is
+    composed through the left branch; either branch would give the same
+    guarantee. *)
+Theorem raw_codedPAGrowingTemplateLocalProofAt_pair_at_empty : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext leftConclusion rightConclusion,
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext [] leftConclusion ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext [] rightConclusion ->
+  RawCodedPAGrowingTemplateLocalProofPairAtEmpty M sourceContext
+    leftConclusion rightConclusion.
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext
+    leftConclusion rightConclusion
+    (leftWitnessList & leftContext & leftRoot &
+      hleftWitnessed & hsourceLeft & hleftProof)
+    (rightWitnessList & rightContext & rightRoot &
+      hrightWitnessed & hsourceRight & hrightProof).
+  cbn [rawTemplateContextCodeOnTail] in hleftProof, hrightProof.
+  destruct
+    (raw_codedPALocalProof_twoWitnessedContexts_commonContext_with_inclusions_complete
+      M hPA leftWitnessList leftContext leftConclusion leftRoot
+      rightWitnessList rightContext rightConclusion rightRoot
+      hleftWitnessed hleftProof hrightWitnessed hrightProof) as
+    (targetWitnessList & targetContext &
+      transportedLeftRoot & transportedRightRoot &
+      htargetWitnessed & hleftIncluded & hrightIncluded &
+      hleftTransported & hrightTransported).
+  exists targetWitnessList, targetContext,
+    transportedLeftRoot, transportedRightRoot.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hleftIncluded member (hsourceLeft member hmember)).
+  - split; assumption.
+Qed.
 
 (** Assemble a right-associated seven-field record once all component proofs
     have reached one literal context.  Keeping this specialization here avoids
