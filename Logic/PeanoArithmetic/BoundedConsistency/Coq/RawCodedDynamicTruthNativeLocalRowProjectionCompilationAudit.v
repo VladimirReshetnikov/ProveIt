@@ -11,6 +11,7 @@ Check
   raw_dynamicTruthNativeLocalExactRows_branch_projection_inputs_on_witnessed_base.
 Check RawDynamicTruthNativeLocalProjectedRowRootsAt.
 Check raw_dynamicTruthNativeLocalProjectedRowRootsAt_of_exact_rows.
+Check raw_dynamicTruthLocalPairFamily_adequateCons.
 Check RawDynamicTruthNativeLocalReducedStagedRootsAt.
 Check
   raw_dynamicTruthNativeLocalFieldRootOn_of_reduced_staged_roots_and_40_helpers.
@@ -21,5 +22,6 @@ Print Assumptions
   raw_dynamicTruthNativeLocalExactRows_branch_projection_inputs_on_witnessed_base.
 Print Assumptions
   raw_dynamicTruthNativeLocalProjectedRowRootsAt_of_exact_rows.
+Print Assumptions raw_dynamicTruthLocalPairFamily_adequateCons.
 Print Assumptions
   raw_dynamicTruthNativeLocalFieldRootOn_of_reduced_staged_roots_and_40_helpers.

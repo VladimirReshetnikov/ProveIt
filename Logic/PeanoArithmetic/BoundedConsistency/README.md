@@ -3601,8 +3601,12 @@ both ternary shift and opening laws.  The Sigma/Pi row-to-disjunction
 implications can then be compiled on the witnessed PA base and weakened
 through the three open assumptions before they are applied to the literal row
 roots.  The resulting reduced staged package drops both dependent projection
-packages.  In particular, it never demands the capture-incorrect self-shift
-of an evidence context merely to translate a row projection.
+packages.  The collision pair implications are likewise completed on the
+witnessed base and only then weakened through the open assumptions; the
+finite disjunction matrix consumes those finished pairs directly.  Hence all
+three temporary-context self-shifts disappear as well.  In particular, the
+boundary never demands the capture-incorrect self-shift of an evidence
+context merely to translate a row projection or compile a collision cell.
 
 `RawCodedDynamicTruthNativeLocalStagedCallbackCompilation.v` connects that
 carried root to the first public dependency-ordered callback.  It extends the
