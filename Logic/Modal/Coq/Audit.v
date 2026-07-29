@@ -13,6 +13,7 @@ From FoundationModal Require Import
   PropositionalHilbertVF PropositionalHilbertVFCorsi
   PropositionalFMTCompleteness PropositionalHilbertWF PropositionalNeighborhoodNB
   PropositionalHeytingSemantics PropositionalConsistentTableau
+  PropositionalKripkeTableauCanonical
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -2118,6 +2119,24 @@ Print Assumptions psct_context_provable_iff.
 Print Assumptions psct_provable_iff.
 Print Assumptions psct_classical_imp_positive_iff.
 Print Assumptions psct_classical_imp_negative_iff.
+
+(** The two-sided canonical Kripke model factors Foundation's tableau-based
+    implication counterextension.  The finite seed calculation reuses the
+    informative positional insert split; canonical extension and completeness
+    inherit exactly the tableau Lindenbaum boundary audited above. *)
+Check psct_canonical_frame.
+Check psct_canonical_valuation.
+Check psct_canonical_model.
+Check psct_imp_counterseed_consistent.
+Check psct_imp_counterextension.
+Check psct_canonical_truth.
+Check psct_canonical_model_valid_iff_provable.
+Check psct_canonical_for_class.
+Check ph_hilbert_pkripke_complete_of_psct_canonical.
+Print Assumptions psct_imp_counterseed_consistent.
+Print Assumptions psct_imp_counterextension.
+Print Assumptions psct_canonical_truth.
+Print Assumptions psct_canonical_model_valid_iff_provable.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
