@@ -2348,6 +2348,233 @@ Proof.
   end.
 Qed.
 
+(** Project the appended-entry lookup fields after an arbitrary later block
+    of eigenvariables.  This is the equality-branch counterpart of the
+    shifted preservation projection used by predecessor rows. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_lookup_components_shift_many :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    count context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  let shiftedWitnessContext := templateContextShiftMany count
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep context) in
+  exists modeRoot formulaRoot assignmentCodeRoot assignmentStepRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count
+          (coqFourStateTableAppendModeLookupTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep))) modeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count
+          (coqFourStateTableAppendFormulaLookupTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep))) formulaRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count
+          (coqFourStateTableAppendAssignmentCodeLookupTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)))
+      assignmentCodeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count
+          (coqFourStateTableAppendAssignmentStepLookupTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)))
+      assignmentStepRoot.
+Proof.
+  intros M hPA translation count context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep.
+  cbn zeta.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_extension_components_shift_many
+      M hPA translation count context
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    as (modeAppendRoot & formulaAppendRoot &
+        assignmentCodeAppendRoot & assignmentStepAppendRoot &
+        hmodeAppend & hformulaAppend &
+        hassignmentCodeAppend & hassignmentStepAppend).
+  destruct (coqFourStateTableAppendExtensionComponent_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodeShape [hformulaShape
+      [hassignmentCodeShape hassignmentStepShape]]].
+  rewrite hmodeShape, !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hmodeAppend.
+  rewrite hformulaShape, !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hformulaAppend.
+  rewrite hassignmentCodeShape, !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hassignmentCodeAppend.
+  rewrite hassignmentStepShape, !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hassignmentStepAppend.
+  destruct (coqFourStateTableAppendExtensionLookupBound_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodeLookupBoundShape [hformulaLookupBoundShape
+      [hassignmentCodeLookupBoundShape
+       hassignmentStepLookupBoundShape]]].
+  pose proof (raw_codedPALocalProofOf_andE2 M hPA _ _ _
+    modeAppendRoot hmodeAppend) as hmodeLookupBound.
+  pose proof (raw_codedPALocalProofOf_andE2 M hPA _ _ _
+    formulaAppendRoot hformulaAppend) as hformulaLookupBound.
+  pose proof (raw_codedPALocalProofOf_andE2 M hPA _ _ _
+    assignmentCodeAppendRoot hassignmentCodeAppend)
+    as hassignmentCodeLookupBound.
+  pose proof (raw_codedPALocalProofOf_andE2 M hPA _ _ _
+    assignmentStepAppendRoot hassignmentStepAppend)
+    as hassignmentStepLookupBound.
+  rewrite hmodeLookupBoundShape, !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hmodeLookupBound.
+  rewrite hformulaLookupBoundShape, !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hformulaLookupBound.
+  rewrite hassignmentCodeLookupBoundShape,
+    !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hassignmentCodeLookupBound.
+  rewrite hassignmentStepLookupBoundShape,
+    !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hassignmentStepLookupBound.
+  lazymatch type of hmodeLookupBound with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      pose proof (raw_codedPALocalProofOf_andE1 M hPA _ _ _
+        pairRoot hmodeLookupBound) as hmodeLookup
+  end.
+  lazymatch type of hformulaLookupBound with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      pose proof (raw_codedPALocalProofOf_andE1 M hPA _ _ _
+        pairRoot hformulaLookupBound) as hformulaLookup
+  end.
+  lazymatch type of hassignmentCodeLookupBound with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      pose proof (raw_codedPALocalProofOf_andE1 M hPA _ _ _
+        pairRoot hassignmentCodeLookupBound) as hassignmentCodeLookup
+  end.
+  lazymatch type of hassignmentStepLookupBound with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      pose proof (raw_codedPALocalProofOf_andE1 M hPA _ _ _
+        pairRoot hassignmentStepLookupBound) as hassignmentStepLookup
+  end.
+  lazymatch type of hmodeLookup with
+  | RawCodedPALocalProofOf _ _ _ ?modeRoot =>
+    lazymatch type of hformulaLookup with
+    | RawCodedPALocalProofOf _ _ _ ?formulaRoot =>
+      lazymatch type of hassignmentCodeLookup with
+      | RawCodedPALocalProofOf _ _ _ ?assignmentCodeRoot =>
+        lazymatch type of hassignmentStepLookup with
+        | RawCodedPALocalProofOf _ _ _ ?assignmentStepRoot =>
+            exists modeRoot, formulaRoot,
+              assignmentCodeRoot, assignmentStepRoot;
+            split; [exact hmodeLookup |];
+            split; [exact hformulaLookup |];
+            split; [exact hassignmentCodeLookup |
+              exact hassignmentStepLookup]
+        end
+      end
+    end
+  end.
+Qed.
+
+(** Reassemble the shifted appended-entry fields into the four-column state
+    lookup needed by the equality branch. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_new_state_lookup_shift_many :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    count context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  let shiftedWitnessContext := templateContextShiftMany count
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep context) in
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count
+          (coqFourStateTableAppendNewStateLookupTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep))) root.
+Proof.
+  intros M hPA translation count context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep.
+  cbn zeta.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_lookup_components_shift_many
+      M hPA translation count context
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    as (modeRoot & formulaRoot & assignmentCodeRoot & assignmentStepRoot &
+        hmode & hformula & hassignmentCode & hassignmentStep).
+  apply (raw_codedPALocalProofOf_templateAnd4 M hPA translation
+    (rawTemplateContextCode translation
+      (templateContextShiftMany count
+        (coqFourStateTableAppendWitnessContext
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep context)))
+    (templateFormulaShiftMany count
+      (coqFourStateTableAppendNewStateLookupTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep))
+    modeRoot formulaRoot assignmentCodeRoot assignmentStepRoot).
+  - exact (templateFormulaShiftMany_and4_shape count _ (eq_refl _)).
+  - rewrite templateAnd4First_shift_many.
+    exact hmode.
+  - rewrite templateAnd4Second_shift_many.
+    exact hformula.
+  - rewrite templateAnd4Third_shift_many.
+    exact hassignmentCode.
+  - rewrite templateAnd4Fourth_shift_many.
+    exact hassignmentStep.
+Qed.
+
 (** Project the four defined-through-successor fields from the same extension
     assumption.  The generic [andE11] helper hides the two nested proof roots
     used for each component. *)

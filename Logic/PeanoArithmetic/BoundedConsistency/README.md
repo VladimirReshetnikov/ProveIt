@@ -4127,3 +4127,9 @@ old-bound proof itself.  Once two transparent template equalities identify
 the arithmetic source's antecedent and left branch, the `< b` branch head is
 used by an actual represented assumption node and fed directly to the shifted
 predecessor transport.
+
+For the equality branch, the append layer now projects and reassembles the
+four unconditional appended-entry lookup fields after any finite block of
+later eigenvariables.  At count five this supplies the complete state lookup
+at the appended index directly in the row context, before equality transport
+changes that index to the row variable.
