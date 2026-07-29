@@ -2,7 +2,8 @@
 
 From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
-  GenericEntailment GenericEmbedding GenericCalculus
+  GenericEntailment GenericDecidability GenericDisjunctive
+  GenericEmbedding GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -429,6 +430,38 @@ Print Assumptions generic_pullback_provable_set_iff.
 Print Assumptions generic_pullback_theory_eq.
 Print Assumptions generic_pullback_weaker_than.
 Print Assumptions generic_pullback_consistent.
+
+(** All four declarations from Logic/Decidability.lean use an executable
+    formula-level decision procedure instead of the source's encoding-specific
+    computable predicate.  Essential undecidability needs only negation, and
+    inconsistency yields the constant positive decider constructively. *)
+Check generic_decidable_theory.
+Check generic_theory_decide.
+Check generic_undecidable_theory.
+Check generic_essentially_undecidable.
+Check generic_essentially_undecidable_extension.
+Check generic_decidable_of_incomplete.
+Check generic_decidable_of_inconsistent.
+Print Assumptions generic_decidable_of_incomplete.
+Print Assumptions generic_decidable_of_inconsistent.
+
+(** All four declarations from Logic/Disjunctive.lean are represented over
+    arbitrary entailments and primitive negation/disjunction operations.  The
+    completeness equivalence needs only excluded middle and left resolution,
+    removing the source's decidable formula equality premise. *)
+Check generic_disjunctive.
+Check generic_disjunctive_cases.
+Check generic_disjunctive_raw.
+Check generic_disjunctive_iff.
+Check generic_excluded_middle.
+Check generic_disjunctive_left_resolution.
+Check generic_disjunctive_of_complete.
+Check generic_complete_of_disjunctive.
+Check generic_complete_iff_disjunctive.
+Print Assumptions generic_disjunctive_iff.
+Print Assumptions generic_disjunctive_of_complete.
+Print Assumptions generic_complete_of_disjunctive.
+Print Assumptions generic_complete_iff_disjunctive.
 
 (** All five declarations from Logic/Embedding.lean are represented over
     heterogeneous system and formula types.  Identity and composition are
