@@ -2800,6 +2800,24 @@ instantiate the displayed context, formula, and both five-witness traversal
 tuples explicitly after opening the two existential packages, without
 depending on ambient de Bruijn positions or the generic `sealPA` bound.
 
+`RawCodedTemplateNestedExistentialElimination.v` extracts the corresponding
+logical bookkeeping.  From any template proof in the literal deepest witness
+context, it builds an arbitrary-length `trpExE` tree and proves the exact
+outer endpoint, including every intermediate shifted existential assumption
+and one conclusion renaming per binder.  The Assumption branch uses it for
+both five-witness packages; later quantified branches can reuse the same
+closed-under-the-global-context constructor.
+
+`RawCodedTemplateRepeatedUniversalElimination.v` provides the dual reusable
+constructor for a finite list of `All-E` replacements.  Its readiness
+predicate follows each capture-avoiding opening, and its correctness theorem
+computes both the exact instantiated formula and the corresponding proof
+tree.  `RawCodedRestrictedPADerivationSoundnessAssumptionTransferInstance.v`
+uses it at the Assumption branch's ten-witness depth: context and formula are
+`#17` and `#16`, the context-truth traversal tuple is `#4..#0`, and the public
+membership tuple is `#9..#5`.  The audited twelve-step result is exactly the
+three-premise traversal-transfer implication needed by the branch.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
