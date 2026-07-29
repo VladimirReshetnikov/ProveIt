@@ -4373,6 +4373,14 @@ tail inclusions.  The theorem remains generic in the finite adequate extra
 prefix, while the immediate traversal client will instantiate it with the
 two honest implication assumptions `[rowLookup; rowBound]`.
 
+The literal implication client is now compiled.  It derives both premises
+from represented assumption leaves in the combined row context, weakens the
+pre-split inherited and fixed-production roots beneath those heads, invokes
+the staged case theorem, and then applies represented implication
+introduction twice.  Its output is exactly
+`rowBound -> rowLookup -> closedProduction` over the final grown witnessed
+tail, with no metatheoretic premise proof standing in for either assumption.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a

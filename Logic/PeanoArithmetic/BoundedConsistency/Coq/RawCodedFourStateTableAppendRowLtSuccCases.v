@@ -22,7 +22,9 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruthTotality
   RawCodedPAAxiomWitnessPrefix
   RawCodedProofAssumptionLeaf
+  RawCodedProofImpIConstructor
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofComposition
   RawCodedPALocalProofContextInsertUnconditional
   RawCodedPALocalProofWitnessedContextMerge
@@ -63,7 +65,9 @@ Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedProofAssumptionLeaf.
+Import PABoundedRawCodedProofImpIConstructor.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
@@ -3551,6 +3555,310 @@ Proof.
         (coqFourStateTableAppendNamedClosedRowProductionTemplate
           sigmaProduction piProduction)
         hbase hsource hbaseIncluded hequalityBaseInputs).
+Qed.
+
+(** Instantiate the intervening prefix with the two premises of the literal
+    traversal row, construct both premises as represented assumption leaves,
+    run the complete case compiler, and discharge the assumptions in the
+    required [bound -> lookup -> production] order. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_concrete_closed_row_implications_on_witnessed_row_context :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName rowBound sigmaProduction piProduction
+    inheritedTraversal oldLookup witnesses fixedResultRoot,
+  let baseWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M) in
+  let baseContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M) in
+  let rowPrefix := coqFourStateTableAppendRowPrefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    (ttParameter boundName)
+    (ttParameter coqFourStateTableAppendRowModeParameterName)
+    (ttParameter coqFourStateTableAppendRowFormulaParameterName)
+    (ttParameter coqFourStateTableAppendRowAssignmentCodeParameterName)
+    (ttParameter coqFourStateTableAppendRowAssignmentStepParameterName) in
+  let antecedent := coqLtSuccCasesAntecedentTemplate (ttVar 4) rowBound in
+  let rowLookup :=
+    coqFourStateTableAppendEqualityRowLookupTemplate
+      coqFourStateTableAppendRowModeParameterName
+      coqFourStateTableAppendRowFormulaParameterName
+      coqFourStateTableAppendRowAssignmentCodeParameterName
+      coqFourStateTableAppendRowAssignmentStepParameterName
+      (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0) in
+  let below := coqLtSuccCasesBelowTemplate (ttVar 4) rowBound in
+  let equalityHead := coqLtSuccCasesEqualTemplate (ttVar 4) rowBound in
+  let fixedResult :=
+    coqFourStateTableAppendNamedClosedRowProductionTemplate
+      sigmaProduction piProduction in
+  let result :=
+    coqFourStateTableAppendConcreteClosedRowProductionTemplate
+      sigmaProduction piProduction in
+  templateUniversalOpenMany inheritedTraversal
+    coqFourStateTableAppendConcreteRowVariables =
+    Some (tfImp below (tfImp oldLookup result)) ->
+  RawCodedTemplatePrefixAtomicallyAdequate M translation rowPrefix ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation antecedent) ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation rowLookup) ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation below) ->
+  equalityHead = tfEq (ttVar 4) (ttParameter boundName) ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation equalityHead) ->
+  coqFourStateTableAppendRowModeParameterName <> boundName ->
+  coqFourStateTableAppendRowFormulaParameterName <> boundName ->
+  coqFourStateTableAppendRowAssignmentCodeParameterName <> boundName ->
+  coqFourStateTableAppendRowAssignmentStepParameterName <> boundName ->
+  RawFourStateTableAppendInheritedLocalRootsAt M translation
+    baseContext rowPrefix inheritedTraversal oldLookup ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext rowPrefix)
+    (rawTemplateFormula translation fixedResult) fixedResultRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    baseWitnessList baseContext rowPrefix
+    (rawTemplateFormula translation
+      (tfImp antecedent (tfImp rowLookup result))).
+Proof.
+  intros M hPA translation hagreement
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName rowBound sigmaProduction piProduction
+    inheritedTraversal oldLookup witnesses fixedResultRoot
+    baseWitnessList baseContext rowPrefix antecedent rowLookup below
+    equalityHead fixedResult result
+    hopen hrowPrefix hantecedentAdequate hrowLookupAdequate
+    hbelowAdequate hequalityHead hequalityAdequate
+    hmodeFresh hformulaFresh hassignmentCodeFresh hassignmentStepFresh
+    hinheritedRoots hfixedResult.
+  cbn zeta in *.
+  assert (hbase : RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))).
+  {
+    pose proof (raw_templateEmbeddedPAAxiomWitnessContext
+      M hPA translation hagreement witnesses) as hbaseTemplate.
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement witnesses) in hbaseTemplate.
+    exact hbaseTemplate.
+  }
+  set (actualRowPrefix := coqFourStateTableAppendRowPrefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    (ttParameter boundName)
+    (ttParameter coqFourStateTableAppendRowModeParameterName)
+    (ttParameter coqFourStateTableAppendRowFormulaParameterName)
+    (ttParameter coqFourStateTableAppendRowAssignmentCodeParameterName)
+    (ttParameter coqFourStateTableAppendRowAssignmentStepParameterName)).
+  set (actualAntecedent :=
+    coqLtSuccCasesAntecedentTemplate (ttVar 4) rowBound).
+  set (actualRowLookup :=
+    coqFourStateTableAppendEqualityRowLookupTemplate
+      coqFourStateTableAppendRowModeParameterName
+      coqFourStateTableAppendRowFormulaParameterName
+      coqFourStateTableAppendRowAssignmentCodeParameterName
+      coqFourStateTableAppendRowAssignmentStepParameterName
+      (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)).
+  set (extraPrefix := [actualRowLookup; actualAntecedent]).
+  assert (hextraPrefix :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation extraPrefix).
+  {
+    intros formula [hformula | [hformula | hformula]].
+    - subst formula. exact hrowLookupAdequate.
+    - subst formula. exact hantecedentAdequate.
+    - contradiction.
+  }
+  assert (hcombinedPrefix :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation
+        (extraPrefix ++ actualRowPrefix)).
+  {
+    intros formula hformula.
+    apply in_app_or in hformula.
+    destruct hformula as [hformula | hformula].
+    - exact (hextraPrefix formula hformula).
+    - exact (hrowPrefix formula hformula).
+  }
+  assert (hrowContext : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses (raw_zero M)) actualRowPrefix)).
+  {
+    apply (raw_templateContextOnTail_realizable M hPA).
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) hbase).
+  }
+  destruct hinheritedRoots as
+    (traversalRoot & oldLookupRoot & htraversal & holdLookup).
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) actualRowPrefix)
+    extraPrefix (rawTemplateFormula translation inheritedTraversal)
+    traversalRoot hrowContext hextraPrefix htraversal)
+    as [prefixedTraversalRoot hprefixedTraversal].
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) actualRowPrefix)
+    extraPrefix (rawTemplateFormula translation oldLookup)
+    oldLookupRoot hrowContext hextraPrefix holdLookup)
+    as [prefixedOldLookupRoot hprefixedOldLookup].
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) actualRowPrefix)
+    extraPrefix
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendNamedClosedRowProductionTemplate
+        sigmaProduction piProduction))
+    fixedResultRoot hrowContext hextraPrefix hfixedResult)
+    as [prefixedFixedResultRoot hprefixedFixedResult].
+  assert (hantecedentTail : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses (raw_zero M)) actualRowPrefix)).
+  { exact hrowContext. }
+  pose proof (raw_codedPALocalProofOf_assumption M hPA
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) actualRowPrefix)
+    (rawTemplateFormula translation actualAntecedent)
+    hantecedentTail) as hantecedentHead.
+  assert (hrowLookupSingleton :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation
+        [actualRowLookup]).
+  {
+    intros formula [hformula | hformula].
+    - subst formula. exact hrowLookupAdequate.
+    - contradiction.
+  }
+  assert (hantecedentContext : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses (raw_zero M))
+        (actualAntecedent :: actualRowPrefix))).
+  {
+    apply (raw_templateContextOnTail_realizable M hPA).
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) hbase).
+  }
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (actualAntecedent :: actualRowPrefix))
+    [actualRowLookup]
+    (rawTemplateFormula translation actualAntecedent)
+    (rawProofAssumptionRoot M
+      (rawListNode M (rawTemplateFormula translation actualAntecedent)
+        (rawTemplateContextCodeOnTail translation
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses (raw_zero M)) actualRowPrefix))
+      (rawTemplateFormula translation actualAntecedent))
+    hantecedentContext hrowLookupSingleton hantecedentHead)
+    as [antecedentRoot hantecedent].
+  pose proof (raw_codedPALocalProofOf_assumption M hPA
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (actualAntecedent :: actualRowPrefix))
+    (rawTemplateFormula translation actualRowLookup)
+    hantecedentContext) as hrowLookup.
+  pose proof
+    (raw_codedPALocalProofOf_four_state_table_append_concrete_closed_row_of_inherited_local_roots_on_witnessed_row_context_under_prefix
+      M hPA translation hagreement
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      boundName rowBound sigmaProduction piProduction
+      inheritedTraversal oldLookup witnesses extraPrefix
+      antecedentRoot
+      (rawProofAssumptionRoot M
+        (rawListNode M (rawTemplateFormula translation actualRowLookup)
+          (rawTemplateContextCodeOnTail translation
+            (rawStandardPAAxiomWitnessPrefixContextCode M
+              witnesses (raw_zero M))
+            (actualAntecedent :: actualRowPrefix)))
+        (rawTemplateFormula translation actualRowLookup))
+      prefixedFixedResultRoot
+      hopen hcombinedPrefix hbelowAdequate
+      hequalityHead hequalityAdequate
+      hmodeFresh hformulaFresh hassignmentCodeFresh hassignmentStepFresh
+      hantecedent
+      (ex_intro _ prefixedTraversalRoot
+        (ex_intro _ prefixedOldLookupRoot
+          (conj hprefixedTraversal hprefixedOldLookup)))
+      hrowLookup hprefixedFixedResult) as hresult.
+  destruct hresult as
+    (finalWitnessList & finalContext & resultRoot &
+      hfinalContext & hbaseFinalIncluded & hresult).
+  pose proof (raw_codedPALocalProofOf_impI M hPA
+    (rawTemplateContextCodeOnTail translation finalContext
+      (actualAntecedent :: actualRowPrefix))
+    (rawTemplateFormula translation actualRowLookup)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+        sigmaProduction piProduction))
+    resultRoot hresult) as hlookupImp.
+  rewrite <- rawTemplateFormula_imp in hlookupImp.
+  pose proof (raw_codedPALocalProofOf_impI M hPA
+    (rawTemplateContextCodeOnTail translation finalContext actualRowPrefix)
+    (rawTemplateFormula translation actualAntecedent)
+    (rawTemplateFormula translation
+      (tfImp actualRowLookup
+        (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+          sigmaProduction piProduction)))
+    (rawProofImpIRoot M
+      (rawTemplateContextCodeOnTail translation finalContext
+        (actualAntecedent :: actualRowPrefix))
+      (rawTemplateFormula translation actualRowLookup)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+          sigmaProduction piProduction)) resultRoot)
+    hlookupImp) as hboundImp.
+  rewrite <- rawTemplateFormula_imp in hboundImp.
+  unfold RawCodedPAGrowingTemplateLocalProofAt.
+  exists finalWitnessList, finalContext,
+    (rawProofImpIRoot M
+      (rawTemplateContextCodeOnTail translation finalContext actualRowPrefix)
+      (rawTemplateFormula translation actualAntecedent)
+      (rawTemplateFormula translation
+        (tfImp actualRowLookup
+          (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+            sigmaProduction piProduction)))
+      (rawProofImpIRoot M
+        (rawTemplateContextCodeOnTail translation finalContext
+          (actualAntecedent :: actualRowPrefix))
+        (rawTemplateFormula translation actualRowLookup)
+        (rawTemplateFormula translation
+          (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+            sigmaProduction piProduction)) resultRoot)).
+  split; [exact hfinalContext |].
+  split; [exact hbaseFinalIncluded | exact hboundImp].
 Qed.
 
 (** Compile [i < S b -> i < b \/ i = b] in the literal appended-row
