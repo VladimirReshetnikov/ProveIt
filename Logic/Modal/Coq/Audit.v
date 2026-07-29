@@ -1776,6 +1776,24 @@ Check phwf_proof_to_phf.
 Check phwf_phf_included.
 Check phwf_phf_included_of_provable_schema.
 Check phwf_WF_included_phf_F.
+Check phwf_separation_left.
+Check phwf_separation_right.
+Check phwf_separation_formula.
+Check phwf_proof_separation.
+Check phwf_WF_provable_separation.
+Check phwf_separation_world.
+Check phwf_separation_access.
+Check phwf_separation_root_access.
+Check phwf_separation_frame.
+Check phwf_separation_model.
+Check phwf_separation_no_left_from_gap.
+Check phwf_separation_right_gap_end.
+Check phwf_separation_forces_left_gap.
+Check phwf_separation_not_forces_right_gap.
+Check phwf_separation_countermodel.
+Check phvf_VF_unprovable_phwf_separation.
+Check phvf_phwf_strictly_included.
+Check phvf_VF_strictly_included_phwf_WF.
 Print Assumptions phwf_schema_substitute.
 Print Assumptions phwf_proof_of_schema_inclusion.
 Print Assumptions phwf_proof_substitute.
@@ -1787,6 +1805,10 @@ Print Assumptions phvf_VF_included_phwf_WF.
 Print Assumptions phwf_proof_to_phf.
 Print Assumptions phwf_phf_included_of_provable_schema.
 Print Assumptions phwf_WF_included_phf_F.
+Print Assumptions phwf_proof_separation.
+Print Assumptions phwf_separation_countermodel.
+Print Assumptions phvf_VF_unprovable_phwf_separation.
+Print Assumptions phvf_VF_strictly_included_phwf_WF.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
