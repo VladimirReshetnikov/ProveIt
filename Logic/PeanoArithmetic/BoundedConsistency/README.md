@@ -2911,6 +2911,16 @@ suffix, reconstructs the old record on that one common tail, and invokes the
 existing growing integration.  The public finalizer therefore no longer asks
 its caller for either Or-I-left recursion or the Assumption semantic law.
 
+`RawCodedRestrictedPADerivationSoundnessAssumptionNativePackageCompilation.v`
+connects this reduced interface directly to
+`RawCoqRestrictedPANativeDirectTruthInputsAt`.  It projects the package's
+shared Sigma and dynamic-context application selectors, the two direct truth
+selectors, the structural input equality, and the audited leaf equations;
+the conclusion/context equations are passed to the field compiler in their
+public order.  The resulting dependent witness exposes the exact selected
+Assumption tail for the package's own `inputs`, together with a continuation
+map from the twenty-one-field remainder back to the older integration API.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
