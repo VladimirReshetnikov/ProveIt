@@ -3006,6 +3006,15 @@ single source theorem lets the proof-producing Or-row construction select one
 standard axiom batch before opening all inputs, rather than nesting four
 independent append theorem selections below successive eigencontexts.
 
+`RawCodedFourStateTableAppendProofCompilation.v` realizes that economy inside
+model-coded proofs.  The generic universal-elimination chain opens all
+thirteen carrier-valued inputs on one witnessed context and exposes named
+four-defined-table and eight-witness templates.  Given a caller proof of the
+defined-table conjunction, the compiler transports it through the selected
+standard PA prefix and applies the specialized implication.  Its endpoint is
+a local proof of the shared eight-witness existential, so subsequent
+existential eliminations can introduce all four extended tables together.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled

@@ -1,0 +1,21 @@
+(** Assumption audit for simultaneous four-table append proof compilation. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFourStateTableAppendProofCompilation.
+
+Import PABoundedRawCodedFourStateTableAppendProofCompilation.
+
+Check coqFourStateTableAppendInstanceTemplate.
+Check coqFourStateTableAppendInstanceTemplate_open_many.
+Check coqFourStateTableAppendDefinedTemplate.
+Check coqFourStateTableAppendExistsTemplate.
+Check coqFourStateTableAppendInstanceTemplate_shape.
+Check raw_codedPALocalProofOf_four_state_table_append_instance_on_witnessed_tail.
+Check raw_codedPALocalProofOf_four_state_table_append_exists_of_defined_on_witnessed_tail.
+
+Print Assumptions coqFourStateTableAppendInstanceTemplate_open_many.
+Print Assumptions coqFourStateTableAppendInstanceTemplate_shape.
+Print Assumptions
+  raw_codedPALocalProofOf_four_state_table_append_instance_on_witnessed_tail.
+Print Assumptions
+  raw_codedPALocalProofOf_four_state_table_append_exists_of_defined_on_witnessed_tail.
