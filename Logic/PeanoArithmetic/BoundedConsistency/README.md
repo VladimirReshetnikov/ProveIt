@@ -4353,6 +4353,18 @@ literal concrete closed-row production over one final witnessed PA tail.
 No branch callback remains in this endpoint; the next closure boundary is
 the surrounding eight existential eliminations and five universal binders.
 
+Closing the actual traversal row also exposes its two nested implication
+assumptions (`bound` and `lookup`) between the arithmetic equality head and
+the fixed append-witness prefix.  The operational equality lookup compiler
+is now generalized to any finite atomically adequate intervening prefix: it
+projects the appended entry first, weakens that lookup under the supplied
+prefix, and only then consumes the equality head.  Context-fold
+associativity normalizes this operational view to `extra ++ rowPrefix`, and
+a corresponding three-root adapter accepts the row lookup and fixed
+production in that combined context.  Thus the next row-closing theorem can
+use honest represented assumption leaves for both implications before the
+five universal introductions.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
