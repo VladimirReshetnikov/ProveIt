@@ -10,7 +10,8 @@ From FoundationModal Require Import
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
-  PropositionalKripkeClassical
+  PropositionalKripkeClassical PropositionalLetterless
+  PropositionalPostCompleteness
   GenericCalculus PropositionalEntailmentAxioms
   PropositionalEntailmentLukasiewicz
   PropositionalEntailmentMinimal PropositionalEntailmentInt
@@ -1121,6 +1122,31 @@ Print Assumptions ph_hilbert_cl_pkripke_finite_euclidean_complete.
 Print Assumptions ph_hilbert_cl_consistent_via_pkripke.
 Print Assumptions ph_hilbert_lc_included_cl.
 Print Assumptions ph_hilbert_lc_strictly_included_cl.
+
+(** Letterless Int/Cl coincidence and Post completeness.  The forcing
+    invariant is constructive; maximal consistency uses the established
+    Boolean countervaluation/zero-substitution boundary. *)
+Check godel_translate_letterless.
+Check pkripke_letterless_forces_iff_boolean.
+Check pkripke_letterless_forcing_invariant.
+Check ph_hilbert_letterless_int_iff_cl.
+Check pformula_logic_consistent.
+Check pformula_logic_strict_subset.
+Check ph_superintuitionistic_logic.
+Check ph_superintuitionistic_contains_int.
+Check ph_superintuitionistic_trivial_of_bottom.
+Check ph_superintuitionistic_strictly_below_trivial.
+Check ph_logic_cl_maximal_consistent.
+Check ph_logic_cl_post_complete.
+Check ph_superintuitionistic_cl_post_complete.
+Print Assumptions godel_translate_letterless.
+Print Assumptions pkripke_letterless_forces_iff_boolean.
+Print Assumptions pkripke_letterless_forcing_invariant.
+Print Assumptions ph_hilbert_letterless_int_iff_cl.
+Print Assumptions ph_superintuitionistic_trivial_of_bottom.
+Print Assumptions ph_superintuitionistic_strictly_below_trivial.
+Print Assumptions ph_logic_cl_maximal_consistent.
+Print Assumptions ph_logic_cl_post_complete.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
