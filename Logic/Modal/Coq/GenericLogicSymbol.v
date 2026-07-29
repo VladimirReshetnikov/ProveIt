@@ -1,7 +1,7 @@
 (**
   Generic logical connectives and their homomorphisms.
 
-  This module begins the port of the pinned Foundation module
+  This module ports the pinned Foundation module
   [Logic/LogicSymbol.lean].  The primitive six-operation structure itself is
   [generic_connectives], defined in [GenericSemantics] and reused here.  This
   tranche centralizes the independent negation/De Morgan abbreviation laws,
@@ -704,4 +704,356 @@ Proof.
   intros F G CF CG h gamma; induction gamma as [|p gamma IH]; simpl.
   - reflexivity.
   - now rewrite (generic_connective_hom_neg h), IH.
+Qed.
+
+(** * Finite-set conveniences *)
+
+(** Foundation's [Finset] layer is represented by duplicate-tolerant lists.
+    Every observable theorem below is phrased through [In], so order and
+    multiplicity are immaterial.  This removes both the source's
+    noncomputability and all [DecidableEq] premises. *)
+Definition generic_finset_neg {F : Type}
+    (C : generic_connectives F) (s : list F) : list F :=
+  generic_list_neg C s.
+
+Lemma generic_finset_neg_member_iff :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_involutive_law C ->
+    forall (p : F) (s : list F),
+      In p (generic_finset_neg C s) <-> In (generic_neg C p) s.
+Proof. exact generic_list_member_neg_iff. Qed.
+
+Lemma generic_finset_neg_involutive :
+  forall (F : Type) (C : generic_connectives F),
+    generic_neg_involutive_law C ->
+    forall s : list F,
+      generic_finset_neg C (generic_finset_neg C s) = s.
+Proof. exact generic_list_neg_involutive. Qed.
+
+Lemma generic_finset_neg_empty :
+  forall (F : Type) (C : generic_connectives F),
+    generic_finset_neg C [] = [].
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_neg_insert :
+  forall (F : Type) (C : generic_connectives F)
+         (p : F) (s : list F),
+    generic_finset_neg C (p :: s) =
+    generic_neg C p :: generic_finset_neg C s.
+Proof. reflexivity. Qed.
+
+(** Append represents finite union. *)
+Lemma generic_finset_neg_union :
+  forall (F : Type) (C : generic_connectives F)
+         (s t : list F),
+    generic_finset_neg C (s ++ t) =
+    generic_finset_neg C s ++ generic_finset_neg C t.
+Proof. exact generic_list_neg_app. Qed.
+
+(** Singleton-normalized folds match Foundation [Finset.conj]/[disj]. *)
+Definition generic_finset_conj {F : Type}
+    (C : generic_connectives F) (s : list F) : F :=
+  generic_list_conj2 C s.
+
+Definition generic_finset_conj_map {I F : Type}
+    (C : generic_connectives F) (s : list I) (f : I -> F) : F :=
+  generic_list_conj_map C f s.
+
+(** A supplied finite enumeration replaces the source's implicit [Fintype]
+    universe and works even when the index type has no decidable equality. *)
+Definition generic_finset_uconj {I F : Type}
+    (C : generic_connectives F) (universe : list I) (f : I -> F) : F :=
+  generic_finset_conj_map C universe f.
+
+Definition generic_finset_disj {F : Type}
+    (C : generic_connectives F) (s : list F) : F :=
+  generic_list_disj2 C s.
+
+Definition generic_finset_disj_map {I F : Type}
+    (C : generic_connectives F) (s : list I) (f : I -> F) : F :=
+  generic_list_disj_map C f s.
+
+Definition generic_finset_udisj {I F : Type}
+    (C : generic_connectives F) (universe : list I) (f : I -> F) : F :=
+  generic_finset_disj_map C universe f.
+
+Lemma generic_finset_conj_empty :
+  forall (F : Type) (C : generic_connectives F),
+    generic_finset_conj C [] = generic_top C.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_conj_singleton :
+  forall (F : Type) (C : generic_connectives F) (p : F),
+    generic_finset_conj C [p] = p.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_conj_map_empty :
+  forall (I F : Type) (C : generic_connectives F) (f : I -> F),
+    generic_finset_conj_map C [] f = generic_top C.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_conj_map_singleton :
+  forall (I F : Type) (C : generic_connectives F)
+         (f : I -> F) (i : I),
+    generic_finset_conj_map C [i] f = f i.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_uconj_empty :
+  forall (I F : Type) (C : generic_connectives F) (f : I -> F),
+    generic_finset_uconj C [] f = generic_top C.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_uconj_singleton :
+  forall (I F : Type) (C : generic_connectives F)
+         (f : I -> F) (i : I),
+    generic_finset_uconj C [i] f = f i.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_disj_empty :
+  forall (F : Type) (C : generic_connectives F),
+    generic_finset_disj C [] = generic_bottom C.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_disj_singleton :
+  forall (F : Type) (C : generic_connectives F) (p : F),
+    generic_finset_disj C [p] = p.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_disj_map_empty :
+  forall (I F : Type) (C : generic_connectives F) (f : I -> F),
+    generic_finset_disj_map C [] f = generic_bottom C.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_disj_map_singleton :
+  forall (I F : Type) (C : generic_connectives F)
+         (f : I -> F) (i : I),
+    generic_finset_disj_map C [i] f = f i.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_udisj_empty :
+  forall (I F : Type) (C : generic_connectives F) (f : I -> F),
+    generic_finset_udisj C [] f = generic_bottom C.
+Proof. reflexivity. Qed.
+
+Lemma generic_finset_udisj_singleton :
+  forall (I F : Type) (C : generic_connectives F)
+         (f : I -> F) (i : I),
+    generic_finset_udisj C [i] f = f i.
+Proof. reflexivity. Qed.
+
+(** Homomorphism preservation is generalized from proposition-valued maps
+    to an arbitrary target connective algebra. *)
+Lemma generic_connective_hom_finset_conj :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG) (s : list F),
+    generic_connective_hom_apply h (generic_finset_conj CF s) =
+    generic_finset_conj CG (map (generic_connective_hom_apply h) s).
+Proof. exact generic_connective_hom_list_conj2. Qed.
+
+Lemma generic_connective_hom_finset_disj :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG) (s : list F),
+    generic_connective_hom_apply h (generic_finset_disj CF s) =
+    generic_finset_disj CG (map (generic_connective_hom_apply h) s).
+Proof. exact generic_connective_hom_list_disj2. Qed.
+
+Lemma generic_connective_hom_finset_conj_map :
+  forall (I F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG)
+         (s : list I) (f : I -> F),
+    generic_connective_hom_apply h (generic_finset_conj_map CF s f) =
+    generic_finset_conj_map CG s
+      (fun i => generic_connective_hom_apply h (f i)).
+Proof.
+  intros I F G CF CG h s f. unfold generic_finset_conj_map.
+  apply generic_connective_hom_list_conj_map.
+Qed.
+
+Lemma generic_connective_hom_finset_disj_map :
+  forall (I F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG)
+         (s : list I) (f : I -> F),
+    generic_connective_hom_apply h (generic_finset_disj_map CF s f) =
+    generic_finset_disj_map CG s
+      (fun i => generic_connective_hom_apply h (f i)).
+Proof.
+  intros I F G CF CG h s f. unfold generic_finset_disj_map.
+  apply generic_connective_hom_list_disj_map.
+Qed.
+
+Lemma generic_connective_hom_finset_uconj :
+  forall (I F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG)
+         (universe : list I) (f : I -> F),
+    generic_connective_hom_apply h
+      (generic_finset_uconj CF universe f) =
+    generic_finset_uconj CG universe
+      (fun i => generic_connective_hom_apply h (f i)).
+Proof. exact generic_connective_hom_finset_conj_map. Qed.
+
+Lemma generic_connective_hom_finset_udisj :
+  forall (I F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG)
+         (universe : list I) (f : I -> F),
+    generic_connective_hom_apply h
+      (generic_finset_udisj CF universe f) =
+    generic_finset_udisj CG universe
+      (fun i => generic_connective_hom_apply h (f i)).
+Proof. exact generic_connective_hom_finset_disj_map. Qed.
+
+(** Predicate readback reuses the independently factored semantic clauses,
+    requiring only top/and or bottom/or rather than a full homomorphism. *)
+Lemma generic_finset_conj_models_iff :
+  forall (M F : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_semantics_top C S ->
+    generic_semantics_and C S ->
+    forall (m : M) (s : list F),
+      generic_models S m (generic_finset_conj C s) <->
+      forall p, In p s -> generic_models S m p.
+Proof. exact generic_models_finset_conj. Qed.
+
+Lemma generic_finset_conj_map_models_iff :
+  forall (M F I : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_semantics_top C S ->
+    generic_semantics_and C S ->
+    forall (m : M) (s : list I) (f : I -> F),
+      generic_models S m (generic_finset_conj_map C s f) <->
+      forall i, In i s -> generic_models S m (f i).
+Proof. exact generic_models_finset_conj_map. Qed.
+
+Lemma generic_finset_disj_models_iff :
+  forall (M F : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_semantics_bottom C S ->
+    generic_semantics_or C S ->
+    forall (m : M) (s : list F),
+      generic_models S m (generic_finset_disj C s) <->
+      exists p, In p s /\ generic_models S m p.
+Proof. exact generic_models_finset_disj. Qed.
+
+Lemma generic_finset_disj_map_models_iff :
+  forall (M F I : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_semantics_bottom C S ->
+    generic_semantics_or C S ->
+    forall (m : M) (s : list I) (f : I -> F),
+      generic_models S m (generic_finset_disj_map C s f) <->
+      exists i, In i s /\ generic_models S m (f i).
+Proof. exact generic_models_finset_disj_map. Qed.
+
+Lemma generic_finset_uconj_models_iff :
+  forall (M F I : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_semantics_top C S ->
+    generic_semantics_and C S ->
+    forall (m : M) (universe : list I) (f : I -> F),
+      generic_models S m (generic_finset_uconj C universe f) <->
+      forall i, In i universe -> generic_models S m (f i).
+Proof. exact generic_finset_conj_map_models_iff. Qed.
+
+Lemma generic_finset_udisj_models_iff :
+  forall (M F I : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_semantics_bottom C S ->
+    generic_semantics_or C S ->
+    forall (m : M) (universe : list I) (f : I -> F),
+      generic_models S m (generic_finset_udisj C universe f) <->
+      exists i, In i universe /\ generic_models S m (f i).
+Proof. exact generic_finset_disj_map_models_iff. Qed.
+
+Lemma generic_finset_conj_union_models_iff :
+  forall (M F : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_semantics_top C S ->
+    generic_semantics_and C S ->
+    forall (m : M) (s t : list F),
+      generic_models S m (generic_finset_conj C (s ++ t)) <->
+      generic_models S m
+        (generic_and C (generic_finset_conj C s)
+          (generic_finset_conj C t)).
+Proof.
+  intros M F C S Htop Hand m s t.
+  rewrite (generic_finset_conj_models_iff Htop Hand m (s ++ t)),
+    (generic_models_and Hand m
+      (generic_finset_conj C s) (generic_finset_conj C t)),
+    (generic_finset_conj_models_iff Htop Hand m s),
+    (generic_finset_conj_models_iff Htop Hand m t).
+  split.
+  - intro Hall; split; intros p Hp; apply Hall; apply in_app_iff;
+      [now left | now right].
+  - intros [Hs Ht] p Hp. apply in_app_iff in Hp.
+    destruct Hp as [Hp | Hp]; [now apply Hs | now apply Ht].
+Qed.
+
+Lemma generic_finset_disj_union_models_iff :
+  forall (M F : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_semantics_bottom C S ->
+    generic_semantics_or C S ->
+    forall (m : M) (s t : list F),
+      generic_models S m (generic_finset_disj C (s ++ t)) <->
+      generic_models S m
+        (generic_or C (generic_finset_disj C s)
+          (generic_finset_disj C t)).
+Proof.
+  intros M F C S Hbottom Hor m s t.
+  rewrite (generic_finset_disj_models_iff Hbottom Hor m (s ++ t)),
+    (generic_models_or Hor m
+      (generic_finset_disj C s) (generic_finset_disj C t)),
+    (generic_finset_disj_models_iff Hbottom Hor m s),
+    (generic_finset_disj_models_iff Hbottom Hor m t).
+  split.
+  - intros [p [Hp Hmodel]]. apply in_app_iff in Hp.
+    destruct Hp as [Hp | Hp].
+    + left. now exists p.
+    + right. now exists p.
+  - intros [[p [Hp Hmodel]] | [p [Hp Hmodel]]]; exists p; split.
+    + apply in_app_iff. now left.
+    + exact Hmodel.
+    + apply in_app_iff. now right.
+    + exact Hmodel.
+Qed.
+
+(** If the supplied enumeration is complete, the source's quantification
+    over an implicit finite universe is recovered exactly. *)
+Lemma generic_finset_uconj_complete_models_iff :
+  forall (M F I : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_semantics_top C S ->
+    generic_semantics_and C S ->
+    forall (m : M) (universe : list I) (f : I -> F),
+      (forall i, In i universe) ->
+      (generic_models S m (generic_finset_uconj C universe f) <->
+       forall i, generic_models S m (f i)).
+Proof.
+  intros M F I C S Htop Hand m universe f Hcover.
+  rewrite (generic_finset_uconj_models_iff Htop Hand m universe f).
+  split.
+  - intros Hall i. apply Hall, Hcover.
+  - intros Hall i _. apply Hall.
+Qed.
+
+Lemma generic_finset_udisj_complete_models_iff :
+  forall (M F I : Type) (C : generic_connectives F)
+         (S : generic_semantics M F),
+    generic_semantics_bottom C S ->
+    generic_semantics_or C S ->
+    forall (m : M) (universe : list I) (f : I -> F),
+      (forall i, In i universe) ->
+      (generic_models S m (generic_finset_udisj C universe f) <->
+       exists i, generic_models S m (f i)).
+Proof.
+  intros M F I C S Hbottom Hor m universe f Hcover.
+  rewrite (generic_finset_udisj_models_iff Hbottom Hor m universe f).
+  split.
+  - intros [i [_ Hi]]. now exists i.
+  - intros [i Hi]. exists i. split; [apply Hcover | exact Hi].
 Qed.
