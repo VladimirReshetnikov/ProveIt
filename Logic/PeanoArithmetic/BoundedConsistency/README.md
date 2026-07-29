@@ -4329,6 +4329,18 @@ assumption constructor, yielding the exact three-root predecessor package.
 Thus the remaining append client work is concentrated on the equality-side
 context view and the outer existential/universal closure.
 
+The equality-side context view is now literal as well.  For a standard
+witnessed PA tail, the operational append lookup compiler's context is
+rewritten to the same equality-head-plus-row-prefix context consumed by the
+growing case theorem.  Row lookup and fixed closed-row production roots may
+be supplied before the case split: the new adapter weakens both beneath the
+adequate equality head and constructs the fixed-bound lookup internally.
+The growing less-than-successor eliminator also has a base-aware form whose
+callbacks receive inclusion of the original witnessed tail in every selected
+extension.  Consequently later append callbacks can transport roots chosen
+before the arithmetic helper batch without making the overstrong assumption
+that those roots exist in every unrelated PA witness context.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
