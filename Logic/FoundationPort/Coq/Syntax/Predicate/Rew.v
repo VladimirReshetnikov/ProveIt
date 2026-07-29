@@ -1368,3 +1368,87 @@ Proof.
   - apply semiformula_rewrite_ext, rew_fix_comp_free.
   - apply semiformula_rewrite_id.
 Qed.
+
+(** * Constructive conversion of free-variable-free formulas *)
+
+Lemma rew_q_emb : forall L O X n (empty : O -> False),
+  rew_equiv (rew_q (@rew_emb L O X n empty))
+    (@rew_emb L O X (S n) empty).
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i. refine (@Fin.caseS' n i (fun j =>
+      rew_apply (rew_q (rew_emb empty)) (Semiterm_bvar j) =
+      rew_apply (rew_emb empty) (Semiterm_bvar j)) _ _).
+    + reflexivity.
+    + intro j; reflexivity.
+  - intro x; exact (False_rect _ (empty x)).
+Qed.
+
+Fixpoint semiformula_to_closed {L X n} (p : semiformula L X n) :
+    (forall x, ~ semiformula_free_occurs x p) -> semisentence L n :=
+  match p as p0 in semiformula _ _ j return
+      (forall x, ~ semiformula_free_occurs x p0) -> semisentence L j with
+  | Semiformula_verum j => fun _ => Semiformula_verum j
+  | Semiformula_falsum j => fun _ => Semiformula_falsum j
+  | @Semiformula_rel _ _ j k r a => fun H =>
+      Semiformula_rel r (fun i =>
+        @semiterm_to_closed L X j (a i)
+          (fun x Hx => H x (ex_intro (fun j => semiterm_free_occurs x (a j)) i Hx)))
+  | @Semiformula_nrel _ _ j k r a => fun H =>
+      Semiformula_nrel r (fun i =>
+        @semiterm_to_closed L X j (a i)
+          (fun x Hx => H x (ex_intro (fun j => semiterm_free_occurs x (a j)) i Hx)))
+  | @Semiformula_and _ _ j q r => fun H =>
+      Semiformula_and
+        (@semiformula_to_closed L X j q (fun x Hx => H x (or_introl Hx)))
+        (@semiformula_to_closed L X j r (fun x Hx => H x (or_intror Hx)))
+  | @Semiformula_or _ _ j q r => fun H =>
+      Semiformula_or
+        (@semiformula_to_closed L X j q (fun x Hx => H x (or_introl Hx)))
+        (@semiformula_to_closed L X j r (fun x Hx => H x (or_intror Hx)))
+  | @Semiformula_all _ _ j q => fun H =>
+      Semiformula_all (@semiformula_to_closed L X (S j) q H)
+  | @Semiformula_exists _ _ j q => fun H =>
+      Semiformula_exists (@semiformula_to_closed L X (S j) q H)
+  end.
+
+Lemma semiformula_emb_to_closed : forall L X n
+    (p : semiformula L X n)
+    (H : forall x, ~ semiformula_free_occurs x p),
+  semiformula_rewrite
+    (rew_emb (fun x : Empty_set => match x with end))
+    (@semiformula_to_closed L X n p H) = p.
+Proof.
+  intros L X n p; induction p; intro H; simpl; try reflexivity.
+  - f_equal. apply functional_extensionality. intro i.
+    apply semiterm_emb_to_closed.
+  - f_equal. apply functional_extensionality. intro i.
+    apply semiterm_emb_to_closed.
+  - f_equal; [apply IHp1 | apply IHp2].
+  - f_equal; [apply IHp1 | apply IHp2].
+  - f_equal.
+    transitivity (semiformula_rewrite
+      (@rew_emb L Empty_set X (S n) (fun x => match x with end))
+      (@semiformula_to_closed L X (S n) p H)).
+    + apply semiformula_rewrite_ext, rew_q_emb.
+    + apply IHp.
+  - f_equal.
+    transitivity (semiformula_rewrite
+      (@rew_emb L Empty_set X (S n) (fun x => match x with end))
+      (@semiformula_to_closed L X (S n) p H)).
+    + apply semiformula_rewrite_ext, rew_q_emb.
+    + apply IHp.
+Qed.
+
+Lemma semiformula_emb_no_free_occurs : forall L O X n
+    (empty : O -> False) (p : semiformula L O n) x,
+  ~ semiformula_free_occurs x
+    (semiformula_rewrite (@rew_emb L O X n empty) p).
+Proof.
+  intros L O X n empty p x H.
+  destruct (@semiformula_rewrite_free_occurs_sources
+    L O n X n (rew_emb empty) p x H)
+    as [[i Hi] | [y [_ Hy]]].
+  - exact Hi.
+  - exact (False_rect _ (empty y)).
+Qed.

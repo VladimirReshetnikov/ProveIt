@@ -211,6 +211,10 @@ Check semiformula_substitute_comp.
 Check semiformula_shift_injective.
 Check semiformula_free_fix.
 Check semiformula_fix_free.
+Check rew_q_emb.
+Check semiformula_to_closed.
+Check semiformula_emb_to_closed.
+Check semiformula_emb_no_free_occurs.
 
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
@@ -293,6 +297,9 @@ Print Assumptions semiformula_substitute_comp.
 Print Assumptions semiformula_shift_injective.
 Print Assumptions semiformula_free_fix.
 Print Assumptions semiformula_fix_free.
+Print Assumptions rew_q_emb.
+Print Assumptions semiformula_emb_to_closed.
+Print Assumptions semiformula_emb_no_free_occurs.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
