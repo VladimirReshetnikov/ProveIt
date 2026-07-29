@@ -11,7 +11,7 @@ From FoundationModal Require Import
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
   PropositionalKripkeClassical PropositionalLetterless
-  PropositionalPostCompleteness
+  PropositionalPostCompleteness PropositionalDisjunctionProperty
   GenericCalculus PropositionalEntailmentAxioms
   PropositionalEntailmentLukasiewicz
   PropositionalEntailmentMinimal PropositionalEntailmentInt
@@ -1147,6 +1147,23 @@ Print Assumptions ph_superintuitionistic_trivial_of_bottom.
 Print Assumptions ph_superintuitionistic_strictly_below_trivial.
 Print Assumptions ph_logic_cl_maximal_consistent.
 Print Assumptions ph_logic_cl_post_complete.
+
+(** Int's disjunction property via a fresh-root sum of two canonical
+    countermodels. *)
+Check pkripke_dp_world.
+Check pkripke_dp_access.
+Check pkripke_dp_access_refl.
+Check pkripke_dp_access_trans.
+Check pkripke_dp_frame.
+Check pkripke_dp_valuation.
+Check pkripke_dp_model.
+Check pkripke_dp_forces_left_iff.
+Check pkripke_dp_forces_right_iff.
+Check ph_hilbert_int_disjunction_property.
+Print Assumptions pkripke_dp_access_trans.
+Print Assumptions pkripke_dp_forces_left_iff.
+Print Assumptions pkripke_dp_forces_right_iff.
+Print Assumptions ph_hilbert_int_disjunction_property.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
