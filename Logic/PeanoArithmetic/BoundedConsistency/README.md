@@ -3592,6 +3592,18 @@ that package checked implication and universal introduction construct the
 carried local field root.  No proof equality, unlinked row choice, semantic
 truth-to-proof conversion, or hidden empty-context transport is used.
 
+`RawCodedDynamicTruthPairedGlobalAdequateOrbitDeepClosure.v` and
+`RawCodedDynamicTruthNativeLocalRowProjectionCompilation.v` shrink this
+residual further.  PA already constructs a deeply closed paired global orbit
+at every level, while functionality of the adequate orbit identifies every
+public trace with that witness.  Consequently the exact native trace inherits
+both ternary shift and opening laws.  The Sigma/Pi row-to-disjunction
+implications can then be compiled on the witnessed PA base and weakened
+through the three open assumptions before they are applied to the literal row
+roots.  The resulting reduced staged package drops both dependent projection
+packages.  In particular, it never demands the capture-incorrect self-shift
+of an evidence context merely to translate a row projection.
+
 `RawCodedDynamicTruthNativeLocalStagedCallbackCompilation.v` connects that
 carried root to the first public dependency-ordered callback.  It extends the
 actual current six-field proof package with the ordered forty-helper batch,
