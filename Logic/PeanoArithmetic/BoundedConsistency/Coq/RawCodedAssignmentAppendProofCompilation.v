@@ -23,7 +23,9 @@ From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedRestrictedPAProof
   RawCodedPAAxiomWitnessPrefix
+  RawCodedProofBinaryConstructors
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofComposition
   RawCodedFixedLevelTruthTotality
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
@@ -43,7 +45,9 @@ Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
+Import PABoundedRawCodedProofBinaryConstructors.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -76,6 +80,43 @@ Lemma coqCodedAssignmentAppendInstanceTemplate_open_many : forall
 Proof.
   intros oldCode oldStep bound newValue.
   unfold coqCodedAssignmentAppendInstanceTemplate,
+    codedAssignmentAppendFormula, fixedTruthTotalityAll4.
+  reflexivity.
+Qed.
+
+(** Named projections of the specialized implication.  They are defined by
+    inspecting the computed template so clients remain insulated from the
+    large arithmetic expansion of beta lookup and prefix preservation. *)
+Definition coqCodedAssignmentAppendDefinedTemplate
+    (oldCode oldStep bound newValue : TemplateTerm) : TemplateFormula :=
+  match coqCodedAssignmentAppendInstanceTemplate
+    oldCode oldStep bound newValue with
+  | tfImp defined _ => defined
+  | _ => tfBot
+  end.
+
+Definition coqCodedAssignmentAppendExistsTemplate
+    (oldCode oldStep bound newValue : TemplateTerm) : TemplateFormula :=
+  match coqCodedAssignmentAppendInstanceTemplate
+    oldCode oldStep bound newValue with
+  | tfImp _ extensionExists => extensionExists
+  | _ => tfBot
+  end.
+
+Lemma coqCodedAssignmentAppendInstanceTemplate_shape : forall
+    oldCode oldStep bound newValue,
+  coqCodedAssignmentAppendInstanceTemplate
+    oldCode oldStep bound newValue =
+  tfImp
+    (coqCodedAssignmentAppendDefinedTemplate
+      oldCode oldStep bound newValue)
+    (coqCodedAssignmentAppendExistsTemplate
+      oldCode oldStep bound newValue).
+Proof.
+  intros oldCode oldStep bound newValue.
+  unfold coqCodedAssignmentAppendDefinedTemplate,
+    coqCodedAssignmentAppendExistsTemplate,
+    coqCodedAssignmentAppendInstanceTemplate,
     codedAssignmentAppendFormula, fixedTruthTotalityAll4.
   reflexivity.
 Qed.
@@ -115,6 +156,85 @@ Proof.
       hbase PA_proves_codedAssignmentAppendFormula
       (coqCodedAssignmentAppendInstanceTemplate_open_many
         oldCode oldStep bound newValue)).
+Qed.
+
+(** Apply the specialized append theorem to a caller-supplied proof that the
+    old table is defined.  The caller's root starts on [baseContext]; it is
+    rebuilt across the fixed theorem's selected standard witness prefix
+    before implication elimination, so both premises meet on one literal
+    object-language context. *)
+Theorem
+    raw_codedPALocalProofOf_assignment_append_exists_of_defined_on_witnessed_tail
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      baseWitnessList baseContext oldCode oldStep bound newValue
+      definedRoot,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDirectTemplateFormula inputs
+      (coqCodedAssignmentAppendDefinedTemplate
+        oldCode oldStep bound newValue)) definedRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext)
+      (rawDirectTemplateFormula inputs
+        (coqCodedAssignmentAppendExistsTemplate
+          oldCode oldStep bound newValue)) root.
+Proof.
+  intros M hPA inputs baseWitnessList baseContext
+    oldCode oldStep bound newValue definedRoot hbase hdefined.
+  destruct
+    (raw_codedPALocalProofOf_assignment_append_instance_on_witnessed_tail
+      M hPA inputs baseWitnessList baseContext
+      oldCode oldStep bound newValue hbase) as
+    (witnesses & implicationRoot & hextended & himplication).
+  destruct (raw_codedPALocalProofOf_standardPAAxiomWitnessPrefix
+    M hPA witnesses baseContext
+    (rawDirectTemplateFormula inputs
+      (coqCodedAssignmentAppendDefinedTemplate
+        oldCode oldStep bound newValue))
+    definedRoot
+    (raw_codedPAAxiomWitnessPrefix_context_realizable_of_witnessed
+      M baseWitnessList baseContext hbase)
+    hdefined) as [transportedDefinedRoot htransportedDefined].
+  rewrite coqCodedAssignmentAppendInstanceTemplate_shape in himplication.
+  change (RawCodedPALocalProofOf M
+    (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
+    (rawFormulaImpCode M
+      (rawDirectTemplateFormula inputs
+        (coqCodedAssignmentAppendDefinedTemplate
+          oldCode oldStep bound newValue))
+      (rawDirectTemplateFormula inputs
+        (coqCodedAssignmentAppendExistsTemplate
+          oldCode oldStep bound newValue))) implicationRoot)
+    in himplication.
+  exists witnesses.
+  exists (rawProofImpERoot M
+    (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
+    (rawDirectTemplateFormula inputs
+      (coqCodedAssignmentAppendDefinedTemplate
+        oldCode oldStep bound newValue))
+    (rawDirectTemplateFormula inputs
+      (coqCodedAssignmentAppendExistsTemplate
+        oldCode oldStep bound newValue))
+    implicationRoot transportedDefinedRoot).
+  split; [exact hextended |].
+  exact (raw_codedPALocalProofOf_impE M hPA
+    (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
+    (rawDirectTemplateFormula inputs
+      (coqCodedAssignmentAppendDefinedTemplate
+        oldCode oldStep bound newValue))
+    (rawDirectTemplateFormula inputs
+      (coqCodedAssignmentAppendExistsTemplate
+        oldCode oldStep bound newValue))
+    implicationRoot transportedDefinedRoot
+    himplication htransportedDefined).
 Qed.
 
 (** Empty-base form used by independently selected soundness fields.  Its
