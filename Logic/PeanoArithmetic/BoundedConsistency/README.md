@@ -4661,3 +4661,13 @@ production roots, compiles the mode-0 and mode-1 globals independently, and
 returns both proofs in one witnessed context.  The remaining predecessor work
 is therefore formula elimination inside this common context, not another
 context-coordination or witness-selection problem.
+
+Both synchronized global proofs are now also installed beneath the exact two
+predecessor-state assumptions.  A generic growing-pair adapter retains the
+chosen witnessed target and source inclusion, proves the two-head state
+context realizable, and performs four binder-safe context transplants.  A
+small dependency-directional bridge composes this adapter with the dual-mode
+append packages, so the append source resources now yield Sigma and Pi global
+roots in one literal joint-state context.  What remains is to eliminate the
+ten global existential witnesses, project the seven traversal fields, and
+instantiate the selected row to obtain the admissibility and evidence roots.

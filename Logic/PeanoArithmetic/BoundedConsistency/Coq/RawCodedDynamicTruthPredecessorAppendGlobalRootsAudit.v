@@ -1,0 +1,13 @@
+(** Assumption audit for the dual-append predecessor global-root bridge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPredecessorAppendGlobalRoots.
+
+Import PABoundedRawCodedDynamicTruthPredecessorAppendGlobalRoots.
+
+Check
+  raw_dynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom_of_append_concrete_global_row_input_packages.
+
+Print Assumptions
+  raw_dynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom_of_append_concrete_global_row_input_packages.
+
