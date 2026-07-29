@@ -10,6 +10,7 @@ From FoundationModal Require Import
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
   PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
   PropositionalKripke2Hilbert PropositionalHilbertFExtensions PropositionalFMT
+  PropositionalHilbertVF
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1535,6 +1536,89 @@ Print Assumptions fmt_valid_mdp.
 Print Assumptions fmt_valid_rule_I.
 Print Assumptions fmt_valid_ser_of_nt_serial.
 Print Assumptions fmt_nt_serial_of_valid_neg_top.
+
+(** Hilbert VF proof systems and their formula-indexed semantics. *)
+Check phvf_hilbert.
+Check phvf_axiom_ser.
+Check phvf_hilbert_VF.
+Check phvf_hilbert_VF_Ser.
+Check phvf_distribute_and_or.
+Check phvf_proof.
+Check phvf_provable.
+Check phvf_provable_of_schema.
+Check phvf_proof_of_schema_inclusion.
+Check phvf_provable_of_schema_inclusion.
+Check phvf_proof_substitute.
+Check phvf_provable_substitute.
+Check phvf_proof_of_proof_schema.
+Check phvf_provable_of_provable_schema.
+Check phvf_VF_schema_in_VF_Ser.
+Check phvf_VF_Ser_provable_ser.
+Check phvf_logic_included.
+Check phvf_logic_strictly_included.
+Check phvf_consistent.
+Check phvf_hilbert_logic.
+Check phvf_hilbert_logic_iff_provable.
+Check phvf_hilbert_logic_subset_of_schema_inclusion.
+Check phvf_hilbert_logic_subset_of_provable_schema.
+Check phvf_logic_VF.
+Check phvf_logic_VF_Ser.
+Check phvf_proof_fmt_model_sound.
+Check phvf_fmt_frame_schema_valid.
+Check phvf_fmt_model_schema_valid.
+Check phvf_fmt_frame_sound.
+Check phvf_fmt_frame_complete.
+Check phvf_fmt_model_sound.
+Check phvf_fmt_frame_sound_of_schema.
+Check phvf_fmt_model_sound_of_schema.
+Check phvf_consistent_of_fmt_frame_sound.
+Check phvf_consistent_of_fmt_model_sound.
+Check phvf_included_of_fmt_frame_class_subset.
+Check phvf_fmt_trivial_frame.
+Check phvf_fmt_trivial_nt_serial.
+Check phvf_VF_fmt_sound.
+Check phvf_VF_consistent.
+Check phvf_VF_Ser_fmt_sound.
+Check phvf_VF_Ser_consistent.
+Check phvf_fmt_ser_counter_frame.
+Check phvf_fmt_ser_counter_model.
+Check phvf_fmt_ser_counter_not_forces_ser.
+Check phvf_VF_unprovable_ser.
+Check phvf_VF_strictly_included_VF_Ser.
+Check phvf_fmt_iff_counter_frame.
+Check phvf_fmt_iff_counter_model.
+Check phvf_fmt_iff_counter_forces_neg_top.
+Check phvf_fmt_iff_counter_not_forces_ser.
+Check phvf_fmt_iff_counter_not_forces_top_iff_ser.
+Check phvf_VF_unprovable_top_iff_ser.
+Check phvf_provable_mdp.
+Check phvf_provable_and_rule.
+Check phvf_provable_or_left.
+Check phvf_provable_or_right.
+Check phvf_provable_of_aczel_slash.
+Check phvf_aczel_slash_of_proof.
+Check phvf_aczel_slash_iff_provable.
+Check phvf_disjunctive_of_schema_aczel_slash.
+Check phvf_aczel_slash_axiom_ser.
+Check phvf_VF_disjunctive.
+Check phvf_VF_Ser_disjunctive.
+Print Assumptions phvf_proof_of_schema_inclusion.
+Print Assumptions phvf_proof_substitute.
+Print Assumptions phvf_provable_of_provable_schema.
+Print Assumptions phvf_proof_fmt_model_sound.
+Print Assumptions phvf_fmt_frame_sound_of_schema.
+Print Assumptions phvf_consistent_of_fmt_frame_sound.
+Print Assumptions phvf_included_of_fmt_frame_class_subset.
+Print Assumptions phvf_VF_fmt_sound.
+Print Assumptions phvf_VF_Ser_fmt_sound.
+Print Assumptions phvf_VF_strictly_included_VF_Ser.
+Print Assumptions phvf_VF_unprovable_top_iff_ser.
+Print Assumptions phvf_provable_of_aczel_slash.
+Print Assumptions phvf_aczel_slash_of_proof.
+Print Assumptions phvf_aczel_slash_iff_provable.
+Print Assumptions phvf_disjunctive_of_schema_aczel_slash.
+Print Assumptions phvf_VF_disjunctive.
+Print Assumptions phvf_VF_Ser_disjunctive.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
