@@ -11,6 +11,7 @@ From Stdlib Require Import Logic.ClassicalEpsilon.
 From FoundationModal Require Import
   GenericSemantics GenericLogicSymbol GenericEntailment GenericCalculus
   PropositionalEntailmentAxioms PropositionalEntailmentMinimal
+  PropositionalEntailmentInt
   PropositionalFormula PropositionalLogic.
 
 Set Implicit Arguments.
@@ -573,6 +574,45 @@ Qed.
 Definition ph_hilbert_int_efq {Atom : Type} (p : pformula Atom) :
     ph_hilbert_proof (ph_hilbert_int Atom) (ph_axiom_efq p) :=
   @PHPAxiom Atom (ph_hilbert_int Atom) (ph_axiom_efq p) (PHIntEFQ p).
+
+(** Factor the concrete Hilbert adapter through an arbitrary ex-falso proof,
+    so every intermediate system can reuse the intuitionistic theorem layer. *)
+Definition ph_hilbert_generic_intuitionistic {Atom : Type}
+    (H : ph_hilbert Atom)
+    (efq : forall p, ph_hilbert_proof H (ph_axiom_efq p)) :
+    generic_intuitionistic_entailment
+      (ph_hilbert_entailment Atom) (pformula_connectives Atom) H.
+Proof.
+  constructor.
+  - exact (ph_hilbert_generic_minimal H).
+  - constructor. exact efq.
+Defined.
+
+Definition ph_hilbert_int_intuitionistic (Atom : Type) :
+    generic_intuitionistic_entailment
+      (ph_hilbert_entailment Atom) (pformula_connectives Atom)
+      (ph_hilbert_int Atom) :=
+  @ph_hilbert_generic_intuitionistic Atom (ph_hilbert_int Atom)
+    ph_hilbert_int_efq.
+
+Definition ph_hilbert_int_double_neg_imp_converse {Atom : Type}
+    (p q : pformula Atom) :
+    ph_hilbert_proof (ph_hilbert_int Atom)
+      (PImp (PImp (pneg (pneg p)) (pneg (pneg q)))
+        (pneg (pneg (PImp p q)))) :=
+  generic_intuitionistic_double_neg_imp_converse_raw
+    (ph_hilbert_int_intuitionistic Atom) p q.
+
+Definition ph_hilbert_int_list_disj2_append_iff {Atom : Type}
+    (gamma delta : list (pformula Atom)) :
+    ph_hilbert_proof (ph_hilbert_int Atom)
+      (generic_formula_iff (pformula_connectives Atom)
+        (generic_list_disj2 (pformula_connectives Atom) (gamma ++ delta))
+        (POr
+          (generic_list_disj2 (pformula_connectives Atom) gamma)
+          (generic_list_disj2 (pformula_connectives Atom) delta))) :=
+  generic_intuitionistic_list_disj2_append_iff_raw
+    (ph_hilbert_int_intuitionistic Atom) gamma delta.
 
 Definition ph_hilbert_kc_efq {Atom : Type} (p : pformula Atom) :
     ph_hilbert_proof (ph_hilbert_kc Atom) (ph_axiom_efq p) :=
