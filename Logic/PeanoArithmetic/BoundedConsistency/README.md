@@ -3613,7 +3613,11 @@ and its linked row parameters, and returns only the staged root package.
 Adequate orbit selection, transform extraction, carried-root certificate
 packaging, and positive-graph satisfaction are then concrete.  Thus the
 callback neither assumes an empty-base leaf compiler nor permits an unrelated
-helper context.
+helper context.  Its preferred reduced-builder endpoint uses the internally
+compiled row projections described above.  The dependency-ordered callback,
+universal-soundness, and bridge bundles all consume that reduced endpoint, so
+the two historical projection packages no longer occur in the public master
+residual; the older adapter remains only as a source-compatible theorem.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but

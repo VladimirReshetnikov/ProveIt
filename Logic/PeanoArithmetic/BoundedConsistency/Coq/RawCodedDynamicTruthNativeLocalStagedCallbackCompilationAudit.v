@@ -43,11 +43,15 @@ Qed.
     Adequate positive selection and ordinary-certificate construction are
     concrete adapters. *)
 Check RawDynamicTruthNativeLocalCurrentStagedRootBuilder.
+Check RawDynamicTruthNativeLocalCurrentReducedStagedRootBuilder.
 Check RawDynamicTruthNativeLocalDecisionExclusiveProofCompilerAt.
 Check
   raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_current_builder.
+Check
+  raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_reduced_current_builder.
 Check raw_dynamicTruthNativeLocalPositiveProof_exists_of_compilerAt.
 Check raw_dynamicTruthNativeStagedNextLocalCompiler_of_current_builder.
+Check raw_dynamicTruthNativeStagedNextLocalCompiler_of_reduced_current_builder.
 
 Print Assumptions
   raw_codedPAProofOf_dynamicTruthNativeLocal_of_witnessed_root.
@@ -58,9 +62,13 @@ Print Assumptions
 Print Assumptions
   raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_current_builder.
 Print Assumptions
+  raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_reduced_current_builder.
+Print Assumptions
   raw_dynamicTruthNativeLocalPositiveProof_exists_of_compilerAt.
 Print Assumptions
   raw_dynamicTruthNativeStagedNextLocalCompiler_of_current_builder.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextLocalCompiler_of_reduced_current_builder.
 
 End
   PABoundedRawCodedDynamicTruthNativeLocalStagedCallbackCompilationAudit.

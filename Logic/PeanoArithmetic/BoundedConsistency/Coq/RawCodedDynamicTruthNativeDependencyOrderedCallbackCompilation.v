@@ -73,7 +73,7 @@ Definition RawDynamicTruthNativeDependencyOrderedKernelCompilers
     (M : RawPAModel)
     (translation : RawCodedTemplateTranslation M) : Prop :=
   RawCodedTemplatePAAgreement M translation /\
-  RawDynamicTruthNativeLocalCurrentStagedRootBuilder M translation /\
+  RawDynamicTruthNativeLocalCurrentReducedStagedRootBuilder M translation /\
   RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
   RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
   RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
@@ -97,7 +97,7 @@ Proof.
       hsubstitution & haxiomSoundness & hfinal).
   repeat split.
   - exact
-      (raw_dynamicTruthNativeStagedNextLocalCompiler_of_current_builder
+      (raw_dynamicTruthNativeStagedNextLocalCompiler_of_reduced_current_builder
         M hPA translation htranslationAgreement hlocal).
   - exact
       (raw_dynamicTruthNativeStagedNextCrossLevelCompiler_of_body_implication

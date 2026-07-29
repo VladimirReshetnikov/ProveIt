@@ -43,7 +43,8 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthNativeLocalProofCompilation
   RawCodedDynamicTruthNativeStagedPositiveSuccessor
-  RawCodedDynamicTruthNativeLocalStagedRootCompilation.
+  RawCodedDynamicTruthNativeLocalStagedRootCompilation
+  RawCodedDynamicTruthNativeLocalRowProjectionCompilation.
 
 Module PABoundedRawCodedDynamicTruthNativeLocalStagedCallbackCompilation.
 
@@ -69,6 +70,7 @@ Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
 Import PABoundedRawCodedDynamicTruthNativeLocalStagedRootCompilation.
+Import PABoundedRawCodedDynamicTruthNativeLocalRowProjectionCompilation.
 
 (** Package a carried local root without changing any of its four logical
     indices.  In particular [baseContext] is stored in the ordinary
@@ -242,6 +244,40 @@ Definition RawDynamicTruthNativeLocalCurrentStagedRootBuilder
 Arguments RawDynamicTruthNativeLocalCurrentStagedRootBuilder
   M translation : clear implicits.
 
+(** The preferred residual builder uses the reduced staged package.  The two
+    row projections are no longer callback inputs: they are reconstructed
+    from the exact trace and the two literal row roots by the context-safe
+    compiler imported above. *)
+Definition RawDynamicTruthNativeLocalCurrentReducedStagedRootBuilder
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      witnessList baseContext (helperRoots : list M)
+      inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalCurrentHelperContextAt M translation
+      tail level currentLocal currentCrossLevel currentShift
+      currentSubstitution currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalProofTraceAt M tail level
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+      sigmaEvidence piEvidence ->
+    forall sigmaRowDomain piRowDomain
+        lowerPiApplication lowerSigmaApplication,
+      RawDynamicTruthNativeLocalExactRowParametersAt M level
+        inputGlobalSigma inputGlobalPi sigmaEvidence piEvidence
+        sigmaRowDomain piRowDomain
+        lowerPiApplication lowerSigmaApplication ->
+      RawDynamicTruthNativeLocalReducedStagedRootsAt M baseContext
+        sigmaDomain piDomain sigmaEvidence piEvidence
+        sigmaRowDomain piRowDomain
+        lowerPiApplication lowerSigmaApplication.
+
+Arguments RawDynamicTruthNativeLocalCurrentReducedStagedRootBuilder
+  M translation : clear implicits.
+
 (** A pointwise version of the existing decision/exclusivity compiler.  The
     staged callback presents one current package at one [tail, level], so a
     global compiler would be needlessly stronger and could not honestly be
@@ -331,6 +367,78 @@ Proof.
       hwitness hfieldRoot).
 Qed.
 
+(** Reduced-builder counterpart of the pointwise callback compiler.  This is
+    intentionally a separate theorem so existing clients of the historical
+    staged package remain source-compatible while dependency-ordered clients
+    can adopt the smaller residual immediately. *)
+Theorem
+    raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_reduced_current_builder :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  RawDynamicTruthNativeLocalCurrentReducedStagedRootBuilder M translation ->
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal,
+  RawDynamicTruthNativeStagedPositiveCurrentAt M tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal ->
+  RawDynamicTruthNativeLocalDecisionExclusiveProofCompilerAt
+    M tail level.
+Proof.
+  intros M hPA translation hagreement hbuilder tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal hcurrent.
+  destruct
+    (raw_dynamicTruthNativeLocalCurrentHelperContextAt_exists
+      M hPA translation hagreement tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal hcurrent)
+    as (witnessList & baseContext & helperRoots & hcurrentHelpers).
+  intros inputGlobalSigma inputGlobalPi fieldCode
+    hadequateOrbit htransform.
+  destruct (raw_dynamicTruthNativeLocalProofTraceAt_of_transform
+    M tail level inputGlobalSigma inputGlobalPi fieldCode
+    hadequateOrbit htransform) as
+    (sigmaDomain & piDomain & sigmaEvidence & piEvidence &
+      hfieldCode & htrace).
+  destruct (raw_dynamicTruthNativeLocalProofTraceAt_exposes_exact_rows
+    M tail level inputGlobalSigma inputGlobalPi
+    sigmaDomain piDomain sigmaEvidence piEvidence htrace) as
+    (sigmaRowDomain & piRowDomain & lowerPiApplication &
+      lowerSigmaApplication & hlinked).
+  pose proof (hbuilder tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi
+    sigmaDomain piDomain sigmaEvidence piEvidence
+    hcurrentHelpers htrace
+    sigmaRowDomain piRowDomain lowerPiApplication lowerSigmaApplication
+    hlinked) as hstaged.
+  pose proof hcurrentHelpers as hcontextFields.
+  destruct hcontextFields as
+    [_ (currentLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+      currentSubstitutionRoot & currentAxiomSoundnessRoot &
+      currentFinalRoot & hwitness & hcurrentLocal &
+      hcurrentCrossLevel & hcurrentShift & hcurrentSubstitution &
+      hcurrentAxiomSoundness & hcurrentFinal & hhelpers)].
+  pose proof
+    (raw_dynamicTruthNativeLocalFieldRootOn_of_reduced_staged_roots_and_40_helpers
+      M hPA translation witnessList baseContext helperRoots
+      tail level inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      sigmaRowDomain piRowDomain lowerPiApplication lowerSigmaApplication
+      hagreement hwitness hhelpers htrace hlinked hstaged)
+    as hfieldRoot.
+  rewrite hfieldCode.
+  exact
+    (raw_codedPAProofOf_dynamicTruthNativeLocalFieldRootOn
+      M witnessList baseContext
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      hwitness hfieldRoot).
+Qed.
+
 (** Exact positive selection for one callback invocation.  This is the
     pointwise body of native positive-graph proof totality.  The adequate
     orbit and its generated transform stay synchronized until [hcompiler]
@@ -402,6 +510,34 @@ Proof.
     currentSubstitution currentAxiomSoundness currentFinal hcurrent.
   pose proof
     (raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_current_builder
+      M hPA translation hagreement hbuilder tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal hcurrent) as hcompiler.
+  destruct
+    (raw_dynamicTruthNativeLocalPositiveProof_exists_of_compilerAt
+      M hPA tail level hcompiler) as
+    (nextLocal & localCertificate & hgraph & hcertificate).
+  exists nextLocal, localCertificate.
+  unfold RawDynamicTruthNativeStagedNextLocalProofAt,
+    RawDynamicTruthNativePositiveFieldOrdinaryProofAt.
+  split; assumption.
+Qed.
+
+(** Preferred callback endpoint with the two projection packages eliminated
+    from the current-package-linked residual. *)
+Theorem
+    raw_dynamicTruthNativeStagedNextLocalCompiler_of_reduced_current_builder :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  RawDynamicTruthNativeLocalCurrentReducedStagedRootBuilder M translation ->
+  RawDynamicTruthNativeStagedNextLocalCompiler M.
+Proof.
+  intros M hPA translation hagreement hbuilder
+    tail level currentLocal currentCrossLevel currentShift
+    currentSubstitution currentAxiomSoundness currentFinal hcurrent.
+  pose proof
+    (raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_reduced_current_builder
       M hPA translation hagreement hbuilder tail level
       currentLocal currentCrossLevel currentShift currentSubstitution
       currentAxiomSoundness currentFinal hcurrent) as hcompiler.
