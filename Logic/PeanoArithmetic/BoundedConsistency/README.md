@@ -3085,6 +3085,14 @@ arbitrary template terms, where opening an unused binder is propositionally
 but not always definitionally independent of its replacement; the concrete
 global-row de Bruijn instance will discharge the equalities separately.
 
+`RawCodedPALocalProofUniversalIntroductionChain.v` supplies the dual finite
+binder compiler needed to close that global row.  From a body proof in the
+exact `n`-times-shifted temporary context it builds `n` represented `AllI`
+nodes and returns the right-nested universal prefix in the original context.
+Unlike self-shift helpers for closed contexts, this theorem follows the
+translation's actual context-shift trace and therefore also applies beneath
+the eight open append witnesses.
+
 `RawCodedLtSuccCasesSource.v` and
 `RawCodedLtSuccCasesProofCompilation.v` supply the object-language case split
 that controls that row condition.  The closed PA theorem states uniformly
