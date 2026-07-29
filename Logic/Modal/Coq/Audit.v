@@ -6,7 +6,7 @@ From FoundationModal Require Import
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
-  PropositionalKripkeCanonical
+  PropositionalKripkeCanonical PropositionalKripkeFinite
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
   GenericCalculus PropositionalEntailmentAxioms
@@ -1104,6 +1104,26 @@ Check ph_hilbert_lc_pkripke_sound_complete.
 Check ph_hilbert_kc_pkripke_complete.
 Check ph_hilbert_kc_pkripke_sound_complete.
 Check ph_hilbert_kc_strictly_included_lc.
+Check pkripke_frame_finite.
+Check pkripke_frame_antisymmetric.
+Check pkripke_finite_partial_order.
+Check pkripke_finite_partial_order_convergent.
+Check pkripke_finite_partial_order_connected.
+Check pkripke_skeleton_frame.
+Check pkripke_skeleton_model.
+Check pkripke_skeleton_forces_iff.
+Check pkripke_skeleton_finite.
+Check pkripke_skeleton_antisymmetric.
+Check pkripke_skeleton_strongly_convergent.
+Check pkripke_skeleton_strongly_connected.
+Check modal_boxed_pkripke_forces_iff_godel.
+Check pkripke_forces_iff_forcing_modal_godel.
+Check ph_hilbert_int_pkripke_finite_complete.
+Check ph_hilbert_kc_pkripke_finite_complete.
+Check ph_hilbert_lc_pkripke_finite_complete.
+Check ph_hilbert_int_pkripke_finite_partial_order_complete.
+Check ph_hilbert_kc_pkripke_finite_partial_order_complete.
+Check ph_hilbert_lc_pkripke_finite_partial_order_complete.
 Print Assumptions pki_limit_derivation_stage_raw.
 Print Assumptions pki_partition_member.
 Print Assumptions pki_list_derivation_bind_raw.
@@ -1124,6 +1144,17 @@ Print Assumptions ph_hilbert_lc_pkripke_sound_complete.
 Print Assumptions ph_hilbert_kc_pkripke_complete.
 Print Assumptions ph_hilbert_kc_pkripke_sound_complete.
 Print Assumptions ph_hilbert_kc_strictly_included_lc.
+Print Assumptions pkripke_skeleton_forces_iff.
+Print Assumptions pkripke_skeleton_finite.
+Print Assumptions pkripke_skeleton_strongly_convergent.
+Print Assumptions pkripke_skeleton_strongly_connected.
+Print Assumptions modal_boxed_pkripke_forces_iff_godel.
+Print Assumptions ph_hilbert_int_pkripke_finite_complete.
+Print Assumptions ph_hilbert_kc_pkripke_finite_complete.
+Print Assumptions ph_hilbert_lc_pkripke_finite_complete.
+Print Assumptions ph_hilbert_int_pkripke_finite_partial_order_complete.
+Print Assumptions ph_hilbert_kc_pkripke_finite_partial_order_complete.
+Print Assumptions ph_hilbert_lc_pkripke_finite_partial_order_complete.
 
 (** Propositional/Translation syntax bridges. *)
 Check pformula_to_pnn.
@@ -3347,18 +3378,30 @@ Check ph_int_complete_from_all_pkripke_models.
 Check S4_sound_on_pkripke_forcing_models.
 Check ph_int_modal_companion_S4.
 Check ph_int_provable_godel_Grz.
+Check ph_int_complete_from_finite_partial_pkripke_models.
+Check Grz_sound_on_finite_partial_pkripke_forcing_models.
+Check ph_int_modal_companion_Grz.
+Check ph_int_boxdot_modal_companion_GL.
 Check S4Point2_proves_godel_translated_WLEM.
 Check ph_kc_provable_godel_S4Point2.
 Check ph_kc_complete_from_convergent_pkripke_models.
 Check S4Point2_sound_on_convergent_pkripke_forcing_models.
 Check ph_kc_modal_companion_S4Point2.
 Check ph_kc_provable_godel_GrzPoint2.
+Check ph_kc_complete_from_finite_partial_convergent_pkripke_models.
+Check GrzPoint2_sound_on_finite_partial_convergent_pkripke_models.
+Check ph_kc_modal_companion_GrzPoint2.
 Check S4Point3_proves_godel_translated_Dummett.
 Check ph_lc_provable_godel_S4Point3.
 Check ph_lc_complete_from_connected_pkripke_models.
 Check S4Point3_sound_on_connected_pkripke_forcing_models.
 Check ph_lc_modal_companion_S4Point3.
 Check ph_lc_provable_godel_GrzPoint3.
+Check ph_lc_complete_from_finite_partial_connected_pkripke_models.
+Check GrzPoint3_sound_on_finite_partial_connected_pkripke_models.
+Check ph_lc_modal_companion_GrzPoint3.
+Check GLPoint3_boxdot_sound_on_finite_partial_connected_pkripke_models.
+Check ph_lc_boxdot_modal_companion_GLPoint3.
 Check s5_entailment.
 Check s5_E.
 Check diabox_box_raw.
@@ -5470,18 +5513,23 @@ Print Assumptions ph_int_complete_from_all_pkripke_models.
 Print Assumptions S4_sound_on_pkripke_forcing_models.
 Print Assumptions ph_int_modal_companion_S4.
 Print Assumptions ph_int_provable_godel_Grz.
+Print Assumptions ph_int_modal_companion_Grz.
+Print Assumptions ph_int_boxdot_modal_companion_GL.
 Print Assumptions S4Point2_proves_godel_translated_WLEM.
 Print Assumptions ph_kc_provable_godel_S4Point2.
 Print Assumptions ph_kc_complete_from_convergent_pkripke_models.
 Print Assumptions S4Point2_sound_on_convergent_pkripke_forcing_models.
 Print Assumptions ph_kc_modal_companion_S4Point2.
 Print Assumptions ph_kc_provable_godel_GrzPoint2.
+Print Assumptions ph_kc_modal_companion_GrzPoint2.
 Print Assumptions S4Point3_proves_godel_translated_Dummett.
 Print Assumptions ph_lc_provable_godel_S4Point3.
 Print Assumptions ph_lc_complete_from_connected_pkripke_models.
 Print Assumptions S4Point3_sound_on_connected_pkripke_forcing_models.
 Print Assumptions ph_lc_modal_companion_S4Point3.
 Print Assumptions ph_lc_provable_godel_GrzPoint3.
+Print Assumptions ph_lc_modal_companion_GrzPoint3.
+Print Assumptions ph_lc_boxdot_modal_companion_GLPoint3.
 Print Assumptions diabox_box_raw.
 Print Assumptions diabox_box_applied_raw.
 Print Assumptions rm_diabox_raw.
