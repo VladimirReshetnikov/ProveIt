@@ -817,23 +817,6 @@ Proof.
     + right. exact (IH Hr).
 Qed.
 
-(** Singleton-normalized finite De Morgan for disjunction. *)
-Lemma generic_neg_list_disj2 :
-  forall (F : Type) (C : generic_connectives F),
-    generic_neg_bottom_law C ->
-    generic_neg_or_law C ->
-    forall xs : list F,
-      generic_neg C (generic_list_disj2 C xs) =
-      generic_list_conj2 C (map (generic_neg C) xs).
-Proof.
-  intros F C Hneg_bottom Hneg_or xs.
-  induction xs as [|p ps IH].
-  - simpl. exact Hneg_bottom.
-  - destruct ps as [|q qs].
-    + reflexivity.
-    + simpl in IH |- *. rewrite Hneg_or, IH. reflexivity.
-Qed.
-
 (** Source declaration 20/43:
     [PrincipalEntailment.derivable_iff_provable_disj]. *)
 Lemma generic_principal_derivable_iff_provable_disj :
@@ -1532,46 +1515,6 @@ Proof.
        generic_context_witness A (generic_adjunctive_empty A))).
     exact (existT _ wempty
       (generic_equiv_to (generic_principal_equiv Hprincipal p) b)).
-Qed.
-
-(** Finite De Morgan for singleton-normalized conjunction.  Declaration 41
-    is the only consumer; exposing the lemma makes its exact law boundary
-    explicit. *)
-Lemma generic_neg_list_conj2 :
-  forall (F : Type) (C : generic_connectives F),
-    generic_neg_top_law C ->
-    generic_neg_and_law C ->
-    forall gamma : list F,
-      generic_neg C (generic_list_conj2 C gamma) =
-      generic_list_disj2 C (map (generic_neg C) gamma).
-Proof.
-  intros F C Hneg_top Hneg_and gamma.
-  induction gamma as [|p ps IH].
-  - simpl. exact Hneg_top.
-  - destruct ps as [|q qs].
-    + reflexivity.
-    + simpl in IH |- *. rewrite Hneg_and, IH. reflexivity.
-Qed.
-
-(** Double negation through a mapped singleton-normalized disjunction. *)
-Lemma generic_neg_mapped_list_disj2 :
-  forall (F : Type) (C : generic_connectives F),
-    generic_neg_involutive_law C ->
-    generic_neg_bottom_law C ->
-    generic_neg_or_law C ->
-    forall gamma : list F,
-      generic_neg C
-        (generic_list_disj2 C (map (generic_neg C) gamma)) =
-      generic_list_conj2 C gamma.
-Proof.
-  intros F C Hinv Hneg_bottom Hneg_or gamma.
-  rewrite (@generic_neg_list_disj2 F C Hneg_bottom Hneg_or
-    (map (generic_neg C) gamma)), map_map.
-  induction gamma as [|p ps IH].
-  - reflexivity.
-  - destruct ps as [|q qs].
-    + simpl. rewrite (Hinv p). reflexivity.
-    + simpl in IH |- *. rewrite (Hinv p), IH. reflexivity.
 Qed.
 
 (** Type-valued finite-context proof used by source declaration 41. *)
