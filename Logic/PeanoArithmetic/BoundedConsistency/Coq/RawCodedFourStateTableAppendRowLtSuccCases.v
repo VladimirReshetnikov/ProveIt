@@ -25,7 +25,10 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofComposition
   RawCodedPALocalProofContextInsertUnconditional
   RawCodedPALocalProofEquality
+  RawCodedPALocalProofExistentialEliminationChain
   RawCodedTemplateSyntax
+  RawCodedTemplateRenamingSubstitution
+  RawCodedTemplateParameterAbstraction
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
@@ -55,7 +58,10 @@ Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedPALocalProofEquality.
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateRenamingSubstitution.
+Import PABoundedRawCodedTemplateParameterAbstraction.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
@@ -117,6 +123,186 @@ Proof.
       (rawTemplateFormula translation (tfEq source target)) context)
     target source motive symmetryRoot transplantedMotiveRoot
     hsymmetry htransplantedMotive).
+Qed.
+
+(** Capture-avoiding specialization for the carrier parameters used by the
+    outer successor compiler.  Abstracting [name] inserts one ordinary PA
+    variable; the parameter-abstraction round trip identifies its opening at
+    the original parameter with [input] literally.  Opening at [source]
+    therefore gives the exact transported branch target. *)
+Theorem
+    raw_codedPALocalProofOf_templateEqTransport_reverse_head_parameter :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context name source input inputRoot,
+  let equalityHead := rawTemplateFormula translation
+    (tfEq source (ttParameter name)) in
+  RawCodedFormulaAtomicallyAdequate M equalityHead ->
+  RawContextListRealizable M context ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation input) inputRoot ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawListNode M equalityHead context)
+      (rawTemplateFormula translation
+        (templateFormulaOpen source
+          (templateFormulaAbstractParameter name input))) root.
+Proof.
+  intros M hPA translation context name source input inputRoot
+    equalityHead hhead hcontext hinput.
+  cbn zeta in *.
+  eapply (raw_codedPALocalProofOf_templateEqTransport_reverse_head
+    M hPA translation context source (ttParameter name)
+    (templateFormulaAbstractParameter name input) inputRoot).
+  - exact hhead.
+  - exact hcontext.
+  - rewrite templateFormulaAbstractParameter_open.
+    exact hinput.
+Qed.
+
+(** The four appended-entry fields with their shared bound parameter
+    abstracted and reopened at the traversal row index.  Keeping this as a
+    named template makes the capture-avoiding transport target transparent
+    to the later lookup-functionality comparison. *)
+Definition coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate
+    (boundName : TemplateParameterName) (index : TemplateTerm)
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      mode formula assignmentCode assignmentStep : TemplateTerm)
+    : TemplateFormula :=
+  templateFormulaOpen index
+    (templateFormulaAbstractParameter boundName
+      (templateFormulaShiftMany 5
+        (coqFourStateTableAppendNewStateLookupTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          (ttParameter boundName)
+          mode formula assignmentCode assignmentStep))).
+
+(** Equality callback for the appended row.  The shifted lookup at the
+    appended bound is projected from the append witnesses themselves; the
+    literal branch assumption [index = bound] then transports all four
+    fields together to [index]. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_equality_branch_lookup_parameter :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName mode formula assignmentCode assignmentStep
+    index rowBound,
+  let shiftedWitnessContext := templateContextShiftMany 5
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) mode formula assignmentCode assignmentStep
+      context) in
+  let shiftedWitnessContextCode :=
+    rawTemplateContextCode translation shiftedWitnessContext in
+  let branchHead := rawTemplateFormula translation
+    (coqLtSuccCasesEqualTemplate index rowBound) in
+  coqLtSuccCasesEqualTemplate index rowBound =
+    tfEq index (ttParameter boundName) ->
+  RawCodedFormulaAtomicallyAdequate M branchHead ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawListNode M branchHead shiftedWitnessContextCode)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate
+          boundName index
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          mode formula assignmentCode assignmentStep)) root.
+Proof.
+  intros M hPA translation context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName mode formula assignmentCode assignmentStep
+    index rowBound
+    shiftedWitnessContext shiftedWitnessContextCode branchHead
+    hequalHead hhead.
+  cbn zeta in *.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_new_state_lookup_shift_many
+      M hPA translation 5 context
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) mode formula assignmentCode assignmentStep)
+    as [lookupRoot hlookup].
+  pose proof (raw_templateContext_realizable M hPA translation
+    (templateContextShiftMany 5
+      (coqFourStateTableAppendWitnessContext
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName) mode formula assignmentCode assignmentStep
+        context))) as hcontext.
+  assert (hbranchHead :
+      rawTemplateFormula translation
+        (coqLtSuccCasesEqualTemplate index rowBound) =
+      rawTemplateFormula translation
+        (tfEq index (ttParameter boundName))).
+  {
+    now rewrite hequalHead.
+  }
+  change (RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation
+      (coqLtSuccCasesEqualTemplate index rowBound))) in hhead.
+  rewrite hbranchHead in hhead.
+  destruct
+    (raw_codedPALocalProofOf_templateEqTransport_reverse_head_parameter
+      M hPA translation
+      (rawTemplateContextCode translation
+        (templateContextShiftMany 5
+          (coqFourStateTableAppendWitnessContext
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            (ttParameter boundName) mode formula assignmentCode assignmentStep
+            context)))
+      boundName index
+      (templateFormulaShiftMany 5
+        (coqFourStateTableAppendNewStateLookupTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          (ttParameter boundName) mode formula assignmentCode assignmentStep))
+      lookupRoot hhead hcontext hlookup)
+    as [root hroot].
+  exists root.
+  unfold coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate.
+  change (RawCodedPALocalProofOf M
+    (rawListNode M
+      (rawTemplateFormula translation
+        (coqLtSuccCasesEqualTemplate index rowBound))
+      (rawTemplateContextCode translation
+        (templateContextShiftMany 5
+          (coqFourStateTableAppendWitnessContext
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            (ttParameter boundName) mode formula assignmentCode assignmentStep
+            context))))
+    (rawTemplateFormula translation
+      (templateFormulaOpen index
+        (templateFormulaAbstractParameter boundName
+          (templateFormulaShiftMany 5
+            (coqFourStateTableAppendNewStateLookupTemplate
+              modeCode modeStep formulaCode formulaStep
+              assignmentCodeCode assignmentCodeStep
+              assignmentStepCode assignmentStepStep
+              (ttParameter boundName) mode formula assignmentCode
+              assignmentStep))))) root).
+  rewrite hbranchHead.
+  exact hroot.
 Qed.
 
 (** Agreement on embedded PA syntax identifies the metatheoretic witnessed
