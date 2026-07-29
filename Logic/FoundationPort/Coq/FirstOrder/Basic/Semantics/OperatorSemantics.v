@@ -68,6 +68,24 @@ Lemma semiterm_operator_val_fn :
     structure_func Str F v.
 Proof. reflexivity. Qed.
 
+Lemma semiterm_operator_val_transport :
+  forall L M N k (Str : first_order_structure L M)
+         (e : carrier_equiv M N) (v : Fin.t k -> N)
+         (o : semiterm_operator L k),
+    semiterm_operator_val (first_order_structure_transport Str e) v o =
+    carrier_equiv_to e
+      (semiterm_operator_val Str
+        (fun i => carrier_equiv_from e (v i)) o).
+Proof.
+  intros. unfold semiterm_operator_val, closed_semiterm_val.
+  rewrite semiterm_val_transport.
+  assert (Hempty :
+    (fun x : Empty_set => carrier_equiv_from e (match x with end)) =
+    (fun x : Empty_set => match x with end)).
+  { apply functional_extensionality. intros []. }
+  now rewrite Hempty.
+Qed.
+
 (** * Formula operators *)
 
 Definition semiformula_operator_eval {L M k}
@@ -113,6 +131,23 @@ Lemma semiformula_operator_eval_or :
     semiformula_operator_eval Str v (semiformula_operator_or o p) <->
     semiformula_operator_eval Str v o \/ semiformula_operator_eval Str v p.
 Proof. reflexivity. Qed.
+
+Lemma semiformula_operator_eval_transport :
+  forall L M N k (Str : first_order_structure L M)
+         (e : carrier_equiv M N) (v : Fin.t k -> N)
+         (o : semiformula_operator L k),
+    semiformula_operator_eval (first_order_structure_transport Str e) v o <->
+    semiformula_operator_eval Str
+      (fun i => carrier_equiv_from e (v i)) o.
+Proof.
+  intros. unfold semiformula_operator_eval.
+  rewrite semiformula_eval_transport.
+  assert (Hempty :
+    (fun x : Empty_set => carrier_equiv_from e (match x with end)) =
+    (fun x : Empty_set => match x with end)).
+  { apply functional_extensionality. intros []. }
+  now rewrite Hempty.
+Qed.
 
 (** Canonical primitive relation operators expose precisely the relation
     interpretation stored in the structure. *)
@@ -217,6 +252,25 @@ Proof.
   rewrite (structure_eq_operator HSemEq a b).
   rewrite (structure_relation_operator HSemLt a b).
   reflexivity.
+Qed.
+
+Lemma structure_interprets_le_of_eq_lt_spec :
+  forall L M (Str : first_order_structure L M)
+         (Heq : semiformula_has_eq_operator L)
+         (Hlt : semiformula_has_lt_operator L)
+         (lt le : M -> M -> Prop),
+    structure_interprets_eq Str Heq ->
+    structure_interprets_lt Str Hlt lt ->
+    (forall a b, le a b <-> a = b \/ lt a b) ->
+    structure_interprets_le Str
+      (semiformula_le_operator_of_eq_lt Heq Hlt) le.
+Proof.
+  intros L M Str Heq Hlt lt le HSemEq HSemLt Hle.
+  pose proof (@structure_interprets_le_of_eq_lt
+    L M Str Heq Hlt lt HSemEq HSemLt) as Hunion.
+  constructor. intros a b.
+  rewrite (structure_relation_operator Hunion a b).
+  symmetry. apply Hle.
 Qed.
 
 (** * Bounded quantifiers *)

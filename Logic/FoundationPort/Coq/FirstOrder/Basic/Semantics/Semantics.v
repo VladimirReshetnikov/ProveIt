@@ -42,6 +42,31 @@ Definition first_order_structure_language_map {L K M}
   {| structure_func := fun _ f v => structure_func S (hom_func h f) v;
      structure_rel := fun _ r v => structure_rel S (hom_rel h r) v |}.
 
+(** A lightweight carrier equivalence.  Keeping it local to semantics avoids
+    importing either proof-calculus equivalences or frame-specific ones. *)
+Record carrier_equiv (M N : Type) : Type := {
+  carrier_equiv_to : M -> N;
+  carrier_equiv_from : N -> M;
+  carrier_equiv_to_from : forall y,
+    carrier_equiv_to (carrier_equiv_from y) = y;
+  carrier_equiv_from_to : forall x,
+    carrier_equiv_from (carrier_equiv_to x) = x
+}.
+
+Arguments carrier_equiv_to {M N} _ _.
+Arguments carrier_equiv_from {M N} _ _.
+Arguments carrier_equiv_to_from {M N} _ _.
+Arguments carrier_equiv_from_to {M N} _ _.
+
+Definition first_order_structure_transport {L M N}
+    (Str : first_order_structure L M) (e : carrier_equiv M N) :
+    first_order_structure L N :=
+  {| structure_func := fun _ F v =>
+       carrier_equiv_to e
+         (structure_func Str F (fun i => carrier_equiv_from e (v i)));
+     structure_rel := fun _ R v =>
+       structure_rel Str R (fun i => carrier_equiv_from e (v i)) |}.
+
 Lemma first_order_structure_language_map_func :
   forall L K M (h : language_hom L K) (S : first_order_structure K M)
          k (f : language_func L k) v,
@@ -69,6 +94,20 @@ Lemma fin_env_cons_succ : forall M n (x : M) (b : Fin.t n -> M)
     (i : Fin.t n),
   fin_env_cons x b (Fin.FS i) = b i.
 Proof. reflexivity. Qed.
+
+Lemma carrier_equiv_from_fin_env_cons :
+  forall M N n (e : carrier_equiv M N) (x : N) (b : Fin.t n -> N),
+    (fun i => carrier_equiv_from e (fin_env_cons x b i)) =
+    fin_env_cons (carrier_equiv_from e x)
+      (fun i => carrier_equiv_from e (b i)).
+Proof.
+  intros. apply functional_extensionality. intro i.
+  refine (@Fin.caseS' n i (fun j =>
+    carrier_equiv_from e (fin_env_cons x b j) =
+    fin_env_cons (carrier_equiv_from e x)
+      (fun u => carrier_equiv_from e (b u)) j) eq_refl _).
+  intro j. reflexivity.
+Qed.
 
 (** * Valuation of terms *)
 
@@ -197,6 +236,24 @@ Proof.
   intros L K M X n h S b f t.
   induction t as [i | x | k F v IH]; simpl; try reflexivity.
   f_equal. apply functional_extensionality. exact IH.
+Qed.
+
+Lemma semiterm_val_transport :
+  forall L M N X n (Str : first_order_structure L M)
+         (e : carrier_equiv M N) (b : Fin.t n -> N) (f : X -> N)
+         (t : semiterm L X n),
+    semiterm_val (first_order_structure_transport Str e) b f t =
+    carrier_equiv_to e
+      (semiterm_val Str
+        (fun i => carrier_equiv_from e (b i))
+        (fun x => carrier_equiv_from e (f x)) t).
+Proof.
+  intros L M N X n Str e b f t.
+  induction t as [i | x | k F v IH]; simpl.
+  - symmetry. apply carrier_equiv_to_from.
+  - symmetry. apply carrier_equiv_to_from.
+  - f_equal. apply f_equal. apply functional_extensionality. intro i.
+    rewrite IH. apply carrier_equiv_from_to.
 Qed.
 
 (** Valuation depends only on free variables which actually occur.  Unlike
@@ -520,4 +577,53 @@ Proof.
   - split; intros Hex; destruct Hex as [x Hx]; exists x.
     + apply (proj1 (IHp (fin_env_cons x b))). exact Hx.
     + apply (proj2 (IHp (fin_env_cons x b))). exact Hx.
+Qed.
+
+Lemma semiformula_eval_transport :
+  forall L M N X n (Str : first_order_structure L M)
+         (e : carrier_equiv M N) (b : Fin.t n -> N) (f : X -> N)
+         (p : semiformula L X n),
+    semiformula_eval (first_order_structure_transport Str e) b f p <->
+    semiformula_eval Str
+      (fun i => carrier_equiv_from e (b i))
+      (fun x => carrier_equiv_from e (f x)) p.
+Proof.
+  intros L M N X n Str e b f p; revert b; induction p; intro b;
+    simpl; try tauto.
+  - assert (Hargs :
+      (fun i => carrier_equiv_from e
+        (semiterm_val (first_order_structure_transport Str e) b f (s i))) =
+      (fun i => semiterm_val Str
+        (fun j => carrier_equiv_from e (b j))
+        (fun x => carrier_equiv_from e (f x)) (s i))).
+    { apply functional_extensionality. intro i.
+      rewrite semiterm_val_transport. apply carrier_equiv_from_to. }
+    now rewrite Hargs.
+  - assert (Hargs :
+      (fun i => carrier_equiv_from e
+        (semiterm_val (first_order_structure_transport Str e) b f (s i))) =
+      (fun i => semiterm_val Str
+        (fun j => carrier_equiv_from e (b j))
+        (fun x => carrier_equiv_from e (f x)) (s i))).
+    { apply functional_extensionality. intro i.
+      rewrite semiterm_val_transport. apply carrier_equiv_from_to. }
+    now rewrite Hargs.
+  - rewrite (IHp1 b), (IHp2 b). tauto.
+  - rewrite (IHp1 b), (IHp2 b). tauto.
+  - split; intros Hall x.
+    + specialize (Hall (carrier_equiv_to e x)).
+      apply (proj1 (IHp (fin_env_cons (carrier_equiv_to e x) b))) in Hall.
+      rewrite carrier_equiv_from_fin_env_cons in Hall.
+      rewrite carrier_equiv_from_to in Hall. exact Hall.
+    + apply (proj2 (IHp (fin_env_cons x b))).
+      rewrite carrier_equiv_from_fin_env_cons. apply Hall.
+  - split; intros Hex.
+    + destruct Hex as [y Hy].
+      apply (proj1 (IHp (fin_env_cons y b))) in Hy.
+      rewrite carrier_equiv_from_fin_env_cons in Hy.
+      now exists (carrier_equiv_from e y).
+    + destruct Hex as [x Hx]. exists (carrier_equiv_to e x).
+      apply (proj2 (IHp (fin_env_cons (carrier_equiv_to e x) b))).
+      rewrite carrier_equiv_from_fin_env_cons.
+      rewrite carrier_equiv_from_to. exact Hx.
 Qed.
