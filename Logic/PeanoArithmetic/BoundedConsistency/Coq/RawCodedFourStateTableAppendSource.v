@@ -20,7 +20,7 @@ From FirstOrder Require Import Fol.
 From PAHF Require Import PAHF.
 From PAListCoding Require Import Representability.
 From PAFiniteBasisReduction Require Import
-  HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
+  HierarchyReduction CanonicalSelector CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
   RawModelCompleteness
   RawCodedAssignment
@@ -34,6 +34,7 @@ Import ListNotations.
 Import PA.
 Import PAListRepresentability.
 Import PAHierarchyReduction.
+Import PACanonicalSelector.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawModelCompleteness.
@@ -78,15 +79,18 @@ Definition codedAssignmentAppendAtTermAt
   pAnd
     (codedAssignmentAppendPrefixTermAt
       current oldCode oldStep bound newValue targetCode targetStep)
-    (codedAssignmentLookupTermAt
-      targetCode targetStep bound newValue).
+    (pAnd
+      (codedAssignmentLookupTermAt
+        targetCode targetStep bound newValue)
+      (Formula.ltTermAt bound current)).
 
 Definition RawCodedAssignmentAppendAt (M : RawPAModel)
     (current oldCode oldStep bound newValue targetCode targetStep : M)
     : Prop :=
   RawCodedAssignmentAppendPrefix M
     current oldCode oldStep bound newValue targetCode targetStep /\
-  RawCodedAssignmentLookup M targetCode targetStep bound newValue.
+  RawCodedAssignmentLookup M targetCode targetStep bound newValue /\
+  rawLt M bound current.
 
 Arguments RawCodedAssignmentAppendAt
   M current oldCode oldStep bound newValue targetCode targetStep
@@ -108,7 +112,8 @@ Proof.
   unfold codedAssignmentAppendAtTermAt, RawCodedAssignmentAppendAt.
   cbn [raw_formula_sat].
   rewrite raw_sat_codedAssignmentAppendPrefixTermAt_iff,
-    raw_sat_codedAssignmentLookupTermAt_iff.
+    raw_sat_codedAssignmentLookupTermAt_iff,
+    raw_sat_ltTermAt_iff.
   reflexivity.
 Qed.
 
@@ -237,6 +242,8 @@ Proof.
   exists newModeCode, newModeStep, newFormulaCode, newFormulaStep,
     newAssignmentCodeCode, newAssignmentCodeStep,
     newAssignmentStepCode, newAssignmentStepStep.
+  assert (hboundLt : rawLt M bound (raw_succ M bound)).
+  { exact (raw_assignment_lt_self_succ M hPA bound). }
   unfold RawCodedAssignmentAppendAt, RawCodedAssignmentAppendPrefix.
   repeat split; try assumption.
   - intros index value _ hbound hold.

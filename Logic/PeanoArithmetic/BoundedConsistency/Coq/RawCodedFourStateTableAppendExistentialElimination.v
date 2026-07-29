@@ -86,12 +86,12 @@ Definition coqFourStateTableAppendModeLookupTemplate
       assignmentStepCode assignmentStepStep
       bound mode formula assignmentCode assignmentStep : TemplateTerm)
     : TemplateFormula :=
-  templateAndSecond (templateAnd4First
+  templateAndFirst (templateAndSecond (templateAnd4First
     (coqFourStateTableAppendExtensionBodyTemplate
       modeCode modeStep formulaCode formulaStep
       assignmentCodeCode assignmentCodeStep
       assignmentStepCode assignmentStepStep
-      bound mode formula assignmentCode assignmentStep)).
+      bound mode formula assignmentCode assignmentStep))).
 
 Definition coqFourStateTableAppendFormulaLookupTemplate
     (modeCode modeStep formulaCode formulaStep
@@ -99,12 +99,12 @@ Definition coqFourStateTableAppendFormulaLookupTemplate
       assignmentStepCode assignmentStepStep
       bound mode formula assignmentCode assignmentStep : TemplateTerm)
     : TemplateFormula :=
-  templateAndSecond (templateAnd4Second
+  templateAndFirst (templateAndSecond (templateAnd4Second
     (coqFourStateTableAppendExtensionBodyTemplate
       modeCode modeStep formulaCode formulaStep
       assignmentCodeCode assignmentCodeStep
       assignmentStepCode assignmentStepStep
-      bound mode formula assignmentCode assignmentStep)).
+      bound mode formula assignmentCode assignmentStep))).
 
 Definition coqFourStateTableAppendAssignmentCodeLookupTemplate
     (modeCode modeStep formulaCode formulaStep
@@ -112,12 +112,12 @@ Definition coqFourStateTableAppendAssignmentCodeLookupTemplate
       assignmentStepCode assignmentStepStep
       bound mode formula assignmentCode assignmentStep : TemplateTerm)
     : TemplateFormula :=
-  templateAndSecond (templateAnd4Third
+  templateAndFirst (templateAndSecond (templateAnd4Third
     (coqFourStateTableAppendExtensionBodyTemplate
       modeCode modeStep formulaCode formulaStep
       assignmentCodeCode assignmentCodeStep
       assignmentStepCode assignmentStepStep
-      bound mode formula assignmentCode assignmentStep)).
+      bound mode formula assignmentCode assignmentStep))).
 
 Definition coqFourStateTableAppendAssignmentStepLookupTemplate
     (modeCode modeStep formulaCode formulaStep
@@ -125,12 +125,25 @@ Definition coqFourStateTableAppendAssignmentStepLookupTemplate
       assignmentStepCode assignmentStepStep
       bound mode formula assignmentCode assignmentStep : TemplateTerm)
     : TemplateFormula :=
-  templateAndSecond (templateAnd4Fourth
+  templateAndFirst (templateAndSecond (templateAnd4Fourth
     (coqFourStateTableAppendExtensionBodyTemplate
       modeCode modeStep formulaCode formulaStep
       assignmentCodeCode assignmentCodeStep
       assignmentStepCode assignmentStepStep
-      bound mode formula assignmentCode assignmentStep)).
+      bound mode formula assignmentCode assignmentStep))).
+
+Definition coqFourStateTableAppendRootBoundTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep : TemplateTerm)
+    : TemplateFormula :=
+  templateAndSecond (templateAndSecond (templateAnd4First
+    (coqFourStateTableAppendExtensionBodyTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep))).
 
 Definition coqFourStateTableAppendNewStateLookupTemplate
     (modeCode modeStep formulaCode formulaStep
@@ -306,6 +319,54 @@ Lemma coqFourStateTableAppendExtensionComponent_shapes : forall
   templateAnd4Fourth extension =
       tfAnd (templateAndFirst (templateAnd4Fourth extension))
         (templateAndSecond (templateAnd4Fourth extension)).
+Proof.
+  intros.
+  cbn zeta.
+  unfold coqFourStateTableAppendExtensionBodyTemplate,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendExtensionBody,
+    codedAssignmentAppendAtTermAt,
+    fixedLevelEx8, fixedLevelAnd4,
+    templateAndFirst, templateAndSecond,
+    templateAnd4First, templateAnd4Second,
+    templateAnd4Third, templateAnd4Fourth.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst
+    templateExistentialBodyMany].
+  repeat split; reflexivity.
+Qed.
+
+(** The second half of every component is literally
+    [appended-entry-lookup /\ bound < S bound]. *)
+Lemma coqFourStateTableAppendExtensionLookupBound_shapes : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  let extension := coqFourStateTableAppendExtensionBodyTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep in
+  templateAndSecond (templateAnd4First extension) =
+      tfAnd
+        (templateAndFirst (templateAndSecond (templateAnd4First extension)))
+        (templateAndSecond (templateAndSecond (templateAnd4First extension))) /\
+  templateAndSecond (templateAnd4Second extension) =
+      tfAnd
+        (templateAndFirst (templateAndSecond (templateAnd4Second extension)))
+        (templateAndSecond (templateAndSecond (templateAnd4Second extension))) /\
+  templateAndSecond (templateAnd4Third extension) =
+      tfAnd
+        (templateAndFirst (templateAndSecond (templateAnd4Third extension)))
+        (templateAndSecond (templateAndSecond (templateAnd4Third extension))) /\
+  templateAndSecond (templateAnd4Fourth extension) =
+      tfAnd
+        (templateAndFirst (templateAndSecond (templateAnd4Fourth extension)))
+        (templateAndSecond (templateAndSecond (templateAnd4Fourth extension))).
 Proof.
   intros.
   cbn zeta.
@@ -541,16 +602,52 @@ Proof.
     in hassignmentCodeAppend.
   rewrite hassignmentStepShape, rawTemplateFormula_and
     in hassignmentStepAppend.
+  destruct (coqFourStateTableAppendExtensionLookupBound_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodeLookupBoundShape [hformulaLookupBoundShape
+      [hassignmentCodeLookupBoundShape
+       hassignmentStepLookupBoundShape]]].
   pose proof (raw_codedPALocalProofOf_andE2 M hPA _ _ _
-    modeAppendRoot hmodeAppend) as hmodeLookup.
+    modeAppendRoot hmodeAppend) as hmodeLookupBound.
   pose proof (raw_codedPALocalProofOf_andE2 M hPA _ _ _
-    formulaAppendRoot hformulaAppend) as hformulaLookup.
+    formulaAppendRoot hformulaAppend) as hformulaLookupBound.
   pose proof (raw_codedPALocalProofOf_andE2 M hPA _ _ _
     assignmentCodeAppendRoot hassignmentCodeAppend)
-    as hassignmentCodeLookup.
+    as hassignmentCodeLookupBound.
   pose proof (raw_codedPALocalProofOf_andE2 M hPA _ _ _
     assignmentStepAppendRoot hassignmentStepAppend)
-    as hassignmentStepLookup.
+    as hassignmentStepLookupBound.
+  rewrite hmodeLookupBoundShape, rawTemplateFormula_and
+    in hmodeLookupBound.
+  rewrite hformulaLookupBoundShape, rawTemplateFormula_and
+    in hformulaLookupBound.
+  rewrite hassignmentCodeLookupBoundShape, rawTemplateFormula_and
+    in hassignmentCodeLookupBound.
+  rewrite hassignmentStepLookupBoundShape, rawTemplateFormula_and
+    in hassignmentStepLookupBound.
+  lazymatch type of hmodeLookupBound with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      pose proof (raw_codedPALocalProofOf_andE1 M hPA _ _ _
+        pairRoot hmodeLookupBound) as hmodeLookup
+  end.
+  lazymatch type of hformulaLookupBound with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      pose proof (raw_codedPALocalProofOf_andE1 M hPA _ _ _
+        pairRoot hformulaLookupBound) as hformulaLookup
+  end.
+  lazymatch type of hassignmentCodeLookupBound with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      pose proof (raw_codedPALocalProofOf_andE1 M hPA _ _ _
+        pairRoot hassignmentCodeLookupBound) as hassignmentCodeLookup
+  end.
+  lazymatch type of hassignmentStepLookupBound with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      pose proof (raw_codedPALocalProofOf_andE1 M hPA _ _ _
+        pairRoot hassignmentStepLookupBound) as hassignmentStepLookup
+  end.
   lazymatch type of hmodeLookup with
   | RawCodedPALocalProofOf _ _ _ ?modeRoot =>
     lazymatch type of hformulaLookup with
@@ -568,6 +665,73 @@ Proof.
         end
       end
     end
+  end.
+Qed.
+
+(** The same strengthened component directly supplies the global root-bound
+    fact [bound < S bound]. *)
+Theorem raw_codedPALocalProofOf_four_state_table_append_root_bound :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation
+        (coqFourStateTableAppendWitnessContext
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep context))
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendRootBoundTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep)) root.
+Proof.
+  intros M hPA translation context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_extension_components
+      M hPA translation context
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    as (modeAppendRoot & formulaAppendRoot &
+        assignmentCodeAppendRoot & assignmentStepAppendRoot &
+        hmodeAppend & _).
+  destruct (coqFourStateTableAppendExtensionComponent_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodeShape _].
+  destruct (coqFourStateTableAppendExtensionLookupBound_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodeLookupBoundShape _].
+  rewrite hmodeShape, rawTemplateFormula_and in hmodeAppend.
+  pose proof (raw_codedPALocalProofOf_andE2 M hPA _ _ _
+    modeAppendRoot hmodeAppend) as hmodeLookupBound.
+  rewrite hmodeLookupBoundShape, rawTemplateFormula_and
+    in hmodeLookupBound.
+  lazymatch type of hmodeLookupBound with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      pose proof (raw_codedPALocalProofOf_andE2 M hPA _ _ _
+        pairRoot hmodeLookupBound) as hbound
+  end.
+  lazymatch type of hbound with
+  | RawCodedPALocalProofOf _ _ _ ?root => exists root; exact hbound
   end.
 Qed.
 
