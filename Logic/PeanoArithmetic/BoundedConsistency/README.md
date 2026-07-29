@@ -2612,6 +2612,14 @@ syntax.  It rejects any named parameter left unabstracted and every opaque
 predicate, and proves that every successful reification embeds back to the
 original template literally.
 
+`RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootSource.v`
+applies that boundary to the first recursive-child residual.  It constructs
+one fixed ordinary PA formula, proves that opening its fresh level variable
+recovers the exact direct reroot law, and builds the represented substitution
+trace at an arbitrary direct carrier term.  The remaining obligation is no
+longer a syntactic adapter: it is precisely the arithmetic theorem that PA
+proves the universal closure of this fixed source.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled

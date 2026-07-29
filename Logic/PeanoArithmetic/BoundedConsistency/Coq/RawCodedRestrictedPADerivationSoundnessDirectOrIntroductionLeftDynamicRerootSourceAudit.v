@@ -1,0 +1,28 @@
+(** Audit surface for the fixed dynamic-restriction reroot source. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootSource.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootSource.
+
+Check
+  coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSourceBodyTemplate.
+Check
+  coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSourceBodyFormula.
+Check
+  coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSourceFormula.
+Check
+  coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSource_reifies.
+Check
+  coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSource_embed.
+Check
+  coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSource_open.
+Check rawDirect_dynamicRestrictedRerootSourceBody_agreement.
+Check rawDirect_dynamicRestrictedRerootSource_substitution.
+
+Print Assumptions
+  coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSource_reifies.
+Print Assumptions
+  coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSource_open.
+Print Assumptions rawDirect_dynamicRestrictedRerootSource_substitution.
