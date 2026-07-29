@@ -33,6 +33,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofContextInsertUnconditional
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedPALocalProofTripleUniversalIntroduction
+  RawCodedUniversalClosureDiagonalSubstitution
   RawCodedDynamicTruthFixedSyntaxFragments
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthImpBranchExclusivity.
@@ -56,6 +57,7 @@ Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPALocalProofTripleUniversalIntroduction.
+Import PABoundedRawCodedUniversalClosureDiagonalSubstitution.
 Import PABoundedRawCodedDynamicTruthFixedSyntaxFragments.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthImpBranchExclusivity.
@@ -282,6 +284,56 @@ Arguments RawDynamicTruthPredecessorStateApplicationBridgeAt
   M baseContext sigmaDomain piDomain sigmaEvidence piEvidence
   : clear implicits.
 
+(** A smaller bridge presents diagonal self-instantiation of the exclusive
+    body instead of spelling out the three [All-E] edges. *)
+Record RawDynamicTruthPredecessorStateDiagonalApplicationBridgeAt
+    (M : RawPAModel)
+    (baseContext sigmaDomain piDomain sigmaEvidence piEvidence : M) : Type := {
+  rawDynamicTruthPredecessorDiagonalBridge_stable :
+    RawCodedFormulaDiagonalSubstitutionAtAllDepths M
+      (rawQuotedTermCode M (tVar 0))
+      (rawDynamicTruthLocalExclusiveCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence);
+  rawDynamicTruthPredecessorDiagonalBridge_admissible : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain) root;
+  rawDynamicTruthPredecessorDiagonalBridge_sigmaEvidence : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      sigmaEvidence root;
+  rawDynamicTruthPredecessorDiagonalBridge_piEvidence : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      piEvidence root
+}.
+
+Arguments RawDynamicTruthPredecessorStateDiagonalApplicationBridgeAt
+  M baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+  : clear implicits.
+
+Theorem raw_dynamicTruthPredecessorStateApplicationBridgeAt_of_diagonal :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      baseContext sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawDynamicTruthPredecessorStateDiagonalApplicationBridgeAt M baseContext
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawDynamicTruthPredecessorStateApplicationBridgeAt M baseContext
+    sigmaDomain piDomain sigmaEvidence piEvidence.
+Proof.
+  intros M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+    [hstable hadmissible hsigma hpi].
+  refine
+    {| rawDynamicTruthPredecessorBridge_elimination := _;
+       rawDynamicTruthPredecessorBridge_admissible := hadmissible;
+       rawDynamicTruthPredecessorBridge_sigmaEvidence := hsigma;
+       rawDynamicTruthPredecessorBridge_piEvidence := hpi |}.
+  unfold rawDynamicTruthLocalFormulaAll3Code.
+  exact (raw_codedUniversalEliminationChain_all3_of_diagonal
+    M hPA (rawQuotedTermCode M (tVar 0))
+    (rawDynamicTruthLocalExclusiveCode M
+      sigmaDomain piDomain sigmaEvidence piEvidence) hstable).
+Qed.
+
 Theorem raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_local_exclusive :
     forall (M : RawPAModel), RawPASatisfies M -> forall
       baseContext sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot,
@@ -316,6 +368,34 @@ Proof.
   rewrite rawDynamicTruthImpPredecessorStateExclusivityCode_as_all3
     by exact hPA.
   exact hroot.
+Qed.
+
+Corollary
+    raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_local_exclusive_diagonal :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      baseContext sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot,
+  RawContextListRealizable M baseContext ->
+  RawContextShift M baseContext baseContext ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalExclusiveCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence)) sourceRoot ->
+  RawDynamicTruthPredecessorStateDiagonalApplicationBridgeAt M baseContext
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M baseContext
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+    sourceRoot hcontext hshift hsource hbridge.
+  exact
+    (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_local_exclusive
+      M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+      sourceRoot hcontext hshift hsource
+      (raw_dynamicTruthPredecessorStateApplicationBridgeAt_of_diagonal
+        M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+        hbridge)).
 Qed.
 
 End PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.

@@ -3652,6 +3652,13 @@ application facts.  The repeated three-`All-I` coverage/endpoint calculation
 is factored into
 `RawCodedPALocalProofTripleUniversalIntroduction.v` and reused by both the
 new compiler and the existing native local-field closers.
+The explicit opening chain is itself derivable from one all-depth diagonal
+stability certificate for the exclusive body:
+`raw_codedUniversalEliminationChain_all3_of_diagonal` propagates that
+certificate through both universal prefixes and constructs the three exact
+self-instantiating `All-E` edges.  A reduced diagonal bridge and aligned
+callback adapter expose this smaller structural obligation while preserving
+the original chain-level interface for other clients.
 
 The next-field exact residual builder sees this package, the one selected
 local transform trace,
