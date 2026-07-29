@@ -43,6 +43,41 @@ Definition generic_intuitionistic_efq_elim_raw {S F : Type}
 
 Arguments generic_intuitionistic_efq_elim_raw {S F E C s} _ _ _.
 
+(** Proof-relevant predicate contexts generalize both of Foundation's finite
+    and set-context explosion lemmas.  Membership evidence is consumed
+    directly, so no equality decision or witness choice is needed. *)
+Definition generic_intuitionistic_type_context_explosion_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_intuitionistic_entailment E C s)
+    {T : F -> Type} (p q : F) (hp : T p) (hnp : T (generic_neg C p)) :
+    generic_type_context_derivation E s C T q :=
+  let Hm := generic_intuitionistic_minimal H in
+  GTCD_mdp (GTCD_theorem (generic_efq_raw
+      (generic_intuitionistic_has_efq H) q))
+    (GTCD_mdp
+      (GTCD_mdp
+        (GTCD_theorem (generic_minimal_iff_elim_left_raw Hm _ _
+          (generic_minimal_neg_equiv Hm p)))
+        (GTCD_assumption hnp))
+      (GTCD_assumption hp)).
+
+Arguments generic_intuitionistic_type_context_explosion_raw {S F E C s}
+  _ {T} _ _ _ _.
+
+Lemma generic_intuitionistic_inconsistent_of_provable_neg :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_intuitionistic_entailment E C s -> forall p,
+      generic_provable E s p ->
+      generic_provable E s (generic_neg C p) ->
+      generic_inconsistent E s.
+Proof.
+  intros S F E C s H p [dp] [dnp] q. constructor.
+  exact (generic_intuitionistic_efq_elim_raw H q
+    (generic_minimal_bottom_of_proof_neg_raw
+      (generic_intuitionistic_minimal H) p dp dnp)).
+Qed.
+
 (** * Explosion and implication *)
 
 Definition generic_intuitionistic_imp_neg_explosion_raw {S F : Type}
@@ -288,3 +323,171 @@ Definition generic_intuitionistic_list_disj2_cons_iff_raw {S F : Type}
 
 Arguments generic_intuitionistic_list_disj2_cons_iff_raw {S F E C s}
   _ _ _.
+
+(** * Positional disjunction removal and monotonicity *)
+
+Definition generic_intuitionistic_insert_member_to_or_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_intuitionistic_entailment E C s)
+    (gamma delta : list F) (p : F) {q : F}
+    (hq : generic_raw_list_member q (gamma ++ p :: delta)) :
+    generic_proof E s
+      (generic_imp C q
+        (generic_or C p (generic_list_disj2 C (gamma ++ delta)))).
+Proof.
+  set (Hm := generic_intuitionistic_minimal H).
+  destruct (@generic_raw_list_member_app_split F q gamma (p :: delta) hq)
+    as [hl | hr].
+  - exact (generic_minimal_imp_trans_raw Hm q
+      (generic_list_disj2 C (gamma ++ delta)) _
+      (generic_minimal_list_disj2_intro_raw Hm
+        (generic_raw_list_member_app_left delta hl))
+      (generic_minimal_or2 Hm p
+        (generic_list_disj2 C (gamma ++ delta)))).
+  - dependent destruction hr.
+    + exact (generic_minimal_or1 Hm p
+        (generic_list_disj2 C (gamma ++ delta))).
+    + exact (generic_minimal_imp_trans_raw Hm q
+        (generic_list_disj2 C (gamma ++ delta)) _
+        (generic_minimal_list_disj2_intro_raw Hm
+          (generic_raw_list_member_app_right gamma hr))
+        (generic_minimal_or2 Hm p
+          (generic_list_disj2 C (gamma ++ delta)))).
+Defined.
+
+Arguments generic_intuitionistic_insert_member_to_or_raw {S F E C s}
+  _ _ _ _ {q} _.
+
+Definition generic_intuitionistic_list_disj2_insert_to_or_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_intuitionistic_entailment E C s)
+    (gamma delta : list F) (p : F) :
+    generic_proof E s
+      (generic_imp C (generic_list_disj2 C (gamma ++ p :: delta))
+        (generic_or C p (generic_list_disj2 C (gamma ++ delta)))) :=
+  generic_intuitionistic_list_disj2_elim_raw H
+    (gamma ++ p :: delta) _
+    (fun q hq => generic_intuitionistic_insert_member_to_or_raw
+      H gamma delta p hq).
+
+Arguments generic_intuitionistic_list_disj2_insert_to_or_raw {S F E C s}
+  _ _ _ _.
+
+Definition generic_intuitionistic_or_to_list_disj2_insert_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_intuitionistic_entailment E C s)
+    (gamma delta : list F) (p : F) :
+    generic_proof E s
+      (generic_imp C
+        (generic_or C p (generic_list_disj2 C (gamma ++ delta)))
+        (generic_list_disj2 C (gamma ++ p :: delta))) :=
+  let Hm := generic_intuitionistic_minimal H in
+  generic_minimal_or_elim_raw Hm p
+    (generic_list_disj2 C (gamma ++ delta))
+    (generic_list_disj2 C (gamma ++ p :: delta))
+    (generic_minimal_list_disj2_intro_raw Hm
+      (generic_raw_list_member_app_right gamma (GRLM_here delta)))
+    (generic_intuitionistic_list_disj2_elim_raw H (gamma ++ delta) _
+      (fun q hq => generic_minimal_list_disj2_intro_raw Hm
+        (@generic_raw_list_member_skip_insert F p q gamma delta hq))).
+
+Arguments generic_intuitionistic_or_to_list_disj2_insert_raw {S F E C s}
+  _ _ _ _.
+
+Definition generic_intuitionistic_list_disj2_insert_iff_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_intuitionistic_entailment E C s)
+    (gamma delta : list F) (p : F) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_list_disj2 C (gamma ++ p :: delta))
+        (generic_or C p (generic_list_disj2 C (gamma ++ delta)))) :=
+  generic_minimal_iff_intro_raw (generic_intuitionistic_minimal H) _ _
+    (generic_intuitionistic_list_disj2_insert_to_or_raw H gamma delta p)
+    (generic_intuitionistic_or_to_list_disj2_insert_raw H gamma delta p).
+
+Arguments generic_intuitionistic_list_disj2_insert_iff_raw {S F E C s}
+  _ _ _ _.
+
+Definition generic_intuitionistic_list_disj2_subset_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_intuitionistic_entailment E C s)
+    (gamma delta : list F)
+    (incl : forall p, generic_raw_list_member p gamma ->
+      generic_raw_list_member p delta) :
+    generic_proof E s
+      (generic_imp C (generic_list_disj2 C gamma)
+        (generic_list_disj2 C delta)) :=
+  generic_intuitionistic_list_disj2_elim_raw H gamma _
+    (fun p hp => generic_minimal_list_disj2_intro_raw
+      (generic_intuitionistic_minimal H) (incl p hp)).
+
+Arguments generic_intuitionistic_list_disj2_subset_raw {S F E C s}
+  _ _ _ _.
+
+(** * Finite De Morgan equivalence *)
+
+Definition generic_intuitionistic_neg_disj2_to_conj2_neg_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_intuitionistic_entailment E C s) (gamma : list F) :
+    generic_proof E s
+      (generic_imp C (generic_neg C (generic_list_disj2 C gamma))
+        (generic_list_conj_map C (generic_neg C) gamma)) :=
+  let Hm := generic_intuitionistic_minimal H in
+  generic_minimal_list_conj_map_right_intro_raw Hm
+    (generic_neg C (generic_list_disj2 C gamma))
+    (generic_neg C) gamma
+    (fun p hp => generic_minimal_contraposition_raw Hm p
+      (generic_list_disj2 C gamma)
+      (generic_minimal_list_disj2_intro_raw Hm hp)).
+
+Arguments generic_intuitionistic_neg_disj2_to_conj2_neg_raw
+  {S F E C s} _ _.
+
+Definition generic_intuitionistic_conj2_neg_to_neg_disj2_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_intuitionistic_entailment E C s) (gamma : list F) :
+    generic_proof E s
+      (generic_imp C (generic_list_conj_map C (generic_neg C) gamma)
+        (generic_neg C (generic_list_disj2 C gamma))).
+Proof.
+  set (Hm := generic_intuitionistic_minimal H).
+  set (a := generic_list_conj_map C (generic_neg C) gamma).
+  set (d := generic_list_disj2 C gamma).
+  assert (branches : forall p, generic_raw_list_member p gamma ->
+      generic_proof E s (generic_imp C p
+        (generic_imp C a (generic_bottom C)))).
+  { intros p hp.
+    apply (@generic_minimal_imp_swap_raw S F E C s Hm
+      a p (generic_bottom C)).
+    exact (generic_minimal_imp_trans_raw Hm a (generic_neg C p)
+      (generic_imp C p (generic_bottom C))
+      (generic_minimal_list_conj_map_elim_raw Hm (generic_neg C) hp)
+      (generic_minimal_iff_elim_left_raw Hm _ _
+        (generic_minimal_neg_equiv Hm p))). }
+  pose (ddab := generic_intuitionistic_list_disj2_elim_raw H gamma
+    (generic_imp C a (generic_bottom C)) branches).
+  pose (dadb := @generic_minimal_imp_swap_raw S F E C s Hm
+    d a (generic_bottom C) ddab).
+  exact (generic_minimal_imp_trans_raw Hm a
+    (generic_imp C d (generic_bottom C)) (generic_neg C d) dadb
+    (generic_minimal_iff_elim_right_raw Hm _ _
+      (generic_minimal_neg_equiv Hm d))).
+Defined.
+
+Arguments generic_intuitionistic_conj2_neg_to_neg_disj2_raw
+  {S F E C s} _ _.
+
+Definition generic_intuitionistic_neg_disj2_iff_conj2_neg_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_intuitionistic_entailment E C s) (gamma : list F) :
+    generic_proof E s
+      (generic_formula_iff C
+        (generic_neg C (generic_list_disj2 C gamma))
+        (generic_list_conj_map C (generic_neg C) gamma)) :=
+  generic_minimal_iff_intro_raw (generic_intuitionistic_minimal H) _ _
+    (generic_intuitionistic_neg_disj2_to_conj2_neg_raw H gamma)
+    (generic_intuitionistic_conj2_neg_to_neg_disj2_raw H gamma).
+
+Arguments generic_intuitionistic_neg_disj2_iff_conj2_neg_raw
+  {S F E C s} _ _.
