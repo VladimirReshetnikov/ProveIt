@@ -127,6 +127,42 @@ Proof.
     constructor; assumption.
 Qed.
 
+(** Indexed variant: conclusions are computed from stable client-side
+    indices, so the relation remains aligned with records carrying the terms
+    used to instantiate a represented helper theorem. *)
+Theorem raw_codedPALocalProof_templatePrefix_indexed : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    baseContext prefix (Index : Type) (conclusion : Index -> M),
+  RawContextListRealizable M baseContext ->
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  forall indices roots,
+  Forall2
+    (fun index root =>
+      RawCodedPALocalProofOf M baseContext (conclusion index) root)
+    indices roots ->
+  exists prefixedRoots,
+    Forall2
+      (fun index root =>
+        RawCodedPALocalProofOf M
+          (rawTemplateContextCodeOnTail translation baseContext prefix)
+          (conclusion index) root)
+      indices prefixedRoots.
+Proof.
+  intros M hPA translation baseContext prefix Index conclusion
+    hbase hprefix indices roots hproofs.
+  induction hproofs as
+      [|index root remainingIndices remainingRoots
+        hproof htail ihtail].
+  - exists []. constructor.
+  - destruct (raw_codedPALocalProof_templatePrefix M hPA translation
+      baseContext prefix (conclusion index) root hbase hprefix hproof)
+      as [prefixedRoot hprefixed].
+    destruct ihtail as [prefixedRemainingRoots hprefixedRemaining].
+    exists (prefixedRoot :: prefixedRemainingRoots).
+    constructor; assumption.
+Qed.
+
 (** Membership inclusion is preserved while the same metatheoretic template
     list is folded onto both carrier-coded tails. *)
 Lemma raw_templateContextCodeOnTail_included : forall
@@ -290,6 +326,51 @@ Proof.
       (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
         M hPA translation sourceWitnessList sourceTail
         targetWitnessList targetTail prefix conclusion root
+        hsourceWitnessed htargetWitnessed hincluded hproof)
+      as [transportedRoot htransported].
+    destruct ihtail as [transportedRemainingRoots htransportedRemaining].
+    exists (transportedRoot :: transportedRemainingRoots).
+    constructor; assumption.
+Qed.
+
+(** Indexed witnessed-tail transport.  Unlike the conclusion-list form, this
+    preserves the client's argument records as the left spine of [Forall2]. *)
+Corollary
+    raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport_indexed :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceTail targetWitnessList targetTail prefix
+    (Index : Type) (conclusion : Index -> M),
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceTail ->
+  RawCodedPAAxiomWitnessContext M targetWitnessList targetTail ->
+  RawContextListIncluded M sourceTail targetTail ->
+  forall indices roots,
+  Forall2
+    (fun index root =>
+      RawCodedPALocalProofOf M
+        (rawTemplateContextCodeOnTail translation sourceTail prefix)
+        (conclusion index) root)
+    indices roots ->
+  exists transportedRoots,
+    Forall2
+      (fun index root =>
+        RawCodedPALocalProofOf M
+          (rawTemplateContextCodeOnTail translation targetTail prefix)
+          (conclusion index) root)
+      indices transportedRoots.
+Proof.
+  intros M hPA translation sourceWitnessList sourceTail
+    targetWitnessList targetTail prefix Index conclusion
+    hsourceWitnessed htargetWitnessed hincluded
+    indices roots hproofs.
+  induction hproofs as
+      [|index root remainingIndices remainingRoots
+        hproof htail ihtail].
+  - exists []. constructor.
+  - destruct
+      (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+        M hPA translation sourceWitnessList sourceTail
+        targetWitnessList targetTail prefix (conclusion index) root
         hsourceWitnessed htargetWitnessed hincluded hproof)
       as [transportedRoot htransported].
     destruct ihtail as [transportedRemainingRoots htransportedRemaining].

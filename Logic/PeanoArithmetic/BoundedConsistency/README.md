@@ -4202,3 +4202,12 @@ pointwise and returns an equally aligned family of output equalities.  This
 separates the purely logical step from witness selection and binder-safe
 weakening, making the remaining four-column callback an assembly problem over
 audited generic pieces.
+
+The family assembly is now end to end at the generic beta layer.  Indexed
+prefix and witnessed-tail transports preserve each argument record while
+moving its proof root, avoiding conversions through lists of carrier formula
+codes.  The resulting beta endpoint compiles the closed theorem once, inserts
+every instance beneath the common adequate prefix, weakens both lookup
+families to the selected tail, and returns every represented output equality
+under that one extended context.  The append-row specialization can therefore
+request its four field comparisons as one atomic witness-extension step.
