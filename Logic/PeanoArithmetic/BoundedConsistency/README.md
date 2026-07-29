@@ -2814,8 +2814,8 @@ predicate follows each capture-avoiding opening, and its correctness theorem
 computes both the exact instantiated formula and the corresponding proof
 tree.  `RawCodedRestrictedPADerivationSoundnessAssumptionTransferInstance.v`
 uses it at the Assumption branch's ten-witness depth: context and formula are
-`#17` and `#16`, the context-truth traversal tuple is `#9..#5`, and the public
-membership tuple is `#4..#0`.  The audited twelve-step result is exactly the
+`#17` and `#16`, the context-truth traversal tuple is `#4..#0`, and the public
+membership tuple is `#9..#5`.  The audited twelve-step result is exactly the
 three-premise traversal-transfer implication needed by the branch.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
