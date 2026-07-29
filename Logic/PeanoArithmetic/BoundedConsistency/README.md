@@ -3071,6 +3071,19 @@ quantified predecessor-preservation laws too.  A checked two-opening
 calculation instantiates all four laws at an arbitrary candidate row while
 retaining the identical witness context; applying their three implication
 premises is the arithmetic core of the universal row condition.
+That application is now factored through a translation-generic four-column
+compiler: four structurally audited triple implications may share proofs of
+their first two premises, consume a right-associated conjunction of their
+four third premises, and return the corresponding conjunction of four
+conclusions.  The lemma is independent of beta-table syntax and will also be
+usable by later synchronized state transformations.
+The append specialization names the four instantiated preservation laws and
+their old/new state-row conjunctions, then feeds them through that generic
+compiler.  It accepts six explicit structural equalities identifying the two
+shared bound guards.  Keeping those equalities visible is important for
+arbitrary template terms, where opening an unused binder is propositionally
+but not always definitionally independent of its replacement; the concrete
+global-row de Bruijn instance will discharge the equalities separately.
 
 `RawCodedLtSuccCasesSource.v` and
 `RawCodedLtSuccCasesProofCompilation.v` supply the object-language case split

@@ -127,6 +127,22 @@ Proof.
   - now rewrite templateTermsSubst_rename.
 Qed.
 
+(** Opening a freshly shifted formula ignores the replacement.  This is the
+    syntactic form of the usual de Bruijn fact that the new variable zero
+    cannot occur in a formula whose old free variables were all shifted. *)
+Lemma templateFormulaOpen_rename_succ : forall input replacement,
+  templateFormulaOpen replacement (templateFormulaRename S input) = input.
+Proof.
+  intros input replacement.
+  unfold templateFormulaOpen.
+  rewrite templateFormulaSubst_rename.
+  transitivity
+    (templateFormulaSubst (fun index => ttVar index) input).
+  - apply templateFormulaSubst_ext.
+    intro index. reflexivity.
+  - apply templateFormulaSubst_id.
+Qed.
+
 (** Opening commutes with an arbitrary outer renaming.  The body uses the
     lifted renaming because its variable zero belongs to the binder being
     opened, whereas the replacement lives outside that binder. *)
