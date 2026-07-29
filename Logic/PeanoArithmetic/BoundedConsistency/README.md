@@ -4169,3 +4169,12 @@ imply `out2 = out1`.  Its raw-model validity is discharged by the existing
 beta functionality theorem and then reflected back to an ordinary finite PA
 derivation; the next compilation layer can therefore instantiate the result
 inside a represented row context rather than using metatheoretic equality.
+
+`RawCodedBetaLookupFunctionalityProofCompilation` performs that
+instantiation.  It opens the five universal binders at arbitrary template
+terms, selects and synchronizes the finite standard PA-axiom witness prefix,
+and applies two represented lookup premises.  Its prefix-general endpoint
+keeps any finite adequate append/row assumptions literally ahead of the
+witnessed tail and returns a represented proof of the output equality.  This
+is the reusable single-column primitive for aligning all four equality-branch
+row fields.
