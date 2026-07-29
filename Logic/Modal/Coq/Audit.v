@@ -1028,6 +1028,7 @@ Check pkripke_frame_class_valid.
 Check pkripke_sound.
 Check pkripke_complete.
 Check ph_hilbert_logic_included.
+Check ph_hilbert_logic_strictly_included.
 Check pkripke_frame_valid_substitute.
 Check ph_hilbert_proof_pkripke_sound.
 Check ph_hilbert_pkripke_sound.
@@ -1037,6 +1038,10 @@ Check ph_hilbert_int_pkripke_sound.
 Check ph_hilbert_int_consistent_via_pkripke.
 Check pkripke_frame_strongly_convergent.
 Check pkripke_frame_strongly_connected.
+Check pkripke_strongly_convergent_of_strongly_connected.
+Check pkripke_diamond_frame.
+Check pkripke_diamond_strongly_convergent.
+Check pkripke_diamond_not_strongly_connected.
 Check pkripke_WLEM_valid_of_strongly_convergent.
 Check pkripke_strongly_convergent_of_WLEM_valid.
 Check pkripke_Dummett_valid_of_strongly_connected.
@@ -1057,6 +1062,7 @@ Print Assumptions pkripke_WLEM_valid_of_strongly_convergent.
 Print Assumptions pkripke_strongly_convergent_of_WLEM_valid.
 Print Assumptions pkripke_Dummett_valid_of_strongly_connected.
 Print Assumptions pkripke_strongly_connected_of_Dummett_valid.
+Print Assumptions pkripke_diamond_not_strongly_connected.
 Print Assumptions ph_hilbert_kc_pkripke_sound.
 Print Assumptions ph_hilbert_kc_consistent_via_pkripke.
 Print Assumptions ph_hilbert_lc_pkripke_sound.
@@ -1097,6 +1103,7 @@ Check ph_hilbert_lc_pkripke_complete.
 Check ph_hilbert_lc_pkripke_sound_complete.
 Check ph_hilbert_kc_pkripke_complete.
 Check ph_hilbert_kc_pkripke_sound_complete.
+Check ph_hilbert_kc_strictly_included_lc.
 Print Assumptions pki_limit_derivation_stage_raw.
 Print Assumptions pki_partition_member.
 Print Assumptions pki_list_derivation_bind_raw.
@@ -1116,6 +1123,7 @@ Print Assumptions ph_hilbert_lc_pkripke_complete.
 Print Assumptions ph_hilbert_lc_pkripke_sound_complete.
 Print Assumptions ph_hilbert_kc_pkripke_complete.
 Print Assumptions ph_hilbert_kc_pkripke_sound_complete.
+Print Assumptions ph_hilbert_kc_strictly_included_lc.
 
 (** Propositional/Translation syntax bridges. *)
 Check pformula_to_pnn.

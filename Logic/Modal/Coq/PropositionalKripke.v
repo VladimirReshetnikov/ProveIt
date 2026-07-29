@@ -214,6 +214,11 @@ Definition ph_hilbert_logic_included {Atom : Type}
     (H1 H2 : ph_hilbert Atom) : Prop :=
   forall p, ph_hilbert_provable H1 p -> ph_hilbert_provable H2 p.
 
+Definition ph_hilbert_logic_strictly_included {Atom : Type}
+    (H1 H2 : ph_hilbert Atom) : Prop :=
+  ph_hilbert_logic_included H1 H2 /\
+  exists p, ph_hilbert_provable H2 p /\ ~ ph_hilbert_provable H1 p.
+
 Definition pkripke_false_valuation (Atom : Type) (F : pkripke_frame) :
     pkripke_valuation Atom F :=
   {| pkripke_atom_value := fun _ _ => False;
@@ -409,6 +414,66 @@ Definition pkripke_frame_strongly_connected (F : pkripke_frame) : Prop :=
   forall x y z,
     pkripke_access F x y -> pkripke_access F x z ->
     pkripke_access F y z \/ pkripke_access F z y.
+
+Lemma pkripke_strongly_convergent_of_strongly_connected :
+  forall F, pkripke_frame_strongly_connected F ->
+    pkripke_frame_strongly_convergent F.
+Proof.
+  intros F HC x y z Rxy Rxz.
+  destruct (HC x y z Rxy Rxz) as [Ryz | Rzy].
+  - exists z. split; [exact Ryz | apply pkripke_access_refl].
+  - exists y. split; [apply pkripke_access_refl | exact Rzy].
+Qed.
+
+(** The four-world diamond separates convergence from connectedness. *)
+Inductive pkripke_diamond_world : Type :=
+| PKD_root | PKD_left | PKD_right | PKD_top.
+
+Definition pkripke_diamond_access
+    (x y : pkripke_diamond_world) : Prop :=
+  x = PKD_root \/ x = y \/ y = PKD_top.
+
+Lemma pkripke_diamond_access_refl :
+  forall x, pkripke_diamond_access x x.
+Proof. intro x. now right; left. Qed.
+
+Lemma pkripke_diamond_access_trans :
+  forall x y z, pkripke_diamond_access x y ->
+    pkripke_diamond_access y z -> pkripke_diamond_access x z.
+Proof.
+  intros x y z Hxy Hyz. unfold pkripke_diamond_access in *.
+  destruct Hxy as [-> | [-> | ->]]; [now left |exact Hyz |].
+  destruct Hyz as [Hbad | [Htop | ->]].
+  - discriminate.
+  - subst z. now right; right.
+  - now right; right.
+Qed.
+
+Definition pkripke_diamond_frame : pkripke_frame :=
+  {| pkripke_world := pkripke_diamond_world;
+     pkripke_access := pkripke_diamond_access;
+     pkripke_access_refl := pkripke_diamond_access_refl;
+     pkripke_access_trans := pkripke_diamond_access_trans |}.
+
+Lemma pkripke_diamond_strongly_convergent :
+  pkripke_frame_strongly_convergent pkripke_diamond_frame.
+Proof.
+  intros x y z _ _. exists PKD_top. split; now right; right.
+Qed.
+
+Lemma pkripke_diamond_not_strongly_connected :
+  ~ pkripke_frame_strongly_connected pkripke_diamond_frame.
+Proof.
+  intro HC.
+  specialize (HC PKD_root PKD_left PKD_right).
+  assert (HRL : pkripke_access pkripke_diamond_frame
+      PKD_root PKD_left) by now left.
+  assert (HRR : pkripke_access pkripke_diamond_frame
+      PKD_root PKD_right) by now left.
+  specialize (HC HRL HRR).
+  cbn [pkripke_diamond_frame pkripke_diamond_access] in HC.
+  destruct HC as [[H | [H | H]] | [H | [H | H]]]; discriminate.
+Qed.
 
 Theorem pkripke_WLEM_valid_of_strongly_convergent :
   forall (Atom : Type) (F : pkripke_frame),

@@ -821,3 +821,23 @@ Proof.
   - apply ph_hilbert_kc_pkripke_sound.
   - apply ph_hilbert_kc_pkripke_complete.
 Qed.
+
+Theorem ph_hilbert_kc_strictly_included_lc :
+  ph_hilbert_logic_strictly_included
+    (ph_hilbert_kc nat) (ph_hilbert_lc nat).
+Proof.
+  split.
+  - eapply ph_hilbert_included_of_pkripke_class_subset
+      with (C1 := pkripke_frame_strongly_convergent)
+           (C2 := pkripke_frame_strongly_connected).
+    + intros F HF. now apply pkripke_strongly_convergent_of_strongly_connected.
+    + exact (@ph_hilbert_kc_pkripke_sound nat).
+    + exact ph_hilbert_lc_pkripke_complete.
+  - exists (ph_axiom_dummett (PAtom 0) (PAtom 1)). split.
+    + constructor. exact (ph_hilbert_lc_dummett (PAtom 0) (PAtom 1)).
+    + intro HKC.
+      apply pkripke_diamond_not_strongly_connected.
+      apply pkripke_strongly_connected_of_Dummett_valid.
+      exact (ph_hilbert_kc_pkripke_sound HKC
+        pkripke_diamond_strongly_convergent).
+Qed.
