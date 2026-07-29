@@ -3157,9 +3157,28 @@ Check iff_dia_diadot.
 Check godel_translate.
 Check godel_translate_rename.
 Check godel_translate_stable.
+Check s4_stable_consequence.
+Check s4_box_nested_one.
+Check s4_box_nested_two.
+Check godel_translated_axiom_K.
+Check godel_translated_axiom_S.
+Check godel_translated_axiom_and1.
+Check godel_translated_axiom_and2.
+Check godel_translated_axiom_and3.
+Check godel_translated_axiom_or1.
+Check godel_translated_axiom_or2.
+Check godel_translated_axiom_or3.
 Check godel_translate_modus_ponens.
 Check godel_translate_efq.
+Check godel_translate_verum.
+Check godel_translate_hilbert_proof.
+Check godel_translate_hilbert_provable.
+Check godel_translate_int_provable.
 Check godel_translate_persistent.
+Check forcing_modal_frame.
+Check forcing_modal_valuation.
+Check godel_translate_forcing_iff_modal_satisfies.
+Check godel_translate_global_forcing_iff_modal_truth.
 Check s5_entailment.
 Check s5_E.
 Check diabox_box_raw.
@@ -5236,9 +5255,16 @@ Print Assumptions iff_box_boxdot_raw.
 Print Assumptions iff_dia_diadot_raw.
 Print Assumptions godel_translate_rename.
 Print Assumptions godel_translate_stable.
+Print Assumptions s4_box_nested_two.
+Print Assumptions godel_translated_axiom_S.
+Print Assumptions godel_translated_axiom_or3.
 Print Assumptions godel_translate_modus_ponens.
 Print Assumptions godel_translate_efq.
+Print Assumptions godel_translate_hilbert_proof.
+Print Assumptions godel_translate_int_provable.
 Print Assumptions godel_translate_persistent.
+Print Assumptions godel_translate_forcing_iff_modal_satisfies.
+Print Assumptions godel_translate_global_forcing_iff_modal_truth.
 Print Assumptions diabox_box_raw.
 Print Assumptions diabox_box_applied_raw.
 Print Assumptions rm_diabox_raw.
