@@ -4194,3 +4194,11 @@ moved pointwise across one witnessed-tail inclusion, preserving each distinct
 conclusion while sharing the target context.  These lemmas remove the repeated
 root-by-root weakening that the four beta premises and four resulting field
 equalities would otherwise require.
+
+The beta compiler also exposes a context-local family eliminator.  Once the
+functionality implications and both lookup-premise families have been aligned
+in one context, it performs the two represented implication eliminations
+pointwise and returns an equally aligned family of output equalities.  This
+separates the purely logical step from witness selection and binder-safe
+weakening, making the remaining four-column callback an assembly problem over
+audited generic pieces.
