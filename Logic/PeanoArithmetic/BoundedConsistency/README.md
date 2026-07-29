@@ -2578,6 +2578,15 @@ and a final corollary obtains projected-fields atomic adequacy from the staged
 graph.  This removes the former finite/direct mismatch while preserving the
 honest grown-base endpoint.
 
+`RawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessFromDirectRuleCases.v`
+closes the remaining composition gap between these checkpoints.  From the
+twenty-three semantic roots over one witnessed finite rule tail and the exact
+closure remainder, it constructs the ordinary direct universal-soundness
+certificate and immediately merges that hidden proof base into the final
+eleven-root staged context.  Its conclusion contains the direct soundness
+root and matching consistency implication over one grown literal context;
+neither root nor an intermediate certificate is accepted as a premise.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled

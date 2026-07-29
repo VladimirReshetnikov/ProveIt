@@ -1,0 +1,13 @@
+(** Audit surface for direct rule cases at the grown final coordinate. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessFromDirectRuleCases.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessFromDirectRuleCases.
+
+Check
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_witnessed_rule_case_semantic_roots.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_witnessed_rule_case_semantic_roots.
