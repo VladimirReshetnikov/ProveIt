@@ -2858,6 +2858,16 @@ compiler.  Both the membership and shifted pointwise inputs are accepted as
 arbitrary proof roots, avoiding artificial assumptions or cuts and keeping
 the theorem polymorphic over the surrounding ten-witness context.
 
+`RawCodedRestrictedPADerivationSoundnessAssumptionTenWitnessComposition.v`
+wraps that deepest proof with the two five-existential eliminations in their
+correct order.  Public membership opens first, expanded context truth is
+shifted through those witnesses and opens second, and the final native truth
+is renamed back through all ten binders.  The explicit transfer theorem is the
+sole additional context formula; because its twelve-variable universal closure
+is closed, it remains unchanged throughout every context shift.  The exported
+root therefore proves the complete native Assumption membership-truth law over
+an arbitrary caller tail from one reusable PA source.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
