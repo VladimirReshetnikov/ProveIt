@@ -20,7 +20,10 @@ equation, and the formula for an arbitrary cubic after normalization. The
 `solveLinear`, `solveQuadratic`, and `solveCubic` functions (with snake-case
 counterparts in Coq) return fixed-size root collections; their correctness
 theorems prove that every returned entry zeros the input polynomial. Ferrari's
-quartic formula is developed in the subsequent module.
+quartic development normalizes and depresses a general quartic, proves the
+cubic-resolvent parameter equations imply a difference-of-squares
+factorization, and exposes a four-entry `solveQuartic` function with the same
+entrywise correctness guarantee.
 
 ## Checking
 
@@ -34,4 +37,6 @@ coqc -Q Algebra/PolynomialFormulas/Coq PolynomialFormulas `
   Algebra/PolynomialFormulas/Coq/Basic.v
 coqc -Q Algebra/PolynomialFormulas/Coq PolynomialFormulas `
   Algebra/PolynomialFormulas/Coq/Cubic.v
+coqc -Q Algebra/PolynomialFormulas/Coq PolynomialFormulas `
+  Algebra/PolynomialFormulas/Coq/Quartic.v
 ```
