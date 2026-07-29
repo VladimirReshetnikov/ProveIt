@@ -4298,6 +4298,17 @@ A separate target-reidentification lemma preserves all witnesses, inclusion
 evidence, and the proof root after the direct-replacement calculation is
 shown equal to the public successor-row code.
 
+The global closed-row production is now a concrete client rather than an
+arbitrary result formula.  Four fixed parameter names, disjoint from the
+native level parameters, denote mode, formula, assignment code, and
+assignment step.  Beneath the five traversal binders they normalize exactly
+to `#3`, `#2`, `#1`, and `#0`; the index is `#4`.  A closed computation proves
+that finite equality transport converts the named Sigma/Pi polarity split
+into the literal mode-zero/mode-one row production, including every field
+occurrence inside both arbitrary polarity bodies.  The specialized growing
+case theorem returns this concrete production and leaves only the honest
+predecessor producer and the three equality-branch roots to its caller.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
