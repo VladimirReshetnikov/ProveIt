@@ -15,7 +15,9 @@ From BoundedPAConsistency Require Import
   RawCodedContextLists
   RawCodedContextStructure
   RawCodedRestrictedPAProof
+  RawCodedFixedLevelTruthTotality
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofContextInsertUnconditional
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedPALocalProofWitnessedContextMergeTransportComplete
   RawCodedTemplateSyntax
@@ -29,13 +31,64 @@ Import PACanonicalSelectorPA.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedContextStructure.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import
   PABoundedRawCodedPALocalProofWitnessedContextMergeTransportComplete.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
+
+(** The weakest translation-generic condition needed to insert a finite
+    template prefix above an existing local proof.  Direct structural
+    translations satisfy it automatically, but arithmetic-only clients can
+    discharge it without constructing the much larger direct-input record. *)
+Definition RawCodedTemplatePrefixAtomicallyAdequate
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (prefix : TemplateContext) : Prop :=
+  forall formula,
+    In formula prefix ->
+    RawCodedFormulaAtomicallyAdequate M
+      (rawTemplateFormula translation formula).
+
+Arguments RawCodedTemplatePrefixAtomicallyAdequate
+  M translation prefix : clear implicits.
+
+(** Insert an arbitrary finite adequate template prefix.  This factors the
+    induction previously repeated by direct-template clients and avoids any
+    assumption that the temporary formulas themselves are PA axioms. *)
+Theorem raw_codedPALocalProof_templatePrefix : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    baseContext prefix conclusion root,
+  RawContextListRealizable M baseContext ->
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPALocalProofOf M baseContext conclusion root ->
+  exists prefixedRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext prefix)
+      conclusion prefixedRoot.
+Proof.
+  intros M hPA translation baseContext prefix.
+  induction prefix as [|head tail ih];
+    intros conclusion root hbase hadequate hproof.
+  - cbn [rawTemplateContextCodeOnTail].
+    exists root. exact hproof.
+  - cbn [rawTemplateContextCodeOnTail].
+    destruct (ih conclusion root hbase
+      (fun formula hformula => hadequate formula (or_intror hformula))
+      hproof) as [tailRoot htail].
+    apply (raw_codedPALocalProof_adequateConsTransplant M hPA
+      (rawTemplateContextCodeOnTail translation baseContext tail)
+      (rawTemplateFormula translation head)
+      conclusion tailRoot).
+    + exact (hadequate head (or_introl eq_refl)).
+    + exact (raw_templateContextOnTail_realizable M hPA
+        translation baseContext tail hbase).
+    + exact htail.
+Qed.
 
 (** Membership inclusion is preserved while the same metatheoretic template
     list is folded onto both carrier-coded tails. *)

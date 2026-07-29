@@ -21,8 +21,11 @@ From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
+  RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
   RawCodedTemplatePAEmbeddingSelfShiftTail
+  RawCodedTemplateLocalProofWitnessedTailTransport
+  RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedLtSuccCasesSource.
 
@@ -41,8 +44,11 @@ Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplatePAEmbeddingSelfShiftTail.
+Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
+Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedLtSuccCasesSource.
 
@@ -198,6 +204,84 @@ Proof.
   end.
 Qed.
 
+(** Prefix-general form used beneath existential and universal
+    eigenvariables.  The caller supplies only atomic adequacy of the finite
+    temporary prefix.  The selected PA-axiom witnesses remain in the tail,
+    so the prefix order and every de Bruijn binder are preserved exactly. *)
+Theorem
+    raw_codedPALocalProofOf_lt_succ_cases_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix index bound antecedentRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqLtSuccCasesAntecedentTemplate index bound)) antecedentRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      (rawTemplateFormula translation
+        (coqLtSuccCasesResultTemplate index bound)) root.
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext prefix index bound antecedentRoot
+    hprefix hbase hantecedent.
+  destruct
+    (raw_codedPALocalProofOf_lt_succ_cases_instance_on_witnessed_tail
+      M hPA translation hagreement baseWitnessList baseContext
+      index bound hbase)
+    as (witnesses & implicationRoot & hextended & himplication).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext).
+  destruct (raw_codedPALocalProof_templatePrefix M hPA translation
+    extendedContext prefix
+    (rawTemplateFormula translation
+      (coqLtSuccCasesInstanceTemplate index bound))
+    implicationRoot
+    (raw_codedPAAxiomWitnessPrefix_context_realizable_of_witnessed M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      extendedContext hextended)
+    hprefix himplication) as [prefixedImplicationRoot hprefixedImplication].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation
+      baseWitnessList baseContext
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      extendedContext prefix
+      (rawTemplateFormula translation
+        (coqLtSuccCasesAntecedentTemplate index bound))
+      antecedentRoot hbase hextended
+      (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+        M hPA witnesses baseContext)
+      hantecedent) as [transportedAntecedentRoot htransportedAntecedent].
+  destruct (coqLtSuccCasesInstanceTemplate_shape index bound)
+    as [himpShape _].
+  rewrite himpShape, rawTemplateFormula_imp in hprefixedImplication.
+  pose proof (raw_codedPALocalProofOf_impE M hPA
+    (rawTemplateContextCodeOnTail translation extendedContext prefix)
+    (rawTemplateFormula translation
+      (coqLtSuccCasesAntecedentTemplate index bound))
+    (rawTemplateFormula translation
+      (coqLtSuccCasesResultTemplate index bound))
+    prefixedImplicationRoot transportedAntecedentRoot
+    hprefixedImplication htransportedAntecedent) as hresult.
+  exists witnesses.
+  eexists.
+  split; [exact hextended | exact hresult].
+Qed.
+
 (** Eliminate the represented arithmetic disjunction immediately.  Branch
     compilers receive the exact finite PA prefix selected for the case theorem,
     so they can build their roots in the literal cons contexts required by
@@ -274,6 +358,93 @@ Proof.
   eexists.
   split; [exact hextended |].
   exact hresult.
+Qed.
+
+(** Represented Or-elimination under the same arbitrary temporary prefix.
+    Both branch callbacks see the one concrete standard-axiom extension
+    selected while compiling the arithmetic case theorem. *)
+Theorem
+    raw_codedPALocalProofOf_lt_succ_cases_eliminate_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix index bound antecedentRoot
+    conclusion,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqLtSuccCasesAntecedentTemplate index bound)) antecedentRoot ->
+  (forall witnesses,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) ->
+    exists root,
+      RawCodedPALocalProofOf M
+        (rawListNode M
+          (rawTemplateFormula translation
+            (coqLtSuccCasesBelowTemplate index bound))
+          (rawTemplateContextCodeOnTail translation
+            (rawStandardPAAxiomWitnessPrefixContextCode M
+              witnesses baseContext) prefix)) conclusion root) ->
+  (forall witnesses,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) ->
+    exists root,
+      RawCodedPALocalProofOf M
+        (rawListNode M
+          (rawTemplateFormula translation
+            (coqLtSuccCasesEqualTemplate index bound))
+          (rawTemplateContextCodeOnTail translation
+            (rawStandardPAAxiomWitnessPrefixContextCode M
+              witnesses baseContext) prefix)) conclusion root) ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      conclusion root.
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext prefix index bound antecedentRoot conclusion
+    hprefix hbase hantecedent hbelowBranch hequalBranch.
+  destruct
+    (raw_codedPALocalProofOf_lt_succ_cases_on_witnessed_tail_under_prefix
+      M hPA translation hagreement
+      baseWitnessList baseContext prefix index bound antecedentRoot
+      hprefix hbase hantecedent)
+    as (witnesses & casesRoot & hextended & hcases).
+  destruct (coqLtSuccCasesInstanceTemplate_shape index bound)
+    as [_ hresultShape].
+  rewrite hresultShape, rawTemplateFormula_or in hcases.
+  destruct (hbelowBranch witnesses hextended)
+    as [belowRoot hbelow].
+  destruct (hequalBranch witnesses hextended)
+    as [equalRoot hequal].
+  pose proof (raw_codedPALocalProofOf_orE M hPA
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) prefix)
+    (rawTemplateFormula translation
+      (coqLtSuccCasesBelowTemplate index bound))
+    (rawTemplateFormula translation
+      (coqLtSuccCasesEqualTemplate index bound))
+    conclusion casesRoot belowRoot equalRoot hcases hbelow hequal)
+    as hresult.
+  exists witnesses.
+  eexists.
+  split; [exact hextended | exact hresult].
 Qed.
 
 End PABoundedRawCodedLtSuccCasesProofCompilation.
