@@ -4,6 +4,7 @@ From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
+From Foundation.FirstOrder.Basic Require Import Model.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
 From Foundation.FirstOrder.Basic.Semantics Require Import RewriteClosure.
 From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
@@ -470,6 +471,36 @@ Check first_order_elementary_equiv_sym.
 Check first_order_elementary_equiv_trans.
 Check first_order_elementary_equiv_models_theory.
 Check first_order_elementary_equiv_of_carrier_equiv.
+Check structure_model.
+Check structure_model_equiv.
+Check structure_model_structure.
+Check structure_model_elementary_equiv.
+Check structure_model_nullary.
+Check structure_model_unary.
+Check structure_model_binary.
+Check structure_model_relation.
+Check structure_model_interprets_zero.
+Check structure_model_interprets_one.
+Check structure_model_interprets_add.
+Check structure_model_interprets_mul.
+Check structure_model_interprets_exp.
+Check structure_model_interprets_eq.
+Check structure_model_interprets_lt.
+Check structure_model_interprets_mem.
+Check function_only_structure.
+Check first_order_structure_add.
+Check first_order_structure_add_language_map_left.
+Check first_order_structure_add_language_map_right.
+Check semiterm_val_language_add_left.
+Check semiformula_eval_language_add_left.
+Check first_order_structure_sigma.
+Check semiterm_val_language_sigma.
+Check semiformula_eval_language_sigma.
+Check structure_lift.
+Check structure_lift_structure.
+Check semiterm_val_structure_lift.
+Check semiformula_eval_structure_lift.
+Check structure_lift_elementary_equiv.
 
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
@@ -629,6 +660,16 @@ Print Assumptions first_order_closed_subset_inclusion.
 Print Assumptions semiformula_eval_carrier_equiv.
 Print Assumptions first_order_elementary_equiv_models_theory.
 Print Assumptions first_order_elementary_equiv_of_carrier_equiv.
+Print Assumptions structure_model_elementary_equiv.
+Print Assumptions structure_model_interprets_relation.
+Print Assumptions structure_model_interprets_eq.
+Print Assumptions semiterm_val_language_add_left.
+Print Assumptions semiformula_eval_language_add_left.
+Print Assumptions semiterm_val_language_sigma.
+Print Assumptions semiformula_eval_language_sigma.
+Print Assumptions semiterm_val_structure_lift.
+Print Assumptions semiformula_eval_structure_lift.
+Print Assumptions structure_lift_elementary_equiv.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
