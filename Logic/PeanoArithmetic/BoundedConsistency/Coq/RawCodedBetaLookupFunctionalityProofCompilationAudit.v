@@ -1,0 +1,24 @@
+(** Assumption audit for represented beta-lookup functionality compilation. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedBetaLookupFunctionalityProofCompilation.
+
+Import PABoundedRawCodedBetaLookupFunctionalityProofCompilation.
+
+Check coqBetaLookupFunctionalityInstanceTemplate.
+Check coqBetaLookupFunctionalityFirstLookupTemplate.
+Check coqBetaLookupFunctionalitySecondLookupTemplate.
+Check coqBetaLookupFunctionalityEqualityTemplate.
+Check coqBetaLookupFunctionalityInstanceTemplate_open.
+Check coqBetaLookupFunctionalityInstanceTemplate_shape.
+Check
+  raw_codedPALocalProofOf_beta_lookup_functionality_instance_on_witnessed_tail.
+Check
+  raw_codedPALocalProofOf_beta_lookup_functionality_on_witnessed_tail_under_prefix.
+
+Print Assumptions coqBetaLookupFunctionalityInstanceTemplate_open.
+Print Assumptions coqBetaLookupFunctionalityInstanceTemplate_shape.
+Print Assumptions
+  raw_codedPALocalProofOf_beta_lookup_functionality_instance_on_witnessed_tail.
+Print Assumptions
+  raw_codedPALocalProofOf_beta_lookup_functionality_on_witnessed_tail_under_prefix.

@@ -4152,3 +4152,29 @@ the adequate head, and applies represented equality elimination to obtain the
 motive at `i`.  Thus the eventual lookup specialization needs only to expose
 its one-variable motive; it cannot bypass the represented branch assumption
 or appeal to semantic equality outside PA.
+
+The concrete parameter specialization now performs the whole lookup half of
+that callback.  It reassembles the four appended-entry projections after the
+five row binders, abstracts the outer bound parameter without capture, and
+opens the result at the row index under the literal `i = b` branch head.  The
+result is one represented proof of the transported mode, formula,
+assignment-code, and assignment-step lookup conjunction; the remaining
+equality-branch work is to compare those fixed fields with the independently
+assumed row lookup by represented lookup functionality.
+
+`RawCodedBetaLookupFunctionalitySource` supplies the required arithmetic
+source as a closed PA theorem.  It universally quantifies two outputs, a beta
+code, step, and index, and proves that two lookups at that same table position
+imply `out2 = out1`.  Its raw-model validity is discharged by the existing
+beta functionality theorem and then reflected back to an ordinary finite PA
+derivation; the next compilation layer can therefore instantiate the result
+inside a represented row context rather than using metatheoretic equality.
+
+`RawCodedBetaLookupFunctionalityProofCompilation` performs that
+instantiation.  It opens the five universal binders at arbitrary template
+terms, selects and synchronizes the finite standard PA-axiom witness prefix,
+and applies two represented lookup premises.  Its prefix-general endpoint
+keeps any finite adequate append/row assumptions literally ahead of the
+witnessed tail and returns a represented proof of the output equality.  This
+is the reusable single-column primitive for aligning all four equality-branch
+row fields.
