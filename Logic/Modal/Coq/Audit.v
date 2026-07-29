@@ -9,7 +9,8 @@ From FoundationModal Require Import
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
   GenericCalculus PropositionalEntailmentAxioms
-  PropositionalEntailmentMinimal PropositionalEntailmentInt PropositionalTait
+  PropositionalEntailmentMinimal PropositionalEntailmentInt
+  PropositionalEntailmentClassical PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -1528,6 +1529,7 @@ Check generic_intuitionistic_inconsistent_of_provable_neg.
 Check generic_intuitionistic_imp_neg_explosion_raw.
 Check generic_intuitionistic_neg_imp_explosion_raw.
 Check generic_intuitionistic_neg_or_to_imp_raw.
+Check generic_intuitionistic_or_of_neg_left_raw.
 Check generic_intuitionistic_double_neg_imp_converse_raw.
 Check generic_intuitionistic_list_disj2_elim_raw.
 Check generic_intuitionistic_list_disj2_append_iff_raw.
@@ -1548,6 +1550,7 @@ Check ph_hilbert_int_inconsistent_of_provable_neg.
 Print Assumptions generic_intuitionistic_type_context_explosion_raw.
 Print Assumptions generic_intuitionistic_inconsistent_of_provable_neg.
 Print Assumptions generic_intuitionistic_neg_or_to_imp_raw.
+Print Assumptions generic_intuitionistic_or_of_neg_left_raw.
 Print Assumptions generic_intuitionistic_double_neg_imp_converse_raw.
 Print Assumptions generic_intuitionistic_list_disj2_elim_raw.
 Print Assumptions generic_intuitionistic_list_disj2_append_iff_raw.
@@ -1560,6 +1563,53 @@ Print Assumptions ph_hilbert_int_list_disj2_append_iff.
 Print Assumptions ph_hilbert_int_list_disj2_insert_iff.
 Print Assumptions ph_hilbert_int_neg_disj2_iff_conj2_neg.
 Print Assumptions ph_hilbert_int_inconsistent_of_provable_neg.
+
+(** Propositional/Entailment/Cl/Basic: DNE yields inverse contraposition,
+    ex falso, the intuitionistic capability, classical De Morgan laws,
+    implication as disjunction, excluded middle, and finite De Morgan. *)
+Check generic_classical_double_neg_iff_raw.
+Check generic_classical_or_of_double_neg_or_raw.
+Check generic_classical_neg_imp_converse_raw.
+Check generic_classical_contraposition_inverse_raw.
+Check generic_classical_efq_raw.
+Check generic_has_axiom_efq_of_classical.
+Check generic_intuitionistic_of_classical.
+Check generic_classical_neg_and_to_or_neg_raw.
+Check generic_classical_neg_and_iff_or_neg_raw.
+Check generic_classical_imp_to_neg_or_raw.
+Check generic_classical_imp_to_neg_or_axiom_raw.
+Check generic_classical_imp_iff_neg_or_raw.
+Check generic_classical_lem_raw.
+Check generic_has_axiom_lem_of_classical.
+Check generic_classical_elim_contra_axiom_raw.
+Check generic_has_axiom_elim_contra_of_classical.
+Check generic_classical_dummett_raw.
+Check generic_has_axiom_dummett_of_classical.
+Check generic_classical_peirce_raw.
+Check generic_has_axiom_peirce_of_classical.
+Check generic_classical_neg_disj2_map_to_conj2_raw.
+Check ph_hilbert_cl_double_neg_iff.
+Check ph_hilbert_cl_neg_and_iff_or_neg.
+Check ph_hilbert_cl_imp_iff_neg_or.
+Check ph_hilbert_cl_elim_contra.
+Check ph_hilbert_cl_dummett.
+Check ph_hilbert_cl_peirce.
+Check ph_hilbert_cl_neg_disj2_map_to_conj2.
+Print Assumptions generic_classical_double_neg_iff_raw.
+Print Assumptions generic_classical_contraposition_inverse_raw.
+Print Assumptions generic_classical_efq_raw.
+Print Assumptions generic_intuitionistic_of_classical.
+Print Assumptions generic_classical_neg_and_iff_or_neg_raw.
+Print Assumptions generic_classical_imp_iff_neg_or_raw.
+Print Assumptions generic_classical_lem_raw.
+Print Assumptions generic_classical_elim_contra_axiom_raw.
+Print Assumptions generic_classical_dummett_raw.
+Print Assumptions generic_classical_peirce_raw.
+Print Assumptions generic_classical_neg_disj2_map_to_conj2_raw.
+Print Assumptions ph_hilbert_cl_double_neg_iff.
+Print Assumptions ph_hilbert_cl_neg_and_iff_or_neg.
+Print Assumptions ph_hilbert_cl_imp_iff_neg_or.
+Print Assumptions ph_hilbert_cl_neg_disj2_map_to_conj2.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.

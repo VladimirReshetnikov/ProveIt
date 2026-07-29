@@ -122,6 +122,24 @@ Definition generic_intuitionistic_neg_or_to_imp_raw {S F : Type}
 Arguments generic_intuitionistic_neg_or_to_imp_raw {S F E C s}
   _ _ _.
 
+(** Disjunctive syllogism uses ex falso but no double-negation elimination. *)
+Definition generic_intuitionistic_or_of_neg_left_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_intuitionistic_entailment E C s) (p q : F)
+    (dor : generic_proof E s (generic_or C p q))
+    (dnp : generic_proof E s (generic_neg C p)) :
+    generic_proof E s q :=
+  let Hm := generic_intuitionistic_minimal H in
+  generic_minimal_mdp_raw Hm (generic_or C p q) q
+    (generic_minimal_or_elim_raw Hm p q q
+      (generic_minimal_mdp_raw Hm (generic_neg C p)
+        (generic_imp C p q)
+        (generic_intuitionistic_neg_imp_explosion_raw H p q) dnp)
+      (generic_minimal_identity_raw Hm q)) dor.
+
+Arguments generic_intuitionistic_or_of_neg_left_raw {S F E C s}
+  _ _ _ _ _.
+
 (** The intuitionistic converse to minimal logic's stable-implication map:
     [(~~p -> ~~q) -> ~~(p -> q)].  The proof factors through
     [~(p -> q) -> (~~p /\ ~q)], exposing the exact use of ex falso in the

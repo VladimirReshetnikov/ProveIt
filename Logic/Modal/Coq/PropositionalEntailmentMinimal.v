@@ -1209,6 +1209,68 @@ Definition generic_minimal_bottom_of_proof_neg_raw {S F : Type}
 Arguments generic_minimal_bottom_of_proof_neg_raw {S F E C s}
   _ _ _ _.
 
+(** An implication refutes a conjunction of its antecedent with the negated
+    consequent.  This frequently appears inside classical proofs, but the
+    construction itself is minimal. *)
+Definition generic_minimal_imp_to_neg_and_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F)
+    (d : generic_proof E s (generic_imp C p q)) :
+    generic_proof E s
+      (generic_neg C (generic_and C p (generic_neg C q))).
+Proof.
+  set (a := generic_and C p (generic_neg C q)).
+  pose (daq := generic_minimal_imp_trans_raw H a p q
+    (generic_minimal_and1 H p (generic_neg C q)) d).
+  pose (daqbot := generic_minimal_imp_trans_raw H a (generic_neg C q)
+    (generic_imp C q (generic_bottom C))
+    (generic_minimal_and2 H p (generic_neg C q))
+    (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H q))).
+  pose (dab := generic_minimal_under_apply_raw H a q
+    (generic_bottom C) daqbot daq).
+  exact (generic_minimal_mdp_raw H
+    (generic_imp C a (generic_bottom C)) (generic_neg C a)
+    (generic_minimal_iff_elim_right_raw H _ _
+      (generic_minimal_neg_equiv H a)) dab).
+Defined.
+
+Arguments generic_minimal_imp_to_neg_and_raw {S F E C s}
+  _ _ _ _.
+
+Definition generic_minimal_imp_to_neg_and_axiom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C (generic_imp C p q)
+        (generic_neg C (generic_and C p (generic_neg C q)))).
+Proof.
+  set (f := generic_imp C p q).
+  set (a := generic_and C p (generic_neg C q)).
+  assert (df : generic_list_derivation E s C [f] f).
+  { exact (GLD_assumption (GRLM_here [])). }
+  pose (daq := GLD_mdp
+    (GLD_theorem (generic_minimal_imp_lift_left_raw H p a q
+      (generic_minimal_and1 H p (generic_neg C q)))) df).
+  pose (daqbot := generic_minimal_imp_trans_raw H a (generic_neg C q)
+    (generic_imp C q (generic_bottom C))
+    (generic_minimal_and2 H p (generic_neg C q))
+    (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H q))).
+  pose (dab := GLD_mdp
+    (GLD_mdp (GLD_theorem (generic_minimal_S H a q (generic_bottom C)))
+      (GLD_theorem daqbot)) daq).
+  pose (dna := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_right_raw H _ _
+      (generic_minimal_neg_equiv H a))) dab).
+  exact (@generic_singleton_deduction_raw S F E s C
+    (generic_minimal_mdp H) (generic_minimal_K H) (generic_minimal_S H)
+    f (generic_neg C a) dna).
+Defined.
+
+Arguments generic_minimal_imp_to_neg_and_axiom_raw {S F E C s}
+  _ _ _.
+
 Definition generic_minimal_or_neg_to_neg_and_raw {S F : Type}
     {E : generic_entailment S F} {C : generic_connectives F} {s : S}
     (H : generic_minimal_entailment E C s) (p q : F) :
