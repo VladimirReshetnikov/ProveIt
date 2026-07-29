@@ -4080,3 +4080,9 @@ opam exec --switch=proofs-rocq92 -- rocq compile \
 
 The audit modules, rather than this README, are the authority for the exact
 kernel assumptions and public theorem surface.
+
+The Coq append-table layer also exposes a predecessor-row compiler below the
+five traversal binders.  It opens the four shifted preservation laws, shares
+the current-bound and old-bound proofs across all four columns, and transports
+one old four-column lookup into the appended table without changing the eight
+append-witness binders that precede the row variables.
