@@ -32,10 +32,7 @@ Theorem depress_monic_cubic (A B C y : R) :
     depressed_cubic (cubic_p A B) (cubic_q A B C) y.
 Proof.
   unfold monic_cubic, depressed_cubic, cubic_p, cubic_q.
-  set (t := A / 3).
-  assert (ht : A = 3 * t) by (unfold t; field).
-  rewrite ht.
-  ring.
+  field.
 Qed.
 
 Theorem cardano_depressed (p q u v : R)
@@ -43,11 +40,9 @@ Theorem cardano_depressed (p q u v : R)
   depressed_cubic p q (u + v) = 0.
 Proof.
   unfold depressed_cubic.
-  assert (huv3 : 3 * u * v = -p) by nra.
-  assert (hexpand : (u + v) ^ 3 + p * (u + v) + q =
-      (u ^ 3 + v ^ 3) + (3 * u * v + p) * (u + v) + q) by ring.
-  rewrite hexpand.
-  rewrite hu, huv3.
+  assert (hp : p = -(3 * u * v)) by nra.
+  assert (hq : q = -(u ^ 3 + v ^ 3)) by nra.
+  rewrite hp, hq.
   ring.
 Qed.
 
@@ -70,17 +65,28 @@ Qed.
 Theorem cubic_normalization (a b c d x : R) (ha : a <> 0) :
   cubic a b c d x = a * monic_cubic (b / a) (c / a) (d / a) x.
 Proof.
-  set (A := b / a).
-  set (B := c / a).
-  set (C := d / a).
-  assert (hA : a * A = b) by (unfold A; field; exact ha).
-  assert (hB : a * B = c) by (unfold B; field; exact ha).
-  assert (hC : a * C = d) by (unfold C; field; exact ha).
   unfold cubic, monic_cubic.
-  assert (hexpand : a * (x ^ 3 + A * x ^ 2 + B * x + C) =
-      a * x ^ 3 + (a * A) * x ^ 2 + (a * B) * x + a * C) by ring.
-  rewrite hexpand, hA, hB, hC.
-  ring.
+  field; exact ha.
+Qed.
+
+(** Scaling a compatible Cardano pair by reciprocal cube roots preserves
+    its two cube equations and its product equation. *)
+Lemma scale_cardano_pair (u v alpha beta U V P : R)
+    (halpha : alpha ^ 3 = 1) (hbeta : beta ^ 3 = 1)
+    (hab : alpha * beta = 1)
+    (hu : u ^ 3 = U) (hv : v ^ 3 = V) (huv : u * v = P) :
+  (alpha * u) ^ 3 = U /\
+  (beta * v) ^ 3 = V /\
+  (alpha * u) * (beta * v) = P.
+Proof.
+  repeat split.
+  - replace ((alpha * u) ^ 3) with (alpha ^ 3 * u ^ 3) by ring.
+    rewrite halpha, hu; ring.
+  - replace ((beta * v) ^ 3) with (beta ^ 3 * v ^ 3) by ring.
+    rewrite hbeta, hv; ring.
+  - replace ((alpha * u) * (beta * v)) with
+        ((alpha * beta) * (u * v)) by ring.
+    rewrite hab, huv; ring.
 Qed.
 
 Theorem cardano_formula (a b c d s u v : R) (ha : a <> 0)
@@ -111,34 +117,15 @@ Theorem solve_cubic_correct (a b c d s u v omega : R) (ha : a <> 0)
 Proof.
   cbn [solve_cubic].
   assert (homega2 : (omega ^ 2) ^ 3 = 1).
-  { assert (h : (omega ^ 2) ^ 3 = (omega ^ 3) ^ 2) by ring.
-    rewrite h, homega; ring. }
-  assert (hu1 : (omega * u) ^ 3 =
-      -cubic_q (b / a) (c / a) (d / a) / 2 + s).
-  { assert (h : (omega * u) ^ 3 = omega ^ 3 * u ^ 3) by ring.
-    rewrite h, homega, hu; ring. }
-  assert (hv1 : (omega ^ 2 * v) ^ 3 =
-      -cubic_q (b / a) (c / a) (d / a) / 2 - s).
-  { assert (h : (omega ^ 2 * v) ^ 3 = (omega ^ 2) ^ 3 * v ^ 3) by ring.
-    rewrite h, homega2, hv; ring. }
-  assert (huv1 : (omega * u) * (omega ^ 2 * v) =
-      -cubic_p (b / a) (c / a) / 3).
-  { assert (h : (omega * u) * (omega ^ 2 * v) =
-        omega ^ 3 * (u * v)) by ring.
-    rewrite h, homega, huv; ring. }
-  assert (hu2 : (omega ^ 2 * u) ^ 3 =
-      -cubic_q (b / a) (c / a) (d / a) / 2 + s).
-  { assert (h : (omega ^ 2 * u) ^ 3 = (omega ^ 2) ^ 3 * u ^ 3) by ring.
-    rewrite h, homega2, hu; ring. }
-  assert (hv2 : (omega * v) ^ 3 =
-      -cubic_q (b / a) (c / a) (d / a) / 2 - s).
-  { assert (h : (omega * v) ^ 3 = omega ^ 3 * v ^ 3) by ring.
-    rewrite h, homega, hv; ring. }
-  assert (huv2 : (omega ^ 2 * u) * (omega * v) =
-      -cubic_p (b / a) (c / a) / 3).
-  { assert (h : (omega ^ 2 * u) * (omega * v) =
-        omega ^ 3 * (u * v)) by ring.
-    rewrite h, homega, huv; ring. }
+  { replace ((omega ^ 2) ^ 3) with ((omega ^ 3) ^ 2) by ring.
+    rewrite homega; ring. }
+  assert (homega12 : omega * omega ^ 2 = 1).
+  { replace (omega * omega ^ 2) with (omega ^ 3) by ring; exact homega. }
+  assert (homega21 : omega ^ 2 * omega = 1) by (rewrite Rmult_comm; exact homega12).
+  pose proof (scale_cardano_pair _ _ omega (omega ^ 2) _ _ _
+    homega homega2 homega12 hu hv huv) as [hu1 [hv1 huv1]].
+  pose proof (scale_cardano_pair _ _ (omega ^ 2) omega _ _ _
+    homega2 homega homega21 hu hv huv) as [hu2 [hv2 huv2]].
   repeat split.
   - exact (cardano_formula a b c d s u v ha hs hu hv huv).
   - exact (cardano_formula a b c d s (omega * u) (omega ^ 2 * v)

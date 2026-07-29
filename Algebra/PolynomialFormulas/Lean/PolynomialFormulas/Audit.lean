@@ -1,6 +1,6 @@
 import PolynomialFormulas
 
-/-! Kernel-assumption audit for the degree-one-through-four solver theorems. -/
+/-! Kernel-assumption audit for the solver theorems and the Abel--Ruffini obstruction. -/
 
 open LeanProofs.PolynomialFormulas
 
@@ -10,8 +10,37 @@ open LeanProofs.PolynomialFormulas
 #check solveCubic_correct
 #check ferrari_parameters_of_resolvent
 #check solveQuartic_correct
+#check solveCubic_exhaustive
+#check solveQuartic_exhaustive
 #check cubic_eq_zero_iff
 #check quartic_eq_zero_iff
+#check RadicalExpression.eval_mem_solvableByRad
+#check RadicalExpression.nonempty_iff_mem_solvableByRad
+#check hasCompleteRadicalSolution_sound
+#check hasCompleteRadicalSolution_iff
+#check abelRuffiniQuintic_irreducible
+#check abelRuffiniQuintic_root_not_solvableByRad
+#check abelRuffiniQuintic_not_completelySolvableByRadicals
+#check paddedAbelRuffiniPolynomial_natDegree
+#check paddedAbelRuffiniPolynomial_not_completelySolvableByRadicals
+#check exists_incomplete_radical_polynomial_of_degree
+#check no_universal_complete_radical_solution
+#check no_universal_radical_formula_of_degree_gt_four
+#check no_universal_complete_solvability_by_radicals
+#check SelmerAbelRuffini.iSup_inertia_eq_top
+#synth NumberField (SelmerAbelRuffini.splittingField 5)
+#check SelmerAbelRuffini.pQ_gal_not_solvable
+#check SelmerAbelRuffini.pQ_rootSet_complex_card
+#check SelmerAbelRuffini.every_complex_root_not_solvableByRad
+#check SelmerAbelRuffini.every_complex_root_has_no_radical_expression
+#check SelmerAbelRuffini.selmer_all_complex_roots
+#check SelmerAbelRuffini.every_degree_gt_four_has_rational_polynomial_with_no_radical_root
+#check GenericAbelRuffini.p_natDegree
+#check GenericAbelRuffini.p_rootSet_card
+#check GenericAbelRuffini.galEquivPerm
+#check GenericAbelRuffini.every_root_not_solvableByRad
+#check GenericAbelRuffini.generic_unsolvable_polynomial
+#check GenericAbelRuffini.every_degree_gt_four_has_polynomial_with_no_radical_root
 
 #print axioms solveLinear_correct
 #print axioms solveQuadratic_correct
@@ -19,5 +48,33 @@ open LeanProofs.PolynomialFormulas
 #print axioms solveCubic_correct
 #print axioms ferrari_parameters_of_resolvent
 #print axioms solveQuartic_correct
+#print axioms solveCubic_exhaustive
+#print axioms solveQuartic_exhaustive
 #print axioms cubic_eq_zero_iff
 #print axioms quartic_eq_zero_iff
+#print axioms RadicalExpression.eval_mem_solvableByRad
+#print axioms RadicalExpression.nonempty_iff_mem_solvableByRad
+#print axioms hasCompleteRadicalSolution_sound
+#print axioms hasCompleteRadicalSolution_iff
+#print axioms abelRuffiniQuintic_irreducible
+#print axioms abelRuffiniQuintic_root_not_solvableByRad
+#print axioms abelRuffiniQuintic_not_completelySolvableByRadicals
+#print axioms paddedAbelRuffiniPolynomial_natDegree
+#print axioms paddedAbelRuffiniPolynomial_not_completelySolvableByRadicals
+#print axioms exists_incomplete_radical_polynomial_of_degree
+#print axioms no_universal_complete_radical_solution
+#print axioms no_universal_radical_formula_of_degree_gt_four
+#print axioms no_universal_complete_solvability_by_radicals
+#print axioms SelmerAbelRuffini.iSup_inertia_eq_top
+#print axioms SelmerAbelRuffini.pQ_gal_not_solvable
+#print axioms SelmerAbelRuffini.pQ_rootSet_complex_card
+#print axioms SelmerAbelRuffini.every_complex_root_not_solvableByRad
+#print axioms SelmerAbelRuffini.every_complex_root_has_no_radical_expression
+#print axioms SelmerAbelRuffini.selmer_all_complex_roots
+#print axioms SelmerAbelRuffini.every_degree_gt_four_has_rational_polynomial_with_no_radical_root
+#print axioms GenericAbelRuffini.p_natDegree
+#print axioms GenericAbelRuffini.p_rootSet_card
+#print axioms GenericAbelRuffini.galEquivPerm
+#print axioms GenericAbelRuffini.every_root_not_solvableByRad
+#print axioms GenericAbelRuffini.generic_unsolvable_polynomial
+#print axioms GenericAbelRuffini.every_degree_gt_four_has_polynomial_with_no_radical_root

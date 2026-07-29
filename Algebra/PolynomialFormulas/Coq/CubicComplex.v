@@ -32,6 +32,17 @@ Proof.
   exact h.
 Qed.
 
+Lemma Cmult3_eq_zero (x y z : C) :
+    x * y * z = c0 -> x = c0 \/ y = c0 \/ z = c0.
+Proof.
+  intro h.
+  apply Cmult_eq_zero in h as [hxy | hz]; [| now right; right].
+  apply Cmult_eq_zero in hxy as [hx | hy]; [now left | now right; left].
+Qed.
+
+Lemma Cminus_eq_zero (x y : C) : x - y = c0 -> x = y.
+Proof. apply (proj2 (Ceq_minus x y)). Qed.
+
 Definition cubic (a b c d x : C) : C :=
   a * x ^ 3 + b * x ^ 2 + c * x + d.
 
@@ -94,6 +105,15 @@ Proof.
   field; exact c3_neq_0.
 Qed.
 
+Lemma translate_monic_cubic (A B D x : C) :
+  monic_cubic A B D x =
+    depressed_cubic (cubic_p A B) (cubic_q A B D) (x + A / c3).
+Proof.
+  rewrite <- depress_monic_cubic.
+  replace (x + A / c3 - A / c3) with x by ring.
+  reflexivity.
+Qed.
+
 (** The three Cardano values give the complete linear factorization of a
     depressed cubic. *)
 Theorem cardano_factorization (p q u v omega y : C)
@@ -144,9 +164,7 @@ Proof.
         (r0 * r1 + r0 * r2 + r1 * r2) * y - r0 * r1 * r2) by ring.
   rewrite hpoly, hsum, hpairs, hproduct.
   unfold depressed_cubic, c0 in *.
-  assert (hp : p = -(c3 * u * v)) by (rewrite huv; ring).
-  assert (hq : q = -(u ^ 3 + v ^ 3)) by (rewrite hu; ring).
-  rewrite hp, hq.
+  rewrite huv, hu.
   ring.
 Qed.
 
@@ -162,14 +180,7 @@ Theorem cubic_factorization (a b c d s u v omega x : C) (ha : a <> c0)
       (x - (omega ^ 2 * u + omega * v - (b / a) / c3))).
 Proof.
   rewrite (cubic_normalization a b c d x ha).
-  assert (htranslate :
-      monic_cubic (b / a) (c / a) (d / a) x =
-      depressed_cubic (cubic_p (b / a) (c / a))
-        (cubic_q (b / a) (c / a) (d / a)) (x + (b / a) / c3)).
-  { rewrite <- depress_monic_cubic.
-    replace (x + b / a / c3 - b / a / c3) with x by ring.
-    reflexivity. }
-  rewrite htranslate.
+  rewrite translate_monic_cubic.
   assert (hsum : u ^ 3 + v ^ 3 = -cubic_q (b / a) (c / a) (d / a)).
   { rewrite hu, hv; unfold c2; field; exact c2_neq_0. }
   assert (hcompat : c3 * u * v = -cubic_p (b / a) (c / a)).
@@ -213,16 +224,10 @@ Proof.
   rewrite (cubic_factorization a b c d s u v omega x
     ha hu hv huv homega) in hx.
   apply Cmult_eq_zero in hx as [ha0 | hroots]; [contradiction |].
-  apply Cmult_eq_zero in hroots as [hfirst | hthird].
-  - apply Cmult_eq_zero in hfirst as [h0 | h1].
-    + unfold solve_cubic; cbn; left.
-      apply (proj2 (Ceq_minus x (u + v - b / a / c3))); exact h0.
-    + unfold solve_cubic; cbn; right; left.
-      apply (proj2 (Ceq_minus x
-        (omega * u + omega ^ 2 * v - b / a / c3))); exact h1.
-  - unfold solve_cubic; cbn; right; right.
-    apply (proj2 (Ceq_minus x
-      (omega ^ 2 * u + omega * v - b / a / c3))); exact hthird.
+  apply Cmult3_eq_zero in hroots as [h0 | [h1 | h2]].
+  - cbn [solve_cubic]; left; now apply Cminus_eq_zero.
+  - cbn [solve_cubic]; right; left; now apply Cminus_eq_zero.
+  - cbn [solve_cubic]; right; right; now apply Cminus_eq_zero.
 Qed.
 
 (** The complex Cardano collection contains exactly all cubic roots. *)

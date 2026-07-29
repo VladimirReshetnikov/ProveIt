@@ -1,10 +1,14 @@
-From PolynomialFormulas Require Import Basic Cubic CubicComplex Quartic.
+From PolynomialFormulas Require Import
+  Basic Cubic CubicComplex Quartic AbelRuffini AbelRuffiniRootwise.
 
-(** Kernel-assumption audit for the degree-one-through-four solver theorems. *)
+(** Kernel-assumption audit for the degree-one-through-four solver theorems
+    and the Abel--Ruffini obstruction above degree four. *)
 
 Import LeanProofs.PolynomialFormulas.
 Import LeanProofs.PolynomialFormulasCubic.
 Import LeanProofs.PolynomialFormulasQuartic.
+Import LeanProofs.PolynomialFormulasAbelRuffini.
+Import PolynomialFormulasAbelRuffiniRootwise.
 
 Check solve_linear_correct.
 Check solve_quadratic_correct.
@@ -12,9 +16,22 @@ Check cardano_formula.
 Check solve_cubic_correct.
 Check ferrari_parameters_of_resolvent.
 Check solve_quartic_correct.
+Check LeanProofs.PolynomialFormulasCubicComplex.solve_cubic_correct.
+Check LeanProofs.PolynomialFormulasCubicComplex.solve_cubic_exhaustive.
 Check LeanProofs.PolynomialFormulasCubicComplex.cubic_eq_zero_iff.
 Check solve_quartic_exhaustive.
 Check quartic_eq_zero_iff.
+Check quintic_no_radical_formula.
+Check algterm_eval_aut.
+Check quintic_roots_conjugate.
+Check quintic_root_has_no_radical_expression.
+Check quintic_every_root_has_no_radical_expression.
+Check padded_no_radical_formula.
+Check padded_not_solvable_by_radicals.
+Check monic_padded_counterexample.
+Check degree_gt_four_counterexample.
+Check not_every_degree_gt_four_solvable_by_radicals.
+Check no_radical_formula_degree_gt_four.
 
 Print Assumptions solve_linear_correct.
 Print Assumptions solve_quadratic_correct.
@@ -22,6 +39,19 @@ Print Assumptions cardano_formula.
 Print Assumptions solve_cubic_correct.
 Print Assumptions ferrari_parameters_of_resolvent.
 Print Assumptions solve_quartic_correct.
+Print Assumptions LeanProofs.PolynomialFormulasCubicComplex.solve_cubic_correct.
+Print Assumptions LeanProofs.PolynomialFormulasCubicComplex.solve_cubic_exhaustive.
 Print Assumptions LeanProofs.PolynomialFormulasCubicComplex.cubic_eq_zero_iff.
 Print Assumptions solve_quartic_exhaustive.
 Print Assumptions quartic_eq_zero_iff.
+Print Assumptions quintic_no_radical_formula.
+Print Assumptions algterm_eval_aut.
+Print Assumptions quintic_roots_conjugate.
+Print Assumptions quintic_root_has_no_radical_expression.
+Print Assumptions quintic_every_root_has_no_radical_expression.
+Print Assumptions padded_no_radical_formula.
+Print Assumptions padded_not_solvable_by_radicals.
+Print Assumptions monic_padded_counterexample.
+Print Assumptions degree_gt_four_counterexample.
+Print Assumptions not_every_degree_gt_four_solvable_by_radicals.
+Print Assumptions no_radical_formula_degree_gt_four.

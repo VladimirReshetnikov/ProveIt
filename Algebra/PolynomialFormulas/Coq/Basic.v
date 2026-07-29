@@ -41,7 +41,7 @@ Definition quadratic (a b c x : R) : R := a * x ^ 2 + b * x + c.
 Definition solve_quadratic (a b c s : R) : R * R :=
   ((-b + s) / (2 * a), (-b - s) / (2 * a)).
 
-Theorem quadratic_formula_plus (a b c s : R) (ha : a <> 0)
+Lemma quadratic_formula_root (a b c s : R) (ha : a <> 0)
     (hs : s ^ 2 = b ^ 2 - 4 * a * c) :
   quadratic a b c ((-b + s) / (2 * a)) = 0.
 Proof.
@@ -53,16 +53,30 @@ Proof.
   destruct (Rdichotomy a 0 ha); nra.
 Qed.
 
+Theorem quadratic_formula_plus (a b c s : R) (ha : a <> 0)
+    (hs : s ^ 2 = b ^ 2 - 4 * a * c) :
+  quadratic a b c ((-b + s) / (2 * a)) = 0.
+Proof. exact (quadratic_formula_root a b c s ha hs). Qed.
+
 Theorem quadratic_formula_minus (a b c s : R) (ha : a <> 0)
     (hs : s ^ 2 = b ^ 2 - 4 * a * c) :
   quadratic a b c ((-b - s) / (2 * a)) = 0.
 Proof.
-  set (x := (-b - s) / (2 * a)).
-  assert (hx : 2 * a * x = -b - s).
-  { unfold x. field; exact ha. }
-  assert (hxsq : (2 * a * x) ^ 2 = (-b - s) ^ 2) by now rewrite hx.
-  unfold quadratic.
-  destruct (Rdichotomy a 0 ha); nra.
+  replace (-b - s) with (-b + -s) by ring.
+  apply quadratic_formula_root; nra.
+Qed.
+
+(** Both roots of a monic quadratic, with the common denominator simplified. *)
+Lemma monic_quadratic_roots (b c s : R)
+    (hs : s ^ 2 = b ^ 2 - 4 * c) :
+  ((-b + s) / 2) ^ 2 + b * ((-b + s) / 2) + c = 0 /\
+  ((-b - s) / 2) ^ 2 + b * ((-b - s) / 2) + c = 0.
+Proof.
+  pose proof (quadratic_formula_plus 1 b c s R1_neq_R0) as hp.
+  pose proof (quadratic_formula_minus 1 b c s R1_neq_R0) as hm.
+  specialize (hp ltac:(nra)); specialize (hm ltac:(nra)).
+  unfold quadratic in hp, hm.
+  split; nra.
 Qed.
 
 Theorem solve_quadratic_correct (a b c s : R) (ha : a <> 0)
