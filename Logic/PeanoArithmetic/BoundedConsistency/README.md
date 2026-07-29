@@ -3609,9 +3609,11 @@ boundary never demands the capture-incorrect self-shift of an evidence
 context merely to translate a row projection or compile a collision cell.
 The exact row identifications also designate the two lower-application atoms
 inside those same direct structural inputs, so the opaque-quantifier direct
-traces are reconstructed rather than repeated in the callback.  The public
-current kernel consequently has five components: predecessor exclusivity,
-binder projections, two cross-level premises, and mixed-QF replay.
+traces are reconstructed rather than repeated in the callback.  The binder
+principal projections are compiled from the same two direct packages and
+their lower-application identifications.  The public current kernel
+consequently has four components: predecessor exclusivity, two cross-level
+premises, and mixed-QF replay.
 
 `RawCodedDynamicTruthNativeLocalStagedCallbackCompilation.v` connects that
 carried root to the first public dependency-ordered callback.  It extends the

@@ -62,6 +62,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthQuantifierBranchExclusivity
   RawCodedDynamicTruthMixedQFBranchExclusivity
   RawCodedDynamicTruthBinderOffDiagonalExclusivity
+  RawCodedDynamicTruthBinderPrincipalProjectionCompilation
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthLocalCollisionMatrixAssembly
   RawCodedDynamicTruthSuccessorRowBranchDisjunctionCompilation
@@ -114,6 +115,7 @@ Import PABoundedRawCodedDynamicTruthImpBranchExclusivity.
 Import PABoundedRawCodedDynamicTruthQuantifierBranchExclusivity.
 Import PABoundedRawCodedDynamicTruthMixedQFBranchExclusivity.
 Import PABoundedRawCodedDynamicTruthBinderOffDiagonalExclusivity.
+Import PABoundedRawCodedDynamicTruthBinderPrincipalProjectionCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssembly.
 Import
@@ -310,6 +312,51 @@ Proof.
        rawDynamicTruthQuantifierLowerApplication_designated :=
          hpiDesignated |}.
   exact I.
+Qed.
+
+(** All eight binder-principal projections are compiled by the same direct
+    Sigma/Pi translations.  The projection theorem depends only on the two
+    lower-application identifications, so the row domains are retained solely
+    to obtain the exact direct packages selected by this trace. *)
+Theorem
+    raw_dynamicTruthNativeLocalExactRows_binder_projections_on_witnessed_base :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (tail : nat -> M) predecessorLevel inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      sigmaRowDomain piRowDomain lowerPiApplication lowerSigmaApplication
+      witnessList baseContext,
+  RawDynamicTruthNativeLocalProofTraceAt M tail predecessorLevel
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence ->
+  RawDynamicTruthNativeLocalExactRowParametersAt M predecessorLevel
+    inputGlobalSigma inputGlobalPi sigmaEvidence piEvidence
+    sigmaRowDomain piRowDomain lowerPiApplication lowerSigmaApplication ->
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  forall cell : DynamicTruthBinderOffDiagonalCell,
+    RawDynamicTruthBinderPrincipalProjectionInterfaceAt M baseContext cell
+      lowerPiApplication lowerSigmaApplication.
+Proof.
+  intros M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+    sigmaDomain piDomain sigmaEvidence piEvidence
+    sigmaRowDomain piRowDomain lowerPi lowerSigma
+    witnessList baseContext htrace hlinked hwitness cell.
+  destruct
+    (raw_dynamicTruthNativeLocalExactRows_branch_projection_inputs_on_witnessed_base
+      M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      sigmaRowDomain piRowDomain lowerPi lowerSigma
+      witnessList baseContext htrace hlinked hwitness)
+    as [sigmaInputs [piInputs _]].
+  exact
+    (raw_dynamicTruthBinderPrincipalProjectionInterface_of_direct
+      M hPA witnessList baseContext lowerPi lowerSigma
+      sigmaRowDomain piRowDomain
+      (rawDynamicTruthSigmaBranchDisjunction_directInputs sigmaInputs)
+      (rawDynamicTruthPiBranchDisjunction_directInputs piInputs)
+      hwitness
+      (rawDynamicTruthSigmaBranchDisjunction_identification sigmaInputs)
+      (rawDynamicTruthPiBranchDisjunction_identification piInputs)
+      cell).
 Qed.
 
 (** The useful endpoint contains the projected [Or7]/[Or6] roots, not the
@@ -515,7 +562,7 @@ Proof.
   now exists liftedRoot.
 Qed.
 
-(** Five genuinely current-field resources remain after extracting the two
+(** Four genuinely current-field resources remain after extracting the two
     lower direct traces from the exact row construction.  This record is the
     public kernel of the reduced callback; the older seven-field kernel is
     rebuilt internally immediately before the established helper assembly. *)
@@ -525,10 +572,6 @@ Record RawDynamicTruthNativeLocalReducedCurrentKernelInputsAt
   rawDynamicTruthNativeLocalReducedKernel_predecessorRoot :
     RawDynamicTruthLocalRootAt M context
       (rawDynamicTruthImpPredecessorStateExclusivityCode M);
-  rawDynamicTruthNativeLocalReducedKernel_binderProjections :
-    forall cell : DynamicTruthBinderOffDiagonalCell,
-      RawDynamicTruthBinderPrincipalProjectionInterfaceAt M context cell
-        lowerPiApplication lowerSigmaApplication;
   rawDynamicTruthNativeLocalReducedKernel_sigmaExCrossRoot :
     RawDynamicTruthLocalRootAt M context
       (rawDynamicTruthSigmaExPiExCrossLevelPremiseCode M
@@ -637,8 +680,20 @@ Proof.
       sigmaRowDomain piRowDomain lowerPi lowerSigma
       witnessList baseContext htrace hlinked hwitness)
     as [piTrace [sigmaTrace _]].
+  assert (hbinder : forall cell : DynamicTruthBinderOffDiagonalCell,
+      RawDynamicTruthBinderPrincipalProjectionInterfaceAt M baseContext cell
+        lowerPi lowerSigma).
+  {
+    intro cell.
+    exact
+      (raw_dynamicTruthNativeLocalExactRows_binder_projections_on_witnessed_base
+        M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+        sigmaDomain piDomain sigmaEvidence piEvidence
+        sigmaRowDomain piRowDomain lowerPi lowerSigma
+        witnessList baseContext htrace hlinked hwitness cell).
+  }
   destruct reducedKernel as
-    [hpredecessor hbinder hsigmaExCross hsigmaAllCross hmixedReplay].
+    [hpredecessor hsigmaExCross hsigmaAllCross hmixedReplay].
   assert (currentKernel :
       RawDynamicTruthNativeLocalCurrentKernelInputsAt M baseContext
         lowerPi lowerSigma).
