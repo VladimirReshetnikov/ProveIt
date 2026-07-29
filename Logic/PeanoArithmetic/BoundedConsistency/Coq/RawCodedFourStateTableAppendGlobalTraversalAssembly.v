@@ -9,7 +9,7 @@
   facts in the dependency order required by the global successor.
 *)
 
-From Stdlib Require Import List.
+From Stdlib Require Import List Lia.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
@@ -23,6 +23,8 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruth
   RawCodedFixedLevelTruthTraversal
   RawCodedTemplateSyntax
+  RawCodedTemplateRenamingSubstitution
+  RawCodedScopedFormulaDiagonalSubstitution
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplateParameterAbstraction
@@ -58,6 +60,8 @@ Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFixedLevelTruthTraversal.
 Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateRenamingSubstitution.
+Import PABoundedRawCodedScopedFormulaDiagonalSubstitution.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateParameterAbstraction.
@@ -370,6 +374,93 @@ Proof.
   - now rewrite IHinput.
 Qed.
 
+(** A template substitution which fixes the advertised free-variable scope
+    fixes embedded ordinary PA syntax.  The formulation is intentionally
+    generic: later opening calculations only need to establish the
+    pointwise behavior of their (possibly very large) composed substitution. *)
+Lemma templateTermSubst_embedPATerm_scoped_fixed : forall
+    scope input substitution,
+  StandardTermScoped scope input ->
+  (forall index, index < scope -> substitution index = ttVar index) ->
+  templateTermSubst substitution (embedPATerm input) = embedPATerm input.
+Proof.
+  intros scope input. revert scope.
+  induction input; intros scope substitution hscope hfixed;
+    cbn [embedPATerm templateTermSubst].
+  - apply hfixed. apply hscope. reflexivity.
+  - reflexivity.
+  - f_equal. apply IHinput with (scope := scope).
+    + intros index hfree. apply hscope. exact hfree.
+    + exact hfixed.
+  - f_equal.
+    + apply IHinput1 with (scope := scope).
+      * intros index hfree. apply hscope. now left.
+      * exact hfixed.
+    + apply IHinput2 with (scope := scope).
+      * intros index hfree. apply hscope. now right.
+      * exact hfixed.
+  - f_equal.
+    + apply IHinput1 with (scope := scope).
+      * intros index hfree. apply hscope. now left.
+      * exact hfixed.
+    + apply IHinput2 with (scope := scope).
+      * intros index hfree. apply hscope. now right.
+      * exact hfixed.
+Qed.
+
+Lemma templateFormulaSubst_embedPAFormula_scoped_fixed : forall
+    scope input substitution,
+  StandardFormulaScoped scope input ->
+  (forall index, index < scope -> substitution index = ttVar index) ->
+  templateFormulaSubst substitution (embedPAFormula input) =
+  embedPAFormula input.
+Proof.
+  intros scope input. revert scope.
+  induction input; intros scope substitution hscope hfixed;
+    cbn [embedPAFormula templateFormulaSubst].
+  - f_equal.
+    + apply templateTermSubst_embedPATerm_scoped_fixed with (scope := scope).
+      * intros index hfree. apply hscope. now left.
+      * exact hfixed.
+    + apply templateTermSubst_embedPATerm_scoped_fixed with (scope := scope).
+      * intros index hfree. apply hscope. now right.
+      * exact hfixed.
+  - reflexivity.
+  - f_equal.
+    + apply IHinput1 with (scope := scope).
+      * intros index hfree. apply hscope. now left.
+      * exact hfixed.
+    + apply IHinput2 with (scope := scope).
+      * intros index hfree. apply hscope. now right.
+      * exact hfixed.
+  - f_equal.
+    + apply IHinput1 with (scope := scope).
+      * intros index hfree. apply hscope. now left.
+      * exact hfixed.
+    + apply IHinput2 with (scope := scope).
+      * intros index hfree. apply hscope. now right.
+      * exact hfixed.
+  - f_equal.
+    + apply IHinput1 with (scope := scope).
+      * intros index hfree. apply hscope. now left.
+      * exact hfixed.
+    + apply IHinput2 with (scope := scope).
+      * intros index hfree. apply hscope. now right.
+      * exact hfixed.
+  - f_equal. apply IHinput with (scope := S scope).
+    + exact (StandardFormulaScoped_binder scope input hscope).
+    + intros [|index] hindex; [reflexivity |].
+      cbn [templateTermUpSubst].
+      rewrite (hfixed index) by lia.
+      reflexivity.
+  - f_equal. apply IHinput with (scope := S scope).
+    + exact (StandardFormulaScoped_ex_binder scope input hscope).
+    + intros [|index] hindex; [reflexivity |].
+      cbn [templateTermUpSubst].
+      rewrite (hfixed index) by lia.
+      reflexivity.
+Qed.
+
 Lemma templateFormulaReplaceParametersDirect_embedPAFormula : forall
     bindings input,
   templateFormulaReplaceParametersDirect bindings (embedPAFormula input) =
@@ -398,6 +489,99 @@ Proof.
   intros localSigma localPi.
   unfold coqFourStateTableAppendConcreteClosedRowProductionTemplate.
   now rewrite !templateFormulaReplaceParametersDirect_embedPAFormula.
+Qed.
+
+(** A small template-only view of the ten global existential binders around
+    the five local-row binders.  Isolating this spine prevents the scoped
+    normalization proof from reducing the unrelated six traversal fields. *)
+Fixpoint templateFormulaExMany
+    (count : nat) (body : TemplateFormula) : TemplateFormula :=
+  match count with
+  | 0 => body
+  | S smaller => tfEx (templateFormulaExMany smaller body)
+  end.
+
+Definition coqFourStateTableAppendOpenedLocalRowTemplate
+    (local : TemplateFormula) (bound : TemplateTerm) : TemplateFormula :=
+  match templateExistentialOpenMany
+    (templateFormulaShiftMany 8
+      (templateFormulaExMany 10 (templateFormulaAllMany 5 local)))
+    (coqFourStateTableAppendGlobalTraversalWitnesses bound) with
+  | Some rows =>
+      match templateUniversalBodyMany 5 rows with
+      | Some body => body
+      | None => tfBot
+      end
+  | None => tfBot
+  end.
+
+(** Projection from the complete opened traversal to the two local polarity
+    bodies.  This is definitional, but naming it makes the expensive global
+    normalization happen only once in downstream proofs. *)
+Lemma coqFourStateTableAppendOpenedGlobalRowProductionTemplate_local_shape :
+  forall rootMode localSigma localPi bound,
+  coqFourStateTableAppendOpenedGlobalRowProductionTemplate
+    rootMode localSigma localPi bound =
+  tfOr
+    (tfAnd (tfEq (ttVar 3) ttZero)
+      (coqFourStateTableAppendOpenedLocalRowTemplate
+        (embedPAFormula localSigma) bound))
+    (tfAnd (tfEq (ttVar 3) (ttSucc ttZero))
+      (coqFourStateTableAppendOpenedLocalRowTemplate
+        (embedPAFormula localPi) bound)).
+Proof. intros. reflexivity. Qed.
+
+(** The eight append witnesses occupy exactly local indices [5..12].
+    After fusing the eight shifts with all ten openings, the resulting
+    substitution fixes those indices and the five row indices [0..4].
+    Values at indices [13] and above may mention [bound], so the scope
+    hypothesis is both sufficient and necessary. *)
+Lemma coqFourStateTableAppendOpenedLocalRowTemplate_scoped_identity : forall
+    local bound,
+  StandardFormulaScoped 13 local ->
+  coqFourStateTableAppendOpenedLocalRowTemplate
+    (embedPAFormula local) bound = embedPAFormula local.
+Proof.
+  intros local bound hscope.
+  unfold coqFourStateTableAppendOpenedLocalRowTemplate.
+  cbn [templateFormulaExMany templateFormulaAllMany
+    templateFormulaShiftMany templateExistentialOpenMany
+    templateUniversalBodyMany templateFormulaOpen templateFormulaRename
+    templateUpRenaming coqFourStateTableAppendGlobalTraversalWitnesses
+    templateFormulaSubst templateTermUpSubst templateInstTerm].
+  repeat rewrite templateFormulaRename_comp.
+  repeat rewrite templateFormulaSubst_comp.
+  rewrite templateFormulaSubst_rename.
+  apply (templateFormulaSubst_embedPAFormula_scoped_fixed 13 local).
+  - exact hscope.
+  - intros index hindex.
+    do 13 (destruct index as [|index]; [reflexivity | ]).
+    lia.
+Qed.
+
+(** The final production equality consumed by the concrete-row/global
+    adapter.  It is independent of the root mode and of the bound term once
+    the two local rows are scoped to their advertised thirteen variables. *)
+Theorem
+    coqFourStateTableAppendConcreteClosedRowProductionTemplate_embedded_eq_opened :
+  forall rootMode localSigma localPi bound,
+  StandardFormulaScoped 13 localSigma ->
+  StandardFormulaScoped 13 localPi ->
+  coqFourStateTableAppendConcreteClosedRowProductionTemplate
+    (embedPAFormula localSigma) (embedPAFormula localPi) =
+  coqFourStateTableAppendOpenedGlobalRowProductionTemplate
+    rootMode localSigma localPi bound.
+Proof.
+  intros rootMode localSigma localPi bound hSigma hPi.
+  rewrite
+    coqFourStateTableAppendConcreteClosedRowProductionTemplate_embedded_shape.
+  rewrite
+    coqFourStateTableAppendOpenedGlobalRowProductionTemplate_local_shape.
+  rewrite (coqFourStateTableAppendOpenedLocalRowTemplate_scoped_identity
+    localSigma bound hSigma).
+  rewrite (coqFourStateTableAppendOpenedLocalRowTemplate_scoped_identity
+    localPi bound hPi).
+  reflexivity.
 Qed.
 
 (** Convert the completed concrete row implication into the exact extracted
@@ -1094,6 +1278,90 @@ Proof.
       assignmentCodeCode assignmentCodeStep
       assignmentStepCode assignmentStepStep
       witnesses sigmaProduction piProduction hproduction hrow).
+Qed.
+
+(** Scoped client of the composed endpoint.  The two concrete polarity
+    bodies are the ordinary embeddings of the local Sigma/Pi rows, so the
+    preceding normalization theorem discharges the former equality premise
+    internally. *)
+Corollary
+    raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_scoped_concrete_row :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall
+    rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses appendRoot,
+  rootMode = 0 \/ rootMode = 1 ->
+  StandardFormulaScoped 13 localSigma ->
+  StandardFormulaScoped 13 localPi ->
+  RawCodedPALocalProofOf M
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName)
+        (embedPATerm (Term.numeral rootMode))
+        (ttVar 0) (ttVar 1) (ttVar 2))) appendRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (coqFourStateTableAppendRowPrefix
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName)
+      (embedPATerm (Term.numeral rootMode))
+      (ttVar 0) (ttVar 1) (ttVar 2))
+    (rawTemplateFormula translation
+      (tfImp
+        (coqLtSuccCasesAntecedentTemplate
+          (ttVar 4) (ttParameter boundName))
+        (tfImp
+          (coqFourStateTableAppendEqualityRowLookupTemplate
+            coqFourStateTableAppendRowModeParameterName
+            coqFourStateTableAppendRowFormulaParameterName
+            coqFourStateTableAppendRowAssignmentCodeParameterName
+            coqFourStateTableAppendRowAssignmentStepParameterName
+            (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+          (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+            (embedPAFormula localSigma) (embedPAFormula localPi))))) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M)) []
+    (rawTemplateFormula translation
+      (embedPAFormula
+        (dynamicTruthGlobalFormula (Term.numeral rootMode)
+          localSigma localPi))).
+Proof.
+  intros M hPA translation hagreement
+    rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses appendRoot hrootMode hSigma hPi happend hrow.
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_concrete_row
+      M hPA translation hagreement
+      rootMode localSigma localPi boundName
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      witnesses (embedPAFormula localSigma) (embedPAFormula localPi)
+      appendRoot hrootMode
+      (coqFourStateTableAppendConcreteClosedRowProductionTemplate_embedded_eq_opened
+        rootMode localSigma localPi (ttParameter boundName) hSigma hPi)
+      happend hrow).
 Qed.
 
 End PABoundedRawCodedFourStateTableAppendGlobalTraversalAssembly.
