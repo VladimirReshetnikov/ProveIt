@@ -2932,6 +2932,18 @@ public order.  The resulting dependent witness exposes the exact selected
 Assumption tail for the package's own `inputs`, together with a continuation
 map from the twenty-one-field remainder back to the older integration API.
 
+`RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterOrIntroductionLeftTruth.v`
+prepares the next native field for independent proof production.  It proves
+that the Or-I-left ready context is compatible with the generic surrounding-
+tail transport, places a selected Or-law witness batch between arbitrary
+earlier and later standard batches, and reconstructs the post-Assumption
+record from an exact twenty-field continuation.  Its native-package endpoint
+therefore produces the direct universal-soundness certificate without asking
+the continuation for the Or-I-left truth root.  The substantive remaining
+step is now isolated: construct that selected root from the linked native
+successor-row data, rather than silently assuming an arbitrary truth
+predicate is closed under disjunction.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
