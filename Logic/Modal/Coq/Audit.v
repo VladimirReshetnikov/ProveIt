@@ -9,7 +9,7 @@ From FoundationModal Require Import
   PropositionalKripkePreservation PropositionalKripkeCanonical
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
   PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
-  PropositionalKripke2Hilbert
+  PropositionalKripke2Hilbert PropositionalHilbertFExtensions
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1434,6 +1434,43 @@ Print Assumptions phf_F_unprovable_noncontradiction.
 Print Assumptions phf_F_strictly_included_F_Ser.
 Print Assumptions phf_F_Rfl_strictly_included_F_Rfl_Sym.
 Print Assumptions phf_F_Tra1_strictly_included_F_Rfl_Tra1.
+
+(** Hilbert F slash/disjunction and weak-deduction extensions. *)
+Check phf_provable_mdp.
+Check phf_provable_afortiori.
+Check phf_provable_and_rule.
+Check phf_provable_or_left.
+Check phf_provable_or_right.
+Check phf_provable_imp_trans.
+Check phf_provable_imp_and.
+Check phf_provable_of_aczel_slash.
+Check phf_aczel_slash_of_proof.
+Check phf_aczel_slash_iff_provable.
+Check phf_disjunctive_of_schema_aczel_slash.
+Check phf_aczel_slash_axiom_ser.
+Check phf_aczel_slash_axiom_rfl.
+Check phf_aczel_slash_axiom_tra1.
+Check phf_F_disjunctive.
+Check phf_F_Ser_disjunctive.
+Check phf_F_Rfl_disjunctive.
+Check phf_F_Tra1_disjunctive.
+Check phf_deduction.
+Check phf_deducible_of_provable.
+Check phf_deduction_empty_iff.
+Check phf_deduction_weaken.
+Check phf_weak_deduction_iff.
+Check phf_deduction_finite_list_support.
+Print Assumptions phf_provable_imp_trans.
+Print Assumptions phf_aczel_slash_of_proof.
+Print Assumptions phf_aczel_slash_iff_provable.
+Print Assumptions phf_disjunctive_of_schema_aczel_slash.
+Print Assumptions phf_F_disjunctive.
+Print Assumptions phf_F_Ser_disjunctive.
+Print Assumptions phf_F_Rfl_disjunctive.
+Print Assumptions phf_F_Tra1_disjunctive.
+Print Assumptions phf_deduction_empty_iff.
+Print Assumptions phf_weak_deduction_iff.
+Print Assumptions phf_deduction_finite_list_support.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
