@@ -10,6 +10,7 @@ From FoundationModal Require Import
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
+  PropositionalKripkeClassical
   GenericCalculus PropositionalEntailmentAxioms
   PropositionalEntailmentLukasiewicz
   PropositionalEntailmentMinimal PropositionalEntailmentInt
@@ -1068,6 +1069,58 @@ Print Assumptions ph_hilbert_kc_pkripke_sound.
 Print Assumptions ph_hilbert_kc_consistent_via_pkripke.
 Print Assumptions ph_hilbert_lc_pkripke_sound.
 Print Assumptions ph_hilbert_lc_consistent_via_pkripke.
+
+(** Excluded middle over preorder Kripke frames.  Symmetry and right
+    Euclideanness coincide; one atomic LEM instance defines them.  The
+    singleton/Boolean bridge factors ordinary and finite Cl completeness. *)
+Check pkripke_frame_symmetric.
+Check pkripke_frame_euclidean.
+Check pkripke_symmetric_of_euclidean.
+Check pkripke_euclidean_of_symmetric.
+Check pkripke_symmetric_iff_euclidean.
+Check pkripke_LEM_valid_of_symmetric.
+Check pkripke_LEM_valid_of_euclidean.
+Check pkripke_euclidean_of_LEM_valid.
+Check pkripke_LEM_valid_iff_euclidean.
+Check pki_has_lem.
+Check pki_canonical_frame_euclidean.
+Check pki_cl_has_efq.
+Check pki_cl_has_lem.
+Check pkripke_singleton_boolean_valuation.
+Check pkripke_singleton_boolean_model.
+Check pkripke_singleton_forces_iff_boolean.
+Check ph_hilbert_cl_pkripke_complete_of_singleton.
+Check ph_hilbert_cl_pkripke_sound.
+Check ph_hilbert_cl_pkripke_complete.
+Check ph_hilbert_cl_pkripke_sound_complete.
+Check ph_hilbert_cl_pkripke_symmetric_complete.
+Check ph_hilbert_cl_pkripke_symmetric_sound_complete.
+Check pkripke_singleton_symmetric.
+Check pkripke_singleton_euclidean.
+Check pkripke_singleton_finite.
+Check pkripke_finite_symmetric.
+Check pkripke_finite_euclidean.
+Check ph_hilbert_cl_pkripke_finite_symmetric_complete.
+Check ph_hilbert_cl_pkripke_finite_euclidean_complete.
+Check ph_hilbert_cl_consistent_via_pkripke.
+Check ph_hilbert_lc_included_cl.
+Check pkripke_two_chain_frame.
+Check pkripke_two_chain_strongly_connected.
+Check pkripke_two_chain_not_euclidean.
+Check ph_hilbert_lc_strictly_included_cl.
+Print Assumptions pkripke_symmetric_iff_euclidean.
+Print Assumptions pkripke_LEM_valid_of_symmetric.
+Print Assumptions pkripke_euclidean_of_LEM_valid.
+Print Assumptions pki_canonical_frame_euclidean.
+Print Assumptions pkripke_singleton_forces_iff_boolean.
+Print Assumptions ph_hilbert_cl_pkripke_complete_of_singleton.
+Print Assumptions ph_hilbert_cl_pkripke_sound.
+Print Assumptions ph_hilbert_cl_pkripke_complete.
+Print Assumptions ph_hilbert_cl_pkripke_finite_symmetric_complete.
+Print Assumptions ph_hilbert_cl_pkripke_finite_euclidean_complete.
+Print Assumptions ph_hilbert_cl_consistent_via_pkripke.
+Print Assumptions ph_hilbert_lc_included_cl.
+Print Assumptions ph_hilbert_lc_strictly_included_cl.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
