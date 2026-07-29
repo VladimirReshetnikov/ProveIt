@@ -245,6 +245,26 @@ Check semiterm_operator_apply_positive.
 Check semiterm_const_operator_positive.
 Check semiterm_operator_foldr.
 Check semiterm_operator_foldr_cons_apply.
+Check semiterm_has_zero_operator.
+Check semiterm_has_one_operator.
+Check semiterm_has_add_operator.
+Check semiterm_has_mul_operator.
+Check semiterm_has_exp_operator.
+Check semiterm_has_star_operator.
+Check semiterm_zero_operator_of_language.
+Check semiterm_one_operator_of_language.
+Check semiterm_add_operator_of_language.
+Check semiterm_mul_operator_of_language.
+Check semiterm_exp_operator_of_language.
+Check semiterm_star_operator_of_language.
+Check semiterm_add_operator_positive.
+Check semiterm_mul_operator_positive.
+Check semiterm_exp_operator_positive.
+Check semiterm_operator_numeral.
+Check semiterm_operator_numeral_zero.
+Check semiterm_operator_numeral_one.
+Check semiterm_operator_numeral_succ_nonzero.
+Check semiterm_operator_numeral_succ_succ.
 Check semiformula_operator.
 Check semiformula_operator_apply.
 Check rew_semiformula_operator_apply.
@@ -256,6 +276,34 @@ Check semiformula_operator_and.
 Check semiformula_operator_or.
 Check semiformula_operator_and_apply.
 Check semiformula_operator_or_apply.
+Check semiformula_has_eq_operator.
+Check semiformula_has_lt_operator.
+Check semiformula_has_le_operator.
+Check semiformula_has_mem_operator.
+Check semiformula_eq_operator_of_language.
+Check semiformula_lt_operator_of_language.
+Check semiformula_mem_operator_of_language.
+Check semiformula_le_operator_of_eq_lt.
+Check semiformula_le_operator_of_language.
+Check semiformula_eq_operator_apply.
+Check semiformula_lt_operator_apply.
+Check semiformula_mem_operator_apply.
+Check semiformula_le_operator_apply.
+Check semiformula_binary_relation_injective.
+Check semiformula_eq_operator_injective.
+Check semiformula_lt_operator_injective.
+Check semiformula_mem_operator_injective.
+Check semiformula_le_operator_injective.
+Check semiformula_eq_operator_open.
+Check semiformula_lt_operator_open.
+Check semiformula_mem_operator_open.
+Check semiformula_le_operator_open.
+Check semiformula_ball_lt.
+Check semiformula_bex_lt.
+Check semiformula_ball_le.
+Check semiformula_bex_le.
+Check semiformula_ball_mem.
+Check semiformula_bex_mem.
 
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
@@ -353,8 +401,15 @@ Print Assumptions semiterm_operator_apply_bound_occurs.
 Print Assumptions semiterm_operator_apply_positive.
 Print Assumptions semiterm_const_operator_positive.
 Print Assumptions semiterm_operator_foldr_cons_apply.
+Print Assumptions semiterm_add_operator_positive.
+Print Assumptions semiterm_mul_operator_positive.
+Print Assumptions semiterm_exp_operator_positive.
+Print Assumptions semiterm_operator_numeral_succ_nonzero.
 Print Assumptions rew_semiformula_operator_apply.
 Print Assumptions semiformula_operator_comp_assoc.
+Print Assumptions semiformula_binary_relation_injective.
+Print Assumptions semiformula_eq_operator_injective.
+Print Assumptions semiformula_le_operator_injective.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
