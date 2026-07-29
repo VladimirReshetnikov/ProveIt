@@ -464,3 +464,298 @@ Defined.
 
 Arguments generic_classical_neg_disj2_map_to_conj2_raw
   {S F E C s} _ _.
+
+(** * Transport across a connective homomorphism and proof equivalence *)
+
+(** A connective homomorphism preserves every formula schema used by the
+    classical-entailment dictionary.  Keeping these equations separate makes
+    the transport below reusable for other proof interfaces. *)
+Lemma generic_connective_hom_axiom_neg_equiv :
+  forall (FT FS : Type)
+         (CT : generic_connectives FT) (CS : generic_connectives FS)
+         (f : generic_connective_hom CT CS) (p : FT),
+    generic_connective_hom_apply f (generic_axiom_neg_equiv CT p) =
+    generic_axiom_neg_equiv CS (generic_connective_hom_apply f p).
+Proof.
+  intros FT FS CT CS f p. unfold generic_axiom_neg_equiv.
+  rewrite (generic_connective_hom_iff f),
+    (generic_connective_hom_neg f),
+    (generic_connective_hom_imp f),
+    (generic_connective_hom_bottom f).
+  reflexivity.
+Qed.
+
+Lemma generic_connective_hom_axiom_K :
+  forall (FT FS : Type)
+         (CT : generic_connectives FT) (CS : generic_connectives FS)
+         (f : generic_connective_hom CT CS) (p q : FT),
+    generic_connective_hom_apply f (generic_axiom_K CT p q) =
+    generic_axiom_K CS
+      (generic_connective_hom_apply f p)
+      (generic_connective_hom_apply f q).
+Proof.
+  intros FT FS CT CS f p q. unfold generic_axiom_K.
+  now rewrite !generic_connective_hom_imp.
+Qed.
+
+Lemma generic_connective_hom_axiom_S :
+  forall (FT FS : Type)
+         (CT : generic_connectives FT) (CS : generic_connectives FS)
+         (f : generic_connective_hom CT CS) (p q r : FT),
+    generic_connective_hom_apply f (generic_axiom_S CT p q r) =
+    generic_axiom_S CS
+      (generic_connective_hom_apply f p)
+      (generic_connective_hom_apply f q)
+      (generic_connective_hom_apply f r).
+Proof.
+  intros FT FS CT CS f p q r. unfold generic_axiom_S.
+  now rewrite !generic_connective_hom_imp.
+Qed.
+
+Lemma generic_connective_hom_axiom_and1 :
+  forall (FT FS : Type)
+         (CT : generic_connectives FT) (CS : generic_connectives FS)
+         (f : generic_connective_hom CT CS) (p q : FT),
+    generic_connective_hom_apply f (generic_axiom_and1 CT p q) =
+    generic_axiom_and1 CS
+      (generic_connective_hom_apply f p)
+      (generic_connective_hom_apply f q).
+Proof.
+  intros FT FS CT CS f p q. unfold generic_axiom_and1.
+  now rewrite generic_connective_hom_imp, generic_connective_hom_and.
+Qed.
+
+Lemma generic_connective_hom_axiom_and2 :
+  forall (FT FS : Type)
+         (CT : generic_connectives FT) (CS : generic_connectives FS)
+         (f : generic_connective_hom CT CS) (p q : FT),
+    generic_connective_hom_apply f (generic_axiom_and2 CT p q) =
+    generic_axiom_and2 CS
+      (generic_connective_hom_apply f p)
+      (generic_connective_hom_apply f q).
+Proof.
+  intros FT FS CT CS f p q. unfold generic_axiom_and2.
+  now rewrite generic_connective_hom_imp, generic_connective_hom_and.
+Qed.
+
+Lemma generic_connective_hom_axiom_and3 :
+  forall (FT FS : Type)
+         (CT : generic_connectives FT) (CS : generic_connectives FS)
+         (f : generic_connective_hom CT CS) (p q : FT),
+    generic_connective_hom_apply f (generic_axiom_and3 CT p q) =
+    generic_axiom_and3 CS
+      (generic_connective_hom_apply f p)
+      (generic_connective_hom_apply f q).
+Proof.
+  intros FT FS CT CS f p q. unfold generic_axiom_and3.
+  now rewrite !generic_connective_hom_imp, generic_connective_hom_and.
+Qed.
+
+Lemma generic_connective_hom_axiom_or1 :
+  forall (FT FS : Type)
+         (CT : generic_connectives FT) (CS : generic_connectives FS)
+         (f : generic_connective_hom CT CS) (p q : FT),
+    generic_connective_hom_apply f (generic_axiom_or1 CT p q) =
+    generic_axiom_or1 CS
+      (generic_connective_hom_apply f p)
+      (generic_connective_hom_apply f q).
+Proof.
+  intros FT FS CT CS f p q. unfold generic_axiom_or1.
+  now rewrite generic_connective_hom_imp, generic_connective_hom_or.
+Qed.
+
+Lemma generic_connective_hom_axiom_or2 :
+  forall (FT FS : Type)
+         (CT : generic_connectives FT) (CS : generic_connectives FS)
+         (f : generic_connective_hom CT CS) (p q : FT),
+    generic_connective_hom_apply f (generic_axiom_or2 CT p q) =
+    generic_axiom_or2 CS
+      (generic_connective_hom_apply f p)
+      (generic_connective_hom_apply f q).
+Proof.
+  intros FT FS CT CS f p q. unfold generic_axiom_or2.
+  now rewrite generic_connective_hom_imp, generic_connective_hom_or.
+Qed.
+
+Lemma generic_connective_hom_axiom_or3 :
+  forall (FT FS : Type)
+         (CT : generic_connectives FT) (CS : generic_connectives FS)
+         (f : generic_connective_hom CT CS) (p q r : FT),
+    generic_connective_hom_apply f (generic_axiom_or3 CT p q r) =
+    generic_axiom_or3 CS
+      (generic_connective_hom_apply f p)
+      (generic_connective_hom_apply f q)
+      (generic_connective_hom_apply f r).
+Proof.
+  intros FT FS CT CS f p q r. unfold generic_axiom_or3.
+  now rewrite !generic_connective_hom_imp, generic_connective_hom_or.
+Qed.
+
+Lemma generic_connective_hom_axiom_dne :
+  forall (FT FS : Type)
+         (CT : generic_connectives FT) (CS : generic_connectives FS)
+         (f : generic_connective_hom CT CS) (p : FT),
+    generic_connective_hom_apply f (generic_axiom_dne CT p) =
+    generic_axiom_dne CS (generic_connective_hom_apply f p).
+Proof.
+  intros FT FS CT CS f p. unfold generic_axiom_dne.
+  now rewrite generic_connective_hom_imp, !generic_connective_hom_neg.
+Qed.
+
+(** Transport a source proof of a homomorphic image back to the target. *)
+Definition generic_proof_equiv_transport_raw
+    {SS ST FS FT : Type}
+    {ES : generic_entailment SS FS} {ET : generic_entailment ST FT}
+    {CS : generic_connectives FS} {CT : generic_connectives FT}
+    {ss : SS} {st : ST}
+    (f : generic_connective_hom CT CS)
+    (e : forall p : FT,
+      generic_type_equiv
+        (generic_proof ES ss (generic_connective_hom_apply f p))
+        (generic_proof ET st p))
+    (p : FT) (q : FS)
+    (Heq : generic_connective_hom_apply f p = q)
+    (d : generic_proof ES ss q) :
+    generic_proof ET st p :=
+  generic_equiv_to (e p)
+    (@generic_proof_cast SS FS ES ss q
+      (generic_connective_hom_apply f p) d (eq_sym Heq)).
+
+Arguments generic_proof_equiv_transport_raw
+  {SS ST FS FT ES ET CS CT ss st} _ _ _ _ _ _.
+
+(** Foundation's [Cl.ofEquiv], generalized to unrelated source and target
+    formula types, system types, and proof representations.  The equivalence
+    laws themselves are retained, although construction consumes only its two
+    maps. *)
+Definition generic_classical_of_proof_equiv
+    {SS ST FS FT : Type}
+    {ES : generic_entailment SS FS} {ET : generic_entailment ST FT}
+    {CS : generic_connectives FS} {CT : generic_connectives FT}
+    {ss : SS} {st : ST}
+    (H : generic_classical_entailment ES CS ss)
+    (f : generic_connective_hom CT CS)
+    (e : forall p : FT,
+      generic_type_equiv
+        (generic_proof ES ss (generic_connective_hom_apply f p))
+        (generic_proof ET st p)) :
+    generic_classical_entailment ET CT st.
+Proof.
+  constructor.
+  - refine {| generic_modus_ponens_raw := _ |}.
+    intros p q dpq dp.
+    apply (generic_equiv_to (e q)).
+    apply (generic_modus_ponens_raw (generic_classical_mdp H)
+      (generic_connective_hom_apply f p)
+      (generic_connective_hom_apply f q)).
+    + exact (@generic_proof_cast SS FS ES ss
+        (generic_connective_hom_apply f (generic_imp CT p q))
+        (generic_imp CS
+          (generic_connective_hom_apply f p)
+          (generic_connective_hom_apply f q))
+        (generic_equiv_from (e (generic_imp CT p q)) dpq)
+        (generic_connective_hom_imp f p q)).
+    + exact (generic_equiv_from (e p) dp).
+  - intro p.
+    exact (generic_proof_equiv_transport_raw f e
+      (generic_axiom_neg_equiv CT p)
+      (generic_axiom_neg_equiv CS (generic_connective_hom_apply f p))
+      (generic_connective_hom_axiom_neg_equiv f p)
+      (generic_classical_neg_equiv H (generic_connective_hom_apply f p))).
+  - exact (generic_proof_equiv_transport_raw f e
+      (generic_top CT) (generic_top CS)
+      (generic_connective_hom_top f) (generic_classical_verum H)).
+  - intros p q.
+    exact (generic_proof_equiv_transport_raw f e
+      (generic_axiom_K CT p q)
+      (generic_axiom_K CS
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))
+      (generic_connective_hom_axiom_K f p q)
+      (generic_classical_K H
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))).
+  - intros p q r.
+    exact (generic_proof_equiv_transport_raw f e
+      (generic_axiom_S CT p q r)
+      (generic_axiom_S CS
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q)
+        (generic_connective_hom_apply f r))
+      (generic_connective_hom_axiom_S f p q r)
+      (generic_classical_S H
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q)
+        (generic_connective_hom_apply f r))).
+  - intros p q.
+    exact (generic_proof_equiv_transport_raw f e
+      (generic_axiom_and1 CT p q)
+      (generic_axiom_and1 CS
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))
+      (generic_connective_hom_axiom_and1 f p q)
+      (generic_classical_and1 H
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))).
+  - intros p q.
+    exact (generic_proof_equiv_transport_raw f e
+      (generic_axiom_and2 CT p q)
+      (generic_axiom_and2 CS
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))
+      (generic_connective_hom_axiom_and2 f p q)
+      (generic_classical_and2 H
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))).
+  - intros p q.
+    exact (generic_proof_equiv_transport_raw f e
+      (generic_axiom_and3 CT p q)
+      (generic_axiom_and3 CS
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))
+      (generic_connective_hom_axiom_and3 f p q)
+      (generic_classical_and3 H
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))).
+  - intros p q.
+    exact (generic_proof_equiv_transport_raw f e
+      (generic_axiom_or1 CT p q)
+      (generic_axiom_or1 CS
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))
+      (generic_connective_hom_axiom_or1 f p q)
+      (generic_classical_or1 H
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))).
+  - intros p q.
+    exact (generic_proof_equiv_transport_raw f e
+      (generic_axiom_or2 CT p q)
+      (generic_axiom_or2 CS
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))
+      (generic_connective_hom_axiom_or2 f p q)
+      (generic_classical_or2 H
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q))).
+  - intros p q r.
+    exact (generic_proof_equiv_transport_raw f e
+      (generic_axiom_or3 CT p q r)
+      (generic_axiom_or3 CS
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q)
+        (generic_connective_hom_apply f r))
+      (generic_connective_hom_axiom_or3 f p q r)
+      (generic_classical_or3 H
+        (generic_connective_hom_apply f p)
+        (generic_connective_hom_apply f q)
+        (generic_connective_hom_apply f r))).
+  - intro p.
+    exact (generic_proof_equiv_transport_raw f e
+      (generic_axiom_dne CT p)
+      (generic_axiom_dne CS (generic_connective_hom_apply f p))
+      (generic_connective_hom_axiom_dne f p)
+      (generic_classical_dne H (generic_connective_hom_apply f p))).
+Defined.
+
+Arguments generic_classical_of_proof_equiv
+  {SS ST FS FT ES ET CS CT ss st} _ _ _.

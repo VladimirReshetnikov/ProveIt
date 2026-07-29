@@ -1571,7 +1571,9 @@ Print Assumptions ph_hilbert_int_inconsistent_of_provable_neg.
 
 (** Propositional/Entailment/Cl/Basic: DNE yields inverse contraposition,
     ex falso, the intuitionistic capability, classical De Morgan laws,
-    implication as disjunction, excluded middle, and finite De Morgan. *)
+    implication as disjunction, excluded middle, and finite De Morgan;
+    classical structure also transports across a connective homomorphism and
+    pointwise equivalence of heterogeneous raw proof types. *)
 Check generic_classical_double_neg_iff_raw.
 Check generic_classical_or_of_double_neg_or_raw.
 Check generic_classical_neg_imp_converse_raw.
@@ -1597,6 +1599,18 @@ Check generic_has_axiom_dummett_of_classical.
 Check generic_classical_peirce_raw.
 Check generic_has_axiom_peirce_of_classical.
 Check generic_classical_neg_disj2_map_to_conj2_raw.
+Check generic_connective_hom_axiom_neg_equiv.
+Check generic_connective_hom_axiom_K.
+Check generic_connective_hom_axiom_S.
+Check generic_connective_hom_axiom_and1.
+Check generic_connective_hom_axiom_and2.
+Check generic_connective_hom_axiom_and3.
+Check generic_connective_hom_axiom_or1.
+Check generic_connective_hom_axiom_or2.
+Check generic_connective_hom_axiom_or3.
+Check generic_connective_hom_axiom_dne.
+Check generic_proof_equiv_transport_raw.
+Check generic_classical_of_proof_equiv.
 Check ph_hilbert_cl_double_neg_iff.
 Check ph_hilbert_cl_neg_and_iff_or_neg.
 Check ph_hilbert_cl_imp_iff_neg_or.
@@ -1620,6 +1634,10 @@ Print Assumptions generic_classical_elim_contra_axiom_raw.
 Print Assumptions generic_classical_dummett_raw.
 Print Assumptions generic_classical_peirce_raw.
 Print Assumptions generic_classical_neg_disj2_map_to_conj2_raw.
+Print Assumptions generic_connective_hom_axiom_neg_equiv.
+Print Assumptions generic_connective_hom_axiom_or3.
+Print Assumptions generic_proof_equiv_transport_raw.
+Print Assumptions generic_classical_of_proof_equiv.
 Print Assumptions ph_hilbert_cl_double_neg_iff.
 Print Assumptions ph_hilbert_cl_neg_and_iff_or_neg.
 Print Assumptions ph_hilbert_cl_imp_iff_neg_or.
