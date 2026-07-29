@@ -4178,3 +4178,36 @@ keeps any finite adequate append/row assumptions literally ahead of the
 witnessed tail and returns a represented proof of the output equality.  This
 is the reusable single-column primitive for aligning all four equality-branch
 row fields.
+
+Repeated universal instantiation is now factored through a list-level
+compiler in `RawCodedPALocalProofUniversalEliminationChain`.  One represented
+closed theorem root can be opened at any finite list of term tuples, and the
+fixed-PA endpoint selects its standard axiom witnesses only once.  The beta
+compiler packages each five-term lookup instance and uses this interface for
+an arbitrary finite family.  In particular, the four state columns can share
+one literal witnessed tail instead of attempting to reconcile four separately
+chosen witness prefixes.
+
+The shared-prefix transport layer likewise has list-level forms now.  A finite
+family of local proofs can be placed beneath one adequate temporary prefix or
+moved pointwise across one witnessed-tail inclusion, preserving each distinct
+conclusion while sharing the target context.  These lemmas remove the repeated
+root-by-root weakening that the four beta premises and four resulting field
+equalities would otherwise require.
+
+The beta compiler also exposes a context-local family eliminator.  Once the
+functionality implications and both lookup-premise families have been aligned
+in one context, it performs the two represented implication eliminations
+pointwise and returns an equally aligned family of output equalities.  This
+separates the purely logical step from witness selection and binder-safe
+weakening, making the remaining four-column callback an assembly problem over
+audited generic pieces.
+
+The family assembly is now end to end at the generic beta layer.  Indexed
+prefix and witnessed-tail transports preserve each argument record while
+moving its proof root, avoiding conversions through lists of carrier formula
+codes.  The resulting beta endpoint compiles the closed theorem once, inserts
+every instance beneath the common adequate prefix, weakens both lookup
+families to the selected tail, and returns every represented output equality
+under that one extended context.  The append-row specialization can therefore
+request its four field comparisons as one atomic witness-extension step.

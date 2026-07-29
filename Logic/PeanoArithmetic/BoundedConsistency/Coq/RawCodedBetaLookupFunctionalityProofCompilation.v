@@ -14,6 +14,7 @@ From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
+  RawCodedContextLists
   RawCodedPALocalProofExistential
   RawCodedPALocalProofComposition
   RawCodedPAAxiomWitnessPrefix
@@ -35,6 +36,7 @@ Import PA.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
+Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
@@ -96,6 +98,70 @@ Proof.
   reflexivity.
 Qed.
 
+(** Package one five-term instantiation so a finite family can share a
+    single compilation of the closed functionality theorem. *)
+Record CoqBetaLookupFunctionalityArguments : Type := {
+  coqBetaLookupFunctionalityOut1 : TemplateTerm;
+  coqBetaLookupFunctionalityOut2 : TemplateTerm;
+  coqBetaLookupFunctionalityCode : TemplateTerm;
+  coqBetaLookupFunctionalityStep : TemplateTerm;
+  coqBetaLookupFunctionalityIndex : TemplateTerm
+}.
+
+Definition coqBetaLookupFunctionalityReplacementList
+    (arguments : CoqBetaLookupFunctionalityArguments)
+    : list TemplateTerm :=
+  [coqBetaLookupFunctionalityOut1 arguments;
+   coqBetaLookupFunctionalityOut2 arguments;
+   coqBetaLookupFunctionalityCode arguments;
+   coqBetaLookupFunctionalityStep arguments;
+   coqBetaLookupFunctionalityIndex arguments].
+
+Definition coqBetaLookupFunctionalityInstanceOf
+    (arguments : CoqBetaLookupFunctionalityArguments)
+    : TemplateFormula :=
+  coqBetaLookupFunctionalityInstanceTemplate
+    (coqBetaLookupFunctionalityOut1 arguments)
+    (coqBetaLookupFunctionalityOut2 arguments)
+    (coqBetaLookupFunctionalityCode arguments)
+    (coqBetaLookupFunctionalityStep arguments)
+    (coqBetaLookupFunctionalityIndex arguments).
+
+Definition coqBetaLookupFunctionalityFirstLookupOf
+    (arguments : CoqBetaLookupFunctionalityArguments)
+    : TemplateFormula :=
+  templateImpAntecedent
+    (coqBetaLookupFunctionalityInstanceOf arguments).
+
+Definition coqBetaLookupFunctionalityAfterFirstOf
+    (arguments : CoqBetaLookupFunctionalityArguments)
+    : TemplateFormula :=
+  templateImpConsequent
+    (coqBetaLookupFunctionalityInstanceOf arguments).
+
+Definition coqBetaLookupFunctionalitySecondLookupOf
+    (arguments : CoqBetaLookupFunctionalityArguments)
+    : TemplateFormula :=
+  templateImpAntecedent
+    (coqBetaLookupFunctionalityAfterFirstOf arguments).
+
+Definition coqBetaLookupFunctionalityEqualityOf
+    (arguments : CoqBetaLookupFunctionalityArguments)
+    : TemplateFormula :=
+  templateImpConsequent
+    (coqBetaLookupFunctionalityAfterFirstOf arguments).
+
+Lemma coqBetaLookupFunctionalityInstanceOf_open : forall arguments,
+  templateUniversalOpenMany
+    (embedPAFormula codedBetaLookupFunctionalityFormula)
+    (coqBetaLookupFunctionalityReplacementList arguments) =
+  Some (coqBetaLookupFunctionalityInstanceOf arguments).
+Proof.
+  intros [out1 out2 code step index].
+  exact (coqBetaLookupFunctionalityInstanceTemplate_open
+    out1 out2 code step index).
+Qed.
+
 (** Exact two-implication shape after opening all five binders. *)
 Lemma coqBetaLookupFunctionalityInstanceTemplate_shape : forall
     out1 out2 code step index,
@@ -121,6 +187,17 @@ Proof.
   cbn [templateUniversalOpenMany embedPAFormula
     templateFormulaOpen templateFormulaSubst].
   reflexivity.
+Qed.
+
+Lemma coqBetaLookupFunctionalityInstanceOf_shape : forall arguments,
+  coqBetaLookupFunctionalityInstanceOf arguments =
+    tfImp (coqBetaLookupFunctionalityFirstLookupOf arguments)
+      (tfImp (coqBetaLookupFunctionalitySecondLookupOf arguments)
+        (coqBetaLookupFunctionalityEqualityOf arguments)).
+Proof.
+  intros [out1 out2 code step index].
+  exact (coqBetaLookupFunctionalityInstanceTemplate_shape
+    out1 out2 code step index).
 Qed.
 
 Theorem
@@ -155,6 +232,254 @@ Proof.
       hbase PA_proves_codedBetaLookupFunctionalityFormula
       (coqBetaLookupFunctionalityInstanceTemplate_open
         out1 out2 code step index)).
+Qed.
+
+(** Compile the closed theorem once, then instantiate it at an arbitrary
+    finite family of beta-table positions.  This is used with four entries
+    for a state row, but the statement deliberately exposes no fixed arity. *)
+Theorem
+    raw_codedPALocalProofOf_beta_lookup_functionality_instances_on_witnessed_tail :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext arguments,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) roots,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    Forall2
+      (fun argument root =>
+        RawCodedPALocalProofOf M
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses baseContext)
+          (rawTemplateFormula translation
+            (coqBetaLookupFunctionalityInstanceOf argument)) root)
+      arguments roots.
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext arguments hbase.
+  assert (hopen : Forall2
+      (fun replacements target =>
+        templateUniversalOpenMany
+          (embedPAFormula codedBetaLookupFunctionalityFormula)
+          replacements = Some target)
+      (map coqBetaLookupFunctionalityReplacementList arguments)
+      (map coqBetaLookupFunctionalityInstanceOf arguments)).
+  {
+    induction arguments as [|argument remaining ih].
+    - constructor.
+    - cbn [map]. constructor.
+      + exact (coqBetaLookupFunctionalityInstanceOf_open argument).
+      + exact ih.
+  }
+  destruct
+    (raw_codedTemplatePALocalProofOf_of_BProv_open_many_list_on_witnessed_tail
+      M hPA translation hagreement baseWitnessList baseContext
+      codedBetaLookupFunctionalityFormula
+      (map coqBetaLookupFunctionalityReplacementList arguments)
+      (map coqBetaLookupFunctionalityInstanceOf arguments)
+      hbase PA_proves_codedBetaLookupFunctionalityFormula hopen)
+    as (witnesses & roots & hextended & hroots).
+  clear hopen.
+  assert (hindexed : Forall2
+      (fun argument root =>
+        RawCodedPALocalProofOf M
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses baseContext)
+          (rawTemplateFormula translation
+            (coqBetaLookupFunctionalityInstanceOf argument)) root)
+      arguments roots).
+  {
+    revert roots hroots.
+    induction arguments as [|argument remaining ih];
+      intros roots hroots.
+    - inversion hroots. constructor.
+    - cbn [map] in hroots.
+      inversion hroots as
+          [|target root remainingTargets remainingRoots
+            hroot htail]; subst.
+      constructor.
+      + exact hroot.
+      + exact (ih remainingRoots htail).
+  }
+  exists witnesses, roots.
+  split; assumption.
+Qed.
+
+(** Apply a family of already aligned functionality instances pointwise.
+    This theorem is deliberately independent of witness selection and context
+    transport: all three incoming root lists inhabit one literal context. *)
+Theorem raw_codedPALocalProofOf_beta_lookup_functionality_instances_apply :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context arguments instanceRoots firstRoots secondRoots,
+  Forall2
+    (fun argument root =>
+      RawCodedPALocalProofOf M context
+        (rawTemplateFormula translation
+          (coqBetaLookupFunctionalityInstanceOf argument)) root)
+    arguments instanceRoots ->
+  Forall2
+    (fun argument root =>
+      RawCodedPALocalProofOf M context
+        (rawTemplateFormula translation
+          (coqBetaLookupFunctionalityFirstLookupOf argument)) root)
+    arguments firstRoots ->
+  Forall2
+    (fun argument root =>
+      RawCodedPALocalProofOf M context
+        (rawTemplateFormula translation
+          (coqBetaLookupFunctionalitySecondLookupOf argument)) root)
+    arguments secondRoots ->
+  exists equalityRoots,
+    Forall2
+      (fun argument root =>
+        RawCodedPALocalProofOf M context
+          (rawTemplateFormula translation
+            (coqBetaLookupFunctionalityEqualityOf argument)) root)
+      arguments equalityRoots.
+Proof.
+  intros M hPA translation context arguments.
+  induction arguments as [|argument remaining ih];
+    intros instanceRoots firstRoots secondRoots
+      hinstances hfirsts hseconds.
+  - inversion hinstances; inversion hfirsts; inversion hseconds.
+    exists []. constructor.
+  - inversion hinstances as
+        [|argumentI instanceRoot remainingI remainingInstanceRoots
+          hinstance hinstancesTail]; subst.
+    inversion hfirsts as
+        [|argumentF firstRoot remainingF remainingFirstRoots
+          hfirst hfirstsTail]; subst.
+    inversion hseconds as
+        [|argumentS secondRoot remainingS remainingSecondRoots
+          hsecond hsecondsTail]; subst.
+    rewrite coqBetaLookupFunctionalityInstanceOf_shape,
+      !rawTemplateFormula_imp in hinstance.
+    pose proof (raw_codedPALocalProofOf_impE M hPA context
+      (rawTemplateFormula translation
+        (coqBetaLookupFunctionalityFirstLookupOf argument))
+      _ instanceRoot firstRoot hinstance hfirst) as hafterFirst.
+    pose proof (raw_codedPALocalProofOf_impE M hPA context
+      (rawTemplateFormula translation
+        (coqBetaLookupFunctionalitySecondLookupOf argument))
+      (rawTemplateFormula translation
+        (coqBetaLookupFunctionalityEqualityOf argument))
+      _ secondRoot hafterFirst hsecond) as hequality.
+    destruct (ih remainingInstanceRoots remainingFirstRoots
+      remainingSecondRoots hinstancesTail hfirstsTail hsecondsTail)
+      as [remainingEqualityRoots hequalitiesTail].
+    lazymatch type of hequality with
+    | RawCodedPALocalProofOf _ _ _ ?equalityRoot =>
+        exists (equalityRoot :: remainingEqualityRoots);
+        constructor; assumption
+    end.
+Qed.
+
+(** End-to-end finite-family endpoint beneath a temporary prefix.  One
+    compilation selects the common PA witness extension; the functionality
+    instances are prefixed, both premise families are weakened to that tail,
+    and the pointwise eliminator returns all represented equalities. *)
+Theorem
+    raw_codedPALocalProofOf_beta_lookup_functionality_instances_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix arguments firstRoots secondRoots,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  Forall2
+    (fun argument root =>
+      RawCodedPALocalProofOf M
+        (rawTemplateContextCodeOnTail translation baseContext prefix)
+        (rawTemplateFormula translation
+          (coqBetaLookupFunctionalityFirstLookupOf argument)) root)
+    arguments firstRoots ->
+  Forall2
+    (fun argument root =>
+      RawCodedPALocalProofOf M
+        (rawTemplateContextCodeOnTail translation baseContext prefix)
+        (rawTemplateFormula translation
+          (coqBetaLookupFunctionalitySecondLookupOf argument)) root)
+    arguments secondRoots ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) equalityRoots,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    Forall2
+      (fun argument root =>
+        RawCodedPALocalProofOf M
+          (rawTemplateContextCodeOnTail translation
+            (rawStandardPAAxiomWitnessPrefixContextCode M
+              witnesses baseContext) prefix)
+          (rawTemplateFormula translation
+            (coqBetaLookupFunctionalityEqualityOf argument)) root)
+      arguments equalityRoots.
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext prefix arguments firstRoots secondRoots
+    hprefix hbase hfirsts hseconds.
+  destruct
+    (raw_codedPALocalProofOf_beta_lookup_functionality_instances_on_witnessed_tail
+      M hPA translation hagreement baseWitnessList baseContext
+      arguments hbase)
+    as (witnesses & instanceRoots & hextended & hinstances).
+  set (extendedWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext).
+  assert (hextendedRealizable : RawContextListRealizable M extendedContext).
+  {
+    exact (raw_codedPAAxiomWitnessPrefix_context_realizable_of_witnessed M
+      extendedWitnessList extendedContext hextended).
+  }
+  destruct (raw_codedPALocalProof_templatePrefix_indexed
+    M hPA translation extendedContext prefix
+    CoqBetaLookupFunctionalityArguments
+    (fun argument => rawTemplateFormula translation
+      (coqBetaLookupFunctionalityInstanceOf argument))
+    hextendedRealizable hprefix arguments instanceRoots hinstances)
+    as [prefixedInstanceRoots hprefixedInstances].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport_indexed
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      CoqBetaLookupFunctionalityArguments
+      (fun argument => rawTemplateFormula translation
+        (coqBetaLookupFunctionalityFirstLookupOf argument))
+      hbase hextended
+      (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+        M hPA witnesses baseContext)
+      arguments firstRoots hfirsts)
+    as [transportedFirstRoots htransportedFirsts].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport_indexed
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      CoqBetaLookupFunctionalityArguments
+      (fun argument => rawTemplateFormula translation
+        (coqBetaLookupFunctionalitySecondLookupOf argument))
+      hbase hextended
+      (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+        M hPA witnesses baseContext)
+      arguments secondRoots hseconds)
+    as [transportedSecondRoots htransportedSeconds].
+  destruct
+    (raw_codedPALocalProofOf_beta_lookup_functionality_instances_apply
+      M hPA translation
+      (rawTemplateContextCodeOnTail translation extendedContext prefix)
+      arguments prefixedInstanceRoots transportedFirstRoots
+      transportedSecondRoots hprefixedInstances
+      htransportedFirsts htransportedSeconds)
+    as [equalityRoots hequalities].
+  exists witnesses, equalityRoots.
+  split; [exact hextended | exact hequalities].
 Qed.
 
 (** Apply both represented lookup premises while preserving an arbitrary
