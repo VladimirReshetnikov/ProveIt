@@ -3,7 +3,8 @@
 From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
-  GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol GenericCalculus
+  GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
+  PropositionalFormula GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -769,6 +770,56 @@ Print Assumptions generic_list_box_iter_image_preimage_reflect.
 Print Assumptions generic_list_dia_iter_preimage_member_iff.
 Print Assumptions generic_finset_box_iter_to_list_member_iff.
 Print Assumptions generic_finset_dia_iter_image_elim.
+
+(** Primitive Propositional/Formula/Basic syntax and structural core. *)
+Check pformula.
+Check PAtom.
+Check PFalsum.
+Check PAnd.
+Check POr.
+Check PImp.
+Check pneg.
+Check ptop.
+Check pformula_connectives.
+Check pformula_and_inj.
+Check pformula_or_inj.
+Check pformula_imp_inj.
+Check pformula_neg_inj.
+Check pformula_iff_def.
+Check pformula_complexity.
+Check pformula_eq_dec.
+Check pformula_letterless.
+Check pformula_atom_not_letterless.
+Check pformula_bottom_letterless.
+Check pformula_top_letterless.
+Check pformula_neg_letterless_iff.
+Check pformula_subformulas.
+Check pformula_is_subformula.
+Check pformula_subformulas_self.
+Check pformula_subformulas_left.
+Check pformula_subformulas_right.
+Check pformula_subformula_trans.
+Check pformula_subformula_and_components.
+Check pformula_subformula_or_components.
+Check pformula_subformula_imp_components.
+Check pformula_subformula_closed.
+Check pformula_subformulas_closed.
+Check psubstitution.
+Check psubstitution_id.
+Check pformula_substitute.
+Check pformula_substitute_iff.
+Check pformula_substitute_id.
+Check psubstitution_compose.
+Check pformula_substitute_compose.
+Check pformula_substitute_letterless.
+Print Assumptions pformula_and_inj.
+Print Assumptions pformula_eq_dec.
+Print Assumptions pformula_neg_letterless_iff.
+Print Assumptions pformula_subformula_trans.
+Print Assumptions pformula_subformulas_closed.
+Print Assumptions pformula_substitute_id.
+Print Assumptions pformula_substitute_compose.
+Print Assumptions pformula_substitute_letterless.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
