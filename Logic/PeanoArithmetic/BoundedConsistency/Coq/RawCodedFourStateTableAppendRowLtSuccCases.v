@@ -1249,6 +1249,163 @@ Proof.
   - exact hresult.
 Qed.
 
+(** The three equality-branch productions that must coexist under its
+    literal arithmetic head.  Naming this package keeps the complete case
+    compiler independent of the proof-root choices made by its client. *)
+Definition RawFourStateTableAppendEqualityProductionInputsAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (context : M) (prefix : TemplateContext)
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep : TemplateTerm)
+    (boundName modeName formulaName assignmentCodeName assignmentStepName
+      : TemplateParameterName)
+    (index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+      : TemplateTerm)
+    (fixedResult : TemplateFormula) : Prop :=
+  exists fixedLookupRoot rowLookupRoot fixedResultRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation context prefix)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate
+          boundName index
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          (ttParameter modeName) (ttParameter formulaName)
+          (ttParameter assignmentCodeName)
+          (ttParameter assignmentStepName))) fixedLookupRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation context prefix)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendEqualityRowLookupTemplate
+          modeName formulaName assignmentCodeName assignmentStepName
+          index rowMode rowFormula rowAssignmentCode rowAssignmentStep))
+      rowLookupRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation context prefix)
+      (rawTemplateFormula translation fixedResult) fixedResultRoot.
+
+Arguments RawFourStateTableAppendEqualityProductionInputsAt
+  M translation context prefix
+  modeCode modeStep formulaCode formulaStep
+  assignmentCodeCode assignmentCodeStep
+  assignmentStepCode assignmentStepStep
+  boundName modeName formulaName assignmentCodeName assignmentStepName
+  index rowMode rowFormula rowAssignmentCode rowAssignmentStep fixedResult
+  : clear implicits.
+
+(** Close one complete appended-row production by represented case
+    elimination.  The predecessor compiler is intentionally abstract over
+    the particular row predicate; the equality branch is concrete and uses
+    the four synchronized beta lookups plus represented parameter transport.
+    Both callbacks may grow the witnessed PA tail, and the generic growing
+    eliminator reconciles their contexts before constructing [OrE]. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_row_production_cases_on_growing_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    index rowBound rowMode rowFormula rowAssignmentCode rowAssignmentStep
+    antecedentRoot fixedResult,
+  let result := templateFormulaReplaceParameters
+    (coqFourStateTableAppendEqualityFieldBindings
+      modeName formulaName assignmentCodeName assignmentStepName
+      rowMode rowFormula rowAssignmentCode rowAssignmentStep)
+    fixedResult in
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation
+      (coqLtSuccCasesEqualTemplate index rowBound)) ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  modeName <> boundName ->
+  formulaName <> boundName ->
+  assignmentCodeName <> boundName ->
+  assignmentStepName <> boundName ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqLtSuccCasesAntecedentTemplate index rowBound)) antecedentRoot ->
+  (forall sourceWitnessList sourceContext,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+    RawCodedPAGrowingTemplateLocalProofAt M translation
+      sourceWitnessList sourceContext
+      (coqLtSuccCasesBelowTemplate index rowBound :: prefix)
+      (rawTemplateFormula translation result)) ->
+  (forall sourceWitnessList sourceContext,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+    RawFourStateTableAppendEqualityProductionInputsAt M translation
+      sourceContext
+      (coqLtSuccCasesEqualTemplate index rowBound :: prefix)
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      boundName modeName formulaName assignmentCodeName assignmentStepName
+      index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+      fixedResult) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    baseWitnessList baseContext prefix
+    (rawTemplateFormula translation result).
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext prefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    index rowBound rowMode rowFormula rowAssignmentCode rowAssignmentStep
+    antecedentRoot fixedResult result
+    hprefix hequalHead hbase
+    hmodeFresh hformulaFresh hassignmentCodeFresh hassignmentStepFresh
+    hantecedent hbelowBranch hequalInputs.
+  cbn zeta in *.
+  eapply
+    (raw_codedPALocalProofOf_lt_succ_cases_eliminate_on_growing_witnessed_tail_under_prefix
+      M hPA translation hagreement
+      baseWitnessList baseContext prefix index rowBound antecedentRoot
+      (rawTemplateFormula translation
+        (templateFormulaReplaceParameters
+          (coqFourStateTableAppendEqualityFieldBindings
+            modeName formulaName assignmentCodeName assignmentStepName
+            rowMode rowFormula rowAssignmentCode rowAssignmentStep)
+          fixedResult))).
+  - exact hprefix.
+  - exact hbase.
+  - exact hantecedent.
+  - exact hbelowBranch.
+  - intros sourceWitnessList sourceContext hsource.
+    destruct (hequalInputs sourceWitnessList sourceContext hsource)
+      as (fixedLookupRoot & rowLookupRoot & fixedResultRoot &
+          hfixedLookup & hrowLookup & hfixedResultRoot).
+    assert (hequalPrefix :
+        RawCodedTemplatePrefixAtomicallyAdequate M translation
+          (coqLtSuccCasesEqualTemplate index rowBound :: prefix)).
+    {
+      intros formula [hformula | hformula].
+      - subst formula. exact hequalHead.
+      - exact (hprefix formula hformula).
+    }
+    exact
+      (raw_codedPALocalProofOf_four_state_table_append_equality_transport_result_growing_tail_under_prefix
+        M hPA translation hagreement
+        sourceWitnessList sourceContext
+        (coqLtSuccCasesEqualTemplate index rowBound :: prefix)
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        boundName modeName formulaName assignmentCodeName assignmentStepName
+        index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+        fixedLookupRoot rowLookupRoot fixedResult fixedResultRoot
+        hequalPrefix hsource
+        hmodeFresh hformulaFresh hassignmentCodeFresh hassignmentStepFresh
+        hfixedLookup hrowLookup hfixedResultRoot).
+Qed.
+
 (** Agreement on embedded PA syntax identifies the metatheoretic witnessed
     template tail with its synchronized carrier-coded context. *)
 Lemma raw_templateContextCode_embedPAAxiomWitnesses : forall

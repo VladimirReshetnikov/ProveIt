@@ -4270,6 +4270,16 @@ The append-row equality assembler exposes exactly that package, so its beta
 functionality witness selection can now occur below the equality head
 without violating the case split's context identity.
 
+The append specialization now consumes that growing eliminator directly.
+Its complete production-case theorem accepts a dependency-ordered
+predecessor compiler and a named three-root equality package under the
+literal `i = b` head.  The equality callback compares all four table fields,
+transports the fixed appended-row production to the independently bound row
+values, and the outer theorem returns the common row production after one
+represented case split.  The remaining concrete work is to instantiate the
+generic production formula with the closed successor-row body and supply its
+predecessor production from the inherited traversal hypothesis.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
