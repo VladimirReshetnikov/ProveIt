@@ -4650,3 +4650,14 @@ the same extension.  This removes the former fixed-context equality obstacle:
 the remaining traversal integration may freely adjoin the PA witnesses needed
 to construct admissibility and the opened Sigma/Pi evidence, provided it
 retains the existing base-context inclusion certificate.
+
+The two polarity-specific append traversals are synchronized at that boundary
+as well.  Completed witnessed-context merging now has a strengthened endpoint
+which retains inclusion of both input contexts, and the generic growing proof
+layer uses it to merge two independently selected empty-prefix proof tails
+while preserving inclusion of their common source.  The append assembly
+bundles each mode's append, inherited-traversal, old-lookup, and fixed-row
+production roots, compiles the mode-0 and mode-1 globals independently, and
+returns both proofs in one witnessed context.  The remaining predecessor work
+is therefore formula elimination inside this common context, not another
+context-coordination or witness-selection problem.

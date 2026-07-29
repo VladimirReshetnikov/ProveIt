@@ -2972,6 +2972,143 @@ Proof.
       hrootMode hopen hinheritedRoots hfixedProduction).
 Qed.
 
+(** Bundle the four root witnesses and their exact structural side conditions
+    for one polarity.  The bundle is Prop-valued because callers only need to
+    eliminate it into another represented-proof existence statement.  This
+    avoids coordinating four independently named roots twice when Sigma and
+    Pi global traversals are compiled together. *)
+Definition RawFourStateTableAppendConcreteGlobalRowInputsAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (rootMode : nat) (localSigma localPi : formula)
+    (boundName : nat) (witnesses : StandardPAAxiomWitnessPrefix) : Prop :=
+  exists (appendRoot fixedProductionRoot : M)
+      (inheritedTraversal oldLookup : TemplateFormula),
+    (rootMode = 0 \/ rootMode = 1) /\
+    StandardFormulaScoped 13 localSigma /\
+    StandardFormulaScoped 13 localPi /\
+    templateUniversalOpenMany inheritedTraversal
+      coqFourStateTableAppendConcreteRowVariables =
+      Some
+        (tfImp
+          (coqLtSuccCasesBelowTemplate
+            (ttVar 4) (ttParameter boundName))
+          (tfImp oldLookup
+            (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+              (embedPAFormula localSigma) (embedPAFormula localPi)))) /\
+    RawFourStateTableAppendInheritedLocalRootsAt M translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (coqFourStateTableAppendRowPrefix
+        (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+        (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+        (ttParameter boundName)
+        (embedPATerm (Term.numeral rootMode))
+        (ttVar 0) (ttVar 1) (ttVar 2))
+      inheritedTraversal oldLookup /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses (raw_zero M))
+        (coqFourStateTableAppendRowPrefix
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter boundName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 0) (ttVar 1) (ttVar 2)))
+      (rawTemplateFormula translation
+        (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+          (coqFourStateTableAppendEmbeddedModeProductionMotive
+            localSigma localPi))) fixedProductionRoot /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter boundName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 0) (ttVar 1) (ttVar 2))) appendRoot.
+
+Arguments RawFourStateTableAppendConcreteGlobalRowInputsAt
+  M translation rootMode localSigma localPi boundName witnesses
+  : clear implicits.
+
+Corollary
+    raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_concrete_global_row_input_package :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode localSigma localPi boundName witnesses,
+  RawFourStateTableAppendConcreteGlobalRowInputsAt M translation
+    rootMode localSigma localPi boundName witnesses ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M)) []
+    (rawTemplateFormula translation
+      (embedPAFormula
+        (dynamicTruthGlobalFormula (Term.numeral rootMode)
+          localSigma localPi))).
+Proof.
+  intros M hPA translation hagreement
+    rootMode localSigma localPi boundName witnesses
+    (appendRoot & fixedProductionRoot & inheritedTraversal & oldLookup &
+      hrootMode & hSigma & hPi & hopen & hinheritedRoots &
+      hfixedProduction & happend).
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_concrete_global_row_inputs
+      M hPA translation hagreement
+      rootMode localSigma localPi boundName witnesses
+      appendRoot inheritedTraversal oldLookup fixedProductionRoot
+      hrootMode hSigma hPi hopen hinheritedRoots hfixedProduction happend).
+Qed.
+
+(** Compile the Sigma- and Pi-rooted globals independently, then merge their
+    possibly different growing PA tails.  The result remembers inclusion of
+    the original standard witness-prefix context, so a carried local field can
+    later be transported into this common global-traversal context. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofPairAtEmpty_dynamic_truth_global_sigma_pi_of_append_concrete_global_row_input_packages :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall localSigma localPi boundName witnesses,
+  RawFourStateTableAppendConcreteGlobalRowInputsAt M translation
+    0 localSigma localPi boundName witnesses ->
+  RawFourStateTableAppendConcreteGlobalRowInputsAt M translation
+    1 localSigma localPi boundName witnesses ->
+  RawCodedPAGrowingTemplateLocalProofPairAtEmpty M
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (rawTemplateFormula translation
+      (embedPAFormula
+        (dynamicTruthGlobalFormula (Term.numeral 0)
+          localSigma localPi)))
+    (rawTemplateFormula translation
+      (embedPAFormula
+        (dynamicTruthGlobalFormula (Term.numeral 1)
+          localSigma localPi))).
+Proof.
+  intros M hPA translation hagreement
+    localSigma localPi boundName witnesses hSigmaInputs hPiInputs.
+  apply (raw_codedPAGrowingTemplateLocalProofAt_pair_at_empty
+    M hPA translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))).
+  - exact
+      (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_concrete_global_row_input_package
+        M hPA translation hagreement 0 localSigma localPi
+        boundName witnesses hSigmaInputs).
+  - exact
+      (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_concrete_global_row_input_package
+        M hPA translation hagreement 1 localSigma localPi
+        boundName witnesses hPiInputs).
+Qed.
+
 (** The row compiler may use a syntactically different temporary prefix—for
     example one containing named carrier parameters.  Equality of translated
     prefix codes over every raw tail is the exact and weakest condition needed
