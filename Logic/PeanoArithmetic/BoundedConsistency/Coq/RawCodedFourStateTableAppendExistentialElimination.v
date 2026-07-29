@@ -266,6 +266,14 @@ Definition coqFourStateTableAppendPreservationAtTemplate
     : TemplateFormula :=
   templateUniversalOpenManyOrBot preservation [index; value].
 
+(** The same two openings after the five global-row eigenvariables have
+    shifted the preservation law. *)
+Definition coqFourStateTableAppendRowPreservationAtTemplate
+    (preservation : TemplateFormula) (index value : TemplateTerm)
+    : TemplateFormula :=
+  templateUniversalOpenManyOrBot
+    (templateFormulaShiftMany 5 preservation) [index; value].
+
 Definition coqFourStateTableAppendPreservationCurrentBoundTemplate
     (preservation : TemplateFormula) (index value : TemplateTerm)
     : TemplateFormula :=
@@ -454,6 +462,158 @@ Proof.
     apply ih.
 Qed.
 
+(** Finite shift preserves transparent conjunctions. *)
+Lemma templateFormulaShiftMany_and : forall count left right,
+  templateFormulaShiftMany count (tfAnd left right) =
+  tfAnd (templateFormulaShiftMany count left)
+    (templateFormulaShiftMany count right).
+Proof.
+  induction count as [|smaller ih]; intros left right.
+  - reflexivity.
+  - cbn [templateFormulaShiftMany templateFormulaRename].
+    rewrite ih. reflexivity.
+Qed.
+
+(** Any projection commuting with one successor renaming also commutes with
+    its finite iteration. *)
+Lemma templateFormulaProjection_shift_many : forall projection,
+  (forall source,
+    projection (templateFormulaRename S source) =
+    templateFormulaRename S (projection source)) ->
+  forall count source,
+    projection (templateFormulaShiftMany count source) =
+    templateFormulaShiftMany count (projection source).
+Proof.
+  intros projection hprojection count.
+  induction count as [|smaller ih]; intro source.
+  - reflexivity.
+  - cbn [templateFormulaShiftMany].
+    rewrite ih, hprojection. reflexivity.
+Qed.
+
+Lemma templateAndFirst_rename_succ : forall source,
+  templateAndFirst (templateFormulaRename S source) =
+  templateFormulaRename S (templateAndFirst source).
+Proof.
+  intros [lhs rhs | | lhs rhs | lhs rhs | lhs rhs | body | body | p args];
+    reflexivity.
+Qed.
+
+Lemma templateAndSecond_rename_succ : forall source,
+  templateAndSecond (templateFormulaRename S source) =
+  templateFormulaRename S (templateAndSecond source).
+Proof.
+  intros [lhs rhs | | lhs rhs | lhs rhs | lhs rhs | body | body | p args];
+    reflexivity.
+Qed.
+
+Lemma templateAnd4First_rename_succ : forall source,
+  templateAnd4First (templateFormulaRename S source) =
+  templateFormulaRename S (templateAnd4First source).
+Proof.
+  intros [lhs rhs | | lhs rhs | lhs rhs | lhs rhs | body | body | p args];
+    reflexivity.
+Qed.
+
+Lemma templateAnd4Second_rename_succ : forall source,
+  templateAnd4Second (templateFormulaRename S source) =
+  templateFormulaRename S (templateAnd4Second source).
+Proof.
+  intros [lhs rhs | | lhs rhs | lhs rhs | lhs rhs | body | body | p args];
+    try reflexivity.
+  destruct rhs; reflexivity.
+Qed.
+
+Lemma templateAnd4Third_rename_succ : forall source,
+  templateAnd4Third (templateFormulaRename S source) =
+  templateFormulaRename S (templateAnd4Third source).
+Proof.
+  intros [lhs rhs | | lhs rhs | lhs rhs | lhs rhs | body | body | p args];
+    try reflexivity.
+  destruct rhs as
+    [lhs2 rhs2 | | lhs2 rhs2 | lhs2 rhs2 | lhs2 rhs2 |
+      body2 | body2 | p2 args2]; try reflexivity.
+  destruct rhs2; reflexivity.
+Qed.
+
+Lemma templateAnd4Fourth_rename_succ : forall source,
+  templateAnd4Fourth (templateFormulaRename S source) =
+  templateFormulaRename S (templateAnd4Fourth source).
+Proof.
+  intros [lhs rhs | | lhs rhs | lhs rhs | lhs rhs | body | body | p args];
+    try reflexivity.
+  destruct rhs as
+    [lhs2 rhs2 | | lhs2 rhs2 | lhs2 rhs2 | lhs2 rhs2 |
+      body2 | body2 | p2 args2]; try reflexivity.
+  destruct rhs2; reflexivity.
+Qed.
+
+Lemma templateAndFirst_shift_many : forall count source,
+  templateAndFirst (templateFormulaShiftMany count source) =
+  templateFormulaShiftMany count (templateAndFirst source).
+Proof.
+  exact (templateFormulaProjection_shift_many
+    templateAndFirst templateAndFirst_rename_succ).
+Qed.
+
+Lemma templateAndSecond_shift_many : forall count source,
+  templateAndSecond (templateFormulaShiftMany count source) =
+  templateFormulaShiftMany count (templateAndSecond source).
+Proof.
+  exact (templateFormulaProjection_shift_many
+    templateAndSecond templateAndSecond_rename_succ).
+Qed.
+
+Lemma templateAnd4First_shift_many : forall count source,
+  templateAnd4First (templateFormulaShiftMany count source) =
+  templateFormulaShiftMany count (templateAnd4First source).
+Proof.
+  exact (templateFormulaProjection_shift_many
+    templateAnd4First templateAnd4First_rename_succ).
+Qed.
+
+Lemma templateAnd4Second_shift_many : forall count source,
+  templateAnd4Second (templateFormulaShiftMany count source) =
+  templateFormulaShiftMany count (templateAnd4Second source).
+Proof.
+  exact (templateFormulaProjection_shift_many
+    templateAnd4Second templateAnd4Second_rename_succ).
+Qed.
+
+Lemma templateAnd4Third_shift_many : forall count source,
+  templateAnd4Third (templateFormulaShiftMany count source) =
+  templateFormulaShiftMany count (templateAnd4Third source).
+Proof.
+  exact (templateFormulaProjection_shift_many
+    templateAnd4Third templateAnd4Third_rename_succ).
+Qed.
+
+Lemma templateAnd4Fourth_shift_many : forall count source,
+  templateAnd4Fourth (templateFormulaShiftMany count source) =
+  templateFormulaShiftMany count (templateAnd4Fourth source).
+Proof.
+  exact (templateFormulaProjection_shift_many
+    templateAnd4Fourth templateAnd4Fourth_rename_succ).
+Qed.
+
+Lemma templateFormulaShiftMany_and4_shape : forall count source,
+  source = tfAnd (templateAnd4First source)
+    (tfAnd (templateAnd4Second source)
+      (tfAnd (templateAnd4Third source) (templateAnd4Fourth source))) ->
+  templateFormulaShiftMany count source =
+    tfAnd
+      (templateAnd4First (templateFormulaShiftMany count source))
+      (tfAnd
+        (templateAnd4Second (templateFormulaShiftMany count source))
+        (tfAnd
+          (templateAnd4Third (templateFormulaShiftMany count source))
+          (templateAnd4Fourth (templateFormulaShiftMany count source)))).
+Proof.
+  intros count source hshape.
+  rewrite hshape, !templateFormulaShiftMany_and.
+  reflexivity.
+Qed.
+
 (** The append extension body remains the head assumption after any number
     of later eigenvariables have shifted the whole witness context. *)
 Lemma coqFourStateTableAppendWitnessContext_shift_many_shape : forall
@@ -531,6 +691,95 @@ Proof.
         assignmentCodeCode assignmentCodeStep
         assignmentStepCode assignmentStepStep
         bound mode formula assignmentCode assignmentStep context))).
+Qed.
+
+(** Project the four top-level append components after an arbitrary later
+    eigenvariable block.  Every target is the shift of the corresponding
+    unshifted component, preserving the original column names. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_extension_components_shift_many :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    count context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  let extension := coqFourStateTableAppendExtensionBodyTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep in
+  let shiftedWitnessContext := templateContextShiftMany count
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep context) in
+  exists modeRoot formulaRoot assignmentCodeRoot assignmentStepRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count (templateAnd4First extension)))
+      modeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count (templateAnd4Second extension)))
+      formulaRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count (templateAnd4Third extension)))
+      assignmentCodeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count (templateAnd4Fourth extension)))
+      assignmentStepRoot.
+Proof.
+  intros M hPA translation count context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep.
+  cbn zeta.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_extension_assumption_shift_many
+      M hPA translation count context
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    as [extensionRoot hextension].
+  destruct (raw_codedPALocalProofOf_templateAnd4_components
+    M hPA translation
+    (rawTemplateContextCode translation
+      (templateContextShiftMany count
+        (coqFourStateTableAppendWitnessContext
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep context)))
+    (templateFormulaShiftMany count
+      (coqFourStateTableAppendExtensionBodyTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep))
+    extensionRoot
+    (templateFormulaShiftMany_and4_shape count _ (eq_refl _))
+    hextension)
+    as (modeRoot & formulaRoot & assignmentCodeRoot & assignmentStepRoot &
+        hmode & hformula & hassignmentCode & hassignmentStep).
+  rewrite templateAnd4First_shift_many in hmode.
+  rewrite templateAnd4Second_shift_many in hformula.
+  rewrite templateAnd4Third_shift_many in hassignmentCode.
+  rewrite templateAnd4Fourth_shift_many in hassignmentStep.
+  exists modeRoot, formulaRoot, assignmentCodeRoot, assignmentStepRoot.
+  split; [exact hmode |].
+  split; [exact hformula |].
+  split; [exact hassignmentCode | exact hassignmentStep].
 Qed.
 
 (** The innermost body retains the literal four-way conjunction of append
@@ -891,6 +1140,101 @@ Proof.
     templateAnd4First, templateAnd4Second,
     templateAnd4Third, templateAnd4Fourth.
   cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst
+    templateExistentialBodyMany].
+  repeat split; reflexivity.
+Qed.
+
+(** Five shifts preserve the two leading universal binders of every append
+    preservation law. *)
+Lemma coqFourStateTableAppendRowPreservationAt_successes : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep,
+  templateUniversalOpenMany
+    (templateFormulaShiftMany 5
+      (coqFourStateTableAppendModePreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep))
+    [index; rowMode] =
+    Some (coqFourStateTableAppendRowPreservationAtTemplate
+      (coqFourStateTableAppendModePreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)
+      index rowMode) /\
+  templateUniversalOpenMany
+    (templateFormulaShiftMany 5
+      (coqFourStateTableAppendFormulaPreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep))
+    [index; rowFormula] =
+    Some (coqFourStateTableAppendRowPreservationAtTemplate
+      (coqFourStateTableAppendFormulaPreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)
+      index rowFormula) /\
+  templateUniversalOpenMany
+    (templateFormulaShiftMany 5
+      (coqFourStateTableAppendAssignmentCodePreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep))
+    [index; rowAssignmentCode] =
+    Some (coqFourStateTableAppendRowPreservationAtTemplate
+      (coqFourStateTableAppendAssignmentCodePreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)
+      index rowAssignmentCode) /\
+  templateUniversalOpenMany
+    (templateFormulaShiftMany 5
+      (coqFourStateTableAppendAssignmentStepPreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep))
+    [index; rowAssignmentStep] =
+    Some (coqFourStateTableAppendRowPreservationAtTemplate
+      (coqFourStateTableAppendAssignmentStepPreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)
+      index rowAssignmentStep).
+Proof.
+  intros.
+  unfold coqFourStateTableAppendRowPreservationAtTemplate,
+    templateUniversalOpenManyOrBot,
+    coqFourStateTableAppendModePreservationTemplate,
+    coqFourStateTableAppendFormulaPreservationTemplate,
+    coqFourStateTableAppendAssignmentCodePreservationTemplate,
+    coqFourStateTableAppendAssignmentStepPreservationTemplate,
+    coqFourStateTableAppendExtensionBodyTemplate,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendExtensionBody,
+    codedAssignmentAppendAtTermAt,
+    codedAssignmentAppendPrefixTermAt,
+    fixedLevelEx8, fixedLevelAnd4,
+    templateAndFirst, templateAndSecond,
+    templateAnd4First, templateAnd4Second,
+    templateAnd4Third, templateAnd4Fourth.
+  cbn [templateFormulaShiftMany templateFormulaRename
+    templateUniversalOpenMany embedPAFormula
     templateFormulaOpen templateFormulaSubst
     templateExistentialBodyMany].
   repeat split; reflexivity.
@@ -1764,6 +2108,236 @@ Proof.
   split; [exact hformulaPreservation |].
   split; [exact hassignmentCodePreservation |
     exact hassignmentStepPreservation].
+Qed.
+
+(** Shifted counterpart used beneath the traversal row's eigenvariables. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_preservation_components_shift_many :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    count context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  let shiftedWitnessContext := templateContextShiftMany count
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep context) in
+  exists modeRoot formulaRoot assignmentCodeRoot assignmentStepRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count
+          (coqFourStateTableAppendModePreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep))) modeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count
+          (coqFourStateTableAppendFormulaPreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep))) formulaRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count
+          (coqFourStateTableAppendAssignmentCodePreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)))
+      assignmentCodeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count
+          (coqFourStateTableAppendAssignmentStepPreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)))
+      assignmentStepRoot.
+Proof.
+  intros M hPA translation count context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep.
+  cbn zeta.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_extension_components_shift_many
+      M hPA translation count context
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    as (modeAppendRoot & formulaAppendRoot &
+        assignmentCodeAppendRoot & assignmentStepAppendRoot &
+        hmodeAppend & hformulaAppend &
+        hassignmentCodeAppend & hassignmentStepAppend).
+  destruct (coqFourStateTableAppendExtensionComponent_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodeShape [hformulaShape
+      [hassignmentCodeShape hassignmentStepShape]]].
+  destruct (coqFourStateTableAppendExtensionDefined_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodeDefinedShape [hformulaDefinedShape
+      [hassignmentCodeDefinedShape hassignmentStepDefinedShape]]].
+  destruct (coqFourStateTableAppendExtensionPreservation_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodePreservationShape [hformulaPreservationShape
+      [hassignmentCodePreservationShape
+       hassignmentStepPreservationShape]]].
+  rewrite hmodeShape, hmodeDefinedShape, hmodePreservationShape,
+    !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hmodeAppend.
+  rewrite hformulaShape, hformulaDefinedShape, hformulaPreservationShape,
+    !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hformulaAppend.
+  rewrite hassignmentCodeShape, hassignmentCodeDefinedShape,
+    hassignmentCodePreservationShape,
+    !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hassignmentCodeAppend.
+  rewrite hassignmentStepShape, hassignmentStepDefinedShape,
+    hassignmentStepPreservationShape,
+    !templateFormulaShiftMany_and,
+    !rawTemplateFormula_and in hassignmentStepAppend.
+  destruct (raw_codedPALocalProofOf_andE121 M hPA _ _ _ _ _ _ hmodeAppend)
+    as [modeRoot hmodePreservation].
+  destruct (raw_codedPALocalProofOf_andE121 M hPA _ _ _ _ _ _
+    hformulaAppend) as [formulaRoot hformulaPreservation].
+  destruct (raw_codedPALocalProofOf_andE121 M hPA _ _ _ _ _ _
+    hassignmentCodeAppend)
+    as [assignmentCodeRoot hassignmentCodePreservation].
+  destruct (raw_codedPALocalProofOf_andE121 M hPA _ _ _ _ _ _
+    hassignmentStepAppend)
+    as [assignmentStepRoot hassignmentStepPreservation].
+  exists modeRoot, formulaRoot, assignmentCodeRoot, assignmentStepRoot.
+  split; [exact hmodePreservation |].
+  split; [exact hformulaPreservation |].
+  split; [exact hassignmentCodePreservation |
+    exact hassignmentStepPreservation].
+Qed.
+
+(** Open the shifted preservation laws at the five row eigenvariables. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_row_preservation_at :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep,
+  let shiftedWitnessContext := templateContextShiftMany 5
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep context) in
+  exists modeRoot formulaRoot assignmentCodeRoot assignmentStepRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendRowPreservationAtTemplate
+          (coqFourStateTableAppendModePreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)
+          index rowMode)) modeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendRowPreservationAtTemplate
+          (coqFourStateTableAppendFormulaPreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)
+          index rowFormula)) formulaRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendRowPreservationAtTemplate
+          (coqFourStateTableAppendAssignmentCodePreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)
+          index rowAssignmentCode)) assignmentCodeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation shiftedWitnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendRowPreservationAtTemplate
+          (coqFourStateTableAppendAssignmentStepPreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)
+          index rowAssignmentStep)) assignmentStepRoot.
+Proof.
+  intros M hPA translation context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep.
+  cbn zeta.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_preservation_components_shift_many
+      M hPA translation 5 context
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    as (modeRoot & formulaRoot & assignmentCodeRoot & assignmentStepRoot &
+        hmode & hformula & hassignmentCode & hassignmentStep).
+  destruct (coqFourStateTableAppendRowPreservationAt_successes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep)
+    as [hmodeOpen [hformulaOpen
+      [hassignmentCodeOpen hassignmentStepOpen]]].
+  destruct (raw_codedPALocalProofOf_templateUniversalOpenMany
+    M hPA translation _ _ [index; rowMode] _ modeRoot hmodeOpen hmode)
+    as [modeAtRoot hmodeAt].
+  destruct (raw_codedPALocalProofOf_templateUniversalOpenMany
+    M hPA translation _ _ [index; rowFormula] _ formulaRoot
+    hformulaOpen hformula) as [formulaAtRoot hformulaAt].
+  destruct (raw_codedPALocalProofOf_templateUniversalOpenMany
+    M hPA translation _ _ [index; rowAssignmentCode] _ assignmentCodeRoot
+    hassignmentCodeOpen hassignmentCode)
+    as [assignmentCodeAtRoot hassignmentCodeAt].
+  destruct (raw_codedPALocalProofOf_templateUniversalOpenMany
+    M hPA translation _ _ [index; rowAssignmentStep] _ assignmentStepRoot
+    hassignmentStepOpen hassignmentStep)
+    as [assignmentStepAtRoot hassignmentStepAt].
+  exists modeAtRoot, formulaAtRoot,
+    assignmentCodeAtRoot, assignmentStepAtRoot.
+  split; [exact hmodeAt |].
+  split; [exact hformulaAt |].
+  split; [exact hassignmentCodeAt | exact hassignmentStepAt].
 Qed.
 
 (** Instantiate the four preservation laws at one predecessor row while

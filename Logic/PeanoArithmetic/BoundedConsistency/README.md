@@ -3098,6 +3098,12 @@ its extension-body head in lockstep.  Consequently the five-variable row
 body begins with a genuine represented assumption leaf for the already-open,
 five-times-shifted append body.  It does not reopen the append existentials
 inside the row binders, which would reverse the two eigenvariable blocks.
+Generic finite-shift lemmas now commute transparent conjunctions and all
+stable append projections with that shift.  They decompose the shifted body
+into its four columns, reach the preservation field inside each column, and
+open all four shifted two-variable laws at the candidate row terms.  The
+resulting local roots live in the literal five-times-shifted append-witness
+context, ready for the shared-premise predecessor compiler.
 
 `RawCodedLtSuccCasesSource.v` and
 `RawCodedLtSuccCasesProofCompilation.v` supply the object-language case split
