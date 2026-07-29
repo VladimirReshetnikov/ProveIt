@@ -16,12 +16,15 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   CodedProof
   RawCodedSyntaxConstructors
+  RawCodedContextLists
   RawCodedRestrictedPAProof
   RawCodedFixedLevelTruthTotality
   RawCodedPAAxiomWitnessPrefix
   RawCodedProofAssumptionLeaf
   RawCodedPALocalProofExistential
   RawCodedPALocalProofComposition
+  RawCodedPALocalProofContextInsertUnconditional
+  RawCodedPALocalProofEquality
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
@@ -43,12 +46,15 @@ Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedCodedProof.
 Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedProofAssumptionLeaf.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
+Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
+Import PABoundedRawCodedPALocalProofEquality.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
@@ -59,6 +65,59 @@ Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedFourStateTableAppendExistentialElimination.
+
+(** Use an equality appearing as a freshly consed assumption in the reverse
+    direction.  This is the characteristic shape of the append equality
+    branch: the base context proves the motive at [target], while the branch
+    head says [source = target].  Symmetry and equality elimination are both
+    derived inside the represented proof calculus; the base proof is moved
+    below the branch head only by the guarded context-transplant theorem. *)
+Theorem raw_codedPALocalProofOf_templateEqTransport_reverse_head : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context source target motive motiveRoot,
+  let equalityHead :=
+    rawTemplateFormula translation (tfEq source target) in
+  RawCodedFormulaAtomicallyAdequate M equalityHead ->
+  RawContextListRealizable M context ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateFormulaOpen target motive)) motiveRoot ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawListNode M equalityHead context)
+      (rawTemplateFormula translation
+        (templateFormulaOpen source motive)) root.
+Proof.
+  intros M hPA translation context source target motive motiveRoot
+    equalityHead hhead hcontext hmotive.
+  cbn zeta in *.
+  pose proof (raw_codedPALocalProofOf_assumption M hPA context
+    (rawTemplateFormula translation (tfEq source target)) hcontext)
+    as hequality.
+  destruct (raw_codedPALocalProofOf_templateEqSymmetry M hPA translation
+    (rawListNode M
+      (rawTemplateFormula translation (tfEq source target)) context)
+    source target
+    (rawProofAssumptionRoot M
+      (rawListNode M
+        (rawTemplateFormula translation (tfEq source target)) context)
+      (rawTemplateFormula translation (tfEq source target)))
+    hequality) as [symmetryRoot hsymmetry].
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    context
+    (rawTemplateFormula translation (tfEq source target))
+    (rawTemplateFormula translation
+      (templateFormulaOpen target motive))
+    motiveRoot hhead hcontext hmotive)
+    as [transplantedMotiveRoot htransplantedMotive].
+  eexists.
+  exact (raw_codedPALocalProofOf_templateEqElim M hPA translation
+    (rawListNode M
+      (rawTemplateFormula translation (tfEq source target)) context)
+    target source motive symmetryRoot transplantedMotiveRoot
+    hsymmetry htransplantedMotive).
+Qed.
 
 (** Agreement on embedded PA syntax identifies the metatheoretic witnessed
     template tail with its synchronized carrier-coded context. *)

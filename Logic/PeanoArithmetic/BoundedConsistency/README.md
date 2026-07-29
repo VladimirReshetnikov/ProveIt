@@ -4144,3 +4144,11 @@ The same module derives represented equality symmetry from the premise-free
 reflexivity constructor and one application of equality elimination.  This
 supplies the `b = i` orientation required to transport the equality branch's
 lookup at the appended index `b` to the traversal row index `i`.
+
+The append-row case module now packages that complete branch pattern.  When
+`i = b` is the freshly consed equality head and the base row context already
+proves a motive at `b`, it derives `b = i`, transplants the base proof beneath
+the adequate head, and applies represented equality elimination to obtain the
+motive at `i`.  Thus the eventual lookup specialization needs only to expose
+its one-variable motive; it cannot bypass the represented branch assumption
+or appeal to semantic equality outside PA.
