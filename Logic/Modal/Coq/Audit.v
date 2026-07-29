@@ -1016,7 +1016,10 @@ Print Assumptions ph_hilbert_cl_classical.
 Print Assumptions ph_hilbert_logic_subset_of_schema_inclusion.
 Print Assumptions ph_hilbert_logic_subset_of_provable_schema.
 
-(** Generalized propositional Kripke semantics and Hilbert soundness. *)
+(** Generalized propositional Kripke semantics and Hilbert soundness.
+    Positive forcing, heredity, substitution, validity closure, and
+    frame-class validation combinators are constructive.  Only the exact
+    countermodel-existence converses use propositional excluded middle. *)
 Check pkripke_frame.
 Check pkripke_valuation.
 Check pkripke_model.
@@ -1027,7 +1030,10 @@ Check pkripke_forces_and.
 Check pkripke_forces_or.
 Check pkripke_forces_imp.
 Check pkripke_forces_neg.
+Check pkripke_forces_top.
+Check pkripke_not_of_forces_neg.
 Check pkripke_forces_persistent.
+Check pkripke_not_forces_persistent_back.
 Check pkripke_forcing_relation.
 Check pkripke_generic_int_forcing.
 Check pkripke_substitution_model.
@@ -1039,13 +1045,36 @@ Check pkripke_sound.
 Check pkripke_complete.
 Check ph_hilbert_logic_included.
 Check ph_hilbert_logic_strictly_included.
+Check pkripke_frame_finite.
+Check pkripke_all_frames.
+Check pkripke_finite_frames.
+Check pkripke_frame_class_validates.
+Check pkripke_frame_class_validates_formula.
+Check pkripke_frame_class_validates_inter.
+Check pkripke_frame_class_validates_formula_inter.
+Check pkripke_model_valid_top.
+Check pkripke_model_not_valid_bottom.
+Check pkripke_model_not_valid_iff_world.
+Check pkripke_frame_valid_top.
+Check pkripke_frame_not_valid_bottom.
+Check pkripke_frame_not_valid_iff_valuation.
+Check pkripke_frame_not_valid_iff_valuation_world.
+Check pkripke_frame_not_valid_iff_model_world.
+Check pkripke_frame_class_not_valid_iff_frame.
+Check pkripke_frame_class_not_valid_iff_model.
+Check pkripke_frame_class_not_valid_iff_model_world.
 Check pkripke_frame_valid_substitute.
+Check pkripke_all_frames_validates_efq.
+Check pkripke_finite_frames_validates_efq.
+Check pkripke_frame_class_validates_with_efq.
 Check ph_hilbert_proof_pkripke_sound.
 Check ph_hilbert_pkripke_sound.
 Check ph_hilbert_consistent_of_nonempty_pkripke_class.
 Check ph_hilbert_included_of_pkripke_class_subset.
 Check ph_hilbert_int_pkripke_sound.
 Check ph_hilbert_int_consistent_via_pkripke.
+Check pkripke_all_frames_nonempty.
+Check pkripke_finite_frames_nonempty.
 Check pkripke_frame_strongly_convergent.
 Check pkripke_frame_strongly_connected.
 Check pkripke_strongly_convergent_of_strongly_connected.
@@ -1061,8 +1090,14 @@ Check ph_hilbert_kc_consistent_via_pkripke.
 Check ph_hilbert_lc_pkripke_sound.
 Check ph_hilbert_lc_consistent_via_pkripke.
 Print Assumptions pkripke_forces_persistent.
+Print Assumptions pkripke_not_forces_persistent_back.
 Print Assumptions pkripke_generic_int_forcing.
 Print Assumptions pkripke_forces_substitute.
+Print Assumptions pkripke_frame_class_validates_inter.
+Print Assumptions pkripke_model_not_valid_iff_world.
+Print Assumptions pkripke_frame_not_valid_iff_valuation_world.
+Print Assumptions pkripke_frame_class_not_valid_iff_model_world.
+Print Assumptions pkripke_frame_class_validates_with_efq.
 Print Assumptions ph_hilbert_proof_pkripke_sound.
 Print Assumptions ph_hilbert_consistent_of_nonempty_pkripke_class.
 Print Assumptions ph_hilbert_included_of_pkripke_class_subset.
@@ -1997,7 +2032,11 @@ Print Assumptions pheyting_lindenbaum_model.
 Print Assumptions pheyting_lindenbaum_satisfies_iff.
 Print Assumptions pheyting_hilbert_complete.
 
-(** Duplicate-tolerant consistent tableaux and factored saturation. *)
+(** Duplicate-tolerant consistent tableaux and factored saturation.
+    The saturated connective and supplied-classicality laws are closed under
+    the global context.  Constructing a saturated extension, and hence the
+    contextual completeness equivalences, exposes exactly excluded middle
+    and definite description through the enumerated Lindenbaum chain. *)
 Check pct_conj.
 Check pct_disj.
 Check pct_list_covered.
@@ -2027,6 +2066,43 @@ Check pctableau_limit_list_stage_negative.
 Check pctableau_limit_consistent.
 Check pctableau_limit_saturated.
 Check pctableau_lindenbaum.
+Check psctableau.
+Check psct_lindenbaum.
+Check psct_not_both.
+Check psct_not_positive_iff_negative.
+Check psct_not_negative_iff_positive.
+Check psct_equiv_of_positive.
+Check psct_equiv_of_negative.
+Check psct_not_negative_of_provable_context.
+Check pctableau_empty_consistent.
+Check psctableau_inhabited.
+Check psct_theorem_positive_raw.
+Check psct_theorem_positive.
+Check psct_mdp_theorem_positive.
+Check psct_mdp_theorem_negative.
+Check psct_top_positive.
+Check psct_bottom_not_positive.
+Check psct_bottom_negative.
+Check psct_mdp_positive.
+Check psct_and_positive_iff.
+Check psct_or_positive_iff.
+Check psct_or_negative_iff.
+Check psct_imp_positive_cases.
+Check psct_neg_positive_implies_negative.
+Check psct_positive_implies_neg_negative.
+Check psct_conj_positive_iff.
+Check psct_disj_negative_iff.
+Check pct_context_provable.
+Check pct_list_derivation_bind_raw.
+Check psct_context_positive_raw.
+Check pctableau_context_counterexample_consistent.
+Check psct_context_provable_iff.
+Check pct_empty_context_to_proof.
+Check psct_provable_iff.
+Check psct_classical_imp_positive_iff.
+Check psct_classical_imp_negative_iff.
+Check psct_classical_neg_positive_iff.
+Check psct_classical_neg_negative_iff.
 Print Assumptions pct_split_insert.
 Print Assumptions pctableau_not_both.
 Print Assumptions pctableau_consistent_insert_positive_iff.
@@ -2034,6 +2110,14 @@ Print Assumptions pctableau_consistent_either.
 Print Assumptions pctableau_chain_consistent.
 Print Assumptions pctableau_limit_consistent.
 Print Assumptions pctableau_lindenbaum.
+Print Assumptions psct_and_positive_iff.
+Print Assumptions psct_or_positive_iff.
+Print Assumptions psct_conj_positive_iff.
+Print Assumptions pctableau_context_counterexample_consistent.
+Print Assumptions psct_context_provable_iff.
+Print Assumptions psct_provable_iff.
+Print Assumptions psct_classical_imp_positive_iff.
+Print Assumptions psct_classical_imp_negative_iff.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions

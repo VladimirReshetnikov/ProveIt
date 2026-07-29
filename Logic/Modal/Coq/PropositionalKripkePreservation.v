@@ -242,9 +242,6 @@ Definition pkripke_frame_antisymmetric (F : pkripke_frame) : Prop :=
 Definition pkripke_frame_irreflexive (F : pkripke_frame) : Prop :=
   forall x, ~ pkripke_access F x x.
 
-Definition pkripke_frame_finite (F : pkripke_frame) : Prop :=
-  exists cover : list (pkripke_world F), forall w, In w cover.
-
 Definition pkripke_frame_root (F : pkripke_frame)
     (r : pkripke_world F) : Prop :=
   forall w, w <> r -> pkripke_access F r w.

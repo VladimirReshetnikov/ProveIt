@@ -13,8 +13,10 @@
 From Stdlib Require Import Arith.PeanoNat Lia Lists.List Program.Equality.
 From Stdlib Require Import Logic.ClassicalDescription.
 From FoundationModal Require Import
-  GenericSemantics GenericLogicSymbol PropositionalEntailmentAxioms
+  GenericSemantics GenericEntailment GenericCalculus GenericLogicSymbol
+  PropositionalEntailmentAxioms
   PropositionalEntailmentMinimal PropositionalEntailmentInt
+  PropositionalEntailmentClassical
   PropositionalFormula PropositionalHilbert.
 
 Import ListNotations.
@@ -621,4 +623,595 @@ Proof.
   - split.
     + exact (@pctableau_limit_consistent Atom K H efq t Hcon).
     + exact (@pctableau_limit_saturated Atom K H t).
+Qed.
+
+(** * Saturated consistent tableaux *)
+
+Record psctableau {Atom : Type} (H : ph_hilbert Atom) : Type := {
+  psct_pair : pctableau Atom;
+  psct_consistent : pctableau_consistent H psct_pair;
+  psct_saturated : pctableau_saturated psct_pair
+}.
+
+Arguments psct_pair {Atom H} _.
+Arguments psct_consistent {Atom H} _.
+Arguments psct_saturated {Atom H} _.
+
+Definition psct_positive {Atom : Type} {H : ph_hilbert Atom}
+    (W : psctableau H) : pformula Atom -> Prop :=
+  pctableau_positive (psct_pair W).
+
+Definition psct_negative {Atom : Type} {H : ph_hilbert Atom}
+    (W : psctableau H) : pformula Atom -> Prop :=
+  pctableau_negative (psct_pair W).
+
+Theorem psct_lindenbaum :
+  forall (Atom : Type) (K : pformula_atom_codec Atom)
+      (H : ph_hilbert Atom)
+      (efq : forall q, ph_hilbert_proof H (ph_axiom_efq q)) t,
+    pctableau_consistent H t ->
+    exists W : psctableau H, pctableau_subset t (psct_pair W).
+Proof.
+  intros Atom K H efq t Hcon.
+  destruct (@pctableau_lindenbaum Atom K H efq t Hcon)
+    as [u [Hsub [Hu Hsat]]].
+  exists {| psct_pair := u; psct_consistent := Hu;
+            psct_saturated := Hsat |}.
+  exact Hsub.
+Qed.
+
+Lemma psct_not_both :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p,
+    ~ (psct_positive W p /\ psct_negative W p).
+Proof. intros; now apply (pctableau_not_both (psct_consistent W)). Qed.
+
+Lemma psct_not_positive_iff_negative :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p,
+    (~ psct_positive W p <-> psct_negative W p).
+Proof.
+  intros Atom H W p.
+  apply (@pctableau_not_positive_iff_negative Atom H (psct_pair W)).
+  - apply psct_consistent.
+  - apply psct_saturated.
+Qed.
+
+Lemma psct_not_negative_iff_positive :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p,
+    (~ psct_negative W p <-> psct_positive W p).
+Proof.
+  intros Atom H W p.
+  apply (@pctableau_not_negative_iff_positive Atom H (psct_pair W)).
+  - apply psct_consistent.
+  - apply psct_saturated.
+Qed.
+
+Lemma psct_equiv_of_positive :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W U : psctableau H),
+    (forall p, psct_positive W p <-> psct_positive U p) ->
+    forall p, psct_negative W p <-> psct_negative U p.
+Proof.
+  intros Atom H W U Heq.
+  apply (proj1 (pctableau_saturated_duality
+    (psct_consistent W) (psct_consistent U)
+    (psct_saturated W) (psct_saturated U))). exact Heq.
+Qed.
+
+Lemma psct_equiv_of_negative :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W U : psctableau H),
+    (forall p, psct_negative W p <-> psct_negative U p) ->
+    forall p, psct_positive W p <-> psct_positive U p.
+Proof.
+  intros Atom H W U Heq.
+  apply (proj2 (pctableau_saturated_duality
+    (psct_consistent W) (psct_consistent U)
+    (psct_saturated W) (psct_saturated U))). exact Heq.
+Qed.
+
+Lemma psct_not_negative_of_provable_context :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) gamma p,
+    pct_list_covered (psct_positive W) gamma ->
+    ph_hilbert_provable H (PImp (pct_conj gamma) p) ->
+    ~ psct_negative W p.
+Proof.
+  intros Atom H W gamma p Hgamma Hproof.
+  exact (@pctableau_not_negative_of_provable_context Atom H
+    (psct_pair W) gamma p (psct_consistent W) Hgamma Hproof).
+Qed.
+
+Lemma pctableau_false_covered_nil :
+  forall (F : Type) (gamma : list F),
+    pct_list_covered (fun _ => False) gamma -> gamma = [].
+Proof.
+  intros F gamma H. destruct gamma as [|p gamma]; [reflexivity |].
+  exfalso. exact (H p (GRLM_here gamma)).
+Qed.
+
+Definition ph_hilbert_bottom_consistent {Atom : Type}
+    (H : ph_hilbert Atom) : Prop :=
+  ~ ph_hilbert_provable H PFalsum.
+
+Lemma pctableau_empty_consistent :
+  forall (Atom : Type) (H : ph_hilbert Atom),
+    ph_hilbert_bottom_consistent H ->
+    pctableau_consistent H ((fun _ => False), (fun _ => False)).
+Proof.
+  intros Atom H Hbottom gamma delta Hg Hd [d].
+  apply pctableau_false_covered_nil in Hg.
+  apply pctableau_false_covered_nil in Hd. subst gamma delta.
+  apply Hbottom. constructor. exact (PHPModusPonens d PHPVerum).
+Qed.
+
+Theorem psctableau_inhabited :
+  forall (Atom : Type) (K : pformula_atom_codec Atom)
+      (H : ph_hilbert Atom)
+      (efq : forall q, ph_hilbert_proof H (ph_axiom_efq q)),
+    ph_hilbert_bottom_consistent H -> inhabited (psctableau H).
+Proof.
+  intros Atom K H efq Hbottom.
+  destruct (@psct_lindenbaum Atom K H efq
+    ((fun _ => False), (fun _ => False))
+    (@pctableau_empty_consistent Atom H Hbottom)) as [W _].
+  now constructor.
+Qed.
+
+(** * Closure under the Hilbert connectives *)
+
+Lemma psct_theorem_positive_raw :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p,
+    ph_hilbert_proof H p -> psct_positive W p.
+Proof.
+  intros Atom H W p d.
+  apply (proj1 (psct_not_negative_iff_positive W p)). intro Hneg.
+  apply (psct_consistent W [] [p]).
+  - apply pct_list_covered_nil.
+  - apply pct_list_covered_cons. split; [exact Hneg |].
+    apply pct_list_covered_nil.
+  - constructor. exact (@ph_hilbert_dhyp Atom H p ptop d).
+Qed.
+
+Lemma psct_theorem_positive :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p,
+    ph_hilbert_provable H p -> psct_positive W p.
+Proof. intros Atom H W p [d]; now apply psct_theorem_positive_raw. Qed.
+
+Lemma psct_mdp_theorem_positive :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p q,
+    ph_hilbert_proof H (PImp p q) ->
+    psct_positive W p -> psct_positive W q.
+Proof.
+  intros Atom H W p q d Hp.
+  apply (proj1 (psct_not_negative_iff_positive W q)). intro Hq.
+  apply (psct_consistent W [p] [q]).
+  - apply pct_list_covered_cons. split; [exact Hp |].
+    apply pct_list_covered_nil.
+  - apply pct_list_covered_cons. split; [exact Hq |].
+    apply pct_list_covered_nil.
+  - constructor. exact d.
+Qed.
+
+Lemma psct_mdp_theorem_negative :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p q,
+    ph_hilbert_proof H (PImp p q) ->
+    psct_negative W q -> psct_negative W p.
+Proof.
+  intros Atom H W p q d Hq.
+  apply (proj1 (psct_not_positive_iff_negative W p)). intro Hp.
+  pose proof (@psct_mdp_theorem_positive Atom H W p q d Hp) as Hqp.
+  exact (@psct_not_both Atom H W q (conj Hqp Hq)).
+Qed.
+
+Lemma psct_top_positive :
+  forall (Atom : Type) (H : ph_hilbert Atom) (W : psctableau H),
+    psct_positive W ptop.
+Proof. intros; apply psct_theorem_positive_raw; exact PHPVerum. Qed.
+
+Lemma psct_bottom_not_positive :
+  forall (Atom : Type) (H : ph_hilbert Atom) (W : psctableau H),
+    ~ psct_positive W PFalsum.
+Proof.
+  intros Atom H W Hbot.
+  apply (psct_consistent W [PFalsum] []).
+  - apply pct_list_covered_cons. split; [exact Hbot |].
+    apply pct_list_covered_nil.
+  - apply pct_list_covered_nil.
+  - constructor. exact (ph_hilbert_identity H PFalsum).
+Qed.
+
+Lemma psct_bottom_negative :
+  forall (Atom : Type) (H : ph_hilbert Atom) (W : psctableau H),
+    psct_negative W PFalsum.
+Proof.
+  intros. apply (proj1 (psct_not_positive_iff_negative W PFalsum)).
+  apply psct_bottom_not_positive.
+Qed.
+
+Lemma psct_mdp_positive :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p q,
+    psct_positive W (PImp p q) ->
+    psct_positive W p -> psct_positive W q.
+Proof.
+  intros Atom H W p q Himp Hp.
+  apply (proj1 (psct_not_negative_iff_positive W q)). intro Hq.
+  apply (psct_consistent W [p; PImp p q] [q]).
+  - apply pct_list_covered_cons. split; [exact Hp |].
+    apply pct_list_covered_cons. split; [exact Himp |].
+    apply pct_list_covered_nil.
+  - apply pct_list_covered_cons. split; [exact Hq |].
+    apply pct_list_covered_nil.
+  - constructor.
+    apply (@ph_hilbert_conj2_to_disj2_of_mdp_members Atom H
+      [p; PImp p q] [q] p q).
+    + apply GRLM_here.
+    + apply GRLM_there. apply GRLM_here.
+    + apply GRLM_here.
+Qed.
+
+Lemma psct_and_positive_iff :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p q,
+    (psct_positive W (PAnd p q) <->
+     psct_positive W p /\ psct_positive W q).
+Proof.
+  intros Atom H W p q; split.
+  - intro Hand. split.
+    + exact (@psct_mdp_theorem_positive Atom H W (PAnd p q) p
+        (PHPAndElimL p q) Hand).
+    + exact (@psct_mdp_theorem_positive Atom H W (PAnd p q) q
+        (PHPAndElimR p q) Hand).
+  - intros [Hp Hq].
+    apply (proj1 (psct_not_negative_iff_positive W (PAnd p q))).
+    intro Handneg.
+    apply (psct_consistent W [p; q] [PAnd p q]).
+    + apply pct_list_covered_cons. split; [exact Hp |].
+      apply pct_list_covered_cons. split; [exact Hq |].
+      apply pct_list_covered_nil.
+    + apply pct_list_covered_cons. split; [exact Handneg |].
+      apply pct_list_covered_nil.
+    + constructor.
+      apply (@ph_hilbert_conj2_to_disj2_of_and_member Atom H
+        [p; q] [PAnd p q] p q).
+      * apply GRLM_here.
+      * apply GRLM_there. apply GRLM_here.
+      * apply GRLM_here.
+Qed.
+
+Lemma psct_or_positive_iff :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p q,
+    (psct_positive W (POr p q) <->
+     psct_positive W p \/ psct_positive W q).
+Proof.
+  intros Atom H W p q; split.
+  - intro Hor.
+    destruct (psct_saturated W p) as [Hp | Hpneg]; [now left |].
+    destruct (psct_saturated W q) as [Hq | Hqneg]; [now right |].
+    exfalso.
+    apply (psct_consistent W [POr p q] [p; q]).
+    + apply pct_list_covered_cons. split; [exact Hor |].
+      apply pct_list_covered_nil.
+    + apply pct_list_covered_cons. split; [exact Hpneg |].
+      apply pct_list_covered_cons. split; [exact Hqneg |].
+      apply pct_list_covered_nil.
+    + constructor.
+      apply (@ph_hilbert_conj2_to_disj2_of_or_member Atom H
+        [POr p q] [p; q] p q).
+      * apply GRLM_here.
+      * apply GRLM_here.
+      * apply GRLM_there. apply GRLM_here.
+  - intros [Hp | Hq].
+    + exact (@psct_mdp_theorem_positive Atom H W p (POr p q)
+        (PHPOrIntroL p q) Hp).
+    + exact (@psct_mdp_theorem_positive Atom H W q (POr p q)
+        (PHPOrIntroR p q) Hq).
+Qed.
+
+Lemma psct_or_negative_iff :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p q,
+    (psct_negative W (POr p q) <->
+     psct_negative W p /\ psct_negative W q).
+Proof.
+  intros Atom H W p q. split.
+  - intro Hor. split.
+    + apply (proj1 (psct_not_positive_iff_negative W p)). intro Hp.
+      pose proof (proj2 (psct_or_positive_iff W p q) (or_introl Hp)) as Hpos.
+      exact (@psct_not_both Atom H W (POr p q) (conj Hpos Hor)).
+    + apply (proj1 (psct_not_positive_iff_negative W q)). intro Hq.
+      pose proof (proj2 (psct_or_positive_iff W p q) (or_intror Hq)) as Hpos.
+      exact (@psct_not_both Atom H W (POr p q) (conj Hpos Hor)).
+  - intros [Hp Hq].
+    apply (proj1 (psct_not_positive_iff_negative W (POr p q))). intro Hor.
+    destruct (proj1 (psct_or_positive_iff W p q) Hor) as [Hpos | Hpos].
+    + exact (@psct_not_both Atom H W p (conj Hpos Hp)).
+    + exact (@psct_not_both Atom H W q (conj Hpos Hq)).
+Qed.
+
+Lemma psct_imp_positive_cases :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p q,
+    psct_positive W (PImp p q) ->
+    psct_negative W p \/ psct_positive W q.
+Proof.
+  intros Atom H W p q Himp.
+  destruct (psct_saturated W p) as [Hp | Hp]; [right | now left].
+  exact (@psct_mdp_positive Atom H W p q Himp Hp).
+Qed.
+
+Lemma psct_neg_positive_implies_negative :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p,
+    psct_positive W (pneg p) -> psct_negative W p.
+Proof.
+  intros Atom H W p Hneg.
+  destruct (@psct_imp_positive_cases Atom H W p PFalsum Hneg)
+    as [Hp | Hbottom].
+  - exact Hp.
+  - exfalso. exact (@psct_bottom_not_positive Atom H W Hbottom).
+Qed.
+
+Lemma psct_positive_implies_neg_negative :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) p,
+    psct_positive W p -> psct_negative W (pneg p).
+Proof.
+  intros Atom H W p Hp.
+  apply (proj1 (psct_not_positive_iff_negative W (pneg p))). intro Hneg.
+  pose proof (@psct_mdp_positive Atom H W p PFalsum Hneg Hp) as Hbottom.
+  exact (@psct_bottom_not_positive Atom H W Hbottom).
+Qed.
+
+Lemma psct_conj_positive_iff :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) gamma,
+    (psct_positive W (pct_conj gamma) <->
+     pct_list_covered (psct_positive W) gamma).
+Proof.
+  intros Atom H W gamma. induction gamma as [|p gamma IH].
+  - split; intro Hx.
+    + apply pct_list_covered_nil.
+    + apply psct_top_positive.
+  - destruct gamma as [|q gamma].
+    + split; intro Hx.
+      * apply pct_list_covered_cons. split; [exact Hx |].
+        apply pct_list_covered_nil.
+      * now apply pct_list_covered_cons in Hx as [Hp _].
+    + change (psct_positive W (PAnd p (pct_conj (q :: gamma))) <->
+        pct_list_covered (psct_positive W) (p :: q :: gamma)).
+      split.
+      * intro Hpq. apply psct_and_positive_iff in Hpq as [Hp Htail].
+        apply pct_list_covered_cons. split; [exact Hp |].
+        now apply IH.
+      * intro Hcovered. apply pct_list_covered_cons in Hcovered as [Hp Htail].
+        apply psct_and_positive_iff. split; [exact Hp |].
+        now apply IH.
+Qed.
+
+Lemma psct_disj_negative_iff :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (W : psctableau H) delta,
+    (psct_negative W (pct_disj delta) <->
+     pct_list_covered (psct_negative W) delta).
+Proof.
+  intros Atom H W delta. induction delta as [|p delta IH].
+  - split; intro Hx.
+    + apply pct_list_covered_nil.
+    + apply psct_bottom_negative.
+  - destruct delta as [|q delta].
+    + split; intro Hx.
+      * apply pct_list_covered_cons. split; [exact Hx |].
+        apply pct_list_covered_nil.
+      * now apply pct_list_covered_cons in Hx as [Hp _].
+    + change (psct_negative W (POr p (pct_disj (q :: delta))) <->
+        pct_list_covered (psct_negative W) (p :: q :: delta)).
+      split.
+      * intro Hpq. apply psct_or_negative_iff in Hpq as [Hp Htail].
+        apply pct_list_covered_cons. split; [exact Hp |].
+        now apply IH.
+      * intro Hcovered. apply pct_list_covered_cons in Hcovered as [Hp Htail].
+        apply psct_or_negative_iff. split; [exact Hp |].
+        now apply IH.
+Qed.
+
+(** * Contextual completeness *)
+
+Definition pct_context_provable {Atom : Type} (H : ph_hilbert Atom)
+    (T : pformula Atom -> Prop) (p : pformula Atom) : Prop :=
+  inhabited (ph_hilbert_type_context_proof H
+    (generic_proof_relevant_context T) p).
+
+Fixpoint pct_list_derivation_bind_raw {Atom : Type}
+    (H : ph_hilbert Atom) {gamma : list (pformula Atom)}
+    {T : pformula Atom -> Type}
+    (replace : forall q, generic_raw_list_member q gamma ->
+      ph_hilbert_type_context_proof H T q)
+    {p} (d : ph_hilbert_context_proof H gamma p) :
+    ph_hilbert_type_context_proof H T p.
+Proof.
+  destruct d as [p hp | p b | p q dpq dp].
+  - exact (replace p hp).
+  - exact (GTCD_theorem b).
+  - exact (GTCD_mdp
+      (@pct_list_derivation_bind_raw Atom H gamma T replace (PImp p q) dpq)
+      (@pct_list_derivation_bind_raw Atom H gamma T replace p dp)).
+Defined.
+
+Fixpoint psct_context_positive_raw {Atom : Type} {H : ph_hilbert Atom}
+    (W : psctableau H) (T : pformula Atom -> Prop)
+    (incl : forall q, T q -> psct_positive W q) {p}
+    (d : ph_hilbert_type_context_proof H
+      (generic_proof_relevant_context T) p) : psct_positive W p.
+Proof.
+  destruct d as [p hp | p b | p q dpq dp].
+  - exact (incl p (proj2_sig hp)).
+  - exact (@psct_theorem_positive_raw Atom H W p b).
+  - exact (@psct_mdp_positive Atom H W p q
+      (@psct_context_positive_raw Atom H W T incl (PImp p q) dpq)
+      (@psct_context_positive_raw Atom H W T incl p dp)).
+Defined.
+
+Definition pctableau_context_counterexample {Atom : Type}
+    (T : pformula Atom -> Prop) (p : pformula Atom) : pctableau Atom :=
+  (T, fun q => q = p).
+
+Lemma pctableau_context_counterexample_consistent :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (efq : forall q, ph_hilbert_proof H (ph_axiom_efq q)) T p,
+    ~ pct_context_provable H T p ->
+    pctableau_consistent H (pctableau_context_counterexample T p).
+Proof.
+  intros Atom H efq T p Hnot gamma delta Hgamma Hdelta [d].
+  apply Hnot. constructor.
+  apply (@pct_list_derivation_bind_raw Atom H gamma
+    (generic_proof_relevant_context T)).
+  - intros q hq. apply GTCD_assumption. exists tt. exact (Hgamma q hq).
+  - apply (@ph_hilbert_context_of_conj2 Atom H gamma p).
+    exact (ph_hilbert_imp_trans d
+      (@generic_intuitionistic_list_disj2_unique_raw
+        (ph_hilbert Atom) (pformula Atom)
+        (ph_hilbert_entailment Atom) (pformula_connectives Atom) H
+        (@ph_hilbert_generic_intuitionistic Atom H efq) p delta
+        (fun q hq => Hdelta q hq))).
+Qed.
+
+Theorem psct_context_provable_iff :
+  forall (Atom : Type) (K : pformula_atom_codec Atom)
+      (H : ph_hilbert Atom)
+      (efq : forall q, ph_hilbert_proof H (ph_axiom_efq q)) T p,
+    (pct_context_provable H T p <->
+     forall W : psctableau H,
+       (forall q, T q -> psct_positive W q) -> psct_positive W p).
+Proof.
+  intros Atom K H efq T p. split.
+  - intros [d] W Hincl.
+    exact (@psct_context_positive_raw Atom H W T Hincl p d).
+  - intro Hall. apply NNPP. intro Hnot.
+    destruct (@psct_lindenbaum Atom K H efq
+      (pctableau_context_counterexample T p)
+      (@pctableau_context_counterexample_consistent Atom H efq T p Hnot))
+      as [W Hsub].
+    pose proof (Hall W (fun q hq => (proj1 Hsub) q hq)) as Hp.
+    pose proof ((proj2 Hsub) p eq_refl) as Hpn.
+    exact (@psct_not_both Atom H W p (conj Hp Hpn)).
+Qed.
+
+Definition pct_empty_context_to_proof {Atom : Type} (H : ph_hilbert Atom)
+    {p : pformula Atom}
+    (d : ph_hilbert_type_context_proof H
+      (generic_proof_relevant_context (fun _ => False)) p) :
+    ph_hilbert_proof H p :=
+  generic_empty_type_context_derivation_raw (ph_hilbert_modus_ponens H)
+    (generic_type_context_derivation_weaken_raw
+      (fun q h => False_rect (generic_empty_type_context q) (proj2_sig h)) d).
+
+Theorem psct_provable_iff :
+  forall (Atom : Type) (K : pformula_atom_codec Atom)
+      (H : ph_hilbert Atom)
+      (efq : forall q, ph_hilbert_proof H (ph_axiom_efq q)) p,
+    (ph_hilbert_provable H p <->
+     forall W : psctableau H, psct_positive W p).
+Proof.
+  intros Atom K H efq p. split.
+  - intros Hp W. exact (@psct_theorem_positive Atom H W p Hp).
+  - intro Hall.
+    assert (Hctx : pct_context_provable H (fun _ => False) p).
+    { apply (proj2 (@psct_context_provable_iff Atom K H efq
+        (fun _ => False) p)).
+      intros W _. exact (Hall W). }
+    destruct Hctx as [d]. constructor.
+    exact (@pct_empty_context_to_proof Atom H p d).
+Qed.
+
+(** * Exact classical implication laws
+
+    Foundation obtains these through the global completeness equivalence.
+    The local proof below only needs excluded middle as a Hilbert theorem, so
+    it drops the source's atom encoding and decidable-equality hypotheses. *)
+
+Lemma psct_classical_imp_positive_iff :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (HC : generic_classical_entailment
+        (ph_hilbert_entailment Atom) (pformula_connectives Atom) H)
+      (W : psctableau H) p q,
+    (psct_positive W (PImp p q) <->
+     psct_negative W p \/ psct_positive W q).
+Proof.
+  intros Atom H HC W p q. split.
+  - apply psct_imp_positive_cases.
+  - intros [Hpneg | Hq].
+    + pose proof (@psct_theorem_positive_raw Atom H W
+        (POr p (pneg p)) (generic_classical_lem_raw HC p)) as Hlem.
+      destruct (proj1 (@psct_or_positive_iff Atom H W p (pneg p)) Hlem)
+        as [Hp | Hnp].
+      * exfalso. exact (@psct_not_both Atom H W p (conj Hp Hpneg)).
+      * exact (@psct_mdp_theorem_positive Atom H W (pneg p) (PImp p q)
+          (generic_intuitionistic_neg_imp_explosion_raw
+            (generic_intuitionistic_of_classical HC) p q) Hnp).
+    + exact (@psct_mdp_theorem_positive Atom H W q (PImp p q)
+        (PHPImplyK q p) Hq).
+Qed.
+
+Lemma psct_classical_imp_negative_iff :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (HC : generic_classical_entailment
+        (ph_hilbert_entailment Atom) (pformula_connectives Atom) H)
+      (W : psctableau H) p q,
+    (psct_negative W (PImp p q) <->
+     psct_positive W p /\ psct_negative W q).
+Proof.
+  intros Atom H HC W p q. split.
+  - intro Himp. split.
+    + apply (proj1 (psct_not_negative_iff_positive W p)). intro Hpneg.
+      apply (@psct_not_both Atom H W (PImp p q)). split; [|exact Himp].
+      apply (proj2 (@psct_classical_imp_positive_iff Atom H HC W p q)).
+      now left.
+    + apply (proj1 (psct_not_positive_iff_negative W q)). intro Hq.
+      apply (@psct_not_both Atom H W (PImp p q)). split; [|exact Himp].
+      apply (proj2 (@psct_classical_imp_positive_iff Atom H HC W p q)).
+      now right.
+  - intros [Hp Hq].
+    apply (proj1 (psct_not_positive_iff_negative W (PImp p q))).
+    intro Himp.
+    destruct (proj1 (@psct_classical_imp_positive_iff Atom H HC W p q)
+      Himp) as [Hpneg | Hqpos].
+    + exact (@psct_not_both Atom H W p (conj Hp Hpneg)).
+    + exact (@psct_not_both Atom H W q (conj Hqpos Hq)).
+Qed.
+
+Lemma psct_classical_neg_positive_iff :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (HC : generic_classical_entailment
+        (ph_hilbert_entailment Atom) (pformula_connectives Atom) H)
+      (W : psctableau H) p,
+    (psct_positive W (pneg p) <-> psct_negative W p).
+Proof.
+  intros Atom H HC W p.
+  rewrite (@psct_classical_imp_positive_iff Atom H HC W p PFalsum).
+  split; [intros [Hp | Hbot] | intro Hp; now left].
+  - exact Hp.
+  - exfalso. exact (@psct_bottom_not_positive Atom H W Hbot).
+Qed.
+
+Lemma psct_classical_neg_negative_iff :
+  forall (Atom : Type) (H : ph_hilbert Atom)
+      (HC : generic_classical_entailment
+        (ph_hilbert_entailment Atom) (pformula_connectives Atom) H)
+      (W : psctableau H) p,
+    (psct_negative W (pneg p) <-> psct_positive W p).
+Proof.
+  intros Atom H HC W p.
+  rewrite (@psct_classical_imp_negative_iff Atom H HC W p PFalsum).
+  split.
+  - now intros [Hp _].
+  - intro Hp. split; [exact Hp | apply psct_bottom_negative].
 Qed.
