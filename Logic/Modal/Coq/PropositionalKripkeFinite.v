@@ -15,23 +15,17 @@ From FoundationModal Require Import
   NormalHilbert Boxdot CanonicalExtensions StructuralFrames
   CanonicalPoint2 CanonicalPoint3 GodelTranslation
   PropositionalFormula PropositionalHilbert PropositionalKripke
-  PropositionalKripkeCanonical.
+  PropositionalKripkePreservation PropositionalKripkeCanonical.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
-
-Definition pkripke_frame_finite (F : pkripke_frame) : Prop :=
-  exists cover : list (pkripke_world F), forall w, List.In w cover.
 
 Definition pkripke_finite_strongly_convergent (F : pkripke_frame) : Prop :=
   pkripke_frame_finite F /\ pkripke_frame_strongly_convergent F.
 
 Definition pkripke_finite_strongly_connected (F : pkripke_frame) : Prop :=
   pkripke_frame_finite F /\ pkripke_frame_strongly_connected F.
-
-Definition pkripke_frame_antisymmetric (F : pkripke_frame) : Prop :=
-  forall x y, pkripke_access F x y -> pkripke_access F y x -> x = y.
 
 Definition pkripke_finite_partial_order (F : pkripke_frame) : Prop :=
   pkripke_frame_finite F /\ pkripke_frame_antisymmetric F.

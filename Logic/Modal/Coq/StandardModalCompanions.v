@@ -12,8 +12,8 @@ From FoundationModal Require Import
   LogicInfrastructure EntailmentExtensions EntailmentS4
   NormalHilbert CanonicalTB Modality
   PropositionalFormula PropositionalBoolean PropositionalBooleanHilbert
-  PropositionalHilbert PropositionalKripke PropositionalKripkeCanonical
-  PropositionalKripkeFinite PropositionalGlivenko
+  PropositionalHilbert PropositionalKripke PropositionalKripkePreservation
+  PropositionalKripkeCanonical PropositionalKripkeFinite PropositionalGlivenko
   GodelTranslation Boxdot GLGrzDerivations
   CanonicalPoint2 CanonicalPoint3 CanonicalGrz CanonicalGrzPoint2
   CanonicalGrzPoint3Strict CanonicalGLPoint3 CanonicalTrivVer CanonicalS5Grz.

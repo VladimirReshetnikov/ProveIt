@@ -15,7 +15,8 @@ From Stdlib Require Import Logic.Classical_Prop Lists.List.
 From FoundationModal Require Import
   PropositionalFormula PropositionalHilbert PropositionalBoolean
   PropositionalBooleanHilbert PropositionalKripke
-  PropositionalKripkeCanonical PropositionalKripkeFinite.
+  PropositionalKripkePreservation PropositionalKripkeCanonical
+  PropositionalKripkeFinite.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
