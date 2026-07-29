@@ -1187,6 +1187,12 @@ Check generic_double_negation_elim_provable.
 Check generic_efq_elim_raw.
 Check generic_efq_elim_provable.
 Check generic_deductive_explosion_of_efq.
+Check generic_imp_identity_raw.
+Check generic_dhyp_raw.
+Check generic_under_apply_raw.
+Check generic_imp_trans_raw.
+Check generic_dne_of_lem_efq_raw.
+Check generic_dne_of_lem_efq_provable.
 Check generic_raw_proof_translation.
 Check generic_has_axiom_dne_map.
 Check generic_has_axiom_efq_map.
@@ -1196,6 +1202,10 @@ Check generic_has_axiom_peirce_map.
 Print Assumptions generic_double_negation_elim_raw.
 Print Assumptions generic_efq_elim_raw.
 Print Assumptions generic_deductive_explosion_of_efq.
+Print Assumptions generic_imp_identity_raw.
+Print Assumptions generic_imp_trans_raw.
+Print Assumptions generic_dne_of_lem_efq_raw.
+Print Assumptions generic_dne_of_lem_efq_provable.
 Print Assumptions generic_has_axiom_dne_map.
 Print Assumptions generic_has_axiom_efq_map.
 Print Assumptions generic_has_axiom_elim_contra_map.
