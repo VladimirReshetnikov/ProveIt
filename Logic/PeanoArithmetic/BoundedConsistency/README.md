@@ -2783,6 +2783,16 @@ literal selector-output equation.  This reusable equation is the rerooting
 bridge by which native context truth can be exposed as its transparent
 five-existential, pointwise-Sigma template without decoding a carrier code.
 
+`RawCodedRestrictedPADerivationSoundnessAssumptionContextTruthExpansion.v`
+defines that transparent context predicate.  Its traversal, liveness, and
+head-table lookup fragments remain ordinary embedded PA formulas, while the
+innermost Sigma cell remains an opaque conclusion-truth leaf.  The module
+proves literal equality with `rawDynamicContextAllSigmaCode`, transports the
+native dependent selector across that equality, and derives the end-to-end
+equation identifying every native context-truth leaf with the instantiated
+five-existential template.  The Assumption compiler can therefore eliminate
+the real context-truth structure using ordinary represented proof rules.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
