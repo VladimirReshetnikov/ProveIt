@@ -4221,3 +4221,14 @@ one shared witness extension.  The structural equalities remain explicit
 because abstracting the append bound is freshness-sensitive for arbitrary
 template parameters; the concrete successor parameter assignment must prove
 them rather than relying on an unsound generic reduction.
+
+The append-row module now fixes the concrete four beta argument records.  The
+new table code/step witnesses are exactly row-context variables `#12/#11`,
+`#10/#9`, `#8/#7`, and `#6/#5`; each record compares its fixed named value
+with the corresponding row value at the common traversal index.  The assumed
+row lookup is packaged as the exact four second-side beta premises and its
+matching contract is definitional.  A witnessed-prefix callback combines
+that row package with the transported append package and returns all four
+represented equalities.  Its sole remaining structural input is the
+first-side matching contract, whose proof requires composing thirteen
+universal/existential openings, five shifts, and named-parameter abstraction.

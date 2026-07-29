@@ -9,7 +9,7 @@
   form.  No carrier-coded context or witness list is decoded.
 *)
 
-From Stdlib Require Import List.
+From Stdlib Require Import List Arith.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
@@ -18,6 +18,7 @@ From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedContextLists
   RawCodedRestrictedPAProof
+  RawCodedFixedLevelTruth
   RawCodedFixedLevelTruthTotality
   RawCodedPAAxiomWitnessPrefix
   RawCodedProofAssumptionLeaf
@@ -25,6 +26,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofComposition
   RawCodedPALocalProofContextInsertUnconditional
   RawCodedPALocalProofEquality
+  RawCodedPALocalProofUniversalEliminationChain
   RawCodedPALocalProofExistentialEliminationChain
   RawCodedTemplateSyntax
   RawCodedTemplateRenamingSubstitution
@@ -37,6 +39,10 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedPALocalProofUniversalIntroductionChain
   RawCodedLtSuccCasesProofCompilation
+  RawCodedBetaLookupFunctionalitySource
+  RawCodedBetaLookupFunctionalityProofCompilation
+  RawCodedFourStateTableAppendSource
+  RawCodedFourStateTableAppendProofCompilation
   RawCodedFourStateTableAppendExistentialElimination.
 
 Import ListNotations.
@@ -51,6 +57,7 @@ Import PABoundedCodedProof.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedProofAssumptionLeaf.
@@ -58,6 +65,7 @@ Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedPALocalProofEquality.
+Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateRenamingSubstitution.
@@ -70,6 +78,10 @@ Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
+Import PABoundedRawCodedBetaLookupFunctionalitySource.
+Import PABoundedRawCodedBetaLookupFunctionalityProofCompilation.
+Import PABoundedRawCodedFourStateTableAppendSource.
+Import PABoundedRawCodedFourStateTableAppendProofCompilation.
 Import PABoundedRawCodedFourStateTableAppendExistentialElimination.
 
 (** Use an equality appearing as a freshly consed assumption in the reverse
@@ -180,6 +192,101 @@ Definition coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate
           assignmentStepCode assignmentStepStep
           (ttParameter boundName)
           mode formula assignmentCode assignmentStep))).
+
+(** The four beta-functionality instances used to compare the transported
+    appended entry with the independently bound traversal row.  After eight
+    append witnesses and five row variables, the new code/step pairs occupy
+    variables 12/11, 10/9, 8/7, and 6/5. *)
+Definition coqFourStateTableAppendEqualityModeFunctionalityArguments
+    (modeName : TemplateParameterName)
+    (index rowMode : TemplateTerm)
+    : CoqBetaLookupFunctionalityArguments :=
+  {| coqBetaLookupFunctionalityOut1 := ttParameter modeName;
+     coqBetaLookupFunctionalityOut2 := rowMode;
+     coqBetaLookupFunctionalityCode := ttVar 12;
+     coqBetaLookupFunctionalityStep := ttVar 11;
+     coqBetaLookupFunctionalityIndex := index |}.
+
+Definition coqFourStateTableAppendEqualityFormulaFunctionalityArguments
+    (formulaName : TemplateParameterName)
+    (index rowFormula : TemplateTerm)
+    : CoqBetaLookupFunctionalityArguments :=
+  {| coqBetaLookupFunctionalityOut1 := ttParameter formulaName;
+     coqBetaLookupFunctionalityOut2 := rowFormula;
+     coqBetaLookupFunctionalityCode := ttVar 10;
+     coqBetaLookupFunctionalityStep := ttVar 9;
+     coqBetaLookupFunctionalityIndex := index |}.
+
+Definition
+    coqFourStateTableAppendEqualityAssignmentCodeFunctionalityArguments
+    (assignmentCodeName : TemplateParameterName)
+    (index rowAssignmentCode : TemplateTerm)
+    : CoqBetaLookupFunctionalityArguments :=
+  {| coqBetaLookupFunctionalityOut1 := ttParameter assignmentCodeName;
+     coqBetaLookupFunctionalityOut2 := rowAssignmentCode;
+     coqBetaLookupFunctionalityCode := ttVar 8;
+     coqBetaLookupFunctionalityStep := ttVar 7;
+     coqBetaLookupFunctionalityIndex := index |}.
+
+Definition
+    coqFourStateTableAppendEqualityAssignmentStepFunctionalityArguments
+    (assignmentStepName : TemplateParameterName)
+    (index rowAssignmentStep : TemplateTerm)
+    : CoqBetaLookupFunctionalityArguments :=
+  {| coqBetaLookupFunctionalityOut1 := ttParameter assignmentStepName;
+     coqBetaLookupFunctionalityOut2 := rowAssignmentStep;
+     coqBetaLookupFunctionalityCode := ttVar 6;
+     coqBetaLookupFunctionalityStep := ttVar 5;
+     coqBetaLookupFunctionalityIndex := index |}.
+
+Definition coqFourStateTableAppendEqualityRowLookupTemplate
+    (modeName formulaName assignmentCodeName assignmentStepName
+      : TemplateParameterName)
+    (index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+      : TemplateTerm) : TemplateFormula :=
+  let modeArguments :=
+    coqFourStateTableAppendEqualityModeFunctionalityArguments
+      modeName index rowMode in
+  let formulaArguments :=
+    coqFourStateTableAppendEqualityFormulaFunctionalityArguments
+      formulaName index rowFormula in
+  let assignmentCodeArguments :=
+    coqFourStateTableAppendEqualityAssignmentCodeFunctionalityArguments
+      assignmentCodeName index rowAssignmentCode in
+  let assignmentStepArguments :=
+    coqFourStateTableAppendEqualityAssignmentStepFunctionalityArguments
+      assignmentStepName index rowAssignmentStep in
+  tfAnd (coqBetaLookupFunctionalitySecondLookupOf modeArguments)
+    (tfAnd (coqBetaLookupFunctionalitySecondLookupOf formulaArguments)
+      (tfAnd
+        (coqBetaLookupFunctionalitySecondLookupOf assignmentCodeArguments)
+        (coqBetaLookupFunctionalitySecondLookupOf
+          assignmentStepArguments))).
+
+Lemma coqFourStateTableAppendEqualityRowLookupTemplate_matches_second :
+  forall modeName formulaName assignmentCodeName assignmentStepName
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep,
+  TemplateAnd4MatchesBetaFunctionalitySide
+    coqBetaLookupFunctionalitySecondLookupOf
+    (coqFourStateTableAppendEqualityRowLookupTemplate
+      modeName formulaName assignmentCodeName assignmentStepName
+      index rowMode rowFormula rowAssignmentCode rowAssignmentStep)
+    (coqFourStateTableAppendEqualityModeFunctionalityArguments
+      modeName index rowMode)
+    (coqFourStateTableAppendEqualityFormulaFunctionalityArguments
+      formulaName index rowFormula)
+    (coqFourStateTableAppendEqualityAssignmentCodeFunctionalityArguments
+      assignmentCodeName index rowAssignmentCode)
+    (coqFourStateTableAppendEqualityAssignmentStepFunctionalityArguments
+      assignmentStepName index rowAssignmentStep).
+Proof.
+  intros.
+  unfold TemplateAnd4MatchesBetaFunctionalitySide,
+    coqFourStateTableAppendEqualityRowLookupTemplate,
+    templateAnd4First, templateAnd4Second,
+    templateAnd4Third, templateAnd4Fourth.
+  repeat split; reflexivity.
+Qed.
 
 (** Equality callback for the appended row.  The shifted lookup at the
     appended bound is projected from the append witnesses themselves; the
@@ -303,6 +410,115 @@ Proof.
               assignmentStep))))) root).
   rewrite hbranchHead.
   exact hroot.
+Qed.
+
+(** Compare the transported appended entry with a row lookup under one
+    witnessed temporary context.  The second-side component contract is
+    definitional; the first-side contract is supplied explicitly until the
+    nested opening/shift/abstraction composition theorem is available. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_equality_lookup_functionality_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+    fixedLookupRoot rowLookupRoot,
+  let modeArguments :=
+    coqFourStateTableAppendEqualityModeFunctionalityArguments
+      modeName index rowMode in
+  let formulaArguments :=
+    coqFourStateTableAppendEqualityFormulaFunctionalityArguments
+      formulaName index rowFormula in
+  let assignmentCodeArguments :=
+    coqFourStateTableAppendEqualityAssignmentCodeFunctionalityArguments
+      assignmentCodeName index rowAssignmentCode in
+  let assignmentStepArguments :=
+    coqFourStateTableAppendEqualityAssignmentStepFunctionalityArguments
+      assignmentStepName index rowAssignmentStep in
+  let fixedLookup :=
+    coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate
+      boundName index
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter modeName) (ttParameter formulaName)
+      (ttParameter assignmentCodeName) (ttParameter assignmentStepName) in
+  let rowLookup := coqFourStateTableAppendEqualityRowLookupTemplate
+    modeName formulaName assignmentCodeName assignmentStepName
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep in
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  TemplateAnd4MatchesBetaFunctionalitySide
+    coqBetaLookupFunctionalityFirstLookupOf fixedLookup
+    modeArguments formulaArguments assignmentCodeArguments
+    assignmentStepArguments ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation fixedLookup) fixedLookupRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation rowLookup) rowLookupRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) equalityRoots,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    Forall2
+      (fun argument root =>
+        RawCodedPALocalProofOf M
+          (rawTemplateContextCodeOnTail translation
+            (rawStandardPAAxiomWitnessPrefixContextCode M
+              witnesses baseContext) prefix)
+          (rawTemplateFormula translation
+            (coqBetaLookupFunctionalityEqualityOf argument)) root)
+      [modeArguments; formulaArguments;
+       assignmentCodeArguments; assignmentStepArguments]
+      equalityRoots.
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext prefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+    fixedLookupRoot rowLookupRoot
+    modeArguments formulaArguments assignmentCodeArguments
+    assignmentStepArguments fixedLookup rowLookup
+    hprefix hbase hfixedMatches hfixedLookup hrowLookup.
+  cbn zeta in *.
+  exact
+    (raw_codedPALocalProofOf_beta_lookup_functionality_and4_on_witnessed_tail_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      (coqFourStateTableAppendEqualityModeFunctionalityArguments
+        modeName index rowMode)
+      (coqFourStateTableAppendEqualityFormulaFunctionalityArguments
+        formulaName index rowFormula)
+      (coqFourStateTableAppendEqualityAssignmentCodeFunctionalityArguments
+        assignmentCodeName index rowAssignmentCode)
+      (coqFourStateTableAppendEqualityAssignmentStepFunctionalityArguments
+        assignmentStepName index rowAssignmentStep)
+      (coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate
+        boundName index
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter modeName) (ttParameter formulaName)
+        (ttParameter assignmentCodeName) (ttParameter assignmentStepName))
+      (coqFourStateTableAppendEqualityRowLookupTemplate
+        modeName formulaName assignmentCodeName assignmentStepName
+        index rowMode rowFormula rowAssignmentCode rowAssignmentStep)
+      fixedLookupRoot rowLookupRoot hprefix hbase hfixedMatches
+      (coqFourStateTableAppendEqualityRowLookupTemplate_matches_second
+        modeName formulaName assignmentCodeName assignmentStepName
+        index rowMode rowFormula rowAssignmentCode rowAssignmentStep)
+      hfixedLookup hrowLookup).
 Qed.
 
 (** Agreement on embedded PA syntax identifies the metatheoretic witnessed
