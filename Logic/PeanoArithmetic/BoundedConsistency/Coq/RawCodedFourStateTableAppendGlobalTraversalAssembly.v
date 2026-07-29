@@ -332,6 +332,178 @@ Proof.
   reflexivity.
 Qed.
 
+(** Convert the completed concrete row implication into the exact extracted
+    seventh field.  The only client-specific obligation is the final
+    production equality; all five binders and both implication premises are
+    handled here.  This keeps local Sigma/Pi normalization independent of the
+    growing-context proof machinery. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_opened_global_rows_of_concrete_row :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses sigmaProduction piProduction,
+  let sourceWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M) in
+  let sourceContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M) in
+  let bound := ttParameter boundName in
+  let mode := embedPATerm (Term.numeral rootMode) in
+  let formula := ttVar 0 in
+  let assignmentCode := ttVar 1 in
+  let assignmentStep := ttVar 2 in
+  let rowPrefix := coqFourStateTableAppendRowPrefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep in
+  let antecedent := coqLtSuccCasesAntecedentTemplate (ttVar 4) bound in
+  let rowLookup :=
+    coqFourStateTableAppendEqualityRowLookupTemplate
+      coqFourStateTableAppendRowModeParameterName
+      coqFourStateTableAppendRowFormulaParameterName
+      coqFourStateTableAppendRowAssignmentCodeParameterName
+      coqFourStateTableAppendRowAssignmentStepParameterName
+      (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0) in
+  let concreteProduction :=
+    coqFourStateTableAppendConcreteClosedRowProductionTemplate
+      sigmaProduction piProduction in
+  concreteProduction =
+    coqFourStateTableAppendOpenedGlobalRowProductionTemplate
+      rootMode localSigma localPi bound ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext rowPrefix
+    (rawTemplateFormula translation
+      (tfImp antecedent (tfImp rowLookup concreteProduction))) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep [])
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendOpenedGlobalRowsTemplate
+        rootMode localSigma localPi bound)).
+Proof.
+  intros M hPA translation
+    rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses sigmaProduction piProduction
+    sourceWitnessList sourceContext bound mode formula
+    assignmentCode assignmentStep rowPrefix antecedent rowLookup
+    concreteProduction hproduction hrow.
+  cbn zeta in *.
+  subst bound.
+  change
+    (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+      sigmaProduction piProduction =
+     coqFourStateTableAppendOpenedGlobalRowProductionTemplate
+      rootMode localSigma localPi (ttParameter boundName))
+    in hproduction.
+  assert (hrowOpened : RawCodedPAGrowingTemplateLocalProofAt M translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (coqFourStateTableAppendRowPrefix
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+        (ttVar 0) (ttVar 1) (ttVar 2))
+      (rawTemplateFormula translation
+        (tfImp
+          (coqLtSuccCasesAntecedentTemplate
+            (ttVar 4) (ttParameter boundName))
+          (tfImp
+            (coqFourStateTableAppendEqualityRowLookupTemplate
+              coqFourStateTableAppendRowModeParameterName
+              coqFourStateTableAppendRowFormulaParameterName
+              coqFourStateTableAppendRowAssignmentCodeParameterName
+              coqFourStateTableAppendRowAssignmentStepParameterName
+              (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+            (coqFourStateTableAppendOpenedGlobalRowProductionTemplate
+              rootMode localSigma localPi (ttParameter boundName)))))).
+  {
+    apply (raw_codedPAGrowingTemplateLocalProofAt_conclusion_eq
+      M translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (coqFourStateTableAppendRowPrefix
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+        (ttVar 0) (ttVar 1) (ttVar 2))
+      (rawTemplateFormula translation
+        (tfImp
+          (coqLtSuccCasesAntecedentTemplate
+            (ttVar 4) (ttParameter boundName))
+          (tfImp
+            (coqFourStateTableAppendEqualityRowLookupTemplate
+              coqFourStateTableAppendRowModeParameterName
+              coqFourStateTableAppendRowFormulaParameterName
+              coqFourStateTableAppendRowAssignmentCodeParameterName
+              coqFourStateTableAppendRowAssignmentStepParameterName
+              (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+            (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+              sigmaProduction piProduction))))
+      (rawTemplateFormula translation
+        (tfImp
+          (coqLtSuccCasesAntecedentTemplate
+            (ttVar 4) (ttParameter boundName))
+          (tfImp
+            (coqFourStateTableAppendEqualityRowLookupTemplate
+              coqFourStateTableAppendRowModeParameterName
+              coqFourStateTableAppendRowFormulaParameterName
+              coqFourStateTableAppendRowAssignmentCodeParameterName
+              coqFourStateTableAppendRowAssignmentStepParameterName
+              (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+            (coqFourStateTableAppendOpenedGlobalRowProductionTemplate
+              rootMode localSigma localPi (ttParameter boundName)))))).
+    - now rewrite hproduction.
+    - exact hrow.
+  }
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_row_all5
+      M hPA translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      (ttVar 0) (ttVar 1) (ttVar 2)
+      (tfImp
+        (coqLtSuccCasesAntecedentTemplate
+          (ttVar 4) (ttParameter boundName))
+        (tfImp
+          (coqFourStateTableAppendEqualityRowLookupTemplate
+            coqFourStateTableAppendRowModeParameterName
+            coqFourStateTableAppendRowFormulaParameterName
+            coqFourStateTableAppendRowAssignmentCodeParameterName
+            coqFourStateTableAppendRowAssignmentStepParameterName
+            (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+          (coqFourStateTableAppendOpenedGlobalRowProductionTemplate
+            rootMode localSigma localPi (ttParameter boundName))))
+      hrowOpened) as hall5.
+  fold coqFourStateTableAppendOpenedGlobalRowsTemplate.
+  rewrite coqFourStateTableAppendOpenedGlobalRowsTemplate_shape.
+  exact hall5.
+Qed.
+
 Lemma coqFourStateTableAppendOpenedGlobalFormulaTemplate_and7_shape : forall
     rootMode localSigma localPi bound,
   let source := coqFourStateTableAppendOpenedGlobalFormulaTemplate
