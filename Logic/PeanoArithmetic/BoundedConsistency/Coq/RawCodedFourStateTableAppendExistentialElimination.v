@@ -865,6 +865,164 @@ Proof.
   repeat split; reflexivity.
 Qed.
 
+(** Structural views used when four triple implications share their first
+    two premises.  The third premises and conclusions are assembled in the
+    same right-associated four-column shape used by traversal state rows. *)
+Definition templateImp3SecondPremise (source : TemplateFormula)
+    : TemplateFormula :=
+  templateImpAntecedent (templateImpConsequent source).
+
+Definition templateImp3ThirdPremise (source : TemplateFormula)
+    : TemplateFormula :=
+  templateImpAntecedent
+    (templateImpConsequent (templateImpConsequent source)).
+
+Definition templateImp3Conclusion (source : TemplateFormula)
+    : TemplateFormula :=
+  templateImpConsequent
+    (templateImpConsequent (templateImpConsequent source)).
+
+Definition templateFormulaMapAnd4
+    (projection : TemplateFormula -> TemplateFormula)
+    (first second third fourth : TemplateFormula) : TemplateFormula :=
+  tfAnd (projection first)
+    (tfAnd (projection second)
+      (tfAnd (projection third) (projection fourth))).
+
+Lemma templateFormulaMapAnd4_shape : forall projection first second third fourth,
+  let source := templateFormulaMapAnd4 projection
+    first second third fourth in
+  source = tfAnd (templateAnd4First source)
+    (tfAnd (templateAnd4Second source)
+      (tfAnd (templateAnd4Third source) (templateAnd4Fourth source))).
+Proof.
+  intros. cbn zeta.
+  unfold templateFormulaMapAnd4,
+    templateAnd4First, templateAnd4Second,
+    templateAnd4Third, templateAnd4Fourth.
+  reflexivity.
+Qed.
+
+(** Apply four represented three-premise implications with one shared proof
+    of each of the first two premises.  The theorem is independent of table
+    coding; the append specialization below supplies only structural
+    equalities between its four arithmetic premise templates. *)
+Theorem raw_codedPALocalProofOf_templateImpE3_shared_first_second_and4 :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context firstSource secondSource thirdSource fourthSource
+    firstImpRoot secondImpRoot thirdImpRoot fourthImpRoot
+    firstRoot secondRoot thirdPremisesRoot,
+  TemplateImp3Shape firstSource ->
+  TemplateImp3Shape secondSource ->
+  TemplateImp3Shape thirdSource ->
+  TemplateImp3Shape fourthSource ->
+  templateImpAntecedent secondSource =
+    templateImpAntecedent firstSource ->
+  templateImpAntecedent thirdSource =
+    templateImpAntecedent firstSource ->
+  templateImpAntecedent fourthSource =
+    templateImpAntecedent firstSource ->
+  templateImp3SecondPremise secondSource =
+    templateImp3SecondPremise firstSource ->
+  templateImp3SecondPremise thirdSource =
+    templateImp3SecondPremise firstSource ->
+  templateImp3SecondPremise fourthSource =
+    templateImp3SecondPremise firstSource ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation firstSource) firstImpRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation secondSource) secondImpRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation thirdSource) thirdImpRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation fourthSource) fourthImpRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateImpAntecedent firstSource)) firstRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateImp3SecondPremise firstSource)) secondRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateFormulaMapAnd4 templateImp3ThirdPremise
+        firstSource secondSource thirdSource fourthSource))
+    thirdPremisesRoot ->
+  exists root,
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation
+        (templateFormulaMapAnd4 templateImp3Conclusion
+          firstSource secondSource thirdSource fourthSource)) root.
+Proof.
+  intros M hPA translation context
+    firstSource secondSource thirdSource fourthSource
+    firstImpRoot secondImpRoot thirdImpRoot fourthImpRoot
+    firstRoot secondRoot thirdPremisesRoot
+    hfirstShape hsecondShape hthirdShape hfourthShape
+    hsecondFirst hthirdFirst hfourthFirst
+    hsecondSecond hthirdSecond hfourthSecond
+    hfirstImp hsecondImp hthirdImp hfourthImp
+    hfirst hsecond hthirdPremises.
+  destruct (raw_codedPALocalProofOf_templateAnd4_components
+    M hPA translation context
+    (templateFormulaMapAnd4 templateImp3ThirdPremise
+      firstSource secondSource thirdSource fourthSource)
+    thirdPremisesRoot
+    (templateFormulaMapAnd4_shape templateImp3ThirdPremise
+      firstSource secondSource thirdSource fourthSource)
+    hthirdPremises)
+    as (firstThirdRoot & secondThirdRoot & thirdThirdRoot & fourthThirdRoot &
+        hfirstThird & hsecondThird & hthirdThird & hfourthThird).
+  assert (hfirstForSecond : RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateImpAntecedent secondSource)) firstRoot).
+  { rewrite hsecondFirst. exact hfirst. }
+  assert (hfirstForThird : RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateImpAntecedent thirdSource)) firstRoot).
+  { rewrite hthirdFirst. exact hfirst. }
+  assert (hfirstForFourth : RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateImpAntecedent fourthSource)) firstRoot).
+  { rewrite hfourthFirst. exact hfirst. }
+  assert (hsecondForSecond : RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateImp3SecondPremise secondSource)) secondRoot).
+  { rewrite hsecondSecond. exact hsecond. }
+  assert (hsecondForThird : RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateImp3SecondPremise thirdSource)) secondRoot).
+  { rewrite hthirdSecond. exact hsecond. }
+  assert (hsecondForFourth : RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateImp3SecondPremise fourthSource)) secondRoot).
+  { rewrite hfourthSecond. exact hsecond. }
+  destruct (raw_codedPALocalProofOf_templateImpE3 M hPA translation context
+    firstSource firstImpRoot firstRoot secondRoot firstThirdRoot
+    hfirstShape hfirstImp hfirst hsecond hfirstThird)
+    as [firstConclusionRoot hfirstConclusion].
+  destruct (raw_codedPALocalProofOf_templateImpE3 M hPA translation context
+    secondSource secondImpRoot firstRoot secondRoot secondThirdRoot
+    hsecondShape hsecondImp hfirstForSecond hsecondForSecond hsecondThird)
+    as [secondConclusionRoot hsecondConclusion].
+  destruct (raw_codedPALocalProofOf_templateImpE3 M hPA translation context
+    thirdSource thirdImpRoot firstRoot secondRoot thirdThirdRoot
+    hthirdShape hthirdImp hfirstForThird hsecondForThird hthirdThird)
+    as [thirdConclusionRoot hthirdConclusion].
+  destruct (raw_codedPALocalProofOf_templateImpE3 M hPA translation context
+    fourthSource fourthImpRoot firstRoot secondRoot fourthThirdRoot
+    hfourthShape hfourthImp hfirstForFourth hsecondForFourth hfourthThird)
+    as [fourthConclusionRoot hfourthConclusion].
+  exact (raw_codedPALocalProofOf_templateAnd4 M hPA translation context
+    (templateFormulaMapAnd4 templateImp3Conclusion
+      firstSource secondSource thirdSource fourthSource)
+    firstConclusionRoot secondConclusionRoot
+    thirdConclusionRoot fourthConclusionRoot
+    (templateFormulaMapAnd4_shape templateImp3Conclusion
+      firstSource secondSource thirdSource fourthSource)
+    hfirstConclusion hsecondConclusion hthirdConclusion hfourthConclusion).
+Qed.
+
 (** The extension body itself is immediately available as an assumption in
     the deepest context.  Later code can project its four append-prefix
     components without reconstructing the nested context layout. *)
