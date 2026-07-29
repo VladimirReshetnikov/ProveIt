@@ -10,7 +10,7 @@ From FoundationModal Require Import
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
   PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
   PropositionalKripke2Hilbert PropositionalHilbertFExtensions PropositionalFMT
-  PropositionalHilbertVF
+  PropositionalHilbertVF PropositionalHilbertWF
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1619,6 +1619,40 @@ Print Assumptions phvf_aczel_slash_iff_provable.
 Print Assumptions phvf_disjunctive_of_schema_aczel_slash.
 Print Assumptions phvf_VF_disjunctive.
 Print Assumptions phvf_VF_Ser_disjunctive.
+
+(** Hilbert WF and heterogeneous VF-to-WF transport. *)
+Check phwf_hilbert.
+Check phwf_schema.
+Check phwf_schema_substitute.
+Check phwf_hilbert_WF.
+Check phwf_iff.
+Check phwf_proof.
+Check phwf_provable.
+Check phwf_provable_of_schema.
+Check phwf_proof_of_schema_inclusion.
+Check phwf_provable_of_schema_inclusion.
+Check phwf_proof_substitute.
+Check phwf_provable_substitute.
+Check phwf_proof_of_proof_schema.
+Check phwf_provable_of_provable_schema.
+Check phwf_logic_included.
+Check phwf_hilbert_logic.
+Check phwf_hilbert_logic_iff_provable.
+Check phwf_hilbert_logic_subset_of_schema_inclusion.
+Check phwf_hilbert_logic_subset_of_provable_schema.
+Check phwf_logic_WF.
+Check phvf_proof_to_phwf.
+Check phvf_phwf_included.
+Check phvf_phwf_included_of_provable_schema.
+Check phvf_VF_included_phwf_WF.
+Print Assumptions phwf_schema_substitute.
+Print Assumptions phwf_proof_of_schema_inclusion.
+Print Assumptions phwf_proof_substitute.
+Print Assumptions phwf_provable_of_provable_schema.
+Print Assumptions phwf_hilbert_logic_subset_of_schema_inclusion.
+Print Assumptions phvf_proof_to_phwf.
+Print Assumptions phvf_phwf_included_of_provable_schema.
+Print Assumptions phvf_VF_included_phwf_WF.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
