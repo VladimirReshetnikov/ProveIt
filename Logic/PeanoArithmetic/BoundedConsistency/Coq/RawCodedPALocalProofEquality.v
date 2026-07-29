@@ -178,6 +178,35 @@ Proof.
   eexists. exact htransport.
 Qed.
 
+(** Same-context reverse equality transport.  This is the reusable core of
+    clients whose available equality is oriented [source = target] while the
+    already-proved motive is instantiated at [target].  Both symmetry and
+    substitution remain represented PA proof nodes. *)
+Theorem raw_codedPALocalProofOf_templateEqTransport_reverse : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context source target motive equalityRoot motiveRoot,
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation (tfEq source target)) equalityRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation
+      (templateFormulaOpen target motive)) motiveRoot ->
+  exists root,
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation
+        (templateFormulaOpen source motive)) root.
+Proof.
+  intros M hPA translation context source target motive
+    equalityRoot motiveRoot hequality hmotive.
+  destruct (raw_codedPALocalProofOf_templateEqSymmetry
+    M hPA translation context source target equalityRoot hequality)
+    as [symmetryRoot hsymmetry].
+  eexists.
+  exact (raw_codedPALocalProofOf_templateEqElim
+    M hPA translation context target source motive
+    symmetryRoot motiveRoot hsymmetry hmotive).
+Qed.
+
 (** Replace one named parameter using an equality oriented from the desired
     replacement to that parameter.  Equality symmetry and elimination both
     occur in the represented calculus.  Parameter abstraction supplies the

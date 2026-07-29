@@ -4486,3 +4486,17 @@ essential for the append row: its eight witness assumptions occur at eight
 successive depths below the five row binders.  The next context adapter must
 therefore apply the verified shift law at each witness depth; a uniform
 unshifted replacement over the whole prefix would be capture-incorrect.
+
+The append equality branch now avoids that capture trap altogether.  The
+literal global witness variables are projected directly from the concrete
+append lookup, and the existing one-column beta-functionality compiler proves
+inside PA that the independently quantified row mode equals the fixed root
+mode.  The other three lookup equalities are intentionally omitted: after
+the scoped embedded-formula normalization, only the mode occurs in the local
+polarity split.  A one-hole motive transports that split from the fixed mode
+to row variable `#3` using represented symmetry and equality elimination.
+The resulting concrete production is packaged as a growing proof, including
+the finite PA witness batch selected by beta functionality, and its three
+input roots admit dependency-ordered witnessed-tail transport.  This removes
+the former need to equate a prefix containing closed named parameters with a
+prefix containing open de Bruijn variables.
