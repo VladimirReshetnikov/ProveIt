@@ -2849,6 +2849,15 @@ implications.  Its conclusion is the native zero-hierarchy witness truth; no
 Assumption-specific outer context or carrier witness is baked into this last
 logical step.
 
+`RawCodedRestrictedPADerivationSoundnessAssumptionFinalWitnessComposition.v`
+supplies the complete deepest-stage composition.  It instantiates the explicit
+twelve-universal PA transfer source, applies the resulting implication to the
+context-truth traversal, public-membership traversal, and public membership,
+then feeds the derived context-table membership directly to the pointwise
+compiler.  Both the membership and shifted pointwise inputs are accepted as
+arbitrary proof roots, avoiding artificial assumptions or cuts and keeping
+the theorem polymorphic over the surrounding ten-witness context.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled

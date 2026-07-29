@@ -96,42 +96,68 @@ Definition coqRestrictedPADirectAssumptionShiftedPointwiseRoot
     coqRestrictedPADirectAssumptionShiftedFinalPointwiseTemplate.
 
 Definition coqRestrictedPADirectAssumptionPointwiseAfterIndexRoot
-    (context : TemplateContext) : TemplateRawProof :=
+    (context : TemplateContext) (pointwiseRoot : TemplateRawProof)
+    : TemplateRawProof :=
   trpAllE (coqRestrictedPADirectAssumptionMembershipIndexContext context)
     coqRestrictedPADirectAssumptionFinalPointwiseIndexBodyTemplate
-    (ttVar 0)
-    (coqRestrictedPADirectAssumptionShiftedPointwiseRoot context).
+    (ttVar 0) pointwiseRoot.
 
 Definition coqRestrictedPADirectAssumptionPointwiseAfterLiveRoot
-    (context : TemplateContext) : TemplateRawProof :=
+    (context : TemplateContext) (pointwiseRoot : TemplateRawProof)
+    : TemplateRawProof :=
   trpImpE (coqRestrictedPADirectAssumptionMembershipIndexContext context)
     coqRestrictedPADirectAssumptionFinalLiveIndexTemplate
     coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate
-    (coqRestrictedPADirectAssumptionPointwiseAfterIndexRoot context)
+    (coqRestrictedPADirectAssumptionPointwiseAfterIndexRoot
+      context pointwiseRoot)
     (coqRestrictedPADirectAssumptionLiveIndexRoot context).
 
 Definition coqRestrictedPADirectAssumptionPointwiseAfterFormulaRoot
-    (context : TemplateContext) : TemplateRawProof :=
+    (context : TemplateContext) (pointwiseRoot : TemplateRawProof)
+    : TemplateRawProof :=
   trpAllE (coqRestrictedPADirectAssumptionMembershipIndexContext context)
     coqRestrictedPADirectAssumptionFinalPointwiseFormulaBodyTemplate
     (ttVar 17)
-    (coqRestrictedPADirectAssumptionPointwiseAfterLiveRoot context).
+    (coqRestrictedPADirectAssumptionPointwiseAfterLiveRoot
+      context pointwiseRoot).
 
 Definition coqRestrictedPADirectAssumptionPointwiseTruthRoot
-    (context : TemplateContext) : TemplateRawProof :=
+    (context : TemplateContext) (pointwiseRoot : TemplateRawProof)
+    : TemplateRawProof :=
   trpImpE (coqRestrictedPADirectAssumptionMembershipIndexContext context)
     coqRestrictedPADirectAssumptionFinalHeadLookupTemplate
     coqRestrictedPADirectAssumptionFinalPointwiseTruthTemplate
-    (coqRestrictedPADirectAssumptionPointwiseAfterFormulaRoot context)
+    (coqRestrictedPADirectAssumptionPointwiseAfterFormulaRoot
+      context pointwiseRoot)
     (coqRestrictedPADirectAssumptionHeadLookupRoot context).
 
-Definition coqRestrictedPADirectAssumptionPointwiseMembershipRoot
-    (context : TemplateContext) : TemplateRawProof :=
+Definition coqRestrictedPADirectAssumptionPointwiseMembershipFromRoots
+    (context : TemplateContext) (membershipRoot pointwiseRoot : TemplateRawProof)
+    : TemplateRawProof :=
   trpExE context
     coqRestrictedPADirectAssumptionFinalMembershipIndexBodyTemplate
     coqRestrictedPADirectAssumptionFinalNativeTruthTemplate
-    (coqRestrictedPADirectAssumptionFinalMembershipRoot context)
-    (coqRestrictedPADirectAssumptionPointwiseTruthRoot context).
+    membershipRoot
+    (coqRestrictedPADirectAssumptionPointwiseTruthRoot
+      context pointwiseRoot).
+
+Arguments coqRestrictedPADirectAssumptionPointwiseMembershipFromRoots
+  context membershipRoot pointwiseRoot : clear implicits.
+
+Definition coqRestrictedPADirectAssumptionPointwiseMembershipFromRoot
+    (context : TemplateContext) (membershipRoot : TemplateRawProof)
+    : TemplateRawProof :=
+  coqRestrictedPADirectAssumptionPointwiseMembershipFromRoots context
+    membershipRoot
+    (coqRestrictedPADirectAssumptionShiftedPointwiseRoot context).
+
+Arguments coqRestrictedPADirectAssumptionPointwiseMembershipFromRoot
+  context membershipRoot : clear implicits.
+
+Definition coqRestrictedPADirectAssumptionPointwiseMembershipRoot
+    (context : TemplateContext) : TemplateRawProof :=
+  coqRestrictedPADirectAssumptionPointwiseMembershipFromRoot context
+    (coqRestrictedPADirectAssumptionFinalMembershipRoot context).
 
 Lemma coqRestrictedPADirectAssumptionFinalNativeTruth_shift :
   templateFormulaRename S
@@ -151,20 +177,27 @@ Proof.
   apply in_map. exact hin.
 Qed.
 
-Theorem coqRestrictedPADirectAssumptionPointwiseMembershipRoot_derives :
-  forall context,
-  In coqRestrictedPADirectAssumptionFinalPointwiseTemplate context ->
-  In coqRestrictedPADirectAssumptionFinalLeftMembershipTemplate context ->
+Theorem
+    coqRestrictedPADirectAssumptionPointwiseMembershipFromRoots_derives :
+  forall context membershipRoot pointwiseRoot,
+  TemplateRawDerives context
+    coqRestrictedPADirectAssumptionFinalLeftMembershipTemplate
+    membershipRoot ->
+  TemplateRawDerives
+    (coqRestrictedPADirectAssumptionMembershipIndexContext context)
+    coqRestrictedPADirectAssumptionShiftedFinalPointwiseTemplate
+    pointwiseRoot ->
   TemplateRawDerives context
     coqRestrictedPADirectAssumptionFinalNativeTruthTemplate
-    (coqRestrictedPADirectAssumptionPointwiseMembershipRoot context).
+    (coqRestrictedPADirectAssumptionPointwiseMembershipFromRoots
+      context membershipRoot pointwiseRoot).
 Proof.
-  intros context hpointwise hmembership.
-  unfold coqRestrictedPADirectAssumptionPointwiseMembershipRoot.
+  intros context membershipRoot pointwiseRoot hmembership hpointwise.
+  unfold coqRestrictedPADirectAssumptionPointwiseMembershipFromRoots.
   rewrite coqRestrictedPADirectAssumptionFinalLeftMembership_shape
     in hmembership.
   apply templateRawDerives_exE.
-  - exact (templateRawDerives_assumption context _ hmembership).
+  - exact hmembership.
   - rewrite coqRestrictedPADirectAssumptionFinalNativeTruth_shift.
     unfold coqRestrictedPADirectAssumptionPointwiseTruthRoot.
     apply templateRawDerives_impE.
@@ -182,16 +215,50 @@ Proof.
         apply templateRawDerives_allE.
         rewrite <-
           coqRestrictedPADirectAssumptionShiftedFinalPointwise_shape.
-        apply templateRawDerives_assumption.
-        exact
-          (coqRestrictedPADirectAssumption_shifted_pointwise_in
-            context hpointwise).
+        exact hpointwise.
       * unfold coqRestrictedPADirectAssumptionLiveIndexRoot.
         apply coqRestrictedPADirect_templateRawDerives_andE1.
         apply templateRawDerives_assumption. left. reflexivity.
     + unfold coqRestrictedPADirectAssumptionHeadLookupRoot.
       apply coqRestrictedPADirect_templateRawDerives_andE2.
       apply templateRawDerives_assumption. left. reflexivity.
+Qed.
+
+Corollary
+    coqRestrictedPADirectAssumptionPointwiseMembershipFromRoot_derives :
+  forall context membershipRoot,
+  In coqRestrictedPADirectAssumptionFinalPointwiseTemplate context ->
+  TemplateRawDerives context
+    coqRestrictedPADirectAssumptionFinalLeftMembershipTemplate
+    membershipRoot ->
+  TemplateRawDerives context
+    coqRestrictedPADirectAssumptionFinalNativeTruthTemplate
+    (coqRestrictedPADirectAssumptionPointwiseMembershipFromRoot
+      context membershipRoot).
+Proof.
+  intros context membershipRoot hpointwise hmembership.
+  apply
+    coqRestrictedPADirectAssumptionPointwiseMembershipFromRoots_derives.
+  - exact hmembership.
+  - apply templateRawDerives_assumption.
+    exact
+      (coqRestrictedPADirectAssumption_shifted_pointwise_in
+        context hpointwise).
+Qed.
+
+Corollary coqRestrictedPADirectAssumptionPointwiseMembershipRoot_derives :
+  forall context,
+  In coqRestrictedPADirectAssumptionFinalPointwiseTemplate context ->
+  In coqRestrictedPADirectAssumptionFinalLeftMembershipTemplate context ->
+  TemplateRawDerives context
+    coqRestrictedPADirectAssumptionFinalNativeTruthTemplate
+    (coqRestrictedPADirectAssumptionPointwiseMembershipRoot context).
+Proof.
+  intros context hpointwise hmembership.
+  apply
+    coqRestrictedPADirectAssumptionPointwiseMembershipFromRoot_derives;
+    [exact hpointwise |].
+  apply templateRawDerives_assumption. exact hmembership.
 Qed.
 
 End
