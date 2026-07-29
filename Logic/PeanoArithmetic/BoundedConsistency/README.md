@@ -3081,6 +3081,13 @@ caller's bound proof through the selected standard PA prefix, and returns a
 local proof of the disjunction.  The result therefore supports represented
 `OrE` between predecessor-row preservation and construction of the new row;
 it does not appeal to the metatheoretic model case split at the client site.
+The compiler now also exposes that elimination directly: clients provide one
+local continuation under each literal disjunct-cons context, and the endpoint
+selects the standard PA witness prefix, compiles the arithmetic split, and
+returns the represented `OrE` root in their common extended context.  This
+keeps both successor-row branches synchronized to exactly the same finite PA
+axiom prefix instead of requiring clients to reconcile independently chosen
+witness contexts.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
