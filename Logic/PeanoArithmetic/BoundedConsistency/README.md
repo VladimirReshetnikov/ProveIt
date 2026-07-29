@@ -2539,6 +2539,21 @@ semantic rule-law package and the existing nonstandard closure remainder as
 inputs; it does not reinterpret a carrier-valued induction axiom as finite
 template syntax or assume the requested universal proof.
 
+Some semantic rule laws themselves use arithmetic theorems and therefore
+cannot honestly be compiled over the empty context.  The witnessed-tail
+integration in
+`RawCodedRestrictedPADerivationSoundnessDirectGrowingIntegrationFromWitnessedRuleCases.v`
+accepts any finite template tail whose translation is a witnessed PA-axiom
+context, compiles all twenty-three semantic roots there, and weakens the
+result only once after adjoining the genuine induction axiom.  Its exact
+prefix equation identifies a standard `BProv` compiler's returned PA-axiom
+prefix with a finite template prefix.  As the first consumer,
+`RawCodedContextMembershipTransferPA.v` proves in PA that membership is
+independent of the beta tables chosen for a complete context traversal and
+returns that theorem over an honestly enlarged witnessed tail.  This resolves
+the former context-boundary mismatch without treating a PA theorem as a
+context-free logical derivation.
+
 `RawCodedRestrictedPAConsistencyFromUniversalSoundnessDirect.v` removes the
 next representation mismatch.  The restricted-target translation theorem is
 now proved over arbitrary structural symbols, which is sufficient because the
