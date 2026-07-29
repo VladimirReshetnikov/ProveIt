@@ -507,6 +507,32 @@ Print Assumptions generic_neg_equal_iff.
 Print Assumptions generic_connective_hom_iff.
 Print Assumptions generic_connective_hom_id.
 Print Assumptions generic_connective_hom_compose.
+Check generic_conj_lt.
+Check generic_conj_lt_zero.
+Check generic_conj_lt_succ.
+Check generic_disj_lt.
+Check generic_disj_lt_zero.
+Check generic_disj_lt_succ.
+Check generic_connective_hom_conj_lt.
+Check generic_connective_hom_disj_lt.
+Check generic_list_conj.
+Check generic_list_disj.
+Check generic_connective_hom_list_conj.
+Check generic_connective_hom_list_disj.
+Check generic_connective_hom_list_conj2.
+Check generic_connective_hom_list_disj2.
+Check generic_list_conj_map.
+Check generic_list_disj_map.
+Check generic_connective_hom_list_conj_map.
+Check generic_connective_hom_list_disj_map.
+Print Assumptions generic_connective_hom_conj_lt.
+Print Assumptions generic_connective_hom_disj_lt.
+Print Assumptions generic_connective_hom_list_conj.
+Print Assumptions generic_connective_hom_list_disj.
+Print Assumptions generic_connective_hom_list_conj2.
+Print Assumptions generic_connective_hom_list_disj2.
+Print Assumptions generic_connective_hom_list_conj_map.
+Print Assumptions generic_connective_hom_list_disj_map.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide

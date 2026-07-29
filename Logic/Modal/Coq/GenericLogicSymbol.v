@@ -14,7 +14,10 @@
   records merely because their underlying functions agree.
 *)
 
+From Stdlib Require Import Lists.List Arith.PeanoNat.
 From FoundationModal Require Import GenericSemantics.
+
+Import ListNotations.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -269,3 +272,202 @@ Arguments generic_closed_or {F C P} _ _ _ _ _.
 Arguments generic_connective_closed_and_or {F C P} _.
 Arguments generic_closed_neg {F C P} _ _ _.
 Arguments generic_closed_imp {F C P} _ _ _ _ _.
+
+(** * Natural-arity conjunction and disjunction *)
+
+(** Foundation [conjLt]: formulas [phi 0] through [phi (k-1)] are folded in
+    descending index order, with top at arity zero. *)
+Fixpoint generic_conj_lt {F : Type}
+    (C : generic_connectives F) (phi : nat -> F) (k : nat) : F :=
+  match k with
+  | 0 => generic_top C
+  | S n => generic_and C (phi n) (generic_conj_lt C phi n)
+  end.
+
+Lemma generic_conj_lt_zero :
+  forall (F : Type) (C : generic_connectives F) (phi : nat -> F),
+    generic_conj_lt C phi 0 = generic_top C.
+Proof. reflexivity. Qed.
+
+Lemma generic_conj_lt_succ :
+  forall (F : Type) (C : generic_connectives F)
+         (phi : nat -> F) (k : nat),
+    generic_conj_lt C phi (S k) =
+    generic_and C (phi k) (generic_conj_lt C phi k).
+Proof. reflexivity. Qed.
+
+Fixpoint generic_disj_lt {F : Type}
+    (C : generic_connectives F) (phi : nat -> F) (k : nat) : F :=
+  match k with
+  | 0 => generic_bottom C
+  | S n => generic_or C (phi n) (generic_disj_lt C phi n)
+  end.
+
+Lemma generic_disj_lt_zero :
+  forall (F : Type) (C : generic_connectives F) (phi : nat -> F),
+    generic_disj_lt C phi 0 = generic_bottom C.
+Proof. reflexivity. Qed.
+
+Lemma generic_disj_lt_succ :
+  forall (F : Type) (C : generic_connectives F)
+         (phi : nat -> F) (k : nat),
+    generic_disj_lt C phi (S k) =
+    generic_or C (phi k) (generic_disj_lt C phi k).
+Proof. reflexivity. Qed.
+
+(** The source specializes these results to proposition-valued
+    homomorphisms.  The equalities below hold for every target connective
+    algebra and therefore strictly generalize both source theorems. *)
+Lemma generic_connective_hom_conj_lt :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG)
+         (phi : nat -> F) (k : nat),
+    generic_connective_hom_apply h (generic_conj_lt CF phi k) =
+    generic_conj_lt CG
+      (fun i => generic_connective_hom_apply h (phi i)) k.
+Proof.
+  intros F G CF CG h phi k; induction k as [|k IH]; simpl.
+  - exact (generic_connective_hom_top h).
+  - now rewrite (generic_connective_hom_and h), IH.
+Qed.
+
+Lemma generic_connective_hom_disj_lt :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG)
+         (phi : nat -> F) (k : nat),
+    generic_connective_hom_apply h (generic_disj_lt CF phi k) =
+    generic_disj_lt CG
+      (fun i => generic_connective_hom_apply h (phi i)) k.
+Proof.
+  intros F G CF CG h phi k; induction k as [|k IH]; simpl.
+  - exact (generic_connective_hom_bottom h).
+  - now rewrite (generic_connective_hom_or h), IH.
+Qed.
+
+(** * List folds *)
+
+(** Ordinary source [List.conj]/[List.disj] folds.  The singleton-normalized
+    [generic_list_conj2]/[generic_list_disj2] operations are shared with
+    [GenericSemantics]. *)
+Definition generic_list_conj {F : Type}
+    (C : generic_connectives F) (gamma : list F) : F :=
+  fold_right (generic_and C) (generic_top C) gamma.
+
+Definition generic_list_disj {F : Type}
+    (C : generic_connectives F) (gamma : list F) : F :=
+  fold_right (generic_or C) (generic_bottom C) gamma.
+
+Lemma generic_list_conj_nil :
+  forall (F : Type) (C : generic_connectives F),
+    generic_list_conj C [] = generic_top C.
+Proof. reflexivity. Qed.
+
+Lemma generic_list_conj_cons :
+  forall (F : Type) (C : generic_connectives F)
+         (p : F) (gamma : list F),
+    generic_list_conj C (p :: gamma) =
+    generic_and C p (generic_list_conj C gamma).
+Proof. reflexivity. Qed.
+
+Lemma generic_list_disj_nil :
+  forall (F : Type) (C : generic_connectives F),
+    generic_list_disj C [] = generic_bottom C.
+Proof. reflexivity. Qed.
+
+Lemma generic_list_disj_cons :
+  forall (F : Type) (C : generic_connectives F)
+         (p : F) (gamma : list F),
+    generic_list_disj C (p :: gamma) =
+    generic_or C p (generic_list_disj C gamma).
+Proof. reflexivity. Qed.
+
+Lemma generic_connective_hom_list_conj :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG) (gamma : list F),
+    generic_connective_hom_apply h (generic_list_conj CF gamma) =
+    generic_list_conj CG (map (generic_connective_hom_apply h) gamma).
+Proof.
+  intros F G CF CG h gamma; induction gamma as [|p gamma IH]; simpl.
+  - exact (generic_connective_hom_top h).
+  - now rewrite (generic_connective_hom_and h), IH.
+Qed.
+
+Lemma generic_connective_hom_list_disj :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG) (gamma : list F),
+    generic_connective_hom_apply h (generic_list_disj CF gamma) =
+    generic_list_disj CG (map (generic_connective_hom_apply h) gamma).
+Proof.
+  intros F G CF CG h gamma; induction gamma as [|p gamma IH]; simpl.
+  - exact (generic_connective_hom_bottom h).
+  - now rewrite (generic_connective_hom_or h), IH.
+Qed.
+
+Lemma generic_connective_hom_list_conj2 :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG) (gamma : list F),
+    generic_connective_hom_apply h (generic_list_conj2 CF gamma) =
+    generic_list_conj2 CG (map (generic_connective_hom_apply h) gamma).
+Proof.
+  intros F G CF CG h gamma; induction gamma as [|p gamma IH].
+  - simpl. exact (generic_connective_hom_top h).
+  - destruct gamma as [|q gamma].
+    + reflexivity.
+    + simpl generic_list_conj2 in IH |- *.
+      now rewrite (generic_connective_hom_and h), IH.
+Qed.
+
+Lemma generic_connective_hom_list_disj2 :
+  forall (F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG) (gamma : list F),
+    generic_connective_hom_apply h (generic_list_disj2 CF gamma) =
+    generic_list_disj2 CG (map (generic_connective_hom_apply h) gamma).
+Proof.
+  intros F G CF CG h gamma; induction gamma as [|p gamma IH].
+  - simpl. exact (generic_connective_hom_bottom h).
+  - destruct gamma as [|q gamma].
+    + reflexivity.
+    + simpl generic_list_disj2 in IH |- *.
+      now rewrite (generic_connective_hom_or h), IH.
+Qed.
+
+(** Indexed list folds, corresponding to source [List.conj']/[List.disj']. *)
+Definition generic_list_conj_map {I F : Type}
+    (C : generic_connectives F) (f : I -> F) (xs : list I) : F :=
+  generic_list_conj2 C (map f xs).
+
+Definition generic_list_disj_map {I F : Type}
+    (C : generic_connectives F) (f : I -> F) (xs : list I) : F :=
+  generic_list_disj2 C (map f xs).
+
+Lemma generic_connective_hom_list_conj_map :
+  forall (I F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG)
+         (f : I -> F) (xs : list I),
+    generic_connective_hom_apply h (generic_list_conj_map CF f xs) =
+    generic_list_conj_map CG
+      (fun i => generic_connective_hom_apply h (f i)) xs.
+Proof.
+  intros I F G CF CG h f xs. unfold generic_list_conj_map.
+  rewrite generic_connective_hom_list_conj2, map_map. reflexivity.
+Qed.
+
+Lemma generic_connective_hom_list_disj_map :
+  forall (I F G : Type)
+         (CF : generic_connectives F) (CG : generic_connectives G)
+         (h : generic_connective_hom CF CG)
+         (f : I -> F) (xs : list I),
+    generic_connective_hom_apply h (generic_list_disj_map CF f xs) =
+    generic_list_disj_map CG
+      (fun i => generic_connective_hom_apply h (f i)) xs.
+Proof.
+  intros I F G CF CG h f xs. unfold generic_list_disj_map.
+  rewrite generic_connective_hom_list_disj2, map_map. reflexivity.
+Qed.
