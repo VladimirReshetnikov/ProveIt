@@ -8,7 +8,7 @@
   finite argument vectors.
 *)
 
-From Stdlib Require Import Arith.PeanoNat Lia Lists.List Vectors.Fin.
+From Stdlib Require Import Arith.Compare_dec Arith.PeanoNat Lia Lists.List Vectors.Fin.
 From Stdlib Require Import Logic.Eqdep_dec.
 From Stdlib Require Import Logic.FunctionalExtensionality.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
@@ -186,6 +186,60 @@ Lemma fin_cast_le_refl : forall n (h : n <= n) (i : Fin.t n),
 Proof.
   intros n h i. apply Fin.to_nat_inj.
   unfold fin_cast_le. rewrite Fin.to_nat_of_nat. reflexivity.
+Qed.
+
+Lemma fin_value_ext : forall n (i j : Fin.t n),
+  fin_value i = fin_value j -> i = j.
+Proof. intros; apply Fin.to_nat_inj; exact H. Qed.
+
+Lemma fin_value_cast : forall n m (i : Fin.t n) (h : n = m),
+  fin_value (Fin.cast i h) = fin_value i.
+Proof.
+  intros n m i h; destruct h. now rewrite fin_cast_refl.
+Qed.
+
+Lemma fin_value_cast_le : forall n m (h : n <= m) (i : Fin.t n),
+  fin_value (fin_cast_le h i) = fin_value i.
+Proof.
+  intros. unfold fin_value, fin_cast_le.
+  rewrite Fin.to_nat_of_nat. reflexivity.
+Qed.
+
+Lemma fin_value_FS : forall n (i : Fin.t n),
+  fin_value (Fin.FS i) = S (fin_value i).
+Proof.
+  intros. unfold fin_value. cbn [Fin.to_nat].
+  destruct (Fin.to_nat i). reflexivity.
+Qed.
+
+Lemma fin_value_L : forall n m (i : Fin.t n),
+  fin_value (Fin.L m i) = fin_value i.
+Proof.
+  intros n m i; induction i; [reflexivity |].
+  cbn [Fin.L].
+  transitivity (S (fin_value (Fin.L m i))).
+  - apply fin_value_FS.
+  - rewrite IHi. symmetry. apply fin_value_FS.
+Qed.
+
+Lemma fin_value_R_f1 : forall n,
+  fin_value (Fin.R n (@Fin.F1 0)) = n.
+Proof.
+  induction n as [|n IH]; [reflexivity |].
+  cbn [Fin.R].
+  transitivity (S (fin_value (Fin.R n (@Fin.F1 0)))).
+  - apply fin_value_FS.
+  - now rewrite IH.
+Qed.
+
+Definition fin_add_right_of_lt (n x m : nat) (h : x < m) : Fin.t (n + m) :=
+  Fin.of_nat_lt ((proj1 (Nat.add_lt_mono_l x m n)) h).
+
+Lemma fin_value_add_right_of_lt : forall n x m (h : x < m),
+  fin_value (@fin_add_right_of_lt n x m h) = n + x.
+Proof.
+  intros. unfold fin_value, fin_add_right_of_lt.
+  rewrite Fin.to_nat_of_nat. reflexivity.
 Qed.
 
 Lemma rew_rewrite_bvar : forall L X Y n e (i : Fin.t n),
@@ -823,6 +877,87 @@ Proof.
       eq_refl _).
     intro j; reflexivity.
   - intro x; reflexivity.
+Qed.
+
+(** * Iterated conversion of leading free variables to bound variables *)
+
+Lemma nat_fix_iter_step : forall n m,
+  (n + m) + 1 = n + S m.
+Proof. intros; lia. Qed.
+
+Fixpoint rew_fix_iter {L} (n m : nat) : syntactic_rew L n (n + m) :=
+  match m as m0 return syntactic_rew L n (n + m0) with
+  | 0 => rew_cast (eq_sym (Nat.add_0_r n))
+  | S k =>
+      rew_comp (rew_cast (nat_fix_iter_step n k))
+        (rew_comp (@rew_fix L (n + k)) (@rew_fix_iter L n k))
+  end.
+
+Lemma rew_fix_iter_zero : forall L n,
+  rew_equiv
+    (rew_comp (@rew_cast L nat (n + 0) n (Nat.add_0_r n))
+      (@rew_fix_iter L n 0))
+    rew_id.
+Proof.
+  intros. cbn [rew_fix_iter].
+  apply rew_equiv_of_variables.
+  - intro i; simpl.
+    f_equal. apply fin_value_ext. rewrite !fin_value_cast. reflexivity.
+  - intro x; reflexivity.
+Qed.
+
+Lemma rew_fix_iter_succ : forall L n m,
+  rew_equiv (@rew_fix_iter L n (S m))
+    (rew_comp (rew_cast (nat_fix_iter_step n m))
+      (rew_comp (@rew_fix L (n + m)) (@rew_fix_iter L n m))).
+Proof. intros; apply rew_equiv_refl. Qed.
+
+Lemma rew_fix_iter_bvar : forall L n m (i : Fin.t n),
+  rew_apply (@rew_fix_iter L n m) (Semiterm_bvar i) =
+  Semiterm_bvar (fin_cast_le (Nat.le_add_r n m) i).
+Proof.
+  intros L n m; induction m as [|m IH]; intro i.
+  - cbn [rew_fix_iter]. rewrite rew_cast_bvar. f_equal.
+    apply fin_value_ext. rewrite fin_value_cast, fin_value_cast_le. reflexivity.
+  - rewrite (@rew_fix_iter_succ L n m (Semiterm_bvar i)).
+    rewrite !rew_comp_apply.
+    rewrite IH, rew_fix_bvar, rew_cast_bvar. f_equal.
+    apply fin_value_ext.
+    rewrite fin_value_cast, fin_value_L, !fin_value_cast_le. reflexivity.
+Qed.
+
+Lemma rew_fix_iter_fvar_ge : forall L n m x,
+  m <= x ->
+  rew_apply (@rew_fix_iter L n m) (Semiterm_fvar x) =
+  Semiterm_fvar (x - m).
+Proof.
+  intros L n m; induction m as [|m IH]; intros x Hmx.
+  - cbn [rew_fix_iter]. rewrite rew_cast_fvar. now rewrite Nat.sub_0_r.
+  - rewrite (@rew_fix_iter_succ L n m (Semiterm_fvar x)).
+    rewrite !rew_comp_apply.
+    rewrite IH by lia.
+    assert (Hx : x - m = S (x - S m)) by lia.
+    rewrite Hx, rew_fix_fvar_succ, rew_cast_fvar. reflexivity.
+Qed.
+
+Lemma rew_fix_iter_fvar_lt : forall L n m x (h : x < m),
+  rew_apply (@rew_fix_iter L n m) (Semiterm_fvar x) =
+  Semiterm_bvar (@fin_add_right_of_lt n x m h).
+Proof.
+  intros L n m; induction m as [|m IH]; intros x h; [lia |].
+  rewrite (@rew_fix_iter_succ L n m (Semiterm_fvar x)).
+  rewrite !rew_comp_apply.
+  destruct (lt_dec x m) as [Hxm | Hxm].
+  - rewrite (IH x Hxm), rew_fix_bvar, rew_cast_bvar. f_equal.
+    apply fin_value_ext.
+    rewrite fin_value_cast, fin_value_L, !fin_value_add_right_of_lt.
+    reflexivity.
+  - assert (Hxeq : x = m) by lia. subst x.
+    rewrite rew_fix_iter_fvar_ge by lia.
+    rewrite Nat.sub_diag, rew_fix_fvar_zero, rew_cast_bvar. f_equal.
+    apply fin_value_ext.
+    rewrite fin_value_cast, fin_value_R_f1, fin_value_add_right_of_lt.
+    reflexivity.
 Qed.
 
 (** * Formula action *)
