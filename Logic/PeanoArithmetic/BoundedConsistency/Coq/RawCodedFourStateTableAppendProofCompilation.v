@@ -442,4 +442,100 @@ Proof.
     himplication htransportedDefined).
 Qed.
 
+(** Component-facing endpoint.  Traversal code normally owns four separate
+    defined-through roots rather than a preassembled conjunction.  This
+    theorem performs the three conjunction introductions and then invokes
+    the synchronized append compiler, selecting its standard witness prefix
+    only after the caller roots have been combined. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_exists_of_components_on_witnessed_tail
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      baseWitnessList baseContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      modeDefinedRoot formulaDefinedRoot
+      assignmentCodeDefinedRoot assignmentStepDefinedRoot,
+  let defined := coqFourStateTableAppendDefinedTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep in
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDirectTemplateFormula inputs (templateAnd4First defined))
+    modeDefinedRoot ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDirectTemplateFormula inputs (templateAnd4Second defined))
+    formulaDefinedRoot ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDirectTemplateFormula inputs (templateAnd4Third defined))
+    assignmentCodeDefinedRoot ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDirectTemplateFormula inputs (templateAnd4Fourth defined))
+    assignmentStepDefinedRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext)
+      (rawDirectTemplateFormula inputs
+        (coqFourStateTableAppendExistsTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep)) root.
+Proof.
+  intros M hPA inputs baseWitnessList baseContext
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    modeDefinedRoot formulaDefinedRoot
+    assignmentCodeDefinedRoot assignmentStepDefinedRoot.
+  cbn zeta.
+  intros hbase hmodeDefined hformulaDefined
+    hassignmentCodeDefined hassignmentStepDefined.
+  set (defined := coqFourStateTableAppendDefinedTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep).
+  assert (hdefinedShape : defined =
+      tfAnd (templateAnd4First defined)
+        (tfAnd (templateAnd4Second defined)
+          (tfAnd (templateAnd4Third defined)
+            (templateAnd4Fourth defined)))).
+  {
+    unfold defined.
+    exact (coqFourStateTableAppendDefinedTemplate_components
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep).
+  }
+  destruct (raw_codedPALocalProofOf_templateAnd4 M hPA
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    baseContext defined
+    modeDefinedRoot formulaDefinedRoot
+    assignmentCodeDefinedRoot assignmentStepDefinedRoot
+    hdefinedShape hmodeDefined hformulaDefined
+    hassignmentCodeDefined hassignmentStepDefined)
+    as [definedRoot hdefined].
+  exact
+    (raw_codedPALocalProofOf_four_state_table_append_exists_of_defined_on_witnessed_tail
+      M hPA inputs baseWitnessList baseContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep definedRoot
+      hbase hdefined).
+Qed.
+
 End PABoundedRawCodedFourStateTableAppendProofCompilation.

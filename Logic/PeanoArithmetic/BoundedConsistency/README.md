@@ -3017,6 +3017,10 @@ existential eliminations can introduce all four extended tables together.
 The antecedent also has audited stable projections for its four literal
 right-associated components, plus a reusable local-proof constructor that
 combines four component roots with three represented conjunction rules.
+The component-facing append endpoint composes that constructor with the
+thirteen-input compiler, so four inherited defined-table roots now directly
+produce the synchronized eight-witness existential on one extended witnessed
+PA context.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
