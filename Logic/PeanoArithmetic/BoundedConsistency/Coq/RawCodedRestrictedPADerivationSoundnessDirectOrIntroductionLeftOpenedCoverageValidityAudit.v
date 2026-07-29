@@ -1,0 +1,31 @@
+(** Audit surface for the complete opened Or-I-left PA theorem. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageValidity
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageProvability.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageProvability.
+
+Check raw_orIntroductionLeft_child_below_sat_iff.
+Check raw_orIntroductionLeft_child_restricted_sat_iff.
+Check raw_orIntroductionLeft_child_endpoint_sat_iff.
+Check raw_orIntroductionLeft_child_admissible_sat_iff.
+Check raw_orIntroductionLeft_child_interface_renamed_sat_iff.
+Check
+  raw_coqRestrictedPADirectOrIntroductionLeftOpenedCoverageLaw_valid.
+Check
+  raw_coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSource_valid.
+Check
+  PA_proves_coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSource.
+
+Print Assumptions
+  raw_orIntroductionLeft_child_interface_renamed_sat_iff.
+Print Assumptions
+  raw_coqRestrictedPADirectOrIntroductionLeftOpenedCoverageLaw_valid.
+Print Assumptions
+  raw_coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSource_valid.
+Print Assumptions
+  PA_proves_coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSource.

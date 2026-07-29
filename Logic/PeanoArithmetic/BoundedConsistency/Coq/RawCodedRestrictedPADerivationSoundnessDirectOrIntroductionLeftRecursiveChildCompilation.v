@@ -29,20 +29,25 @@ From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
   RawModelCompleteness
+  RawCodedAssignment
   RawCodedSyntaxConstructors
   RawCodedContextLists
   RawCodedProofDescent
+  RawCodedProofRules
   RawCodedProofAtomicAdequacy
   RawCodedProofFormulaCoverage
   RawCodedProofRuleCoverage
+  RawCodedFixedLevelTruthTotality
   RawCodedRestrictedPAProof
   RawCodedRestrictedProofAdmissibility
+  RawCodedRestrictedPAConsistencyFormulaCode
   RawCodedPALocalProofExistential
   RawCodedPALocalProofAndIntroduction
   RawCodedPALocalProofConjunction
   RawCodedPALocalProofPropositionalRules
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
+  RawCodedRestrictedTargetTemplateContext
   RawCodedRestrictedPADerivationSoundnessDirectRenamedChildTruth
   RawCodedTemplateDirectStructuralTranslation
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
@@ -63,20 +68,25 @@ Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawModelCompleteness.
+Import PABoundedRawCodedAssignment.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedProofDescent.
+Import PABoundedRawCodedProofRules.
 Import PABoundedRawCodedProofAtomicAdequacy.
 Import PABoundedRawCodedProofFormulaCoverage.
 Import PABoundedRawCodedProofRuleCoverage.
+Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedRestrictedProofAdmissibility.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofAndIntroduction.
 Import PABoundedRawCodedPALocalProofConjunction.
 Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedRestrictedTargetTemplateContext.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessDirectRenamedChildTruth.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
@@ -169,6 +179,33 @@ Definition
     coqRestrictedPADirectOrIntroductionLeftWitnessContextTerm
     coqRestrictedPADirectOrIntroductionLeftChildConclusionTerm.
 
+Definition coqRestrictedPADirectOrIntroductionLeftChildBelowTemplate
+    : TemplateFormula :=
+  coqRestrictedPADirectAndIntroductionChildBelowTemplate
+    coqRestrictedPADirectOrIntroductionLeftChildTerm.
+
+Definition coqRestrictedPADirectOrIntroductionLeftChildRestrictedTemplate
+    : TemplateFormula :=
+  coqRestrictedPADirectAndIntroductionChildRestrictedTemplate
+    coqRestrictedPADirectOrIntroductionLeftChildTerm
+    coqRestrictedPADirectOrIntroductionLeftWitnessContextTerm
+    coqRestrictedPADirectOrIntroductionLeftChildConclusionTerm.
+
+Definition
+    coqRestrictedPADirectOrIntroductionLeftChildPredicateEndpointTemplate
+    : TemplateFormula :=
+  coqRestrictedPADirectAndIntroductionChildEndpointTemplate
+    coqRestrictedPADirectOrIntroductionLeftChildTerm
+    coqRestrictedPADirectOrIntroductionLeftWitnessContextTerm
+    coqRestrictedPADirectOrIntroductionLeftChildConclusionTerm.
+
+Definition coqRestrictedPADirectOrIntroductionLeftChildAdmissibleTemplate
+    : TemplateFormula :=
+  coqRestrictedPADirectAndIntroductionChildAdmissibleTemplate
+    coqRestrictedPADirectOrIntroductionLeftChildTerm
+    coqRestrictedPADirectOrIntroductionLeftWitnessContextTerm
+    coqRestrictedPADirectOrIntroductionLeftChildConclusionTerm.
+
 Definition coqRestrictedPADirectTemplateAndLeft
     (formula : TemplateFormula) : TemplateFormula :=
   match formula with
@@ -186,6 +223,58 @@ Definition
     : TemplateFormula :=
   coqRestrictedPADirectTemplateAndLeft
     coqRestrictedPADirectAndIntroductionLeftRestrictedTemplate.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_child_interface_shape :
+  coqRestrictedPADirectOrIntroductionLeftChildInterfaceResultTemplate =
+  tfAnd coqRestrictedPADirectOrIntroductionLeftChildBelowTemplate
+    (tfAnd coqRestrictedPADirectOrIntroductionLeftChildRestrictedTemplate
+      (tfAnd
+        coqRestrictedPADirectOrIntroductionLeftChildPredicateEndpointTemplate
+        coqRestrictedPADirectOrIntroductionLeftChildAdmissibleTemplate)).
+Proof. reflexivity. Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_child_below_shape :
+  coqRestrictedPADirectOrIntroductionLeftChildBelowTemplate =
+  embedPAFormula
+    (Formula.ltTermAt (tVar 2) (liftTerm 8 (tVar 4))).
+Proof. reflexivity. Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_child_restricted_shape :
+  coqRestrictedPADirectOrIntroductionLeftChildRestrictedTemplate =
+  tfAnd coqRestrictedPADirectOrIntroductionLeftChildRestrictedCoreTemplate
+    (tfAnd
+      (embedPAFormula (proofAtomicallyAdequateTermAt (tVar 2)))
+      (tfAnd
+        (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 2)))
+        (embedPAFormula (proofRuleCoverageTermAt (tVar 2))))).
+Proof. reflexivity. Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_child_predicate_endpoint_shape :
+  coqRestrictedPADirectOrIntroductionLeftChildPredicateEndpointTemplate =
+  embedPAFormula
+    (proofRuleValidTermAt (tVar 2) (tVar 7) (tVar 6)).
+Proof. reflexivity. Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_child_admissible_shape :
+  coqRestrictedPADirectOrIntroductionLeftChildAdmissibleTemplate =
+  tfAnd
+    (tfAnd
+      (embedPAFormula
+        (codedFormulaAtomicallyAdequateTermAt (tVar 6)))
+      (tfAnd
+        (embedPAFormula
+          (codedAssignmentDefinedThroughTermAt
+            (tVar 9) (tVar 8) (tVar 6)))
+        (restrictedTargetTemplateFormulaContext
+          coqRestrictedPASoundnessLowerLevelTerm
+          (restrictedTargetFormulaQuantifierBoundedContext (tVar 6)))))
+    (embedPAFormula
+      (pEx
+        (pAnd
+          (proofFormulaCoverageTermAt (tVar 3) (tVar 0))
+          (codedAssignmentDefinedThroughTermAt
+            (tVar 10) (tVar 9) (tVar 0))))).
+Proof. reflexivity. Qed.
 
 Lemma
     coqRestrictedPADirectOrIntroductionLeft_deep_restricted_shape :
@@ -212,6 +301,15 @@ Lemma
   coqRestrictedPADirectOrIntroductionLeftDeepCommonCoverageTemplate =
   tfEx
     coqRestrictedPADirectOrIntroductionLeftDeepCommonCoverageBodyTemplate.
+Proof. reflexivity. Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_common_coverage_body_shape :
+  coqRestrictedPADirectOrIntroductionLeftDeepCommonCoverageBodyTemplate =
+  embedPAFormula
+    (pAnd
+      (proofFormulaCoverageTermAt (tVar 13) (tVar 0))
+      (codedAssignmentDefinedThroughTermAt
+        (tVar 10) (tVar 9) (tVar 0))).
 Proof. reflexivity. Qed.
 
 Lemma coqRestrictedPADirectOrIntroductionLeft_child_context_truth_agreement :
