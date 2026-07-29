@@ -2897,6 +2897,17 @@ exported theorem now supplies both a witnessed PA-axiom context and the exact
 `RawCoqRestrictedPADirectStrongStepAssumptionMembershipTruthLawRoot` expected
 by the residual direct-rule dispatcher.
 
+The surrounding-tail step is factored through
+`RawCodedTemplateLocalProofStandardWitnessTailTransport.v`.  This reusable
+module is independent of direct soundness: for any template translation that
+agrees with embedded PA syntax, it proves witnessed-context realizability and
+membership inclusion when an independently selected standard witness batch is
+placed before an existing batch and another is placed after it.  Binder-safe
+weakening then transports an arbitrary carrier conclusion beneath an arbitrary
+finite local template prefix.  Assumption is only the first client; later rule
+compilers can share the theorem without rebuilding carrier-code equalities or
+context-inclusion inductions.
+
 `RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterAssumption.v`
 integrates that field with the already compiled Or-I-left recursive field.
 The Assumption root first gains a surrounding-tail transport theorem: any
