@@ -22,13 +22,16 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
   RawCodedPAAxiomWitnessPrefix
   RawCodedProofBinaryConstructors
+  RawCodedProofAndIConstructor
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofAndIntroduction
   RawCodedPALocalProofComposition
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateDirectStructuralPAAgreement
   RawCodedPALocalProofUniversalEliminationChain
+  RawCodedFixedLevelTruth
   RawCodedFourStateTableAppendSource.
 
 Import ListNotations.
@@ -44,13 +47,16 @@ Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedProofBinaryConstructors.
+Import PABoundedRawCodedProofAndIConstructor.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofAndIntroduction.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
+Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFourStateTableAppendSource.
 
 (** The replacements follow the source theorem's outer-to-inner order. *)
@@ -156,6 +162,115 @@ Proof.
     codedFourStateTableAppendFormula,
     fourStateTableAppendRepeatedAll.
   reflexivity.
+Qed.
+
+(** Stable projections for a right-associated four-way conjunction.  Keeping
+    these generic avoids unfolding the large beta-definedness formula when a
+    traversal client needs just one of its four proof roots. *)
+Definition templateAnd4First (source : TemplateFormula) : TemplateFormula :=
+  match source with
+  | tfAnd first _ => first
+  | _ => tfBot
+  end.
+
+Definition templateAnd4Second (source : TemplateFormula) : TemplateFormula :=
+  match source with
+  | tfAnd _ (tfAnd second _) => second
+  | _ => tfBot
+  end.
+
+Definition templateAnd4Third (source : TemplateFormula) : TemplateFormula :=
+  match source with
+  | tfAnd _ (tfAnd _ (tfAnd third _)) => third
+  | _ => tfBot
+  end.
+
+Definition templateAnd4Fourth (source : TemplateFormula) : TemplateFormula :=
+  match source with
+  | tfAnd _ (tfAnd _ (tfAnd _ fourth)) => fourth
+  | _ => tfBot
+  end.
+
+(** The combined premise retains the source theorem's literal
+    right-associated four-component shape after all thirteen openings. *)
+Lemma coqFourStateTableAppendDefinedTemplate_components : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  coqFourStateTableAppendDefinedTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep =
+  let defined := coqFourStateTableAppendDefinedTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep in
+  tfAnd (templateAnd4First defined)
+    (tfAnd (templateAnd4Second defined)
+      (tfAnd (templateAnd4Third defined)
+        (templateAnd4Fourth defined))).
+Proof.
+  intros.
+  cbn zeta.
+  unfold coqFourStateTableAppendDefinedTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendDefinedBody,
+    fixedLevelAnd4,
+    templateAnd4First, templateAnd4Second,
+    templateAnd4Third, templateAnd4Fourth.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst].
+  reflexivity.
+Qed.
+
+(** Assemble any template with the same four-way shape from component local
+    proofs.  Returning an existential root keeps clients independent of the
+    particular right-associated proof-tree code. *)
+Theorem raw_codedPALocalProofOf_templateAnd4 : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context source firstRoot secondRoot thirdRoot fourthRoot,
+  source = tfAnd (templateAnd4First source)
+    (tfAnd (templateAnd4Second source)
+      (tfAnd (templateAnd4Third source) (templateAnd4Fourth source))) ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation (templateAnd4First source)) firstRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation (templateAnd4Second source)) secondRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation (templateAnd4Third source)) thirdRoot ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation (templateAnd4Fourth source)) fourthRoot ->
+  exists root,
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation source) root.
+Proof.
+  intros M hPA translation context source
+    firstRoot secondRoot thirdRoot fourthRoot
+    hshape hfirst hsecond hthird hfourth.
+  pose proof (raw_codedPALocalProofOf_andI M hPA context _ _
+    thirdRoot fourthRoot hthird hfourth) as hthirdFourth.
+  pose proof (raw_codedPALocalProofOf_andI M hPA context _ _
+    secondRoot
+    (rawProofAndIRoot M context _ _ thirdRoot fourthRoot)
+    hsecond hthirdFourth) as hsecondThroughFourth.
+  pose proof (raw_codedPALocalProofOf_andI M hPA context _ _
+    firstRoot
+    (rawProofAndIRoot M context _ _ secondRoot
+      (rawProofAndIRoot M context _ _ thirdRoot fourthRoot))
+    hfirst hsecondThroughFourth) as hall.
+  lazymatch type of hall with
+  | RawCodedPALocalProofOf _ _ _ ?root =>
+      exists root;
+      rewrite hshape;
+      repeat rewrite rawTemplateFormula_and;
+      exact hall
+  end.
 Qed.
 
 (** Specialize the fixed theorem on an arbitrary witnessed base. *)
