@@ -7,7 +7,8 @@ From FoundationModal Require Import
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert
   PropositionalBoolean PropositionalBooleanNNFormula
-  PropositionalBooleanZeroSubst GenericCalculus PropositionalTait
+  PropositionalBooleanZeroSubst PropositionalBooleanHilbert
+  GenericCalculus PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -1097,6 +1098,71 @@ Print Assumptions pboolean_eval_vf_substitute_iff.
 Print Assumptions pboolean_exists_neg_zero_subst_of_not_tautology.
 Print Assumptions pboolean_tautology_of_forall_zero_subst.
 Print Assumptions pboolean_vf_substitution_tautology.
+
+(** Propositional/Boolean/Hilbert soundness and canonical completeness.
+    The port replaces the source's two-sided saturated tableau with a
+    deduction theorem, an enumerated Lindenbaum chain, and one maximal-theory
+    truth lemma. *)
+Check ph_cl_proof_sound.
+Check ph_cl_provable_sound.
+Check ph_cl_not_provable_of_countervaluation.
+Check ph_theory.
+Check ph_theory_included.
+Check ph_theory_empty.
+Check ph_theory_insert.
+Check ph_cl_derives.
+Check PCD_assumption.
+Check PCD_theorem.
+Check PCD_mdp.
+Check ph_theory_consistent.
+Check ph_cl_derives_weaken.
+Check ph_cl_derives_cast.
+Check ph_theory_insert_member_split.
+Check ph_cl_derives_deduction.
+Check ph_cl_derives_empty_iff.
+Check ph_theory_consistent_insert_iff.
+Check ph_lindenbaum_step.
+Check ph_lindenbaum_step_includes.
+Check ph_lindenbaum_step_decides.
+Check ph_lindenbaum_step_consistent.
+Check ph_lindenbaum_chain.
+Check ph_lindenbaum_chain_included_succ.
+Check ph_lindenbaum_chain_included_le.
+Check ph_lindenbaum_chain_consistent.
+Check ph_lindenbaum_limit.
+Check ph_lindenbaum_limit_includes.
+Check ph_lindenbaum_limit_complete.
+Check ph_cl_derives_lindenbaum_limit_stage.
+Check ph_lindenbaum_limit_consistent.
+Check ph_maximal_consistent_theory.
+Check ph_lindenbaum_mct.
+Check ph_lindenbaum_extension.
+Check ph_mct_not_both.
+Check ph_mct_bottom_absent.
+Check ph_mct_neg_iff.
+Check ph_mct_derivable_mem.
+Check ph_mct_theorem_mem.
+Check ph_mct_and_iff.
+Check ph_mct_or_iff.
+Check ph_mct_imp_iff.
+Check ph_mct_truth_lemma.
+Check ph_cl_neg_seed_consistent.
+Check ph_cl_provable_complete.
+Check ph_cl_provable_iff_tautology.
+Check ph_cl_exists_countervaluation_of_not_provable.
+Check ph_logic_cl_iff_tautology.
+Print Assumptions ph_cl_proof_sound.
+Print Assumptions ph_cl_derives_weaken.
+Print Assumptions ph_cl_derives_deduction.
+Print Assumptions ph_lindenbaum_limit_consistent.
+Print Assumptions ph_mct_and_iff.
+Print Assumptions ph_mct_or_iff.
+Print Assumptions ph_mct_imp_iff.
+Print Assumptions ph_mct_truth_lemma.
+Print Assumptions ph_cl_provable_complete.
+Print Assumptions ph_cl_provable_iff_tautology.
+Print Assumptions ph_cl_exists_countervaluation_of_not_provable.
+Print Assumptions ph_logic_cl_iff_tautology.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
