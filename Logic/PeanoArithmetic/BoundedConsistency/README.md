@@ -4232,3 +4232,11 @@ that row package with the transported append package and returns all four
 represented equalities.  Its sole remaining structural input is the
 first-side matching contract, whose proof requires composing thirteen
 universal/existential openings, five shifts, and named-parameter abstraction.
+
+`RawCodedTemplateRenamingSubstitution` now includes the missing generic
+substitution-fusion laws for terms, term lists, and formulas.  A separate
+lifted-substitution composition lemma handles the binder case, and a
+root-level corollary rewrites opening after an arbitrary substitution into
+one composed substitution.  These identities are syntax-generic and
+assumption-free; they provide the normalization mechanism needed for the
+remaining append first-side contract without table-specific reduction hacks.

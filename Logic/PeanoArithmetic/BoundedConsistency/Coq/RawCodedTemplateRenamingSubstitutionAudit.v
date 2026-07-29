@@ -13,10 +13,18 @@ Check templateTermSubst_rename.
 Check templateTermsSubst_rename.
 Check templateTermUpSubst_upRenaming.
 Check templateFormulaSubst_rename.
+Check templateTermSubst_comp.
+Check templateTermsSubst_comp.
+Check templateTermUpSubst_comp.
+Check templateFormulaSubst_comp.
+Check templateFormulaOpen_subst.
 Check templateFormulaOpen_rename_succ.
 Check templateFormulaRename_open.
 
 Print Assumptions templateFormulaRename_subst.
 Print Assumptions templateFormulaSubst_rename.
+Print Assumptions templateTermSubst_comp.
+Print Assumptions templateFormulaSubst_comp.
+Print Assumptions templateFormulaOpen_subst.
 Print Assumptions templateFormulaOpen_rename_succ.
 Print Assumptions templateFormulaRename_open.
