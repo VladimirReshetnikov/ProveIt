@@ -2552,6 +2552,17 @@ substantive: it must instantiate universal soundness and compile the two
 dynamic-truth coherence laws; it is no longer hidden behind an invalid
 direct-to-finite conversion.
 
+`RawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridgeDirect.v`
+carries those exact direct codes into the final staged coordinate.  Its
+context-accumulation theorem is generalized over an arbitrary fixed soundness
+code: it opens an ordinary represented PA certificate, merges its hidden
+witnessed axiom context with all eleven staged prerequisite roots, and only
+then reconstructs the context-dependent consistency implication.  The direct
+specialization fixes both roots to the same direct universal-soundness code,
+and a final corollary obtains projected-fields atomic adequacy from the staged
+graph.  This removes the former finite/direct mismatch while preserving the
+honest grown-base endpoint.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
