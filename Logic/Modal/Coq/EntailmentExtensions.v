@@ -1256,6 +1256,50 @@ Proof.
       (k_dia_regularity HK IH) (k_not_dia_bottom HK)).
 Qed.
 
+Lemma k_dia_iter_list_conj2_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n Gamma,
+    L (Imp (dia_iter n (logic_list_conj2 Gamma))
+      (logic_list_conj2 (map (dia_iter n) Gamma))).
+Proof.
+  intros AtomType L HK n Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - apply (logic_classical_tautology (k_classical HK)).
+    intro rho; unfold Top, Neg; simpl; tauto.
+  - destruct Gamma as [|q Gamma].
+    + simpl. now apply logic_identity, k_classical.
+    + simpl in IH |- *.
+      pose proof (k_classical HK) as Hclass.
+      pose proof
+        (k_dia_iter_and_distribute HK n p
+          (logic_list_conj2 (q :: Gamma))) as Hdist.
+      apply logic_imp_and_intro; [exact Hclass | |].
+      * eapply logic_imp_trans; [exact Hclass | exact Hdist |].
+        now apply logic_and_elim_left_imp.
+      * eapply logic_imp_trans; [exact Hclass | exact Hdist |].
+        eapply logic_imp_trans; [exact Hclass | |exact IH].
+        now apply logic_and_elim_right_imp.
+Qed.
+
+Lemma k_dia_iter_list_disj2_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n Gamma,
+    L (Imp (dia_iter n (logic_list_disj2 Gamma))
+      (logic_list_disj2 (map (dia_iter n) Gamma))).
+Proof.
+  intros AtomType L HK n Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - exact (k_not_dia_iter_bottom HK n).
+  - destruct Gamma as [|q Gamma].
+    + simpl. now apply logic_identity, k_classical.
+    + simpl in IH |- *.
+      pose proof (k_classical HK) as Hclass.
+      eapply logic_imp_trans; [exact Hclass | |].
+      * exact (k_dia_iter_or_distribute HK n p
+          (logic_list_disj2 (q :: Gamma))).
+      * eapply (logic_modus_ponens Hclass); [|exact IH].
+        apply (logic_classical_tautology Hclass).
+        intro rho; unfold Or, Neg; simpl; tauto.
+Qed.
+
 (** EMCN.lean, forward instance. *)
 Lemma k_entailment_of_EMCN :
   forall (AtomType : Type) (L : modal_logic_set AtomType),

@@ -3065,6 +3065,10 @@ Check k_dia_and_distribute.
 Check k_dia_iter_and_distribute.
 Check k_not_dia_bottom.
 Check k_not_dia_iter_bottom.
+Check logic_list_disj2.
+Check classical_eval_list_disj2.
+Check k_dia_iter_list_conj2_distribute.
+Check k_dia_iter_list_disj2_distribute.
 Check k_entailment_of_EMCN.
 Check EMCN_of_k_entailment.
 Check geach_dual.
@@ -5173,6 +5177,9 @@ Print Assumptions k_dia_or_distribute.
 Print Assumptions k_dia_iter_or_distribute.
 Print Assumptions k_dia_iter_and_distribute.
 Print Assumptions k_not_dia_iter_bottom.
+Print Assumptions classical_eval_list_disj2.
+Print Assumptions k_dia_iter_list_conj2_distribute.
+Print Assumptions k_dia_iter_list_disj2_distribute.
 Print Assumptions k_entailment_of_EMCN.
 Print Assumptions EMCN_of_k_entailment.
 Print Assumptions has_Geach_dual.
