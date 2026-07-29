@@ -4365,6 +4365,14 @@ production in that combined context.  Thus the next row-closing theorem can
 use honest represented assumption leaves for both implications before the
 five universal introductions.
 
+That intervening-prefix support is now threaded through the complete staged
+row compiler.  Its predecessor and equality packages may start under
+`extraPrefix ++ rowPrefix`; dependency-ordered helper batches preserve the
+same combined prefix, and both packages are transported only along witnessed
+tail inclusions.  The theorem remains generic in the finite adequate extra
+prefix, while the immediate traversal client will instantiate it with the
+two honest implication assumptions `[rowLookup; rowBound]`.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
