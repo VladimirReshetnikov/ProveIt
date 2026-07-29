@@ -3197,6 +3197,7 @@ Check forcing_modal_frame.
 Check forcing_modal_valuation.
 Check godel_translate_forcing_iff_modal_satisfies.
 Check godel_translate_global_forcing_iff_modal_truth.
+Check godel_modal_companion_via_forcing_semantics.
 Check s5_entailment.
 Check s5_E.
 Check diabox_box_raw.
@@ -5289,6 +5290,7 @@ Print Assumptions godel_translate_int_provable.
 Print Assumptions godel_translate_persistent.
 Print Assumptions godel_translate_forcing_iff_modal_satisfies.
 Print Assumptions godel_translate_global_forcing_iff_modal_truth.
+Print Assumptions godel_modal_companion_via_forcing_semantics.
 Print Assumptions diabox_box_raw.
 Print Assumptions diabox_box_applied_raw.
 Print Assumptions rm_diabox_raw.

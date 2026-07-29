@@ -572,3 +572,40 @@ Proof.
   - apply (proj2 (godel_translate_forcing_iff_modal_satisfies
       Hrefl Htrans HIK p w)), H.
 Qed.
+
+(** Foundation's [modalCompanion_via_kripkeSemantics], generalized from a
+    frame-property class to an arbitrary dependent family of eligible
+    intuitionistic forcing models. *)
+Theorem godel_modal_companion_via_forcing_semantics :
+  forall (AtomType ModelIndex : Type)
+      (Worlds : ModelIndex -> Type)
+      (Forcing : forall m, generic_forcing_relation (Worlds m)
+        (pformula AtomType))
+      (Access : forall m, Worlds m -> Worlds m -> Prop)
+      (Eligible : ModelIndex -> Prop)
+      (IL : pformula AtomType -> Prop)
+      (ML : modal_logic_set AtomType),
+    (forall m w, Access m w w) ->
+    (forall m x y z,
+      Access m x y -> Access m y z -> Access m x z) ->
+    (forall m, generic_int_kripke (pformula_connectives AtomType)
+      (Forcing m) (Access m)) ->
+    (forall p, IL p -> ML (godel_translate p)) ->
+    (forall p,
+      (forall m, Eligible m -> generic_all_forces (Forcing m) p) -> IL p) ->
+    (forall f, ML f -> forall m, Eligible m ->
+      @model_valid AtomType (forcing_modal_frame (Access m))
+        (@forcing_modal_valuation (Worlds m) AtomType
+          (Forcing m) (Access m)) f) ->
+    godel_modal_companion IL ML.
+Proof.
+  intros AtomType ModelIndex Worlds Forcing Access Eligible IL ML
+    Hrefl Htrans HIK Hforward Hcomplete Hsound p; split.
+  - now apply Hforward.
+  - intro Hmodal. apply Hcomplete. intros m Heligible.
+    apply (proj2
+      (@godel_translate_global_forcing_iff_modal_truth
+        (Worlds m) AtomType (Forcing m) (Access m)
+        (Hrefl m) (Htrans m) (HIK m) p)).
+    exact (Hsound (godel_translate p) Hmodal m Heligible).
+Qed.
