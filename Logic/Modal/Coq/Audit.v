@@ -19,7 +19,7 @@ From FoundationModal Require Import
   FrameProperties
   RelationProperties ConverseWellFounded WeakConverseWellFounded
   CorrespondenceExtensions NormalHilbert LogicInfrastructure
-  HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
+  HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentK4 EntailmentS4
   EntailmentS5 HilbertWithRE HilbertNormal AlgebraicSemantics
   HilbertNormalAxiomAdapters
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
@@ -3131,6 +3131,22 @@ Check KD_of_KT_prime.
 Check ET_of_KT.
 Check KD_of_KT.
 Check reduce_box_in_CAnt_bang.
+Check k4_entailment.
+Check k4_dia_four.
+Check k4_dia_four_applied.
+Check imply_BoxBoxdot_Box_raw.
+Check imply_boxboxdot_box.
+Check imply_Box_BoxBoxdot_raw.
+Check imply_box_boxboxdot.
+Check imply_Box_BoxBoxdot_applied.
+Check iff_Box_BoxBoxdot_raw.
+Check iff_box_boxboxdot.
+Check iff_Box_BoxdotBox_raw.
+Check iff_box_boxdotbox.
+Check iff_Boxdot_BoxdotBoxdot_raw.
+Check iff_boxdot_boxdotboxdot.
+Check boxdot_axiomFour_raw.
+Check boxdot_axiomFour.
 Check s4_entailment.
 Check Diadot.
 Check iff_box_boxdot_raw.
@@ -5203,6 +5219,12 @@ Print Assumptions KD_of_KT_prime.
 Print Assumptions ET_of_KT.
 Print Assumptions KD_of_KT.
 Print Assumptions reduce_box_in_CAnt_bang.
+Print Assumptions k4_dia_four_applied.
+Print Assumptions imply_Box_BoxBoxdot_raw.
+Print Assumptions iff_Box_BoxBoxdot_raw.
+Print Assumptions iff_Box_BoxdotBox_raw.
+Print Assumptions iff_Boxdot_BoxdotBoxdot_raw.
+Print Assumptions boxdot_axiomFour_raw.
 Print Assumptions iff_box_boxdot_raw.
 Print Assumptions iff_dia_diadot_raw.
 Print Assumptions diabox_box_raw.
