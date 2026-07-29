@@ -6,6 +6,7 @@ From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
 From Foundation.FirstOrder.Basic Require Import Definability.
+From Foundation.FirstOrder.Basic Require Import Calculus.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
 From Foundation.FirstOrder.Basic.Semantics Require Import RewriteClosure.
 From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
@@ -569,6 +570,32 @@ Check first_order_definable_projection.
 Check first_order_definable_parameter_const.
 Check first_order_definable_lt.
 Check first_order_definable_mem.
+Check first_order_sequent.
+Check first_order_sequent_shift.
+Check first_order_derivation.
+Check FODIdentity.
+Check FODCut.
+Check FODContraction.
+Check FODVerum.
+Check FODOr.
+Check FODAnd.
+Check FODAll.
+Check FODExists.
+Check first_order_derivation_height.
+Check first_order_derivation_cast.
+Check first_order_derivation_height_cast.
+Check first_order_derivation_contra.
+Check first_order_derivation_top.
+Check first_order_derivation_atomic_identity.
+Check first_order_derivation_rotate.
+Check first_order_derivation_tensor.
+Check first_order_derivation_height_identity.
+Check first_order_derivation_height_cut.
+Check first_order_derivation_height_contraction.
+Check first_order_derivation_height_or.
+Check first_order_derivation_height_and.
+Check first_order_derivation_height_all.
+Check first_order_derivation_height_exists.
 
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
@@ -776,6 +803,11 @@ Print Assumptions first_order_definable_eq_terms.
 Print Assumptions first_order_definable_term_graph.
 Print Assumptions first_order_definable_projection.
 Print Assumptions first_order_definable_parameter_const.
+Print Assumptions first_order_derivation_height_cast.
+Print Assumptions first_order_derivation_top.
+Print Assumptions first_order_derivation_atomic_identity.
+Print Assumptions first_order_derivation_rotate.
+Print Assumptions first_order_derivation_tensor.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
