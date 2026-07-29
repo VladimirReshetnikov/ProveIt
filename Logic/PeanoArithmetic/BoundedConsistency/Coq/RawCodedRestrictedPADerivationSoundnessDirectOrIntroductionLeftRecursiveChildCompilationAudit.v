@@ -56,6 +56,8 @@ Check
   coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootLawTemplate.
 Check
   RawCoqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootLawRoot.
+Check
+  raw_codedPALocalProof_recursiveChildLaw_of_openedCoverageCompiler.
 
 Print Assumptions
   coqRestrictedPADirectOrIntroductionLeft_deep_restricted_shape.
@@ -67,3 +69,5 @@ Print Assumptions
   coqRestrictedPADirectOrIntroductionLeft_eigen_restricted_in.
 Print Assumptions
   coqRestrictedPADirectOrIntroductionLeft_eigen_context_truth_in.
+Print Assumptions
+  raw_codedPALocalProof_recursiveChildLaw_of_openedCoverageCompiler.

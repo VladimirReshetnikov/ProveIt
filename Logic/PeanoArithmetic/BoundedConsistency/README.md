@@ -2671,7 +2671,7 @@ a sentence, binder-induced shifts leave the embedded axiom tail literally
 unchanged.  The module consequently identifies the on-tail proof context with
 the exact shared rule-case template context and exports the legacy dynamic
 reroot root predicate on a selected witnessed tail.  Consuming that root in
-the opened coverage compiler is the next integration step.
+the opened coverage compiler is the next arithmetic integration step.
 
 The binder plumbing for that integration is now factored out rather than
 duplicated in the Or-I-left branch.  `RawCodedTemplateRenamingSubstitution.v`
@@ -2685,6 +2685,18 @@ renamed restrictedness, endpoint, admissibility, and context-truth facts into
 the resulting child instance.  Both modules have separate assumption audits;
 the one-step eigenvariable shift required by opened common coverage is now an
 instance of this reusable theorem.
+
+The Or-I-left recursive-child compilation now uses that theorem end to end.
+From an opened coverage compiler root it projects the restriction core,
+atomic adequacy, formula coverage, rule coverage, and admissibility core;
+eliminates the common-coverage existential; applies the compiler to those six
+facts and the constructor case; and feeds the resulting four-field child
+interface into renamed `K(d)`.  Represented Ex-E returns the child truth to
+the original context, and two Imp-I steps reconstruct the exact legacy
+recursive-child law consumed by the rule-case assembler.  Thus the old
+recursive-child residual is no longer primitive: only construction of the
+opened structural root from the compiled dynamic reroot law and the remaining
+coverage operations is left at this branch boundary.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
