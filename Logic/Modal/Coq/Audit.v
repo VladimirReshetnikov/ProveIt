@@ -8,7 +8,7 @@ From FoundationModal Require Import
   PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalKripkePreservation PropositionalKripkeCanonical
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
-  PropositionalSlash
+  PropositionalSlash PropositionalKripke2
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1209,6 +1209,63 @@ Print Assumptions pkripke_point_generated_finite.
 Print Assumptions pkripke_point_generated_antisymmetric.
 Print Assumptions pkripke_point_generated_p_morphism.
 Print Assumptions pkripke_point_generated_equivalent_at_root.
+
+(** Rooted arbitrary-relation propositional Kripke semantics. *)
+Check pk2_frame.
+Check pk2_model.
+Check pk2_forces.
+Check pk2_forces_atom.
+Check pk2_forces_bottom.
+Check pk2_forces_top.
+Check pk2_forces_and.
+Check pk2_not_forces_and.
+Check pk2_forces_or.
+Check pk2_not_forces_or.
+Check pk2_forces_imp.
+Check pk2_not_forces_imp.
+Check pk2_forces_neg.
+Check pk2_not_forces_neg.
+Check pk2_substitution_model.
+Check pk2_forces_substitute.
+Check pk2_model_valid.
+Check pk2_frame_valid.
+Check pk2_frame_class_valid.
+Check pk2_model_class_valid.
+Check pk2_model_not_valid_iff.
+Check pk2_frame_not_valid_iff_model.
+Check pk2_frame_not_valid_iff_world.
+Check pk2_frame_valid_substitute.
+Check pk2_frame_class_not_valid_iff_frame.
+Check pk2_frame_class_not_valid_iff_model.
+Check pk2_frame_class_not_valid_iff_model_world.
+Check pk2_model_class_not_valid_iff_model.
+Check pk2_model_class_not_valid_iff_world.
+Check pk2_axiom_C.
+Check pk2_axiom_D.
+Check pk2_distribute_and_or.
+Check pk2_axiom_I.
+Check pk2_valid_and1.
+Check pk2_valid_and2.
+Check pk2_valid_axiom_C.
+Check pk2_valid_or1.
+Check pk2_valid_or2.
+Check pk2_valid_axiom_D.
+Check pk2_valid_distribute_and_or.
+Check pk2_valid_axiom_I.
+Check pk2_valid_identity.
+Check pk2_valid_efq.
+Check pk2_valid_afortiori.
+Check pk2_valid_conjunction_rule.
+Check pk2_valid_modus_ponens.
+Check pk2_K_counter_frame.
+Check pk2_K_counter_frame_refutes_K.
+Print Assumptions pk2_not_forces_imp.
+Print Assumptions pk2_forces_substitute.
+Print Assumptions pk2_frame_valid_substitute.
+Print Assumptions pk2_frame_class_not_valid_iff_model_world.
+Print Assumptions pk2_valid_axiom_C.
+Print Assumptions pk2_valid_modus_ponens.
+Print Assumptions pk2_K_counter_frame_refutes_K.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
