@@ -2746,10 +2746,19 @@ specializes that generic compiler to the complete opened-coverage source.  It
 selects a witnessed PA tail, converts the on-tail context to the exact legacy
 template context, and produces the opened-coverage compiler root.  Feeding
 that root through the earlier recursive-child compiler yields the exact
-Or-I-left recursive-child law root on the same witnessed tail.  Thus this
-branch no longer has a recursive-child residual; the next integration step is
-to merge its selected witnessed tail with the other rule-case roots used by
-the direct rule dispatcher.
+Or-I-left recursive-child law root on the same witnessed tail.
+
+`RawCodedTemplateLocalProofWitnessedTailTransport.v` supplies the binder-safe
+merge operation needed after independent helper compilers select different PA
+tails.  Literal context inclusion and binder readiness are lifted through an
+arbitrary shared finite template prefix, after which the completed represented
+weakening theorem transports the local proof.  The opened-coverage compiler
+specializes this result to the Or-I-left ready context and proves that its
+recursive-child law survives appending any later finite standard PA tail.
+Thus this branch no longer has a recursive-child residual and can be retained
+while subsequent rule roots extend the common witnessed tail; the next step
+is to apply the same transport interface while assembling the residual-only
+direct rule-case record.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
