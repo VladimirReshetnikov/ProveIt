@@ -11,7 +11,7 @@ From FoundationModal Require Import
   PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
   PropositionalKripke2Hilbert PropositionalHilbertFExtensions PropositionalFMT
   PropositionalHilbertVF PropositionalHilbertVFCorsi
-  PropositionalFMTCompleteness PropositionalHilbertWF
+  PropositionalFMTCompleteness PropositionalHilbertWF PropositionalNeighborhoodNB
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1809,6 +1809,101 @@ Print Assumptions phwf_proof_separation.
 Print Assumptions phwf_separation_countermodel.
 Print Assumptions phvf_VF_unprovable_phwf_separation.
 Print Assumptions phvf_VF_strictly_included_phwf_WF.
+
+(** Rooted propositional neighborhood semantics and Hilbert WF.  Predicate
+    extensionality is a frame law, so the constructive Rule-E proof needs no
+    functional or propositional extensionality.  Only the negative
+    class-validity witness equivalences use classical predicate logic. *)
+Check nb_subset.
+Check nb_set_equiv.
+Check nb_subset_equiv.
+Check nb_frame.
+Check nb_model.
+Check nb_truthset.
+Check nb_forces.
+Check nb_model_valid.
+Check nb_frame_valid.
+Check nb_frame_class_valid.
+Check nb_model_class_valid.
+Check nb_forces_atom.
+Check nb_not_forces_bottom.
+Check nb_forces_and.
+Check nb_forces_or.
+Check nb_forces_imp.
+Check nb_forces_top.
+Check nb_forces_neg.
+Check nb_forces_iff.
+Check nb_model_valid_imp_iff.
+Check nb_model_valid_iff_iff.
+Check nb_valid_and1.
+Check nb_valid_and2.
+Check nb_valid_or1.
+Check nb_valid_or2.
+Check nb_valid_distribute_and_or.
+Check nb_valid_identity.
+Check nb_valid_efq.
+Check nb_valid_modus_ponens.
+Check nb_valid_fortiori.
+Check nb_valid_and_rule.
+Check nb_valid_rule_C.
+Check nb_valid_rule_D.
+Check nb_valid_rule_I.
+Check nb_valid_rule_E.
+Check nb_phwf_proof_sound.
+Check nb_phwf_frame_schema_valid.
+Check nb_phwf_model_schema_valid.
+Check nb_phwf_frame_sound.
+Check nb_phwf_model_sound.
+Check nb_phwf_frame_complete.
+Check nb_phwf_soundness_frame_class.
+Check nb_phwf_soundness_model_class.
+Check nb_phwf_consistent.
+Check nb_phwf_consistent_of_frame_sound.
+Check nb_phwf_consistent_of_model_sound.
+Check nb_phwf_weaker_of_frame_classes.
+Check nb_model_not_valid_iff.
+Check nb_frame_not_valid_iff.
+Check nb_frame_class_not_valid_iff_frame.
+Check nb_frame_class_not_valid_iff_model.
+Check nb_frame_class_not_valid_iff_model_world.
+Check nb_model_class_not_valid_iff_model.
+Check nb_model_class_not_valid_iff_world.
+Check nb_trivial_frame.
+Check phwf_WF_nb_frame_sound.
+Check phwf_WF_nb_model_sound.
+Check phwf_WF_consistent.
+Check nb_two_frame.
+Check nb_C_frame.
+Check nb_C_model.
+Check nb_axiom_C.
+Check nb_C_countermodel.
+Check phwf_WF_unprovable_axiom_C.
+Check nb_D_frame.
+Check nb_D_model.
+Check nb_axiom_D.
+Check nb_D_countermodel.
+Check phwf_WF_unprovable_axiom_D.
+Check nb_I_frame.
+Check nb_I_model.
+Check nb_axiom_I.
+Check nb_I_countermodel.
+Check phwf_WF_unprovable_axiom_I.
+Check phwf_phf_strictly_included.
+Check phwf_WF_strictly_included_phf_F.
+Print Assumptions nb_model_valid_imp_iff.
+Print Assumptions nb_valid_rule_E.
+Print Assumptions nb_phwf_proof_sound.
+Print Assumptions nb_phwf_soundness_frame_class.
+Print Assumptions nb_phwf_consistent_of_frame_sound.
+Print Assumptions nb_phwf_weaker_of_frame_classes.
+Print Assumptions nb_frame_class_not_valid_iff_model_world.
+Print Assumptions nb_C_countermodel.
+Print Assumptions phwf_WF_unprovable_axiom_C.
+Print Assumptions nb_D_countermodel.
+Print Assumptions phwf_WF_unprovable_axiom_D.
+Print Assumptions nb_I_countermodel.
+Print Assumptions phwf_WF_unprovable_axiom_I.
+Print Assumptions phwf_WF_strictly_included_phf_F.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
