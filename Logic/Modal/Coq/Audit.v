@@ -6,7 +6,8 @@ From FoundationModal Require Import
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
-  PropositionalKripkeCanonical PropositionalKripkeFinite PropositionalGlivenko
+  PropositionalKripkePreservation PropositionalKripkeCanonical
+  PropositionalKripkeFinite PropositionalGlivenko
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1164,6 +1165,49 @@ Print Assumptions pkripke_dp_access_trans.
 Print Assumptions pkripke_dp_forces_left_iff.
 Print Assumptions pkripke_dp_forces_right_iff.
 Print Assumptions ph_hilbert_int_disjunction_property.
+
+(** Propositional Kripke preservation and point-generated rooted models. *)
+Check pkripke_bisimulation.
+Check pkripke_bisimulation_symmetry.
+Check pkripke_bisimulation_invariance.
+Check pkripke_equivalent.
+Check pkripke_equivalent_of_bisimilar.
+Check pkripke_equivalent_symmetry.
+Check pkripke_frame_p_morphism.
+Check pkripke_frame_p_morphism_id.
+Check pkripke_frame_p_morphism_comp.
+Check pkripke_model_p_morphism.
+Check pkripke_model_p_morphism_of_atomic.
+Check pkripke_model_p_morphism_id.
+Check pkripke_model_p_morphism_comp.
+Check pkripke_model_p_morphism_bisimulation.
+Check pkripke_model_p_morphism_equivalence.
+Check pkripke_frame_irreflexive.
+Check pkripke_frame_root.
+Check pkripke_frame_rooted.
+Check pkripke_point_generated_member.
+Check pkripke_point_generated_frame.
+Check pkripke_point_generated_root.
+Check pkripke_point_generated_root_is_root.
+Check pkripke_point_generated_rooted.
+Check pkripke_point_generated_cover.
+Check pkripke_point_generated_finite.
+Check pkripke_point_generated_antisymmetric.
+Check pkripke_point_generated_irreflexive.
+Check pkripke_point_generated_p_morphism.
+Check pkripke_point_generated_valuation.
+Check pkripke_point_generated_model.
+Check pkripke_point_generated_model_p_morphism.
+Check pkripke_point_generated_bisimulation.
+Check pkripke_point_generated_equivalent_at_root.
+Print Assumptions pkripke_bisimulation_invariance.
+Print Assumptions pkripke_frame_p_morphism_comp.
+Print Assumptions pkripke_model_p_morphism_equivalence.
+Print Assumptions pkripke_point_generated_root_is_root.
+Print Assumptions pkripke_point_generated_finite.
+Print Assumptions pkripke_point_generated_antisymmetric.
+Print Assumptions pkripke_point_generated_p_morphism.
+Print Assumptions pkripke_point_generated_equivalent_at_root.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
