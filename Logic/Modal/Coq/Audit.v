@@ -4,7 +4,7 @@ From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
-  PropositionalFormula GenericCalculus
+  PropositionalFormula PropositionalNNFormula GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -844,6 +844,50 @@ Print Assumptions pformula_enum_surjective.
 Print Assumptions pformula_subformula_predicate_closed.
 Print Assumptions pformula_closed_and_components.
 Print Assumptions pformula_zero_substitution_letterless.
+
+(** Primitive Propositional/Formula/NNFormula syntax and laws. *)
+Check pnnformula.
+Check PNNTop.
+Check PNNBottom.
+Check PNNAtom.
+Check PNNNegAtom.
+Check PNNAnd.
+Check PNNOr.
+Check pnn_neg.
+Check pnn_neg_involutive.
+Check pnnformula_connectives.
+Check pnn_neg_top.
+Check pnn_neg_bottom.
+Check pnn_neg_atom.
+Check pnn_neg_neg_atom.
+Check pnn_neg_and.
+Check pnn_neg_or.
+Check pnn_neg_inj.
+Check pnn_imp_def.
+Check pnn_iff_def.
+Check pnn_neg_imp.
+Check pnn_and_inj.
+Check pnn_or_inj.
+Check pnn_de_morgan_laws.
+Check pnn_neg_involutive_law.
+Check pnn_complexity.
+Check pnn_complexity_top.
+Check pnn_complexity_bottom.
+Check pnn_complexity_atom.
+Check pnn_complexity_neg_atom.
+Check pnn_complexity_and.
+Check pnn_complexity_or.
+Check pnn_complexity_neg.
+Check pnnformula_eq_dec.
+Check pnn_ne_of_ne_complexity.
+Check pnn_theory.
+Print Assumptions pnn_neg_involutive.
+Print Assumptions pnn_neg_inj.
+Print Assumptions pnn_neg_imp.
+Print Assumptions pnn_de_morgan_laws.
+Print Assumptions pnn_complexity_neg.
+Print Assumptions pnnformula_eq_dec.
+Print Assumptions pnn_ne_of_ne_complexity.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
