@@ -4139,3 +4139,8 @@ constructor as both a carrier-level local-proof rule and a translation-generic
 template rule.  Template clients provide only a proof of `s = t` and a proof
 of the motive opened at `s`; the translation supplies both represented
 substitution traces needed to obtain the motive opened at `t`.
+
+The same module derives represented equality symmetry from the premise-free
+reflexivity constructor and one application of equality elimination.  This
+supplies the `b = i` orientation required to transport the equality branch's
+lookup at the appended index `b` to the traversal row index `i`.
