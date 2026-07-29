@@ -4,7 +4,8 @@ From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
-  PropositionalFormula PropositionalNNFormula GenericCalculus
+  PropositionalFormula PropositionalNNFormula PropositionalBoolean
+  GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -888,6 +889,43 @@ Print Assumptions pnn_de_morgan_laws.
 Print Assumptions pnn_complexity_neg.
 Print Assumptions pnnformula_eq_dec.
 Print Assumptions pnn_ne_of_ne_complexity.
+
+(** Propositional/Boolean/Basic truth-functional semantics. *)
+Check pvaluation.
+Check pboolean_eval.
+Check pboolean_semantics.
+Check pboolean_models_iff_eval.
+Check pboolean_tarski_top.
+Check pboolean_tarski_bottom.
+Check pboolean_tarski_and.
+Check pboolean_tarski_or.
+Check pboolean_tarski_imp.
+Check pboolean_tarski_neg.
+Check pboolean_tarski.
+Check pboolean_models_atom.
+Check pboolean_eval_ext.
+Check pboolean_eval_substitute.
+Check pboolean_letterless_invariant.
+Check pboolean_letterless_eval_dec.
+Check pformula_is_tautology.
+Check pboolean_substitute_tautology.
+Check pboolean_and_tautology_iff.
+Check pboolean_or_tautology_of.
+Check pboolean_imp_tautology_of_consequent.
+Check pboolean_bottom_not_tautology.
+Check pboolean_top_tautology.
+Check pboolean_letterless_tautology_of_not_neg_tautology.
+Check pboolean_neg_tautology_of_letterless_not_tautology.
+Print Assumptions pboolean_tarski.
+Print Assumptions pboolean_eval_ext.
+Print Assumptions pboolean_eval_substitute.
+Print Assumptions pboolean_letterless_invariant.
+Print Assumptions pboolean_letterless_eval_dec.
+Print Assumptions pboolean_substitute_tautology.
+Print Assumptions pboolean_and_tautology_iff.
+Print Assumptions pboolean_bottom_not_tautology.
+Print Assumptions pboolean_letterless_tautology_of_not_neg_tautology.
+Print Assumptions pboolean_neg_tautology_of_letterless_not_tautology.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
