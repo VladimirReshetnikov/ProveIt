@@ -1,0 +1,24 @@
+(** Audit surface for the fixed opened Or-I-left PA source. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageSource.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageSource.
+
+Check
+  coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSourceBodyTemplate.
+Check
+  coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSourceBodyFormula.
+Check coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSourceFormula.
+Check coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSource_reifies.
+Check coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSource_embed.
+Check coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSource_open.
+Check rawDirect_openedCoverageSourceBody_agreement.
+Check rawDirect_openedCoverageSource_substitution.
+
+Print Assumptions
+  coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSource_reifies.
+Print Assumptions
+  coqRestrictedPADirectOrIntroductionLeftOpenedCoverageSource_open.
+Print Assumptions rawDirect_openedCoverageSource_substitution.
