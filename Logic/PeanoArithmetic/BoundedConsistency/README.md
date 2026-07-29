@@ -2646,6 +2646,15 @@ assignment tail.  Consequently the parent and child restrictions may be
 rerooted even when nested template renamings evaluate them under differently
 shifted assignments.
 
+`RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootValidity.v`
+uses that transport theorem to prove raw-model validity of the exact dynamic
+reroot law.  Parameter abstraction turns the arbitrary carrier hierarchy
+value into the outer variable of the fixed PA source; semantic completeness
+is applied to its seal and then eliminated, giving an unconditional PA proof
+of the displayed universally quantified reroot source.  This discharges the
+previously isolated object-level arithmetic obligation for the Or-I-left
+recursive child; integrating its proof code into the direct compiler remains.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
