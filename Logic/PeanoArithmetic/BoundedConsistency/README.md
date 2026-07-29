@@ -3005,6 +3005,10 @@ the resulting closed valid formula into an ordinary PA derivation.  This
 single source theorem lets the proof-producing Or-row construction select one
 standard axiom batch before opening all inputs, rather than nesting four
 independent append theorem selections below successive eigencontexts.
+Each extension component carries both its full append-prefix certificate and
+the newly appended lookup explicitly.  The stronger source theorem already
+provides that lookup, and representing it removes the need to transport a
+separate arithmetic proof of `b < S b` through the witness scopes.
 
 `RawCodedFourStateTableAppendProofCompilation.v` realizes that economy inside
 model-coded proofs.  The generic universal-elimination chain opens all
@@ -3035,6 +3039,10 @@ that the fallback context is unreachable, and its local-proof endpoint
 reduces closing the append existential to constructing one eight-times-shifted
 continuation under the literal table-witness context.  Thus the Or-row client
 no longer has to hand-code eight context shifts and eigenvariable scopes.
+The deepest body is exposed as an actual context-head assumption, projected
+into its four append components, and then into four unconditional lookups.
+Three checked conjunction introductions reassemble those lookups as the new
+state row required by the global traversal.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely

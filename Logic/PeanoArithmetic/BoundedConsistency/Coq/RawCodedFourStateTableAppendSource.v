@@ -68,24 +68,68 @@ Definition fourStateTableAppendDefinedBody : formula :=
     (codedAssignmentDefinedThroughTermAt
       (tVar 6) (tVar 5) (tVar 4)).
 
+(** A traversal client needs the newly appended entry itself, not only the
+    guarded final field inside [codedAssignmentAppendPrefixTermAt].  Carry it
+    explicitly so no separate proof of [bound < S bound] must be transported
+    through the later eight-eigenvariable context. *)
+Definition codedAssignmentAppendAtTermAt
+    (current oldCode oldStep bound newValue targetCode targetStep : term)
+    : formula :=
+  pAnd
+    (codedAssignmentAppendPrefixTermAt
+      current oldCode oldStep bound newValue targetCode targetStep)
+    (codedAssignmentLookupTermAt
+      targetCode targetStep bound newValue).
+
+Definition RawCodedAssignmentAppendAt (M : RawPAModel)
+    (current oldCode oldStep bound newValue targetCode targetStep : M)
+    : Prop :=
+  RawCodedAssignmentAppendPrefix M
+    current oldCode oldStep bound newValue targetCode targetStep /\
+  RawCodedAssignmentLookup M targetCode targetStep bound newValue.
+
+Arguments RawCodedAssignmentAppendAt
+  M current oldCode oldStep bound newValue targetCode targetStep
+  : clear implicits.
+
+Lemma raw_sat_codedAssignmentAppendAtTermAt_iff : forall
+    (M : RawPAModel) e current oldCode oldStep bound newValue
+      targetCode targetStep,
+  raw_formula_sat M e
+    (codedAssignmentAppendAtTermAt
+      current oldCode oldStep bound newValue targetCode targetStep) <->
+  RawCodedAssignmentAppendAt M
+    (raw_term_eval M e current)
+    (raw_term_eval M e oldCode) (raw_term_eval M e oldStep)
+    (raw_term_eval M e bound) (raw_term_eval M e newValue)
+    (raw_term_eval M e targetCode) (raw_term_eval M e targetStep).
+Proof.
+  intros.
+  unfold codedAssignmentAppendAtTermAt, RawCodedAssignmentAppendAt.
+  cbn [raw_formula_sat].
+  rewrite raw_sat_codedAssignmentAppendPrefixTermAt_iff,
+    raw_sat_codedAssignmentLookupTermAt_iff.
+  reflexivity.
+Qed.
+
 (** Under the eight existential binders, variables 7 down to 0 are the new
     code/step pairs in the same column order as above.  Every old input has
     consequently moved up by eight slots. *)
 Definition fourStateTableAppendExtensionBody : formula :=
   fixedLevelAnd4
-    (codedAssignmentAppendPrefixTermAt
+    (codedAssignmentAppendAtTermAt
       (tSucc (tVar 12))
       (tVar 20) (tVar 19) (tVar 12) (tVar 11)
       (tVar 7) (tVar 6))
-    (codedAssignmentAppendPrefixTermAt
+    (codedAssignmentAppendAtTermAt
       (tSucc (tVar 12))
       (tVar 18) (tVar 17) (tVar 12) (tVar 10)
       (tVar 5) (tVar 4))
-    (codedAssignmentAppendPrefixTermAt
+    (codedAssignmentAppendAtTermAt
       (tSucc (tVar 12))
       (tVar 16) (tVar 15) (tVar 12) (tVar 9)
       (tVar 3) (tVar 2))
-    (codedAssignmentAppendPrefixTermAt
+    (codedAssignmentAppendAtTermAt
       (tSucc (tVar 12))
       (tVar 14) (tVar 13) (tVar 12) (tVar 8)
       (tVar 1) (tVar 0)).
@@ -112,14 +156,14 @@ Definition RawFourStateTableAppendProperty (M : RawPAModel) : Prop :=
   exists newModeCode newModeStep newFormulaCode newFormulaStep
     newAssignmentCodeCode newAssignmentCodeStep
     newAssignmentStepCode newAssignmentStepStep : M,
-    RawCodedAssignmentAppendPrefix M (raw_succ M bound)
+    RawCodedAssignmentAppendAt M (raw_succ M bound)
       modeCode modeStep bound mode newModeCode newModeStep /\
-    RawCodedAssignmentAppendPrefix M (raw_succ M bound)
+    RawCodedAssignmentAppendAt M (raw_succ M bound)
       formulaCode formulaStep bound formula newFormulaCode newFormulaStep /\
-    RawCodedAssignmentAppendPrefix M (raw_succ M bound)
+    RawCodedAssignmentAppendAt M (raw_succ M bound)
       assignmentCodeCode assignmentCodeStep bound assignmentCode
       newAssignmentCodeCode newAssignmentCodeStep /\
-    RawCodedAssignmentAppendPrefix M (raw_succ M bound)
+    RawCodedAssignmentAppendAt M (raw_succ M bound)
       assignmentStepCode assignmentStepStep bound assignmentStep
       newAssignmentStepCode newAssignmentStepStep.
 
@@ -142,7 +186,7 @@ Proof.
   cbn [fourStateTableAppendRepeatedAll raw_formula_sat].
   repeat setoid_rewrite
     raw_sat_codedAssignmentDefinedThroughTermAt_iff.
-  repeat setoid_rewrite raw_sat_codedAssignmentAppendPrefixTermAt_iff.
+  repeat setoid_rewrite raw_sat_codedAssignmentAppendAtTermAt_iff.
   cbn [raw_term_eval scons].
   reflexivity.
 Qed.
@@ -155,6 +199,7 @@ Proof.
     fourStateTableAppendDefinedBody,
     fourStateTableAppendExtensionBody,
     fixedLevelAnd4, fixedLevelEx8,
+    codedAssignmentAppendAtTermAt,
     codedAssignmentAppendPrefixTermAt,
     codedAssignmentDefinedThroughTermAt in hfree.
   cbn in hfree.
@@ -192,7 +237,7 @@ Proof.
   exists newModeCode, newModeStep, newFormulaCode, newFormulaStep,
     newAssignmentCodeCode, newAssignmentCodeStep,
     newAssignmentStepCode, newAssignmentStepStep.
-  unfold RawCodedAssignmentAppendPrefix.
+  unfold RawCodedAssignmentAppendAt, RawCodedAssignmentAppendPrefix.
   repeat split; try assumption.
   - intros index value _ hbound hold.
     exact (hmodePrefix index value hbound hold).

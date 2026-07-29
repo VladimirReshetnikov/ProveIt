@@ -25,6 +25,7 @@ From BoundedPAConsistency Require Import
   RawCodedProofAndIConstructor
   RawCodedPALocalProofExistential
   RawCodedPALocalProofAndIntroduction
+  RawCodedPALocalProofConjunction
   RawCodedPALocalProofComposition
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
@@ -50,6 +51,7 @@ Import PABoundedRawCodedProofBinaryConstructors.
 Import PABoundedRawCodedProofAndIConstructor.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofAndIntroduction.
+Import PABoundedRawCodedPALocalProofConjunction.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -167,6 +169,18 @@ Qed.
 (** Stable projections for a right-associated four-way conjunction.  Keeping
     these generic avoids unfolding the large beta-definedness formula when a
     traversal client needs just one of its four proof roots. *)
+Definition templateAndFirst (source : TemplateFormula) : TemplateFormula :=
+  match source with
+  | tfAnd first _ => first
+  | _ => tfBot
+  end.
+
+Definition templateAndSecond (source : TemplateFormula) : TemplateFormula :=
+  match source with
+  | tfAnd _ second => second
+  | _ => tfBot
+  end.
+
 Definition templateAnd4First (source : TemplateFormula) : TemplateFormula :=
   match source with
   | tfAnd first _ => first
@@ -270,6 +284,65 @@ Proof.
       rewrite hshape;
       repeat rewrite rawTemplateFormula_and;
       exact hall
+  end.
+Qed.
+
+(** Dual projection interface for the same stable four-way shape. *)
+Theorem raw_codedPALocalProofOf_templateAnd4_components : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context source sourceRoot,
+  source = tfAnd (templateAnd4First source)
+    (tfAnd (templateAnd4Second source)
+      (tfAnd (templateAnd4Third source) (templateAnd4Fourth source))) ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation source) sourceRoot ->
+  exists firstRoot secondRoot thirdRoot fourthRoot,
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation (templateAnd4First source)) firstRoot /\
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation (templateAnd4Second source)) secondRoot /\
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation (templateAnd4Third source)) thirdRoot /\
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation (templateAnd4Fourth source)) fourthRoot.
+Proof.
+  intros M hPA translation context source sourceRoot hshape hsource.
+  rewrite hshape in hsource.
+  repeat rewrite rawTemplateFormula_and in hsource.
+  pose proof (raw_codedPALocalProofOf_andE1 M hPA context _ _
+    sourceRoot hsource) as hfirst.
+  pose proof (raw_codedPALocalProofOf_andE2 M hPA context _ _
+    sourceRoot hsource) as hrest1.
+  lazymatch type of hrest1 with
+  | RawCodedPALocalProofOf _ _ _ ?rest1Root =>
+      pose proof (raw_codedPALocalProofOf_andE1 M hPA context _ _
+        rest1Root hrest1) as hsecond;
+      pose proof (raw_codedPALocalProofOf_andE2 M hPA context _ _
+        rest1Root hrest1) as hrest2
+  end.
+  lazymatch type of hrest2 with
+  | RawCodedPALocalProofOf _ _ _ ?rest2Root =>
+      pose proof (raw_codedPALocalProofOf_andE1 M hPA context _ _
+        rest2Root hrest2) as hthird;
+      pose proof (raw_codedPALocalProofOf_andE2 M hPA context _ _
+        rest2Root hrest2) as hfourth
+  end.
+  lazymatch type of hfirst with
+  | RawCodedPALocalProofOf _ _ _ ?firstRoot =>
+    lazymatch type of hsecond with
+    | RawCodedPALocalProofOf _ _ _ ?secondRoot =>
+      lazymatch type of hthird with
+      | RawCodedPALocalProofOf _ _ _ ?thirdRoot =>
+        lazymatch type of hfourth with
+        | RawCodedPALocalProofOf _ _ _ ?fourthRoot =>
+            exists firstRoot, secondRoot, thirdRoot, fourthRoot;
+            split; [exact hfirst |];
+            split; [exact hsecond |];
+            split; [exact hthird | exact hfourth]
+        end
+      end
+    end
   end.
 Qed.
 

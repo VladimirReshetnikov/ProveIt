@@ -65,6 +65,18 @@ Fixpoint templateExistentialEliminationContext
       end
   end.
 
+(** The formula exposed after removing the same finite existential spine. *)
+Fixpoint templateExistentialBodyMany
+    (count : nat) (source : TemplateFormula) : option TemplateFormula :=
+  match count with
+  | 0 => Some source
+  | S smaller =>
+      match source with
+      | tfEx body => templateExistentialBodyMany smaller body
+      | _ => None
+      end
+  end.
+
 (** Compile a proof from the deepest eigenvariable context back to the
     original context.  The original existential proof is used at the first
     step; every later existential source is the freshly consed assumption
