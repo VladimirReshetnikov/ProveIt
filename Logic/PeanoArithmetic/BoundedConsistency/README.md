@@ -2944,6 +2944,19 @@ step is now isolated: construct that selected root from the linked native
 successor-row data, rather than silently assuming an arbitrary truth
 predicate is closed under disjunction.
 
+`RawCodedRestrictedPADerivationSoundnessOrIntroductionLeftNativeLawTransport.v`
+now identifies that substantive obligation at literal carrier-code level.
+Using the native package's conclusion-leaf equation twice, it rewrites the
+public rule field to `outer = left \/ right -> Sigma(left) -> Sigma(outer)`,
+where both Sigma applications come from the same dependent successor
+selector.  Proof roots transport across this equality, and the selected-tail
+form plugs directly into the twenty-field dispatcher.  The source interface
+is intentionally linked to the actual paired global successor edge rather
+than universally quantified over arbitrary predicates.  Its final package
+theorem shows that compiling this one linked native law, together with the
+twenty remaining fields, is sufficient to produce the exact ordinary direct
+universal-soundness certificate.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
