@@ -1,0 +1,24 @@
+(** Assumption audit for finite universal-elimination chains. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofUniversalEliminationChain.
+
+Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
+
+Check RawCodedUniversalEliminationChain.
+Check RCUENil.
+Check RCUECons.
+Check templateUniversalOpenMany.
+Check raw_templateUniversalOpenMany_elimination_chain.
+Check raw_codedPALocalProofOf_universal_elimination_chain.
+Check
+  raw_codedTemplatePALocalProofOf_of_BProv_then_universal_chain_on_witnessed_tail.
+Check
+  raw_codedTemplatePALocalProofOf_of_BProv_open_many_on_witnessed_tail.
+
+Print Assumptions raw_templateUniversalOpenMany_elimination_chain.
+Print Assumptions raw_codedPALocalProofOf_universal_elimination_chain.
+Print Assumptions
+  raw_codedTemplatePALocalProofOf_of_BProv_then_universal_chain_on_witnessed_tail.
+Print Assumptions
+  raw_codedTemplatePALocalProofOf_of_BProv_open_many_on_witnessed_tail.

@@ -1,0 +1,17 @@
+(** Assumption audit for represented assignment-append proof compilation. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedAssignmentAppendProofCompilation.
+
+Import PABoundedRawCodedAssignmentAppendProofCompilation.
+
+Check coqCodedAssignmentAppendInstanceTemplate.
+Check coqCodedAssignmentAppendInstanceTemplate_open_many.
+Check raw_codedPALocalProofOf_assignment_append_instance_on_witnessed_tail.
+Check raw_codedPALocalProofOf_assignment_append_instance_standard_tail.
+
+Print Assumptions coqCodedAssignmentAppendInstanceTemplate_open_many.
+Print Assumptions
+  raw_codedPALocalProofOf_assignment_append_instance_on_witnessed_tail.
+Print Assumptions
+  raw_codedPALocalProofOf_assignment_append_instance_standard_tail.
