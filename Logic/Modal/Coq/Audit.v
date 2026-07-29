@@ -1016,7 +1016,10 @@ Print Assumptions ph_hilbert_cl_classical.
 Print Assumptions ph_hilbert_logic_subset_of_schema_inclusion.
 Print Assumptions ph_hilbert_logic_subset_of_provable_schema.
 
-(** Generalized propositional Kripke semantics and Hilbert soundness. *)
+(** Generalized propositional Kripke semantics and Hilbert soundness.
+    Positive forcing, heredity, substitution, validity closure, and
+    frame-class validation combinators are constructive.  Only the exact
+    countermodel-existence converses use propositional excluded middle. *)
 Check pkripke_frame.
 Check pkripke_valuation.
 Check pkripke_model.
@@ -1027,7 +1030,10 @@ Check pkripke_forces_and.
 Check pkripke_forces_or.
 Check pkripke_forces_imp.
 Check pkripke_forces_neg.
+Check pkripke_forces_top.
+Check pkripke_not_of_forces_neg.
 Check pkripke_forces_persistent.
+Check pkripke_not_forces_persistent_back.
 Check pkripke_forcing_relation.
 Check pkripke_generic_int_forcing.
 Check pkripke_substitution_model.
@@ -1039,13 +1045,36 @@ Check pkripke_sound.
 Check pkripke_complete.
 Check ph_hilbert_logic_included.
 Check ph_hilbert_logic_strictly_included.
+Check pkripke_frame_finite.
+Check pkripke_all_frames.
+Check pkripke_finite_frames.
+Check pkripke_frame_class_validates.
+Check pkripke_frame_class_validates_formula.
+Check pkripke_frame_class_validates_inter.
+Check pkripke_frame_class_validates_formula_inter.
+Check pkripke_model_valid_top.
+Check pkripke_model_not_valid_bottom.
+Check pkripke_model_not_valid_iff_world.
+Check pkripke_frame_valid_top.
+Check pkripke_frame_not_valid_bottom.
+Check pkripke_frame_not_valid_iff_valuation.
+Check pkripke_frame_not_valid_iff_valuation_world.
+Check pkripke_frame_not_valid_iff_model_world.
+Check pkripke_frame_class_not_valid_iff_frame.
+Check pkripke_frame_class_not_valid_iff_model.
+Check pkripke_frame_class_not_valid_iff_model_world.
 Check pkripke_frame_valid_substitute.
+Check pkripke_all_frames_validates_efq.
+Check pkripke_finite_frames_validates_efq.
+Check pkripke_frame_class_validates_with_efq.
 Check ph_hilbert_proof_pkripke_sound.
 Check ph_hilbert_pkripke_sound.
 Check ph_hilbert_consistent_of_nonempty_pkripke_class.
 Check ph_hilbert_included_of_pkripke_class_subset.
 Check ph_hilbert_int_pkripke_sound.
 Check ph_hilbert_int_consistent_via_pkripke.
+Check pkripke_all_frames_nonempty.
+Check pkripke_finite_frames_nonempty.
 Check pkripke_frame_strongly_convergent.
 Check pkripke_frame_strongly_connected.
 Check pkripke_strongly_convergent_of_strongly_connected.
@@ -1061,8 +1090,14 @@ Check ph_hilbert_kc_consistent_via_pkripke.
 Check ph_hilbert_lc_pkripke_sound.
 Check ph_hilbert_lc_consistent_via_pkripke.
 Print Assumptions pkripke_forces_persistent.
+Print Assumptions pkripke_not_forces_persistent_back.
 Print Assumptions pkripke_generic_int_forcing.
 Print Assumptions pkripke_forces_substitute.
+Print Assumptions pkripke_frame_class_validates_inter.
+Print Assumptions pkripke_model_not_valid_iff_world.
+Print Assumptions pkripke_frame_not_valid_iff_valuation_world.
+Print Assumptions pkripke_frame_class_not_valid_iff_model_world.
+Print Assumptions pkripke_frame_class_validates_with_efq.
 Print Assumptions ph_hilbert_proof_pkripke_sound.
 Print Assumptions ph_hilbert_consistent_of_nonempty_pkripke_class.
 Print Assumptions ph_hilbert_included_of_pkripke_class_subset.

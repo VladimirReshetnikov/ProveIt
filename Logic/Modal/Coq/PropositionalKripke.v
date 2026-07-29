@@ -5,7 +5,7 @@
     Arbitrary, possibly empty preorders replace nonempty partial orders, and
     atoms are polymorphic rather than fixed to naturals. *)
 
-From Stdlib Require Import Logic.Classical_Prop.
+From Stdlib Require Import Lists.List Logic.Classical_Prop.
 From FoundationModal Require Import
   GenericSemantics GenericForcingRelation
   PropositionalFormula PropositionalHilbert.
@@ -13,6 +13,8 @@ From FoundationModal Require Import
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
+
+Import ListNotations.
 
 Record pkripke_frame : Type := {
   pkripke_world : Type;
@@ -104,6 +106,21 @@ Lemma pkripke_forces_neg :
       ~ pkripke_forces M v p).
 Proof. reflexivity. Qed.
 
+Lemma pkripke_forces_top :
+  forall (Atom : Type) (M : pkripke_model Atom)
+      (w : pkripke_world (pkripke_model_frame M)),
+    pkripke_forces M w (@ptop Atom).
+Proof. intros Atom M w v _ Hfalse. exact Hfalse. Qed.
+
+Lemma pkripke_not_of_forces_neg :
+  forall (Atom : Type) (M : pkripke_model Atom)
+      (w : pkripke_world (pkripke_model_frame M)) p,
+    pkripke_forces M w (pneg p) -> ~ pkripke_forces M w p.
+Proof.
+  intros Atom M w p Hneg Hp.
+  exact (Hneg w (pkripke_access_refl _ w) Hp).
+Qed.
+
 (** Heredity is factored once for every formula. *)
 Lemma pkripke_forces_persistent :
   forall (Atom : Type) (M : pkripke_model Atom) (p : pformula Atom)
@@ -125,6 +142,16 @@ Proof.
   - intros z Ryz Hzp. apply (Hx z).
     + eapply pkripke_access_trans; eauto.
     + exact Hzp.
+Qed.
+
+Lemma pkripke_not_forces_persistent_back :
+  forall (Atom : Type) (M : pkripke_model Atom) (p : pformula Atom)
+      (x y : pkripke_world (pkripke_model_frame M)),
+    pkripke_access (pkripke_model_frame M) x y ->
+    ~ pkripke_forces M y p -> ~ pkripke_forces M x p.
+Proof.
+  intros Atom M p x y Rxy Hny Hx.
+  apply Hny. exact (pkripke_forces_persistent Rxy Hx).
 Qed.
 
 (** Package the concrete semantics once for generic forcing arguments.  This
@@ -219,10 +246,184 @@ Definition ph_hilbert_logic_strictly_included {Atom : Type}
   ph_hilbert_logic_included H1 H2 /\
   exists p, ph_hilbert_provable H2 p /\ ~ ph_hilbert_provable H1 p.
 
+(** A data-carrying finite cover is the operational content used throughout
+    the port.  Duplicates are harmless, so no equality decision is needed. *)
+Definition pkripke_frame_finite (F : pkripke_frame) : Prop :=
+  exists cover : list (pkripke_world F), forall w, In w cover.
+
+Definition pkripke_all_frames : pkripke_frame -> Prop := fun _ => True.
+
+Definition pkripke_finite_frames : pkripke_frame -> Prop :=
+  pkripke_frame_finite.
+
+Definition pkripke_frame_class_validates {Atom : Type}
+    (C : pkripke_frame -> Prop) (Gamma : pformula Atom -> Prop) : Prop :=
+  forall F, C F -> forall p, Gamma p -> pkripke_frame_valid F p.
+
+Definition pkripke_frame_class_validates_formula {Atom : Type}
+    (C : pkripke_frame -> Prop) (p : pformula Atom) : Prop :=
+  pkripke_frame_class_valid C p.
+
+Lemma pkripke_frame_class_validates_inter :
+  forall (Atom : Type) (C1 C2 : pkripke_frame -> Prop)
+      (Gamma1 Gamma2 : pformula Atom -> Prop),
+    pkripke_frame_class_validates C1 Gamma1 ->
+    pkripke_frame_class_validates C2 Gamma2 ->
+    pkripke_frame_class_validates
+      (fun F => C1 F /\ C2 F) (fun p => Gamma1 p \/ Gamma2 p).
+Proof.
+  intros Atom C1 C2 Gamma1 Gamma2 H1 H2 F [HF1 HF2] p [Hp | Hp].
+  - exact (H1 F HF1 p Hp).
+  - exact (H2 F HF2 p Hp).
+Qed.
+
+Lemma pkripke_frame_class_validates_formula_inter :
+  forall (Atom : Type) (C1 C2 : pkripke_frame -> Prop)
+      (p q : pformula Atom),
+    pkripke_frame_class_validates_formula C1 p ->
+    pkripke_frame_class_validates_formula C2 q ->
+    pkripke_frame_class_validates
+      (fun F => C1 F /\ C2 F) (fun r => r = p \/ r = q).
+Proof.
+  intros Atom C1 C2 p q Hp Hq F [HF1 HF2] r [-> | ->].
+  - exact (Hp F HF1).
+  - exact (Hq F HF2).
+Qed.
+
 Definition pkripke_false_valuation (Atom : Type) (F : pkripke_frame) :
     pkripke_valuation Atom F :=
   {| pkripke_atom_value := fun _ _ => False;
      pkripke_atom_persistent := fun _ _ _ _ H => H |}.
+
+Lemma pkripke_model_valid_top :
+  forall (Atom : Type) (M : pkripke_model Atom),
+    pkripke_model_valid M (@ptop Atom).
+Proof. intros Atom M w. apply pkripke_forces_top. Qed.
+
+Lemma pkripke_model_not_valid_bottom :
+  forall (Atom : Type) (M : pkripke_model Atom),
+    inhabited (pkripke_world (pkripke_model_frame M)) ->
+    ~ pkripke_model_valid M PFalsum.
+Proof.
+  intros Atom M [w] Hvalid.
+  exact (@pkripke_forces_bottom Atom M w (Hvalid w)).
+Qed.
+
+Lemma pkripke_model_not_valid_iff_world :
+  forall (Atom : Type) (M : pkripke_model Atom) p,
+    (~ pkripke_model_valid M p <->
+     exists w, ~ pkripke_forces M w p).
+Proof.
+  intros Atom M p. split.
+  - intro Hnot. apply NNPP. intro Hnone. apply Hnot. intro w.
+    apply NNPP. intro Hnw. apply Hnone. now exists w.
+  - intros [w Hnw] Hvalid. exact (Hnw (Hvalid w)).
+Qed.
+
+Lemma pkripke_frame_valid_top :
+  forall (Atom : Type) (F : pkripke_frame),
+    pkripke_frame_valid F (@ptop Atom).
+Proof. intros Atom F V. apply pkripke_model_valid_top. Qed.
+
+Lemma pkripke_frame_not_valid_bottom :
+  forall (Atom : Type) (F : pkripke_frame),
+    inhabited (pkripke_world F) ->
+    ~ pkripke_frame_valid F (@PFalsum Atom).
+Proof.
+  intros Atom F Hw Hvalid.
+  exact (@pkripke_model_not_valid_bottom Atom
+    {| pkripke_model_frame := F;
+       pkripke_model_valuation := pkripke_false_valuation Atom F |}
+    Hw (Hvalid (pkripke_false_valuation Atom F))).
+Qed.
+
+Lemma pkripke_frame_not_valid_iff_valuation :
+  forall (Atom : Type) (F : pkripke_frame) p,
+    (~ pkripke_frame_valid F p <->
+     exists V : pkripke_valuation Atom F,
+       ~ pkripke_model_valid
+         {| pkripke_model_frame := F; pkripke_model_valuation := V |} p).
+Proof.
+  intros Atom F p. split.
+  - intro Hnot. apply NNPP. intro Hnone. apply Hnot. intro V.
+    apply NNPP. intro Hnv. apply Hnone. now exists V.
+  - intros [V Hnv] Hvalid. exact (Hnv (Hvalid V)).
+Qed.
+
+Lemma pkripke_frame_not_valid_iff_valuation_world :
+  forall (Atom : Type) (F : pkripke_frame) p,
+    (~ pkripke_frame_valid F p <->
+     exists (V : pkripke_valuation Atom F) (w : pkripke_world F),
+       ~ pkripke_forces
+         {| pkripke_model_frame := F; pkripke_model_valuation := V |} w p).
+Proof.
+  intros Atom F p. rewrite pkripke_frame_not_valid_iff_valuation.
+  split.
+  - intros [V Hnv]. apply pkripke_model_not_valid_iff_world in Hnv.
+    destruct Hnv as [w Hnw]. now exists V, w.
+  - intros [V [w Hnw]]. exists V.
+    apply pkripke_model_not_valid_iff_world. now exists w.
+Qed.
+
+Lemma pkripke_frame_not_valid_iff_model_world :
+  forall (Atom : Type) (F : pkripke_frame) p,
+    (~ pkripke_frame_valid F p <->
+     exists (M : pkripke_model Atom)
+       (w : pkripke_world (pkripke_model_frame M)),
+       pkripke_model_frame M = F /\ ~ pkripke_forces M w p).
+Proof.
+  intros Atom F p. split.
+  - intro Hnot. apply pkripke_frame_not_valid_iff_valuation_world in Hnot.
+    destruct Hnot as [V [w Hnw]].
+    exists {| pkripke_model_frame := F; pkripke_model_valuation := V |}, w.
+    now split.
+  - intros [M [w [Heq Hnw]]] Hvalid.
+    destruct M as [G V]. cbn in *. subst G.
+    exact (Hnw (Hvalid V w)).
+Qed.
+
+Lemma pkripke_frame_class_not_valid_iff_frame :
+  forall (Atom : Type) (C : pkripke_frame -> Prop) (p : pformula Atom),
+    (~ pkripke_frame_class_valid C p <->
+     exists F, C F /\ ~ pkripke_frame_valid F p).
+Proof.
+  intros Atom C p. split.
+  - intro Hnot. apply NNPP. intro Hnone. apply Hnot. intros F HF.
+    apply NNPP. intro HnF. apply Hnone. now exists F.
+  - intros [F [HF HnF]] Hvalid. exact (HnF (Hvalid F HF)).
+Qed.
+
+Lemma pkripke_frame_class_not_valid_iff_model :
+  forall (Atom : Type) (C : pkripke_frame -> Prop) (p : pformula Atom),
+    (~ pkripke_frame_class_valid C p <->
+     exists M : pkripke_model Atom,
+       C (pkripke_model_frame M) /\ ~ pkripke_model_valid M p).
+Proof.
+  intros Atom C p. rewrite pkripke_frame_class_not_valid_iff_frame.
+  split.
+  - intros [F [HF HnF]].
+    apply pkripke_frame_not_valid_iff_valuation in HnF.
+    destruct HnF as [V HnV].
+    exists {| pkripke_model_frame := F; pkripke_model_valuation := V |}.
+    now split.
+  - intros [[F V] [HF HnV]]. cbn in *. exists F. split; [exact HF |].
+    apply pkripke_frame_not_valid_iff_valuation. now exists V.
+Qed.
+
+Lemma pkripke_frame_class_not_valid_iff_model_world :
+  forall (Atom : Type) (C : pkripke_frame -> Prop) (p : pformula Atom),
+    (~ pkripke_frame_class_valid C p <->
+     exists (M : pkripke_model Atom)
+       (w : pkripke_world (pkripke_model_frame M)),
+       C (pkripke_model_frame M) /\ ~ pkripke_forces M w p).
+Proof.
+  intros Atom C p. rewrite pkripke_frame_class_not_valid_iff_model.
+  split.
+  - intros [M [HM Hnv]]. apply pkripke_model_not_valid_iff_world in Hnv.
+    destruct Hnv as [w Hnw]. now exists M, w.
+  - intros [M [w [HM Hnw]]]. exists M. split; [exact HM |].
+    apply pkripke_model_not_valid_iff_world. now exists w.
+Qed.
 
 Lemma pkripke_frame_valid_substitute :
   forall (A B : Type) (F : pkripke_frame) (p : pformula A),
@@ -310,6 +511,34 @@ Lemma pkripke_model_valid_efq :
     pkripke_model_valid M (ph_axiom_efq p).
 Proof. intros Atom M p x y _ H; contradiction. Qed.
 
+Lemma pkripke_all_frames_validates_efq :
+  forall (Atom : Type) (p : pformula Atom),
+    pkripke_frame_class_validates_formula pkripke_all_frames
+      (ph_axiom_efq p).
+Proof.
+  intros Atom p F _. intros V. apply pkripke_model_valid_efq.
+Qed.
+
+Lemma pkripke_finite_frames_validates_efq :
+  forall (Atom : Type) (p : pformula Atom),
+    pkripke_frame_class_validates_formula pkripke_finite_frames
+      (ph_axiom_efq p).
+Proof.
+  intros Atom p F _. intros V. apply pkripke_model_valid_efq.
+Qed.
+
+Lemma pkripke_frame_class_validates_with_efq :
+  forall (Atom : Type) (C : pkripke_frame -> Prop)
+      (Gamma : pformula Atom -> Prop) p,
+    pkripke_frame_class_validates C Gamma ->
+    pkripke_frame_class_validates C
+      (fun q => q = ph_axiom_efq p \/ Gamma q).
+Proof.
+  intros Atom C Gamma p Hvalid F HF q [-> | Hq].
+  - intros V. apply pkripke_model_valid_efq.
+  - exact (Hvalid F HF q Hq).
+Qed.
+
 Theorem ph_hilbert_proof_pkripke_sound :
   forall (Atom : Type) (H : ph_hilbert Atom)
       (C : pkripke_frame -> Prop),
@@ -386,6 +615,17 @@ Definition pkripke_singleton_frame : pkripke_frame :=
      pkripke_access := fun _ _ => True;
      pkripke_access_refl := fun _ => I;
      pkripke_access_trans := fun _ _ _ _ _ => I |}.
+
+Lemma pkripke_all_frames_nonempty :
+  exists F, pkripke_all_frames F /\ inhabited (pkripke_world F).
+Proof. exists pkripke_singleton_frame. split; [exact I | now constructor]. Qed.
+
+Lemma pkripke_finite_frames_nonempty :
+  exists F, pkripke_finite_frames F /\ inhabited (pkripke_world F).
+Proof.
+  exists pkripke_singleton_frame. split; [|now constructor].
+  exists [tt]. intros []; now left.
+Qed.
 
 Definition pkripke_singleton_valuation (Atom : Type) :
     pkripke_valuation Atom pkripke_singleton_frame :=
