@@ -819,36 +819,14 @@ Proof.
     lowerPiApplication lowerSigmaApplication hcontext
     hglobalPiDeep hglobalSigmaDeep hupperNumeral
     hsigmaDomain hsigmaLower hpiDomain hpiLower cell.
-  destruct (raw_codedTernaryApplicationSelector_exists M hPA
-    globalPiCode (proj1 hglobalPiDeep)) as [sigmaSelector _].
-  destruct (raw_codedTernaryApplicationSelector_exists M hPA
-    globalSigmaCode (proj1 hglobalSigmaDeep)) as [piSelector _].
-  assert (hsigmaCommuting :
-      RawCoqDynamicTruthTemplateTernaryCommutingOnSyntax M
-        globalPiCode sigmaSelector).
-  {
-    constructor.
-    - exact (rawTernaryApplicationSelector_shift_commuting_on_syntax
-        M hPA globalPiCode sigmaSelector
-        (raw_codedTernaryApplicationShiftInterchange_of_deepClosed
-          M hPA globalPiCode hglobalPiDeep)).
-    - exact
-        (rawTernaryApplicationSelector_opening_commuting_on_syntax_of_deepClosed_concrete
-          M hPA globalPiCode sigmaSelector hglobalPiDeep).
-  }
-  assert (hpiCommuting :
-      RawCoqDynamicTruthTemplateTernaryCommutingOnSyntax M
-        globalSigmaCode piSelector).
-  {
-    constructor.
-    - exact (rawTernaryApplicationSelector_shift_commuting_on_syntax
-        M hPA globalSigmaCode piSelector
-        (raw_codedTernaryApplicationShiftInterchange_of_deepClosed
-          M hPA globalSigmaCode hglobalSigmaDeep)).
-    - exact
-        (rawTernaryApplicationSelector_opening_commuting_on_syntax_of_deepClosed_concrete
-          M hPA globalSigmaCode piSelector hglobalSigmaDeep).
-  }
+  destruct
+    (raw_coqDynamicTruthTemplateTernarySelector_exists_of_deepClosed
+      M hPA globalPiCode hglobalPiDeep) as
+    [sigmaSelector hsigmaCommuting].
+  destruct
+    (raw_coqDynamicTruthTemplateTernarySelector_exists_of_deepClosed
+      M hPA globalSigmaCode hglobalSigmaDeep) as
+    [piSelector hpiCommuting].
   exact
     (raw_dynamicTruthBinderPrincipalProjectionInterface_of_native_traces
       M hPA witnessList context level upperNumeral
