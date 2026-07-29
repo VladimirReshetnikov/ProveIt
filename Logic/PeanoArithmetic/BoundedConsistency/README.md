@@ -4127,3 +4127,20 @@ old-bound proof itself.  Once two transparent template equalities identify
 the arithmetic source's antecedent and left branch, the `< b` branch head is
 used by an actual represented assumption node and fed directly to the shifted
 predecessor transport.
+
+For the equality branch, the append layer now projects and reassembles the
+four unconditional appended-entry lookup fields after any finite block of
+later eigenvariables.  At count five this supplies the complete state lookup
+at the appended index directly in the row context, before equality transport
+changes that index to the row variable.
+
+`RawCodedPALocalProofEquality` packages the raw represented equality
+constructor as both a carrier-level local-proof rule and a translation-generic
+template rule.  Template clients provide only a proof of `s = t` and a proof
+of the motive opened at `s`; the translation supplies both represented
+substitution traces needed to obtain the motive opened at `t`.
+
+The same module derives represented equality symmetry from the premise-free
+reflexivity constructor and one application of equality elimination.  This
+supplies the `b = i` orientation required to transport the equality branch's
+lookup at the appended index `b` to the traversal row index `i`.
