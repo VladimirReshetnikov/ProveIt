@@ -1,0 +1,11 @@
+From BoundedPAConsistency Require Import
+  RawCodedTemplateNestedExistentialElimination.
+
+Import PABoundedRawCodedTemplateNestedExistentialElimination.
+
+Check templateRawDerives_exE.
+Check rawCoqTemplateNestedExEliminationRoot.
+Check rawCoqTemplateNestedExEliminationRoot_derives.
+
+Print Assumptions templateRawDerives_exE.
+Print Assumptions rawCoqTemplateNestedExEliminationRoot_derives.
