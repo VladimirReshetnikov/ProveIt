@@ -1,0 +1,20 @@
+(** Assumption audit for traversal-independent context membership in PA. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedContextMembershipTransferPA.
+
+Import PABoundedRawCodedContextMembershipTransferPA.
+
+Check contextListMemberTransferTermAt.
+Check raw_sat_contextListMemberTransferTermAt_iff.
+Check contextListMemberTransferFormula.
+Check contextListMemberTransferFormula_raw_valid.
+Check PA_proves_contextListMemberTransferFormula.
+Check raw_codedPAProofOf_contextListMemberTransferFormula.
+Check raw_codedTemplatePALocalProofOf_contextListMemberTransfer_on_tail.
+
+Print Assumptions contextListMemberTransferFormula_raw_valid.
+Print Assumptions PA_proves_contextListMemberTransferFormula.
+Print Assumptions raw_codedPAProofOf_contextListMemberTransferFormula.
+Print Assumptions
+  raw_codedTemplatePALocalProofOf_contextListMemberTransfer_on_tail.
