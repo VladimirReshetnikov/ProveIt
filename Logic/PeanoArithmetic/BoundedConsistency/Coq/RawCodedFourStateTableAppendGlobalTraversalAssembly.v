@@ -28,6 +28,7 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruth
   RawCodedFixedLevelTruthTotality
   RawCodedFixedLevelTruthTraversal
+  RawCodedFormulaShiftSourceAtomicAdequacy
   RawCodedTemplateSyntax
   RawCodedTemplateRenamingSubstitution
   RawCodedTemplateStructuralTranslation
@@ -75,6 +76,7 @@ Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedFixedLevelTruthTraversal.
+Import PABoundedRawCodedFormulaShiftSourceAtomicAdequacy.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateRenamingSubstitution.
 Import PABoundedRawCodedTemplateStructuralTranslation.
@@ -100,6 +102,36 @@ Import PABoundedRawCodedFourStateTableAppendExistentialElimination.
 Import PABoundedRawCodedFourStateTableAppendRowLtSuccCases.
 Import PABoundedRawCodedDynamicTruthPairedGlobalSuccessorGraph.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
+
+(** Atomic adequacy is already implicit in the template-translation
+    contract.  Its represented unit-shift trace proves the source formula
+    adequate, even when that source is a genuinely nonstandard code. *)
+Theorem raw_codedTemplateFormula_atomically_adequate : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M) input,
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation input).
+Proof.
+  intros M hPA translation input.
+  exact (raw_codedFormulaShift_source_atomically_adequate_core
+    M hPA (raw_zero M) (rawNumeralValue M 1)
+    (rawTemplateFormula translation input)
+    (rawTemplateFormula translation (templateFormulaRename S input))
+    (rawTemplateFormula_shift translation input)).
+Qed.
+
+(** Hence every finite template prefix is adequate.  Retaining the list
+    argument makes this a drop-in discharge for all prefix-general proof
+    compilers, without imposing structural-translation-specific premises. *)
+Corollary raw_codedTemplatePrefix_atomically_adequate : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M) prefix,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix.
+Proof.
+  intros M hPA translation prefix input _.
+  exact (raw_codedTemplateFormula_atomically_adequate
+    M hPA translation input).
+Qed.
 
 (** The deepest append context is affine in its caller-provided tail.  Eight
     eigenvariables shift the tail eight times, while the finite assumption
@@ -1926,6 +1958,80 @@ Proof.
     actualRowPrefix actualAntecedent actualRowLookup actualResult hresult).
 Qed.
 
+(** Public concrete-row interface with all atomic-adequacy obligations
+    discharged from the generic translation contract. *)
+Corollary
+    raw_codedPALocalProofOf_four_state_table_append_concrete_global_closed_row_implications :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode boundName localSigma localPi witnesses
+    inheritedTraversal oldLookup fixedProductionRoot,
+  let baseWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M) in
+  let baseContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M) in
+  let rowPrefix := coqFourStateTableAppendRowPrefix
+    (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+    (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+    (ttParameter boundName)
+    (embedPATerm (Term.numeral rootMode))
+    (ttVar 0) (ttVar 1) (ttVar 2) in
+  let antecedent := coqLtSuccCasesAntecedentTemplate
+    (ttVar 4) (ttParameter boundName) in
+  let rowLookup :=
+    coqFourStateTableAppendEqualityRowLookupTemplate
+      coqFourStateTableAppendRowModeParameterName
+      coqFourStateTableAppendRowFormulaParameterName
+      coqFourStateTableAppendRowAssignmentCodeParameterName
+      coqFourStateTableAppendRowAssignmentStepParameterName
+      (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0) in
+  let below := coqLtSuccCasesBelowTemplate
+    (ttVar 4) (ttParameter boundName) in
+  let fixedProduction :=
+    templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+      (coqFourStateTableAppendEmbeddedModeProductionMotive
+        localSigma localPi) in
+  let result := coqFourStateTableAppendConcreteClosedRowProductionTemplate
+    (embedPAFormula localSigma) (embedPAFormula localPi) in
+  rootMode = 0 \/ rootMode = 1 ->
+  templateUniversalOpenMany inheritedTraversal
+    coqFourStateTableAppendConcreteRowVariables =
+    Some (tfImp below (tfImp oldLookup result)) ->
+  RawFourStateTableAppendInheritedLocalRootsAt M translation
+    baseContext rowPrefix inheritedTraversal oldLookup ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext rowPrefix)
+    (rawTemplateFormula translation fixedProduction) fixedProductionRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    baseWitnessList baseContext rowPrefix
+    (rawTemplateFormula translation
+      (tfImp antecedent (tfImp rowLookup result))).
+Proof.
+  intros M hPA translation hagreement
+    rootMode boundName localSigma localPi witnesses
+    inheritedTraversal oldLookup fixedProductionRoot
+    baseWitnessList baseContext rowPrefix antecedent rowLookup below
+    fixedProduction result hrootMode hopen hinheritedRoots
+    hfixedProduction.
+  cbn zeta in *.
+  exact
+    (raw_codedPALocalProofOf_four_state_table_append_concrete_global_closed_row_implications_on_witnessed_row_context
+      M hPA translation hagreement
+      rootMode boundName localSigma localPi witnesses
+      (ttParameter boundName) inheritedTraversal oldLookup
+      fixedProductionRoot hrootMode hopen
+      (raw_codedTemplatePrefix_atomically_adequate M hPA translation _)
+      (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+      (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+      (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+      eq_refl
+      (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+      hinheritedRoots hfixedProduction).
+Qed.
+
 (** Pointwise equality of translated context entries is enough to identify
     their folds over every raw tail.  This formulation avoids requiring the
     template syntax itself to be equal: named carrier parameters and concrete
@@ -2777,6 +2883,93 @@ Proof.
       (coqFourStateTableAppendConcreteClosedRowProductionTemplate_embedded_eq_opened
         rootMode localSigma localPi (ttParameter boundName) hSigma hPi)
       happend hrow).
+Qed.
+
+(** Close the literal global append successor from the pre-split row roots.
+    The concrete row compiler above supplies the seventh traversal field;
+    the scoped append endpoint supplies all universal/existential closure and
+    the other six fields.  No row proof or prefix-identification premise is
+    exposed by this composition. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_concrete_global_row_inputs :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode localSigma localPi boundName witnesses
+    appendRoot inheritedTraversal oldLookup fixedProductionRoot,
+  rootMode = 0 \/ rootMode = 1 ->
+  StandardFormulaScoped 13 localSigma ->
+  StandardFormulaScoped 13 localPi ->
+  templateUniversalOpenMany inheritedTraversal
+    coqFourStateTableAppendConcreteRowVariables =
+    Some
+      (tfImp
+        (coqLtSuccCasesBelowTemplate
+          (ttVar 4) (ttParameter boundName))
+        (tfImp oldLookup
+          (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+            (embedPAFormula localSigma) (embedPAFormula localPi)))) ->
+  RawFourStateTableAppendInheritedLocalRootsAt M translation
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (coqFourStateTableAppendRowPrefix
+      (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+      (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+      (ttParameter boundName)
+      (embedPATerm (Term.numeral rootMode))
+      (ttVar 0) (ttVar 1) (ttVar 2))
+    inheritedTraversal oldLookup ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (coqFourStateTableAppendRowPrefix
+        (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+        (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+        (ttParameter boundName)
+        (embedPATerm (Term.numeral rootMode))
+        (ttVar 0) (ttVar 1) (ttVar 2)))
+    (rawTemplateFormula translation
+      (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+        (coqFourStateTableAppendEmbeddedModeProductionMotive
+          localSigma localPi))) fixedProductionRoot ->
+  RawCodedPALocalProofOf M
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendExistsTemplate
+        (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+        (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+        (ttParameter boundName)
+        (embedPATerm (Term.numeral rootMode))
+        (ttVar 0) (ttVar 1) (ttVar 2))) appendRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M)) []
+    (rawTemplateFormula translation
+      (embedPAFormula
+        (dynamicTruthGlobalFormula (Term.numeral rootMode)
+          localSigma localPi))).
+Proof.
+  intros M hPA translation hagreement
+    rootMode localSigma localPi boundName witnesses
+    appendRoot inheritedTraversal oldLookup fixedProductionRoot
+    hrootMode hSigma hPi hopen hinheritedRoots hfixedProduction happend.
+  apply
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_scoped_concrete_row
+      M hPA translation hagreement
+      rootMode localSigma localPi boundName
+      (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+      (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+      witnesses appendRoot hrootMode hSigma hPi happend).
+  exact
+    (raw_codedPALocalProofOf_four_state_table_append_concrete_global_closed_row_implications
+      M hPA translation hagreement
+      rootMode boundName localSigma localPi witnesses
+      inheritedTraversal oldLookup fixedProductionRoot
+      hrootMode hopen hinheritedRoots hfixedProduction).
 Qed.
 
 (** The row compiler may use a syntactically different temporary prefix—for
