@@ -4,7 +4,9 @@ From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
-  PropositionalFormula PropositionalNNFormula GenericCalculus
+  PropositionalFormula PropositionalNNFormula PropositionalTranslation
+  PropositionalBoolean PropositionalBooleanNNFormula
+  PropositionalBooleanZeroSubst GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -888,6 +890,105 @@ Print Assumptions pnn_de_morgan_laws.
 Print Assumptions pnn_complexity_neg.
 Print Assumptions pnnformula_eq_dec.
 Print Assumptions pnn_ne_of_ne_complexity.
+
+(** Propositional/Translation syntax bridges. *)
+Check pformula_to_pnn.
+Check pformula_to_pnn_atom.
+Check pformula_to_pnn_bottom.
+Check pformula_to_pnn_and.
+Check pformula_to_pnn_or.
+Check pformula_to_pnn_imp.
+Check pnn_to_pformula.
+Check pnn_to_pformula_top.
+Check pnn_to_pformula_bottom.
+Check pnn_to_pformula_atom.
+Check pnn_to_pformula_neg_atom.
+Check pnn_to_pformula_and.
+Check pnn_to_pformula_or.
+Print Assumptions pformula_to_pnn_imp.
+Print Assumptions pnn_to_pformula_neg_atom.
+
+(** Propositional/Boolean/Basic truth-functional semantics. *)
+Check pvaluation.
+Check pboolean_eval.
+Check pboolean_semantics.
+Check pboolean_models_iff_eval.
+Check pboolean_tarski_top.
+Check pboolean_tarski_bottom.
+Check pboolean_tarski_and.
+Check pboolean_tarski_or.
+Check pboolean_tarski_imp.
+Check pboolean_tarski_neg.
+Check pboolean_tarski.
+Check pboolean_models_atom.
+Check pboolean_eval_ext.
+Check pboolean_eval_substitute.
+Check pboolean_letterless_invariant.
+Check pboolean_letterless_eval_dec.
+Check pformula_is_tautology.
+Check pboolean_substitute_tautology.
+Check pboolean_and_tautology_iff.
+Check pboolean_or_tautology_of.
+Check pboolean_imp_tautology_of_consequent.
+Check pboolean_bottom_not_tautology.
+Check pboolean_top_tautology.
+Check pboolean_letterless_tautology_of_not_neg_tautology.
+Check pboolean_neg_tautology_of_letterless_not_tautology.
+Print Assumptions pboolean_tarski.
+Print Assumptions pboolean_eval_ext.
+Print Assumptions pboolean_eval_substitute.
+Print Assumptions pboolean_letterless_invariant.
+Print Assumptions pboolean_letterless_eval_dec.
+Print Assumptions pboolean_substitute_tautology.
+Print Assumptions pboolean_and_tautology_iff.
+Print Assumptions pboolean_bottom_not_tautology.
+Print Assumptions pboolean_letterless_tautology_of_not_neg_tautology.
+Print Assumptions pboolean_neg_tautology_of_letterless_not_tautology.
+
+(** Propositional/Boolean/NNFormula algebraic and Boolean evaluation. *)
+Check pnn_eval_aux.
+Check pnn_eval_aux_neg.
+Check pnn_eval_hom.
+Check pnn_eval_atom.
+Check pnn_eval_neg_atom.
+Check pnn_prop_connectives.
+Check pnn_boolean_eval.
+Check pnn_boolean_semantics.
+Check pnn_boolean_models_iff_eval.
+Check pnn_boolean_eval_neg.
+Check pnn_boolean_tarski_top.
+Check pnn_boolean_tarski_bottom.
+Check pnn_boolean_tarski_and.
+Check pnn_boolean_tarski_or.
+Check pnn_boolean_tarski_neg.
+Check pnn_boolean_tarski_imp.
+Check pnn_boolean_tarski.
+Check pnn_boolean_models_atom.
+Check pnn_boolean_models_neg_atom.
+Check pnn_to_pformula_eval.
+Check pformula_to_pnn_eval.
+Print Assumptions pnn_eval_aux_neg.
+Print Assumptions pnn_eval_hom.
+Print Assumptions pnn_boolean_eval_neg.
+Print Assumptions pnn_boolean_tarski_neg.
+Print Assumptions pnn_boolean_tarski_imp.
+Print Assumptions pnn_boolean_tarski.
+Print Assumptions pnn_to_pformula_eval.
+Print Assumptions pformula_to_pnn_eval.
+
+(** Propositional/Boolean/ZeroSubst valuation-selected substitutions. *)
+Check pboolean_vf_substitution.
+Check pboolean_vf_substitution_atom.
+Check pboolean_eval_vf_substitute_iff.
+Check pboolean_exists_neg_zero_subst_of_not_tautology.
+Check pboolean_tautology_of_forall_zero_subst.
+Check pboolean_vf_substitution_tautology.
+Print Assumptions pboolean_vf_substitution.
+Print Assumptions pboolean_vf_substitution_atom.
+Print Assumptions pboolean_eval_vf_substitute_iff.
+Print Assumptions pboolean_exists_neg_zero_subst_of_not_tautology.
+Print Assumptions pboolean_tautology_of_forall_zero_subst.
+Print Assumptions pboolean_vf_substitution_tautology.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
