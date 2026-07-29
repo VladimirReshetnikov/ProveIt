@@ -249,11 +249,11 @@ Theorem
         [first; second; third; fourth; fifth]) =
     rawTernaryApplicationOutput contextApplicationSelector
       (rawCoqRestrictedPADerivationSoundnessTemplateTermView
-        M parameters third)
+        M parameters fifth)
       (rawCoqRestrictedPADerivationSoundnessTemplateTermView
         M parameters fourth)
       (rawCoqRestrictedPADerivationSoundnessTemplateTermView
-        M parameters fifth)) ->
+        M parameters third)) ->
   (forall first second third fourth fifth,
     rawDirectTemplateFormula
       (rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
@@ -296,7 +296,7 @@ Proof.
     exact
       (raw_coqRestrictedPATernaryApplication_deep_closed_from_template_scope
         M hPA parameters scope contextPredicate contextApplicationSelector
-        third fourth fifth hcontextDeep hthird hfourth hfifth).
+        fifth fourth third hcontextDeep hfifth hfourth hthird).
   - destruct arguments as
       [|first [|second [|third [|fourth [|fifth [|sixth rest]]]]]].
     all: try
@@ -419,11 +419,11 @@ Corollary
         [first; second; third; fourth; fifth]) =
     rawTernaryApplicationOutput contextApplicationSelector
       (rawCoqRestrictedPADerivationSoundnessTemplateTermView
-        M parameters third)
+        M parameters fifth)
       (rawCoqRestrictedPADerivationSoundnessTemplateTermView
         M parameters fourth)
       (rawCoqRestrictedPADerivationSoundnessTemplateTermView
-        M parameters fifth)) ->
+        M parameters third)) ->
   (forall first second third fourth fifth,
     rawDirectTemplateFormula
       (rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs

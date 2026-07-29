@@ -6,6 +6,9 @@ Import PABoundedRawCodedTemplateNestedExistentialElimination.
 Check templateRawDerives_exE.
 Check rawCoqTemplateNestedExEliminationRoot.
 Check rawCoqTemplateNestedExEliminationRoot_derives.
+Check rawCoqTemplateNestedExEliminationFromRoot.
+Check rawCoqTemplateNestedExEliminationFromRoot_derives.
 
 Print Assumptions templateRawDerives_exE.
 Print Assumptions rawCoqTemplateNestedExEliminationRoot_derives.
+Print Assumptions rawCoqTemplateNestedExEliminationFromRoot_derives.

@@ -98,7 +98,7 @@ Definition RawCoqRestrictedPANativeDirectTruthInputsAt
       rawCoqRestrictedPATruthDirectOutput contextTruth
         lower upper context assignmentCode assignmentStep =
       rawTernaryApplicationOutput contextApplicationSelector
-        context assignmentCode assignmentStep) /\
+        assignmentStep assignmentCode context) /\
     (forall lower upper conclusion assignmentCode assignmentStep,
       rawCoqRestrictedPATruthDirectOutput conclusionTruth
         lower upper conclusion assignmentCode assignmentStep =
@@ -110,11 +110,11 @@ Definition RawCoqRestrictedPANativeDirectTruthInputsAt
           [first; second; third; fourth; fifth]) =
       rawTernaryApplicationOutput contextApplicationSelector
         (rawCoqRestrictedPADerivationSoundnessTemplateTermView
-          M parameters third)
+          M parameters fifth)
         (rawCoqRestrictedPADerivationSoundnessTemplateTermView
           M parameters fourth)
         (rawCoqRestrictedPADerivationSoundnessTemplateTermView
-          M parameters fifth)) /\
+          M parameters third)) /\
     (forall first second third fourth fifth,
       rawDirectTemplateFormula inputs
         (tfOpaque coqRestrictedPAConclusionTruthPredicateName

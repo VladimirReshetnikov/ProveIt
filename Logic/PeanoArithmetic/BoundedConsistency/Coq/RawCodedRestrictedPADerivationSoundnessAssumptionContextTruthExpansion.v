@@ -266,13 +266,13 @@ Theorem raw_coqRestrictedPADynamicContextPredicateTemplate_native_output :
         M parameters fifth)) ->
   forall context assignmentCode assignmentStep,
   rawTernaryApplicationOutput contextSelector
-    (rawDirectTemplateTerm inputs context)
+    (rawDirectTemplateTerm inputs assignmentStep)
     (rawDirectTemplateTerm inputs assignmentCode)
-    (rawDirectTemplateTerm inputs assignmentStep) =
+    (rawDirectTemplateTerm inputs context) =
   rawDirectTemplateFormula inputs
     (coqRestrictedPATemplateTernaryApplication
       coqRestrictedPADynamicContextPredicateTemplate
-      context assignmentCode assignmentStep).
+      assignmentStep assignmentCode context).
 Proof.
   intros M hPA parameters contextTruth conclusionTruth inputs
     sigmaCode sigmaSelector contextSelector hconclusion
@@ -284,7 +284,7 @@ Proof.
   destruct hcode.
   exact (raw_coqRestrictedPADynamicContextPredicateTemplate_output
     M hPA parameters contextTruth conclusionTruth contextSelector
-    context assignmentCode assignmentStep).
+    assignmentStep assignmentCode context).
 Qed.
 
 (** End-to-end leaf equation.  The first two hierarchy arguments remain in
@@ -320,11 +320,11 @@ Theorem raw_coqRestrictedPAContextTruthLeaf_expansion : forall
         [first; second; third; fourth; fifth]) =
     rawTernaryApplicationOutput contextSelector
       (rawCoqRestrictedPADerivationSoundnessTemplateTermView
-        M parameters third)
+        M parameters fifth)
       (rawCoqRestrictedPADerivationSoundnessTemplateTermView
         M parameters fourth)
       (rawCoqRestrictedPADerivationSoundnessTemplateTermView
-        M parameters fifth)) ->
+        M parameters third)) ->
   forall first second context assignmentCode assignmentStep,
   rawDirectTemplateFormula inputs
     (tfOpaque coqRestrictedPAContextTruthPredicateName
@@ -332,7 +332,7 @@ Theorem raw_coqRestrictedPAContextTruthLeaf_expansion : forall
   rawDirectTemplateFormula inputs
     (coqRestrictedPATemplateTernaryApplication
       coqRestrictedPADynamicContextPredicateTemplate
-      context assignmentCode assignmentStep).
+      assignmentStep assignmentCode context).
 Proof.
   intros M hPA parameters contextTruth conclusionTruth inputs
     sigmaCode sigmaSelector contextSelector
