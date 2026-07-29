@@ -16,6 +16,7 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   CodedProof
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofWitnessedContextMerge
   RawCodedRestrictedPAProof
   RawCodedPAAxiomWitness
   RawCodedPAAxiomWitnessPrefix
@@ -25,6 +26,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
   RawCodedTemplatePAEmbeddingSelfShiftTail
+  RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateDirectStructuralPAAgreement
   RawCodedTemplateTernaryApplication
@@ -35,6 +37,7 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPADerivationSoundnessDirectStrongStepShell
   RawCodedRestrictedPADerivationSoundnessDirectAssumptionCase
   RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageCompilation
   RawCodedRestrictedPADerivationSoundnessAssumptionTenWitnessComposition
   RawCodedRestrictedPADerivationSoundnessAssumptionUniversalSourceCompilation
   RawCodedRestrictedPADerivationSoundnessAssumptionNativeLawTransport.
@@ -47,6 +50,7 @@ Module
 Import PA.
 Import PABoundedCodedProof.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
@@ -59,6 +63,7 @@ Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplatePAEmbeddingSelfShiftTail.
+Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedTemplateTernaryApplication.
@@ -74,6 +79,8 @@ Import
   PABoundedRawCodedRestrictedPADerivationSoundnessDirectAssumptionCase.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootCompilation.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageCompilation.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessAssumptionTenWitnessComposition.
 Import
@@ -210,6 +217,126 @@ Proof.
       root).
     rewrite hreadyCode, hlaw.
     exact hnative.
+Qed.
+
+(** Adding a finite standard prefix in front of a witnessed direct tail keeps
+    every old context member.  This elementary inclusion is separated from
+    proof transport so later rule compilers can reuse the exact carrier fact. *)
+Lemma raw_assumption_standardPrefix_target_included : forall
+    (M : RawPAModel), RawPASatisfies M -> forall prefix context,
+  RawContextListIncluded M context
+    (rawStandardPAAxiomWitnessPrefixContextCode M prefix context).
+Proof.
+  intros M hPA prefix.
+  induction prefix as [| witness tail ih]; intro context.
+  - exact (raw_contextListIncluded_refl M context).
+  - cbn [rawStandardPAAxiomWitnessPrefixContextCode].
+    apply (raw_contextListIncluded_cons_target M hPA).
+    exact (ih context).
+Qed.
+
+(** The selected Assumption witness batch remains included when another
+    independently selected batch is placed before it and an arbitrary later
+    suffix is placed after it. *)
+Lemma raw_assumption_directEmbeddedPAAxiomWitnessContext_surrounded_included :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    prefix witnesses suffix,
+  RawContextListIncluded M
+    (rawTemplateContextCode
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (embedPAContext (map witnessedAxiom witnesses)))
+    (rawTemplateContextCode
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (embedPAContext
+        (map witnessedAxiom (prefix ++ (witnesses ++ suffix))))).
+Proof.
+  intros M hPA inputs prefix witnesses suffix member hmember.
+  pose proof
+    (raw_directEmbeddedPAAxiomWitnessContext_suffix_included
+      M hPA inputs witnesses suffix) as hsuffix.
+  assert (htargetCode :
+    rawTemplateContextCode
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (embedPAContext
+        (map witnessedAxiom (prefix ++ (witnesses ++ suffix)))) =
+    rawStandardPAAxiomWitnessPrefixContextCode M prefix
+      (rawTemplateContextCode
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (embedPAContext (map witnessedAxiom (witnesses ++ suffix))))).
+  {
+    rewrite rawTemplateContextCode_as_on_tail.
+    rewrite (raw_templateContextCodeOnTail_embedPAAxiomWitnesses M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+      (prefix ++ (witnesses ++ suffix)) (raw_zero M)).
+    rewrite rawStandardPAAxiomWitnessPrefixContextCode_app.
+    f_equal.
+    rewrite rawTemplateContextCode_as_on_tail.
+    exact (eq_sym
+      (raw_templateContextCodeOnTail_embedPAAxiomWitnesses M
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+        (witnesses ++ suffix) (raw_zero M))).
+  }
+  rewrite htargetCode.
+  exact
+    (raw_assumption_standardPrefix_target_included M hPA prefix
+      (rawTemplateContextCode
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (embedPAContext (map witnessedAxiom (witnesses ++ suffix))))
+      member (hsuffix member hmember)).
+Qed.
+
+(** Transport the exact public Assumption residual to a common witnessed tail.
+    Both an earlier prefix and a later suffix are allowed, so this theorem can
+    be composed with rule compilers in either selection order. *)
+Theorem raw_assumptionLawRoot_surround_witnessed_tail : forall
+    (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    prefix witnesses suffix,
+  RawCoqRestrictedPADirectStrongStepAssumptionMembershipTruthLawRoot
+    M hPA inputs (embedPAContext (map witnessedAxiom witnesses)) ->
+  RawCoqRestrictedPADirectStrongStepAssumptionMembershipTruthLawRoot
+    M hPA inputs
+      (embedPAContext
+        (map witnessedAxiom (prefix ++ (witnesses ++ suffix)))).
+Proof.
+  intros M hPA inputs prefix witnesses suffix [root hroot].
+  rewrite
+    coqRestrictedPADirectStrongStepAssumptionReadyContext_app_witnesses
+    in hroot.
+  rewrite rawTemplateContextCode_app_on_tail in hroot.
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawTemplateContextCode
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (embedPAContext (map witnessedAxiom witnesses)))
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        (prefix ++ (witnesses ++ suffix)) (raw_zero M))
+      (rawTemplateContextCode
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (embedPAContext
+          (map witnessedAxiom (prefix ++ (witnesses ++ suffix)))))
+      (coqRestrictedPADirectStrongStepAssumptionReadyContext [])
+      (rawDirectTemplateFormula inputs
+        coqRestrictedPADirectAssumptionMembershipTruthLawTemplate)
+      root
+      (raw_directEmbeddedPAAxiomWitnessContext M hPA inputs witnesses)
+      (raw_directEmbeddedPAAxiomWitnessContext M hPA inputs
+        (prefix ++ (witnesses ++ suffix)))
+      (raw_assumption_directEmbeddedPAAxiomWitnessContext_surrounded_included
+        M hPA inputs prefix witnesses suffix)
+      hroot) as [transportedRoot htransported].
+  exists transportedRoot.
+  rewrite
+    coqRestrictedPADirectStrongStepAssumptionReadyContext_app_witnesses.
+  rewrite rawTemplateContextCode_app_on_tail.
+  exact htransported.
 Qed.
 
 End

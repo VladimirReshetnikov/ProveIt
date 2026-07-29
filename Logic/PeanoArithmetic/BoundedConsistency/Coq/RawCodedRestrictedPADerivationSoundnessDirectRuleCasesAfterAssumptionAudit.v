@@ -1,0 +1,25 @@
+(** Audit surface after eliminating both Or-I-left recursion and Assumption. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterAssumption.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterAssumption.
+
+Check RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterAssumption.
+Check raw_remainingRuleCases_of_afterAssumption.
+Check
+  RawCoqRestrictedPADirectRemainingAfterAssumptionStandardTailCompiler.
+Check RawCoqRestrictedPADirectSelectedAssumptionTail.
+Check raw_remainingCompiler_after_orIntroductionLeft_of_afterAssumption.
+Check raw_remainingCompiler_after_orIntroductionLeft_of_nativeAssumption.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_remaining_afterAssumption.
+
+Print Assumptions raw_remainingRuleCases_of_afterAssumption.
+Print Assumptions
+  raw_remainingCompiler_after_orIntroductionLeft_of_afterAssumption.
+Print Assumptions
+  raw_remainingCompiler_after_orIntroductionLeft_of_nativeAssumption.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_remaining_afterAssumption.
