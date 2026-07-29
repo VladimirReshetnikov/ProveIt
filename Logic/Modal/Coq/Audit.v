@@ -9,6 +9,7 @@ From FoundationModal Require Import
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
   GenericCalculus PropositionalEntailmentAxioms
+  PropositionalEntailmentLukasiewicz
   PropositionalEntailmentMinimal PropositionalEntailmentInt
   PropositionalEntailmentClassical PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
@@ -1623,6 +1624,21 @@ Print Assumptions ph_hilbert_cl_double_neg_iff.
 Print Assumptions ph_hilbert_cl_neg_and_iff_or_neg.
 Print Assumptions ph_hilbert_cl_imp_iff_neg_or.
 Print Assumptions ph_hilbert_cl_neg_disj2_map_to_conj2.
+
+(** Propositional/Entailment/Cl/Łukasiewicz: the K/S/elimination-of-
+    contraposition basis derives DNE, DNI, and contradiction explosion over
+    an otherwise arbitrary generic entailment. *)
+Check generic_lukasiewicz_entailment.
+Check generic_lukasiewicz_identity_raw.
+Check generic_lukasiewicz_dne_raw.
+Check generic_has_axiom_dne_of_lukasiewicz.
+Check generic_lukasiewicz_dni_raw.
+Check generic_lukasiewicz_explosion_raw.
+Check generic_lukasiewicz_inconsistent_of_provable_neg.
+Print Assumptions generic_lukasiewicz_dne_raw.
+Print Assumptions generic_lukasiewicz_dni_raw.
+Print Assumptions generic_lukasiewicz_explosion_raw.
+Print Assumptions generic_lukasiewicz_inconsistent_of_provable_neg.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
