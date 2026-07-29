@@ -4133,3 +4133,9 @@ four unconditional appended-entry lookup fields after any finite block of
 later eigenvariables.  At count five this supplies the complete state lookup
 at the appended index directly in the row context, before equality transport
 changes that index to the row variable.
+
+`RawCodedPALocalProofEquality` packages the raw represented equality
+constructor as both a carrier-level local-proof rule and a translation-generic
+template rule.  Template clients provide only a proof of `s = t` and a proof
+of the motive opened at `s`; the translation supplies both represented
+substitution traces needed to obtain the motive opened at `t`.
