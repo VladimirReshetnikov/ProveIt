@@ -54,6 +54,48 @@ or the root, never the middle ones:
 panics the elaborator instead (`unreachable @ extractMainModule`), and the `#`/`?`
 roots need `«…»` too.
 
+### What `✝` is, and why the suppression exists at all
+
+U+271D LATIN CROSS is not an interesting *character*; it is a **sentinel**.
+`isInaccessibleUserName` is literally a substring test
+(`Init/Meta/Defs.lean:153`):
+
+```lean
+def isInaccessibleUserName : Name → Bool
+  | Name.str _ s   => (String.Internal.contains s '✝') || s == "_inaccessible"
+  | Name.num p _   => isInaccessibleUserName p
+  | _              => false
+```
+
+so the cross and the literal string `_inaccessible` are two spellings of one
+flag. It marks hypotheses the user may not refer to — the ones `induction`
+leaves behind:
+
+```
+case succ
+n✝ : Nat
+a✝ : n✝ = n✝
+⊢ n✝ + 1 = n✝ + 1
+```
+
+U+271D is in none of `isLetterLike`'s ranges, so the lexer cannot read it back.
+**That is the design**: an inaccessible name must be unwritable in source, or you
+could name a hypothesis Lean deliberately hid from you. Printing such a name
+un-round-trippably is therefore correct behaviour for the *marked component*.
+
+The defect is that the implementation achieves it by disabling escaping for the
+**entire name** rather than for the marked component. The minimal pair, same
+first component both times:
+
+```
+(.str (.str ⊥ "a.b") "ok"           ).toString  =  "«a.b».ok"           -- escaped
+(.str (.str ⊥ "a.b") "_inaccessible").toString  =  "a.b._inaccessible"  -- raw
+```
+
+The *last* component decides how an *earlier* one is printed. A component-local
+suppression would keep the sentinel unwritable while leaving its siblings
+escaped, and the collision would not exist.
+
 Lean's docstring already warns that names "containing `»`" may not round trip
 (`Init/Meta/Defs.lean:235`), but this case involves no `»` at all.
 
@@ -98,10 +140,23 @@ nonzero exit.
 
 Two further quiet failures in the same family:
 
-* **`»` and `✝` components → panic.** `escapePart` returns `none` for these, and
-  `maybeEscape` (`Init/Data/ToString/Name.lean:85`) swallows the `none` with
-  `.getD s`, emitting the component **raw** — discarding precisely the signal
-  `escapePart`'s docstring promises.
+* **`»` and `✝` components → unparseable output, but for *different* reasons.**
+  Measured:
+
+  ```
+  Name.escapePart "a✝"   =  some "«a✝»"      -- escaping works fine
+  Name.escapePart "a»b"  =  none             -- genuinely impossible
+  ```
+
+  So only `»` defeats `escapePart`, which honestly returns `none`; `maybeEscape`
+  (`Init/Data/ToString/Name.lean:85`) then swallows that with `.getD s` and emits
+  the component **raw**, discarding exactly the signal `escapePart`'s docstring
+  promises.
+
+  `✝` is a different story: `escapePart` would have produced `«a✝»`, but
+  `Name.toString` never asks, because `isInaccessibleUserName` has already turned
+  escaping off for the whole name. Nor can the caller override it — the flag is
+  ANDed, so `(Name.mkSimple "a✝").toString (escape := true)` is still `"a✝"`.
 * **`--` prefix → silently dropped.** `def «--foo»._inaccessible` stringifies to
   `--foo._inaccessible`; lean4export's `args.partition (·.startsWith "--")`
   reclassifies it as an *option*, so it is never exported and no error is raised.
