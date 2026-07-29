@@ -4086,3 +4086,9 @@ five traversal binders.  It opens the four shifted preservation laws, shares
 the current-bound and old-bound proofs across all four columns, and transports
 one old four-column lookup into the appended table without changing the eight
 append-witness binders that precede the row variables.
+
+The represented successor-bound split can now be compiled beneath any finite
+atomically adequate template prefix.  Its standard PA witnesses stay in the
+tail, while both branches retain the caller's temporary assumptions in their
+original order.  This is the interface used for the append-witness and
+five-row-variable context of the dynamic-truth successor construction.

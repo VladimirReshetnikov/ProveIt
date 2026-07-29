@@ -5,12 +5,15 @@ From BoundedPAConsistency Require Import
 
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 
+Check RawCodedTemplatePrefixAtomicallyAdequate.
+Check raw_codedPALocalProof_templatePrefix.
 Check raw_templateContextCodeOnTail_included.
 Check raw_templateContextCodeOnTail_binderReady.
 Check raw_codedPALocalProof_sameTemplatePrefix_transport.
 Check raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport.
 
 Print Assumptions raw_templateContextCodeOnTail_included.
+Print Assumptions raw_codedPALocalProof_templatePrefix.
 Print Assumptions raw_templateContextCodeOnTail_binderReady.
 Print Assumptions raw_codedPALocalProof_sameTemplatePrefix_transport.
 Print Assumptions
