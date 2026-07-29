@@ -3634,6 +3634,12 @@ that predecessor trace with the input globals of the next trace.  The
 callback packages this alignment together with the carried current-local
 proof and its two exact ternary evidence applications, so downstream
 collision compilers do not need to repeat the orbit comparison.
+It also projects the carried conjunction proof immediately to deterministic
+triple-universal decision and exclusivity roots.  General adapters then
+consume any verified universal-elimination chain from either root, leaving a
+downstream collision compiler responsible only for the exact substitutions
+that select its desired instance rather than for repeated And-E/All-E proof
+assembly.
 
 The next-field exact residual builder sees this package, the one selected
 local transform trace,

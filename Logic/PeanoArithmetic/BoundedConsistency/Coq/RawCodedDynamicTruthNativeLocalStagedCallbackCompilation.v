@@ -48,6 +48,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthPairedGlobalOrbitFunctionality
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthNativeLocalPositiveExactification
+  RawCodedDynamicTruthLocalFieldProjectionCompilation
   RawCodedDynamicTruthNativeLocalProofCompilation
   RawCodedDynamicTruthNativeMasterEndpoint
   RawCodedDynamicTruthMasterSplicedBasePackage
@@ -85,6 +86,7 @@ Import PABoundedRawCodedDynamicTruthPairedGlobalOrbitFunctionality.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalPositiveExactification.
+Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
 Import PABoundedRawCodedDynamicTruthMasterSplicedBasePackage.
@@ -420,6 +422,34 @@ Record RawDynamicTruthNativeLocalAlignedPredecessorAt
   rawDynamicTruthNativeLocalAligned_currentProof :
     RawCodedPALocalProofOf M baseContext currentLocal
       rawDynamicTruthNativeLocalAligned_currentLocalRoot;
+  rawDynamicTruthNativeLocalAligned_decisionProjection :
+    RawCodedPALocalProofOf M baseContext
+      (rawDynamicTruthLocalFormulaAll3Code M
+        (rawDynamicTruthLocalDecisionCode M
+          rawDynamicTruthNativeLocalAligned_currentSigmaDomain
+          rawDynamicTruthNativeLocalAligned_currentPiDomain
+          rawDynamicTruthNativeLocalAligned_currentSigmaEvidence
+          rawDynamicTruthNativeLocalAligned_currentPiEvidence))
+      (rawDynamicTruthLocalDecisionProjectionRoot M baseContext
+        rawDynamicTruthNativeLocalAligned_currentSigmaDomain
+        rawDynamicTruthNativeLocalAligned_currentPiDomain
+        rawDynamicTruthNativeLocalAligned_currentSigmaEvidence
+        rawDynamicTruthNativeLocalAligned_currentPiEvidence
+        rawDynamicTruthNativeLocalAligned_currentLocalRoot);
+  rawDynamicTruthNativeLocalAligned_exclusiveProjection :
+    RawCodedPALocalProofOf M baseContext
+      (rawDynamicTruthLocalFormulaAll3Code M
+        (rawDynamicTruthLocalExclusiveCode M
+          rawDynamicTruthNativeLocalAligned_currentSigmaDomain
+          rawDynamicTruthNativeLocalAligned_currentPiDomain
+          rawDynamicTruthNativeLocalAligned_currentSigmaEvidence
+          rawDynamicTruthNativeLocalAligned_currentPiEvidence))
+      (rawDynamicTruthLocalExclusiveProjectionRoot M baseContext
+        rawDynamicTruthNativeLocalAligned_currentSigmaDomain
+        rawDynamicTruthNativeLocalAligned_currentPiDomain
+        rawDynamicTruthNativeLocalAligned_currentSigmaEvidence
+        rawDynamicTruthNativeLocalAligned_currentPiEvidence
+        rawDynamicTruthNativeLocalAligned_currentLocalRoot);
   rawDynamicTruthNativeLocalAligned_successor :
     RawDynamicTruthPairedGlobalSuccessorAt M
       rawDynamicTruthNativeLocalAligned_currentInputGlobalSigma
@@ -506,6 +536,18 @@ Proof.
         nextSigmaDomain nextPiDomain nextSigmaEvidence nextPiEvidence
         hcurrentTrace hnextTraceAtSuccessor) as
       (hsuccessor & hsigmaApplication & hpiApplication).
+    assert (hcurrentFieldProof :
+        RawCodedPALocalProofOf M baseContext
+          (rawDynamicTruthLocalDecisionExclusiveFieldCode M
+            currentSigmaDomain currentPiDomain currentSigmaEvidence
+            currentPiEvidence) currentLocalRoot).
+    { rewrite <- hfield. exact hcurrentProof. }
+    pose proof
+      (raw_dynamicTruthLocalDecisionExclusiveProjectedRootsAt_of_local
+        M hPA baseContext currentSigmaDomain currentPiDomain
+        currentSigmaEvidence currentPiEvidence currentLocalRoot
+        hcurrentFieldProof) as hprojected.
+    destruct hprojected as [hdecisionProjection hexclusiveProjection].
     exists predecessorLevel.
     split; [exact hlevel |].
     exists
@@ -526,6 +568,10 @@ Proof.
          rawDynamicTruthNativeLocalAligned_currentField := hfield;
          rawDynamicTruthNativeLocalAligned_currentTrace := hcurrentTrace;
          rawDynamicTruthNativeLocalAligned_currentProof := hcurrentProof;
+         rawDynamicTruthNativeLocalAligned_decisionProjection :=
+           hdecisionProjection;
+         rawDynamicTruthNativeLocalAligned_exclusiveProjection :=
+           hexclusiveProjection;
          rawDynamicTruthNativeLocalAligned_successor := hsuccessor;
          rawDynamicTruthNativeLocalAligned_sigmaApplication :=
            hsigmaApplication;
