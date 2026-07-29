@@ -2731,10 +2731,25 @@ of the fixed universal PA source.  The separate
 applies arithmetic completeness and seal elimination to obtain an
 unconditional `Formula.BProv Formula.Ax_s []` theorem.  Separating the semantic
 proof from the completeness wrapper also keeps Rocq's expensive normalization
-of the large fixed formula cached.  The remaining Or-I-left task is now only
-proof-code integration: instantiate this universal theorem over a witnessed
-finite PA base, then feed the resulting opened-coverage root to the existing
-recursive-child compiler.
+of the large fixed formula cached.
+
+`RawCodedPALocalProofUniversalSourceInstance.v` extracts the recurring
+proof-code operation behind the universal arithmetic sources.  Given any PA
+theorem `pAll sourceBody`, a represented substitution trace, an arbitrary
+carrier replacement, and a finite direct-template prefix, it realizes the PA
+proof over a witnessed finite axiom extension, performs represented All-E,
+and inserts the requested prefix.  The theorem does not inspect the source
+body, target code, replacement, or prefix.
+
+`RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageCompilation.v`
+specializes that generic compiler to the complete opened-coverage source.  It
+selects a witnessed PA tail, converts the on-tail context to the exact legacy
+template context, and produces the opened-coverage compiler root.  Feeding
+that root through the earlier recursive-child compiler yields the exact
+Or-I-left recursive-child law root on the same witnessed tail.  Thus this
+branch no longer has a recursive-child residual; the next integration step is
+to merge its selected witnessed tail with the other rule-case roots used by
+the direct rule dispatcher.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely

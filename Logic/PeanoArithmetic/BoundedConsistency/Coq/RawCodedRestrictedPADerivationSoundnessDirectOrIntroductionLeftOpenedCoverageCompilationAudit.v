@@ -1,0 +1,19 @@
+(** Audit surface for opened Or-I-left proof-code integration. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageCompilation.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageCompilation.
+
+Check raw_codedPALocalProof_openedCoverageLaw_on_witnessed_base.
+Check raw_openedCoverageCompilerLawRoot_on_selected_witnessed_tail.
+Check
+  raw_orIntroductionLeft_recursiveChildLawRoot_on_selected_witnessed_tail.
+
+Print Assumptions
+  raw_codedPALocalProof_openedCoverageLaw_on_witnessed_base.
+Print Assumptions
+  raw_openedCoverageCompilerLawRoot_on_selected_witnessed_tail.
+Print Assumptions
+  raw_orIntroductionLeft_recursiveChildLawRoot_on_selected_witnessed_tail.
