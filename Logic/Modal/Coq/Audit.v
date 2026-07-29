@@ -10,7 +10,8 @@ From FoundationModal Require Import
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
   PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
   PropositionalKripke2Hilbert PropositionalHilbertFExtensions PropositionalFMT
-  PropositionalHilbertVF PropositionalHilbertVFCorsi PropositionalHilbertWF
+  PropositionalHilbertVF PropositionalHilbertVFCorsi
+  PropositionalFMTCompleteness PropositionalHilbertWF
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1682,6 +1683,46 @@ Print Assumptions phvf_proof_list_conj_member.
 Print Assumptions phvf_proof_list_disj_elim.
 Print Assumptions phvf_provable_list_conj_subset.
 Print Assumptions phvf_provable_list_disjunct.
+
+(** List-based Hintikka saturation for formula-indexed completeness. *)
+Check phvf_hintikka_pair.
+Check phvf_hintikka_consistent.
+Check phvf_hintikka_insert_positive.
+Check phvf_hintikka_insert_negative.
+Check phvf_proof_hintikka_collapse.
+Check phvf_provable_hintikka_collapse.
+Check phvf_hintikka_either_consistent.
+Check phvf_hintikka_next.
+Check phvf_hintikka_next_consistent.
+Check phvf_hintikka_next_positive_monotone.
+Check phvf_hintikka_next_negative_monotone.
+Check phvf_hintikka_next_either_member.
+Check phvf_hintikka_enumerate.
+Check phvf_hintikka_enumerate_consistent.
+Check phvf_hintikka_enumerate_positive_monotone.
+Check phvf_hintikka_enumerate_negative_monotone.
+Check phvf_hintikka_enumerate_member.
+Check phvf_hintikka_saturate.
+Check phvf_saturated_hintikka_pair.
+Check phvf_hintikka_lindenbaum.
+Check phvf_hintikka_lindenbaum_positive.
+Check phvf_hintikka_lindenbaum_negative.
+Check phvf_saturated_not_both.
+Check phvf_saturated_positive_iff_not_negative.
+Check phvf_saturated_negative_of_not_positive.
+Check phvf_saturated_imp_closed.
+Check phvf_saturated_bottom_not_positive.
+Check phvf_saturated_top_positive.
+Check phvf_saturated_and_iff.
+Check phvf_saturated_or_iff.
+Print Assumptions phvf_proof_hintikka_collapse.
+Print Assumptions phvf_hintikka_either_consistent.
+Print Assumptions phvf_hintikka_next_consistent.
+Print Assumptions phvf_hintikka_lindenbaum.
+Print Assumptions phvf_saturated_not_both.
+Print Assumptions phvf_saturated_imp_closed.
+Print Assumptions phvf_saturated_and_iff.
+Print Assumptions phvf_saturated_or_iff.
 
 (** Hilbert WF and heterogeneous VF-to-WF transport. *)
 Check phwf_hilbert.
