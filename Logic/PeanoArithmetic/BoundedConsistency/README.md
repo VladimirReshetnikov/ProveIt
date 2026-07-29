@@ -3009,6 +3009,16 @@ application evidence while adjoining the exact closure remainder consumed by
 the growing strong-prefix compiler.  Thus no closure-specific premise remains
 after a native axiom-soundness trace has been supplied.
 
+`RawCodedRestrictedPADerivationSoundnessNativeAfterAssumptionCompilation.v`
+connects that refined native package to the post-Assumption rule dispatcher.
+At package level it hides the dependent Sigma selector, context selector,
+and direct truth-family choices, and returns an ordinary PA certificate of
+the exact direct universal-soundness code from only the remaining twenty-one
+semantic rule fields.  Its trace-level corollary preserves the two literal
+successive-stage parameter equations alongside the certificate.  This makes
+the next final-bridge step consume one coherent native trace instead of an
+unrelated closure package, selector equations, and soundness proof.
+
 `RawCodedUniversalClosureAllCarrierTotality.v` instantiates the generic
 PA-internal carrier orbit with base `input` and successor `forall`, proving
 existence and uniqueness of iterated universal closure for every carrier
