@@ -16,6 +16,14 @@ Check templateTermAbstractParameterAt_open.
 Check templateTermsAbstractParameterAt_open.
 Check templateFormulaAbstractParameterAt_open.
 Check templateFormulaAbstractParameter_open.
+Check templateTermReplaceParameterAt.
+Check templateTermsReplaceParameterAt.
+Check templateFormulaReplaceParameterAt.
+Check templateFormulaReplaceParameter.
+Check templateTermAbstractParameterAt_open_as_replace.
+Check templateTermsAbstractParameterAt_open_as_replace.
+Check templateFormulaAbstractParameterAt_open_as_replace.
+Check templateFormulaAbstractParameter_open_as_replace.
 Check templateTermAsPATerm.
 Check templateFormulaAsPAFormula.
 Check templateTermAsPATerm_sound.
@@ -25,5 +33,8 @@ Print Assumptions templateOpeningSubstAt_after_shift.
 Print Assumptions templateTermAbstractParameterAt_open.
 Print Assumptions templateFormulaAbstractParameterAt_open.
 Print Assumptions templateFormulaAbstractParameter_open.
+Print Assumptions templateTermAbstractParameterAt_open_as_replace.
+Print Assumptions templateFormulaAbstractParameterAt_open_as_replace.
+Print Assumptions templateFormulaAbstractParameter_open_as_replace.
 Print Assumptions templateTermAsPATerm_sound.
 Print Assumptions templateFormulaAsPAFormula_sound.

@@ -12,6 +12,8 @@ Check templateEqualitySymmetryMotive_open.
 Check raw_codedPALocalProofOf_templateEqSymmetry.
 Check raw_codedPALocalProofOf_templateParameterTransport_reverse.
 Check templateFormulaReplaceParameters.
+Check templateFormulaReplaceParametersDirect.
+Check templateFormulaReplaceParameters_eq_direct.
 Check raw_codedPALocalProofOf_templateParameterTransports_reverse.
 Print Assumptions raw_codedPALocalProofOf_eqRefl.
 Print Assumptions raw_codedPALocalProofOf_eqElim.
@@ -21,5 +23,7 @@ Print Assumptions raw_codedPALocalProofOf_templateEqSymmetry.
 Print Assumptions
   raw_codedPALocalProofOf_templateParameterTransport_reverse.
 Print Assumptions templateFormulaReplaceParameters.
+Print Assumptions templateFormulaReplaceParametersDirect.
+Print Assumptions templateFormulaReplaceParameters_eq_direct.
 Print Assumptions
   raw_codedPALocalProofOf_templateParameterTransports_reverse.
