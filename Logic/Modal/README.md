@@ -202,6 +202,7 @@ is being reconstructed:
 | `GenericAdjunctiveSet.v` | `Vorspiel/AdjunctiveSet.lean` | Complete 35-declaration surface: constructive pointwise contexts, empty/adjoin and inclusion laws, subset-closed finite covers, generic list extension/conversion, and predicate/list realizations; multiset/finset conveniences are generalized through duplicate-tolerant enumerations |
 | `GenericForcingRelation.v` | `Logic/ForcingRelation.lean` | Complete 20-declaration surface: ordinary/existence/weak forcing dictionaries, factored persistence and future-world implication/negation, intuitionistic and classical Kripke bundles, global/context forcing, and minimally hypothesized connective laws |
 | `GenericEntailment.v` | `Logic/Entailment.lean` | Complete 138-declaration surface: Type-valued formal proofs and inhabited provability, proof sets and controlled extraction, heterogeneous strength order/equivalence, consistency, explosion, completeness/incompleteness, axiomatized and compact contexts, deduction, semantic soundness/completeness, and pullback |
+| `GenericDisjunctive.v` | `Logic/Disjunctive.lean` | Complete four-declaration surface: disjunctive entailments and the exact completeness equivalence, generalized from full classical entailment plus decidable formula equality to excluded middle and left resolution alone |
 | `GenericEmbedding.v` | `Logic/Embedding.lean` | Complete five-declaration surface: faithful provability translations between heterogeneous systems, explicit witnesses, identity, and composition, all constructively |
 | `GenericCalculus.v` | `Logic/Calculus.lean` | Complete 43-declaration surface: universe-polymorphic Type-valued one-sided LK/Cut, principal- and contextual-entailment dictionaries, structural combinators, strengthened finite folds, the complete classical Hilbert interface, structure-preserving pullback, contextual structural/classical adapters, strong cut, explosion, inconsistency, principal-context equivalence, and deduction |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
@@ -548,6 +549,12 @@ premise and needs only implication normalization, base LK, and modus ponens at
 adjoined contexts; the source-shaped Cut adapter supplies that last capability.
 Only conversion from inhabited provability back to a raw `Type`-valued proof
 uses informative description, matching the source's noncomputable boundary.
+
+`GenericDisjunctive.v` isolates the disjunction property from every unused
+connective.  Syntactic completeness is equivalent to disjunctiveness whenever
+the entailment proves excluded middle and resolves a disjunction against the
+negation of its left disjunct.  This exact capability boundary makes the proof
+constructive and removes Foundation's decidable formula equality premise.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and

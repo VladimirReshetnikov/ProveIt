@@ -2,7 +2,7 @@
 
 From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
-  GenericEntailment GenericEmbedding GenericCalculus
+  GenericEntailment GenericDisjunctive GenericEmbedding GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -429,6 +429,24 @@ Print Assumptions generic_pullback_provable_set_iff.
 Print Assumptions generic_pullback_theory_eq.
 Print Assumptions generic_pullback_weaker_than.
 Print Assumptions generic_pullback_consistent.
+
+(** All four declarations from Logic/Disjunctive.lean are represented over
+    arbitrary entailments and primitive negation/disjunction operations.  The
+    completeness equivalence needs only excluded middle and left resolution,
+    removing the source's decidable formula equality premise. *)
+Check generic_disjunctive.
+Check generic_disjunctive_cases.
+Check generic_disjunctive_raw.
+Check generic_disjunctive_iff.
+Check generic_excluded_middle.
+Check generic_disjunctive_left_resolution.
+Check generic_disjunctive_of_complete.
+Check generic_complete_of_disjunctive.
+Check generic_complete_iff_disjunctive.
+Print Assumptions generic_disjunctive_iff.
+Print Assumptions generic_disjunctive_of_complete.
+Print Assumptions generic_complete_of_disjunctive.
+Print Assumptions generic_complete_iff_disjunctive.
 
 (** All five declarations from Logic/Embedding.lean are represented over
     heterogeneous system and formula types.  Identity and composition are
