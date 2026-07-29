@@ -1015,6 +1015,75 @@ Definition coqFourStateTableAppendEqualityFieldBindings
    (assignmentCodeName, rowAssignmentCode);
    (assignmentStepName, rowAssignmentStep)].
 
+(** ------------------------------------------------------------------
+    Concrete closed-row production under the five traversal binders.
+
+    Parameter names [2..5] are disjoint from the two level parameters used
+    by the native Sigma/Pi row sources.  After the row index [#4] has been
+    introduced, the four exposed state fields are literally [#3..#0]. *)
+
+Definition coqFourStateTableAppendRowModeParameterName
+    : TemplateParameterName := 2.
+Definition coqFourStateTableAppendRowFormulaParameterName
+    : TemplateParameterName := 3.
+Definition coqFourStateTableAppendRowAssignmentCodeParameterName
+    : TemplateParameterName := 4.
+Definition coqFourStateTableAppendRowAssignmentStepParameterName
+    : TemplateParameterName := 5.
+
+Definition coqFourStateTableAppendConcreteRowFieldBindings
+    : list (TemplateParameterName * TemplateTerm) :=
+  coqFourStateTableAppendEqualityFieldBindings
+    coqFourStateTableAppendRowModeParameterName
+    coqFourStateTableAppendRowFormulaParameterName
+    coqFourStateTableAppendRowAssignmentCodeParameterName
+    coqFourStateTableAppendRowAssignmentStepParameterName
+    (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0).
+
+(** The mode split of [fixedLevelClosedSuccessorRowTermAt], with its two
+    polarity bodies left abstract.  Those bodies may mention all four named
+    row fields; finite replacement below traverses them as well. *)
+Definition coqFourStateTableAppendNamedClosedRowProductionTemplate
+    (sigmaProduction piProduction : TemplateFormula) : TemplateFormula :=
+  tfOr
+    (tfAnd
+      (tfEq
+        (ttParameter coqFourStateTableAppendRowModeParameterName) ttZero)
+      sigmaProduction)
+    (tfAnd
+      (tfEq
+        (ttParameter coqFourStateTableAppendRowModeParameterName)
+        (ttSucc ttZero))
+      piProduction).
+
+Definition coqFourStateTableAppendConcreteClosedRowProductionTemplate
+    (sigmaProduction piProduction : TemplateFormula) : TemplateFormula :=
+  tfOr
+    (tfAnd (tfEq (ttVar 3) ttZero)
+      (templateFormulaReplaceParametersDirect
+        coqFourStateTableAppendConcreteRowFieldBindings sigmaProduction))
+    (tfAnd (tfEq (ttVar 3) (ttSucc ttZero))
+      (templateFormulaReplaceParametersDirect
+        coqFourStateTableAppendConcreteRowFieldBindings piProduction)).
+
+(** The exact syntax identity required by the equality branch of the global
+    successor traversal.  It is a computation over the fixed four-name
+    namespace; the arbitrary polarity bodies need not be unfolded. *)
+Theorem
+    coqFourStateTableAppendNamedClosedRowProductionTemplate_replace_fields :
+  forall sigmaProduction piProduction,
+  templateFormulaReplaceParameters
+    coqFourStateTableAppendConcreteRowFieldBindings
+    (coqFourStateTableAppendNamedClosedRowProductionTemplate
+      sigmaProduction piProduction) =
+  coqFourStateTableAppendConcreteClosedRowProductionTemplate
+    sigmaProduction piProduction.
+Proof.
+  intros sigmaProduction piProduction.
+  rewrite templateFormulaReplaceParameters_eq_direct.
+  reflexivity.
+Qed.
+
 (** Assemble the equality branch for an arbitrary production over the four
     fixed appended fields.  The production root is first weakened across the
     single witness extension chosen by beta functionality.  The four literal
@@ -1404,6 +1473,136 @@ Proof.
         hequalPrefix hsource
         hmodeFresh hformulaFresh hassignmentCodeFresh hassignmentStepFresh
         hfixedLookup hrowLookup hfixedResultRoot).
+Qed.
+
+(** Concrete global-row client.  The five traversal variables are fixed to
+    [index, mode, formula, assignmentCode, assignmentStep = #4..#0], and the
+    named production is normalized to the literal polarity split returned to
+    the caller.  Only the two genuine branch producers remain as inputs. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_concrete_closed_row_cases_on_growing_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName rowBound antecedentRoot sigmaProduction piProduction,
+  let fixedResult :=
+    coqFourStateTableAppendNamedClosedRowProductionTemplate
+      sigmaProduction piProduction in
+  let result :=
+    coqFourStateTableAppendConcreteClosedRowProductionTemplate
+      sigmaProduction piProduction in
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation
+      (coqLtSuccCasesEqualTemplate (ttVar 4) rowBound)) ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  coqFourStateTableAppendRowModeParameterName <> boundName ->
+  coqFourStateTableAppendRowFormulaParameterName <> boundName ->
+  coqFourStateTableAppendRowAssignmentCodeParameterName <> boundName ->
+  coqFourStateTableAppendRowAssignmentStepParameterName <> boundName ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqLtSuccCasesAntecedentTemplate (ttVar 4) rowBound))
+    antecedentRoot ->
+  (forall sourceWitnessList sourceContext,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+    RawCodedPAGrowingTemplateLocalProofAt M translation
+      sourceWitnessList sourceContext
+      (coqLtSuccCasesBelowTemplate (ttVar 4) rowBound :: prefix)
+      (rawTemplateFormula translation result)) ->
+  (forall sourceWitnessList sourceContext,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+    RawFourStateTableAppendEqualityProductionInputsAt M translation
+      sourceContext
+      (coqLtSuccCasesEqualTemplate (ttVar 4) rowBound :: prefix)
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      boundName
+      coqFourStateTableAppendRowModeParameterName
+      coqFourStateTableAppendRowFormulaParameterName
+      coqFourStateTableAppendRowAssignmentCodeParameterName
+      coqFourStateTableAppendRowAssignmentStepParameterName
+      (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+      fixedResult) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    baseWitnessList baseContext prefix
+    (rawTemplateFormula translation result).
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext prefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName rowBound antecedentRoot sigmaProduction piProduction
+    fixedResult result hprefix hequalHead hbase
+    hmodeFresh hformulaFresh hassignmentCodeFresh hassignmentStepFresh
+    hantecedent hbelow hequalInputs.
+  cbn zeta in *.
+  assert (hsyntax :
+      templateFormulaReplaceParameters
+        coqFourStateTableAppendConcreteRowFieldBindings
+        (coqFourStateTableAppendNamedClosedRowProductionTemplate
+          sigmaProduction piProduction) =
+      coqFourStateTableAppendConcreteClosedRowProductionTemplate
+        sigmaProduction piProduction).
+  {
+    apply
+      coqFourStateTableAppendNamedClosedRowProductionTemplate_replace_fields.
+  }
+  assert (hcode :
+      rawTemplateFormula translation
+        (templateFormulaReplaceParameters
+          coqFourStateTableAppendConcreteRowFieldBindings
+          (coqFourStateTableAppendNamedClosedRowProductionTemplate
+            sigmaProduction piProduction)) =
+      rawTemplateFormula translation
+        (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+          sigmaProduction piProduction)).
+  { now rewrite hsyntax. }
+  assert (hbelowForNamed : forall sourceWitnessList sourceContext,
+      RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+      RawCodedPAGrowingTemplateLocalProofAt M translation
+        sourceWitnessList sourceContext
+        (coqLtSuccCasesBelowTemplate (ttVar 4) rowBound :: prefix)
+        (rawTemplateFormula translation
+          (templateFormulaReplaceParameters
+            coqFourStateTableAppendConcreteRowFieldBindings
+            (coqFourStateTableAppendNamedClosedRowProductionTemplate
+              sigmaProduction piProduction)))).
+  {
+    intros sourceWitnessList sourceContext hsource.
+    eapply raw_codedPAGrowingTemplateLocalProofAt_conclusion_eq.
+    - symmetry. exact hcode.
+    - exact (hbelow sourceWitnessList sourceContext hsource).
+  }
+  pose proof
+    (raw_codedPALocalProofOf_four_state_table_append_row_production_cases_on_growing_witnessed_tail_under_prefix
+      M hPA translation hagreement
+      baseWitnessList baseContext prefix
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      boundName
+      coqFourStateTableAppendRowModeParameterName
+      coqFourStateTableAppendRowFormulaParameterName
+      coqFourStateTableAppendRowAssignmentCodeParameterName
+      coqFourStateTableAppendRowAssignmentStepParameterName
+      (ttVar 4) rowBound (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+      antecedentRoot
+      (coqFourStateTableAppendNamedClosedRowProductionTemplate
+        sigmaProduction piProduction)
+      hprefix hequalHead hbase
+      hmodeFresh hformulaFresh hassignmentCodeFresh hassignmentStepFresh
+      hantecedent hbelowForNamed hequalInputs) as hnamed.
+  eapply raw_codedPAGrowingTemplateLocalProofAt_conclusion_eq.
+  - exact hcode.
+  - exact hnamed.
 Qed.
 
 (** Agreement on embedded PA syntax identifies the metatheoretic witnessed
