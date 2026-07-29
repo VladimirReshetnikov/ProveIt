@@ -8,7 +8,8 @@
 
 From Stdlib Require Import Lists.List.
 From FoundationModal Require Import
-  GenericSemantics GenericEntailment GenericLogicSymbol GenericCalculus
+  GenericSemantics GenericAdjunctiveSet GenericEntailment
+  GenericLogicSymbol GenericCalculus
   PropositionalEntailmentAxioms
   PropositionalEntailmentMinimal
   PropositionalEntailmentInt.
@@ -464,6 +465,85 @@ Defined.
 
 Arguments generic_classical_neg_disj2_map_to_conj2_raw
   {S F E C s} _ _.
+
+(** * Consistency under an adjoined negation *)
+
+(** Foundation assumes classical entailment at every system in this theorem.
+    The two directions use less: classical reasoning is needed only at the
+    original system, while the adjoined system needs merely intuitionistic
+    explosion. *)
+Lemma generic_classical_provable_iff_inconsistent_adjoin :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    generic_deduction E (generic_imp C) (generic_adjunctive_adjoin A) ->
+    forall (s : S) (p : F),
+      generic_classical_entailment E C s ->
+      generic_intuitionistic_entailment E C
+        (generic_adjunctive_adjoin A (generic_neg C p) s) ->
+      (generic_provable E s p <->
+       generic_inconsistent E
+         (generic_adjunctive_adjoin A (generic_neg C p) s)).
+Proof.
+  intros S F E C A Haxiom Hdeduction s p Hsource Hadded.
+  split.
+  - intros [dp].
+    apply (@generic_intuitionistic_inconsistent_of_provable_neg
+      S F E C (generic_adjunctive_adjoin A (generic_neg C p) s)
+      Hadded p).
+    + constructor.
+      exact (generic_axiomatized_to_adjoin_raw Haxiom
+        (generic_neg C p) dp).
+    + constructor.
+      exact (generic_axiomatized_adjoin_raw Haxiom
+        (generic_neg C p) s).
+  - intro Hinc.
+    destruct (Hinc (generic_bottom C)) as [dbottom].
+    constructor.
+    apply (generic_minimal_mdp_raw (generic_minimal_of_classical Hsource)
+      (generic_neg C (generic_neg C p)) p
+      (generic_classical_dne Hsource p)).
+    apply (generic_minimal_neg_of_imp_bottom_raw
+      (generic_minimal_of_classical Hsource) (generic_neg C p)).
+    exact (generic_deduction_forward_raw Hdeduction s
+      (generic_neg C p) (generic_bottom C) dbottom).
+Qed.
+
+(** The negated equivalence is proved directly, avoiding the generic
+    classical theorem [not_consistent_iff_inconsistent]. *)
+Lemma generic_classical_unprovable_iff_consistent_adjoin :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (A : generic_adjunctive_set F S),
+    generic_axiomatized E A ->
+    generic_deduction E (generic_imp C) (generic_adjunctive_adjoin A) ->
+    forall (s : S) (p : F),
+      generic_classical_entailment E C s ->
+      generic_intuitionistic_entailment E C
+        (generic_adjunctive_adjoin A (generic_neg C p) s) ->
+      (generic_unprovable E s p <->
+       generic_consistent E
+         (generic_adjunctive_adjoin A (generic_neg C p) s)).
+Proof.
+  intros S F E C A Haxiom Hdeduction s p Hsource Hadded.
+  pose proof (@generic_classical_provable_iff_inconsistent_adjoin
+    S F E C A Haxiom Hdeduction s p Hsource Hadded) as Hequiv.
+  split.
+  - intro Hnot. constructor. intro Hinc.
+    apply Hnot. apply (proj2 Hequiv). exact Hinc.
+  - intros Hcon Hp.
+    apply (generic_consistent_not_inconsistent Hcon).
+    apply (proj1 Hequiv). exact Hp.
+Qed.
+
+(** The source's inferred global deductive-explosion instance, exposed as an
+    explicit family adapter. *)
+Definition generic_deductive_explosion_of_classical {S F : Type}
+    (E : generic_entailment S F) (C : generic_connectives F)
+    (H : forall s : S, generic_classical_entailment E C s) :
+    generic_deductive_explosion E (generic_bottom C) :=
+  @generic_deductive_explosion_of_efq S F E C
+    (fun s => generic_classical_mdp (H s))
+    (fun s => generic_has_axiom_efq_of_classical (H s)).
 
 (** * Transport across a connective homomorphism and proof equivalence *)
 

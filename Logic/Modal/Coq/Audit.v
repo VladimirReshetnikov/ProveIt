@@ -1599,6 +1599,9 @@ Check generic_has_axiom_dummett_of_classical.
 Check generic_classical_peirce_raw.
 Check generic_has_axiom_peirce_of_classical.
 Check generic_classical_neg_disj2_map_to_conj2_raw.
+Check generic_classical_provable_iff_inconsistent_adjoin.
+Check generic_classical_unprovable_iff_consistent_adjoin.
+Check generic_deductive_explosion_of_classical.
 Check generic_connective_hom_axiom_neg_equiv.
 Check generic_connective_hom_axiom_K.
 Check generic_connective_hom_axiom_S.
@@ -1634,6 +1637,9 @@ Print Assumptions generic_classical_elim_contra_axiom_raw.
 Print Assumptions generic_classical_dummett_raw.
 Print Assumptions generic_classical_peirce_raw.
 Print Assumptions generic_classical_neg_disj2_map_to_conj2_raw.
+Print Assumptions generic_classical_provable_iff_inconsistent_adjoin.
+Print Assumptions generic_classical_unprovable_iff_consistent_adjoin.
+Print Assumptions generic_deductive_explosion_of_classical.
 Print Assumptions generic_connective_hom_axiom_neg_equiv.
 Print Assumptions generic_connective_hom_axiom_or3.
 Print Assumptions generic_proof_equiv_transport_raw.
