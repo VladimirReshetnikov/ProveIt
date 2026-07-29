@@ -2720,6 +2720,22 @@ carrier-level quantifier boundedness).  The constructor-row boilerplate and
 the general carrier-restricted endpoint-boundedness fact are exposed as
 separate reusable lemmas.
 
+`RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageValidity.v`
+now connects that carrier-valued interface to every field of the represented
+child predicate.  In particular, the child admissibility component retains a
+single shared witness that simultaneously bounds the child's formula codes
+and lies in the current assignment domain.  The complete seven-premise opened
+law is valid in every raw PA model, and parameter abstraction proves validity
+of the fixed universal PA source.  The separate
+`RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageProvability.v`
+applies arithmetic completeness and seal elimination to obtain an
+unconditional `Formula.BProv Formula.Ax_s []` theorem.  Separating the semantic
+proof from the completeness wrapper also keeps Rocq's expensive normalization
+of the large fixed formula cached.  The remaining Or-I-left task is now only
+proof-code integration: instantiate this universal theorem over a witnessed
+finite PA base, then feed the resulting opened-coverage root to the existing
+recursive-child compiler.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
