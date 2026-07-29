@@ -2,7 +2,8 @@
 
     This file ports the complete classical companion family from Foundation's
     [Modal/ModalCompanion/Standard/Cl.lean]: S5, S5Grz, Triv, and the boxdot
-    presentation through Ver. *)
+    presentation through Ver.  It also establishes the proof-transport half
+    of the Int, KC, and LC companion families. *)
 
 From Stdlib Require Import Logic.Classical_Prop.
 From FoundationModal Require Import
@@ -10,7 +11,9 @@ From FoundationModal Require Import
   LogicInfrastructure EntailmentExtensions EntailmentS4
   NormalHilbert CanonicalTB Modality
   PropositionalFormula PropositionalBoolean PropositionalBooleanHilbert
-  PropositionalHilbert GodelTranslation Boxdot CanonicalTrivVer CanonicalS5Grz.
+  PropositionalHilbert GodelTranslation Boxdot GLGrzDerivations
+  CanonicalPoint2 CanonicalPoint3 CanonicalGrzPoint2
+  CanonicalGrzPoint3Strict CanonicalTrivVer CanonicalS5Grz.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -189,4 +192,167 @@ Proof.
     apply (proj2 (ph_cl_modal_companion_Triv p)).
     now apply (proj1 (Ver_boxdot_iff_Triv_unconditional
       (godel_translate p))).
+Qed.
+
+(** * Forward halves of the intuitionistic companion families *)
+
+(** These entailment packages share the same construction.  Keeping them
+    here makes all three proof-transport theorems instances of the single
+    generic Hilbert recursor in [GodelTranslation]. *)
+Definition S4_schema_closed : schema_substitution_closed S4_schema :=
+  schema_union_substitution_closed
+    schema_T_substitution_closed schema_Four_substitution_closed.
+
+Definition S4_normal_logic : normal_logic (@S4_proves nat) :=
+  normal_proves_logic_is_normal S4_schema_closed.
+
+Lemma S4_has_T : has_T (@S4_proves nat).
+Proof. constructor; intro p. apply Np_extra. left. now exists p. Qed.
+
+Lemma S4_has_Four : has_Four (@S4_proves nat).
+Proof. constructor; intro p. apply Np_extra. right. now exists p. Qed.
+
+Definition S4_as_s4_entailment : s4_entailment (@S4_proves nat) :=
+  {| s4_K := k_entailment_of_normal_logic S4_normal_logic;
+     s4_T := S4_has_T;
+     s4_Four := S4_has_Four |}.
+
+Definition S4Point2_normal_logic : normal_logic (@S4Point2_proves nat) :=
+  normal_proves_logic_is_normal S4Point2_schema_substitution_closed.
+
+Lemma S4Point2_has_T : has_T (@S4Point2_proves nat).
+Proof. constructor; intro p. apply Np_extra. left; left. now exists p. Qed.
+
+Lemma S4Point2_has_Four : has_Four (@S4Point2_proves nat).
+Proof. constructor; intro p. apply Np_extra. left; right. now exists p. Qed.
+
+Definition S4Point2_as_s4_entailment :
+    s4_entailment (@S4Point2_proves nat) :=
+  {| s4_K := k_entailment_of_normal_logic S4Point2_normal_logic;
+     s4_T := S4Point2_has_T;
+     s4_Four := S4Point2_has_Four |}.
+
+Definition S4Point3_normal_logic : normal_logic (@S4Point3_proves nat) :=
+  normal_proves_logic_is_normal S4Point3_schema_substitution_closed.
+
+Lemma S4Point3_has_T : has_T (@S4Point3_proves nat).
+Proof. constructor; intro p. apply Np_extra. left; left. now exists p. Qed.
+
+Lemma S4Point3_has_Four : has_Four (@S4Point3_proves nat).
+Proof. constructor; intro p. apply Np_extra. left; right. now exists p. Qed.
+
+Definition S4Point3_as_s4_entailment :
+    s4_entailment (@S4Point3_proves nat) :=
+  {| s4_K := k_entailment_of_normal_logic S4Point3_normal_logic;
+     s4_T := S4Point3_has_T;
+     s4_Four := S4Point3_has_Four |}.
+
+Lemma ph_int_provable_godel_S4 :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_int nat) p ->
+    S4_proves (godel_translate p).
+Proof. exact (godel_translate_int_provable S4_as_s4_entailment). Qed.
+
+Lemma ph_int_provable_godel_Grz :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_int nat) p ->
+    Grz_proves (godel_translate p).
+Proof.
+  intros p Hp. apply S4_weaker_than_Grz.
+  now apply ph_int_provable_godel_S4.
+Qed.
+
+(** WLEM becomes valid on every convergent preorder. *)
+Lemma S4Point2_proves_godel_translated_WLEM :
+  forall p : pformula nat,
+    S4Point2_proves (godel_translate (ph_axiom_wlem p)).
+Proof.
+  intro p. apply S4Point2_complete.
+  intros F [Hrefl [Htrans Hconv]] V x.
+  cbn [ph_axiom_wlem pneg godel_translate]. apply satisfies_or.
+  destruct (classic (satisfies F V x
+      (Box (Imp (godel_translate p) Bottom)))) as [Hneg | Hneg].
+  - now left.
+  - right. intros y Rxy Hyneg.
+    assert (Hex : exists z, Rel F x z /\
+        ~ satisfies F V z (Imp (godel_translate p) Bottom)).
+    { apply NNPP. intro Hnone. apply Hneg. intros z Rxz.
+      apply NNPP. intro Hbad. apply Hnone. exists z. split; assumption. }
+    destruct Hex as [z [Rxz Hz]].
+    assert (Hzp : satisfies F V z (godel_translate p)).
+    { apply NNPP. intro Hzp. apply Hz. intro Hp. contradiction. }
+    destruct (Hconv x y z Rxy Rxz) as [u [Ryu Rzu]].
+    apply (Hyneg u Ryu).
+    eapply godel_translate_persistent; eauto.
+Qed.
+
+Lemma ph_kc_provable_godel_S4Point2 :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_kc nat) p ->
+    S4Point2_proves (godel_translate p).
+Proof.
+  intros p Hp.
+  eapply godel_translate_hilbert_provable;
+    [exact S4Point2_as_s4_entailment | |exact Hp].
+  intros q Hq; destruct Hq.
+  - exact (godel_translate_efq S4Point2_as_s4_entailment p0).
+  - exact (S4Point2_proves_godel_translated_WLEM p0).
+Qed.
+
+Lemma ph_kc_provable_godel_GrzPoint2 :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_kc nat) p ->
+    GrzPoint2_proves (godel_translate p).
+Proof.
+  intros p Hp. apply S4Point2_weaker_than_GrzPoint2.
+  now apply ph_kc_provable_godel_S4Point2.
+Qed.
+
+(** Dummett's axiom becomes valid on every locally connected preorder. *)
+Lemma S4Point3_proves_godel_translated_Dummett :
+  forall p q : pformula nat,
+    S4Point3_proves (godel_translate (ph_axiom_dummett p q)).
+Proof.
+  intros p q. apply S4Point3_complete.
+  intros F [Hrefl [Htrans Hconn]] V x.
+  cbn [ph_axiom_dummett godel_translate]. apply satisfies_or.
+  apply NNPP. intro Hneither.
+  apply Decidable.not_or in Hneither as [Hpq Hqp].
+  assert (Hy : exists y, Rel F x y /\
+      satisfies F V y (godel_translate p) /\
+      ~ satisfies F V y (godel_translate q)).
+  { apply NNPP. intro Hnone. apply Hpq. intros y Rxy Hyp.
+    apply NNPP. intro Hynq. apply Hnone. exists y. repeat split; assumption. }
+  assert (Hz : exists z, Rel F x z /\
+      satisfies F V z (godel_translate q) /\
+      ~ satisfies F V z (godel_translate p)).
+  { apply NNPP. intro Hnone. apply Hqp. intros z Rxz Hzq.
+    apply NNPP. intro Hznp. apply Hnone. exists z. repeat split; assumption. }
+  destruct Hy as [y [Rxy [Hyp Hynq]]].
+  destruct Hz as [z [Rxz [Hzq Hznp]]].
+  destruct (Hconn x y z Rxy Rxz) as [Ryz | Rzy].
+  - apply Hznp. eapply godel_translate_persistent; eauto.
+  - apply Hynq. eapply godel_translate_persistent; eauto.
+Qed.
+
+Lemma ph_lc_provable_godel_S4Point3 :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_lc nat) p ->
+    S4Point3_proves (godel_translate p).
+Proof.
+  intros p Hp.
+  eapply godel_translate_hilbert_provable;
+    [exact S4Point3_as_s4_entailment | |exact Hp].
+  intros q Hq; destruct Hq as [r | r s].
+  - exact (godel_translate_efq S4Point3_as_s4_entailment r).
+  - exact (S4Point3_proves_godel_translated_Dummett r s).
+Qed.
+
+Lemma ph_lc_provable_godel_GrzPoint3 :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_lc nat) p ->
+    GrzPoint3_proves (godel_translate p).
+Proof.
+  intros p Hp. apply S4Point3_weaker_than_GrzPoint3.
+  now apply ph_lc_provable_godel_S4Point3.
 Qed.
