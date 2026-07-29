@@ -3619,7 +3619,19 @@ premises, and mixed-QF replay.
 carried root to the first public dependency-ordered callback.  It extends the
 actual current six-field proof package with the ordered forty-helper batch,
 retaining one witnessed context and all current graph witnesses.  The exact
-residual builder sees this package, the one selected local transform trace,
+current local coordinate can now be recovered from that public package
+without strengthening it: `RawCodedDynamicTruthNativeLocalPositiveExactification.v`
+proves functionality of the three-substitution application, the complete
+local transform, and the orbit/transform composition.  A freshly constructed
+adequate orbit is therefore identified with the public graph output.  The
+callback exposes the resulting exhaustive carrier-level decomposition: zero
+selects the quoted fixed base field, while every successor selects an exact
+adequate predecessor trace, and both cases retain the literal carried local
+proof root in the unchanged helper context.  This is the trace needed to
+project the four remaining predecessor-field collision resources.
+
+The next-field exact residual builder sees this package, the one selected
+local transform trace,
 and its linked row parameters, and returns only the staged root package.
 Adequate orbit selection, transform extraction, carried-root certificate
 packaging, and positive-graph satisfaction are then concrete.  Thus the

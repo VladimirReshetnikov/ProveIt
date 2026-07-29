@@ -29,6 +29,7 @@ From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
+  RawCodedAssignment
   RawCodedRestrictedPAProof
   RawCodedPALocalProofExistential
   RawCodedPAProvability
@@ -37,11 +38,18 @@ From BoundedPAConsistency Require Import
   RawCodedTemplatePAEmbedding
   RawCodedTemplateStructuralPAAgreement
   RawCodedTruthCertificateMasterBaseBridge
+  RawCodedTruthCertificateMasterSuccessorBridge
   RawCodedTruthCertificateMasterFixedHelperBatchExtension
   RawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation
+  RawCodedDynamicLocalFieldGraph
+  RawCodedDynamicTruthLocalDecisionExclusiveBase
   RawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph
   RawCodedDynamicTruthNativeLocalPositiveGraph
+  RawCodedDynamicTruthNativeLocalPositiveExactification
   RawCodedDynamicTruthNativeLocalProofCompilation
+  RawCodedDynamicTruthNativeMasterEndpoint
+  RawCodedDynamicTruthMasterSplicedBasePackage
+  RawCodedDynamicTruthMasterSplicedSuccessorBridge
   RawCodedDynamicTruthNativeStagedPositiveSuccessor
   RawCodedDynamicTruthNativeLocalStagedRootCompilation
   RawCodedDynamicTruthNativeLocalRowProjectionCompilation.
@@ -54,6 +62,7 @@ Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedAssignment.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPAProvability.
@@ -62,12 +71,20 @@ Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateStructuralPAAgreement.
 Import PABoundedRawCodedTruthCertificateMasterBaseBridge.
+Import PABoundedRawCodedTruthCertificateMasterSuccessorBridge.
 Import PABoundedRawCodedTruthCertificateMasterFixedHelperBatchExtension.
 Import
   PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.
+Import PABoundedRawCodedDynamicLocalFieldGraph.
+Import PABoundedRawCodedDynamicTruthLocalDecisionExclusiveBase.
 Import PABoundedRawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalPositiveExactification.
 Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
+Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
+Import PABoundedRawCodedDynamicTruthMasterSplicedBasePackage.
+Import PABoundedRawCodedDynamicTruthMasterSplicedSuccessorBridge.
 Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
 Import PABoundedRawCodedDynamicTruthNativeLocalStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalRowProjectionCompilation.
@@ -158,6 +175,148 @@ Arguments RawDynamicTruthNativeLocalCurrentHelperContextAt
     currentLocal currentCrossLevel currentShift currentSubstitution
     currentAxiomSoundness currentFinal witnessList baseContext helperRoots
   : clear implicits.
+
+(** At a positive current level the public spliced graph determines an exact
+    adequate local trace.  The master package did not retain adequacy as a
+    field, but exactification recovers it by constructing a fresh adequate
+    positive witness and using functionality to identify its output with the
+    literal [currentLocal] target.  The proof root below is the one already
+    carried by the common helper context; it is not regenerated. *)
+Theorem raw_dynamicTruthNativeLocalCurrentHelperContextAt_successor_trace :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M)
+      (tail : nat -> M) level predecessorLevel
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots,
+  RawDynamicTruthNativeLocalCurrentHelperContextAt M translation
+    tail level currentLocal currentCrossLevel currentShift
+    currentSubstitution currentAxiomSoundness currentFinal
+    witnessList baseContext helperRoots ->
+  level = raw_succ M predecessorLevel ->
+  exists inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence currentLocalRoot : M,
+    currentLocal = rawDynamicTruthLocalDecisionExclusiveFieldCode M
+      sigmaDomain piDomain sigmaEvidence piEvidence /\
+    RawDynamicTruthNativeLocalProofTraceAt M tail predecessorLevel
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+      sigmaEvidence piEvidence /\
+    RawCodedPALocalProofOf M baseContext currentLocal currentLocalRoot.
+Proof.
+  intros M hPA translation tail level predecessorLevel
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    [hcurrent hhelpers] hlevel.
+  destruct hcurrent as [hgraphs _].
+  unfold RawSixFieldMasterGraphWitnessesAt in hgraphs.
+  destruct hgraphs as [hcurrentLocalGraph _].
+  destruct hhelpers as
+    (currentLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+      currentSubstitutionRoot & currentAxiomSoundnessRoot &
+      currentFinalRoot & hwitness & hcurrentLocal & _).
+  rewrite hlevel in hcurrentLocalGraph.
+  unfold dynamicTruthNativeSplicedLocalFieldGraph,
+    dynamicTruthSplicedLocalFieldGraph in hcurrentLocalGraph.
+  apply (proj1
+    (raw_dynamicLocalFieldGraph_succ_iff M hPA
+      dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph
+      dynamicTruthNativeLocalPositiveGraph tail predecessorLevel
+      currentLocal)) in hcurrentLocalGraph.
+  apply (proj1
+    (raw_sat_dynamicTruthNativeLocalPositiveGraph_iff M tail
+      predecessorLevel currentLocal)) in hcurrentLocalGraph.
+  destruct
+    (raw_dynamicTruthNativeLocalPositiveAt_exact M hPA tail
+      predecessorLevel currentLocal hcurrentLocalGraph) as
+    (inputGlobalSigma & inputGlobalPi & hadequateOrbit & htransform).
+  destruct
+    (raw_dynamicTruthNativeLocalProofTraceAt_of_transform M tail
+      predecessorLevel inputGlobalSigma inputGlobalPi currentLocal
+      hadequateOrbit htransform) as
+    (sigmaDomain & piDomain & sigmaEvidence & piEvidence &
+      hfield & htrace).
+  exists inputGlobalSigma, inputGlobalPi,
+    sigmaDomain, piDomain, sigmaEvidence, piEvidence, currentLocalRoot.
+  split; [exact hfield |].
+  split; assumption.
+Qed.
+
+(** The zero/successor decomposition is internal to PA and therefore covers
+    nonstandard carrier levels as well.  This theorem is the exact current
+    local coordinate retained by the callback: at zero it is the quoted
+    fixed base theorem; at a successor it carries an adequate orbit trace for
+    the preceding level.  Both alternatives retain a proof of the literal
+    [currentLocal] target in the unchanged helper context. *)
+Theorem raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M)
+      (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots,
+  RawDynamicTruthNativeLocalCurrentHelperContextAt M translation
+    tail level currentLocal currentCrossLevel currentShift
+    currentSubstitution currentAxiomSoundness currentFinal
+    witnessList baseContext helperRoots ->
+  (exists currentLocalRoot : M,
+      level = raw_zero M /\
+      currentLocal = rawQuotedFormulaCode M
+        dynamicTruthLocalDecisionExclusiveBaseFormula /\
+      RawCodedPALocalProofOf M baseContext currentLocal currentLocalRoot) \/
+  (exists predecessorLevel inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence currentLocalRoot : M,
+      level = raw_succ M predecessorLevel /\
+      currentLocal = rawDynamicTruthLocalDecisionExclusiveFieldCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence /\
+      RawDynamicTruthNativeLocalProofTraceAt M tail predecessorLevel
+        inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+        sigmaEvidence piEvidence /\
+      RawCodedPALocalProofOf M baseContext currentLocal currentLocalRoot).
+Proof.
+  intros M hPA translation tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    hcontext.
+  destruct (raw_assignment_zero_or_successor M hPA level) as
+    [hzero | [predecessorLevel hsuccessor]].
+  - left.
+    destruct hcontext as [[hgraphs _] hhelpers].
+    unfold RawSixFieldMasterGraphWitnessesAt in hgraphs.
+    destruct hgraphs as [hcurrentLocalGraph _].
+    destruct hhelpers as
+      (currentLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+        currentSubstitutionRoot & currentAxiomSoundnessRoot &
+        currentFinalRoot & hwitness & hcurrentLocal & _).
+    rewrite hzero in hcurrentLocalGraph.
+    unfold dynamicTruthNativeSplicedLocalFieldGraph,
+      dynamicTruthSplicedLocalFieldGraph in hcurrentLocalGraph.
+    apply (proj1
+      (raw_dynamicLocalFieldGraph_zero_iff M hPA
+        dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph
+        dynamicTruthNativeLocalPositiveGraph tail currentLocal))
+      in hcurrentLocalGraph.
+    apply (proj1
+      (dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph_representation
+        M hPA tail (raw_zero M) currentLocal)) in hcurrentLocalGraph.
+    exists currentLocalRoot.
+    split; [exact hzero |].
+    split; assumption.
+  - right.
+    destruct
+      (raw_dynamicTruthNativeLocalCurrentHelperContextAt_successor_trace
+        M hPA translation tail level predecessorLevel
+        currentLocal currentCrossLevel currentShift currentSubstitution
+        currentAxiomSoundness currentFinal witnessList baseContext
+        helperRoots hcontext hsuccessor) as
+      (inputGlobalSigma & inputGlobalPi & sigmaDomain & piDomain &
+        sigmaEvidence & piEvidence & currentLocalRoot & hfield & htrace &
+        hcurrentLocal).
+    exists predecessorLevel, inputGlobalSigma, inputGlobalPi,
+      sigmaDomain, piDomain, sigmaEvidence, piEvidence, currentLocalRoot.
+    split; [exact hsuccessor |].
+    split; [exact hfield |].
+    split; assumption.
+Qed.
 
 (** The helper extension is not part of the residual.  It follows uniformly
     from the proof half of the actual current package and preserves all six
