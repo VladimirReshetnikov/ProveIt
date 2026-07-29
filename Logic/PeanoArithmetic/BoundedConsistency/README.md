@@ -4457,6 +4457,18 @@ local Sigma/Pi formulae.  The composed global-successor endpoint now consumes
 those two natural scope facts directly; the former production-equality premise
 is no longer exposed to its clients.
 
+The next adapter now isolates the context-side mismatch with the existing row
+compiler.  A generic congruence theorem transports a growing local proof
+between finite template prefixes whenever their translated raw context codes
+agree over every tail; a `Forall2` entrywise criterion is provided as the
+usual way to prove that equality.  Applying this to the global successor means
+the row proof may retain its named carrier-parameter prefix.  The only new
+premise is the exact raw-code equality between that prefix and the concrete
+root-mode/formula/assignment prefix opened by the global traversal.  This is
+strictly weaker than template-syntax equality and is the appropriate next
+boundary because a general template translation deliberately leaves parameter
+and mixed-term interpretation opaque.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
