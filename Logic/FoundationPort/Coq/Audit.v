@@ -3,6 +3,7 @@
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
+From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.Syntax.Predicate Require Import Relational.
 
 Check language.
@@ -147,7 +148,9 @@ Check rew_cast_refl.
 Check rew_cast_le_refl.
 Check rew_subst_comp_subst.
 Check rew_subst_comp_emb_substs.
+Check rew_comp_emb_substs.
 Check rew_emb_substs_variables.
+Check rew_emb_substs_variables_empty.
 Check rew_rewrite_comp_rewrite.
 Check rew_bshift.
 Check rew_bshift_add.
@@ -215,6 +218,44 @@ Check rew_q_emb.
 Check semiformula_to_closed.
 Check semiformula_emb_to_closed.
 Check semiformula_emb_no_free_occurs.
+Check semiformula_free_bound.
+Check semiformula_fix_all_free.
+Check semiformula_fix_all_free_no_free.
+Check semiformula_universal_closure_open.
+Check semiformula_universal_closure_open_no_free.
+Check semiformula_universal_closure.
+Check semiformula_emb_universal_closure.
+Check semiformula_universal_closure_open_id.
+
+Check semiterm_operator.
+Check semiterm_operator_fn.
+Check semiterm_operator_apply.
+Check semiterm_operator_const_apply.
+Check semiterm_operator_fn_apply.
+Check rew_semiterm_operator_apply.
+Check semiterm_operator_comp.
+Check semiterm_operator_comp_apply.
+Check semiterm_operator_bvar.
+Check semiterm_operator_bvar_apply.
+Check semiterm_operator_comp_bvar_left.
+Check semiterm_operator_comp_bvar_right.
+Check semiterm_operator_comp_assoc.
+Check semiterm_operator_apply_bound_occurs.
+Check semiterm_operator_apply_positive.
+Check semiterm_const_operator_positive.
+Check semiterm_operator_foldr.
+Check semiterm_operator_foldr_cons_apply.
+Check semiformula_operator.
+Check semiformula_operator_apply.
+Check rew_semiformula_operator_apply.
+Check semiformula_operator_comp.
+Check semiformula_operator_comp_apply.
+Check semiformula_operator_comp_bvar_right.
+Check semiformula_operator_comp_assoc.
+Check semiformula_operator_and.
+Check semiformula_operator_or.
+Check semiformula_operator_and_apply.
+Check semiformula_operator_or_apply.
 
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
@@ -257,7 +298,9 @@ Print Assumptions rew_eta.
 Print Assumptions rew_equiv_of_variables.
 Print Assumptions rew_subst_comp_subst.
 Print Assumptions rew_subst_comp_emb_substs.
+Print Assumptions rew_comp_emb_substs.
 Print Assumptions rew_emb_substs_variables.
+Print Assumptions rew_emb_substs_variables_empty.
 Print Assumptions rew_cast_refl.
 Print Assumptions rew_cast_le_refl.
 Print Assumptions rew_bshift_add_zero_cast.
@@ -300,6 +343,18 @@ Print Assumptions semiformula_fix_free.
 Print Assumptions rew_q_emb.
 Print Assumptions semiformula_emb_to_closed.
 Print Assumptions semiformula_emb_no_free_occurs.
+Print Assumptions semiformula_fix_all_free_no_free.
+Print Assumptions semiformula_universal_closure_open_no_free.
+Print Assumptions semiformula_emb_universal_closure.
+Print Assumptions semiformula_universal_closure_open_id.
+Print Assumptions rew_semiterm_operator_apply.
+Print Assumptions semiterm_operator_comp_assoc.
+Print Assumptions semiterm_operator_apply_bound_occurs.
+Print Assumptions semiterm_operator_apply_positive.
+Print Assumptions semiterm_const_operator_positive.
+Print Assumptions semiterm_operator_foldr_cons_apply.
+Print Assumptions rew_semiformula_operator_apply.
+Print Assumptions semiformula_operator_comp_assoc.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.

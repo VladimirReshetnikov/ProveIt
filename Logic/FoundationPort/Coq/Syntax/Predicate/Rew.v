@@ -346,10 +346,34 @@ Proof.
   - intros [].
 Qed.
 
+(** An arbitrary rewrite, not merely a bound-variable substitution, can be
+    pushed through instantiation of a closed template.  This is the common
+    algebraic core of term- and formula-operator composition. *)
+Lemma rew_comp_emb_substs : forall L X Y l k n
+    (v : Fin.t l -> semiterm L X k) (w : rew L X k Y n),
+  rew_equiv (rew_comp w (rew_emb_substs v))
+    (rew_emb_substs (fun i => rew_apply w (v i))).
+Proof.
+  intros L X Y l k n v w.
+  apply rew_equiv_of_variables.
+  - intro i; reflexivity.
+  - intros [].
+Qed.
+
 Lemma rew_emb_substs_variables : forall L X n,
   rew_equiv
     (@rew_emb_substs L X n n (fun i => Semiterm_bvar i))
     (rew_emb (fun x : Empty_set => match x with end)).
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i; reflexivity.
+  - intros [].
+Qed.
+
+Lemma rew_emb_substs_variables_empty : forall L n,
+  rew_equiv
+    (@rew_emb_substs L Empty_set n n (fun i => Semiterm_bvar i))
+    rew_id.
 Proof.
   intros. apply rew_equiv_of_variables.
   - intro i; reflexivity.
@@ -1451,4 +1475,120 @@ Proof.
     as [[i Hi] | [y [_ Hy]]].
   - exact Hi.
   - exact (False_rect _ (empty y)).
+Qed.
+
+(** * Exact universal closure *)
+
+Fixpoint nat_free_bound (xs : list nat) : nat :=
+  match xs with
+  | nil => 0
+  | cons x ys => Nat.max (S x) (nat_free_bound ys)
+  end.
+
+Lemma in_nat_free_bound : forall x xs,
+  In x xs -> x < nat_free_bound xs.
+Proof.
+  intros x xs; induction xs as [|y ys IH]; simpl; [tauto |].
+  intros [-> | Hin].
+  - change (x < Nat.max (S x) (nat_free_bound ys)).
+    eapply Nat.lt_le_trans.
+    + apply Nat.lt_succ_diag_r.
+    + apply Nat.le_max_l.
+  - change (x < Nat.max (S y) (nat_free_bound ys)).
+    eapply Nat.lt_le_trans.
+    + apply IH, Hin.
+    + apply Nat.le_max_r.
+Qed.
+
+Definition semiformula_free_bound {L n} (p : semiproposition L n) : nat :=
+  nat_free_bound (semiformula_free_variable_list p).
+
+Lemma semiformula_lt_free_bound_of_occurs : forall L n
+    (p : semiproposition L n) x,
+  semiformula_free_occurs x p -> x < semiformula_free_bound p.
+Proof.
+  intros. apply in_nat_free_bound.
+  now apply (proj2 (semiformula_free_variable_list_spec p x)).
+Qed.
+
+Lemma semiformula_free_bound_zero : forall L n (p : semiproposition L n),
+  (forall x, ~ semiformula_free_occurs x p) ->
+  semiformula_free_bound p = 0.
+Proof.
+  intros L n p H. unfold semiformula_free_bound.
+  destruct (semiformula_free_variable_list p) as [|x xs] eqn:Hxs;
+    [reflexivity |].
+  exfalso. apply (H x).
+  apply (proj1 (semiformula_free_variable_list_spec p x)).
+  rewrite Hxs. now left.
+Qed.
+
+Definition semiformula_fix_all_free {L} (p : proposition L) :
+    semiproposition L (semiformula_free_bound p) :=
+  semiformula_rewrite
+    (@rew_fix_iter L 0 (semiformula_free_bound p)) p.
+
+Lemma semiformula_fix_all_free_no_free : forall L (p : proposition L) x,
+  ~ semiformula_free_occurs x (semiformula_fix_all_free p).
+Proof.
+  intros L p x H.
+  destruct (@semiformula_rewrite_free_occurs_sources
+    L nat 0 nat (semiformula_free_bound p)
+    (rew_fix_iter 0 (semiformula_free_bound p)) p x H)
+    as [[i Hi] | [y [Hy Himage]]].
+  - exact (Fin.case0 (fun i => ~ semiterm_free_occurs x
+      (rew_apply (rew_fix_iter 0 (semiformula_free_bound p))
+        (Semiterm_bvar i))) i Hi).
+  - pose proof (@semiformula_lt_free_bound_of_occurs L 0 p y Hy) as Hlt.
+    pose proof (@rew_fix_iter_fvar_lt L 0
+      (semiformula_free_bound p) y Hlt) as Heq.
+    assert (Hbound : semiterm_free_occurs x
+      (@Semiterm_bvar L nat (semiformula_free_bound p)
+        (@fin_add_right_of_lt 0 y (semiformula_free_bound p) Hlt))).
+    { exact (eq_rect _ (fun P : Prop => P) Himage _
+        (f_equal (fun t => semiterm_free_occurs x t) Heq)). }
+    exact Hbound.
+Qed.
+
+Definition semiformula_universal_closure_open {L} (p : proposition L) :
+    proposition L :=
+  first_all_closure (semiformula_universal_quantifier L nat)
+    (semiformula_free_bound p) (semiformula_fix_all_free p).
+
+Lemma semiformula_universal_closure_open_no_free :
+  forall L (p : proposition L) x,
+  ~ semiformula_free_occurs x (semiformula_universal_closure_open p).
+Proof.
+  intros L p x H.
+  apply (proj1 (@semiformula_free_occurs_all_closure
+    L nat (semiformula_free_bound p) x (semiformula_fix_all_free p))) in H.
+  exact (@semiformula_fix_all_free_no_free L p x H).
+Qed.
+
+Definition semiformula_universal_closure {L} (p : proposition L) : sentence L :=
+  @semiformula_to_closed L nat 0 (semiformula_universal_closure_open p)
+    (@semiformula_universal_closure_open_no_free L p).
+
+Lemma semiformula_emb_universal_closure : forall L (p : proposition L),
+  semiformula_rewrite
+    (rew_emb (fun x : Empty_set => match x with end))
+    (semiformula_universal_closure p) =
+  semiformula_universal_closure_open p.
+Proof. intros; apply semiformula_emb_to_closed. Qed.
+
+Lemma semiformula_universal_closure_open_id :
+  forall L (p : proposition L),
+  (forall x, ~ semiformula_free_occurs x p) ->
+  semiformula_universal_closure_open p = p.
+Proof.
+  intros L p Hclosed.
+  pose proof (@semiformula_free_bound_zero L 0 p Hclosed) as Hb.
+  unfold semiformula_universal_closure_open, semiformula_fix_all_free.
+  rewrite Hb. cbn.
+  transitivity (semiformula_rewrite (@rew_id L nat 0) p).
+  - apply semiformula_rewrite_ext.
+    apply rew_equiv_of_variables.
+    + intro i; exact (Fin.case0 (fun i => _ = _) i).
+    + intro x; reflexivity.
+  - apply semiformula_rewrite_id.
 Qed.
