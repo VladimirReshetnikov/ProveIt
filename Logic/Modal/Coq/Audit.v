@@ -12,7 +12,7 @@ From FoundationModal Require Import
   PropositionalKripke2Hilbert PropositionalHilbertFExtensions PropositionalFMT
   PropositionalHilbertVF PropositionalHilbertVFCorsi
   PropositionalFMTCompleteness PropositionalHilbertWF PropositionalNeighborhoodNB
-  PropositionalHeytingSemantics
+  PropositionalHeytingSemantics PropositionalConsistentTableau
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1996,6 +1996,44 @@ Print Assumptions pheyting_lindenbaum_laws.
 Print Assumptions pheyting_lindenbaum_model.
 Print Assumptions pheyting_lindenbaum_satisfies_iff.
 Print Assumptions pheyting_hilbert_complete.
+
+(** Duplicate-tolerant consistent tableaux and factored saturation. *)
+Check pct_conj.
+Check pct_disj.
+Check pct_list_covered.
+Check pct_insert_split.
+Check pct_split_insert.
+Check pctableau.
+Check pctableau_subset.
+Check pctableau_consistent.
+Check pctableau_saturated.
+Check pctableau_not_both.
+Check pctableau_not_positive_iff_negative.
+Check pctableau_not_negative_iff_positive.
+Check pctableau_saturated_duality.
+Check pctableau_not_negative_of_provable_context.
+Check pctableau_consistent_insert_positive_iff.
+Check pctableau_consistent_insert_negative_iff.
+Check pctableau_inconsistent_insert_positive_iff.
+Check pctableau_inconsistent_insert_negative_iff.
+Check pctableau_consistent_either.
+Check pctableau_next.
+Check pctableau_chain.
+Check pctableau_limit.
+Check pctableau_chain_included_le.
+Check pctableau_chain_consistent.
+Check pctableau_limit_list_stage_positive.
+Check pctableau_limit_list_stage_negative.
+Check pctableau_limit_consistent.
+Check pctableau_limit_saturated.
+Check pctableau_lindenbaum.
+Print Assumptions pct_split_insert.
+Print Assumptions pctableau_not_both.
+Print Assumptions pctableau_consistent_insert_positive_iff.
+Print Assumptions pctableau_consistent_either.
+Print Assumptions pctableau_chain_consistent.
+Print Assumptions pctableau_limit_consistent.
+Print Assumptions pctableau_lindenbaum.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
