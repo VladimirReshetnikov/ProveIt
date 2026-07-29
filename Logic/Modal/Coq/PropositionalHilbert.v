@@ -7,11 +7,11 @@
   has its own dependent structural recursor because it changes the conclusion.
 *)
 
-From Stdlib Require Import Logic.ClassicalEpsilon.
+From Stdlib Require Import Logic.ClassicalEpsilon Lists.List.
 From FoundationModal Require Import
   GenericSemantics GenericLogicSymbol GenericEntailment GenericCalculus
   PropositionalEntailmentAxioms PropositionalEntailmentMinimal
-  PropositionalEntailmentInt
+  PropositionalEntailmentInt PropositionalEntailmentClassical
   PropositionalFormula PropositionalLogic.
 
 Set Implicit Arguments.
@@ -724,6 +724,64 @@ Proof.
   - exact PHPOrElim.
   - exact ph_hilbert_cl_dne.
 Defined.
+
+(** Concrete classical-Hilbert views of the generic classical algebra. *)
+Definition ph_hilbert_cl_double_neg_iff {Atom : Type}
+    (p : pformula Atom) :
+    ph_hilbert_proof (ph_hilbert_cl Atom)
+      (generic_formula_iff (pformula_connectives Atom) p
+        (pneg (pneg p))) :=
+  generic_classical_double_neg_iff_raw
+    (ph_hilbert_cl_classical Atom) p.
+
+Definition ph_hilbert_cl_neg_and_iff_or_neg {Atom : Type}
+    (p q : pformula Atom) :
+    ph_hilbert_proof (ph_hilbert_cl Atom)
+      (generic_formula_iff (pformula_connectives Atom)
+        (pneg (generic_and (pformula_connectives Atom) p q))
+        (generic_or (pformula_connectives Atom) (pneg p) (pneg q))) :=
+  generic_classical_neg_and_iff_or_neg_raw
+    (ph_hilbert_cl_classical Atom) p q.
+
+Definition ph_hilbert_cl_imp_iff_neg_or {Atom : Type}
+    (p q : pformula Atom) :
+    ph_hilbert_proof (ph_hilbert_cl Atom)
+      (generic_formula_iff (pformula_connectives Atom)
+        (generic_imp (pformula_connectives Atom) p q)
+        (generic_or (pformula_connectives Atom) (pneg p) q)) :=
+  generic_classical_imp_iff_neg_or_raw
+    (ph_hilbert_cl_classical Atom) p q.
+
+Definition ph_hilbert_cl_elim_contra (Atom : Type) :
+    generic_has_axiom_elim_contra
+      (ph_hilbert_entailment Atom) (pformula_connectives Atom)
+      (ph_hilbert_cl Atom) :=
+  generic_has_axiom_elim_contra_of_classical
+    (ph_hilbert_cl_classical Atom).
+
+Definition ph_hilbert_cl_dummett (Atom : Type) :
+    generic_has_axiom_dummett
+      (ph_hilbert_entailment Atom) (pformula_connectives Atom)
+      (ph_hilbert_cl Atom) :=
+  generic_has_axiom_dummett_of_classical
+    (ph_hilbert_cl_classical Atom).
+
+Definition ph_hilbert_cl_peirce (Atom : Type) :
+    generic_has_axiom_peirce
+      (ph_hilbert_entailment Atom) (pformula_connectives Atom)
+      (ph_hilbert_cl Atom) :=
+  generic_has_axiom_peirce_of_classical
+    (ph_hilbert_cl_classical Atom).
+
+Definition ph_hilbert_cl_neg_disj2_map_to_conj2 {Atom : Type}
+    (gamma : list (pformula Atom)) :
+    ph_hilbert_proof (ph_hilbert_cl Atom)
+      (generic_imp (pformula_connectives Atom)
+        (pneg (generic_list_disj2 (pformula_connectives Atom)
+          (map pneg gamma)))
+        (generic_list_conj2 (pformula_connectives Atom) gamma)) :=
+  generic_classical_neg_disj2_map_to_conj2_raw
+    (ph_hilbert_cl_classical Atom) gamma.
 
 (** The theorem predicate of any Hilbert system is an abstract logic. *)
 Definition ph_hilbert_logic {Atom : Type}
