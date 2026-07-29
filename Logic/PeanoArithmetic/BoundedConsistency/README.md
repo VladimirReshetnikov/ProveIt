@@ -3005,10 +3005,11 @@ the resulting closed valid formula into an ordinary PA derivation.  This
 single source theorem lets the proof-producing Or-row construction select one
 standard axiom batch before opening all inputs, rather than nesting four
 independent append theorem selections below successive eigencontexts.
-Each extension component carries both its full append-prefix certificate and
-the newly appended lookup explicitly.  The stronger source theorem already
-provides that lookup, and representing it removes the need to transport a
-separate arithmetic proof of `b < S b` through the witness scopes.
+Each extension component carries its full append-prefix certificate, the newly
+appended lookup, and the common arithmetic fact `b < S b` explicitly.  The
+stronger source theorem therefore supplies both facts needed at the new global
+root without transporting a separate arithmetic proof through all eight
+witness scopes.
 
 `RawCodedFourStateTableAppendProofCompilation.v` realizes that economy inside
 model-coded proofs.  The generic universal-elimination chain opens all
@@ -3033,6 +3034,12 @@ at every depth, creates each newly exposed body assumption, and rebuilds all
 represented `ExE` nodes back to the original context.  The compiler is
 generic over template translations and inspects no carrier-valued syntax.
 
+`RawCodedPALocalProofConjunction.v` also exposes existentially rooted two-step
+projections for all four paths through a nested conjunction.  These small
+combinators keep clients independent of the concrete pair of represented
+`AndE` root constructors and remove repeated proof-root plumbing from table
+and traversal projections.
+
 `RawCodedFourStateTableAppendExistentialElimination.v` specializes that chain
 to the append consequent's exact eight binders.  Its computation audit proves
 that the fallback context is unreachable, and its local-proof endpoint
@@ -3042,7 +3049,15 @@ no longer has to hand-code eight context shifts and eigenvariable scopes.
 The deepest body is exposed as an actual context-head assumption, projected
 into its four append components, and then into four unconditional lookups.
 Three checked conjunction introductions reassemble those lookups as the new
-state row required by the global traversal.
+state row required by the global traversal.  A parallel audited projection
+extracts `b < S b` from the same body, providing the global wrapper's new-root
+bound field in the identical eight-eigenvariable context.  The append-prefix
+halves are now projected as well: their first fields give four local proofs
+that the fresh tables are defined through `S b`, and a checked conjunction
+constructor reassembles the exact four-field prefix of the new global
+traversal certificate.  Thus six of its seven body fields (four defined-table
+facts, root bound, and root lookup) are available beneath the shared eight
+witness scopes; the remaining construction is the universal row condition.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely

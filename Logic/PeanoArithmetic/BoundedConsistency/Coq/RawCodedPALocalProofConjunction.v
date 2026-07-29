@@ -64,4 +64,79 @@ Proof.
     context left right child hchild).
 Qed.
 
+(** Two-step projections are deliberately existential in their proof root.
+    Most clients care about the selected formula and should not have to repeat
+    the implementation-specific nesting of the two [AndE] root constructors. *)
+Corollary raw_codedPALocalProofOf_andE11 : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context first second rest child,
+  RawCodedPALocalProofOf M context
+    (rawFormulaAndCode M (rawFormulaAndCode M first second) rest) child ->
+  exists root, RawCodedPALocalProofOf M context first root.
+Proof.
+  intros M hPA context first second rest child hchild.
+  pose proof (raw_codedPALocalProofOf_andE1 M hPA context
+    (rawFormulaAndCode M first second) rest child hchild) as hpair.
+  lazymatch type of hpair with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      exists (rawProofAndERoot M RawAndLeft context first second pairRoot);
+      exact (raw_codedPALocalProofOf_andE1 M hPA context
+        first second pairRoot hpair)
+  end.
+Qed.
+
+Corollary raw_codedPALocalProofOf_andE12 : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context first second rest child,
+  RawCodedPALocalProofOf M context
+    (rawFormulaAndCode M (rawFormulaAndCode M first second) rest) child ->
+  exists root, RawCodedPALocalProofOf M context second root.
+Proof.
+  intros M hPA context first second rest child hchild.
+  pose proof (raw_codedPALocalProofOf_andE1 M hPA context
+    (rawFormulaAndCode M first second) rest child hchild) as hpair.
+  lazymatch type of hpair with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      exists (rawProofAndERoot M RawAndRight context first second pairRoot);
+      exact (raw_codedPALocalProofOf_andE2 M hPA context
+        first second pairRoot hpair)
+  end.
+Qed.
+
+Corollary raw_codedPALocalProofOf_andE21 : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context first second third child,
+  RawCodedPALocalProofOf M context
+    (rawFormulaAndCode M first (rawFormulaAndCode M second third)) child ->
+  exists root, RawCodedPALocalProofOf M context second root.
+Proof.
+  intros M hPA context first second third child hchild.
+  pose proof (raw_codedPALocalProofOf_andE2 M hPA context
+    first (rawFormulaAndCode M second third) child hchild) as hpair.
+  lazymatch type of hpair with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      exists (rawProofAndERoot M RawAndLeft context second third pairRoot);
+      exact (raw_codedPALocalProofOf_andE1 M hPA context
+        second third pairRoot hpair)
+  end.
+Qed.
+
+Corollary raw_codedPALocalProofOf_andE22 : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context first second third child,
+  RawCodedPALocalProofOf M context
+    (rawFormulaAndCode M first (rawFormulaAndCode M second third)) child ->
+  exists root, RawCodedPALocalProofOf M context third root.
+Proof.
+  intros M hPA context first second third child hchild.
+  pose proof (raw_codedPALocalProofOf_andE2 M hPA context
+    first (rawFormulaAndCode M second third) child hchild) as hpair.
+  lazymatch type of hpair with
+  | RawCodedPALocalProofOf _ _ _ ?pairRoot =>
+      exists (rawProofAndERoot M RawAndRight context second third pairRoot);
+      exact (raw_codedPALocalProofOf_andE2 M hPA context
+        second third pairRoot hpair)
+  end.
+Qed.
+
 End PABoundedRawCodedPALocalProofConjunction.
