@@ -33,6 +33,8 @@ Check
   raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_traversal_body.
 Check
   raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_rows.
+Check
+  raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_concrete_row.
 
 Print Assumptions coqFourStateTableAppendWitnessContext_affine.
 Print Assumptions raw_fourStateTableAppendWitnessContext_witnessed_tail_code.
@@ -49,3 +51,5 @@ Print Assumptions
   raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_traversal_body.
 Print Assumptions
   raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_rows.
+Print Assumptions
+  raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_concrete_row.

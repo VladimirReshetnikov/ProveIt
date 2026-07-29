@@ -4431,6 +4431,14 @@ only the final local polarity production equality remains to be established;
 the growing-tail transport, binder, arithmetic, and lookup layers are no
 longer part of that seam.
 
+The adapter is also composed through the complete global closure.  Given the
+append source proof, the concrete row implication, and that one production
+equality, the public theorem now returns the unshifted
+`dynamicTruthGlobalFormula` on the empty template prefix.  Consequently the
+remaining normalization lemma can be plugged into a single endpoint rather
+than coordinating the five row binders, ten introductions, or eight append
+eliminations itself.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a

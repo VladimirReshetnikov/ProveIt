@@ -936,4 +936,96 @@ Proof.
       hsource happend hcontinuation).
 Qed.
 
+(** Public composition of the concrete row compiler with global append
+    closure.  All context growth, five row binders, ten global witness
+    introductions, and eight append eliminations are internal to this
+    theorem.  Its single syntactic premise deliberately exposes the remaining
+    local-row normalization seam. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_concrete_row :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall
+    rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses sigmaProduction piProduction appendRoot,
+  rootMode = 0 \/ rootMode = 1 ->
+  coqFourStateTableAppendConcreteClosedRowProductionTemplate
+    sigmaProduction piProduction =
+  coqFourStateTableAppendOpenedGlobalRowProductionTemplate
+    rootMode localSigma localPi (ttParameter boundName) ->
+  RawCodedPALocalProofOf M
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName)
+        (embedPATerm (Term.numeral rootMode))
+        (ttVar 0) (ttVar 1) (ttVar 2))) appendRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (coqFourStateTableAppendRowPrefix
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName)
+      (embedPATerm (Term.numeral rootMode))
+      (ttVar 0) (ttVar 1) (ttVar 2))
+    (rawTemplateFormula translation
+      (tfImp
+        (coqLtSuccCasesAntecedentTemplate
+          (ttVar 4) (ttParameter boundName))
+        (tfImp
+          (coqFourStateTableAppendEqualityRowLookupTemplate
+            coqFourStateTableAppendRowModeParameterName
+            coqFourStateTableAppendRowFormulaParameterName
+            coqFourStateTableAppendRowAssignmentCodeParameterName
+            coqFourStateTableAppendRowAssignmentStepParameterName
+            (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+          (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+            sigmaProduction piProduction)))) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M)) []
+    (rawTemplateFormula translation
+      (embedPAFormula
+        (dynamicTruthGlobalFormula (Term.numeral rootMode)
+          localSigma localPi))).
+Proof.
+  intros M hPA translation hagreement
+    rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses sigmaProduction piProduction appendRoot
+    hrootMode hproduction happend hrow.
+  apply
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_global_of_append_rows
+      M hPA translation hagreement
+      rootMode localSigma localPi boundName
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      witnesses appendRoot hrootMode happend).
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_opened_global_rows_of_concrete_row
+      M hPA translation
+      rootMode localSigma localPi boundName
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      witnesses sigmaProduction piProduction hproduction hrow).
+Qed.
+
 End PABoundedRawCodedFourStateTableAppendGlobalTraversalAssembly.
