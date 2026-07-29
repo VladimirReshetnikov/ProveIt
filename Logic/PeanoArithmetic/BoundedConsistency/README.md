@@ -4320,6 +4320,15 @@ roots, and the equality branch's three-root package; both branches are then
 assembled into the concrete successor-row production on one final witnessed
 tail.
 
+The predecessor branch no longer asks its outer caller to manufacture roots
+below the arithmetic head.  A two-root pre-branch package contains only the
+inherited traversal proof and old-state lookup proof.  Given honest tail
+witnesses and atomic adequacy of `i < b`, the compiler weakens both roots
+beneath that head and builds the bound premise from the represented
+assumption constructor, yielding the exact three-root predecessor package.
+Thus the remaining append client work is concentrated on the equality-side
+context view and the outer existential/universal closure.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
