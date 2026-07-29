@@ -74,4 +74,41 @@ Proof.
       context antecedent consequent impChild antecedentChild).
 Qed.
 
+(** Three successive modus-ponens steps in one unchanged local context.  The
+    existential endpoint avoids exposing the nested binary proof-root term. *)
+Corollary raw_codedPALocalProofOf_impE3 : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context first second third conclusion
+      implicationRoot firstRoot secondRoot thirdRoot,
+  RawCodedPALocalProofOf M context
+    (rawFormulaImpCode M first
+      (rawFormulaImpCode M second
+        (rawFormulaImpCode M third conclusion))) implicationRoot ->
+  RawCodedPALocalProofOf M context first firstRoot ->
+  RawCodedPALocalProofOf M context second secondRoot ->
+  RawCodedPALocalProofOf M context third thirdRoot ->
+  exists root, RawCodedPALocalProofOf M context conclusion root.
+Proof.
+  intros M hPA context first second third conclusion
+    implicationRoot firstRoot secondRoot thirdRoot
+    himp hfirst hsecond hthird.
+  pose proof (raw_codedPALocalProofOf_impE M hPA context
+    first (rawFormulaImpCode M second
+      (rawFormulaImpCode M third conclusion))
+    implicationRoot firstRoot himp hfirst) as himp2.
+  lazymatch type of himp2 with
+  | RawCodedPALocalProofOf _ _ _ ?imp2Root =>
+      pose proof (raw_codedPALocalProofOf_impE M hPA context
+        second (rawFormulaImpCode M third conclusion)
+        imp2Root secondRoot himp2 hsecond) as himp3
+  end.
+  lazymatch type of himp3 with
+  | RawCodedPALocalProofOf _ _ _ ?imp3Root =>
+      exists (rawProofImpERoot M context third conclusion
+        imp3Root thirdRoot);
+      exact (raw_codedPALocalProofOf_impE M hPA context
+        third conclusion imp3Root thirdRoot himp3 hthird)
+  end.
+Qed.
+
 End PABoundedRawCodedPALocalProofComposition.

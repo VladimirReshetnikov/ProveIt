@@ -2980,6 +2980,10 @@ finite list of leading openings and automatically realizes the corresponding
 operation traces.  The witnessed-tail endpoint composes this with an
 arbitrary fixed PA theorem, selecting its finite axiom prefix once before
 performing all carrier-valued instances.
+An additional local endpoint now starts from any proof already present in an
+arbitrary context, computes a successful fixed-template opening sequence, and
+returns the instantiated proof directly.  This separates reusable finite
+universal elimination from the optional PA-theorem/witness-prefix machinery.
 
 `RawCodedAssignmentAppendProofCompilation.v` applies that generic chain to
 PA's already proved arbitrary-value beta-table append theorem.  It opens the
@@ -3057,7 +3061,11 @@ that the fresh tables are defined through `S b`, and a checked conjunction
 constructor reassembles the exact four-field prefix of the new global
 traversal certificate.  Thus six of its seven body fields (four defined-table
 facts, root bound, and root lookup) are available beneath the shared eight
-witness scopes; the remaining construction is the universal row condition.
+witness scopes.  Their second fields now expose the four universally
+quantified predecessor-preservation laws too.  A checked two-opening
+calculation instantiates all four laws at an arbitrary candidate row while
+retaining the identical witness context; applying their three implication
+premises is the arithmetic core of the universal row condition.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely

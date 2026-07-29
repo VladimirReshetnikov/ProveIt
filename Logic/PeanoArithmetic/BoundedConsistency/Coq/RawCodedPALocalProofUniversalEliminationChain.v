@@ -87,6 +87,25 @@ Fixpoint templateUniversalOpenMany
       end
   end.
 
+(** Total view used when a fixed source is separately audited to contain the
+    requested binder prefix. *)
+Definition templateUniversalOpenManyOrBot
+    (source : TemplateFormula) (replacements : list TemplateTerm)
+    : TemplateFormula :=
+  match templateUniversalOpenMany source replacements with
+  | Some target => target
+  | None => tfBot
+  end.
+
+Lemma templateUniversalOpenManyOrBot_of_success : forall
+    source replacements target,
+  templateUniversalOpenMany source replacements = Some target ->
+  templateUniversalOpenManyOrBot source replacements = target.
+Proof.
+  intros source replacements target hopen.
+  unfold templateUniversalOpenManyOrBot. rewrite hopen. reflexivity.
+Qed.
+
 (** Every successful fixed-template traversal produces the corresponding
     represented elimination chain under any honest compiler translation. *)
 Theorem raw_templateUniversalOpenMany_elimination_chain : forall
@@ -138,6 +157,31 @@ Proof.
     exact (ihtail
       (rawProofAllERoot M context body replacement sourceRoot)
       hinstance).
+Qed.
+
+(** Fixed-template convenience wrapper: compute the relational chain and
+    compile it in one call.  Unlike the PA-theorem endpoint below, this starts
+    from an arbitrary local proof already available in the caller's context. *)
+Corollary raw_codedPALocalProofOf_templateUniversalOpenMany : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context source replacements target sourceRoot,
+  templateUniversalOpenMany source replacements = Some target ->
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation source) sourceRoot ->
+  exists targetRoot,
+    RawCodedPALocalProofOf M context
+      (rawTemplateFormula translation target) targetRoot.
+Proof.
+  intros M hPA translation context source replacements target sourceRoot
+    hopen hsource.
+  apply (raw_codedPALocalProofOf_universal_elimination_chain
+    M hPA context
+    (rawTemplateFormula translation source)
+    (rawTemplateFormula translation target)
+    (raw_templateUniversalOpenMany_elimination_chain
+      M translation source replacements target hopen)
+    sourceRoot hsource).
 Qed.
 
 (** Compile a fixed PA theorem over an arbitrary witnessed base and then

@@ -201,6 +201,65 @@ Definition coqFourStateTableAppendAssignmentStepDefinedTemplate
       assignmentStepCode assignmentStepStep
       bound mode formula assignmentCode assignmentStep))).
 
+(** Universally quantified preservation fields for entries strictly below the
+    previous bound. *)
+Definition coqFourStateTableAppendModePreservationTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep : TemplateTerm)
+    : TemplateFormula :=
+  templateAndFirst (templateAndSecond (templateAndFirst (templateAnd4First
+    (coqFourStateTableAppendExtensionBodyTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)))).
+
+Definition coqFourStateTableAppendFormulaPreservationTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep : TemplateTerm)
+    : TemplateFormula :=
+  templateAndFirst (templateAndSecond (templateAndFirst (templateAnd4Second
+    (coqFourStateTableAppendExtensionBodyTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)))).
+
+Definition coqFourStateTableAppendAssignmentCodePreservationTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep : TemplateTerm)
+    : TemplateFormula :=
+  templateAndFirst (templateAndSecond (templateAndFirst (templateAnd4Third
+    (coqFourStateTableAppendExtensionBodyTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)))).
+
+Definition coqFourStateTableAppendAssignmentStepPreservationTemplate
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep : TemplateTerm)
+    : TemplateFormula :=
+  templateAndFirst (templateAndSecond (templateAndFirst (templateAnd4Fourth
+    (coqFourStateTableAppendExtensionBodyTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)))).
+
+Definition coqFourStateTableAppendPreservationAtTemplate
+    (preservation : TemplateFormula) (index value : TemplateTerm)
+    : TemplateFormula :=
+  templateUniversalOpenManyOrBot preservation [index; value].
+
 Definition coqFourStateTableAppendNewStateDefinedTemplate
     (modeCode modeStep formulaCode formulaStep
       assignmentCodeCode assignmentCodeStep
@@ -528,6 +587,169 @@ Proof.
     coqFourStateTableAppendFormulaDefinedTemplate,
     coqFourStateTableAppendAssignmentCodeDefinedTemplate,
     coqFourStateTableAppendAssignmentStepDefinedTemplate,
+    coqFourStateTableAppendExtensionBodyTemplate,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendExtensionBody,
+    codedAssignmentAppendAtTermAt,
+    codedAssignmentAppendPrefixTermAt,
+    fixedLevelEx8, fixedLevelAnd4,
+    templateAndFirst, templateAndSecond,
+    templateAnd4First, templateAnd4Second,
+    templateAnd4Third, templateAnd4Fourth.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst
+    templateExistentialBodyMany].
+  repeat split; reflexivity.
+Qed.
+
+(** The tail of each append prefix starts with the two-variable preservation
+    law and ends with the guarded new-entry lookup. *)
+Lemma coqFourStateTableAppendExtensionPreservation_shapes : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  let extension := coqFourStateTableAppendExtensionBodyTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep in
+  templateAndSecond (templateAndFirst (templateAnd4First extension)) =
+      tfAnd
+        (coqFourStateTableAppendModePreservationTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep)
+        (templateAndSecond (templateAndSecond (templateAndFirst
+          (templateAnd4First extension)))) /\
+  templateAndSecond (templateAndFirst (templateAnd4Second extension)) =
+      tfAnd
+        (coqFourStateTableAppendFormulaPreservationTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep)
+        (templateAndSecond (templateAndSecond (templateAndFirst
+          (templateAnd4Second extension)))) /\
+  templateAndSecond (templateAndFirst (templateAnd4Third extension)) =
+      tfAnd
+        (coqFourStateTableAppendAssignmentCodePreservationTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep)
+        (templateAndSecond (templateAndSecond (templateAndFirst
+          (templateAnd4Third extension)))) /\
+  templateAndSecond (templateAndFirst (templateAnd4Fourth extension)) =
+      tfAnd
+        (coqFourStateTableAppendAssignmentStepPreservationTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep)
+        (templateAndSecond (templateAndSecond (templateAndFirst
+          (templateAnd4Fourth extension)))).
+Proof.
+  intros.
+  cbn zeta.
+  unfold coqFourStateTableAppendModePreservationTemplate,
+    coqFourStateTableAppendFormulaPreservationTemplate,
+    coqFourStateTableAppendAssignmentCodePreservationTemplate,
+    coqFourStateTableAppendAssignmentStepPreservationTemplate,
+    coqFourStateTableAppendExtensionBodyTemplate,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendExtensionBody,
+    codedAssignmentAppendAtTermAt,
+    codedAssignmentAppendPrefixTermAt,
+    fixedLevelEx8, fixedLevelAnd4,
+    templateAndFirst, templateAndSecond,
+    templateAnd4First, templateAnd4Second,
+    templateAnd4Third, templateAnd4Fourth.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst
+    templateExistentialBodyMany].
+  repeat split; reflexivity.
+Qed.
+
+(** All four preservation fields have exactly two leading universal binders;
+    instantiate them at one candidate predecessor state. *)
+Lemma coqFourStateTableAppendPreservationAt_successes : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep,
+  templateUniversalOpenMany
+    (coqFourStateTableAppendModePreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    [index; rowMode] =
+    Some (coqFourStateTableAppendPreservationAtTemplate
+      (coqFourStateTableAppendModePreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)
+      index rowMode) /\
+  templateUniversalOpenMany
+    (coqFourStateTableAppendFormulaPreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    [index; rowFormula] =
+    Some (coqFourStateTableAppendPreservationAtTemplate
+      (coqFourStateTableAppendFormulaPreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)
+      index rowFormula) /\
+  templateUniversalOpenMany
+    (coqFourStateTableAppendAssignmentCodePreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    [index; rowAssignmentCode] =
+    Some (coqFourStateTableAppendPreservationAtTemplate
+      (coqFourStateTableAppendAssignmentCodePreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)
+      index rowAssignmentCode) /\
+  templateUniversalOpenMany
+    (coqFourStateTableAppendAssignmentStepPreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    [index; rowAssignmentStep] =
+    Some (coqFourStateTableAppendPreservationAtTemplate
+      (coqFourStateTableAppendAssignmentStepPreservationTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)
+      index rowAssignmentStep).
+Proof.
+  intros.
+  unfold coqFourStateTableAppendPreservationAtTemplate,
+    templateUniversalOpenManyOrBot,
+    coqFourStateTableAppendModePreservationTemplate,
+    coqFourStateTableAppendFormulaPreservationTemplate,
+    coqFourStateTableAppendAssignmentCodePreservationTemplate,
+    coqFourStateTableAppendAssignmentStepPreservationTemplate,
     coqFourStateTableAppendExtensionBodyTemplate,
     coqFourStateTableAppendExistsTemplate,
     coqFourStateTableAppendInstanceTemplate,
@@ -928,6 +1150,224 @@ Proof.
   split; [exact hmodeDefined |].
   split; [exact hformulaDefined |].
   split; [exact hassignmentCodeDefined | exact hassignmentStepDefined].
+Qed.
+
+(** Project the four universally quantified predecessor-preservation laws. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_preservation_components :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  let witnessContext := coqFourStateTableAppendWitnessContext
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep context in
+  exists modeRoot formulaRoot assignmentCodeRoot assignmentStepRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation witnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendModePreservationTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep)) modeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation witnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendFormulaPreservationTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep)) formulaRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation witnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendAssignmentCodePreservationTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep)) assignmentCodeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation witnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendAssignmentStepPreservationTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep)) assignmentStepRoot.
+Proof.
+  intros M hPA translation context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep.
+  cbn zeta.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_extension_components
+      M hPA translation context
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    as (modeAppendRoot & formulaAppendRoot &
+        assignmentCodeAppendRoot & assignmentStepAppendRoot &
+        hmodeAppend & hformulaAppend &
+        hassignmentCodeAppend & hassignmentStepAppend).
+  destruct (coqFourStateTableAppendExtensionComponent_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodeShape [hformulaShape
+      [hassignmentCodeShape hassignmentStepShape]]].
+  destruct (coqFourStateTableAppendExtensionDefined_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodeDefinedShape [hformulaDefinedShape
+      [hassignmentCodeDefinedShape hassignmentStepDefinedShape]]].
+  destruct (coqFourStateTableAppendExtensionPreservation_shapes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep)
+    as [hmodePreservationShape [hformulaPreservationShape
+      [hassignmentCodePreservationShape
+       hassignmentStepPreservationShape]]].
+  rewrite hmodeShape, hmodeDefinedShape, hmodePreservationShape,
+    !rawTemplateFormula_and in hmodeAppend.
+  rewrite hformulaShape, hformulaDefinedShape, hformulaPreservationShape,
+    !rawTemplateFormula_and in hformulaAppend.
+  rewrite hassignmentCodeShape, hassignmentCodeDefinedShape,
+    hassignmentCodePreservationShape,
+    !rawTemplateFormula_and in hassignmentCodeAppend.
+  rewrite hassignmentStepShape, hassignmentStepDefinedShape,
+    hassignmentStepPreservationShape,
+    !rawTemplateFormula_and in hassignmentStepAppend.
+  destruct (raw_codedPALocalProofOf_andE121 M hPA _ _ _ _ _ _ hmodeAppend)
+    as [modeRoot hmodePreservation].
+  destruct (raw_codedPALocalProofOf_andE121 M hPA _ _ _ _ _ _
+    hformulaAppend) as [formulaRoot hformulaPreservation].
+  destruct (raw_codedPALocalProofOf_andE121 M hPA _ _ _ _ _ _
+    hassignmentCodeAppend)
+    as [assignmentCodeRoot hassignmentCodePreservation].
+  destruct (raw_codedPALocalProofOf_andE121 M hPA _ _ _ _ _ _
+    hassignmentStepAppend)
+    as [assignmentStepRoot hassignmentStepPreservation].
+  exists modeRoot, formulaRoot, assignmentCodeRoot, assignmentStepRoot.
+  split; [exact hmodePreservation |].
+  split; [exact hformulaPreservation |].
+  split; [exact hassignmentCodePreservation |
+    exact hassignmentStepPreservation].
+Qed.
+
+(** Instantiate the four preservation laws at one predecessor row while
+    retaining the shared witness context. *)
+Theorem raw_codedPALocalProofOf_four_state_table_append_preservation_at :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep,
+  let witnessContext := coqFourStateTableAppendWitnessContext
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep context in
+  exists modeRoot formulaRoot assignmentCodeRoot assignmentStepRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation witnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendPreservationAtTemplate
+          (coqFourStateTableAppendModePreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)
+          index rowMode)) modeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation witnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendPreservationAtTemplate
+          (coqFourStateTableAppendFormulaPreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)
+          index rowFormula)) formulaRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation witnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendPreservationAtTemplate
+          (coqFourStateTableAppendAssignmentCodePreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)
+          index rowAssignmentCode)) assignmentCodeRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation witnessContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendPreservationAtTemplate
+          (coqFourStateTableAppendAssignmentStepPreservationTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep)
+          index rowAssignmentStep)) assignmentStepRoot.
+Proof.
+  intros M hPA translation context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep.
+  cbn zeta.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_preservation_components
+      M hPA translation context
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    as (modeRoot & formulaRoot & assignmentCodeRoot & assignmentStepRoot &
+        hmode & hformula & hassignmentCode & hassignmentStep).
+  destruct (coqFourStateTableAppendPreservationAt_successes
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep)
+    as [hmodeOpen [hformulaOpen
+      [hassignmentCodeOpen hassignmentStepOpen]]].
+  destruct (raw_codedPALocalProofOf_templateUniversalOpenMany
+    M hPA translation _ _ [index; rowMode] _ modeRoot hmodeOpen hmode)
+    as [modeAtRoot hmodeAt].
+  destruct (raw_codedPALocalProofOf_templateUniversalOpenMany
+    M hPA translation _ _ [index; rowFormula] _ formulaRoot
+    hformulaOpen hformula) as [formulaAtRoot hformulaAt].
+  destruct (raw_codedPALocalProofOf_templateUniversalOpenMany
+    M hPA translation _ _ [index; rowAssignmentCode] _ assignmentCodeRoot
+    hassignmentCodeOpen hassignmentCode)
+    as [assignmentCodeAtRoot hassignmentCodeAt].
+  destruct (raw_codedPALocalProofOf_templateUniversalOpenMany
+    M hPA translation _ _ [index; rowAssignmentStep] _ assignmentStepRoot
+    hassignmentStepOpen hassignmentStep)
+    as [assignmentStepAtRoot hassignmentStepAt].
+  exists modeAtRoot, formulaAtRoot,
+    assignmentCodeAtRoot, assignmentStepAtRoot.
+  split; [exact hmodeAt |].
+  split; [exact hformulaAt |].
+  split; [exact hassignmentCodeAt | exact hassignmentStepAt].
 Qed.
 
 (** Assemble the exact first four right-associated fields of the global
