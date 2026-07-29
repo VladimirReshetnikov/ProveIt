@@ -7,7 +7,8 @@ From FoundationModal Require Import
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalKripkePreservation PropositionalKripkeCanonical
-  PropositionalKripkeFinite PropositionalGlivenko
+  PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
+  PropositionalSlash
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1271,6 +1272,38 @@ Check ph_glivenko_classical_to_int_double_neg.
 Check ph_glivenko_int_double_neg_to_classical_raw.
 Check ph_glivenko.
 Check ph_neg_provable_int_iff_cl.
+Check p_dialectica_player.
+Check p_dialectica_argument.
+Check p_dialectica_witness.
+Check p_dialectica_counter.
+Check p_dialectica_realizes.
+Check p_dialectica_valid.
+Check p_dialectica_not_valid.
+Check p_dialectica_not_valid_iff.
+Check p_dialectica_realizes_falsum.
+Check p_dialectica_realizes_atom.
+Check p_dialectica_realizes_and_left.
+Check p_dialectica_realizes_and_right.
+Check p_dialectica_realizes_or_left.
+Check p_dialectica_realizes_or_right.
+Check p_dialectica_realizes_imp.
+Check p_dialectica_realizes_top.
+Check p_dialectica_realizes_neg.
+Check p_dialectica_valid_identity.
+Check p_dialectica_excluded_middle_not_valid.
+Check p_aczel_slash.
+Check p_aczel_slash_atom.
+Check p_aczel_slash_falsum.
+Check p_aczel_slash_or.
+Check p_aczel_slash_and.
+Check p_aczel_slash_imp.
+Check p_aczel_slash_neg.
+Check p_aczel_slash_top.
+Check p_aczel_slash_modus_ponens.
+Check pformula_predicate_disjunctive.
+Check pformula_disjunctive_of_aczel_slash_iff.
+Check pformula_logic_aczel_slash.
+Check pformula_logic_disjunctive_of_aczel_slash_iff.
 Check pkripke_frame_kreisel_putnam.
 Check pkripke_KP_valid_of_condition.
 Check pkripke_kreisel_putnam_of_strongly_convergent.
@@ -1317,6 +1350,12 @@ Print Assumptions ph_hilbert_double_neg_lem_raw.
 Print Assumptions ph_glivenko_classical_to_int_double_neg.
 Print Assumptions ph_glivenko.
 Print Assumptions ph_neg_provable_int_iff_cl.
+Print Assumptions p_dialectica_not_valid_iff.
+Print Assumptions p_dialectica_valid_identity.
+Print Assumptions p_dialectica_excluded_middle_not_valid.
+Print Assumptions p_aczel_slash_modus_ponens.
+Print Assumptions pformula_disjunctive_of_aczel_slash_iff.
+Print Assumptions pformula_logic_disjunctive_of_aczel_slash_iff.
 Print Assumptions pkripke_KP_valid_of_condition.
 Print Assumptions pkripke_kreisel_putnam_of_strongly_convergent.
 Print Assumptions ph_hilbert_kp_pkripke_sound.
