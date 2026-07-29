@@ -4161,3 +4161,11 @@ result is one represented proof of the transported mode, formula,
 assignment-code, and assignment-step lookup conjunction; the remaining
 equality-branch work is to compare those fixed fields with the independently
 assumed row lookup by represented lookup functionality.
+
+`RawCodedBetaLookupFunctionalitySource` supplies the required arithmetic
+source as a closed PA theorem.  It universally quantifies two outputs, a beta
+code, step, and index, and proves that two lookups at that same table position
+imply `out2 = out1`.  Its raw-model validity is discharged by the existing
+beta functionality theorem and then reflected back to an ordinary finite PA
+derivation; the next compilation layer can therefore instantiate the result
+inside a represented row context rather than using metatheoretic equality.
