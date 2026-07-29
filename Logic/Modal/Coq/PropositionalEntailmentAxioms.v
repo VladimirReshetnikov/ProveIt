@@ -8,8 +8,11 @@
     formula-uniform proof embedding preserves every capability.
 *)
 
+From Stdlib Require Import Lists.List Program.Equality.
 From FoundationModal Require Import
   GenericSemantics GenericEntailment GenericCalculus.
+
+Import ListNotations.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -389,6 +392,183 @@ Proof.
   exact (@generic_dne_of_lem_efq_raw S F E C s
     Hmp HK HS Hor3 Hlem Hefq Hneg p).
 Qed.
+
+(** * Constructive finite-context deduction *)
+
+Inductive generic_raw_list_member {F : Type} (p : F) : list F -> Type :=
+| GRLM_here : forall Gamma, generic_raw_list_member p (p :: Gamma)
+| GRLM_there : forall q Gamma,
+    generic_raw_list_member p Gamma ->
+    generic_raw_list_member p (q :: Gamma).
+
+Arguments GRLM_here {F p} Gamma.
+Arguments GRLM_there {F p} q {Gamma} _.
+
+Inductive generic_list_derivation {S F : Type}
+    (E : generic_entailment S F) (s : S) (C : generic_connectives F)
+    (Gamma : list F) : F -> Type :=
+| GLD_assumption : forall p,
+    generic_raw_list_member p Gamma ->
+    generic_list_derivation E s C Gamma p
+| GLD_theorem : forall p,
+    generic_proof E s p -> generic_list_derivation E s C Gamma p
+| GLD_mdp : forall p q,
+    generic_list_derivation E s C Gamma (generic_imp C p q) ->
+    generic_list_derivation E s C Gamma p ->
+    generic_list_derivation E s C Gamma q.
+
+Arguments GLD_assumption {S F E s C Gamma p} _.
+Arguments GLD_theorem {S F E s C Gamma p} _.
+Arguments GLD_mdp {S F E s C Gamma p q} _ _.
+
+Fixpoint generic_list_deduction {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    (Hmp : generic_modus_ponens E C s)
+    (HK : forall p q, generic_proof E s (generic_axiom_K C p q))
+    (HS : forall p q r, generic_proof E s (generic_axiom_S C p q r))
+    {Gamma : list F} {a p : F}
+    (d : generic_list_derivation E s C (a :: Gamma) p) :
+    generic_list_derivation E s C Gamma (generic_imp C a p).
+Proof.
+  destruct d as [p h | p b | p q dpq dp].
+  - dependent destruction h.
+    + exact (GLD_theorem (generic_imp_identity_raw Hmp HK HS a)).
+    + exact (GLD_mdp (GLD_theorem (HK p a)) (GLD_assumption h)).
+  - exact (GLD_mdp (GLD_theorem (HK p a)) (GLD_theorem b)).
+  - exact (GLD_mdp
+      (GLD_mdp (GLD_theorem (HS a p q))
+        (@generic_list_deduction S F E s C Hmp HK HS Gamma a
+          (generic_imp C p q) dpq))
+      (@generic_list_deduction S F E s C Hmp HK HS Gamma a p dp)).
+Defined.
+
+Fixpoint generic_empty_derivation_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    (Hmp : generic_modus_ponens E C s) {p : F}
+    (d : generic_list_derivation E s C [] p) : generic_proof E s p :=
+  match d with
+  | GLD_assumption h => match h with end
+  | GLD_theorem b => b
+  | GLD_mdp dpq dp =>
+      generic_modus_ponens_raw Hmp _ _
+        (generic_empty_derivation_raw Hmp dpq)
+        (generic_empty_derivation_raw Hmp dp)
+  end.
+
+Definition generic_singleton_deduction_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    (Hmp : generic_modus_ponens E C s)
+    (HK : forall p q, generic_proof E s (generic_axiom_K C p q))
+    (HS : forall p q r, generic_proof E s (generic_axiom_S C p q r))
+    (a p : F) (d : generic_list_derivation E s C [a] p) :
+    generic_proof E s (generic_imp C a p) :=
+  generic_empty_derivation_raw Hmp (generic_list_deduction Hmp HK HS d).
+
+(** Dummett's axiom implies weak excluded middle.  Foundation assumes
+    decidable formula equality only for its set-context deduction machinery;
+    raw positional membership makes this proof fully constructive. *)
+Definition generic_wlem_of_dummett_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    (Hmp : generic_modus_ponens E C s)
+    (HK : forall p q, generic_proof E s (generic_axiom_K C p q))
+    (HS : forall p q r, generic_proof E s (generic_axiom_S C p q r))
+    (Hor1 : forall p q, generic_proof E s (generic_axiom_or1 C p q))
+    (Hor2 : forall p q, generic_proof E s (generic_axiom_or2 C p q))
+    (Hor3 : forall p q r, generic_proof E s (generic_axiom_or3 C p q r))
+    (Hneg_to_imp : forall p, generic_proof E s
+      (generic_imp C (generic_neg C p)
+        (generic_imp C p (generic_bottom C))))
+    (Himp_to_neg : forall p, generic_proof E s
+      (generic_imp C (generic_imp C p (generic_bottom C))
+        (generic_neg C p)))
+    (Hdummett : generic_has_axiom_dummett E C s)
+    (p : F) : generic_proof E s (generic_axiom_wlem C p).
+Proof.
+  set (n := generic_neg C p).
+  set (nn := generic_neg C n).
+  set (a := generic_imp C p n).
+  set (b := generic_imp C n p).
+  assert (dleft : generic_proof E s (generic_imp C a n)).
+  { apply (@generic_singleton_deduction_raw S F E s C Hmp HK HS a n).
+    apply (GLD_mdp (GLD_theorem (Himp_to_neg p))).
+    apply (@generic_list_deduction S F E s C Hmp HK HS
+      [a] p (generic_bottom C)).
+    exact (GLD_mdp
+      (GLD_mdp (GLD_theorem (Hneg_to_imp p))
+        (GLD_mdp
+          (@GLD_assumption S F E s C (p :: [a]) a
+            (GRLM_there p (GRLM_here [])))
+          (@GLD_assumption S F E s C (p :: [a]) p
+            (GRLM_here [a]))))
+      (@GLD_assumption S F E s C (p :: [a]) p
+        (GRLM_here [a]))). }
+  assert (dright : generic_proof E s (generic_imp C b nn)).
+  { apply (@generic_singleton_deduction_raw S F E s C Hmp HK HS b nn).
+    apply (GLD_mdp (GLD_theorem (Himp_to_neg n))).
+    apply (@generic_list_deduction S F E s C Hmp HK HS
+      [b] n (generic_bottom C)).
+    exact (GLD_mdp
+      (GLD_mdp (GLD_theorem (Hneg_to_imp p))
+        (@GLD_assumption S F E s C (n :: [b]) n
+          (GRLM_here [b])))
+      (GLD_mdp
+        (@GLD_assumption S F E s C (n :: [b]) b
+          (GRLM_there n (GRLM_here [])))
+        (@GLD_assumption S F E s C (n :: [b]) n
+          (GRLM_here [b])))). }
+  pose (dleft' := @generic_imp_trans_raw S F E C s Hmp HK HS a n
+    (generic_axiom_wlem C p) dleft (Hor1 n nn)).
+  pose (dright' := @generic_imp_trans_raw S F E C s Hmp HK HS b nn
+    (generic_axiom_wlem C p) dright (Hor2 n nn)).
+  exact (generic_modus_ponens_raw Hmp _ _
+    (generic_modus_ponens_raw Hmp _ _
+      (generic_modus_ponens_raw Hmp _ _
+        (Hor3 a b (generic_axiom_wlem C p)) dleft') dright')
+    (generic_dummett_raw Hdummett p n)).
+Defined.
+
+Lemma generic_wlem_of_dummett_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (s : S) (C : generic_connectives F),
+    generic_modus_ponens E C s ->
+    (forall p q, generic_proof E s (generic_axiom_K C p q)) ->
+    (forall p q r, generic_proof E s (generic_axiom_S C p q r)) ->
+    (forall p q, generic_proof E s (generic_axiom_or1 C p q)) ->
+    (forall p q, generic_proof E s (generic_axiom_or2 C p q)) ->
+    (forall p q r, generic_proof E s (generic_axiom_or3 C p q r)) ->
+    (forall p, generic_proof E s
+      (generic_imp C (generic_neg C p)
+        (generic_imp C p (generic_bottom C)))) ->
+    (forall p, generic_proof E s
+      (generic_imp C (generic_imp C p (generic_bottom C))
+        (generic_neg C p))) ->
+    generic_has_axiom_dummett E C s ->
+    forall p, generic_provable E s (generic_axiom_wlem C p).
+Proof.
+  intros S F E s C Hmp HK HS Hor1 Hor2 Hor3 Hni Hin Hd p.
+  constructor. exact (@generic_wlem_of_dummett_raw S F E s C
+    Hmp HK HS Hor1 Hor2 Hor3 Hni Hin Hd p).
+Qed.
+
+Definition generic_has_axiom_wlem_of_dummett {S F : Type}
+    (E : generic_entailment S F) (s : S) (C : generic_connectives F)
+    (Hmp : generic_modus_ponens E C s)
+    (HK : forall p q, generic_proof E s (generic_axiom_K C p q))
+    (HS : forall p q r, generic_proof E s (generic_axiom_S C p q r))
+    (Hor1 : forall p q, generic_proof E s (generic_axiom_or1 C p q))
+    (Hor2 : forall p q, generic_proof E s (generic_axiom_or2 C p q))
+    (Hor3 : forall p q r, generic_proof E s (generic_axiom_or3 C p q r))
+    (Hneg_to_imp : forall p, generic_proof E s
+      (generic_imp C (generic_neg C p)
+        (generic_imp C p (generic_bottom C))))
+    (Himp_to_neg : forall p, generic_proof E s
+      (generic_imp C (generic_imp C p (generic_bottom C))
+        (generic_neg C p)))
+    (Hdummett : generic_has_axiom_dummett E C s) :
+    generic_has_axiom_wlem E C s :=
+  {| generic_wlem_raw := fun p =>
+       generic_wlem_of_dummett_raw Hmp HK HS Hor1 Hor2 Hor3
+         Hneg_to_imp Himp_to_neg Hdummett p |}.
 
 (** * Formula-uniform transport
 

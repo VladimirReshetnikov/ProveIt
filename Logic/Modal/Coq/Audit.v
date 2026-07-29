@@ -1207,6 +1207,17 @@ Check generic_under_apply_raw.
 Check generic_imp_trans_raw.
 Check generic_dne_of_lem_efq_raw.
 Check generic_dne_of_lem_efq_provable.
+Check generic_raw_list_member.
+Check generic_list_derivation.
+Check GLD_assumption.
+Check GLD_theorem.
+Check GLD_mdp.
+Check generic_list_deduction.
+Check generic_empty_derivation_raw.
+Check generic_singleton_deduction_raw.
+Check generic_wlem_of_dummett_raw.
+Check generic_wlem_of_dummett_provable.
+Check generic_has_axiom_wlem_of_dummett.
 Check generic_raw_proof_translation.
 Check generic_has_axiom_dne_map.
 Check generic_has_axiom_efq_map.
@@ -1224,6 +1235,11 @@ Print Assumptions generic_imp_identity_raw.
 Print Assumptions generic_imp_trans_raw.
 Print Assumptions generic_dne_of_lem_efq_raw.
 Print Assumptions generic_dne_of_lem_efq_provable.
+Print Assumptions generic_list_deduction.
+Print Assumptions generic_empty_derivation_raw.
+Print Assumptions generic_wlem_of_dummett_raw.
+Print Assumptions generic_wlem_of_dummett_provable.
+Print Assumptions generic_has_axiom_wlem_of_dummett.
 Print Assumptions generic_has_axiom_dne_map.
 Print Assumptions generic_has_axiom_efq_map.
 Print Assumptions generic_has_axiom_elim_contra_map.
