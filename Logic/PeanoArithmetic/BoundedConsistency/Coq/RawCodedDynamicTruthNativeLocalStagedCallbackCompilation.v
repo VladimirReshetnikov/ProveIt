@@ -30,6 +30,9 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedAssignment
+  RawCodedContextLists
+  RawCodedContextStructure
+  RawCodedContextShift
   RawCodedRestrictedPAProof
   RawCodedPALocalProofExistential
   RawCodedPAProvability
@@ -49,6 +52,8 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthNativeLocalPositiveExactification
   RawCodedDynamicTruthLocalFieldProjectionCompilation
+  RawCodedDynamicTruthImpBranchExclusivity
+  RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthNativeLocalProofCompilation
   RawCodedDynamicTruthNativeMasterEndpoint
   RawCodedDynamicTruthMasterSplicedBasePackage
@@ -66,6 +71,9 @@ Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedAssignment.
+Import PABoundedRawCodedContextLists.
+Import PABoundedRawCodedContextStructure.
+Import PABoundedRawCodedContextShift.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPAProvability.
@@ -87,6 +95,9 @@ Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalPositiveExactification.
 Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
+Import PABoundedRawCodedDynamicTruthImpBranchExclusivity.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
 Import PABoundedRawCodedDynamicTruthMasterSplicedBasePackage.
@@ -467,6 +478,77 @@ Record RawDynamicTruthNativeLocalAlignedPredecessorAt
 Arguments RawDynamicTruthNativeLocalAlignedPredecessorAt
   M tail predecessorLevel baseContext currentLocal
   nextInputGlobalSigma nextInputGlobalPi : clear implicits.
+
+(** The aligned package already contains the source exclusivity proof.  A
+    table/application bridge can therefore be consumed immediately, with no
+    re-projection of the current conjunction and no independently selected
+    predecessor root. *)
+Theorem raw_dynamicTruthNativeLocalAligned_predecessorRoot_of_bridge :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  forall (tail : nat -> M) predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi
+      (aligned : RawDynamicTruthNativeLocalAlignedPredecessorAt M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi),
+  RawContextListRealizable M baseContext ->
+  RawContextShift M baseContext baseContext ->
+  RawDynamicTruthPredecessorStateApplicationBridgeAt M baseContext
+    (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+      predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned)
+    (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+      predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned)
+    (rawDynamicTruthNativeLocalAligned_currentSigmaEvidence M tail
+      predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned)
+    (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
+      predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned) ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M baseContext
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA tail predecessorLevel baseContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi aligned hcontext hshift hbridge.
+  exact
+    (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_local_exclusive
+      M hPA baseContext
+      (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentSigmaEvidence M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthLocalExclusiveProjectionRoot M baseContext
+        (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentSigmaEvidence M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentLocalRoot M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned))
+      hcontext hshift
+      (rawDynamicTruthNativeLocalAligned_exclusiveProjection M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      hbridge).
+Qed.
 
 (** Enrich the exhaustive current-field cases with the next trace.  The zero
     alternative is unchanged; in the successor alternative all orbit and

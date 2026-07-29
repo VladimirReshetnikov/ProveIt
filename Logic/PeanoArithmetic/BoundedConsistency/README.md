@@ -3640,6 +3640,18 @@ consume any verified universal-elimination chain from either root, leaving a
 downstream collision compiler responsible only for the exact substitutions
 that select its desired instance rather than for repeated And-E/All-E proof
 assembly.
+`RawCodedDynamicTruthPredecessorStateExclusivityCompilation.v` consumes that
+projected exclusivity root together with the exact state-member/application
+bridge: one verified three-binder elimination chain and local roots for
+admissibility, Sigma evidence, and Pi evidence under the two literal state
+assumptions.  It transports the opened law into that context, performs the
+three implication eliminations, discharges both assumptions, and restores
+the three universal binders.  The aligned callback therefore reduces the
+former opaque predecessor-exclusivity root to the three concrete table-to-
+application facts.  The repeated three-`All-I` coverage/endpoint calculation
+is factored into
+`RawCodedPALocalProofTripleUniversalIntroduction.v` and reused by both the
+new compiler and the existing native local-field closers.
 
 The next-field exact residual builder sees this package, the one selected
 local transform trace,
