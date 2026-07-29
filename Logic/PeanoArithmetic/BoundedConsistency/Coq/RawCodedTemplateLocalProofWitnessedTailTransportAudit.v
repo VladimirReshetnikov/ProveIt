@@ -1,0 +1,17 @@
+(** Audit surface for shared-template-prefix witnessed-tail transport. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplateLocalProofWitnessedTailTransport.
+
+Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
+
+Check raw_templateContextCodeOnTail_included.
+Check raw_templateContextCodeOnTail_binderReady.
+Check raw_codedPALocalProof_sameTemplatePrefix_transport.
+Check raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport.
+
+Print Assumptions raw_templateContextCodeOnTail_included.
+Print Assumptions raw_templateContextCodeOnTail_binderReady.
+Print Assumptions raw_codedPALocalProof_sameTemplatePrefix_transport.
+Print Assumptions
+  raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport.

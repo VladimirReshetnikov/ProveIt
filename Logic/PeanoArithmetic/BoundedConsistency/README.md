@@ -2746,10 +2746,32 @@ specializes that generic compiler to the complete opened-coverage source.  It
 selects a witnessed PA tail, converts the on-tail context to the exact legacy
 template context, and produces the opened-coverage compiler root.  Feeding
 that root through the earlier recursive-child compiler yields the exact
-Or-I-left recursive-child law root on the same witnessed tail.  Thus this
-branch no longer has a recursive-child residual; the next integration step is
-to merge its selected witnessed tail with the other rule-case roots used by
-the direct rule dispatcher.
+Or-I-left recursive-child law root on the same witnessed tail.
+
+`RawCodedTemplateLocalProofWitnessedTailTransport.v` supplies the binder-safe
+merge operation needed after independent helper compilers select different PA
+tails.  Literal context inclusion and binder readiness are lifted through an
+arbitrary shared finite template prefix, after which the completed represented
+weakening theorem transports the local proof.  The opened-coverage compiler
+specializes this result to the Or-I-left ready context and proves that its
+recursive-child law survives appending any later finite standard PA tail.
+Thus this branch no longer has a recursive-child residual and can be retained
+while subsequent rule roots extend the common witnessed tail; the next step
+is to apply the same transport interface while assembling the residual-only
+direct rule-case record.
+
+`RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterOrIntroductionLeft.v`
+performs that assembly step explicitly.  It defines the exact twenty-two-field
+remainder obtained by deleting only the discharged Or-I-left recursive field
+from the old dispatcher record.  A continuation-style compiler may append a
+finite standard suffix to any incoming witness prefix; the module transports
+the compiled Or-I-left root to that combined tail, reconstructs the complete
+rule record, and feeds it through the witnessed growing integration to an
+ordinary proof of the direct universal-soundness code.  Consequently the
+former twenty-three-field premise has been reduced to the visible
+twenty-two-field continuation plus the independent strong-prefix closure
+remainder.  The next branch-level task is to discharge another field of this
+remainder with the same standard-tail protocol.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
