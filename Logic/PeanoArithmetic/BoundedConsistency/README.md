@@ -4396,9 +4396,36 @@ existential source proof on the initial witnessed tail and a deep growing
 continuation under the exact append-witness context.  If that continuation
 selects further helper batches, the source proof is transported to its final
 tail first; the compiler then rebuilds all eight represented existential
-eliminations and returns the unshifted outer conclusion.  The remaining work
-is therefore the concrete seven-field traversal conjunction and successor
-witness introduction that supplies this deep continuation.
+eliminations and returns the unshifted outer conclusion.
+
+The concrete seven-field traversal conjunction and successor witness closure
+are now compiled.  A generic dependency-ordered conjunction theorem moves six
+stable roots from the initial witnessed PA tail to the final tail selected by
+the growing row compiler and constructs the right-associated `And7` record.
+The append-specific assembler supplies the four defined-through fields, root
+bound, and root lookup from the simultaneous table extension.  Literal shape
+lemmas check that these six fields are exactly the first six fields of the
+ten-witness global formula for both actual modes, including the otherwise
+easy-to-miss eight-slot shift of the three public arguments.
+
+A finite existential-introduction compiler then introduces the successor
+bound, old-bound root index, and all eight table witnesses.  The growing
+append eliminator removes the eight table eigenvariables afterward.  The
+result is an exact conditional proof of the shifted and then unshifted
+`dynamicTruthGlobalFormula`: its sole formula-producing premise is the
+seventh field selected from the opened global body, namely the five-universal
+row formula.  The remaining local successor seam is therefore no longer the
+global record or either existential block; it is the syntactic/proof bridge
+from the completed row-implication compiler to that extracted row field.
+
+That seventh field is now decomposed exactly as well.  A partial inverse to a
+finite universal prefix certifies its five literal binders, and the resulting
+body is definitionally `i < S b -> rowLookup -> production`.  In particular,
+the less-than-successor compiler receives the old bound `b` (its antecedent
+constructor supplies the successor), and the four-column lookup is identical
+to the row compiler's equality-side lookup.  Only the final local polarity
+production remains to be identified with the concrete closed-row production;
+the binder, arithmetic, and lookup layers are no longer part of that seam.
 
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
