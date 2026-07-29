@@ -1195,6 +1195,20 @@ Definition generic_minimal_contradiction_raw {S F : Type}
 
 Arguments generic_minimal_contradiction_raw {S F E C s} _ _ _.
 
+(** Separate contradiction formation from ex falso: producing bottom from a
+    proof and its negation is already valid in minimal logic. *)
+Definition generic_minimal_bottom_of_proof_neg_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p : F)
+    (dp : generic_proof E s p)
+    (dnp : generic_proof E s (generic_neg C p)) :
+    generic_proof E s (generic_bottom C) :=
+  generic_minimal_contradiction_raw H p
+    (generic_minimal_and_intro_raw H p (generic_neg C p) dp dnp).
+
+Arguments generic_minimal_bottom_of_proof_neg_raw {S F E C s}
+  _ _ _ _.
+
 Definition generic_minimal_or_neg_to_neg_and_raw {S F : Type}
     {E : generic_entailment S F} {C : generic_connectives F} {s : S}
     (H : generic_minimal_entailment E C s) (p q : F) :

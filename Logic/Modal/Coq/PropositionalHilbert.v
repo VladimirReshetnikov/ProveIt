@@ -614,6 +614,41 @@ Definition ph_hilbert_int_list_disj2_append_iff {Atom : Type}
   generic_intuitionistic_list_disj2_append_iff_raw
     (ph_hilbert_int_intuitionistic Atom) gamma delta.
 
+Definition ph_hilbert_int_list_disj2_insert_iff {Atom : Type}
+    (gamma delta : list (pformula Atom)) (p : pformula Atom) :
+    ph_hilbert_proof (ph_hilbert_int Atom)
+      (generic_formula_iff (pformula_connectives Atom)
+        (generic_list_disj2 (pformula_connectives Atom)
+          (gamma ++ p :: delta))
+        (POr p
+          (generic_list_disj2 (pformula_connectives Atom)
+            (gamma ++ delta)))) :=
+  generic_intuitionistic_list_disj2_insert_iff_raw
+    (ph_hilbert_int_intuitionistic Atom) gamma delta p.
+
+Definition ph_hilbert_int_neg_disj2_iff_conj2_neg {Atom : Type}
+    (gamma : list (pformula Atom)) :
+    ph_hilbert_proof (ph_hilbert_int Atom)
+      (generic_formula_iff (pformula_connectives Atom)
+        (pneg (generic_list_disj2 (pformula_connectives Atom) gamma))
+        (generic_list_conj_map (pformula_connectives Atom) pneg gamma)) :=
+  generic_intuitionistic_neg_disj2_iff_conj2_neg_raw
+    (ph_hilbert_int_intuitionistic Atom) gamma.
+
+Lemma ph_hilbert_int_inconsistent_of_provable_neg :
+  forall (Atom : Type) (p : pformula Atom),
+    ph_hilbert_provable (ph_hilbert_int Atom) p ->
+    ph_hilbert_provable (ph_hilbert_int Atom) (pneg p) ->
+    generic_inconsistent (ph_hilbert_entailment Atom)
+      (ph_hilbert_int Atom).
+Proof.
+  intros Atom p hp hnp.
+  exact (@generic_intuitionistic_inconsistent_of_provable_neg
+    (ph_hilbert Atom) (pformula Atom) (ph_hilbert_entailment Atom)
+    (pformula_connectives Atom) (ph_hilbert_int Atom)
+    (ph_hilbert_int_intuitionistic Atom) p hp hnp).
+Qed.
+
 Definition ph_hilbert_kc_efq {Atom : Type} (p : pformula Atom) :
     ph_hilbert_proof (ph_hilbert_kc Atom) (ph_axiom_efq p) :=
   @PHPAxiom Atom (ph_hilbert_kc Atom) (ph_axiom_efq p) (PHKCEfq p).
