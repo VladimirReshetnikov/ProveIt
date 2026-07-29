@@ -356,6 +356,10 @@ Check semiterm_val_free_ext.
 Check nat_env_cons.
 Check fin_env_snoc.
 Check fin_env_append.
+Check fin_env_append_left.
+Check fin_env_append_right.
+Check fin_env_append_left_eta.
+Check fin_env_append_right_eta.
 Check semiterm_val_shift.
 Check semiterm_val_rew_free_bvars.
 Check semiterm_val_rew_free_fvars.
@@ -522,9 +526,31 @@ Check first_order_definable_not.
 Check first_order_definable_iff.
 Check first_order_definable_all.
 Check first_order_definable_exists.
+Check first_order_definable_all_vector.
+Check first_order_definable_exists_vector.
+Check semiformula_list_conj.
+Check semiformula_list_disj.
+Check semiformula_eval_list_conj.
+Check semiformula_eval_list_disj.
+Check first_order_definable_list_all.
+Check first_order_definable_list_exists.
+Check first_order_definable_finite_all.
+Check first_order_definable_finite_exists.
+Check fin_t_finite_cover.
 Check first_order_definable_retraction.
+Check fin_graph_retraction.
+Check fin_graph_retraction_head.
+Check fin_graph_retraction_tail.
+Check first_order_definable_graph_family.
+Check first_order_definable_substitution_witness.
+Check first_order_definable_substitution.
 Check first_order_definable_operator_relation.
+Check first_order_definable_operator_relation_terms.
 Check first_order_definable_eq.
+Check first_order_definable_eq_terms.
+Check first_order_definable_term_graph.
+Check first_order_definable_projection.
+Check first_order_definable_parameter_const.
 Check first_order_definable_lt.
 Check first_order_definable_mem.
 
@@ -703,9 +729,29 @@ Print Assumptions first_order_definable_const.
 Print Assumptions first_order_definable_and.
 Print Assumptions first_order_definable_all.
 Print Assumptions first_order_definable_exists.
+Print Assumptions first_order_definable_all_vector.
+Print Assumptions first_order_definable_exists_vector.
+Print Assumptions semiformula_eval_list_conj.
+Print Assumptions semiformula_eval_list_disj.
+Print Assumptions first_order_definable_list_all.
+Print Assumptions first_order_definable_list_exists.
+Print Assumptions first_order_definable_finite_all.
+Print Assumptions first_order_definable_finite_exists.
 Print Assumptions first_order_definable_retraction.
+Print Assumptions fin_env_append_left.
+Print Assumptions fin_env_append_right.
+Print Assumptions fin_env_append_left_eta.
+Print Assumptions fin_env_append_right_eta.
+Print Assumptions first_order_definable_graph_family.
+Print Assumptions first_order_definable_substitution_witness.
+Print Assumptions first_order_definable_substitution.
 Print Assumptions first_order_definable_operator_relation.
+Print Assumptions first_order_definable_operator_relation_terms.
 Print Assumptions first_order_definable_eq.
+Print Assumptions first_order_definable_eq_terms.
+Print Assumptions first_order_definable_term_graph.
+Print Assumptions first_order_definable_projection.
+Print Assumptions first_order_definable_parameter_const.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.

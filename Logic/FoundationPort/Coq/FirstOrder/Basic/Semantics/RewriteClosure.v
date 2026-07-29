@@ -67,6 +67,43 @@ Lemma fin_env_append_cons : forall M k n (x : M) (e : Fin.t k -> M)
   fin_env_cons x (fin_env_append k n e b).
 Proof. reflexivity. Qed.
 
+Lemma fin_env_append_left : forall M k n (e : Fin.t k -> M)
+    (b : Fin.t n -> M) (i : Fin.t k),
+  fin_env_append k n e b (Fin.L n i) = e i.
+Proof.
+  intros M k; induction k as [|k IH]; intros n e b i.
+  - inversion i.
+  - refine (@Fin.caseS' k i (fun j =>
+      fin_env_append (S k) n e b (Fin.L n j) = e j) _ _).
+    + reflexivity.
+    + intro j. simpl. apply IH.
+Qed.
+
+Lemma fin_env_append_right : forall M k n (e : Fin.t k -> M)
+    (b : Fin.t n -> M) (i : Fin.t n),
+  fin_env_append k n e b (Fin.R k i) = b i.
+Proof.
+  intros M k; induction k as [|k IH]; intros n e b i.
+  - reflexivity.
+  - simpl. apply IH.
+Qed.
+
+Lemma fin_env_append_left_eta : forall M k n (e : Fin.t k -> M)
+    (b : Fin.t n -> M),
+  (fun i => fin_env_append k n e b (Fin.L n i)) = e.
+Proof.
+  intros. apply functional_extensionality. intro i.
+  apply fin_env_append_left.
+Qed.
+
+Lemma fin_env_append_right_eta : forall M k n (e : Fin.t k -> M)
+    (b : Fin.t n -> M),
+  (fun i => fin_env_append k n e b (Fin.R k i)) = b.
+Proof.
+  intros. apply functional_extensionality. intro i.
+  apply fin_env_append_right.
+Qed.
+
 (** * Standard syntactic term rewrites *)
 
 Lemma semiterm_val_shift :
