@@ -2986,9 +2986,13 @@ PA's already proved arbitrary-value beta-table append theorem.  It opens the
 four universal binders in the order old code, old step, bound, and new value,
 and emits a genuine local proof of the specialized append implication on a
 standard witnessed PA tail.  Both arbitrary-base and empty-base forms are
-available.  This supplies the first proof-producing arithmetic primitive for
-extending the four synchronized tables inside the normalized global-Sigma
-Or-row construction.
+available.  Named projections expose its defined-through antecedent and
+two-witness extension consequent.  A same-context application theorem
+transplants any caller proof of the antecedent through the selected standard
+axiom prefix and performs represented implication elimination, producing the
+extension existential itself.  This supplies the first proof-producing
+arithmetic primitive for extending the four synchronized tables inside the
+normalized global-Sigma Or-row construction.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
