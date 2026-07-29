@@ -39,7 +39,66 @@ its own name, and `Name.toString` escapes the NFD form as `«café»`). Any
 component in the pipeline that normalises — a filesystem, an editor, a diff or
 review tool, a search index, a normalising text pipeline — would.
 
-### 2. Module names vs. the filesystem
+### 2. Collation-ignorable characters: ARABIC TATWEEL
+
+`TatweelIdentifiers.lean`. U+0640 ARABIC TATWEEL (category `Lm`) is the standard
+example of a character that culture-sensitive comparison gives **zero weight**:
+under .NET's default `StringComparison.CurrentCulture`, and under the DUCET
+default collation, `"foo"` and `"fooـ"` compare **equal**. The same holds
+for `Cf` characters such as U+00AD SOFT HYPHEN and the zero-width joiners --
+and C# goes further and strips `Cf` characters from identifiers outright.
+
+U+0640 is in none of `isLetterLike`'s ranges, so:
+
+| spelling | result |
+| --- | --- |
+| `def fooـ` (bare suffix) | **`error: expected token`** |
+| `def ـfoo` (bare prefix) | **`error: expected token`** |
+| `def «fooـ»` | **accepted -- distinct from `foo`** |
+| `def «ـfoo»` | **accepted -- distinct from `foo`** |
+
+Lean's own comparisons are all ordinal and agree that these are distinct:
+`"foo" == "fooـ"` is `false`, `compare` gives `.lt`, the `Name`s differ,
+the hashes differ, and `Name.toString` escapes them to `«fooـ»` /
+`«ـfoo»`, which round-trip. So Lean is immune; anything downstream that
+compares identifiers by collation rather than ordinally is not.
+
+The useful fact is the *bare* rejection: an invisible or zero-weight character
+cannot be smuggled into an ordinary-looking identifier. Getting one in requires
+French quotes, which are conspicuous in source.
+
+### 3. `Name.toString` is documented as not round-tripping
+
+`NameRoundTrip.lean`. Over 18 adversarial components, three fail
+`toName ∘ toString = id`:
+
+```
+component "a»b"  printed as "a»b"  parsed back as Lean.Name.anonymous
+component "»"    printed as "»"    parsed back as Lean.Name.anonymous
+component "«x»"  printed as "«x»"  parsed back as `x
+```
+
+The last is the sharp one: `Name.mkSimple "«x»"` and `Name.mkSimple "x"` are
+distinct constants, but the printed form of the first *parses to the second*.
+So `toName ∘ toString` is not injective, while ordinal comparison of the printed
+forms keeps them apart -- two different notions of name identity.
+
+This is **documented**, not a new bug. `Init/Meta/Defs.lean:235`:
+
+> Names with number components, anonymous names, and names containing `»` might
+> not round trip.
+
+(Number components actually do round-trip -- `foo.5` vs `foo.«5»` -- so the
+doc is pessimistic there.)
+
+It matters because names really do cross a text boundary: comparator's
+`Main.lean:safeExport` serialises the constants to export with `.toString` and
+passes them as **argv** to `lean4export`, which parses them back. Those names
+are verifier-controlled (theorem names, permitted axioms, the primitive list),
+so a solver cannot reach it -- but a challenge whose theorem name contained `»`
+would silently cause the wrong constant to be exported.
+
+### 4. Module names vs. the filesystem
 
 `ModuleNameVsFilesystem.md`. Lean's module identity is byte-exact; NTFS and
 APFS/HFS+ are case-insensitive, and HFS+ normalises to NFD. On Windows,
@@ -85,4 +144,6 @@ other than the one written.
 lean StringIdentity/EmbeddedNulDiff.lean      # differential fuzz, expect 0 mismatches
 lean StringIdentity/NameIdentity.lean         # Name identity and hashing
 lean StringIdentity/NormalizationForms.lean   # expect exactly 2 errors, at the NFD-bare and NFC-quoted lines
+lean StringIdentity/TatweelIdentifiers.lean   # expect exactly 2 errors, at the two BARE tatweel lines
+lean StringIdentity/NameRoundTrip.lean        # expect 3 round-trip failures, all involving »
 ```
