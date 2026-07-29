@@ -4500,3 +4500,23 @@ the finite PA witness batch selected by beta functionality, and its three
 input roots admit dependency-ordered witnessed-tail transport.  This removes
 the former need to equate a prefix containing closed named parameters with a
 prefix containing open de Bruijn variables.
+
+That mode-only package is now threaded through the complete literal row case.
+An adequate-prefix assembler constructs the operational appended lookup with
+the actual global variables, weakens the independently quantified row lookup
+and fixed-mode production beneath `i = b`, and packages all three roots in one
+context.  The base-aware less-than-successor eliminator transports this
+package along its dependency-ordered witness extension, while the predecessor
+callback transports only the inherited traversal and old lookup.  Their two
+growing branches therefore return the embedded concrete row production under
+the exact global row prefix, without any of the four named-field freshness
+hypotheses required by the older parameter-replacement route.
+
+The two traversal premises are closed as honest represented implications as
+well.  A general growing-proof lemma discharges any two context-head
+assumptions while retaining the selected witness list, target context, and
+base-context inclusion.  The concrete append client builds the bound and row
+lookup assumptions, runs the full case compiler, and applies that lemma to
+obtain exactly `bound -> rowLookup -> production`.  This proof is already in
+the literal prefix consumed by the scoped global append endpoint; no prefix
+code equality or carrier-parameter interpretation remains.
