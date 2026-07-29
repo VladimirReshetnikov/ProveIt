@@ -2620,6 +2620,14 @@ trace at an arbitrary direct carrier term.  The remaining obligation is no
 longer a syntactic adapter: it is precisely the arithmetic theorem that PA
 proves the universal closure of this fixed source.
 
+`RawCodedTemplateSemantics.v` gives finite templates a raw-model semantics
+with separate variable, carrier-parameter, and opaque-predicate environments.
+It proves agreement with embedded PA syntax, semantic renaming, and the key
+abstraction law: inserting a carrier value as a fresh de Bruijn variable is
+equivalent to overriding the selected named parameter by that value.  This
+allows validity of the large fixed reroot source to be proved compositionally
+without normalizing its expanded syntax.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
