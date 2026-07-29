@@ -3628,7 +3628,12 @@ callback exposes the resulting exhaustive carrier-level decomposition: zero
 selects the quoted fixed base field, while every successor selects an exact
 adequate predecessor trace, and both cases retain the literal carried local
 proof root in the unchanged helper context.  This is the trace needed to
-project the four remaining predecessor-field collision resources.
+project the four remaining predecessor-field collision resources.  Moreover,
+functionality of the paired orbit identifies the successor globals hidden in
+that predecessor trace with the input globals of the next trace.  The
+callback packages this alignment together with the carried current-local
+proof and its two exact ternary evidence applications, so downstream
+collision compilers do not need to repeat the orbit comparison.
 
 The next-field exact residual builder sees this package, the one selected
 local transform trace,
