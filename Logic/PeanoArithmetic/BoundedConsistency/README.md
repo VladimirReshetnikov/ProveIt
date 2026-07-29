@@ -4391,6 +4391,15 @@ append-row specialization converts the completed implication proof from the
 shifted row prefix back to the unshifted eight-witness context, ready for the
 outer append existential closure.
 
+The eight-witness specialization is now exposed too.  It accepts the append
+existential source proof on the initial witnessed tail and a deep growing
+continuation under the exact append-witness context.  If that continuation
+selects further helper batches, the source proof is transported to its final
+tail first; the compiler then rebuilds all eight represented existential
+eliminations and returns the unshifted outer conclusion.  The remaining work
+is therefore the concrete seven-field traversal conjunction and successor
+witness introduction that supplies this deep continuation.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
