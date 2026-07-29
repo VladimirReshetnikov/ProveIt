@@ -6,6 +6,9 @@ From BoundedPAConsistency Require Import
 Import PABoundedRawCodedFourStateTableAppendSource.
 
 Check codedFourStateTableAppendFormula.
+Check codedAssignmentAppendAtTermAt.
+Check RawCodedAssignmentAppendAt.
+Check raw_sat_codedAssignmentAppendAtTermAt_iff.
 Check RawFourStateTableAppendProperty.
 Check raw_sat_codedFourStateTableAppendFormula_iff.
 Check codedFourStateTableAppendFormula_sentence.
@@ -13,6 +16,7 @@ Check codedFourStateTableAppendFormula_raw_valid.
 Check PA_proves_codedFourStateTableAppendFormula.
 
 Print Assumptions raw_sat_codedFourStateTableAppendFormula_iff.
+Print Assumptions raw_sat_codedAssignmentAppendAtTermAt_iff.
 Print Assumptions codedFourStateTableAppendFormula_sentence.
 Print Assumptions codedFourStateTableAppendFormula_raw_valid.
 Print Assumptions PA_proves_codedFourStateTableAppendFormula.

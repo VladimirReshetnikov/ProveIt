@@ -1,0 +1,13 @@
+(** Assumption audit for finite represented existential elimination chains. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofExistentialEliminationChain.
+
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
+
+Check templateFormulaShiftMany.
+Check templateExistentialEliminationContext.
+Check templateExistentialBodyMany.
+Check raw_codedPALocalProofOf_existential_elimination_chain.
+
+Print Assumptions raw_codedPALocalProofOf_existential_elimination_chain.
