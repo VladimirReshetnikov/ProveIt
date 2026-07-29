@@ -3682,6 +3682,14 @@ the aligned staged callback exposes a roots-only endpoint.  Its remaining
 premises are precisely the represented admissibility, Sigma-evidence, and
 Pi-evidence proofs which the three implication eliminations consume; no
 external template bridge or independently supplied translation remains.
+Those three leaves are also bundled as the Prop-valued
+`RawDynamicTruthPredecessorStateLogicalRootsAt`.  This is more than cosmetic:
+the global traversal compiler will obtain concrete proof roots through
+existential proof construction, and Rocq permits those witnesses to be
+eliminated into a proposition but not into the Type-valued structural
+translation record.  Package-shaped predecessor and aligned-callback
+endpoints now preserve that universe boundary explicitly, while the older
+three-premise interfaces remain available as compatibility adapters.
 
 The next-field exact residual builder sees this package, the one selected
 local transform trace,

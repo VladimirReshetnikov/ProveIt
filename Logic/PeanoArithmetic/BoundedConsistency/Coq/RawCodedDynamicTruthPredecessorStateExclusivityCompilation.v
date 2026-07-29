@@ -165,6 +165,32 @@ Arguments rawDynamicTruthPredecessorSigmaStateContext M baseContext
 Arguments rawDynamicTruthPredecessorJointStateContext M baseContext
   : clear implicits.
 
+(** The three proof-producing leaves form one logical resource.  Keeping the
+    package in [Prop] is deliberate: a trace compiler may obtain its carrier
+    roots existentially and eliminate those existentials into this package,
+    while Type-valued structural translations remain independent of the
+    chosen proof-root witnesses. *)
+Record RawDynamicTruthPredecessorStateLogicalRootsAt
+    (M : RawPAModel)
+    (baseContext sigmaDomain piDomain sigmaEvidence piEvidence : M) : Prop := {
+  rawDynamicTruthPredecessorLogicalRoots_admissible : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain) root;
+  rawDynamicTruthPredecessorLogicalRoots_sigmaEvidence : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      sigmaEvidence root;
+  rawDynamicTruthPredecessorLogicalRoots_piEvidence : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      piEvidence root
+}.
+
+Arguments RawDynamicTruthPredecessorStateLogicalRootsAt
+  M baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+  : clear implicits.
+
 (** General proof-theoretic kernel.  The two assumptions need not be state
     atoms: any adequate formulas can be discharged.  Likewise the opened
     exclusive body can come from any verified elimination chain. *)
@@ -415,6 +441,35 @@ Proof.
     hidentification).
 Qed.
 
+(** Package-based form of the direct structural bridge.  Its conclusion is
+    Type-valued, but it only projects Prop-valued fields; it never chooses or
+    inspects the existential carrier roots. *)
+Corollary
+    raw_dynamicTruthPredecessorStateTemplateApplicationBridgeAt_of_direct_logical_roots :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawDynamicTruthPredecessorStateLogicalRootsAt M baseContext
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawDynamicTruthPredecessorStateTemplateApplicationBridgeAt M baseContext
+    sigmaDomain piDomain sigmaEvidence piEvidence.
+Proof.
+  intros M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+    inputs hidentification hroots.
+  exact
+    (raw_dynamicTruthPredecessorStateTemplateApplicationBridgeAt_of_direct
+      M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+      inputs hidentification
+      (rawDynamicTruthPredecessorLogicalRoots_admissible
+        M baseContext sigmaDomain piDomain sigmaEvidence piEvidence hroots)
+      (rawDynamicTruthPredecessorLogicalRoots_sigmaEvidence
+        M baseContext sigmaDomain piDomain sigmaEvidence piEvidence hroots)
+      (rawDynamicTruthPredecessorLogicalRoots_piEvidence
+        M baseContext sigmaDomain piDomain sigmaEvidence piEvidence hroots)).
+Qed.
+
 Theorem raw_dynamicTruthPredecessorStateApplicationBridgeAt_of_diagonal :
     forall (M : RawPAModel), RawPASatisfies M -> forall
       baseContext sigmaDomain piDomain sigmaEvidence piEvidence,
@@ -606,6 +661,45 @@ Proof.
     (raw_dynamicTruthPredecessorStateTemplateApplicationBridgeAt_of_direct
       M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
       inputs hidentification hadmissible hsigma hpi).
+Qed.
+
+(** The package form is the natural Prop-valued endpoint for callers which
+    construct the three leaves together under the joint state context. *)
+Corollary
+    raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_native_trace_logical_roots :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (tail : nat -> M) predecessorLevel inputGlobalSigma inputGlobalPi
+      baseContext sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot,
+  RawContextListRealizable M baseContext ->
+  RawContextShift M baseContext baseContext ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalExclusiveCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence)) sourceRoot ->
+  RawDynamicTruthNativeLocalProofTraceAt M tail predecessorLevel
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence ->
+  RawDynamicTruthPredecessorStateLogicalRootsAt M baseContext
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M baseContext
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+    baseContext sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot
+    hcontext hshift hsource htrace hroots.
+  exact
+    (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_native_trace
+      M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+      baseContext sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot
+      hcontext hshift hsource htrace
+      (rawDynamicTruthPredecessorLogicalRoots_admissible
+        M baseContext sigmaDomain piDomain sigmaEvidence piEvidence hroots)
+      (rawDynamicTruthPredecessorLogicalRoots_sigmaEvidence
+        M baseContext sigmaDomain piDomain sigmaEvidence piEvidence hroots)
+      (rawDynamicTruthPredecessorLogicalRoots_piEvidence
+        M baseContext sigmaDomain piDomain sigmaEvidence piEvidence hroots)).
 Qed.
 
 End PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
