@@ -1157,6 +1157,98 @@ Proof.
   split; assumption.
 Qed.
 
+(** Growing-tail packaging of the completed equality branch.  This is the
+    exact callback shape consumed by the dependency-ordered successor-bound
+    eliminator: beta functionality may select its finite PA theorem batch,
+    and the resulting proof advertises the honest inclusion of the caller's
+    witness tail into that enlarged context. *)
+Corollary
+    raw_codedPALocalProofOf_four_state_table_append_equality_transport_result_growing_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall sourceWitnessList sourceContext prefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+    fixedLookupRoot rowLookupRoot fixedResult fixedResultRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  modeName <> boundName ->
+  formulaName <> boundName ->
+  assignmentCodeName <> boundName ->
+  assignmentStepName <> boundName ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate
+        boundName index
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter modeName) (ttParameter formulaName)
+        (ttParameter assignmentCodeName) (ttParameter assignmentStepName)))
+    fixedLookupRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendEqualityRowLookupTemplate
+        modeName formulaName assignmentCodeName assignmentStepName
+        index rowMode rowFormula rowAssignmentCode rowAssignmentStep))
+    rowLookupRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawTemplateFormula translation fixedResult) fixedResultRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix
+    (rawTemplateFormula translation
+      (templateFormulaReplaceParameters
+        (coqFourStateTableAppendEqualityFieldBindings
+          modeName formulaName assignmentCodeName assignmentStepName
+          rowMode rowFormula rowAssignmentCode rowAssignmentStep)
+        fixedResult)).
+Proof.
+  intros M hPA translation hagreement
+    sourceWitnessList sourceContext prefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+    fixedLookupRoot rowLookupRoot fixedResult fixedResultRoot
+    hprefix hsource hmodeFresh hformulaFresh
+    hassignmentCodeFresh hassignmentStepFresh
+    hfixedLookup hrowLookup hfixedResult.
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_equality_transport_result_on_witnessed_tail_under_prefix
+      M hPA translation hagreement
+      sourceWitnessList sourceContext prefix
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      boundName modeName formulaName assignmentCodeName assignmentStepName
+      index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+      fixedLookupRoot rowLookupRoot fixedResult fixedResultRoot
+      hprefix hsource hmodeFresh hformulaFresh
+      hassignmentCodeFresh hassignmentStepFresh
+      hfixedLookup hrowLookup hfixedResult)
+    as (witnesses & resultRoot & hextended & hresult).
+  unfold RawCodedPAGrowingTemplateLocalProofAt.
+  exists
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses sourceWitnessList),
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses sourceContext),
+    resultRoot.
+  split; [exact hextended |].
+  split.
+  - exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+      M hPA witnesses sourceContext).
+  - exact hresult.
+Qed.
+
 (** Agreement on embedded PA syntax identifies the metatheoretic witnessed
     template tail with its synchronized carrier-coded context. *)
 Lemma raw_templateContextCode_embedPAAxiomWitnesses : forall

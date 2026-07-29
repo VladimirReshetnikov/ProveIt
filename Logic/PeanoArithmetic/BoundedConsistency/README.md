@@ -4259,6 +4259,17 @@ the independently bound row values, so later clients need only identify their
 concrete successor-row formula with this capture-avoiding four-parameter
 replacement.
 
+The successor-bound eliminator now admits dependency-ordered branch
+compilers whose witnessed PA tails may grow.  The first callback can select
+another finite helper-theorem batch, the second starts from that honestly
+witnessed extension and may grow it again, and the eliminator weakens both
+the arithmetic disjunction and the earlier branch proof to the final common
+tail before constructing represented `Or-E`.  A reusable growing-proof
+package records the final witnessed context and literal context inclusion.
+The append-row equality assembler exposes exactly that package, so its beta
+functionality witness selection can now occur below the equality head
+without violating the case split's context identity.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a

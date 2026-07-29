@@ -19,6 +19,9 @@ Check
 Check raw_codedPALocalProofOf_lt_succ_cases_eliminate_on_witnessed_tail.
 Check
   raw_codedPALocalProofOf_lt_succ_cases_eliminate_on_witnessed_tail_under_prefix.
+Check RawCodedPAGrowingTemplateLocalProofAt.
+Check
+  raw_codedPALocalProofOf_lt_succ_cases_eliminate_on_growing_witnessed_tail_under_prefix.
 
 Print Assumptions coqLtSuccCasesInstanceTemplate_open.
 Print Assumptions coqLtSuccCasesInstanceTemplate_shape.
@@ -31,3 +34,6 @@ Print Assumptions
   raw_codedPALocalProofOf_lt_succ_cases_eliminate_on_witnessed_tail.
 Print Assumptions
   raw_codedPALocalProofOf_lt_succ_cases_eliminate_on_witnessed_tail_under_prefix.
+Print Assumptions RawCodedPAGrowingTemplateLocalProofAt.
+Print Assumptions
+  raw_codedPALocalProofOf_lt_succ_cases_eliminate_on_growing_witnessed_tail_under_prefix.
