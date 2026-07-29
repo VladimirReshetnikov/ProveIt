@@ -23,7 +23,7 @@ From FoundationModal Require Import
   PropositionalEntailmentLukasiewicz
   PropositionalEntailmentMinimal PropositionalEntailmentInt
   PropositionalEntailmentClassical PropositionalTait
-  NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
+  NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness CorsiVF Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
   Correspondence FiltrationExtensions PropositionalKripkeFiltration
@@ -3871,6 +3871,36 @@ Check plon_N_sound_complete.
 Check plon_N_strictly_weaker_K.
 Check plon_N_strictly_weaker_EN.
 
+(** Corsi's weak-Goedel modal companion.  Unlike the pinned source, the NP
+    soundness and completeness boundary is proved rather than axiomatized. *)
+Check corsi_godel_weak.
+Check corsi_godel_weak_decode.
+Check corsi_godel_weak_decode_roundtrip.
+Check corsi_godel_weak_injective.
+Check plon_P_axiom.
+Check plon_NP_axioms.
+Check plon_frame_NP.
+Check plon_P_valid_on_NP_frame.
+Check plon_NP_sound.
+Check plon_NP_consistent.
+Check plon_NP_canonical_frame_serial.
+Check plon_NP_complete.
+Check plon_NP_sound_complete.
+Check plon_hilbert_proves_mono.
+Check plon_N_proves_in_NP.
+Check corsi_plon_to_fmt_frame.
+Check corsi_plon_to_fmt_model.
+Check corsi_plon_to_fmt_truth.
+Check corsi_fmt_to_plon_frame.
+Check corsi_fmt_to_plon_model.
+Check corsi_fmt_to_plon_frame_NP.
+Check corsi_fmt_to_plon_truth.
+Check phvf_VF_provable_implies_plon_N_weak.
+Check plon_NP_weak_provable_implies_phvf_VF.
+Check phvf_VF_iff_plon_N_weak.
+Check phvf_VF_iff_plon_NP_weak.
+Check plon_N_weak_iff_NP_weak.
+
 (** Complete named schema surface from Foundation/Modal/Axioms.lean. *)
 Check Axioms.DiaDuality.
 Check Axioms.K.
@@ -6433,6 +6463,14 @@ Print Assumptions plon_complete_of_canonical_frame.
 Print Assumptions plon_N_sound_complete.
 Print Assumptions plon_N_strictly_weaker_K.
 Print Assumptions plon_N_strictly_weaker_EN.
+Print Assumptions corsi_godel_weak_injective.
+Print Assumptions plon_NP_sound.
+Print Assumptions plon_NP_canonical_frame_serial.
+Print Assumptions plon_NP_complete.
+Print Assumptions corsi_plon_to_fmt_truth.
+Print Assumptions corsi_fmt_to_plon_truth.
+Print Assumptions phvf_VF_iff_plon_N_weak.
+Print Assumptions phvf_VF_iff_plon_NP_weak.
 Print Assumptions valid_T_of_reflexive.
 Print Assumptions valid_D_of_serial.
 Print Assumptions valid_B_of_symmetric.

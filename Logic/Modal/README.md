@@ -254,6 +254,7 @@ is being reconstructed:
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
 | `PLoN.v` | `Modal/PLoN/Basic.lean` | Formula-indexed frames/models, satisfaction, validity, countermodels, failure of replacement of equivalents |
 | `PLoNCompleteness.v` | `Modal/PLoN/{Hilbert,Completeness,Logic/N}.lean` | Generic PLoN Hilbert soundness/canonical completeness and complete logic-N metatheory, including strictness below EN and K |
+| `CorsiVF.v` | `Modal/ModalCompanion/Corsi{,/VF}.lean` | Complete weak-Gödel VF modal companion: an explicit partial decoder and injectivity theorem; proved NP soundness, consistency, canonical seriality, and completeness for formula-indexed PLoN frames; factored PLoN-to-FMT and FMT-to-PLoN model translations with exact truth lemmas; and the VF/N/NP provability equivalences. This strengthens the pinned source by replacing its NP soundness and completeness axioms with checked canonical proofs |
 | `Axioms.v` | `Modal/Axioms.lean` | Complete named schema catalog, including normal, Geach, provability, McKinsey, and boxdot schemata |
 | `HilbertK.v` | `Modal/Hilbert/Normal/Basic.lean` | Constructive Hilbert K, substitution, derived classical rules, theories, deduction, consistency criteria, contextual boxing |
 | `Kripke.v` | `Modal/Kripke/Basic.lean` | Core frames, valuations, recursive satisfaction, substitution, relation/modal iteration, and K validity |
