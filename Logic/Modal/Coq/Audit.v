@@ -3215,6 +3215,21 @@ Check ph_cl_provable_of_godel_S5Grz.
 Check ph_cl_modal_companion_S5Grz.
 Check ph_cl_modal_companion_Triv.
 Check ph_cl_boxdot_modal_companion_Ver.
+Check S4_schema_closed.
+Check S4_normal_logic.
+Check S4_as_s4_entailment.
+Check S4Point2_normal_logic.
+Check S4Point2_as_s4_entailment.
+Check S4Point3_normal_logic.
+Check S4Point3_as_s4_entailment.
+Check ph_int_provable_godel_S4.
+Check ph_int_provable_godel_Grz.
+Check S4Point2_proves_godel_translated_WLEM.
+Check ph_kc_provable_godel_S4Point2.
+Check ph_kc_provable_godel_GrzPoint2.
+Check S4Point3_proves_godel_translated_Dummett.
+Check ph_lc_provable_godel_S4Point3.
+Check ph_lc_provable_godel_GrzPoint3.
 Check s5_entailment.
 Check s5_E.
 Check diabox_box_raw.
@@ -5318,6 +5333,17 @@ Print Assumptions ph_cl_provable_of_godel_S5Grz.
 Print Assumptions ph_cl_modal_companion_S5Grz.
 Print Assumptions ph_cl_modal_companion_Triv.
 Print Assumptions ph_cl_boxdot_modal_companion_Ver.
+Print Assumptions S4_as_s4_entailment.
+Print Assumptions S4Point2_as_s4_entailment.
+Print Assumptions S4Point3_as_s4_entailment.
+Print Assumptions ph_int_provable_godel_S4.
+Print Assumptions ph_int_provable_godel_Grz.
+Print Assumptions S4Point2_proves_godel_translated_WLEM.
+Print Assumptions ph_kc_provable_godel_S4Point2.
+Print Assumptions ph_kc_provable_godel_GrzPoint2.
+Print Assumptions S4Point3_proves_godel_translated_Dummett.
+Print Assumptions ph_lc_provable_godel_S4Point3.
+Print Assumptions ph_lc_provable_godel_GrzPoint3.
 Print Assumptions diabox_box_raw.
 Print Assumptions diabox_box_applied_raw.
 Print Assumptions rm_diabox_raw.
