@@ -4439,6 +4439,15 @@ remaining normalization lemma can be plugged into a single endpoint rather
 than coordinating the five row binders, ten introductions, or eight append
 eliminations itself.
 
+The production equality has been split once more.  Structural lemmas prove
+that finite named-parameter replacement is inert on every embedded ordinary
+PA term or formula, including underneath binders.  Hence the concrete
+closed-row production instantiated by `embedPAFormula localSigma` and
+`embedPAFormula localPi` is already the literal mode-zero/mode-one polarity
+split.  What remains is solely the scoped opening calculation showing that
+the ten global witnesses act identically on the first thirteen local-row
+variables; variables outside that scope intentionally need not be fixed.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a

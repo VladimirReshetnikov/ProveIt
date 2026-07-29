@@ -25,6 +25,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
+  RawCodedTemplateParameterAbstraction
   RawCodedTemplatePAEmbedding
   RawCodedTemplatePAEmbeddingSelfShiftTail
   RawCodedTemplateLocalProofStandardWitnessTailTransport
@@ -32,6 +33,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofUniversalIntroductionChain
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedPALocalProofExistentialIntroductionChain
+  RawCodedPALocalProofEquality
   RawCodedLtSuccCasesProofCompilation
   RawCodedFourStateTableAppendSource
   RawCodedFourStateTableAppendProofCompilation
@@ -58,6 +60,7 @@ Import PABoundedRawCodedFixedLevelTruthTraversal.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
+Import PABoundedRawCodedTemplateParameterAbstraction.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplatePAEmbeddingSelfShiftTail.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
@@ -65,6 +68,7 @@ Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPALocalProofExistentialIntroductionChain.
+Import PABoundedRawCodedPALocalProofEquality.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedFourStateTableAppendSource.
 Import PABoundedRawCodedFourStateTableAppendProofCompilation.
@@ -330,6 +334,70 @@ Lemma coqFourStateTableAppendOpenedGlobalRowsTemplate_shape : forall
 Proof.
   intros.
   reflexivity.
+Qed.
+
+(** Ordinary embedded PA syntax contains no named template parameters.
+    Direct parameter replacement is therefore inert at every binder depth.
+    These small structural lemmas keep that fact explicit instead of asking
+    reduction to traverse an arbitrary client formula repeatedly. *)
+Lemma templateTermReplaceParameterAt_embedPATerm : forall
+    name depth replacement input,
+  templateTermReplaceParameterAt name depth replacement
+    (embedPATerm input) = embedPATerm input.
+Proof.
+  intros name depth replacement input.
+  induction input; cbn [embedPATerm templateTermReplaceParameterAt];
+    try reflexivity.
+  - now rewrite IHinput.
+  - now rewrite IHinput1, IHinput2.
+  - now rewrite IHinput1, IHinput2.
+Qed.
+
+Lemma templateFormulaReplaceParameterAt_embedPAFormula : forall
+    name depth replacement input,
+  templateFormulaReplaceParameterAt name depth replacement
+    (embedPAFormula input) = embedPAFormula input.
+Proof.
+  intros name depth replacement input. revert depth.
+  induction input; intro depth;
+    cbn [embedPAFormula templateFormulaReplaceParameterAt].
+  - now rewrite !templateTermReplaceParameterAt_embedPATerm.
+  - reflexivity.
+  - now rewrite IHinput1, IHinput2.
+  - now rewrite IHinput1, IHinput2.
+  - now rewrite IHinput1, IHinput2.
+  - now rewrite IHinput.
+  - now rewrite IHinput.
+Qed.
+
+Lemma templateFormulaReplaceParametersDirect_embedPAFormula : forall
+    bindings input,
+  templateFormulaReplaceParametersDirect bindings (embedPAFormula input) =
+  embedPAFormula input.
+Proof.
+  induction bindings as [|[name replacement] remaining ih]; intro input.
+  - reflexivity.
+  - cbn [templateFormulaReplaceParametersDirect].
+    unfold templateFormulaReplaceParameter.
+    rewrite templateFormulaReplaceParameterAt_embedPAFormula.
+    exact (ih input).
+Qed.
+
+(** The concrete row normal form already agrees with the desired polarity
+    split when its two bodies are embedded ordinary PA formulae. *)
+Lemma
+    coqFourStateTableAppendConcreteClosedRowProductionTemplate_embedded_shape :
+  forall localSigma localPi,
+  coqFourStateTableAppendConcreteClosedRowProductionTemplate
+    (embedPAFormula localSigma) (embedPAFormula localPi) =
+  tfOr
+    (tfAnd (tfEq (ttVar 3) ttZero) (embedPAFormula localSigma))
+    (tfAnd (tfEq (ttVar 3) (ttSucc ttZero))
+      (embedPAFormula localPi)).
+Proof.
+  intros localSigma localPi.
+  unfold coqFourStateTableAppendConcreteClosedRowProductionTemplate.
+  now rewrite !templateFormulaReplaceParametersDirect_embedPAFormula.
 Qed.
 
 (** Convert the completed concrete row implication into the exact extracted
