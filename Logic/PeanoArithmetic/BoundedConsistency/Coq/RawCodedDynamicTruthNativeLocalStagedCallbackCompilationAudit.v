@@ -19,6 +19,8 @@ Check raw_codedPAProofOf_dynamicTruthNativeLocalFieldRootOn.
 (** The exact helper context contains the actual staged current package and
     is produced automatically from it by the forty-helper extension. *)
 Check RawDynamicTruthNativeLocalCurrentHelperContextAt.
+Check raw_dynamicTruthNativeLocalCurrentHelperContextAt_successor_trace.
+Check raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases.
 Check raw_dynamicTruthNativeLocalCurrentHelperContextAt_exists.
 
 Goal forall M translation tail level
@@ -57,6 +59,10 @@ Print Assumptions
   raw_codedPAProofOf_dynamicTruthNativeLocal_of_witnessed_root.
 Print Assumptions
   raw_codedPAProofOf_dynamicTruthNativeLocalFieldRootOn.
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentHelperContextAt_successor_trace.
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases.
 Print Assumptions
   raw_dynamicTruthNativeLocalCurrentHelperContextAt_exists.
 Print Assumptions
