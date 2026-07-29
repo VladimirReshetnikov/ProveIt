@@ -127,6 +127,81 @@ Proof.
   - now rewrite templateTermsSubst_rename.
 Qed.
 
+(** Substitution composition for the extended template syntax.  Named
+    parameters remain inert, while ordinary variables receive [first] and
+    then [second]. *)
+Lemma templateTermSubst_comp : forall input first second,
+  templateTermSubst second (templateTermSubst first input) =
+  templateTermSubst
+    (fun index => templateTermSubst second (first index)) input.
+Proof.
+  induction input; intros first second; cbn; try reflexivity.
+  - now rewrite IHinput.
+  - now rewrite IHinput1, IHinput2.
+  - now rewrite IHinput1, IHinput2.
+Qed.
+
+Lemma templateTermsSubst_comp : forall inputs first second,
+  templateTermsSubst second (templateTermsSubst first inputs) =
+  templateTermsSubst
+    (fun index => templateTermSubst second (first index)) inputs.
+Proof.
+  induction inputs as [|input inputs ih]; intros first second; cbn.
+  - reflexivity.
+  - rewrite templateTermSubst_comp. f_equal.
+    exact (ih first second).
+Qed.
+
+(** Lifting commutes with substitution composition.  This is the binder
+    calculation required by formula-level composition. *)
+Lemma templateTermUpSubst_comp : forall first second index,
+  templateTermSubst (templateTermUpSubst second)
+    (templateTermUpSubst first index) =
+  templateTermUpSubst
+    (fun outer => templateTermSubst second (first outer)) index.
+Proof.
+  intros first second [|index].
+  - reflexivity.
+  - cbn [templateTermUpSubst].
+    rewrite templateTermSubst_rename.
+    rewrite templateTermRename_subst.
+    apply templateTermSubst_ext.
+    intro variable. reflexivity.
+Qed.
+
+Lemma templateFormulaSubst_comp : forall input first second,
+  templateFormulaSubst second (templateFormulaSubst first input) =
+  templateFormulaSubst
+    (fun index => templateTermSubst second (first index)) input.
+Proof.
+  induction input; intros first second; cbn.
+  - now rewrite !templateTermSubst_comp.
+  - reflexivity.
+  - now rewrite IHinput1, IHinput2.
+  - now rewrite IHinput1, IHinput2.
+  - now rewrite IHinput1, IHinput2.
+  - rewrite IHinput. f_equal.
+    apply templateFormulaSubst_ext.
+    apply templateTermUpSubst_comp.
+  - rewrite IHinput. f_equal.
+    apply templateFormulaSubst_ext.
+    apply templateTermUpSubst_comp.
+  - now rewrite templateTermsSubst_comp.
+Qed.
+
+(** Opening is the distinguished root-level instance of composition. *)
+Corollary templateFormulaOpen_subst : forall input substitution replacement,
+  templateFormulaOpen replacement
+    (templateFormulaSubst substitution input) =
+  templateFormulaSubst
+    (fun index => templateTermSubst
+      (templateInstTerm replacement) (substitution index)) input.
+Proof.
+  intros input substitution replacement.
+  unfold templateFormulaOpen.
+  apply templateFormulaSubst_comp.
+Qed.
+
 (** Opening a freshly shifted formula ignores the replacement.  This is the
     syntactic form of the usual de Bruijn fact that the new variable zero
     cannot occur in a formula whose old free variables were all shifted. *)

@@ -4221,3 +4221,22 @@ one shared witness extension.  The structural equalities remain explicit
 because abstracting the append bound is freshness-sensitive for arbitrary
 template parameters; the concrete successor parameter assignment must prove
 them rather than relying on an unsound generic reduction.
+
+The append-row module now fixes the concrete four beta argument records.  The
+new table code/step witnesses are exactly row-context variables `#12/#11`,
+`#10/#9`, `#8/#7`, and `#6/#5`; each record compares its fixed named value
+with the corresponding row value at the common traversal index.  The assumed
+row lookup is packaged as the exact four second-side beta premises and its
+matching contract is definitional.  A witnessed-prefix callback combines
+that row package with the transported append package and returns all four
+represented equalities.  Its sole remaining structural input is the
+first-side matching contract, whose proof requires composing thirteen
+universal/existential openings, five shifts, and named-parameter abstraction.
+
+`RawCodedTemplateRenamingSubstitution` now includes the missing generic
+substitution-fusion laws for terms, term lists, and formulas.  A separate
+lifted-substitution composition lemma handles the binder case, and a
+root-level corollary rewrites opening after an arbitrary substitution into
+one composed substitution.  These identities are syntax-generic and
+assumption-free; they provide the normalization mechanism needed for the
+remaining append first-side contract without table-specific reduction hacks.
