@@ -5,6 +5,7 @@ From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
+From Foundation.FirstOrder.Basic.Semantics Require Import RewriteClosure.
 From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
 From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 From Foundation.Syntax.Predicate Require Import Relational.
@@ -349,6 +350,16 @@ Check semiterm_val_emb_substs.
 Check semiterm_val_language_map.
 Check semiterm_val_transport.
 Check semiterm_val_free_ext.
+Check nat_env_cons.
+Check fin_env_snoc.
+Check fin_env_append.
+Check semiterm_val_shift.
+Check semiterm_val_rew_free_bvars.
+Check semiterm_val_rew_free_fvars.
+Check semiterm_val_rew_fix_bvars.
+Check semiterm_val_rew_fix_fvars.
+Check semiterm_val_free.
+Check semiterm_val_fix.
 Check semiformula_eval.
 Check formula_eval.
 Check sentence_realize.
@@ -366,6 +377,12 @@ Check semiformula_eval_emb_substs.
 Check semiformula_eval_free_ext.
 Check semiformula_eval_language_map.
 Check semiformula_eval_transport.
+Check semiformula_eval_free.
+Check semiformula_eval_shift.
+Check semiformula_eval_all_iter.
+Check semiformula_eval_exists_iter.
+Check semiformula_eval_all_closure.
+Check semiformula_eval_exists_closure.
 Check semiterm_operator_val.
 Check semiterm_val_operator_apply.
 Check semiterm_operator_val_comp.
@@ -549,12 +566,21 @@ Print Assumptions semiterm_val_rewrite.
 Print Assumptions semiterm_val_language_map.
 Print Assumptions semiterm_val_transport.
 Print Assumptions semiterm_val_free_ext.
+Print Assumptions semiterm_val_shift.
+Print Assumptions semiterm_val_free.
+Print Assumptions semiterm_val_fix.
 Print Assumptions semiformula_eval_neg.
 Print Assumptions semiformula_eval_bounded_all.
 Print Assumptions semiformula_eval_rewrite.
 Print Assumptions semiformula_eval_free_ext.
 Print Assumptions semiformula_eval_language_map.
 Print Assumptions semiformula_eval_transport.
+Print Assumptions semiformula_eval_free.
+Print Assumptions semiformula_eval_shift.
+Print Assumptions semiformula_eval_all_iter.
+Print Assumptions semiformula_eval_exists_iter.
+Print Assumptions semiformula_eval_all_closure.
+Print Assumptions semiformula_eval_exists_closure.
 Print Assumptions semiterm_val_operator_apply.
 Print Assumptions semiterm_operator_val_comp.
 Print Assumptions semiterm_operator_val_transport.
