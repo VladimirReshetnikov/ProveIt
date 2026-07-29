@@ -4104,3 +4104,8 @@ the prefix-general arithmetic compiler.  Given the row proof of `i < S b`, it
 returns an honest local proof of `i < b \/ i = b` under the same append and row
 assumptions, extending only the synchronized witnessed-PA tail selected by the
 fixed helper theorem.
+
+Its elimination endpoint performs represented disjunction elimination without
+leaving that operational context view.  The predecessor and equality callbacks
+each receive their branch formula as the literal context head and share the
+same newly selected PA-witness batch, ready for the two successor-row branches.
