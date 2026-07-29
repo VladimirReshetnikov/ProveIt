@@ -27,6 +27,9 @@ Check
   raw_codedPALocalProofOf_beta_lookup_functionality_instances_apply.
 Check
   raw_codedPALocalProofOf_beta_lookup_functionality_instances_on_witnessed_tail_under_prefix.
+Check TemplateAnd4MatchesBetaFunctionalitySide.
+Check
+  raw_codedPALocalProofOf_beta_lookup_functionality_and4_on_witnessed_tail_under_prefix.
 Check
   raw_codedPALocalProofOf_beta_lookup_functionality_on_witnessed_tail_under_prefix.
 
@@ -42,5 +45,7 @@ Print Assumptions
   raw_codedPALocalProofOf_beta_lookup_functionality_instances_apply.
 Print Assumptions
   raw_codedPALocalProofOf_beta_lookup_functionality_instances_on_witnessed_tail_under_prefix.
+Print Assumptions
+  raw_codedPALocalProofOf_beta_lookup_functionality_and4_on_witnessed_tail_under_prefix.
 Print Assumptions
   raw_codedPALocalProofOf_beta_lookup_functionality_on_witnessed_tail_under_prefix.
