@@ -4211,3 +4211,13 @@ every instance beneath the common adequate prefix, weakens both lookup
 families to the selected tail, and returns every represented output equality
 under that one extended context.  The append-row specialization can therefore
 request its four field comparisons as one atomic witness-extension step.
+
+A four-conjunction adapter now bridges table-specific lookup packages to that
+family endpoint.  Each side supplies its ordinary right-associated shape and
+four transparent projection equalities identifying the corresponding beta
+premises.  The adapter projects both represented conjunctions, aligns their
+roots with four argument records, and returns the four output equalities after
+one shared witness extension.  The structural equalities remain explicit
+because abstracting the append bound is freshness-sensitive for arbitrary
+template parameters; the concrete successor parameter assignment must prove
+them rather than relying on an unsound generic reduction.

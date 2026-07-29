@@ -27,7 +27,8 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedPALocalProofUniversalEliminationChain
-  RawCodedBetaLookupFunctionalitySource.
+  RawCodedBetaLookupFunctionalitySource
+  RawCodedFourStateTableAppendProofCompilation.
 
 Module PABoundedRawCodedBetaLookupFunctionalityProofCompilation.
 
@@ -50,6 +51,7 @@ Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedBetaLookupFunctionalitySource.
+Import PABoundedRawCodedFourStateTableAppendProofCompilation.
 
 Definition coqBetaLookupFunctionalityInstanceTemplate
     (out1 out2 code step index : TemplateTerm) : TemplateFormula :=
@@ -480,6 +482,133 @@ Proof.
     as [equalityRoots hequalities].
   exists witnesses, equalityRoots.
   split; [exact hextended | exact hequalities].
+Qed.
+
+(** A four-way conjunction matches one side of four beta-functionality
+    instances when its stable projections are exactly the requested premise
+    templates.  The projection function is kept abstract so the same record
+    describes both the first and second lookup families. *)
+Definition TemplateAnd4MatchesBetaFunctionalitySide
+    (side : CoqBetaLookupFunctionalityArguments -> TemplateFormula)
+    (source : TemplateFormula)
+    (first second third fourth : CoqBetaLookupFunctionalityArguments)
+    : Prop :=
+  source = tfAnd (templateAnd4First source)
+    (tfAnd (templateAnd4Second source)
+      (tfAnd (templateAnd4Third source) (templateAnd4Fourth source))) /\
+  templateAnd4First source = side first /\
+  templateAnd4Second source = side second /\
+  templateAnd4Third source = side third /\
+  templateAnd4Fourth source = side fourth.
+
+(** Four-column specialization of the end-to-end family compiler.  Both
+    conjunctions are projected in the caller's original prefixed context;
+    their components are aligned by transparent template equalities, then one
+    shared witness extension produces all four represented output equalities. *)
+Theorem
+    raw_codedPALocalProofOf_beta_lookup_functionality_and4_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix
+    firstArguments secondArguments thirdArguments fourthArguments
+    firstSource secondSource firstSourceRoot secondSourceRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  TemplateAnd4MatchesBetaFunctionalitySide
+    coqBetaLookupFunctionalityFirstLookupOf firstSource
+    firstArguments secondArguments thirdArguments fourthArguments ->
+  TemplateAnd4MatchesBetaFunctionalitySide
+    coqBetaLookupFunctionalitySecondLookupOf secondSource
+    firstArguments secondArguments thirdArguments fourthArguments ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation firstSource) firstSourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation secondSource) secondSourceRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) equalityRoots,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    Forall2
+      (fun argument root =>
+        RawCodedPALocalProofOf M
+          (rawTemplateContextCodeOnTail translation
+            (rawStandardPAAxiomWitnessPrefixContextCode M
+              witnesses baseContext) prefix)
+          (rawTemplateFormula translation
+            (coqBetaLookupFunctionalityEqualityOf argument)) root)
+      [firstArguments; secondArguments; thirdArguments; fourthArguments]
+      equalityRoots.
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext prefix
+    firstArguments secondArguments thirdArguments fourthArguments
+    firstSource secondSource firstSourceRoot secondSourceRoot
+    hprefix hbase
+    (hfirstShape & hfirst1 & hfirst2 & hfirst3 & hfirst4)
+    (hsecondShape & hsecond1 & hsecond2 & hsecond3 & hsecond4)
+    hfirstSource hsecondSource.
+  destruct (raw_codedPALocalProofOf_templateAnd4_components
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    firstSource firstSourceRoot hfirstShape hfirstSource)
+    as (firstRoot1 & firstRoot2 & firstRoot3 & firstRoot4 &
+        hfirstRoot1 & hfirstRoot2 & hfirstRoot3 & hfirstRoot4).
+  destruct (raw_codedPALocalProofOf_templateAnd4_components
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    secondSource secondSourceRoot hsecondShape hsecondSource)
+    as (secondRoot1 & secondRoot2 & secondRoot3 & secondRoot4 &
+        hsecondRoot1 & hsecondRoot2 & hsecondRoot3 & hsecondRoot4).
+  assert (hfirstRoots : Forall2
+      (fun argument root =>
+        RawCodedPALocalProofOf M
+          (rawTemplateContextCodeOnTail translation baseContext prefix)
+          (rawTemplateFormula translation
+            (coqBetaLookupFunctionalityFirstLookupOf argument)) root)
+      [firstArguments; secondArguments; thirdArguments; fourthArguments]
+      [firstRoot1; firstRoot2; firstRoot3; firstRoot4]).
+  {
+    constructor.
+    - rewrite <- hfirst1. exact hfirstRoot1.
+    - constructor.
+      + rewrite <- hfirst2. exact hfirstRoot2.
+      + constructor.
+        * rewrite <- hfirst3. exact hfirstRoot3.
+        * constructor.
+          -- rewrite <- hfirst4. exact hfirstRoot4.
+          -- constructor.
+  }
+  assert (hsecondRoots : Forall2
+      (fun argument root =>
+        RawCodedPALocalProofOf M
+          (rawTemplateContextCodeOnTail translation baseContext prefix)
+          (rawTemplateFormula translation
+            (coqBetaLookupFunctionalitySecondLookupOf argument)) root)
+      [firstArguments; secondArguments; thirdArguments; fourthArguments]
+      [secondRoot1; secondRoot2; secondRoot3; secondRoot4]).
+  {
+    constructor.
+    - rewrite <- hsecond1. exact hsecondRoot1.
+    - constructor.
+      + rewrite <- hsecond2. exact hsecondRoot2.
+      + constructor.
+        * rewrite <- hsecond3. exact hsecondRoot3.
+        * constructor.
+          -- rewrite <- hsecond4. exact hsecondRoot4.
+          -- constructor.
+  }
+  exact
+    (raw_codedPALocalProofOf_beta_lookup_functionality_instances_on_witnessed_tail_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      [firstArguments; secondArguments; thirdArguments; fourthArguments]
+      [firstRoot1; firstRoot2; firstRoot3; firstRoot4]
+      [secondRoot1; secondRoot2; secondRoot3; secondRoot4]
+      hprefix hbase hfirstRoots hsecondRoots).
 Qed.
 
 (** Apply both represented lookup premises while preserving an arbitrary
