@@ -1406,7 +1406,12 @@ equality rules.  `RawCodedTemplateSyntax.v` therefore supplies an honest
 extended source language with named carrier parameters, opaque finite-arity
 predicate applications, capture-avoiding renaming/substitution, an embedding
 of ordinary PA syntax, and an unindexed tree for all seventeen natural-
-deduction constructors.  `RawCodedTemplateProofCompiler.v` translates such a
+deduction constructors.  `RawCodedTemplateRenamingSubstitution.v` isolates
+the generic de Bruijn algebra used below eigenvariable binders: renaming
+commutes with term and formula substitution in both directions, and opening a
+formula commutes with an arbitrary outer renaming.  Its separate audit keeps
+these binder-sensitive identities axiom-free and reusable across recursive
+rule compilers.  `RawCodedTemplateProofCompiler.v` translates such a
 fixed finite tree under an abstract model-coded specialization and builds
 every raw proof node through the coverage-certified constructors.  Its public
 result is an exact `RawCodedPALocalProofOf`; nonstandard predicate codes are
@@ -2667,6 +2672,19 @@ unchanged.  The module consequently identifies the on-tail proof context with
 the exact shared rule-case template context and exports the legacy dynamic
 reroot root predicate on a selected witnessed tail.  Consuming that root in
 the opened coverage compiler is the next integration step.
+
+The binder plumbing for that integration is now factored out rather than
+duplicated in the Or-I-left branch.  `RawCodedTemplateRenamingSubstitution.v`
+proves the general renaming/substitution interchange laws for template terms
+and formulae, including the key fact that formula opening commutes with an
+arbitrary outer renaming.  On top of it,
+`RawCodedRestrictedPADerivationSoundnessDirectRenamedChildTruth.v` generalizes
+the existing strong-prefix child-truth compiler to any template renaming.
+It specializes every universal binder of `K(d)` after transport and feeds the
+renamed restrictedness, endpoint, admissibility, and context-truth facts into
+the resulting child instance.  Both modules have separate assumption audits;
+the one-step eigenvariable shift required by opened common coverage is now an
+instance of this reusable theorem.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
