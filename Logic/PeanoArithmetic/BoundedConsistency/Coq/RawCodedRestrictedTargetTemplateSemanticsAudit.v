@@ -1,0 +1,26 @@
+(** Audit surface for unsealed restricted-target template semantics. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedTargetTemplateSemantics.
+
+Import PABoundedRawCodedRestrictedTargetTemplateSemantics.
+
+Check rawRestrictedTargetTermContextEval.
+Check RestrictedTargetFormulaContextSealFree.
+Check rawRestrictedTargetFormulaContextSat.
+Check rawRestrictedTargetTermContextEval_ext_below.
+Check rawRestrictedTargetFormulaContextSat_ext_below.
+Check rawTemplateTermEval_restrictedTarget_parameter.
+Check rawTemplateFormulaSat_restrictedTarget_parameter.
+
+Check restrictedTargetFormulaQuantifierBoundedContext_seal_free.
+Check restrictedTargetContextAllBoundedContext_seal_free.
+Check restrictedTargetProofNodeContext_seal_free.
+Check restrictedTargetProofTraversalContext_seal_free.
+Check restrictedTargetProofCertificateWithSupportContext_seal_free.
+Check restrictedTargetProofContext_seal_free.
+
+Print Assumptions rawTemplateTermEval_restrictedTarget_parameter.
+Print Assumptions rawTemplateFormulaSat_restrictedTarget_parameter.
+Print Assumptions rawRestrictedTargetFormulaContextSat_ext_below.
+Print Assumptions restrictedTargetProofContext_seal_free.

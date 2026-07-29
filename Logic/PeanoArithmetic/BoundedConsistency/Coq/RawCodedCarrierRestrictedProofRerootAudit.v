@@ -1,0 +1,21 @@
+(** Audit surface for carrier-parametric restricted-proof rerooting. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedCarrierRestrictedProofReroot.
+
+Import PABoundedRawCodedCarrierRestrictedProofReroot.
+
+Check RawCarrierRestrictedProofNodeAt.
+Check RawCarrierRestrictedProofTraversalAt.
+Check RawCarrierRestrictedProofCertificateAt.
+Check RawCarrierRestrictedProofAt.
+Check raw_carrierRestrictedProofNodeAt_syntax.
+Check raw_carrierRestrictedProofContextSat_iff.
+Check raw_carrierRestrictedProofTraversalAt_weaken.
+Check raw_carrierRestrictedProofAt_orI_left_child.
+Check raw_restrictedTargetProofContextSat_orI_left_child.
+
+Print Assumptions raw_carrierRestrictedProofContextSat_iff.
+Print Assumptions raw_carrierRestrictedProofTraversalAt_weaken.
+Print Assumptions raw_carrierRestrictedProofAt_orI_left_child.
+Print Assumptions raw_restrictedTargetProofContextSat_orI_left_child.
