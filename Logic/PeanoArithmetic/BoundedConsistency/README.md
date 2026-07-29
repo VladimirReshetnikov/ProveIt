@@ -4115,3 +4115,9 @@ form for those callbacks.  It transports the four preservation laws, current
 bound, and old lookup beneath one atomically adequate branch head, while taking
 the old-bound proof directly in that extended context.  This isolates all
 proof-root transplantation from the table-specific predecessor construction.
+
+The shifted append specialization now applies that rule directly: from the
+pre-split current bound and old four-column lookup plus the branch-local old
+bound, it constructs the appended table's four-column lookup beneath the
+branch head.  The construction remains generic in the template translation
+and in the particular adequate head formula.
