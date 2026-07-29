@@ -20,7 +20,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 
 | Topic | Contents |
 | --- | --- |
-| [`Algebra/`](Algebra/) | Jacobian-conjecture counterexamples: the dimension-three witness and a lower-degree stable representative checked independently in Lean and Coq, plus an exact cubic reduction. |
+| [`Algebra/`](Algebra/) | Linear-through-quartic root formulas and solver functions; Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction. |
 | [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
 | [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
@@ -34,6 +34,11 @@ is the broad Lean import surface.
 
 ## Highlights
 
+- Field-generic Lean and independent real-field Coq checks of the classical
+  formulas through degree four: unique linear and exhaustive quadratic roots,
+  Cardano's cubic translation and branch-compatible radicals, and Ferrari's
+  cubic resolvent and quartic factorization. Executable root-collection
+  functions have entrywise correctness theorems and exact rational examples.
 - A Lean/Coq proof that the Jacobian conjecture is false in dimension three:
   an explicit polynomial map has formal Jacobian determinant `-2` but
   identifies distinct integral and rational points.  A stabilization
@@ -144,6 +149,7 @@ The broad build is intentionally expensive. Focused examples are:
 
 ```powershell
 lake build JacobianConjecture
+lake build +PolynomialFormulas
 lake build +DiophantineEquations.FermatFour
 lake build +ShefferStroke.Sheffer
 lake build +FirstOrder.Fol

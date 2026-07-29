@@ -25,6 +25,26 @@ cubic-resolvent parameter equations imply a difference-of-squares
 factorization, and exposes a four-entry `solveQuartic` function with the same
 entrywise correctness guarantee.
 
+## Calculator interface and scope
+
+The solver functions are ordinary reducible definitions.  For example, the
+committed examples evaluate
+
+```text
+x² - 5x + 6  ->  (3, 2)
+x⁴ - 5x² + 4 ->  (2, 1, -1, -2).
+```
+
+For degrees two through four, the function arguments include the square/cube
+radicals used by the classical formulas.  Their correctness theorems require
+the corresponding equations (`s² = D`, `u³ = z`, the Cardano branch-product
+condition, and the Ferrari resolvent equations).  This is intentional: a bare
+characteristic-zero field does not provide total radical operations, and the
+installed Coq real-number library cannot represent nonreal roots.  Once
+certified radical values are supplied, the functions compute fixed-size root
+collections and the theorem proves every entry correct.  No unproved radical
+oracle or hidden branch convention is introduced.
+
 ## Checking
 
 From the repository root:
@@ -39,4 +59,8 @@ coqc -Q Algebra/PolynomialFormulas/Coq PolynomialFormulas `
   Algebra/PolynomialFormulas/Coq/Cubic.v
 coqc -Q Algebra/PolynomialFormulas/Coq PolynomialFormulas `
   Algebra/PolynomialFormulas/Coq/Quartic.v
+coqc -Q Algebra/PolynomialFormulas/Coq PolynomialFormulas `
+  Algebra/PolynomialFormulas/Coq/Examples.v
+coqc -Q Algebra/PolynomialFormulas/Coq PolynomialFormulas `
+  Algebra/PolynomialFormulas/Coq/Audit.v
 ```
