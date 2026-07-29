@@ -3652,6 +3652,22 @@ application facts.  The repeated three-`All-I` coverage/endpoint calculation
 is factored into
 `RawCodedPALocalProofTripleUniversalIntroduction.v` and reused by both the
 new compiler and the existing native local-field closers.
+The explicit opening chain is itself derivable from one all-depth diagonal
+stability certificate for the exclusive body:
+`raw_codedUniversalEliminationChain_all3_of_diagonal` propagates that
+certificate through both universal prefixes and constructs the three exact
+self-instantiating `All-E` edges.  A reduced diagonal bridge and aligned
+callback adapter expose this smaller structural obligation while preserving
+the original chain-level interface for other clients.
+That fixed-point route is useful for genuinely closed bodies, but it is
+stronger than the natural three-variable invariant.  The general replacement
+is `RawCodedTemplateTripleUniversalOpening.v`: a template body scoped by
+`#2,#1,#0` is restored by eliminating its binders with `#2`, then `#1`, then
+`#0`.  Its two intermediate formulas are shifted bodies, not fixed points.
+Every honest template translation therefore supplies the exact represented
+elimination chain even when opaque leaves translate to nonstandard dynamic
+formula codes.  The predecessor compiler can use this structural route once
+its exact domain/evidence applications are packaged as one such translation.
 
 The next-field exact residual builder sees this package, the one selected
 local transform trace,
