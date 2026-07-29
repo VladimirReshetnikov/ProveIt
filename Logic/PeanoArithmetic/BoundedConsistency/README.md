@@ -2639,9 +2639,12 @@ traversal, certificate, and full restricted-proof contexts.
 traversal at an arbitrary carrier hierarchy value.  It proves that Or-I-left
 descent reuses the parent node predicates and support tables while shrinking
 only the arithmetic traversal prefix.  The resulting compact-context theorem
-has no standardness hypothesis and works under one shared surrounding
-assignment.  Transport between the differently shifted assignments in the
-fixed universal reroot source is the next remaining semantic step.
+has no standardness hypothesis.  Compositional carrier-level interpretations
+of formula bounds, context bounds, constructor occurrences, and endpoint
+occurrences also prove that the node relation ignores the surrounding
+assignment tail.  Consequently the parent and child restrictions may be
+rerooted even when nested template renamings evaluate them under differently
+shifted assignments.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
