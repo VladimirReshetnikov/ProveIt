@@ -13,7 +13,7 @@ From FoundationModal Require Import
   NormalHilbert CanonicalTB Modality
   PropositionalFormula PropositionalBoolean PropositionalBooleanHilbert
   PropositionalHilbert PropositionalKripke PropositionalKripkeCanonical
-  PropositionalKripkeFinite
+  PropositionalKripkeFinite PropositionalGlivenko
   GodelTranslation Boxdot GLGrzDerivations
   CanonicalPoint2 CanonicalPoint3 CanonicalGrz CanonicalGrzPoint2
   CanonicalGrzPoint3Strict CanonicalGLPoint3 CanonicalTrivVer CanonicalS5Grz.
@@ -397,6 +397,26 @@ Proof.
     now apply (proj1 (ph_int_modal_companion_Grz p)).
   - intro Hp. apply (proj2 (ph_int_modal_companion_Grz p)).
     now apply (proj1 (GL_boxdot_iff_Grz (godel_translate p))).
+Qed.
+
+(** Glivenko turns the classical theoremhood of [p] into intuitionistic
+    theoremhood of [~~p].  Its Goedel translation is [Box (Dia p^g)]; T and
+    necessitation remove and restore that outer box. *)
+Theorem ph_cl_provable_iff_S4_dia_godel :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_cl nat) p <->
+    S4_proves (Dia (godel_translate p)).
+Proof.
+  intro p; split.
+  - intro Hp.
+    pose proof (proj1 (ph_int_modal_companion_S4
+      (pneg (pneg p))) (proj2 (@ph_glivenko nat p) Hp)) as Hboxdia.
+    change (S4_proves (Box (Dia (godel_translate p)))) in Hboxdia.
+    exact (Np_mp (has_T_axiom S4_has_T (Dia (godel_translate p))) Hboxdia).
+  - intro Hdia. apply (proj1 (@ph_glivenko nat p)).
+    apply (proj2 (ph_int_modal_companion_S4 (pneg (pneg p)))).
+    change (S4_proves (Box (Dia (godel_translate p)))).
+    now apply Np_nec.
 Qed.
 
 (** WLEM becomes valid on every convergent preorder. *)
