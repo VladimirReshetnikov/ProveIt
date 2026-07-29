@@ -1,0 +1,18 @@
+(** Assumption audit for the simultaneous four-table PA append source. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFourStateTableAppendSource.
+
+Import PABoundedRawCodedFourStateTableAppendSource.
+
+Check codedFourStateTableAppendFormula.
+Check RawFourStateTableAppendProperty.
+Check raw_sat_codedFourStateTableAppendFormula_iff.
+Check codedFourStateTableAppendFormula_sentence.
+Check codedFourStateTableAppendFormula_raw_valid.
+Check PA_proves_codedFourStateTableAppendFormula.
+
+Print Assumptions raw_sat_codedFourStateTableAppendFormula_iff.
+Print Assumptions codedFourStateTableAppendFormula_sentence.
+Print Assumptions codedFourStateTableAppendFormula_raw_valid.
+Print Assumptions PA_proves_codedFourStateTableAppendFormula.

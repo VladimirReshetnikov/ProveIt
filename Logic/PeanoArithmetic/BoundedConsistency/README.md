@@ -2994,6 +2994,18 @@ extension existential itself.  This supplies the first proof-producing
 arithmetic primitive for extending the four synchronized tables inside the
 normalized global-Sigma Or-row construction.
 
+`RawCodedFourStateTableAppendSource.v` packages the four synchronized
+extensions as one object-language PA theorem.  Its thirteen universal inputs
+follow the global traversal's mode/formula/assignment-code/assignment-step
+layout, while eight existential outputs provide the four new code/step pairs.
+The semantic audit identifies the consequent exactly with four append-prefix
+predicates.  Raw fixed-level state-table append supplies those predicates,
+including the new row at the common bound, and raw-model completeness turns
+the resulting closed valid formula into an ordinary PA derivation.  This
+single source theorem lets the proof-producing Or-row construction select one
+standard axiom batch before opening all inputs, rather than nesting four
+independent append theorem selections below successive eigencontexts.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
