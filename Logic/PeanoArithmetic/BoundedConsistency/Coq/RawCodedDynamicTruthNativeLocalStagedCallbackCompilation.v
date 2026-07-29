@@ -43,7 +43,9 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation
   RawCodedDynamicLocalFieldGraph
   RawCodedDynamicTruthLocalDecisionExclusiveBase
+  RawCodedDynamicTruthPairedGlobalSuccessorGraph
   RawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph
+  RawCodedDynamicTruthPairedGlobalOrbitFunctionality
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthNativeLocalPositiveExactification
   RawCodedDynamicTruthNativeLocalProofCompilation
@@ -77,7 +79,9 @@ Import
   PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.
 Import PABoundedRawCodedDynamicLocalFieldGraph.
 Import PABoundedRawCodedDynamicTruthLocalDecisionExclusiveBase.
+Import PABoundedRawCodedDynamicTruthPairedGlobalSuccessorGraph.
 Import PABoundedRawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph.
+Import PABoundedRawCodedDynamicTruthPairedGlobalOrbitFunctionality.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalPositiveExactification.
@@ -175,6 +179,72 @@ Arguments RawDynamicTruthNativeLocalCurrentHelperContextAt
     currentLocal currentCrossLevel currentShift currentSubstitution
     currentAxiomSoundness currentFinal witnessList baseContext helperRoots
   : clear implicits.
+
+(** Consecutive exact local traces use the same paired global orbit.  The
+    successor outputs hidden in the earlier transform are therefore exactly
+    the input pair selected by the later trace.  Besides identifying that
+    pair, retain the two ternary applications which are the Sigma/Pi evidence
+    predicates of the carried current-local field. *)
+Theorem raw_dynamicTruthNativeLocalProofTraceAt_consecutive_alignment :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (tail : nat -> M) predecessorLevel
+      currentInputGlobalSigma currentInputGlobalPi
+      currentSigmaDomain currentPiDomain
+      currentSigmaEvidence currentPiEvidence
+      nextInputGlobalSigma nextInputGlobalPi
+      nextSigmaDomain nextPiDomain nextSigmaEvidence nextPiEvidence,
+  RawDynamicTruthNativeLocalProofTraceAt M tail predecessorLevel
+    currentInputGlobalSigma currentInputGlobalPi
+    currentSigmaDomain currentPiDomain
+    currentSigmaEvidence currentPiEvidence ->
+  RawDynamicTruthNativeLocalProofTraceAt M tail
+    (raw_succ M predecessorLevel)
+    nextInputGlobalSigma nextInputGlobalPi
+    nextSigmaDomain nextPiDomain nextSigmaEvidence nextPiEvidence ->
+  RawDynamicTruthPairedGlobalSuccessorAt M
+    currentInputGlobalSigma currentInputGlobalPi
+    (raw_succ M predecessorLevel)
+    nextInputGlobalSigma nextInputGlobalPi /\
+  RawDynamicTruthLocalTernaryApplication M
+    nextInputGlobalSigma currentSigmaEvidence /\
+  RawDynamicTruthLocalTernaryApplication M
+    nextInputGlobalPi currentPiEvidence.
+Proof.
+  intros M hPA tail predecessorLevel
+    currentInputGlobalSigma currentInputGlobalPi
+    currentSigmaDomain currentPiDomain
+    currentSigmaEvidence currentPiEvidence
+    nextInputGlobalSigma nextInputGlobalPi
+    nextSigmaDomain nextPiDomain nextSigmaEvidence nextPiEvidence
+    [hcurrentOrbit hcurrentBody] [hnextOrbit _].
+  destruct hcurrentBody as
+    (inputLevel & successorGlobalSigma & successorGlobalPi &
+      inputLevelNumeral & hinputLevel & hsuccessor & hnumeral &
+      hcurrentSigmaDomain & hcurrentPiDomain & hcurrentSigmaEvidence &
+      hcurrentPiEvidence).
+  rewrite hinputLevel in hsuccessor.
+  assert (hsuccessorOrbit :
+      RawDynamicTruthPairedGlobalFormulaCodeOrbitAt M tail
+        (raw_succ M (raw_succ M predecessorLevel))
+        successorGlobalSigma successorGlobalPi).
+  {
+    apply (proj2
+      (raw_dynamicTruthPairedGlobalFormulaCodeOrbitAt_succ_iff M hPA
+        tail (raw_succ M predecessorLevel)
+        successorGlobalSigma successorGlobalPi)).
+    exists currentInputGlobalSigma, currentInputGlobalPi.
+    split; [exact (proj1 hcurrentOrbit) | exact hsuccessor].
+  }
+  destruct
+    (raw_dynamicTruthPairedGlobalFormulaCodeOrbitAt_functional M hPA
+      tail (raw_succ M (raw_succ M predecessorLevel))
+      successorGlobalSigma successorGlobalPi
+      nextInputGlobalSigma nextInputGlobalPi
+      hsuccessorOrbit (proj1 hnextOrbit)) as [hsigma hpi].
+  subst nextInputGlobalSigma. subst nextInputGlobalPi.
+  split; [exact hsuccessor |].
+  split; assumption.
+Qed.
 
 (** At a positive current level the public spliced graph determines an exact
     adequate local trace.  The master package did not retain adequacy as a
@@ -316,6 +386,152 @@ Proof.
     split; [exact hsuccessor |].
     split; [exact hfield |].
     split; assumption.
+Qed.
+
+(** Information shared by a positive current local field and the next local
+    trace.  This is the exact predecessor package needed by the remaining
+    collision compilers: it contains the carried local proof, its own exact
+    trace, and the equations identifying its successor globals with the
+    next trace's input pair. *)
+Record RawDynamicTruthNativeLocalAlignedPredecessorAt
+    (M : RawPAModel) (tail : nat -> M) (predecessorLevel baseContext
+      currentLocal nextInputGlobalSigma nextInputGlobalPi : M) : Type := {
+  rawDynamicTruthNativeLocalAligned_currentInputGlobalSigma : M;
+  rawDynamicTruthNativeLocalAligned_currentInputGlobalPi : M;
+  rawDynamicTruthNativeLocalAligned_currentSigmaDomain : M;
+  rawDynamicTruthNativeLocalAligned_currentPiDomain : M;
+  rawDynamicTruthNativeLocalAligned_currentSigmaEvidence : M;
+  rawDynamicTruthNativeLocalAligned_currentPiEvidence : M;
+  rawDynamicTruthNativeLocalAligned_currentLocalRoot : M;
+  rawDynamicTruthNativeLocalAligned_currentField :
+    currentLocal = rawDynamicTruthLocalDecisionExclusiveFieldCode M
+      rawDynamicTruthNativeLocalAligned_currentSigmaDomain
+      rawDynamicTruthNativeLocalAligned_currentPiDomain
+      rawDynamicTruthNativeLocalAligned_currentSigmaEvidence
+      rawDynamicTruthNativeLocalAligned_currentPiEvidence;
+  rawDynamicTruthNativeLocalAligned_currentTrace :
+    RawDynamicTruthNativeLocalProofTraceAt M tail predecessorLevel
+      rawDynamicTruthNativeLocalAligned_currentInputGlobalSigma
+      rawDynamicTruthNativeLocalAligned_currentInputGlobalPi
+      rawDynamicTruthNativeLocalAligned_currentSigmaDomain
+      rawDynamicTruthNativeLocalAligned_currentPiDomain
+      rawDynamicTruthNativeLocalAligned_currentSigmaEvidence
+      rawDynamicTruthNativeLocalAligned_currentPiEvidence;
+  rawDynamicTruthNativeLocalAligned_currentProof :
+    RawCodedPALocalProofOf M baseContext currentLocal
+      rawDynamicTruthNativeLocalAligned_currentLocalRoot;
+  rawDynamicTruthNativeLocalAligned_successor :
+    RawDynamicTruthPairedGlobalSuccessorAt M
+      rawDynamicTruthNativeLocalAligned_currentInputGlobalSigma
+      rawDynamicTruthNativeLocalAligned_currentInputGlobalPi
+      (raw_succ M predecessorLevel)
+      nextInputGlobalSigma nextInputGlobalPi;
+  rawDynamicTruthNativeLocalAligned_sigmaApplication :
+    RawDynamicTruthLocalTernaryApplication M nextInputGlobalSigma
+      rawDynamicTruthNativeLocalAligned_currentSigmaEvidence;
+  rawDynamicTruthNativeLocalAligned_piApplication :
+    RawDynamicTruthLocalTernaryApplication M nextInputGlobalPi
+      rawDynamicTruthNativeLocalAligned_currentPiEvidence
+}.
+
+Arguments RawDynamicTruthNativeLocalAlignedPredecessorAt
+  M tail predecessorLevel baseContext currentLocal
+  nextInputGlobalSigma nextInputGlobalPi : clear implicits.
+
+(** Enrich the exhaustive current-field cases with the next trace.  The zero
+    alternative is unchanged; in the successor alternative all orbit and
+    application alignment is performed once and stored in the record above. *)
+Theorem
+    raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases_aligned_with_next :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M)
+      (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots
+      nextInputGlobalSigma nextInputGlobalPi
+      nextSigmaDomain nextPiDomain nextSigmaEvidence nextPiEvidence,
+  RawDynamicTruthNativeLocalCurrentHelperContextAt M translation
+    tail level currentLocal currentCrossLevel currentShift
+    currentSubstitution currentAxiomSoundness currentFinal
+    witnessList baseContext helperRoots ->
+  RawDynamicTruthNativeLocalProofTraceAt M tail level
+    nextInputGlobalSigma nextInputGlobalPi
+    nextSigmaDomain nextPiDomain nextSigmaEvidence nextPiEvidence ->
+  (exists currentLocalRoot : M,
+      level = raw_zero M /\
+      currentLocal = rawQuotedFormulaCode M
+        dynamicTruthLocalDecisionExclusiveBaseFormula /\
+      RawCodedPALocalProofOf M baseContext currentLocal currentLocalRoot) \/
+  (exists predecessorLevel : M,
+      level = raw_succ M predecessorLevel /\
+      exists aligned :
+          RawDynamicTruthNativeLocalAlignedPredecessorAt M tail
+            predecessorLevel baseContext currentLocal
+            nextInputGlobalSigma nextInputGlobalPi,
+        True).
+Proof.
+  intros M hPA translation tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    nextInputGlobalSigma nextInputGlobalPi
+    nextSigmaDomain nextPiDomain nextSigmaEvidence nextPiEvidence
+    hcontext hnextTrace.
+  destruct
+    (raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases
+      M hPA translation tail level currentLocal currentCrossLevel
+      currentShift currentSubstitution currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots hcontext) as
+    [(currentLocalRoot & hzero & hfield & hcurrentProof) |
+      (predecessorLevel & currentInputGlobalSigma & currentInputGlobalPi &
+        currentSigmaDomain & currentPiDomain & currentSigmaEvidence &
+        currentPiEvidence & currentLocalRoot & hlevel & hfield &
+        hcurrentTrace & hcurrentProof)].
+  - left. exists currentLocalRoot.
+    split; [exact hzero |].
+    split; assumption.
+  - right.
+    assert (hnextTraceAtSuccessor :
+        RawDynamicTruthNativeLocalProofTraceAt M tail
+          (raw_succ M predecessorLevel)
+          nextInputGlobalSigma nextInputGlobalPi
+          nextSigmaDomain nextPiDomain nextSigmaEvidence nextPiEvidence).
+    { rewrite <- hlevel. exact hnextTrace. }
+    destruct
+      (raw_dynamicTruthNativeLocalProofTraceAt_consecutive_alignment
+        M hPA tail predecessorLevel
+        currentInputGlobalSigma currentInputGlobalPi
+        currentSigmaDomain currentPiDomain currentSigmaEvidence
+        currentPiEvidence nextInputGlobalSigma nextInputGlobalPi
+        nextSigmaDomain nextPiDomain nextSigmaEvidence nextPiEvidence
+        hcurrentTrace hnextTraceAtSuccessor) as
+      (hsuccessor & hsigmaApplication & hpiApplication).
+    exists predecessorLevel.
+    split; [exact hlevel |].
+    exists
+      {| rawDynamicTruthNativeLocalAligned_currentInputGlobalSigma :=
+           currentInputGlobalSigma;
+         rawDynamicTruthNativeLocalAligned_currentInputGlobalPi :=
+           currentInputGlobalPi;
+         rawDynamicTruthNativeLocalAligned_currentSigmaDomain :=
+           currentSigmaDomain;
+         rawDynamicTruthNativeLocalAligned_currentPiDomain :=
+           currentPiDomain;
+         rawDynamicTruthNativeLocalAligned_currentSigmaEvidence :=
+           currentSigmaEvidence;
+         rawDynamicTruthNativeLocalAligned_currentPiEvidence :=
+           currentPiEvidence;
+         rawDynamicTruthNativeLocalAligned_currentLocalRoot :=
+           currentLocalRoot;
+         rawDynamicTruthNativeLocalAligned_currentField := hfield;
+         rawDynamicTruthNativeLocalAligned_currentTrace := hcurrentTrace;
+         rawDynamicTruthNativeLocalAligned_currentProof := hcurrentProof;
+         rawDynamicTruthNativeLocalAligned_successor := hsuccessor;
+         rawDynamicTruthNativeLocalAligned_sigmaApplication :=
+           hsigmaApplication;
+         rawDynamicTruthNativeLocalAligned_piApplication :=
+           hpiApplication |}.
+    exact I.
 Qed.
 
 (** The helper extension is not part of the residual.  It follows uniformly
