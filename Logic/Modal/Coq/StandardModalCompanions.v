@@ -7,11 +7,12 @@
 
 From Stdlib Require Import Logic.Classical_Prop.
 From FoundationModal Require Import
-  Syntax Axioms Kripke Correspondence FrameTransformations
+  Syntax GenericForcingRelation Axioms Kripke Correspondence FrameTransformations
   LogicInfrastructure EntailmentExtensions EntailmentS4
   NormalHilbert CanonicalTB Modality
   PropositionalFormula PropositionalBoolean PropositionalBooleanHilbert
-  PropositionalHilbert GodelTranslation Boxdot GLGrzDerivations
+  PropositionalHilbert PropositionalKripke PropositionalKripkeCanonical
+  GodelTranslation Boxdot GLGrzDerivations
   CanonicalPoint2 CanonicalPoint3 CanonicalGrzPoint2
   CanonicalGrzPoint3Strict CanonicalTrivVer CanonicalS5Grz.
 
@@ -252,6 +253,65 @@ Lemma ph_int_provable_godel_S4 :
     ph_hilbert_provable (ph_hilbert_int nat) p ->
     S4_proves (godel_translate p).
 Proof. exact (godel_translate_int_provable S4_as_s4_entailment). Qed.
+
+(** The concrete propositional models instantiate the generic forcing
+    criterion once and for all.  Bundling frames with valuations as the model
+    index avoids any choice of a privileged valuation. *)
+Lemma ph_int_complete_from_all_pkripke_models :
+  forall p : pformula nat,
+    (forall M : pkripke_model nat, True ->
+      generic_all_forces (pkripke_forcing_relation M) p) ->
+    ph_hilbert_provable (ph_hilbert_int nat) p.
+Proof.
+  intros p Hall. apply ph_hilbert_int_pkripke_complete.
+  intros F _ V w.
+  apply (Hall
+    {| pkripke_model_frame := F; pkripke_model_valuation := V |}).
+  constructor.
+Qed.
+
+Lemma S4_sound_on_pkripke_forcing_models :
+  forall f : formula nat, S4_proves f ->
+    forall M : pkripke_model nat, True ->
+    @model_valid nat
+      (forcing_modal_frame
+        (pkripke_access (pkripke_model_frame M)))
+      (@forcing_modal_valuation
+        (pkripke_world (pkripke_model_frame M)) nat
+        (pkripke_forcing_relation M)
+        (pkripke_access (pkripke_model_frame M))) f.
+Proof.
+  intros f Hf M _.
+  pose (R := pkripke_access (pkripke_model_frame M)).
+  assert (HR : frame_reflexive (forcing_modal_frame R)).
+  { intro w. apply pkripke_access_refl. }
+  assert (HT : frame_transitive (forcing_modal_frame R)).
+  { intros x y z. apply pkripke_access_trans. }
+  exact ((@S4_proves_sound_on_preorder_frame nat
+    (forcing_modal_frame R) f HR HT Hf)
+    (@forcing_modal_valuation
+      (pkripke_world (pkripke_model_frame M)) nat
+      (pkripke_forcing_relation M) R)).
+Qed.
+
+Theorem ph_int_modal_companion_S4 :
+  godel_modal_companion
+    (ph_hilbert_provable (ph_hilbert_int nat)) (@S4_proves nat).
+Proof.
+  eapply (@godel_modal_companion_via_forcing_semantics
+    nat (pkripke_model nat)
+    (fun M => pkripke_world (pkripke_model_frame M))
+    (fun M => pkripke_forcing_relation M)
+    (fun M => pkripke_access (pkripke_model_frame M))
+    (fun _ => True)
+    (ph_hilbert_provable (ph_hilbert_int nat)) (@S4_proves nat)).
+  - intros M w. apply pkripke_access_refl.
+  - intros M x y z. apply pkripke_access_trans.
+  - intro M. apply pkripke_generic_int_forcing.
+  - apply ph_int_provable_godel_S4.
+  - apply ph_int_complete_from_all_pkripke_models.
+  - apply S4_sound_on_pkripke_forcing_models.
+Qed.
 
 Lemma ph_int_provable_godel_Grz :
   forall p : pformula nat,

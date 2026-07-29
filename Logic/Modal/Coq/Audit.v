@@ -1018,6 +1018,8 @@ Check pkripke_forces_or.
 Check pkripke_forces_imp.
 Check pkripke_forces_neg.
 Check pkripke_forces_persistent.
+Check pkripke_forcing_relation.
+Check pkripke_generic_int_forcing.
 Check pkripke_substitution_model.
 Check pkripke_forces_substitute.
 Check pkripke_model_valid.
@@ -1042,6 +1044,7 @@ Check pkripke_strongly_connected_of_Dummett_valid.
 Check ph_hilbert_kc_pkripke_sound.
 Check ph_hilbert_lc_pkripke_sound.
 Print Assumptions pkripke_forces_persistent.
+Print Assumptions pkripke_generic_int_forcing.
 Print Assumptions pkripke_forces_substitute.
 Print Assumptions ph_hilbert_proof_pkripke_sound.
 Print Assumptions ph_hilbert_consistent_of_nonempty_pkripke_class.
@@ -3309,6 +3312,9 @@ Check S4Point2_as_s4_entailment.
 Check S4Point3_normal_logic.
 Check S4Point3_as_s4_entailment.
 Check ph_int_provable_godel_S4.
+Check ph_int_complete_from_all_pkripke_models.
+Check S4_sound_on_pkripke_forcing_models.
+Check ph_int_modal_companion_S4.
 Check ph_int_provable_godel_Grz.
 Check S4Point2_proves_godel_translated_WLEM.
 Check ph_kc_provable_godel_S4Point2.
@@ -5423,6 +5429,9 @@ Print Assumptions S4_as_s4_entailment.
 Print Assumptions S4Point2_as_s4_entailment.
 Print Assumptions S4Point3_as_s4_entailment.
 Print Assumptions ph_int_provable_godel_S4.
+Print Assumptions ph_int_complete_from_all_pkripke_models.
+Print Assumptions S4_sound_on_pkripke_forcing_models.
+Print Assumptions ph_int_modal_companion_S4.
 Print Assumptions ph_int_provable_godel_Grz.
 Print Assumptions S4Point2_proves_godel_translated_WLEM.
 Print Assumptions ph_kc_provable_godel_S4Point2.
