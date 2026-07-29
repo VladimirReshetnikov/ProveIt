@@ -8,7 +8,7 @@ From FoundationModal Require Import
   PropositionalLogic PropositionalHilbert
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
-  GenericCalculus PropositionalTait
+  GenericCalculus PropositionalEntailmentAxioms PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -1163,6 +1163,44 @@ Print Assumptions ph_cl_provable_complete.
 Print Assumptions ph_cl_provable_iff_tautology.
 Print Assumptions ph_cl_exists_countervaluation_of_not_provable.
 Print Assumptions ph_logic_cl_iff_tautology.
+
+(** Five standalone propositional axiom capabilities, with their shared
+    theorem views, elimination laws, explosion adapter, and generalized
+    context transport. *)
+Check generic_axiom_dne.
+Check generic_axiom_efq.
+Check generic_axiom_lem.
+Check generic_axiom_elim_contra.
+Check generic_axiom_peirce.
+Check generic_has_axiom_dne.
+Check generic_has_axiom_efq.
+Check generic_has_axiom_elim_contra.
+Check generic_has_axiom_lem.
+Check generic_has_axiom_peirce.
+Check generic_dne_provable.
+Check generic_efq_provable.
+Check generic_elim_contra_provable.
+Check generic_lem_provable.
+Check generic_peirce_provable.
+Check generic_double_negation_elim_raw.
+Check generic_double_negation_elim_provable.
+Check generic_efq_elim_raw.
+Check generic_efq_elim_provable.
+Check generic_deductive_explosion_of_efq.
+Check generic_raw_proof_translation.
+Check generic_has_axiom_dne_map.
+Check generic_has_axiom_efq_map.
+Check generic_has_axiom_elim_contra_map.
+Check generic_has_axiom_lem_map.
+Check generic_has_axiom_peirce_map.
+Print Assumptions generic_double_negation_elim_raw.
+Print Assumptions generic_efq_elim_raw.
+Print Assumptions generic_deductive_explosion_of_efq.
+Print Assumptions generic_has_axiom_dne_map.
+Print Assumptions generic_has_axiom_efq_map.
+Print Assumptions generic_has_axiom_elim_contra_map.
+Print Assumptions generic_has_axiom_lem_map.
+Print Assumptions generic_has_axiom_peirce_map.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
