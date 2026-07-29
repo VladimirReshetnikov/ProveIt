@@ -35,6 +35,28 @@ Definition generic_axiom_peirce {F : Type}
     (C : generic_connectives F) (p q : F) : F :=
   generic_imp C (generic_imp C (generic_imp C p q) p) p.
 
+Definition generic_axiom_wlem {F : Type}
+    (C : generic_connectives F) (p : F) : F :=
+  generic_or C (generic_neg C p) (generic_neg C (generic_neg C p)).
+
+Definition generic_axiom_dummett {F : Type}
+    (C : generic_connectives F) (p q : F) : F :=
+  generic_or C (generic_imp C p q) (generic_imp C q p).
+
+Definition generic_axiom_kreisel_putnam {F : Type}
+    (C : generic_connectives F) (p q r : F) : F :=
+  generic_imp C
+    (generic_imp C (generic_neg C p) (generic_or C q r))
+    (generic_or C
+      (generic_imp C (generic_neg C p) q)
+      (generic_imp C (generic_neg C p) r)).
+
+Definition generic_axiom_scott {F : Type}
+    (C : generic_connectives F) (p : F) : F :=
+  generic_imp C
+    (generic_imp C (generic_axiom_dne C p) (generic_axiom_lem C p))
+    (generic_axiom_wlem C p).
+
 (** [generic_axiom_dne] is shared with the classical-calculus interface in
     [GenericCalculus]. *)
 
@@ -70,11 +92,39 @@ Record generic_has_axiom_peirce {S F : Type}
     generic_proof E s (generic_axiom_peirce C p q)
 }.
 
+Record generic_has_axiom_wlem {S F : Type}
+    (E : generic_entailment S F) (C : generic_connectives F) (s : S) : Type := {
+  generic_wlem_raw : forall p,
+    generic_proof E s (generic_axiom_wlem C p)
+}.
+
+Record generic_has_axiom_dummett {S F : Type}
+    (E : generic_entailment S F) (C : generic_connectives F) (s : S) : Type := {
+  generic_dummett_raw : forall p q,
+    generic_proof E s (generic_axiom_dummett C p q)
+}.
+
+Record generic_has_axiom_kreisel_putnam {S F : Type}
+    (E : generic_entailment S F) (C : generic_connectives F) (s : S) : Type := {
+  generic_kreisel_putnam_raw : forall p q r,
+    generic_proof E s (generic_axiom_kreisel_putnam C p q r)
+}.
+
+Record generic_has_axiom_scott {S F : Type}
+    (E : generic_entailment S F) (C : generic_connectives F) (s : S) : Type := {
+  generic_scott_raw : forall p,
+    generic_proof E s (generic_axiom_scott C p)
+}.
+
 Arguments generic_dne_raw {S F E C s} _ _.
 Arguments generic_efq_raw {S F E C s} _ _.
 Arguments generic_elim_contra_raw {S F E C s} _ _ _.
 Arguments generic_lem_raw {S F E C s} _ _.
 Arguments generic_peirce_raw {S F E C s} _ _ _.
+Arguments generic_wlem_raw {S F E C s} _ _.
+Arguments generic_dummett_raw {S F E C s} _ _ _.
+Arguments generic_kreisel_putnam_raw {S F E C s} _ _ _ _.
+Arguments generic_scott_raw {S F E C s} _ _.
 
 (** * Inhabited theorem views *)
 
@@ -115,6 +165,68 @@ Lemma generic_peirce_provable :
     forall p q, generic_provable E s (generic_axiom_peirce C p q).
 Proof.
   intros S F E C s H p q; constructor; exact (generic_peirce_raw H p q).
+Qed.
+
+Lemma generic_wlem_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_has_axiom_wlem E C s ->
+    forall p, generic_provable E s (generic_axiom_wlem C p).
+Proof. intros S F E C s H p; constructor; exact (generic_wlem_raw H p). Qed.
+
+Lemma generic_dummett_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_has_axiom_dummett E C s ->
+    forall p q, generic_provable E s (generic_axiom_dummett C p q).
+Proof.
+  intros S F E C s H p q; constructor; exact (generic_dummett_raw H p q).
+Qed.
+
+Lemma generic_kreisel_putnam_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_has_axiom_kreisel_putnam E C s ->
+    forall p q r, generic_provable E s (generic_axiom_kreisel_putnam C p q r).
+Proof.
+  intros S F E C s H p q r; constructor.
+  exact (generic_kreisel_putnam_raw H p q r).
+Qed.
+
+Lemma generic_scott_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_has_axiom_scott E C s ->
+    forall p, generic_provable E s (generic_axiom_scott C p).
+Proof. intros S F E C s H p; constructor; exact (generic_scott_raw H p). Qed.
+
+Definition generic_kreisel_putnam_elim_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (Hmp : generic_modus_ponens E C s)
+    (Hkp : generic_has_axiom_kreisel_putnam E C s)
+    (p q r : F)
+    (d : generic_proof E s
+      (generic_imp C (generic_neg C p) (generic_or C q r))) :
+    generic_proof E s
+      (generic_or C (generic_imp C (generic_neg C p) q)
+        (generic_imp C (generic_neg C p) r)) :=
+  generic_modus_ponens_raw Hmp _ _
+    (generic_kreisel_putnam_raw Hkp p q r) d.
+
+Lemma generic_kreisel_putnam_elim_provable :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_modus_ponens E C s ->
+    generic_has_axiom_kreisel_putnam E C s ->
+    forall p q r,
+      generic_provable E s
+        (generic_imp C (generic_neg C p) (generic_or C q r)) ->
+      generic_provable E s
+        (generic_or C (generic_imp C (generic_neg C p) q)
+          (generic_imp C (generic_neg C p) r)).
+Proof.
+  intros S F E C s Hmp Hkp p q r [d]. constructor.
+  exact (@generic_kreisel_putnam_elim_raw S F E C s Hmp Hkp p q r d).
 Qed.
 
 (** * Elimination consequences *)
@@ -326,3 +438,35 @@ Definition generic_has_axiom_peirce_map {S T F : Type}
     (H : generic_has_axiom_peirce ES C s) : generic_has_axiom_peirce ET C t :=
   {| generic_peirce_raw :=
        fun p q => f _ (generic_peirce_raw H p q) |}.
+
+Definition generic_has_axiom_wlem_map {S T F : Type}
+    {ES : generic_entailment S F} {ET : generic_entailment T F}
+    {C : generic_connectives F} {s : S} {t : T}
+    (f : generic_raw_proof_translation ES ET s t)
+    (H : generic_has_axiom_wlem ES C s) : generic_has_axiom_wlem ET C t :=
+  {| generic_wlem_raw := fun p => f _ (generic_wlem_raw H p) |}.
+
+Definition generic_has_axiom_dummett_map {S T F : Type}
+    {ES : generic_entailment S F} {ET : generic_entailment T F}
+    {C : generic_connectives F} {s : S} {t : T}
+    (f : generic_raw_proof_translation ES ET s t)
+    (H : generic_has_axiom_dummett ES C s) :
+    generic_has_axiom_dummett ET C t :=
+  {| generic_dummett_raw :=
+       fun p q => f _ (generic_dummett_raw H p q) |}.
+
+Definition generic_has_axiom_kreisel_putnam_map {S T F : Type}
+    {ES : generic_entailment S F} {ET : generic_entailment T F}
+    {C : generic_connectives F} {s : S} {t : T}
+    (f : generic_raw_proof_translation ES ET s t)
+    (H : generic_has_axiom_kreisel_putnam ES C s) :
+    generic_has_axiom_kreisel_putnam ET C t :=
+  {| generic_kreisel_putnam_raw :=
+       fun p q r => f _ (generic_kreisel_putnam_raw H p q r) |}.
+
+Definition generic_has_axiom_scott_map {S T F : Type}
+    {ES : generic_entailment S F} {ET : generic_entailment T F}
+    {C : generic_connectives F} {s : S} {t : T}
+    (f : generic_raw_proof_translation ES ET s t)
+    (H : generic_has_axiom_scott ES C s) : generic_has_axiom_scott ET C t :=
+  {| generic_scott_raw := fun p => f _ (generic_scott_raw H p) |}.

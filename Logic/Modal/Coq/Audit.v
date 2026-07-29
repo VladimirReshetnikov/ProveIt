@@ -1172,16 +1172,30 @@ Check generic_axiom_efq.
 Check generic_axiom_lem.
 Check generic_axiom_elim_contra.
 Check generic_axiom_peirce.
+Check generic_axiom_wlem.
+Check generic_axiom_dummett.
+Check generic_axiom_kreisel_putnam.
+Check generic_axiom_scott.
 Check generic_has_axiom_dne.
 Check generic_has_axiom_efq.
 Check generic_has_axiom_elim_contra.
 Check generic_has_axiom_lem.
 Check generic_has_axiom_peirce.
+Check generic_has_axiom_wlem.
+Check generic_has_axiom_dummett.
+Check generic_has_axiom_kreisel_putnam.
+Check generic_has_axiom_scott.
 Check generic_dne_provable.
 Check generic_efq_provable.
 Check generic_elim_contra_provable.
 Check generic_lem_provable.
 Check generic_peirce_provable.
+Check generic_wlem_provable.
+Check generic_dummett_provable.
+Check generic_kreisel_putnam_provable.
+Check generic_scott_provable.
+Check generic_kreisel_putnam_elim_raw.
+Check generic_kreisel_putnam_elim_provable.
 Check generic_double_negation_elim_raw.
 Check generic_double_negation_elim_provable.
 Check generic_efq_elim_raw.
@@ -1199,6 +1213,10 @@ Check generic_has_axiom_efq_map.
 Check generic_has_axiom_elim_contra_map.
 Check generic_has_axiom_lem_map.
 Check generic_has_axiom_peirce_map.
+Check generic_has_axiom_wlem_map.
+Check generic_has_axiom_dummett_map.
+Check generic_has_axiom_kreisel_putnam_map.
+Check generic_has_axiom_scott_map.
 Print Assumptions generic_double_negation_elim_raw.
 Print Assumptions generic_efq_elim_raw.
 Print Assumptions generic_deductive_explosion_of_efq.
@@ -1211,6 +1229,12 @@ Print Assumptions generic_has_axiom_efq_map.
 Print Assumptions generic_has_axiom_elim_contra_map.
 Print Assumptions generic_has_axiom_lem_map.
 Print Assumptions generic_has_axiom_peirce_map.
+Print Assumptions generic_kreisel_putnam_elim_raw.
+Print Assumptions generic_kreisel_putnam_elim_provable.
+Print Assumptions generic_has_axiom_wlem_map.
+Print Assumptions generic_has_axiom_dummett_map.
+Print Assumptions generic_has_axiom_kreisel_putnam_map.
+Print Assumptions generic_has_axiom_scott_map.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
