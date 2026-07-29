@@ -4368,13 +4368,17 @@ Check has_C_of_k.
 Check k_multinecessitation.
 Check k_entailment_of_normal_logic.
 Check k_box_iter_axiom_K.
+Check k_box_iter_axiom_K_apply.
 Check k_box_iter_regularity.
 Check k_box_congruence.
 Check k_box_iter_congruence.
 Check k_box_iter_top.
 Check k_box_iter_and_collect.
 Check k_box_iter_and_distribute.
+Check k_box_iter_and_collect_apply.
+Check k_box_iter_and_distribute_apply.
 Check k_box_iter_or_collect.
+Check k_box_iter_or_collect_apply.
 Check k_boxdot_top.
 Check k_boxdot_axiom_K.
 Check k_boxdot_axiom_T.
@@ -4383,13 +4387,20 @@ Check k_boxdot_box.
 Check k_box_boxdot_to_boxdot_box.
 Check k_box_iter_list_conj2_distribute.
 Check k_box_iter_list_conj2_collect.
+Check logic_list_conj2_theorem_iff.
+Check k_box_iter_list_conj2_theorem_iff.
 Check k_dia_regularity.
 Check k_dia_iter_regularity.
+Check k_dia_regularity_apply.
+Check k_dia_iter_regularity_apply.
 Check k_dia_or_collect.
+Check k_dia_or_collect_apply.
 Check k_dia_or_distribute.
 Check k_dia_iter_or_collect.
+Check k_dia_iter_or_collect_apply.
 Check k_dia_iter_or_distribute.
 Check k_dia_and_distribute.
+Check k_dia_and_distribute_apply.
 Check k_dia_iter_and_distribute.
 Check k_not_dia_bottom.
 Check k_not_dia_iter_bottom.
@@ -6604,6 +6615,7 @@ Print Assumptions necessitation_of_EN.
 Print Assumptions has_N_of_necessitation.
 Print Assumptions has_K_of_EMC.
 Print Assumptions k_box_iter_axiom_K.
+Print Assumptions k_box_iter_axiom_K_apply.
 Print Assumptions k_box_iter_regularity.
 Print Assumptions k_box_iter_congruence.
 Print Assumptions k_box_iter_and_collect.
@@ -6613,7 +6625,9 @@ Print Assumptions k_boxdot_axiom_K.
 Print Assumptions k_box_boxdot_to_boxdot_box.
 Print Assumptions k_box_iter_list_conj2_distribute.
 Print Assumptions k_box_iter_list_conj2_collect.
+Print Assumptions k_box_iter_list_conj2_theorem_iff.
 Print Assumptions k_dia_iter_regularity.
+Print Assumptions k_dia_iter_regularity_apply.
 Print Assumptions k_dia_or_collect.
 Print Assumptions k_dia_or_distribute.
 Print Assumptions k_dia_iter_or_distribute.
