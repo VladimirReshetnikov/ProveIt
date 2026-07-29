@@ -534,7 +534,12 @@ Check first_order_definable_finite_all.
 Check first_order_definable_finite_exists.
 Check first_order_definable_retraction.
 Check first_order_definable_operator_relation.
+Check first_order_definable_operator_relation_terms.
 Check first_order_definable_eq.
+Check first_order_definable_eq_terms.
+Check first_order_definable_term_graph.
+Check first_order_definable_projection.
+Check first_order_definable_parameter_const.
 Check first_order_definable_lt.
 Check first_order_definable_mem.
 
@@ -723,7 +728,12 @@ Print Assumptions first_order_definable_finite_all.
 Print Assumptions first_order_definable_finite_exists.
 Print Assumptions first_order_definable_retraction.
 Print Assumptions first_order_definable_operator_relation.
+Print Assumptions first_order_definable_operator_relation_terms.
 Print Assumptions first_order_definable_eq.
+Print Assumptions first_order_definable_eq_terms.
+Print Assumptions first_order_definable_term_graph.
+Print Assumptions first_order_definable_projection.
+Print Assumptions first_order_definable_parameter_const.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.

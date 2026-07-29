@@ -422,6 +422,27 @@ Proof.
   rewrite Hv. apply structure_relation_operator. exact HR.
 Defined.
 
+(** Applying an interpreted relation operator to arbitrary terms gives a
+    definable preimage.  This factors all equality-of-terms and graph
+    constructions below. *)
+Definition first_order_definable_operator_relation_terms {L M k}
+    {Str : first_order_structure L M} (o : semiformula_operator L 2)
+    (R : M -> M -> Prop) (HR : structure_interprets_relation Str o R)
+    (t u : semiterm L M k) :
+    first_order_definable Str
+      (fun v => R
+        (semiterm_val Str v (fun x => x) t)
+        (semiterm_val Str v (fun x => x) u)).
+Proof.
+  refine {| first_order_definable_formula :=
+    semiformula_operator_apply o (fin_two t u) |}.
+  intro v. rewrite semiformula_eval_operator_apply.
+  rewrite (fin_two_eta
+    (fun i => semiterm_val Str v (fun x => x) (fin_two t u i))).
+  rewrite fin_two_first, fin_two_second.
+  apply structure_relation_operator. exact HR.
+Defined.
+
 Definition first_order_definable_eq {L M}
     {Str : first_order_structure L M} (H : semiformula_has_eq_operator L)
     (HEq : structure_interprets_eq Str H) :
@@ -431,6 +452,53 @@ Proof.
     with (o := semiformula_eq_operator H).
   constructor. apply structure_eq_operator. exact HEq.
 Defined.
+
+Definition first_order_definable_eq_terms {L M k}
+    {Str : first_order_structure L M} (H : semiformula_has_eq_operator L)
+    (HEq : structure_interprets_eq Str H) (t u : semiterm L M k) :
+    first_order_definable Str
+      (fun v =>
+        semiterm_val Str v (fun x => x) t =
+        semiterm_val Str v (fun x => x) u).
+Proof.
+  apply first_order_definable_operator_relation_terms
+    with (o := semiformula_eq_operator H).
+  constructor. apply structure_eq_operator. exact HEq.
+Defined.
+
+(** Every term defines the graph of its valuation.  Projection and parameter
+    constants are immediate instances, and compound language terms inherit
+    the same theorem without separate operator-specific proofs. *)
+Definition first_order_definable_term_graph {L M k}
+    {Str : first_order_structure L M} (H : semiformula_has_eq_operator L)
+    (HEq : structure_interprets_eq Str H) (t : semiterm L M k) :
+    first_order_definable_function Str
+      (fun v => semiterm_val Str v (fun x => x) t).
+Proof.
+  unfold first_order_definable_function.
+  refine (first_order_definable_of_iff
+    (first_order_definable_eq_terms (H := H) HEq
+      (@Semiterm_bvar L M (S k) Fin.F1)
+      (rew_apply (rew_map Fin.FS (fun x => x)) t)) _).
+  intro w.
+  change
+    (w Fin.F1 = semiterm_val Str (fun i => w (Fin.FS i)) (fun x => x) t <->
+     w Fin.F1 = semiterm_val Str w (fun x => x)
+       (rew_apply (rew_map Fin.FS (fun x => x)) t)).
+  rewrite semiterm_val_map. reflexivity.
+Defined.
+
+Definition first_order_definable_projection {L M k}
+    {Str : first_order_structure L M} (H : semiformula_has_eq_operator L)
+    (HEq : structure_interprets_eq Str H) (i : Fin.t k) :
+  first_order_definable_function Str (fun v => v i) :=
+  first_order_definable_term_graph (H := H) HEq (@Semiterm_bvar L M k i).
+
+Definition first_order_definable_parameter_const {L M k}
+    {Str : first_order_structure L M} (H : semiformula_has_eq_operator L)
+    (HEq : structure_interprets_eq Str H) (c : M) :
+  first_order_definable_function Str (fun _ : Fin.t k -> M => c) :=
+  first_order_definable_term_graph (H := H) HEq (@Semiterm_fvar L M k c).
 
 Definition first_order_definable_lt {L M}
     {Str : first_order_structure L M} (H : semiformula_has_lt_operator L)
