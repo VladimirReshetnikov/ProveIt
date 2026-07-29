@@ -60,7 +60,7 @@ From FoundationModal Require Import
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 JerabekBoxdot CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
-  CanonicalGrzMcK CanonicalTrivVer MaximalTranslations GLPoint3PlusBoxBot CanonicalS5Grz
+  CanonicalGrzMcK CanonicalTrivVer MaximalTranslations Makinson GLPoint3PlusBoxBot CanonicalS5Grz
   CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
   CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
@@ -4214,6 +4214,26 @@ Check GL_unprovable_AxiomT.
 Check K4_unprovable_atomic_L.
 Check K4_strictly_weaker_GL.
 Check not_S4_weakerThan_GL.
+(** Makinson's independently checked KD/Triv half.  The conditional theorem
+    exposes the exact Ver boundary admitted by the pinned Lean source. *)
+Check KD_provability_of_classical_satisfiability.
+Check provable_KD_of_classical_satisfiability.
+Check provable_KD_of_classical_tautology.
+Check provable_not_KD_of_classical_unsatisfiable.
+Check makinson_zero_substitution.
+Check makinson_zero_substitution_letterless.
+Check substitute_formula_letterless.
+Check makinson_zero_substitution_formula_letterless.
+Check triv_translate_makinson_zero_substitute.
+Check makinson_zero_substitution_readback.
+Check makinson_subset_Triv_of_KD_subset.
+Check makinson_Ver_family.
+Check makinson_Triv_family.
+Check makinson_families_disjoint.
+Check makinson_Ver_boundary.
+Check makinson_dichotomy_of_Ver_boundary.
+Check makinson_Ver_family_not_Triv_family.
+Check makinson_Triv_family_not_Ver_family.
 Check grz_mini_countermodel.
 Check Grz_finite_sound_complete.
 Check Grz_sound_complete.
@@ -6610,6 +6630,11 @@ Print Assumptions GL_unprovable_AxiomT.
 Print Assumptions K4_unprovable_atomic_L.
 Print Assumptions K4_strictly_weaker_GL.
 Print Assumptions not_S4_weakerThan_GL.
+Print Assumptions KD_provability_of_classical_satisfiability.
+Print Assumptions makinson_zero_substitution_readback.
+Print Assumptions makinson_subset_Triv_of_KD_subset.
+Print Assumptions makinson_families_disjoint.
+Print Assumptions makinson_dichotomy_of_Ver_boundary.
 Print Assumptions Grz_finite_sound_complete.
 Print Assumptions Grz_sound_complete.
 Print Assumptions finite_partial_order_mckinsey.
