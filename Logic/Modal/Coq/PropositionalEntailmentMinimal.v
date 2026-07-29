@@ -1271,6 +1271,42 @@ Defined.
 Arguments generic_minimal_imp_to_neg_and_axiom_raw {S F E C s}
   _ _ _.
 
+(** If one antecedent yields both [q] and [~r], it refutes [q -> r].
+    Foundation states this inside classical entailment, although neither DNE
+    nor ex falso is used. *)
+Definition generic_minimal_not_imp_of_premises_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) (p q r : F)
+    (dpq : generic_proof E s (generic_imp C p q))
+    (dpnr : generic_proof E s (generic_imp C p (generic_neg C r))) :
+    generic_proof E s
+      (generic_imp C p (generic_neg C (generic_imp C q r))).
+Proof.
+  set (f := generic_imp C q r).
+  assert (df : generic_list_derivation E s C [f; p] f).
+  { exact (GLD_assumption (GRLM_here [p])). }
+  assert (dp : generic_list_derivation E s C [f; p] p).
+  { exact (GLD_assumption (GRLM_there f (GRLM_here []))). }
+  pose (dq := GLD_mdp (GLD_theorem dpq) dp).
+  pose (dr := GLD_mdp df dq).
+  pose (dnr := GLD_mdp (GLD_theorem dpnr) dp).
+  pose (drbot := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_left_raw H _ _
+      (generic_minimal_neg_equiv H r))) dnr).
+  pose (dbot := GLD_mdp drbot dr).
+  pose (dfbot := generic_list_deduction (generic_minimal_mdp H)
+    (generic_minimal_K H) (generic_minimal_S H) dbot).
+  pose (dnf := GLD_mdp
+    (GLD_theorem (generic_minimal_iff_elim_right_raw H _ _
+      (generic_minimal_neg_equiv H f))) dfbot).
+  exact (@generic_singleton_deduction_raw S F E s C
+    (generic_minimal_mdp H) (generic_minimal_K H) (generic_minimal_S H)
+    p (generic_neg C f) dnf).
+Defined.
+
+Arguments generic_minimal_not_imp_of_premises_raw {S F E C s}
+  _ _ _ _ _ _.
+
 Definition generic_minimal_or_neg_to_neg_and_raw {S F : Type}
     {E : generic_entailment S F} {C : generic_connectives F} {s : S}
     (H : generic_minimal_entailment E C s) (p q : F) :

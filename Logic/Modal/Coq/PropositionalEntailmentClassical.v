@@ -65,6 +65,26 @@ Definition generic_classical_neg_imp_converse_raw {S F : Type}
 Arguments generic_classical_neg_imp_converse_raw {S F E C s}
   _ _ _ _.
 
+Definition generic_classical_neg_imp_converse_axiom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_classical_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C (generic_imp C (generic_neg C p) q)
+        (generic_imp C (generic_neg C q) p)) :=
+  let Hm := generic_minimal_of_classical H in
+  generic_minimal_imp_trans_raw Hm
+    (generic_imp C (generic_neg C p) q)
+    (generic_imp C (generic_neg C q)
+      (generic_neg C (generic_neg C p)))
+    (generic_imp C (generic_neg C q) p)
+    (generic_minimal_contraposition_axiom_raw Hm (generic_neg C p) q)
+    (generic_minimal_imp_lift_right_raw Hm
+      (generic_neg C (generic_neg C p)) p (generic_neg C q)
+      (generic_classical_dne H p)).
+
+Arguments generic_classical_neg_imp_converse_axiom_raw {S F E C s}
+  _ _ _.
+
 (** The usual elimination-of-contraposition form
     [(~p -> ~q) -> (q -> p)]. *)
 Definition generic_classical_contraposition_inverse_raw {S F : Type}
@@ -81,6 +101,57 @@ Definition generic_classical_contraposition_inverse_raw {S F : Type}
 
 Arguments generic_classical_contraposition_inverse_raw {S F E C s}
   _ _ _ _.
+
+(** Moving a negation across either side of a biconditional. *)
+Definition generic_classical_neg_iff_move_right_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_classical_entailment E C s) (p q : F)
+    (d : generic_proof E s
+      (generic_formula_iff C p (generic_neg C q))) :
+    generic_proof E s
+      (generic_formula_iff C (generic_neg C p) q) :=
+  let Hm := generic_minimal_of_classical H in
+  generic_minimal_iff_intro_raw Hm _ _
+    (generic_classical_neg_imp_converse_raw H q p
+      (generic_minimal_iff_elim_right_raw Hm p (generic_neg C q) d))
+    (generic_minimal_negated_imp_swap_raw Hm p q
+      (generic_minimal_iff_elim_left_raw Hm p (generic_neg C q) d)).
+
+Arguments generic_classical_neg_iff_move_right_raw {S F E C s}
+  _ _ _ _.
+
+Definition generic_classical_neg_iff_move_left_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_classical_entailment E C s) (p q : F)
+    (d : generic_proof E s
+      (generic_formula_iff C (generic_neg C p) q)) :
+    generic_proof E s
+      (generic_formula_iff C p (generic_neg C q)) :=
+  let Hm := generic_minimal_of_classical H in
+  generic_minimal_iff_symm_raw Hm (generic_neg C q) p
+    (generic_classical_neg_iff_move_right_raw H q p
+      (generic_minimal_iff_symm_raw Hm (generic_neg C p) q d)).
+
+Arguments generic_classical_neg_iff_move_left_raw {S F E C s}
+  _ _ _ _.
+
+Definition generic_classical_expanded_double_neg_iff_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_classical_entailment E C s) (p : F) :
+    generic_proof E s
+      (generic_formula_iff C p
+        (generic_imp C (generic_imp C p (generic_bottom C))
+          (generic_bottom C))) :=
+  generic_minimal_iff_trans_raw (generic_minimal_of_classical H) p
+    (generic_neg C (generic_neg C p))
+    (generic_imp C (generic_imp C p (generic_bottom C))
+      (generic_bottom C))
+    (generic_classical_double_neg_iff_raw H p)
+    (generic_minimal_double_neg_expansion_iff_raw
+      (generic_minimal_of_classical H) p).
+
+Arguments generic_classical_expanded_double_neg_iff_raw {S F E C s}
+  _ _.
 
 (** * Classical entailment contains intuitionistic entailment *)
 
@@ -271,6 +342,18 @@ Definition generic_classical_elim_contra_axiom_raw {S F : Type}
 
 Arguments generic_classical_elim_contra_axiom_raw {S F E C s}
   _ _ _.
+
+Definition generic_classical_contraposition_inverse_axiom_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_classical_entailment E C s) (p q : F) :
+    generic_proof E s
+      (generic_imp C
+        (generic_imp C (generic_neg C p) (generic_neg C q))
+        (generic_imp C q p)) :=
+  generic_classical_elim_contra_axiom_raw H q p.
+
+Arguments generic_classical_contraposition_inverse_axiom_raw
+  {S F E C s} _ _ _.
 
 Definition generic_has_axiom_elim_contra_of_classical {S F : Type}
     {E : generic_entailment S F} {C : generic_connectives F} {s : S}

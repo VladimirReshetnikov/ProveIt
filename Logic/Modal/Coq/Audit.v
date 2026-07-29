@@ -1410,6 +1410,7 @@ Check generic_empty_type_context.
 Check generic_empty_type_context_derivation_raw.
 Check generic_minimal_empty_type_context_provable_iff.
 Check generic_minimal_double_neg_imp_distribution_raw.
+Check generic_minimal_not_imp_of_premises_raw.
 Check generic_minimal_double_neg_imp_map_raw.
 Check generic_minimal_top_to_neg_bottom_raw.
 Check generic_minimal_and_or_cut_raw.
@@ -1433,6 +1434,7 @@ Check ph_hilbert_type_context_proof.
 Check ph_hilbert_type_context_deduction.
 Check ph_hilbert_type_context_to_finite.
 Check ph_hilbert_double_neg_imp_distribution.
+Check ph_hilbert_not_imp_of_premises.
 Check ph_hilbert_and_or_cut.
 Print Assumptions generic_minimal_imp_swap_raw.
 Print Assumptions generic_minimal_imp_contract_raw.
@@ -1496,6 +1498,7 @@ Print Assumptions generic_type_context_of_finite_witness_raw.
 Print Assumptions generic_type_context_finite_iff.
 Print Assumptions generic_minimal_empty_type_context_provable_iff.
 Print Assumptions generic_minimal_double_neg_imp_distribution_raw.
+Print Assumptions generic_minimal_not_imp_of_premises_raw.
 Print Assumptions generic_minimal_double_neg_imp_map_raw.
 Print Assumptions generic_minimal_top_to_neg_bottom_raw.
 Print Assumptions generic_minimal_and_or_cut_raw.
@@ -1517,6 +1520,7 @@ Print Assumptions ph_hilbert_context_of_conj2.
 Print Assumptions ph_hilbert_type_context_deduction.
 Print Assumptions ph_hilbert_type_context_to_finite.
 Print Assumptions ph_hilbert_double_neg_imp_distribution.
+Print Assumptions ph_hilbert_not_imp_of_premises.
 Print Assumptions ph_hilbert_and_or_cut.
 
 (** Propositional/Entailment/Int/Basic: the ex-falso extension, explosion,
@@ -1570,11 +1574,15 @@ Print Assumptions ph_hilbert_int_inconsistent_of_provable_neg.
 Check generic_classical_double_neg_iff_raw.
 Check generic_classical_or_of_double_neg_or_raw.
 Check generic_classical_neg_imp_converse_raw.
+Check generic_classical_neg_imp_converse_axiom_raw.
 Check generic_classical_contraposition_inverse_raw.
 Check generic_classical_efq_raw.
 Check generic_has_axiom_efq_of_classical.
 Check generic_intuitionistic_of_classical.
 Check generic_classical_neg_and_to_or_neg_raw.
+Check generic_classical_neg_iff_move_right_raw.
+Check generic_classical_neg_iff_move_left_raw.
+Check generic_classical_expanded_double_neg_iff_raw.
 Check generic_classical_neg_and_iff_or_neg_raw.
 Check generic_classical_imp_to_neg_or_raw.
 Check generic_classical_imp_to_neg_or_axiom_raw.
@@ -1591,12 +1599,17 @@ Check generic_classical_neg_disj2_map_to_conj2_raw.
 Check ph_hilbert_cl_double_neg_iff.
 Check ph_hilbert_cl_neg_and_iff_or_neg.
 Check ph_hilbert_cl_imp_iff_neg_or.
+Check ph_hilbert_cl_neg_iff_move_right.
+Check ph_hilbert_cl_expanded_double_neg_iff.
 Check ph_hilbert_cl_elim_contra.
 Check ph_hilbert_cl_dummett.
 Check ph_hilbert_cl_peirce.
 Check ph_hilbert_cl_neg_disj2_map_to_conj2.
 Print Assumptions generic_classical_double_neg_iff_raw.
 Print Assumptions generic_classical_contraposition_inverse_raw.
+Print Assumptions generic_classical_neg_imp_converse_axiom_raw.
+Print Assumptions generic_classical_neg_iff_move_right_raw.
+Print Assumptions generic_classical_expanded_double_neg_iff_raw.
 Print Assumptions generic_classical_efq_raw.
 Print Assumptions generic_intuitionistic_of_classical.
 Print Assumptions generic_classical_neg_and_iff_or_neg_raw.

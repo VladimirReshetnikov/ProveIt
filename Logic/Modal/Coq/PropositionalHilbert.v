@@ -331,6 +331,14 @@ Definition ph_hilbert_contraposition {Atom : Type} (H : ph_hilbert Atom)
   generic_minimal_contraposition_raw
     (ph_hilbert_generic_minimal H) p q d.
 
+Definition ph_hilbert_not_imp_of_premises {Atom : Type}
+    (H : ph_hilbert Atom) (p q r : pformula Atom)
+    (dpq : ph_hilbert_proof H (PImp p q))
+    (dpnr : ph_hilbert_proof H (PImp p (pneg r))) :
+    ph_hilbert_proof H (PImp p (pneg (PImp q r))) :=
+  generic_minimal_not_imp_of_premises_raw
+    (ph_hilbert_generic_minimal H) p q r dpq dpnr.
+
 Definition ph_hilbert_neg_or_iff_and_neg {Atom : Type}
     (H : ph_hilbert Atom) (p q : pformula Atom) :
     ph_hilbert_proof H
@@ -751,6 +759,23 @@ Definition ph_hilbert_cl_imp_iff_neg_or {Atom : Type}
         (generic_or (pformula_connectives Atom) (pneg p) q)) :=
   generic_classical_imp_iff_neg_or_raw
     (ph_hilbert_cl_classical Atom) p q.
+
+Definition ph_hilbert_cl_neg_iff_move_right {Atom : Type}
+    (p q : pformula Atom)
+    (d : ph_hilbert_proof (ph_hilbert_cl Atom)
+      (generic_formula_iff (pformula_connectives Atom) p (pneg q))) :
+    ph_hilbert_proof (ph_hilbert_cl Atom)
+      (generic_formula_iff (pformula_connectives Atom) (pneg p) q) :=
+  generic_classical_neg_iff_move_right_raw
+    (ph_hilbert_cl_classical Atom) p q d.
+
+Definition ph_hilbert_cl_expanded_double_neg_iff {Atom : Type}
+    (p : pformula Atom) :
+    ph_hilbert_proof (ph_hilbert_cl Atom)
+      (generic_formula_iff (pformula_connectives Atom) p
+        (PImp (PImp p PFalsum) PFalsum)) :=
+  generic_classical_expanded_double_neg_iff_raw
+    (ph_hilbert_cl_classical Atom) p.
 
 Definition ph_hilbert_cl_elim_contra (Atom : Type) :
     generic_has_axiom_elim_contra
