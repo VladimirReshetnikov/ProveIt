@@ -8,6 +8,8 @@ Open Scope R_scope.
 Module LeanProofs.
 Module PolynomialFormulasQuartic.
 
+Import LeanProofs.PolynomialFormulas.
+
 Definition quartic (a b c d e x : R) : R :=
   a * x ^ 4 + b * x ^ 3 + c * x ^ 2 + d * x + e.
 
@@ -184,13 +186,15 @@ Theorem solve_quartic_correct (a b c d e m s t rho sigma : R) (ha : a <> 0)
   quartic a b c d e (fst (snd (snd roots))) = 0 /\
   quartic a b c d e (snd (snd (snd roots))) = 0.
 Proof.
-  cbn [solve_quartic].
+  unfold solve_quartic.
+  cbn.
   pose proof (solve_depressed_quartic_correct
     (quartic_p (b / a) (c / a))
     (quartic_q (b / a) (c / a) (d / a))
     (quartic_r (b / a) (c / a) (d / a) (e / a))
     m s t rho sigma hs hst ht hrho hsigma) as hroots.
-  cbn [solve_depressed_quartic] in hroots.
+  unfold solve_depressed_quartic in hroots.
+  cbn in hroots.
   destruct hroots as [h0 [h1 [h2 h3]]].
   unfold solve_depressed_quartic in h0, h1, h2, h3.
   cbn in h0, h1, h2, h3.
@@ -203,6 +207,101 @@ Proof.
     rewrite (quartic_normalization a b c d e _ ha), depress_monic_quartic, h2; ring.
   - change (quartic a b c d e ((-s - sigma) / 2 - (b / a) / 4) = 0).
     rewrite (quartic_normalization a b c d e _ ha), depress_monic_quartic, h3; ring.
+Qed.
+
+(** Every root of the depressed quartic occurs in the four-entry Ferrari
+    collection. *)
+Theorem solve_depressed_quartic_exhaustive
+    (p q r m s t rho sigma y : R)
+    (hs : s ^ 2 = 2 * m - p) (hst : 2 * s * t = -q)
+    (ht : t ^ 2 = m ^ 2 - r)
+    (hrho : rho ^ 2 = s ^ 2 - 4 * (m - t))
+    (hsigma : sigma ^ 2 = s ^ 2 - 4 * (m + t))
+    (hy : depressed_quartic p q r y = 0) :
+  let roots := solve_depressed_quartic m s t rho sigma in
+  y = fst roots \/ y = fst (snd roots) \/
+  y = fst (snd (snd roots)) \/ y = snd (snd (snd roots)).
+Proof.
+  rewrite (ferrari_factorization p q r m s t y hs hst ht) in hy.
+  apply Rmult_integral in hy as [hfirst | hsecond].
+  - assert (hquadratic : quadratic 1 (-s) (m - t) y = 0).
+    { unfold quadratic; nra. }
+    assert (hdisc : rho ^ 2 = (-s) ^ 2 - 4 * 1 * (m - t)) by nra.
+    apply (proj1 (quadratic_eq_zero_iff 1 (-s) (m - t) rho y
+      R1_neq_R0 hdisc)) in hquadratic.
+    cbn [solve_depressed_quartic].
+    destruct hquadratic as [h | h].
+    + left; change (y = (s + rho) / 2); nra.
+    + right; left; change (y = (s - rho) / 2); nra.
+  - assert (hquadratic : quadratic 1 s (m + t) y = 0).
+    { unfold quadratic; nra. }
+    assert (hdisc : sigma ^ 2 = s ^ 2 - 4 * 1 * (m + t)) by nra.
+    apply (proj1 (quadratic_eq_zero_iff 1 s (m + t) sigma y
+      R1_neq_R0 hdisc)) in hquadratic.
+    cbn [solve_depressed_quartic].
+    destruct hquadratic as [h | h].
+    + right; right; left; change (y = (-s + sigma) / 2); nra.
+    + right; right; right; change (y = (-s - sigma) / 2); nra.
+Qed.
+
+(** Every real root of the input quartic occurs in [solve_quartic]. *)
+Theorem solve_quartic_exhaustive
+    (a b c d e m s t rho sigma x : R) (ha : a <> 0)
+    (hs : s ^ 2 = 2 * m - quartic_p (b / a) (c / a))
+    (hst : 2 * s * t = -quartic_q (b / a) (c / a) (d / a))
+    (ht : t ^ 2 = m ^ 2 - quartic_r (b / a) (c / a) (d / a) (e / a))
+    (hrho : rho ^ 2 = s ^ 2 - 4 * (m - t))
+    (hsigma : sigma ^ 2 = s ^ 2 - 4 * (m + t))
+    (hx : quartic a b c d e x = 0) :
+  let roots := solve_quartic a b c d e m s t rho sigma in
+  x = fst roots \/ x = fst (snd roots) \/
+  x = fst (snd (snd roots)) \/ x = snd (snd (snd roots)).
+Proof.
+  assert (hmonic : monic_quartic (b / a) (c / a) (d / a) (e / a) x = 0).
+  { rewrite (quartic_normalization a b c d e x ha) in hx.
+    apply Rmult_integral in hx as [ha0 | hmonic]; [contradiction | exact hmonic]. }
+  set (y := x + (b / a) / 4).
+  assert (hdepressed :
+      depressed_quartic (quartic_p (b / a) (c / a))
+        (quartic_q (b / a) (c / a) (d / a))
+        (quartic_r (b / a) (c / a) (d / a) (e / a)) y = 0).
+  { rewrite <- depress_monic_quartic.
+    replace (y - b / a / 4) with x by (unfold y; field; exact ha).
+    exact hmonic. }
+  pose proof (solve_depressed_quartic_exhaustive
+    (quartic_p (b / a) (c / a))
+    (quartic_q (b / a) (c / a) (d / a))
+    (quartic_r (b / a) (c / a) (d / a) (e / a))
+    m s t rho sigma y hs hst ht hrho hsigma hdepressed) as hroots.
+  unfold solve_depressed_quartic in hroots.
+  cbn in hroots.
+  unfold solve_quartic.
+  cbn.
+  destruct hroots as [h | [h | [h | h]]].
+  - left; rewrite <- h; unfold y; ring.
+  - right; left; rewrite <- h; unfold y; ring.
+  - right; right; left; rewrite <- h; unfold y; ring.
+  - right; right; right; rewrite <- h; unfold y; ring.
+Qed.
+
+(** The Ferrari collection contains exactly all real roots of the quartic. *)
+Theorem quartic_eq_zero_iff (a b c d e m s t rho sigma x : R) (ha : a <> 0)
+    (hs : s ^ 2 = 2 * m - quartic_p (b / a) (c / a))
+    (hst : 2 * s * t = -quartic_q (b / a) (c / a) (d / a))
+    (ht : t ^ 2 = m ^ 2 - quartic_r (b / a) (c / a) (d / a) (e / a))
+    (hrho : rho ^ 2 = s ^ 2 - 4 * (m - t))
+    (hsigma : sigma ^ 2 = s ^ 2 - 4 * (m + t)) :
+  quartic a b c d e x = 0 <->
+  let roots := solve_quartic a b c d e m s t rho sigma in
+  x = fst roots \/ x = fst (snd roots) \/
+  x = fst (snd (snd roots)) \/ x = snd (snd (snd roots)).
+Proof.
+  split.
+  - apply solve_quartic_exhaustive; assumption.
+  - cbn [solve_quartic].
+    intros [-> | [-> | [-> | ->]]].
+    all: apply (solve_quartic_correct a b c d e m s t rho sigma
+      ha hs hst ht hrho hsigma).
 Qed.
 
 End PolynomialFormulasQuartic.

@@ -122,6 +122,36 @@ theorem solveDepressedQuartic_correct {p q r m s t ρ σ : K}
     field_simp
     linear_combination hσ
 
+/-- Every root of the depressed quartic occurs in the four-entry Ferrari
+collection. -/
+theorem solveDepressedQuartic_exhaustive {p q r m s t ρ σ y : K}
+    (hs : s ^ 2 = 2 * m - p) (hst : 2 * s * t = -q)
+    (ht : t ^ 2 = m ^ 2 - r)
+    (hρ : ρ ^ 2 = s ^ 2 - 4 * (m - t))
+    (hσ : σ ^ 2 = s ^ 2 - 4 * (m + t))
+    (hy : depressedQuartic p q r y = 0) :
+    ∃ i, solveDepressedQuartic m s t ρ σ i = y := by
+  rw [ferrari_factorization hs hst ht] at hy
+  rcases mul_eq_zero.mp hy with hfirst | hsecond
+  · have hquadratic : quadratic 1 (-s) (m - t) y = 0 := by
+      simpa [quadratic, sub_eq_add_neg] using hfirst
+    have hdisc : ρ ^ 2 = (-s) ^ 2 - 4 * 1 * (m - t) := by
+      rw [hρ]
+      ring
+    rcases (quadratic_eq_zero_iff (a := (1 : K)) (b := -s)
+      (c := m - t) (s := ρ) (x := y) one_ne_zero hdisc).mp hquadratic with h | h
+    · exact ⟨0, by simpa [solveDepressedQuartic] using h.symm⟩
+    · exact ⟨1, by simpa [solveDepressedQuartic] using h.symm⟩
+  · have hquadratic : quadratic 1 s (m + t) y = 0 := by
+      simpa [quadratic, sub_eq_add_neg] using hsecond
+    have hdisc : σ ^ 2 = s ^ 2 - 4 * 1 * (m + t) := by
+      rw [hσ]
+      ring
+    rcases (quadratic_eq_zero_iff (a := (1 : K)) (b := s)
+      (c := m + t) (s := σ) (x := y) one_ne_zero hdisc).mp hquadratic with h | h
+    · exact ⟨2, by simpa [solveDepressedQuartic] using h.symm⟩
+    · exact ⟨3, by simpa [solveDepressedQuartic] using h.symm⟩
+
 /-- Every entry computed by `solveQuartic` is a root of the input quartic. -/
 theorem solveQuartic_correct {a b c d e m s t ρ σ : K} (ha : a ≠ 0)
     (hs : s ^ 2 = 2 * m - quarticP (b / a) (c / a))
@@ -135,6 +165,48 @@ theorem solveQuartic_correct {a b c d e m s t ρ σ : K} (ha : a ≠ 0)
   rw [depress_monic_quartic]
   rw [solveDepressedQuartic_correct hs hst ht hρ hσ i]
   ring
+
+/-- Every root of the input quartic occurs in `solveQuartic`. -/
+theorem solveQuartic_exhaustive {a b c d e m s t ρ σ x : K} (ha : a ≠ 0)
+    (hs : s ^ 2 = 2 * m - quarticP (b / a) (c / a))
+    (hst : 2 * s * t = -quarticQ (b / a) (c / a) (d / a))
+    (ht : t ^ 2 = m ^ 2 - quarticR (b / a) (c / a) (d / a) (e / a))
+    (hρ : ρ ^ 2 = s ^ 2 - 4 * (m - t))
+    (hσ : σ ^ 2 = s ^ 2 - 4 * (m + t))
+    (hx : quartic a b c d e x = 0) :
+    ∃ i, solveQuartic a b c d e m s t ρ σ i = x := by
+  have hmonic : monicQuartic (b / a) (c / a) (d / a) (e / a) x = 0 := by
+    rw [quartic_normalization ha] at hx
+    exact (mul_eq_zero.mp hx).resolve_left ha
+  let y := x + (b / a) / 4
+  have hdepressed :
+      depressedQuartic (quarticP (b / a) (c / a))
+        (quarticQ (b / a) (c / a) (d / a))
+        (quarticR (b / a) (c / a) (d / a) (e / a)) y = 0 := by
+    rw [← depress_monic_quartic]
+    convert hmonic using 1
+    dsimp [y]
+    ring
+  obtain ⟨i, hi⟩ := solveDepressedQuartic_exhaustive hs hst ht hρ hσ hdepressed
+  refine ⟨i, ?_⟩
+  simp only [solveQuartic]
+  rw [hi]
+  dsimp [y]
+  ring
+
+/-- The Ferrari collection contains exactly all roots of the quartic. -/
+theorem quartic_eq_zero_iff {a b c d e m s t ρ σ x : K} (ha : a ≠ 0)
+    (hs : s ^ 2 = 2 * m - quarticP (b / a) (c / a))
+    (hst : 2 * s * t = -quarticQ (b / a) (c / a) (d / a))
+    (ht : t ^ 2 = m ^ 2 - quarticR (b / a) (c / a) (d / a) (e / a))
+    (hρ : ρ ^ 2 = s ^ 2 - 4 * (m - t))
+    (hσ : σ ^ 2 = s ^ 2 - 4 * (m + t)) :
+    quartic a b c d e x = 0 ↔
+      ∃ i, solveQuartic a b c d e m s t ρ σ i = x := by
+  constructor
+  · exact solveQuartic_exhaustive ha hs hst ht hρ hσ
+  · rintro ⟨i, rfl⟩
+    exact solveQuartic_correct ha hs hst ht hρ hσ i
 
 end Field
 

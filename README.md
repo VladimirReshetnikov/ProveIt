@@ -38,7 +38,8 @@ is the broad Lean import surface.
   formulas through degree four: unique linear and exhaustive quadratic roots,
   Cardano's cubic translation and branch-compatible radicals, and Ferrari's
   cubic resolvent and quartic factorization. Executable root-collection
-  functions have entrywise correctness theorems and exact rational examples.
+  functions have entrywise correctness and exhaustiveness theorems, with a
+  complex Coq cubic development covering nonreal roots and exact examples.
 - A Lean/Coq proof that the Jacobian conjecture is false in dimension three:
   an explicit polynomial map has formal Jacobian determinant `-2` but
   identifies distinct integral and rational points.  A stabilization

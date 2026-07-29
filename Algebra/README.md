@@ -7,4 +7,4 @@
 - [`PolynomialFormulas/`](PolynomialFormulas/) contains independent Lean 4 and
   Rocq/Coq verifications of the linear, quadratic, Cardano cubic, and Ferrari
   quartic formulas, together with root-collection functions and entrywise
-  correctness theorems.
+  correctness and exhaustiveness theorems.
