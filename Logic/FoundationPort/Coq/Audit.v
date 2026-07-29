@@ -245,12 +245,19 @@ Check semiterm_operator_apply_positive.
 Check semiterm_const_operator_positive.
 Check semiterm_operator_foldr.
 Check semiterm_operator_foldr_cons_apply.
+Check fin_to_list.
+Check semiterm_operator_iterr.
+Check semiterm_operator_iterr_zero.
+Check semiterm_operator_iterr_succ.
 Check semiterm_has_zero_operator.
 Check semiterm_has_one_operator.
 Check semiterm_has_add_operator.
 Check semiterm_has_mul_operator.
 Check semiterm_has_exp_operator.
+Check semiterm_has_sub_operator.
+Check semiterm_has_div_operator.
 Check semiterm_has_star_operator.
+Check semiterm_godel_number_operator.
 Check semiterm_zero_operator_of_language.
 Check semiterm_one_operator_of_language.
 Check semiterm_add_operator_of_language.
@@ -265,6 +272,16 @@ Check semiterm_operator_numeral_zero.
 Check semiterm_operator_numeral_one.
 Check semiterm_operator_numeral_succ_nonzero.
 Check semiterm_operator_numeral_succ_succ.
+Check semiterm_godel_number_of_encoding.
+Check semiterm_operator_npow.
+Check semiterm_operator_npow_zero.
+Check semiterm_operator_npow_succ.
+Check semiterm_operator_npow_positive.
+Check fin_max_two.
+Check semiterm_zero_operator_complexity.
+Check semiterm_one_operator_complexity.
+Check semiterm_add_operator_complexity.
+Check semiterm_mul_operator_complexity.
 Check semiformula_operator.
 Check semiformula_operator_apply.
 Check rew_semiformula_operator_apply.
@@ -289,6 +306,11 @@ Check semiformula_eq_operator_apply.
 Check semiformula_lt_operator_apply.
 Check semiformula_mem_operator_apply.
 Check semiformula_le_operator_apply.
+Check semiformula_rel_arity_injective.
+Check semiformula_rewrite_binary_relation_preimage.
+Check semiformula_rewrite_eq_operator_preimage.
+Check semiformula_rewrite_lt_operator_preimage.
+Check semiformula_rewrite_mem_operator_preimage.
 Check semiformula_binary_relation_injective.
 Check semiformula_eq_operator_injective.
 Check semiformula_lt_operator_injective.
@@ -405,8 +427,13 @@ Print Assumptions semiterm_add_operator_positive.
 Print Assumptions semiterm_mul_operator_positive.
 Print Assumptions semiterm_exp_operator_positive.
 Print Assumptions semiterm_operator_numeral_succ_nonzero.
+Print Assumptions semiterm_operator_iterr_succ.
+Print Assumptions semiterm_operator_npow_positive.
+Print Assumptions semiterm_add_operator_complexity.
 Print Assumptions rew_semiformula_operator_apply.
 Print Assumptions semiformula_operator_comp_assoc.
+Print Assumptions semiformula_rewrite_binary_relation_preimage.
+Print Assumptions semiformula_rewrite_eq_operator_preimage.
 Print Assumptions semiformula_binary_relation_injective.
 Print Assumptions semiformula_eq_operator_injective.
 Print Assumptions semiformula_le_operator_injective.
