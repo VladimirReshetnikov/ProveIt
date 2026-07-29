@@ -2793,6 +2793,13 @@ equation identifying every native context-truth leaf with the instantiated
 five-existential template.  The Assumption compiler can therefore eliminate
 the real context-truth structure using ordinary represented proof rules.
 
+The membership-transfer theorem now also retains an explicit twelve-times
+universally quantified source as a public theorem, carrier proof certificate,
+and witnessed-tail local proof.  This lets the deep Assumption compiler
+instantiate the displayed context, formula, and both five-witness traversal
+tuples explicitly after opening the two existential packages, without
+depending on ambient de Bruijn positions or the generic `sealPA` bound.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled

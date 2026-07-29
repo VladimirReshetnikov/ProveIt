@@ -151,9 +151,15 @@ Proof.
     hright hleft hmember).
 Qed.
 
-(** Completeness is used only after sealing this fixed standard PA formula.
-    Eliminating the seal returns the open theorem, so later compilers may
-    instantiate its twelve parameters with their literal witness terms. *)
+(** Keep an explicitly twelve-quantifier source public.  Deep represented compilers
+    can eliminate its twelve binders at arbitrary carrier-valued witness
+    terms; they must not rely on the accidental free-variable positions of an
+    open theorem after several surrounding existential eliminations. *)
+Definition contextListMemberTransferUniversalFormula : formula :=
+  Formula.closeN 12 contextListMemberTransferFormula.
+
+(** Completeness first supplies a sealed theorem; eliminating that generic
+    seal returns the convenient open theorem. *)
 Theorem PA_proves_contextListMemberTransferFormula :
   Formula.BProv Formula.Ax_s [] contextListMemberTransferFormula.
 Proof.
@@ -173,6 +179,16 @@ Proof.
   now rewrite Formula.rename_id in hopen.
 Qed.
 
+(** Universal introduction closes the explicitly displayed parameters. *)
+Theorem PA_proves_contextListMemberTransferUniversalFormula :
+  Formula.BProv Formula.Ax_s [] contextListMemberTransferUniversalFormula.
+Proof.
+  unfold contextListMemberTransferUniversalFormula.
+  apply Formula.BProv_closeN_nil_of_sentences.
+  - exact Formula.sentence_ax_s.
+  - exact PA_proves_contextListMemberTransferFormula.
+Qed.
+
 (** Carrier-facing global certificate.  Its formula is a standard quotation,
     and the finite PA-axiom witness list remains explicit in the certificate. *)
 Theorem raw_codedPAProofOf_contextListMemberTransferFormula : forall
@@ -186,6 +202,25 @@ Proof.
   destruct (raw_codedPAProofOf_of_BProv M hPA
     contextListMemberTransferFormula
     PA_proves_contextListMemberTransferFormula)
+    as [certificate hcertificate].
+  exists certificate.
+  rewrite rawQuotedFormulaCode_standard by exact hPA.
+  exact hcertificate.
+Qed.
+
+(** Universally quantified carrier-facing certificate retained for arbitrary represented
+    instantiation. *)
+Theorem raw_codedPAProofOf_contextListMemberTransferUniversalFormula : forall
+    (M : RawPAModel), RawPASatisfies M ->
+  exists certificate : M,
+    RawCodedPAProofOf M
+      (rawQuotedFormulaCode M contextListMemberTransferUniversalFormula)
+      certificate.
+Proof.
+  intros M hPA.
+  destruct (raw_codedPAProofOf_of_BProv M hPA
+    contextListMemberTransferUniversalFormula
+    PA_proves_contextListMemberTransferUniversalFormula)
     as [certificate hcertificate].
   exists certificate.
   rewrite rawQuotedFormulaCode_standard by exact hPA.
@@ -220,6 +255,34 @@ Proof.
     M hPA translation hagreement baseWitnessList baseContext
     contextListMemberTransferFormula hbase
     PA_proves_contextListMemberTransferFormula).
+Qed.
+
+(** Exact witnessed-tail form of the explicitly universal source. *)
+Theorem
+    raw_codedTemplatePALocalProofOf_contextListMemberTransferUniversal_on_tail :
+  forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (prefix : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        prefix baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        prefix baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        prefix baseContext)
+      (rawTemplateFormula translation
+        (embedPAFormula contextListMemberTransferUniversalFormula)) root.
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext hbase.
+  exact (raw_codedTemplatePALocalProofOf_of_BProv_on_witnessed_tail
+    M hPA translation hagreement baseWitnessList baseContext
+    contextListMemberTransferUniversalFormula hbase
+    PA_proves_contextListMemberTransferUniversalFormula).
 Qed.
 
 End PABoundedRawCodedContextMembershipTransferPA.
