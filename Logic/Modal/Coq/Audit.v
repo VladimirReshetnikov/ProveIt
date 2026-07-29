@@ -4,8 +4,8 @@ From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
-  PropositionalFormula PropositionalNNFormula PropositionalBoolean
-  GenericCalculus
+  PropositionalFormula PropositionalNNFormula PropositionalTranslation
+  PropositionalBoolean GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -889,6 +889,23 @@ Print Assumptions pnn_de_morgan_laws.
 Print Assumptions pnn_complexity_neg.
 Print Assumptions pnnformula_eq_dec.
 Print Assumptions pnn_ne_of_ne_complexity.
+
+(** Propositional/Translation syntax bridges. *)
+Check pformula_to_pnn.
+Check pformula_to_pnn_atom.
+Check pformula_to_pnn_bottom.
+Check pformula_to_pnn_and.
+Check pformula_to_pnn_or.
+Check pformula_to_pnn_imp.
+Check pnn_to_pformula.
+Check pnn_to_pformula_top.
+Check pnn_to_pformula_bottom.
+Check pnn_to_pformula_atom.
+Check pnn_to_pformula_neg_atom.
+Check pnn_to_pformula_and.
+Check pnn_to_pformula_or.
+Print Assumptions pformula_to_pnn_imp.
+Print Assumptions pnn_to_pformula_neg_atom.
 
 (** Propositional/Boolean/Basic truth-functional semantics. *)
 Check pvaluation.
