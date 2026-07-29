@@ -322,6 +322,22 @@ Proof.
   intro tail. right. right. right. right. left. reflexivity.
 Qed.
 
+(** The two hypotheses of the recursive-child residual are deliberately the
+    first two entries of the law-body context.  Naming these positions keeps
+    the later implication-introduction proof independent of the much longer
+    strong-step tail. *)
+Lemma coqRestrictedPADirectOrIntroductionLeft_law_body_context_truth_in :
+    forall tail,
+  In coqRestrictedPADirectAssumptionWitnessContextTruthTemplate
+    (coqRestrictedPADirectOrIntroductionLeftLawBodyContext tail).
+Proof. intro tail. left. reflexivity. Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_law_body_endpoint_in :
+    forall tail,
+  In coqRestrictedPADirectOrIntroductionLeftChildEndpointTemplate
+    (coqRestrictedPADirectOrIntroductionLeftLawBodyContext tail).
+Proof. intro tail. right. left. reflexivity. Qed.
+
 Lemma coqRestrictedPADirectOrIntroductionLeft_eigen_inherited : forall
     tail formula,
   In formula (coqRestrictedPADirectOrIntroductionLeftLawBodyContext tail) ->
@@ -331,6 +347,81 @@ Proof.
   intros tail formula hin. right.
   unfold templateContextShift, templateContextRename.
   apply in_map. exact hin.
+Qed.
+
+(** After existential elimination the coverage witness itself is the fresh
+    head assumption, while every pre-existing resource has crossed exactly
+    one de Bruijn binder.  These small membership lemmas are the syntactic
+    contract used by the opened coverage compiler and by the shifted [K(d)]
+    application which follows it. *)
+Lemma coqRestrictedPADirectOrIntroductionLeft_eigen_coverage_body_in :
+    forall tail,
+  In coqRestrictedPADirectOrIntroductionLeftDeepCommonCoverageBodyTemplate
+    (coqRestrictedPADirectOrIntroductionLeftCoverageEigenContext tail).
+Proof. intro tail. left. reflexivity. Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_eigen_restricted_in :
+    forall tail,
+  In (templateFormulaRename S
+      coqRestrictedPADirectOrIntroductionLeftDeepRestrictedTemplate)
+    (coqRestrictedPADirectOrIntroductionLeftCoverageEigenContext tail).
+Proof.
+  intro tail.
+  apply coqRestrictedPADirectOrIntroductionLeft_eigen_inherited.
+  apply coqRestrictedPADirectOrIntroductionLeft_law_body_restricted_in.
+Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_eigen_admissible_in :
+    forall tail,
+  In (templateFormulaRename S
+      coqRestrictedPADirectOrIntroductionLeftDeepAdmissibleTemplate)
+    (coqRestrictedPADirectOrIntroductionLeftCoverageEigenContext tail).
+Proof.
+  intro tail.
+  apply coqRestrictedPADirectOrIntroductionLeft_eigen_inherited.
+  apply coqRestrictedPADirectOrIntroductionLeft_law_body_admissible_in.
+Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_eigen_prefix_in : forall tail,
+  In (templateFormulaRename S
+      coqRestrictedPADirectAndIntroductionDeepStrongPrefixTemplate)
+    (coqRestrictedPADirectOrIntroductionLeftCoverageEigenContext tail).
+Proof.
+  intro tail.
+  apply coqRestrictedPADirectOrIntroductionLeft_eigen_inherited.
+  apply coqRestrictedPADirectOrIntroductionLeft_law_body_prefix_in.
+Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_eigen_case_in : forall tail,
+  In (templateFormulaRename S
+      coqRestrictedPADirectOrIntroductionLeftCaseTemplate)
+    (coqRestrictedPADirectOrIntroductionLeftCoverageEigenContext tail).
+Proof.
+  intro tail.
+  apply coqRestrictedPADirectOrIntroductionLeft_eigen_inherited.
+  apply coqRestrictedPADirectOrIntroductionLeft_law_body_case_in.
+Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_eigen_context_truth_in :
+    forall tail,
+  In (templateFormulaRename S
+      coqRestrictedPADirectAssumptionWitnessContextTruthTemplate)
+    (coqRestrictedPADirectOrIntroductionLeftCoverageEigenContext tail).
+Proof.
+  intro tail.
+  apply coqRestrictedPADirectOrIntroductionLeft_eigen_inherited.
+  apply
+    coqRestrictedPADirectOrIntroductionLeft_law_body_context_truth_in.
+Qed.
+
+Lemma coqRestrictedPADirectOrIntroductionLeft_eigen_endpoint_in : forall tail,
+  In (templateFormulaRename S
+      coqRestrictedPADirectOrIntroductionLeftChildEndpointTemplate)
+    (coqRestrictedPADirectOrIntroductionLeftCoverageEigenContext tail).
+Proof.
+  intro tail.
+  apply coqRestrictedPADirectOrIntroductionLeft_eigen_inherited.
+  apply coqRestrictedPADirectOrIntroductionLeft_law_body_endpoint_in.
 Qed.
 
 (** ------------------------------------------------------------------
