@@ -1379,6 +1379,26 @@ Check generic_minimal_empty_derivation_provable_iff.
 Check generic_minimal_list_derivation_conj2_iff.
 Check generic_list_derivation_weaken.
 Check generic_list_derivation_append_mdp.
+Check generic_type_context_derivation.
+Check generic_type_context_derivable.
+Check generic_proof_relevant_context.
+Check generic_type_context_derivation_weaken_raw.
+Check generic_type_context_mdp_raw.
+Check generic_type_context_adjoin.
+Check generic_minimal_type_context_deduction_raw.
+Check generic_type_context_deduction_inverse_raw.
+Check generic_minimal_type_context_deduction_iff.
+Check generic_type_context_derivation_weaken.
+Check generic_type_context_mdp.
+Check generic_type_context_finite_witness.
+Check generic_type_context_finitely_derivable.
+Check generic_type_context_to_finite_witness_raw.
+Check generic_type_context_of_list_derivation_raw.
+Check generic_type_context_of_finite_witness_raw.
+Check generic_type_context_finite_iff.
+Check generic_empty_type_context.
+Check generic_empty_type_context_derivation_raw.
+Check generic_minimal_empty_type_context_provable_iff.
 Check ph_hilbert_dni.
 Check ph_hilbert_contraposition.
 Check ph_hilbert_neg_or_iff_and_neg.
@@ -1389,6 +1409,9 @@ Check ph_hilbert_list_disj2_intro.
 Check ph_hilbert_context_proof.
 Check ph_hilbert_context_to_conj2.
 Check ph_hilbert_context_of_conj2.
+Check ph_hilbert_type_context_proof.
+Check ph_hilbert_type_context_deduction.
+Check ph_hilbert_type_context_to_finite.
 Print Assumptions generic_minimal_imp_swap_raw.
 Print Assumptions generic_minimal_imp_contract_raw.
 Print Assumptions generic_minimal_iff_trans_raw.
@@ -1437,6 +1460,14 @@ Print Assumptions generic_minimal_list_derivation_of_conj2_raw.
 Print Assumptions generic_minimal_list_derivation_deduction_iff.
 Print Assumptions generic_minimal_empty_derivation_provable_iff.
 Print Assumptions generic_minimal_list_derivation_conj2_iff.
+Print Assumptions generic_type_context_derivation_weaken_raw.
+Print Assumptions generic_minimal_type_context_deduction_raw.
+Print Assumptions generic_type_context_deduction_inverse_raw.
+Print Assumptions generic_minimal_type_context_deduction_iff.
+Print Assumptions generic_type_context_to_finite_witness_raw.
+Print Assumptions generic_type_context_of_finite_witness_raw.
+Print Assumptions generic_type_context_finite_iff.
+Print Assumptions generic_minimal_empty_type_context_provable_iff.
 Print Assumptions ph_hilbert_dni.
 Print Assumptions ph_hilbert_contraposition.
 Print Assumptions ph_hilbert_neg_or_iff_and_neg.
@@ -1446,6 +1477,8 @@ Print Assumptions ph_hilbert_list_conj2_elim.
 Print Assumptions ph_hilbert_list_disj2_intro.
 Print Assumptions ph_hilbert_context_to_conj2.
 Print Assumptions ph_hilbert_context_of_conj2.
+Print Assumptions ph_hilbert_type_context_deduction.
+Print Assumptions ph_hilbert_type_context_to_finite.
 
 (** Propositional/Tait/Calculus one-sided NNF calculus. *)
 Check pnn_sequent.
