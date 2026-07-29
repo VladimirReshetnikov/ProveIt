@@ -2057,6 +2057,17 @@ Check pctableau_consistent_insert_negative_iff.
 Check pctableau_inconsistent_insert_positive_iff.
 Check pctableau_inconsistent_insert_negative_iff.
 Check pctableau_consistent_either.
+Check pct_raw_member_inhabited.
+Check pct_raw_member_of_in.
+Check pct_partition_left.
+Check pct_partition_right.
+Check pct_partition.
+Check pct_partition_left_holds.
+Check pct_partition_right_not_left.
+Check pct_partition_left_origin.
+Check pct_partition_right_origin.
+Check pct_partition_member.
+Check pct_partition_original_included.
 Check pctableau_next.
 Check pctableau_chain.
 Check pctableau_limit.
@@ -2108,6 +2119,8 @@ Print Assumptions pct_split_insert.
 Print Assumptions pctableau_not_both.
 Print Assumptions pctableau_consistent_insert_positive_iff.
 Print Assumptions pctableau_consistent_either.
+Print Assumptions pct_partition_member.
+Print Assumptions pct_partition_original_included.
 Print Assumptions pctableau_chain_consistent.
 Print Assumptions pctableau_limit_consistent.
 Print Assumptions pctableau_lindenbaum.
@@ -2233,9 +2246,25 @@ Check pformula_disjunctive_of_aczel_slash_iff.
 Check pformula_logic_aczel_slash.
 Check pformula_logic_disjunctive_of_aczel_slash_iff.
 Check pkripke_frame_kreisel_putnam.
+Check psct_unneg.
+Check psct_common_neg.
+Check psct_common_neg_shape.
+Check psct_common_neg_left.
+Check psct_common_neg_right.
+Check psct_common_neg_roundtrip.
+Check psct_kp_seed.
+Check psct_kp_seed_consistent.
+Check psct_positive_union_seed.
+Check psct_positive_union_extension.
+Check psct_no_positive_union_witness.
+Check psct_canonical_frame_kreisel_putnam.
+Check ph_hilbert_pkripke_kp_complete_of_axioms.
+Check ph_hilbert_kp_pkripke_complete_of_codec.
+Check ph_hilbert_kp_pkripke_complete.
 Check pkripke_KP_valid_of_condition.
 Check pkripke_kreisel_putnam_of_strongly_convergent.
 Check ph_hilbert_kp_pkripke_sound.
+Check ph_hilbert_kp_pkripke_sound_complete.
 Check ph_hilbert_kp_consistent_via_pkripke.
 Check pkripke_fork_kreisel_putnam.
 Check pkripke_fork_not_strongly_convergent.
@@ -2285,8 +2314,15 @@ Print Assumptions p_aczel_slash_modus_ponens.
 Print Assumptions pformula_disjunctive_of_aczel_slash_iff.
 Print Assumptions pformula_logic_disjunctive_of_aczel_slash_iff.
 Print Assumptions pkripke_KP_valid_of_condition.
+Print Assumptions psct_common_neg_roundtrip.
+Print Assumptions psct_kp_seed_consistent.
+Print Assumptions psct_no_positive_union_witness.
+Print Assumptions psct_canonical_frame_kreisel_putnam.
+Print Assumptions ph_hilbert_pkripke_kp_complete_of_axioms.
+Print Assumptions ph_hilbert_kp_pkripke_complete.
 Print Assumptions pkripke_kreisel_putnam_of_strongly_convergent.
 Print Assumptions ph_hilbert_kp_pkripke_sound.
+Print Assumptions ph_hilbert_kp_pkripke_sound_complete.
 Print Assumptions ph_hilbert_kp_consistent_via_pkripke.
 Print Assumptions pkripke_fork_kreisel_putnam.
 Print Assumptions ph_hilbert_kp_strictly_included_kc.
