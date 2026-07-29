@@ -6,6 +6,7 @@ From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
 From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
+From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 From Foundation.Syntax.Predicate Require Import Relational.
 
 Check language.
@@ -403,6 +404,36 @@ Check semiformula_eval_ball_mem.
 Check semiformula_eval_bex_mem.
 Check semiformula_eval_ball_relation.
 Check semiformula_eval_bex_relation.
+Check first_order_model.
+Check first_order_model_of_structure.
+Check first_order_model_realize.
+Check first_order_semantics.
+Check sentence_connectives.
+Check first_order_tarski.
+Check first_order_models_theory.
+Check first_order_valid.
+Check first_order_satisfiable.
+Check first_order_consequence.
+Check first_order_models_theory_iff.
+Check first_order_models_of_member.
+Check first_order_models_of_subset.
+Check first_order_models_union_iff.
+Check first_order_valid_iff.
+Check first_order_satisfiable_iff.
+Check first_order_unsatisfiable_iff.
+Check first_order_satisfiable_intro.
+Check first_order_consequence_iff.
+Check first_order_consequence_iff_unsatisfiable.
+Check first_order_consequence_weakening.
+Check first_order_consequence_of_member.
+Check first_order_model_theory.
+Check first_order_model_theory_spec.
+Check first_order_model_models_own_theory.
+Check first_order_model_theory_satisfiable.
+Check first_order_theory_subset_model_theory_iff.
+Check first_order_model_language_pullback.
+Check first_order_model_realize_language_map.
+Check first_order_consequence_language_map.
 
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
@@ -536,6 +567,16 @@ Print Assumptions semiformula_eval_bounded_operator_all.
 Print Assumptions semiformula_eval_bounded_operator_exists.
 Print Assumptions semiformula_eval_ball_relation.
 Print Assumptions semiformula_eval_bex_relation.
+Print Assumptions first_order_tarski.
+Print Assumptions first_order_models_theory_iff.
+Print Assumptions first_order_satisfiable_iff.
+Print Assumptions first_order_unsatisfiable_iff.
+Print Assumptions first_order_consequence_iff.
+Print Assumptions first_order_consequence_iff_unsatisfiable.
+Print Assumptions first_order_consequence_weakening.
+Print Assumptions first_order_model_theory_satisfiable.
+Print Assumptions first_order_model_realize_language_map.
+Print Assumptions first_order_consequence_language_map.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
