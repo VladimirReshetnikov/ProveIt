@@ -2708,6 +2708,18 @@ element.  This reduces the next step to arithmetic validity of one explicit
 universal source, followed by the same witnessed-base compilation already
 used for the smaller reroot law.
 
+The arithmetic content of that validity proof is factored into
+`RawCodedOrIntroductionLeftChildInterface.v`.  Its main theorem is independent
+of template syntax and works at an arbitrary carrier-valued hierarchy level.
+Given parent carrier restriction, atomic/formula/rule coverage certificates,
+the literal Or-I-left constructor equation, a displayed child endpoint, and a
+common assignment bound, it returns child descent and carrier restriction,
+all three inherited proof-wide certificates, child rule validity, and the
+three endpoint admissibility fields (atomic adequacy, assignment coverage, and
+carrier-level quantifier boundedness).  The constructor-row boilerplate and
+the general carrier-restricted endpoint-boundedness fact are exposed as
+separate reusable lemmas.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled

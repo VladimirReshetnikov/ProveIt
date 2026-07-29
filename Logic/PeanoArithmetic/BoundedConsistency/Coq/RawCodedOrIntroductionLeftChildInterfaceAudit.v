@@ -1,0 +1,14 @@
+(** Audit surface for carrier-valued Or-I-left child descent. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedOrIntroductionLeftChildInterface.
+
+Import PABoundedRawCodedOrIntroductionLeftChildInterface.
+
+Check raw_orIntroductionLeft_recursive_child_data.
+Check raw_carrierRestrictedProofAt_endpoint_bounded.
+Check raw_orIntroductionLeft_child_interface.
+
+Print Assumptions raw_orIntroductionLeft_recursive_child_data.
+Print Assumptions raw_carrierRestrictedProofAt_endpoint_bounded.
+Print Assumptions raw_orIntroductionLeft_child_interface.
