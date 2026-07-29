@@ -3669,6 +3669,20 @@ elimination chain even when opaque leaves translate to nonstandard dynamic
 formula codes.  The predecessor compiler can use this structural route once
 its exact domain/evidence applications are packaged as one such translation.
 
+That final structural package is now generated directly from the native local
+trace.  `RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.v` defines the
+finite `#2,#1,#0` exclusivity template and a dual ternary opaque-code router:
+predicate zero selects the Sigma transform and predicate one selects the Pi
+transform.  Deep closure of the two consecutive orbit entries proves the
+required shift/open laws, while the trace's two ternary-application equations
+identify all four domain/evidence leaves exactly.  The trace compiler carries
+those facts across the paired global successor.  The predecessor compiler can
+therefore build the structural translation and opening chain internally, and
+the aligned staged callback exposes a roots-only endpoint.  Its remaining
+premises are precisely the represented admissibility, Sigma-evidence, and
+Pi-evidence proofs which the three implication eliminations consume; no
+external template bridge or independently supplied translation remains.
+
 The next-field exact residual builder sees this package, the one selected
 local transform trace,
 and its linked row parameters, and returns only the staged root package.

@@ -36,9 +36,13 @@ From BoundedPAConsistency Require Import
   RawCodedUniversalClosureDiagonalSubstitution
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
+  RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateTripleUniversalOpening
   RawCodedDynamicTruthFixedSyntaxFragments
   RawCodedDynamicTruthNativeLocalPositiveGraph
+  RawCodedDynamicTruthNativeLocalProofCompilation
+  RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
+  RawCodedDynamicTruthLocalExclusiveTemplateTraceCompilation
   RawCodedDynamicTruthImpBranchExclusivity.
 
 Module PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
@@ -63,9 +67,15 @@ Import PABoundedRawCodedPALocalProofTripleUniversalIntroduction.
 Import PABoundedRawCodedUniversalClosureDiagonalSubstitution.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateTripleUniversalOpening.
 Import PABoundedRawCodedDynamicTruthFixedSyntaxFragments.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
+Import
+  PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
+Import
+  PABoundedRawCodedDynamicTruthLocalExclusiveTemplateTraceCompilation.
 Import PABoundedRawCodedDynamicTruthImpBranchExclusivity.
 
 (** The two open atoms and their implication body are named separately from
@@ -355,6 +365,56 @@ Arguments RawDynamicTruthPredecessorStateTemplateApplicationBridgeAt
   M baseContext sigmaDomain piDomain sigmaEvidence piEvidence
   : clear implicits.
 
+(** Direct structural identification discharges every syntactic coordinate
+    of the template bridge.  Downstream table compilers now need to supply
+    only the three genuinely logical roots in the joint predecessor-state
+    context; selector choice, scoping, and the exact body-code equation are
+    reconstructed here. *)
+Theorem
+    raw_dynamicTruthPredecessorStateTemplateApplicationBridgeAt_of_direct :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  (exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain) root) ->
+  (exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      sigmaEvidence root) ->
+  (exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      piEvidence root) ->
+  RawDynamicTruthPredecessorStateTemplateApplicationBridgeAt M baseContext
+    sigmaDomain piDomain sigmaEvidence piEvidence.
+Proof.
+  intros M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+    inputs hidentification hadmissible hsigma hpi.
+  refine
+    {| rawDynamicTruthPredecessorTemplateBridge_translation :=
+         rawDirectStructuralTemplateTranslation M hPA inputs;
+       rawDynamicTruthPredecessorTemplateBridge_body :=
+         coqDynamicTruthLocalExclusiveBodyTemplate;
+       rawDynamicTruthPredecessorTemplateBridge_scoped :=
+         coqDynamicTruthLocalExclusiveBodyTemplate_scoped;
+       rawDynamicTruthPredecessorTemplateBridge_bodyCode := _;
+       rawDynamicTruthPredecessorTemplateBridge_admissible := hadmissible;
+       rawDynamicTruthPredecessorTemplateBridge_sigmaEvidence := hsigma;
+       rawDynamicTruthPredecessorTemplateBridge_piEvidence := hpi |}.
+  change
+    (rawDirectTemplateFormula inputs
+      coqDynamicTruthLocalExclusiveBodyTemplate =
+     rawDynamicTruthLocalExclusiveCode M
+       sigmaDomain piDomain sigmaEvidence piEvidence).
+  exact (rawCoqDynamicTruthLocalExclusiveBodyTemplate_identified
+    M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    hidentification).
+Qed.
+
 Theorem raw_dynamicTruthPredecessorStateApplicationBridgeAt_of_diagonal :
     forall (M : RawPAModel), RawPASatisfies M -> forall
       baseContext sigmaDomain piDomain sigmaEvidence piEvidence,
@@ -493,6 +553,59 @@ Proof.
       (raw_dynamicTruthPredecessorStateApplicationBridgeAt_of_template
         M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
         hbridge)).
+Qed.
+
+(** Native traces can be eliminated safely here because the final result is
+    a proposition.  This avoids any forbidden large elimination from the
+    trace's existentially selected [Type]-valued translation witness while
+    still leaving only the three logical roots as premises. *)
+Corollary
+    raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_native_trace :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (tail : nat -> M) predecessorLevel inputGlobalSigma inputGlobalPi
+      baseContext sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot,
+  RawContextListRealizable M baseContext ->
+  RawContextShift M baseContext baseContext ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalExclusiveCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence)) sourceRoot ->
+  RawDynamicTruthNativeLocalProofTraceAt M tail predecessorLevel
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence ->
+  (exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain) root) ->
+  (exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      sigmaEvidence root) ->
+  (exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      piEvidence root) ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M baseContext
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+    baseContext sigmaDomain piDomain sigmaEvidence piEvidence sourceRoot
+    hcontext hshift hsource htrace hadmissible hsigma hpi.
+  destruct
+    (raw_coqDynamicTruthLocalExclusiveTemplateIdentification_of_native_trace
+      M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence htrace) as
+    [inputs hidentification].
+  apply
+    (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_local_exclusive_template
+      M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+      sourceRoot hcontext hshift hsource).
+  exact
+    (raw_dynamicTruthPredecessorStateTemplateApplicationBridgeAt_of_direct
+      M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
+      inputs hidentification hadmissible hsigma hpi).
 Qed.
 
 End PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
