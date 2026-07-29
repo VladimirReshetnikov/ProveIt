@@ -1,0 +1,16 @@
+(** Public surface and kernel-assumption audit for formula-shift source
+    atomic adequacy. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFormulaShiftSourceAtomicAdequacy.
+
+Import PABoundedRawCodedFormulaShiftSourceAtomicAdequacy.
+
+Check raw_codedFormulaOperationTraversalRow_source_syntax_core.
+Check raw_formulaShift_eq_row_of_source_core.
+Check raw_codedFormulaShift_source_atomically_adequate_core.
+
+Print Assumptions
+  raw_codedFormulaOperationTraversalRow_source_syntax_core.
+Print Assumptions raw_formulaShift_eq_row_of_source_core.
+Print Assumptions raw_codedFormulaShift_source_atomically_adequate_core.

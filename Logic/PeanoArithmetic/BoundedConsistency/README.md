@@ -4520,3 +4520,21 @@ lookup assumptions, runs the full case compiler, and applies that lemma to
 obtain exactly `bound -> rowLookup -> production`.  This proof is already in
 the literal prefix consumed by the scoped global append endpoint; no prefix
 code equality or carrier-parameter interpretation remains.
+
+Atomic adequacy has also been removed from the public concrete-row boundary.
+Every `RawCodedTemplateTranslation` already carries a represented unit-shift
+trace for each translated formula.  A new lower-level module factors the
+source-column half of formula-shift atomic adequacy away from the unrelated
+formula-bound development; applying it to that mandatory trace proves every
+template formula atomically adequate, and therefore every finite template
+prefix adequate.  The literal row compiler now derives all five former
+adequacy premises internally.
+
+Finally, the row compiler is composed directly with the scoped global append
+endpoint.  Given the append source, the inherited traversal and old lookup,
+and the production at the fixed root mode, it builds the full concrete row,
+closes its five universal binders and both existential witness blocks, and
+returns `dynamicTruthGlobalFormula` on the empty prefix.  Neither an externally
+assembled row proof nor a prefix-equivalence premise survives in this
+interface; the next integration boundary consists only of extracting those
+three genuine proof resources from the current master-successor package.
