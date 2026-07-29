@@ -117,6 +117,18 @@ APFS/HFS+ are case-insensitive, and HFS+ normalises to NFD. On Windows,
 spellings appear in one file, but a lone mis-cased import resolves to a module
 other than the one written.
 
+### 5. The source reader is many-to-one, and silent
+
+[`InvalidUtf8.md`](InvalidUtf8.md). Lean's lexer does **not** validate UTF-8: any
+invalid byte sequence is silently replaced with U+FFFD at read time, with no
+error or warning. Five byte-distinct spellings — lone high surrogate `ED A0 80`,
+lone low surrogate `ED B0 80`, raw `FF`, overlong NUL `C0 80`, and a *genuine*
+U+FFFD `EF BF BD` — all declare the same constant. It applies to string literals
+too, so a corrupted file still compiles and proves a different theorem than its
+author wrote. Not a soundness hole (the sanitisation happens before the kernel or
+the compiler sees anything, and keeps `Char`/`String` invariants honest), but an
+integrity one.
+
 ## Systematic lexer sweep
 
 79 candidate characters x 4 probes each, one probe per file (316 `lean`
