@@ -3092,6 +3092,12 @@ nodes and returns the right-nested universal prefix in the original context.
 Unlike self-shift helpers for closed contexts, this theorem follows the
 translation's actual context-shift trace and therefore also applies beneath
 the eight open append witnesses.
+The append elimination module now audits the required binder order directly:
+iterated context shift preserves the witness-context cons spine and shifts
+its extension-body head in lockstep.  Consequently the five-variable row
+body begins with a genuine represented assumption leaf for the already-open,
+five-times-shifted append body.  It does not reopen the append existentials
+inside the row binders, which would reverse the two eigenvariable blocks.
 
 `RawCodedLtSuccCasesSource.v` and
 `RawCodedLtSuccCasesProofCompilation.v` supply the object-language case split

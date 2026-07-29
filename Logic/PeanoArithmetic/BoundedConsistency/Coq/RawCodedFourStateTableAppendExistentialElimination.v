@@ -24,6 +24,7 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruth
   RawCodedFixedLevelTruthTotality
   RawCodedPALocalProofUniversalEliminationChain
+  RawCodedPALocalProofUniversalIntroductionChain
   RawCodedFourStateTableAppendSource
   RawCodedFourStateTableAppendProofCompilation
   RawCodedPALocalProofExistentialEliminationChain.
@@ -46,6 +47,7 @@ Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedFourStateTableAppendSource.
 Import PABoundedRawCodedFourStateTableAppendProofCompilation.
 Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
@@ -435,6 +437,100 @@ Proof.
     templateExistentialEliminationContext
     templateExistentialBodyMany tl].
   reflexivity.
+Qed.
+
+(** Iterated context shift preserves a literal cons and applies the matching
+    iterated formula shift to its head.  This is the scope-order identity used
+    when row eigenvariables are introduced *inside* append witnesses. *)
+Lemma templateContextShiftMany_cons : forall count head tail,
+  templateContextShiftMany count (head :: tail) =
+  templateFormulaShiftMany count head ::
+    templateContextShiftMany count tail.
+Proof.
+  induction count as [|smaller ih]; intros head tail.
+  - reflexivity.
+  - cbn [templateContextShiftMany templateFormulaShiftMany
+      templateContextShift templateContextRename].
+    apply ih.
+Qed.
+
+(** The append extension body remains the head assumption after any number
+    of later eigenvariables have shifted the whole witness context. *)
+Lemma coqFourStateTableAppendWitnessContext_shift_many_shape : forall
+    count
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep context,
+  templateContextShiftMany count
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep context) =
+  templateFormulaShiftMany count
+    (coqFourStateTableAppendExtensionBodyTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep) ::
+  templateContextShiftMany count
+    (coqFourStateTableAppendWitnessTail
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep context).
+Proof.
+  intros.
+  rewrite coqFourStateTableAppendWitnessContext_shape.
+  apply templateContextShiftMany_cons.
+Qed.
+
+(** Proof-producing form of the preceding scope identity.  It reconstructs
+    only an assumption leaf, so no general proof-code renaming principle is
+    hidden here. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_extension_assumption_shift_many :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    count context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation
+        (templateContextShiftMany count
+          (coqFourStateTableAppendWitnessContext
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep context)))
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany count
+          (coqFourStateTableAppendExtensionBodyTemplate
+            modeCode modeStep formulaCode formulaStep
+            assignmentCodeCode assignmentCodeStep
+            assignmentStepCode assignmentStepStep
+            bound mode formula assignmentCode assignmentStep))) root.
+Proof.
+  intros M hPA translation count context
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep.
+  rewrite coqFourStateTableAppendWitnessContext_shift_many_shape.
+  cbn [rawTemplateContextCode].
+  eexists.
+  apply (raw_codedPALocalProofOf_assumption M hPA).
+  exact (raw_templateContext_realizable M hPA translation
+    (templateContextShiftMany count
+      (coqFourStateTableAppendWitnessTail
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep context))).
 Qed.
 
 (** The innermost body retains the literal four-way conjunction of append
