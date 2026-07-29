@@ -10,7 +10,7 @@ From FoundationModal Require Import
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
   PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
   PropositionalKripke2Hilbert PropositionalHilbertFExtensions PropositionalFMT
-  PropositionalHilbertVF PropositionalHilbertWF
+  PropositionalHilbertVF PropositionalHilbertVFCorsi PropositionalHilbertWF
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1632,6 +1632,56 @@ Print Assumptions phvf_aczel_slash_iff_provable.
 Print Assumptions phvf_disjunctive_of_schema_aczel_slash.
 Print Assumptions phvf_VF_disjunctive.
 Print Assumptions phvf_VF_Ser_disjunctive.
+
+(** Corsi proof algebra specialized to faithful Hilbert VF derivations. *)
+Check phvf_collect_or_and.
+Check phvf_iff.
+Check phvf_proof_iff_identity.
+Check phvf_proof_and_comm.
+Check phvf_proof_or_comm.
+Check phvf_proof_and_right_cancel.
+Check phvf_proof_and_right_replace.
+Check phvf_proof_collect_or_and.
+Check phvf_proof_or_replace_both.
+Check phvf_proof_or_replace_left.
+Check phvf_proof_or_replace_right.
+Check phvf_proof_imp_replace_both.
+Check phvf_proof_and_right_covariant.
+Check phvf_provable_collect_or_and.
+Check phvf_provable_iff_identity.
+Check phvf_provable_and_comm.
+Check phvf_provable_or_comm.
+Check phvf_provable_and_right_cancel.
+Check phvf_provable_and_right_replace.
+Check phvf_provable_or_replace_both.
+Check phvf_provable_or_replace_left.
+Check phvf_provable_or_replace_right.
+Check phvf_provable_imp_replace_both.
+Check phvf_provable_and_right_covariant.
+Check phvf_consistent_not_bottom.
+Check phvf_list_conj.
+Check phvf_list_disj.
+Check phvf_list_member.
+Check phvf_proof_list_conj_intro.
+Check phvf_proof_list_conj_member.
+Check phvf_proof_list_conj_subset.
+Check phvf_proof_list_conj_cons.
+Check phvf_proof_list_disj_member.
+Check phvf_proof_list_disj_elim.
+Check phvf_provable_list_conj_intro.
+Check phvf_provable_list_conj_member.
+Check phvf_provable_list_conj_subset.
+Check phvf_provable_list_conj_cons.
+Check phvf_provable_list_disj_member.
+Check phvf_provable_list_disj_elim.
+Check phvf_provable_list_disjunct.
+Print Assumptions phvf_proof_collect_or_and.
+Print Assumptions phvf_proof_imp_replace_both.
+Print Assumptions phvf_proof_list_conj_intro.
+Print Assumptions phvf_proof_list_conj_member.
+Print Assumptions phvf_proof_list_disj_elim.
+Print Assumptions phvf_provable_list_conj_subset.
+Print Assumptions phvf_provable_list_disjunct.
 
 (** Hilbert WF and heterogeneous VF-to-WF transport. *)
 Check phwf_hilbert.
