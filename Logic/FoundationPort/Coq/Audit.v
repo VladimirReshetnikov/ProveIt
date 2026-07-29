@@ -136,9 +136,18 @@ Check rew_rewrite_map.
 Check rew_map.
 Check rew_subst.
 Check rew_emb.
+Check rew_emb_substs.
 Check rew_subst_comp_subst.
+Check rew_subst_comp_emb_substs.
+Check rew_emb_substs_variables.
 Check rew_rewrite_comp_rewrite.
 Check rew_bshift.
+Check rew_bshift_add.
+Check rew_bshift_comp_subst.
+Check rew_shift_comp_subst.
+Check rew_rewrite_comp_emb.
+Check rew_shift_comp_emb.
+Check rew_comp_emb_empty.
 Check rew_q.
 Check rew_q_bshift_apply.
 Check rew_q_comp_apply.
@@ -169,6 +178,10 @@ Check semiformula_rewrite_comp.
 Check semiformula_rewrite_all_iter.
 Check semiformula_rewrite_exists_iter.
 Check semiformula_rewrite_bounded_all.
+Check semiformula_rewrite_complexity.
+Check semiformula_rewrite_quantifier_rank.
+Check semiformula_rewrite_open.
+Check semiformula_rewrite_free_occurs_sources.
 Check semiformula_substitute.
 Check semiformula_substitute_id.
 Check semiformula_substitute_comp.
@@ -216,6 +229,12 @@ Print Assumptions rew_comp_assoc.
 Print Assumptions rew_eta.
 Print Assumptions rew_equiv_of_variables.
 Print Assumptions rew_subst_comp_subst.
+Print Assumptions rew_subst_comp_emb_substs.
+Print Assumptions rew_emb_substs_variables.
+Print Assumptions rew_bshift_comp_subst.
+Print Assumptions rew_shift_comp_subst.
+Print Assumptions rew_rewrite_comp_emb.
+Print Assumptions rew_comp_emb_empty.
 Print Assumptions rew_q_bshift_apply.
 Print Assumptions rew_q_comp_apply.
 Print Assumptions rew_shift_injective.
@@ -229,6 +248,10 @@ Print Assumptions semiformula_rewrite_ext.
 Print Assumptions semiformula_rewrite_id.
 Print Assumptions semiformula_rewrite_comp.
 Print Assumptions semiformula_rewrite_all_iter.
+Print Assumptions semiformula_rewrite_complexity.
+Print Assumptions semiformula_rewrite_quantifier_rank.
+Print Assumptions semiformula_rewrite_open.
+Print Assumptions semiformula_rewrite_free_occurs_sources.
 Print Assumptions semiformula_substitute_comp.
 Print Assumptions semiformula_shift_injective.
 Print Assumptions semiformula_free_fix.
