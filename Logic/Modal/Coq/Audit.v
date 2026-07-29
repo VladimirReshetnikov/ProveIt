@@ -5,7 +5,8 @@ From FoundationModal Require Import
   GenericEntailment GenericDecidability GenericDisjunctive
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
-  PropositionalBoolean PropositionalBooleanNNFormula GenericCalculus
+  PropositionalBoolean PropositionalBooleanNNFormula
+  PropositionalBooleanZeroSubst GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -974,6 +975,20 @@ Print Assumptions pnn_boolean_tarski_imp.
 Print Assumptions pnn_boolean_tarski.
 Print Assumptions pnn_to_pformula_eval.
 Print Assumptions pformula_to_pnn_eval.
+
+(** Propositional/Boolean/ZeroSubst valuation-selected substitutions. *)
+Check pboolean_vf_substitution.
+Check pboolean_vf_substitution_atom.
+Check pboolean_eval_vf_substitute_iff.
+Check pboolean_exists_neg_zero_subst_of_not_tautology.
+Check pboolean_tautology_of_forall_zero_subst.
+Check pboolean_vf_substitution_tautology.
+Print Assumptions pboolean_vf_substitution.
+Print Assumptions pboolean_vf_substitution_atom.
+Print Assumptions pboolean_eval_vf_substitute_iff.
+Print Assumptions pboolean_exists_neg_zero_subst_of_not_tautology.
+Print Assumptions pboolean_tautology_of_forall_zero_subst.
+Print Assumptions pboolean_vf_substitution_tautology.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
