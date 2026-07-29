@@ -356,6 +356,10 @@ Check semiterm_val_free_ext.
 Check nat_env_cons.
 Check fin_env_snoc.
 Check fin_env_append.
+Check fin_env_append_left.
+Check fin_env_append_right.
+Check fin_env_append_left_eta.
+Check fin_env_append_right_eta.
 Check semiterm_val_shift.
 Check semiterm_val_rew_free_bvars.
 Check semiterm_val_rew_free_fvars.
@@ -532,7 +536,14 @@ Check first_order_definable_list_all.
 Check first_order_definable_list_exists.
 Check first_order_definable_finite_all.
 Check first_order_definable_finite_exists.
+Check fin_t_finite_cover.
 Check first_order_definable_retraction.
+Check fin_graph_retraction.
+Check fin_graph_retraction_head.
+Check fin_graph_retraction_tail.
+Check first_order_definable_graph_family.
+Check first_order_definable_substitution_witness.
+Check first_order_definable_substitution.
 Check first_order_definable_operator_relation.
 Check first_order_definable_operator_relation_terms.
 Check first_order_definable_eq.
@@ -727,6 +738,13 @@ Print Assumptions first_order_definable_list_exists.
 Print Assumptions first_order_definable_finite_all.
 Print Assumptions first_order_definable_finite_exists.
 Print Assumptions first_order_definable_retraction.
+Print Assumptions fin_env_append_left.
+Print Assumptions fin_env_append_right.
+Print Assumptions fin_env_append_left_eta.
+Print Assumptions fin_env_append_right_eta.
+Print Assumptions first_order_definable_graph_family.
+Print Assumptions first_order_definable_substitution_witness.
+Print Assumptions first_order_definable_substitution.
 Print Assumptions first_order_definable_operator_relation.
 Print Assumptions first_order_definable_operator_relation_terms.
 Print Assumptions first_order_definable_eq.
