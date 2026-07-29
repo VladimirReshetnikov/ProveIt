@@ -4341,6 +4341,18 @@ extension.  Consequently later append callbacks can transport roots chosen
 before the arithmetic helper batch without making the overstrong assumption
 that those roots exist in every unrelated PA witness context.
 
+The base-aware interface is now threaded through the generic and concrete
+closed-row case compilers.  Small transport lemmas move the two inherited
+predecessor roots and the complete three-root equality package from the
+original row context into any callback context carrying the supplied base
+inclusion.  A fully staged endpoint therefore starts with only pre-split
+roots: the inherited traversal and old lookup, the equality-side row lookup,
+and the fixed named production.  It constructs the operational fixed-bound
+lookup once, transports both branch packages as needed, and returns the
+literal concrete closed-row production over one final witnessed PA tail.
+No branch callback remains in this endpoint; the next closure boundary is
+the surrounding eight existential eliminations and five universal binders.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
