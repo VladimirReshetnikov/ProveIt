@@ -5,6 +5,7 @@ From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
+From Foundation.FirstOrder.Basic Require Import Definability.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
 From Foundation.FirstOrder.Basic.Semantics Require Import RewriteClosure.
 From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
@@ -501,6 +502,31 @@ Check structure_lift_structure.
 Check semiterm_val_structure_lift.
 Check semiformula_eval_structure_lift.
 Check structure_lift_elementary_equiv.
+Check first_order_is_defined_by.
+Check first_order_defined.
+Check first_order_is_defined_by_with_params.
+Check first_order_definable.
+Check first_order_defined_function.
+Check first_order_definable_function.
+Check first_order_definable_predicate.
+Check first_order_definable_relation.
+Check semiformula_embed_empty.
+Check semiformula_eval_embed_empty.
+Check first_order_defined_to_definable.
+Check first_order_definable_of_iff.
+Check first_order_definable_const.
+Check first_order_definable_and.
+Check first_order_definable_or.
+Check first_order_definable_imp.
+Check first_order_definable_not.
+Check first_order_definable_iff.
+Check first_order_definable_all.
+Check first_order_definable_exists.
+Check first_order_definable_retraction.
+Check first_order_definable_operator_relation.
+Check first_order_definable_eq.
+Check first_order_definable_lt.
+Check first_order_definable_mem.
 
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
@@ -670,6 +696,16 @@ Print Assumptions semiformula_eval_language_sigma.
 Print Assumptions semiterm_val_structure_lift.
 Print Assumptions semiformula_eval_structure_lift.
 Print Assumptions structure_lift_elementary_equiv.
+Print Assumptions semiformula_eval_embed_empty.
+Print Assumptions first_order_defined_to_definable.
+Print Assumptions first_order_definable_of_iff.
+Print Assumptions first_order_definable_const.
+Print Assumptions first_order_definable_and.
+Print Assumptions first_order_definable_all.
+Print Assumptions first_order_definable_exists.
+Print Assumptions first_order_definable_retraction.
+Print Assumptions first_order_definable_operator_relation.
+Print Assumptions first_order_definable_eq.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
