@@ -4381,6 +4381,16 @@ introduction twice.  Its output is exactly
 `rowBound -> rowLookup -> closedProduction` over the final grown witnessed
 tail, with no metatheoretic premise proof standing in for either assumption.
 
+Finite binder closure now works above grown witnessed tails as well.  The
+universal-introduction and existential-elimination chain compilers have
+self-shifting-tail and witnessed-tail forms, plus growing wrappers that retain
+the selected final context and the original inclusion evidence.  The
+existential wrapper transports an earlier source proof to the continuation's
+final helper context before rebuilding every `Ex-E` node.  A five-binder
+append-row specialization converts the completed implication proof from the
+shifted row prefix back to the unshifted eight-witness context, ready for the
+outer append existential closure.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
