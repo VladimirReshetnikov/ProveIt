@@ -7,14 +7,16 @@
 
 From Stdlib Require Import Logic.Classical_Prop.
 From FoundationModal Require Import
-  Syntax GenericForcingRelation Axioms Kripke Correspondence FrameTransformations
+  Syntax GenericForcingRelation Axioms Kripke Correspondence
+  CorrespondenceExtensions FrameProperties FrameTransformations
   LogicInfrastructure EntailmentExtensions EntailmentS4
   NormalHilbert CanonicalTB Modality
   PropositionalFormula PropositionalBoolean PropositionalBooleanHilbert
   PropositionalHilbert PropositionalKripke PropositionalKripkeCanonical
+  PropositionalKripkeFinite
   GodelTranslation Boxdot GLGrzDerivations
-  CanonicalPoint2 CanonicalPoint3 CanonicalGrzPoint2
-  CanonicalGrzPoint3Strict CanonicalTrivVer CanonicalS5Grz.
+  CanonicalPoint2 CanonicalPoint3 CanonicalGrz CanonicalGrzPoint2
+  CanonicalGrzPoint3Strict CanonicalGLPoint3 CanonicalTrivVer CanonicalS5Grz.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -322,6 +324,81 @@ Proof.
   now apply ph_int_provable_godel_S4.
 Qed.
 
+Lemma ph_int_complete_from_finite_partial_pkripke_models :
+  forall p : pformula nat,
+    (forall M : pkripke_model nat,
+      pkripke_finite_partial_order (pkripke_model_frame M) ->
+      generic_all_forces (pkripke_forcing_relation M) p) ->
+    ph_hilbert_provable (ph_hilbert_int nat) p.
+Proof.
+  intros p Hall.
+  apply ph_hilbert_int_pkripke_finite_partial_order_complete.
+  intros F HF V w.
+  apply (Hall {| pkripke_model_frame := F;
+    pkripke_model_valuation := V |} HF).
+Qed.
+
+Lemma Grz_sound_on_finite_partial_pkripke_forcing_models :
+  forall f : formula nat, Grz_proves f ->
+    forall M : pkripke_model nat,
+    pkripke_finite_partial_order (pkripke_model_frame M) ->
+    @model_valid nat
+      (forcing_modal_frame
+        (pkripke_access (pkripke_model_frame M)))
+      (@forcing_modal_valuation
+        (pkripke_world (pkripke_model_frame M)) nat
+        (pkripke_forcing_relation M)
+        (pkripke_access (pkripke_model_frame M))) f.
+Proof.
+  intros f Hf M [Hfinite Hanti].
+  assert (HF : Grz_finite_frame_class
+      (forcing_modal_frame
+        (pkripke_access (pkripke_model_frame M)))).
+  { split; [exact Hfinite |]. repeat split.
+    - exact (pkripke_access_refl (pkripke_model_frame M)).
+    - exact (pkripke_access_trans (pkripke_model_frame M)).
+    - exact Hanti. }
+  exact (((Grz_finite_sound Hf)
+    (forcing_modal_frame
+      (pkripke_access (pkripke_model_frame M))) HF)
+    (@forcing_modal_valuation
+      (pkripke_world (pkripke_model_frame M)) nat
+      (pkripke_forcing_relation M)
+      (pkripke_access (pkripke_model_frame M)))).
+Qed.
+
+Theorem ph_int_modal_companion_Grz :
+  godel_modal_companion
+    (ph_hilbert_provable (ph_hilbert_int nat)) (@Grz_proves nat).
+Proof.
+  eapply (@godel_modal_companion_via_forcing_semantics
+    nat (pkripke_model nat)
+    (fun M => pkripke_world (pkripke_model_frame M))
+    (fun M => pkripke_forcing_relation M)
+    (fun M => pkripke_access (pkripke_model_frame M))
+    (fun M => pkripke_finite_partial_order
+      (pkripke_model_frame M))
+    (ph_hilbert_provable (ph_hilbert_int nat)) (@Grz_proves nat)).
+  - intros M w. apply pkripke_access_refl.
+  - intros M x y z. apply pkripke_access_trans.
+  - intro M. apply pkripke_generic_int_forcing.
+  - apply ph_int_provable_godel_Grz.
+  - apply ph_int_complete_from_finite_partial_pkripke_models.
+  - apply Grz_sound_on_finite_partial_pkripke_forcing_models.
+Qed.
+
+Theorem ph_int_boxdot_modal_companion_GL :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_int nat) p <->
+    GL_proves (boxdot_translate (godel_translate p)).
+Proof.
+  intro p; split.
+  - intro Hp. apply (proj2 (GL_boxdot_iff_Grz (godel_translate p))).
+    now apply (proj1 (ph_int_modal_companion_Grz p)).
+  - intro Hp. apply (proj2 (ph_int_modal_companion_Grz p)).
+    now apply (proj1 (GL_boxdot_iff_Grz (godel_translate p))).
+Qed.
+
 (** WLEM becomes valid on every convergent preorder. *)
 Lemma S4Point2_proves_godel_translated_WLEM :
   forall p : pformula nat,
@@ -427,6 +504,75 @@ Lemma ph_kc_provable_godel_GrzPoint2 :
 Proof.
   intros p Hp. apply S4Point2_weaker_than_GrzPoint2.
   now apply ph_kc_provable_godel_S4Point2.
+Qed.
+
+Lemma ph_kc_complete_from_finite_partial_convergent_pkripke_models :
+  forall p : pformula nat,
+    (forall M : pkripke_model nat,
+      pkripke_finite_partial_order_convergent
+        (pkripke_model_frame M) ->
+      generic_all_forces (pkripke_forcing_relation M) p) ->
+    ph_hilbert_provable (ph_hilbert_kc nat) p.
+Proof.
+  intros p Hall.
+  apply ph_hilbert_kc_pkripke_finite_partial_order_complete.
+  intros F HF V w.
+  apply (Hall {| pkripke_model_frame := F;
+    pkripke_model_valuation := V |} HF).
+Qed.
+
+Lemma GrzPoint2_sound_on_finite_partial_convergent_pkripke_models :
+  forall f : formula nat, GrzPoint2_proves f ->
+    forall M : pkripke_model nat,
+    pkripke_finite_partial_order_convergent
+      (pkripke_model_frame M) ->
+    @model_valid nat
+      (forcing_modal_frame
+        (pkripke_access (pkripke_model_frame M)))
+      (@forcing_modal_valuation
+        (pkripke_world (pkripke_model_frame M)) nat
+        (pkripke_forcing_relation M)
+        (pkripke_access (pkripke_model_frame M))) f.
+Proof.
+  intros f Hf M [Hfinite [Hanti Hconv]].
+  assert (HF : GrzPoint2_finite_frame_class
+      (forcing_modal_frame
+        (pkripke_access (pkripke_model_frame M)))).
+  { split; [exact Hfinite |]. split.
+    - repeat split.
+      + exact (pkripke_access_refl (pkripke_model_frame M)).
+      + exact (pkripke_access_trans (pkripke_model_frame M)).
+      + exact Hanti.
+    - exact Hconv. }
+  exact ((@GrzPoint2_proves_sound_on_finite_frame nat
+    (forcing_modal_frame
+      (pkripke_access (pkripke_model_frame M))) f HF Hf)
+    (@forcing_modal_valuation
+      (pkripke_world (pkripke_model_frame M)) nat
+      (pkripke_forcing_relation M)
+      (pkripke_access (pkripke_model_frame M)))).
+Qed.
+
+Theorem ph_kc_modal_companion_GrzPoint2 :
+  godel_modal_companion
+    (ph_hilbert_provable (ph_hilbert_kc nat))
+    (@GrzPoint2_proves nat).
+Proof.
+  eapply (@godel_modal_companion_via_forcing_semantics
+    nat (pkripke_model nat)
+    (fun M => pkripke_world (pkripke_model_frame M))
+    (fun M => pkripke_forcing_relation M)
+    (fun M => pkripke_access (pkripke_model_frame M))
+    (fun M => pkripke_finite_partial_order_convergent
+      (pkripke_model_frame M))
+    (ph_hilbert_provable (ph_hilbert_kc nat))
+    (@GrzPoint2_proves nat)).
+  - intros M w. apply pkripke_access_refl.
+  - intros M x y z. apply pkripke_access_trans.
+  - intro M. apply pkripke_generic_int_forcing.
+  - apply ph_kc_provable_godel_GrzPoint2.
+  - apply ph_kc_complete_from_finite_partial_convergent_pkripke_models.
+  - apply GrzPoint2_sound_on_finite_partial_convergent_pkripke_models.
 Qed.
 
 (** Dummett's axiom becomes valid on every locally connected preorder. *)
@@ -537,4 +683,137 @@ Lemma ph_lc_provable_godel_GrzPoint3 :
 Proof.
   intros p Hp. apply S4Point3_weaker_than_GrzPoint3.
   now apply ph_lc_provable_godel_S4Point3.
+Qed.
+
+Lemma ph_lc_complete_from_finite_partial_connected_pkripke_models :
+  forall p : pformula nat,
+    (forall M : pkripke_model nat,
+      pkripke_finite_partial_order_connected
+        (pkripke_model_frame M) ->
+      generic_all_forces (pkripke_forcing_relation M) p) ->
+    ph_hilbert_provable (ph_hilbert_lc nat) p.
+Proof.
+  intros p Hall.
+  apply ph_hilbert_lc_pkripke_finite_partial_order_complete.
+  intros F HF V w.
+  apply (Hall {| pkripke_model_frame := F;
+    pkripke_model_valuation := V |} HF).
+Qed.
+
+Lemma GrzPoint3_sound_on_finite_partial_connected_pkripke_models :
+  forall f : formula nat, GrzPoint3_proves f ->
+    forall M : pkripke_model nat,
+    pkripke_finite_partial_order_connected
+      (pkripke_model_frame M) ->
+    @model_valid nat
+      (forcing_modal_frame
+        (pkripke_access (pkripke_model_frame M)))
+      (@forcing_modal_valuation
+        (pkripke_world (pkripke_model_frame M)) nat
+        (pkripke_forcing_relation M)
+        (pkripke_access (pkripke_model_frame M))) f.
+Proof.
+  intros f Hf M [Hfinite [Hanti Hconn]].
+  assert (HF : GrzPoint3_finite_piecewise_strong_frame_class
+      (forcing_modal_frame
+        (pkripke_access (pkripke_model_frame M)))).
+  { split; [exact Hfinite |]. split.
+    - repeat split.
+      + exact (pkripke_access_refl (pkripke_model_frame M)).
+      + exact (pkripke_access_trans (pkripke_model_frame M)).
+      + exact Hanti.
+    - exact Hconn. }
+  exact ((@GrzPoint3_proves_sound_on_finite_piecewise_strong_frame nat
+    (forcing_modal_frame
+      (pkripke_access (pkripke_model_frame M))) f HF Hf)
+    (@forcing_modal_valuation
+      (pkripke_world (pkripke_model_frame M)) nat
+      (pkripke_forcing_relation M)
+      (pkripke_access (pkripke_model_frame M)))).
+Qed.
+
+Theorem ph_lc_modal_companion_GrzPoint3 :
+  godel_modal_companion
+    (ph_hilbert_provable (ph_hilbert_lc nat))
+    (@GrzPoint3_proves nat).
+Proof.
+  eapply (@godel_modal_companion_via_forcing_semantics
+    nat (pkripke_model nat)
+    (fun M => pkripke_world (pkripke_model_frame M))
+    (fun M => pkripke_forcing_relation M)
+    (fun M => pkripke_access (pkripke_model_frame M))
+    (fun M => pkripke_finite_partial_order_connected
+      (pkripke_model_frame M))
+    (ph_hilbert_provable (ph_hilbert_lc nat))
+    (@GrzPoint3_proves nat)).
+  - intros M w. apply pkripke_access_refl.
+  - intros M x y z. apply pkripke_access_trans.
+  - intro M. apply pkripke_generic_int_forcing.
+  - apply ph_lc_provable_godel_GrzPoint3.
+  - apply ph_lc_complete_from_finite_partial_connected_pkripke_models.
+  - apply GrzPoint3_sound_on_finite_partial_connected_pkripke_models.
+Qed.
+
+Lemma GLPoint3_boxdot_sound_on_finite_partial_connected_pkripke_models :
+  forall f : formula nat,
+    GLPoint3_proves (boxdot_translate f) ->
+    forall M : pkripke_model nat,
+    pkripke_finite_partial_order_connected
+      (pkripke_model_frame M) ->
+    @model_valid nat
+      (forcing_modal_frame
+        (pkripke_access (pkripke_model_frame M)))
+      (@forcing_modal_valuation
+        (pkripke_world (pkripke_model_frame M)) nat
+        (pkripke_forcing_relation M)
+        (pkripke_access (pkripke_model_frame M))) f.
+Proof.
+  intros f Hf M [Hfinite [Hanti Hconn]].
+  set (F := forcing_modal_frame
+    (pkripke_access (pkripke_model_frame M))).
+  assert (Hrefl : frame_reflexive F).
+  { exact (pkripke_access_refl (pkripke_model_frame M)). }
+  assert (Htrans : frame_transitive F).
+  { exact (pkripke_access_trans (pkripke_model_frame M)). }
+  assert (HGrz3 : boxdot_finite_GrzPoint3_frame F).
+  { split.
+    - split; [exact Hfinite |]. split; [exact Hrefl |]. split.
+      + exact Htrans.
+      + now apply finite_transitive_antisymmetric_weak_cwf.
+    - exact Hconn. }
+  assert (HGL3 : boxdot_finite_GLPoint3_frame
+      (irreflexivize_frame F)).
+  { now apply finite_GrzPoint3_to_irreflexivize_finite_GLPoint3. }
+  assert (Hvalid_i : valid (irreflexivize_frame F)
+      (boxdot_translate f)).
+  { now apply GLPoint3_proves_sound_on_finite_frame. }
+  assert (Hvalid_r : valid
+      (frame_refl_gen (irreflexivize_frame F)) f).
+  { now apply (proj1 (boxdot_reflexive_closure_valid_iff
+      (irreflexivize_frame F) f)). }
+  assert (Hvalid_F : valid F f).
+  { now apply (proj2 (@irreflexivize_reflexive_valid_iff nat F f Hrefl)). }
+  exact (Hvalid_F
+    (@forcing_modal_valuation
+      (pkripke_world (pkripke_model_frame M)) nat
+      (pkripke_forcing_relation M)
+      (pkripke_access (pkripke_model_frame M)))).
+Qed.
+
+Theorem ph_lc_boxdot_modal_companion_GLPoint3 :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_lc nat) p <->
+    GLPoint3_proves (boxdot_translate (godel_translate p)).
+Proof.
+  intro p; split.
+  - intro Hp. apply GrzPoint3_proves_to_GLPoint3_boxdot_unconditional.
+    now apply (proj1 (ph_lc_modal_companion_GrzPoint3 p)).
+  - intro Hp.
+    apply ph_hilbert_lc_pkripke_finite_partial_order_complete.
+    intros F HF V w.
+    set (M := {| pkripke_model_frame := F;
+      pkripke_model_valuation := V |}).
+    apply (proj2 (@pkripke_forces_iff_forcing_modal_godel nat M p w)).
+    exact (@GLPoint3_boxdot_sound_on_finite_partial_connected_pkripke_models
+      (godel_translate p) Hp M HF w).
 Qed.
