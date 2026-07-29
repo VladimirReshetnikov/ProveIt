@@ -203,7 +203,7 @@ is being reconstructed:
 | `GenericForcingRelation.v` | `Logic/ForcingRelation.lean` | Complete 20-declaration surface: ordinary/existence/weak forcing dictionaries, factored persistence and future-world implication/negation, intuitionistic and classical Kripke bundles, global/context forcing, and minimally hypothesized connective laws |
 | `GenericEntailment.v` | `Logic/Entailment.lean` | Complete 138-declaration surface: Type-valued formal proofs and inhabited provability, proof sets and controlled extraction, heterogeneous strength order/equivalence, consistency, explosion, completeness/incompleteness, axiomatized and compact contexts, deduction, semantic soundness/completeness, and pullback |
 | `GenericEmbedding.v` | `Logic/Embedding.lean` | Complete five-declaration surface: faithful provability translations between heterogeneous systems, explicit witnesses, identity, and composition, all constructively |
-| `GenericCalculus.v` | `Logic/Calculus.lean` | Declarations 1--42 of 43: universe-polymorphic Type-valued one-sided LK/Cut, principal- and contextual-entailment dictionaries, structural combinators, strengthened finite folds, the complete classical Hilbert interface, structure-preserving pullback, contextual structural/classical adapters, strong cut, explosion, inconsistency, and principal-context equivalence |
+| `GenericCalculus.v` | `Logic/Calculus.lean` | Complete 43-declaration surface: universe-polymorphic Type-valued one-sided LK/Cut, principal- and contextual-entailment dictionaries, structural combinators, strengthened finite folds, the complete classical Hilbert interface, structure-preserving pullback, contextual structural/classical adapters, strong cut, explosion, inconsistency, principal-context equivalence, and deduction |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
@@ -541,7 +541,13 @@ factored eleven LK sequents as the principal adapter.  Empty-context
 equivalence and direct lifting of principal theorems need no connective or LK
 law at all; the full finite principal-context characterization exposes exactly
 the six normalization equations it uses.  All forty-two declarations remain
-constructive and closed under the global context.
+constructive and closed under the global context.  Finally, a constructive
+support-splitting lemma removes adjoined assumptions without decidable formula
+equality.  The resulting deduction core drops the source's principal-system
+premise and needs only implication normalization, base LK, and modus ponens at
+adjoined contexts; the source-shaped Cut adapter supplies that last capability.
+Only conversion from inhabited provability back to a raw `Type`-valued proof
+uses informative description, matching the source's noncomputable boundary.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and

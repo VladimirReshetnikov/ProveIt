@@ -1,8 +1,8 @@
 (**
   Generic one-sided classical sequent calculi.
 
-  This module currently ports declarations 1--42 of the forty-three active
-  declarations in the pinned Foundation module [Logic/Calculus.lean].  The
+  This module ports all forty-three active declarations in the pinned
+  Foundation module [Logic/Calculus.lean].  The
   calculus and its principal entailments are Type-valued, so derivations
   retain their computational content.
 
@@ -1790,3 +1790,162 @@ Arguments generic_contextual_iff_principal_context
   {S P F} E EP A C D _ theory _ _ _ _ _ _ _ _ _ _.
 Arguments generic_contextual_of_principal_provable
   {S P F} E EP A neg D _ theory _ s p _.
+
+(** A constructive finite split: a list covered by [adjoin p s] has a
+    sublist covered by [s], and every omitted formula equals [p].  The proof
+    consumes the membership disjunction already supplied by the adjunctive
+    interface, so it needs no formula equality decision. *)
+Lemma generic_contextual_split_adjoin :
+  forall (F S : Type) (A : generic_adjunctive_set F S)
+         (p : F) (s : S) (gamma : list F),
+    (forall r,
+      generic_list_member r gamma ->
+      generic_adjunctive_member A r
+        (generic_adjunctive_adjoin A p s)) ->
+    exists delta : list F,
+      (forall r,
+        generic_list_member r delta ->
+        generic_adjunctive_member A r s) /\
+      (forall r,
+        generic_list_member r gamma ->
+        r = p \/ generic_list_member r delta).
+Proof.
+  intros F S A p s gamma; induction gamma as [|q qs IH]; intro Hmembers.
+  - exists []. split; intros r Hr; contradiction.
+  - destruct (IH (fun r Hr => Hmembers r (or_intror Hr)))
+      as [delta [Hdelta Hcover]].
+    destruct (proj1 (generic_adjunctive_mem_adjoin_iff A q p s)
+      (Hmembers q (or_introl eq_refl))) as [Hqp | Hqs].
+    + exists delta. split; [exact Hdelta |].
+      intros r [Hr | Hr].
+      * left. now destruct Hr.
+      * exact (Hcover r Hr).
+    + exists (q :: delta). split.
+      * intros r [Hr | Hr].
+        -- now destruct Hr.
+        -- exact (Hdelta r Hr).
+      * intros r [Hr | Hr].
+        -- right. now left.
+        -- destruct (Hcover r Hr) as [Hrp | Hrdelta].
+           ++ now left.
+           ++ right. now right.
+Qed.
+
+(** The constructive content of the forward half of declaration 43.  Its
+    conclusion intentionally remains provability in [Prop]: choosing a raw
+    proof is the sole nonconstructive step in the final Type-valued
+    dictionary. *)
+Lemma generic_contextual_deduction_forward_provable :
+  forall (S F : Type)
+         (E : generic_entailment S F)
+         (A : generic_adjunctive_set F S)
+         (C : generic_connectives F) (D : list F -> Type),
+    generic_contextual_entailment E A (generic_neg C) D ->
+    generic_imp_as_or_law C ->
+    generic_one_sided_lk C D ->
+    forall (s : S) (p q : F),
+      generic_proof E (generic_adjunctive_adjoin A p s) q ->
+      generic_provable E s (generic_imp C p q).
+Proof.
+  intros S F E A C D Hcontext Himp Hlk s p q b.
+  destruct (generic_equiv_to
+    (generic_contextual_equiv Hcontext
+      (generic_adjunctive_adjoin A p s) q) b) as [w d].
+  destruct (@generic_contextual_split_adjoin F S A p s
+    (generic_context_witness_formulas w)
+    (generic_context_witness_covers w))
+    as [delta [Hdelta Hcover]].
+  assert (Hspread : generic_list_subset
+    (q :: map (generic_neg C) (generic_context_witness_formulas w))
+    (q :: generic_neg C p :: map (generic_neg C) delta)).
+  { intros r [Hr | Hr].
+    - now left.
+    - destruct (@generic_list_member_map_elim F F (generic_neg C) r
+        (generic_context_witness_formulas w) Hr)
+        as [x [Hx Heq]].
+      subst r.
+      destruct (Hcover x Hx) as [Hxp | Hxdelta].
+      + subst x. now right; left.
+      + right; right. exact (@generic_list_member_map_intro F F
+          (generic_neg C) x delta Hxdelta). }
+  pose proof (generic_lk_contra Hlk d Hspread) as dspread.
+  pose proof (generic_lk_swap1 Hlk dspread) as dswap.
+  pose proof (generic_lk_or Hlk (generic_neg C p) q
+    (map (generic_neg C) delta) dswap) as dor.
+  assert (eformula :
+    generic_or C (generic_neg C p) q :: map (generic_neg C) delta =
+    generic_imp C p q :: map (generic_neg C) delta).
+  { rewrite Himp. reflexivity. }
+  pose proof (@generic_lk_cast F D _ _ dor eformula) as dimp.
+  constructor.
+  apply (generic_equiv_from
+    (generic_contextual_equiv Hcontext s (generic_imp C p q))).
+  pose (wdelta :=
+    (@exist (list F)
+      (fun formulas => forall r,
+        generic_list_member r formulas ->
+        generic_adjunctive_member A r s)
+      delta Hdelta : generic_context_witness A s)).
+  exact (existT _ wdelta dimp).
+Qed.
+
+(** The reusable dependency boundary of source declaration 43.  The inverse
+    needs modus ponens only at contexts formed by adjoining its antecedent;
+    neither Cut nor any negation law is intrinsic to this core. *)
+Definition generic_contextual_deduction_core {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Himp : generic_imp_as_or_law C)
+    (Hlk : generic_one_sided_lk C D)
+    (Hmp : forall (s : S) (p : F),
+      generic_modus_ponens E C (generic_adjunctive_adjoin A p s)) :
+    generic_deduction E (generic_imp C) (generic_adjunctive_adjoin A).
+Proof.
+  constructor.
+  - intros s p q b.
+    exact (generic_choose_inhabited
+      (@generic_contextual_deduction_forward_provable
+        S F E A C D Hcontext Himp Hlk s p q b)).
+  - intros s p q bimp.
+    pose proof (@generic_contextual_of_axiom_subset S F E A
+      (generic_neg C) D Hcontext s
+      (generic_adjunctive_adjoin A p s) (generic_imp C p q)
+      bimp (@generic_adjunctive_subset_adjoin F S A s p)) as bimp'.
+    pose proof (@generic_contextual_of_axiom S F E A C D Hcontext
+      Hlk (generic_adjunctive_adjoin A p s) p
+      (@generic_adjunctive_mem_adjoin_self F S A s p)) as bp.
+    exact (@generic_modus_ponens_raw S F E C
+      (generic_adjunctive_adjoin A p s) (Hmp s p) p q bimp' bp).
+Defined.
+
+(** Source declaration 43/43: [ContextualEntailment.deduction].
+    The source's principal-system premise is unnecessary: support splitting
+    proves the forward direction directly, and contextual modus ponens proves
+    the inverse.  The Cut and negation-law assumptions here serve only to
+    construct the adjoined-context modus-ponens family consumed by the core.
+    Informative description is isolated to selection of a raw proof from the
+    constructive forward provability theorem. *)
+Definition generic_contextual_deduction {S F : Type}
+    {E : generic_entailment S F}
+    {A : generic_adjunctive_set F S}
+    (C : generic_connectives F) {D : list F -> Type}
+    (Hcontext :
+      generic_contextual_entailment E A (generic_neg C) D)
+    (Hinv : generic_neg_involutive_law C)
+    (Himp : generic_imp_as_or_law C)
+    (Hneg_or : generic_neg_or_law C)
+    (K : generic_one_sided_lk_cut C D) :
+    generic_deduction E (generic_imp C) (generic_adjunctive_adjoin A) :=
+  @generic_contextual_deduction_core S F E A C D Hcontext Himp
+    (generic_lk_cut_base K)
+    (fun s p => @generic_contextual_modus_ponens
+      S F E A C D Hcontext Hinv Himp Hneg_or K
+      (generic_adjunctive_adjoin A p s)).
+
+Arguments generic_contextual_deduction_core
+  {S F E A} C {D} _ _ _ _.
+Arguments generic_contextual_deduction
+  {S F E A} C {D} _ _ _ _ _.

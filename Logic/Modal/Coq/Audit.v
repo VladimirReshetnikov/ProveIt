@@ -592,6 +592,17 @@ Print Assumptions generic_neg_list_conj2.
 Print Assumptions generic_neg_mapped_list_disj2.
 Print Assumptions generic_contextual_iff_principal_context.
 Print Assumptions generic_contextual_of_principal_provable.
+Check generic_contextual_split_adjoin.
+Check generic_contextual_deduction_forward_provable.
+Check generic_contextual_deduction_core.
+Check generic_contextual_deduction.
+Print Assumptions generic_contextual_split_adjoin.
+Print Assumptions generic_contextual_deduction_forward_provable.
+(** Raw deduction selects a Type-valued proof from inhabited provability.
+    Informative description is its sole metatheoretic assumption; support
+    splitting and the forward provability theorem above remain constructive. *)
+Print Assumptions generic_contextual_deduction_core.
+Print Assumptions generic_contextual_deduction.
 
 (** The complete 20-declaration ForcingRelation surface is constructive over
     arbitrary world, formula, context, and accessibility types.  Ordinary and
