@@ -21,6 +21,7 @@ From FoundationModal Require Import
   CorrespondenceExtensions NormalHilbert LogicInfrastructure
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentK4 EntailmentS4
   GodelTranslation
+  StandardModalCompanions
   EntailmentS5 HilbertWithRE HilbertNormal AlgebraicSemantics
   HilbertNormalAxiomAdapters
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
@@ -3198,6 +3199,17 @@ Check forcing_modal_valuation.
 Check godel_translate_forcing_iff_modal_satisfies.
 Check godel_translate_global_forcing_iff_modal_truth.
 Check godel_modal_companion_via_forcing_semantics.
+Check nat_pformula_codec.
+Check S5_schema_closed.
+Check S5_normal_logic.
+Check S5_has_T.
+Check S5_has_Four.
+Check S5_as_s4_entailment.
+Check S5_proves_godel_translated_LEM.
+Check ph_cl_provable_godel_S5.
+Check godel_translate_reflexive_singleton_iff_boolean.
+Check ph_cl_provable_of_godel_S5.
+Check ph_cl_modal_companion_S5.
 Check s5_entailment.
 Check s5_E.
 Check diabox_box_raw.
@@ -5291,6 +5303,11 @@ Print Assumptions godel_translate_persistent.
 Print Assumptions godel_translate_forcing_iff_modal_satisfies.
 Print Assumptions godel_translate_global_forcing_iff_modal_truth.
 Print Assumptions godel_modal_companion_via_forcing_semantics.
+Print Assumptions S5_proves_godel_translated_LEM.
+Print Assumptions ph_cl_provable_godel_S5.
+Print Assumptions godel_translate_reflexive_singleton_iff_boolean.
+Print Assumptions ph_cl_provable_of_godel_S5.
+Print Assumptions ph_cl_modal_companion_S5.
 Print Assumptions diabox_box_raw.
 Print Assumptions diabox_box_applied_raw.
 Print Assumptions rm_diabox_raw.
