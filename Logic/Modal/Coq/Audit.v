@@ -3038,6 +3038,23 @@ Check has_K_of_EMC.
 Check box_regularity_of_k.
 Check e_entailment_of_k.
 Check has_C_of_k.
+Check k_multinecessitation.
+Check k_box_iter_axiom_K.
+Check k_box_iter_regularity.
+Check k_box_congruence.
+Check k_box_iter_congruence.
+Check k_box_iter_top.
+Check k_box_iter_and_collect.
+Check k_box_iter_and_distribute.
+Check k_box_iter_or_collect.
+Check k_dia_regularity.
+Check k_dia_iter_regularity.
+Check k_dia_or_collect.
+Check k_dia_or_distribute.
+Check k_dia_iter_or_collect.
+Check k_dia_iter_or_distribute.
+Check k_dia_and_distribute.
+Check k_dia_iter_and_distribute.
 Check k_entailment_of_EMCN.
 Check EMCN_of_k_entailment.
 Check geach_dual.
@@ -5130,6 +5147,17 @@ Print Assumptions EM_of_E_box_regularity.
 Print Assumptions necessitation_of_EN.
 Print Assumptions has_N_of_necessitation.
 Print Assumptions has_K_of_EMC.
+Print Assumptions k_box_iter_axiom_K.
+Print Assumptions k_box_iter_regularity.
+Print Assumptions k_box_iter_congruence.
+Print Assumptions k_box_iter_and_collect.
+Print Assumptions k_box_iter_and_distribute.
+Print Assumptions k_box_iter_or_collect.
+Print Assumptions k_dia_iter_regularity.
+Print Assumptions k_dia_or_collect.
+Print Assumptions k_dia_or_distribute.
+Print Assumptions k_dia_iter_or_distribute.
+Print Assumptions k_dia_iter_and_distribute.
 Print Assumptions k_entailment_of_EMCN.
 Print Assumptions EMCN_of_k_entailment.
 Print Assumptions has_Geach_dual.
