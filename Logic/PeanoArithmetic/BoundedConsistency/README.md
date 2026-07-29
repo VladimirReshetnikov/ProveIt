@@ -2833,7 +2833,12 @@ binders, then opens the five context witnesses and checks definitionally that
 the final traversal and membership projections are exactly the terms used by
 the twelve-argument transfer instance.  These small audited shape equalities
 also catch argument-order mistakes before they become hidden inside a large
-represented proof tree.
+represented proof tree.  The audit continues through the remaining membership
+index: its bound and head lookup coincide with the two pointwise universal
+premises, and the resulting native conclusion leaf is the eleven-binder shift
+of the witness-formula leaf with its hierarchy arguments fixed to zero.  The
+separate native conclusion-leaf equation is therefore the only remaining
+transport needed at that endpoint.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely

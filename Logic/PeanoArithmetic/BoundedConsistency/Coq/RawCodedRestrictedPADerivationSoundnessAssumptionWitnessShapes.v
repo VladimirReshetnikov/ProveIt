@@ -17,6 +17,7 @@ From Stdlib Require Import List.
 From PAHF Require Import PAHF.
 From BoundedPAConsistency Require Import
   RawCodedTemplateSyntax
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier
   RawCodedRestrictedPADerivationSoundnessDirectAssumptionCase
   RawCodedRestrictedPADerivationSoundnessAssumptionContextTruthExpansion
@@ -30,6 +31,7 @@ Module
 
 Import PA.
 Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier.
 Import
@@ -134,6 +136,108 @@ Proof. vm_compute. reflexivity. Qed.
 Lemma coqRestrictedPADirectAssumptionFinalRightMembership_shape :
   coqRestrictedPADirectAssumptionFinalRightMembershipTemplate =
   coqRestrictedPADirectAssumptionRightMembershipWithTablesTemplate.
+Proof. vm_compute. reflexivity. Qed.
+
+(** The transfer instance returns membership expressed with the context-truth
+    tables.  One final existential index witnesses that membership. *)
+Definition coqRestrictedPADirectAssumptionFinalLeftMembershipTemplate
+    : TemplateFormula :=
+  coqRestrictedPADirectAssumptionLeftMembershipWithTablesTemplate.
+
+Definition coqRestrictedPADirectAssumptionFinalMembershipIndexBodyTemplate
+    : TemplateFormula :=
+  match coqRestrictedPADirectAssumptionFinalLeftMembershipTemplate with
+  | tfEx body => body
+  | _ => tfBot
+  end.
+
+Definition coqRestrictedPADirectAssumptionFinalLiveIndexTemplate
+    : TemplateFormula :=
+  match coqRestrictedPADirectAssumptionFinalMembershipIndexBodyTemplate with
+  | tfAnd liveIndex _ => liveIndex
+  | _ => tfBot
+  end.
+
+Definition coqRestrictedPADirectAssumptionFinalHeadLookupTemplate
+    : TemplateFormula :=
+  match coqRestrictedPADirectAssumptionFinalMembershipIndexBodyTemplate with
+  | tfAnd _ headLookup => headLookup
+  | _ => tfBot
+  end.
+
+Lemma coqRestrictedPADirectAssumptionFinalLeftMembership_shape :
+  coqRestrictedPADirectAssumptionFinalLeftMembershipTemplate =
+  tfEx
+    (tfAnd coqRestrictedPADirectAssumptionFinalLiveIndexTemplate
+      coqRestrictedPADirectAssumptionFinalHeadLookupTemplate).
+Proof. vm_compute. reflexivity. Qed.
+
+(** After opening that index, the two universal pointwise binders specialize
+    to the same bound and lookup formulas.  Native context truth fixes the two
+    hierarchy arguments of its conclusion leaf to zero; a later carrier-code
+    equation removes that harmless difference from the public conclusion
+    truth leaf. *)
+Definition coqRestrictedPADirectAssumptionNativeWitnessFormulaTruthTemplate
+    : TemplateFormula :=
+  tfOpaque coqRestrictedPAConclusionTruthPredicateName
+    [ttZero; ttZero;
+     coqRestrictedPADirectAssumptionWitnessFormulaTerm;
+     ttVar 9; ttVar 8].
+
+Definition coqRestrictedPADirectAssumptionFinalPointwiseAfterIndexTemplate
+    : TemplateFormula :=
+  match templateFormulaRename S
+      coqRestrictedPADirectAssumptionFinalPointwiseTemplate with
+  | tfAll body => templateFormulaOpen (ttVar 0) body
+  | _ => tfBot
+  end.
+
+Definition coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate
+    : TemplateFormula :=
+  match coqRestrictedPADirectAssumptionFinalPointwiseAfterIndexTemplate with
+  | tfImp _ consequent => consequent
+  | _ => tfBot
+  end.
+
+Definition coqRestrictedPADirectAssumptionFinalPointwiseAfterFormulaTemplate
+    : TemplateFormula :=
+  match coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate with
+  | tfAll body => templateFormulaOpen (ttVar 17) body
+  | _ => tfBot
+  end.
+
+Definition coqRestrictedPADirectAssumptionFinalPointwiseTruthTemplate
+    : TemplateFormula :=
+  match coqRestrictedPADirectAssumptionFinalPointwiseAfterFormulaTemplate with
+  | tfImp _ truth => truth
+  | _ => tfBot
+  end.
+
+Lemma coqRestrictedPADirectAssumptionFinalPointwiseAfterIndex_shape :
+  coqRestrictedPADirectAssumptionFinalPointwiseAfterIndexTemplate =
+  tfImp coqRestrictedPADirectAssumptionFinalLiveIndexTemplate
+    coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate.
+Proof. vm_compute. reflexivity. Qed.
+
+Lemma coqRestrictedPADirectAssumptionFinalPointwiseAfterLive_shape :
+  coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate =
+  tfAll
+    (match coqRestrictedPADirectAssumptionFinalPointwiseAfterLiveTemplate with
+     | tfAll body => body
+     | _ => tfBot
+     end).
+Proof. vm_compute. reflexivity. Qed.
+
+Lemma coqRestrictedPADirectAssumptionFinalPointwiseAfterFormula_shape :
+  coqRestrictedPADirectAssumptionFinalPointwiseAfterFormulaTemplate =
+  tfImp coqRestrictedPADirectAssumptionFinalHeadLookupTemplate
+    coqRestrictedPADirectAssumptionFinalPointwiseTruthTemplate.
+Proof. vm_compute. reflexivity. Qed.
+
+Lemma coqRestrictedPADirectAssumptionFinalPointwiseTruth_shape :
+  coqRestrictedPADirectAssumptionFinalPointwiseTruthTemplate =
+  rawCoqTemplateRenameN 11
+    coqRestrictedPADirectAssumptionNativeWitnessFormulaTruthTemplate.
 Proof. vm_compute. reflexivity. Qed.
 
 End
