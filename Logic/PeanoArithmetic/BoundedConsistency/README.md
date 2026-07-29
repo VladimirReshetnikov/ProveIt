@@ -2599,6 +2599,19 @@ restriction certificate at a recursive child for a carrier-valued hierarchy
 parameter.  The older metatheoretic theorem fixes a standard Rocq `nat`, so it
 cannot fill this direct root without a PA-internal uniformization theorem.
 
+`RawCodedTemplateParameterAbstraction.v` supplies the capture-avoiding
+syntax needed by that uniformization.  It replaces one selected named
+carrier parameter by a fresh de Bruijn variable, shifts all old variables
+past the insertion point, and proves that opening at the selected parameter
+recovers the original template exactly, including beneath nested binders and
+opaque-predicate argument lists.  This makes it possible to internalize one
+fixed universally quantified PA theorem and later instantiate it at a
+possibly nonstandard carrier term.
+The same module exposes a partial reification boundary back to ordinary PA
+syntax.  It rejects any named parameter left unabstracted and every opaque
+predicate, and proves that every successful reification embeds back to the
+original template literally.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
