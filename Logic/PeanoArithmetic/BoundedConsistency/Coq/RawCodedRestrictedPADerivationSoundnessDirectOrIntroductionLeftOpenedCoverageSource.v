@@ -13,7 +13,11 @@ From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA.
 From BoundedPAConsistency Require Import
+  RawCodedSyntaxConstructors
+  RawCodedFormulaOperations
   RawCodedTemplateSyntax
+  RawCodedTemplateStructuralTranslation
+  RawCodedTemplateStructuralPAAgreement
   RawCodedTemplateParameterAbstraction
   RawCodedTemplateDirectStructuralTranslation
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
@@ -25,7 +29,11 @@ Module
 Import PA.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
+Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedFormulaOperations.
 Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateStructuralTranslation.
+Import PABoundedRawCodedTemplateStructuralPAAgreement.
 Import PABoundedRawCodedTemplateParameterAbstraction.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
