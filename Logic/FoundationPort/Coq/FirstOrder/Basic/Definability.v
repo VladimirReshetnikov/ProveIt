@@ -8,11 +8,11 @@
 
 From Stdlib Require Import Lists.List Vectors.Fin.
 From Stdlib Require Import Logic.FunctionalExtensionality.
-From Foundation.Syntax.Predicate Require Import Language Term Rew.
+From Foundation.Syntax.Predicate Require Import Language Term Quantifier Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic.Semantics Require Import
-  Semantics OperatorSemantics.
+  Semantics RewriteClosure OperatorSemantics.
 
 Import ListNotations.
 
@@ -226,6 +226,41 @@ Proof.
   unfold first_order_is_defined_by_with_params in Hp.
   refine {| first_order_definable_formula := Semiformula_exists p |}.
   intro v. simpl. setoid_rewrite Hp. reflexivity.
+Defined.
+
+(** Exact block quantification is shorter than the source's vector induction:
+    the prefix layout is the native de Bruijn environment layout already
+    characterized by [fin_env_append]. *)
+Definition first_order_definable_all_vector {L M k l}
+    {Str : first_order_structure L M}
+    (Q : (Fin.t (l + k) -> M) -> Prop)
+    (HQ : first_order_definable Str Q) :
+    first_order_definable Str
+      (fun b : Fin.t k -> M =>
+        forall e : Fin.t l -> M, Q (fin_env_append l k e b)).
+Proof.
+  destruct HQ as [p Hp].
+  unfold first_order_is_defined_by_with_params in Hp.
+  refine {| first_order_definable_formula :=
+    first_all_iter (semiformula_universal_quantifier L M) l k p |}.
+  intro b. rewrite semiformula_eval_all_iter.
+  setoid_rewrite Hp. reflexivity.
+Defined.
+
+Definition first_order_definable_exists_vector {L M k l}
+    {Str : first_order_structure L M}
+    (Q : (Fin.t (l + k) -> M) -> Prop)
+    (HQ : first_order_definable Str Q) :
+    first_order_definable Str
+      (fun b : Fin.t k -> M =>
+        exists e : Fin.t l -> M, Q (fin_env_append l k e b)).
+Proof.
+  destruct HQ as [p Hp].
+  unfold first_order_is_defined_by_with_params in Hp.
+  refine {| first_order_definable_formula :=
+    first_exists_iter (semiformula_existential_quantifier L M) l k p |}.
+  intro b. rewrite semiformula_eval_exists_iter.
+  setoid_rewrite Hp. reflexivity.
 Defined.
 
 (** * Finite logical families *)

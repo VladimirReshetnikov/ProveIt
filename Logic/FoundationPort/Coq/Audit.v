@@ -522,6 +522,8 @@ Check first_order_definable_not.
 Check first_order_definable_iff.
 Check first_order_definable_all.
 Check first_order_definable_exists.
+Check first_order_definable_all_vector.
+Check first_order_definable_exists_vector.
 Check semiformula_list_conj.
 Check semiformula_list_disj.
 Check semiformula_eval_list_conj.
@@ -711,6 +713,8 @@ Print Assumptions first_order_definable_const.
 Print Assumptions first_order_definable_and.
 Print Assumptions first_order_definable_all.
 Print Assumptions first_order_definable_exists.
+Print Assumptions first_order_definable_all_vector.
+Print Assumptions first_order_definable_exists_vector.
 Print Assumptions semiformula_eval_list_conj.
 Print Assumptions semiformula_eval_list_disj.
 Print Assumptions first_order_definable_list_all.
