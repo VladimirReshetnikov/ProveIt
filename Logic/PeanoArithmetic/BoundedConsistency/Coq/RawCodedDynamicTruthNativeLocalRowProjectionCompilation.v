@@ -42,6 +42,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofFiniteDisjunction
   RawCodedPALocalProofFiniteDisjunctionMatrix
+  RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplatePAEmbedding
   RawCodedTruthCertificateMasterFixedHelperBatchExtension
   RawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation
@@ -52,6 +53,15 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthPairedGlobalAdequateOrbitDeepClosure
   RawCodedDynamicTruthSigmaSuccessorRowGraph
   RawCodedDynamicTruthPiSuccessorRowGraph
+  RawCodedDynamicTruthUniversalLeafSourceTemplate
+  RawCodedDynamicTruthPiUniversalLeafSourceTemplate
+  RawCodedDynamicTruthUniversalLeafProofCompilation
+  RawCodedDynamicTruthPiTemplateDirectInputs
+  RawCodedDynamicTruthQuantifierConditionalCellCompilation
+  RawCodedDynamicTruthImpBranchExclusivity
+  RawCodedDynamicTruthQuantifierBranchExclusivity
+  RawCodedDynamicTruthMixedQFBranchExclusivity
+  RawCodedDynamicTruthBinderOffDiagonalExclusivity
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthLocalCollisionMatrixAssembly
   RawCodedDynamicTruthSuccessorRowBranchDisjunctionCompilation
@@ -81,6 +91,7 @@ Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofFiniteDisjunction.
 Import PABoundedRawCodedPALocalProofFiniteDisjunctionMatrix.
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTruthCertificateMasterFixedHelperBatchExtension.
 Import PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.
@@ -94,6 +105,15 @@ Import
   PABoundedRawCodedDynamicTruthPairedGlobalAdequateOrbitDeepClosure.
 Import PABoundedRawCodedDynamicTruthSigmaSuccessorRowGraph.
 Import PABoundedRawCodedDynamicTruthPiSuccessorRowGraph.
+Import PABoundedRawCodedDynamicTruthUniversalLeafSourceTemplate.
+Import PABoundedRawCodedDynamicTruthPiUniversalLeafSourceTemplate.
+Import PABoundedRawCodedDynamicTruthUniversalLeafProofCompilation.
+Import PABoundedRawCodedDynamicTruthPiTemplateDirectInputs.
+Import PABoundedRawCodedDynamicTruthQuantifierConditionalCellCompilation.
+Import PABoundedRawCodedDynamicTruthImpBranchExclusivity.
+Import PABoundedRawCodedDynamicTruthQuantifierBranchExclusivity.
+Import PABoundedRawCodedDynamicTruthMixedQFBranchExclusivity.
+Import PABoundedRawCodedDynamicTruthBinderOffDiagonalExclusivity.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssembly.
 Import
@@ -218,6 +238,77 @@ Proof.
          piDirectInputs;
        rawDynamicTruthPiBranchDisjunction_identification :=
          hpiIdentification |}.
+  exact I.
+Qed.
+
+(** The same direct inputs also carry the two lower-application traces used
+    by the opaque quantifier cells.  These traces were historically repeated
+    in the current collision kernel; their designated-formula equations are
+    already fields of the exact Sigma/Pi row identifications above. *)
+Theorem
+    raw_dynamicTruthNativeLocalExactRows_lower_direct_traces_on_witnessed_base :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (tail : nat -> M) predecessorLevel inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      sigmaRowDomain piRowDomain lowerPiApplication lowerSigmaApplication
+      witnessList baseContext,
+  RawDynamicTruthNativeLocalProofTraceAt M tail predecessorLevel
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence ->
+  RawDynamicTruthNativeLocalExactRowParametersAt M predecessorLevel
+    inputGlobalSigma inputGlobalPi sigmaEvidence piEvidence
+    sigmaRowDomain piRowDomain lowerPiApplication lowerSigmaApplication ->
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  exists piTrace :
+      RawDynamicTruthQuantifierLowerApplicationDirectTrace
+        M lowerPiApplication,
+    exists sigmaTrace :
+      RawDynamicTruthQuantifierLowerApplicationDirectTrace
+        M lowerSigmaApplication,
+      True.
+Proof.
+  intros M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+    sigmaDomain piDomain sigmaEvidence piEvidence
+    sigmaRowDomain piRowDomain lowerPi lowerSigma
+    witnessList baseContext htrace hlinked hwitness.
+  destruct
+    (raw_dynamicTruthNativeLocalExactRows_branch_projection_inputs_on_witnessed_base
+      M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      sigmaRowDomain piRowDomain lowerPi lowerSigma
+      witnessList baseContext htrace hlinked hwitness)
+    as [sigmaInputs [piInputs _]].
+  exists
+    {| rawDynamicTruthQuantifierLowerApplication_inputs :=
+         rawDynamicTruthSigmaBranchDisjunction_directInputs sigmaInputs;
+       rawDynamicTruthQuantifierLowerApplication_designated :=
+         eq_trans
+           (rawDirect_coqDynamicTruthLowerPiAtomTemplate
+             M (rawDynamicTruthSigmaBranchDisjunction_directInputs
+               sigmaInputs))
+           (rawCoqDynamicTruthSigmaDirect_lowerApplication_identified
+             (rawDynamicTruthSigmaBranchDisjunction_identification
+               sigmaInputs)) |}.
+  assert (hpiDesignated :
+      rawDirectTemplateFormula
+        (rawDynamicTruthPiBranchDisjunction_directInputs piInputs)
+        coqDynamicTruthLowerPiAtomTemplate = lowerSigma).
+  {
+    change
+      (rawDirectTemplateFormula
+        (rawDynamicTruthPiBranchDisjunction_directInputs piInputs)
+        coqDynamicTruthLowerSigmaAtomTemplate = lowerSigma).
+    exact (eq_trans
+      (rawDirect_coqDynamicTruthLowerSigmaAtomTemplate M
+        (rawDynamicTruthPiBranchDisjunction_directInputs piInputs))
+      (rawCoqDynamicTruthPiDirect_lowerApplication_identified
+        (rawDynamicTruthPiBranchDisjunction_identification piInputs))).
+  }
+  exists
+    {| rawDynamicTruthQuantifierLowerApplication_inputs :=
+         rawDynamicTruthPiBranchDisjunction_directInputs piInputs;
+       rawDynamicTruthQuantifierLowerApplication_designated :=
+         hpiDesignated |}.
   exact I.
 Qed.
 
@@ -424,6 +515,36 @@ Proof.
   now exists liftedRoot.
 Qed.
 
+(** Five genuinely current-field resources remain after extracting the two
+    lower direct traces from the exact row construction.  This record is the
+    public kernel of the reduced callback; the older seven-field kernel is
+    rebuilt internally immediately before the established helper assembly. *)
+Record RawDynamicTruthNativeLocalReducedCurrentKernelInputsAt
+    (M : RawPAModel) (context lowerPiApplication lowerSigmaApplication : M)
+    : Type := {
+  rawDynamicTruthNativeLocalReducedKernel_predecessorRoot :
+    RawDynamicTruthLocalRootAt M context
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M);
+  rawDynamicTruthNativeLocalReducedKernel_binderProjections :
+    forall cell : DynamicTruthBinderOffDiagonalCell,
+      RawDynamicTruthBinderPrincipalProjectionInterfaceAt M context cell
+        lowerPiApplication lowerSigmaApplication;
+  rawDynamicTruthNativeLocalReducedKernel_sigmaExCrossRoot :
+    RawDynamicTruthLocalRootAt M context
+      (rawDynamicTruthSigmaExPiExCrossLevelPremiseCode M
+        lowerSigmaApplication);
+  rawDynamicTruthNativeLocalReducedKernel_sigmaAllCrossRoot :
+    RawDynamicTruthLocalRootAt M context
+      (rawDynamicTruthSigmaAllPiAllCrossLevelPremiseCode M
+        lowerPiApplication);
+  rawDynamicTruthNativeLocalReducedKernel_mixedReplayRoot :
+    RawDynamicTruthLocalRootAt M context
+      (rawDynamicTruthMixedQFReplayExclusivityCode M)
+}.
+
+Arguments RawDynamicTruthNativeLocalReducedCurrentKernelInputsAt
+  M context lowerPiApplication lowerSigmaApplication : clear implicits.
+
 (** A strictly smaller staged package than the historical one.  It retains
     only the genuinely proof-producing case roots, row roots, and collision
     kernel.  Both direct projection packages and all three temporary-context
@@ -447,7 +568,7 @@ Definition RawDynamicTruthNativeLocalReducedStagedRootsAt
       (rawDynamicTruthPiSuccessorRowCode M
         piRowDomain lowerSigmaApplication) /\
     exists currentKernel :
-        RawDynamicTruthNativeLocalCurrentKernelInputsAt M baseContext
+        RawDynamicTruthNativeLocalReducedCurrentKernelInputsAt M baseContext
           lowerPiApplication lowerSigmaApplication,
       True.
 
@@ -490,7 +611,7 @@ Proof.
     sigmaRowDomain piRowDomain lowerPi lowerSigma
     hagreement hwitness hhelpers htrace hlinked hstaged.
   destruct hstaged as
-    (hcases & hsigmaRow & hpiRow & currentKernel & _).
+    (hcases & hsigmaRow & hpiRow & reducedKernel & _).
   pose proof
     (raw_dynamicTruthNativeLocalProofTraceAt_linked_adequacy
       M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
@@ -509,6 +630,33 @@ Proof.
       hsigmaRow hpiRow) as hprojected.
   destruct hprojected as
     (sigmaOrRoot & piOrRoot & hsigmaOr & hpiOr).
+  destruct
+    (raw_dynamicTruthNativeLocalExactRows_lower_direct_traces_on_witnessed_base
+      M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      sigmaRowDomain piRowDomain lowerPi lowerSigma
+      witnessList baseContext htrace hlinked hwitness)
+    as [piTrace [sigmaTrace _]].
+  destruct reducedKernel as
+    [hpredecessor hbinder hsigmaExCross hsigmaAllCross hmixedReplay].
+  assert (currentKernel :
+      RawDynamicTruthNativeLocalCurrentKernelInputsAt M baseContext
+        lowerPi lowerSigma).
+  {
+    exact
+    {| rawDynamicTruthNativeLocalCurrentKernel_predecessorRoot :=
+         hpredecessor;
+       rawDynamicTruthNativeLocalCurrentKernel_binderProjections :=
+         hbinder;
+       rawDynamicTruthNativeLocalCurrentKernel_sigmaExTrace := sigmaTrace;
+       rawDynamicTruthNativeLocalCurrentKernel_sigmaAllTrace := piTrace;
+       rawDynamicTruthNativeLocalCurrentKernel_sigmaExCrossRoot :=
+         hsigmaExCross;
+       rawDynamicTruthNativeLocalCurrentKernel_sigmaAllCrossRoot :=
+         hsigmaAllCross;
+       rawDynamicTruthNativeLocalCurrentKernel_mixedReplayRoot :=
+         hmixedReplay |}.
+  }
   pose proof
     (raw_dynamicTruthNativeLocalCollisionResidualInputsAt_of_current_kernel
       M hPA translation witnessList baseContext helperRoots
