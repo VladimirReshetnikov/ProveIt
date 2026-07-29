@@ -6,7 +6,7 @@ From FoundationModal Require Import
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
   PropositionalBoolean PropositionalBooleanNNFormula
-  PropositionalBooleanZeroSubst GenericCalculus
+  PropositionalBooleanZeroSubst GenericCalculus PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -989,6 +989,39 @@ Print Assumptions pboolean_eval_vf_substitute_iff.
 Print Assumptions pboolean_exists_neg_zero_subst_of_not_tautology.
 Print Assumptions pboolean_tautology_of_forall_zero_subst.
 Print Assumptions pboolean_vf_substitution_tautology.
+
+(** Propositional/Tait/Calculus one-sided NNF calculus. *)
+Check pnn_sequent.
+Check pnn_derivation.
+Check PNNDIdentity.
+Check PNNDCut.
+Check PNNDWeakening.
+Check PNNDTop.
+Check PNNDOr.
+Check PNNDAnd.
+Check pnn_derivation_height.
+Check pnn_derivation_cast.
+Check pnn_derivation_height_cast.
+Check pnn_derivation_rotate.
+Check pnn_derivation_tensor.
+Check pnn_derivation_top_eta.
+Check pnn_derivation_bottom_eta.
+Check pnn_derivation_eta.
+Check pnn_derivation_close.
+Check pnn_tait_lk.
+Check pnn_tait_lk_cut.
+Check pnn_tait_proof.
+Check pnn_tait_symbol.
+Check PNNTait.
+Check pnn_tait_entailment.
+Check pnn_tait_principal_entailment.
+Check pnn_tait_is_tautology.
+Print Assumptions pnn_derivation_height_cast.
+Print Assumptions pnn_derivation_eta.
+Print Assumptions pnn_derivation_close.
+Print Assumptions pnn_tait_lk.
+Print Assumptions pnn_tait_lk_cut.
+Print Assumptions pnn_tait_principal_entailment.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
