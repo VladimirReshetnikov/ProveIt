@@ -4121,3 +4121,9 @@ pre-split current bound and old four-column lookup plus the branch-local old
 bound, it constructs the appended table's four-column lookup beneath the
 branch head.  The construction remains generic in the template translation
 and in the particular adequate head formula.
+
+`RawCodedFourStateTableAppendRowLtSuccCases` now constructs that branch-local
+old-bound proof itself.  Once two transparent template equalities identify
+the arithmetic source's antecedent and left branch, the `< b` branch head is
+used by an actual represented assumption node and fed directly to the shifted
+predecessor transport.
