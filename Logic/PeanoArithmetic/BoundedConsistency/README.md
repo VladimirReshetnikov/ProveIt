@@ -2655,6 +2655,16 @@ of the displayed universally quantified reroot source.  This discharges the
 previously isolated object-level arithmetic obligation for the Or-I-left
 recursive child; integrating its proof code into the direct compiler remains.
 
+`RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootCompilation.v`
+performs the first proof-code integration step.  Over any witnessed PA base it
+compiles the universal source with its honest finite axiom prefix, applies
+represented All-E at the arbitrary direct level using the exact substitution
+trace, and transports the instantiated law beneath the finite opened-coverage
+template prefix.  The result is a represented local proof of the dynamic
+reroot law over an extended witnessed base; identifying that on-tail context
+with the shared rule-case template tail and consuming it in the opened
+coverage compiler are the next integration steps.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
