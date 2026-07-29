@@ -16,6 +16,8 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofExistential
   RawCodedPALocalProofComposition
   RawCodedPALocalProofPropositionalRules
+  RawCodedFixedLevelTruthTotality
+  RawCodedContextLists
   RawCodedPAAxiomWitnessPrefix
   RawCodedRestrictedPAProof
   RawCodedSyntaxConstructors
@@ -40,6 +42,8 @@ Import PAFiniteBetaCoding.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofPropositionalRules.
+Import PABoundedRawCodedFixedLevelTruthTotality.
+Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedSyntaxConstructors.
@@ -465,6 +469,101 @@ Definition RawCodedPAGrowingTemplateLocalProofAt
 Arguments RawCodedPAGrowingTemplateLocalProofAt
   M translation sourceWitnessList sourceContext prefix conclusion
   : clear implicits.
+
+(** Re-identify only the target formula while preserving every selected
+    witness, context inclusion, and proof root.  Concrete row compilers use
+    this after reducing a finite named-parameter replacement to their public
+    successor-row syntax. *)
+Theorem raw_codedPAGrowingTemplateLocalProofAt_conclusion_eq : forall
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext prefix sourceConclusion targetConclusion,
+  sourceConclusion = targetConclusion ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix sourceConclusion ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix targetConclusion.
+Proof.
+  intros M translation sourceWitnessList sourceContext prefix
+    sourceConclusion targetConclusion -> hproof.
+  exact hproof.
+Qed.
+
+(** Degenerate growth: insert one adequate branch head while retaining the
+    same witnessed tail.  This is the common adapter for an inherited
+    traversal production that is already available before the arithmetic
+    case split; no helper theorem or new PA axiom witness is selected. *)
+Theorem raw_codedPAGrowingTemplateLocalProofAt_cons_of_local_proof :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext prefix head conclusion root,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation head) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    conclusion root ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext (head :: prefix) conclusion.
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext
+    prefix head conclusion root hsource hhead hroot.
+  assert (hfullContext : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation sourceContext prefix)).
+  {
+    apply (raw_templateContextOnTail_realizable M hPA).
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      sourceWitnessList sourceContext hsource).
+  }
+  assert (hheadPrefix :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation [head]).
+  {
+    intros formula [hformula | hformula].
+    - subst formula. exact hhead.
+    - contradiction.
+  }
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    [head] conclusion root hfullContext hheadPrefix hroot)
+    as [prefixedRoot hprefixed].
+  unfold RawCodedPAGrowingTemplateLocalProofAt.
+  exists sourceWitnessList, sourceContext, prefixedRoot.
+  split; [exact hsource |].
+  split.
+  - apply raw_contextListIncluded_refl.
+  - cbn in hprefixed |- *.
+    exact hprefixed.
+Qed.
+
+(** Pointwise adapter for an inherited production compiler.  The producer
+    may choose its proof root from the current witnessed tail, while this
+    lemma uniformly inserts the branch head and packages the unchanged-tail
+    result for dependency-ordered case elimination. *)
+Theorem raw_codedPAGrowingTemplateBranchCompiler_cons_of_local : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    prefix head conclusion,
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation head) ->
+  (forall sourceWitnessList sourceContext,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+    exists root,
+      RawCodedPALocalProofOf M
+        (rawTemplateContextCodeOnTail translation sourceContext prefix)
+        conclusion root) ->
+  forall sourceWitnessList sourceContext,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+    RawCodedPAGrowingTemplateLocalProofAt M translation
+      sourceWitnessList sourceContext (head :: prefix) conclusion.
+Proof.
+  intros M hPA translation prefix head conclusion hhead
+    hproducer sourceWitnessList sourceContext hsource.
+  destruct (hproducer sourceWitnessList sourceContext hsource)
+    as [root hroot].
+  exact (raw_codedPAGrowingTemplateLocalProofAt_cons_of_local_proof
+    M hPA translation sourceWitnessList sourceContext
+    prefix head conclusion root hsource hhead hroot).
+Qed.
 
 (** A growing-tail form of represented case elimination.
 

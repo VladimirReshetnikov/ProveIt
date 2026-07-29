@@ -4289,6 +4289,15 @@ ordered direct-replacement fold.  Concrete successor-row syntax identities
 can therefore reduce through the mode, formula, assignment-code, and
 assignment-step fields without unfolding represented equality proofs.
 
+Growing branch compilation now also has its zero-growth dual.  An inherited
+local production already available on the current witnessed tail can be put
+beneath one atomically adequate arithmetic branch head while retaining the
+same witness list and context; a pointwise adapter turns any such inherited
+producer into the callback required by dependency-ordered case elimination.
+A separate target-reidentification lemma preserves all witnesses, inclusion
+evidence, and the proof root after the direct-replacement calculation is
+shown equal to the public successor-row code.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
