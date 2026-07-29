@@ -960,6 +960,65 @@ Proof.
     reflexivity.
 Qed.
 
+(** * Constructive conversion of free-variable-free terms *)
+
+Fixpoint semiterm_to_closed {L X n} (t : semiterm L X n) :
+    (forall x, ~ semiterm_free_occurs x t) -> closed_semiterm L n :=
+  match t as t0 return
+      (forall x, ~ semiterm_free_occurs x t0) -> closed_semiterm L n with
+  | Semiterm_bvar i => fun _ => Semiterm_bvar i
+  | Semiterm_fvar y => fun H => False_rect _ (H y eq_refl)
+  | @Semiterm_func _ _ _ k f a => fun H =>
+      Semiterm_func f (fun i =>
+        @semiterm_to_closed L X n (a i)
+          (fun x Hx => H x (ex_intro (fun j => semiterm_free_occurs x (a j)) i Hx)))
+  end.
+
+Lemma semiterm_to_closed_bvar : forall L X n (i : Fin.t n) H,
+  @semiterm_to_closed L X n (Semiterm_bvar i) H = Semiterm_bvar i.
+Proof. reflexivity. Qed.
+
+Lemma semiterm_to_closed_func : forall L X n k
+    (f : language_func L k) (a : Fin.t k -> semiterm L X n) H,
+  @semiterm_to_closed L X n (Semiterm_func f a) H =
+  Semiterm_func f (fun i =>
+    @semiterm_to_closed L X n (a i)
+      (fun x Hx => H x (ex_intro (fun j => semiterm_free_occurs x (a j)) i Hx))).
+Proof. reflexivity. Qed.
+
+Lemma semiterm_emb_to_closed : forall L X n
+    (t : semiterm L X n) (H : forall x, ~ semiterm_free_occurs x t),
+  rew_apply (rew_emb (fun x : Empty_set => match x with end))
+    (@semiterm_to_closed L X n t H) = t.
+Proof.
+  intros L X n t; induction t as [i | y | k f a IH]; intro H; simpl.
+  - reflexivity.
+  - exact (False_rect _ (H y eq_refl)).
+  - f_equal. apply functional_extensionality. intro i. apply IH.
+Qed.
+
+Lemma semiterm_emb_no_free_occurs : forall L O X n
+    (empty : O -> False) (t : semiterm L O n) x,
+  ~ semiterm_free_occurs x (rew_apply (@rew_emb L O X n empty) t).
+Proof.
+  intros L O X n empty t; induction t as [i | y | k f a IH]; intro x; simpl.
+  - tauto.
+  - exact (False_rect _ (empty y)).
+  - intros [i Hi]. exact (IH i x Hi).
+Qed.
+
+Lemma semiterm_to_closed_emb : forall L O n (empty : O -> False)
+    (t : semiterm L O n) H,
+  @semiterm_to_closed L Empty_set n
+    (rew_apply (@rew_emb L O Empty_set n empty) t) H =
+  rew_apply (@rew_emb L O Empty_set n empty) t.
+Proof.
+  intros L O n empty t; induction t as [i | y | k f a IH]; intro H; simpl.
+  - reflexivity.
+  - exact (False_rect _ (empty y)).
+  - f_equal. apply functional_extensionality. intro i. apply IH.
+Qed.
+
 (** * Formula action *)
 
 Fixpoint semiformula_rewrite {L X n Y m}

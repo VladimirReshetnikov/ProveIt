@@ -188,6 +188,10 @@ Check rew_fix_iter_succ.
 Check rew_fix_iter_bvar.
 Check rew_fix_iter_fvar_ge.
 Check rew_fix_iter_fvar_lt.
+Check semiterm_to_closed.
+Check semiterm_emb_to_closed.
+Check semiterm_emb_no_free_occurs.
+Check semiterm_to_closed_emb.
 Check semiformula_rewrite.
 Check semiformula_rewrite_connective_hom.
 Check semiformula_rewrite_all.
@@ -267,6 +271,9 @@ Print Assumptions rew_fix_iter_zero.
 Print Assumptions rew_fix_iter_bvar.
 Print Assumptions rew_fix_iter_fvar_ge.
 Print Assumptions rew_fix_iter_fvar_lt.
+Print Assumptions semiterm_emb_to_closed.
+Print Assumptions semiterm_emb_no_free_occurs.
+Print Assumptions semiterm_to_closed_emb.
 Print Assumptions rew_shift_injective.
 Print Assumptions rew_free_comp_fix.
 Print Assumptions rew_fix_comp_free.
