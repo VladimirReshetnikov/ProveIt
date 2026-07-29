@@ -3601,8 +3601,12 @@ both ternary shift and opening laws.  The Sigma/Pi row-to-disjunction
 implications can then be compiled on the witnessed PA base and weakened
 through the three open assumptions before they are applied to the literal row
 roots.  The resulting reduced staged package drops both dependent projection
-packages.  In particular, it never demands the capture-incorrect self-shift
-of an evidence context merely to translate a row projection.
+packages.  The collision pair implications are likewise completed on the
+witnessed base and only then weakened through the open assumptions; the
+finite disjunction matrix consumes those finished pairs directly.  Hence all
+three temporary-context self-shifts disappear as well.  In particular, the
+boundary never demands the capture-incorrect self-shift of an evidence
+context merely to translate a row projection or compile a collision cell.
 
 `RawCodedDynamicTruthNativeLocalStagedCallbackCompilation.v` connects that
 carried root to the first public dependency-ordered callback.  It extends the
@@ -3613,7 +3617,11 @@ and its linked row parameters, and returns only the staged root package.
 Adequate orbit selection, transform extraction, carried-root certificate
 packaging, and positive-graph satisfaction are then concrete.  Thus the
 callback neither assumes an empty-base leaf compiler nor permits an unrelated
-helper context.
+helper context.  Its preferred reduced-builder endpoint uses the internally
+compiled row projections described above.  The dependency-ordered callback,
+universal-soundness, and bridge bundles all consume that reduced endpoint, so
+the two historical projection packages no longer occur in the public master
+residual; the older adapter remains only as a source-compatible theorem.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but

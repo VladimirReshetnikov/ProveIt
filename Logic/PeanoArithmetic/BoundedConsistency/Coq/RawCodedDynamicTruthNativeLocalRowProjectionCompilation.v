@@ -28,6 +28,7 @@ From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
+  RawCodedFixedLevelTruthTotality
   RawCodedRestrictedPAProof
   RawCodedContextLists
   RawCodedContextStructure
@@ -39,6 +40,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofContextInsertUnconditional
   RawCodedPALocalProofExistential
   RawCodedPALocalProofPropositionalRules
+  RawCodedPALocalProofFiniteDisjunction
   RawCodedPALocalProofFiniteDisjunctionMatrix
   RawCodedTemplatePAEmbedding
   RawCodedTruthCertificateMasterFixedHelperBatchExtension
@@ -65,6 +67,7 @@ Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedContextStructure.
@@ -76,6 +79,7 @@ Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofPropositionalRules.
+Import PABoundedRawCodedPALocalProofFiniteDisjunction.
 Import PABoundedRawCodedPALocalProofFiniteDisjunctionMatrix.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTruthCertificateMasterFixedHelperBatchExtension.
@@ -394,11 +398,37 @@ Proof.
       piImpFinal piRowRoot hpiImpFinal hpiRow).
 Qed.
 
+(** A finite pair family consists entirely of completed implication proofs,
+    so it can be weakened through an adequate context head without requiring
+    the enlarged context to shift to itself.  This is the key distinction
+    from transporting the uncompiled collision-input record, whose direct
+    quantifier traces still need a context shift while they are compiled. *)
+Lemma raw_dynamicTruthLocalPairFamily_adequateCons : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context head leftBranches rightBranches conclusion,
+  RawCodedFormulaAtomicallyAdequate M head ->
+  RawContextListRealizable M context ->
+  RawCodedPALocalFiniteDisjunctionPairFamily M context
+    leftBranches rightBranches conclusion ->
+  RawCodedPALocalFiniteDisjunctionPairFamily M
+    (rawListNode M head context) leftBranches rightBranches conclusion.
+Proof.
+  intros M hPA context head leftBranches rightBranches conclusion
+    hhead hcontext hpairs left hleft right hright.
+  destruct (hpairs left hleft right hright) as [root hroot].
+  destruct (raw_codedPALocalProof_adequateConsTransplant
+    M hPA context head
+    (rawFormulaImpCode M left
+      (rawFormulaImpCode M right conclusion))
+    root hhead hcontext hroot) as [liftedRoot hlifted].
+  now exists liftedRoot.
+Qed.
+
 (** A strictly smaller staged package than the historical one.  It retains
-    the genuinely proof-producing case roots, row roots, collision kernel,
-    and context transports, but drops both direct projection packages.  The
-    preceding theorem reconstructs those projections after compiling their
-    closed implications on the witnessed base. *)
+    only the genuinely proof-producing case roots, row roots, and collision
+    kernel.  Both direct projection packages and all three temporary-context
+    self-shifts are reconstructed or avoided by compiling completed proofs on
+    the witnessed PA base before weakening them. *)
 Definition RawDynamicTruthNativeLocalReducedStagedRootsAt
     (M : RawPAModel)
     (baseContext sigmaDomain piDomain sigmaEvidence piEvidence
@@ -419,21 +449,7 @@ Definition RawDynamicTruthNativeLocalReducedStagedRootsAt
     exists currentKernel :
         RawDynamicTruthNativeLocalCurrentKernelInputsAt M baseContext
           lowerPiApplication lowerSigmaApplication,
-      RawContextShift M
-        (rawDynamicTruthNativeLocalAdmissibleContextOn M baseContext
-          sigmaDomain piDomain)
-        (rawDynamicTruthNativeLocalAdmissibleContextOn M baseContext
-          sigmaDomain piDomain) /\
-      RawContextShift M
-        (rawDynamicTruthNativeLocalExclusiveSigmaContextOn M baseContext
-          sigmaDomain piDomain sigmaEvidence)
-        (rawDynamicTruthNativeLocalExclusiveSigmaContextOn M baseContext
-          sigmaDomain piDomain sigmaEvidence) /\
-      RawContextShift M
-        (rawDynamicTruthNativeLocalExclusivePiContextOn M baseContext
-          sigmaDomain piDomain sigmaEvidence piEvidence)
-        (rawDynamicTruthNativeLocalExclusivePiContextOn M baseContext
-          sigmaDomain piDomain sigmaEvidence piEvidence).
+      True.
 
 Arguments RawDynamicTruthNativeLocalReducedStagedRootsAt
   M baseContext sigmaDomain piDomain sigmaEvidence piEvidence
@@ -474,8 +490,7 @@ Proof.
     sigmaRowDomain piRowDomain lowerPi lowerSigma
     hagreement hwitness hhelpers htrace hlinked hstaged.
   destruct hstaged as
-    (hcases & hsigmaRow & hpiRow & currentKernel &
-      hadmissibleShift & hsigmaShift & hpiShift).
+    (hcases & hsigmaRow & hpiRow & currentKernel & _).
   pose proof
     (raw_dynamicTruthNativeLocalProofTraceAt_linked_adequacy
       M hPA tail predecessorLevel inputGlobalSigma inputGlobalPi
@@ -504,16 +519,59 @@ Proof.
       M hPA translation witnessList baseContext helperRoots
       lowerPi lowerSigma hagreement hwitness hhelpers hresidual)
     as hbaseInputs.
-  pose proof
-    (raw_dynamicTruthLocalCollisionMatrixInputs_on_exclusive_context
-      M hPA baseContext sigmaDomain piDomain sigmaEvidence piEvidence
-      lowerPi lowerSigma hbaseInputs hadmissible
-      hsigmaEvidence hpiEvidence
-      hadmissibleShift hsigmaShift hpiShift)
-    as hexclusiveInputs.
   set (exclusiveContext :=
     rawDynamicTruthNativeLocalExclusivePiContextOn M baseContext
       sigmaDomain piDomain sigmaEvidence piEvidence).
+  pose proof
+    (raw_dynamicTruthLocalCollisionMatrix_pair_family
+      M hPA baseContext lowerPi lowerSigma hbaseInputs)
+    as hbasePairs.
+  pose proof
+    (rawDynamicTruthLocalCollision_context_realizable
+      M baseContext lowerPi lowerSigma hbaseInputs)
+    as hbaseRealizable.
+  assert (hadmissibleRealizable : RawContextListRealizable M
+      (rawDynamicTruthNativeLocalAdmissibleContextOn M baseContext
+        sigmaDomain piDomain)).
+  { exact (raw_contextList_cons_realizable M hPA baseContext
+      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
+      hbaseRealizable). }
+  assert (hsigmaRealizable : RawContextListRealizable M
+      (rawDynamicTruthNativeLocalExclusiveSigmaContextOn M baseContext
+        sigmaDomain piDomain sigmaEvidence)).
+  { exact (raw_contextList_cons_realizable M hPA
+      (rawDynamicTruthNativeLocalAdmissibleContextOn M baseContext
+        sigmaDomain piDomain) sigmaEvidence hadmissibleRealizable). }
+  assert (hexclusiveRealizable : RawContextListRealizable M
+      exclusiveContext).
+  { exact (raw_contextList_cons_realizable M hPA
+      (rawDynamicTruthNativeLocalExclusiveSigmaContextOn M baseContext
+        sigmaDomain piDomain sigmaEvidence)
+      piEvidence hsigmaRealizable). }
+  pose proof
+    (raw_dynamicTruthLocalPairFamily_adequateCons M hPA
+      baseContext
+      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
+      (rawDynamicTruthLocalSigmaBranches M lowerPi)
+      (rawDynamicTruthLocalPiBranches M lowerSigma)
+      (rawFormulaBotCode M) hadmissible hbaseRealizable hbasePairs)
+    as hadmissiblePairs.
+  pose proof
+    (raw_dynamicTruthLocalPairFamily_adequateCons M hPA
+      (rawDynamicTruthNativeLocalAdmissibleContextOn M baseContext
+        sigmaDomain piDomain) sigmaEvidence
+      (rawDynamicTruthLocalSigmaBranches M lowerPi)
+      (rawDynamicTruthLocalPiBranches M lowerSigma)
+      (rawFormulaBotCode M) hsigmaEvidence hadmissibleRealizable
+      hadmissiblePairs) as hsigmaPairs.
+  pose proof
+    (raw_dynamicTruthLocalPairFamily_adequateCons M hPA
+      (rawDynamicTruthNativeLocalExclusiveSigmaContextOn M baseContext
+        sigmaDomain piDomain sigmaEvidence) piEvidence
+      (rawDynamicTruthLocalSigmaBranches M lowerPi)
+      (rawDynamicTruthLocalPiBranches M lowerSigma)
+      (rawFormulaBotCode M) hpiEvidence hsigmaRealizable hsigmaPairs)
+    as hexclusivePairs.
   assert (matrixResources :
       RawFiniteDisjunctionMatrixResources M
         (rawDynamicTruthLocalSigmaBranches M lowerPi)
@@ -521,15 +579,25 @@ Proof.
         exclusiveContext).
   { apply (raw_dynamicTruthLocalCollisionMatrixResources_of_adequacy
       M hPA exclusiveContext lowerPi lowerSigma).
-    - exact (rawDynamicTruthLocalCollision_context_realizable
-        M exclusiveContext lowerPi lowerSigma hexclusiveInputs).
+    - exact hexclusiveRealizable.
     - exact hlowerPi.
     - exact hlowerSigma. }
+  change (RawCodedPALocalProofOf M exclusiveContext
+    (rawFiniteRightDisjunctionCode M
+      (rawDynamicTruthLocalSigmaBranches M lowerPi)) sigmaOrRoot)
+    in hsigmaOr.
+  change (RawCodedPALocalProofOf M exclusiveContext
+    (rawFiniteRightDisjunctionCode M
+      (rawDynamicTruthLocalPiBranches M lowerSigma)) piOrRoot)
+    in hpiOr.
   destruct
-    (raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom
-      M hPA exclusiveContext lowerPi lowerSigma
-      sigmaOrRoot piOrRoot hexclusiveInputs matrixResources
-      hsigmaOr hpiOr) as [bottomRoot hbottom].
+    (raw_codedPALocalProofOf_finiteDisjunctionMatrix
+      M hPA
+      (rawDynamicTruthLocalSigmaBranches M lowerPi)
+      (rawDynamicTruthLocalPiBranches M lowerSigma)
+      (rawFormulaBotCode M) exclusiveContext sigmaOrRoot piOrRoot
+      matrixResources hsigmaOr hpiOr hexclusivePairs)
+    as [bottomRoot hbottom].
   assert (hdecision : RawDynamicTruthNativeLocalDecisionRootOn M
       baseContext sigmaDomain piDomain sigmaEvidence piEvidence).
   { apply (raw_dynamicTruthNativeLocalDecisionRootOn_of_structural_roots
