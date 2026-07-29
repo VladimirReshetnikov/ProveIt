@@ -405,12 +405,29 @@ Defined.
 
 (** * Substitution by formula-defined functions *)
 
+(** Select an arbitrary output coordinate and arbitrary parameter coordinates
+    for a function graph. *)
+Definition fin_graph_retraction_map {k l n}
+    (out : Fin.t k -> Fin.t n) (param : Fin.t l -> Fin.t n)
+    (i : Fin.t k) : Fin.t (S l) -> Fin.t n :=
+  fun j => @Fin.caseS' l j (fun _ => Fin.t n)
+    (out i) param.
+
+Lemma fin_graph_retraction_map_head : forall k l n
+    (out : Fin.t k -> Fin.t n) (param : Fin.t l -> Fin.t n) i,
+  fin_graph_retraction_map out param i Fin.F1 = out i.
+Proof. reflexivity. Qed.
+
+Lemma fin_graph_retraction_map_tail : forall k l n
+    (out : Fin.t k -> Fin.t n) (param : Fin.t l -> Fin.t n) i j,
+  fin_graph_retraction_map out param i (Fin.FS j) = param j.
+Proof. reflexivity. Qed.
+
 (** Place the graph output at the [i]-th position of a prefix environment and
     retain every parameter in the suffix. *)
 Definition fin_graph_retraction {k l} (i : Fin.t k) :
     Fin.t (S l) -> Fin.t (k + l) :=
-  fun j => @Fin.caseS' l j (fun _ => Fin.t (k + l))
-    (Fin.L l i) (fun q => Fin.R k q).
+  fin_graph_retraction_map (Fin.L l) (Fin.R k) i.
 
 Lemma fin_graph_retraction_head : forall k l (i : Fin.t k),
   fin_graph_retraction i Fin.F1 = Fin.L l i.
@@ -419,6 +436,25 @@ Proof. reflexivity. Qed.
 Lemma fin_graph_retraction_tail : forall k l (i : Fin.t k) (j : Fin.t l),
   fin_graph_retraction i (Fin.FS j) = Fin.R k j.
 Proof. reflexivity. Qed.
+
+Definition first_order_definable_graph_family_map {L M k l n}
+    {Str : first_order_structure L M}
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (Hf : forall i, first_order_definable_function Str (f i))
+    (out : Fin.t k -> Fin.t n) (param : Fin.t l -> Fin.t n) :
+    first_order_definable Str
+      (fun w : Fin.t n -> M =>
+        forall i, w (out i) = f i (fun j => w (param j))).
+Proof.
+  refine (first_order_definable_finite_all
+    (P := fun i w => w (out i) = f i (fun j => w (param j)))
+    (fin_t_finite_cover k) _).
+  intro i.
+  refine (first_order_definable_of_iff
+    (first_order_definable_retraction (Hf i)
+      (fin_graph_retraction_map out param i)) _).
+  intro w. reflexivity.
+Defined.
 
 Definition first_order_definable_graph_family {L M k l}
     {Str : first_order_structure L M}
@@ -429,14 +465,7 @@ Definition first_order_definable_graph_family {L M k l}
         forall i,
           w (Fin.L l i) = f i (fun j => w (Fin.R k j))).
 Proof.
-  refine (first_order_definable_finite_all
-    (P := fun i w =>
-      w (Fin.L l i) = f i (fun j => w (Fin.R k j)))
-    (fin_t_finite_cover k) _).
-  intro i.
-  refine (first_order_definable_of_iff
-    (first_order_definable_retraction (Hf i) (fin_graph_retraction i)) _).
-  intro w. reflexivity.
+  apply first_order_definable_graph_family_map. exact Hf.
 Defined.
 
 Definition first_order_definable_substitution_witness {L M k l}
@@ -480,6 +509,166 @@ Proof.
       specialize (Hgraph i).
       now rewrite fin_env_append_left, fin_env_append_right_eta in Hgraph. }
     rewrite fin_env_append_left_eta in HPys. now rewrite <- Hys.
+Defined.
+
+(** Retraction of a function graph into an environment consisting of
+    existentially quantified inputs followed by an external output and its
+    parameters. *)
+Definition fin_function_graph_retraction {k l} :
+    Fin.t (S k) -> Fin.t (k + S l) :=
+  fun j => @Fin.caseS' k j (fun _ => Fin.t (k + S l))
+    (Fin.R k Fin.F1) (Fin.L (S l)).
+
+Lemma fin_function_graph_retraction_head : forall k l,
+  @fin_function_graph_retraction k l Fin.F1 = Fin.R k Fin.F1.
+Proof. reflexivity. Qed.
+
+Lemma fin_function_graph_retraction_tail : forall k l (i : Fin.t k),
+  @fin_function_graph_retraction k l (Fin.FS i) = Fin.L (S l) i.
+Proof. reflexivity. Qed.
+
+Definition first_order_definable_function_substitution_witness {L M k l}
+    {Str : first_order_structure L M}
+    (F : (Fin.t k -> M) -> M)
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (HF : first_order_definable_function Str F)
+    (Hf : forall i, first_order_definable_function Str (f i)) :
+    first_order_definable Str
+      (fun w : Fin.t (k + S l) -> M =>
+        (forall i,
+          w (Fin.L (S l) i) =
+          f i (fun j => w (Fin.R k (Fin.FS j)))) /\
+        w (Fin.R k Fin.F1) = F (fun i => w (Fin.L (S l) i))).
+Proof.
+  apply first_order_definable_and.
+  - apply first_order_definable_graph_family_map. exact Hf.
+  - refine (first_order_definable_of_iff
+      (first_order_definable_retraction HF
+        fin_function_graph_retraction) _).
+    intro w. reflexivity.
+Defined.
+
+(** This strengthens the source theorem by requiring no interpreted equality
+    operator: the graph formulas supplied in [HF] and [Hf] already contain
+    every equality needed by the existential graph argument. *)
+Definition first_order_definable_function_substitution {L M k l}
+    {Str : first_order_structure L M}
+    (F : (Fin.t k -> M) -> M)
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (HF : first_order_definable_function Str F)
+    (Hf : forall i, first_order_definable_function Str (f i)) :
+    first_order_definable_function Str
+      (fun z => F (fun i => f i z)).
+Proof.
+  unfold first_order_definable_function.
+  refine (first_order_definable_of_iff
+    (first_order_definable_exists_vector
+      (first_order_definable_function_substitution_witness
+        (F := F) (f := f) HF Hf)) _).
+  intro w.
+  assert (Hright_tail : forall ys : Fin.t k -> M,
+    (fun j => fin_env_append k (S l) ys w (Fin.R k (Fin.FS j))) =
+    (fun j => w (Fin.FS j))).
+  { intro ys. apply functional_extensionality. intro j.
+    apply fin_env_append_right. }
+  split.
+  - intro Hw. exists (fun i => f i (fun j => w (Fin.FS j))). split.
+    + intro i. rewrite fin_env_append_left, Hright_tail. reflexivity.
+    + rewrite fin_env_append_right, fin_env_append_left_eta. exact Hw.
+  - intros [ys [Hgraph HFys]].
+    assert (Hys : ys = fun i => f i (fun j => w (Fin.FS j))).
+    { apply functional_extensionality. intro i.
+      specialize (Hgraph i).
+      now rewrite fin_env_append_left, Hright_tail in Hgraph. }
+    rewrite fin_env_append_right, fin_env_append_left_eta in HFys.
+    now rewrite <- Hys.
+Defined.
+
+(** * Common composition interfaces *)
+
+Definition first_order_definable_unary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M) : Type :=
+  first_order_definable_function Str
+    (fun v : Fin.t 1 -> M => F (v Fin.F1)).
+
+Definition first_order_definable_binary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M -> M) : Type :=
+  first_order_definable_function Str
+    (fun v : Fin.t 2 -> M => F (v Fin.F1) (v (Fin.FS Fin.F1))).
+
+Definition fin_two_definable_function_family {L M l}
+    {Str : first_order_structure L M}
+    (f g : (Fin.t l -> M) -> M)
+    (Hf : first_order_definable_function Str f)
+    (Hg : first_order_definable_function Str g) :
+    forall i, first_order_definable_function Str (fin_two f g i).
+Proof.
+  intro i.
+  refine (@Fin.caseS' 1 i
+    (fun j => first_order_definable_function Str (fin_two f g j)) Hf _).
+  intro j.
+  refine (@Fin.caseS' 0 j
+    (fun q => first_order_definable_function Str (fin_two f g (Fin.FS q)))
+    Hg _).
+  intros q; inversion q.
+Defined.
+
+Definition first_order_definable_predicate_comp {L M l}
+    {Str : first_order_structure L M} (P : M -> Prop)
+    (f : (Fin.t l -> M) -> M)
+    (HP : first_order_definable_predicate Str P)
+    (Hf : first_order_definable_function Str f) :
+    first_order_definable Str (fun z => P (f z)).
+Proof.
+  refine (first_order_definable_of_iff
+    (first_order_definable_substitution
+      (P := fun v : Fin.t 1 -> M => P (v Fin.F1))
+      (f := fun _ => f) HP (fun _ => Hf)) _).
+  intro z. reflexivity.
+Defined.
+
+Definition first_order_definable_relation_comp {L M l}
+    {Str : first_order_structure L M} (R : M -> M -> Prop)
+    (f g : (Fin.t l -> M) -> M)
+    (HR : first_order_definable_relation Str R)
+    (Hf : first_order_definable_function Str f)
+    (Hg : first_order_definable_function Str g) :
+    first_order_definable Str (fun z => R (f z) (g z)).
+Proof.
+  refine (first_order_definable_of_iff
+    (first_order_definable_substitution
+      (P := fun v : Fin.t 2 -> M =>
+        R (v Fin.F1) (v (Fin.FS Fin.F1)))
+      (f := fin_two f g) HR
+      (fin_two_definable_function_family (f := f) (g := g) Hf Hg)) _).
+  intro z. reflexivity.
+Defined.
+
+Definition first_order_definable_unary_function_comp {L M l}
+    {Str : first_order_structure L M} (F : M -> M)
+    (f : (Fin.t l -> M) -> M)
+    (HF : first_order_definable_unary_function Str F)
+    (Hf : first_order_definable_function Str f) :
+    first_order_definable_function Str (fun z => F (f z)).
+Proof.
+  refine (first_order_definable_function_substitution
+    (F := fun v : Fin.t 1 -> M => F (v Fin.F1))
+    (f := fun _ => f) HF (fun _ => Hf)).
+Defined.
+
+Definition first_order_definable_binary_function_comp {L M l}
+    {Str : first_order_structure L M} (F : M -> M -> M)
+    (f g : (Fin.t l -> M) -> M)
+    (HF : first_order_definable_binary_function Str F)
+    (Hf : first_order_definable_function Str f)
+    (Hg : first_order_definable_function Str g) :
+    first_order_definable_function Str (fun z => F (f z) (g z)).
+Proof.
+  refine (first_order_definable_function_substitution
+    (F := fun v : Fin.t 2 -> M =>
+      F (v Fin.F1) (v (Fin.FS Fin.F1)))
+    (f := fin_two f g) HF
+    (fin_two_definable_function_family (f := f) (g := g) Hf Hg)).
 Defined.
 
 (** * Primitive and arbitrary relation operators *)
