@@ -1171,8 +1171,28 @@ Check algebraic_mod_models_iff.
 Check normal_hilbert_algebraic_sound.
 Check normal_hilbert_algebraic_sound_instance.
 
-(** Reusable classical formula/setoid specialization of the 29-declaration
-    Logic/LindenbaumAlgebra.lean surface. *)
+(** Generic setoid generalized-Heyting/Heyting construction and reusable
+    classical formula specialization of Logic/LindenbaumAlgebra.lean. *)
+Check generalized_heyting_algebra.
+Check gha_equiv.
+Check gha_le.
+Check gha_top.
+Check gha_meet.
+Check gha_join.
+Check gha_imp.
+Check heyting_algebra.
+Check ha_generalized.
+Check ha_bottom.
+Check ha_compl.
+Check generic_lindenbaum_equiv.
+Check generic_lindenbaum_le.
+Check generic_lindenbaum_minimal_laws.
+Check generic_lindenbaum_generalized_heyting.
+Check generic_lindenbaum_intuitionistic_laws.
+Check generic_lindenbaum_heyting.
+Check generic_lindenbaum_equiv_readback.
+Check generic_lindenbaum_order_readback.
+Check generic_lindenbaum_provable_iff_top.
 Check lindenbaum_equiv.
 Check lindenbaum_le.
 Check lindenbaum_equiv_refl.
@@ -1237,6 +1257,11 @@ Print Assumptions algebraic_satisfies_mdp.
 Print Assumptions algebraic_mod_models_iff.
 Print Assumptions normal_hilbert_algebraic_sound.
 Print Assumptions normal_hilbert_algebraic_sound_instance.
+Print Assumptions generic_lindenbaum_generalized_heyting.
+Print Assumptions generic_lindenbaum_heyting.
+Print Assumptions generic_lindenbaum_equiv_readback.
+Print Assumptions generic_lindenbaum_order_readback.
+Print Assumptions generic_lindenbaum_provable_iff_top.
 Print Assumptions lindenbaum_equiv.
 Print Assumptions lindenbaum_le.
 Print Assumptions lindenbaum_equiv_refl.

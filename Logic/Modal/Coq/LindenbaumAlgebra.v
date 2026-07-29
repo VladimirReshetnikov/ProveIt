@@ -18,11 +18,249 @@
 *)
 
 From FoundationModal Require Import
-  Syntax LogicInfrastructure EntailmentExtensions ModalAlgebra.
+  Syntax GenericSemantics GenericLogicSymbol LogicInfrastructure
+  EntailmentExtensions ModalAlgebra.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
+
+(** * Generic setoid Heyting interfaces *)
+
+(** Foundation uses Mathlib's quotient-based hierarchy.  These records keep
+    equality explicit, matching the repository's Boolean algebra style and
+    avoiding quotient representatives and equality decision. *)
+Record generalized_heyting_algebra (A : Type) := {
+  gha_equiv : A -> A -> Prop;
+  gha_le : A -> A -> Prop;
+  gha_top : A;
+  gha_meet : A -> A -> A;
+  gha_join : A -> A -> A;
+  gha_imp : A -> A -> A;
+
+  gha_equiv_refl : forall a, gha_equiv a a;
+  gha_equiv_sym : forall a b, gha_equiv a b -> gha_equiv b a;
+  gha_equiv_trans : forall a b c,
+    gha_equiv a b -> gha_equiv b c -> gha_equiv a c;
+  gha_le_refl : forall a, gha_le a a;
+  gha_le_trans : forall a b c, gha_le a b -> gha_le b c -> gha_le a c;
+  gha_le_antisymmetric : forall a b,
+    gha_le a b -> gha_le b a -> gha_equiv a b;
+  gha_le_respects_equiv : forall a a' b b',
+    gha_equiv a a' -> gha_equiv b b' ->
+    (gha_le a b <-> gha_le a' b');
+  gha_meet_respects_equiv : forall a a' b b',
+    gha_equiv a a' -> gha_equiv b b' ->
+    gha_equiv (gha_meet a b) (gha_meet a' b');
+  gha_join_respects_equiv : forall a a' b b',
+    gha_equiv a a' -> gha_equiv b b' ->
+    gha_equiv (gha_join a b) (gha_join a' b');
+  gha_imp_respects_equiv : forall a a' b b',
+    gha_equiv a a' -> gha_equiv b b' ->
+    gha_equiv (gha_imp a b) (gha_imp a' b');
+
+  gha_meet_le_left : forall a b, gha_le (gha_meet a b) a;
+  gha_meet_le_right : forall a b, gha_le (gha_meet a b) b;
+  gha_le_meet : forall a b c,
+    gha_le a b -> gha_le a c -> gha_le a (gha_meet b c);
+  gha_le_join_left : forall a b, gha_le a (gha_join a b);
+  gha_le_join_right : forall a b, gha_le b (gha_join a b);
+  gha_join_le : forall a b c,
+    gha_le a c -> gha_le b c -> gha_le (gha_join a b) c;
+  gha_le_top : forall a, gha_le a gha_top;
+  gha_imp_adjoint : forall x a b,
+    gha_le (gha_meet x a) b <-> gha_le x (gha_imp a b)
+}.
+
+Arguments gha_equiv {A} _ _ _.
+Arguments gha_le {A} _ _ _.
+Arguments gha_top {A} _.
+Arguments gha_meet {A} _ _ _.
+Arguments gha_join {A} _ _ _.
+Arguments gha_imp {A} _ _ _.
+
+Record heyting_algebra (A : Type) := {
+  ha_generalized : generalized_heyting_algebra A;
+  ha_bottom : A;
+  ha_compl : A -> A;
+  ha_compl_respects_equiv : forall a b,
+    gha_equiv ha_generalized a b ->
+    gha_equiv ha_generalized (ha_compl a) (ha_compl b);
+  ha_bottom_le : forall a,
+    gha_le ha_generalized ha_bottom a;
+  ha_imp_bottom : forall a,
+    gha_equiv ha_generalized
+      (gha_imp ha_generalized a ha_bottom) (ha_compl a)
+}.
+
+Arguments ha_bottom {A} _.
+Arguments ha_compl {A} _ _.
+
+(** * Abstract minimal Lindenbaum construction *)
+
+Definition generic_lindenbaum_equiv {F : Type}
+    (C : generic_connectives F) (Prov : F -> Prop)
+    (p q : F) : Prop :=
+  Prov (generic_formula_iff C p q).
+
+Definition generic_lindenbaum_le {F : Type}
+    (C : generic_connectives F) (Prov : F -> Prop)
+    (p q : F) : Prop :=
+  Prov (generic_imp C p q).
+
+(** This capability is the precise proof-theoretic surface consumed by the
+    generalized-Heyting construction.  It is weaker than any classical logic
+    package and permits primitive intuitionistic conjunction/disjunction. *)
+Record generic_lindenbaum_minimal_laws {F : Type}
+    (C : generic_connectives F) (Prov : F -> Prop) : Prop := {
+  glm_equiv_refl : forall p,
+    generic_lindenbaum_equiv C Prov p p;
+  glm_equiv_sym : forall p q,
+    generic_lindenbaum_equiv C Prov p q ->
+    generic_lindenbaum_equiv C Prov q p;
+  glm_equiv_trans : forall p q r,
+    generic_lindenbaum_equiv C Prov p q ->
+    generic_lindenbaum_equiv C Prov q r ->
+    generic_lindenbaum_equiv C Prov p r;
+  glm_le_refl : forall p, generic_lindenbaum_le C Prov p p;
+  glm_le_trans : forall p q r,
+    generic_lindenbaum_le C Prov p q ->
+    generic_lindenbaum_le C Prov q r ->
+    generic_lindenbaum_le C Prov p r;
+  glm_le_antisymmetric : forall p q,
+    generic_lindenbaum_le C Prov p q ->
+    generic_lindenbaum_le C Prov q p ->
+    generic_lindenbaum_equiv C Prov p q;
+  glm_le_respects_equiv : forall p p' q q',
+    generic_lindenbaum_equiv C Prov p p' ->
+    generic_lindenbaum_equiv C Prov q q' ->
+    (generic_lindenbaum_le C Prov p q <->
+     generic_lindenbaum_le C Prov p' q');
+  glm_and_respects_equiv : forall p p' q q',
+    generic_lindenbaum_equiv C Prov p p' ->
+    generic_lindenbaum_equiv C Prov q q' ->
+    generic_lindenbaum_equiv C Prov
+      (generic_and C p q) (generic_and C p' q');
+  glm_or_respects_equiv : forall p p' q q',
+    generic_lindenbaum_equiv C Prov p p' ->
+    generic_lindenbaum_equiv C Prov q q' ->
+    generic_lindenbaum_equiv C Prov
+      (generic_or C p q) (generic_or C p' q');
+  glm_imp_respects_equiv : forall p p' q q',
+    generic_lindenbaum_equiv C Prov p p' ->
+    generic_lindenbaum_equiv C Prov q q' ->
+    generic_lindenbaum_equiv C Prov
+      (generic_imp C p q) (generic_imp C p' q');
+  glm_and_le_left : forall p q,
+    generic_lindenbaum_le C Prov (generic_and C p q) p;
+  glm_and_le_right : forall p q,
+    generic_lindenbaum_le C Prov (generic_and C p q) q;
+  glm_le_and : forall p q r,
+    generic_lindenbaum_le C Prov p q ->
+    generic_lindenbaum_le C Prov p r ->
+    generic_lindenbaum_le C Prov p (generic_and C q r);
+  glm_le_or_left : forall p q,
+    generic_lindenbaum_le C Prov p (generic_or C p q);
+  glm_le_or_right : forall p q,
+    generic_lindenbaum_le C Prov q (generic_or C p q);
+  glm_or_le : forall p q r,
+    generic_lindenbaum_le C Prov p r ->
+    generic_lindenbaum_le C Prov q r ->
+    generic_lindenbaum_le C Prov (generic_or C p q) r;
+  glm_le_top : forall p,
+    generic_lindenbaum_le C Prov p (generic_top C);
+  glm_imp_adjoint : forall p q r,
+    generic_lindenbaum_le C Prov (generic_and C p q) r <->
+    generic_lindenbaum_le C Prov p (generic_imp C q r);
+  glm_provable_iff_top : forall p,
+    Prov p <->
+    generic_lindenbaum_equiv C Prov p (generic_top C)
+}.
+
+Definition generic_lindenbaum_generalized_heyting
+    {F : Type} (C : generic_connectives F) (Prov : F -> Prop)
+    (H : generic_lindenbaum_minimal_laws C Prov) :
+    generalized_heyting_algebra F.
+Proof.
+  refine
+    {| gha_equiv := generic_lindenbaum_equiv C Prov;
+       gha_le := generic_lindenbaum_le C Prov;
+       gha_top := generic_top C;
+       gha_meet := generic_and C;
+       gha_join := generic_or C;
+       gha_imp := generic_imp C |}.
+  - exact (glm_equiv_refl H).
+  - exact (glm_equiv_sym H).
+  - exact (glm_equiv_trans H).
+  - exact (glm_le_refl H).
+  - exact (glm_le_trans H).
+  - exact (glm_le_antisymmetric H).
+  - exact (glm_le_respects_equiv H).
+  - exact (glm_and_respects_equiv H).
+  - exact (glm_or_respects_equiv H).
+  - exact (glm_imp_respects_equiv H).
+  - exact (glm_and_le_left H).
+  - exact (glm_and_le_right H).
+  - exact (glm_le_and H).
+  - exact (glm_le_or_left H).
+  - exact (glm_le_or_right H).
+  - exact (glm_or_le H).
+  - exact (glm_le_top H).
+  - exact (glm_imp_adjoint H).
+Defined.
+
+Record generic_lindenbaum_intuitionistic_laws {F : Type}
+    (C : generic_connectives F) (Prov : F -> Prop) : Prop := {
+  gli_minimal : generic_lindenbaum_minimal_laws C Prov;
+  gli_neg_respects_equiv : forall p q,
+    generic_lindenbaum_equiv C Prov p q ->
+    generic_lindenbaum_equiv C Prov
+      (generic_neg C p) (generic_neg C q);
+  gli_bottom_le : forall p,
+    generic_lindenbaum_le C Prov (generic_bottom C) p;
+  gli_imp_bottom : forall p,
+    generic_lindenbaum_equiv C Prov
+      (generic_imp C p (generic_bottom C)) (generic_neg C p)
+}.
+
+Definition generic_lindenbaum_heyting
+    {F : Type} (C : generic_connectives F) (Prov : F -> Prop)
+    (H : generic_lindenbaum_intuitionistic_laws C Prov) :
+    heyting_algebra F.
+Proof.
+  refine
+    {| ha_generalized :=
+         @generic_lindenbaum_generalized_heyting F C Prov (gli_minimal H);
+       ha_bottom := generic_bottom C;
+       ha_compl := generic_neg C |}.
+  - exact (gli_neg_respects_equiv H).
+  - exact (gli_bottom_le H).
+  - exact (gli_imp_bottom H).
+Defined.
+
+(** Generic beta/readback laws are definitional because formula
+    representatives replace quotient representatives. *)
+Lemma generic_lindenbaum_equiv_readback :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov) p q,
+    gha_equiv (@generic_lindenbaum_generalized_heyting F C Prov H) p q <->
+    Prov (generic_formula_iff C p q).
+Proof. reflexivity. Qed.
+
+Lemma generic_lindenbaum_order_readback :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov) p q,
+    gha_le (@generic_lindenbaum_generalized_heyting F C Prov H) p q <->
+    Prov (generic_imp C p q).
+Proof. reflexivity. Qed.
+
+Lemma generic_lindenbaum_provable_iff_top :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov) p,
+    Prov p <->
+    gha_equiv (@generic_lindenbaum_generalized_heyting F C Prov H) p
+      (gha_top (@generic_lindenbaum_generalized_heyting F C Prov H)).
+Proof. intros F C Prov H p. exact (glm_provable_iff_top H p). Qed.
 
 (** * Provable equivalence and order *)
 
