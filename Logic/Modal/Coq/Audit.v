@@ -2878,6 +2878,7 @@ Check normal_proves_logic_is_normal.
 Check normal_logic_contains_K.
 Check logic_sum_normal_sym.
 Check logic_sum_normal_normal_left.
+Check logic_sum_normal_covered.
 Check logic_sum_quasi_normal_sym.
 Check logic_sum_quasi_normal_iff_subset.
 Check logic_sum_quasi_normal_sum_union.
@@ -3040,6 +3041,7 @@ Check box_regularity_of_k.
 Check e_entailment_of_k.
 Check has_C_of_k.
 Check k_multinecessitation.
+Check k_entailment_of_normal_logic.
 Check k_box_iter_axiom_K.
 Check k_box_iter_regularity.
 Check k_box_congruence.
@@ -3155,7 +3157,23 @@ Check iff_box_boxdot.
 Check iff_dia_diadot_raw.
 Check iff_dia_diadot.
 Check godel_translate.
+Check godel_modal_companion.
+Check godel_image_logic.
+Check godel_smallest_companion.
+Check grz_seed_logic.
+Check godel_largest_companion.
 Check godel_translate_rename.
+Check godel_smallest_includes_base.
+Check godel_smallest_includes_translation.
+Check godel_smallest_normal.
+Check godel_smallest_s4.
+Check godel_smallest_least.
+Check godel_largest_includes_smallest.
+Check godel_largest_includes_translation.
+Check godel_largest_includes_Grz.
+Check godel_largest_normal.
+Check godel_largest_s4.
+Check godel_largest_least.
 Check godel_translate_stable.
 Check s4_stable_consequence.
 Check s4_box_nested_one.
@@ -5179,6 +5197,7 @@ Print Assumptions logic_list_conj_equivalence.
 Print Assumptions normal_proves_logic_is_normal.
 Print Assumptions normal_logic_contains_K.
 Print Assumptions logic_sum_normal_sym.
+Print Assumptions logic_sum_normal_covered.
 Print Assumptions logic_sum_quasi_normal_sum_union.
 Print Assumptions logic_sum_quasi_normal_iff_finite_provable.
 Print Assumptions logic_sum_quasi_normal_iff_finite_provable_letterless.
@@ -5254,6 +5273,11 @@ Print Assumptions boxdot_axiomFour_raw.
 Print Assumptions iff_box_boxdot_raw.
 Print Assumptions iff_dia_diadot_raw.
 Print Assumptions godel_translate_rename.
+Print Assumptions godel_smallest_s4.
+Print Assumptions godel_smallest_least.
+Print Assumptions godel_largest_includes_Grz.
+Print Assumptions godel_largest_s4.
+Print Assumptions godel_largest_least.
 Print Assumptions godel_translate_stable.
 Print Assumptions s4_box_nested_two.
 Print Assumptions godel_translated_axiom_S.

@@ -6,7 +6,7 @@
     substitution-free S4 capability rather than a concrete Hilbert system. *)
 
 From FoundationModal Require Import
-  Syntax Kripke GenericForcingRelation LogicInfrastructure
+  Syntax Axioms Kripke GenericForcingRelation LogicInfrastructure
   EntailmentExtensions EntailmentS4
   PropositionalFormula PropositionalHilbert.
 
@@ -24,6 +24,31 @@ Fixpoint godel_translate {AtomType : Type}
   | PImp q r => Box (Imp (godel_translate q) (godel_translate r))
   end.
 
+Definition godel_modal_companion {AtomType : Type}
+    (IL : pformula AtomType -> Prop)
+    (ML : modal_logic_set AtomType) : Prop :=
+  forall p, IL p <-> ML (godel_translate p).
+
+Definition godel_image_logic {AtomType : Type}
+    (IL : pformula AtomType -> Prop) : modal_logic_set AtomType :=
+  fun f => exists p, IL p /\ f = godel_translate p.
+
+(** Foundation fixes S4 as the left operand.  Parameterizing the base logic
+    exposes the actual construction and lets clients reuse any normal S4
+    extension without rebuilding its closure. *)
+Definition godel_smallest_companion {AtomType : Type}
+    (Base : modal_logic_set AtomType)
+    (IL : pformula AtomType -> Prop) : modal_logic_set AtomType :=
+  logic_sum_normal Base (godel_image_logic IL).
+
+Definition grz_seed_logic {AtomType : Type} : modal_logic_set AtomType :=
+  fun f => exists p, f = Grz p.
+
+Definition godel_largest_companion {AtomType : Type}
+    (Base : modal_logic_set AtomType)
+    (IL : pformula AtomType -> Prop) : modal_logic_set AtomType :=
+  logic_sum_normal (godel_smallest_companion Base IL) grz_seed_logic.
+
 Lemma godel_translate_rename :
   forall (A B : Type) (f : A -> B) p,
     godel_translate (pformula_substitute (fun a => PAtom (f a)) p) =
@@ -36,6 +61,117 @@ Proof.
   - unfold And, Neg; simpl. now rewrite IHp, IHq.
   - unfold Or, Neg; simpl. now rewrite IHp, IHq.
   - now rewrite IHp, IHq.
+Qed.
+
+Lemma godel_smallest_includes_base :
+  forall (AtomType : Type) (Base : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop),
+    logic_subset Base (godel_smallest_companion Base IL).
+Proof. intros; apply logic_sum_normal_includes_left. Qed.
+
+Lemma godel_smallest_includes_translation :
+  forall (AtomType : Type) (Base : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop) p,
+    IL p -> godel_smallest_companion Base IL (godel_translate p).
+Proof.
+  intros AtomType Base IL p Hp. apply logic_sum_normal_mem_right.
+  exists p; now split.
+Qed.
+
+Lemma godel_smallest_normal :
+  forall (AtomType : Type) (Base : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop),
+    normal_logic Base -> normal_logic (godel_smallest_companion Base IL).
+Proof. intros; now apply logic_sum_normal_normal_left. Qed.
+
+Lemma godel_smallest_s4 :
+  forall (AtomType : Type) (Base : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop),
+    normal_logic Base -> s4_entailment Base ->
+    s4_entailment (godel_smallest_companion Base IL).
+Proof.
+  intros AtomType Base IL Hnormal HS4; constructor.
+  - apply k_entailment_of_normal_logic.
+    now apply godel_smallest_normal.
+  - constructor; intro p. apply logic_sum_normal_mem_left.
+    exact (has_T_axiom (s4_T HS4) p).
+  - constructor; intro p. apply logic_sum_normal_mem_left.
+    exact (has_Four_axiom (s4_Four HS4) p).
+Qed.
+
+Lemma godel_smallest_least :
+  forall (AtomType : Type) (Base Target : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop),
+    normal_logic Target -> logic_subset Base Target ->
+    (forall p, IL p -> Target (godel_translate p)) ->
+    logic_subset (godel_smallest_companion Base IL) Target.
+Proof.
+  intros AtomType Base Target IL Hnormal Hbase Htranslated.
+  apply logic_sum_normal_covered; [exact Hnormal |exact Hbase |].
+  intros f [p [Hp ->]]. now apply Htranslated.
+Qed.
+
+Lemma godel_largest_includes_smallest :
+  forall (AtomType : Type) (Base : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop),
+    logic_subset (godel_smallest_companion Base IL)
+      (godel_largest_companion Base IL).
+Proof. intros; apply logic_sum_normal_includes_left. Qed.
+
+Lemma godel_largest_includes_translation :
+  forall (AtomType : Type) (Base : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop) p,
+    IL p -> godel_largest_companion Base IL (godel_translate p).
+Proof.
+  intros AtomType Base IL p Hp. apply logic_sum_normal_mem_left.
+  now apply godel_smallest_includes_translation.
+Qed.
+
+Lemma godel_largest_includes_Grz :
+  forall (AtomType : Type) (Base : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop) p,
+    godel_largest_companion Base IL (Grz p).
+Proof.
+  intros. apply logic_sum_normal_mem_right. now exists p.
+Qed.
+
+Lemma godel_largest_normal :
+  forall (AtomType : Type) (Base : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop),
+    normal_logic Base -> normal_logic (godel_largest_companion Base IL).
+Proof.
+  intros AtomType Base IL Hnormal. apply logic_sum_normal_normal_left.
+  now apply godel_smallest_normal.
+Qed.
+
+Lemma godel_largest_s4 :
+  forall (AtomType : Type) (Base : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop),
+    normal_logic Base -> s4_entailment Base ->
+    s4_entailment (godel_largest_companion Base IL).
+Proof.
+  intros AtomType Base IL Hnormal HS4; constructor.
+  - apply k_entailment_of_normal_logic.
+    now apply godel_largest_normal.
+  - constructor; intro p. apply logic_sum_normal_mem_left.
+    exact (has_T_axiom
+      (s4_T (@godel_smallest_s4 AtomType Base IL Hnormal HS4)) p).
+  - constructor; intro p. apply logic_sum_normal_mem_left.
+    exact (has_Four_axiom
+      (s4_Four (@godel_smallest_s4 AtomType Base IL Hnormal HS4)) p).
+Qed.
+
+Lemma godel_largest_least :
+  forall (AtomType : Type) (Base Target : modal_logic_set AtomType)
+      (IL : pformula AtomType -> Prop),
+    normal_logic Target ->
+    logic_subset (godel_smallest_companion Base IL) Target ->
+    (forall p, Target (Grz p)) ->
+    logic_subset (godel_largest_companion Base IL) Target.
+Proof.
+  intros AtomType Base Target IL Hnormal Hsmall Hgrz.
+  apply logic_sum_normal_covered; [exact Hnormal |exact Hsmall |].
+  intros f [p ->]. now apply Hgrz.
 Qed.
 
 (** Every translated formula is stable in substitution-free S4. *)

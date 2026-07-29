@@ -805,6 +805,24 @@ Lemma logic_sum_normal_includes_right :
     logic_subset L2 (logic_sum_normal L1 L2).
 Proof. intros AtomType L1 L2 p; apply LSN_mem_right. Qed.
 
+(** Universal property of the normal sum.  This factors the closure argument
+    used by generated companion logics and later least-extension proofs. *)
+Lemma logic_sum_normal_covered :
+  forall (AtomType : Type) (L1 L2 L3 : modal_logic_set AtomType),
+    normal_logic L3 ->
+    logic_subset L1 L3 -> logic_subset L2 L3 ->
+    logic_subset (logic_sum_normal L1 L2) L3.
+Proof.
+  intros AtomType L1 L2 L3 Hnormal Hleft Hright p Hp.
+  induction Hp.
+  - now apply Hleft.
+  - now apply Hright.
+  - exact (logic_modus_ponens (quasi_classical (normal_quasi Hnormal))
+      IHHp1 IHHp2).
+  - exact (quasi_substitution (normal_quasi Hnormal) sigma IHHp).
+  - exact (normal_nec Hnormal IHHp).
+Qed.
+
 (** * The quasinormal sum *)
 
 Inductive logic_sum_quasi_normal {AtomType}

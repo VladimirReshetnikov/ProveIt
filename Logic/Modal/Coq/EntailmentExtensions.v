@@ -150,6 +150,20 @@ Record k_entailment {AtomType}
   k_dia_duality : forall p, L (DiaDuality p)
 }.
 
+(** Every normal logic supplies Foundation's weaker, substitution-free K
+    capability.  Keeping this adapter generic avoids rebuilding the same
+    four-field record for each generated normal sum. *)
+Definition k_entailment_of_normal_logic :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> k_entailment L.
+Proof.
+  intros AtomType L Hnormal; constructor.
+  - exact (quasi_classical (normal_quasi Hnormal)).
+  - exact (normal_nec Hnormal).
+  - constructor. exact (quasi_modal_K (normal_quasi Hnormal)).
+  - exact (quasi_dia_duality (normal_quasi Hnormal)).
+Defined.
+
 (** * Classical object-logic adapters *)
 
 Lemma logic_iff_intro :
