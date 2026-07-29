@@ -9,7 +9,8 @@
     predicates. *)
 
 From FoundationModal Require Import
-  PropositionalFormula PropositionalLogic PropositionalHilbert PropositionalFMT.
+  PropositionalFormula PropositionalLogic PropositionalHilbert PropositionalFMT
+  PropositionalSlash.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -487,4 +488,162 @@ Proof.
   intro Hp. apply phvf_fmt_iff_counter_not_forces_top_iff_ser.
   exact (@phvf_VF_fmt_sound (fmt_iff ptop phvf_axiom_ser) Hp
     phvf_fmt_iff_counter_frame I (fun _ _ => True) true).
+Qed.
+
+(** * Aczel slash and the disjunction property *)
+
+Lemma phvf_provable_mdp :
+  forall (Atom : Type) (H : phvf_hilbert Atom) p q,
+    phvf_provable H (PImp p q) -> phvf_provable H p ->
+    phvf_provable H q.
+Proof.
+  intros Atom H p q [Hpq] [Hp]. constructor.
+  exact (PHVFPModusPonens Hpq Hp).
+Qed.
+
+Lemma phvf_provable_and_rule :
+  forall (Atom : Type) (H : phvf_hilbert Atom) p q,
+    phvf_provable H p -> phvf_provable H q ->
+    phvf_provable H (PAnd p q).
+Proof.
+  intros Atom H p q [Hp] [Hq]. constructor. exact (PHVFPAndRule Hp Hq).
+Qed.
+
+Lemma phvf_provable_or_left :
+  forall (Atom : Type) (H : phvf_hilbert Atom) p q,
+    phvf_provable H p -> phvf_provable H (POr p q).
+Proof.
+  intros Atom H p q [Hp]. constructor.
+  exact (PHVFPModusPonens (PHVFPOrIntroL p q) Hp).
+Qed.
+
+Lemma phvf_provable_or_right :
+  forall (Atom : Type) (H : phvf_hilbert Atom) p q,
+    phvf_provable H q -> phvf_provable H (POr p q).
+Proof.
+  intros Atom H p q [Hq]. constructor.
+  exact (PHVFPModusPonens (PHVFPOrIntroR p q) Hq).
+Qed.
+
+Theorem phvf_provable_of_aczel_slash :
+  forall (Atom : Type) (H : phvf_hilbert Atom) p,
+    p_aczel_slash (phvf_provable H) p -> phvf_provable H p.
+Proof.
+  intros Atom H p; induction p as
+      [a| |p IHp q IHq|p IHp q IHq|p IHp q IHq]; cbn.
+  - exact (fun H => H).
+  - contradiction.
+  - intros [Hp Hq]. now apply phvf_provable_and_rule; auto.
+  - intros [Hp | Hq].
+    + now apply phvf_provable_or_left, IHp.
+    + now apply phvf_provable_or_right, IHq.
+  - intros [Hpq _]. exact Hpq.
+Qed.
+
+Theorem phvf_aczel_slash_of_proof :
+  forall (Atom : Type) (H : phvf_hilbert Atom) p,
+    phvf_proof H p ->
+    (forall q, phvf_schema H q ->
+      p_aczel_slash (phvf_provable H) q) ->
+    p_aczel_slash (phvf_provable H) p.
+Proof.
+  intros Atom H p d; induction d; intro Hschema.
+  - now apply Hschema.
+  - split.
+    + constructor. apply PHVFPAndElimL.
+    + intros [Hp _]. exact Hp.
+  - split.
+    + constructor. apply PHVFPAndElimR.
+    + intros [_ Hq]. exact Hq.
+  - split.
+    + constructor. apply PHVFPOrIntroL.
+    + now intros Hp; left.
+  - split.
+    + constructor. apply PHVFPOrIntroR.
+    + now intros Hq; right.
+  - split.
+    + constructor. apply PHVFPDistributeAndOr.
+    + intros [Hp [Hq | Hr]].
+      * left; now split.
+      * right; now split.
+  - split.
+    + constructor. apply PHVFPIdentity.
+    + exact (fun Hp => Hp).
+  - split.
+    + constructor. apply PHVFPEfq.
+    + contradiction.
+  - eapply p_aczel_slash_modus_ponens.
+    + now apply IHd1.
+    + now apply IHd2.
+  - split.
+    + constructor. now apply PHVFPFortiori.
+    + intro Hignored. now apply IHd.
+  - split; [now apply IHd1 | now apply IHd2].
+  - split.
+    + constructor. exact (PHVFPRuleC d1 d2).
+    + intro Hp; split.
+      * exact (proj2 (IHd1 Hschema) Hp).
+      * exact (proj2 (IHd2 Hschema) Hp).
+  - split.
+    + constructor. exact (PHVFPRuleD d1 d2).
+    + intros [Hp | Hq].
+      * exact (proj2 (IHd1 Hschema) Hp).
+      * exact (proj2 (IHd2 Hschema) Hq).
+  - split.
+    + constructor. exact (PHVFPRuleI d1 d2).
+    + intro Hp. apply (proj2 (IHd2 Hschema)).
+      exact (proj2 (IHd1 Hschema) Hp).
+Qed.
+
+Theorem phvf_aczel_slash_iff_provable :
+  forall (Atom : Type) (H : phvf_hilbert Atom),
+    (forall p, phvf_schema H p ->
+      p_aczel_slash (phvf_provable H) p) ->
+    forall p,
+      p_aczel_slash (phvf_provable H) p <-> phvf_provable H p.
+Proof.
+  intros Atom H Hschema p; split.
+  - apply phvf_provable_of_aczel_slash.
+  - intros [d]. now apply phvf_aczel_slash_of_proof.
+Qed.
+
+Theorem phvf_disjunctive_of_schema_aczel_slash :
+  forall (Atom : Type) (H : phvf_hilbert Atom),
+    (forall p, phvf_schema H p ->
+      p_aczel_slash (phvf_provable H) p) ->
+    pformula_predicate_disjunctive (phvf_provable H).
+Proof.
+  intros Atom H Hschema.
+  apply pformula_disjunctive_of_aczel_slash_iff.
+  now apply phvf_aczel_slash_iff_provable.
+Qed.
+
+Lemma phvf_aczel_slash_axiom_ser :
+  forall (Atom : Type) (H : phvf_hilbert Atom),
+    phvf_provable H (@phvf_axiom_ser Atom) ->
+    p_aczel_slash (phvf_provable H) (@phvf_axiom_ser Atom).
+Proof.
+  intros Atom H Hser.
+  apply (proj2 (@p_aczel_slash_neg Atom (phvf_provable H) (pneg ptop))).
+  split; [exact Hser |]. intro HnegTop.
+  apply (proj1 (@p_aczel_slash_neg Atom (phvf_provable H) ptop) HnegTop).
+  apply (proj2 (@p_aczel_slash_top Atom (phvf_provable H))).
+  constructor. apply PHVFPIdentity.
+Qed.
+
+Theorem phvf_VF_disjunctive : forall Atom : Type,
+  pformula_predicate_disjunctive
+    (phvf_provable (phvf_hilbert_VF Atom)).
+Proof.
+  intro Atom. apply phvf_disjunctive_of_schema_aczel_slash.
+  intros p H; contradiction.
+Qed.
+
+Theorem phvf_VF_Ser_disjunctive : forall Atom : Type,
+  pformula_predicate_disjunctive
+    (phvf_provable (phvf_hilbert_VF_Ser Atom)).
+Proof.
+  intro Atom. apply phvf_disjunctive_of_schema_aczel_slash.
+  intros p ->. apply phvf_aczel_slash_axiom_ser,
+    phvf_provable_of_schema. reflexivity.
 Qed.

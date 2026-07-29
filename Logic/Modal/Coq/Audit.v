@@ -1591,6 +1591,17 @@ Check phvf_fmt_iff_counter_forces_neg_top.
 Check phvf_fmt_iff_counter_not_forces_ser.
 Check phvf_fmt_iff_counter_not_forces_top_iff_ser.
 Check phvf_VF_unprovable_top_iff_ser.
+Check phvf_provable_mdp.
+Check phvf_provable_and_rule.
+Check phvf_provable_or_left.
+Check phvf_provable_or_right.
+Check phvf_provable_of_aczel_slash.
+Check phvf_aczel_slash_of_proof.
+Check phvf_aczel_slash_iff_provable.
+Check phvf_disjunctive_of_schema_aczel_slash.
+Check phvf_aczel_slash_axiom_ser.
+Check phvf_VF_disjunctive.
+Check phvf_VF_Ser_disjunctive.
 Print Assumptions phvf_proof_of_schema_inclusion.
 Print Assumptions phvf_proof_substitute.
 Print Assumptions phvf_provable_of_provable_schema.
@@ -1602,6 +1613,12 @@ Print Assumptions phvf_VF_fmt_sound.
 Print Assumptions phvf_VF_Ser_fmt_sound.
 Print Assumptions phvf_VF_strictly_included_VF_Ser.
 Print Assumptions phvf_VF_unprovable_top_iff_ser.
+Print Assumptions phvf_provable_of_aczel_slash.
+Print Assumptions phvf_aczel_slash_of_proof.
+Print Assumptions phvf_aczel_slash_iff_provable.
+Print Assumptions phvf_disjunctive_of_schema_aczel_slash.
+Print Assumptions phvf_VF_disjunctive.
+Print Assumptions phvf_VF_Ser_disjunctive.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
