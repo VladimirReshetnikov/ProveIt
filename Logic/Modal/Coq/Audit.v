@@ -8,7 +8,7 @@ From FoundationModal Require Import
   PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalKripkePreservation PropositionalKripkeCanonical
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
-  PropositionalSlash PropositionalKripke2
+  PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1266,6 +1266,70 @@ Print Assumptions pk2_frame_class_not_valid_iff_model_world.
 Print Assumptions pk2_valid_axiom_C.
 Print Assumptions pk2_valid_modus_ponens.
 Print Assumptions pk2_K_counter_frame_refutes_K.
+
+(** Exact frame correspondences for rooted arbitrary-relation semantics. *)
+Check pk2_frame_coreflexive.
+Check pk2_frame_reflexive.
+Check pk2_frame_serial.
+Check pk2_frame_symmetric.
+Check pk2_frame_transitive.
+Check pk2_frame_piecewise_connected.
+Check pk2_frame_piecewise_strongly_connected.
+Check pk2_model_hereditary.
+Check pk2_reflexive_serial.
+Check pk2_symmetric_serial.
+Check pk2_axiom_rfl.
+Check pk2_axiom_corefl.
+Check pk2_axiom_tra1.
+Check pk2_axiom_tra2.
+Check pk2_axiom_sym.
+Check pk2_axiom_ser.
+Check pk2_axiom_hrd.
+Check pk2_valid_corefl_of_coreflexive.
+Check pk2_coreflexive_of_valid_corefl.
+Check pk2_coreflexive_iff_valid_corefl.
+Check pk2_valid_hrd_of_hereditary.
+Check pk2_hereditary_of_valid_hrd.
+Check pk2_hereditary_iff_valid_hrd.
+Check pk2_valid_rfl_of_reflexive.
+Check pk2_reflexive_of_valid_rfl.
+Check pk2_reflexive_iff_valid_rfl.
+Check pk2_valid_ser_of_serial.
+Check pk2_serial_of_valid_ser.
+Check pk2_serial_iff_valid_ser.
+Check pk2_valid_sym_of_symmetric.
+Check pk2_symmetric_of_valid_sym.
+Check pk2_symmetric_iff_valid_sym.
+Check pk2_valid_tra1_of_transitive.
+Check pk2_transitive_of_valid_tra1.
+Check pk2_valid_tra2_of_transitive.
+Check pk2_transitive_of_valid_tra2.
+Check pk2_transitive_iff_valid_tra1.
+Check pk2_transitive_iff_valid_tra2.
+Check pk2_valid_tra1_iff_valid_tra2.
+Check pk2_axiom_pscon.
+Check pk2_valid_pscon_of_piecewise_strongly_connected.
+Check pk2_axiom_pcon1.
+Check pk2_axiom_pcon2.
+Check pk2_axiom_pcon3.
+Check pk2_axiom_pcon4.
+Check pk2_axiom_pcon5.
+Check pk2_axiom_pcon6.
+Check pk2_pcon_counter_frame.
+Check pk2_pcon_counter_valuation.
+Check pk2_pcon_counter_piecewise_strongly_connected.
+Check pk2_pcon_counter_piecewise_connected.
+Check pk2_pcon1_not_valid_on_piecewise_connected_frame.
+Print Assumptions pk2_valid_corefl_of_coreflexive.
+Print Assumptions pk2_coreflexive_of_valid_corefl.
+Print Assumptions pk2_hereditary_iff_valid_hrd.
+Print Assumptions pk2_reflexive_iff_valid_rfl.
+Print Assumptions pk2_serial_iff_valid_ser.
+Print Assumptions pk2_symmetric_iff_valid_sym.
+Print Assumptions pk2_transitive_iff_valid_tra1.
+Print Assumptions pk2_transitive_iff_valid_tra2.
+Print Assumptions pk2_valid_pscon_of_piecewise_strongly_connected.
+Print Assumptions pk2_pcon1_not_valid_on_piecewise_connected_frame.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
