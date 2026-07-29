@@ -2160,3 +2160,275 @@ Proof.
   intros S F E C s gamma delta p q [dpq] [dp]. constructor.
   exact (generic_list_derivation_append_mdp_raw dpq dp).
 Qed.
+
+(** * Proof-relevant predicate contexts *)
+
+(** Foundation's set contexts require decidable formula equality when their
+    [Prop]-valued membership evidence must guide a raw proof construction.
+    A proof-relevant predicate keeps precisely that evidence in [Type], so the
+    complete context algebra below is constructive. *)
+Inductive generic_type_context_derivation {S F : Type}
+    (E : generic_entailment S F) (s : S) (C : generic_connectives F)
+    (T : F -> Type) : F -> Type :=
+| GTCD_assumption : forall p, T p ->
+    generic_type_context_derivation E s C T p
+| GTCD_theorem : forall p, generic_proof E s p ->
+    generic_type_context_derivation E s C T p
+| GTCD_mdp : forall p q,
+    generic_type_context_derivation E s C T (generic_imp C p q) ->
+    generic_type_context_derivation E s C T p ->
+    generic_type_context_derivation E s C T q.
+
+Arguments GTCD_assumption {S F E s C T p} _.
+Arguments GTCD_theorem {S F E s C T p} _.
+Arguments GTCD_mdp {S F E s C T p q} _ _.
+
+Definition generic_type_context_derivable {S F : Type}
+    (E : generic_entailment S F) (s : S) (C : generic_connectives F)
+    (T : F -> Type) (p : F) : Prop :=
+  inhabited (generic_type_context_derivation E s C T p).
+
+Definition generic_proof_relevant_context {F : Type}
+    (T : F -> Prop) (p : F) : Type := { _ : unit | T p }.
+
+Fixpoint generic_type_context_derivation_weaken_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    {T U : F -> Type} (incl : forall p, T p -> U p) {p : F}
+    (d : generic_type_context_derivation E s C T p) :
+    generic_type_context_derivation E s C U p.
+Proof.
+  destruct d as [p hp | p b | p q dpq dp].
+  - exact (GTCD_assumption (incl p hp)).
+  - exact (GTCD_theorem b).
+  - exact (GTCD_mdp
+      (@generic_type_context_derivation_weaken_raw
+        S F E s C T U incl (generic_imp C p q) dpq)
+      (@generic_type_context_derivation_weaken_raw
+        S F E s C T U incl p dp)).
+Defined.
+
+Arguments generic_type_context_derivation_weaken_raw
+  {S F E s C T U} _ {p} _.
+
+Definition generic_type_context_mdp_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    {T : F -> Type} {p q : F}
+    (dpq : generic_type_context_derivation E s C T (generic_imp C p q))
+    (dp : generic_type_context_derivation E s C T p) :
+    generic_type_context_derivation E s C T q := GTCD_mdp dpq dp.
+
+Inductive generic_type_context_adjoin {F : Type}
+    (a : F) (T : F -> Type) : F -> Type :=
+| GTCA_here : generic_type_context_adjoin a T a
+| GTCA_there : forall p, T p -> generic_type_context_adjoin a T p.
+
+Arguments GTCA_here {F a T}.
+Arguments GTCA_there {F a T p} _.
+
+Fixpoint generic_minimal_type_context_deduction_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s) {T : F -> Type} {a p : F}
+    (d : generic_type_context_derivation E s C
+      (generic_type_context_adjoin a T) p) :
+    generic_type_context_derivation E s C T (generic_imp C a p).
+Proof.
+  destruct d as [p hp | p b | p q dpq dp].
+  - dependent destruction hp.
+    + exact (GTCD_theorem (generic_minimal_identity_raw H a)).
+    + exact (GTCD_mdp
+        (GTCD_theorem (generic_minimal_K H p a))
+        (GTCD_assumption t)).
+  - exact (GTCD_mdp (GTCD_theorem (generic_minimal_K H p a))
+      (GTCD_theorem b)).
+  - exact (GTCD_mdp
+      (GTCD_mdp (GTCD_theorem (generic_minimal_S H a p q))
+        (@generic_minimal_type_context_deduction_raw
+          S F E C s H T a (generic_imp C p q) dpq))
+      (@generic_minimal_type_context_deduction_raw
+        S F E C s H T a p dp)).
+Defined.
+
+Arguments generic_minimal_type_context_deduction_raw {S F E C s}
+  _ {T a p} _.
+
+Definition generic_type_context_deduction_inverse_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    {T : F -> Type} {a p : F}
+    (d : generic_type_context_derivation E s C T (generic_imp C a p)) :
+    generic_type_context_derivation E s C
+      (generic_type_context_adjoin a T) p :=
+  GTCD_mdp
+    (generic_type_context_derivation_weaken_raw
+      (fun q hq => GTCA_there hq) d)
+    (GTCD_assumption GTCA_here).
+
+Arguments generic_type_context_deduction_inverse_raw {S F E s C T a p} _.
+
+Lemma generic_minimal_type_context_deduction_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall T a p,
+      generic_type_context_derivable E s C
+        (generic_type_context_adjoin a T) p <->
+      generic_type_context_derivable E s C T (generic_imp C a p).
+Proof.
+  intros S F E C s H T a p. split; intros [d]; constructor.
+  - exact (generic_minimal_type_context_deduction_raw H d).
+  - exact (generic_type_context_deduction_inverse_raw d).
+Qed.
+
+Lemma generic_type_context_derivation_weaken :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S) T U,
+    (forall p, T p -> U p) -> forall p,
+      generic_type_context_derivable E s C T p ->
+      generic_type_context_derivable E s C U p.
+Proof.
+  intros S F E C s T U incl p [d]. constructor.
+  exact (generic_type_context_derivation_weaken_raw incl d).
+Qed.
+
+Lemma generic_type_context_mdp :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S) T p q,
+    generic_type_context_derivable E s C T (generic_imp C p q) ->
+    generic_type_context_derivable E s C T p ->
+    generic_type_context_derivable E s C T q.
+Proof.
+  intros S F E C s T p q [dpq] [dp]. constructor.
+  exact (GTCD_mdp dpq dp).
+Qed.
+
+(** A finite witness records a positional list of assumptions together with
+    proof-relevant evidence that every occurrence belongs to the predicate
+    context.  Duplicates are intentional and harmless. *)
+Record generic_type_context_finite_witness {S F : Type}
+    (E : generic_entailment S F) (s : S) (C : generic_connectives F)
+    (T : F -> Type) (p : F) : Type := {
+  generic_type_context_witness_formulas : list F;
+  generic_type_context_witness_covers : forall q,
+    generic_raw_list_member q generic_type_context_witness_formulas -> T q;
+  generic_type_context_witness_derivation :
+    generic_list_derivation E s C
+      generic_type_context_witness_formulas p
+}.
+
+Arguments generic_type_context_witness_formulas {S F E s C T p} _.
+Arguments generic_type_context_witness_covers {S F E s C T p} _ {q} _.
+Arguments generic_type_context_witness_derivation {S F E s C T p} _.
+
+Definition generic_type_context_finitely_derivable {S F : Type}
+    (E : generic_entailment S F) (s : S) (C : generic_connectives F)
+    (T : F -> Type) (p : F) : Prop :=
+  inhabited (generic_type_context_finite_witness E s C T p).
+
+Definition generic_raw_list_member_singleton_payload {F : Type}
+    {T : F -> Type} {p q : F} (hp : T p)
+    (h : generic_raw_list_member q [p]) : T q.
+Proof.
+  dependent destruction h.
+  - exact hp.
+  - inversion h.
+Defined.
+
+Fixpoint generic_type_context_to_finite_witness_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    {T : F -> Type} {p : F}
+    (d : generic_type_context_derivation E s C T p) :
+    generic_type_context_finite_witness E s C T p.
+Proof.
+  destruct d as [p hp | p b | p q dpq dp].
+  - refine {| generic_type_context_witness_formulas := [p];
+              generic_type_context_witness_derivation :=
+                GLD_assumption (GRLM_here []) |}.
+    intros q hq. exact (generic_raw_list_member_singleton_payload hp hq).
+  - refine {| generic_type_context_witness_formulas := [];
+              generic_type_context_witness_derivation := GLD_theorem b |}.
+    intros q hq. inversion hq.
+  - destruct (@generic_type_context_to_finite_witness_raw
+      S F E s C T (generic_imp C p q) dpq) as [gamma cover_gamma dgamma].
+    destruct (@generic_type_context_to_finite_witness_raw
+      S F E s C T p dp) as [delta cover_delta ddelta].
+    refine {| generic_type_context_witness_formulas := gamma ++ delta;
+              generic_type_context_witness_derivation :=
+                generic_list_derivation_append_mdp_raw dgamma ddelta |}.
+    intros r hr.
+    destruct (@generic_raw_list_member_app_split F r gamma delta hr)
+      as [hl | hr'].
+    + exact (cover_gamma r hl).
+    + exact (cover_delta r hr').
+Defined.
+
+Arguments generic_type_context_to_finite_witness_raw {S F E s C T p} _.
+
+Fixpoint generic_type_context_of_list_derivation_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    {T : F -> Type} {gamma : list F}
+    (cover : forall q, generic_raw_list_member q gamma -> T q) {p : F}
+    (d : generic_list_derivation E s C gamma p) :
+    generic_type_context_derivation E s C T p.
+Proof.
+  destruct d as [p hp | p b | p q dpq dp].
+  - exact (GTCD_assumption (cover p hp)).
+  - exact (GTCD_theorem b).
+  - exact (GTCD_mdp
+      (@generic_type_context_of_list_derivation_raw
+        S F E s C T gamma cover (generic_imp C p q) dpq)
+      (@generic_type_context_of_list_derivation_raw
+        S F E s C T gamma cover p dp)).
+Defined.
+
+Arguments generic_type_context_of_list_derivation_raw
+  {S F E s C T gamma} _ {p} _.
+
+Definition generic_type_context_of_finite_witness_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    {T : F -> Type} {p : F}
+    (w : generic_type_context_finite_witness E s C T p) :
+    generic_type_context_derivation E s C T p :=
+  @generic_type_context_of_list_derivation_raw
+    S F E s C T (generic_type_context_witness_formulas w)
+    (fun q hq => generic_type_context_witness_covers w hq) p
+    (generic_type_context_witness_derivation w).
+
+Arguments generic_type_context_of_finite_witness_raw {S F E s C T p} _.
+
+Lemma generic_type_context_finite_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S) T p,
+    generic_type_context_derivable E s C T p <->
+    generic_type_context_finitely_derivable E s C T p.
+Proof.
+  intros S F E C s T p. split; intros [d]; constructor.
+  - exact (generic_type_context_to_finite_witness_raw d).
+  - exact (generic_type_context_of_finite_witness_raw d).
+Qed.
+
+Definition generic_empty_type_context {F : Type} (_ : F) : Type := Empty_set.
+
+Fixpoint generic_empty_type_context_derivation_raw {S F : Type}
+    {E : generic_entailment S F} {s : S} {C : generic_connectives F}
+    (Hmp : generic_modus_ponens E C s) {p : F}
+    (d : generic_type_context_derivation E s C
+      (@generic_empty_type_context F) p) : generic_proof E s p :=
+  match d with
+  | GTCD_assumption h => match h with end
+  | GTCD_theorem b => b
+  | GTCD_mdp dpq dp =>
+      generic_modus_ponens_raw Hmp _ _
+        (generic_empty_type_context_derivation_raw Hmp dpq)
+        (generic_empty_type_context_derivation_raw Hmp dp)
+  end.
+
+Lemma generic_minimal_empty_type_context_provable_iff :
+  forall (S F : Type) (E : generic_entailment S F)
+         (C : generic_connectives F) (s : S),
+    generic_minimal_entailment E C s -> forall p,
+      generic_type_context_derivable E s C generic_empty_type_context p <->
+      generic_provable E s p.
+Proof.
+  intros S F E C s H p. split; intros [d]; constructor.
+  - exact (generic_empty_type_context_derivation_raw
+      (generic_minimal_mdp H) d).
+  - exact (GTCD_theorem d).
+Qed.

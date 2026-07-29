@@ -402,6 +402,28 @@ Definition ph_hilbert_context_of_conj2 {Atom : Type}
   generic_minimal_list_derivation_of_conj2_raw
     (ph_hilbert_generic_minimal H) gamma p d.
 
+Definition ph_hilbert_type_context_proof {Atom : Type}
+    (H : ph_hilbert Atom) (T : pformula Atom -> Type)
+    (p : pformula Atom) : Type :=
+  generic_type_context_derivation (ph_hilbert_entailment Atom) H
+    (pformula_connectives Atom) T p.
+
+Definition ph_hilbert_type_context_deduction {Atom : Type}
+    (H : ph_hilbert Atom) {T : pformula Atom -> Type}
+    {a p : pformula Atom}
+    (d : ph_hilbert_type_context_proof H
+      (generic_type_context_adjoin a T) p) :
+    ph_hilbert_type_context_proof H T (PImp a p) :=
+  generic_minimal_type_context_deduction_raw
+    (ph_hilbert_generic_minimal H) d.
+
+Definition ph_hilbert_type_context_to_finite {Atom : Type}
+    (H : ph_hilbert Atom) {T : pformula Atom -> Type}
+    {p : pformula Atom} (d : ph_hilbert_type_context_proof H T p) :
+    generic_type_context_finite_witness
+      (ph_hilbert_entailment Atom) H (pformula_connectives Atom) T p :=
+  generic_type_context_to_finite_witness_raw d.
+
 (** One recursor factors inclusion and arbitrary proof-schema translations. *)
 Fixpoint ph_hilbert_proof_map {Atom : Type}
     {H K : ph_hilbert Atom}
