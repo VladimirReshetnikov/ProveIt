@@ -151,6 +151,10 @@ Record generic_lindenbaum_minimal_laws {F : Type}
     generic_lindenbaum_equiv C Prov q q' ->
     generic_lindenbaum_equiv C Prov
       (generic_imp C p q) (generic_imp C p' q');
+  glm_neg_respects_equiv : forall p q,
+    generic_lindenbaum_equiv C Prov p q ->
+    generic_lindenbaum_equiv C Prov
+      (generic_neg C p) (generic_neg C q);
   glm_and_le_left : forall p q,
     generic_lindenbaum_le C Prov (generic_and C p q) p;
   glm_and_le_right : forall p q,
@@ -212,10 +216,6 @@ Defined.
 Record generic_lindenbaum_intuitionistic_laws {F : Type}
     (C : generic_connectives F) (Prov : F -> Prop) : Prop := {
   gli_minimal : generic_lindenbaum_minimal_laws C Prov;
-  gli_neg_respects_equiv : forall p q,
-    generic_lindenbaum_equiv C Prov p q ->
-    generic_lindenbaum_equiv C Prov
-      (generic_neg C p) (generic_neg C q);
   gli_bottom_le : forall p,
     generic_lindenbaum_le C Prov (generic_bottom C) p;
   gli_imp_bottom : forall p,
@@ -233,7 +233,7 @@ Proof.
          @generic_lindenbaum_generalized_heyting F C Prov (gli_minimal H);
        ha_bottom := generic_bottom C;
        ha_compl := generic_neg C |}.
-  - exact (gli_neg_respects_equiv H).
+  - exact (glm_neg_respects_equiv (gli_minimal H)).
   - exact (gli_bottom_le H).
   - exact (gli_imp_bottom H).
 Defined.
@@ -261,6 +261,125 @@ Lemma generic_lindenbaum_provable_iff_top :
     gha_equiv (@generic_lindenbaum_generalized_heyting F C Prov H) p
       (gha_top (@generic_lindenbaum_generalized_heyting F C Prov H)).
 Proof. intros F C Prov H p. exact (glm_provable_iff_top H p). Qed.
+
+Lemma generic_lindenbaum_top_beta :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov),
+    gha_top (@generic_lindenbaum_generalized_heyting F C Prov H) =
+    generic_top C.
+Proof. reflexivity. Qed.
+
+Lemma generic_lindenbaum_meet_beta :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov) p q,
+    gha_meet (@generic_lindenbaum_generalized_heyting F C Prov H) p q =
+    generic_and C p q.
+Proof. reflexivity. Qed.
+
+Lemma generic_lindenbaum_join_beta :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov) p q,
+    gha_join (@generic_lindenbaum_generalized_heyting F C Prov H) p q =
+    generic_or C p q.
+Proof. reflexivity. Qed.
+
+Lemma generic_lindenbaum_imp_beta :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov) p q,
+    gha_imp (@generic_lindenbaum_generalized_heyting F C Prov H) p q =
+    generic_imp C p q.
+Proof. reflexivity. Qed.
+
+Lemma generic_lindenbaum_bottom_beta :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_intuitionistic_laws C Prov),
+    ha_bottom (@generic_lindenbaum_heyting F C Prov H) = generic_bottom C.
+Proof. reflexivity. Qed.
+
+Lemma generic_lindenbaum_compl_beta :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_intuitionistic_laws C Prov) p,
+    ha_compl (@generic_lindenbaum_heyting F C Prov H) p = generic_neg C p.
+Proof. reflexivity. Qed.
+
+(** * Generic consistency and nontriviality *)
+
+Definition generic_lindenbaum_inconsistent {F : Type}
+    (Prov : F -> Prop) : Prop := forall p, Prov p.
+
+Definition generic_lindenbaum_consistent {F : Type}
+    (Prov : F -> Prop) : Prop :=
+  ~ generic_lindenbaum_inconsistent Prov.
+
+Definition generic_lindenbaum_trivial {F : Type}
+    (C : generic_connectives F) (Prov : F -> Prop)
+    (H : generic_lindenbaum_minimal_laws C Prov) : Prop :=
+  forall p,
+    gha_equiv (@generic_lindenbaum_generalized_heyting F C Prov H) p
+      (gha_top (@generic_lindenbaum_generalized_heyting F C Prov H)).
+
+Definition generic_lindenbaum_nontrivial {F : Type}
+    (C : generic_connectives F) (Prov : F -> Prop)
+    (H : generic_lindenbaum_minimal_laws C Prov) : Prop :=
+  exists p q,
+    ~ gha_equiv (@generic_lindenbaum_generalized_heyting F C Prov H) p q.
+
+Lemma generic_lindenbaum_inconsistent_iff_trivial :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov),
+    generic_lindenbaum_inconsistent Prov <->
+    @generic_lindenbaum_trivial F C Prov H.
+Proof.
+  intros F C Prov H; split.
+  - intros Hall p. apply (proj1 (generic_lindenbaum_provable_iff_top H p)).
+    apply Hall.
+  - intros Htrivial p.
+    apply (proj2 (generic_lindenbaum_provable_iff_top H p)).
+    apply Htrivial.
+Qed.
+
+Lemma generic_lindenbaum_nontrivial_implies_consistent :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov),
+    @generic_lindenbaum_nontrivial F C Prov H ->
+    generic_lindenbaum_consistent Prov.
+Proof.
+  intros F C Prov H [p [q Hneq]] Hall.
+  apply Hneq. exact (Hall (generic_formula_iff C p q)).
+Qed.
+
+(** Extracting an unprovable formula from a negated universal is the sole
+    nonconstructive step hidden by the source's [Nontrivial] proof.  It is an
+    explicit capability here and can be supplied computationally. *)
+Definition generic_unprovable_witness {F : Type}
+    (Prov : F -> Prop) : Prop :=
+  generic_lindenbaum_consistent Prov -> exists p, ~ Prov p.
+
+Lemma generic_lindenbaum_nontrivial_of_consistent :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov),
+    generic_unprovable_witness Prov ->
+    generic_lindenbaum_consistent Prov ->
+    @generic_lindenbaum_nontrivial F C Prov H.
+Proof.
+  intros F C Prov H Hwitness Hconsistent.
+  destruct (Hwitness Hconsistent) as [p Hp].
+  exists p, (generic_top C). intro Hequiv.
+  apply Hp. apply (proj2 (generic_lindenbaum_provable_iff_top H p)).
+  exact Hequiv.
+Qed.
+
+Lemma generic_lindenbaum_consistent_iff_nontrivial :
+  forall (F : Type) (C : generic_connectives F) (Prov : F -> Prop)
+         (H : generic_lindenbaum_minimal_laws C Prov),
+    generic_unprovable_witness Prov ->
+    (generic_lindenbaum_consistent Prov <->
+     @generic_lindenbaum_nontrivial F C Prov H).
+Proof.
+  intros F C Prov H Hwitness; split.
+  - apply generic_lindenbaum_nontrivial_of_consistent; exact Hwitness.
+  - apply generic_lindenbaum_nontrivial_implies_consistent.
+Qed.
 
 (** * Provable equivalence and order *)
 

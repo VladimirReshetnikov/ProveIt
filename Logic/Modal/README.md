@@ -219,7 +219,7 @@ is being reconstructed:
 | `KripkeSemantics.v` | `Modal/Kripke/Basic.lean` | Complete source-facing local/model/frame/class semantic API: singleton frames, connective/list/iteration truth laws, congruence and duality, counterexamples, closure, and K insertion |
 | `KripkeAlgebra.v` | `Modal/Kripke/Algebra.lean` | Relational complex algebras, modal operations, algebraic evaluation/satisfaction equivalence, and validity as subset/extensional equality |
 | `ModalAlgebra.v` | `Semantics/Algebra/Modal/{Basic,Magari}.lean` | Setoid Boolean and modal algebras, the complete derived K/duality/monotonicity surface, Magari diagonal and transitivity theorems, and the Kripke complex-algebra adapter |
-| `LindenbaumAlgebra.v` | `Logic/LindenbaumAlgebra.lean` | Classical formula/setoid specialization of all 29 declaration shapes: provable equivalence, implication order, connective readback, Boolean algebra, provability as equality to top, and consistency/nontriviality; the source's weaker Minimal and Intuitionistic capability boundaries remain deferred |
+| `LindenbaumAlgebra.v` | `Logic/LindenbaumAlgebra.lean` | Complete generic and classical surfaces: setoid generalized-Heyting/Heyting builders at Minimal/Intuitionistic capability boundaries, connective readback, Boolean specialization, and explicit constructive consistency/nontriviality boundaries |
 | `AlgebraicSemantics.v` | `Modal/Algebra/Basic.lean` | Exact 26-declaration generic semantics/soundness tranche: primitive-operation evaluation, all eight derived-connective equations, nontrivial algebraic models, implication/order, MP, necessitation, instantiated-axiom model classes, and raw Normal soundness |
 | `AlgebraicCompleteness.v` | `Modal/Algebra/Basic.lean` | Exact remaining 13 declarations: generic K-entailment Lindenbaum modal algebra, quotient-free syntactic algebraic model, truth/provability equivalence, singleton packages, raw-Normal algebraic completeness, and the named K instance; together with `AlgebraicSemantics.v`, this closes all 39 active declarations |
 | `CoherenceSpace.v` | `Semantics/CoherenceSpace/Basic.lean` | Complete coherence/incoherence, clique/point/colimit, base-space, linear-negation, tensor, par, lolli, and additive connective surface |
@@ -412,17 +412,17 @@ and box operations, while the model laws and Hilbert soundness specialize to
 modal algebras.  The K, S, and contraposition-elimination cases are direct
 constructive Boolean-order proofs.
 
-`LindenbaumAlgebra.v` factors the reusable classical formula/setoid layer out
-of algebraic completeness.  It exports provable biconditional and implication
-order, every connective beta/readback law, the full Boolean-algebra package,
-provability as equivalence to top, and exact inconsistent/trivial and
-consistent/nontrivial characterizations.  These cover all 29 mathematical
-declaration shapes in the source module without quotient representatives or
-decidable atom equality.  The coverage entry remains deliberately `partial`:
-Foundation proves 26 declarations from a weaker Minimal entailment and one
-from an Intuitionistic entailment, while this repository has neither a
-generalized-Heyting/Heyting setoid interface nor abstract primitive
-intuitionistic conjunction/disjunction in its modal syntax.
+`LindenbaumAlgebra.v` supplies explicit-setoid generalized-Heyting and Heyting
+interfaces over arbitrary carriers, primitive connectives, and provability
+predicates.  Its Minimal capability asks only for equivalence, implication
+order, connective congruence, lattice, adjunction, and top readback; the
+Intuitionistic extension adds explosion and implication-to-bottom.  The
+existing classical formula/Boolean specialization remains available.
+Formula representatives make all connective beta laws literal and avoid
+quotients and decidable atom equality.  Inconsistency/triviality and the
+nontriviality-to-consistency direction are constructive; the reverse
+direction makes the source's hidden not-forall witness extraction explicit
+as `generic_unprovable_witness`.
 
 `AlgebraicCompleteness.v` finishes the source module with a quotient-free
 Lindenbaum construction.  Formulas remain representatives and provable

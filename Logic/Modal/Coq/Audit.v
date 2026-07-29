@@ -1193,6 +1193,21 @@ Check generic_lindenbaum_heyting.
 Check generic_lindenbaum_equiv_readback.
 Check generic_lindenbaum_order_readback.
 Check generic_lindenbaum_provable_iff_top.
+Check generic_lindenbaum_top_beta.
+Check generic_lindenbaum_meet_beta.
+Check generic_lindenbaum_join_beta.
+Check generic_lindenbaum_imp_beta.
+Check generic_lindenbaum_bottom_beta.
+Check generic_lindenbaum_compl_beta.
+Check generic_lindenbaum_inconsistent.
+Check generic_lindenbaum_consistent.
+Check generic_lindenbaum_trivial.
+Check generic_lindenbaum_nontrivial.
+Check generic_lindenbaum_inconsistent_iff_trivial.
+Check generic_lindenbaum_nontrivial_implies_consistent.
+Check generic_unprovable_witness.
+Check generic_lindenbaum_nontrivial_of_consistent.
+Check generic_lindenbaum_consistent_iff_nontrivial.
 Check lindenbaum_equiv.
 Check lindenbaum_le.
 Check lindenbaum_equiv_refl.
@@ -1262,6 +1277,12 @@ Print Assumptions generic_lindenbaum_heyting.
 Print Assumptions generic_lindenbaum_equiv_readback.
 Print Assumptions generic_lindenbaum_order_readback.
 Print Assumptions generic_lindenbaum_provable_iff_top.
+Print Assumptions generic_lindenbaum_top_beta.
+Print Assumptions generic_lindenbaum_bottom_beta.
+Print Assumptions generic_lindenbaum_inconsistent_iff_trivial.
+Print Assumptions generic_lindenbaum_nontrivial_implies_consistent.
+Print Assumptions generic_lindenbaum_nontrivial_of_consistent.
+Print Assumptions generic_lindenbaum_consistent_iff_nontrivial.
 Print Assumptions lindenbaum_equiv.
 Print Assumptions lindenbaum_le.
 Print Assumptions lindenbaum_equiv_refl.
