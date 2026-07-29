@@ -1,0 +1,22 @@
+(** Audit surface after eliminating the Or-I-left recursive residual. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterOrIntroductionLeft.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterOrIntroductionLeft.
+
+Check
+  RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterOrIntroductionLeft.
+Check raw_ruleCaseSemanticRoots_of_remaining_after_orIntroductionLeft.
+Check RawCoqRestrictedPADirectRemainingRuleCasesStandardTailCompiler.
+Check raw_ruleCaseSemanticRoots_on_selected_witnessed_tail_of_remaining.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_remaining_after_orIntroductionLeft.
+
+Print Assumptions
+  raw_ruleCaseSemanticRoots_of_remaining_after_orIntroductionLeft.
+Print Assumptions
+  raw_ruleCaseSemanticRoots_on_selected_witnessed_tail_of_remaining.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_remaining_after_orIntroductionLeft.

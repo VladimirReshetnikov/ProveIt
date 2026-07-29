@@ -2760,6 +2760,19 @@ while subsequent rule roots extend the common witnessed tail; the next step
 is to apply the same transport interface while assembling the residual-only
 direct rule-case record.
 
+`RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterOrIntroductionLeft.v`
+performs that assembly step explicitly.  It defines the exact twenty-two-field
+remainder obtained by deleting only the discharged Or-I-left recursive field
+from the old dispatcher record.  A continuation-style compiler may append a
+finite standard suffix to any incoming witness prefix; the module transports
+the compiled Or-I-left root to that combined tail, reconstructs the complete
+rule record, and feeds it through the witnessed growing integration to an
+ordinary proof of the direct universal-soundness code.  Consequently the
+former twenty-three-field premise has been reduced to the visible
+twenty-two-field continuation plus the independent strong-prefix closure
+remainder.  The next branch-level task is to discharge another field of this
+remainder with the same standard-tail protocol.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
