@@ -1,0 +1,13 @@
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessAssumptionNativePackageCompilation.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessAssumptionNativePackageCompilation.
+
+Check raw_selectedAssumptionTail_of_nativeDirectTruthInputsAt.
+Check
+  raw_remainingCompiler_after_orIntroductionLeft_of_nativeDirectTruthInputsAt.
+
+Print Assumptions raw_selectedAssumptionTail_of_nativeDirectTruthInputsAt.
+Print Assumptions
+  raw_remainingCompiler_after_orIntroductionLeft_of_nativeDirectTruthInputsAt.
