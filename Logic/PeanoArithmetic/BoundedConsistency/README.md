@@ -2840,6 +2840,15 @@ of the witness-formula leaf with its hierarchy arguments fixed to zero.  The
 separate native conclusion-leaf equation is therefore the only remaining
 transport needed at that endpoint.
 
+`RawCodedRestrictedPADerivationSoundnessAssumptionPointwiseMembership.v`
+turns that final shape calculation into a reusable proof object.  In an
+arbitrary ambient template context it opens the transferred membership index,
+projects the live-bound and head-lookup witnesses, specializes the shifted
+pointwise clause at that index and the displayed formula, and applies both
+implications.  Its conclusion is the native zero-hierarchy witness truth; no
+Assumption-specific outer context or carrier witness is baked into this last
+logical step.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
