@@ -3210,6 +3210,11 @@ Check ph_cl_provable_godel_S5.
 Check godel_translate_reflexive_singleton_iff_boolean.
 Check ph_cl_provable_of_godel_S5.
 Check ph_cl_modal_companion_S5.
+Check ph_cl_provable_godel_S5Grz.
+Check ph_cl_provable_of_godel_S5Grz.
+Check ph_cl_modal_companion_S5Grz.
+Check ph_cl_modal_companion_Triv.
+Check ph_cl_boxdot_modal_companion_Ver.
 Check s5_entailment.
 Check s5_E.
 Check diabox_box_raw.
@@ -5308,6 +5313,11 @@ Print Assumptions ph_cl_provable_godel_S5.
 Print Assumptions godel_translate_reflexive_singleton_iff_boolean.
 Print Assumptions ph_cl_provable_of_godel_S5.
 Print Assumptions ph_cl_modal_companion_S5.
+Print Assumptions ph_cl_provable_godel_S5Grz.
+Print Assumptions ph_cl_provable_of_godel_S5Grz.
+Print Assumptions ph_cl_modal_companion_S5Grz.
+Print Assumptions ph_cl_modal_companion_Triv.
+Print Assumptions ph_cl_boxdot_modal_companion_Ver.
 Print Assumptions diabox_box_raw.
 Print Assumptions diabox_box_applied_raw.
 Print Assumptions rm_diabox_raw.
