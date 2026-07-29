@@ -736,6 +736,118 @@ Lemma semiformula_rewrite_bounded_exists : forall L X n Y m
     (semiformula_rewrite (rew_q w) q).
 Proof. reflexivity. Qed.
 
+Lemma semiformula_rewrite_complexity : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n),
+  semiformula_complexity (semiformula_rewrite w p) =
+  semiformula_complexity p.
+Proof.
+  intros L X n Y m w p; revert Y m w.
+  induction p; intros; simpl; try reflexivity;
+    now rewrite ?IHp, ?IHp1, ?IHp2.
+Qed.
+
+Lemma semiformula_rewrite_quantifier_rank : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n),
+  semiformula_quantifier_rank (semiformula_rewrite w p) =
+  semiformula_quantifier_rank p.
+Proof.
+  intros L X n Y m w p; revert Y m w.
+  induction p; intros; simpl; try reflexivity;
+    now rewrite ?IHp, ?IHp1, ?IHp2.
+Qed.
+
+Lemma semiformula_rewrite_open : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n),
+  semiformula_open (semiformula_rewrite w p) <-> semiformula_open p.
+Proof.
+  intros; unfold semiformula_open.
+  now rewrite semiformula_rewrite_quantifier_rank.
+Qed.
+
+Lemma semiformula_rewrite_free_occurs_sources :
+  forall L X n Y m (w : rew L X n Y m)
+    (p : semiformula L X n) (y : Y),
+  semiformula_free_occurs y (semiformula_rewrite w p) ->
+  (exists i : Fin.t n,
+      semiterm_free_occurs y (rew_apply w (Semiterm_bvar i))) \/
+  (exists x : X,
+      semiformula_free_occurs x p /\
+      semiterm_free_occurs y (rew_apply w (Semiterm_fvar x))).
+Proof.
+  intros L X n Y m w p; revert Y m w.
+  induction p; intros Y m w y H; simpl in H.
+  - contradiction.
+  - contradiction.
+  - destruct H as [j Hj].
+    destruct (@rew_free_occurs_sources L X n Y m w (s j) y Hj)
+      as [[i Hi] | [x [Hx Hy]]].
+    + left. now exists i.
+    + right. exists x. split; [now exists j | exact Hy].
+  - destruct H as [j Hj].
+    destruct (@rew_free_occurs_sources L X n Y m w (s j) y Hj)
+      as [[i Hi] | [x [Hx Hy]]].
+    + left. now exists i.
+    + right. exists x. split; [now exists j | exact Hy].
+  - destruct H as [Hp | Hq].
+    + destruct (IHp1 Y m w y Hp) as [Hb | [x [Hx Hy]]].
+      * now left.
+      * right. exists x. now split; [left |].
+    + destruct (IHp2 Y m w y Hq) as [Hb | [x [Hx Hy]]].
+      * now left.
+      * right. exists x. now split; [right |].
+  - destruct H as [Hp | Hq].
+    + destruct (IHp1 Y m w y Hp) as [Hb | [x [Hx Hy]]].
+      * now left.
+      * right. exists x. now split; [left |].
+    + destruct (IHp2 Y m w y Hq) as [Hb | [x [Hx Hy]]].
+      * now left.
+      * right. exists x. now split; [right |].
+  - destruct (IHp Y (S m) (rew_q w) y H)
+      as [[j Hj] | [x [Hx Hy]]].
+    + revert Hj. refine (@Fin.caseS' n j
+        (fun j =>
+          semiterm_free_occurs y
+            (rew_apply (rew_q w) (Semiterm_bvar j)) ->
+          (exists i : Fin.t n,
+              semiterm_free_occurs y
+                (rew_apply w (Semiterm_bvar i))) \/
+          (exists x : X,
+              semiformula_free_occurs x (Semiformula_all p) /\
+              semiterm_free_occurs y
+                (rew_apply w (Semiterm_fvar x)))) _ _).
+      * intro Hj. rewrite rew_q_bvar_zero in Hj. cbn in Hj. contradiction.
+      * intros i Hj. rewrite rew_q_bvar_succ in Hj.
+        apply (proj1 (@rew_bshift_free_occurs L Y m y
+          (rew_apply w (Semiterm_bvar i)))) in Hj.
+        left. now exists i.
+    + rewrite rew_q_fvar in Hy.
+      apply (proj1 (@rew_bshift_free_occurs L Y m y
+        (rew_apply w (Semiterm_fvar x)))) in Hy.
+      right. exists x. now split.
+  - destruct (IHp Y (S m) (rew_q w) y H)
+      as [[j Hj] | [x [Hx Hy]]].
+    + revert Hj. refine (@Fin.caseS' n j
+        (fun j =>
+          semiterm_free_occurs y
+            (rew_apply (rew_q w) (Semiterm_bvar j)) ->
+          (exists i : Fin.t n,
+              semiterm_free_occurs y
+                (rew_apply w (Semiterm_bvar i))) \/
+          (exists x : X,
+              semiformula_free_occurs x (Semiformula_exists p) /\
+              semiterm_free_occurs y
+                (rew_apply w (Semiterm_fvar x)))) _ _).
+      * intro Hj. rewrite rew_q_bvar_zero in Hj. cbn in Hj. contradiction.
+      * intros i Hj. rewrite rew_q_bvar_succ in Hj.
+        apply (proj1 (@rew_bshift_free_occurs L Y m y
+          (rew_apply w (Semiterm_bvar i)))) in Hj.
+        left. now exists i.
+    + rewrite rew_q_fvar in Hy.
+      apply (proj1 (@rew_bshift_free_occurs L Y m y
+        (rew_apply w (Semiterm_fvar x)))) in Hy.
+      right. exists x. now split.
+Qed.
+
 Definition semiformula_substitute {L X n m}
     (b : Fin.t n -> semiterm L X m) (p : semiformula L X n) :
     semiformula L X m :=

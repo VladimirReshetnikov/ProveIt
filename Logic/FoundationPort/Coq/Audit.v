@@ -169,6 +169,10 @@ Check semiformula_rewrite_comp.
 Check semiformula_rewrite_all_iter.
 Check semiformula_rewrite_exists_iter.
 Check semiformula_rewrite_bounded_all.
+Check semiformula_rewrite_complexity.
+Check semiformula_rewrite_quantifier_rank.
+Check semiformula_rewrite_open.
+Check semiformula_rewrite_free_occurs_sources.
 Check semiformula_substitute.
 Check semiformula_substitute_id.
 Check semiformula_substitute_comp.
@@ -229,6 +233,10 @@ Print Assumptions semiformula_rewrite_ext.
 Print Assumptions semiformula_rewrite_id.
 Print Assumptions semiformula_rewrite_comp.
 Print Assumptions semiformula_rewrite_all_iter.
+Print Assumptions semiformula_rewrite_complexity.
+Print Assumptions semiformula_rewrite_quantifier_rank.
+Print Assumptions semiformula_rewrite_open.
+Print Assumptions semiformula_rewrite_free_occurs_sources.
 Print Assumptions semiformula_substitute_comp.
 Print Assumptions semiformula_shift_injective.
 Print Assumptions semiformula_free_fix.
