@@ -4217,10 +4217,10 @@ family endpoint.  Each side supplies its ordinary right-associated shape and
 four transparent projection equalities identifying the corresponding beta
 premises.  The adapter projects both represented conjunctions, aligns their
 roots with four argument records, and returns the four output equalities after
-one shared witness extension.  The structural equalities remain explicit
-because abstracting the append bound is freshness-sensitive for arbitrary
-template parameters; the concrete successor parameter assignment must prove
-them rather than relying on an unsound generic reduction.
+one shared witness extension.  The generic adapter keeps the structural
+equalities explicit because abstracting the append bound is
+freshness-sensitive for arbitrary template parameters; the concrete append
+specialization below discharges exactly those freshness conditions.
 
 The append-row module now fixes the concrete four beta argument records.  The
 new table code/step witnesses are exactly row-context variables `#12/#11`,
@@ -4229,9 +4229,20 @@ with the corresponding row value at the common traversal index.  The assumed
 row lookup is packaged as the exact four second-side beta premises and its
 matching contract is definitional.  A witnessed-prefix callback combines
 that row package with the transported append package and returns all four
-represented equalities.  Its sole remaining structural input is the
+represented equalities.  Its sole remaining structural input was the
 first-side matching contract, whose proof requires composing thirteen
 universal/existential openings, five shifts, and named-parameter abstraction.
+
+That previously explicit first-side contract is now closed.  Four base
+normalization lemmas expose the append body's beta witnesses at `#7/#6`,
+`#5/#4`, `#3/#2`, and `#1/#0`.
+A shared shift/abstraction/opening lemma proves that entering the five row
+binders raises those pairs to the concrete argument-record positions while a
+fresh bound parameter is replaced capture-avoidantly by the traversal index.
+The append-row functionality callback now takes only the four honest
+field-versus-bound freshness hypotheses and constructs both conjunction
+contracts internally; no caller-supplied syntactic matching assumption
+remains.
 
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate

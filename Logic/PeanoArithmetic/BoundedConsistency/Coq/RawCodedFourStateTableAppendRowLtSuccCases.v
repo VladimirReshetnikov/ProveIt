@@ -29,6 +29,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedPALocalProofExistentialEliminationChain
   RawCodedTemplateSyntax
+  RawCodedTemplateStructuralTranslation
   RawCodedTemplateRenamingSubstitution
   RawCodedTemplateParameterAbstraction
   RawCodedTemplateProofCompiler
@@ -68,6 +69,7 @@ Import PABoundedRawCodedPALocalProofEquality.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateStructuralTranslation.
 Import PABoundedRawCodedTemplateRenamingSubstitution.
 Import PABoundedRawCodedTemplateParameterAbstraction.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -288,6 +290,343 @@ Proof.
   repeat split; reflexivity.
 Qed.
 
+(** Before the five row binders are introduced, the mode lookup projected
+    from the eight-witness append body is literally one beta-functionality
+    first premise.  This small normalization lemma is the base case for the
+    shifted and parameter-abstracted four-column contract. *)
+Lemma coqFourStateTableAppendModeLookupTemplate_beta_first : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    rowMode,
+  coqFourStateTableAppendModeLookupTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    (ttParameter boundName) (ttParameter modeName)
+    (ttParameter formulaName) (ttParameter assignmentCodeName)
+    (ttParameter assignmentStepName) =
+  coqBetaLookupFunctionalityFirstLookupOf
+    {| coqBetaLookupFunctionalityOut1 := ttParameter modeName;
+       coqBetaLookupFunctionalityOut2 := rowMode;
+       coqBetaLookupFunctionalityCode := ttVar 7;
+       coqBetaLookupFunctionalityStep := ttVar 6;
+       coqBetaLookupFunctionalityIndex := ttParameter boundName |}.
+Proof.
+  intros.
+  unfold coqFourStateTableAppendModeLookupTemplate,
+    coqFourStateTableAppendExtensionBodyTemplate,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendExtensionBody,
+    fixedLevelEx8, fixedLevelAnd4,
+    codedAssignmentAppendAtTermAt,
+    coqBetaLookupFunctionalityFirstLookupOf,
+    coqBetaLookupFunctionalityInstanceOf,
+    coqBetaLookupFunctionalityInstanceTemplate,
+    codedBetaLookupFunctionalityFormula,
+    templateImpAntecedent,
+    templateAndFirst, templateAndSecond,
+    templateAnd4First,
+    templateUniversalOpenManyOrBot.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateExistentialBodyMany].
+  repeat rewrite templateFormulaSubst_comp.
+  cbn [templateFormulaSubst templateTermSubst
+    templateTermUpSubst templateInstTerm].
+  reflexivity.
+Qed.
+
+(** The remaining three projections obey the same normalization.  Their
+    de Bruijn pairs descend by two because the append body binds the four
+    code/step pairs in mode, formula, assignment-code, assignment-step
+    order.  Keeping the equalities separate makes later projection rewrites
+    local and documents the exact witness layout. *)
+Lemma coqFourStateTableAppendFormulaLookupTemplate_beta_first : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    rowFormula,
+  coqFourStateTableAppendFormulaLookupTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    (ttParameter boundName) (ttParameter modeName)
+    (ttParameter formulaName) (ttParameter assignmentCodeName)
+    (ttParameter assignmentStepName) =
+  coqBetaLookupFunctionalityFirstLookupOf
+    {| coqBetaLookupFunctionalityOut1 := ttParameter formulaName;
+       coqBetaLookupFunctionalityOut2 := rowFormula;
+       coqBetaLookupFunctionalityCode := ttVar 5;
+       coqBetaLookupFunctionalityStep := ttVar 4;
+       coqBetaLookupFunctionalityIndex := ttParameter boundName |}.
+Proof.
+  intros.
+  unfold coqFourStateTableAppendFormulaLookupTemplate,
+    coqFourStateTableAppendExtensionBodyTemplate,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendExtensionBody,
+    fixedLevelEx8, fixedLevelAnd4,
+    codedAssignmentAppendAtTermAt,
+    coqBetaLookupFunctionalityFirstLookupOf,
+    coqBetaLookupFunctionalityInstanceOf,
+    coqBetaLookupFunctionalityInstanceTemplate,
+    codedBetaLookupFunctionalityFormula,
+    templateImpAntecedent,
+    templateAndFirst, templateAndSecond,
+    templateAnd4Second,
+    templateUniversalOpenManyOrBot.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateExistentialBodyMany].
+  repeat rewrite templateFormulaSubst_comp.
+  cbn [templateFormulaSubst templateTermSubst
+    templateTermUpSubst templateInstTerm].
+  reflexivity.
+Qed.
+
+Lemma coqFourStateTableAppendAssignmentCodeLookupTemplate_beta_first : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    rowAssignmentCode,
+  coqFourStateTableAppendAssignmentCodeLookupTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    (ttParameter boundName) (ttParameter modeName)
+    (ttParameter formulaName) (ttParameter assignmentCodeName)
+    (ttParameter assignmentStepName) =
+  coqBetaLookupFunctionalityFirstLookupOf
+    {| coqBetaLookupFunctionalityOut1 := ttParameter assignmentCodeName;
+       coqBetaLookupFunctionalityOut2 := rowAssignmentCode;
+       coqBetaLookupFunctionalityCode := ttVar 3;
+       coqBetaLookupFunctionalityStep := ttVar 2;
+       coqBetaLookupFunctionalityIndex := ttParameter boundName |}.
+Proof.
+  intros.
+  unfold coqFourStateTableAppendAssignmentCodeLookupTemplate,
+    coqFourStateTableAppendExtensionBodyTemplate,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendExtensionBody,
+    fixedLevelEx8, fixedLevelAnd4,
+    codedAssignmentAppendAtTermAt,
+    coqBetaLookupFunctionalityFirstLookupOf,
+    coqBetaLookupFunctionalityInstanceOf,
+    coqBetaLookupFunctionalityInstanceTemplate,
+    codedBetaLookupFunctionalityFormula,
+    templateImpAntecedent,
+    templateAndFirst, templateAndSecond,
+    templateAnd4Third,
+    templateUniversalOpenManyOrBot.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateExistentialBodyMany].
+  repeat rewrite templateFormulaSubst_comp.
+  cbn [templateFormulaSubst templateTermSubst
+    templateTermUpSubst templateInstTerm].
+  reflexivity.
+Qed.
+
+Lemma coqFourStateTableAppendAssignmentStepLookupTemplate_beta_first : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    rowAssignmentStep,
+  coqFourStateTableAppendAssignmentStepLookupTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    (ttParameter boundName) (ttParameter modeName)
+    (ttParameter formulaName) (ttParameter assignmentCodeName)
+    (ttParameter assignmentStepName) =
+  coqBetaLookupFunctionalityFirstLookupOf
+    {| coqBetaLookupFunctionalityOut1 := ttParameter assignmentStepName;
+       coqBetaLookupFunctionalityOut2 := rowAssignmentStep;
+       coqBetaLookupFunctionalityCode := ttVar 1;
+       coqBetaLookupFunctionalityStep := ttVar 0;
+       coqBetaLookupFunctionalityIndex := ttParameter boundName |}.
+Proof.
+  intros.
+  unfold coqFourStateTableAppendAssignmentStepLookupTemplate,
+    coqFourStateTableAppendExtensionBodyTemplate,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendExtensionBody,
+    fixedLevelEx8, fixedLevelAnd4,
+    codedAssignmentAppendAtTermAt,
+    coqBetaLookupFunctionalityFirstLookupOf,
+    coqBetaLookupFunctionalityInstanceOf,
+    coqBetaLookupFunctionalityInstanceTemplate,
+    codedBetaLookupFunctionalityFormula,
+    templateImpAntecedent,
+    templateAndFirst, templateAndSecond,
+    templateAnd4Fourth,
+    templateUniversalOpenManyOrBot.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateExistentialBodyMany].
+  repeat rewrite templateFormulaSubst_comp.
+  cbn [templateFormulaSubst templateTermSubst
+    templateTermUpSubst templateInstTerm].
+  reflexivity.
+Qed.
+
+(** Shift one beta first-premise beneath the five row binders, then replace
+    its named append bound by the traversal index.  The result records the
+    whole binder calculation once: ordinary code/step variables rise by
+    five, field parameters remain fixed, and the selected bound parameter
+    is opened capture-avoidantly at [index]. *)
+Lemma coqBetaLookupFunctionalityFirstLookup_shift5_abstract_open : forall
+    boundName valueName index rowValue codeVariable stepVariable,
+  valueName <> boundName ->
+  templateFormulaOpen index
+    (templateFormulaAbstractParameter boundName
+      (templateFormulaShiftMany 5
+        (coqBetaLookupFunctionalityFirstLookupOf
+          {| coqBetaLookupFunctionalityOut1 := ttParameter valueName;
+             coqBetaLookupFunctionalityOut2 := rowValue;
+             coqBetaLookupFunctionalityCode := ttVar codeVariable;
+             coqBetaLookupFunctionalityStep := ttVar stepVariable;
+             coqBetaLookupFunctionalityIndex :=
+               ttParameter boundName |}))) =
+  coqBetaLookupFunctionalityFirstLookupOf
+    {| coqBetaLookupFunctionalityOut1 := ttParameter valueName;
+       coqBetaLookupFunctionalityOut2 := rowValue;
+       coqBetaLookupFunctionalityCode := ttVar (5 + codeVariable);
+       coqBetaLookupFunctionalityStep := ttVar (5 + stepVariable);
+       coqBetaLookupFunctionalityIndex := index |}.
+Proof.
+  intros boundName valueName index rowValue codeVariable stepVariable
+    hfresh.
+  assert (hfreshEqb : Nat.eqb valueName boundName = false) by
+    (apply Nat.eqb_neq; exact hfresh).
+  unfold coqBetaLookupFunctionalityFirstLookupOf,
+    coqBetaLookupFunctionalityInstanceOf,
+    coqBetaLookupFunctionalityInstanceTemplate,
+    codedBetaLookupFunctionalityFormula,
+    templateImpAntecedent,
+    templateAndFirst, templateAndSecond,
+    templateUniversalOpenManyOrBot,
+    templateFormulaAbstractParameter,
+    templateFormulaOpen.
+  cbv [templateFormulaShiftMany templateFormulaRename
+    templateTermRename templateTermsRename
+    templateFormulaAbstractParameterAt
+    templateTermAbstractParameterAt templateTermsAbstractParameterAt
+    templateFormulaSubst templateTermSubst templateTermsSubst
+    templateTermUpSubst templateUpRenaming templateInstTerm
+    templateShiftRenamingAt
+    templateUniversalOpenMany templateFormulaOpen
+    embedPAFormula embedPATerm
+    coqBetaLookupFunctionalityOut1
+    coqBetaLookupFunctionalityOut2
+    coqBetaLookupFunctionalityCode
+    coqBetaLookupFunctionalityStep
+    coqBetaLookupFunctionalityIndex
+    Formula.betaTermTermAt Formula.betaModTermTerm
+    Formula.remTermTermAt Formula.ltTermAt
+    Term.rename].
+  rewrite hfreshEqb.
+  rewrite Nat.eqb_refl.
+  cbn [templateTermSubst templateTermRename
+    templateTermUpSubst templateInstTerm].
+  reflexivity.
+Qed.
+
+(** The transformed append lookup supplies the first premise of all four
+    functionality instances.  The four freshness hypotheses are necessary:
+    [templateFormulaAbstractParameter] intentionally abstracts every
+    occurrence of [boundName], so a field parameter bearing that same name
+    would no longer denote the independently fixed row value. *)
+Lemma
+    coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate_matches_first :
+  forall modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep,
+  modeName <> boundName ->
+  formulaName <> boundName ->
+  assignmentCodeName <> boundName ->
+  assignmentStepName <> boundName ->
+  TemplateAnd4MatchesBetaFunctionalitySide
+    coqBetaLookupFunctionalityFirstLookupOf
+    (coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate
+      boundName index
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter modeName) (ttParameter formulaName)
+      (ttParameter assignmentCodeName) (ttParameter assignmentStepName))
+    (coqFourStateTableAppendEqualityModeFunctionalityArguments
+      modeName index rowMode)
+    (coqFourStateTableAppendEqualityFormulaFunctionalityArguments
+      formulaName index rowFormula)
+    (coqFourStateTableAppendEqualityAssignmentCodeFunctionalityArguments
+      assignmentCodeName index rowAssignmentCode)
+    (coqFourStateTableAppendEqualityAssignmentStepFunctionalityArguments
+      assignmentStepName index rowAssignmentStep).
+Proof.
+  intros modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName modeName formulaName assignmentCodeName assignmentStepName
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+    hmode hformula hassignmentCode hassignmentStep.
+  unfold TemplateAnd4MatchesBetaFunctionalitySide,
+    coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate,
+    coqFourStateTableAppendNewStateLookupTemplate.
+  rewrite !templateFormulaShiftMany_and.
+  cbn [templateFormulaAbstractParameter
+    templateFormulaAbstractParameterAt
+    templateFormulaOpen templateFormulaSubst
+    templateAnd4First templateAnd4Second
+    templateAnd4Third templateAnd4Fourth].
+  repeat split.
+  - rewrite (coqFourStateTableAppendModeLookupTemplate_beta_first
+      _ _ _ _ _ _ _ _ _ _ _ _ _ rowMode).
+    unfold coqFourStateTableAppendEqualityModeFunctionalityArguments.
+    exact
+      (coqBetaLookupFunctionalityFirstLookup_shift5_abstract_open
+        boundName modeName index rowMode 7 6 hmode).
+  - rewrite (coqFourStateTableAppendFormulaLookupTemplate_beta_first
+      _ _ _ _ _ _ _ _ _ _ _ _ _ rowFormula).
+    unfold coqFourStateTableAppendEqualityFormulaFunctionalityArguments.
+    exact
+      (coqBetaLookupFunctionalityFirstLookup_shift5_abstract_open
+        boundName formulaName index rowFormula 5 4 hformula).
+  - rewrite
+      (coqFourStateTableAppendAssignmentCodeLookupTemplate_beta_first
+        _ _ _ _ _ _ _ _ _ _ _ _ _ rowAssignmentCode).
+    unfold
+      coqFourStateTableAppendEqualityAssignmentCodeFunctionalityArguments.
+    exact
+      (coqBetaLookupFunctionalityFirstLookup_shift5_abstract_open
+        boundName assignmentCodeName index rowAssignmentCode 3 2
+        hassignmentCode).
+  - rewrite
+      (coqFourStateTableAppendAssignmentStepLookupTemplate_beta_first
+        _ _ _ _ _ _ _ _ _ _ _ _ _ rowAssignmentStep).
+    unfold
+      coqFourStateTableAppendEqualityAssignmentStepFunctionalityArguments.
+    exact
+      (coqBetaLookupFunctionalityFirstLookup_shift5_abstract_open
+        boundName assignmentStepName index rowAssignmentStep 1 0
+        hassignmentStep).
+Qed.
+
 (** Equality callback for the appended row.  The shifted lookup at the
     appended bound is projected from the append witnesses themselves; the
     literal branch assumption [index = bound] then transports all four
@@ -413,9 +752,9 @@ Proof.
 Qed.
 
 (** Compare the transported appended entry with a row lookup under one
-    witnessed temporary context.  The second-side component contract is
-    definitional; the first-side contract is supplied explicitly until the
-    nested opening/shift/abstraction composition theorem is available. *)
+    witnessed temporary context.  Both four-component contracts are now
+    discharged internally: the row side is definitional, while the append
+    side uses the shift/abstraction calculation above. *)
 Theorem
     raw_codedPALocalProofOf_four_state_table_append_equality_lookup_functionality_on_witnessed_tail_under_prefix :
   forall (M : RawPAModel), RawPASatisfies M -> forall
@@ -453,10 +792,10 @@ Theorem
     index rowMode rowFormula rowAssignmentCode rowAssignmentStep in
   RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
   RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
-  TemplateAnd4MatchesBetaFunctionalitySide
-    coqBetaLookupFunctionalityFirstLookupOf fixedLookup
-    modeArguments formulaArguments assignmentCodeArguments
-    assignmentStepArguments ->
+  modeName <> boundName ->
+  formulaName <> boundName ->
+  assignmentCodeName <> boundName ->
+  assignmentStepName <> boundName ->
   RawCodedPALocalProofOf M
     (rawTemplateContextCodeOnTail translation baseContext prefix)
     (rawTemplateFormula translation fixedLookup) fixedLookupRoot ->
@@ -491,7 +830,9 @@ Proof.
     fixedLookupRoot rowLookupRoot
     modeArguments formulaArguments assignmentCodeArguments
     assignmentStepArguments fixedLookup rowLookup
-    hprefix hbase hfixedMatches hfixedLookup hrowLookup.
+    hprefix hbase hmodeFresh hformulaFresh
+    hassignmentCodeFresh hassignmentStepFresh
+    hfixedLookup hrowLookup.
   cbn zeta in *.
   exact
     (raw_codedPALocalProofOf_beta_lookup_functionality_and4_on_witnessed_tail_under_prefix
@@ -514,7 +855,15 @@ Proof.
       (coqFourStateTableAppendEqualityRowLookupTemplate
         modeName formulaName assignmentCodeName assignmentStepName
         index rowMode rowFormula rowAssignmentCode rowAssignmentStep)
-      fixedLookupRoot rowLookupRoot hprefix hbase hfixedMatches
+      fixedLookupRoot rowLookupRoot hprefix hbase
+      (coqFourStateTableAppendEqualityTransportedNewStateLookupTemplate_matches_first
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        boundName modeName formulaName assignmentCodeName assignmentStepName
+        index rowMode rowFormula rowAssignmentCode rowAssignmentStep
+        hmodeFresh hformulaFresh
+        hassignmentCodeFresh hassignmentStepFresh)
       (coqFourStateTableAppendEqualityRowLookupTemplate_matches_second
         modeName formulaName assignmentCodeName assignmentStepName
         index rowMode rowFormula rowAssignmentCode rowAssignmentStep)
