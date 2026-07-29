@@ -9,6 +9,7 @@ From FoundationModal Require Import
   PropositionalKripkePreservation PropositionalKripkeCanonical
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
   PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
+  PropositionalKripke2Hilbert
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -1330,6 +1331,109 @@ Print Assumptions pk2_transitive_iff_valid_tra1.
 Print Assumptions pk2_transitive_iff_valid_tra2.
 Print Assumptions pk2_valid_pscon_of_piecewise_strongly_connected.
 Print Assumptions pk2_pcon1_not_valid_on_piecewise_connected_frame.
+
+(** Hilbert F proof systems and their rooted arbitrary-relation semantics. *)
+Check phf_hilbert.
+Check phf_hilbert_F.
+Check phf_hilbert_F_Ser.
+Check phf_hilbert_F_Rfl.
+Check phf_hilbert_F_Sym.
+Check phf_hilbert_F_Rfl_Sym.
+Check phf_hilbert_F_Tra1.
+Check phf_hilbert_F_Rfl_Tra1.
+Check phf_F_schema_in_F_Ser.
+Check phf_F_schema_in_F_Rfl.
+Check phf_F_schema_in_F_Sym.
+Check phf_F_schema_in_F_Tra1.
+Check phf_F_Rfl_schema_in_F_Rfl_Sym.
+Check phf_F_Sym_schema_in_F_Rfl_Sym.
+Check phf_F_Rfl_schema_in_F_Rfl_Tra1.
+Check phf_F_Tra1_schema_in_F_Rfl_Tra1.
+Check phf_proof.
+Check phf_provable.
+Check phf_provable_of_schema.
+Check phf_proof_of_schema_inclusion.
+Check phf_provable_of_schema_inclusion.
+Check phf_proof_substitute.
+Check phf_provable_substitute.
+Check phf_proof_of_provable_schema.
+Check phf_provable_of_provable_schema.
+Check phf_logic_included.
+Check phf_logic_strictly_included.
+Check phf_consistent.
+Check phf_hilbert_logic.
+Check phf_hilbert_logic_iff_provable.
+Check phf_hilbert_logic_subset_of_schema_inclusion.
+Check phf_hilbert_logic_subset_of_provable_schema.
+Check phf_logic_F.
+Check phf_logic_F_Ser.
+Check phf_logic_F_Rfl.
+Check phf_logic_F_Sym.
+Check phf_logic_F_Rfl_Sym.
+Check phf_logic_F_Tra1.
+Check phf_logic_F_Rfl_Tra1.
+Check phf_proof_pk2_model_sound.
+Check phf_pk2_frame_sound.
+Check phf_pk2_frame_complete.
+Check phf_pk2_model_sound.
+Check phf_pk2_frame_sound_of_schema.
+Check phf_pk2_model_sound_of_schema.
+Check phf_consistent_of_frame_sound.
+Check phf_consistent_of_model_sound.
+Check phf_included_of_pk2_frame_class_subset.
+Check phf_trivial_frame.
+Check phf_trivial_reflexive.
+Check phf_trivial_symmetric.
+Check phf_trivial_transitive.
+Check phf_F_pk2_sound.
+Check phf_F_Ser_pk2_sound.
+Check phf_F_Rfl_pk2_sound.
+Check phf_F_Sym_pk2_sound.
+Check phf_F_Rfl_Sym_pk2_sound.
+Check phf_F_Tra1_pk2_sound.
+Check phf_F_Rfl_Tra1_pk2_sound.
+Check phf_F_consistent.
+Check phf_F_Ser_consistent.
+Check phf_F_Rfl_consistent.
+Check phf_F_Sym_consistent.
+Check phf_F_Rfl_Sym_consistent.
+Check phf_F_Tra1_consistent.
+Check phf_F_Rfl_Tra1_consistent.
+Check phf_serial_nonreflexive_frame.
+Check phf_serial_nonreflexive_serial.
+Check phf_serial_nonreflexive_symmetric.
+Check phf_serial_nonreflexive_not_reflexive.
+Check phf_reflexive_nonsymmetric_frame.
+Check phf_reflexive_nonsymmetric_reflexive.
+Check phf_reflexive_nonsymmetric_not_symmetric.
+Check phf_gap_frame.
+Check phf_gap_true_reflexive.
+Check phf_gap_not_transitive.
+Check pk2_K_counter_not_serial.
+Check pk2_K_counter_transitive.
+Check phf_F_unprovable_noncontradiction.
+Check phf_F_strictly_included_F_Ser.
+Check phf_F_strictly_included_F_Sym.
+Check phf_F_strictly_included_F_Tra1.
+Check phf_F_Rfl_not_included_F_Ser.
+Check phf_F_Rfl_strictly_included_F_Rfl_Sym.
+Check phf_F_Sym_strictly_included_F_Rfl_Sym.
+Check phf_F_Rfl_strictly_included_F_Rfl_Tra1.
+Check phf_F_Tra1_strictly_included_F_Rfl_Tra1.
+Print Assumptions phf_proof_of_schema_inclusion.
+Print Assumptions phf_proof_substitute.
+Print Assumptions phf_provable_of_provable_schema.
+Print Assumptions phf_proof_pk2_model_sound.
+Print Assumptions phf_pk2_frame_sound_of_schema.
+Print Assumptions phf_pk2_model_sound_of_schema.
+Print Assumptions phf_consistent_of_frame_sound.
+Print Assumptions phf_included_of_pk2_frame_class_subset.
+Print Assumptions phf_F_pk2_sound.
+Print Assumptions phf_F_Rfl_Tra1_pk2_sound.
+Print Assumptions phf_F_unprovable_noncontradiction.
+Print Assumptions phf_F_strictly_included_F_Ser.
+Print Assumptions phf_F_Rfl_strictly_included_F_Rfl_Sym.
+Print Assumptions phf_F_Tra1_strictly_included_F_Rfl_Tra1.
 
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
