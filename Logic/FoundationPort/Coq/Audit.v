@@ -157,6 +157,10 @@ Check rew_shift_comp_subst.
 Check rew_rewrite_comp_emb.
 Check rew_shift_comp_emb.
 Check rew_comp_emb_empty.
+Check rew_subst_bound_occurs.
+Check rew_subst_positive.
+Check rew_emb_substs_bound_occurs.
+Check rew_emb_substs_positive.
 Check rew_q.
 Check rew_q_bshift_apply.
 Check rew_q_comp_apply.
@@ -247,6 +251,10 @@ Print Assumptions rew_bshift_comp_subst.
 Print Assumptions rew_shift_comp_subst.
 Print Assumptions rew_rewrite_comp_emb.
 Print Assumptions rew_comp_emb_empty.
+Print Assumptions rew_subst_bound_occurs.
+Print Assumptions rew_subst_positive.
+Print Assumptions rew_emb_substs_bound_occurs.
+Print Assumptions rew_emb_substs_positive.
 Print Assumptions rew_q_bshift_apply.
 Print Assumptions rew_q_comp_apply.
 Print Assumptions rew_shift_injective.

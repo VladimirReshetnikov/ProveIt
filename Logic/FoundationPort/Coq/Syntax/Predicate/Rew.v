@@ -378,6 +378,78 @@ Proof.
   - intro x; exact (False_rect _ (empty x)).
 Qed.
 
+Lemma rew_subst_bound_occurs : forall L X n m
+    (v : Fin.t n -> semiterm L X m) (t : semiterm L X n) j,
+  semiterm_bound_occurs j (rew_apply (rew_subst v) t) <->
+  exists i : Fin.t n,
+    semiterm_bound_occurs i t /\ semiterm_bound_occurs j (v i).
+Proof.
+  intros L X n m v t; induction t as [i | x | k f a IH]; intro j; simpl.
+  - split.
+    + intro H. exists i. now split.
+    + intros [i' [-> H]]. exact H.
+  - split; [contradiction | intros [i [H _]]; contradiction].
+  - split.
+    + intros [c Hc].
+      apply (proj1 (IH c j)) in Hc.
+      destruct Hc as [i [Hi Hj]].
+      exists i. split; [now exists c | exact Hj].
+    + intros [i [[c Hc] Hj]].
+      exists c. apply (proj2 (IH c j)).
+      exists i. now split.
+Qed.
+
+Lemma rew_subst_positive : forall L X n m
+    (v : Fin.t n -> semiterm L X (S m)) (t : semiterm L X n),
+  semiterm_positive (rew_apply (rew_subst v) t) <->
+  forall i, semiterm_bound_occurs i t -> semiterm_positive (v i).
+Proof.
+  intros L X n m v t. unfold semiterm_positive.
+  split.
+  - intros H i Hi j Hj. apply (H j).
+    apply (proj2 (rew_subst_bound_occurs v t j)).
+    exists i. now split.
+  - intros H j Hj.
+    apply (proj1 (rew_subst_bound_occurs v t j)) in Hj.
+    destruct Hj as [i [Hi Hj]]. exact (H i Hi j Hj).
+Qed.
+
+Lemma rew_emb_substs_bound_occurs : forall L X n m
+    (v : Fin.t n -> semiterm L X m) (t : semiterm L Empty_set n) j,
+  semiterm_bound_occurs j (rew_apply (rew_emb_substs v) t) <->
+  exists i : Fin.t n,
+    semiterm_bound_occurs i t /\ semiterm_bound_occurs j (v i).
+Proof.
+  intros L X n m v t; induction t as [i | x | k f a IH]; intro j; simpl.
+  - split.
+    + intro H. exists i. now split.
+    + intros [i' [-> H]]. exact H.
+  - destruct x.
+  - split.
+    + intros [c Hc].
+      apply (proj1 (IH c j)) in Hc.
+      destruct Hc as [i [Hi Hj]].
+      exists i. split; [now exists c | exact Hj].
+    + intros [i [[c Hc] Hj]].
+      exists c. apply (proj2 (IH c j)).
+      exists i. now split.
+Qed.
+
+Lemma rew_emb_substs_positive : forall L X n m
+    (v : Fin.t n -> semiterm L X (S m)) (t : semiterm L Empty_set n),
+  semiterm_positive (rew_apply (rew_emb_substs v) t) <->
+  forall i, semiterm_bound_occurs i t -> semiterm_positive (v i).
+Proof.
+  intros L X n m v t. unfold semiterm_positive.
+  split.
+  - intros H i Hi j Hj. apply (H j).
+    apply (proj2 (rew_emb_substs_bound_occurs v t j)).
+    exists i. now split.
+  - intros H j Hj.
+    apply (proj1 (rew_emb_substs_bound_occurs v t j)) in Hj.
+    destruct Hj as [i [Hi Hj]]. exact (H i Hi j Hj).
+Qed.
+
 Lemma rew_q_bvar_zero : forall L X n Y m (w : rew L X n Y m),
   rew_apply (rew_q w) (Semiterm_bvar Fin.F1) = Semiterm_bvar Fin.F1.
 Proof. reflexivity. Qed.
