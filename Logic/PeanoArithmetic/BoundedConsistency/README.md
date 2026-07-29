@@ -4423,9 +4423,30 @@ finite universal prefix certifies its five literal binders, and the resulting
 body is definitionally `i < S b -> rowLookup -> production`.  In particular,
 the less-than-successor compiler receives the old bound `b` (its antecedent
 constructor supplies the successor), and the four-column lookup is identical
-to the row compiler's equality-side lookup.  Only the final local polarity
-production remains to be identified with the concrete closed-row production;
-the binder, arithmetic, and lookup layers are no longer part of that seam.
+to the row compiler's equality-side lookup.  An equality-parametric adapter
+now rewrites a completed concrete closed-row implication to the opened local
+production and closes all five universal binders, yielding exactly the
+extracted seventh global field under the eight-witness append context.  Thus
+only the final local polarity production equality remains to be established;
+the growing-tail transport, binder, arithmetic, and lookup layers are no
+longer part of that seam.
+
+The adapter is also composed through the complete global closure.  Given the
+append source proof, the concrete row implication, and that one production
+equality, the public theorem now returns the unshifted
+`dynamicTruthGlobalFormula` on the empty template prefix.  Consequently the
+remaining normalization lemma can be plugged into a single endpoint rather
+than coordinating the five row binders, ten introductions, or eight append
+eliminations itself.
+
+The production equality has been split once more.  Structural lemmas prove
+that finite named-parameter replacement is inert on every embedded ordinary
+PA term or formula, including underneath binders.  Hence the concrete
+closed-row production instantiated by `embedPAFormula localSigma` and
+`embedPAFormula localPi` is already the literal mode-zero/mode-one polarity
+split.  What remains is solely the scoped opening calculation showing that
+the ten global witnesses act identically on the first thirteen local-row
+variables; variables outside that scope intentionally need not be fixed.
 
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
