@@ -9,10 +9,12 @@
 *)
 
 From Stdlib Require Import List.
+From FirstOrder Require Import Fol.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
+  CodedProof
   RawCodedSyntaxConstructors
   RawCodedPALocalProofExistential
   RawCodedProofAssumptionLeaf
@@ -33,6 +35,7 @@ Module PABoundedRawCodedFourStateTableAppendExistentialElimination.
 
 Import ListNotations.
 Import PA.
+Import PABoundedCodedProof.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
@@ -460,6 +463,136 @@ Proof.
   - cbn [templateContextShiftMany templateFormulaShiftMany
       templateContextShift templateContextRename].
     apply ih.
+Qed.
+
+Lemma templateContextShift_app : forall left right,
+  templateContextShift (left ++ right) =
+    templateContextShift left ++ templateContextShift right.
+Proof.
+  intros left right.
+  unfold templateContextShift, templateContextRename.
+  apply map_app.
+Qed.
+
+Lemma templateContextShiftMany_app : forall count left right,
+  templateContextShiftMany count (left ++ right) =
+    templateContextShiftMany count left ++
+      templateContextShiftMany count right.
+Proof.
+  induction count as [|smaller ih]; intros left right.
+  - reflexivity.
+  - cbn [templateContextShiftMany].
+    rewrite templateContextShift_app.
+    apply ih.
+Qed.
+
+(** The temporary assumptions preceding a witnessed PA tail in the exact
+    successor-row construction.  Eight append witnesses are introduced
+    first; shifting their context five more times accounts for the row's
+    index, mode, formula, assignment-code, and assignment-step variables. *)
+Definition coqFourStateTableAppendRowPrefix
+    (modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep : TemplateTerm)
+    : TemplateContext :=
+  templateContextShiftMany 5
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep []).
+
+(** The computed append context is affine in its tail.  The eight
+    existential eliminations and five row binders shift that tail exactly
+    thirteen times, while the finite temporary prefix is independent of it. *)
+Lemma coqFourStateTableAppendRowContext_affine : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep context,
+  templateContextShiftMany 5
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep context) =
+  coqFourStateTableAppendRowPrefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep ++
+  templateContextShiftMany 13 context.
+Proof.
+  intros.
+  unfold coqFourStateTableAppendRowPrefix,
+    coqFourStateTableAppendWitnessContext,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fixedLevelEx8.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst
+    templateExistentialEliminationContext
+    templateContextShiftMany templateContextShift
+    templateContextRename List.map List.app].
+  reflexivity.
+Qed.
+
+(** Standard PA axioms are sentences, so neither append eigenvariables nor
+    row eigenvariables alter their embedded template tail. *)
+Lemma templateContextShift_embedPAAxiomWitnesses_fixed : forall witnesses,
+  templateContextShift (embedPAContext (map witnessedAxiom witnesses)) =
+  embedPAContext (map witnessedAxiom witnesses).
+Proof.
+  intro witnesses.
+  rewrite <- embedPAContext_shift.
+  unfold embedPAContext. rewrite !map_map.
+  apply map_ext. intro witness.
+  rewrite (Formula.rename_eq_of_sentence
+    (witnessedAxiom witness)).
+  - reflexivity.
+  - apply Formula.sentence_ax_s.
+    apply witnessedAxiom_is_Ax_s.
+Qed.
+
+Lemma templateContextShiftMany_embedPAAxiomWitnesses_fixed : forall
+    count witnesses,
+  templateContextShiftMany count
+    (embedPAContext (map witnessedAxiom witnesses)) =
+  embedPAContext (map witnessedAxiom witnesses).
+Proof.
+  induction count as [|smaller ih]; intro witnesses.
+  - reflexivity.
+  - cbn [templateContextShiftMany].
+    rewrite templateContextShift_embedPAAxiomWitnesses_fixed.
+    apply ih.
+Qed.
+
+Corollary coqFourStateTableAppendRowContext_witnessed_tail : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep witnesses,
+  templateContextShiftMany 5
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      (embedPAContext (map witnessedAxiom witnesses))) =
+  coqFourStateTableAppendRowPrefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep ++
+  embedPAContext (map witnessedAxiom witnesses).
+Proof.
+  intros.
+  rewrite coqFourStateTableAppendRowContext_affine.
+  rewrite templateContextShiftMany_embedPAAxiomWitnesses_fixed.
+  reflexivity.
 Qed.
 
 (** Finite shift preserves transparent conjunctions. *)

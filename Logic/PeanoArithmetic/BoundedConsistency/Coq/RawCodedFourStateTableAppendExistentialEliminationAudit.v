@@ -32,6 +32,13 @@ Check coqFourStateTableAppendWitnessTail.
 Check coqFourStateTableAppendWitnessContext_success.
 Check coqFourStateTableAppendWitnessContext_shape.
 Check templateContextShiftMany_cons.
+Check templateContextShift_app.
+Check templateContextShiftMany_app.
+Check coqFourStateTableAppendRowPrefix.
+Check coqFourStateTableAppendRowContext_affine.
+Check templateContextShift_embedPAAxiomWitnesses_fixed.
+Check templateContextShiftMany_embedPAAxiomWitnesses_fixed.
+Check coqFourStateTableAppendRowContext_witnessed_tail.
 Check templateFormulaShiftMany_and.
 Check templateFormulaProjection_shift_many.
 Check templateAndFirst_shift_many.
@@ -98,6 +105,11 @@ Check raw_codedPALocalProofOf_four_state_table_append_ex8_elimination.
 Print Assumptions coqFourStateTableAppendWitnessContext_success.
 Print Assumptions coqFourStateTableAppendWitnessContext_shape.
 Print Assumptions templateContextShiftMany_cons.
+Print Assumptions templateContextShiftMany_app.
+Print Assumptions coqFourStateTableAppendRowContext_affine.
+Print Assumptions
+  templateContextShiftMany_embedPAAxiomWitnesses_fixed.
+Print Assumptions coqFourStateTableAppendRowContext_witnessed_tail.
 Print Assumptions templateFormulaShiftMany_and.
 Print Assumptions templateFormulaProjection_shift_many.
 Print Assumptions templateFormulaShiftMany_and4_shape.
