@@ -1,0 +1,29 @@
+(** Audit surface for capture-avoiding template-parameter abstraction. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplateParameterAbstraction.
+
+Import PABoundedRawCodedTemplateParameterAbstraction.
+
+Check templateTermAbstractParameterAt.
+Check templateTermsAbstractParameterAt.
+Check templateFormulaAbstractParameterAt.
+Check templateFormulaAbstractParameter.
+
+Check templateOpeningSubstAt_after_shift.
+Check templateOpeningSubstAt_parameter_at.
+Check templateTermAbstractParameterAt_open.
+Check templateTermsAbstractParameterAt_open.
+Check templateFormulaAbstractParameterAt_open.
+Check templateFormulaAbstractParameter_open.
+Check templateTermAsPATerm.
+Check templateFormulaAsPAFormula.
+Check templateTermAsPATerm_sound.
+Check templateFormulaAsPAFormula_sound.
+
+Print Assumptions templateOpeningSubstAt_after_shift.
+Print Assumptions templateTermAbstractParameterAt_open.
+Print Assumptions templateFormulaAbstractParameterAt_open.
+Print Assumptions templateFormulaAbstractParameter_open.
+Print Assumptions templateTermAsPATerm_sound.
+Print Assumptions templateFormulaAsPAFormula_sound.
