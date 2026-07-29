@@ -9,7 +9,7 @@
   facts in the dependency order required by the global successor.
 *)
 
-From Stdlib Require Import List Lia.
+From Stdlib Require Import List Arith Lia.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
@@ -24,6 +24,7 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruthTraversal
   RawCodedTemplateSyntax
   RawCodedTemplateRenamingSubstitution
+  RawCodedTemplateStructuralTranslation
   RawCodedScopedFormulaDiagonalSubstitution
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
@@ -61,6 +62,7 @@ Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFixedLevelTruthTraversal.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateRenamingSubstitution.
+Import PABoundedRawCodedTemplateStructuralTranslation.
 Import PABoundedRawCodedScopedFormulaDiagonalSubstitution.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
@@ -583,6 +585,189 @@ Proof.
     localPi bound hPi).
   reflexivity.
 Qed.
+
+(** ------------------------------------------------------------------
+    Parameter replacement and context shifts.
+
+    A temporary prefix is shifted once whenever a new row variable is
+    introduced.  Named parameters are inert under that shift, whereas the
+    concrete term replacing a parameter must itself be shifted.  The
+    following depth-indexed lemmas establish that these two orders agree,
+    including below quantifiers and inside opaque argument lists. *)
+
+Lemma templateOpeningSubstAt_rename_succ_at_depth : forall
+    depth replacement,
+  templateOpeningSubstAt depth (templateTermRename S replacement) depth =
+  templateTermRename (templateShiftRenamingAt depth)
+    (templateOpeningSubstAt depth replacement depth).
+Proof.
+  induction depth as [|depth ih]; intro replacement.
+  - reflexivity.
+  - cbn [templateOpeningSubstAt templateTermUpSubst].
+    rewrite ih, !templateTermRename_comp.
+    apply templateTermRename_ext. intro index.
+    rewrite templateShiftRenamingAt_succ.
+    destruct index; reflexivity.
+Qed.
+
+Lemma templateTermReplaceParameterAt_rename_succ : forall
+    name depth replacement input,
+  templateTermReplaceParameterAt name depth
+    (templateTermRename S replacement)
+    (templateTermRename (templateShiftRenamingAt depth) input) =
+  templateTermRename (templateShiftRenamingAt depth)
+    (templateTermReplaceParameterAt name depth replacement input).
+Proof.
+  intros name depth replacement input.
+  induction input;
+    cbn [templateTermReplaceParameterAt templateTermRename].
+  - reflexivity.
+  - destruct (Nat.eqb t name).
+    + apply templateOpeningSubstAt_rename_succ_at_depth.
+    + reflexivity.
+  - reflexivity.
+  - now rewrite IHinput.
+  - now rewrite IHinput1, IHinput2.
+  - now rewrite IHinput1, IHinput2.
+Qed.
+
+Lemma templateFormulaReplaceParameterAt_rename_succ : forall
+    name depth replacement input,
+  templateFormulaReplaceParameterAt name depth
+    (templateTermRename S replacement)
+    (templateFormulaRename (templateShiftRenamingAt depth) input) =
+  templateFormulaRename (templateShiftRenamingAt depth)
+    (templateFormulaReplaceParameterAt name depth replacement input).
+Proof.
+  intros name depth replacement input. revert depth.
+  induction input; intro depth;
+    cbn [templateFormulaReplaceParameterAt templateFormulaRename].
+  - now rewrite !templateTermReplaceParameterAt_rename_succ.
+  - reflexivity.
+  - now rewrite IHinput1, IHinput2.
+  - now rewrite IHinput1, IHinput2.
+  - now rewrite IHinput1, IHinput2.
+  - f_equal. rewrite <- !templateFormulaRename_shift_succ.
+    apply IHinput.
+  - f_equal. rewrite <- !templateFormulaRename_shift_succ.
+    apply IHinput.
+  - unfold templateTermsReplaceParameterAt, templateTermsRename.
+    rewrite !map_map. f_equal.
+    apply map_ext. intro argument.
+    apply templateTermReplaceParameterAt_rename_succ.
+Qed.
+
+Corollary templateFormulaReplaceParameter_rename_succ : forall
+    name replacement input,
+  templateFormulaReplaceParameter name (templateTermRename S replacement)
+    (templateFormulaRename S input) =
+  templateFormulaRename S
+    (templateFormulaReplaceParameter name replacement input).
+Proof.
+  intros name replacement input.
+  unfold templateFormulaReplaceParameter.
+  change
+    (templateFormulaReplaceParameterAt name 0
+      (templateTermRename S replacement)
+      (templateFormulaRename (templateShiftRenamingAt 0) input) =
+     templateFormulaRename (templateShiftRenamingAt 0)
+      (templateFormulaReplaceParameterAt name 0 replacement input)).
+  apply templateFormulaReplaceParameterAt_rename_succ.
+Qed.
+
+Definition templateParameterBindingsRename
+    (renaming : nat -> nat)
+    (bindings : list (TemplateParameterName * TemplateTerm))
+    : list (TemplateParameterName * TemplateTerm) :=
+  map (fun binding =>
+    (fst binding, templateTermRename renaming (snd binding))) bindings.
+
+Lemma templateFormulaReplaceParametersDirect_rename_succ : forall
+    bindings input,
+  templateFormulaReplaceParametersDirect
+    (templateParameterBindingsRename S bindings)
+    (templateFormulaRename S input) =
+  templateFormulaRename S
+    (templateFormulaReplaceParametersDirect bindings input).
+Proof.
+  induction bindings as [|[name replacement] remaining ih]; intro input.
+  - reflexivity.
+  - change
+      (templateFormulaReplaceParametersDirect
+        (templateParameterBindingsRename S remaining)
+        (templateFormulaReplaceParameter name
+          (templateTermRename S replacement)
+          (templateFormulaRename S input)) =
+       templateFormulaRename S
+        (templateFormulaReplaceParametersDirect remaining
+          (templateFormulaReplaceParameter name replacement input))).
+    rewrite templateFormulaReplaceParameter_rename_succ.
+    apply ih.
+Qed.
+
+Definition templateContextReplaceParametersDirect
+    (bindings : list (TemplateParameterName * TemplateTerm))
+    (context : TemplateContext) : TemplateContext :=
+  map (templateFormulaReplaceParametersDirect bindings) context.
+
+Lemma templateContextReplaceParametersDirect_shift : forall
+    bindings context,
+  templateContextReplaceParametersDirect
+    (templateParameterBindingsRename S bindings)
+    (templateContextShift context) =
+  templateContextShift
+    (templateContextReplaceParametersDirect bindings context).
+Proof.
+  intros bindings context.
+  unfold templateContextReplaceParametersDirect,
+    templateContextShift, templateContextRename.
+  rewrite !map_map.
+  apply map_ext. intro formula.
+  apply templateFormulaReplaceParametersDirect_rename_succ.
+Qed.
+
+Fixpoint templateParameterBindingsShiftMany
+    (count : nat)
+    (bindings : list (TemplateParameterName * TemplateTerm))
+    : list (TemplateParameterName * TemplateTerm) :=
+  match count with
+  | 0 => bindings
+  | S smaller =>
+      templateParameterBindingsShiftMany smaller
+        (templateParameterBindingsRename S bindings)
+  end.
+
+Lemma templateContextReplaceParametersDirect_shift_many : forall
+    count bindings context,
+  templateContextReplaceParametersDirect
+    (templateParameterBindingsShiftMany count bindings)
+    (templateContextShiftMany count context) =
+  templateContextShiftMany count
+    (templateContextReplaceParametersDirect bindings context).
+Proof.
+  induction count as [|smaller ih]; intros bindings context.
+  - reflexivity.
+  - cbn [templateParameterBindingsShiftMany templateContextShiftMany].
+    rewrite (ih (templateParameterBindingsRename S bindings)
+      (templateContextShift context)).
+    rewrite templateContextReplaceParametersDirect_shift.
+    reflexivity.
+Qed.
+
+(** The four carrier parameters used by the row compiler are instantiated at
+    the root of the five row binders.  At that root, the mode is the closed
+    metatheoretic numeral and the other three fields are the surrounding
+    global-traversal variables. *)
+Definition coqFourStateTableAppendRootFieldBindings
+    (rootMode : nat) :
+    list (TemplateParameterName * TemplateTerm) :=
+  coqFourStateTableAppendEqualityFieldBindings
+    coqFourStateTableAppendRowModeParameterName
+    coqFourStateTableAppendRowFormulaParameterName
+    coqFourStateTableAppendRowAssignmentCodeParameterName
+    coqFourStateTableAppendRowAssignmentStepParameterName
+    (embedPATerm (Term.numeral rootMode))
+    (ttVar 0) (ttVar 1) (ttVar 2).
 
 (** Pointwise equality of translated context entries is enough to identify
     their folds over every raw tail.  This formulation avoids requiring the

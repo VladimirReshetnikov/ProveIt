@@ -4476,3 +4476,13 @@ root-level corollary rewrites opening after an arbitrary substitution into
 one composed substitution.  These identities are syntax-generic and
 assumption-free; they provide the normalization mechanism needed for the
 remaining append first-side contract without table-specific reduction hacks.
+
+Finite named-parameter replacement now commutes with a one-step template
+shift at every binder depth, including opaque argument lists.  The result is
+lifted to ordered finite binding lists, contexts, and arbitrary iterated
+context shifts.  In particular, a replacement term is shifted together with
+the context rather than being treated as a closed atom.  This distinction is
+essential for the append row: its eight witness assumptions occur at eight
+successive depths below the five row binders.  The next context adapter must
+therefore apply the verified shift law at each witness depth; a uniform
+unshifted replacement over the whole prefix would be capture-incorrect.
