@@ -4280,6 +4280,15 @@ represented case split.  The remaining concrete work is to instantiate the
 generic production formula with the closed successor-row body and supply its
 predecessor production from the inherited traversal hypothesis.
 
+Parameter transport now has a transparent normalization theorem as well as
+its proof-producing abstract/open interface.  Capture-avoiding replacement
+is defined recursively at every binder depth, and arbitrary opening of an
+abstracted named parameter is proved literally equal to that direct
+replacement.  The finite four-field transport likewise normalizes to an
+ordered direct-replacement fold.  Concrete successor-row syntax identities
+can therefore reduce through the mode, formula, assignment-code, and
+assignment-step fields without unfolding represented equality proofs.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a

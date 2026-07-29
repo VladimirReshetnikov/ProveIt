@@ -231,6 +231,32 @@ Fixpoint templateFormulaReplaceParameters
           (templateFormulaAbstractParameter name input))
   end.
 
+(** Transparent normal form for the same ordered finite replacement.  This
+    form is intended for concrete syntax calculations: unlike the
+    proof-producing abstract/open spelling, it reduces structurally through
+    the target formula. *)
+Fixpoint templateFormulaReplaceParametersDirect
+    (bindings : list (TemplateParameterName * TemplateTerm))
+    (input : TemplateFormula) : TemplateFormula :=
+  match bindings with
+  | [] => input
+  | (name, replacement) :: remaining =>
+      templateFormulaReplaceParametersDirect remaining
+        (templateFormulaReplaceParameter name replacement input)
+  end.
+
+Theorem templateFormulaReplaceParameters_eq_direct : forall bindings input,
+  templateFormulaReplaceParameters bindings input =
+  templateFormulaReplaceParametersDirect bindings input.
+Proof.
+  induction bindings as [|[name replacement] remaining ih]; intro input.
+  - reflexivity.
+  - cbn [templateFormulaReplaceParameters
+      templateFormulaReplaceParametersDirect].
+    rewrite templateFormulaAbstractParameter_open_as_replace.
+    apply ih.
+Qed.
+
 (** Iterate reverse parameter transport for an arbitrary finite family.
     Every equality root and every intermediate proof remains in one literal
     context; no adequacy, freshness, or context-extension hypothesis is

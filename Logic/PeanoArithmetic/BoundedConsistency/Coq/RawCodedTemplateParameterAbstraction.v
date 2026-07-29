@@ -198,6 +198,160 @@ Proof.
 Qed.
 
 (** ------------------------------------------------------------------
+    Direct capture-avoiding replacement of a named parameter.
+
+    The abstract/open construction is the proof-producing interface, but
+    concrete clients need a transparent syntax normal form.  At binder depth
+    [depth], an occurrence of the selected parameter is replaced by exactly
+    the lifted term that [templateOpeningSubstAt] assigns to the freshly
+    inserted variable.  Ordinary variables are left unchanged because the
+    insertion performed by abstraction is cancelled by opening. *)
+
+Fixpoint templateTermReplaceParameterAt
+    (name : TemplateParameterName) (depth : nat)
+    (replacement : TemplateTerm) (input : TemplateTerm) : TemplateTerm :=
+  match input with
+  | ttVar index => ttVar index
+  | ttParameter current =>
+      if Nat.eqb current name
+      then templateOpeningSubstAt depth replacement depth
+      else ttParameter current
+  | ttZero => ttZero
+  | ttSucc child =>
+      ttSucc (templateTermReplaceParameterAt name depth replacement child)
+  | ttAdd lhs rhs =>
+      ttAdd
+        (templateTermReplaceParameterAt name depth replacement lhs)
+        (templateTermReplaceParameterAt name depth replacement rhs)
+  | ttMul lhs rhs =>
+      ttMul
+        (templateTermReplaceParameterAt name depth replacement lhs)
+        (templateTermReplaceParameterAt name depth replacement rhs)
+  end.
+
+Definition templateTermsReplaceParameterAt
+    (name : TemplateParameterName) (depth : nat)
+    (replacement : TemplateTerm) (inputs : list TemplateTerm)
+    : list TemplateTerm :=
+  map (templateTermReplaceParameterAt name depth replacement) inputs.
+
+Fixpoint templateFormulaReplaceParameterAt
+    (name : TemplateParameterName) (depth : nat)
+    (replacement : TemplateTerm) (input : TemplateFormula)
+    : TemplateFormula :=
+  match input with
+  | tfEq lhs rhs =>
+      tfEq
+        (templateTermReplaceParameterAt name depth replacement lhs)
+        (templateTermReplaceParameterAt name depth replacement rhs)
+  | tfBot => tfBot
+  | tfImp lhs rhs =>
+      tfImp
+        (templateFormulaReplaceParameterAt name depth replacement lhs)
+        (templateFormulaReplaceParameterAt name depth replacement rhs)
+  | tfAnd lhs rhs =>
+      tfAnd
+        (templateFormulaReplaceParameterAt name depth replacement lhs)
+        (templateFormulaReplaceParameterAt name depth replacement rhs)
+  | tfOr lhs rhs =>
+      tfOr
+        (templateFormulaReplaceParameterAt name depth replacement lhs)
+        (templateFormulaReplaceParameterAt name depth replacement rhs)
+  | tfAll body =>
+      tfAll
+        (templateFormulaReplaceParameterAt name (S depth) replacement body)
+  | tfEx body =>
+      tfEx
+        (templateFormulaReplaceParameterAt name (S depth) replacement body)
+  | tfOpaque predicate arguments =>
+      tfOpaque predicate
+        (templateTermsReplaceParameterAt name depth replacement arguments)
+  end.
+
+Definition templateFormulaReplaceParameter
+    (name : TemplateParameterName) (replacement : TemplateTerm)
+    (input : TemplateFormula) : TemplateFormula :=
+  templateFormulaReplaceParameterAt name 0 replacement input.
+
+Theorem templateTermAbstractParameterAt_open_as_replace : forall
+    name depth replacement input,
+  templateTermSubst (templateOpeningSubstAt depth replacement)
+    (templateTermAbstractParameterAt name depth input) =
+  templateTermReplaceParameterAt name depth replacement input.
+Proof.
+  intros name depth replacement input.
+  induction input as
+      [index | current | | child ih | lhs ihlhs rhs ihrhs |
+       lhs ihlhs rhs ihrhs]; cbn
+      [templateTermAbstractParameterAt templateTermSubst
+       templateTermReplaceParameterAt].
+  - apply templateOpeningSubstAt_after_shift.
+  - destruct (Nat.eqb current name); reflexivity.
+  - reflexivity.
+  - now rewrite ih.
+  - now rewrite ihlhs, ihrhs.
+  - now rewrite ihlhs, ihrhs.
+Qed.
+
+Lemma templateTermsAbstractParameterAt_open_as_replace : forall
+    name depth replacement inputs,
+  templateTermsSubst (templateOpeningSubstAt depth replacement)
+    (templateTermsAbstractParameterAt name depth inputs) =
+  templateTermsReplaceParameterAt name depth replacement inputs.
+Proof.
+  intros name depth replacement inputs.
+  unfold templateTermsSubst, templateTermsAbstractParameterAt,
+    templateTermsReplaceParameterAt.
+  rewrite map_map.
+  induction inputs as [|input inputs ih]; cbn.
+  - reflexivity.
+  - f_equal.
+    + apply templateTermAbstractParameterAt_open_as_replace.
+    + exact ih.
+Qed.
+
+Theorem templateFormulaAbstractParameterAt_open_as_replace : forall
+    name depth replacement input,
+  templateFormulaSubst (templateOpeningSubstAt depth replacement)
+    (templateFormulaAbstractParameterAt name depth input) =
+  templateFormulaReplaceParameterAt name depth replacement input.
+Proof.
+  intros name depth replacement input. revert depth.
+  induction input as
+      [lhs rhs | | lhs ihlhs rhs ihrhs | lhs ihlhs rhs ihrhs |
+       lhs ihlhs rhs ihrhs | body ihbody | body ihbody |
+       predicate arguments]; intro depth;
+    cbn [templateFormulaAbstractParameterAt templateFormulaSubst
+      templateFormulaReplaceParameterAt templateTermSubst
+      templateTermsSubst].
+  - now rewrite !templateTermAbstractParameterAt_open_as_replace.
+  - reflexivity.
+  - now rewrite ihlhs, ihrhs.
+  - now rewrite ihlhs, ihrhs.
+  - now rewrite ihlhs, ihrhs.
+  - f_equal. exact (ihbody (S depth)).
+  - f_equal. exact (ihbody (S depth)).
+  - f_equal. apply templateTermsAbstractParameterAt_open_as_replace.
+Qed.
+
+(** Root-level normalization used by finite represented parameter transport. *)
+Corollary templateFormulaAbstractParameter_open_as_replace : forall
+    name replacement input,
+  templateFormulaOpen replacement
+    (templateFormulaAbstractParameter name input) =
+  templateFormulaReplaceParameter name replacement input.
+Proof.
+  intros name replacement input.
+  unfold templateFormulaOpen, templateFormulaAbstractParameter,
+    templateFormulaReplaceParameter.
+  change
+    (templateFormulaSubst (templateOpeningSubstAt 0 replacement)
+      (templateFormulaAbstractParameterAt name 0 input) =
+     templateFormulaReplaceParameterAt name 0 replacement input).
+  apply templateFormulaAbstractParameterAt_open_as_replace.
+Qed.
+
+(** ------------------------------------------------------------------
     Reification of the ordinary PA fragment.
 
     After every intended carrier parameter has been abstracted, the source
