@@ -35,6 +35,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofContextInsertUnconditional
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedPALocalProofWitnessedContextMergeTransportComplete
+  RawCodedPAGrowingTemplateConjunction
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedPALocalProofTripleUniversalIntroduction
   RawCodedUniversalClosureDiagonalSubstitution
@@ -71,6 +72,7 @@ Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import
   PABoundedRawCodedPALocalProofWitnessedContextMergeTransportComplete.
+Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPALocalProofTripleUniversalIntroduction.
 Import PABoundedRawCodedUniversalClosureDiagonalSubstitution.
@@ -199,6 +201,106 @@ Record RawDynamicTruthPredecessorStateLogicalRootsAt
 Arguments RawDynamicTruthPredecessorStateLogicalRootsAt
   M baseContext sigmaDomain piDomain sigmaEvidence piEvidence
   : clear implicits.
+
+(** The two global traversal proofs after they have been weakened beneath the
+    exact predecessor-state assumptions.  This intermediate resource is kept
+    separate from the three logical leaves: the latter still require opening
+    the traversal witnesses and selecting the indexed row, whereas this
+    package performs only context synchronization. *)
+Record RawDynamicTruthPredecessorGlobalRootsAt
+    (M : RawPAModel) (baseContext sigmaGlobal piGlobal : M) : Prop := {
+  rawDynamicTruthPredecessorGlobalRoots_sigma : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      sigmaGlobal root;
+  rawDynamicTruthPredecessorGlobalRoots_pi : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      piGlobal root
+}.
+
+Arguments RawDynamicTruthPredecessorGlobalRootsAt
+  M baseContext sigmaGlobal piGlobal : clear implicits.
+
+(** Growing-pair output retaining the selected witnessed extension and the
+    original source-context inclusion.  The latter is what permits the
+    carried local exclusivity projection to join these global resources at
+    the aligned callback boundary. *)
+Definition RawDynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom
+    (M : RawPAModel) (sourceContext sigmaGlobal piGlobal : M) : Prop :=
+  exists targetWitnessList targetContext : M,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawDynamicTruthPredecessorGlobalRootsAt M targetContext
+      sigmaGlobal piGlobal.
+
+Arguments RawDynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom
+  M sourceContext sigmaGlobal piGlobal : clear implicits.
+
+(** Put both synchronized global proofs under the two literal state heads.
+    Each head is a quoted PA formula and hence atomically adequate.  The
+    target witness package supplies realizability of the common tail; after
+    the first insertion, ordinary context-list cons realizability supplies
+    the premise for the second. *)
+Theorem
+    raw_dynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom_of_growing_pair :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      sourceContext sigmaGlobal piGlobal,
+  RawCodedPAGrowingTemplateLocalProofPairAtEmpty M sourceContext
+    sigmaGlobal piGlobal ->
+  RawDynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom M
+    sourceContext sigmaGlobal piGlobal.
+Proof.
+  intros M hPA sourceContext sigmaGlobal piGlobal
+    (targetWitnessList & targetContext & sigmaRoot & piRoot &
+      htargetWitnessed & hincluded & hsigma & hpi).
+  assert (htargetContext : RawContextListRealizable M targetContext).
+  {
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      targetWitnessList targetContext htargetWitnessed).
+  }
+  assert (hsigmaStateContext : RawContextListRealizable M
+      (rawDynamicTruthPredecessorSigmaStateContext M targetContext)).
+  {
+    exact (raw_contextList_cons_realizable M hPA targetContext
+      (rawDynamicTruthPredecessorSigmaStateMemberBodyCode M)
+      htargetContext).
+  }
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    targetContext
+    (rawDynamicTruthPredecessorSigmaStateMemberBodyCode M)
+    sigmaGlobal sigmaRoot
+    (raw_quotedFormula_atomically_adequate M hPA
+      dynamicTruthPredecessorSigmaStateMemberBodyFormula)
+    htargetContext hsigma) as [sigmaFirstRoot hsigmaFirst].
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    (rawDynamicTruthPredecessorSigmaStateContext M targetContext)
+    (rawDynamicTruthPredecessorPiStateMemberBodyCode M)
+    sigmaGlobal sigmaFirstRoot
+    (raw_quotedFormula_atomically_adequate M hPA
+      dynamicTruthPredecessorPiStateMemberBodyFormula)
+    hsigmaStateContext hsigmaFirst) as [sigmaJointRoot hsigmaJoint].
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    targetContext
+    (rawDynamicTruthPredecessorSigmaStateMemberBodyCode M)
+    piGlobal piRoot
+    (raw_quotedFormula_atomically_adequate M hPA
+      dynamicTruthPredecessorSigmaStateMemberBodyFormula)
+    htargetContext hpi) as [piFirstRoot hpiFirst].
+  destruct (raw_codedPALocalProof_adequateConsTransplant M hPA
+    (rawDynamicTruthPredecessorSigmaStateContext M targetContext)
+    (rawDynamicTruthPredecessorPiStateMemberBodyCode M)
+    piGlobal piFirstRoot
+    (raw_quotedFormula_atomically_adequate M hPA
+      dynamicTruthPredecessorPiStateMemberBodyFormula)
+    hsigmaStateContext hpiFirst) as [piJointRoot hpiJoint].
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  constructor.
+  - exists sigmaJointRoot. exact hsigmaJoint.
+  - exists piJointRoot. exact hpiJoint.
+Qed.
 
 (** General proof-theoretic kernel.  The two assumptions need not be state
     atoms: any adequate formulas can be discharged.  Likewise the opened

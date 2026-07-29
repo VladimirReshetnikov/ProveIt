@@ -4661,3 +4661,24 @@ production roots, compiles the mode-0 and mode-1 globals independently, and
 returns both proofs in one witnessed context.  The remaining predecessor work
 is therefore formula elimination inside this common context, not another
 context-coordination or witness-selection problem.
+
+Both synchronized global proofs are now also installed beneath the exact two
+predecessor-state assumptions.  A generic growing-pair adapter retains the
+chosen witnessed target and source inclusion, proves the two-head state
+context realizable, and performs four binder-safe context transplants.  A
+small dependency-directional bridge composes this adapter with the dual-mode
+append packages, so the append source resources now yield Sigma and Pi global
+roots in one literal joint-state context.  What remains is to eliminate the
+ten global existential witnesses, project the seven traversal fields, and
+instantiate the selected row to obtain the admissibility and evidence roots.
+
+The ten-witness elimination boundary is now compiled over that literal state
+context.  The two state-member assumptions are represented as a template
+prefix over the witnessed PA tail, rather than incorrectly treated as a raw
+self-shifting tail, so every eigenvariable step shifts both assumptions.  A
+single endpoint computes the ten deep contexts, performs the complete
+existential-elimination chain, and transports the resulting conclusion back
+to the predecessor joint-state context.  The remaining continuation begins
+only after all ten global witnesses have been opened: it must project the
+seven traversal fields and instantiate the selected row to construct the
+admissibility and Sigma/Pi evidence roots.

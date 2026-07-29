@@ -1,0 +1,21 @@
+(** Audit for ten-witness global elimination over predecessor state. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPredecessorGlobalExistentialElimination.
+
+Import
+  PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
+
+Check coqDynamicTruthPredecessorStateTemplateContext.
+Check coqDynamicTruthGlobalExistentialSource.
+Check coqDynamicTruthGlobalExistentialDeepContext.
+Check coqDynamicTruthGlobalExistentialDeepContext_success.
+Check raw_dynamicTruthPredecessorStateTemplateContextCode.
+Check
+  raw_codedPALocalProofOf_dynamicTruthGlobal_existential_elimination_on_predecessor_state_context.
+
+Print Assumptions coqDynamicTruthGlobalExistentialDeepContext_success.
+Print Assumptions raw_dynamicTruthPredecessorStateTemplateContextCode.
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthGlobal_existential_elimination_on_predecessor_state_context.
+
