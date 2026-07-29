@@ -31,6 +31,8 @@ Check
 Check
   raw_dynamicTruthNativeLocalAligned_predecessorRoot_of_template_bridge.
 Check
+  raw_dynamicTruthNativeLocalAligned_predecessorRoot_of_native_trace_roots.
+Check
   raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases_aligned_with_next.
 Check raw_dynamicTruthNativeLocalCurrentHelperContextAt_exists.
 
@@ -76,6 +78,8 @@ Print Assumptions
   raw_dynamicTruthNativeLocalCurrentHelperContextAt_successor_trace.
 Print Assumptions
   raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases.
+Print Assumptions
+  raw_dynamicTruthNativeLocalAligned_predecessorRoot_of_native_trace_roots.
 Print Assumptions
   raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases_aligned_with_next.
 Print Assumptions

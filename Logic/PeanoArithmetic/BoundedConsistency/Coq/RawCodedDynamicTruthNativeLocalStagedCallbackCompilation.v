@@ -652,6 +652,101 @@ Proof.
       hbridge).
 Qed.
 
+(** The native trace now determines the finite syntactic template and its
+    four opened leaves.  Consequently the callback does not need to carry a
+    structural translation or an application table: after alignment, only
+    the three represented proofs which are actually applied remain. *)
+Corollary
+    raw_dynamicTruthNativeLocalAligned_predecessorRoot_of_native_trace_roots :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  forall (tail : nat -> M) predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi
+      (aligned : RawDynamicTruthNativeLocalAlignedPredecessorAt M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi),
+  RawContextListRealizable M baseContext ->
+  RawContextShift M baseContext baseContext ->
+  (exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawDynamicTruthLocalAdmissibleCode M
+        (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned))
+      root) ->
+  (exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawDynamicTruthNativeLocalAligned_currentSigmaEvidence M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      root) ->
+  (exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      root) ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M baseContext
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA tail predecessorLevel baseContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi aligned hcontext hshift
+    hadmissible hsigma hpi.
+  exact
+    (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_native_trace
+      M hPA tail predecessorLevel
+      (rawDynamicTruthNativeLocalAligned_currentInputGlobalSigma M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentInputGlobalPi M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      baseContext
+      (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentSigmaEvidence M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthLocalExclusiveProjectionRoot M baseContext
+        (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentSigmaEvidence M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentLocalRoot M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned))
+      hcontext hshift
+      (rawDynamicTruthNativeLocalAligned_exclusiveProjection M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentTrace M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      hadmissible hsigma hpi).
+Qed.
+
 (** Enrich the exhaustive current-field cases with the next trace.  The zero
     alternative is unchanged; in the successor alternative all orbit and
     application alignment is performed once and stored in the record above. *)
