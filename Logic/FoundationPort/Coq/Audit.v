@@ -137,17 +137,30 @@ Check rew_map.
 Check rew_subst.
 Check rew_emb.
 Check rew_emb_substs.
+Check rew_cast.
+Check fin_cast_refl.
+Check fin_cast_L_zero.
+Check fin_cast_le.
+Check fin_cast_le_refl.
+Check rew_cast_le.
+Check rew_cast_refl.
+Check rew_cast_le_refl.
 Check rew_subst_comp_subst.
 Check rew_subst_comp_emb_substs.
 Check rew_emb_substs_variables.
 Check rew_rewrite_comp_rewrite.
 Check rew_bshift.
 Check rew_bshift_add.
+Check rew_bshift_add_zero_cast.
 Check rew_bshift_comp_subst.
 Check rew_shift_comp_subst.
 Check rew_rewrite_comp_emb.
 Check rew_shift_comp_emb.
 Check rew_comp_emb_empty.
+Check rew_subst_bound_occurs.
+Check rew_subst_positive.
+Check rew_emb_substs_bound_occurs.
+Check rew_emb_substs_positive.
 Check rew_q.
 Check rew_q_bshift_apply.
 Check rew_q_comp_apply.
@@ -231,10 +244,17 @@ Print Assumptions rew_equiv_of_variables.
 Print Assumptions rew_subst_comp_subst.
 Print Assumptions rew_subst_comp_emb_substs.
 Print Assumptions rew_emb_substs_variables.
+Print Assumptions rew_cast_refl.
+Print Assumptions rew_cast_le_refl.
+Print Assumptions rew_bshift_add_zero_cast.
 Print Assumptions rew_bshift_comp_subst.
 Print Assumptions rew_shift_comp_subst.
 Print Assumptions rew_rewrite_comp_emb.
 Print Assumptions rew_comp_emb_empty.
+Print Assumptions rew_subst_bound_occurs.
+Print Assumptions rew_subst_positive.
+Print Assumptions rew_emb_substs_bound_occurs.
+Print Assumptions rew_emb_substs_positive.
 Print Assumptions rew_q_bshift_apply.
 Print Assumptions rew_q_comp_apply.
 Print Assumptions rew_shift_injective.

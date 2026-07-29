@@ -9,6 +9,7 @@
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lia Lists.List Vectors.Fin.
+From Stdlib Require Import Logic.Eqdep_dec.
 From Stdlib Require Import Logic.FunctionalExtensionality.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
@@ -149,8 +150,43 @@ Definition rew_empty {L O X n} (empty : O -> False) : rew L O 0 X n :=
     (fun x => False_rect _ (empty x)).
 
 Definition rew_emb_substs {L X k n}
-  (v : Fin.t k -> semiterm L X n) : rew L Empty_set k X n :=
+    (v : Fin.t k -> semiterm L X n) : rew L Empty_set k X n :=
   rew_bind v (fun x : Empty_set => match x with end).
+
+Definition rew_cast {L X n m} (h : n = m) : rew L X n X m :=
+  rew_map (fun i => Fin.cast i h) (fun x => x).
+
+Definition fin_cast_le {n m} (h : n <= m) (i : Fin.t n) : Fin.t m :=
+  Fin.of_nat_lt
+    (Nat.lt_le_trans (fin_value i) n m (proj2_sig (Fin.to_nat i)) h).
+
+Definition rew_cast_le {L X n m} (h : n <= m) : rew L X n X m :=
+  rew_map (fin_cast_le h) (fun x => x).
+
+Lemma fin_cast_refl : forall n (i : Fin.t n),
+  Fin.cast i eq_refl = i.
+Proof.
+  intros n i; induction i; simpl; [reflexivity | now rewrite IHi].
+Qed.
+
+Lemma fin_cast_L_zero : forall n (i : Fin.t n),
+  Fin.cast (Fin.L 0 i) (Nat.add_0_r n) = i.
+Proof.
+  intros n i; induction i; simpl; [reflexivity |].
+  f_equal.
+  pose proof (@UIP_dec nat Nat.eq_dec (n + 0) n
+    (f_equal Nat.pred (Nat.add_0_r (S n))) (Nat.add_0_r n)) as Hp.
+  etransitivity.
+  - exact (f_equal (fun q : n + 0 = n => Fin.cast (Fin.L 0 i) q) Hp).
+  - exact IHi.
+Qed.
+
+Lemma fin_cast_le_refl : forall n (h : n <= n) (i : Fin.t n),
+  fin_cast_le h i = i.
+Proof.
+  intros n h i. apply Fin.to_nat_inj.
+  unfold fin_cast_le. rewrite Fin.to_nat_of_nat. reflexivity.
+Qed.
 
 Lemma rew_rewrite_bvar : forall L X Y n e (i : Fin.t n),
   rew_apply (@rew_rewrite L X Y n e) (Semiterm_bvar i) = Semiterm_bvar i.
@@ -180,6 +216,45 @@ Lemma rew_emb_substs_bvar : forall L X k n
     (v : Fin.t k -> semiterm L X n) (i : Fin.t k),
   rew_apply (rew_emb_substs v) (Semiterm_bvar i) = v i.
 Proof. reflexivity. Qed.
+
+Lemma rew_cast_bvar : forall L X n m (h : n = m) (i : Fin.t n),
+  rew_apply (@rew_cast L X n m h) (Semiterm_bvar i) =
+  Semiterm_bvar (Fin.cast i h).
+Proof. reflexivity. Qed.
+
+Lemma rew_cast_fvar : forall L X n m (h : n = m) (x : X),
+  rew_apply (@rew_cast L X n m h) (Semiterm_fvar x) =
+  Semiterm_fvar x.
+Proof. reflexivity. Qed.
+
+Lemma rew_cast_refl : forall L X n (h : n = n),
+  rew_equiv (@rew_cast L X n n h) rew_id.
+Proof.
+  intros L X n h.
+  pose proof (@UIP_dec nat Nat.eq_dec n n h eq_refl) as Hh.
+  rewrite Hh.
+  apply rew_equiv_of_variables.
+  - intro i; simpl. now rewrite fin_cast_refl.
+  - intro x; reflexivity.
+Qed.
+
+Lemma rew_cast_le_bvar : forall L X n m (h : n <= m) (i : Fin.t n),
+  rew_apply (@rew_cast_le L X n m h) (Semiterm_bvar i) =
+  Semiterm_bvar (fin_cast_le h i).
+Proof. reflexivity. Qed.
+
+Lemma rew_cast_le_fvar : forall L X n m (h : n <= m) (x : X),
+  rew_apply (@rew_cast_le L X n m h) (Semiterm_fvar x) =
+  Semiterm_fvar x.
+Proof. reflexivity. Qed.
+
+Lemma rew_cast_le_refl : forall L X n (h : n <= n),
+  rew_equiv (@rew_cast_le L X n n h) rew_id.
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i; simpl. now rewrite fin_cast_le_refl.
+  - intro x; reflexivity.
+Qed.
 
 Lemma rew_bind_comp : forall L X n Y m Z l
     (b : Fin.t n -> semiterm L Y m) (e : X -> semiterm L Y m)
@@ -264,6 +339,17 @@ Lemma rew_bshift_add_fvar : forall L X n m (x : X),
   Semiterm_fvar x.
 Proof. reflexivity. Qed.
 
+Lemma rew_bshift_add_zero_cast : forall L X n,
+  rew_equiv
+    (rew_comp (@rew_cast L X (n + 0) n (Nat.add_0_r n))
+      (@rew_bshift_add L X n 0))
+    rew_id.
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i; simpl. now rewrite fin_cast_L_zero.
+  - intro x; reflexivity.
+Qed.
+
 Lemma rew_bshift_comp_subst : forall L X n m
     (v : Fin.t n -> semiterm L X m),
   rew_equiv (rew_comp rew_bshift (rew_subst v))
@@ -290,6 +376,78 @@ Proof.
   intros. apply rew_equiv_of_variables.
   - intro i; exact (Fin.case0 (fun i => _ = _) i).
   - intro x; exact (False_rect _ (empty x)).
+Qed.
+
+Lemma rew_subst_bound_occurs : forall L X n m
+    (v : Fin.t n -> semiterm L X m) (t : semiterm L X n) j,
+  semiterm_bound_occurs j (rew_apply (rew_subst v) t) <->
+  exists i : Fin.t n,
+    semiterm_bound_occurs i t /\ semiterm_bound_occurs j (v i).
+Proof.
+  intros L X n m v t; induction t as [i | x | k f a IH]; intro j; simpl.
+  - split.
+    + intro H. exists i. now split.
+    + intros [i' [-> H]]. exact H.
+  - split; [contradiction | intros [i [H _]]; contradiction].
+  - split.
+    + intros [c Hc].
+      apply (proj1 (IH c j)) in Hc.
+      destruct Hc as [i [Hi Hj]].
+      exists i. split; [now exists c | exact Hj].
+    + intros [i [[c Hc] Hj]].
+      exists c. apply (proj2 (IH c j)).
+      exists i. now split.
+Qed.
+
+Lemma rew_subst_positive : forall L X n m
+    (v : Fin.t n -> semiterm L X (S m)) (t : semiterm L X n),
+  semiterm_positive (rew_apply (rew_subst v) t) <->
+  forall i, semiterm_bound_occurs i t -> semiterm_positive (v i).
+Proof.
+  intros L X n m v t. unfold semiterm_positive.
+  split.
+  - intros H i Hi j Hj. apply (H j).
+    apply (proj2 (rew_subst_bound_occurs v t j)).
+    exists i. now split.
+  - intros H j Hj.
+    apply (proj1 (rew_subst_bound_occurs v t j)) in Hj.
+    destruct Hj as [i [Hi Hj]]. exact (H i Hi j Hj).
+Qed.
+
+Lemma rew_emb_substs_bound_occurs : forall L X n m
+    (v : Fin.t n -> semiterm L X m) (t : semiterm L Empty_set n) j,
+  semiterm_bound_occurs j (rew_apply (rew_emb_substs v) t) <->
+  exists i : Fin.t n,
+    semiterm_bound_occurs i t /\ semiterm_bound_occurs j (v i).
+Proof.
+  intros L X n m v t; induction t as [i | x | k f a IH]; intro j; simpl.
+  - split.
+    + intro H. exists i. now split.
+    + intros [i' [-> H]]. exact H.
+  - destruct x.
+  - split.
+    + intros [c Hc].
+      apply (proj1 (IH c j)) in Hc.
+      destruct Hc as [i [Hi Hj]].
+      exists i. split; [now exists c | exact Hj].
+    + intros [i [[c Hc] Hj]].
+      exists c. apply (proj2 (IH c j)).
+      exists i. now split.
+Qed.
+
+Lemma rew_emb_substs_positive : forall L X n m
+    (v : Fin.t n -> semiterm L X (S m)) (t : semiterm L Empty_set n),
+  semiterm_positive (rew_apply (rew_emb_substs v) t) <->
+  forall i, semiterm_bound_occurs i t -> semiterm_positive (v i).
+Proof.
+  intros L X n m v t. unfold semiterm_positive.
+  split.
+  - intros H i Hi j Hj. apply (H j).
+    apply (proj2 (rew_emb_substs_bound_occurs v t j)).
+    exists i. now split.
+  - intros H j Hj.
+    apply (proj1 (rew_emb_substs_bound_occurs v t j)) in Hj.
+    destruct Hj as [i [Hi Hj]]. exact (H i Hi j Hj).
 Qed.
 
 Lemma rew_q_bvar_zero : forall L X n Y m (w : rew L X n Y m),
