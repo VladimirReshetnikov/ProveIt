@@ -6,7 +6,9 @@
     atoms are polymorphic rather than fixed to naturals. *)
 
 From Stdlib Require Import Logic.Classical_Prop.
-From FoundationModal Require Import PropositionalFormula PropositionalHilbert.
+From FoundationModal Require Import
+  GenericSemantics GenericForcingRelation
+  PropositionalFormula PropositionalHilbert.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -124,6 +126,35 @@ Proof.
     + eapply pkripke_access_trans; eauto.
     + exact Hzp.
 Qed.
+
+(** Package the concrete semantics once for generic forcing arguments.  This
+    adapter lets every theorem stated through [generic_int_kripke] consume a
+    propositional Kripke model without restating its forcing clauses. *)
+Definition pkripke_forcing_relation {Atom : Type}
+    (M : pkripke_model Atom) :
+    generic_forcing_relation
+      (pkripke_world (pkripke_model_frame M)) (pformula Atom) :=
+  @Build_generic_semantics
+    (pkripke_world (pkripke_model_frame M)) (pformula Atom)
+    (pkripke_forces M).
+
+Definition pkripke_generic_int_forcing {Atom : Type}
+    (M : pkripke_model Atom) :
+    generic_int_kripke (pformula_connectives Atom)
+      (pkripke_forcing_relation M)
+      (pkripke_access (pkripke_model_frame M)).
+Proof.
+  constructor.
+  - constructor.
+    + constructor. intros w v Rwv Hfalse. exact Hfalse.
+    + constructor. intros w p q. reflexivity.
+    + constructor. intros w p q. reflexivity.
+  - constructor. intros w p Hw v Rwv.
+    exact (pkripke_forces_persistent Rwv Hw).
+  - constructor. intros w p q. reflexivity.
+  - constructor. apply pkripke_forces_bottom.
+  - constructor. intros w p. apply pkripke_forces_neg.
+Defined.
 
 Definition pkripke_substitution_model {A B : Type}
     (M : pkripke_model B) (sigma : psubstitution A B) :
