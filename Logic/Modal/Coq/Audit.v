@@ -1374,6 +1374,7 @@ Check generic_minimal_list_conj2_cons_iff_raw.
 Check generic_minimal_list_conj2_cons_imp_provable_iff.
 Check generic_minimal_list_conj_provable_iff.
 Check generic_minimal_list_conj2_provable_iff.
+Check generic_minimal_list_conj_map_provable_iff.
 Check generic_minimal_list_disj_intro_provable.
 Check generic_minimal_list_disj2_intro_provable.
 Check generic_list_derivable.
@@ -1410,11 +1411,18 @@ Check generic_type_context_finite_iff.
 Check generic_empty_type_context.
 Check generic_empty_type_context_derivation_raw.
 Check generic_minimal_empty_type_context_provable_iff.
+Check generic_list_derivation_entailment.
+Check generic_type_context_derivation_entailment.
+Check generic_minimal_list_derivation.
+Check generic_minimal_type_context_derivation.
+Check generic_minimal_type_context_bottom_of_neg_raw.
 Check generic_minimal_double_neg_imp_distribution_raw.
 Check generic_minimal_not_imp_of_premises_raw.
 Check generic_minimal_double_neg_imp_map_raw.
 Check generic_minimal_top_to_neg_bottom_raw.
 Check generic_minimal_and_or_cut_raw.
+Check generic_minimal_conj2_to_disj2_of_and_member_raw.
+Check generic_minimal_conj2_to_disj2_of_mdp_members_raw.
 Check generic_minimal_double_neg_imp_distribution_provable.
 Check generic_minimal_and_or_cut_provable.
 Check generic_minimal_unprovable_imp_trans.
@@ -1437,6 +1445,8 @@ Check ph_hilbert_type_context_to_finite.
 Check ph_hilbert_double_neg_imp_distribution.
 Check ph_hilbert_not_imp_of_premises.
 Check ph_hilbert_and_or_cut.
+Check ph_hilbert_conj2_to_disj2_of_and_member.
+Check ph_hilbert_conj2_to_disj2_of_mdp_members.
 Print Assumptions generic_minimal_imp_swap_raw.
 Print Assumptions generic_minimal_imp_contract_raw.
 Print Assumptions generic_minimal_iff_trans_raw.
@@ -1481,6 +1491,7 @@ Print Assumptions generic_minimal_list_conj2_unique_raw.
 Print Assumptions generic_minimal_imp_of_list_conj2_unique_raw.
 Print Assumptions generic_minimal_list_conj2_cons_imp_provable_iff.
 Print Assumptions generic_minimal_list_conj2_provable_iff.
+Print Assumptions generic_minimal_list_conj_map_provable_iff.
 Print Assumptions generic_list_derivation_weaken_raw.
 Print Assumptions generic_list_derivation_append_mdp_raw.
 Print Assumptions generic_minimal_list_deduction_raw.
@@ -1498,11 +1509,16 @@ Print Assumptions generic_type_context_to_finite_witness_raw.
 Print Assumptions generic_type_context_of_finite_witness_raw.
 Print Assumptions generic_type_context_finite_iff.
 Print Assumptions generic_minimal_empty_type_context_provable_iff.
+Print Assumptions generic_minimal_list_derivation.
+Print Assumptions generic_minimal_type_context_derivation.
+Print Assumptions generic_minimal_type_context_bottom_of_neg_raw.
 Print Assumptions generic_minimal_double_neg_imp_distribution_raw.
 Print Assumptions generic_minimal_not_imp_of_premises_raw.
 Print Assumptions generic_minimal_double_neg_imp_map_raw.
 Print Assumptions generic_minimal_top_to_neg_bottom_raw.
 Print Assumptions generic_minimal_and_or_cut_raw.
+Print Assumptions generic_minimal_conj2_to_disj2_of_and_member_raw.
+Print Assumptions generic_minimal_conj2_to_disj2_of_mdp_members_raw.
 Print Assumptions generic_minimal_double_neg_imp_distribution_provable.
 Print Assumptions generic_minimal_and_or_cut_provable.
 Print Assumptions generic_minimal_unprovable_imp_trans.
@@ -1523,6 +1539,8 @@ Print Assumptions ph_hilbert_type_context_to_finite.
 Print Assumptions ph_hilbert_double_neg_imp_distribution.
 Print Assumptions ph_hilbert_not_imp_of_premises.
 Print Assumptions ph_hilbert_and_or_cut.
+Print Assumptions ph_hilbert_conj2_to_disj2_of_and_member.
+Print Assumptions ph_hilbert_conj2_to_disj2_of_mdp_members.
 
 (** Propositional/Entailment/Int/Basic: the ex-falso extension, explosion,
     reverse stable implication, and normalized finite-disjunction algebra are

@@ -34,21 +34,6 @@ Arguments generic_intuitionistic_has_efq {S F E C s} _.
 
 (** * Inheritance by proof-relevant contexts *)
 
-(** Concrete entailment presentations for Foundation's finite and general
-    contexts.  Fixing the ambient system keeps the context itself as the
-    system object and preserves the raw Type-valued derivation. *)
-Definition generic_list_derivation_entailment {S F : Type}
-    (E : generic_entailment S F) (s : S) (C : generic_connectives F) :
-    generic_entailment (list F) F :=
-  {| generic_proof := fun gamma p =>
-       generic_list_derivation E s C gamma p |}.
-
-Definition generic_type_context_derivation_entailment {S F : Type}
-    (E : generic_entailment S F) (s : S) (C : generic_connectives F) :
-    generic_entailment (F -> Type) F :=
-  {| generic_proof := fun T p =>
-       generic_type_context_derivation E s C T p |}.
-
 (** Every finite context inherits intuitionistic entailment by theorem
     injection and contextual modus ponens. *)
 Definition generic_intuitionistic_list_derivation {S F : Type}
@@ -57,21 +42,9 @@ Definition generic_intuitionistic_list_derivation {S F : Type}
     generic_intuitionistic_entailment
       (generic_list_derivation_entailment E s C) C gamma.
 Proof.
-  set (Hm := generic_intuitionistic_minimal H).
   constructor.
-  - constructor.
-    + refine {| generic_modus_ponens_raw := _ |}.
-      intros p q dpq dp. exact (GLD_mdp dpq dp).
-    + intro p. exact (GLD_theorem (generic_minimal_neg_equiv Hm p)).
-    + exact (GLD_theorem (generic_minimal_verum Hm)).
-    + intros p q. exact (GLD_theorem (generic_minimal_K Hm p q)).
-    + intros p q r. exact (GLD_theorem (generic_minimal_S Hm p q r)).
-    + intros p q. exact (GLD_theorem (generic_minimal_and1 Hm p q)).
-    + intros p q. exact (GLD_theorem (generic_minimal_and2 Hm p q)).
-    + intros p q. exact (GLD_theorem (generic_minimal_and3 Hm p q)).
-    + intros p q. exact (GLD_theorem (generic_minimal_or1 Hm p q)).
-    + intros p q. exact (GLD_theorem (generic_minimal_or2 Hm p q)).
-    + intros p q r. exact (GLD_theorem (generic_minimal_or3 Hm p q r)).
+  - exact (generic_minimal_list_derivation
+      (generic_intuitionistic_minimal H) gamma).
   - refine {| generic_efq_raw := _ |}.
     intro p. exact (GLD_theorem
       (generic_efq_raw (generic_intuitionistic_has_efq H) p)).
@@ -85,21 +58,9 @@ Definition generic_intuitionistic_type_context_derivation {S F : Type}
     generic_intuitionistic_entailment
       (generic_type_context_derivation_entailment E s C) C T.
 Proof.
-  set (Hm := generic_intuitionistic_minimal H).
   constructor.
-  - constructor.
-    + refine {| generic_modus_ponens_raw := _ |}.
-      intros p q dpq dp. exact (GTCD_mdp dpq dp).
-    + intro p. exact (GTCD_theorem (generic_minimal_neg_equiv Hm p)).
-    + exact (GTCD_theorem (generic_minimal_verum Hm)).
-    + intros p q. exact (GTCD_theorem (generic_minimal_K Hm p q)).
-    + intros p q r. exact (GTCD_theorem (generic_minimal_S Hm p q r)).
-    + intros p q. exact (GTCD_theorem (generic_minimal_and1 Hm p q)).
-    + intros p q. exact (GTCD_theorem (generic_minimal_and2 Hm p q)).
-    + intros p q. exact (GTCD_theorem (generic_minimal_and3 Hm p q)).
-    + intros p q. exact (GTCD_theorem (generic_minimal_or1 Hm p q)).
-    + intros p q. exact (GTCD_theorem (generic_minimal_or2 Hm p q)).
-    + intros p q r. exact (GTCD_theorem (generic_minimal_or3 Hm p q r)).
+  - exact (generic_minimal_type_context_derivation
+      (generic_intuitionistic_minimal H) T).
   - refine {| generic_efq_raw := _ |}.
     intro p. exact (GTCD_theorem
       (generic_efq_raw (generic_intuitionistic_has_efq H) p)).

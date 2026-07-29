@@ -491,6 +491,30 @@ Definition ph_hilbert_conj2_to_disj2_of_or_member {Atom : Type}
   generic_minimal_conj2_to_disj2_of_or_member_raw
     (ph_hilbert_generic_minimal H) gamma delta p q hor hp hq.
 
+Definition ph_hilbert_conj2_to_disj2_of_and_member {Atom : Type}
+    (H : ph_hilbert Atom)
+    (gamma delta : list (pformula Atom)) (p q : pformula Atom)
+    (hp : generic_raw_list_member p gamma)
+    (hq : generic_raw_list_member q gamma)
+    (hand : generic_raw_list_member (PAnd p q) delta) :
+    ph_hilbert_proof H
+      (PImp (generic_list_conj2 (pformula_connectives Atom) gamma)
+        (generic_list_disj2 (pformula_connectives Atom) delta)) :=
+  generic_minimal_conj2_to_disj2_of_and_member_raw
+    (ph_hilbert_generic_minimal H) gamma delta p q hp hq hand.
+
+Definition ph_hilbert_conj2_to_disj2_of_mdp_members {Atom : Type}
+    (H : ph_hilbert Atom)
+    (gamma delta : list (pformula Atom)) (p q : pformula Atom)
+    (hp : generic_raw_list_member p gamma)
+    (hpq : generic_raw_list_member (PImp p q) gamma)
+    (hq : generic_raw_list_member q delta) :
+    ph_hilbert_proof H
+      (PImp (generic_list_conj2 (pformula_connectives Atom) gamma)
+        (generic_list_disj2 (pformula_connectives Atom) delta)) :=
+  generic_minimal_conj2_to_disj2_of_mdp_members_raw
+    (ph_hilbert_generic_minimal H) gamma delta p q hp hpq hq.
+
 (** One recursor factors inclusion and arbitrary proof-schema translations. *)
 Fixpoint ph_hilbert_proof_map {Atom : Type}
     {H K : ph_hilbert Atom}
