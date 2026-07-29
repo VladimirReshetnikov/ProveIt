@@ -6,13 +6,15 @@
   so finite constructions can carry formulas directly without choice.
 *)
 
-From Stdlib Require Import Vectors.Fin.
+From Stdlib Require Import Lists.List Vectors.Fin.
 From Stdlib Require Import Logic.FunctionalExtensionality.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics OperatorSemantics.
+
+Import ListNotations.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -224,6 +226,127 @@ Proof.
   unfold first_order_is_defined_by_with_params in Hp.
   refine {| first_order_definable_formula := Semiformula_exists p |}.
   intro v. simpl. setoid_rewrite Hp. reflexivity.
+Defined.
+
+(** * Finite logical families *)
+
+Fixpoint semiformula_list_conj {L X n I}
+    (s : list I) (p : I -> semiformula L X n) : semiformula L X n :=
+  match s with
+  | [] => Semiformula_verum n
+  | i :: s' => Semiformula_and (p i) (semiformula_list_conj s' p)
+  end.
+
+Fixpoint semiformula_list_disj {L X n I}
+    (s : list I) (p : I -> semiformula L X n) : semiformula L X n :=
+  match s with
+  | [] => Semiformula_falsum n
+  | i :: s' => Semiformula_or (p i) (semiformula_list_disj s' p)
+  end.
+
+Lemma semiformula_eval_list_conj :
+  forall L M X n I (Str : first_order_structure L M)
+         (b : Fin.t n -> M) (f : X -> M) (s : list I)
+         (p : I -> semiformula L X n),
+    semiformula_eval Str b f (semiformula_list_conj s p) <->
+    forall i, In i s -> semiformula_eval Str b f (p i).
+Proof.
+  intros L M X n I Str b f s; induction s as [|a s IH]; intro p; simpl.
+  - split.
+    + intros _ i Hi. contradiction.
+    + intros _. constructor.
+  - rewrite IH. split.
+    + intros [Ha Hs] i [Hi | Hi].
+      * now subst i.
+      * now apply Hs.
+    + intro H. split.
+      * apply (H a). now left.
+      * intros i Hi. apply (H i). now right.
+Qed.
+
+Lemma semiformula_eval_list_disj :
+  forall L M X n I (Str : first_order_structure L M)
+         (b : Fin.t n -> M) (f : X -> M) (s : list I)
+         (p : I -> semiformula L X n),
+    semiformula_eval Str b f (semiformula_list_disj s p) <->
+    exists i, In i s /\ semiformula_eval Str b f (p i).
+Proof.
+  intros L M X n I Str b f s; induction s as [|a s IH]; intro p; simpl.
+  - split.
+    + contradiction.
+    + intros [i [Hi _]]. contradiction.
+  - rewrite IH. split.
+    + intros [Ha | Hs].
+      * exists a. split; [now left | exact Ha].
+      * destruct Hs as [i [Hi Hp]].
+        exists i. split; [now right | exact Hp].
+    + intros [i [[Hi | Hi] Hp]].
+      * left. now subst i.
+      * right. exists i. now split.
+Qed.
+
+Definition first_order_definable_list_all {L M k I}
+    {Str : first_order_structure L M}
+    (P : I -> (Fin.t k -> M) -> Prop) (s : list I)
+    (HP : forall i, first_order_definable Str (P i)) :
+    first_order_definable Str
+      (fun v => forall i, In i s -> P i v).
+Proof.
+  refine {| first_order_definable_formula :=
+    semiformula_list_conj s
+      (fun i => first_order_definable_formula (HP i)) |}.
+  intro v. rewrite semiformula_eval_list_conj. split.
+  - intros H i Hi.
+    apply (proj1 (first_order_definable_spec (HP i) v)).
+    now apply H.
+  - intros H i Hi.
+    apply (proj2 (first_order_definable_spec (HP i) v)).
+    now apply H.
+Defined.
+
+Definition first_order_definable_list_exists {L M k I}
+    {Str : first_order_structure L M}
+    (P : I -> (Fin.t k -> M) -> Prop) (s : list I)
+    (HP : forall i, first_order_definable Str (P i)) :
+    first_order_definable Str
+      (fun v => exists i, In i s /\ P i v).
+Proof.
+  refine {| first_order_definable_formula :=
+    semiformula_list_disj s
+      (fun i => first_order_definable_formula (HP i)) |}.
+  intro v. rewrite semiformula_eval_list_disj. split.
+  - intros [i [Hi Hp]]. exists i. split; [exact Hi |].
+    apply (proj1 (first_order_definable_spec (HP i) v)). exact Hp.
+  - intros [i [Hi Hp]]. exists i. split; [exact Hi |].
+    apply (proj2 (first_order_definable_spec (HP i) v)). exact Hp.
+Defined.
+
+Definition first_order_definable_finite_all {L M k I}
+    {Str : first_order_structure L M}
+    (P : I -> (Fin.t k -> M) -> Prop) (c : finite_cover I)
+    (HP : forall i, first_order_definable Str (P i)) :
+    first_order_definable Str (fun v => forall i, P i v).
+Proof.
+  refine (first_order_definable_of_iff
+    (first_order_definable_list_all
+      (P := P) (finite_cover_list c) HP) _).
+  intro v. split.
+  - intros H i _. apply H.
+  - intros H i. apply H. apply finite_cover_complete.
+Defined.
+
+Definition first_order_definable_finite_exists {L M k I}
+    {Str : first_order_structure L M}
+    (P : I -> (Fin.t k -> M) -> Prop) (c : finite_cover I)
+    (HP : forall i, first_order_definable Str (P i)) :
+    first_order_definable Str (fun v => exists i, P i v).
+Proof.
+  refine (first_order_definable_of_iff
+    (first_order_definable_list_exists
+      (P := P) (finite_cover_list c) HP) _).
+  intro v. split.
+  - intros [i Hi]. exists i. split; [apply finite_cover_complete | exact Hi].
+  - intros [i [_ Hi]]. now exists i.
 Defined.
 
 (** * Variable retraction *)

@@ -522,6 +522,14 @@ Check first_order_definable_not.
 Check first_order_definable_iff.
 Check first_order_definable_all.
 Check first_order_definable_exists.
+Check semiformula_list_conj.
+Check semiformula_list_disj.
+Check semiformula_eval_list_conj.
+Check semiformula_eval_list_disj.
+Check first_order_definable_list_all.
+Check first_order_definable_list_exists.
+Check first_order_definable_finite_all.
+Check first_order_definable_finite_exists.
 Check first_order_definable_retraction.
 Check first_order_definable_operator_relation.
 Check first_order_definable_eq.
@@ -703,6 +711,12 @@ Print Assumptions first_order_definable_const.
 Print Assumptions first_order_definable_and.
 Print Assumptions first_order_definable_all.
 Print Assumptions first_order_definable_exists.
+Print Assumptions semiformula_eval_list_conj.
+Print Assumptions semiformula_eval_list_disj.
+Print Assumptions first_order_definable_list_all.
+Print Assumptions first_order_definable_list_exists.
+Print Assumptions first_order_definable_finite_all.
+Print Assumptions first_order_definable_finite_exists.
 Print Assumptions first_order_definable_retraction.
 Print Assumptions first_order_definable_operator_relation.
 Print Assumptions first_order_definable_eq.
