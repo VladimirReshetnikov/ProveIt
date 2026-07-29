@@ -181,7 +181,44 @@ Proof.
     (rawTemplateFormula translation target)
     (raw_templateUniversalOpenMany_elimination_chain
       M translation source replacements target hopen)
-    sourceRoot hsource).
+      sourceRoot hsource).
+Qed.
+
+(** Reuse one represented universally quantified proof for any finite list
+    of opening tuples.  All instances remain in the same context and share
+    the same source root; in particular, clients do not need to compile the
+    same closed PA theorem repeatedly and reconcile independently selected
+    axiom-witness prefixes. *)
+Theorem raw_codedPALocalProofOf_templateUniversalOpenMany_list : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    context source sourceRoot,
+  RawCodedPALocalProofOf M context
+    (rawTemplateFormula translation source) sourceRoot ->
+  forall replacementLists targets,
+  Forall2
+    (fun replacements target =>
+      templateUniversalOpenMany source replacements = Some target)
+    replacementLists targets ->
+  exists roots,
+    Forall2
+      (fun target root =>
+        RawCodedPALocalProofOf M context
+          (rawTemplateFormula translation target) root)
+      targets roots.
+Proof.
+  intros M hPA translation context source sourceRoot hsource
+    replacementLists targets hopen.
+  induction hopen as
+      [|replacements target remainingReplacements remainingTargets
+        hopen htail ihtail].
+  - exists []. constructor.
+  - destruct (raw_codedPALocalProofOf_templateUniversalOpenMany
+      M hPA translation context source replacements target sourceRoot
+      hopen hsource) as [targetRoot htarget].
+    destruct ihtail as [remainingRoots hremaining].
+    exists (targetRoot :: remainingRoots).
+    constructor; assumption.
 Qed.
 
 (** Compile a fixed PA theorem over an arbitrary witnessed base and then
@@ -258,6 +295,51 @@ Proof.
       hbase htheorem).
   exact (raw_templateUniversalOpenMany_elimination_chain
     M translation (embedPAFormula phi) replacements targetTemplate hopen).
+Qed.
+
+(** Compile a fixed PA theorem once and instantiate it at a finite list of
+    term tuples.  Every resulting local proof uses the one standard witness
+    prefix selected for the shared source derivation. *)
+Corollary
+    raw_codedTemplatePALocalProofOf_of_BProv_open_many_list_on_witnessed_tail :
+  forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext phi replacementLists targets,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  Formula.BProv Formula.Ax_s [] phi ->
+  Forall2
+    (fun replacements target =>
+      templateUniversalOpenMany (embedPAFormula phi) replacements =
+        Some target)
+    replacementLists targets ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) roots,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    Forall2
+      (fun target root =>
+        RawCodedPALocalProofOf M
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses baseContext)
+          (rawTemplateFormula translation target) root)
+      targets roots.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext phi
+    replacementLists targets hbase htheorem hopen.
+  destruct (raw_codedTemplatePALocalProofOf_of_BProv_on_witnessed_tail
+    M hPA translation hagreement baseWitnessList baseContext phi
+    hbase htheorem) as
+    (witnesses & sourceRoot & hextended & hsource).
+  destruct (raw_codedPALocalProofOf_templateUniversalOpenMany_list
+    M hPA translation
+    (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
+    (embedPAFormula phi) sourceRoot hsource
+    replacementLists targets hopen) as [roots hroots].
+  exists witnesses, roots.
+  split; assumption.
 Qed.
 
 End PABoundedRawCodedPALocalProofUniversalEliminationChain.

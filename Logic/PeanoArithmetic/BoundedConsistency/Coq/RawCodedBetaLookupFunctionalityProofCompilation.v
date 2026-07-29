@@ -96,6 +96,46 @@ Proof.
   reflexivity.
 Qed.
 
+(** Package one five-term instantiation so a finite family can share a
+    single compilation of the closed functionality theorem. *)
+Record CoqBetaLookupFunctionalityArguments : Type := {
+  coqBetaLookupFunctionalityOut1 : TemplateTerm;
+  coqBetaLookupFunctionalityOut2 : TemplateTerm;
+  coqBetaLookupFunctionalityCode : TemplateTerm;
+  coqBetaLookupFunctionalityStep : TemplateTerm;
+  coqBetaLookupFunctionalityIndex : TemplateTerm
+}.
+
+Definition coqBetaLookupFunctionalityReplacementList
+    (arguments : CoqBetaLookupFunctionalityArguments)
+    : list TemplateTerm :=
+  [coqBetaLookupFunctionalityOut1 arguments;
+   coqBetaLookupFunctionalityOut2 arguments;
+   coqBetaLookupFunctionalityCode arguments;
+   coqBetaLookupFunctionalityStep arguments;
+   coqBetaLookupFunctionalityIndex arguments].
+
+Definition coqBetaLookupFunctionalityInstanceOf
+    (arguments : CoqBetaLookupFunctionalityArguments)
+    : TemplateFormula :=
+  coqBetaLookupFunctionalityInstanceTemplate
+    (coqBetaLookupFunctionalityOut1 arguments)
+    (coqBetaLookupFunctionalityOut2 arguments)
+    (coqBetaLookupFunctionalityCode arguments)
+    (coqBetaLookupFunctionalityStep arguments)
+    (coqBetaLookupFunctionalityIndex arguments).
+
+Lemma coqBetaLookupFunctionalityInstanceOf_open : forall arguments,
+  templateUniversalOpenMany
+    (embedPAFormula codedBetaLookupFunctionalityFormula)
+    (coqBetaLookupFunctionalityReplacementList arguments) =
+  Some (coqBetaLookupFunctionalityInstanceOf arguments).
+Proof.
+  intros [out1 out2 code step index].
+  exact (coqBetaLookupFunctionalityInstanceTemplate_open
+    out1 out2 code step index).
+Qed.
+
 (** Exact two-implication shape after opening all five binders. *)
 Lemma coqBetaLookupFunctionalityInstanceTemplate_shape : forall
     out1 out2 code step index,
@@ -155,6 +195,55 @@ Proof.
       hbase PA_proves_codedBetaLookupFunctionalityFormula
       (coqBetaLookupFunctionalityInstanceTemplate_open
         out1 out2 code step index)).
+Qed.
+
+(** Compile the closed theorem once, then instantiate it at an arbitrary
+    finite family of beta-table positions.  This is used with four entries
+    for a state row, but the statement deliberately exposes no fixed arity. *)
+Theorem
+    raw_codedPALocalProofOf_beta_lookup_functionality_instances_on_witnessed_tail :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext arguments,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) roots,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    Forall2
+      (fun target root =>
+        RawCodedPALocalProofOf M
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses baseContext)
+          (rawTemplateFormula translation target) root)
+      (map coqBetaLookupFunctionalityInstanceOf arguments) roots.
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext arguments hbase.
+  assert (hopen : Forall2
+      (fun replacements target =>
+        templateUniversalOpenMany
+          (embedPAFormula codedBetaLookupFunctionalityFormula)
+          replacements = Some target)
+      (map coqBetaLookupFunctionalityReplacementList arguments)
+      (map coqBetaLookupFunctionalityInstanceOf arguments)).
+  {
+    induction arguments as [|argument remaining ih].
+    - constructor.
+    - cbn [map]. constructor.
+      + exact (coqBetaLookupFunctionalityInstanceOf_open argument).
+      + exact ih.
+  }
+  exact
+    (raw_codedTemplatePALocalProofOf_of_BProv_open_many_list_on_witnessed_tail
+      M hPA translation hagreement baseWitnessList baseContext
+      codedBetaLookupFunctionalityFormula
+      (map coqBetaLookupFunctionalityReplacementList arguments)
+      (map coqBetaLookupFunctionalityInstanceOf arguments)
+      hbase PA_proves_codedBetaLookupFunctionalityFormula hopen).
 Qed.
 
 (** Apply both represented lookup premises while preserving an arbitrary

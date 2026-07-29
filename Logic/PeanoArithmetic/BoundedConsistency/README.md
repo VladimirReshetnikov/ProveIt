@@ -4178,3 +4178,12 @@ keeps any finite adequate append/row assumptions literally ahead of the
 witnessed tail and returns a represented proof of the output equality.  This
 is the reusable single-column primitive for aligning all four equality-branch
 row fields.
+
+Repeated universal instantiation is now factored through a list-level
+compiler in `RawCodedPALocalProofUniversalEliminationChain`.  One represented
+closed theorem root can be opened at any finite list of term tuples, and the
+fixed-PA endpoint selects its standard axiom witnesses only once.  The beta
+compiler packages each five-term lookup instance and uses this interface for
+an arbitrary finite family.  In particular, the four state columns can share
+one literal witnessed tail instead of attempting to reconcile four separately
+chosen witness prefixes.
