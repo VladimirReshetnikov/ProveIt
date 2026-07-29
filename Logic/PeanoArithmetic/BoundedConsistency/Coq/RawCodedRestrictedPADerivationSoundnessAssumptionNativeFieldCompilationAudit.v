@@ -1,0 +1,13 @@
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessAssumptionNativeFieldCompilation.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessAssumptionNativeFieldCompilation.
+
+Check coqRestrictedPADirectStrongStepAssumptionReadyContext_app_witnesses.
+Check raw_coqRestrictedPADirectStrongStepAssumptionLaw_on_selected_tail.
+
+Print Assumptions
+  coqRestrictedPADirectStrongStepAssumptionReadyContext_app_witnesses.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepAssumptionLaw_on_selected_tail.

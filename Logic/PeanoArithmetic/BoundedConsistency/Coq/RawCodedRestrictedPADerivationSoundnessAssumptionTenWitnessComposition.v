@@ -137,6 +137,12 @@ Definition coqRestrictedPADirectAssumptionTenWitnessRoot
       coqRestrictedPADirectAssumptionNativeWitnessFormulaTruthTemplate)
     (coqRestrictedPADirectAssumptionAfterMembershipRoot tail).
 
+Definition coqRestrictedPADirectAssumptionTransferImplicationRoot
+    (tail : TemplateContext) : TemplateRawProof :=
+  trpImpI tail coqRestrictedPADirectAssumptionTransferSourceTemplate
+    coqRestrictedPADirectAssumptionNativeMembershipTruthLawTemplate
+    (coqRestrictedPADirectAssumptionTenWitnessRoot tail).
+
 Lemma coqRestrictedPADirectAssumptionNativeTruth_rename_five_twice :
   rawCoqTemplateRenameN 5
     (rawCoqTemplateRenameN 5
@@ -245,6 +251,23 @@ Proof.
     + apply coqRestrictedPADirectAssumption_final_membership_body_in.
     + apply templateRawDerives_assumption.
       apply coqRestrictedPADirectAssumption_final_transfer_source_in.
+Qed.
+
+(** Closed-source form used by the carrier compiler.  The PA proof of the
+    transfer source can be combined with this implication by one ordinary
+    modus-ponens node, without adjoining an artificial assumption. *)
+Corollary
+    coqRestrictedPADirectAssumptionTransferImplicationRoot_derives :
+  forall tail,
+  TemplateRawDerives tail
+    (tfImp coqRestrictedPADirectAssumptionTransferSourceTemplate
+      coqRestrictedPADirectAssumptionNativeMembershipTruthLawTemplate)
+    (coqRestrictedPADirectAssumptionTransferImplicationRoot tail).
+Proof.
+  intro tail.
+  unfold coqRestrictedPADirectAssumptionTransferImplicationRoot.
+  apply coqRestrictedPADirect_templateRawDerives_impI.
+  exact (coqRestrictedPADirectAssumptionTenWitnessRoot_derives tail).
 Qed.
 
 End

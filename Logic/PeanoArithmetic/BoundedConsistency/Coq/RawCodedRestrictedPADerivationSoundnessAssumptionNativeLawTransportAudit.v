@@ -1,0 +1,9 @@
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessAssumptionNativeLawTransport.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessAssumptionNativeLawTransport.
+
+Check raw_coqRestrictedPADirectAssumptionNativeLaw_code.
+
+Print Assumptions raw_coqRestrictedPADirectAssumptionNativeLaw_code.

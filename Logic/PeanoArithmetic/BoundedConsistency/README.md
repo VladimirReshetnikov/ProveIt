@@ -2868,6 +2868,35 @@ is closed, it remains unchanged throughout every context shift.  The exported
 root therefore proves the complete native Assumption membership-truth law over
 an arbitrary caller tail from one reusable PA source.
 
+`RawCodedRestrictedPADerivationSoundnessAssumptionUniversalSourceCompilation.v`
+removes that last reusable-source premise.  It compiles PA's closed
+context-membership transfer theorem over the empty witnessed base, extends the
+result by the selected standard PA-axiom witnesses, and inserts an arbitrary
+finite direct-template prefix.  The ten-witness implication is compiled over
+the identical carrier context and combined with the source by represented
+modus ponens.  Thus the result is a genuine local PA proof of the complete
+native Assumption law, paired with the concrete witnessed tail on which it was
+compiled; its audit exposes no branch-specific theorem hypothesis.
+
+`RawCodedRestrictedPADerivationSoundnessAssumptionNativeLawTransport.v`
+then identifies that transparent native law with the dispatcher's public
+Assumption residual at carrier-code level.  The context leaf uses its audited
+step/assignment/context argument order, while the two conclusion leaves are
+rewritten through the same selector equation; the native zero hierarchy
+arguments and the public displayed hierarchy arguments therefore compute to
+the same selector output.
+
+Finally,
+`RawCodedRestrictedPADerivationSoundnessAssumptionNativeFieldCompilation.v`
+packages the construction as the exact strong-step Assumption field.  Its
+affine-context lemma proves that appending a tail of witnessed PA sentences
+commutes with every existential shift in the Assumption ready context.  This
+aligns the selected tail with the universal-source proof context, after which
+the carrier-law equality transports the root to the public formula.  The
+exported theorem now supplies both a witnessed PA-axiom context and the exact
+`RawCoqRestrictedPADirectStrongStepAssumptionMembershipTruthLawRoot` expected
+by the residual direct-rule dispatcher.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
