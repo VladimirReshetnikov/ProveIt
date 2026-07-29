@@ -4444,9 +4444,18 @@ that finite named-parameter replacement is inert on every embedded ordinary
 PA term or formula, including underneath binders.  Hence the concrete
 closed-row production instantiated by `embedPAFormula localSigma` and
 `embedPAFormula localPi` is already the literal mode-zero/mode-one polarity
-split.  What remains is solely the scoped opening calculation showing that
-the ten global witnesses act identically on the first thirteen local-row
-variables; variables outside that scope intentionally need not be fixed.
+split.
+
+The scoped opening calculation is now closed too.  A generic substitution
+lemma says that any template substitution fixing a displayed scope fixes the
+embedding of an ordinary PA formula at that scope.  The append specialization
+isolates just the ten existential and five universal binders, fuses all eight
+outer renamings and ten openings into one substitution, and checks
+definitionally that it fixes local indices `0..12`.  This proves the concrete
+production equal to the opened global production for arbitrary 13-scoped
+local Sigma/Pi formulae.  The composed global-successor endpoint now consumes
+those two natural scope facts directly; the former production-equality premise
+is no longer exposed to its clients.
 
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
