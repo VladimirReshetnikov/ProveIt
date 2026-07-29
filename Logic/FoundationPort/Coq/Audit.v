@@ -3,6 +3,7 @@
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
+From Foundation.Syntax.Predicate Require Import Relational.
 
 Check language.
 Check language_relational.
@@ -175,6 +176,15 @@ Check semiformula_shift_injective.
 Check semiformula_free_fix.
 Check semiformula_fix_free.
 
+Check semiterm_bvar_or_fvar_relational.
+Check term_fvar_relational.
+Check fin_cons.
+Check semiterm_relational_val.
+Check semiterm_relational_val_bvar.
+Check semiterm_relational_val_fvar.
+Check semiterm_relational_val_rew.
+Check semiterm_relational_val_bshift.
+
 Print Assumptions language_hom_ext.
 Print Assumptions language_hom_comp_assoc.
 Print Assumptions oring_function_symbols_complete.
@@ -223,3 +233,7 @@ Print Assumptions semiformula_substitute_comp.
 Print Assumptions semiformula_shift_injective.
 Print Assumptions semiformula_free_fix.
 Print Assumptions semiformula_fix_free.
+Print Assumptions semiterm_bvar_or_fvar_relational.
+Print Assumptions term_fvar_relational.
+Print Assumptions semiterm_relational_val_rew.
+Print Assumptions semiterm_relational_val_bshift.
