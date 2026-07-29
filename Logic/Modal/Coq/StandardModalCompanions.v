@@ -1,15 +1,16 @@
 (** Named standard modal companions.
 
-    This file begins the dependent modules above [GodelTranslation], starting
-    with the complete classical/S5 equivalence from Foundation's
-    [Modal/ModalCompanion/Standard/Cl.lean]. *)
+    This file ports the complete classical companion family from Foundation's
+    [Modal/ModalCompanion/Standard/Cl.lean]: S5, S5Grz, Triv, and the boxdot
+    presentation through Ver. *)
 
 From Stdlib Require Import Logic.Classical_Prop.
 From FoundationModal Require Import
-  Syntax Axioms Kripke Correspondence LogicInfrastructure EntailmentExtensions EntailmentS4
+  Syntax Axioms Kripke Correspondence FrameTransformations
+  LogicInfrastructure EntailmentExtensions EntailmentS4
   NormalHilbert CanonicalTB Modality
   PropositionalFormula PropositionalBoolean PropositionalBooleanHilbert
-  PropositionalHilbert GodelTranslation.
+  PropositionalHilbert GodelTranslation Boxdot CanonicalTrivVer CanonicalS5Grz.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -119,4 +120,73 @@ Proof.
   intro p; split.
   - apply ph_cl_provable_godel_S5.
   - apply ph_cl_provable_of_godel_S5.
+Qed.
+
+(** S5Grz contains S5, so the forward direction is inherited. *)
+Lemma ph_cl_provable_godel_S5Grz :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_cl nat) p ->
+    S5Grz_proves (godel_translate p).
+Proof.
+  intros p Hp. apply S5_weaker_than_S5Grz.
+  now apply ph_cl_provable_godel_S5.
+Qed.
+
+(** For translated propositional formulas, soundness on the one-world Triv
+    frame gives the converse without requiring a general S5Grz-to-S5
+    reduction. *)
+Lemma ph_cl_provable_of_godel_S5Grz :
+  forall p : pformula nat,
+    S5Grz_proves (godel_translate p) ->
+    ph_hilbert_provable (ph_hilbert_cl nat) p.
+Proof.
+  intros p Hp. apply (proj2
+    (@ph_cl_provable_iff_tautology nat nat_pformula_codec p)).
+  intro v.
+  apply (proj1 (godel_translate_reflexive_singleton_iff_boolean v p)).
+  eapply (@S5Grz_proves_sound_on_Triv_frame nat
+    reflexive_singleton_frame (godel_translate p)).
+  - split.
+    + exact reflexive_singleton_reflexive.
+    + exact reflexive_singleton_coreflexive.
+  - exact Hp.
+Qed.
+
+Theorem ph_cl_modal_companion_S5Grz :
+  godel_modal_companion
+    (ph_hilbert_provable (ph_hilbert_cl nat)) (@S5Grz_proves nat).
+Proof.
+  intro p; split.
+  - apply ph_cl_provable_godel_S5Grz.
+  - apply ph_cl_provable_of_godel_S5Grz.
+Qed.
+
+(** The unconditional proof-theoretic collapse [S5Grz = Triv] transports the
+    companion equivalence in both directions. *)
+Theorem ph_cl_modal_companion_Triv :
+  godel_modal_companion
+    (ph_hilbert_provable (ph_hilbert_cl nat)) (@Triv_proves nat).
+Proof.
+  intro p; split.
+  - intro Hp. apply S5Grz_weaker_than_Triv.
+    now apply ph_cl_provable_godel_S5Grz.
+  - intro Hp. apply ph_cl_provable_of_godel_S5Grz.
+    now apply Triv_weaker_than_S5Grz.
+Qed.
+
+(** Boxdot converts the unconditional Ver/Triv equivalence into the final
+    classical companion presentation. *)
+Theorem ph_cl_boxdot_modal_companion_Ver :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_cl nat) p <->
+    Ver_proves (boxdot_translate (godel_translate p)).
+Proof.
+  intro p; split.
+  - intro Hp.
+    apply (proj2 (Ver_boxdot_iff_Triv_unconditional (godel_translate p))).
+    now apply (proj1 (ph_cl_modal_companion_Triv p)).
+  - intro Hp.
+    apply (proj2 (ph_cl_modal_companion_Triv p)).
+    now apply (proj1 (Ver_boxdot_iff_Triv_unconditional
+      (godel_translate p))).
 Qed.
