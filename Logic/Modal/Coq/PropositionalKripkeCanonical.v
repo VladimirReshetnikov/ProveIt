@@ -252,6 +252,9 @@ Qed.
 Definition pki_has_efq (H : ph_hilbert nat) : Prop :=
   forall p, ph_hilbert_provable H (ph_axiom_efq p).
 
+Definition pki_has_dummett (H : ph_hilbert nat) : Prop :=
+  forall p q, ph_hilbert_provable H (ph_axiom_dummett p q).
+
 Record pki_prime_theory (H : ph_hilbert nat) : Type := {
   pki_prime_carrier : pki_theory;
   pki_prime_closed : forall p, pki_derives H pki_prime_carrier p ->
@@ -413,6 +416,36 @@ Proof.
   - exact Hq.
 Qed.
 
+(** Dummett's axiom linearly orders all extensions above a prime theory.
+    The proof needs no saturation-specific argument: one formula witnessing a
+    failed inclusion and primeness of the axiom decide the other inclusion. *)
+Theorem pki_canonical_frame_strongly_connected :
+  forall H, pki_has_dummett H ->
+    pkripke_frame_strongly_connected (pki_canonical_frame H).
+Proof.
+  intros H HD T U V HTU HTV.
+  destruct (classic (pki_theory_included U V)) as [HUV | HnotUV].
+  - now left.
+  - right.
+    apply not_all_ex_not in HnotUV.
+    destruct HnotUV as [p HnotUV].
+    assert (HpU : pki_prime_mem U p).
+    { apply NNPP. intro HnotU. apply HnotUV. intro Hp. contradiction. }
+    assert (HpV : ~ pki_prime_mem V p).
+    { intro Hp. apply HnotUV. intros _. exact Hp. }
+    intros q HqV. apply NNPP. intro HqU.
+    assert (HDmem : pki_prime_mem T (ph_axiom_dummett p q)).
+    { apply pki_prime_contains_theorems, HD. }
+    destruct (proj1 (pki_prime_or_iff T (PImp p q) (PImp q p))
+      HDmem) as [Hpq | Hqp].
+    + apply HqU. eapply pki_prime_mdp.
+      * exact (HTU _ Hpq).
+      * exact HpU.
+    + apply HpV. eapply pki_prime_mdp.
+      * exact (HTV _ Hqp).
+      * exact HqV.
+Qed.
+
 Theorem pki_canonical_truth_lemma :
   forall H, pki_has_efq H -> forall (T : pki_prime_theory H) p,
     pkripke_forces (pki_canonical_model H) T p <->
@@ -515,6 +548,12 @@ Qed.
 Definition pki_int_has_efq : pki_has_efq (ph_hilbert_int nat) :=
   fun p => inhabits (ph_hilbert_int_efq p).
 
+Definition pki_lc_has_efq : pki_has_efq (ph_hilbert_lc nat) :=
+  fun p => inhabits (ph_hilbert_lc_efq p).
+
+Definition pki_lc_has_dummett : pki_has_dummett (ph_hilbert_lc nat) :=
+  fun p q => inhabits (ph_hilbert_lc_dummett p q).
+
 Theorem ph_hilbert_int_pkripke_complete :
   pkripke_complete (ph_hilbert_int nat) (fun _ => True).
 Proof. exact (ph_hilbert_pkripke_complete pki_int_has_efq). Qed.
@@ -527,4 +566,23 @@ Proof.
   intro p; split.
   - apply ph_hilbert_int_pkripke_sound.
   - apply ph_hilbert_int_pkripke_complete.
+Qed.
+
+Theorem ph_hilbert_lc_pkripke_complete :
+  pkripke_complete (ph_hilbert_lc nat)
+    pkripke_frame_strongly_connected.
+Proof.
+  apply ph_hilbert_pkripke_complete_of_canonical.
+  - exact pki_lc_has_efq.
+  - exact (pki_canonical_frame_strongly_connected pki_lc_has_dummett).
+Qed.
+
+Theorem ph_hilbert_lc_pkripke_sound_complete :
+  forall p : pformula nat,
+    ph_hilbert_provable (ph_hilbert_lc nat) p <->
+    pkripke_frame_class_valid pkripke_frame_strongly_connected p.
+Proof.
+  intro p; split.
+  - apply ph_hilbert_lc_pkripke_sound.
+  - apply ph_hilbert_lc_pkripke_complete.
 Qed.

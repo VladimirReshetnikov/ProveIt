@@ -543,3 +543,13 @@ Proof.
   - intros V. apply pkripke_model_valid_efq.
   - now apply pkripke_Dummett_valid_of_strongly_connected.
 Qed.
+
+Theorem ph_hilbert_lc_consistent_via_pkripke :
+  ~ ph_hilbert_provable (ph_hilbert_lc nat) PFalsum.
+Proof.
+  eapply ph_hilbert_consistent_of_nonempty_pkripke_class.
+  - exact (@ph_hilbert_lc_pkripke_sound nat).
+  - exists pkripke_singleton_frame. split.
+    + intros x y z _ _. left. constructor.
+    + constructor. exact tt.
+Qed.
