@@ -1,0 +1,24 @@
+(** Audit surface for raw validity of the universal Or-I-left reroot law. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootValidity.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootValidity.
+
+Check rawTemplateFormulaSat_rawCoqTemplateRenameN.
+Check coqRestrictedPADirectOrIntroductionLeftChildRestrictedCore_shape.
+Check
+  raw_coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootLaw_valid.
+Check
+  raw_coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSource_valid.
+Check
+  PA_proves_coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSource.
+
+Print Assumptions rawTemplateFormulaSat_rawCoqTemplateRenameN.
+Print Assumptions
+  raw_coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootLaw_valid.
+Print Assumptions
+  raw_coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSource_valid.
+Print Assumptions
+  PA_proves_coqRestrictedPADirectOrIntroductionLeftDynamicRestrictedRerootSource.
