@@ -2673,6 +2673,30 @@ Defined.
 Arguments generic_minimal_and_or_cut_raw {S F E C s}
   _ _ _ _ _ _ _ _.
 
+(** The source places its finite conjunction-to-disjunction cut in the
+    intuitionistic module, but ex falso is unused.  Positional list
+    membership both generalizes finite sets and removes formula equality. *)
+Definition generic_minimal_conj2_to_disj2_of_or_member_raw {S F : Type}
+    {E : generic_entailment S F} {C : generic_connectives F} {s : S}
+    (H : generic_minimal_entailment E C s)
+    (gamma delta : list F) (p q : F)
+    (hor : generic_raw_list_member (generic_or C p q) gamma)
+    (hp : generic_raw_list_member p delta)
+    (hq : generic_raw_list_member q delta) :
+    generic_proof E s
+      (generic_imp C (generic_list_conj2 C gamma)
+        (generic_list_disj2 C delta)) :=
+  generic_minimal_imp_trans_raw H
+    (generic_list_conj2 C gamma) (generic_or C p q)
+    (generic_list_disj2 C delta)
+    (generic_minimal_list_conj2_elim_raw H hor)
+    (generic_minimal_or_elim_raw H p q (generic_list_disj2 C delta)
+      (generic_minimal_list_disj2_intro_raw H hp)
+      (generic_minimal_list_disj2_intro_raw H hq)).
+
+Arguments generic_minimal_conj2_to_disj2_of_or_member_raw
+  {S F E C s} _ _ _ _ _ _ _ _.
+
 Lemma generic_minimal_double_neg_imp_distribution_provable :
   forall (S F : Type) (E : generic_entailment S F)
          (C : generic_connectives F) (s : S),

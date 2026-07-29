@@ -479,6 +479,18 @@ Definition ph_hilbert_and_or_cut {Atom : Type}
   generic_minimal_and_or_cut_raw
     (ph_hilbert_generic_minimal H) p1 p2 cut q1 q2 d1 d2.
 
+Definition ph_hilbert_conj2_to_disj2_of_or_member {Atom : Type}
+    (H : ph_hilbert Atom)
+    (gamma delta : list (pformula Atom)) (p q : pformula Atom)
+    (hor : generic_raw_list_member (POr p q) gamma)
+    (hp : generic_raw_list_member p delta)
+    (hq : generic_raw_list_member q delta) :
+    ph_hilbert_proof H
+      (PImp (generic_list_conj2 (pformula_connectives Atom) gamma)
+        (generic_list_disj2 (pformula_connectives Atom) delta)) :=
+  generic_minimal_conj2_to_disj2_of_or_member_raw
+    (ph_hilbert_generic_minimal H) gamma delta p q hor hp hq.
+
 (** One recursor factors inclusion and arbitrary proof-schema translations. *)
 Fixpoint ph_hilbert_proof_map {Atom : Type}
     {H K : ph_hilbert Atom}
