@@ -346,10 +346,34 @@ Proof.
   - intros [].
 Qed.
 
+(** An arbitrary rewrite, not merely a bound-variable substitution, can be
+    pushed through instantiation of a closed template.  This is the common
+    algebraic core of term- and formula-operator composition. *)
+Lemma rew_comp_emb_substs : forall L X Y l k n
+    (v : Fin.t l -> semiterm L X k) (w : rew L X k Y n),
+  rew_equiv (rew_comp w (rew_emb_substs v))
+    (rew_emb_substs (fun i => rew_apply w (v i))).
+Proof.
+  intros L X Y l k n v w.
+  apply rew_equiv_of_variables.
+  - intro i; reflexivity.
+  - intros [].
+Qed.
+
 Lemma rew_emb_substs_variables : forall L X n,
   rew_equiv
     (@rew_emb_substs L X n n (fun i => Semiterm_bvar i))
     (rew_emb (fun x : Empty_set => match x with end)).
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i; reflexivity.
+  - intros [].
+Qed.
+
+Lemma rew_emb_substs_variables_empty : forall L n,
+  rew_equiv
+    (@rew_emb_substs L Empty_set n n (fun i => Semiterm_bvar i))
+    rew_id.
 Proof.
   intros. apply rew_equiv_of_variables.
   - intro i; reflexivity.
