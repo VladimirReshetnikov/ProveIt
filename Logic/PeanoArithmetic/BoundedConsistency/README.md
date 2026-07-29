@@ -3044,6 +3044,11 @@ combinators keep clients independent of the concrete pair of represented
 `AndE` root constructors and remove repeated proof-root plumbing from table
 and traversal projections.
 
+`RawCodedPALocalProofComposition.v` provides the analogous three-premise
+modus-ponens chain.  Its template-facing endpoint uses audited structural
+views of a triple implication, so clients can apply a fixed implication tower
+without unfolding its translated carrier codes or naming nested proof roots.
+
 `RawCodedFourStateTableAppendExistentialElimination.v` specializes that chain
 to the append consequent's exact eight binders.  Its computation audit proves
 that the fallback context is unreachable, and its local-proof endpoint
@@ -3066,6 +3071,23 @@ quantified predecessor-preservation laws too.  A checked two-opening
 calculation instantiates all four laws at an arbitrary candidate row while
 retaining the identical witness context; applying their three implication
 premises is the arithmetic core of the universal row condition.
+
+`RawCodedLtSuccCasesSource.v` and
+`RawCodedLtSuccCasesProofCompilation.v` supply the object-language case split
+that controls that row condition.  The closed PA theorem states uniformly
+that `i < S b` implies `i < b \/ i = b`.  Its translation-generic compiler
+opens both universal binders on an arbitrary witnessed base, transports the
+caller's bound proof through the selected standard PA prefix, and returns a
+local proof of the disjunction.  The result therefore supports represented
+`OrE` between predecessor-row preservation and construction of the new row;
+it does not appeal to the metatheoretic model case split at the client site.
+The compiler now also exposes that elimination directly: clients provide one
+local continuation under each literal disjunct-cons context, and the endpoint
+selects the standard PA witness prefix, compiles the arithmetic split, and
+returns the represented `OrE` root in their common extended context.  This
+keeps both successor-row branches synchronized to exactly the same finite PA
+axiom prefix instead of requiring clients to reconcile independently chosen
+witness contexts.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely

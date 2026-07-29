@@ -16,6 +16,7 @@ From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedPALocalProofExistential
   RawCodedProofAssumptionLeaf
+  RawCodedPALocalProofComposition
   RawCodedPALocalProofConjunction
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
@@ -36,6 +37,7 @@ Import PAFiniteBetaCoding.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedProofAssumptionLeaf.
+Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofConjunction.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -259,6 +261,34 @@ Definition coqFourStateTableAppendPreservationAtTemplate
     (preservation : TemplateFormula) (index value : TemplateTerm)
     : TemplateFormula :=
   templateUniversalOpenManyOrBot preservation [index; value].
+
+Definition coqFourStateTableAppendPreservationCurrentBoundTemplate
+    (preservation : TemplateFormula) (index value : TemplateTerm)
+    : TemplateFormula :=
+  templateImpAntecedent
+    (coqFourStateTableAppendPreservationAtTemplate
+      preservation index value).
+
+Definition coqFourStateTableAppendPreservationOldBoundTemplate
+    (preservation : TemplateFormula) (index value : TemplateTerm)
+    : TemplateFormula :=
+  templateImpAntecedent (templateImpConsequent
+    (coqFourStateTableAppendPreservationAtTemplate
+      preservation index value)).
+
+Definition coqFourStateTableAppendPreservationOldLookupTemplate
+    (preservation : TemplateFormula) (index value : TemplateTerm)
+    : TemplateFormula :=
+  templateImpAntecedent (templateImpConsequent (templateImpConsequent
+    (coqFourStateTableAppendPreservationAtTemplate
+      preservation index value))).
+
+Definition coqFourStateTableAppendPreservationNewLookupTemplate
+    (preservation : TemplateFormula) (index value : TemplateTerm)
+    : TemplateFormula :=
+  templateImpConsequent (templateImpConsequent (templateImpConsequent
+    (coqFourStateTableAppendPreservationAtTemplate
+      preservation index value))).
 
 Definition coqFourStateTableAppendNewStateDefinedTemplate
     (modeCode modeStep formulaCode formulaStep
@@ -745,6 +775,73 @@ Lemma coqFourStateTableAppendPreservationAt_successes : forall
 Proof.
   intros.
   unfold coqFourStateTableAppendPreservationAtTemplate,
+    templateUniversalOpenManyOrBot,
+    coqFourStateTableAppendModePreservationTemplate,
+    coqFourStateTableAppendFormulaPreservationTemplate,
+    coqFourStateTableAppendAssignmentCodePreservationTemplate,
+    coqFourStateTableAppendAssignmentStepPreservationTemplate,
+    coqFourStateTableAppendExtensionBodyTemplate,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendExtensionBody,
+    codedAssignmentAppendAtTermAt,
+    codedAssignmentAppendPrefixTermAt,
+    fixedLevelEx8, fixedLevelAnd4,
+    templateAndFirst, templateAndSecond,
+    templateAnd4First, templateAnd4Second,
+    templateAnd4Third, templateAnd4Fourth.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst
+    templateExistentialBodyMany].
+  repeat split; reflexivity.
+Qed.
+
+Lemma coqFourStateTableAppendPreservationAt_shapes : forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    index rowMode rowFormula rowAssignmentCode rowAssignmentStep,
+  let modeAt := coqFourStateTableAppendPreservationAtTemplate
+    (coqFourStateTableAppendModePreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    index rowMode in
+  let formulaAt := coqFourStateTableAppendPreservationAtTemplate
+    (coqFourStateTableAppendFormulaPreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    index rowFormula in
+  let assignmentCodeAt := coqFourStateTableAppendPreservationAtTemplate
+    (coqFourStateTableAppendAssignmentCodePreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    index rowAssignmentCode in
+  let assignmentStepAt := coqFourStateTableAppendPreservationAtTemplate
+    (coqFourStateTableAppendAssignmentStepPreservationTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    index rowAssignmentStep in
+  TemplateImp3Shape modeAt /\
+  TemplateImp3Shape formulaAt /\
+  TemplateImp3Shape assignmentCodeAt /\
+  TemplateImp3Shape assignmentStepAt.
+Proof.
+  intros.
+  cbn zeta.
+  unfold TemplateImp3Shape,
+    templateImpAntecedent, templateImpConsequent,
+    coqFourStateTableAppendPreservationAtTemplate,
     templateUniversalOpenManyOrBot,
     coqFourStateTableAppendModePreservationTemplate,
     coqFourStateTableAppendFormulaPreservationTemplate,
