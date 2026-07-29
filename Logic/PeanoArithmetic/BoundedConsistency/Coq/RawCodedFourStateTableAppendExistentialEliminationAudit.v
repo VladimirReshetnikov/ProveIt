@@ -1,0 +1,14 @@
+(** Assumption audit for eliminating the eight table-extension witnesses. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFourStateTableAppendExistentialElimination.
+
+Import PABoundedRawCodedFourStateTableAppendExistentialElimination.
+
+Check coqFourStateTableAppendWitnessContext.
+Check coqFourStateTableAppendWitnessContext_success.
+Check raw_codedPALocalProofOf_four_state_table_append_ex8_elimination.
+
+Print Assumptions coqFourStateTableAppendWitnessContext_success.
+Print Assumptions
+  raw_codedPALocalProofOf_four_state_table_append_ex8_elimination.

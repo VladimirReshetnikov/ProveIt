@@ -3022,6 +3022,20 @@ thirteen-input compiler, so four inherited defined-table roots now directly
 produce the synchronized eight-witness existential on one extended witnessed
 PA context.
 
+`RawCodedPALocalProofExistentialEliminationChain.v` extracts the dual finite
+proof pattern.  For any fixed number of leading existential binders it
+computes the literal nested eigenvariable context, shifts the eventual target
+at every depth, creates each newly exposed body assumption, and rebuilds all
+represented `ExE` nodes back to the original context.  The compiler is
+generic over template translations and inspects no carrier-valued syntax.
+
+`RawCodedFourStateTableAppendExistentialElimination.v` specializes that chain
+to the append consequent's exact eight binders.  Its computation audit proves
+that the fallback context is unreachable, and its local-proof endpoint
+reduces closing the append existential to constructing one eight-times-shifted
+continuation under the literal table-witness context.  Thus the Or-row client
+no longer has to hand-code eight context shifts and eigenvariable scopes.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
