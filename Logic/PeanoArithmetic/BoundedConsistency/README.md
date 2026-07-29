@@ -4373,6 +4373,24 @@ tail inclusions.  The theorem remains generic in the finite adequate extra
 prefix, while the immediate traversal client will instantiate it with the
 two honest implication assumptions `[rowLookup; rowBound]`.
 
+The literal implication client is now compiled.  It derives both premises
+from represented assumption leaves in the combined row context, weakens the
+pre-split inherited and fixed-production roots beneath those heads, invokes
+the staged case theorem, and then applies represented implication
+introduction twice.  Its output is exactly
+`rowBound -> rowLookup -> closedProduction` over the final grown witnessed
+tail, with no metatheoretic premise proof standing in for either assumption.
+
+Finite binder closure now works above grown witnessed tails as well.  The
+universal-introduction and existential-elimination chain compilers have
+self-shifting-tail and witnessed-tail forms, plus growing wrappers that retain
+the selected final context and the original inclusion evidence.  The
+existential wrapper transports an earlier source proof to the continuation's
+final helper context before rebuilding every `Ex-E` node.  A five-binder
+append-row specialization converts the completed implication proof from the
+shifted row prefix back to the unshifted eight-witness context, ready for the
+outer append existential closure.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
