@@ -32,7 +32,7 @@
 
 From Stdlib Require Import Lists.List.
 From FoundationModal Require Import
-  GenericSemantics GenericAdjunctiveSet GenericEntailment.
+  GenericSemantics GenericLogicSymbol GenericAdjunctiveSet GenericEntailment.
 
 Import ListNotations.
 
@@ -386,37 +386,6 @@ Arguments generic_equiv_from {A B} _ _.
 Arguments generic_equiv_to_from {A B} _ _.
 Arguments generic_equiv_from_to {A B} _ _.
 
-(** Each connective equation is exposed independently so downstream rules
-    can state exactly the normalization laws they use. *)
-Definition generic_neg_involutive_law {F : Type}
-    (C : generic_connectives F) : Prop :=
-  forall p, generic_neg C (generic_neg C p) = p.
-
-Definition generic_neg_top_law {F : Type}
-    (C : generic_connectives F) : Prop :=
-  generic_neg C (generic_top C) = generic_bottom C.
-
-Definition generic_neg_bottom_law {F : Type}
-    (C : generic_connectives F) : Prop :=
-  generic_neg C (generic_bottom C) = generic_top C.
-
-Definition generic_imp_as_or_law {F : Type}
-    (C : generic_connectives F) : Prop :=
-  forall p q,
-    generic_imp C p q = generic_or C (generic_neg C p) q.
-
-Definition generic_neg_and_law {F : Type}
-    (C : generic_connectives F) : Prop :=
-  forall p q,
-    generic_neg C (generic_and C p q) =
-    generic_or C (generic_neg C p) (generic_neg C q).
-
-Definition generic_neg_or_law {F : Type}
-    (C : generic_connectives F) : Prop :=
-  forall p q,
-    generic_neg C (generic_or C p q) =
-    generic_and C (generic_neg C p) (generic_neg C q).
-
 (** Infrastructure corresponding to Foundation's imported raw modus-ponens
     capability. *)
 Record generic_modus_ponens {S F : Type}
@@ -492,13 +461,6 @@ Proof.
   pose proof (generic_lk_cut_raw K p [] [q] dp d1) as d2.
   exact d2.
 Defined.
-
-(** Formula shapes from Foundation's imported classical-entailment
-    interface.  Keeping them explicit makes declaration 19 usable for an
-    arbitrary formula representation. *)
-Definition generic_formula_iff {F : Type}
-    (C : generic_connectives F) (p q : F) : F :=
-  generic_and C (generic_imp C p q) (generic_imp C q p).
 
 Definition generic_axiom_neg_equiv {F : Type}
     (C : generic_connectives F) (p : F) : F :=

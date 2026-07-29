@@ -3,7 +3,7 @@
 From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
-  GenericEmbedding GenericCalculus
+  GenericEmbedding GenericLogicSymbol GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -475,6 +475,64 @@ Check generic_faithfully_embeddable_trans.
 Print Assumptions generic_faithfully_embeddable_fun_exists.
 Print Assumptions generic_faithfully_embeddable_refl.
 Print Assumptions generic_faithfully_embeddable_trans.
+
+(** The foundational LogicSymbol core centralizes independently consumable
+    connective laws and the full homomorphism API.  Pointwise homomorphism
+    equality avoids functional and proof extensionality. *)
+Check generic_de_morgan_laws.
+Check generic_de_morgan_neg_top.
+Check generic_de_morgan_neg_bottom.
+Check generic_de_morgan_imp.
+Check generic_de_morgan_neg_and.
+Check generic_de_morgan_neg_or.
+Check generic_neg_abbrev_law.
+Check generic_lukasiewicz_abbrev.
+Check generic_neg_injective.
+Check generic_neg_equal_iff.
+Check generic_neg_embedding.
+Check generic_neg_embedding_apply.
+Check generic_formula_iff.
+Check generic_connective_hom.
+Check generic_connective_hom_apply.
+Check generic_connective_hom_iff.
+Check generic_connective_hom_equiv.
+Check generic_connective_hom_id.
+Check generic_connective_hom_compose.
+Check generic_connective_hom_id_apply.
+Check generic_connective_hom_compose_apply.
+Check generic_and_or_closed.
+Check generic_connective_closed.
+Print Assumptions generic_neg_injective.
+Print Assumptions generic_neg_equal_iff.
+Print Assumptions generic_connective_hom_iff.
+Print Assumptions generic_connective_hom_id.
+Print Assumptions generic_connective_hom_compose.
+Check generic_conj_lt.
+Check generic_conj_lt_zero.
+Check generic_conj_lt_succ.
+Check generic_disj_lt.
+Check generic_disj_lt_zero.
+Check generic_disj_lt_succ.
+Check generic_connective_hom_conj_lt.
+Check generic_connective_hom_disj_lt.
+Check generic_list_conj.
+Check generic_list_disj.
+Check generic_connective_hom_list_conj.
+Check generic_connective_hom_list_disj.
+Check generic_connective_hom_list_conj2.
+Check generic_connective_hom_list_disj2.
+Check generic_list_conj_map.
+Check generic_list_disj_map.
+Check generic_connective_hom_list_conj_map.
+Check generic_connective_hom_list_disj_map.
+Print Assumptions generic_connective_hom_conj_lt.
+Print Assumptions generic_connective_hom_disj_lt.
+Print Assumptions generic_connective_hom_list_conj.
+Print Assumptions generic_connective_hom_list_disj.
+Print Assumptions generic_connective_hom_list_conj2.
+Print Assumptions generic_connective_hom_list_disj2.
+Print Assumptions generic_connective_hom_list_conj_map.
+Print Assumptions generic_connective_hom_list_disj_map.
 
 (** The first fifteen declarations from Logic/Calculus.lean retain raw,
     Type-valued derivations while relaxing the source's namespace-wide
