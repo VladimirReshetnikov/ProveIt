@@ -2773,6 +2773,16 @@ twenty-two-field continuation plus the independent strong-prefix closure
 remainder.  The next branch-level task is to discharge another field of this
 remainder with the same standard-tail protocol.
 
+`RawCodedRestrictedPATemplateTernaryApplicationCompilation.v` factors the
+represented application calculation needed by that next branch out of the
+Assumption rule itself.  For arbitrary direct truth selectors it performs the
+protective shift-by-two and shift-by-one on the first two template arguments,
+then compiles all three formula openings to the exact five-trace ternary
+application relation.  Cross-trace functionality upgrades the relation to a
+literal selector-output equation.  This reusable equation is the rerooting
+bridge by which native context truth can be exposed as its transparent
+five-existential, pointwise-Sigma template without decoding a carrier code.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
