@@ -2661,9 +2661,12 @@ compiles the universal source with its honest finite axiom prefix, applies
 represented All-E at the arbitrary direct level using the exact substitution
 trace, and transports the instantiated law beneath the finite opened-coverage
 template prefix.  The result is a represented local proof of the dynamic
-reroot law over an extended witnessed base; identifying that on-tail context
-with the shared rule-case template tail and consuming it in the opened
-coverage compiler are the next integration steps.
+reroot law over an extended witnessed base.  Since each selected PA axiom is
+a sentence, binder-induced shifts leave the embedded axiom tail literally
+unchanged.  The module consequently identifies the on-tail proof context with
+the exact shared rule-case template context and exports the legacy dynamic
+reroot root predicate on a selected witnessed tail.  Consuming that root in
+the opened coverage compiler is the next integration step.
 
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
