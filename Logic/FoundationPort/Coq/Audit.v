@@ -4,6 +4,7 @@ From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
+From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
 From Foundation.Syntax.Predicate Require Import Relational.
 
 Check language.
@@ -327,6 +328,38 @@ Check semiformula_bex_le.
 Check semiformula_ball_mem.
 Check semiformula_bex_mem.
 
+Check first_order_structure.
+Check unit_first_order_structure.
+Check first_order_structure_language_map.
+Check fin_env_cons.
+Check semiterm_val.
+Check closed_semiterm_val.
+Check semiterm_val_rewrite.
+Check semiterm_val_rewrite_free.
+Check semiterm_val_rewrite_map.
+Check semiterm_val_substitute.
+Check semiterm_val_map.
+Check semiterm_val_bshift.
+Check semiterm_val_emb_substs.
+Check semiterm_val_language_map.
+Check semiterm_val_free_ext.
+Check semiformula_eval.
+Check formula_eval.
+Check sentence_realize.
+Check semiformula_eval_neg.
+Check semiformula_eval_imp.
+Check semiformula_eval_bounded_all.
+Check semiformula_eval_bounded_exists.
+Check semiterm_val_rew_q_bvars.
+Check semiterm_val_rew_q_fvars.
+Check semiformula_eval_rewrite.
+Check semiformula_eval_map.
+Check semiformula_eval_substitute.
+Check semiformula_eval_bshift.
+Check semiformula_eval_emb_substs.
+Check semiformula_eval_free_ext.
+Check semiformula_eval_language_map.
+
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
 Check fin_cons.
@@ -437,6 +470,14 @@ Print Assumptions semiformula_rewrite_eq_operator_preimage.
 Print Assumptions semiformula_binary_relation_injective.
 Print Assumptions semiformula_eq_operator_injective.
 Print Assumptions semiformula_le_operator_injective.
+Print Assumptions semiterm_val_rewrite.
+Print Assumptions semiterm_val_language_map.
+Print Assumptions semiterm_val_free_ext.
+Print Assumptions semiformula_eval_neg.
+Print Assumptions semiformula_eval_bounded_all.
+Print Assumptions semiformula_eval_rewrite.
+Print Assumptions semiformula_eval_free_ext.
+Print Assumptions semiformula_eval_language_map.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
