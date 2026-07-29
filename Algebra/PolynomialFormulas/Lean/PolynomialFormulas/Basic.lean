@@ -24,6 +24,14 @@ theorem linear_formula {a b : K} (ha : a ≠ 0) :
   field_simp [ha]
   ring
 
+/-- Executable expression for the root of a linear equation. -/
+def solveLinear (a b : K) : K := -b / a
+
+/-- The linear solver always returns the unique root when `a ≠ 0`. -/
+theorem solveLinear_correct {a b : K} (ha : a ≠ 0) :
+    linear a b (solveLinear a b) = 0 := by
+  exact linear_formula ha
+
 /-- The linear formula gives the unique root. -/
 theorem linear_eq_zero_iff {a b x : K} (ha : a ≠ 0) :
     linear a b x = 0 ↔ x = -b / a := by
@@ -38,6 +46,10 @@ theorem linear_eq_zero_iff {a b x : K} (ha : a ≠ 0) :
 def quadratic (a b c x : K) : K := a * x ^ 2 + b * x + c
 
 variable [CharZero K]
+
+/-- The two values computed by the quadratic formula. -/
+def solveQuadratic (a b _c s : K) : Fin 2 → K :=
+  ![(-b + s) / (2 * a), (-b - s) / (2 * a)]
 
 /-- The `+` branch of the quadratic formula. -/
 theorem quadratic_formula_plus {a b c s : K} (ha : a ≠ 0)
@@ -54,6 +66,14 @@ theorem quadratic_formula_minus {a b c s : K} (ha : a ≠ 0)
   unfold quadratic
   field_simp [ha]
   linear_combination hs
+
+/-- Every entry returned by `solveQuadratic` is a root. -/
+theorem solveQuadratic_correct {a b c s : K} (ha : a ≠ 0)
+    (hs : s ^ 2 = b ^ 2 - 4 * a * c) (i : Fin 2) :
+    quadratic a b c (solveQuadratic a b c s i) = 0 := by
+  fin_cases i
+  · exact quadratic_formula_plus ha hs
+  · exact quadratic_formula_minus ha hs
 
 /-- The quadratic polynomial factors through the two formula roots. -/
 theorem quadratic_formula_factorization {a b c s x : K} (ha : a ≠ 0)

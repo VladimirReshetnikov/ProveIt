@@ -14,8 +14,13 @@ where `ring`, `field`, and `nra` produce proof terms checked by the kernel.
 
 The linear theorem proves uniqueness.  The quadratic development proves both
 formula branches, their factorization, and that they exhaust every root.
-Cardano's cubic formula and Ferrari's quartic formula are developed in the
-subsequent modules.
+The cubic development proves the Tschirnhaus translation to depressed form,
+the compatible radical-pair identity in Cardano's formula, its discriminant
+equation, and the formula for an arbitrary cubic after normalization. The
+`solveLinear`, `solveQuadratic`, and `solveCubic` functions (with snake-case
+counterparts in Coq) return fixed-size root collections; their correctness
+theorems prove that every returned entry zeros the input polynomial. Ferrari's
+quartic formula is developed in the subsequent module.
 
 ## Checking
 
@@ -27,4 +32,6 @@ lake build +PolynomialFormulas
 
 coqc -Q Algebra/PolynomialFormulas/Coq PolynomialFormulas `
   Algebra/PolynomialFormulas/Coq/Basic.v
+coqc -Q Algebra/PolynomialFormulas/Coq PolynomialFormulas `
+  Algebra/PolynomialFormulas/Coq/Cubic.v
 ```

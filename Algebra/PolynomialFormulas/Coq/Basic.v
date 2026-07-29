@@ -18,6 +18,12 @@ Proof.
   field; exact ha.
 Qed.
 
+Definition solve_linear (a b : R) : R := -b / a.
+
+Theorem solve_linear_correct (a b : R) (ha : a <> 0) :
+  linear a b (solve_linear a b) = 0.
+Proof. apply linear_formula; exact ha. Qed.
+
 Theorem linear_eq_zero_iff (a b x : R) (ha : a <> 0) :
   linear a b x = 0 <-> x = -b / a.
 Proof.
@@ -31,6 +37,9 @@ Proof.
 Qed.
 
 Definition quadratic (a b c x : R) : R := a * x ^ 2 + b * x + c.
+
+Definition solve_quadratic (a b c s : R) : R * R :=
+  ((-b + s) / (2 * a), (-b - s) / (2 * a)).
 
 Theorem quadratic_formula_plus (a b c s : R) (ha : a <> 0)
     (hs : s ^ 2 = b ^ 2 - 4 * a * c) :
@@ -54,6 +63,16 @@ Proof.
   assert (hxsq : (2 * a * x) ^ 2 = (-b - s) ^ 2) by now rewrite hx.
   unfold quadratic.
   destruct (Rdichotomy a 0 ha); nra.
+Qed.
+
+Theorem solve_quadratic_correct (a b c s : R) (ha : a <> 0)
+    (hs : s ^ 2 = b ^ 2 - 4 * a * c) :
+  quadratic a b c (fst (solve_quadratic a b c s)) = 0 /\
+  quadratic a b c (snd (solve_quadratic a b c s)) = 0.
+Proof.
+  split; cbn [solve_quadratic].
+  - apply quadratic_formula_plus; assumption.
+  - apply quadratic_formula_minus; assumption.
 Qed.
 
 Theorem quadratic_formula_factorization (a b c s x : R) (ha : a <> 0)
