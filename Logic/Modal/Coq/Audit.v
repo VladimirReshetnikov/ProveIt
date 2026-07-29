@@ -2,7 +2,8 @@
 
 From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
-  GenericEntailment GenericDisjunctive GenericEmbedding GenericCalculus
+  GenericEntailment GenericDecidability GenericDisjunctive
+  GenericEmbedding GenericCalculus
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -429,6 +430,20 @@ Print Assumptions generic_pullback_provable_set_iff.
 Print Assumptions generic_pullback_theory_eq.
 Print Assumptions generic_pullback_weaker_than.
 Print Assumptions generic_pullback_consistent.
+
+(** All four declarations from Logic/Decidability.lean use an executable
+    formula-level decision procedure instead of the source's encoding-specific
+    computable predicate.  Essential undecidability needs only negation, and
+    inconsistency yields the constant positive decider constructively. *)
+Check generic_decidable_theory.
+Check generic_theory_decide.
+Check generic_undecidable_theory.
+Check generic_essentially_undecidable.
+Check generic_essentially_undecidable_extension.
+Check generic_decidable_of_incomplete.
+Check generic_decidable_of_inconsistent.
+Print Assumptions generic_decidable_of_incomplete.
+Print Assumptions generic_decidable_of_inconsistent.
 
 (** All four declarations from Logic/Disjunctive.lean are represented over
     arbitrary entailments and primitive negation/disjunction operations.  The
