@@ -1,0 +1,22 @@
+(** Assumption audit for proof-producing successor-bound splitting. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedLtSuccCasesProofCompilation.
+
+Import PABoundedRawCodedLtSuccCasesProofCompilation.
+
+Check coqLtSuccCasesInstanceTemplate.
+Check coqLtSuccCasesAntecedentTemplate.
+Check coqLtSuccCasesResultTemplate.
+Check coqLtSuccCasesBelowTemplate.
+Check coqLtSuccCasesEqualTemplate.
+Check coqLtSuccCasesInstanceTemplate_open.
+Check coqLtSuccCasesInstanceTemplate_shape.
+Check raw_codedPALocalProofOf_lt_succ_cases_instance_on_witnessed_tail.
+Check raw_codedPALocalProofOf_lt_succ_cases_on_witnessed_tail.
+
+Print Assumptions coqLtSuccCasesInstanceTemplate_open.
+Print Assumptions coqLtSuccCasesInstanceTemplate_shape.
+Print Assumptions
+  raw_codedPALocalProofOf_lt_succ_cases_instance_on_witnessed_tail.
+Print Assumptions raw_codedPALocalProofOf_lt_succ_cases_on_witnessed_tail.

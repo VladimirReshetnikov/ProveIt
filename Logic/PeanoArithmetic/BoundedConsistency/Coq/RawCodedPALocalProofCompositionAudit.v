@@ -8,7 +8,12 @@ Import PABoundedRawCodedPALocalProofComposition.
 Check raw_codedPALocalProofOf_botE.
 Check raw_codedPALocalProofOf_impE.
 Check raw_codedPALocalProofOf_impE3.
+Check templateImpAntecedent.
+Check templateImpConsequent.
+Check TemplateImp3Shape.
+Check raw_codedPALocalProofOf_templateImpE3.
 
 Print Assumptions raw_codedPALocalProofOf_botE.
 Print Assumptions raw_codedPALocalProofOf_impE.
 Print Assumptions raw_codedPALocalProofOf_impE3.
+Print Assumptions raw_codedPALocalProofOf_templateImpE3.
