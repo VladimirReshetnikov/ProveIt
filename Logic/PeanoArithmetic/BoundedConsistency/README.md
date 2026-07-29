@@ -2698,6 +2698,16 @@ recursive-child residual is no longer primitive: only construction of the
 opened structural root from the compiled dynamic reroot law and the remaining
 coverage operations is left at this branch boundary.
 
+`RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageSource.v`
+now fixes the syntax of that remaining boundary.  The complete seven-premise
+opened law contains no opaque truth applications, so abstracting its named
+carrier level reifies to one ordinary PA formula.  The module proves exact
+embedding and opening equations and supplies the represented substitution
+trace from that fixed source to the direct template law at an arbitrary model
+element.  This reduces the next step to arithmetic validity of one explicit
+universal source, followed by the same witnessed-base compilation already
+used for the smaller reroot law.
+
 `RawCodedRestrictedPADerivationSoundnessDirectDiagonalClosure.v` formalizes
 finite scoping for the direct template and lifts it to genuinely
 carrier-valued operation depths.  Represented numeral parameters are handled
