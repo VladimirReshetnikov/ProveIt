@@ -532,6 +532,16 @@ Proof.
   - now apply pkripke_WLEM_valid_of_strongly_convergent.
 Qed.
 
+Theorem ph_hilbert_kc_consistent_via_pkripke :
+  ~ ph_hilbert_provable (ph_hilbert_kc nat) PFalsum.
+Proof.
+  eapply ph_hilbert_consistent_of_nonempty_pkripke_class.
+  - exact (@ph_hilbert_kc_pkripke_sound nat).
+  - exists pkripke_singleton_frame. split.
+    + intros x y z _ _. exists tt. split; constructor.
+    + constructor. exact tt.
+Qed.
+
 Theorem ph_hilbert_lc_pkripke_sound :
   forall (Atom : Type) p,
     ph_hilbert_provable (ph_hilbert_lc Atom) p ->
