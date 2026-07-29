@@ -6,7 +6,7 @@ From FoundationModal Require Import
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
   PropositionalFormula PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
-  PropositionalKripkeCanonical PropositionalKripkeFinite
+  PropositionalKripkeCanonical PropositionalKripkeFinite PropositionalGlivenko
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
   GenericCalculus PropositionalEntailmentAxioms
@@ -1124,6 +1124,12 @@ Check ph_hilbert_lc_pkripke_finite_complete.
 Check ph_hilbert_int_pkripke_finite_partial_order_complete.
 Check ph_hilbert_kc_pkripke_finite_partial_order_complete.
 Check ph_hilbert_lc_pkripke_finite_partial_order_complete.
+Check ph_hilbert_double_neg_intro_raw.
+Check ph_hilbert_double_neg_lem_raw.
+Check ph_glivenko_classical_to_int_double_neg.
+Check ph_glivenko_int_double_neg_to_classical_raw.
+Check ph_glivenko.
+Check ph_neg_provable_int_iff_cl.
 Print Assumptions pki_limit_derivation_stage_raw.
 Print Assumptions pki_partition_member.
 Print Assumptions pki_list_derivation_bind_raw.
@@ -1155,6 +1161,10 @@ Print Assumptions ph_hilbert_lc_pkripke_finite_complete.
 Print Assumptions ph_hilbert_int_pkripke_finite_partial_order_complete.
 Print Assumptions ph_hilbert_kc_pkripke_finite_partial_order_complete.
 Print Assumptions ph_hilbert_lc_pkripke_finite_partial_order_complete.
+Print Assumptions ph_hilbert_double_neg_lem_raw.
+Print Assumptions ph_glivenko_classical_to_int_double_neg.
+Print Assumptions ph_glivenko.
+Print Assumptions ph_neg_provable_int_iff_cl.
 
 (** Propositional/Translation syntax bridges. *)
 Check pformula_to_pnn.
@@ -3382,6 +3392,7 @@ Check ph_int_complete_from_finite_partial_pkripke_models.
 Check Grz_sound_on_finite_partial_pkripke_forcing_models.
 Check ph_int_modal_companion_Grz.
 Check ph_int_boxdot_modal_companion_GL.
+Check ph_cl_provable_iff_S4_dia_godel.
 Check S4Point2_proves_godel_translated_WLEM.
 Check ph_kc_provable_godel_S4Point2.
 Check ph_kc_complete_from_convergent_pkripke_models.
@@ -5515,6 +5526,7 @@ Print Assumptions ph_int_modal_companion_S4.
 Print Assumptions ph_int_provable_godel_Grz.
 Print Assumptions ph_int_modal_companion_Grz.
 Print Assumptions ph_int_boxdot_modal_companion_GL.
+Print Assumptions ph_cl_provable_iff_S4_dia_godel.
 Print Assumptions S4Point2_proves_godel_translated_WLEM.
 Print Assumptions ph_kc_provable_godel_S4Point2.
 Print Assumptions ph_kc_complete_from_convergent_pkripke_models.
