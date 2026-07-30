@@ -5289,3 +5289,14 @@ of the direct-evidence handoff accepts this growing pair, transports the
 atomic and domain roots to its chosen context, and only then compiles the
 shared admissibility root.  Thus neither permuted evidence proof nor the
 append context must be contracted back to the original callback base.
+
+The remaining strong-step premise has also been split at its true dependency
+boundary.  The new atomic/domain projection in
+`RawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.v` consumes only
+the restricted-proof root, the rule root, and the native domain
+substitutions; it returns both arithmetic roots on a witnessed extension
+beneath the predecessor-state assumptions.  Separately, ternary application
+now has a translation-generic five-trace theorem parameterized only by its
+two protective term shifts.  This isolates the final code-identification
+work for the extended direct translation without reintroducing global-row
+or selected-payload hypotheses.

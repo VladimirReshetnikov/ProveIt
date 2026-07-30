@@ -81,6 +81,61 @@ Definition coqRestrictedPATemplateTernaryApplication
     (coqRestrictedPATemplateTernarySecondResult
       predicate first second).
 
+(** The three formula openings are supplied by every template translation;
+    only the two protective term shifts depend on the concrete term
+    interpreter.  Factoring them as premises lets extended direct-input
+    translations reuse the same five-trace application proof. *)
+Theorem raw_codedTemplateTernaryApplication_trace_of_protected_shifts :
+  forall (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+      predicate first second third,
+  RawCodedTermShift M
+    (raw_zero M) (rawNumeralValue M 2)
+    (rawTemplateTerm translation first)
+    (rawTemplateTerm translation
+      (coqRestrictedPATemplateTernaryFirstLifted first)) ->
+  RawCodedTermShift M
+    (raw_zero M) (rawNumeralValue M 1)
+    (rawTemplateTerm translation second)
+    (rawTemplateTerm translation
+      (coqRestrictedPATemplateTernarySecondLifted second)) ->
+  RawCodedTernaryApplication M
+    (rawTemplateFormula translation predicate)
+    (rawTemplateTerm translation first)
+    (rawTemplateTerm translation second)
+    (rawTemplateTerm translation third)
+    (rawTemplateFormula translation
+      (coqRestrictedPATemplateTernaryApplication
+        predicate first second third)).
+Proof.
+  intros M translation predicate first second third
+    hfirstShift hsecondShift.
+  unfold RawCodedTernaryApplication.
+  exists
+    (rawTemplateTerm translation
+      (coqRestrictedPATemplateTernaryFirstLifted first)),
+    (rawTemplateTerm translation
+      (coqRestrictedPATemplateTernarySecondLifted second)),
+    (rawTemplateFormula translation
+      (coqRestrictedPATemplateTernaryFirstResult predicate first)),
+    (rawTemplateFormula translation
+      (coqRestrictedPATemplateTernarySecondResult
+        predicate first second)).
+  repeat split.
+  - exact hfirstShift.
+  - exact hsecondShift.
+  - unfold coqRestrictedPATemplateTernaryFirstResult.
+    exact (rawTemplateFormula_open translation
+      predicate (coqRestrictedPATemplateTernaryFirstLifted first)).
+  - unfold coqRestrictedPATemplateTernarySecondResult.
+    exact (rawTemplateFormula_open translation
+      (coqRestrictedPATemplateTernaryFirstResult predicate first)
+      (coqRestrictedPATemplateTernarySecondLifted second)).
+  - unfold coqRestrictedPATemplateTernaryApplication.
+    exact (rawTemplateFormula_open translation
+      (coqRestrictedPATemplateTernarySecondResult
+        predicate first second) third).
+Qed.
+
 (** Direct term translation is selector-independent.  The numeral-template
     shift theorem therefore supplies the non-unit shift by two directly,
     rather than composing two independently represented unit-shift tables. *)
