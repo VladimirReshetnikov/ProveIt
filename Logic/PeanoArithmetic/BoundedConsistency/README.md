@@ -4781,3 +4781,14 @@ final common context.  It retains the original-tail inclusion and returns
 both evidence roots together.  The predecessor logical-roots package now
 lacks only the admissibility root and the two native translated-code
 identifications.
+
+The paired compiler is now exposed through a complete logical-roots
+packaging corollary.  In addition to the two global sources and their code
+identifications, it accepts an admissibility root in the caller's original
+joint-state context.  After both polarity eliminations choose their common
+final witnessed tail, the corollary transports that admissibility proof
+beneath the identical predecessor-state prefix and returns the full
+`RawDynamicTruthPredecessorStateLogicalRootsAt` record.  Native integration
+therefore no longer has to coordinate the three proof roots or their
+contexts; its remaining obligations are precisely the admissibility proof
+and the two concrete translated-code equalities.
