@@ -16,6 +16,7 @@ From Foundation.FirstOrder.Basic.Semantics Require Import RewriteClosure.
 From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
 From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
+From Foundation.FirstOrder Require Import Polarity.
 From Foundation.Syntax.Predicate Require Import Relational.
 
 Check language.
@@ -713,6 +714,30 @@ Check semiformula_rewrite_padding.
 Check semiformula_repeated_verum_raw.
 Check semiformula_padding_iff_raw.
 Check semiformula_padding_iff_provable.
+Check semiformula_polarity.
+Check semiformula_positive.
+Check semiformula_negative.
+Check semiformula_polarity_neg.
+Check semiformula_polarity_imp.
+Check semiformula_rel_positive.
+Check semiformula_rel_not_negative.
+Check semiformula_nrel_not_positive.
+Check semiformula_nrel_negative.
+Check semiformula_verum_positive.
+Check semiformula_verum_not_negative.
+Check semiformula_falsum_not_positive.
+Check semiformula_falsum_negative.
+Check semiformula_and_positive_iff.
+Check semiformula_and_negative_iff.
+Check semiformula_or_positive_iff.
+Check semiformula_or_negative_iff.
+Check semiformula_exists_positive.
+Check semiformula_exists_not_negative.
+Check semiformula_all_not_positive.
+Check semiformula_all_negative.
+Check semiformula_neg_positive_iff.
+Check semiformula_neg_negative_iff.
+Check semiformula_polarity_rewrite.
 Check first_order_derivation_language_map.
 Check first_order_lk_provable_language_map.
 Check first_order_derivation_rewrite.
@@ -1054,6 +1079,12 @@ Print Assumptions semiformula_padding_injective_iff.
 Print Assumptions semiformula_rewrite_padding.
 Print Assumptions semiformula_padding_iff_raw.
 Print Assumptions semiformula_padding_iff_provable.
+Print Assumptions semiformula_polarity_neg.
+Print Assumptions semiformula_polarity_imp.
+Print Assumptions semiformula_and_positive_iff.
+Print Assumptions semiformula_or_negative_iff.
+Print Assumptions semiformula_neg_positive_iff.
+Print Assumptions semiformula_polarity_rewrite.
 Print Assumptions first_order_sequent_language_map_shift.
 Print Assumptions first_order_derivation_language_map.
 Print Assumptions first_order_lk_provable_language_map.
