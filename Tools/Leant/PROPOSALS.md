@@ -115,7 +115,7 @@ constants. Port back the side-environment cache, `isInternalDetail`
 filtering, `:browse!`, `@`-stripping, and session-declaration section.
 
 ### 14. Self-managing backend in Haskell — M
-`leant-hs` currently reuses the binary LeanInteract built. Teach it to
+`leant` (the Haskell implementation) currently reuses the binary LeanInteract built. Teach it to
 clone and `lake build` the matching REPL revision itself (toolchain read
 from `lean-toolchain`), making the Haskell port fully standalone.
 

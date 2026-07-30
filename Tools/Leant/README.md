@@ -35,7 +35,7 @@ GHC boot libraries:
 cabal build
 ```
 
-`leant-hs.cmd` builds on first use and runs the binary (pausing on error
+`leant.cmd` builds on first use and runs the binary (pausing on error
 exit, like the Python launcher).
 
 ## Usage
@@ -44,7 +44,7 @@ Identical to the Python version — see its [README](../LeantPy/README.md)
 for the full command table and semantics. Summary:
 
 ```
-leant-hs [FILE] [--project DIR] [--plain] [-i MOD]
+leant [FILE] [--project DIR] [--plain] [-i MOD]
             [--timeout N] [--time] [--transcript [FILE]] [--timestamps]
             [--repl-exe PATH] [--lake PATH]
 ```

@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE LambdaCase #-}
 
--- | leant-hs - a GHCi-style interactive REPL for Lean 4.
+-- | leant - a GHCi-style interactive REPL for Lean 4.
 --
 -- Haskell port of Tools/LeantPy/leant.py. The Haskeline loop follows the
 -- structure of the Djex REPL driver (interrupt-safe step function, logical
@@ -1776,7 +1776,7 @@ parseArgs = go defaultOptions
 
 usage :: String
 usage = unlines
-  [ "usage: leant-hs [FILE] [options]"
+  [ "usage: leant [FILE] [options]"
   , "  --project DIR    path to a Lake project to run inside"
   , "  --plain          do not use any Lake project (backend project only)"
   , "  -i, --import M   module to import at startup (repeatable)"

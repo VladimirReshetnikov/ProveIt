@@ -27,9 +27,9 @@ it maps onto Lean's type system.*
 | **LJT engine (Djinn)** | Complete, *terminating* proof search for intuitionistic propositional logic over `->`, tuples, `Either`, `Void`, opaque type variables; emits a lambda term, or a definitive "no term exists" | Curry–Howard transfers directly: the same calculus decides the Lean fragment `→ × ⊕ Empty Unit` in `Type` and `→ ∧ ∨ ⊥ ⊤ ¬ ↔` in `Prop`, emitting `fun`/`⟨,⟩`/`Sum.inl`/`.casesOn` terms |
 | **Non-inhabitation verdicts** | "Proof-backed non-inhabitation result... when formula translation is complete" (library-api.md) | For *opaque* type variables, LJT failure means **no closed term exists at that polymorphic type** — a trustworthy negative answer no Lean tactic currently gives (`exact?` failing proves nothing) |
 | **Exference engine** | Best-first search over an *inventory* of typed constants with per-name ratings (`environment/*.ratings`), explicit step/queue/depth budgets, ranked candidate batches | Phase-3 idea: weighted search seeded from Leant's cached **browse environment** (the constant inventory we already extract for `:browse`/completion), with a ratings file for core/Mathlib |
-| **Shared synthesis foundation** | Parser-independent vocabulary (`Name`, `Type`, `Constraint`, `Environment → Inventory → PreparedInventory → QueryResult (SearchBatch Candidate) → Expression`), each arrow a checked boundary | The template for Leant's internal engine boundary: one fragment grammar, one candidate term grammar, one verification protocol, with the engine behind it swappable. **Scope decision: this feature is Haskell-only** — `leant-hs` links Djex in-process; the Python implementation does not grow a synthesis host |
+| **Shared synthesis foundation** | Parser-independent vocabulary (`Name`, `Type`, `Constraint`, `Environment → Inventory → PreparedInventory → QueryResult (SearchBatch Candidate) → Expression`), each arrow a checked boundary | The template for Leant's internal engine boundary: one fragment grammar, one candidate term grammar, one verification protocol, with the engine behind it swappable. **Scope decision: this feature is Haskell-only** — `Tools/Leant` links Djex in-process; the Python implementation does not grow a synthesis host |
 | **Verification posture** | Engines are explicit about semantics ("neither backend guesses the other's"); truncated batches are labeled; a finished heuristic batch with no candidates "is not a proof of non-inhabitation" | Leant goes one better: **every candidate is elaborated by the Lean backend before display** (`example : (T) := term`), so the synthesizer never needs to be trusted — the same outsource-soundness pattern `:search?` and prove mode already use |
-| **Embeddable library** | `build-depends: djex`, GHC 9.12.4, sealed session + checked request + result envelope; also three CLIs (`djex djinn --render expression "a -> a"`) | `leant-hs` is built with **the same GHC 9.12.4** — it links Djex directly as a library, in-process, with no subprocess or protocol overhead |
+| **Embeddable library** | `build-depends: djex`, GHC 9.12.4, sealed session + checked request + result envelope; also three CLIs (`djex djinn --render expression "a -> a"`) | `Tools/Leant` is built with **the same GHC 9.12.4** — it links Djex directly as a library, in-process, with no subprocess or protocol overhead |
 | **Shared REPL conventions** | Explicit backend selection (`djinn`/`exference`/`both`), settable limits, environment files | `:synth` command options: engine choice, candidate count, budget — consistent with Leant's `:set`-style toggles |
 
 ## 1.5 The post-merger scope: what Djex implements today
@@ -231,7 +231,7 @@ with explicit truncation labeling.
 - **Verification loop**: `example : (T) := candidate` is one `runCmd` —
   infrastructure that exists, including timeout handling and crash
   replay.
-- **A reason for `leant-hs` to exist beyond parity**: so far the Haskell
+- **A reason for `Tools/Leant` to exist beyond parity**: so far the Haskell
   port mirrors the Python original. In-process Djex embedding is the
   first capability where the Haskell implementation is structurally
   advantaged (same GHC, direct library linkage, no IPC), giving the two
@@ -273,7 +273,7 @@ Design rules, all inherited from Djex:
    engine through a small typed interface (goal in, candidate batch
    out), so the LJT engine, a future ranked-search engine, or a
    different backend can be swapped without touching the REPL layer.
-   Haskell-only: the engine lives in `leant-hs` as a direct Djex
+   Haskell-only: the engine lives in `Tools/Leant` as a direct Djex
    library dependency; `leant.py` deliberately does not implement this
    feature.
 
@@ -301,7 +301,7 @@ Design rules, all inherited from Djex:
 
 ## 4. Phased plan
 
-- **Phase 0 — spike (S).** `:synth` in `leant-hs` only, engine =
+- **Phase 0 — spike (S).** `:synth` in `Tools/Leant` only, engine =
   embedded Djex (`build-depends: djex`; same GHC). Fragment: arrows and
   opaque variables. Verify via backend, render, display batch. Proves
   the translation round-trip end to end.
@@ -314,7 +314,7 @@ Design rules, all inherited from Djex:
   opening, hypothesis instantiation at query-supplied types, guarded
   impredicativity — the Leant work is confined to the translator
   (polarity- and atom-aware) and to verdict labeling (§2.0). The
-  Python REPL's `:synth` prints a pointer to `leant-hs` rather than
+  Python REPL's `:synth` prints a pointer to `Tools/Leant` rather than
   growing its own host.
 - **Phase 2 — local inductives (M/L).** Treat non-recursive,
   non-dependent user inductives and structures as generalized sums of
@@ -364,7 +364,7 @@ Design rules, all inherited from Djex:
   cost center is the backend verification round-trip (~100–300 ms per
   candidate on this machine), so batches should verify lazily, top
   candidate first.
-- **Maintenance**: embedding Djex ties `leant-hs` to a large local
+- **Maintenance**: embedding Djex ties `Tools/Leant` to a large local
   package (and to its GHC version). Mitigation: the narrow engine
   boundary keeps Djex swappable for a small purpose-built LJT module
   later, without REPL-layer changes.
@@ -383,7 +383,7 @@ reachable goal space grew.
 
 Do phase 0 and phase 1: the effort is modest, every piece of supporting
 infrastructure (backend verification, browse env, prove mode) already
-exists in `leant-hs`, and the payoff — instant
+exists in `Tools/Leant`, and the payoff — instant
 verified lambda terms, trustworthy uninhabitation answers, and a
 prove-mode step that composes rather than searches — is a capability no
 current Lean tool combination offers in one place. Phase 2 is worth it
