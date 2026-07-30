@@ -5053,3 +5053,16 @@ both relocated row templates to the literal wrapped local row codes.  The
 remaining strong-step instantiation must construct the two global-source
 proof roots and selected-payload equations; those are proof obligations, not
 mere consequences of the code wrapper equality.
+
+The code half of the global-source boundary is now explicit.  For any
+template translation agreeing with PA quotation, translating the generalized
+ten-existential source is definitionally the native transparent
+`rawDynamicTruthGlobalFormulaCode` polynomial applied to the two translated
+row leaves.  Consequently, once the aligned row equations are known, the
+paired wrapper identifies the two translated sources with the literal native
+next-global Sigma and Pi codes simultaneously.  This does not manufacture
+proof roots.  The existing append traversal compiler does produce and merge
+such roots, but its public package still requires metatheoretic `formula`
+rows; the next proof-producing step is to generalize that package to opaque
+`TemplateFormula` rows (or expose an equivalent trace-linked compiler), then
+establish the two selected-payload equations needed by the strong handoff.
