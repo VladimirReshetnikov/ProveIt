@@ -8,6 +8,8 @@ From Foundation.FirstOrder.Basic Require Import Model.
 From Foundation.FirstOrder.Basic Require Import Definability.
 From Foundation.FirstOrder.Basic Require Import Calculus.
 From Foundation.FirstOrder.Basic Require Import Calculus2.
+From Foundation.FirstOrder.Basic Require Import Padding.
+From Foundation.FirstOrder.Basic Require Import Eq.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
@@ -15,6 +17,7 @@ From Foundation.FirstOrder.Basic.Semantics Require Import RewriteClosure.
 From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
 From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
+From Foundation.FirstOrder Require Import Polarity.
 From Foundation.Syntax.Predicate Require Import Relational.
 
 Check language.
@@ -676,6 +679,79 @@ Check first_order_derivation2_proof_data.
 Check first_order_derivation2_axioms.
 Check first_order_derivation2_axioms_member.
 Check first_order_derivation2_lk.
+Check first_order_axiom_suffix.
+Check first_order_axiom_suffix_app.
+Check first_order_sentence_embed_shift.
+Check first_order_axiom_suffix_shift.
+Check first_order_sequent_shift_with_axiom_suffix.
+Check first_order_derivation_extend_axiom_suffix_right.
+Check first_order_derivation_extend_axiom_suffix_left.
+Check first_order_derivation_contract_member.
+Check first_order_derivation2_proof_data_weaken.
+Check first_order_derivation2_proof_data_extend_right.
+Check first_order_derivation2_proof_data_extend_left.
+Check first_order_derivation2_to_proof_data.
+Check first_order_derivation2_to_proof.
+Check first_order_derivation2_cut_axioms.
+Check first_order_derivable2_cut_axioms.
+Check first_order_sentence_embed_neg.
+Check first_order_sentence_embed_neg_map.
+Check first_order_theory_proof2.
+Check first_order_theory_provable2.
+Check first_order_theory_proof_to_proof2.
+Check first_order_theory_proof2_to_proof.
+Check first_order_theory_provable_iff_derivable2.
+Check semiformula_repeated_verum.
+Check semiformula_padding.
+Check semiformula_get_padding_aux.
+Check semiformula_get_padding.
+Check semiformula_get_padding_formula.
+Check semiformula_get_padding_aux_repeated_verum.
+Check semiformula_get_padding_padding.
+Check semiformula_get_padding_formula_padding.
+Check semiformula_padding_injective_iff.
+Check semiformula_rewrite_repeated_verum.
+Check semiformula_rewrite_padding.
+Check semiformula_repeated_verum_raw.
+Check semiformula_padding_iff_raw.
+Check semiformula_padding_iff_provable.
+Check semiformula_polarity.
+Check semiformula_positive.
+Check semiformula_negative.
+Check semiformula_polarity_neg.
+Check semiformula_polarity_imp.
+Check semiformula_rel_positive.
+Check semiformula_rel_not_negative.
+Check semiformula_nrel_not_positive.
+Check semiformula_nrel_negative.
+Check semiformula_verum_positive.
+Check semiformula_verum_not_negative.
+Check semiformula_falsum_not_positive.
+Check semiformula_falsum_negative.
+Check semiformula_and_positive_iff.
+Check semiformula_and_negative_iff.
+Check semiformula_or_positive_iff.
+Check semiformula_or_negative_iff.
+Check semiformula_exists_positive.
+Check semiformula_exists_not_negative.
+Check semiformula_all_not_positive.
+Check semiformula_all_negative.
+Check semiformula_neg_positive_iff.
+Check semiformula_neg_negative_iff.
+Check semiformula_polarity_rewrite.
+Check first_order_eqv.
+Check first_order_models_equality_axioms.
+Check first_order_eqv_refl.
+Check first_order_eqv_symm.
+Check first_order_eqv_trans.
+Check first_order_eqv_func_ext.
+Check first_order_eqv_rel_ext.
+Check first_order_eqv_equivalence.
+Check first_order_eqv_rel_ext_iff.
+Check first_order_models_equality_axioms_of_interprets_eq.
+Check first_order_eqv_fin_env_cons.
+Check semiterm_val_eqv.
+Check semiformula_eval_eqv.
 Check first_order_derivation_language_map.
 Check first_order_lk_provable_language_map.
 Check first_order_derivation_rewrite.
@@ -1005,6 +1081,28 @@ Print Assumptions first_order_theory_specialize.
 Print Assumptions first_order_theory_closure_spec.
 Print Assumptions first_order_derivation2_cast.
 Print Assumptions first_order_derivation_to_derivation2.
+Print Assumptions first_order_sentence_embed_shift.
+Print Assumptions first_order_axiom_suffix_shift.
+Print Assumptions first_order_derivation2_to_proof_data.
+Print Assumptions first_order_derivation2_cut_axioms.
+Print Assumptions first_order_theory_proof_to_proof2.
+Print Assumptions first_order_theory_proof2_to_proof.
+Print Assumptions first_order_theory_provable_iff_derivable2.
+Print Assumptions semiformula_get_padding_padding.
+Print Assumptions semiformula_padding_injective_iff.
+Print Assumptions semiformula_rewrite_padding.
+Print Assumptions semiformula_padding_iff_raw.
+Print Assumptions semiformula_padding_iff_provable.
+Print Assumptions semiformula_polarity_neg.
+Print Assumptions semiformula_polarity_imp.
+Print Assumptions semiformula_and_positive_iff.
+Print Assumptions semiformula_or_negative_iff.
+Print Assumptions semiformula_neg_positive_iff.
+Print Assumptions semiformula_polarity_rewrite.
+Print Assumptions first_order_eqv_equivalence.
+Print Assumptions first_order_models_equality_axioms_of_interprets_eq.
+Print Assumptions semiterm_val_eqv.
+Print Assumptions semiformula_eval_eqv.
 Print Assumptions first_order_sequent_language_map_shift.
 Print Assumptions first_order_derivation_language_map.
 Print Assumptions first_order_lk_provable_language_map.
