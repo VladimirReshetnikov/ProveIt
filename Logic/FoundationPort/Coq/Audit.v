@@ -615,6 +615,13 @@ Check first_order_derivation_top.
 Check first_order_derivation_atomic_identity.
 Check first_order_derivation_rotate.
 Check first_order_derivation_tensor.
+Check first_order_derivation_eta_rewrite.
+Check first_order_derivation_eta.
+Check first_order_one_sided_lk.
+Check first_order_one_sided_lk_cut.
+Check first_order_sequent_is_closed.
+Check first_order_derivation_close.
+Check first_order_derivation_of_is_closed.
 Check first_order_derivation_language_map.
 Check first_order_derivation_rewrite.
 Check first_order_derivation_map.
@@ -898,6 +905,16 @@ Print Assumptions first_order_derivation_top.
 Print Assumptions first_order_derivation_atomic_identity.
 Print Assumptions first_order_derivation_rotate.
 Print Assumptions first_order_derivation_tensor.
+Print Assumptions semiformula_substitute_shift_one_eq_free.
+Print Assumptions semiformula_substitute_neg_shift_one_eq_neg_free.
+Print Assumptions semiformula_free_neg.
+Print Assumptions semiformula_shift_exists.
+Print Assumptions first_order_derivation_eta_rewrite.
+Print Assumptions first_order_derivation_eta.
+Print Assumptions first_order_one_sided_lk.
+Print Assumptions first_order_one_sided_lk_cut.
+Print Assumptions first_order_derivation_close.
+Print Assumptions first_order_derivation_of_is_closed.
 Print Assumptions first_order_sequent_language_map_shift.
 Print Assumptions first_order_derivation_language_map.
 Print Assumptions first_order_sequent_rewrite_under_free_shift.

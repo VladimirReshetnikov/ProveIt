@@ -174,6 +174,144 @@ Definition first_order_derivation_tensor {L p q Gamma Delta}
     (FODContraction dq
       (@generic_list_subset_cons_append_left _ q Gamma Delta)).
 
+Fixpoint first_order_derivation_eta_rewrite {L X n}
+    (p : semiformula L X n) (w : rew L X n nat 0) {struct p} :
+    first_order_derivation L
+      [semiformula_rewrite w p;
+       semiformula_neg (semiformula_rewrite w p)].
+Proof.
+  revert w.
+  destruct p as [n0 | n0 | n0 k r v | n0 k r v |
+    n0 p q | n0 p q | n0 p | n0 p]; intro w.
+  - apply first_order_derivation_top. now left.
+  - apply first_order_derivation_top. right. now left.
+  - exact (FODIdentity r (fun i => rew_apply w (v i))).
+  - exact (first_order_derivation_rotate
+      (FODIdentity r (fun i => rew_apply w (v i)))).
+  - exact (first_order_derivation_rotate
+      (FODOr
+        (first_order_derivation_rotate
+          (first_order_derivation_tensor
+            (@first_order_derivation_eta_rewrite L X n0 p w)
+            (@first_order_derivation_eta_rewrite L X n0 q w))))).
+  - exact (FODOr
+      (first_order_derivation_rotate
+        (first_order_derivation_tensor
+          (first_order_derivation_rotate
+            (@first_order_derivation_eta_rewrite L X n0 p w))
+          (first_order_derivation_rotate
+            (@first_order_derivation_eta_rewrite L X n0 q w))))).
+  - pose (body := semiformula_rewrite (rew_q w) p).
+    pose (dfree_raw := @first_order_derivation_eta_rewrite L X (S n0) p
+      (rew_comp (@rew_free L 0) (rew_q w))).
+    assert (dfree : first_order_derivation L
+      [@semiformula_free L 0 body;
+       semiformula_neg (@semiformula_free L 0 body)]).
+    { refine (first_order_derivation_cast dfree_raw _).
+      unfold body. simpl. rewrite semiformula_rewrite_comp. reflexivity. }
+    pose (dneg := first_order_derivation_rotate dfree).
+    pose (dinstance := first_order_derivation_cast dneg
+      (eq_trans
+        (f_equal (fun x => [x; @semiformula_free L 0 body])
+          (eq_sym
+            (semiformula_substitute_neg_shift_one_eq_neg_free body)))
+        eq_refl)).
+    pose (dexists := FODExists dinstance).
+    assert (dallpremise : first_order_derivation L
+      [@semiformula_free L 0 body;
+       semiformula_shift
+         (Semiformula_exists (semiformula_neg body))]).
+    { refine (first_order_derivation_cast
+        (first_order_derivation_rotate dexists) _).
+      simpl. f_equal.
+      rewrite semiformula_shift_exists.
+      unfold semiformula_shift. now rewrite semiformula_rewrite_neg. }
+    exact (@FODAll L body
+      [Semiformula_exists (semiformula_neg body)] dallpremise).
+  - pose (body := semiformula_rewrite (rew_q w) p).
+    pose (dfree_raw := @first_order_derivation_eta_rewrite L X (S n0) p
+      (rew_comp (@rew_free L 0) (rew_q w))).
+    assert (dfree : first_order_derivation L
+      [@semiformula_free L 0 body;
+       semiformula_neg (@semiformula_free L 0 body)]).
+    { refine (first_order_derivation_cast dfree_raw _).
+      unfold body. simpl. rewrite semiformula_rewrite_comp. reflexivity. }
+    assert (dinstance : first_order_derivation L
+      [semiformula_substitute
+         (fun _ : Fin.t 1 => Semiterm_fvar 0)
+         (semiformula_shift body);
+       @semiformula_free L 0 (semiformula_neg body)]).
+    { refine (first_order_derivation_cast dfree _).
+      simpl. now rewrite semiformula_substitute_shift_one_eq_free,
+        semiformula_free_neg. }
+    pose (dexists := FODExists dinstance).
+    assert (dallpremise : first_order_derivation L
+      [@semiformula_free L 0 (semiformula_neg body);
+       semiformula_shift (Semiformula_exists body)]).
+    { refine (first_order_derivation_cast
+        (first_order_derivation_rotate dexists) _).
+      simpl. now rewrite semiformula_shift_exists. }
+    exact (first_order_derivation_rotate
+      (@FODAll L (semiformula_neg body)
+        [Semiformula_exists body] dallpremise)).
+Defined.
+
+Definition first_order_derivation_eta {L} (p : proposition L) :
+    first_order_derivation L [p; semiformula_neg p].
+Proof.
+  refine (first_order_derivation_cast
+    (first_order_derivation_eta_rewrite p rew_id) _).
+  now rewrite semiformula_rewrite_id.
+Defined.
+
+(** The first-order rules form the generic one-sided classical calculus.
+    Keeping this dictionary explicit lets all generic structural and
+    entailment constructions reuse the quantified identity expansion above. *)
+Definition first_order_one_sided_lk (L : language) :
+    generic_one_sided_lk (semiformula_connectives L nat 0)
+      (first_order_derivation L).
+Proof.
+  constructor.
+  - intro p. exact (first_order_derivation_eta p).
+  - intros delta gamma d Hsub. exact (FODContraction d Hsub).
+  - exact FODVerum.
+  - intros p q gamma dp dq. exact (FODAnd dp dq).
+  - intros p q gamma d. exact (FODOr d).
+Defined.
+
+Definition first_order_one_sided_lk_cut (L : language) :
+    generic_one_sided_lk_cut (semiformula_connectives L nat 0)
+      (first_order_derivation L).
+Proof.
+  constructor.
+  - exact (first_order_one_sided_lk L).
+  - intros p gamma delta dp dn. exact (FODCut dp dn).
+Defined.
+
+Definition first_order_sequent_is_closed {L}
+    (Gamma : first_order_sequent L) : Prop :=
+  exists p,
+    generic_list_member p Gamma /\
+    generic_list_member (semiformula_neg p) Gamma.
+
+Definition first_order_derivation_close {L} (p : proposition L)
+    {Gamma : first_order_sequent L}
+    (Hp : generic_list_member p Gamma)
+    (Hn : generic_list_member (semiformula_neg p) Gamma) :
+    first_order_derivation L Gamma :=
+  @generic_lk_close (proposition L) (semiformula_connectives L nat 0)
+    (first_order_derivation L) (first_order_one_sided_lk L)
+    p Gamma Hp Hn.
+
+Definition first_order_derivation_of_is_closed {L}
+    {Gamma : first_order_sequent L}
+    (Hclosed : first_order_sequent_is_closed Gamma) :
+    inhabited (first_order_derivation L Gamma).
+Proof.
+  destruct Hclosed as [p [Hp Hn]].
+  exact (inhabits (@first_order_derivation_close L p Gamma Hp Hn)).
+Defined.
+
 (** Every derivation is functorial in the underlying first-order language. *)
 Fixpoint first_order_derivation_language_map {L M Gamma}
     (h : language_hom L M) (d : first_order_derivation L Gamma) {struct d} :
