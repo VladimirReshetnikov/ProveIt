@@ -1,6 +1,6 @@
 (** Generic axiom schemes underlying arithmetic induction theories. *)
 
-From Stdlib Require Import Logic.FunctionalExtensionality.
+From Stdlib Require Import Logic.Classical_Prop Logic.FunctionalExtensionality.
 From FoundationModal Require Import GenericEntailment.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
@@ -8,6 +8,7 @@ From Foundation.FirstOrder.Basic Require Import Calculus Operator Soundness.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics RewriteClosure OperatorSemantics ModelTheory Elementary.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Hierarchy.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -690,4 +691,69 @@ Proof.
   { intros x Hx. apply (proj1 (Hspec _)).
     apply Hsucc. apply (proj2 (Hspec x)). exact Hx. }
   intro x. apply (proj2 (Hspec x)). exact (Hind Hzero' Hsucc' x).
+Qed.
+
+Definition arithmetic_successor_induction_principle {M}
+    (O : oring_carrier M) : Prop :=
+  forall P : M -> Prop,
+    P (oring_zero O) ->
+    (forall x, P x -> P (oring_add O x (oring_one O))) ->
+    forall x, P x.
+
+Definition arithmetic_order_induction_principle {M}
+    (O : oring_carrier M) : Prop :=
+  forall P : M -> Prop,
+    (forall x, (forall y, oring_lt O y x -> P y) -> P x) ->
+    forall x, P x.
+
+Definition arithmetic_least_number_principle {M}
+    (O : oring_carrier M) : Prop :=
+  forall (P : M -> Prop) x,
+    P x -> exists y, P y /\ forall z, oring_lt O z y -> ~ P z.
+
+Theorem arithmetic_order_induction_of_successor : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O ->
+  arithmetic_successor_induction_principle O ->
+  arithmetic_order_induction_principle O.
+Proof.
+  intros M O Hpa Hsucc P Hind.
+  set (Q := fun x => forall y, oring_lt O y x -> P y).
+  assert (HQ : forall x, Q x).
+  { apply (Hsucc Q).
+    - intros y Hy. exfalso. exact (peano_minus_not_lt_zero Hpa Hy).
+    - intros x Hx y Hy.
+      destruct (proj2 (peano_minus_le_iff_lt_add_one Hpa y x) Hy)
+        as [-> | Hyx].
+      + apply Hind. exact Hx.
+      + exact (Hx y Hyx). }
+  intro x. apply Hind. exact (HQ x).
+Qed.
+
+Theorem arithmetic_least_number_of_order_induction : forall M
+    (O : oring_carrier M),
+  arithmetic_order_induction_principle O ->
+  arithmetic_least_number_principle O.
+Proof.
+  intros M O Horder P x Hx.
+  destruct (classic (exists y, P y /\
+      forall z, oring_lt O z y -> ~ P z)) as [Hleast | Hnone].
+  - exact Hleast.
+  - exfalso.
+    assert (Hnot : forall y, ~ P y).
+    { apply (Horder (fun y => ~ P y)).
+      intros y Hbelow Hy.
+      apply Hnone. exists y. split; [exact Hy | exact Hbelow]. }
+    exact (Hnot x Hx).
+Qed.
+
+Corollary arithmetic_least_number_of_successor_induction : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O ->
+  arithmetic_successor_induction_principle O ->
+  arithmetic_least_number_principle O.
+Proof.
+  intros M O Hpa Hsucc.
+  apply arithmetic_least_number_of_order_induction.
+  now apply (arithmetic_order_induction_of_successor Hpa).
 Qed.
