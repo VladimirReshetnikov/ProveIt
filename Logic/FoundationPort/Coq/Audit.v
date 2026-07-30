@@ -17,6 +17,7 @@ From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Q Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Q.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
@@ -1549,6 +1550,14 @@ Print Assumptions nat_robinson_q_laws.
 Print Assumptions peano_minus_zero_or_succ.
 Print Assumptions peano_minus_lt_iff_exists_add_succ.
 Print Assumptions peano_minus_robinson_q_laws.
+Print Assumptions omega_add_one.
+Print Assumptions omega_add_one_oring.
+Print Assumptions omega_add_one_numeral.
+Print Assumptions omega_add_one_robinson_q_laws.
+Print Assumptions omega_add_one_r0_laws.
+Print Assumptions omega_add_one_successor_fixed_point.
+Print Assumptions omega_add_one_top_lt_top.
+Print Assumptions omega_add_one_not_peano_minus.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.
