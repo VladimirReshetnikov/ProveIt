@@ -4,6 +4,7 @@ From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.List Require Import Basic.
+From Foundation.Vorspiel.List Require Import Chain.
 From Foundation.Vorspiel.Nat Require Import Basic.
 From Foundation.Vorspiel.Order Require Import Heyting.
 From Foundation.Vorspiel.Order Require Import Lattice.
@@ -100,6 +101,19 @@ Print Assumptions list_nodup_iff_indexed_distinct.
 Print Assumptions list_words_up_to_complete.
 Print Assumptions nodup_lists_explicit_finite_cover.
 Print Assumptions list_singleton_suffix_unique.
+Check list_chain.
+Print Assumptions list_chain_map.
+Print Assumptions list_chain_range_strict_mono.
+Print Assumptions list_chain_range_strict_anti.
+Print Assumptions list_chain_seq.
+Print Assumptions fin_value_FS.
+Print Assumptions fin_enum_nth_error_value.
+Print Assumptions list_chain_fin_enum.
+Print Assumptions list_chain_fin_enum_strict_mono.
+Print Assumptions list_chain_fin_enum_strict_anti.
+Print Assumptions list_chain_connected.
+Print Assumptions list_chain_nodup.
+Print Assumptions chain_lists_explicit_finite_cover.
 Check nat_cases.
 Print Assumptions nat_cases_zero.
 Print Assumptions nat_cases_succ.
