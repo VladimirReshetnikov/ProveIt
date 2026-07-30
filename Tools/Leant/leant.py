@@ -1495,8 +1495,11 @@ not the question mark form.
             return False
         if is_error(res):
             if not quiet:
-                msg = res.message.strip() or "the tactic failed to elaborate"
-                print(red("error: ") + msg.splitlines()[0])
+                msg = res.message.strip()
+                lines = msg.splitlines()
+                if lines and lines[0].strip() == "Lean error:":
+                    msg = "\n".join(lines[1:]).strip()
+                print(red("error: ") + (msg or "the tactic failed to elaborate"))
             return False
         errors = [m for m in getattr(res, "messages", []) if m.severity == "error"]
         if errors:

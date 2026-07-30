@@ -64,6 +64,10 @@ leant-hs [FILE] [--project DIR] [--plain] [-i MOD]
   case-insensitively; `:search? TYPE` runs `exact?` proof search; the last
   evaluated expression is available as `it`; TAB completes `:commands`
   and dotted identifiers.
+- `:prove [PROP]` enters interactive prove mode (see the Python README for
+  a walkthrough): tactic-by-tactic goals, unlimited `:undo`, `:script`,
+  `:auto`, `:qed [NAME]` saving a real theorem, resumption of the last
+  `sorry`, and crash-safe script dumps.
 
 ## Differences from the Python version
 
