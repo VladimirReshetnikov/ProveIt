@@ -1,0 +1,10 @@
+From BoundedPAConsistency Require Import
+  RawCodedZeroOneDistinctnessProofCompilation.
+
+Import PABoundedRawCodedZeroOneDistinctnessProofCompilation.
+
+Check BProv_Ax_s_zeroOneDistinctnessPair.
+Check raw_codedZeroOneDistinctness_roots_on_witnessed_extension.
+
+Print Assumptions BProv_Ax_s_zeroOneDistinctnessPair.
+Print Assumptions raw_codedZeroOneDistinctness_roots_on_witnessed_extension.
