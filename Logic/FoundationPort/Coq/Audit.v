@@ -14,6 +14,7 @@ From Foundation.FirstOrder.Basic Require Import Coding.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
+From Foundation.FirstOrder.Arithmetic.TA Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
@@ -822,6 +823,10 @@ Check arithmetic_theory_sound_on_hierarchy.
 Check arithmetic_theory_sound_on_hierarchy_elim.
 Check arithmetic_theory_consistent_of_sigma_one_sound.
 Check arithmetic_theory_consistent_of_pi_two_sound.
+Check first_order_true_arithmetic.
+Check first_order_true_arithmetic_models.
+Check first_order_true_arithmetic_provable_iff.
+Check arithmetic_theory_weaker_than_true_arithmetic.
 Check first_order_structure_monotone.
 Check structure_func_monotone.
 Check semiterm_val_monotone.
@@ -1247,6 +1252,9 @@ Print Assumptions arithmetic_hierarchy_neg_iff.
 Print Assumptions arithmetic_hierarchy_of_open.
 Print Assumptions arithmetic_theory_consistent_of_sigma_one_sound.
 Print Assumptions arithmetic_theory_consistent_of_pi_two_sound.
+Print Assumptions first_order_true_arithmetic_models.
+Print Assumptions first_order_true_arithmetic_provable_iff.
+Print Assumptions arithmetic_theory_weaker_than_true_arithmetic.
 Print Assumptions semiterm_val_monotone.
 Print Assumptions semiterm_val_monotone_free.
 Print Assumptions semiterm_val_monotone_bound.
