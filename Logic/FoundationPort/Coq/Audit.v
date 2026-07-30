@@ -1535,6 +1535,9 @@ Print Assumptions robinson_q_numeral_zero_succ_ne.
 Print Assumptions robinson_q_numeral_ne.
 Print Assumptions robinson_q_numeral_eq_iff.
 Print Assumptions robinson_q_numeral_lt.
+Print Assumptions robinson_q_not_lt_zero.
+Print Assumptions robinson_q_lt_numeral_iff.
+Print Assumptions robinson_q_r0_laws.
 Print Assumptions nat_robinson_q_laws.
 Print Assumptions peano_minus_zero_or_succ.
 Print Assumptions peano_minus_lt_iff_exists_add_succ.

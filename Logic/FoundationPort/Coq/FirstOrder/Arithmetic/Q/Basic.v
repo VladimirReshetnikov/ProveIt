@@ -169,6 +169,54 @@ Proof.
   f_equal. lia.
 Qed.
 
+Lemma robinson_q_not_lt_zero : forall M (O : oring_carrier M),
+  robinson_q_laws O -> forall x,
+  ~ oring_lt O x (oring_zero O).
+Proof.
+  intros M O H x Hlt.
+  destruct (proj1 (@robinson_q_lt_def M O H x (oring_zero O)) Hlt)
+    as [c Hc].
+  rewrite (@robinson_q_add_succ M O H) in Hc.
+  exact (@robinson_q_succ_ne_zero M O H (oring_add O x c) Hc).
+Qed.
+
+Lemma robinson_q_lt_numeral_iff : forall M (O : oring_carrier M),
+  robinson_q_laws O -> forall n x,
+  oring_lt O x (oring_numeral O n) <->
+  exists m, m < n /\ x = oring_numeral O m.
+Proof.
+  intros M O H n. induction n as [|n IH]; intro x; split.
+  - intro Hlt. exfalso. exact (robinson_q_not_lt_zero H Hlt).
+  - intros [m [Hm _]]. lia.
+  - intro Hlt.
+    destruct (proj1 (@robinson_q_lt_def M O H x
+      (oring_numeral O (S n))) Hlt) as [a Ha].
+    rewrite (@robinson_q_add_succ M O H) in Ha.
+    rewrite (robinson_q_numeral_succ H n) in Ha.
+    apply (@robinson_q_succ_inj M O H) in Ha.
+    destruct (@robinson_q_zero_or_succ M O H a)
+      as [Hazero | [b Hb]].
+    + subst a. rewrite (@robinson_q_add_zero M O H) in Ha.
+      exists n. split; [lia|exact Ha].
+    + rewrite Hb in Ha.
+      assert (Hlower : oring_lt O x (oring_numeral O n)).
+      { apply (proj2 (@robinson_q_lt_def M O H x
+          (oring_numeral O n))). now exists b. }
+      destruct (proj1 (IH x) Hlower) as [m [Hmn Hm]].
+      exists m. split; [lia|exact Hm].
+  - intros [m [Hmn ->]]. now apply (robinson_q_numeral_lt H).
+Qed.
+
+Definition robinson_q_r0_laws : forall M (O : oring_carrier M),
+  robinson_q_laws O -> r0_laws O.
+Proof.
+  intros M O H. constructor.
+  - apply (robinson_q_numeral_add H).
+  - apply (robinson_q_numeral_mul H).
+  - apply (robinson_q_numeral_ne H).
+  - apply (robinson_q_lt_numeral_iff H).
+Defined.
+
 Definition nat_robinson_q_laws : robinson_q_laws nat_oring_carrier.
 Proof.
   constructor.
