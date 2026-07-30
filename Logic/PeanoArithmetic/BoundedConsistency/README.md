@@ -4847,3 +4847,14 @@ definedness root there.  Crucially, it returns the chosen witness extension as
 well: the remaining atomic-adequacy and domain-disjunction roots can therefore
 be transported into that same context before the generic admissibility
 compiler conjoins all three components.
+
+The synchronization promised by that boundary is now compiled.  Its honest
+interface accepts an atomic-adequacy root and a Sigma/Pi rank-domain
+disjunction root under the original joint-state context; state membership by
+itself cannot supply either invariant for an arbitrary table row.  The
+compiler generates universal assignment coverage, obtains its one standard
+axiom-witness extension, transports both incoming roots beneath the unchanged
+state prefix, and invokes the generic two-`And-I` admissibility assembler.
+Consequently the predecessor client no longer coordinates proof roots or
+witness tails: its only remaining admissibility work is to project those two
+mathematical invariants from the restricted-proof certificate.
