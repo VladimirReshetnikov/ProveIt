@@ -4835,3 +4835,15 @@ extension.  A concrete specialization computes the local slots `#1`, `#0`,
 and `#2` and rewrites the result to the exact standard formula-code numeral
 used by the admissibility record.  Thus local assignment definedness no longer
 depends on projecting or aligning any particular global traversal table.
+
+That compiler now also works beneath any atomically adequate temporary
+template prefix.  It first compiles the closed universal theorem over the
+witnessed base tail, retains the resulting standard axiom-witness extension,
+and inserts the opened instance beneath the caller's unchanged prefix.  The
+predecessor specialization proves that its literal Pi/Sigma state prefix is
+adequate directly from standard PA quotation, identifies the translated
+prefix with the native joint-state context, and returns the exact assignment
+definedness root there.  Crucially, it returns the chosen witness extension as
+well: the remaining atomic-adequacy and domain-disjunction roots can therefore
+be transported into that same context before the generic admissibility
+compiler conjoins all three components.

@@ -1,0 +1,16 @@
+(** Audit for the predecessor assignment-admissibility component. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation.
+
+Check raw_dynamicTruthPredecessorStateTemplateContext_atomically_adequate.
+Check
+  raw_dynamicTruthPredecessorLocalAssignmentRoot_on_witnessed_extension.
+
+Print Assumptions
+  raw_dynamicTruthPredecessorStateTemplateContext_atomically_adequate.
+Print Assumptions
+  raw_dynamicTruthPredecessorLocalAssignmentRoot_on_witnessed_extension.
