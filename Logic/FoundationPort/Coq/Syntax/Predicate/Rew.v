@@ -714,6 +714,17 @@ Lemma rew_fix_fvar_succ : forall L n x,
   rew_apply (@rew_fix L n) (Semiterm_fvar (S x)) = Semiterm_fvar x.
 Proof. reflexivity. Qed.
 
+Lemma rew_q_fix : forall L n,
+  rew_equiv (rew_q (@rew_fix L n)) (@rew_fix L (S n)).
+Proof.
+  intros L n. apply rew_equiv_of_variables.
+  - intro i. refine (@Fin.caseS' n i (fun j =>
+      rew_apply (rew_q rew_fix) (Semiterm_bvar j) =
+      rew_apply rew_fix (Semiterm_bvar j)) _ _);
+      intros; reflexivity.
+  - intros [|x]; reflexivity.
+Qed.
+
 Lemma rew_free_comp_fix : forall L n,
   rew_equiv (rew_comp (@rew_free L n) rew_fix) rew_id.
 Proof.
@@ -1708,6 +1719,110 @@ Proof.
   transitivity (semiformula_rewrite rew_id p).
   - apply semiformula_rewrite_ext, rew_fix_comp_free.
   - apply semiformula_rewrite_id.
+Qed.
+
+Lemma semiformula_fix_all : forall L n
+    (p : semiproposition L (S n)),
+  semiformula_fix (Semiformula_all p) =
+  Semiformula_all (semiformula_fix p).
+Proof.
+  intros. unfold semiformula_fix. simpl. f_equal.
+  apply semiformula_rewrite_ext, rew_q_fix.
+Qed.
+
+Lemma semiformula_fix_all_closure : forall L m
+    (p : semiproposition L m),
+  semiformula_fix
+      (first_all_closure (semiformula_universal_quantifier L nat) m p) =
+  first_all_iter (semiformula_universal_quantifier L nat) m 1
+    (semiformula_fix p).
+Proof.
+  intros L m; induction m as [|m IH]; intro p; simpl.
+  - reflexivity.
+  - rewrite IH. apply f_equal, semiformula_fix_all.
+Qed.
+
+Lemma semiformula_all_iter_closure : forall L m
+    (p : semiproposition L (m + 1)),
+  Semiformula_all
+      (first_all_iter (semiformula_universal_quantifier L nat) m 1 p) =
+  first_all_closure (semiformula_universal_quantifier L nat) (m + 1) p.
+Proof.
+  intros L m; induction m as [|m IH]; intro p; simpl.
+  - reflexivity.
+  - apply IH.
+Qed.
+
+Lemma semiformula_rewrite_fix_iter_zero : forall L
+    (p : proposition L),
+  semiformula_rewrite (@rew_fix_iter L 0 0) p = p.
+Proof.
+  intros. transitivity (semiformula_rewrite rew_id p).
+  - apply semiformula_rewrite_ext, rew_cast_refl.
+  - apply semiformula_rewrite_id.
+Qed.
+
+Lemma semiformula_fix_rewrite_fix_iter : forall L
+    (p : proposition L) m,
+  semiformula_rewrite (rew_cast (Nat.add_1_r m))
+      (semiformula_fix
+        (semiformula_rewrite (@rew_fix_iter L 0 m) p)) =
+  semiformula_rewrite (@rew_fix_iter L 0 (S m)) p.
+Proof.
+  intros L p m. unfold semiformula_fix.
+  rewrite <- !semiformula_rewrite_comp.
+  apply semiformula_rewrite_ext. intro t.
+  symmetry.
+  rewrite (@rew_fix_iter_succ L 0 m t).
+  assert (Heq : nat_fix_iter_step 0 m = Nat.add_1_r m).
+  { apply UIP_dec. apply Nat.eq_dec. }
+  now rewrite Heq.
+Qed.
+
+Lemma semiformula_rewrite_cast : forall L X n m (h : n = m)
+    (p : semiformula L X n),
+  semiformula_rewrite (rew_cast h) p =
+  eq_rect n (semiformula L X) p m h.
+Proof.
+  intros L X n m h p; destruct h; simpl.
+  transitivity (semiformula_rewrite rew_id p).
+  - apply semiformula_rewrite_ext, rew_cast_refl.
+  - apply semiformula_rewrite_id.
+Qed.
+
+Lemma semiformula_all_closure_cast : forall L n m (h : n = m)
+    (p : semiproposition L n),
+  first_all_closure (semiformula_universal_quantifier L nat) n p =
+  first_all_closure (semiformula_universal_quantifier L nat) m
+    (semiformula_rewrite (rew_cast h) p).
+Proof.
+  intros L n m h p; destruct h.
+  rewrite semiformula_rewrite_cast. reflexivity.
+Qed.
+
+Lemma semiformula_all_fix_iter_closure_step : forall L
+    (p : proposition L) m,
+  Semiformula_all
+      (semiformula_fix
+        (first_all_closure (semiformula_universal_quantifier L nat) m
+          (semiformula_rewrite (@rew_fix_iter L 0 m) p))) =
+  first_all_closure (semiformula_universal_quantifier L nat) (S m)
+    (semiformula_rewrite (@rew_fix_iter L 0 (S m)) p).
+Proof.
+  intros L p m.
+  rewrite semiformula_fix_all_closure.
+  transitivity
+    (first_all_closure (semiformula_universal_quantifier L nat) (m + 1)
+      (semiformula_fix
+        (semiformula_rewrite (@rew_fix_iter L 0 m) p))).
+  - apply semiformula_all_iter_closure.
+  - transitivity
+      (first_all_closure (semiformula_universal_quantifier L nat) (S m)
+        (semiformula_rewrite (rew_cast (Nat.add_1_r m))
+          (semiformula_fix
+            (semiformula_rewrite (@rew_fix_iter L 0 m) p)))).
+    + apply semiformula_all_closure_cast.
+    + rewrite semiformula_fix_rewrite_fix_iter. reflexivity.
 Qed.
 
 (** * Constructive conversion of free-variable-free formulas *)
