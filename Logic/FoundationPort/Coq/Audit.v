@@ -209,6 +209,16 @@ Check semiformula_rewrite.
 Check semiformula_rewrite_connective_hom.
 Check semiformula_rewrite_all.
 Check semiformula_rewrite_ext.
+Check rew_language_map.
+Check semiterm_language_map_rew_apply.
+Check rew_language_map_q.
+Check semiformula_language_map_rewrite.
+Check rew_language_map_subst.
+Check rew_language_map_shift.
+Check rew_language_map_free.
+Check semiformula_language_map_substitute.
+Check semiformula_language_map_shift.
+Check semiformula_language_map_free.
 Check semiformula_rewrite_id.
 Check semiformula_rewrite_comp.
 Check semiformula_rewrite_all_iter.
@@ -574,6 +584,8 @@ Check first_order_definable_lt.
 Check first_order_definable_mem.
 Check first_order_sequent.
 Check first_order_sequent_shift.
+Check first_order_sequent_language_map.
+Check first_order_sequent_language_map_shift.
 Check first_order_derivation.
 Check FODIdentity.
 Check FODCut.
@@ -591,6 +603,7 @@ Check first_order_derivation_top.
 Check first_order_derivation_atomic_identity.
 Check first_order_derivation_rotate.
 Check first_order_derivation_tensor.
+Check first_order_derivation_language_map.
 Check first_order_derivation_height_identity.
 Check first_order_derivation_height_cut.
 Check first_order_derivation_height_contraction.
@@ -694,6 +707,12 @@ Print Assumptions rew_free_occurs_sources.
 Print Assumptions semiterm_language_map_rew_bind.
 Print Assumptions semiformula_rewrite_connective_hom.
 Print Assumptions semiformula_rewrite_ext.
+Print Assumptions semiterm_language_map_rew_apply.
+Print Assumptions rew_language_map_q.
+Print Assumptions semiformula_language_map_rewrite.
+Print Assumptions semiformula_language_map_substitute.
+Print Assumptions semiformula_language_map_shift.
+Print Assumptions semiformula_language_map_free.
 Print Assumptions semiformula_rewrite_id.
 Print Assumptions semiformula_rewrite_comp.
 Print Assumptions semiformula_rewrite_all_iter.
@@ -833,6 +852,8 @@ Print Assumptions first_order_derivation_top.
 Print Assumptions first_order_derivation_atomic_identity.
 Print Assumptions first_order_derivation_rotate.
 Print Assumptions first_order_derivation_tensor.
+Print Assumptions first_order_sequent_language_map_shift.
+Print Assumptions first_order_derivation_language_map.
 Print Assumptions first_order_is_cut_free_or_iff.
 Print Assumptions first_order_is_cut_free_and_iff.
 Print Assumptions first_order_is_cut_free_all_iff.
