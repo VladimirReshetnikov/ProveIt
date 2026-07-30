@@ -5255,3 +5255,15 @@ for the direct structural translator.  This rules out an unsound reuse of an
 unpermuted opened source body and gives the forthcoming proof transport a
 precise target: rename the append/global proof by the explicit three-slot
 permutation before rebuilding the native evidence existential witnesses.
+
+The predecessor handoff now also exposes a strictly weaker direct-evidence
+route.  `RawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.v` starts
+from arbitrary Sigma and Pi evidence proofs already living under the joint
+predecessor-state context.  It compiles assignment coverage from the existing
+atomic/domain roots, retains the resulting finite PA-witness extension, and
+transports both evidence proofs to that exact context before packaging the
+three native logical roots.  Both prefix-general and empty-prefix endpoints
+are audited.  Consequently a permuted append compiler need not reopen its
+global certificates and run selected-row callbacks merely to recover the
+same applied formulas: once it produces the native evidence endpoints, only
+the shared admissibility construction remains.
