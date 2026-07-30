@@ -501,6 +501,8 @@ Commands (GHCi-style):
   :imports                 list active imports
   :browse [NAMESPACE]      list declarations in a namespace or the session
   :browse! NAMESPACE       ...including compiler-generated auxiliaries
+  :prove [PROP]            interactively prove PROP tactic by tactic
+                           (no argument: resume the last `sorry`)
   :doc NAME                show the documentation string of NAME
   :search TEXT             search declaration names (case-insensitive)
   :search? TYPE            proof search: what proves TYPE? (via exact?)
@@ -550,6 +552,10 @@ class Leant:
         self.browse_env: int | None = None  # imports + Lean.Elab.Command
         self.it_counter: int = 0            # GHCi-style `it` binding
         self.completion_cache: dict[str, list[str]] = {}
+        # interactive prove mode
+        self.prove: dict | None = None      # {'stmt', 'stack': [(ps, goals, script_entry)]}
+        self.prove_counter: int = 0
+        self.last_sorry: tuple[int, str] | None = None  # (proof_state, goal)
 
     # -- server ------------------------------------------------------------
 
@@ -736,7 +742,10 @@ class Leant:
                 print(text)
         for s in getattr(res, "sorries", None) or []:
             goal = (s.goal or "").rstrip()
-            print(cyan("sorry") + dim(f" (proof state {s.proof_state})"))
+            if s.proof_state is not None:
+                self.last_sorry = (s.proof_state, goal)
+            print(cyan("sorry") + dim(f" (proof state {s.proof_state} — "
+                                      ":prove to work on it)"))
             for line in goal.splitlines():
                 print("  " + line)
         return errored
@@ -780,6 +789,9 @@ class Leant:
         return "\n".join(buf)
 
     def prompt(self) -> str:
+        if self.prove is not None:
+            n = len(self.prove["stack"][-1][1])
+            return f"⊢{n}> " if n > 1 else "⊢> "
         return "λ> "
 
     def cont_prompt(self) -> str:
@@ -951,6 +963,8 @@ class Leant:
             self.cmd_browse(arg)
         elif cmd == "browse!":
             self.cmd_browse(arg, show_all=True)
+        elif cmd == "prove":
+            self.cmd_prove(arg)
         elif cmd == "doc":
             self.cmd_doc(arg)
         elif cmd == "search":
@@ -1386,6 +1400,245 @@ class Leant:
         else:
             self.drop_from_cache(res)
 
+    # -- interactive prove mode ----------------------------------------------
+
+    PROVE_HELP = """
+Prove mode: every input line is a tactic applied to the current goals.
+Multi-line tactics work as usual (:{ :} or automatic continuation).
+
+  :goals             reprint the current goals
+  :undo [N]          take back the last N tactics (default 1)
+  :script            show the tactic script so far
+  :auto              try common finishing tactics on the current goal
+  :qed [NAME]        finish — save as `theorem NAME` in the session
+  :abort             leave prove mode (the script is printed, not lost)
+  :help              this help;  :quit exits the REPL
+
+Tip: `exact?`, `simp?`, `rw?` record the tactic they *found* in the script,
+not the question mark form.
+"""
+
+    AUTO_TACTICS = ["rfl", "trivial", "decide", "simp", "omega",
+                    "exact?", "aesop"]
+
+    def format_goals(self, goals: list[str]):
+        if not goals:
+            print(green("All goals accomplished 🎉"))
+            return
+        n = len(goals)
+        for i, g in enumerate(goals):
+            if n > 1:
+                print(dim(f"— goal {i + 1} of {n} —"))
+            for line in g.rstrip().splitlines():
+                if line.startswith("case "):
+                    print(cyan(line))
+                elif line.startswith("⊢"):
+                    print(bold(line))
+                else:
+                    print(line)
+
+    def cmd_prove(self, arg: str):
+        if self.prove is not None:
+            print(red("already in prove mode — :abort or :qed first"))
+            return
+        arg = self.subst_it(arg.strip())
+        if arg:
+            res = self.run_cmd(f"example : ({arg}) := by sorry", env=self.cur_env)
+            if is_error(res):
+                self.print_response(res)
+                return
+            real_errors = [m for m in res.messages if m.severity == "error"]
+            if real_errors or not res.sorries:
+                for m in real_errors:
+                    print(red("error: ") + m.data.rstrip())
+                if not res.sorries:
+                    print(red("could not create a proof state — "
+                              "is the statement a proposition?"))
+                return
+            s = res.sorries[0]
+            self.prove = {"stmt": arg,
+                          "stack": [(s.proof_state, [s.goal or ""], None)]}
+        elif self.last_sorry is not None:
+            ps, goal = self.last_sorry
+            self.prove = {"stmt": None, "stack": [(ps, [goal], None)]}
+            print(dim("resuming from the last `sorry` — on :qed the script is "
+                      "printed for you to paste (the original declaration "
+                      "already elaborated)"))
+        else:
+            print(red("usage: :prove PROPOSITION   "
+                      "(or :prove after a `sorry` to resume it)"))
+            return
+        print(dim("entering prove mode — type tactics; :help for commands"))
+        self.format_goals(self.prove["stack"][-1][1])
+
+    @staticmethod
+    def parse_try_this(messages) -> str | None:
+        """Extract the suggested tactic from a `Try this:` message."""
+        for m in messages:
+            if m.severity == "info" and m.data.lstrip().startswith("Try this:"):
+                lines = [ln.strip() for ln in m.data.splitlines()[1:] if ln.strip()]
+                lines = [re.sub(r"^\[\w+\]\s*", "", ln) for ln in lines]
+                if lines:
+                    return "\n".join(lines)
+        return None
+
+    def apply_tactic(self, tactic: str, quiet: bool = False) -> bool:
+        """Apply one tactic to the current proof state. Returns True if the
+        state advanced."""
+        from lean_interact import ProofStep
+        ps, _goals, _ = self.prove["stack"][-1]
+        try:
+            res = self.server.run(ProofStep(proof_state=ps, tactic=tactic),
+                                  timeout=self.timeout)
+        except Exception as e:  # noqa: BLE001  (timeout, server death, ...)
+            self.prove_emergency_exit(f"the backend failed ({e!r})")
+            return False
+        if is_error(res):
+            if not quiet:
+                msg = res.message.strip() or "the tactic failed to elaborate"
+                print(red("error: ") + msg.splitlines()[0])
+            return False
+        errors = [m for m in getattr(res, "messages", []) if m.severity == "error"]
+        if errors:
+            if not quiet:
+                for m in errors:
+                    print(red("error: ") + m.data.rstrip())
+            return False
+        script_entry = self.parse_try_this(res.messages) or tactic
+        if script_entry != tactic and not quiet:
+            print(dim(f"recorded as: {script_entry.splitlines()[0]}"))
+        for m in res.messages:
+            if m.severity == "warning":
+                print(yellow("warning: ") + m.data.rstrip())
+        self.prove["stack"].append((res.proof_state, list(res.goals), script_entry))
+        return True
+
+    def prove_script(self) -> list[str]:
+        return [e for (_, _, e) in self.prove["stack"] if e]
+
+    def prove_emergency_exit(self, why: str):
+        """The backend lost the proof states; leave the mode without losing
+        the user's work."""
+        print(red(why))
+        script = self.prove_script()
+        if script:
+            print(dim("tactic script so far (proof states were lost):"))
+            for t in script:
+                print("  " + t)
+        self.prove = None
+
+    def prove_input(self, text: str) -> bool:
+        """Handle one input line in prove mode. Returns False to exit the
+        whole REPL."""
+        stripped = text.strip()
+        if not stripped:
+            return True
+        if stripped.startswith(":") and not stripped.startswith(":="):
+            parts = stripped.split(None, 1)
+            cmd, arg = parts[0][1:], (parts[1].strip() if len(parts) > 1 else "")
+            if cmd in ("q", "quit", "exit"):
+                return False
+            elif cmd in ("h", "help", "?"):
+                print(self.PROVE_HELP)
+            elif cmd == "goals":
+                self.format_goals(self.prove["stack"][-1][1])
+            elif cmd == "undo":
+                n = int(arg) if arg.isdigit() else 1
+                popped = 0
+                while n > 0 and len(self.prove["stack"]) > 1:
+                    _, _, entry = self.prove["stack"].pop()
+                    popped += 1
+                    n -= 1
+                    if entry:
+                        print(dim(f"undid: {entry.splitlines()[0]}"))
+                if popped == 0:
+                    print(red("nothing to undo"))
+                else:
+                    self.format_goals(self.prove["stack"][-1][1])
+            elif cmd == "script":
+                script = self.prove_script()
+                if script:
+                    print("\n".join(script))
+                else:
+                    print(dim("(no tactics yet)"))
+            elif cmd == "auto":
+                self.cmd_auto()
+            elif cmd == "qed":
+                self.cmd_qed(arg)
+            elif cmd == "abort":
+                script = self.prove_script()
+                self.prove = None
+                if script:
+                    print(dim("left prove mode; the script was:"))
+                    for t in script:
+                        print("  " + t)
+                else:
+                    print(dim("left prove mode"))
+            else:
+                print(red(f"no :{cmd} inside prove mode — tactics, :goals, "
+                          ":undo, :script, :auto, :qed, :abort, :help, :quit"))
+            return True
+        # anything else is a tactic
+        if self.apply_tactic(self.subst_it(stripped)):
+            goals = self.prove["stack"][-1][1]
+            self.format_goals(goals)
+            if not goals:
+                print(dim("finish with :qed [NAME], inspect with :script"))
+        return True
+
+    def cmd_auto(self):
+        """Try common finishing tactics on the current goal."""
+        before = len(self.prove["stack"][-1][1])
+        tried = []
+        for tac in self.AUTO_TACTICS:
+            tried.append(tac)
+            if self.apply_tactic(tac, quiet=True):
+                after_goals = self.prove["stack"][-1][1]
+                if len(after_goals) < before or not after_goals:
+                    entry = self.prove["stack"][-1][2]
+                    print(green(f"closed by: {entry.splitlines()[0]}")
+                          + dim(f"  (tried {', '.join(tried)})"))
+                    self.format_goals(after_goals)
+                    if not after_goals:
+                        print(dim("finish with :qed [NAME]"))
+                    return
+                # advanced but did not close a goal — take it back
+                self.prove["stack"].pop()
+            if self.prove is None:
+                return  # emergency exit fired
+        print(red("no luck — ") + dim(f"tried {', '.join(tried)}"))
+
+    def cmd_qed(self, arg: str):
+        goals = self.prove["stack"][-1][1]
+        if goals:
+            print(red(f"{len(goals)} goal{'s' if len(goals) > 1 else ''} "
+                      "remain — :goals to see them, :abort to give up"))
+            return
+        script = self.prove_script()
+        body = "by\n" + "\n".join("  " + ln for t in script for ln in t.splitlines()) \
+            if script else "by trivial"
+        if any("sorry" in t for t in script):
+            print(yellow("warning: ") + "the script contains `sorry`")
+        if self.prove["stmt"] is None:
+            print(dim("replace the `sorry` in the original declaration with:"))
+            print(body)
+            self.prove = None
+            return
+        name = arg.strip() or f"prove_{self.prove_counter + 1}"
+        code = f"theorem {name} : ({self.prove['stmt']}) := {body}"
+        res = self.run_cmd(code, env=self.cur_env, cache=True)
+        errored = self.print_response(res)
+        if errored or is_error(res):
+            self.drop_from_cache(res)
+            print(red("could not save the theorem — still in prove mode "
+                      "(:script to inspect)"))
+            return
+        self.advance_env(res.env, code)
+        if not arg.strip():
+            self.prove_counter += 1
+        print(green(f"saved: theorem {name} : {self.prove['stmt']}"))
+        self.prove = None
+
     # -- main loop -----------------------------------------------------------
 
     def loop(self):
@@ -1409,6 +1662,17 @@ class Leant:
                 break
             stripped = text.strip()
             if not stripped:
+                continue
+            if self.prove is not None:
+                try:
+                    if not self.prove_input(text):
+                        break
+                except KeyboardInterrupt:
+                    self.handle_interrupt()
+                except Exception as e:  # noqa: BLE001
+                    self.report_exception(e)
+                    if self.prove is not None:
+                        self.prove_emergency_exit("prove mode aborted")
                 continue
             if stripped.startswith(":") and not stripped.startswith(":="):
                 cmd_word = stripped.split(None, 1)[0]
@@ -1462,6 +1726,8 @@ class Leant:
     def handle_interrupt(self):
         print(red("\ninterrupted") +
               dim(" — restarting Lean server (session replays automatically)"))
+        if self.prove is not None:
+            self.prove_emergency_exit("the restart discards proof states")
         try:
             self.server.restart()
         except Exception as e:  # noqa: BLE001
@@ -1491,8 +1757,8 @@ def has_errors(res) -> bool:
 
 COMMAND_NAMES = [
     ":help", ":quit", ":type", ":info", ":load", ":reload", ":import",
-    ":imports", ":browse", ":browse!", ":doc", ":search", ":search?", ":set",
-    ":undo", ":reset", ":history", ":env", ":time", ":transcript",
+    ":imports", ":browse", ":browse!", ":doc", ":prove", ":search", ":search?",
+    ":set", ":undo", ":reset", ":history", ":env", ":time", ":transcript",
     ":timestamps", ":pickle", ":unpickle",
 ]
 
