@@ -2,6 +2,7 @@
 
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
+From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Nat Require Import Basic.
 From Foundation.Vorspiel.Order Require Import Heyting.
 From Foundation.Vorspiel.Order Require Import Dense.
@@ -62,6 +63,20 @@ Check option_to_list.
 Print Assumptions option_to_list_singleton_iff.
 Check function_equal_on.
 Print Assumptions function_equal_on_subset.
+Print Assumptions fin_zero_eta.
+Print Assumptions nat_sub_one_lt_nonzero.
+Print Assumptions vorspiel_fin_enum_complete.
+Print Assumptions vorspiel_fin_enum_nodup.
+Print Assumptions no_fin_embedding_to_smaller.
+Print Assumptions nat_lt_next_fin_last.
+Print Assumptions vorspiel_fin_le_last_nonzero.
+Print Assumptions vorspiel_fin_positive_of_value_nonzero.
+Print Assumptions vorspiel_fin_of_nat_positive.
+Print Assumptions fin_forall_succ_iff.
+Print Assumptions fin_exists_succ_iff.
+Print Assumptions fin_add_cast_value.
+Print Assumptions fin_one_eq_zero.
+Print Assumptions fin_one_not_positive.
 Check nat_cases.
 Print Assumptions nat_cases_zero.
 Print Assumptions nat_cases_succ.
