@@ -568,6 +568,17 @@ Print Assumptions llfo_forget_all.
 Print Assumptions llfo_forget_exs.
 Print Assumptions llfo_forget_neg.
 Print Assumptions llfo_forget_rewrite.
+Check llfo_girard.
+Print Assumptions llfo_girard_rel.
+Print Assumptions llfo_girard_nrel.
+Print Assumptions llfo_girard_verum.
+Print Assumptions llfo_girard_falsum.
+Print Assumptions llfo_girard_neg.
+Print Assumptions llfo_girard_rewrite.
+Check llfo_Girard.
+Print Assumptions llfo_Girard_rewrite.
+Print Assumptions llfo_forget_girard.
+Print Assumptions llfo_forget_Girard.
 Check llfo_forget_sequent.
 Print Assumptions llfo_forget_sequent_shift.
 Print Assumptions llfo_forget_permutation_subset.

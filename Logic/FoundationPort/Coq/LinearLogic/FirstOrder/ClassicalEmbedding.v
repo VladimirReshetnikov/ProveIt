@@ -5,6 +5,7 @@ From FoundationModal Require Import GenericCalculus.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Calculus.
+From Foundation.FirstOrder Require Import Polarity.
 From Foundation.LinearLogic.FirstOrder Require Import Formula Rew Calculus.
 
 Import ListNotations.
@@ -110,6 +111,128 @@ Proof.
   - apply IHphi.
   - now rewrite (IHphi (S m) (rew_q w)).
   - now rewrite (IHphi (S m) (rew_q w)).
+Qed.
+
+(** Polarity-sensitive Girard translation in the reverse direction. *)
+Fixpoint llfo_girard {L X n} (phi : semiformula L X n) :
+    llfo_semiformula L X n :=
+  match phi with
+  | Semiformula_rel R v => LLBang (LLRel R v)
+  | Semiformula_nrel R v => LLQuest (LLNRel R v)
+  | Semiformula_verum _ => LLOne
+  | Semiformula_falsum _ => LLFalsum
+  | Semiformula_and psi chi =>
+      match semiformula_polarity psi, semiformula_polarity chi with
+      | true, true => LLTensor (llfo_girard psi) (llfo_girard chi)
+      | true, false => LLTensor (llfo_girard psi) (LLBang (llfo_girard chi))
+      | false, true => LLTensor (LLBang (llfo_girard psi)) (llfo_girard chi)
+      | false, false => LLWith (llfo_girard psi) (llfo_girard chi)
+      end
+  | Semiformula_or psi chi =>
+      match semiformula_polarity psi, semiformula_polarity chi with
+      | true, true => LLPlus (llfo_girard psi) (llfo_girard chi)
+      | true, false => LLPar (LLQuest (llfo_girard psi)) (llfo_girard chi)
+      | false, true => LLPar (llfo_girard psi) (LLQuest (llfo_girard chi))
+      | false, false => LLPar (llfo_girard psi) (llfo_girard chi)
+      end
+  | Semiformula_all psi =>
+      if semiformula_polarity psi
+      then LLAll (LLQuest (llfo_girard psi))
+      else LLAll (llfo_girard psi)
+  | Semiformula_exists psi =>
+      if semiformula_polarity psi
+      then LLExs (llfo_girard psi)
+      else LLExs (LLBang (llfo_girard psi))
+  end.
+
+Lemma llfo_girard_rel : forall L X n k (R : language_rel L k) v,
+  llfo_girard (@Semiformula_rel L X n k R v) = LLBang (LLRel R v).
+Proof. reflexivity. Qed.
+
+Lemma llfo_girard_nrel : forall L X n k (R : language_rel L k) v,
+  llfo_girard (@Semiformula_nrel L X n k R v) = LLQuest (LLNRel R v).
+Proof. reflexivity. Qed.
+
+Lemma llfo_girard_verum : forall L X n,
+  llfo_girard (@Semiformula_verum L X n) = LLOne.
+Proof. reflexivity. Qed.
+
+Lemma llfo_girard_falsum : forall L X n,
+  llfo_girard (@Semiformula_falsum L X n) = LLFalsum.
+Proof. reflexivity. Qed.
+
+Theorem llfo_girard_neg : forall L X n (phi : semiformula L X n),
+  llfo_girard (semiformula_neg phi) = llfo_neg (llfo_girard phi).
+Proof.
+  intros L X n phi. induction phi; simpl; try reflexivity.
+  - rewrite semiformula_polarity_neg, semiformula_polarity_neg.
+    rewrite IHphi1, IHphi2.
+    destruct (semiformula_polarity phi1), (semiformula_polarity phi2);
+      reflexivity.
+  - rewrite semiformula_polarity_neg, semiformula_polarity_neg.
+    rewrite IHphi1, IHphi2.
+    destruct (semiformula_polarity phi1), (semiformula_polarity phi2);
+      reflexivity.
+  - rewrite semiformula_polarity_neg, IHphi.
+    destruct (semiformula_polarity phi); reflexivity.
+  - rewrite semiformula_polarity_neg, IHphi.
+    destruct (semiformula_polarity phi); reflexivity.
+Qed.
+
+Theorem llfo_girard_rewrite : forall L X n Y m (w : rew L X n Y m)
+    (phi : semiformula L X n),
+  llfo_girard (semiformula_rewrite w phi) =
+  llfo_rewrite w (llfo_girard phi).
+Proof.
+  intros L X n Y m w phi. revert m w.
+  induction phi; intros m w; simpl; try reflexivity.
+  - rewrite !semiformula_polarity_rewrite.
+    rewrite (IHphi1 m w), (IHphi2 m w).
+    destruct (semiformula_polarity phi1), (semiformula_polarity phi2);
+      reflexivity.
+  - rewrite !semiformula_polarity_rewrite.
+    rewrite (IHphi1 m w), (IHphi2 m w).
+    destruct (semiformula_polarity phi1), (semiformula_polarity phi2);
+      reflexivity.
+  - rewrite semiformula_polarity_rewrite, (IHphi (S m) (rew_q w)).
+    destruct (semiformula_polarity phi); reflexivity.
+  - rewrite semiformula_polarity_rewrite, (IHphi (S m) (rew_q w)).
+    destruct (semiformula_polarity phi); reflexivity.
+Qed.
+
+Definition llfo_Girard {L X n} (phi : semiformula L X n) :
+    llfo_semiformula L X n :=
+  if semiformula_polarity phi
+  then LLQuest (llfo_girard phi)
+  else llfo_girard phi.
+
+Theorem llfo_Girard_rewrite : forall L X n Y m (w : rew L X n Y m)
+    (phi : semiformula L X n),
+  llfo_Girard (semiformula_rewrite w phi) =
+  llfo_rewrite w (llfo_Girard phi).
+Proof.
+  intros. unfold llfo_Girard.
+  rewrite semiformula_polarity_rewrite, llfo_girard_rewrite.
+  destruct (semiformula_polarity phi); reflexivity.
+Qed.
+
+Theorem llfo_forget_girard : forall L X n (phi : semiformula L X n),
+  llfo_forget (llfo_girard phi) = phi.
+Proof.
+  intros L X n phi. induction phi; simpl; try reflexivity.
+  - destruct (semiformula_polarity phi1), (semiformula_polarity phi2);
+      simpl; now rewrite IHphi1, IHphi2.
+  - destruct (semiformula_polarity phi1), (semiformula_polarity phi2);
+      simpl; now rewrite IHphi1, IHphi2.
+  - destruct (semiformula_polarity phi); simpl; now rewrite IHphi.
+  - destruct (semiformula_polarity phi); simpl; now rewrite IHphi.
+Qed.
+
+Theorem llfo_forget_Girard : forall L X n (phi : semiformula L X n),
+  llfo_forget (llfo_Girard phi) = phi.
+Proof.
+  intros. unfold llfo_Girard.
+  destruct (semiformula_polarity phi); apply llfo_forget_girard.
 Qed.
 
 Definition llfo_forget_sequent {L} (Gamma : llfo_sequent L) :
