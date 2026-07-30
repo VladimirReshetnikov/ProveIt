@@ -292,6 +292,17 @@ Print Assumptions arithmetic1_sub.
 Check nat_pair.
 Print Assumptions nat_truth_lt_branch.
 Print Assumptions arithmetic1_pair.
+Check nat_sqrt_test.
+Print Assumptions nat_sqrt_test_positive_iff.
+Print Assumptions nat_sqrt_least_test.
+Print Assumptions arithmetic1_sqrt_test.
+Print Assumptions arithmetic1_sqrt.
+Print Assumptions arithmetic1_if_lt.
+Check nat_square_remainder.
+Print Assumptions arithmetic1_square_remainder.
+Check nat_unpair.
+Print Assumptions arithmetic1_unpair1.
+Print Assumptions arithmetic1_unpair2.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.

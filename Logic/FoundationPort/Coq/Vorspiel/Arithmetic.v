@@ -605,3 +605,145 @@ Proof.
   - intros v x. simpl. unfold nat_pair.
     now rewrite nat_truth_lt_branch.
 Qed.
+
+Definition nat_sqrt_test (k a : nat) : nat :=
+  nat_truth_and
+    (nat_truth_le (k * k) a)
+    (nat_truth_lt a (S k * S k)).
+
+Lemma nat_sqrt_test_positive_iff : forall k a,
+  0 < nat_sqrt_test k a <->
+  k * k <= a /\ a < S k * S k.
+Proof.
+  intros k a. unfold nat_sqrt_test.
+  rewrite nat_truth_and_positive_iff, nat_truth_le_positive_iff,
+    nat_truth_lt_positive_iff.
+  tauto.
+Qed.
+
+Lemma nat_sqrt_least_test : forall a x,
+  x = Nat.sqrt a <->
+  (x * x <= a /\ a < S x * S x) /\
+  forall m, m < x -> ~ (m * m <= a /\ a < S m * S m).
+Proof.
+  intros a x. split.
+  - intro Hx. subst x.
+    destruct (Nat.sqrt_specif a) as [Hlower Hupper].
+    split; [tauto |].
+    intros m Hm [_ Hmupper].
+    assert (S m <= Nat.sqrt a) by lia.
+    nia.
+  - intros [[Hxlower Hxupper] _].
+    destruct (Nat.sqrt_specif a) as [Hlower Hupper].
+    nia.
+Qed.
+
+Definition nat_sqrt_test_vector (v : Fin.t 2 -> nat) : nat :=
+  nat_sqrt_test (v Fin.F1) (v (Fin.FS Fin.F1)).
+
+Lemma arithmetic1_sqrt_test : arithmetic1 nat_sqrt_test_vector.
+Proof.
+  unfold nat_sqrt_test_vector, nat_sqrt_test.
+  eapply arithmetic1_comp2 with (f := nat_truth_and).
+  - exact arithmetic1_and.
+  - eapply arithmetic1_comp2 with (f := nat_truth_le).
+    + exact arithmetic1_le.
+    + eapply arithmetic1_comp2 with (f := Nat.mul).
+      * unfold arithmetic1_binary. apply arithmetic1_mul.
+      * apply arithmetic1_proj.
+      * apply arithmetic1_proj.
+    + apply arithmetic1_proj.
+  - eapply arithmetic1_comp2 with (f := nat_truth_lt).
+    + apply arithmetic1_lt.
+    + apply arithmetic1_proj.
+    + eapply arithmetic1_comp2 with (f := Nat.mul).
+      * unfold arithmetic1_binary. apply arithmetic1_mul.
+      * eapply arithmetic1_comp1 with (f := S).
+        -- exact arithmetic1_succ.
+        -- apply arithmetic1_proj.
+      * eapply arithmetic1_comp1 with (f := S).
+        -- exact arithmetic1_succ.
+        -- apply arithmetic1_proj.
+Qed.
+
+Theorem arithmetic1_sqrt : arithmetic1_unary Nat.sqrt.
+Proof.
+  unfold arithmetic1_unary, arithmetic1.
+  eapply arith_part1_ext with
+    (f := arith_find_positive_on nat_sqrt_test_vector).
+  - apply arith_part1_find_positive. exact arithmetic1_sqrt_test.
+  - intros v x. rewrite arith_find_positive_on_member_iff.
+    change
+      ((0 < nat_sqrt_test x (v Fin.F1) /\
+        forall m, m < x -> ~ 0 < nat_sqrt_test m (v Fin.F1)) <->
+       x = Nat.sqrt (v Fin.F1)).
+    rewrite nat_sqrt_test_positive_iff.
+    setoid_rewrite nat_sqrt_test_positive_iff.
+    apply iff_sym. exact (nat_sqrt_least_test (v Fin.F1) x).
+Qed.
+
+Theorem arithmetic1_if_lt : forall n
+    (f g h k : (Fin.t n -> nat) -> nat),
+  arithmetic1 f -> arithmetic1 g -> arithmetic1 h -> arithmetic1 k ->
+  arithmetic1 (fun v => if lt_dec (f v) (g v) then h v else k v).
+Proof.
+  intros n f g h k Hf Hg Hh Hk.
+  assert (Hcond : arithmetic1 (fun v => nat_truth_lt (f v) (g v))).
+  { eapply arithmetic1_comp2; [apply arithmetic1_lt | exact Hf | exact Hg]. }
+  eapply arith_part1_ext.
+  - unfold arithmetic1.
+    exact (@arithmetic1_if_positive n _ h k Hcond Hh Hk).
+  - intros v x. simpl. now rewrite nat_truth_lt_branch.
+Qed.
+
+Definition nat_square_remainder (n : nat) : nat :=
+  n - Nat.sqrt n * Nat.sqrt n.
+
+Lemma arithmetic1_square_remainder :
+  arithmetic1_unary nat_square_remainder.
+Proof.
+  unfold arithmetic1_unary, nat_square_remainder.
+  eapply arithmetic1_comp2 with (f := Nat.sub).
+  - exact arithmetic1_sub.
+  - apply arithmetic1_proj.
+  - eapply arithmetic1_comp2 with (f := Nat.mul).
+    + unfold arithmetic1_binary. apply arithmetic1_mul.
+    + exact arithmetic1_sqrt.
+    + exact arithmetic1_sqrt.
+Qed.
+
+Definition nat_unpair1 (n : nat) : nat :=
+  if lt_dec (nat_square_remainder n) (Nat.sqrt n)
+  then nat_square_remainder n
+  else Nat.sqrt n.
+
+Definition nat_unpair2 (n : nat) : nat :=
+  if lt_dec (nat_square_remainder n) (Nat.sqrt n)
+  then Nat.sqrt n
+  else nat_square_remainder n - Nat.sqrt n.
+
+Definition nat_unpair (n : nat) : nat * nat :=
+  (nat_unpair1 n, nat_unpair2 n).
+
+Theorem arithmetic1_unpair1 : arithmetic1_unary nat_unpair1.
+Proof.
+  unfold arithmetic1_unary, nat_unpair1.
+  eapply arithmetic1_if_lt.
+  - exact arithmetic1_square_remainder.
+  - exact arithmetic1_sqrt.
+  - exact arithmetic1_square_remainder.
+  - exact arithmetic1_sqrt.
+Qed.
+
+Theorem arithmetic1_unpair2 : arithmetic1_unary nat_unpair2.
+Proof.
+  unfold arithmetic1_unary, nat_unpair2.
+  eapply arithmetic1_if_lt.
+  - exact arithmetic1_square_remainder.
+  - exact arithmetic1_sqrt.
+  - exact arithmetic1_sqrt.
+  - eapply arithmetic1_comp2 with (f := Nat.sub).
+    + exact arithmetic1_sub.
+    + exact arithmetic1_square_remainder.
+    + exact arithmetic1_sqrt.
+Qed.
