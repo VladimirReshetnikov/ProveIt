@@ -8,7 +8,7 @@
 -- multi-line input, command completion).
 module Main (main) where
 
-import Control.Exception (SomeException, try)
+import Control.Exception (SomeException, finally, try)
 import Control.Monad (forM_, unless, when)
 import Control.Monad.IO.Class (liftIO)
 import Data.Char (isSpace)
@@ -53,6 +53,31 @@ foreign import ccall unsafe "GetConsoleMode"
 foreign import ccall unsafe "SetConsoleMode"
   c_SetConsoleMode :: Ptr () -> Word32 -> IO CInt
 
+foreign import ccall unsafe "GetConsoleOutputCP"
+  c_GetConsoleOutputCP :: IO Word32
+foreign import ccall unsafe "SetConsoleOutputCP"
+  c_SetConsoleOutputCP :: Word32 -> IO CInt
+foreign import ccall unsafe "GetConsoleCP"
+  c_GetConsoleCP :: IO Word32
+foreign import ccall unsafe "SetConsoleCP"
+  c_SetConsoleCP :: Word32 -> IO CInt
+
+-- The console renders our UTF-8 output bytes in its OEM codepage (CP437:
+-- \945 shows as ╬▒) unless the output codepage is UTF-8. Switch both
+-- codepages to 65001 and return an action restoring the originals.
+setupConsoleUtf8 :: IO (IO ())
+setupConsoleUtf8 = do
+  result <- try $ do
+    oldOut <- c_GetConsoleOutputCP
+    oldIn <- c_GetConsoleCP
+    _ <- c_SetConsoleOutputCP 65001
+    _ <- c_SetConsoleCP 65001
+    pure $ do
+      _ <- c_SetConsoleOutputCP oldOut
+      _ <- c_SetConsoleCP oldIn
+      pure ()
+  pure (either (\e -> const (pure ()) (e :: SomeException)) id result)
+
 -- Enable virtual-terminal processing so ANSI escapes render in the classic
 -- Windows console. Returns False if the console refuses.
 enableVT :: IO Bool
@@ -69,6 +94,9 @@ enableVT = do
           pure (ok' /= 0)
   pure (either (\e -> const False (e :: SomeException)) id result)
 #else
+setupConsoleUtf8 :: IO (IO ())
+setupConsoleUtf8 = pure (pure ())
+
 enableVT :: IO Bool
 enableVT = pure True
 #endif
@@ -1134,9 +1162,10 @@ main = do
   hSetEncoding stderr utf8
   hSetBuffering stdout (BlockBuffering Nothing)
   args <- getArgs
+  restoreConsole <- setupConsoleUtf8
   case parseArgs args of
     Left message -> putStrLn message >> exitWith (ExitFailure 2)
-    Right opts -> run opts
+    Right opts -> run opts `finally` restoreConsole
 
 run :: Options -> IO ()
 run opts = do
