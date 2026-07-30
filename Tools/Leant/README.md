@@ -80,6 +80,11 @@ instance, or the expression is a proposition or function), the type is shown
 via `#check` instead. Declarations (`def`, `theorem`, `open`, `#eval`, ...)
 run verbatim and, on success, advance the session environment.
 
+The last successfully evaluated expression is available as `it`, GHCi-style
+(`2 + 2` then `it * 10` gives `40`). TAB completes `:commands` and dotted
+identifiers (via the same cached environment that powers `:browse`, `:doc`,
+and `:search` — the first completion builds it).
+
 Multi-line input starts automatically when a line is syntactically
 incomplete (unbalanced brackets, trailing `:=`/`by`/`where`/..., or a parse
 error at end of input); once started, an empty line submits the block
@@ -106,7 +111,10 @@ used with `:t`/`:info` or evaluated bare, instead of a plain
 | `:reload`, `:r` | reload the last loaded file |
 | `:import MOD` | add an import (rebuilds the session, replaying history) |
 | `:imports` | list active imports |
-| `:browse NS` | list declarations under a namespace (needs `:import Lean`) |
+| `:browse NS` | list declarations under a namespace (`:browse!` includes generated auxiliaries) |
+| `:doc NAME` | show the documentation string of a declaration |
+| `:search TEXT` | case-insensitive name search over the environment |
+| `:search? TYPE` | proof search: what proves TYPE? (via `exact?`) |
 | `:set OPT VAL` | `set_option` persisting in the session |
 | `:undo` | revert the last state-changing command |
 | `:reset` | clear definitions, keep imports |

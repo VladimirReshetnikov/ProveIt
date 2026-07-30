@@ -11,9 +11,9 @@ module Main (main) where
 import Control.Exception (SomeException, finally, try)
 import Control.Monad (forM_, unless, when)
 import Control.Monad.IO.Class (liftIO)
-import Data.Char (isSpace)
+import Data.Char (isAlphaNum, isSpace, toLower)
 import Data.IORef
-import Data.List (intercalate, isPrefixOf, isSuffixOf, nub)
+import Data.List (intercalate, isInfixOf, isPrefixOf, isSuffixOf, nub, stripPrefix)
 import Data.Maybe (fromMaybe, isJust)
 import Data.Time.Clock (diffUTCTime, getCurrentTime)
 import Data.Time.Format (defaultTimeLocale, formatTime)
@@ -116,6 +116,10 @@ data ReplState = ReplState
   , rsShowTime :: Bool
   , rsTimestamps :: Bool
   , rsTranscript :: Maybe (FilePath, Handle)
+  , rsItCounter :: Int
+    -- ^ GHCi-style `it`: evaluations bind `def \171it!N\187 := (expr)`; bare
+    -- `it` in later input is substituted with the newest binding
+  , rsComplCache :: [(String, [String])]
   , rsBrowseEnv :: Maybe Integer
     -- ^ cached environment for :browse - session imports plus
     -- Lean.Elab.Command (so the introspection metaprogram elaborates without
@@ -319,7 +323,7 @@ printResponse st transform v = case respFatal v of
   Nothing -> do
     errored <- newIORef False
     forM_ (respMessages v) $ \(severity, rawText) -> do
-      let text = trimEnd (applyTransform severity rawText)
+      let text = trimEnd (applyTransform severity (rewriteIt rawText))
       case severity of
         "error" -> do
           writeIORef errored True
@@ -345,7 +349,7 @@ printResponse st transform v = case respFatal v of
 -- startup after a crash, and when imports change).
 rebuildSession :: St -> IO Bool
 rebuildSession st = do
-  modifyIORef' st (\s -> s { rsBrowseEnv = Nothing })
+  modifyIORef' st (\s -> s { rsBrowseEnv = Nothing, rsComplCache = [] })
   state <- readIORef st
   baseOk <- case rsImports state of
     [] -> do
@@ -439,6 +443,84 @@ splitOn sep s = case break (== sep) s of
 
 data EvalOutcome = EvalDone | EvalIncomplete
 
+-- GHCi-style `it` ------------------------------------------------------------
+
+itName :: Int -> String
+itName n = "\171it!" ++ show n ++ "\187"
+
+-- Replace bare `it` (outside strings and comments, at identifier
+-- boundaries) with the mangled name of the newest bound result.
+substIt :: Int -> String -> String
+substIt 0 text = text
+substIt counter text = go Nothing text
+ where
+  target = itName counter
+  go _ [] = []
+  go _ ('"' : rest) =
+    let (lit, rest') = takeStringLit rest in '"' : lit ++ go (Just '"') rest'
+  go _ ('-' : '-' : rest) =
+    let (c, r) = break (== '\n') rest in "--" ++ c ++ go (Just ' ') r
+  go _ ('/' : '-' : rest) =
+    let (c, r) = takeBlockComment (1 :: Int) rest
+    in "/-" ++ c ++ go (Just ' ') r
+  go prev ('i' : 't' : rest)
+    | boundaryBefore prev, boundaryAfter rest =
+        target ++ go (Just '\187') rest
+  go _ (c : rest) = c : go (Just c) rest
+
+  boundaryBefore Nothing = True
+  boundaryBefore (Just c) = not (isIdentChar c) && c /= '.'
+  boundaryAfter [] = True
+  boundaryAfter (c : _) = not (isIdentChar c)  -- '.' allowed: it.succ
+  isIdentChar c = isAlphaNum c || c `elem` "_'!?\171\187"
+
+  takeStringLit ('\\' : c : rest) =
+    let (a, b) = takeStringLit rest in ('\\' : c : a, b)
+  takeStringLit ('"' : rest) = ("\"", rest)
+  takeStringLit (c : rest) = let (a, b) = takeStringLit rest in (c : a, b)
+  takeStringLit [] = ("", "")
+
+  takeBlockComment _ [] = ("", "")
+  takeBlockComment depth ('/' : '-' : rest) =
+    let (a, b) = takeBlockComment (depth + 1) rest in ("/-" ++ a, b)
+  takeBlockComment depth ('-' : '/' : rest)
+    | depth <= 1 = ("-/", rest)
+    | otherwise = let (a, b) = takeBlockComment (depth - 1) rest
+                  in ("-/" ++ a, b)
+  takeBlockComment depth (c : rest) =
+    let (a, b) = takeBlockComment depth rest in (c : a, b)
+
+-- Cosmetic: mangled it-names in backend output display as plain `it`.
+rewriteIt :: String -> String
+rewriteIt [] = []
+rewriteIt s@(c : rest) = case stripItName s of
+  Just remainder -> "it" ++ rewriteIt remainder
+  Nothing -> c : rewriteIt rest
+ where
+  stripItName input = do
+    afterMark <- stripPrefix "\171it!" input `orElse'`
+      (stripPrefix "it!" input >>= ensureBare)
+    let (digits, rest') = span (`elem` "0123456789") afterMark
+    if null digits then Nothing else
+      pure (fromMaybe rest' (stripPrefix "\187" rest'))
+  -- for the guillemet-less spelling, digits must follow directly
+  ensureBare r@(d : _) | d `elem` "0123456789" = Just r
+  ensureBare _ = Nothing
+  orElse' (Just x) _ = Just x
+  orElse' Nothing y = y
+
+bindIt :: St -> String -> IO ()
+bindIt st expr = do
+  state <- readIORef st
+  let n = rsItCounter state + 1
+      code = "def " ++ itName n ++ " := (" ++ expr ++ ")"
+  result <- runCmd st (rsEnv state) code
+  case result of
+    Right v | not (hasErrors v), Nothing <- respFatal v -> do
+      modifyIORef' st (\s -> s { rsItCounter = n })
+      advanceEnv st (respEnv v) code
+    _ -> pure ()
+
 advanceEnv :: St -> Maybe Integer -> String -> IO ()
 advanceEnv st newEnv code = modifyIORef' st $ \s -> s
   { rsEnvStack = rsEnv s : rsEnvStack s
@@ -448,7 +530,8 @@ advanceEnv st newEnv code = modifyIORef' st $ \s -> s
 
 evalInput :: St -> Bool -> String -> IO EvalOutcome
 evalInput st allowIncomplete rawText = do
-  let text = trim rawText
+  counter <- rsItCounter <$> readIORef st
+  let text = substIt counter (trim rawText)
   if null text then pure EvalDone else do
     started <- getCurrentTime
     outcome <-
@@ -487,8 +570,9 @@ evalExpression st text = do
   env <- rsEnv <$> readIORef st
   evalResult <- runCmd st env ("#eval (" ++ text ++ ")")
   case evalResult of
-    Right v | not (hasErrors v), Nothing <- respFatal v ->
-      () <$ printResponse st Nothing v
+    Right v | not (hasErrors v), Nothing <- respFatal v -> do
+      _ <- printResponse st Nothing v
+      bindIt st text
     Left err -> emitLn st =<< cRed st err
     _ -> do
       checkResult <- runCmd st env ("#check (" ++ text ++ ")")
@@ -536,6 +620,9 @@ helpText = unlines
   , "  :imports                 list active imports"
   , "  :browse [NAMESPACE]      list declarations in a namespace or the session"
   , "  :browse! NAMESPACE       ...including compiler-generated auxiliaries"
+  , "  :doc NAME                show the documentation string of NAME"
+  , "  :search TEXT             search declaration names (case-insensitive)"
+  , "  :search? TYPE            proof search: what proves TYPE? (via exact?)"
   , "  :set OPT VAL             set_option OPT VAL (persists in the session)"
   , "  :undo                    revert the last state-changing command"
   , "  :reset                   clear all definitions (keeps imports)"
@@ -553,8 +640,9 @@ helpText = unlines
 commandNames :: [String]
 commandNames =
   [ ":help", ":quit", ":type", ":info", ":load", ":reload", ":import"
-  , ":imports", ":browse", ":set", ":undo", ":reset", ":history", ":env"
-  , ":time", ":transcript", ":timestamps", ":pickle", ":unpickle"
+  , ":imports", ":browse", ":browse!", ":doc", ":search", ":search?"
+  , ":set", ":undo", ":reset", ":history", ":env", ":time", ":transcript"
+  , ":timestamps", ":pickle", ":unpickle"
   ]
 
 -- Returns False when the REPL should exit.
@@ -576,6 +664,9 @@ dispatchCommand st line = do
       pure True
     "browse" -> True <$ cmdBrowse st False arg
     "browse!" -> True <$ cmdBrowse st True arg
+    "doc" -> True <$ cmdDoc st arg
+    "search" -> True <$ cmdSearch st False arg
+    "search?" -> True <$ cmdSearch st True arg
     "import" -> True <$ cmdImport st (words (map decomma arg))
     "imports" -> do
       imports <- rsImports <$> readIORef st
@@ -616,7 +707,8 @@ dispatchCommand st line = do
         ("session reset" ++ if null imports then "" else " (imports kept)")
       pure True
     "history" -> do
-      history <- rsHistory <$> readIORef st
+      history <- filter (not . ("def \171it!" `isPrefixOf`)) . rsHistory
+        <$> readIORef st
       if null history
         then emitLn st =<< cDim st "(empty)"
         else forM_ (zip [1 :: Int ..] history) $ \(i, h) ->
@@ -673,10 +765,12 @@ dispatchCommand st line = do
   pad i = let s = show i in replicate (3 - length s) ' ' ++ s
 
 cmdType :: St -> String -> IO ()
-cmdType st arg
-  | null arg = emitLn st =<< cRed st "usage: :type EXPR"
+cmdType st rawArg
+  | null rawArg = emitLn st =<< cRed st "usage: :type EXPR"
   | otherwise = do
-      env <- rsEnv <$> readIORef st
+      state <- readIORef st
+      let arg = substIt (rsItCounter state) rawArg
+          env = rsEnv state
       result <- runCmd st env ("#check (" ++ arg ++ ")")
       case result of
         Left err -> emitLn st =<< cRed st err
@@ -834,12 +928,16 @@ browseProgram showAll nameComponents = unlines $
 -- Build (or reuse) an environment containing the session's imports plus the
 -- Lean metaprogramming API, without touching the user's environment.
 ensureBrowseEnv :: St -> IO (Either String Integer)
-ensureBrowseEnv st = do
+ensureBrowseEnv = ensureBrowseEnv' False
+
+ensureBrowseEnv' :: Bool -> St -> IO (Either String Integer)
+ensureBrowseEnv' quiet st = do
   state <- readIORef st
   case rsBrowseEnv state of
     Just env -> pure (Right env)
     Nothing -> do
-      emitLn st =<< cDim st "preparing browse environment (session imports + Lean)..."
+      unless quiet $
+        emitLn st =<< cDim st "preparing browse environment (session imports + Lean)..."
       let imports = nub (rsImports state ++ ["Lean.Elab.Command"])
       result <- runCmd st Nothing (unlines (map ("import " ++) imports))
       case result of
@@ -860,6 +958,149 @@ leanStringLit s = '"' : concatMap escape s ++ "\""
   escape '"' = "\\\""
   escape '\\' = "\\\\"
   escape c = [c]
+
+-- shared filter for compiler-generated auxiliary names
+generatedFilterLines :: [String]
+generatedFilterLines =
+  [ "  let aux : List String :="
+  , "    [\"rec\", \"recOn\", \"casesOn\", \"brecOn\", \"binductionOn\","
+  , "     \"below\", \"ibelow\", \"noConfusion\", \"noConfusionType\","
+  , "     \"ctorElim\", \"ctorElimType\", \"ctorIdx\", \"sizeOf_spec\","
+  , "     \"injEq\", \"inj\", \"eq_def\", \"decEq\"]"
+  , "  let keep (n : Name) : Bool :="
+  , "    !n.isInternalDetail &&"
+  , "    !n.components.any fun c => match c with"
+  , "      | .str _ s => aux.contains s"
+  , "      | _ => false"
+  ]
+
+validDottedName :: String -> Maybe [String]
+validDottedName arg =
+  let comps = splitOn '.' arg
+  in if any isSpace arg || any null comps then Nothing else Just comps
+
+cmdDoc :: St -> String -> IO ()
+cmdDoc st rawArg = do
+  let arg = dropWhile (== '@') (trim rawArg)
+  case (arg, validDottedName arg) of
+    ("", _) -> emitLn st =<< cRed st "usage: :doc NAME"
+    (_, Nothing) -> emitLn st =<< cRed st ("invalid name `" ++ arg ++ "`")
+    (_, Just comps) -> do
+      envOr <- ensureBrowseEnv st
+      case envOr of
+        Left err -> emitLn st =<< cRed st err
+        Right env -> do
+          let program = unlines
+                [ "open Lean in run_cmd do"
+                , "  let env \8592 getEnv"
+                , "  let n : Name := ["
+                    ++ intercalate ", " (map leanStringLit comps)
+                    ++ "].foldl (fun a s => Name.str a s) Name.anonymous"
+                , "  if !env.contains n then"
+                , "    logInfo s!\"unknown constant `{n}` "
+                    ++ "(session-local names have no docstrings)\""
+                , "  else"
+                , "    match \8592 findDocString? env n with"
+                , "    | some doc => logInfo doc"
+                , "    | none => logInfo \"(no documentation string)\""
+                ]
+          result <- runCmd st (Just env) program
+          case result of
+            Left err -> emitLn st =<< cRed st err
+            Right v -> () <$ printResponse st Nothing v
+
+cmdSearch :: St -> Bool -> String -> IO ()
+cmdSearch st byType arg
+  | null arg = emitLn st =<< cRed st "usage: :search TEXT  |  :search? TYPE"
+  | byType = do
+      env <- rsEnv <$> readIORef st
+      result <- runCmd st env ("example : (" ++ arg ++ ") := by exact?")
+      case result of
+        Left err -> emitLn st =<< cRed st err
+        Right v
+          | any (\(s, d) -> s == "error" && "unknown tactic" `isInfixOf` d)
+              (respMessages v) -> do
+            message <- cRed st ":search? needs the `exact?` tactic \8212 "
+            hint <- cBold st ":import Mathlib.Tactic"
+            emitLn st (message ++ "try " ++ hint)
+          | otherwise -> () <$ printResponse st Nothing v
+  | otherwise = do
+      envOr <- ensureBrowseEnv st
+      case envOr of
+        Left err -> emitLn st =<< cRed st err
+        Right env -> do
+          state <- readIORef st
+          -- hide Lean-API hits unless the user imported Lean themselves
+          let leanImported = any (\i -> i == "Lean" || "Lean." `isPrefixOf` i)
+                (rsImports state)
+              hidden = if leanImported then "[]" else "[\"Lean\"]"
+              program = unlines $
+                [ "open Lean in run_cmd do"
+                , "  let env \8592 getEnv"
+                , "  let needle := (" ++ leanStringLit arg ++ ").toLower"
+                , "  let hidden : List String := " ++ hidden
+                ] ++ generatedFilterLines ++
+                [ "  let hits := env.constants.fold (init := #[]) fun a n _ =>"
+                , "    if keep n && !hidden.contains n.getRoot.toString"
+                , "        && (n.toString.toLower.splitOn needle).length > 1"
+                , "    then a.push n else a"
+                , "  if hits.isEmpty then"
+                , "    logInfo \"(no matches)\""
+                , "  else"
+                , "    let sorted := hits.qsort (\183.toString < \183.toString)"
+                , "    let shown := sorted.toList.take 100"
+                , "    let more := if sorted.size > 100 then"
+                , "      s!\"\\n... ({sorted.size} matches, first 100 shown)\" else \"\""
+                , "    logInfo (String.intercalate \"\\n\" (shown.map toString) ++ more)"
+                ]
+          result <- runCmd st (Just env) program
+          case result of
+            Left err -> emitLn st =<< cRed st err
+            Right v -> () <$ printResponse st Nothing v
+          history <- rsHistory <$> readIORef st
+          let matching = [ n | n <- concatMap sessionDeclNames history
+                         , lower arg `isInfixOf` lower n ]
+          unless (null matching) $ do
+            emitLn st =<< cDim st "-- declared in this session:"
+            mapM_ (emitLn st) matching
+ where
+  lower = map toLower
+
+completionCandidates :: St -> String -> IO [String]
+completionCandidates st prefix = do
+  state <- readIORef st
+  case lookup prefix (rsComplCache state) of
+    Just cached -> pure cached
+    Nothing -> do
+      let sessionNames =
+            [ n | n <- concatMap sessionDeclNames (rsHistory state)
+            , prefix `isPrefixOf` n ]
+      envOr <- ensureBrowseEnv' True st
+      backendNames <- case envOr of
+        Left _ -> pure []
+        Right env -> do
+          let program = unlines $
+                [ "open Lean in run_cmd do"
+                , "  let env \8592 getEnv"
+                , "  let pre := " ++ leanStringLit prefix
+                ] ++ generatedFilterLines ++
+                [ "  let hits := env.constants.fold (init := #[]) fun a n _ =>"
+                , "    if keep n && pre.isPrefixOf n.toString then a.push n else a"
+                , "  let sorted := hits.qsort (\183.toString < \183.toString)"
+                , "  logInfo (String.intercalate \"\\n\""
+                , "    (sorted.toList.take 200 |>.map toString))"
+                ]
+          result <- try (runCmd st (Just env) program)
+          case result of
+            Right (Right v) -> pure
+              [ n | (sev, d) <- respMessages v, sev == "info"
+              , n <- lines d, not (null n) ]
+            Right (Left _) -> pure []
+            Left e -> const (pure []) (e :: SomeException)
+      let merged = nub (sessionNames ++ backendNames)
+      modifyIORef' st (\s -> s
+        { rsComplCache = (prefix, merged) : rsComplCache s })
+      pure merged
 
 cmdBrowse :: St -> Bool -> String -> IO ()
 cmdBrowse st showAll rawArg
@@ -922,7 +1163,8 @@ sessionDeclNames entry =
   declName (w : rest)
     | w `elem` modifiers = declName rest
     | w `elem` binders, name : _ <- rest
-    , isIdentStart name, w /= "example" = Just (takeWhile isIdentChar name)
+    , isIdentStart name, w /= "example"
+    , not ("\171it!" `isPrefixOf` name) = Just (takeWhile isIdentChar name)
   declName _ = Nothing
 
   isIdentStart s = case s of
@@ -1095,9 +1337,9 @@ readLogicalInput st = do
         | trim l == ":}" -> pure (intercalate "\n" (reverse acc))
         | otherwise -> collectBlock (l : acc)
 
-completionSettings :: Settings IO
-completionSettings = Settings
-  { complete = completeWord Nothing " \t" completer
+mkSettings :: St -> Settings IO
+mkSettings st = Settings
+  { complete = completeWord Nothing " \t()[]{},\10216\10217" completer
   , historyFile = Nothing  -- set in main
   , autoAddHistory = True
   }
@@ -1105,6 +1347,11 @@ completionSettings = Settings
   completer word
     | ":" `isPrefixOf` word =
         pure [simpleCompletion c | c <- commandNames, word `isPrefixOf` c]
+    | length word >= 2 = do
+        result <- try (completionCandidates st word)
+        case result of
+          Right cands -> pure (map simpleCompletion cands)
+          Left e -> const (pure []) (e :: SomeException)
     | otherwise = pure []
 
 -- CLI -----------------------------------------------------------------------
@@ -1230,6 +1477,8 @@ run opts = do
         , rsShowTime = optTime opts
         , rsTimestamps = optTimestamps opts
         , rsTranscript = Nothing
+        , rsItCounter = 0
+        , rsComplCache = []
         , rsBrowseEnv = Nothing
         , rsTimeout = if optTimeout opts <= 0 then Nothing
             else Just (optTimeout opts)
@@ -1276,7 +1525,7 @@ run opts = do
       forM_ (optFile opts) (cmdLoad st)
 
       home <- getHomeDirectory
-      let settings = completionSettings
+      let settings = (mkSettings st)
             { historyFile = if interactive
                 then Just (home </> ".leant_history")
                 else Nothing }

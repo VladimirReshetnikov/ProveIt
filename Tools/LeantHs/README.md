@@ -60,6 +60,10 @@ leant-hs [FILE] [--project DIR] [--plain] [-i MOD]
   `:unpickle` save and restore environments; `:undo`, `:reset`,
   `:history`, `:import`, `:load`/`:reload`, `:set`, `:time`, `:!` as in
   the Python version.
+- `:doc NAME` shows docstrings; `:search TEXT` searches declaration names
+  case-insensitively; `:search? TYPE` runs `exact?` proof search; the last
+  evaluated expression is available as `it`; TAB completes `:commands`
+  and dotted identifiers.
 
 ## Differences from the Python version
 
