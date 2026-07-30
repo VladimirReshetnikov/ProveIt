@@ -257,6 +257,204 @@ Definition first_order_derivation_shift {L Gamma}
     first_order_derivation L (first_order_sequent_shift Gamma) :=
   first_order_derivation_rewrite (fun x => Semiterm_fvar (S x)) d.
 
+Definition first_order_fresh_map (m x : nat) : nat :=
+  if Nat.eq_dec x m then 0 else S x.
+
+Lemma semiformula_rewrite_map_substitute_fresh :
+  forall L (p : semiproposition L 1) m,
+    ~ semiformula_free_occurs m p ->
+    semiformula_rewrite
+      (rew_rewrite
+        (fun x => Semiterm_fvar (first_order_fresh_map m x)))
+      (semiformula_substitute
+        (fun _ : Fin.t 1 => Semiterm_fvar m) p) =
+    @semiformula_free L 0 p.
+Proof.
+  intros L p m Hfresh.
+  unfold semiformula_substitute, semiformula_free.
+  rewrite <- semiformula_rewrite_comp.
+  apply semiformula_rewrite_ext_on_free.
+  - intro i. assert (Hi : i = Fin.F1) by apply fin_one_eq_f1.
+    subst i. cbn. unfold first_order_fresh_map.
+    destruct (Nat.eq_dec m m); [reflexivity | contradiction].
+  - intros x Hx. cbn.
+    assert (Hxm : x <> m).
+    { intro Heq. subst x. exact (Hfresh Hx). }
+    unfold first_order_fresh_map.
+    destruct (Nat.eq_dec x m); [contradiction | reflexivity].
+Qed.
+
+Lemma semiformula_rewrite_map_fresh_eq_shift :
+  forall L (p : proposition L) m,
+    ~ semiformula_free_occurs m p ->
+    semiformula_rewrite
+      (rew_rewrite
+        (fun x => Semiterm_fvar (first_order_fresh_map m x))) p =
+    semiformula_shift p.
+Proof.
+  intros L p m Hfresh. unfold semiformula_shift.
+  apply semiformula_rewrite_ext_on_free.
+  - intro i. exact (Fin.case0 (fun _ => _ = _) i).
+  - intros x Hx. cbn.
+    assert (Hxm : x <> m).
+    { intro Heq. subst x. exact (Hfresh Hx). }
+    unfold first_order_fresh_map.
+    destruct (Nat.eq_dec x m); [contradiction | reflexivity].
+Qed.
+
+Lemma first_order_sequent_rewrite_map_fresh_eq_shift :
+  forall L (Gamma : first_order_sequent L) m,
+    (forall p, In p Gamma -> ~ semiformula_free_occurs m p) ->
+    first_order_sequent_rewrite
+      (fun x => Semiterm_fvar (first_order_fresh_map m x)) Gamma =
+    first_order_sequent_shift Gamma.
+Proof.
+  intros L Gamma. induction Gamma as [|p Gamma IH]; intros m Hfresh; simpl.
+  - reflexivity.
+  - f_equal.
+    + apply semiformula_rewrite_map_fresh_eq_shift.
+      apply Hfresh. now left.
+    + apply IH. intros q Hq. apply Hfresh. now right.
+Qed.
+
+(** Universal introduction from an instance at a genuinely fresh free
+    variable.  No decidable equality on formulas or language symbols is
+    required. *)
+Definition first_order_derivation_generalize_fresh {L p m Gamma}
+    (Hp : ~ semiformula_free_occurs m p)
+    (HGamma : forall q, In q Gamma -> ~ semiformula_free_occurs m q)
+    (d : first_order_derivation L
+      (semiformula_substitute
+        (fun _ : Fin.t 1 => Semiterm_fvar m) p :: Gamma)) :
+    first_order_derivation L (Semiformula_all p :: Gamma).
+Proof.
+  apply FODAll.
+  refine (first_order_derivation_cast
+    (first_order_derivation_map d (first_order_fresh_map m)) _).
+  simpl. f_equal.
+  - apply semiformula_rewrite_map_substitute_fresh. exact Hp.
+  - apply first_order_sequent_rewrite_map_fresh_eq_shift. exact HGamma.
+Defined.
+
+Definition first_order_sequent_new_variable {L}
+    (Gamma : first_order_sequent L) : nat :=
+  list_nat_max (map semiformula_fv_sup Gamma).
+
+Lemma first_order_sequent_fv_sup_le_new_variable :
+  forall L (Gamma : first_order_sequent L) p,
+    In p Gamma ->
+    semiformula_fv_sup p <= first_order_sequent_new_variable Gamma.
+Proof.
+  intros L Gamma p Hp. unfold first_order_sequent_new_variable.
+  apply in_list_nat_max. now apply in_map.
+Qed.
+
+Lemma first_order_sequent_new_variable_fresh :
+  forall L (Gamma : first_order_sequent L) p,
+    In p Gamma ->
+    ~ semiformula_free_occurs
+      (first_order_sequent_new_variable Gamma) p.
+Proof.
+  intros L Gamma p Hp.
+  apply semiformula_no_free_occurs_above_fv_sup.
+  now apply first_order_sequent_fv_sup_le_new_variable.
+Qed.
+
+Lemma generic_list_member_of_list_in :
+  forall (A : Type) (x : A) xs,
+    In x xs -> generic_list_member x xs.
+Proof.
+  intros A x xs. induction xs as [|y ys IH]; simpl; [tauto |].
+  intros [Hxy | Hx].
+  - now left.
+  - right. now apply IH.
+Qed.
+
+Definition first_order_derivation_all_new_variable {L p Gamma}
+    (Hall : In (Semiformula_all p) Gamma)
+    (d : first_order_derivation L
+      (semiformula_substitute
+        (fun _ : Fin.t 1 =>
+          Semiterm_fvar (first_order_sequent_new_variable Gamma)) p
+       :: Gamma)) :
+    first_order_derivation L Gamma.
+Proof.
+  pose (m := first_order_sequent_new_variable Gamma).
+  assert (Hp : ~ semiformula_free_occurs m p).
+  { intro Hocc.
+    apply (first_order_sequent_new_variable_fresh Hall).
+    exact Hocc. }
+  assert (HGamma : forall q, In q Gamma ->
+      ~ semiformula_free_occurs m q).
+  { intros q Hq. apply first_order_sequent_new_variable_fresh. exact Hq. }
+  pose (dgeneral := first_order_derivation_generalize_fresh
+    (m := m) (p := p) (Gamma := Gamma) Hp HGamma d).
+  apply (FODContraction dgeneral). intros q [Hq | Hq].
+  - subst q. now apply generic_list_member_of_list_in.
+  - exact Hq.
+Defined.
+
+Lemma generic_list_subset_contract_head :
+  forall (A : Type) (x : A) (xs : list A),
+    generic_list_subset (x :: x :: xs) (x :: xs).
+Proof.
+  intros A x xs y [Hy | [Hy | Hy]].
+  - now left.
+  - now left.
+  - now right.
+Qed.
+
+Lemma generic_list_subset_weaken_head :
+  forall (A : Type) (x : A) (xs : list A),
+    generic_list_subset xs (x :: xs).
+Proof. intros A x xs y Hy. now right. Qed.
+
+Fixpoint first_order_derivation_exists_of_instances {L}
+    (ts : list (syntactic_term L)) (p : semiproposition L 1)
+    (Gamma : first_order_sequent L)
+    (d : first_order_derivation L
+      (map (fun t => semiformula_substitute
+        (fun _ : Fin.t 1 => t) p) ts ++ Gamma)) {struct ts} :
+    first_order_derivation L (Semiformula_exists p :: Gamma).
+Proof.
+  destruct ts as [|t ts].
+  - simpl in d. apply (FODContraction d).
+    apply generic_list_subset_weaken_head.
+  - simpl in d.
+    pose (dexists := FODExists d).
+    pose (drotated := FODContraction dexists
+      (@generic_list_subset_rotate_across _
+        (Semiformula_exists p)
+        (map (fun u => semiformula_substitute
+          (fun _ : Fin.t 1 => u) p) ts) Gamma)).
+    pose (drest := @first_order_derivation_exists_of_instances L
+      ts p (Semiformula_exists p :: Gamma) drotated).
+    exact (FODContraction drest
+      (@generic_list_subset_contract_head _
+        (Semiformula_exists p) Gamma)).
+Defined.
+
+Definition first_order_derivation_exists_of_instances_present {L}
+    (ts : list (syntactic_term L)) (p : semiproposition L 1)
+    (Gamma : first_order_sequent L)
+    (d : first_order_derivation L
+      (Semiformula_exists p ::
+       map (fun t => semiformula_substitute
+         (fun _ : Fin.t 1 => t) p) ts ++ Gamma)) :
+    first_order_derivation L (Semiformula_exists p :: Gamma).
+Proof.
+  pose (drotated := FODContraction d
+    (@generic_list_subset_rotate_across _
+      (Semiformula_exists p)
+      (map (fun t => semiformula_substitute
+        (fun _ : Fin.t 1 => t) p) ts) Gamma)).
+  pose (dall := @first_order_derivation_exists_of_instances L
+    ts p (Semiformula_exists p :: Gamma) drotated).
+  exact (FODContraction dall
+    (@generic_list_subset_contract_head _
+      (Semiformula_exists p) Gamma)).
+Defined.
+
 Lemma first_order_derivation_height_identity :
   forall L k (r : language_rel L k) v,
     first_order_derivation_height (FODIdentity r v) = 0.

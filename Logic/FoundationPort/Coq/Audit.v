@@ -209,6 +209,8 @@ Check semiformula_rewrite.
 Check semiformula_rewrite_connective_hom.
 Check semiformula_rewrite_all.
 Check semiformula_rewrite_ext.
+Check semiterm_rew_apply_ext_on_free.
+Check semiformula_rewrite_ext_on_free.
 Check rew_language_map.
 Check semiterm_language_map_rew_apply.
 Check rew_language_map_q.
@@ -617,6 +619,20 @@ Check first_order_derivation_language_map.
 Check first_order_derivation_rewrite.
 Check first_order_derivation_map.
 Check first_order_derivation_shift.
+Check first_order_fresh_map.
+Check semiformula_rewrite_map_substitute_fresh.
+Check semiformula_rewrite_map_fresh_eq_shift.
+Check first_order_sequent_rewrite_map_fresh_eq_shift.
+Check first_order_derivation_generalize_fresh.
+Check first_order_sequent_new_variable.
+Check first_order_sequent_fv_sup_le_new_variable.
+Check first_order_sequent_new_variable_fresh.
+Check generic_list_member_of_list_in.
+Check first_order_derivation_all_new_variable.
+Check generic_list_subset_contract_head.
+Check generic_list_subset_weaken_head.
+Check first_order_derivation_exists_of_instances.
+Check first_order_derivation_exists_of_instances_present.
 Check first_order_derivation_height_identity.
 Check first_order_derivation_height_cut.
 Check first_order_derivation_height_contraction.
@@ -645,6 +661,10 @@ Check first_order_is_cut_free_language_map_iff.
 Check first_order_is_cut_free_rewrite_iff.
 Check first_order_is_cut_free_map_iff.
 Check first_order_is_cut_free_shift_iff.
+Check first_order_is_cut_free_generalize_fresh_iff.
+Check first_order_is_cut_free_exists_of_instances_iff.
+Check first_order_is_cut_free_exists_of_instances_present_iff.
+Check first_order_is_cut_free_all_new_variable_iff.
 Check first_order_empty_env.
 Check first_order_sequent_true.
 Check fin_env_snoc_empty_eq_cons.
@@ -724,6 +744,8 @@ Print Assumptions rew_free_occurs_sources.
 Print Assumptions semiterm_language_map_rew_bind.
 Print Assumptions semiformula_rewrite_connective_hom.
 Print Assumptions semiformula_rewrite_ext.
+Print Assumptions semiterm_rew_apply_ext_on_free.
+Print Assumptions semiformula_rewrite_ext_on_free.
 Print Assumptions semiterm_language_map_rew_apply.
 Print Assumptions rew_language_map_q.
 Print Assumptions semiformula_language_map_rewrite.
@@ -882,6 +904,15 @@ Print Assumptions first_order_sequent_rewrite_under_free_shift.
 Print Assumptions first_order_derivation_rewrite.
 Print Assumptions first_order_derivation_map.
 Print Assumptions first_order_derivation_shift.
+Print Assumptions semiformula_rewrite_map_substitute_fresh.
+Print Assumptions semiformula_rewrite_map_fresh_eq_shift.
+Print Assumptions first_order_sequent_rewrite_map_fresh_eq_shift.
+Print Assumptions first_order_derivation_generalize_fresh.
+Print Assumptions first_order_sequent_fv_sup_le_new_variable.
+Print Assumptions first_order_sequent_new_variable_fresh.
+Print Assumptions first_order_derivation_all_new_variable.
+Print Assumptions first_order_derivation_exists_of_instances.
+Print Assumptions first_order_derivation_exists_of_instances_present.
 Print Assumptions first_order_is_cut_free_or_iff.
 Print Assumptions first_order_is_cut_free_and_iff.
 Print Assumptions first_order_is_cut_free_all_iff.
@@ -894,6 +925,10 @@ Print Assumptions first_order_is_cut_free_language_map_iff.
 Print Assumptions first_order_is_cut_free_rewrite_iff.
 Print Assumptions first_order_is_cut_free_map_iff.
 Print Assumptions first_order_is_cut_free_shift_iff.
+Print Assumptions first_order_is_cut_free_generalize_fresh_iff.
+Print Assumptions first_order_is_cut_free_exists_of_instances_iff.
+Print Assumptions first_order_is_cut_free_exists_of_instances_present_iff.
+Print Assumptions first_order_is_cut_free_all_new_variable_iff.
 Print Assumptions fin_env_snoc_empty_eq_cons.
 Print Assumptions first_order_shifted_context_true.
 Print Assumptions first_order_derivation_sound.
