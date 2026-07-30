@@ -1,0 +1,7 @@
+From BoundedPAConsistency Require Import
+  RawCodedTemplateFormulaAtomicAdequacy.
+
+Import PABoundedRawCodedTemplateFormulaAtomicAdequacy.
+
+Check raw_codedTemplateFormula_atomically_adequate_core.
+Print Assumptions raw_codedTemplateFormula_atomically_adequate_core.

@@ -4722,3 +4722,30 @@ one witnessed context avoids a second merge when the tagged row choice is
 selected.  The remaining specialization must transport these roots beneath
 the ten opened global witnesses and establish atomic adequacy of the two
 tagged branches before invoking the generic choice eliminators.
+
+The fixed-polarity selection is now complete in the deepest represented
+context.  Stable template destructors expose both tags and payloads of the
+opened row, with definitional checks that the impossible mode-0 right tag is
+`0 = 1` and the impossible mode-1 left tag is `1 = 0`.  A new generic lemma
+extracts atomic adequacy directly from any template translation's unit-shift
+trace, avoiding a dependency on the append assembler.  The selector grows
+the witnessed PA tail once, opens the row over that extension, inserts both
+closed contradiction proofs beneath the full ten-witness prefix, and invokes
+the represented tagged-choice eliminator.  It returns the polarity-correct
+payload together with the enlarged witnessed context and inclusion of the
+caller's original tail.  The next boundary is to identify that payload with
+the predecessor Sigma/Pi evidence formula and weaken the incoming global
+source proof to the same enlarged tail before existential elimination.
+
+The selection and elimination layers are now composed through one reusable
+mode-generic bridge.  Its only formula-specific premise is the literal
+template equation saying that the selected payload is the tenfold shift of
+the conclusion retained after opening the traversal.  Given that equation,
+the bridge grows the PA witness tail, transports the corresponding global
+source proof beneath the same two predecessor-state assumptions, reuses the
+selected deep proof, and compiles all ten represented `Ex-E` nodes.  It
+returns the requested conclusion in the enlarged joint-state context while
+retaining both the witnessed package and inclusion of the caller's tail.
+Thus the remaining native specialization no longer coordinates contexts or
+proof rules: it must prove the two concrete payload equations and combine
+the resulting Sigma/Pi roots with the already available admissibility root.

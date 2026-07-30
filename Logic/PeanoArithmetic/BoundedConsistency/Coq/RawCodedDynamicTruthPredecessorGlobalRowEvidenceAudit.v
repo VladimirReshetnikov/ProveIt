@@ -1,0 +1,8 @@
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPredecessorGlobalRowEvidence.
+
+Import PABoundedRawCodedDynamicTruthPredecessorGlobalRowEvidence.
+
+Check raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_evidence.
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_evidence.
