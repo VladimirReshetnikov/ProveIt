@@ -148,6 +148,14 @@ Print Assumptions set_subset_insert_iff_remove.
 Print Assumptions set_strict_subset_of_subset_not_equiv.
 Print Assumptions finite_list_subset_chain_union.
 Print Assumptions finite_family_subset_chain_union.
+Check pointed_set_enumeration.
+Check set_finite_approximation.
+Print Assumptions set_finite_approximation_member_iff.
+Print Assumptions set_finite_approximation_nodup.
+Print Assumptions set_finite_approximation_strict.
+Print Assumptions set_finite_approximation_subset.
+Print Assumptions set_finite_approximation_complete.
+Print Assumptions infinitely_finite_approximate.
 Check heyting_algebra_data.
 Print Assumptions ha_inf_mono.
 Print Assumptions ha_himp_himp_inf_himp_inf_le.
