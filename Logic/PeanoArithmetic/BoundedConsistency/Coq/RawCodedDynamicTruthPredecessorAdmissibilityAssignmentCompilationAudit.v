@@ -9,7 +9,6 @@ Import
 Check raw_dynamicTruthPredecessorStateTemplateContext_atomically_adequate.
 Check
   raw_dynamicTruthPredecessorStateTemplateContext_app_atomically_adequate.
-Check raw_dynamicTruthPredecessorStateTemplateContext_app_code.
 Check
   raw_dynamicTruthPredecessorLocalAssignmentRoot_on_witnessed_extension_under_prefix.
 Check
@@ -23,7 +22,6 @@ Print Assumptions
   raw_dynamicTruthPredecessorStateTemplateContext_atomically_adequate.
 Print Assumptions
   raw_dynamicTruthPredecessorStateTemplateContext_app_atomically_adequate.
-Print Assumptions raw_dynamicTruthPredecessorStateTemplateContext_app_code.
 Print Assumptions
   raw_dynamicTruthPredecessorLocalAssignmentRoot_on_witnessed_extension_under_prefix.
 Print Assumptions

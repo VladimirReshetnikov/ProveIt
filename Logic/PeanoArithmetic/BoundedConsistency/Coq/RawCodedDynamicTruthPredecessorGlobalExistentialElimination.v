@@ -75,6 +75,19 @@ Definition coqDynamicTruthGlobalExistentialDeepContext
   | None => []
   end.
 
+(** Variant retaining an arbitrary caller prefix behind the two predecessor
+    state assumptions.  Every formula in that prefix is shifted by the
+    generic elimination-chain machinery as the ten eigenvariables enter. *)
+Definition coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+    (rootMode : nat) (localSigma localPi : formula)
+    (prefix : TemplateContext) : TemplateContext :=
+  match templateExistentialEliminationContext 10
+    (coqDynamicTruthGlobalExistentialSource rootMode localSigma localPi)
+    (coqDynamicTruthPredecessorStateTemplateContext ++ prefix) with
+  | Some context => context
+  | None => []
+  end.
+
 Lemma coqDynamicTruthGlobalExistentialDeepContext_success : forall
     rootMode localSigma localPi,
   templateExistentialEliminationContext 10
@@ -84,6 +97,18 @@ Lemma coqDynamicTruthGlobalExistentialDeepContext_success : forall
     rootMode localSigma localPi).
 Proof.
   intros rootMode localSigma localPi.
+  reflexivity.
+Qed.
+
+Lemma coqDynamicTruthGlobalExistentialDeepContextUnderPrefix_success :
+  forall rootMode localSigma localPi prefix,
+  templateExistentialEliminationContext 10
+    (coqDynamicTruthGlobalExistentialSource rootMode localSigma localPi)
+    (coqDynamicTruthPredecessorStateTemplateContext ++ prefix) =
+  Some (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+    rootMode localSigma localPi prefix).
+Proof.
+  intros rootMode localSigma localPi prefix.
   reflexivity.
 Qed.
 
@@ -108,11 +133,96 @@ Proof.
   reflexivity.
 Qed.
 
+(** Context normalization with additional temporary assumptions.  Keeping
+    this equation next to the existential context definition lets both the
+    admissibility and row-elimination layers share it without a dependency
+    cycle. *)
+Lemma raw_dynamicTruthPredecessorStateTemplateContext_app_code : forall
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseContext prefix,
+  rawTemplateContextCodeOnTail translation baseContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix) =
+    rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix).
+Proof.
+  intros M translation hagreement baseContext prefix.
+  unfold coqDynamicTruthPredecessorStateTemplateContext,
+    rawDynamicTruthPredecessorJointStateContext,
+    rawDynamicTruthPredecessorSigmaStateContext,
+    rawDynamicTruthPredecessorPiStateMemberBodyCode,
+    rawDynamicTruthPredecessorSigmaStateMemberBodyCode.
+  cbn [List.app rawTemplateContextCodeOnTail].
+  rewrite !rawTemplateFormula_embedPA by exact hagreement.
+  reflexivity.
+Qed.
+
+(** Complete ten-step elimination beneath predecessor state plus an arbitrary
+    caller prefix.  The witnessed tail remains the only raw context on which
+    the generic elimination compiler relies. *)
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthGlobal_existential_elimination_on_predecessor_state_context_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall witnessList baseContext prefix rootMode localSigma localPi
+      conclusion sourceRoot deepRoot,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource
+        rootMode localSigma localPi)) sourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext
+      (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+        rootMode localSigma localPi prefix))
+    (rawTemplateFormula translation
+      (templateFormulaShiftMany 10 conclusion)) deepRoot ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation baseContext prefix))
+      (rawTemplateFormula translation conclusion) root.
+Proof.
+  intros M hPA translation hagreement witnessList baseContext prefix
+    rootMode localSigma localPi conclusion sourceRoot deepRoot
+    hwitnessed hsource hdeep.
+  assert (hsourceOnTemplateContext : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (coqDynamicTruthPredecessorStateTemplateContext ++ prefix))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalExistentialSource
+          rootMode localSigma localPi)) sourceRoot).
+  {
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement baseContext prefix).
+    exact hsource.
+  }
+  destruct
+    (raw_codedPALocalProofOf_existential_elimination_chain_on_witnessed_tail
+      M hPA translation witnessList baseContext 10
+      (coqDynamicTruthGlobalExistentialSource
+        rootMode localSigma localPi)
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix) conclusion
+      (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+        rootMode localSigma localPi prefix)
+      sourceRoot deepRoot hwitnessed
+      (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix_success
+        rootMode localSigma localPi prefix)
+      hsourceOnTemplateContext hdeep) as [root hroot].
+  exists root.
+  rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+    M translation hagreement baseContext prefix).
+  exact hroot.
+Qed.
+
 (** The complete ten-step elimination endpoint.  [conclusion] is a template
     formula because its shift through the eigenvariable block must be tracked
     syntactically.  Carrier-valued evidence conclusions will be connected to
     such templates by the trace's direct structural translation. *)
-Theorem
+Corollary
     raw_codedPALocalProofOf_dynamicTruthGlobal_existential_elimination_on_predecessor_state_context :
   forall (M : RawPAModel), RawPASatisfies M -> forall
     (translation : RawCodedTemplateTranslation M),
@@ -139,36 +249,15 @@ Proof.
   intros M hPA translation hagreement witnessList baseContext
     rootMode localSigma localPi conclusion sourceRoot deepRoot
     hwitnessed hsource hdeep.
-  assert (hcontextCode :
-      rawTemplateContextCodeOnTail translation baseContext
-        coqDynamicTruthPredecessorStateTemplateContext =
-      rawDynamicTruthPredecessorJointStateContext M baseContext).
-  {
-    exact (raw_dynamicTruthPredecessorStateTemplateContextCode
-      M translation hagreement baseContext).
-  }
-  assert (hsourceOnTemplateContext : RawCodedPALocalProofOf M
-      (rawTemplateContextCodeOnTail translation baseContext
-        coqDynamicTruthPredecessorStateTemplateContext)
-      (rawTemplateFormula translation
-        (coqDynamicTruthGlobalExistentialSource
-          rootMode localSigma localPi)) sourceRoot).
-  {
-    rewrite hcontextCode. exact hsource.
-  }
-  destruct
-    (raw_codedPALocalProofOf_existential_elimination_chain_on_witnessed_tail
-      M hPA translation witnessList baseContext 10
-      (coqDynamicTruthGlobalExistentialSource
-        rootMode localSigma localPi)
-      coqDynamicTruthPredecessorStateTemplateContext conclusion
-      (coqDynamicTruthGlobalExistentialDeepContext
-        rootMode localSigma localPi)
-      sourceRoot deepRoot hwitnessed
-      (coqDynamicTruthGlobalExistentialDeepContext_success
-        rootMode localSigma localPi)
-      hsourceOnTemplateContext hdeep) as [root hroot].
-  exists root. rewrite <- hcontextCode. exact hroot.
+  pose proof
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_existential_elimination_on_predecessor_state_context_under_prefix
+      M hPA translation hagreement witnessList baseContext []
+      rootMode localSigma localPi conclusion sourceRoot deepRoot
+      hwitnessed hsource hdeep) as hresult.
+  cbn [rawTemplateContextCodeOnTail
+    coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+    coqDynamicTruthGlobalExistentialDeepContext] in hresult.
+  exact hresult.
 Qed.
 
 End

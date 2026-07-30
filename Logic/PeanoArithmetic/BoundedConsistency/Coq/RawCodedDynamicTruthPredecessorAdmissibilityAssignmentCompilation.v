@@ -105,30 +105,6 @@ Proof.
   - exact (hprefix formula hcaller).
 Qed.
 
-(** Folding the state prefix in front of a caller prefix produces the raw
-    joint-state context whose tail is the caller's translated context.  This
-    equality is the sole context normalization needed by the generalized
-    compilers below. *)
-Lemma raw_dynamicTruthPredecessorStateTemplateContext_app_code : forall
-    (M : RawPAModel) (translation : RawCodedTemplateTranslation M),
-  RawCodedTemplatePAAgreement M translation ->
-  forall baseContext prefix,
-  rawTemplateContextCodeOnTail translation baseContext
-      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix) =
-    rawDynamicTruthPredecessorJointStateContext M
-      (rawTemplateContextCodeOnTail translation baseContext prefix).
-Proof.
-  intros M translation hagreement baseContext prefix.
-  unfold coqDynamicTruthPredecessorStateTemplateContext,
-    rawDynamicTruthPredecessorJointStateContext,
-    rawDynamicTruthPredecessorSigmaStateContext,
-    rawDynamicTruthPredecessorPiStateMemberBodyCode,
-    rawDynamicTruthPredecessorSigmaStateMemberBodyCode.
-  cbn [List.app rawTemplateContextCodeOnTail].
-  rewrite !rawTemplateFormula_embedPA by exact hagreement.
-  reflexivity.
-Qed.
-
 (** Prefix-general assignment component.  The caller prefix stays outside
     the witnessed PA tail and is therefore preserved literally while the
     closed assignment theorem selects its finite standard-axiom extension. *)

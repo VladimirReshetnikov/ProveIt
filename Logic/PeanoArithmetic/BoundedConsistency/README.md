@@ -4977,3 +4977,17 @@ compiler is an empty-prefix corollary, so existing clients remain unchanged;
 the next global-row handoff can now retain constructor, endpoint-witness, and
 shell assumptions without pretending that they belong to the witnessed PA
 tail.
+
+The same prefix discipline now extends through the complete global-row
+pipeline.  A prefix-indexed ten-witness context lets the generic existential
+eliminator shift every caller assumption at each eigenvariable; the opened
+traversal body remains the literal head, so its seven fields and selected
+polarity payload are projected without any new semantic premise.  Single and
+paired row-evidence compilers, admissibility synchronization, and the final
+`RawDynamicTruthPredecessorStateLogicalRootsAt` package all retain that prefix
+while independently selected standard PA witness batches grow only the raw
+tail.  Each historical state-only theorem is now the empty-prefix corollary
+of its generalized implementation.  Thus the synchronized strong-step
+endpoint invariants can be handed to predecessor global-row soundness without
+discarding the constructor, restricted-proof, rule-validity, or endpoint
+witness assumptions surrounding them.
