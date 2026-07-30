@@ -13,6 +13,7 @@ From Foundation.FirstOrder.Basic Require Import Eq.
 From Foundation.FirstOrder.Basic Require Import Coding.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
@@ -801,6 +802,26 @@ Check arithmetic_theory_sound_on.
 Check arithmetic_theory_sound_on_elim.
 Check arithmetic_theory_sound_on_of_models.
 Check arithmetic_theory_consistent_of_sound_on.
+Check arithmetic_sigma.
+Check arithmetic_pi.
+Check arithmetic_polarity_alt.
+Check arithmetic_lt_operator.
+Check arithmetic_lt_guard.
+Check arithmetic_bounded_all.
+Check arithmetic_bounded_exists.
+Check arithmetic_hierarchy.
+Check arithmetic_delta_zero.
+Check arithmetic_hierarchy_accum.
+Check arithmetic_hierarchy_accum_iter.
+Check arithmetic_hierarchy_strict_mono.
+Check arithmetic_hierarchy_mono.
+Check arithmetic_hierarchy_neg.
+Check arithmetic_hierarchy_neg_iff.
+Check arithmetic_hierarchy_of_open.
+Check arithmetic_theory_sound_on_hierarchy.
+Check arithmetic_theory_sound_on_hierarchy_elim.
+Check arithmetic_theory_consistent_of_sigma_one_sound.
+Check arithmetic_theory_consistent_of_pi_two_sound.
 Check first_order_structure_monotone.
 Check structure_func_monotone.
 Check semiterm_val_monotone.
@@ -1219,6 +1240,13 @@ Print Assumptions oring_standard_structure_unique.
 Print Assumptions nat_standard_structure_interprets.
 Print Assumptions arithmetic_theory_sound_on_of_models.
 Print Assumptions arithmetic_theory_consistent_of_sound_on.
+Print Assumptions arithmetic_hierarchy_accum.
+Print Assumptions arithmetic_hierarchy_strict_mono.
+Print Assumptions arithmetic_hierarchy_neg.
+Print Assumptions arithmetic_hierarchy_neg_iff.
+Print Assumptions arithmetic_hierarchy_of_open.
+Print Assumptions arithmetic_theory_consistent_of_sigma_one_sound.
+Print Assumptions arithmetic_theory_consistent_of_pi_two_sound.
 Print Assumptions semiterm_val_monotone.
 Print Assumptions semiterm_val_monotone_free.
 Print Assumptions semiterm_val_monotone_bound.
