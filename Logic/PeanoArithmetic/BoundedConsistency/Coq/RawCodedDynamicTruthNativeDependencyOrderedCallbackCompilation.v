@@ -31,6 +31,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeMasterEndpoint
   RawCodedDynamicTruthNativeStagedPositiveSuccessor
   RawCodedDynamicTruthNativeLocalStagedCallbackCompilation
+  RawCodedDynamicTruthNativeLocalGrowingStagedCallbackCompilation
   RawCodedDynamicTruthNativeCrossLevelStagedCallbackCompilation
   RawCodedDynamicTruthNativeShiftStagedCallbackCompilation
   RawCodedDynamicTruthNativeSubstitutionStagedCallbackCompilation
@@ -56,6 +57,8 @@ Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalStagedCallbackCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalGrowingStagedCallbackCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeCrossLevelStagedCallbackCompilation.
 Import
@@ -83,6 +86,46 @@ Definition RawDynamicTruthNativeDependencyOrderedKernelCompilers
 Arguments RawDynamicTruthNativeDependencyOrderedKernelCompilers
   M translation : clear implicits.
 
+(** Preferred model-local boundary.  Global traversal and selected-row
+    compilation may add finitely many PA witnesses while constructing the
+    local coordinate, so the local residual uses the witnessed-extension
+    builder.  The five later coordinates are unchanged. *)
+Definition RawDynamicTruthNativeDependencyOrderedGrowingKernelCompilers
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  RawCodedTemplatePAAgreement M translation /\
+  RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRootBuilder
+    M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments RawDynamicTruthNativeDependencyOrderedGrowingKernelCompilers
+  M translation : clear implicits.
+
+(** The historical fixed-context bundle embeds in the growing bundle by
+    selecting the source helper context as the target extension. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedGrowingKernelCompilers_of_fixed
+    : forall (M : RawPAModel)
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeDependencyOrderedKernelCompilers M translation ->
+  RawDynamicTruthNativeDependencyOrderedGrowingKernelCompilers
+    M translation.
+Proof.
+  intros M translation
+    (hagreement & hlocal & hcrossLevel & hshift & hsubstitution & haxiom &
+      hfinal).
+  split; [exact hagreement |].
+  split.
+  - exact
+      (raw_dynamicTruthNativeLocalCurrentGrowingReducedStagedRootBuilder_of_fixed
+        M translation hlocal).
+  - repeat split; assumption.
+Qed.
+
 (** Apply each field-specific adapter once.  The conclusion is the literal
     callback bundle consumed by dependency-ordered successor assembly. *)
 Theorem
@@ -98,6 +141,40 @@ Proof.
   repeat split.
   - exact
       (raw_dynamicTruthNativeStagedNextLocalCompiler_of_reduced_current_builder
+        M hPA translation htranslationAgreement hlocal).
+  - exact
+      (raw_dynamicTruthNativeStagedNextCrossLevelCompiler_of_body_implication
+        M hPA hcrossLevel).
+  - exact
+      (raw_dynamicTruthNativeStagedNextShiftCompiler_of_body_implication
+        M hPA hshift).
+  - exact
+      (raw_dynamicTruthNativeStagedNextSubstitutionCompiler_of_body_implication
+        M hPA hsubstitution).
+  - exact
+      (raw_dynamicTruthNativeStagedNextAxiomSoundnessCompiler_of_kernel_implication
+        M hPA haxiomSoundness).
+  - exact
+      (raw_dynamicTruthNativeStagedNextFinalCompiler_of_source_linked_implication
+        M hPA hfinal).
+Qed.
+
+(** Dependency-ordered callback assembly using the relaxed local coordinate.
+    This is the adapter needed by global-row predecessor compilers which
+    honestly retain their added finite witness suffix. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_growing_kernel_compilers
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeDependencyOrderedGrowingKernelCompilers M translation ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacks M.
+Proof.
+  intros M hPA translation
+    (htranslationAgreement & hlocal & hcrossLevel & hshift &
+      hsubstitution & haxiomSoundness & hfinal).
+  repeat split.
+  - exact
+      (raw_dynamicTruthNativeStagedNextLocalCompiler_of_growing_reduced_current_builder
         M hPA translation htranslationAgreement hlocal).
   - exact
       (raw_dynamicTruthNativeStagedNextCrossLevelCompiler_of_body_implication
@@ -144,6 +221,14 @@ Definition
     exists translation : RawCodedTemplateTranslation M,
       RawDynamicTruthNativeDependencyOrderedKernelCompilers M translation.
 
+Definition
+    RawDynamicTruthNativeDependencyOrderedGrowingKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel), RawPASatisfies M ->
+    exists translation : RawCodedTemplateTranslation M,
+      RawDynamicTruthNativeDependencyOrderedGrowingKernelCompilers
+        M translation.
+
 Theorem
     raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers
     :
@@ -154,6 +239,19 @@ Proof.
   destruct (hkernels M hPA) as [translation hmodelKernels].
   exact
     (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_kernel_compilers
+      M hPA translation hmodelKernels).
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_growing_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedGrowingKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels.
+Proof.
+  intros hkernels M hPA.
+  destruct (hkernels M hPA) as [translation hmodelKernels].
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_growing_kernel_compilers
       M hPA translation hmodelKernels).
 Qed.
 
@@ -171,6 +269,23 @@ Proof.
   exact
     (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
       (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers
+        hkernels)).
+Qed.
+
+(** Preferred conditional compact headline.  Relative to the previous
+    endpoint, its local premise has been strictly relaxed to allow exactly
+    the witnessed context growth performed by native global traversal. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_growing_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedGrowingKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hkernels.
+  exact
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_growing_kernel_compilers
         hkernels)).
 Qed.
 

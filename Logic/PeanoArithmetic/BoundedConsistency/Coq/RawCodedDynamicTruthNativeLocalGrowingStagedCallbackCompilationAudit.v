@@ -1,0 +1,24 @@
+(** Audit surface for the witnessed-extension native local callback. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeLocalGrowingStagedCallbackCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalGrowingStagedCallbackCompilation.
+
+Check raw_fixedPAHelperBatchLocalProofs_witnessed_inclusion.
+Check RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRootBuilder.
+Check
+  raw_dynamicTruthNativeLocalCurrentGrowingReducedStagedRootBuilder_of_fixed.
+Check
+  raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_growing_reduced_current_builder.
+Check
+  raw_dynamicTruthNativeStagedNextLocalCompiler_of_growing_reduced_current_builder.
+
+Print Assumptions raw_fixedPAHelperBatchLocalProofs_witnessed_inclusion.
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentGrowingReducedStagedRootBuilder_of_fixed.
+Print Assumptions
+  raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_growing_reduced_current_builder.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextLocalCompiler_of_growing_reduced_current_builder.
