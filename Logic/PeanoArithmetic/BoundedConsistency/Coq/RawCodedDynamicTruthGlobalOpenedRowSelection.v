@@ -9,16 +9,20 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
   RawCodedSyntaxConstructors
   RawCodedFixedLevelTruthTotality
+  RawCodedFixedLevelTruthTraversal
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofComposition
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedPALocalProofTaggedChoice
+  RawCodedPALocalProofUniversalEliminationChain
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
   RawCodedTemplateFormulaAtomicAdequacy
   RawCodedTemplateLocalProofWitnessedTailTransport
+  RawCodedDynamicTruthPairedGlobalSuccessorGraph
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthGlobalOpenedFieldProjection
   RawCodedZeroOneDistinctnessProofCompilation.
@@ -34,16 +38,20 @@ Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedFixedLevelTruthTotality.
+Import PABoundedRawCodedFixedLevelTruthTraversal.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedPALocalProofTaggedChoice.
+Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateFormulaAtomicAdequacy.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
+Import PABoundedRawCodedDynamicTruthPairedGlobalSuccessorGraph.
 Import
   PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 Import PABoundedRawCodedDynamicTruthGlobalOpenedFieldProjection.
@@ -148,6 +156,81 @@ Lemma coqDynamicTruthGlobalOpenedRootRowLeftTag_one : forall
   embedPAFormula oneEqualsZeroFormula.
 Proof.
   intros. reflexivity.
+Qed.
+
+(** Lift a substitution through a fixed number of still-unopened binders. *)
+Fixpoint templateTermSubstitutionLiftMany (depth : nat)
+    (substitution : nat -> TemplateTerm) : nat -> TemplateTerm :=
+  match depth with
+  | 0 => substitution
+  | S remaining => templateTermUpSubst
+      (templateTermSubstitutionLiftMany remaining substitution)
+  end.
+
+(** Opening a subformula sitting beneath an entire universal tower is not a
+    naive sequence of direct openings.  The first replacement must cross all
+    remaining binders, the second all but one, and so on.  Encoding that lift
+    count here keeps later payload calculations capture-safe. *)
+Fixpoint templateFormulaOpenSequenceUnderBinders
+    (input : TemplateFormula) (replacements : list TemplateTerm)
+    : TemplateFormula :=
+  match replacements with
+  | [] => input
+  | replacement :: tail =>
+      templateFormulaOpenSequenceUnderBinders
+        (templateFormulaSubst
+          (templateTermSubstitutionLiftMany (length tail)
+            (templateInstTerm replacement)) input) tail
+  end.
+
+Lemma coqDynamicTruthGlobalOpenedRootRowLeftPayload_open_sequence : forall
+    rootMode localSigma localPi,
+  coqDynamicTruthGlobalOpenedRootRowLeftPayload
+      rootMode localSigma localPi =
+  templateFormulaOpenSequenceUnderBinders (embedPAFormula localSigma)
+    (coqDynamicTruthGlobalOpenedRootRowReplacements rootMode).
+Proof.
+  intros.
+  unfold coqDynamicTruthGlobalOpenedRootRowLeftPayload,
+    coqDynamicTruthGlobalOpenedRootRowLeftBranch,
+    templateAndRightOrBot, templateOrLeftOrBot,
+    coqDynamicTruthGlobalOpenedRootRowChoice,
+    templateImpConsequent,
+    coqDynamicTruthGlobalOpenedRootRowFormula,
+    coqDynamicTruthGlobalOpenedRows,
+    templateUniversalOpenManyOrBot,
+    coqDynamicTruthGlobalOpenedRootRowReplacements,
+    dynamicTruthGlobalRowsFormula, fixedTruthTraversalAll5.
+  cbn [embedPAFormula templateUniversalOpenMany
+    templateFormulaOpenSequenceUnderBinders
+    templateTermSubstitutionLiftMany templateFormulaOpen
+    templateFormulaSubst templateTermSubst templateTermUpSubst length].
+  reflexivity.
+Qed.
+
+Lemma coqDynamicTruthGlobalOpenedRootRowRightPayload_open_sequence : forall
+    rootMode localSigma localPi,
+  coqDynamicTruthGlobalOpenedRootRowRightPayload
+      rootMode localSigma localPi =
+  templateFormulaOpenSequenceUnderBinders (embedPAFormula localPi)
+    (coqDynamicTruthGlobalOpenedRootRowReplacements rootMode).
+Proof.
+  intros.
+  unfold coqDynamicTruthGlobalOpenedRootRowRightPayload,
+    coqDynamicTruthGlobalOpenedRootRowRightBranch,
+    templateAndRightOrBot, templateOrRightOrBot,
+    coqDynamicTruthGlobalOpenedRootRowChoice,
+    templateImpConsequent,
+    coqDynamicTruthGlobalOpenedRootRowFormula,
+    coqDynamicTruthGlobalOpenedRows,
+    templateUniversalOpenManyOrBot,
+    coqDynamicTruthGlobalOpenedRootRowReplacements,
+    dynamicTruthGlobalRowsFormula, fixedTruthTraversalAll5.
+  cbn [embedPAFormula templateUniversalOpenMany
+    templateFormulaOpenSequenceUnderBinders
+    templateTermSubstitutionLiftMany templateFormulaOpen
+    templateFormulaSubst templateTermSubst templateTermUpSubst length].
+  reflexivity.
 Qed.
 
 Definition coqDynamicTruthGlobalOpenedRootRowSelectedPayload

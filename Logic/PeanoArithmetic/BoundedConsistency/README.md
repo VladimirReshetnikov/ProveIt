@@ -4749,3 +4749,12 @@ retaining both the witnessed package and inclusion of the caller's tail.
 Thus the remaining native specialization no longer coordinates contexts or
 proof rules: it must prove the two concrete payload equations and combine
 the resulting Sigma/Pi roots with the already available admissibility root.
+
+The two payloads are now normalized one layer further.  A capture-safe
+opening combinator lifts each replacement through exactly the row binders
+that remain at that step—depths four, three, two, one, and zero for the five
+root-tuple arguments.  Audited definitional lemmas identify the left payload
+with this opening of `embedPAFormula localSigma` and the right payload with
+the analogous opening of `localPi`.  This replaces the full global row spine
+by a small explicit substitution calculation and prevents the tempting but
+incorrect use of five unlifted direct openings.
