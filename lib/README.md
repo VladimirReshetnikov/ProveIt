@@ -20,5 +20,15 @@ commit `32e1a0956a8622fad067328ca1959729a7634428`.  It is retained as the source
 reference for the independent Coq port under [`../Logic/Modal/`](../Logic/Modal/);
 the port neither imports nor modifies the Lean checkout.
 
+[`Djex/`](Djex/) is the read-only BSD-3-Clause-licensed
+`VladimirReshetnikov/Djex` submodule at commit
+`6a9fc226265ae86e3415505979b6242bde4347aa` — the Haskell expression
+synthesizer (Djinn's LJT engine + Exference's ranked search) referenced
+by the Leant term-synthesis proposal at
+[`../Tools/Leant/SYNTHESIS_PROPOSAL.md`](../Tools/Leant/SYNTHESIS_PROPOSAL.md).
+It is a source reference and future library dependency for
+[`../Tools/LeantHs/`](../Tools/LeantHs/); nothing in this repository
+modifies it.
+
 Repository-authored Busy Beaver models, bridges, and score certificates live
 under [`../Computability/BusyBeaver/`](../Computability/BusyBeaver/), not here.

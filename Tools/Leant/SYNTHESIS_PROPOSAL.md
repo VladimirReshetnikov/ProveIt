@@ -3,7 +3,9 @@
 *Status: proposal (no implementation yet). Companion to
 [PROPOSALS.md](PROPOSALS.md).*
 
-Djex (`C:\Djex`) merges two Haskell expression synthesizers — Djinn
+Djex — vendored read-only in this repository as the
+[`lib/Djex`](../../lib/Djex) submodule (pinned at `6a9fc22`, the state
+this analysis reviewed) — merges two Haskell expression synthesizers — Djinn
 (Dyckhoff's LJT calculus: complete, terminating intuitionistic proof
 search that emits programs) and Exference (ranked heuristic search with
 resource budgets and type-class evidence) — behind one
