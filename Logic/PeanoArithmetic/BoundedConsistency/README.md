@@ -4890,3 +4890,18 @@ shift and be unsound.  The current-domain and current-formula atomic roots
 must instead be projected from the restricted-proof occurrence-bound and
 proof-atomic-adequacy fields, together with the current proof-row endpoint;
 the existing seven-field projection package is the next integration source.
+
+The first of those two restricted-proof projections now has a reusable
+represented kernel.  `RawCodedProofEndpointAtomicAdequacyProofCompilation.v`
+internalizes the standard arithmetic implication saying that proof-wide
+atomic adequacy and a root endpoint imply atomic adequacy of the endpoint
+conclusion.  It proves the open implication by raw-model validity, seals it
+only for the completeness step, and closes exactly the three displayed
+parameters with the generic `closeN` theorem; this avoids unfolding the large
+support-table certificate in a syntactic sentence proof.  Its growing local
+endpoint compiles any three template terms over a witnessed PA tail,
+transports both caller premise roots through the selected standard axiom
+prefix, and performs the two represented modus-ponens steps in that exact
+extension.  The remaining atomic specialization is now only the concrete
+identification of the restricted atomic field and current endpoint with
+these two named premises.
