@@ -996,3 +996,135 @@ Proof.
     <- (iopen_list_unpair_pair H Hleast ys), <- Hlen, Heq.
   reflexivity.
 Qed.
+
+Lemma iopen_pair_lt_pair_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a1 a2 b,
+  oring_lt O a1 a2 ->
+  oring_lt O (iopen_pair O a1 b) (iopen_pair O a2 b).
+Proof.
+  intros M O H a1 a2 b Ha. unfold iopen_pair.
+  destruct (excluded_middle_informative (oring_lt O a1 b)) as [H1 | H1];
+  destruct (excluded_middle_informative (oring_lt O a2 b)) as [H2 | H2].
+  - apply (peano_minus_add_lt_add_left H (oring_mul O b b) Ha).
+  - pose proof (@peano_minus_add_lt_add M O H a1 b
+      (oring_mul O b b) H1) as Hfirst.
+    rewrite (@peano_minus_add_comm M O H a1 (oring_mul O b b)),
+      (@peano_minus_add_comm M O H b (oring_mul O b b)) in Hfirst.
+    pose proof (peano_minus_le_of_not_lt H H2) as Hba2.
+    pose proof (peano_minus_add_le_add H
+      (peano_minus_square_le_square H Hba2) Hba2) as Hmiddle.
+    pose proof (peano_minus_le_add_right H
+      (oring_add O (oring_mul O a2 a2) a2) b) as Hlast.
+    exact (@peano_minus_lt_le_trans M O H _ _ _
+      (@peano_minus_lt_le_trans M O H _ _ _ Hfirst Hmiddle) Hlast).
+  - exfalso. apply H1.
+    exact (@peano_minus_lt_trans M O H _ _ _ Ha H2).
+  - apply (@peano_minus_add_lt_add M O H _ _ b).
+    apply (peano_minus_add_lt_add_both H
+      (peano_minus_square_lt_square H Ha) Ha).
+Qed.
+
+Lemma iopen_pair_le_pair_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a1 a2 b,
+  peano_minus_le O a1 a2 ->
+  peano_minus_le O (iopen_pair O a1 b) (iopen_pair O a2 b).
+Proof.
+  intros M O H a1 a2 b [-> | Ha].
+  - apply peano_minus_le_refl.
+  - right. now apply (iopen_pair_lt_pair_left H).
+Qed.
+
+Lemma iopen_pair_lt_pair_right : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a b1 b2,
+  oring_lt O b1 b2 ->
+  oring_lt O (iopen_pair O a b1) (iopen_pair O a b2).
+Proof.
+  intros M O H a b1 b2 Hb. unfold iopen_pair.
+  destruct (excluded_middle_informative (oring_lt O a b1)) as [H1 | H1];
+  destruct (excluded_middle_informative (oring_lt O a b2)) as [H2 | H2].
+  - apply (@peano_minus_add_lt_add M O H _ _ a).
+    now apply (peano_minus_square_lt_square H).
+  - exfalso. apply H2.
+    exact (@peano_minus_lt_trans M O H _ _ _ H1 Hb).
+  - assert (Haa : oring_lt O
+        (oring_add O (oring_mul O a a) a)
+        (oring_mul O (oring_add O a (oring_one O))
+          (oring_add O a (oring_one O)))).
+    { rewrite (peano_minus_square_succ H a).
+      apply (peano_minus_le_lt_add_one H).
+      apply (peano_minus_le_add_right H). }
+    pose proof (@peano_minus_add_lt_add M O H _ _ b1 Haa) as Hfirst.
+    pose proof (peano_minus_add_one_le_of_lt H H2) as Hsucc.
+    pose proof (peano_minus_add_le_add_right H
+      (x := oring_mul O (oring_add O a (oring_one O))
+        (oring_add O a (oring_one O)))
+      (y := oring_mul O b2 b2) b1
+      (peano_minus_square_le_square H Hsucc)) as Hmiddle.
+    pose proof (peano_minus_add_le_add_left H
+      (x := b1) (y := a) (oring_mul O b2 b2)
+      (peano_minus_le_of_not_lt H H1)) as Hlast.
+    exact (@peano_minus_lt_le_trans M O H _ _ _
+      (@peano_minus_lt_le_trans M O H _ _ _ Hfirst Hmiddle) Hlast).
+  - apply (peano_minus_add_lt_add_left H
+      (oring_add O (oring_mul O a a) a) Hb).
+Qed.
+
+Lemma iopen_pair_le_pair_right : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a b1 b2,
+  peano_minus_le O b1 b2 ->
+  peano_minus_le O (iopen_pair O a b1) (iopen_pair O a b2).
+Proof.
+  intros M O H a b1 b2 [-> | Hb].
+  - apply peano_minus_le_refl.
+  - right. now apply (iopen_pair_lt_pair_right H).
+Qed.
+
+Lemma iopen_pair_le_pair : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a1 a2 b1 b2,
+  peano_minus_le O a1 a2 -> peano_minus_le O b1 b2 ->
+  peano_minus_le O (iopen_pair O a1 b1) (iopen_pair O a2 b2).
+Proof.
+  intros M O H a1 a2 b1 b2 Ha Hb.
+  eapply (peano_minus_le_trans H).
+  - exact (iopen_pair_le_pair_left H b1 Ha).
+  - exact (iopen_pair_le_pair_right H a2 Hb).
+Qed.
+
+Lemma iopen_pair_lt_pair : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a1 a2 b1 b2,
+  oring_lt O a1 a2 -> oring_lt O b1 b2 ->
+  oring_lt O (iopen_pair O a1 b1) (iopen_pair O a2 b2).
+Proof.
+  intros M O H a1 a2 b1 b2 Ha Hb.
+  eapply (@peano_minus_lt_trans M O H).
+  - exact (iopen_pair_lt_pair_left H b1 Ha).
+  - exact (iopen_pair_lt_pair_right H a2 Hb).
+Qed.
+
+Lemma iopen_pair_polybound : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a b,
+  peano_minus_le O (iopen_pair O a b)
+    (oring_mul O
+      (oring_add O (oring_add O a b) (oring_one O))
+      (oring_add O (oring_add O a b) (oring_one O))).
+Proof.
+  intros M O H a b.
+  pose (s := oring_add O a b).
+  assert (Ha : peano_minus_le O a s).
+  { unfold s. apply (peano_minus_le_add_right H). }
+  assert (Hb : peano_minus_le O b s).
+  { unfold s. apply (peano_minus_le_add_left H). }
+  assert (Hbase : peano_minus_le O (iopen_pair O a b)
+      (oring_add O (oring_mul O s s) s)).
+  { unfold iopen_pair.
+    destruct (excluded_middle_informative (oring_lt O a b)).
+    - apply (peano_minus_add_le_add H
+        (peano_minus_square_le_square H Hb) Ha).
+    - rewrite (@peano_minus_add_assoc M O H (oring_mul O a a) a b).
+      apply (peano_minus_add_le_add H
+        (peano_minus_square_le_square H Ha) (peano_minus_le_refl s)). }
+  fold s. rewrite (peano_minus_square_succ H s).
+  eapply (peano_minus_le_trans H); [exact Hbase |].
+  eapply (peano_minus_le_trans H);
+    apply (peano_minus_le_add_right H).
+Qed.

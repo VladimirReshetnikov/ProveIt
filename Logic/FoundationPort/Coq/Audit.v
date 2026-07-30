@@ -1523,6 +1523,8 @@ Print Assumptions peano_minus_le_of_not_lt.
 Print Assumptions peano_minus_add_one_le_of_lt.
 Print Assumptions peano_minus_lt_add_one.
 Print Assumptions peano_minus_le_iff_lt_add_one.
+Print Assumptions peano_minus_add_lt_add_left.
+Print Assumptions peano_minus_add_lt_add_both.
 Print Assumptions peano_minus_add_le_add.
 Print Assumptions peano_minus_le_add_right.
 Print Assumptions peano_minus_le_add_left.
@@ -1764,6 +1766,13 @@ Print Assumptions iopen_list_unpair_length.
 Print Assumptions iopen_list_unpair_pair.
 Print Assumptions iopen_list_unpair_pair_nth.
 Print Assumptions iopen_list_pair_injective_at_length.
+Print Assumptions iopen_pair_lt_pair_left.
+Print Assumptions iopen_pair_le_pair_left.
+Print Assumptions iopen_pair_lt_pair_right.
+Print Assumptions iopen_pair_le_pair_right.
+Print Assumptions iopen_pair_le_pair.
+Print Assumptions iopen_pair_lt_pair.
+Print Assumptions iopen_pair_polybound.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.

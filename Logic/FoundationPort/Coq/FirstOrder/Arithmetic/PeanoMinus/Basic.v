@@ -427,6 +427,28 @@ Proof.
   now apply (peano_minus_add_le_add_right H).
 Qed.
 
+Lemma peano_minus_add_lt_add_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  oring_lt O x y ->
+  oring_lt O (oring_add O z x) (oring_add O z y).
+Proof.
+  intros M O H x y z Hxy.
+  rewrite (@peano_minus_add_comm M O H z x),
+    (@peano_minus_add_comm M O H z y).
+  now apply (@peano_minus_add_lt_add M O H).
+Qed.
+
+Lemma peano_minus_add_lt_add_both : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x x' y y',
+  oring_lt O x x' -> oring_lt O y y' ->
+  oring_lt O (oring_add O x y) (oring_add O x' y').
+Proof.
+  intros M O H x x' y y' Hx Hy.
+  eapply (@peano_minus_lt_trans M O H).
+  - exact (@peano_minus_add_lt_add M O H x x' y Hx).
+  - exact (peano_minus_add_lt_add_left H x' Hy).
+Qed.
+
 Lemma peano_minus_add_le_add : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall x x' y y',
   peano_minus_le O x x' -> peano_minus_le O y y' ->
