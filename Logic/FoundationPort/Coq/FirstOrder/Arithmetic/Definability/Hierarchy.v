@@ -7,7 +7,7 @@
   carry their proof obligations directly and require no proof-to-data choice.
 *)
 
-From Foundation.Syntax.Predicate Require Import Language Term Rew.
+From Foundation.Syntax.Predicate Require Import Language Term Quantifier Rew.
 From Stdlib Require Import Logic.FunctionalExtensionality.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Operator.
@@ -428,6 +428,28 @@ Definition arithmetic_sorted_all {X : Type} {n rank}
     (Semiformula_all (arithmetic_sorted_formula_val p))
     (AH_all (arithmetic_sorted_pi_prop p)).
 
+Definition arithmetic_sorted_exists_iter {X : Type} {k n rank}
+    (p : arithmetic_sorted_formula X (k + n)
+      (arithmetic_sigma_symbol (S rank))) :
+    arithmetic_sorted_formula X n (arithmetic_sigma_symbol (S rank)) :=
+  ArithmeticSortedSigma (S rank)
+    (first_exists_iter
+      (semiformula_existential_quantifier oring_language X) k n
+      (arithmetic_sorted_formula_val p))
+    (proj2 (@arithmetic_hierarchy_exists_iter_iff X rank k n
+      (arithmetic_sorted_formula_val p)) (arithmetic_sorted_sigma_prop p)).
+
+Definition arithmetic_sorted_all_iter {X : Type} {k n rank}
+    (p : arithmetic_sorted_formula X (k + n)
+      (arithmetic_pi_symbol (S rank))) :
+    arithmetic_sorted_formula X n (arithmetic_pi_symbol (S rank)) :=
+  ArithmeticSortedPi (S rank)
+    (first_all_iter
+      (semiformula_universal_quantifier oring_language X) k n
+      (arithmetic_sorted_formula_val p))
+    (proj2 (@arithmetic_hierarchy_all_iter_iff X rank k n
+      (arithmetic_sorted_formula_val p)) (arithmetic_sorted_pi_prop p)).
+
 Lemma arithmetic_sorted_verum_val : forall (X : Type) n symbol,
   arithmetic_sorted_formula_val (@arithmetic_sorted_verum X n symbol) =
   Semiformula_verum n.
@@ -490,6 +512,24 @@ Lemma arithmetic_sorted_all_val : forall (X : Type) n rank
     (p : arithmetic_sorted_formula X (S n) (arithmetic_pi_symbol (S rank))),
   arithmetic_sorted_formula_val (arithmetic_sorted_all p) =
   Semiformula_all (arithmetic_sorted_formula_val p).
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_sorted_exists_iter_val : forall (X : Type) k n rank
+    (p : arithmetic_sorted_formula X (k + n)
+      (arithmetic_sigma_symbol (S rank))),
+  arithmetic_sorted_formula_val (arithmetic_sorted_exists_iter p) =
+  first_exists_iter
+    (semiformula_existential_quantifier oring_language X) k n
+    (arithmetic_sorted_formula_val p).
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_sorted_all_iter_val : forall (X : Type) k n rank
+    (p : arithmetic_sorted_formula X (k + n)
+      (arithmetic_pi_symbol (S rank))),
+  arithmetic_sorted_formula_val (arithmetic_sorted_all_iter p) =
+  first_all_iter
+    (semiformula_universal_quantifier oring_language X) k n
+    (arithmetic_sorted_formula_val p).
 Proof. reflexivity. Qed.
 
 (** * Semantic properness of Delta presentations *)

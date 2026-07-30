@@ -8,16 +8,20 @@
 *)
 
 From Stdlib Require Import Vectors.Fin.
+From Stdlib Require Import Lists.List.
+From Stdlib Require Import Logic.Classical_Prop.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic Require Import Operator Definability.
 From Foundation.FirstOrder.Basic.Semantics Require Import
-  Semantics OperatorSemantics.
+  Semantics RewriteClosure OperatorSemantics.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
+
+Import ListNotations.
 
 (** * Definitions and definability witnesses *)
 
@@ -313,6 +317,38 @@ Definition arithmetic_sorted_definable_of_sigma_pi
 
 (** * Boolean closure *)
 
+Definition arithmetic_sorted_definable_verum {M : Type} {k}
+    (Str : first_order_structure oring_language M)
+    (symbol : arithmetic_hierarchy_symbol) :
+    arithmetic_sorted_definable Str symbol
+      (fun _ : Fin.t k -> M => True).
+Proof.
+  destruct symbol as [class rank].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_verum
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := rank |} |}. split.
+  - destruct class; simpl; trivial.
+    apply arithmetic_sorted_delta_proper_verum.
+  - intro v. rewrite arithmetic_sorted_verum_val. reflexivity.
+Defined.
+
+Definition arithmetic_sorted_definable_falsum {M : Type} {k}
+    (Str : first_order_structure oring_language M)
+    (symbol : arithmetic_hierarchy_symbol) :
+    arithmetic_sorted_definable Str symbol
+      (fun _ : Fin.t k -> M => False).
+Proof.
+  destruct symbol as [class rank].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_falsum
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := rank |} |}. split.
+  - destruct class; simpl; trivial.
+    apply arithmetic_sorted_delta_proper_falsum.
+  - intro v. rewrite arithmetic_sorted_falsum_val. reflexivity.
+Defined.
+
 Definition arithmetic_sorted_definable_and {M : Type} {k symbol}
     {Str : first_order_structure oring_language M}
     {P Q : (Fin.t k -> M) -> Prop}
@@ -398,6 +434,151 @@ Proof.
   - now apply arithmetic_sorted_delta_proper_neg.
   - intro v. rewrite (arithmetic_sorted_delta_eval_neg_iff Hp v).
     specialize (Hspec v). tauto.
+Defined.
+
+Definition arithmetic_sorted_definable_imp_sigma {M : Type} {k rank}
+    {Str : first_order_structure oring_language M}
+    {P Q : (Fin.t k -> M) -> Prop}
+    (HP : arithmetic_sorted_definable Str (arithmetic_pi_symbol rank) P)
+    (HQ : arithmetic_sorted_definable Str (arithmetic_sigma_symbol rank) Q) :
+    arithmetic_sorted_definable Str (arithmetic_sigma_symbol rank)
+      (fun v => P v -> Q v).
+Proof.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_or
+      (arithmetic_sorted_definable_not_pi HP) HQ)).
+  intro v. destruct (classic (P v)); tauto.
+Defined.
+
+Definition arithmetic_sorted_definable_imp_pi {M : Type} {k rank}
+    {Str : first_order_structure oring_language M}
+    {P Q : (Fin.t k -> M) -> Prop}
+    (HP : arithmetic_sorted_definable Str (arithmetic_sigma_symbol rank) P)
+    (HQ : arithmetic_sorted_definable Str (arithmetic_pi_symbol rank) Q) :
+    arithmetic_sorted_definable Str (arithmetic_pi_symbol rank)
+      (fun v => P v -> Q v).
+Proof.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_or
+      (arithmetic_sorted_definable_not_sigma HP) HQ)).
+  intro v. destruct (classic (P v)); tauto.
+Defined.
+
+Definition arithmetic_sorted_definable_imp_delta {M : Type} {k rank}
+    {Str : first_order_structure oring_language M}
+    {P Q : (Fin.t k -> M) -> Prop}
+    (HP : arithmetic_sorted_definable Str (arithmetic_delta_symbol rank) P)
+    (HQ : arithmetic_sorted_definable Str (arithmetic_delta_symbol rank) Q) :
+    arithmetic_sorted_definable Str (arithmetic_delta_symbol rank)
+      (fun v => P v -> Q v).
+Proof.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_or
+      (arithmetic_sorted_definable_not_delta HP) HQ)).
+  intro v. destruct (classic (P v)); tauto.
+Defined.
+
+Definition arithmetic_sorted_definable_iff_delta {M : Type} {k rank}
+    {Str : first_order_structure oring_language M}
+    {P Q : (Fin.t k -> M) -> Prop}
+    (HP : arithmetic_sorted_definable Str (arithmetic_delta_symbol rank) P)
+    (HQ : arithmetic_sorted_definable Str (arithmetic_delta_symbol rank) Q) :
+    arithmetic_sorted_definable Str (arithmetic_delta_symbol rank)
+      (fun v => P v <-> Q v) :=
+  arithmetic_sorted_definable_and
+    (arithmetic_sorted_definable_imp_delta HP HQ)
+    (arithmetic_sorted_definable_imp_delta HQ HP).
+
+(** List representatives make finite-family closure duplicate tolerant and
+    remove the source's decidable-equality requirement. *)
+Fixpoint arithmetic_sorted_definable_list_conj
+    {M : Type} {I : Type} {k symbol}
+    {Str : first_order_structure oring_language M}
+    (R : I -> (Fin.t k -> M) -> Prop)
+    (s : list I)
+    (H : forall i, arithmetic_sorted_definable Str symbol (R i)) {struct s} :
+    arithmetic_sorted_definable Str symbol
+      (fun v => forall i, In i s -> R i v).
+Proof.
+  destruct s as [| a s].
+  - apply (arithmetic_sorted_definable_of_iff
+      (arithmetic_sorted_definable_verum (k := k) Str symbol)).
+    intro v. split.
+    + intros _. constructor.
+    + intros _ i Hin. contradiction.
+  - apply (arithmetic_sorted_definable_of_iff
+      (arithmetic_sorted_definable_and (H a)
+        (@arithmetic_sorted_definable_list_conj
+          M I k symbol Str R s H))).
+    intro v. split.
+    + intro Hall. split.
+      * apply (Hall a). now left.
+      * intros i Hin. apply (Hall i). now right.
+    + intros [Ha Hs] i [Hi | Hin].
+      * now subst i.
+      * now apply Hs.
+Defined.
+
+Fixpoint arithmetic_sorted_definable_list_disj
+    {M : Type} {I : Type} {k symbol}
+    {Str : first_order_structure oring_language M}
+    (R : I -> (Fin.t k -> M) -> Prop)
+    (s : list I)
+    (H : forall i, arithmetic_sorted_definable Str symbol (R i)) {struct s} :
+    arithmetic_sorted_definable Str symbol
+      (fun v => exists i, In i s /\ R i v).
+Proof.
+  destruct s as [| a s].
+  - apply (arithmetic_sorted_definable_of_iff
+      (arithmetic_sorted_definable_falsum (k := k) Str symbol)).
+    intro v. split.
+    + intros [i [Hin _]]. contradiction.
+    + contradiction.
+  - apply (arithmetic_sorted_definable_of_iff
+      (arithmetic_sorted_definable_or (H a)
+        (@arithmetic_sorted_definable_list_disj
+          M I k symbol Str R s H))).
+    intro v. split.
+    + intros [i [[Hi | Hin] HR]].
+      * left. now subst i.
+      * right. now exists i.
+    + intros [Ha | [i [Hin HR]]].
+      * exists a. split; [now left | exact Ha].
+      * exists i. split; [now right | exact HR].
+Defined.
+
+Definition arithmetic_sorted_definable_finite_conj
+    {M : Type} {I : Type} {k symbol}
+    {Str : first_order_structure oring_language M}
+    (C : finite_cover I) (R : I -> (Fin.t k -> M) -> Prop)
+    (H : forall i, arithmetic_sorted_definable Str symbol (R i)) :
+    arithmetic_sorted_definable Str symbol
+      (fun v => forall i, R i v).
+Proof.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_list_conj
+      (R := R) (finite_cover_list C) H)).
+  intro v. split.
+  - intros Hall i _. apply Hall.
+  - intros Hall i. apply (Hall i). exact (finite_cover_complete C i).
+Defined.
+
+Definition arithmetic_sorted_definable_finite_disj
+    {M : Type} {I : Type} {k symbol}
+    {Str : first_order_structure oring_language M}
+    (C : finite_cover I) (R : I -> (Fin.t k -> M) -> Prop)
+    (H : forall i, arithmetic_sorted_definable Str symbol (R i)) :
+    arithmetic_sorted_definable Str symbol
+      (fun v => exists i, R i v).
+Proof.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_list_disj
+      (R := R) (finite_cover_list C) H)).
+  intro v. split.
+  - intros [i HR]. exists i. split.
+    + exact (finite_cover_complete C i).
+    + exact HR.
+  - intros [i [_ HR]]. now exists i.
 Defined.
 
 (** * Bound-variable substitution and quantifier closure *)
@@ -535,4 +716,44 @@ Proof.
   split; intros Hall x.
   - exact (proj1 (Hspec (fin_env_cons x v)) (Hall x)).
   - exact (proj2 (Hspec (fin_env_cons x v)) (Hall x)).
+Defined.
+
+Definition arithmetic_sorted_definable_exists_vector
+    {M : Type} {l k rank}
+    {Str : first_order_structure oring_language M}
+    (Q : (Fin.t (l + k) -> M) -> Prop)
+    (H : arithmetic_sorted_definable Str
+      (arithmetic_sigma_symbol (S rank)) Q) :
+    arithmetic_sorted_definable Str (arithmetic_sigma_symbol (S rank))
+      (fun b : Fin.t k -> M => exists e : Fin.t l -> M,
+        Q (fin_env_append l k e b)).
+Proof.
+  destruct H as [p [_ Hspec]].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_exists_iter p |}. split; [exact I |].
+  intro b. rewrite arithmetic_sorted_exists_iter_val.
+  rewrite semiformula_eval_exists_iter. split.
+  - intros [e Hbody]. exists e.
+    exact (proj1 (Hspec (fin_env_append l k e b)) Hbody).
+  - intros [e HQ]. exists e.
+    exact (proj2 (Hspec (fin_env_append l k e b)) HQ).
+Defined.
+
+Definition arithmetic_sorted_definable_all_vector
+    {M : Type} {l k rank}
+    {Str : first_order_structure oring_language M}
+    (Q : (Fin.t (l + k) -> M) -> Prop)
+    (H : arithmetic_sorted_definable Str
+      (arithmetic_pi_symbol (S rank)) Q) :
+    arithmetic_sorted_definable Str (arithmetic_pi_symbol (S rank))
+      (fun b : Fin.t k -> M => forall e : Fin.t l -> M,
+        Q (fin_env_append l k e b)).
+Proof.
+  destruct H as [p [_ Hspec]].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_all_iter p |}. split; [exact I |].
+  intro b. rewrite arithmetic_sorted_all_iter_val.
+  rewrite semiformula_eval_all_iter. split; intros Hall e.
+  - exact (proj1 (Hspec (fin_env_append l k e b)) (Hall e)).
+  - exact (proj2 (Hspec (fin_env_append l k e b)) (Hall e)).
 Defined.
