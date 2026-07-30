@@ -11,6 +11,7 @@ From Foundation.FirstOrder.Basic Require Import Calculus2.
 From Foundation.FirstOrder.Basic Require Import Padding.
 From Foundation.FirstOrder.Basic Require Import Eq.
 From Foundation.FirstOrder.Basic Require Import Coding.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
@@ -757,6 +758,11 @@ Check semiterm_encoding.
 Check semiformula_encoding.
 Check semiterm_encoding_encode.
 Check semiformula_encoding_encode.
+Check first_order_structure_monotone.
+Check structure_func_monotone.
+Check semiterm_val_monotone.
+Check semiterm_val_monotone_free.
+Check semiterm_val_monotone_bound.
 Check semiformula_polarity.
 Check semiformula_positive.
 Check semiformula_negative.
@@ -1149,6 +1155,9 @@ Print Assumptions semiformula_code_emb.
 Print Assumptions semiformula_code_closed_injection.
 Print Assumptions semiterm_encoding.
 Print Assumptions semiformula_encoding.
+Print Assumptions semiterm_val_monotone.
+Print Assumptions semiterm_val_monotone_free.
+Print Assumptions semiterm_val_monotone_bound.
 Print Assumptions semiformula_polarity_neg.
 Print Assumptions semiformula_polarity_imp.
 Print Assumptions semiformula_and_positive_iff.
