@@ -1,6 +1,7 @@
 (** Executable arithmetic truth values and bounded universal quantification. *)
 
-From Stdlib Require Import Arith.Arith Lia.
+From Stdlib Require Import Arith.Arith Lia Vectors.Fin.
+From Foundation.Vorspiel Require Import Matrix Part.
 
 Definition nat_truth_eq (n m : nat) : nat :=
   if Nat.eq_dec n m then 1 else 0.
@@ -161,3 +162,53 @@ Theorem nat_bounded_all_eq_one_iff_positive : forall n phi,
 Proof.
   intros n phi. destruct (nat_bounded_all_boolean n phi) as [-> | ->]; lia.
 Qed.
+
+(** The source's first partial-arithmetic closure calculus, stated directly
+    over finite functions and the proof-relevant partial values from [Part]. *)
+Definition arith_partial_function (n : nat) : Type :=
+  (Fin.t n -> nat) -> partial_value nat.
+
+Definition arith_partial_comp {m n}
+    (f : arith_partial_function n)
+    (g : Fin.t n -> arith_partial_function m) :
+    arith_partial_function m :=
+  fun v => partial_bind
+    (fin_partial_product (fun i => g i v)) f.
+
+Definition arith_find_on {n} (f : (Fin.t (S n) -> nat) -> nat)
+    (v : Fin.t n -> nat) : partial_value nat :=
+  partial_find_zero (fun k => f (matrix_vec_cons k v)).
+
+Inductive arith_part1 : forall n, arith_partial_function n -> Prop :=
+| arith_part1_zero : forall n,
+    arith_part1 n (fun _ => partial_some 0)
+| arith_part1_one : forall n,
+    arith_part1 n (fun _ => partial_some 1)
+| arith_part1_add : forall n (i j : Fin.t n),
+    arith_part1 n (fun v => partial_some (v i + v j))
+| arith_part1_mul : forall n (i j : Fin.t n),
+    arith_part1 n (fun v => partial_some (v i * v j))
+| arith_part1_proj : forall n (i : Fin.t n),
+    arith_part1 n (fun v => partial_some (v i))
+| arith_part1_equal : forall n (i j : Fin.t n),
+    arith_part1 n (fun v => partial_some (nat_truth_eq (v i) (v j)))
+| arith_part1_lt : forall n (i j : Fin.t n),
+    arith_part1 n (fun v => partial_some (nat_truth_lt (v i) (v j)))
+| arith_part1_comp : forall m n (f : arith_partial_function n)
+    (g : Fin.t n -> arith_partial_function m),
+    arith_part1 n f ->
+    (forall i, arith_part1 m (g i)) ->
+    arith_part1 m (arith_partial_comp f g)
+| arith_part1_find : forall n (f : (Fin.t (S n) -> nat) -> nat),
+    arith_part1 (S n) (fun v => partial_some (f v)) ->
+    arith_part1 n (arith_find_on f).
+
+Definition arithmetic1 {n} (f : (Fin.t n -> nat) -> nat) : Prop :=
+  arith_part1 n (fun v => partial_some (f v)).
+
+Lemma arith_find_on_member_iff : forall n
+    (f : (Fin.t (S n) -> nat) -> nat) (v : Fin.t n -> nat) k,
+  partial_member (arith_find_on f v) k <->
+  f (matrix_vec_cons k v) = 0 /\
+  forall m, m < k -> f (matrix_vec_cons m v) <> 0.
+Proof. reflexivity. Qed.

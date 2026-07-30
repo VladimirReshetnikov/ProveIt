@@ -159,6 +159,13 @@ Print Assumptions function_graph3_iff_right.
 Check partial_value.
 Check partial_dom.
 Check partial_some.
+Check partial_none.
+Check partial_bind.
+Check partial_map.
+Print Assumptions partial_bind_some.
+Print Assumptions partial_map_member_iff.
+Check partial_find_zero.
+Print Assumptions partial_find_zero_member_iff.
 Check fin_partial_product.
 Print Assumptions fin_partial_product_member_iff.
 Print Assumptions partial_unit_dom_iff.
@@ -245,6 +252,12 @@ Check nat_bounded_all.
 Print Assumptions nat_bounded_all_positive_iff.
 Print Assumptions nat_bounded_all_eq_zero_iff.
 Print Assumptions nat_bounded_all_eq_one_iff_positive.
+Check arith_partial_function.
+Check arith_partial_comp.
+Check arith_find_on.
+Check arith_part1.
+Check arithmetic1.
+Print Assumptions arith_find_on_member_iff.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.
