@@ -4991,3 +4991,16 @@ of its generalized implementation.  Thus the synchronized strong-step
 endpoint invariants can be handed to predecessor global-row soundness without
 discarding the constructor, restricted-proof, rule-validity, or endpoint
 witness assumptions surrounding them.
+
+That handoff is now compiled as a single context-safe theorem.
+`RawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.v` inserts the two
+predecessor-state assumptions ahead of an arbitrary atomically adequate caller
+prefix, synchronizes the restricted-proof and rule-validity roots into the
+native atomic and Sigma/Pi rank-domain conclusions, and transports both opened
+global-row sources through the same witnessed extension.  It then invokes the
+prefix-general predecessor compiler and returns the complete four-root logical
+package beneath the original caller prefix.  Only finite standard PA-axiom
+witnesses grow the raw tail; no constructor or eigenvariable assumption is
+misclassified as an axiom.  The remaining shell integration is consequently
+the concrete supply of the already-native level, substitution, selected-row,
+and global-source alignments, rather than another proof-context transport.
