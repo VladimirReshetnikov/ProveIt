@@ -739,3 +739,202 @@ Proof.
       (peano_minus_add_sub_self_of_le H Hqd).
     exact Heq.
 Qed.
+
+Lemma iopen_sqrt_pair_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, oring_lt O a b ->
+  iopen_sqrt O (iopen_pair O a b) = b.
+Proof.
+  intros M O H Hleast a b Hab.
+  assert (Hpair : iopen_pair O a b =
+      oring_add O (oring_mul O b b) a).
+  { unfold iopen_pair.
+    destruct (excluded_middle_informative (oring_lt O a b));
+      [reflexivity | contradiction]. }
+  rewrite Hpair. apply (iopen_sqrt_eq_of H Hleast). split.
+  - apply (peano_minus_le_add_right H).
+  - rewrite (peano_minus_square_succ H b).
+    apply (peano_minus_le_lt_add_one H).
+    apply (@peano_minus_le_trans M O H _
+      (oring_add O (oring_mul O b b) b) _).
+    + right. pose proof (@peano_minus_add_lt_add M O H a b
+        (oring_mul O b b) Hab) as Hadd.
+      rewrite (@peano_minus_add_comm M O H a (oring_mul O b b)),
+        (@peano_minus_add_comm M O H b (oring_mul O b b)) in Hadd.
+      exact Hadd.
+    + apply (peano_minus_le_add_right H).
+Qed.
+
+Lemma iopen_sqrt_pair_right : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, peano_minus_le O b a ->
+  iopen_sqrt O (iopen_pair O a b) = a.
+Proof.
+  intros M O H Hleast a b Hba.
+  assert (Hpair : iopen_pair O a b =
+      oring_add O (oring_add O (oring_mul O a a) a) b).
+  { unfold iopen_pair.
+    destruct (excluded_middle_informative (oring_lt O a b)) as [Hab | _].
+    - exfalso. exact (peano_minus_lt_not_ge H Hab Hba).
+    - reflexivity. }
+  rewrite Hpair. apply (iopen_sqrt_eq_of H Hleast). split.
+  - eapply (peano_minus_le_trans H);
+      apply (peano_minus_le_add_right H).
+  - rewrite (peano_minus_square_succ H a).
+    apply (peano_minus_le_lt_add_one H).
+    exact (peano_minus_add_le_add_left H
+      (x := b) (y := a)
+      (oring_add O (oring_mul O a a) a) Hba).
+Qed.
+
+Lemma iopen_unpair_pair : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, iopen_unpair O (iopen_pair O a b) = (a, b).
+Proof.
+  intros M O H Hleast a b.
+  destruct (excluded_middle_informative (oring_lt O a b)) as [Hab | Hab].
+  - assert (Hpair : iopen_pair O a b =
+        oring_add O (oring_mul O b b) a).
+    { unfold iopen_pair.
+      destruct (excluded_middle_informative (oring_lt O a b));
+        [reflexivity | contradiction]. }
+    unfold iopen_unpair.
+    rewrite (iopen_sqrt_pair_left H Hleast Hab), Hpair.
+    assert (Hsub : peano_minus_sub O
+        (oring_add O (oring_mul O b b) a) (oring_mul O b b) = a).
+    { rewrite (@peano_minus_add_comm M O H (oring_mul O b b) a).
+      apply (peano_minus_add_sub_self H). }
+    rewrite Hsub.
+    destruct (excluded_middle_informative (oring_lt O a b));
+      [reflexivity | contradiction].
+  - pose proof (peano_minus_le_of_not_lt H Hab) as Hba.
+    assert (Hpair : iopen_pair O a b =
+        oring_add O (oring_add O (oring_mul O a a) a) b).
+    { unfold iopen_pair.
+      destruct (excluded_middle_informative (oring_lt O a b));
+        [contradiction | reflexivity]. }
+    unfold iopen_unpair.
+    rewrite (iopen_sqrt_pair_right H Hleast Hba), Hpair.
+    assert (Hsub : peano_minus_sub O
+        (oring_add O (oring_add O (oring_mul O a a) a) b)
+        (oring_mul O a a) = oring_add O a b).
+    { rewrite (@peano_minus_add_assoc M O H (oring_mul O a a) a b),
+        (@peano_minus_add_comm M O H (oring_mul O a a)
+          (oring_add O a b)).
+      apply (peano_minus_add_sub_self H). }
+    rewrite Hsub.
+    assert (Hnot : ~ oring_lt O (oring_add O a b) a).
+    { intro Hlt.
+      exact (peano_minus_lt_not_ge H Hlt (peano_minus_le_add_right H a b)). }
+    destruct (excluded_middle_informative
+      (oring_lt O (oring_add O a b) a)) as [Hlt | _]; [contradiction |].
+    rewrite (@peano_minus_add_comm M O H a b),
+      (peano_minus_add_sub_self H).
+    reflexivity.
+Qed.
+
+Definition iopen_pi1 {M} (O : oring_carrier M) (a : M) : M :=
+  fst (iopen_unpair O a).
+
+Definition iopen_pi2 {M} (O : oring_carrier M) (a : M) : M :=
+  snd (iopen_unpair O a).
+
+Lemma iopen_pair_pi : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, iopen_pair O (iopen_pi1 O a) (iopen_pi2 O a) = a.
+Proof.
+  intros M O H Hleast a.
+  apply (iopen_pair_unpair H Hleast).
+Qed.
+
+Lemma iopen_pi1_pair : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, iopen_pi1 O (iopen_pair O a b) = a.
+Proof.
+  intros M O H Hleast a b. unfold iopen_pi1.
+  now rewrite (iopen_unpair_pair H Hleast a b).
+Qed.
+
+Lemma iopen_pi2_pair : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, iopen_pi2 O (iopen_pair O a b) = b.
+Proof.
+  intros M O H Hleast a b. unfold iopen_pi2.
+  now rewrite (iopen_unpair_pair H Hleast a b).
+Qed.
+
+Lemma iopen_pi1_le_self : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, peano_minus_le O (iopen_pi1 O a) a.
+Proof.
+  intros M O H Hleast a. unfold iopen_pi1, iopen_unpair.
+  destruct (excluded_middle_informative
+    (oring_lt O
+      (peano_minus_sub O a
+        (oring_mul O (iopen_sqrt O a) (iopen_sqrt O a)))
+      (iopen_sqrt O a))); simpl.
+  - apply (peano_minus_sub_le_self H).
+  - apply (iopen_sqrt_le_self H Hleast).
+Qed.
+
+Lemma iopen_pi2_le_self : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, peano_minus_le O (iopen_pi2 O a) a.
+Proof.
+  intros M O H Hleast a. unfold iopen_pi2, iopen_unpair.
+  destruct (excluded_middle_informative
+    (oring_lt O
+      (peano_minus_sub O a
+        (oring_mul O (iopen_sqrt O a) (iopen_sqrt O a)))
+      (iopen_sqrt O a))); simpl.
+  - apply (iopen_sqrt_le_self H Hleast).
+  - eapply (peano_minus_le_trans H).
+    + apply (peano_minus_sub_le_self H).
+    + apply (peano_minus_sub_le_self H).
+Qed.
+
+Lemma iopen_le_pair_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, peano_minus_le O a (iopen_pair O a b).
+Proof.
+  intros M O H Hleast a b.
+  pose proof (iopen_pi1_le_self H Hleast (iopen_pair O a b)) as Hle.
+  rewrite (iopen_pi1_pair H Hleast a b) in Hle.
+  exact Hle.
+Qed.
+
+Lemma iopen_le_pair_right : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, peano_minus_le O b (iopen_pair O a b).
+Proof.
+  intros M O H Hleast a b.
+  pose proof (iopen_pi2_le_self H Hleast (iopen_pair O a b)) as Hle.
+  rewrite (iopen_pi2_pair H Hleast a b) in Hle.
+  exact Hle.
+Qed.
+
+Lemma iopen_pair_injective : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a1 a2 b1 b2,
+  iopen_pair O a1 b1 = iopen_pair O a2 b2 ->
+  a1 = a2 /\ b1 = b2.
+Proof.
+  intros M O H Hleast a1 a2 b1 b2 Heq. split.
+  - rewrite <- (iopen_pi1_pair H Hleast a1 b1),
+      <- (iopen_pi1_pair H Hleast a2 b2).
+    now rewrite Heq.
+  - rewrite <- (iopen_pi2_pair H Hleast a1 b1),
+      <- (iopen_pi2_pair H Hleast a2 b2).
+    now rewrite Heq.
+Qed.
+
+Lemma iopen_pair_eq_iff : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a1 a2 b1 b2,
+  iopen_pair O a1 b1 = iopen_pair O a2 b2 <->
+  a1 = a2 /\ b1 = b2.
+Proof.
+  intros M O H Hleast a1 a2 b1 b2. split.
+  - apply (iopen_pair_injective H Hleast).
+  - intros [-> ->]. reflexivity.
+Qed.
