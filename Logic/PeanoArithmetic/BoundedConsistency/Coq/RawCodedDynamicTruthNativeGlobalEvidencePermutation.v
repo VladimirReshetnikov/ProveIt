@@ -157,4 +157,75 @@ Proof.
     (ttVar 2) (ttVar 1) (ttVar 0)).
 Qed.
 
+(** Functional selection converts the relational traces into the literal
+    code equations used when an aligned native selector is transported along
+    the paired-global wrapper equation. *)
+Corollary
+    raw_coqDynamicTruthSharedSigmaGlobalTernaryApplication_reverse_output :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    (parameters : RawCodedTemplateNumeralParameters M)
+    (contextTruth conclusionTruth :
+      RawCoqRestrictedPATruthDirectSelector M parameters),
+  let inputs :=
+    rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
+      M hPA parameters contextTruth conclusionTruth in
+  forall selector : RawCodedTernaryApplicationSelector M
+      (rawDirectTemplateFormula inputs
+        (coqDynamicTruthGlobalExistentialSource 0
+          coqDynamicTruthSharedSigmaSuccessorRowTemplate
+          coqDynamicTruthSharedPiSuccessorRowTemplate)),
+  rawTernaryApplicationOutput selector
+      (rawDirectTemplateTerm inputs (ttVar 2))
+      (rawDirectTemplateTerm inputs (ttVar 1))
+      (rawDirectTemplateTerm inputs (ttVar 0)) =
+    rawDirectTemplateFormula inputs
+      (templateFormulaRename templateReverseFirstThreeRenaming
+        (coqDynamicTruthGlobalExistentialSource 0
+          coqDynamicTruthSharedSigmaSuccessorRowTemplate
+          coqDynamicTruthSharedPiSuccessorRowTemplate)).
+Proof.
+  intros M hPA parameters contextTruth conclusionTruth inputs selector.
+  rewrite <- coqDynamicTruthSharedSigmaGlobalTernaryApplication_reverse.
+  exact (raw_coqRestrictedPATemplateTernaryApplication_output
+    M hPA parameters contextTruth conclusionTruth
+    (coqDynamicTruthGlobalExistentialSource 0
+      coqDynamicTruthSharedSigmaSuccessorRowTemplate
+      coqDynamicTruthSharedPiSuccessorRowTemplate)
+    selector (ttVar 2) (ttVar 1) (ttVar 0)).
+Qed.
+
+Corollary
+    raw_coqDynamicTruthSharedPiGlobalTernaryApplication_reverse_output :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    (parameters : RawCodedTemplateNumeralParameters M)
+    (contextTruth conclusionTruth :
+      RawCoqRestrictedPATruthDirectSelector M parameters),
+  let inputs :=
+    rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
+      M hPA parameters contextTruth conclusionTruth in
+  forall selector : RawCodedTernaryApplicationSelector M
+      (rawDirectTemplateFormula inputs
+        (coqDynamicTruthGlobalExistentialSource 1
+          coqDynamicTruthSharedSigmaSuccessorRowTemplate
+          coqDynamicTruthSharedPiSuccessorRowTemplate)),
+  rawTernaryApplicationOutput selector
+      (rawDirectTemplateTerm inputs (ttVar 2))
+      (rawDirectTemplateTerm inputs (ttVar 1))
+      (rawDirectTemplateTerm inputs (ttVar 0)) =
+    rawDirectTemplateFormula inputs
+      (templateFormulaRename templateReverseFirstThreeRenaming
+        (coqDynamicTruthGlobalExistentialSource 1
+          coqDynamicTruthSharedSigmaSuccessorRowTemplate
+          coqDynamicTruthSharedPiSuccessorRowTemplate)).
+Proof.
+  intros M hPA parameters contextTruth conclusionTruth inputs selector.
+  rewrite <- coqDynamicTruthSharedPiGlobalTernaryApplication_reverse.
+  exact (raw_coqRestrictedPATemplateTernaryApplication_output
+    M hPA parameters contextTruth conclusionTruth
+    (coqDynamicTruthGlobalExistentialSource 1
+      coqDynamicTruthSharedSigmaSuccessorRowTemplate
+      coqDynamicTruthSharedPiSuccessorRowTemplate)
+    selector (ttVar 2) (ttVar 1) (ttVar 0)).
+Qed.
+
 End PABoundedRawCodedDynamicTruthNativeGlobalEvidencePermutation.
