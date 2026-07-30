@@ -5339,3 +5339,19 @@ canonical inputs and a named canonical translation.  The sharpest compact
 headline consequently assumes a plain all-model family of the same eight
 proof-producing coordinates—there is no existential translation or input
 witness left in its statement.
+
+The rank-zero coordinate has now been reduced to its logical content as
+well.  Four explicit ordinary PA formulas name the zero-level Sigma/Pi
+domains and level-one evidence predicates.  Reversing the three predicate
+variables and applying the generic protected ternary operation recovers the
+literal native evidence applications; executable scope checks establish the
+required deep closure.  These facts give a concrete direct-template
+identification of the entire zero local field.  A new adapter projects the
+carried base field's exclusivity conjunct, transports it to the traversal's
+witnessed extension, and closes the predecessor implication from only three
+logical roots (admissibility, Sigma evidence, and Pi evidence).  The sharpest
+canonical compact headline therefore no longer assumes a completed zero
+predecessor compiler.  Its remaining first coordinate is the substantially
+smaller compiler for those three fixed rank-zero roots; the other seven
+coordinates remain the permuted-append strong-step resources, reduced staged
+remainder, and five linked staged implication compilers.

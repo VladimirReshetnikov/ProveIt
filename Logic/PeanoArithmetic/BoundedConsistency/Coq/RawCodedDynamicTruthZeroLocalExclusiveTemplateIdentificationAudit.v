@@ -1,0 +1,18 @@
+(** Audit of the fixed rank-zero direct-template identification. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
+
+Import
+  PABoundedRawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
+
+Check dynamicTruthZeroSigmaDomainFormula_open.
+Check dynamicTruthZeroPiDomainFormula_open.
+Check dynamicTruthZeroSigmaPredicateFormula_application.
+Check dynamicTruthZeroPiPredicateFormula_application.
+Check raw_dynamicTruthZeroSigmaEvidence_application.
+Check raw_dynamicTruthZeroPiEvidence_application.
+Check raw_dynamicTruthZeroLocalExclusiveTemplateIdentification_exists.
+
+Print Assumptions
+  raw_dynamicTruthZeroLocalExclusiveTemplateIdentification_exists.
