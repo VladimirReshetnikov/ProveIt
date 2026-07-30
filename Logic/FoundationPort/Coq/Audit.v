@@ -5,6 +5,7 @@ From Foundation.Vorspiel Require Import Basic.
 From Foundation.Vorspiel Require Import Small.
 From Foundation.Vorspiel Require Import String.
 From Foundation.Vorspiel Require Import Fintype.
+From Foundation.Vorspiel Require Import Denumerable.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Finset Require Import Card.
 From Foundation.Vorspiel.Finset Require Import Basic.
@@ -94,6 +95,11 @@ Print Assumptions finite_cover_sup_le_iff.
 Print Assumptions finite_cover_sup_empty.
 Check list_dependent_eq_dec.
 Print Assumptions finite_cover_dependent_eq_dec.
+Print Assumptions cantor_of_nat_components_le.
+Check denumerable_nat_list_fuel.
+Check denumerable_nat_list.
+Print Assumptions denumerable_nat_list_fuel_member_lt.
+Print Assumptions denumerable_nat_list_member_lt.
 Check list_strict_inclusion.
 Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
