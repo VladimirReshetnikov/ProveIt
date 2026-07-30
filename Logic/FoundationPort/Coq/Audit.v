@@ -7,6 +7,7 @@ From Foundation.Vorspiel Require Import String.
 From Foundation.Vorspiel Require Import Fintype.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Finset Require Import Card.
+From Foundation.Vorspiel.Finset Require Import Basic.
 From Foundation.Vorspiel.List Require Import Basic.
 From Foundation.Vorspiel.List Require Import Chain.
 From Foundation.Vorspiel.Nat Require Import Basic.
@@ -98,6 +99,20 @@ Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
 Check list_nat_sum.
 Print Assumptions list_nat_sum_le_length_mul.
+Print Assumptions list_doubleton_incl_iff.
+Print Assumptions list_strict_inclusion_length_lt.
+Print Assumptions no_list_strict_descending_chain.
+Check finite_range.
+Print Assumptions finite_range_member_iff.
+Check list_image.
+Print Assumptions list_image_member_iff.
+Print Assumptions list_image_member.
+Print Assumptions set_remove_union_equiv.
+Check explicit_equiv.
+Check finite_cover_transport.
+Print Assumptions finite_cover_transport_member.
+Print Assumptions finite_cover_sup_reindex_equiv.
+Print Assumptions list_flat_map_empty_iff.
 Print Assumptions fin_zero_eta.
 Print Assumptions nat_sub_one_lt_nonzero.
 Print Assumptions vorspiel_fin_enum_complete.
