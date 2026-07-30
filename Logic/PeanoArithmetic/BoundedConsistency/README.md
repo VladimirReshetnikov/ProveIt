@@ -5267,3 +5267,14 @@ are audited.  Consequently a permuted append compiler need not reopen its
 global certificates and run selected-row callbacks merely to recover the
 same applied formulas: once it produces the native evidence endpoints, only
 the shared admissibility construction remains.
+
+`RawCodedFourStateTableAppendPermutedTemplateGlobalTraversalAssembly.v`
+now performs that permutation at the proof-producing append boundary rather
+than appealing to an unavailable general proof-renaming theorem.  It opens
+the reversed global source, identifies its traversal body with the root tuple
+`(2,1,0)`, compiles the universal seventh row field, introduces the ten global
+witnesses, and eliminates the eight append witnesses.  A root-term-general
+row compiler and the finite shared-row normalization then specialize this
+construction to the native Sigma/Pi successor rows.  The resulting growing
+proof retains the append traversal's witnessed context while concluding the
+permuted global source required by the native evidence application.
