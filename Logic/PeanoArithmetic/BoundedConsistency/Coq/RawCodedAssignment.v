@@ -247,6 +247,66 @@ Proof.
   reflexivity.
 Qed.
 
+(** Instantiate prefix-definedness at any represented index below its bound.
+    This is the proof-theoretic counterpart of applying
+    [RawCodedAssignmentDefinedThrough] to one index.  Keeping the result at
+    the object-language [BProv] level lets later proof-code compilers reuse
+    it under arbitrary quoted contexts. *)
+Theorem BProv_Ax_s_codedAssignmentDefinedThrough_entry_of_ltTerm :
+  forall G code step bound idx,
+  PA.Formula.BProv PA.Formula.Ax_s G
+    (codedAssignmentDefinedThroughTermAt code step bound) ->
+  PA.Formula.BProv PA.Formula.Ax_s G
+    (PA.Formula.ltTermAt idx bound) ->
+  PA.Formula.BProv PA.Formula.Ax_s G
+    (betaEntryExistsTermAt code step idx).
+Proof.
+  intros G code step bound idx hentries hlt.
+  pose proof (BProv_allE Ax_s G _ idx hentries) as himp.
+  unfold codedAssignmentDefinedThroughTermAt,
+    betaEntryExistsPrefixTermAt in hentries.
+  cbn [subst] in himp.
+  rewrite subst_ltTermAt in himp.
+  unfold betaEntryExistsTermAt in himp.
+  cbn [subst] in himp.
+  rewrite subst_betaTermTermAt in himp.
+  simpl in himp.
+  rewrite term_subst_instTerm_rename_succ in himp.
+  repeat rewrite Term.rename_comp in himp.
+  simpl in himp.
+  repeat rewrite term_subst_upSubst_instTerm_rename_two_succ in himp.
+  unfold betaEntryExistsTermAt.
+  exact (BProv_mp Ax_s G _ _ himp hlt).
+Qed.
+
+(** Closed implication form, suited to compilation as one reusable PA proof
+    followed by two represented [Imp-E] nodes in an arbitrary local
+    context. *)
+Corollary BProv_Ax_s_codedAssignmentDefinedThrough_entry_imp :
+  forall code step bound idx,
+  PA.Formula.BProv PA.Formula.Ax_s []
+    (pImp (codedAssignmentDefinedThroughTermAt code step bound)
+      (pImp (PA.Formula.ltTermAt idx bound)
+        (betaEntryExistsTermAt code step idx))).
+Proof.
+  intros code step bound idx.
+  apply BProv_impI.
+  apply BProv_impI.
+  assert (hdefined : BProv Ax_s
+      (PA.Formula.ltTermAt idx bound ::
+        codedAssignmentDefinedThroughTermAt code step bound :: [])
+      (codedAssignmentDefinedThroughTermAt code step bound)).
+  { apply BProv_ass. simpl. right. left. reflexivity. }
+  assert (hlt : BProv Ax_s
+      (PA.Formula.ltTermAt idx bound ::
+        codedAssignmentDefinedThroughTermAt code step bound :: [])
+      (PA.Formula.ltTermAt idx bound)).
+  { apply BProv_ass. simpl. left. reflexivity. }
+  exact
+    (BProv_Ax_s_codedAssignmentDefinedThrough_entry_of_ltTerm
+      _ code step bound idx hdefined hlt).
+Qed.
+
 (** ------------------------------------------------------------------
     Functionality and the exact de Bruijn lookup equations. *)
 

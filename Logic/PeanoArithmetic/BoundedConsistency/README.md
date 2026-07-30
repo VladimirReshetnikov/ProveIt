@@ -4812,3 +4812,15 @@ the common joint-state context.  Only realizability of the arbitrary base
 tail is required.  Subsequent admissibility lowering can therefore consume
 atomic lookup resources directly instead of repeating assumption-leaf and
 context-insertion plumbing.
+
+Assignment prefix-definedness now has the missing proof-theoretic elimination
+interface as well.  The Coq assignment layer proves, by specializing the
+bounded universal and applying modus ponens, that definedness through a bound
+together with an index below that bound yields a beta lookup witness at the
+index.  A closed curried implication packages this ordinary PA derivation for
+reuse by the raw proof compiler.  Its represented companion compiles the
+implication over any witnessed tail, transports both caller-supplied premise
+roots through the single resulting standard axiom prefix, and applies two
+checked `Imp-E` nodes.  It returns the enlarged witnessed context explicitly,
+so subsequent admissibility lowering can move other roots into exactly the
+same context rather than choosing an unrelated axiom prefix.
