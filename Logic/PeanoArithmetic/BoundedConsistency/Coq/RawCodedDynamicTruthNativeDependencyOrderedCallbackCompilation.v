@@ -304,7 +304,7 @@ Definition
     (M : RawPAModel) (hPA : RawPASatisfies M)
     (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
   let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
-  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnCanonicalGlobalStep M /\
+  RawDynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase M /\
   RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
     M hPA /\
   RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
@@ -347,8 +347,8 @@ Proof.
   - exact
       (raw_dynamicTruthNativeLocalZeroPredecessorRootCompiler_of_growing_logical_roots
         M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
-        (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_canonical_global_step
-          M hPA hzero)).
+        (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_fixed_logical_roots
+          M hzero)).
   - exact (conj hstrong
       (conj hremainder
         (conj hcrossLevel

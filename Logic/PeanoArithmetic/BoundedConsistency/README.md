@@ -5352,9 +5352,11 @@ witnessed extension, and closes the predecessor implication from only three
 logical roots (admissibility, Sigma evidence, and Pi evidence).  The sharpest
 canonical compact headline therefore no longer assumes a completed zero
 predecessor compiler.  Its remaining first coordinate is the substantially
-smaller compiler for those three fixed rank-zero roots; the other seven
-coordinates remain the permuted-append strong-step resources, reduced staged
-remainder, and five linked staged implication compilers.
+smaller compiler for those three fixed rank-zero roots on an arbitrary
+witnessed PA base.  Its type mentions no native trace, orbit level, global
+predicate code, or successor witness; the other seven coordinates remain the
+permuted-append strong-step resources, reduced staged remainder, and five
+linked staged implication compilers.
 
 The native zero trace has also been normalized to the exact global data that
 this smaller compiler must use.  Its adequate orbit at level one inverts to

@@ -102,6 +102,32 @@ Proof.
   reflexivity.
 Qed.
 
+(** Sharp fixed rank-zero proof boundary.  Once the four formulas have been
+    identified with literal quotations, their logical-root package depends
+    only on the witnessed PA tail under the two fixed predecessor-state
+    assumptions.  In particular, neither a native trace nor any global code
+    selected by that trace occurs in the result type.
+
+    This is the finite proof compiler that remains to be constructed.  The
+    more elaborate interfaces below are retained as adapters for existing
+    callback call sites and as an audit of where the fixed formulas came
+    from. *)
+Definition RawDynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase
+    (M : RawPAModel) : Prop :=
+  forall sourceWitnessList baseContext,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList baseContext ->
+    exists targetWitnessList targetContext,
+      RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+      RawContextListIncluded M baseContext targetContext /\
+      RawDynamicTruthPredecessorStateLogicalRootsAt M targetContext
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M).
+
+Arguments RawDynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase
+  M : clear implicits.
+
 (** A trace indexed by zero is not itself the missing rank-zero local row:
     its public input predicates sit at global level one.  Nevertheless its
     orbit component remembers the unique preceding global pair.  Opening
@@ -229,6 +255,21 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase
   M : clear implicits.
+
+(** The sharp fixed compiler handles the trace-shaped callback immediately:
+    the trace and its zero-index equality are not discarded assumptions but
+    parameters absent from the fixed conclusion. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_fixed_logical_roots
+    : forall (M : RawPAModel),
+  RawDynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase M ->
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase M.
+Proof.
+  intros M hfixed tail level baseContext
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence sourceWitnessList hsource _htrace _hlevel.
+  exact (hfixed sourceWitnessList baseContext hsource).
+Qed.
 
 (** Any compiler for the canonical one-step package automatically handles
     the older trace-shaped call site.  All discarded trace coordinates are
