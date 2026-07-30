@@ -92,15 +92,25 @@ then yield `False` outright. So the positivity check is not defensive
 belt-and-braces; it is the single load-bearing guard, and its necessity is
 provable inside Lean.
 
-## Why a genuine paradox is not expected here
+## Results, and a correction
 
-Lean's core theory has a consistency proof relative to ZFC plus countably many
-inaccessibles (Mario Carneiro, *The Type Theory of Lean*). A mathematical
-inconsistency in the rules covered by that model would refute a published
-metatheorem. The only place a mathematical unsoundness could live is a
-definitional rule the kernel implements that the model does **not** cover — which
-is why the surrounding investigation inventoried them: definitional proof
-irrelevance, eta for functions, eta for structures, eta for unit-like types
-(`is_def_eq_unit_like`), K-like reduction, large elimination of `Acc`, and the
-`Quot` primitives (note `Quot {α : Sort u} r : Sort u` does not raise the
-universe, so at `u = 0` you get elimination from a `Prop` into `Type`).
+See [`Findings.md`](Findings.md) for the full account. Headlines:
+
+* **No paradox** — expected.
+* **A correction to a claim made earlier in this study.** Lean's consistency is
+  *not* a settled theorem: Carneiro's Conjectures 2.7 and 2.9 were **downgraded
+  from theorems to conjectures**, because the stratification of the typing
+  judgment used to break the mutual induction between typing and definitional
+  equality does not and cannot respect substitution. The model construction
+  stands; the metatheoretic bridge has an acknowledged gap, sitting exactly where
+  the extra kernel rules live.
+* **Verified: `Expr.proj` is strictly stronger than the recursor.** For the
+  kernel-level inductive `I2 (a : Sort u) : Sort u | mk : a → I2 a`, `I2.rec` is
+  restricted to `Prop` motives while `Expr.proj` eliminates into `Sort v`. Sound,
+  but it refutes the "proj = recursor application" desugaring that Lean4Lean's
+  specification of `Expr.proj` relies on. See `ProjBeyondRecursor.lean`.
+* **Verified: the kernel's `is_def_eq` is not transitive** — `A ≡ B`, `B ≡ C`,
+  `A ≢ C`. Incompleteness, the safe direction, and already implied by the thesis's
+  undecidability result.
+* The `Acc` + proof-irrelevance anomaly is **self-refuting**: its precondition is
+  the negation of its own hypothesis (`acc_irrefl`, axiom-free).
