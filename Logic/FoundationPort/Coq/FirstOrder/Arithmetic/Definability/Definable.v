@@ -10,6 +10,7 @@
 From Stdlib Require Import Vectors.Fin.
 From Stdlib Require Import Lists.List.
 From Stdlib Require Import Logic.Classical_Prop.
+From Stdlib Require Import Logic.FunctionalExtensionality.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic Require Import Operator Definability.
 From Foundation.FirstOrder.Basic.Semantics Require Import
@@ -820,3 +821,312 @@ Proof.
   - exact (proj1 (Hspec (fin_env_append l k e b)) (Hall e)).
   - exact (proj2 (Hspec (fin_env_append l k e b)) (Hall e)).
 Defined.
+
+(** * Substitution by formula-defined functions *)
+
+(** The graph equations share the existential prefix holding the selected
+    function values and the suffix holding the original parameters. *)
+Definition arithmetic_sorted_definable_graph_family
+    {M : Type} {k l rank}
+    {Str : first_order_structure oring_language M}
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (Hf : forall i, arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol (S rank)) (f i)) :
+    arithmetic_sorted_definable Str (arithmetic_sigma_symbol (S rank))
+      (fun w : Fin.t (k + l) -> M => forall i,
+        w (Fin.L l i) = f i (fun j => w (Fin.R k j))).
+Proof.
+  apply (arithmetic_sorted_definable_finite_conj
+    (R := fun i w =>
+      w (Fin.L l i) = f i (fun j => w (Fin.R k j)))
+    (fin_t_finite_cover k)).
+  intro i.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_retraction (Hf i)
+      (fin_graph_retraction i))).
+  intro w. reflexivity.
+Defined.
+
+Definition arithmetic_sorted_definable_substitution_sigma
+    {M : Type} {k l rank}
+    {Str : first_order_structure oring_language M}
+    (P : (Fin.t k -> M) -> Prop)
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (HP : arithmetic_sorted_definable Str
+      (arithmetic_sigma_symbol (S rank)) P)
+    (Hf : forall i, arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol (S rank)) (f i)) :
+    arithmetic_sorted_definable Str (arithmetic_sigma_symbol (S rank))
+      (fun z : Fin.t l -> M => P (fun i => f i z)).
+Proof.
+  refine (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_exists_vector
+      (Q := fun w : Fin.t (k + l) -> M =>
+        (forall i, w (Fin.L l i) =
+          f i (fun j => w (Fin.R k j))) /\
+        P (fun i => w (Fin.L l i)))
+      (arithmetic_sorted_definable_and
+        (arithmetic_sorted_definable_graph_family (f := f) Hf)
+        (arithmetic_sorted_definable_retraction HP (Fin.L l)))) _).
+  intro z. split.
+  - intro Hz. exists (fun i => f i z). split.
+    + intro i. rewrite fin_env_append_left, fin_env_append_right_eta.
+      reflexivity.
+    + now rewrite fin_env_append_left_eta.
+  - intros [ys [Hgraph HPys]].
+    assert (Hys : ys = fun i => f i z).
+    { apply functional_extensionality. intro i.
+      specialize (Hgraph i).
+      now rewrite fin_env_append_left, fin_env_append_right_eta in Hgraph. }
+    rewrite fin_env_append_left_eta in HPys. now rewrite <- Hys.
+Defined.
+
+Definition arithmetic_sorted_definable_substitution_pi
+    {M : Type} {k l rank}
+    {Str : first_order_structure oring_language M}
+    (P : (Fin.t k -> M) -> Prop)
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (HP : arithmetic_sorted_definable Str
+      (arithmetic_pi_symbol (S rank)) P)
+    (Hf : forall i, arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol (S rank)) (f i)) :
+    arithmetic_sorted_definable Str (arithmetic_pi_symbol (S rank))
+      (fun z : Fin.t l -> M => P (fun i => f i z)).
+Proof.
+  refine (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_all_vector
+      (Q := fun w : Fin.t (k + l) -> M =>
+        (forall i, w (Fin.L l i) =
+          f i (fun j => w (Fin.R k j))) ->
+        P (fun i => w (Fin.L l i)))
+      (arithmetic_sorted_definable_imp_pi
+        (arithmetic_sorted_definable_graph_family (f := f) Hf)
+        (arithmetic_sorted_definable_retraction HP (Fin.L l)))) _).
+  intro z. split.
+  - intros HPz ys Hgraph.
+    assert (Hys : ys = fun i => f i z).
+    { apply functional_extensionality. intro i.
+      specialize (Hgraph i).
+      now rewrite fin_env_append_left, fin_env_append_right_eta in Hgraph. }
+    rewrite fin_env_append_left_eta. now rewrite Hys.
+  - intros Hall.
+    specialize (Hall (fun i => f i z)).
+    assert (Hgraph : forall i,
+      fin_env_append k l (fun i => f i z) z (Fin.L l i) =
+      f i (fun j =>
+        fin_env_append k l (fun i => f i z) z (Fin.R k j))).
+    { intro i. rewrite fin_env_append_left, fin_env_append_right_eta.
+      reflexivity. }
+    specialize (Hall Hgraph).
+    now rewrite fin_env_append_left_eta in Hall.
+Defined.
+
+Definition arithmetic_sorted_definable_substitution
+    {M : Type} {k l rank class}
+    {Str : first_order_structure oring_language M}
+    (P : (Fin.t k -> M) -> Prop)
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (HP : arithmetic_sorted_definable Str
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := S rank |} P)
+    (Hf : forall i, arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol (S rank)) (f i)) :
+    arithmetic_sorted_definable Str
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := S rank |}
+      (fun z : Fin.t l -> M => P (fun i => f i z)).
+Proof.
+  destruct class.
+  - exact (arithmetic_sorted_definable_substitution_sigma
+      (P := P) (f := f) HP Hf).
+  - exact (arithmetic_sorted_definable_substitution_pi
+      (P := P) (f := f) HP Hf).
+  - apply arithmetic_sorted_definable_delta_of_sigma_pi.
+    + apply (arithmetic_sorted_definable_substitution_sigma
+        (P := P) (f := f)
+        (arithmetic_sorted_definable_of_delta HP ArithmeticHierarchySigma) Hf).
+    + apply (arithmetic_sorted_definable_substitution_pi
+        (P := P) (f := f)
+        (arithmetic_sorted_definable_of_delta HP ArithmeticHierarchyPi) Hf).
+Defined.
+
+(** Reindex a function graph while keeping its distinguished output in the
+    head coordinate. *)
+Definition arithmetic_function_graph_reindex {k l}
+    (e : Fin.t k -> Fin.t l) : Fin.t (S k) -> Fin.t (S l) :=
+  fun j => @Fin.caseS' k j (fun _ => Fin.t (S l))
+    Fin.F1 (fun i => Fin.FS (e i)).
+
+Lemma arithmetic_function_graph_reindex_head : forall k l
+    (e : Fin.t k -> Fin.t l),
+  arithmetic_function_graph_reindex e Fin.F1 = Fin.F1.
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_function_graph_reindex_tail : forall k l
+    (e : Fin.t k -> Fin.t l) (i : Fin.t k),
+  arithmetic_function_graph_reindex e (Fin.FS i) = Fin.FS (e i).
+Proof. reflexivity. Qed.
+
+Definition arithmetic_sorted_definable_function_retraction
+    {M : Type} {k l symbol}
+    {Str : first_order_structure oring_language M}
+    {f : (Fin.t k -> M) -> M}
+    (Hf : arithmetic_sorted_definable_function Str symbol f)
+    (e : Fin.t k -> Fin.t l) :
+    arithmetic_sorted_definable_function Str symbol
+      (fun v : Fin.t l -> M => f (fun i => v (e i))).
+Proof.
+  unfold arithmetic_sorted_definable_function in *.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_retraction Hf
+      (arithmetic_function_graph_reindex e))).
+  intro w. reflexivity.
+Defined.
+
+(** The family substituted into an outer function graph: the head member is
+    the preserved output coordinate, and every tail member is an inner
+    function evaluated on the parameter tail. *)
+Definition arithmetic_function_substitution_family
+    {M : Type} {k l}
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (i : Fin.t (S k)) (w : Fin.t (S l) -> M) : M :=
+  @Fin.caseS' k i (fun _ => M)
+    (w Fin.F1) (fun j => f j (fun q => w (Fin.FS q))).
+
+Lemma arithmetic_function_substitution_family_head : forall
+    (M : Type) k l (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (w : Fin.t (S l) -> M),
+  arithmetic_function_substitution_family f Fin.F1 w = w Fin.F1.
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_function_substitution_family_tail : forall
+    (M : Type) k l (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (i : Fin.t k) (w : Fin.t (S l) -> M),
+  arithmetic_function_substitution_family f (Fin.FS i) w =
+  f i (fun q => w (Fin.FS q)).
+Proof. reflexivity. Qed.
+
+Definition arithmetic_sorted_definable_function_substitution
+    {M : Type} {k l rank class}
+    {Str : first_order_structure oring_language M}
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (F : (Fin.t k -> M) -> M)
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (HF : arithmetic_sorted_definable_function Str
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := S rank |} F)
+    (Hf : forall i, arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol (S rank)) (f i)) :
+    arithmetic_sorted_definable_function Str
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := S rank |}
+      (fun z : Fin.t l -> M => F (fun i => f i z)).
+Proof.
+  assert (Hg : forall i : Fin.t (S k),
+    arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol (S rank))
+      (arithmetic_function_substitution_family f i)).
+  { intro i.
+    refine (@Fin.caseS' k i
+      (fun i => arithmetic_sorted_definable_function Str
+        (arithmetic_sigma_symbol (S rank))
+        (arithmetic_function_substitution_family f i)) _ _).
+    - apply (arithmetic_sorted_definable_projection (Str := Str) HEq
+        (arithmetic_sigma_symbol (S rank)) Fin.F1).
+    - intro j.
+      apply (arithmetic_sorted_definable_of_iff
+        (arithmetic_sorted_definable_function_retraction
+          (Hf j) (fun q => Fin.FS q))).
+      intro w. reflexivity. }
+  unfold arithmetic_sorted_definable_function in *.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_substitution
+      (P := fun y : Fin.t (S k) -> M =>
+        y Fin.F1 = F (fun i => y (Fin.FS i)))
+      (f := arithmetic_function_substitution_family f) HF Hg)).
+  intro w. reflexivity.
+Defined.
+
+(** * Delta promotion for function graphs *)
+
+(** In the uniqueness presentation, the quantified candidate output occupies
+    the head coordinate, the distinguished output follows it, and the
+    original parameters occupy the remaining tail. *)
+Definition arithmetic_function_graph_uniqueness_reindex {k} :
+    Fin.t (S k) -> Fin.t (S (S k)) :=
+  fun j => @Fin.caseS' k j (fun _ => Fin.t (S (S k)))
+    Fin.F1 (fun i => Fin.FS (Fin.FS i)).
+
+Lemma arithmetic_function_graph_uniqueness_reindex_head : forall k,
+  @arithmetic_function_graph_uniqueness_reindex k Fin.F1 = Fin.F1.
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_function_graph_uniqueness_reindex_tail : forall k
+    (i : Fin.t k),
+  arithmetic_function_graph_uniqueness_reindex (Fin.FS i) =
+  Fin.FS (Fin.FS i).
+Proof. reflexivity. Qed.
+
+Definition arithmetic_sorted_definable_function_graph_delta_positive
+    {M : Type} {k rank}
+    {Str : first_order_structure oring_language M}
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (f : (Fin.t k -> M) -> M)
+    (Hf : arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol (S rank)) f) :
+    arithmetic_sorted_definable_function Str
+      (arithmetic_delta_symbol (S rank)) f.
+Proof.
+  unfold arithmetic_sorted_definable_function in *.
+  apply arithmetic_sorted_definable_delta_of_sigma_pi.
+  - exact Hf.
+  - pose proof (arithmetic_sorted_definable_retraction Hf
+      arithmetic_function_graph_uniqueness_reindex) as Hantecedent.
+    pose proof (arithmetic_sorted_definable_eq_terms (Str := Str) HEq
+      (arithmetic_pi_symbol (S rank))
+      (@Semiterm_bvar oring_language M (S (S k)) Fin.F1)
+      (@Semiterm_bvar oring_language M (S (S k))
+        (Fin.FS Fin.F1))) as Hequality.
+    pose proof (arithmetic_sorted_definable_imp_pi
+      Hantecedent Hequality) as Huniqueness.
+    pose proof (arithmetic_sorted_definable_all
+      (R := fun v : Fin.t (S k) -> M => fun y : M =>
+        y = f (fun i => v (Fin.FS i)) -> y = v Fin.F1)
+      Huniqueness) as Hall.
+    apply (arithmetic_sorted_definable_of_iff Hall).
+    intro v. split.
+    + intros Hgraph y Hy. rewrite Hy. symmetry. exact Hgraph.
+    + intro Hunique. symmetry. apply Hunique. reflexivity.
+Defined.
+
+Definition arithmetic_sorted_definable_function_graph_delta
+    {M : Type} {k rank}
+    {Str : first_order_structure oring_language M}
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (f : (Fin.t k -> M) -> M)
+    (Hf : arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol rank) f) :
+    arithmetic_sorted_definable_function Str
+      (arithmetic_delta_symbol rank) f.
+Proof.
+  destruct rank as [| rank].
+  - exact (arithmetic_sorted_definable_of_zero Hf
+      (arithmetic_delta_symbol 0)).
+  - exact (arithmetic_sorted_definable_function_graph_delta_positive
+      (f := f) HEq Hf).
+Defined.
+
+Definition arithmetic_sorted_definable_function_of_sigma
+    {M : Type} {k rank}
+    {Str : first_order_structure oring_language M}
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (target_class : arithmetic_hierarchy_class)
+    (f : (Fin.t k -> M) -> M)
+    (Hf : arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol rank) f) :
+    arithmetic_sorted_definable_function Str
+      {| arithmetic_hierarchy_symbol_class := target_class;
+         arithmetic_hierarchy_symbol_rank := rank |} f :=
+  arithmetic_sorted_definable_of_delta
+    (arithmetic_sorted_definable_function_graph_delta
+      (f := f) HEq Hf) target_class.
