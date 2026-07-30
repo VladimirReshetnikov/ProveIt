@@ -68,7 +68,7 @@ From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
 From Foundation.FirstOrder Require Import Polarity.
 From Foundation.Syntax.Predicate Require Import Relational.
-From Foundation.LinearLogic Require Import MLL MELL.
+From Foundation.LinearLogic Require Import LogicSymbol MLL MELL.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
@@ -373,6 +373,31 @@ Print Assumptions mell_rotate.
 Print Assumptions mell_eta.
 Print Assumptions mell_identity_proof.
 Print Assumptions mell_modus_ponens.
+Check multiplicative_connective.
+Check multiplicative_neutral.
+Check additive_connective.
+Check additive_neutral.
+Check exponential_connective.
+Check multiplicative_de_morgan.
+Check multiplicative_neutral_de_morgan.
+Check additive_de_morgan.
+Check additive_neutral_de_morgan.
+Check exponential_de_morgan.
+Check linear_lolli.
+Print Assumptions linear_lolli_def.
+Print Assumptions linear_tensor_eq_iff.
+Print Assumptions linear_par_eq_iff.
+Print Assumptions involutive_injective.
+Print Assumptions linear_lolli_eq_iff.
+Print Assumptions linear_with_eq_iff.
+Print Assumptions linear_plus_eq_iff.
+Print Assumptions linear_bang_eq_iff.
+Print Assumptions linear_quest_eq_iff.
+Check linear_list_quest.
+Print Assumptions linear_list_quest_def.
+Print Assumptions linear_list_quest_nil.
+Print Assumptions linear_list_quest_cons.
+Print Assumptions linear_list_quest_append.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.
