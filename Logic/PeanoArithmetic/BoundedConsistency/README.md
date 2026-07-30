@@ -4692,3 +4692,14 @@ seven projections independently.  Consequently the remaining continuation
 starts with the root-bound, selected-root lookup, and five-universal row-law
 proofs already available; it only needs to instantiate that row and apply
 the resulting implications to the predecessor state assumptions.
+
+The five row binders are now instantiated as well.  A named replacement tuple
+records their semantic order—root index, fixed polarity, root formula, and
+the two root-assignment components—and its computed opening is audited to
+have the expected two-implication shape.  For the only public polarities,
+zero and one, those antecedents reduce exactly to the fifth and sixth global
+fields.  The new represented endpoint consumes fields five through seven,
+compiles all five `All-E` nodes and both `Imp-E` nodes, and returns the root-row
+polarity disjunction in the unchanged ten-witness context.  The next step is
+therefore only fixed-polarity disjunction elimination and alignment of the
+selected local formula with the predecessor evidence codes.

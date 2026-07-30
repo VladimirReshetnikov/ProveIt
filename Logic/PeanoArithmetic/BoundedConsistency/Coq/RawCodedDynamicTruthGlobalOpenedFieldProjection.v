@@ -19,11 +19,14 @@ From BoundedPAConsistency Require Import
   RawCodedProofAssumptionLeaf
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofComposition
   RawCodedPALocalProofExistentialEliminationChain
+  RawCodedPALocalProofUniversalEliminationChain
   RawCodedPALocalProofConjunction
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
+  RawCodedFixedLevelTruthTraversal
   RawCodedDynamicTruthPairedGlobalSuccessorGraph
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 
@@ -39,11 +42,14 @@ Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedProofAssumptionLeaf.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
+Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPALocalProofConjunction.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
+Import PABoundedRawCodedFixedLevelTruthTraversal.
 Import PABoundedRawCodedDynamicTruthPairedGlobalSuccessorGraph.
 Import
   PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
@@ -208,6 +214,138 @@ Proof.
           (coqDynamicTruthGlobalOpenedRows localSigma localPi))
         bodyRoot hbody)
   end.
+Qed.
+
+(** Open the five row binders at the root tuple carried by the ten global
+    witnesses.  Binder order is index, mode, formula, assignment code, then
+    assignment step; this is the reverse of their de Bruijn order in the row
+    body. *)
+Definition coqDynamicTruthGlobalOpenedRootRowReplacements
+    (rootMode : nat) : list TemplateTerm :=
+  [ ttVar 8;
+    embedPATerm (Term.numeral rootMode);
+    ttVar 10;
+    ttVar 11;
+    ttVar 12 ].
+
+Definition coqDynamicTruthGlobalOpenedRootRowFormula
+    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+  templateUniversalOpenManyOrBot
+    (coqDynamicTruthGlobalOpenedRows localSigma localPi)
+    (coqDynamicTruthGlobalOpenedRootRowReplacements rootMode).
+
+Definition coqDynamicTruthGlobalOpenedRootRowChoice
+    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+  templateImpConsequent (templateImpConsequent
+    (coqDynamicTruthGlobalOpenedRootRowFormula
+      rootMode localSigma localPi)).
+
+Lemma coqDynamicTruthGlobalOpenedRootRowFormula_success : forall
+    rootMode localSigma localPi,
+  templateUniversalOpenMany
+    (coqDynamicTruthGlobalOpenedRows localSigma localPi)
+    (coqDynamicTruthGlobalOpenedRootRowReplacements rootMode) =
+  Some (coqDynamicTruthGlobalOpenedRootRowFormula
+    rootMode localSigma localPi).
+Proof.
+  intros. reflexivity.
+Qed.
+
+Lemma coqDynamicTruthGlobalOpenedRootRowFormula_imp2_shape : forall
+    rootMode localSigma localPi,
+  coqDynamicTruthGlobalOpenedRootRowFormula rootMode localSigma localPi =
+  tfImp
+    (templateImpAntecedent
+      (coqDynamicTruthGlobalOpenedRootRowFormula
+        rootMode localSigma localPi))
+    (tfImp
+      (templateImpAntecedent (templateImpConsequent
+        (coqDynamicTruthGlobalOpenedRootRowFormula
+          rootMode localSigma localPi)))
+      (coqDynamicTruthGlobalOpenedRootRowChoice
+        rootMode localSigma localPi)).
+Proof.
+  intros. reflexivity.
+Qed.
+
+(** The two opened antecedents are not merely equivalent to the stable
+    traversal fields: they are definitionally the same templates. *)
+Lemma coqDynamicTruthGlobalOpenedRootRowFormula_bound : forall
+    rootMode localSigma localPi,
+  templateImpAntecedent
+    (coqDynamicTruthGlobalOpenedRootRowFormula
+      rootMode localSigma localPi) =
+  coqDynamicTruthGlobalOpenedRootBound.
+Proof.
+  intros. reflexivity.
+Qed.
+
+Lemma coqDynamicTruthGlobalOpenedRootRowFormula_lookup : forall
+    rootMode localSigma localPi,
+  rootMode = 0 \/ rootMode = 1 ->
+  templateImpAntecedent (templateImpConsequent
+    (coqDynamicTruthGlobalOpenedRootRowFormula
+      rootMode localSigma localPi)) =
+  coqDynamicTruthGlobalOpenedRootLookup rootMode.
+Proof.
+  intros rootMode localSigma localPi [-> | ->]; reflexivity.
+Qed.
+
+(** Consume fields five through seven to obtain the selected root-row choice
+    in the unchanged deepest context.  All five [All-E] nodes and both
+    [Imp-E] nodes are compiled by the generic finite-chain endpoint. *)
+Theorem raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_choice :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    witnessList baseContext rootMode localSigma localPi,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  rootMode = 0 \/ rootMode = 1 ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (coqDynamicTruthGlobalExistentialDeepContext
+          rootMode localSigma localPi))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowChoice
+          rootMode localSigma localPi)) root.
+Proof.
+  intros M hPA translation witnessList baseContext rootMode
+    localSigma localPi hwitnessed hrootMode.
+  pose proof
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_opened_and7_fields
+      M hPA translation witnessList baseContext rootMode
+      localSigma localPi hwitnessed) as hfields.
+  destruct hfields as
+    [hmode hformula hassignmentCode hassignmentStep
+      [boundRoot hbound] [lookupRoot hlookup] [rowsRoot hrows]].
+  rewrite <- (coqDynamicTruthGlobalOpenedRootRowFormula_bound
+    rootMode localSigma localPi) in hbound.
+  rewrite <- (coqDynamicTruthGlobalOpenedRootRowFormula_lookup
+    rootMode localSigma localPi hrootMode) in hlookup.
+  exact
+    (raw_codedPALocalProofOf_templateUniversalOpenMany_impE2
+      M hPA translation
+      (rawTemplateContextCodeOnTail translation baseContext
+        (coqDynamicTruthGlobalExistentialDeepContext
+          rootMode localSigma localPi))
+      (coqDynamicTruthGlobalOpenedRows localSigma localPi)
+      (coqDynamicTruthGlobalOpenedRootRowReplacements rootMode)
+      (templateImpAntecedent
+        (coqDynamicTruthGlobalOpenedRootRowFormula
+          rootMode localSigma localPi))
+      (templateImpAntecedent (templateImpConsequent
+        (coqDynamicTruthGlobalOpenedRootRowFormula
+          rootMode localSigma localPi)))
+      (coqDynamicTruthGlobalOpenedRootRowChoice
+        rootMode localSigma localPi)
+      rowsRoot boundRoot lookupRoot
+      (eq_trans
+        (coqDynamicTruthGlobalOpenedRootRowFormula_success
+          rootMode localSigma localPi)
+        (f_equal (@Some TemplateFormula)
+          (coqDynamicTruthGlobalOpenedRootRowFormula_imp2_shape
+            rootMode localSigma localPi)))
+      hrows hbound hlookup).
 Qed.
 
 End PABoundedRawCodedDynamicTruthGlobalOpenedFieldProjection.
