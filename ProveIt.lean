@@ -9,6 +9,7 @@ import NaturalDeduction
 import FiniteMatrixNoncharacterizability
 import MonotonicityOfEntailment
 import PrincipleOfExplosion
+import HurkensParadox
 import EquationalLogic
 import BooleanAlgebra
 import PowerTowers
