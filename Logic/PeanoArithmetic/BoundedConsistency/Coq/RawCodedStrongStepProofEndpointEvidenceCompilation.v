@@ -15,22 +15,31 @@ From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
+  CodedSyntax
   RawCodedSyntaxConstructors
+  RawCodedFormulaOperations
+  RawCodedFormulaOperationCrossTraceFunctionality
   RawCodedPALocalProofExistential
   RawCodedPALocalProofComposition
   RawCodedPALocalProofConjunction
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedProofRuleCoverage
   RawCodedRestrictedPAProof
+  RawCodedRestrictedPAConsistencyFormulaCode
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
+  RawCodedTemplateStructuralTranslation
+  RawCodedTemplateStructuralPAAgreement
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateDirectStructuralPAAgreement
   RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedPAAxiomWitnessPrefix
+  RawCodedRestrictedTargetTemplateContext
+  RawCodedDynamicTruthNativeLocalPositiveGraph
+  RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedProofEndpointQuantifierBoundedProofCompilation
   RawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation
   RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
@@ -43,22 +52,31 @@ Import PA.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
+Import PABoundedCodedSyntax.
 Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedFormulaOperations.
+Import PABoundedRawCodedFormulaOperationCrossTraceFunctionality.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofConjunction.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedProofRuleCoverage.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
+Import PABoundedRawCodedTemplateStructuralTranslation.
+Import PABoundedRawCodedTemplateStructuralPAAgreement.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
+Import PABoundedRawCodedRestrictedTargetTemplateContext.
+Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 Import
   PABoundedRawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation.
 Import
@@ -83,6 +101,110 @@ Lemma coqRestrictedPADerivationSoundnessRestrictedProofTemplate_view :
         (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 4)))
         (embedPAFormula (proofRuleCoverageTermAt (tVar 4))))).
 Proof. reflexivity. Qed.
+
+(** The native local-domain templates deliberately reserve variable zero for
+    the level numeral.  Opening that slot moves their formula argument from
+    [#3] to the strong-step conclusion slot [#2], yielding exactly the two
+    restricted-target domain contexts. *)
+Lemma coqStrongStepSigmaDomainTemplate_open :
+  templateFormulaOpen coqRestrictedPASoundnessLowerLevelTerm
+    (embedPAFormula dynamicTruthLocalSigmaInputDomainTemplate) =
+  restrictedTargetTemplateFormulaContext
+    coqRestrictedPASoundnessLowerLevelTerm
+    (restrictedTargetSigmaDomainContext (tVar 2)).
+Proof. reflexivity. Qed.
+
+Lemma coqStrongStepPiDomainTemplate_open :
+  templateFormulaOpen coqRestrictedPASoundnessLowerLevelTerm
+    (embedPAFormula dynamicTruthLocalPiInputDomainTemplate) =
+  restrictedTargetTemplateFormulaContext
+    coqRestrictedPASoundnessLowerLevelTerm
+    (restrictedTargetPiDomainContext (tVar 2)).
+Proof. reflexivity. Qed.
+
+(** PA embedding agreement turns the atomic conclusion into the exact fixed
+    numeral used by native local admissibility. *)
+Lemma raw_strongStepEndpointAtomicAdequacyConclusion_code : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M),
+  rawDirectTemplateFormula inputs
+    coqStrongStepProofEndpointAtomicAdequacyConclusion =
+  rawDynamicTruthLocalAtomicAdequacyCode M.
+Proof.
+  intros M hPA inputs.
+  rewrite coqStrongStepProofEndpointAtomicAdequacyConclusion_view.
+  unfold rawDirectTemplateFormula.
+  rewrite rawStructuralTemplateFormulaWith_embedPA.
+  rewrite rawQuotedFormulaCode_standard by exact hPA.
+  reflexivity.
+Qed.
+
+(** General nonstandard domain alignment.  The two trace outputs need not be
+    decoded: represented substitution functionality identifies them with the
+    direct restricted-target outputs once their common numeral-term code is
+    named. *)
+Theorem raw_strongStepEndpointQuantifierBoundedConclusion_code : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    levelNumeral sigmaDomain piDomain,
+  rawDirectTemplateTerm inputs
+    coqRestrictedPASoundnessLowerLevelTerm = levelNumeral ->
+  RawCodedFormulaSingleSubstitution M levelNumeral
+    (rawNumeralValue M
+      (formulaCode dynamicTruthLocalSigmaInputDomainTemplate))
+    sigmaDomain ->
+  RawCodedFormulaSingleSubstitution M levelNumeral
+    (rawNumeralValue M
+      (formulaCode dynamicTruthLocalPiInputDomainTemplate))
+    piDomain ->
+  rawDirectTemplateFormula inputs
+    coqStrongStepProofEndpointQuantifierBoundedConclusion =
+  rawFormulaOrCode M sigmaDomain piDomain.
+Proof.
+  intros M hPA inputs levelNumeral sigmaDomain piDomain
+    hlevel hsigma hpi.
+  pose proof (rawDirectTemplateFormula_open M hPA inputs
+    (embedPAFormula dynamicTruthLocalSigmaInputDomainTemplate)
+    coqRestrictedPASoundnessLowerLevelTerm) as hsigmaDirect.
+  pose proof (rawDirectTemplateFormula_open M hPA inputs
+    (embedPAFormula dynamicTruthLocalPiInputDomainTemplate)
+    coqRestrictedPASoundnessLowerLevelTerm) as hpiDirect.
+  unfold rawDirectTemplateFormula in hsigmaDirect, hpiDirect.
+  rewrite !rawStructuralTemplateFormulaWith_embedPA
+    in hsigmaDirect, hpiDirect.
+  rewrite coqStrongStepSigmaDomainTemplate_open in hsigmaDirect.
+  rewrite coqStrongStepPiDomainTemplate_open in hpiDirect.
+  rewrite !rawQuotedFormulaCode_standard in hsigmaDirect, hpiDirect
+    by exact hPA.
+  rewrite hlevel in hsigmaDirect, hpiDirect.
+  pose proof (raw_codedFormulaSingleSubstitution_functional M hPA
+    levelNumeral
+    (rawNumeralValue M
+      (formulaCode dynamicTruthLocalSigmaInputDomainTemplate))
+    (rawStructuralTemplateFormulaWith M
+      (rawDirectTemplateSymbols inputs)
+      (restrictedTargetTemplateFormulaContext
+        coqRestrictedPASoundnessLowerLevelTerm
+        (restrictedTargetSigmaDomainContext (tVar 2))))
+    sigmaDomain hsigmaDirect hsigma) as hsigmaCode.
+  pose proof (raw_codedFormulaSingleSubstitution_functional M hPA
+    levelNumeral
+    (rawNumeralValue M
+      (formulaCode dynamicTruthLocalPiInputDomainTemplate))
+    (rawStructuralTemplateFormulaWith M
+      (rawDirectTemplateSymbols inputs)
+      (restrictedTargetTemplateFormulaContext
+        coqRestrictedPASoundnessLowerLevelTerm
+        (restrictedTargetPiDomainContext (tVar 2))))
+    piDomain hpiDirect hpi) as hpiCode.
+  rewrite coqStrongStepProofEndpointQuantifierBoundedConclusion_view.
+  unfold rawDirectTemplateFormula.
+  rewrite rawStructuralWith_restrictedTargetTemplateFormulaContext.
+  cbn [restrictedTargetFormulaQuantifierBoundedContext
+    rawRestrictedTargetFormulaContextCode].
+  rewrite <- !rawStructuralWith_restrictedTargetTemplateFormulaContext.
+  now rewrite hsigmaCode, hpiCode.
+Qed.
 
 (** Generic context-safe application of a two-premise template law.  Fixed
     PA theorem compilers naturally return the law over a witnessed tail; this
