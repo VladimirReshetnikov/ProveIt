@@ -5330,3 +5330,12 @@ reconstructs PA agreement internally before invoking the existing compact
 headline.  The remaining Coq gap consists of the zero predecessor compiler,
 the permuted-append strong-step resources, the reduced staged remainder, and
 the five linked staged implication compilers.
+
+The harmless direct input is now canonical rather than merely existential.
+At standard level zero, the represented numeral-term code is the explicit
+quotation of the zero term; this defines the two-name parameter record in
+`Type` without choice.  Combining it with the bottom selectors gives named
+canonical inputs and a named canonical translation.  The sharpest compact
+headline consequently assumes a plain all-model family of the same eight
+proof-producing coordinates—there is no existential translation or input
+witness left in its statement.

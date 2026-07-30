@@ -24,6 +24,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplatePAEmbedding
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateDirectStructuralPAAgreement
+  RawCodedTemplateBottomDirectStructuralInputs
   RawCodedDynamicTruthNativeCrossLevelGuardRootCompilation
   RawCodedDynamicTruthNativeShiftStagedRootCompilation
   RawCodedDynamicTruthNativeSubstitutionStagedRootCompilation
@@ -55,6 +56,7 @@ Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
+Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedDynamicTruthNativeCrossLevelGuardRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeShiftStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeSubstitutionStagedRootCompilation.
@@ -276,6 +278,18 @@ Definition
 Arguments
   RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers
   M hPA inputs : clear implicits.
+
+(** Canonical direct boundary.  Fixing the explicit bottom-valued input
+    removes even the existential structural witness from the residual. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalPermutedAppendProofResourceStrongStepKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers
+    M hPA (rawBottomTemplateDirectStructuralInputs M hPA).
+
+Arguments
+  RawDynamicTruthNativeDependencyOrderedCanonicalPermutedAppendProofResourceStrongStepKernelCompilers
+  M hPA : clear implicits.
 
 (** Reinsert the structural agreement coordinate.  Keeping this adapter
     separate prevents every downstream theorem from carrying and unpacking
@@ -738,6 +752,13 @@ Definition
       RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers
         M hPA inputs.
 
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalPermutedAppendProofResourceStrongStepKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    RawDynamicTruthNativeDependencyOrderedCanonicalPermutedAppendProofResourceStrongStepKernelCompilers
+      M hPA.
+
 Theorem
     raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers
     :
@@ -855,6 +876,21 @@ Proof.
       M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
       (raw_dynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers_of_direct
         M hPA inputs hmodelKernels)).
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_permuted_append_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalPermutedAppendProofResourceStrongStepKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels.
+Proof.
+  intros hkernels M hPA.
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_permuted_append_proof_resource_strong_step_kernel_compilers
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (raw_dynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers_of_direct
+        M hPA (rawBottomTemplateDirectStructuralInputs M hPA)
+        (hkernels M hPA))).
 Qed.
 
 (** Exact conditional compact headline.  This does not discharge any member
@@ -1005,6 +1041,22 @@ Proof.
   exact
     (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
       (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_direct_permuted_append_proof_resource_strong_step_kernel_compilers
+        hkernels)).
+Qed.
+
+(** Canonical eight-coordinate headline.  No translation, agreement proof,
+    or structural-input witness occurs in its premise. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_canonical_permuted_append_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalPermutedAppendProofResourceStrongStepKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hkernels.
+  exact
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_permuted_append_proof_resource_strong_step_kernel_compilers
         hkernels)).
 Qed.
 
