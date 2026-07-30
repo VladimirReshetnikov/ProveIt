@@ -622,7 +622,15 @@ Check first_order_one_sided_lk_cut.
 Check first_order_sequent_is_closed.
 Check first_order_derivation_close.
 Check first_order_derivation_of_is_closed.
+Check first_order_lk.
+Check first_order_lk_entailment.
+Check first_order_lk_principal.
+Check first_order_lk_provable.
+Check first_order_lk_provable_iff.
+Check first_order_lk_classical.
+Check first_order_lk_all.
 Check first_order_derivation_language_map.
+Check first_order_lk_provable_language_map.
 Check first_order_derivation_rewrite.
 Check first_order_derivation_map.
 Check first_order_derivation_shift.
@@ -915,8 +923,13 @@ Print Assumptions first_order_one_sided_lk.
 Print Assumptions first_order_one_sided_lk_cut.
 Print Assumptions first_order_derivation_close.
 Print Assumptions first_order_derivation_of_is_closed.
+Print Assumptions first_order_lk_principal.
+Print Assumptions first_order_lk_provable_iff.
+Print Assumptions first_order_lk_classical.
+Print Assumptions first_order_lk_all.
 Print Assumptions first_order_sequent_language_map_shift.
 Print Assumptions first_order_derivation_language_map.
+Print Assumptions first_order_lk_provable_language_map.
 Print Assumptions first_order_sequent_rewrite_under_free_shift.
 Print Assumptions first_order_derivation_rewrite.
 Print Assumptions first_order_derivation_map.

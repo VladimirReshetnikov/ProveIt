@@ -8,7 +8,8 @@
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lists.List Vectors.Fin.
-From FoundationModal Require Import GenericAdjunctiveSet GenericCalculus.
+From FoundationModal Require Import
+  GenericAdjunctiveSet GenericCalculus GenericEntailment.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 
@@ -312,6 +313,67 @@ Proof.
   exact (inhabits (@first_order_derivation_close L p Gamma Hp Hn)).
 Defined.
 
+(** The principal proof system has one marker and takes singleton LK
+    derivations as its raw proofs, exactly matching the source presentation. *)
+Inductive first_order_lk (L : language) : Type :=
+| FirstOrderLK : first_order_lk L.
+
+Arguments FirstOrderLK {L}.
+
+Definition first_order_lk_entailment (L : language) :
+    generic_entailment (first_order_lk L) (proposition L) :=
+  {| generic_proof :=
+       fun _ p => first_order_derivation L [p] |}.
+
+Definition first_order_lk_principal (L : language) :
+    generic_principal_entailment
+      (first_order_lk_entailment L)
+      (first_order_derivation L) FirstOrderLK.
+Proof.
+  constructor. intro p.
+  refine {| generic_equiv_to := fun d => d;
+            generic_equiv_from := fun d => d |}; reflexivity.
+Defined.
+
+Definition first_order_lk_provable {L} (p : proposition L) : Prop :=
+  generic_provable (first_order_lk_entailment L) FirstOrderLK p.
+
+Lemma first_order_lk_provable_iff : forall L (p : proposition L),
+  first_order_lk_provable p <->
+  inhabited (first_order_derivation L [p]).
+Proof.
+  intros L p.
+  exact (@generic_principal_provable_iff
+    (first_order_lk L) (proposition L)
+    (first_order_lk_entailment L) (first_order_derivation L)
+    FirstOrderLK (first_order_lk_principal L) p).
+Qed.
+
+Definition first_order_lk_classical (L : language) :
+    generic_classical_entailment
+      (first_order_lk_entailment L)
+      (semiformula_connectives L nat 0) FirstOrderLK.
+Proof.
+  refine (@generic_principal_classical
+    (first_order_lk L) (proposition L)
+    (first_order_lk_entailment L)
+    (semiformula_connectives L nat 0)
+    (first_order_derivation L) FirstOrderLK
+    (first_order_lk_principal L)
+    (@semiformula_neg_involutive L nat 0)
+    eq_refl (fun _ _ => eq_refl)
+    (fun _ _ => eq_refl) (fun _ _ => eq_refl)
+    (first_order_one_sided_lk_cut L)).
+Defined.
+
+Definition first_order_lk_all {L} (p : semiproposition L 1)
+    (Hp : first_order_lk_provable (@semiformula_free L 0 p)) :
+    first_order_lk_provable (Semiformula_all p).
+Proof.
+  destruct Hp as [d]. constructor.
+  exact (@FODAll L p [] d).
+Defined.
+
 (** Every derivation is functorial in the underlying first-order language. *)
 Fixpoint first_order_derivation_language_map {L M Gamma}
     (h : language_hom L M) (d : first_order_derivation L Gamma) {struct d} :
@@ -344,6 +406,15 @@ Proof.
     refine (first_order_derivation_cast
       (@first_order_derivation_language_map L M _ h d) _).
     simpl. now rewrite semiformula_language_map_substitute.
+Defined.
+
+Definition first_order_lk_provable_language_map {L M}
+    (h : language_hom L M) (p : proposition L)
+    (Hp : first_order_lk_provable p) :
+    first_order_lk_provable (semiformula_language_map h p).
+Proof.
+  destruct Hp as [d]. constructor.
+  exact (@first_order_derivation_language_map L M [p] h d).
 Defined.
 
 (** Simultaneously rewrite every free variable occurring in a derivation. *)
