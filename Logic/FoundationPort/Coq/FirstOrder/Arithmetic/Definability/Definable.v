@@ -949,3 +949,100 @@ Proof.
         (P := P) (f := f)
         (arithmetic_sorted_definable_of_delta HP ArithmeticHierarchyPi) Hf).
 Defined.
+
+(** Reindex a function graph while keeping its distinguished output in the
+    head coordinate. *)
+Definition arithmetic_function_graph_reindex {k l}
+    (e : Fin.t k -> Fin.t l) : Fin.t (S k) -> Fin.t (S l) :=
+  fun j => @Fin.caseS' k j (fun _ => Fin.t (S l))
+    Fin.F1 (fun i => Fin.FS (e i)).
+
+Lemma arithmetic_function_graph_reindex_head : forall k l
+    (e : Fin.t k -> Fin.t l),
+  arithmetic_function_graph_reindex e Fin.F1 = Fin.F1.
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_function_graph_reindex_tail : forall k l
+    (e : Fin.t k -> Fin.t l) (i : Fin.t k),
+  arithmetic_function_graph_reindex e (Fin.FS i) = Fin.FS (e i).
+Proof. reflexivity. Qed.
+
+Definition arithmetic_sorted_definable_function_retraction
+    {M : Type} {k l symbol}
+    {Str : first_order_structure oring_language M}
+    {f : (Fin.t k -> M) -> M}
+    (Hf : arithmetic_sorted_definable_function Str symbol f)
+    (e : Fin.t k -> Fin.t l) :
+    arithmetic_sorted_definable_function Str symbol
+      (fun v : Fin.t l -> M => f (fun i => v (e i))).
+Proof.
+  unfold arithmetic_sorted_definable_function in *.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_retraction Hf
+      (arithmetic_function_graph_reindex e))).
+  intro w. reflexivity.
+Defined.
+
+(** The family substituted into an outer function graph: the head member is
+    the preserved output coordinate, and every tail member is an inner
+    function evaluated on the parameter tail. *)
+Definition arithmetic_function_substitution_family
+    {M : Type} {k l}
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (i : Fin.t (S k)) (w : Fin.t (S l) -> M) : M :=
+  @Fin.caseS' k i (fun _ => M)
+    (w Fin.F1) (fun j => f j (fun q => w (Fin.FS q))).
+
+Lemma arithmetic_function_substitution_family_head : forall
+    (M : Type) k l (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (w : Fin.t (S l) -> M),
+  arithmetic_function_substitution_family f Fin.F1 w = w Fin.F1.
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_function_substitution_family_tail : forall
+    (M : Type) k l (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (i : Fin.t k) (w : Fin.t (S l) -> M),
+  arithmetic_function_substitution_family f (Fin.FS i) w =
+  f i (fun q => w (Fin.FS q)).
+Proof. reflexivity. Qed.
+
+Definition arithmetic_sorted_definable_function_substitution
+    {M : Type} {k l rank class}
+    {Str : first_order_structure oring_language M}
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (F : (Fin.t k -> M) -> M)
+    (f : Fin.t k -> (Fin.t l -> M) -> M)
+    (HF : arithmetic_sorted_definable_function Str
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := S rank |} F)
+    (Hf : forall i, arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol (S rank)) (f i)) :
+    arithmetic_sorted_definable_function Str
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := S rank |}
+      (fun z : Fin.t l -> M => F (fun i => f i z)).
+Proof.
+  assert (Hg : forall i : Fin.t (S k),
+    arithmetic_sorted_definable_function Str
+      (arithmetic_sigma_symbol (S rank))
+      (arithmetic_function_substitution_family f i)).
+  { intro i.
+    refine (@Fin.caseS' k i
+      (fun i => arithmetic_sorted_definable_function Str
+        (arithmetic_sigma_symbol (S rank))
+        (arithmetic_function_substitution_family f i)) _ _).
+    - apply (arithmetic_sorted_definable_projection (Str := Str) HEq
+        (arithmetic_sigma_symbol (S rank)) Fin.F1).
+    - intro j.
+      apply (arithmetic_sorted_definable_of_iff
+        (arithmetic_sorted_definable_function_retraction
+          (Hf j) (fun q => Fin.FS q))).
+      intro w. reflexivity. }
+  unfold arithmetic_sorted_definable_function in *.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_substitution
+      (P := fun y : Fin.t (S k) -> M =>
+        y Fin.F1 = F (fun i => y (Fin.FS i)))
+      (f := arithmetic_function_substitution_family f) HF Hg)).
+  intro w. reflexivity.
+Defined.
