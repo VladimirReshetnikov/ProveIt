@@ -284,6 +284,27 @@ Proof.
   - now apply llfo_girard_negative.
 Qed.
 
+Definition llfo_girard_sequent {L} (Gamma : first_order_sequent L) :
+    llfo_sequent L := map llfo_Girard Gamma.
+
+Lemma llfo_girard_sequent_negative : forall L (Gamma : first_order_sequent L),
+  llfo_sequent_negative (llfo_girard_sequent Gamma).
+Proof.
+  intros L Gamma phi Hphi. apply in_map_iff in Hphi.
+  destruct Hphi as [psi [<- _]]. apply llfo_Girard_negative.
+Qed.
+
+Lemma llfo_girard_sequent_shift : forall L (Gamma : first_order_sequent L),
+  llfo_shift_sequent (llfo_girard_sequent Gamma) =
+  llfo_girard_sequent (first_order_sequent_shift Gamma).
+Proof.
+  intros L Gamma.
+  unfold llfo_shift_sequent, llfo_girard_sequent,
+    first_order_sequent_shift.
+  rewrite !map_map. apply map_ext. intro phi.
+  apply eq_sym. apply llfo_Girard_rewrite.
+Qed.
+
 Theorem llfo_forget_girard : forall L X n (phi : semiformula L X n),
   llfo_forget (llfo_girard phi) = phi.
 Proof.
