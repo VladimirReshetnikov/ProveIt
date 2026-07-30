@@ -4824,3 +4824,14 @@ roots through the single resulting standard axiom prefix, and applies two
 checked `Imp-E` nodes.  It returns the enlarged witnessed context explicitly,
 so subsequent admissibility lowering can move other roots into exactly the
 same context rather than choosing an unrelated axiom prefix.
+
+The stronger assignment fact is now available at the object-proof boundary
+too.  PA's internal induction establishing a beta remainder for every code,
+step, and index is closed into the sentence saying that every beta-coded
+assignment is defined through every bound.  Raw-model completeness yields a
+finite ordinary PA proof of that sentence, and the represented compiler opens
+its three universal binders at arbitrary template terms in one witnessed
+extension.  A concrete specialization computes the local slots `#1`, `#0`,
+and `#2` and rewrites the result to the exact standard formula-code numeral
+used by the admissibility record.  Thus local assignment definedness no longer
+depends on projecting or aligning any particular global traversal table.

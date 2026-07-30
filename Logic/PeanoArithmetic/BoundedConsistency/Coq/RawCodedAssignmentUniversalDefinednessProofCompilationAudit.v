@@ -1,0 +1,22 @@
+(** Assumption audit for universal represented assignment-definedness. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedAssignmentUniversalDefinednessProofCompilation.
+
+Import
+  PABoundedRawCodedAssignmentUniversalDefinednessProofCompilation.
+
+Check codedAssignmentUniversalDefinednessFormula.
+Check PA_proves_codedAssignmentUniversalDefinednessFormula.
+Check
+  raw_codedPALocalProofOf_assignmentUniversalDefinedness_instance_on_witnessed_tail.
+Check
+  raw_codedPALocalProofOf_assignmentDefinedThrough_local_on_witnessed_tail.
+Check
+  raw_codedPALocalProofOf_assignmentDefinedThrough_local_numeral_on_witnessed_tail.
+
+Print Assumptions PA_proves_codedAssignmentUniversalDefinednessFormula.
+Print Assumptions
+  raw_codedPALocalProofOf_assignmentDefinedThrough_local_on_witnessed_tail.
+Print Assumptions
+  raw_codedPALocalProofOf_assignmentDefinedThrough_local_numeral_on_witnessed_tail.
