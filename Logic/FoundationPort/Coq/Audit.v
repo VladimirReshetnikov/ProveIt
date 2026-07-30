@@ -502,6 +502,11 @@ Check llfo_emb.
 Check llfo_shift.
 Check llfo_free.
 Check llfo_substitute.
+Print Assumptions llfo_substitute_shift_one_eq_free.
+Print Assumptions llfo_substitute_neg_shift_one_eq_neg_free.
+Print Assumptions llfo_free_neg.
+Print Assumptions llfo_shift_neg.
+Print Assumptions llfo_shift_exs.
 Check llfo_sequent.
 Check llfo_sequent_is_quest.
 Check llfo_sequent_negative.
@@ -554,6 +559,20 @@ Print Assumptions llfo_excluded_middle.
 Print Assumptions llfo_exp_comm.
 Print Assumptions llfo_add_quest_append_right.
 Print Assumptions llfo_add_quest_tail.
+Print Assumptions llfo_sequent_is_quest_singleton.
+Print Assumptions llfo_of_negative_par_step.
+Print Assumptions llfo_of_negative_with_step.
+Print Assumptions llfo_of_negative_all_step.
+Print Assumptions llfo_of_negative_rewrite.
+Print Assumptions llfo_of_negative.
+Print Assumptions llfo_remove_quest.
+Print Assumptions llfo_negative_weakening.
+Print Assumptions llfo_negative_contraction.
+Print Assumptions llfo_remove_quest_append_right.
+Print Assumptions llfo_remove_quest_tail.
+Print Assumptions llfo_negative_of_course.
+Print Assumptions llfo_negative_comp_subset.
+Print Assumptions llfo_negative_wk.
 Check llfo_forget.
 Print Assumptions llfo_forget_rel.
 Print Assumptions llfo_forget_nrel.

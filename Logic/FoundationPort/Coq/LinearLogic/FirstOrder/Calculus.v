@@ -1,7 +1,8 @@
 (** One-sided sequent calculus for first-order classical linear logic. *)
 
-From Stdlib Require Import Lists.List Sorting.Permutation Vectors.Fin.
-From Foundation.Syntax.Predicate Require Import Language Term.
+From Stdlib Require Import Lists.List Sorting.Permutation Vectors.Fin
+  Program.Wf Program.Equality Lia.
+From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.LinearLogic.FirstOrder Require Import Formula Rew.
 From Foundation.Vorspiel.List Require Import Perm.
 
@@ -380,3 +381,329 @@ Definition llfo_add_quest_tail {L phi Gamma}
     (d : llfo_derivation L (phi :: Gamma)) :
     llfo_derivation L (phi :: llfo_quest_sequent Gamma) :=
   @llfo_add_quest_append_right L Gamma [phi] d.
+
+Lemma llfo_sequent_is_quest_singleton : forall L
+    (phi : llfo_proposition L),
+  llfo_sequent_is_quest [LLQuest phi].
+Proof.
+  intros. apply llfo_sequent_is_quest_cons. split; [constructor |].
+  apply llfo_sequent_is_quest_nil.
+Qed.
+
+Definition llfo_of_negative_par_step {L} (nu mu : llfo_proposition L)
+    (dnu : llfo_derivation L [llfo_neg (LLQuest nu); nu])
+    (dmu : llfo_derivation L [llfo_neg (LLQuest mu); mu]) :
+    llfo_derivation L
+      [llfo_neg (LLQuest (LLPar nu mu)); LLPar nu mu].
+Proof.
+  assert (dtensor : llfo_derivation L
+      [LLTensor (llfo_neg nu) (llfo_neg mu); nu; mu]).
+  { exact (@LLDTensor L (llfo_neg nu) (llfo_neg mu) [nu] [mu]
+      (llfo_rotate (llfo_eta nu)) (llfo_rotate (llfo_eta mu))). }
+  assert (dpromoted : llfo_derivation L
+      [LLBang (LLTensor (llfo_neg nu) (llfo_neg mu));
+       LLQuest nu; LLQuest mu]).
+  { apply LLDOfCourse.
+    - exact (llfo_rotate (LLDDereliction
+        (llfo_rotate (LLDDereliction (llfo_rotate dtensor))))).
+    - apply llfo_sequent_is_quest_cons. split; [constructor |].
+      apply llfo_sequent_is_quest_cons. split; [constructor |].
+      apply llfo_sequent_is_quest_nil. }
+  assert (dcut_nu : llfo_derivation L
+      [LLQuest mu; LLBang (LLTensor (llfo_neg nu) (llfo_neg mu)); nu]).
+  { exact (@LLDCut L (LLQuest nu)
+      [LLQuest mu; LLBang (LLTensor (llfo_neg nu) (llfo_neg mu))]
+      [nu] (llfo_rotate dpromoted) dnu). }
+  assert (dcut_mu : llfo_derivation L
+      [LLBang (LLTensor (llfo_neg nu) (llfo_neg mu)); nu; mu]).
+  { exact (@LLDCut L (LLQuest mu)
+      [LLBang (LLTensor (llfo_neg nu) (llfo_neg mu)); nu]
+      [mu] dcut_nu dmu). }
+  exact (llfo_rotate (LLDPar (llfo_rotate dcut_mu))).
+Defined.
+
+Definition llfo_of_negative_with_step {L} (nu mu : llfo_proposition L)
+    (dnu : llfo_derivation L [llfo_neg (LLQuest nu); nu])
+    (dmu : llfo_derivation L [llfo_neg (LLQuest mu); mu]) :
+    llfo_derivation L
+      [llfo_neg (LLQuest (LLWith nu mu)); LLWith nu mu].
+Proof.
+  assert (dpromoted_nu : llfo_derivation L
+      [LLBang (LLPlus (llfo_neg nu) (llfo_neg mu)); LLQuest nu]).
+  { apply LLDOfCourse.
+    - exact (llfo_rotate (LLDDereliction (llfo_rotate
+        (@LLDPlusRight L (llfo_neg nu) (llfo_neg mu) [nu]
+          (llfo_rotate (llfo_eta nu)))))).
+    - apply llfo_sequent_is_quest_cons. split; [constructor |].
+      apply llfo_sequent_is_quest_nil. }
+  assert (dpromoted_mu : llfo_derivation L
+      [LLBang (LLPlus (llfo_neg nu) (llfo_neg mu)); LLQuest mu]).
+  { apply LLDOfCourse.
+    - exact (llfo_rotate (LLDDereliction (llfo_rotate
+        (@LLDPlusLeft L (llfo_neg nu) (llfo_neg mu) [mu]
+          (llfo_rotate (llfo_eta mu)))))).
+    - apply llfo_sequent_is_quest_cons. split; [constructor |].
+      apply llfo_sequent_is_quest_nil. }
+  assert (dwith_nu : llfo_derivation L
+      [nu; LLBang (LLPlus (llfo_neg nu) (llfo_neg mu))]).
+  { exact (llfo_rotate (@LLDCut L (LLQuest nu)
+      [LLBang (LLPlus (llfo_neg nu) (llfo_neg mu))] [nu]
+      (llfo_rotate dpromoted_nu) dnu)). }
+  assert (dwith_mu : llfo_derivation L
+      [mu; LLBang (LLPlus (llfo_neg nu) (llfo_neg mu))]).
+  { exact (llfo_rotate (@LLDCut L (LLQuest mu)
+      [LLBang (LLPlus (llfo_neg nu) (llfo_neg mu))] [mu]
+      (llfo_rotate dpromoted_mu) dmu)). }
+  exact (llfo_rotate (LLDWith dwith_nu dwith_mu)).
+Defined.
+
+Definition llfo_of_negative_all_step {L}
+    (nu : llfo_semiproposition L 1)
+    (dnu : llfo_derivation L
+      [llfo_neg (LLQuest (@llfo_free L 0 nu)); @llfo_free L 0 nu]) :
+    llfo_derivation L
+      [llfo_neg (LLQuest (LLAll nu)); LLAll nu].
+Proof.
+  assert (dinst : llfo_derivation L
+      [llfo_substitute
+         (fun _ : Fin.t 1 => Semiterm_fvar 0)
+         (llfo_neg (llfo_shift nu));
+       LLQuest (@llfo_free L 0 nu)]).
+  { eapply llfo_derivation_cast.
+    - exact (llfo_rotate (LLDDereliction
+        (llfo_eta (@llfo_free L 0 nu)))).
+    - simpl. f_equal. apply eq_sym.
+      apply llfo_substitute_neg_shift_one_eq_neg_free. }
+  assert (dpromoted : llfo_derivation L
+      [LLBang (LLExs (llfo_neg (llfo_shift nu)));
+       LLQuest (@llfo_free L 0 nu)]).
+  { apply LLDOfCourse.
+    - exact (@LLDExs L (llfo_neg (llfo_shift nu))
+        [LLQuest (@llfo_free L 0 nu)] (Semiterm_fvar 0) dinst).
+    - apply llfo_sequent_is_quest_cons. split; [constructor |].
+      apply llfo_sequent_is_quest_nil. }
+  assert (dcut : llfo_derivation L
+      [LLBang (LLExs (llfo_neg (llfo_shift nu))); @llfo_free L 0 nu]).
+  { exact (@LLDCut L (LLQuest (@llfo_free L 0 nu))
+      [LLBang (LLExs (llfo_neg (llfo_shift nu)))]
+      [@llfo_free L 0 nu] (llfo_rotate dpromoted) dnu). }
+  assert (dall : llfo_derivation L
+      [LLAll nu; LLBang (LLExs (llfo_neg nu))]).
+  { apply LLDAll.
+    eapply llfo_derivation_cast.
+    - exact (llfo_rotate dcut).
+    - change
+        ([@llfo_free L 0 nu;
+          LLBang (LLExs (llfo_neg (llfo_shift nu)))] =
+         [@llfo_free L 0 nu;
+          llfo_shift (LLBang (LLExs (llfo_neg nu)))]).
+      f_equal. apply eq_sym.
+      unfold llfo_shift. simpl. f_equal.
+      rewrite llfo_rewrite_neg. f_equal.
+      f_equal.
+      f_equal.
+      apply llfo_rewrite_ext, rew_q_shift. }
+  exact (llfo_rotate dall).
+Defined.
+
+Lemma llfo_negative_rel_absurd : forall L X n k
+    (R : language_rel L k) v,
+  @llfo_negative L X n (LLRel R v) -> False.
+Proof. intros L X n k R v H. inversion H. Qed.
+
+Lemma llfo_negative_nrel_absurd : forall L X n k
+    (R : language_rel L k) v,
+  @llfo_negative L X n (LLNRel R v) -> False.
+Proof. intros L X n k R v H. inversion H. Qed.
+
+Lemma llfo_negative_one_absurd : forall L X n,
+  @llfo_negative L X n LLOne -> False.
+Proof. intros L X n H. inversion H. Qed.
+
+Lemma llfo_negative_tensor_absurd : forall L X n
+    (phi psi : llfo_semiformula L X n),
+  llfo_negative n (LLTensor phi psi) -> False.
+Proof. intros L X n phi psi H. inversion H. Qed.
+
+Lemma llfo_negative_zero_absurd : forall L X n,
+  @llfo_negative L X n LLZero -> False.
+Proof. intros L X n H. inversion H. Qed.
+
+Lemma llfo_negative_plus_absurd : forall L X n
+    (phi psi : llfo_semiformula L X n),
+  llfo_negative n (LLPlus phi psi) -> False.
+Proof. intros L X n phi psi H. inversion H. Qed.
+
+Lemma llfo_negative_bang_absurd : forall L X n
+    (phi : llfo_semiformula L X n),
+  llfo_negative n (LLBang phi) -> False.
+Proof. intros L X n phi H. inversion H. Qed.
+
+Lemma llfo_negative_exs_absurd : forall L X n
+    (phi : llfo_semiformula L X (S n)),
+  llfo_negative n (LLExs phi) -> False.
+Proof. intros L X n phi H. inversion H. Qed.
+
+(** Generalizing the recursive bridge over a rewrite into propositions keeps
+    the binder index abstract.  This is the Coq replacement for eliminating
+    a [Prop]-valued negativity witness into the Type-valued derivation. *)
+Program Fixpoint llfo_of_negative_rewrite {L n}
+    (w : rew L nat n nat 0) (nu : llfo_semiproposition L n)
+    (hnu : llfo_negative n nu) {measure (llfo_complexity nu)} :
+    llfo_derivation L
+      [llfo_neg (LLQuest (llfo_rewrite w nu)); llfo_rewrite w nu] := _.
+Next Obligation.
+  destruct nu; simpl in *.
+  - destruct (llfo_negative_rel_absurd hnu).
+  - destruct (llfo_negative_nrel_absurd hnu).
+  - destruct (llfo_negative_one_absurd hnu).
+  - exact (llfo_rotate (LLDFalsum
+      (@LLDOfCourse L LLOne [] LLDOne
+        (@llfo_sequent_is_quest_nil L)))).
+  - destruct (llfo_negative_tensor_absurd hnu).
+  - apply llfo_of_negative_par_step.
+    + eapply llfo_of_negative_rewrite.
+      * exact (proj1 (proj1 (llfo_negative_par_iff _ _) hnu)).
+      * simpl. lia.
+    + eapply llfo_of_negative_rewrite.
+      * exact (proj2 (proj1 (llfo_negative_par_iff _ _) hnu)).
+      * simpl. lia.
+  - exact (llfo_rotate (LLDVerum [LLBang LLZero])).
+  - destruct (llfo_negative_zero_absurd hnu).
+  - apply llfo_of_negative_with_step.
+    + eapply llfo_of_negative_rewrite.
+      * exact (proj1 (proj1 (llfo_negative_with_iff _ _) hnu)).
+      * simpl. lia.
+    + eapply llfo_of_negative_rewrite.
+      * exact (proj2 (proj1 (llfo_negative_with_iff _ _) hnu)).
+      * simpl. lia.
+  - destruct (llfo_negative_plus_absurd hnu).
+  - destruct (llfo_negative_bang_absurd hnu).
+  - exact (@LLDOfCourse L
+      (llfo_neg (LLQuest (llfo_rewrite w nu)))
+      [LLQuest (llfo_rewrite w nu)]
+      (llfo_rotate (llfo_eta (LLQuest (llfo_rewrite w nu))))
+      (@llfo_sequent_is_quest_singleton L (llfo_rewrite w nu))).
+  - apply llfo_of_negative_all_step.
+    eapply llfo_derivation_cast.
+    + eapply llfo_of_negative_rewrite
+        with (w := rew_comp (@rew_free L 0) (rew_q w)).
+      * now apply (proj1 (llfo_negative_all_iff _) hnu).
+      * simpl. lia.
+    + rewrite llfo_rewrite_comp. reflexivity.
+  - destruct (llfo_negative_exs_absurd hnu).
+Defined.
+
+Definition llfo_of_negative {L} (nu : llfo_proposition L)
+    (hnu : llfo_negative 0 nu) :
+    llfo_derivation L [llfo_neg (LLQuest nu); nu].
+Proof.
+  eapply llfo_derivation_cast.
+  - exact (@llfo_of_negative_rewrite L 0 rew_id nu hnu).
+  - now rewrite llfo_rewrite_id.
+Defined.
+
+Definition llfo_remove_quest {L nu Gamma}
+    (hnu : llfo_negative 0 nu)
+    (d : llfo_derivation L (LLQuest nu :: Gamma)) :
+    llfo_derivation L (nu :: Gamma) :=
+  llfo_inv_rotate (@LLDCut L (LLQuest nu) Gamma [nu]
+    d (llfo_of_negative hnu)).
+
+Definition llfo_negative_weakening {L nu Gamma}
+    (hnu : llfo_negative 0 nu) (d : llfo_derivation L Gamma) :
+    llfo_derivation L (nu :: Gamma) :=
+  llfo_remove_quest hnu (@LLDWeakening L nu Gamma d).
+
+Definition llfo_negative_contraction {L nu Gamma}
+    (hnu : llfo_negative 0 nu)
+    (d : llfo_derivation L (nu :: nu :: Gamma)) :
+    llfo_derivation L (nu :: Gamma).
+Proof.
+  assert (dquests : llfo_derivation L
+      (LLQuest nu :: LLQuest nu :: Gamma)).
+  { eapply LLDExchange.
+    - exact (LLDDereliction (llfo_rotate (LLDDereliction d))).
+    - apply perm_skip.
+      apply Permutation_sym, Permutation_cons_append. }
+  exact (llfo_remove_quest hnu (LLDContraction dquests)).
+Defined.
+
+Fixpoint llfo_remove_quest_append_right {L} (Delta : llfo_sequent L) :
+    forall Gamma,
+    llfo_derivation L (Gamma ++ llfo_quest_sequent Delta) ->
+    llfo_sequent_negative Delta ->
+    llfo_derivation L (Gamma ++ Delta) :=
+  match Delta as Delta0 return forall Gamma,
+      llfo_derivation L (Gamma ++ llfo_quest_sequent Delta0) ->
+      llfo_sequent_negative Delta0 ->
+      llfo_derivation L (Gamma ++ Delta0) with
+  | [] => fun Gamma d _ => d
+  | nu :: Delta0 => fun Gamma d hDelta =>
+      let hparts := proj1 (llfo_sequent_negative_cons nu Delta0) hDelta in
+      let dfront := @LLDExchange L
+        (Gamma ++ LLQuest nu :: llfo_quest_sequent Delta0)
+        (LLQuest nu :: Gamma ++ llfo_quest_sequent Delta0) d
+        (Permutation_sym
+          (Permutation_middle Gamma (llfo_quest_sequent Delta0)
+            (LLQuest nu))) in
+      let dtail := @llfo_remove_quest_append_right L Delta0
+        (LLQuest nu :: Gamma) dfront (proj2 hparts) in
+      @LLDExchange L
+        (nu :: Gamma ++ Delta0) (Gamma ++ nu :: Delta0)
+        (llfo_remove_quest (proj1 hparts) dtail)
+        (Permutation_middle Gamma Delta0 nu)
+  end.
+
+Definition llfo_remove_quest_tail {L phi Gamma}
+    (d : llfo_derivation L (phi :: llfo_quest_sequent Gamma))
+    (hGamma : llfo_sequent_negative Gamma) :
+    llfo_derivation L (phi :: Gamma) :=
+  @llfo_remove_quest_append_right L Gamma [phi] d hGamma.
+
+Definition llfo_negative_of_course {L phi Gamma}
+    (d : llfo_derivation L (phi :: Gamma))
+    (hGamma : llfo_sequent_negative Gamma) :
+    llfo_derivation L (LLBang phi :: Gamma) :=
+  llfo_remove_quest_tail
+    (@LLDOfCourse L phi (llfo_quest_sequent Gamma)
+      (llfo_add_quest_tail d) (@llfo_quest_sequent_is_quest L Gamma))
+    hGamma.
+
+Fixpoint llfo_negative_comp_subset {L Gamma Delta}
+    (c : @list_comp_subset (llfo_proposition L) Gamma Delta) :
+    llfo_derivation L Gamma ->
+    llfo_sequent_negative Delta ->
+    llfo_derivation L Delta :=
+  match c as c0 in list_comp_subset Gamma0 Delta0 return
+      llfo_derivation L Gamma0 ->
+      llfo_sequent_negative Delta0 ->
+      llfo_derivation L Delta0 with
+  | comp_subset_refl xs => fun d _ => d
+  | @comp_subset_perm _ xs ys zs c0 p => fun d hzs =>
+      let hys : llfo_sequent_negative ys := fun phi hphi =>
+        hzs phi (@Permutation_in _ ys zs phi p hphi) in
+      @LLDExchange L ys zs (llfo_negative_comp_subset c0 d hys) p
+  | @comp_subset_add _ xs ys phi c0 => fun d hcons =>
+      let hp := proj1 (llfo_sequent_negative_cons phi ys) hcons in
+      llfo_negative_weakening (proj1 hp)
+        (llfo_negative_comp_subset c0 d (proj2 hp))
+  | @comp_subset_double _ xs ys phi c0 => fun d hcons =>
+      let hp := proj1 (llfo_sequent_negative_cons phi ys) hcons in
+      let hdouble : llfo_sequent_negative (phi :: phi :: ys) :=
+        proj2 (llfo_sequent_negative_cons phi (phi :: ys))
+          (conj (proj1 hp) hcons) in
+      llfo_negative_contraction (proj1 hp)
+        (llfo_negative_comp_subset c0 d hdouble)
+  end.
+
+Definition llfo_negative_wk {L}
+    (eq_dec : forall phi psi : llfo_proposition L,
+      {phi = psi} + {phi <> psi})
+    {Gamma Delta} (d : llfo_derivation L Gamma)
+    (hsub : incl Gamma Delta)
+    (hDelta : llfo_sequent_negative Delta) :
+    llfo_derivation L Delta :=
+  llfo_negative_comp_subset
+    (@list_incl_to_comp_subset (llfo_proposition L)
+      eq_dec Gamma Delta hsub) d hDelta.

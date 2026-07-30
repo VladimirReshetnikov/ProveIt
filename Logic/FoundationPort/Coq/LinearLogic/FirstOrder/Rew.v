@@ -289,3 +289,46 @@ Definition llfo_free {L n} (phi : llfo_semiproposition L (n + 1)) :
 Definition llfo_substitute {L X n m}
     (b : Fin.t n -> semiterm L X m) (phi : llfo_semiformula L X n) :
     llfo_semiformula L X m := llfo_rewrite (rew_subst b) phi.
+
+Lemma llfo_substitute_shift_one_eq_free : forall L
+    (phi : llfo_semiproposition L 1),
+  llfo_substitute
+      (fun _ : Fin.t 1 => Semiterm_fvar 0)
+      (llfo_shift phi) =
+  @llfo_free L 0 phi.
+Proof.
+  intros. unfold llfo_substitute, llfo_shift, llfo_free.
+  rewrite <- llfo_rewrite_comp.
+  apply llfo_rewrite_ext, rew_equiv_of_variables.
+  - intro i. assert (Hi : i = Fin.F1) by apply fin_one_eq_f1.
+    now subst i.
+  - intro x. reflexivity.
+Qed.
+
+Lemma llfo_substitute_neg_shift_one_eq_neg_free : forall L
+    (phi : llfo_semiproposition L 1),
+  llfo_substitute
+      (fun _ : Fin.t 1 => Semiterm_fvar 0)
+      (llfo_neg (llfo_shift phi)) =
+  llfo_neg (@llfo_free L 0 phi).
+Proof.
+  intros. unfold llfo_substitute.
+  rewrite llfo_rewrite_neg.
+  f_equal. apply llfo_substitute_shift_one_eq_free.
+Qed.
+
+Lemma llfo_free_neg : forall L n
+    (phi : llfo_semiproposition L (n + 1)),
+  llfo_free (llfo_neg phi) = llfo_neg (llfo_free phi).
+Proof. intros. unfold llfo_free. apply llfo_rewrite_neg. Qed.
+
+Lemma llfo_shift_neg : forall L n (phi : llfo_semiproposition L n),
+  llfo_shift (llfo_neg phi) = llfo_neg (llfo_shift phi).
+Proof. intros. unfold llfo_shift. apply llfo_rewrite_neg. Qed.
+
+Lemma llfo_shift_exs : forall L (phi : llfo_semiproposition L 1),
+  llfo_shift (LLExs phi) = LLExs (llfo_shift phi).
+Proof.
+  intros. unfold llfo_shift. simpl. f_equal.
+  apply llfo_rewrite_ext, rew_q_shift.
+Qed.
