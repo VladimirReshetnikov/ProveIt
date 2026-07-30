@@ -14,9 +14,22 @@
   arithmetic subformulae.
 *)
 
+From Stdlib Require Import List.
+From PAHF Require Import PAHF.
+From PAFiniteBasisReduction Require Import
+  HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
   RawCodedTemplateSyntax
   RawCodedTemplateRenamingSubstitution
+  RawCodedTemplateProofCompiler
+  RawCodedTemplatePAEmbedding
+  RawCodedPAAxiomWitnessPrefix
+  RawCodedPALocalProofExistential
+  RawCodedLtSuccCasesProofCompilation
+  RawCodedFourStateTableAppendSource
+  RawCodedFourStateTableAppendProofCompilation
+  RawCodedFourStateTableAppendExistentialElimination
+  RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedPALocalProofEquality
   RawCodedTemplateTripleUniversalOpening
   RawCodedFourStateTableAppendRowLtSuccCases
@@ -27,9 +40,24 @@ From BoundedPAConsistency Require Import
 
 Module PABoundedRawCodedDynamicTruthSuccessorRowsAppendNormalization.
 
+Import ListNotations.
+Import PA.
+Import PAHierarchyReduction.
+Import PACanonicalSelectorPA.
+Import PAFiniteBetaCoding.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateRenamingSubstitution.
 Import PABoundedRawCodedPALocalProofEquality.
+Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedPAAxiomWitnessPrefix.
+Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedLtSuccCasesProofCompilation.
+Import PABoundedRawCodedFourStateTableAppendSource.
+Import PABoundedRawCodedFourStateTableAppendProofCompilation.
+Import PABoundedRawCodedFourStateTableAppendExistentialElimination.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 Import PABoundedRawCodedTemplateTripleUniversalOpening.
 Import PABoundedRawCodedDynamicTruthUniversalLeafSourceTemplate.
 Import PABoundedRawCodedDynamicTruthPiUniversalLeafSourceTemplate.
@@ -103,6 +131,92 @@ Proof.
   - exact
       coqDynamicTruthSharedSigmaSuccessorRowTemplate_append_fields_inert.
   - exact coqDynamicTruthSharedPiSuccessorRowTemplate_append_fields_inert.
+Qed.
+
+(** Native-row specialization of the proof-producing append endpoint.  The
+    large syntactic equality is intentionally absent from this interface:
+    the preceding normalization theorem supplies it for both root modes. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_shared_successor_global_of_append_row :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses appendRoot,
+  rootMode = 0 \/ rootMode = 1 ->
+  RawCodedPALocalProofOf M
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName)
+        (embedPATerm (Term.numeral rootMode))
+        (ttVar 0) (ttVar 1) (ttVar 2))) appendRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (coqFourStateTableAppendRowPrefix
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName)
+      (embedPATerm (Term.numeral rootMode))
+      (ttVar 0) (ttVar 1) (ttVar 2))
+    (rawTemplateFormula translation
+      (tfImp
+        (coqLtSuccCasesAntecedentTemplate
+          (ttVar 4) (ttParameter boundName))
+        (tfImp
+          (coqFourStateTableAppendEqualityRowLookupTemplate
+            coqFourStateTableAppendRowModeParameterName
+            coqFourStateTableAppendRowFormulaParameterName
+            coqFourStateTableAppendRowAssignmentCodeParameterName
+            coqFourStateTableAppendRowAssignmentStepParameterName
+            (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+          (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+            coqDynamicTruthSharedSigmaSuccessorRowTemplate
+            coqDynamicTruthSharedPiSuccessorRowTemplate)))) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M)) []
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource rootMode
+        coqDynamicTruthSharedSigmaSuccessorRowTemplate
+        coqDynamicTruthSharedPiSuccessorRowTemplate)).
+Proof.
+  intros M hPA translation hagreement
+    rootMode boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses appendRoot hrootMode happend hrow.
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_template_global_of_append_concrete_row
+      M hPA translation hagreement
+      rootMode
+      coqDynamicTruthSharedSigmaSuccessorRowTemplate
+      coqDynamicTruthSharedPiSuccessorRowTemplate
+      boundName
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      witnesses
+      coqDynamicTruthSharedSigmaSuccessorRowTemplate
+      coqDynamicTruthSharedPiSuccessorRowTemplate
+      appendRoot hrootMode
+      (coqDynamicTruthSharedSuccessorRows_append_production
+        rootMode (ttParameter boundName))
+      happend hrow).
 Qed.
 
 End PABoundedRawCodedDynamicTruthSuccessorRowsAppendNormalization.
