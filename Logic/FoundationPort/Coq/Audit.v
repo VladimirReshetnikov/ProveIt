@@ -8,6 +8,7 @@ From Foundation.FirstOrder.Basic Require Import Model.
 From Foundation.FirstOrder.Basic Require Import Definability.
 From Foundation.FirstOrder.Basic Require Import Calculus.
 From Foundation.FirstOrder.Basic Require Import Calculus2.
+From Foundation.FirstOrder.Basic Require Import Padding.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
@@ -698,6 +699,20 @@ Check first_order_theory_provable2.
 Check first_order_theory_proof_to_proof2.
 Check first_order_theory_proof2_to_proof.
 Check first_order_theory_provable_iff_derivable2.
+Check semiformula_repeated_verum.
+Check semiformula_padding.
+Check semiformula_get_padding_aux.
+Check semiformula_get_padding.
+Check semiformula_get_padding_formula.
+Check semiformula_get_padding_aux_repeated_verum.
+Check semiformula_get_padding_padding.
+Check semiformula_get_padding_formula_padding.
+Check semiformula_padding_injective_iff.
+Check semiformula_rewrite_repeated_verum.
+Check semiformula_rewrite_padding.
+Check semiformula_repeated_verum_raw.
+Check semiformula_padding_iff_raw.
+Check semiformula_padding_iff_provable.
 Check first_order_derivation_language_map.
 Check first_order_lk_provable_language_map.
 Check first_order_derivation_rewrite.
@@ -1034,6 +1049,11 @@ Print Assumptions first_order_derivation2_cut_axioms.
 Print Assumptions first_order_theory_proof_to_proof2.
 Print Assumptions first_order_theory_proof2_to_proof.
 Print Assumptions first_order_theory_provable_iff_derivable2.
+Print Assumptions semiformula_get_padding_padding.
+Print Assumptions semiformula_padding_injective_iff.
+Print Assumptions semiformula_rewrite_padding.
+Print Assumptions semiformula_padding_iff_raw.
+Print Assumptions semiformula_padding_iff_provable.
 Print Assumptions first_order_sequent_language_map_shift.
 Print Assumptions first_order_derivation_language_map.
 Print Assumptions first_order_lk_provable_language_map.
