@@ -1,6 +1,7 @@
 (** Public surface and kernel-assumption audit for the generic Foundation port. *)
 
 From Foundation.Vorspiel Require Import ExistsUnique.
+From Foundation.Vorspiel Require Import Basic.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
@@ -48,6 +49,15 @@ Print Assumptions extended_choose_unique_spec.
 Print Assumptions extended_choose_unique_spec_not.
 Print Assumptions extended_choose_unique_uniq.
 Print Assumptions extended_choose_unique_eq_iff.
+Print Assumptions empty_function_unique.
+Check type_is_empty.
+Check empty_type_elim.
+Print Assumptions empty_type_function_unique.
+Print Assumptions option_return_eq_some.
+Check option_to_list.
+Print Assumptions option_to_list_singleton_iff.
+Check function_equal_on.
+Print Assumptions function_equal_on_subset.
 
 Check language.
 Check language_relational.
