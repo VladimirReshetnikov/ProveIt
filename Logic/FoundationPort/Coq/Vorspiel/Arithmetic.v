@@ -1,6 +1,7 @@
 (** Executable arithmetic truth values and bounded universal quantification. *)
 
-From Stdlib Require Import Arith.Arith Lia Vectors.Fin.
+From Stdlib Require Import Arith.Arith Lia Logic.FunctionalExtensionality
+  Vectors.Fin.
 From Foundation.Vorspiel Require Import Matrix Part.
 
 Definition nat_truth_eq (n m : nat) : nat :=
@@ -201,7 +202,11 @@ Inductive arith_part1 : forall n, arith_partial_function n -> Prop :=
     arith_part1 m (arith_partial_comp f g)
 | arith_part1_find : forall n (f : (Fin.t (S n) -> nat) -> nat),
     arith_part1 (S n) (fun v => partial_some (f v)) ->
-    arith_part1 n (arith_find_on f).
+    arith_part1 n (arith_find_on f)
+| arith_part1_ext : forall n (f g : arith_partial_function n),
+    arith_part1 n f ->
+    (forall v x, partial_member (f v) x <-> partial_member (g v) x) ->
+    arith_part1 n g.
 
 Definition arithmetic1 {n} (f : (Fin.t n -> nat) -> nat) : Prop :=
   arith_part1 n (fun v => partial_some (f v)).
@@ -212,3 +217,161 @@ Lemma arith_find_on_member_iff : forall n
   f (matrix_vec_cons k v) = 0 /\
   forall m, m < k -> f (matrix_vec_cons m v) <> 0.
 Proof. reflexivity. Qed.
+
+Lemma arith_partial_comp_some_member_iff : forall m n
+    (f : (Fin.t n -> nat) -> nat)
+    (g : Fin.t n -> (Fin.t m -> nat) -> nat)
+    (v : Fin.t m -> nat) x,
+  partial_member
+    (arith_partial_comp (fun w => partial_some (f w))
+      (fun i w => partial_some (g i w)) v) x <->
+  x = f (fun i => g i v).
+Proof.
+  intros m n f g v x. unfold arith_partial_comp, partial_bind. simpl.
+  split.
+  - intros [w [Hw Hx]].
+    assert (Heq : w = (fun i => g i v)).
+    { apply functional_extensionality. intro i. exact (Hw i). }
+    now subst w.
+  - intro Hx. exists (fun i => g i v). split.
+    + intro i. reflexivity.
+    + exact Hx.
+Qed.
+
+Lemma arithmetic1_zero : forall n,
+  @arithmetic1 n (fun _ => 0).
+Proof. intro n. apply arith_part1_zero. Qed.
+
+Lemma arithmetic1_one : forall n,
+  @arithmetic1 n (fun _ => 1).
+Proof. intro n. apply arith_part1_one. Qed.
+
+Lemma arithmetic1_add : forall n (i j : Fin.t n),
+  arithmetic1 (fun v => v i + v j).
+Proof. intros. apply arith_part1_add. Qed.
+
+Lemma arithmetic1_mul : forall n (i j : Fin.t n),
+  arithmetic1 (fun v => v i * v j).
+Proof. intros. apply arith_part1_mul. Qed.
+
+Lemma arithmetic1_proj : forall n (i : Fin.t n),
+  arithmetic1 (fun v => v i).
+Proof. intros. apply arith_part1_proj. Qed.
+
+Lemma arithmetic1_equal : forall n (i j : Fin.t n),
+  arithmetic1 (fun v => nat_truth_eq (v i) (v j)).
+Proof. intros. apply arith_part1_equal. Qed.
+
+Lemma arithmetic1_lt : forall n (i j : Fin.t n),
+  arithmetic1 (fun v => nat_truth_lt (v i) (v j)).
+Proof. intros. apply arith_part1_lt. Qed.
+
+Theorem arithmetic1_comp : forall m n
+    (f : (Fin.t n -> nat) -> nat)
+    (g : Fin.t n -> (Fin.t m -> nat) -> nat),
+  arithmetic1 f ->
+  (forall i, arithmetic1 (g i)) ->
+  arithmetic1 (fun v => f (fun i => g i v)).
+Proof.
+  intros m n f g Hf Hg. unfold arithmetic1 in *.
+  eapply arith_part1_ext.
+  - apply arith_part1_comp.
+    + exact Hf.
+    + exact Hg.
+  - intros v x. rewrite arith_partial_comp_some_member_iff.
+    reflexivity.
+Qed.
+
+Definition arithmetic1_unary (f : nat -> nat) : Prop :=
+  @arithmetic1 1 (fun v => f (v Fin.F1)).
+
+Definition arithmetic1_binary (f : nat -> nat -> nat) : Prop :=
+  @arithmetic1 2 (fun v => f (v Fin.F1) (v (Fin.FS Fin.F1))).
+
+Theorem arithmetic1_comp1 : forall n (f : nat -> nat)
+    (g : (Fin.t n -> nat) -> nat),
+  arithmetic1_unary f -> arithmetic1 g ->
+  arithmetic1 (fun v => f (g v)).
+Proof.
+  intros n f g Hf Hg. unfold arithmetic1_unary in Hf.
+  eapply arithmetic1_comp with
+    (f := fun w => f (w Fin.F1)) (g := fun _ => g).
+  - exact Hf.
+  - intro. exact Hg.
+Qed.
+
+Theorem arithmetic1_comp2 : forall n (f : nat -> nat -> nat)
+    (g h : (Fin.t n -> nat) -> nat),
+  arithmetic1_binary f -> arithmetic1 g -> arithmetic1 h ->
+  arithmetic1 (fun v => f (g v) (h v)).
+Proof.
+  intros n f g h Hf Hg Hh. unfold arithmetic1_binary in Hf.
+  eapply arithmetic1_comp with
+    (f := fun w => f (w Fin.F1) (w (Fin.FS Fin.F1)))
+    (g := fun i => @Fin.caseS' 1 i
+      (fun _ => (Fin.t n -> nat) -> nat) g (fun _ => h)).
+  - exact Hf.
+  - intro i. refine (@Fin.caseS' 1 i
+      (fun j => arithmetic1 (@Fin.caseS' 1 j
+        (fun _ => (Fin.t n -> nat) -> nat) g (fun _ => h))) Hg _).
+    intro j. exact Hh.
+Qed.
+
+Lemma arithmetic1_succ : arithmetic1_unary S.
+Proof.
+  unfold arithmetic1_unary.
+  eapply arith_part1_ext.
+  - unfold arithmetic1.
+    eapply arithmetic1_comp2 with (f := Nat.add)
+      (g := fun v : Fin.t 1 -> nat => v Fin.F1)
+      (h := fun _ : Fin.t 1 -> nat => 1).
+    + unfold arithmetic1_binary. apply arithmetic1_add.
+    + apply arithmetic1_proj.
+    + apply arithmetic1_one.
+  - intros v x. simpl. split; intro H; subst x; f_equal; lia.
+Qed.
+
+Theorem arithmetic1_const : forall n k,
+  @arithmetic1 n (fun _ => k).
+Proof.
+  intros n k. induction k as [|k IH].
+  - apply arithmetic1_zero.
+  - change (arithmetic1 (fun _ : Fin.t n -> nat => S k)).
+    apply arithmetic1_comp1; [apply arithmetic1_succ | exact IH].
+Qed.
+
+Lemma arithmetic1_inv : arithmetic1_unary nat_truth_inv.
+Proof.
+  unfold arithmetic1_unary, nat_truth_inv.
+  eapply arithmetic1_comp2.
+  - unfold arithmetic1_binary. apply arithmetic1_equal.
+  - apply arithmetic1_proj.
+  - apply arithmetic1_zero.
+Qed.
+
+Lemma arithmetic1_pos : arithmetic1_unary nat_truth_pos.
+Proof.
+  unfold arithmetic1_unary, nat_truth_pos.
+  eapply arithmetic1_comp2.
+  - unfold arithmetic1_binary. apply arithmetic1_lt.
+  - apply arithmetic1_zero.
+  - apply arithmetic1_proj.
+Qed.
+
+Lemma arithmetic1_and : arithmetic1_binary nat_truth_and.
+Proof.
+  unfold arithmetic1_binary, nat_truth_and.
+  eapply arithmetic1_comp2.
+  - unfold arithmetic1_binary. apply arithmetic1_lt.
+  - apply arithmetic1_zero.
+  - apply arithmetic1_mul.
+Qed.
+
+Lemma arithmetic1_or : arithmetic1_binary nat_truth_or.
+Proof.
+  unfold arithmetic1_binary, nat_truth_or.
+  eapply arithmetic1_comp2.
+  - unfold arithmetic1_binary. apply arithmetic1_lt.
+  - apply arithmetic1_zero.
+  - apply arithmetic1_add.
+Qed.

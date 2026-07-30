@@ -258,6 +258,25 @@ Check arith_find_on.
 Check arith_part1.
 Check arithmetic1.
 Print Assumptions arith_find_on_member_iff.
+Print Assumptions arith_partial_comp_some_member_iff.
+Print Assumptions arithmetic1_zero.
+Print Assumptions arithmetic1_one.
+Print Assumptions arithmetic1_add.
+Print Assumptions arithmetic1_mul.
+Print Assumptions arithmetic1_proj.
+Print Assumptions arithmetic1_equal.
+Print Assumptions arithmetic1_lt.
+Print Assumptions arithmetic1_comp.
+Check arithmetic1_unary.
+Check arithmetic1_binary.
+Print Assumptions arithmetic1_comp1.
+Print Assumptions arithmetic1_comp2.
+Print Assumptions arithmetic1_succ.
+Print Assumptions arithmetic1_const.
+Print Assumptions arithmetic1_inv.
+Print Assumptions arithmetic1_pos.
+Print Assumptions arithmetic1_and.
+Print Assumptions arithmetic1_or.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.
