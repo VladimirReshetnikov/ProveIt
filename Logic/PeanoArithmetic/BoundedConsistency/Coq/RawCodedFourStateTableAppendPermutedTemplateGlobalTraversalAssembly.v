@@ -27,6 +27,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofUniversalEliminationChain
   RawCodedPAGrowingTemplateConjunction
   RawCodedLtSuccCasesProofCompilation
   RawCodedPALocalProofExistentialEliminationChain
@@ -57,6 +58,7 @@ Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
@@ -571,6 +573,227 @@ Proof.
       coqDynamicTruthSharedPiSuccessorRowTemplate
       (coqDynamicTruthSharedSuccessorRows_append_production
         rootMode (ttParameter boundName)) hrow).
+Qed.
+
+(** Accept any syntactic row prefix whose translated context code agrees
+    with the reversed concrete prefix.  This is the interface needed by the
+    named append resources used by the native predecessor compiler. *)
+Corollary
+    raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_permuted_shared_successor_global_of_append_code_equivalent_row_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses appendRoot rowPrefix,
+  rootMode = 0 \/ rootMode = 1 ->
+  (forall tail,
+    rawTemplateContextCodeOnTail translation tail rowPrefix =
+    rawTemplateContextCodeOnTail translation tail
+      (coqFourStateTableAppendRowPrefix
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+        (ttVar 2) (ttVar 1) (ttVar 0))) ->
+  RawCodedPALocalProofOf M
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+        (ttVar 2) (ttVar 1) (ttVar 0))) appendRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M)) rowPrefix
+    (rawTemplateFormula translation
+      (tfImp
+        (coqLtSuccCasesAntecedentTemplate
+          (ttVar 4) (ttParameter boundName))
+        (tfImp
+          (coqFourStateTableAppendEqualityRowLookupTemplate
+            coqFourStateTableAppendRowModeParameterName
+            coqFourStateTableAppendRowFormulaParameterName
+            coqFourStateTableAppendRowAssignmentCodeParameterName
+            coqFourStateTableAppendRowAssignmentStepParameterName
+            (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+          (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+            coqDynamicTruthSharedSigmaSuccessorRowTemplate
+            coqDynamicTruthSharedPiSuccessorRowTemplate)))) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M)) []
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendPermutedTemplateGlobalSource rootMode
+        coqDynamicTruthSharedSigmaSuccessorRowTemplate
+        coqDynamicTruthSharedPiSuccessorRowTemplate)).
+Proof.
+  intros M hPA translation hagreement rootMode boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep witnesses appendRoot rowPrefix
+    hrootMode hprefix happend hrow.
+  apply
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_permuted_shared_successor_global_of_append_row
+      M hPA translation hagreement rootMode boundName
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep witnesses appendRoot
+      hrootMode happend).
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_prefix_code_eq
+      M translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      rowPrefix
+      (coqFourStateTableAppendRowPrefix
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+        (ttVar 2) (ttVar 1) (ttVar 0))
+      (rawTemplateFormula translation
+        (tfImp
+          (coqLtSuccCasesAntecedentTemplate
+            (ttVar 4) (ttParameter boundName))
+          (tfImp
+            (coqFourStateTableAppendEqualityRowLookupTemplate
+              coqFourStateTableAppendRowModeParameterName
+              coqFourStateTableAppendRowFormulaParameterName
+              coqFourStateTableAppendRowAssignmentCodeParameterName
+              coqFourStateTableAppendRowAssignmentStepParameterName
+              (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+            (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+              coqDynamicTruthSharedSigmaSuccessorRowTemplate
+              coqDynamicTruthSharedPiSuccessorRowTemplate))))
+      hprefix hrow).
+Qed.
+
+(** Compose the reversed append closure with the same inherited and fixed-row
+    resources used by the ordinary native client.  Only the translated
+    prefix equality and append root mention the reversed tuple. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_permuted_shared_successor_global_of_append_and_inherited_row_roots :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses appendRoot inheritedTraversal oldLookup fixedProductionRoot,
+  let boundName := coqDynamicTruthAppendRowBoundParameterName in
+  let namedRowPrefix :=
+    coqFourStateTableAppendRowPrefix
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName)
+      (ttParameter coqFourStateTableAppendRowModeParameterName)
+      (ttParameter coqFourStateTableAppendRowFormulaParameterName)
+      (ttParameter coqFourStateTableAppendRowAssignmentCodeParameterName)
+      (ttParameter coqFourStateTableAppendRowAssignmentStepParameterName) in
+  rootMode = 0 \/ rootMode = 1 ->
+  (forall tail,
+    rawTemplateContextCodeOnTail translation tail namedRowPrefix =
+    rawTemplateContextCodeOnTail translation tail
+      (coqFourStateTableAppendRowPrefix
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+        (ttVar 2) (ttVar 1) (ttVar 0))) ->
+  RawCodedPALocalProofOf M
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+        (ttVar 2) (ttVar 1) (ttVar 0))) appendRoot ->
+  templateUniversalOpenMany inheritedTraversal
+      coqFourStateTableAppendConcreteRowVariables =
+    Some
+      (tfImp
+        (coqLtSuccCasesBelowTemplate
+          (ttVar 4) (ttParameter boundName))
+        (tfImp oldLookup
+          (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+            coqDynamicTruthSharedSigmaSuccessorRowTemplate
+            coqDynamicTruthSharedPiSuccessorRowTemplate))) ->
+  RawFourStateTableAppendInheritedLocalRootsAt M translation
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    namedRowPrefix inheritedTraversal oldLookup ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) namedRowPrefix)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendNamedClosedRowProductionTemplate
+        coqDynamicTruthSharedSigmaSuccessorRowTemplate
+        coqDynamicTruthSharedPiSuccessorRowTemplate))
+    fixedProductionRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M)) []
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendPermutedTemplateGlobalSource rootMode
+        coqDynamicTruthSharedSigmaSuccessorRowTemplate
+        coqDynamicTruthSharedPiSuccessorRowTemplate)).
+Proof.
+  intros M hPA translation hagreement rootMode
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    witnesses appendRoot inheritedTraversal oldLookup fixedProductionRoot
+    boundName namedRowPrefix hrootMode hprefix happend hopen
+    hinherited hfixedProduction.
+  cbn zeta in *.
+  apply
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_permuted_shared_successor_global_of_append_code_equivalent_row_prefix
+      M hPA translation hagreement rootMode boundName
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep witnesses appendRoot
+      namedRowPrefix hrootMode hprefix happend).
+  exact
+    (raw_codedPALocalProofOf_four_state_table_append_concrete_closed_row_implications_on_witnessed_row_context
+      M hPA translation hagreement
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      boundName (ttParameter boundName)
+      coqDynamicTruthSharedSigmaSuccessorRowTemplate
+      coqDynamicTruthSharedPiSuccessorRowTemplate
+      inheritedTraversal oldLookup witnesses fixedProductionRoot
+      hopen
+      (raw_codedTemplatePrefix_atomically_adequate M hPA translation _)
+      (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+      (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+      (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+      eq_refl
+      (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+      ltac:(vm_compute; discriminate)
+      ltac:(vm_compute; discriminate)
+      ltac:(vm_compute; discriminate)
+      ltac:(vm_compute; discriminate)
+      hinherited hfixedProduction).
 Qed.
 
 End

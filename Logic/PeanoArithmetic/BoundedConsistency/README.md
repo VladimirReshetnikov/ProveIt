@@ -5278,3 +5278,14 @@ row compiler and the finite shared-row normalization then specialize this
 construction to the native Sigma/Pi successor rows.  The resulting growing
 proof retains the append traversal's witnessed context while concluding the
 permuted global source required by the native evidence application.
+
+The reversed endpoint now has the same named-prefix and inherited-row
+resource interface as the ordinary append client.  The companion
+`RawCodedDynamicTruthSharedSuccessorPermutedAppendGlobalRoots.v` packages one
+trace per polarity, synchronizes their independently growing contexts, merges
+the result with an arbitrary witnessed callback base, and installs both roots
+beneath the predecessor-state assumptions.  A dependency-ordered extension
+of the direct-evidence handoff accepts this growing pair, transports the
+atomic and domain roots to its chosen context, and only then compiles the
+shared admissibility root.  Thus neither permuted evidence proof nor the
+append context must be contracted back to the original callback base.
