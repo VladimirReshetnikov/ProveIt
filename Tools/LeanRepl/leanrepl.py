@@ -273,6 +273,72 @@ def is_declaration(text: str) -> bool:
     return tok in DECL_KEYWORDS
 
 
+def format_info(data: str) -> str | None:
+    """Reformat `#print` output for inductives/structures/classes as a valid
+    Lean declaration, e.g.
+
+        inductive Nat : Type          inductive Nat : Type where
+        number of parameters: 0   →     | zero : Nat
+        constructors:                   | succ : Nat → Nat
+        Nat.zero : Nat
+        Nat.succ : Nat → Nat
+
+    Returns None when the text is not in that shape (defs, theorems, ...)."""
+    lines = data.splitlines()
+    nparams_idx = next((i for i, ln in enumerate(lines)
+                        if re.fullmatch(r"number of parameters: \d+", ln.strip())), None)
+    if nparams_idx is None or nparams_idx == 0:
+        return None
+    header = lines[:nparams_idx]
+    m = re.match(r"^(?:class inductive|inductive|structure|class)\s+([^\s({:]+)",
+                 header[0])
+    if not m:
+        return None
+    full_name = re.sub(r"\.\{[^}]*\}?$", "", m.group(1)).rstrip(".")
+    prefix = full_name + "."
+
+    def strip_prefix(s: str) -> str:
+        return s[len(prefix):] if s.startswith(prefix) else s
+
+    ctors: list[str] = []      # rendered "| name : type" lines
+    fields: list[str] = []     # rendered "name : type" lines
+    struct_ctor: str | None = None
+    section = None
+    for ln in lines[nparams_idx + 1:]:
+        s = ln.strip()
+        if s == "constructors:":
+            section = "ctors"
+        elif s == "fields:":
+            section = "fields"
+        elif s == "constructor:":
+            section = "ctor"
+        elif not s:
+            continue
+        elif section == "ctors":
+            if ln.startswith(" ") and ctors:   # wrapped continuation line
+                ctors.append("    " + s)
+            else:
+                ctors.append("| " + strip_prefix(s))
+        elif section == "fields":
+            if re.match(r"^\s{3,}", ln) and fields:  # deeper indent: continuation
+                fields.append("  " + s)
+            else:
+                fields.append(strip_prefix(s))
+        elif section == "ctor":
+            if struct_ctor is None:
+                name = strip_prefix(s).split(".", 1)[0].split(" ", 1)[0].split("{", 1)[0]
+                struct_ctor = name
+        else:
+            return None  # unrecognized shape; show the original text
+    out = list(header)
+    out[-1] = out[-1] + " where"
+    if struct_ctor is not None and struct_ctor != "mk":
+        out.append("  " + struct_ctor + " ::")
+    out += ["  " + c for c in ctors]
+    out += ["  " + f for f in fields]
+    return "\n".join(out)
+
+
 # ---------------------------------------------------------------------------
 # The REPL
 # ---------------------------------------------------------------------------
@@ -495,8 +561,11 @@ class LeanRepl:
 
     # -- response printing --------------------------------------------------
 
-    def print_response(self, res, show_env_error: bool = False) -> bool:
-        """Print messages/sorries. Returns True if there were errors."""
+    def print_response(self, res, show_env_error: bool = False,
+                       transform=None) -> bool:
+        """Print messages/sorries. Returns True if there were errors.
+        `transform` optionally rewrites info-message text (returning None to
+        leave it unchanged)."""
         from lean_interact.interface import LeanError
 
         if isinstance(res, LeanError):
@@ -505,6 +574,8 @@ class LeanRepl:
         errored = False
         for msg in res.messages:
             text = msg.data.rstrip()
+            if transform is not None and msg.severity == "info":
+                text = transform(text) or text
             if msg.severity == "error":
                 errored = True
                 print(red("error: ") + text)
@@ -544,15 +615,19 @@ class LeanRepl:
             return "\n".join(lines)
         if line.startswith(":") and not line.startswith(":{"):
             return line  # REPL commands are single-line
+        # Once multi-line mode is entered, only a blank line submits (Python
+        # REPL style) — completeness heuristics cannot tell whether another
+        # `| ctor` or structure field is coming.
         buf = [line]
-        while needs_continuation("\n".join(buf)):
-            try:
-                nxt = prompt_fn(self.cont_prompt())
-            except EOFError:
-                break
-            if nxt.strip() == "":
-                break
-            buf.append(nxt)
+        if needs_continuation(line):
+            while True:
+                try:
+                    nxt = prompt_fn(self.cont_prompt())
+                except EOFError:
+                    break
+                if nxt.strip() == "":
+                    break
+                buf.append(nxt)
         return "\n".join(buf)
 
     def prompt(self) -> str:
@@ -697,7 +772,7 @@ class LeanRepl:
                     else:
                         self.print_response(res)
                 else:
-                    self.print_response(res)
+                    self.print_response(res, transform=format_info)
             else:
                 print(red("usage: :info NAME"))
         elif cmd in ("l", "load"):

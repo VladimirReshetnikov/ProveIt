@@ -80,10 +80,14 @@ instance, or the expression is a proposition or function), the type is shown
 via `#check` instead. Declarations (`def`, `theorem`, `open`, `#eval`, ...)
 run verbatim and, on success, advance the session environment.
 
-Multi-line input continues automatically while the input is syntactically
-incomplete (unbalanced brackets, trailing `:=`/`by`/`|`/..., or a parse
-error at end of input); finish with an empty line. `:{` ... `:}` delimits an
-explicit block, as in GHCi.
+Multi-line input starts automatically when a line is syntactically
+incomplete (unbalanced brackets, trailing `:=`/`by`/`where`/..., or a parse
+error at end of input); once started, an empty line submits the block
+(Python-REPL style). `:{` ... `:}` delimits an explicit block, as in GHCi.
+
+`:info` renders inductives, structures, and classes as valid Lean
+declarations (`inductive Nat : Type where | zero : Nat | succ : Nat → Nat`)
+rather than `#print`'s raw "constructors:" listing.
 
 ### Commands
 
