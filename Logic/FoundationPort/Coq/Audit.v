@@ -796,6 +796,11 @@ Check fin_zero_eta.
 Check oring_standard_structure_unique.
 Check nat_standard_structure.
 Check nat_standard_structure_interprets.
+Check nat_standard_model.
+Check arithmetic_theory_sound_on.
+Check arithmetic_theory_sound_on_elim.
+Check arithmetic_theory_sound_on_of_models.
+Check arithmetic_theory_consistent_of_sound_on.
 Check first_order_structure_monotone.
 Check structure_func_monotone.
 Check semiterm_val_monotone.
@@ -895,6 +900,15 @@ Check fin_env_snoc_empty_eq_cons.
 Check first_order_shifted_context_true.
 Check first_order_derivation_sound.
 Check first_order_derivation_nil_empty.
+Check first_order_sentence_embed_eval.
+Check first_order_lk_sound.
+Check first_order_theory_proof_sound.
+Check first_order_theory_sound.
+Check first_order_theory_consistent_of_satisfiable.
+Check first_order_theory_consistent_of_model.
+Check first_order_theory_unprovable_of_countermodel.
+Check first_order_models_of_provable.
+Check first_order_models_of_weaker_theory.
 
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
@@ -1203,6 +1217,8 @@ Print Assumptions oring_standard_structure_interprets.
 Print Assumptions first_order_structure_ext.
 Print Assumptions oring_standard_structure_unique.
 Print Assumptions nat_standard_structure_interprets.
+Print Assumptions arithmetic_theory_sound_on_of_models.
+Print Assumptions arithmetic_theory_consistent_of_sound_on.
 Print Assumptions semiterm_val_monotone.
 Print Assumptions semiterm_val_monotone_free.
 Print Assumptions semiterm_val_monotone_bound.
@@ -1252,6 +1268,11 @@ Print Assumptions fin_env_snoc_empty_eq_cons.
 Print Assumptions first_order_shifted_context_true.
 Print Assumptions first_order_derivation_sound.
 Print Assumptions first_order_derivation_nil_empty.
+Print Assumptions first_order_sentence_embed_eval.
+Print Assumptions first_order_lk_sound.
+Print Assumptions first_order_theory_proof_sound.
+Print Assumptions first_order_theory_consistent_of_satisfiable.
+Print Assumptions first_order_models_of_weaker_theory.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
