@@ -18,6 +18,7 @@ From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Q Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Q.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Functions.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
@@ -1503,6 +1504,8 @@ Print Assumptions peano_minus_le_trans.
 Print Assumptions peano_minus_le_antisym.
 Print Assumptions peano_minus_le_total.
 Print Assumptions peano_minus_add_right_cancel.
+Print Assumptions peano_minus_add_left_cancel.
+Print Assumptions peano_minus_lt_not_ge.
 Print Assumptions peano_minus_positive_eq_add_one.
 Print Assumptions peano_minus_lt_add_one.
 Print Assumptions peano_minus_le_iff_lt_add_one.
@@ -1558,6 +1561,24 @@ Print Assumptions omega_add_one_r0_laws.
 Print Assumptions omega_add_one_successor_fixed_point.
 Print Assumptions omega_add_one_top_lt_top.
 Print Assumptions omega_add_one_not_peano_minus.
+Print Assumptions peano_minus_sub_spec_exists.
+Print Assumptions peano_minus_sub_spec_functional.
+Print Assumptions peano_minus_sub_spec_exists_unique.
+Print Assumptions peano_minus_sub.
+Print Assumptions peano_minus_sub_specification.
+Print Assumptions peano_minus_sub_spec_of_ge.
+Print Assumptions peano_minus_sub_spec_of_lt.
+Print Assumptions peano_minus_sub_eq_iff.
+Print Assumptions peano_minus_sub_le_self.
+Print Assumptions peano_minus_sub_self.
+Print Assumptions peano_minus_sub_of_le.
+Print Assumptions peano_minus_sub_add_self_of_le.
+Print Assumptions peano_minus_add_sub_self_of_le.
+Print Assumptions peano_minus_add_sub_self.
+Print Assumptions peano_minus_zero_sub.
+Print Assumptions peano_minus_sub_zero.
+Print Assumptions peano_minus_pos_sub_iff_lt.
+Print Assumptions peano_minus_sub_eq_zero_iff_le.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.

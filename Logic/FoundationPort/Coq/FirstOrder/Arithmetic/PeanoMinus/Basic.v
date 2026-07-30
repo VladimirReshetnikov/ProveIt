@@ -128,6 +128,26 @@ Proof.
     exact (False_rect _ (@peano_minus_lt_irrefl M O H _ Hlt)).
 Qed.
 
+Lemma peano_minus_add_left_cancel : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  oring_add O z x = oring_add O z y -> x = y.
+Proof.
+  intros M O H x y z Heq.
+  rewrite (@peano_minus_add_comm M O H z x),
+    (@peano_minus_add_comm M O H z y) in Heq.
+  exact (@peano_minus_add_right_cancel M O H x y z Heq).
+Qed.
+
+Lemma peano_minus_lt_not_ge : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  oring_lt O x y -> ~ peano_minus_le O y x.
+Proof.
+  intros M O H x y Hxy [Hyx | Hyx].
+  - subst y. exact (@peano_minus_lt_irrefl M O H x Hxy).
+  - exact (@peano_minus_lt_irrefl M O H x
+      (@peano_minus_lt_trans M O H x y x Hxy Hyx)).
+Qed.
+
 Lemma peano_minus_positive_eq_add_one : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall x,
   oring_lt O (oring_zero O) x ->
