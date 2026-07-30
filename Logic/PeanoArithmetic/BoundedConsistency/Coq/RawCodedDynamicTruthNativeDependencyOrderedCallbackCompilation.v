@@ -36,6 +36,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeLocalStagedCallbackCompilation
   RawCodedDynamicTruthNativeLocalGrowingStagedCallbackCompilation
   RawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation
+  RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
   RawCodedDynamicTruthNativeAlignedStrongStepLogicalRootsCompilation
   RawCodedDynamicTruthNativeCrossLevelStagedCallbackCompilation
   RawCodedDynamicTruthNativeShiftStagedCallbackCompilation
@@ -69,6 +70,8 @@ Import
   PABoundedRawCodedDynamicTruthNativeLocalGrowingStagedCallbackCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeAlignedStrongStepLogicalRootsCompilation.
 Import
@@ -290,6 +293,67 @@ Definition
 Arguments
   RawDynamicTruthNativeDependencyOrderedCanonicalPermutedAppendProofResourceStrongStepKernelCompilers
   M hPA : clear implicits.
+
+(** Rank-zero-refined direct boundary.  The former zero predecessor callback
+    has been reduced to the same kind of resource used at positive levels:
+    three logical roots on a witnessed extension.  All syntactic
+    identification, local-field projection, and template closure are now
+    consequences rather than caller-supplied proof construction. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
+  let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase M /\
+  RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
+    M hPA /\
+  RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
+    M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
+  M hPA inputs : clear implicits.
+
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  RawDynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
+    M hPA (rawBottomTemplateDirectStructuralInputs M hPA).
+
+Arguments
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
+  M hPA : clear implicits.
+
+(** Reconstruct the previous direct boundary by closing its zero coordinate
+    through the concrete rank-zero template theorem. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers_of_logical_zero
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  forall (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
+    M hPA inputs ->
+  RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers
+    M hPA inputs.
+Proof.
+  intros M hPA inputs
+    (hzero & hstrong & hremainder & hcrossLevel & hshift &
+      hsubstitution & haxiom & hfinal).
+  split.
+  - exact
+      (raw_dynamicTruthNativeLocalZeroPredecessorRootCompiler_of_growing_logical_roots
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs) hzero).
+  - exact (conj hstrong
+      (conj hremainder
+        (conj hcrossLevel
+          (conj hshift
+            (conj hsubstitution
+              (conj haxiom hfinal)))))).
+Qed.
 
 (** Reinsert the structural agreement coordinate.  Keeping this adapter
     separate prevents every downstream theorem from carrying and unpacking
@@ -759,6 +823,13 @@ Definition
     RawDynamicTruthNativeDependencyOrderedCanonicalPermutedAppendProofResourceStrongStepKernelCompilers
       M hPA.
 
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
+      M hPA.
+
 Theorem
     raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers
     :
@@ -891,6 +962,23 @@ Proof.
       (raw_dynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers_of_direct
         M hPA (rawBottomTemplateDirectStructuralInputs M hPA)
         (hkernels M hPA))).
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_permuted_append_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels.
+Proof.
+  intros hkernels M hPA.
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_permuted_append_proof_resource_strong_step_kernel_compilers
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (raw_dynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers_of_direct
+        M hPA (rawBottomTemplateDirectStructuralInputs M hPA)
+        (raw_dynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers_of_logical_zero
+          M hPA (rawBottomTemplateDirectStructuralInputs M hPA)
+          (hkernels M hPA)))).
 Qed.
 
 (** Exact conditional compact headline.  This does not discharge any member
@@ -1057,6 +1145,23 @@ Proof.
   exact
     (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
       (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_permuted_append_proof_resource_strong_step_kernel_compilers
+        hkernels)).
+Qed.
+
+(** Canonical rank-zero-refined headline.  Its first coordinate now asks only
+    for the three concrete rank-zero logical roots; construction of the
+    predecessor implication is proved internally. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_canonical_logical_zero_permuted_append_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hkernels.
+  exact
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_permuted_append_proof_resource_strong_step_kernel_compilers
         hkernels)).
 Qed.
 

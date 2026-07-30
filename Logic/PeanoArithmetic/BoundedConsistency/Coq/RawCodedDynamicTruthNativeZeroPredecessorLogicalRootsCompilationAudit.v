@@ -1,0 +1,15 @@
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
+
+Check raw_dynamicTruthZeroLocalDecisionExclusiveFieldCode.
+Check
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase.
+Check
+  raw_dynamicTruthNativeLocalZeroPredecessorRootCompiler_of_growing_logical_roots.
+
+Print Assumptions raw_dynamicTruthZeroLocalDecisionExclusiveFieldCode.
+Print Assumptions
+  raw_dynamicTruthNativeLocalZeroPredecessorRootCompiler_of_growing_logical_roots.
