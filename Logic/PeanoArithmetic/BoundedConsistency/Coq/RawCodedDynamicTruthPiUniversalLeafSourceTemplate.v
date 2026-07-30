@@ -71,6 +71,12 @@ Definition coqDynamicTruthLowerSigmaAtomTemplate : TemplateFormula :=
   tfOpaque coqDynamicTruthLowerSigmaPredicateName
     [ttVar 9; ttVar 1; ttVar 0].
 
+(** Slot-parametric form for combined translators.  Existing Pi-only
+    clients continue to use the definition above at local slot zero. *)
+Definition coqDynamicTruthLowerSigmaAtomTemplateAt
+    (predicate : TemplatePredicateName) : TemplateFormula :=
+  tfOpaque predicate [ttVar 9; ttVar 1; ttVar 0].
+
 (** Both polarities use the same three de Bruijn openings.  Their relations
     differ only in the intended polarity of the input predicate, which is not
     part of the raw five-trace data. *)
@@ -153,6 +159,42 @@ Definition coqDynamicTruthPiSuccessorRowTemplate : TemplateFormula :=
   templateRepeatedExists 8
     (tfAnd coqDynamicTruthPiDomainLeafTemplate
       coqDynamicTruthPiBranchesTemplate).
+
+(** Relocate the Pi row's sole opaque occurrence, which lies inside the
+    existential branch, into a caller-chosen disjoint predicate slot. *)
+Definition coqDynamicTruthPiNoBinderCounterexampleTemplateAt
+    (predicate : TemplatePredicateName) : TemplateFormula :=
+  tfImp
+    (templateRepeatedExists 3
+      (tfAnd coqDynamicTruthPiBinderPrependTemplate
+        (coqDynamicTruthLowerSigmaAtomTemplateAt predicate)))
+    tfBot.
+
+Definition coqDynamicTruthPiExistentialLeafTemplateAt
+    (predicate : TemplatePredicateName) : TemplateFormula :=
+  tfAnd coqDynamicTruthPiExistentialPrefixTemplate
+    (coqDynamicTruthPiNoBinderCounterexampleTemplateAt predicate).
+
+Definition coqDynamicTruthPiBranchesTemplateAt
+    (predicate : TemplatePredicateName) : TemplateFormula :=
+  tfOr coqDynamicTruthPiQfLeafTemplate
+    (tfOr coqDynamicTruthPiImpLeafTemplate
+      (tfOr coqDynamicTruthPiAndLeafTemplate
+        (tfOr coqDynamicTruthPiOrLeafTemplate
+          (tfOr coqDynamicTruthPiAllLeafTemplate
+            (coqDynamicTruthPiExistentialLeafTemplateAt predicate))))).
+
+Definition coqDynamicTruthPiSuccessorRowTemplateAt
+    (predicate : TemplatePredicateName) : TemplateFormula :=
+  templateRepeatedExists 8
+    (tfAnd coqDynamicTruthPiDomainLeafTemplate
+      (coqDynamicTruthPiBranchesTemplateAt predicate)).
+
+Lemma coqDynamicTruthPiSuccessorRowTemplateAt_default :
+  coqDynamicTruthPiSuccessorRowTemplateAt
+    coqDynamicTruthLowerSigmaPredicateName =
+  coqDynamicTruthPiSuccessorRowTemplate.
+Proof. reflexivity. Qed.
 
 (** ------------------------------------------------------------------
     Transparent carrier polynomials for the source template. *)

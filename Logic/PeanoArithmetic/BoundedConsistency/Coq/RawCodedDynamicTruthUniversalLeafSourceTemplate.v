@@ -75,6 +75,13 @@ Definition coqDynamicTruthLowerPiAtomTemplate : TemplateFormula :=
   tfOpaque coqDynamicTruthLowerPiPredicateName
     [ttVar 9; ttVar 1; ttVar 0].
 
+(** Predicate-parameterized spelling used when this row shares a template
+    translator with other opaque families.  The historical slot-zero
+    spelling above remains unchanged for all existing single-row clients. *)
+Definition coqDynamicTruthLowerPiAtomTemplateAt
+    (predicate : TemplatePredicateName) : TemplateFormula :=
+  tfOpaque predicate [ttVar 9; ttVar 1; ttVar 0].
+
 (** ------------------------------------------------------------------
     The eight actual leaves of Rocq's Sigma successor row.
 
@@ -148,6 +155,44 @@ Definition coqDynamicTruthSigmaSuccessorRowTemplate : TemplateFormula :=
   templateRepeatedExists 8
     (tfAnd coqDynamicTruthSigmaDomainLeafTemplate
       coqDynamicTruthSigmaBranchesTemplate).
+
+(** The only opaque occurrence in the Sigma row sits inside the universal
+    branch.  These parameterized wrappers relocate that occurrence without
+    traversing or decoding any carrier formula code. *)
+Definition coqDynamicTruthSigmaNoBinderCounterexampleTemplateAt
+    (predicate : TemplatePredicateName) : TemplateFormula :=
+  tfImp
+    (templateRepeatedExists 3
+      (tfAnd coqDynamicTruthSigmaBinderPrependTemplate
+        (coqDynamicTruthLowerPiAtomTemplateAt predicate)))
+    tfBot.
+
+Definition coqDynamicTruthSigmaUniversalLeafTemplateAt
+    (predicate : TemplatePredicateName) : TemplateFormula :=
+  tfAnd coqDynamicTruthSigmaUniversalPrefixTemplate
+    (coqDynamicTruthSigmaNoBinderCounterexampleTemplateAt predicate).
+
+Definition coqDynamicTruthSigmaBranchesTemplateAt
+    (predicate : TemplatePredicateName) : TemplateFormula :=
+  tfOr coqDynamicTruthSigmaQfLeafTemplate
+    (tfOr coqDynamicTruthSigmaImpFalseLeftLeafTemplate
+      (tfOr coqDynamicTruthSigmaImpTrueRightLeafTemplate
+        (tfOr coqDynamicTruthSigmaAndLeafTemplate
+          (tfOr coqDynamicTruthSigmaOrLeafTemplate
+            (tfOr coqDynamicTruthSigmaExLeafTemplate
+              (coqDynamicTruthSigmaUniversalLeafTemplateAt predicate)))))).
+
+Definition coqDynamicTruthSigmaSuccessorRowTemplateAt
+    (predicate : TemplatePredicateName) : TemplateFormula :=
+  templateRepeatedExists 8
+    (tfAnd coqDynamicTruthSigmaDomainLeafTemplate
+      (coqDynamicTruthSigmaBranchesTemplateAt predicate)).
+
+Lemma coqDynamicTruthSigmaSuccessorRowTemplateAt_default :
+  coqDynamicTruthSigmaSuccessorRowTemplateAt
+    coqDynamicTruthLowerPiPredicateName =
+  coqDynamicTruthSigmaSuccessorRowTemplate.
+Proof. reflexivity. Qed.
 
 (** ------------------------------------------------------------------
     Generic quotation equations for ordinary embedded PA syntax. *)
