@@ -4703,3 +4703,12 @@ compiles all five `All-E` nodes and both `Imp-E` nodes, and returns the root-row
 polarity disjunction in the unchanged ten-witness context.  The next step is
 therefore only fixed-polarity disjunction elimination and alignment of the
 selected local formula with the predecessor evidence codes.
+
+The propositional part of that selection is now factored generically.  New
+left and right tagged-choice eliminators consume a proof of
+`((tag₀ ∧ A) ∨ (tag₁ ∧ B))` together with a represented contradiction for
+the opposite tag.  Each selector constructs the two branch assumptions,
+projects the tags or payloads, transports the contradiction beneath the
+opposite branch, and closes an honest `Or-E` proof.  The dynamic specialization
+now only needs to supply the PA proofs that zero differs from one and the
+atomic-adequacy certificates for the two concrete tagged row branches.

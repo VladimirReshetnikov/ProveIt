@@ -1,0 +1,9 @@
+From BoundedPAConsistency Require Import RawCodedPALocalProofTaggedChoice.
+
+Import PABoundedRawCodedPALocalProofTaggedChoice.
+
+Check raw_codedPALocalProofOf_taggedChoice_left.
+Check raw_codedPALocalProofOf_taggedChoice_right.
+
+Print Assumptions raw_codedPALocalProofOf_taggedChoice_left.
+Print Assumptions raw_codedPALocalProofOf_taggedChoice_right.
