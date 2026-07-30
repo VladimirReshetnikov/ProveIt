@@ -6,6 +6,7 @@ From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.List Require Import Basic.
 From Foundation.Vorspiel.List Require Import Chain.
 From Foundation.Vorspiel.Nat Require Import Basic.
+From Foundation.Vorspiel.Set Require Import Basic.
 From Foundation.Vorspiel.Order Require Import Heyting.
 From Foundation.Vorspiel.Order Require Import Lattice.
 From Foundation.Vorspiel.Order Require Import Dense.
@@ -140,6 +141,13 @@ Check nat_to_fin.
 Print Assumptions nat_positive_of_nonzero.
 Print Assumptions nat_one_le_of_odd.
 Print Assumptions nat_square_pair_monotone.
+Check pred_set.
+Check set_subset.
+Print Assumptions set_doubleton_subset_iff.
+Print Assumptions set_subset_insert_iff_remove.
+Print Assumptions set_strict_subset_of_subset_not_equiv.
+Print Assumptions finite_list_subset_chain_union.
+Print Assumptions finite_family_subset_chain_union.
 Check heyting_algebra_data.
 Print Assumptions ha_inf_mono.
 Print Assumptions ha_himp_himp_inf_himp_inf_le.
