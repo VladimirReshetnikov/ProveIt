@@ -9,8 +9,9 @@
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lia.
-From Foundation.Syntax.Predicate Require Import Language.
+From Foundation.Syntax.Predicate Require Import Language Term.
 From Foundation.FirstOrder.Basic Require Import Operator.
+From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics OperatorSemantics.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Model Monotone.
@@ -417,6 +418,96 @@ Proof.
     destruct (Nat.eq_dec m n) as [-> | Hne].
     + apply peano_minus_le_refl.
     + right. apply (peano_minus_numeral_lt H). lia.
+Qed.
+
+Definition peano_minus_ball_lt_succ {X n}
+    (t : semiterm oring_language X n)
+    (p : semiformula oring_language X (S n)) :
+    semiformula oring_language X n :=
+  semiformula_ball_lt_succ
+    (semiformula_lt_operator_of_language
+      (language_oring_lt oring_language_structure))
+    (semiterm_one_operator_of_language
+      (language_oring_one oring_language_structure))
+    (semiterm_add_operator_of_language
+      (language_oring_add oring_language_structure)) t p.
+
+Definition peano_minus_bex_lt_succ {X n}
+    (t : semiterm oring_language X n)
+    (p : semiformula oring_language X (S n)) :
+    semiformula oring_language X n :=
+  semiformula_bex_lt_succ
+    (semiformula_lt_operator_of_language
+      (language_oring_lt oring_language_structure))
+    (semiterm_one_operator_of_language
+      (language_oring_one oring_language_structure))
+    (semiterm_add_operator_of_language
+      (language_oring_add oring_language_structure)) t p.
+
+Lemma peano_minus_eval_ball_lt_succ : forall M X n
+    (Str : first_order_structure oring_language M)
+    (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  forall (b : Fin.t n -> M) (f : X -> M)
+    (t : semiterm oring_language X n)
+    (p : semiformula oring_language X (S n)),
+  semiformula_eval Str b f (peano_minus_ball_lt_succ t p) <->
+  forall x, peano_minus_le O x (semiterm_val Str b f t) ->
+    semiformula_eval Str (fin_env_cons x b) f p.
+Proof.
+  intros M X n Str O Horing Hpa b f t p.
+  unfold peano_minus_ball_lt_succ.
+  rewrite (@semiformula_eval_ball_lt_succ oring_language M X n
+    Str b f
+    (semiformula_lt_operator_of_language
+      (language_oring_lt oring_language_structure))
+    (semiterm_one_operator_of_language
+      (language_oring_one oring_language_structure))
+    (semiterm_add_operator_of_language
+      (language_oring_add oring_language_structure))
+    (oring_lt O) (oring_one O) (oring_add O) t p
+    (structure_oring_lt Horing) (structure_oring_one Horing)
+    (structure_oring_add Horing)).
+  split; intros Hall x Hx; apply Hall.
+  - now apply (proj1 (peano_minus_le_iff_lt_add_one Hpa x
+      (semiterm_val Str b f t))).
+  - now apply (proj2 (peano_minus_le_iff_lt_add_one Hpa x
+      (semiterm_val Str b f t))).
+Qed.
+
+Lemma peano_minus_eval_bex_lt_succ : forall M X n
+    (Str : first_order_structure oring_language M)
+    (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  forall (b : Fin.t n -> M) (f : X -> M)
+    (t : semiterm oring_language X n)
+    (p : semiformula oring_language X (S n)),
+  semiformula_eval Str b f (peano_minus_bex_lt_succ t p) <->
+  exists x, peano_minus_le O x (semiterm_val Str b f t) /\
+    semiformula_eval Str (fin_env_cons x b) f p.
+Proof.
+  intros M X n Str O Horing Hpa b f t p.
+  unfold peano_minus_bex_lt_succ.
+  rewrite (@semiformula_eval_bex_lt_succ oring_language M X n
+    Str b f
+    (semiformula_lt_operator_of_language
+      (language_oring_lt oring_language_structure))
+    (semiterm_one_operator_of_language
+      (language_oring_one oring_language_structure))
+    (semiterm_add_operator_of_language
+      (language_oring_add oring_language_structure))
+    (oring_lt O) (oring_one O) (oring_add O) t p
+    (structure_oring_lt Horing) (structure_oring_one Horing)
+    (structure_oring_add Horing)).
+  split.
+  - intros [x [Hx Hp]]. exists x. split; [|exact Hp].
+    now apply (proj2 (peano_minus_le_iff_lt_add_one Hpa x
+      (semiterm_val Str b f t))).
+  - intros [x [Hx Hp]]. exists x. split; [|exact Hp].
+    now apply (proj1 (peano_minus_le_iff_lt_add_one Hpa x
+      (semiterm_val Str b f t))).
 Qed.
 
 Definition nat_peano_minus_laws :
