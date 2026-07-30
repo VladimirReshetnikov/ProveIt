@@ -3,6 +3,7 @@
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
 From Foundation.Vorspiel Require Import NotationClass.
+From Foundation.Vorspiel Require Import Quotient.
 From Foundation.Vorspiel Require Import Small.
 From Foundation.Vorspiel Require Import String.
 From Foundation.Vorspiel Require Import Fintype.
@@ -104,6 +105,14 @@ Check lo_godel_quote.
 Check lo_sigma_symbol.
 Check lo_pi_symbol.
 Check lo_delta_symbol.
+Check explicit_quotient.
+Check quotient_vec_mk.
+Print Assumptions quotient_vec_induction.
+Check quotient_vec_lift.
+Print Assumptions quotient_vec_lift_zero.
+Print Assumptions quotient_vec_lift_mk.
+Print Assumptions quotient_vec_lift_mk_one.
+Print Assumptions quotient_vec_lift_mk_two.
 Print Assumptions option_return_eq_some.
 Check option_to_list.
 Print Assumptions option_to_list_singleton_iff.
