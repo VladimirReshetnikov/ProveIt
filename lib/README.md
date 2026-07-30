@@ -26,8 +26,9 @@ the port neither imports nor modifies the Lean checkout.
 synthesizer (Djinn's LJT engine + Exference's ranked search) referenced
 by the Leant term-synthesis proposal at
 [`../Tools/Leant/SYNTHESIS_PROPOSAL.md`](../Tools/Leant/SYNTHESIS_PROPOSAL.md).
-It is a source reference and future library dependency for
-[`../Tools/Leant/`](../Tools/Leant/); nothing in this repository
+It is the in-process engine behind the `:synth` command of
+[`../Tools/Leant/`](../Tools/Leant/) (linked via `build-depends: djex`
+from `Tools/Leant/cabal.project`); nothing in this repository
 modifies it.
 
 Repository-authored Busy Beaver models, bridges, and score certificates live

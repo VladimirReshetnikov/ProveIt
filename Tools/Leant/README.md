@@ -28,11 +28,15 @@ The Haskeline front-end (interrupt-safe step loop, logical multi-line input,
 
 ## Building
 
-Requires GHC ≥ 9.4 and cabal (tested with GHC 9.12.4). All dependencies are
-GHC boot libraries:
+Requires GHC 9.12.4 and cabal. The REPL core uses GHC boot libraries
+only, but `:synth` links the vendored [Djex](../../lib/Djex) synthesis
+library (a read-only git submodule — run
+`git submodule update --init lib/Djex` once), which pulls
+`haskell-src-exts` and a few other packages from Hackage. The bundled
+`cabal.project` builds both packages together:
 
 ```
-cabal build
+cabal build exe:leant
 ```
 
 `leant.cmd` builds on first use and runs the binary (pausing on error
@@ -68,6 +72,39 @@ leant [FILE] [--project DIR] [--plain] [-i MOD]
   a walkthrough): tactic-by-tactic goals, unlimited `:undo`, `:script`,
   `:auto`, `:qed [NAME]` saving a real theorem, resumption of the last
   `sorry`, and crash-safe script dumps.
+
+## `:synth` — automatic term synthesis (Haskell-only)
+
+`:synth TYPE` constructs programs and proofs in the structural fragment
+`→ / × / ∧ / ⊕ / ∨ / ↔ / ¬ / ⊥ / ⊤ / ∀` over opaque variables, using the
+Djinn LJT engine from the vendored [Djex](../../lib/Djex) library —
+linked in-process, no subprocess. Design and phasing:
+[SYNTHESIS_PROPOSAL.md](SYNTHESIS_PROPOSAL.md) (phases 0–1 are
+implemented).
+
+```
+λ> :synth (A × (B ⊕ C) → (A × B) ⊕ (A × C))
+  1  fun ⟨a, b⟩ => match b with | .inl c => .inl ⟨a, c⟩ | .inr d => .inr ⟨a, d⟩
+(1 verified candidate)
+λ> :synth (((a → b) → a) → a)
+provably uninhabited — no closed term of this polymorphic type exists
+```
+
+- Every displayed candidate has been **verified by the Lean backend**
+  (`example : (T) := term`) — the synthesis engine is never trusted.
+- Candidates are ranked; `:synth N` binds candidate N as `it` (in prove
+  mode it closes the goal with `exact`). Bare `:synth` targets the
+  current prove-mode goal or the last `sorry`.
+- Negative verdicts are labeled by strength: "provably uninhabited" only
+  when the translation was complete and every opaque atom is a genuine
+  quantified variable; otherwise "no term found within bounds". In
+  `Prop` the verdict notes it is about *constructive* provability.
+- Dependent subformulas (`∀ n : Nat, P n`) are carried as opaque atoms:
+  transportable, never analyzed. Session declarations are visible to
+  goal translation (the session history is replayed into the synthesis
+  environment).
+- The Python implementation deliberately does not grow a synthesis host;
+  its `:synth` prints a pointer here.
 
 ## Differences from the Python version
 

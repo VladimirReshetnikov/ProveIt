@@ -150,6 +150,7 @@ used with `:t`/`:info` or evaluated bare, instead of a plain
 | `:doc NAME` | show the documentation string of a declaration |
 | `:search TEXT` | case-insensitive name search over the environment |
 | `:search? TYPE` | proof search: what proves TYPE? (via `exact?`) |
+| `:synth TYPE` | term synthesis — Haskell [Tools/Leant](../Leant/README.md) only (in-process Djex engine); here it prints a pointer |
 | `:prove [PROP]` | interactive prove mode (see above); bare form resumes the last `sorry` |
 | `:set OPT VAL` | `set_option` persisting in the session |
 | `:undo` | revert the last state-changing command |

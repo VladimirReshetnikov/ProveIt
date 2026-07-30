@@ -11,7 +11,7 @@ module Main (main) where
 import Control.Exception (SomeException, finally, try)
 import Control.Monad (forM_, unless, when)
 import Control.Monad.IO.Class (liftIO)
-import Data.Char (isAlphaNum, isSpace, toLower)
+import Data.Char (isAlphaNum, isDigit, isSpace, toLower)
 import Data.IORef
 import Data.List (intercalate, isInfixOf, isPrefixOf, isSuffixOf, nub, stripPrefix)
 import Data.Maybe (fromMaybe, isJust)
@@ -37,6 +37,17 @@ import Leant.Builtins (builtinInfo)
 import Leant.Classify
 import Leant.Format (formatInfo, indentDefBody)
 import Leant.Json
+import Leant.Synth.Engine (SynthOutcome (..), synthesize)
+import Leant.Synth.Fragment
+  ( ParsedGoal (..)
+  , GoalSort (..)
+  , fragLeadingAlls
+  , fragRefusal
+  , fragUnsafeAtoms
+  , parseGoalSexp
+  , serializerProgram
+  , synthPrelude
+  )
 
 #ifdef mingw32_HOST_OS
 import Data.Bits ((.|.))
@@ -127,12 +138,28 @@ data ReplState = ReplState
     -- ^ cached environment for :browse - session imports plus
     -- Lean.Elab.Command (so the introspection metaprogram elaborates without
     -- polluting the user's own environment); invalidated on import changes
+  , rsSynthBase :: Maybe Integer
+    -- ^ cached base environment for :synth goal translation - session
+    -- imports plus Lean (for run_tac) plus the compiled serializer
+    -- prelude; invalidated on import changes
+  , rsSynthEnv :: Maybe (Integer, [String])
+    -- ^ the base environment with the session history replayed on top
+    -- (so session-local names translate), tagged with the history it
+    -- replayed; rebuilt when the history changes
+  , rsSynthLast :: Maybe SynthBatch
+    -- ^ the last verified :synth batch, for `:synth N` selection
   , rsTimeout :: Maybe Int
   , rsColor :: Bool
   , rsInteractive :: Bool
     -- ^ False when stdin is piped: prompts and echo go through emit (so the
     -- output and transcript read like a session) and Haskeline's own
     -- locale-encoded prompt printing is bypassed.
+  }
+
+-- | The goal text and the verified candidate terms of the last :synth.
+data SynthBatch = SynthBatch
+  { sbGoal :: String
+  , sbTerms :: [String]
   }
 
 -- | Interactive prove mode: the stack holds (proofState, goals, scriptEntry)
@@ -379,7 +406,9 @@ printResponse st transform v = case respFatal v of
 -- startup after a crash, and when imports change).
 rebuildSession :: St -> IO Bool
 rebuildSession st = do
-  modifyIORef' st (\s -> s { rsBrowseEnv = Nothing, rsComplCache = [] })
+  modifyIORef' st (\s -> s
+    { rsBrowseEnv = Nothing, rsSynthBase = Nothing, rsSynthEnv = Nothing
+    , rsComplCache = [] })
   state <- readIORef st
   baseOk <- case rsImports state of
     [] -> do
@@ -655,6 +684,8 @@ helpText = unlines
   , "  :doc NAME                show the documentation string of NAME"
   , "  :search TEXT             search declaration names (case-insensitive)"
   , "  :search? TYPE            proof search: what proves TYPE? (via exact?)"
+  , "  :synth TYPE              synthesize verified terms of TYPE (LJT engine)"
+  , "  :synth N                 pick candidate N from the last :synth batch"
   , "  :set OPT VAL             set_option OPT VAL (persists in the session)"
   , "  :undo                    revert the last state-changing command"
   , "  :reset                   clear all definitions (keeps imports)"
@@ -673,8 +704,8 @@ commandNames :: [String]
 commandNames =
   [ ":help", ":quit", ":type", ":info", ":load", ":reload", ":import"
   , ":imports", ":browse", ":browse!", ":doc", ":prove", ":search", ":search?"
-  , ":set", ":undo", ":reset", ":history", ":env", ":time", ":transcript"
-  , ":timestamps", ":pickle", ":unpickle"
+  , ":set", ":synth", ":undo", ":reset", ":history", ":env", ":time"
+  , ":transcript", ":timestamps", ":pickle", ":unpickle"
   ]
 
 -- Returns False when the REPL should exit.
@@ -700,6 +731,7 @@ dispatchCommand st line = do
     "doc" -> True <$ cmdDoc st arg
     "search" -> True <$ cmdSearch st False arg
     "search?" -> True <$ cmdSearch st True arg
+    "synth" -> True <$ cmdSynth st arg
     "import" -> True <$ cmdImport st (words (map decomma arg))
     "imports" -> do
       imports <- rsImports <$> readIORef st
@@ -1099,6 +1131,291 @@ cmdSearch st byType arg
  where
   lower = map toLower
 
+-- :synth ---------------------------------------------------------------------
+--
+-- Term synthesis via the in-process Djex Djinn (LJT) engine; see
+-- SYNTHESIS_PROPOSAL.md.  The pipeline: translate the goal on the backend
+-- (serializer metaprogram), refuse honestly when out of fragment, run the
+-- engine, then verify every shown candidate with `example : (T) := term`
+-- in the user's environment - the engine is never trusted.
+
+-- | The base environment for :synth goal translation: session imports
+-- plus the Lean metaprogramming API, with the compiled serializer
+-- prelude on top (run_tac runs interpreted and cannot host `let rec`).
+ensureSynthBase :: St -> IO (Either String Integer)
+ensureSynthBase st = do
+  state <- readIORef st
+  case rsSynthBase state of
+    Just env -> pure (Right env)
+    Nothing -> do
+      emitLn st =<< cDim st
+        "preparing synthesis environment (session imports + Lean)..."
+      let imports = nub (rsImports state ++ ["Lean"])
+      result <- runCmd st Nothing (unlines (map ("import " ++) imports))
+      case result of
+        Left err -> pure (Left err)
+        Right v
+          | hasErrors v || isJust (respFatal v) -> do
+              _ <- printResponse st Nothing v
+              pure (Left "failed to build the synthesis environment")
+          | otherwise -> case respEnv v of
+              Nothing -> pure (Left "synthesis environment has no id")
+              Just importEnv -> do
+                prelude <- runCmd st (Just importEnv) synthPrelude
+                case prelude of
+                  Left err -> pure (Left err)
+                  Right pv
+                    | hasErrors pv || isJust (respFatal pv) -> do
+                        _ <- printResponse st Nothing pv
+                        pure (Left
+                          "failed to compile the synthesis serializer")
+                    | otherwise -> case respEnv pv of
+                        Nothing -> pure
+                          (Left "synthesis environment has no id")
+                        Just env -> do
+                          modifyIORef' st
+                            (\s -> s { rsSynthBase = Just env })
+                          pure (Right env)
+
+-- | The synthesis environment: the base plus the session history, so
+-- goals may mention session-local declarations.  Entries that fail to
+-- replay (e.g. names clashing with the Lean import) are skipped with a
+-- note; their declarations are then simply not visible to :synth.
+ensureSynthEnv :: St -> IO (Either String Integer)
+ensureSynthEnv st = do
+  state <- readIORef st
+  case rsSynthEnv state of
+    Just (env, hist) | hist == rsHistory state -> pure (Right env)
+    _ -> do
+      baseOr <- ensureSynthBase st
+      case baseOr of
+        Left err -> pure (Left err)
+        Right base -> do
+          history <- rsHistory <$> readIORef st
+          env <- replaySynth base history
+          modifyIORef' st (\s -> s { rsSynthEnv = Just (env, history) })
+          pure (Right env)
+ where
+  replaySynth env [] = pure env
+  replaySynth env (code : rest) = do
+    result <- runCmd st (Just env) code
+    case result of
+      Right v | not (hasErrors v), Nothing <- respFatal v
+              , Just env' <- respEnv v ->
+        replaySynth env' rest
+      _ -> do
+        emitLn st =<< cDim st
+          ("note: `" ++ takeWhile (/= '\n') code
+           ++ "` is not visible to :synth (it did not replay over the "
+           ++ "Lean import)")
+        replaySynth env rest
+
+-- | The goal target (the part after \8866) of a pretty-printed goal, plus
+-- whether the goal carried hypotheses that :synth will ignore.
+goalTarget :: String -> Maybe (String, Bool)
+goalTarget goalText = case rest of
+  [] -> Nothing
+  (turnstile : more) ->
+    let first' = trim (drop 1 (dropWhile isSpace turnstile))
+        target = trim (intercalate "\n" (first' : more))
+        hadContext = any
+          (\l -> not (null (trim l)) && not ("case " `isPrefixOf` trim l))
+          before
+    in if null target then Nothing else Just (target, hadContext)
+ where
+  (before, rest) =
+    break (\l -> "\8866" `isPrefixOf` dropWhile isSpace l) (lines goalText)
+
+synthMaxShown, synthMaxTried :: Int
+synthMaxShown = 5
+synthMaxTried = 12
+
+cmdSynth :: St -> String -> IO ()
+cmdSynth st rawArg = do
+  state <- readIORef st
+  let arg = trim rawArg
+  if not (null arg) && all isDigit arg && isJust (rsSynthLast state)
+    then synthSelect st (read arg)
+    else do
+      goalOr <-
+        if not (null arg)
+          then pure (Right (substIt (rsItCounter state) arg, False))
+          else case rsProve state of
+            Just pv | (_, goal : _, _) : _ <- pvStack pv ->
+              pure $ case goalTarget goal of
+                Just t -> Right t
+                Nothing -> Left "cannot extract the goal target"
+            _ -> case rsLastSorry state of
+              Just (_, goal) -> pure $ case goalTarget goal of
+                Just t -> Right t
+                Nothing -> Left "cannot extract the goal target"
+              Nothing -> pure (Left
+                ("usage: :synth TYPE   (or bare :synth in prove mode / "
+                 ++ "after a `sorry`, :synth N to pick a candidate)"))
+      case goalOr of
+        Left err -> emitLn st =<< cRed st err
+        Right (goal, hadContext) -> do
+          when hadContext $ emitLn st =<< cDim st
+            "(hypotheses are ignored \8212 synthesizing the goal target only)"
+          synthRun st goal
+
+synthRun :: St -> String -> IO ()
+synthRun st goal = do
+  envOr <- ensureSynthEnv st
+  case envOr of
+    Left err -> emitLn st =<< cRed st err
+    Right env -> do
+      result <- runCmd st (Just env) (serializerProgram goal)
+      case result of
+        Left err -> emitLn st =<< cRed st err
+        Right v -> do
+          let infos = [d | (sev, d) <- respMessages v, sev == "info"]
+              errors = [d | (sev, d) <- respMessages v, sev == "error"]
+              sexp = [d | d <- infos, "(goal " `isPrefixOf` trim d]
+          -- an error next to an emitted translation means Lean recovered
+          -- from a bad goal and the translation is garbage - refuse
+          case (respFatal v, errors, sexp) of
+            (Just fatal, _, _) ->
+              emitLn st . (++ fatal) =<< cRed st "REPL error: "
+            (_, _ : _, _) -> do
+              emitLn st =<< cRed st "cannot translate this goal:"
+              forM_ errors $ \e ->
+                forM_ (lines (trim e)) $ \l -> emitLn st ("  " ++ l)
+            (_, [], translated : _) -> case parseGoalSexp (trim translated) of
+              Left err -> emitLn st =<< cRed st
+                ("goal translation failed: " ++ err)
+              Right parsed -> synthGo st goal parsed
+            (Nothing, [], []) -> emitLn st =<< cRed st
+              "goal translation produced no output"
+
+synthGo :: St -> String -> ParsedGoal -> IO ()
+synthGo st goal parsed = case fragRefusal (pgFrag parsed) of
+  Just reason -> emitLn st =<< cRed st ("out of fragment: " ++ reason)
+  Nothing -> case synthesize (pgFrag parsed) of
+    Left err -> emitLn st =<< cRed st ("synthesis engine error: " ++ err)
+    Right (SynthCandidates terms notes) -> do
+      -- Djinn treats leading quantifiers as implicit polymorphism; the
+      -- Lean goal's explicit leading binders must be introduced
+      let prefixed = map (prefixBinders (fragLeadingAlls (pgFrag parsed)))
+            (take synthMaxTried terms)
+      (verified, dropped) <- synthVerify st goal prefixed
+      let shown = take synthMaxShown verified
+      if null shown
+        then emitLn st =<< cRed st
+          ("the engine proposed " ++ show (length terms)
+           ++ " candidate(s) but none survived Lean verification")
+        else do
+          forM_ (zip [1 :: Int ..] shown) $ \(i, term) -> do
+            n <- cBold st (show i)
+            emitLn st ("  " ++ n ++ "  " ++ term)
+          proving <- isJust . rsProve <$> readIORef st
+          hint <- cDim st (if proving
+            then ":synth N closes the goal with `exact` candidate N"
+            else ":synth N binds candidate N as `it`")
+          counts <- cDim st (synthCounts (length terms) dropped (length shown))
+          emitLn st counts
+          emitLn st hint
+          modifyIORef' st (\s -> s
+            { rsSynthLast = Just (SynthBatch goal shown) })
+      forM_ notes $ \note -> emitLn st =<< cDim st ("note: " ++ note)
+    Right (SynthRefuted sound)
+      | sound -> do
+          message <- cYellow st
+            ("provably uninhabited \8212 no closed term of this "
+             ++ "polymorphic type exists")
+          emitLn st message
+          when (pgSort parsed == GoalProp) $ emitLn st =<< cDim st
+            ("(constructively \8212 a classical proof may still exist; "
+             ++ "this is not a disproof of the proposition)")
+      | otherwise -> do
+          let atoms = fragUnsafeAtoms (pgFrag parsed)
+              listing = intercalate "`, `" (take 3 atoms)
+          emitLn st =<< cYellow st
+            ("no term found within bounds (opaque atoms `" ++ listing
+             ++ "` hide structure the engine cannot analyze \8212 "
+             ++ "not a refutation)")
+    Right (SynthNoTerm notes) -> do
+      emitLn st =<< cYellow st "no term found within the search bounds"
+      forM_ notes $ \note -> emitLn st =<< cDim st ("note: " ++ note)
+
+-- | Prepend one anonymous binder per leading goal quantifier, merging
+-- into the candidate's own lambda when it has one.
+prefixBinders :: Int -> String -> String
+prefixBinders k term
+  | k <= 0 = term
+  | "fun " `isPrefixOf` term =
+      "fun " ++ concat (replicate k "_ ") ++ drop 4 term
+  | otherwise =
+      "fun " ++ concat (replicate k "_ ") ++ "=> (" ++ term ++ ")"
+
+synthCounts :: Int -> Int -> Int -> String
+synthCounts engine dropped shown =
+  "(" ++ show shown ++ " verified candidate" ++ plural shown
+  ++ (if dropped > 0
+        then "; " ++ show dropped ++ " failed verification and were hidden"
+        else "")
+  ++ (if engine > synthMaxTried
+        then "; " ++ show engine ++ " proposed by the engine"
+        else "")
+  ++ ")"
+ where
+  plural 1 = ""
+  plural _ = "s"
+
+-- | Verify candidates against the backend, best first, lazily: stop once
+-- enough verified candidates are collected (design rule: only
+-- backend-verified candidates are ever shown).  Returns the verified
+-- terms and how many attempts failed verification.
+synthVerify :: St -> String -> [String] -> IO ([String], Int)
+synthVerify st goal = go synthMaxShown 0
+ where
+  go _ failed [] = pure ([], failed)
+  go 0 failed _ = pure ([], failed)
+  go n failed (term : rest) = do
+    env <- rsEnv <$> readIORef st
+    let code = "set_option autoImplicit true in example : (" ++ goal
+          ++ ") := (" ++ term ++ ")"
+    result <- runCmd st env code
+    case result of
+      Right v | not (hasErrors v), Nothing <- respFatal v
+              , null (respSorries v) -> do
+        (rest', failed') <- go (n - 1) failed rest
+        pure (term : rest', failed')
+      _ -> go n (failed + 1) rest
+
+synthSelect :: St -> Int -> IO ()
+synthSelect st n = do
+  state <- readIORef st
+  case rsSynthLast state of
+    Nothing -> emitLn st =<< cRed st "no :synth batch to select from"
+    Just batch
+      | n < 1 || n > length (sbTerms batch) ->
+          emitLn st =<< cRed st ("candidate " ++ show n
+            ++ " is out of range (1.." ++ show (length (sbTerms batch)) ++ ")")
+      | otherwise -> do
+          let term = sbTerms batch !! (n - 1)
+          case rsProve state of
+            Just _ -> do
+              advanced <- applyTactic st False ("exact (" ++ term ++ ")")
+              when advanced $ do
+                goals <- currentGoals st
+                formatGoals st goals
+                when (null goals) $ emitLn st =<< cDim st
+                  "finish with :qed [NAME], inspect with :script"
+            Nothing -> do
+              let k = rsItCounter state + 1
+                  code = "set_option autoImplicit true in def " ++ itName k
+                    ++ " : (" ++ sbGoal batch ++ ") := (" ++ term ++ ")"
+              result <- runCmd st (rsEnv state) code
+              case result of
+                Right v | not (hasErrors v), Nothing <- respFatal v -> do
+                  modifyIORef' st (\s -> s { rsItCounter = k })
+                  advanceEnv st (respEnv v) code
+                  emitLn st =<< cDim st
+                    ("it := " ++ term ++ " : " ++ sbGoal batch)
+                Right v -> () <$ printResponse st Nothing v
+                Left err -> emitLn st =<< cRed st err
+
 completionCandidates :: St -> String -> IO [String]
 completionCandidates st prefix = do
   state <- readIORef st
@@ -1273,6 +1590,8 @@ proveHelp = unlines
   , "  :undo [N]          take back the last N tactics (default 1)"
   , "  :script            show the tactic script so far"
   , "  :auto              try common finishing tactics on the current goal"
+  , "  :synth             synthesize a term for the goal target (then :synth N"
+  , "                     records the `exact` step; hypotheses are ignored)"
   , "  :qed [NAME]        finish - save as `theorem NAME` in the session"
   , "  :abort             leave prove mode (the script is printed, not lost)"
   , "  :help              this help;  :quit exits the REPL"
@@ -1470,6 +1789,7 @@ proveInput st text = do
             _ -> emitLn st =<< cDim st "(no tactics yet)"
           pure True
         "auto" -> True <$ cmdAuto st
+        "synth" -> True <$ cmdSynth st arg
         "qed" -> True <$ cmdQed st arg
         "abort" -> do
           state <- readIORef st
@@ -1484,7 +1804,8 @@ proveInput st text = do
           pure True
         _ -> do
           emitLn st =<< cRed st ("no :" ++ word ++ " inside prove mode \8212 "
-            ++ "tactics, :goals, :undo, :script, :auto, :qed, :abort, :quit")
+            ++ "tactics, :goals, :undo, :script, :auto, :synth, :qed, "
+            ++ ":abort, :quit")
           pure True
     else do
       counter <- rsItCounter <$> readIORef st
@@ -1853,6 +2174,9 @@ run opts = do
         , rsItCounter = 0
         , rsComplCache = []
         , rsBrowseEnv = Nothing
+        , rsSynthBase = Nothing
+        , rsSynthEnv = Nothing
+        , rsSynthLast = Nothing
         , rsTimeout = if optTimeout opts <= 0 then Nothing
             else Just (optTimeout opts)
         , rsColor = useColor
