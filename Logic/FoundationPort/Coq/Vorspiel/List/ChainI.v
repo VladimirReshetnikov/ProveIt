@@ -154,3 +154,68 @@ Proof.
   - destruct (list_chainI_tail_exists Htail) as [tail Hrest].
     subst rest. now exists tail, c.
 Qed.
+
+Theorem list_chainI_append_point_iff : forall A
+    (R : A -> A -> Prop) (left right : list A) a b c,
+  list_chainI R a b (left ++ c :: right) <->
+  list_chainI R a c (left ++ [c]) /\
+  list_chainI R c b (c :: right).
+Proof.
+  intros A R left. induction left as [|x tail IH]; intros right a b c.
+  - simpl. split.
+    + intro H. assert (a = c) by now apply (list_chainI_head_eq H).
+      subst a. split; [apply chainI_singleton | exact H].
+    + intros [Hsingle H].
+      apply list_chainI_singleton_iff in Hsingle.
+      destruct Hsingle as [-> _]. exact H.
+  - destruct tail as [|y rest].
+    + simpl. split.
+      * intro H. apply list_chainI_cons_cons_iff in H.
+        destruct H as [-> [Hxc Htail]]. split.
+        -- exact (@chainI_cons A R x c c [c]
+             Hxc (chainI_singleton c)).
+        -- exact Htail.
+      * intros [Hleft Hright].
+        apply list_chainI_cons_cons_iff in Hleft.
+        destruct Hleft as [-> [Hxc _]].
+        exact (chainI_cons Hxc Hright).
+    + simpl. split.
+      * intro H. apply list_chainI_cons_cons_iff in H.
+        destruct H as [-> [Hxy Htail]].
+        apply (proj1 (IH right y b c)) in Htail.
+        destruct Htail as [Hleft Hright]. split.
+        -- exact (chainI_cons Hxy Hleft).
+        -- exact Hright.
+      * intros [Hleft Hright].
+        apply list_chainI_cons_cons_iff in Hleft.
+        destruct Hleft as [-> [Hxy Hmiddle]].
+        pose proof (proj2 (IH right y b c)
+          (conj Hmiddle Hright)) as Htail.
+        exact (@chainI_cons A R x y b
+          (y :: rest ++ c :: right) Hxy Htail).
+Qed.
+
+Theorem list_chainI_relation_of_adjacent_infix : forall A
+    (R : A -> A -> Prop) a b xs x y,
+  list_chainI R a b xs ->
+  (exists prefix suffix, xs = prefix ++ x :: y :: suffix) ->
+  R x y.
+Proof.
+  intros A R a b xs x y Hchain [prefix [suffix ->]].
+  apply (proj1 (list_chainI_append_point_iff
+    R prefix (y :: suffix) a b x)) in Hchain.
+  destruct Hchain as [_ Htail].
+  apply list_chainI_cons_cons_iff in Htail.
+  tauto.
+Qed.
+
+Theorem list_chainI_infix_of_prefixed_suffix : forall A
+    (R : A -> A -> Prop) a b xs x whole,
+  list_chainI R a b xs ->
+  (exists prefix, whole = prefix ++ x :: xs) ->
+  exists prefix suffix, whole = prefix ++ x :: a :: suffix.
+Proof.
+  intros A R a b xs x whole Hchain [prefix ->].
+  destruct (list_chainI_tail_exists Hchain) as [tail ->].
+  now exists prefix, tail.
+Qed.

@@ -215,6 +215,9 @@ Print Assumptions list_chainI_not_mem_predecessor.
 Print Assumptions list_chainI_nodup.
 Print Assumptions chainI_lists_explicit_finite_cover.
 Print Assumptions list_chainI_predecessor_exists.
+Print Assumptions list_chainI_append_point_iff.
+Print Assumptions list_chainI_relation_of_adjacent_infix.
+Print Assumptions list_chainI_infix_of_prefixed_suffix.
 Check list_strict_inclusion.
 Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
