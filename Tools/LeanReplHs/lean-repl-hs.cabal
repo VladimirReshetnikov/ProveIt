@@ -1,0 +1,39 @@
+Cabal-Version: 3.0
+Name:          lean-repl-hs
+Version:       0.1.0
+Synopsis:      A GHCi-style interactive REPL for Lean 4
+Description:
+  Haskell port of Tools/LeanRepl/leanrepl.py: an interactive read-eval-print
+  loop for Lean 4 talking directly to the leanprover-community/repl backend
+  (JSON over stdin/stdout), with a Haskeline front-end modeled on the Djex
+  REPL driver.
+License:       BSD-3-Clause
+Author:        Vladimir Reshetnikov
+Maintainer:    Vladimir Reshetnikov
+Build-Type:    Simple
+
+Executable leanrepl-hs
+  Default-Language: Haskell2010
+  Hs-Source-Dirs:   src
+  Main-Is:          Main.hs
+  Other-Modules:
+    LeanRepl.Backend
+    LeanRepl.Builtins
+    LeanRepl.Classify
+    LeanRepl.Format
+    LeanRepl.Json
+  Ghc-Options:
+    -Wall
+    -Wcompat
+    -Wincomplete-uni-patterns
+    -threaded
+  Build-Depends:
+    base       >= 4.19 && < 5,
+    containers >= 0.6  && < 0.9,
+    directory  >= 1.3  && < 1.4,
+    filepath   >= 1.4  && < 1.6,
+    haskeline  >= 0.8  && < 0.9,
+    process    >= 1.6  && < 1.7,
+    time       >= 1.12 && < 1.15
+  if os(windows)
+    Build-Depends: Win32 >= 2.13 && < 2.15
