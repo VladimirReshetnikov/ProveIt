@@ -410,11 +410,11 @@ Qed.
     this same extension and can weaken its incoming global proof exactly
     once. *)
 Theorem
-    raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_selected :
+    raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_selected_under_prefix :
   forall (M : RawPAModel), RawPASatisfies M -> forall
     (translation : RawCodedTemplateTranslation M),
   RawCodedTemplatePAAgreement M translation ->
-  forall witnessList baseContext rootMode localSigma localPi,
+  forall witnessList baseContext prefix rootMode localSigma localPi,
   RawCodedPAAxiomWitnessContext M witnessList baseContext ->
   rootMode = 0 \/ rootMode = 1 ->
   exists witnesses selectedRoot,
@@ -430,14 +430,14 @@ Theorem
       (rawTemplateContextCodeOnTail translation
         (rawStandardPAAxiomWitnessPrefixContextCode M
           witnesses baseContext)
-        (coqDynamicTruthGlobalExistentialDeepContext
-          rootMode localSigma localPi))
+        (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+          rootMode localSigma localPi prefix))
       (rawTemplateFormula translation
         (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
           rootMode localSigma localPi)) selectedRoot.
 Proof.
   intros M hPA translation hagreement witnessList baseContext
-    rootMode localSigma localPi hwitnessed hrootMode.
+    prefix rootMode localSigma localPi hwitnessed hrootMode.
   destruct
     (raw_codedZeroOneDistinctness_roots_on_witnessed_extension
       M hPA translation hagreement witnessList baseContext hwitnessed)
@@ -445,8 +445,8 @@ Proof.
       hextended & hincluded & hzeroNotOne & honeNotZero).
   set (extendedContext :=
     rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext).
-  set (deepPrefix := coqDynamicTruthGlobalExistentialDeepContext
-    rootMode localSigma localPi).
+  set (deepPrefix := coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+    rootMode localSigma localPi prefix).
   assert (hextendedRealizable : RawContextListRealizable M extendedContext).
   {
     exact (raw_codedPAAxiomWitnessContext_context_realizable M
@@ -470,11 +470,12 @@ Proof.
     hdeepPrefixAdequate honeNotZero)
     as [deepOneNotZeroRoot hdeepOneNotZero].
   destruct
-    (raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_choice
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_choice_under_prefix
       M hPA translation
       (rawStandardPAAxiomWitnessPrefixWitnessListCode M
         witnesses witnessList)
-      extendedContext rootMode localSigma localPi hextended hrootMode)
+      extendedContext prefix rootMode localSigma localPi
+      hextended hrootMode)
     as [choiceRoot hchoice].
   assert (hdeepRealizable : RawContextListRealizable M
       (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)).
@@ -595,6 +596,45 @@ Proof.
     split; [exact hextended |].
     split; [exact hincluded |].
     exact hselected.
+Qed.
+
+(** Original state-only selector, obtained by choosing no caller prefix. *)
+Corollary
+    raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_selected :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall witnessList baseContext rootMode localSigma localPi,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  rootMode = 0 \/ rootMode = 1 ->
+  exists witnesses selectedRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses witnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext)
+        (coqDynamicTruthGlobalExistentialDeepContext
+          rootMode localSigma localPi))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
+          rootMode localSigma localPi)) selectedRoot.
+Proof.
+  intros M hPA translation hagreement witnessList baseContext
+    rootMode localSigma localPi hwitnessed hrootMode.
+  pose proof
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_selected_under_prefix
+      M hPA translation hagreement witnessList baseContext []
+      rootMode localSigma localPi hwitnessed hrootMode) as hselected.
+  cbn [coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+    coqDynamicTruthGlobalExistentialDeepContext] in hselected.
+  exact hselected.
 Qed.
 
 End PABoundedRawCodedDynamicTruthGlobalOpenedRowSelection.

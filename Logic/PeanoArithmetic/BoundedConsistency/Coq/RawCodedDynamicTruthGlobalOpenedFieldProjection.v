@@ -128,11 +128,111 @@ Proof.
   intros. eexists. reflexivity.
 Qed.
 
+(** Adding temporary assumptions behind the predecessor-state prefix does
+    not change the opened traversal body at the head of the ten-witness
+    eigencontext. *)
+Lemma coqDynamicTruthGlobalExistentialDeepContextUnderPrefix_head : forall
+    rootMode localSigma localPi prefix,
+  exists tail,
+    coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+      rootMode localSigma localPi prefix =
+    coqDynamicTruthGlobalOpenedTraversalBody
+      rootMode localSigma localPi :: tail.
+Proof.
+  intros. eexists. reflexivity.
+Qed.
+
 (** Produce all seven honest projections from the deep-context head.  The
     witness package is used only to establish realizability of the PA tail;
     the projections themselves are pure represented natural-deduction
     steps. *)
-Theorem raw_codedPALocalProofOf_dynamicTruthGlobal_opened_and7_fields :
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthGlobal_opened_and7_fields_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    witnessList baseContext prefix rootMode localSigma localPi,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedPALocalProofAnd7FieldsAt M
+    (rawTemplateContextCodeOnTail translation baseContext
+      (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+        rootMode localSigma localPi prefix))
+    (rawTemplateFormula translation
+      coqDynamicTruthGlobalOpenedModeDefined)
+    (rawTemplateFormula translation
+      coqDynamicTruthGlobalOpenedFormulaDefined)
+    (rawTemplateFormula translation
+      coqDynamicTruthGlobalOpenedAssignmentCodeDefined)
+    (rawTemplateFormula translation
+      coqDynamicTruthGlobalOpenedAssignmentStepDefined)
+    (rawTemplateFormula translation
+      coqDynamicTruthGlobalOpenedRootBound)
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalOpenedRootLookup rootMode))
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalOpenedRows localSigma localPi)).
+Proof.
+  intros M hPA translation witnessList baseContext prefix rootMode
+    localSigma localPi hwitnessed.
+  destruct
+    (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix_head
+      rootMode localSigma localPi prefix) as [tail hdeep].
+  assert (htail : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation baseContext tail)).
+  {
+    apply (raw_templateContextOnTail_realizable M hPA).
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      witnessList baseContext hwitnessed).
+  }
+  assert (hbody : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+          rootMode localSigma localPi prefix))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedTraversalBody
+          rootMode localSigma localPi))
+      (rawProofAssumptionRoot M
+        (rawTemplateContextCodeOnTail translation baseContext
+          (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+            rootMode localSigma localPi prefix))
+        (rawTemplateFormula translation
+          (coqDynamicTruthGlobalOpenedTraversalBody
+            rootMode localSigma localPi)))).
+  {
+    rewrite hdeep. cbn [rawTemplateContextCodeOnTail].
+    exact (raw_codedPALocalProofOf_assumption M hPA
+      (rawTemplateContextCodeOnTail translation baseContext tail)
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedTraversalBody
+          rootMode localSigma localPi)) htail).
+  }
+  rewrite coqDynamicTruthGlobalOpenedTraversalBody_and7_shape in hbody.
+  rewrite !rawTemplateFormula_and in hbody.
+  lazymatch type of hbody with
+  | RawCodedPALocalProofOf _ _ _ ?bodyRoot =>
+      exact (raw_codedPALocalProofOf_and7E M hPA
+        (rawTemplateContextCodeOnTail translation baseContext
+          (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+            rootMode localSigma localPi prefix))
+        (rawTemplateFormula translation
+          coqDynamicTruthGlobalOpenedModeDefined)
+        (rawTemplateFormula translation
+          coqDynamicTruthGlobalOpenedFormulaDefined)
+        (rawTemplateFormula translation
+          coqDynamicTruthGlobalOpenedAssignmentCodeDefined)
+        (rawTemplateFormula translation
+          coqDynamicTruthGlobalOpenedAssignmentStepDefined)
+        (rawTemplateFormula translation
+          coqDynamicTruthGlobalOpenedRootBound)
+        (rawTemplateFormula translation
+          (coqDynamicTruthGlobalOpenedRootLookup rootMode))
+        (rawTemplateFormula translation
+          (coqDynamicTruthGlobalOpenedRows localSigma localPi))
+        bodyRoot hbody)
+  end.
+Qed.
+
+(** Compatibility endpoint over the original state-only context. *)
+Corollary raw_codedPALocalProofOf_dynamicTruthGlobal_opened_and7_fields :
   forall (M : RawPAModel), RawPASatisfies M -> forall
     (translation : RawCodedTemplateTranslation M)
     witnessList baseContext rootMode localSigma localPi,
@@ -158,62 +258,13 @@ Theorem raw_codedPALocalProofOf_dynamicTruthGlobal_opened_and7_fields :
 Proof.
   intros M hPA translation witnessList baseContext rootMode
     localSigma localPi hwitnessed.
-  destruct
-    (coqDynamicTruthGlobalExistentialDeepContext_head
-      rootMode localSigma localPi) as [tail hdeep].
-  assert (htail : RawContextListRealizable M
-      (rawTemplateContextCodeOnTail translation baseContext tail)).
-  {
-    apply (raw_templateContextOnTail_realizable M hPA).
-    exact (raw_codedPAAxiomWitnessContext_context_realizable M
-      witnessList baseContext hwitnessed).
-  }
-  assert (hbody : RawCodedPALocalProofOf M
-      (rawTemplateContextCodeOnTail translation baseContext
-        (coqDynamicTruthGlobalExistentialDeepContext
-          rootMode localSigma localPi))
-      (rawTemplateFormula translation
-        (coqDynamicTruthGlobalOpenedTraversalBody
-          rootMode localSigma localPi))
-      (rawProofAssumptionRoot M
-        (rawTemplateContextCodeOnTail translation baseContext
-          (coqDynamicTruthGlobalExistentialDeepContext
-            rootMode localSigma localPi))
-        (rawTemplateFormula translation
-          (coqDynamicTruthGlobalOpenedTraversalBody
-            rootMode localSigma localPi)))).
-  {
-    rewrite hdeep. cbn [rawTemplateContextCodeOnTail].
-    exact (raw_codedPALocalProofOf_assumption M hPA
-      (rawTemplateContextCodeOnTail translation baseContext tail)
-      (rawTemplateFormula translation
-        (coqDynamicTruthGlobalOpenedTraversalBody
-          rootMode localSigma localPi)) htail).
-  }
-  rewrite coqDynamicTruthGlobalOpenedTraversalBody_and7_shape in hbody.
-  rewrite !rawTemplateFormula_and in hbody.
-  lazymatch type of hbody with
-  | RawCodedPALocalProofOf _ _ _ ?bodyRoot =>
-      exact (raw_codedPALocalProofOf_and7E M hPA
-        (rawTemplateContextCodeOnTail translation baseContext
-          (coqDynamicTruthGlobalExistentialDeepContext
-            rootMode localSigma localPi))
-        (rawTemplateFormula translation
-          coqDynamicTruthGlobalOpenedModeDefined)
-        (rawTemplateFormula translation
-          coqDynamicTruthGlobalOpenedFormulaDefined)
-        (rawTemplateFormula translation
-          coqDynamicTruthGlobalOpenedAssignmentCodeDefined)
-        (rawTemplateFormula translation
-          coqDynamicTruthGlobalOpenedAssignmentStepDefined)
-        (rawTemplateFormula translation
-          coqDynamicTruthGlobalOpenedRootBound)
-        (rawTemplateFormula translation
-          (coqDynamicTruthGlobalOpenedRootLookup rootMode))
-        (rawTemplateFormula translation
-          (coqDynamicTruthGlobalOpenedRows localSigma localPi))
-        bodyRoot hbody)
-  end.
+  pose proof
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_opened_and7_fields_under_prefix
+      M hPA translation witnessList baseContext [] rootMode
+      localSigma localPi hwitnessed) as hfields.
+  cbn [coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+    coqDynamicTruthGlobalExistentialDeepContext] in hfields.
+  exact hfields.
 Qed.
 
 (** Open the five row binders at the root tuple carried by the ten global
@@ -294,26 +345,27 @@ Qed.
 (** Consume fields five through seven to obtain the selected root-row choice
     in the unchanged deepest context.  All five [All-E] nodes and both
     [Imp-E] nodes are compiled by the generic finite-chain endpoint. *)
-Theorem raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_choice :
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_choice_under_prefix :
   forall (M : RawPAModel), RawPASatisfies M -> forall
     (translation : RawCodedTemplateTranslation M)
-    witnessList baseContext rootMode localSigma localPi,
+    witnessList baseContext prefix rootMode localSigma localPi,
   RawCodedPAAxiomWitnessContext M witnessList baseContext ->
   rootMode = 0 \/ rootMode = 1 ->
   exists root,
     RawCodedPALocalProofOf M
       (rawTemplateContextCodeOnTail translation baseContext
-        (coqDynamicTruthGlobalExistentialDeepContext
-          rootMode localSigma localPi))
+        (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+          rootMode localSigma localPi prefix))
       (rawTemplateFormula translation
         (coqDynamicTruthGlobalOpenedRootRowChoice
           rootMode localSigma localPi)) root.
 Proof.
-  intros M hPA translation witnessList baseContext rootMode
+  intros M hPA translation witnessList baseContext prefix rootMode
     localSigma localPi hwitnessed hrootMode.
   pose proof
-    (raw_codedPALocalProofOf_dynamicTruthGlobal_opened_and7_fields
-      M hPA translation witnessList baseContext rootMode
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_opened_and7_fields_under_prefix
+      M hPA translation witnessList baseContext prefix rootMode
       localSigma localPi hwitnessed) as hfields.
   destruct hfields as
     [hmode hformula hassignmentCode hassignmentStep
@@ -326,8 +378,8 @@ Proof.
     (raw_codedPALocalProofOf_templateUniversalOpenMany_impE2
       M hPA translation
       (rawTemplateContextCodeOnTail translation baseContext
-        (coqDynamicTruthGlobalExistentialDeepContext
-          rootMode localSigma localPi))
+        (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+          rootMode localSigma localPi prefix))
       (coqDynamicTruthGlobalOpenedRows localSigma localPi)
       (coqDynamicTruthGlobalOpenedRootRowReplacements rootMode)
       (templateImpAntecedent
@@ -346,6 +398,33 @@ Proof.
           (coqDynamicTruthGlobalOpenedRootRowFormula_imp2_shape
             rootMode localSigma localPi)))
       hrows hbound hlookup).
+Qed.
+
+(** State-only compatibility endpoint. *)
+Corollary raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_choice :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    witnessList baseContext rootMode localSigma localPi,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  rootMode = 0 \/ rootMode = 1 ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (coqDynamicTruthGlobalExistentialDeepContext
+          rootMode localSigma localPi))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowChoice
+          rootMode localSigma localPi)) root.
+Proof.
+  intros M hPA translation witnessList baseContext rootMode
+    localSigma localPi hwitnessed hrootMode.
+  pose proof
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_choice_under_prefix
+      M hPA translation witnessList baseContext [] rootMode
+      localSigma localPi hwitnessed hrootMode) as hchoice.
+  cbn [coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+    coqDynamicTruthGlobalExistentialDeepContext] in hchoice.
+  exact hchoice.
 Qed.
 
 End PABoundedRawCodedDynamicTruthGlobalOpenedFieldProjection.
