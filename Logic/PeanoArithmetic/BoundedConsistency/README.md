@@ -5143,3 +5143,13 @@ and its chosen witnessed extension.  The historical code-equality theorem
 is retained as a compatibility corollary.  Native integration can therefore
 use the already projected traversal equalities to build an honest transport
 proof before closing the ten existential eliminations.
+
+That proof-producing interface is now synchronized across both polarities.
+The callback contract is factored into a named predicate, and the paired
+compiler requests its Pi callback only after Sigma selection has chosen a
+possibly larger witnessed PA tail.  It transports the Pi source to that
+tail, compiles Pi there, and then transports the completed Sigma evidence to
+the final common context.  The former paired code-equality theorem is a thin
+compatibility client of this dependency-ordered implementation, eliminating
+the duplicated context-transport proof while allowing the native callbacks
+to use distinct proof roots and standard-axiom witness batches.
