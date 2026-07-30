@@ -747,3 +747,341 @@ Proof.
     + exact arithmetic1_square_remainder.
     + exact arithmetic1_sqrt.
 Qed.
+
+Definition arith_partial_cons {n}
+    (g : arith_partial_function n) (i : Fin.t (S n)) :
+    arith_partial_function n :=
+  @Fin.caseS' n i (fun _ => arith_partial_function n)
+    g (fun j v => partial_some (v j)).
+
+Lemma arith_part1_partial_cons : forall n
+    (g : arith_partial_function n),
+  arith_part1 n g -> forall i, arith_part1 n (arith_partial_cons g i).
+Proof.
+  intros n g Hg i. unfold arith_partial_cons.
+  refine (@Fin.caseS' n i
+    (fun j => arith_part1 n
+      (@Fin.caseS' n j (fun _ => arith_partial_function n)
+        g (fun k v => partial_some (v k)))) Hg _).
+  intro j. apply arith_part1_proj.
+Qed.
+
+Theorem arith_part1_map_total : forall n
+    (f : (Fin.t n -> nat) -> nat -> nat)
+    (g : arith_partial_function n),
+  arithmetic1 (fun w : Fin.t (S n) -> nat =>
+    f (matrix_vec_tail w) (matrix_vec_head w)) ->
+  arith_part1 n g ->
+  arith_part1 n
+    (fun v => partial_map (fun x => f v x) (g v)).
+Proof.
+  intros n f g Hf Hg.
+  eapply arith_part1_ext with
+    (f := arith_partial_comp
+      (fun w => partial_some (f (matrix_vec_tail w) (matrix_vec_head w)))
+      (arith_partial_cons g)).
+  - apply arith_part1_comp.
+    + exact Hf.
+    + now apply arith_part1_partial_cons.
+  - intros v x. rewrite partial_map_member_iff.
+    unfold arith_partial_comp, partial_bind. simpl.
+    split.
+    + intros [w [Hw Hx]].
+      exists (matrix_vec_head w). split.
+      * exact (Hw Fin.F1).
+      * assert (Htail : matrix_vec_tail w = v).
+        { apply functional_extensionality. intro i.
+          exact (Hw (Fin.FS i)). }
+        now rewrite Htail in Hx.
+    + intros [a [Ha Hfa]].
+      exists (matrix_vec_cons a v). split.
+      * intro i. unfold arith_partial_cons.
+        refine (@Fin.caseS' n i
+          (fun j => partial_member
+            (@Fin.caseS' n j (fun _ => arith_partial_function n)
+              g (fun k u => partial_some (u k)) v)
+            (matrix_vec_cons a v j)) Ha _).
+        intro j. apply matrix_vec_cons_succ.
+      * change (x = f v a). now symmetry.
+Qed.
+
+Lemma nat_least_decidable_bound : forall (P : nat -> Prop),
+  (forall n, {P n} + {~ P n}) ->
+  forall bound, P bound ->
+  exists n, P n /\ forall m, m < n -> ~ P m.
+Proof.
+  intros P Hdec bound. revert P Hdec.
+  induction bound as [|bound IH]; intros P Hdec Hbound.
+  - exists 0. split; [exact Hbound | lia].
+  - destruct (Hdec 0) as [Hzero | Hzero].
+    + exists 0. split; [exact Hzero | lia].
+    + destruct (IH (fun n => P (S n))
+        (fun n => Hdec (S n)) Hbound) as [n [Hn Hleast]].
+      exists (S n). split; [exact Hn |].
+      intros m Hm. destruct m as [|m].
+      * exact Hzero.
+      * apply Hleast. lia.
+Qed.
+
+Definition nat_dvd_witness_test (k a b : nat) : nat :=
+  nat_truth_or
+    (nat_truth_eq (k * a) b)
+    (nat_truth_lt b k).
+
+Lemma nat_dvd_witness_test_positive_iff : forall k a b,
+  0 < nat_dvd_witness_test k a b <->
+  k * a = b \/ b < k.
+Proof.
+  intros k a b. unfold nat_dvd_witness_test.
+  rewrite nat_truth_or_positive_iff, nat_truth_eq_positive_iff,
+    nat_truth_lt_positive_iff.
+  tauto.
+Qed.
+
+Lemma nat_truth_le_boolean : forall n m,
+  nat_truth_le n m = 0 \/ nat_truth_le n m = 1.
+Proof. intros n m. unfold nat_truth_le. destruct le_dec; auto. Qed.
+
+Lemma nat_truth_dvd_boolean : forall n m,
+  nat_truth_dvd n m = 0 \/ nat_truth_dvd n m = 1.
+Proof.
+  intros n m. unfold nat_truth_dvd, nat_truth_eq.
+  destruct (Nat.eq_dec n 0); destruct Nat.eq_dec; auto.
+Qed.
+
+Lemma nat_dvd_witness_least_iff : forall a b k,
+  (k * a = b \/ b < k) ->
+  (forall m, m < k -> ~ (m * a = b \/ b < m)) ->
+  (k <= b <-> Nat.divide a b).
+Proof.
+  intros a b k Hk Hleast. split.
+  - intro Hkb. destruct Hk as [Heq | Hlt]; [|lia].
+    exists k. lia.
+  - intros [q Hq].
+    assert (Hex : exists c, c <= b /\ (c * a = b \/ b < c)).
+    { destruct b as [|b].
+      - exists 0. split; [lia | left; lia].
+      - exists q. split.
+        + destruct a; simpl in Hq; nia.
+        + left. nia. }
+    destruct Hex as [c [Hcb Hc]].
+    destruct (le_dec k c); [lia |].
+    exfalso. apply (Hleast c); [lia | exact Hc].
+Qed.
+
+Lemma nat_dvd_witness_least_value : forall a b k,
+  (k * a = b \/ b < k) ->
+  (forall m, m < k -> ~ (m * a = b \/ b < m)) ->
+  nat_truth_le k b = nat_truth_dvd a b.
+Proof.
+  intros a b k Hk Hleast.
+  pose proof (nat_dvd_witness_least_iff a b k Hk Hleast) as Hiff.
+  destruct (nat_truth_le_boolean k b) as [Hle | Hle];
+    destruct (nat_truth_dvd_boolean a b) as [Hdvd | Hdvd];
+    rewrite Hle, Hdvd; try reflexivity.
+  - exfalso. assert (Nat.divide a b).
+    { apply nat_truth_dvd_positive_iff. rewrite Hdvd. lia. }
+    assert (k <= b) by now apply Hiff.
+    assert (Hpositive : 0 < nat_truth_le k b)
+      by now apply nat_truth_le_positive_iff.
+    rewrite Hle in Hpositive. lia.
+  - exfalso. assert (k <= b).
+    { apply nat_truth_le_positive_iff. rewrite Hle. lia. }
+    assert (Nat.divide a b) by now apply Hiff.
+    assert (Hpositive : 0 < nat_truth_dvd a b)
+      by now apply nat_truth_dvd_positive_iff.
+    rewrite Hdvd in Hpositive. lia.
+Qed.
+
+Lemma nat_dvd_witness_least_exists : forall a b,
+  exists k,
+    (k * a = b \/ b < k) /\
+    forall m, m < k -> ~ (m * a = b \/ b < m).
+Proof.
+  intros a b.
+  eapply nat_least_decidable_bound with (bound := S b)
+    (P := fun k => k * a = b \/ b < k).
+  - intro k. destruct (Nat.eq_dec (k * a) b);
+      destruct (lt_dec b k); tauto.
+  - right. lia.
+Qed.
+
+Definition nat_dvd_witness_test_vector (v : Fin.t 3 -> nat) : nat :=
+  nat_dvd_witness_test
+    (v Fin.F1)
+    (v (Fin.FS Fin.F1))
+    (v (Fin.FS (Fin.FS Fin.F1))).
+
+Lemma arithmetic1_dvd_witness_test :
+  arithmetic1 nat_dvd_witness_test_vector.
+Proof.
+  unfold nat_dvd_witness_test_vector, nat_dvd_witness_test.
+  eapply arithmetic1_comp2 with (f := nat_truth_or).
+  - exact arithmetic1_or.
+  - eapply arithmetic1_comp2 with (f := nat_truth_eq).
+    + apply arithmetic1_equal.
+    + eapply arithmetic1_comp2 with (f := Nat.mul).
+      * unfold arithmetic1_binary. apply arithmetic1_mul.
+      * apply arithmetic1_proj.
+      * apply arithmetic1_proj.
+    + apply arithmetic1_proj.
+  - eapply arithmetic1_comp2 with (f := nat_truth_lt).
+    + apply arithmetic1_lt.
+    + apply arithmetic1_proj.
+    + apply arithmetic1_proj.
+Qed.
+
+Theorem arithmetic1_dvd : arithmetic1_binary nat_truth_dvd.
+Proof.
+  unfold arithmetic1_binary, arithmetic1.
+  eapply arith_part1_ext with
+    (f := fun v => partial_map
+      (fun k => nat_truth_le k (v (Fin.FS Fin.F1)))
+      (arith_find_positive_on nat_dvd_witness_test_vector v)).
+  - apply arith_part1_map_total.
+    + eapply arithmetic1_comp2 with (f := nat_truth_le).
+      * exact arithmetic1_le.
+      * apply arithmetic1_proj.
+      * apply arithmetic1_proj.
+    + apply arith_part1_find_positive.
+      exact arithmetic1_dvd_witness_test.
+  - intros v x. rewrite partial_map_member_iff.
+    split.
+    + intros [k [Hk Hvalue]].
+      rewrite arith_find_positive_on_member_iff in Hk.
+      cbn [nat_dvd_witness_test_vector] in Hk.
+      destruct Hk as [Hk Hleast].
+      apply nat_dvd_witness_test_positive_iff in Hk.
+      assert (Hleast' : forall m, m < k ->
+          ~ (m * v Fin.F1 = v (Fin.FS Fin.F1) \/
+             v (Fin.FS Fin.F1) < m)).
+      { intros m Hm Htest. apply (Hleast m Hm).
+        now apply nat_dvd_witness_test_positive_iff. }
+      rewrite (nat_dvd_witness_least_value
+        (v Fin.F1) (v (Fin.FS Fin.F1)) k Hk Hleast') in Hvalue.
+      now symmetry.
+    + intro Hx.
+      destruct (nat_dvd_witness_least_exists
+        (v Fin.F1) (v (Fin.FS Fin.F1))) as [k [Hk Hleast]].
+      exists k. split.
+      * rewrite arith_find_positive_on_member_iff.
+        cbn [nat_dvd_witness_test_vector]. split.
+        -- now apply nat_dvd_witness_test_positive_iff.
+        -- intros m Hm Hpositive. apply (Hleast m Hm).
+           now apply nat_dvd_witness_test_positive_iff in Hpositive.
+      * rewrite (nat_dvd_witness_least_value
+          (v Fin.F1) (v (Fin.FS Fin.F1)) k Hk Hleast).
+        now symmetry.
+Qed.
+
+Definition nat_rem_test (k a b : nat) : nat :=
+  nat_truth_dvd b (a - k).
+
+Lemma nat_rem_test_positive_iff : forall k a b,
+  0 < nat_rem_test k a b <-> Nat.divide b (a - k).
+Proof. intros k a b. apply nat_truth_dvd_positive_iff. Qed.
+
+Lemma nat_divides_sub_mod : forall a b,
+  Nat.divide b (a - a mod b).
+Proof.
+  intros a b. destruct (Nat.eq_dec b 0) as [-> | Hb].
+  - rewrite Nat.mod_0_r, Nat.sub_diag. now exists 0.
+  - exists (a / b).
+    pose proof (Nat.div_mod a b Hb). nia.
+Qed.
+
+Lemma nat_rem_is_least : forall a b,
+  Nat.divide b (a - a mod b) /\
+  forall m, m < a mod b -> ~ Nat.divide b (a - m).
+Proof.
+  intros a b. split; [apply nat_divides_sub_mod |].
+  intros m Hm Hdivide.
+  destruct (Nat.eq_dec b 0) as [-> | Hb].
+  - rewrite Nat.mod_0_r in Hm.
+    destruct Hdivide as [q Hq]. simpl in Hq. lia.
+  - assert (Hrle : a mod b <= a) by now apply Nat.mod_le.
+    assert (Hdiff : a - m - (a - a mod b) = a mod b - m) by lia.
+    pose proof (Nat.divide_sub_r b (a - m) (a - a mod b)
+      Hdivide (nat_divides_sub_mod a b)) as Hdifference.
+    rewrite Hdiff in Hdifference.
+    assert (Hpositive : 0 < a mod b - m) by lia.
+    assert (Hsmall : a mod b - m < b).
+    { pose proof (Nat.mod_upper_bound a b Hb). lia. }
+    destruct Hdifference as [q Hq].
+    destruct q; simpl in Hq; nia.
+Qed.
+
+Lemma nat_rem_least_test : forall a b x,
+  x = a mod b <->
+  Nat.divide b (a - x) /\
+  forall m, m < x -> ~ Nat.divide b (a - m).
+Proof.
+  intros a b x. split.
+  - intros ->. apply nat_rem_is_least.
+  - intros [Hx Hleast].
+    destruct (nat_rem_is_least a b) as [Hr Hrleast].
+    destruct (Nat.lt_trichotomy x (a mod b)) as [Hlt | [Heq | Hgt]].
+    + exfalso. exact (Hrleast x Hlt Hx).
+    + exact Heq.
+    + exfalso. exact (Hleast (a mod b) Hgt Hr).
+Qed.
+
+Definition nat_rem_test_vector (v : Fin.t 3 -> nat) : nat :=
+  nat_rem_test
+    (v Fin.F1)
+    (v (Fin.FS Fin.F1))
+    (v (Fin.FS (Fin.FS Fin.F1))).
+
+Lemma arithmetic1_rem_test : arithmetic1 nat_rem_test_vector.
+Proof.
+  unfold nat_rem_test_vector, nat_rem_test.
+  eapply arithmetic1_comp2 with (f := nat_truth_dvd).
+  - exact arithmetic1_dvd.
+  - apply arithmetic1_proj.
+  - eapply arithmetic1_comp2 with (f := Nat.sub).
+    + exact arithmetic1_sub.
+    + apply arithmetic1_proj.
+    + apply arithmetic1_proj.
+Qed.
+
+Theorem arithmetic1_rem : arithmetic1_binary Nat.modulo.
+Proof.
+  unfold arithmetic1_binary, arithmetic1.
+  eapply arith_part1_ext with
+    (f := arith_find_positive_on nat_rem_test_vector).
+  - apply arith_part1_find_positive. exact arithmetic1_rem_test.
+  - intros v x. rewrite arith_find_positive_on_member_iff.
+    change
+      ((0 < nat_rem_test x (v Fin.F1) (v (Fin.FS Fin.F1)) /\
+        forall m, m < x ->
+          ~ 0 < nat_rem_test m (v Fin.F1) (v (Fin.FS Fin.F1))) <->
+       x = v Fin.F1 mod v (Fin.FS Fin.F1)).
+    rewrite nat_rem_test_positive_iff.
+    setoid_rewrite nat_rem_test_positive_iff.
+    apply iff_sym.
+    exact (nat_rem_least_test
+      (v Fin.F1) (v (Fin.FS Fin.F1)) x).
+Qed.
+
+Definition nat_beta (z i : nat) : nat :=
+  nat_unpair1 z mod S (S i * nat_unpair2 z).
+
+Theorem arithmetic1_beta : arithmetic1_binary nat_beta.
+Proof.
+  unfold arithmetic1_binary, nat_beta.
+  eapply arithmetic1_comp2 with (f := Nat.modulo).
+  - exact arithmetic1_rem.
+  - eapply arithmetic1_comp1 with (f := nat_unpair1).
+    + exact arithmetic1_unpair1.
+    + apply arithmetic1_proj.
+  - eapply arithmetic1_comp1 with (f := S).
+    + exact arithmetic1_succ.
+    + eapply arithmetic1_comp2 with (f := Nat.mul).
+      * unfold arithmetic1_binary. apply arithmetic1_mul.
+      * eapply arithmetic1_comp1 with (f := S).
+        -- exact arithmetic1_succ.
+        -- apply arithmetic1_proj.
+      * eapply arithmetic1_comp1 with (f := nat_unpair2).
+        -- exact arithmetic1_unpair2.
+        -- apply arithmetic1_proj.
+Qed.

@@ -303,6 +303,28 @@ Print Assumptions arithmetic1_square_remainder.
 Check nat_unpair.
 Print Assumptions arithmetic1_unpair1.
 Print Assumptions arithmetic1_unpair2.
+Check arith_partial_cons.
+Print Assumptions arith_part1_partial_cons.
+Print Assumptions arith_part1_map_total.
+Print Assumptions nat_least_decidable_bound.
+Check nat_dvd_witness_test.
+Print Assumptions nat_dvd_witness_test_positive_iff.
+Print Assumptions nat_truth_le_boolean.
+Print Assumptions nat_truth_dvd_boolean.
+Print Assumptions nat_dvd_witness_least_iff.
+Print Assumptions nat_dvd_witness_least_value.
+Print Assumptions nat_dvd_witness_least_exists.
+Print Assumptions arithmetic1_dvd_witness_test.
+Print Assumptions arithmetic1_dvd.
+Check nat_rem_test.
+Print Assumptions nat_rem_test_positive_iff.
+Print Assumptions nat_divides_sub_mod.
+Print Assumptions nat_rem_is_least.
+Print Assumptions nat_rem_least_test.
+Print Assumptions arithmetic1_rem_test.
+Print Assumptions arithmetic1_rem.
+Check nat_beta.
+Print Assumptions arithmetic1_beta.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.
