@@ -2,6 +2,7 @@
 
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
+From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
@@ -58,6 +59,27 @@ Check option_to_list.
 Print Assumptions option_to_list_singleton_iff.
 Check function_equal_on.
 Print Assumptions function_equal_on_subset.
+Check preorder_data.
+Check order_compatible.
+Print Assumptions order_compatible_sym_iff.
+Print Assumptions order_incompatible_iff.
+Print Assumptions order_incompatible_lower.
+Check order_dense.
+Check order_dense_below.
+Check dense_set.
+Check dense_choose.
+Print Assumptions dense_choose_le.
+Print Assumptions dense_choose_member.
+Check order_pfilter.
+Check principal_pfilter.
+Check descending_chain.
+Check pfilter_of_descending_chain.
+Print Assumptions pfilter_of_descending_chain_member_iff.
+Check pfilter_generic.
+Check dense_family_countable.
+Print Assumptions nat_relation_of_successors.
+Print Assumptions generic_descending_chain_is_descending.
+Print Assumptions exists_generic_pfilter_of_countable.
 
 Check language.
 Check language_relational.
