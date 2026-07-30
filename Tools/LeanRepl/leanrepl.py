@@ -399,6 +399,21 @@ def print_builtin_info(token: str) -> bool:
     return True
 
 
+def indent_def_body(data: str) -> str | None:
+    """#print emits definition bodies at column 0 after the ':=' line; indent
+    them two spaces, Lean-style. Returns None if the shape doesn't match."""
+    lines = data.splitlines()
+    header_end = next((i for i, ln in enumerate(lines)
+                       if ln.rstrip().endswith(":=")), None)
+    if header_end is None or header_end == len(lines) - 1:
+        return None
+    body = lines[header_end + 1:]
+    if all(ln.startswith(" ") or not ln.strip() for ln in body):
+        return None  # already indented
+    return "\n".join(lines[:header_end + 1]
+                     + [("  " + ln if ln.strip() else ln) for ln in body])
+
+
 def format_info(data: str) -> str | None:
     """Reformat `#print` output for inductives/structures/classes as a valid
     Lean declaration, e.g.
@@ -903,7 +918,8 @@ class LeanRepl:
                     elif not print_builtin_info(arg):
                         self.print_response(res)
                 else:
-                    self.print_response(res, transform=format_info)
+                    self.print_response(
+                        res, transform=lambda t: format_info(t) or indent_def_body(t))
             else:
                 print(red("usage: :info NAME"))
         elif cmd in ("l", "load"):
