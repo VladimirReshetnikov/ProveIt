@@ -7,11 +7,14 @@ From Foundation.Vorspiel.List Require Import Basic.
 From Foundation.Vorspiel.List Require Import Chain.
 From Foundation.Vorspiel.Nat Require Import Basic.
 From Foundation.Vorspiel.Set Require Import Basic.
+From Foundation.Vorspiel.Set Require Import Cofinite.
+From Foundation.Vorspiel.Set Require Import Fin.
 From Foundation.Vorspiel.Order Require Import Heyting.
 From Foundation.Vorspiel.Order Require Import Lattice.
 From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Vorspiel.Order Require Import Ideal.
 From Foundation.Vorspiel.Order Require Import LowerSet.
+From Foundation.Vorspiel.Order Require Import Regular.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
@@ -157,6 +160,27 @@ Print Assumptions set_finite_approximation_strict.
 Print Assumptions set_finite_approximation_subset.
 Print Assumptions set_finite_approximation_complete.
 Print Assumptions infinitely_finite_approximate.
+Check set_finitely_covered.
+Check set_cofinite.
+Check set_coinfinite.
+Print Assumptions set_finitely_covered_subset.
+Print Assumptions set_coinfinite_iff_not_cofinite.
+Print Assumptions set_cofinite_iff_not_coinfinite.
+Print Assumptions set_cofinite_subset.
+Print Assumptions set_coinfinite_subset.
+Print Assumptions set_full_cofinite.
+Print Assumptions set_cofinite_union_left.
+Print Assumptions set_cofinite_union_right.
+Print Assumptions fin1_full_equiv_singleton.
+Print Assumptions fin1_set_cases.
+Print Assumptions fin1_powerset_iff.
+Print Assumptions fin2_full_equiv_pair.
+Print Assumptions fin2_singleton_not_full.
+Print Assumptions fin2_set_cases.
+Print Assumptions fin2_powerset_iff.
+Print Assumptions fin2_complement_one_equiv_zero.
+Print Assumptions fin2_complement_zero_equiv_one.
+Print Assumptions fin3_full_equiv_triple.
 Check heyting_algebra_data.
 Print Assumptions ha_inf_mono.
 Print Assumptions ha_himp_himp_inf_himp_inf_le.
@@ -252,11 +276,20 @@ Check regular_family_sup.
 Check regular_family_inf.
 Print Assumptions regular_meet_greatest.
 Print Assumptions regular_join_least.
-Print Assumptions regular_family_sup_least.
-Print Assumptions regular_family_inf_greatest.
+Print Assumptions Foundation.Vorspiel.Order.LowerSet.regular_family_sup_least.
+Print Assumptions Foundation.Vorspiel.Order.LowerSet.regular_family_inf_greatest.
 Print Assumptions regular_meet_compl_bottom.
 Print Assumptions regular_join_compl_top.
 Print Assumptions regular_compl_involutive.
+Check Foundation.Vorspiel.Order.Regular.closure_order_data.
+Check Foundation.Vorspiel.Order.Regular.regular_element.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_value_equiv_closure.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_sup_value.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_sup_contains.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_sup_universal.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_inf_value.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_inf_below.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_inf_universal.
 
 Check language.
 Check language_relational.
