@@ -22,6 +22,8 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   RawCodedTemplateProofCompiler
   RawCodedTemplatePAEmbedding
+  RawCodedTemplateDirectStructuralTranslation
+  RawCodedTemplateDirectStructuralPAAgreement
   RawCodedDynamicTruthNativeCrossLevelGuardRootCompilation
   RawCodedDynamicTruthNativeShiftStagedRootCompilation
   RawCodedDynamicTruthNativeSubstitutionStagedRootCompilation
@@ -51,6 +53,8 @@ Import PABoundedCompactPAUniformProvability.
 Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedDynamicTruthNativeCrossLevelGuardRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeShiftStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeSubstitutionStagedRootCompilation.
@@ -248,6 +252,48 @@ Definition
 Arguments
   RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers
   M hPA translation : clear implicits.
+
+(** Agreement-free direct-translation boundary.  A direct structural input
+    determines its translation, and the generic structural theorem proves PA
+    agreement for free.  Consequently this interface contains only the eight
+    genuinely proof-producing coordinates. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
+  let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
+  RawDynamicTruthNativeLocalZeroPredecessorRootCompiler M translation /\
+  RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
+    M hPA /\
+  RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
+    M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers
+  M hPA inputs : clear implicits.
+
+(** Reinsert the structural agreement coordinate.  Keeping this adapter
+    separate prevents every downstream theorem from carrying and unpacking
+    the same redundant proof. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers_of_direct
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  forall (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers
+    M hPA inputs ->
+  RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers
+    M hPA (rawDirectStructuralTemplateTranslation M hPA inputs).
+Proof.
+  intros M hPA inputs hresources.
+  split.
+  - exact (rawDirectStructuralTemplatePAAgreement M hPA inputs).
+  - exact hresources.
+Qed.
 
 Theorem
     raw_dynamicTruthNativeDependencyOrderedStrongStepKernelCompilers_of_proof_resources
@@ -682,6 +728,16 @@ Definition
       RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers
         M hPA translation.
 
+(** Agreement-free all-model boundary.  The direct input witness replaces an
+    arbitrary translation plus a separately supplied agreement proof. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    exists inputs : RawCodedTemplateDirectStructuralInputs M,
+      RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers
+        M hPA inputs.
+
 Theorem
     raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers
     :
@@ -784,6 +840,21 @@ Proof.
   exact
     (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_permuted_append_proof_resource_strong_step_kernel_compilers
       M hPA translation hmodelKernels).
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_direct_permuted_append_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels.
+Proof.
+  intros hkernels M hPA.
+  destruct (hkernels M hPA) as [inputs hmodelKernels].
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_permuted_append_proof_resource_strong_step_kernel_compilers
+      M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (raw_dynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers_of_direct
+        M hPA inputs hmodelKernels)).
 Qed.
 
 (** Exact conditional compact headline.  This does not discharge any member
@@ -917,6 +988,23 @@ Proof.
   exact
     (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
       (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_permuted_append_proof_resource_strong_step_kernel_compilers
+        hkernels)).
+Qed.
+
+(** Agreement-free direct-evidence headline.  Its premise has eight
+    proof-producing fields; PA quotation agreement is reconstructed from the
+    direct structural translation and is no longer supplied by the caller. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_direct_permuted_append_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hkernels.
+  exact
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_direct_permuted_append_proof_resource_strong_step_kernel_compilers
         hkernels)).
 Qed.
 

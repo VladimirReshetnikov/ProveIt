@@ -5316,3 +5316,17 @@ evidence handoff.  This path is exposed through a corresponding all-model
 dependency bundle and conditional compact PA headline.  The remaining Coq
 gap is now the construction of those concrete residual resource fields, not
 any formula permutation, source contraction, or selected-row transport.
+
+The helper translation itself is no longer one of those residual resources.
+`RawCodedTemplateBottomDirectStructuralInputs.v` constructs a direct
+structural translation whose two opaque five-argument predicates are bottom.
+The one-node bottom operation tree proves stability under every represented
+shift and opening, while numeral-code totality supplies harmless zero-valued
+named parameters.  The generic direct structural agreement theorem then
+shows that this concrete translation still maps every embedded ordinary PA
+term and formula to its exact quotation.  An agreement-free direct
+dependency bundle now exposes only eight proof-producing coordinates and
+reconstructs PA agreement internally before invoking the existing compact
+headline.  The remaining Coq gap consists of the zero predecessor compiler,
+the permuted-append strong-step resources, the reduced staged remainder, and
+the five linked staged implication compilers.
