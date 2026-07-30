@@ -577,6 +577,11 @@ Print Assumptions llfo_girard_neg.
 Print Assumptions llfo_girard_rewrite.
 Check llfo_Girard.
 Print Assumptions llfo_Girard_rewrite.
+Print Assumptions llfo_girard_negative.
+Print Assumptions llfo_girard_positive.
+Print Assumptions llfo_girard_negative_iff.
+Print Assumptions llfo_girard_positive_iff.
+Print Assumptions llfo_Girard_negative.
 Print Assumptions llfo_forget_girard.
 Print Assumptions llfo_forget_Girard.
 Check llfo_forget_sequent.

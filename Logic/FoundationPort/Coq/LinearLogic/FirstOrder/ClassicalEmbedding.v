@@ -216,6 +216,74 @@ Proof.
   destruct (semiformula_polarity phi); reflexivity.
 Qed.
 
+Theorem llfo_girard_negative : forall L X n (phi : semiformula L X n),
+  semiformula_negative phi -> llfo_negative n (llfo_girard phi).
+Proof.
+  intros L X n phi. induction phi; intro Hneg; simpl.
+  - now apply semiformula_verum_not_negative in Hneg.
+  - constructor.
+  - now apply semiformula_rel_not_negative in Hneg.
+  - constructor.
+  - apply semiformula_and_negative_iff in Hneg as [Hp Hq].
+    unfold semiformula_negative in Hp, Hq.
+    rewrite Hp, Hq. constructor; [now apply IHphi1 | now apply IHphi2].
+  - destruct (semiformula_polarity phi1) eqn:Hp,
+      (semiformula_polarity phi2) eqn:Hq; simpl.
+    + unfold semiformula_negative in Hneg. simpl in Hneg.
+      rewrite Hp, Hq in Hneg. discriminate.
+    + constructor; [constructor | now apply IHphi2].
+    + constructor; [now apply IHphi1 | constructor].
+    + constructor; [now apply IHphi1 | now apply IHphi2].
+  - destruct (semiformula_polarity phi) eqn:Hp.
+    + constructor. constructor.
+    + constructor. now apply IHphi.
+  - discriminate.
+Qed.
+
+Theorem llfo_girard_positive : forall L X n (phi : semiformula L X n),
+  semiformula_positive phi -> llfo_positive n (llfo_girard phi).
+Proof.
+  intros L X n phi Hpos.
+  apply (proj1 (llfo_neg_negative_iff_positive (llfo_girard phi))).
+  rewrite <- llfo_girard_neg.
+  apply llfo_girard_negative.
+  now apply (proj2 (semiformula_neg_negative_iff phi)).
+Qed.
+
+Theorem llfo_girard_negative_iff : forall L X n
+    (phi : semiformula L X n),
+  llfo_negative n (llfo_girard phi) <-> semiformula_negative phi.
+Proof.
+  intros L X n phi. split; [|apply llfo_girard_negative].
+  intro Hlinear. unfold semiformula_negative.
+  destruct (semiformula_polarity phi) eqn:Hpol; [|reflexivity].
+  exfalso.
+  apply (@llfo_positive_negative_disjoint L X n (llfo_girard phi)).
+  split; [now apply llfo_girard_positive | exact Hlinear].
+Qed.
+
+Theorem llfo_girard_positive_iff : forall L X n
+    (phi : semiformula L X n),
+  llfo_positive n (llfo_girard phi) <-> semiformula_positive phi.
+Proof.
+  intros L X n phi. split; [|apply llfo_girard_positive].
+  intro Hlinear. unfold semiformula_positive.
+  destruct (semiformula_polarity phi) eqn:Hpol; [reflexivity |].
+  exfalso.
+  apply (@llfo_positive_negative_disjoint L X n (llfo_girard phi)).
+  split; [exact Hlinear |].
+  apply llfo_girard_negative. exact Hpol.
+Qed.
+
+Theorem llfo_Girard_negative : forall L X n (phi : semiformula L X n),
+  llfo_negative n (llfo_Girard phi).
+Proof.
+  intros L X n phi. unfold llfo_Girard.
+  destruct (semiformula_polarity phi) eqn:Hpol.
+  - constructor.
+  - now apply llfo_girard_negative.
+Qed.
+
 Theorem llfo_forget_girard : forall L X n (phi : semiformula L X n),
   llfo_forget (llfo_girard phi) = phi.
 Proof.
