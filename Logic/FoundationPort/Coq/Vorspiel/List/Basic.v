@@ -1,6 +1,7 @@
 (** Finite list bounds, deletion, custom induction, and suffix divergence. *)
 
 From Stdlib Require Import Arith.PeanoNat Bool.Bool Lia Lists.List Logic.Classical.
+From Foundation.Vorspiel.Fin Require Import Basic.
 
 Import ListNotations.
 
@@ -47,6 +48,80 @@ Proof.
   destruct Hx as [-> | Hx].
   - eapply Nat.lt_le_trans; [apply Nat.lt_succ_diag_r | apply Nat.le_max_l].
   - eapply Nat.lt_le_trans; [apply IH; exact Hx | apply Nat.le_max_r].
+Qed.
+
+Lemma list_nth_map_seq : forall A (default : A) (f : nat -> A) n i,
+  i < n -> nth i (map f (seq 0 n)) default = f i.
+Proof.
+  intros A default f n i Hi. apply nth_error_nth with (x := f i).
+  rewrite nth_error_map, nth_error_seq.
+  assert (Hltb : Nat.ltb i n = true) by now apply Nat.ltb_lt.
+  rewrite Hltb. reflexivity.
+Qed.
+
+Fixpoint list_join {A} (join : A -> A -> A) (bottom : A)
+    (xs : list A) : A :=
+  match xs with
+  | [] => bottom
+  | x :: rest => join x (list_join join bottom rest)
+  end.
+
+Lemma list_join_nil : forall A join (bottom : A),
+  list_join join bottom [] = bottom.
+Proof. reflexivity. Qed.
+
+Lemma list_join_cons : forall A join (bottom : A) x xs,
+  list_join join bottom (x :: xs) = join x (list_join join bottom xs).
+Proof. reflexivity. Qed.
+
+Theorem list_member_le_join : forall A (le : A -> A -> Prop)
+    join bottom,
+  (forall x y z, le x y -> le y z -> le x z) ->
+  (forall x y, le x (join x y)) ->
+  (forall x y, le y (join x y)) ->
+  forall xs x, In x xs -> le x (list_join join bottom xs).
+Proof.
+  intros A le join bottom Htrans Hleft Hright xs.
+  induction xs as [|y xs IH]; intros x Hx; [inversion Hx |].
+  destruct Hx as [-> | Hx].
+  - apply Hleft.
+  - eapply Htrans; [apply IH; exact Hx | apply Hright].
+Qed.
+
+Definition list_of_fin {A n} (f : Fin.t n -> A) : list A :=
+  map f (vorspiel_fin_enum n).
+
+Lemma list_of_fin_length : forall A n (f : Fin.t n -> A),
+  length (list_of_fin f) = n.
+Proof.
+  intros A n f. unfold list_of_fin.
+  now rewrite length_map, vorspiel_fin_enum_length.
+Qed.
+
+Lemma list_of_fin_member_iff : forall A n (f : Fin.t n -> A) x,
+  In x (list_of_fin f) <-> exists i, f i = x.
+Proof.
+  intros A n f x. unfold list_of_fin. rewrite in_map_iff. split.
+  - intros [i [Hix _]]. now exists i.
+  - intros [i Hix]. exists i. split; [exact Hix | apply vorspiel_fin_enum_complete].
+Qed.
+
+Lemma list_of_fin_map : forall A B n (g : A -> B) (f : Fin.t n -> A),
+  map g (list_of_fin f) = list_of_fin (fun i => g (f i)).
+Proof. intros. unfold list_of_fin. now rewrite map_map. Qed.
+
+Corollary list_fin_member_le_join : forall A (le : A -> A -> Prop)
+    join bottom,
+  (forall x y z, le x y -> le y z -> le x z) ->
+  (forall x y, le x (join x y)) ->
+  (forall x y, le y (join x y)) ->
+  forall n (f : Fin.t n -> A) i,
+    le (f i) (list_join join bottom (list_of_fin f)).
+Proof.
+  intros A le join bottom Htrans Hleft Hright n f i.
+  apply (@list_member_le_join A le join bottom Htrans Hleft Hright
+           (list_of_fin f) (f i)).
+  apply (proj2 (@list_of_fin_member_iff A n f (f i))). now exists i.
 Qed.
 
 Lemma list_append_incl : forall A (xs ys tail : list A),
@@ -274,6 +349,72 @@ Proof.
   destruct H as [i [Hfi Hi]]. exists i. split.
   - apply in_seq in Hi. lia.
   - now symmetry.
+Qed.
+
+Theorem list_nodup_iff_indexed_distinct : forall A (xs : list A),
+  NoDup xs <->
+  forall i j x,
+    i < j -> j < length xs ->
+    nth_error xs i = Some x -> nth_error xs j <> Some x.
+Proof.
+  intros A xs. split.
+  - intros Hnodup i j x Hij Hj Hi Hjeq.
+    pose proof (proj1 (@NoDup_nth_error A xs) Hnodup i j) as Hindex.
+    assert (HiLen : i < length xs) by lia.
+    specialize (Hindex HiLen).
+    assert (i = j).
+    { apply Hindex. now rewrite Hi, Hjeq. }
+    lia.
+  - intro Hdistinct. apply (proj2 (@NoDup_nth_error A xs)).
+    intros i j HiLen Heq.
+    destruct (nth_error xs i) as [x |] eqn:Hi.
+    + assert (Hj : nth_error xs j = Some x) by now rewrite <- Heq.
+      assert (HjLen : j < length xs).
+      { apply (proj1 (@nth_error_Some A xs j)). now rewrite Hj. }
+      destruct (Nat.lt_trichotomy i j) as [Hij | [Hij | Hij]].
+      * exfalso. exact (Hdistinct i j x Hij HjLen Hi Hj).
+      * exact Hij.
+      * exfalso. exact (Hdistinct j i x Hij HiLen Hj Hi).
+    + exfalso. apply (proj2 (@nth_error_Some A xs i) HiLen). exact Hi.
+Qed.
+
+Fixpoint list_words_up_to {A} (alphabet : list A) (n : nat) :
+    list (list A) :=
+  match n with
+  | 0 => [[]]
+  | S k =>
+      list_words_up_to alphabet k ++
+      flat_map (fun a => map (cons a) (list_words_up_to alphabet k)) alphabet
+  end.
+
+Lemma list_words_up_to_complete : forall A (alphabet : list A) n xs,
+  length xs <= n ->
+  (forall x, In x xs -> In x alphabet) ->
+  In xs (list_words_up_to alphabet n).
+Proof.
+  intros A alphabet n. induction n as [|n IH]; intros xs Hlen Hall.
+  - assert (xs = []) by (apply length_zero_iff_nil; lia).
+    subst. simpl. now left.
+  - simpl. destruct xs as [|x xs].
+    + apply in_app_iff. left.
+      apply IH; [simpl; lia | intros y Hy; inversion Hy].
+    + apply in_app_iff. right. apply in_flat_map. exists x. split.
+      * apply Hall. now left.
+      * apply in_map. apply IH.
+        { simpl in Hlen. lia. }
+        { intros y Hy. apply Hall. now right. }
+Qed.
+
+Theorem nodup_lists_explicit_finite_cover : forall A (alphabet : list A),
+  (forall x : A, In x alphabet) ->
+  forall xs, NoDup xs ->
+    In xs (list_words_up_to alphabet (length alphabet)).
+Proof.
+  intros A alphabet Hcover xs Hnodup.
+  apply list_words_up_to_complete.
+  - apply NoDup_incl_length with (l := xs); [exact Hnodup |].
+    intros x Hx. apply Hcover.
+  - intros x Hx. apply Hcover.
 Qed.
 
 Lemma list_singleton_suffix_unique : forall A (a b : A) xs,

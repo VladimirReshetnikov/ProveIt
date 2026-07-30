@@ -81,6 +81,12 @@ Print Assumptions fin_one_eq_zero.
 Print Assumptions fin_one_not_positive.
 Print Assumptions list_subset_bool_true_iff.
 Print Assumptions list_member_lt_upper.
+Print Assumptions list_nth_map_seq.
+Print Assumptions list_member_le_join.
+Print Assumptions list_of_fin_length.
+Print Assumptions list_of_fin_member_iff.
+Print Assumptions list_of_fin_map.
+Print Assumptions list_fin_member_le_join.
 Print Assumptions list_remove_all_member_iff.
 Print Assumptions list_remove_all_mono.
 Print Assumptions list_remove_all_map_incl.
@@ -90,6 +96,9 @@ Print Assumptions list_boundary_of_not_suffix.
 Print Assumptions list_suffix_eq_or_cons.
 Print Assumptions list_suffix_trichotomy.
 Print Assumptions list_exists_of_map_seq.
+Print Assumptions list_nodup_iff_indexed_distinct.
+Print Assumptions list_words_up_to_complete.
+Print Assumptions nodup_lists_explicit_finite_cover.
 Print Assumptions list_singleton_suffix_unique.
 Check nat_cases.
 Print Assumptions nat_cases_zero.
