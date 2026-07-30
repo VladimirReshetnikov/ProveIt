@@ -51,4 +51,4 @@ developments.
    `(← getEnv).toKernelEnv.addDecl {}` and `Lean.Kernel.isDefEq`.
 5. **Keep controls.** A probe that shows a defect must be accompanied by the
    variant with the defect's key ingredient removed, demonstrating that the
-   ingredient is load-bearing rather than incidental.
+   ingredient is essential rather than incidental.

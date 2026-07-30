@@ -151,7 +151,7 @@ instructive: a 0-field type *can* be empty, but only with **indices**
 | --- | --- |
 | **Girard** (System U) | a *second* impredicative sort. `∀ α : Type u, F α` computes to `Sort (imax (u+2) (u+1)) = Type (u+1)` — the universe bumps. There is exactly one impredicative sort and it is `Prop`. |
 | **Hurkens** | `Prop` closed under powerset. Denied arithmetically: for `X : Prop`, `X → Prop : Sort (imax 0 1) = Type 0`. Impredicativity lives only in the codomain (`imax u 0 = 0`). |
-| **Coquand–Paulin** | non-strict positivity — and only that. `CoquandPaulin.lean` proves the guard load-bearing, axiom-free. |
+| **Coquand–Paulin** | non-strict positivity — and only that. `CoquandPaulin.lean` proves the guard essential, axiom-free. |
 | **Reynolds** | set-theoretic semantics for polymorphism; irrelevant to a type theory with a set-theoretic model. |
 | **Berardi** | harmless: it derives proof irrelevance, which Lean already has definitionally. |
 | **Chicli–Pottier–Simpson** | proof-relevant quotients. Lean's `Quot` at `u = 0` is a definitional isomorph of a subsingleton. |

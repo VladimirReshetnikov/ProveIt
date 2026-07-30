@@ -264,7 +264,7 @@ closure of `Type u` over itself, a universe decoding with a section, a
 non-strictly-positive inductive — and shows that granting it is fatal. These are
 negative results about type theory: proofs that a rule *cannot* be added. They
 are axiom-free and their hypotheses are unsatisfiable in Lean, so they say
-nothing against Lean's consistency. They locate its load-bearing restrictions.
+nothing against Lean's consistency. They locate its essential restrictions.
 
 **Loopholes in kernels implementing those systems.** Probes of the Lean 4
 kernel: accelerated `Nat` and `String` primitives, name and string identity,

@@ -43,7 +43,7 @@ error: Function expected at s
 That is the whole story: **Lean's impredicativity is one-directional**, and
 Hurkens needs a universe closed under both quantification *and* powerset.
 
-## `CoquandPaulin.lean` — the positivity guard is load-bearing
+## `CoquandPaulin.lean` — the positivity guard is indispensable
 
 With impredicativity and a universe type both available, the *only* thing left
 standing between Lean and Coquand's paradox is strict positivity. This file
@@ -90,7 +90,7 @@ gives
 — from the *kernel*, not the elaborator. `Bad` would supply `introA := Bad.mk`
 together with `matchA` and `beta` from its recursor, and `coquand_paulin` would
 then yield `False` outright. So the positivity check is not defensive
-belt-and-braces; it is the single load-bearing guard, and its necessity is
+belt-and-braces; it is the single decisive guard, and its necessity is
 provable inside Lean.
 
 ## Results, and a correction

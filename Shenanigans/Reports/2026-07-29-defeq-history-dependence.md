@@ -68,7 +68,7 @@ ordered control over which comparisons run.
       A'=?=B ; B=?=C' ; A'=?=C'          ACCEPTED
       B=?=C' ; A'=?=B ; A'=?=C'          ACCEPTED   (order-independent)
       A'=?=B ; B=?=C' ; C'=?=A'          ACCEPTED   (symmetric)
-      same three, no hash collision      rejected   (collision load-bearing)
+      same three, no hash collision      rejected   (collision essential)     
 
     theorem (A' = C') by rfl, bare       rejected
     theorem (A' = C') by rfl, primed     ACCEPTED

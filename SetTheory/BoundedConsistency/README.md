@@ -86,9 +86,9 @@ hierarchy is quantifier-free truth rather than `Delta_0` truth, which makes it
 simpler: atoms and Boolean combinations only.
 
 That earlier note said the all-occurrences restriction would be *less*
-load-bearing here than in arithmetic, because route 1 factors through
+essential here than in arithmetic, because route 1 factors through
 consistency of a fragment.  Route 2 was taken instead, and on it the restriction
-is fully load-bearing: fixed-level soundness consumes the bound on rule
+is fully necessary: fixed-level soundness consumes the bound on rule
 parameters in four of the seventeen rules, so a conclusions-only or even a
 conclusions-and-contexts-only bound would not have sufficed.
 
@@ -363,7 +363,7 @@ remain, and they are not independent:
   axioms finally enters, and it is independent of the other two.
 
 The obstruction in the first was sharp and is worth keeping on record, because
-it is what showed the level-collapse theorem to be load-bearing rather than a
+it is what showed the level-collapse theorem to be necessary rather than a
 loose end.  Implication elimination has `SigmaTrue (n+1)` of an implication
 together with `SigmaTrue (n+1)` of its antecedent; the Tarski clause turns the
 former into a disjunction whose left half is `PiFalse (n+1)` of the antecedent,

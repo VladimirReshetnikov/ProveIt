@@ -146,7 +146,7 @@ constants named `Bool.true` / `Bool.false` — also by name.
 ## Strengthening: nothing has to be redefined
 
 The objection above ("you replaced part of the system") turns out not to be
-load-bearing. `Shenanigans/KernelSoundness/Lean/NatGcdFreeName.lean` imports
+decisive. `Shenanigans/KernelSoundness/Lean/NatGcdFreeName.lean` imports
 `Init.Prelude` and uses the **genuine** core `Nat`, `Nat.add`, `Eq`, `rfl`,
 `True`, `False`, `Nat.rec` and numeric literals, entirely unmodified. It only
 *defines* `Nat.gcd`, which `Init.Prelude` does not claim — core defines it far

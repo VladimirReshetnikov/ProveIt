@@ -5,7 +5,7 @@ Lean has TWO of Coquand's three ingredients outright:
   * impredicative `Prop` — `∀ x : X, p x : Prop` for `X` in *any* universe, and
   * a universe type      — `Prop : Type`.
 Only the third, non-strictly-positive inductive types, is denied, by the kernel's
-positivity check. This file proves that guard is *load-bearing*: from merely a
+positivity check. This file proves that guard is *essential*: from merely a
 retraction of `Phi A` into `A`, `False` follows.
 -/
 
