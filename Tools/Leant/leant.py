@@ -500,6 +500,10 @@ Commands (GHCi-style):
   :import MOD              add an import (rebuilds the session)
   :imports                 list active imports
   :browse [NAMESPACE]      list declarations in a namespace or the session
+  :browse! NAMESPACE       ...including compiler-generated auxiliaries
+  :doc NAME                show the documentation string of NAME
+  :search TEXT             search declaration names (case-insensitive)
+  :search? TYPE            proof search: what proves TYPE? (via exact?)
   :set OPT VAL             set_option OPT VAL (persists in the session)
   :undo                    revert the last state-changing command
   :reset                   clear all definitions (keeps imports)
@@ -543,6 +547,9 @@ class Leant:
         self.config = None
         self.transcript: Transcript | None = None
         self.timestamps: bool = args.timestamps
+        self.browse_env: int | None = None  # imports + Lean.Elab.Command
+        self.it_counter: int = 0            # GHCi-style `it` binding
+        self.completion_cache: dict[str, list[str]] = {}
 
     # -- server ------------------------------------------------------------
 
@@ -658,6 +665,8 @@ class Leant:
     def rebuild_base_env(self):
         """(Re)create the base environment containing all imports, then replay
         the session history on top of it."""
+        self.browse_env = None
+        self.completion_cache.clear()
         if self.imports:
             print(dim(f"Importing: {', '.join(self.imports)} ..."))
             self.warn_missing_modules(self.imports)
@@ -713,7 +722,7 @@ class Leant:
             return True
         errored = False
         for msg in res.messages:
-            text = msg.data.rstrip()
+            text = self.IT_RE.sub("it", msg.data.rstrip())
             if transform is not None and msg.severity == "info":
                 text = transform(text) or text
             if msg.severity == "error":
@@ -838,7 +847,7 @@ class Leant:
     def eval_input(self, text: str, allow_incomplete: bool = True) -> str | None:
         """Evaluate one input. Returns "incomplete" when the input parses as an
         unfinished declaration (caller should read continuation lines)."""
-        text = text.strip()
+        text = self.subst_it(text.strip())
         if not text:
             return None
         t0 = time.time()
@@ -868,6 +877,7 @@ class Leant:
         res = self.run_cmd(f"#eval ({text})", env=self.cur_env)
         if not is_error(res) and not has_errors(res):
             self.print_response(res)
+            self.bind_it(text)
             return
         res2 = self.run_cmd(f"#check ({text})", env=self.cur_env)
         if not is_error(res2) and not has_errors(res2):
@@ -898,6 +908,7 @@ class Leant:
             print(HELP)
         elif cmd in ("t", "type"):
             if arg:
+                arg = self.subst_it(arg)
                 res = self.run_cmd(f"#check ({arg})", env=self.cur_env)
                 if (is_error(res) or has_errors(res)) and print_builtin_info(arg):
                     pass
@@ -938,6 +949,14 @@ class Leant:
                 print(dim("(no imports)"))
         elif cmd == "browse":
             self.cmd_browse(arg)
+        elif cmd == "browse!":
+            self.cmd_browse(arg, show_all=True)
+        elif cmd == "doc":
+            self.cmd_doc(arg)
+        elif cmd == "search":
+            self.cmd_search(arg)
+        elif cmd == "search?":
+            self.cmd_search(arg, by_type=True)
         elif cmd == "set":
             if arg:
                 res = self.run_cmd(f"set_option {arg}", env=self.cur_env, cache=True)
@@ -961,8 +980,9 @@ class Leant:
             self.cur_env = self.base_env
             print(dim("session reset" + (" (imports kept)" if self.imports else "")))
         elif cmd == "history":
-            if self.history:
-                for i, h in enumerate(self.history, 1):
+            visible = [h for h in self.history if not h.startswith("def «it!")]
+            if visible:
+                for i, h in enumerate(visible, 1):
                     first = h.splitlines()[0]
                     more = " …" if "\n" in h else ""
                     print(f"{i:3}  {first}{more}")
@@ -1104,33 +1124,267 @@ class Leant:
         n = len(body.splitlines())
         print(dim(f"Loaded {path.name} ({n} lines) in {time.time() - t0:.1f}s"))
 
-    def cmd_browse(self, arg: str):
-        """List session declarations, or declarations in a namespace."""
-        if arg:
-            code = (
-                "open Lean in run_cmd do\n"
-                "  let env ← Lean.getEnv\n"
-                f"  let pre := `{arg}\n"
-                "  let mut names := #[]\n"
-                "  for (n, _) in env.constants.toList do\n"
-                "    if pre.isPrefixOf n && !n.isInternal then names := names.push n\n"
-                "  for n in names.qsort (·.toString < ·.toString) do\n"
-                "    Lean.logInfo m!\"{n}\"\n"
-            )
-            res = self.run_cmd(code, env=self.cur_env)
-            if any("include `import Lean" in m.data
-                   for m in getattr(res, "messages", []) if m.severity == "error"):
-                print(red(":browse needs the Lean metaprogramming API in scope — ")
-                      + "run " + bold(":import Lean") + " first")
-            elif not getattr(res, "messages", []):
-                print(dim(f"(no declarations found under {arg})"))
-            else:
+    # -- browse environment (imports + Lean metaprogramming API) ------------
+
+    def ensure_browse_env(self, quiet: bool = False) -> int | None:
+        """Environment for introspection metaprograms (:browse, :doc, :search,
+        completion): the session's imports plus Lean.Elab.Command, cached and
+        invalidated on import changes. The user's environment is untouched."""
+        if self.browse_env is not None:
+            return self.browse_env
+        if not quiet:
+            print(dim("preparing browse environment (session imports + Lean)..."))
+        mods = list(dict.fromkeys(self.imports + ["Lean.Elab.Command"]))
+        code = "\n".join(f"import {m}" for m in mods)
+        res = self.run_cmd(code, env=None)
+        if is_error(res) or has_errors(res) or res.env is None:
+            if not quiet:
                 self.print_response(res)
-        else:
-            if self.history:
-                print("\n\n".join(self.history))
+                print(red("failed to build the browse environment"))
+            return None
+        self.browse_env = res.env
+        return self.browse_env
+
+    GENERATED_FILTER = (
+        '  let aux : List String :=\n'
+        '    ["rec", "recOn", "casesOn", "brecOn", "binductionOn",\n'
+        '     "below", "ibelow", "noConfusion", "noConfusionType",\n'
+        '     "ctorElim", "ctorElimType", "ctorIdx", "sizeOf_spec",\n'
+        '     "injEq", "inj", "eq_def", "decEq"]\n'
+        "  let keep (n : Name) : Bool :=\n"
+        "    !n.isInternalDetail &&\n"
+        "    !n.components.any fun c => match c with\n"
+        "      | .str _ s => aux.contains s\n"
+        "      | _ => false\n"
+    )
+
+    @staticmethod
+    def lean_string_lit(s: str) -> str:
+        return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+    @classmethod
+    def lean_name_expr(cls, components: list[str]) -> str:
+        lits = ", ".join(cls.lean_string_lit(c) for c in components)
+        return f"[{lits}].foldl (fun a s => Name.str a s) Name.anonymous"
+
+    def session_decl_names(self) -> list[str]:
+        """Names bound by history entries, parsed textually."""
+        modifiers = {"private", "protected", "noncomputable", "partial",
+                     "unsafe", "scoped", "local", "mutual"}
+        binders = {"def", "theorem", "lemma", "abbrev", "inductive",
+                   "structure", "class", "instance", "axiom", "opaque"}
+        names = []
+        for entry in self.history:
+            for line in entry.splitlines():
+                line = line.strip()
+                if line.startswith("@["):
+                    line = line.split("]", 1)[-1].strip()
+                ws = line.split()
+                while ws and ws[0] in modifiers:
+                    ws = ws[1:]
+                if len(ws) >= 2 and ws[0] in binders:
+                    name = re.split(r"[\s({\[:=]", ws[1])[0]
+                    if name and not name.startswith("«it!"):
+                        names.append(name)
+        return names
+
+    def cmd_browse(self, arg: str, show_all: bool = False):
+        """List session declarations, or declarations in a namespace."""
+        arg = arg.lstrip("@").strip()
+        if not arg:
+            decls = self.session_decl_names()
+            if decls:
+                print("\n".join(decls))
             else:
                 print(dim("(no session declarations)"))
+            return
+        components = arg.split(".")
+        if any(ch.isspace() for ch in arg) or any(not c for c in components):
+            print(red(f"invalid namespace `{arg}`")
+                  + " — :browse expects a dotted name such as Nat or List.Perm")
+            return
+        env = self.ensure_browse_env()
+        if env is None:
+            return
+        keep = ("  let keep (n : Name) : Bool := !n.isInternal\n"
+                if show_all else self.GENERATED_FILTER)
+        code = (
+            "open Lean in run_cmd do\n"
+            "  let env ← getEnv\n"
+            f"  let pre : Name := {self.lean_name_expr(components)}\n"
+            + keep +
+            "  let names := env.constants.fold (init := #[]) fun a n _ =>\n"
+            "    if pre.isPrefixOf n && keep n then a.push n else a\n"
+            "  if names.isEmpty then\n"
+            "    logInfo \"(no declarations found)\"\n"
+            "  else\n"
+            "    let sorted := names.qsort (·.toString < ·.toString)\n"
+            "    logInfo (String.intercalate \"\\n\" (sorted.toList.map toString))\n"
+        )
+        res = self.run_cmd(code, env=env)
+        self.print_response(res)
+        matching = [n for n in self.session_decl_names()
+                    if n == arg or n.startswith(arg + ".")]
+        if matching:
+            print(dim("-- declared in this session:"))
+            print("\n".join(matching))
+
+    def cmd_doc(self, arg: str):
+        """Print the docstring of a declaration."""
+        arg = arg.lstrip("@").strip()
+        if not arg:
+            print(red("usage: :doc NAME"))
+            return
+        components = arg.split(".")
+        if any(ch.isspace() for ch in arg) or any(not c for c in components):
+            print(red(f"invalid name `{arg}`"))
+            return
+        env = self.ensure_browse_env()
+        if env is None:
+            return
+        code = (
+            "open Lean in run_cmd do\n"
+            "  let env ← getEnv\n"
+            f"  let n : Name := {self.lean_name_expr(components)}\n"
+            "  if !env.contains n then\n"
+            "    logInfo s!\"unknown constant `{n}` (session-local names have no docstrings)\"\n"
+            "  else\n"
+            "    match ← findDocString? env n with\n"
+            "    | some doc => logInfo doc\n"
+            "    | none => logInfo \"(no documentation string)\"\n"
+        )
+        res = self.run_cmd(code, env=env)
+        self.print_response(res)
+
+    def cmd_search(self, arg: str, by_type: bool = False):
+        """:search TEXT — case-insensitive name search over the environment;
+        :search? TYPE — proof search via `exact?`."""
+        if not arg:
+            print(red("usage: :search TEXT  |  :search? TYPE"))
+            return
+        if by_type:
+            res = self.run_cmd(f"example : ({arg}) := by exact?", env=self.cur_env)
+            if any("unknown tactic" in m.data for m in getattr(res, "messages", [])
+                   if m.severity == "error"):
+                print(red(":search? needs the `exact?` tactic — ")
+                      + "try " + bold(":import Mathlib.Tactic") + " (or Batteries)")
+            else:
+                self.print_response(res)
+            return
+        env = self.ensure_browse_env()
+        if env is None:
+            return
+        # The browse env silently adds the Lean API; hide those hits unless
+        # the user actually imported Lean themselves.
+        lean_imported = any(i == "Lean" or i.startswith("Lean.")
+                            for i in self.imports)
+        hidden = "[]" if lean_imported else '["Lean"]'
+        code = (
+            "open Lean in run_cmd do\n"
+            "  let env ← getEnv\n"
+            f"  let needle := ({self.lean_string_lit(arg)}).toLower\n"
+            f"  let hidden : List String := {hidden}\n"
+            + self.GENERATED_FILTER +
+            "  let hits := env.constants.fold (init := #[]) fun a n _ =>\n"
+            "    if keep n && !hidden.contains n.getRoot.toString\n"
+            "        && (n.toString.toLower.splitOn needle).length > 1\n"
+            "    then a.push n else a\n"
+            "  if hits.isEmpty then\n"
+            "    logInfo \"(no matches)\"\n"
+            "  else\n"
+            "    let sorted := hits.qsort (·.toString < ·.toString)\n"
+            "    let shown := sorted.toList.take 100\n"
+            "    let more := if sorted.size > 100 then\n"
+            "      s!\"\\n... ({sorted.size} matches, first 100 shown)\" else \"\"\n"
+            "    logInfo (String.intercalate \"\\n\" (shown.map toString) ++ more)\n"
+        )
+        res = self.run_cmd(code, env=env)
+        self.print_response(res)
+        matching = [n for n in self.session_decl_names() if arg.lower() in n.lower()]
+        if matching:
+            print(dim("-- declared in this session:"))
+            print("\n".join(matching))
+
+    def completion_candidates(self, prefix: str) -> list[str]:
+        """Dotted-identifier completions for the prompt (cached per prefix)."""
+        if prefix in self.completion_cache:
+            return self.completion_cache[prefix]
+        candidates = [n for n in self.session_decl_names()
+                      if n.startswith(prefix)]
+        env = self.ensure_browse_env(quiet=True)
+        if env is not None:
+            code = (
+                "open Lean in run_cmd do\n"
+                "  let env ← getEnv\n"
+                f"  let pre := {self.lean_string_lit(prefix)}\n"
+                + self.GENERATED_FILTER +
+                "  let hits := env.constants.fold (init := #[]) fun a n _ =>\n"
+                "    if keep n && pre.isPrefixOf n.toString then a.push n else a\n"
+                "  let sorted := hits.qsort (·.toString < ·.toString)\n"
+                "  logInfo (String.intercalate \"\\n\"\n"
+                "    (sorted.toList.take 200 |>.map toString))\n"
+            )
+            try:
+                res = self.run_cmd(code, env=env)
+                for m in getattr(res, "messages", []):
+                    if m.severity == "info":
+                        candidates += [n for n in m.data.splitlines() if n]
+            except Exception:  # noqa: BLE001
+                pass
+        result = sorted(dict.fromkeys(candidates))
+        self.completion_cache[prefix] = result
+        return result
+
+    # -- GHCi-style `it` binding ---------------------------------------------
+
+    IT_RE = re.compile(r"«?it!\d+»?")
+
+    def subst_it(self, text: str) -> str:
+        """Replace bare `it` (outside strings/comments) with the mangled name
+        of the most recent bound result."""
+        if self.it_counter == 0:
+            return text
+        target = f"«it!{self.it_counter}»"
+        out = []
+        # walk the text, skipping strings and comments
+        i, n = 0, len(text)
+        ident = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'!?")
+        while i < n:
+            ch = text[i]
+            if ch == '"':
+                j = i + 1
+                while j < n and text[j] != '"':
+                    j += 2 if text[j] == "\\" else 1
+                out.append(text[i:j + 1]); i = j + 1
+            elif text.startswith("--", i):
+                j = text.find("\n", i)
+                j = n if j < 0 else j
+                out.append(text[i:j]); i = j
+            elif text.startswith("/-", i):
+                depth, j = 1, i + 2
+                while j < n and depth > 0:
+                    if text.startswith("/-", j): depth += 1; j += 2
+                    elif text.startswith("-/", j): depth -= 1; j += 2
+                    else: j += 1
+                out.append(text[i:j]); i = j
+            elif (text.startswith("it", i)
+                  and (i == 0 or (text[i-1] not in ident and text[i-1] != "."))
+                  and (i + 2 >= n or text[i+2] not in ident)):
+                out.append(target); i += 2
+            else:
+                out.append(ch); i += 1
+        return "".join(out)
+
+    def bind_it(self, expr: str):
+        """After a successful evaluation, bind the expression as `it`."""
+        name = f"«it!{self.it_counter + 1}»"
+        code = f"def {name} := ({expr})"
+        res = self.run_cmd(code, env=self.cur_env, cache=True)
+        if not is_error(res) and not has_errors(res):
+            self.it_counter += 1
+            self.advance_env(res.env, code)
+        else:
+            self.drop_from_cache(res)
 
     # -- main loop -----------------------------------------------------------
 
@@ -1140,7 +1394,7 @@ class Leant:
         print(cyan(BANNER))
         print(f"Leant — a GHCi-style REPL for Lean 4.  Type {bold(':help')} for help, "
               f"{bold(':quit')} to exit.")
-        raw_prompt_fn, echoes = make_prompt_fn()
+        raw_prompt_fn, echoes = make_prompt_fn(self)
         prompt_fn = self.wrap_prompt(raw_prompt_fn, echoes)
         if self.args.file:
             self.cmd_load(self.args.file)
@@ -1235,7 +1489,17 @@ def has_errors(res) -> bool:
     return any(m.severity == "error" for m in getattr(res, "messages", []))
 
 
-def make_prompt_fn():
+COMMAND_NAMES = [
+    ":help", ":quit", ":type", ":info", ":load", ":reload", ":import",
+    ":imports", ":browse", ":browse!", ":doc", ":search", ":search?", ":set",
+    ":undo", ":reset", ":history", ":env", ":time", ":transcript",
+    ":timestamps", ":pickle", ":unpickle",
+]
+
+IDENT_WORD_RE = re.compile(r"[\w.«»₀-₉'!?]+$")
+
+
+def make_prompt_fn(repl=None):
     """Return (callable(prompt_str) -> str, echoes_via_stdout).
     echoes_via_stdout is True when the prompt and typed line already pass
     through sys.stdout (so a stdout tee captures them for transcripts)."""
@@ -1248,10 +1512,37 @@ def make_prompt_fn():
         return fn, True
     try:
         from prompt_toolkit import PromptSession
+        from prompt_toolkit.completion import Completer, Completion
         from prompt_toolkit.history import FileHistory
 
+        class LeantCompleter(Completer):
+            """Completes :commands at line start and dotted identifiers
+            elsewhere (identifier candidates come from the backend via the
+            cached browse environment; TAB-triggered only)."""
+
+            def get_completions(self, document, complete_event):
+                before = document.text_before_cursor
+                if before.lstrip().startswith(":") and " " not in before.lstrip():
+                    word = before.lstrip()
+                    for name in COMMAND_NAMES:
+                        if name.startswith(word):
+                            yield Completion(name, start_position=-len(word))
+                    return
+                if repl is None or not complete_event.completion_requested:
+                    return  # identifiers only on explicit TAB
+                m = IDENT_WORD_RE.search(before)
+                if not m or len(m.group(0)) < 2:
+                    return
+                word = m.group(0)
+                for cand in repl.completion_candidates(word):
+                    yield Completion(cand, start_position=-len(word))
+
         histfile = Path.home() / ".leant_history"
-        session = PromptSession(history=FileHistory(str(histfile)))
+        session = PromptSession(
+            history=FileHistory(str(histfile)),
+            completer=LeantCompleter(),
+            complete_while_typing=False,
+        )
 
         def fn(p: str) -> str:
             return session.prompt(p)
