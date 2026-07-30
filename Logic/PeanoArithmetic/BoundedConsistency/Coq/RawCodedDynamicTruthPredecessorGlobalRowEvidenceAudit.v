@@ -9,6 +9,8 @@ Check raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_evidence_pair.
 Check raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair.
 Check
   raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_components.
+Check
+  raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_atomic_and_domain.
 Print Assumptions
   raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_evidence.
 Print Assumptions
@@ -19,3 +21,5 @@ Print Assumptions
   raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair.
 Print Assumptions
   raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_components.
+Print Assumptions
+  raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_atomic_and_domain.
