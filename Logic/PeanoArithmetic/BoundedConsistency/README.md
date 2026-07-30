@@ -5192,3 +5192,18 @@ native-trace closure transports the carried exclusivity projection and builds
 the universal predecessor implication there.  The dependency-ordered compact
 headline exposes this split bundle, leaving the zero producer and the three
 unrelated collision roots distinct from the selected-payload obligation.
+
+The aligned positive branch is now connected to the complete strong-step
+handoff.  `RawCodedDynamicTruthNativeAlignedStrongStepLogicalRootsCompilation.v`
+extracts the literal successor-level numeral and both domain-substitution
+traces from the aligned current field.  A proof-producing resource compiler
+supplies a matching direct structural translation, restricted/rule roots,
+the two generalized global-source roots, and the dependency-ordered Sigma/Pi
+selected-payload families.  Applying the strong handoff at the empty temporary
+prefix returns the three logical roots on a witnessed extension; two explicit
+translation equations identify its conclusions with the native evidence
+codes.  The preferred dependency-ordered kernel and compact conditional
+headline consume these strong-step resources directly.  Consequently the
+positive logical-root callback itself is discharged; what remains inside this
+coordinate is the construction of those concrete global-source and selected-
+payload proof resources.
