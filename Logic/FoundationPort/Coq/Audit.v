@@ -10,6 +10,7 @@ From Foundation.Vorspiel.Set Require Import Basic.
 From Foundation.Vorspiel.Order Require Import Heyting.
 From Foundation.Vorspiel.Order Require Import Lattice.
 From Foundation.Vorspiel.Order Require Import Dense.
+From Foundation.Vorspiel.Order Require Import Ideal.
 From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
@@ -165,6 +166,20 @@ Check finite_fold.
 Print Assumptions finite_fold_filter_all.
 Print Assumptions finite_sup_filter_all.
 Print Assumptions finite_inf_filter_all.
+Check join_order_data.
+Check order_ideal.
+Print Assumptions principal_ideal_member_iff.
+Print Assumptions bottom_ideal_member_eq_iff.
+Print Assumptions principal_ideal_least.
+Print Assumptions ideal_join_list_member_bound.
+Print Assumptions ideal_join_list_least_upper.
+Print Assumptions ideal_join_list_member.
+Print Assumptions principal_ideal_join_list_least.
+Print Assumptions ideal_supremum_member_downward.
+Print Assumptions ideal_proper_iff_top_not_member.
+Check ideal_prime_pair.
+Print Assumptions prime_pair_not_filter_iff_ideal.
+Print Assumptions prime_pair_not_ideal_iff_filter.
 Check preorder_data.
 Check directed_on.
 Print Assumptions directed_list_colimit.
