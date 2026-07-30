@@ -8,10 +8,11 @@
 *)
 
 From Stdlib Require Import Bool.Bool Arith.PeanoNat Lia Lists.List.
-From FoundationModal Require Import GenericEntailment GenericSemantics.
-From Foundation.Syntax.Predicate Require Import Language Term Rew.
+From FoundationModal Require Import
+  GenericEntailment GenericLogicSymbol GenericSemantics.
+From Foundation.Syntax.Predicate Require Import Language Term Quantifier Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
-From Foundation.FirstOrder.Basic Require Import Calculus Operator.
+From Foundation.FirstOrder.Basic Require Import Calculus Operator Padding.
 From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 From Foundation.FirstOrder Require Import Polarity.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
@@ -664,6 +665,118 @@ Proof.
   - apply AH_exists.
 Qed.
 
+Theorem arithmetic_hierarchy_all_iter_iff : forall X s k n
+    (p : semiformula oring_language X (k + n)),
+  arithmetic_hierarchy X arithmetic_pi (S s) n
+      (first_all_iter (semiformula_universal_quantifier oring_language X)
+        k n p) <->
+  arithmetic_hierarchy X arithmetic_pi (S s) (k + n) p.
+Proof.
+  intros X s k. induction k as [|k IH]; intros n p.
+  - reflexivity.
+  - simpl first_all_iter. rewrite IH.
+    apply arithmetic_hierarchy_all_iff.
+Qed.
+
+Theorem arithmetic_hierarchy_exists_iter_iff : forall X s k n
+    (p : semiformula oring_language X (k + n)),
+  arithmetic_hierarchy X arithmetic_sigma (S s) n
+      (first_exists_iter (semiformula_existential_quantifier oring_language X)
+        k n p) <->
+  arithmetic_hierarchy X arithmetic_sigma (S s) (k + n) p.
+Proof.
+  intros X s k. induction k as [|k IH]; intros n p.
+  - reflexivity.
+  - simpl first_exists_iter. rewrite IH.
+    apply arithmetic_hierarchy_exists_iff.
+Qed.
+
+Theorem arithmetic_hierarchy_exists_closure : forall X s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X arithmetic_sigma (S s) n p ->
+  arithmetic_hierarchy X arithmetic_sigma (S s) 0
+    (first_exists_closure
+      (semiformula_existential_quantifier oring_language X) n p).
+Proof.
+  intros X s n. induction n as [|n IH]; intros p Hp.
+  - exact Hp.
+  - simpl first_exists_closure. apply IH. now apply AH_exists.
+Qed.
+
+Theorem arithmetic_hierarchy_all_closure : forall X s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X arithmetic_pi (S s) n p ->
+  arithmetic_hierarchy X arithmetic_pi (S s) 0
+    (first_all_closure
+      (semiformula_universal_quantifier oring_language X) n p).
+Proof.
+  intros X s n. induction n as [|n IH]; intros p Hp.
+  - exact Hp.
+  - simpl first_all_closure. apply IH. now apply AH_all.
+Qed.
+
+Lemma arithmetic_hierarchy_repeated_verum : forall X pol s n k,
+  arithmetic_hierarchy X pol s n
+    (@semiformula_repeated_verum oring_language X n k).
+Proof.
+  intros X pol s n k. induction k as [|k IH].
+  - apply AH_verum.
+  - simpl. apply AH_and; [apply AH_verum | exact IH].
+Qed.
+
+Theorem arithmetic_hierarchy_padding_iff : forall X pol s n
+    (p : semiformula oring_language X n) k,
+  arithmetic_hierarchy X pol s n (semiformula_padding p k) <->
+  arithmetic_hierarchy X pol s n p.
+Proof.
+  intros. unfold semiformula_padding.
+  rewrite arithmetic_hierarchy_and_iff. split.
+  - tauto.
+  - intro Hp. split; [exact Hp | apply arithmetic_hierarchy_repeated_verum].
+Qed.
+
+Theorem arithmetic_hierarchy_matrix_conj_iff : forall X pol s n k
+    (v : Fin.t k -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_matrix_conj
+        (semiformula_connectives oring_language X n) k v) <->
+  forall i, arithmetic_hierarchy X pol s n (v i).
+Proof.
+  intros X pol s n k. induction k as [|k IH]; intro v.
+  - simpl. split.
+    + intros _ i. inversion i.
+    + intros _. apply AH_verum.
+  - simpl. rewrite arithmetic_hierarchy_and_iff, IH. split.
+    + intros [Hhead Htail] i.
+      refine (@Fin.caseS' k i
+        (fun j => arithmetic_hierarchy X pol s n (v j)) Hhead _).
+      exact Htail.
+    + intro Hall. split.
+      * apply Hall.
+      * intro i. apply Hall.
+Qed.
+
+Theorem arithmetic_hierarchy_matrix_disj_iff : forall X pol s n k
+    (v : Fin.t k -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_matrix_disj
+        (semiformula_connectives oring_language X n) k v) <->
+  forall i, arithmetic_hierarchy X pol s n (v i).
+Proof.
+  intros X pol s n k. induction k as [|k IH]; intro v.
+  - simpl. split.
+    + intros _ i. inversion i.
+    + intros _. apply AH_falsum.
+  - simpl. rewrite arithmetic_hierarchy_or_iff, IH. split.
+    + intros [Hhead Htail] i.
+      refine (@Fin.caseS' k i
+        (fun j => arithmetic_hierarchy X pol s n (v j)) Hhead _).
+      exact Htail.
+    + intro Hall. split.
+      * apply Hall.
+      * intro i. apply Hall.
+Qed.
+
 Theorem arithmetic_hierarchy_list_conj_iff : forall X pol s n
     (xs : list (semiformula oring_language X n)),
   arithmetic_hierarchy X pol s n
@@ -708,6 +821,62 @@ Proof.
       * intro Hall. split.
         -- apply Hall. now left.
         -- intros r Hr. apply Hall. now right.
+Qed.
+
+Theorem arithmetic_hierarchy_list_conj_map_iff : forall I X pol s n
+    (xs : list I) (f : I -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_list_conj_map
+        (semiformula_connectives oring_language X n) f xs) <->
+  forall i, In i xs -> arithmetic_hierarchy X pol s n (f i).
+Proof.
+  intros. unfold generic_list_conj_map.
+  rewrite arithmetic_hierarchy_list_conj_iff. split.
+  - intros Hall i Hi. apply Hall, in_map. exact Hi.
+  - intros Hall p Hp. apply in_map_iff in Hp.
+    destruct Hp as [i [<- Hi]]. now apply Hall.
+Qed.
+
+Theorem arithmetic_hierarchy_list_disj_map_iff : forall I X pol s n
+    (xs : list I) (f : I -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_list_disj_map
+        (semiformula_connectives oring_language X n) f xs) <->
+  forall i, In i xs -> arithmetic_hierarchy X pol s n (f i).
+Proof.
+  intros. unfold generic_list_disj_map.
+  rewrite arithmetic_hierarchy_list_disj_iff. split.
+  - intros Hall i Hi. apply Hall, in_map. exact Hi.
+  - intros Hall p Hp. apply in_map_iff in Hp.
+    destruct Hp as [i [<- Hi]]. now apply Hall.
+Qed.
+
+Theorem arithmetic_hierarchy_finite_conj_iff : forall I X pol s n
+    (cover : finite_cover I) (f : I -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_finset_uconj
+        (semiformula_connectives oring_language X n)
+        (finite_cover_list cover) f) <->
+  forall i, arithmetic_hierarchy X pol s n (f i).
+Proof.
+  intros. unfold generic_finset_uconj, generic_finset_conj_map.
+  rewrite arithmetic_hierarchy_list_conj_map_iff. split.
+  - intros H i. apply H, finite_cover_complete.
+  - intros H i _. apply H.
+Qed.
+
+Theorem arithmetic_hierarchy_finite_disj_iff : forall I X pol s n
+    (cover : finite_cover I) (f : I -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_finset_udisj
+        (semiformula_connectives oring_language X n)
+        (finite_cover_list cover) f) <->
+  forall i, arithmetic_hierarchy X pol s n (f i).
+Proof.
+  intros. unfold generic_finset_udisj, generic_finset_disj_map.
+  rewrite arithmetic_hierarchy_list_disj_map_iff. split.
+  - intros H i. apply H, finite_cover_complete.
+  - intros H i _. apply H.
 Qed.
 
 Definition arithmetic_theory_sound_on_hierarchy
