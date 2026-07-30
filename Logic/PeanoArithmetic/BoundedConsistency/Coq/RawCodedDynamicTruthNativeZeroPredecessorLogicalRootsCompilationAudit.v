@@ -6,6 +6,10 @@ Import
 
 Check raw_dynamicTruthZeroLocalDecisionExclusiveFieldCode.
 Check RawDynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase.
+Check dynamicTruthZeroLogicalRootsLawFormula.
+Check raw_dynamicTruthZeroLocalAdmissibleCode.
+Check
+  raw_dynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_PA_law.
 Check raw_dynamicTruthNativeLocalProofTraceAt_zero_global_predecessor.
 Check
   RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnCanonicalGlobalStep.
@@ -21,6 +25,8 @@ Check
 Print Assumptions raw_dynamicTruthZeroLocalDecisionExclusiveFieldCode.
 Print Assumptions
   raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_fixed_logical_roots.
+Print Assumptions
+  raw_dynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_PA_law.
 Print Assumptions
   raw_dynamicTruthNativeLocalProofTraceAt_zero_global_predecessor.
 Print Assumptions
