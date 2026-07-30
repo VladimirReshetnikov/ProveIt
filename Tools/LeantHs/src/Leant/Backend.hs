@@ -4,7 +4,7 @@
 -- This ports the relevant parts of LeanInteract's server module: requests are
 -- one JSON document followed by a blank line; responses are read until the
 -- blank-line delimiter.
-module LeanRepl.Backend
+module Leant.Backend
   ( Backend (..)
   , BackendConfig (..)
   , discoverReplExe
@@ -54,7 +54,7 @@ import System.Process
   )
 import System.Timeout (timeout)
 
-import LeanRepl.Json (JValue, encodeJson, parseJson)
+import Leant.Json (JValue, encodeJson, parseJson)
 
 data BackendConfig = BackendConfig
   { bcLakePath :: FilePath
@@ -79,13 +79,13 @@ data RequestError
 -- Discovery -----------------------------------------------------------------
 
 -- | Locate the repl executable built by LeanInteract (the Python sibling of
--- this tool), or honor the LEANREPL_BACKEND environment variable.
+-- this tool), or honor the LEANT_BACKEND environment variable.
 --
 -- The cache layout is
 --   <site-packages>/lean_interact/cache/<owner>/repl/<rev>/.lake/build/bin/repl.exe
 discoverReplExe :: IO (Maybe FilePath)
 discoverReplExe = do
-  fromEnv <- lookupEnv "LEANREPL_BACKEND"
+  fromEnv <- lookupEnv "LEANT_BACKEND"
   case fromEnv of
     Just path -> do
       exists <- doesFileExist path

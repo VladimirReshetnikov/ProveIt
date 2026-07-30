@@ -1,4 +1,4 @@
-# LeanRepl — a GHCi-style interactive REPL for Lean 4
+# Leant — a GHCi-style interactive REPL for Lean 4
 
 An interactive read-eval-print loop for Lean 4, modeled on Haskell's GHCi.
 Type expressions to evaluate them, type declarations to extend the session,
@@ -19,7 +19,7 @@ The ecosystem provides:
   [Kimina Lean Server](https://arxiv.org/html/2504.21230v1) — programmatic /
   batch-server wrappers, not interactive shells.
 
-`leanrepl.py` is the missing front-end: a single-file GHCi-style shell built
+`leant.py` is the missing front-end: a single-file GHCi-style shell built
 on LeanInteract. Definitions persist between inputs via the backend's
 environment threading; the session survives backend crashes (commands are
 replayed from a session cache); Ctrl+C restarts the server without losing
@@ -38,17 +38,17 @@ afterwards startup is instant.
 ## Usage
 
 ```
-python leanrepl.py                       # auto-detects the enclosing Lake project
-python leanrepl.py --project C:/ProveIt  # explicit Lake project
-python leanrepl.py --plain               # bare Lean (no project, stdlib only)
-python leanrepl.py -i Mathlib.Tactic.Ring  # start with imports
-python leanrepl.py MyFile.lean           # load a file at startup
-python leanrepl.py --transcript [FILE]   # record a full session transcript
-python leanrepl.py --transcript --timestamps  # ...with per-command timestamps
+python leant.py                       # auto-detects the enclosing Lake project
+python leant.py --project C:/ProveIt  # explicit Lake project
+python leant.py --plain               # bare Lean (no project, stdlib only)
+python leant.py -i Mathlib.Tactic.Ring  # start with imports
+python leant.py MyFile.lean           # load a file at startup
+python leant.py --transcript [FILE]   # record a full session transcript
+python leant.py --transcript --timestamps  # ...with per-command timestamps
 ```
 
-On Windows, `leanrepl.cmd` wraps the above — both here and at the
-repository root (so `leanrepl` works directly from the project directory).
+On Windows, `leant.cmd` wraps the above — both here and at the
+repository root (so `leant` works directly from the project directory).
 
 When run inside a Lake project (e.g. this repository), all built project
 modules and dependencies (Mathlib, ...) are importable. Import narrow
@@ -80,6 +80,11 @@ instance, or the expression is a proposition or function), the type is shown
 via `#check` instead. Declarations (`def`, `theorem`, `open`, `#eval`, ...)
 run verbatim and, on success, advance the session environment.
 
+The last successfully evaluated expression is available as `it`, GHCi-style
+(`2 + 2` then `it * 10` gives `40`). TAB completes `:commands` and dotted
+identifiers (via the same cached environment that powers `:browse`, `:doc`,
+and `:search` — the first completion builds it).
+
 Multi-line input starts automatically when a line is syntactically
 incomplete (unbalanced brackets, trailing `:=`/`by`/`where`/..., or a parse
 error at end of input); once started, an empty line submits the block
@@ -106,7 +111,10 @@ used with `:t`/`:info` or evaluated bare, instead of a plain
 | `:reload`, `:r` | reload the last loaded file |
 | `:import MOD` | add an import (rebuilds the session, replaying history) |
 | `:imports` | list active imports |
-| `:browse NS` | list declarations under a namespace (needs `:import Lean`) |
+| `:browse NS` | list declarations under a namespace (`:browse!` includes generated auxiliaries) |
+| `:doc NAME` | show the documentation string of a declaration |
+| `:search TEXT` | case-insensitive name search over the environment |
+| `:search? TYPE` | proof search: what proves TYPE? (via `exact?`) |
 | `:set OPT VAL` | `set_option` persisting in the session |
 | `:undo` | revert the last state-changing command |
 | `:reset` | clear definitions, keep imports |
@@ -128,7 +136,7 @@ used with `:t`/`:info` or evaluated bare, instead of a plain
   not yet surfaced interactively.
 - Interrupting evaluation (Ctrl+C) restarts the backend; the session is
   restored automatically from the replay cache on the next command.
-- Line history is stored in `~/.leanrepl_history`.
+- Line history is stored in `~/.leant_history`.
 - Transcripts contain the whole session (prompts, inputs, and ANSI-stripped
-  output). `--transcript` with no FILE writes `leanrepl-<date>-<time>.log`
+  output). `--transcript` with no FILE writes `leant-<date>-<time>.log`
   in the current directory. `:transcript` alone shows recording status.
