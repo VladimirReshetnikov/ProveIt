@@ -9,6 +9,7 @@ From Foundation.FirstOrder.Basic Require Import Definability.
 From Foundation.FirstOrder.Basic Require Import Calculus.
 From Foundation.FirstOrder.Basic Require Import Calculus2.
 From Foundation.FirstOrder.Basic Require Import Padding.
+From Foundation.FirstOrder.Basic Require Import Eq.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
@@ -738,6 +739,19 @@ Check semiformula_all_negative.
 Check semiformula_neg_positive_iff.
 Check semiformula_neg_negative_iff.
 Check semiformula_polarity_rewrite.
+Check first_order_eqv.
+Check first_order_models_equality_axioms.
+Check first_order_eqv_refl.
+Check first_order_eqv_symm.
+Check first_order_eqv_trans.
+Check first_order_eqv_func_ext.
+Check first_order_eqv_rel_ext.
+Check first_order_eqv_equivalence.
+Check first_order_eqv_rel_ext_iff.
+Check first_order_models_equality_axioms_of_interprets_eq.
+Check first_order_eqv_fin_env_cons.
+Check semiterm_val_eqv.
+Check semiformula_eval_eqv.
 Check first_order_derivation_language_map.
 Check first_order_lk_provable_language_map.
 Check first_order_derivation_rewrite.
@@ -1085,6 +1099,10 @@ Print Assumptions semiformula_and_positive_iff.
 Print Assumptions semiformula_or_negative_iff.
 Print Assumptions semiformula_neg_positive_iff.
 Print Assumptions semiformula_polarity_rewrite.
+Print Assumptions first_order_eqv_equivalence.
+Print Assumptions first_order_models_equality_axioms_of_interprets_eq.
+Print Assumptions semiterm_val_eqv.
+Print Assumptions semiformula_eval_eqv.
 Print Assumptions first_order_sequent_language_map_shift.
 Print Assumptions first_order_derivation_language_map.
 Print Assumptions first_order_lk_provable_language_map.
