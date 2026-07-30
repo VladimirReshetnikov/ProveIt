@@ -8,6 +8,7 @@ From Foundation.Vorspiel.List Require Import Chain.
 From Foundation.Vorspiel.Nat Require Import Basic.
 From Foundation.Vorspiel.Set Require Import Basic.
 From Foundation.Vorspiel.Set Require Import Cofinite.
+From Foundation.Vorspiel.Set Require Import Fin.
 From Foundation.Vorspiel.Order Require Import Heyting.
 From Foundation.Vorspiel.Order Require Import Lattice.
 From Foundation.Vorspiel.Order Require Import Dense.
@@ -170,6 +171,16 @@ Print Assumptions set_coinfinite_subset.
 Print Assumptions set_full_cofinite.
 Print Assumptions set_cofinite_union_left.
 Print Assumptions set_cofinite_union_right.
+Print Assumptions fin1_full_equiv_singleton.
+Print Assumptions fin1_set_cases.
+Print Assumptions fin1_powerset_iff.
+Print Assumptions fin2_full_equiv_pair.
+Print Assumptions fin2_singleton_not_full.
+Print Assumptions fin2_set_cases.
+Print Assumptions fin2_powerset_iff.
+Print Assumptions fin2_complement_one_equiv_zero.
+Print Assumptions fin2_complement_zero_equiv_one.
+Print Assumptions fin3_full_equiv_triple.
 Check heyting_algebra_data.
 Print Assumptions ha_inf_mono.
 Print Assumptions ha_himp_himp_inf_himp_inf_le.
