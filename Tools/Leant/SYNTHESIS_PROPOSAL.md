@@ -13,6 +13,13 @@ synthesis inside Leant, what they would buy us, and how to build it.
 
 ## 1. What Djex actually provides (and what maps)
 
+*Scope note: Djex has moved well past the original Djinn and Exference.
+Recent work (reviewed from the commit history and the dated reports
+through 2026-07-29) adds bounded rank-N quantification, guarded
+impredicative instantiation, and a unified type-class constraint
+contract; §1.5 summarizes that implemented scope and §2.0 analyzes how
+it maps onto Lean's type system.*
+
 | Djex idea | Substance | Lean/Leant mapping |
 | --- | --- | --- |
 | **LJT engine (Djinn)** | Complete, *terminating* proof search for intuitionistic propositional logic over `->`, tuples, `Either`, `Void`, opaque type variables; emits a lambda term, or a definitive "no term exists" | Curry–Howard transfers directly: the same calculus decides the Lean fragment `→ × ⊕ Empty Unit` in `Type` and `→ ∧ ∨ ⊥ ⊤ ¬ ↔` in `Prop`, emitting `fun`/`⟨,⟩`/`Sum.inl`/`.casesOn` terms |
@@ -22,6 +29,66 @@ synthesis inside Leant, what they would buy us, and how to build it.
 | **Verification posture** | Engines are explicit about semantics ("neither backend guesses the other's"); truncated batches are labeled; a finished heuristic batch with no candidates "is not a proof of non-inhabitation" | Leant goes one better: **every candidate is elaborated by the Lean backend before display** (`example : (T) := term`), so the synthesizer never needs to be trusted — the same outsource-soundness pattern `:search?` and prove mode already use |
 | **Embeddable library** | `build-depends: djex`, GHC 9.12.4, sealed session + checked request + result envelope; also three CLIs (`djex djinn --render expression "a -> a"`) | `leant-hs` is built with **the same GHC 9.12.4** — it links Djex directly as a library, in-process, with no subprocess or protocol overhead |
 | **Shared REPL conventions** | Explicit backend selection (`djinn`/`exference`/`both`), settable limits, environment files | `:synth` command options: engine choice, candidate count, budget — consistent with Leant's `:set`-style toggles |
+
+## 1.5 The post-merger scope: what Djex implements today
+
+The current engines go beyond propositional LJT and monomorphic
+best-first search. From the commit history (`a069029` through `6a9fc22`)
+and the reports `2026-07-28-rank-n-inference-review.md` and
+`2026-07-29-hypothesis-instantiation.md`:
+
+- **Alpha-aware opaque atoms as the default boundary.** Quantified
+  subterms are carried as alpha-normalized `TypeAtom`s with lexical
+  scoping; ordinary unification never decomposes an atom. Everything
+  below is a *bounded relaxation* of that default.
+- **Positive rank-N opening (Djinn).** Goal-position `forall`s open into
+  occurrence-scoped skolems via a polarized translation (arrow domains
+  reverse polarity; products/sums preserve it). Search runs a *plan
+  family*: the fully-opened and fully-opaque plans plus two linear
+  occurrence frontiers (each site opened among opaque siblings, and
+  kept opaque among opened siblings) — at most `2n + 2` plans, which is
+  exhaustive for three independent quantified sites; four-site balanced
+  subsets are a deliberate, documented gap.
+- **Bounded hypothesis-side instantiation (Djinn).** A quantified
+  hypothesis generates bounded premise axioms
+  `Opaque(∀ as. t) → t[as := ss]` whose instantiation candidates are
+  *only types the sequent itself supplies*: goal free variables, opened
+  skolems, premise scopes, and quantified atoms already mentioned. That
+  last class is **guarded impredicativity** — a binder may be solved
+  with a polytype, but only one the query supplied. A worklist follows
+  strictly shallower exposed foralls under per-scheme and global caps;
+  chains beyond three binders stay opaque. This closes goals like
+  `(forall a. a -> a) -> b -> b` and polymorphic transport through a
+  container while remaining terminating.
+- **Guarded impredicative provider subsumption (Exference).** A
+  provider such as `forall a. a -> a` forwards to an impredicative
+  requested scheme; the Quick-Look-style guard admits a quantified
+  instantiation image only if it occurs, up to alpha equivalence, as a
+  quantified subtree of the requested scheme: "no quantifier the query
+  did not supply is ever invented". Scoped providers instantiate their
+  complete leading forall chain freshly per use; provider contexts
+  become proof obligations.
+- **Verdict honesty as a fixed soundness bug.** Djinn once approximated
+  every nested forall as one proposition and could report
+  `ProvedUninhabitable` for inhabited types like
+  `c -> (forall a. a -> a)`. The polarized translation now records
+  whether any occurrence stayed opaque; an exhausted search over an
+  approximated space is `NoEvidence`, never a refutation. Negative
+  verdicts require a complete translation.
+- **Unified class-constraint contract.** Both engines share one
+  `Constraint` syntax and one explicit resolution policy; Djinn
+  validates contexts (existence, arity, kinds) and synthesizes
+  dictionary-independent terms; Exference resolves givens, superclasses,
+  and instances, with direct provider contexts becoming obligations.
+- **One classifier for search and checking.** Provider use is
+  classified once "by semantic root shape" and consumed by both the
+  search and the independent expression checker, so the two cannot
+  drift.
+
+Djex continues expanding in this direction (a goal-side
+forall-introduction slice is designed and documented as pending), which
+strengthens the case for consuming it as a library behind a narrow
+boundary: improvements arrive by version bump.
 
 Two Djex components deliberately do *not* map:
 
@@ -34,6 +101,88 @@ Two Djex components deliberately do *not* map:
 - **Haskell-source environment loading**: Leant's inventory comes from
   the live Lean environment via metaprograms, which is strictly better
   than parsing source files.
+
+## 2.0 Applicability of the expanded scope to Lean's type system
+
+The rank-N and impredicativity work is where the Haskell/Lean comparison
+gets genuinely interesting, because the two systems are asymmetric in
+opposite directions.
+
+### What becomes *easier* in Lean
+
+- **Rank-N is native.** Haskell's surface language is prenex; Djex's
+  polarized translation, occurrence-scoped skolems, and plan frontiers
+  are careful engineering *around* that. Lean has uniform Π-types:
+  `(∀ a, a → a) → b → b` is an unremarkable type, goal-side
+  ∀-introduction is literally `intro`, and Djex's still-pending
+  "goal-side forall-introduction slice" is a non-problem. What
+  transfers is not the workaround but the *logic*: positive ∀ =
+  introduce a fresh opaque atom (Lean: a local constant), negative ∀ =
+  bounded instantiation rule. The `2n + 2` plan-family discipline
+  transfers as-is as a search-space cap.
+- **Instantiation evidence is trivial.** Djex manufactures reserved
+  `$`-namespace axiom symbols and erases them before code generation
+  because GHC re-instantiates value occurrences implicitly. In Lean the
+  evidence for "use `h : ∀ α, α → α` at `B`" is just the application
+  `h B` (or bare `h`, letting the elaborator unify) — no erasure
+  machinery at all.
+- **The independent checker comes for free.** Djex maintains its own
+  expression checker sharing a classifier with search. Leant's
+  architecture already outsources checking to the Lean kernel — which
+  also silently enforces the one constraint Haskell doesn't have:
+  **universe correctness**. In `Type u` Lean is predicative
+  (`(∀ α : Type, α → α) : Type 1` cannot instantiate an `α : Type`
+  binder); the engine may propose universe-sloppy candidates and
+  verification discards them. No universe reasoning needs to live in
+  the engine.
+- **Class contexts collapse into elaboration.** Djex implements nominal
+  instance resolution (givens, superclasses, instances). In Lean,
+  instance-implicit binders `[Monad m]` in a goal become ordinary
+  opaque hypotheses for the engine (Djinn's dictionary-independent
+  posture), and any candidate that *uses* a class method simply leaves
+  the instance argument implicit — Lean's elaborator, running during
+  verification, is a better evidence resolver than anything we would
+  port.
+
+### What becomes *harder* in Lean — and why Djex's shape is still right
+
+- **`Prop` is genuinely impredicative**, so the space of legal
+  instantiations is *larger* than in (predicative-by-default) Haskell:
+  `∀ p : Prop, ...` may be instantiated at any proposition, including
+  quantified ones. Full second-order intuitionistic propositional
+  inhabitation is undecidable, so *some* bound is mandatory, and Djex's
+  guarded rule — instantiate only with polytypes the query itself
+  supplies, up to alpha equivalence — is exactly the right bound: it is
+  sound, terminating, closes the practically common goals
+  (polymorphic transport, self-application patterns like
+  `(∀ p, p → p) → q → q`), and fails *honestly* on the rest. In Lean
+  this guard is not a stopgap before a complete solver arrives; it is
+  the correct permanent design for an undecidable problem.
+- **Verdict semantics need Djex's fixed honesty rule, extended.**
+  Djinn's lesson — negative evidence only from complete translations —
+  becomes a two-axis rule in Leant: a "provably no closed term" verdict
+  requires (a) no quantified occurrence was left opaque or
+  bounded-instantiated, *and* (b) no atom is hiding dependent
+  structure. Otherwise the result is "no term found within bounds",
+  Djex's `NoEvidence`.
+- **Dependent types remain outside the engine** — but the alpha-aware
+  opaque-atom discipline upgrades them from *refusal* to *atoms*. A
+  goal like `(∀ n : Nat, P n) → Q → (∀ n : Nat, P n)` is solvable
+  propositionally: the dependent subformulas alpha-normalize to equal
+  atoms and LJT finds `fun h _ => h`. This is a direct, cheap widening
+  of the phase-1 fragment that the original proposal (pre-review)
+  missed: dependent goals become in-scope whenever their dependent
+  parts only need to be *transported*, not *analyzed*.
+
+### Net assessment
+
+Djex's expanded scope is not just applicable — Lean *simplifies* most of
+it (native rank-N, kernel-checked universes, elaborator-resolved
+instances, trivial instantiation evidence) while *validating* the rest
+(guarded impredicativity as the permanent answer to an undecidable
+space; strict verdict honesty). The parts of Djex that took the most
+engineering are precisely the parts Leant gets from Lean for free, which
+tilts the cost/benefit further toward doing this.
 
 ## 2. Why this is worth having: benefits analysis
 
@@ -135,8 +284,13 @@ Design rules, all inherited from Djex:
   `Iff` (as pair of arrows), `¬` (as `→ False`), and opaque heads
   (variables and any constant applied to arguments, treated atomically).
   Universally quantified *type* variables at the front (`∀ {α : Sort u}`)
-  become Djinn's opaque variables — this is exactly Djex's "explicit
-  prenex polymorphism at the checked request edge".
+  become Djinn's opaque variables. **Nested quantifiers are not
+  refused**: following Djex's current model, they are carried as
+  alpha-normalized opaque atoms by default, opened positionally under
+  the plan-family caps (§1.5/§2.0), and instantiated on the hypothesis
+  side only at sequent-supplied types. **Dependent subformulas**
+  (`∀ n : Nat, P n`, indexed families) likewise become opaque atoms —
+  transportable, never analyzed.
 - **Out of the engine**: LJT proofs are lambda terms with pairing,
   injections, and case splits; render `⟨a, b⟩`, `Sum.inl`/`Or.inl`,
   `nomatch`/`False.elim`, `.1`/`.2`. In `Prop` render the logical
@@ -152,7 +306,12 @@ Design rules, all inherited from Djex:
 - **Phase 1 — the real feature (M).** Full propositional fragment (×,
   ⊕, ⊥, ⊤, ¬, ↔, non-dependent ∀), Prop/Type-aware rendering,
   non-inhabitation verdicts, candidate numbering and selection,
-  prove-mode integration (`:synth` as a tactic-step producer). The
+  prove-mode integration (`:synth` as a tactic-step producer). Because
+  the engine is today's Djex, the **bounded quantified slice comes in
+  the same phase for free**: nested ∀s as opaque atoms, positive
+  opening, hypothesis instantiation at query-supplied types, guarded
+  impredicativity — the Leant work is confined to the translator
+  (polarity- and atom-aware) and to verdict labeling (§2.0). The
   Python REPL's `:synth` prints a pointer to `leant-hs` rather than
   growing its own host.
 - **Phase 2 — local inductives (M/L).** Treat non-recursive,
@@ -178,9 +337,18 @@ Design rules, all inherited from Djex:
 
 ## 5. Honest limitations
 
-- **No dependent types** in the decidable fragment: goals mentioning a
-  bound variable in a later type are refused (with the reason). This
-  still covers an enormous share of interactive "plumbing" moments.
+- **Dependent types are transported, never analyzed**: a dependent
+  subformula participates only as an opaque atom (§2.0), so goals
+  needing an actual induction, rewrite, or case split on indices stay
+  out of scope — those belong to prove mode and `:auto`. Fully
+  dependent goals with no propositional skeleton are refused with the
+  reason.
+- **Quantifier verdicts are bounded, not complete**: second-order
+  instantiation follows Djex's guarded, sequent-supplied discipline;
+  beyond it (and beyond three-binder chains) the answer is "no term
+  found within bounds" — full impredicative inhabitation is
+  undecidable, so this boundary is permanent, and the display must
+  never upgrade it to a refutation.
 - **No recursion before phase 3**, and even then only by reusing library
   functions; `:synth` will never invent `Nat.rec`-based programs. Djinn
   has the same boundary and remains useful after twenty years.
@@ -203,6 +371,13 @@ Design rules, all inherited from Djex:
   now have distinct strengths instead of being mirrors.
 
 ## 6. Recommendation
+
+The review of Djex's current scope strengthens the original
+recommendation: the engine now handles bounded rank-N and guarded
+impredicative goals out of the box, and the analysis in §2.0 shows the
+expensive parts of that machinery are either native to Lean or absorbed
+by kernel-side verification — Leant's share of the work shrank while the
+reachable goal space grew.
 
 Do phase 0 and phase 1: the effort is modest, every piece of supporting
 infrastructure (backend verification, browse env, prove mode) already
