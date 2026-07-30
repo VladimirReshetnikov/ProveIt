@@ -2,6 +2,7 @@
 
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
+From Foundation.Vorspiel.Nat Require Import Basic.
 From Foundation.Vorspiel.Order Require Import Heyting.
 From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Vorspiel.Order Require Import LowerSet.
@@ -61,6 +62,17 @@ Check option_to_list.
 Print Assumptions option_to_list_singleton_iff.
 Check function_equal_on.
 Print Assumptions function_equal_on_subset.
+Check nat_cases.
+Print Assumptions nat_cases_zero.
+Print Assumptions nat_cases_succ.
+Print Assumptions nat_ne_succ_max_left.
+Print Assumptions nat_ne_succ_max_right.
+Print Assumptions nat_fold_ext_below.
+Print Assumptions nat_least_number.
+Check nat_to_fin.
+Print Assumptions nat_positive_of_nonzero.
+Print Assumptions nat_one_le_of_odd.
+Print Assumptions nat_square_pair_monotone.
 Check heyting_algebra_data.
 Print Assumptions ha_inf_mono.
 Print Assumptions ha_himp_himp_inf_himp_inf_le.
