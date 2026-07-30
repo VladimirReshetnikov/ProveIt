@@ -17,6 +17,7 @@ From Foundation.Vorspiel.Finset Require Import Card.
 From Foundation.Vorspiel.Finset Require Import Basic.
 From Foundation.Vorspiel.List Require Import Basic.
 From Foundation.Vorspiel.List Require Import Chain.
+From Foundation.Vorspiel.List Require Import Perm.
 From Foundation.Vorspiel.Nat Require Import Basic.
 From Foundation.Vorspiel.Nat Require Import Matrix.
 From Foundation.Vorspiel.Set Require Import Basic.
@@ -192,6 +193,13 @@ Print Assumptions fin_vec_exists_iff.
 Check nat_to_matrix_vec.
 Print Assumptions nat_to_matrix_vec_encode.
 Print Assumptions nat_to_matrix_vec_member_lt.
+Print Assumptions list_permutation_two_iff.
+Check list_comp_subset.
+Print Assumptions list_permutation_normalize.
+Print Assumptions list_comp_subset_contract.
+Print Assumptions list_comp_subset_trans.
+Print Assumptions list_comp_subset_cons.
+Print Assumptions list_incl_to_comp_subset.
 Check list_strict_inclusion.
 Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
