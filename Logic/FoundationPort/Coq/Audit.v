@@ -325,6 +325,12 @@ Print Assumptions arithmetic1_rem_test.
 Print Assumptions arithmetic1_rem.
 Check nat_beta.
 Print Assumptions arithmetic1_beta.
+Print Assumptions arithmetic1_tail.
+Check nat_bounded_all_search.
+Print Assumptions nat_bounded_all_search_positive_iff.
+Print Assumptions nat_bounded_all_search_least_exists.
+Print Assumptions nat_bounded_all_search_least_value.
+Print Assumptions arithmetic1_bounded_all.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.

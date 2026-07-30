@@ -1085,3 +1085,138 @@ Proof.
         -- exact arithmetic1_unpair2.
         -- apply arithmetic1_proj.
 Qed.
+
+Theorem arithmetic1_tail : forall n
+    (f : (Fin.t n -> nat) -> nat),
+  arithmetic1 f ->
+  arithmetic1 (fun v : Fin.t (S n) -> nat => f (matrix_vec_tail v)).
+Proof.
+  intros n f Hf.
+  eapply arithmetic1_comp with
+    (g := fun i v => v (Fin.FS i)).
+  - exact Hf.
+  - intro i. apply arithmetic1_proj.
+Qed.
+
+Definition nat_bounded_all_search
+    (k bound : nat) (phi : nat -> nat) : nat :=
+  nat_truth_or
+    (nat_truth_inv (phi k))
+    (nat_truth_le bound k).
+
+Lemma nat_bounded_all_search_positive_iff : forall k bound phi,
+  0 < nat_bounded_all_search k bound phi <->
+  ~ 0 < phi k \/ bound <= k.
+Proof.
+  intros k bound phi. unfold nat_bounded_all_search.
+  rewrite nat_truth_or_positive_iff, nat_truth_inv_positive_iff,
+    nat_truth_le_positive_iff.
+  tauto.
+Qed.
+
+Lemma nat_bounded_all_search_least_exists : forall bound phi,
+  exists k,
+    (~ 0 < phi k \/ bound <= k) /\
+    forall m, m < k -> ~ (~ 0 < phi m \/ bound <= m).
+Proof.
+  intros bound phi.
+  eapply nat_least_decidable_bound with (bound := bound)
+    (P := fun k => ~ 0 < phi k \/ bound <= k).
+  - intro k. destruct (lt_dec 0 (phi k)); destruct (le_dec bound k);
+      tauto.
+  - right. lia.
+Qed.
+
+Lemma nat_bounded_all_search_least_value : forall bound phi k,
+  (~ 0 < phi k \/ bound <= k) ->
+  (forall m, m < k -> ~ (~ 0 < phi m \/ bound <= m)) ->
+  nat_truth_eq k bound = nat_bounded_all bound phi.
+Proof.
+  intros bound phi k Hk Hleast.
+  assert (Hkle : k <= bound).
+  { destruct (le_dec k bound); [assumption |].
+    exfalso. apply (Hleast bound); [lia | right; lia]. }
+  destruct (Nat.eq_dec k bound) as [-> | Hne].
+  - unfold nat_truth_eq. destruct Nat.eq_dec; [|contradiction].
+    symmetry. apply nat_bounded_all_eq_one_iff_positive,
+      nat_bounded_all_positive_iff.
+    intros m Hm.
+    destruct (lt_dec 0 (phi m)); [assumption |].
+    exfalso. apply (Hleast m Hm). now left.
+  - assert (Hklt : k < bound) by lia.
+    assert (Hphizero : phi k = 0).
+    { destruct Hk as [Hphi | Hbound]; [lia | lia]. }
+    unfold nat_truth_eq. destruct Nat.eq_dec; [contradiction |].
+    symmetry. apply nat_bounded_all_eq_zero_iff.
+    exists k. now split.
+Qed.
+
+Theorem arithmetic1_bounded_all : forall n
+    (bound : (Fin.t n -> nat) -> nat)
+    (phi : (Fin.t n -> nat) -> nat -> nat),
+  arithmetic1 bound ->
+  arithmetic1 (fun w : Fin.t (S n) -> nat =>
+    phi (matrix_vec_tail w) (matrix_vec_head w)) ->
+  arithmetic1 (fun v => nat_bounded_all (bound v) (phi v)).
+Proof.
+  intros n bound phi Hbound Hphi.
+  assert (Hsearch : arithmetic1 (fun w : Fin.t (S n) -> nat =>
+      nat_bounded_all_search (matrix_vec_head w)
+        (bound (matrix_vec_tail w)) (phi (matrix_vec_tail w)))).
+  { unfold nat_bounded_all_search.
+    eapply arithmetic1_comp2 with (f := nat_truth_or).
+    - exact arithmetic1_or.
+    - eapply arithmetic1_comp1 with (f := nat_truth_inv).
+      + exact arithmetic1_inv.
+      + exact Hphi.
+    - eapply arithmetic1_comp2 with (f := nat_truth_le).
+      + exact arithmetic1_le.
+      + now apply arithmetic1_tail.
+      + apply arithmetic1_proj. }
+  unfold arithmetic1.
+  eapply arith_part1_ext with
+    (f := fun v => partial_map
+      (fun k => nat_truth_eq k (bound v))
+      (arith_find_positive_on
+        (fun w => nat_bounded_all_search (matrix_vec_head w)
+          (bound (matrix_vec_tail w)) (phi (matrix_vec_tail w))) v)).
+  - apply arith_part1_map_total.
+    + eapply arithmetic1_comp2 with (f := nat_truth_eq).
+      * unfold arithmetic1_binary. apply arithmetic1_equal.
+      * apply arithmetic1_proj.
+      * now apply arithmetic1_tail.
+    + apply arith_part1_find_positive. exact Hsearch.
+  - intros v x. rewrite partial_map_member_iff.
+    split.
+    + intros [k [Hk Hvalue]].
+      rewrite arith_find_positive_on_member_iff in Hk.
+      change
+        (0 < nat_bounded_all_search k (bound v) (phi v) /\
+          forall m, m < k ->
+            ~ 0 < nat_bounded_all_search m (bound v) (phi v)) in Hk.
+      destruct Hk as [Hpositive Hleast].
+      apply nat_bounded_all_search_positive_iff in Hpositive.
+      assert (Hleast' : forall m, m < k ->
+          ~ (~ 0 < phi v m \/ bound v <= m)).
+      { intros m Hm Htest. apply (Hleast m Hm).
+        now apply nat_bounded_all_search_positive_iff. }
+      rewrite (nat_bounded_all_search_least_value
+        (bound v) (phi v) k Hpositive Hleast') in Hvalue.
+      now symmetry.
+    + intro Hx.
+      destruct (nat_bounded_all_search_least_exists
+        (bound v) (phi v)) as [k [Hk Hleast]].
+      exists k. split.
+      * rewrite arith_find_positive_on_member_iff.
+        change
+          (0 < nat_bounded_all_search k (bound v) (phi v) /\
+           forall m, m < k ->
+             ~ 0 < nat_bounded_all_search m (bound v) (phi v)).
+        split.
+        -- now apply nat_bounded_all_search_positive_iff.
+        -- intros m Hm Hpositive. apply (Hleast m Hm).
+           now apply nat_bounded_all_search_positive_iff in Hpositive.
+      * rewrite (nat_bounded_all_search_least_value
+          (bound v) (phi v) k Hk Hleast).
+        now symmetry.
+Qed.
