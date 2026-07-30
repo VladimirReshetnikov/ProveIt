@@ -8,6 +8,7 @@ From Foundation.FirstOrder.Basic Require Import Model.
 From Foundation.FirstOrder.Basic Require Import Definability.
 From Foundation.FirstOrder.Basic Require Import Calculus.
 From Foundation.FirstOrder.Basic Require Import Soundness.
+From Foundation.FirstOrder.Basic Require Import CutFree.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
 From Foundation.FirstOrder.Basic.Semantics Require Import RewriteClosure.
 From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
@@ -597,6 +598,23 @@ Check first_order_derivation_height_or.
 Check first_order_derivation_height_and.
 Check first_order_derivation_height_all.
 Check first_order_derivation_height_exists.
+Check first_order_is_cut_free.
+Check FOCFIdentity.
+Check FOCFVerum.
+Check FOCFOr.
+Check FOCFAnd.
+Check FOCFAll.
+Check FOCFExists.
+Check FOCFContraction.
+Check first_order_is_cut_free_or_iff.
+Check first_order_is_cut_free_and_iff.
+Check first_order_is_cut_free_all_iff.
+Check first_order_is_cut_free_exists_iff.
+Check first_order_is_cut_free_contraction_iff.
+Check first_order_is_cut_free_cast_iff.
+Check first_order_derivation_root_is_cut.
+Check first_order_is_cut_free_root_is_not_cut.
+Check first_order_is_cut_free_not_cut.
 Check first_order_empty_env.
 Check first_order_sequent_true.
 Check fin_env_snoc_empty_eq_cons.
@@ -815,6 +833,14 @@ Print Assumptions first_order_derivation_top.
 Print Assumptions first_order_derivation_atomic_identity.
 Print Assumptions first_order_derivation_rotate.
 Print Assumptions first_order_derivation_tensor.
+Print Assumptions first_order_is_cut_free_or_iff.
+Print Assumptions first_order_is_cut_free_and_iff.
+Print Assumptions first_order_is_cut_free_all_iff.
+Print Assumptions first_order_is_cut_free_exists_iff.
+Print Assumptions first_order_is_cut_free_contraction_iff.
+Print Assumptions first_order_is_cut_free_cast_iff.
+Print Assumptions first_order_is_cut_free_root_is_not_cut.
+Print Assumptions first_order_is_cut_free_not_cut.
 Print Assumptions fin_env_snoc_empty_eq_cons.
 Print Assumptions first_order_shifted_context_true.
 Print Assumptions first_order_derivation_sound.
