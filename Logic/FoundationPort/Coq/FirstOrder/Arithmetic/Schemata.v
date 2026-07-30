@@ -458,7 +458,8 @@ Lemma arithmetic_induction_scheme_intro : forall C induction_axiom phi,
   C phi -> arithmetic_induction_scheme C induction_axiom
     (induction_axiom phi).
 Proof.
-  intros. apply first_order_axiom_scheme_intro. assumption.
+  intros C induction_axiom phi Hphi.
+  exists phi. split; [exact Hphi | reflexivity].
 Qed.
 
 Lemma arithmetic_induction_scheme_subset : forall C D induction_axiom,
@@ -468,4 +469,102 @@ Lemma arithmetic_induction_scheme_subset : forall C D induction_axiom,
     arithmetic_induction_scheme D induction_axiom sigma.
 Proof.
   intros. eapply first_order_axiom_scheme_subset; eauto.
+Qed.
+
+Definition arithmetic_successor_induction_scheme
+    (C : arithmetic_semiproposition 1 -> Prop) : theory oring_language :=
+  first_order_axiom_scheme C
+    (fun phi => semiformula_universal_closure
+      (arithmetic_successor_induction phi)).
+
+Definition arithmetic_induction_theory (T : theory oring_language)
+    (C : arithmetic_semiproposition 1 -> Prop) : theory oring_language :=
+  first_order_theory_union T (arithmetic_successor_induction_scheme C).
+
+Definition arithmetic_open_induction_theory (T : theory oring_language) :
+    theory oring_language :=
+  arithmetic_induction_theory T (@semiformula_open oring_language nat 1).
+
+Definition arithmetic_sigma_induction_theory
+    (T : theory oring_language) (k : nat) : theory oring_language :=
+  arithmetic_induction_theory T
+    (fun phi => arithmetic_hierarchy nat arithmetic_sigma k 1 phi).
+
+Definition arithmetic_peano_theory (T : theory oring_language) :
+    theory oring_language :=
+  arithmetic_induction_theory T (fun _ => True).
+
+Lemma arithmetic_successor_induction_scheme_intro : forall C phi,
+  C phi -> arithmetic_successor_induction_scheme C
+    (semiformula_universal_closure
+      (arithmetic_successor_induction phi)).
+Proof.
+  intros C phi Hphi. exists phi. split; [exact Hphi | reflexivity].
+Qed.
+
+Lemma arithmetic_successor_induction_scheme_subset : forall C D,
+  (forall phi, C phi -> D phi) ->
+  forall sigma, arithmetic_successor_induction_scheme C sigma ->
+    arithmetic_successor_induction_scheme D sigma.
+Proof.
+  intros. eapply first_order_axiom_scheme_subset; eauto.
+Qed.
+
+Lemma arithmetic_induction_theory_subset : forall T C D,
+  (forall phi, C phi -> D phi) ->
+  forall sigma, arithmetic_induction_theory T C sigma ->
+    arithmetic_induction_theory T D sigma.
+Proof.
+  intros T C D HCD.
+  apply first_order_theory_union_mono_right.
+  now apply arithmetic_successor_induction_scheme_subset.
+Qed.
+
+Theorem arithmetic_induction_theory_weaker : forall T C D,
+  (forall phi, C phi -> D phi) ->
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    (arithmetic_induction_theory T C)
+    (arithmetic_induction_theory T D).
+Proof.
+  intros. apply first_order_theory_weaker_of_subset.
+  now apply arithmetic_induction_theory_subset.
+Qed.
+
+Lemma arithmetic_sigma_induction_subset_mono : forall T k l,
+  k <= l -> forall sigma,
+  arithmetic_sigma_induction_theory T k sigma ->
+  arithmetic_sigma_induction_theory T l sigma.
+Proof.
+  intros T k l Hkl. apply arithmetic_induction_theory_subset.
+  intros phi Hphi. now apply arithmetic_hierarchy_mono with (s := k).
+Qed.
+
+Theorem arithmetic_sigma_induction_weaker_mono : forall T k l,
+  k <= l ->
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    (arithmetic_sigma_induction_theory T k)
+    (arithmetic_sigma_induction_theory T l).
+Proof.
+  intros. apply first_order_theory_weaker_of_subset.
+  now apply arithmetic_sigma_induction_subset_mono.
+Qed.
+
+Lemma arithmetic_open_induction_subset_sigma_zero : forall T sigma,
+  arithmetic_open_induction_theory T sigma ->
+  arithmetic_sigma_induction_theory T 0 sigma.
+Proof.
+  intro T. apply arithmetic_induction_theory_subset.
+  intros phi Hopen. now apply arithmetic_hierarchy_of_open.
+Qed.
+
+Lemma arithmetic_sigma_induction_subset_peano : forall T k sigma,
+  arithmetic_sigma_induction_theory T k sigma ->
+  arithmetic_peano_theory T sigma.
+Proof.
+  intros T k. apply arithmetic_induction_theory_subset.
+  intros phi Hphi. exact I.
 Qed.
