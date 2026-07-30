@@ -1590,6 +1590,10 @@ Print Assumptions peano_minus_pred_lt_self_of_pos.
 Print Assumptions peano_minus_sub_mul.
 Print Assumptions peano_minus_mul_sub.
 Print Assumptions peano_minus_add_sub_of_le.
+Print Assumptions peano_minus_sub_succ_add_succ.
+Print Assumptions peano_minus_le_sub_one_of_lt.
+Print Assumptions peano_minus_sub_le_iff_right.
+Print Assumptions peano_minus_sub_lt_iff_right.
 Print Assumptions peano_minus_dvd.
 Print Assumptions peano_minus_le_mul_self_of_pos_left.
 Print Assumptions peano_minus_le_mul_self_of_pos_right.

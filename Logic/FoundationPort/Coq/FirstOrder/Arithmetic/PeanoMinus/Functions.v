@@ -313,6 +313,108 @@ Proof.
   symmetry. apply (@peano_minus_add_assoc M O H).
 Qed.
 
+Lemma peano_minus_sub_succ_add_succ : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  oring_lt O y x ->
+  oring_add O
+    (peano_minus_sub O x (oring_add O y (oring_one O)))
+    (oring_add O z (oring_one O)) =
+  oring_add O (peano_minus_sub O x y) z.
+Proof.
+  intros M O H x y z Hyx.
+  rewrite <- (@peano_minus_sub_sub M O H x y (oring_one O)).
+  rewrite (@peano_minus_add_comm M O H z (oring_one O)),
+    <- (@peano_minus_add_assoc M O H).
+  rewrite (peano_minus_sub_add_self_of_le H).
+  - reflexivity.
+  - apply (@peano_minus_one_le_of_zero_lt M O H).
+    destruct (@peano_minus_zero_le M O H
+      (peano_minus_sub O x y)) as [Hzero | Hpos]; [|exact Hpos].
+    exfalso.
+    pose proof (peano_minus_sub_spec_of_ge H
+      (peano_minus_lt_le Hyx)) as Hspec.
+    rewrite <- Hzero, (@peano_minus_add_zero M O H y) in Hspec.
+    subst x. exact (@peano_minus_lt_irrefl M O H y Hyx).
+Qed.
+
+Lemma peano_minus_le_sub_one_of_lt : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall a b,
+  oring_lt O a b ->
+  peano_minus_le O a (peano_minus_sub O b (oring_one O)).
+Proof.
+  intros M O H a b Hab.
+  apply (proj2 (peano_minus_le_iff_lt_add_one H a
+    (peano_minus_sub O b (oring_one O)))).
+  assert (Hb : oring_lt O (oring_zero O) b).
+  { destruct (@peano_minus_zero_le M O H a) as [Ha | Ha].
+    - now rewrite Ha.
+    - exact (@peano_minus_lt_trans M O H _ _ _ Ha Hab). }
+  pose proof (@peano_minus_one_le_of_zero_lt M O H b Hb) as Hone.
+  now rewrite (peano_minus_sub_add_self_of_le H Hone).
+Qed.
+
+Lemma peano_minus_sub_le_iff_right : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall a b c,
+  peano_minus_le O (peano_minus_sub O a b) c <->
+  peano_minus_le O a (oring_add O c b).
+Proof.
+  intros M O H a b c.
+  destruct (@peano_minus_lt_trichotomy M O H a b)
+    as [Hab | [Hab | Hba]].
+  - rewrite (peano_minus_sub_spec_of_lt H Hab). split.
+    + intro Hzero. eapply (@peano_minus_le_trans M O H a b); [now right|].
+      pose proof (peano_minus_add_le_add_right H
+        (x := oring_zero O) (y := c) b
+        (@peano_minus_zero_le M O H c)) as Hle.
+      now rewrite (peano_minus_add_zero_left H) in Hle.
+    + intro Hle. apply (@peano_minus_zero_le M O H).
+  - subst a. rewrite (peano_minus_sub_self H). split.
+    + intro Hzero. pose proof (peano_minus_add_le_add_right H
+        (x := oring_zero O) (y := c) b
+        (@peano_minus_zero_le M O H c)) as Hle.
+      now rewrite (peano_minus_add_zero_left H) in Hle.
+    + intro Hle. apply (@peano_minus_zero_le M O H).
+  - pose proof (peano_minus_sub_spec_of_ge H
+      (peano_minus_lt_le Hba)) as Hspec.
+    split.
+    + intro Hle.
+      pose proof (peano_minus_add_le_add_left H
+        (x := peano_minus_sub O a b) (y := c) b Hle) as Hadd.
+      rewrite <- Hspec, (@peano_minus_add_comm M O H b c) in Hadd.
+      exact Hadd.
+    + intro Hle.
+      apply (@peano_minus_le_of_add_le_add_left M O H
+        (peano_minus_sub O a b) c b).
+      rewrite <- Hspec, (@peano_minus_add_comm M O H b c).
+      exact Hle.
+Qed.
+
+Lemma peano_minus_sub_lt_iff_right : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall a b c,
+  peano_minus_le O b a ->
+  (oring_lt O (peano_minus_sub O a b) c <->
+   oring_lt O a (oring_add O c b)).
+Proof.
+  intros M O H a b c Hba.
+  pose proof (peano_minus_sub_spec_of_ge H Hba) as Hspec.
+  split.
+  - intro Hlt.
+    pose proof (@peano_minus_add_lt_add M O H
+      (peano_minus_sub O a b) c b Hlt) as Hadd.
+    rewrite (@peano_minus_add_comm M O H
+      (peano_minus_sub O a b) b), <- Hspec in Hadd.
+    exact Hadd.
+  - intro Hlt.
+    apply (@peano_minus_lt_of_add_lt_add_left M O H
+      (peano_minus_sub O a b) c b).
+    rewrite <- Hspec, (@peano_minus_add_comm M O H b c).
+    exact Hlt.
+Qed.
+
 Definition peano_minus_dvd {M : Type} (O : oring_carrier M)
     (a b : M) : Prop :=
   exists c, b = oring_mul O a c.
