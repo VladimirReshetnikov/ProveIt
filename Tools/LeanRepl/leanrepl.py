@@ -15,6 +15,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import datetime
 import os
 import re
 import sys
@@ -60,6 +61,76 @@ def dim(t: str) -> str:
 
 def bold(t: str) -> str:
     return _c("1", t)
+
+
+# ---------------------------------------------------------------------------
+# Session transcripts
+# ---------------------------------------------------------------------------
+
+ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
+
+
+class Transcript:
+    """Writes a plain-text (ANSI-stripped) copy of the whole session to a file.
+    Output is captured by teeing sys.stdout; input lines are appended
+    explicitly by the read loop (interactive input never passes through
+    stdout)."""
+
+    def __init__(self, path: Path):
+        self.path = path
+        self._file = open(path, "a", encoding="utf-8")
+        self._real_stdout = None
+        stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self._file.write(f"-- LeanRepl transcript started {stamp}\n")
+        self._file.flush()
+
+    def install(self):
+        self._real_stdout = sys.stdout
+        sys.stdout = _TeeStream(self._real_stdout, self)
+
+    def uninstall(self):
+        if self._real_stdout is not None:
+            sys.stdout = self._real_stdout
+            self._real_stdout = None
+
+    def write_raw(self, text: str):
+        self._file.write(ANSI_RE.sub("", text))
+        self._file.flush()
+
+    def write_input(self, prompt: str, line: str, timestamp: bool = False):
+        if timestamp:
+            self.write_raw(f"[{datetime.datetime.now().strftime('%H:%M:%S')}]\n")
+        self.write_raw(f"{prompt}{line}\n")
+
+    def close(self):
+        self.uninstall()
+        stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self._file.write(f"-- LeanRepl transcript ended {stamp}\n")
+        self._file.close()
+
+
+class _TeeStream:
+    """Forwards writes to the real stdout and appends them to the transcript."""
+
+    def __init__(self, real, transcript: Transcript):
+        self._real = real
+        self._transcript = transcript
+
+    def write(self, s: str):
+        self._real.write(s)
+        self._transcript.write_raw(s)
+        return len(s)
+
+    def flush(self):
+        self._real.flush()
+
+    def __getattr__(self, name):  # encoding, isatty, fileno, ...
+        return getattr(self._real, name)
+
+
+def default_transcript_path() -> Path:
+    name = datetime.datetime.now().strftime("leanrepl-%Y%m%d-%H%M%S.log")
+    return Path.cwd() / name
 
 
 # ---------------------------------------------------------------------------
@@ -215,6 +286,8 @@ Commands (GHCi-style):
   :history                 show state-changing commands of this session
   :env                     show the current environment id
   :time                    toggle per-command timing
+  :transcript [FILE|on|off] record a full transcript of the session to a file
+  :timestamps [on|off]     timestamp each command in the transcript
   :pickle FILE             save the current environment to FILE (.olean)
   :unpickle FILE           restore an environment from FILE
   :! CMD                   run a shell command
@@ -249,6 +322,8 @@ class LeanRepl:
         self.loaded_file: Path | None = None
         self.server = None
         self.config = None
+        self.transcript: Transcript | None = None
+        self.timestamps: bool = args.timestamps
 
     # -- server ------------------------------------------------------------
 
@@ -442,6 +517,49 @@ class LeanRepl:
     def cont_prompt(self) -> str:
         return "…> "
 
+    # -- transcripts ---------------------------------------------------------
+
+    def transcript_start(self, path: str | None):
+        if self.transcript is not None:
+            print(dim(f"already recording to {self.transcript.path}"))
+            return
+        p = Path(path).expanduser().resolve() if path else default_transcript_path()
+        try:
+            self.transcript = Transcript(p)
+        except OSError as e:
+            print(red(f"cannot open transcript file: {e}"))
+            return
+        self.transcript.install()
+        extra = " (with per-command timestamps)" if self.timestamps else ""
+        print(dim(f"recording transcript to {p}{extra}"))
+
+    def transcript_stop(self):
+        if self.transcript is None:
+            print(dim("transcript is not active"))
+            return
+        p = self.transcript.path
+        self.transcript.close()
+        self.transcript = None
+        print(dim(f"transcript saved to {p}"))
+
+    def wrap_prompt(self, prompt_fn, echoes_via_stdout: bool):
+        """Wrap an input function so prompts and typed lines land in the
+        transcript (interactive input bypasses the stdout tee)."""
+        def fn(p: str) -> str:
+            is_main = p == self.prompt()
+            if (self.transcript is not None and echoes_via_stdout
+                    and self.timestamps and is_main):
+                # prompt+line will be captured via the stdout tee; only the
+                # timestamp needs writing, and it must precede the prompt
+                self.transcript.write_raw(
+                    f"[{datetime.datetime.now().strftime('%H:%M:%S')}]\n")
+            line = prompt_fn(p)
+            if self.transcript is not None and not echoes_via_stdout:
+                self.transcript.write_input(p, line,
+                                            timestamp=self.timestamps and is_main)
+            return line
+        return fn
+
     # -- evaluation ----------------------------------------------------------
 
     def advance_env(self, new_env: int | None, code: str):
@@ -581,6 +699,32 @@ class LeanRepl:
         elif cmd == "time":
             self.show_time = not self.show_time
             print(dim(f"timing {'on' if self.show_time else 'off'}"))
+        elif cmd == "transcript":
+            a = arg.strip()
+            if not a:
+                if self.transcript is not None:
+                    print(f"recording to {self.transcript.path}"
+                          + (" (with timestamps)" if self.timestamps else ""))
+                else:
+                    print(dim("transcript is off  (:transcript on|FILE to start)"))
+            elif a.lower() == "off":
+                self.transcript_stop()
+            elif a.lower() == "on":
+                self.transcript_start(None)
+            else:
+                self.transcript_start(a)
+        elif cmd == "timestamps":
+            a = arg.strip().lower()
+            if a in ("on", "true", "1", "yes"):
+                self.timestamps = True
+            elif a in ("off", "false", "0", "no"):
+                self.timestamps = False
+            elif not a:
+                self.timestamps = not self.timestamps
+            else:
+                print(red("usage: :timestamps [on|off]"))
+                return True
+            print(dim(f"per-command timestamps {'on' if self.timestamps else 'off'}"))
         elif cmd == "pickle":
             if arg:
                 from lean_interact import PickleEnvironment
@@ -717,10 +861,13 @@ class LeanRepl:
     # -- main loop -----------------------------------------------------------
 
     def loop(self):
+        if self.args.transcript is not None:
+            self.transcript_start(self.args.transcript or None)
         print(cyan(BANNER))
         print(f"LeanRepl — a GHCi-style REPL for Lean 4.  Type {bold(':help')} for help, "
               f"{bold(':quit')} to exit.")
-        prompt_fn = make_prompt_fn()
+        raw_prompt_fn, echoes = make_prompt_fn()
+        prompt_fn = self.wrap_prompt(raw_prompt_fn, echoes)
         if self.args.file:
             self.cmd_load(self.args.file)
         while True:
@@ -770,6 +917,8 @@ class LeanRepl:
                       dim(" — the server was restarted; session state is replayed lazily"))
             except Exception as e:  # noqa: BLE001
                 print(red(f"internal error: {e!r}"))
+        if self.transcript is not None:
+            self.transcript_stop()
 
     def handle_interrupt(self):
         print(red("\ninterrupted") +
@@ -802,14 +951,16 @@ def has_errors(res) -> bool:
 
 
 def make_prompt_fn():
-    """Return a callable(prompt_str) -> str, using prompt_toolkit if available."""
+    """Return (callable(prompt_str) -> str, echoes_via_stdout).
+    echoes_via_stdout is True when the prompt and typed line already pass
+    through sys.stdout (so a stdout tee captures them for transcripts)."""
     if not sys.stdin.isatty():
         def fn(p: str) -> str:
             line = input(p)
             print(line)  # echo piped input so transcripts are readable
             return line
 
-        return fn
+        return fn, True
     try:
         from prompt_toolkit import PromptSession
         from prompt_toolkit.history import FileHistory
@@ -820,12 +971,12 @@ def make_prompt_fn():
         def fn(p: str) -> str:
             return session.prompt(p)
 
-        return fn
+        return fn, False
     except ImportError:
         def fn(p: str) -> str:
             return input(p)
 
-        return fn
+        return fn, False
 
 
 def main():
@@ -842,6 +993,11 @@ def main():
     ap.add_argument("--timeout", type=float, default=300,
                     help="per-command timeout in seconds (0 = none, default 300)")
     ap.add_argument("--time", action="store_true", help="show per-command timing")
+    ap.add_argument("--transcript", nargs="?", const="", default=None, metavar="FILE",
+                    help="record a full transcript of the session to FILE "
+                         "(default: leanrepl-<date>.log in the current directory)")
+    ap.add_argument("--timestamps", action="store_true",
+                    help="timestamp each command in the transcript")
     ap.add_argument("--verbose", "-v", action="store_true",
                     help="verbose backend setup output")
     args = ap.parse_args()

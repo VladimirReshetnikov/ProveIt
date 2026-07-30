@@ -43,9 +43,12 @@ python leanrepl.py --project C:/ProveIt  # explicit Lake project
 python leanrepl.py --plain               # bare Lean (no project, stdlib only)
 python leanrepl.py -i Mathlib.Tactic.Ring  # start with imports
 python leanrepl.py MyFile.lean           # load a file at startup
+python leanrepl.py --transcript [FILE]   # record a full session transcript
+python leanrepl.py --transcript --timestamps  # ...with per-command timestamps
 ```
 
-On Windows, `leanrepl.cmd` wraps the above.
+On Windows, `leanrepl.cmd` wraps the above — both here and at the
+repository root (so `leanrepl` works directly from the project directory).
 
 When run inside a Lake project (e.g. this repository), all built project
 modules and dependencies (Mathlib, ...) are importable. Import narrow
@@ -101,6 +104,8 @@ explicit block, as in GHCi.
 | `:history` | list state-changing commands |
 | `:env` | show the backend environment id |
 | `:time` | toggle per-command timing |
+| `:transcript [FILE\|on\|off]` | record a full transcript of the session to a file |
+| `:timestamps [on\|off]` | timestamp each command in the transcript |
 | `:pickle FILE` / `:unpickle FILE` | save/restore the environment as `.olean` |
 | `:! CMD` | run a shell command |
 
@@ -115,3 +120,6 @@ explicit block, as in GHCi.
 - Interrupting evaluation (Ctrl+C) restarts the backend; the session is
   restored automatically from the replay cache on the next command.
 - Line history is stored in `~/.leanrepl_history`.
+- Transcripts contain the whole session (prompts, inputs, and ANSI-stripped
+  output). `--transcript` with no FILE writes `leanrepl-<date>-<time>.log`
+  in the current directory. `:transcript` alone shows recording status.
