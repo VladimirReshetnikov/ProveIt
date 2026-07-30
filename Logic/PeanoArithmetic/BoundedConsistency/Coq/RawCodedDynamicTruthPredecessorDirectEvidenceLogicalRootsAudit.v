@@ -1,0 +1,15 @@
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.
+
+Import
+  PABoundedRawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.
+
+Check
+  raw_dynamicTruthPredecessorStateLogicalRootsAt_of_direct_evidence_under_prefix_atomic_and_domain.
+Check
+  raw_dynamicTruthPredecessorStateLogicalRootsAt_of_direct_evidence_atomic_and_domain.
+
+Print Assumptions
+  raw_dynamicTruthPredecessorStateLogicalRootsAt_of_direct_evidence_under_prefix_atomic_and_domain.
+Print Assumptions
+  raw_dynamicTruthPredecessorStateLogicalRootsAt_of_direct_evidence_atomic_and_domain.
