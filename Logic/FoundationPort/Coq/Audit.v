@@ -9,6 +9,7 @@ From Foundation.Vorspiel Require Import Denumerable.
 From Foundation.Vorspiel Require Import Graph.
 From Foundation.Vorspiel Require Import Part.
 From Foundation.Vorspiel Require Import ENat.
+From Foundation.Vorspiel Require Import DMatrix.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Finset Require Import Card.
 From Foundation.Vorspiel.Finset Require Import Basic.
@@ -134,6 +135,14 @@ Print Assumptions enat_lt_find.
 Print Assumptions enat_exists_of_find_le.
 Print Assumptions enat_find_eq_top_iff.
 Print Assumptions enat_find_le.
+Check dvec_empty.
+Check dvec_cons.
+Print Assumptions dvec_cons_zero.
+Print Assumptions dvec_cons_succ.
+Print Assumptions dvec_eta.
+Print Assumptions dvec_cons_ext_iff.
+Check fin_cover_data.
+Print Assumptions dvec_eq_dec.
 Check list_strict_inclusion.
 Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
