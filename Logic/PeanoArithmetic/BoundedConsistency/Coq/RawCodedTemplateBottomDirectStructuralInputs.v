@@ -25,6 +25,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplatePAEmbedding
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateNumeralParameters
+  RawCodedRestrictedPAConsistencyFormulaCode
   RawCodedDynamicTruthTemplateNumeralParameters
   RawCodedRestrictedPADerivationSoundnessTemplateDirectInputs
   RawCodedTemplateDirectStructuralPAAgreement.
@@ -43,6 +44,7 @@ Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateNumeralParameters.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
 Import PABoundedRawCodedDynamicTruthTemplateNumeralParameters.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessTemplateDirectInputs.
@@ -73,6 +75,51 @@ Defined.
 Arguments rawBottomRestrictedPATruthDirectSelector M hPA parameters
   : clear implicits.
 
+(** At the standard value zero the numeral-term output is known explicitly,
+    so no choice is needed to put the canonical input record in [Type]. *)
+Definition rawBottomTemplateZeroNumeralParameters
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    : RawCodedTemplateNumeralParameters M :=
+  rawCoqDynamicTruthTemplateNumeralParameters M
+    (raw_zero M) (raw_zero M)
+    (rawQuotedTermCode M (Term.numeral 0))
+    (rawQuotedTermCode M (Term.numeral 0))
+    (raw_numeralTermCodeAt_standard M hPA 0)
+    (raw_numeralTermCodeAt_standard M hPA 0).
+
+Arguments rawBottomTemplateZeroNumeralParameters M hPA : clear implicits.
+
+Definition rawBottomTemplateDirectStructuralInputs
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    : RawCodedTemplateDirectStructuralInputs M :=
+  rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
+    M hPA (rawBottomTemplateZeroNumeralParameters M hPA)
+    (rawBottomRestrictedPATruthDirectSelector M hPA
+      (rawBottomTemplateZeroNumeralParameters M hPA))
+    (rawBottomRestrictedPATruthDirectSelector M hPA
+      (rawBottomTemplateZeroNumeralParameters M hPA)).
+
+Arguments rawBottomTemplateDirectStructuralInputs M hPA : clear implicits.
+
+Definition rawBottomDirectStructuralTemplateTranslation
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    : RawCodedTemplateTranslation M :=
+  rawDirectStructuralTemplateTranslation M hPA
+    (rawBottomTemplateDirectStructuralInputs M hPA).
+
+Arguments rawBottomDirectStructuralTemplateTranslation M hPA
+  : clear implicits.
+
+Theorem rawBottomDirectStructuralTemplatePAAgreement : forall
+    (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawCodedTemplatePAAgreement M
+    (rawBottomDirectStructuralTemplateTranslation M hPA).
+Proof.
+  intros M hPA.
+  exact (rawDirectStructuralTemplatePAAgreement M hPA
+    (rawBottomTemplateDirectStructuralInputs M hPA)).
+Qed.
+
 (** The two parameter names can both denote zero.  Represented numeral-code
     totality chooses the required term codes inside [Prop], after which the
     bottom selectors give a direct structural input record. *)
@@ -81,13 +128,7 @@ Theorem raw_bottomTemplateDirectStructuralInputs_exists : forall
   exists inputs : RawCodedTemplateDirectStructuralInputs M, True.
 Proof.
   intros M hPA.
-  destruct (raw_coqDynamicTruthTemplateNumeralParameters_exists
-    M hPA (raw_zero M) (raw_zero M)) as [parameters _].
-  exists
-    (rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
-      M hPA parameters
-      (rawBottomRestrictedPATruthDirectSelector M hPA parameters)
-      (rawBottomRestrictedPATruthDirectSelector M hPA parameters)).
+  exists (rawBottomTemplateDirectStructuralInputs M hPA).
   exact I.
 Qed.
 
@@ -100,10 +141,8 @@ Corollary raw_codedTemplatePAAgreement_exists : forall
     RawCodedTemplatePAAgreement M translation.
 Proof.
   intros M hPA.
-  destruct (raw_bottomTemplateDirectStructuralInputs_exists M hPA)
-    as [inputs _].
-  exists (rawDirectStructuralTemplateTranslation M hPA inputs).
-  exact (rawDirectStructuralTemplatePAAgreement M hPA inputs).
+  exists (rawBottomDirectStructuralTemplateTranslation M hPA).
+  exact (rawBottomDirectStructuralTemplatePAAgreement M hPA).
 Qed.
 
 End PABoundedRawCodedTemplateBottomDirectStructuralInputs.
