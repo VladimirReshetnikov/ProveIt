@@ -4858,3 +4858,15 @@ state prefix, and invokes the generic two-`And-I` admissibility assembler.
 Consequently the predecessor client no longer coordinates proof roots or
 witness tails: its only remaining admissibility work is to project those two
 mathematical invariants from the restricted-proof certificate.
+
+The paired global-row eliminator now consumes that honest boundary directly.
+It first builds admissibility in its retained witness extension, transports
+both opened Sigma/Pi global sources beneath the identical predecessor-state
+prefix, and then performs the two ten-binder row eliminations in their final
+common tail.  The resulting endpoint returns the complete
+`RawDynamicTruthPredecessorStateLogicalRootsAt` package and an inclusion of
+the caller's original context.  All assignment, conjunction, source
+weakening, and multi-stage witness synchronization have therefore disappeared
+from the eventual restricted-proof client; only its atomic and rank-domain
+projections, the two source roots, and the native payload-code alignments
+remain visible.
