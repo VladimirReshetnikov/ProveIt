@@ -197,6 +197,10 @@ Check rew_free_comp_fix.
 Check rew_fix_comp_free.
 Check rew_free_bshift_eq_shift.
 Check rew_bshift_positive.
+Check rew_bshift_not_bvar_zero.
+Check rew_q_bvar_zero_iff.
+Check rew_q_positive.
+Check rew_q_positive_iff.
 Check rew_bshift_free_occurs.
 Check rew_free_occurs_sources.
 Check semiterm_language_map_rew_bind.
@@ -325,6 +329,10 @@ Check semiterm_mul_operator_complexity.
 Check semiformula_operator.
 Check semiformula_operator_apply.
 Check rew_semiformula_operator_apply.
+Check semiformula_rewrite_and_preimage.
+Check semiformula_rewrite_or_preimage.
+Check semiformula_rewrite_all_preimage.
+Check semiformula_rewrite_exists_preimage.
 Check semiformula_operator_comp.
 Check semiformula_operator_comp_apply.
 Check semiformula_operator_comp_bvar_right.
@@ -812,6 +820,13 @@ Check arithmetic_bounded_all.
 Check arithmetic_bounded_exists.
 Check arithmetic_hierarchy.
 Check arithmetic_delta_zero.
+Check arithmetic_lt_guard_rewrite.
+Check arithmetic_lt_guard_rewrite_preimage.
+Check arithmetic_bounded_all_rewrite_preimage.
+Check arithmetic_bounded_exists_rewrite_preimage.
+Check arithmetic_hierarchy_rewrite.
+Check arithmetic_hierarchy_rewrite_reflect.
+Check arithmetic_hierarchy_rewrite_iff.
 Check arithmetic_hierarchy_accum.
 Check arithmetic_hierarchy_accum_iter.
 Check arithmetic_hierarchy_strict_mono.
@@ -1022,9 +1037,14 @@ Print Assumptions rew_shift_injective.
 Print Assumptions rew_free_comp_fix.
 Print Assumptions rew_fix_comp_free.
 Print Assumptions rew_bshift_positive.
+Print Assumptions rew_bshift_not_bvar_zero.
+Print Assumptions rew_q_bvar_zero_iff.
+Print Assumptions rew_q_positive_iff.
 Print Assumptions rew_free_occurs_sources.
 Print Assumptions semiterm_language_map_rew_bind.
 Print Assumptions semiformula_rewrite_connective_hom.
+Print Assumptions semiformula_rewrite_and_preimage.
+Print Assumptions semiformula_rewrite_all_preimage.
 Print Assumptions semiformula_rewrite_ext.
 Print Assumptions semiterm_rew_apply_ext_on_free.
 Print Assumptions semiformula_rewrite_ext_on_free.
@@ -1263,6 +1283,13 @@ Print Assumptions oring_standard_structure_unique.
 Print Assumptions nat_standard_structure_interprets.
 Print Assumptions arithmetic_theory_sound_on_of_models.
 Print Assumptions arithmetic_theory_consistent_of_sound_on.
+Print Assumptions arithmetic_lt_guard_rewrite.
+Print Assumptions arithmetic_lt_guard_rewrite_preimage.
+Print Assumptions arithmetic_bounded_all_rewrite_preimage.
+Print Assumptions arithmetic_bounded_exists_rewrite_preimage.
+Print Assumptions arithmetic_hierarchy_rewrite.
+Print Assumptions arithmetic_hierarchy_rewrite_reflect.
+Print Assumptions arithmetic_hierarchy_rewrite_iff.
 Print Assumptions arithmetic_hierarchy_accum.
 Print Assumptions arithmetic_hierarchy_strict_mono.
 Print Assumptions arithmetic_hierarchy_zero_iff.

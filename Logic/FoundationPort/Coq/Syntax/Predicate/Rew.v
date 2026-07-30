@@ -783,6 +783,86 @@ Proof.
       (fun i => rew_apply rew_bshift (a i)))); exact IH.
 Qed.
 
+Lemma rew_bshift_not_bvar_zero : forall L X n (t : semiterm L X n),
+  rew_apply rew_bshift t <> @Semiterm_bvar L X (S n) Fin.F1.
+Proof.
+  intros L X n t. destruct t; simpl; discriminate.
+Qed.
+
+Lemma rew_q_bvar_zero_iff : forall L X n Y m
+    (w : rew L X n Y m) (t : semiterm L X (S n)),
+  rew_apply (rew_q w) t = @Semiterm_bvar L Y (S m) Fin.F1 <->
+  t = @Semiterm_bvar L X (S n) Fin.F1.
+Proof.
+  intros L X n Y m w t. destruct t as [i | x | k f a].
+  - refine (@Fin.caseS' n i
+      (fun j =>
+        rew_apply (rew_q w) (@Semiterm_bvar L X (S n) j) =
+          @Semiterm_bvar L Y (S m) Fin.F1 <->
+        @Semiterm_bvar L X (S n) j =
+          @Semiterm_bvar L X (S n) Fin.F1) _ _).
+    + rewrite rew_q_bvar_zero. split; intro H; reflexivity.
+    + intro j. rewrite rew_q_bvar_succ. split; intro H.
+      * exfalso. exact (@rew_bshift_not_bvar_zero L Y m
+          (rew_apply w (Semiterm_bvar j)) H).
+      * discriminate H.
+  - rewrite rew_q_fvar. split; intro H.
+    + exfalso. exact (@rew_bshift_not_bvar_zero L Y m
+        (rew_apply w (Semiterm_fvar x)) H).
+    + discriminate H.
+  - simpl. split; discriminate.
+Qed.
+
+Lemma rew_q_positive : forall L X n Y m (w : rew L X n Y m)
+    (t : semiterm L X (S n)),
+  semiterm_positive t ->
+  semiterm_positive (rew_apply (rew_q w) t).
+Proof.
+  intros L X n Y m w t.
+  induction t as [i | x | k f a IH]; intro Hpositive.
+  - revert Hpositive.
+    refine (@Fin.caseS' n i
+      (fun j =>
+        semiterm_positive (@Semiterm_bvar L X (S n) j) ->
+        semiterm_positive
+          (rew_apply (rew_q w) (@Semiterm_bvar L X (S n) j))) _ _).
+    + intro Hzero.
+      apply (proj1 (semiterm_positive_bvar L X Fin.F1)) in Hzero.
+      now inversion Hzero.
+    + intros j _.
+      rewrite rew_q_bvar_succ. apply rew_bshift_positive.
+  - rewrite rew_q_fvar. apply rew_bshift_positive.
+  - cbn. apply (proj2 (semiterm_positive_func f
+      (fun i => rew_apply (rew_q w) (a i)))).
+    intro j. apply IH.
+    apply (proj1 (semiterm_positive_func f a) Hpositive j).
+Qed.
+
+Lemma rew_q_positive_iff : forall L X n Y m (w : rew L X n Y m)
+    (t : semiterm L X (S n)),
+  semiterm_positive (rew_apply (rew_q w) t) <-> semiterm_positive t.
+Proof.
+  intros L X n Y m w t. split.
+  - induction t as [i | x | k f a IH]; intro Hpositive.
+    + revert Hpositive.
+      refine (@Fin.caseS' n i
+        (fun j =>
+          semiterm_positive
+            (rew_apply (rew_q w) (@Semiterm_bvar L X (S n) j)) ->
+          semiterm_positive (@Semiterm_bvar L X (S n) j)) _ _).
+      * rewrite rew_q_bvar_zero. intro Hzero.
+        apply (proj1 (semiterm_positive_bvar L Y Fin.F1)) in Hzero.
+        now inversion Hzero.
+      * intros j _. apply (proj2 (semiterm_positive_bvar L X (Fin.FS j))).
+        apply fin_value_fs_positive.
+    + apply semiterm_positive_fvar.
+    + apply (proj2 (semiterm_positive_func f a)). intro j.
+      apply IH.
+      apply (proj1 (semiterm_positive_func f
+        (fun i => rew_apply (rew_q w) (a i))) Hpositive j).
+  - apply rew_q_positive.
+Qed.
+
 Lemma rew_bshift_free_occurs : forall L X n x (t : semiterm L X n),
   semiterm_free_occurs x (rew_apply rew_bshift t) <->
   semiterm_free_occurs x t.
@@ -1108,6 +1188,76 @@ Lemma semiformula_rewrite_exists : forall L X n Y m
   semiformula_rewrite w (Semiformula_exists p) =
   Semiformula_exists (semiformula_rewrite (rew_q w) p).
 Proof. reflexivity. Qed.
+
+Lemma semiformula_rewrite_and_preimage : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q r : semiformula L Y m),
+  semiformula_rewrite w p = Semiformula_and q r ->
+  exists q' r' : semiformula L X n,
+    p = Semiformula_and q' r' /\
+    semiformula_rewrite w q' = q /\
+    semiformula_rewrite w r' = r.
+Proof.
+  intros L X n Y m w p q r H.
+  destruct p as
+    [n0 | n0 | n0 k s v | n0 k s v |
+     n0 a b | n0 a b | n0 a | n0 a];
+    simpl in H; try discriminate H.
+  apply (proj1 (semiformula_and_injective _ _ _ _)) in H.
+  destruct H as [Ha Hb]. exists a, b. auto.
+Qed.
+
+Lemma semiformula_rewrite_or_preimage : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q r : semiformula L Y m),
+  semiformula_rewrite w p = Semiformula_or q r ->
+  exists q' r' : semiformula L X n,
+    p = Semiformula_or q' r' /\
+    semiformula_rewrite w q' = q /\
+    semiformula_rewrite w r' = r.
+Proof.
+  intros L X n Y m w p q r H.
+  destruct p as
+    [n0 | n0 | n0 k s v | n0 k s v |
+     n0 a b | n0 a b | n0 a | n0 a];
+    simpl in H; try discriminate H.
+  apply (proj1 (semiformula_or_injective _ _ _ _)) in H.
+  destruct H as [Ha Hb]. exists a, b. auto.
+Qed.
+
+Lemma semiformula_rewrite_all_preimage : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q : semiformula L Y (S m)),
+  semiformula_rewrite w p = Semiformula_all q ->
+  exists q' : semiformula L X (S n),
+    p = Semiformula_all q' /\
+    semiformula_rewrite (rew_q w) q' = q.
+Proof.
+  intros L X n Y m w p q H.
+  destruct p as
+    [n0 | n0 | n0 k s v | n0 k s v |
+     n0 a b | n0 a b | n0 a | n0 a];
+    simpl in H; try discriminate H.
+  apply (proj1 (semiformula_all_injective _ _)) in H.
+  exists a. auto.
+Qed.
+
+Lemma semiformula_rewrite_exists_preimage : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q : semiformula L Y (S m)),
+  semiformula_rewrite w p = Semiformula_exists q ->
+  exists q' : semiformula L X (S n),
+    p = Semiformula_exists q' /\
+    semiformula_rewrite (rew_q w) q' = q.
+Proof.
+  intros L X n Y m w p q H.
+  destruct p as
+    [n0 | n0 | n0 k s v | n0 k s v |
+     n0 a b | n0 a b | n0 a | n0 a];
+    simpl in H; try discriminate H.
+  apply (proj1 (semiformula_exists_injective _ _)) in H.
+  exists a. auto.
+Qed.
 
 Lemma semiformula_rewrite_ext : forall L X n Y m
     (w v : rew L X n Y m) (p : semiformula L X n),
