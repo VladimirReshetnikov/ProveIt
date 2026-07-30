@@ -1571,6 +1571,49 @@ Proof.
   apply semiformula_rewrite_ext, rew_rewrite_comp_substitute_one.
 Qed.
 
+Lemma semiformula_substitute_shift_one_eq_free : forall L
+    (p : semiproposition L 1),
+  semiformula_substitute
+      (fun _ : Fin.t 1 => Semiterm_fvar 0)
+      (semiformula_shift p) =
+  @semiformula_free L 0 p.
+Proof.
+  intros. unfold semiformula_substitute, semiformula_shift,
+    semiformula_free.
+  rewrite <- semiformula_rewrite_comp.
+  apply semiformula_rewrite_ext, rew_equiv_of_variables.
+  - intro i. assert (Hi : i = Fin.F1) by apply fin_one_eq_f1.
+    now subst i.
+  - intro x. reflexivity.
+Qed.
+
+Lemma semiformula_substitute_neg_shift_one_eq_neg_free : forall L
+    (p : semiproposition L 1),
+  semiformula_substitute
+      (fun _ : Fin.t 1 => Semiterm_fvar 0)
+      (semiformula_neg (semiformula_shift p)) =
+  semiformula_neg (@semiformula_free L 0 p).
+Proof.
+  intros. unfold semiformula_substitute.
+  rewrite semiformula_rewrite_neg.
+  f_equal. apply semiformula_substitute_shift_one_eq_free.
+Qed.
+
+Lemma semiformula_free_neg : forall L n
+    (p : semiproposition L (n + 1)),
+  semiformula_free (semiformula_neg p) =
+  semiformula_neg (semiformula_free p).
+Proof. intros. unfold semiformula_free. apply semiformula_rewrite_neg. Qed.
+
+Lemma semiformula_shift_exists : forall L
+    (p : semiproposition L 1),
+  semiformula_shift (Semiformula_exists p) =
+  Semiformula_exists (semiformula_shift p).
+Proof.
+  intros. unfold semiformula_shift. simpl. f_equal.
+  apply semiformula_rewrite_ext, rew_q_shift.
+Qed.
+
 Lemma semiformula_language_map_substitute : forall L M X k n
     (h : language_hom L M) (v : Fin.t k -> semiterm L X n)
     (p : semiformula L X k),
