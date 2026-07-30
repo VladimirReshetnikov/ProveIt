@@ -1,6 +1,7 @@
 (** Homogeneous finite-vector algebra over [Fin.t]. *)
 
-From Stdlib Require Import Lists.List Logic.FunctionalExtensionality Vectors.Fin.
+From Stdlib Require Import Arith.Cantor Lists.List
+  Logic.FunctionalExtensionality Vectors.Fin.
 From Foundation.Vorspiel Require Import DMatrix.
 
 Set Implicit Arguments.
@@ -216,3 +217,90 @@ Proof.
     + intro H. exfalso. apply (Ha k). now symmetry.
     + intros l H. f_equal. now apply Hf.
 Qed.
+
+(** Concatenation is recursive in its left argument.  This orientation makes
+    cons distribution definitional and gives the canonical [Fin.L]/[Fin.R]
+    index laws without casts. *)
+Fixpoint matrix_vec_append {A} (n : nat) :
+    (Fin.t n -> A) -> forall m, (Fin.t m -> A) -> Fin.t (n + m) -> A :=
+  match n as k return
+    (Fin.t k -> A) -> forall m, (Fin.t m -> A) -> Fin.t (k + m) -> A with
+  | 0 => fun _ _ w => w
+  | S k => fun v m w => matrix_vec_cons (matrix_vec_head v)
+      (@matrix_vec_append A k (matrix_vec_tail v) m w)
+  end.
+
+Lemma matrix_vec_append_zero : forall A m (v : Fin.t 0 -> A)
+    (w : Fin.t m -> A),
+  @matrix_vec_append A 0 v m w = w.
+Proof. reflexivity. Qed.
+
+Lemma matrix_vec_append_cons : forall A n m a (v : Fin.t n -> A)
+    (w : Fin.t m -> A),
+  @matrix_vec_append A (S n) (matrix_vec_cons a v) m w =
+  matrix_vec_cons a (@matrix_vec_append A n v m w).
+Proof. reflexivity. Qed.
+
+Theorem matrix_vec_append_left : forall A n m (v : Fin.t n -> A)
+    (w : Fin.t m -> A) (i : Fin.t n),
+  @matrix_vec_append A n v m w (Fin.L m i) = v i.
+Proof.
+  intros A n. induction n as [|n IH]; intros m v w i; [inversion i |].
+  refine (@Fin.caseS' n i (fun j =>
+    @matrix_vec_append A (S n) v m w (Fin.L m j) = v j) _ _).
+  - reflexivity.
+  - intro j. apply IH.
+Qed.
+
+Theorem matrix_vec_append_right : forall A n m (v : Fin.t n -> A)
+    (w : Fin.t m -> A) (i : Fin.t m),
+  @matrix_vec_append A n v m w (Fin.R n i) = w i.
+Proof.
+  intros A n. induction n as [|n IH]; intros m v w i; simpl.
+  - reflexivity.
+  - apply IH.
+Qed.
+
+Definition matrix_vec_singleton {A} (a : A) : Fin.t 1 -> A :=
+  matrix_vec_cons a matrix_vec_empty.
+
+Definition matrix_vec_snoc {A n} (v : Fin.t n -> A) (a : A) :
+    Fin.t (n + 1) -> A :=
+  @matrix_vec_append A n v 1 (matrix_vec_singleton a).
+
+Lemma matrix_vec_snoc_left : forall A n (v : Fin.t n -> A) a
+    (i : Fin.t n),
+  matrix_vec_snoc v a (Fin.L 1 i) = v i.
+Proof. intros. apply matrix_vec_append_left. Qed.
+
+Lemma matrix_vec_snoc_last : forall A n (v : Fin.t n -> A) a,
+  matrix_vec_snoc v a (Fin.R n Fin.F1) = a.
+Proof. intros. apply matrix_vec_append_right. Qed.
+
+Lemma matrix_vec_snoc_cons : forall A n a b (v : Fin.t n -> A),
+  matrix_vec_snoc (matrix_vec_cons a v) b =
+  matrix_vec_cons a (matrix_vec_snoc v b).
+Proof. reflexivity. Qed.
+
+Theorem matrix_vec_map_append : forall A B n m (f : A -> B)
+    (v : Fin.t n -> A) (w : Fin.t m -> A),
+  matrix_vec_map f (@matrix_vec_append A n v m w) =
+  @matrix_vec_append B n (matrix_vec_map f v) m (matrix_vec_map f w).
+Proof.
+  intros A B n. induction n as [|n IH]; intros m f v w; simpl.
+  - reflexivity.
+  - rewrite matrix_vec_map_cons. f_equal. apply IH.
+Qed.
+
+Definition matrix_vec_to_nat {n} (v : Fin.t n -> nat) : nat :=
+  @matrix_vec_foldr nat nat
+    (fun head tail => S (Cantor.to_nat (head, tail))) 0 n v.
+
+Lemma matrix_vec_to_nat_empty : forall (v : Fin.t 0 -> nat),
+  matrix_vec_to_nat v = 0.
+Proof. reflexivity. Qed.
+
+Lemma matrix_vec_to_nat_cons : forall n x (v : Fin.t n -> nat),
+  matrix_vec_to_nat (matrix_vec_cons x v) =
+  S (Cantor.to_nat (x, matrix_vec_to_nat v)).
+Proof. reflexivity. Qed.

@@ -12,11 +12,13 @@ From Foundation.Vorspiel Require Import ENat.
 From Foundation.Vorspiel Require Import DMatrix.
 From Foundation.Vorspiel Require Import Matrix.
 From Foundation.Vorspiel.Fin Require Import Basic.
+From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
 From Foundation.Vorspiel.Finset Require Import Basic.
 From Foundation.Vorspiel.List Require Import Basic.
 From Foundation.Vorspiel.List Require Import Chain.
 From Foundation.Vorspiel.Nat Require Import Basic.
+From Foundation.Vorspiel.Nat Require Import Matrix.
 From Foundation.Vorspiel.Set Require Import Basic.
 From Foundation.Vorspiel.Set Require Import Cofinite.
 From Foundation.Vorspiel.Set Require Import Fin.
@@ -168,6 +170,28 @@ Print Assumptions matrix_vec_exists_iff.
 Check matrix_vec_option_sequence.
 Print Assumptions matrix_vec_option_sequence_some.
 Print Assumptions matrix_vec_cons_injective.
+Check matrix_vec_append.
+Print Assumptions matrix_vec_append_zero.
+Print Assumptions matrix_vec_append_cons.
+Print Assumptions matrix_vec_append_left.
+Print Assumptions matrix_vec_append_right.
+Check matrix_vec_singleton.
+Check matrix_vec_snoc.
+Print Assumptions matrix_vec_snoc_left.
+Print Assumptions matrix_vec_snoc_last.
+Print Assumptions matrix_vec_snoc_cons.
+Print Assumptions matrix_vec_map_append.
+Check matrix_vec_to_nat.
+Print Assumptions matrix_vec_to_nat_empty.
+Print Assumptions matrix_vec_to_nat_cons.
+Check fin_vec_pointwise.
+Print Assumptions fin_vec_forall_bounded_iff.
+Print Assumptions fin_vec_exists_bounded_iff.
+Print Assumptions fin_vec_forall_iff.
+Print Assumptions fin_vec_exists_iff.
+Check nat_to_matrix_vec.
+Print Assumptions nat_to_matrix_vec_encode.
+Print Assumptions nat_to_matrix_vec_member_lt.
 Check list_strict_inclusion.
 Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
