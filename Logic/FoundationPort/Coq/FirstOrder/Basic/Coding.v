@@ -10,6 +10,7 @@
 *)
 
 From Stdlib Require Import Arith.PeanoNat Cantor Vectors.Fin.
+From Stdlib Require Import Logic.ClassicalDescription Logic.ClassicalEpsilon.
 From Stdlib Require Import Logic.FunctionalExtensionality.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
@@ -292,3 +293,55 @@ Proof.
   - symmetry. now apply (proj2 (@semiformula_code_closed_injection
       L n EL p X EX q)).
 Qed.
+
+(** Any injection into naturals admits a verified (generally noncomputable)
+    partial inverse.  Factoring this standard classical boundary lets clients
+    use the codes through the repository's ordinary [encoding] interface while
+    keeping all structural coding and injectivity results constructive. *)
+Definition decode_injective_code {A} (c : A -> nat) (n : nat) : option A :=
+  match excluded_middle_informative (exists x, c x = n) with
+  | left H => Some (proj1_sig
+      (constructive_indefinite_description (fun x => c x = n) H))
+  | right _ => None
+  end.
+
+Lemma decode_injective_code_encode : forall A (c : A -> nat)
+    (Hc : forall x y, c x = c y -> x = y) x,
+  decode_injective_code c (c x) = Some x.
+Proof.
+  intros A c Hc x. unfold decode_injective_code.
+  destruct (excluded_middle_informative (exists y, c y = c x))
+    as [Hex | Hnone].
+  - destruct (constructive_indefinite_description
+      (fun y => c y = c x) Hex) as [y Hy].
+    simpl. f_equal. now apply Hc.
+  - exfalso. apply Hnone. now exists x.
+Qed.
+
+Definition encoding_of_injective_code {A} (c : A -> nat)
+    (Hc : forall x y, c x = c y -> x = y) : encoding A :=
+  {| encode := c;
+     decode := decode_injective_code c;
+     decode_encode := decode_injective_code_encode Hc |}.
+
+Definition semiterm_encoding (L : language) (X : Type) (n : nat)
+    (EL : language_encodable L) (EX : encoding X) :
+    encoding (semiterm L X n) :=
+  @encoding_of_injective_code (semiterm L X n) (semiterm_code EL EX)
+    (@semiterm_code_injective L X n EL EX).
+
+Definition semiformula_encoding (L : language) (X : Type) (n : nat)
+    (EL : language_encodable L) (EX : encoding X) :
+    encoding (semiformula L X n) :=
+  @encoding_of_injective_code (semiformula L X n) (semiformula_code EL EX)
+    (@semiformula_code_injective L X n EL EX).
+
+Lemma semiterm_encoding_encode : forall L X n EL EX
+    (t : semiterm L X n),
+  encode (semiterm_encoding n EL EX) t = semiterm_code EL EX t.
+Proof. reflexivity. Qed.
+
+Lemma semiformula_encoding_encode : forall L X n EL EX
+    (p : semiformula L X n),
+  encode (semiformula_encoding n EL EX) p = semiformula_code EL EX p.
+Proof. reflexivity. Qed.

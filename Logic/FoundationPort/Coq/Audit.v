@@ -730,6 +730,13 @@ Check semiterm_code_emb.
 Check semiformula_code_emb.
 Check semiformula_code_closed_injection.
 Check semiformula_code_closed_injection_rev.
+Check decode_injective_code.
+Check decode_injective_code_encode.
+Check encoding_of_injective_code.
+Check semiterm_encoding.
+Check semiformula_encoding.
+Check semiterm_encoding_encode.
+Check semiformula_encoding_encode.
 Check semiformula_polarity.
 Check semiformula_positive.
 Check semiformula_negative.
@@ -1114,6 +1121,9 @@ Print Assumptions semiformula_code_injective.
 Print Assumptions semiterm_code_emb.
 Print Assumptions semiformula_code_emb.
 Print Assumptions semiformula_code_closed_injection.
+Print Assumptions decode_injective_code_encode.
+Print Assumptions semiterm_encoding.
+Print Assumptions semiformula_encoding.
 Print Assumptions semiformula_polarity_neg.
 Print Assumptions semiformula_polarity_imp.
 Print Assumptions semiformula_and_positive_iff.
