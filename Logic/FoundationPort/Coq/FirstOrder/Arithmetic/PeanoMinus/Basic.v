@@ -16,6 +16,7 @@ From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics OperatorSemantics.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Model Monotone.
 From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.Q Require Import Basic.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -143,6 +144,17 @@ Proof.
     now symmetry.
 Qed.
 
+Lemma peano_minus_zero_or_succ : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  x = oring_zero O \/
+  exists y, x = oring_add O y (oring_one O).
+Proof.
+  intros M O H x.
+  destruct (@peano_minus_zero_le M O H x) as [Hzero | Hpos].
+  - left. now symmetry.
+  - right. now apply (peano_minus_positive_eq_add_one H).
+Qed.
+
 Lemma peano_minus_lt_add_one : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall x,
   oring_lt O x (oring_add O x (oring_one O)).
@@ -197,6 +209,34 @@ Proof.
         rewrite (peano_minus_add_zero_left H),
           (@peano_minus_add_comm M O H z' x), Hxy in Hadd.
         exact Hadd.
+Qed.
+
+Lemma peano_minus_lt_iff_exists_add_succ : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  oring_lt O x y <->
+  exists z, oring_add O x (oring_add O z (oring_one O)) = y.
+Proof.
+  intros M O H x y. split.
+  - intro Hxy.
+    destruct (@peano_minus_add_eq_of_lt M O H x y Hxy) as [c Hc].
+    assert (Hcne : c <> oring_zero O).
+    { intro Hzero. subst c.
+      rewrite (@peano_minus_add_zero M O H x) in Hc. subst y.
+      exact (@peano_minus_lt_irrefl M O H x Hxy). }
+    destruct (@peano_minus_zero_le M O H c) as [Hzero | Hpos].
+    + exfalso. exact (Hcne (eq_sym Hzero)).
+    + destruct (peano_minus_positive_eq_add_one H Hpos) as [z Hz].
+      exists z. now rewrite <- Hz.
+  - intros [z Hz].
+    pose proof (peano_minus_le_lt_add_one H
+      (@peano_minus_zero_le M O H z)) as Hpos.
+    pose proof (@peano_minus_add_lt_add M O H
+      (oring_zero O) (oring_add O z (oring_one O)) x Hpos) as Hlt.
+    rewrite (peano_minus_add_zero_left H),
+      (@peano_minus_add_comm M O H (oring_add O z (oring_one O)) x),
+      Hz in Hlt.
+    exact Hlt.
 Qed.
 
 Lemma peano_minus_add_le_add_right : forall M (O : oring_carrier M),
@@ -470,6 +510,25 @@ Proof.
   - apply (peano_minus_numeral_mul H).
   - apply (peano_minus_numeral_ne H).
   - apply (peano_minus_lt_numeral_iff H).
+Defined.
+
+Definition peano_minus_robinson_q_laws : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> robinson_q_laws O.
+Proof.
+  intros M O H. constructor.
+  - intros a Heq.
+    pose proof (peano_minus_lt_add_one H a) as Hlt.
+    rewrite Heq in Hlt. exact (peano_minus_not_lt_zero H Hlt).
+  - intros a b Hab.
+    exact (@peano_minus_add_right_cancel M O H a b (oring_one O) Hab).
+  - apply (peano_minus_zero_or_succ H).
+  - apply (@peano_minus_add_zero M O H).
+  - intros a b. symmetry. apply (@peano_minus_add_assoc M O H).
+  - apply (@peano_minus_mul_zero M O H).
+  - intros a b. rewrite (@peano_minus_mul_add_distr M O H),
+      (@peano_minus_mul_one M O H). reflexivity.
+  - apply (peano_minus_lt_iff_exists_add_succ H).
 Defined.
 
 Definition peano_minus_ball_lt_succ {X n}
