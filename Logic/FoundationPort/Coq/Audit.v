@@ -2,7 +2,9 @@
 
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
+From Foundation.Vorspiel.Order Require Import Heyting.
 From Foundation.Vorspiel.Order Require Import Dense.
+From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
@@ -59,6 +61,11 @@ Check option_to_list.
 Print Assumptions option_to_list_singleton_iff.
 Check function_equal_on.
 Print Assumptions function_equal_on_subset.
+Check heyting_algebra_data.
+Print Assumptions ha_inf_mono.
+Print Assumptions ha_himp_himp_inf_himp_inf_le.
+Print Assumptions ha_himp_inf_himp_inf_sup_le.
+Print Assumptions ha_complement_of_sup_equiv_inf_complements.
 Check preorder_data.
 Check directed_on.
 Print Assumptions directed_list_colimit.
@@ -83,6 +90,13 @@ Check dense_family_countable.
 Print Assumptions nat_relation_of_successors.
 Print Assumptions generic_descending_chain_is_descending.
 Print Assumptions exists_generic_pfilter_of_countable.
+Check lower_set.
+Print Assumptions lower_disjoint_iff_incompatible.
+Print Assumptions lower_dual_member_iff.
+Print Assumptions lower_dual_greatest_disjoint.
+Print Assumptions lower_himp_member_iff.
+Print Assumptions lower_himp_greatest.
+Check lower_regular.
 
 Check language.
 Check language_relational.
