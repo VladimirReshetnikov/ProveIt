@@ -1809,3 +1809,37 @@ Proof.
     + now right.
     + lia.
 Qed.
+
+Lemma iopen_polynomial_induction : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_order_induction_principle O ->
+  forall P : M -> Prop,
+  P (oring_zero O) ->
+  (forall x, oring_lt O (oring_zero O) x -> P x ->
+    P (oring_mul O (oring_numeral O 2) x)) ->
+  (forall x, P x ->
+    P (oring_add O (oring_mul O (oring_numeral O 2) x)
+      (oring_one O))) ->
+  forall x, P x.
+Proof.
+  intros M O H Horder P Hzero Heven Hodd.
+  pose proof (arithmetic_least_number_of_order_induction Horder) as Hleast.
+  apply (Horder P). intros x IH.
+  destruct (@peano_minus_zero_le M O H x) as [Hxzero | Hxpos].
+  - symmetry in Hxzero. subst x. exact Hzero.
+  - assert (Htwo : oring_lt O (oring_one O) (oring_numeral O 2)).
+    { change (oring_lt O (oring_numeral O 1) (oring_numeral O 2)).
+      apply (peano_minus_numeral_lt H). lia. }
+    pose proof (iopen_div_lt_of_pos_of_one_lt H Hleast Hxpos Htwo)
+      as Hdivlt.
+    destruct (iopen_even_or_odd_exact H Hleast x) as [Heq | Heq].
+    + rewrite Heq.
+      apply Heven.
+      * destruct (@peano_minus_zero_le M O H
+          (iopen_div O x (oring_numeral O 2))) as [Hqzero | Hqpos];
+          [| exact Hqpos].
+        exfalso. rewrite <- Hqzero,
+          (@peano_minus_mul_zero M O H (oring_numeral O 2)) in Heq.
+        subst x. exact (@peano_minus_lt_irrefl M O H _ Hxpos).
+      * apply IH. exact Hdivlt.
+    + rewrite Heq. apply Hodd. apply IH. exact Hdivlt.
+Qed.
