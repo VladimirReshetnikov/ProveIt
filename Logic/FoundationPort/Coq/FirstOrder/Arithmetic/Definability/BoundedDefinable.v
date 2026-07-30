@@ -197,6 +197,11 @@ Record arithmetic_definably_bounded_function {M : Type} {k}
     arithmetic_sorted_definable_function Str arithmetic_sigma_zero_symbol f
 }.
 
+Definition arithmetic_interpreted_lt {M : Type}
+    (Str : first_order_structure oring_language M) (x y : M) : Prop :=
+  semiformula_operator_eval Str (fin_two x y)
+    (semiformula_lt_operator arithmetic_lt_operator).
+
 Definition arithmetic_definably_bounded_variable {M : Type} {k}
     (Str : first_order_structure oring_language M) (le : M -> M -> Prop)
     (Hrefl : forall x, le x x)
@@ -271,4 +276,55 @@ Proof.
   - apply (arithmetic_sorted_definable_of_iff
       (arithmetic_sorted_definable_retraction Hdef (fin_graph_reindex e))).
     intro v. reflexivity.
+Defined.
+
+(** A single bounded graph witness is the common core of level-zero
+    substitution.  Stating the majorant with the interpreted strict order
+    makes the exact assumption used by the bounded existential constructor
+    explicit; no ambient arithmetic model laws are needed. *)
+Definition arithmetic_sorted_definable_substitution_one_strictly_bounded
+    {M : Type} {k symbol}
+    {Str : first_order_structure oring_language M}
+    (P : (Fin.t k -> M) -> M -> Prop)
+    (f : (Fin.t k -> M) -> M)
+    (Hf : arithmetic_definably_bounded_function Str
+      (arithmetic_interpreted_lt Str) f)
+    (HP : arithmetic_sorted_definable Str symbol
+      (fun w : Fin.t (S k) -> M =>
+        P (fun i => w (Fin.FS i)) (w Fin.F1))) :
+    arithmetic_sorted_definable Str symbol
+      (fun v : Fin.t k -> M => P v (f v)).
+Proof.
+  destruct Hf as [Hbound Hgraph].
+  pose proof (arithmetic_sorted_definable_of_zero Hgraph symbol)
+    as Hgraph_at_symbol.
+  pose proof (arithmetic_sorted_definable_and Hgraph_at_symbol HP)
+    as Hbody.
+  pose proof (arithmetic_sorted_definable_bex
+    (R := fun v x => x = f v /\ P v x) Hbody
+    (arithmetic_bounded_term Hbound)) as Hexists.
+  apply (arithmetic_sorted_definable_of_iff Hexists).
+  intro v. split.
+  - intro HPf. exists (f v). split.
+    + exact (arithmetic_bounded_spec Hbound v).
+    + split; [reflexivity | exact HPf].
+  - intros [x [_ [Hxf HPx]]]. now rewrite Hxf in HPx.
+Defined.
+
+Definition arithmetic_sorted_definable_compose_predicate_one_strictly_bounded
+    {M : Type} {k symbol}
+    {Str : first_order_structure oring_language M}
+    (P : M -> Prop)
+    (f : (Fin.t k -> M) -> M)
+    (HP : arithmetic_sorted_definable Str symbol
+      (fun v : Fin.t 1 -> M => P (v Fin.F1)))
+    (Hf : arithmetic_definably_bounded_function Str
+      (arithmetic_interpreted_lt Str) f) :
+    arithmetic_sorted_definable Str symbol
+      (fun v : Fin.t k -> M => P (f v)).
+Proof.
+  apply (arithmetic_sorted_definable_substitution_one_strictly_bounded
+    (P := fun _ x => P x) (f := f) Hf).
+  apply (arithmetic_sorted_definable_retraction HP
+    (fun _ : Fin.t 1 => Fin.F1)).
 Defined.
