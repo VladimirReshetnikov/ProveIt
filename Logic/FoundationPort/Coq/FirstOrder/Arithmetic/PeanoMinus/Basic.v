@@ -449,6 +449,18 @@ Proof.
   - exact (peano_minus_add_lt_add_left H x' Hy).
 Qed.
 
+Lemma peano_minus_add_swap_middle : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  oring_add O (oring_add O x y) z =
+  oring_add O (oring_add O x z) y.
+Proof.
+  intros M O H x y z.
+  rewrite (@peano_minus_add_assoc M O H x y z),
+    (@peano_minus_add_comm M O H y z),
+    <- (@peano_minus_add_assoc M O H x z y).
+  reflexivity.
+Qed.
+
 Lemma peano_minus_add_le_add : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall x x' y y',
   peano_minus_le O x x' -> peano_minus_le O y y' ->

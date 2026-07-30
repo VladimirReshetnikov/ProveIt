@@ -1247,3 +1247,154 @@ Proof.
     (@peano_minus_mul_comm M O H b c).
   now apply (iopen_div_cancel_left H Hleast).
 Qed.
+
+Lemma iopen_div_add_mul_self : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a c b, oring_lt O (oring_zero O) b ->
+  iopen_div O (oring_add O a (oring_mul O c b)) b =
+  oring_add O (iopen_div O a b) c.
+Proof.
+  intros M O H Hleast a c b Hb.
+  destruct (iopen_eq_mul_div_add_of_pos H Hleast a Hb)
+    as [r [Hr Heq]].
+  rewrite Heq at 1.
+  rewrite (@peano_minus_mul_comm M O H b (iopen_div O a b)),
+    (peano_minus_add_swap_middle H),
+    <- (@peano_minus_add_mul_distr M O H (iopen_div O a b) c b).
+  apply (iopen_div_mul_add H Hleast). exact Hr.
+Qed.
+
+Lemma iopen_div_add_mul_self_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a c b, oring_lt O (oring_zero O) b ->
+  iopen_div O (oring_add O a (oring_mul O b c)) b =
+  oring_add O (iopen_div O a b) c.
+Proof.
+  intros M O H Hleast a c b Hb.
+  rewrite (@peano_minus_mul_comm M O H b c).
+  now apply (iopen_div_add_mul_self H Hleast).
+Qed.
+
+Lemma iopen_div_mul_add_self : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a c b, oring_lt O (oring_zero O) b ->
+  iopen_div O (oring_add O (oring_mul O a b) c) b =
+  oring_add O a (iopen_div O c b).
+Proof.
+  intros M O H Hleast a c b Hb.
+  rewrite (@peano_minus_add_comm M O H (oring_mul O a b) c),
+    (iopen_div_add_mul_self H Hleast c a Hb),
+    (@peano_minus_add_comm M O H (iopen_div O c b) a).
+  reflexivity.
+Qed.
+
+Lemma iopen_div_mul_add_self_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a c b, oring_lt O (oring_zero O) b ->
+  iopen_div O (oring_add O (oring_mul O b a) c) b =
+  oring_add O a (iopen_div O c b).
+Proof.
+  intros M O H Hleast a c b Hb.
+  rewrite (@peano_minus_mul_comm M O H b a).
+  now apply (iopen_div_mul_add_self H Hleast).
+Qed.
+
+Lemma iopen_rem_eq_of_decomposition : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b q r, oring_lt O r b ->
+  a = oring_add O (oring_mul O b q) r -> iopen_rem O a b = r.
+Proof.
+  intros M O H Hleast a b q r Hr Heq.
+  rewrite Heq, (@peano_minus_mul_comm M O H b q).
+  now apply (iopen_rem_mul_add_of_lt H Hleast).
+Qed.
+
+Lemma iopen_rem_add_mul_self : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a c b, oring_lt O (oring_zero O) b ->
+  iopen_rem O (oring_add O a (oring_mul O c b)) b = iopen_rem O a b.
+Proof.
+  intros M O H Hleast a c b Hb.
+  destruct (iopen_eq_mul_div_add_of_pos H Hleast a Hb)
+    as [r [Hr Heq]].
+  rewrite (iopen_rem_eq_of_decomposition H Hleast Hr Heq).
+  apply (iopen_rem_eq_of_decomposition H Hleast
+    (q := oring_add O (iopen_div O a b) c) Hr).
+  rewrite Heq at 1.
+  rewrite (@peano_minus_mul_comm M O H b (iopen_div O a b)),
+    (peano_minus_add_swap_middle H),
+    <- (@peano_minus_add_mul_distr M O H (iopen_div O a b) c b),
+    (@peano_minus_mul_comm M O H b
+      (oring_add O (iopen_div O a b) c)).
+  reflexivity.
+Qed.
+
+Lemma iopen_rem_add_mul_self_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a c b, oring_lt O (oring_zero O) b ->
+  iopen_rem O (oring_add O a (oring_mul O b c)) b = iopen_rem O a b.
+Proof.
+  intros M O H Hleast a c b Hb.
+  rewrite (@peano_minus_mul_comm M O H b c).
+  now apply (iopen_rem_add_mul_self H Hleast).
+Qed.
+
+Lemma iopen_rem_mul_add_self : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a c b, oring_lt O (oring_zero O) b ->
+  iopen_rem O (oring_add O (oring_mul O a b) c) b = iopen_rem O c b.
+Proof.
+  intros M O H Hleast a c b Hb.
+  rewrite (@peano_minus_add_comm M O H (oring_mul O a b) c).
+  now apply (iopen_rem_add_mul_self H Hleast).
+Qed.
+
+Lemma iopen_rem_mul_add_self_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a c b, oring_lt O (oring_zero O) b ->
+  iopen_rem O (oring_add O (oring_mul O b a) c) b = iopen_rem O c b.
+Proof.
+  intros M O H Hleast a c b Hb.
+  rewrite (@peano_minus_mul_comm M O H b a).
+  now apply (iopen_rem_mul_add_self H Hleast).
+Qed.
+
+Lemma iopen_rem_add_remove_right : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, oring_lt O (oring_zero O) b ->
+  iopen_rem O (oring_add O a b) b = iopen_rem O a b.
+Proof.
+  intros M O H Hleast a b Hb.
+  pose proof (iopen_rem_add_mul_self H Hleast a (oring_one O) Hb) as Hrem.
+  now rewrite (@peano_minus_one_mul M O H b) in Hrem.
+Qed.
+
+Lemma iopen_rem_add_remove_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, oring_lt O (oring_zero O) a ->
+  iopen_rem O (oring_add O a b) a = iopen_rem O b a.
+Proof.
+  intros M O H Hleast a b Ha.
+  rewrite (@peano_minus_add_comm M O H a b).
+  now apply (iopen_rem_add_remove_right H Hleast).
+Qed.
+
+Lemma iopen_rem_div : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, iopen_div O (iopen_rem O a b) b = oring_zero O.
+Proof.
+  intros M O H Hleast a b.
+  destruct (@peano_minus_zero_le M O H b) as [Hb | Hb].
+  - symmetry in Hb. subst b. apply (iopen_div_zero H Hleast).
+  - apply (iopen_div_eq_zero_of_lt H Hleast).
+    apply (iopen_rem_lt H Hleast a Hb).
+Qed.
+
+Lemma iopen_rem_one : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, iopen_rem O a (oring_one O) = oring_zero O.
+Proof.
+  intros M O H Hleast a.
+  apply (proj2 (iopen_rem_eq_zero_iff_dvd H Hleast (oring_one O) a)).
+  exists a. now rewrite (@peano_minus_one_mul M O H a).
+Qed.
