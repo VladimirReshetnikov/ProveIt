@@ -160,6 +160,18 @@ Proof.
   - exact Hyx.
 Qed.
 
+Lemma peano_minus_le_of_not_lt : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  ~ oring_lt O x y -> peano_minus_le O y x.
+Proof.
+  intros M O H x y Hnlt.
+  destruct (@peano_minus_lt_trichotomy M O H x y)
+    as [Hxy | [Hxy | Hyx]].
+  - contradiction.
+  - left. now symmetry.
+  - now right.
+Qed.
+
 Lemma peano_minus_lt_of_add_lt_add_right : forall M
     (O : oring_carrier M),
   peano_minus_laws O -> forall x y z,

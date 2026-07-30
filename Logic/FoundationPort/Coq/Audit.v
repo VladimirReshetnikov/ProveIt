@@ -1517,6 +1517,7 @@ Print Assumptions peano_minus_zero_mul.
 Print Assumptions peano_minus_one_mul.
 Print Assumptions peano_minus_positive_eq_add_one.
 Print Assumptions peano_minus_lt_of_not_le.
+Print Assumptions peano_minus_le_of_not_lt.
 Print Assumptions peano_minus_add_one_le_of_lt.
 Print Assumptions peano_minus_lt_add_one.
 Print Assumptions peano_minus_le_iff_lt_add_one.
@@ -1690,6 +1691,14 @@ Print Assumptions iopen_div_specification.
 Print Assumptions iopen_mul_div_le_pos.
 Print Assumptions iopen_lt_mul_div_succ.
 Print Assumptions iopen_div_zero.
+Print Assumptions iopen_eq_mul_div_add_of_pos.
+Print Assumptions iopen_div_graph.
+Print Assumptions iopen_div_eq_of.
+Print Assumptions iopen_div_mul_add.
+Print Assumptions iopen_div_mul_add_left.
+Print Assumptions iopen_zero_div.
+Print Assumptions iopen_div_one.
+Print Assumptions iopen_div_eq_zero_of_lt.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.
