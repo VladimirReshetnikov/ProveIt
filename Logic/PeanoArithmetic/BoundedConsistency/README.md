@@ -4941,3 +4941,15 @@ Thus the predecessor client now needs only the existing restricted-proof and
 rule-validity roots to obtain both mathematical admissibility invariants; the
 next boundary is their direct handoff to the predecessor assignment and
 global-row compilers.
+
+The endpoint-evidence boundary is now prefix-general rather than restricted
+to a bare witnessed context.  A reusable two-premise law combinator inserts
+any compiled implication beneath an atomically adequate temporary template
+prefix, transports both premise roots through the same witnessed-tail
+extension, and performs the represented implication eliminations there.
+Both endpoint laws and their synchronizer instantiate this combinator.  The
+shell-compatible wrapper consequently preserves all case, endpoint-witness,
+admissibility, and eigenvariable assumptions verbatim while concatenating
+only the standard PA witness tails.  The remaining predecessor handoff is
+therefore a literal formula-code alignment problem, not a missing context
+transport principle.
