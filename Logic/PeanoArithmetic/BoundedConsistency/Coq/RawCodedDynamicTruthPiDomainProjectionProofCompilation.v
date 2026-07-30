@@ -202,6 +202,24 @@ Qed.
 (** The source-template module already proves that honest quotations of all
     five fixed non-binder alternatives and the existential-prefix fragments
     coincide with the numeral leaves in the native Pi row. *)
+Theorem rawCoqDynamicTruthPiDomainProjectionCode_eq_native :
+  forall (M : RawPAModel), RawPASatisfies M ->
+  forall domain lowerApplication,
+  rawCoqDynamicTruthPiDomainProjectionCode M
+    domain lowerApplication =
+  rawDynamicTruthPiDomainProjectionCode M
+    domain lowerApplication.
+Proof.
+  intros M hPA domain lowerApplication.
+  unfold rawCoqDynamicTruthPiDomainProjectionCode,
+    rawDynamicTruthPiDomainProjectionCode.
+  rewrite (rawCoqDynamicTruthPiSuccessorRowTemplateCode_eq_native
+    M hPA domain lowerApplication).
+  reflexivity.
+Qed.
+
+(** Closing the open equality under the fixed row environment yields the
+    graph-facing field equality without redoing any quotation arithmetic. *)
 Theorem rawCoqDynamicTruthPiDomainProjectionFieldCode_eq_native :
   forall (M : RawPAModel), RawPASatisfies M ->
   forall domain lowerApplication,
@@ -212,10 +230,8 @@ Theorem rawCoqDynamicTruthPiDomainProjectionFieldCode_eq_native :
 Proof.
   intros M hPA domain lowerApplication.
   unfold rawCoqDynamicTruthPiDomainProjectionFieldCode,
-    rawDynamicTruthPiDomainProjectionFieldCode,
-    rawCoqDynamicTruthPiDomainProjectionCode,
-    rawDynamicTruthPiDomainProjectionCode.
-  rewrite (rawCoqDynamicTruthPiSuccessorRowTemplateCode_eq_native
+    rawDynamicTruthPiDomainProjectionFieldCode.
+  rewrite (rawCoqDynamicTruthPiDomainProjectionCode_eq_native
     M hPA domain lowerApplication).
   reflexivity.
 Qed.

@@ -18,6 +18,7 @@ Check rawCoqDynamicTruthPiDomainProjectionFieldCode.
 Check rawDynamicTruthPiDomainProjectionFieldCode.
 Check rawDirect_coqDynamicTruthPiDomainProjection_identified.
 Check rawDirect_coqDynamicTruthPiDomainProjectionField_identified.
+Check rawCoqDynamicTruthPiDomainProjectionCode_eq_native.
 Check rawCoqDynamicTruthPiDomainProjectionFieldCode_eq_native.
 
 Check rawCoqDynamicTruthPiDomainProjectionFieldCertificate.
@@ -29,6 +30,8 @@ Print Assumptions coqDynamicTruthPiDomainProjectionProof_derives.
 Print Assumptions coqDynamicTruthPiDomainProjectionFieldProof_derives.
 Print Assumptions
   rawDirect_coqDynamicTruthPiDomainProjection_identified.
+Print Assumptions
+  rawCoqDynamicTruthPiDomainProjectionCode_eq_native.
 Print Assumptions
   rawCoqDynamicTruthPiDomainProjectionFieldCode_eq_native.
 Print Assumptions
