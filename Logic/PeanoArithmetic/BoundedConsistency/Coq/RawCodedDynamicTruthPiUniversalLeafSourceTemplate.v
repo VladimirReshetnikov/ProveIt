@@ -208,6 +208,22 @@ Definition rawCoqDynamicTruthLowerSigmaAtomTemplateCode
      rawTermVarCode M (rawNumeralValue M 1);
      rawTermVarCode M (rawNumeralValue M 0)].
 
+Definition rawCoqDynamicTruthLowerSigmaAtomTemplateCodeAt
+    (M : RawPAModel) (inputs : RawCodedTemplateStructuralInputs M)
+    (predicate : TemplatePredicateName) : M :=
+  rawStructuralTemplateOpaqueCode
+    (rawStructuralTemplateSymbols inputs) predicate
+    [rawTermVarCode M (rawNumeralValue M 9);
+     rawTermVarCode M (rawNumeralValue M 1);
+     rawTermVarCode M (rawNumeralValue M 0)].
+
+Lemma rawCoqDynamicTruthLowerSigmaAtomTemplateCodeAt_default : forall
+    M inputs,
+  rawCoqDynamicTruthLowerSigmaAtomTemplateCodeAt M inputs
+    coqDynamicTruthLowerSigmaPredicateName =
+  rawCoqDynamicTruthLowerSigmaAtomTemplateCode M inputs.
+Proof. reflexivity. Qed.
+
 Definition rawCoqDynamicTruthPiExistentialLeafTemplateCode
     (M : RawPAModel) (lowerApplication : M) : M :=
   rawFormulaAndCode M
@@ -318,6 +334,72 @@ Proof.
         (rawCoqDynamicTruthPiBranchesTemplateCode M
           (rawCoqDynamicTruthLowerSigmaAtomTemplateCode M inputs)))).
   rewrite rawStructural_coqDynamicTruthPiBranchesTemplate.
+  reflexivity.
+Qed.
+
+(** Structural row polynomial with a caller-selected opaque slot. *)
+Theorem rawStructural_coqDynamicTruthLowerSigmaAtomTemplateAt : forall
+    (M : RawPAModel) (inputs : RawCodedTemplateStructuralInputs M)
+    predicate,
+  rawStructuralTemplateFormula inputs
+    (coqDynamicTruthLowerSigmaAtomTemplateAt predicate) =
+  rawCoqDynamicTruthLowerSigmaAtomTemplateCodeAt M inputs predicate.
+Proof. intros M inputs predicate. reflexivity. Qed.
+
+Theorem rawStructural_coqDynamicTruthPiBranchesTemplateAt : forall
+    (M : RawPAModel) (inputs : RawCodedTemplateStructuralInputs M)
+    predicate,
+  rawStructuralTemplateFormula inputs
+    (coqDynamicTruthPiBranchesTemplateAt predicate) =
+  rawCoqDynamicTruthPiBranchesTemplateCode M
+    (rawCoqDynamicTruthLowerSigmaAtomTemplateCodeAt M inputs predicate).
+Proof.
+  intros M inputs predicate.
+  unfold coqDynamicTruthPiBranchesTemplateAt,
+    coqDynamicTruthPiQfLeafTemplate,
+    coqDynamicTruthPiImpLeafTemplate,
+    coqDynamicTruthPiAndLeafTemplate,
+    coqDynamicTruthPiOrLeafTemplate,
+    coqDynamicTruthPiAllLeafTemplate,
+    coqDynamicTruthPiExistentialLeafTemplateAt,
+    coqDynamicTruthPiExistentialPrefixTemplate,
+    coqDynamicTruthPiNoBinderCounterexampleTemplateAt,
+    coqDynamicTruthPiBinderPrependTemplate,
+    rawCoqDynamicTruthPiBranchesTemplateCode,
+    rawCoqDynamicTruthPiExistentialLeafTemplateCode.
+  cbn [templateRepeatedExists rawStructuralTemplateFormula
+    rawStructuralTemplateFormulaWith].
+  rewrite !rawStructuralTemplateFormulaWith_embedPA.
+  reflexivity.
+Qed.
+
+Theorem rawStructural_coqDynamicTruthPiSuccessorRowTemplateAt : forall
+    (M : RawPAModel) (inputs : RawCodedTemplateStructuralInputs M)
+    predicate,
+  rawStructuralTemplateFormula inputs
+    (coqDynamicTruthPiSuccessorRowTemplateAt predicate) =
+  rawCoqDynamicTruthPiSuccessorRowTemplateCode M
+    (rawStructuralTemplateFormula inputs
+      coqDynamicTruthPiDomainLeafTemplate)
+    (rawCoqDynamicTruthLowerSigmaAtomTemplateCodeAt M inputs predicate).
+Proof.
+  intros M inputs predicate.
+  unfold coqDynamicTruthPiSuccessorRowTemplateAt,
+    rawCoqDynamicTruthPiSuccessorRowTemplateCode.
+  change (rawDynamicTruthPiFormulaEx8Code M
+    (rawFormulaAndCode M
+      (rawStructuralTemplateFormula inputs
+        coqDynamicTruthPiDomainLeafTemplate)
+      (rawStructuralTemplateFormula inputs
+        (coqDynamicTruthPiBranchesTemplateAt predicate))) =
+    rawDynamicTruthPiFormulaEx8Code M
+      (rawFormulaAndCode M
+        (rawStructuralTemplateFormula inputs
+          coqDynamicTruthPiDomainLeafTemplate)
+        (rawCoqDynamicTruthPiBranchesTemplateCode M
+          (rawCoqDynamicTruthLowerSigmaAtomTemplateCodeAt
+            M inputs predicate)))).
+  rewrite rawStructural_coqDynamicTruthPiBranchesTemplateAt.
   reflexivity.
 Qed.
 

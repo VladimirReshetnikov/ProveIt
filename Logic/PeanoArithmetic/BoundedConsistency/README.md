@@ -5027,3 +5027,15 @@ templates; reflexive compatibility lemmas retain their historical slot-zero
 forms.  This removes the representation mismatch identified at the previous
 handoff: the next step is to identify both relocated successor rows with the
 native carrier row codes under the shared hierarchy numeral parameters.
+
+That row identification is now proved.  The shared input adapter constructs
+one four-family direct translator and reuses the existing `[9,1,0]` ternary
+application compatibility theorem through the same numeral-parameter record.
+Direct opening of the two fixed domain templates is functional against the
+native Sigma and Pi domain-substitution traces.  The resulting paired theorem
+identifies both relocated templates with `rawDynamicTruthSigmaSuccessorRowCode`
+and `rawDynamicTruthPiSuccessorRowCode` simultaneously; the soundness leaves
+remain in slots zero and one throughout.  The next integration boundary is
+to obtain the two lower-predicate selectors from the deep-closure fields of
+the native aligned predecessor trace and feed this exact shared input into
+the strong-step predecessor global-row handoff.
