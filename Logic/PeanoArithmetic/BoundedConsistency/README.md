@@ -4769,3 +4769,15 @@ substitutions and the tenfold rename of the desired evidence formula.  Once
 this PA-syntax equality is supplied, all template alignment, witnessed-tail
 growth, source weakening, row selection, and existential elimination are
 derived internally.
+
+The generic endpoint has now been relaxed to the equality it actually uses:
+equality of translated carrier formula codes, rather than equality of the
+templates themselves.  This is essential for native evidence, whose desired
+conclusions are opaque template applications even when their translated
+codes agree with the opened standard row.  A paired compiler then runs the
+Sigma elimination, transports the Pi global source into that witnessed
+extension, runs the Pi elimination, and transports the Sigma result into the
+final common context.  It retains the original-tail inclusion and returns
+both evidence roots together.  The predecessor logical-roots package now
+lacks only the admissibility root and the two native translated-code
+identifications.
