@@ -1437,6 +1437,12 @@ Print Assumptions arithmetic_sorted_definable_list_conj.
 Print Assumptions arithmetic_sorted_definable_list_disj.
 Print Assumptions arithmetic_sorted_definable_finite_conj.
 Print Assumptions arithmetic_sorted_definable_finite_disj.
+Print Assumptions arithmetic_sorted_eq.
+Print Assumptions arithmetic_sorted_eq_val.
+Print Assumptions arithmetic_sorted_definable_eq_terms.
+Print Assumptions arithmetic_sorted_definable_term_graph.
+Print Assumptions arithmetic_sorted_definable_projection.
+Print Assumptions arithmetic_sorted_definable_parameter_constant.
 Print Assumptions arithmetic_sorted_definable_substitute_bound.
 Print Assumptions arithmetic_sorted_definable_retraction.
 Print Assumptions arithmetic_sorted_definable_ball.
@@ -1457,6 +1463,11 @@ Print Assumptions arithmetic_bounded_compose_one.
 Print Assumptions arithmetic_bounded_compose_two.
 Print Assumptions fin_graph_reindex.
 Print Assumptions arithmetic_definably_bounded_function.
+Print Assumptions arithmetic_definably_bounded_variable.
+Print Assumptions arithmetic_definably_bounded_constant.
+Print Assumptions arithmetic_definably_bounded_term.
+Print Assumptions arithmetic_bounded_of_pointwise_eq.
+Print Assumptions arithmetic_definably_bounded_of_pointwise_eq.
 Print Assumptions arithmetic_definably_bounded_retraction.
 Print Assumptions first_order_true_arithmetic_models.
 Print Assumptions first_order_true_arithmetic_provable_iff.

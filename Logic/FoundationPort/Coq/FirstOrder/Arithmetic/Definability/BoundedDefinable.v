@@ -11,8 +11,9 @@
 From Stdlib Require Import Vectors.Fin.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
-From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
+From Foundation.FirstOrder.Basic.Semantics Require Import
+  Semantics OperatorSemantics.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy Monotone.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import
   Hierarchy Definable.
 
@@ -195,6 +196,67 @@ Record arithmetic_definably_bounded_function {M : Type} {k}
   arithmetic_definably_bounded_definition :
     arithmetic_sorted_definable_function Str arithmetic_sigma_zero_symbol f
 }.
+
+Definition arithmetic_definably_bounded_variable {M : Type} {k}
+    (Str : first_order_structure oring_language M) (le : M -> M -> Prop)
+    (Hrefl : forall x, le x x)
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (i : Fin.t k) :
+    arithmetic_definably_bounded_function Str le (fun v => v i) :=
+  {| arithmetic_definably_bounded_bound :=
+      arithmetic_bounded_variable Str (le := le) Hrefl i;
+     arithmetic_definably_bounded_definition :=
+      arithmetic_sorted_definable_projection (Str := Str) HEq
+        arithmetic_sigma_zero_symbol i |}.
+
+Definition arithmetic_definably_bounded_constant {M : Type} {k}
+    (Str : first_order_structure oring_language M) (le : M -> M -> Prop)
+    (Hrefl : forall x, le x x)
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (c : M) :
+    arithmetic_definably_bounded_function Str le
+      (fun _ : Fin.t k -> M => c) :=
+  {| arithmetic_definably_bounded_bound :=
+      arithmetic_bounded_constant Str (le := le) Hrefl c;
+     arithmetic_definably_bounded_definition :=
+      arithmetic_sorted_definable_parameter_constant (Str := Str) HEq
+        arithmetic_sigma_zero_symbol c |}.
+
+Definition arithmetic_definably_bounded_term {M : Type} {k}
+    (Str : first_order_structure oring_language M) (le : M -> M -> Prop)
+    (Hrefl : forall x, le x x)
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (t : semiterm oring_language M k) :
+    arithmetic_definably_bounded_function Str le
+      (fun v => semiterm_val Str v (fun x => x) t) :=
+  {| arithmetic_definably_bounded_bound :=
+      arithmetic_bounded_term_function Str (le := le) Hrefl t;
+     arithmetic_definably_bounded_definition :=
+      arithmetic_sorted_definable_term_graph (Str := Str) HEq
+        arithmetic_sigma_zero_symbol t |}.
+
+Definition arithmetic_bounded_of_pointwise_eq {M : Type} {k}
+    {Str : first_order_structure oring_language M} {le : M -> M -> Prop}
+    {f g : (Fin.t k -> M) -> M}
+    (Hf : arithmetic_bounded_function Str le f)
+    (Hfg : forall v, f v = g v) : arithmetic_bounded_function Str le g.
+Proof.
+  refine {| arithmetic_bounded_term := arithmetic_bounded_term Hf |}.
+  intro v. rewrite <- Hfg. apply arithmetic_bounded_spec.
+Defined.
+
+Definition arithmetic_definably_bounded_of_pointwise_eq {M : Type} {k}
+    {Str : first_order_structure oring_language M} {le : M -> M -> Prop}
+    {f g : (Fin.t k -> M) -> M}
+    (Hf : arithmetic_definably_bounded_function Str le f)
+    (Hfg : forall v, f v = g v) :
+    arithmetic_definably_bounded_function Str le g.
+Proof.
+  destruct Hf as [Hbound Hdef]. constructor.
+  - exact (arithmetic_bounded_of_pointwise_eq Hbound Hfg).
+  - apply (arithmetic_sorted_definable_of_iff Hdef).
+    intro w. rewrite <- (Hfg (fun i => w (Fin.FS i))). reflexivity.
+Defined.
 
 Definition arithmetic_definably_bounded_retraction {M : Type} {k m}
     {Str : first_order_structure oring_language M} {le : M -> M -> Prop}

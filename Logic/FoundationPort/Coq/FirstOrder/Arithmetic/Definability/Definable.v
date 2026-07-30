@@ -581,6 +581,69 @@ Proof.
   - intros [i [_ HR]]. now exists i.
 Defined.
 
+(** * Equality and term graphs *)
+
+Definition arithmetic_sorted_definable_eq_terms {M : Type} {k}
+    (Str : first_order_structure oring_language M)
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (symbol : arithmetic_hierarchy_symbol)
+    (t u : semiterm oring_language M k) :
+    arithmetic_sorted_definable Str symbol
+      (fun v => semiterm_val Str v (fun x => x) t =
+        semiterm_val Str v (fun x => x) u).
+Proof.
+  destruct symbol as [class rank].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_eq
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := rank |} t u |}. split.
+  - destruct class; simpl; trivial. intro v; reflexivity.
+  - intro v. rewrite arithmetic_sorted_eq_val.
+    change
+      (semiformula_eval Str v (fun x => x)
+        (first_order_definable_formula
+          (first_order_definable_eq_terms
+            (H := arithmetic_eq_operator) HEq t u)) <->
+       semiterm_val Str v (fun x => x) t =
+       semiterm_val Str v (fun x => x) u).
+    apply (first_order_definable_spec
+      (first_order_definable_eq_terms
+        (H := arithmetic_eq_operator) HEq t u)).
+Defined.
+
+Definition arithmetic_sorted_definable_term_graph {M : Type} {k}
+    (Str : first_order_structure oring_language M)
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (symbol : arithmetic_hierarchy_symbol)
+    (t : semiterm oring_language M k) :
+    arithmetic_sorted_definable_function Str symbol
+      (fun v => semiterm_val Str v (fun x => x) t).
+Proof.
+  unfold arithmetic_sorted_definable_function.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_eq_terms (Str := Str) HEq symbol
+      (@Semiterm_bvar oring_language M (S k) Fin.F1)
+      (rew_apply (rew_map Fin.FS (fun x => x)) t))).
+  intro w. rewrite semiterm_val_map. reflexivity.
+Defined.
+
+Definition arithmetic_sorted_definable_projection {M : Type} {k}
+    (Str : first_order_structure oring_language M)
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (symbol : arithmetic_hierarchy_symbol) (i : Fin.t k) :
+    arithmetic_sorted_definable_function Str symbol (fun v => v i) :=
+  arithmetic_sorted_definable_term_graph (Str := Str) HEq symbol
+    (@Semiterm_bvar oring_language M k i).
+
+Definition arithmetic_sorted_definable_parameter_constant {M : Type} {k}
+    (Str : first_order_structure oring_language M)
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (symbol : arithmetic_hierarchy_symbol) (c : M) :
+    arithmetic_sorted_definable_function Str symbol
+      (fun _ : Fin.t k -> M => c) :=
+  arithmetic_sorted_definable_term_graph (Str := Str) HEq symbol
+    (@Semiterm_fvar oring_language M k c).
+
 (** * Bound-variable substitution and quantifier closure *)
 
 (** This single term-substitution theorem subsumes the source's variable
