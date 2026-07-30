@@ -375,3 +375,105 @@ Proof.
   - apply arithmetic1_zero.
   - apply arithmetic1_add.
 Qed.
+
+Lemma nat_truth_le_as_or : forall n m,
+  nat_truth_le n m =
+  nat_truth_or (nat_truth_lt n m) (nat_truth_eq n m).
+Proof.
+  intros n m.
+  unfold nat_truth_or, nat_truth_lt, nat_truth_eq, nat_truth_le.
+  destruct (lt_dec n m); destruct (Nat.eq_dec n m);
+    destruct (le_dec n m); cbn; repeat destruct lt_dec; lia.
+Qed.
+
+Lemma arithmetic1_le : arithmetic1_binary nat_truth_le.
+Proof.
+  unfold arithmetic1_binary.
+  eapply arith_part1_ext.
+  - unfold arithmetic1.
+    eapply arithmetic1_comp2 with (f := nat_truth_or)
+      (g := fun v : Fin.t 2 -> nat =>
+        nat_truth_lt (v Fin.F1) (v (Fin.FS Fin.F1)))
+      (h := fun v : Fin.t 2 -> nat =>
+        nat_truth_eq (v Fin.F1) (v (Fin.FS Fin.F1))).
+    + exact arithmetic1_or.
+    + apply arithmetic1_lt.
+    + apply arithmetic1_equal.
+  - intros v x. simpl.
+    rewrite <- nat_truth_le_as_or. reflexivity.
+Qed.
+
+Lemma nat_truth_if_positive : forall c x y,
+  nat_truth_pos c * x + nat_truth_inv c * y =
+  if lt_dec 0 c then x else y.
+Proof.
+  intros c x y.
+  unfold nat_truth_pos, nat_truth_inv, nat_truth_lt, nat_truth_eq.
+  destruct (lt_dec 0 c) as [Hc | Hc].
+  - destruct (Nat.eq_dec c 0); [lia | cbn; lia].
+  - destruct (Nat.eq_dec c 0); [subst; cbn; lia | lia].
+Qed.
+
+Theorem arithmetic1_if_positive : forall n
+    (f g h : (Fin.t n -> nat) -> nat),
+  arithmetic1 f -> arithmetic1 g -> arithmetic1 h ->
+  arithmetic1 (fun v => if lt_dec 0 (f v) then g v else h v).
+Proof.
+  intros n f g h Hf Hg Hh.
+  pose proof (@arithmetic1_comp1 n nat_truth_pos f
+    arithmetic1_pos Hf) as Hpos.
+  pose proof (@arithmetic1_comp1 n nat_truth_inv f
+    arithmetic1_inv Hf) as Hinv.
+  assert (Hmul : arithmetic1_binary Nat.mul).
+  { unfold arithmetic1_binary. apply arithmetic1_mul. }
+  assert (Hadd : arithmetic1_binary Nat.add).
+  { unfold arithmetic1_binary. apply arithmetic1_add. }
+  pose proof (@arithmetic1_comp2 n Nat.mul
+    (fun v => nat_truth_pos (f v)) g Hmul Hpos Hg) as Hleft.
+  pose proof (@arithmetic1_comp2 n Nat.mul
+    (fun v => nat_truth_inv (f v)) h Hmul Hinv Hh) as Hright.
+  eapply arith_part1_ext.
+  - unfold arithmetic1.
+    exact (@arithmetic1_comp2 n Nat.add
+      (fun v => nat_truth_pos (f v) * g v)
+      (fun v => nat_truth_inv (f v) * h v)
+      Hadd Hleft Hright).
+  - intros v x. simpl. now rewrite nat_truth_if_positive.
+Qed.
+
+Definition arith_find_positive_on {n}
+    (f : (Fin.t (S n) -> nat) -> nat) (v : Fin.t n -> nat) :
+    partial_value nat :=
+  partial_find_zero
+    (fun k => nat_truth_inv (f (matrix_vec_cons k v))).
+
+Theorem arith_part1_find_positive : forall n
+    (f : (Fin.t (S n) -> nat) -> nat),
+  arithmetic1 f -> arith_part1 n (arith_find_positive_on f).
+Proof.
+  intros n f Hf.
+  change (arith_part1 n (arith_find_on (fun v => nat_truth_inv (f v)))).
+  apply arith_part1_find.
+  unfold arithmetic1.
+  apply arithmetic1_comp1; [exact arithmetic1_inv | exact Hf].
+Qed.
+
+Lemma arith_find_positive_on_member_iff : forall n
+    (f : (Fin.t (S n) -> nat) -> nat) (v : Fin.t n -> nat) k,
+  partial_member (arith_find_positive_on f v) k <->
+  0 < f (matrix_vec_cons k v) /\
+  forall m, m < k -> ~ 0 < f (matrix_vec_cons m v).
+Proof.
+  intros n f v k. unfold arith_find_positive_on.
+  rewrite partial_find_zero_member_iff.
+  split.
+  - intros [Hk Hleast]. split.
+    + now apply nat_truth_inv_eq_zero_iff in Hk.
+    + intros m Hm Hpos. apply (Hleast m Hm).
+      now apply nat_truth_inv_eq_zero_iff.
+  - intros [Hk Hleast]. split.
+    + now apply nat_truth_inv_eq_zero_iff.
+    + intros m Hm Hinv.
+      apply nat_truth_inv_eq_zero_iff in Hinv.
+      exact (Hleast m Hm Hinv).
+Qed.
