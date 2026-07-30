@@ -304,7 +304,8 @@ Definition
     (M : RawPAModel) (hPA : RawPASatisfies M)
     (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
   let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
-  RawDynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase M /\
+  Formula.BProv Formula.Ax_s nil
+    dynamicTruthZeroLogicalRootsLawFormula /\
   RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
     M hPA /\
   RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
@@ -348,7 +349,9 @@ Proof.
       (raw_dynamicTruthNativeLocalZeroPredecessorRootCompiler_of_growing_logical_roots
         M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
         (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_fixed_logical_roots
-          M hzero)).
+          M
+          (raw_dynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_PA_law
+            hzero M hPA))).
   - exact (conj hstrong
       (conj hremainder
         (conj hcrossLevel
@@ -1150,9 +1153,10 @@ Proof.
         hkernels)).
 Qed.
 
-(** Canonical rank-zero-refined headline.  Its first coordinate now asks only
-    for the three concrete rank-zero logical roots; construction of the
-    predecessor implication is proved internally. *)
+(** Canonical rank-zero-refined headline.  Its first coordinate is now one
+    ordinary PA derivation of the fixed state-to-roots law; every
+    model-internal proof code, context extension, and predecessor implication
+    is constructed internally. *)
 Corollary
     PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_canonical_logical_zero_permuted_append_proof_resource_strong_step_kernel_compilers
     :

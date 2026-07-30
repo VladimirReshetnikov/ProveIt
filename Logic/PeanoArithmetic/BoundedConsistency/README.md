@@ -5358,6 +5358,15 @@ predicate code, or successor witness; the other seven coordinates remain the
 permuted-append strong-step resources, reduced staged remainder, and five
 linked staged implication compilers.
 
+That fixed compiler is in turn generated from one ordinary PA derivation.
+The law curries the Sigma- and Pi-state assumptions around a conjunction of
+admissibility, Sigma evidence, and Pi evidence.  Its raw compiler realizes
+the ordinary proof over an arbitrary witnessed tail, inserts the two state
+assumptions, performs two implication eliminations, and projects all three
+roots on the same witnessed extension.  Consequently the sharpest headline's
+first coordinate is now the ordinary `Formula.BProv` statement for this
+single fixed law, rather than any model-indexed proof-code callback.
+
 The native zero trace has also been normalized to the exact global data that
 this smaller compiler must use.  Its adequate orbit at level one inverts to
 one successor edge whose predecessor is forced by the zero orbit equation to
