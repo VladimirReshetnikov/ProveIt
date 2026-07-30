@@ -7,6 +7,7 @@ From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
 From Foundation.FirstOrder.Basic Require Import Definability.
 From Foundation.FirstOrder.Basic Require Import Calculus.
+From Foundation.FirstOrder.Basic Require Import Calculus2.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
@@ -657,6 +658,24 @@ Check first_order_theory_deduction.
 Check first_order_theory_specialize.
 Check first_order_theory_closure.
 Check first_order_theory_closure_spec.
+Check first_order_derivation2.
+Check FOD2Closed.
+Check FOD2Axiom.
+Check FOD2Verum.
+Check FOD2And.
+Check FOD2Or.
+Check FOD2All.
+Check FOD2Exists.
+Check FOD2Weakening.
+Check FOD2Shift.
+Check FOD2Cut.
+Check first_order_derivable2.
+Check first_order_derivation2_cast.
+Check first_order_derivation_to_derivation2.
+Check first_order_derivation2_proof_data.
+Check first_order_derivation2_axioms.
+Check first_order_derivation2_axioms_member.
+Check first_order_derivation2_lk.
 Check first_order_derivation_language_map.
 Check first_order_lk_provable_language_map.
 Check first_order_derivation_rewrite.
@@ -984,6 +1003,8 @@ Print Assumptions first_order_theory_classical.
 Print Assumptions first_order_theory_deduction.
 Print Assumptions first_order_theory_specialize.
 Print Assumptions first_order_theory_closure_spec.
+Print Assumptions first_order_derivation2_cast.
+Print Assumptions first_order_derivation_to_derivation2.
 Print Assumptions first_order_sequent_language_map_shift.
 Print Assumptions first_order_derivation_language_map.
 Print Assumptions first_order_lk_provable_language_map.
