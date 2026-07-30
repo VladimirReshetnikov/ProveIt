@@ -243,6 +243,41 @@ Definition RawDynamicTruthNativeLocalAlignedGrowingLogicalRootsCompiler
 Arguments RawDynamicTruthNativeLocalAlignedGrowingLogicalRootsCompiler M
   : clear implicits.
 
+(** Callback form used by the actual current-package assembly.  Unlike the
+    context-only interface above, it receives the concrete witness list which
+    the helper package already carries.  This is strictly weaker: a global
+    row compiler need not rediscover a witness for its source context. *)
+Definition
+    RawDynamicTruthNativeLocalAlignedGrowingLogicalRootsCompilerOnWitnessedBase
+    (M : RawPAModel) : Prop :=
+  forall (tail : nat -> M) predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi
+      (aligned : RawDynamicTruthNativeLocalAlignedPredecessorAt M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi)
+      sourceWitnessList,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList baseContext ->
+    exists targetWitnessList targetContext,
+      RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+      RawContextListIncluded M baseContext targetContext /\
+      RawDynamicTruthPredecessorStateLogicalRootsAt M targetContext
+        (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentSigmaEvidence M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned)
+        (rawDynamicTruthNativeLocalAligned_currentPiEvidence M tail
+          predecessorLevel baseContext currentLocal
+          nextInputGlobalSigma nextInputGlobalPi aligned).
+
+Arguments
+  RawDynamicTruthNativeLocalAlignedGrowingLogicalRootsCompilerOnWitnessedBase
+  M : clear implicits.
+
 (** Assemble the predecessor producer by the exact zero/successor split.
     In the successor branch the logical-roots compiler is closed against the
     carried exclusivity projection by the native-trace theorem. *)
@@ -284,6 +319,60 @@ Proof.
       [_ (currentLocalRoot & currentCrossLevelRoot & currentShiftRoot &
         currentSubstitutionRoot & currentAxiomSoundnessRoot &
         currentFinalRoot & hbaseWitnessed & _) ].
+    exists targetWitnessList, targetContext.
+    split; [exact htargetWitnessed |].
+    split; [exact hincluded |].
+    exact
+      (raw_dynamicTruthNativeLocalAligned_predecessorRoot_on_witnessed_extension_logical_roots
+        M hPA tail predecessorLevel baseContext currentLocal
+        inputGlobalSigma inputGlobalPi aligned
+        targetWitnessList targetContext
+        (raw_codedPAAxiomWitnessContext_context_realizable M
+          witnessList baseContext hbaseWitnessed)
+        htargetWitnessed hincluded hlogicalRoots).
+Qed.
+
+(** Preferred assembly: pass the witness list already stored by the current
+    helper context to the aligned global-row compiler. *)
+Theorem
+    raw_dynamicTruthNativeLocalCurrentGrowingPredecessorRootBuilder_of_zero_and_witnessed_aligned_logical_roots
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroPredecessorRootCompiler M translation ->
+  RawDynamicTruthNativeLocalAlignedGrowingLogicalRootsCompilerOnWitnessedBase
+    M ->
+  RawDynamicTruthNativeLocalCurrentGrowingPredecessorRootBuilder
+    M translation.
+Proof.
+  intros M hPA translation hzero haligned tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain sigmaEvidence
+    piEvidence hcurrent htrace.
+  destruct
+    (raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases_aligned_with_next
+      M hPA translation tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain sigmaEvidence
+      piEvidence hcurrent htrace) as
+    [(currentLocalRoot & hlevel & hfield & hcurrentRoot) |
+      (predecessorLevel & hlevel & aligned & _)].
+  - exact (hzero tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain sigmaEvidence
+      piEvidence currentLocalRoot hcurrent htrace hlevel hfield
+      hcurrentRoot).
+  - pose proof hcurrent as hfields.
+    destruct hfields as
+      [_ (currentLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+        currentSubstitutionRoot & currentAxiomSoundnessRoot &
+        currentFinalRoot & hbaseWitnessed & _) ].
+    destruct (haligned tail predecessorLevel baseContext currentLocal
+      inputGlobalSigma inputGlobalPi aligned witnessList hbaseWitnessed) as
+      (targetWitnessList & targetContext & htargetWitnessed &
+        hincluded & hlogicalRoots).
     exists targetWitnessList, targetContext.
     split; [exact htargetWitnessed |].
     split; [exact hincluded |].

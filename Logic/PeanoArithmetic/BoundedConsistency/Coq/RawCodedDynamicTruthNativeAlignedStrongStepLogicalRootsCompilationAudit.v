@@ -1,0 +1,14 @@
+(** Audit surface for aligned native strong-step logical-root compilation. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeAlignedStrongStepLogicalRootsCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeAlignedStrongStepLogicalRootsCompilation.
+
+Check RawDynamicTruthNativeAlignedStrongStepResourcesCompilerWithPA.
+Check
+  raw_dynamicTruthNativeLocalAlignedGrowingLogicalRootsCompilerOnWitnessedBase_of_strong_step_resources.
+
+Print Assumptions
+  raw_dynamicTruthNativeLocalAlignedGrowingLogicalRootsCompilerOnWitnessedBase_of_strong_step_resources.
