@@ -24,6 +24,7 @@ From BoundedPAConsistency Require Import
   RawCodedNumeralTermCode
   RawCodedRestrictedPAConsistencyFormulaCode
   RawCodedRestrictedPAProof
+  RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
   RawCodedTemplateSyntax
   RawCodedTemplateNumeralParameters
@@ -31,6 +32,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplateDirectStructuralTranslation
+  RawCodedTemplateDirectStructuralPAAgreement
   RawCodedTemplateTernaryApplication
   RawCodedTemplateTernaryApplicationFunctionality
   RawCodedDynamicTruthTemplateNumeralParameters
@@ -49,6 +51,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
   RawCodedDynamicTruthAlignedPredecessorExtendedRows
   RawCodedDynamicTruthSuccessorRowsAppendNormalization
+  RawCodedDynamicTruthSharedSuccessorAppendGlobalRoots
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthPredecessorGlobalRowEvidence
@@ -68,6 +71,7 @@ Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedNumeralTermCode.
 Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateNumeralParameters.
@@ -75,6 +79,7 @@ Import PABoundedRawCodedTemplateStructuralTranslation.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedTemplateTernaryApplication.
 Import PABoundedRawCodedTemplateTernaryApplicationFunctionality.
 Import PABoundedRawCodedDynamicTruthTemplateNumeralParameters.
@@ -98,6 +103,7 @@ Import PABoundedRawCodedDynamicTruthGlobalSuccessorDeepClosure.
 Import PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
 Import PABoundedRawCodedDynamicTruthAlignedPredecessorExtendedRows.
 Import PABoundedRawCodedDynamicTruthSuccessorRowsAppendNormalization.
+Import PABoundedRawCodedDynamicTruthSharedSuccessorAppendGlobalRoots.
 Import
   PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 Import
@@ -490,6 +496,153 @@ Arguments
   RawDynamicTruthNativeAlignedStrongStepProofResourcesCompilerWithPA
   M hPA : clear implicits.
 
+(** Further relaxed proof boundary matching append traversal.  The two
+    generalized global sources may be produced only after choosing a larger
+    witnessed PA context; their package records that context and inclusion
+    instead of requiring impossible contraction back to [baseContext]. *)
+Definition
+    RawDynamicTruthNativeAlignedStrongStepGrowingProofResourcesCompilerWithPA
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  forall (tail : nat -> M) predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi
+      (aligned : RawDynamicTruthNativeLocalAlignedPredecessorAt M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi)
+      sourceWitnessList inputLevelNumeral
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+    RawCodedPAAxiomWitnessContext M sourceWitnessList baseContext ->
+    RawNumeralTermCodeAt M (raw_succ M predecessorLevel)
+      inputLevelNumeral ->
+    RawDynamicTruthNativeAlignedStrongStepStructuralInputsAt
+      M hPA tail predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned
+      inputLevelNumeral inputs ->
+    exists restrictedRoot ruleRoot : M,
+      RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+        M (rawDirectStructuralTemplateTranslation M hPA inputs)
+        baseContext [] 0
+        coqDynamicTruthSharedSigmaSuccessorRowTemplate
+        coqDynamicTruthSharedPiSuccessorRowTemplate
+        coqDynamicTruthNativeAlignedSigmaEvidenceConclusionTemplate /\
+      RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+        M (rawDirectStructuralTemplateTranslation M hPA inputs)
+        baseContext [] 1
+        coqDynamicTruthSharedSigmaSuccessorRowTemplate
+        coqDynamicTruthSharedPiSuccessorRowTemplate
+        coqDynamicTruthNativeAlignedPiEvidenceConclusionTemplate /\
+      RawCodedPALocalProofOf M baseContext
+        (rawDirectTemplateFormula inputs
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+        restrictedRoot /\
+      RawCodedPALocalProofOf M baseContext
+        (rawDirectTemplateFormula inputs
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+        ruleRoot /\
+      RawDynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom M
+        baseContext
+        (rawDirectTemplateFormula inputs
+          (coqDynamicTruthGlobalExistentialSource 0
+            coqDynamicTruthSharedSigmaSuccessorRowTemplate
+            coqDynamicTruthSharedPiSuccessorRowTemplate))
+        (rawDirectTemplateFormula inputs
+          (coqDynamicTruthGlobalExistentialSource 1
+            coqDynamicTruthSharedSigmaSuccessorRowTemplate
+            coqDynamicTruthSharedPiSuccessorRowTemplate)).
+
+Arguments
+  RawDynamicTruthNativeAlignedStrongStepGrowingProofResourcesCompilerWithPA
+  M hPA : clear implicits.
+
+(** Append-facing residual boundary.  Unlike the growing resource package
+    above, this interface does not ask a client to synchronize the two
+    polarities or transport their roots to the current callback context.
+    It exposes the two normalized opaque-row append traces at one standard
+    helper prefix; [raw_dynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom_of_shared_successor_append_input_packages]
+    performs all subsequent context assembly. *)
+Definition
+    RawDynamicTruthNativeAlignedStrongStepAppendProofResourcesCompilerWithPA
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  forall (tail : nat -> M) predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi
+      (aligned : RawDynamicTruthNativeLocalAlignedPredecessorAt M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi)
+      sourceWitnessList inputLevelNumeral
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+    RawCodedPAAxiomWitnessContext M sourceWitnessList baseContext ->
+    RawNumeralTermCodeAt M (raw_succ M predecessorLevel)
+      inputLevelNumeral ->
+    RawDynamicTruthNativeAlignedStrongStepStructuralInputsAt
+      M hPA tail predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned
+      inputLevelNumeral inputs ->
+    exists restrictedRoot ruleRoot : M,
+    exists appendWitnesses : StandardPAAxiomWitnessPrefix,
+      RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+        M (rawDirectStructuralTemplateTranslation M hPA inputs)
+        baseContext [] 0
+        coqDynamicTruthSharedSigmaSuccessorRowTemplate
+        coqDynamicTruthSharedPiSuccessorRowTemplate
+        coqDynamicTruthNativeAlignedSigmaEvidenceConclusionTemplate /\
+      RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+        M (rawDirectStructuralTemplateTranslation M hPA inputs)
+        baseContext [] 1
+        coqDynamicTruthSharedSigmaSuccessorRowTemplate
+        coqDynamicTruthSharedPiSuccessorRowTemplate
+        coqDynamicTruthNativeAlignedPiEvidenceConclusionTemplate /\
+      RawCodedPALocalProofOf M baseContext
+        (rawDirectTemplateFormula inputs
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+        restrictedRoot /\
+      RawCodedPALocalProofOf M baseContext
+        (rawDirectTemplateFormula inputs
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+        ruleRoot /\
+      RawDynamicTruthSharedSuccessorAppendGlobalInputsAt M
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        0 appendWitnesses /\
+      RawDynamicTruthSharedSuccessorAppendGlobalInputsAt M
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        1 appendWitnesses.
+
+Arguments
+  RawDynamicTruthNativeAlignedStrongStepAppendProofResourcesCompilerWithPA
+  M hPA : clear implicits.
+
+(** Compile append traces into the growing global-source package expected by
+    the strong-step handoff.  The caller's witnessed base is merged with the
+    append helper context, so no contraction or context-code equality is
+    hidden in this adapter. *)
+Theorem
+    raw_dynamicTruthNativeAlignedStrongStepGrowingProofResourcesCompilerWithPA_of_append_proof_resources
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeAlignedStrongStepAppendProofResourcesCompilerWithPA
+    M hPA ->
+  RawDynamicTruthNativeAlignedStrongStepGrowingProofResourcesCompilerWithPA
+    M hPA.
+Proof.
+  intros M hPA happend tail predecessorLevel baseContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi aligned sourceWitnessList
+    inputLevelNumeral inputs hsourceWitnessed hinputNumeral hstructural.
+  destruct (happend tail predecessorLevel baseContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi aligned sourceWitnessList
+    inputLevelNumeral inputs hsourceWitnessed hinputNumeral hstructural) as
+    (restrictedRoot & ruleRoot & appendWitnesses &
+      hsigmaFamily & hpiFamily & hrestricted & hrule &
+      hsigmaInputs & hpiInputs).
+  exists restrictedRoot, ruleRoot.
+  split; [exact hsigmaFamily |].
+  split; [exact hpiFamily |].
+  split; [exact hrestricted |].
+  split; [exact hrule |].
+  exact
+    (raw_dynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom_of_shared_successor_append_input_packages
+      M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+      sourceWitnessList baseContext appendWitnesses
+      hsourceWitnessed hsigmaInputs hpiInputs).
+Qed.
+
 (** Exact proof-producing resources for one aligned predecessor invocation.
     The strong-step translation depends on the ambient proof [hPA].  The
     native trace supplies [inputLevelNumeral] and both domain substitutions;
@@ -657,6 +810,70 @@ Proof.
     cbn [rawTemplateContextCodeOnTail] in hlogicalRoots.
     rewrite hsigmaConclusion, hpiConclusion in hlogicalRoots.
     exact hlogicalRoots.
+Qed.
+
+(** Direct aligned client of the growing global-source handoff.  Structural
+    inputs are reconstructed from the trace, append-selected source growth is
+    retained, and the final evidence equations are rewritten only after the
+    strong-step proof has returned its common witnessed context. *)
+Theorem
+    raw_dynamicTruthNativeLocalAlignedGrowingLogicalRootsCompilerOnWitnessedBase_of_growing_proof_resources
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeAlignedStrongStepGrowingProofResourcesCompilerWithPA
+    M hPA ->
+  RawDynamicTruthNativeLocalAlignedGrowingLogicalRootsCompilerOnWitnessedBase
+    M.
+Proof.
+  intros M hPA hresources tail predecessorLevel baseContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi aligned sourceWitnessList
+    hsourceWitnessed.
+  pose proof
+    (rawDynamicTruthNativeLocalAligned_currentTrace M tail predecessorLevel
+      baseContext currentLocal nextInputGlobalSigma nextInputGlobalPi aligned)
+    as htrace.
+  destruct htrace as
+    (_ & inputLevel & evidenceGlobalSigma & evidenceGlobalPi &
+      inputLevelNumeral & hinputLevel & hsuccessor & hnumeral &
+      hsigmaDomain & hpiDomain & hsigmaApplication & hpiApplication).
+  subst inputLevel.
+  destruct
+    (raw_dynamicTruthNativeAlignedStrongStepStructuralInputs_exists
+      M hPA tail predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned
+      inputLevelNumeral hnumeral) as [inputs hstructural].
+  pose proof hstructural as hstructuralForResources.
+  destruct hstructural as
+    (localSigmaRow & localPiRow & hwrapper & hlevel &
+      hsigmaRow & hpiRow & hsigmaConclusion & hpiConclusion).
+  destruct (hresources tail predecessorLevel baseContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi aligned sourceWitnessList
+    inputLevelNumeral inputs hsourceWitnessed hnumeral
+    hstructuralForResources) as
+    (restrictedRoot & ruleRoot & hsigmaFamily & hpiFamily &
+      hrestricted & hrule & hglobalSources).
+  destruct
+    (raw_codedPALocalProof_strongStepPredecessorLogicalRoots_of_restricted_rule_and_growing_global_sources_and_selected_compiler_families
+      M hPA inputs sourceWitnessList baseContext inputLevelNumeral
+      coqDynamicTruthSharedSigmaSuccessorRowTemplate
+      coqDynamicTruthSharedPiSuccessorRowTemplate
+      (rawDynamicTruthNativeLocalAligned_currentSigmaDomain M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      (rawDynamicTruthNativeLocalAligned_currentPiDomain M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned)
+      coqDynamicTruthNativeAlignedSigmaEvidenceConclusionTemplate
+      coqDynamicTruthNativeAlignedPiEvidenceConclusionTemplate
+      restrictedRoot ruleRoot
+      hsourceWitnessed hlevel hsigmaDomain hpiDomain
+      hsigmaFamily hpiFamily hrestricted hrule hglobalSources) as
+    (targetWitnessList & targetContext & htargetWitnessed &
+      hincluded & hlogicalRoots).
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  rewrite hsigmaConclusion, hpiConclusion in hlogicalRoots.
+  exact hlogicalRoots.
 Qed.
 
 End

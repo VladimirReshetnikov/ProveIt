@@ -5223,3 +5223,21 @@ reconstructs the former strong-step bundle, removing structural alignment
 from the remaining conditional hypothesis.  The dependency-ordered assembly
 and compact conditional headline now expose this reduced proof-resource
 bundle directly.
+
+The global-source half of that reduced bundle now preserves the context
+growth performed by append traversal.  The strong-step handoff accepts Sigma
+and Pi source roots on any witnessed extension of the aligned callback base,
+transports the restricted and rule roots to that extension, and specializes
+the selected-payload families there.  No source proof is contracted back to
+the pre-append context.
+
+`RawCodedDynamicTruthSharedSuccessorAppendGlobalRoots.v` packages the exact
+normalized opaque-row inputs for each root mode.  It compiles the two shared
+successor globals independently, synchronizes their growing contexts, merges
+that context with an arbitrary witnessed callback base, and inserts the two
+predecessor-state assumptions only after the merge.  The aligned native
+adapter and dependency-ordered compact headline expose these append packages
+directly.  Thus context equality, polarity synchronization, and global-root
+transport are all proved internally; the remaining positive-coordinate work
+is to construct the concrete append/inherited/fixed-production roots and the
+two selected-payload proof families.
