@@ -5084,3 +5084,17 @@ now narrower: instantiate the concrete seventh-field proof and its row
 normalization equality from the aligned native predecessor/selector package,
 then identify the selected polarity payloads expected by the strong-step
 shell.
+
+The fixed native row normalization is now discharged as well.
+`RawCodedDynamicTruthSuccessorRowsAppendNormalization.v` reflects template
+scoping into a compact Boolean computation and verifies that the relocated
+Sigma and Pi successor rows are scoped beneath the append opening's thirteen
+slots.  The same computation confirms that append's field bindings, whose
+parameter names are 2 through 5, leave the rows' hierarchy parameters 0 and
+1 untouched.  Hence their concrete closed production is exactly the seventh
+field extracted from either native generalized source, with no equality
+premise left for downstream clients.  What remains is proof-theoretic rather
+than syntactic: instantiate the concrete row-implication and append-root
+premises from the aligned predecessor trace, transport the resulting two
+global roots under the retained strong-step prefix, and close the selected
+payload alignments.

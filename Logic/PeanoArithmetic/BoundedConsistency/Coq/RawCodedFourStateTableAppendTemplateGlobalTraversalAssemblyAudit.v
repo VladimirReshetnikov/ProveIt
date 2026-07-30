@@ -21,6 +21,12 @@ Check coqFourStateTableAppendOpenedTemplateGlobalFormula_shape.
 Check templateTermSubst_template_scoped_fixed.
 Check templateTermsSubst_template_scoped_fixed.
 Check templateFormulaSubst_template_scoped_fixed.
+Check templateTermScopedBool.
+Check templateTermsScopedBool.
+Check templateFormulaScopedBool.
+Check templateTermScopedBool_iff.
+Check templateTermsScopedBool_iff.
+Check templateFormulaScopedBool_iff.
 Check
   coqFourStateTableAppendOpenedLocalRowTemplate_template_scoped_identity.
 Check coqFourStateTableAppendTemplateClosedRowProduction_eq_opened.
@@ -34,6 +40,7 @@ Check
 Print Assumptions coqFourStateTableAppendOpenedTemplateGlobalFormula_embed.
 Print Assumptions coqFourStateTableAppendOpenedTemplateGlobalFormula_shape.
 Print Assumptions templateFormulaSubst_template_scoped_fixed.
+Print Assumptions templateFormulaScopedBool_iff.
 Print Assumptions
   coqFourStateTableAppendOpenedLocalRowTemplate_template_scoped_identity.
 Print Assumptions coqFourStateTableAppendTemplateClosedRowProduction_eq_opened.

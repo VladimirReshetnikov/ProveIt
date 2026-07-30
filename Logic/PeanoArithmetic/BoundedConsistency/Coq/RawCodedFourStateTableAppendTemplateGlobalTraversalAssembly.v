@@ -16,7 +16,7 @@
   choice principle is introduced.
 *)
 
-From Stdlib Require Import List Lia.
+From Stdlib Require Import List Lia Arith.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
@@ -261,6 +261,93 @@ Proof.
       * rewrite hfixed by lia. reflexivity.
   - f_equal. exact (templateTermsSubst_template_scoped_fixed
       scope l substitution hscope hfixed).
+Qed.
+
+(** Boolean mirrors keep scope checks for large fixed row templates small.
+    The reflection proof is structural; concrete clients can subsequently
+    discharge a scope obligation with VM reduction of a Boolean only. *)
+Fixpoint templateTermScopedBool
+    (scope : nat) (input : TemplateTerm) : bool :=
+  match input with
+  | ttVar index => Nat.ltb index scope
+  | ttParameter _ => true
+  | ttZero => true
+  | ttSucc child => templateTermScopedBool scope child
+  | ttAdd lhs rhs
+  | ttMul lhs rhs =>
+      templateTermScopedBool scope lhs &&
+      templateTermScopedBool scope rhs
+  end.
+
+Fixpoint templateTermsScopedBool
+    (scope : nat) (inputs : list TemplateTerm) : bool :=
+  match inputs with
+  | [] => true
+  | input :: tail =>
+      templateTermScopedBool scope input &&
+      templateTermsScopedBool scope tail
+  end.
+
+Fixpoint templateFormulaScopedBool
+    (scope : nat) (input : TemplateFormula) : bool :=
+  match input with
+  | tfEq lhs rhs =>
+      templateTermScopedBool scope lhs &&
+      templateTermScopedBool scope rhs
+  | tfBot => true
+  | tfImp lhs rhs
+  | tfAnd lhs rhs
+  | tfOr lhs rhs =>
+      templateFormulaScopedBool scope lhs &&
+      templateFormulaScopedBool scope rhs
+  | tfAll body
+  | tfEx body => templateFormulaScopedBool (S scope) body
+  | tfOpaque _ arguments => templateTermsScopedBool scope arguments
+  end.
+
+Lemma templateTermScopedBool_iff : forall scope input,
+  templateTermScopedBool scope input = true <->
+  TemplateTermScoped scope input.
+Proof.
+  intros scope input.
+  induction input as
+      [index | name | | child IH | lhs IHlhs rhs IHrhs
+      | lhs IHlhs rhs IHrhs]; cbn.
+  - apply Nat.ltb_lt.
+  - tauto.
+  - tauto.
+  - exact IH.
+  - rewrite Bool.andb_true_iff, IHlhs, IHrhs. tauto.
+  - rewrite Bool.andb_true_iff, IHlhs, IHrhs. tauto.
+Qed.
+
+Lemma templateTermsScopedBool_iff : forall scope inputs,
+  templateTermsScopedBool scope inputs = true <->
+  TemplateTermsScoped scope inputs.
+Proof.
+  intros scope inputs. induction inputs as [|input tail IH]; cbn.
+  - tauto.
+  - rewrite Bool.andb_true_iff, templateTermScopedBool_iff, IH.
+    tauto.
+Qed.
+
+Lemma templateFormulaScopedBool_iff : forall scope input,
+  templateFormulaScopedBool scope input = true <->
+  TemplateFormulaScoped scope input.
+Proof.
+  intros scope input. revert scope.
+  induction input as
+      [lhs rhs | | lhs IHlhs rhs IHrhs | lhs IHlhs rhs IHrhs
+      | lhs IHlhs rhs IHrhs | body IHbody | body IHbody
+      | predicate arguments]; intro scope; cbn.
+  - rewrite Bool.andb_true_iff, !templateTermScopedBool_iff. tauto.
+  - tauto.
+  - rewrite Bool.andb_true_iff, IHlhs, IHrhs. tauto.
+  - rewrite Bool.andb_true_iff, IHlhs, IHrhs. tauto.
+  - rewrite Bool.andb_true_iff, IHlhs, IHrhs. tauto.
+  - apply IHbody.
+  - apply IHbody.
+  - apply templateTermsScopedBool_iff.
 Qed.
 
 (** The append opening substitution fixes all local indices below thirteen.
