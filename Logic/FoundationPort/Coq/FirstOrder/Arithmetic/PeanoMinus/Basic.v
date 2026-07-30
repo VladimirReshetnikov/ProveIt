@@ -9,7 +9,11 @@
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lia.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
+From Foundation.Syntax.Predicate Require Import Language.
+From Foundation.FirstOrder.Basic Require Import Operator.
+From Foundation.FirstOrder.Basic.Semantics Require Import
+  Semantics OperatorSemantics.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Model Monotone.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -192,6 +196,150 @@ Proof.
           (@peano_minus_add_comm M O H z' x), Hxy in Hadd.
         exact Hadd.
 Qed.
+
+Lemma peano_minus_add_le_add_right : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  peano_minus_le O x y ->
+  peano_minus_le O (oring_add O x z) (oring_add O y z).
+Proof.
+  intros M O H x y z [-> | Hxy].
+  - apply peano_minus_le_refl.
+  - right. now apply (@peano_minus_add_lt_add M O H).
+Qed.
+
+Lemma peano_minus_add_le_add_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  peano_minus_le O x y ->
+  peano_minus_le O (oring_add O z x) (oring_add O z y).
+Proof.
+  intros M O H x y z Hxy.
+  rewrite (@peano_minus_add_comm M O H z x),
+    (@peano_minus_add_comm M O H z y).
+  now apply (peano_minus_add_le_add_right H).
+Qed.
+
+Lemma peano_minus_add_le_add : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x x' y y',
+  peano_minus_le O x x' -> peano_minus_le O y y' ->
+  peano_minus_le O (oring_add O x y) (oring_add O x' y').
+Proof.
+  intros M O H x x' y y' Hx Hy.
+  eapply (peano_minus_le_trans H).
+  - exact (peano_minus_add_le_add_right H (x := x) (y := x') y Hx).
+  - exact (peano_minus_add_le_add_left H (x := y) (y := y') x' Hy).
+Qed.
+
+Lemma peano_minus_mul_le_mul_right : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  peano_minus_le O x y ->
+  peano_minus_le O (oring_mul O x z) (oring_mul O y z).
+Proof.
+  intros M O H x y z [-> | Hxy].
+  - apply peano_minus_le_refl.
+  - destruct (@peano_minus_zero_le M O H z) as [Hz | Hz].
+    + left. rewrite <- Hz.
+      now rewrite !(@peano_minus_mul_zero M O H).
+    + right. now apply (@peano_minus_mul_lt_mul M O H).
+Qed.
+
+Lemma peano_minus_mul_le_mul_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  peano_minus_le O x y ->
+  peano_minus_le O (oring_mul O z x) (oring_mul O z y).
+Proof.
+  intros M O H x y z Hxy.
+  rewrite (@peano_minus_mul_comm M O H z x),
+    (@peano_minus_mul_comm M O H z y).
+  now apply (peano_minus_mul_le_mul_right H).
+Qed.
+
+Lemma peano_minus_mul_le_mul : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x x' y y',
+  peano_minus_le O x x' -> peano_minus_le O y y' ->
+  peano_minus_le O (oring_mul O x y) (oring_mul O x' y').
+Proof.
+  intros M O H x x' y y' Hx Hy.
+  eapply (peano_minus_le_trans H).
+  - exact (peano_minus_mul_le_mul_right H (x := x) (y := x') y Hx).
+  - exact (peano_minus_mul_le_mul_left H (x := y) (y := y') x' Hy).
+Qed.
+
+Definition peano_minus_structure_monotone : forall M
+    (O : oring_carrier M)
+    (Str : first_order_structure oring_language M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  first_order_structure_monotone (peano_minus_le O) Str.
+Proof.
+  intros M O Str Horing Hpa. constructor.
+  intros k f v w Hvw. destruct f.
+  - change (peano_minus_le O
+      (semiterm_operator_val Str v
+        (@semiterm_operator_fn oring_language 0 ORing_zero))
+      (semiterm_operator_val Str w
+        (@semiterm_operator_fn oring_language 0 ORing_zero))).
+    rewrite (fin_zero_eta v), (fin_zero_eta w).
+    pose proof (structure_zero_operator
+      (structure_oring_zero Horing)) as Hzero.
+    change (semiterm_operator_val Str fin_zero
+      (@semiterm_operator_fn oring_language 0 ORing_zero) =
+      oring_zero O) in Hzero.
+    rewrite Hzero.
+    apply peano_minus_le_refl.
+  - change (peano_minus_le O
+      (semiterm_operator_val Str v
+        (@semiterm_operator_fn oring_language 0 ORing_one))
+      (semiterm_operator_val Str w
+        (@semiterm_operator_fn oring_language 0 ORing_one))).
+    rewrite (fin_zero_eta v), (fin_zero_eta w).
+    pose proof (structure_one_operator
+      (structure_oring_one Horing)) as Hone.
+    change (semiterm_operator_val Str fin_zero
+      (@semiterm_operator_fn oring_language 0 ORing_one) =
+      oring_one O) in Hone.
+    rewrite Hone.
+    apply peano_minus_le_refl.
+  - change (peano_minus_le O
+      (semiterm_operator_val Str v
+        (@semiterm_operator_fn oring_language 2 ORing_add))
+      (semiterm_operator_val Str w
+        (@semiterm_operator_fn oring_language 2 ORing_add))).
+    rewrite (fin_two_eta v), (fin_two_eta w).
+    pose proof (structure_add_operator (structure_oring_add Horing)
+      (v Fin.F1) (v (Fin.FS Fin.F1))) as Hv.
+    pose proof (structure_add_operator (structure_oring_add Horing)
+      (w Fin.F1) (w (Fin.FS Fin.F1))) as Hw.
+    change (semiterm_operator_val Str
+      (fin_two (v Fin.F1) (v (Fin.FS Fin.F1)))
+      (@semiterm_operator_fn oring_language 2 ORing_add) =
+      oring_add O (v Fin.F1) (v (Fin.FS Fin.F1))) in Hv.
+    change (semiterm_operator_val Str
+      (fin_two (w Fin.F1) (w (Fin.FS Fin.F1)))
+      (@semiterm_operator_fn oring_language 2 ORing_add) =
+      oring_add O (w Fin.F1) (w (Fin.FS Fin.F1))) in Hw.
+    rewrite Hv, Hw.
+    apply (peano_minus_add_le_add Hpa); apply Hvw.
+  - change (peano_minus_le O
+      (semiterm_operator_val Str v
+        (@semiterm_operator_fn oring_language 2 ORing_mul))
+      (semiterm_operator_val Str w
+        (@semiterm_operator_fn oring_language 2 ORing_mul))).
+    rewrite (fin_two_eta v), (fin_two_eta w).
+    pose proof (structure_mul_operator (structure_oring_mul Horing)
+      (v Fin.F1) (v (Fin.FS Fin.F1))) as Hv.
+    pose proof (structure_mul_operator (structure_oring_mul Horing)
+      (w Fin.F1) (w (Fin.FS Fin.F1))) as Hw.
+    change (semiterm_operator_val Str
+      (fin_two (v Fin.F1) (v (Fin.FS Fin.F1)))
+      (@semiterm_operator_fn oring_language 2 ORing_mul) =
+      oring_mul O (v Fin.F1) (v (Fin.FS Fin.F1))) in Hv.
+    change (semiterm_operator_val Str
+      (fin_two (w Fin.F1) (w (Fin.FS Fin.F1)))
+      (@semiterm_operator_fn oring_language 2 ORing_mul) =
+      oring_mul O (w Fin.F1) (w (Fin.FS Fin.F1))) in Hw.
+    rewrite Hv, Hw.
+    apply (peano_minus_mul_le_mul Hpa); apply Hvw.
+Defined.
 
 Definition nat_peano_minus_laws :
     peano_minus_laws nat_oring_carrier.

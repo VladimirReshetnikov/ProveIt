@@ -683,7 +683,6 @@ Definition arithmetic_definably_bounded_compose_peano_minus
     {O : oring_carrier M}
     (Horing : structure_interprets_oring Str oring_language_structure O)
     (Hpa : peano_minus_laws O)
-    (Hmon : first_order_structure_monotone (peano_minus_le O) Str)
     (F : (Fin.t n -> M) -> M)
     (f : Fin.t n -> (Fin.t k -> M) -> M)
     (HF : arithmetic_definably_bounded_function Str
@@ -694,7 +693,8 @@ Definition arithmetic_definably_bounded_compose_peano_minus
       (fun z : Fin.t k -> M => F (fun i => f i z)) :=
   arithmetic_definably_bounded_compose
     (fun x => peano_minus_le_refl x)
-    (peano_minus_le_trans Hpa) Hmon
+    (peano_minus_le_trans Hpa)
+    (peano_minus_structure_monotone Horing Hpa)
     (lift := arithmetic_peano_minus_majorant_lift)
     (arithmetic_peano_minus_majorant_lift_spec Horing Hpa)
     (F := F) (f := f) HF Hf.
