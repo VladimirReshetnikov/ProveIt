@@ -93,7 +93,8 @@ Theorem
   forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
     (inputs : RawCodedTemplateDirectStructuralInputs M)
     baseWitnessList baseContext prefix
-    levelNumeral localSigma localPi sigmaDomain piDomain
+    levelNumeral (localSigma localPi : TemplateFormula)
+    sigmaDomain piDomain
     sigmaConclusion piConclusion
     restrictedRoot ruleRoot sigmaSourceRoot piSourceRoot,
   RawCodedTemplatePrefixAtomicallyAdequate M
