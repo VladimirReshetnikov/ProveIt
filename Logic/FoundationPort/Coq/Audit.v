@@ -1451,6 +1451,10 @@ Print Assumptions arithmetic_sorted_definable_exists.
 Print Assumptions arithmetic_sorted_definable_all.
 Print Assumptions arithmetic_sorted_definable_exists_vector.
 Print Assumptions arithmetic_sorted_definable_all_vector.
+Print Assumptions arithmetic_sorted_definable_graph_family.
+Print Assumptions arithmetic_sorted_definable_substitution_sigma.
+Print Assumptions arithmetic_sorted_definable_substitution_pi.
+Print Assumptions arithmetic_sorted_definable_substitution.
 Print Assumptions arithmetic_bounded_function.
 Print Assumptions arithmetic_bounded_variable.
 Print Assumptions arithmetic_bounded_constant.
