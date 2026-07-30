@@ -1808,6 +1808,13 @@ Print Assumptions iopen_div_lt_of_pos_of_one_lt.
 Print Assumptions iopen_rem_add_remove_right_of_dvd.
 Print Assumptions iopen_rem_add_remove_left_of_dvd.
 Print Assumptions iopen_le_two_mul_div_two_add_one.
+Print Assumptions iopen_sqrt_eq_of_le_of_le.
+Print Assumptions iopen_sqrt_numeral_eq.
+Print Assumptions iopen_sqrt_two.
+Print Assumptions iopen_sqrt_three.
+Print Assumptions iopen_sqrt_four.
+Print Assumptions iopen_two_ne_square.
+Print Assumptions iopen_sqrt_le_add.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.

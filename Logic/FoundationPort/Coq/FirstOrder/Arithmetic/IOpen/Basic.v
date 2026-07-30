@@ -1,6 +1,6 @@
 (** Semantic division from open-induction least-number reasoning. *)
 
-From Stdlib Require Import Lia Logic.ClassicalEpsilon Lists.List.
+From Stdlib Require Import Arith.PeanoNat Lia Logic.ClassicalEpsilon Lists.List.
 From Foundation.FirstOrder.Arithmetic Require Import Schemata.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic Functions.
@@ -576,6 +576,31 @@ Proof.
   now symmetry.
 Qed.
 
+Lemma iopen_sqrt_eq_of_le_of_le : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a x,
+  peano_minus_le O (oring_mul O x x) a ->
+  peano_minus_le O a
+    (oring_add O (oring_mul O x x)
+      (oring_mul O (oring_numeral O 2) x)) ->
+  iopen_sqrt O a = x.
+Proof.
+  intros M O H Hleast a x Hlo Hhi.
+  apply (iopen_sqrt_eq_of H Hleast). split; [exact Hlo |].
+  rewrite (peano_minus_square_succ H x).
+  apply (proj1 (peano_minus_le_iff_lt_add_one H a
+    (oring_add O (oring_add O (oring_mul O x x) x) x))).
+  assert (Htwo : oring_mul O (oring_numeral O 2) x =
+      oring_add O x x).
+  { change (oring_mul O (oring_add O (oring_one O) (oring_one O)) x =
+      oring_add O x x).
+    rewrite (@peano_minus_add_mul_distr M O H),
+      !(@peano_minus_one_mul M O H). reflexivity. }
+  rewrite Htwo, <- (@peano_minus_add_assoc M O H
+    (oring_mul O x x) x x) in Hhi.
+  exact Hhi.
+Qed.
+
 Lemma iopen_sqrt_square : forall M (O : oring_carrier M),
   peano_minus_laws O -> arithmetic_least_number_principle O ->
   forall a, iopen_sqrt O (oring_mul O a a) = a.
@@ -605,6 +630,58 @@ Proof.
   now rewrite (@peano_minus_mul_one M O H (oring_one O)) in Hsqrt.
 Qed.
 
+Lemma iopen_sqrt_numeral_eq : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall n k, k * k <= n -> n < (k + 1) * (k + 1) ->
+  iopen_sqrt O (oring_numeral O n) = oring_numeral O k.
+Proof.
+  intros M O H Hleast n k Hlo Hhi.
+  apply (iopen_sqrt_eq_of H Hleast). split.
+  - rewrite (peano_minus_numeral_mul H).
+    destruct (Nat.eq_dec (k * k) n) as [Heq | Hneq].
+    + subst n. apply peano_minus_le_refl.
+    + right. apply (peano_minus_numeral_lt H). lia.
+  - rewrite <- !(peano_minus_numeral_succ H k),
+      (peano_minus_numeral_mul H).
+    apply (peano_minus_numeral_lt H). lia.
+Qed.
+
+Lemma iopen_sqrt_two : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  iopen_sqrt O (oring_numeral O 2) = oring_numeral O 1.
+Proof.
+  intros M O H Hleast.
+  apply (iopen_sqrt_numeral_eq H Hleast); lia.
+Qed.
+
+Lemma iopen_sqrt_three : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  iopen_sqrt O (oring_numeral O 3) = oring_numeral O 1.
+Proof.
+  intros M O H Hleast.
+  apply (iopen_sqrt_numeral_eq H Hleast); lia.
+Qed.
+
+Lemma iopen_sqrt_four : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  iopen_sqrt O (oring_numeral O 4) = oring_numeral O 2.
+Proof.
+  intros M O H Hleast.
+  apply (iopen_sqrt_numeral_eq H Hleast); lia.
+Qed.
+
+Lemma iopen_two_ne_square : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, oring_numeral O 2 <> oring_mul O a a.
+Proof.
+  intros M O H Hleast a Heq.
+  pose proof (f_equal (iopen_sqrt O) Heq) as Hroot.
+  rewrite (iopen_sqrt_two H Hleast),
+    (iopen_sqrt_square H Hleast) in Hroot.
+  rewrite <- Hroot, (peano_minus_numeral_mul H) in Heq.
+  exact (peano_minus_numeral_ne H (n := 2) (m := 1) ltac:(lia) Heq).
+Qed.
+
 Lemma iopen_sqrt_square_le : forall M (O : oring_carrier M),
   peano_minus_laws O -> arithmetic_least_number_principle O ->
   forall a,
@@ -624,6 +701,36 @@ Lemma iopen_sqrt_lt_square_succ : forall M (O : oring_carrier M),
 Proof.
   intros M O H Hleast a.
   exact (proj2 (iopen_sqrt_specification H Hleast a)).
+Qed.
+
+Lemma iopen_sqrt_le_add : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a,
+  peano_minus_le O a
+    (oring_add O
+      (oring_mul O (iopen_sqrt O a) (iopen_sqrt O a))
+      (oring_mul O (oring_numeral O 2) (iopen_sqrt O a))).
+Proof.
+  intros M O H Hleast a.
+  pose proof (iopen_sqrt_lt_square_succ H Hleast a) as Hupper.
+  rewrite (peano_minus_square_succ H (iopen_sqrt O a)) in Hupper.
+  pose proof (proj2 (peano_minus_le_iff_lt_add_one H a
+    (oring_add O
+      (oring_add O
+        (oring_mul O (iopen_sqrt O a) (iopen_sqrt O a))
+        (iopen_sqrt O a))
+      (iopen_sqrt O a))) Hupper) as Hle.
+  assert (Htwo : oring_mul O (oring_numeral O 2) (iopen_sqrt O a) =
+      oring_add O (iopen_sqrt O a) (iopen_sqrt O a)).
+  { change (oring_mul O (oring_add O (oring_one O) (oring_one O))
+      (iopen_sqrt O a) =
+      oring_add O (iopen_sqrt O a) (iopen_sqrt O a)).
+    rewrite (@peano_minus_add_mul_distr M O H),
+      !(@peano_minus_one_mul M O H). reflexivity. }
+  rewrite Htwo, <- (@peano_minus_add_assoc M O H
+    (oring_mul O (iopen_sqrt O a) (iopen_sqrt O a))
+    (iopen_sqrt O a) (iopen_sqrt O a)).
+  exact Hle.
 Qed.
 
 Lemma iopen_sqrt_le_self : forall M (O : oring_carrier M),
