@@ -1,6 +1,6 @@
 (** Semantic division from open-induction least-number reasoning. *)
 
-From Stdlib Require Import Logic.ClassicalEpsilon Lists.List.
+From Stdlib Require Import Lia Logic.ClassicalEpsilon Lists.List.
 From Foundation.FirstOrder.Arithmetic Require Import Schemata.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic Functions.
@@ -1480,4 +1480,104 @@ Proof.
   intros M O H Hleast a b m Hm.
   rewrite (iopen_rem_mul_congr_left H Hleast a b Hm).
   apply (iopen_rem_mul_congr_right H Hleast). exact Hm.
+Qed.
+
+Lemma iopen_rem_two : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a,
+  iopen_rem O a (oring_numeral O 2) = oring_numeral O 0 \/
+  iopen_rem O a (oring_numeral O 2) = oring_numeral O 1.
+Proof.
+  intros M O H Hleast a.
+  assert (Htwo : oring_lt O (oring_zero O) (oring_numeral O 2)).
+  { change (oring_lt O (oring_numeral O 0) (oring_numeral O 2)).
+    apply (peano_minus_numeral_lt H). lia. }
+  pose proof (iopen_rem_lt H Hleast a Htwo) as Hlt.
+  destruct (proj1 (peano_minus_lt_numeral_iff H 2
+    (iopen_rem O a (oring_numeral O 2))) Hlt) as [m [Hm Heq]].
+  destruct m as [|[|m]].
+  - now left.
+  - now right.
+  - lia.
+Qed.
+
+Lemma iopen_even_or_odd : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, exists q,
+  a = oring_mul O (oring_numeral O 2) q \/
+  a = oring_add O (oring_mul O (oring_numeral O 2) q) (oring_one O).
+Proof.
+  intros M O H Hleast a.
+  exists (iopen_div O a (oring_numeral O 2)).
+  pose proof (iopen_div_add_rem H Hleast a (oring_numeral O 2)) as Hrec.
+  destruct (iopen_rem_two H Hleast a) as [Hrem | Hrem].
+  - left. rewrite Hrem in Hrec.
+    change (oring_add O
+      (oring_mul O (oring_numeral O 2) (iopen_div O a (oring_numeral O 2)))
+      (oring_zero O) = a) in Hrec.
+    rewrite (@peano_minus_add_zero M O H) in Hrec. now symmetry.
+  - right. change (iopen_rem O a (oring_numeral O 2) = oring_one O) in Hrem.
+    now rewrite Hrem in Hrec.
+Qed.
+
+Lemma iopen_even_or_odd_exact : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a,
+  a = oring_mul O (oring_numeral O 2)
+      (iopen_div O a (oring_numeral O 2)) \/
+  a = oring_add O
+      (oring_mul O (oring_numeral O 2)
+        (iopen_div O a (oring_numeral O 2)))
+      (oring_one O).
+Proof.
+  intros M O H Hleast a.
+  pose proof (iopen_div_add_rem H Hleast a (oring_numeral O 2)) as Hrec.
+  destruct (iopen_rem_two H Hleast a) as [Hrem | Hrem].
+  - left. rewrite Hrem in Hrec.
+    change (oring_add O
+      (oring_mul O (oring_numeral O 2) (iopen_div O a (oring_numeral O 2)))
+      (oring_zero O) = a) in Hrec.
+    rewrite (@peano_minus_add_zero M O H) in Hrec. now symmetry.
+  - right. change (iopen_rem O a (oring_numeral O 2) = oring_one O) in Hrem.
+    now rewrite Hrem in Hrec.
+Qed.
+
+Lemma iopen_two_dvd_mul : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b,
+  peano_minus_dvd O (oring_numeral O 2) (oring_mul O a b) ->
+  peano_minus_dvd O (oring_numeral O 2) a \/
+  peano_minus_dvd O (oring_numeral O 2) b.
+Proof.
+  intros M O H Hleast a b Hab.
+  destruct (classic (peano_minus_dvd O (oring_numeral O 2) a)) as [Ha | Ha];
+    [now left |].
+  destruct (classic (peano_minus_dvd O (oring_numeral O 2) b)) as [Hb | Hb];
+    [now right |].
+  exfalso.
+  assert (Hra : iopen_rem O a (oring_numeral O 2) = oring_one O).
+  { destruct (iopen_rem_two H Hleast a) as [Hra | Hra]; [| exact Hra].
+    exfalso. apply Ha.
+    apply (proj1 (iopen_rem_eq_zero_iff_dvd H Hleast
+      (oring_numeral O 2) a)). exact Hra. }
+  assert (Hrb : iopen_rem O b (oring_numeral O 2) = oring_one O).
+  { destruct (iopen_rem_two H Hleast b) as [Hrb | Hrb]; [| exact Hrb].
+    exfalso. apply Hb.
+    apply (proj1 (iopen_rem_eq_zero_iff_dvd H Hleast
+      (oring_numeral O 2) b)). exact Hrb. }
+  assert (Htwo : oring_lt O (oring_zero O) (oring_numeral O 2)).
+  { change (oring_lt O (oring_numeral O 0) (oring_numeral O 2)).
+    apply (peano_minus_numeral_lt H). lia. }
+  pose proof (iopen_rem_mul H Hleast a b Htwo) as Hcong.
+  rewrite Hra, Hrb, (@peano_minus_one_mul M O H (oring_one O)) in Hcong.
+  assert (Hone : iopen_rem O (oring_one O) (oring_numeral O 2) =
+      oring_one O).
+  { apply (iopen_rem_eq_self_of_lt H Hleast).
+    change (oring_lt O (oring_numeral O 1) (oring_numeral O 2)).
+    apply (peano_minus_numeral_lt H). lia. }
+  rewrite Hone in Hcong.
+  pose proof (proj2 (iopen_rem_eq_zero_iff_dvd H Hleast
+    (oring_numeral O 2) (oring_mul O a b)) Hab) as Hzero.
+  rewrite Hzero in Hcong.
+  apply (peano_minus_numeral_ne H (n := 0) (m := 1)); [lia | exact Hcong].
 Qed.

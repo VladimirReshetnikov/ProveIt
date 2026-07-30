@@ -1799,6 +1799,10 @@ Print Assumptions iopen_rem_add.
 Print Assumptions iopen_rem_mul_congr_left.
 Print Assumptions iopen_rem_mul_congr_right.
 Print Assumptions iopen_rem_mul.
+Print Assumptions iopen_rem_two.
+Print Assumptions iopen_even_or_odd.
+Print Assumptions iopen_even_or_odd_exact.
+Print Assumptions iopen_two_dvd_mul.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.
