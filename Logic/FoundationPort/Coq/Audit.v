@@ -11,6 +11,7 @@ From Foundation.FirstOrder.Basic Require Import Calculus2.
 From Foundation.FirstOrder.Basic Require Import Padding.
 From Foundation.FirstOrder.Basic Require Import Eq.
 From Foundation.FirstOrder.Basic Require Import Coding.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
@@ -758,6 +759,29 @@ Check semiterm_encoding.
 Check semiformula_encoding.
 Check semiterm_encoding_encode.
 Check semiformula_encoding_encode.
+Check oring_carrier.
+Check oring_numeral.
+Check nat_oring_carrier.
+Check nat_oring_numeral.
+Check arithmetic_semiterm.
+Check arithmetic_sentence.
+Check semiterm_godel_number_term.
+Check semiterm_godel_number_term_eq.
+Check rew_semiterm_godel_number_term.
+Check semiterm_one_term.
+Check semiterm_add_term.
+Check semiterm_add_one.
+Check semiterm_val_fin_zero.
+Check semiterm_val_fin_two.
+Check semiterm_val_one_term.
+Check semiterm_val_add_term.
+Check semiterm_val_add_one.
+Check structure_interprets_oring.
+Check semiterm_operator_val_numeral.
+Check semiformula_ball_lt_succ.
+Check semiformula_bex_lt_succ.
+Check semiformula_eval_ball_lt_succ.
+Check semiformula_eval_bex_lt_succ.
 Check first_order_structure_monotone.
 Check structure_func_monotone.
 Check semiterm_val_monotone.
@@ -1155,6 +1179,12 @@ Print Assumptions semiformula_code_emb.
 Print Assumptions semiformula_code_closed_injection.
 Print Assumptions semiterm_encoding.
 Print Assumptions semiformula_encoding.
+Print Assumptions nat_oring_numeral.
+Print Assumptions rew_semiterm_godel_number_term.
+Print Assumptions semiterm_val_add_one.
+Print Assumptions semiterm_operator_val_numeral.
+Print Assumptions semiformula_eval_ball_lt_succ.
+Print Assumptions semiformula_eval_bex_lt_succ.
 Print Assumptions semiterm_val_monotone.
 Print Assumptions semiterm_val_monotone_free.
 Print Assumptions semiterm_val_monotone_bound.
