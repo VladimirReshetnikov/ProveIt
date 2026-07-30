@@ -10,7 +10,7 @@
 From Stdlib Require Import Arith.PeanoNat Lists.List Vectors.Fin.
 From FoundationModal Require Import
   GenericAdjunctiveSet GenericCalculus GenericEntailment.
-From Foundation.Syntax.Predicate Require Import Language Term Rew.
+From Foundation.Syntax.Predicate Require Import Language Quantifier Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 
 Import ListNotations.
@@ -349,6 +349,15 @@ Proof.
     FirstOrderLK (first_order_lk_principal L) p).
 Qed.
 
+Lemma first_order_lk_provable_cast : forall L (p q : proposition L),
+  first_order_lk_provable p -> p = q -> first_order_lk_provable q.
+Proof.
+  intros L p q Hp Heq.
+  exact (@generic_provable_cast
+    (first_order_lk L) (proposition L)
+    (first_order_lk_entailment L) FirstOrderLK p q Hp Heq).
+Qed.
+
 Definition first_order_lk_classical (L : language) :
     generic_classical_entailment
       (first_order_lk_entailment L)
@@ -374,11 +383,63 @@ Proof.
   exact (@FODAll L p [] d).
 Defined.
 
+Lemma first_order_lk_provable_all_fix_iter : forall L
+    (p : proposition L),
+  first_order_lk_provable p -> forall m,
+  first_order_lk_provable
+    (first_all_closure (semiformula_universal_quantifier L nat) m
+      (semiformula_rewrite (@rew_fix_iter L 0 m) p)).
+Proof.
+  intros L p Hp m; induction m as [|m IH].
+  - apply (first_order_lk_provable_cast Hp).
+    symmetry. apply semiformula_rewrite_fix_iter_zero.
+  - pose (closed :=
+      first_all_closure (semiformula_universal_quantifier L nat) m
+        (semiformula_rewrite (@rew_fix_iter L 0 m) p)).
+    assert (Hfree : first_order_lk_provable
+      (semiformula_free (semiformula_fix closed))).
+    { apply (first_order_lk_provable_cast IH).
+      unfold closed. symmetry. apply semiformula_free_fix. }
+    pose proof (@first_order_lk_all L (semiformula_fix closed) Hfree) as Hall.
+    apply (first_order_lk_provable_cast Hall).
+    unfold closed. apply semiformula_all_fix_iter_closure_step.
+Qed.
+
+Definition first_order_lk_provable_universal_closure_open {L}
+    (p : proposition L) (Hp : first_order_lk_provable p) :
+    first_order_lk_provable (semiformula_universal_closure_open p) :=
+  @first_order_lk_provable_all_fix_iter L p Hp
+    (semiformula_free_bound p).
+
 (** Closed sentences embed into propositions by the unique map out of the
     empty free-variable type. *)
 Definition first_order_sentence_embed {L} (p : sentence L) : proposition L :=
   semiformula_rewrite
     (@rew_emb L Empty_set nat 0 (fun x => match x with end)) p.
+
+Definition first_order_closed_term_embed {L} (t : closed_term L) :
+    syntactic_term L :=
+  rew_apply (@rew_emb L Empty_set nat 0 (fun x => match x with end)) t.
+
+Lemma first_order_sentence_embed_substitute : forall L
+    (p : semisentence L 1) (t : closed_term L),
+  first_order_sentence_embed
+      (semiformula_substitute (fun _ : Fin.t 1 => t) p) =
+  semiformula_substitute
+      (fun _ : Fin.t 1 => first_order_closed_term_embed t)
+      (semiformula_rewrite
+        (rew_q (@rew_emb L Empty_set nat 0
+          (fun x => match x with end))) p).
+Proof.
+  intros L p t.
+  unfold first_order_sentence_embed, first_order_closed_term_embed,
+    semiformula_substitute.
+  rewrite <- !semiformula_rewrite_comp.
+  apply semiformula_rewrite_ext, rew_equiv_of_variables.
+  - intro i. assert (Hi : i = Fin.F1) by apply fin_one_eq_f1.
+    now subst i.
+  - intro x. exact (match x with end).
+Qed.
 
 Definition first_order_sentence_embed_lk_hom (L : language) :
     generic_lk_connective_hom
@@ -537,6 +598,39 @@ Proof.
     (first_order_sentence_lk_principal L) T sigma).
 Qed.
 
+Definition first_order_theory_specialize {L} (T : theory L)
+    (p : semisentence L 1) (t : closed_term L) :
+    first_order_theory_provable T
+      (semiformula_imp (Semiformula_all p)
+        (semiformula_substitute (fun _ : Fin.t 1 => t) p)).
+Proof.
+  apply first_order_theory_of_lk_provable. constructor.
+  pose (body := semiformula_rewrite
+    (rew_q (@rew_emb L Empty_set nat 0
+      (fun x => match x with end))) p).
+  pose (term := first_order_closed_term_embed t).
+  pose (instance := semiformula_substitute
+    (fun _ : Fin.t 1 => term) body).
+  assert (dinstance : first_order_derivation L
+    [semiformula_substitute
+       (fun _ : Fin.t 1 => term) (semiformula_neg body);
+     instance]).
+  { refine (first_order_derivation_cast
+      (first_order_derivation_rotate
+        (first_order_derivation_eta instance)) _).
+    unfold instance. simpl. f_equal.
+    unfold semiformula_substitute.
+    symmetry. apply semiformula_rewrite_neg. }
+  pose (dexists := @FODExists L (semiformula_neg body) term
+    [instance] dinstance).
+  pose proof (@first_order_sentence_embed_substitute L p t) as Hsubst.
+  unfold first_order_sentence_embed, first_order_closed_term_embed in Hsubst.
+  refine (first_order_derivation_cast (FODOr dexists) _).
+  unfold first_order_sentence_embed, semiformula_imp, body, instance, term.
+  simpl. rewrite semiformula_rewrite_neg.
+  rewrite Hsubst. reflexivity.
+Defined.
+
 Definition first_order_theory_axiomatized (L : language) :
     generic_axiomatized
       (first_order_theory_entailment L)
@@ -550,6 +644,30 @@ Definition first_order_theory_axiomatized (L : language) :
       (@first_order_sentence_embed L))
     (first_order_theory_contextual L)
     (first_order_sentence_one_sided_lk L).
+
+Definition first_order_theory_compact (L : language) :
+    generic_compact_entailment
+      (first_order_theory_entailment L)
+      (generic_predicate_adjunctive_set (sentence L)).
+Proof.
+  pose (core :=
+    fun (T : theory L) (sigma : sentence L)
+        (b : first_order_theory_proof T sigma) (tau : sentence L) =>
+      generic_list_member tau
+        (generic_context_witness_formulas (projT1 b))).
+  refine (@Build_generic_compact_entailment
+    (theory L) (sentence L) (first_order_theory_entailment L)
+    (generic_predicate_adjunctive_set (sentence L)) core _ _ _).
+  - intros T sigma [w d].
+    refine (existT _
+      (exist _ (generic_context_witness_formulas w) _) d).
+    intros tau Htau. exact Htau.
+  - intros T sigma [w d] tau Htau.
+    exact (generic_context_witness_covers w tau Htau).
+  - intros T sigma [w d].
+    exists (generic_context_witness_formulas w).
+    intros tau Htau. exact Htau.
+Defined.
 
 Lemma first_order_theory_weaker_of_subset : forall L
     (T U : theory L),
@@ -604,6 +722,15 @@ Proof.
     (fun _ _ => eq_refl) (fun _ _ => eq_refl)
     (first_order_sentence_one_sided_lk_cut L)).
 Defined.
+
+Definition first_order_theory_closure {L} (T : theory L) : theory L :=
+  fun sigma => first_order_theory_provable T sigma.
+
+Lemma first_order_theory_closure_spec : forall L
+    (T : theory L) (sigma : sentence L),
+  first_order_theory_closure T sigma <->
+  first_order_theory_provable T sigma.
+Proof. reflexivity. Qed.
 
 (** Every derivation is functorial in the underlying first-order language. *)
 Fixpoint first_order_derivation_language_map {L M Gamma}

@@ -627,9 +627,14 @@ Check first_order_lk_entailment.
 Check first_order_lk_principal.
 Check first_order_lk_provable.
 Check first_order_lk_provable_iff.
+Check first_order_lk_provable_cast.
 Check first_order_lk_classical.
 Check first_order_lk_all.
+Check first_order_lk_provable_all_fix_iter.
+Check first_order_lk_provable_universal_closure_open.
 Check first_order_sentence_embed.
+Check first_order_closed_term_embed.
+Check first_order_sentence_embed_substitute.
 Check first_order_sentence_embed_lk_hom.
 Check first_order_sentence_one_sided_lk.
 Check first_order_sentence_one_sided_lk_cut.
@@ -645,9 +650,13 @@ Check first_order_theory_inconsistent_iff.
 Check first_order_empty_theory_provable_iff.
 Check first_order_theory_of_lk_provable.
 Check first_order_theory_axiomatized.
+Check first_order_theory_compact.
 Check first_order_theory_weaker_of_subset.
 Check first_order_theory_classical.
 Check first_order_theory_deduction.
+Check first_order_theory_specialize.
+Check first_order_theory_closure.
+Check first_order_theory_closure_spec.
 Check first_order_derivation_language_map.
 Check first_order_lk_provable_language_map.
 Check first_order_derivation_rewrite.
@@ -944,8 +953,21 @@ Print Assumptions first_order_derivation_close.
 Print Assumptions first_order_derivation_of_is_closed.
 Print Assumptions first_order_lk_principal.
 Print Assumptions first_order_lk_provable_iff.
+Print Assumptions first_order_lk_provable_cast.
 Print Assumptions first_order_lk_classical.
 Print Assumptions first_order_lk_all.
+Print Assumptions rew_q_fix.
+Print Assumptions semiformula_fix_all.
+Print Assumptions semiformula_fix_all_closure.
+Print Assumptions semiformula_all_iter_closure.
+Print Assumptions semiformula_rewrite_fix_iter_zero.
+Print Assumptions semiformula_fix_rewrite_fix_iter.
+Print Assumptions semiformula_rewrite_cast.
+Print Assumptions semiformula_all_closure_cast.
+Print Assumptions semiformula_all_fix_iter_closure_step.
+Print Assumptions first_order_lk_provable_all_fix_iter.
+Print Assumptions first_order_lk_provable_universal_closure_open.
+Print Assumptions first_order_sentence_embed_substitute.
 Print Assumptions first_order_sentence_embed_lk_hom.
 Print Assumptions first_order_sentence_one_sided_lk.
 Print Assumptions first_order_sentence_one_sided_lk_cut.
@@ -956,9 +978,12 @@ Print Assumptions first_order_theory_inconsistent_iff.
 Print Assumptions first_order_empty_theory_provable_iff.
 Print Assumptions first_order_theory_of_lk_provable.
 Print Assumptions first_order_theory_axiomatized.
+Print Assumptions first_order_theory_compact.
 Print Assumptions first_order_theory_weaker_of_subset.
 Print Assumptions first_order_theory_classical.
 Print Assumptions first_order_theory_deduction.
+Print Assumptions first_order_theory_specialize.
+Print Assumptions first_order_theory_closure_spec.
 Print Assumptions first_order_sequent_language_map_shift.
 Print Assumptions first_order_derivation_language_map.
 Print Assumptions first_order_lk_provable_language_map.
