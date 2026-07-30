@@ -4722,3 +4722,17 @@ one witnessed context avoids a second merge when the tagged row choice is
 selected.  The remaining specialization must transport these roots beneath
 the ten opened global witnesses and establish atomic adequacy of the two
 tagged branches before invoking the generic choice eliminators.
+
+The fixed-polarity selection is now complete in the deepest represented
+context.  Stable template destructors expose both tags and payloads of the
+opened row, with definitional checks that the impossible mode-0 right tag is
+`0 = 1` and the impossible mode-1 left tag is `1 = 0`.  A new generic lemma
+extracts atomic adequacy directly from any template translation's unit-shift
+trace, avoiding a dependency on the append assembler.  The selector grows
+the witnessed PA tail once, opens the row over that extension, inserts both
+closed contradiction proofs beneath the full ten-witness prefix, and invokes
+the represented tagged-choice eliminator.  It returns the polarity-correct
+payload together with the enlarged witnessed context and inclusion of the
+caller's original tail.  The next boundary is to identify that payload with
+the predecessor Sigma/Pi evidence formula and weaken the incoming global
+source proof to the same enlarged tail before existential elimination.
