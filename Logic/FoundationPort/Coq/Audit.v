@@ -10,6 +10,7 @@ From Foundation.FirstOrder.Basic Require Import Calculus.
 From Foundation.FirstOrder.Basic Require Import Calculus2.
 From Foundation.FirstOrder.Basic Require Import Padding.
 From Foundation.FirstOrder.Basic Require Import Eq.
+From Foundation.FirstOrder.Basic Require Import Coding.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
@@ -715,6 +716,20 @@ Check semiformula_rewrite_padding.
 Check semiformula_repeated_verum_raw.
 Check semiformula_padding_iff_raw.
 Check semiformula_padding_iff_provable.
+Check encoding_injective.
+Check fin_nat_code.
+Check fin_nat_code_injective.
+Check semiterm_code.
+Check semiterm_code_bvar.
+Check semiterm_code_fvar.
+Check semiterm_code_func.
+Check semiterm_code_injective.
+Check semiformula_code.
+Check semiformula_code_injective.
+Check semiterm_code_emb.
+Check semiformula_code_emb.
+Check semiformula_code_closed_injection.
+Check semiformula_code_closed_injection_rev.
 Check semiformula_polarity.
 Check semiformula_positive.
 Check semiformula_negative.
@@ -1093,6 +1108,12 @@ Print Assumptions semiformula_padding_injective_iff.
 Print Assumptions semiformula_rewrite_padding.
 Print Assumptions semiformula_padding_iff_raw.
 Print Assumptions semiformula_padding_iff_provable.
+Print Assumptions fin_nat_code_injective.
+Print Assumptions semiterm_code_injective.
+Print Assumptions semiformula_code_injective.
+Print Assumptions semiterm_code_emb.
+Print Assumptions semiformula_code_emb.
+Print Assumptions semiformula_code_closed_injection.
 Print Assumptions semiformula_polarity_neg.
 Print Assumptions semiformula_polarity_imp.
 Print Assumptions semiformula_and_positive_iff.
