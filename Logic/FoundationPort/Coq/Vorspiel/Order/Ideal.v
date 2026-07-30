@@ -132,6 +132,109 @@ Proof.
     now apply ideal_join_list_member.
 Qed.
 
+Lemma ideal_join_list_app_left : forall A (J : join_order_data A) xs ys,
+  jo_le J (ideal_join_list J xs) (ideal_join_list J (xs ++ ys)).
+Proof.
+  intros A J xs ys. apply ideal_join_list_least_upper.
+  intros x Hx. apply ideal_join_list_member_bound.
+  apply in_app_iff. now left.
+Qed.
+
+Lemma ideal_join_list_app_right : forall A (J : join_order_data A) xs ys,
+  jo_le J (ideal_join_list J ys) (ideal_join_list J (xs ++ ys)).
+Proof.
+  intros A J xs ys. apply ideal_join_list_least_upper.
+  intros x Hx. apply ideal_join_list_member_bound.
+  apply in_app_iff. now right.
+Qed.
+
+Definition generated_ideal {A} (J : join_order_data A)
+    (G : A -> Prop) : order_ideal J.
+Proof.
+  refine {| ideal_member := fun x => exists xs,
+    Forall G xs /\ jo_le J x (ideal_join_list J xs) |}.
+  - exists nil. split; [constructor |]. simpl. apply preorder_refl.
+  - intros x y Hyx [xs [Hxs Hx]]. exists xs. split; [exact Hxs |].
+    exact (@preorder_trans A (jo_order J) y x
+      (ideal_join_list J xs) Hyx Hx).
+  - intros x y [xs [Hxs Hx]] [ys [Hys Hy]].
+    exists (xs ++ ys). split.
+    + apply Forall_app. now split.
+    + apply jo_join_le.
+      * exact (@preorder_trans A (jo_order J) x
+          (ideal_join_list J xs) (ideal_join_list J (xs ++ ys))
+          Hx (ideal_join_list_app_left J xs ys)).
+      * exact (@preorder_trans A (jo_order J) y
+          (ideal_join_list J ys) (ideal_join_list J (xs ++ ys))
+          Hy (ideal_join_list_app_right J xs ys)).
+Defined.
+
+Lemma generated_ideal_member_iff : forall A (J : join_order_data A)
+    G x,
+  ideal_member (generated_ideal J G) x <->
+  exists xs, Forall G xs /\ jo_le J x (ideal_join_list J xs).
+Proof. reflexivity. Qed.
+
+Definition principal_list_generators {A} (J : join_order_data A)
+    (generators : list A) : A -> Prop :=
+  fun x => exists a, In a generators /\ jo_le J x a.
+
+Theorem generated_principal_list_member_iff : forall A
+    (J : join_order_data A) generators x,
+  ideal_member
+    (generated_ideal J (principal_list_generators J generators)) x <->
+  jo_le J x (ideal_join_list J generators).
+Proof.
+  intros A J generators x. rewrite generated_ideal_member_iff. split.
+  - intros [xs [Hxs Hx]]. eapply preorder_trans; [exact Hx |].
+    apply ideal_join_list_least_upper. intros y Hy.
+    apply Forall_forall with (x := y) in Hxs; [|exact Hy].
+    destruct Hxs as [a [Ha Hya]]. eapply preorder_trans; [exact Hya |].
+    now apply ideal_join_list_member_bound.
+  - intro Hx. exists generators. split; [|exact Hx].
+    apply Forall_forall. intros a Ha. exists a. split.
+    + exact Ha.
+    + apply preorder_refl.
+Qed.
+
+Definition ideal_family_sup {A} (J : join_order_data A)
+    I (F : I -> order_ideal J) : order_ideal J :=
+  generated_ideal J (fun x => exists i, ideal_member (F i) x).
+
+Theorem ideal_family_sup_member_iff : forall A
+    (J : join_order_data A) I (F : I -> order_ideal J) x,
+  ideal_member (@ideal_family_sup A J I F) x <->
+  exists xs,
+    Forall (fun y => exists i, ideal_member (F i) y) xs /\
+    jo_le J x (ideal_join_list J xs).
+Proof. reflexivity. Qed.
+
+Lemma ideal_family_sup_contains : forall A (J : join_order_data A)
+    I (F : I -> order_ideal J) i,
+  ideal_subset (F i) (@ideal_family_sup A J I F).
+Proof.
+  intros A J I F i x Hx. rewrite ideal_family_sup_member_iff.
+  exists (x :: nil). split.
+  - constructor; [now exists i | constructor].
+  - simpl. apply jo_le_join_left.
+Qed.
+
+Theorem ideal_family_sup_least : forall A (J : join_order_data A)
+    I (F : I -> order_ideal J) (K : order_ideal J),
+  ideal_subset (@ideal_family_sup A J I F) K <->
+  forall i, ideal_subset (F i) K.
+Proof.
+  intros A J I F K. split.
+  - intros H i x Hx. apply H.
+    exact (@ideal_family_sup_contains A J I F i x Hx).
+  - intros Hall x Hx. rewrite ideal_family_sup_member_iff in Hx.
+    destruct Hx as [xs [Hxs Hbound]].
+    apply (@ideal_lower A J K (ideal_join_list J xs) x Hbound).
+    apply ideal_join_list_member. intros y Hy.
+    apply Forall_forall with (x := y) in Hxs; [|exact Hy].
+    destruct Hxs as [i Hi]. now apply (Hall i).
+Qed.
+
 Theorem ideal_supremum_member_downward : forall A
     (J : join_order_data A) (I : order_ideal J)
     (S : A -> Prop) sup,
@@ -186,4 +289,194 @@ Proof.
   - intro Hnot. destruct (prime_pair_cover P x); [contradiction | assumption].
   - intros Hfilter Hideal.
     exact (@prime_pair_disjoint A J P x Hideal Hfilter).
+Qed.
+
+Record boolean_order_data (A : Type) := {
+  bo_join_order : join_order_data A;
+  bo_meet : A -> A -> A;
+  bo_top : A;
+  bo_compl : A -> A;
+  bo_himp : A -> A -> A;
+  bo_meet_le_left : forall x y,
+    jo_le bo_join_order (bo_meet x y) x;
+  bo_meet_le_right : forall x y,
+    jo_le bo_join_order (bo_meet x y) y;
+  bo_meet_compl_bottom : forall x,
+    bo_meet x (bo_compl x) = jo_bottom bo_join_order;
+  bo_join_compl_top : forall x,
+    jo_join bo_join_order x (bo_compl x) = bo_top;
+  bo_compl_involutive : forall x, bo_compl (bo_compl x) = x;
+  bo_compl_join : forall x y,
+    bo_compl (jo_join bo_join_order x y) =
+    bo_meet (bo_compl x) (bo_compl y);
+  bo_himp_eq : forall x y,
+    bo_himp x y = jo_join bo_join_order (bo_compl x) y
+}.
+
+Arguments bo_meet {A} _ _ _.
+Arguments bo_top {A} _.
+Arguments bo_compl {A} _ _.
+Arguments bo_himp {A} _ _ _.
+
+Definition boolean_prime_ideal {A} (B : boolean_order_data A)
+    (I : order_ideal (bo_join_order B)) : Prop :=
+  forall x y,
+    ideal_member I (bo_meet B x y) ->
+    ideal_member I x \/ ideal_member I y.
+
+Arguments boolean_prime_ideal {A} B I.
+
+Theorem boolean_prime_pair_ideal_or_compl : forall A
+    (B : boolean_order_data A)
+    (P : ideal_prime_pair (bo_join_order B)),
+  boolean_prime_ideal B (prime_pair_ideal P) ->
+  forall x,
+    ideal_member (prime_pair_ideal P) x \/
+    ideal_member (prime_pair_ideal P) (bo_compl B x).
+Proof.
+  intros A B P Hprime x. apply Hprime.
+  rewrite bo_meet_compl_bottom. apply ideal_bottom_member.
+Qed.
+
+Arguments boolean_prime_pair_ideal_or_compl {A} B P _ x.
+
+Theorem boolean_prime_pair_filter_or_compl : forall A
+    (B : boolean_order_data A)
+    (P : ideal_prime_pair (bo_join_order B)),
+  ~ ideal_member (prime_pair_ideal P) (bo_top B) ->
+  forall x,
+    prime_pair_filter P x \/ prime_pair_filter P (bo_compl B x).
+Proof.
+  intros A B P Hproper x.
+  destruct (prime_pair_cover P x) as [HxI | HxF]; [|now left].
+  destruct (prime_pair_cover P (bo_compl B x)) as [HcI | HcF]; [|now right].
+  exfalso. apply Hproper.
+  pose proof (@ideal_join_member A (bo_join_order B) (prime_pair_ideal P)
+    x (bo_compl B x) HxI HcI) as Htop.
+  now rewrite bo_join_compl_top in Htop.
+Qed.
+
+Arguments boolean_prime_pair_filter_or_compl {A} B P _ x.
+
+Theorem boolean_prime_pair_compl_ideal_iff_filter : forall A
+    (B : boolean_order_data A)
+    (P : ideal_prime_pair (bo_join_order B)),
+  boolean_prime_ideal B (prime_pair_ideal P) ->
+  ~ ideal_member (prime_pair_ideal P) (bo_top B) ->
+  forall x,
+    ideal_member (prime_pair_ideal P) (bo_compl B x) <->
+    prime_pair_filter P x.
+Proof.
+  intros A B P Hprime Hproper x. split.
+  - intro HcI. destruct (prime_pair_cover P x) as [HxI | HxF]; [|exact HxF].
+    exfalso. apply Hproper.
+    pose proof (@ideal_join_member A (bo_join_order B) (prime_pair_ideal P)
+      x (bo_compl B x) HxI HcI) as Htop.
+    now rewrite bo_join_compl_top in Htop.
+  - intro HxF.
+    destruct (boolean_prime_pair_ideal_or_compl B P Hprime x)
+      as [HxI | HcI]; [|exact HcI].
+    exfalso. exact (@prime_pair_disjoint A (bo_join_order B) P x HxI HxF).
+Qed.
+
+Arguments boolean_prime_pair_compl_ideal_iff_filter {A} B P _ _ x.
+
+Theorem boolean_prime_pair_compl_filter_iff_ideal : forall A
+    (B : boolean_order_data A)
+    (P : ideal_prime_pair (bo_join_order B)),
+  boolean_prime_ideal B (prime_pair_ideal P) ->
+  ~ ideal_member (prime_pair_ideal P) (bo_top B) ->
+  forall x,
+    prime_pair_filter P (bo_compl B x) <->
+    ideal_member (prime_pair_ideal P) x.
+Proof.
+  intros A B P Hprime Hproper x. split.
+  - intro Hfilter.
+    pose proof (proj2 (boolean_prime_pair_compl_ideal_iff_filter
+      B P Hprime Hproper (bo_compl B x)) Hfilter) as Hideal.
+    now rewrite bo_compl_involutive in Hideal.
+  - intro Hideal.
+    apply (proj1 (boolean_prime_pair_compl_ideal_iff_filter
+      B P Hprime Hproper (bo_compl B x))).
+    now rewrite bo_compl_involutive.
+Qed.
+
+Arguments boolean_prime_pair_compl_filter_iff_ideal {A} B P _ _ x.
+
+Theorem boolean_prime_pair_meet_ideal_iff : forall A
+    (B : boolean_order_data A)
+    (P : ideal_prime_pair (bo_join_order B)),
+  boolean_prime_ideal B (prime_pair_ideal P) ->
+  forall x y,
+    ideal_member (prime_pair_ideal P) (bo_meet B x y) <->
+    ideal_member (prime_pair_ideal P) x \/
+    ideal_member (prime_pair_ideal P) y.
+Proof.
+  intros A B P Hprime x y. split; [apply Hprime |].
+  intros [Hx | Hy].
+  - exact (@ideal_lower A (bo_join_order B) (prime_pair_ideal P)
+      x (bo_meet B x y) (bo_meet_le_left B x y) Hx).
+  - exact (@ideal_lower A (bo_join_order B) (prime_pair_ideal P)
+      y (bo_meet B x y) (bo_meet_le_right B x y) Hy).
+Qed.
+
+Arguments boolean_prime_pair_meet_ideal_iff {A} B P _ x y.
+
+Theorem boolean_prime_pair_join_filter_iff : forall A
+    (B : boolean_order_data A)
+    (P : ideal_prime_pair (bo_join_order B)),
+  boolean_prime_ideal B (prime_pair_ideal P) ->
+  ~ ideal_member (prime_pair_ideal P) (bo_top B) ->
+  forall x y,
+    prime_pair_filter P (jo_join (bo_join_order B) x y) <->
+    prime_pair_filter P x \/ prime_pair_filter P y.
+Proof.
+  intros A B P Hprime Hproper x y. split.
+  - intro Hjoin.
+    apply (proj2 (boolean_prime_pair_compl_ideal_iff_filter
+      B P Hprime Hproper _)) in Hjoin.
+    rewrite bo_compl_join in Hjoin.
+    apply (proj1 (boolean_prime_pair_meet_ideal_iff B P Hprime _ _)) in Hjoin.
+    destruct Hjoin as [Hx | Hy].
+    + left. now apply (proj1 (boolean_prime_pair_compl_ideal_iff_filter
+        B P Hprime Hproper x)).
+    + right. now apply (proj1 (boolean_prime_pair_compl_ideal_iff_filter
+        B P Hprime Hproper y)).
+  - intros [Hx | Hy].
+    + apply (proj1 (boolean_prime_pair_compl_ideal_iff_filter
+        B P Hprime Hproper _)). rewrite bo_compl_join.
+      apply (proj2 (boolean_prime_pair_meet_ideal_iff B P Hprime _ _)). left.
+      now apply (proj2 (boolean_prime_pair_compl_ideal_iff_filter
+        B P Hprime Hproper x)).
+    + apply (proj1 (boolean_prime_pair_compl_ideal_iff_filter
+        B P Hprime Hproper _)). rewrite bo_compl_join.
+      apply (proj2 (boolean_prime_pair_meet_ideal_iff B P Hprime _ _)). right.
+      now apply (proj2 (boolean_prime_pair_compl_ideal_iff_filter
+        B P Hprime Hproper y)).
+Qed.
+
+Arguments boolean_prime_pair_join_filter_iff {A} B P _ _ x y.
+
+Theorem boolean_prime_pair_himp_filter_iff : forall A
+    (B : boolean_order_data A)
+    (P : ideal_prime_pair (bo_join_order B)),
+  boolean_prime_ideal B (prime_pair_ideal P) ->
+  ~ ideal_member (prime_pair_ideal P) (bo_top B) ->
+  forall x y,
+    prime_pair_filter P (bo_himp B x y) <->
+    (prime_pair_filter P x -> prime_pair_filter P y).
+Proof.
+  intros A B P Hprime Hproper x y. rewrite bo_himp_eq. split.
+  - intro Hjoin. apply (proj1 (boolean_prime_pair_join_filter_iff
+      B P Hprime Hproper _ _)) in Hjoin.
+    intros Hx. destruct Hjoin as [Hcx | Hy]; [|exact Hy].
+    pose proof (proj1 (boolean_prime_pair_compl_filter_iff_ideal
+      B P Hprime Hproper x) Hcx) as HxI.
+    exfalso. exact (@prime_pair_disjoint A (bo_join_order B) P x HxI Hx).
+  - intro Himp. apply (proj2 (boolean_prime_pair_join_filter_iff
+      B P Hprime Hproper _ _)).
+    destruct (prime_pair_cover P x) as [HxI | HxF].
+    + left. now apply (proj2 (boolean_prime_pair_compl_filter_iff_ideal
+        B P Hprime Hproper x)).
+    + right. now apply Himp.
 Qed.

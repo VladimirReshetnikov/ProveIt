@@ -175,11 +175,28 @@ Print Assumptions ideal_join_list_member_bound.
 Print Assumptions ideal_join_list_least_upper.
 Print Assumptions ideal_join_list_member.
 Print Assumptions principal_ideal_join_list_least.
+Print Assumptions ideal_join_list_app_left.
+Print Assumptions ideal_join_list_app_right.
+Check generated_ideal.
+Print Assumptions generated_principal_list_member_iff.
+Check ideal_family_sup.
+Print Assumptions ideal_family_sup_member_iff.
+Print Assumptions ideal_family_sup_contains.
+Print Assumptions ideal_family_sup_least.
 Print Assumptions ideal_supremum_member_downward.
 Print Assumptions ideal_proper_iff_top_not_member.
 Check ideal_prime_pair.
 Print Assumptions prime_pair_not_filter_iff_ideal.
 Print Assumptions prime_pair_not_ideal_iff_filter.
+Check boolean_order_data.
+Check boolean_prime_ideal.
+Print Assumptions boolean_prime_pair_ideal_or_compl.
+Print Assumptions boolean_prime_pair_filter_or_compl.
+Print Assumptions boolean_prime_pair_compl_ideal_iff_filter.
+Print Assumptions boolean_prime_pair_compl_filter_iff_ideal.
+Print Assumptions boolean_prime_pair_meet_ideal_iff.
+Print Assumptions boolean_prime_pair_join_filter_iff.
+Print Assumptions boolean_prime_pair_himp_filter_iff.
 Check preorder_data.
 Check directed_on.
 Print Assumptions directed_list_colimit.
