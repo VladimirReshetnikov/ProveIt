@@ -161,6 +161,44 @@ Proof.
         hinputSigmaAdequate hinputPiAdequate)))).
 Qed.
 
+(** Proof-producing boundary after canonical orbit inversion.  In contrast
+    with the trace-facing compiler below, this interface contains no unused
+    local-row coordinates and no equality asserting that an arbitrary level
+    is zero.  Its two global inputs are exactly the outputs of the one
+    successor edge from the fixed rank-zero base pair.
+
+    Root closure of the fixed inputs is retained explicitly because the next
+    traversal compiler uses it to justify arbitrary represented ternary
+    substitutions.  Atomic adequacy of the outputs is the corresponding
+    syntactic invariant needed to compile their applications. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnCanonicalGlobalStep
+    (M : RawPAModel) : Prop :=
+  forall sourceWitnessList baseContext inputGlobalSigma inputGlobalPi,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList baseContext ->
+    RawDynamicTruthPairedGlobalSuccessorAt M
+      (rawDynamicTruthGlobalSigmaBaseCode M)
+      (rawDynamicTruthGlobalPiBaseCode M)
+      (raw_zero M) inputGlobalSigma inputGlobalPi ->
+    RawCodedTernaryPredicateRootClosed M
+      (rawDynamicTruthGlobalSigmaBaseCode M) ->
+    RawCodedTernaryPredicateRootClosed M
+      (rawDynamicTruthGlobalPiBaseCode M) ->
+    RawCodedFormulaAtomicallyAdequate M inputGlobalSigma ->
+    RawCodedFormulaAtomicallyAdequate M inputGlobalPi ->
+    exists targetWitnessList targetContext,
+      RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+      RawContextListIncluded M baseContext targetContext /\
+      RawDynamicTruthPredecessorStateLogicalRootsAt M targetContext
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M).
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnCanonicalGlobalStep
+  M : clear implicits.
+
 (** Arithmetic/proof-traversal boundary for rank zero.  The source witness
     list is passed explicitly because it is already stored in the current
     helper package; asking a compiler to rediscover it would be stronger.
@@ -191,6 +229,32 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase
   M : clear implicits.
+
+(** Any compiler for the canonical one-step package automatically handles
+    the older trace-shaped call site.  All discarded trace coordinates are
+    genuinely irrelevant: the adequate orbit alone supplies every premise
+    consumed below. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_canonical_global_step
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnCanonicalGlobalStep
+    M ->
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase M.
+Proof.
+  intros M hPA hcanonical tail level baseContext
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence sourceWitnessList hsource htrace hlevel.
+  destruct
+    (raw_dynamicTruthNativeLocalProofTraceAt_zero_global_predecessor
+      M hPA tail level inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence htrace hlevel) as
+    (hsuccessor & hbaseSigmaClosed & hbasePiClosed &
+      hinputSigmaAdequate & hinputPiAdequate).
+  exact (hcanonical sourceWitnessList baseContext
+    inputGlobalSigma inputGlobalPi hsource hsuccessor
+    hbaseSigmaClosed hbasePiClosed
+    hinputSigmaAdequate hinputPiAdequate).
+Qed.
 
 (** Assemble the former zero callback from the smaller logical-root
     compiler.  The carried base proof is first identified with the concrete
