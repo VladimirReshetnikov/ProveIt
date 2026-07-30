@@ -16,6 +16,7 @@ From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
+From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
 From Foundation.FirstOrder.Arithmetic.TA Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
@@ -1444,6 +1445,19 @@ Print Assumptions arithmetic_sorted_definable_exists.
 Print Assumptions arithmetic_sorted_definable_all.
 Print Assumptions arithmetic_sorted_definable_exists_vector.
 Print Assumptions arithmetic_sorted_definable_all_vector.
+Print Assumptions arithmetic_bounded_function.
+Print Assumptions arithmetic_bounded_variable.
+Print Assumptions arithmetic_bounded_constant.
+Print Assumptions arithmetic_bounded_term_function.
+Print Assumptions arithmetic_bounded_substitute_bound.
+Print Assumptions arithmetic_bounded_retraction.
+Print Assumptions arithmetic_bounded_term_retraction.
+Print Assumptions arithmetic_bounded_compose.
+Print Assumptions arithmetic_bounded_compose_one.
+Print Assumptions arithmetic_bounded_compose_two.
+Print Assumptions fin_graph_reindex.
+Print Assumptions arithmetic_definably_bounded_function.
+Print Assumptions arithmetic_definably_bounded_retraction.
 Print Assumptions first_order_true_arithmetic_models.
 Print Assumptions first_order_true_arithmetic_provable_iff.
 Print Assumptions arithmetic_theory_weaker_than_true_arithmetic.
