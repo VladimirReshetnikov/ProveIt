@@ -3,6 +3,7 @@
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
 From Foundation.Vorspiel.Order Require Import Dense.
+From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
@@ -83,6 +84,13 @@ Check dense_family_countable.
 Print Assumptions nat_relation_of_successors.
 Print Assumptions generic_descending_chain_is_descending.
 Print Assumptions exists_generic_pfilter_of_countable.
+Check lower_set.
+Print Assumptions lower_disjoint_iff_incompatible.
+Print Assumptions lower_dual_member_iff.
+Print Assumptions lower_dual_greatest_disjoint.
+Print Assumptions lower_himp_member_iff.
+Print Assumptions lower_himp_greatest.
+Check lower_regular.
 
 Check language.
 Check language_relational.
