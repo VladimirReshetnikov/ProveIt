@@ -14,12 +14,18 @@ From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA.
 From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
+  RawCodedFixedLevelTruthTotality
   RawCodedPAAxiomWitness
   RawCodedRestrictedPAProof
   RawCodedPALocalProofExistential
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateProofCompiler
+  RawCodedTemplateTernaryApplication
+  RawCodedTernaryPredicateRootClosure
   RawCodedDynamicTruthLocalDecisionExclusiveBase
+  RawCodedDynamicTruthPairedGlobalSuccessorGraph
+  RawCodedDynamicTruthGlobalBaseRootClosure
+  RawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthNativeLocalProofCompilation
   RawCodedDynamicTruthLocalFieldProjectionCompilation
@@ -34,12 +40,18 @@ Import PA.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedPAAxiomWitness.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateTernaryApplication.
+Import PABoundedRawCodedTernaryPredicateRootClosure.
 Import PABoundedRawCodedDynamicTruthLocalDecisionExclusiveBase.
+Import PABoundedRawCodedDynamicTruthPairedGlobalSuccessorGraph.
+Import PABoundedRawCodedDynamicTruthGlobalBaseRootClosure.
+Import PABoundedRawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
 Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
@@ -88,6 +100,65 @@ Proof.
     dynamicTruthZeroPiEvidenceFormula.
   rewrite dynamicTruthLocalDecisionExclusiveCarrierFormula_fixedLevel.
   reflexivity.
+Qed.
+
+(** A trace indexed by zero is not itself the missing rank-zero local row:
+    its public input predicates sit at global level one.  Nevertheless its
+    orbit component remembers the unique preceding global pair.  Opening
+    that single orbit edge identifies the predecessor with the two literal
+    rank-zero base quotations.
+
+    Retaining root closure of the base pair and atomic adequacy of the level
+    one outputs avoids repeating this orbit inversion in the eventual
+    proof-producing traversal compiler. *)
+Theorem raw_dynamicTruthNativeLocalProofTraceAt_zero_global_predecessor :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (tail : nat -> M) level inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawDynamicTruthNativeLocalProofTraceAt M tail level
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence ->
+  level = raw_zero M ->
+  RawDynamicTruthPairedGlobalSuccessorAt M
+      (rawDynamicTruthGlobalSigmaBaseCode M)
+      (rawDynamicTruthGlobalPiBaseCode M)
+      (raw_zero M) inputGlobalSigma inputGlobalPi /\
+  RawCodedTernaryPredicateRootClosed M
+      (rawDynamicTruthGlobalSigmaBaseCode M) /\
+  RawCodedTernaryPredicateRootClosed M
+      (rawDynamicTruthGlobalPiBaseCode M) /\
+  RawCodedFormulaAtomicallyAdequate M inputGlobalSigma /\
+  RawCodedFormulaAtomicallyAdequate M inputGlobalPi.
+Proof.
+  intros M hPA tail level inputGlobalSigma inputGlobalPi
+    sigmaDomain piDomain sigmaEvidence piEvidence htrace hlevel.
+  subst level.
+  destruct htrace as [horbit _].
+  destruct horbit as [horbit [hinputSigmaAdequate hinputPiAdequate]].
+  destruct
+    (proj1
+      (raw_dynamicTruthPairedGlobalFormulaCodeOrbitAt_succ_iff M hPA
+        tail (raw_zero M) inputGlobalSigma inputGlobalPi)
+      horbit) as
+    (previousGlobalSigma & previousGlobalPi & hpreviousOrbit & hsuccessor).
+  pose proof
+    (proj1
+      (raw_dynamicTruthPairedGlobalFormulaCodeOrbitAt_zero_iff M hPA
+        tail previousGlobalSigma previousGlobalPi)
+      hpreviousOrbit) as hpreviousBaseGraph.
+  pose proof
+    (proj1
+      (raw_sat_dynamicTruthPairedGlobalBaseGraph_iff M tail
+        previousGlobalSigma previousGlobalPi)
+      hpreviousBaseGraph) as hpreviousBase.
+  unfold RawDynamicTruthPairedGlobalBaseAt,
+    RawDynamicTruthPairedGlobalWrapperAt in hpreviousBase.
+  destruct hpreviousBase as [hpreviousSigma hpreviousPi].
+  subst previousGlobalSigma. subst previousGlobalPi.
+  refine (conj hsuccessor (conj
+    (rawDynamicTruthGlobalSigmaBaseCode_root_closed M hPA) (conj
+      (rawDynamicTruthGlobalPiBaseCode_root_closed M hPA) (conj
+        hinputSigmaAdequate hinputPiAdequate)))).
 Qed.
 
 (** Arithmetic/proof-traversal boundary for rank zero.  The source witness
