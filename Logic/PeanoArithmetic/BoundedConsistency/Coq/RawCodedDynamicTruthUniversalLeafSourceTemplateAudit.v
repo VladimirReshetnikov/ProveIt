@@ -16,6 +16,7 @@ Check coqDynamicTruthLowerLevelParameterName.
 Check coqDynamicTruthUpperLevelParameterName.
 Check coqDynamicTruthLowerPiPredicateName.
 Check coqDynamicTruthLowerPiAtomTemplate.
+Check coqDynamicTruthLowerPiAtomTemplateAt.
 Check coqDynamicTruthSigmaDomainLeafTemplate.
 Check coqDynamicTruthSigmaQfLeafTemplate.
 Check coqDynamicTruthSigmaImpFalseLeftLeafTemplate.
@@ -27,6 +28,11 @@ Check coqDynamicTruthSigmaUniversalLeafTemplate.
 Check coqDynamicTruthSigmaRowTemplateLeaves.
 Check coqDynamicTruthSigmaBranchesTemplate.
 Check coqDynamicTruthSigmaSuccessorRowTemplate.
+Check coqDynamicTruthSigmaNoBinderCounterexampleTemplateAt.
+Check coqDynamicTruthSigmaUniversalLeafTemplateAt.
+Check coqDynamicTruthSigmaBranchesTemplateAt.
+Check coqDynamicTruthSigmaSuccessorRowTemplateAt.
+Check coqDynamicTruthSigmaSuccessorRowTemplateAt_default.
 
 Check rawStructuralTemplateTerm_embedPA.
 Check rawStructuralTemplateFormula_embedPA.
@@ -51,6 +57,7 @@ Check coqDynamicTruthSigma_generic_candidate_not_successor_row.
 Print Assumptions rawStructuralTemplateFormula_embedPA.
 Print Assumptions rawStructural_coqDynamicTruthSigmaUniversalLeafTemplate.
 Print Assumptions rawStructural_coqDynamicTruthSigmaSuccessorRowTemplate.
+Print Assumptions coqDynamicTruthSigmaSuccessorRowTemplateAt_default.
 Print Assumptions
   rawStructural_coqDynamicTruthSigmaSuccessorRowTemplate_identified.
 Print Assumptions

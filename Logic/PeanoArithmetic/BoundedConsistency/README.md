@@ -5013,3 +5013,17 @@ Compatibility lemmas prove that embedded ordinary PA leaves reduce literally
 to the previous `dynamicTruthGlobalFormula` spelling.  Thus the generalized
 interface loses no standard-formula behavior, while it can now be instantiated
 by the carrier-indexed truth predicates used in the uniform construction.
+
+The soundness and global-row templates can now share one direct structural
+translation without conflating their opaque leaves.  An extensible tail
+interface preserves soundness predicate slots zero and one for the existing
+five-argument context and conclusion truth selectors, while delegating every
+slot at least two to an independently verified operation-commuting family.
+Its first concrete instance places the lower-Pi and lower-Sigma ternary
+applications in disjoint slots two and three and sends malformed arities or
+unused tail names to the represented bottom formula.  The Sigma universal
+branch and Pi existential branch also expose predicate-parameterized row
+templates; reflexive compatibility lemmas retain their historical slot-zero
+forms.  This removes the representation mismatch identified at the previous
+handoff: the next step is to identify both relocated successor rows with the
+native carrier row codes under the shared hierarchy numeral parameters.
