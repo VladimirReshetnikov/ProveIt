@@ -468,3 +468,123 @@ Proof.
       rewrite (iopen_div_mul_right H Hleast c Ha).
       apply (peano_minus_sub_self H).
 Qed.
+
+Definition iopen_sqrt_spec {M} (O : oring_carrier M)
+    (a x : M) : Prop :=
+  peano_minus_le O (oring_mul O x x) a /\
+  oring_lt O a
+    (oring_mul O (oring_add O x (oring_one O))
+      (oring_add O x (oring_one O))).
+
+Lemma iopen_sqrt_exists_unique : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, exists! x, iopen_sqrt_spec O a x.
+Proof.
+  intros M O H Hleast a.
+  assert (Hlarge : oring_lt O a
+      (oring_mul O (oring_add O a (oring_one O))
+        (oring_add O a (oring_one O)))).
+  { destruct (@peano_minus_zero_le M O H a) as [Ha | Ha].
+    - symmetry in Ha. subst a.
+      rewrite (peano_minus_add_zero_left H),
+        (@peano_minus_mul_one M O H (oring_one O)).
+      apply (@peano_minus_zero_lt_one M O H).
+    - apply (@peano_minus_le_lt_trans M O H _ (oring_mul O a a) _).
+      + apply (peano_minus_le_mul_self_of_pos_left H a Ha).
+      + apply (peano_minus_square_lt_square H).
+        apply (peano_minus_lt_add_one H). }
+  assert (Hboundary : exists x,
+      peano_minus_le O (oring_mul O x x) a /\
+      ~ peano_minus_le O
+        (oring_mul O (oring_add O x (oring_one O))
+          (oring_add O x (oring_one O))) a).
+  { apply (arithmetic_boundary_of_least_number H Hleast
+      (P := fun x => peano_minus_le O (oring_mul O x x) a)).
+    - rewrite (@peano_minus_zero_mul M O H (oring_zero O)).
+      apply (@peano_minus_zero_le M O H).
+    - exists (oring_add O a (oring_one O)).
+      exact (peano_minus_lt_not_ge H Hlarge). }
+  destruct Hboundary as [x [Hxlo Hxnext]].
+  assert (Hx : iopen_sqrt_spec O a x).
+  { split; [exact Hxlo | now apply (peano_minus_lt_of_not_le H)]. }
+  exists x. split; [exact Hx |].
+  intros y Hy.
+  assert (Hnotxy : ~ oring_lt O x y).
+  { intro Hxy.
+    pose proof (peano_minus_add_one_le_of_lt H Hxy) as Hsucc.
+    pose proof (peano_minus_square_le_square H Hsucc) as Hsq.
+    pose proof (@peano_minus_le_trans M O H _ _ _ Hsq (proj1 Hy)) as Hle.
+    exact (peano_minus_lt_not_ge H (proj2 Hx) Hle). }
+  assert (Hnotyx : ~ oring_lt O y x).
+  { intro Hyx.
+    pose proof (peano_minus_add_one_le_of_lt H Hyx) as Hsucc.
+    pose proof (peano_minus_square_le_square H Hsucc) as Hsq.
+    pose proof (@peano_minus_le_trans M O H _ _ _ Hsq (proj1 Hx)) as Hle.
+    exact (peano_minus_lt_not_ge H (proj2 Hy) Hle). }
+  destruct (@peano_minus_lt_trichotomy M O H y x)
+    as [Hyx | [Heq | Hxy]]; [contradiction | symmetry; exact Heq | contradiction].
+Qed.
+
+Definition iopen_sqrt {M} (O : oring_carrier M) (a : M) : M :=
+  epsilon (inhabits (oring_zero O)) (iopen_sqrt_spec O a).
+
+Lemma iopen_sqrt_specification : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, iopen_sqrt_spec O a (iopen_sqrt O a).
+Proof.
+  intros M O H Hleast a. unfold iopen_sqrt.
+  apply epsilon_spec.
+  destruct (iopen_sqrt_exists_unique H Hleast a) as [x [Hx _]].
+  now exists x.
+Qed.
+
+Lemma iopen_sqrt_graph : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a x, x = iopen_sqrt O a <-> iopen_sqrt_spec O a x.
+Proof.
+  intros M O H Hleast a x. split.
+  - intros ->. apply (iopen_sqrt_specification H Hleast).
+  - intro Hx.
+    destruct (iopen_sqrt_exists_unique H Hleast a) as [y [Hy Huniq]].
+    transitivity y.
+    + symmetry. now apply Huniq.
+    + apply Huniq. apply (iopen_sqrt_specification H Hleast).
+Qed.
+
+Lemma iopen_sqrt_eq_of : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a x, iopen_sqrt_spec O a x -> iopen_sqrt O a = x.
+Proof.
+  intros M O H Hleast a x Hx.
+  apply (proj2 (iopen_sqrt_graph H Hleast a x)) in Hx.
+  now symmetry.
+Qed.
+
+Lemma iopen_sqrt_square : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, iopen_sqrt O (oring_mul O a a) = a.
+Proof.
+  intros M O H Hleast a. apply (iopen_sqrt_eq_of H Hleast).
+  split.
+  - apply peano_minus_le_refl.
+  - apply (peano_minus_square_lt_square H).
+    apply (peano_minus_lt_add_one H).
+Qed.
+
+Lemma iopen_sqrt_zero : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  iopen_sqrt O (oring_zero O) = oring_zero O.
+Proof.
+  intros M O H Hleast.
+  pose proof (iopen_sqrt_square H Hleast (oring_zero O)) as Hsqrt.
+  now rewrite (@peano_minus_zero_mul M O H (oring_zero O)) in Hsqrt.
+Qed.
+
+Lemma iopen_sqrt_one : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  iopen_sqrt O (oring_one O) = oring_one O.
+Proof.
+  intros M O H Hleast.
+  pose proof (iopen_sqrt_square H Hleast (oring_one O)) as Hsqrt.
+  now rewrite (@peano_minus_mul_one M O H (oring_one O)) in Hsqrt.
+Qed.

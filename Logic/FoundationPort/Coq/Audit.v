@@ -1503,6 +1503,8 @@ Print Assumptions arithmetic_sorted_definable_function_substitution_bounded.
 Print Assumptions arithmetic_definably_bounded_compose.
 Print Assumptions peano_minus_laws.
 Print Assumptions peano_minus_le_trans.
+Print Assumptions peano_minus_le_lt_trans.
+Print Assumptions peano_minus_lt_le_trans.
 Print Assumptions peano_minus_le_antisym.
 Print Assumptions peano_minus_le_total.
 Print Assumptions peano_minus_add_right_cancel.
@@ -1523,6 +1525,8 @@ Print Assumptions peano_minus_lt_add_one.
 Print Assumptions peano_minus_le_iff_lt_add_one.
 Print Assumptions peano_minus_add_le_add.
 Print Assumptions peano_minus_mul_le_mul.
+Print Assumptions peano_minus_square_le_square.
+Print Assumptions peano_minus_square_lt_square.
 Print Assumptions peano_minus_structure_monotone.
 Print Assumptions peano_minus_not_lt_zero.
 Print Assumptions peano_minus_numeral_succ.
@@ -1716,6 +1720,15 @@ Print Assumptions iopen_rem_mul_self_left.
 Print Assumptions iopen_rem_mul_self_right.
 Print Assumptions iopen_rem_self.
 Print Assumptions iopen_rem_eq_zero_iff_dvd.
+Print Assumptions iopen_sqrt_spec.
+Print Assumptions iopen_sqrt_exists_unique.
+Print Assumptions iopen_sqrt.
+Print Assumptions iopen_sqrt_specification.
+Print Assumptions iopen_sqrt_graph.
+Print Assumptions iopen_sqrt_eq_of.
+Print Assumptions iopen_sqrt_square.
+Print Assumptions iopen_sqrt_zero.
+Print Assumptions iopen_sqrt_one.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.

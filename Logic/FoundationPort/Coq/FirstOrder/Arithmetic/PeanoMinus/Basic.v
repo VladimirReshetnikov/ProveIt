@@ -82,6 +82,22 @@ Proof.
   - right. eapply peano_minus_lt_trans; eauto.
 Qed.
 
+Lemma peano_minus_le_lt_trans : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  peano_minus_le O x y -> oring_lt O y z -> oring_lt O x z.
+Proof.
+  intros M O H x y z [-> | Hxy] Hyz; [exact Hyz |].
+  now eapply peano_minus_lt_trans; eauto.
+Qed.
+
+Lemma peano_minus_lt_le_trans : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  oring_lt O x y -> peano_minus_le O y z -> oring_lt O x z.
+Proof.
+  intros M O H x y z Hxy [-> | Hyz]; [exact Hxy |].
+  now eapply peano_minus_lt_trans; eauto.
+Qed.
+
 Lemma peano_minus_le_antisym : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall x y,
   peano_minus_le O x y -> peano_minus_le O y x -> x = y.
@@ -455,6 +471,31 @@ Proof.
   eapply (peano_minus_le_trans H).
   - exact (peano_minus_mul_le_mul_right H (x := x) (y := x') y Hx).
   - exact (peano_minus_mul_le_mul_left H (x := y) (y := y') x' Hy).
+Qed.
+
+Lemma peano_minus_square_le_square : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  peano_minus_le O x y ->
+  peano_minus_le O (oring_mul O x x) (oring_mul O y y).
+Proof.
+  intros M O H x y Hxy.
+  now apply (peano_minus_mul_le_mul H).
+Qed.
+
+Lemma peano_minus_square_lt_square : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  oring_lt O x y ->
+  oring_lt O (oring_mul O x x) (oring_mul O y y).
+Proof.
+  intros M O H x y Hxy.
+  assert (Hy : oring_lt O (oring_zero O) y).
+  { destruct (@peano_minus_zero_le M O H x) as [Hx | Hx].
+    - now rewrite <- Hx in Hxy.
+    - exact (@peano_minus_lt_trans M O H _ _ _ Hx Hxy). }
+  pose proof (peano_minus_mul_le_mul_left H
+    (x := x) (y := y) x (peano_minus_lt_le Hxy)) as Hle.
+  pose proof (@peano_minus_mul_lt_mul M O H x y y Hxy Hy) as Hlt.
+  exact (@peano_minus_le_lt_trans M O H _ _ _ Hle Hlt).
 Qed.
 
 Definition peano_minus_structure_monotone : forall M
