@@ -251,6 +251,31 @@ Proof.
         (AH_falsum arithmetic_pi rank n))).
 Defined.
 
+Definition arithmetic_sorted_eq {X : Type} {n}
+    (symbol : arithmetic_hierarchy_symbol)
+    (t u : semiterm oring_language X n) :
+    arithmetic_sorted_formula X n symbol.
+Proof.
+  destruct symbol as [class rank]. destruct class.
+  - exact (ArithmeticSortedSigma rank
+      (semiformula_operator_apply
+        (semiformula_eq_operator arithmetic_eq_operator) (fin_two t u))
+      (arithmetic_hierarchy_eq arithmetic_sigma rank t u)).
+  - exact (ArithmeticSortedPi rank
+      (semiformula_operator_apply
+        (semiformula_eq_operator arithmetic_eq_operator) (fin_two t u))
+      (arithmetic_hierarchy_eq arithmetic_pi rank t u)).
+  - exact (ArithmeticSortedDelta rank
+      (ArithmeticSortedSigma rank
+        (semiformula_operator_apply
+          (semiformula_eq_operator arithmetic_eq_operator) (fin_two t u))
+        (arithmetic_hierarchy_eq arithmetic_sigma rank t u))
+      (ArithmeticSortedPi rank
+        (semiformula_operator_apply
+          (semiformula_eq_operator arithmetic_eq_operator) (fin_two t u))
+        (arithmetic_hierarchy_eq arithmetic_pi rank t u))).
+Defined.
+
 Definition arithmetic_sorted_and {X : Type} {n symbol}
     (p q : arithmetic_sorted_formula X n symbol) :
     arithmetic_sorted_formula X n symbol.
@@ -459,6 +484,13 @@ Lemma arithmetic_sorted_falsum_val : forall (X : Type) n symbol,
   arithmetic_sorted_formula_val (@arithmetic_sorted_falsum X n symbol) =
   Semiformula_falsum n.
 Proof. intros X n [class rank]; now destruct class. Qed.
+
+Lemma arithmetic_sorted_eq_val : forall (X : Type) n symbol
+    (t u : semiterm oring_language X n),
+  arithmetic_sorted_formula_val (arithmetic_sorted_eq symbol t u) =
+  semiformula_operator_apply
+    (semiformula_eq_operator arithmetic_eq_operator) (fin_two t u).
+Proof. intros X n [class rank] t u; now destruct class. Qed.
 
 Lemma arithmetic_sorted_and_val : forall (X : Type) n symbol
     (p q : arithmetic_sorted_formula X n symbol),
