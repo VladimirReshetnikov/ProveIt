@@ -797,11 +797,15 @@ cmdLoad st arg
 
 -- The introspection metaprogram run inside the browse environment. One
 -- logInfo with all matches keeps the response to a single message.
-browseProgram :: Bool -> String -> String
-browseProgram showAll namespaceName = unlines $
+-- The namespace is spliced as string literals (not a backquoted name
+-- literal), so arbitrary component spellings cannot break the parser.
+browseProgram :: Bool -> [String] -> String
+browseProgram showAll nameComponents = unlines $
   [ "open Lean in run_cmd do"
   , "  let env \8592 getEnv"
-  , "  let pre := `" ++ namespaceName
+  , "  let pre : Name := ["
+      ++ intercalate ", " (map leanStringLit nameComponents)
+      ++ "].foldl (fun a s => Name.str a s) Name.anonymous"
   ]
   ++ (if showAll then
   [ "  let keep (n : Name) : Bool := !n.isInternal" ]
@@ -850,20 +854,32 @@ ensureBrowseEnv st = do
                 modifyIORef' st (\s -> s { rsBrowseEnv = Just env })
                 pure (Right env)
 
+leanStringLit :: String -> String
+leanStringLit s = '"' : concatMap escape s ++ "\""
+ where
+  escape '"' = "\\\""
+  escape '\\' = "\\\\"
+  escape c = [c]
+
 cmdBrowse :: St -> Bool -> String -> IO ()
-cmdBrowse st showAll arg
+cmdBrowse st showAll rawArg
   | null arg = do
       history <- rsHistory <$> readIORef st
       let decls = concatMap sessionDeclNames history
       if null decls
         then emitLn st =<< cDim st "(no session declarations)"
         else mapM_ (emitLn st) decls
+  | any isSpace arg || any null nameComponents = do
+      message <- cRed st ("invalid namespace `" ++ arg ++ "`")
+      emitLn st (message
+        ++ " - :browse expects a dotted name such as Nat or List.Perm")
   | otherwise = do
       envOr <- ensureBrowseEnv st
       case envOr of
         Left err -> emitLn st =<< cRed st err
         Right env -> do
-          result <- runCmd st (Just env) (browseProgram showAll arg)
+          result <- runCmd st (Just env)
+            (browseProgram showAll nameComponents)
           case result of
             Left err -> emitLn st =<< cRed st err
             Right v -> () <$ printResponse st Nothing v
@@ -878,6 +894,10 @@ cmdBrowse st showAll arg
       unless (null matching) $ do
         emitLn st =<< cDim st "-- declared in this session:"
         mapM_ (emitLn st) matching
+ where
+  -- a leading '@' (pasted from :t @f output) is meaningless here; drop it
+  arg = dropWhile (== '@') (trim rawArg)
+  nameComponents = splitOn '.' arg
 
 -- Names bound by a history entry, parsed textually (namespace blocks are not
 -- tracked; names are reported as typed).
