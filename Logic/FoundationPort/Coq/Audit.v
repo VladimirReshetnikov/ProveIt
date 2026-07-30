@@ -2,6 +2,7 @@
 
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
+From Foundation.Vorspiel Require Import NotationClass.
 From Foundation.Vorspiel Require Import Small.
 From Foundation.Vorspiel Require Import String.
 From Foundation.Vorspiel Require Import Fintype.
@@ -11,6 +12,7 @@ From Foundation.Vorspiel Require Import Part.
 From Foundation.Vorspiel Require Import ENat.
 From Foundation.Vorspiel Require Import DMatrix.
 From Foundation.Vorspiel Require Import Matrix.
+From Foundation.Vorspiel Require Import Arithmetic.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -81,6 +83,27 @@ Print Assumptions empty_function_unique.
 Check type_is_empty.
 Check empty_type_elim.
 Print Assumptions empty_type_function_unique.
+Check lo_tilde.
+Check lo_arrow.
+Check lo_wedge.
+Check lo_vee.
+Check lo_box.
+Check lo_dia.
+Check lo_rhd.
+Check lo_tensor.
+Check lo_par.
+Check lo_with.
+Check lo_plus.
+Check lo_lolli.
+Check lo_bang.
+Check lo_quest.
+Check lo_exp.
+Check lo_smash.
+Check lo_length.
+Check lo_godel_quote.
+Check lo_sigma_symbol.
+Check lo_pi_symbol.
+Check lo_delta_symbol.
 Print Assumptions option_return_eq_some.
 Check option_to_list.
 Print Assumptions option_to_list_singleton_iff.
@@ -194,6 +217,25 @@ Print Assumptions fin_vec_exists_iff.
 Check nat_to_matrix_vec.
 Print Assumptions nat_to_matrix_vec_encode.
 Print Assumptions nat_to_matrix_vec_member_lt.
+Check nat_truth_eq.
+Check nat_truth_lt.
+Check nat_truth_le.
+Check nat_truth_dvd.
+Print Assumptions nat_truth_eq_positive_iff.
+Print Assumptions nat_truth_lt_positive_iff.
+Print Assumptions nat_truth_le_positive_iff.
+Print Assumptions nat_truth_dvd_positive_iff.
+Check nat_truth_inv.
+Check nat_truth_pos.
+Check nat_truth_and.
+Check nat_truth_or.
+Print Assumptions nat_truth_inv_eq_zero_iff.
+Print Assumptions nat_truth_and_positive_iff.
+Print Assumptions nat_truth_or_positive_iff.
+Check nat_bounded_all.
+Print Assumptions nat_bounded_all_positive_iff.
+Print Assumptions nat_bounded_all_eq_zero_iff.
+Print Assumptions nat_bounded_all_eq_one_iff_positive.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.
