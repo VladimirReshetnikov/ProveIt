@@ -1,14 +1,15 @@
 # Results of the mathematical line
 
 **No paradox was found.** That was the expected outcome. But the line produced
-three things worth keeping, two of them verified in this session and one of them a
-correction to a claim I made earlier in this study.
+three things worth keeping, two of them verified directly and one of them a
+correction to how Lean's metatheoretic status is usually stated.
 
 ## 1. Correction: Lean's consistency is *not* a settled theorem
 
-Earlier in this investigation I wrote that "Lean's core theory has a consistency
-proof relative to ZFC + countably many inaccessibles (Carneiro, *The Type Theory
-of Lean*)". **That overstates the record.**
+It is commonly said — and I said it myself while setting this investigation up —
+that "Lean's core theory has a consistency proof relative to ZFC + countably many
+inaccessibles (Carneiro, *The Type Theory of Lean*)". **That overstates the
+record.**
 
 Conjectures 2.7 and 2.9 were **downgraded from theorems to conjectures** in later
 work, because of an error in a technical lemma: the proof constructs a

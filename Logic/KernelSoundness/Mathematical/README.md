@@ -1,8 +1,9 @@
 # Mathematical approaches: how close is Lean to Girard/Hurkens?
 
-Unlike the rest of `KernelSoundness/`, nothing here is an implementation defect.
-This directory asks the mathematical question: does Lean's *type theory* admit a
-paradox in the tradition of Girard, Hurkens, or Coquand–Paulin?
+Nothing here is an implementation defect. This directory asks the *mathematical*
+question: does Lean's type theory admit a paradox in the tradition of Girard,
+Hurkens, or Coquand–Paulin? Every result is machine-checked, and the two headline
+theorems report **no axioms at all**.
 
 **Short answer: no, and the reason is precise and worth writing down.** Coquand's
 counterexample needs three ingredients — impredicativity, a universe type, and
@@ -97,7 +98,7 @@ provable inside Lean.
 See [`Findings.md`](Findings.md) for the full account. Headlines:
 
 * **No paradox** — expected.
-* **A correction to a claim made earlier in this study.** Lean's consistency is
+* **A correction to the usual framing.** Lean's consistency is
   *not* a settled theorem: Carneiro's Conjectures 2.7 and 2.9 were **downgraded
   from theorems to conjectures**, because the stratification of the typing
   judgment used to break the mutual induction between typing and definitional
