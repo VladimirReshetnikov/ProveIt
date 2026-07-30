@@ -27,7 +27,7 @@ synthesizer (Djinn's LJT engine + Exference's ranked search) referenced
 by the Leant term-synthesis proposal at
 [`../Tools/Leant/SYNTHESIS_PROPOSAL.md`](../Tools/Leant/SYNTHESIS_PROPOSAL.md).
 It is a source reference and future library dependency for
-[`../Tools/LeantHs/`](../Tools/LeantHs/); nothing in this repository
+[`../Tools/Leant/`](../Tools/Leant/); nothing in this repository
 modifies it.
 
 Repository-authored Busy Beaver models, bridges, and score certificates live

@@ -1,175 +1,88 @@
-# Leant — a GHCi-style interactive REPL for Lean 4
+# Leant (Haskell) — a GHCi-style interactive REPL for Lean 4
 
-An interactive read-eval-print loop for Lean 4, modeled on Haskell's GHCi.
-Type expressions to evaluate them, type declarations to extend the session,
-and use `:`-commands for everything else.
+Haskell port of [Tools/LeantPy](../LeantPy/README.md) (the Python
+original). Same features, same commands, same heuristics — but a native
+binary with no Python dependency at runtime.
 
-## Why this design
+## How the port replaces its dependencies
 
-There was (as of mid-2026) no interactive human-facing REPL for Lean 4.
-The ecosystem provides:
+The Python version delegates backend management to
+[LeanInteract](https://github.com/augustepoiroux/LeanInteract). This port
+implements that layer directly (`src/Leant/Backend.hs`):
 
-- [leanprover-community/repl](https://github.com/leanprover-community/repl) —
-  the machine-oriented backend: JSON over stdin/stdout, environment snapshots.
-- [LeanInteract](https://github.com/augustepoiroux/LeanInteract) — a Python
-  API that installs/builds the right REPL version automatically (including a
-  cross-version fork), works on Windows, and supports running inside a local
-  Lake project.
-- [lean-repl-py](https://pypi.org/project/lean-repl-py/),
-  [Kimina Lean Server](https://arxiv.org/html/2504.21230v1) — programmatic /
-  batch-server wrappers, not interactive shells.
+- **Backend discovery** — finds the `repl.exe` that LeanInteract built
+  (searching its cache under `%LOCALAPPDATA%\Python\...\lean_interact\cache`),
+  or uses `--repl-exe` / the `LEANT_BACKEND` environment variable. Any
+  build of [leanprover-community/repl](https://github.com/leanprover-community/repl)
+  matching the project toolchain works.
+- **Protocol** — JSON over stdin/stdout with blank-line framing, spawned as
+  `lake env repl.exe` inside the Lake project. The JSON codec is hand-rolled
+  (`src/Leant/Json.hs`), so the whole port builds with GHC boot libraries
+  only — no Hackage downloads.
+- **Crash recovery** — replaces LeanInteract's `AutoLeanServer`: on backend
+  death, timeout, or Ctrl+C, the process is killed and the session (imports +
+  history) replays automatically on the next command.
 
-`leant.py` is the missing front-end: a single-file GHCi-style shell built
-on LeanInteract. Definitions persist between inputs via the backend's
-environment threading; the session survives backend crashes (commands are
-replayed from a session cache); Ctrl+C restarts the server without losing
-your definitions.
+The Haskeline front-end (interrupt-safe step loop, logical multi-line input,
+`:command` completion) follows the structure of the Djex REPL driver.
 
-## Setup
+## Building
+
+Requires GHC ≥ 9.4 and cabal (tested with GHC 9.12.4). All dependencies are
+GHC boot libraries:
 
 ```
-pip install -r requirements.txt
+cabal build
 ```
 
-Requires Python ≥ 3.10, git, and `lake`/`lean` on PATH (via elan).
-The first launch downloads and builds the Lean REPL backend (~5 min);
-afterwards startup is instant.
+`leant-hs.cmd` builds on first use and runs the binary (pausing on error
+exit, like the Python launcher).
 
 ## Usage
 
-```
-python leant.py                       # auto-detects the enclosing Lake project
-python leant.py --project C:/ProveIt  # explicit Lake project
-python leant.py --plain               # bare Lean (no project, stdlib only)
-python leant.py -i Mathlib.Tactic.Ring  # start with imports
-python leant.py MyFile.lean           # load a file at startup
-python leant.py --transcript [FILE]   # record a full session transcript
-python leant.py --transcript --timestamps  # ...with per-command timestamps
-```
-
-On Windows, `leant.cmd` wraps the above — both here and at the
-repository root (so `leant` works directly from the project directory).
-
-When run inside a Lake project (e.g. this repository), all built project
-modules and dependencies (Mathlib, ...) are importable. Import narrow
-modules (`Mathlib.Tactic.Ring`) rather than all of `Mathlib` when RAM is
-tight — a full Mathlib import can take minutes on small machines.
-
-### Example session
+Identical to the Python version — see its [README](../LeantPy/README.md)
+for the full command table and semantics. Summary:
 
 ```
-λ> 2 + 2
-4
-λ> def fact : Nat → Nat
-…>   | 0 => 1
-…>   | n + 1 => (n + 1) * fact n
-…>
-λ> fact 10
-3628800
-λ> :t fact
-fact : Nat → Nat
-λ> import Mathlib.Tactic.Ring
-λ> example (a b : Nat) : (a + b)^2 = a^2 + 2*a*b + b^2 := by ring
-λ> example : 1 = 2 := by sorry
-sorry (proof state 0)
-  ⊢ 1 = 2
+leant-hs [FILE] [--project DIR] [--plain] [-i MOD]
+            [--timeout N] [--time] [--transcript [FILE]] [--timestamps]
+            [--repl-exe PATH] [--lake PATH]
 ```
 
-Bare expressions are evaluated with `#eval`; if that fails (e.g. no `Repr`
-instance, or the expression is a proposition or function), the type is shown
-via `#check` instead. Declarations (`def`, `theorem`, `open`, `#eval`, ...)
-run verbatim and, on success, advance the session environment.
+- Expressions evaluate via `#eval` with `#check` fallback; declarations
+  persist via environment threading.
+- Multi-line input starts on incomplete lines (or `:{ :}`); a blank line
+  submits.
+- `:info` renders inductives/structures/classes as valid Lean declarations
+  and indents definition bodies; built-ins and keywords (`imax`, `fun`,
+  `→`, ...) get explanatory help instead of "Unknown identifier".
+- `:transcript` / `:timestamps` record the full session; `:pickle` /
+  `:unpickle` save and restore environments; `:undo`, `:reset`,
+  `:history`, `:import`, `:load`/`:reload`, `:set`, `:time`, `:!` as in
+  the Python version.
+- `:doc NAME` shows docstrings; `:search TEXT` searches declaration names
+  case-insensitively; `:search? TYPE` runs `exact?` proof search; the last
+  evaluated expression is available as `it`; TAB completes `:commands`
+  and dotted identifiers.
+- `:prove [PROP]` enters interactive prove mode (see the Python README for
+  a walkthrough): tactic-by-tactic goals, unlimited `:undo`, `:script`,
+  `:auto`, `:qed [NAME]` saving a real theorem, resumption of the last
+  `sorry`, and crash-safe script dumps.
 
-### Prove mode
+## Differences from the Python version
 
-`:prove PROP` opens an interactive tactic session on `PROP` (and bare
-`:prove` resumes the most recent `sorry`):
-
-```
-λ> :prove ∀ n : Nat, 0 + n = n
-⊢ ∀ (n : Nat), 0 + n = n
-⊢> intro n
-n : Nat
-⊢ 0 + n = n
-⊢> induction n
-— goal 1 of 2 — ...
-⊢2> exact?
-recorded as: exact Nat.zero_add 0
-⊢> :auto
-closed by: simp  (tried rfl, trivial, decide, simp)
-All goals accomplished 🎉
-⊢> :qed zeroAdd
-saved: theorem zeroAdd : ∀ n : Nat, 0 + n = n
-```
-
-Goals reprint after every tactic (numbered when there are several; the
-prompt shows the count). `:undo [N]` takes back tactics without limit;
-`:script` shows the accumulated proof; `:auto` tries common finishers;
-`:qed [NAME]` turns the script into a real `theorem` in the session
-(auto-named `prove_N`); `:abort` leaves the mode, printing the script.
-`?`-tactics (`exact?`, `simp?`, `rw?`) record the tactic they *found*
-rather than the question-mark form. If the backend dies or is
-interrupted, the script is printed before the mode exits — work is never
-lost. When resuming a `sorry`, `:qed` prints a paste-ready `by` block
-instead (the original declaration has already elaborated).
-
-The last successfully evaluated expression is available as `it`, GHCi-style
-(`2 + 2` then `it * 10` gives `40`). TAB completes `:commands` and dotted
-identifiers (via the same cached environment that powers `:browse`, `:doc`,
-and `:search` — the first completion builds it).
-
-Multi-line input starts automatically when a line is syntactically
-incomplete (unbalanced brackets, trailing `:=`/`by`/`where`/..., or a parse
-error at end of input); once started, an empty line submits the block
-(Python-REPL style). `:{` ... `:}` delimits an explicit block, as in GHCi.
-
-`:info` renders inductives, structures, and classes as valid Lean
-declarations (`inductive Nat : Type where | zero : Nat | succ : Nat → Nat`)
-rather than `#print`'s raw "constructors:" listing.
-
-Built-ins and keywords that are not constants in the environment (`imax`,
-`Sort`, `fun`, `by`, `→`, `∀`, `:=`, `⟨⟩`, ...) get explanatory help when
-used with `:t`/`:info` or evaluated bare, instead of a plain
-"Unknown identifier" error.
-
-### Commands
-
-| Command | Meaning |
-|---|---|
-| `:help`, `:h`, `:?` | show help |
-| `:quit`, `:q` | exit |
-| `:type EXPR`, `:t` | show the type of an expression (`#check`) |
-| `:info NAME`, `:i` | show a definition (`#print`) |
-| `:load FILE`, `:l` | reset the session and load a `.lean` file |
-| `:reload`, `:r` | reload the last loaded file |
-| `:import MOD` | add an import (rebuilds the session, replaying history) |
-| `:imports` | list active imports |
-| `:browse NS` | list declarations under a namespace (`:browse!` includes generated auxiliaries) |
-| `:doc NAME` | show the documentation string of a declaration |
-| `:search TEXT` | case-insensitive name search over the environment |
-| `:search? TYPE` | proof search: what proves TYPE? (via `exact?`) |
-| `:set OPT VAL` | `set_option` persisting in the session |
-| `:undo` | revert the last state-changing command |
-| `:reset` | clear definitions, keep imports |
-| `:history` | list state-changing commands |
-| `:env` | show the backend environment id |
-| `:time` | toggle per-command timing |
-| `:transcript [FILE\|on\|off]` | record a full transcript of the session to a file |
-| `:timestamps [on\|off]` | timestamp each command in the transcript |
-| `:pickle FILE` / `:unpickle FILE` | save/restore the environment as `.olean` |
-| `:! CMD` | run a shell command |
-
-### Notes and limitations
-
-- `import` mid-session rebuilds the environment from scratch and replays
-  your history (imports cannot be added incrementally to a Lean
-  environment). Unavailable modules are detected up front (the backend
-  otherwise ignores them silently, yielding an empty environment).
-- `sorry` prints its goal and a proof-state id; the backend's tactic mode is
-  not yet surfaced interactively.
-- Interrupting evaluation (Ctrl+C) restarts the backend; the session is
-  restored automatically from the replay cache on the next command.
-- Line history is stored in `~/.leant_history`.
-- Transcripts contain the whole session (prompts, inputs, and ANSI-stripped
-  output). `--transcript` with no FILE writes `leant-<date>-<time>.log`
-  in the current directory. `:transcript` alone shows recording status.
+- No `AutoLeanServer` memory guard (the Python version needs one because
+  LeanInteract refuses to start above a RAM threshold); the backend is only
+  restarted on actual failure.
+- `:browse` is *improved* rather than merely ported. The Python version
+  required `:import Lean` in the user's session first; here `:browse NS`
+  builds (and caches) a separate environment - session imports plus
+  `Lean.Elab.Command` - runs the introspection metaprogram there, and
+  appends declarations made in the session itself. Compiler-generated
+  auxiliaries (`.rec`, `.noConfusion`, `.eq_1`, ...) are filtered out;
+  `:browse! NS` shows everything.
+- Backend discovery reuses the binary LeanInteract built rather than
+  building its own. To set one up from scratch:
+  `git clone https://github.com/leanprover-community/repl && cd repl &&
+  lake build`, then point `LEANT_BACKEND` at
+  `.lake/build/bin/repl.exe`.

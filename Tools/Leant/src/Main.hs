@@ -3,7 +3,7 @@
 
 -- | leant-hs - a GHCi-style interactive REPL for Lean 4.
 --
--- Haskell port of Tools/Leant/leant.py. The Haskeline loop follows the
+-- Haskell port of Tools/LeantPy/leant.py. The Haskeline loop follows the
 -- structure of the Djex REPL driver (interrupt-safe step function, logical
 -- multi-line input, command completion).
 module Main (main) where
@@ -1816,7 +1816,7 @@ run opts = do
   case replExe of
     Nothing -> do
       putStrLn "error: could not find the Lean REPL backend executable."
-      putStrLn "Build it once via the Python sibling (Tools/Leant), or pass"
+      putStrLn "Build it once via the Python sibling (Tools/LeantPy), or pass"
       putStrLn "--repl-exe / set LEANT_BACKEND to a repl.exe built from"
       putStrLn "https://github.com/leanprover-community/repl for your toolchain."
       exitWith (ExitFailure 1)
