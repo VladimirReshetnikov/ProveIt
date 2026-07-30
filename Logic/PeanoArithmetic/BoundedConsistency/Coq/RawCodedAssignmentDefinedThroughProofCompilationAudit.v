@@ -1,0 +1,12 @@
+(** Assumption audit for represented assignment-prefix instantiation. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedAssignmentDefinedThroughProofCompilation.
+
+Import PABoundedRawCodedAssignmentDefinedThroughProofCompilation.
+
+Check
+  raw_codedPALocalProofOf_assignmentDefinedThrough_entry_of_lt_on_witnessed_tail.
+
+Print Assumptions
+  raw_codedPALocalProofOf_assignmentDefinedThrough_entry_of_lt_on_witnessed_tail.
