@@ -1815,6 +1815,8 @@ Print Assumptions iopen_sqrt_three.
 Print Assumptions iopen_sqrt_four.
 Print Assumptions iopen_two_ne_square.
 Print Assumptions iopen_sqrt_le_add.
+Print Assumptions iopen_lt_pair_left_of_pos.
+Print Assumptions iopen_two_prime.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.

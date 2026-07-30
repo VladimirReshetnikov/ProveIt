@@ -1036,6 +1036,32 @@ Proof.
   exact Hle.
 Qed.
 
+Lemma iopen_lt_pair_left_of_pos : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a,
+  oring_lt O (oring_zero O) a -> forall b,
+  oring_lt O a (iopen_pair O a b).
+Proof.
+  intros M O H a Ha b. unfold iopen_pair.
+  destruct (excluded_middle_informative (oring_lt O a b)) as [Hab | Hab].
+  - assert (Hb : oring_lt O (oring_zero O) b).
+    { exact (@peano_minus_lt_trans M O H _ _ _ Ha Hab). }
+    pose proof (@peano_minus_mul_lt_mul M O H
+      (oring_zero O) b b Hb Hb) as Hsq.
+    rewrite (@peano_minus_zero_mul M O H b) in Hsq.
+    pose proof (@peano_minus_add_lt_add M O H
+      (oring_zero O) (oring_mul O b b) a Hsq) as Hadd.
+    now rewrite (peano_minus_add_zero_left H) in Hadd.
+  - pose proof (@peano_minus_mul_lt_mul M O H
+      (oring_zero O) a a Ha Ha) as Hsq.
+    rewrite (@peano_minus_zero_mul M O H a) in Hsq.
+    pose proof (@peano_minus_add_lt_add M O H
+      (oring_zero O) (oring_mul O a a) a Hsq) as Hadd.
+    rewrite (peano_minus_add_zero_left H) in Hadd.
+    exact (@peano_minus_lt_le_trans M O H _ _ _ Hadd
+      (peano_minus_le_add_right H
+        (oring_add O (oring_mul O a a) a) b)).
+Qed.
+
 Lemma iopen_pair_injective : forall M (O : oring_carrier M),
   peano_minus_laws O -> arithmetic_least_number_principle O ->
   forall a1 a2 b1 b2,
@@ -1762,4 +1788,24 @@ Proof.
     (oring_numeral O 2) (oring_mul O a b)) Hab) as Hzero.
   rewrite Hzero in Hcong.
   apply (peano_minus_numeral_ne H (n := 0) (m := 1)); [lia | exact Hcong].
+Qed.
+
+Lemma iopen_two_prime : forall M (O : oring_carrier M),
+  peano_minus_laws O -> peano_minus_is_prime O (oring_numeral O 2).
+Proof.
+  intros M O H. split.
+  - change (oring_lt O (oring_numeral O 1) (oring_numeral O 2)).
+    apply (peano_minus_numeral_lt H). lia.
+  - intros a Hale [c Hdiv].
+    destruct (proj1 (peano_minus_le_numeral_iff H 2 a) Hale)
+      as [m [Hm Ha]].
+    subst a. destruct m as [|[|[|m]]].
+    + change (oring_numeral O 2 =
+        oring_mul O (oring_zero O) c) in Hdiv.
+      rewrite (@peano_minus_zero_mul M O H c) in Hdiv.
+      exfalso. exact (peano_minus_numeral_ne H
+        (n := 2) (m := 0) ltac:(lia) Hdiv).
+    + now left.
+    + now right.
+    + lia.
 Qed.
