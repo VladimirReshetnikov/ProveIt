@@ -15,6 +15,7 @@ From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics OperatorSemantics.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Model Monotone.
+From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -363,6 +364,34 @@ Proof.
   - apply oring_numeral_succ_succ.
 Qed.
 
+Lemma peano_minus_numeral_add : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall n m,
+  oring_add O (oring_numeral O n) (oring_numeral O m) =
+  oring_numeral O (n + m).
+Proof.
+  intros M O H n m. induction m as [|m IH].
+  - cbn. rewrite Nat.add_0_r. apply (@peano_minus_add_zero M O H).
+  - rewrite (peano_minus_numeral_succ H m).
+    replace (n + S m) with (S (n + m)) by lia.
+    rewrite (peano_minus_numeral_succ H (n + m)).
+    rewrite <- (@peano_minus_add_assoc M O H).
+    now rewrite IH.
+Qed.
+
+Lemma peano_minus_numeral_mul : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall n m,
+  oring_mul O (oring_numeral O n) (oring_numeral O m) =
+  oring_numeral O (n * m).
+Proof.
+  intros M O H n m. induction m as [|m IH].
+  - cbn. rewrite Nat.mul_0_r. apply (@peano_minus_mul_zero M O H).
+  - rewrite (peano_minus_numeral_succ H m).
+    rewrite (@peano_minus_mul_add_distr M O H),
+      (@peano_minus_mul_one M O H), IH,
+      (peano_minus_numeral_add H).
+    f_equal. lia.
+Qed.
+
 Lemma peano_minus_numeral_lt : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall m n,
   m < n -> oring_lt O (oring_numeral O m) (oring_numeral O n).
@@ -375,6 +404,19 @@ Proof.
   - eapply (@peano_minus_lt_trans M O H).
     + apply IH. lia.
     + apply (peano_minus_lt_add_one H).
+Qed.
+
+Lemma peano_minus_numeral_ne : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall n m,
+  n <> m -> oring_numeral O n <> oring_numeral O m.
+Proof.
+  intros M O H n m Hne Heq.
+  destruct (Nat.lt_total n m) as [Hnm | [Hnm | Hmn]].
+  - pose proof (peano_minus_numeral_lt H Hnm) as Hlt.
+    rewrite Heq in Hlt. exact (@peano_minus_lt_irrefl M O H _ Hlt).
+  - contradiction.
+  - pose proof (peano_minus_numeral_lt H Hmn) as Hlt.
+    rewrite <- Heq in Hlt. exact (@peano_minus_lt_irrefl M O H _ Hlt).
 Qed.
 
 Lemma peano_minus_eq_numeral_of_lt_numeral : forall M
@@ -419,6 +461,16 @@ Proof.
     + apply peano_minus_le_refl.
     + right. apply (peano_minus_numeral_lt H). lia.
 Qed.
+
+Definition peano_minus_r0_laws : forall M (O : oring_carrier M),
+  peano_minus_laws O -> r0_laws O.
+Proof.
+  intros M O H. constructor.
+  - apply (peano_minus_numeral_add H).
+  - apply (peano_minus_numeral_mul H).
+  - apply (peano_minus_numeral_ne H).
+  - apply (peano_minus_lt_numeral_iff H).
+Defined.
 
 Definition peano_minus_ball_lt_succ {X n}
     (t : semiterm oring_language X n)

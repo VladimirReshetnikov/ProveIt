@@ -14,6 +14,7 @@ From Foundation.FirstOrder.Basic Require Import Coding.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
+From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
@@ -1508,10 +1509,19 @@ Print Assumptions peano_minus_mul_le_mul.
 Print Assumptions peano_minus_structure_monotone.
 Print Assumptions peano_minus_not_lt_zero.
 Print Assumptions peano_minus_numeral_succ.
+Print Assumptions peano_minus_numeral_add.
+Print Assumptions peano_minus_numeral_mul.
 Print Assumptions peano_minus_numeral_lt.
+Print Assumptions peano_minus_numeral_ne.
 Print Assumptions peano_minus_eq_numeral_of_lt_numeral.
 Print Assumptions peano_minus_lt_numeral_iff.
 Print Assumptions peano_minus_le_numeral_iff.
+Print Assumptions r0_laws.
+Print Assumptions r0_numeral_eq_iff.
+Print Assumptions r0_numeral_lt_iff.
+Print Assumptions r0_lt_numeral_fin_iff.
+Print Assumptions nat_r0_laws.
+Print Assumptions peano_minus_r0_laws.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.
