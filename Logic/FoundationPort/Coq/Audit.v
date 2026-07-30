@@ -102,6 +102,8 @@ Print Assumptions list_words_up_to_complete.
 Print Assumptions nodup_lists_explicit_finite_cover.
 Print Assumptions list_singleton_suffix_unique.
 Check list_chain.
+Print Assumptions list_member_index.
+Print Assumptions list_member_indices_distinct.
 Print Assumptions list_chain_map.
 Print Assumptions list_chain_range_strict_mono.
 Print Assumptions list_chain_range_strict_anti.
@@ -114,6 +116,19 @@ Print Assumptions list_chain_fin_enum_strict_anti.
 Print Assumptions list_chain_connected.
 Print Assumptions list_chain_nodup.
 Print Assumptions chain_lists_explicit_finite_cover.
+Print Assumptions list_chain_rev.
+Print Assumptions list_chain_fin_enum_rev.
+Print Assumptions list_chain_app_singleton_iff.
+Print Assumptions list_chain_head_relation.
+Print Assumptions list_chain_head_lower.
+Print Assumptions list_chain_last_relation.
+Print Assumptions list_chain_last_upper.
+Print Assumptions list_chain_app_singleton_last_iff.
+Check chain_list_index.
+Print Assumptions chain_list_index_member.
+Print Assumptions chain_list_index_injective_of_nodup.
+Check type_embedding.
+Print Assumptions list_embedding_of_nodup_length.
 Check nat_cases.
 Print Assumptions nat_cases_zero.
 Print Assumptions nat_cases_succ.
