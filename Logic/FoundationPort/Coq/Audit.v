@@ -2,6 +2,7 @@
 
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
+From Foundation.Vorspiel.Order Require Import Heyting.
 From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
@@ -60,6 +61,11 @@ Check option_to_list.
 Print Assumptions option_to_list_singleton_iff.
 Check function_equal_on.
 Print Assumptions function_equal_on_subset.
+Check heyting_algebra_data.
+Print Assumptions ha_inf_mono.
+Print Assumptions ha_himp_himp_inf_himp_inf_le.
+Print Assumptions ha_himp_inf_himp_inf_sup_le.
+Print Assumptions ha_complement_of_sup_equiv_inf_complements.
 Check preorder_data.
 Check directed_on.
 Print Assumptions directed_list_colimit.
