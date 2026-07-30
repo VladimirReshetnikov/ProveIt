@@ -1640,6 +1640,14 @@ Print Assumptions fin_env_cons_empty_eq_constant.
 Print Assumptions arithmetic_all_predicate_eval.
 Print Assumptions arithmetic_successor_step_eval.
 Print Assumptions arithmetic_successor_induction_eval.
+Print Assumptions arithmetic_bounded_all_eval.
+Print Assumptions arithmetic_predecessors_eval.
+Print Assumptions arithmetic_order_step_eval.
+Print Assumptions arithmetic_order_induction_eval.
+Print Assumptions arithmetic_exists_predicate_eval.
+Print Assumptions arithmetic_no_predecessors_eval.
+Print Assumptions arithmetic_least_witness_eval.
+Print Assumptions arithmetic_least_number_eval.
 Print Assumptions first_order_axiom_scheme_subset.
 Print Assumptions first_order_scheme_union_subset.
 Print Assumptions first_order_scheme_union_weaker.

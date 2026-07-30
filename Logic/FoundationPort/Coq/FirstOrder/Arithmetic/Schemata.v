@@ -205,6 +205,188 @@ Proof.
   rewrite arithmetic_all_predicate_eval. tauto.
 Qed.
 
+Lemma arithmetic_bounded_all_eval : forall M X n
+    (Str : first_order_structure oring_language M)
+    (b : Fin.t n -> M) (f : X -> M) (O : oring_carrier M)
+    (t : semiterm oring_language X (S n))
+    (p : semiformula oring_language X (S n)),
+  structure_interprets_oring Str oring_language_structure O ->
+  semiformula_eval Str b f (arithmetic_bounded_all t p) <->
+  forall x,
+    oring_lt O x (semiterm_val Str (fin_env_cons x b) f t) ->
+    semiformula_eval Str (fin_env_cons x b) f p.
+Proof.
+  intros M X n Str b f O t p Horing.
+  unfold arithmetic_bounded_all, arithmetic_lt_guard.
+  rewrite semiformula_eval_bounded_all.
+  setoid_rewrite semiformula_eval_operator_apply.
+  setoid_rewrite semiterm_val_fin_two.
+  setoid_rewrite (structure_relation_operator (structure_oring_lt Horing)).
+  reflexivity.
+Qed.
+
+Lemma arithmetic_predecessors_eval : forall M X
+    (Str : first_order_structure oring_language M)
+    (b : Fin.t 0 -> M) (f : X -> M) (O : oring_carrier M)
+    (phi : semiformula oring_language X 1) x,
+  structure_interprets_oring Str oring_language_structure O ->
+  semiformula_eval Str (fin_env_cons x b) f
+    (arithmetic_bounded_all (Semiterm_bvar (Fin.FS Fin.F1))
+      (arithmetic_predicate_instance phi (Semiterm_bvar Fin.F1))) <->
+  forall y, oring_lt O y x -> arithmetic_predicate_holds Str f phi y.
+Proof.
+  intros M X Str b f O phi x Horing.
+  rewrite (@arithmetic_bounded_all_eval M X 1 Str
+    (fin_env_cons x b) f O _ _ Horing).
+  split; intros H y Hy.
+  - specialize (H y). simpl in H.
+    apply (proj1 (arithmetic_predicate_instance_eval Str
+      (fin_env_cons y (fin_env_cons x b)) f phi (Semiterm_bvar Fin.F1))).
+    simpl. apply H. exact Hy.
+  - apply (proj2 (arithmetic_predicate_instance_eval Str
+      (fin_env_cons y (fin_env_cons x b)) f phi (Semiterm_bvar Fin.F1))).
+    simpl. apply H. exact Hy.
+Qed.
+
+Lemma arithmetic_order_step_eval : forall M X
+    (Str : first_order_structure oring_language M)
+    (b : Fin.t 0 -> M) (f : X -> M) (O : oring_carrier M)
+    (phi : semiformula oring_language X 1),
+  structure_interprets_oring Str oring_language_structure O ->
+  semiformula_eval Str b f
+    (Semiformula_all
+      (semiformula_imp
+        (arithmetic_bounded_all (Semiterm_bvar (Fin.FS Fin.F1))
+          (arithmetic_predicate_instance phi (Semiterm_bvar Fin.F1)))
+        phi)) <->
+  forall x,
+    (forall y, oring_lt O y x ->
+      arithmetic_predicate_holds Str f phi y) ->
+    arithmetic_predicate_holds Str f phi x.
+Proof.
+  intros M X Str b f O phi Horing. split.
+  - intros H x Hpred. specialize (H x).
+    rewrite semiformula_eval_imp in H.
+    unfold arithmetic_predicate_holds.
+    rewrite <- (fin_env_cons_empty_eq_constant x b).
+    apply H.
+    apply (proj2 (@arithmetic_predecessors_eval
+      M X Str b f O phi x Horing)). exact Hpred.
+  - intros H x. rewrite semiformula_eval_imp. intro Hpred.
+    specialize (H x) as Hx. unfold arithmetic_predicate_holds in Hx.
+    rewrite (fin_env_cons_empty_eq_constant x b).
+    apply Hx. apply (proj1 (@arithmetic_predecessors_eval
+      M X Str b f O phi x Horing)). exact Hpred.
+Qed.
+
+Theorem arithmetic_order_induction_eval : forall M X
+    (Str : first_order_structure oring_language M)
+    (f : X -> M) (O : oring_carrier M)
+    (phi : semiformula oring_language X 1),
+  structure_interprets_oring Str oring_language_structure O ->
+  formula_eval Str f (arithmetic_order_induction phi) <->
+  ((forall x,
+      (forall y, oring_lt O y x ->
+        arithmetic_predicate_holds Str f phi y) ->
+      arithmetic_predicate_holds Str f phi x) ->
+    forall x, arithmetic_predicate_holds Str f phi x).
+Proof.
+  intros M X Str f O phi Horing.
+  unfold formula_eval, arithmetic_order_induction.
+  rewrite semiformula_eval_imp.
+  rewrite (@arithmetic_order_step_eval M X Str _ f O phi Horing).
+  rewrite arithmetic_all_predicate_eval. tauto.
+Qed.
+
+Lemma arithmetic_exists_predicate_eval : forall M X
+    (Str : first_order_structure oring_language M)
+    (b : Fin.t 0 -> M) (f : X -> M)
+    (phi : semiformula oring_language X 1),
+  semiformula_eval Str b f (Semiformula_exists phi) <->
+  exists x, arithmetic_predicate_holds Str f phi x.
+Proof.
+  intros. simpl. split; intros [x Hx]; exists x.
+  - unfold arithmetic_predicate_holds.
+    rewrite <- (fin_env_cons_empty_eq_constant x b). exact Hx.
+  - rewrite (fin_env_cons_empty_eq_constant x b). exact Hx.
+Qed.
+
+Lemma arithmetic_no_predecessors_eval : forall M X
+    (Str : first_order_structure oring_language M)
+    (b : Fin.t 0 -> M) (f : X -> M) (O : oring_carrier M)
+    (phi : semiformula oring_language X 1) x,
+  structure_interprets_oring Str oring_language_structure O ->
+  semiformula_eval Str (fin_env_cons x b) f
+    (arithmetic_bounded_all (Semiterm_bvar (Fin.FS Fin.F1))
+      (semiformula_neg
+        (arithmetic_predicate_instance phi (Semiterm_bvar Fin.F1)))) <->
+  forall y, oring_lt O y x ->
+    ~ arithmetic_predicate_holds Str f phi y.
+Proof.
+  intros M X Str b f O phi x Horing.
+  rewrite (@arithmetic_bounded_all_eval M X 1 Str
+    (fin_env_cons x b) f O _ _ Horing).
+  split.
+  - intros H y Hy. specialize (H y). simpl in H.
+    specialize (H Hy). rewrite semiformula_eval_neg in H.
+    intro Hphi. apply H.
+    apply (proj2 (arithmetic_predicate_instance_eval Str
+      (fin_env_cons y (fin_env_cons x b)) f phi (Semiterm_bvar Fin.F1))).
+    simpl. exact Hphi.
+  - intros H y Hy. simpl.
+    rewrite semiformula_eval_neg. intro Hphi.
+    apply (H y Hy).
+    apply (proj1 (arithmetic_predicate_instance_eval Str
+      (fin_env_cons y (fin_env_cons x b)) f phi (Semiterm_bvar Fin.F1))).
+    simpl. exact Hphi.
+Qed.
+
+Lemma arithmetic_least_witness_eval : forall M X
+    (Str : first_order_structure oring_language M)
+    (b : Fin.t 0 -> M) (f : X -> M) (O : oring_carrier M)
+    (phi : semiformula oring_language X 1),
+  structure_interprets_oring Str oring_language_structure O ->
+  semiformula_eval Str b f
+    (Semiformula_exists
+      (Semiformula_and phi
+        (arithmetic_bounded_all (Semiterm_bvar (Fin.FS Fin.F1))
+          (semiformula_neg
+            (arithmetic_predicate_instance phi
+              (Semiterm_bvar Fin.F1)))))) <->
+  exists x, arithmetic_predicate_holds Str f phi x /\
+    forall y, oring_lt O y x ->
+      ~ arithmetic_predicate_holds Str f phi y.
+Proof.
+  intros M X Str b f O phi Horing. simpl. split.
+  - intros [x [Hx Hmin]]. exists x. split.
+    + unfold arithmetic_predicate_holds.
+      rewrite <- (fin_env_cons_empty_eq_constant x b). exact Hx.
+    + apply (proj1 (@arithmetic_no_predecessors_eval
+        M X Str b f O phi x Horing)). exact Hmin.
+  - intros [x [Hx Hmin]]. exists x. split.
+    + rewrite (fin_env_cons_empty_eq_constant x b). exact Hx.
+    + apply (proj2 (@arithmetic_no_predecessors_eval
+        M X Str b f O phi x Horing)). exact Hmin.
+Qed.
+
+Theorem arithmetic_least_number_eval : forall M X
+    (Str : first_order_structure oring_language M)
+    (f : X -> M) (O : oring_carrier M)
+    (phi : semiformula oring_language X 1),
+  structure_interprets_oring Str oring_language_structure O ->
+  formula_eval Str f (arithmetic_least_number phi) <->
+  ((exists x, arithmetic_predicate_holds Str f phi x) ->
+   exists x, arithmetic_predicate_holds Str f phi x /\
+     forall y, oring_lt O y x ->
+       ~ arithmetic_predicate_holds Str f phi y).
+Proof.
+  intros M X Str f O phi Horing.
+  unfold formula_eval, arithmetic_least_number.
+  rewrite semiformula_eval_imp, arithmetic_exists_predicate_eval.
+  rewrite (@arithmetic_least_witness_eval M X Str _ f O phi Horing).
+  tauto.
+Qed.
+
 Definition first_order_axiom_scheme {L : language} {I : Type}
     (C : I -> Prop) (axiom : I -> sentence L) : theory L :=
   fun sigma => exists i, C i /\ sigma = axiom i.
