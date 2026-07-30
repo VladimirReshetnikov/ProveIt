@@ -68,6 +68,7 @@ From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
 From Foundation.FirstOrder Require Import Polarity.
 From Foundation.Syntax.Predicate Require Import Relational.
+From Foundation.LinearLogic Require Import MLL MELL.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
@@ -331,6 +332,47 @@ Print Assumptions nat_bounded_all_search_positive_iff.
 Print Assumptions nat_bounded_all_search_least_exists.
 Print Assumptions nat_bounded_all_search_least_value.
 Print Assumptions arithmetic1_bounded_all.
+Check mll_formula.
+Check mll_neg.
+Print Assumptions mll_neg_involutive.
+Check mll_lolli.
+Check mll_derivation.
+Check mll_id.
+Check mll_cut.
+Check mll_exchange.
+Check mll_tensor_rule.
+Check mll_par_rule.
+Print Assumptions mll_rotate.
+Print Assumptions mll_identity.
+Print Assumptions mll_identity_proof.
+Print Assumptions mll_modus_ponens.
+Print Assumptions mll_excluded_middle.
+Check mell_formula.
+Check mell_neg.
+Print Assumptions mell_neg_involutive.
+Check mell_lolli.
+Check mell_formula_is_quest.
+Print Assumptions mell_formula_is_quest_not_atom.
+Print Assumptions mell_formula_is_quest_not_natom.
+Print Assumptions mell_formula_is_quest_not_tensor.
+Print Assumptions mell_formula_is_quest_not_par.
+Print Assumptions mell_formula_is_quest_not_bang.
+Print Assumptions mell_formula_is_quest_quest.
+Check mell_sequent_is_quest.
+Print Assumptions mell_sequent_is_quest_nil.
+Print Assumptions mell_sequent_is_quest_cons.
+Check mell_derivation.
+Check mell_id.
+Check mell_cut.
+Check mell_exchange.
+Check mell_tensor_rule.
+Check mell_par_rule.
+Check mell_bang_rule.
+Check mell_dereliction.
+Print Assumptions mell_rotate.
+Print Assumptions mell_eta.
+Print Assumptions mell_identity_proof.
+Print Assumptions mell_modus_ponens.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.
