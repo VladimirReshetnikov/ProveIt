@@ -228,6 +228,14 @@ Check semiformula_rewrite_complexity.
 Check semiformula_rewrite_quantifier_rank.
 Check semiformula_rewrite_open.
 Check semiformula_rewrite_free_occurs_sources.
+Check rew_rewrite_under_free.
+Check rew_rewrite_under_free_comp_shift.
+Check rew_rewrite_under_free_comp_free.
+Check semiformula_rewrite_under_free_shift.
+Check semiformula_rewrite_under_free_free.
+Check rew_subst_bshift_zero.
+Check rew_rewrite_comp_substitute_one.
+Check semiformula_rewrite_substitute_one.
 Check semiformula_substitute.
 Check semiformula_substitute_id.
 Check semiformula_substitute_comp.
@@ -586,6 +594,8 @@ Check first_order_sequent.
 Check first_order_sequent_shift.
 Check first_order_sequent_language_map.
 Check first_order_sequent_language_map_shift.
+Check first_order_sequent_rewrite.
+Check first_order_sequent_rewrite_under_free_shift.
 Check first_order_derivation.
 Check FODIdentity.
 Check FODCut.
@@ -604,6 +614,9 @@ Check first_order_derivation_atomic_identity.
 Check first_order_derivation_rotate.
 Check first_order_derivation_tensor.
 Check first_order_derivation_language_map.
+Check first_order_derivation_rewrite.
+Check first_order_derivation_map.
+Check first_order_derivation_shift.
 Check first_order_derivation_height_identity.
 Check first_order_derivation_height_cut.
 Check first_order_derivation_height_contraction.
@@ -629,6 +642,9 @@ Check first_order_derivation_root_is_cut.
 Check first_order_is_cut_free_root_is_not_cut.
 Check first_order_is_cut_free_not_cut.
 Check first_order_is_cut_free_language_map_iff.
+Check first_order_is_cut_free_rewrite_iff.
+Check first_order_is_cut_free_map_iff.
+Check first_order_is_cut_free_shift_iff.
 Check first_order_empty_env.
 Check first_order_sequent_true.
 Check fin_env_snoc_empty_eq_cons.
@@ -721,6 +737,13 @@ Print Assumptions semiformula_rewrite_complexity.
 Print Assumptions semiformula_rewrite_quantifier_rank.
 Print Assumptions semiformula_rewrite_open.
 Print Assumptions semiformula_rewrite_free_occurs_sources.
+Print Assumptions rew_rewrite_under_free_comp_shift.
+Print Assumptions rew_rewrite_under_free_comp_free.
+Print Assumptions semiformula_rewrite_under_free_shift.
+Print Assumptions semiformula_rewrite_under_free_free.
+Print Assumptions rew_subst_bshift_zero.
+Print Assumptions rew_rewrite_comp_substitute_one.
+Print Assumptions semiformula_rewrite_substitute_one.
 Print Assumptions semiformula_substitute_comp.
 Print Assumptions semiformula_shift_injective.
 Print Assumptions semiformula_free_fix.
@@ -855,6 +878,10 @@ Print Assumptions first_order_derivation_rotate.
 Print Assumptions first_order_derivation_tensor.
 Print Assumptions first_order_sequent_language_map_shift.
 Print Assumptions first_order_derivation_language_map.
+Print Assumptions first_order_sequent_rewrite_under_free_shift.
+Print Assumptions first_order_derivation_rewrite.
+Print Assumptions first_order_derivation_map.
+Print Assumptions first_order_derivation_shift.
 Print Assumptions first_order_is_cut_free_or_iff.
 Print Assumptions first_order_is_cut_free_and_iff.
 Print Assumptions first_order_is_cut_free_all_iff.
@@ -864,6 +891,9 @@ Print Assumptions first_order_is_cut_free_cast_iff.
 Print Assumptions first_order_is_cut_free_root_is_not_cut.
 Print Assumptions first_order_is_cut_free_not_cut.
 Print Assumptions first_order_is_cut_free_language_map_iff.
+Print Assumptions first_order_is_cut_free_rewrite_iff.
+Print Assumptions first_order_is_cut_free_map_iff.
+Print Assumptions first_order_is_cut_free_shift_iff.
 Print Assumptions fin_env_snoc_empty_eq_cons.
 Print Assumptions first_order_shifted_context_true.
 Print Assumptions first_order_derivation_sound.

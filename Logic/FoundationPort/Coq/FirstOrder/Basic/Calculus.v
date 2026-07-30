@@ -39,6 +39,22 @@ Proof.
   - now rewrite semiformula_language_map_shift, IH.
 Qed.
 
+Definition first_order_sequent_rewrite {L}
+    (f : nat -> syntactic_term L) (Gamma : first_order_sequent L) :
+    first_order_sequent L :=
+  map (semiformula_rewrite (rew_rewrite f)) Gamma.
+
+Lemma first_order_sequent_rewrite_under_free_shift :
+  forall L (f : nat -> syntactic_term L) (Gamma : first_order_sequent L),
+    first_order_sequent_rewrite (rew_rewrite_under_free f)
+      (first_order_sequent_shift Gamma) =
+    first_order_sequent_shift (first_order_sequent_rewrite f Gamma).
+Proof.
+  intros L f Gamma. induction Gamma as [|p Gamma IH]; simpl.
+  - reflexivity.
+  - now rewrite semiformula_rewrite_under_free_shift, IH.
+Qed.
+
 (** Primitive LK rules.  Contraction includes exchange and weakening because
     [generic_list_subset] is pointwise list inclusion. *)
 Inductive first_order_derivation (L : language) :
@@ -191,6 +207,55 @@ Proof.
       (@first_order_derivation_language_map L M _ h d) _).
     simpl. now rewrite semiformula_language_map_substitute.
 Defined.
+
+(** Simultaneously rewrite every free variable occurring in a derivation. *)
+Fixpoint first_order_derivation_rewrite {L Gamma}
+    (f : nat -> syntactic_term L) (d : first_order_derivation L Gamma)
+    {struct d} :
+    first_order_derivation L (first_order_sequent_rewrite f Gamma).
+Proof.
+  destruct d as [k r v | p Gamma Delta dp dn | Gamma Delta d Hsub |
+    | p q Gamma d | p q Gamma dp dq | p Gamma d | p t Gamma d].
+  - exact (FODIdentity r
+      (fun i => rew_apply (rew_rewrite f) (v i))).
+  - pose (dp' := @first_order_derivation_rewrite L _ f dp).
+    pose (dn' := @first_order_derivation_rewrite L _ f dn).
+    refine (first_order_derivation_cast
+      (FODCut dp'
+        (first_order_derivation_cast dn' _)) _).
+    + simpl. now rewrite semiformula_rewrite_neg.
+    + unfold first_order_sequent_rewrite. simpl.
+      now rewrite List.map_app.
+  - apply (FODContraction (@first_order_derivation_rewrite L _ f d)).
+    now apply generic_list_map_subset.
+  - exact FODVerum.
+  - exact (FODOr (@first_order_derivation_rewrite L _ f d)).
+  - exact (FODAnd (@first_order_derivation_rewrite L _ f dp)
+                  (@first_order_derivation_rewrite L _ f dq)).
+  - apply FODAll.
+    refine (first_order_derivation_cast
+      (@first_order_derivation_rewrite L _
+        (rew_rewrite_under_free f) d) _).
+    simpl. rewrite semiformula_rewrite_under_free_free.
+    now rewrite first_order_sequent_rewrite_under_free_shift.
+  - apply (FODExists
+      (t := rew_apply (rew_rewrite f) t)).
+    refine (first_order_derivation_cast
+      (@first_order_derivation_rewrite L _ f d) _).
+    simpl. now rewrite semiformula_rewrite_substitute_one.
+Defined.
+
+Definition first_order_derivation_map {L Gamma}
+    (d : first_order_derivation L Gamma) (f : nat -> nat) :
+    first_order_derivation L
+      (first_order_sequent_rewrite
+        (fun x => Semiterm_fvar (f x)) Gamma) :=
+  first_order_derivation_rewrite (fun x => Semiterm_fvar (f x)) d.
+
+Definition first_order_derivation_shift {L Gamma}
+    (d : first_order_derivation L Gamma) :
+    first_order_derivation L (first_order_sequent_shift Gamma) :=
+  first_order_derivation_rewrite (fun x => Semiterm_fvar (S x)) d.
 
 Lemma first_order_derivation_height_identity :
   forall L k (r : language_rel L k) v,

@@ -1,7 +1,7 @@
 (** Cut-freeness for first-order LK derivation trees. *)
 
 From Stdlib Require Import Lists.List Vectors.Fin Program.Equality.
-From Foundation.Syntax.Predicate Require Import Language Rew.
+From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Calculus.
 
@@ -156,3 +156,40 @@ Proof.
   - repeat rewrite first_order_is_cut_free_exists_iff.
     rewrite first_order_is_cut_free_cast_iff. exact IHd.
 Qed.
+
+Lemma first_order_is_cut_free_rewrite_iff :
+  forall L Gamma (f : nat -> syntactic_term L)
+         (d : first_order_derivation L Gamma),
+    first_order_is_cut_free (first_order_derivation_rewrite f d) <->
+    first_order_is_cut_free d.
+Proof.
+  intros L Gamma f d. revert f. induction d; intro f; cbn.
+  - split; intro; constructor.
+  - split; intro Hcf.
+    + exfalso. rewrite first_order_is_cut_free_cast_iff in Hcf.
+      exact (first_order_is_cut_free_not_cut Hcf).
+    + exfalso. exact (first_order_is_cut_free_not_cut Hcf).
+  - repeat rewrite first_order_is_cut_free_contraction_iff. apply IHd.
+  - split; intro; constructor.
+  - repeat rewrite first_order_is_cut_free_or_iff. apply IHd.
+  - repeat rewrite first_order_is_cut_free_and_iff.
+    now rewrite (IHd1 f), (IHd2 f).
+  - repeat rewrite first_order_is_cut_free_all_iff.
+    rewrite first_order_is_cut_free_cast_iff.
+    apply (IHd (rew_rewrite_under_free f)).
+  - repeat rewrite first_order_is_cut_free_exists_iff.
+    rewrite first_order_is_cut_free_cast_iff. apply (IHd f).
+Qed.
+
+Lemma first_order_is_cut_free_map_iff :
+  forall L Gamma (f : nat -> nat)
+         (d : first_order_derivation L Gamma),
+    first_order_is_cut_free (first_order_derivation_map d f) <->
+    first_order_is_cut_free d.
+Proof. intros; apply first_order_is_cut_free_rewrite_iff. Qed.
+
+Lemma first_order_is_cut_free_shift_iff :
+  forall L Gamma (d : first_order_derivation L Gamma),
+    first_order_is_cut_free (first_order_derivation_shift d) <->
+    first_order_is_cut_free d.
+Proof. intros; apply first_order_is_cut_free_rewrite_iff. Qed.

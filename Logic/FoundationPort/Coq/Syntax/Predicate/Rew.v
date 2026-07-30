@@ -1417,6 +1417,102 @@ Definition semiformula_fix {L n} (p : semiproposition L n) :
     semiproposition L (n + 1) :=
   semiformula_rewrite rew_fix p.
 
+(** Rewriting a freed binder reserves free variable zero for that binder and
+    shifts the rewritten images of all pre-existing free variables. *)
+Definition rew_rewrite_under_free {L}
+    (f : nat -> syntactic_term L) : nat -> syntactic_term L :=
+  fun x =>
+    match x with
+    | 0 => Semiterm_fvar 0
+    | S y => rew_apply rew_shift (f y)
+    end.
+
+Lemma rew_rewrite_under_free_comp_shift : forall L
+    (f : nat -> syntactic_term L),
+  rew_equiv
+    (rew_comp (rew_rewrite (rew_rewrite_under_free f)) rew_shift)
+    (rew_comp rew_shift (rew_rewrite f)).
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intros i. exact (Fin.case0 (fun _ => _ = _) i).
+  - intro x. reflexivity.
+Qed.
+
+Lemma rew_rewrite_under_free_comp_free : forall L
+    (f : nat -> syntactic_term L),
+  rew_equiv
+    (rew_comp (rew_rewrite (rew_rewrite_under_free f)) (@rew_free L 0))
+    (rew_comp (@rew_free L 0) (rew_q (rew_rewrite f))).
+Proof.
+  intros L f. apply rew_equiv_of_variables.
+  - intro i. assert (Hi : i = Fin.F1) by apply fin_one_eq_f1.
+    subst i. reflexivity.
+  - intro x. cbn. symmetry.
+    apply rew_free_bshift_eq_shift.
+Qed.
+
+Lemma semiformula_rewrite_under_free_shift : forall L
+    (f : nat -> syntactic_term L) (p : proposition L),
+  semiformula_rewrite (rew_rewrite (rew_rewrite_under_free f))
+      (semiformula_shift p) =
+  semiformula_shift (semiformula_rewrite (rew_rewrite f) p).
+Proof.
+  intros. unfold semiformula_shift.
+  rewrite <- !semiformula_rewrite_comp.
+  apply semiformula_rewrite_ext, rew_rewrite_under_free_comp_shift.
+Qed.
+
+Lemma semiformula_rewrite_under_free_free : forall L
+    (f : nat -> syntactic_term L) (p : semiproposition L 1),
+  semiformula_rewrite (rew_rewrite (rew_rewrite_under_free f))
+      (@semiformula_free L 0 p) =
+  @semiformula_free L 0
+    (semiformula_rewrite (rew_q (rew_rewrite f)) p).
+Proof.
+  intros. unfold semiformula_free.
+  rewrite <- !semiformula_rewrite_comp.
+  apply semiformula_rewrite_ext, rew_rewrite_under_free_comp_free.
+Qed.
+
+Lemma rew_subst_bshift_zero : forall L X
+    (v : Fin.t 1 -> semiterm L X 0) (t : semiterm L X 0),
+  rew_apply (rew_subst v) (rew_apply rew_bshift t) = t.
+Proof.
+  intros L X v t. induction t as [i | x | k g a IH]; simpl.
+  - exact (Fin.case0 (fun _ => _ = _) i).
+  - reflexivity.
+  - f_equal. apply functional_extensionality. exact IH.
+Qed.
+
+Lemma rew_rewrite_comp_substitute_one : forall L
+    (f : nat -> syntactic_term L) (t : syntactic_term L),
+  rew_equiv
+    (rew_comp (rew_rewrite f) (rew_subst (fun _ : Fin.t 1 => t)))
+    (rew_comp
+      (rew_subst
+        (fun _ : Fin.t 1 => rew_apply (rew_rewrite f) t))
+      (rew_q (rew_rewrite f))).
+Proof.
+  intros L f t. apply rew_equiv_of_variables.
+  - intro i. assert (Hi : i = Fin.F1) by apply fin_one_eq_f1.
+    now subst i.
+  - intro x. cbn. symmetry. apply rew_subst_bshift_zero.
+Qed.
+
+Lemma semiformula_rewrite_substitute_one : forall L
+    (f : nat -> syntactic_term L) (t : syntactic_term L)
+    (p : semiproposition L 1),
+  semiformula_rewrite (rew_rewrite f)
+      (semiformula_substitute (fun _ : Fin.t 1 => t) p) =
+  semiformula_substitute
+      (fun _ : Fin.t 1 => rew_apply (rew_rewrite f) t)
+      (semiformula_rewrite (rew_q (rew_rewrite f)) p).
+Proof.
+  intros. unfold semiformula_substitute.
+  rewrite <- !semiformula_rewrite_comp.
+  apply semiformula_rewrite_ext, rew_rewrite_comp_substitute_one.
+Qed.
+
 Lemma semiformula_language_map_substitute : forall L M X k n
     (h : language_hom L M) (v : Fin.t k -> semiterm L X n)
     (p : semiformula L X k),
