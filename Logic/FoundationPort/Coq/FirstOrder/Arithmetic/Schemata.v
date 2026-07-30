@@ -4,9 +4,9 @@ From Stdlib Require Import Logic.FunctionalExtensionality.
 From FoundationModal Require Import GenericEntailment.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
-From Foundation.FirstOrder.Basic Require Import Calculus Operator.
+From Foundation.FirstOrder.Basic Require Import Calculus Operator Soundness.
 From Foundation.FirstOrder.Basic.Semantics Require Import
-  Semantics OperatorSemantics.
+  Semantics RewriteClosure OperatorSemantics ModelTheory Elementary.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Hierarchy.
 
 Set Implicit Arguments.
@@ -567,4 +567,127 @@ Lemma arithmetic_sigma_induction_subset_peano : forall T k sigma,
 Proof.
   intros T k. apply arithmetic_induction_theory_subset.
   intros phi Hphi. exact I.
+Qed.
+
+Theorem semiformula_universal_closure_elim : forall L M
+    (Str : first_order_structure L M) (p : proposition L) (f : nat -> M),
+  sentence_realize Str (semiformula_universal_closure p) ->
+  formula_eval Str f p.
+Proof.
+  intros L M Str p f Hreal.
+  pose proof (proj2 (@first_order_sentence_embed_eval L M Str f
+    (semiformula_universal_closure p)) Hreal) as Hopen.
+  unfold first_order_sentence_embed in Hopen.
+  rewrite semiformula_emb_universal_closure in Hopen.
+  unfold semiformula_universal_closure_open in Hopen.
+  pose proof (proj1 (@semiformula_eval_all_closure L M nat
+    (semiformula_free_bound p) Str
+    (fun i : Fin.t 0 => match i with end) f
+    (semiformula_fix_all_free p)) Hopen) as Hall.
+  specialize (Hall (fun i => f (fin_value i))).
+  unfold semiformula_fix_all_free in Hall.
+  rewrite semiformula_eval_rewrite in Hall.
+  unfold formula_eval.
+  assert (Hfree : forall x, semiformula_free_occurs x p ->
+      (fun y => semiterm_val Str (fun i => f (fin_value i)) f
+        (rew_apply (rew_fix_iter 0 (semiformula_free_bound p))
+          (Semiterm_fvar y))) x = f x).
+  { intros x Hx.
+    pose proof (@semiformula_lt_free_bound_of_occurs L 0 p x Hx) as Hlt.
+    rewrite (@rew_fix_iter_fvar_lt L 0 (semiformula_free_bound p) x Hlt).
+    cbn [semiterm_val].
+    unfold fin_value, fin_add_right_of_lt.
+    rewrite Fin.to_nat_of_nat. now simpl. }
+  pose proof (proj1 (@semiformula_eval_free_ext L M nat 0 Str
+    (fun i => semiterm_val Str (fun j => f (fin_value j)) f
+      (rew_apply (rew_fix_iter 0 (semiformula_free_bound p))
+        (Semiterm_bvar i)))
+    (fun x => semiterm_val Str (fun i => f (fin_value i)) f
+      (rew_apply (rew_fix_iter 0 (semiformula_free_bound p))
+    (Semiterm_fvar x))) f p Hfree) Hall) as Hp.
+  assert (Hbound : forall i : Fin.t 0,
+      semiterm_val Str (fun j => f (fin_value j)) f
+        (rew_apply (rew_fix_iter 0 (semiformula_free_bound p))
+          (Semiterm_bvar i)) = match i with end).
+  { intro i. inversion i. }
+  exact (proj1 (@semiformula_eval_bound_extensional L M nat 0 Str
+    (fun i => semiterm_val Str
+      (fun j => f (fin_value j)) f
+      (rew_apply (rew_fix_iter 0 (semiformula_free_bound p))
+        (Semiterm_bvar i)))
+    (fun i : Fin.t 0 => match i with end) f p Hbound) Hp).
+Qed.
+
+Theorem arithmetic_models_successor_induction : forall
+    (m : first_order_model oring_language) (O : oring_carrier
+      (first_order_model_domain m)) C
+    (phi : arithmetic_semiproposition 1) (f : nat ->
+      first_order_model_domain m),
+  structure_interprets_oring (first_order_model_structure m)
+    oring_language_structure O ->
+  first_order_models_theory m (arithmetic_successor_induction_scheme C) ->
+  C phi ->
+  arithmetic_predicate_holds (first_order_model_structure m) f phi
+      (oring_zero O) ->
+  (forall x, arithmetic_predicate_holds
+      (first_order_model_structure m) f phi x ->
+    arithmetic_predicate_holds (first_order_model_structure m) f phi
+      (oring_add O x (oring_one O))) ->
+  forall x, arithmetic_predicate_holds
+    (first_order_model_structure m) f phi x.
+Proof.
+  intros m O C phi f Horing Hmodels HC Hzero Hsucc.
+  pose proof (first_order_models_of_member Hmodels
+    (arithmetic_successor_induction_scheme_intro HC)) as Haxiom.
+  pose proof (@semiformula_universal_closure_elim oring_language
+    (first_order_model_domain m) (first_order_model_structure m)
+    (arithmetic_successor_induction phi) f Haxiom) as Hind.
+  pose proof (proj1 (@arithmetic_successor_induction_eval
+    (first_order_model_domain m) nat (first_order_model_structure m)
+    f O phi Horing) Hind) as Hinduction.
+  exact (Hinduction Hzero Hsucc).
+Qed.
+
+Record arithmetic_model_predicate_representation
+    (m : first_order_model oring_language)
+    (C : arithmetic_semiproposition 1 -> Prop)
+    (P : first_order_model_domain m -> Prop) : Type := {
+  arithmetic_representation_valuation : nat -> first_order_model_domain m;
+  arithmetic_representation_formula : arithmetic_semiproposition 1;
+  arithmetic_representation_class :
+    C arithmetic_representation_formula;
+  arithmetic_representation_spec : forall x,
+    P x <-> arithmetic_predicate_holds (first_order_model_structure m)
+      arithmetic_representation_valuation arithmetic_representation_formula x
+}.
+
+Theorem arithmetic_models_induction_theory_successor : forall
+    (m : first_order_model oring_language) (O : oring_carrier
+      (first_order_model_domain m)) T C
+    (P : first_order_model_domain m -> Prop),
+  structure_interprets_oring (first_order_model_structure m)
+    oring_language_structure O ->
+  first_order_models_theory m (arithmetic_induction_theory T C) ->
+  @arithmetic_model_predicate_representation m C P ->
+  P (oring_zero O) ->
+  (forall x, P x -> P (oring_add O x (oring_one O))) ->
+  forall x, P x.
+Proof.
+  intros m O T C P Horing Hmodels
+    [f phi HC Hspec] Hzero Hsucc.
+  unfold arithmetic_induction_theory, first_order_theory_union in Hmodels.
+  pose proof (proj1 (@first_order_models_union_iff oring_language m
+    T (arithmetic_successor_induction_scheme C)) Hmodels) as Hparts.
+  pose proof (@arithmetic_models_successor_induction m O C phi f
+    Horing (proj2 Hparts) HC) as Hind.
+  assert (Hzero' : arithmetic_predicate_holds
+      (first_order_model_structure m) f phi (oring_zero O)).
+  { apply (proj1 (Hspec (oring_zero O))). exact Hzero. }
+  assert (Hsucc' : forall x,
+      arithmetic_predicate_holds (first_order_model_structure m) f phi x ->
+      arithmetic_predicate_holds (first_order_model_structure m) f phi
+        (oring_add O x (oring_one O))).
+  { intros x Hx. apply (proj1 (Hspec _)).
+    apply Hsucc. apply (proj2 (Hspec x)). exact Hx. }
+  intro x. apply (proj2 (Hspec x)). exact (Hind Hzero' Hsucc' x).
 Qed.

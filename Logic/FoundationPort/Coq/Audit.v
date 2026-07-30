@@ -1666,6 +1666,10 @@ Print Assumptions arithmetic_sigma_induction_subset_mono.
 Print Assumptions arithmetic_sigma_induction_weaker_mono.
 Print Assumptions arithmetic_open_induction_subset_sigma_zero.
 Print Assumptions arithmetic_sigma_induction_subset_peano.
+Print Assumptions semiformula_universal_closure_elim.
+Print Assumptions arithmetic_models_successor_induction.
+Print Assumptions arithmetic_model_predicate_representation.
+Print Assumptions arithmetic_models_induction_theory_successor.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.
