@@ -1,6 +1,6 @@
 # Reproduce and verify the kernel-soundness artifacts in this directory.
 #
-#   pwsh Logic/KernelSoundness/verify.ps1
+#   pwsh Shenanigans/KernelSoundness/verify.ps1
 #
 # Builds each module into a scratch directory (deliberately *outside* the Lake
 # workspace: these are `prelude` modules and must not join the mathlib build),

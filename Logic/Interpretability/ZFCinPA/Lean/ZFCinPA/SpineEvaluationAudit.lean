@@ -17,7 +17,7 @@ Three things must stay visible.
   ternary relation those theorems quantify over.  `eval_srcLvlInstP_triple`
   is the source-level counterpart of the hypothesis `hl` that goal 2's
   level `…_spec` theorems carry.
-* **The environment clause is load-bearing.**  `eval_srcJustRow` consumes
+* **The environment clause is essential.**  `eval_srcJustRow` consumes
   `IsUnivEnv H (e 1)`, exactly as `fLevelJustifiedF_spec` consumes `hE`,
   and `eval_srcClosStep` therefore is a two-direction argument rather than
   a congruence.
