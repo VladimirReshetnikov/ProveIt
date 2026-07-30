@@ -5164,3 +5164,17 @@ the complete restricted-rule handoff expose this family interface.  Their
 historical raw-code-equality statements are retained as wrappers, so existing
 clients continue to compile while the native proof-producing client can be
 implemented without the impossible syntactic alignment premise.
+
+The first native dependency-ordered callback now accepts that growing proof
+shape.  `RawCodedDynamicTruthNativeLocalGrowingStagedCallbackCompilation.v`
+defines a reduced staged-root builder which may return any witnessed PA
+context containing the current forty-helper context.  Complete binder-safe
+witnessed-context weakening transports the whole ordered helper batch to the
+chosen target, after which the existing reduced row/collision assembly
+produces the ordinary local certificate there.  A fixed-context builder embeds
+by reflexive inclusion, so this is a strict relaxation of the old boundary.
+The dependency-ordered kernel bundle and compact conditional headline expose
+the growing variant directly.  Thus append/global-row traversal may retain
+its finite standard-witness suffix all the way into the native local callback;
+the remaining local obligation is the arithmetic construction of the growing
+staged roots, not any artificial collapse back to the starting context.
