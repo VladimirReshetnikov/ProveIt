@@ -4,7 +4,9 @@ From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
 From Foundation.Vorspiel Require Import Small.
 From Foundation.Vorspiel Require Import String.
+From Foundation.Vorspiel Require Import Fintype.
 From Foundation.Vorspiel.Fin Require Import Basic.
+From Foundation.Vorspiel.Finset Require Import Card.
 From Foundation.Vorspiel.List Require Import Basic.
 From Foundation.Vorspiel.List Require Import Chain.
 From Foundation.Vorspiel.Nat Require Import Basic.
@@ -84,6 +86,18 @@ Print Assumptions fin_string_join_many.
 Print Assumptions fin_vec_to_string_zero.
 Print Assumptions fin_vec_to_string_one.
 Print Assumptions fin_vec_to_string_many.
+Check finite_cover_data.
+Check finite_cover_sup.
+Print Assumptions finite_cover_elem_le_sup.
+Print Assumptions finite_cover_sup_le_iff.
+Print Assumptions finite_cover_sup_empty.
+Check list_dependent_eq_dec.
+Print Assumptions finite_cover_dependent_eq_dec.
+Check list_strict_inclusion.
+Print Assumptions list_strict_inclusion_of_incl_lt_length.
+Print Assumptions list_length_eq_of_eq.
+Check list_nat_sum.
+Print Assumptions list_nat_sum_le_length_mul.
 Print Assumptions fin_zero_eta.
 Print Assumptions nat_sub_one_lt_nonzero.
 Print Assumptions vorspiel_fin_enum_complete.
