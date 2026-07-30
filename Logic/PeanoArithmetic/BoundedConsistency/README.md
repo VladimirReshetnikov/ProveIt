@@ -4736,3 +4736,16 @@ payload together with the enlarged witnessed context and inclusion of the
 caller's original tail.  The next boundary is to identify that payload with
 the predecessor Sigma/Pi evidence formula and weaken the incoming global
 source proof to the same enlarged tail before existential elimination.
+
+The selection and elimination layers are now composed through one reusable
+mode-generic bridge.  Its only formula-specific premise is the literal
+template equation saying that the selected payload is the tenfold shift of
+the conclusion retained after opening the traversal.  Given that equation,
+the bridge grows the PA witness tail, transports the corresponding global
+source proof beneath the same two predecessor-state assumptions, reuses the
+selected deep proof, and compiles all ten represented `Ex-E` nodes.  It
+returns the requested conclusion in the enlarged joint-state context while
+retaining both the witnessed package and inclusion of the caller's tail.
+Thus the remaining native specialization no longer coordinates contexts or
+proof rules: it must prove the two concrete payload equations and combine
+the resulting Sigma/Pi roots with the already available admissibility root.
