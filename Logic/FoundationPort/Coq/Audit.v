@@ -222,12 +222,41 @@ Print Assumptions nat_relation_of_successors.
 Print Assumptions generic_descending_chain_is_descending.
 Print Assumptions exists_generic_pfilter_of_countable.
 Check lower_set.
+Check lower_empty.
+Check lower_full.
+Check lower_union.
+Check lower_family_union.
+Check lower_family_intersection.
 Print Assumptions lower_disjoint_iff_incompatible.
 Print Assumptions lower_dual_member_iff.
 Print Assumptions lower_dual_greatest_disjoint.
 Print Assumptions lower_himp_member_iff.
 Print Assumptions lower_himp_greatest.
+Print Assumptions lower_set_heyting_algebra.
 Check lower_regular.
+Print Assumptions lower_dual_antitone.
+Print Assumptions lower_double_dual_extensive.
+Print Assumptions lower_double_dual_monotone.
+Print Assumptions lower_triple_dual_equiv.
+Print Assumptions lower_regularize_regular.
+Print Assumptions lower_dual_regular.
+Print Assumptions lower_intersection_regular.
+Print Assumptions lower_family_intersection_regular.
+Check regular_lower_set.
+Check regular_bottom.
+Check regular_top.
+Check regular_meet.
+Check regular_join.
+Check regular_compl.
+Check regular_family_sup.
+Check regular_family_inf.
+Print Assumptions regular_meet_greatest.
+Print Assumptions regular_join_least.
+Print Assumptions regular_family_sup_least.
+Print Assumptions regular_family_inf_greatest.
+Print Assumptions regular_meet_compl_bottom.
+Print Assumptions regular_join_compl_top.
+Print Assumptions regular_compl_involutive.
 
 Check language.
 Check language_relational.
