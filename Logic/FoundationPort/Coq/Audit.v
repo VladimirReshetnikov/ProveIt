@@ -12,6 +12,7 @@ From Foundation.Vorspiel.Order Require Import Lattice.
 From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Vorspiel.Order Require Import Ideal.
 From Foundation.Vorspiel.Order Require Import LowerSet.
+From Foundation.Vorspiel.Order Require Import Regular.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
@@ -252,11 +253,20 @@ Check regular_family_sup.
 Check regular_family_inf.
 Print Assumptions regular_meet_greatest.
 Print Assumptions regular_join_least.
-Print Assumptions regular_family_sup_least.
-Print Assumptions regular_family_inf_greatest.
+Print Assumptions Foundation.Vorspiel.Order.LowerSet.regular_family_sup_least.
+Print Assumptions Foundation.Vorspiel.Order.LowerSet.regular_family_inf_greatest.
 Print Assumptions regular_meet_compl_bottom.
 Print Assumptions regular_join_compl_top.
 Print Assumptions regular_compl_involutive.
+Check Foundation.Vorspiel.Order.Regular.closure_order_data.
+Check Foundation.Vorspiel.Order.Regular.regular_element.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_value_equiv_closure.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_sup_value.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_sup_contains.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_sup_universal.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_inf_value.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_inf_below.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_inf_universal.
 
 Check language.
 Check language_relational.
