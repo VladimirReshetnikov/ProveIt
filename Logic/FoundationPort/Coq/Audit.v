@@ -8,6 +8,7 @@ From Foundation.FirstOrder.Basic Require Import Model.
 From Foundation.FirstOrder.Basic Require Import Definability.
 From Foundation.FirstOrder.Basic Require Import Calculus.
 From Foundation.FirstOrder.Basic Require Import Soundness.
+From Foundation.FirstOrder.Basic Require Import CutFree.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
 From Foundation.FirstOrder.Basic.Semantics Require Import RewriteClosure.
 From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
@@ -208,6 +209,16 @@ Check semiformula_rewrite.
 Check semiformula_rewrite_connective_hom.
 Check semiformula_rewrite_all.
 Check semiformula_rewrite_ext.
+Check rew_language_map.
+Check semiterm_language_map_rew_apply.
+Check rew_language_map_q.
+Check semiformula_language_map_rewrite.
+Check rew_language_map_subst.
+Check rew_language_map_shift.
+Check rew_language_map_free.
+Check semiformula_language_map_substitute.
+Check semiformula_language_map_shift.
+Check semiformula_language_map_free.
 Check semiformula_rewrite_id.
 Check semiformula_rewrite_comp.
 Check semiformula_rewrite_all_iter.
@@ -573,6 +584,8 @@ Check first_order_definable_lt.
 Check first_order_definable_mem.
 Check first_order_sequent.
 Check first_order_sequent_shift.
+Check first_order_sequent_language_map.
+Check first_order_sequent_language_map_shift.
 Check first_order_derivation.
 Check FODIdentity.
 Check FODCut.
@@ -590,6 +603,7 @@ Check first_order_derivation_top.
 Check first_order_derivation_atomic_identity.
 Check first_order_derivation_rotate.
 Check first_order_derivation_tensor.
+Check first_order_derivation_language_map.
 Check first_order_derivation_height_identity.
 Check first_order_derivation_height_cut.
 Check first_order_derivation_height_contraction.
@@ -597,6 +611,24 @@ Check first_order_derivation_height_or.
 Check first_order_derivation_height_and.
 Check first_order_derivation_height_all.
 Check first_order_derivation_height_exists.
+Check first_order_is_cut_free.
+Check FOCFIdentity.
+Check FOCFVerum.
+Check FOCFOr.
+Check FOCFAnd.
+Check FOCFAll.
+Check FOCFExists.
+Check FOCFContraction.
+Check first_order_is_cut_free_or_iff.
+Check first_order_is_cut_free_and_iff.
+Check first_order_is_cut_free_all_iff.
+Check first_order_is_cut_free_exists_iff.
+Check first_order_is_cut_free_contraction_iff.
+Check first_order_is_cut_free_cast_iff.
+Check first_order_derivation_root_is_cut.
+Check first_order_is_cut_free_root_is_not_cut.
+Check first_order_is_cut_free_not_cut.
+Check first_order_is_cut_free_language_map_iff.
 Check first_order_empty_env.
 Check first_order_sequent_true.
 Check fin_env_snoc_empty_eq_cons.
@@ -676,6 +708,12 @@ Print Assumptions rew_free_occurs_sources.
 Print Assumptions semiterm_language_map_rew_bind.
 Print Assumptions semiformula_rewrite_connective_hom.
 Print Assumptions semiformula_rewrite_ext.
+Print Assumptions semiterm_language_map_rew_apply.
+Print Assumptions rew_language_map_q.
+Print Assumptions semiformula_language_map_rewrite.
+Print Assumptions semiformula_language_map_substitute.
+Print Assumptions semiformula_language_map_shift.
+Print Assumptions semiformula_language_map_free.
 Print Assumptions semiformula_rewrite_id.
 Print Assumptions semiformula_rewrite_comp.
 Print Assumptions semiformula_rewrite_all_iter.
@@ -815,6 +853,17 @@ Print Assumptions first_order_derivation_top.
 Print Assumptions first_order_derivation_atomic_identity.
 Print Assumptions first_order_derivation_rotate.
 Print Assumptions first_order_derivation_tensor.
+Print Assumptions first_order_sequent_language_map_shift.
+Print Assumptions first_order_derivation_language_map.
+Print Assumptions first_order_is_cut_free_or_iff.
+Print Assumptions first_order_is_cut_free_and_iff.
+Print Assumptions first_order_is_cut_free_all_iff.
+Print Assumptions first_order_is_cut_free_exists_iff.
+Print Assumptions first_order_is_cut_free_contraction_iff.
+Print Assumptions first_order_is_cut_free_cast_iff.
+Print Assumptions first_order_is_cut_free_root_is_not_cut.
+Print Assumptions first_order_is_cut_free_not_cut.
+Print Assumptions first_order_is_cut_free_language_map_iff.
 Print Assumptions fin_env_snoc_empty_eq_cons.
 Print Assumptions first_order_shifted_context_true.
 Print Assumptions first_order_derivation_sound.

@@ -1112,6 +1112,94 @@ Proof.
   - f_equal. apply IHp. now apply rew_q_respects_equiv.
 Qed.
 
+(** Transport a rewrite across a language homomorphism by mapping only the
+    terms assigned to its bound and free variables. *)
+Definition rew_language_map {L M X n Y m}
+    (h : language_hom L M) (w : rew L X n Y m) : rew M X n Y m :=
+  rew_bind
+    (fun i => semiterm_language_map h (rew_apply w (Semiterm_bvar i)))
+    (fun x => semiterm_language_map h (rew_apply w (Semiterm_fvar x))).
+
+Lemma semiterm_language_map_rew_apply : forall L M X n Y m
+    (h : language_hom L M) (w : rew L X n Y m)
+    (t : semiterm L X n),
+  semiterm_language_map h (rew_apply w t) =
+  rew_apply (rew_language_map h w) (semiterm_language_map h t).
+Proof.
+  intros L M X n Y m h w t.
+  rewrite (rew_eta w t).
+  apply semiterm_language_map_rew_bind.
+Qed.
+
+Lemma rew_language_map_q : forall L M X n Y m
+    (h : language_hom L M) (w : rew L X n Y m),
+  rew_equiv (rew_language_map h (rew_q w))
+            (rew_q (rew_language_map h w)).
+Proof.
+  intros L M X n Y m h w.
+  apply rew_equiv_of_variables.
+  - intro i.
+    refine (@Fin.caseS' n i (fun j =>
+      rew_apply (rew_language_map h (rew_q w)) (Semiterm_bvar j) =
+      rew_apply (rew_q (rew_language_map h w)) (Semiterm_bvar j)) _ _).
+    + reflexivity.
+    + intro j.
+      change (semiterm_language_map h
+        (rew_apply rew_bshift (rew_apply w (Semiterm_bvar j))) =
+        rew_apply rew_bshift
+          (semiterm_language_map h (rew_apply w (Semiterm_bvar j)))).
+      apply semiterm_language_map_rew_bshift.
+  - intro x.
+    change (semiterm_language_map h
+      (rew_apply rew_bshift (rew_apply w (Semiterm_fvar x))) =
+      rew_apply rew_bshift
+        (semiterm_language_map h (rew_apply w (Semiterm_fvar x)))).
+    apply semiterm_language_map_rew_bshift.
+Qed.
+
+Lemma semiformula_language_map_rewrite : forall L M X n Y m
+    (h : language_hom L M) (w : rew L X n Y m)
+    (p : semiformula L X n),
+  semiformula_language_map h (semiformula_rewrite w p) =
+  semiformula_rewrite (rew_language_map h w)
+    (semiformula_language_map h p).
+Proof.
+  intros L M X n Y m h w p; revert Y m w.
+  induction p; intros Y m w; simpl; try reflexivity.
+  - f_equal. apply functional_extensionality. intro i.
+    apply semiterm_language_map_rew_apply.
+  - f_equal. apply functional_extensionality. intro i.
+    apply semiterm_language_map_rew_apply.
+  - now rewrite IHp1, IHp2.
+  - now rewrite IHp1, IHp2.
+  - f_equal. rewrite IHp.
+    apply semiformula_rewrite_ext, rew_language_map_q.
+  - f_equal. rewrite IHp.
+    apply semiformula_rewrite_ext, rew_language_map_q.
+Qed.
+
+Lemma rew_language_map_subst : forall L M X k n
+    (h : language_hom L M) (v : Fin.t k -> semiterm L X n),
+  rew_equiv (rew_language_map h (rew_subst v))
+    (rew_subst (fun i => semiterm_language_map h (v i))).
+Proof.
+  intros. apply rew_equiv_of_variables; intro x; reflexivity.
+Qed.
+
+Lemma rew_language_map_shift : forall L M n (h : language_hom L M),
+  rew_equiv (rew_language_map h (@rew_shift L n)) (@rew_shift M n).
+Proof.
+  intros. apply rew_equiv_of_variables; intro x; reflexivity.
+Qed.
+
+Lemma rew_language_map_free : forall L M n (h : language_hom L M),
+  rew_equiv (rew_language_map h (@rew_free L n)) (@rew_free M n).
+Proof.
+  intros L M n h. apply rew_equiv_of_variables.
+  - intro i. apply semiterm_language_map_rew_free_bound.
+  - intro x. reflexivity.
+Qed.
+
 Lemma semiformula_rewrite_id : forall L X n (p : semiformula L X n),
   semiformula_rewrite rew_id p = p.
 Proof.
@@ -1328,6 +1416,38 @@ Definition semiformula_free {L n} (p : semiproposition L (n + 1)) :
 Definition semiformula_fix {L n} (p : semiproposition L n) :
     semiproposition L (n + 1) :=
   semiformula_rewrite rew_fix p.
+
+Lemma semiformula_language_map_substitute : forall L M X k n
+    (h : language_hom L M) (v : Fin.t k -> semiterm L X n)
+    (p : semiformula L X k),
+  semiformula_language_map h (semiformula_substitute v p) =
+  semiformula_substitute (fun i => semiterm_language_map h (v i))
+    (semiformula_language_map h p).
+Proof.
+  intros. unfold semiformula_substitute.
+  rewrite semiformula_language_map_rewrite.
+  apply semiformula_rewrite_ext, rew_language_map_subst.
+Qed.
+
+Lemma semiformula_language_map_shift : forall L M n
+    (h : language_hom L M) (p : semiproposition L n),
+  semiformula_language_map h (semiformula_shift p) =
+  semiformula_shift (semiformula_language_map h p).
+Proof.
+  intros. unfold semiformula_shift.
+  rewrite semiformula_language_map_rewrite.
+  apply semiformula_rewrite_ext, rew_language_map_shift.
+Qed.
+
+Lemma semiformula_language_map_free : forall L M n
+    (h : language_hom L M) (p : semiproposition L (n + 1)),
+  semiformula_language_map h (semiformula_free p) =
+  semiformula_free (semiformula_language_map h p).
+Proof.
+  intros. unfold semiformula_free.
+  rewrite semiformula_language_map_rewrite.
+  apply semiformula_rewrite_ext, rew_language_map_free.
+Qed.
 
 Lemma rew_subst_variables_id : forall L X n,
   rew_equiv (@rew_subst L X n n (fun i => Semiterm_bvar i)) rew_id.

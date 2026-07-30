@@ -24,6 +24,21 @@ Definition first_order_sequent_shift {L}
     (Gamma : first_order_sequent L) : first_order_sequent L :=
   map semiformula_shift Gamma.
 
+Definition first_order_sequent_language_map {L M}
+    (h : language_hom L M) (Gamma : first_order_sequent L) :
+    first_order_sequent M :=
+  map (semiformula_language_map h) Gamma.
+
+Lemma first_order_sequent_language_map_shift :
+  forall L M (h : language_hom L M) (Gamma : first_order_sequent L),
+    first_order_sequent_language_map h (first_order_sequent_shift Gamma) =
+    first_order_sequent_shift (first_order_sequent_language_map h Gamma).
+Proof.
+  intros L M h Gamma. induction Gamma as [|p Gamma IH]; simpl.
+  - reflexivity.
+  - now rewrite semiformula_language_map_shift, IH.
+Qed.
+
 (** Primitive LK rules.  Contraction includes exchange and weakening because
     [generic_list_subset] is pointwise list inclusion. *)
 Inductive first_order_derivation (L : language) :
@@ -142,6 +157,40 @@ Definition first_order_derivation_tensor {L p q Gamma Delta}
       (@generic_list_subset_cons_append_right _ p Gamma Delta))
     (FODContraction dq
       (@generic_list_subset_cons_append_left _ q Gamma Delta)).
+
+(** Every derivation is functorial in the underlying first-order language. *)
+Fixpoint first_order_derivation_language_map {L M Gamma}
+    (h : language_hom L M) (d : first_order_derivation L Gamma) {struct d} :
+    first_order_derivation M (first_order_sequent_language_map h Gamma).
+Proof.
+  destruct d as [k r v | p Gamma Delta dp dn | Gamma Delta d Hsub |
+    | p q Gamma d | p q Gamma dp dq | p Gamma d | p t Gamma d].
+  - exact (FODIdentity (hom_rel h r)
+      (fun i => semiterm_language_map h (v i))).
+  - pose (dp' := @first_order_derivation_language_map L M _ h dp).
+    pose (dn' := @first_order_derivation_language_map L M _ h dn).
+    refine (first_order_derivation_cast
+      (FODCut dp'
+        (first_order_derivation_cast dn' _)) _).
+    + simpl. now rewrite semiformula_language_map_neg.
+    + unfold first_order_sequent_language_map. simpl.
+      now rewrite List.map_app.
+  - apply (FODContraction (@first_order_derivation_language_map L M _ h d)).
+    now apply generic_list_map_subset.
+  - exact FODVerum.
+  - exact (FODOr (@first_order_derivation_language_map L M _ h d)).
+  - exact (FODAnd (@first_order_derivation_language_map L M _ h dp)
+                  (@first_order_derivation_language_map L M _ h dq)).
+  - apply FODAll.
+    refine (first_order_derivation_cast
+      (@first_order_derivation_language_map L M _ h d) _).
+    simpl. rewrite semiformula_language_map_free.
+    now rewrite first_order_sequent_language_map_shift.
+  - apply (FODExists (t := semiterm_language_map h t)).
+    refine (first_order_derivation_cast
+      (@first_order_derivation_language_map L M _ h d) _).
+    simpl. now rewrite semiformula_language_map_substitute.
+Defined.
 
 Lemma first_order_derivation_height_identity :
   forall L k (r : language_rel L k) v,
