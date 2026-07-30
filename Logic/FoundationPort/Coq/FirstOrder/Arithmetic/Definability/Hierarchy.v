@@ -303,6 +303,20 @@ Proof.
       now apply AH_or; apply arithmetic_sorted_pi_prop.
 Defined.
 
+Definition arithmetic_sorted_neg_sigma {X : Type} {n rank}
+    (p : arithmetic_sorted_formula X n (arithmetic_sigma_symbol rank)) :
+    arithmetic_sorted_formula X n (arithmetic_pi_symbol rank) :=
+  ArithmeticSortedPi rank
+    (semiformula_neg (arithmetic_sorted_formula_val p))
+    (arithmetic_hierarchy_neg (arithmetic_sorted_sigma_prop p)).
+
+Definition arithmetic_sorted_neg_pi {X : Type} {n rank}
+    (p : arithmetic_sorted_formula X n (arithmetic_pi_symbol rank)) :
+    arithmetic_sorted_formula X n (arithmetic_sigma_symbol rank) :=
+  ArithmeticSortedSigma rank
+    (semiformula_neg (arithmetic_sorted_formula_val p))
+    (arithmetic_hierarchy_neg (arithmetic_sorted_pi_prop p)).
+
 Definition arithmetic_sorted_neg_delta {X : Type} {n rank}
     (p : arithmetic_sorted_formula X n (arithmetic_delta_symbol rank)) :
     arithmetic_sorted_formula X n (arithmetic_delta_symbol rank) :=
@@ -317,6 +331,18 @@ Definition arithmetic_sorted_neg_delta {X : Type} {n rank}
         (arithmetic_sorted_formula_val (arithmetic_sorted_delta_sigma p)))
       (arithmetic_hierarchy_neg (arithmetic_sorted_sigma_prop
         (arithmetic_sorted_delta_sigma p)))).
+
+Lemma arithmetic_sorted_neg_sigma_val : forall (X : Type) n rank
+    (p : arithmetic_sorted_formula X n (arithmetic_sigma_symbol rank)),
+  arithmetic_sorted_formula_val (arithmetic_sorted_neg_sigma p) =
+  semiformula_neg (arithmetic_sorted_formula_val p).
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_sorted_neg_pi_val : forall (X : Type) n rank
+    (p : arithmetic_sorted_formula X n (arithmetic_pi_symbol rank)),
+  arithmetic_sorted_formula_val (arithmetic_sorted_neg_pi p) =
+  semiformula_neg (arithmetic_sorted_formula_val p).
+Proof. reflexivity. Qed.
 
 Definition arithmetic_sorted_ball {X : Type} {n symbol}
     (t : semiterm oring_language X n)

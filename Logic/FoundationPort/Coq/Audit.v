@@ -15,6 +15,7 @@ From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
+From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
 From Foundation.FirstOrder.Arithmetic.TA Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
@@ -1386,6 +1387,8 @@ Print Assumptions arithmetic_sorted_of_zero.
 Print Assumptions arithmetic_sorted_of_zero_val.
 Print Assumptions arithmetic_sorted_and.
 Print Assumptions arithmetic_sorted_or.
+Print Assumptions arithmetic_sorted_neg_sigma.
+Print Assumptions arithmetic_sorted_neg_pi.
 Print Assumptions arithmetic_sorted_neg_delta.
 Print Assumptions arithmetic_sorted_ball.
 Print Assumptions arithmetic_sorted_bex.
@@ -1407,6 +1410,20 @@ Print Assumptions arithmetic_sorted_delta_uniformly_proper_rewrite.
 Print Assumptions arithmetic_sorted_delta_proper_on_rewrite.
 Print Assumptions arithmetic_sorted_delta_proper_on_rewrite_with_params.
 Print Assumptions arithmetic_sorted_delta_proper_with_params_on_subst.
+Print Assumptions arithmetic_sorted_formula_proper.
+Print Assumptions arithmetic_sorted_is_defined_by.
+Print Assumptions arithmetic_sorted_is_defined_by_with_params.
+Print Assumptions arithmetic_sorted_defined.
+Print Assumptions arithmetic_sorted_definable.
+Print Assumptions arithmetic_sorted_defined_to_definable.
+Print Assumptions arithmetic_sorted_definable_of_zero.
+Print Assumptions arithmetic_sorted_definable_of_delta.
+Print Assumptions arithmetic_sorted_definable_delta_of_sigma_pi.
+Print Assumptions arithmetic_sorted_definable_and.
+Print Assumptions arithmetic_sorted_definable_or.
+Print Assumptions arithmetic_sorted_definable_not_sigma.
+Print Assumptions arithmetic_sorted_definable_not_pi.
+Print Assumptions arithmetic_sorted_definable_not_delta.
 Print Assumptions first_order_true_arithmetic_models.
 Print Assumptions first_order_true_arithmetic_provable_iff.
 Print Assumptions arithmetic_theory_weaker_than_true_arithmetic.
