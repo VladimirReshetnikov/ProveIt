@@ -156,6 +156,54 @@ Definition
 Arguments RawDynamicTruthNativeDependencyOrderedStrongStepKernelCompilers
   M hPA translation : clear implicits.
 
+(** Preferred strong-step bundle after trace-determined structural alignment.
+    Its positive predecessor coordinate contains only proof-producing
+    resources; numeral, row, wrapper, and evidence-code alignment are all
+    constructed by the aligned structural theorem. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedProofResourceStrongStepKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  RawCodedTemplatePAAgreement M translation /\
+  RawDynamicTruthNativeLocalZeroPredecessorRootCompiler M translation /\
+  RawDynamicTruthNativeAlignedStrongStepProofResourcesCompilerWithPA M hPA /\
+  RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
+    M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeDependencyOrderedProofResourceStrongStepKernelCompilers
+  M hPA translation : clear implicits.
+
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedStrongStepKernelCompilers_of_proof_resources
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  forall (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeDependencyOrderedProofResourceStrongStepKernelCompilers
+    M hPA translation ->
+  RawDynamicTruthNativeDependencyOrderedStrongStepKernelCompilers
+    M hPA translation.
+Proof.
+  intros M hPA translation
+    (hagreement & hzero & hproofs & hremainder & hcrossLevel & hshift &
+      hsubstitution & haxiom & hfinal).
+  split; [exact hagreement |].
+  split; [exact hzero |].
+  split.
+  - exact
+      (raw_dynamicTruthNativeAlignedStrongStepResourcesCompilerWithPA_of_proof_resources
+        M hPA hproofs).
+  - exact (conj hremainder
+      (conj hcrossLevel
+        (conj hshift
+          (conj hsubstitution
+            (conj haxiom hfinal))))).
+Qed.
+
 (** Assemble the growing kernel while preserving the source witness list
     carried by the current helper package. *)
 Theorem
@@ -331,6 +379,22 @@ Proof.
         M hPA translation hkernels)).
 Qed.
 
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_proof_resource_strong_step_kernel_compilers
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  forall (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeDependencyOrderedProofResourceStrongStepKernelCompilers
+    M hPA translation ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacks M.
+Proof.
+  intros M hPA translation hkernels.
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_strong_step_kernel_compilers
+      M hPA translation
+      (raw_dynamicTruthNativeDependencyOrderedStrongStepKernelCompilers_of_proof_resources
+        M hPA translation hkernels)).
+Qed.
+
 (** Model-local positive-component successor.  All context synchronization,
     target preservation, and six-field assembly are discharged by the
     previously proved dependency-ordered endpoint. *)
@@ -383,6 +447,14 @@ Definition
       RawDynamicTruthNativeDependencyOrderedStrongStepKernelCompilers
         M hPA translation.
 
+Definition
+    RawDynamicTruthNativeDependencyOrderedProofResourceStrongStepKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    exists translation : RawCodedTemplateTranslation M,
+      RawDynamicTruthNativeDependencyOrderedProofResourceStrongStepKernelCompilers
+        M hPA translation.
+
 Theorem
     raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers
     :
@@ -432,6 +504,19 @@ Proof.
   destruct (hkernels M hPA) as [translation hmodelKernels].
   exact
     (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_strong_step_kernel_compilers
+      M hPA translation hmodelKernels).
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedProofResourceStrongStepKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels.
+Proof.
+  intros hkernels M hPA.
+  destruct (hkernels M hPA) as [translation hmodelKernels].
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_proof_resource_strong_step_kernel_compilers
       M hPA translation hmodelKernels).
 Qed.
 
@@ -499,6 +584,23 @@ Proof.
   exact
     (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
       (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_strong_step_kernel_compilers
+        hkernels)).
+Qed.
+
+(** Preferred conditional headline: the positive strong-step hypothesis now
+    contains only represented proof production, with structural alignment
+    discharged internally from each native trace. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedProofResourceStrongStepKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hkernels.
+  exact
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_proof_resource_strong_step_kernel_compilers
         hkernels)).
 Qed.
 
