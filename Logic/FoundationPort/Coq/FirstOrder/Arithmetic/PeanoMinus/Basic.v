@@ -341,6 +341,84 @@ Proof.
     apply (peano_minus_mul_le_mul Hpa); apply Hvw.
 Defined.
 
+Lemma peano_minus_not_lt_zero : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  ~ oring_lt O x (oring_zero O).
+Proof.
+  intros M O H x Hx.
+  destruct (@peano_minus_zero_le M O H x) as [Hz | Hz].
+  - subst x. exact (@peano_minus_lt_irrefl M O H _ Hx).
+  - exact (@peano_minus_lt_irrefl M O H _
+      (@peano_minus_lt_trans M O H _ _ _ Hz Hx)).
+Qed.
+
+Lemma peano_minus_numeral_succ : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall n,
+  oring_numeral O (S n) =
+  oring_add O (oring_numeral O n) (oring_one O).
+Proof.
+  intros M O H [|n].
+  - simpl. symmetry. apply (peano_minus_add_zero_left H).
+  - apply oring_numeral_succ_succ.
+Qed.
+
+Lemma peano_minus_numeral_lt : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall m n,
+  m < n -> oring_lt O (oring_numeral O m) (oring_numeral O n).
+Proof.
+  intros M O H m n. revert m.
+  induction n as [|n IH]; intros m Hmn; [lia|].
+  rewrite (peano_minus_numeral_succ H).
+  destruct (Nat.eq_dec m n) as [-> | Hne].
+  - apply (peano_minus_lt_add_one H).
+  - eapply (@peano_minus_lt_trans M O H).
+    + apply IH. lia.
+    + apply (peano_minus_lt_add_one H).
+Qed.
+
+Lemma peano_minus_eq_numeral_of_lt_numeral : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall n x,
+  oring_lt O x (oring_numeral O n) ->
+  exists m, m < n /\ x = oring_numeral O m.
+Proof.
+  intros M O H n. induction n as [|n IH]; intros x Hx.
+  - exfalso. apply (peano_minus_not_lt_zero H (x := x)). exact Hx.
+  - rewrite (peano_minus_numeral_succ H) in Hx.
+    destruct (proj2 (peano_minus_le_iff_lt_add_one H x
+      (oring_numeral O n)) Hx) as [Heq | Hlt].
+    + exists n. split; [lia|exact Heq].
+    + destruct (IH x Hlt) as [m [Hmn Hm]].
+      exists m. split; [lia|exact Hm].
+Qed.
+
+Lemma peano_minus_lt_numeral_iff : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall n x,
+  oring_lt O x (oring_numeral O n) <->
+  exists m, m < n /\ x = oring_numeral O m.
+Proof.
+  intros M O H n x. split.
+  - apply (peano_minus_eq_numeral_of_lt_numeral H).
+  - intros [m [Hmn ->]]. now apply (peano_minus_numeral_lt H).
+Qed.
+
+Lemma peano_minus_le_numeral_iff : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall n x,
+  peano_minus_le O x (oring_numeral O n) <->
+  exists m, m <= n /\ x = oring_numeral O m.
+Proof.
+  intros M O H n x. split.
+  - intros [Heq | Hlt].
+    + exists n. split; [lia|exact Heq].
+    + destruct (peano_minus_eq_numeral_of_lt_numeral H Hlt)
+        as [m [Hmn Hm]].
+      exists m. split; [lia|exact Hm].
+  - intros [m [Hmn ->]].
+    destruct (Nat.eq_dec m n) as [-> | Hne].
+    + apply peano_minus_le_refl.
+    + right. apply (peano_minus_numeral_lt H). lia.
+Qed.
+
 Definition nat_peano_minus_laws :
     peano_minus_laws nat_oring_carrier.
 Proof.

@@ -1506,6 +1506,12 @@ Print Assumptions peano_minus_le_iff_lt_add_one.
 Print Assumptions peano_minus_add_le_add.
 Print Assumptions peano_minus_mul_le_mul.
 Print Assumptions peano_minus_structure_monotone.
+Print Assumptions peano_minus_not_lt_zero.
+Print Assumptions peano_minus_numeral_succ.
+Print Assumptions peano_minus_numeral_lt.
+Print Assumptions peano_minus_eq_numeral_of_lt_numeral.
+Print Assumptions peano_minus_lt_numeral_iff.
+Print Assumptions peano_minus_le_numeral_iff.
 Print Assumptions nat_peano_minus_laws.
 Print Assumptions arithmetic_peano_minus_majorant_lift.
 Print Assumptions arithmetic_peano_minus_majorant_lift_spec.
