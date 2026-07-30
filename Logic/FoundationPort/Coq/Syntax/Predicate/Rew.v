@@ -1112,6 +1112,64 @@ Proof.
   - f_equal. apply IHp. now apply rew_q_respects_equiv.
 Qed.
 
+Lemma semiterm_rew_apply_ext_on_free : forall L X n Y m
+    (w v : rew L X n Y m) (t : semiterm L X n),
+  (forall i, rew_apply w (Semiterm_bvar i) =
+             rew_apply v (Semiterm_bvar i)) ->
+  (forall x, semiterm_free_occurs x t ->
+      rew_apply w (Semiterm_fvar x) =
+      rew_apply v (Semiterm_fvar x)) ->
+  rew_apply w t = rew_apply v t.
+Proof.
+  intros L X n Y m w v t. induction t as [i | x | k g a IH];
+    intros Hb Hf.
+  - apply Hb.
+  - apply Hf. reflexivity.
+  - rewrite (rew_apply_func w g a), (rew_apply_func v g a).
+    f_equal. apply functional_extensionality. intro i.
+    apply IH; [exact Hb |].
+    intros x Hx. apply Hf. now exists i.
+Qed.
+
+(** Formula rewrites need agree only on free variables that occur in the
+    formula; agreement on bound variables remains unconditional. *)
+Lemma semiformula_rewrite_ext_on_free : forall L X n Y m
+    (w v : rew L X n Y m) (p : semiformula L X n),
+  (forall i, rew_apply w (Semiterm_bvar i) =
+             rew_apply v (Semiterm_bvar i)) ->
+  (forall x, semiformula_free_occurs x p ->
+      rew_apply w (Semiterm_fvar x) =
+      rew_apply v (Semiterm_fvar x)) ->
+  semiformula_rewrite w p = semiformula_rewrite v p.
+Proof.
+  intros L X n Y m w v p; revert Y m w v.
+  induction p; intros Y m w v Hb Hf; simpl; try reflexivity.
+  - f_equal. apply functional_extensionality. intro i.
+    apply semiterm_rew_apply_ext_on_free; [exact Hb |].
+    intros x Hx. apply Hf. now exists i.
+  - f_equal. apply functional_extensionality. intro i.
+    apply semiterm_rew_apply_ext_on_free; [exact Hb |].
+    intros x Hx. apply Hf. now exists i.
+  - f_equal.
+    + apply IHp1; [exact Hb |]. intros x Hx. apply Hf. now left.
+    + apply IHp2; [exact Hb |]. intros x Hx. apply Hf. now right.
+  - f_equal.
+    + apply IHp1; [exact Hb |]. intros x Hx. apply Hf. now left.
+    + apply IHp2; [exact Hb |]. intros x Hx. apply Hf. now right.
+  - f_equal. apply IHp.
+    + intro i. refine (@Fin.caseS' n i (fun j =>
+        rew_apply (rew_q w) (Semiterm_bvar j) =
+        rew_apply (rew_q v) (Semiterm_bvar j)) eq_refl _).
+      intro j. cbn. now rewrite Hb.
+    + intros x Hx. cbn. now rewrite (Hf x Hx).
+  - f_equal. apply IHp.
+    + intro i. refine (@Fin.caseS' n i (fun j =>
+        rew_apply (rew_q w) (Semiterm_bvar j) =
+        rew_apply (rew_q v) (Semiterm_bvar j)) eq_refl _).
+      intro j. cbn. now rewrite Hb.
+    + intros x Hx. cbn. now rewrite (Hf x Hx).
+Qed.
+
 (** Transport a rewrite across a language homomorphism by mapping only the
     terms assigned to its bound and free variables. *)
 Definition rew_language_map {L M X n Y m}

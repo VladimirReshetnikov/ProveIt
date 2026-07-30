@@ -193,3 +193,83 @@ Lemma first_order_is_cut_free_shift_iff :
     first_order_is_cut_free (first_order_derivation_shift d) <->
     first_order_is_cut_free d.
 Proof. intros; apply first_order_is_cut_free_rewrite_iff. Qed.
+
+Lemma first_order_is_cut_free_generalize_fresh_iff :
+  forall L (p : semiproposition L 1) m Gamma
+         (Hp : ~ semiformula_free_occurs m p)
+         (HGamma : forall q, In q Gamma ->
+           ~ semiformula_free_occurs m q)
+         (d : first_order_derivation L
+           (semiformula_substitute
+             (fun _ : Fin.t 1 => Semiterm_fvar m) p :: Gamma)),
+    first_order_is_cut_free
+      (first_order_derivation_generalize_fresh Hp HGamma d) <->
+    first_order_is_cut_free d.
+Proof.
+  intros L p m Gamma Hp HGamma d. split; intro Hcf.
+  - unfold first_order_derivation_generalize_fresh in Hcf.
+    rewrite first_order_is_cut_free_all_iff,
+      first_order_is_cut_free_cast_iff,
+      first_order_is_cut_free_map_iff in Hcf.
+    exact Hcf.
+  - unfold first_order_derivation_generalize_fresh.
+    apply FOCFAll.
+    rewrite first_order_is_cut_free_cast_iff,
+      first_order_is_cut_free_map_iff.
+    exact Hcf.
+Qed.
+
+Lemma first_order_is_cut_free_exists_of_instances_iff :
+  forall L (ts : list (syntactic_term L))
+         (p : semiproposition L 1) Gamma
+         (d : first_order_derivation L
+           (map (fun t => semiformula_substitute
+             (fun _ : Fin.t 1 => t) p) ts ++ Gamma)),
+    first_order_is_cut_free
+      (@first_order_derivation_exists_of_instances L ts p Gamma d) <->
+    first_order_is_cut_free d.
+Proof.
+  intros L ts. induction ts as [|t ts IH]; intros p Gamma d.
+  - cbn [first_order_derivation_exists_of_instances].
+    apply first_order_is_cut_free_contraction_iff.
+  - cbn [first_order_derivation_exists_of_instances].
+    rewrite first_order_is_cut_free_contraction_iff.
+    rewrite IH.
+    rewrite first_order_is_cut_free_contraction_iff.
+    apply first_order_is_cut_free_exists_iff.
+Qed.
+
+Lemma first_order_is_cut_free_exists_of_instances_present_iff :
+  forall L (ts : list (syntactic_term L))
+         (p : semiproposition L 1) Gamma
+         (d : first_order_derivation L
+           (Semiformula_exists p ::
+            map (fun t => semiformula_substitute
+              (fun _ : Fin.t 1 => t) p) ts ++ Gamma)),
+    first_order_is_cut_free
+      (@first_order_derivation_exists_of_instances_present
+        L ts p Gamma d) <->
+    first_order_is_cut_free d.
+Proof.
+  intros. unfold first_order_derivation_exists_of_instances_present.
+  repeat rewrite first_order_is_cut_free_contraction_iff.
+  rewrite first_order_is_cut_free_exists_of_instances_iff.
+  apply first_order_is_cut_free_contraction_iff.
+Qed.
+
+Lemma first_order_is_cut_free_all_new_variable_iff :
+  forall L (p : semiproposition L 1) Gamma
+         (Hall : In (Semiformula_all p) Gamma)
+         (d : first_order_derivation L
+           (semiformula_substitute
+             (fun _ : Fin.t 1 =>
+               Semiterm_fvar (first_order_sequent_new_variable Gamma)) p
+            :: Gamma)),
+    first_order_is_cut_free
+      (first_order_derivation_all_new_variable Hall d) <->
+    first_order_is_cut_free d.
+Proof.
+  intros. unfold first_order_derivation_all_new_variable.
+  rewrite first_order_is_cut_free_contraction_iff.
+  apply first_order_is_cut_free_generalize_fresh_iff.
+Qed.
