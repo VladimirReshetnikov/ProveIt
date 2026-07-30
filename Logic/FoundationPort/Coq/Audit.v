@@ -1453,7 +1453,11 @@ Print Assumptions arithmetic_bounded_substitute_bound.
 Print Assumptions arithmetic_bounded_retraction.
 Print Assumptions arithmetic_bounded_term_retraction.
 Print Assumptions arithmetic_bounded_compose.
+Print Assumptions arithmetic_bounded_compose_one.
+Print Assumptions arithmetic_bounded_compose_two.
+Print Assumptions fin_graph_reindex.
 Print Assumptions arithmetic_definably_bounded_function.
+Print Assumptions arithmetic_definably_bounded_retraction.
 Print Assumptions first_order_true_arithmetic_models.
 Print Assumptions first_order_true_arithmetic_provable_iff.
 Print Assumptions arithmetic_theory_weaker_than_true_arithmetic.

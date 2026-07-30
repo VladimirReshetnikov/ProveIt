@@ -10,6 +10,7 @@
 
 From Stdlib Require Import Vectors.Fin.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
+From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import
@@ -137,6 +138,55 @@ Proof.
     intro i. apply (arithmetic_bounded_spec (Hg i) v).
 Defined.
 
+Definition arithmetic_bounded_compose_one {M : Type} {k}
+    {Str : first_order_structure oring_language M} {le : M -> M -> Prop}
+    (Hrefl : forall x, le x x)
+    (Htrans : forall x y z, le x y -> le y z -> le x z)
+    (Hmon : first_order_structure_monotone le Str)
+    {f : M -> M} {g : (Fin.t k -> M) -> M}
+    (Hf : arithmetic_bounded_function_one Str le f)
+    (Hg : arithmetic_bounded_function Str le g) :
+    arithmetic_bounded_function Str le (fun v => f (g v)).
+Proof.
+  apply (arithmetic_bounded_compose Hrefl Htrans Hmon Hf
+    (g := fun _ => g)).
+  intro i. exact Hg.
+Defined.
+
+Definition arithmetic_bounded_compose_two {M : Type} {k}
+    {Str : first_order_structure oring_language M} {le : M -> M -> Prop}
+    (Hrefl : forall x, le x x)
+    (Htrans : forall x y z, le x y -> le y z -> le x z)
+    (Hmon : first_order_structure_monotone le Str)
+    {f : M -> M -> M} {g h : (Fin.t k -> M) -> M}
+    (Hf : arithmetic_bounded_function_two Str le f)
+    (Hg : arithmetic_bounded_function Str le g)
+    (Hh : arithmetic_bounded_function Str le h) :
+    arithmetic_bounded_function Str le (fun v => f (g v) (h v)).
+Proof.
+  apply (arithmetic_bounded_compose Hrefl Htrans Hmon Hf
+    (g := fin_two g h)).
+  intro i. refine (@Fin.caseS' 1 i
+    (fun j => arithmetic_bounded_function Str le (fin_two g h j)) Hg _).
+  intro j. refine (@Fin.caseS' 0 j
+    (fun q => arithmetic_bounded_function Str le (fin_two g h (Fin.FS q)))
+    Hh _).
+  intros q; inversion q.
+Defined.
+
+Definition fin_graph_reindex {k m} (e : Fin.t k -> Fin.t m) :
+    Fin.t (S k) -> Fin.t (S m) :=
+  fun i => @Fin.caseS' k i (fun _ => Fin.t (S m))
+    Fin.F1 (fun j => Fin.FS (e j)).
+
+Lemma fin_graph_reindex_zero : forall k m (e : Fin.t k -> Fin.t m),
+  fin_graph_reindex e Fin.F1 = Fin.F1.
+Proof. reflexivity. Qed.
+
+Lemma fin_graph_reindex_succ : forall k m (e : Fin.t k -> Fin.t m) i,
+  fin_graph_reindex e (Fin.FS i) = Fin.FS (e i).
+Proof. reflexivity. Qed.
+
 Record arithmetic_definably_bounded_function {M : Type} {k}
     (Str : first_order_structure oring_language M)
     (le : M -> M -> Prop) (f : (Fin.t k -> M) -> M) : Type := {
@@ -145,3 +195,18 @@ Record arithmetic_definably_bounded_function {M : Type} {k}
   arithmetic_definably_bounded_definition :
     arithmetic_sorted_definable_function Str arithmetic_sigma_zero_symbol f
 }.
+
+Definition arithmetic_definably_bounded_retraction {M : Type} {k m}
+    {Str : first_order_structure oring_language M} {le : M -> M -> Prop}
+    {f : (Fin.t k -> M) -> M}
+    (Hf : arithmetic_definably_bounded_function Str le f)
+    (e : Fin.t k -> Fin.t m) :
+    arithmetic_definably_bounded_function Str le
+      (fun v : Fin.t m -> M => f (fun i => v (e i))).
+Proof.
+  destruct Hf as [Hbound Hdef]. constructor.
+  - exact (arithmetic_bounded_retraction Hbound e).
+  - apply (arithmetic_sorted_definable_of_iff
+      (arithmetic_sorted_definable_retraction Hdef (fin_graph_reindex e))).
+    intro v. reflexivity.
+Defined.
