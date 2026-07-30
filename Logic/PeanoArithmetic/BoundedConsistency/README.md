@@ -4682,3 +4682,13 @@ to the predecessor joint-state context.  The remaining continuation begins
 only after all ten global witnesses have been opened: it must project the
 seven traversal fields and instantiate the selected row to construct the
 admissibility and Sigma/Pi evidence roots.
+
+That opened conjunction is now exposed as an audited proof resource.  The
+generic local-proof library projects an entire right-associated seven-field
+record through explicit represented `And-E` nodes.  The global specialization
+proves that the tenth existential body is literally the head of the computed
+deep context, constructs the corresponding assumption leaf, and returns all
+seven projections independently.  Consequently the remaining continuation
+starts with the root-bound, selected-root lookup, and five-universal row-law
+proofs already available; it only needs to instantiate that row and apply
+the resulting implications to the predecessor state assumptions.

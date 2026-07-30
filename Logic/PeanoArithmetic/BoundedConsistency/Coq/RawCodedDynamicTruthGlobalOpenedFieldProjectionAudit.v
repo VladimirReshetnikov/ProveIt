@@ -1,0 +1,17 @@
+(** Audit for projection of all seven opened global traversal fields. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthGlobalOpenedFieldProjection.
+
+Import PABoundedRawCodedDynamicTruthGlobalOpenedFieldProjection.
+
+Check coqDynamicTruthGlobalOpenedTraversalBody_and7_shape.
+Check coqDynamicTruthGlobalExistentialBodyMany_ten.
+Check coqDynamicTruthGlobalExistentialDeepContext_head.
+Check raw_codedPALocalProofOf_dynamicTruthGlobal_opened_and7_fields.
+
+Print Assumptions coqDynamicTruthGlobalOpenedTraversalBody_and7_shape.
+Print Assumptions coqDynamicTruthGlobalExistentialBodyMany_ten.
+Print Assumptions coqDynamicTruthGlobalExistentialDeepContext_head.
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthGlobal_opened_and7_fields.
