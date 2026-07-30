@@ -1511,6 +1511,8 @@ Print Assumptions peano_minus_lt_of_add_lt_add_left.
 Print Assumptions peano_minus_le_of_add_le_add_right.
 Print Assumptions peano_minus_le_of_add_le_add_left.
 Print Assumptions peano_minus_add_mul_distr.
+Print Assumptions peano_minus_zero_mul.
+Print Assumptions peano_minus_one_mul.
 Print Assumptions peano_minus_positive_eq_add_one.
 Print Assumptions peano_minus_lt_add_one.
 Print Assumptions peano_minus_le_iff_lt_add_one.
@@ -1588,6 +1590,14 @@ Print Assumptions peano_minus_pred_lt_self_of_pos.
 Print Assumptions peano_minus_sub_mul.
 Print Assumptions peano_minus_mul_sub.
 Print Assumptions peano_minus_add_sub_of_le.
+Print Assumptions peano_minus_dvd.
+Print Assumptions peano_minus_le_mul_self_of_pos_left.
+Print Assumptions peano_minus_le_mul_self_of_pos_right.
+Print Assumptions peano_minus_dvd_iff_bounded.
+Print Assumptions peano_minus_le_of_dvd.
+Print Assumptions peano_minus_not_dvd_of_lt.
+Print Assumptions peano_minus_dvd_antisym.
+Print Assumptions peano_minus_dvd_one_iff.
 Print Assumptions peano_minus_pos_sub_iff_lt.
 Print Assumptions peano_minus_sub_eq_zero_iff_le.
 Print Assumptions peano_minus_ball_lt_succ.

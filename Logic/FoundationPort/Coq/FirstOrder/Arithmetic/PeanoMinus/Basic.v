@@ -208,6 +208,24 @@ Proof.
   reflexivity.
 Qed.
 
+Lemma peano_minus_zero_mul : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_mul O (oring_zero O) x = oring_zero O.
+Proof.
+  intros M O H x.
+  rewrite (@peano_minus_mul_comm M O H (oring_zero O) x).
+  apply (@peano_minus_mul_zero M O H).
+Qed.
+
+Lemma peano_minus_one_mul : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_mul O (oring_one O) x = x.
+Proof.
+  intros M O H x.
+  rewrite (@peano_minus_mul_comm M O H (oring_one O) x).
+  apply (@peano_minus_mul_one M O H).
+Qed.
+
 Lemma peano_minus_positive_eq_add_one : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall x,
   oring_lt O (oring_zero O) x ->

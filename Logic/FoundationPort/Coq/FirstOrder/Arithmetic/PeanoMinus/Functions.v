@@ -313,6 +313,107 @@ Proof.
   symmetry. apply (@peano_minus_add_assoc M O H).
 Qed.
 
+Definition peano_minus_dvd {M : Type} (O : oring_carrier M)
+    (a b : M) : Prop :=
+  exists c, b = oring_mul O a c.
+
+Lemma peano_minus_le_mul_self_of_pos_left : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall a b,
+  oring_lt O (oring_zero O) b ->
+  peano_minus_le O a (oring_mul O b a).
+Proof.
+  intros M O H a b Hb.
+  pose proof (peano_minus_mul_le_mul_right H
+    (x := oring_one O) (y := b) a
+    (@peano_minus_one_le_of_zero_lt M O H b Hb)) as Hle.
+  now rewrite (@peano_minus_one_mul M O H a) in Hle.
+Qed.
+
+Lemma peano_minus_le_mul_self_of_pos_right : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall a b,
+  oring_lt O (oring_zero O) b ->
+  peano_minus_le O a (oring_mul O a b).
+Proof.
+  intros M O H a b Hb.
+  rewrite (@peano_minus_mul_comm M O H a b).
+  now apply (peano_minus_le_mul_self_of_pos_left H).
+Qed.
+
+Lemma peano_minus_dvd_iff_bounded : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a b,
+  peano_minus_dvd O a b <->
+  exists c, peano_minus_le O c b /\ b = oring_mul O a c.
+Proof.
+  intros M O H a b. split.
+  - intros [c Hc].
+    destruct (@peano_minus_zero_le M O H a) as [Ha | Ha].
+    + symmetry in Ha. subst a.
+      rewrite (@peano_minus_zero_mul M O H c) in Hc. subst b.
+      exists (oring_zero O). split.
+      * apply (@peano_minus_zero_le M O H).
+      * symmetry. apply (@peano_minus_zero_mul M O H).
+    + exists c. split.
+      * rewrite Hc.
+        exact (@peano_minus_le_mul_self_of_pos_left M O H c a Ha).
+      * exact Hc.
+  - intros [c [_ Hc]]. now exists c.
+Qed.
+
+Lemma peano_minus_le_of_dvd : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a b,
+  oring_lt O (oring_zero O) b ->
+  peano_minus_dvd O a b -> peano_minus_le O a b.
+Proof.
+  intros M O H a b Hb [c Hc].
+  destruct (@peano_minus_zero_le M O H c) as [Hcz | Hcp].
+  - symmetry in Hcz. subst c.
+    rewrite (@peano_minus_mul_zero M O H a) in Hc. subst b.
+    exfalso. exact (@peano_minus_lt_irrefl M O H _ Hb).
+  - rewrite Hc.
+    exact (@peano_minus_le_mul_self_of_pos_right M O H a c Hcp).
+Qed.
+
+Lemma peano_minus_not_dvd_of_lt : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a b,
+  oring_lt O (oring_zero O) b -> oring_lt O b a ->
+  ~ peano_minus_dvd O a b.
+Proof.
+  intros M O H a b Hb Hba Hdvd.
+  exact (peano_minus_lt_not_ge H Hba
+    (peano_minus_le_of_dvd H Hb Hdvd)).
+Qed.
+
+Lemma peano_minus_dvd_antisym : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a b,
+  peano_minus_dvd O a b -> peano_minus_dvd O b a -> a = b.
+Proof.
+  intros M O H a b Hab Hba.
+  destruct (@peano_minus_zero_le M O H a) as [Haz | Hap].
+  - symmetry in Haz. subst a.
+    destruct Hab as [c Hbc].
+    rewrite (@peano_minus_zero_mul M O H c) in Hbc. now symmetry.
+  - destruct (@peano_minus_zero_le M O H b) as [Hbz | Hbp].
+    + symmetry in Hbz. subst b.
+      destruct Hba as [c Hac].
+      rewrite (@peano_minus_zero_mul M O H c) in Hac. exact Hac.
+    + apply (@peano_minus_le_antisym M O H).
+      * exact (peano_minus_le_of_dvd H Hbp Hab).
+      * exact (peano_minus_le_of_dvd H Hap Hba).
+Qed.
+
+Lemma peano_minus_dvd_one_iff : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a,
+  peano_minus_dvd O a (oring_one O) <-> a = oring_one O.
+Proof.
+  intros M O H a. split.
+  - intro Ha. apply (peano_minus_dvd_antisym H Ha).
+    exists a. symmetry. apply (@peano_minus_one_mul M O H).
+  - intros ->. exists (oring_one O).
+    symmetry. apply (@peano_minus_mul_one M O H).
+Qed.
+
 Lemma peano_minus_pos_sub_iff_lt : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall a b,
   oring_lt O (oring_zero O) (peano_minus_sub O a b) <->
