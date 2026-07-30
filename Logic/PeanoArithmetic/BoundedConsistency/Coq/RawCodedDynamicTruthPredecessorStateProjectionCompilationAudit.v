@@ -1,0 +1,17 @@
+(** Assumption audit for predecessor-state assumption projections. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPredecessorStateProjectionCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthPredecessorStateProjectionCompilation.
+
+Check dynamicTruthPredecessorSigmaStateMemberBodyFormula_shape.
+Check dynamicTruthPredecessorPiStateMemberBodyFormula_shape.
+Check rawDynamicTruthPredecessorSigmaStateMemberBodyCode_shape.
+Check rawDynamicTruthPredecessorPiStateMemberBodyCode_shape.
+Check RawDynamicTruthPredecessorStateProjectionRootsAt.
+Check raw_dynamicTruthPredecessorStateProjectionRootsAt_of_realizable.
+
+Print Assumptions
+  raw_dynamicTruthPredecessorStateProjectionRootsAt_of_realizable.

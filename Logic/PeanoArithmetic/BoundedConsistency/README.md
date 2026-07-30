@@ -4802,3 +4802,13 @@ codes, or any traversal hypothesis.  The global-row endpoint has a matching
 component-facing corollary, so later native traversal work can establish
 each of the three facts from its own source and leave their conjunction and
 subsequent context synchronization to the reusable compilers.
+
+The two predecessor-state assumptions are also projected once at a generic
+boundary.  Their literal conjunction shapes are named at both PA-formula and
+raw-code levels, and a new compiler introduces the buried Sigma assumption
+before transporting it beneath the Pi head.  Four audited `And-E` roots then
+expose the Sigma bound, Sigma four-table lookup, Pi bound, and Pi lookup in
+the common joint-state context.  Only realizability of the arbitrary base
+tail is required.  Subsequent admissibility lowering can therefore consume
+atomic lookup resources directly instead of repeating assumption-leaf and
+context-insertion plumbing.
