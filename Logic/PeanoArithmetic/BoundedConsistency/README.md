@@ -4870,3 +4870,23 @@ weakening, and multi-stage witness synchronization have therefore disappeared
 from the eventual restricted-proof client; only its atomic and rank-domain
 projections, the two source roots, and the native payload-code alignments
 remain visible.
+
+The rank-domain projection has now been moved to the same context-safe local
+boundary used by the successor-row branch projections.  The Sigma and Pi
+proof compilers expose the unclosed code equalities separately from their
+older thirteen-universal field equalities.  Given the exact direct
+translation already selected by the native row trace, the local row compiler
+can therefore compile `sigmaRow -> Ex8 sigmaRowDomain` and
+`piRow -> Ex8 piRowDomain` directly on the witnessed, self-shifting PA base.
+This avoids closing and reopening thirteen environment binders and, more
+importantly, produces implications that can be transplanted beneath the two
+predecessor-state assumptions before modus ponens is applied to the evidence
+roots.
+
+The remaining rank-domain step is now a concrete code alignment rather than
+a missing proof schema: the projected `Ex8` row-domain codes must be identified
+with the current Sigma/Pi input-domain codes selected one level earlier by the
+native trace.  Once those two substitution equations are exposed, either
+projection yields the corresponding side of the admissibility disjunction;
+only the independent restricted-proof atomic-adequacy projection will remain
+outside the predecessor evidence compiler.

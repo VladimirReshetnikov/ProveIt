@@ -260,6 +260,27 @@ Proof.
   reflexivity.
 Qed.
 
+(** The unclosed projection is the form consumed by local row roots.  Keep
+    this equality separate from the universally closed field equality below:
+    clients that already have a witnessed, self-shifting base can compile the
+    open implication there and need not introduce and later eliminate the
+    thirteen environment binders. *)
+Theorem rawCoqDynamicTruthSigmaDomainProjectionCode_eq_native :
+  forall (M : RawPAModel), RawPASatisfies M ->
+  forall domain lowerApplication,
+  rawCoqDynamicTruthSigmaDomainProjectionCode M
+    domain lowerApplication =
+  rawDynamicTruthSigmaDomainProjectionCode M
+    domain lowerApplication.
+Proof.
+  intros M hPA domain lowerApplication.
+  unfold rawCoqDynamicTruthSigmaDomainProjectionCode,
+    rawDynamicTruthSigmaDomainProjectionCode.
+  rewrite (rawCoqDynamicTruthSigmaSuccessorRowTemplateCode_eq_native
+    M hPA domain lowerApplication).
+  reflexivity.
+Qed.
+
 Theorem rawCoqDynamicTruthSigmaDomainProjectionFieldCode_eq_native :
   forall (M : RawPAModel), RawPASatisfies M ->
   forall domain lowerApplication,
@@ -270,10 +291,8 @@ Theorem rawCoqDynamicTruthSigmaDomainProjectionFieldCode_eq_native :
 Proof.
   intros M hPA domain lowerApplication.
   unfold rawCoqDynamicTruthSigmaDomainProjectionFieldCode,
-    rawDynamicTruthSigmaDomainProjectionFieldCode,
-    rawCoqDynamicTruthSigmaDomainProjectionCode,
-    rawDynamicTruthSigmaDomainProjectionCode.
-  rewrite (rawCoqDynamicTruthSigmaSuccessorRowTemplateCode_eq_native
+    rawDynamicTruthSigmaDomainProjectionFieldCode.
+  rewrite (rawCoqDynamicTruthSigmaDomainProjectionCode_eq_native
     M hPA domain lowerApplication).
   reflexivity.
 Qed.

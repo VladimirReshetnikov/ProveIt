@@ -42,6 +42,8 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofFiniteDisjunction
   RawCodedPALocalProofFiniteDisjunctionMatrix
+  RawCodedTemplateProofCompiler
+  RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplatePAEmbedding
   RawCodedTruthCertificateMasterFixedHelperBatchExtension
@@ -66,6 +68,8 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthLocalCollisionMatrixAssembly
   RawCodedDynamicTruthSuccessorRowBranchDisjunctionCompilation
+  RawCodedDynamicTruthSigmaDomainProjectionProofCompilation
+  RawCodedDynamicTruthPiDomainProjectionProofCompilation
   RawCodedDynamicTruthNativeLocalProofCompilation
   RawCodedDynamicTruthNativeLocalLeafRootCompiler
   RawCodedDynamicTruthNativeLocalDecisionRootCompilation
@@ -92,6 +96,8 @@ Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofFiniteDisjunction.
 Import PABoundedRawCodedPALocalProofFiniteDisjunctionMatrix.
+Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTruthCertificateMasterFixedHelperBatchExtension.
@@ -120,6 +126,8 @@ Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssembly.
 Import
   PABoundedRawCodedDynamicTruthSuccessorRowBranchDisjunctionCompilation.
+Import PABoundedRawCodedDynamicTruthSigmaDomainProjectionProofCompilation.
+Import PABoundedRawCodedDynamicTruthPiDomainProjectionProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalLeafRootCompiler.
 Import PABoundedRawCodedDynamicTruthNativeLocalDecisionRootCompilation.
@@ -241,6 +249,130 @@ Proof.
        rawDynamicTruthPiBranchDisjunction_identification :=
          hpiIdentification |}.
   exact I.
+Qed.
+
+(** ------------------------------------------------------------------
+    Open domain-projection implications on the witnessed base.
+
+    The older domain-projection graph exported a closed [All13] theorem.
+    Native predecessor compilation already owns the exact direct translator
+    and a witnessed base that shifts to itself, so closing and reopening all
+    thirteen columns would add proof nodes without adding information.  The
+    two roots below compile the open row-to-domain implications directly. *)
+
+Definition rawDynamicTruthSigmaSuccessorRowDomainProjectionImpRoot
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (context concreteDomain concreteLowerApplication : M)
+    (compilation :
+      RawDynamicTruthSigmaSuccessorRowBranchDisjunctionCompilationInputs
+        M context concreteDomain concreteLowerApplication) : M :=
+  rawTemplateProofCodeOnTail
+    (rawDirectStructuralTemplateTranslation M hPA
+      (rawDynamicTruthSigmaBranchDisjunction_directInputs compilation))
+    context coqDynamicTruthSigmaDomainProjectionProof.
+
+Definition rawDynamicTruthPiSuccessorRowDomainProjectionImpRoot
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (context concreteDomain concreteLowerApplication : M)
+    (compilation :
+      RawDynamicTruthPiSuccessorRowBranchDisjunctionCompilationInputs
+        M context concreteDomain concreteLowerApplication) : M :=
+  rawTemplateProofCodeOnTail
+    (rawDirectStructuralTemplateTranslation M hPA
+      (rawDynamicTruthPiBranchDisjunction_directInputs compilation))
+    context coqDynamicTruthPiDomainProjectionProof.
+
+Arguments rawDynamicTruthSigmaSuccessorRowDomainProjectionImpRoot
+  M hPA context concreteDomain concreteLowerApplication compilation
+  : clear implicits.
+Arguments rawDynamicTruthPiSuccessorRowDomainProjectionImpRoot
+  M hPA context concreteDomain concreteLowerApplication compilation
+  : clear implicits.
+
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthSigmaSuccessorRowDomainProjectionImp :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    context concreteDomain concreteLowerApplication
+    (compilation :
+      RawDynamicTruthSigmaSuccessorRowBranchDisjunctionCompilationInputs
+        M context concreteDomain concreteLowerApplication),
+  RawCodedPALocalProofOf M context
+    (rawDynamicTruthSigmaDomainProjectionCode M
+      concreteDomain concreteLowerApplication)
+    (rawDynamicTruthSigmaSuccessorRowDomainProjectionImpRoot
+      M hPA context concreteDomain concreteLowerApplication compilation).
+Proof.
+  intros M hPA context concreteDomain concreteLowerApplication compilation.
+  unfold rawDynamicTruthSigmaSuccessorRowDomainProjectionImpRoot.
+  rewrite <- (rawCoqDynamicTruthSigmaDomainProjectionCode_eq_native
+    M hPA concreteDomain concreteLowerApplication).
+  rewrite <-
+    (rawDirect_coqDynamicTruthSigmaDomainProjection_identified
+      M (rawDynamicTruthSigmaBranchDisjunction_directInputs compilation)
+      concreteDomain concreteLowerApplication
+      (rawDynamicTruthSigmaBranchDisjunction_identification compilation)).
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA
+        (rawDynamicTruthSigmaBranchDisjunction_directInputs compilation))
+      context nil)
+    (rawTemplateFormula
+      (rawDirectStructuralTemplateTranslation M hPA
+        (rawDynamicTruthSigmaBranchDisjunction_directInputs compilation))
+      coqDynamicTruthSigmaDomainProjectionFormula)
+    (rawTemplateProofCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA
+        (rawDynamicTruthSigmaBranchDisjunction_directInputs compilation))
+      context coqDynamicTruthSigmaDomainProjectionProof)).
+  apply (raw_templateProofOnTail_localProof M hPA).
+  - exact (rawDynamicTruthSigmaBranchDisjunction_contextRealizable
+      compilation).
+  - exact (rawDynamicTruthSigmaBranchDisjunction_contextSelfShift
+      compilation).
+  - exact (proj1 coqDynamicTruthSigmaDomainProjectionProof_derives).
+Qed.
+
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthPiSuccessorRowDomainProjectionImp :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    context concreteDomain concreteLowerApplication
+    (compilation :
+      RawDynamicTruthPiSuccessorRowBranchDisjunctionCompilationInputs
+        M context concreteDomain concreteLowerApplication),
+  RawCodedPALocalProofOf M context
+    (rawDynamicTruthPiDomainProjectionCode M
+      concreteDomain concreteLowerApplication)
+    (rawDynamicTruthPiSuccessorRowDomainProjectionImpRoot
+      M hPA context concreteDomain concreteLowerApplication compilation).
+Proof.
+  intros M hPA context concreteDomain concreteLowerApplication compilation.
+  unfold rawDynamicTruthPiSuccessorRowDomainProjectionImpRoot.
+  rewrite <- (rawCoqDynamicTruthPiDomainProjectionCode_eq_native
+    M hPA concreteDomain concreteLowerApplication).
+  rewrite <-
+    (rawDirect_coqDynamicTruthPiDomainProjection_identified
+      M (rawDynamicTruthPiBranchDisjunction_directInputs compilation)
+      concreteDomain concreteLowerApplication
+      (rawDynamicTruthPiBranchDisjunction_identification compilation)).
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA
+        (rawDynamicTruthPiBranchDisjunction_directInputs compilation))
+      context nil)
+    (rawTemplateFormula
+      (rawDirectStructuralTemplateTranslation M hPA
+        (rawDynamicTruthPiBranchDisjunction_directInputs compilation))
+      coqDynamicTruthPiDomainProjectionFormula)
+    (rawTemplateProofCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA
+        (rawDynamicTruthPiBranchDisjunction_directInputs compilation))
+      context coqDynamicTruthPiDomainProjectionProof)).
+  apply (raw_templateProofOnTail_localProof M hPA).
+  - exact (rawDynamicTruthPiBranchDisjunction_contextRealizable
+      compilation).
+  - exact (rawDynamicTruthPiBranchDisjunction_contextSelfShift
+      compilation).
+  - exact (proj1 coqDynamicTruthPiDomainProjectionProof_derives).
 Qed.
 
 (** The same direct inputs also carry the two lower-application traces used
