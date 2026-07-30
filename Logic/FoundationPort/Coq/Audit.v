@@ -607,6 +607,14 @@ Print Assumptions llfo_Girard_negative.
 Check llfo_girard_sequent.
 Print Assumptions llfo_girard_sequent_negative.
 Print Assumptions llfo_girard_sequent_shift.
+Print Assumptions llfo_girard_sequent_app.
+Print Assumptions llfo_girard_sequent_incl.
+Print Assumptions list_in_of_generic_list_member.
+Print Assumptions llfo_girard_identity.
+Print Assumptions llfo_girard_cut_step.
+Print Assumptions llfo_girard_contraction_step.
+Print Assumptions llfo_girard_verum_step.
+Print Assumptions llfo_girard_or_step.
 Print Assumptions llfo_forget_girard.
 Print Assumptions llfo_forget_Girard.
 Check llfo_forget_sequent.

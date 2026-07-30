@@ -1,7 +1,7 @@
 (** Forgetful embedding of first-order linear logic into classical LK. *)
 
 From Stdlib Require Import Lists.List Sorting.Permutation Vectors.Fin.
-From FoundationModal Require Import GenericCalculus.
+From FoundationModal Require Import GenericAdjunctiveSet GenericCalculus.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Calculus.
@@ -304,6 +304,169 @@ Proof.
   rewrite !map_map. apply map_ext. intro phi.
   apply eq_sym. apply llfo_Girard_rewrite.
 Qed.
+
+Lemma llfo_girard_sequent_app : forall L
+    (Gamma Delta : first_order_sequent L),
+  llfo_girard_sequent (Gamma ++ Delta) =
+  llfo_girard_sequent Gamma ++ llfo_girard_sequent Delta.
+Proof. intros. unfold llfo_girard_sequent. apply map_app. Qed.
+
+Lemma llfo_girard_sequent_incl : forall L
+    (Gamma Delta : first_order_sequent L),
+  incl Gamma Delta ->
+  incl (llfo_girard_sequent Gamma) (llfo_girard_sequent Delta).
+Proof.
+  intros L Gamma Delta Hsub phi Hphi.
+  apply in_map_iff in Hphi. destruct Hphi as [psi [<- Hpsi]].
+  apply in_map. now apply Hsub.
+Qed.
+
+Lemma list_in_of_generic_list_member : forall (A : Type) (x : A) xs,
+  generic_list_member x xs -> In x xs.
+Proof.
+  intros A x xs. induction xs as [|y ys IH]; simpl; [tauto |].
+  intros [Hxy | Hx]; [now left | right; now apply IH].
+Qed.
+
+Definition llfo_girard_identity {L k} (R : language_rel L k)
+    (v : Fin.t k -> syntactic_term L) :
+    llfo_derivation L
+      (llfo_girard_sequent
+        [Semiformula_rel R v; Semiformula_nrel R v]) :=
+  LLDDereliction (LLDIdentity (LLBang (LLRel R v))).
+
+Definition llfo_girard_cut_step {L} (phi : proposition L)
+    (Gamma Delta : first_order_sequent L)
+    (dpos : llfo_derivation L
+      (llfo_Girard phi :: llfo_girard_sequent Gamma))
+    (dneg : llfo_derivation L
+      (llfo_Girard (semiformula_neg phi) ::
+       llfo_girard_sequent Delta)) :
+    llfo_derivation L
+      (llfo_girard_sequent (Gamma ++ Delta)).
+Proof.
+  destruct (semiformula_polarity phi) eqn:Hpol.
+  - assert (dpos' : llfo_derivation L
+        (LLQuest (llfo_girard phi) :: llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact dpos |].
+      simpl. unfold llfo_Girard. now rewrite Hpol. }
+    assert (dneg' : llfo_derivation L
+        (llfo_neg (llfo_girard phi) :: llfo_girard_sequent Delta)).
+    { eapply llfo_derivation_cast; [exact dneg |].
+      simpl. unfold llfo_Girard.
+      rewrite semiformula_polarity_neg, Hpol. simpl.
+      now rewrite llfo_girard_neg. }
+    refine (llfo_derivation_cast
+      (@LLDCut L (LLQuest (llfo_girard phi))
+        (llfo_girard_sequent Gamma) (llfo_girard_sequent Delta)
+        dpos' (llfo_negative_of_course dneg'
+          (@llfo_girard_sequent_negative L Delta))) _).
+    apply eq_sym, llfo_girard_sequent_app.
+  - assert (dpos' : llfo_derivation L
+        (llfo_girard phi :: llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact dpos |].
+      simpl. unfold llfo_Girard. now rewrite Hpol. }
+    assert (dneg' : llfo_derivation L
+        (llfo_neg (LLBang (llfo_girard phi)) ::
+         llfo_girard_sequent Delta)).
+    { eapply llfo_derivation_cast; [exact dneg |].
+      simpl. unfold llfo_Girard.
+      rewrite semiformula_polarity_neg, Hpol. simpl.
+      now rewrite llfo_girard_neg. }
+    refine (llfo_derivation_cast
+      (@LLDCut L (LLBang (llfo_girard phi))
+        (llfo_girard_sequent Gamma) (llfo_girard_sequent Delta)
+        (llfo_negative_of_course dpos'
+          (@llfo_girard_sequent_negative L Gamma)) dneg') _).
+    apply eq_sym, llfo_girard_sequent_app.
+Defined.
+
+Definition llfo_girard_contraction_step {L}
+    (eq_dec : forall phi psi : llfo_proposition L,
+      {phi = psi} + {phi <> psi})
+    (Gamma Delta : first_order_sequent L)
+    (d : llfo_derivation L (llfo_girard_sequent Gamma))
+    (hsub : generic_list_subset Gamma Delta) :
+    llfo_derivation L (llfo_girard_sequent Delta) :=
+  llfo_negative_wk eq_dec d
+    (llfo_girard_sequent_incl
+      (fun phi hphi => list_in_of_generic_list_member
+        (hsub phi (generic_list_member_of_list_in hphi))))
+    (@llfo_girard_sequent_negative L Delta).
+
+Definition llfo_girard_verum_step {L} :
+    llfo_derivation L
+      (llfo_girard_sequent [@Semiformula_verum L nat 0]) :=
+  LLDDereliction LLDOne.
+
+Definition llfo_girard_or_step {L} (phi psi : proposition L)
+    (Gamma : first_order_sequent L)
+    (d : llfo_derivation L
+      (llfo_girard_sequent (phi :: psi :: Gamma))) :
+    llfo_derivation L
+      (llfo_girard_sequent (Semiformula_or phi psi :: Gamma)).
+Proof.
+  destruct (semiformula_polarity phi) eqn:Hphi,
+    (semiformula_polarity psi) eqn:Hpsi.
+  - assert (dprem : llfo_derivation L
+        (LLQuest (llfo_girard phi) :: LLQuest (llfo_girard psi) ::
+         llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact d |].
+      simpl. unfold llfo_Girard. now rewrite Hphi, Hpsi. }
+    assert (dpar : llfo_derivation L
+        (llfo_neg
+           (LLTensor (LLBang (llfo_neg (llfo_girard phi)))
+             (LLBang (llfo_neg (llfo_girard psi)))) ::
+         llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact (LLDPar dprem) |].
+      simpl. now rewrite !llfo_neg_involutive. }
+    eapply llfo_derivation_cast.
+    + exact (@LLDCut L
+        (LLTensor (LLBang (llfo_neg (llfo_girard phi)))
+          (LLBang (llfo_neg (llfo_girard psi))))
+        [LLQuest (LLPlus (llfo_girard phi) (llfo_girard psi))]
+        (llfo_girard_sequent Gamma)
+        (llfo_exp_comm (llfo_girard phi) (llfo_girard psi)) dpar).
+    + unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. cbn [semiformula_polarity llfo_girard].
+      rewrite Hphi, Hpsi. reflexivity.
+  - eapply llfo_derivation_cast.
+    + assert (dprem : llfo_derivation L
+          (LLQuest (llfo_girard phi) :: llfo_girard psi ::
+           llfo_girard_sequent Gamma)).
+      { eapply llfo_derivation_cast; [exact d |].
+        unfold llfo_girard_sequent. cbn [map].
+        unfold llfo_Girard. now rewrite Hphi, Hpsi. }
+      exact (@LLDPar L (LLQuest (llfo_girard phi))
+        (llfo_girard psi) (llfo_girard_sequent Gamma) dprem).
+    + unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. cbn [semiformula_polarity llfo_girard].
+      now rewrite Hphi, Hpsi.
+  - eapply llfo_derivation_cast.
+    + assert (dprem : llfo_derivation L
+          (llfo_girard phi :: LLQuest (llfo_girard psi) ::
+           llfo_girard_sequent Gamma)).
+      { eapply llfo_derivation_cast; [exact d |].
+        unfold llfo_girard_sequent. cbn [map].
+        unfold llfo_Girard. now rewrite Hphi, Hpsi. }
+      exact (@LLDPar L (llfo_girard phi)
+        (LLQuest (llfo_girard psi)) (llfo_girard_sequent Gamma) dprem).
+    + unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. cbn [semiformula_polarity llfo_girard].
+      now rewrite Hphi, Hpsi.
+  - eapply llfo_derivation_cast.
+    + assert (dprem : llfo_derivation L
+          (llfo_girard phi :: llfo_girard psi ::
+           llfo_girard_sequent Gamma)).
+      { eapply llfo_derivation_cast; [exact d |].
+        unfold llfo_girard_sequent. cbn [map].
+        unfold llfo_Girard. now rewrite Hphi, Hpsi. }
+      exact (@LLDPar L (llfo_girard phi) (llfo_girard psi)
+        (llfo_girard_sequent Gamma) dprem).
+    + unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. cbn [semiformula_polarity llfo_girard].
+      now rewrite Hphi, Hpsi.
+Defined.
 
 Theorem llfo_forget_girard : forall L X n (phi : semiformula L X n),
   llfo_forget (llfo_girard phi) = phi.
