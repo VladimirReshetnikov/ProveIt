@@ -2,18 +2,28 @@
 
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
+From Foundation.Vorspiel Require Import NotationClass.
+From Foundation.Vorspiel Require Import Quotient.
 From Foundation.Vorspiel Require Import Small.
 From Foundation.Vorspiel Require Import String.
 From Foundation.Vorspiel Require Import Fintype.
 From Foundation.Vorspiel Require Import Denumerable.
 From Foundation.Vorspiel Require Import Graph.
 From Foundation.Vorspiel Require Import Part.
+From Foundation.Vorspiel Require Import ENat.
+From Foundation.Vorspiel Require Import DMatrix.
+From Foundation.Vorspiel Require Import Matrix.
+From Foundation.Vorspiel Require Import Arithmetic.
 From Foundation.Vorspiel.Fin Require Import Basic.
+From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
 From Foundation.Vorspiel.Finset Require Import Basic.
 From Foundation.Vorspiel.List Require Import Basic.
 From Foundation.Vorspiel.List Require Import Chain.
+From Foundation.Vorspiel.List Require Import ChainI.
+From Foundation.Vorspiel.List Require Import Perm.
 From Foundation.Vorspiel.Nat Require Import Basic.
+From Foundation.Vorspiel.Nat Require Import Matrix.
 From Foundation.Vorspiel.Set Require Import Basic.
 From Foundation.Vorspiel.Set Require Import Cofinite.
 From Foundation.Vorspiel.Set Require Import Fin.
@@ -74,6 +84,35 @@ Print Assumptions empty_function_unique.
 Check type_is_empty.
 Check empty_type_elim.
 Print Assumptions empty_type_function_unique.
+Check lo_tilde.
+Check lo_arrow.
+Check lo_wedge.
+Check lo_vee.
+Check lo_box.
+Check lo_dia.
+Check lo_rhd.
+Check lo_tensor.
+Check lo_par.
+Check lo_with.
+Check lo_plus.
+Check lo_lolli.
+Check lo_bang.
+Check lo_quest.
+Check lo_exp.
+Check lo_smash.
+Check lo_length.
+Check lo_godel_quote.
+Check lo_sigma_symbol.
+Check lo_pi_symbol.
+Check lo_delta_symbol.
+Check explicit_quotient.
+Check quotient_vec_mk.
+Print Assumptions quotient_vec_induction.
+Check quotient_vec_lift.
+Print Assumptions quotient_vec_lift_zero.
+Print Assumptions quotient_vec_lift_mk.
+Print Assumptions quotient_vec_lift_mk_one.
+Print Assumptions quotient_vec_lift_mk_two.
 Print Assumptions option_return_eq_some.
 Check option_to_list.
 Print Assumptions option_to_list_singleton_iff.
@@ -120,9 +159,148 @@ Print Assumptions function_graph3_iff_right.
 Check partial_value.
 Check partial_dom.
 Check partial_some.
+Check partial_none.
+Check partial_bind.
+Check partial_map.
+Print Assumptions partial_bind_some.
+Print Assumptions partial_map_member_iff.
+Check partial_find_zero.
+Print Assumptions partial_find_zero_member_iff.
 Check fin_partial_product.
 Print Assumptions fin_partial_product_member_iff.
 Print Assumptions partial_unit_dom_iff.
+Check enat.
+Check enat_top.
+Check enat_le.
+Check enat_lt.
+Check enat_find.
+Print Assumptions enat_find_exists_spec.
+Print Assumptions enat_lt_find.
+Print Assumptions enat_exists_of_find_le.
+Print Assumptions enat_find_eq_top_iff.
+Print Assumptions enat_find_le.
+Check dvec_empty.
+Check dvec_cons.
+Print Assumptions dvec_cons_zero.
+Print Assumptions dvec_cons_succ.
+Print Assumptions dvec_eta.
+Print Assumptions dvec_cons_ext_iff.
+Check fin_cover_data.
+Print Assumptions dvec_eq_dec.
+Check matrix_vec_empty.
+Check matrix_vec_cons.
+Check matrix_vec_head.
+Check matrix_vec_tail.
+Print Assumptions matrix_vec_cons_zero.
+Print Assumptions matrix_vec_cons_succ.
+Print Assumptions matrix_vec_eta.
+Print Assumptions matrix_vec_cons_ext_iff.
+Check matrix_vec_eq_dec.
+Check matrix_vec_map.
+Print Assumptions matrix_vec_map_cons.
+Print Assumptions matrix_vec_map_comp.
+Check matrix_vec_to_list.
+Print Assumptions matrix_vec_to_list_length.
+Print Assumptions matrix_vec_to_list_member_iff.
+Check matrix_vec_foldr.
+Check matrix_vec_foldl.
+Print Assumptions matrix_vec_foldr_succ.
+Print Assumptions matrix_vec_foldl_succ.
+Print Assumptions matrix_vec_forall_iff.
+Print Assumptions matrix_vec_exists_iff.
+Check matrix_vec_option_sequence.
+Print Assumptions matrix_vec_option_sequence_some.
+Print Assumptions matrix_vec_cons_injective.
+Check matrix_vec_append.
+Print Assumptions matrix_vec_append_zero.
+Print Assumptions matrix_vec_append_cons.
+Print Assumptions matrix_vec_append_left.
+Print Assumptions matrix_vec_append_right.
+Check matrix_vec_singleton.
+Check matrix_vec_snoc.
+Print Assumptions matrix_vec_snoc_left.
+Print Assumptions matrix_vec_snoc_last.
+Print Assumptions matrix_vec_snoc_cons.
+Print Assumptions matrix_vec_map_append.
+Check matrix_vec_to_nat.
+Print Assumptions matrix_vec_to_nat_empty.
+Print Assumptions matrix_vec_to_nat_cons.
+Check fin_vec_pointwise.
+Print Assumptions fin_vec_forall_bounded_iff.
+Print Assumptions fin_vec_exists_bounded_iff.
+Print Assumptions fin_vec_forall_iff.
+Print Assumptions fin_vec_exists_iff.
+Check nat_to_matrix_vec.
+Print Assumptions nat_to_matrix_vec_encode.
+Print Assumptions nat_to_matrix_vec_member_lt.
+Check nat_truth_eq.
+Check nat_truth_lt.
+Check nat_truth_le.
+Check nat_truth_dvd.
+Print Assumptions nat_truth_eq_positive_iff.
+Print Assumptions nat_truth_lt_positive_iff.
+Print Assumptions nat_truth_le_positive_iff.
+Print Assumptions nat_truth_dvd_positive_iff.
+Check nat_truth_inv.
+Check nat_truth_pos.
+Check nat_truth_and.
+Check nat_truth_or.
+Print Assumptions nat_truth_inv_eq_zero_iff.
+Print Assumptions nat_truth_and_positive_iff.
+Print Assumptions nat_truth_or_positive_iff.
+Check nat_bounded_all.
+Print Assumptions nat_bounded_all_positive_iff.
+Print Assumptions nat_bounded_all_eq_zero_iff.
+Print Assumptions nat_bounded_all_eq_one_iff_positive.
+Check arith_partial_function.
+Check arith_partial_comp.
+Check arith_find_on.
+Check arith_part1.
+Check arithmetic1.
+Print Assumptions arith_find_on_member_iff.
+Print Assumptions arith_partial_comp_some_member_iff.
+Print Assumptions arithmetic1_zero.
+Print Assumptions arithmetic1_one.
+Print Assumptions arithmetic1_add.
+Print Assumptions arithmetic1_mul.
+Print Assumptions arithmetic1_proj.
+Print Assumptions arithmetic1_equal.
+Print Assumptions arithmetic1_lt.
+Print Assumptions arithmetic1_comp.
+Check arithmetic1_unary.
+Check arithmetic1_binary.
+Print Assumptions arithmetic1_comp1.
+Print Assumptions arithmetic1_comp2.
+Print Assumptions arithmetic1_succ.
+Print Assumptions arithmetic1_const.
+Print Assumptions arithmetic1_inv.
+Print Assumptions arithmetic1_pos.
+Print Assumptions arithmetic1_and.
+Print Assumptions arithmetic1_or.
+Print Assumptions list_permutation_two_iff.
+Check list_comp_subset.
+Print Assumptions list_permutation_normalize.
+Print Assumptions list_comp_subset_contract.
+Print Assumptions list_comp_subset_trans.
+Print Assumptions list_comp_subset_cons.
+Print Assumptions list_incl_to_comp_subset.
+Check list_chainI.
+Print Assumptions list_chainI_not_nil.
+Print Assumptions list_chainI_singleton_iff.
+Print Assumptions list_chainI_head_eq.
+Print Assumptions list_chainI_cons_cons_iff.
+Print Assumptions list_chainI_tail_exists.
+Print Assumptions list_chainI_suffix_exists.
+Print Assumptions list_chainI_prefix_suffix.
+Print Assumptions list_chainI_last_eq.
+Print Assumptions list_chainI_endpoints_unique.
+Print Assumptions list_chainI_not_mem_predecessor.
+Print Assumptions list_chainI_nodup.
+Print Assumptions chainI_lists_explicit_finite_cover.
+Print Assumptions list_chainI_predecessor_exists.
+Print Assumptions list_chainI_append_point_iff.
+Print Assumptions list_chainI_relation_of_adjacent_infix.
+Print Assumptions list_chainI_infix_of_prefixed_suffix.
 Check list_strict_inclusion.
 Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
