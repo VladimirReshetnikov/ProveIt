@@ -12,6 +12,7 @@ From Foundation.FirstOrder.Basic Require Import Padding.
 From Foundation.FirstOrder.Basic Require Import Eq.
 From Foundation.FirstOrder.Basic Require Import Coding.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
@@ -782,6 +783,19 @@ Check semiformula_ball_lt_succ.
 Check semiformula_bex_lt_succ.
 Check semiformula_eval_ball_lt_succ.
 Check semiformula_eval_bex_lt_succ.
+Check oring_standard_structure.
+Check oring_standard_structure_zero.
+Check oring_standard_structure_one.
+Check oring_standard_structure_add.
+Check oring_standard_structure_mul.
+Check oring_standard_structure_eq.
+Check oring_standard_structure_lt.
+Check oring_standard_structure_interprets.
+Check first_order_structure_ext.
+Check fin_zero_eta.
+Check oring_standard_structure_unique.
+Check nat_standard_structure.
+Check nat_standard_structure_interprets.
 Check first_order_structure_monotone.
 Check structure_func_monotone.
 Check semiterm_val_monotone.
@@ -1185,6 +1199,10 @@ Print Assumptions semiterm_val_add_one.
 Print Assumptions semiterm_operator_val_numeral.
 Print Assumptions semiformula_eval_ball_lt_succ.
 Print Assumptions semiformula_eval_bex_lt_succ.
+Print Assumptions oring_standard_structure_interprets.
+Print Assumptions first_order_structure_ext.
+Print Assumptions oring_standard_structure_unique.
+Print Assumptions nat_standard_structure_interprets.
 Print Assumptions semiterm_val_monotone.
 Print Assumptions semiterm_val_monotone_free.
 Print Assumptions semiterm_val_monotone_bound.
