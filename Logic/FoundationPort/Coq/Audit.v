@@ -816,9 +816,27 @@ Check arithmetic_hierarchy_accum.
 Check arithmetic_hierarchy_accum_iter.
 Check arithmetic_hierarchy_strict_mono.
 Check arithmetic_hierarchy_mono.
+Check arithmetic_hierarchy_zero_alt.
+Check arithmetic_hierarchy_zero_iff.
+Check arithmetic_hierarchy_and_iff.
+Check arithmetic_hierarchy_or_iff.
 Check arithmetic_hierarchy_neg.
 Check arithmetic_hierarchy_neg_iff.
+Check arithmetic_hierarchy_imp_iff.
+Check arithmetic_hierarchy_iff_iff.
+Check arithmetic_hierarchy_zero_iff_iff.
 Check arithmetic_hierarchy_of_open.
+Check arithmetic_lt_guard_open.
+Check arithmetic_hierarchy_remove_all.
+Check arithmetic_hierarchy_remove_exists.
+Check arithmetic_hierarchy_bounded_all_iff.
+Check arithmetic_hierarchy_bounded_exists_iff.
+Check arithmetic_hierarchy_ball_lt_iff.
+Check arithmetic_hierarchy_bex_lt_iff.
+Check arithmetic_hierarchy_all_iff.
+Check arithmetic_hierarchy_exists_iff.
+Check arithmetic_hierarchy_list_conj_iff.
+Check arithmetic_hierarchy_list_disj_iff.
 Check arithmetic_theory_sound_on_hierarchy.
 Check arithmetic_theory_sound_on_hierarchy_elim.
 Check arithmetic_theory_consistent_of_sigma_one_sound.
@@ -1247,9 +1265,20 @@ Print Assumptions arithmetic_theory_sound_on_of_models.
 Print Assumptions arithmetic_theory_consistent_of_sound_on.
 Print Assumptions arithmetic_hierarchy_accum.
 Print Assumptions arithmetic_hierarchy_strict_mono.
+Print Assumptions arithmetic_hierarchy_zero_iff.
+Print Assumptions arithmetic_hierarchy_and_iff.
+Print Assumptions arithmetic_hierarchy_or_iff.
 Print Assumptions arithmetic_hierarchy_neg.
 Print Assumptions arithmetic_hierarchy_neg_iff.
+Print Assumptions arithmetic_hierarchy_imp_iff.
+Print Assumptions arithmetic_hierarchy_iff_iff.
 Print Assumptions arithmetic_hierarchy_of_open.
+Print Assumptions arithmetic_hierarchy_remove_all.
+Print Assumptions arithmetic_hierarchy_remove_exists.
+Print Assumptions arithmetic_hierarchy_bounded_all_iff.
+Print Assumptions arithmetic_hierarchy_bounded_exists_iff.
+Print Assumptions arithmetic_hierarchy_list_conj_iff.
+Print Assumptions arithmetic_hierarchy_list_disj_iff.
 Print Assumptions arithmetic_theory_consistent_of_sigma_one_sound.
 Print Assumptions arithmetic_theory_consistent_of_pi_two_sound.
 Print Assumptions first_order_true_arithmetic_models.
