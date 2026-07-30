@@ -131,6 +131,25 @@ Lemma coqProofEndpointQuantifierBoundedLawTemplate_imp2_shape :
       coqProofEndpointQuantifierBoundedConclusion).
 Proof. reflexivity. Qed.
 
+Lemma coqProofEndpointQuantifierBoundedRestrictedPremise_view :
+  coqProofEndpointQuantifierBoundedRestrictedPremise =
+  restrictedTargetTemplateFormulaContext
+    coqRestrictedPASoundnessLowerLevelTerm
+    (restrictedTargetProofContext (tVar 2)).
+Proof. reflexivity. Qed.
+
+Lemma coqProofEndpointQuantifierBoundedEndpointPremise_view :
+  coqProofEndpointQuantifierBoundedEndpointPremise =
+  embedPAFormula (proofEndpointTermAt (tVar 2) (tVar 1) (tVar 0)).
+Proof. reflexivity. Qed.
+
+Lemma coqProofEndpointQuantifierBoundedConclusion_view :
+  coqProofEndpointQuantifierBoundedConclusion =
+  restrictedTargetTemplateFormulaContext
+    coqRestrictedPASoundnessLowerLevelTerm
+    (restrictedTargetFormulaQuantifierBoundedContext (tVar 0)).
+Proof. reflexivity. Qed.
+
 (** Semantic statement of the law.  Notice that [level] is an arbitrary
     carrier element and [variables] supplies the tail used to interpret the
     restricted-proof certificate. *)
@@ -486,6 +505,192 @@ Proof.
           split; [exact hincluded | exact hresult]
       end
   end.
+Qed.
+
+(** ------------------------------------------------------------------
+    Strong-step specialization.
+
+    Four endpoint witnesses have already been introduced in the direct
+    soundness shell.  Consequently the proof, context, and conclusion are
+    variables four, three, and two.  Defining this fixed specialization
+    directly is important: filling the restricted-target level hole with a
+    free PA term would be captured beneath its internal binders, while
+    closing and reopening all endpoint variables causes prohibitively large
+    proof-term normalization.  Only the named level parameter is abstracted
+    here, exactly as in the smaller three-variable interface above. *)
+
+Definition coqStrongStepProofEndpointQuantifierBoundedLawTemplate
+    : TemplateFormula :=
+  tfImp
+    (restrictedTargetTemplateFormulaContext
+      coqRestrictedPASoundnessLowerLevelTerm
+      (restrictedTargetProofContext (tVar 4)))
+    (tfImp
+      (embedPAFormula
+        (proofEndpointTermAt (tVar 4) (tVar 3) (tVar 2)))
+      (restrictedTargetTemplateFormulaContext
+        coqRestrictedPASoundnessLowerLevelTerm
+        (restrictedTargetFormulaQuantifierBoundedContext (tVar 2)))).
+
+Definition coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise
+    : TemplateFormula :=
+  templateImpAntecedent
+    coqStrongStepProofEndpointQuantifierBoundedLawTemplate.
+
+Definition coqStrongStepProofEndpointQuantifierBoundedEndpointPremise
+    : TemplateFormula :=
+  templateImpAntecedent
+    (templateImpConsequent
+      coqStrongStepProofEndpointQuantifierBoundedLawTemplate).
+
+Definition coqStrongStepProofEndpointQuantifierBoundedConclusion
+    : TemplateFormula :=
+  templateImpConsequent
+    (templateImpConsequent
+      coqStrongStepProofEndpointQuantifierBoundedLawTemplate).
+
+Lemma coqStrongStepProofEndpointQuantifierBoundedLawTemplate_imp2_shape :
+  coqStrongStepProofEndpointQuantifierBoundedLawTemplate =
+  tfImp coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise
+    (tfImp coqStrongStepProofEndpointQuantifierBoundedEndpointPremise
+      coqStrongStepProofEndpointQuantifierBoundedConclusion).
+Proof. reflexivity. Qed.
+
+Lemma coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise_view :
+  coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise =
+  restrictedTargetTemplateFormulaContext
+    coqRestrictedPASoundnessLowerLevelTerm
+    (restrictedTargetProofContext (tVar 4)).
+Proof. reflexivity. Qed.
+
+Lemma coqStrongStepProofEndpointQuantifierBoundedEndpointPremise_view :
+  coqStrongStepProofEndpointQuantifierBoundedEndpointPremise =
+  embedPAFormula (proofEndpointTermAt (tVar 4) (tVar 3) (tVar 2)).
+Proof. reflexivity. Qed.
+
+Lemma coqStrongStepProofEndpointQuantifierBoundedConclusion_view :
+  coqStrongStepProofEndpointQuantifierBoundedConclusion =
+  restrictedTargetTemplateFormulaContext
+    coqRestrictedPASoundnessLowerLevelTerm
+    (restrictedTargetFormulaQuantifierBoundedContext (tVar 2)).
+Proof. reflexivity. Qed.
+
+Theorem raw_coqStrongStepProofEndpointQuantifierBoundedLawTemplate_valid :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    variables parameters predicates,
+  rawTemplateFormulaSat M variables parameters predicates
+    coqStrongStepProofEndpointQuantifierBoundedLawTemplate.
+Proof.
+  intros M hPA variables parameters predicates.
+  unfold coqStrongStepProofEndpointQuantifierBoundedLawTemplate.
+  cbn [rawTemplateFormulaSat].
+  unfold coqRestrictedPASoundnessLowerLevelTerm.
+  rewrite rawTemplateFormulaSat_restrictedTarget_parameter;
+    [|apply restrictedTargetProofContext_seal_free].
+  rewrite raw_carrierRestrictedProofContextSat_iff.
+  rewrite rawTemplateFormulaSat_embedPA.
+  rewrite raw_sat_proofEndpointTermAt_iff.
+  rewrite rawTemplateFormulaSat_restrictedTarget_parameter;
+    [|apply restrictedTargetFormulaQuantifierBoundedContext_seal_free].
+  rewrite raw_restrictedTargetFormulaQuantifierBoundedContextSat_iff.
+  cbn [raw_term_eval].
+  intros hrestricted hendpoint.
+  exact (raw_carrierRestrictedProof_endpoint_formula_bounded M hPA
+    variables
+    (parameters coqRestrictedPASoundnessLowerLevelParameterName)
+    (variables 4) hrestricted
+    (variables 3) (variables 2) hendpoint).
+Qed.
+
+Definition coqStrongStepProofEndpointQuantifierBoundedSourceBodyTemplate
+    : TemplateFormula :=
+  templateFormulaAbstractParameter
+    coqRestrictedPASoundnessLowerLevelParameterName
+    coqStrongStepProofEndpointQuantifierBoundedLawTemplate.
+
+Definition coqStrongStepProofEndpointQuantifierBoundedSourceBodyFormula
+    : formula :=
+  match templateFormulaAsPAFormula
+    coqStrongStepProofEndpointQuantifierBoundedSourceBodyTemplate with
+  | Some output => output
+  | None => pBot
+  end.
+
+Definition coqStrongStepProofEndpointQuantifierBoundedSourceFormula
+    : formula :=
+  pAll coqStrongStepProofEndpointQuantifierBoundedSourceBodyFormula.
+
+Lemma coqStrongStepProofEndpointQuantifierBoundedSource_reifies :
+  templateFormulaAsPAFormula
+    coqStrongStepProofEndpointQuantifierBoundedSourceBodyTemplate =
+  Some coqStrongStepProofEndpointQuantifierBoundedSourceBodyFormula.
+Proof. vm_compute. reflexivity. Qed.
+
+Theorem coqStrongStepProofEndpointQuantifierBoundedSource_embed :
+  embedPAFormula
+    coqStrongStepProofEndpointQuantifierBoundedSourceBodyFormula =
+  coqStrongStepProofEndpointQuantifierBoundedSourceBodyTemplate.
+Proof.
+  apply templateFormulaAsPAFormula_sound.
+  exact coqStrongStepProofEndpointQuantifierBoundedSource_reifies.
+Qed.
+
+Theorem coqStrongStepProofEndpointQuantifierBoundedSource_open :
+  templateFormulaOpen coqRestrictedPASoundnessLowerLevelTerm
+    (embedPAFormula
+      coqStrongStepProofEndpointQuantifierBoundedSourceBodyFormula) =
+  coqStrongStepProofEndpointQuantifierBoundedLawTemplate.
+Proof.
+  rewrite coqStrongStepProofEndpointQuantifierBoundedSource_embed.
+  apply templateFormulaAbstractParameter_open.
+Qed.
+
+Theorem raw_coqStrongStepProofEndpointQuantifierBoundedSourceFormula_valid :
+  forall (M : RawPAModel), RawPASatisfies M -> forall variables,
+  raw_formula_sat M variables
+    coqStrongStepProofEndpointQuantifierBoundedSourceFormula.
+Proof.
+  intros M hPA variables.
+  unfold coqStrongStepProofEndpointQuantifierBoundedSourceFormula.
+  cbn [raw_formula_sat]. intro level.
+  pose (parameters :=
+    (fun _ : TemplateParameterName => raw_zero M)).
+  pose (predicates :=
+    (fun (_ : TemplatePredicateName) (_ : list M) => True)).
+  apply (proj1 (rawTemplateFormulaSat_embedPA M
+    (scons M level variables) parameters predicates
+    coqStrongStepProofEndpointQuantifierBoundedSourceBodyFormula)).
+  rewrite coqStrongStepProofEndpointQuantifierBoundedSource_embed.
+  unfold coqStrongStepProofEndpointQuantifierBoundedSourceBodyTemplate.
+  apply (proj2 (rawTemplateFormulaSat_abstractParameter M
+    variables parameters predicates
+    coqRestrictedPASoundnessLowerLevelParameterName level
+    coqStrongStepProofEndpointQuantifierBoundedLawTemplate)).
+  apply raw_coqStrongStepProofEndpointQuantifierBoundedLawTemplate_valid.
+  exact hPA.
+Qed.
+
+Theorem PA_proves_coqStrongStepProofEndpointQuantifierBoundedSourceFormula :
+  Formula.BProv Formula.Ax_s []
+    coqStrongStepProofEndpointQuantifierBoundedSourceFormula.
+Proof.
+  assert (hclosed : Formula.BProv Formula.Ax_s []
+      (Formula.sealPA
+        coqStrongStepProofEndpointQuantifierBoundedSourceFormula)).
+  {
+    apply PA_BProv_of_raw_valid.
+    - apply Formula.sealPA_sentence.
+    - intros M hPA variables.
+      apply raw_formula_sat_sealPA_of_valid.
+      intro inner.
+      exact
+        (raw_coqStrongStepProofEndpointQuantifierBoundedSourceFormula_valid
+          M hPA inner).
+  }
+  pose proof (Formula.BProv_sealPA_allE_rename Formula.Ax_s []
+    coqStrongStepProofEndpointQuantifierBoundedSourceFormula
+    (fun index => index) hclosed) as hopen.
+  now rewrite Formula.rename_id in hopen.
 Qed.
 
 End PABoundedRawCodedProofEndpointQuantifierBoundedProofCompilation.
