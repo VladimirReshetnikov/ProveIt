@@ -87,6 +87,51 @@ Proof.
   subst a. exact Ha.
 Qed.
 
+Lemma robinson_q_eq_zero_of_add_eq_zero : forall M
+    (O : oring_carrier M),
+  robinson_q_laws O -> forall a b,
+  oring_add O a b = oring_zero O ->
+  a = oring_zero O /\ b = oring_zero O.
+Proof.
+  intros M O H a b Hab.
+  destruct (@robinson_q_zero_or_succ M O H b)
+    as [Hb | [c Hb]].
+  - subst b. rewrite (@robinson_q_add_zero M O H) in Hab.
+    now split.
+  - exfalso. rewrite Hb, (@robinson_q_add_succ M O H) in Hab.
+    exact (@robinson_q_succ_ne_zero M O H (oring_add O a c) Hab).
+Qed.
+
+Lemma robinson_q_lt_of_add_nonzero : forall M (O : oring_carrier M),
+  robinson_q_laws O -> forall a b,
+  b <> oring_zero O -> oring_lt O a (oring_add O a b).
+Proof.
+  intros M O H a b Hb.
+  destruct (robinson_q_exists_succ_of_ne_zero H Hb) as [c Hc].
+  apply (proj2 (@robinson_q_lt_def M O H a (oring_add O a b))).
+  exists c. now rewrite <- Hc.
+Qed.
+
+Lemma robinson_q_lt_one_iff_eq_zero : forall M (O : oring_carrier M),
+  robinson_q_laws O -> forall a,
+  oring_lt O a (oring_one O) <-> a = oring_zero O.
+Proof.
+  intros M O H a. split.
+  - intro Hlt.
+    destruct (proj1 (@robinson_q_lt_def M O H a (oring_one O)) Hlt)
+      as [c Hc].
+    rewrite (@robinson_q_add_succ M O H) in Hc.
+    assert (Hsum : oring_add O a c = oring_zero O).
+    { apply (@robinson_q_succ_inj M O H).
+      rewrite Hc. symmetry. apply (robinson_q_zero_add_one H). }
+    exact (proj1 (robinson_q_eq_zero_of_add_eq_zero H Hsum)).
+  - intro Ha. subst a.
+    apply (proj2 (@robinson_q_lt_def M O H
+      (oring_zero O) (oring_one O))).
+    exists (oring_zero O).
+    now rewrite !(robinson_q_zero_add_one H).
+Qed.
+
 Lemma robinson_q_numeral_succ : forall M (O : oring_carrier M),
   robinson_q_laws O -> forall n,
   oring_numeral O (S n) =
@@ -167,6 +212,91 @@ Proof.
   rewrite <- (robinson_q_numeral_succ H (m - n - 1)).
   rewrite (robinson_q_numeral_add H).
   f_equal. lia.
+Qed.
+
+Lemma robinson_q_not_lt_zero : forall M (O : oring_carrier M),
+  robinson_q_laws O -> forall x,
+  ~ oring_lt O x (oring_zero O).
+Proof.
+  intros M O H x Hlt.
+  destruct (proj1 (@robinson_q_lt_def M O H x (oring_zero O)) Hlt)
+    as [c Hc].
+  rewrite (@robinson_q_add_succ M O H) in Hc.
+  exact (@robinson_q_succ_ne_zero M O H (oring_add O x c) Hc).
+Qed.
+
+Lemma robinson_q_lt_numeral_iff : forall M (O : oring_carrier M),
+  robinson_q_laws O -> forall n x,
+  oring_lt O x (oring_numeral O n) <->
+  exists m, m < n /\ x = oring_numeral O m.
+Proof.
+  intros M O H n. induction n as [|n IH]; intro x; split.
+  - intro Hlt. exfalso. exact (robinson_q_not_lt_zero H Hlt).
+  - intros [m [Hm _]]. lia.
+  - intro Hlt.
+    destruct (proj1 (@robinson_q_lt_def M O H x
+      (oring_numeral O (S n))) Hlt) as [a Ha].
+    rewrite (@robinson_q_add_succ M O H) in Ha.
+    rewrite (robinson_q_numeral_succ H n) in Ha.
+    apply (@robinson_q_succ_inj M O H) in Ha.
+    destruct (@robinson_q_zero_or_succ M O H a)
+      as [Hazero | [b Hb]].
+    + subst a. rewrite (@robinson_q_add_zero M O H) in Ha.
+      exists n. split; [lia|exact Ha].
+    + rewrite Hb in Ha.
+      assert (Hlower : oring_lt O x (oring_numeral O n)).
+      { apply (proj2 (@robinson_q_lt_def M O H x
+          (oring_numeral O n))). now exists b. }
+      destruct (proj1 (IH x) Hlower) as [m [Hmn Hm]].
+      exists m. split; [lia|exact Hm].
+  - intros [m [Hmn ->]]. now apply (robinson_q_numeral_lt H).
+Qed.
+
+Definition robinson_q_r0_laws : forall M (O : oring_carrier M),
+  robinson_q_laws O -> r0_laws O.
+Proof.
+  intros M O H. constructor.
+  - apply (robinson_q_numeral_add H).
+  - apply (robinson_q_numeral_mul H).
+  - apply (robinson_q_numeral_ne H).
+  - apply (robinson_q_lt_numeral_iff H).
+Defined.
+
+Lemma robinson_q_numeral_lt_iff : forall M (O : oring_carrier M),
+  robinson_q_laws O -> forall n m,
+  oring_lt O (oring_numeral O n) (oring_numeral O m) <-> n < m.
+Proof.
+  intros M O H n m.
+  exact (r0_numeral_lt_iff (robinson_q_r0_laws H) n m).
+Qed.
+
+Lemma robinson_q_numeral_add_one : forall M (O : oring_carrier M),
+  robinson_q_laws O -> forall n,
+  oring_add O (oring_numeral O n) (oring_one O) =
+  oring_numeral O (S n).
+Proof.
+  intros M O H n. symmetry. apply (robinson_q_numeral_succ H).
+Qed.
+
+Lemma robinson_q_numeral_lt_add : forall M (O : oring_carrier M),
+  robinson_q_laws O -> forall n m,
+  m <> 0 ->
+  oring_lt O (oring_numeral O n)
+    (oring_add O (oring_numeral O n) (oring_numeral O m)).
+Proof.
+  intros M O H n m Hm.
+  rewrite (robinson_q_numeral_add H).
+  apply (robinson_q_numeral_lt H). lia.
+Qed.
+
+Lemma robinson_q_numeral_lt_succ : forall M (O : oring_carrier M),
+  robinson_q_laws O -> forall n,
+  oring_lt O (oring_numeral O n)
+    (oring_add O (oring_numeral O n) (oring_one O)).
+Proof.
+  intros M O H n.
+  rewrite (robinson_q_numeral_add_one H).
+  apply (robinson_q_numeral_lt H). lia.
 Qed.
 
 Definition nat_robinson_q_laws : robinson_q_laws nat_oring_carrier.
