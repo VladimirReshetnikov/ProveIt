@@ -5108,3 +5108,13 @@ scoping certificate, a parameter-inertness equation, or an arbitrary pair
 of row templates.  The source-root boundary is now stated only in terms of
 the append existential root and the concrete row implication that the
 existing four-state-table compilers are designed to construct.
+
+That client is now prefix-flexible as well.  A row implication compiled
+beneath named carrier parameters may be transported to the concrete root
+tuple whenever the two translated prefixes have equal raw context codes for
+every tail.  This is the weakest context condition used by the existing
+growing-proof transport lemma and avoids forcing template-level equality
+between two presentations of the same carrier terms.  Consequently the
+generic named-parameter row compiler can feed the native opaque-row global
+closure directly; the remaining premise construction is confined to its
+inherited traversal, equality-branch production, and append-root resources.
