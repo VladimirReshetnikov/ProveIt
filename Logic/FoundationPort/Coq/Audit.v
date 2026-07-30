@@ -20,6 +20,7 @@ From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Q.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Functions.
 From Foundation.FirstOrder.Arithmetic Require Import Schemata.
+From Foundation.FirstOrder.Arithmetic.IOpen Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
@@ -1515,6 +1516,8 @@ Print Assumptions peano_minus_add_mul_distr.
 Print Assumptions peano_minus_zero_mul.
 Print Assumptions peano_minus_one_mul.
 Print Assumptions peano_minus_positive_eq_add_one.
+Print Assumptions peano_minus_lt_of_not_le.
+Print Assumptions peano_minus_add_one_le_of_lt.
 Print Assumptions peano_minus_lt_add_one.
 Print Assumptions peano_minus_le_iff_lt_add_one.
 Print Assumptions peano_minus_add_le_add.
@@ -1676,6 +1679,17 @@ Print Assumptions arithmetic_least_number_principle.
 Print Assumptions arithmetic_order_induction_of_successor.
 Print Assumptions arithmetic_least_number_of_order_induction.
 Print Assumptions arithmetic_least_number_of_successor_induction.
+Print Assumptions arithmetic_boundary_of_least_number.
+Print Assumptions iopen_div_pos_spec.
+Print Assumptions iopen_lt_mul_add_one.
+Print Assumptions iopen_div_exists_unique_pos.
+Print Assumptions iopen_div_spec.
+Print Assumptions iopen_div_exists_unique.
+Print Assumptions iopen_div.
+Print Assumptions iopen_div_specification.
+Print Assumptions iopen_mul_div_le_pos.
+Print Assumptions iopen_lt_mul_div_succ.
+Print Assumptions iopen_div_zero.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.

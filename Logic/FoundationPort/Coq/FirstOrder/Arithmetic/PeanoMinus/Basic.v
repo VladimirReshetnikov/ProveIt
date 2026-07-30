@@ -148,6 +148,18 @@ Proof.
       (@peano_minus_lt_trans M O H x y x Hxy Hyx)).
 Qed.
 
+Lemma peano_minus_lt_of_not_le : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  ~ peano_minus_le O x y -> oring_lt O y x.
+Proof.
+  intros M O H x y Hnle.
+  destruct (@peano_minus_lt_trichotomy M O H x y)
+    as [Hxy | [Hxy | Hyx]].
+  - exfalso. apply Hnle. now right.
+  - exfalso. apply Hnle. now left.
+  - exact Hyx.
+Qed.
+
 Lemma peano_minus_lt_of_add_lt_add_right : forall M
     (O : oring_carrier M),
   peano_minus_laws O -> forall x y z,
@@ -240,6 +252,35 @@ Proof.
       (oring_one O) x Hone) as [y Hy].
     exists y. rewrite (@peano_minus_add_comm M O H y (oring_one O)).
     now symmetry.
+Qed.
+
+Lemma peano_minus_add_one_le_of_lt : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  oring_lt O x y ->
+  peano_minus_le O (oring_add O x (oring_one O)) y.
+Proof.
+  intros M O H x y Hxy.
+  destruct (@peano_minus_add_eq_of_lt M O H x y Hxy) as [z Hz].
+  destruct (@peano_minus_zero_le M O H z) as [Hzero | Hpos].
+  - symmetry in Hzero. subst z.
+    rewrite (@peano_minus_add_zero M O H x) in Hz. subst y.
+    exfalso. exact (@peano_minus_lt_irrefl M O H x Hxy).
+  - destruct (peano_minus_positive_eq_add_one H Hpos) as [w Hw].
+    subst z.
+    assert (Hle : peano_minus_le O (oring_add O x (oring_one O))
+        (oring_add O (oring_add O x (oring_one O)) w)).
+    { destruct (@peano_minus_zero_le M O H w) as [Hwzero | Hwpos].
+      - symmetry in Hwzero. subst w. left.
+        symmetry. apply (@peano_minus_add_zero M O H).
+      - right. pose proof (@peano_minus_add_lt_add M O H
+          (oring_zero O) w (oring_add O x (oring_one O)) Hwpos) as Hlt.
+        rewrite (peano_minus_add_zero_left H),
+          (@peano_minus_add_comm M O H w
+            (oring_add O x (oring_one O))) in Hlt.
+        exact Hlt. }
+    rewrite <- Hz, (@peano_minus_add_comm M O H w (oring_one O)),
+      <- (@peano_minus_add_assoc M O H x (oring_one O) w).
+    exact Hle.
 Qed.
 
 Lemma peano_minus_zero_or_succ : forall M (O : oring_carrier M),
