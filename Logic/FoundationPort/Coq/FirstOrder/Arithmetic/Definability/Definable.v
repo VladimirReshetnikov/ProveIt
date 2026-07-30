@@ -8,9 +8,11 @@
 *)
 
 From Stdlib Require Import Vectors.Fin.
-From Foundation.Syntax.Predicate Require Import Language Rew.
-From Foundation.FirstOrder.Basic Require Import Definability.
-From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
+From Foundation.Syntax.Predicate Require Import Language Term Rew.
+From Foundation.FirstOrder.Basic Require Import Operator Definability.
+From Foundation.FirstOrder.Basic.Semantics Require Import
+  Semantics OperatorSemantics.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 
 Set Implicit Arguments.
@@ -396,4 +398,141 @@ Proof.
   - now apply arithmetic_sorted_delta_proper_neg.
   - intro v. rewrite (arithmetic_sorted_delta_eval_neg_iff Hp v).
     specialize (Hspec v). tauto.
+Defined.
+
+(** * Bound-variable substitution and quantifier closure *)
+
+(** This single term-substitution theorem subsumes the source's variable
+    retraction and term-retraction operations.  Its target predicate exposes
+    exactly the valuation induced by the substituted terms. *)
+Definition arithmetic_sorted_definable_substitute_bound
+    {M : Type} {k m symbol}
+    {Str : first_order_structure oring_language M}
+    {P : (Fin.t k -> M) -> Prop}
+    (H : arithmetic_sorted_definable Str symbol P)
+    (t : Fin.t k -> semiterm oring_language M m) :
+    arithmetic_sorted_definable Str symbol
+      (fun v : Fin.t m -> M =>
+        P (fun i => semiterm_val Str v (fun x => x) (t i))).
+Proof.
+  destruct symbol as [class rank]. destruct H as [p [Hp Hspec]].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_rewrite (rew_subst t) p |}. split.
+  - destruct class; simpl in *; trivial.
+    now apply arithmetic_sorted_delta_proper_with_params_on_subst.
+  - intro v. rewrite arithmetic_sorted_rewrite_val.
+    rewrite semiformula_eval_rewrite.
+    change
+      (semiformula_eval Str
+        (fun i => semiterm_val Str v (fun x => x) (t i))
+        (fun x => x) (arithmetic_sorted_formula_val p) <->
+       P (fun i => semiterm_val Str v (fun x => x) (t i))).
+    apply Hspec.
+Defined.
+
+Definition arithmetic_sorted_definable_retraction
+    {M : Type} {k m symbol}
+    {Str : first_order_structure oring_language M}
+    {P : (Fin.t k -> M) -> Prop}
+    (H : arithmetic_sorted_definable Str symbol P)
+    (e : Fin.t k -> Fin.t m) :
+    arithmetic_sorted_definable Str symbol
+      (fun v : Fin.t m -> M => P (fun i => v (e i))).
+Proof.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_substitute_bound H
+      (fun i => @Semiterm_bvar oring_language M m (e i)))).
+  intro v. reflexivity.
+Defined.
+
+Definition arithmetic_sorted_definable_ball {M : Type} {k symbol}
+    {Str : first_order_structure oring_language M}
+    {R : (Fin.t k -> M) -> M -> Prop}
+    (H : arithmetic_sorted_definable Str symbol
+      (fun w : Fin.t (S k) -> M =>
+        R (fun i => w (Fin.FS i)) (w Fin.F1)))
+    (t : semiterm oring_language M k) :
+    arithmetic_sorted_definable Str symbol
+      (fun v : Fin.t k -> M => forall x : M,
+        semiformula_operator_eval Str
+          (fin_two x (semiterm_val Str v (fun y => y) t))
+          (semiformula_lt_operator arithmetic_lt_operator) -> R v x).
+Proof.
+  destruct symbol as [class rank]. destruct H as [p [Hp Hspec]].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_ball t p |}. split.
+  - destruct class; simpl in *; trivial.
+    now apply arithmetic_sorted_delta_proper_ball.
+  - intro v. rewrite arithmetic_sorted_ball_val.
+    rewrite semiformula_eval_ball_lt.
+    split; intros Hall x Hguard.
+    + apply (proj1 (Hspec (fin_env_cons x v))). now apply Hall.
+    + apply (proj2 (Hspec (fin_env_cons x v))). now apply Hall.
+Defined.
+
+Definition arithmetic_sorted_definable_bex {M : Type} {k symbol}
+    {Str : first_order_structure oring_language M}
+    {R : (Fin.t k -> M) -> M -> Prop}
+    (H : arithmetic_sorted_definable Str symbol
+      (fun w : Fin.t (S k) -> M =>
+        R (fun i => w (Fin.FS i)) (w Fin.F1)))
+    (t : semiterm oring_language M k) :
+    arithmetic_sorted_definable Str symbol
+      (fun v : Fin.t k -> M => exists x : M,
+        semiformula_operator_eval Str
+          (fin_two x (semiterm_val Str v (fun y => y) t))
+          (semiformula_lt_operator arithmetic_lt_operator) /\ R v x).
+Proof.
+  destruct symbol as [class rank]. destruct H as [p [Hp Hspec]].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_bex t p |}. split.
+  - destruct class; simpl in *; trivial.
+    now apply arithmetic_sorted_delta_proper_bex.
+  - intro v. rewrite arithmetic_sorted_bex_val.
+    rewrite semiformula_eval_bex_lt.
+    split.
+    + intros [x [Hguard Hbody]]. exists x. split; [exact Hguard |].
+      exact (proj1 (Hspec (fin_env_cons x v)) Hbody).
+    + intros [x [Hguard Hbody]]. exists x. split; [exact Hguard |].
+      exact (proj2 (Hspec (fin_env_cons x v)) Hbody).
+Defined.
+
+Definition arithmetic_sorted_definable_exists {M : Type} {k rank}
+    {Str : first_order_structure oring_language M}
+    {R : (Fin.t k -> M) -> M -> Prop}
+    (H : arithmetic_sorted_definable Str
+      (arithmetic_sigma_symbol (S rank))
+      (fun w : Fin.t (S k) -> M =>
+        R (fun i => w (Fin.FS i)) (w Fin.F1))) :
+    arithmetic_sorted_definable Str (arithmetic_sigma_symbol (S rank))
+      (fun v : Fin.t k -> M => exists x : M, R v x).
+Proof.
+  destruct H as [p [_ Hspec]].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_exists p |}. split; [exact I |].
+  intro v. rewrite arithmetic_sorted_exists_val. simpl.
+  split.
+  - intros [x Hbody]. exists x.
+    exact (proj1 (Hspec (fin_env_cons x v)) Hbody).
+  - intros [x Hbody]. exists x.
+    exact (proj2 (Hspec (fin_env_cons x v)) Hbody).
+Defined.
+
+Definition arithmetic_sorted_definable_all {M : Type} {k rank}
+    {Str : first_order_structure oring_language M}
+    {R : (Fin.t k -> M) -> M -> Prop}
+    (H : arithmetic_sorted_definable Str
+      (arithmetic_pi_symbol (S rank))
+      (fun w : Fin.t (S k) -> M =>
+        R (fun i => w (Fin.FS i)) (w Fin.F1))) :
+    arithmetic_sorted_definable Str (arithmetic_pi_symbol (S rank))
+      (fun v : Fin.t k -> M => forall x : M, R v x).
+Proof.
+  destruct H as [p [_ Hspec]].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_all p |}. split; [exact I |].
+  intro v. rewrite arithmetic_sorted_all_val. simpl.
+  split; intros Hall x.
+  - exact (proj1 (Hspec (fin_env_cons x v)) (Hall x)).
+  - exact (proj2 (Hspec (fin_env_cons x v)) (Hall x)).
 Defined.
