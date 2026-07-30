@@ -5066,3 +5066,21 @@ such roots, but its public package still requires metatheoretic `formula`
 rows; the next proof-producing step is to generalize that package to opaque
 `TemplateFormula` rows (or expose an equivalent trace-linked compiler), then
 establish the two selected-payload equations needed by the strong handoff.
+
+The append traversal compiler is now generalized to those opaque rows.
+`RawCodedFourStateTableAppendTemplateGlobalTraversalAssembly.v` opens the
+native ten-existential source directly, proves that its first six traversal
+fields retain their historical shapes, and isolates its seventh field as a
+five-universal row formula over arbitrary `TemplateFormula` leaves.  A
+concrete row implication can be rewritten to this extracted production,
+closed under the five row binders, combined with the six stable fields,
+closed under all ten source witnesses, and discharged from the eight append
+eigenvariables.  The public endpoint therefore returns a growing proof of
+the literal generalized `coqDynamicTruthGlobalExistentialSource`; it does not
+decode either row or detour through an embedded metatheoretic formula.
+Structural scoping and fixed-substitution lemmas also expose a sufficient
+normalization criterion for concrete row bodies.  The remaining handoff is
+now narrower: instantiate the concrete seventh-field proof and its row
+normalization equality from the aligned native predecessor/selector package,
+then identify the selected polarity payloads expected by the strong-step
+shell.
