@@ -7,6 +7,7 @@ From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
 From Foundation.FirstOrder.Basic Require Import Definability.
 From Foundation.FirstOrder.Basic Require Import Calculus.
+From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
 From Foundation.FirstOrder.Basic.Semantics Require Import RewriteClosure.
 From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
@@ -596,6 +597,12 @@ Check first_order_derivation_height_or.
 Check first_order_derivation_height_and.
 Check first_order_derivation_height_all.
 Check first_order_derivation_height_exists.
+Check first_order_empty_env.
+Check first_order_sequent_true.
+Check fin_env_snoc_empty_eq_cons.
+Check first_order_shifted_context_true.
+Check first_order_derivation_sound.
+Check first_order_derivation_nil_empty.
 
 Check semiterm_bvar_or_fvar_relational.
 Check term_fvar_relational.
@@ -808,6 +815,10 @@ Print Assumptions first_order_derivation_top.
 Print Assumptions first_order_derivation_atomic_identity.
 Print Assumptions first_order_derivation_rotate.
 Print Assumptions first_order_derivation_tensor.
+Print Assumptions fin_env_snoc_empty_eq_cons.
+Print Assumptions first_order_shifted_context_true.
+Print Assumptions first_order_derivation_sound.
+Print Assumptions first_order_derivation_nil_empty.
 Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
