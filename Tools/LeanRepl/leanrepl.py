@@ -33,6 +33,19 @@ for _stream in (sys.stdout, sys.stderr, sys.stdin):
 # ---------------------------------------------------------------------------
 
 USE_COLOR = sys.stdout.isatty() and os.environ.get("NO_COLOR") is None
+if USE_COLOR and os.name == "nt":
+    # The classic Windows console needs virtual-terminal processing switched
+    # on before ANSI escapes render; fall back to plain text if that fails.
+    try:
+        import ctypes
+        _k32 = ctypes.windll.kernel32
+        _handle = _k32.GetStdHandle(-11)  # STD_OUTPUT_HANDLE
+        _mode = ctypes.c_uint32()
+        if (not _k32.GetConsoleMode(_handle, ctypes.byref(_mode))
+                or not _k32.SetConsoleMode(_handle, _mode.value | 0x0004)):
+            USE_COLOR = False
+    except Exception:  # noqa: BLE001
+        USE_COLOR = False
 
 
 def _c(code: str, text: str) -> str:
@@ -343,6 +356,10 @@ class LeanRepl:
             project_dir = self.find_project(Path.cwd())
         if project_dir is not None:
             print(dim(f"Using Lake project: {project_dir}"))
+            if not self.is_built_project(project_dir):
+                print(yellow("warning: ") + f"{project_dir} has no .lake build — "
+                      "the backend may fail or try to fetch dependencies. "
+                      "Run `lake build` there, or point --project at a built checkout.")
             kwargs["project"] = LocalProject(directory=str(project_dir), auto_build=False)
             self.project_dir = project_dir
         else:
@@ -358,6 +375,24 @@ class LeanRepl:
                                      max_process_memory=None)
         print(dim(f"Lean REPL ready in {time.time() - t0:.1f}s "
                   f"(Lean {self.server.lean_version or 'unknown'})"))
+
+        # First contact with the backend happens lazily; probe now so a broken
+        # setup surfaces as a clear message instead of a traceback later.
+        t0 = time.time()
+        try:
+            probe = self.run_cmd("#eval (0 : Nat)", env=None)
+            if is_error(probe):
+                raise RuntimeError(probe.message)
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:  # noqa: BLE001
+            print(red("The Lean backend failed to start:"))
+            print(str(e))
+            print(yellow("hints: ") + "make sure the project is built (`lake build`), "
+                  "check available memory, or clear the LeanInteract cache "
+                  "(`clear-lean-cache`).")
+            raise SystemExit(1) from e
+        print(dim(f"Backend responding ({time.time() - t0:.1f}s)"))
 
         if self.imports:
             self.rebuild_base_env()
@@ -388,11 +423,20 @@ class LeanRepl:
                       f"silently ignore it ({hint})")
 
     @staticmethod
+    def is_built_project(d: Path) -> bool:
+        return (d / ".lake" / "build" / "lib" / "lean").is_dir()
+
+    @staticmethod
     def find_project(start: Path) -> Path | None:
-        for d in [start, *start.parents]:
-            if (d / "lakefile.toml").exists() or (d / "lakefile.lean").exists():
+        """Nearest enclosing Lake project that has been built; falls back to
+        the nearest project of any kind (e.g. a git worktree of a built
+        checkout has a lakefile but no .lake build of its own)."""
+        candidates = [d for d in [start, *start.parents]
+                      if (d / "lakefile.toml").exists() or (d / "lakefile.lean").exists()]
+        for d in candidates:
+            if LeanRepl.is_built_project(d):
                 return d
-        return None
+        return candidates[0] if candidates else None
 
     def run_cmd(self, code: str, env: int | None, cache: bool = False):
         """Run a command in the given environment. Returns response or LeanError."""
@@ -644,7 +688,16 @@ class LeanRepl:
         elif cmd in ("i", "info"):
             if arg:
                 res = self.run_cmd(f"#print {arg}", env=self.cur_env)
-                self.print_response(res)
+                if is_error(res) or has_errors(res):
+                    # #print only takes identifiers; fall back to #check for
+                    # keywords like `Type` and for compound expressions
+                    res2 = self.run_cmd(f"#check ({arg})", env=self.cur_env)
+                    if not is_error(res2) and not has_errors(res2):
+                        self.print_response(res2)
+                    else:
+                        self.print_response(res)
+                else:
+                    self.print_response(res)
             else:
                 print(red("usage: :info NAME"))
         elif cmd in ("l", "load"):
@@ -890,6 +943,8 @@ class LeanRepl:
                         break
                 except KeyboardInterrupt:
                     self.handle_interrupt()
+                except Exception as e:  # noqa: BLE001
+                    self.report_exception(e)
                 continue
             try:
                 while True:
@@ -912,13 +967,22 @@ class LeanRepl:
                     text = text + "\n" + "\n".join(extra)
             except KeyboardInterrupt:
                 self.handle_interrupt()
-            except TimeoutError:
-                print(red(f"timeout after {self.timeout}s") +
-                      dim(" — the server was restarted; session state is replayed lazily"))
             except Exception as e:  # noqa: BLE001
-                print(red(f"internal error: {e!r}"))
+                self.report_exception(e)
         if self.transcript is not None:
             self.transcript_stop()
+
+    def report_exception(self, e: Exception):
+        if isinstance(e, TimeoutError):
+            print(red(f"timeout after {self.timeout}s") +
+                  dim(" — the server was restarted; session state is replayed lazily"))
+        elif isinstance(e, (ConnectionAbortedError, ConnectionError, BrokenPipeError, EOFError)):
+            print(red("the Lean server died: ") + str(e).strip())
+            print(yellow("hint: ") + "check that the project is built (`lake build`) and "
+                  "that enough memory is available; the session will be restored "
+                  "automatically on the next command.")
+        else:
+            print(red(f"internal error: {e!r}"))
 
     def handle_interrupt(self):
         print(red("\ninterrupted") +
