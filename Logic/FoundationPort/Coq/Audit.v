@@ -7,6 +7,7 @@ From Foundation.Vorspiel.List Require Import Basic.
 From Foundation.Vorspiel.List Require Import Chain.
 From Foundation.Vorspiel.Nat Require Import Basic.
 From Foundation.Vorspiel.Set Require Import Basic.
+From Foundation.Vorspiel.Set Require Import Cofinite.
 From Foundation.Vorspiel.Order Require Import Heyting.
 From Foundation.Vorspiel.Order Require Import Lattice.
 From Foundation.Vorspiel.Order Require Import Dense.
@@ -158,6 +159,17 @@ Print Assumptions set_finite_approximation_strict.
 Print Assumptions set_finite_approximation_subset.
 Print Assumptions set_finite_approximation_complete.
 Print Assumptions infinitely_finite_approximate.
+Check set_finitely_covered.
+Check set_cofinite.
+Check set_coinfinite.
+Print Assumptions set_finitely_covered_subset.
+Print Assumptions set_coinfinite_iff_not_cofinite.
+Print Assumptions set_cofinite_iff_not_coinfinite.
+Print Assumptions set_cofinite_subset.
+Print Assumptions set_coinfinite_subset.
+Print Assumptions set_full_cofinite.
+Print Assumptions set_cofinite_union_left.
+Print Assumptions set_cofinite_union_right.
 Check heyting_algebra_data.
 Print Assumptions ha_inf_mono.
 Print Assumptions ha_himp_himp_inf_himp_inf_le.
