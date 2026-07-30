@@ -116,6 +116,9 @@ data ReplState = ReplState
   , rsShowTime :: Bool
   , rsTimestamps :: Bool
   , rsTranscript :: Maybe (FilePath, Handle)
+  , rsProve :: Maybe ProveState
+  , rsProveCounter :: Int
+  , rsLastSorry :: Maybe (Integer, String)
   , rsItCounter :: Int
     -- ^ GHCi-style `it`: evaluations bind `def \171it!N\187 := (expr)`; bare
     -- `it` in later input is substituted with the newest binding
@@ -130,6 +133,13 @@ data ReplState = ReplState
     -- ^ False when stdin is piped: prompts and echo go through emit (so the
     -- output and transcript read like a session) and Haskeline's own
     -- locale-encoded prompt printing is bypassed.
+  }
+
+-- | Interactive prove mode: the stack holds (proofState, goals, scriptEntry)
+-- newest first; the entry state has no script entry.
+data ProveState = ProveState
+  { pvStmt :: Maybe String  -- ^ Nothing when resumed from a `sorry`
+  , pvStack :: [(Integer, [String], Maybe String)]
   }
 
 type St = IORef ReplState
@@ -208,11 +218,11 @@ transcriptStop st = do
 
 -- Record an input line (with its prompt) in the transcript; Haskeline's echo
 -- does not pass through emit.
-transcriptInput :: St -> String -> String -> IO ()
-transcriptInput st promptText line = do
+transcriptInput' :: St -> Bool -> String -> String -> IO ()
+transcriptInput' st isMain promptText line = do
   state <- readIORef st
   forM_ (rsTranscript state) $ \(_, h) -> do
-    when (rsTimestamps state && promptText == mainPrompt) $ do
+    when (rsTimestamps state && isMain) $ do
       now <- getZonedTime
       hPutStrLn h (formatTime defaultTimeLocale "[%H:%M:%S]" now)
     hPutStrLn h (promptText ++ line)
@@ -221,6 +231,16 @@ transcriptInput st promptText line = do
 mainPrompt, contPrompt :: String
 mainPrompt = "\955> "
 contPrompt = "\8230> "
+
+promptOf :: St -> IO String
+promptOf st = do
+  state <- readIORef st
+  pure $ case rsProve state of
+    Just pv -> case pvStack pv of
+      (_, goals, _) : _ | length goals > 1 ->
+        "\8866" ++ show (length goals) ++ "> "
+      _ -> "\8866> "
+    Nothing -> mainPrompt
 
 -- Backend interaction -------------------------------------------------------
 
@@ -250,14 +270,21 @@ backendDied st = do
 
 -- Run a command in an environment. Nothing env = fresh (imports allowed).
 runCmd :: St -> Maybe Integer -> String -> IO (Either String JValue)
-runCmd st env code = do
+runCmd st env code = runPayload st $ JObj
+  (("cmd", JStr code) : [("env", JInt e) | Just e <- [env]])
+
+-- Apply one tactic to a proof state.
+runTactic :: St -> Integer -> String -> IO (Either String JValue)
+runTactic st proofState tactic = runPayload st $ JObj
+  [("tactic", JStr tactic), ("proofState", JInt proofState)]
+
+runPayload :: St -> JValue -> IO (Either String JValue)
+runPayload st payload = do
   backendOr <- ensureBackend st
   case backendOr of
     Left err -> pure (Left err)
     Right backend -> do
       state <- readIORef st
-      let payload = JObj (("cmd", JStr code)
-            : [("env", JInt e) | Just e <- [env]])
       result <- request backend (rsTimeout state) payload
       case result of
         Right v -> pure (Right v)
@@ -333,8 +360,11 @@ printResponse st transform v = case respFatal v of
             emitLn st . (++ text) =<< cYellow st "warning: "
         _ -> emitLn st text
     forM_ (respSorries v) $ \(proofState, goal) -> do
+      forM_ proofState $ \ps -> modifyIORef' st
+        (\s -> s { rsLastSorry = Just (ps, goal) })
       tag <- cCyan st "sorry"
-      note <- cDim st (" (proof state " ++ maybe "?" show proofState ++ ")")
+      note <- cDim st (" (proof state " ++ maybe "?" show proofState
+        ++ " \8212 :prove to work on it)")
       emitLn st (tag ++ note)
       forM_ (lines (trimEnd goal)) $ \l -> emitLn st ("  " ++ l)
     readIORef errored
@@ -620,6 +650,8 @@ helpText = unlines
   , "  :imports                 list active imports"
   , "  :browse [NAMESPACE]      list declarations in a namespace or the session"
   , "  :browse! NAMESPACE       ...including compiler-generated auxiliaries"
+  , "  :prove [PROP]            interactively prove PROP tactic by tactic"
+  , "                           (no argument: resume the last `sorry`)"
   , "  :doc NAME                show the documentation string of NAME"
   , "  :search TEXT             search declaration names (case-insensitive)"
   , "  :search? TYPE            proof search: what proves TYPE? (via exact?)"
@@ -640,7 +672,7 @@ helpText = unlines
 commandNames :: [String]
 commandNames =
   [ ":help", ":quit", ":type", ":info", ":load", ":reload", ":import"
-  , ":imports", ":browse", ":browse!", ":doc", ":search", ":search?"
+  , ":imports", ":browse", ":browse!", ":doc", ":prove", ":search", ":search?"
   , ":set", ":undo", ":reset", ":history", ":env", ":time", ":transcript"
   , ":timestamps", ":pickle", ":unpickle"
   ]
@@ -664,6 +696,7 @@ dispatchCommand st line = do
       pure True
     "browse" -> True <$ cmdBrowse st False arg
     "browse!" -> True <$ cmdBrowse st True arg
+    "prove" -> True <$ cmdProve st arg
     "doc" -> True <$ cmdDoc st arg
     "search" -> True <$ cmdSearch st False arg
     "search?" -> True <$ cmdSearch st True arg
@@ -1229,6 +1262,338 @@ readFileUtf8 path = do
   length contents `seq` hClose h
   pure contents
 
+-- Interactive prove mode ------------------------------------------------------
+
+proveHelp :: String
+proveHelp = unlines
+  [ ""
+  , "Prove mode: every input line is a tactic applied to the current goals."
+  , ""
+  , "  :goals             reprint the current goals"
+  , "  :undo [N]          take back the last N tactics (default 1)"
+  , "  :script            show the tactic script so far"
+  , "  :auto              try common finishing tactics on the current goal"
+  , "  :qed [NAME]        finish - save as `theorem NAME` in the session"
+  , "  :abort             leave prove mode (the script is printed, not lost)"
+  , "  :help              this help;  :quit exits the REPL"
+  , ""
+  , "Tip: `exact?`, `simp?`, `rw?` record the tactic they *found* in the"
+  , "script, not the question mark form."
+  ]
+
+autoTactics :: [String]
+autoTactics = ["rfl", "trivial", "decide", "simp", "omega", "exact?", "aesop"]
+
+respGoals :: JValue -> [String]
+respGoals v = fromMaybe [] $ do
+  gs <- jLookup "goals" v >>= jArray
+  pure [g | Just g <- map jString gs]
+
+respProofState :: JValue -> Maybe Integer
+respProofState v = jLookup "proofState" v >>= jInt
+
+formatGoals :: St -> [String] -> IO ()
+formatGoals st goals
+  | null goals = emitLn st =<< color st "32" "All goals accomplished \127881"
+  | otherwise = do
+      let n = length goals
+      forM_ (zip [1 :: Int ..] goals) $ \(i, g) -> do
+        when (n > 1) $
+          emitLn st =<< cDim st ("\8212 goal " ++ show i ++ " of " ++ show n ++ " \8212")
+        forM_ (lines (trimEnd' g)) $ \line ->
+          if "case " `isPrefixOf` line
+            then emitLn st =<< cCyan st line
+            else if "\8866" `isPrefixOf` line
+              then emitLn st =<< cBold st line
+              else emitLn st line
+ where
+  trimEnd' = reverse . dropWhile isSpace . reverse
+
+parseTryThis :: [(String, String)] -> Maybe String
+parseTryThis messages = listToMaybe'
+  [ intercalate "\n" cleaned
+  | (sev, d) <- messages, sev == "info"
+  , "Try this:" `isPrefixOf` dropWhile isSpace d
+  , let cleaned = [ stripMarker (trim ln)
+                  | ln <- drop 1 (lines d), not (null (trim ln)) ]
+  , not (null cleaned)
+  ]
+ where
+  listToMaybe' (x : _) = Just x
+  listToMaybe' [] = Nothing
+  stripMarker ln = case ln of
+    '[' : rest -> case break (== ']') rest of
+      (_, ']' : ' ' : suggestion) -> suggestion
+      (_, ']' : suggestion) -> suggestion
+      _ -> ln
+    _ -> ln
+
+proveScript :: ProveState -> [String]
+proveScript pv = reverse [e | (_, _, Just e) <- pvStack pv]
+
+proveEmergencyExit :: St -> String -> IO ()
+proveEmergencyExit st why = do
+  state <- readIORef st
+  forM_ (rsProve state) $ \pv -> do
+    emitLn st =<< cRed st why
+    let script = proveScript pv
+    unless (null script) $ do
+      emitLn st =<< cDim st "tactic script so far (proof states were lost):"
+      forM_ script $ \t -> emitLn st ("  " ++ t)
+  modifyIORef' st (\s -> s { rsProve = Nothing })
+
+cmdProve :: St -> String -> IO ()
+cmdProve st rawArg = do
+  state <- readIORef st
+  case rsProve state of
+    Just _ -> emitLn st =<< cRed st
+      "already in prove mode \8212 :abort or :qed first"
+    Nothing -> do
+      let arg = substIt (rsItCounter state) (trim rawArg)
+      entered <- if not (null arg)
+        then do
+          result <- runCmd st (rsEnv state)
+            ("example : (" ++ arg ++ ") := by sorry")
+          case result of
+            Left err -> False <$ (emitLn st =<< cRed st err)
+            Right v -> do
+              let errs = [d | (s, d) <- respMessages v, s == "error"]
+              case respSorries v of
+                ((Just ps, goal) : _) | null errs -> do
+                  modifyIORef' st (\s -> s { rsProve = Just (ProveState
+                    (Just arg) [(ps, [goal], Nothing)]) })
+                  pure True
+                _ -> do
+                  forM_ errs $ \e ->
+                    emitLn st . (++ e) =<< cRed st "error: "
+                  when (null errs) $ emitLn st =<< cRed st
+                    "could not create a proof state \8212 is the statement a proposition?"
+                  pure False
+        else case rsLastSorry state of
+          Just (ps, goal) -> do
+            modifyIORef' st (\s -> s { rsProve = Just (ProveState
+              Nothing [(ps, [goal], Nothing)]) })
+            emitLn st =<< cDim st
+              ("resuming from the last `sorry` \8212 on :qed the script is "
+               ++ "printed for you to paste")
+            pure True
+          Nothing -> False <$ (emitLn st =<< cRed st
+            "usage: :prove PROPOSITION   (or :prove after a `sorry`)")
+      when entered $ do
+        emitLn st =<< cDim st
+          "entering prove mode \8212 type tactics; :help for commands"
+        stateNow <- readIORef st
+        forM_ (rsProve stateNow) $ \pv ->
+          case pvStack pv of
+            (_, goals, _) : _ -> formatGoals st goals
+            [] -> pure ()
+
+-- Apply one tactic; returns True if the proof state advanced.
+applyTactic :: St -> Bool -> String -> IO Bool
+applyTactic st quiet tactic = do
+  state <- readIORef st
+  case rsProve state of
+    Nothing -> pure False
+    Just pv -> case pvStack pv of
+      [] -> pure False
+      (ps, _, _) : _ -> do
+        result <- runTactic st ps tactic
+        case result of
+          Left err -> do
+            proveEmergencyExit st ("the backend failed: " ++ err)
+            pure False
+          Right v
+            | Just fatal <- respFatal v -> do
+                let cleaned = case lines (trim fatal) of
+                      ("Lean error:" : rest@(_ : _)) -> intercalate "\n" rest
+                      _ | null (trim fatal) -> "the tactic failed to elaborate"
+                        | otherwise -> trim fatal
+                unless quiet $ emitLn st . (++ cleaned) =<< cRed st "error: "
+                pure False
+            | errs@(_ : _) <- [d | (s, d) <- respMessages v, s == "error"] -> do
+                unless quiet $ forM_ errs $ \e ->
+                  emitLn st . (++ trimEnd' e) =<< cRed st "error: "
+                pure False
+            | Just newPs <- respProofState v -> do
+                let entry = fromMaybe tactic (parseTryThis (respMessages v))
+                when (entry /= tactic && not quiet) $
+                  emitLn st =<< cDim st ("recorded as: " ++ headLine entry)
+                unless quiet $
+                  forM_ [d | (s, d) <- respMessages v, s == "warning"] $ \w ->
+                    emitLn st . (++ trimEnd' w) =<< cYellow st "warning: "
+                modifyIORef' st (\s -> s { rsProve = Just pv
+                  { pvStack = (newPs, respGoals v, Just entry) : pvStack pv } })
+                pure True
+            | otherwise -> do
+                unless quiet $ emitLn st =<< cRed st
+                  "the tactic produced no new proof state"
+                pure False
+ where
+  headLine t = case lines t of
+    l : _ -> l
+    [] -> t
+  trimEnd' = reverse . dropWhile isSpace . reverse
+
+currentGoals :: St -> IO [String]
+currentGoals st = do
+  state <- readIORef st
+  pure $ case rsProve state of
+    Just pv | (_, goals, _) : _ <- pvStack pv -> goals
+    _ -> []
+
+-- Handle one input line in prove mode. Returns False to exit the REPL.
+proveInput :: St -> String -> IO Bool
+proveInput st text = do
+  let stripped = trim text
+  if null stripped then pure True
+  else if ":" `isPrefixOf` stripped && not (":=" `isPrefixOf` stripped)
+    then do
+      let (word, rest) = break isSpace (drop 1 stripped)
+          arg = trim rest
+      case word of
+        w | w `elem` ["q", "quit", "exit"] -> pure False
+        w | w `elem` ["h", "help", "?"] -> True <$ emit st proveHelp
+        "goals" -> True <$ (formatGoals st =<< currentGoals st)
+        "undo" -> do
+          let n = if all (`elem` "0123456789") arg && not (null arg)
+                then read arg else 1 :: Int
+          popped <- popTactics n
+          if popped == 0
+            then emitLn st =<< cRed st "nothing to undo"
+            else formatGoals st =<< currentGoals st
+          pure True
+        "script" -> do
+          state <- readIORef st
+          case rsProve state of
+            Just pv | script@(_ : _) <- proveScript pv ->
+              mapM_ (emitLn st) script
+            _ -> emitLn st =<< cDim st "(no tactics yet)"
+          pure True
+        "auto" -> True <$ cmdAuto st
+        "qed" -> True <$ cmdQed st arg
+        "abort" -> do
+          state <- readIORef st
+          forM_ (rsProve state) $ \pv -> do
+            let script = proveScript pv
+            if null script
+              then emitLn st =<< cDim st "left prove mode"
+              else do
+                emitLn st =<< cDim st "left prove mode; the script was:"
+                forM_ script $ \t -> emitLn st ("  " ++ t)
+          modifyIORef' st (\s -> s { rsProve = Nothing })
+          pure True
+        _ -> do
+          emitLn st =<< cRed st ("no :" ++ word ++ " inside prove mode \8212 "
+            ++ "tactics, :goals, :undo, :script, :auto, :qed, :abort, :quit")
+          pure True
+    else do
+      counter <- rsItCounter <$> readIORef st
+      advanced <- applyTactic st False (substIt counter stripped)
+      when advanced $ do
+        goals <- currentGoals st
+        formatGoals st goals
+        when (null goals) $
+          emitLn st =<< cDim st "finish with :qed [NAME], inspect with :script"
+      pure True
+ where
+  popTactics n = go n 0
+   where
+    go 0 acc = pure acc
+    go k acc = do
+      state <- readIORef st
+      case rsProve state of
+        Just pv | (_, _, Just entry) : rest <- pvStack pv -> do
+          modifyIORef' st (\s -> s { rsProve = Just pv { pvStack = rest } })
+          emitLn st =<< cDim st ("undid: " ++ takeWhile (/= '\n') entry)
+          go (k - 1) (acc + 1)
+        _ -> pure acc
+
+cmdAuto :: St -> IO ()
+cmdAuto st = do
+  before <- length <$> currentGoals st
+  go before autoTactics []
+ where
+  go _ [] tried = emitLn st . (++ dimTried tried "") =<< cRed st "no luck \8212 "
+  go before (tac : rest) tried = do
+    stillActive <- rsProve <$> readIORef st
+    case stillActive of
+      Nothing -> pure ()  -- emergency exit fired
+      Just _ -> do
+        advanced <- applyTactic st True tac
+        if not advanced then go before rest (tried ++ [tac])
+        else do
+          goals <- currentGoals st
+          if length goals < before || null goals
+            then do
+              state <- readIORef st
+              let entry = case rsProve state of
+                    Just pv | (_, _, Just e) : _ <- pvStack pv -> e
+                    _ -> tac
+              closed <- color st "32" ("closed by: " ++ takeWhile (/= '\n') entry)
+              note <- cDim st ("  (tried "
+                ++ intercalate ", " (tried ++ [tac]) ++ ")")
+              emitLn st (closed ++ note)
+              formatGoals st goals
+              when (null goals) $
+                emitLn st =<< cDim st "finish with :qed [NAME]"
+            else do
+              -- advanced without closing a goal: take it back
+              modifyIORef' st $ \s -> s { rsProve = case rsProve s of
+                Just pv | _ : rest' <- pvStack pv -> Just pv { pvStack = rest' }
+                other -> other }
+              go before rest (tried ++ [tac])
+  dimTried tried extra = "tried " ++ intercalate ", " (tried ++ [extra | not (null extra)])
+
+cmdQed :: St -> String -> IO ()
+cmdQed st arg = do
+  goals <- currentGoals st
+  state <- readIORef st
+  case rsProve state of
+    Nothing -> pure ()
+    Just pv
+      | not (null goals) -> emitLn st =<< cRed st
+          (show (length goals) ++ " goal"
+           ++ (if length goals > 1 then "s" else "")
+           ++ " remain \8212 :goals to see them, :abort to give up")
+      | otherwise -> do
+          let script = proveScript pv
+              body = if null script then "by trivial"
+                else "by\n" ++ intercalate "\n"
+                  ["  " ++ ln | t <- script, ln <- lines t]
+          when (any ("sorry" `isInfixOf`) script) $
+            emitLn st . (++ "the script contains `sorry`")
+              =<< cYellow st "warning: "
+          case pvStmt pv of
+            Nothing -> do
+              emitLn st =<< cDim st
+                "replace the `sorry` in the original declaration with:"
+              emitLn st body
+              modifyIORef' st (\s -> s { rsProve = Nothing })
+            Just stmt -> do
+              let name = if null (trim arg)
+                    then "prove_" ++ show (rsProveCounter state + 1)
+                    else trim arg
+                  code = "theorem " ++ name ++ " : (" ++ stmt ++ ") := " ++ body
+              result <- runCmd st (rsEnv state) code
+              case result of
+                Left err -> do
+                  emitLn st =<< cRed st err
+                  emitLn st =<< cRed st
+                    "could not save the theorem \8212 still in prove mode"
+                Right v -> do
+                  errored <- printResponse st Nothing v
+                  if errored
+                    then emitLn st =<< cRed st
+                      "could not save the theorem \8212 still in prove mode (:script to inspect)"
+                    else do
+                      advanceEnv st (respEnv v) code
+                      when (null (trim arg)) $ modifyIORef' st
+                        (\s -> s { rsProveCounter = rsProveCounter s + 1 })
+                      saved <- color st "32"
+                        ("saved: theorem " ++ name ++ " : " ++ stmt)
+                      emitLn st saved
+                      modifyIORef' st (\s -> s { rsProve = Nothing })
+
 -- Main loop -----------------------------------------------------------------
 
 banner :: String
@@ -1248,18 +1613,22 @@ replLoop st = do
       Nothing -> do
         liftIO (emitLn st =<< cDim st "goodbye")
         pure False
-      Just text
-        | null (trim text) -> pure True
-        | ":" `isPrefixOf` trim text && not (":=" `isPrefixOf` trim text) ->
-            liftIO (dispatchCommand st (trim text))
-        | otherwise -> do
-            evalWithRetry text
-            pure True
+      Just text -> do
+        proving <- liftIO (isJust . rsProve <$> readIORef st)
+        case () of
+          _ | null (trim text) -> pure True
+            | proving -> liftIO (proveInput st text)
+            | ":" `isPrefixOf` trim text && not (":=" `isPrefixOf` trim text) ->
+                liftIO (dispatchCommand st (trim text))
+            | otherwise -> do
+                evalWithRetry text
+                pure True
   when step (replLoop st)
  where
   onInterrupt = do
     liftIO $ do
       emitLn st =<< cRed st "interrupted"
+      proveEmergencyExit st "the interrupt discards proof states"
       state <- readIORef st
       when (isJust (rsBackend state)) $ do
         backendDied st
@@ -1279,18 +1648,18 @@ replLoop st = do
 
 -- Read one line, handling prompt display, echo, and transcript capture for
 -- both interactive and piped stdin.
-readLine :: St -> String -> InputT IO (Maybe String)
-readLine st promptText = do
+readLine :: St -> Bool -> String -> InputT IO (Maybe String)
+readLine st isMain promptText = do
   interactive <- liftIO (rsInteractive <$> readIORef st)
   if interactive
     then do
       input <- getInputLine promptText
-      forM_ input (liftIO . transcriptInput st promptText)
+      forM_ input (liftIO . transcriptInput' st isMain promptText)
       pure input
     else do
       liftIO $ do
         state <- readIORef st
-        when (rsTimestamps state && promptText == mainPrompt) $
+        when (rsTimestamps state && isMain) $
           forM_ (rsTranscript state) $ \(_, h) -> do
             now <- getZonedTime
             hPutStrLn h (formatTime defaultTimeLocale "[%H:%M:%S]" now)
@@ -1307,7 +1676,7 @@ readLine st promptText = do
 
 readContinuationLines :: St -> [String] -> InputT IO [String]
 readContinuationLines st acc = do
-  next <- readLine st contPrompt
+  next <- readLine st False contPrompt
   case next of
     Nothing -> pure (reverse acc)
     Just l
@@ -1317,7 +1686,8 @@ readContinuationLines st acc = do
 -- One logical (possibly multi-line) input; Nothing on EOF.
 readLogicalInput :: St -> InputT IO (Maybe String)
 readLogicalInput st = do
-  input <- readLine st mainPrompt
+  promptText <- liftIO (promptOf st)
+  input <- readLine st True promptText
   case input of
     Nothing -> pure Nothing
     Just line -> case () of
@@ -1330,7 +1700,7 @@ readLogicalInput st = do
         | otherwise -> pure (Just line)
  where
   collectBlock acc = do
-    next <- readLine st contPrompt
+    next <- readLine st False contPrompt
     case next of
       Nothing -> pure (intercalate "\n" (reverse acc))
       Just l
@@ -1477,6 +1847,9 @@ run opts = do
         , rsShowTime = optTime opts
         , rsTimestamps = optTimestamps opts
         , rsTranscript = Nothing
+        , rsProve = Nothing
+        , rsProveCounter = 0
+        , rsLastSorry = Nothing
         , rsItCounter = 0
         , rsComplCache = []
         , rsBrowseEnv = Nothing

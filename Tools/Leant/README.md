@@ -80,6 +80,39 @@ instance, or the expression is a proposition or function), the type is shown
 via `#check` instead. Declarations (`def`, `theorem`, `open`, `#eval`, ...)
 run verbatim and, on success, advance the session environment.
 
+### Prove mode
+
+`:prove PROP` opens an interactive tactic session on `PROP` (and bare
+`:prove` resumes the most recent `sorry`):
+
+```
+λ> :prove ∀ n : Nat, 0 + n = n
+⊢ ∀ (n : Nat), 0 + n = n
+⊢> intro n
+n : Nat
+⊢ 0 + n = n
+⊢> induction n
+— goal 1 of 2 — ...
+⊢2> exact?
+recorded as: exact Nat.zero_add 0
+⊢> :auto
+closed by: simp  (tried rfl, trivial, decide, simp)
+All goals accomplished 🎉
+⊢> :qed zeroAdd
+saved: theorem zeroAdd : ∀ n : Nat, 0 + n = n
+```
+
+Goals reprint after every tactic (numbered when there are several; the
+prompt shows the count). `:undo [N]` takes back tactics without limit;
+`:script` shows the accumulated proof; `:auto` tries common finishers;
+`:qed [NAME]` turns the script into a real `theorem` in the session
+(auto-named `prove_N`); `:abort` leaves the mode, printing the script.
+`?`-tactics (`exact?`, `simp?`, `rw?`) record the tactic they *found*
+rather than the question-mark form. If the backend dies or is
+interrupted, the script is printed before the mode exits — work is never
+lost. When resuming a `sorry`, `:qed` prints a paste-ready `by` block
+instead (the original declaration has already elaborated).
+
 The last successfully evaluated expression is available as `it`, GHCi-style
 (`2 + 2` then `it * 10` gives `40`). TAB completes `:commands` and dotted
 identifiers (via the same cached environment that powers `:browse`, `:doc`,
