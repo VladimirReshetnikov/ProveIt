@@ -374,6 +374,237 @@ Proof.
   exact (@FODAll L p [] d).
 Defined.
 
+(** Closed sentences embed into propositions by the unique map out of the
+    empty free-variable type. *)
+Definition first_order_sentence_embed {L} (p : sentence L) : proposition L :=
+  semiformula_rewrite
+    (@rew_emb L Empty_set nat 0 (fun x => match x with end)) p.
+
+Definition first_order_sentence_embed_lk_hom (L : language) :
+    generic_lk_connective_hom
+      (semiformula_connectives L nat 0)
+      (semiformula_connectives L Empty_set 0)
+      (@first_order_sentence_embed L).
+Proof.
+  constructor.
+  - reflexivity.
+  - intro p. apply semiformula_rewrite_neg.
+  - intros p q. reflexivity.
+  - intros p q. reflexivity.
+Qed.
+
+Definition first_order_sentence_one_sided_lk (L : language) :
+    generic_one_sided_lk (semiformula_connectives L Empty_set 0)
+      (generic_lk_pullback (first_order_derivation L)
+        (@first_order_sentence_embed L)) :=
+  generic_lk_pullback_one_sided
+    (first_order_sentence_embed_lk_hom L)
+    (first_order_one_sided_lk L).
+
+Definition first_order_sentence_one_sided_lk_cut (L : language) :
+    generic_one_sided_lk_cut (semiformula_connectives L Empty_set 0)
+      (generic_lk_pullback (first_order_derivation L)
+        (@first_order_sentence_embed L)) :=
+  generic_lk_pullback_cut
+    (first_order_sentence_embed_lk_hom L)
+    (first_order_one_sided_lk_cut L).
+
+Definition first_order_sentence_lk_entailment (L : language) :=
+  generic_pullback_entailment (first_order_lk_entailment L)
+    (@first_order_sentence_embed L).
+
+Definition first_order_sentence_lk_system (L : language) :=
+  generic_pullback_of (@FirstOrderLK L) (@first_order_sentence_embed L).
+
+Definition first_order_sentence_lk_principal (L : language) :
+    generic_principal_entailment
+      (first_order_sentence_lk_entailment L)
+      (generic_lk_pullback (first_order_derivation L)
+        (@first_order_sentence_embed L))
+      (first_order_sentence_lk_system L) :=
+  generic_lk_pullback_principal
+    (@first_order_sentence_embed L) (first_order_lk_principal L).
+
+(** A theory proof is exactly a finite axiom witness together with the
+    pulled-back LK derivation of the conclusion against their negations. *)
+Definition first_order_theory_proof {L}
+    (T : theory L) (sigma : sentence L) : Type :=
+  { w : generic_context_witness
+      (generic_predicate_adjunctive_set (sentence L)) T &
+    generic_lk_pullback (first_order_derivation L)
+      (@first_order_sentence_embed L)
+      (sigma :: map semiformula_neg
+        (generic_context_witness_formulas w)) }.
+
+Definition first_order_theory_entailment (L : language) :
+    generic_entailment (theory L) (sentence L) :=
+  {| generic_proof := first_order_theory_proof |}.
+
+Definition first_order_theory_contextual (L : language) :
+    generic_contextual_entailment
+      (first_order_theory_entailment L)
+      (generic_predicate_adjunctive_set (sentence L))
+      semiformula_neg
+      (generic_lk_pullback (first_order_derivation L)
+        (@first_order_sentence_embed L)).
+Proof.
+  constructor. intros T sigma.
+  refine {| generic_equiv_to := fun d => d;
+            generic_equiv_from := fun d => d |}; reflexivity.
+Defined.
+
+Definition first_order_theory_provable {L}
+    (T : theory L) (sigma : sentence L) : Prop :=
+  generic_provable (first_order_theory_entailment L) T sigma.
+
+Lemma first_order_theory_provable_iff : forall L
+    (T : theory L) (sigma : sentence L),
+  first_order_theory_provable T sigma <->
+  exists Gamma : list (sentence L),
+    (forall tau, generic_list_member tau Gamma -> T tau) /\
+    inhabited
+      (generic_lk_pullback (first_order_derivation L)
+        (@first_order_sentence_embed L)
+        (sigma :: map semiformula_neg Gamma)).
+Proof.
+  intros L T sigma.
+  exact (@generic_contextual_provable_iff
+    (theory L) (sentence L)
+    (first_order_theory_entailment L)
+    (generic_predicate_adjunctive_set (sentence L))
+    semiformula_neg
+    (generic_lk_pullback (first_order_derivation L)
+      (@first_order_sentence_embed L))
+    (first_order_theory_contextual L) T sigma).
+Qed.
+
+Lemma first_order_theory_inconsistent_iff : forall L (T : theory L),
+  generic_inconsistent (first_order_theory_entailment L) T <->
+  exists Gamma : list (sentence L),
+    (forall tau, generic_list_member tau Gamma -> T tau) /\
+    inhabited
+      (generic_lk_pullback (first_order_derivation L)
+        (@first_order_sentence_embed L)
+        (map semiformula_neg Gamma)).
+Proof.
+  intros L T.
+  exact (@generic_contextual_inconsistent_iff
+    (theory L) (sentence L)
+    (first_order_theory_entailment L)
+    (generic_predicate_adjunctive_set (sentence L))
+    (semiformula_connectives L Empty_set 0)
+    (generic_lk_pullback (first_order_derivation L)
+      (@first_order_sentence_embed L))
+    (first_order_theory_contextual L) eq_refl
+    (first_order_sentence_one_sided_lk_cut L) T).
+Qed.
+
+Lemma first_order_empty_theory_provable_iff : forall L
+    (sigma : sentence L),
+  first_order_theory_provable (fun _ => False) sigma <->
+  generic_provable (first_order_sentence_lk_entailment L)
+    (first_order_sentence_lk_system L) sigma.
+Proof.
+  intros L sigma.
+  exact (generic_contextual_empty_provable_iff_principal
+    (first_order_theory_entailment L)
+    (first_order_sentence_lk_entailment L)
+    (generic_predicate_adjunctive_set (sentence L))
+    semiformula_neg
+    (generic_lk_pullback (first_order_derivation L)
+      (@first_order_sentence_embed L))
+    (first_order_theory_contextual L)
+    (first_order_sentence_lk_system L)
+    (first_order_sentence_lk_principal L) sigma).
+Qed.
+
+Lemma first_order_theory_of_lk_provable : forall L
+    (T : theory L) (sigma : sentence L),
+  generic_provable (first_order_sentence_lk_entailment L)
+    (first_order_sentence_lk_system L) sigma ->
+  first_order_theory_provable T sigma.
+Proof.
+  intros L T sigma.
+  exact (generic_contextual_of_principal_provable
+    (first_order_theory_entailment L)
+    (first_order_sentence_lk_entailment L)
+    (generic_predicate_adjunctive_set (sentence L))
+    semiformula_neg
+    (generic_lk_pullback (first_order_derivation L)
+      (@first_order_sentence_embed L))
+    (first_order_theory_contextual L)
+    (first_order_sentence_lk_system L)
+    (first_order_sentence_lk_principal L) T sigma).
+Qed.
+
+Definition first_order_theory_axiomatized (L : language) :
+    generic_axiomatized
+      (first_order_theory_entailment L)
+      (generic_predicate_adjunctive_set (sentence L)) :=
+  @generic_contextual_axiomatized
+    (theory L) (sentence L)
+    (first_order_theory_entailment L)
+    (generic_predicate_adjunctive_set (sentence L))
+    (semiformula_connectives L Empty_set 0)
+    (generic_lk_pullback (first_order_derivation L)
+      (@first_order_sentence_embed L))
+    (first_order_theory_contextual L)
+    (first_order_sentence_one_sided_lk L).
+
+Lemma first_order_theory_weaker_of_subset : forall L
+    (T U : theory L),
+  (forall sigma, T sigma -> U sigma) ->
+  generic_weaker_than
+    (first_order_theory_entailment L)
+    (first_order_theory_entailment L) T U.
+Proof.
+  intros L T U Hsub.
+  exact (@generic_axiomatized_weaker_of_subset
+    (theory L) (sentence L)
+    (first_order_theory_entailment L)
+    (generic_predicate_adjunctive_set (sentence L))
+    (first_order_theory_axiomatized L) T U Hsub).
+Qed.
+
+Definition first_order_theory_classical {L} (T : theory L) :
+    generic_classical_entailment
+      (first_order_theory_entailment L)
+      (semiformula_connectives L Empty_set 0) T.
+Proof.
+  refine (@generic_contextual_classical
+    (theory L) (sentence L)
+    (first_order_theory_entailment L)
+    (generic_predicate_adjunctive_set (sentence L))
+    (semiformula_connectives L Empty_set 0)
+    (generic_lk_pullback (first_order_derivation L)
+      (@first_order_sentence_embed L))
+    (first_order_theory_contextual L)
+    (@semiformula_neg_involutive L Empty_set 0)
+    eq_refl (fun _ _ => eq_refl)
+    (fun _ _ => eq_refl) (fun _ _ => eq_refl)
+    (first_order_sentence_one_sided_lk_cut L) T).
+Defined.
+
+Definition first_order_theory_deduction (L : language) :
+    generic_deduction
+      (first_order_theory_entailment L)
+      (semiformula_imp (L := L) (X := Empty_set) (n := 0))
+      (generic_adjunctive_adjoin
+        (generic_predicate_adjunctive_set (sentence L))).
+Proof.
+  refine (@generic_contextual_deduction
+    (theory L) (sentence L)
+    (first_order_theory_entailment L)
+    (generic_predicate_adjunctive_set (sentence L))
+    (semiformula_connectives L Empty_set 0)
+    (generic_lk_pullback (first_order_derivation L)
+      (@first_order_sentence_embed L))
+    (first_order_theory_contextual L)
+    (@semiformula_neg_involutive L Empty_set 0)
+    (fun _ _ => eq_refl) (fun _ _ => eq_refl)
+    (first_order_sentence_one_sided_lk_cut L)).
+Defined.
+
 (** Every derivation is functorial in the underlying first-order language. *)
 Fixpoint first_order_derivation_language_map {L M Gamma}
     (h : language_hom L M) (d : first_order_derivation L Gamma) {struct d} :

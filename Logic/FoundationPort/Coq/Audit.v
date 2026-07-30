@@ -629,6 +629,25 @@ Check first_order_lk_provable.
 Check first_order_lk_provable_iff.
 Check first_order_lk_classical.
 Check first_order_lk_all.
+Check first_order_sentence_embed.
+Check first_order_sentence_embed_lk_hom.
+Check first_order_sentence_one_sided_lk.
+Check first_order_sentence_one_sided_lk_cut.
+Check first_order_sentence_lk_entailment.
+Check first_order_sentence_lk_system.
+Check first_order_sentence_lk_principal.
+Check first_order_theory_proof.
+Check first_order_theory_entailment.
+Check first_order_theory_contextual.
+Check first_order_theory_provable.
+Check first_order_theory_provable_iff.
+Check first_order_theory_inconsistent_iff.
+Check first_order_empty_theory_provable_iff.
+Check first_order_theory_of_lk_provable.
+Check first_order_theory_axiomatized.
+Check first_order_theory_weaker_of_subset.
+Check first_order_theory_classical.
+Check first_order_theory_deduction.
 Check first_order_derivation_language_map.
 Check first_order_lk_provable_language_map.
 Check first_order_derivation_rewrite.
@@ -927,6 +946,19 @@ Print Assumptions first_order_lk_principal.
 Print Assumptions first_order_lk_provable_iff.
 Print Assumptions first_order_lk_classical.
 Print Assumptions first_order_lk_all.
+Print Assumptions first_order_sentence_embed_lk_hom.
+Print Assumptions first_order_sentence_one_sided_lk.
+Print Assumptions first_order_sentence_one_sided_lk_cut.
+Print Assumptions first_order_sentence_lk_principal.
+Print Assumptions first_order_theory_contextual.
+Print Assumptions first_order_theory_provable_iff.
+Print Assumptions first_order_theory_inconsistent_iff.
+Print Assumptions first_order_empty_theory_provable_iff.
+Print Assumptions first_order_theory_of_lk_provable.
+Print Assumptions first_order_theory_axiomatized.
+Print Assumptions first_order_theory_weaker_of_subset.
+Print Assumptions first_order_theory_classical.
+Print Assumptions first_order_theory_deduction.
 Print Assumptions first_order_sequent_language_map_shift.
 Print Assumptions first_order_derivation_language_map.
 Print Assumptions first_order_lk_provable_language_map.
