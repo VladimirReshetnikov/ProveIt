@@ -5118,3 +5118,16 @@ between two presentations of the same carrier terms.  Consequently the
 generic named-parameter row compiler can feed the native opaque-row global
 closure directly; the remaining premise construction is confined to its
 inherited traversal, equality-branch production, and append-root resources.
+
+The row compiler and native closure are now composed into one audited
+endpoint.  It fixes parameter name six as the traversal bound (the four row
+fields occupy names two through five), discharges freshness and atomic
+adequacy internally, compiles both arithmetic branches, transports the
+result across the translated-prefix equality, and returns the generalized
+global-source proof.  Its visible inputs are exactly the append existential
+root, the opened inherited traversal equation and roots, the fixed named-row
+production root, and the carrier-level prefix equality.  The assumption
+audit records the stronger classical choice, proof-irrelevance, and
+propositional-extensionality boundary inherited from the complete generic
+row case compiler; the earlier normalization-only clients retain their
+smaller classical/extensionality boundary.
