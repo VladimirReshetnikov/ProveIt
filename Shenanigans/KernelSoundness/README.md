@@ -119,7 +119,7 @@ output; they are kept because they are reusable. Run any with plain `lean <file>
 ## Reproducing
 
 ```bash
-pwsh Logic/KernelSoundness/verify.ps1
+pwsh Shenanigans/KernelSoundness/verify.ps1
 ```
 
 It builds each module in a scratch directory outside the Lake workspace, runs

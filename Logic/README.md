@@ -42,13 +42,9 @@
   factorizations, canonical base digits and divisor lists, and the exact
   canonical list of distinct permutations.
 
-- [`TypeTheory/Hurkens/`](TypeTheory/Hurkens/) carries out Hurkens' simplification
-  of Girard's paradox in Lean, deriving `False` — axiom-free — from a
-  hypothetical impredicative closure of `Type u` over itself, and from a
-  Tarski-style universe decoding `El : V → Type u` with a section.  Both
-  theorems isolate the single judgment Lean's predicative hierarchy denies:
-  the product `(X : Type u) → F X` lands in `Type (u+1)`, never `Type u`.
+Deliberate paradoxes and kernel-loophole work — Girard/Hurkens, Coquand-Paulin,
+and the Lean kernel soundness probes — live in [`Shenanigans/`](../Shenanigans/),
+outside the ordinary mathematics of this directory.
 
-The natural-deduction developments, FirstOrder, PAHF, and the Hurkens
-development are mathlib-free and have standalone Lake configurations as well as
-root integration targets.
+The natural-deduction developments, FirstOrder, and PAHF are mathlib-free and
+have standalone Lake configurations as well as root integration targets.
