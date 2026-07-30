@@ -1,3 +1,3 @@
 @echo off
-python "%~dp0leanrepl.py" %*
+python "%~dp0Tools\Leant\leant.py" %*
 if not "%errorlevel%"=="0" pause

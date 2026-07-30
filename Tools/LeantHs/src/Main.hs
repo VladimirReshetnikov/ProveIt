@@ -1,9 +1,9 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE LambdaCase #-}
 
--- | leanrepl-hs - a GHCi-style interactive REPL for Lean 4.
+-- | leant-hs - a GHCi-style interactive REPL for Lean 4.
 --
--- Haskell port of Tools/LeanRepl/leanrepl.py. The Haskeline loop follows the
+-- Haskell port of Tools/Leant/leant.py. The Haskeline loop follows the
 -- structure of the Djex REPL driver (interrupt-safe step function, logical
 -- multi-line input, command completion).
 module Main (main) where
@@ -32,11 +32,11 @@ import System.IO
 import System.IO.Error (catchIOError, isEOFError)
 import System.Process (callCommand)
 
-import LeanRepl.Backend
-import LeanRepl.Builtins (builtinInfo)
-import LeanRepl.Classify
-import LeanRepl.Format (formatInfo, indentDefBody)
-import LeanRepl.Json
+import Leant.Backend
+import Leant.Builtins (builtinInfo)
+import Leant.Classify
+import Leant.Format (formatInfo, indentDefBody)
+import Leant.Json
 
 #ifdef mingw32_HOST_OS
 import Data.Bits ((.|.))
@@ -174,14 +174,14 @@ transcriptStart st mpath = do
         Just p -> pure p
         Nothing -> do
           now <- getZonedTime
-          pure (formatTime defaultTimeLocale "leanrepl-%Y%m%d-%H%M%S.log" now)
+          pure (formatTime defaultTimeLocale "leant-%Y%m%d-%H%M%S.log" now)
       result <- try (openFile path AppendMode)
       case (result :: Either SomeException Handle) of
         Left err -> emitLn st =<< cRed st ("cannot open transcript file: " ++ show err)
         Right h -> do
           hSetEncoding h utf8
           now <- getZonedTime
-          hPutStrLn h ("-- LeanRepl transcript started "
+          hPutStrLn h ("-- Leant transcript started "
             ++ formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S" now)
           hFlush h
           modifyIORef' st (\s -> s { rsTranscript = Just (path, h) })
@@ -196,7 +196,7 @@ transcriptStop st = do
     Nothing -> emitLn st =<< cDim st "transcript is not active"
     Just (path, h) -> do
       now <- getZonedTime
-      hPutStrLn h ("-- LeanRepl transcript ended "
+      hPutStrLn h ("-- Leant transcript ended "
         ++ formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S" now)
       hClose h
       modifyIORef' st (\s -> s { rsTranscript = Nothing })
@@ -992,11 +992,10 @@ readFileUtf8 path = do
 banner :: String
 banner = unlines
   [ ""
-  , "  __                          ___"
-  , " / /  ___ ___ ____  ______ __/ _ \\___ ___  / /"
-  , "/ /__/ -_) _ `/ _ \\/ __/ // / , _/ -_) _ \\/ /"
-  , "\\____|__/\\_,_/_//_/_/  \\_, /_/|_|\\___/ .__/_/"
-  , "                      /___/         /_/"
+  , "   __                  __"
+  , "  / /  ___ ___ ____   / /_"
+  , " / /__/ -_) _ `/ _ \\_/ __/"
+  , "/____/\\__/\\_,_/_//_/ \\__/"
   ]
 
 replLoop :: St -> InputT IO ()
@@ -1160,7 +1159,7 @@ parseArgs = go defaultOptions
 
 usage :: String
 usage = unlines
-  [ "usage: leanrepl-hs [FILE] [options]"
+  [ "usage: leant-hs [FILE] [options]"
   , "  --project DIR    path to a Lake project to run inside"
   , "  --plain          do not use any Lake project (backend project only)"
   , "  -i, --import M   module to import at startup (repeatable)"
@@ -1168,7 +1167,7 @@ usage = unlines
   , "  --time           show per-command timing"
   , "  --transcript [F] record a full transcript of the session"
   , "  --timestamps     timestamp each command in the transcript"
-  , "  --repl-exe PATH  Lean REPL backend executable (see also LEANREPL_BACKEND)"
+  , "  --repl-exe PATH  Lean REPL backend executable (see also LEANT_BACKEND)"
   , "  --lake PATH      lake executable (default: lake)"
   ]
 
@@ -1200,8 +1199,8 @@ run opts = do
   case replExe of
     Nothing -> do
       putStrLn "error: could not find the Lean REPL backend executable."
-      putStrLn "Build it once via the Python sibling (Tools/LeanRepl), or pass"
-      putStrLn "--repl-exe / set LEANREPL_BACKEND to a repl.exe built from"
+      putStrLn "Build it once via the Python sibling (Tools/Leant), or pass"
+      putStrLn "--repl-exe / set LEANT_BACKEND to a repl.exe built from"
       putStrLn "https://github.com/leanprover-community/repl for your toolchain."
       exitWith (ExitFailure 1)
     Just exe -> do
@@ -1271,7 +1270,7 @@ run opts = do
       emit st =<< cCyan st banner
       bold1 <- cBold st ":help"
       bold2 <- cBold st ":quit"
-      emitLn st ("LeanRepl (Haskell) - a GHCi-style REPL for Lean 4.  Type "
+      emitLn st ("Leant (Haskell) - a GHCi-style REPL for Lean 4.  Type "
         ++ bold1 ++ " for help, " ++ bold2 ++ " to exit.")
 
       forM_ (optFile opts) (cmdLoad st)
@@ -1279,7 +1278,7 @@ run opts = do
       home <- getHomeDirectory
       let settings = completionSettings
             { historyFile = if interactive
-                then Just (home </> ".leanrepl_history")
+                then Just (home </> ".leant_history")
                 else Nothing }
           behavior = if interactive then defaultBehavior else useFileHandle stdin
       runInputTBehavior behavior settings (replLoop st)

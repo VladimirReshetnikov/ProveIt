@@ -1,7 +1,7 @@
-# LeanRepl — proposed improvements and new features
+# Leant — proposed improvements and new features
 
-Applies to both implementations (Python `Tools/LeanRepl`, Haskell
-`Tools/LeanReplHs`) unless marked otherwise. Ordered by expected
+Applies to both implementations (Python `Tools/Leant`, Haskell
+`Tools/LeantHs`) unless marked otherwise. Ordered by expected
 value-for-effort within each tier. Effort: S (< half a day), M (a day or
 two), L (several days).
 
@@ -58,8 +58,8 @@ Pairs naturally with `:info`.
   practical "is this already proven?" tool.
 
 ### 5. One-shot / scripting mode (`-e`, `--script`) — S
-`leanrepl -e "2 + 2"` evaluates and exits with the result on stdout
-(exit code reflects errors); `leanrepl --script file.repl` runs a
+`leant -e "2 + 2"` evaluates and exits with the result on stdout
+(exit code reflects errors); `leant --script file.repl` runs a
 transcript of REPL inputs. Makes the REPL usable from Makefiles, CI
 checks, and editor keybindings. The non-tty path already does 90% of
 this — it needs only flag plumbing and quieter output.
@@ -80,7 +80,7 @@ records only the *surviving* declarations — the thing you actually want
 to keep after an exploratory session. `:pickle` complements but is
 binary and toolchain-bound.
 
-### 8. Config file (`~/.leanreplrc` / project `.leanreplrc`) — S
+### 8. Config file (`~/.leantrc` / project `.leantrc`) — S
 Default imports, default `set_option`s, timeout, color and timestamp
 preferences, default transcript directory. Project-level file overrides
 user-level. Removes per-invocation flag noise for the ProveIt workflow
@@ -115,7 +115,7 @@ constants. Port back the side-environment cache, `isInternalDetail`
 filtering, `:browse!`, `@`-stripping, and session-declaration section.
 
 ### 14. Self-managing backend in Haskell — M
-`leanrepl-hs` currently reuses the binary LeanInteract built. Teach it to
+`leant-hs` currently reuses the binary LeanInteract built. Teach it to
 clone and `lake build` the matching REPL revision itself (toolchain read
 from `lean-toolchain`), making the Haskell port fully standalone.
 
@@ -135,4 +135,4 @@ LeanInteract objects almost directly.)
 - A GUI / web front-end: `lean4_jupyter` already covers notebook use.
 - Replacing the backend protocol: the blank-line JSON framing is crude
   but works on all platforms; changing it buys nothing user-visible.
-- Windows-specific installers: `leanrepl.cmd` + PATH is adequate.
+- Windows-specific installers: `leant.cmd` + PATH is adequate.

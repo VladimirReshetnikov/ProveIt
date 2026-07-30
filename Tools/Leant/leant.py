@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""leanrepl — a GHCi-style interactive REPL for Lean 4.
+"""Leant — a GHCi-style interactive REPL for Lean 4.
 
 Front-end on top of LeanInteract (https://github.com/augustepoiroux/LeanInteract),
 which manages the Lean REPL backend (https://github.com/leanprover-community/repl).
 
 Usage:
-  python leanrepl.py                      # auto-detect enclosing Lake project
-  python leanrepl.py --project C:/ProveIt # REPL inside a specific Lake project
-  python leanrepl.py --plain              # bare Lean, no project
-  python leanrepl.py -i Mathlib.Tactic    # start with imports
-  python leanrepl.py file.lean            # load a file at startup
+  python leant.py                      # auto-detect enclosing Lake project
+  python leant.py --project C:/ProveIt # REPL inside a specific Lake project
+  python leant.py --plain              # bare Lean, no project
+  python leant.py -i Mathlib.Tactic    # start with imports
+  python leant.py file.lean            # load a file at startup
 """
 
 from __future__ import annotations
@@ -94,7 +94,7 @@ class Transcript:
         self._file = open(path, "a", encoding="utf-8")
         self._real_stdout = None
         stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self._file.write(f"-- LeanRepl transcript started {stamp}\n")
+        self._file.write(f"-- Leant transcript started {stamp}\n")
         self._file.flush()
 
     def install(self):
@@ -118,7 +118,7 @@ class Transcript:
     def close(self):
         self.uninstall()
         stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self._file.write(f"-- LeanRepl transcript ended {stamp}\n")
+        self._file.write(f"-- Leant transcript ended {stamp}\n")
         self._file.close()
 
 
@@ -142,7 +142,7 @@ class _TeeStream:
 
 
 def default_transcript_path() -> Path:
-    name = datetime.datetime.now().strftime("leanrepl-%Y%m%d-%H%M%S.log")
+    name = datetime.datetime.now().strftime("leant-%Y%m%d-%H%M%S.log")
     return Path.cwd() / name
 
 
@@ -516,15 +516,14 @@ axioms) can be entered directly.
 """
 
 BANNER = r"""
-  __                          ___
- / /  ___ ___ ____  ______ __/ _ \___ ___  / /
-/ /__/ -_) _ `/ _ \/ __/ // / , _/ -_) _ \/ /
-\____|__/\_,_/_//_/_/  \_, /_/|_|\___/ .__/_/
-                      /___/         /_/
+   __                  __
+  / /  ___ ___ ____   / /_
+ / /__/ -_) _ `/ _ \_/ __/
+/____/\__/\_,_/_//_/ \__/
 """
 
 
-class LeanRepl:
+class Leant:
     def __init__(self, args: argparse.Namespace):
         self.args = args
         self.show_time = args.time
@@ -641,7 +640,7 @@ class LeanRepl:
         candidates = [d for d in [start, *start.parents]
                       if (d / "lakefile.toml").exists() or (d / "lakefile.lean").exists()]
         for d in candidates:
-            if LeanRepl.is_built_project(d):
+            if Leant.is_built_project(d):
                 return d
         return candidates[0] if candidates else None
 
@@ -1139,7 +1138,7 @@ class LeanRepl:
         if self.args.transcript is not None:
             self.transcript_start(self.args.transcript or None)
         print(cyan(BANNER))
-        print(f"LeanRepl — a GHCi-style REPL for Lean 4.  Type {bold(':help')} for help, "
+        print(f"Leant — a GHCi-style REPL for Lean 4.  Type {bold(':help')} for help, "
               f"{bold(':quit')} to exit.")
         raw_prompt_fn, echoes = make_prompt_fn()
         prompt_fn = self.wrap_prompt(raw_prompt_fn, echoes)
@@ -1251,7 +1250,7 @@ def make_prompt_fn():
         from prompt_toolkit import PromptSession
         from prompt_toolkit.history import FileHistory
 
-        histfile = Path.home() / ".leanrepl_history"
+        histfile = Path.home() / ".leant_history"
         session = PromptSession(history=FileHistory(str(histfile)))
 
         def fn(p: str) -> str:
@@ -1267,7 +1266,7 @@ def make_prompt_fn():
 
 def main():
     ap = argparse.ArgumentParser(
-        prog="leanrepl",
+        prog="leant",
         description="A GHCi-style interactive REPL for Lean 4.")
     ap.add_argument("file", nargs="?", help="Lean file to load at startup")
     ap.add_argument("--project", "-p", help="path to a Lake project to run inside")
@@ -1281,14 +1280,14 @@ def main():
     ap.add_argument("--time", action="store_true", help="show per-command timing")
     ap.add_argument("--transcript", nargs="?", const="", default=None, metavar="FILE",
                     help="record a full transcript of the session to FILE "
-                         "(default: leanrepl-<date>.log in the current directory)")
+                         "(default: leant-<date>.log in the current directory)")
     ap.add_argument("--timestamps", action="store_true",
                     help="timestamp each command in the transcript")
     ap.add_argument("--verbose", "-v", action="store_true",
                     help="verbose backend setup output")
     args = ap.parse_args()
 
-    repl = LeanRepl(args)
+    repl = Leant(args)
     try:
         repl.start()
     except KeyboardInterrupt:

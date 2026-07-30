@@ -1,6 +1,6 @@
 -- | Input classification and multi-line continuation heuristics
--- (port of the corresponding section of leanrepl.py).
-module LeanRepl.Classify
+-- (port of the corresponding section of leant.py).
+module Leant.Classify
   ( isDeclaration
   , firstToken
   , needsContinuation

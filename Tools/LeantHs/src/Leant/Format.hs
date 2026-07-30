@@ -1,5 +1,5 @@
 -- | Output beautification for :info (port of format_info / indent_def_body).
-module LeanRepl.Format
+module Leant.Format
   ( formatInfo
   , indentDefBody
   ) where

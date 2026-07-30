@@ -3,7 +3,7 @@
 -- The backend speaks a small, fixed JSON dialect, so this hand-rolled
 -- parser/encoder replaces an aeson dependency (keeping the port buildable
 -- with GHC boot libraries alone).
-module LeanRepl.Json
+module Leant.Json
   ( JValue (..)
   , parseJson
   , encodeJson
