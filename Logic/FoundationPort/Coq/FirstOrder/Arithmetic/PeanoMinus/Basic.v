@@ -148,6 +148,66 @@ Proof.
       (@peano_minus_lt_trans M O H x y x Hxy Hyx)).
 Qed.
 
+Lemma peano_minus_lt_of_add_lt_add_right : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  oring_lt O (oring_add O x z) (oring_add O y z) -> oring_lt O x y.
+Proof.
+  intros M O H x y z Hxy.
+  destruct (@peano_minus_lt_trichotomy M O H x y)
+    as [Hlt | [Heq | Hgt]]; [exact Hlt | |].
+  - subst y. exfalso. exact (@peano_minus_lt_irrefl M O H _ Hxy).
+  - pose proof (@peano_minus_add_lt_add M O H y x z Hgt) as Hyx.
+    exfalso. exact (@peano_minus_lt_irrefl M O H _
+      (@peano_minus_lt_trans M O H _ _ _ Hxy Hyx)).
+Qed.
+
+Lemma peano_minus_lt_of_add_lt_add_left : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  oring_lt O (oring_add O z x) (oring_add O z y) -> oring_lt O x y.
+Proof.
+  intros M O H x y z Hxy.
+  rewrite (@peano_minus_add_comm M O H z x),
+    (@peano_minus_add_comm M O H z y) in Hxy.
+  now apply (@peano_minus_lt_of_add_lt_add_right M O H x y z).
+Qed.
+
+Lemma peano_minus_le_of_add_le_add_right : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  peano_minus_le O (oring_add O x z) (oring_add O y z) ->
+  peano_minus_le O x y.
+Proof.
+  intros M O H x y z [Hxy | Hxy].
+  - left. exact (@peano_minus_add_right_cancel M O H x y z Hxy).
+  - right. exact (@peano_minus_lt_of_add_lt_add_right M O H x y z Hxy).
+Qed.
+
+Lemma peano_minus_le_of_add_le_add_left : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  peano_minus_le O (oring_add O z x) (oring_add O z y) ->
+  peano_minus_le O x y.
+Proof.
+  intros M O H x y z [Hxy | Hxy].
+  - left. exact (@peano_minus_add_left_cancel M O H x y z Hxy).
+  - right. exact (@peano_minus_lt_of_add_lt_add_left M O H x y z Hxy).
+Qed.
+
+Lemma peano_minus_add_mul_distr : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y z,
+  oring_mul O (oring_add O x y) z =
+  oring_add O (oring_mul O x z) (oring_mul O y z).
+Proof.
+  intros M O H x y z.
+  rewrite (@peano_minus_mul_comm M O H (oring_add O x y) z),
+    (@peano_minus_mul_add_distr M O H z x y),
+    (@peano_minus_mul_comm M O H z x),
+    (@peano_minus_mul_comm M O H z y).
+  reflexivity.
+Qed.
+
 Lemma peano_minus_positive_eq_add_one : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall x,
   oring_lt O (oring_zero O) x ->
