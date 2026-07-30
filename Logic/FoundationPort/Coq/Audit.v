@@ -1,5 +1,6 @@
 (** Public surface and kernel-assumption audit for the generic Foundation port. *)
 
+From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
@@ -35,6 +36,18 @@ From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
 From Foundation.FirstOrder Require Import Polarity.
 From Foundation.Syntax.Predicate Require Import Relational.
+
+Check choose_unique.
+Print Assumptions choose_unique_spec.
+Print Assumptions choose_unique_uniq.
+Print Assumptions choose_unique_eq_iff_right.
+Print Assumptions choose_unique_eq_iff_left.
+Print Assumptions exists_unique_extend.
+Check extended_choose_unique.
+Print Assumptions extended_choose_unique_spec.
+Print Assumptions extended_choose_unique_spec_not.
+Print Assumptions extended_choose_unique_uniq.
+Print Assumptions extended_choose_unique_eq_iff.
 
 Check language.
 Check language_relational.
