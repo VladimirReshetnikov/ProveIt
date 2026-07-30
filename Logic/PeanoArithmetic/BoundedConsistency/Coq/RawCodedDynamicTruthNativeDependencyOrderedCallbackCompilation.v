@@ -225,6 +225,30 @@ Arguments
   RawDynamicTruthNativeDependencyOrderedAppendProofResourceStrongStepKernelCompilers
   M hPA translation : clear implicits.
 
+(** Direct-evidence append bundle.  Compared with the preceding interface,
+    its strong-step coordinate omits both selected-payload compiler families
+    and asks only for restricted/rule roots plus the two reversed append
+    traces. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  RawCodedTemplatePAAgreement M translation /\
+  RawDynamicTruthNativeLocalZeroPredecessorRootCompiler M translation /\
+  RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
+    M hPA /\
+  RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
+    M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers
+  M hPA translation : clear implicits.
+
 Theorem
     raw_dynamicTruthNativeDependencyOrderedStrongStepKernelCompilers_of_proof_resources
     : forall (M : RawPAModel) (hPA : RawPASatisfies M),
@@ -271,6 +295,35 @@ Proof.
         (raw_dynamicTruthNativeLocalCurrentGrowingPredecessorRootBuilder_of_zero_and_witnessed_aligned_logical_roots
           M hPA translation hzero
           (raw_dynamicTruthNativeLocalAlignedGrowingLogicalRootsCompilerOnWitnessedBase_of_growing_proof_resources
+            M hPA hstrong)).
+    + exact hremainder.
+  - exact (conj hcrossLevel
+      (conj hshift
+        (conj hsubstitution
+          (conj haxiom hfinal)))).
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedGrowingKernelCompilers_of_permuted_append_proof_resources
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  forall (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers
+    M hPA translation ->
+  RawDynamicTruthNativeDependencyOrderedGrowingKernelCompilers
+    M translation.
+Proof.
+  intros M hPA translation
+    (hagreement & hzero & hstrong & hremainder & hcrossLevel & hshift &
+      hsubstitution & haxiom & hfinal).
+  split; [exact hagreement |].
+  split.
+  - apply
+      (raw_dynamicTruthNativeLocalCurrentGrowingReducedStagedRootBuilder_of_predecessor_and_remainder
+        M translation).
+    + exact
+        (raw_dynamicTruthNativeLocalCurrentGrowingPredecessorRootBuilder_of_zero_and_witnessed_aligned_logical_roots
+          M hPA translation hzero
+          (raw_dynamicTruthNativeLocalAlignedGrowingLogicalRootsCompilerOnWitnessedBase_of_permuted_append_proof_resources
             M hPA hstrong)).
     + exact hremainder.
   - exact (conj hcrossLevel
@@ -529,6 +582,22 @@ Proof.
         M hPA translation hkernels)).
 Qed.
 
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_permuted_append_proof_resource_strong_step_kernel_compilers
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  forall (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers
+    M hPA translation ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacks M.
+Proof.
+  intros M hPA translation hkernels.
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_growing_kernel_compilers
+      M hPA translation
+      (raw_dynamicTruthNativeDependencyOrderedGrowingKernelCompilers_of_permuted_append_proof_resources
+        M hPA translation hkernels)).
+Qed.
+
 (** Model-local positive-component successor.  All context synchronization,
     target preservation, and six-field assembly are discharged by the
     previously proved dependency-ordered endpoint. *)
@@ -603,6 +672,14 @@ Definition
   forall (M : RawPAModel) (hPA : RawPASatisfies M),
     exists translation : RawCodedTemplateTranslation M,
       RawDynamicTruthNativeDependencyOrderedAppendProofResourceStrongStepKernelCompilers
+        M hPA translation.
+
+Definition
+    RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    exists translation : RawCodedTemplateTranslation M,
+      RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilers
         M hPA translation.
 
 Theorem
@@ -693,6 +770,19 @@ Proof.
   destruct (hkernels M hPA) as [translation hmodelKernels].
   exact
     (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_append_proof_resource_strong_step_kernel_compilers
+      M hPA translation hmodelKernels).
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_permuted_append_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels.
+Proof.
+  intros hkernels M hPA.
+  destruct (hkernels M hPA) as [translation hmodelKernels].
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacks_of_permuted_append_proof_resource_strong_step_kernel_compilers
       M hPA translation hmodelKernels).
 Qed.
 
@@ -810,6 +900,23 @@ Proof.
   exact
     (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
       (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_append_proof_resource_strong_step_kernel_compilers
+        hkernels)).
+Qed.
+
+(** Direct-evidence append headline.  The premise contains no selected-row
+    callback families: the reversed append traces already prove the exact
+    native evidence formulas. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_permuted_append_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedPermutedAppendProofResourceStrongStepKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hkernels.
+  exact
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_permuted_append_proof_resource_strong_step_kernel_compilers
         hkernels)).
 Qed.
 

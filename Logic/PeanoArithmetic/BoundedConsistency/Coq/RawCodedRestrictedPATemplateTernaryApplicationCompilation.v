@@ -29,7 +29,8 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateNumeralParameters
   RawCodedTemplateTernaryApplication
   RawCodedTemplateTernaryApplicationFunctionality
-  RawCodedRestrictedPADerivationSoundnessTemplateDirectInputs.
+  RawCodedRestrictedPADerivationSoundnessTemplateDirectInputs
+  RawCodedRestrictedPADerivationSoundnessExtendedDirectInputs.
 
 Module
   PABoundedRawCodedRestrictedPATemplateTernaryApplicationCompilation.
@@ -49,6 +50,8 @@ Import PABoundedRawCodedTemplateTernaryApplication.
 Import PABoundedRawCodedTemplateTernaryApplicationFunctionality.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessTemplateDirectInputs.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessExtendedDirectInputs.
 
 (** The exact template counterpart of [standardTernaryApplication].  Naming
     the two protected terms makes both the represented trace theorem and
@@ -134,6 +137,90 @@ Proof.
     exact (rawTemplateFormula_open translation
       (coqRestrictedPATemplateTernarySecondResult
         predicate first second) third).
+Qed.
+
+(** Extended derivation-soundness inputs share the numeral term interpreter,
+    so the generic trace applies unchanged even though their opaque formula
+    selector family is larger. *)
+Theorem raw_coqRestrictedPAExtendedTemplateTernaryApplication_trace :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (parameters : RawCodedTemplateNumeralParameters M)
+    (contextTruth conclusionTruth :
+      RawCoqRestrictedPATruthDirectSelector M parameters)
+    (tail : RawCoqRestrictedPAOpaqueTailDirectSelector M parameters),
+  let inputs :=
+    rawCoqRestrictedPADerivationSoundnessExtendedDirectStructuralInputs
+      M hPA parameters contextTruth conclusionTruth tail in
+  forall predicate first second third,
+  RawCodedTernaryApplication M
+    (rawDirectTemplateFormula inputs predicate)
+    (rawDirectTemplateTerm inputs first)
+    (rawDirectTemplateTerm inputs second)
+    (rawDirectTemplateTerm inputs third)
+    (rawDirectTemplateFormula inputs
+      (coqRestrictedPATemplateTernaryApplication
+        predicate first second third)).
+Proof.
+  intros M hPA parameters contextTruth conclusionTruth tail inputs
+    predicate first second third.
+  apply
+    (raw_codedTemplateTernaryApplication_trace_of_protected_shifts
+      M (rawDirectStructuralTemplateTranslation M hPA inputs)).
+  - unfold coqRestrictedPATemplateTernaryFirstLifted.
+    exact
+      (rawCoqRestrictedPADerivationSoundnessExtendedDirectTerm_shift_by
+        M hPA parameters contextTruth conclusionTruth tail 0 2 first).
+  - unfold coqRestrictedPATemplateTernarySecondLifted.
+    exact
+      (rawCoqRestrictedPADerivationSoundnessExtendedDirectTerm_shift_by
+        M hPA parameters contextTruth conclusionTruth tail 0 1 second).
+Qed.
+
+Corollary raw_coqRestrictedPAExtendedTemplateTernaryApplication_output :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (parameters : RawCodedTemplateNumeralParameters M)
+    (contextTruth conclusionTruth :
+      RawCoqRestrictedPATruthDirectSelector M parameters)
+    (tail : RawCoqRestrictedPAOpaqueTailDirectSelector M parameters),
+  let inputs :=
+    rawCoqRestrictedPADerivationSoundnessExtendedDirectStructuralInputs
+      M hPA parameters contextTruth conclusionTruth tail in
+  forall predicate
+    (selector : RawCodedTernaryApplicationSelector M
+      (rawDirectTemplateFormula inputs predicate))
+    first second third,
+  rawTernaryApplicationOutput selector
+    (rawDirectTemplateTerm inputs first)
+    (rawDirectTemplateTerm inputs second)
+    (rawDirectTemplateTerm inputs third) =
+  rawDirectTemplateFormula inputs
+    (coqRestrictedPATemplateTernaryApplication
+      predicate first second third).
+Proof.
+  intros M hPA parameters contextTruth conclusionTruth tail inputs
+    predicate selector first second third.
+  unfold inputs in *.
+  apply (rawTernaryApplicationOutput_unique M hPA
+    (rawDirectTemplateFormula
+      (rawCoqRestrictedPADerivationSoundnessExtendedDirectStructuralInputs
+        M hPA parameters contextTruth conclusionTruth tail) predicate)
+    selector).
+  - rewrite
+      rawCoqRestrictedPADerivationSoundnessExtendedDirectTerm_view.
+    apply rawCoqRestrictedPADerivationSoundnessTemplateTermView_syntax.
+    exact hPA.
+  - rewrite
+      rawCoqRestrictedPADerivationSoundnessExtendedDirectTerm_view.
+    apply rawCoqRestrictedPADerivationSoundnessTemplateTermView_syntax.
+    exact hPA.
+  - rewrite
+      rawCoqRestrictedPADerivationSoundnessExtendedDirectTerm_view.
+    apply rawCoqRestrictedPADerivationSoundnessTemplateTermView_syntax.
+    exact hPA.
+  - exact
+      (raw_coqRestrictedPAExtendedTemplateTernaryApplication_trace
+        M hPA parameters contextTruth conclusionTruth tail
+        predicate first second third).
 Qed.
 
 (** Direct term translation is selector-independent.  The numeral-template
