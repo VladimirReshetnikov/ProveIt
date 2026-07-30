@@ -14,6 +14,7 @@ From Foundation.FirstOrder.Basic Require Import Coding.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
@@ -1494,6 +1495,20 @@ Print Assumptions arithmetic_definably_bounded_lift_to_strict.
 Print Assumptions arithmetic_sorted_definable_substitution_bounded.
 Print Assumptions arithmetic_sorted_definable_function_substitution_bounded.
 Print Assumptions arithmetic_definably_bounded_compose.
+Print Assumptions peano_minus_laws.
+Print Assumptions peano_minus_le_trans.
+Print Assumptions peano_minus_le_antisym.
+Print Assumptions peano_minus_le_total.
+Print Assumptions peano_minus_add_right_cancel.
+Print Assumptions peano_minus_positive_eq_add_one.
+Print Assumptions peano_minus_lt_add_one.
+Print Assumptions peano_minus_le_iff_lt_add_one.
+Print Assumptions nat_peano_minus_laws.
+Print Assumptions arithmetic_peano_minus_majorant_lift.
+Print Assumptions arithmetic_peano_minus_majorant_lift_spec.
+Print Assumptions arithmetic_sorted_definable_substitution_peano_minus.
+Print Assumptions arithmetic_sorted_definable_function_substitution_peano_minus.
+Print Assumptions arithmetic_definably_bounded_compose_peano_minus.
 Print Assumptions first_order_true_arithmetic_models.
 Print Assumptions first_order_true_arithmetic_provable_iff.
 Print Assumptions arithmetic_theory_weaker_than_true_arithmetic.

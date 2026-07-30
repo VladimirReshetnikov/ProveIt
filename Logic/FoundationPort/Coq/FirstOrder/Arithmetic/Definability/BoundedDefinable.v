@@ -14,7 +14,8 @@ From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic Require Import Operator Definability.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics RewriteClosure OperatorSemantics.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy Monotone.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Hierarchy Monotone.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import
   Hierarchy Definable.
 
@@ -600,6 +601,103 @@ Proof.
       (lift := lift) Hlift (F := F) (f := f)
       (arithmetic_definably_bounded_definition HF) Hf).
 Defined.
+
+(** In a Peano-minus model the successor term is the canonical strict lift of
+    a weak majorant.  This discharges the abstract bridge above without baking
+    model laws into the generic substitution proof. *)
+Definition arithmetic_peano_minus_majorant_lift {M : Type} {k}
+    (t : semiterm oring_language M k) : semiterm oring_language M k :=
+  semiterm_add_one
+    (semiterm_one_operator_of_language
+      (language_oring_one oring_language_structure))
+    (semiterm_add_operator_of_language
+      (language_oring_add oring_language_structure)) t.
+
+Lemma arithmetic_peano_minus_majorant_lift_spec : forall M k
+    (Str : first_order_structure oring_language M)
+    (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  forall (t : semiterm oring_language M k) (v : Fin.t k -> M) x,
+    peano_minus_le O x (semiterm_val Str v (fun y => y) t) ->
+    arithmetic_interpreted_lt Str x
+      (semiterm_val Str v (fun y => y)
+        (arithmetic_peano_minus_majorant_lift t)).
+Proof.
+  intros M k Str O Horing Hpa t v x Hle.
+  unfold arithmetic_peano_minus_majorant_lift.
+  rewrite (@semiterm_val_add_one oring_language M M k Str v
+    (fun y => y)
+    (semiterm_one_operator_of_language
+      (language_oring_one oring_language_structure))
+    (semiterm_add_operator_of_language
+      (language_oring_add oring_language_structure))
+    (oring_one O) (oring_add O) t
+    (structure_oring_one Horing) (structure_oring_add Horing)).
+  unfold arithmetic_interpreted_lt.
+  apply (proj2 (structure_relation_operator
+    (structure_oring_lt Horing) x
+    (oring_add O (semiterm_val Str v (fun y => y) t) (oring_one O)))).
+  now apply (peano_minus_le_lt_add_one Hpa).
+Qed.
+
+Definition arithmetic_sorted_definable_substitution_peano_minus
+    {M : Type} {n k symbol}
+    {Str : first_order_structure oring_language M}
+    {O : oring_carrier M}
+    (Horing : structure_interprets_oring Str oring_language_structure O)
+    (Hpa : peano_minus_laws O)
+    (P : (Fin.t n -> M) -> Prop)
+    (f : Fin.t n -> (Fin.t k -> M) -> M)
+    (HP : arithmetic_sorted_definable Str symbol P)
+    (Hf : forall i, arithmetic_definably_bounded_function Str
+      (peano_minus_le O) (f i)) :
+    arithmetic_sorted_definable Str symbol
+      (fun z : Fin.t k -> M => P (fun i => f i z)) :=
+  arithmetic_sorted_definable_substitution_bounded
+    (lift := arithmetic_peano_minus_majorant_lift)
+    (arithmetic_peano_minus_majorant_lift_spec Horing Hpa)
+    (P := P) (f := f) HP Hf.
+
+Definition arithmetic_sorted_definable_function_substitution_peano_minus
+    {M : Type} {n k symbol}
+    {Str : first_order_structure oring_language M}
+    {O : oring_carrier M}
+    (Horing : structure_interprets_oring Str oring_language_structure O)
+    (Hpa : peano_minus_laws O)
+    (F : (Fin.t n -> M) -> M)
+    (f : Fin.t n -> (Fin.t k -> M) -> M)
+    (HF : arithmetic_sorted_definable_function Str symbol F)
+    (Hf : forall i, arithmetic_definably_bounded_function Str
+      (peano_minus_le O) (f i)) :
+    arithmetic_sorted_definable_function Str symbol
+      (fun z : Fin.t k -> M => F (fun i => f i z)) :=
+  arithmetic_sorted_definable_function_substitution_bounded
+    (lift := arithmetic_peano_minus_majorant_lift)
+    (arithmetic_peano_minus_majorant_lift_spec Horing Hpa)
+    (F := F) (f := f) HF Hf.
+
+Definition arithmetic_definably_bounded_compose_peano_minus
+    {M : Type} {n k}
+    {Str : first_order_structure oring_language M}
+    {O : oring_carrier M}
+    (Horing : structure_interprets_oring Str oring_language_structure O)
+    (Hpa : peano_minus_laws O)
+    (Hmon : first_order_structure_monotone (peano_minus_le O) Str)
+    (F : (Fin.t n -> M) -> M)
+    (f : Fin.t n -> (Fin.t k -> M) -> M)
+    (HF : arithmetic_definably_bounded_function Str
+      (peano_minus_le O) F)
+    (Hf : forall i, arithmetic_definably_bounded_function Str
+      (peano_minus_le O) (f i)) :
+    arithmetic_definably_bounded_function Str (peano_minus_le O)
+      (fun z : Fin.t k -> M => F (fun i => f i z)) :=
+  arithmetic_definably_bounded_compose
+    (fun x => peano_minus_le_refl x)
+    (peano_minus_le_trans Hpa) Hmon
+    (lift := arithmetic_peano_minus_majorant_lift)
+    (arithmetic_peano_minus_majorant_lift_spec Horing Hpa)
+    (F := F) (f := f) HF Hf.
 
 Definition arithmetic_sorted_definable_compose_predicate_one_strictly_bounded
     {M : Type} {k symbol}
