@@ -10,10 +10,12 @@
 From Stdlib Require Import Vectors.Fin.
 From Stdlib Require Import Logic.FunctionalExtensionality.
 From Stdlib Require Import Logic.PropExtensionality.
+From FoundationModal Require Import GenericEntailment.
 From Foundation.Syntax.Predicate Require Import Language Term.
-From Foundation.FirstOrder.Basic Require Import Operator.
+From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
+From Foundation.FirstOrder.Basic Require Import Calculus Operator Soundness.
 From Foundation.FirstOrder.Basic.Semantics Require Import
-  Semantics OperatorSemantics.
+  Semantics OperatorSemantics ModelTheory.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 
 Set Implicit Arguments.
@@ -158,3 +160,44 @@ Lemma nat_standard_structure_interprets :
   structure_interprets_oring nat_standard_structure
     oring_language_structure nat_oring_carrier.
 Proof. apply oring_standard_structure_interprets. Qed.
+
+(** The natural-number model used by arithmetic soundness. *)
+Definition nat_standard_model : first_order_model oring_language :=
+  first_order_model_of_structure (inhabits 0) nat_standard_structure.
+
+(** Soundness restricted to a selected syntactic class of arithmetic
+    sentences.  Keeping the class explicit mirrors Foundation's [SoundOn]
+    interface without introducing global typeclass state. *)
+Record arithmetic_theory_sound_on
+    (T : theory oring_language)
+    (F : sentence oring_language -> Prop) : Prop := {
+  arithmetic_theory_sound_on_elim :
+    forall sigma : sentence oring_language,
+      first_order_theory_provable T sigma ->
+      F sigma ->
+      first_order_model_realize nat_standard_model sigma
+}.
+
+Arguments arithmetic_theory_sound_on_elim {T F} _ {sigma} _ _.
+
+Definition arithmetic_theory_sound_on_of_models
+    (T : theory oring_language)
+    (F : sentence oring_language -> Prop)
+    (Hmodels : first_order_models_theory nat_standard_model T) :
+    arithmetic_theory_sound_on T F.
+Proof.
+  constructor. intros sigma Hproof _.
+  exact (first_order_models_of_provable Hmodels Hproof).
+Defined.
+
+Theorem arithmetic_theory_consistent_of_sound_on :
+  forall (T : theory oring_language)
+         (F : sentence oring_language -> Prop),
+    arithmetic_theory_sound_on T F ->
+    F (@Semiformula_falsum oring_language Empty_set 0) ->
+    generic_consistent (first_order_theory_entailment oring_language) T.
+Proof.
+  intros T F Hsound Hfalse. constructor. intro Hinc.
+  exact (arithmetic_theory_sound_on_elim Hsound
+    (Hinc (@Semiformula_falsum oring_language Empty_set 0)) Hfalse).
+Qed.

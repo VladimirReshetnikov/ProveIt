@@ -2,12 +2,13 @@
 
 From Stdlib Require Import Lists.List Vectors.Fin Logic.Classical
   Logic.FunctionalExtensionality.
-From FoundationModal Require Import GenericAdjunctiveSet GenericCalculus.
+From FoundationModal Require Import
+  GenericAdjunctiveSet GenericCalculus GenericEntailment GenericSemantics.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Calculus Operator.
 From Foundation.FirstOrder.Basic.Semantics Require Import
-  Semantics RewriteClosure.
+  Semantics RewriteClosure ModelTheory Elementary.
 
 Import ListNotations.
 
@@ -127,4 +128,143 @@ Proof.
   destruct (first_order_derivation_sound d
     (unit_first_order_structure L) (fun _ => tt)) as [p [Hp _]].
   contradiction.
+Qed.
+
+(** Closed sentences are insensitive to the arbitrary natural-number
+    valuation introduced by the proposition-level LK calculus. *)
+Lemma first_order_sentence_embed_eval :
+  forall L M (Str : first_order_structure L M) (f : nat -> M)
+         (sigma : sentence L),
+    formula_eval Str f (first_order_sentence_embed sigma) <->
+    sentence_realize Str sigma.
+Proof.
+  intros L M Str f sigma.
+  unfold formula_eval, sentence_realize, first_order_sentence_embed.
+  rewrite semiformula_eval_rewrite.
+  etransitivity.
+  - apply semiformula_eval_bound_extensional. intro i. inversion i.
+  - apply semiformula_eval_free_ext. intros x _. destruct x.
+Qed.
+
+(** Soundness of the principal singleton LK presentation. *)
+Theorem first_order_lk_sound :
+  forall L (p : proposition L),
+    first_order_lk_provable p ->
+    forall M (Str : first_order_structure L M) (f : nat -> M),
+      formula_eval Str f p.
+Proof.
+  intros L p [d] M Str f.
+  destruct (first_order_derivation_sound d Str f)
+    as [q [[Hq | Hq] Hval]].
+  - now subst q.
+  - contradiction.
+Qed.
+
+(** Every theory proof is valid in every bundled model of its axioms.  The
+    finite witness stored in the proof makes this a direct consequence of LK
+    soundness; no completeness or choice principle is involved. *)
+Theorem first_order_theory_proof_sound :
+  forall L (T : theory L) (sigma : sentence L),
+    first_order_theory_provable T sigma ->
+    first_order_consequence T sigma.
+Proof.
+  intros L T sigma [b] m Hmodels.
+  destruct b as [w d].
+  destruct (first_order_model_nonempty m) as [a].
+  pose (f := fun _ : nat => a).
+  destruct (first_order_derivation_sound d
+    (first_order_model_structure m) f) as [p [Hp Hval]].
+  simpl in Hp.
+  destruct Hp as [Hp | Hp].
+  - subst p. apply (proj1 (first_order_sentence_embed_eval
+      (first_order_model_structure m) f sigma)). exact Hval.
+  - destruct (@generic_list_member_map_elim
+      (sentence L) (proposition L) (@first_order_sentence_embed L)
+      p (map semiformula_neg (generic_context_witness_formulas w)) Hp)
+      as [rho [Hrho <-]].
+    destruct (@generic_list_member_map_elim
+      (sentence L) (sentence L) (@semiformula_neg L Empty_set 0)
+      rho (generic_context_witness_formulas w) Hrho)
+      as [tau [Htau <-]].
+    apply (proj1 (first_order_sentence_embed_eval
+      (first_order_model_structure m) f (semiformula_neg tau))) in Hval.
+    unfold sentence_realize, formula_eval in Hval.
+    apply (proj1 (semiformula_eval_neg
+      (first_order_model_structure m)
+      (fun i : Fin.t 0 => match i with end)
+      (fun x : Empty_set => match x with end) tau)) in Hval.
+    exfalso. apply Hval.
+    exact (first_order_models_of_member Hmodels
+      (generic_context_witness_covers w tau Htau)).
+Qed.
+
+Definition first_order_theory_sound {L} (T : theory L) :
+    generic_sound (first_order_theory_entailment L)
+      (generic_set_semantics (first_order_semantics L))
+      T (generic_model_set (first_order_semantics L) T).
+Proof.
+  constructor. intros sigma Hsigma.
+  exact (first_order_theory_proof_sound Hsigma).
+Defined.
+
+Theorem first_order_theory_consistent_of_satisfiable :
+  forall L (T : theory L),
+    first_order_satisfiable T ->
+    generic_consistent (first_order_theory_entailment L) T.
+Proof.
+  intros L T [m Hmodels]. constructor. intro Hinc.
+  pose proof (first_order_theory_proof_sound
+    (Hinc (@Semiformula_falsum L Empty_set 0)) Hmodels) as Hfalse.
+  exact Hfalse.
+Qed.
+
+Corollary first_order_theory_consistent_of_model :
+  forall L (T : theory L) (m : first_order_model L),
+    first_order_models_theory m T ->
+    generic_consistent (first_order_theory_entailment L) T.
+Proof.
+  intros L T m Hmodels.
+  apply first_order_theory_consistent_of_satisfiable.
+  now exists m.
+Qed.
+
+Corollary first_order_theory_unprovable_of_countermodel :
+  forall L (T : theory L) (m : first_order_model L)
+         (sigma : sentence L),
+    first_order_models_theory m T ->
+    ~ first_order_model_realize m sigma ->
+    ~ first_order_theory_provable T sigma.
+Proof.
+  intros L T m sigma Hmodels Hcounter Hproof.
+  exact (Hcounter (first_order_theory_proof_sound Hproof Hmodels)).
+Qed.
+
+Corollary first_order_models_of_provable :
+  forall L (T : theory L) (m : first_order_model L)
+         (sigma : sentence L),
+    first_order_models_theory m T ->
+    first_order_theory_provable T sigma ->
+    first_order_model_realize m sigma.
+Proof.
+  intros L T m sigma Hmodels Hproof.
+  exact (first_order_theory_proof_sound Hproof Hmodels).
+Qed.
+
+Theorem first_order_models_of_weaker_theory :
+  forall L (T U : theory L) (m : first_order_model L),
+    generic_weaker_than
+      (first_order_theory_entailment L)
+      (first_order_theory_entailment L) T U ->
+    first_order_models_theory m U ->
+    first_order_models_theory m T.
+Proof.
+  intros L T U m Hweak HU. constructor. intros sigma Hsigma.
+  apply first_order_models_of_provable with (T := U).
+  - exact HU.
+  - apply (generic_weaker_subset Hweak sigma).
+    exact (@generic_axiomatized_by_axiom
+      (theory L) (sentence L)
+      (first_order_theory_entailment L)
+      (generic_predicate_adjunctive_set (sentence L))
+      (first_order_theory_axiomatized L) T sigma Hsigma).
 Qed.
