@@ -4905,3 +4905,21 @@ prefix, and performs the two represented modus-ponens steps in that exact
 extension.  The remaining atomic specialization is now only the concrete
 identification of the restricted atomic field and current endpoint with
 these two named premises.
+
+The matching current-rank projection is represented as well.
+`RawCodedCarrierRestrictedProofReroot.v` first proves the carrier-level fact
+at an arbitrary, possibly nonstandard hierarchy level by specializing the
+restricted proof's traversal certificate at the displayed root and reading
+the endpoint occurrence invariant.  The endpoint-boundedness compiler then
+abstracts only that named carrier level, proves the resulting fixed universal
+PA source by raw-model completeness, and substitutes the direct level code by
+represented `All-E`.  A concrete strong-step source fixes proof, context, and
+conclusion at `#4`, `#3`, and `#2`; this is capture-safe beneath the internal
+restricted-target binders and avoids the impractical normalization of closing
+four arbitrary endpoint terms.  Its separate compilation module transports
+the restricted-proof and endpoint roots through one standard axiom-witness
+prefix and returns the exact current-formula Sigma/Pi rank-domain root after
+two represented modus-ponens steps.  The remaining integration work is to
+identify the strong-step restricted core and endpoint assumptions with those
+premises, synchronize this root with the atomic projection, and hand both to
+the predecessor admissibility package.
