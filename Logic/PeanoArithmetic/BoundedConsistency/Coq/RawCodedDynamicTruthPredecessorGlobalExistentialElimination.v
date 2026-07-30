@@ -27,6 +27,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
+  RawCodedDynamicTruthSigmaSuccessorRowGraph
   RawCodedDynamicTruthPairedGlobalSuccessorGraph
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedFourStateTableAppendRowLtSuccCases.
@@ -47,6 +48,7 @@ Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedDynamicTruthSigmaSuccessorRowGraph.
 Import PABoundedRawCodedDynamicTruthPairedGlobalSuccessorGraph.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
@@ -113,6 +115,81 @@ Lemma coqDynamicTruthGlobalExistentialSource_embed : forall
     (dynamicTruthGlobalFormula (Term.numeral rootMode)
       localSigma localPi).
 Proof. intros. reflexivity. Qed.
+
+(** Translating the generalized source does not require decoding either
+    local row.  Its fixed PA leaves are quoted through [hagreement], while
+    the two template leaves remain exactly the caller-selected carrier
+    codes.  Thus the result is the same transparent constructor polynomial
+    used by the native paired-global wrapper.  This is the key code-level
+    bridge for nonstandard successor rows; producing a PA proof of that code
+    is a separate, genuinely proof-theoretic obligation. *)
+Theorem rawTemplateFormula_dynamicTruthGlobalExistentialSource : forall
+    (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode localSigma localPi,
+  rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource
+        rootMode localSigma localPi) =
+    rawDynamicTruthGlobalFormulaCode M
+      (Term.numeral rootMode)
+      (rawTemplateFormula translation localSigma)
+      (rawTemplateFormula translation localPi).
+Proof.
+  intros M hPA translation hagreement rootMode localSigma localPi.
+  unfold coqDynamicTruthGlobalExistentialSource,
+    coqDynamicTruthGlobalTraversalBodyTemplate,
+    coqDynamicTruthGlobalRowsTemplate,
+    rawDynamicTruthGlobalFormulaCode,
+    rawDynamicTruthFormulaEx10Code,
+    rawFormulaEx8Code,
+    rawDynamicTruthFormulaAnd7Code,
+    rawDynamicTruthGlobalRowsCode,
+    rawDynamicTruthFormulaAll5Code,
+    rawDynamicTruthGlobalRowChoiceCode.
+  repeat first
+    [ rewrite rawTemplateFormula_ex
+    | rewrite rawTemplateFormula_and
+    | rewrite rawTemplateFormula_all
+    | rewrite rawTemplateFormula_imp
+    | rewrite rawTemplateFormula_or ].
+  rewrite !rawTemplateFormula_embedPA by exact hagreement.
+  rewrite !rawFixedFormulaNumeralCode_eq_quoted by exact hPA.
+  reflexivity.
+Qed.
+
+(** Once the two row leaves have been identified, the public wrapper
+    equalities identify both translated existential sources at once.  The
+    direction of the resulting equations is chosen for direct rewriting of
+    proof endpoints into the literal native global codes. *)
+Corollary rawTemplateFormula_dynamicTruthGlobalSources_of_wrapper : forall
+    (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall localSigma localPi localSigmaCode localPiCode
+      globalSigma globalPi,
+  rawTemplateFormula translation localSigma = localSigmaCode ->
+  rawTemplateFormula translation localPi = localPiCode ->
+  RawDynamicTruthPairedGlobalWrapperAt M
+    localSigmaCode localPiCode globalSigma globalPi ->
+  rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource
+        0 localSigma localPi) = globalSigma /\
+  rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource
+        1 localSigma localPi) = globalPi.
+Proof.
+  intros M hPA translation hagreement
+    localSigma localPi localSigmaCode localPiCode
+    globalSigma globalPi hsigma hpi [hglobalSigma hglobalPi].
+  split.
+  - rewrite (rawTemplateFormula_dynamicTruthGlobalExistentialSource
+      M hPA translation hagreement 0 localSigma localPi), hsigma, hpi.
+    symmetry. exact hglobalSigma.
+  - rewrite (rawTemplateFormula_dynamicTruthGlobalExistentialSource
+      M hPA translation hagreement 1 localSigma localPi), hsigma, hpi.
+    symmetry. exact hglobalPi.
+Qed.
 
 (** Compute, rather than hand-write, the ten successively shifted contexts.
     The fallback branch is unreachable and audited by the success lemma. *)
