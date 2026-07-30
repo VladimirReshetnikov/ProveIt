@@ -4758,3 +4758,14 @@ with this opening of `embedPAFormula localSigma` and the right payload with
 the analogous opening of `localPi`.  This replaces the full global row spine
 by a small explicit substitution calculation and prevents the tempting but
 incorrect use of five unlifted direct openings.
+
+That capture-safe calculation is now reflected back into ordinary PA syntax.
+Generic commuting lemmas show that embedding a PA formula after the lifted
+five-opening sequence equals opening its embedding, and that embedding an
+iterated PA rename equals the template tenfold shift.  Consequently a new
+public predecessor-evidence endpoint asks only for an equality between two
+ordinary PA formulas: the selected local row after its five root-tuple
+substitutions and the tenfold rename of the desired evidence formula.  Once
+this PA-syntax equality is supplied, all template alignment, witnessed-tail
+growth, source weakening, row selection, and existential elimination are
+derived internally.

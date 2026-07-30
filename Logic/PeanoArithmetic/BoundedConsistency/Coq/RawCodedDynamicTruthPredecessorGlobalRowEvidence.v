@@ -145,4 +145,54 @@ Proof.
   split; [exact hincluded | exact hevidence].
 Qed.
 
+(** Ordinary-PA syntax is the most convenient final specialization
+    boundary.  The two embedding lemmas turn its equality into the template
+    shift equation consumed by the fully generic bridge above. *)
+Corollary
+    raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_PA_evidence :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall witnessList baseContext rootMode localSigma localPi
+      evidenceFormula sourceRoot,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  rootMode = 0 \/ rootMode = 1 ->
+  paDynamicTruthGlobalOpenedRootRowSelectedPayload
+      rootMode localSigma localPi =
+    paFormulaShiftMany 10 evidenceFormula ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M baseContext)
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource
+        rootMode localSigma localPi)) sourceRoot ->
+  exists witnesses evidenceRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses witnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext))
+      (rawTemplateFormula translation
+        (embedPAFormula evidenceFormula)) evidenceRoot.
+Proof.
+  intros M hPA translation hagreement witnessList baseContext
+    rootMode localSigma localPi evidenceFormula sourceRoot
+    hwitnessed hrootMode halignment hsource.
+  apply
+    (raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_evidence
+      M hPA translation hagreement witnessList baseContext
+      rootMode localSigma localPi (embedPAFormula evidenceFormula)
+      sourceRoot hwitnessed hrootMode).
+  - rewrite coqDynamicTruthGlobalOpenedRootRowSelectedPayload_embedPA,
+      <- embedPAFormula_paFormulaShiftMany, halignment.
+    reflexivity.
+  - exact hsource.
+Qed.
+
 End PABoundedRawCodedDynamicTruthPredecessorGlobalRowEvidence.

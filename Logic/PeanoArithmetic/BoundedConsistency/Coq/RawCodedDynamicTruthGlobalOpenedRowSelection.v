@@ -12,6 +12,7 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruthTraversal
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofExistentialEliminationChain
   RawCodedPALocalProofComposition
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedPALocalProofTaggedChoice
@@ -41,6 +42,7 @@ Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedFixedLevelTruthTraversal.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedPALocalProofTaggedChoice.
@@ -167,6 +169,21 @@ Fixpoint templateTermSubstitutionLiftMany (depth : nat)
       (templateTermSubstitutionLiftMany remaining substitution)
   end.
 
+Lemma templateTermSubstitutionLiftMany_ext : forall
+    depth first second,
+  (forall index, first index = second index) ->
+  forall index,
+    templateTermSubstitutionLiftMany depth first index =
+    templateTermSubstitutionLiftMany depth second index.
+Proof.
+  induction depth as [|depth ih]; intros first second hext index.
+  - exact (hext index).
+  - cbn [templateTermSubstitutionLiftMany].
+    destruct index as [|index]; cbn [templateTermUpSubst].
+    + reflexivity.
+    + rewrite (ih first second hext index). reflexivity.
+Qed.
+
 (** Opening a subformula sitting beneath an entire universal tower is not a
     naive sequence of direct openings.  The first replacement must cross all
     remaining binders, the second all but one, and so on.  Encoding that lift
@@ -233,6 +250,137 @@ Proof.
   reflexivity.
 Qed.
 
+(** Ordinary-PA counterpart of the capture-safe template opening. *)
+Fixpoint paTermSubstitutionLiftMany (depth : nat)
+    (substitution : nat -> term) : nat -> term :=
+  match depth with
+  | 0 => substitution
+  | S remaining => Term.upSubst
+      (paTermSubstitutionLiftMany remaining substitution)
+  end.
+
+Fixpoint paFormulaOpenSequenceUnderBinders
+    (input : formula) (replacements : list term) : formula :=
+  match replacements with
+  | [] => input
+  | replacement :: tail =>
+      paFormulaOpenSequenceUnderBinders
+        (Formula.subst
+          (paTermSubstitutionLiftMany (length tail)
+            (Formula.instTerm replacement)) input) tail
+  end.
+
+Lemma embedPATerm_paTermSubstitutionLiftMany : forall
+    depth substitution index,
+  embedPATerm (paTermSubstitutionLiftMany depth substitution index) =
+  templateTermSubstitutionLiftMany depth
+    (fun position => embedPATerm (substitution position)) index.
+Proof.
+  induction depth as [|depth ih]; intros substitution index.
+  - reflexivity.
+  - cbn [paTermSubstitutionLiftMany
+      templateTermSubstitutionLiftMany].
+    rewrite embedPATerm_upSubst.
+    destruct index as [|index]; cbn [templateTermUpSubst].
+    + reflexivity.
+    + now rewrite ih.
+Qed.
+
+Lemma embedPAFormula_paFormulaOpenSequenceUnderBinders : forall
+    input replacements,
+  embedPAFormula
+    (paFormulaOpenSequenceUnderBinders input replacements) =
+  templateFormulaOpenSequenceUnderBinders (embedPAFormula input)
+    (map embedPATerm replacements).
+Proof.
+  intros input replacements.
+  revert input.
+  induction replacements as [|replacement tail ih]; intro input.
+  - reflexivity.
+  - cbn [map length paFormulaOpenSequenceUnderBinders
+      templateFormulaOpenSequenceUnderBinders].
+    rewrite ih, embedPAFormula_subst.
+    f_equal.
+    apply templateFormulaSubst_ext.
+    intro index.
+    rewrite embedPATerm_paTermSubstitutionLiftMany.
+    rewrite length_map.
+    apply templateTermSubstitutionLiftMany_ext.
+    intro position. destruct position; reflexivity.
+Qed.
+
+Definition coqDynamicTruthGlobalOpenedRootRowPAReplacements
+    (rootMode : nat) : list term :=
+  [ tVar 8;
+    Term.numeral rootMode;
+    tVar 10;
+    tVar 11;
+    tVar 12 ].
+
+Lemma coqDynamicTruthGlobalOpenedRootRowReplacements_embedPA : forall
+    rootMode,
+  coqDynamicTruthGlobalOpenedRootRowReplacements rootMode =
+  map embedPATerm
+    (coqDynamicTruthGlobalOpenedRootRowPAReplacements rootMode).
+Proof.
+  intros. reflexivity.
+Qed.
+
+Lemma coqDynamicTruthGlobalOpenedRootRowLeftPayload_embedPA : forall
+    rootMode localSigma localPi,
+  coqDynamicTruthGlobalOpenedRootRowLeftPayload
+      rootMode localSigma localPi =
+  embedPAFormula
+    (paFormulaOpenSequenceUnderBinders localSigma
+      (coqDynamicTruthGlobalOpenedRootRowPAReplacements rootMode)).
+Proof.
+  intros.
+  rewrite coqDynamicTruthGlobalOpenedRootRowLeftPayload_open_sequence,
+    coqDynamicTruthGlobalOpenedRootRowReplacements_embedPA.
+  symmetry.
+  apply embedPAFormula_paFormulaOpenSequenceUnderBinders.
+Qed.
+
+Lemma coqDynamicTruthGlobalOpenedRootRowRightPayload_embedPA : forall
+    rootMode localSigma localPi,
+  coqDynamicTruthGlobalOpenedRootRowRightPayload
+      rootMode localSigma localPi =
+  embedPAFormula
+    (paFormulaOpenSequenceUnderBinders localPi
+      (coqDynamicTruthGlobalOpenedRootRowPAReplacements rootMode)).
+Proof.
+  intros.
+  rewrite coqDynamicTruthGlobalOpenedRootRowRightPayload_open_sequence,
+    coqDynamicTruthGlobalOpenedRootRowReplacements_embedPA.
+  symmetry.
+  apply embedPAFormula_paFormulaOpenSequenceUnderBinders.
+Qed.
+
+Definition paDynamicTruthGlobalOpenedRootRowSelectedPayload
+    (rootMode : nat) (localSigma localPi : formula) : formula :=
+  match rootMode with
+  | 0 => paFormulaOpenSequenceUnderBinders localSigma
+      (coqDynamicTruthGlobalOpenedRootRowPAReplacements 0)
+  | S _ => paFormulaOpenSequenceUnderBinders localPi
+      (coqDynamicTruthGlobalOpenedRootRowPAReplacements rootMode)
+  end.
+
+Fixpoint paFormulaShiftMany (count : nat) (input : formula) : formula :=
+  match count with
+  | 0 => input
+  | S smaller => paFormulaShiftMany smaller (Formula.rename S input)
+  end.
+
+Lemma embedPAFormula_paFormulaShiftMany : forall count input,
+  embedPAFormula (paFormulaShiftMany count input) =
+  templateFormulaShiftMany count (embedPAFormula input).
+Proof.
+  induction count as [|count ih]; intro input.
+  - reflexivity.
+  - cbn [paFormulaShiftMany templateFormulaShiftMany].
+    rewrite ih, embedPAFormula_rename. reflexivity.
+Qed.
+
 Definition coqDynamicTruthGlobalOpenedRootRowSelectedPayload
     (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
   match rootMode with
@@ -241,6 +389,19 @@ Definition coqDynamicTruthGlobalOpenedRootRowSelectedPayload
   | S _ => coqDynamicTruthGlobalOpenedRootRowRightPayload
       rootMode localSigma localPi
   end.
+
+Lemma coqDynamicTruthGlobalOpenedRootRowSelectedPayload_embedPA : forall
+    rootMode localSigma localPi,
+  coqDynamicTruthGlobalOpenedRootRowSelectedPayload
+      rootMode localSigma localPi =
+  embedPAFormula
+    (paDynamicTruthGlobalOpenedRootRowSelectedPayload
+      rootMode localSigma localPi).
+Proof.
+  intros [|rootMode] localSigma localPi.
+  - apply coqDynamicTruthGlobalOpenedRootRowLeftPayload_embedPA.
+  - apply coqDynamicTruthGlobalOpenedRootRowRightPayload_embedPA.
+Qed.
 
 (** Grow the witnessed PA tail once, insert both closed contradictions under
     the complete ten-witness prefix, and select the mode-correct payload.
