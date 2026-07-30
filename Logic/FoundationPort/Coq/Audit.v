@@ -6,6 +6,8 @@ From Foundation.Vorspiel Require Import Small.
 From Foundation.Vorspiel Require Import String.
 From Foundation.Vorspiel Require Import Fintype.
 From Foundation.Vorspiel Require Import Denumerable.
+From Foundation.Vorspiel Require Import Graph.
+From Foundation.Vorspiel Require Import Part.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Finset Require Import Card.
 From Foundation.Vorspiel.Finset Require Import Basic.
@@ -100,6 +102,27 @@ Check denumerable_nat_list_fuel.
 Check denumerable_nat_list.
 Print Assumptions denumerable_nat_list_fuel_member_lt.
 Print Assumptions denumerable_nat_list_member_lt.
+Check function_graph_vector.
+Check function_graph.
+Check function_graph2.
+Check function_graph3.
+Check function_graph4.
+Check function_graph5.
+Print Assumptions function_graph_eq.
+Print Assumptions function_graph_iff_left.
+Print Assumptions function_graph_iff_right.
+Print Assumptions function_graph2_eq.
+Print Assumptions function_graph2_iff_left.
+Print Assumptions function_graph2_iff_right.
+Print Assumptions function_graph3_eq.
+Print Assumptions function_graph3_iff_left.
+Print Assumptions function_graph3_iff_right.
+Check partial_value.
+Check partial_dom.
+Check partial_some.
+Check fin_partial_product.
+Print Assumptions fin_partial_product_member_iff.
+Print Assumptions partial_unit_dom_iff.
 Check list_strict_inclusion.
 Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
