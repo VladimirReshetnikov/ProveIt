@@ -5131,3 +5131,15 @@ audit records the stronger classical choice, proof-irrelevance, and
 propositional-extensionality boundary inherited from the complete generic
 row case compiler; the earlier normalization-only clients retain their
 smaller classical/extensionality boundary.
+
+The selected-row boundary no longer requires raw formula-code equality with
+a tenfold-shifted conclusion.  That equality is too strong for native rows:
+the selected row legitimately retains the opened traversal witnesses, which
+must be rewritten by represented equality proofs rather than identified as
+quoted syntax.  The predecessor eliminator now has a lower-level endpoint
+accepting any proof of the shifted conclusion in the exact ten-witness deep
+context, plus a callback endpoint that receives the selected payload proof
+and its chosen witnessed extension.  The historical code-equality theorem
+is retained as a compatibility corollary.  Native integration can therefore
+use the already projected traversal equalities to build an honest transport
+proof before closing the ten existential eliminations.
