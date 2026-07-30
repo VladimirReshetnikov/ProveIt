@@ -719,20 +719,40 @@ Check semiformula_padding_iff_provable.
 Check encoding_injective.
 Check fin_nat_code.
 Check fin_nat_code_injective.
+Check fin_nat_decode.
+Check fin_nat_decode_code.
+Check fin_nat_code_component_le.
+Check fin_option_sequence.
+Check fin_option_sequence_some.
 Check semiterm_code.
 Check semiterm_code_bvar.
 Check semiterm_code_fvar.
 Check semiterm_code_func.
 Check semiterm_code_injective.
+Check semiterm_decode_fuel.
+Check semiterm_decode.
+Check semiterm_decode_fuel_code.
+Check semiterm_decode_code.
 Check semiformula_code.
+Check semiformula_code_verum.
+Check semiformula_code_falsum.
+Check semiformula_code_rel.
+Check semiformula_code_nrel.
+Check semiformula_code_and.
+Check semiformula_code_or.
+Check semiformula_code_all.
+Check semiformula_code_exists.
 Check semiformula_code_injective.
+Check semiformula_decode_fuel.
+Check semiformula_decode.
+Check cantor_payload_lt_fuel.
+Check cantor_pair_components_lt_fuel.
+Check semiformula_decode_fuel_code.
+Check semiformula_decode_code.
 Check semiterm_code_emb.
 Check semiformula_code_emb.
 Check semiformula_code_closed_injection.
 Check semiformula_code_closed_injection_rev.
-Check decode_injective_code.
-Check decode_injective_code_encode.
-Check encoding_of_injective_code.
 Check semiterm_encoding.
 Check semiformula_encoding.
 Check semiterm_encoding_encode.
@@ -1116,12 +1136,17 @@ Print Assumptions semiformula_rewrite_padding.
 Print Assumptions semiformula_padding_iff_raw.
 Print Assumptions semiformula_padding_iff_provable.
 Print Assumptions fin_nat_code_injective.
+Print Assumptions fin_nat_decode_code.
+Print Assumptions fin_option_sequence_some.
 Print Assumptions semiterm_code_injective.
+Print Assumptions semiterm_decode_fuel_code.
+Print Assumptions semiterm_decode_code.
 Print Assumptions semiformula_code_injective.
+Print Assumptions semiformula_decode_fuel_code.
+Print Assumptions semiformula_decode_code.
 Print Assumptions semiterm_code_emb.
 Print Assumptions semiformula_code_emb.
 Print Assumptions semiformula_code_closed_injection.
-Print Assumptions decode_injective_code_encode.
 Print Assumptions semiterm_encoding.
 Print Assumptions semiformula_encoding.
 Print Assumptions semiformula_polarity_neg.

@@ -1,16 +1,14 @@
 (**
-  Structural Gödel numbering for first-order syntax.
+  Executable structural Gödel numbering for first-order syntax.
 
-  This ports the injective coding and closed-syntax embedding core of
-  [Foundation/FirstOrder/Basic/Coding.lean].  Codes are assembled from the
-  standard library's Cantor pairing function.  Unlike the source interface,
-  injectivity is exposed directly, independently of typeclass search; the
-  only data required are verified encodings of free variables and language
-  symbols.
+  This ports [Foundation/FirstOrder/Basic/Coding.lean].  Codes are assembled
+  from the standard library's Cantor pairing function and decoded by bounded
+  structural search.  Unlike the source interface, injectivity is also
+  exposed directly, independently of typeclass search; the only data required
+  are verified encodings of free variables and language symbols.
 *)
 
-From Stdlib Require Import Arith.PeanoNat Cantor Vectors.Fin.
-From Stdlib Require Import Logic.ClassicalDescription Logic.ClassicalEpsilon.
+From Stdlib Require Import Arith.Compare_dec Arith.PeanoNat Cantor Lia Vectors.Fin.
 From Stdlib Require Import Logic.FunctionalExtensionality.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
@@ -53,6 +51,79 @@ Proof.
     apply functional_extensionality. intro i.
     refine (@Fin.caseS' k i (fun j => v j = w j) Hhead _).
     intro j. exact (f_equal (fun h => h j) Htail).
+Qed.
+
+Definition fin_coding_cons {A} {k}
+    (x : A) (v : Fin.t k -> A) : Fin.t (S k) -> A :=
+  fun i => @Fin.caseS' k i (fun _ => A) x v.
+
+Fixpoint fin_nat_decode (k : nat) : nat -> Fin.t k -> nat :=
+  match k as j return nat -> Fin.t j -> nat with
+  | 0 => fun _ i => match i with end
+  | S j => fun code =>
+      let '(head, tail) := Cantor.of_nat code in
+      fin_coding_cons head (@fin_nat_decode j tail)
+  end.
+
+Lemma fin_nat_decode_code : forall k (v : Fin.t k -> nat),
+  @fin_nat_decode k (fin_nat_code v) = v.
+Proof.
+  induction k as [|k IH]; intro v.
+  - apply functional_extensionality. intro i. inversion i.
+  - cbn [fin_nat_code fin_nat_decode]. rewrite Cantor.cancel_of_to.
+    apply functional_extensionality. intro i.
+    refine (@Fin.caseS' k i
+      (fun j => fin_coding_cons (v Fin.F1)
+        (@fin_nat_decode k (fin_nat_code (fun u => v (Fin.FS u)))) j = v j)
+      eq_refl _).
+    intro j. cbn [fin_coding_cons].
+    exact (f_equal (fun h => h j) (IH (fun u => v (Fin.FS u)))).
+Qed.
+
+Lemma fin_nat_code_component_le : forall k (v : Fin.t k -> nat) i,
+  v i <= fin_nat_code v.
+Proof.
+  induction k as [|k IH]; intros v i; [inversion i|].
+  change (v i <= Cantor.to_nat
+    (v Fin.F1, fin_nat_code (fun j => v (Fin.FS j)))).
+  pose proof (Cantor.to_nat_non_decreasing
+    (v Fin.F1) (fin_nat_code (fun j => v (Fin.FS j)))) as Hpair.
+  refine (@Fin.caseS' k i
+    (fun j => v j <= Cantor.to_nat
+      (v Fin.F1, fin_nat_code (fun u => v (Fin.FS u)))) _ _).
+  - lia.
+  - intro j.
+    pose proof (IH (fun u => v (Fin.FS u)) j). lia.
+Qed.
+
+Fixpoint fin_option_sequence (k : nat) {A : Type} :
+    (Fin.t k -> option A) -> option (Fin.t k -> A) :=
+  match k as j return
+      (Fin.t j -> option A) -> option (Fin.t j -> A) with
+  | 0 => fun _ => Some (fun i : Fin.t 0 => match i with end)
+  | S j => fun v =>
+      match v Fin.F1,
+            @fin_option_sequence j A (fun i => v (Fin.FS i)) with
+      | Some x, Some xs => Some (fin_coding_cons x xs)
+      | _, _ => None
+      end
+  end.
+
+Lemma fin_option_sequence_some : forall k A
+    (v : Fin.t k -> option A) (w : Fin.t k -> A),
+  (forall i, v i = Some (w i)) -> @fin_option_sequence k A v = Some w.
+Proof.
+  induction k as [|k IH]; intros A v w H.
+  - cbn [fin_option_sequence]. f_equal.
+    apply functional_extensionality. intro i. inversion i.
+  - cbn [fin_option_sequence]. rewrite H.
+    rewrite (IH A (fun i => v (Fin.FS i))
+      (fun i => w (Fin.FS i)) (fun i => H (Fin.FS i))).
+    f_equal. apply functional_extensionality. intro i.
+    refine (@Fin.caseS' k i
+      (fun j => fin_coding_cons (w Fin.F1)
+        (fun u => w (Fin.FS u)) j = w j) eq_refl _).
+    reflexivity.
 Qed.
 
 Fixpoint semiterm_code {L X n}
@@ -127,6 +198,93 @@ Proof.
       now subst g; subst w.
 Qed.
 
+Fixpoint semiterm_decode_fuel {L X}
+    (EL : language_encodable L) (EX : encoding X)
+    (fuel n code : nat) : option (semiterm L X n) :=
+  match fuel with
+  | 0 => None
+  | S fuel' =>
+      let '(tag, payload) := Cantor.of_nat code in
+      match tag with
+      | 0 =>
+          match lt_dec payload n with
+          | left H => Some (Semiterm_bvar (Fin.of_nat_lt H))
+          | right _ => None
+          end
+      | 1 => option_map Semiterm_fvar (decode EX payload)
+      | 2 =>
+          let '(k, rest) := Cantor.of_nat payload in
+          let '(ef, ev) := Cantor.of_nat rest in
+          match decode (language_func_encoding EL k) ef with
+          | None => None
+          | Some f =>
+              match @fin_option_sequence k (semiterm L X n)
+                (fun i => semiterm_decode_fuel EL EX fuel' n
+                  (@fin_nat_decode k ev i)) with
+              | None => None
+              | Some v => Some (Semiterm_func f v)
+              end
+          end
+      | _ => None
+      end
+  end.
+
+Definition semiterm_decode {L X} (EL : language_encodable L)
+    (EX : encoding X) (n code : nat) : option (semiterm L X n) :=
+  semiterm_decode_fuel EL EX (S code) n code.
+
+Theorem semiterm_decode_fuel_code : forall L X n EL EX
+    (t : semiterm L X n) fuel,
+  semiterm_code EL EX t < fuel ->
+  semiterm_decode_fuel EL EX fuel n (semiterm_code EL EX t) = Some t.
+Proof.
+  intros L X n EL EX t.
+  induction t as [i | x | k f v IH].
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiterm_code semiterm_decode_fuel].
+    rewrite Cantor.cancel_of_to. cbn [fst snd].
+    destruct (lt_dec (fin_value i) n) as [Hi | Hi].
+    + f_equal. f_equal. apply Fin.to_nat_inj.
+      rewrite Fin.to_nat_of_nat. reflexivity.
+    + exfalso. apply Hi. exact (proj2_sig (Fin.to_nat i)).
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiterm_code semiterm_decode_fuel].
+    rewrite Cantor.cancel_of_to. cbn [fst snd].
+    now rewrite decode_encode.
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiterm_code semiterm_decode_fuel].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    rewrite decode_encode, fin_nat_decode_code.
+    rewrite (fin_option_sequence_some
+      (v := fun i => semiterm_decode_fuel EL EX fuel' n
+        (semiterm_code EL EX (v i))) (w := v)).
+    + reflexivity.
+    + intro i. apply IH.
+      cbn [semiterm_code] in Hfuel.
+      pose proof (fin_nat_code_component_le
+        (fun j => semiterm_code EL EX (v j)) i) as Hcomponent.
+      pose proof (Cantor.to_nat_non_decreasing
+        (encode (language_func_encoding EL k) f)
+        (fin_nat_code (fun j => semiterm_code EL EX (v j)))) as Hsymbol.
+      pose proof (Cantor.to_nat_non_decreasing k
+        (Cantor.to_nat
+          (encode (language_func_encoding EL k) f,
+           fin_nat_code (fun j => semiterm_code EL EX (v j))))) as Harity.
+      pose proof (Cantor.to_nat_non_decreasing 2
+        (Cantor.to_nat (k,
+          Cantor.to_nat
+            (encode (language_func_encoding EL k) f,
+             fin_nat_code (fun j => semiterm_code EL EX (v j)))))) as Houter.
+      lia.
+Qed.
+
+Theorem semiterm_decode_code : forall L X n EL EX
+    (t : semiterm L X n),
+  semiterm_decode EL EX n (semiterm_code EL EX t) = Some t.
+Proof.
+  intros. unfold semiterm_decode. apply semiterm_decode_fuel_code. lia.
+Qed.
+
 Fixpoint semiformula_code {L X n}
     (EL : language_encodable L) (EX : encoding X)
     (p : semiformula L X n) : nat :=
@@ -152,6 +310,62 @@ Fixpoint semiformula_code {L X n}
   | Semiformula_all p => Cantor.to_nat (6, semiformula_code EL EX p)
   | Semiformula_exists p => Cantor.to_nat (7, semiformula_code EL EX p)
   end.
+
+Lemma semiformula_code_verum : forall L X n EL EX,
+  @semiformula_code L X n EL EX (Semiformula_verum n) =
+  Cantor.to_nat (0, 0).
+Proof. reflexivity. Qed.
+
+Lemma semiformula_code_falsum : forall L X n EL EX,
+  @semiformula_code L X n EL EX (Semiformula_falsum n) =
+  Cantor.to_nat (1, 0).
+Proof. reflexivity. Qed.
+
+Lemma semiformula_code_rel : forall L X n EL EX k
+    (r : language_rel L k) (v : Fin.t k -> semiterm L X n),
+  semiformula_code EL EX (Semiformula_rel r v) =
+  Cantor.to_nat (2,
+    Cantor.to_nat (k,
+      Cantor.to_nat
+        (encode (language_rel_encoding EL k) r,
+         fin_nat_code (fun i => semiterm_code EL EX (v i))))).
+Proof. reflexivity. Qed.
+
+Lemma semiformula_code_nrel : forall L X n EL EX k
+    (r : language_rel L k) (v : Fin.t k -> semiterm L X n),
+  semiformula_code EL EX (Semiformula_nrel r v) =
+  Cantor.to_nat (3,
+    Cantor.to_nat (k,
+      Cantor.to_nat
+        (encode (language_rel_encoding EL k) r,
+         fin_nat_code (fun i => semiterm_code EL EX (v i))))).
+Proof. reflexivity. Qed.
+
+Lemma semiformula_code_and : forall L X n EL EX
+    (p q : semiformula L X n),
+  semiformula_code EL EX (Semiformula_and p q) =
+  Cantor.to_nat (4,
+    Cantor.to_nat (semiformula_code EL EX p, semiformula_code EL EX q)).
+Proof. reflexivity. Qed.
+
+Lemma semiformula_code_or : forall L X n EL EX
+    (p q : semiformula L X n),
+  semiformula_code EL EX (Semiformula_or p q) =
+  Cantor.to_nat (5,
+    Cantor.to_nat (semiformula_code EL EX p, semiformula_code EL EX q)).
+Proof. reflexivity. Qed.
+
+Lemma semiformula_code_all : forall L X n EL EX
+    (p : semiformula L X (S n)),
+  semiformula_code EL EX (Semiformula_all p) =
+  Cantor.to_nat (6, semiformula_code EL EX p).
+Proof. reflexivity. Qed.
+
+Lemma semiformula_code_exists : forall L X n EL EX
+    (p : semiformula L X (S n)),
+  semiformula_code EL EX (Semiformula_exists p) =
+  Cantor.to_nat (7, semiformula_code EL EX p).
+Proof. reflexivity. Qed.
 
 Theorem semiformula_code_injective : forall L X n EL EX
     (p q : semiformula L X n),
@@ -215,6 +429,156 @@ Proof.
       cbn [semiformula_code] in H;
       apply Cantor.to_nat_inj in H; try discriminate H.
     injection H as Hp. f_equal. now apply IHp.
+Qed.
+
+Fixpoint semiformula_decode_fuel {L X}
+    (EL : language_encodable L) (EX : encoding X)
+    (fuel n code : nat) : option (semiformula L X n) :=
+  match fuel with
+  | 0 => None
+  | S fuel' =>
+      let '(tag, payload) := Cantor.of_nat code in
+      match tag with
+      | 0 => Some (Semiformula_verum n)
+      | 1 => Some (Semiformula_falsum n)
+      | 2 =>
+          let '(k, rest) := Cantor.of_nat payload in
+          let '(er, ev) := Cantor.of_nat rest in
+          match decode (language_rel_encoding EL k) er with
+          | None => None
+          | Some r =>
+              match @fin_option_sequence k (semiterm L X n)
+                (fun i => semiterm_decode EL EX n (@fin_nat_decode k ev i)) with
+              | None => None
+              | Some v => Some (Semiformula_rel r v)
+              end
+          end
+      | 3 =>
+          let '(k, rest) := Cantor.of_nat payload in
+          let '(er, ev) := Cantor.of_nat rest in
+          match decode (language_rel_encoding EL k) er with
+          | None => None
+          | Some r =>
+              match @fin_option_sequence k (semiterm L X n)
+                (fun i => semiterm_decode EL EX n (@fin_nat_decode k ev i)) with
+              | None => None
+              | Some v => Some (Semiformula_nrel r v)
+              end
+          end
+      | 4 =>
+          let '(ep, eq) := Cantor.of_nat payload in
+          match semiformula_decode_fuel EL EX fuel' n ep,
+                semiformula_decode_fuel EL EX fuel' n eq with
+          | Some p, Some q => Some (Semiformula_and p q)
+          | _, _ => None
+          end
+      | 5 =>
+          let '(ep, eq) := Cantor.of_nat payload in
+          match semiformula_decode_fuel EL EX fuel' n ep,
+                semiformula_decode_fuel EL EX fuel' n eq with
+          | Some p, Some q => Some (Semiformula_or p q)
+          | _, _ => None
+          end
+      | 6 =>
+          option_map Semiformula_all
+            (semiformula_decode_fuel EL EX fuel' (S n) payload)
+      | 7 =>
+          option_map Semiformula_exists
+            (semiformula_decode_fuel EL EX fuel' (S n) payload)
+      | _ => None
+      end
+  end.
+
+Definition semiformula_decode {L X} (EL : language_encodable L)
+    (EX : encoding X) (n code : nat) : option (semiformula L X n) :=
+  semiformula_decode_fuel EL EX (S code) n code.
+
+Lemma cantor_payload_lt_fuel : forall tag payload fuel,
+  0 < tag -> Cantor.to_nat (tag, payload) < S fuel -> payload < fuel.
+Proof.
+  intros tag payload fuel Htag Hcode.
+  pose proof (Cantor.to_nat_non_decreasing tag payload). lia.
+Qed.
+
+Lemma cantor_pair_components_lt_fuel : forall tag left right fuel,
+  0 < tag ->
+  Cantor.to_nat (tag, Cantor.to_nat (left, right)) < S fuel ->
+  left < fuel /\ right < fuel.
+Proof.
+  intros tag left right fuel Htag Hcode.
+  pose proof (Cantor.to_nat_non_decreasing left right) as Hinner.
+  pose proof (Cantor.to_nat_non_decreasing tag
+    (Cantor.to_nat (left, right))) as Houter.
+  lia.
+Qed.
+
+Theorem semiformula_decode_fuel_code : forall L X n EL EX
+    (p : semiformula L X n) fuel,
+  semiformula_code EL EX p < fuel ->
+  semiformula_decode_fuel EL EX fuel n (semiformula_code EL EX p) = Some p.
+Proof.
+  intros L X n EL EX p. induction p.
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiformula_code semiformula_decode_fuel].
+    now rewrite Cantor.cancel_of_to.
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiformula_code semiformula_decode_fuel].
+    now rewrite Cantor.cancel_of_to.
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiformula_code semiformula_decode_fuel].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    rewrite decode_encode, fin_nat_decode_code.
+    rewrite (fin_option_sequence_some
+      (v := fun i => semiterm_decode EL EX n (semiterm_code EL EX (s i)))
+      (w := s)).
+    + reflexivity.
+    + intro i. apply semiterm_decode_code.
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiformula_code semiformula_decode_fuel].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    rewrite decode_encode, fin_nat_decode_code.
+    rewrite (fin_option_sequence_some
+      (v := fun i => semiterm_decode EL EX n (semiterm_code EL EX (s i)))
+      (w := s)).
+    + reflexivity.
+    + intro i. apply semiterm_decode_code.
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiformula_code] in Hfuel.
+    pose proof (@cantor_pair_components_lt_fuel 4
+      (semiformula_code EL EX p1) (semiformula_code EL EX p2)
+      fuel' ltac:(lia) Hfuel) as [Hp Hq].
+    cbn [semiformula_code semiformula_decode_fuel].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    now rewrite (IHp1 fuel' Hp), (IHp2 fuel' Hq).
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiformula_code] in Hfuel.
+    pose proof (@cantor_pair_components_lt_fuel 5
+      (semiformula_code EL EX p1) (semiformula_code EL EX p2)
+      fuel' ltac:(lia) Hfuel) as [Hp Hq].
+    cbn [semiformula_code semiformula_decode_fuel].
+    rewrite !Cantor.cancel_of_to. cbn [fst snd].
+    now rewrite (IHp1 fuel' Hp), (IHp2 fuel' Hq).
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiformula_code] in Hfuel.
+    pose proof (@cantor_payload_lt_fuel 6
+      (semiformula_code EL EX p) fuel' ltac:(lia) Hfuel) as Hp.
+    cbn [semiformula_code semiformula_decode_fuel].
+    rewrite Cantor.cancel_of_to. cbn [fst snd].
+    now rewrite (IHp fuel' Hp).
+  - intros fuel Hfuel. destruct fuel as [|fuel']; [lia|].
+    cbn [semiformula_code] in Hfuel.
+    pose proof (@cantor_payload_lt_fuel 7
+      (semiformula_code EL EX p) fuel' ltac:(lia) Hfuel) as Hp.
+    cbn [semiformula_code semiformula_decode_fuel].
+    rewrite Cantor.cancel_of_to. cbn [fst snd].
+    now rewrite (IHp fuel' Hp).
+Qed.
+
+Theorem semiformula_decode_code : forall L X n EL EX
+    (p : semiformula L X n),
+  semiformula_decode EL EX n (semiformula_code EL EX p) = Some p.
+Proof.
+  intros. unfold semiformula_decode. apply semiformula_decode_fuel_code. lia.
 Qed.
 
 Lemma semiterm_code_emb : forall L n EL
@@ -294,47 +658,19 @@ Proof.
       L n EL p X EX q)).
 Qed.
 
-(** Any injection into naturals admits a verified (generally noncomputable)
-    partial inverse.  Factoring this standard classical boundary lets clients
-    use the codes through the repository's ordinary [encoding] interface while
-    keeping all structural coding and injectivity results constructive. *)
-Definition decode_injective_code {A} (c : A -> nat) (n : nat) : option A :=
-  match excluded_middle_informative (exists x, c x = n) with
-  | left H => Some (proj1_sig
-      (constructive_indefinite_description (fun x => c x = n) H))
-  | right _ => None
-  end.
-
-Lemma decode_injective_code_encode : forall A (c : A -> nat)
-    (Hc : forall x y, c x = c y -> x = y) x,
-  decode_injective_code c (c x) = Some x.
-Proof.
-  intros A c Hc x. unfold decode_injective_code.
-  destruct (excluded_middle_informative (exists y, c y = c x))
-    as [Hex | Hnone].
-  - destruct (constructive_indefinite_description
-      (fun y => c y = c x) Hex) as [y Hy].
-    simpl. f_equal. now apply Hc.
-  - exfalso. apply Hnone. now exists x.
-Qed.
-
-Definition encoding_of_injective_code {A} (c : A -> nat)
-    (Hc : forall x y, c x = c y -> x = y) : encoding A :=
-  {| encode := c;
-     decode := decode_injective_code c;
-     decode_encode := decode_injective_code_encode Hc |}.
-
 Definition semiterm_encoding (L : language) (X : Type) (n : nat)
     (EL : language_encodable L) (EX : encoding X) :
     encoding (semiterm L X n) :=
-  @encoding_of_injective_code (semiterm L X n) (semiterm_code EL EX)
-    (@semiterm_code_injective L X n EL EX).
+  {| encode := semiterm_code EL EX;
+     decode := semiterm_decode EL EX n;
+     decode_encode := @semiterm_decode_code L X n EL EX |}.
 
 Definition semiformula_encoding (L : language) (X : Type) (n : nat)
     (EL : language_encodable L) (EX : encoding X) :
     encoding (semiformula L X n) :=
-  @encoding_of_injective_code (semiformula L X n) (semiformula_code EL EX)
-    (@semiformula_code_injective L X n EL EX).
+  {| encode := semiformula_code EL EX;
+     decode := semiformula_decode EL EX n;
+     decode_encode := @semiformula_decode_code L X n EL EX |}.
 
 Lemma semiterm_encoding_encode : forall L X n EL EX
     (t : semiterm L X n),
