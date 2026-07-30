@@ -58,16 +58,67 @@ Definition coqDynamicTruthPredecessorStateTemplateContext : TemplateContext :=
   [ embedPAFormula dynamicTruthPredecessorPiStateMemberBodyFormula;
     embedPAFormula dynamicTruthPredecessorSigmaStateMemberBodyFormula ].
 
+(** Template-level spelling of the dynamic global traversal.  The two local
+    row leaves must remain templates: at a nonstandard truth level they are
+    opaque carrier formula codes, so there is no metatheoretic PA formula to
+    decode and pass to [dynamicTruthGlobalFormula]. *)
+Definition coqDynamicTruthGlobalRowsTemplate
+    (localSigma localPi : TemplateFormula) : TemplateFormula :=
+  tfAll (tfAll (tfAll (tfAll (tfAll
+    (tfImp (embedPAFormula dynamicTruthGlobalRowBoundFormula)
+      (tfImp (embedPAFormula dynamicTruthGlobalRowLookupFormula)
+        (tfOr
+          (tfAnd (embedPAFormula dynamicTruthGlobalSigmaModeFormula)
+            localSigma)
+          (tfAnd (embedPAFormula dynamicTruthGlobalPiModeFormula)
+            localPi)))))))).
+
+Definition coqDynamicTruthGlobalTraversalBodyTemplate
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
+  tfAnd (embedPAFormula dynamicTruthGlobalModeDefinedFormula)
+    (tfAnd (embedPAFormula dynamicTruthGlobalFormulaDefinedFormula)
+      (tfAnd
+        (embedPAFormula dynamicTruthGlobalAssignmentCodeDefinedFormula)
+        (tfAnd
+          (embedPAFormula dynamicTruthGlobalAssignmentStepDefinedFormula)
+          (tfAnd (embedPAFormula dynamicTruthGlobalRootBoundFormula)
+            (tfAnd
+              (embedPAFormula
+                (dynamicTruthGlobalRootLookupFormula
+                  (Term.numeral rootMode)))
+              (coqDynamicTruthGlobalRowsTemplate
+                localSigma localPi)))))).
+
 Definition coqDynamicTruthGlobalExistentialSource
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
+  tfEx (tfEx (tfEx (tfEx (tfEx (tfEx (tfEx (tfEx (tfEx (tfEx
+    (coqDynamicTruthGlobalTraversalBodyTemplate
+      rootMode localSigma localPi)))))))))).
+
+(** On ordinary PA leaves the generalized spelling is constructor-for-
+    constructor the historical quoted formula. *)
+Lemma coqDynamicTruthGlobalRowsTemplate_embed : forall localSigma localPi,
+  coqDynamicTruthGlobalRowsTemplate
+    (embedPAFormula localSigma) (embedPAFormula localPi) =
+  embedPAFormula (dynamicTruthGlobalRowsFormula localSigma localPi).
+Proof. intros. reflexivity. Qed.
+
+Lemma coqDynamicTruthGlobalExistentialSource_embed : forall
+    rootMode localSigma localPi,
+  coqDynamicTruthGlobalExistentialSource rootMode
+    (embedPAFormula localSigma) (embedPAFormula localPi) =
   embedPAFormula
     (dynamicTruthGlobalFormula (Term.numeral rootMode)
       localSigma localPi).
+Proof. intros. reflexivity. Qed.
 
 (** Compute, rather than hand-write, the ten successively shifted contexts.
     The fallback branch is unreachable and audited by the success lemma. *)
 Definition coqDynamicTruthGlobalExistentialDeepContext
-    (rootMode : nat) (localSigma localPi : formula) : TemplateContext :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateContext :=
   match templateExistentialEliminationContext 10
     (coqDynamicTruthGlobalExistentialSource rootMode localSigma localPi)
     coqDynamicTruthPredecessorStateTemplateContext with
@@ -79,7 +130,7 @@ Definition coqDynamicTruthGlobalExistentialDeepContext
     state assumptions.  Every formula in that prefix is shifted by the
     generic elimination-chain machinery as the ten eigenvariables enter. *)
 Definition coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
-    (rootMode : nat) (localSigma localPi : formula)
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
     (prefix : TemplateContext) : TemplateContext :=
   match templateExistentialEliminationContext 10
     (coqDynamicTruthGlobalExistentialSource rootMode localSigma localPi)

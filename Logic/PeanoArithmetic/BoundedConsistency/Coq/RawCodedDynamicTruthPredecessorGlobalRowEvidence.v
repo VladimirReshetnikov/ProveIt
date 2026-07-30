@@ -229,7 +229,8 @@ Corollary
     (rawDynamicTruthPredecessorJointStateContext M baseContext)
     (rawTemplateFormula translation
       (coqDynamicTruthGlobalExistentialSource
-        rootMode localSigma localPi)) sourceRoot ->
+        rootMode (embedPAFormula localSigma)
+        (embedPAFormula localPi))) sourceRoot ->
   exists witnesses evidenceRoot,
     RawCodedPAAxiomWitnessContext M
       (rawStandardPAAxiomWitnessPrefixWitnessListCode M
@@ -252,7 +253,8 @@ Proof.
   apply
     (raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_evidence
       M hPA translation hagreement witnessList baseContext
-      rootMode localSigma localPi (embedPAFormula evidenceFormula)
+      rootMode (embedPAFormula localSigma) (embedPAFormula localPi)
+      (embedPAFormula evidenceFormula)
       sourceRoot hwitnessed hrootMode).
   - rewrite coqDynamicTruthGlobalOpenedRootRowSelectedPayload_embedPA,
       <- embedPAFormula_paFormulaShiftMany, halignment.

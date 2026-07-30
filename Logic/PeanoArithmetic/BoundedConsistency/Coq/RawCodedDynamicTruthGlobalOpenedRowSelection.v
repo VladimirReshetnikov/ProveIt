@@ -88,37 +88,43 @@ Definition templateAndRightOrBot (input : TemplateFormula) : TemplateFormula :=
   end.
 
 Definition coqDynamicTruthGlobalOpenedRootRowLeftBranch
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
   templateOrLeftOrBot
     (coqDynamicTruthGlobalOpenedRootRowChoice
       rootMode localSigma localPi).
 
 Definition coqDynamicTruthGlobalOpenedRootRowRightBranch
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
   templateOrRightOrBot
     (coqDynamicTruthGlobalOpenedRootRowChoice
       rootMode localSigma localPi).
 
 Definition coqDynamicTruthGlobalOpenedRootRowLeftTag
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
   templateAndLeftOrBot
     (coqDynamicTruthGlobalOpenedRootRowLeftBranch
       rootMode localSigma localPi).
 
 Definition coqDynamicTruthGlobalOpenedRootRowLeftPayload
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
   templateAndRightOrBot
     (coqDynamicTruthGlobalOpenedRootRowLeftBranch
       rootMode localSigma localPi).
 
 Definition coqDynamicTruthGlobalOpenedRootRowRightTag
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
   templateAndLeftOrBot
     (coqDynamicTruthGlobalOpenedRootRowRightBranch
       rootMode localSigma localPi).
 
 Definition coqDynamicTruthGlobalOpenedRootRowRightPayload
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
   templateAndRightOrBot
     (coqDynamicTruthGlobalOpenedRootRowRightBranch
       rootMode localSigma localPi).
@@ -204,7 +210,7 @@ Lemma coqDynamicTruthGlobalOpenedRootRowLeftPayload_open_sequence : forall
     rootMode localSigma localPi,
   coqDynamicTruthGlobalOpenedRootRowLeftPayload
       rootMode localSigma localPi =
-  templateFormulaOpenSequenceUnderBinders (embedPAFormula localSigma)
+  templateFormulaOpenSequenceUnderBinders localSigma
     (coqDynamicTruthGlobalOpenedRootRowReplacements rootMode).
 Proof.
   intros.
@@ -215,9 +221,10 @@ Proof.
     templateImpConsequent,
     coqDynamicTruthGlobalOpenedRootRowFormula,
     coqDynamicTruthGlobalOpenedRows,
+    coqDynamicTruthGlobalRowsTemplate,
     templateUniversalOpenManyOrBot,
     coqDynamicTruthGlobalOpenedRootRowReplacements,
-    dynamicTruthGlobalRowsFormula, fixedTruthTraversalAll5.
+    fixedTruthTraversalAll5.
   cbn [embedPAFormula templateUniversalOpenMany
     templateFormulaOpenSequenceUnderBinders
     templateTermSubstitutionLiftMany templateFormulaOpen
@@ -229,7 +236,7 @@ Lemma coqDynamicTruthGlobalOpenedRootRowRightPayload_open_sequence : forall
     rootMode localSigma localPi,
   coqDynamicTruthGlobalOpenedRootRowRightPayload
       rootMode localSigma localPi =
-  templateFormulaOpenSequenceUnderBinders (embedPAFormula localPi)
+  templateFormulaOpenSequenceUnderBinders localPi
     (coqDynamicTruthGlobalOpenedRootRowReplacements rootMode).
 Proof.
   intros.
@@ -240,9 +247,10 @@ Proof.
     templateImpConsequent,
     coqDynamicTruthGlobalOpenedRootRowFormula,
     coqDynamicTruthGlobalOpenedRows,
+    coqDynamicTruthGlobalRowsTemplate,
     templateUniversalOpenManyOrBot,
     coqDynamicTruthGlobalOpenedRootRowReplacements,
-    dynamicTruthGlobalRowsFormula, fixedTruthTraversalAll5.
+    fixedTruthTraversalAll5.
   cbn [embedPAFormula templateUniversalOpenMany
     templateFormulaOpenSequenceUnderBinders
     templateTermSubstitutionLiftMany templateFormulaOpen
@@ -329,7 +337,7 @@ Qed.
 Lemma coqDynamicTruthGlobalOpenedRootRowLeftPayload_embedPA : forall
     rootMode localSigma localPi,
   coqDynamicTruthGlobalOpenedRootRowLeftPayload
-      rootMode localSigma localPi =
+      rootMode (embedPAFormula localSigma) (embedPAFormula localPi) =
   embedPAFormula
     (paFormulaOpenSequenceUnderBinders localSigma
       (coqDynamicTruthGlobalOpenedRootRowPAReplacements rootMode)).
@@ -344,7 +352,7 @@ Qed.
 Lemma coqDynamicTruthGlobalOpenedRootRowRightPayload_embedPA : forall
     rootMode localSigma localPi,
   coqDynamicTruthGlobalOpenedRootRowRightPayload
-      rootMode localSigma localPi =
+      rootMode (embedPAFormula localSigma) (embedPAFormula localPi) =
   embedPAFormula
     (paFormulaOpenSequenceUnderBinders localPi
       (coqDynamicTruthGlobalOpenedRootRowPAReplacements rootMode)).
@@ -382,7 +390,8 @@ Proof.
 Qed.
 
 Definition coqDynamicTruthGlobalOpenedRootRowSelectedPayload
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
   match rootMode with
   | 0 => coqDynamicTruthGlobalOpenedRootRowLeftPayload
       0 localSigma localPi
@@ -393,7 +402,7 @@ Definition coqDynamicTruthGlobalOpenedRootRowSelectedPayload
 Lemma coqDynamicTruthGlobalOpenedRootRowSelectedPayload_embedPA : forall
     rootMode localSigma localPi,
   coqDynamicTruthGlobalOpenedRootRowSelectedPayload
-      rootMode localSigma localPi =
+      rootMode (embedPAFormula localSigma) (embedPAFormula localPi) =
   embedPAFormula
     (paDynamicTruthGlobalOpenedRootRowSelectedPayload
       rootMode localSigma localPi).

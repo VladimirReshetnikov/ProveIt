@@ -79,14 +79,13 @@ Definition coqDynamicTruthGlobalOpenedRootLookup
     (dynamicTruthGlobalRootLookupFormula (Term.numeral rootMode)).
 
 Definition coqDynamicTruthGlobalOpenedRows
-    (localSigma localPi : formula) : TemplateFormula :=
-  embedPAFormula (dynamicTruthGlobalRowsFormula localSigma localPi).
+    (localSigma localPi : TemplateFormula) : TemplateFormula :=
+  coqDynamicTruthGlobalRowsTemplate localSigma localPi.
 
 Definition coqDynamicTruthGlobalOpenedTraversalBody
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
-  embedPAFormula
-    (dynamicTruthGlobalTraversalBodyFormula (Term.numeral rootMode)
-      localSigma localPi).
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
+  coqDynamicTruthGlobalTraversalBodyTemplate rootMode localSigma localPi.
 
 Lemma coqDynamicTruthGlobalOpenedTraversalBody_and7_shape : forall
     rootMode localSigma localPi,
@@ -280,13 +279,15 @@ Definition coqDynamicTruthGlobalOpenedRootRowReplacements
     ttVar 12 ].
 
 Definition coqDynamicTruthGlobalOpenedRootRowFormula
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
   templateUniversalOpenManyOrBot
     (coqDynamicTruthGlobalOpenedRows localSigma localPi)
     (coqDynamicTruthGlobalOpenedRootRowReplacements rootMode).
 
 Definition coqDynamicTruthGlobalOpenedRootRowChoice
-    (rootMode : nat) (localSigma localPi : formula) : TemplateFormula :=
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    : TemplateFormula :=
   templateImpConsequent (templateImpConsequent
     (coqDynamicTruthGlobalOpenedRootRowFormula
       rootMode localSigma localPi)).

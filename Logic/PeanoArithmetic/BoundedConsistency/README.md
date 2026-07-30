@@ -5004,3 +5004,12 @@ witnesses grow the raw tail; no constructor or eigenvariable assumption is
 misclassified as an axiom.  The remaining shell integration is consequently
 the concrete supply of the already-native level, substitution, selected-row,
 and global-source alignments, rather than another proof-context transport.
+
+The global-row spine is now representation-safe at nonstandard levels too.
+Its two local Sigma/Pi leaves are `TemplateFormula`s rather than decoded
+metatheoretic PA formulae, so the direct truth selectors may remain opaque
+while all ten existential openings and all five row openings are compiled.
+Compatibility lemmas prove that embedded ordinary PA leaves reduce literally
+to the previous `dynamicTruthGlobalFormula` spelling.  Thus the generalized
+interface loses no standard-formula behavior, while it can now be instantiated
+by the carrier-indexed truth predicates used in the uniform construction.
