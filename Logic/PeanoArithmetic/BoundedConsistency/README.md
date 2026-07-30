@@ -5178,3 +5178,17 @@ the growing variant directly.  Thus append/global-row traversal may retain
 its finite standard-witness suffix all the way into the native local callback;
 the remaining local obligation is the arithmetic construction of the growing
 staged roots, not any artificial collapse back to the starting context.
+
+The growing local residual is now split at the arithmetic predecessor seam.
+`RawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation.v`
+removes the predecessor implication from the reduced collision kernel and
+reassembles it only after a dependency-ordered predecessor producer has
+chosen its witnessed target context.  The exact current-package case theorem
+then separates zero from successor.  In the successor branch, consecutive
+native traces supply the aligned predecessor record, and the remaining
+global-row client must return only the three logical roots—admissibility,
+Sigma evidence, and Pi evidence—on a witnessed extension.  The audited
+native-trace closure transports the carried exclusivity projection and builds
+the universal predecessor implication there.  The dependency-ordered compact
+headline exposes this split bundle, leaving the zero producer and the three
+unrelated collision roots distinct from the selected-payload obligation.
