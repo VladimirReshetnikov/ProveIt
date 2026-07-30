@@ -4964,3 +4964,16 @@ direct outputs with the native trace's `sigmaDomain` and `piDomain` whenever
 the shared (possibly nonstandard) numeral-term code is equal.  Consequently
 the boundedness root rewrites literally to `sigmaDomain \/ piDomain` without
 decoding the carrier level or assuming it is standard.
+
+Predecessor admissibility now preserves arbitrary strong-step assumptions.
+The two fixed predecessor-state formulae are concatenated in front of any
+atomically adequate template prefix, and a named normalization lemma identifies
+their translated context with the raw joint-state context whose tail is that
+prefix.  The universal assignment theorem is compiled beneath this complete
+temporary context, while the endpoint atomic and rank-domain roots are
+transported through the same retained standard-axiom extension before the
+three admissibility components are conjoined.  The historical state-only
+compiler is an empty-prefix corollary, so existing clients remain unchanged;
+the next global-row handoff can now retain constructor, endpoint-witness, and
+shell assumptions without pretending that they belong to the witnessed PA
+tail.
