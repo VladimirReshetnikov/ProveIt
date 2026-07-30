@@ -5098,3 +5098,13 @@ than syntactic: instantiate the concrete row-implication and append-root
 premises from the aligned predecessor trace, transport the resulting two
 global roots under the retained strong-step prefix, and close the selected
 payload alignments.
+
+The native proof-producing client now consumes exactly those two remaining
+premises.  Its conclusion is a growing proof of the literal generalized
+global source for either mode, while the shared Sigma/Pi row choice and its
+production equality are fixed internally by the audited normalization
+lemmas.  Downstream aligned-predecessor code therefore no longer carries a
+scoping certificate, a parameter-inertness equation, or an arbitrary pair
+of row templates.  The source-root boundary is now stated only in terms of
+the append existential root and the concrete row implication that the
+existing four-state-table compilers are designed to construct.
