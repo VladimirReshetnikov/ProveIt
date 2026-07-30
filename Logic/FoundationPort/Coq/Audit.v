@@ -60,6 +60,9 @@ Print Assumptions option_to_list_singleton_iff.
 Check function_equal_on.
 Print Assumptions function_equal_on_subset.
 Check preorder_data.
+Check directed_on.
+Print Assumptions directed_list_colimit.
+Print Assumptions directed_finite_family_colimit.
 Check order_compatible.
 Print Assumptions order_compatible_sym_iff.
 Print Assumptions order_incompatible_iff.

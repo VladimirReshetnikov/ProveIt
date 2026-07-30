@@ -1,6 +1,8 @@
 (** Dense subsets, descending-chain filters, and countable generic filters. *)
 
-From Stdlib Require Import Arith.PeanoNat Lia Logic.ClassicalEpsilon.
+From Stdlib Require Import Arith.PeanoNat Lists.List Lia Logic.ClassicalEpsilon.
+
+Import ListNotations.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -14,6 +16,49 @@ Record preorder_data (A : Type) := {
 }.
 
 Arguments preorder_le {A} _ _ _.
+
+Definition directed_on {A} (R : A -> A -> Prop) (S : A -> Prop) : Prop :=
+  forall x y, S x -> S y ->
+    exists z, S z /\ R x z /\ R y z.
+
+Lemma directed_list_colimit : forall A (R : A -> A -> Prop) S,
+  (forall x y z, R x y -> R y z -> R x z) ->
+  (exists x, S x) -> directed_on R S ->
+  forall xs, Forall S xs ->
+    exists z, S z /\ forall x, In x xs -> R x z.
+Proof.
+  intros A R S Htrans Hnonempty Hdirected xs Hxs.
+  induction xs as [|x xs IH].
+  - destruct Hnonempty as [z Hz]. exists z. split; [exact Hz |].
+    intros y Hy. inversion Hy.
+  - inversion Hxs as [|? ? Hx Htail]; subst.
+    destruct (IH Htail) as [y [Hy Hall]].
+    destruct (Hdirected x y Hx Hy) as [z [Hz [Hxz Hyz]]].
+    exists z. split; [exact Hz |].
+    intros w [Hwx | Hw].
+    + subst. exact Hxz.
+    + exact (Htrans w y z (Hall w Hw) Hyz).
+Qed.
+
+Theorem directed_finite_family_colimit :
+  forall A (R : A -> A -> Prop) S,
+  (forall x y z, R x y -> R y z -> R x z) ->
+  (exists x, S x) -> directed_on R S ->
+  forall I (cover : list I),
+  (forall i, In i cover) ->
+  forall v : I -> A, (forall i, S (v i)) ->
+    exists z, S z /\ forall i, R (v i) z.
+Proof.
+  intros A R S Htrans Hnonempty Hdirected I cover Hcover v Hv.
+  assert (Hvalues : Forall S (map v cover)).
+  { clear Hcover. induction cover as [|i cover IH].
+    - constructor.
+    - constructor; [apply Hv | apply IH]. }
+  destruct (directed_list_colimit Htrans Hnonempty Hdirected Hvalues)
+    as [z [Hz Hall]].
+  exists z. split; [exact Hz |].
+  intro i. apply Hall. apply in_map. apply Hcover.
+Qed.
 
 Definition order_compatible {A} (O : preorder_data A) (a b : A) : Prop :=
   exists c, preorder_le O c a /\ preorder_le O c b.
