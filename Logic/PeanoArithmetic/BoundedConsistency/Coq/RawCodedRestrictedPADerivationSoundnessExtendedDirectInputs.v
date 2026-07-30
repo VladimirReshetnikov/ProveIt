@@ -457,6 +457,26 @@ Proof.
     rawCoqRestrictedPADerivationSoundnessExtendedTemplateTerm_symbols.
 Qed.
 
+(** Extended opaque selectors do not affect term translation.  Expose the
+    arbitrary finite shift theorem explicitly so clients of the extended
+    input record need not reconstruct the numeral-template symbol view. *)
+Lemma rawCoqRestrictedPADerivationSoundnessExtendedDirectTerm_shift_by :
+    forall cutoff amount input,
+  RawCodedTermShift M
+    (rawNumeralValue M cutoff) (rawNumeralValue M amount)
+    (rawDirectTemplateTerm extendedInputs input)
+    (rawDirectTemplateTerm extendedInputs
+      (templateTermRename
+        (templateShiftRenamingBy cutoff amount) input)).
+Proof.
+  intros cutoff amount input.
+  rewrite !rawCoqRestrictedPADerivationSoundnessExtendedDirectTerm_view.
+  unfold rawCoqRestrictedPADerivationSoundnessTemplateTermView,
+    rawCoqRestrictedPADerivationSoundnessTermViewSymbols.
+  apply raw_numeralTemplateTerm_shift_by.
+  exact hPA.
+Qed.
+
 Lemma rawCoqRestrictedPADerivationSoundnessExtendedDirectFormula_view :
     forall formula,
   rawDirectTemplateFormula extendedInputs formula =

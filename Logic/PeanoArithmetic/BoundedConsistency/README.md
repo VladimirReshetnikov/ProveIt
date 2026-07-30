@@ -5300,3 +5300,19 @@ now has a translation-generic five-trace theorem parameterized only by its
 two protective term shifts.  This isolates the final code-identification
 work for the extended direct translation without reintroducing global-row
 or selected-payload hypotheses.
+
+The aligned structural package now proves the two exact code equations that
+close this seam.  For each polarity, it identifies the translated shared-row
+global source with the successor wrapper code, compiles its protected
+ternary application in the extended direct translation, and uses represented
+application functionality against the native selector trace.  The resulting
+permuted formula code is literally the current Sigma or Pi evidence code.
+
+Consequently the new permuted-append strong-step resource compiler contains
+no selected-payload families.  Its adapter derives atomic/domain roots from
+the restricted and rule proofs, compiles both reversed append traces on a
+synchronized witnessed extension, and applies the dependency-ordered direct
+evidence handoff.  This path is exposed through a corresponding all-model
+dependency bundle and conditional compact PA headline.  The remaining Coq
+gap is now the construction of those concrete residual resource fields, not
+any formula permutation, source contraction, or selected-row transport.
