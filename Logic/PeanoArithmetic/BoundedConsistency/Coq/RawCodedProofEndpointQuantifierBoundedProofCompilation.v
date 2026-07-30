@@ -26,6 +26,7 @@ From BoundedPAConsistency Require Import
   RawCodedFormulaOperations
   RawCodedProofAllEConstructor
   RawCodedProofEndpoints
+  RawCodedProofRules
   RawCodedPALocalProofExistential
   RawCodedPALocalProofComposition
   RawCodedPALocalProofWitnessedContextMerge
@@ -66,6 +67,7 @@ Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedFormulaOperations.
 Import PABoundedRawCodedProofAllEConstructor.
 Import PABoundedRawCodedProofEndpoints.
+Import PABoundedRawCodedProofRules.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
@@ -527,7 +529,7 @@ Definition coqStrongStepProofEndpointQuantifierBoundedLawTemplate
       (restrictedTargetProofContext (tVar 4)))
     (tfImp
       (embedPAFormula
-        (proofEndpointTermAt (tVar 4) (tVar 3) (tVar 2)))
+        (proofRuleValidTermAt (tVar 4) (tVar 3) (tVar 2)))
       (restrictedTargetTemplateFormulaContext
         coqRestrictedPASoundnessLowerLevelTerm
         (restrictedTargetFormulaQuantifierBoundedContext (tVar 2)))).
@@ -565,8 +567,27 @@ Proof. reflexivity. Qed.
 
 Lemma coqStrongStepProofEndpointQuantifierBoundedEndpointPremise_view :
   coqStrongStepProofEndpointQuantifierBoundedEndpointPremise =
-  embedPAFormula (proofEndpointTermAt (tVar 4) (tVar 3) (tVar 2)).
+  embedPAFormula (proofRuleValidTermAt (tVar 4) (tVar 3) (tVar 2)).
 Proof. reflexivity. Qed.
+
+(** Rule validity carries the same eight displayed fields as the endpoint
+    relation and merely adds constructor-local side conditions.  Forgetting
+    those side conditions therefore yields the endpoint fact needed by the
+    carrier restricted-proof theorem. *)
+Lemma raw_proofRuleValid_endpoint : forall (M : RawPAModel)
+    code context conclusion,
+  RawProofRuleValid M code context conclusion ->
+  RawProofEndpoint M code context conclusion.
+Proof.
+  intros M code context conclusion
+    (rowContext & a & b & c & t & child1 & child2 & child3 &
+      hcontext & hrule).
+  exists rowContext, a, b, c, t, child1, child2, child3.
+  split; [exact hcontext |].
+  unfold RawProofRuleValidCases in hrule.
+  unfold RawProofEndpointCases.
+  tauto.
+Qed.
 
 Lemma coqStrongStepProofEndpointQuantifierBoundedConclusion_view :
   coqStrongStepProofEndpointQuantifierBoundedConclusion =
@@ -589,17 +610,19 @@ Proof.
     [|apply restrictedTargetProofContext_seal_free].
   rewrite raw_carrierRestrictedProofContextSat_iff.
   rewrite rawTemplateFormulaSat_embedPA.
-  rewrite raw_sat_proofEndpointTermAt_iff.
+  rewrite raw_sat_proofRuleValidTermAt_iff.
   rewrite rawTemplateFormulaSat_restrictedTarget_parameter;
     [|apply restrictedTargetFormulaQuantifierBoundedContext_seal_free].
   rewrite raw_restrictedTargetFormulaQuantifierBoundedContextSat_iff.
   cbn [raw_term_eval].
-  intros hrestricted hendpoint.
+  intros hrestricted hrule.
   exact (raw_carrierRestrictedProof_endpoint_formula_bounded M hPA
     variables
     (parameters coqRestrictedPASoundnessLowerLevelParameterName)
     (variables 4) hrestricted
-    (variables 3) (variables 2) hendpoint).
+    (variables 3) (variables 2)
+    (raw_proofRuleValid_endpoint M (variables 4)
+      (variables 3) (variables 2) hrule)).
 Qed.
 
 Definition coqStrongStepProofEndpointQuantifierBoundedSourceBodyTemplate
