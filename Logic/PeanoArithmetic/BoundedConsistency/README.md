@@ -4758,3 +4758,37 @@ with this opening of `embedPAFormula localSigma` and the right payload with
 the analogous opening of `localPi`.  This replaces the full global row spine
 by a small explicit substitution calculation and prevents the tempting but
 incorrect use of five unlifted direct openings.
+
+That capture-safe calculation is now reflected back into ordinary PA syntax.
+Generic commuting lemmas show that embedding a PA formula after the lifted
+five-opening sequence equals opening its embedding, and that embedding an
+iterated PA rename equals the template tenfold shift.  Consequently a new
+public predecessor-evidence endpoint asks only for an equality between two
+ordinary PA formulas: the selected local row after its five root-tuple
+substitutions and the tenfold rename of the desired evidence formula.  Once
+this PA-syntax equality is supplied, all template alignment, witnessed-tail
+growth, source weakening, row selection, and existential elimination are
+derived internally.
+
+The generic endpoint has now been relaxed to the equality it actually uses:
+equality of translated carrier formula codes, rather than equality of the
+templates themselves.  This is essential for native evidence, whose desired
+conclusions are opaque template applications even when their translated
+codes agree with the opened standard row.  A paired compiler then runs the
+Sigma elimination, transports the Pi global source into that witnessed
+extension, runs the Pi elimination, and transports the Sigma result into the
+final common context.  It retains the original-tail inclusion and returns
+both evidence roots together.  The predecessor logical-roots package now
+lacks only the admissibility root and the two native translated-code
+identifications.
+
+The paired compiler is now exposed through a complete logical-roots
+packaging corollary.  In addition to the two global sources and their code
+identifications, it accepts an admissibility root in the caller's original
+joint-state context.  After both polarity eliminations choose their common
+final witnessed tail, the corollary transports that admissibility proof
+beneath the identical predecessor-state prefix and returns the full
+`RawDynamicTruthPredecessorStateLogicalRootsAt` record.  Native integration
+therefore no longer has to coordinate the three proof roots or their
+contexts; its remaining obligations are precisely the admissibility proof
+and the two concrete translated-code equalities.
