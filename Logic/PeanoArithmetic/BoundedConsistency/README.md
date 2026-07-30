@@ -4792,3 +4792,13 @@ beneath the identical predecessor-state prefix and returns the full
 therefore no longer has to coordinate the three proof roots or their
 contexts; its remaining obligations are precisely the admissibility proof
 and the two concrete translated-code equalities.
+
+Admissibility has now been split at its natural represented-proof boundary.
+The new context-generic compiler packages three independently produced local
+roots—formula atomic adequacy, assignment definedness through that formula,
+and the Sigma/Pi domain disjunction—using exactly two `And-I` nodes.  It does
+not require a witnessed context, context realizability, standard formula
+codes, or any traversal hypothesis.  The global-row endpoint has a matching
+component-facing corollary, so later native traversal work can establish
+each of the three facts from its own source and leave their conjunction and
+subsequent context synchronization to the reusable compilers.
