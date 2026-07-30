@@ -516,6 +516,63 @@ Proof.
     symmetry. apply (@peano_minus_mul_one M O H).
 Qed.
 
+Definition peano_minus_is_prime {M : Type} (O : oring_carrier M)
+    (p : M) : Prop :=
+  oring_lt O (oring_one O) p /\
+  forall a, peano_minus_le O a p -> peano_minus_dvd O a p ->
+    a = oring_one O \/ a = p.
+
+Lemma peano_minus_prime_gt_one : forall M (O : oring_carrier M),
+  forall p, peano_minus_is_prime O p -> oring_lt O (oring_one O) p.
+Proof.
+  intros M O p Hp. exact (proj1 Hp).
+Qed.
+
+Lemma peano_minus_prime_pos : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall p,
+  peano_minus_is_prime O p -> oring_lt O (oring_zero O) p.
+Proof.
+  intros M O H p Hp.
+  exact (@peano_minus_lt_trans M O H
+    (oring_zero O) (oring_one O) p
+    (@peano_minus_zero_lt_one M O H) (proj1 Hp)).
+Qed.
+
+Lemma peano_minus_prime_divisor : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall p a,
+  peano_minus_is_prime O p -> peano_minus_dvd O a p ->
+  a = oring_one O \/ a = p.
+Proof.
+  intros M O H p a Hp Ha.
+  apply (proj2 Hp a).
+  - exact (peano_minus_le_of_dvd H (peano_minus_prime_pos H Hp) Ha).
+  - exact Ha.
+Qed.
+
+Lemma peano_minus_one_not_prime : forall M (O : oring_carrier M),
+  peano_minus_laws O -> ~ peano_minus_is_prime O (oring_one O).
+Proof.
+  intros M O H Hp.
+  exact (@peano_minus_lt_irrefl M O H (oring_one O) (proj1 Hp)).
+Qed.
+
+Lemma peano_minus_prime_ne_zero : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall p,
+  peano_minus_is_prime O p -> p <> oring_zero O.
+Proof.
+  intros M O H p Hp Heq. subst p.
+  exact (@peano_minus_lt_irrefl M O H (oring_zero O)
+    (peano_minus_prime_pos H Hp)).
+Qed.
+
+Lemma peano_minus_prime_ne_one : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall p,
+  peano_minus_is_prime O p -> p <> oring_one O.
+Proof.
+  intros M O H p Hp Heq. subst p.
+  now apply (@peano_minus_one_not_prime M O H).
+Qed.
+
 Lemma peano_minus_pos_sub_iff_lt : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall a b,
   oring_lt O (oring_zero O) (peano_minus_sub O a b) <->
