@@ -5241,3 +5241,17 @@ directly.  Thus context equality, polarity synchronization, and global-root
 transport are all proved internally; the remaining positive-coordinate work
 is to construct the concrete append/inherited/fixed-production roots and the
 two selected-payload proof families.
+
+The native selected-payload seam now records its previously implicit
+free-variable permutation.  Append traversal presents each ternary global
+source in de Bruijn order `(0,1,2)`, whereas derivation soundness applies the
+current formula/assignment tuple as `(2,1,0)`.  The protected three-opening
+protocol therefore produces the source with its outer three variables
+reversed, rather than the literal append source.  The finite Sigma and Pi
+normalizations in
+`RawCodedDynamicTruthNativeGlobalEvidencePermutation.v` prove this fact at
+template level and lift it to exact represented ternary-application traces
+for the direct structural translator.  This rules out an unsound reuse of an
+unpermuted opened source body and gives the forthcoming proof transport a
+precise target: rename the append/global proof by the explicit three-slot
+permutation before rebuilding the native evidence existential witnesses.
