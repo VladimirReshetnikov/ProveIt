@@ -1773,6 +1773,12 @@ Print Assumptions iopen_pair_le_pair_right.
 Print Assumptions iopen_pair_le_pair.
 Print Assumptions iopen_pair_lt_pair.
 Print Assumptions iopen_pair_polybound.
+Print Assumptions iopen_div_le.
+Print Assumptions iopen_div_monotone.
+Print Assumptions iopen_div_lt_of_lt_mul.
+Print Assumptions iopen_div_mul.
+Print Assumptions iopen_div_cancel_left.
+Print Assumptions iopen_div_cancel_right.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.
