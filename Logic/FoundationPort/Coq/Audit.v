@@ -441,6 +441,37 @@ Print Assumptions llfo_is_quest_not_tensor.
 Print Assumptions llfo_is_quest_not_par.
 Print Assumptions llfo_is_quest_not_all.
 Print Assumptions llfo_is_quest_not_exs.
+Print Assumptions llfo_is_quest_not_rel.
+Print Assumptions llfo_is_quest_not_nrel.
+Print Assumptions llfo_is_quest_not_one.
+Print Assumptions llfo_is_quest_not_falsum.
+Print Assumptions llfo_is_quest_not_verum.
+Print Assumptions llfo_is_quest_not_zero.
+Print Assumptions llfo_is_quest_not_with.
+Print Assumptions llfo_is_quest_not_plus.
+Check llfo_negative.
+Check LLNegativeQuest.
+Check LLNegativeVerum.
+Check LLNegativeFalsum.
+Check LLNegativePar.
+Check LLNegativeWith.
+Check LLNegativeAll.
+Check llfo_positive.
+Check LLPositiveBang.
+Check LLPositiveZero.
+Check LLPositiveOne.
+Check LLPositiveTensor.
+Check LLPositivePlus.
+Check LLPositiveExs.
+Print Assumptions llfo_negative_par_iff.
+Print Assumptions llfo_negative_with_iff.
+Print Assumptions llfo_negative_all_iff.
+Print Assumptions llfo_positive_tensor_iff.
+Print Assumptions llfo_positive_plus_iff.
+Print Assumptions llfo_positive_exs_iff.
+Print Assumptions llfo_neg_positive_iff_negative.
+Print Assumptions llfo_neg_negative_iff_positive.
+Print Assumptions llfo_positive_negative_disjoint.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.

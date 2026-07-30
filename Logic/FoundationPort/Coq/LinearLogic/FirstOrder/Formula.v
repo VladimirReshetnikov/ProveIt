@@ -219,3 +219,175 @@ Lemma llfo_is_quest_not_exs : forall L X n
     (phi : llfo_semiformula L X (S n)),
   ~ llfo_is_quest (LLExs phi).
 Proof. intros L X n phi H. inversion H. Qed.
+
+Lemma llfo_is_quest_not_rel : forall L X n k
+    (R : language_rel L k) v,
+  ~ llfo_is_quest (@LLRel L X n k R v).
+Proof. intros L X n k R v H. inversion H. Qed.
+
+Lemma llfo_is_quest_not_nrel : forall L X n k
+    (R : language_rel L k) v,
+  ~ llfo_is_quest (@LLNRel L X n k R v).
+Proof. intros L X n k R v H. inversion H. Qed.
+
+Lemma llfo_is_quest_not_one : forall L X n,
+  ~ llfo_is_quest (@LLOne L X n).
+Proof. intros L X n H. inversion H. Qed.
+
+Lemma llfo_is_quest_not_falsum : forall L X n,
+  ~ llfo_is_quest (@LLFalsum L X n).
+Proof. intros L X n H. inversion H. Qed.
+
+Lemma llfo_is_quest_not_verum : forall L X n,
+  ~ llfo_is_quest (@LLVerum L X n).
+Proof. intros L X n H. inversion H. Qed.
+
+Lemma llfo_is_quest_not_zero : forall L X n,
+  ~ llfo_is_quest (@LLZero L X n).
+Proof. intros L X n H. inversion H. Qed.
+
+Lemma llfo_is_quest_not_with : forall L X n
+    (phi psi : llfo_semiformula L X n),
+  ~ llfo_is_quest (LLWith phi psi).
+Proof. intros L X n phi psi H. inversion H. Qed.
+
+Lemma llfo_is_quest_not_plus : forall L X n
+    (phi psi : llfo_semiformula L X n),
+  ~ llfo_is_quest (LLPlus phi psi).
+Proof. intros L X n phi psi H. inversion H. Qed.
+
+Inductive llfo_negative {L X} :
+    forall n, llfo_semiformula L X n -> Prop :=
+| LLNegativeQuest : forall n (phi : llfo_semiformula L X n),
+    @llfo_negative L X n (LLQuest phi)
+| LLNegativeVerum : forall n,
+    @llfo_negative L X n LLVerum
+| LLNegativeFalsum : forall n,
+    @llfo_negative L X n LLFalsum
+| LLNegativePar : forall n (phi psi : llfo_semiformula L X n),
+    @llfo_negative L X n phi -> @llfo_negative L X n psi ->
+    @llfo_negative L X n (LLPar phi psi)
+| LLNegativeWith : forall n (phi psi : llfo_semiformula L X n),
+    @llfo_negative L X n phi -> @llfo_negative L X n psi ->
+    @llfo_negative L X n (LLWith phi psi)
+| LLNegativeAll : forall n (phi : llfo_semiformula L X (S n)),
+    @llfo_negative L X (S n) phi -> @llfo_negative L X n (LLAll phi).
+
+Inductive llfo_positive {L X} :
+    forall n, llfo_semiformula L X n -> Prop :=
+| LLPositiveBang : forall n (phi : llfo_semiformula L X n),
+    @llfo_positive L X n (LLBang phi)
+| LLPositiveZero : forall n,
+    @llfo_positive L X n LLZero
+| LLPositiveOne : forall n,
+    @llfo_positive L X n LLOne
+| LLPositiveTensor : forall n (phi psi : llfo_semiformula L X n),
+    @llfo_positive L X n phi -> @llfo_positive L X n psi ->
+    @llfo_positive L X n (LLTensor phi psi)
+| LLPositivePlus : forall n (phi psi : llfo_semiformula L X n),
+    @llfo_positive L X n phi -> @llfo_positive L X n psi ->
+    @llfo_positive L X n (LLPlus phi psi)
+| LLPositiveExs : forall n (phi : llfo_semiformula L X (S n)),
+    @llfo_positive L X (S n) phi -> @llfo_positive L X n (LLExs phi).
+
+Arguments llfo_negative {L X} n _.
+Arguments llfo_positive {L X} n _.
+
+Lemma llfo_negative_par_iff : forall L X n
+    (phi psi : llfo_semiformula L X n),
+  llfo_negative n (LLPar phi psi) <->
+  llfo_negative n phi /\ llfo_negative n psi.
+Proof.
+  intros L X n phi psi. split.
+  - intro H. dependent destruction H. now split.
+  - intros [Hphi Hpsi]. now constructor.
+Qed.
+
+Lemma llfo_negative_with_iff : forall L X n
+    (phi psi : llfo_semiformula L X n),
+  llfo_negative n (LLWith phi psi) <->
+  llfo_negative n phi /\ llfo_negative n psi.
+Proof.
+  intros L X n phi psi. split.
+  - intro H. dependent destruction H. now split.
+  - intros [Hphi Hpsi]. now constructor.
+Qed.
+
+Lemma llfo_negative_all_iff : forall L X n
+    (phi : llfo_semiformula L X (S n)),
+  llfo_negative n (LLAll phi) <-> llfo_negative (S n) phi.
+Proof.
+  intros L X n phi. split.
+  - intro H. dependent destruction H. assumption.
+  - now constructor.
+Qed.
+
+Lemma llfo_positive_tensor_iff : forall L X n
+    (phi psi : llfo_semiformula L X n),
+  llfo_positive n (LLTensor phi psi) <->
+  llfo_positive n phi /\ llfo_positive n psi.
+Proof.
+  intros L X n phi psi. split.
+  - intro H. dependent destruction H. now split.
+  - intros [Hphi Hpsi]. now constructor.
+Qed.
+
+Lemma llfo_positive_plus_iff : forall L X n
+    (phi psi : llfo_semiformula L X n),
+  llfo_positive n (LLPlus phi psi) <->
+  llfo_positive n phi /\ llfo_positive n psi.
+Proof.
+  intros L X n phi psi. split.
+  - intro H. dependent destruction H. now split.
+  - intros [Hphi Hpsi]. now constructor.
+Qed.
+
+Lemma llfo_positive_exs_iff : forall L X n
+    (phi : llfo_semiformula L X (S n)),
+  llfo_positive n (LLExs phi) <-> llfo_positive (S n) phi.
+Proof.
+  intros L X n phi. split.
+  - intro H. dependent destruction H. assumption.
+  - now constructor.
+Qed.
+
+Theorem llfo_neg_positive_iff_negative : forall L X n
+    (phi : llfo_semiformula L X n),
+  llfo_positive n (llfo_neg phi) <-> llfo_negative n phi.
+Proof.
+  intros L X n phi. induction phi; simpl.
+  - split; intro H; dependent destruction H.
+  - split; intro H; dependent destruction H.
+  - split; intro H; dependent destruction H.
+  - split; intro H; constructor.
+  - split; intro H; dependent destruction H.
+  - rewrite llfo_positive_tensor_iff, llfo_negative_par_iff,
+      IHphi1, IHphi2. tauto.
+  - split; intro H; constructor.
+  - split; intro H; dependent destruction H.
+  - rewrite llfo_positive_plus_iff, llfo_negative_with_iff,
+      IHphi1, IHphi2. tauto.
+  - split; intro H; dependent destruction H.
+  - split; intro H; dependent destruction H.
+  - split; intro H; constructor.
+  - rewrite llfo_positive_exs_iff, llfo_negative_all_iff, IHphi.
+    tauto.
+  - split; intro H; dependent destruction H.
+Qed.
+
+Theorem llfo_neg_negative_iff_positive : forall L X n
+    (phi : llfo_semiformula L X n),
+  llfo_negative n (llfo_neg phi) <-> llfo_positive n phi.
+Proof.
+  intros L X n phi.
+  rewrite <- (llfo_neg_positive_iff_negative (llfo_neg phi)).
+  now rewrite llfo_neg_involutive.
+Qed.
+
+Theorem llfo_positive_negative_disjoint : forall L X n
+    (phi : llfo_semiformula L X n),
+  ~ (llfo_positive n phi /\ llfo_negative n phi).
+Proof.
+  intros L X n phi. induction phi; intros [Hpos Hneg];
+    inversion Hpos; inversion Hneg; subst; eauto.
+Qed.
