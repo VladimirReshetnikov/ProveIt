@@ -88,6 +88,10 @@ data ReplState = ReplState
   , rsShowTime :: Bool
   , rsTimestamps :: Bool
   , rsTranscript :: Maybe (FilePath, Handle)
+  , rsBrowseEnv :: Maybe Integer
+    -- ^ cached environment for :browse - session imports plus
+    -- Lean.Elab.Command (so the introspection metaprogram elaborates without
+    -- polluting the user's own environment); invalidated on import changes
   , rsTimeout :: Maybe Int
   , rsColor :: Bool
   , rsInteractive :: Bool
@@ -313,6 +317,7 @@ printResponse st transform v = case respFatal v of
 -- startup after a crash, and when imports change).
 rebuildSession :: St -> IO Bool
 rebuildSession st = do
+  modifyIORef' st (\s -> s { rsBrowseEnv = Nothing })
   state <- readIORef st
   baseOk <- case rsImports state of
     [] -> do
@@ -501,6 +506,8 @@ helpText = unlines
   , "  :reload, :r              reload the last loaded file"
   , "  :import MOD              add an import (rebuilds the session)"
   , "  :imports                 list active imports"
+  , "  :browse [NAMESPACE]      list declarations in a namespace or the session"
+  , "  :browse! NAMESPACE       ...including compiler-generated auxiliaries"
   , "  :set OPT VAL             set_option OPT VAL (persists in the session)"
   , "  :undo                    revert the last state-changing command"
   , "  :reset                   clear all definitions (keeps imports)"
@@ -518,8 +525,8 @@ helpText = unlines
 commandNames :: [String]
 commandNames =
   [ ":help", ":quit", ":type", ":info", ":load", ":reload", ":import"
-  , ":imports", ":set", ":undo", ":reset", ":history", ":env", ":time"
-  , ":transcript", ":timestamps", ":pickle", ":unpickle"
+  , ":imports", ":browse", ":set", ":undo", ":reset", ":history", ":env"
+  , ":time", ":transcript", ":timestamps", ":pickle", ":unpickle"
   ]
 
 -- Returns False when the REPL should exit.
@@ -539,6 +546,8 @@ dispatchCommand st line = do
         Just path -> cmdLoad st path
         Nothing -> emitLn st =<< cRed st "no file has been loaded"
       pure True
+    "browse" -> True <$ cmdBrowse st False arg
+    "browse!" -> True <$ cmdBrowse st True arg
     "import" -> True <$ cmdImport st (words (map decomma arg))
     "imports" -> do
       imports <- rsImports <$> readIORef st
@@ -755,6 +764,123 @@ cmdLoad st arg
           go rest (trim (drop 7 (trim l)) : imports)
       | null (trim l) || "--" `isPrefixOf` trim l = go rest imports
       | otherwise = (reverse imports, intercalate "\n" (l : rest))
+
+-- :browse -------------------------------------------------------------------
+
+-- The introspection metaprogram run inside the browse environment. One
+-- logInfo with all matches keeps the response to a single message.
+browseProgram :: Bool -> String -> String
+browseProgram showAll namespaceName = unlines $
+  [ "open Lean in run_cmd do"
+  , "  let env \8592 getEnv"
+  , "  let pre := `" ++ namespaceName
+  ]
+  ++ (if showAll then
+  [ "  let keep (n : Name) : Bool := !n.isInternal" ]
+  else
+  [ "  let aux : List String :="
+  , "    [\"rec\", \"recOn\", \"casesOn\", \"brecOn\", \"binductionOn\","
+  , "     \"below\", \"ibelow\", \"noConfusion\", \"noConfusionType\","
+  , "     \"ctorElim\", \"ctorElimType\", \"ctorIdx\", \"sizeOf_spec\","
+  , "     \"injEq\", \"inj\", \"eq_def\", \"decEq\"]"
+  , "  let keep (n : Name) : Bool :="
+  , "    !n.isInternalDetail &&"
+  , "    !n.components.any fun c => match c with"
+  , "      | .str _ s => aux.contains s"
+  , "      | _ => false"
+  ])
+  ++
+  [ "  let names := env.constants.fold (init := #[]) fun a n _ =>"
+  , "    if pre.isPrefixOf n && keep n then a.push n else a"
+  , "  if names.isEmpty then"
+  , "    logInfo \"(no declarations found)\""
+  , "  else"
+  , "    let sorted := names.qsort (\183.toString < \183.toString)"
+  , "    logInfo (String.intercalate \"\\n\" (sorted.toList.map toString))"
+  ]
+
+-- Build (or reuse) an environment containing the session's imports plus the
+-- Lean metaprogramming API, without touching the user's environment.
+ensureBrowseEnv :: St -> IO (Either String Integer)
+ensureBrowseEnv st = do
+  state <- readIORef st
+  case rsBrowseEnv state of
+    Just env -> pure (Right env)
+    Nothing -> do
+      emitLn st =<< cDim st "preparing browse environment (session imports + Lean)..."
+      let imports = nub (rsImports state ++ ["Lean.Elab.Command"])
+      result <- runCmd st Nothing (unlines (map ("import " ++) imports))
+      case result of
+        Left err -> pure (Left err)
+        Right v
+          | hasErrors v || isJust (respFatal v) -> do
+              _ <- printResponse st Nothing v
+              pure (Left "failed to build the browse environment")
+          | otherwise -> case respEnv v of
+              Nothing -> pure (Left "browse environment has no id")
+              Just env -> do
+                modifyIORef' st (\s -> s { rsBrowseEnv = Just env })
+                pure (Right env)
+
+cmdBrowse :: St -> Bool -> String -> IO ()
+cmdBrowse st showAll arg
+  | null arg = do
+      history <- rsHistory <$> readIORef st
+      let decls = concatMap sessionDeclNames history
+      if null decls
+        then emitLn st =<< cDim st "(no session declarations)"
+        else mapM_ (emitLn st) decls
+  | otherwise = do
+      envOr <- ensureBrowseEnv st
+      case envOr of
+        Left err -> emitLn st =<< cRed st err
+        Right env -> do
+          result <- runCmd st (Just env) (browseProgram showAll arg)
+          case result of
+            Left err -> emitLn st =<< cRed st err
+            Right v -> () <$ printResponse st Nothing v
+      -- the browse environment predates session declarations; list those
+      -- separately from the recorded history
+      history <- rsHistory <$> readIORef st
+      let matching =
+            [ name
+            | name <- concatMap sessionDeclNames history
+            , (arg ++ ".") `isPrefixOf` name || arg == name
+            ]
+      unless (null matching) $ do
+        emitLn st =<< cDim st "-- declared in this session:"
+        mapM_ (emitLn st) matching
+
+-- Names bound by a history entry, parsed textually (namespace blocks are not
+-- tracked; names are reported as typed).
+sessionDeclNames :: String -> [String]
+sessionDeclNames entry =
+  [ name
+  | line <- lines entry
+  , Just name <- [declName (words (stripAttrs line))]
+  ]
+ where
+  stripAttrs l = case dropWhile isSpace l of
+    '@' : '[' : rest -> drop 1 (dropWhile (/= ']') rest)
+    other -> other
+
+  modifiers =
+    [ "private", "protected", "noncomputable", "partial", "unsafe"
+    , "scoped", "local", "mutual" ]
+  binders =
+    [ "def", "theorem", "lemma", "abbrev", "inductive", "structure"
+    , "class", "instance", "axiom", "opaque", "example" ]
+
+  declName (w : rest)
+    | w `elem` modifiers = declName rest
+    | w `elem` binders, name : _ <- rest
+    , isIdentStart name, w /= "example" = Just (takeWhile isIdentChar name)
+  declName _ = Nothing
+
+  isIdentStart s = case s of
+    c : _ -> not (c `elem` "({[:=")
+    [] -> False
+  isIdentChar c = not (isSpace c) && c `notElem` "({[:="
 
 cmdPickle :: St -> String -> IO ()
 cmdPickle st arg
@@ -1056,6 +1182,7 @@ run opts = do
         , rsShowTime = optTime opts
         , rsTimestamps = optTimestamps opts
         , rsTranscript = Nothing
+        , rsBrowseEnv = Nothing
         , rsTimeout = if optTimeout opts <= 0 then Nothing
             else Just (optTimeout opts)
         , rsColor = useColor

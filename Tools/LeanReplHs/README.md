@@ -66,8 +66,13 @@ leanrepl-hs [FILE] [--project DIR] [--plain] [-i MOD]
 - No `AutoLeanServer` memory guard (the Python version needs one because
   LeanInteract refuses to start above a RAM threshold); the backend is only
   restarted on actual failure.
-- `:browse` is not ported (it depended on injecting `run_cmd` metaprograms;
-  use `open NS` + completion, or the Python version).
+- `:browse` is *improved* rather than merely ported. The Python version
+  required `:import Lean` in the user's session first; here `:browse NS`
+  builds (and caches) a separate environment - session imports plus
+  `Lean.Elab.Command` - runs the introspection metaprogram there, and
+  appends declarations made in the session itself. Compiler-generated
+  auxiliaries (`.rec`, `.noConfusion`, `.eq_1`, ...) are filtered out;
+  `:browse! NS` shows everything.
 - Backend discovery reuses the binary LeanInteract built rather than
   building its own. To set one up from scratch:
   `git clone https://github.com/leanprover-community/repl && cd repl &&
