@@ -1,0 +1,13 @@
+(** Assumption audit for the strong-step predecessor global-row handoff. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
+
+Import
+  PABoundedRawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
+
+Check
+  raw_codedPALocalProof_strongStepPredecessorLogicalRoots_of_restricted_rule_and_global_sources_under_prefix.
+
+Print Assumptions
+  raw_codedPALocalProof_strongStepPredecessorLogicalRoots_of_restricted_rule_and_global_sources_under_prefix.
