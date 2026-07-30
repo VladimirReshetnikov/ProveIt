@@ -5153,3 +5153,14 @@ the final common context.  The former paired code-equality theorem is a thin
 compatibility client of this dependency-ordered implementation, eliminating
 the duplicated context-transport proof while allowing the native callbacks
 to use distinct proof roots and standard-axiom witness batches.
+
+The selected-payload callbacks now remain available through every later
+context choice.  A uniform family packages the compiler at each witnessed
+extension of the caller's PA tail; admissibility may therefore introduce its
+own standard-axiom witnesses before row selection, and the strong-step
+handoff may transport the two global sources to its endpoint context without
+losing the callback.  Both the atomic/domain logical-root constructor and
+the complete restricted-rule handoff expose this family interface.  Their
+historical raw-code-equality statements are retained as wrappers, so existing
+clients continue to compile while the native proof-producing client can be
+implemented without the impossible syntactic alignment premise.

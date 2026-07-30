@@ -189,6 +189,27 @@ Arguments RawCodedDynamicTruthSelectedPayloadShiftCompilerAt
   M translation witnessList baseContext prefix rootMode
   localSigma localPi conclusion : clear implicits.
 
+(** Uniform callback family over every witnessed extension of a fixed caller
+    context.  Earlier phases such as admissibility may choose their own
+    standard-axiom witness batch before row selection starts. *)
+Definition
+    RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (baseContext : M) (prefix : TemplateContext)
+    (rootMode : nat) (localSigma localPi conclusion : TemplateFormula)
+    : Prop :=
+  forall witnessList extendedContext,
+    RawCodedPAAxiomWitnessContext M witnessList extendedContext ->
+    RawContextListIncluded M baseContext extendedContext ->
+    RawCodedDynamicTruthSelectedPayloadShiftCompilerAt M translation
+      witnessList extendedContext prefix rootMode
+      localSigma localPi conclusion.
+
+Arguments
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+  M translation baseContext prefix rootMode
+  localSigma localPi conclusion : clear implicits.
+
 (** Formula-specific compiler interface.  The callback receives the selected
     row proof and the exact witnessed extension chosen by tag selection, then
     returns any represented proof of the shifted conclusion in that same
@@ -547,6 +568,64 @@ Proof.
   - split; assumption.
 Qed.
 
+(** Symmetric public form for clients whose payload compiler is stable under
+    arbitrary standard-axiom witness growth. *)
+Corollary
+    raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_evidence_pair_of_selected_compiler_families_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall witnessList baseContext prefix localSigma localPi
+      sigmaConclusion piConclusion sigmaSourceRoot piSourceRoot,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+    M translation baseContext prefix 0
+    localSigma localPi sigmaConclusion ->
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+    M translation baseContext prefix 1
+    localSigma localPi piConclusion ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource 0 localSigma localPi))
+    sigmaSourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource 1 localSigma localPi))
+    piSourceRoot ->
+  exists targetWitnessList targetContext sigmaRoot piRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation targetContext prefix))
+      (rawTemplateFormula translation sigmaConclusion) sigmaRoot /\
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation targetContext prefix))
+      (rawTemplateFormula translation piConclusion) piRoot.
+Proof.
+  intros M hPA translation hagreement witnessList baseContext
+    prefix localSigma localPi sigmaConclusion piConclusion
+    sigmaSourceRoot piSourceRoot hwitnessed
+    hsigmaFamily hpiFamily hsigmaSource hpiSource.
+  apply
+    (raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_evidence_pair_of_selected_compilers_under_prefix
+      M hPA translation hagreement witnessList baseContext prefix
+      localSigma localPi sigmaConclusion piConclusion
+      sigmaSourceRoot piSourceRoot hwitnessed).
+  - exact (hsigmaFamily witnessList baseContext hwitnessed
+      (fun member hmember => hmember)).
+  - intros piWitnessList piBaseContext hpiWitnessed hpiIncluded.
+    exact (hpiFamily piWitnessList piBaseContext
+      hpiWitnessed hpiIncluded).
+  - exact hsigmaSource.
+  - exact hpiSource.
+Qed.
+
 (** Compile both polarity payloads into one final witnessed context.  The
     second selection may grow the PA tail again, so the first evidence root
     is transported across that inclusion after the Pi elimination closes.
@@ -669,9 +748,110 @@ Proof.
   exact hresult.
 Qed.
 
+(** Package a caller-supplied admissibility root with evidence produced by
+    the dependency-ordered selected-payload callbacks.  The admissibility
+    proof is transported only after both polarity compilers have selected
+    their final common witnessed tail. *)
+Corollary
+    raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_of_selected_compilers_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall witnessList baseContext prefix localSigma localPi
+      sigmaDomain piDomain sigmaConclusion piConclusion
+      sigmaSourceRoot piSourceRoot,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerAt M translation
+    witnessList baseContext prefix 0 localSigma localPi sigmaConclusion ->
+  (forall piWitnessList piBaseContext,
+    RawCodedPAAxiomWitnessContext M piWitnessList piBaseContext ->
+    RawContextListIncluded M baseContext piBaseContext ->
+    RawCodedDynamicTruthSelectedPayloadShiftCompilerAt M translation
+      piWitnessList piBaseContext prefix 1
+      localSigma localPi piConclusion) ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource 0 localSigma localPi))
+    sigmaSourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource 1 localSigma localPi))
+    piSourceRoot ->
+  (exists admissibleRoot,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation baseContext prefix))
+      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
+      admissibleRoot) ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthPredecessorStateLogicalRootsAt M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      sigmaDomain piDomain
+      (rawTemplateFormula translation sigmaConclusion)
+      (rawTemplateFormula translation piConclusion).
+Proof.
+  intros M hPA translation hagreement witnessList baseContext
+    prefix localSigma localPi sigmaDomain piDomain
+    sigmaConclusion piConclusion
+    sigmaSourceRoot piSourceRoot hwitnessed
+    hsigmaCompiler hpiCompiler hsigmaSource hpiSource
+    [admissibleRoot hadmissible].
+  destruct
+    (raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_evidence_pair_of_selected_compilers_under_prefix
+      M hPA translation hagreement witnessList baseContext
+      prefix localSigma localPi sigmaConclusion piConclusion
+      sigmaSourceRoot piSourceRoot hwitnessed
+      hsigmaCompiler hpiCompiler hsigmaSource hpiSource)
+    as (targetWitnessList & targetContext & sigmaRoot & piRoot &
+      htargetWitnessed & hincluded & hsigma & hpi).
+  assert (hadmissibleOnTemplatePrefix : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (coqDynamicTruthPredecessorStateTemplateContext ++ prefix))
+      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
+      admissibleRoot).
+  {
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement baseContext prefix).
+    exact hadmissible.
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation witnessList baseContext
+      targetWitnessList targetContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix)
+      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
+      admissibleRoot hwitnessed htargetWitnessed hincluded
+      hadmissibleOnTemplatePrefix)
+    as [transportedAdmissibleRoot htransportedAdmissible].
+  assert (htransportedAdmissibleJoint : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation targetContext prefix))
+      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
+      transportedAdmissibleRoot).
+  {
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement targetContext prefix).
+    exact htransportedAdmissible.
+  }
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  constructor.
+  - exists transportedAdmissibleRoot. exact htransportedAdmissibleJoint.
+  - exists sigmaRoot. exact hsigma.
+  - exists piRoot. exact hpi.
+Qed.
+
 (** Package a caller-supplied admissibility root with the two newly derived
     evidence roots.  The admissibility proof is transported only after both
-    polarity compilers have selected their final common witnessed tail. *)
+    polarity compilers have selected their final common witnessed tail.  This
+    is the code-equality compatibility client of the generalized package. *)
 Corollary
     raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_under_prefix :
   forall (M : RawPAModel), RawPASatisfies M -> forall
@@ -722,51 +902,24 @@ Proof.
     prefix localSigma localPi sigmaDomain piDomain
     sigmaConclusion piConclusion
     sigmaSourceRoot piSourceRoot hwitnessed hsigmaAlignment hpiAlignment
-    hsigmaSource hpiSource [admissibleRoot hadmissible].
-  destruct
-    (raw_codedPALocalProofOf_dynamicTruthPredecessor_global_row_evidence_pair_under_prefix
-      M hPA translation hagreement witnessList baseContext
-      prefix localSigma localPi sigmaConclusion piConclusion
-      sigmaSourceRoot piSourceRoot hwitnessed
-      hsigmaAlignment hpiAlignment hsigmaSource hpiSource)
-    as (targetWitnessList & targetContext & sigmaRoot & piRoot &
-      htargetWitnessed & hincluded & hsigma & hpi).
-  assert (hadmissibleOnTemplatePrefix : RawCodedPALocalProofOf M
-      (rawTemplateContextCodeOnTail translation baseContext
-        (coqDynamicTruthPredecessorStateTemplateContext ++ prefix))
-      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
-      admissibleRoot).
-  {
-    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
-      M translation hagreement baseContext prefix).
-    exact hadmissible.
-  }
-  destruct
-    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
-      M hPA translation witnessList baseContext
-      targetWitnessList targetContext
-      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix)
-      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
-      admissibleRoot hwitnessed htargetWitnessed hincluded
-      hadmissibleOnTemplatePrefix)
-    as [transportedAdmissibleRoot htransportedAdmissible].
-  assert (htransportedAdmissibleJoint : RawCodedPALocalProofOf M
-      (rawDynamicTruthPredecessorJointStateContext M
-        (rawTemplateContextCodeOnTail translation targetContext prefix))
-      (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
-      transportedAdmissibleRoot).
-  {
-    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
-      M translation hagreement targetContext prefix).
-    exact htransportedAdmissible.
-  }
-  exists targetWitnessList, targetContext.
-  split; [exact htargetWitnessed |].
-  split; [exact hincluded |].
-  constructor.
-  - exists transportedAdmissibleRoot. exact htransportedAdmissibleJoint.
-  - exists sigmaRoot. exact hsigma.
-  - exists piRoot. exact hpi.
+    hsigmaSource hpiSource hadmissible.
+  apply
+    (raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_of_selected_compilers_under_prefix
+      M hPA translation hagreement witnessList baseContext prefix
+      localSigma localPi sigmaDomain piDomain sigmaConclusion piConclusion
+      sigmaSourceRoot piSourceRoot hwitnessed).
+  - intros witnesses selectedRoot hextended hincluded hselected.
+    exists selectedRoot.
+    rewrite <- hsigmaAlignment.
+    exact hselected.
+  - intros piWitnessList piBaseContext hpiWitnessed hpiIncluded
+      witnesses selectedRoot hextended hincluded hselected.
+    exists selectedRoot.
+    rewrite <- hpiAlignment.
+    exact hselected.
+  - exact hsigmaSource.
+  - exact hpiSource.
+  - exact hadmissible.
 Qed.
 
 (** State-only compatibility package. *)
@@ -892,7 +1045,7 @@ Qed.
     are internal; callers retain only the two restricted-proof invariants and
     the two opened global-row sources. *)
 Corollary
-    raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_under_prefix_atomic_and_domain :
+    raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_under_prefix_atomic_and_domain_of_selected_compiler_families :
   forall (M : RawPAModel), RawPASatisfies M -> forall
     (translation : RawCodedTemplateTranslation M),
   RawCodedTemplatePAAgreement M translation ->
@@ -901,16 +1054,12 @@ Corollary
       sigmaSourceRoot piSourceRoot atomicRoot domainRoot,
   RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
   RawCodedPAAxiomWitnessContext M witnessList baseContext ->
-  rawTemplateFormula translation
-      (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
-        0 localSigma localPi) =
-    rawTemplateFormula translation
-      (templateFormulaShiftMany 10 sigmaConclusion) ->
-  rawTemplateFormula translation
-      (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
-        1 localSigma localPi) =
-    rawTemplateFormula translation
-      (templateFormulaShiftMany 10 piConclusion) ->
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+    M translation baseContext prefix 0
+    localSigma localPi sigmaConclusion ->
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+    M translation baseContext prefix 1
+    localSigma localPi piConclusion ->
   RawCodedPALocalProofOf M
     (rawDynamicTruthPredecessorJointStateContext M
       (rawTemplateContextCodeOnTail translation baseContext prefix))
@@ -944,7 +1093,7 @@ Proof.
     prefix localSigma localPi sigmaDomain piDomain
     sigmaConclusion piConclusion
     sigmaSourceRoot piSourceRoot atomicRoot domainRoot hprefix hwitnessed
-    hsigmaAlignment hpiAlignment hsigmaSource hpiSource hatomic hdomain.
+    hsigmaFamily hpiFamily hsigmaSource hpiSource hatomic hdomain.
   destruct
     (raw_dynamicTruthPredecessorLocalAdmissibility_on_witnessed_extension_under_prefix_of_atomic_and_domain
       M hPA translation hagreement witnessList baseContext prefix
@@ -1032,13 +1181,20 @@ Proof.
     exact htransportedPiSource.
   }
   destruct
-    (raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_under_prefix
+    (raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_of_selected_compilers_under_prefix
       M hPA translation hagreement
       admissibilityWitnessList admissibilityContext
       prefix localSigma localPi sigmaDomain piDomain
       sigmaConclusion piConclusion
       transportedSigmaSourceRoot transportedPiSourceRoot
-      hadmissibilityWitnessed hsigmaAlignment hpiAlignment
+      hadmissibilityWitnessed
+      (hsigmaFamily admissibilityWitnessList admissibilityContext
+        hadmissibilityWitnessed hadmissibilityIncluded)
+      (fun piWitnessList piBaseContext hpiWitnessed hpiIncluded =>
+        hpiFamily piWitnessList piBaseContext hpiWitnessed
+          (fun member hmember =>
+            hpiIncluded member
+              (hadmissibilityIncluded member hmember)))
       htransportedSigmaSourceJoint htransportedPiSourceJoint
       (ex_intro _ admissibleRoot hadmissible))
     as (targetWitnessList & targetContext & htargetWitnessed &
@@ -1050,6 +1206,84 @@ Proof.
     exact (htargetIncluded member
       (hadmissibilityIncluded member hmember)).
   - exact hroots.
+Qed.
+
+(** Code-equality compatibility endpoint for the complete atomic/domain
+    handoff. *)
+Corollary
+    raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_under_prefix_atomic_and_domain :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall witnessList baseContext prefix localSigma localPi
+      sigmaDomain piDomain sigmaConclusion piConclusion
+      sigmaSourceRoot piSourceRoot atomicRoot domainRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  rawTemplateFormula translation
+      (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
+        0 localSigma localPi) =
+    rawTemplateFormula translation
+      (templateFormulaShiftMany 10 sigmaConclusion) ->
+  rawTemplateFormula translation
+      (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
+        1 localSigma localPi) =
+    rawTemplateFormula translation
+      (templateFormulaShiftMany 10 piConclusion) ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource 0 localSigma localPi))
+    sigmaSourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource 1 localSigma localPi))
+    piSourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawFormulaOrCode M sigmaDomain piDomain) domainRoot ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthPredecessorStateLogicalRootsAt M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      sigmaDomain piDomain
+      (rawTemplateFormula translation sigmaConclusion)
+      (rawTemplateFormula translation piConclusion).
+Proof.
+  intros M hPA translation hagreement witnessList baseContext
+    prefix localSigma localPi sigmaDomain piDomain
+    sigmaConclusion piConclusion sigmaSourceRoot piSourceRoot
+    atomicRoot domainRoot hprefix hwitnessed
+    hsigmaAlignment hpiAlignment hsigmaSource hpiSource hatomic hdomain.
+  apply
+    (raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_under_prefix_atomic_and_domain_of_selected_compiler_families
+      M hPA translation hagreement witnessList baseContext prefix
+      localSigma localPi sigmaDomain piDomain sigmaConclusion piConclusion
+      sigmaSourceRoot piSourceRoot atomicRoot domainRoot
+      hprefix hwitnessed).
+  - intros sourceWitnessList sourceContext hsource hsourceIncluded
+      witnesses selectedRoot hextended hincluded hselected.
+    exists selectedRoot.
+    rewrite <- hsigmaAlignment.
+    exact hselected.
+  - intros sourceWitnessList sourceContext hsource hsourceIncluded
+      witnesses selectedRoot hextended hincluded hselected.
+    exists selectedRoot.
+    rewrite <- hpiAlignment.
+    exact hselected.
+  - exact hsigmaSource.
+  - exact hpiSource.
+  - exact hatomic.
+  - exact hdomain.
 Qed.
 
 (** State-only compatibility endpoint for the complete atomic/domain
