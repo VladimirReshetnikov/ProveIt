@@ -19,6 +19,7 @@ From Foundation.FirstOrder.Arithmetic.Q Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Q.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Functions.
+From Foundation.FirstOrder.Arithmetic Require Import Schemata.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
@@ -1623,6 +1624,12 @@ Print Assumptions peano_minus_min_le_left.
 Print Assumptions peano_minus_min_le_right.
 Print Assumptions peano_minus_le_max_left.
 Print Assumptions peano_minus_le_max_right.
+Print Assumptions first_order_axiom_scheme.
+Print Assumptions first_order_axiom_scheme_subset.
+Print Assumptions first_order_scheme_union_subset.
+Print Assumptions first_order_scheme_union_weaker.
+Print Assumptions arithmetic_induction_scheme.
+Print Assumptions arithmetic_induction_scheme_subset.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.
