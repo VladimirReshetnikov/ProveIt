@@ -1,0 +1,860 @@
+#!/usr/bin/env python3
+"""leanrepl — a GHCi-style interactive REPL for Lean 4.
+
+Front-end on top of LeanInteract (https://github.com/augustepoiroux/LeanInteract),
+which manages the Lean REPL backend (https://github.com/leanprover-community/repl).
+
+Usage:
+  python leanrepl.py                      # auto-detect enclosing Lake project
+  python leanrepl.py --project C:/ProveIt # REPL inside a specific Lake project
+  python leanrepl.py --plain              # bare Lean, no project
+  python leanrepl.py -i Mathlib.Tactic    # start with imports
+  python leanrepl.py file.lean            # load a file at startup
+"""
+
+from __future__ import annotations
+
+import argparse
+import os
+import re
+import sys
+import time
+from pathlib import Path
+
+# Lean output is Unicode-heavy; the Windows console defaults to a legacy
+# codepage, so force UTF-8 on all standard streams.
+for _stream in (sys.stdout, sys.stderr, sys.stdin):
+    if hasattr(_stream, "reconfigure") and (_stream.encoding or "").lower() not in ("utf-8", "utf8"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
+# ---------------------------------------------------------------------------
+# Terminal colors
+# ---------------------------------------------------------------------------
+
+USE_COLOR = sys.stdout.isatty() and os.environ.get("NO_COLOR") is None
+
+
+def _c(code: str, text: str) -> str:
+    return f"\x1b[{code}m{text}\x1b[0m" if USE_COLOR else text
+
+
+def red(t: str) -> str:
+    return _c("31", t)
+
+
+def yellow(t: str) -> str:
+    return _c("33", t)
+
+
+def green(t: str) -> str:
+    return _c("32", t)
+
+
+def cyan(t: str) -> str:
+    return _c("36", t)
+
+
+def dim(t: str) -> str:
+    return _c("2", t)
+
+
+def bold(t: str) -> str:
+    return _c("1", t)
+
+
+# ---------------------------------------------------------------------------
+# Input classification
+# ---------------------------------------------------------------------------
+
+# First tokens that mark input as a top-level command/declaration to be run
+# verbatim (rather than an expression to #eval / #check).
+DECL_KEYWORDS = {
+    "abbrev", "add_decl_doc", "alias", "attribute", "axiom", "binder_predicate",
+    "builtin_initialize", "class", "declare_syntax_cat", "def", "deriving",
+    "elab", "elab_rules", "end", "example", "export", "extends", "gen_injective_theorems",
+    "import", "in", "include", "inductive", "infix", "infixl", "infixr", "initialize",
+    "instance", "lemma", "local", "macro", "macro_rules", "mutual", "namespace",
+    "noncomputable", "notation", "omit", "opaque", "open", "partial", "postfix",
+    "prefix", "private", "protected", "recall", "run_cmd", "run_elab", "scoped",
+    "section", "set_option", "show_panel_widgets", "structure", "syntax",
+    "theorem", "unif_hint", "universe", "unsafe", "variable", "variables",
+}
+
+CONTINUATION_ENDINGS = (
+    ":=", "=>", "by", "do", "then", "else", "where", ",", "|", "fun", "with",
+    "←", "<-", "→", "->", "↔", "<->", "∧", "∨", "+", "*", "/", "(", "[", "{",
+    "⟨", "«", ":", ";", "·", "$", "from", "have", "let", "in", "match",
+)
+
+OPEN_BRACKETS = "([{⟨"
+CLOSE_BRACKETS = ")]}⟩"
+BRACKET_MAP = dict(zip(CLOSE_BRACKETS, OPEN_BRACKETS))
+
+
+def strip_strings_and_comments(text: str) -> str:
+    """Remove string literals, char literals and comments so bracket counting
+    is not confused by them.  Rough but adequate for balance heuristics."""
+    out = []
+    i, n = 0, len(text)
+    while i < n:
+        ch = text[i]
+        if ch == '"':  # string literal
+            i += 1
+            while i < n and text[i] != '"':
+                i += 2 if text[i] == "\\" else 1
+            i += 1
+        elif ch == "'" and i + 2 < n and (text[i + 1] == "\\" or text[i + 2] == "'"):
+            # char literal like 'a' or '\n'
+            i += 3 if text[i + 1] != "\\" else 4
+        elif text.startswith("--", i):  # line comment
+            while i < n and text[i] != "\n":
+                i += 1
+        elif text.startswith("/-", i):  # block comment (nested)
+            depth = 1
+            i += 2
+            while i < n and depth > 0:
+                if text.startswith("/-", i):
+                    depth += 1
+                    i += 2
+                elif text.startswith("-/", i):
+                    depth -= 1
+                    i += 2
+                else:
+                    i += 1
+        else:
+            out.append(ch)
+            i += 1
+    return "".join(out)
+
+
+def bracket_balance(text: str) -> int:
+    """Net count of unclosed brackets (only counts, ignores mismatch kinds)."""
+    clean = strip_strings_and_comments(text)
+    bal = 0
+    for ch in clean:
+        if ch in OPEN_BRACKETS:
+            bal += 1
+        elif ch in CLOSE_BRACKETS:
+            bal -= 1
+    return bal
+
+
+def in_open_block_comment(text: str) -> bool:
+    clean_len_text = text
+    depth = 0
+    i = 0
+    n = len(clean_len_text)
+    while i < n:
+        if clean_len_text.startswith("/-", i):
+            depth += 1
+            i += 2
+        elif clean_len_text.startswith("-/", i):
+            depth = max(0, depth - 1)
+            i += 2
+        else:
+            i += 1
+    return depth > 0
+
+
+def needs_continuation(text: str) -> bool:
+    """Heuristic: does this input look syntactically incomplete?"""
+    if in_open_block_comment(text):
+        return True
+    if bracket_balance(text) > 0:
+        return True
+    stripped = strip_strings_and_comments(text).rstrip()
+    if not stripped:
+        return False
+    for ending in CONTINUATION_ENDINGS:
+        if stripped.endswith(ending):
+            # avoid treating identifiers ending in keyword letters as keywords
+            if ending.isalpha() or ending in ("<-", ":="):
+                tail = stripped[-len(ending) - 1: -len(ending)]
+                if tail and (tail.isalnum() or tail in "_.'"):
+                    continue
+            return True
+    return False
+
+
+def first_token(text: str) -> str:
+    m = re.match(r"\s*([#@\[]*[A-Za-z_][A-Za-z0-9_?!']*|#\w+|@\[)", text)
+    return m.group(1) if m else ""
+
+
+def is_declaration(text: str) -> bool:
+    t = text.lstrip()
+    if t.startswith("#") or t.startswith("@[") or t.startswith("--") or t.startswith("/-"):
+        return True
+    tok = first_token(t)
+    return tok in DECL_KEYWORDS
+
+
+# ---------------------------------------------------------------------------
+# The REPL
+# ---------------------------------------------------------------------------
+
+HELP = f"""
+Enter Lean declarations (def, theorem, ...) or expressions (evaluated with #eval,
+falling back to #check).  Multi-line input continues automatically when a line is
+syntactically incomplete; finish with an empty line.  Use :{{ and :}} for explicit
+multi-line blocks.
+
+Commands (GHCi-style):
+  :help, :h, :?            show this help
+  :quit, :q                exit the REPL
+  :type EXPR, :t EXPR      show the type of EXPR       (#check)
+  :info NAME, :i NAME      show the definition of NAME (#print)
+  :load FILE, :l FILE      reset the session and load a .lean file
+  :reload, :r              reload the last loaded file
+  :import MOD              add an import (rebuilds the session)
+  :imports                 list active imports
+  :browse [NAMESPACE]      list declarations in a namespace or the session
+  :set OPT VAL             set_option OPT VAL (persists in the session)
+  :undo                    revert the last state-changing command
+  :reset                   clear all definitions (keeps imports)
+  :history                 show state-changing commands of this session
+  :env                     show the current environment id
+  :time                    toggle per-command timing
+  :pickle FILE             save the current environment to FILE (.olean)
+  :unpickle FILE           restore an environment from FILE
+  :! CMD                   run a shell command
+Any other :-prefixed or #-prefixed Lean command (e.g. #eval, #check, #print
+axioms) can be entered directly.
+"""
+
+BANNER = r"""
+  __                          ___
+ / /  ___ ___ ____  ______ __/ _ \___ ___  / /
+/ /__/ -_) _ `/ _ \/ __/ // / , _/ -_) _ \/ /
+\____|__/\_,_/_//_/_/  \_, /_/|_|\___/ .__/_/
+                      /___/         /_/
+"""
+
+
+class LeanRepl:
+    def __init__(self, args: argparse.Namespace):
+        self.args = args
+        self.show_time = args.time
+        self.timeout: float | None = args.timeout if args.timeout > 0 else None
+        self.imports: list[str] = []
+        for imp in args.imports or []:
+            for part in imp.split(","):
+                part = part.strip()
+                if part:
+                    self.imports.append(part)
+        self.history: list[str] = []  # state-changing commands (excludes imports)
+        self.env_stack: list[int | None] = []
+        self.cur_env: int | None = None
+        self.base_env: int | None = None  # env right after imports
+        self.loaded_file: Path | None = None
+        self.server = None
+        self.config = None
+
+    # -- server ------------------------------------------------------------
+
+    def start(self):
+        from lean_interact import AutoLeanServer, LeanREPLConfig
+        from lean_interact.project import LocalProject
+
+        t0 = time.time()
+        kwargs = {"verbose": self.args.verbose}
+        self.project_dir: Path | None = None
+        project_dir = None
+        if self.args.plain:
+            pass
+        elif self.args.project:
+            project_dir = Path(self.args.project).resolve()
+        else:
+            project_dir = self.find_project(Path.cwd())
+        if project_dir is not None:
+            print(dim(f"Using Lake project: {project_dir}"))
+            kwargs["project"] = LocalProject(directory=str(project_dir), auto_build=False)
+            self.project_dir = project_dir
+        else:
+            lean_version = self.args.lean_version or "v4.32.0"
+            print(dim(f"No Lake project found; using plain Lean {lean_version}"))
+            kwargs["lean_version"] = lean_version
+
+        print(dim("Preparing Lean REPL backend (first run may download and build it)..."))
+        self.config = LeanREPLConfig(**kwargs)
+        # The default memory guard (80% of total RAM) is too aggressive on
+        # machines with a high baseline usage; only refuse near exhaustion.
+        self.server = AutoLeanServer(self.config, max_total_memory=0.98,
+                                     max_process_memory=None)
+        print(dim(f"Lean REPL ready in {time.time() - t0:.1f}s "
+                  f"(Lean {self.server.lean_version or 'unknown'})"))
+
+        if self.imports:
+            self.rebuild_base_env()
+
+    # The backend REPL silently ignores imports it cannot resolve, so check
+    # module availability on the Python side and warn the user.
+    TOOLCHAIN_PREFIXES = ("Init", "Std", "Lean")
+
+    def module_available(self, mod: str) -> bool:
+        if mod.split(".", 1)[0] in self.TOOLCHAIN_PREFIXES:
+            return True
+        if self.project_dir is None:
+            return False  # plain mode: only the toolchain library exists
+        rel = Path(*mod.split("."))
+        roots = [self.project_dir / ".lake" / "build" / "lib" / "lean"]
+        pkgs = self.project_dir / ".lake" / "packages"
+        if pkgs.is_dir():
+            roots += [p / ".lake" / "build" / "lib" / "lean" for p in pkgs.iterdir()]
+        return any((r / rel.parent / (rel.name + ".olean")).exists() for r in roots)
+
+    def warn_missing_modules(self, mods: list[str]):
+        for m in mods:
+            if not self.module_available(m):
+                hint = (f"run `lake build` in {self.project_dir}" if self.project_dir
+                        else "plain mode has no project modules; try --project")
+                print(yellow("warning: ") +
+                      f"module {m} not found in the build tree — the backend will "
+                      f"silently ignore it ({hint})")
+
+    @staticmethod
+    def find_project(start: Path) -> Path | None:
+        for d in [start, *start.parents]:
+            if (d / "lakefile.toml").exists() or (d / "lakefile.lean").exists():
+                return d
+        return None
+
+    def run_cmd(self, code: str, env: int | None, cache: bool = False):
+        """Run a command in the given environment. Returns response or LeanError."""
+        from lean_interact import Command
+        return self.server.run(
+            Command(cmd=code, env=env),
+            timeout=self.timeout,
+            add_to_session_cache=cache,
+        )
+
+    # -- environment management --------------------------------------------
+
+    def rebuild_base_env(self):
+        """(Re)create the base environment containing all imports, then replay
+        the session history on top of it."""
+        if self.imports:
+            print(dim(f"Importing: {', '.join(self.imports)} ..."))
+            self.warn_missing_modules(self.imports)
+            t0 = time.time()
+            code = "\n".join(f"import {m}" for m in self.imports)
+            res = self.run_cmd(code, env=None, cache=True)
+            if self.print_response(res, show_env_error=True):
+                # import failed: keep previous state
+                return False
+            # A failed import yields a silently *empty* environment (not even
+            # core notation); probe for that.
+            probe = self.run_cmd("example : True := True.intro", env=res.env)
+            if is_error(probe) or has_errors(probe):
+                print(red("import failed: ") +
+                      "the resulting environment is unusable (a module in the "
+                      "import list could not be loaded)")
+                self.drop_from_cache(res)
+                return False
+            self.base_env = res.env
+            print(dim(f"Imports ready in {time.time() - t0:.1f}s"))
+        else:
+            self.base_env = None
+        return self.replay_history()
+
+    def replay_history(self) -> bool:
+        env = self.base_env
+        ok = True
+        for i, code in enumerate(self.history):
+            res = self.run_cmd(code, env=env, cache=True)
+            if is_error(res) or has_errors(res):
+                print(red(f"Replay failed at history item {i + 1}:"))
+                print(dim(code))
+                self.print_response(res, show_env_error=True)
+                self.history = self.history[:i]
+                ok = False
+                break
+            env = res.env
+        self.cur_env = env
+        self.env_stack.clear()
+        return ok
+
+    # -- response printing --------------------------------------------------
+
+    def print_response(self, res, show_env_error: bool = False) -> bool:
+        """Print messages/sorries. Returns True if there were errors."""
+        from lean_interact.interface import LeanError
+
+        if isinstance(res, LeanError):
+            print(red("REPL error: ") + res.message)
+            return True
+        errored = False
+        for msg in res.messages:
+            text = msg.data.rstrip()
+            if msg.severity == "error":
+                errored = True
+                print(red("error: ") + text)
+            elif msg.severity == "warning":
+                if text.startswith("declaration uses"):
+                    continue  # redundant with the goal display below
+                print(yellow("warning: ") + text)
+            else:
+                print(text)
+        for s in getattr(res, "sorries", None) or []:
+            goal = (s.goal or "").rstrip()
+            print(cyan("sorry") + dim(f" (proof state {s.proof_state})"))
+            for line in goal.splitlines():
+                print("  " + line)
+        return errored
+
+    # -- input handling ------------------------------------------------------
+
+    def read_input(self, prompt_fn) -> str | None:
+        """Read one logical (possibly multi-line) input. None on EOF."""
+        try:
+            line = prompt_fn(self.prompt())
+        except EOFError:
+            return None
+        if line is None:
+            return None
+        if line.strip() == ":{":
+            lines = []
+            while True:
+                try:
+                    nxt = prompt_fn(self.cont_prompt())
+                except EOFError:
+                    break
+                if nxt.strip() == ":}":
+                    break
+                lines.append(nxt)
+            return "\n".join(lines)
+        if line.startswith(":") and not line.startswith(":{"):
+            return line  # REPL commands are single-line
+        buf = [line]
+        while needs_continuation("\n".join(buf)):
+            try:
+                nxt = prompt_fn(self.cont_prompt())
+            except EOFError:
+                break
+            if nxt.strip() == "":
+                break
+            buf.append(nxt)
+        return "\n".join(buf)
+
+    def prompt(self) -> str:
+        return "λ> "
+
+    def cont_prompt(self) -> str:
+        return "…> "
+
+    # -- evaluation ----------------------------------------------------------
+
+    def advance_env(self, new_env: int | None, code: str):
+        self.env_stack.append(self.cur_env)
+        self.cur_env = new_env
+        self.history.append(code)
+
+    def drop_from_cache(self, res):
+        """Remove an errored command from the crash-recovery session cache."""
+        env = getattr(res, "env", None)
+        if env is not None and env < 0:
+            try:
+                self.server.remove_from_session_cache(env)
+            except Exception:  # noqa: BLE001
+                pass
+
+    def eval_input(self, text: str, allow_incomplete: bool = True) -> str | None:
+        """Evaluate one input. Returns "incomplete" when the input parses as an
+        unfinished declaration (caller should read continuation lines)."""
+        text = text.strip()
+        if not text:
+            return None
+        t0 = time.time()
+        status = None
+        if first_token(text) == "import":
+            mods = [ln.split(None, 1)[1].strip()
+                    for ln in text.splitlines() if ln.strip().startswith("import ")]
+            self.cmd_import(" ".join(mods))
+        elif is_declaration(text):
+            res = self.run_cmd(text, env=self.cur_env, cache=True)
+            if allow_incomplete and looks_incomplete(res):
+                self.drop_from_cache(res)
+                return "incomplete"
+            errored = self.print_response(res)
+            if not errored and not is_error(res):
+                self.advance_env(res.env, text)
+            else:
+                self.drop_from_cache(res)
+        else:
+            self.eval_expression(text)
+        if self.show_time:
+            print(dim(f"({time.time() - t0:.2f}s)"))
+        return status
+
+    def eval_expression(self, text: str):
+        """GHCi-style: try #eval, fall back to #check."""
+        res = self.run_cmd(f"#eval ({text})", env=self.cur_env)
+        if not is_error(res) and not has_errors(res):
+            self.print_response(res)
+            return
+        res2 = self.run_cmd(f"#check ({text})", env=self.cur_env)
+        if not is_error(res2) and not has_errors(res2):
+            self.print_response(res2)
+            return
+        # Neither worked; show the (usually more informative) #eval errors,
+        # unless the input failed to parse as a term at all — then run raw.
+        res3 = self.run_cmd(text, env=self.cur_env)
+        if not is_error(res3) and not has_errors(res3):
+            self.print_response(res3)
+            self.advance_env(res3.env, text)
+            return
+        self.print_response(res)
+
+    # -- commands ------------------------------------------------------------
+
+    def dispatch_command(self, line: str) -> bool:
+        """Handle a :command. Returns False if the REPL should exit."""
+        parts = line.split(None, 1)
+        cmd = parts[0][1:]
+        arg = parts[1].strip() if len(parts) > 1 else ""
+
+        if cmd in ("q", "quit", "exit"):
+            return False
+        elif cmd in ("h", "help", "?"):
+            print(HELP)
+        elif cmd in ("t", "type"):
+            if arg:
+                res = self.run_cmd(f"#check ({arg})", env=self.cur_env)
+                self.print_response(res)
+            else:
+                print(red("usage: :type EXPR"))
+        elif cmd in ("i", "info"):
+            if arg:
+                res = self.run_cmd(f"#print {arg}", env=self.cur_env)
+                self.print_response(res)
+            else:
+                print(red("usage: :info NAME"))
+        elif cmd in ("l", "load"):
+            self.cmd_load(arg)
+        elif cmd in ("r", "reload"):
+            if self.loaded_file:
+                self.cmd_load(str(self.loaded_file))
+            else:
+                print(red("no file has been loaded"))
+        elif cmd == "import":
+            self.cmd_import(arg)
+        elif cmd == "imports":
+            if self.imports:
+                for m in self.imports:
+                    print(f"import {m}")
+            else:
+                print(dim("(no imports)"))
+        elif cmd == "browse":
+            self.cmd_browse(arg)
+        elif cmd == "set":
+            if arg:
+                res = self.run_cmd(f"set_option {arg}", env=self.cur_env, cache=True)
+                if not self.print_response(res) and not is_error(res):
+                    self.advance_env(res.env, f"set_option {arg}")
+                else:
+                    self.drop_from_cache(res)
+            else:
+                print(red("usage: :set OPTION VALUE"))
+        elif cmd == "undo":
+            if self.env_stack:
+                self.cur_env = self.env_stack.pop()
+                if self.history:
+                    dropped = self.history.pop()
+                    print(dim(f"undid: {dropped.splitlines()[0]}"))
+            else:
+                print(red("nothing to undo"))
+        elif cmd == "reset":
+            self.history.clear()
+            self.env_stack.clear()
+            self.cur_env = self.base_env
+            print(dim("session reset" + (" (imports kept)" if self.imports else "")))
+        elif cmd == "history":
+            if self.history:
+                for i, h in enumerate(self.history, 1):
+                    first = h.splitlines()[0]
+                    more = " …" if "\n" in h else ""
+                    print(f"{i:3}  {first}{more}")
+            else:
+                print(dim("(empty)"))
+        elif cmd == "env":
+            print(f"environment id: {self.cur_env}")
+        elif cmd == "time":
+            self.show_time = not self.show_time
+            print(dim(f"timing {'on' if self.show_time else 'off'}"))
+        elif cmd == "pickle":
+            if arg:
+                from lean_interact import PickleEnvironment
+                path = str(Path(arg).with_suffix(".olean").resolve())
+                res = self.server.run(
+                    PickleEnvironment(env=self.cur_env or 0, pickle_to=path),
+                    timeout=self.timeout)
+                if not self.print_response(res):
+                    print(dim(f"environment saved to {path}"))
+            else:
+                print(red("usage: :pickle FILE"))
+        elif cmd == "unpickle":
+            if arg:
+                from lean_interact import UnpickleEnvironment
+                path = str(Path(arg).with_suffix(".olean").resolve())
+                res = self.server.run(
+                    UnpickleEnvironment(unpickle_env_from=path),
+                    timeout=self.timeout)
+                if not self.print_response(res) and not is_error(res):
+                    self.env_stack.append(self.cur_env)
+                    self.cur_env = res.env
+                    print(dim(f"environment restored from {path}"))
+            else:
+                print(red("usage: :unpickle FILE"))
+        elif cmd == "!":
+            os.system(arg)
+        elif cmd == "" and arg == "":
+            pass
+        else:
+            print(red(f"unknown command :{cmd}  (:help for help)"))
+        return True
+
+    def cmd_import(self, arg: str):
+        mods = [m for m in re.split(r"[,\s]+", arg) if m]
+        if not mods:
+            print(red("usage: :import MODULE"))
+            return
+        new = []
+        for m in mods:
+            if m in self.imports:
+                continue
+            if not self.module_available(m):
+                self.warn_missing_modules([m])
+                continue
+            new.append(m)
+        if not new:
+            print(dim("no new modules to import"))
+            return
+        old_imports = list(self.imports)
+        self.imports.extend(new)
+        print(dim("Rebuilding session with new imports (this re-elaborates history)..."))
+        if not self.rebuild_base_env():
+            self.imports = old_imports
+            print(red("import failed; session unchanged"))
+            self.rebuild_base_env()
+
+    def cmd_load(self, arg: str):
+        if not arg:
+            print(red("usage: :load FILE"))
+            return
+        path = Path(arg).expanduser()
+        if not path.exists() and not path.suffix:
+            path = path.with_suffix(".lean")
+        if not path.exists():
+            print(red(f"file not found: {path}"))
+            return
+        text = path.read_text(encoding="utf-8")
+        # split leading imports from the body
+        body_lines: list[str] = []
+        file_imports: list[str] = []
+        header_done = False
+        for line in text.splitlines():
+            s = line.strip()
+            if not header_done and s.startswith("import "):
+                file_imports.append(s.split(None, 1)[1].strip())
+                continue
+            if not header_done and (not s or s.startswith("--")):
+                continue
+            header_done = True
+            body_lines.append(line)
+        body = "\n".join(body_lines).strip()
+
+        # GHCi-style :load resets the session to the file contents
+        self.history.clear()
+        self.env_stack.clear()
+        for m in file_imports:
+            if m not in self.imports:
+                self.imports.append(m)
+        print(dim(f"Loading {path} ..."))
+        t0 = time.time()
+        if not self.rebuild_base_env():
+            print(red("failed to elaborate imports"))
+            return
+        if body:
+            res = self.run_cmd(body, env=self.base_env, cache=True)
+            errored = self.print_response(res)
+            if is_error(res):
+                return
+            self.cur_env = res.env
+            if not errored:
+                self.history.append(body)
+        self.loaded_file = path
+        n = len(body.splitlines())
+        print(dim(f"Loaded {path.name} ({n} lines) in {time.time() - t0:.1f}s"))
+
+    def cmd_browse(self, arg: str):
+        """List session declarations, or declarations in a namespace."""
+        if arg:
+            code = (
+                "open Lean in run_cmd do\n"
+                "  let env ← Lean.getEnv\n"
+                f"  let pre := `{arg}\n"
+                "  let mut names := #[]\n"
+                "  for (n, _) in env.constants.toList do\n"
+                "    if pre.isPrefixOf n && !n.isInternal then names := names.push n\n"
+                "  for n in names.qsort (·.toString < ·.toString) do\n"
+                "    Lean.logInfo m!\"{n}\"\n"
+            )
+            res = self.run_cmd(code, env=self.cur_env)
+            if any("include `import Lean" in m.data
+                   for m in getattr(res, "messages", []) if m.severity == "error"):
+                print(red(":browse needs the Lean metaprogramming API in scope — ")
+                      + "run " + bold(":import Lean") + " first")
+            elif not getattr(res, "messages", []):
+                print(dim(f"(no declarations found under {arg})"))
+            else:
+                self.print_response(res)
+        else:
+            if self.history:
+                print("\n\n".join(self.history))
+            else:
+                print(dim("(no session declarations)"))
+
+    # -- main loop -----------------------------------------------------------
+
+    def loop(self):
+        print(cyan(BANNER))
+        print(f"LeanRepl — a GHCi-style REPL for Lean 4.  Type {bold(':help')} for help, "
+              f"{bold(':quit')} to exit.")
+        prompt_fn = make_prompt_fn()
+        if self.args.file:
+            self.cmd_load(self.args.file)
+        while True:
+            try:
+                text = self.read_input(prompt_fn)
+            except KeyboardInterrupt:
+                print(dim("(interrupted — :quit to exit)"))
+                continue
+            if text is None:
+                print(dim("goodbye"))
+                break
+            stripped = text.strip()
+            if not stripped:
+                continue
+            if stripped.startswith(":") and not stripped.startswith(":="):
+                cmd_word = stripped.split(None, 1)[0]
+                # ':' commands are REPL commands unless they parse as Lean (e.g. `:= ...` never)
+                try:
+                    if not self.dispatch_command(stripped):
+                        break
+                except KeyboardInterrupt:
+                    self.handle_interrupt()
+                continue
+            try:
+                while True:
+                    status = self.eval_input(text)
+                    if status != "incomplete":
+                        break
+                    # unfinished declaration: keep reading until a blank line
+                    extra = []
+                    while True:
+                        try:
+                            nxt = prompt_fn(self.cont_prompt())
+                        except (EOFError, KeyboardInterrupt):
+                            break
+                        if nxt.strip() == "":
+                            break
+                        extra.append(nxt)
+                    if not extra:
+                        self.eval_input(text, allow_incomplete=False)
+                        break
+                    text = text + "\n" + "\n".join(extra)
+            except KeyboardInterrupt:
+                self.handle_interrupt()
+            except TimeoutError:
+                print(red(f"timeout after {self.timeout}s") +
+                      dim(" — the server was restarted; session state is replayed lazily"))
+            except Exception as e:  # noqa: BLE001
+                print(red(f"internal error: {e!r}"))
+
+    def handle_interrupt(self):
+        print(red("\ninterrupted") +
+              dim(" — restarting Lean server (session replays automatically)"))
+        try:
+            self.server.restart()
+        except Exception as e:  # noqa: BLE001
+            print(red(f"failed to restart server: {e!r}"))
+
+
+# ---------------------------------------------------------------------------
+
+
+def is_error(res) -> bool:
+    from lean_interact.interface import LeanError
+    return isinstance(res, LeanError)
+
+
+def looks_incomplete(res) -> bool:
+    """True if the only errors are parse errors at end of input, meaning the
+    user probably has more lines to type (e.g. `def f : Nat → Nat`)."""
+    msgs = [m for m in getattr(res, "messages", []) if m.severity == "error"]
+    if not msgs:
+        return False
+    return all("unexpected end of input" in m.data for m in msgs)
+
+
+def has_errors(res) -> bool:
+    return any(m.severity == "error" for m in getattr(res, "messages", []))
+
+
+def make_prompt_fn():
+    """Return a callable(prompt_str) -> str, using prompt_toolkit if available."""
+    if not sys.stdin.isatty():
+        def fn(p: str) -> str:
+            line = input(p)
+            print(line)  # echo piped input so transcripts are readable
+            return line
+
+        return fn
+    try:
+        from prompt_toolkit import PromptSession
+        from prompt_toolkit.history import FileHistory
+
+        histfile = Path.home() / ".leanrepl_history"
+        session = PromptSession(history=FileHistory(str(histfile)))
+
+        def fn(p: str) -> str:
+            return session.prompt(p)
+
+        return fn
+    except ImportError:
+        def fn(p: str) -> str:
+            return input(p)
+
+        return fn
+
+
+def main():
+    ap = argparse.ArgumentParser(
+        prog="leanrepl",
+        description="A GHCi-style interactive REPL for Lean 4.")
+    ap.add_argument("file", nargs="?", help="Lean file to load at startup")
+    ap.add_argument("--project", "-p", help="path to a Lake project to run inside")
+    ap.add_argument("--plain", action="store_true",
+                    help="do not use any Lake project (bare Lean + stdlib)")
+    ap.add_argument("--lean-version", help="Lean toolchain for --plain mode (e.g. v4.32.0)")
+    ap.add_argument("--import", "-i", dest="imports", action="append", metavar="MOD",
+                    help="module to import at startup (repeatable, comma-separated ok)")
+    ap.add_argument("--timeout", type=float, default=300,
+                    help="per-command timeout in seconds (0 = none, default 300)")
+    ap.add_argument("--time", action="store_true", help="show per-command timing")
+    ap.add_argument("--verbose", "-v", action="store_true",
+                    help="verbose backend setup output")
+    args = ap.parse_args()
+
+    repl = LeanRepl(args)
+    try:
+        repl.start()
+    except KeyboardInterrupt:
+        print(red("\nstartup interrupted"))
+        return 130
+    repl.loop()
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
