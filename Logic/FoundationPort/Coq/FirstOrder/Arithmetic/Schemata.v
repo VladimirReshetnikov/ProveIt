@@ -757,3 +757,24 @@ Proof.
   apply arithmetic_least_number_of_order_induction.
   now apply (arithmetic_order_induction_of_successor Hpa).
 Qed.
+
+Theorem arithmetic_boundary_of_least_number : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O ->
+  arithmetic_least_number_principle O ->
+  forall P : M -> Prop,
+  P (oring_zero O) ->
+  (exists a, ~ P a) ->
+  exists x, P x /\ ~ P (oring_add O x (oring_one O)).
+Proof.
+  intros M O Hpa Hleast P Hzero [a Ha].
+  destruct (Hleast (fun x => ~ P x) a Ha)
+    as [y [Hy Hmin]].
+  destruct (@peano_minus_zero_le M O Hpa y) as [Hyzero | Hypos].
+  - symmetry in Hyzero. subst y. contradiction.
+  - destruct (peano_minus_positive_eq_add_one Hpa Hypos) as [x Hx].
+    exists x. split.
+    + apply NNPP. apply (Hmin x).
+      rewrite Hx. apply (peano_minus_lt_add_one Hpa).
+    + now rewrite <- Hx.
+Qed.
