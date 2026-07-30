@@ -8,6 +8,7 @@ From Foundation.Vorspiel Require Import Fintype.
 From Foundation.Vorspiel Require Import Denumerable.
 From Foundation.Vorspiel Require Import Graph.
 From Foundation.Vorspiel Require Import Part.
+From Foundation.Vorspiel Require Import ENat.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Finset Require Import Card.
 From Foundation.Vorspiel.Finset Require Import Basic.
@@ -123,6 +124,16 @@ Check partial_some.
 Check fin_partial_product.
 Print Assumptions fin_partial_product_member_iff.
 Print Assumptions partial_unit_dom_iff.
+Check enat.
+Check enat_top.
+Check enat_le.
+Check enat_lt.
+Check enat_find.
+Print Assumptions enat_find_exists_spec.
+Print Assumptions enat_lt_find.
+Print Assumptions enat_exists_of_find_le.
+Print Assumptions enat_find_eq_top_iff.
+Print Assumptions enat_find_le.
 Check list_strict_inclusion.
 Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
