@@ -10,7 +10,7 @@
 *)
 
 From Stdlib Require Import Bool.Bool.
-(* Load-bearing: `tauto` needs the classical `classic` axiom this module
+(* Required: `tauto` needs the classical `classic` axiom this module
    provides to prove `prop_nand_imp` below (its right-to-left direction is
    not intuitionistically valid). *)
 From Stdlib Require Import Logic.Classical_Prop.
@@ -418,7 +418,7 @@ Proof.
 Qed.
 
 (* `p -> q` expressed with NAND alone.  This is where the `Classical_Prop`
-   import is load-bearing: without `classic` in the environment, `tauto`
+   import is required: without `classic` in the environment, `tauto`
    cannot prove the right-to-left double-negation step. *)
 Theorem prop_nand_imp (p q : Prop) :
     propNand p (propNand q q) <-> (p -> q).

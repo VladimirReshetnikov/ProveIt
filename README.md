@@ -27,6 +27,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
 | [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`. |
+| [`Shenanigans/`](Shenanigans/) | **Not ordinary mathematics.** Paradoxes of proof systems (Girard/Hurkens, Coquand-Paulin) and loopholes in the kernels implementing them. See [the section below](#shenanigans-paradoxes-and-kernel-loopholes). |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
 Repository-wide configuration remains at the root. [`ProveIt.lean`](ProveIt.lean)
@@ -240,6 +241,44 @@ and classical boundaries and provides a `coqchk` command.
 - Conditional theorems remain explicitly conditional. The A198683 research
   ledger distinguishes semantic proofs, finite data checks, conditional
   results, and heuristic evidence.
+- [`Shenanigans/`](Shenanigans/) sits outside this boundary by design: it
+  studies paradoxes and kernel defects rather than asserting mathematics. See
+  the section below.
+
+## Shenanigans: paradoxes and kernel loopholes
+
+[`Shenanigans/`](Shenanigans/) is the one directory whose contents are **not
+ordinary mathematics**. Proofs and attempted proofs inside it concern paradoxes
+in proof systems and loopholes in the kernels implementing them. A `False`
+derived there is a statement about a formal system or a program — never a
+mathematical fact, and never grounds for doubting anything proved elsewhere in
+this repository.
+
+Two kinds of work live there.
+
+**Paradoxes of proof systems.** Girard's paradox, Hurkens' simplification of it,
+and the Coquand-Paulin counterexample derive `False` from assumptions a type
+theory might plausibly have made but does not. Each is stated as an
+*implication* that hypothesizes the ingredient Lean withholds — an impredicative
+closure of `Type u` over itself, a universe decoding with a section, a
+non-strictly-positive inductive — and shows that granting it is fatal. These are
+negative results about type theory: proofs that a rule *cannot* be added. They
+are axiom-free and their hypotheses are unsatisfiable in Lean, so they say
+nothing against Lean's consistency. They locate its essential restrictions.
+
+**Loopholes in kernels implementing those systems.** Probes of the Lean 4
+kernel: accelerated `Nat` and `String` primitives, name and string identity,
+definitional-equality caching, and the checked `addDecl` path. Some are genuine
+soundness defects yielding an axiom-free `False`. Those are bugs in an
+*implementation*, not in the type theory; they are reported upstream and
+recorded with the exact toolchain versions affected, since a defect present in
+one release is typically absent in the next.
+
+Nothing in `Shenanigans/` is imported by the mathematical developments, and
+nothing outside it depends on any of it. Its ground rules — no `sorry`, no new
+axioms, mandatory `#print axioms` audits, explicit toolchain pins and version
+matrices, and a control for every claimed defect — are documented in
+[`Shenanigans/README.md`](Shenanigans/README.md).
 
 ## Vendored components
 

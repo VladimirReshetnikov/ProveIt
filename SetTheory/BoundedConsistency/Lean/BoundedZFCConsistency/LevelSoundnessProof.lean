@@ -31,7 +31,7 @@ cases therefore establish Sigma-truth of the conclusion and read Pi-truth off
 it; universal introduction goes the other way, since the universal head is
 recorded on the Pi side and delegated on the Sigma side.
 
-That is also where two-valuedness is load-bearing rather than convenient.
+That is also where two-valuedness is essential rather than convenient.
 Implication elimination has to discharge Pi-falsity of the antecedent against
 Sigma-truth of it, and disjunction elimination has to turn Sigma-truth of a
 recorded disjunct into the full level truth its subderivation's context asks
