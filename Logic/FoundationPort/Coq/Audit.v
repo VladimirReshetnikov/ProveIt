@@ -1,5 +1,7 @@
 (** Public surface and kernel-assumption audit for the generic Foundation port. *)
 
+From Foundation.Vorspiel Require Import ExistsUnique.
+From Foundation.Vorspiel Require Import Basic.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
@@ -35,6 +37,27 @@ From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
 From Foundation.FirstOrder Require Import Polarity.
 From Foundation.Syntax.Predicate Require Import Relational.
+
+Check choose_unique.
+Print Assumptions choose_unique_spec.
+Print Assumptions choose_unique_uniq.
+Print Assumptions choose_unique_eq_iff_right.
+Print Assumptions choose_unique_eq_iff_left.
+Print Assumptions exists_unique_extend.
+Check extended_choose_unique.
+Print Assumptions extended_choose_unique_spec.
+Print Assumptions extended_choose_unique_spec_not.
+Print Assumptions extended_choose_unique_uniq.
+Print Assumptions extended_choose_unique_eq_iff.
+Print Assumptions empty_function_unique.
+Check type_is_empty.
+Check empty_type_elim.
+Print Assumptions empty_type_function_unique.
+Print Assumptions option_return_eq_some.
+Check option_to_list.
+Print Assumptions option_to_list_singleton_iff.
+Check function_equal_on.
+Print Assumptions function_equal_on_subset.
 
 Check language.
 Check language_relational.
@@ -1815,6 +1838,9 @@ Print Assumptions iopen_sqrt_three.
 Print Assumptions iopen_sqrt_four.
 Print Assumptions iopen_two_ne_square.
 Print Assumptions iopen_sqrt_le_add.
+Print Assumptions iopen_lt_pair_left_of_pos.
+Print Assumptions iopen_two_prime.
+Print Assumptions iopen_polynomial_induction.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.
