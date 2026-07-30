@@ -273,6 +273,132 @@ def is_declaration(text: str) -> bool:
     return tok in DECL_KEYWORDS
 
 
+# ---------------------------------------------------------------------------
+# Help for built-ins and keywords that are not constants in the environment
+# (content adapted from the Lean 4 manual and Theorem Proving in Lean 4)
+# ---------------------------------------------------------------------------
+
+BUILTIN_HELP: dict[str, str] = {
+    "imax": """`imax` is an operation of Lean's built-in *universe level* arithmetic,
+not a constant in the environment — which is why `#check imax` fails.
+Universe levels form their own tiny language: `0`, `u+1`, `max u v`,
+`imax u v`. `imax u v` equals `0` when `v = 0`, and `max u v` otherwise.
+It appears in the universe of dependent function types:
+  (x : Sort u) → Sort v  :  Sort (imax u v)
+so a function into a proposition (`v = 0`) is itself a proposition —
+this is what makes `Prop` impredicative: `∀ p : Prop, p : Prop`.
+Universe expressions can only occur inside `Sort u` / `Type u`.""",
+    "Sort": """`Sort u` is the universe of types at level `u`; it is primitive syntax,
+not a constant. `Prop` is `Sort 0` and `Type u` is `Sort (u + 1)`.
+A bare `Sort` needs a level: try `:t Sort 0` or `:t Sort (u + 1)`.
+Universe levels are built from `0`, `u+1`, `max u v`, `imax u v`.""",
+    "fun": """`fun` (or `λ`) is the keyword introducing an anonymous function; it is
+syntax, not a constant. Examples:
+  fun x => x + 1
+  fun (x : Nat) (y : Nat) => x * y
+  fun ⟨a, b⟩ => a   -- pattern-matching binder
+`fun x => e : α → β` when `e : β` given `x : α`.""",
+    "→": """`→` (ASCII `->`) is the function arrow, primitive syntax for the
+(non-dependent) function type — shorthand for `(_ : α) → β`. It is
+right-associative: `α → β → γ` is `α → (β → γ)`. The dependent form
+binds a name: `(x : α) → p x` (same as `∀ x : α, p x`). To inspect it
+as an operator, apply section notation: `:t (· → ·)`.""",
+    "∀": """`∀` (keyword `forall`) is the universal quantifier binder. It is
+notation for the dependent function type: `∀ x : α, p x` is exactly
+`(x : α) → p x`; a proof of it is a function mapping each `x` to a
+proof of `p x`. Its universe is `Sort (imax u v)` (see `:info imax`).""",
+    "∃": """`∃` is binder notation for the inductive predicate `Exists`:
+`∃ x : α, p x` unfolds to `Exists fun x => p x`. Introduce it with
+`⟨witness, proof⟩`, eliminate with `obtain ⟨x, hx⟩ := h`.
+See `:info Exists`.""",
+    "by": """`by` is a keyword that enters *tactic mode*: `by tac` elaborates the
+tactic block `tac` to produce a term of the expected type, e.g.
+  theorem t : 2 + 2 = 4 := by rfl
+It is syntax, not a term — it only makes sense where a term of a known
+type is expected.""",
+    "do": """`do` is a keyword introducing monadic do-notation: sequencing with
+`let x ← action`, early `return`, `if`/`for`/`try` blocks. A `do` block
+elaborates to `bind`/`pure` calls in the ambient monad, e.g.
+  def main : IO Unit := do
+    let line ← (← IO.getStdin).getLine
+    IO.println line""",
+    "match": """`match` is the pattern-matching keyword:
+  match xs with
+  | []      => ...
+  | x :: r  => ...
+It is compiled to auxiliary matcher functions built on recursors, so it
+is syntax rather than a constant you can `#check`.""",
+    "where": """`where` is a keyword attaching auxiliary definitions to a declaration
+(visible in its body), and also introduces the field/constructor block
+of `structure`/`inductive` declarations:
+  def f (n : Nat) : Nat := g n + 1
+    where g (k : Nat) := 2 * k""",
+    "let": """`let` is a keyword introducing a local definition in a term or do-block:
+`let x := e; body` (or on separate lines). Unlike `fun`-abstraction,
+`x` is definitionally transparent in `body`.""",
+    "have": """`have` is a keyword stating an intermediate fact in term or tactic
+mode: `have h : p := proof` makes `h : p` available afterwards. Unlike
+`let`, the definition is opaque — only the type matters.""",
+    "show": """`show` is a keyword annotating the expected type: `show t from e` (or
+`show t; tac` in tactic mode) checks/changes the goal to the
+definitionally equal `t`.""",
+    "calc": """`calc` is the keyword for chained calculational proofs:
+  calc a = b := by ...
+       _ = c := by ...
+Steps are glued with `Trans` instances.""",
+    ":=": """`:=` is the definition/assignment token: it separates a declaration's
+signature from its body (`def f : T := e`), appears in `let`/`have`,
+and in structure-instance fields (`{ x := 1 }`). It is punctuation, not
+an operator.""",
+    "=>": """`=>` is the token separating a binder or pattern from its body: in
+`fun x => e`, in `match` arms (`| pat => e`), and in tactic
+alternatives. Not to be confused with implication, which is `→`.""",
+    "←": """`←` (ASCII `<-`) is punctuation with two roles: in do-notation,
+`let x ← action` binds the result of a monadic action; inside a do
+expression `(← action)` inlines it. In `rw [← h]` it rewrites with
+equation `h` right-to-left.""",
+    "|": """`|` separates alternatives: constructors in `inductive ... where`,
+arms of `match` (and equation-style `def`), and `<|>` alternatives in
+tactics use `first | t₁ | t₂`. `p₁ | p₂` inside patterns does not
+exist in Lean 4 — write separate arms.""",
+    "@": """`@f` is the *explicit application* prefix: it turns all implicit
+arguments of `f` into explicit ones, e.g. `@id Nat 3`. Useful with
+`:t @f` to see the full signature including implicits.""",
+    "_": """`_` is a placeholder (hole): Lean infers the term or type from
+context. In proofs, `?h` named holes create goals; in patterns `_`
+matches anything without binding a name.""",
+    "·": """`·` is the section/placeholder dot: `(· + 1)` is `fun x => x + 1`,
+`(· → ·)` is `fun a b => a → b`. Each `·` inside the closest
+parentheses becomes a fresh bound variable, in order.""",
+    "⟨": """`⟨e₁, e₂, ...⟩` is the *anonymous constructor*: it builds a value of
+any expected single-constructor type (pairs, `And`, `Exists`,
+structures): `(⟨1, rfl⟩ : ∃ n, n = 1)`. In patterns it destructures.""",
+}
+
+BUILTIN_ALIASES: dict[str, str] = {
+    "->": "→", "forall": "∀", "exists": "∃",
+    "λ": "fun", "lambda": "fun",
+    "<-": "←", "⟩": "⟨", "⟨⟩": "⟨",
+}
+
+
+def builtin_info(token: str) -> str | None:
+    """Help text if `token` is a known built-in / keyword, else None."""
+    t = token.strip()
+    t = BUILTIN_ALIASES.get(t, t)
+    return BUILTIN_HELP.get(t)
+
+
+def print_builtin_info(token: str) -> bool:
+    text = builtin_info(token)
+    if text is None:
+        return False
+    print(cyan(f"built-in: {token.strip()}"))
+    for line in text.splitlines():
+        print("  " + line)
+    return True
+
+
 def format_info(data: str) -> str | None:
     """Reformat `#print` output for inductives/structures/classes as a valid
     Lean declaration, e.g.
@@ -740,6 +866,8 @@ class LeanRepl:
             self.print_response(res3)
             self.advance_env(res3.env, text)
             return
+        if print_builtin_info(text):
+            return
         self.print_response(res)
 
     # -- commands ------------------------------------------------------------
@@ -757,7 +885,10 @@ class LeanRepl:
         elif cmd in ("t", "type"):
             if arg:
                 res = self.run_cmd(f"#check ({arg})", env=self.cur_env)
-                self.print_response(res)
+                if (is_error(res) or has_errors(res)) and print_builtin_info(arg):
+                    pass
+                else:
+                    self.print_response(res)
             else:
                 print(red("usage: :type EXPR"))
         elif cmd in ("i", "info"):
@@ -769,7 +900,7 @@ class LeanRepl:
                     res2 = self.run_cmd(f"#check ({arg})", env=self.cur_env)
                     if not is_error(res2) and not has_errors(res2):
                         self.print_response(res2)
-                    else:
+                    elif not print_builtin_info(arg):
                         self.print_response(res)
                 else:
                     self.print_response(res, transform=format_info)

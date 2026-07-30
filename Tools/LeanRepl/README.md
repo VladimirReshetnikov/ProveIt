@@ -89,6 +89,11 @@ error at end of input); once started, an empty line submits the block
 declarations (`inductive Nat : Type where | zero : Nat | succ : Nat → Nat`)
 rather than `#print`'s raw "constructors:" listing.
 
+Built-ins and keywords that are not constants in the environment (`imax`,
+`Sort`, `fun`, `by`, `→`, `∀`, `:=`, `⟨⟩`, ...) get explanatory help when
+used with `:t`/`:info` or evaluated bare, instead of a plain
+"Unknown identifier" error.
+
 ### Commands
 
 | Command | Meaning |
