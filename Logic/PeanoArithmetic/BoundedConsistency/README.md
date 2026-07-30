@@ -5207,3 +5207,19 @@ headline consume these strong-step resources directly.  Consequently the
 positive logical-root callback itself is discharged; what remains inside this
 coordinate is the construction of those concrete global-source and selected-
 payload proof resources.
+
+The aligned strong-step boundary now constructs its structural translation
+internally.  The current adequate orbit and aligned successor edge yield deep
+closure of both successor globals; commuting ternary selectors then install
+Sigma in the conclusion-truth slot and Pi in an auxiliary same-arity slot.
+Represented numeral and application functionality identify the resulting
+lower-level term, shared Sigma/Pi row codes, and both direct evidence leaves
+with the exact codes carried by the native trace.  The retained wrapper
+equation ties those shared rows back to the same successor globals.  A reduced
+proof-resource compiler therefore fixes all templates and translations and
+asks only for the restricted/rule roots, the two generalized global-source
+roots, and the two selected-payload proof families.  Its audited adapter
+reconstructs the former strong-step bundle, removing structural alignment
+from the remaining conditional hypothesis.  The dependency-ordered assembly
+and compact conditional headline now expose this reduced proof-resource
+bundle directly.
