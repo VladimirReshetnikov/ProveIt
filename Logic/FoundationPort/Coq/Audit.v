@@ -5,6 +5,7 @@ From Foundation.Vorspiel Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Nat Require Import Basic.
 From Foundation.Vorspiel.Order Require Import Heyting.
+From Foundation.Vorspiel.Order Require Import Lattice.
 From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
@@ -93,6 +94,10 @@ Print Assumptions ha_inf_mono.
 Print Assumptions ha_himp_himp_inf_himp_inf_le.
 Print Assumptions ha_himp_inf_himp_inf_sup_le.
 Print Assumptions ha_complement_of_sup_equiv_inf_complements.
+Check finite_fold.
+Print Assumptions finite_fold_filter_all.
+Print Assumptions finite_sup_filter_all.
+Print Assumptions finite_inf_filter_all.
 Check preorder_data.
 Check directed_on.
 Print Assumptions directed_list_colimit.
