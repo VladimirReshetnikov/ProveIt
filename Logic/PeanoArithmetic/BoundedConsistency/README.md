@@ -4712,3 +4712,13 @@ projects the tags or payloads, transports the contradiction beneath the
 opposite branch, and closes an honest `Or-E` proof.  The dynamic specialization
 now only needs to supply the PA proofs that zero differs from one and the
 atomic-adequacy certificates for the two concrete tagged row branches.
+
+Both orientations of zero/one distinctness are now compiled as one ordinary
+PA conjunction.  The compiler allocates a single standard axiom-witness
+prefix, projects represented proofs of `0 = 1 -> bottom` and
+`1 = 0 -> bottom` with explicit `And-E` nodes, and records inclusion of the
+caller's original context in that shared extension.  Keeping both roots in
+one witnessed context avoids a second merge when the tagged row choice is
+selected.  The remaining specialization must transport these roots beneath
+the ten opened global witnesses and establish atomic adequacy of the two
+tagged branches before invoking the generic choice eliminators.
