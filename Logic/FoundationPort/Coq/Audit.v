@@ -69,7 +69,7 @@ From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
 From Foundation.FirstOrder Require Import Polarity.
 From Foundation.Syntax.Predicate Require Import Relational.
 From Foundation.LinearLogic Require Import LogicSymbol MLL MELL.
-From Foundation.LinearLogic.FirstOrder Require Import Formula Rew.
+From Foundation.LinearLogic.FirstOrder Require Import Formula Rew Calculus.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
@@ -498,7 +498,58 @@ Print Assumptions llfo_is_quest_rewrite_iff.
 Print Assumptions llfo_rewrite_lolli.
 Check llfo_map.
 Check llfo_emb.
+Check llfo_shift.
+Check llfo_free.
 Check llfo_substitute.
+Check llfo_sequent.
+Check llfo_sequent_is_quest.
+Check llfo_sequent_negative.
+Print Assumptions llfo_sequent_is_quest_nil.
+Print Assumptions llfo_sequent_is_quest_cons.
+Print Assumptions llfo_sequent_negative_nil.
+Print Assumptions llfo_sequent_negative_cons.
+Print Assumptions llfo_quest_sequent_is_quest.
+Check llfo_derivation.
+Check LLDIdentity.
+Check LLDCut.
+Check LLDExchange.
+Check LLDOne.
+Check LLDFalsum.
+Check LLDTensor.
+Check LLDPar.
+Check LLDVerum.
+Check LLDWith.
+Check LLDPlusLeft.
+Check LLDPlusRight.
+Check LLDOfCourse.
+Check LLDWeakening.
+Check LLDDereliction.
+Check LLDContraction.
+Check LLDAll.
+Check LLDExs.
+Check llfo_derivation_height.
+Print Assumptions llfo_height_identity.
+Print Assumptions llfo_height_cut.
+Print Assumptions llfo_height_exchange.
+Print Assumptions llfo_height_one.
+Print Assumptions llfo_height_falsum.
+Print Assumptions llfo_height_tensor.
+Print Assumptions llfo_height_par.
+Print Assumptions llfo_height_verum.
+Print Assumptions llfo_height_with.
+Print Assumptions llfo_height_plus_left.
+Print Assumptions llfo_height_plus_right.
+Print Assumptions llfo_height_of_course.
+Print Assumptions llfo_height_weakening.
+Print Assumptions llfo_height_dereliction.
+Print Assumptions llfo_height_contraction.
+Print Assumptions llfo_height_all.
+Print Assumptions llfo_height_exs.
+Print Assumptions llfo_height_cast.
+Check llfo_eta.
+Check llfo_identity_proof.
+Print Assumptions llfo_modus_ponens.
+Print Assumptions llfo_excluded_middle.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.

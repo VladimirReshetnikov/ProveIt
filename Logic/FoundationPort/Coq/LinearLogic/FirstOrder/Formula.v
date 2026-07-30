@@ -6,6 +6,7 @@ From Foundation.LinearLogic Require Import LogicSymbol.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
+Set Universe Polymorphism.
 
 Inductive llfo_semiformula (L : language) (X : Type) : nat -> Type :=
 | LLRel : forall n k, language_rel L k ->

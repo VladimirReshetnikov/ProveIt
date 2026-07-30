@@ -280,6 +280,12 @@ Definition llfo_emb {L O X n} (empty : O -> False)
     (phi : llfo_semiformula L O n) : llfo_semiformula L X n :=
   llfo_rewrite (rew_emb empty) phi.
 
+Definition llfo_shift {L n} (phi : llfo_semiproposition L n) :
+    llfo_semiproposition L n := llfo_rewrite rew_shift phi.
+
+Definition llfo_free {L n} (phi : llfo_semiproposition L (n + 1)) :
+    llfo_semiproposition L n := llfo_rewrite rew_free phi.
+
 Definition llfo_substitute {L X n m}
     (b : Fin.t n -> semiterm L X m) (phi : llfo_semiformula L X n) :
     llfo_semiformula L X m := llfo_rewrite (rew_subst b) phi.
