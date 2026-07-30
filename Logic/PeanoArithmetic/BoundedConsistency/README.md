@@ -4953,3 +4953,14 @@ admissibility, and eigenvariable assumptions verbatim while concatenating
 only the standard PA witness tails.  The remaining predecessor handoff is
 therefore a literal formula-code alignment problem, not a missing context
 transport principle.
+
+The two remaining formula-code alignments are now explicit reusable lemmas.
+PA embedding agreement identifies the atomic endpoint conclusion with the
+native local atomic-adequacy numeral.  For the domain root, opening the local
+Sigma and Pi input templates at their reserved level slot produces exactly
+the restricted-target domain contexts with formula argument `#2`.
+Represented cross-trace substitution functionality then identifies those
+direct outputs with the native trace's `sigmaDomain` and `piDomain` whenever
+the shared (possibly nonstandard) numeral-term code is equal.  Consequently
+the boundedness root rewrites literally to `sigmaDomain \/ piDomain` without
+decoding the carrier level or assuming it is standard.
