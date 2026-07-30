@@ -89,7 +89,7 @@ Import PABoundedRawCodedStrongStepProofEndpointEvidenceCompilation.
     carrier-level facts already present in a native local proof trace: the
     common level numeral and the two functional substitution outputs. *)
 Theorem
-    raw_codedPALocalProof_strongStepPredecessorLogicalRoots_of_restricted_rule_and_global_sources_under_prefix :
+    raw_codedPALocalProof_strongStepPredecessorLogicalRoots_of_restricted_rule_and_global_sources_and_selected_compiler_families_under_prefix :
   forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
     (inputs : RawCodedTemplateDirectStructuralInputs M)
     baseWitnessList baseContext prefix
@@ -110,20 +110,12 @@ Theorem
     (rawNumeralValue M
       (formulaCode dynamicTruthLocalPiInputDomainTemplate))
     piDomain ->
-  rawTemplateFormula
-      (rawDirectStructuralTemplateTranslation M hPA inputs)
-      (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
-        0 localSigma localPi) =
-    rawTemplateFormula
-      (rawDirectStructuralTemplateTranslation M hPA inputs)
-      (templateFormulaShiftMany 10 sigmaConclusion) ->
-  rawTemplateFormula
-      (rawDirectStructuralTemplateTranslation M hPA inputs)
-      (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
-        1 localSigma localPi) =
-    rawTemplateFormula
-      (rawDirectStructuralTemplateTranslation M hPA inputs)
-      (templateFormulaShiftMany 10 piConclusion) ->
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+    baseContext prefix 0 localSigma localPi sigmaConclusion ->
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+    baseContext prefix 1 localSigma localPi piConclusion ->
   RawCodedPALocalProofOf M
     (rawTemplateContextCodeOnTail
       (rawDirectStructuralTemplateTranslation M hPA inputs)
@@ -176,7 +168,7 @@ Proof.
     sigmaConclusion piConclusion
     restrictedRoot ruleRoot sigmaSourceRoot piSourceRoot
     hprefix hbase hlevel hsigmaDomain hpiDomain
-    hsigmaAlignment hpiAlignment hrestricted hrule
+    hsigmaFamily hpiFamily hrestricted hrule
     hsigmaSource hpiSource.
   set (translation :=
     rawDirectStructuralTemplateTranslation M hPA inputs).
@@ -373,7 +365,7 @@ Proof.
     exact htransportedPiSource.
   }
   destruct
-    (raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_under_prefix_atomic_and_domain
+    (raw_dynamicTruthPredecessorStateLogicalRootsAt_of_global_row_pair_under_prefix_atomic_and_domain_of_selected_compiler_families
       M hPA translation
       (rawDirectStructuralTemplatePAAgreement M hPA inputs)
       endpointWitnessList endpointContext prefix
@@ -381,7 +373,16 @@ Proof.
       sigmaConclusion piConclusion
       transportedSigmaSourceRoot transportedPiSourceRoot
       atomicResultRoot rankResultRoot hprefix hendpointWitnessed
-      hsigmaAlignment hpiAlignment
+      (fun sourceWitnessList sourceContext hsource hsourceIncluded =>
+        hsigmaFamily sourceWitnessList sourceContext hsource
+          (fun member hmember =>
+            hsourceIncluded member
+              (hendpointIncluded member hmember)))
+      (fun sourceWitnessList sourceContext hsource hsourceIncluded =>
+        hpiFamily sourceWitnessList sourceContext hsource
+          (fun member hmember =>
+            hsourceIncluded member
+              (hendpointIncluded member hmember)))
       htransportedSigmaSourceJoint htransportedPiSourceJoint
       hendpointAtomicNative hendpointRankNative)
     as (targetWitnessList & targetContext & htargetWitnessed &
@@ -392,6 +393,122 @@ Proof.
   - intros member hmember.
     exact (htargetIncluded member (hendpointIncluded member hmember)).
   - exact hroots.
+Qed.
+
+(** Backward-compatible strong handoff for clients that can identify selected
+    payload codes directly.  Native clients should use the proof-producing
+    compiler-family theorem above. *)
+Theorem
+    raw_codedPALocalProof_strongStepPredecessorLogicalRoots_of_restricted_rule_and_global_sources_under_prefix :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    baseWitnessList baseContext prefix
+    levelNumeral (localSigma localPi : TemplateFormula)
+    sigmaDomain piDomain
+    sigmaConclusion piConclusion
+    restrictedRoot ruleRoot sigmaSourceRoot piSourceRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M
+    (rawDirectStructuralTemplateTranslation M hPA inputs) prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  rawDirectTemplateTerm inputs
+    coqRestrictedPASoundnessLowerLevelTerm = levelNumeral ->
+  RawCodedFormulaSingleSubstitution M levelNumeral
+    (rawNumeralValue M
+      (formulaCode dynamicTruthLocalSigmaInputDomainTemplate))
+    sigmaDomain ->
+  RawCodedFormulaSingleSubstitution M levelNumeral
+    (rawNumeralValue M
+      (formulaCode dynamicTruthLocalPiInputDomainTemplate))
+    piDomain ->
+  rawTemplateFormula
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
+        0 localSigma localPi) =
+    rawTemplateFormula
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (templateFormulaShiftMany 10 sigmaConclusion) ->
+  rawTemplateFormula
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
+        1 localSigma localPi) =
+    rawTemplateFormula
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (templateFormulaShiftMany 10 piConclusion) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext prefix)
+    (rawDirectTemplateFormula inputs
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext prefix)
+    (rawDirectTemplateFormula inputs
+      coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+    ruleRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        baseContext prefix))
+    (rawTemplateFormula
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthGlobalExistentialSource 0 localSigma localPi))
+    sigmaSourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        baseContext prefix))
+    (rawTemplateFormula
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthGlobalExistentialSource 1 localSigma localPi))
+    piSourceRoot ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthPredecessorStateLogicalRootsAt M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext prefix)
+      sigmaDomain piDomain
+      (rawTemplateFormula
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        sigmaConclusion)
+      (rawTemplateFormula
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        piConclusion).
+Proof.
+  intros M hPA inputs baseWitnessList baseContext prefix
+    levelNumeral localSigma localPi sigmaDomain piDomain
+    sigmaConclusion piConclusion
+    restrictedRoot ruleRoot sigmaSourceRoot piSourceRoot
+    hprefix hbase hlevel hsigmaDomain hpiDomain
+    hsigmaAlignment hpiAlignment hrestricted hrule
+    hsigmaSource hpiSource.
+  apply
+    (raw_codedPALocalProof_strongStepPredecessorLogicalRoots_of_restricted_rule_and_global_sources_and_selected_compiler_families_under_prefix
+      M hPA inputs baseWitnessList baseContext prefix
+      levelNumeral localSigma localPi sigmaDomain piDomain
+      sigmaConclusion piConclusion restrictedRoot ruleRoot
+      sigmaSourceRoot piSourceRoot hprefix hbase hlevel
+      hsigmaDomain hpiDomain).
+  - intros sourceWitnessList sourceContext hsource hsourceIncluded
+      witnesses selectedRoot hextended hincluded hselected.
+    exists selectedRoot.
+    rewrite <- hsigmaAlignment.
+    exact hselected.
+  - intros sourceWitnessList sourceContext hsource hsourceIncluded
+      witnesses selectedRoot hextended hincluded hselected.
+    exists selectedRoot.
+    rewrite <- hpiAlignment.
+    exact hselected.
+  - exact hrestricted.
+  - exact hrule.
+  - exact hsigmaSource.
+  - exact hpiSource.
 Qed.
 
 End PABoundedRawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
