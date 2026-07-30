@@ -1,4 +1,5 @@
 import JacobianConjecture
+import PolynomialFormulas
 import TrigonometricIdentities
 import ExponentialIdentities
 import DiophantineEquations

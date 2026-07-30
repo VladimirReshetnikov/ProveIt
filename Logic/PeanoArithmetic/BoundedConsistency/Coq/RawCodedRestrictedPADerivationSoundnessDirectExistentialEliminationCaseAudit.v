@@ -1,0 +1,83 @@
+(** Assumption and exact-slot audit for direct existential elimination.
+
+    This branch is unusually sensitive to the exact de Bruijn slots: the first
+    child proves the existential premise in the ambient context, while the
+    second child proves the shifted conclusion under a context extended by the
+    witness body.  Keeping the literal fields and both transports visible here
+    makes accidental weakening of that eigenvariable discipline detectable. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationCase.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationCaseAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationCase.
+
+(** Literal constructor slot and every field projected from its right-nested
+    conjunction. *)
+Check coqRestrictedPADirectExistentialEliminationCaseTemplate.
+Check coqRestrictedPADirectExistentialElimination_case_shape.
+Check coqRestrictedPADirectExistentialEliminationCodeEqualityTemplate.
+Check coqRestrictedPADirectExistentialEliminationConclusionEqualityTemplate.
+Check coqRestrictedPADirectExistentialEliminationFormulaCodeTemplate.
+Check coqRestrictedPADirectExistentialEliminationExistentialEndpointTemplate.
+Check coqRestrictedPADirectExistentialEliminationContextShiftTemplate.
+Check coqRestrictedPADirectExistentialEliminationConclusionShiftTemplate.
+Check coqRestrictedPADirectExistentialEliminationBodyEndpointTemplate.
+Check coqRestrictedPADirectExistentialEliminationTerminalTruthTemplate.
+
+(** Truth codes expose the ambient existential premise, the witness body in
+    its binder context, and the shifted and unshifted conclusions separately. *)
+Check coqRestrictedPADirectExistentialEliminationExistentialTruthTemplate.
+Check coqRestrictedPADirectExistentialEliminationBodyTruthTemplate.
+Check coqRestrictedPADirectExistentialEliminationBinderContextTerm.
+Check coqRestrictedPADirectExistentialEliminationBinderContextTruthTemplate.
+Check coqRestrictedPADirectExistentialEliminationShiftedResultTruthTemplate.
+Check coqRestrictedPADirectExistentialEliminationResultTruthTemplate.
+Check coqRestrictedPADirectExistentialElimination_result_truth_shape.
+Check coqRestrictedPADirectExistentialElimination_conclusion_motive_result.
+
+(** The semantic residual is deliberately split into the two recursive child
+    laws, the binder-context transport, and the dynamic existential rule. *)
+Check coqRestrictedPADirectExistentialEliminationExistentialChildLawTemplate.
+Check
+  coqRestrictedPADirectExistentialEliminationBinderContextTruthLawTemplate.
+Check coqRestrictedPADirectExistentialEliminationBodyChildLawTemplate.
+Check coqRestrictedPADirectExistentialEliminationDynamicTruthLawTemplate.
+Check rawTemplateFormula_existentialEliminationExistentialChildLaw_view.
+Check rawTemplateFormula_existentialEliminationBinderContextTruthLaw_view.
+Check rawTemplateFormula_existentialEliminationBodyChildLaw_view.
+Check rawTemplateFormula_existentialEliminationDynamicTruthLaw_view.
+Check RawCoqRestrictedPADirectExistentialEliminationSemanticRoots.
+
+(** Projection proofs cover both endpoints and both eigenvariable-sensitive
+    shifts; the final transport changes only the literal result formula into
+    the outer strong-step conclusion. *)
+Check coqRestrictedPADirectExistentialEliminationCodeEqualityRootAt_valid.
+Check
+  coqRestrictedPADirectExistentialEliminationConclusionEqualityRootAt_valid.
+Check coqRestrictedPADirectExistentialEliminationFormulaCodeRootAt_valid.
+Check
+  coqRestrictedPADirectExistentialEliminationExistentialEndpointRootAt_valid.
+Check coqRestrictedPADirectExistentialEliminationContextShiftRootAt_valid.
+Check coqRestrictedPADirectExistentialEliminationConclusionShiftRootAt_valid.
+Check coqRestrictedPADirectExistentialEliminationBodyEndpointRootAt_valid.
+Check coqRestrictedPADirectExistentialEliminationTerminalTruthRootAt_valid.
+Check
+  coqRestrictedPADirectExistentialEliminationConclusionTransportRootAt_valid.
+
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectExistentialEliminationConclusion.
+Check raw_coqRestrictedPADirectStrongStepExistentialEliminationCaseRoot.
+
+Print Assumptions
+  coqRestrictedPADirectExistentialEliminationConclusionTransportRootAt_valid.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectExistentialEliminationConclusion.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepExistentialEliminationCaseRoot.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationCaseAudit.

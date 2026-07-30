@@ -1191,6 +1191,50 @@ Qed.
 (** In particular, the left proof can now be transported into the exact
     witnessed prefix merge already constructed in the preceding module. *)
 Corollary
+    raw_codedPALocalProof_twoWitnessedContexts_commonContext_with_inclusions_complete :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      leftWitnessList leftContext leftConclusion leftRoot
+      rightWitnessList rightContext rightConclusion rightRoot,
+  RawCodedPAAxiomWitnessContext M leftWitnessList leftContext ->
+  RawCodedPALocalProofOf M leftContext leftConclusion leftRoot ->
+  RawCodedPAAxiomWitnessContext M rightWitnessList rightContext ->
+  RawCodedPALocalProofOf M rightContext rightConclusion rightRoot ->
+  exists mergedWitnessList mergedContext
+      transportedLeftRoot transportedRightRoot : M,
+    RawCodedPAAxiomWitnessContext M mergedWitnessList mergedContext /\
+    RawContextListIncluded M leftContext mergedContext /\
+    RawContextListIncluded M rightContext mergedContext /\
+    RawCodedPALocalProofOf M
+      mergedContext leftConclusion transportedLeftRoot /\
+    RawCodedPALocalProofOf M
+      mergedContext rightConclusion transportedRightRoot.
+Proof.
+  intros M hPA leftWitnessList leftContext leftConclusion leftRoot
+    rightWitnessList rightContext rightConclusion rightRoot
+    hleftWitnessed hleftProof hrightWitnessed hrightProof.
+  destruct (raw_codedPAAxiomWitnessContext_prefixMerge M hPA
+    leftWitnessList leftContext rightWitnessList rightContext
+    hleftWitnessed hrightWitnessed) as
+    (mergedWitnessList & mergedContext & hmergedWitnessed &
+      _ & hleftIncluded & _ & hrightIncluded & hrightTransport).
+  destruct
+    (raw_codedPALocalProofWitnessedContextInclusionWeakening_complete M hPA
+      leftWitnessList leftContext mergedWitnessList mergedContext
+      leftConclusion leftRoot hleftWitnessed hmergedWitnessed
+      hleftIncluded hleftProof) as [transportedLeftRoot hleftTransported].
+  destruct (hrightTransport rightConclusion rightRoot hrightProof)
+    as [transportedRightRoot hrightTransported].
+  exists mergedWitnessList, mergedContext,
+    transportedLeftRoot, transportedRightRoot.
+  split; [exact hmergedWitnessed |].
+  split; [exact hleftIncluded |].
+  split; [exact hrightIncluded |].
+  split; [exact hleftTransported | exact hrightTransported].
+Qed.
+
+(** Compatibility projection for callers which do not need to remember how
+    the two source contexts embed into the selected common context. *)
+Corollary
     raw_codedPALocalProof_twoWitnessedContexts_commonContext_complete :
     forall (M : RawPAModel), RawPASatisfies M -> forall
       leftWitnessList leftContext leftConclusion leftRoot

@@ -1,0 +1,10 @@
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessAssumptionUniversalSourceCompilation.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessAssumptionUniversalSourceCompilation.
+
+Check raw_codedPALocalProof_assumptionNativeLaw_on_selected_tail.
+
+Print Assumptions
+  raw_codedPALocalProof_assumptionNativeLaw_on_selected_tail.

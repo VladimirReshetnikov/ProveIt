@@ -1,0 +1,15 @@
+(** Assumption audit for the closed PA beta-lookup functionality theorem. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedBetaLookupFunctionalitySource.
+
+Import PABoundedRawCodedBetaLookupFunctionalitySource.
+
+Check codedBetaLookupFunctionalityFormula.
+Check codedBetaLookupFunctionalityFormula_sentence.
+Check codedBetaLookupFunctionalityFormula_raw_valid.
+Check PA_proves_codedBetaLookupFunctionalityFormula.
+
+Print Assumptions codedBetaLookupFunctionalityFormula_sentence.
+Print Assumptions codedBetaLookupFunctionalityFormula_raw_valid.
+Print Assumptions PA_proves_codedBetaLookupFunctionalityFormula.

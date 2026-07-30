@@ -199,20 +199,69 @@ is being reconstructed:
 | Coq module | Main Foundation source | Ported boundary |
 | --- | --- | --- |
 | `GenericSemantics.v` | `Logic/Semantics.lean` | Complete 67-declaration surface: generic satisfaction and minimal connective clauses; ordinary/singleton-normalized finite truth laws; model sets, validity, satisfiability, theories, meaningfulness, lifted set semantics, consequence, cumulative theories, exact compactness, finite consequence extraction, and cumulative-union compactness |
-| `GenericAdjunctiveSet.v` | `Vorspiel/AdjunctiveSet.lean` | Constructive pointwise context interface with empty/adjoin laws, inclusion algebra, list-backed finiteness and conversion, and predicate/list realizations; no decidable formula equality or predicate extensionality |
+| `GenericAdjunctiveSet.v` | `Vorspiel/AdjunctiveSet.lean` | Complete 35-declaration surface: constructive pointwise contexts, empty/adjoin and inclusion laws, subset-closed finite covers, generic list extension/conversion, and predicate/list realizations; multiset/finset conveniences are generalized through duplicate-tolerant enumerations |
+| `GenericForcingRelation.v` | `Logic/ForcingRelation.lean` | Complete 20-declaration surface: ordinary/existence/weak forcing dictionaries, factored persistence and future-world implication/negation, intuitionistic and classical Kripke bundles, global/context forcing, and minimally hypothesized connective laws |
 | `GenericEntailment.v` | `Logic/Entailment.lean` | Complete 138-declaration surface: Type-valued formal proofs and inhabited provability, proof sets and controlled extraction, heterogeneous strength order/equivalence, consistency, explosion, completeness/incompleteness, axiomatized and compact contexts, deduction, semantic soundness/completeness, and pullback |
+| `GenericDecidability.v` | `Logic/Decidability.lean` | Complete four-declaration surface: executable theory decision procedures, undecidability, essential undecidability under extension, and the constant decider for inconsistent theories; direct computation replaces formula coding |
+| `GenericDisjunctive.v` | `Logic/Disjunctive.lean` | Complete four-declaration surface: disjunctive entailments and the exact completeness equivalence, generalized from full classical entailment plus decidable formula equality to excluded middle and left resolution alone |
+| `GenericEmbedding.v` | `Logic/Embedding.lean` | Complete five-declaration surface: faithful provability translations between heterogeneous systems, explicit witnesses, identity, and composition, all constructively |
+| `GenericLogicSymbol.v` | `Logic/LogicSymbol.lean` | Complete mathematical surface: independent laws/abbreviations, negation injectivity, full homomorphisms, closed predicates, all indexed/vector/list/finite-set folds, negation, variadic De Morgan laws, generalized homomorphism preservation, and semantic readback |
+| `GenericModalLogicSymbol.v` | `Modal/LogicSymbol.lean` | Complete mathematical surface: generic modal iteration and bounded folds, duality/De Morgan/injectivity interfaces, predicate/list/finite-set images and preimages, restricted filtering, and representation bridges, all factored through arbitrary endomaps |
+| `PropositionalFormula.v` | `Propositional/Formula/Basic.lean` | Complete mathematical surface: primitive Minimal/Intuitionistic syntax, complexity, equality decision, letterlessness, subformula closure, heterogeneous/zero substitutions, and an atom-parametric executable codec |
+| `PropositionalNNFormula.v` | `Propositional/Formula/NNFormula.lean` | Complete mathematical surface: positive/negative atoms, structural involutive negation, derived implication and biconditional, constructor injection, generic De Morgan laws, complexity invariance, and lifted decidable equality |
+| `PropositionalTranslation.v` | `Propositional/Translation.lean` | Complete bidirectional syntax translation surface between primitive formulas and propositional NNF, including all constructor equations |
+| `PropositionalDialectica.v` | `Propositional/Dialectica/Basic.lean` | Complete atom-polymorphic Dialectica surface: dependent Eloise witness and Abelard counter types, recursive realizability and connective laws, refuted-validity equivalence, the identity realizer, and a constructive counter-realizer for atomic excluded middle |
+| `PropositionalSlash.v` | `Propositional/Slash.lean` | Complete constructive Aczel-slash surface, generalized to arbitrary formula predicates: exact connective clauses, slash modus ponens, and the disjunction property whenever slash truth coincides with provability, with an abstract propositional-logic specialization |
+| `PropositionalLogic.v` | `Propositional/Logic/Basic.lean` | Complete abstract logic surface: substitution and modus-ponens closure, triviality, extensions, and constructive inclusion algebra |
+| `PropositionalLetterless.v` | `Propositional/Logic/Letterless_Int_Cl.lean` | Complete source theorem surface: Gödel translation preserves letterlessness, and Int and Cl prove exactly the same nat-atom letterless formulas. A stronger constructive theorem identifies forcing of any atom-free formula at every world of every preorder model with arbitrary Boolean evaluation, replacing the source modal-companion argument and eliminating encoding and equality assumptions |
+| `PropositionalPostCompleteness.v` | `Propositional/Logic/{Superintuitionistic,PostComplete}.lean` | Complete mathematical surface: superintuitionistic extensions, consistency, explosion from bottom, strictness below the trivial logic, and Post completeness of Cl. The main theorem is strengthened to every consistent propositional logic containing Cl—no separate Int-extension premise is needed—and uses one factored zero-substitution countervaluation argument; one executable atom codec replaces separate encodability and equality assumptions |
+| `PropositionalHilbert.v` | `Propositional/Hilbert/Minimal/Basic.lean` | Complete schema-generated Minimal/Int/KC/LC/KP/Cl systems, Type-valued proofs, factored proof transport and substitution, derived negation equivalence and DNE, generic capabilities, and theorem logics |
+| `PropositionalGlivenko.v` | `Propositional/Hilbert/Minimal/Glivenko.lean` | Complete atom-polymorphic Glivenko theorem and negated-formula corollary via direct Hilbert-proof induction; double-negated excluded middle is factored once at the minimal-logic level, and no formula equality or semantic completeness is required |
+| `PropositionalKreiselPutnam.v` | `Propositional/Kripke/{AxiomKreiselPutnam,Hilbert/KreiselPutnam,Hilbert/KC}.lean` | Complete active KP surface: exact frame condition and axiom soundness; a factored two-sided canonical seed proof, canonical-frame condition, and ordinary completeness; convergence-to-KP reduction; consistency; and the strict Int/KP/KC hierarchy via explicit five- and three-world countermodels. The canonical construction is atom-polymorphic given a formula codec and proves a stronger fork property that does not use the source condition's incomparability premises |
+| `PropositionalKripke.v` | `Propositional/Kripke/{Basic,AxiomWLEM,AxiomDummett,Hilbert/*}.lean` | Complete `Basic` surface over arbitrary atoms and possibly empty preorders: hereditary valuations, exact forcing clauses, forward/contrapositive persistence, heterogeneous substitution, model/frame/class validity and every countermodel characterization, validation unions over class intersections, explicit finite covers, all/finite frame classes, and generic Hilbert soundness, consistency, and semantic comparison. Explicit inhabitance replaces the source frame's hidden nonempty-world field exactly where bottom refutation needs it. The module also gives exact WLEM/convergence and Dummett/connectedness characterizations plus Int, KC, and LC soundness |
+| `PropositionalKripkeFiltration.v` | `Propositional/Kripke/Filtration.lean` | Complete atom-polymorphic finite filtration surface over any subformula-closed formula list. Realised Boolean truth profiles replace quotient worlds and provide an explicit duplicate-free cover of size at most `2^|T|`; a common forth/back interface factors the truth lemma for both the coarsest persistence relation and the finest transitive closure generated by the original frame. Both relations are proved antisymmetric on profiles, while the model API needs only preorders |
+| `PropositionalKripkePreservation.v` | `Propositional/Kripke/{Preservation,Rooted}.lean` | Complete atom-polymorphic bisimulation and bounded-morphism surface for intuitionistic forcing, including identity/composition, graph bisimulations, and exact formula invariance; generalized point-generated preorder frames/models, inherited finite covers and order laws, the inclusion morphism, and formula equivalence at the generated root |
+| `PropositionalKripke2.v` | `Propositional/Kripke2/Basic.lean` | Complete atom-polymorphic rooted arbitrary-relation semantics: unrestricted valuations and forcing, exact negative counterexample clauses, heterogeneous substitution, all model/frame/class countermodel characterizations, positive axiom/rule validity, root-driven global modus ponens, and a three-world refutation of the a-fortiori K schema |
+| `PropositionalKripke2Correspondence.v` | `Propositional/Kripke2/Axiom/{Corfl,Hrd,PCon,PSCon,Rfl,Ser,Sym,Tra}.lean` | Factored frame properties and axiom formulas; exact coreflexivity, atomic-heredity, reflexivity, seriality, symmetry, and both transitivity correspondences; piecewise-strong-connectedness soundness for PSCon; and a universal two-world countermodel showing that the source's admitted PCon/Dummett claim is false for unrestricted valuations |
+| `PropositionalKripke2Hilbert.v` | `Propositional/Hilbert/F/Basic.lean`, `Propositional/Kripke2/Hilbert/{Basic,F,F_Ser,F_Rfl,F_Sym,F_Tra1,F_Rfl_Sym,F_Rfl_Tra1}.lean` | Complete substitution-closed Hilbert-F schemas and proof calculus with factored schema/proof transport; generic model and frame-class soundness, consistency, and semantic inclusion; named-system soundness and consistency generalized to arbitrary atom types; finite counterframes proving all source strict separations independent of its admitted reflexive-completeness claim; and an explicit F countermodel to noncontradiction |
+| `PropositionalHilbertFExtensions.v` | `Propositional/Hilbert/F/{Disjunctive,Deduction}.lean` | Generic slash/provability coincidence and disjunction-property theorem for Hilbert F, slash validation and disjunctivity of F, F_Ser, F_Rfl, and F_Tra1, plus weak singleton deduction and equality-free finite-list support for arbitrary contexts; the source's two `sorry`-backed finite-conjunction deduction directions are not assumed |
+| `PropositionalFMT.v` | `Propositional/FMT/Basic.lean`, `Propositional/FMT/Axiom/Ser.lean` | Complete rooted formula-indexed semantics: forcing and exact negative clauses, model/frame/class validity and countermodels, positive axiom validity, root-driven global rules, elementary NT-seriality results, and canonical Hintikka-frame NT-seriality when the Hilbert system proves double-negated truth |
+| `PropositionalHilbertVF.v` | `Propositional/Hilbert/VF/{Basic,Disjunctive}.lean`, `Propositional/FMT/Hilbert/{Basic,VF,VF_Ser}.lean` | Atom-polymorphic substitution-closed Hilbert VF systems and Type-valued proofs with factored proof transport; a generic Aczel-slash induction giving VF and VF_Ser the disjunction property; generic FMT model/frame-class soundness, consistency, and semantic comparison; VF and VF_Ser soundness, completeness, and consistency; and small formula-indexed countermodels proving VF below VF_Ser and WF while refuting `top` equivalent to double-negated `top` |
+| `PropositionalHilbertVFCorsi.v` | `Propositional/Entailment/{Corsi,Corsi/Basic,Corsi/F,Corsi/VF,Corsi/WF}.lean` | Constructive Corsi proof algebra specialized to the faithful atom-polymorphic Hilbert calculi: commutation, cancellation, replacement, the collect-or-and law, the F-derived Restall/Rule-E bridge, and explicit WF→VF and WF+C/D/I→F capability relationships; duplicate-tolerant list conjunction and disjunction folds provide introduction, elimination, subset transport, and finite disjunction extraction without decidable equality. Type-valued positional witnesses keep raw derivations computational while ordinary `List.In` remains the proposition-level API |
+| `PropositionalFMTCompleteness.v` | `Propositional/FMT/Completeness.lean` | Complete Hintikka completeness layer: atom-polymorphic consistent pairs and list-based Lindenbaum saturation, exact connective membership, a fresh-root formula-indexed canonical model, the full truth lemma, countermodel extraction, generic completeness on all FMT frames, canonical NT-seriality, and serial-frame completeness. Duplicate-tolerant lists remove formula equality and the fresh root removes the source construction's disjunction-property and global-consistency premises |
+| `PropositionalHilbertWF.v` | `Propositional/Hilbert/{F_WF,WF/Basic,WF_VF}.lean`, `Propositional/FMT/Hilbert/VF.lean` | Atom-polymorphic Hilbert WF proofs obtained by sharing VF's identical substitution-closed schema representation and adding faithful replacement of equivalents; schema weakening, substitution, provable-schema transport, theorem-logic packaging, and heterogeneous VF-to-WF and WF-to-F transports are factored over raw Type-valued proofs. A reusable Hilbert-F Restall derivation supplies Rule E. A three-world formula-indexed countermodel separates the resulting WF equivalence theorem from VF, completing the strict comparison |
+| `PropositionalNeighborhoodNB.v` | `Propositional/Neighborhood/NB/{Basic,Hilbert/Basic,Hilbert/WF}.lean` | Complete atom-polymorphic rooted neighborhood semantics: predicate truth sets and exact forcing laws, model/frame/class validity and countermodel witnesses, all positive schemata and global WF rules, generic model/frame-class soundness, consistency, and semantic comparison. Predicate extensionality is an explicit frame law, avoiding quotient and extensionality axioms. The source admissible carrier and its three closure fields are eliminated because its own laws force that carrier to contain every world. One parameterized two-world frame factors countermodels refuting C, D, and I in WF; C witnesses the strict inclusion `WF < F` |
+| `PropositionalHeytingSemantics.v` | `Propositional/Heyting/Semantics.lean` | Complete atom-polymorphic setoid Heyting semantics: recursive algebraic evaluation, exact top/negation/implication/conjunction/biconditional validity laws, all Minimal Hilbert axioms, generic schema soundness, and a quotient-free Lindenbaum model giving completeness for every EFQ-capable Hilbert system. Formula representatives make evaluation literally equal to the represented formula and remove the source's `DecidableEq` requirement; only the inconsistent-system completeness branch uses excluded middle |
+| `PropositionalConsistentTableau.v` | `Propositional/ConsistentTableau.lean` | Complete active mathematical surface: duplicate-tolerant two-sided Hilbert consistency, exact insertion laws, the factored cut argument, reusable stable positional partitions, an atom-polymorphic enumerated Lindenbaum chain with finite-stage extraction, saturated consistent tableaux, exact contextual and empty-context provability characterizations, theorem and internal modus ponens closure, top/bottom, conjunction/disjunction and list-fold laws, intuitionistic one-way implication/negation laws, and exact classical implication/negation laws. Positional lists and typed membership recovery remove every source finite-set and `DecidableEq` premise; the local classical implication proof also drops the source encoding premise |
+| `PropositionalKripkeTableauCanonical.v` | `Propositional/Kripke/{Completeness,AxiomKreiselPutnam}.lean` | Reusable atom-polymorphic two-sided canonical Kripke model over saturated consistent tableaux: a factored finite-context implication counterseed lemma, Lindenbaum counterextensions, the exact truth lemma, model validity iff Hilbert provability, and completeness for every class containing the canonical frame. This complements the smaller prime-theory canonical model and supplies the negative-side structure needed by the Kreisel–Putnam canonicality proof |
+| `PropositionalKripkeCanonical.v` | `Propositional/Kripke/{Completeness,AxiomWLEM,AxiomDummett,Hilbert/Int/Basic,Hilbert/KC,Hilbert/LC}.lean` | Enumerated maximal extensions avoiding a target formula, derivably closed prime theories, the canonical preorder/model and truth lemma, completeness for every frame class containing the canonical frame, countermodel extraction, Int soundness/completeness, Dummett-driven connectedness and LC completeness, a finite-support/WLEM common-extension proof yielding canonical convergence and KC completeness, and a four-world diamond proving KC is strictly below LC; a compact one-sided construction replaces the source's two-sided saturated tableau |
+| `PropositionalKripkeFinite.v` | `Propositional/Kripke/Hilbert/{Int/Basic,KC,LC}.lean` | Finite Int, KC, and LC completeness obtained through the existing S4/S4.2/S4.3 finite completeness theorems; a boxed-atom valuation identifies propositional forcing with Gödel-translation truth, while a reusable cluster skeleton collapses finite preorders to finite partial orders and preserves forcing, convergence, and connectedness |
+| `PropositionalKripkeClassical.v` | `Propositional/Kripke/{AxiomLEM,Hilbert/Cl}.lean` | Exact LEM correspondence with symmetry/right Euclideanness on generalized preorders; canonical-frame Euclideanness; arbitrary-atom soundness and consistency; nat-atom ordinary completeness; finite symmetric and Euclidean completeness generalized to any atom type with an executable codec; and strict LC-below-Cl separation. A reusable singleton/Boolean truth lemma replaces the source filtration proof and proves completeness for every frame class containing the reflexive singleton |
+| `PropositionalDisjunctionProperty.v` | `Propositional/Kripke/Hilbert/Int/DP.lean` | Complete mathematical surface: a generalized fresh-root sum of two pointed preorder models, exact forcing preservation on both embedded components, and Int's disjunction property. The final proof reuses the one-sided canonical countermodel extractor and needs no frame antisymmetry, atom equality, or formula coding |
+| `PropositionalBoolean.v` | `Propositional/Boolean/Basic.lean` | Complete mathematical surface: truth-functional evaluation, generic Tarski semantics, extensionality, heterogeneous substitution composition, letterless invariance and decidability, and the core tautology laws |
+| `PropositionalBooleanNNFormula.v` | `Propositional/Boolean/NNFormula.lean` | Complete mathematical surface: algebra-parametric NNF evaluation as a connective homomorphism, Prop-valued Tarski semantics, atom-polarity laws, and correctness of both explicit syntax translations |
+| `PropositionalBooleanZeroSubst.v` | `Propositional/Boolean/ZeroSubst.lean` | Complete mathematical surface: valuation-selected letterless substitutions, valuation-independent evaluation, counter-tautology witnesses, the zero-substitution tautology criterion, and truth/tautology equivalence |
+| `PropositionalBooleanHilbert.v` | `Propositional/Boolean/Hilbert.lean` | Complete mathematical surface: classical Hilbert soundness, countervaluation refutation, deduction, enumerated Lindenbaum extension, maximal-consistent-theory connective laws and truth lemma, semantic completeness, the provability/tautology equivalence, and logic membership; a compact one-sided canonical construction replaces the source's two-sided saturated tableau |
+| `PropositionalTait.v` | `Propositional/Tait/Calculus.lean` | Complete mathematical surface: Type-valued one-sided NNF derivations with cut, height and casts, weakening/tensor/rotation, structural eta and close, generic LK/Cut adapters, and principal entailment |
+| `GenericCalculus.v` | `Logic/Calculus.lean` | Complete 43-declaration surface: universe-polymorphic Type-valued one-sided LK/Cut, principal- and contextual-entailment dictionaries, structural combinators, strengthened finite folds, the complete classical Hilbert interface, structure-preserving pullback, contextual structural/classical adapters, strong cut, explosion, inconsistency, principal-context equivalence, and deduction |
+| `PropositionalEntailmentAxioms.v` | `Propositional/Entailment/Axiom{DNE,EFQ,ElimContra,LEM,Peirce}.lean`, `Propositional/Entailment/{KC,LC,KreiselPutnam,Scott}.lean`, `Propositional/Entailment/Int/DNE_of_LEM.lean` | Complete ten-module surface: standalone raw-proof capabilities and inhabited theorem views; DNE, EFQ, and Kreisel–Putnam elimination; deductive explosion; formula-uniform context transport; factored implicational combinators; direct DNE from LEM+EFQ; constructive Type-valued finite-context deduction; and Dummett-to-WLEM without formula equality |
+| `PropositionalEntailmentLukasiewicz.v` | `Propositional/Entailment/Cl/Łukasiewicz.lean` | Complete mathematical surface: a generic Type-valued K/S/elimination-of-contraposition capability; implication identity and exchange; DNE, DNI, EFQ, contradiction explosion, contraposition, and theorem-level inconsistency; reconstruction of truth, negation equivalence, and every conjunction/disjunction Hilbert axiom from the Łukasiewicz abbreviation equations; and assembly of the full classical entailment capability. The implicational core needs no connective abbreviation laws, and no theorem uses formula equality or choice; source-only intermediate combinator names are factored through proof-relevant deduction |
+| `PropositionalEntailmentMinimal.v` | `Propositional/Entailment/Minimal/Basic.lean` | Complete active mathematical surface through a generic Type-valued minimal-entailment capability: implication, conjunction, disjunction, biconditional, negation, double-negation, contraposition, contradiction, constructive De Morgan, truth, currying, finite-fold, cut, and context algebras; exact theoremhood views for ordinary, normalized, and indexed conjunctions; duplicate-safe insertion, append, subset, and unique-entry laws; generalized conjunction-to-disjunction cuts for disjunctive assumptions, conjunction formation, and internal modus ponens; structural finite contexts with exact normalized-conjunction representation; and proof-relevant predicate contexts with inherited minimal logic, deduction, contradiction, and exact finite-support extraction. Positional enumerations implement the source's Finset/Fintype wrappers without `DecidableEq`, choice, or loss of duplicates; conversion lemmas and notation-only aliases are represented definitionally |
+| `PropositionalEntailmentInt.v` | `Propositional/Entailment/Int/Basic.lean` | Complete active mathematical surface: constructive minimal-plus-EFQ capability; explicit inheritance by finite-list and arbitrary proof-relevant contexts; bottom elimination and contradiction inconsistency; implication explosion and its proof-specialized aliases; negated-antecedent disjunction elimination; reverse stable implication; ordinary, normalized, indexed, finite-enumeration, and explicit-universe disjunction elimination; append, cons, insertion, union, subset, uniqueness, and external provability laws; and exact list/finite-family De Morgan equivalences. Duplicate-tolerant positional enumerations replace Finset/Fintype wrappers, eliminate every source equality decision, and allow non-injective indexed maps. The finite conjunction-to-disjunction membership theorem is factored into minimal logic and generalized from finite sets to positional lists |
+| `PropositionalEntailmentClassical.v` | `Propositional/Entailment/Cl/Basic.lean` | Complete active mathematical surface: DNE-based classical algebra with exact and expanded double-negation equivalences, raw and internal inverse contraposition, negation transport across biconditionals, derived ex falso and intuitionistic capabilities, classical De Morgan and implication/disjunction equivalences, excluded middle, elimination of contraposition, Dummett and Peirce packages, finite mapped-negation De Morgan, consistency after adjoining a negated unprovable formula, global deductive explosion, and transport of the full classical dictionary across a connective homomorphism and pointwise raw-proof equivalence. The consistency theorem requires classical reasoning only at the original system and intuitionistic explosion at the extension, replacing the source's global classical-family premise. Proof transport is generalized to unrelated source/target formula, system, and proof types, with independently reusable schema-preservation equations. Proof-relevant positional membership removes formula equality and finite-set assumptions; several results are factored into their strictly weaker minimal or intuitionistic layers |
 | `Syntax.v` | `Modal/Formula/Basic.lean` | Primitive/derived syntax, iteration, substitution, complexity, degree, subformulas |
 | `NNFormula.v` | `Modal/Formula/NNFormula.lean` | NNF syntax, negation, ordinary-formula translations, degree, modal CNF/DNF predicates |
 | `FormulaEncoding.v` | `Modal/Formula/{Basic,NNFormula}.lean` | Executable Cantor codes/decoders and surjective enumerations for nat atoms |
 | `PLoN.v` | `Modal/PLoN/Basic.lean` | Formula-indexed frames/models, satisfaction, validity, countermodels, failure of replacement of equivalents |
 | `PLoNCompleteness.v` | `Modal/PLoN/{Hilbert,Completeness,Logic/N}.lean` | Generic PLoN Hilbert soundness/canonical completeness and complete logic-N metatheory, including strictness below EN and K |
+| `CorsiVF.v` | `Modal/ModalCompanion/Corsi{,/VF}.lean` | Complete weak-Gödel VF modal companion: an explicit partial decoder and injectivity theorem; proved NP soundness, consistency, canonical seriality, and completeness for formula-indexed PLoN frames; factored PLoN-to-FMT and FMT-to-PLoN model translations with exact truth lemmas; and the VF/N/NP provability equivalences. This strengthens the pinned source by replacing its NP soundness and completeness axioms with checked canonical proofs |
 | `Axioms.v` | `Modal/Axioms.lean` | Complete named schema catalog, including normal, Geach, provability, McKinsey, and boxdot schemata |
 | `HilbertK.v` | `Modal/Hilbert/Normal/Basic.lean` | Constructive Hilbert K, substitution, derived classical rules, theories, deduction, consistency criteria, contextual boxing |
 | `Kripke.v` | `Modal/Kripke/Basic.lean` | Core frames, valuations, recursive satisfaction, substitution, relation/modal iteration, and K validity |
 | `KripkeSemantics.v` | `Modal/Kripke/Basic.lean` | Complete source-facing local/model/frame/class semantic API: singleton frames, connective/list/iteration truth laws, congruence and duality, counterexamples, closure, and K insertion |
 | `KripkeAlgebra.v` | `Modal/Kripke/Algebra.lean` | Relational complex algebras, modal operations, algebraic evaluation/satisfaction equivalence, and validity as subset/extensional equality |
 | `ModalAlgebra.v` | `Semantics/Algebra/Modal/{Basic,Magari}.lean` | Setoid Boolean and modal algebras, the complete derived K/duality/monotonicity surface, Magari diagonal and transitivity theorems, and the Kripke complex-algebra adapter |
-| `LindenbaumAlgebra.v` | `Logic/LindenbaumAlgebra.lean` | Classical formula/setoid specialization of all 29 declaration shapes: provable equivalence, implication order, connective readback, Boolean algebra, provability as equality to top, and consistency/nontriviality; the source's weaker Minimal and Intuitionistic capability boundaries remain deferred |
+| `LindenbaumAlgebra.v` | `Logic/LindenbaumAlgebra.lean` | Complete generic and classical surfaces: setoid generalized-Heyting/Heyting builders at Minimal/Intuitionistic capability boundaries, connective readback, Boolean specialization, and explicit constructive consistency/nontriviality boundaries |
 | `AlgebraicSemantics.v` | `Modal/Algebra/Basic.lean` | Exact 26-declaration generic semantics/soundness tranche: primitive-operation evaluation, all eight derived-connective equations, nontrivial algebraic models, implication/order, MP, necessitation, instantiated-axiom model classes, and raw Normal soundness |
 | `AlgebraicCompleteness.v` | `Modal/Algebra/Basic.lean` | Exact remaining 13 declarations: generic K-entailment Lindenbaum modal algebra, quotient-free syntactic algebraic model, truth/provability equivalence, singleton packages, raw-Normal algebraic completeness, and the named K instance; together with `AlgebraicSemantics.v`, this closes all 39 active declarations |
 | `CoherenceSpace.v` | `Semantics/CoherenceSpace/Basic.lean` | Complete coherence/incoherence, clique/point/colimit, base-space, linear-negation, tensor, par, lolli, and additive connective surface |
@@ -229,10 +278,13 @@ is being reconstructed:
 | `NormalHilbert.v` | `Modal/Hilbert/Normal/Basic.lean`, `Modal/{Entailment,Kripke/Logic}/*` | Schema-parameterized normal systems; named-system substitution, inclusion, soundness, and consistency |
 | `LogicInfrastructure.v` | `Modal/Logic/{Basic,SumNormal,SumQuasiNormal,Global}.lean` | Predicate-valued logic structure; normal/quasinormal sums and recursors; finite bases, substitution omission, and global consequence |
 | `HilbertAxiom.v` | `Modal/Hilbert/Axiom.lean` | Complete 30-declaration raw-template API: same-atom substitution instances, constructive membership introduction, and all 27 witness-carrying named-schema capabilities |
-| `EntailmentExtensions.v` | `Modal/Entailment/{DiaDuality,E,EM,EN,EMC,EMCN,AxiomGeach}.lean` | Complete substitution-free duality, replacement, M/C/N/K capability equivalences, iterated box/diamond laws, and dual Geach schemata; minimal supporting records from `Entailment/Basic.lean` |
+| `EntailmentExtensions.v` | `Modal/Entailment/{DiaDuality,E,EM,EN,EMC,EMCN,K,AxiomGeach}.lean` | Complete substitution-free duality, replacement, M/C/N/K capability equivalences, iterated box K/regularity/congruence, bidirectional pointwise-box/finite-conjunction laws with exact boxed-context theoremhood and applied eliminators, iterated box/diamond conjunction and disjunction algebra including normalized finite diamond folds, normal boxdot laws, the specialized K-to-Grz bridge, iterated diamond-bottom refutation, dual Geach schemata, and minimal supporting records from `Entailment/Basic.lean` |
 | `EntailmentNamedExtensions.v` | `Modal/Entailment/{EMK,END,ET,ETB,ET5,KP,N}.lean` | Complete 26-declaration substitution-free surface: the C, P, D, N, B, Point2, and Four derivations and all named capability conversions |
 | `EntailmentKT.v` | `Modal/Entailment/KT.lean` | Complete seven-declaration surface: equivalence of T and its diamond presentation at K strength, KT-to-ET/KD projections, and arbitrary iterated-box reduction |
+| `EntailmentK4.v` | `Modal/Entailment/K4.lean` | Substitution-free K4 capability, diamond contraction, and the complete raw/wrapped Box/Boxdot equivalence and Four algebra; Foundation-specific set/finset context encodings remain represented by the concrete Hilbert layer |
 | `EntailmentS4.v` | `Modal/Entailment/S4.lean` | Complete four-declaration surface: atom-polymorphic box/boxdot and diamond/diadot equivalences, with raw/wrapped aliases |
+| `GodelTranslation.v` | `Modal/ModalCompanion/Standard/Basic.lean` | Complete mathematical surface: atom-polymorphic Gödel translation; generalized least S4-based and greatest Grz-seeded companion constructions with universal properties; substitution-free S4 stability; every translated Minimal axiom plus EFQ; factored generic Hilbert-proof transport and Int corollary; persistence, exact intuitionistic-forcing/modal-truth equivalence on preorders, and the completeness/soundness modal-companion criterion |
+| `StandardModalCompanions.v` | `Modal/ModalCompanion/Standard/{Cl,Int,KC,LC}.lean` | Complete classical, Int, KC, and LC companion families; full Int/S4/Grz, KC/S4.2/Grz.2, and LC/S4.3/Grz.3 equivalences via generalized forcing and finite partial-order completeness; Int/GL and LC/GL.3 boxdot companions; the Glivenko-based classical/S4-diamond characterization; reusable S4-family entailment packages; and direct convergent-frame WLEM and connected-frame Dummett proofs |
 | `EntailmentS5.v` | `Modal/Entailment/S5.lean` | Complete ten-declaration derived-rule surface: diamond-box elimination, its applications, and both S5Grz implication-lifting helpers |
 | `HilbertWithRE.v` | `Modal/Hilbert/WithRE/Basic.lean` | Faithful generic six-constructor replacement-of-equivalents calculus, exact proof-indexed Prop recursor, substitution and weakening, Lukasiewicz basis, and all ten schematic-axiom adapters |
 | `HilbertNormal.v` | `Modal/Hilbert/Normal/Basic.lean` | Exact ten-declaration generic core: six raw constructors without hardwired modal K, all axiom aliases and structural instances, a proof-indexed Prop fold, substitution, and both weakening principles |
@@ -301,6 +353,7 @@ is being reconstructed:
 | `CanonicalPoint3McK.v` | `Modal/Kripke/Logic/S4Point3McK.lean` | Combined connectedness/McKinsey canonical completeness; strict S4.2McK and S4.3 predecessors with finite diamond and universal-frame separators |
 | `CanonicalTrivVer.v` | `Modal/{Entailment,Kripke/Logic}/{KTc,Triv,Ver}.lean`, `Modal/Kripke/AxiomVer.lean`, `Modal/Boxdot/Ver_Triv.lean` | Generic Ver/isolated canonicality; coreflexive/equality/isolated metatheory; finite Triv/Ver completeness; all entailments and strictness results; unconditional Boxdot equivalence |
 | `MaximalTranslations.v` | `Modal/Maximal/{Basic,Unprovability}.lean` | Atom-polymorphic Triv/Ver translations and degree-zero laws; exact formula and classical-tautology characterizations; universal atomic Loeb/T and P unprovability; translated K4/GL classical cores |
+| `Makinson.v` | `Modal/Maximal/Makinson.lean` | Independently checked Makinson surface: KD decides every letterless formula; a valuation-selected zero substitution and exact Triv readback prove that every consistent normal extension of KD is contained in Triv; `P` separates the Ver and Triv families. The final dichotomy is parameterized by the exact Ver/KD boundary whose upstream proof contains four `sorry` blocks, avoiding any imported axiom |
 | `CanonicalS5Grz.v` | `Modal/Entailment/S5Grz.lean`, `Modal/Kripke/Logic/S5Grz.lean`, `Modal/Hilbert/Normal/Basic.lean` | Polymorphic S5Grz calculus; direct DiaT and Tc derivations; proof-theoretic equivalence with Triv; direct finite-Triv soundness and consistency; strict S5 and Grz predecessors and the derived strict S4-to-Triv inclusion |
 | `CanonicalPoint4McK.v` | `Modal/Kripke/Logic/S4Point4McK.lean` | Complete S4.4McK canonical metatheory and strictness, reusing the complete S4.3McK predecessor API |
 | `Correspondence.v` | `Modal/Kripke/AxiomGeach.lean`, `AxiomPoint3.lean` | Generic Geach and standard named frame correspondences |
@@ -405,17 +458,17 @@ and box operations, while the model laws and Hilbert soundness specialize to
 modal algebras.  The K, S, and contraposition-elimination cases are direct
 constructive Boolean-order proofs.
 
-`LindenbaumAlgebra.v` factors the reusable classical formula/setoid layer out
-of algebraic completeness.  It exports provable biconditional and implication
-order, every connective beta/readback law, the full Boolean-algebra package,
-provability as equivalence to top, and exact inconsistent/trivial and
-consistent/nontrivial characterizations.  These cover all 29 mathematical
-declaration shapes in the source module without quotient representatives or
-decidable atom equality.  The coverage entry remains deliberately `partial`:
-Foundation proves 26 declarations from a weaker Minimal entailment and one
-from an Intuitionistic entailment, while this repository has neither a
-generalized-Heyting/Heyting setoid interface nor abstract primitive
-intuitionistic conjunction/disjunction in its modal syntax.
+`LindenbaumAlgebra.v` supplies explicit-setoid generalized-Heyting and Heyting
+interfaces over arbitrary carriers, primitive connectives, and provability
+predicates.  Its Minimal capability asks only for equivalence, implication
+order, connective congruence, lattice, adjunction, and top readback; the
+Intuitionistic extension adds explosion and implication-to-bottom.  The
+existing classical formula/Boolean specialization remains available.
+Formula representatives make all connective beta laws literal and avoid
+quotients and decidable atom equality.  Inconsistency/triviality and the
+nontriviality-to-consistency direction are constructive; the reverse
+direction makes the source's hidden not-forall witness extraction explicit
+as `generic_unprovable_witness`.
 
 `AlgebraicCompleteness.v` finishes the source module with a quotient-free
 Lindenbaum construction.  Formulas remain representatives and provable
@@ -447,6 +500,28 @@ meaningfulness, finite unsatisfiability, both set-meaningfulness laws, the
 reverse consequence/unsatisfiability direction, and compact finite
 consequence.  The remaining numbered declarations are constructive, and none
 uses choice or extensionality.
+
+`GenericAdjunctiveSet.v` supplies the generic context boundary without a
+primitive subset field: inclusion is pointwise and mutual inclusion yields
+pointwise carrier equivalence.  Its finite-cover presentation is closed under
+arbitrary subsets constructively, unlike exact enumeration, while canonical
+list-built contexts retain exact membership readback.  Duplicate-tolerant
+enumerations subsume the source's list, multiset, and finite-set conveniences
+without a decidable formula equality.
+
+`GenericForcingRelation.v` reuses the models-only semantic dictionary for
+ordinary and weak forcing while keeping world-domain existence nominally
+separate.  Persistence and future-world implication/negation are shared
+capabilities, so they cannot be confused with same-world Tarski clauses.
+Intuitionistic and weak/classical Kripke bundles assume no order laws.  The
+biconditional and global top/conjunction results take only the clauses they
+use, and global falsum over an inhabited world type is proved without the
+source's classical choice.
+
+`GenericEmbedding.v` adds faithful formula translations between proof systems
+whose formula and system types may all differ.  Translation witnesses,
+identity, and composition are entirely constructive; the source module's
+classical propositional import is not needed.
 
 `GenericEntailment.v` begins the generic proof-system layer directly above
 those semantics.  It preserves Foundation's distinction between a formal
@@ -483,6 +558,78 @@ the countermodel theorem constructive.  Exactly three later declarations use
 excluded middle to extract a semantic counterexample or model from consistency.
 Entailment pullback along an arbitrary formula map is entirely constructive,
 including literal definitional equality of its theory predicate.
+
+`GenericCalculus.v` starts Foundation's generic one-sided sequent-calculus
+layer without importing modal syntax.  Its Type-valued derivation family,
+identity, structural contraction, truth, conjunction, disjunction, and Cut
+rules require only the raw connective operations: the source's ambient De
+Morgan and involutive-negation laws are unused in this tranche.  Reusable
+pointwise list-inclusion lemmas discharge exchange and weakening uniformly.
+The singleton-normalized conjunction fold is constructive, and a rotated-tail
+recursion strengthens the source disjunction fold from Cut to the base LK
+dictionary.  Principal proof-type equivalence then transports inhabited
+derivability, modus ponens, and a single factored family of eleven classical
+Hilbert sequents.  Every numbered theorem states only the connective equations
+it uses; object-logic classicality is derived without meta-level excluded
+middle.  Derivability is exactly provability of the singleton-normalized
+finite disjunction.  This principal tranche is closed under the global
+context.  Pullback along a formula translation preserves the base calculus,
+Cut, and principal entailment; the LK adapter assumes preservation of only
+top, negation, conjunction, and disjunction, while the principal adapter needs
+no connective law at all.  Its list-map proof requires neither injectivity nor
+choice.  Contextual entailment packages a finite list with pointwise ambient
+membership evidence and its raw one-sided derivation in a dependent `Type`.
+Provability, singleton proofs, axiom introduction, and context weakening then
+transport through that equivalence.  The representation and weakening use
+only raw negation; axiom introduction adds only the base LK dictionary.
+Contextual modus ponens feeds a factored recursive context eliminator that
+yields strong cut; the helper itself needs only a local modus-ponens dictionary.
+Explosion and the exact inconsistency characterization need only cut and the
+equation negating bottom to top.  These structural declarations are closed
+under the global context.  The contextual classical adapter reuses the same
+factored eleven LK sequents as the principal adapter.  Empty-context
+equivalence and direct lifting of principal theorems need no connective or LK
+law at all; the full finite principal-context characterization exposes exactly
+the six normalization equations it uses.  All forty-two declarations remain
+constructive and closed under the global context.  Finally, a constructive
+support-splitting lemma removes adjoined assumptions without decidable formula
+equality.  The resulting deduction core drops the source's principal-system
+premise and needs only implication normalization, base LK, and modus ponens at
+adjoined contexts; the source-shaped Cut adapter supplies that last capability.
+Only conversion from inhabited provability back to a raw `Type`-valued proof
+uses informative description, matching the source's noncomputable boundary.
+
+`GenericDisjunctive.v` isolates the disjunction property from every unused
+connective.  Syntactic completeness is equivalent to disjunctiveness whenever
+the entailment proves excluded middle and resolves a disjunction against the
+negation of its left disjunct.  This exact capability boundary makes the proof
+constructive and removes Foundation's decidable formula equality premise.
+
+`GenericDecidability.v` represents a decidable theory by a direct sumbool
+procedure on formulas, retaining executable evidence without requiring a
+`Primcodable` encoding.  Essential undecidability is parameterized only by the
+negation operation needed to state incompleteness, and an inconsistent theory
+has the constant positive decider constructively.
+
+`GenericLogicSymbol.v` now owns the connective laws previously local to the
+calculus port.  It keeps involution and each De Morgan equation independently
+requestable, packages the source abbreviation interfaces, and proves exact
+negation equality reflection.  Full six-operation homomorphisms preserve the
+derived biconditional and compose constructively; pointwise equality replaces
+equality of proof-carrying homomorphism records, avoiding extensionality.  The
+natural-arity preservation theorems are generalized from proposition-valued
+homomorphisms to arbitrary targets.  Ordinary, singleton-normalized, and
+indexed list folds reuse the existing semantic fold definitions and commute
+with every full connective homomorphism.  Finite vectors use lookup functions
+over `Fin.t`, and their conjunction/disjunction folds satisfy the same general
+preservation theorem.  List negation is involutive, reflects membership, and
+satisfies ordinary and singleton-normalized variadic De Morgan laws.  These
+laws now live here rather than in Calculus.  The final finite-set layer uses
+duplicate-tolerant list representatives and explicit finite enumerations,
+removing the source's noncomputability, `Fintype`, and decidable-equality
+requirements.  Its union and fold readback theorems request only the semantic
+clauses they actually consume.  Lean-specific parser/unexpander declarations
+have no mathematical Coq counterpart.
 
 The generic elementary relation layer in `RelationProperties.v` is entirely
 constructive.  It reuses the existing finite-path and closure predicates and
@@ -1024,7 +1171,9 @@ rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
 coqchk -silent -Q . FoundationModal `
   FoundationModal.Syntax FoundationModal.NNFormula FoundationModal.Axioms `
-  FoundationModal.GenericSemantics FoundationModal.GenericEntailment `
+  FoundationModal.GenericSemantics FoundationModal.GenericAdjunctiveSet `
+  FoundationModal.GenericForcingRelation FoundationModal.GenericEntailment `
+  FoundationModal.GenericEmbedding `
   FoundationModal.FormulaEncoding FoundationModal.PLoN `
   FoundationModal.PLoNCompleteness `
   FoundationModal.Kripke FoundationModal.KripkeSemantics FoundationModal.NNFormulaSemantics `

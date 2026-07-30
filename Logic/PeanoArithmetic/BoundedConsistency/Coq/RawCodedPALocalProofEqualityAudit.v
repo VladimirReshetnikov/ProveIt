@@ -1,0 +1,31 @@
+(** Assumption audit for represented local equality elimination. *)
+
+From BoundedPAConsistency Require Import RawCodedPALocalProofEquality.
+
+Import PABoundedRawCodedPALocalProofEquality.
+
+Check raw_codedPALocalProofOf_eqRefl.
+Check raw_codedPALocalProofOf_eqElim.
+Check raw_codedPALocalProofOf_templateEqElim.
+Check templateEqualitySymmetryMotive.
+Check templateEqualitySymmetryMotive_open.
+Check raw_codedPALocalProofOf_templateEqSymmetry.
+Check raw_codedPALocalProofOf_templateEqTransport_reverse.
+Check raw_codedPALocalProofOf_templateParameterTransport_reverse.
+Check templateFormulaReplaceParameters.
+Check templateFormulaReplaceParametersDirect.
+Check templateFormulaReplaceParameters_eq_direct.
+Check raw_codedPALocalProofOf_templateParameterTransports_reverse.
+Print Assumptions raw_codedPALocalProofOf_eqRefl.
+Print Assumptions raw_codedPALocalProofOf_eqElim.
+Print Assumptions raw_codedPALocalProofOf_templateEqElim.
+Print Assumptions templateEqualitySymmetryMotive_open.
+Print Assumptions raw_codedPALocalProofOf_templateEqSymmetry.
+Print Assumptions raw_codedPALocalProofOf_templateEqTransport_reverse.
+Print Assumptions
+  raw_codedPALocalProofOf_templateParameterTransport_reverse.
+Print Assumptions templateFormulaReplaceParameters.
+Print Assumptions templateFormulaReplaceParametersDirect.
+Print Assumptions templateFormulaReplaceParameters_eq_direct.
+Print Assumptions
+  raw_codedPALocalProofOf_templateParameterTransports_reverse.

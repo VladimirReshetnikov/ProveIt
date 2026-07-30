@@ -1,0 +1,19 @@
+(** Assumption audit for normalized global-Sigma ternary application. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthGlobalSigmaTernaryApplicationView.
+
+Import PABoundedRawCodedDynamicTruthGlobalSigmaTernaryApplicationView.
+
+Check RawDynamicTruthGlobalSigmaTernaryApplicationViewAt.
+Check raw_dynamicTruthGlobalSigmaTernaryApplication_view_iff.
+Check raw_dynamicTruthGlobalSigmaTernaryApplication_selector_view.
+Check raw_dynamicTruthGlobalSigmaTernaryApplication_view_exposes_sigma_row.
+Check raw_dynamicTruthGlobalSigmaTernaryApplication_selector_unique.
+
+Print Assumptions raw_dynamicTruthGlobalSigmaTernaryApplication_view_iff.
+Print Assumptions raw_dynamicTruthGlobalSigmaTernaryApplication_selector_view.
+Print Assumptions
+  raw_dynamicTruthGlobalSigmaTernaryApplication_view_exposes_sigma_row.
+Print Assumptions
+  raw_dynamicTruthGlobalSigmaTernaryApplication_selector_unique.

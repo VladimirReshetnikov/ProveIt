@@ -1,0 +1,75 @@
+(** Audit surface for the exact direct equality-elimination branch. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationCase.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationCase.
+
+(** Literal constructor, witness-index, and shell shapes. *)
+Check coqRestrictedPADirectEqualityElimination_case_shape.
+Check coqRestrictedPADirectEqualityEliminationEqualityChildTerm.
+Check coqRestrictedPADirectEqualityEliminationMotiveChildTerm.
+Check coqRestrictedPADirectEqualityEliminationEqualityFormulaTerm.
+Check coqRestrictedPADirectEqualityEliminationSourceInstanceTerm.
+Check
+  coqRestrictedPADirectEqualityElimination_equality_context_truth_agreement.
+Check coqRestrictedPADirectEqualityElimination_motive_context_truth_agreement.
+Check coqRestrictedPADirectEqualityElimination_remaining_shape.
+Check coqRestrictedPADirectEqualityElimination_ready_restricted_in.
+Check coqRestrictedPADirectEqualityElimination_ready_prefix_in.
+
+(** Every displayed constructor field has its own checked projection. *)
+Check coqRestrictedPADirectEqualityEliminationCodeEqualityRootAt_valid.
+Check coqRestrictedPADirectEqualityEliminationTargetSubstitutionRootAt_valid.
+Check coqRestrictedPADirectEqualityEliminationEqualityFormulaCodeRootAt_valid.
+Check
+  coqRestrictedPADirectEqualityEliminationEqualityChildEndpointRootAt_valid.
+Check coqRestrictedPADirectEqualityEliminationSourceSubstitutionRootAt_valid.
+Check coqRestrictedPADirectEqualityEliminationMotiveChildEndpointRootAt_valid.
+
+(** The exact residual package contains two recursive-child operations and
+    one dynamic equality/substitution truth operation. *)
+Check
+  coqRestrictedPADirectEqualityEliminationEqualityChildInterfaceResultTemplate.
+Check
+  coqRestrictedPADirectEqualityEliminationMotiveChildInterfaceResultTemplate.
+Check coqRestrictedPADirectEqualityEliminationChildInterfaceLawTemplate.
+Check
+  coqRestrictedPADirectEqualityEliminationEqualityChildInterfaceLawTemplate.
+Check
+  coqRestrictedPADirectEqualityEliminationMotiveChildInterfaceLawTemplate.
+Check coqRestrictedPADirectEqualityEliminationDynamicTruthLawTemplate.
+Check RawCoqRestrictedPADirectEqualityEliminationChildInterfaceRootsAt.
+Check RawCoqRestrictedPADirectEqualityEliminationDynamicTruthLawRootAt.
+Check RawCoqRestrictedPADirectStrongStepEqualityEliminationSemanticRoots.
+
+(** Structural composition, recursive-IH application, and the literal
+    dispatcher slot remain independently inspectable. *)
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectEqualityEliminationChildInterface.
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectEqualityEliminationConclusionAt.
+Check
+  raw_coqRestrictedPADirectStrongStepEqualityEliminationCaseImplicationRoot.
+
+(** Finite projections are constructive.  Semantic composition inherits
+    only dependencies already present in the raw model/compiler stack. *)
+Print Assumptions
+  coqRestrictedPADirectEqualityEliminationCodeEqualityRootAt_valid.
+Print Assumptions
+  coqRestrictedPADirectEqualityEliminationTargetSubstitutionRootAt_valid.
+Print Assumptions
+  coqRestrictedPADirectEqualityEliminationEqualityFormulaCodeRootAt_valid.
+Print Assumptions
+  coqRestrictedPADirectEqualityEliminationEqualityChildEndpointRootAt_valid.
+Print Assumptions
+  coqRestrictedPADirectEqualityEliminationSourceSubstitutionRootAt_valid.
+Print Assumptions
+  coqRestrictedPADirectEqualityEliminationMotiveChildEndpointRootAt_valid.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectEqualityEliminationChildInterface.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectEqualityEliminationConclusionAt.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepEqualityEliminationCaseImplicationRoot.

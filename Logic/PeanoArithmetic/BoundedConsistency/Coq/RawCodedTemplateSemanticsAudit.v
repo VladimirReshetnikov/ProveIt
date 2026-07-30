@@ -1,0 +1,31 @@
+(** Audit surface for raw-model template semantics. *)
+
+From BoundedPAConsistency Require Import RawCodedTemplateSemantics.
+
+Import PABoundedRawCodedTemplateSemantics.
+
+Check RawTemplateParameterEnvironment.
+Check RawTemplatePredicateEnvironment.
+Check rawTemplateTermEval.
+Check rawTemplateTermsEval.
+Check rawTemplateFormulaSat.
+
+Check rawTemplateTermEval_variables_ext.
+Check rawTemplateFormulaSat_variables_ext.
+Check rawTemplateTermEval_embedPA.
+Check rawTemplateFormulaSat_embedPA.
+Check rawTemplateTermEval_rename.
+Check rawTemplateFormulaSat_rename.
+
+Check rawTemplateEnvironmentInsertAt.
+Check rawTemplateParameterOverride.
+Check rawTemplateEnvironmentInsertAt_shift.
+Check rawTemplateEnvironmentInsertAt_fresh.
+Check rawTemplateTermEval_abstractParameterAt.
+Check rawTemplateFormulaSat_abstractParameterAt.
+Check rawTemplateFormulaSat_abstractParameter.
+
+Print Assumptions rawTemplateFormulaSat_embedPA.
+Print Assumptions rawTemplateFormulaSat_rename.
+Print Assumptions rawTemplateFormulaSat_abstractParameterAt.
+Print Assumptions rawTemplateFormulaSat_abstractParameter.

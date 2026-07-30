@@ -1,0 +1,16 @@
+(** Audit surface for direct integration over a witnessed template tail. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectGrowingIntegrationFromWitnessedRuleCases.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectGrowingIntegrationFromWitnessedRuleCases.
+
+Check raw_templateContextCode_app_on_tail.
+Check raw_templateContextCode_standardPAAxiomPrefix_app.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_rule_case_semantic_roots_on_witnessed_tail.
+
+Print Assumptions raw_templateContextCode_standardPAAxiomPrefix_app.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_rule_case_semantic_roots_on_witnessed_tail.

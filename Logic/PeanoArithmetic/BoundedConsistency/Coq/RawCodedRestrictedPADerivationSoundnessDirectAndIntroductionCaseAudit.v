@@ -1,0 +1,57 @@
+(** Audit surface for the exact direct conjunction-introduction branch. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase.
+
+(** Literal constructor syntax and the two child strong-prefix instances. *)
+Check coqRestrictedPADirectAndIntroduction_case_shape.
+Check coqRestrictedPADirectAndIntroduction_deep_prefix_shape.
+Check coqRestrictedPADirectAndIntroduction_left_guarded_shape.
+Check coqRestrictedPADirectAndIntroduction_right_guarded_shape.
+Check coqRestrictedPADirectAndIntroduction_left_ready_shape.
+Check coqRestrictedPADirectAndIntroduction_right_ready_shape.
+Check coqRestrictedPADirectAndIntroduction_left_below_shape.
+Check coqRestrictedPADirectAndIntroduction_right_below_shape.
+
+(** Every right-associated case projection is compiled independently. *)
+Check coqRestrictedPADirectAndIntroductionCodeEqualityRootAt_valid.
+Check coqRestrictedPADirectAndIntroductionFormulaAndRootAt_valid.
+Check coqRestrictedPADirectAndIntroductionLeftEndpointRootAt_valid.
+Check coqRestrictedPADirectAndIntroductionRightEndpointRootAt_valid.
+
+(** The residual boundary names semantic operations, not a branch proof. *)
+Check coqRestrictedPADirectAndIntroductionChildInterfaceLawTemplate.
+Check coqRestrictedPADirectAndIntroductionChildInterfaceResultTemplate.
+Check coqRestrictedPADirectAndIntroductionTruthLawTemplate.
+Check RawCoqRestrictedPADirectAndIntroductionChildInterfaceRootsAt.
+Check RawCoqRestrictedPADirectAndIntroductionTruthLawRootAt.
+Check RawCoqRestrictedPADirectStrongStepAndIntroductionSemanticRoots.
+
+(** Open-root composition, recursive-child/IH plumbing, and the exact shell
+    slot are separate checked stages. *)
+Check raw_codedPALocalProofOf_coqRestrictedPADirect_templateImpE.
+Check raw_codedPALocalProofOf_coqRestrictedPADirect_templateAllE.
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectAndIntroductionChildInterface.
+Check raw_codedPALocalProofOf_coqRestrictedPADirectAndIntroductionChildTruth.
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectAndIntroductionConclusionAt.
+Check
+  raw_coqRestrictedPADirectStrongStepAndIntroductionCaseImplicationRoot.
+
+(** No new logical axiom is introduced by the finite constructor plumbing.
+    Existing classical/extensional dependencies, if printed, come from the
+    shared raw-model and template compiler stack. *)
+Print Assumptions
+  coqRestrictedPADirectAndIntroductionCodeEqualityRootAt_valid.
+Print Assumptions
+  coqRestrictedPADirectAndIntroductionRightEndpointRootAt_valid.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectAndIntroductionChildTruth.
+Print Assumptions
+  raw_codedPALocalProofOf_coqRestrictedPADirectAndIntroductionConclusionAt.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepAndIntroductionCaseImplicationRoot.

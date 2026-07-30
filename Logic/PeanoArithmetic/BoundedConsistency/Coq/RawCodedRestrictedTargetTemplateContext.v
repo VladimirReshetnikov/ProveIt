@@ -157,7 +157,114 @@ Proof.
 Qed.
 
 (** ------------------------------------------------------------------
-    Exact arbitrary-model raw-code translation. *)
+    Exact arbitrary-model raw-code translation.
+
+    The main recursion is stated over bare structural symbols rather than the
+    stronger operation-tree input record.  Restricted targets contain no
+    opaque template leaves, so requiring shift and substitution witnesses here
+    would be artificial.  This more general statement is also what lets the
+    direct nonstandard translation share the exact same target theorem. *)
+
+Lemma rawStructuralWith_restrictedTargetTemplateCloseN : forall
+    (M : RawPAModel) (symbols : RawCodedTemplateStructuralSymbols M)
+    count body,
+  rawStructuralTemplateFormulaWith M symbols
+    (restrictedTargetTemplateCloseN count body) =
+  rawRestrictedTargetCloseNFormulaCode M count
+    (rawStructuralTemplateFormulaWith M symbols body).
+Proof.
+  intros M symbols count.
+  induction count as [|count ih]; intro body.
+  - reflexivity.
+  - cbn [restrictedTargetTemplateCloseN
+      rawRestrictedTargetCloseNFormulaCode].
+    change
+      (rawStructuralTemplateFormulaWith M symbols
+        (restrictedTargetTemplateCloseN count (tfAll body)) =
+       rawRestrictedTargetCloseNFormulaCode M count
+        (rawStructuralTemplateFormulaWith M symbols (tfAll body))).
+    apply ih.
+Qed.
+
+Lemma rawStructuralWith_restrictedTargetTemplateTermContext : forall
+    (M : RawPAModel) (symbols : RawCodedTemplateStructuralSymbols M)
+    replacement context,
+  rawStructuralTemplateTermWith M symbols
+    (restrictedTargetTemplateTermContext replacement context) =
+  rawRestrictedTargetTermContextCode M
+    (rawStructuralTemplateTermWith M symbols replacement) context.
+Proof.
+  intros M symbols replacement context.
+  induction context as
+      [fixed | | child ih | lhs ihLeft rhs ihRight |
+       lhs ihLeft rhs ihRight].
+  - cbn [restrictedTargetTemplateTermContext
+      rawRestrictedTargetTermContextCode].
+    apply rawStructuralTemplateTermWith_embedPA.
+  - reflexivity.
+  - cbn [restrictedTargetTemplateTermContext
+      rawRestrictedTargetTermContextCode rawStructuralTemplateTermWith].
+    now rewrite ih.
+  - cbn [restrictedTargetTemplateTermContext
+      rawRestrictedTargetTermContextCode rawStructuralTemplateTermWith].
+    now rewrite ihLeft, ihRight.
+  - cbn [restrictedTargetTemplateTermContext
+      rawRestrictedTargetTermContextCode rawStructuralTemplateTermWith].
+    now rewrite ihLeft, ihRight.
+Qed.
+
+Theorem rawStructuralWith_restrictedTargetTemplateFormulaContext : forall
+    (M : RawPAModel) (symbols : RawCodedTemplateStructuralSymbols M)
+    replacement context,
+  rawStructuralTemplateFormulaWith M symbols
+    (restrictedTargetTemplateFormulaContext replacement context) =
+  rawRestrictedTargetFormulaContextCode M
+    (rawStructuralTemplateTermWith M symbols replacement) context.
+Proof.
+  intros M symbols replacement context.
+  induction context as
+      [fixed | | lhs rhs | lhs ihLeft rhs ihRight |
+       lhs ihLeft rhs ihRight | lhs ihLeft rhs ihRight |
+       child ih | child ih | child ih].
+  - cbn [restrictedTargetTemplateFormulaContext
+      rawRestrictedTargetFormulaContextCode].
+    apply rawStructuralTemplateFormulaWith_embedPA.
+  - reflexivity.
+  - cbn [restrictedTargetTemplateFormulaContext
+      rawRestrictedTargetFormulaContextCode
+      rawStructuralTemplateFormulaWith].
+    pose proof
+      (rawStructuralWith_restrictedTargetTemplateTermContext
+        M symbols replacement lhs) as hLeft.
+    pose proof
+      (rawStructuralWith_restrictedTargetTemplateTermContext
+        M symbols replacement rhs) as hRight.
+    now rewrite hLeft, hRight.
+  - cbn [restrictedTargetTemplateFormulaContext
+      rawRestrictedTargetFormulaContextCode
+      rawStructuralTemplateFormulaWith].
+    now rewrite ihLeft, ihRight.
+  - cbn [restrictedTargetTemplateFormulaContext
+      rawRestrictedTargetFormulaContextCode
+      rawStructuralTemplateFormulaWith].
+    now rewrite ihLeft, ihRight.
+  - cbn [restrictedTargetTemplateFormulaContext
+      rawRestrictedTargetFormulaContextCode
+      rawStructuralTemplateFormulaWith].
+    now rewrite ihLeft, ihRight.
+  - cbn [restrictedTargetTemplateFormulaContext
+      rawRestrictedTargetFormulaContextCode
+      rawStructuralTemplateFormulaWith].
+    now rewrite ih.
+  - cbn [restrictedTargetTemplateFormulaContext
+      rawRestrictedTargetFormulaContextCode
+      rawStructuralTemplateFormulaWith].
+    now rewrite ih.
+  - cbn [restrictedTargetTemplateFormulaContext
+      rawRestrictedTargetFormulaContextCode].
+    rewrite rawStructuralWith_restrictedTargetTemplateCloseN, ih.
+    reflexivity.
+Qed.
 
 Lemma rawStructural_restrictedTargetTemplateCloseN : forall
     (M : RawPAModel) (inputs : RawCodedTemplateStructuralInputs M)
@@ -167,17 +274,9 @@ Lemma rawStructural_restrictedTargetTemplateCloseN : forall
   rawRestrictedTargetCloseNFormulaCode M count
     (rawStructuralTemplateFormula inputs body).
 Proof.
-  intros M inputs count.
-  induction count as [|count ih]; intro body.
-  - reflexivity.
-  - cbn [restrictedTargetTemplateCloseN
-      rawRestrictedTargetCloseNFormulaCode].
-    change
-      (rawStructuralTemplateFormula inputs
-        (restrictedTargetTemplateCloseN count (tfAll body)) =
-       rawRestrictedTargetCloseNFormulaCode M count
-        (rawStructuralTemplateFormula inputs (tfAll body))).
-    apply ih.
+  intros M inputs count body.
+  unfold rawStructuralTemplateFormula.
+  apply rawStructuralWith_restrictedTargetTemplateCloseN.
 Qed.
 
 Lemma rawStructural_restrictedTargetTemplateTermContext : forall
@@ -189,28 +288,8 @@ Lemma rawStructural_restrictedTargetTemplateTermContext : forall
     (rawStructuralTemplateTerm inputs replacement) context.
 Proof.
   intros M inputs replacement context.
-  induction context as
-      [fixed | | child ih | lhs ihLeft rhs ihRight |
-       lhs ihLeft rhs ihRight].
-  - cbn [restrictedTargetTemplateTermContext
-      rawRestrictedTargetTermContextCode].
-    apply rawStructuralTemplateTerm_embedPA.
-  - reflexivity.
-  - cbn [restrictedTargetTemplateTermContext
-      rawRestrictedTargetTermContextCode
-      rawStructuralTemplateTerm rawStructuralTemplateTermWith].
-    unfold rawStructuralTemplateTerm in ih.
-    now rewrite ih.
-  - cbn [restrictedTargetTemplateTermContext
-      rawRestrictedTargetTermContextCode
-      rawStructuralTemplateTerm rawStructuralTemplateTermWith].
-    unfold rawStructuralTemplateTerm in ihLeft, ihRight.
-    now rewrite ihLeft, ihRight.
-  - cbn [restrictedTargetTemplateTermContext
-      rawRestrictedTargetTermContextCode
-      rawStructuralTemplateTerm rawStructuralTemplateTermWith].
-    unfold rawStructuralTemplateTerm in ihLeft, ihRight.
-    now rewrite ihLeft, ihRight.
+  unfold rawStructuralTemplateTerm.
+  apply rawStructuralWith_restrictedTargetTemplateTermContext.
 Qed.
 
 Theorem rawStructural_restrictedTargetTemplateFormulaContext : forall
@@ -222,54 +301,8 @@ Theorem rawStructural_restrictedTargetTemplateFormulaContext : forall
     (rawStructuralTemplateTerm inputs replacement) context.
 Proof.
   intros M inputs replacement context.
-  induction context as
-      [fixed | | lhs rhs | lhs ihLeft rhs ihRight |
-       lhs ihLeft rhs ihRight | lhs ihLeft rhs ihRight |
-       child ih | child ih | child ih].
-  - cbn [restrictedTargetTemplateFormulaContext
-      rawRestrictedTargetFormulaContextCode].
-    apply rawStructuralTemplateFormula_embedPA.
-  - reflexivity.
-  - cbn [restrictedTargetTemplateFormulaContext
-      rawRestrictedTargetFormulaContextCode
-      rawStructuralTemplateFormula rawStructuralTemplateFormulaWith].
-    pose proof
-      (rawStructural_restrictedTargetTemplateTermContext
-        M inputs replacement lhs) as hLeft.
-    pose proof
-      (rawStructural_restrictedTargetTemplateTermContext
-        M inputs replacement rhs) as hRight.
-    unfold rawStructuralTemplateTerm in hLeft, hRight.
-    now rewrite hLeft, hRight.
-  - cbn [restrictedTargetTemplateFormulaContext
-      rawRestrictedTargetFormulaContextCode
-      rawStructuralTemplateFormula rawStructuralTemplateFormulaWith].
-    unfold rawStructuralTemplateFormula in ihLeft, ihRight.
-    now rewrite ihLeft, ihRight.
-  - cbn [restrictedTargetTemplateFormulaContext
-      rawRestrictedTargetFormulaContextCode
-      rawStructuralTemplateFormula rawStructuralTemplateFormulaWith].
-    unfold rawStructuralTemplateFormula in ihLeft, ihRight.
-    now rewrite ihLeft, ihRight.
-  - cbn [restrictedTargetTemplateFormulaContext
-      rawRestrictedTargetFormulaContextCode
-      rawStructuralTemplateFormula rawStructuralTemplateFormulaWith].
-    unfold rawStructuralTemplateFormula in ihLeft, ihRight.
-    now rewrite ihLeft, ihRight.
-  - cbn [restrictedTargetTemplateFormulaContext
-      rawRestrictedTargetFormulaContextCode
-      rawStructuralTemplateFormula rawStructuralTemplateFormulaWith].
-    unfold rawStructuralTemplateFormula in ih.
-    now rewrite ih.
-  - cbn [restrictedTargetTemplateFormulaContext
-      rawRestrictedTargetFormulaContextCode
-      rawStructuralTemplateFormula rawStructuralTemplateFormulaWith].
-    unfold rawStructuralTemplateFormula in ih.
-    now rewrite ih.
-  - cbn [restrictedTargetTemplateFormulaContext
-      rawRestrictedTargetFormulaContextCode].
-    rewrite rawStructural_restrictedTargetTemplateCloseN, ih.
-    reflexivity.
+  unfold rawStructuralTemplateFormula, rawStructuralTemplateTerm.
+  apply rawStructuralWith_restrictedTargetTemplateFormulaContext.
 Qed.
 
 (** Two useful nonstandard specializations.  They identify the exact
@@ -299,6 +332,36 @@ Corollary rawStructural_restrictedPAConsistencyTemplate : forall
     restrictedPAConsistencyFormulaContext.
 Proof.
   intros. apply rawStructural_restrictedTargetTemplateFormulaContext.
+Qed.
+
+(** Direct translations use the same constructor interpretation and differ
+    only in the operation evidence attached to opaque leaves.  Since a
+    restricted target has no opaque leaves, the symbol-level theorem gives
+    both useful direct specializations without any carrier decoding. *)
+Corollary rawStructuralWith_restrictedTargetProofTemplate : forall
+    (M : RawPAModel) (symbols : RawCodedTemplateStructuralSymbols M)
+    levelParameter root,
+  rawStructuralTemplateFormulaWith M symbols
+    (restrictedTargetTemplateFormulaContext levelParameter
+      (restrictedTargetProofContext root)) =
+  rawRestrictedTargetFormulaContextCode M
+    (rawStructuralTemplateTermWith M symbols levelParameter)
+    (restrictedTargetProofContext root).
+Proof.
+  intros. apply rawStructuralWith_restrictedTargetTemplateFormulaContext.
+Qed.
+
+Corollary rawStructuralWith_restrictedPAConsistencyTemplate : forall
+    (M : RawPAModel) (symbols : RawCodedTemplateStructuralSymbols M)
+    levelParameter,
+  rawStructuralTemplateFormulaWith M symbols
+    (restrictedTargetTemplateFormulaContext levelParameter
+      restrictedPAConsistencyFormulaContext) =
+  rawRestrictedTargetFormulaContextCode M
+    (rawStructuralTemplateTermWith M symbols levelParameter)
+    restrictedPAConsistencyFormulaContext.
+Proof.
+  intros. apply rawStructuralWith_restrictedTargetTemplateFormulaContext.
 Qed.
 
 End PABoundedRawCodedRestrictedTargetTemplateContext.

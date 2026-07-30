@@ -1,0 +1,14 @@
+(** Public surface and assumption audit for local admissibility assembly. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthLocalAdmissibilityCompilation.
+
+Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
+
+Check rawDynamicTruthLocalAtomicAdequacyCode.
+Check rawDynamicTruthLocalAssignmentDefinedCode.
+Check RawDynamicTruthLocalAdmissibilityComponentsAt.
+Check raw_codedPALocalProofOf_dynamicTruthLocalAdmissible_of_components.
+
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthLocalAdmissible_of_components.

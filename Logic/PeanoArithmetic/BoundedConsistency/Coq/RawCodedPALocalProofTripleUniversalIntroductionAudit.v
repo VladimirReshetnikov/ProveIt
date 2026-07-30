@@ -1,0 +1,11 @@
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofTripleUniversalIntroduction.
+
+Import PABoundedRawCodedPALocalProofTripleUniversalIntroduction.
+
+Check rawPALocalProofClose3Root.
+Check raw_codedPALocalProofOf_close3_on.
+Check raw_codedPALocalProofOf_close3_empty.
+
+Print Assumptions raw_codedPALocalProofOf_close3_on.
+Print Assumptions raw_codedPALocalProofOf_close3_empty.

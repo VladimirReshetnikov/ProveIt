@@ -150,6 +150,20 @@ Record k_entailment {AtomType}
   k_dia_duality : forall p, L (DiaDuality p)
 }.
 
+(** Every normal logic supplies Foundation's weaker, substitution-free K
+    capability.  Keeping this adapter generic avoids rebuilding the same
+    four-field record for each generated normal sum. *)
+Definition k_entailment_of_normal_logic :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    normal_logic L -> k_entailment L.
+Proof.
+  intros AtomType L Hnormal; constructor.
+  - exact (quasi_classical (normal_quasi Hnormal)).
+  - exact (normal_nec Hnormal).
+  - constructor. exact (quasi_modal_K (normal_quasi Hnormal)).
+  - exact (quasi_dia_duality (normal_quasi Hnormal)).
+Defined.
+
 (** * Classical object-logic adapters *)
 
 Lemma logic_iff_intro :
@@ -824,6 +838,679 @@ Proof.
   pose proof (logic_under_mp Hclass Hlift Hboxed_imp) as Hwith_q.
   exact (logic_under_mp Hclass Hwith_q Hright).
 Qed.
+
+(** * K.lean: substitution-free derived modal algebra *)
+
+Lemma k_multinecessitation :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p,
+    L p -> L (box_iter n p).
+Proof.
+  intros AtomType L HK n; induction n as [|n IH]; intros p Hp; simpl.
+  - exact Hp.
+  - apply (k_necessitation HK). now apply IH.
+Qed.
+
+(** Iterating K does not require substitution closure.  At each successor,
+    one necessitated induction hypothesis and two instances of K suffice. *)
+Lemma k_box_iter_axiom_K :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp (box_iter n (Imp p q))
+      (Imp (box_iter n p) (box_iter n q))).
+Proof.
+  intros AtomType L HK n; induction n as [|n IH]; intros p q; simpl.
+  - now apply logic_identity, k_classical.
+  - pose proof (k_classical HK) as Hclass.
+    pose proof (k_necessitation HK (IH p q)) as Hnec.
+    pose proof
+      (logic_modus_ponens Hclass
+        (has_K_axiom (k_axiom HK)
+          (box_iter n (Imp p q))
+          (Imp (box_iter n p) (box_iter n q))) Hnec) as Hfirst.
+    exact (logic_imp_trans Hclass Hfirst
+      (has_K_axiom (k_axiom HK) (box_iter n p) (box_iter n q))).
+Qed.
+
+Lemma k_box_iter_regularity :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp p q) ->
+    L (Imp (box_iter n p) (box_iter n q)).
+Proof.
+  intros AtomType L HK n p q Hpq.
+  eapply (logic_modus_ponens (k_classical HK)).
+  - exact (k_box_iter_axiom_K HK n p q).
+  - exact (k_multinecessitation HK n Hpq).
+Qed.
+
+(** Applied forms of the K algebra.  Foundation exposes these beside the
+    implication theorems because proof-object modus ponens is explicit there;
+    keeping the eliminators factored is equally useful for Prop-valued Coq
+    theoremhood. *)
+Lemma k_box_iter_axiom_K_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (box_iter n (Imp p q)) ->
+    L (Imp (box_iter n p) (box_iter n q)).
+Proof.
+  intros AtomType L HK n p q Himp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_box_iter_axiom_K HK n p q) Himp).
+Qed.
+
+Lemma k_box_congruence :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Iff p q) -> L (Iff (Box p) (Box q)).
+Proof.
+  intros AtomType L HK p q Hiff.
+  pose proof (k_classical HK) as Hclass.
+  apply logic_iff_intro; [exact Hclass | |].
+  - apply box_regularity_of_k; [exact HK |].
+    now apply (logic_iff_elim_left Hclass).
+  - apply box_regularity_of_k; [exact HK |].
+    now apply (logic_iff_elim_right Hclass).
+Qed.
+
+Lemma k_box_iter_congruence :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Iff p q) ->
+    L (Iff (box_iter n p) (box_iter n q)).
+Proof.
+  intros AtomType L HK n p q Hiff.
+  pose proof (k_classical HK) as Hclass.
+  apply logic_iff_intro; [exact Hclass | |].
+  - apply k_box_iter_regularity; [exact HK |].
+    now apply (logic_iff_elim_left Hclass).
+  - apply k_box_iter_regularity; [exact HK |].
+    now apply (logic_iff_elim_right Hclass).
+Qed.
+
+Lemma k_box_iter_top :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n,
+    L (box_iter n Top).
+Proof.
+  intros AtomType L HK n.
+  apply k_multinecessitation; [exact HK |].
+  now apply logic_mem_top, k_classical.
+Qed.
+
+Lemma k_box_iter_and_collect :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp (And (box_iter n p) (box_iter n q))
+      (box_iter n (And p q))).
+Proof.
+  intros AtomType L HK n p q.
+  pose proof (k_classical HK) as Hclass.
+  assert (Hintro : L (Imp p (Imp q (And p q)))).
+  { apply (logic_classical_tautology Hclass).
+    intro rho; unfold And, Neg; simpl; tauto. }
+  pose proof (k_box_iter_regularity HK n Hintro) as Hfirst.
+  pose proof (k_box_iter_axiom_K HK n q (And p q)) as Hsecond.
+  pose proof (logic_imp_trans Hclass Hfirst Hsecond) as Hcurried.
+  eapply (logic_modus_ponens Hclass); [|exact Hcurried].
+  apply (logic_classical_tautology Hclass).
+  intro rho; unfold And, Neg; simpl; tauto.
+Qed.
+
+Lemma k_box_iter_and_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp (box_iter n (And p q))
+      (And (box_iter n p) (box_iter n q))).
+Proof.
+  intros AtomType L HK n p q.
+  pose proof (k_classical HK) as Hclass.
+  apply logic_imp_and_intro; [exact Hclass | |].
+  - apply k_box_iter_regularity; [exact HK |].
+    now apply logic_and_elim_left_imp.
+  - apply k_box_iter_regularity; [exact HK |].
+    now apply logic_and_elim_right_imp.
+Qed.
+
+Lemma k_box_iter_and_collect_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (And (box_iter n p) (box_iter n q)) ->
+    L (box_iter n (And p q)).
+Proof.
+  intros AtomType L HK n p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_box_iter_and_collect HK n p q) Hp).
+Qed.
+
+Lemma k_box_iter_and_distribute_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (box_iter n (And p q)) ->
+    L (And (box_iter n p) (box_iter n q)).
+Proof.
+  intros AtomType L HK n p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_box_iter_and_distribute HK n p q) Hp).
+Qed.
+
+Lemma k_box_iter_or_collect :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp (Or (box_iter n p) (box_iter n q))
+      (box_iter n (Or p q))).
+Proof.
+  intros AtomType L HK n p q.
+  pose proof (k_classical HK) as Hclass.
+  assert (Hleft0 : L (Imp p (Or p q))).
+  { apply (logic_classical_tautology Hclass).
+    intro rho; unfold Or, Neg; simpl; tauto. }
+  assert (Hright0 : L (Imp q (Or p q))).
+  { apply (logic_classical_tautology Hclass).
+    intro rho; unfold Or, Neg; simpl; tauto. }
+  pose proof (k_box_iter_regularity HK n Hleft0) as Hleft.
+  pose proof (k_box_iter_regularity HK n Hright0) as Hright.
+  eapply (logic_modus_ponens Hclass); [|exact Hright].
+  eapply (logic_modus_ponens Hclass); [|exact Hleft].
+  apply (logic_classical_tautology Hclass).
+  intro rho; unfold Or, Neg; simpl; tauto.
+Qed.
+
+Lemma k_box_iter_or_collect_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Or (box_iter n p) (box_iter n q)) ->
+    L (box_iter n (Or p q)).
+Proof.
+  intros AtomType L HK n p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_box_iter_or_collect HK n p q) Hp).
+Qed.
+
+(** Boxdot is the conjunction [p /\ box p].  Its normality laws are already
+    consequences of K; no additional modal capability is required. *)
+Lemma k_boxdot_top :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> L (Boxdot Top).
+Proof.
+  intros AtomType L HK; unfold Boxdot.
+  apply logic_and_intro; [exact (k_classical HK) | |].
+  - now apply logic_mem_top, k_classical.
+  - exact (k_box_iter_top HK 1).
+Qed.
+
+Lemma k_boxdot_axiom_K :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Imp (Boxdot (Imp p q))
+      (Imp (Boxdot p) (Boxdot q))).
+Proof.
+  intros AtomType L HK p q.
+  pose proof (k_classical HK) as Hclass.
+  set (a := Boxdot (Imp p q)).
+  set (b := Boxdot p).
+  assert (Ha_imp : L (Imp a (Imp p q))).
+  { unfold a, Boxdot. now apply logic_and_elim_left_imp. }
+  assert (Ha_box_imp : L (Imp a (Box (Imp p q)))).
+  { unfold a, Boxdot. now apply logic_and_elim_right_imp. }
+  assert (Hb_p : L (Imp b p)).
+  { unfold b, Boxdot. now apply logic_and_elim_left_imp. }
+  assert (Hb_box_p : L (Imp b (Box p))).
+  { unfold b, Boxdot. now apply logic_and_elim_right_imp. }
+  pose proof (logic_and_elim_left_imp Hclass a b) as Hab_a.
+  pose proof (logic_and_elim_right_imp Hclass a b) as Hab_b.
+  pose proof (logic_imp_trans Hclass Hab_a Ha_imp) as Hab_imp.
+  pose proof (logic_imp_trans Hclass Hab_b Hb_p) as Hab_p.
+  pose proof (logic_under_mp Hclass Hab_imp Hab_p) as Hab_q.
+  pose proof (logic_imp_trans Hclass Hab_a Ha_box_imp) as Hab_box_imp.
+  pose proof (logic_imp_trans Hclass Hab_b Hb_box_p) as Hab_box_p.
+  pose proof (logic_imply_intro Hclass (And a b)
+    (has_K_axiom (k_axiom HK) p q)) as Hab_K.
+  pose proof (logic_under_mp Hclass Hab_K Hab_box_imp) as Hab_box_mp.
+  pose proof (logic_under_mp Hclass Hab_box_mp Hab_box_p) as Hab_box_q.
+  apply logic_curry; [exact Hclass |].
+  change (L (Imp (And a b) (And q (Box q)))).
+  exact (logic_imp_and_intro Hclass Hab_q Hab_box_q).
+Qed.
+
+Lemma k_boxdot_axiom_T :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p,
+    L (Imp (Boxdot p) p).
+Proof.
+  intros AtomType L HK p; unfold Boxdot.
+  now apply logic_and_elim_left_imp, k_classical.
+Qed.
+
+Lemma k_boxdot_nec :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p,
+    L p -> L (Boxdot p).
+Proof.
+  intros AtomType L HK p Hp; unfold Boxdot.
+  apply logic_and_intro; [exact (k_classical HK) | exact Hp |].
+  now apply k_necessitation.
+Qed.
+
+Lemma k_boxdot_box :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p,
+    L (Imp (Boxdot p) (Box p)).
+Proof.
+  intros AtomType L HK p; unfold Boxdot.
+  now apply logic_and_elim_right_imp, k_classical.
+Qed.
+
+Lemma k_box_boxdot_to_boxdot_box :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p,
+    L (Imp (Box (Boxdot p)) (Boxdot (Box p))).
+Proof.
+  intros AtomType L HK p; unfold Boxdot.
+  exact (k_box_iter_and_distribute HK 1 p (Box p)).
+Qed.
+
+(** Pointwise boxes commute with normalized finite conjunctions.  Lists are
+    duplicate-tolerant enumerations, so these theorems simultaneously cover
+    Foundation's list and finite-set presentations without equality tests. *)
+Lemma k_box_iter_list_conj2_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n Gamma,
+    L (Imp (box_iter n (logic_list_conj2 Gamma))
+      (logic_list_conj2 (map (box_iter n) Gamma))).
+Proof.
+  intros AtomType L HK n Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - apply (logic_classical_tautology (k_classical HK)).
+    intro rho; unfold Top, Neg; simpl; tauto.
+  - destruct Gamma as [|q Gamma].
+    + simpl. now apply logic_identity, k_classical.
+    + simpl in IH |- *.
+      pose proof (k_classical HK) as Hclass.
+      pose proof
+        (k_box_iter_and_distribute HK n p
+          (logic_list_conj2 (q :: Gamma))) as Hdist.
+      apply logic_imp_and_intro; [exact Hclass | |].
+      * eapply logic_imp_trans; [exact Hclass | exact Hdist |].
+        now apply logic_and_elim_left_imp.
+      * eapply logic_imp_trans; [exact Hclass | exact Hdist |].
+        eapply logic_imp_trans; [exact Hclass | |exact IH].
+        now apply logic_and_elim_right_imp.
+Qed.
+
+Lemma k_box_iter_list_conj2_collect :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n Gamma,
+    L (Imp (logic_list_conj2 (map (box_iter n) Gamma))
+      (box_iter n (logic_list_conj2 Gamma))).
+Proof.
+  intros AtomType L HK n Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - apply logic_imply_intro; [exact (k_classical HK) |].
+    exact (k_box_iter_top HK n).
+  - destruct Gamma as [|q Gamma].
+    + simpl. now apply logic_identity, k_classical.
+    + simpl in IH |- *.
+      pose proof (k_classical HK) as Hclass.
+      set (a := And (box_iter n p)
+        (logic_list_conj2 (map (box_iter n) (q :: Gamma)))).
+      assert (Hleft : L (Imp a (box_iter n p))).
+      { unfold a. now apply logic_and_elim_left_imp. }
+      assert (Hright :
+          L (Imp a (box_iter n (logic_list_conj2 (q :: Gamma))))).
+      { eapply logic_imp_trans; [exact Hclass | |exact IH].
+        unfold a. now apply logic_and_elim_right_imp. }
+      eapply logic_imp_trans; [exact Hclass | |].
+      * exact (logic_imp_and_intro Hclass Hleft Hright).
+      * exact (k_box_iter_and_collect HK n p
+          (logic_list_conj2 (q :: Gamma))).
+Qed.
+
+Lemma logic_list_conj2_theorem_iff :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    classical_logic L -> forall Gamma,
+    L (logic_list_conj2 Gamma) <->
+    (forall p, In p Gamma -> L p).
+Proof.
+  intros AtomType L Hclass Gamma; induction Gamma as [|p Gamma IH].
+  - simpl. split.
+    + intros _ q Hq. contradiction.
+    + intros _. exact (logic_mem_top Hclass).
+  - destruct Gamma as [|q Gamma].
+    + simpl. split.
+      * intros Hp r [-> | Hr]; [exact Hp | contradiction].
+      * intros Hall. apply Hall. now left.
+    + simpl in IH |- *. split.
+      * intros Hand r [-> | Hr].
+        -- exact (logic_modus_ponens Hclass
+             (@logic_and_elim_left_imp AtomType L Hclass r
+               (logic_list_conj2 (q :: Gamma))) Hand).
+        -- apply (proj1 IH); [|exact Hr].
+           exact (logic_modus_ponens Hclass
+             (@logic_and_elim_right_imp AtomType L Hclass p
+               (logic_list_conj2 (q :: Gamma))) Hand).
+      * intros Hall. apply logic_and_intro; [exact Hclass | |].
+        -- apply Hall. now left.
+        -- apply (proj2 IH). intros r Hr. apply Hall. now right.
+Qed.
+
+(** Exact theoremhood characterization for a boxed normalized context.  It
+    subsumes the source list theorem and its finite-set wrapper because lists
+    here are duplicate-insensitive context enumerations. *)
+Lemma k_box_iter_list_conj2_theorem_iff :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n Gamma,
+    L (box_iter n (logic_list_conj2 Gamma)) <->
+    (forall p, In p Gamma -> L (box_iter n p)).
+Proof.
+  intros AtomType L HK n Gamma. split.
+  - intro Hboxed.
+    pose proof (logic_modus_ponens (k_classical HK)
+      (k_box_iter_list_conj2_distribute HK n Gamma) Hboxed) as Hall.
+    pose proof (proj1 (@logic_list_conj2_theorem_iff AtomType L
+      (k_classical HK) (map (fun p => box_iter n p) Gamma)) Hall) as Hall'.
+    intros p Hp. apply Hall'. apply in_map_iff.
+    now exists p.
+  - intro Hall.
+    apply (logic_modus_ponens (k_classical HK)
+      (k_box_iter_list_conj2_collect HK n Gamma)).
+    apply (proj2 (@logic_list_conj2_theorem_iff AtomType L
+      (k_classical HK) (map (fun p => box_iter n p) Gamma))).
+    intros r Hr. apply in_map_iff in Hr as [p [<- Hp]].
+    now apply Hall.
+Qed.
+
+Lemma k_dia_regularity :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Imp p q) -> L (Imp (Dia p) (Dia q)).
+Proof.
+  intros AtomType L HK p q Hpq.
+  pose proof (k_classical HK) as Hclass.
+  unfold Dia.
+  apply logic_contraposition; [exact Hclass |].
+  apply box_regularity_of_k; [exact HK |].
+  now apply logic_contraposition.
+Qed.
+
+Lemma k_dia_iter_regularity :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp p q) ->
+    L (Imp (dia_iter n p) (dia_iter n q)).
+Proof.
+  intros AtomType L HK n; induction n as [|n IH]; intros p q Hpq; simpl.
+  - exact Hpq.
+  - apply k_dia_regularity; [exact HK |]. now apply IH.
+Qed.
+
+Lemma k_dia_regularity_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Imp p q) -> L (Dia p) -> L (Dia q).
+Proof.
+  intros AtomType L HK p q Hpq Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_dia_regularity HK Hpq) Hp).
+Qed.
+
+Lemma k_dia_iter_regularity_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp p q) -> L (dia_iter n p) -> L (dia_iter n q).
+Proof.
+  intros AtomType L HK n p q Hpq Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_dia_iter_regularity HK n Hpq) Hp).
+Qed.
+
+Lemma k_dia_or_collect :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Imp (Or (Dia p) (Dia q)) (Dia (Or p q))).
+Proof.
+  intros AtomType L HK p q.
+  pose proof (k_classical HK) as Hclass.
+  assert (Hleft0 : L (Imp p (Or p q))).
+  { apply (logic_classical_tautology Hclass).
+    intro rho; unfold Or, Neg; simpl; tauto. }
+  assert (Hright0 : L (Imp q (Or p q))).
+  { apply (logic_classical_tautology Hclass).
+    intro rho; unfold Or, Neg; simpl; tauto. }
+  pose proof (k_dia_regularity HK Hleft0) as Hleft.
+  pose proof (k_dia_regularity HK Hright0) as Hright.
+  eapply (logic_modus_ponens Hclass); [|exact Hright].
+  eapply (logic_modus_ponens Hclass); [|exact Hleft].
+  apply (logic_classical_tautology Hclass).
+  intro rho; unfold Or, Neg; simpl; tauto.
+Qed.
+
+Lemma k_dia_or_collect_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Or (Dia p) (Dia q)) -> L (Dia (Or p q)).
+Proof.
+  intros AtomType L HK p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_dia_or_collect HK p q) Hp).
+Qed.
+
+Lemma k_dia_or_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Imp (Dia (Or p q)) (Or (Dia p) (Dia q))).
+Proof.
+  intros AtomType L HK p q.
+  pose proof (k_classical HK) as Hclass.
+  assert (Hdm : L (Imp (And (Neg p) (Neg q)) (Neg (Or p q)))).
+  { apply (logic_classical_tautology Hclass).
+    intro rho; unfold And, Or, Neg; simpl; tauto. }
+  pose proof (box_regularity_of_k HK Hdm) as Hreg.
+  pose proof (has_C_axiom (has_C_of_k HK) (Neg p) (Neg q)) as Hcollect.
+  pose proof (logic_imp_trans Hclass Hcollect Hreg) as Hboth.
+  pose proof (logic_contraposition Hclass Hboth) as Hcontra.
+  unfold Dia.
+  eapply logic_imp_trans; [exact Hclass | exact Hcontra |].
+  apply (logic_classical_tautology Hclass).
+  intro rho; unfold And, Or, Neg; simpl; tauto.
+Qed.
+
+Lemma k_dia_iter_or_collect :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp (Or (dia_iter n p) (dia_iter n q))
+      (dia_iter n (Or p q))).
+Proof.
+  intros AtomType L HK n p q.
+  pose proof (k_classical HK) as Hclass.
+  assert (Hleft0 : L (Imp p (Or p q))).
+  { apply (logic_classical_tautology Hclass).
+    intro rho; unfold Or, Neg; simpl; tauto. }
+  assert (Hright0 : L (Imp q (Or p q))).
+  { apply (logic_classical_tautology Hclass).
+    intro rho; unfold Or, Neg; simpl; tauto. }
+  pose proof (k_dia_iter_regularity HK n Hleft0) as Hleft.
+  pose proof (k_dia_iter_regularity HK n Hright0) as Hright.
+  eapply (logic_modus_ponens Hclass); [|exact Hright].
+  eapply (logic_modus_ponens Hclass); [|exact Hleft].
+  apply (logic_classical_tautology Hclass).
+  intro rho; unfold Or, Neg; simpl; tauto.
+Qed.
+
+Lemma k_dia_iter_or_collect_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Or (dia_iter n p) (dia_iter n q)) ->
+    L (dia_iter n (Or p q)).
+Proof.
+  intros AtomType L HK n p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_dia_iter_or_collect HK n p q) Hp).
+Qed.
+
+Lemma k_dia_iter_or_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp (dia_iter n (Or p q))
+      (Or (dia_iter n p) (dia_iter n q))).
+Proof.
+  intros AtomType L HK n; induction n as [|n IH]; intros p q; simpl.
+  - now apply logic_identity, k_classical.
+  - pose proof (k_classical HK) as Hclass.
+    exact (logic_imp_trans Hclass
+      (k_dia_regularity HK (IH p q))
+      (k_dia_or_distribute HK (dia_iter n p) (dia_iter n q))).
+Qed.
+
+Lemma k_dia_and_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Imp (Dia (And p q)) (And (Dia p) (Dia q))).
+Proof.
+  intros AtomType L HK p q.
+  pose proof (k_classical HK) as Hclass.
+  apply logic_imp_and_intro; [exact Hclass | |].
+  - apply k_dia_regularity; [exact HK |].
+    now apply logic_and_elim_left_imp.
+  - apply k_dia_regularity; [exact HK |].
+    now apply logic_and_elim_right_imp.
+Qed.
+
+Lemma k_dia_and_distribute_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Dia (And p q)) -> L (And (Dia p) (Dia q)).
+Proof.
+  intros AtomType L HK p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_dia_and_distribute HK p q) Hp).
+Qed.
+
+Lemma k_dia_iter_and_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp (dia_iter n (And p q))
+      (And (dia_iter n p) (dia_iter n q))).
+Proof.
+  intros AtomType L HK n; induction n as [|n IH]; intros p q; simpl.
+  - now apply logic_identity, k_classical.
+  - pose proof (k_classical HK) as Hclass.
+    exact (logic_imp_trans Hclass
+      (k_dia_regularity HK (IH p q))
+      (k_dia_and_distribute HK (dia_iter n p) (dia_iter n q))).
+Qed.
+
+Lemma k_not_dia_bottom :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> L (Neg (Dia Bottom)).
+Proof.
+  intros AtomType L HK.
+  pose proof (k_classical HK) as Hclass.
+  unfold Dia, Top.
+  change (L (Neg (Neg (Box (Neg Bottom))))).
+  eapply (logic_modus_ponens Hclass).
+  - apply (logic_iff_elim_left Hclass).
+    exact (logic_double_neg_iff Hclass (Box (Neg Bottom))).
+  - change (L (Box Top)). exact (k_box_iter_top HK 1).
+Qed.
+
+Lemma k_not_dia_iter_bottom :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n,
+    L (Neg (dia_iter n Bottom)).
+Proof.
+  intros AtomType L HK n; induction n as [|n IH]; simpl.
+  - change (L Top). now apply logic_mem_top, k_classical.
+  - exact (logic_imp_trans (k_classical HK)
+      (k_dia_regularity HK IH) (k_not_dia_bottom HK)).
+Qed.
+
+Lemma k_dia_iter_list_conj2_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n Gamma,
+    L (Imp (dia_iter n (logic_list_conj2 Gamma))
+      (logic_list_conj2 (map (dia_iter n) Gamma))).
+Proof.
+  intros AtomType L HK n Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - apply (logic_classical_tautology (k_classical HK)).
+    intro rho; unfold Top, Neg; simpl; tauto.
+  - destruct Gamma as [|q Gamma].
+    + simpl. now apply logic_identity, k_classical.
+    + simpl in IH |- *.
+      pose proof (k_classical HK) as Hclass.
+      pose proof
+        (k_dia_iter_and_distribute HK n p
+          (logic_list_conj2 (q :: Gamma))) as Hdist.
+      apply logic_imp_and_intro; [exact Hclass | |].
+      * eapply logic_imp_trans; [exact Hclass | exact Hdist |].
+        now apply logic_and_elim_left_imp.
+      * eapply logic_imp_trans; [exact Hclass | exact Hdist |].
+        eapply logic_imp_trans; [exact Hclass | |exact IH].
+        now apply logic_and_elim_right_imp.
+Qed.
+
+Lemma k_dia_iter_list_disj2_distribute :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n Gamma,
+    L (Imp (dia_iter n (logic_list_disj2 Gamma))
+      (logic_list_disj2 (map (dia_iter n) Gamma))).
+Proof.
+  intros AtomType L HK n Gamma; induction Gamma as [|p Gamma IH]; simpl.
+  - exact (k_not_dia_iter_bottom HK n).
+  - destruct Gamma as [|q Gamma].
+    + simpl. now apply logic_identity, k_classical.
+    + simpl in IH |- *.
+      pose proof (k_classical HK) as Hclass.
+      eapply logic_imp_trans; [exact Hclass | |].
+      * exact (k_dia_iter_or_distribute HK n p
+          (logic_list_disj2 (q :: Gamma))).
+      * eapply (logic_modus_ponens Hclass); [|exact IH].
+        apply (logic_classical_tautology Hclass).
+        intro rho; unfold Or, Neg; simpl; tauto.
+Qed.
+
+(** Foundation's specialized [lemma_Grz1].  The auxiliary formula packages
+    the candidate Four instance.  K alone turns a hypothetical progressive
+    proof of that package into the required boxed implication. *)
+Lemma lemma_Grz1_raw :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p,
+    let psi := And p (Imp (Box p) (Box (Box p))) in
+    L (Imp (Box p)
+      (Box (Imp (Box (Imp psi (Box psi))) psi))).
+Proof.
+  intros AtomType L HK p.
+  set (psi := And p (Imp (Box p) (Box (Box p)))).
+  change (L (Imp (Box p)
+    (Box (Imp (Box (Imp psi (Box psi))) psi)))).
+  pose proof (k_classical HK) as Hclass.
+  assert (Hpsi_p : L (Imp psi p)).
+  { unfold psi. now apply logic_and_elim_left_imp. }
+  pose proof (box_regularity_of_k HK Hpsi_p) as Hboxpsi_boxp.
+  assert (Hprogress :
+      L (Imp (Imp psi (Box psi)) (Imp p (Box p)))).
+  { eapply (logic_modus_ponens Hclass); [|exact Hboxpsi_boxp].
+    apply (logic_classical_tautology Hclass).
+    intro rho; unfold psi, And, Neg; simpl; tauto. }
+  pose proof (box_regularity_of_k HK Hprogress) as Hboxed_progress.
+  pose proof
+    (logic_imp_trans Hclass Hboxed_progress
+      (has_K_axiom (k_axiom HK) p (Box p))) as Hfour.
+  assert (Hpackage :
+      L (Imp p (Imp (Box (Imp psi (Box psi))) psi))).
+  { eapply (logic_modus_ponens Hclass); [|exact Hfour].
+    apply (logic_classical_tautology Hclass).
+    intro rho; unfold psi, And, Neg; simpl; tauto. }
+  exact (box_regularity_of_k HK Hpackage).
+Qed.
+
+(** Prop-valued theoremhood identifies Foundation's proof-object and wrapped
+    spellings, while both source declarations retain public Coq names. *)
+Lemma lemma_Grz1 :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p,
+    let psi := And p (Imp (Box p) (Box (Box p))) in
+    L (Imp (Box p)
+      (Box (Imp (Box (Imp psi (Box psi))) psi))).
+Proof. exact lemma_Grz1_raw. Qed.
 
 (** EMCN.lean, forward instance. *)
 Lemma k_entailment_of_EMCN :

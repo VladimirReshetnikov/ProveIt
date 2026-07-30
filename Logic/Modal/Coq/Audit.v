@@ -1,15 +1,39 @@
 (** Public surface and kernel-assumption audit for the Foundation modal port. *)
 
 From FoundationModal Require Import
-  Syntax GenericSemantics GenericAdjunctiveSet GenericEntailment GenericEmbedding
-  NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
+  Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
+  GenericEntailment GenericDecidability GenericDisjunctive
+  GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
+  PropositionalFormula PropositionalNNFormula PropositionalTranslation
+  PropositionalLogic PropositionalHilbert PropositionalKripke
+  PropositionalKripkePreservation PropositionalKripkeCanonical
+  PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
+  PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
+  PropositionalKripke2Hilbert PropositionalHilbertFExtensions PropositionalFMT
+  PropositionalHilbertVF PropositionalHilbertVFCorsi
+  PropositionalFMTCompleteness PropositionalHilbertWF PropositionalNeighborhoodNB
+  PropositionalHeytingSemantics PropositionalConsistentTableau
+  PropositionalKripkeTableauCanonical
+  PropositionalKreiselPutnam
+  PropositionalBoolean PropositionalBooleanNNFormula
+  PropositionalBooleanZeroSubst PropositionalBooleanHilbert
+  PropositionalKripkeClassical PropositionalLetterless
+  PropositionalPostCompleteness PropositionalDisjunctionProperty
+  GenericCalculus PropositionalEntailmentAxioms
+  PropositionalEntailmentLukasiewicz
+  PropositionalEntailmentMinimal PropositionalEntailmentInt
+  PropositionalEntailmentClassical PropositionalTait
+  NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness CorsiVF Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
-  Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
+  Correspondence FiltrationExtensions PropositionalKripkeFiltration
+  CanonicalK HilbertNNFormula Loeb
   FrameProperties
   RelationProperties ConverseWellFounded WeakConverseWellFounded
   CorrespondenceExtensions NormalHilbert LogicInfrastructure
-  HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentS4
+  HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentK4 EntailmentS4
+  GodelTranslation
+  StandardModalCompanions
   EntailmentS5 HilbertWithRE HilbertNormal AlgebraicSemantics
   HilbertNormalAxiomAdapters
   HilbertNormalBaseSystems HilbertNormalClassicalBaseSystems
@@ -36,7 +60,7 @@ From FoundationModal Require Import
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 JerabekBoxdot CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
-  CanonicalGrzMcK CanonicalTrivVer MaximalTranslations GLPoint3PlusBoxBot CanonicalS5Grz
+  CanonicalGrzMcK CanonicalTrivVer MaximalTranslations Makinson GLPoint3PlusBoxBot CanonicalS5Grz
   CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
   CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
@@ -429,6 +453,38 @@ Print Assumptions generic_pullback_theory_eq.
 Print Assumptions generic_pullback_weaker_than.
 Print Assumptions generic_pullback_consistent.
 
+(** All four declarations from Logic/Decidability.lean use an executable
+    formula-level decision procedure instead of the source's encoding-specific
+    computable predicate.  Essential undecidability needs only negation, and
+    inconsistency yields the constant positive decider constructively. *)
+Check generic_decidable_theory.
+Check generic_theory_decide.
+Check generic_undecidable_theory.
+Check generic_essentially_undecidable.
+Check generic_essentially_undecidable_extension.
+Check generic_decidable_of_incomplete.
+Check generic_decidable_of_inconsistent.
+Print Assumptions generic_decidable_of_incomplete.
+Print Assumptions generic_decidable_of_inconsistent.
+
+(** All four declarations from Logic/Disjunctive.lean are represented over
+    arbitrary entailments and primitive negation/disjunction operations.  The
+    completeness equivalence needs only excluded middle and left resolution,
+    removing the source's decidable formula equality premise. *)
+Check generic_disjunctive.
+Check generic_disjunctive_cases.
+Check generic_disjunctive_raw.
+Check generic_disjunctive_iff.
+Check generic_excluded_middle.
+Check generic_disjunctive_left_resolution.
+Check generic_disjunctive_of_complete.
+Check generic_complete_of_disjunctive.
+Check generic_complete_iff_disjunctive.
+Print Assumptions generic_disjunctive_iff.
+Print Assumptions generic_disjunctive_of_complete.
+Print Assumptions generic_complete_of_disjunctive.
+Print Assumptions generic_complete_iff_disjunctive.
+
 (** All five declarations from Logic/Embedding.lean are represented over
     heterogeneous system and formula types.  Identity and composition are
     wholly constructive despite the source module's stronger import. *)
@@ -441,6 +497,2827 @@ Check generic_faithfully_embeddable_trans.
 Print Assumptions generic_faithfully_embeddable_fun_exists.
 Print Assumptions generic_faithfully_embeddable_refl.
 Print Assumptions generic_faithfully_embeddable_trans.
+
+(** The foundational LogicSymbol core centralizes independently consumable
+    connective laws and the full homomorphism API.  Pointwise homomorphism
+    equality avoids functional and proof extensionality. *)
+Check generic_de_morgan_laws.
+Check generic_de_morgan_neg_top.
+Check generic_de_morgan_neg_bottom.
+Check generic_de_morgan_imp.
+Check generic_de_morgan_neg_and.
+Check generic_de_morgan_neg_or.
+Check generic_neg_abbrev_law.
+Check generic_lukasiewicz_abbrev.
+Check generic_neg_injective.
+Check generic_neg_equal_iff.
+Check generic_neg_embedding.
+Check generic_neg_embedding_apply.
+Check generic_formula_iff.
+Check generic_connective_hom.
+Check generic_connective_hom_apply.
+Check generic_connective_hom_iff.
+Check generic_connective_hom_equiv.
+Check generic_connective_hom_id.
+Check generic_connective_hom_compose.
+Check generic_connective_hom_id_apply.
+Check generic_connective_hom_compose_apply.
+Check generic_and_or_closed.
+Check generic_connective_closed.
+Print Assumptions generic_neg_injective.
+Print Assumptions generic_neg_equal_iff.
+Print Assumptions generic_connective_hom_iff.
+Print Assumptions generic_connective_hom_id.
+Print Assumptions generic_connective_hom_compose.
+Check generic_conj_lt.
+Check generic_conj_lt_zero.
+Check generic_conj_lt_succ.
+Check generic_disj_lt.
+Check generic_disj_lt_zero.
+Check generic_disj_lt_succ.
+Check generic_connective_hom_conj_lt.
+Check generic_connective_hom_disj_lt.
+Check generic_list_conj.
+Check generic_list_disj.
+Check generic_connective_hom_list_conj.
+Check generic_connective_hom_list_disj.
+Check generic_connective_hom_list_conj2.
+Check generic_connective_hom_list_disj2.
+Check generic_list_conj_map.
+Check generic_list_disj_map.
+Check generic_connective_hom_list_conj_map.
+Check generic_connective_hom_list_disj_map.
+Print Assumptions generic_connective_hom_conj_lt.
+Print Assumptions generic_connective_hom_disj_lt.
+Print Assumptions generic_connective_hom_list_conj.
+Print Assumptions generic_connective_hom_list_disj.
+Print Assumptions generic_connective_hom_list_conj2.
+Print Assumptions generic_connective_hom_list_disj2.
+Print Assumptions generic_connective_hom_list_conj_map.
+Print Assumptions generic_connective_hom_list_disj_map.
+Check generic_matrix_conj.
+Check generic_matrix_conj_zero.
+Check generic_matrix_conj_succ.
+Check generic_matrix_disj.
+Check generic_matrix_disj_zero.
+Check generic_matrix_disj_succ.
+Check generic_connective_hom_matrix_conj.
+Check generic_connective_hom_matrix_disj.
+Check generic_list_neg.
+Check generic_list_neg_nil.
+Check generic_list_neg_cons.
+Check generic_list_neg_app.
+Check generic_list_member_neg_iff.
+Check generic_list_neg_involutive.
+Check generic_neg_list_disj.
+Check generic_neg_list_conj.
+Check generic_neg_list_disj2.
+Check generic_neg_list_conj2.
+Check generic_neg_mapped_list_disj2.
+Check generic_connective_hom_list_neg.
+Print Assumptions generic_connective_hom_matrix_conj.
+Print Assumptions generic_connective_hom_matrix_disj.
+Print Assumptions generic_list_member_neg_iff.
+Print Assumptions generic_list_neg_involutive.
+Print Assumptions generic_neg_list_disj.
+Print Assumptions generic_neg_list_conj.
+Print Assumptions generic_neg_list_disj2.
+Print Assumptions generic_neg_list_conj2.
+Print Assumptions generic_neg_mapped_list_disj2.
+Print Assumptions generic_connective_hom_list_neg.
+Check generic_finset_neg.
+Check generic_finset_neg_member_iff.
+Check generic_finset_neg_involutive.
+Check generic_finset_neg_empty.
+Check generic_finset_neg_insert.
+Check generic_finset_neg_union.
+Check generic_finset_conj.
+Check generic_finset_conj_map.
+Check generic_finset_uconj.
+Check generic_finset_disj.
+Check generic_finset_disj_map.
+Check generic_finset_udisj.
+Check generic_finset_conj_empty.
+Check generic_finset_conj_singleton.
+Check generic_finset_conj_map_empty.
+Check generic_finset_conj_map_singleton.
+Check generic_finset_uconj_empty.
+Check generic_finset_uconj_singleton.
+Check generic_finset_disj_empty.
+Check generic_finset_disj_singleton.
+Check generic_finset_disj_map_empty.
+Check generic_finset_disj_map_singleton.
+Check generic_finset_udisj_empty.
+Check generic_finset_udisj_singleton.
+Check generic_connective_hom_finset_conj.
+Check generic_connective_hom_finset_disj.
+Check generic_connective_hom_finset_conj_map.
+Check generic_connective_hom_finset_disj_map.
+Check generic_connective_hom_finset_uconj.
+Check generic_connective_hom_finset_udisj.
+Check generic_finset_conj_models_iff.
+Check generic_finset_conj_map_models_iff.
+Check generic_finset_disj_models_iff.
+Check generic_finset_disj_map_models_iff.
+Check generic_finset_uconj_models_iff.
+Check generic_finset_udisj_models_iff.
+Check generic_finset_conj_union_models_iff.
+Check generic_finset_disj_union_models_iff.
+Check generic_finset_uconj_complete_models_iff.
+Check generic_finset_udisj_complete_models_iff.
+Print Assumptions generic_finset_neg_member_iff.
+Print Assumptions generic_finset_neg_involutive.
+Print Assumptions generic_connective_hom_finset_conj.
+Print Assumptions generic_connective_hom_finset_disj_map.
+Print Assumptions generic_connective_hom_finset_uconj.
+Print Assumptions generic_finset_conj_models_iff.
+Print Assumptions generic_finset_disj_models_iff.
+Print Assumptions generic_finset_conj_union_models_iff.
+Print Assumptions generic_finset_disj_union_models_iff.
+Print Assumptions generic_finset_uconj_complete_models_iff.
+Print Assumptions generic_finset_udisj_complete_models_iff.
+
+(** Representation-independent Modal/LogicSymbol iteration and set layer. *)
+Check generic_modal_iter.
+Check generic_modal_iter_zero.
+Check generic_modal_iter_succ.
+Check generic_modal_iter_add.
+Check generic_box_iter.
+Check generic_box_iter_zero.
+Check generic_box_iter_succ.
+Check generic_box_iter_add.
+Check generic_dia_iter.
+Check generic_dia_iter_zero.
+Check generic_dia_iter_succ.
+Check generic_dia_iter_add.
+Check generic_box_le.
+Check generic_dia_le.
+Check generic_box_le_zero.
+Check generic_dia_le_zero.
+Check generic_boxdot.
+Check generic_diadot.
+Check generic_modal_connectives.
+Check generic_dia_by_box_law.
+Check generic_box_by_dia_law.
+Check generic_modal_de_morgan_laws.
+Check generic_injective.
+Check generic_modal_iter_injective.
+Check generic_box_iter_injective.
+Check generic_dia_iter_injective.
+Check generic_set_subset.
+Check generic_iter_image.
+Check generic_iter_preimage.
+Check generic_iter_image_subset_mono.
+Check generic_iter_preimage_subset_mono.
+Check generic_iter_image_intro.
+Check generic_iter_image_elim.
+Check generic_iter_preimage_member_iff.
+Check generic_iter_image_reflect.
+Check generic_iter_image_change_depth.
+Check generic_set_box_iter_image.
+Check generic_set_box_iter_preimage.
+Check generic_set_box_image.
+Check generic_set_box_preimage.
+Check generic_set_box_iter_image_subset_mono.
+Check generic_set_box_iter_preimage_subset_mono.
+Check generic_set_box_iter_image_intro.
+Check generic_set_box_iter_image_elim.
+Check generic_set_box_iter_preimage_member_iff.
+Check generic_set_box_iter_image_reflect.
+Check generic_set_box_iter_image_change_depth.
+Check generic_set_dia_iter_image.
+Check generic_set_dia_iter_preimage.
+Check generic_set_dia_image.
+Check generic_set_dia_preimage.
+Check generic_set_dia_iter_image_subset_mono.
+Check generic_set_dia_iter_preimage_subset_mono.
+Check generic_set_dia_iter_image_intro.
+Check generic_set_dia_iter_image_elim.
+Check generic_set_dia_iter_preimage_member_iff.
+Print Assumptions generic_modal_iter_add.
+Print Assumptions generic_box_le_zero.
+Print Assumptions generic_dia_le_zero.
+Print Assumptions generic_modal_iter_injective.
+Print Assumptions generic_iter_image_subset_mono.
+Print Assumptions generic_iter_preimage_subset_mono.
+Print Assumptions generic_iter_image_reflect.
+Print Assumptions generic_iter_image_change_depth.
+Print Assumptions generic_set_box_iter_image_change_depth.
+Print Assumptions generic_set_dia_iter_image_elim.
+Check generic_list_collection_subset.
+Check generic_list_iter_image.
+Check generic_list_image.
+Check generic_list_iter_image_zero.
+Check generic_list_iter_image_nil.
+Check generic_list_iter_image_singleton.
+Check generic_list_iter_image_cons.
+Check generic_list_iter_image_nonempty.
+Check generic_list_iter_image_cons_member_iff.
+Check generic_list_iter_image_add.
+Check generic_list_iter_image_intro.
+Check generic_list_iter_image_elim.
+Check generic_list_iter_image_subset_mono.
+Check generic_list_box_iter_image.
+Check generic_list_box_image.
+Check generic_list_box_iter_image_zero.
+Check generic_list_box_iter_image_nonempty.
+Check generic_list_box_iter_image_nil.
+Check generic_list_box_iter_image_singleton.
+Check generic_list_box_iter_image_cons.
+Check generic_list_box_iter_image_cons_member_iff.
+Check generic_list_box_iter_image_add.
+Check generic_list_box_iter_image_intro.
+Check generic_list_box_iter_image_elim.
+Check generic_list_box_iter_image_subset_mono.
+Check generic_list_dia_iter_image.
+Check generic_list_dia_image.
+Check generic_list_dia_iter_image_zero.
+Check generic_list_dia_iter_image_nonempty.
+Check generic_list_dia_iter_image_nil.
+Check generic_list_dia_iter_image_singleton.
+Check generic_list_dia_iter_image_cons.
+Check generic_list_dia_iter_image_cons_member_iff.
+Check generic_list_dia_iter_image_add.
+Check generic_list_dia_iter_image_intro.
+Check generic_list_dia_iter_image_elim.
+Check generic_list_dia_iter_image_subset_mono.
+Print Assumptions generic_list_iter_image_zero.
+Print Assumptions generic_list_iter_image_nonempty.
+Print Assumptions generic_list_iter_image_cons_member_iff.
+Print Assumptions generic_list_iter_image_add.
+Print Assumptions generic_list_iter_image_intro.
+Print Assumptions generic_list_iter_image_elim.
+Print Assumptions generic_list_iter_image_subset_mono.
+Print Assumptions generic_list_box_iter_image_add.
+Print Assumptions generic_list_dia_iter_image_subset_mono.
+Check generic_list_preimage_capability.
+Check generic_list_iter_preimage_apply.
+Check generic_list_iter_preimage_spec.
+Check generic_list_iter_preimage_nil.
+Check generic_list_iter_image_preimage_reflect.
+Check generic_list_iter_image_preimage_intro.
+Check generic_list_iter_preimage_singleton_extensional.
+Check generic_list_filter_dec.
+Check generic_list_filter_dec_member_iff.
+Check generic_list_restricted_iter_preimage.
+Check generic_list_restricted_iter_preimage_member_iff.
+Check generic_list_restricted_iter_preimage_nil.
+Check generic_list_box_iter_preimage.
+Check generic_list_box_preimage.
+Check generic_list_box_iter_preimage_nil.
+Check generic_list_box_iter_image_preimage_reflect.
+Check generic_list_box_iter_image_preimage_intro.
+Check generic_list_dia_iter_preimage.
+Check generic_list_dia_filter.
+Check generic_list_dia_iter_preimage_member_iff.
+Check generic_list_dia_iter_preimage_nil.
+Check generic_finset_box_iter_image.
+Check generic_finset_box_image.
+Check generic_finset_dia_iter_image.
+Check generic_finset_dia_image.
+Check generic_finset_box_iter_to_list_member_iff.
+Check generic_finset_dia_iter_to_list_member_iff.
+Check generic_finset_box_iter_image_intro.
+Check generic_finset_box_iter_image_elim.
+Check generic_finset_dia_iter_image_intro.
+Check generic_finset_dia_iter_image_elim.
+Print Assumptions generic_list_iter_preimage_nil.
+Print Assumptions generic_list_iter_image_preimage_reflect.
+Print Assumptions generic_list_iter_image_preimage_intro.
+Print Assumptions generic_list_iter_preimage_singleton_extensional.
+Print Assumptions generic_list_filter_dec_member_iff.
+Print Assumptions generic_list_restricted_iter_preimage_member_iff.
+Print Assumptions generic_list_box_iter_image_preimage_reflect.
+Print Assumptions generic_list_dia_iter_preimage_member_iff.
+Print Assumptions generic_finset_box_iter_to_list_member_iff.
+Print Assumptions generic_finset_dia_iter_image_elim.
+
+(** Primitive Propositional/Formula/Basic syntax and structural core. *)
+Check pformula.
+Check PAtom.
+Check PFalsum.
+Check PAnd.
+Check POr.
+Check PImp.
+Check pneg.
+Check ptop.
+Check pformula_connectives.
+Check pformula_and_inj.
+Check pformula_or_inj.
+Check pformula_imp_inj.
+Check pformula_neg_inj.
+Check pformula_iff_def.
+Check pformula_complexity.
+Check pformula_eq_dec.
+Check pformula_letterless.
+Check pformula_atom_not_letterless.
+Check pformula_bottom_letterless.
+Check pformula_top_letterless.
+Check pformula_neg_letterless_iff.
+Check pformula_subformulas.
+Check pformula_is_subformula.
+Check pformula_subformulas_self.
+Check pformula_subformulas_left.
+Check pformula_subformulas_right.
+Check pformula_subformula_trans.
+Check pformula_subformula_and_components.
+Check pformula_subformula_or_components.
+Check pformula_subformula_imp_components.
+Check pformula_subformula_closed.
+Check pformula_subformulas_closed.
+Check psubstitution.
+Check psubstitution_id.
+Check pformula_substitute.
+Check pformula_substitute_iff.
+Check pformula_substitute_id.
+Check psubstitution_compose.
+Check pformula_substitute_compose.
+Check pformula_substitute_letterless.
+Print Assumptions pformula_and_inj.
+Print Assumptions pformula_eq_dec.
+Print Assumptions pformula_neg_letterless_iff.
+Print Assumptions pformula_subformula_trans.
+Print Assumptions pformula_subformulas_closed.
+Print Assumptions pformula_substitute_id.
+Print Assumptions pformula_substitute_compose.
+Print Assumptions pformula_substitute_letterless.
+Check pformula_atom_codec.
+Check pformula_atom_encode.
+Check pformula_atom_decode.
+Check pformula_atom_decode_encode.
+Check pformula_code.
+Check pformula_decode.
+Check pformula_decode_code.
+Check pformula_enum.
+Check pformula_enum_surjective.
+Check pformula_predicate_subformula_closed.
+Check pformula_subformula_predicate_closed.
+Check pformula_closed_and_components.
+Check pformula_closed_or_components.
+Check pformula_closed_imp_components.
+Check pzero_substitution.
+Check pzero_substitution_apply.
+Check pzero_substitution_letterless.
+Check pformula_zero_substitution_letterless.
+Check pformula_substitution_closed.
+Print Assumptions pformula_decode_code.
+Print Assumptions pformula_enum_surjective.
+Print Assumptions pformula_subformula_predicate_closed.
+Print Assumptions pformula_closed_and_components.
+Print Assumptions pformula_zero_substitution_letterless.
+
+(** Primitive Propositional/Formula/NNFormula syntax and laws. *)
+Check pnnformula.
+Check PNNTop.
+Check PNNBottom.
+Check PNNAtom.
+Check PNNNegAtom.
+Check PNNAnd.
+Check PNNOr.
+Check pnn_neg.
+Check pnn_neg_involutive.
+Check pnnformula_connectives.
+Check pnn_neg_top.
+Check pnn_neg_bottom.
+Check pnn_neg_atom.
+Check pnn_neg_neg_atom.
+Check pnn_neg_and.
+Check pnn_neg_or.
+Check pnn_neg_inj.
+Check pnn_imp_def.
+Check pnn_iff_def.
+Check pnn_neg_imp.
+Check pnn_and_inj.
+Check pnn_or_inj.
+Check pnn_de_morgan_laws.
+Check pnn_neg_involutive_law.
+Check pnn_complexity.
+Check pnn_complexity_top.
+Check pnn_complexity_bottom.
+Check pnn_complexity_atom.
+Check pnn_complexity_neg_atom.
+Check pnn_complexity_and.
+Check pnn_complexity_or.
+Check pnn_complexity_neg.
+Check pnnformula_eq_dec.
+Check pnn_ne_of_ne_complexity.
+Check pnn_theory.
+Print Assumptions pnn_neg_involutive.
+Print Assumptions pnn_neg_inj.
+Print Assumptions pnn_neg_imp.
+Print Assumptions pnn_de_morgan_laws.
+Print Assumptions pnn_complexity_neg.
+Print Assumptions pnnformula_eq_dec.
+Print Assumptions pnn_ne_of_ne_complexity.
+
+(** Propositional/Logic/Basic abstract logics. *)
+Check pformula_logic.
+Check pformula_logic_theorems.
+Check pformula_logic_substitute.
+Check pformula_logic_mdp.
+Check pformula_logic_trivial.
+Check pformula_logic_is_trivial.
+Check pformula_logic_trivial_is_trivial.
+Check pformula_logic_extension.
+Check pformula_logic_extension_logic.
+Check pformula_logic_extension_includes.
+Check pformula_logic_subset.
+Check pformula_logic_subset_refl.
+Check pformula_logic_subset_trans.
+Print Assumptions pformula_logic_trivial_is_trivial.
+Print Assumptions pformula_logic_subset_trans.
+
+(** Propositional/Hilbert/Minimal/Basic schema-generated systems. *)
+Check ph_axiom_K.
+Check ph_axiom_S.
+Check ph_axiom_and1.
+Check ph_axiom_and2.
+Check ph_axiom_and3.
+Check ph_axiom_or1.
+Check ph_axiom_or2.
+Check ph_axiom_or3.
+Check ph_axiom_efq.
+Check ph_axiom_wlem.
+Check ph_axiom_dummett.
+Check ph_axiom_kreisel_putnam.
+Check ph_axiom_lem.
+Check ph_hilbert.
+Check ph_hilbert_min.
+Check ph_hilbert_int.
+Check ph_hilbert_kc.
+Check ph_hilbert_lc.
+Check ph_hilbert_kp.
+Check ph_hilbert_cl.
+Check ph_hilbert_int_le_kc.
+Check ph_hilbert_int_le_lc.
+Check ph_hilbert_int_le_kp.
+Check ph_hilbert_int_le_cl.
+Check ph_hilbert_proof.
+Check PHPAxiom.
+Check PHPModusPonens.
+Check PHPVerum.
+Check PHPImplyS.
+Check PHPImplyK.
+Check PHPAndElimL.
+Check PHPAndElimR.
+Check PHPAndIntro.
+Check PHPOrIntroL.
+Check PHPOrIntroR.
+Check PHPOrElim.
+Check ph_hilbert_entailment.
+Check ph_hilbert_provable.
+Check ph_hilbert_of_schema.
+Check ph_hilbert_modus_ponens.
+Check ph_hilbert_identity.
+Check ph_hilbert_dhyp.
+Check ph_hilbert_under_apply.
+Check ph_hilbert_imp_trans.
+Check ph_hilbert_and_intro_raw.
+Check ph_hilbert_neg_equiv.
+Check ph_hilbert_minimal_capabilities.
+Check ph_hilbert_minimal.
+Check ph_hilbert_proof_map.
+Check ph_hilbert_proof_of_schema_inclusion.
+Check ph_hilbert_provable_of_schema_inclusion.
+Check ph_hilbert_proof_substitute.
+Check ph_hilbert_provable_substitute.
+Check ph_hilbert_proof_of_provable_schema.
+Check ph_inhabited_get.
+Check ph_hilbert_provable_of_provable_schema.
+Check ph_hilbert_int_efq.
+Check ph_hilbert_kc_wlem.
+Check ph_hilbert_lc_dummett.
+Check ph_hilbert_kp_axiom.
+Check ph_hilbert_cl_efq.
+Check ph_hilbert_cl_lem.
+Check ph_hilbert_cl_dne.
+Check ph_hilbert_cl_classical.
+Check ph_hilbert_logic.
+Check ph_hilbert_logic_iff_provable.
+Check ph_hilbert_logic_subset_of_schema_inclusion.
+Check ph_hilbert_logic_subset_of_provable_schema.
+Check ph_logic_int.
+Check ph_logic_kc.
+Check ph_logic_lc.
+Check ph_logic_kreisel_putnam.
+Check ph_logic_cl.
+Print Assumptions ph_hilbert_int_le_cl.
+Print Assumptions ph_hilbert_identity.
+Print Assumptions ph_hilbert_neg_equiv.
+Print Assumptions ph_hilbert_minimal.
+Print Assumptions ph_hilbert_proof_map.
+Print Assumptions ph_hilbert_provable_of_schema_inclusion.
+Print Assumptions ph_hilbert_proof_substitute.
+Print Assumptions ph_hilbert_provable_substitute.
+Print Assumptions ph_hilbert_proof_of_provable_schema.
+Print Assumptions ph_inhabited_get.
+Print Assumptions ph_hilbert_provable_of_provable_schema.
+Print Assumptions ph_hilbert_cl_dne.
+Print Assumptions ph_hilbert_cl_classical.
+Print Assumptions ph_hilbert_logic_subset_of_schema_inclusion.
+Print Assumptions ph_hilbert_logic_subset_of_provable_schema.
+
+(** Generalized propositional Kripke semantics and Hilbert soundness.
+    Positive forcing, heredity, substitution, validity closure, and
+    frame-class validation combinators are constructive.  Only the exact
+    countermodel-existence converses use propositional excluded middle. *)
+Check pkripke_frame.
+Check pkripke_valuation.
+Check pkripke_model.
+Check pkripke_forces.
+Check pkripke_forces_atom.
+Check pkripke_forces_bottom.
+Check pkripke_forces_and.
+Check pkripke_forces_or.
+Check pkripke_forces_imp.
+Check pkripke_forces_neg.
+Check pkripke_forces_top.
+Check pkripke_not_of_forces_neg.
+Check pkripke_forces_persistent.
+Check pkripke_not_forces_persistent_back.
+Check pkripke_forcing_relation.
+Check pkripke_generic_int_forcing.
+Check pkripke_substitution_model.
+Check pkripke_forces_substitute.
+Check pkripke_model_valid.
+Check pkripke_frame_valid.
+Check pkripke_frame_class_valid.
+Check pkripke_sound.
+Check pkripke_complete.
+Check ph_hilbert_logic_included.
+Check ph_hilbert_logic_strictly_included.
+Check pkripke_frame_finite.
+Check pkripke_all_frames.
+Check pkripke_finite_frames.
+Check pkripke_frame_class_validates.
+Check pkripke_frame_class_validates_formula.
+Check pkripke_frame_class_validates_inter.
+Check pkripke_frame_class_validates_formula_inter.
+Check pkripke_model_valid_top.
+Check pkripke_model_not_valid_bottom.
+Check pkripke_model_not_valid_iff_world.
+Check pkripke_frame_valid_top.
+Check pkripke_frame_not_valid_bottom.
+Check pkripke_frame_not_valid_iff_valuation.
+Check pkripke_frame_not_valid_iff_valuation_world.
+Check pkripke_frame_not_valid_iff_model_world.
+Check pkripke_frame_class_not_valid_iff_frame.
+Check pkripke_frame_class_not_valid_iff_model.
+Check pkripke_frame_class_not_valid_iff_model_world.
+Check pkripke_frame_valid_substitute.
+Check pkripke_all_frames_validates_efq.
+Check pkripke_finite_frames_validates_efq.
+Check pkripke_frame_class_validates_with_efq.
+Check ph_hilbert_proof_pkripke_sound.
+Check ph_hilbert_pkripke_sound.
+Check ph_hilbert_consistent_of_nonempty_pkripke_class.
+Check ph_hilbert_included_of_pkripke_class_subset.
+Check ph_hilbert_int_pkripke_sound.
+Check ph_hilbert_int_consistent_via_pkripke.
+Check pkripke_all_frames_nonempty.
+Check pkripke_finite_frames_nonempty.
+Check pkripke_frame_strongly_convergent.
+Check pkripke_frame_strongly_connected.
+Check pkripke_strongly_convergent_of_strongly_connected.
+Check pkripke_diamond_frame.
+Check pkripke_diamond_strongly_convergent.
+Check pkripke_diamond_not_strongly_connected.
+Check pkripke_WLEM_valid_of_strongly_convergent.
+Check pkripke_strongly_convergent_of_WLEM_valid.
+Check pkripke_Dummett_valid_of_strongly_connected.
+Check pkripke_strongly_connected_of_Dummett_valid.
+Check ph_hilbert_kc_pkripke_sound.
+Check ph_hilbert_kc_consistent_via_pkripke.
+Check ph_hilbert_lc_pkripke_sound.
+Check ph_hilbert_lc_consistent_via_pkripke.
+Print Assumptions pkripke_forces_persistent.
+Print Assumptions pkripke_not_forces_persistent_back.
+Print Assumptions pkripke_generic_int_forcing.
+Print Assumptions pkripke_forces_substitute.
+Print Assumptions pkripke_frame_class_validates_inter.
+Print Assumptions pkripke_model_not_valid_iff_world.
+Print Assumptions pkripke_frame_not_valid_iff_valuation_world.
+Print Assumptions pkripke_frame_class_not_valid_iff_model_world.
+Print Assumptions pkripke_frame_class_validates_with_efq.
+Print Assumptions ph_hilbert_proof_pkripke_sound.
+Print Assumptions ph_hilbert_consistent_of_nonempty_pkripke_class.
+Print Assumptions ph_hilbert_included_of_pkripke_class_subset.
+Print Assumptions ph_hilbert_int_pkripke_sound.
+Print Assumptions ph_hilbert_int_consistent_via_pkripke.
+Print Assumptions pkripke_WLEM_valid_of_strongly_convergent.
+Print Assumptions pkripke_strongly_convergent_of_WLEM_valid.
+Print Assumptions pkripke_Dummett_valid_of_strongly_connected.
+Print Assumptions pkripke_strongly_connected_of_Dummett_valid.
+Print Assumptions pkripke_diamond_not_strongly_connected.
+Print Assumptions ph_hilbert_kc_pkripke_sound.
+Print Assumptions ph_hilbert_kc_consistent_via_pkripke.
+Print Assumptions ph_hilbert_lc_pkripke_sound.
+Print Assumptions ph_hilbert_lc_consistent_via_pkripke.
+
+(** Finite truth-profile filtrations for intuitionistic propositional models. *)
+Check pfilter_truth_profile.
+Check pfilter_profile_agreement.
+Check pfilter_class_agreement.
+Check pfilter_class_representative_eq.
+Check pfilter_world_eq_of_agreement.
+Check pfilter_world_cover.
+Check pfilter_world_cover_complete.
+Check pfilter_world_cover_nodup.
+Check pfilter_world_cover_bound.
+Check pfiltration_data.
+Check pfiltration_model.
+Check pfiltration_truth.
+Check pcoarsest_filtration_rel.
+Check pcoarsest_filtration_data.
+Check pcoarsest_filtration_antisymmetric.
+Check pcoarsest_filtration_model.
+Check pcoarsest_filtration_truth.
+Check pfinest_filtration_edge.
+Check pfilter_path.
+Check pfilter_path_trans.
+Check pfinest_filtration_rel.
+Check pfinest_edge_preserves.
+Check pfinest_path_preserves.
+Check pfinest_filtration_data.
+Check pfinest_filtration_model.
+Check pfinest_filtration_truth.
+Check pfinest_filtration_rel_in_coarsest.
+Check pfinest_filtration_antisymmetric.
+Check pcoarsest_subformula_filtration_truth.
+Check pfinest_subformula_filtration_truth.
+Print Assumptions pfilter_profile_agreement.
+Print Assumptions pfilter_world_cover_complete.
+Print Assumptions pfilter_world_cover_bound.
+Print Assumptions pfiltration_truth.
+Print Assumptions pcoarsest_filtration_antisymmetric.
+Print Assumptions pcoarsest_filtration_truth.
+Print Assumptions pfinest_path_preserves.
+Print Assumptions pfinest_filtration_truth.
+Print Assumptions pfinest_filtration_antisymmetric.
+
+(** Excluded middle over preorder Kripke frames.  Symmetry and right
+    Euclideanness coincide; one atomic LEM instance defines them.  The
+    singleton/Boolean bridge factors ordinary and finite Cl completeness. *)
+Check pkripke_frame_symmetric.
+Check pkripke_frame_euclidean.
+Check pkripke_symmetric_of_euclidean.
+Check pkripke_euclidean_of_symmetric.
+Check pkripke_symmetric_iff_euclidean.
+Check pkripke_LEM_valid_of_symmetric.
+Check pkripke_LEM_valid_of_euclidean.
+Check pkripke_euclidean_of_LEM_valid.
+Check pkripke_LEM_valid_iff_euclidean.
+Check pki_has_lem.
+Check pki_canonical_frame_euclidean.
+Check pki_cl_has_efq.
+Check pki_cl_has_lem.
+Check pkripke_singleton_boolean_valuation.
+Check pkripke_singleton_boolean_model.
+Check pkripke_singleton_forces_iff_boolean.
+Check ph_hilbert_cl_pkripke_complete_of_singleton.
+Check ph_hilbert_cl_pkripke_sound.
+Check ph_hilbert_cl_pkripke_complete.
+Check ph_hilbert_cl_pkripke_sound_complete.
+Check ph_hilbert_cl_pkripke_symmetric_complete.
+Check ph_hilbert_cl_pkripke_symmetric_sound_complete.
+Check pkripke_singleton_symmetric.
+Check pkripke_singleton_euclidean.
+Check pkripke_singleton_finite.
+Check pkripke_finite_symmetric.
+Check pkripke_finite_euclidean.
+Check ph_hilbert_cl_pkripke_finite_symmetric_complete.
+Check ph_hilbert_cl_pkripke_finite_euclidean_complete.
+Check ph_hilbert_cl_consistent_via_pkripke.
+Check ph_hilbert_lc_included_cl.
+Check pkripke_two_chain_frame.
+Check pkripke_two_chain_strongly_connected.
+Check pkripke_two_chain_not_euclidean.
+Check ph_hilbert_lc_strictly_included_cl.
+Print Assumptions pkripke_symmetric_iff_euclidean.
+Print Assumptions pkripke_LEM_valid_of_symmetric.
+Print Assumptions pkripke_euclidean_of_LEM_valid.
+Print Assumptions pki_canonical_frame_euclidean.
+Print Assumptions pkripke_singleton_forces_iff_boolean.
+Print Assumptions ph_hilbert_cl_pkripke_complete_of_singleton.
+Print Assumptions ph_hilbert_cl_pkripke_sound.
+Print Assumptions ph_hilbert_cl_pkripke_complete.
+Print Assumptions ph_hilbert_cl_pkripke_finite_symmetric_complete.
+Print Assumptions ph_hilbert_cl_pkripke_finite_euclidean_complete.
+Print Assumptions ph_hilbert_cl_consistent_via_pkripke.
+Print Assumptions ph_hilbert_lc_included_cl.
+Print Assumptions ph_hilbert_lc_strictly_included_cl.
+
+(** Letterless Int/Cl coincidence and Post completeness.  The forcing
+    invariant is constructive; maximal consistency uses the established
+    Boolean countervaluation/zero-substitution boundary. *)
+Check godel_translate_letterless.
+Check pkripke_letterless_forces_iff_boolean.
+Check pkripke_letterless_forcing_invariant.
+Check ph_hilbert_letterless_int_iff_cl.
+Check pformula_logic_consistent.
+Check pformula_logic_strict_subset.
+Check ph_superintuitionistic_logic.
+Check ph_superintuitionistic_contains_int.
+Check ph_superintuitionistic_trivial_of_bottom.
+Check ph_superintuitionistic_strictly_below_trivial.
+Check ph_logic_cl_maximal_consistent.
+Check ph_logic_cl_post_complete.
+Check ph_superintuitionistic_cl_post_complete.
+Print Assumptions godel_translate_letterless.
+Print Assumptions pkripke_letterless_forces_iff_boolean.
+Print Assumptions pkripke_letterless_forcing_invariant.
+Print Assumptions ph_hilbert_letterless_int_iff_cl.
+Print Assumptions ph_superintuitionistic_trivial_of_bottom.
+Print Assumptions ph_superintuitionistic_strictly_below_trivial.
+Print Assumptions ph_logic_cl_maximal_consistent.
+Print Assumptions ph_logic_cl_post_complete.
+
+(** Int's disjunction property via a fresh-root sum of two canonical
+    countermodels. *)
+Check pkripke_dp_world.
+Check pkripke_dp_access.
+Check pkripke_dp_access_refl.
+Check pkripke_dp_access_trans.
+Check pkripke_dp_frame.
+Check pkripke_dp_valuation.
+Check pkripke_dp_model.
+Check pkripke_dp_forces_left_iff.
+Check pkripke_dp_forces_right_iff.
+Check ph_hilbert_int_disjunction_property.
+Print Assumptions pkripke_dp_access_trans.
+Print Assumptions pkripke_dp_forces_left_iff.
+Print Assumptions pkripke_dp_forces_right_iff.
+Print Assumptions ph_hilbert_int_disjunction_property.
+
+(** Propositional Kripke preservation and point-generated rooted models. *)
+Check pkripke_bisimulation.
+Check pkripke_bisimulation_symmetry.
+Check pkripke_bisimulation_invariance.
+Check pkripke_equivalent.
+Check pkripke_equivalent_of_bisimilar.
+Check pkripke_equivalent_symmetry.
+Check pkripke_frame_p_morphism.
+Check pkripke_frame_p_morphism_id.
+Check pkripke_frame_p_morphism_comp.
+Check pkripke_model_p_morphism.
+Check pkripke_model_p_morphism_of_atomic.
+Check pkripke_model_p_morphism_id.
+Check pkripke_model_p_morphism_comp.
+Check pkripke_model_p_morphism_bisimulation.
+Check pkripke_model_p_morphism_equivalence.
+Check pkripke_frame_irreflexive.
+Check pkripke_frame_root.
+Check pkripke_frame_rooted.
+Check pkripke_point_generated_member.
+Check pkripke_point_generated_frame.
+Check pkripke_point_generated_root.
+Check pkripke_point_generated_root_is_root.
+Check pkripke_point_generated_rooted.
+Check pkripke_point_generated_cover.
+Check pkripke_point_generated_finite.
+Check pkripke_point_generated_antisymmetric.
+Check pkripke_point_generated_irreflexive.
+Check pkripke_point_generated_p_morphism.
+Check pkripke_point_generated_valuation.
+Check pkripke_point_generated_model.
+Check pkripke_point_generated_model_p_morphism.
+Check pkripke_point_generated_bisimulation.
+Check pkripke_point_generated_equivalent_at_root.
+Print Assumptions pkripke_bisimulation_invariance.
+Print Assumptions pkripke_frame_p_morphism_comp.
+Print Assumptions pkripke_model_p_morphism_equivalence.
+Print Assumptions pkripke_point_generated_root_is_root.
+Print Assumptions pkripke_point_generated_finite.
+Print Assumptions pkripke_point_generated_antisymmetric.
+Print Assumptions pkripke_point_generated_p_morphism.
+Print Assumptions pkripke_point_generated_equivalent_at_root.
+
+(** Rooted arbitrary-relation propositional Kripke semantics. *)
+Check pk2_frame.
+Check pk2_model.
+Check pk2_forces.
+Check pk2_forces_atom.
+Check pk2_forces_bottom.
+Check pk2_forces_top.
+Check pk2_forces_and.
+Check pk2_not_forces_and.
+Check pk2_forces_or.
+Check pk2_not_forces_or.
+Check pk2_forces_imp.
+Check pk2_not_forces_imp.
+Check pk2_forces_neg.
+Check pk2_not_forces_neg.
+Check pk2_substitution_model.
+Check pk2_forces_substitute.
+Check pk2_model_valid.
+Check pk2_frame_valid.
+Check pk2_frame_class_valid.
+Check pk2_model_class_valid.
+Check pk2_model_not_valid_iff.
+Check pk2_frame_not_valid_iff_model.
+Check pk2_frame_not_valid_iff_world.
+Check pk2_frame_valid_substitute.
+Check pk2_frame_class_not_valid_iff_frame.
+Check pk2_frame_class_not_valid_iff_model.
+Check pk2_frame_class_not_valid_iff_model_world.
+Check pk2_model_class_not_valid_iff_model.
+Check pk2_model_class_not_valid_iff_world.
+Check pk2_axiom_C.
+Check pk2_axiom_D.
+Check pk2_distribute_and_or.
+Check pk2_axiom_I.
+Check pk2_valid_and1.
+Check pk2_valid_and2.
+Check pk2_valid_axiom_C.
+Check pk2_valid_or1.
+Check pk2_valid_or2.
+Check pk2_valid_axiom_D.
+Check pk2_valid_distribute_and_or.
+Check pk2_valid_axiom_I.
+Check pk2_valid_identity.
+Check pk2_valid_efq.
+Check pk2_valid_afortiori.
+Check pk2_valid_conjunction_rule.
+Check pk2_valid_modus_ponens.
+Check pk2_K_counter_frame.
+Check pk2_K_counter_frame_refutes_K.
+Print Assumptions pk2_not_forces_imp.
+Print Assumptions pk2_forces_substitute.
+Print Assumptions pk2_frame_valid_substitute.
+Print Assumptions pk2_frame_class_not_valid_iff_model_world.
+Print Assumptions pk2_valid_axiom_C.
+Print Assumptions pk2_valid_modus_ponens.
+Print Assumptions pk2_K_counter_frame_refutes_K.
+
+(** Exact frame correspondences for rooted arbitrary-relation semantics. *)
+Check pk2_frame_coreflexive.
+Check pk2_frame_reflexive.
+Check pk2_frame_serial.
+Check pk2_frame_symmetric.
+Check pk2_frame_transitive.
+Check pk2_frame_piecewise_connected.
+Check pk2_frame_piecewise_strongly_connected.
+Check pk2_model_hereditary.
+Check pk2_reflexive_serial.
+Check pk2_symmetric_serial.
+Check pk2_axiom_rfl.
+Check pk2_axiom_corefl.
+Check pk2_axiom_tra1.
+Check pk2_axiom_tra2.
+Check pk2_axiom_sym.
+Check pk2_axiom_ser.
+Check pk2_axiom_hrd.
+Check pk2_valid_corefl_of_coreflexive.
+Check pk2_coreflexive_of_valid_corefl.
+Check pk2_coreflexive_iff_valid_corefl.
+Check pk2_valid_hrd_of_hereditary.
+Check pk2_hereditary_of_valid_hrd.
+Check pk2_hereditary_iff_valid_hrd.
+Check pk2_valid_rfl_of_reflexive.
+Check pk2_reflexive_of_valid_rfl.
+Check pk2_reflexive_iff_valid_rfl.
+Check pk2_valid_ser_of_serial.
+Check pk2_serial_of_valid_ser.
+Check pk2_serial_iff_valid_ser.
+Check pk2_valid_sym_of_symmetric.
+Check pk2_symmetric_of_valid_sym.
+Check pk2_symmetric_iff_valid_sym.
+Check pk2_valid_tra1_of_transitive.
+Check pk2_transitive_of_valid_tra1.
+Check pk2_valid_tra2_of_transitive.
+Check pk2_transitive_of_valid_tra2.
+Check pk2_transitive_iff_valid_tra1.
+Check pk2_transitive_iff_valid_tra2.
+Check pk2_valid_tra1_iff_valid_tra2.
+Check pk2_axiom_pscon.
+Check pk2_valid_pscon_of_piecewise_strongly_connected.
+Check pk2_axiom_pcon1.
+Check pk2_axiom_pcon2.
+Check pk2_axiom_pcon3.
+Check pk2_axiom_pcon4.
+Check pk2_axiom_pcon5.
+Check pk2_axiom_pcon6.
+Check pk2_pcon_counter_frame.
+Check pk2_pcon_counter_valuation.
+Check pk2_pcon_counter_piecewise_strongly_connected.
+Check pk2_pcon_counter_piecewise_connected.
+Check pk2_pcon1_not_valid_on_piecewise_connected_frame.
+Print Assumptions pk2_valid_corefl_of_coreflexive.
+Print Assumptions pk2_coreflexive_of_valid_corefl.
+Print Assumptions pk2_hereditary_iff_valid_hrd.
+Print Assumptions pk2_reflexive_iff_valid_rfl.
+Print Assumptions pk2_serial_iff_valid_ser.
+Print Assumptions pk2_symmetric_iff_valid_sym.
+Print Assumptions pk2_transitive_iff_valid_tra1.
+Print Assumptions pk2_transitive_iff_valid_tra2.
+Print Assumptions pk2_valid_pscon_of_piecewise_strongly_connected.
+Print Assumptions pk2_pcon1_not_valid_on_piecewise_connected_frame.
+
+(** Hilbert F proof systems and their rooted arbitrary-relation semantics. *)
+Check phf_hilbert.
+Check phf_hilbert_F.
+Check phf_hilbert_F_Ser.
+Check phf_hilbert_F_Rfl.
+Check phf_hilbert_F_Sym.
+Check phf_hilbert_F_Rfl_Sym.
+Check phf_hilbert_F_Tra1.
+Check phf_hilbert_F_Rfl_Tra1.
+Check phf_F_schema_in_F_Ser.
+Check phf_F_schema_in_F_Rfl.
+Check phf_F_schema_in_F_Sym.
+Check phf_F_schema_in_F_Tra1.
+Check phf_F_Rfl_schema_in_F_Rfl_Sym.
+Check phf_F_Sym_schema_in_F_Rfl_Sym.
+Check phf_F_Rfl_schema_in_F_Rfl_Tra1.
+Check phf_F_Tra1_schema_in_F_Rfl_Tra1.
+Check phf_proof.
+Check phf_provable.
+Check phf_provable_of_schema.
+Check phf_proof_of_schema_inclusion.
+Check phf_provable_of_schema_inclusion.
+Check phf_proof_substitute.
+Check phf_provable_substitute.
+Check phf_proof_of_provable_schema.
+Check phf_provable_of_provable_schema.
+Check phf_logic_included.
+Check phf_logic_strictly_included.
+Check phf_consistent.
+Check phf_hilbert_logic.
+Check phf_hilbert_logic_iff_provable.
+Check phf_hilbert_logic_subset_of_schema_inclusion.
+Check phf_hilbert_logic_subset_of_provable_schema.
+Check phf_logic_F.
+Check phf_logic_F_Ser.
+Check phf_logic_F_Rfl.
+Check phf_logic_F_Sym.
+Check phf_logic_F_Rfl_Sym.
+Check phf_logic_F_Tra1.
+Check phf_logic_F_Rfl_Tra1.
+Check phf_proof_pk2_model_sound.
+Check phf_pk2_frame_sound.
+Check phf_pk2_frame_complete.
+Check phf_pk2_model_sound.
+Check phf_pk2_frame_sound_of_schema.
+Check phf_pk2_model_sound_of_schema.
+Check phf_consistent_of_frame_sound.
+Check phf_consistent_of_model_sound.
+Check phf_included_of_pk2_frame_class_subset.
+Check phf_trivial_frame.
+Check phf_trivial_reflexive.
+Check phf_trivial_symmetric.
+Check phf_trivial_transitive.
+Check phf_F_pk2_sound.
+Check phf_F_Ser_pk2_sound.
+Check phf_F_Rfl_pk2_sound.
+Check phf_F_Sym_pk2_sound.
+Check phf_F_Rfl_Sym_pk2_sound.
+Check phf_F_Tra1_pk2_sound.
+Check phf_F_Rfl_Tra1_pk2_sound.
+Check phf_F_consistent.
+Check phf_F_Ser_consistent.
+Check phf_F_Rfl_consistent.
+Check phf_F_Sym_consistent.
+Check phf_F_Rfl_Sym_consistent.
+Check phf_F_Tra1_consistent.
+Check phf_F_Rfl_Tra1_consistent.
+Check phf_serial_nonreflexive_frame.
+Check phf_serial_nonreflexive_serial.
+Check phf_serial_nonreflexive_symmetric.
+Check phf_serial_nonreflexive_not_reflexive.
+Check phf_reflexive_nonsymmetric_frame.
+Check phf_reflexive_nonsymmetric_reflexive.
+Check phf_reflexive_nonsymmetric_not_symmetric.
+Check phf_gap_frame.
+Check phf_gap_true_reflexive.
+Check phf_gap_not_transitive.
+Check pk2_K_counter_not_serial.
+Check pk2_K_counter_transitive.
+Check phf_F_unprovable_noncontradiction.
+Check phf_F_strictly_included_F_Ser.
+Check phf_F_strictly_included_F_Sym.
+Check phf_F_strictly_included_F_Tra1.
+Check phf_F_Rfl_not_included_F_Ser.
+Check phf_F_Rfl_strictly_included_F_Rfl_Sym.
+Check phf_F_Sym_strictly_included_F_Rfl_Sym.
+Check phf_F_Rfl_strictly_included_F_Rfl_Tra1.
+Check phf_F_Tra1_strictly_included_F_Rfl_Tra1.
+Print Assumptions phf_proof_of_schema_inclusion.
+Print Assumptions phf_proof_substitute.
+Print Assumptions phf_provable_of_provable_schema.
+Print Assumptions phf_proof_pk2_model_sound.
+Print Assumptions phf_pk2_frame_sound_of_schema.
+Print Assumptions phf_pk2_model_sound_of_schema.
+Print Assumptions phf_consistent_of_frame_sound.
+Print Assumptions phf_included_of_pk2_frame_class_subset.
+Print Assumptions phf_F_pk2_sound.
+Print Assumptions phf_F_Rfl_Tra1_pk2_sound.
+Print Assumptions phf_F_unprovable_noncontradiction.
+Print Assumptions phf_F_strictly_included_F_Ser.
+Print Assumptions phf_F_Rfl_strictly_included_F_Rfl_Sym.
+Print Assumptions phf_F_Tra1_strictly_included_F_Rfl_Tra1.
+
+(** Hilbert F slash/disjunction and weak-deduction extensions. *)
+Check phf_provable_mdp.
+Check phf_provable_afortiori.
+Check phf_provable_and_rule.
+Check phf_provable_or_left.
+Check phf_provable_or_right.
+Check phf_provable_imp_trans.
+Check phf_provable_imp_and.
+Check phf_iff.
+Check phf_proof_rule_C.
+Check phf_proof_rule_D.
+Check phf_proof_rule_I.
+Check phf_proof_iff_left.
+Check phf_proof_iff_right.
+Check phf_proof_restall.
+Check phf_proof_rule_E.
+Check phf_provable_of_aczel_slash.
+Check phf_aczel_slash_of_proof.
+Check phf_aczel_slash_iff_provable.
+Check phf_disjunctive_of_schema_aczel_slash.
+Check phf_aczel_slash_axiom_ser.
+Check phf_aczel_slash_axiom_rfl.
+Check phf_aczel_slash_axiom_tra1.
+Check phf_F_disjunctive.
+Check phf_F_Ser_disjunctive.
+Check phf_F_Rfl_disjunctive.
+Check phf_F_Tra1_disjunctive.
+Check phf_deduction.
+Check phf_deducible_of_provable.
+Check phf_deduction_empty_iff.
+Check phf_deduction_weaken.
+Check phf_weak_deduction_iff.
+Check phf_deduction_finite_list_support.
+Print Assumptions phf_provable_imp_trans.
+Print Assumptions phf_proof_rule_C.
+Print Assumptions phf_proof_rule_D.
+Print Assumptions phf_proof_rule_I.
+Print Assumptions phf_proof_restall.
+Print Assumptions phf_proof_rule_E.
+Print Assumptions phf_aczel_slash_of_proof.
+Print Assumptions phf_aczel_slash_iff_provable.
+Print Assumptions phf_disjunctive_of_schema_aczel_slash.
+Print Assumptions phf_F_disjunctive.
+Print Assumptions phf_F_Ser_disjunctive.
+Print Assumptions phf_F_Rfl_disjunctive.
+Print Assumptions phf_F_Tra1_disjunctive.
+Print Assumptions phf_deduction_empty_iff.
+Print Assumptions phf_weak_deduction_iff.
+Print Assumptions phf_deduction_finite_list_support.
+
+(** Formula-indexed rooted semantics and elementary NT-seriality. *)
+Check fmt_frame.
+Check fmt_valuation.
+Check fmt_model.
+Check fmt_forces.
+Check fmt_forces_atom.
+Check fmt_forces_bottom.
+Check fmt_forces_top.
+Check fmt_forces_and.
+Check fmt_not_forces_and.
+Check fmt_forces_or.
+Check fmt_not_forces_or.
+Check fmt_forces_imp.
+Check fmt_not_forces_imp.
+Check fmt_forces_neg.
+Check fmt_not_forces_neg.
+Check fmt_iff.
+Check fmt_forces_iff.
+Check fmt_not_forces_iff.
+Check fmt_model_valid.
+Check fmt_frame_valid.
+Check fmt_frame_class_valid.
+Check fmt_model_class_valid.
+Check fmt_model_valid_top.
+Check fmt_model_not_valid_bottom.
+Check fmt_model_valid_at_root.
+Check fmt_frame_valid_top.
+Check fmt_frame_not_valid_bottom.
+Check fmt_model_not_valid_iff.
+Check fmt_frame_not_valid_iff.
+Check fmt_frame_not_valid_iff_world.
+Check fmt_frame_class_not_valid_iff_frame.
+Check fmt_frame_class_not_valid_iff_model.
+Check fmt_frame_class_not_valid_iff_model_world.
+Check fmt_model_class_not_valid_iff_model.
+Check fmt_model_class_not_valid_iff_world.
+Check fmt_collect_or_and.
+Check fmt_valid_and1.
+Check fmt_valid_and2.
+Check fmt_valid_or1.
+Check fmt_valid_or2.
+Check fmt_valid_distribute_and_or.
+Check fmt_valid_collect_or_and.
+Check fmt_valid_identity.
+Check fmt_valid_efq.
+Check fmt_valid_mdp.
+Check fmt_valid_afortiori.
+Check fmt_valid_and_rule.
+Check fmt_valid_rule_D.
+Check fmt_valid_rule_C.
+Check fmt_valid_rule_I.
+Check fmt_nt_serial.
+Check fmt_valid_ser_of_nt_serial.
+Check fmt_nt_serial_of_valid_neg_top.
+Check fmt_valid_ser_of_valid_neg_top.
+Print Assumptions fmt_not_forces_imp.
+Print Assumptions fmt_not_forces_iff.
+Print Assumptions fmt_frame_class_not_valid_iff_model_world.
+Print Assumptions fmt_model_class_not_valid_iff_world.
+Print Assumptions fmt_valid_mdp.
+Print Assumptions fmt_valid_rule_I.
+Print Assumptions fmt_valid_ser_of_nt_serial.
+Print Assumptions fmt_nt_serial_of_valid_neg_top.
+
+(** Hilbert VF proof systems and their formula-indexed semantics. *)
+Check phvf_hilbert.
+Check phvf_axiom_ser.
+Check phvf_hilbert_VF.
+Check phvf_hilbert_VF_Ser.
+Check phvf_distribute_and_or.
+Check phvf_proof.
+Check phvf_provable.
+Check phvf_provable_of_schema.
+Check phvf_proof_of_schema_inclusion.
+Check phvf_provable_of_schema_inclusion.
+Check phvf_proof_substitute.
+Check phvf_provable_substitute.
+Check phvf_proof_of_proof_schema.
+Check phvf_provable_of_provable_schema.
+Check phvf_VF_schema_in_VF_Ser.
+Check phvf_VF_Ser_provable_ser.
+Check phvf_logic_included.
+Check phvf_logic_strictly_included.
+Check phvf_consistent.
+Check phvf_hilbert_logic.
+Check phvf_hilbert_logic_iff_provable.
+Check phvf_hilbert_logic_subset_of_schema_inclusion.
+Check phvf_hilbert_logic_subset_of_provable_schema.
+Check phvf_logic_VF.
+Check phvf_logic_VF_Ser.
+Check phvf_proof_fmt_model_sound.
+Check phvf_fmt_frame_schema_valid.
+Check phvf_fmt_model_schema_valid.
+Check phvf_fmt_frame_sound.
+Check phvf_fmt_frame_complete.
+Check phvf_fmt_model_sound.
+Check phvf_fmt_frame_sound_of_schema.
+Check phvf_fmt_model_sound_of_schema.
+Check phvf_consistent_of_fmt_frame_sound.
+Check phvf_consistent_of_fmt_model_sound.
+Check phvf_included_of_fmt_frame_class_subset.
+Check phvf_fmt_trivial_frame.
+Check phvf_fmt_trivial_nt_serial.
+Check phvf_VF_fmt_sound.
+Check phvf_VF_consistent.
+Check phvf_VF_Ser_fmt_sound.
+Check phvf_VF_Ser_consistent.
+Check phvf_fmt_ser_counter_frame.
+Check phvf_fmt_ser_counter_model.
+Check phvf_fmt_ser_counter_not_forces_ser.
+Check phvf_VF_unprovable_ser.
+Check phvf_VF_strictly_included_VF_Ser.
+Check phvf_fmt_iff_counter_frame.
+Check phvf_fmt_iff_counter_model.
+Check phvf_fmt_iff_counter_forces_neg_top.
+Check phvf_fmt_iff_counter_not_forces_ser.
+Check phvf_fmt_iff_counter_not_forces_top_iff_ser.
+Check phvf_VF_unprovable_top_iff_ser.
+Check phvf_provable_mdp.
+Check phvf_provable_and_rule.
+Check phvf_provable_or_left.
+Check phvf_provable_or_right.
+Check phvf_provable_of_aczel_slash.
+Check phvf_aczel_slash_of_proof.
+Check phvf_aczel_slash_iff_provable.
+Check phvf_disjunctive_of_schema_aczel_slash.
+Check phvf_aczel_slash_axiom_ser.
+Check phvf_VF_disjunctive.
+Check phvf_VF_Ser_disjunctive.
+Print Assumptions phvf_proof_of_schema_inclusion.
+Print Assumptions phvf_proof_substitute.
+Print Assumptions phvf_provable_of_provable_schema.
+Print Assumptions phvf_proof_fmt_model_sound.
+Print Assumptions phvf_fmt_frame_sound_of_schema.
+Print Assumptions phvf_consistent_of_fmt_frame_sound.
+Print Assumptions phvf_included_of_fmt_frame_class_subset.
+Print Assumptions phvf_VF_fmt_sound.
+Print Assumptions phvf_VF_Ser_fmt_sound.
+Print Assumptions phvf_VF_strictly_included_VF_Ser.
+Print Assumptions phvf_VF_unprovable_top_iff_ser.
+Print Assumptions phvf_provable_of_aczel_slash.
+Print Assumptions phvf_aczel_slash_of_proof.
+Print Assumptions phvf_aczel_slash_iff_provable.
+Print Assumptions phvf_disjunctive_of_schema_aczel_slash.
+Print Assumptions phvf_VF_disjunctive.
+Print Assumptions phvf_VF_Ser_disjunctive.
+
+(** Corsi proof algebra specialized to faithful Hilbert VF derivations. *)
+Check phvf_collect_or_and.
+Check phvf_iff.
+Check phvf_proof_iff_identity.
+Check phvf_proof_and_comm.
+Check phvf_proof_or_comm.
+Check phvf_proof_and_right_cancel.
+Check phvf_proof_and_right_replace.
+Check phvf_proof_collect_or_and.
+Check phvf_proof_or_replace_both.
+Check phvf_proof_or_replace_left.
+Check phvf_proof_or_replace_right.
+Check phvf_proof_imp_replace_both.
+Check phvf_proof_and_right_covariant.
+Check phvf_provable_collect_or_and.
+Check phvf_provable_iff_identity.
+Check phvf_provable_and_comm.
+Check phvf_provable_or_comm.
+Check phvf_provable_and_right_cancel.
+Check phvf_provable_and_right_replace.
+Check phvf_provable_or_replace_both.
+Check phvf_provable_or_replace_left.
+Check phvf_provable_or_replace_right.
+Check phvf_provable_imp_replace_both.
+Check phvf_provable_and_right_covariant.
+Check phvf_consistent_not_bottom.
+Check phvf_list_conj.
+Check phvf_list_disj.
+Check phvf_list_member.
+Check phvf_proof_list_conj_intro.
+Check phvf_proof_list_conj_member.
+Check phvf_proof_list_conj_subset.
+Check phvf_proof_list_conj_cons.
+Check phvf_proof_list_disj_member.
+Check phvf_proof_list_disj_elim.
+Check phvf_provable_list_conj_intro.
+Check phvf_provable_list_conj_member.
+Check phvf_provable_list_conj_subset.
+Check phvf_provable_list_conj_cons.
+Check phvf_provable_list_disj_member.
+Check phvf_provable_list_disj_elim.
+Check phvf_provable_list_disjunct.
+Print Assumptions phvf_proof_collect_or_and.
+Print Assumptions phvf_proof_imp_replace_both.
+Print Assumptions phvf_proof_list_conj_intro.
+Print Assumptions phvf_proof_list_conj_member.
+Print Assumptions phvf_proof_list_disj_elim.
+Print Assumptions phvf_provable_list_conj_subset.
+Print Assumptions phvf_provable_list_disjunct.
+
+(** List-based Hintikka saturation for formula-indexed completeness. *)
+Check phvf_hintikka_pair.
+Check phvf_hintikka_consistent.
+Check phvf_hintikka_insert_positive.
+Check phvf_hintikka_insert_negative.
+Check phvf_proof_hintikka_collapse.
+Check phvf_provable_hintikka_collapse.
+Check phvf_hintikka_either_consistent.
+Check phvf_hintikka_next.
+Check phvf_hintikka_next_consistent.
+Check phvf_hintikka_next_positive_monotone.
+Check phvf_hintikka_next_negative_monotone.
+Check phvf_hintikka_next_either_member.
+Check phvf_hintikka_enumerate.
+Check phvf_hintikka_enumerate_consistent.
+Check phvf_hintikka_enumerate_positive_monotone.
+Check phvf_hintikka_enumerate_negative_monotone.
+Check phvf_hintikka_enumerate_member.
+Check phvf_hintikka_saturate.
+Check phvf_saturated_hintikka_pair.
+Check phvf_hintikka_lindenbaum.
+Check phvf_hintikka_lindenbaum_positive.
+Check phvf_hintikka_lindenbaum_negative.
+Check phvf_saturated_not_both.
+Check phvf_saturated_positive_iff_not_negative.
+Check phvf_saturated_negative_of_not_positive.
+Check phvf_saturated_imp_closed.
+Check phvf_saturated_bottom_not_positive.
+Check phvf_saturated_top_positive.
+Check phvf_saturated_and_iff.
+Check phvf_saturated_or_iff.
+Check phvf_fmt_hintikka_access.
+Check phvf_fmt_hintikka_frame.
+Check phvf_fmt_hintikka_model.
+Check phvf_hintikka_imp_seed.
+Check phvf_hintikka_imp_seed_consistent.
+Check phvf_fmt_hintikka_truth.
+Check phvf_hintikka_counter_seed.
+Check phvf_hintikka_counter_seed_consistent.
+Check phvf_provable_of_fmt_hintikka_valid.
+Check phvf_fmt_complete_all_frames.
+Check phvf_fmt_hintikka_nt_serial_of_ser.
+Check phvf_fmt_complete_nt_serial_of_ser.
+Check phvf_VF_fmt_complete.
+Check phvf_VF_Ser_fmt_complete.
+Print Assumptions phvf_proof_hintikka_collapse.
+Print Assumptions phvf_hintikka_either_consistent.
+Print Assumptions phvf_hintikka_next_consistent.
+Print Assumptions phvf_hintikka_lindenbaum.
+Print Assumptions phvf_saturated_not_both.
+Print Assumptions phvf_saturated_imp_closed.
+Print Assumptions phvf_saturated_and_iff.
+Print Assumptions phvf_saturated_or_iff.
+Print Assumptions phvf_hintikka_imp_seed_consistent.
+Print Assumptions phvf_fmt_hintikka_truth.
+Print Assumptions phvf_hintikka_counter_seed_consistent.
+Print Assumptions phvf_provable_of_fmt_hintikka_valid.
+Print Assumptions phvf_fmt_complete_all_frames.
+Print Assumptions phvf_fmt_hintikka_nt_serial_of_ser.
+Print Assumptions phvf_fmt_complete_nt_serial_of_ser.
+Print Assumptions phvf_VF_fmt_complete.
+Print Assumptions phvf_VF_Ser_fmt_complete.
+
+(** Hilbert WF and heterogeneous VF-to-WF transport. *)
+Check phwf_hilbert.
+Check phwf_schema.
+Check phwf_schema_substitute.
+Check phwf_hilbert_WF.
+Check phwf_iff.
+Check phwf_proof.
+Check phwf_provable.
+Check phwf_provable_of_schema.
+Check phwf_proof_of_schema_inclusion.
+Check phwf_provable_of_schema_inclusion.
+Check phwf_proof_substitute.
+Check phwf_provable_substitute.
+Check phwf_proof_of_proof_schema.
+Check phwf_provable_of_provable_schema.
+Check phwf_logic_included.
+Check phwf_hilbert_logic.
+Check phwf_hilbert_logic_iff_provable.
+Check phwf_hilbert_logic_subset_of_schema_inclusion.
+Check phwf_hilbert_logic_subset_of_provable_schema.
+Check phwf_logic_WF.
+Check phvf_proof_to_phwf.
+Check phvf_phwf_included.
+Check phvf_phwf_included_of_provable_schema.
+Check phvf_VF_included_phwf_WF.
+Check phwf_proof_to_phf.
+Check phwf_phf_included.
+Check phwf_phf_included_of_provable_schema.
+Check phwf_WF_included_phf_F.
+Check phwf_separation_left.
+Check phwf_separation_right.
+Check phwf_separation_formula.
+Check phwf_proof_separation.
+Check phwf_WF_provable_separation.
+Check phwf_separation_world.
+Check phwf_separation_access.
+Check phwf_separation_root_access.
+Check phwf_separation_frame.
+Check phwf_separation_model.
+Check phwf_separation_no_left_from_gap.
+Check phwf_separation_right_gap_end.
+Check phwf_separation_forces_left_gap.
+Check phwf_separation_not_forces_right_gap.
+Check phwf_separation_countermodel.
+Check phvf_VF_unprovable_phwf_separation.
+Check phvf_phwf_strictly_included.
+Check phvf_VF_strictly_included_phwf_WF.
+Print Assumptions phwf_schema_substitute.
+Print Assumptions phwf_proof_of_schema_inclusion.
+Print Assumptions phwf_proof_substitute.
+Print Assumptions phwf_provable_of_provable_schema.
+Print Assumptions phwf_hilbert_logic_subset_of_schema_inclusion.
+Print Assumptions phvf_proof_to_phwf.
+Print Assumptions phvf_phwf_included_of_provable_schema.
+Print Assumptions phvf_VF_included_phwf_WF.
+Print Assumptions phwf_proof_to_phf.
+Print Assumptions phwf_phf_included_of_provable_schema.
+Print Assumptions phwf_WF_included_phf_F.
+Print Assumptions phwf_proof_separation.
+Print Assumptions phwf_separation_countermodel.
+Print Assumptions phvf_VF_unprovable_phwf_separation.
+Print Assumptions phvf_VF_strictly_included_phwf_WF.
+
+(** Rooted propositional neighborhood semantics and Hilbert WF.  Predicate
+    extensionality is a frame law, so the constructive Rule-E proof needs no
+    functional or propositional extensionality.  Only the negative
+    class-validity witness equivalences use classical predicate logic. *)
+Check nb_subset.
+Check nb_set_equiv.
+Check nb_subset_equiv.
+Check nb_frame.
+Check nb_model.
+Check nb_truthset.
+Check nb_forces.
+Check nb_model_valid.
+Check nb_frame_valid.
+Check nb_frame_class_valid.
+Check nb_model_class_valid.
+Check nb_forces_atom.
+Check nb_not_forces_bottom.
+Check nb_forces_and.
+Check nb_forces_or.
+Check nb_forces_imp.
+Check nb_forces_top.
+Check nb_forces_neg.
+Check nb_forces_iff.
+Check nb_model_valid_imp_iff.
+Check nb_model_valid_iff_iff.
+Check nb_valid_and1.
+Check nb_valid_and2.
+Check nb_valid_or1.
+Check nb_valid_or2.
+Check nb_valid_distribute_and_or.
+Check nb_valid_identity.
+Check nb_valid_efq.
+Check nb_valid_modus_ponens.
+Check nb_valid_fortiori.
+Check nb_valid_and_rule.
+Check nb_valid_rule_C.
+Check nb_valid_rule_D.
+Check nb_valid_rule_I.
+Check nb_valid_rule_E.
+Check nb_phwf_proof_sound.
+Check nb_phwf_frame_schema_valid.
+Check nb_phwf_model_schema_valid.
+Check nb_phwf_frame_sound.
+Check nb_phwf_model_sound.
+Check nb_phwf_frame_complete.
+Check nb_phwf_soundness_frame_class.
+Check nb_phwf_soundness_model_class.
+Check nb_phwf_consistent.
+Check nb_phwf_consistent_of_frame_sound.
+Check nb_phwf_consistent_of_model_sound.
+Check nb_phwf_weaker_of_frame_classes.
+Check nb_model_not_valid_iff.
+Check nb_frame_not_valid_iff.
+Check nb_frame_class_not_valid_iff_frame.
+Check nb_frame_class_not_valid_iff_model.
+Check nb_frame_class_not_valid_iff_model_world.
+Check nb_model_class_not_valid_iff_model.
+Check nb_model_class_not_valid_iff_world.
+Check nb_trivial_frame.
+Check phwf_WF_nb_frame_sound.
+Check phwf_WF_nb_model_sound.
+Check phwf_WF_consistent.
+Check nb_two_frame.
+Check nb_C_frame.
+Check nb_C_model.
+Check nb_axiom_C.
+Check nb_C_countermodel.
+Check phwf_WF_unprovable_axiom_C.
+Check nb_D_frame.
+Check nb_D_model.
+Check nb_axiom_D.
+Check nb_D_countermodel.
+Check phwf_WF_unprovable_axiom_D.
+Check nb_I_frame.
+Check nb_I_model.
+Check nb_axiom_I.
+Check nb_I_countermodel.
+Check phwf_WF_unprovable_axiom_I.
+Check phwf_phf_strictly_included.
+Check phwf_WF_strictly_included_phf_F.
+Print Assumptions nb_model_valid_imp_iff.
+Print Assumptions nb_valid_rule_E.
+Print Assumptions nb_phwf_proof_sound.
+Print Assumptions nb_phwf_soundness_frame_class.
+Print Assumptions nb_phwf_consistent_of_frame_sound.
+Print Assumptions nb_phwf_weaker_of_frame_classes.
+Print Assumptions nb_frame_class_not_valid_iff_model_world.
+Print Assumptions nb_C_countermodel.
+Print Assumptions phwf_WF_unprovable_axiom_C.
+Print Assumptions nb_D_countermodel.
+Print Assumptions phwf_WF_unprovable_axiom_D.
+Print Assumptions nb_I_countermodel.
+Print Assumptions phwf_WF_unprovable_axiom_I.
+Print Assumptions phwf_WF_strictly_included_phf_F.
+
+(** Setoid Heyting semantics, soundness, and quotient-free completeness. *)
+Check pha_equiv.
+Check pha_le.
+Check pha_imp_top_iff_le.
+Check pha_meet_top_iff.
+Check pha_bottom_not_top.
+Check pha_meet_join_cases.
+Check pheyting_eval.
+Check pheyting_eval_top.
+Check pheyting_eval_neg.
+Check pheyting_semantics.
+Check pheyting_value.
+Check pheyting_satisfies.
+Check pheyting_satisfies_imp_iff.
+Check pheyting_satisfies_and_iff.
+Check pheyting_satisfies_iff_iff.
+Check pheyting_satisfies_neg_iff.
+Check pheyting_satisfies_top.
+Check pheyting_not_satisfies_bottom.
+Check pheyting_valid_K.
+Check pheyting_valid_S.
+Check pheyting_valid_and1.
+Check pheyting_valid_and2.
+Check pheyting_valid_and3.
+Check pheyting_valid_or1.
+Check pheyting_valid_or2.
+Check pheyting_valid_or3.
+Check pheyting_valid_mdp.
+Check pheyting_hilbert_proof_sound.
+Check pheyting_models_schema.
+Check pheyting_mod_valid.
+Check pheyting_hilbert_sound.
+Check pheyting_intuitionistic.
+Check pheyting_consistent.
+Check pheyting_lindenbaum_laws.
+Check pheyting_lindenbaum_int_laws.
+Check pheyting_lindenbaum_model.
+Check pheyting_lindenbaum_value_eq.
+Check pheyting_lindenbaum_satisfies_iff.
+Check pheyting_hilbert_complete.
+Print Assumptions pha_imp_top_iff_le.
+Print Assumptions pha_meet_join_cases.
+Print Assumptions pheyting_hilbert_proof_sound.
+Print Assumptions pheyting_hilbert_sound.
+Print Assumptions pheyting_lindenbaum_laws.
+Print Assumptions pheyting_lindenbaum_model.
+Print Assumptions pheyting_lindenbaum_satisfies_iff.
+Print Assumptions pheyting_hilbert_complete.
+
+(** Duplicate-tolerant consistent tableaux and factored saturation.
+    The saturated connective and supplied-classicality laws are closed under
+    the global context.  Constructing a saturated extension, and hence the
+    contextual completeness equivalences, exposes exactly excluded middle
+    and definite description through the enumerated Lindenbaum chain. *)
+Check pct_conj.
+Check pct_disj.
+Check pct_list_covered.
+Check pct_insert_split.
+Check pct_split_insert.
+Check pctableau.
+Check pctableau_subset.
+Check pctableau_consistent.
+Check pctableau_saturated.
+Check pctableau_not_both.
+Check pctableau_not_positive_iff_negative.
+Check pctableau_not_negative_iff_positive.
+Check pctableau_saturated_duality.
+Check pctableau_not_negative_of_provable_context.
+Check pctableau_consistent_insert_positive_iff.
+Check pctableau_consistent_insert_negative_iff.
+Check pctableau_inconsistent_insert_positive_iff.
+Check pctableau_inconsistent_insert_negative_iff.
+Check pctableau_consistent_either.
+Check pct_raw_member_inhabited.
+Check pct_raw_member_of_in.
+Check pct_partition_left.
+Check pct_partition_right.
+Check pct_partition.
+Check pct_partition_left_holds.
+Check pct_partition_right_not_left.
+Check pct_partition_left_origin.
+Check pct_partition_right_origin.
+Check pct_partition_member.
+Check pct_partition_original_included.
+Check pctableau_next.
+Check pctableau_chain.
+Check pctableau_limit.
+Check pctableau_chain_included_le.
+Check pctableau_chain_consistent.
+Check pctableau_limit_list_stage_positive.
+Check pctableau_limit_list_stage_negative.
+Check pctableau_limit_consistent.
+Check pctableau_limit_saturated.
+Check pctableau_lindenbaum.
+Check psctableau.
+Check psct_lindenbaum.
+Check psct_not_both.
+Check psct_not_positive_iff_negative.
+Check psct_not_negative_iff_positive.
+Check psct_equiv_of_positive.
+Check psct_equiv_of_negative.
+Check psct_not_negative_of_provable_context.
+Check pctableau_empty_consistent.
+Check psctableau_inhabited.
+Check psct_theorem_positive_raw.
+Check psct_theorem_positive.
+Check psct_mdp_theorem_positive.
+Check psct_mdp_theorem_negative.
+Check psct_top_positive.
+Check psct_bottom_not_positive.
+Check psct_bottom_negative.
+Check psct_mdp_positive.
+Check psct_and_positive_iff.
+Check psct_or_positive_iff.
+Check psct_or_negative_iff.
+Check psct_imp_positive_cases.
+Check psct_neg_positive_implies_negative.
+Check psct_positive_implies_neg_negative.
+Check psct_conj_positive_iff.
+Check psct_disj_negative_iff.
+Check pct_context_provable.
+Check pct_list_derivation_bind_raw.
+Check psct_context_positive_raw.
+Check pctableau_context_counterexample_consistent.
+Check psct_context_provable_iff.
+Check pct_empty_context_to_proof.
+Check psct_provable_iff.
+Check psct_classical_imp_positive_iff.
+Check psct_classical_imp_negative_iff.
+Check psct_classical_neg_positive_iff.
+Check psct_classical_neg_negative_iff.
+Print Assumptions pct_split_insert.
+Print Assumptions pctableau_not_both.
+Print Assumptions pctableau_consistent_insert_positive_iff.
+Print Assumptions pctableau_consistent_either.
+Print Assumptions pct_partition_member.
+Print Assumptions pct_partition_original_included.
+Print Assumptions pctableau_chain_consistent.
+Print Assumptions pctableau_limit_consistent.
+Print Assumptions pctableau_lindenbaum.
+Print Assumptions psct_and_positive_iff.
+Print Assumptions psct_or_positive_iff.
+Print Assumptions psct_conj_positive_iff.
+Print Assumptions pctableau_context_counterexample_consistent.
+Print Assumptions psct_context_provable_iff.
+Print Assumptions psct_provable_iff.
+Print Assumptions psct_classical_imp_positive_iff.
+Print Assumptions psct_classical_imp_negative_iff.
+
+(** The two-sided canonical Kripke model factors Foundation's tableau-based
+    implication counterextension.  The finite seed calculation reuses the
+    informative positional insert split; canonical extension and completeness
+    inherit exactly the tableau Lindenbaum boundary audited above. *)
+Check psct_canonical_frame.
+Check psct_canonical_valuation.
+Check psct_canonical_model.
+Check psct_imp_counterseed_consistent.
+Check psct_imp_counterextension.
+Check psct_canonical_truth.
+Check psct_canonical_model_valid_iff_provable.
+Check psct_canonical_for_class.
+Check ph_hilbert_pkripke_complete_of_psct_canonical.
+Print Assumptions psct_imp_counterseed_consistent.
+Print Assumptions psct_imp_counterextension.
+Print Assumptions psct_canonical_truth.
+Print Assumptions psct_canonical_model_valid_iff_provable.
+
+(** Enumerated prime-theory construction and canonical completeness.
+    Indefinite description selects a finite stage witnessing use of assumptions
+    from the increasing union and reifies positional membership after the
+    classical KC support partition. *)
+Check pki_context.
+Check pki_limit_derivation_stage_raw.
+Check pki_partition.
+Check pki_partition_member.
+Check pki_list_derivation_bind_raw.
+Check pki_limit_avoids.
+Check pki_limit_maximal.
+Check pki_limit_derivably_closed.
+Check pki_prime_theory.
+Check pki_prime_extension.
+Check pki_prime_and_iff.
+Check pki_prime_or_iff.
+Check pki_prime_list_conj2.
+Check pki_canonical_frame.
+Check pki_canonical_model.
+Check pki_prime_imp_counterextension.
+Check pki_canonical_frame_strongly_connected.
+Check pki_canonical_frame_strongly_convergent.
+Check pki_canonical_truth_lemma.
+Check pki_empty_derives_iff_provable.
+Check pki_canonical_model_valid_iff_provable.
+Check pki_canonical_for_class.
+Check ph_hilbert_pkripke_complete_of_canonical.
+Check ph_hilbert_pkripke_complete.
+Check pki_unprovable_has_canonical_countermodel.
+Check ph_hilbert_int_pkripke_complete.
+Check ph_hilbert_int_pkripke_sound_complete.
+Check ph_hilbert_lc_pkripke_complete.
+Check ph_hilbert_lc_pkripke_sound_complete.
+Check ph_hilbert_kc_pkripke_complete.
+Check ph_hilbert_kc_pkripke_sound_complete.
+Check ph_hilbert_kc_strictly_included_lc.
+Check pkripke_frame_finite.
+Check pkripke_frame_antisymmetric.
+Check pkripke_finite_partial_order.
+Check pkripke_finite_partial_order_convergent.
+Check pkripke_finite_partial_order_connected.
+Check pkripke_skeleton_frame.
+Check pkripke_skeleton_model.
+Check pkripke_skeleton_forces_iff.
+Check pkripke_skeleton_finite.
+Check pkripke_skeleton_antisymmetric.
+Check pkripke_skeleton_strongly_convergent.
+Check pkripke_skeleton_strongly_connected.
+Check modal_boxed_pkripke_forces_iff_godel.
+Check pkripke_forces_iff_forcing_modal_godel.
+Check ph_hilbert_int_pkripke_finite_complete.
+Check ph_hilbert_kc_pkripke_finite_complete.
+Check ph_hilbert_lc_pkripke_finite_complete.
+Check ph_hilbert_int_pkripke_finite_partial_order_complete.
+Check ph_hilbert_kc_pkripke_finite_partial_order_complete.
+Check ph_hilbert_lc_pkripke_finite_partial_order_complete.
+Check ph_hilbert_double_neg_intro_raw.
+Check ph_hilbert_double_neg_lem_raw.
+Check ph_glivenko_classical_to_int_double_neg.
+Check ph_glivenko_int_double_neg_to_classical_raw.
+Check ph_glivenko.
+Check ph_neg_provable_int_iff_cl.
+Check p_dialectica_player.
+Check p_dialectica_argument.
+Check p_dialectica_witness.
+Check p_dialectica_counter.
+Check p_dialectica_realizes.
+Check p_dialectica_valid.
+Check p_dialectica_not_valid.
+Check p_dialectica_not_valid_iff.
+Check p_dialectica_realizes_falsum.
+Check p_dialectica_realizes_atom.
+Check p_dialectica_realizes_and_left.
+Check p_dialectica_realizes_and_right.
+Check p_dialectica_realizes_or_left.
+Check p_dialectica_realizes_or_right.
+Check p_dialectica_realizes_imp.
+Check p_dialectica_realizes_top.
+Check p_dialectica_realizes_neg.
+Check p_dialectica_valid_identity.
+Check p_dialectica_excluded_middle_not_valid.
+Check p_aczel_slash.
+Check p_aczel_slash_atom.
+Check p_aczel_slash_falsum.
+Check p_aczel_slash_or.
+Check p_aczel_slash_and.
+Check p_aczel_slash_imp.
+Check p_aczel_slash_neg.
+Check p_aczel_slash_top.
+Check p_aczel_slash_modus_ponens.
+Check pformula_predicate_disjunctive.
+Check pformula_disjunctive_of_aczel_slash_iff.
+Check pformula_logic_aczel_slash.
+Check pformula_logic_disjunctive_of_aczel_slash_iff.
+Check pkripke_frame_kreisel_putnam.
+Check psct_unneg.
+Check psct_common_neg.
+Check psct_common_neg_shape.
+Check psct_common_neg_left.
+Check psct_common_neg_right.
+Check psct_common_neg_roundtrip.
+Check psct_kp_seed.
+Check psct_kp_seed_consistent.
+Check psct_positive_union_seed.
+Check psct_positive_union_extension.
+Check psct_no_positive_union_witness.
+Check psct_canonical_frame_kreisel_putnam.
+Check ph_hilbert_pkripke_kp_complete_of_axioms.
+Check ph_hilbert_kp_pkripke_complete_of_codec.
+Check ph_hilbert_kp_pkripke_complete.
+Check pkripke_KP_valid_of_condition.
+Check pkripke_kreisel_putnam_of_strongly_convergent.
+Check ph_hilbert_kp_pkripke_sound.
+Check ph_hilbert_kp_pkripke_sound_complete.
+Check ph_hilbert_kp_consistent_via_pkripke.
+Check pkripke_fork_kreisel_putnam.
+Check pkripke_fork_not_strongly_convergent.
+Check ph_hilbert_kp_logic_included_kc.
+Check ph_hilbert_kp_strictly_included_kc.
+Check pkripke_kp5_refutes_KP_axiom.
+Check ph_hilbert_int_strictly_included_kp.
+Print Assumptions pki_limit_derivation_stage_raw.
+Print Assumptions pki_partition_member.
+Print Assumptions pki_list_derivation_bind_raw.
+Print Assumptions pki_limit_avoids.
+Print Assumptions pki_limit_maximal.
+Print Assumptions pki_limit_derivably_closed.
+Print Assumptions pki_prime_extension.
+Print Assumptions pki_prime_imp_counterextension.
+Print Assumptions pki_canonical_frame_strongly_connected.
+Print Assumptions pki_canonical_frame_strongly_convergent.
+Print Assumptions pki_canonical_truth_lemma.
+Print Assumptions pki_canonical_model_valid_iff_provable.
+Print Assumptions ph_hilbert_pkripke_complete_of_canonical.
+Print Assumptions ph_hilbert_int_pkripke_complete.
+Print Assumptions ph_hilbert_int_pkripke_sound_complete.
+Print Assumptions ph_hilbert_lc_pkripke_complete.
+Print Assumptions ph_hilbert_lc_pkripke_sound_complete.
+Print Assumptions ph_hilbert_kc_pkripke_complete.
+Print Assumptions ph_hilbert_kc_pkripke_sound_complete.
+Print Assumptions ph_hilbert_kc_strictly_included_lc.
+Print Assumptions pkripke_skeleton_forces_iff.
+Print Assumptions pkripke_skeleton_finite.
+Print Assumptions pkripke_skeleton_strongly_convergent.
+Print Assumptions pkripke_skeleton_strongly_connected.
+Print Assumptions modal_boxed_pkripke_forces_iff_godel.
+Print Assumptions ph_hilbert_int_pkripke_finite_complete.
+Print Assumptions ph_hilbert_kc_pkripke_finite_complete.
+Print Assumptions ph_hilbert_lc_pkripke_finite_complete.
+Print Assumptions ph_hilbert_int_pkripke_finite_partial_order_complete.
+Print Assumptions ph_hilbert_kc_pkripke_finite_partial_order_complete.
+Print Assumptions ph_hilbert_lc_pkripke_finite_partial_order_complete.
+Print Assumptions ph_hilbert_double_neg_lem_raw.
+Print Assumptions ph_glivenko_classical_to_int_double_neg.
+Print Assumptions ph_glivenko.
+Print Assumptions ph_neg_provable_int_iff_cl.
+Print Assumptions p_dialectica_not_valid_iff.
+Print Assumptions p_dialectica_valid_identity.
+Print Assumptions p_dialectica_excluded_middle_not_valid.
+Print Assumptions p_aczel_slash_modus_ponens.
+Print Assumptions pformula_disjunctive_of_aczel_slash_iff.
+Print Assumptions pformula_logic_disjunctive_of_aczel_slash_iff.
+Print Assumptions pkripke_KP_valid_of_condition.
+Print Assumptions psct_common_neg_roundtrip.
+Print Assumptions psct_kp_seed_consistent.
+Print Assumptions psct_no_positive_union_witness.
+Print Assumptions psct_canonical_frame_kreisel_putnam.
+Print Assumptions ph_hilbert_pkripke_kp_complete_of_axioms.
+Print Assumptions ph_hilbert_kp_pkripke_complete.
+Print Assumptions pkripke_kreisel_putnam_of_strongly_convergent.
+Print Assumptions ph_hilbert_kp_pkripke_sound.
+Print Assumptions ph_hilbert_kp_pkripke_sound_complete.
+Print Assumptions ph_hilbert_kp_consistent_via_pkripke.
+Print Assumptions pkripke_fork_kreisel_putnam.
+Print Assumptions ph_hilbert_kp_strictly_included_kc.
+Print Assumptions pkripke_kp5_refutes_KP_axiom.
+Print Assumptions ph_hilbert_int_strictly_included_kp.
+
+(** Propositional/Translation syntax bridges. *)
+Check pformula_to_pnn.
+Check pformula_to_pnn_atom.
+Check pformula_to_pnn_bottom.
+Check pformula_to_pnn_and.
+Check pformula_to_pnn_or.
+Check pformula_to_pnn_imp.
+Check pnn_to_pformula.
+Check pnn_to_pformula_top.
+Check pnn_to_pformula_bottom.
+Check pnn_to_pformula_atom.
+Check pnn_to_pformula_neg_atom.
+Check pnn_to_pformula_and.
+Check pnn_to_pformula_or.
+Print Assumptions pformula_to_pnn_imp.
+Print Assumptions pnn_to_pformula_neg_atom.
+
+(** Propositional/Boolean/Basic truth-functional semantics. *)
+Check pvaluation.
+Check pboolean_eval.
+Check pboolean_semantics.
+Check pboolean_models_iff_eval.
+Check pboolean_tarski_top.
+Check pboolean_tarski_bottom.
+Check pboolean_tarski_and.
+Check pboolean_tarski_or.
+Check pboolean_tarski_imp.
+Check pboolean_tarski_neg.
+Check pboolean_tarski.
+Check pboolean_models_atom.
+Check pboolean_eval_ext.
+Check pboolean_eval_substitute.
+Check pboolean_letterless_invariant.
+Check pboolean_letterless_eval_dec.
+Check pformula_is_tautology.
+Check pboolean_substitute_tautology.
+Check pboolean_and_tautology_iff.
+Check pboolean_or_tautology_of.
+Check pboolean_imp_tautology_of_consequent.
+Check pboolean_bottom_not_tautology.
+Check pboolean_top_tautology.
+Check pboolean_letterless_tautology_of_not_neg_tautology.
+Check pboolean_neg_tautology_of_letterless_not_tautology.
+Print Assumptions pboolean_tarski.
+Print Assumptions pboolean_eval_ext.
+Print Assumptions pboolean_eval_substitute.
+Print Assumptions pboolean_letterless_invariant.
+Print Assumptions pboolean_letterless_eval_dec.
+Print Assumptions pboolean_substitute_tautology.
+Print Assumptions pboolean_and_tautology_iff.
+Print Assumptions pboolean_bottom_not_tautology.
+Print Assumptions pboolean_letterless_tautology_of_not_neg_tautology.
+Print Assumptions pboolean_neg_tautology_of_letterless_not_tautology.
+
+(** Propositional/Boolean/NNFormula algebraic and Boolean evaluation. *)
+Check pnn_eval_aux.
+Check pnn_eval_aux_neg.
+Check pnn_eval_hom.
+Check pnn_eval_atom.
+Check pnn_eval_neg_atom.
+Check pnn_prop_connectives.
+Check pnn_boolean_eval.
+Check pnn_boolean_semantics.
+Check pnn_boolean_models_iff_eval.
+Check pnn_boolean_eval_neg.
+Check pnn_boolean_tarski_top.
+Check pnn_boolean_tarski_bottom.
+Check pnn_boolean_tarski_and.
+Check pnn_boolean_tarski_or.
+Check pnn_boolean_tarski_neg.
+Check pnn_boolean_tarski_imp.
+Check pnn_boolean_tarski.
+Check pnn_boolean_models_atom.
+Check pnn_boolean_models_neg_atom.
+Check pnn_to_pformula_eval.
+Check pformula_to_pnn_eval.
+Print Assumptions pnn_eval_aux_neg.
+Print Assumptions pnn_eval_hom.
+Print Assumptions pnn_boolean_eval_neg.
+Print Assumptions pnn_boolean_tarski_neg.
+Print Assumptions pnn_boolean_tarski_imp.
+Print Assumptions pnn_boolean_tarski.
+Print Assumptions pnn_to_pformula_eval.
+Print Assumptions pformula_to_pnn_eval.
+
+(** Propositional/Boolean/ZeroSubst valuation-selected substitutions. *)
+Check pboolean_vf_substitution.
+Check pboolean_vf_substitution_atom.
+Check pboolean_eval_vf_substitute_iff.
+Check pboolean_exists_neg_zero_subst_of_not_tautology.
+Check pboolean_tautology_of_forall_zero_subst.
+Check pboolean_vf_substitution_tautology.
+Print Assumptions pboolean_vf_substitution.
+Print Assumptions pboolean_vf_substitution_atom.
+Print Assumptions pboolean_eval_vf_substitute_iff.
+Print Assumptions pboolean_exists_neg_zero_subst_of_not_tautology.
+Print Assumptions pboolean_tautology_of_forall_zero_subst.
+Print Assumptions pboolean_vf_substitution_tautology.
+
+(** Propositional/Boolean/Hilbert soundness and canonical completeness.
+    The port replaces the source's two-sided saturated tableau with a
+    deduction theorem, an enumerated Lindenbaum chain, and one maximal-theory
+    truth lemma. *)
+Check ph_cl_proof_sound.
+Check ph_cl_provable_sound.
+Check ph_cl_not_provable_of_countervaluation.
+Check ph_theory.
+Check ph_theory_included.
+Check ph_theory_empty.
+Check ph_theory_insert.
+Check ph_cl_derives.
+Check PCD_assumption.
+Check PCD_theorem.
+Check PCD_mdp.
+Check ph_theory_consistent.
+Check ph_cl_derives_weaken.
+Check ph_cl_derives_cast.
+Check ph_theory_insert_member_split.
+Check ph_cl_derives_deduction.
+Check ph_cl_derives_empty_iff.
+Check ph_theory_consistent_insert_iff.
+Check ph_lindenbaum_step.
+Check ph_lindenbaum_step_includes.
+Check ph_lindenbaum_step_decides.
+Check ph_lindenbaum_step_consistent.
+Check ph_lindenbaum_chain.
+Check ph_lindenbaum_chain_included_succ.
+Check ph_lindenbaum_chain_included_le.
+Check ph_lindenbaum_chain_consistent.
+Check ph_lindenbaum_limit.
+Check ph_lindenbaum_limit_includes.
+Check ph_lindenbaum_limit_complete.
+Check ph_cl_derives_lindenbaum_limit_stage.
+Check ph_lindenbaum_limit_consistent.
+Check ph_maximal_consistent_theory.
+Check ph_lindenbaum_mct.
+Check ph_lindenbaum_extension.
+Check ph_mct_not_both.
+Check ph_mct_bottom_absent.
+Check ph_mct_neg_iff.
+Check ph_mct_derivable_mem.
+Check ph_mct_theorem_mem.
+Check ph_mct_and_iff.
+Check ph_mct_or_iff.
+Check ph_mct_imp_iff.
+Check ph_mct_truth_lemma.
+Check ph_cl_neg_seed_consistent.
+Check ph_cl_provable_complete.
+Check ph_cl_provable_iff_tautology.
+Check ph_cl_exists_countervaluation_of_not_provable.
+Check ph_logic_cl_iff_tautology.
+Print Assumptions ph_cl_proof_sound.
+Print Assumptions ph_cl_derives_weaken.
+Print Assumptions ph_cl_derives_deduction.
+Print Assumptions ph_lindenbaum_limit_consistent.
+Print Assumptions ph_mct_and_iff.
+Print Assumptions ph_mct_or_iff.
+Print Assumptions ph_mct_imp_iff.
+Print Assumptions ph_mct_truth_lemma.
+Print Assumptions ph_cl_provable_complete.
+Print Assumptions ph_cl_provable_iff_tautology.
+Print Assumptions ph_cl_exists_countervaluation_of_not_provable.
+Print Assumptions ph_logic_cl_iff_tautology.
+
+(** Five standalone propositional axiom capabilities, with their shared
+    theorem views, elimination laws, explosion adapter, and generalized
+    context transport. *)
+Check generic_axiom_dne.
+Check generic_axiom_efq.
+Check generic_axiom_lem.
+Check generic_axiom_elim_contra.
+Check generic_axiom_peirce.
+Check generic_axiom_wlem.
+Check generic_axiom_dummett.
+Check generic_axiom_kreisel_putnam.
+Check generic_axiom_scott.
+Check generic_has_axiom_dne.
+Check generic_has_axiom_efq.
+Check generic_has_axiom_elim_contra.
+Check generic_has_axiom_lem.
+Check generic_has_axiom_peirce.
+Check generic_has_axiom_wlem.
+Check generic_has_axiom_dummett.
+Check generic_has_axiom_kreisel_putnam.
+Check generic_has_axiom_scott.
+Check generic_dne_provable.
+Check generic_efq_provable.
+Check generic_elim_contra_provable.
+Check generic_lem_provable.
+Check generic_peirce_provable.
+Check generic_wlem_provable.
+Check generic_dummett_provable.
+Check generic_kreisel_putnam_provable.
+Check generic_scott_provable.
+Check generic_kreisel_putnam_elim_raw.
+Check generic_kreisel_putnam_elim_provable.
+Check generic_double_negation_elim_raw.
+Check generic_double_negation_elim_provable.
+Check generic_efq_elim_raw.
+Check generic_efq_elim_provable.
+Check generic_deductive_explosion_of_efq.
+Check generic_imp_identity_raw.
+Check generic_dhyp_raw.
+Check generic_under_apply_raw.
+Check generic_imp_trans_raw.
+Check generic_dne_of_lem_efq_raw.
+Check generic_dne_of_lem_efq_provable.
+Check generic_raw_list_member.
+Check generic_list_derivation.
+Check GLD_assumption.
+Check GLD_theorem.
+Check GLD_mdp.
+Check generic_list_deduction.
+Check generic_empty_derivation_raw.
+Check generic_singleton_deduction_raw.
+Check generic_wlem_of_dummett_raw.
+Check generic_wlem_of_dummett_provable.
+Check generic_has_axiom_wlem_of_dummett.
+Check generic_raw_proof_translation.
+Check generic_has_axiom_dne_map.
+Check generic_has_axiom_efq_map.
+Check generic_has_axiom_elim_contra_map.
+Check generic_has_axiom_lem_map.
+Check generic_has_axiom_peirce_map.
+Check generic_has_axiom_wlem_map.
+Check generic_has_axiom_dummett_map.
+Check generic_has_axiom_kreisel_putnam_map.
+Check generic_has_axiom_scott_map.
+Print Assumptions generic_double_negation_elim_raw.
+Print Assumptions generic_efq_elim_raw.
+Print Assumptions generic_deductive_explosion_of_efq.
+Print Assumptions generic_imp_identity_raw.
+Print Assumptions generic_imp_trans_raw.
+Print Assumptions generic_dne_of_lem_efq_raw.
+Print Assumptions generic_dne_of_lem_efq_provable.
+Print Assumptions generic_list_deduction.
+Print Assumptions generic_empty_derivation_raw.
+Print Assumptions generic_wlem_of_dummett_raw.
+Print Assumptions generic_wlem_of_dummett_provable.
+Print Assumptions generic_has_axiom_wlem_of_dummett.
+Print Assumptions generic_has_axiom_dne_map.
+Print Assumptions generic_has_axiom_efq_map.
+Print Assumptions generic_has_axiom_elim_contra_map.
+Print Assumptions generic_has_axiom_lem_map.
+Print Assumptions generic_has_axiom_peirce_map.
+Print Assumptions generic_kreisel_putnam_elim_raw.
+Print Assumptions generic_kreisel_putnam_elim_provable.
+Print Assumptions generic_has_axiom_wlem_map.
+Print Assumptions generic_has_axiom_dummett_map.
+Print Assumptions generic_has_axiom_kreisel_putnam_map.
+Print Assumptions generic_has_axiom_scott_map.
+
+(** Propositional/Entailment/Minimal/Basic core proof algebra. *)
+Check generic_minimal_entailment.
+Check generic_minimal_of_classical.
+Check generic_minimal_mdp_raw.
+Check generic_minimal_mdp_provable.
+Check generic_minimal_axioms_provable.
+Check generic_minimal_identity_raw.
+Check generic_minimal_dhyp_raw.
+Check generic_minimal_under_apply_raw.
+Check generic_minimal_imp_trans_raw.
+Check generic_minimal_imp_replace_raw.
+Check generic_minimal_imp_swap_raw.
+Check generic_minimal_imp_contract_raw.
+Check generic_minimal_and_elim_left_raw.
+Check generic_minimal_and_elim_right_raw.
+Check generic_minimal_and_intro_raw.
+Check generic_minimal_or_intro_left_raw.
+Check generic_minimal_or_intro_right_raw.
+Check generic_minimal_or_elim_raw.
+Check generic_minimal_or_cases_raw.
+Check generic_minimal_iff_intro_raw.
+Check generic_minimal_iff_refl_raw.
+Check generic_minimal_iff_symm_raw.
+Check generic_minimal_iff_trans_raw.
+Check generic_minimal_imp_bottom_of_neg_raw.
+Check generic_minimal_neg_of_imp_bottom_raw.
+Check generic_minimal_right_and_intro_raw.
+Check generic_minimal_and_swap_axiom_raw.
+Check generic_minimal_iff_swap_axiom_raw.
+Check generic_minimal_to_verum_raw.
+Check generic_minimal_curry_raw.
+Check generic_minimal_uncurry_raw.
+Check generic_minimal_curry_axiom_raw.
+Check generic_minimal_uncurry_axiom_raw.
+Check generic_minimal_curry_iff_raw.
+Check generic_minimal_connective_rules_provable.
+Check generic_minimal_negation_provable_iff.
+Check generic_minimal_curry_provable_iff.
+Check ph_hilbert_generic_minimal.
+Check generic_minimal_imp_lift_right_raw.
+Check generic_minimal_imp_lift_left_raw.
+Check generic_minimal_imp_iff_congr_raw.
+Check generic_minimal_and_map_raw.
+Check generic_minimal_and_map_axiom_raw.
+Check generic_minimal_and_iff_congr_raw.
+Check generic_minimal_or_map_raw.
+Check generic_minimal_or_map_axiom_raw.
+Check generic_minimal_or_iff_congr_raw.
+Check generic_minimal_or_swap_axiom_raw.
+Check generic_minimal_or_assoc_left_raw.
+Check generic_minimal_or_assoc_right_raw.
+Check generic_minimal_or_assoc_iff_raw.
+Check generic_minimal_and_assoc_left_raw.
+Check generic_minimal_and_assoc_right_raw.
+Check generic_minimal_and_assoc_iff_raw.
+Check generic_minimal_inner_mdp_raw.
+Check generic_minimal_neg_mdp_raw.
+Check generic_minimal_dni_raw.
+Check generic_minimal_dni_elim_raw.
+Check generic_minimal_contraposition_raw.
+Check generic_minimal_contraposition_axiom_raw.
+Check generic_minimal_double_neg_map_raw.
+Check generic_minimal_double_neg_map_axiom_raw.
+Check generic_minimal_neg_iff_congr_raw.
+Check generic_minimal_negated_imp_swap_raw.
+Check generic_minimal_negated_imp_swap_axiom_raw.
+Check generic_minimal_triple_neg_elim_raw.
+Check generic_minimal_triple_neg_iff_raw.
+Check generic_minimal_neg_bottom_raw.
+Check generic_minimal_double_neg_bottom_elim_raw.
+Check generic_minimal_double_neg_bottom_iff_raw.
+Check generic_minimal_double_neg_expansion_iff_raw.
+Check generic_minimal_contradiction_axiom_raw.
+Check generic_minimal_contradiction_raw.
+Check generic_minimal_bottom_of_proof_neg_raw.
+Check generic_minimal_or_neg_to_neg_and_raw.
+Check generic_minimal_and_neg_to_neg_or_raw.
+Check generic_minimal_neg_or_to_and_neg_raw.
+Check generic_minimal_neg_or_iff_and_neg_raw.
+Check generic_minimal_or_double_neg_map_raw.
+Check generic_minimal_and_double_neg_map_raw.
+Check generic_minimal_dni_provable.
+Check generic_minimal_contraposition_provable.
+Check generic_minimal_double_neg_map_provable.
+Check generic_minimal_binary_iff_congruence_provable.
+Check generic_minimal_neg_or_iff_and_neg_provable.
+Check generic_minimal_provable_iff_of_raw_iff.
+Check generic_minimal_provable_iff_of_formula_iff.
+Check generic_minimal_or_assoc_iff_provable.
+Check generic_minimal_or_assoc_provable_iff.
+Check generic_minimal_and_assoc_iff_provable.
+Check generic_minimal_and_assoc_provable_iff.
+Check generic_raw_list_member_map.
+Check generic_minimal_list_conj_intro_raw.
+Check generic_minimal_list_conj_right_intro_raw.
+Check generic_minimal_list_conj_elim_raw.
+Check generic_minimal_list_conj_subset_raw.
+Check generic_minimal_list_conj2_intro_raw.
+Check generic_minimal_list_conj2_right_intro_raw.
+Check generic_minimal_list_conj2_elim_raw.
+Check generic_minimal_list_conj2_subset_raw.
+Check generic_minimal_list_conj_iff_conj2_raw.
+Check generic_minimal_list_disj_intro_raw.
+Check generic_minimal_list_disj2_intro_raw.
+Check generic_minimal_list_conj_map_right_intro_raw.
+Check generic_minimal_list_conj_map_elim_raw.
+Check generic_minimal_list_disj_map_intro_raw.
+Check generic_raw_list_member_app_split.
+Check generic_minimal_list_conj2_append_iff_raw.
+Check generic_raw_list_member_skip_insert.
+Check generic_minimal_list_conj2_insert_to_and_raw.
+Check generic_minimal_and_to_list_conj2_insert_raw.
+Check generic_minimal_list_conj2_insert_iff_raw.
+Check generic_minimal_list_conj2_unique_raw.
+Check generic_minimal_imp_of_list_conj2_unique_raw.
+Check generic_minimal_list_conj2_cons_iff_raw.
+Check generic_minimal_list_conj2_cons_imp_provable_iff.
+Check generic_minimal_list_conj_provable_iff.
+Check generic_minimal_list_conj2_provable_iff.
+Check generic_minimal_list_conj_map_provable_iff.
+Check generic_minimal_list_disj_intro_provable.
+Check generic_minimal_list_disj2_intro_provable.
+Check generic_list_derivable.
+Check generic_list_derivation_weaken_raw.
+Check generic_list_derivation_append_mdp_raw.
+Check generic_list_deduction_inverse_raw.
+Check generic_minimal_list_deduction_raw.
+Check generic_minimal_list_conj2_derivation_intro_raw.
+Check generic_minimal_list_conj2_context_raw.
+Check generic_minimal_list_derivation_to_conj2_raw.
+Check generic_minimal_list_derivation_of_conj2_raw.
+Check generic_minimal_list_derivation_deduction_iff.
+Check generic_minimal_empty_derivation_provable_iff.
+Check generic_minimal_list_derivation_conj2_iff.
+Check generic_list_derivation_weaken.
+Check generic_list_derivation_append_mdp.
+Check generic_type_context_derivation.
+Check generic_type_context_derivable.
+Check generic_proof_relevant_context.
+Check generic_type_context_derivation_weaken_raw.
+Check generic_type_context_mdp_raw.
+Check generic_type_context_adjoin.
+Check generic_minimal_type_context_deduction_raw.
+Check generic_type_context_deduction_inverse_raw.
+Check generic_minimal_type_context_deduction_iff.
+Check generic_type_context_derivation_weaken.
+Check generic_type_context_mdp.
+Check generic_type_context_finite_witness.
+Check generic_type_context_finitely_derivable.
+Check generic_type_context_to_finite_witness_raw.
+Check generic_type_context_of_list_derivation_raw.
+Check generic_type_context_of_finite_witness_raw.
+Check generic_type_context_finite_iff.
+Check generic_empty_type_context.
+Check generic_empty_type_context_derivation_raw.
+Check generic_minimal_empty_type_context_provable_iff.
+Check generic_list_derivation_entailment.
+Check generic_type_context_derivation_entailment.
+Check generic_minimal_list_derivation.
+Check generic_minimal_type_context_derivation.
+Check generic_minimal_type_context_bottom_of_neg_raw.
+Check generic_minimal_double_neg_imp_distribution_raw.
+Check generic_minimal_not_imp_of_premises_raw.
+Check generic_minimal_double_neg_imp_map_raw.
+Check generic_minimal_top_to_neg_bottom_raw.
+Check generic_minimal_and_or_cut_raw.
+Check generic_minimal_conj2_to_disj2_of_and_member_raw.
+Check generic_minimal_conj2_to_disj2_of_mdp_members_raw.
+Check generic_minimal_double_neg_imp_distribution_provable.
+Check generic_minimal_and_or_cut_provable.
+Check generic_minimal_unprovable_imp_trans.
+Check generic_minimal_unprovable_iff_of_formula_iff.
+Check ph_hilbert_dni.
+Check ph_hilbert_contraposition.
+Check ph_hilbert_neg_or_iff_and_neg.
+Check ph_hilbert_or_assoc_iff.
+Check ph_hilbert_and_assoc_iff.
+Check ph_hilbert_list_conj2_elim.
+Check ph_hilbert_list_disj2_intro.
+Check ph_hilbert_list_conj2_insert_iff.
+Check ph_hilbert_list_conj2_unique.
+Check ph_hilbert_context_proof.
+Check ph_hilbert_context_to_conj2.
+Check ph_hilbert_context_of_conj2.
+Check ph_hilbert_type_context_proof.
+Check ph_hilbert_type_context_deduction.
+Check ph_hilbert_type_context_to_finite.
+Check ph_hilbert_double_neg_imp_distribution.
+Check ph_hilbert_not_imp_of_premises.
+Check ph_hilbert_and_or_cut.
+Check ph_hilbert_conj2_to_disj2_of_and_member.
+Check ph_hilbert_conj2_to_disj2_of_mdp_members.
+Print Assumptions generic_minimal_imp_swap_raw.
+Print Assumptions generic_minimal_imp_contract_raw.
+Print Assumptions generic_minimal_iff_trans_raw.
+Print Assumptions generic_minimal_imp_bottom_of_neg_raw.
+Print Assumptions generic_minimal_right_and_intro_raw.
+Print Assumptions generic_minimal_curry_raw.
+Print Assumptions generic_minimal_uncurry_raw.
+Print Assumptions generic_minimal_curry_iff_raw.
+Print Assumptions generic_minimal_connective_rules_provable.
+Print Assumptions generic_minimal_negation_provable_iff.
+Print Assumptions ph_hilbert_generic_minimal.
+Print Assumptions generic_minimal_imp_iff_congr_raw.
+Print Assumptions generic_minimal_and_iff_congr_raw.
+Print Assumptions generic_minimal_or_iff_congr_raw.
+Print Assumptions generic_minimal_or_assoc_iff_raw.
+Print Assumptions generic_minimal_and_assoc_iff_raw.
+Print Assumptions generic_minimal_dni_raw.
+Print Assumptions generic_minimal_contraposition_raw.
+Print Assumptions generic_minimal_contraposition_axiom_raw.
+Print Assumptions generic_minimal_double_neg_map_axiom_raw.
+Print Assumptions generic_minimal_negated_imp_swap_axiom_raw.
+Print Assumptions generic_minimal_triple_neg_iff_raw.
+Print Assumptions generic_minimal_double_neg_bottom_iff_raw.
+Print Assumptions generic_minimal_double_neg_expansion_iff_raw.
+Print Assumptions generic_minimal_contradiction_axiom_raw.
+Print Assumptions generic_minimal_bottom_of_proof_neg_raw.
+Print Assumptions generic_minimal_or_neg_to_neg_and_raw.
+Print Assumptions generic_minimal_neg_or_iff_and_neg_raw.
+Print Assumptions generic_minimal_binary_iff_congruence_provable.
+Print Assumptions generic_minimal_provable_iff_of_formula_iff.
+Print Assumptions generic_minimal_or_assoc_provable_iff.
+Print Assumptions generic_minimal_and_assoc_provable_iff.
+Print Assumptions generic_minimal_list_conj_intro_raw.
+Print Assumptions generic_minimal_list_conj_elim_raw.
+Print Assumptions generic_minimal_list_conj2_intro_raw.
+Print Assumptions generic_minimal_list_conj2_elim_raw.
+Print Assumptions generic_minimal_list_disj2_intro_raw.
+Print Assumptions generic_minimal_list_conj_map_right_intro_raw.
+Print Assumptions generic_minimal_list_conj2_append_iff_raw.
+Print Assumptions generic_minimal_list_conj2_insert_iff_raw.
+Print Assumptions generic_minimal_list_conj2_unique_raw.
+Print Assumptions generic_minimal_imp_of_list_conj2_unique_raw.
+Print Assumptions generic_minimal_list_conj2_cons_imp_provable_iff.
+Print Assumptions generic_minimal_list_conj2_provable_iff.
+Print Assumptions generic_minimal_list_conj_map_provable_iff.
+Print Assumptions generic_list_derivation_weaken_raw.
+Print Assumptions generic_list_derivation_append_mdp_raw.
+Print Assumptions generic_minimal_list_deduction_raw.
+Print Assumptions generic_minimal_list_conj2_context_raw.
+Print Assumptions generic_minimal_list_derivation_to_conj2_raw.
+Print Assumptions generic_minimal_list_derivation_of_conj2_raw.
+Print Assumptions generic_minimal_list_derivation_deduction_iff.
+Print Assumptions generic_minimal_empty_derivation_provable_iff.
+Print Assumptions generic_minimal_list_derivation_conj2_iff.
+Print Assumptions generic_type_context_derivation_weaken_raw.
+Print Assumptions generic_minimal_type_context_deduction_raw.
+Print Assumptions generic_type_context_deduction_inverse_raw.
+Print Assumptions generic_minimal_type_context_deduction_iff.
+Print Assumptions generic_type_context_to_finite_witness_raw.
+Print Assumptions generic_type_context_of_finite_witness_raw.
+Print Assumptions generic_type_context_finite_iff.
+Print Assumptions generic_minimal_empty_type_context_provable_iff.
+Print Assumptions generic_minimal_list_derivation.
+Print Assumptions generic_minimal_type_context_derivation.
+Print Assumptions generic_minimal_type_context_bottom_of_neg_raw.
+Print Assumptions generic_minimal_double_neg_imp_distribution_raw.
+Print Assumptions generic_minimal_not_imp_of_premises_raw.
+Print Assumptions generic_minimal_double_neg_imp_map_raw.
+Print Assumptions generic_minimal_top_to_neg_bottom_raw.
+Print Assumptions generic_minimal_and_or_cut_raw.
+Print Assumptions generic_minimal_conj2_to_disj2_of_and_member_raw.
+Print Assumptions generic_minimal_conj2_to_disj2_of_mdp_members_raw.
+Print Assumptions generic_minimal_double_neg_imp_distribution_provable.
+Print Assumptions generic_minimal_and_or_cut_provable.
+Print Assumptions generic_minimal_unprovable_imp_trans.
+Print Assumptions generic_minimal_unprovable_iff_of_formula_iff.
+Print Assumptions ph_hilbert_dni.
+Print Assumptions ph_hilbert_contraposition.
+Print Assumptions ph_hilbert_neg_or_iff_and_neg.
+Print Assumptions ph_hilbert_or_assoc_iff.
+Print Assumptions ph_hilbert_and_assoc_iff.
+Print Assumptions ph_hilbert_list_conj2_elim.
+Print Assumptions ph_hilbert_list_disj2_intro.
+Print Assumptions ph_hilbert_list_conj2_insert_iff.
+Print Assumptions ph_hilbert_list_conj2_unique.
+Print Assumptions ph_hilbert_context_to_conj2.
+Print Assumptions ph_hilbert_context_of_conj2.
+Print Assumptions ph_hilbert_type_context_deduction.
+Print Assumptions ph_hilbert_type_context_to_finite.
+Print Assumptions ph_hilbert_double_neg_imp_distribution.
+Print Assumptions ph_hilbert_not_imp_of_premises.
+Print Assumptions ph_hilbert_and_or_cut.
+Print Assumptions ph_hilbert_conj2_to_disj2_of_and_member.
+Print Assumptions ph_hilbert_conj2_to_disj2_of_mdp_members.
+
+(** Propositional/Entailment/Int/Basic: the ex-falso extension, explosion,
+    reverse stable implication, and normalized finite-disjunction algebra are
+    constructive over their explicit intuitionistic capability. *)
+Check generic_intuitionistic_entailment.
+Check generic_list_derivation_entailment.
+Check generic_type_context_derivation_entailment.
+Check generic_intuitionistic_list_derivation.
+Check generic_intuitionistic_type_context_derivation.
+Check generic_intuitionistic_efq_elim_raw.
+Check generic_intuitionistic_type_context_explosion_raw.
+Check generic_intuitionistic_inconsistent_of_provable_neg.
+Check generic_intuitionistic_imp_neg_explosion_raw.
+Check generic_intuitionistic_neg_imp_explosion_raw.
+Check generic_intuitionistic_imp_of_neg_raw.
+Check generic_intuitionistic_neg_imp_of_proof_raw.
+Check generic_intuitionistic_neg_or_to_imp_raw.
+Check generic_intuitionistic_or_of_neg_left_raw.
+Check generic_intuitionistic_double_neg_imp_converse_raw.
+Check generic_intuitionistic_list_disj_elim_raw.
+Check generic_intuitionistic_list_disj2_elim_raw.
+Check generic_intuitionistic_list_disj_map_elim_raw.
+Check generic_intuitionistic_list_disj2_append_iff_raw.
+Check generic_intuitionistic_list_disj2_append_provable_iff.
+Check generic_intuitionistic_list_disj2_unique_raw.
+Check generic_intuitionistic_list_disj2_cons_iff_raw.
+Check generic_intuitionistic_list_disj2_cons_provable_iff.
+Check generic_intuitionistic_list_disj2_insert_iff_raw.
+Check generic_intuitionistic_list_disj2_subset_raw.
+Check generic_intuitionistic_finset_disj_elim_raw.
+Check generic_intuitionistic_finset_disj_map_elim_raw.
+Check generic_intuitionistic_finite_universe_disj_elim_raw.
+Check generic_intuitionistic_finset_disj_insert_iff_raw.
+Check generic_intuitionistic_finset_disj_union_iff_raw.
+Check generic_intuitionistic_finset_disj_subset_raw.
+Check generic_intuitionistic_neg_disj2_to_conj2_neg_raw.
+Check generic_intuitionistic_conj2_neg_to_neg_disj2_raw.
+Check generic_intuitionistic_neg_disj2_iff_conj2_neg_raw.
+Check generic_intuitionistic_neg_finset_disj_to_conj_neg_raw.
+Check generic_intuitionistic_finset_conj_neg_to_neg_disj_raw.
+Check generic_intuitionistic_neg_finset_disj_iff_conj_neg_raw.
+Check generic_minimal_conj2_to_disj2_of_or_member_raw.
+Check ph_hilbert_generic_intuitionistic.
+Check ph_hilbert_int_intuitionistic.
+Check ph_hilbert_int_double_neg_imp_converse.
+Check ph_hilbert_int_list_disj2_append_iff.
+Check ph_hilbert_int_list_disj2_insert_iff.
+Check ph_hilbert_int_neg_disj2_iff_conj2_neg.
+Check ph_hilbert_int_inconsistent_of_provable_neg.
+Check ph_hilbert_conj2_to_disj2_of_or_member.
+Print Assumptions generic_intuitionistic_list_derivation.
+Print Assumptions generic_intuitionistic_type_context_derivation.
+Print Assumptions generic_intuitionistic_type_context_explosion_raw.
+Print Assumptions generic_intuitionistic_inconsistent_of_provable_neg.
+Print Assumptions generic_intuitionistic_imp_of_neg_raw.
+Print Assumptions generic_intuitionistic_neg_or_to_imp_raw.
+Print Assumptions generic_intuitionistic_or_of_neg_left_raw.
+Print Assumptions generic_intuitionistic_double_neg_imp_converse_raw.
+Print Assumptions generic_intuitionistic_list_disj_elim_raw.
+Print Assumptions generic_intuitionistic_list_disj2_elim_raw.
+Print Assumptions generic_intuitionistic_list_disj_map_elim_raw.
+Print Assumptions generic_intuitionistic_list_disj2_append_iff_raw.
+Print Assumptions generic_intuitionistic_list_disj2_append_provable_iff.
+Print Assumptions generic_intuitionistic_list_disj2_unique_raw.
+Print Assumptions generic_intuitionistic_list_disj2_insert_iff_raw.
+Print Assumptions generic_intuitionistic_list_disj2_subset_raw.
+Print Assumptions generic_intuitionistic_finset_disj_union_iff_raw.
+Print Assumptions generic_intuitionistic_neg_disj2_iff_conj2_neg_raw.
+Print Assumptions generic_intuitionistic_neg_finset_disj_iff_conj_neg_raw.
+Print Assumptions generic_minimal_conj2_to_disj2_of_or_member_raw.
+Print Assumptions ph_hilbert_int_double_neg_imp_converse.
+Print Assumptions ph_hilbert_int_list_disj2_append_iff.
+Print Assumptions ph_hilbert_int_list_disj2_insert_iff.
+Print Assumptions ph_hilbert_int_neg_disj2_iff_conj2_neg.
+Print Assumptions ph_hilbert_int_inconsistent_of_provable_neg.
+Print Assumptions ph_hilbert_conj2_to_disj2_of_or_member.
+
+(** Propositional/Entailment/Cl/Basic: DNE yields inverse contraposition,
+    ex falso, the intuitionistic capability, classical De Morgan laws,
+    implication as disjunction, excluded middle, and finite De Morgan;
+    classical structure also transports across a connective homomorphism and
+    pointwise equivalence of heterogeneous raw proof types. *)
+Check generic_classical_double_neg_iff_raw.
+Check generic_classical_or_of_double_neg_or_raw.
+Check generic_classical_neg_imp_converse_raw.
+Check generic_classical_neg_imp_converse_axiom_raw.
+Check generic_classical_contraposition_inverse_raw.
+Check generic_classical_efq_raw.
+Check generic_has_axiom_efq_of_classical.
+Check generic_intuitionistic_of_classical.
+Check generic_classical_neg_and_to_or_neg_raw.
+Check generic_classical_neg_iff_move_right_raw.
+Check generic_classical_neg_iff_move_left_raw.
+Check generic_classical_expanded_double_neg_iff_raw.
+Check generic_classical_neg_and_iff_or_neg_raw.
+Check generic_classical_imp_to_neg_or_raw.
+Check generic_classical_imp_to_neg_or_axiom_raw.
+Check generic_classical_imp_iff_neg_or_raw.
+Check generic_classical_lem_raw.
+Check generic_has_axiom_lem_of_classical.
+Check generic_classical_elim_contra_axiom_raw.
+Check generic_has_axiom_elim_contra_of_classical.
+Check generic_classical_dummett_raw.
+Check generic_has_axiom_dummett_of_classical.
+Check generic_classical_peirce_raw.
+Check generic_has_axiom_peirce_of_classical.
+Check generic_classical_neg_disj2_map_to_conj2_raw.
+Check generic_classical_provable_iff_inconsistent_adjoin.
+Check generic_classical_unprovable_iff_consistent_adjoin.
+Check generic_deductive_explosion_of_classical.
+Check generic_connective_hom_axiom_neg_equiv.
+Check generic_connective_hom_axiom_K.
+Check generic_connective_hom_axiom_S.
+Check generic_connective_hom_axiom_and1.
+Check generic_connective_hom_axiom_and2.
+Check generic_connective_hom_axiom_and3.
+Check generic_connective_hom_axiom_or1.
+Check generic_connective_hom_axiom_or2.
+Check generic_connective_hom_axiom_or3.
+Check generic_connective_hom_axiom_dne.
+Check generic_proof_equiv_transport_raw.
+Check generic_classical_of_proof_equiv.
+Check ph_hilbert_cl_double_neg_iff.
+Check ph_hilbert_cl_neg_and_iff_or_neg.
+Check ph_hilbert_cl_imp_iff_neg_or.
+Check ph_hilbert_cl_neg_iff_move_right.
+Check ph_hilbert_cl_expanded_double_neg_iff.
+Check ph_hilbert_cl_elim_contra.
+Check ph_hilbert_cl_dummett.
+Check ph_hilbert_cl_peirce.
+Check ph_hilbert_cl_neg_disj2_map_to_conj2.
+Print Assumptions generic_classical_double_neg_iff_raw.
+Print Assumptions generic_classical_contraposition_inverse_raw.
+Print Assumptions generic_classical_neg_imp_converse_axiom_raw.
+Print Assumptions generic_classical_neg_iff_move_right_raw.
+Print Assumptions generic_classical_expanded_double_neg_iff_raw.
+Print Assumptions generic_classical_efq_raw.
+Print Assumptions generic_intuitionistic_of_classical.
+Print Assumptions generic_classical_neg_and_iff_or_neg_raw.
+Print Assumptions generic_classical_imp_iff_neg_or_raw.
+Print Assumptions generic_classical_lem_raw.
+Print Assumptions generic_classical_elim_contra_axiom_raw.
+Print Assumptions generic_classical_dummett_raw.
+Print Assumptions generic_classical_peirce_raw.
+Print Assumptions generic_classical_neg_disj2_map_to_conj2_raw.
+Print Assumptions generic_classical_provable_iff_inconsistent_adjoin.
+Print Assumptions generic_classical_unprovable_iff_consistent_adjoin.
+Print Assumptions generic_deductive_explosion_of_classical.
+Print Assumptions generic_connective_hom_axiom_neg_equiv.
+Print Assumptions generic_connective_hom_axiom_or3.
+Print Assumptions generic_proof_equiv_transport_raw.
+Print Assumptions generic_classical_of_proof_equiv.
+Print Assumptions ph_hilbert_cl_double_neg_iff.
+Print Assumptions ph_hilbert_cl_neg_and_iff_or_neg.
+Print Assumptions ph_hilbert_cl_imp_iff_neg_or.
+Print Assumptions ph_hilbert_cl_neg_disj2_map_to_conj2.
+
+(** Propositional/Entailment/Cl/Łukasiewicz: the K/S/elimination-of-
+    contraposition basis derives DNE, DNI, and contradiction explosion over
+    an otherwise arbitrary generic entailment. *)
+Check generic_lukasiewicz_entailment.
+Check generic_lukasiewicz_identity_raw.
+Check generic_lukasiewicz_dne_raw.
+Check generic_has_axiom_dne_of_lukasiewicz.
+Check generic_lukasiewicz_dni_raw.
+Check generic_lukasiewicz_explosion_raw.
+Check generic_lukasiewicz_inconsistent_of_provable_neg.
+Check generic_lukasiewicz_neg_to_imp_bottom_raw.
+Check generic_lukasiewicz_imp_bottom_to_neg_raw.
+Check generic_lukasiewicz_verum_raw.
+Check generic_lukasiewicz_efq_raw.
+Check generic_has_axiom_efq_of_lukasiewicz.
+Check generic_lukasiewicz_imp_swap_raw.
+Check generic_lukasiewicz_explosion_axiom_raw.
+Check generic_lukasiewicz_contraposition_axiom_raw.
+Check generic_lukasiewicz_contraposition_raw.
+Check generic_lukasiewicz_and1_raw.
+Check generic_lukasiewicz_and2_raw.
+Check generic_lukasiewicz_and3_raw.
+Check generic_lukasiewicz_or1_raw.
+Check generic_lukasiewicz_or2_raw.
+Check generic_lukasiewicz_or3_raw.
+Check generic_lukasiewicz_neg_equiv_raw.
+Check generic_classical_of_lukasiewicz.
+Print Assumptions generic_lukasiewicz_dne_raw.
+Print Assumptions generic_lukasiewicz_dni_raw.
+Print Assumptions generic_lukasiewicz_explosion_raw.
+Print Assumptions generic_lukasiewicz_inconsistent_of_provable_neg.
+Print Assumptions generic_lukasiewicz_efq_raw.
+Print Assumptions generic_lukasiewicz_contraposition_axiom_raw.
+Print Assumptions generic_lukasiewicz_and1_raw.
+Print Assumptions generic_lukasiewicz_and2_raw.
+Print Assumptions generic_lukasiewicz_and3_raw.
+Print Assumptions generic_lukasiewicz_or1_raw.
+Print Assumptions generic_lukasiewicz_or2_raw.
+Print Assumptions generic_lukasiewicz_or3_raw.
+Print Assumptions generic_lukasiewicz_neg_equiv_raw.
+Print Assumptions generic_classical_of_lukasiewicz.
+
+(** Propositional/Tait/Calculus one-sided NNF calculus. *)
+Check pnn_sequent.
+Check pnn_derivation.
+Check PNNDIdentity.
+Check PNNDCut.
+Check PNNDWeakening.
+Check PNNDTop.
+Check PNNDOr.
+Check PNNDAnd.
+Check pnn_derivation_height.
+Check pnn_derivation_cast.
+Check pnn_derivation_height_cast.
+Check pnn_derivation_rotate.
+Check pnn_derivation_tensor.
+Check pnn_derivation_top_eta.
+Check pnn_derivation_bottom_eta.
+Check pnn_derivation_eta.
+Check pnn_derivation_close.
+Check pnn_tait_lk.
+Check pnn_tait_lk_cut.
+Check pnn_tait_proof.
+Check pnn_tait_symbol.
+Check PNNTait.
+Check pnn_tait_entailment.
+Check pnn_tait_principal_entailment.
+Check pnn_tait_is_tautology.
+Print Assumptions pnn_derivation_height_cast.
+Print Assumptions pnn_derivation_eta.
+Print Assumptions pnn_derivation_close.
+Print Assumptions pnn_tait_lk.
+Print Assumptions pnn_tait_lk_cut.
+Print Assumptions pnn_tait_principal_entailment.
+
+(** The first fifteen declarations from Logic/Calculus.lean retain raw,
+    Type-valued derivations while relaxing the source's namespace-wide
+    De Morgan and involutive-negation assumptions.  Pointwise list inclusion
+    factors exchange, weakening, and contraction; disjunction folding is
+    strengthened from Cut to the base one-sided calculus. *)
+Check generic_list_subset.
+Check generic_list_member_app_iff.
+Check generic_list_subset_refl.
+Check generic_list_subset_trans.
+Check generic_list_subset_cons_append_right.
+Check generic_list_subset_cons_append_left.
+Check generic_list_subset_rotate.
+Check generic_list_subset_swap_two.
+Check generic_list_subset_move_third.
+Check generic_list_subset_move_fourth.
+Check generic_list_subset_rotate_across.
+Check generic_one_sided_lk.
+Check generic_one_sided_lk_cut.
+Check generic_lk_cast.
+Check generic_lk_contra.
+Check generic_lk_rotate.
+Check generic_lk_close.
+Check generic_lk_top.
+Check generic_lk_tensor.
+Check generic_lk_swap1.
+Check generic_lk_swap2.
+Check generic_lk_swap3.
+Check generic_lk_cut.
+Check generic_lk_extended_cut.
+Check generic_lk_disj2.
+Check generic_lk_conj2.
+Print Assumptions generic_list_member_app_iff.
+Print Assumptions generic_list_subset_rotate_across.
+Print Assumptions generic_lk_cast.
+Print Assumptions generic_lk_contra.
+Print Assumptions generic_lk_rotate.
+Print Assumptions generic_lk_close.
+Print Assumptions generic_lk_top.
+Print Assumptions generic_lk_tensor.
+Print Assumptions generic_lk_swap1.
+Print Assumptions generic_lk_swap2.
+Print Assumptions generic_lk_swap3.
+Print Assumptions generic_lk_extended_cut.
+Print Assumptions generic_lk_disj2.
+Print Assumptions generic_lk_conj2.
+Check generic_type_equiv.
+Check generic_equiv_to.
+Check generic_equiv_from.
+Check generic_neg_involutive_law.
+Check generic_neg_top_law.
+Check generic_neg_bottom_law.
+Check generic_imp_as_or_law.
+Check generic_neg_and_law.
+Check generic_neg_or_law.
+Check generic_modus_ponens.
+Check generic_principal_entailment.
+Check generic_principal_provable_iff.
+Check generic_principal_modus_ponens.
+Check generic_formula_iff.
+Check generic_axiom_neg_equiv.
+Check generic_axiom_K.
+Check generic_axiom_S.
+Check generic_axiom_and1.
+Check generic_axiom_and2.
+Check generic_axiom_and3.
+Check generic_axiom_or1.
+Check generic_axiom_or2.
+Check generic_axiom_or3.
+Check generic_axiom_dne.
+Check generic_classical_entailment.
+Check generic_lk_classical_derivations.
+Check generic_lk_classical.
+Check generic_principal_classical.
+Check generic_list_member_map_elim.
+Check generic_list_member_map_neg_back.
+Check generic_neg_list_disj2.
+Check generic_principal_derivable_iff_provable_disj.
+Print Assumptions generic_principal_provable_iff.
+Print Assumptions generic_principal_modus_ponens.
+Print Assumptions generic_lk_classical.
+Print Assumptions generic_principal_classical.
+Print Assumptions generic_list_member_map_elim.
+Print Assumptions generic_list_member_map_neg_back.
+Print Assumptions generic_neg_list_disj2.
+Print Assumptions generic_principal_derivable_iff_provable_disj.
+Check generic_lk_connective_hom.
+Check generic_lk_hom_top.
+Check generic_lk_hom_neg.
+Check generic_lk_hom_and.
+Check generic_lk_hom_or.
+Check generic_list_member_map_intro.
+Check generic_list_map_subset.
+Check generic_lk_pullback.
+Check generic_lk_pullback_cast.
+Check generic_lk_pullback_uncast.
+Check generic_lk_pullback_one_sided.
+Check generic_lk_pullback_cut.
+Check generic_lk_pullback_principal.
+Check generic_lk_pullback_inhabited_iff.
+Check generic_lk_pullback_empty_iff.
+Print Assumptions generic_list_map_subset.
+Print Assumptions generic_lk_pullback_cast.
+Print Assumptions generic_lk_pullback_uncast.
+Print Assumptions generic_lk_pullback_one_sided.
+Print Assumptions generic_lk_pullback_cut.
+Print Assumptions generic_lk_pullback_principal.
+Print Assumptions generic_lk_pullback_inhabited_iff.
+Print Assumptions generic_lk_pullback_empty_iff.
+Check generic_context_witness.
+Check generic_context_witness_formulas.
+Check generic_context_witness_covers.
+Check generic_contextual_entailment.
+Check generic_contextual_equiv.
+Check generic_contextual_provable_iff.
+Check generic_contextual_to_proof.
+Check generic_contextual_of_axiom.
+Check generic_contextual_of_axiom_subset.
+Check generic_contextual_axiomatized.
+Print Assumptions generic_contextual_provable_iff.
+Print Assumptions generic_contextual_to_proof.
+Print Assumptions generic_contextual_of_axiom.
+Print Assumptions generic_contextual_of_axiom_subset.
+Print Assumptions generic_contextual_axiomatized.
+Check generic_contextual_modus_ponens.
+Check generic_contextual_cut_list.
+Check generic_contextual_strong_cut.
+Check generic_contextual_deductive_explosion.
+Check generic_contextual_inconsistent_iff.
+Print Assumptions generic_contextual_modus_ponens.
+Print Assumptions generic_contextual_cut_list.
+Print Assumptions generic_contextual_strong_cut.
+Print Assumptions generic_contextual_deductive_explosion.
+Print Assumptions generic_contextual_inconsistent_iff.
+Check generic_contextual_classical.
+Check generic_contextual_empty_provable_iff_principal.
+Check generic_neg_list_conj2.
+Check generic_neg_mapped_list_disj2.
+Check generic_principal_context_proof.
+Check generic_principal_context_formulas.
+Check generic_principal_context_covers.
+Check generic_principal_context_raw.
+Check generic_contextual_iff_principal_context.
+Check generic_contextual_of_principal_provable.
+Print Assumptions generic_contextual_classical.
+Print Assumptions generic_contextual_empty_provable_iff_principal.
+Print Assumptions generic_neg_list_conj2.
+Print Assumptions generic_neg_mapped_list_disj2.
+Print Assumptions generic_contextual_iff_principal_context.
+Print Assumptions generic_contextual_of_principal_provable.
+Check generic_contextual_split_adjoin.
+Check generic_contextual_deduction_forward_provable.
+Check generic_contextual_deduction_core.
+Check generic_contextual_deduction.
+Print Assumptions generic_contextual_split_adjoin.
+Print Assumptions generic_contextual_deduction_forward_provable.
+(** Raw deduction selects a Type-valued proof from inhabited provability.
+    Informative description is its sole metatheoretic assumption; support
+    splitting and the forward provability theorem above remain constructive. *)
+Print Assumptions generic_contextual_deduction_core.
+Print Assumptions generic_contextual_deduction.
+
+(** The complete 20-declaration ForcingRelation surface is constructive over
+    arbitrary world, formula, context, and accessibility types.  Ordinary and
+    weak forcing reuse models-only semantics, while relation-indexed
+    implication/negation stay distinct from point-local Tarski clauses. *)
+Check generic_forcing_relation.
+Check generic_forces.
+Check generic_forcing_exists.
+Check generic_exists_forces.
+Check generic_forcing_not_forces.
+Check generic_forcing_basic_semantics.
+Check generic_forcing_basic_top.
+Check generic_forcing_basic_and.
+Check generic_forcing_basic_or.
+Check generic_forcing_monotone.
+Check generic_forcing_persistent.
+Check generic_forcing_imp.
+Check generic_forcing_imp_clause.
+Check generic_forcing_neg.
+Check generic_forcing_neg_clause.
+Check generic_int_kripke.
+Check generic_int_kripke_basic.
+Check generic_int_kripke_monotone.
+Check generic_int_kripke_imp.
+Check generic_int_kripke_bottom.
+Check generic_int_kripke_neg.
+Check generic_forcing_models_iff.
+Check generic_all_forces.
+Check generic_all_forces_context.
+Check generic_all_forces_context_iff_models_set.
+Check generic_all_forces_top.
+Check generic_all_forces_and.
+Check generic_weak_forcing_relation.
+Check generic_weakly_forces.
+Check generic_weak_forcing_not_forces.
+Check generic_weak_forcing_basic_semantics.
+Check generic_weak_forcing_basic_top.
+Check generic_weak_forcing_basic_bottom.
+Check generic_weak_forcing_basic_and.
+Check generic_classical_kripke.
+Check generic_classical_kripke_basic.
+Check generic_classical_kripke_or.
+Check generic_classical_kripke_neg.
+Check generic_classical_kripke_imp.
+Check generic_classical_kripke_monotone.
+Check generic_classical_kripke_generic.
+Check generic_weak_all_forces.
+Check generic_weak_all_forces_context.
+Check generic_weak_all_forces_top.
+Check generic_all_forces_bottom_of_inhabited.
+Check generic_weak_all_forces_bottom.
+Check generic_weak_all_forces_and.
+Print Assumptions generic_forcing_models_iff.
+Print Assumptions generic_all_forces_context_iff_models_set.
+Print Assumptions generic_all_forces_top.
+Print Assumptions generic_all_forces_and.
+Print Assumptions generic_weak_all_forces_top.
+Print Assumptions generic_weak_all_forces_bottom.
+Print Assumptions generic_weak_all_forces_and.
 
 (** Complete source-facing Kripke semantic surface: local satisfaction,
     fixed-model validity, frame validity, and frame-class counterexamples. *)
@@ -623,8 +3500,43 @@ Check algebraic_mod_models_iff.
 Check normal_hilbert_algebraic_sound.
 Check normal_hilbert_algebraic_sound_instance.
 
-(** Reusable classical formula/setoid specialization of the 29-declaration
-    Logic/LindenbaumAlgebra.lean surface. *)
+(** Generic setoid generalized-Heyting/Heyting construction and reusable
+    classical formula specialization of Logic/LindenbaumAlgebra.lean. *)
+Check generalized_heyting_algebra.
+Check gha_equiv.
+Check gha_le.
+Check gha_top.
+Check gha_meet.
+Check gha_join.
+Check gha_imp.
+Check heyting_algebra.
+Check ha_generalized.
+Check ha_bottom.
+Check ha_compl.
+Check generic_lindenbaum_equiv.
+Check generic_lindenbaum_le.
+Check generic_lindenbaum_minimal_laws.
+Check generic_lindenbaum_generalized_heyting.
+Check generic_lindenbaum_intuitionistic_laws.
+Check generic_lindenbaum_heyting.
+Check generic_lindenbaum_equiv_readback.
+Check generic_lindenbaum_order_readback.
+Check generic_lindenbaum_provable_iff_top.
+Check generic_lindenbaum_top_beta.
+Check generic_lindenbaum_meet_beta.
+Check generic_lindenbaum_join_beta.
+Check generic_lindenbaum_imp_beta.
+Check generic_lindenbaum_bottom_beta.
+Check generic_lindenbaum_compl_beta.
+Check generic_lindenbaum_inconsistent.
+Check generic_lindenbaum_consistent.
+Check generic_lindenbaum_trivial.
+Check generic_lindenbaum_nontrivial.
+Check generic_lindenbaum_inconsistent_iff_trivial.
+Check generic_lindenbaum_nontrivial_implies_consistent.
+Check generic_unprovable_witness.
+Check generic_lindenbaum_nontrivial_of_consistent.
+Check generic_lindenbaum_consistent_iff_nontrivial.
 Check lindenbaum_equiv.
 Check lindenbaum_le.
 Check lindenbaum_equiv_refl.
@@ -689,6 +3601,17 @@ Print Assumptions algebraic_satisfies_mdp.
 Print Assumptions algebraic_mod_models_iff.
 Print Assumptions normal_hilbert_algebraic_sound.
 Print Assumptions normal_hilbert_algebraic_sound_instance.
+Print Assumptions generic_lindenbaum_generalized_heyting.
+Print Assumptions generic_lindenbaum_heyting.
+Print Assumptions generic_lindenbaum_equiv_readback.
+Print Assumptions generic_lindenbaum_order_readback.
+Print Assumptions generic_lindenbaum_provable_iff_top.
+Print Assumptions generic_lindenbaum_top_beta.
+Print Assumptions generic_lindenbaum_bottom_beta.
+Print Assumptions generic_lindenbaum_inconsistent_iff_trivial.
+Print Assumptions generic_lindenbaum_nontrivial_implies_consistent.
+Print Assumptions generic_lindenbaum_nontrivial_of_consistent.
+Print Assumptions generic_lindenbaum_consistent_iff_nontrivial.
 Print Assumptions lindenbaum_equiv.
 Print Assumptions lindenbaum_le.
 Print Assumptions lindenbaum_equiv_refl.
@@ -947,6 +3870,36 @@ Check plon_N_complete.
 Check plon_N_sound_complete.
 Check plon_N_strictly_weaker_K.
 Check plon_N_strictly_weaker_EN.
+
+(** Corsi's weak-Goedel modal companion.  Unlike the pinned source, the NP
+    soundness and completeness boundary is proved rather than axiomatized. *)
+Check corsi_godel_weak.
+Check corsi_godel_weak_decode.
+Check corsi_godel_weak_decode_roundtrip.
+Check corsi_godel_weak_injective.
+Check plon_P_axiom.
+Check plon_NP_axioms.
+Check plon_frame_NP.
+Check plon_P_valid_on_NP_frame.
+Check plon_NP_sound.
+Check plon_NP_consistent.
+Check plon_NP_canonical_frame_serial.
+Check plon_NP_complete.
+Check plon_NP_sound_complete.
+Check plon_hilbert_proves_mono.
+Check plon_N_proves_in_NP.
+Check corsi_plon_to_fmt_frame.
+Check corsi_plon_to_fmt_model.
+Check corsi_plon_to_fmt_truth.
+Check corsi_fmt_to_plon_frame.
+Check corsi_fmt_to_plon_model.
+Check corsi_fmt_to_plon_frame_NP.
+Check corsi_fmt_to_plon_truth.
+Check phvf_VF_provable_implies_plon_N_weak.
+Check plon_NP_weak_provable_implies_phvf_VF.
+Check phvf_VF_iff_plon_N_weak.
+Check phvf_VF_iff_plon_NP_weak.
+Check plon_N_weak_iff_NP_weak.
 
 (** Complete named schema surface from Foundation/Modal/Axioms.lean. *)
 Check Axioms.DiaDuality.
@@ -1261,6 +4214,26 @@ Check GL_unprovable_AxiomT.
 Check K4_unprovable_atomic_L.
 Check K4_strictly_weaker_GL.
 Check not_S4_weakerThan_GL.
+(** Makinson's independently checked KD/Triv half.  The conditional theorem
+    exposes the exact Ver boundary admitted by the pinned Lean source. *)
+Check KD_provability_of_classical_satisfiability.
+Check provable_KD_of_classical_satisfiability.
+Check provable_KD_of_classical_tautology.
+Check provable_not_KD_of_classical_unsatisfiable.
+Check makinson_zero_substitution.
+Check makinson_zero_substitution_letterless.
+Check substitute_formula_letterless.
+Check makinson_zero_substitution_formula_letterless.
+Check triv_translate_makinson_zero_substitute.
+Check makinson_zero_substitution_readback.
+Check makinson_subset_Triv_of_KD_subset.
+Check makinson_Ver_family.
+Check makinson_Triv_family.
+Check makinson_families_disjoint.
+Check makinson_Ver_boundary.
+Check makinson_dichotomy_of_Ver_boundary.
+Check makinson_Ver_family_not_Triv_family.
+Check makinson_Triv_family_not_Ver_family.
 Check grz_mini_countermodel.
 Check Grz_finite_sound_complete.
 Check Grz_sound_complete.
@@ -1280,6 +4253,7 @@ Check normal_proves_logic_is_normal.
 Check normal_logic_contains_K.
 Check logic_sum_normal_sym.
 Check logic_sum_normal_normal_left.
+Check logic_sum_normal_covered.
 Check logic_sum_quasi_normal_sym.
 Check logic_sum_quasi_normal_iff_subset.
 Check logic_sum_quasi_normal_sum_union.
@@ -1441,6 +4415,51 @@ Check has_K_of_EMC.
 Check box_regularity_of_k.
 Check e_entailment_of_k.
 Check has_C_of_k.
+Check k_multinecessitation.
+Check k_entailment_of_normal_logic.
+Check k_box_iter_axiom_K.
+Check k_box_iter_axiom_K_apply.
+Check k_box_iter_regularity.
+Check k_box_congruence.
+Check k_box_iter_congruence.
+Check k_box_iter_top.
+Check k_box_iter_and_collect.
+Check k_box_iter_and_distribute.
+Check k_box_iter_and_collect_apply.
+Check k_box_iter_and_distribute_apply.
+Check k_box_iter_or_collect.
+Check k_box_iter_or_collect_apply.
+Check k_boxdot_top.
+Check k_boxdot_axiom_K.
+Check k_boxdot_axiom_T.
+Check k_boxdot_nec.
+Check k_boxdot_box.
+Check k_box_boxdot_to_boxdot_box.
+Check k_box_iter_list_conj2_distribute.
+Check k_box_iter_list_conj2_collect.
+Check logic_list_conj2_theorem_iff.
+Check k_box_iter_list_conj2_theorem_iff.
+Check k_dia_regularity.
+Check k_dia_iter_regularity.
+Check k_dia_regularity_apply.
+Check k_dia_iter_regularity_apply.
+Check k_dia_or_collect.
+Check k_dia_or_collect_apply.
+Check k_dia_or_distribute.
+Check k_dia_iter_or_collect.
+Check k_dia_iter_or_collect_apply.
+Check k_dia_iter_or_distribute.
+Check k_dia_and_distribute.
+Check k_dia_and_distribute_apply.
+Check k_dia_iter_and_distribute.
+Check k_not_dia_bottom.
+Check k_not_dia_iter_bottom.
+Check logic_list_disj2.
+Check classical_eval_list_disj2.
+Check k_dia_iter_list_conj2_distribute.
+Check k_dia_iter_list_disj2_distribute.
+Check lemma_Grz1_raw.
+Check lemma_Grz1.
 Check k_entailment_of_EMCN.
 Check EMCN_of_k_entailment.
 Check geach_dual.
@@ -1501,12 +4520,123 @@ Check KD_of_KT_prime.
 Check ET_of_KT.
 Check KD_of_KT.
 Check reduce_box_in_CAnt_bang.
+Check k4_entailment.
+Check k4_dia_four.
+Check k4_dia_four_applied.
+Check imply_BoxBoxdot_Box_raw.
+Check imply_boxboxdot_box.
+Check imply_Box_BoxBoxdot_raw.
+Check imply_box_boxboxdot.
+Check imply_Box_BoxBoxdot_applied.
+Check iff_Box_BoxBoxdot_raw.
+Check iff_box_boxboxdot.
+Check iff_Box_BoxdotBox_raw.
+Check iff_box_boxdotbox.
+Check iff_Boxdot_BoxdotBoxdot_raw.
+Check iff_boxdot_boxdotboxdot.
+Check boxdot_axiomFour_raw.
+Check boxdot_axiomFour.
 Check s4_entailment.
 Check Diadot.
 Check iff_box_boxdot_raw.
 Check iff_box_boxdot.
 Check iff_dia_diadot_raw.
 Check iff_dia_diadot.
+Check godel_translate.
+Check godel_modal_companion.
+Check godel_image_logic.
+Check godel_smallest_companion.
+Check grz_seed_logic.
+Check godel_largest_companion.
+Check godel_translate_rename.
+Check godel_smallest_includes_base.
+Check godel_smallest_includes_translation.
+Check godel_smallest_normal.
+Check godel_smallest_s4.
+Check godel_smallest_least.
+Check godel_largest_includes_smallest.
+Check godel_largest_includes_translation.
+Check godel_largest_includes_Grz.
+Check godel_largest_normal.
+Check godel_largest_s4.
+Check godel_largest_least.
+Check godel_translate_stable.
+Check s4_stable_consequence.
+Check s4_box_nested_one.
+Check s4_box_nested_two.
+Check godel_translated_axiom_K.
+Check godel_translated_axiom_S.
+Check godel_translated_axiom_and1.
+Check godel_translated_axiom_and2.
+Check godel_translated_axiom_and3.
+Check godel_translated_axiom_or1.
+Check godel_translated_axiom_or2.
+Check godel_translated_axiom_or3.
+Check godel_translate_modus_ponens.
+Check godel_translate_efq.
+Check godel_translate_verum.
+Check godel_translate_hilbert_proof.
+Check godel_translate_hilbert_provable.
+Check godel_translate_int_provable.
+Check godel_translate_persistent.
+Check forcing_modal_frame.
+Check forcing_modal_valuation.
+Check godel_translate_forcing_iff_modal_satisfies.
+Check godel_translate_global_forcing_iff_modal_truth.
+Check godel_modal_companion_via_forcing_semantics.
+Check nat_pformula_codec.
+Check S5_schema_closed.
+Check S5_normal_logic.
+Check S5_has_T.
+Check S5_has_Four.
+Check S5_as_s4_entailment.
+Check S5_proves_godel_translated_LEM.
+Check ph_cl_provable_godel_S5.
+Check godel_translate_reflexive_singleton_iff_boolean.
+Check ph_cl_provable_of_godel_S5.
+Check ph_cl_modal_companion_S5.
+Check ph_cl_provable_godel_S5Grz.
+Check ph_cl_provable_of_godel_S5Grz.
+Check ph_cl_modal_companion_S5Grz.
+Check ph_cl_modal_companion_Triv.
+Check ph_cl_boxdot_modal_companion_Ver.
+Check S4_schema_closed.
+Check S4_normal_logic.
+Check S4_as_s4_entailment.
+Check S4Point2_normal_logic.
+Check S4Point2_as_s4_entailment.
+Check S4Point3_normal_logic.
+Check S4Point3_as_s4_entailment.
+Check ph_int_provable_godel_S4.
+Check ph_int_complete_from_all_pkripke_models.
+Check S4_sound_on_pkripke_forcing_models.
+Check ph_int_modal_companion_S4.
+Check ph_int_provable_godel_Grz.
+Check ph_int_complete_from_finite_partial_pkripke_models.
+Check Grz_sound_on_finite_partial_pkripke_forcing_models.
+Check ph_int_modal_companion_Grz.
+Check ph_int_boxdot_modal_companion_GL.
+Check ph_cl_provable_iff_S4_dia_godel.
+Check S4Point2_proves_godel_translated_WLEM.
+Check ph_kc_provable_godel_S4Point2.
+Check ph_kc_complete_from_convergent_pkripke_models.
+Check S4Point2_sound_on_convergent_pkripke_forcing_models.
+Check ph_kc_modal_companion_S4Point2.
+Check ph_kc_provable_godel_GrzPoint2.
+Check ph_kc_complete_from_finite_partial_convergent_pkripke_models.
+Check GrzPoint2_sound_on_finite_partial_convergent_pkripke_models.
+Check ph_kc_modal_companion_GrzPoint2.
+Check S4Point3_proves_godel_translated_Dummett.
+Check ph_lc_provable_godel_S4Point3.
+Check ph_lc_complete_from_connected_pkripke_models.
+Check S4Point3_sound_on_connected_pkripke_forcing_models.
+Check ph_lc_modal_companion_S4Point3.
+Check ph_lc_provable_godel_GrzPoint3.
+Check ph_lc_complete_from_finite_partial_connected_pkripke_models.
+Check GrzPoint3_sound_on_finite_partial_connected_pkripke_models.
+Check ph_lc_modal_companion_GrzPoint3.
+Check GLPoint3_boxdot_sound_on_finite_partial_connected_pkripke_models.
+Check ph_lc_boxdot_modal_companion_GLPoint3.
 Check s5_entailment.
 Check s5_E.
 Check diabox_box_raw.
@@ -3353,6 +6483,14 @@ Print Assumptions plon_complete_of_canonical_frame.
 Print Assumptions plon_N_sound_complete.
 Print Assumptions plon_N_strictly_weaker_K.
 Print Assumptions plon_N_strictly_weaker_EN.
+Print Assumptions corsi_godel_weak_injective.
+Print Assumptions plon_NP_sound.
+Print Assumptions plon_NP_canonical_frame_serial.
+Print Assumptions plon_NP_complete.
+Print Assumptions corsi_plon_to_fmt_truth.
+Print Assumptions corsi_fmt_to_plon_truth.
+Print Assumptions phvf_VF_iff_plon_N_weak.
+Print Assumptions phvf_VF_iff_plon_NP_weak.
 Print Assumptions valid_T_of_reflexive.
 Print Assumptions valid_D_of_serial.
 Print Assumptions valid_B_of_symmetric.
@@ -3492,6 +6630,11 @@ Print Assumptions GL_unprovable_AxiomT.
 Print Assumptions K4_unprovable_atomic_L.
 Print Assumptions K4_strictly_weaker_GL.
 Print Assumptions not_S4_weakerThan_GL.
+Print Assumptions KD_provability_of_classical_satisfiability.
+Print Assumptions makinson_zero_substitution_readback.
+Print Assumptions makinson_subset_Triv_of_KD_subset.
+Print Assumptions makinson_families_disjoint.
+Print Assumptions makinson_dichotomy_of_Ver_boundary.
 Print Assumptions Grz_finite_sound_complete.
 Print Assumptions Grz_sound_complete.
 Print Assumptions finite_partial_order_mckinsey.
@@ -3507,6 +6650,7 @@ Print Assumptions logic_list_conj_equivalence.
 Print Assumptions normal_proves_logic_is_normal.
 Print Assumptions normal_logic_contains_K.
 Print Assumptions logic_sum_normal_sym.
+Print Assumptions logic_sum_normal_covered.
 Print Assumptions logic_sum_quasi_normal_sum_union.
 Print Assumptions logic_sum_quasi_normal_iff_finite_provable.
 Print Assumptions logic_sum_quasi_normal_iff_finite_provable_letterless.
@@ -3533,6 +6677,30 @@ Print Assumptions EM_of_E_box_regularity.
 Print Assumptions necessitation_of_EN.
 Print Assumptions has_N_of_necessitation.
 Print Assumptions has_K_of_EMC.
+Print Assumptions k_box_iter_axiom_K.
+Print Assumptions k_box_iter_axiom_K_apply.
+Print Assumptions k_box_iter_regularity.
+Print Assumptions k_box_iter_congruence.
+Print Assumptions k_box_iter_and_collect.
+Print Assumptions k_box_iter_and_distribute.
+Print Assumptions k_box_iter_or_collect.
+Print Assumptions k_boxdot_axiom_K.
+Print Assumptions k_box_boxdot_to_boxdot_box.
+Print Assumptions k_box_iter_list_conj2_distribute.
+Print Assumptions k_box_iter_list_conj2_collect.
+Print Assumptions k_box_iter_list_conj2_theorem_iff.
+Print Assumptions k_dia_iter_regularity.
+Print Assumptions k_dia_iter_regularity_apply.
+Print Assumptions k_dia_or_collect.
+Print Assumptions k_dia_or_distribute.
+Print Assumptions k_dia_iter_or_distribute.
+Print Assumptions k_dia_iter_and_distribute.
+Print Assumptions k_not_dia_iter_bottom.
+Print Assumptions classical_eval_list_disj2.
+Print Assumptions k_dia_iter_list_conj2_distribute.
+Print Assumptions k_dia_iter_list_disj2_distribute.
+Print Assumptions lemma_Grz1_raw.
+Print Assumptions lemma_Grz1.
 Print Assumptions k_entailment_of_EMCN.
 Print Assumptions EMCN_of_k_entailment.
 Print Assumptions has_Geach_dual.
@@ -3552,8 +6720,68 @@ Print Assumptions KD_of_KT_prime.
 Print Assumptions ET_of_KT.
 Print Assumptions KD_of_KT.
 Print Assumptions reduce_box_in_CAnt_bang.
+Print Assumptions k4_dia_four_applied.
+Print Assumptions imply_Box_BoxBoxdot_raw.
+Print Assumptions iff_Box_BoxBoxdot_raw.
+Print Assumptions iff_Box_BoxdotBox_raw.
+Print Assumptions iff_Boxdot_BoxdotBoxdot_raw.
+Print Assumptions boxdot_axiomFour_raw.
 Print Assumptions iff_box_boxdot_raw.
 Print Assumptions iff_dia_diadot_raw.
+Print Assumptions godel_translate_rename.
+Print Assumptions godel_smallest_s4.
+Print Assumptions godel_smallest_least.
+Print Assumptions godel_largest_includes_Grz.
+Print Assumptions godel_largest_s4.
+Print Assumptions godel_largest_least.
+Print Assumptions godel_translate_stable.
+Print Assumptions s4_box_nested_two.
+Print Assumptions godel_translated_axiom_S.
+Print Assumptions godel_translated_axiom_or3.
+Print Assumptions godel_translate_modus_ponens.
+Print Assumptions godel_translate_efq.
+Print Assumptions godel_translate_hilbert_proof.
+Print Assumptions godel_translate_int_provable.
+Print Assumptions godel_translate_persistent.
+Print Assumptions godel_translate_forcing_iff_modal_satisfies.
+Print Assumptions godel_translate_global_forcing_iff_modal_truth.
+Print Assumptions godel_modal_companion_via_forcing_semantics.
+Print Assumptions S5_proves_godel_translated_LEM.
+Print Assumptions ph_cl_provable_godel_S5.
+Print Assumptions godel_translate_reflexive_singleton_iff_boolean.
+Print Assumptions ph_cl_provable_of_godel_S5.
+Print Assumptions ph_cl_modal_companion_S5.
+Print Assumptions ph_cl_provable_godel_S5Grz.
+Print Assumptions ph_cl_provable_of_godel_S5Grz.
+Print Assumptions ph_cl_modal_companion_S5Grz.
+Print Assumptions ph_cl_modal_companion_Triv.
+Print Assumptions ph_cl_boxdot_modal_companion_Ver.
+Print Assumptions S4_as_s4_entailment.
+Print Assumptions S4Point2_as_s4_entailment.
+Print Assumptions S4Point3_as_s4_entailment.
+Print Assumptions ph_int_provable_godel_S4.
+Print Assumptions ph_int_complete_from_all_pkripke_models.
+Print Assumptions S4_sound_on_pkripke_forcing_models.
+Print Assumptions ph_int_modal_companion_S4.
+Print Assumptions ph_int_provable_godel_Grz.
+Print Assumptions ph_int_modal_companion_Grz.
+Print Assumptions ph_int_boxdot_modal_companion_GL.
+Print Assumptions ph_cl_provable_iff_S4_dia_godel.
+Print Assumptions S4Point2_proves_godel_translated_WLEM.
+Print Assumptions ph_kc_provable_godel_S4Point2.
+Print Assumptions ph_kc_complete_from_convergent_pkripke_models.
+Print Assumptions S4Point2_sound_on_convergent_pkripke_forcing_models.
+Print Assumptions ph_kc_modal_companion_S4Point2.
+Print Assumptions ph_kc_provable_godel_GrzPoint2.
+Print Assumptions ph_kc_modal_companion_GrzPoint2.
+Print Assumptions S4Point3_proves_godel_translated_Dummett.
+Print Assumptions ph_lc_provable_godel_S4Point3.
+Print Assumptions ph_lc_complete_from_connected_pkripke_models.
+Print Assumptions S4Point3_sound_on_connected_pkripke_forcing_models.
+Print Assumptions ph_lc_modal_companion_S4Point3.
+Print Assumptions ph_lc_provable_godel_GrzPoint3.
+Print Assumptions ph_lc_modal_companion_GrzPoint3.
+Print Assumptions ph_lc_boxdot_modal_companion_GLPoint3.
 Print Assumptions diabox_box_raw.
 Print Assumptions diabox_box_applied_raw.
 Print Assumptions rm_diabox_raw.

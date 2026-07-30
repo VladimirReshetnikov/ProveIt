@@ -163,7 +163,7 @@ Definition
     (M : RawPAModel)
     (translation : RawCodedTemplateTranslation M) : Prop :=
   RawCodedTemplatePAAgreement M translation /\
-  RawDynamicTruthNativeLocalCurrentStagedRootBuilder M translation /\
+  RawDynamicTruthNativeLocalCurrentReducedStagedRootBuilder M translation /\
   RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
   RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
   RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
