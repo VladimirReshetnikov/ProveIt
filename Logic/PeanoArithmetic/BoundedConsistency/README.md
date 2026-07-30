@@ -5039,3 +5039,17 @@ remain in slots zero and one throughout.  The next integration boundary is
 to obtain the two lower-predicate selectors from the deep-closure fields of
 the native aligned predecessor trace and feed this exact shared input into
 the strong-step predecessor global-row handoff.
+
+The aligned predecessor now produces that shared row package.  Its adequate
+current orbit supplies deep closure and hence honest-syntax commuting
+selectors for the current Pi and Sigma globals.  The current trace supplies
+the lower-level numeral and both admissibility domains; the aligned successor
+supplies both local rows and their next-global wrapper.  Although the two row
+graphs choose upper numeral codes independently, represented numeral-code
+functionality identifies them before construction of the common parameter
+record.  For every later coherent context/conclusion truth-selector pair, one
+extended translator therefore has the correct lower-level term and translates
+both relocated row templates to the literal wrapped local row codes.  The
+remaining strong-step instantiation must construct the two global-source
+proof roots and selected-payload equations; those are proof obligations, not
+mere consequences of the code wrapper equality.
