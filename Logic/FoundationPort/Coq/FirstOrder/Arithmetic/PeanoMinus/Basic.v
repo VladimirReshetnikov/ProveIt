@@ -438,6 +438,26 @@ Proof.
   - exact (peano_minus_add_le_add_left H (x := y) (y := y') x' Hy).
 Qed.
 
+Lemma peano_minus_le_add_right : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  peano_minus_le O x (oring_add O x y).
+Proof.
+  intros M O H x y.
+  pose proof (peano_minus_add_le_add_left H
+    (x := oring_zero O) (y := y) x
+    (@peano_minus_zero_le M O H y)) as Hle.
+  now rewrite (@peano_minus_add_zero M O H x) in Hle.
+Qed.
+
+Lemma peano_minus_le_add_left : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  peano_minus_le O y (oring_add O x y).
+Proof.
+  intros M O H x y.
+  rewrite (@peano_minus_add_comm M O H x y).
+  apply (peano_minus_le_add_right H).
+Qed.
+
 Lemma peano_minus_mul_le_mul_right : forall M (O : oring_carrier M),
   peano_minus_laws O -> forall x y z,
   peano_minus_le O x y ->
@@ -496,6 +516,54 @@ Proof.
     (x := x) (y := y) x (peano_minus_lt_le Hxy)) as Hle.
   pose proof (@peano_minus_mul_lt_mul M O H x y y Hxy Hy) as Hlt.
   exact (@peano_minus_le_lt_trans M O H _ _ _ Hle Hlt).
+Qed.
+
+Lemma peano_minus_square_succ : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_mul O (oring_add O x (oring_one O))
+      (oring_add O x (oring_one O)) =
+  oring_add O
+    (oring_add O (oring_add O (oring_mul O x x) x) x)
+    (oring_one O).
+Proof.
+  intros M O H x.
+  rewrite (@peano_minus_mul_add_distr M O H
+      (oring_add O x (oring_one O)) x (oring_one O)),
+    (@peano_minus_add_mul_distr M O H x (oring_one O) x),
+    (@peano_minus_one_mul M O H x),
+    (@peano_minus_mul_one M O H (oring_add O x (oring_one O))),
+    <- (@peano_minus_add_assoc M O H
+      (oring_add O (oring_mul O x x) x) x (oring_one O)).
+  reflexivity.
+Qed.
+
+Lemma peano_minus_le_square : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  peano_minus_le O x (oring_mul O x x).
+Proof.
+  intros M O H x.
+  destruct (@peano_minus_zero_le M O H x) as [Hx | Hx].
+  - symmetry in Hx. subst x.
+    rewrite (@peano_minus_zero_mul M O H (oring_zero O)).
+    apply peano_minus_le_refl.
+  - pose proof (peano_minus_mul_le_mul_right H
+      (x := oring_one O) (y := x) x
+      (@peano_minus_one_le_of_zero_lt M O H x Hx)) as Hmul.
+    now rewrite (@peano_minus_one_mul M O H x) in Hmul.
+Qed.
+
+Lemma peano_minus_lt_square_of_one_lt : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_lt O (oring_one O) x -> oring_lt O x (oring_mul O x x).
+Proof.
+  intros M O H x Hx.
+  assert (Hpos : oring_lt O (oring_zero O) x).
+  { exact (@peano_minus_lt_trans M O H _ _ _
+      (@peano_minus_zero_lt_one M O H) Hx). }
+  pose proof (@peano_minus_mul_lt_mul M O H
+    (oring_one O) x x Hx Hpos) as Hmul.
+  now rewrite (@peano_minus_one_mul M O H x) in Hmul.
 Qed.
 
 Definition peano_minus_structure_monotone : forall M

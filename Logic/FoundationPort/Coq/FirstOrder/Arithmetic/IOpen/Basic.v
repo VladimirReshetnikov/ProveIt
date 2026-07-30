@@ -588,3 +588,154 @@ Proof.
   pose proof (iopen_sqrt_square H Hleast (oring_one O)) as Hsqrt.
   now rewrite (@peano_minus_mul_one M O H (oring_one O)) in Hsqrt.
 Qed.
+
+Lemma iopen_sqrt_square_le : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a,
+  peano_minus_le O
+    (oring_mul O (iopen_sqrt O a) (iopen_sqrt O a)) a.
+Proof.
+  intros M O H Hleast a.
+  exact (proj1 (iopen_sqrt_specification H Hleast a)).
+Qed.
+
+Lemma iopen_sqrt_lt_square_succ : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a,
+  oring_lt O a
+    (oring_mul O (oring_add O (iopen_sqrt O a) (oring_one O))
+      (oring_add O (iopen_sqrt O a) (oring_one O))).
+Proof.
+  intros M O H Hleast a.
+  exact (proj2 (iopen_sqrt_specification H Hleast a)).
+Qed.
+
+Lemma iopen_sqrt_le_self : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, peano_minus_le O (iopen_sqrt O a) a.
+Proof.
+  intros M O H Hleast a.
+  apply NNPP. intro Hnle.
+  pose proof (peano_minus_lt_of_not_le H Hnle) as Halt.
+  pose proof (peano_minus_square_lt_square H Halt) as Hsq.
+  pose proof (@peano_minus_lt_le_trans M O H _ _ _ Hsq
+    (iopen_sqrt_square_le H Hleast a)) as Hsq_a.
+  exact (peano_minus_lt_not_ge H Hsq_a (peano_minus_le_square H a)).
+Qed.
+
+Lemma iopen_sqrt_le_of_le_square : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, peano_minus_le O a (oring_mul O b b) ->
+  peano_minus_le O (iopen_sqrt O a) b.
+Proof.
+  intros M O H Hleast a b Hab.
+  apply NNPP. intro Hnle.
+  pose proof (peano_minus_lt_of_not_le H Hnle) as Hlt.
+  pose proof (peano_minus_square_lt_square H Hlt) as Hsq.
+  pose proof (@peano_minus_lt_le_trans M O H _ _ _ Hsq
+    (iopen_sqrt_square_le H Hleast a)) as Hsq_a.
+  pose proof (@peano_minus_lt_le_trans M O H _ _ _ Hsq_a Hab) as Hbad.
+  exact (@peano_minus_lt_irrefl M O H _ Hbad).
+Qed.
+
+Lemma iopen_square_lt_of_lt_sqrt : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a b, oring_lt O a (iopen_sqrt O b) ->
+  oring_lt O (oring_mul O a a) b.
+Proof.
+  intros M O H Hleast a b Hab.
+  apply (@peano_minus_lt_le_trans M O H _
+    (oring_mul O (iopen_sqrt O b) (iopen_sqrt O b)) _).
+  - now apply (peano_minus_square_lt_square H).
+  - apply (iopen_sqrt_square_le H Hleast).
+Qed.
+
+Lemma iopen_sqrt_lt_self_of_one_lt : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a, oring_lt O (oring_one O) a ->
+  oring_lt O (iopen_sqrt O a) a.
+Proof.
+  intros M O H Hleast a Ha.
+  destruct (iopen_sqrt_le_self H Hleast a) as [Heq | Hlt]; [| exact Hlt].
+  pose proof (iopen_sqrt_square_le H Hleast a) as Hle.
+  rewrite Heq in Hle.
+  exfalso.
+  exact (peano_minus_lt_not_ge H (peano_minus_lt_square_of_one_lt H Ha)
+    Hle).
+Qed.
+
+Definition iopen_pair {M} (O : oring_carrier M) (a b : M) : M :=
+  if excluded_middle_informative (oring_lt O a b)
+  then oring_add O (oring_mul O b b) a
+  else oring_add O (oring_add O (oring_mul O a a) a) b.
+
+Lemma iopen_pair_graph : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall a b c,
+  c = iopen_pair O a b <->
+  (oring_lt O a b /\ c = oring_add O (oring_mul O b b) a) \/
+  (peano_minus_le O b a /\
+    c = oring_add O (oring_add O (oring_mul O a a) a) b).
+Proof.
+  intros M O H a b c. unfold iopen_pair.
+  destruct (excluded_middle_informative (oring_lt O a b)) as [Hab | Hab].
+  - split.
+    + intro Hc. now left.
+    + intros [[_ Hc] | [Hba _]]; [exact Hc |].
+      exfalso. exact (peano_minus_lt_not_ge H Hab Hba).
+  - pose proof (peano_minus_le_of_not_lt H Hab) as Hba.
+    split.
+    + intro Hc. now right.
+    + intros [[Hlt _] | [_ Hc]]; [contradiction | exact Hc].
+Qed.
+
+Definition iopen_unpair {M} (O : oring_carrier M) (a : M) : M * M :=
+  let q := iopen_sqrt O a in
+  let d := peano_minus_sub O a (oring_mul O q q) in
+  if excluded_middle_informative (oring_lt O d q)
+  then (d, q)
+  else (q, peano_minus_sub O d q).
+
+Lemma iopen_pair_unpair : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall a,
+  iopen_pair O (fst (iopen_unpair O a)) (snd (iopen_unpair O a)) = a.
+Proof.
+  intros M O H Hleast a.
+  pose (q := iopen_sqrt O a).
+  pose (d := peano_minus_sub O a (oring_mul O q q)).
+  assert (Hq : peano_minus_le O (oring_mul O q q) a).
+  { unfold q. apply (iopen_sqrt_square_le H Hleast). }
+  assert (Heq : oring_add O (oring_mul O q q) d = a).
+  { unfold d. apply (peano_minus_add_sub_self_of_le H Hq). }
+  unfold iopen_unpair. fold q d.
+  destruct (excluded_middle_informative (oring_lt O d q)) as [Hdq | Hdq].
+  - simpl. unfold iopen_pair.
+    destruct (excluded_middle_informative (oring_lt O d q)) as [Hdq' | Hdq'];
+      [exact Heq | contradiction].
+  - simpl.
+    assert (Hqd : peano_minus_le O q d).
+    { apply (peano_minus_le_of_not_lt H Hdq). }
+    assert (Hdqq : peano_minus_le O d (oring_add O q q)).
+    { pose proof (iopen_sqrt_lt_square_succ H Hleast a) as Hupper.
+      fold q in Hupper.
+      rewrite (peano_minus_square_succ H q) in Hupper.
+      pose proof (proj2 (peano_minus_le_iff_lt_add_one H a
+        (oring_add O (oring_add O (oring_mul O q q) q) q)) Hupper) as Hale.
+      rewrite <- Heq,
+        (@peano_minus_add_assoc M O H (oring_mul O q q) q q) in Hale.
+      exact (@peano_minus_le_of_add_le_add_left M O H d
+        (oring_add O q q) (oring_mul O q q) Hale). }
+    assert (Hsub : peano_minus_le O (peano_minus_sub O d q) q).
+    { apply (proj2 (peano_minus_sub_le_iff_right H d q q)). exact Hdqq. }
+    assert (Hnot : ~ oring_lt O q (peano_minus_sub O d q)).
+    { intro Hlt. exact (peano_minus_lt_not_ge H Hlt Hsub). }
+    unfold iopen_pair.
+    destruct (excluded_middle_informative
+      (oring_lt O q (peano_minus_sub O d q))) as [Hlt | _];
+      [contradiction |].
+    rewrite (@peano_minus_add_assoc M O H (oring_mul O q q) q
+      (peano_minus_sub O d q)),
+      (peano_minus_add_sub_self_of_le H Hqd).
+    exact Heq.
+Qed.
