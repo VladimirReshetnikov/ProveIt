@@ -477,3 +477,131 @@ Proof.
       apply nat_truth_inv_eq_zero_iff in Hinv.
       exact (Hleast m Hm Hinv).
 Qed.
+
+Definition nat_sub_test (k a b : nat) : nat :=
+  nat_truth_or
+    (nat_truth_eq (k + b) a)
+    (nat_truth_and (nat_truth_lt a b) (nat_truth_eq k 0)).
+
+Lemma nat_sub_test_positive_iff : forall k a b,
+  0 < nat_sub_test k a b <->
+  k + b = a \/ (a < b /\ k = 0).
+Proof.
+  intros k a b. unfold nat_sub_test.
+  rewrite nat_truth_or_positive_iff, nat_truth_eq_positive_iff,
+    nat_truth_and_positive_iff, nat_truth_lt_positive_iff,
+    nat_truth_eq_positive_iff.
+  tauto.
+Qed.
+
+Lemma nat_sub_least_test : forall a b x,
+  x = a - b <->
+  (x + b = a \/ (a < b /\ x = 0)) /\
+  forall m, m < x -> ~ (m + b = a \/ (a < b /\ m = 0)).
+Proof.
+  intros a b x. split.
+  - intro Hx. subst x. split.
+    + destruct (le_dec b a) as [Hba | Hba].
+      * left. now apply Nat.sub_add.
+      * right. split; [lia | apply Nat.sub_0_le; lia].
+    + intros m Hm [Heq | [Hab Hzero]].
+      * assert (m + b < a) by lia. lia.
+      * subst m. lia.
+  - intros [[Heq | [Hab Hzero]] _].
+    + assert (b <= a) by lia. lia.
+    + subst x. apply eq_sym, Nat.sub_0_le. lia.
+Qed.
+
+Definition nat_sub_test_vector (v : Fin.t 3 -> nat) : nat :=
+  nat_sub_test
+    (v Fin.F1)
+    (v (Fin.FS Fin.F1))
+    (v (Fin.FS (Fin.FS Fin.F1))).
+
+Lemma arithmetic1_sub_test : arithmetic1 nat_sub_test_vector.
+Proof.
+  unfold nat_sub_test_vector, nat_sub_test.
+  eapply arithmetic1_comp2 with (f := nat_truth_or).
+  - exact arithmetic1_or.
+  - eapply arithmetic1_comp2 with (f := nat_truth_eq).
+    + apply arithmetic1_equal.
+    + eapply arithmetic1_comp2 with (f := Nat.add).
+      * unfold arithmetic1_binary. apply arithmetic1_add.
+      * apply arithmetic1_proj.
+      * apply arithmetic1_proj.
+    + apply arithmetic1_proj.
+  - eapply arithmetic1_comp2 with (f := nat_truth_and).
+    + exact arithmetic1_and.
+    + eapply arithmetic1_comp2 with (f := nat_truth_lt).
+      * apply arithmetic1_lt.
+      * apply arithmetic1_proj.
+      * apply arithmetic1_proj.
+    + eapply arithmetic1_comp2 with (f := nat_truth_eq).
+      * apply arithmetic1_equal.
+      * apply arithmetic1_proj.
+      * apply arithmetic1_zero.
+Qed.
+
+Theorem arithmetic1_sub : arithmetic1_binary Nat.sub.
+Proof.
+  unfold arithmetic1_binary, arithmetic1.
+  eapply arith_part1_ext with
+    (f := arith_find_positive_on nat_sub_test_vector).
+  - apply arith_part1_find_positive. exact arithmetic1_sub_test.
+  - intros v x. rewrite arith_find_positive_on_member_iff.
+    change
+      ((0 < nat_sub_test x (v Fin.F1) (v (Fin.FS Fin.F1)) /\
+        forall m, m < x ->
+          ~ 0 < nat_sub_test m (v Fin.F1) (v (Fin.FS Fin.F1))) <->
+       x = v Fin.F1 - v (Fin.FS Fin.F1)).
+    rewrite nat_sub_test_positive_iff.
+    setoid_rewrite nat_sub_test_positive_iff.
+    apply iff_sym.
+    exact (nat_sub_least_test
+      (v Fin.F1) (v (Fin.FS Fin.F1)) x).
+Qed.
+
+Definition nat_pair (a b : nat) : nat :=
+  if lt_dec a b then b * b + a else a * a + a + b.
+
+Lemma nat_truth_lt_branch : forall a b x y : nat,
+  (if lt_dec 0 (nat_truth_lt a b) then x else y) =
+  (if lt_dec a b then x else y).
+Proof.
+  intros a b x y. unfold nat_truth_lt.
+  destruct (lt_dec a b); cbn; repeat destruct lt_dec; lia.
+Qed.
+
+Theorem arithmetic1_pair : arithmetic1_binary nat_pair.
+Proof.
+  unfold arithmetic1_binary.
+  assert (Hcond : arithmetic1 (fun v : Fin.t 2 -> nat =>
+      nat_truth_lt (v Fin.F1) (v (Fin.FS Fin.F1)))).
+  { apply arithmetic1_lt. }
+  assert (Hthen : arithmetic1 (fun v : Fin.t 2 -> nat =>
+      v (Fin.FS Fin.F1) * v (Fin.FS Fin.F1) + v Fin.F1)).
+  { eapply arithmetic1_comp2 with (f := Nat.add).
+    - unfold arithmetic1_binary. apply arithmetic1_add.
+    - eapply arithmetic1_comp2 with (f := Nat.mul).
+      + unfold arithmetic1_binary. apply arithmetic1_mul.
+      + apply arithmetic1_proj.
+      + apply arithmetic1_proj.
+    - apply arithmetic1_proj. }
+  assert (Helse : arithmetic1 (fun v : Fin.t 2 -> nat =>
+      v Fin.F1 * v Fin.F1 + v Fin.F1 + v (Fin.FS Fin.F1))).
+  { eapply arithmetic1_comp2 with (f := Nat.add).
+    - unfold arithmetic1_binary. apply arithmetic1_add.
+    - eapply arithmetic1_comp2 with (f := Nat.add).
+      + unfold arithmetic1_binary. apply arithmetic1_add.
+      + eapply arithmetic1_comp2 with (f := Nat.mul).
+        * unfold arithmetic1_binary. apply arithmetic1_mul.
+        * apply arithmetic1_proj.
+        * apply arithmetic1_proj.
+      + apply arithmetic1_proj.
+    - apply arithmetic1_proj. }
+  eapply arith_part1_ext.
+  - unfold arithmetic1.
+    exact (@arithmetic1_if_positive 2 _ _ _ Hcond Hthen Helse).
+  - intros v x. simpl. unfold nat_pair.
+    now rewrite nat_truth_lt_branch.
+Qed.

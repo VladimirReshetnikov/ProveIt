@@ -284,6 +284,14 @@ Print Assumptions arithmetic1_if_positive.
 Check arith_find_positive_on.
 Print Assumptions arith_part1_find_positive.
 Print Assumptions arith_find_positive_on_member_iff.
+Check nat_sub_test.
+Print Assumptions nat_sub_test_positive_iff.
+Print Assumptions nat_sub_least_test.
+Print Assumptions arithmetic1_sub_test.
+Print Assumptions arithmetic1_sub.
+Check nat_pair.
+Print Assumptions nat_truth_lt_branch.
+Print Assumptions arithmetic1_pair.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.
