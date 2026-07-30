@@ -17,6 +17,7 @@ From Foundation.Vorspiel.Finset Require Import Card.
 From Foundation.Vorspiel.Finset Require Import Basic.
 From Foundation.Vorspiel.List Require Import Basic.
 From Foundation.Vorspiel.List Require Import Chain.
+From Foundation.Vorspiel.List Require Import ChainI.
 From Foundation.Vorspiel.List Require Import Perm.
 From Foundation.Vorspiel.Nat Require Import Basic.
 From Foundation.Vorspiel.Nat Require Import Matrix.
@@ -200,6 +201,20 @@ Print Assumptions list_comp_subset_contract.
 Print Assumptions list_comp_subset_trans.
 Print Assumptions list_comp_subset_cons.
 Print Assumptions list_incl_to_comp_subset.
+Check list_chainI.
+Print Assumptions list_chainI_not_nil.
+Print Assumptions list_chainI_singleton_iff.
+Print Assumptions list_chainI_head_eq.
+Print Assumptions list_chainI_cons_cons_iff.
+Print Assumptions list_chainI_tail_exists.
+Print Assumptions list_chainI_suffix_exists.
+Print Assumptions list_chainI_prefix_suffix.
+Print Assumptions list_chainI_last_eq.
+Print Assumptions list_chainI_endpoints_unique.
+Print Assumptions list_chainI_not_mem_predecessor.
+Print Assumptions list_chainI_nodup.
+Print Assumptions chainI_lists_explicit_finite_cover.
+Print Assumptions list_chainI_predecessor_exists.
 Check list_strict_inclusion.
 Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
