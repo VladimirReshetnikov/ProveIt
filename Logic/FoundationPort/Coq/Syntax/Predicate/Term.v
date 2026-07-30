@@ -67,6 +67,23 @@ Proof.
     + right. intro Hall. apply Hhead. apply Hall.
 Defined.
 
+Lemma fin_forall_exists_choice : forall n (A : Type)
+    (P : Fin.t n -> A -> Prop),
+  (forall i, exists x, P i x) ->
+  exists f : Fin.t n -> A, forall i, P i (f i).
+Proof.
+  intros n. induction n as [|n IH]; intros A P H.
+  - exists (fun i => Fin.case0 (fun _ => A) i). intro i; inversion i.
+  - destruct (H Fin.F1) as [x Hx].
+    destruct (IH A (fun i y => P (Fin.FS i) y)
+      (fun i => H (Fin.FS i))) as [f Hf].
+    exists (fun i => @Fin.caseS' n i (fun _ => A) x f).
+    intro i. refine (@Fin.caseS' n i
+      (fun j => P j (@Fin.caseS' n j (fun _ => A) x f)) _ _).
+    + exact Hx.
+    + exact Hf.
+Qed.
+
 Definition fin_function_eq_dec (n : nat) (A : Type)
     (eq_dec : forall x y : A, {x = y} + {x <> y})
     (f g : Fin.t n -> A) : {f = g} + {f <> g}.

@@ -783,6 +783,34 @@ Proof.
       (fun i => rew_apply rew_bshift (a i)))); exact IH.
 Qed.
 
+Lemma rew_bshift_positive_iff_exists : forall L X n
+    (t : semiterm L X (S n)),
+  semiterm_positive t <->
+  exists u : semiterm L X n, rew_apply rew_bshift u = t.
+Proof.
+  intros L X n t. split.
+  - induction t as [i | x | k f a IH]; intro Hpositive.
+    + revert Hpositive.
+      refine (@Fin.caseS' n i
+        (fun j =>
+          semiterm_positive (@Semiterm_bvar L X (S n) j) ->
+          exists u : semiterm L X n,
+            rew_apply rew_bshift u = @Semiterm_bvar L X (S n) j) _ _).
+      * intro Hzero.
+        apply (proj1 (semiterm_positive_bvar L X Fin.F1)) in Hzero.
+        now inversion Hzero.
+      * intros j _. exists (Semiterm_bvar j). reflexivity.
+    + exists (Semiterm_fvar x). reflexivity.
+    + pose proof (proj1 (@semiterm_positive_func L X n k f a)
+        Hpositive) as Hargs.
+      destruct (@fin_forall_exists_choice k (semiterm L X n)
+        (fun i u => rew_apply rew_bshift u = a i)
+        (fun i => IH i (Hargs i))) as [v Hv].
+      exists (Semiterm_func f v). rewrite rew_apply_func.
+      f_equal. apply functional_extensionality. exact Hv.
+  - intros [u <-]. apply rew_bshift_positive.
+Qed.
+
 Lemma rew_bshift_not_bvar_zero : forall L X n (t : semiterm L X n),
   rew_apply rew_bshift t <> @Semiterm_bvar L X (S n) Fin.F1.
 Proof.

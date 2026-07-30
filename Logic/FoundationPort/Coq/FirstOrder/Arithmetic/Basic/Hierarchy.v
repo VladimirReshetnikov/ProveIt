@@ -15,7 +15,7 @@ From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Calculus Operator Padding.
 From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 From Foundation.FirstOrder Require Import Polarity.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Model.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -30,6 +30,17 @@ Definition arithmetic_polarity_alt (pol : bool) : bool := negb pol.
 Definition arithmetic_lt_operator :
     semiformula_has_lt_operator oring_language :=
   semiformula_lt_operator_of_language
+    (language_oring_lt oring_language_structure).
+
+Definition arithmetic_eq_operator :
+    semiformula_has_eq_operator oring_language :=
+  semiformula_eq_operator_of_language
+    (language_oring_eq oring_language_structure).
+
+Definition arithmetic_le_operator :
+    semiformula_has_le_operator oring_language :=
+  semiformula_le_operator_of_language
+    (language_oring_eq oring_language_structure)
     (language_oring_lt oring_language_structure).
 
 Definition arithmetic_lt_guard {X n}
@@ -129,6 +140,36 @@ Arguments AH_dummy_pi {X s n p} _.
 Definition arithmetic_delta_zero {X n}
     (p : semiformula oring_language X n) : Prop :=
   arithmetic_hierarchy X arithmetic_sigma 0 n p.
+
+Lemma arithmetic_hierarchy_eq : forall X pol s n
+    (t u : semiterm oring_language X n),
+  arithmetic_hierarchy X pol s n
+    (semiformula_operator_apply
+      (semiformula_eq_operator arithmetic_eq_operator) (fin_two t u)).
+Proof.
+  intros. unfold arithmetic_eq_operator.
+  rewrite semiformula_eq_operator_apply. apply AH_rel.
+Qed.
+
+Lemma arithmetic_hierarchy_lt : forall X pol s n
+    (t u : semiterm oring_language X n),
+  arithmetic_hierarchy X pol s n
+    (semiformula_operator_apply
+      (semiformula_lt_operator arithmetic_lt_operator) (fin_two t u)).
+Proof.
+  intros. unfold arithmetic_lt_operator.
+  rewrite semiformula_lt_operator_apply. apply AH_rel.
+Qed.
+
+Lemma arithmetic_hierarchy_le : forall X pol s n
+    (t u : semiterm oring_language X n),
+  arithmetic_hierarchy X pol s n
+    (semiformula_operator_apply
+      (semiformula_le_operator arithmetic_le_operator) (fin_two t u)).
+Proof.
+  intros. unfold arithmetic_le_operator.
+  rewrite semiformula_le_operator_apply. apply AH_or; apply AH_rel.
+Qed.
 
 Lemma arithmetic_lt_guard_rewrite : forall X n Y m
     (w : rew oring_language X n Y m)
@@ -410,6 +451,16 @@ Proof.
     split; apply arithmetic_hierarchy_zero_alt.
 Qed.
 
+Theorem arithmetic_hierarchy_of_zero : forall X pol n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol 0 n p ->
+  forall pol' s, arithmetic_hierarchy X pol' s n p.
+Proof.
+  intros X pol n p Hp pol' s. destruct s as [|s].
+  - exact (proj1 (@arithmetic_hierarchy_zero_iff X pol pol' n p) Hp).
+  - eapply arithmetic_hierarchy_strict_mono; eauto; lia.
+Qed.
+
 Theorem arithmetic_hierarchy_and_iff : forall X pol s n
     (p q : semiformula oring_language X n),
   arithmetic_hierarchy X pol s n (Semiformula_and p q) <->
@@ -642,6 +693,36 @@ Proof.
     arithmetic_lt_guard.
   apply arithmetic_hierarchy_bounded_exists_iff.
   apply rew_bshift_positive.
+Qed.
+
+Corollary arithmetic_hierarchy_ball_lt_succ_iff : forall X pol s n
+    (t : semiterm oring_language X n)
+    (p : semiformula oring_language X (S n)),
+  arithmetic_hierarchy X pol s n
+      (semiformula_ball_lt_succ arithmetic_lt_operator
+        (semiterm_one_operator_of_language
+          (language_oring_one oring_language_structure))
+        (semiterm_add_operator_of_language
+          (language_oring_add oring_language_structure)) t p) <->
+  arithmetic_hierarchy X pol s (S n) p.
+Proof.
+  intros. unfold semiformula_ball_lt_succ.
+  apply arithmetic_hierarchy_ball_lt_iff.
+Qed.
+
+Corollary arithmetic_hierarchy_bex_lt_succ_iff : forall X pol s n
+    (t : semiterm oring_language X n)
+    (p : semiformula oring_language X (S n)),
+  arithmetic_hierarchy X pol s n
+      (semiformula_bex_lt_succ arithmetic_lt_operator
+        (semiterm_one_operator_of_language
+          (language_oring_one oring_language_structure))
+        (semiterm_add_operator_of_language
+          (language_oring_add oring_language_structure)) t p) <->
+  arithmetic_hierarchy X pol s (S n) p.
+Proof.
+  intros. unfold semiformula_bex_lt_succ.
+  apply arithmetic_hierarchy_bex_lt_iff.
 Qed.
 
 Corollary arithmetic_hierarchy_all_iff : forall X s n
@@ -877,6 +958,135 @@ Proof.
   rewrite arithmetic_hierarchy_list_disj_map_iff. split.
   - intros H i. apply H, finite_cover_complete.
   - intros H i _. apply H.
+Qed.
+
+Lemma arithmetic_hierarchy_sigma_one_of_base : forall X pol level n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol level n p ->
+  level = 0 \/ (pol = arithmetic_sigma /\ level = 1) ->
+  arithmetic_hierarchy X arithmetic_sigma 1 n p.
+Proof.
+  intros X pol level n p Hp [-> | [-> ->]].
+  - eapply arithmetic_hierarchy_strict_mono; eauto; lia.
+  - exact Hp.
+Qed.
+
+(** A generalized eliminator for Sigma-1 formulas.  Instead of exposing four
+    ordered-ring-specific equality/order atom cases, it accepts one handler
+    for every positive atom and one for every negative atom.  This both
+    shortens clients and remains valid if the arithmetic signature grows more
+    primitive relations. *)
+Theorem arithmetic_sigma_one_induction : forall X
+    (P : forall n, semiformula oring_language X n -> Prop),
+  (forall n, P n (Semiformula_verum n)) ->
+  (forall n, P n (Semiformula_falsum n)) ->
+  (forall n k (r : language_rel oring_language k)
+          (v : Fin.t k -> semiterm oring_language X n),
+      P n (Semiformula_rel r v)) ->
+  (forall n k (r : language_rel oring_language k)
+          (v : Fin.t k -> semiterm oring_language X n),
+      P n (Semiformula_nrel r v)) ->
+  (forall n (p q : semiformula oring_language X n),
+      arithmetic_hierarchy X arithmetic_sigma 1 n p ->
+      arithmetic_hierarchy X arithmetic_sigma 1 n q ->
+      P n p -> P n q -> P n (Semiformula_and p q)) ->
+  (forall n (p q : semiformula oring_language X n),
+      arithmetic_hierarchy X arithmetic_sigma 1 n p ->
+      arithmetic_hierarchy X arithmetic_sigma 1 n q ->
+      P n p -> P n q -> P n (Semiformula_or p q)) ->
+  (forall n (t : semiterm oring_language X n)
+          (p : semiformula oring_language X (S n)),
+      arithmetic_hierarchy X arithmetic_sigma 1 (S n) p ->
+      P (S n) p ->
+      P n (semiformula_ball_lt arithmetic_lt_operator t p)) ->
+  (forall n (p : semiformula oring_language X (S n)),
+      arithmetic_hierarchy X arithmetic_sigma 1 (S n) p ->
+      P (S n) p -> P n (Semiformula_exists p)) ->
+  forall n (p : semiformula oring_language X n),
+    arithmetic_hierarchy X arithmetic_sigma 1 n p -> P n p.
+Proof.
+  intros X P Hverum Hfalsum Hrel Hnrel Hand Hor Hball Hexists n p Hp.
+  assert (Haux : forall pol level n0
+      (q : semiformula oring_language X n0),
+    arithmetic_hierarchy X pol level n0 q ->
+    level = 0 \/ (pol = arithmetic_sigma /\ level = 1) -> P n0 q).
+  {
+    intros pol level n0 q H.
+    induction H as
+      [pol level n0
+      | pol level n0
+      | pol level n0 k r v
+      | pol level n0 k r v
+      | pol level n0 a b Hp' IHp Hq' IHq
+      | pol level n0 a b Hp' IHp Hq' IHq
+      | pol level n0 t body Hpositive Hp' IHp
+      | pol level n0 t body Hpositive Hp' IHp
+      | s n0 body Hp' IHp
+      | s n0 body Hp' IHp
+      | s n0 body Hp' IHp
+      | s n0 body Hp' IHp
+      | s n0 body Hp' IHp
+      | s n0 body Hp' IHp]; intro Hclass.
+    - apply Hverum.
+    - apply Hfalsum.
+    - apply Hrel.
+    - apply Hnrel.
+    - apply Hand.
+      + now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level).
+      + now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level).
+      + now apply IHp.
+      + now apply IHq.
+    - apply Hor.
+      + now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level).
+      + now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level).
+      + now apply IHp.
+      + now apply IHq.
+    - apply (proj1 (rew_bshift_positive_iff_exists t)) in Hpositive.
+      destruct Hpositive as [u Hu]. subst t.
+      change (P n0 (semiformula_ball_lt arithmetic_lt_operator u body)).
+      apply Hball.
+      + now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level).
+      + now apply IHp.
+    - apply (proj1 (rew_bshift_positive_iff_exists t)) in Hpositive.
+      destruct Hpositive as [u Hu]. subst t.
+      change (P n0 (Semiformula_exists
+        (Semiformula_and
+          (arithmetic_lt_guard (rew_apply rew_bshift u)) body))).
+      assert (Hguard : arithmetic_hierarchy X arithmetic_sigma 1 (S n0)
+          (arithmetic_lt_guard (rew_apply rew_bshift u))).
+      { apply arithmetic_hierarchy_of_open. apply arithmetic_lt_guard_open. }
+      assert (Hbody : arithmetic_hierarchy X arithmetic_sigma 1 (S n0) body).
+      { now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level). }
+      apply Hexists.
+      + now apply AH_and.
+      + apply Hand; try assumption.
+        * unfold arithmetic_lt_guard, arithmetic_lt_operator.
+          rewrite semiformula_lt_operator_apply. apply Hrel.
+        * now apply IHp.
+    - destruct Hclass as [Hz | [_ Hlevel]]; [discriminate Hz |].
+      assert (s = 0) by lia. subst s.
+      apply Hexists; [exact Hp' |]. apply IHp. now right.
+    - destruct Hclass as [Hz | [Hpol _]];
+        [discriminate Hz | discriminate Hpol].
+    - destruct Hclass as [Hz | [_ Hlevel]]; [discriminate Hz |].
+      assert (s = 0) by lia. subst s.
+      apply Hexists.
+      + apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := arithmetic_pi) (level := 0); [exact Hp' | now left].
+      + apply IHp. now left.
+    - destruct Hclass as [Hz | [Hpol _]];
+        [discriminate Hz | discriminate Hpol].
+    - destruct Hclass as [Hz | [_ Hlevel]]; lia.
+    - destruct Hclass as [Hz | [Hpol _]];
+        [discriminate Hz | discriminate Hpol].
+  }
+  apply (Haux arithmetic_sigma 1 n p Hp). now right.
 Qed.
 
 Definition arithmetic_theory_sound_on_hierarchy

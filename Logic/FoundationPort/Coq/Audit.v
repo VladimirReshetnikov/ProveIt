@@ -73,6 +73,7 @@ Check syntactic_term.
 Check semiterm_from_free_default.
 Check semiterm_from_constant.
 Check fin_pointwise_eq_dec.
+Check fin_forall_exists_choice.
 Check fin_function_eq_dec.
 Check fin_function_pointwise_eq_dec.
 Check semiterm_eq_dec.
@@ -197,6 +198,7 @@ Check rew_free_comp_fix.
 Check rew_fix_comp_free.
 Check rew_free_bshift_eq_shift.
 Check rew_bshift_positive.
+Check rew_bshift_positive_iff_exists.
 Check rew_bshift_not_bvar_zero.
 Check rew_q_bvar_zero_iff.
 Check rew_q_positive.
@@ -815,11 +817,16 @@ Check arithmetic_sigma.
 Check arithmetic_pi.
 Check arithmetic_polarity_alt.
 Check arithmetic_lt_operator.
+Check arithmetic_eq_operator.
+Check arithmetic_le_operator.
 Check arithmetic_lt_guard.
 Check arithmetic_bounded_all.
 Check arithmetic_bounded_exists.
 Check arithmetic_hierarchy.
 Check arithmetic_delta_zero.
+Check arithmetic_hierarchy_eq.
+Check arithmetic_hierarchy_lt.
+Check arithmetic_hierarchy_le.
 Check arithmetic_lt_guard_rewrite.
 Check arithmetic_lt_guard_rewrite_preimage.
 Check arithmetic_bounded_all_rewrite_preimage.
@@ -831,6 +838,7 @@ Check arithmetic_hierarchy_accum.
 Check arithmetic_hierarchy_accum_iter.
 Check arithmetic_hierarchy_strict_mono.
 Check arithmetic_hierarchy_mono.
+Check arithmetic_hierarchy_of_zero.
 Check arithmetic_hierarchy_zero_alt.
 Check arithmetic_hierarchy_zero_iff.
 Check arithmetic_hierarchy_and_iff.
@@ -848,6 +856,8 @@ Check arithmetic_hierarchy_bounded_all_iff.
 Check arithmetic_hierarchy_bounded_exists_iff.
 Check arithmetic_hierarchy_ball_lt_iff.
 Check arithmetic_hierarchy_bex_lt_iff.
+Check arithmetic_hierarchy_ball_lt_succ_iff.
+Check arithmetic_hierarchy_bex_lt_succ_iff.
 Check arithmetic_hierarchy_all_iff.
 Check arithmetic_hierarchy_exists_iff.
 Check arithmetic_hierarchy_all_iter_iff.
@@ -864,6 +874,8 @@ Check arithmetic_hierarchy_list_conj_map_iff.
 Check arithmetic_hierarchy_list_disj_map_iff.
 Check arithmetic_hierarchy_finite_conj_iff.
 Check arithmetic_hierarchy_finite_disj_iff.
+Check arithmetic_hierarchy_sigma_one_of_base.
+Check arithmetic_sigma_one_induction.
 Check arithmetic_theory_sound_on_hierarchy.
 Check arithmetic_theory_sound_on_hierarchy_elim.
 Check arithmetic_theory_consistent_of_sigma_one_sound.
@@ -1049,6 +1061,7 @@ Print Assumptions rew_shift_injective.
 Print Assumptions rew_free_comp_fix.
 Print Assumptions rew_fix_comp_free.
 Print Assumptions rew_bshift_positive.
+Print Assumptions rew_bshift_positive_iff_exists.
 Print Assumptions rew_bshift_not_bvar_zero.
 Print Assumptions rew_q_bvar_zero_iff.
 Print Assumptions rew_q_positive_iff.
@@ -1304,6 +1317,7 @@ Print Assumptions arithmetic_hierarchy_rewrite_reflect.
 Print Assumptions arithmetic_hierarchy_rewrite_iff.
 Print Assumptions arithmetic_hierarchy_accum.
 Print Assumptions arithmetic_hierarchy_strict_mono.
+Print Assumptions arithmetic_hierarchy_of_zero.
 Print Assumptions arithmetic_hierarchy_zero_iff.
 Print Assumptions arithmetic_hierarchy_and_iff.
 Print Assumptions arithmetic_hierarchy_or_iff.
@@ -1329,6 +1343,8 @@ Print Assumptions arithmetic_hierarchy_list_conj_map_iff.
 Print Assumptions arithmetic_hierarchy_list_disj_map_iff.
 Print Assumptions arithmetic_hierarchy_finite_conj_iff.
 Print Assumptions arithmetic_hierarchy_finite_disj_iff.
+Print Assumptions arithmetic_hierarchy_sigma_one_of_base.
+Print Assumptions arithmetic_sigma_one_induction.
 Print Assumptions arithmetic_theory_consistent_of_sigma_one_sound.
 Print Assumptions arithmetic_theory_consistent_of_pi_two_sound.
 Print Assumptions first_order_true_arithmetic_models.
