@@ -2,6 +2,7 @@
 
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
+From Foundation.Vorspiel Require Import Small.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.List Require Import Basic.
 From Foundation.Vorspiel.List Require Import Chain.
@@ -71,6 +72,9 @@ Check option_to_list.
 Print Assumptions option_to_list_singleton_iff.
 Check function_equal_on.
 Print Assumptions function_equal_on_subset.
+Check predicate_small.
+Check predicate_preimage.
+Print Assumptions small_preimage_of_injective.
 Print Assumptions fin_zero_eta.
 Print Assumptions nat_sub_one_lt_nonzero.
 Print Assumptions vorspiel_fin_enum_complete.
