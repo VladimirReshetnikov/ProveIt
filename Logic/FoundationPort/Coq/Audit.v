@@ -10,6 +10,7 @@ From Foundation.Vorspiel Require Import Graph.
 From Foundation.Vorspiel Require Import Part.
 From Foundation.Vorspiel Require Import ENat.
 From Foundation.Vorspiel Require Import DMatrix.
+From Foundation.Vorspiel Require Import Matrix.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Finset Require Import Card.
 From Foundation.Vorspiel.Finset Require Import Basic.
@@ -143,6 +144,30 @@ Print Assumptions dvec_eta.
 Print Assumptions dvec_cons_ext_iff.
 Check fin_cover_data.
 Print Assumptions dvec_eq_dec.
+Check matrix_vec_empty.
+Check matrix_vec_cons.
+Check matrix_vec_head.
+Check matrix_vec_tail.
+Print Assumptions matrix_vec_cons_zero.
+Print Assumptions matrix_vec_cons_succ.
+Print Assumptions matrix_vec_eta.
+Print Assumptions matrix_vec_cons_ext_iff.
+Check matrix_vec_eq_dec.
+Check matrix_vec_map.
+Print Assumptions matrix_vec_map_cons.
+Print Assumptions matrix_vec_map_comp.
+Check matrix_vec_to_list.
+Print Assumptions matrix_vec_to_list_length.
+Print Assumptions matrix_vec_to_list_member_iff.
+Check matrix_vec_foldr.
+Check matrix_vec_foldl.
+Print Assumptions matrix_vec_foldr_succ.
+Print Assumptions matrix_vec_foldl_succ.
+Print Assumptions matrix_vec_forall_iff.
+Print Assumptions matrix_vec_exists_iff.
+Check matrix_vec_option_sequence.
+Print Assumptions matrix_vec_option_sequence_some.
+Print Assumptions matrix_vec_cons_injective.
 Check list_strict_inclusion.
 Print Assumptions list_strict_inclusion_of_incl_lt_length.
 Print Assumptions list_length_eq_of_eq.
