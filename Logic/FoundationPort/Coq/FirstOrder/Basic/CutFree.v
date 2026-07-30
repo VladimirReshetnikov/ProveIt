@@ -133,3 +133,26 @@ Proof.
   pose proof (first_order_is_cut_free_root_is_not_cut H) as Hroot.
   discriminate Hroot.
 Qed.
+
+Lemma first_order_is_cut_free_language_map_iff :
+  forall L M Gamma (h : language_hom L M)
+         (d : first_order_derivation L Gamma),
+    first_order_is_cut_free (first_order_derivation_language_map h d) <->
+    first_order_is_cut_free d.
+Proof.
+  intros L M Gamma h d. induction d; cbn.
+  - split; intro; constructor.
+  - split; intro Hcf.
+    + exfalso. rewrite first_order_is_cut_free_cast_iff in Hcf.
+      exact (first_order_is_cut_free_not_cut Hcf).
+    + exfalso. exact (first_order_is_cut_free_not_cut Hcf).
+  - repeat rewrite first_order_is_cut_free_contraction_iff. exact IHd.
+  - split; intro; constructor.
+  - repeat rewrite first_order_is_cut_free_or_iff. exact IHd.
+  - repeat rewrite first_order_is_cut_free_and_iff.
+    now rewrite IHd1, IHd2.
+  - repeat rewrite first_order_is_cut_free_all_iff.
+    rewrite first_order_is_cut_free_cast_iff. exact IHd.
+  - repeat rewrite first_order_is_cut_free_exists_iff.
+    rewrite first_order_is_cut_free_cast_iff. exact IHd.
+Qed.

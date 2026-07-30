@@ -628,6 +628,7 @@ Check first_order_is_cut_free_cast_iff.
 Check first_order_derivation_root_is_cut.
 Check first_order_is_cut_free_root_is_not_cut.
 Check first_order_is_cut_free_not_cut.
+Check first_order_is_cut_free_language_map_iff.
 Check first_order_empty_env.
 Check first_order_sequent_true.
 Check fin_env_snoc_empty_eq_cons.
@@ -862,6 +863,7 @@ Print Assumptions first_order_is_cut_free_contraction_iff.
 Print Assumptions first_order_is_cut_free_cast_iff.
 Print Assumptions first_order_is_cut_free_root_is_not_cut.
 Print Assumptions first_order_is_cut_free_not_cut.
+Print Assumptions first_order_is_cut_free_language_map_iff.
 Print Assumptions fin_env_snoc_empty_eq_cons.
 Print Assumptions first_order_shifted_context_true.
 Print Assumptions first_order_derivation_sound.
