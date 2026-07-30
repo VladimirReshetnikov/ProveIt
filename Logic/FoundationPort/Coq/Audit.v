@@ -69,7 +69,8 @@ From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
 From Foundation.FirstOrder Require Import Polarity.
 From Foundation.Syntax.Predicate Require Import Relational.
 From Foundation.LinearLogic Require Import LogicSymbol MLL MELL.
-From Foundation.LinearLogic.FirstOrder Require Import Formula Rew Calculus.
+From Foundation.LinearLogic.FirstOrder Require Import
+  Formula Rew Calculus ClassicalEmbedding.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
@@ -550,6 +551,28 @@ Check llfo_eta.
 Check llfo_identity_proof.
 Print Assumptions llfo_modus_ponens.
 Print Assumptions llfo_excluded_middle.
+Check llfo_forget.
+Print Assumptions llfo_forget_rel.
+Print Assumptions llfo_forget_nrel.
+Print Assumptions llfo_forget_one.
+Print Assumptions llfo_forget_verum.
+Print Assumptions llfo_forget_falsum.
+Print Assumptions llfo_forget_zero.
+Print Assumptions llfo_forget_tensor.
+Print Assumptions llfo_forget_with.
+Print Assumptions llfo_forget_par.
+Print Assumptions llfo_forget_plus.
+Print Assumptions llfo_forget_bang.
+Print Assumptions llfo_forget_quest.
+Print Assumptions llfo_forget_all.
+Print Assumptions llfo_forget_exs.
+Print Assumptions llfo_forget_neg.
+Print Assumptions llfo_forget_rewrite.
+Check llfo_forget_sequent.
+Print Assumptions llfo_forget_sequent_shift.
+Print Assumptions llfo_forget_permutation_subset.
+Check llfo_derivation_forget.
+Print Assumptions llfo_proof_forget.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.
