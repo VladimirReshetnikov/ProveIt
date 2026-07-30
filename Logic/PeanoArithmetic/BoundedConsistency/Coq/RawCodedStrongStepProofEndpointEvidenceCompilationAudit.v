@@ -1,0 +1,19 @@
+(** Assumption audit for synchronized strong-step endpoint evidence. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedStrongStepProofEndpointEvidenceCompilation.
+
+Import PABoundedRawCodedStrongStepProofEndpointEvidenceCompilation.
+
+Check coqStrongStepEndpointEvidence_rule_premises_agree.
+Check coqRestrictedPADerivationSoundnessRestrictedProofTemplate_view.
+Check raw_codedPALocalProof_strongStepEndpointEvidence_of_roots.
+Check
+  raw_codedPALocalProof_strongStepEndpointEvidence_of_restricted_and_rule_roots.
+
+Print Assumptions coqStrongStepEndpointEvidence_rule_premises_agree.
+Print Assumptions
+  coqRestrictedPADerivationSoundnessRestrictedProofTemplate_view.
+Print Assumptions raw_codedPALocalProof_strongStepEndpointEvidence_of_roots.
+Print Assumptions
+  raw_codedPALocalProof_strongStepEndpointEvidence_of_restricted_and_rule_roots.

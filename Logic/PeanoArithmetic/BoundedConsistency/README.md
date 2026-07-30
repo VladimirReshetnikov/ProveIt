@@ -4925,3 +4925,19 @@ rank-domain root after two represented modus-ponens steps.  The remaining
 integration work is to project the strong-step restricted core and proof-wide
 atomic field from their conjunction, synchronize this root with the atomic
 projection, and hand both to the predecessor admissibility package.
+
+That projection and synchronization boundary is now closed.
+`RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.v` proves a
+fixed PA law using the exact rule-validity premise, rather than demanding a
+separately compiled weaker endpoint root.  The endpoint-evidence synchronizer
+first compiles rank boundedness, transports the proof-wide atomic and common
+rule roots into that witnessed extension, compiles atomic adequacy there, and
+then transports the rank result through the second extension.  Concatenating
+the two finite standard witness prefixes produces one literal context holding
+both roots.  Its public wrapper performs represented conjunction elimination
+on the shell's restricted-proof premise, projecting the hierarchy core and
+proof-wide atomic certificate while leaving formula and rule coverage intact.
+Thus the predecessor client now needs only the existing restricted-proof and
+rule-validity roots to obtain both mathematical admissibility invariants; the
+next boundary is their direct handoff to the predecessor assignment and
+global-row compilers.
