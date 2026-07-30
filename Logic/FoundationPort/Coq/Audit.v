@@ -69,7 +69,7 @@ From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
 From Foundation.FirstOrder Require Import Polarity.
 From Foundation.Syntax.Predicate Require Import Relational.
 From Foundation.LinearLogic Require Import LogicSymbol MLL MELL.
-From Foundation.LinearLogic.FirstOrder Require Import Formula.
+From Foundation.LinearLogic.FirstOrder Require Import Formula Rew.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
@@ -472,6 +472,33 @@ Print Assumptions llfo_positive_exs_iff.
 Print Assumptions llfo_neg_positive_iff_negative.
 Print Assumptions llfo_neg_negative_iff_positive.
 Print Assumptions llfo_positive_negative_disjoint.
+Check llfo_rewrite.
+Print Assumptions llfo_rewrite_rel.
+Print Assumptions llfo_rewrite_nrel.
+Print Assumptions llfo_rewrite_one.
+Print Assumptions llfo_rewrite_falsum.
+Print Assumptions llfo_rewrite_tensor.
+Print Assumptions llfo_rewrite_par.
+Print Assumptions llfo_rewrite_verum.
+Print Assumptions llfo_rewrite_zero.
+Print Assumptions llfo_rewrite_with.
+Print Assumptions llfo_rewrite_plus.
+Print Assumptions llfo_rewrite_bang.
+Print Assumptions llfo_rewrite_quest.
+Print Assumptions llfo_rewrite_all.
+Print Assumptions llfo_rewrite_exs.
+Print Assumptions llfo_rewrite_neg.
+Print Assumptions llfo_rewrite_ext.
+Print Assumptions llfo_rewrite_id.
+Print Assumptions llfo_rewrite_comp.
+Print Assumptions llfo_complexity_rewrite.
+Print Assumptions llfo_negative_rewrite_iff.
+Print Assumptions llfo_positive_rewrite_iff.
+Print Assumptions llfo_is_quest_rewrite_iff.
+Print Assumptions llfo_rewrite_lolli.
+Check llfo_map.
+Check llfo_emb.
+Check llfo_substitute.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.
