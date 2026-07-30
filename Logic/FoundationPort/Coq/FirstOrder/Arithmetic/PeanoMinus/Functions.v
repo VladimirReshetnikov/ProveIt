@@ -8,7 +8,7 @@
   constructive once that single noncomputable selection has been made.
 *)
 
-From Stdlib Require Import Logic.ClassicalEpsilon.
+From Stdlib Require Import Logic.ClassicalEpsilon Logic.ClassicalDescription.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 
@@ -451,4 +451,122 @@ Proof.
       pose proof (proj2 (peano_minus_pos_sub_iff_lt H a b) Hba) as Hpos.
       now rewrite Hzero in Hpos.
   - apply (peano_minus_sub_of_le H).
+Qed.
+
+Definition peano_minus_min {M : Type} (O : oring_carrier M)
+    (H : peano_minus_laws O) (x y : M) : M :=
+  if excluded_middle_informative (peano_minus_le O x y) then x else y.
+
+Definition peano_minus_max {M : Type} (O : oring_carrier M)
+    (H : peano_minus_laws O) (x y : M) : M :=
+  if excluded_middle_informative (peano_minus_le O x y) then y else x.
+
+Lemma peano_minus_min_of_le : forall M (O : oring_carrier M)
+    (H : peano_minus_laws O) x y,
+  peano_minus_le O x y -> @peano_minus_min M O H x y = x.
+Proof.
+  intros M O H x y Hxy. unfold peano_minus_min.
+  destruct (excluded_middle_informative (peano_minus_le O x y))
+    as [Hle | Hnle]; [reflexivity | contradiction].
+Qed.
+
+Lemma peano_minus_min_of_ge : forall M (O : oring_carrier M)
+    (H : peano_minus_laws O) x y,
+  peano_minus_le O y x -> @peano_minus_min M O H x y = y.
+Proof.
+  intros M O H x y Hyx. unfold peano_minus_min.
+  destruct (excluded_middle_informative (peano_minus_le O x y))
+    as [Hxy | Hnxy]; [|reflexivity].
+  exact (@peano_minus_le_antisym M O H x y Hxy Hyx).
+Qed.
+
+Lemma peano_minus_max_of_le : forall M (O : oring_carrier M)
+    (H : peano_minus_laws O) x y,
+  peano_minus_le O x y -> @peano_minus_max M O H x y = y.
+Proof.
+  intros M O H x y Hxy. unfold peano_minus_max.
+  destruct (excluded_middle_informative (peano_minus_le O x y))
+    as [Hle | Hnle]; [reflexivity | contradiction].
+Qed.
+
+Lemma peano_minus_max_of_ge : forall M (O : oring_carrier M)
+    (H : peano_minus_laws O) x y,
+  peano_minus_le O y x -> @peano_minus_max M O H x y = x.
+Proof.
+  intros M O H x y Hyx. unfold peano_minus_max.
+  destruct (excluded_middle_informative (peano_minus_le O x y))
+    as [Hxy | Hnxy]; [|reflexivity].
+  symmetry. exact (@peano_minus_le_antisym M O H x y Hxy Hyx).
+Qed.
+
+Lemma peano_minus_min_graph_iff : forall M (O : oring_carrier M)
+    (H : peano_minus_laws O) x y z,
+  z = @peano_minus_min M O H x y <->
+  (peano_minus_le O x y -> z = x) /\
+  (peano_minus_le O y x -> z = y).
+Proof.
+  intros M O H x y z. split.
+  - intros ->. split; intro Hle.
+    + apply (peano_minus_min_of_le H Hle).
+    + apply (peano_minus_min_of_ge H Hle).
+  - intros [Hx Hy].
+    destruct (@peano_minus_le_total M O H x y) as [Hxy | Hyx].
+    + rewrite (Hx Hxy), (peano_minus_min_of_le H Hxy). reflexivity.
+    + rewrite (Hy Hyx), (peano_minus_min_of_ge H Hyx). reflexivity.
+Qed.
+
+Lemma peano_minus_max_graph_iff : forall M (O : oring_carrier M)
+    (H : peano_minus_laws O) x y z,
+  z = @peano_minus_max M O H x y <->
+  (peano_minus_le O y x -> z = x) /\
+  (peano_minus_le O x y -> z = y).
+Proof.
+  intros M O H x y z. split.
+  - intros ->. split; intro Hle.
+    + apply (peano_minus_max_of_ge H Hle).
+    + apply (peano_minus_max_of_le H Hle).
+  - intros [Hx Hy].
+    destruct (@peano_minus_le_total M O H x y) as [Hxy | Hyx].
+    + rewrite (Hy Hxy), (peano_minus_max_of_le H Hxy). reflexivity.
+    + rewrite (Hx Hyx), (peano_minus_max_of_ge H Hyx). reflexivity.
+Qed.
+
+Lemma peano_minus_min_le_left : forall M (O : oring_carrier M)
+    (H : peano_minus_laws O) x y,
+  peano_minus_le O (@peano_minus_min M O H x y) x.
+Proof.
+  intros M O H x y.
+  destruct (@peano_minus_le_total M O H x y) as [Hxy | Hyx].
+  - rewrite (peano_minus_min_of_le H Hxy). apply peano_minus_le_refl.
+  - rewrite (peano_minus_min_of_ge H Hyx). exact Hyx.
+Qed.
+
+Lemma peano_minus_min_le_right : forall M (O : oring_carrier M)
+    (H : peano_minus_laws O) x y,
+  peano_minus_le O (@peano_minus_min M O H x y) y.
+Proof.
+  intros M O H x y.
+  destruct (@peano_minus_le_total M O H x y) as [Hxy | Hyx].
+  - rewrite (peano_minus_min_of_le H Hxy). exact Hxy.
+  - rewrite (peano_minus_min_of_ge H Hyx). apply peano_minus_le_refl.
+Qed.
+
+Lemma peano_minus_le_max_left : forall M (O : oring_carrier M)
+    (H : peano_minus_laws O) x y,
+  peano_minus_le O x (@peano_minus_max M O H x y).
+Proof.
+  intros M O H x y.
+  destruct (@peano_minus_le_total M O H x y) as [Hxy | Hyx].
+  - rewrite (peano_minus_max_of_le H Hxy). exact Hxy.
+  - rewrite (peano_minus_max_of_ge H Hyx). apply peano_minus_le_refl.
+Qed.
+
+Lemma peano_minus_le_max_right : forall M (O : oring_carrier M)
+    (H : peano_minus_laws O) x y,
+  peano_minus_le O y (@peano_minus_max M O H x y).
+Proof.
+  intros M O H x y.
+  destruct (@peano_minus_le_total M O H x y) as [Hxy | Hyx].
+  - rewrite (peano_minus_max_of_le H Hxy). apply peano_minus_le_refl.
+  - rewrite (peano_minus_max_of_ge H Hyx). exact Hyx.
 Qed.
