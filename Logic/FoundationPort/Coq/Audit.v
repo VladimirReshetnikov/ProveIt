@@ -14,6 +14,7 @@ From Foundation.FirstOrder.Basic Require Import Coding.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
+From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.TA Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
@@ -880,6 +881,37 @@ Check arithmetic_theory_sound_on_hierarchy.
 Check arithmetic_theory_sound_on_hierarchy_elim.
 Check arithmetic_theory_consistent_of_sigma_one_sound.
 Check arithmetic_theory_consistent_of_pi_two_sound.
+
+Check arithmetic_hierarchy_class.
+Check arithmetic_hierarchy_symbol.
+Check arithmetic_sigma_symbol.
+Check arithmetic_pi_symbol.
+Check arithmetic_delta_symbol.
+Check arithmetic_sorted_polar_formula.
+Check arithmetic_sorted_formula.
+Check arithmetic_sorted_formula_val.
+Check arithmetic_sorted_sigma_prop.
+Check arithmetic_sorted_pi_prop.
+Check arithmetic_sorted_delta_sigma.
+Check arithmetic_sorted_delta_pi.
+Check arithmetic_sorted_rewrite.
+Check arithmetic_sorted_rewrite_val.
+Check arithmetic_sorted_zero_hierarchy.
+Check arithmetic_sorted_of_zero.
+Check arithmetic_sorted_of_zero_val.
+Check arithmetic_sorted_verum.
+Check arithmetic_sorted_falsum.
+Check arithmetic_sorted_and.
+Check arithmetic_sorted_or.
+Check arithmetic_sorted_neg_delta.
+Check arithmetic_sorted_ball.
+Check arithmetic_sorted_bex.
+Check arithmetic_sorted_exists.
+Check arithmetic_sorted_all.
+Check arithmetic_sorted_and_val.
+Check arithmetic_sorted_or_val.
+Check arithmetic_sorted_ball_val.
+Check arithmetic_sorted_bex_val.
 Check first_order_true_arithmetic.
 Check first_order_true_arithmetic_models.
 Check first_order_true_arithmetic_provable_iff.
@@ -1347,6 +1379,18 @@ Print Assumptions arithmetic_hierarchy_sigma_one_of_base.
 Print Assumptions arithmetic_sigma_one_induction.
 Print Assumptions arithmetic_theory_consistent_of_sigma_one_sound.
 Print Assumptions arithmetic_theory_consistent_of_pi_two_sound.
+Print Assumptions arithmetic_sorted_rewrite.
+Print Assumptions arithmetic_sorted_rewrite_val.
+Print Assumptions arithmetic_sorted_zero_hierarchy.
+Print Assumptions arithmetic_sorted_of_zero.
+Print Assumptions arithmetic_sorted_of_zero_val.
+Print Assumptions arithmetic_sorted_and.
+Print Assumptions arithmetic_sorted_or.
+Print Assumptions arithmetic_sorted_neg_delta.
+Print Assumptions arithmetic_sorted_ball.
+Print Assumptions arithmetic_sorted_bex.
+Print Assumptions arithmetic_sorted_exists.
+Print Assumptions arithmetic_sorted_all.
 Print Assumptions first_order_true_arithmetic_models.
 Print Assumptions first_order_true_arithmetic_provable_iff.
 Print Assumptions arithmetic_theory_weaker_than_true_arithmetic.
