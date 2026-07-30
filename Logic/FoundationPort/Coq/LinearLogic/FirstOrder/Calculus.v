@@ -3,6 +3,7 @@
 From Stdlib Require Import Lists.List Sorting.Permutation Vectors.Fin.
 From Foundation.Syntax.Predicate Require Import Language Term.
 From Foundation.LinearLogic.FirstOrder Require Import Formula Rew.
+From Foundation.Vorspiel.List Require Import Perm.
 
 Import ListNotations.
 
@@ -320,3 +321,62 @@ Proof.
   intros L phi. exists (@LLDPar L phi (llfo_neg phi) [] (llfo_eta phi)).
   trivial.
 Qed.
+
+(** Exponentials mediate the additive choice needed by the classical
+    disjunction branch of Girard's embedding. *)
+Definition llfo_exp_comm {L} (phi psi : llfo_proposition L) :
+    llfo_derivation L
+      [LLTensor (LLBang (llfo_neg phi)) (LLBang (llfo_neg psi));
+       LLQuest (LLPlus phi psi)].
+Proof.
+  assert (dphi : llfo_derivation L
+      [LLBang (llfo_neg phi); LLQuest (LLPlus phi psi)]).
+  { apply LLDOfCourse.
+    - exact (llfo_rotate (LLDDereliction
+        (@LLDPlusRight L phi psi [llfo_neg phi]
+          (LLDIdentity phi)))).
+    - apply llfo_sequent_is_quest_cons. split.
+      + constructor.
+      + apply llfo_sequent_is_quest_nil. }
+  assert (dpsi : llfo_derivation L
+      [LLBang (llfo_neg psi); LLQuest (LLPlus phi psi)]).
+  { apply LLDOfCourse.
+    - exact (llfo_rotate (LLDDereliction
+        (@LLDPlusLeft L phi psi [llfo_neg psi]
+          (LLDIdentity psi)))).
+    - apply llfo_sequent_is_quest_cons. split.
+      + constructor.
+      + apply llfo_sequent_is_quest_nil. }
+  pose (d := @LLDTensor L
+    (LLBang (llfo_neg phi)) (LLBang (llfo_neg psi))
+    [LLQuest (LLPlus phi psi)] [LLQuest (LLPlus phi psi)]
+    dphi dpsi).
+  exact (llfo_rotate (LLDContraction (llfo_rotate d))).
+Defined.
+
+Fixpoint llfo_add_quest_append_right {L} (Delta : llfo_sequent L) :
+    forall Gamma,
+    llfo_derivation L (Gamma ++ Delta) ->
+    llfo_derivation L (Gamma ++ llfo_quest_sequent Delta) :=
+  match Delta as Delta0 return forall Gamma,
+      llfo_derivation L (Gamma ++ Delta0) ->
+      llfo_derivation L (Gamma ++ llfo_quest_sequent Delta0) with
+  | [] => fun Gamma d => d
+  | nu :: Delta0 => fun Gamma d =>
+      let dfront := @LLDExchange L
+        (Gamma ++ nu :: Delta0) (nu :: Gamma ++ Delta0) d
+        (Permutation_sym (Permutation_middle Gamma Delta0 nu)) in
+      let dtail := @llfo_add_quest_append_right L Delta0
+        (nu :: Gamma) dfront in
+      @LLDExchange L
+        (LLQuest nu :: Gamma ++ llfo_quest_sequent Delta0)
+        (Gamma ++ LLQuest nu :: llfo_quest_sequent Delta0)
+        (LLDDereliction dtail)
+        (Permutation_middle Gamma (llfo_quest_sequent Delta0)
+          (LLQuest nu))
+  end.
+
+Definition llfo_add_quest_tail {L phi Gamma}
+    (d : llfo_derivation L (phi :: Gamma)) :
+    llfo_derivation L (phi :: llfo_quest_sequent Gamma) :=
+  @llfo_add_quest_append_right L Gamma [phi] d.

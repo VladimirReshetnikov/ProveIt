@@ -551,6 +551,9 @@ Check llfo_eta.
 Check llfo_identity_proof.
 Print Assumptions llfo_modus_ponens.
 Print Assumptions llfo_excluded_middle.
+Print Assumptions llfo_exp_comm.
+Print Assumptions llfo_add_quest_append_right.
+Print Assumptions llfo_add_quest_tail.
 Check llfo_forget.
 Print Assumptions llfo_forget_rel.
 Print Assumptions llfo_forget_nrel.
