@@ -1602,6 +1602,13 @@ Print Assumptions peano_minus_le_of_dvd.
 Print Assumptions peano_minus_not_dvd_of_lt.
 Print Assumptions peano_minus_dvd_antisym.
 Print Assumptions peano_minus_dvd_one_iff.
+Print Assumptions peano_minus_is_prime.
+Print Assumptions peano_minus_prime_gt_one.
+Print Assumptions peano_minus_prime_pos.
+Print Assumptions peano_minus_prime_divisor.
+Print Assumptions peano_minus_one_not_prime.
+Print Assumptions peano_minus_prime_ne_zero.
+Print Assumptions peano_minus_prime_ne_one.
 Print Assumptions peano_minus_pos_sub_iff_lt.
 Print Assumptions peano_minus_sub_eq_zero_iff_le.
 Print Assumptions peano_minus_min.
