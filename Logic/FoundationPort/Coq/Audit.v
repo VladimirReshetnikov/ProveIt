@@ -1758,6 +1758,12 @@ Print Assumptions iopen_le_pair_left.
 Print Assumptions iopen_le_pair_right.
 Print Assumptions iopen_pair_injective.
 Print Assumptions iopen_pair_eq_iff.
+Print Assumptions iopen_list_pair.
+Print Assumptions iopen_list_unpair.
+Print Assumptions iopen_list_unpair_length.
+Print Assumptions iopen_list_unpair_pair.
+Print Assumptions iopen_list_unpair_pair_nth.
+Print Assumptions iopen_list_pair_injective_at_length.
 Print Assumptions peano_minus_ball_lt_succ.
 Print Assumptions peano_minus_bex_lt_succ.
 Print Assumptions peano_minus_eval_ball_lt_succ.

@@ -1,6 +1,6 @@
 (** Semantic division from open-induction least-number reasoning. *)
 
-From Stdlib Require Import Logic.ClassicalEpsilon.
+From Stdlib Require Import Logic.ClassicalEpsilon Lists.List.
 From Foundation.FirstOrder.Arithmetic Require Import Schemata.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic Functions.
@@ -937,4 +937,62 @@ Proof.
   intros M O H Hleast a1 a2 b1 b2. split.
   - apply (iopen_pair_injective H Hleast).
   - intros [-> ->]. reflexivity.
+Qed.
+
+Fixpoint iopen_list_pair {M} (O : oring_carrier M)
+    (xs : list M) : M :=
+  match xs with
+  | nil => oring_zero O
+  | cons x xs => iopen_pair O x (iopen_list_pair O xs)
+  end.
+
+Fixpoint iopen_list_unpair {M} (O : oring_carrier M)
+    (n : nat) (a : M) : list M :=
+  match n with
+  | O => nil
+  | S n => cons (iopen_pi1 O a)
+      (iopen_list_unpair O n (iopen_pi2 O a))
+  end.
+
+Lemma iopen_list_unpair_length : forall M (O : oring_carrier M),
+  forall n a, List.length (iopen_list_unpair O n a) = n.
+Proof.
+  intros M O n. induction n as [|n IH]; intro a; simpl; [reflexivity |].
+  now rewrite IH.
+Qed.
+
+Lemma iopen_list_unpair_pair : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall xs,
+  iopen_list_unpair O (List.length xs) (iopen_list_pair O xs) = xs.
+Proof.
+  intros M O H Hleast xs. induction xs as [|x xs IH]; simpl.
+  - reflexivity.
+  - rewrite (iopen_pi1_pair H Hleast),
+      (iopen_pi2_pair H Hleast), IH.
+    reflexivity.
+Qed.
+
+Lemma iopen_list_unpair_pair_nth : forall M (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall xs i,
+  List.nth_error
+    (iopen_list_unpair O (List.length xs) (iopen_list_pair O xs)) i =
+  List.nth_error xs i.
+Proof.
+  intros M O H Hleast xs i.
+  now rewrite (iopen_list_unpair_pair H Hleast xs).
+Qed.
+
+Lemma iopen_list_pair_injective_at_length : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall xs ys,
+  List.length xs = List.length ys ->
+  iopen_list_pair O xs = iopen_list_pair O ys -> xs = ys.
+Proof.
+  intros M O H Hleast xs ys Hlen Heq.
+  rewrite <- (iopen_list_unpair_pair H Hleast xs),
+    <- (iopen_list_unpair_pair H Hleast ys), <- Hlen, Heq.
+  reflexivity.
 Qed.
