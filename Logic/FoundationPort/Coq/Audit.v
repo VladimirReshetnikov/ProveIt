@@ -69,6 +69,7 @@ From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
 From Foundation.FirstOrder Require Import Polarity.
 From Foundation.Syntax.Predicate Require Import Relational.
 From Foundation.LinearLogic Require Import LogicSymbol MLL MELL.
+From Foundation.LinearLogic.FirstOrder Require Import Formula.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
@@ -398,6 +399,48 @@ Print Assumptions linear_list_quest_def.
 Print Assumptions linear_list_quest_nil.
 Print Assumptions linear_list_quest_cons.
 Print Assumptions linear_list_quest_append.
+Check llfo_semiformula.
+Check LLRel.
+Check LLNRel.
+Check LLOne.
+Check LLFalsum.
+Check LLTensor.
+Check LLPar.
+Check LLVerum.
+Check LLZero.
+Check LLWith.
+Check LLPlus.
+Check LLBang.
+Check LLQuest.
+Check LLAll.
+Check LLExs.
+Check llfo_multiplicative_connective.
+Check llfo_multiplicative_neutral.
+Check llfo_additive_connective.
+Check llfo_additive_neutral.
+Check llfo_exponential_connective.
+Print Assumptions llfo_all_injective.
+Print Assumptions llfo_exs_injective.
+Check llfo_neg.
+Print Assumptions llfo_neg_rel.
+Print Assumptions llfo_neg_nrel.
+Print Assumptions llfo_neg_all.
+Print Assumptions llfo_neg_exs.
+Print Assumptions llfo_neg_involutive.
+Print Assumptions llfo_neg_eq_iff.
+Check llfo_lolli.
+Check llfo_wedge.
+Check llfo_vee.
+Check llfo_imply.
+Check llfo_complexity.
+Print Assumptions llfo_complexity_neg.
+Check llfo_is_quest.
+Print Assumptions llfo_is_quest_quest.
+Print Assumptions llfo_is_quest_not_bang.
+Print Assumptions llfo_is_quest_not_tensor.
+Print Assumptions llfo_is_quest_not_par.
+Print Assumptions llfo_is_quest_not_all.
+Print Assumptions llfo_is_quest_not_exs.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.
