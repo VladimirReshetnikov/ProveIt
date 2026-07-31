@@ -1,0 +1,667 @@
+% !TeX program = lualatex
+%==============================================================================
+%  Leant — a GHCi-style REPL for Lean 4
+%  An overview and tutorial, with a detailed exposition of :synth.
+%
+%  Leant is an experimental project in active development; this document
+%  describes the state of the tool at the date on the title page.
+%
+%  Build:  lualatex Leant.tex   (twice, for the table of contents)
+%
+%  The visual design (palette, fonts, code boxes) follows the typeset
+%  edition of "Counterexamples in Type Systems".
+%==============================================================================
+\documentclass[11pt,oneside]{article}
+
+\usepackage[letterpaper,
+            textwidth=5.65in, textheight=8.5in,
+            centering, headsep=16pt, footskip=28pt]{geometry}
+
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{fvextra}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage[hang,flushmargin,bottom]{footmisc}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{bookmark}
+
+%------------------------------------------------------------------ fonts ----
+\setmainfont{LibertinusSerif}[
+  Extension    = .otf,
+  UprightFont  = *-Regular, ItalicFont = *-Italic,
+  BoldFont     = *-Bold,    BoldItalicFont = *-BoldItalic,
+  Ligatures    = TeX ]
+\setsansfont{LibertinusSans}[
+  Extension    = .otf,
+  UprightFont  = *-Regular, ItalicFont = *-Italic, BoldFont = *-Bold,
+  Ligatures    = TeX ]
+\setmonofont{DejaVuSansMono}[
+  Extension    = .ttf,
+  UprightFont  = *, ItalicFont = *-Oblique,
+  BoldFont     = *-Bold, BoldItalicFont = *-BoldOblique,
+  Scale        = 0.83 ]
+\setmathfont{LibertinusMath-Regular.otf}
+
+%----------------------------------------------------------------- colours ---
+%  A calm, paper-like palette: sage greens, warm off-whites, near-black.
+\definecolor{ink}      {HTML}{0B0B0B}  % body text
+\definecolor{moss}     {HTML}{3E5C43}  % links, rules, section numbers
+\definecolor{sage}     {HTML}{D7E8CD}  % code label ground
+\definecolor{sagepale} {HTML}{F8FBF1}  % code ground
+\definecolor{sageline} {HTML}{DFE4D7}  % hairlines
+\definecolor{parchment}{HTML}{F4F3EB}  % warm ground
+\definecolor{stone}    {HTML}{ADADAC}  % dimmed text
+\definecolor{lichen}   {HTML}{77836A}  % tag line
+\definecolor{cmtcol}   {HTML}{7A8A76}  % code comments
+\definecolor{kwcol}    {HTML}{33523B}  % code keywords
+\definecolor{strcol}   {HTML}{8A5A44}  % code strings
+\color{ink}
+
+%---------------------------------------------------------------- headings ---
+\titleformat{\section}
+  {\normalfont\LARGE\bfseries\color{ink}}
+  {\color{moss}\thesection}{0.7em}{}
+  [\vspace{2pt}{\color{sageline}\titlerule[0.8pt]}]
+\titlespacing*{\section}{0pt}{0pt}{1.1\baselineskip}
+
+\titleformat{\subsection}{\normalfont\large\bfseries\color{ink}}
+  {\color{moss}\thesubsection}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{1.4\baselineskip}{0.45\baselineskip}
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+
+%----------------------------------------------------------------- running ---
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\itshape\color{stone}\nouppercase{\leftmark}}
+\fancyhead[R]{\footnotesize\color{stone}\thepage}
+\fancypagestyle{plain}{\fancyhf{}%
+  \fancyhead[R]{\footnotesize\color{stone}\thepage}}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+
+%------------------------------------------------------------------- lists ---
+\setlist[itemize]{leftmargin=1.35em, itemsep=0.45\baselineskip,
+                  parsep=0.35\baselineskip, topsep=0.5\baselineskip,
+                  label={\color{moss}\rule[0.28ex]{0.36em}{0.36em}}}
+
+%------------------------------------------------------------------- misc ----
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\cmd}[1]{\texttt{\color{kwcol}#1}}
+
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+\setlength{\emergencystretch}{2em}
+
+%---------------------------------------------------------------- code box ---
+%  REPL transcripts are typeset by fvextra rather than listings: the
+%  transcripts are full of non-ASCII Lean syntax, and listings under
+%  LuaTeX reorders a multibyte character in front of whatever precedes
+%  it.  The session environment writes its body verbatim to a scratch
+%  file and reads it back inside the box.
+\tcbset{cebox/.style={
+  enhanced, breakable,
+  colback=sagepale, colframe=sageline, boxrule=0.5pt, arc=2pt,
+  left=7pt, right=7pt, top=5pt, bottom=5pt,
+  toptitle=1pt, bottomtitle=1pt,
+  coltitle=ink, colbacktitle=sage,
+  fonttitle=\sffamily\scriptsize\bfseries,
+  attach boxed title to top left={xshift=9pt, yshift=-\tcboxedtitleheight/2},
+  boxed title style={boxrule=0pt, arc=1.5pt, left=5pt, right=5pt,
+                     top=1.5pt, bottom=1.5pt},
+  before skip=\medskipamount, after skip=\medskipamount }}
+
+\newtcolorbox{sessionouter}{cebox, title={session}}
+
+\newenvironment{session}
+ {\VerbatimEnvironment\begin{VerbatimOut}{\jobname.session.tmp}}
+ {\end{VerbatimOut}%
+  \begin{sessionouter}%
+  \VerbatimInput[fontsize=\footnotesize, breaklines=true,
+    breaksymbolleft={\textcolor{stone}{\footnotesize$\hookrightarrow$}},
+    formatcom=\color{ink}, tabsize=4]{\jobname.session.tmp}%
+  \end{sessionouter}}
+
+% the "experimental" notice
+\newtcolorbox{notice}[1]{enhanced, breakable,
+  colback=parchment, colframe=sageline, boxrule=0.5pt, arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  coltitle=ink, colbacktitle=sage,
+  fonttitle=\sffamily\scriptsize\bfseries, title={#1},
+  attach boxed title to top left={xshift=9pt, yshift=-\tcboxedtitleheight/2},
+  boxed title style={boxrule=0pt, arc=1.5pt, left=5pt, right=5pt,
+                     top=1.5pt, bottom=1.5pt},
+  before skip=\medskipamount, after skip=\medskipamount }
+
+%------------------------------------------------------------ command table --
+\newenvironment{cmdtable}
+  {\par\begingroup\small
+   \setlength{\parindent}{0pt}\setlength{\parskip}{2.5pt}}
+  {\endgroup\par\vspace{0.3\baselineskip}}
+\newcommand{\cmdrow}[2]{%
+  \makebox[11.5em][l]{\code{#1}}\parbox[t]{\dimexpr\linewidth-12em}{#2}\par}
+
+%--------------------------------------------------------------- hyperlinks --
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = moss,
+  urlcolor   = moss,
+  citecolor  = moss,
+  pdftitle   = {Leant — a GHCi-style REPL for Lean 4},
+  pdfauthor  = {The ProveIt project},
+  pdfsubject = {An interactive REPL for Lean 4, with verified term synthesis},
+  pdfkeywords= {Lean 4, REPL, term synthesis, Djinn, LJT, Exference},
+  bookmarksnumbered = true }
+\urlstyle{same}
+
+\begin{document}
+%------------------------------------------------------------------ title ---
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{\stretch{2}}
+\begin{center}
+  {\color{sageline}\rule{0.55\textwidth}{0.8pt}}\\[1.7em]
+  {\fontsize{34}{40}\selectfont Leant}\\[0.55em]
+  {\Large a GHCi-style REPL for Lean 4}\\[1.5em]
+  {\color{sageline}\rule{0.55\textwidth}{0.8pt}}\\[2.2em]
+  {\large \emph{an overview and tutorial, with a detailed tour of \code{:synth}}}
+\end{center}
+\vspace{\stretch{3}}
+\begin{center}
+  \small\color{lichen}
+  An \textbf{experimental} tool in active development --- interfaces,
+  output, and capabilities change frequently.\\[0.6em]
+  Part of the \emph{ProveIt} repository, \code{Tools/Leant}.\quad
+  July 2026.
+\end{center}
+\vspace*{\stretch{1}}
+\end{titlepage}
+
+\clearpage
+{\hypersetup{linkcolor=ink}%
+ \microtypesetup{protrusion=false}%
+ \tableofcontents
+ \microtypesetup{protrusion=true}}
+\clearpage
+
+%==============================================================================
+\section{Introduction}\label{sec:intro}
+
+Leant is an interactive read--eval--print loop for Lean~4, in the
+spirit of GHCi: you type expressions and they are evaluated, you type
+declarations and they enter the session, and a family of colon-commands
+gives you type queries, documentation, search, interactive proving, and
+--- the subject of half of this document --- automatic \emph{term
+synthesis} with machine-checked answers.
+
+Lean~4 itself is normally driven from an editor: the language server
+shows goals and diagnostics as you edit a file. Leant complements that
+workflow with a conversational one. It is aimed at exploration ---
+trying a lemma, poking at a definition, asking \emph{is this type even
+inhabited?} --- where the unit of work is a line, not a file.
+
+\begin{notice}{experimental}
+Leant is an \textbf{experimental project in active development}. It is
+a research vehicle, not a supported product: commands appear, change
+shape, and disappear between commits; output formats are not stable;
+and some features are deliberately bounded approximations. Every
+transcript in this document was produced by the tool at the date on
+the title page and may not match the tool you build tomorrow. When
+this document and \code{:help} disagree, believe \code{:help}.
+\end{notice}
+
+Two implementations live side by side in the repository:
+\code{Tools/LeantPy} (the Python original, whose backend management is
+delegated to LeanInteract) and \code{Tools/Leant} (the Haskell port,
+now the primary implementation, which speaks the backend protocol
+directly). They share the command set and the same session semantics;
+term synthesis (\S\ref{sec:synth}) is Haskell-only, because it embeds
+the Djex synthesis library in-process. Everything below describes the
+Haskell implementation.
+
+Under the hood, Leant drives the community
+\code{leanprover-community/repl} binary over a JSON protocol: every
+input becomes a command against a persistent Lean environment, and
+every claim Leant makes --- including every synthesized term --- is
+checked by that backend before it is shown. Sessions survive backend
+crashes (the session history replays automatically), can be saved and
+restored (\code{:pickle}/\code{:unpickle}), and can be recorded as
+transcripts.
+
+%==============================================================================
+\section{Getting started}\label{sec:start}
+
+Build the binary once with \code{cabal build exe:leant} (GHC 9.12.4;
+the vendored \code{lib/Djex} submodule must be initialized), then run
+\code{leant.cmd} --- or the built executable directly. Leant finds the
+Lean backend the same way LeanInteract's cache laid it out, or accepts
+an explicit \code{-{}-repl-exe}/\code{LEANT\_BACKEND}. Without a Lake
+project it runs against the plain Lean~4 standard library, which is
+also the least memorable thing about it: no imports, subsecond
+startup.
+
+A session begins as a calculator and escalates quietly:
+
+\begin{session}
+λ> 2 + 2
+4
+λ> it * 10
+40
+λ> def double (n : Nat) : Nat := n + n
+λ> double 21
+42
+λ> :type double
+double : Nat → Nat
+\end{session}
+
+Expressions are tried with \code{\#eval} and fall back to
+\code{\#check}; the last evaluated value is bound as \code{it},
+GHCi-style. Declarations (\code{def}, \code{theorem},
+\code{inductive}, \dots) extend the session environment, and any
+\code{\#}-command (\code{\#eval}, \code{\#check}, \code{\#print
+axioms}) passes straight through. Multi-line input opens automatically
+when a line is syntactically incomplete --- type a \code{structure}
+header and keep going --- and an empty line submits it.
+
+%==============================================================================
+\section{The commands}\label{sec:commands}
+
+\subsection{Session and evaluation}
+\begin{cmdtable}
+\cmdrow{:help, :h, :?}{show the command summary}
+\cmdrow{:quit, :q}{exit}
+\cmdrow{:type EXPR, :t}{show the type of \code{EXPR} (\code{\#check})}
+\cmdrow{:info NAME, :i}{show the definition of \code{NAME} (\code{\#print})}
+\cmdrow{:load FILE, :l}{reset the session and load a \code{.lean} file}
+\cmdrow{:reload, :r}{reload the last loaded file}
+\cmdrow{:import MOD}{add an import (rebuilds the session)}
+\cmdrow{:imports}{list active imports}
+\cmdrow{:undo}{revert the last state-changing command}
+\cmdrow{:reset}{clear all definitions (keeps imports)}
+\cmdrow{:history}{show the session's state-changing commands}
+\cmdrow{:set OPT VAL}{a Lean \code{set\_option} that persists in the session}
+\end{cmdtable}
+
+\subsection{Discovery}
+\begin{cmdtable}
+\cmdrow{:browse [NS]}{list declarations in a namespace, or the session's own}
+\cmdrow{:browse!\ NS}{\dots including compiler-generated auxiliaries}
+\cmdrow{:doc NAME}{show a docstring}
+\cmdrow{:search TEXT}{search declaration names, case-insensitively}
+\cmdrow{:search?\ TYPE}{proof search: what proves \code{TYPE}? (via \code{exact?})}
+\end{cmdtable}
+
+\subsection{Proving and synthesis}
+\begin{cmdtable}
+\cmdrow{:prove [PROP]}{prove \code{PROP} interactively, tactic by tactic
+  (without an argument: resume the last \code{sorry})}
+\cmdrow{:synth TYPE}{synthesize verified terms of \code{TYPE};
+  candidates are bound as \code{it1} (= \code{it}), \code{it2}, \dots
+  (\S\ref{sec:synth})}
+\cmdrow{:set synth-engine E}{\code{djinn} (default) $\mid$
+  \code{exference} $\mid$ \code{both}}
+\cmdrow{:set synth-steps N}{Exference's step budget (default 4096)}
+\cmdrow{:set synth-classical B}{offer classical candidates for
+  constructively refuted goals (\code{on}$\mid$\code{off}, default on)}
+\end{cmdtable}
+
+\subsection{Persistence and utility}
+\begin{cmdtable}
+\cmdrow{:transcript [F|on|off]}{record a transcript of the session}
+\cmdrow{:timestamps [on|off]}{timestamp transcript entries}
+\cmdrow{:pickle FILE}{save the environment to \code{FILE} (\code{.olean})}
+\cmdrow{:unpickle FILE}{restore an environment}
+\cmdrow{:env}{show the backend environment id}
+\cmdrow{:time}{toggle per-command timing}
+\cmdrow{:!\ CMD}{run a shell command}
+\end{cmdtable}
+
+%==============================================================================
+\section{Interactive proving}\label{sec:prove}
+
+\code{:prove} turns the prompt into a tactic loop against the
+backend's proof-state protocol. Every line is a tactic; \code{:undo}
+pops one step; \code{:qed NAME} assembles the accumulated script into
+a theorem and replays it into the session, so the result is usable
+afterwards.
+
+\begin{session}
+λ> :prove ∀ p q : Prop, (p → q) → p → q ∧ p
+⊢ ∀ (p q : Prop), (p → q) → p → q ∧ p
+⊢> intro p q h hp
+p q : Prop
+h : p → q
+hp : p
+⊢ q ∧ p
+⊢> exact ⟨h hp, hp⟩
+All goals accomplished
+⊢> :qed mp_and
+saved: theorem mp_and : ∀ p q : Prop, (p → q) → p → q ∧ p
+\end{session}
+
+A \code{sorry} in an ordinary declaration prints its goal and offers
+the same loop via bare \code{:prove}. Prove mode also cooperates with
+\code{:synth}, which is where it gets interesting
+(\S\ref{sec:synthprove}).
+
+%==============================================================================
+\section{Term synthesis: \code{:synth}}\label{sec:synth}
+
+\code{:synth TYPE} answers the question \emph{``write me a term of
+this type''} --- or, on the propositions-as-types side of the mirror,
+\emph{``prove this''} --- and sometimes the stronger question
+\emph{``show me that no such term exists.''} It is built on two
+program-synthesis engines from the vendored Djex library, linked
+in-process: \textbf{Djinn}, a complete and terminating proof search
+for intuitionistic propositional logic (Dyckhoff's LJT calculus) that
+emits programs, and \textbf{Exference}, a ranked heuristic search
+under explicit budgets. Both were built for Haskell types; Leant
+translates Lean goals into their fragment and their answers back into
+Lean.
+
+Three design rules keep this honest:
+
+\begin{itemize}
+\item \textbf{The engine is never trusted.} Every candidate is
+  re-elaborated by the Lean backend against the exact goal
+  (\code{example :\ (T) :=\ term}) before you see it. A rendering bug
+  or an engine bug costs a dropped candidate, never a wrong answer.
+\item \textbf{Refusals are honest.} Goals outside the supported
+  fragment are refused with a reason, not silently mangled.
+\item \textbf{Negative verdicts are labeled by strength.}
+  ``Provably uninhabited'' appears only when the translation was
+  complete and lossless; anything weaker is reported as ``no term
+  found within bounds,'' which claims nothing.
+\end{itemize}
+
+\subsection{Higher-order plumbing}\label{sec:plumbing}
+
+The sweet spot is the structural fragment: arrows, products, sums,
+$\bot$, $\top$, negation, \code{Iff}, and quantifiers over opaque
+variables --- the ``plumbing'' terms one writes constantly.
+Free capital identifiers are auto-bound, so quick queries stay quick:
+
+\begin{session}
+λ> :synth ((A → B → C) → (A → B) → A → C)
+  it1  fun f g x => f x (g x)
+λ> :synth (A × (B ⊕ C) → (A × B) ⊕ (A × C))
+  it1  fun ⟨x, y⟩ => match y with | .inl z => .inl ⟨x, z⟩ | .inr w => .inr ⟨x, w⟩
+λ> :synth (∀ p q : Prop, (p ↔ q) → ¬p → ¬q)
+  it1  fun _ _ ⟨_, f⟩ k x => k (f x)
+\end{session}
+
+The first is the S combinator; the second distributes a product over a
+sum; the third is contraposition across an \code{Iff}, with the
+backward implication projected out by the pattern
+\code{⟨\_, f⟩}. Binders are named by role --- functions \code{f g h},
+values \code{x y z}, negations and continuations \code{k} --- which is
+a small thing that makes large candidates legible.
+
+Candidates are ranked smallest-first and \emph{bound into the session}
+as \code{it1}, \code{it2}, \dots, with bare \code{it} the best one.
+They are ordinary definitions; you can evaluate them immediately:
+
+\begin{session}
+λ> :synth (a → a → a)
+  it1  fun _ x => x
+  it2  fun x _ => x
+λ> #eval it2 "left" "right"
+"left"
+\end{session}
+
+Both inhabitants of $a \to a \to a$ that matter, and picking one is
+just using its name. For \emph{programs} --- as opposed to
+proof-irrelevant propositions --- candidate choice is the whole point.
+
+\subsection{Impossibility, proved}\label{sec:negative}
+
+When Djinn's complete search exhausts a fully translated goal, failure
+is a theorem:
+
+\begin{session}
+λ> :synth (∀ a b : Type, a → b)
+provably uninhabited — no closed term of this polymorphic type exists
+\end{session}
+
+No Lean tactic gives you this answer (a failing \code{exact?} proves
+nothing). Note the careful wording: the verdict is about \emph{closed
+terms of the polymorphic type}. It does not say any particular
+instance $a \to b$ is empty --- choose $a = b$ and it isn't --- and
+for propositions it is about \emph{constructive} provability, a
+distinction \S\ref{sec:classical} exploits. When the translation had
+to hide structure behind an opaque atom, the verdict honestly
+downgrades:
+
+\begin{session}
+λ> :synth (∀ a : Type, Sigma (fun _ : Nat => a))
+no term found within bounds (opaque atoms `Nat` hide structure the engine cannot analyze — not a refutation)
+\end{session}
+
+\subsection{Inductive types}\label{sec:inductives}
+
+A non-recursive, non-indexed inductive or structure applied to all its
+parameters is expanded into a generalized sum of products:
+constructors become introduction rules, case analysis the elimination
+rule. This covers the standard library's little workhorses ---
+
+\begin{session}
+λ> :synth Ordering
+  it1  .lt
+  it2  .eq
+  it3  .gt
+λ> :synth (∀ a : Type, Option (Option a) → Option a)
+  it1  fun _ _ => .none
+  it2  fun _ x => match x with | .none => (.none) | .some y => y
+λ> :synth (∀ e a b : Type, Except e a → (a → b) → Except e b)
+  it1  fun _ _ _ x f => match x with | .error y => .error y | .ok z => .ok (f z)
+\end{session}
+
+--- \code{Option.join} and \code{Except.map} synthesized rather than
+remembered. It extends to \code{Type}-valued classes-as-data like
+\code{Decidable}, where the eliminations write themselves:
+
+\begin{session}
+λ> :synth (∀ p : Prop, Decidable p → Decidable (¬ p))
+  it1  fun _ x => match x with | .isFalse k => .isTrue k | .isTrue y => .isFalse (fun k1 => k1 y)
+\end{session}
+
+Session-declared types participate the moment you declare them, and
+refutations over expanded inductives remain sound, because the engine
+saw the complete constructor list:
+
+\begin{session}
+λ> structure Pair (A B : Type) where
+…>   fst : A
+…>   snd : B
+…>
+λ> :synth (∀ a b : Type, a → b → Pair a b)
+  it1  fun _ _ x y => ⟨x, y⟩
+λ> :synth (∀ a b : Type, Pair a b → Empty)
+provably uninhabited — no closed term of this polymorphic type exists
+\end{session}
+
+Recursive types cannot be expanded --- elimination is where
+undecidability lives --- but their \emph{constructors} are still sound
+introduction rules, so building is possible even where analysis is
+not:
+
+\begin{session}
+λ> :synth Nat
+  it1  Nat.zero
+  it2  Nat.succ Nat.zero
+λ> :synth (∀ a : Type, a → List a)
+  it1  fun _ _ => List.nil
+\end{session}
+
+\subsection{Classical candidates}\label{sec:classical}
+
+Peirce's law has no constructive inhabitant, and \code{:synth} can
+prove that. But rather than stopping at the refutation, it then asks
+the classical question, and answers with a term whose spelling
+announces exactly what was used:
+
+\begin{session}
+λ> :synth (∀ p q : Prop, ((p → q) → p) → p)
+  it1  fun _ _ f => match Classical.em _ with | .inl x => x | .inr k => f (fun y => absurd y k)
+λ> :synth (∀ p : Prop, ¬¬p → p)
+  it1  fun _ k => match Classical.em _ with | .inl x => x | .inr k1 => absurd k1 k
+\end{session}
+
+These are the proofs a human would write: one case split on excluded
+middle, one \code{absurd} where the contradiction lands. Even
+statements that are classically true but intuitionistically
+unprovable in a less famous way come out as case splits --- the
+G\"odel--Dummett formula, for instance:
+
+\begin{session}
+λ> :synth (∀ p q : Prop, (p → q) ∨ (q → p))
+  it1  fun _ _ => match Classical.em _ with | .inl x => (match Classical.em _ with | .inl _ => .inr (fun _ => x) | .inr k => .inr (fun y => absurd y k)) | .inr k1 => .inl (fun z => absurd z k1)
+\end{session}
+
+Two searches stand behind this. First, one excluded-middle assumption
+per atomic subformula is handed to the intuitionistic engine ---
+complete for the propositional fragment, since intuitionistic logic
+plus atom instances of $p \vee \neg p$ \emph{is} classical
+propositional logic --- and rendered as \code{Classical.em} case
+splits. If that misses, the goal's double-negation translation runs
+instead (complete by Glivenko's theorem) and the candidate is wrapped
+in \code{Classical.byContradiction}. Both kinds are verified like any
+other candidate. The whole behavior sits behind a switch:
+
+\begin{session}
+λ> :set synth-classical off
+synth classical: off
+λ> :synth (∀ p : Prop, p ∨ ¬ p)
+provably uninhabited — no closed term of this polymorphic type exists
+(constructively — a classical proof may still exist; this is not a disproof of the proposition)
+\end{session}
+
+\subsection{Dependent formulas as cargo}\label{sec:dependent}
+
+Leant's translation deliberately does not analyze dependent types.
+But it does not refuse them either: a dependent subformula becomes an
+opaque \emph{atom}, compared up to $\alpha$-equivalence, which the
+engine can carry from one side of a goal to the other. Transport
+works; analysis does not:
+
+\begin{session}
+λ> opaque P : Nat → Prop
+λ> opaque Q : Prop
+λ> :synth ((∀ n : Nat, P n) ∧ Q → Q ∧ (∀ n : Nat, P n))
+  it1  fun ⟨x, y⟩ => ⟨y, x⟩
+\end{session}
+
+The engine never looked inside $\forall n,\, P\,n$ --- it swapped a
+sealed box. A goal that would require opening the box (an induction, a
+rewrite, a case split on an index) is refused with a reason; that work
+belongs to \code{:prove}.
+
+\subsection{Synthesis inside a proof}\label{sec:synthprove}
+
+Bare \code{:synth} in prove mode targets the current goal \emph{with
+its hypotheses as premises}. Candidates are offered as \code{it1},
+\code{it2}, \dots\ exactly as in the session, except that here
+\code{itN} splices the candidate applied to your hypotheses --- so
+\code{exact it1} closes the goal:
+
+\begin{session}
+λ> :prove ∀ p q : Prop, (p → q) → p → q ∧ p
+⊢ ∀ (p q : Prop), (p → q) → p → q ∧ p
+⊢> intro p q h hp
+p q : Prop
+h : p → q
+hp : p
+⊢ q ∧ p
+⊢> :synth
+(synthesizing with hypotheses p q h hp as premises)
+  it1  fun _ _ f x => ⟨f x, x⟩
+⊢> exact it1
+All goals accomplished
+⊢> :qed mp_and
+saved: theorem mp_and : ∀ p q : Prop, (p → q) → p → q ∧ p
+\end{session}
+
+Unlike \code{exact?}, which finds an \emph{existing} lemma, this
+\emph{composes a new term} from the goal's own material --- a
+constructive complement to the finisher tactics, needing no premise
+database and no imports.
+
+\subsection{Engines, budgets, and honesty about both}\label{sec:engines}
+
+The default engine is Djinn: complete, terminating, and the only
+source of refutations. \code{:set synth-engine exference} switches to
+the ranked heuristic search, and \code{both} runs the two together ---
+Djinn's candidates first, Exference's new ones appended, negative
+verdicts only from the engine entitled to them. Exference runs under
+explicit budgets (\code{:set synth-steps}, default 4096), and
+truncation is always reported:
+
+\begin{session}
+λ> :set synth-engine both
+synth engine: both
+λ> :synth ((A → B → C) → (A → B) → A → C)
+  it1  fun f g x => f x (g x)
+note: exference: search truncated: step limit reached, queue limit pruned 31990
+\end{session}
+
+The pure searches answer in microseconds to milliseconds; the cost
+center is backend verification, a few hundred milliseconds per
+candidate. A wall-clock guard (default 20\,s,
+\code{LEANT\_SYNTH\_TIMEOUT}) covers the quantified goals whose
+bounded instantiation can widen the space; hitting it is reported as
+``no answer,'' never as a verdict.
+
+\subsection{What \code{:synth} will not do}\label{sec:limits}
+
+Present limits, stated plainly: it will not synthesize recursion or
+induction (recursive types contribute constructors only); it will not
+analyze dependent structure (atoms are transported, never opened); its
+quantifier handling beyond the propositional fragment is a bounded,
+sequent-supplied discipline, so some higher-rank goals answer ``no
+term found within bounds'' rather than anything stronger; and
+class-constrained goals rely on Lean's elaborator to resolve
+instances during verification. The fragment is small on purpose:
+inside it, answers are fast, verified, and --- for refutations ---
+final.
+
+%==============================================================================
+\section{How it works, briefly}\label{sec:how}
+
+A \code{:synth} query passes through five checked stages. A Lean
+metaprogram (compiled once into a cached side environment) elaborates
+the goal and serializes it into the engines' fragment: structural
+connectives are decomposed; qualifying inductives expand into
+constructor lists; everything else becomes an $\alpha$-normalized
+opaque atom. The fragment translator either accepts the result or
+refuses with a reason. The selected engine searches; its candidates
+are rendered back into Lean syntax --- constructor names restored,
+binders named by role, anonymous-constructor and leading-dot
+spellings preferred with fully qualified fallbacks. Finally the
+backend re-elaborates each candidate against the original goal, and
+only survivors are shown and bound. The engine boundary is narrow by
+design: the searches behind it are swappable, and nothing they emit is
+believed until Lean has type-checked it.
+
+%==============================================================================
+\section{Status}\label{sec:status}
+
+Leant is a working prototype under active development inside the
+\emph{ProveIt} repository. The Haskell implementation
+(\code{Tools/Leant}) is primary; the Python original
+(\code{Tools/LeantPy}) remains as a lighter alternative without
+synthesis. The synthesis design and its phased history are documented
+in \code{Tools/Leant/SYNTHESIS\_PROPOSAL.md}; transcript-level golden
+tests live in \code{Tools/Leant/test}. Expect sharp edges: the project exists to find out how far a
+conversational, verification-gated synthesis workflow can be pushed,
+and it moves at the speed of that question.
+\end{document}
