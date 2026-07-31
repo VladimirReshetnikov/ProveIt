@@ -1418,6 +1418,7 @@ Multi-line tactics work as usual (:{ :} or automatic continuation).
   :script            show the tactic script so far
   :auto              try common finishing tactics on the current goal
   :qed [NAME]        finish — save as `theorem NAME` in the session
+                     (a `def` if the statement is not a proposition)
   :abort             leave prove mode (the script is printed, not lost)
   :help              this help;  :quit exits the REPL
 
@@ -1635,18 +1636,30 @@ not the question mark form.
             self.prove = None
             return
         name = arg.strip() or f"prove_{self.prove_counter + 1}"
-        code = f"theorem {name} : ({self.prove['stmt']}) := {body}"
+        keyword = "theorem"
+        code = f"{keyword} {name} : ({self.prove['stmt']}) := {body}"
         res = self.run_cmd(code, env=self.cur_env, cache=True)
+        # Type-valued statements (e.g. a Decidable instance) cannot be
+        # theorems; Lean rejects them with
+        # "type of theorem `NAME` is not a proposition".
+        if any(m.severity == "error"
+               and "type of theorem" in m.data
+               and "is not a proposition" in m.data
+               for m in getattr(res, "messages", [])):
+            self.drop_from_cache(res)
+            keyword = "def"
+            code = f"{keyword} {name} : ({self.prove['stmt']}) := {body}"
+            res = self.run_cmd(code, env=self.cur_env, cache=True)
         errored = self.print_response(res)
         if errored or is_error(res):
             self.drop_from_cache(res)
-            print(red("could not save the theorem — still in prove mode "
+            print(red(f"could not save the {keyword} — still in prove mode "
                       "(:script to inspect)"))
             return
         self.advance_env(res.env, code)
         if not arg.strip():
             self.prove_counter += 1
-        print(green(f"saved: theorem {name} : {self.prove['stmt']}"))
+        print(green(f"saved: {keyword} {name} : {self.prove['stmt']}"))
         self.prove = None
 
     # -- main loop -----------------------------------------------------------

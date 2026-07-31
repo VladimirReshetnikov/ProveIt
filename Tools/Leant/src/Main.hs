@@ -2018,9 +2018,10 @@ proveHelp = unlines
   , "  :undo [N]          take back the last N tactics (default 1)"
   , "  :script            show the tactic script so far"
   , "  :auto              try common finishing tactics on the current goal"
-  , "  :synth             synthesize a term for the goal target (then :synth N"
-  , "                     records the `exact` step; hypotheses are ignored)"
+  , "  :synth             synthesize terms for the goal, with the hypotheses"
+  , "                     as premises (then `exact it1` records the step)"
   , "  :qed [NAME]        finish - save as `theorem NAME` in the session"
+  , "                     (a `def` if the statement is not a proposition)"
   , "  :abort             leave prove mode (the script is printed, not lost)"
   , "  :help              this help;  :quit exits the REPL"
   , ""
@@ -2324,26 +2325,40 @@ cmdQed st arg = do
               let name = if null (trim arg)
                     then "prove_" ++ show (rsProveCounter state + 1)
                     else trim arg
-                  code = "theorem " ++ name ++ " : (" ++ stmt ++ ") := " ++ body
-              result <- runCmd st (rsEnv state) code
-              case result of
-                Left err -> do
-                  emitLn st =<< cRed st err
-                  emitLn st =<< cRed st
-                    "could not save the theorem \8212 still in prove mode"
-                Right v -> do
-                  errored <- printResponse st Nothing v
-                  if errored
-                    then emitLn st =<< cRed st
-                      "could not save the theorem \8212 still in prove mode (:script to inspect)"
-                    else do
-                      advanceEnv st (respEnv v) code
-                      when (null (trim arg)) $ modifyIORef' st
-                        (\s -> s { rsProveCounter = rsProveCounter s + 1 })
-                      saved <- color st "32"
-                        ("saved: theorem " ++ name ++ " : " ++ stmt)
-                      emitLn st saved
-                      leaveProve st
+                  codeFor kw = kw ++ " " ++ name ++ " : (" ++ stmt ++ ") := " ++ body
+                  -- Type-valued statements (e.g. a Decidable instance) cannot
+                  -- be theorems; Lean rejects them with
+                  -- "type of theorem `NAME` is not a proposition".
+                  notAProp v = any
+                    (\(sev, d) -> sev == "error"
+                      && "type of theorem" `isInfixOf` d
+                      && "is not a proposition" `isInfixOf` d)
+                    (respMessages v)
+                  save kw = do
+                    result <- runCmd st (rsEnv state) (codeFor kw)
+                    case result of
+                      Left err -> do
+                        emitLn st =<< cRed st err
+                        emitLn st =<< cRed st
+                          ("could not save the " ++ kw
+                           ++ " \8212 still in prove mode")
+                      Right v
+                        | kw == "theorem" && notAProp v -> save "def"
+                        | otherwise -> do
+                            errored <- printResponse st Nothing v
+                            if errored
+                              then emitLn st =<< cRed st
+                                ("could not save the " ++ kw
+                                 ++ " \8212 still in prove mode (:script to inspect)")
+                              else do
+                                advanceEnv st (respEnv v) (codeFor kw)
+                                when (null (trim arg)) $ modifyIORef' st
+                                  (\s -> s { rsProveCounter = rsProveCounter s + 1 })
+                                saved <- color st "32"
+                                  ("saved: " ++ kw ++ " " ++ name ++ " : " ++ stmt)
+                                emitLn st saved
+                                leaveProve st
+              save "theorem"
 
 -- Main loop -----------------------------------------------------------------
 

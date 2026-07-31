@@ -70,8 +70,9 @@ leant [FILE] [--project DIR] [--plain] [-i MOD]
   and dotted identifiers.
 - `:prove [PROP]` enters interactive prove mode (see the Python README for
   a walkthrough): tactic-by-tactic goals, unlimited `:undo`, `:script`,
-  `:auto`, `:qed [NAME]` saving a real theorem, resumption of the last
-  `sorry`, and crash-safe script dumps.
+  `:auto`, `:qed [NAME]` saving a real theorem (a `def` when the statement
+  is not a proposition), resumption of the last `sorry`, and crash-safe
+  script dumps.
 
 ## `:synth` — automatic term synthesis (Haskell-only)
 

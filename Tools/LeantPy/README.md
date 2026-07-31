@@ -108,7 +108,9 @@ Goals reprint after every tactic (numbered when there are several; the
 prompt shows the count). `:undo [N]` takes back tactics without limit;
 `:script` shows the accumulated proof; `:auto` tries common finishers;
 `:qed [NAME]` turns the script into a real `theorem` in the session
-(auto-named `prove_N`); `:abort` leaves the mode, printing the script.
+(auto-named `prove_N`; a `def` when the statement is not a proposition,
+e.g. a `Decidable` instance); `:abort` leaves the mode, printing the
+script.
 `?`-tactics (`exact?`, `simp?`, `rw?`) record the tactic they *found*
 rather than the question-mark form. If the backend dies or is
 interrupted, the script is printed before the mode exits — work is never
