@@ -109,29 +109,34 @@ kernel and a soundness hole in an independent implementation.
 
 ## 3. Rocq / Coq
 
-Rocq has historically seen roughly one soundness bug per year; the 2026 AI sweep
-found seven at once. **Nothing in this directory covers Rocq yet — every row
-below is a `gap`**, and closing them is the largest single piece of outstanding
-work toward the goal in `README.md`.
+Coq has historically seen roughly one soundness bug per year; the 2026 AI sweep
+found seven at once. Coverage lives in [`Coq/`](Coq/) and is verified on
+**Rocq 9.2** by [`Coq/verify.ps1`](Coq/verify.ps1); the four exhibits present
+are all **fixed upstream**, so each is a *regression witness* — it must be
+rejected, and acceptance would signal a regression.
 
 ### 3.1 Proofs of `False` (all CLOSED / fixed)
 
-| Issue | Defect |
-| --- | --- |
-| [#21682](https://github.com/rocq-prover/rocq/issues/21682) | Guard checker: cross-calls in nested mutual fixpoints. |
-| [#21683](https://github.com/rocq-prover/rocq/issues/21683) | Guard checker: higher-order recursive call through a fixpoint. |
-| [#21685](https://github.com/rocq-prover/rocq/issues/21685) | `Module Alias := M` through a multi-step alias chain corrupts the delta-resolver. |
-| [#21690](https://github.com/rocq-prover/rocq/issues/21690) | Missing stack conversion for `caseinvert`. |
-| [#21694](https://github.com/rocq-prover/rocq/issues/21694) | Incorrect discharge of squashing info. |
-| [#21701](https://github.com/rocq-prover/rocq/issues/21701) | Guard checker: argument-less recursive calls don't restrict uniform arguments. |
-| [#21702](https://github.com/rocq-prover/rocq/issues/21702) | Incorrect `with Definition` universe-constraint handling. |
-| [#21736](https://github.com/rocq-prover/rocq/issues/21736) | Universe polymorphism + VM/native compilation + `Register Inline`. *(Not in the blog's list; found in this survey.)* |
+| Issue | Defect | Coverage |
+| --- | --- | --- |
+| [#21682](https://github.com/rocq-prover/rocq/issues/21682) | Guard checker: cross-calls in nested mutual fixpoints. `find_uniform_parameters` inspected only self-calls, so a parameter growing through a cross-call was misclassified as uniform. | **artifact** — [`Coq/GuardChecker/NestedMutualCrossCall.v`](Coq/GuardChecker/NestedMutualCrossCall.v); rejected on Rocq 9.2 with the exact message the upstream patch predicted |
+| [#21683](https://github.com/rocq-prover/rocq/issues/21683) | Guard checker: a fixpoint passes itself as a higher-order argument to another fixpoint, which applies it to a non-subterm. Makes `russell 1` convertible with its own negation. | **artifact** — [`Coq/GuardChecker/HigherOrderFixpoint.v`](Coq/GuardChecker/HigherOrderFixpoint.v); rejected on Rocq 9.2 |
+| [#21685](https://github.com/rocq-prover/rocq/issues/21685) | `Module Alias := M` reached through a multi-step alias chain corrupts the delta-resolver, identifying two different functor instantiations. | **artifact** — [`Coq/ModuleSystem/AliasChainDeltaResolver.v`](Coq/ModuleSystem/AliasChainDeltaResolver.v); rejected on Rocq 9.2 (`Unable to unify`) |
+| [#21701](https://github.com/rocq-prover/rocq/issues/21701) | Guard checker: recursive calls appearing without arguments (`let`-bound aliases) were ignored when computing uniform arguments. | **artifact** — [`Coq/GuardChecker/UniformArgsLet.v`](Coq/GuardChecker/UniformArgsLet.v); rejected on Rocq 9.2 |
+| [#21690](https://github.com/rocq-prover/rocq/issues/21690) | Missing stack conversion for `caseinvert`. | **gap** |
+| [#21694](https://github.com/rocq-prover/rocq/issues/21694) | Incorrect discharge of squashing info. | **gap** |
+| [#21702](https://github.com/rocq-prover/rocq/issues/21702) | Incorrect `with Definition` universe-constraint handling. | **gap** |
+| [#21736](https://github.com/rocq-prover/rocq/issues/21736) | Universe polymorphism + VM/native compilation + `Register Inline`. *(Not in the blog's list; found in this survey.)* | **gap** |
 
 Concentration is informative: **three of eight are guard-checker bugs and three
 are module-system bugs**, matching the blog's description of "relatively
 orthogonal soundness bugs (mainly in the guard checker and module system)".
-Lean has neither a guard checker (it compiles recursion to recursors) nor Rocq's
-module system, which is a structural rather than accidental difference.
+Lean has neither a guard checker (it compiles recursion to recursors) nor Coq's
+module system, which is a structural rather than accidental difference —
+discussed further in [`Coq/README.md`](Coq/README.md). All three guard-checker
+bugs turn out to be failures of the *same* analysis (uniform arguments for
+nested mutual fixpoints) reached three different ways, which is why they are
+grouped in one directory.
 
 ### 3.2 Related non-`False` bugs from the same sweep (CLOSED)
 
@@ -161,10 +166,10 @@ soundness record (pre-2026) is not covered at all.
 
 ## 4. Outstanding work
 
-1. **Rocq artifacts.** §3 is entirely `gap`. The repository already vendors
-   Rocq developments and has a working Rocq toolchain, so the guard-checker
-   bugs (§3.1) are the natural first targets — they are self-contained and
-   need no module-system setup.
+1. **Remaining Coq artifacts.** Four of §3.1's eight proofs of `False` are
+   covered ([`Coq/`](Coq/)); #21690, #21694, #21702, and #21736 are still
+   `gap`, as is all of §3.2 and §3.3 — including the four *open* issues in
+   §3.3, which are the only live Coq soundness items known here.
 2. **Pair #12747 with `LevelFuzzer`.** Confirm case-by-case that the fuzzer's
    162 incompleteness cases are instances of the `imax`-to-`max` normalization
    defect, or isolate any that are not.
