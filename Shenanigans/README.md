@@ -31,8 +31,21 @@ kernel that is fast enough to be usable, and that the defence is having several
 independent implementations disagree: a term one kernel accepts and another
 rejects is the design working. That is the standard applied here — every defect
 is pinned to exact versions, given a control, and checked against an
-independent judge where one exists. [`CATALOG.md`](CATALOG.md) records which
-known defects this directory does and does not yet represent.
+independent judge where one exists.
+
+Lawrence Paulson's [*Broken proofs and broken
+provers*](https://lawrencecpaulson.github.io/2026/01/15/Broken_proofs.html)
+supplies the longer view from outside both systems, running back through
+Isabelle/HOL, HOL88, LCF and PVS: soundness bugs recur in every prover, and
+their practical consequences have been consistently small, because nobody's
+real theorem turned out to depend on one. His sharper point is that the
+inadequacy of a *model* of the world is the far likelier source of a wrong
+conclusion than the unsoundness of a kernel. Both cautions apply to everything
+below: a `False` here is a fact about a program, and it is not evidence that
+machine-checked mathematics is unreliable.
+
+[`CATALOG.md`](CATALOG.md) records which known defects this directory does and
+does not yet represent.
 
 ## Contents
 
