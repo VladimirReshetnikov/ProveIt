@@ -12,9 +12,9 @@ module claiming to prove it, comparator guarantees the solution's theorem
 **Every exhibit in `../Lean/` is rejected by comparator.** That is the correct
 outcome.
 
-**But `evade/` is accepted** — a proof of `False` that comparator passes, exit 0,
+**But `accepted/` is accepted** — a proof of `False` that comparator passes, exit 0,
 `Your solution is okay!`, with `#print axioms boom` reporting nothing. See
-[The evasion](#the-evasion) below for what it does and does not show.
+[The accepted case](#the-accepted-case) below for what it does and does not show.
 
 ## Results
 
@@ -32,7 +32,7 @@ Run on comparator `master` (2026-07-28) with Lean `v4.33.0-rc1`.
 included because without a *passing* control the four rejections would prove
 nothing — they could just be the harness failing on Windows.
 
-## This attack class was already known to the Lean FRO
+## This class of construction was already known to the Lean FRO
 
 Comparator's own regression suite contains
 [`tests/projects/primitive_issue`](https://github.com/leanprover/comparator/tree/master/tests/projects/primitive_issue),
@@ -56,10 +56,10 @@ def Nat.land (_ _ : Nat) : Nat := 0
 ```
 
 with `test.json` asserting `"exit_code": 1`. So the "define a kernel-primitive
-name the prelude has not claimed" attack is a known one with a deployed
-countermeasure and a regression test.
+name the prelude has not claimed" construction is a known one with a deployed
+safeguard and a regression test.
 
-## How the defence works
+## How the check works
 
 `Main.lean:primitiveTargets` pins a list of kernel-special-cased constants
 ("List from `git grep new_persistent_expr_const src/kernel/`"), and
@@ -69,9 +69,9 @@ constant used in the challenge statement, then transitively demands full
 environments. A solution that supplies its own `Nat.gcd` — or its own `False`,
 or its own `String.ofList` — differs on one of those constants and is rejected.
 
-## The evasion
+## The accepted case
 
-`evade/` contains a `Challenge`/`Solution` pair that comparator **accepts**:
+`accepted/` contains a `Challenge`/`Solution` pair that comparator **accepts**:
 
 ```
 Running Lean default kernel on solution.
@@ -105,7 +105,7 @@ the challenge is itself a `prelude` module that never imports `Init`, the entire
 primitive mechanism is vacuous: challenge and solution agree perfectly on a set
 of primitives that are not Lean's.
 
-`evade/Challenge.lean` and `evade/Solution.lean` share a byte-identical preamble
+`accepted/Challenge.lean` and `accepted/Solution.lean` share a byte-identical preamble
 declaring `False`, `Nat`, `Bool`, `List`, `String`, the 15 `primitiveTargets`
 constants — and
 
@@ -148,7 +148,7 @@ installation it is running under, or at minimum assert that both modules
 transitively import `Init` — instead of only checking challenge/solution
 agreement.
 
-## A gap in the list (not exploitable against a normal challenge)
+## A gap in the list (not reachable against a normal challenge)
 
 `primitiveTargets` omits several names the kernel really does hard-code:
 
@@ -195,6 +195,6 @@ COMPARATOR_LEAN4EXPORT=/path/to/comparator/.lake/packages/lean4export/.lake/buil
 ```
 
 The `Solution.lean` files here carry extra stub definitions of the kernel
-primitives (`Nat.land`, `String.ofList`, …). Those are not part of the exploit;
+primitives (`Nat.land`, `String.ofList`, …). Those are not part of the construction;
 they exist only so `lean4export` can emit a primitive-complete export, exactly as
 in comparator's own `primitive_issue` test.

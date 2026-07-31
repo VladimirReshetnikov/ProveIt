@@ -1,7 +1,7 @@
 /-
 STRONGER FORM OF THE HOLE: nothing is redefined.
 
-The usual objection to the `prelude` exploit is "you replaced part of the system".
+The usual objection to the `prelude` construction is "you replaced part of the system".
 This module replaces nothing. It imports `Init.Prelude`, so `Nat`, `Eq`, `rfl`,
 `False`, `True`, `Nat.rec`, `OfNat` and the numeric literals are all the genuine
 core ones. It then merely *defines* `Nat.gcd` — a name that `Init.Prelude` does

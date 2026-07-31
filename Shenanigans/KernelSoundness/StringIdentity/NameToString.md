@@ -1,7 +1,7 @@
 # `Name.toString` is not injective — and it is reachable from ordinary source
 
 This is the strongest result of the string-identity study, and the only one that
-is a *machine-level* defect rather than a hazard for human readers.
+is a *machine-level* defect rather than a risk for human readers.
 
 ## The collision
 

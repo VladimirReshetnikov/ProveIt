@@ -2,7 +2,7 @@ prelude
 import Init.Prelude
 
 -- `Init.Prelude` does not define `Lean.reduceBool`; the kernel has nevertheless
--- already armed `reduce_native` for that name.  It is NOT in comparator's
+-- already installed `reduce_native` for that name.  It is NOT in comparator's
 -- `primitiveTargets` list either.
 def Lean.reduceBool (_b : Bool) : Bool := true
 
