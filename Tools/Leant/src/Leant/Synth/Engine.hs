@@ -26,7 +26,7 @@ module Leant.Synth.Engine
   ) where
 
 import Data.Foldable (toList)
-import Data.List (nub, sortOn)
+import Data.List (intercalate, nub, sortOn)
 import qualified Data.Map.Strict as Map
 import Data.Void (Void)
 
@@ -40,6 +40,7 @@ import Language.Haskell.Djex
   , Declaration (DataTypeDeclaration)
   , Name
   , Progress (..)
+  , TruncationReason (..)
   , Type (..)
   , TypeParameter (..)
   , applyTypeArguments
@@ -161,8 +162,18 @@ progressNotes :: Progress -> [String]
 progressNotes progress = case progress of
   Completed Finished -> []
   Completed (Truncated reasons) ->
-    ["search truncated: " ++ show reasons]
+    [ "search truncated: "
+      ++ intercalate ", " (map reasonText (nub (toList reasons))) ]
   Continuing -> ["search reported more batches to come"]
+ where
+  reasonText reason = case reason of
+    StepLimitReached -> "step limit reached"
+    ChoicePointLimitReached -> "choice-point limit reached"
+    CandidateLimitReached ->
+      "candidate limit reached (" ++ show candidateWindow ++ ")"
+    IdentifierSpaceExhausted -> "identifier space exhausted"
+    QueueLimitPruned n -> "queue limit pruned " ++ show n
+    DepthLimitPruned n -> "depth limit pruned " ++ show n
 
 -- Fragment -> Djinn type ----------------------------------------------------
 --
