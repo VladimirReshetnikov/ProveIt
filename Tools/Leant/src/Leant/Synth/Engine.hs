@@ -24,6 +24,8 @@ module Leant.Synth.Engine
   , parseSynthEngine
   , synthEngineName
   , synthesize
+  , synthesizeWith
+  , synthesizeTuned
   , forceOutcome
   , candidateWindow
   ) where
@@ -146,32 +148,57 @@ synthEngineName engine = case engine of
 -- step budget applies to Exference only (Djinn's complete search needs
 -- no budget beyond the candidate window).
 synthesize :: SynthEngine -> Int -> Frag -> Either String SynthOutcome
-synthesize engine steps frag = do
-  (goal0, decls, ctorMap, premises) <- fragToDjinn frag
-  -- constructor premises of recursive inductives enter as goal
-  -- antecedents (same scope as the goal's variables - a top-level
-  -- declaration would generalize them); the renderer strips the
-  -- matching binders and substitutes the Lean constructor names
-  let goal = foldr (\(_, t) acc -> FunctionType t acc) goal0 premises
-      premiseNames = map fst premises
-      render expr = renderLeanTerm ctorMap premiseNames frag expr
+synthesize engine steps frag = synthesizeWith engine steps [] frag frag
+
+-- | 'synthesize' with caller-supplied premises (name, fragment) - used
+-- by the classical fallback to hand the engine excluded-middle
+-- assumptions spelled @Classical.em _@ - and a separate fitting
+-- fragment: the engine searches @engineFrag@ (with all premises
+-- prepended as antecedents), while candidates are fitted and verified
+-- against @fitFrag@.  The two differ when @engineFrag@ carries the
+-- fitting goal's bound variables as free opaque variables instead.
+synthesizeWith
+  :: SynthEngine -> Int -> [(String, Frag)] -> Frag -> Frag
+  -> Either String SynthOutcome
+synthesizeWith engine steps =
+  synthesizeTuned engine steps (candidateWindow, Nothing)
+
+-- | 'synthesizeWith' with explicit Djinn limits: the candidate cutoff
+-- and an optional choice-point budget.  A budget forfeits completeness
+-- (and with it refutation soundness), which is why only searches whose
+-- negative verdicts are discarded anyway - the classical fallback's -
+-- should pass one; it is what keeps a premise-heavy search's memory
+-- bounded.
+synthesizeTuned
+  :: SynthEngine -> Int -> (Int, Maybe Integer) -> [(String, Frag)]
+  -> Frag -> Frag -> Either String SynthOutcome
+synthesizeTuned engine steps limits extras engineFrag fitFrag = do
+  (goal0, decls, ctorMap, premises) <- fragToDjinn extras engineFrag
+  -- premises (caller-supplied assumptions, and constructor premises of
+  -- recursive inductives) enter as goal antecedents (same scope as the
+  -- goal's variables - a top-level declaration would generalize them);
+  -- the renderer strips the matching binders and substitutes the names
+  let goal = foldr (\(_, _, t) acc -> FunctionType t acc) goal0 premises
+      premisePairs = [(name, prem) | (name, prem, _) <- premises]
+      render expr = renderLeanTerm ctorMap premisePairs fitFrag expr
   case engine of
-    EngineDjinn -> djinnRun frag render goal decls
+    EngineDjinn -> djinnRun limits fitFrag render goal decls
     EngineExference -> exferenceRun steps render goal decls
     EngineBoth -> do
-      djinn <- djinnRun frag render goal decls
+      djinn <- djinnRun limits fitFrag render goal decls
       exference <- exferenceRun steps render goal decls
       pure (mergeOutcomes djinn exference)
 
 -- | The complete LJT search: candidates, or a refutation whose
 -- soundness depends on the translation having hidden nothing.
 djinnRun
-  :: Frag
+  :: (Int, Maybe Integer)
+  -> Frag
   -> (Expression String -> Either String [String])
   -> Type String
   -> [DjinnDecl]
   -> Either String SynthOutcome
-djinnRun frag render goal decls = do
+djinnRun (cutoff, budget) frag render goal decls = do
   standard <- viaDiagnostic standardDjinnSession
   targetName <- viaShow (mkIdentifier "leantSynth")
   target <- viaShow (mkDefinitionName targetName)
@@ -189,7 +216,8 @@ djinnRun frag render goal decls = do
         , requestContexts = []
         , requestOptions = defaultQueryOptions
             { optionAlternatives = True
-            , optionCutoff = candidateWindow
+            , optionCutoff = cutoff
+            , optionBudget = budget
             }
         }
   request <- viaDiagnostic (mkDjinnRequest query)
@@ -202,14 +230,15 @@ djinnRun frag render goal decls = do
       -- a bounded prefix (the batch is terminal but can be long).
       rendered =
         [ (expressionSize expr, group)
-        | candidate <- take candidateWindow (batchCandidates batch)
+        | candidate <- take cutoff (batchCandidates batch)
         , let expr = functionClauseExpression (candidateOutput candidate)
         , Right group <- [render expr]
         ]
       terms = map snd (sortOn fst rendered)
   pure $ case resultEvidence result of
     ValidatedCandidates -> SynthCandidates terms notes
-    ProvedUninhabitable -> SynthRefuted (null (fragUnsafeAtoms frag))
+    ProvedUninhabitable ->
+      SynthRefuted (budget == Nothing && null (fragUnsafeAtoms frag))
     RequiresTargetReference -> SynthNoTerm
       ("only a recursive reference to the definition itself would inhabit \
        \this type" : notes)
@@ -339,8 +368,9 @@ data TransState = TransState
   , tsRecs :: Map.Map String ()
     -- ^ recursive-inductive keys whose constructor premises are
     -- already registered
-  , tsPrems :: [(String, Type String)]
-    -- ^ constructor premises (Lean name, engine type), in order
+  , tsPrems :: [(String, Frag, Type String)]
+    -- ^ constructor premises (Lean name, fragment for the renderer's
+    -- domain fitting, engine type), in order
   }
 
 newtype Trans a = Trans
@@ -391,10 +421,11 @@ variable key = do
       pure v
 
 fragToDjinn
-  :: Frag
+  :: [(String, Frag)]
+  -> Frag
   -> Either String
-      (Type String, [DjinnDecl], CtorMap, [(String, Type String)])
-fragToDjinn frag0 = do
+      (Type String, [DjinnDecl], CtorMap, [(String, Frag, Type String)])
+fragToDjinn extras frag0 = do
   eitherC <- viaShow (mkIdentifier "Either")
   voidC <- viaShow (mkIdentifier "Void")
   unitC <- viaShow (tupleName Boxed 0)
@@ -475,12 +506,24 @@ fragToDjinn frag0 = do
               (\(leanName, fields) -> do
                 fieldTypes <- mapM go fields
                 let premise = foldr FunctionType occurrence fieldTypes
+                    premFrag = foldr FArr (FAtom False key) fields
                 modifyT (\s -> s
-                  { tsPrems = tsPrems s ++ [(leanName, premise)] }))
+                  { tsPrems =
+                      tsPrems s ++ [(leanName, premFrag, premise)] }))
               ctors
             pure occurrence
 
-  (goal, finalState) <- runTrans (go frag0) TransState
+  let translate = do
+        -- caller-supplied premises share the goal's variable table and
+        -- come first, so their binders are the candidate's first
+        extrasT <- mapM
+          (\(name, prem) -> do
+            premType <- go prem
+            pure (name, prem, premType))
+          extras
+        goal <- go frag0
+        pure (extrasT, goal)
+  ((extrasT, goal), finalState) <- runTrans translate TransState
     { tsTable = Map.empty
     , tsNext = 0
     , tsInds = Map.empty
@@ -491,4 +534,4 @@ fragToDjinn frag0 = do
     , tsPrems = []
     }
   Right (goal, tsDecls finalState, tsCtorMap finalState
-        , tsPrems finalState)
+        , extrasT ++ tsPrems finalState)

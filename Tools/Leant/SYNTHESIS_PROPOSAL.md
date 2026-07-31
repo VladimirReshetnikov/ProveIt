@@ -459,6 +459,18 @@ propositional fragment without ¬¬-shifts; an unverified claim is worse
 than none). Effort is small because the retry reuses the whole
 pipeline; only the wrapper and the verdict text are new.
 
+*As implemented, a second classical presentation runs first: one
+excluded-middle premise per atomic subformula (complete for the same
+fragment — intuitionistic + atom-instances of em is exactly classical
+propositional logic), substituted as `Classical.em _`, so the
+candidates read as the case splits a human would write
+(`match Classical.em _ with | .inl x => x | .inr k => f (fun y =>
+absurd y k)` for Peirce). The em search runs under a choice-point
+budget — excluded-middle premises multiply the proof space, and the
+backend retains an environment per verification attempt, so both the
+engine's memory and the number of failing verifications must stay
+bounded; a miss falls through to the complete ¬¬ route.*
+
 ### C. Golden transcript tests for `:synth` — S, overdue (implemented)
 
 The pipeline compiles Lean metaprograms out of Haskell string

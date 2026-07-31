@@ -6,38 +6,38 @@
 Leant (Haskell) - a GHCi-style REPL for Lean 4.  Type :help for help, :quit to exit.
 λ> :synth (A × (B ⊕ C) → (A × B) ⊕ (A × C))
 preparing synthesis environment (session imports + Lean)...
-  1  fun ⟨a, b⟩ => match b with | .inl c => .inl ⟨a, c⟩ | .inr d => .inr ⟨a, d⟩
+  1  fun ⟨x, y⟩ => match y with | .inl z => .inl ⟨x, z⟩ | .inr w => .inr ⟨x, w⟩
 (1 verified candidate)
 :synth N binds candidate N as `it`
 λ> :synth ((A → B → C) → (A → B) → A → C)
-  1  fun a b c => a c (b c)
+  1  fun f g x => f x (g x)
 (1 verified candidate)
 :synth N binds candidate N as `it`
 λ> :synth (((A → B) → A) → A)
 constructively unprovable — but classically:
-  1  Classical.byContradiction (fun a => nomatch (a (fun b => nomatch (a (fun _ => b (fun c => nomatch (a (fun _ => c))))))))
+  1  Classical.byContradiction (fun k => k (fun f => absurd (fun _ => f (fun a => absurd (fun _ => a) k)) k))
 :synth N binds candidate N as `it`
 λ> :synth (∀ a b : Type, a → b)
 provably uninhabited — no closed term of this polymorphic type exists
 λ> :synth (a → a → a)
-  1  fun _ a => a
-  2  fun a _ => a
+  1  fun _ x => x
+  2  fun x _ => x
 (2 verified candidates)
 :synth N binds candidate N as `it`
 λ> :synth (Nat → Nat)
   1  Nat.succ
-  2  fun a => a
+  2  fun x => x
   3  fun _ => Nat.zero
   4  fun _ => Nat.succ Nat.zero
-  5  fun a => Nat.succ a
+  5  fun x => Nat.succ x
 (5 verified candidates)
 :synth N binds candidate N as `it`
 λ> :synth (∀ p q : Prop, (p ↔ q) → ¬p → ¬q)
-  1  fun _ _ ⟨_, a⟩ b c => b (a c)
+  1  fun _ _ ⟨_, f⟩ k x => k (f x)
 (1 verified candidate)
 :synth N binds candidate N as `it`
 λ> :synth (((A → B) → A) → (A → A))
-  1  fun _ a => a
+  1  fun _ x => x
 (1 verified candidate)
 :synth N binds candidate N as `it`
 λ> :quit

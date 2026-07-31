@@ -53,6 +53,7 @@ import Leant.Synth.Engine
   , parseSynthEngine
   , synthEngineName
   , synthesize
+  , synthesizeTuned
   )
 import Leant.Synth.Fragment
   ( Frag (..)
@@ -62,6 +63,7 @@ import Leant.Synth.Fragment
   , fragUnsafeAtoms
   , glivenkoSplit
   , parseGoalSexp
+  , propAtoms
   , serializerProgram
   , synthPrelude
   )
@@ -1654,13 +1656,64 @@ synthClassical st args goal parsed = case glivenkoSplit (pgFrag parsed) of
   Just (prefix, body) -> do
     limit <- synthTimeoutSeconds
     state <- readIORef st
-    let nnFrag = foldr (\(explicit, binder) acc -> FAll explicit binder acc)
-          (FArr (FArr body FBot) FBot) prefix
-    bounded <- runEngineBounded limit
-      (synthesize (rsSynthEngine state) (rsSynthSteps state) nnFrag)
-    case bounded of
-      Just (Right (SynthCandidates groups _)) -> do
-        let explicits = length (filter fst prefix)
+    let engine = rsSynthEngine state
+        steps = rsSynthSteps state
+        -- route 1: an excluded-middle premise per atomic subformula.
+        -- For a propositional body, intuitionistic + atom-instances of
+        -- em is exactly classical, so this is complete whenever the
+        -- \172\172 route is - and the candidates read as case splits on
+        -- Classical.em.  The prefix's binders stay free opaque
+        -- variables for the engine; fitting and verification use the
+        -- original quantified goal, and a variable that turns out not
+        -- to be a Prop just fails verification.
+        atoms = propAtoms body
+        emPremises =
+          [("Classical.em _", FSum v (FArr v FBot)) | v <- atoms]
+        -- the engine goal is just the body: synthesizeTuned prepends
+        -- the premises itself, and the prefix's binders stay free
+        -- opaque variables
+        emEngineFrag = body
+    emGroups <-
+      if null atoms || length atoms > 5
+        then pure []
+        else do
+          -- excluded-middle premises multiply the proof space, so this
+          -- search runs under a choice-point budget: memory stays
+          -- bounded, and losing completeness costs nothing here (a
+          -- miss falls through to the complete ¬¬ route, and negative
+          -- verdicts from this run are discarded anyway)
+          bounded <- runEngineBounded limit
+            (synthesizeTuned engine steps (synthMaxTried, Just 100000)
+              emPremises emEngineFrag (pgFrag parsed))
+          debug <- lookupEnv "LEANT_SYNTH_DEBUG"
+          when (isJust debug) $ emitLn st =<< cDim st
+            ("debug em outcome: " ++ case bounded of
+              Nothing -> "timeout"
+              Just (Left err) -> "error: " ++ err
+              Just (Right (SynthCandidates groups _)) ->
+                show (length groups) ++ " groups: "
+                  ++ show (take 3 (map (take 2) groups))
+              Just (Right (SynthRefuted _)) -> "refuted"
+              Just (Right (SynthNoTerm notes)) ->
+                "no term: " ++ show notes)
+          -- half the usual group budget: every failed verification
+          -- leaks an environment in the backend, and a systematically
+          -- failing em batch (a goal whose atoms are not Props, say)
+          -- should stay cheap before the ¬¬ route takes over
+          pure $ case bounded of
+            Just (Right (SynthCandidates groups _)) ->
+              take (synthMaxTried `div` 2) groups
+            _ -> []
+    shownEm <- displayClassical st args goal emGroups
+    if shownEm
+      then pure True
+      else do
+        -- route 2: the double-negation translation, wrapped in
+        -- Classical.byContradiction (complete by Glivenko's theorem)
+        let nnFrag =
+              foldr (\(explicit, binder) acc -> FAll explicit binder acc)
+                (FArr (FArr body FBot) FBot) prefix
+            explicits = length (filter fst prefix)
             binders = ["cl" ++ show i | i <- [1 .. explicits]]
             wrap term
               | null binders =
@@ -1668,25 +1721,35 @@ synthClassical st args goal parsed = case glivenkoSplit (pgFrag parsed) of
               | otherwise = "fun " ++ unwords binders
                   ++ " => Classical.byContradiction ((" ++ term ++ ") "
                   ++ unwords binders ++ ")"
-            wrapped = map (map wrap) (take synthMaxTried groups)
-        (verified, _) <- synthVerify st goal wrapped
-        let shown = take synthMaxShown verified
-        if null shown
-          then pure False
-          else do
-            emitLn st =<< cYellow st
-              "constructively unprovable \8212 but classically:"
-            forM_ (zip [1 :: Int ..] shown) $ \(i, term) -> do
-              n <- cBold st (show i)
-              emitLn st ("  " ++ n ++ "  " ++ term)
-            proving <- isJust . rsProve <$> readIORef st
-            emitLn st =<< cDim st (if proving
-              then ":synth N closes the goal with `exact` candidate N"
-              else ":synth N binds candidate N as `it`")
-            modifyIORef' st (\s -> s
-              { rsSynthLast = Just (SynthBatch goal shown args) })
-            pure True
-      _ -> pure False
+        bounded <- runEngineBounded limit
+          (synthesizeTuned engine steps (synthMaxTried, Nothing) []
+            nnFrag nnFrag)
+        case bounded of
+          Just (Right (SynthCandidates groups _)) -> displayClassical
+            st args goal (map (map wrap) (take synthMaxTried groups))
+          _ -> pure False
+
+-- | Verify and display classical candidates; 'True' when any survived.
+displayClassical :: St -> [String] -> String -> [[String]] -> IO Bool
+displayClassical _ _ _ [] = pure False
+displayClassical st args goal groups = do
+  (verified, _) <- synthVerify st goal groups
+  let shown = take synthMaxShown verified
+  if null shown
+    then pure False
+    else do
+      emitLn st =<< cYellow st
+        "constructively unprovable \8212 but classically:"
+      forM_ (zip [1 :: Int ..] shown) $ \(i, term) -> do
+        n <- cBold st (show i)
+        emitLn st ("  " ++ n ++ "  " ++ term)
+      proving <- isJust . rsProve <$> readIORef st
+      emitLn st =<< cDim st (if proving
+        then ":synth N closes the goal with `exact` candidate N"
+        else ":synth N binds candidate N as `it`")
+      modifyIORef' st (\s -> s
+        { rsSynthLast = Just (SynthBatch goal shown args) })
+      pure True
 
 synthCounts :: Int -> Int -> Int -> String
 synthCounts engine dropped shown =

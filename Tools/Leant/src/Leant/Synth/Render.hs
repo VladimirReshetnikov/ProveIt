@@ -75,19 +75,23 @@ type CtorMap = Map.Map String CtorInfo
 -- group of textual variants, best guess first; the caller verifies
 -- them in order and keeps the first that elaborates.
 renderLeanTerm
-  :: CtorMap -> [String] -> Frag -> Expression String
+  :: CtorMap -> [(String, Frag)] -> Frag -> Expression String
   -> Either String [String]
 renderLeanTerm cm premises goalFrag expr0 = do
-  stripped <- stripPremises premises (normalizeExpr 0 expr0)
+  stripped <- stripPremises (map fst premises) (normalizeExpr 0 expr0)
   base <- uniquify stripped
+  -- premises participate in domain fitting under their marked names,
+  -- so case splits on them reveal their branch binders' domains
+  let seed = [(premiseMark ++ name, frag) | (name, frag) <- premises]
   texts <- concat <$> mapM variantsFor
-    (nub [fit cm force goalFrag base 0 [] | force <- [False, True]])
+    (nub [fit cm force goalFrag base 0 seed | force <- [False, True]])
   case nub texts of
     [] -> Left "no renderable variant"
     group -> Right (take 12 group)
  where
-  variantsFor (expr, _, domPairs) = do
-    let doms = Map.fromList domPairs
+  variantsFor fitted = do
+    let (expr, domPairs) = roleRename fitted
+        doms = Map.fromList domPairs
         sites = countSites doms expr
         sets
           | sites == 0 = [[]]
@@ -169,13 +173,109 @@ substLocals sub expr
         | (pat, body) <- alts
         ]
  where
-  removeBound pats m = foldr Map.delete m (concatMap boundNames pats)
-  boundNames pat = case pat of
-    Bind x -> [x]
-    Wildcard -> []
-    As x p -> x : boundNames p
-    TuplePattern ps -> concatMap boundNames ps
-    Constructor _ ps -> concatMap boundNames ps
+  removeBound pats m = foldr Map.delete m (concatMap patternNames pats)
+
+-- | Every name bound by a pattern.
+patternNames :: Pattern String -> [String]
+patternNames pat = case pat of
+  Bind x -> [x]
+  Wildcard -> []
+  As x p -> x : patternNames p
+  TuplePattern ps -> concatMap patternNames ps
+  Constructor _ ps -> concatMap patternNames ps
+
+-- Role-based naming ----------------------------------------------------------
+--
+-- After fitting, binders whose domain fragment the goal determines are
+-- named by role: continuations\/negations (domain ending in \8869) draw
+-- from the @k@ pool, other functions from @f g h@, values from
+-- @x y z w@, and binders the goal says nothing about from @a b c@.
+-- Placeholders are globally unique, so one global substitution is
+-- capture-safe; pools are mutually disjoint (including overflow
+-- spellings) and avoid the @z0, z1, ...@ names 'fit' gives eta binders.
+
+data Role = RoleNeg | RoleFun | RoleVal
+
+roleRename
+  :: (Expression String, Int, [(String, Frag)])
+  -> (Expression String, [(String, Frag)])
+roleRename (expr, _, domPairs) =
+  ( mapExprNames renamed expr
+  , [(renamed key, frag) | (key, frag) <- domPairs]
+  )
+ where
+  doms = Map.fromList domPairs
+  assignment = Map.fromList
+    (assign (filter isPlaceholder (binderOrder expr)) (0, 0, 0, 0))
+  renamed name = Map.findWithDefault name name assignment
+
+  assign [] _ = []
+  assign (name : rest) (nk, nf, nx, na) =
+    case classify <$> Map.lookup name doms of
+      Just RoleNeg ->
+        (name, pool "k" ["k"] nk) : assign rest (nk + 1, nf, nx, na)
+      Just RoleFun ->
+        (name, pool "f" ["f", "g", "h"] nf)
+          : assign rest (nk, nf + 1, nx, na)
+      Just RoleVal ->
+        (name, pool "x" ["x", "y", "z", "w"] nx)
+          : assign rest (nk, nf, nx + 1, na)
+      Nothing ->
+        (name, pool "a" ["a", "b", "c", "d", "e"] na)
+          : assign rest (nk, nf, nx, na + 1)
+
+  pool stem names i
+    | i < length names = names !! i
+    | otherwise = stem ++ show (i - length names + 1)
+
+  classify frag = case peel frag of
+    FArr _ rest
+      | endsBot rest -> RoleNeg
+      | otherwise -> RoleFun
+    _ -> RoleVal
+   where
+    endsBot f = case peel f of
+      FBot -> True
+      FArr _ r -> endsBot r
+      _ -> False
+  peel (FAll _ _ b) = peel b
+  peel f = f
+
+-- | Bound placeholder names in binding order.
+binderOrder :: Expression String -> [String]
+binderOrder e = case e of
+  Local _ -> []
+  Global _ -> []
+  Hole _ -> []
+  Apply f a -> binderOrder f ++ binderOrder a
+  Tuple es -> concatMap binderOrder es
+  Lambda pats b -> concatMap patternNames pats ++ binderOrder b
+  Let pat rhs b ->
+    binderOrder rhs ++ patternNames pat ++ binderOrder b
+  Case scrut alts -> binderOrder scrut
+    ++ concatMap (\(p, b) -> patternNames p ++ binderOrder b) alts
+
+-- | Rename every local name - binding and use sites alike.  Sound only
+-- for globally injective renamings of globally unique names.
+mapExprNames :: (String -> String) -> Expression String -> Expression String
+mapExprNames f = go
+ where
+  go e = case e of
+    Local x -> Local (f x)
+    Global g -> Global g
+    Hole h -> Hole h
+    Apply a b -> Apply (go a) (go b)
+    Tuple es -> Tuple (map go es)
+    Lambda pats b -> Lambda (map goPat pats) (go b)
+    Let pat rhs b -> Let (goPat pat) (go rhs) (go b)
+    Case scrut alts ->
+      Case (go scrut) [(goPat p, go b) | (p, b) <- alts]
+  goPat pat = case pat of
+    Bind x -> Bind (f x)
+    Wildcard -> Wildcard
+    As x p -> As (f x) (goPat p)
+    TuplePattern ps -> TuplePattern (map goPat ps)
+    Constructor c ps -> Constructor c (map goPat ps)
 
 -- Globals -------------------------------------------------------------------
 
@@ -270,14 +370,16 @@ normalizeExpr fresh expr = case expr of
 -- Uniquification -------------------------------------------------------------
 --
 -- Djinn's binder identities are strings of its own choosing; rename every
--- binding site to a fresh Lean-safe name (scoped, so shadowing in the
--- source term stays correct).  The name pool leaves @z1, z2, ...@ free
--- for binders introduced later by 'fit'.
+-- binding site to a reserved, globally unique placeholder (scoped, so
+-- shadowing in the source term stays correct).  The final Lean-safe
+-- names are chosen later by 'roleRename', once the fitting pass has
+-- paired binders with their goal-determined domain fragments.
 
-nameSupply :: [String]
-nameSupply =
-  ["a", "b", "c", "d", "e", "f", "g", "h", "p", "q", "r", "u", "v", "w"]
-    ++ ["x" ++ show n | n <- [1 :: Int ..]]
+placeholder :: Int -> String
+placeholder n = "$u" ++ show n
+
+isPlaceholder :: String -> Bool
+isPlaceholder = ("$u" ==) . take 2
 
 type Ren = Map.Map String String
 
@@ -341,7 +443,7 @@ uniquify expr0 = fst <$> go Map.empty 0 expr0
   goPat env n pat = case pat of
     Wildcard -> Right (Wildcard, env, n)
     Bind x ->
-      let name = nameSupply !! n
+      let name = placeholder n
       in Right (Bind name, Map.insert x name env, n + 1)
     TuplePattern ps -> do
       (ps', env', n') <- goPats env n ps
@@ -440,6 +542,23 @@ fitCore cm force cf ce n ds = case (cf, ce) of
               in (done ++ [arg'], k', dss')
             (args', n1, ds1) = foldl step ([], n, ds) (zip fields args)
         in (foldl Apply (Global g) args', n1, ds1)
+  -- an eliminated absurdity whose expected type is itself ⊥ needs no
+  -- elimination at all
+  (FBot, Case scrut []) -> fitCore cm force FBot scrut n ds
+  -- an application of a known hypothesis: fit each term argument
+  -- against the successive explicit-arrow domains of its type, so
+  -- binders inside those arguments are named and fitted too
+  (_, _)
+    | (Local h, args@(_ : _)) <- appSpine ce
+    , Just hFrag <- lookup h ds ->
+        let step (done, k, dss) (mdom, arg) = case mdom of
+              Just dom ->
+                let (arg', k', dss') = fit cm force dom arg k dss
+                in (done ++ [arg'], k', dss')
+              Nothing -> (done ++ [arg], k, dss)
+            (args', n1, ds1) =
+              foldl step ([], n, ds) (zip (argDoms hFrag) args)
+        in (foldl Apply (Local h) args', n1, ds1)
   (_, Case scrut alts) ->
     let scrutFrag = case scrut of
           Local s -> peelAlls <$> lookup s ds
@@ -475,6 +594,12 @@ fitCore cm force cf ce n ds = case (cf, ce) of
   appSpine expr = spineAcc expr []
   spineAcc (Apply f a) acc = spineAcc f (a : acc)
   spineAcc f acc = (f, acc)
+  -- the domain of the hypothesis type's n-th term argument (its
+  -- quantifier slots consume no term arguments)
+  argDoms frag = case frag of
+    FAll _ _ rest -> argDoms rest
+    FArr dom rest -> Just dom : argDoms rest
+    _ -> repeat Nothing
 
 -- | Binders whose domain type the goal fragment determines, recursing
 -- through tuple destructuring.
@@ -644,6 +769,17 @@ render cm style doms = go
       bodyTxt <- go 0 body
       Right (at req 0
         ("let " ++ patTxt ++ " := " ++ rhsTxt ++ "; " ++ bodyTxt))
+    Case scrut []
+      -- a one-argument negation applied and eliminated is `absurd`
+      -- in idiomatic Lean; the explicit style keeps `nomatch` for
+      -- the cases where `absurd`'s Prop-only hypothesis fails
+      | Idiomatic <- style
+      , Apply (Local kx) argE <- scrut
+      , Just frag <- Map.lookup (stripTag kx) doms
+      , isUnaryNeg frag -> do
+          argTxt <- go 2 argE
+          Right (at req 1
+            ("absurd " ++ argTxt ++ " " ++ stripMark (stripTag kx)))
     Case scrut [] -> do
       scrutTxt <- go 2 scrut
       Right (at req 0 ("nomatch " ++ scrutTxt))
@@ -658,13 +794,16 @@ render cm style doms = go
   -- trailing quantifiers when the site is tagged
   renderUse req x argTxts =
     let name = stripMark (stripTag x)
+        -- domain lookups keep the premise mark (premise entries are
+        -- seeded under their marked names); only the display strips it
+        key = stripTag x
         instantiate = tagged x
         -- a binder the goal fragment does not describe (bound inside an
         -- argument, say) simply takes its arguments as written
-        woven = case Map.lookup name doms of
+        woven = case Map.lookup key doms of
           Nothing -> argTxts
           Just frag -> weaveArgs frag argTxts
-        trailing = case Map.lookup name doms of
+        trailing = case Map.lookup key doms of
           Just frag | instantiate -> trailingAlls frag (length argTxts)
           _ -> 0
         parts = name : woven ++ replicate trailing "_"
@@ -677,6 +816,14 @@ render cm style doms = go
   weaveArgs (FAll False _ rest) as = weaveArgs rest as
   weaveArgs (FArr _ rest) (a : as) = a : weaveArgs rest as
   weaveArgs _ as = as
+
+  isUnaryNeg frag = case peelA frag of
+    FArr _ rest -> case peelA rest of
+      FBot -> True
+      _ -> False
+    _ -> False
+  peelA (FAll _ _ b) = peelA b
+  peelA f = f
 
   at req level text = if level >= req then text else "(" ++ text ++ ")"
 

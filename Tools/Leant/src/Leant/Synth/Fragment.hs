@@ -32,6 +32,7 @@ module Leant.Synth.Fragment
   , fragSpine
   , glivenkoSplit
   , leadingTypeArgs
+  , propAtoms
   ) where
 
 import Data.Char (isSpace)
@@ -450,6 +451,21 @@ glivenkoSplit = go []
     FRec _ ctors -> all (all quantFree . snd) ctors
     FAll{} -> False
     _ -> True
+
+-- | The distinct atomic subformulas (opaque variables and atoms) of a
+-- quantifier-free fragment - the candidates for excluded-middle
+-- premises in the classical fallback's case-split presentation.
+propAtoms :: Frag -> [Frag]
+propAtoms = nub . go
+ where
+  go f = case f of
+    FArr a b -> go a ++ go b
+    FProd a b -> go a ++ go b
+    FSum a b -> go a ++ go b
+    FInd _ ctors -> concatMap (concatMap go . snd) ctors
+    FVar _ -> [f]
+    FAtom _ _ -> [f]
+    _ -> []
 
 -- | Display keys of atoms that poison a negative verdict (they mention
 -- concrete constants whose structure the engine cannot see).

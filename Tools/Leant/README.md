@@ -87,12 +87,22 @@ implemented).
 λ> :synth (A × (B ⊕ C) → (A × B) ⊕ (A × C))
   1  fun ⟨a, b⟩ => match b with | .inl c => .inl ⟨a, c⟩ | .inr d => .inr ⟨a, d⟩
 (1 verified candidate)
-λ> :synth (((a → b) → a) → a)
-provably uninhabited — no closed term of this polymorphic type exists
+λ> :synth (∀ p q : Prop, ((p → q) → p) → p)
+constructively unprovable — but classically:
+  1  fun _ _ f => match Classical.em _ with | .inl x => x | .inr k => f (fun y => absurd y k)
 λ> :synth (∀ p : Prop, Decidable p → Decidable (¬ p))
-  1  fun _ a => match a with | Decidable.isFalse b => Decidable.isTrue b | Decidable.isTrue c => Decidable.isFalse (fun d => d c)
+  1  fun _ x => match x with | .isFalse k => .isTrue k | .isTrue y => .isFalse (fun k1 => k1 y)
 (1 verified candidate)
 ```
+
+Binders are named by role — continuations/negations `k`, functions
+`f g h`, values `x y z` — and a constructively refuted `Prop` goal gets
+a classical attempt: first with an excluded-middle case split per
+atomic subformula (shown as `match Classical.em _ with ...`), then via
+the Glivenko double-negation translation wrapped in
+`Classical.byContradiction`. Both presentations are backend-verified
+like every other candidate; single-argument negations render as
+`absurd`.
 
 - Every displayed candidate has been **verified by the Lean backend**
   (`example : (T) := term`) — the synthesis engine is never trusted.
