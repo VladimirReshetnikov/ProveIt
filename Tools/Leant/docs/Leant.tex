@@ -179,8 +179,8 @@
 \vspace{\stretch{3}}
 \begin{center}
   \small\color{lichen}
-  An \textbf{experimental} tool in active development --- interfaces,
-  output, and capabilities change frequently.\\[0.6em]
+  An \textbf{experimental} tool in active development.
+  Interfaces, output, and capabilities change frequently.\\[0.6em]
   Part of the \emph{ProveIt} repository, \code{Tools/Leant}.\quad
   July 2026.
 \end{center}
@@ -200,21 +200,21 @@
 Leant is an interactive read--eval--print loop for Lean~4, in the
 spirit of GHCi: you type expressions and they are evaluated, you type
 declarations and they enter the session, and a family of colon-commands
-gives you type queries, documentation, search, interactive proving, and
---- the subject of half of this document --- automatic \emph{term
-synthesis} with machine-checked answers.
+gives you type queries, documentation, search, interactive proving,
+and automatic \emph{term synthesis} with machine-checked answers.
+The synthesis command takes up half of this document.
 
 Lean~4 itself is normally driven from an editor: the language server
 shows goals and diagnostics as you edit a file. Leant complements that
-workflow with a conversational one. It is aimed at exploration ---
-trying a lemma, poking at a definition, asking \emph{is this type even
-inhabited?} --- where the unit of work is a line, not a file.
+workflow with a conversational one. It is aimed at exploration (trying a
+lemma, poking at a definition, asking \emph{is this type even
+inhabited?}), where the unit of work is a line, not a file.
 
 \begin{notice}{experimental}
 Leant is an \textbf{experimental project in active development}. It is
 a research vehicle, not a supported product: commands appear, change
 shape, and disappear between commits; output formats are not stable;
-and some features are deliberately bounded approximations. Every
+and some features are bounded approximations by design. Every
 transcript in this document was produced by the tool at the date on
 the title page and may not match the tool you build tomorrow. When
 this document and \code{:help} disagree, believe \code{:help}.
@@ -232,7 +232,7 @@ Haskell implementation.
 Under the hood, Leant drives the community
 \code{leanprover-community/repl} binary over a JSON protocol: every
 input becomes a command against a persistent Lean environment, and
-every claim Leant makes --- including every synthesized term --- is
+every claim Leant makes, including every synthesized term, is
 checked by that backend before it is shown. Sessions survive backend
 crashes (the session history replays automatically), can be saved and
 restored (\code{:pickle}/\code{:unpickle}), and can be recorded as
@@ -243,7 +243,7 @@ transcripts.
 
 Build the binary once with \code{cabal build exe:leant} (GHC 9.12.4;
 the vendored \code{lib/Djex} submodule must be initialized), then run
-\code{leant.cmd} --- or the built executable directly. Leant finds the
+\code{leant.cmd}, or the built executable directly. Leant finds the
 Lean backend the same way LeanInteract's cache laid it out, or accepts
 an explicit \code{-{}-repl-exe}/\code{LEANT\_BACKEND}. Without a Lake
 project it runs against the plain Lean~4 standard library, which is
@@ -270,8 +270,8 @@ GHCi-style. Declarations (\code{def}, \code{theorem},
 \code{inductive}, \dots) extend the session environment, and any
 \code{\#}-command (\code{\#eval}, \code{\#check}, \code{\#print
 axioms}) passes straight through. Multi-line input opens automatically
-when a line is syntactically incomplete --- type a \code{structure}
-header and keep going --- and an empty line submits it.
+when a line is syntactically incomplete (type a \code{structure}
+header and just keep going), and an empty line submits it.
 
 %==============================================================================
 \section{The commands}\label{sec:commands}
@@ -351,48 +351,48 @@ saved: theorem mp_and : ∀ p q : Prop, (p → q) → p → q ∧ p
 
 A \code{sorry} in an ordinary declaration prints its goal and offers
 the same loop via bare \code{:prove}. Prove mode also cooperates with
-\code{:synth}, which is where it gets interesting
-(\S\ref{sec:synthprove}).
+\code{:synth}; \S\ref{sec:synthprove} shows what that buys.
 
 %==============================================================================
 \section{Term synthesis: \code{:synth}}\label{sec:synth}
 
 \code{:synth TYPE} answers the question \emph{``write me a term of
-this type''} --- or, on the propositions-as-types side of the mirror,
-\emph{``prove this''} --- and sometimes the stronger question
+this type''}; read through propositions-as-types, that is
+\emph{``prove this.''} Sometimes it answers the stronger question
 \emph{``show me that no such term exists.''} It is built on the
 vendored Djex library, linked in-process. Djex began by merging two
 classic Haskell program synthesizers behind one checked synthesis
-foundation --- \textbf{Djinn}, a complete and terminating proof
+foundation: \textbf{Djinn}, a complete and terminating proof
 search for intuitionistic propositional logic (Dyckhoff's LJT
 calculus) that emits programs, and \textbf{Exference}, a ranked
-heuristic search under explicit budgets --- and has since moved well
-beyond both originals. It fixes a substantial number of their bugs
-(notably verdict honesty: an exhausted search over an approximated
-space is reported as \emph{no evidence}, never as a refutation);
-it implements markedly better type-class support, with a unified,
-validated constraint contract shared by both engines --- Exference
-resolves givens, superclasses, and instances, Djinn checks contexts
-and synthesizes dictionary-independent terms; and it adds a growing
-level of support for rank-N and impredicative types: goal-side
+heuristic search under explicit budgets. It has since moved well
+beyond both originals. It fixes a long list of their bugs; the worst
+of them let a search that had merely approximated a type report that
+type uninhabited, and an exhausted search over an approximated space
+now counts for nothing.
+It implements much better type-class support, with a unified,
+validated constraint contract shared by both engines: Exference
+resolves givens, superclasses, and instances, while Djinn checks
+contexts and synthesizes dictionary-independent terms. And it adds a
+growing level of support for rank-N and impredicative types: goal-side
 quantifiers open through polarity-aware plan families, quantified
 hypotheses are instantiated at a bounded set of sequent-supplied
 types, and impredicative instantiation is admitted under a guard that
 never invents a polytype the query did not supply. That scope is
-still being improved; Leant consumes Djex as a library behind a
-deliberately narrow engine boundary, so each improvement arrives by
-version bump. The engines speak Haskell types; Leant translates Lean
+still being improved, and Leant keeps the boundary to the engines
+narrow on purpose, so each improvement arrives by version bump. The engines speak Haskell types; Leant translates Lean
 goals into their fragment and their answers back into Lean.
 
-Three design rules keep this honest:
+Three rules run through the design:
 
 \begin{itemize}
 \item \textbf{The engine is never trusted.} Every candidate is
   re-elaborated by the Lean backend against the exact goal
   (\code{example :\ (T) :=\ term}) before you see it. A rendering bug
   or an engine bug costs a dropped candidate, never a wrong answer.
-\item \textbf{Refusals are honest.} Goals outside the supported
-  fragment are refused with a reason, not silently mangled.
+\item \textbf{Refusals come with reasons.} A goal outside the
+  supported fragment is turned away with a note saying what fell
+  outside, not quietly mangled into something answerable.
 \item \textbf{Negative verdicts are labeled by strength.}
   ``Provably uninhabited'' appears only when the translation was
   complete and lossless; anything weaker is reported as ``no term
@@ -403,7 +403,7 @@ Three design rules keep this honest:
 
 The sweet spot is the structural fragment: arrows, products, sums,
 $\bot$, $\top$, negation, \code{Iff}, and quantifiers over opaque
-variables --- the ``plumbing'' terms one writes constantly.
+variables. These are the ``plumbing'' terms one writes constantly.
 Free capital identifiers are auto-bound, so quick queries stay quick:
 
 \begin{session}
@@ -418,9 +418,9 @@ Free capital identifiers are auto-bound, so quick queries stay quick:
 The first is the S combinator; the second distributes a product over a
 sum; the third is contraposition across an \code{Iff}, with the
 backward implication projected out by the pattern
-\code{⟨\_, f⟩}. Binders are named by role --- functions \code{f g h},
-values \code{x y z}, negations and continuations \code{k} --- which is
-a small thing that makes large candidates legible.
+\code{⟨\_, f⟩}. Binders are named by role (functions \code{f g h},
+values \code{x y z}, negations and continuations \code{k}), a small
+thing that makes large candidates much easier to read.
 
 Candidates are ranked smallest-first and \emph{bound into the session}
 as \code{it1}, \code{it2}, \dots, with bare \code{it} the best one.
@@ -435,8 +435,56 @@ They are ordinary definitions; you can evaluate them immediately:
 \end{session}
 
 Both inhabitants of $a \to a \to a$ that matter, and picking one is
-just using its name. For \emph{programs} --- as opposed to
-proof-irrelevant propositions --- candidate choice is the whole point.
+just using its name. For programs, as opposed to proof-irrelevant
+propositions, the choice between candidates is the whole point.
+
+An \code{Iff} goal is treated as a pair of implications, so both
+directions of a logical identity arrive in one anonymous constructor.
+De Morgan and the absorption law:
+
+\begin{session}
+λ> :synth (∀ p q : Prop, ¬(p ∨ q) ↔ ¬p ∧ ¬q)
+  it1  fun _ _ => ⟨fun k => ⟨fun x => k (.inl x), fun y => k (.inr y)⟩, fun ⟨k1, k2⟩ z => match z with | .inl w => k1 w | .inr x1 => k2 x1⟩
+λ> :synth (∀ p q : Prop, p ∧ (p ∨ q) ↔ p)
+  it1  fun _ _ => ⟨fun ⟨x, _⟩ => x, fun y => ⟨y, .inl y⟩⟩
+\end{session}
+
+\subsection{Programs you already know}\label{sec:monads}
+
+Some types have one sensible inhabitant, and asking for it by type is
+quicker than remembering which library corner it lives in. Take the
+bind of the state monad:
+
+\begin{session}
+λ> :synth ((S → A × S) → (A → S → B × S) → S → B × S)
+  it1  fun f g x => match f x with | ⟨a, b⟩ => g a b
+  it2  fun f g x => match f x with | ⟨a, _⟩ => g a x
+  it3  fun f g x => match f x with | ⟨a, b⟩ => (match g a x with | ⟨c, _⟩ => ⟨c, b⟩)
+\end{session}
+
+The first candidate threads the state correctly. Now look at the
+second: it is type-correct and runs \code{g} on the \emph{initial}
+state, throwing away whatever \code{f} did to it. That is the classic
+state-threading bug, and the type admits it just as happily. Types
+alone cannot tell these apart, which is why all candidates are shown
+and each is one keystroke from a test run. Continuation-passing style
+works too; this is the bind of the continuation monad:
+
+\begin{session}
+λ> :synth ((A → R) → R) → (A → (B → R) → R) → (B → R) → R
+  it1  fun f g h => f (fun x => g x h)
+\end{session}
+
+With the inductive expansion of \S\ref{sec:inductives} the same game
+extends to data. Here is \code{Option.bind}, with the lazy
+\code{.none} candidate ranked first and the real one second. When in
+doubt, run one:
+
+\begin{session}
+λ> :synth (∀ a b : Type, Option a → (a → Option b) → Option b)
+  it1  fun _ _ _ _ => .none
+  it2  fun _ _ x f => match x with | .none => (.none) | .some y => f y
+\end{session}
 
 \subsection{Impossibility, proved}\label{sec:negative}
 
@@ -451,11 +499,11 @@ provably uninhabited — no closed term of this polymorphic type exists
 No Lean tactic gives you this answer (a failing \code{exact?} proves
 nothing). Note the careful wording: the verdict is about \emph{closed
 terms of the polymorphic type}. It does not say any particular
-instance $a \to b$ is empty --- choose $a = b$ and it isn't --- and
+instance $a \to b$ is empty (choose $a = b$ and it isn't), and
 for propositions it is about \emph{constructive} provability, a
 distinction \S\ref{sec:classical} exploits. When the translation had
-to hide structure behind an opaque atom, the verdict honestly
-downgrades:
+to hide structure behind an opaque atom, the verdict backs off to
+match:
 
 \begin{session}
 λ> :synth (∀ a : Type, Sigma (fun _ : Nat => a))
@@ -483,12 +531,22 @@ rule. This covers the standard library's little workhorses ---
 
 --- \code{Option.join} and \code{Except.map} synthesized rather than
 remembered. It extends to \code{Type}-valued classes-as-data like
-\code{Decidable}, where the eliminations write themselves:
+\code{Decidable}, where the eliminations write themselves, up to and
+including the instance combinators a library author would otherwise
+write by hand:
 
 \begin{session}
 λ> :synth (∀ p : Prop, Decidable p → Decidable (¬ p))
   it1  fun _ x => match x with | .isFalse k => .isTrue k | .isTrue y => .isFalse (fun k1 => k1 y)
+λ> :synth (∀ p q : Prop, Decidable p → Decidable q → Decidable (p ∧ q))
+  it1  fun _ _ x y => match x with | .isFalse k => .isFalse (fun ⟨z, _⟩ => k z) | .isTrue w => (match y with | .isFalse k1 => .isFalse (fun ⟨_, x1⟩ => k1 x1) | .isTrue x2 => .isTrue ⟨w, x2⟩)
+λ> :synth (∀ p q : Prop, Decidable p → Decidable q → Decidable (p → q))
+  it1  fun _ _ x y => match x with | .isFalse k => .isTrue (fun z => absurd z k) | .isTrue w => (match y with | .isFalse k1 => .isFalse (fun f => k1 (f w)) | .isTrue x1 => .isTrue (fun _ => x1))
 \end{session}
+
+The last two are decidability of conjunction and of implication,
+assembled by case analysis on both instance arguments: four
+branches each, every branch carrying its own little proof.
 
 Session-declared types participate the moment you declare them, and
 refutations over expanded inductives remain sound, because the engine
@@ -505,10 +563,10 @@ saw the complete constructor list:
 provably uninhabited — no closed term of this polymorphic type exists
 \end{session}
 
-Recursive types cannot be expanded --- elimination is where
-undecidability lives --- but their \emph{constructors} are still sound
-introduction rules, so building is possible even where analysis is
-not:
+Recursive types cannot be expanded; elimination is where
+undecidability lives. Their \emph{constructors} are still sound
+introduction rules, though, so building is possible even where
+analysis is not:
 
 \begin{session}
 λ> :synth Nat
@@ -520,10 +578,22 @@ not:
 
 \subsection{Classical candidates}\label{sec:classical}
 
-Peirce's law has no constructive inhabitant, and \code{:synth} can
-prove that. But rather than stopping at the refutation, it then asks
-the classical question, and answers with a term whose spelling
-announces exactly what was used:
+Constructive logic goes further than newcomers expect, and
+\code{:synth} stays inside it whenever it can. Triple negation
+collapses, and contraposition holds in one direction, with no axioms
+in sight:
+
+\begin{session}
+λ> :synth (∀ p : Prop, ¬¬¬p → ¬p)
+  it1  fun _ k x => k (fun k1 => k1 x)
+λ> :synth (∀ p q : Prop, (p → q) → ¬q → ¬p)
+  it1  fun _ _ f k x => k (f x)
+\end{session}
+
+Peirce's law is different: it has no constructive inhabitant, and
+\code{:synth} can prove that. But rather than stopping at the
+refutation, it then asks the classical question, and answers with a
+term whose spelling shows what was used:
 
 \begin{session}
 λ> :synth (∀ p q : Prop, ((p → q) → p) → p)
@@ -533,12 +603,13 @@ announces exactly what was used:
 \end{session}
 
 These are the proofs a human would write: one case split on excluded
-middle, one \code{absurd} where the contradiction lands. Even
-statements that are classically true but intuitionistically
-unprovable in a less famous way come out as case splits --- the
-G\"odel--Dummett formula, for instance:
+middle, one \code{absurd} where the contradiction lands. Less famous
+gaps between the two logics come out the same way. Weak excluded
+middle, and the G\"odel--Dummett formula:
 
 \begin{session}
+λ> :synth (∀ p : Prop, ¬p ∨ ¬¬p)
+  it1  fun _ => match Classical.em _ with | .inl x => .inr (fun k => k x) | .inr k1 => .inl k1
 λ> :synth (∀ p q : Prop, (p → q) ∨ (q → p))
   it1  fun _ _ => match Classical.em _ with | .inl x => (match Classical.em _ with | .inl _ => .inr (fun _ => x) | .inr k => .inr (fun y => absurd y k)) | .inr k1 => .inl (fun z => absurd z k1)
 \end{session}
@@ -547,8 +618,8 @@ Two searches stand behind this. First, one excluded-middle assumption
 per atomic subformula is handed to the intuitionistic engine ---
 complete for the propositional fragment, since intuitionistic logic
 plus atom instances of $p \vee \neg p$ \emph{is} classical
-propositional logic --- and rendered as \code{Classical.em} case
-splits. If that misses, the goal's double-negation translation runs
+propositional logic. The findings are rendered as \code{Classical.em}
+case splits. If that misses, the goal's double-negation translation runs
 instead (complete by Glivenko's theorem) and the candidate is wrapped
 in \code{Classical.byContradiction}. Both kinds are verified like any
 other candidate. The whole behavior sits behind a switch:
@@ -563,8 +634,8 @@ provably uninhabited — no closed term of this polymorphic type exists
 
 \subsection{Dependent formulas as cargo}\label{sec:dependent}
 
-Leant's translation deliberately does not analyze dependent types.
-But it does not refuse them either: a dependent subformula becomes an
+Leant's translation makes no attempt to analyze dependent types.
+It does not refuse them either: a dependent subformula becomes an
 opaque \emph{atom}, compared up to $\alpha$-equivalence, which the
 engine can carry from one side of a goal to the other. Transport
 works; analysis does not:
@@ -576,7 +647,7 @@ works; analysis does not:
   it1  fun ⟨x, y⟩ => ⟨y, x⟩
 \end{session}
 
-The engine never looked inside $\forall n,\, P\,n$ --- it swapped a
+The engine never looked inside $\forall n,\, P\,n$; it swapped a
 sealed box. A goal that would require opening the box (an induction, a
 rewrite, a case split on an index) is refused with a reason; that work
 belongs to \code{:prove}.
@@ -586,32 +657,82 @@ belongs to \code{:prove}.
 Bare \code{:synth} in prove mode targets the current goal \emph{with
 its hypotheses as premises}. Candidates are offered as \code{it1},
 \code{it2}, \dots\ exactly as in the session, except that here
-\code{itN} splices the candidate applied to your hypotheses --- so
-\code{exact it1} closes the goal:
+\code{itN} splices the candidate applied to your hypotheses, so
+\code{exact it1} closes the goal. The hypotheses can carry real
+weight; below, the case analysis on the \code{Decidable} instance
+comes from \code{hd}:
 
 \begin{session}
-λ> :prove ∀ p q : Prop, (p → q) → p → q ∧ p
-⊢ ∀ (p q : Prop), (p → q) → p → q ∧ p
-⊢> intro p q h hp
+λ> :prove ∀ p q : Prop, Decidable p → (p → q) → (¬p → q) → q
+⊢ ∀ (p q : Prop), Decidable p → (p → q) → (¬p → q) → q
+⊢> intro p q hd hpq hnq
 p q : Prop
-h : p → q
-hp : p
-⊢ q ∧ p
+hd : Decidable p
+hpq : p → q
+hnq : ¬p → q
+⊢ q
 ⊢> :synth
-(synthesizing with hypotheses p q h hp as premises)
-  it1  fun _ _ f x => ⟨f x, x⟩
+(synthesizing with hypotheses p q hd hpq hnq as premises)
+  it1  fun _ _ x f g => match x with | .isFalse k => g k | .isTrue y => f y
 ⊢> exact it1
 All goals accomplished
-⊢> :qed mp_and
-saved: theorem mp_and : ∀ p q : Prop, (p → q) → p → q ∧ p
+⊢> :qed byCases
+saved: theorem byCases : ∀ p q : Prop, Decidable p → (p → q) → (¬p → q) → q
+\end{session}
+
+It also slots into an ordinary multi-goal proof. Split a conjunction
+with \code{constructor} and let \code{:synth} deal with each half in
+turn. Notice the prompt tracking the number of open goals, and the
+projections from \code{h} showing up without being asked for:
+
+\begin{session}
+λ> :prove ∀ p q r : Prop, (p → q) ∧ (q → r) → p → r ∧ (p → q)
+⊢ ∀ (p q r : Prop), (p → q) ∧ (q → r) → p → r ∧ (p → q)
+⊢> intro p q r h hp
+p q r : Prop
+h : (p → q) ∧ (q → r)
+hp : p
+⊢ r ∧ (p → q)
+⊢> constructor
+— goal 1 of 2 —
+case left
+p q r : Prop
+h : (p → q) ∧ (q → r)
+hp : p
+⊢ r
+— goal 2 of 2 —
+case right
+p q r : Prop
+h : (p → q) ∧ (q → r)
+hp : p
+⊢ p → q
+⊢2> :synth
+(synthesizing with hypotheses p q r h hp as premises)
+  it1  fun _ _ _ ⟨f, g⟩ x => g (f x)
+⊢2> exact it1
+case right
+p q r : Prop
+h : (p → q) ∧ (q → r)
+hp : p
+⊢ p → q
+⊢> :synth
+(synthesizing with hypotheses p q r h hp as premises)
+  it1  fun _ _ _ ⟨f, _⟩ x _ => f x
+⊢> exact it1
+All goals accomplished
+⊢> :qed chain
+saved: theorem chain : ∀ p q r : Prop, (p → q) ∧ (q → r) → p → r ∧ (p → q)
 \end{session}
 
 Unlike \code{exact?}, which finds an \emph{existing} lemma, this
-\emph{composes a new term} from the goal's own material --- a
-constructive complement to the finisher tactics, needing no premise
-database and no imports.
+composes a new term from the goal's own material: a constructive
+complement to the finisher tactics, needing no premise database and
+no imports. The division of labor that
+emerges is pleasant: the genuinely dependent moves (quantifiers,
+induction, rewriting) stay yours, and the propositional bookkeeping
+between them does not.
 
-\subsection{Engines, budgets, and honesty about both}\label{sec:engines}
+\subsection{Engines and budgets}\label{sec:engines}
 
 The default engine is Djinn: complete, terminating, and the only
 source of refutations. \code{:set synth-engine exference} switches to
@@ -638,18 +759,18 @@ bounded instantiation can widen the space; hitting it is reported as
 
 \subsection{What \code{:synth} will not do}\label{sec:limits}
 
-Present limits, stated plainly: it will not synthesize recursion or
-induction (recursive types contribute constructors only); it will not
-analyze dependent structure (atoms are transported, never opened);
-quantifier handling beyond the propositional fragment follows Djex's
-bounded rank-N and guarded impredicativity rules --- sound and
-terminating over an undecidable space, and widening as Djex improves
---- so some higher-rank goals answer ``no term found within bounds''
-rather than anything stronger; and although Djex itself resolves
-type-class evidence, Leant currently leaves instance arguments to
-Lean's elaborator during verification, which is better placed to
-resolve them. The fragment is bounded on purpose: inside it, answers
-are fast, verified, and --- for refutations --- final.
+Some plain statements of present limits. It will not synthesize
+recursion or induction; recursive types contribute constructors only.
+It will not analyze dependent structure; atoms are transported, never
+opened. Quantifier handling beyond the propositional fragment follows
+Djex's bounded rank-N and guarded impredicativity rules, which are
+sound and terminating over an undecidable space and widen as Djex
+improves; until then, some higher-rank goals answer ``no term found
+within bounds'' and nothing stronger. And although Djex can resolve
+type-class evidence itself, Leant leaves instance arguments to Lean's
+elaborator during verification, which sits nearer the instance tables
+anyway. The fragment is bounded on purpose: inside it, answers are
+fast, verified, and, for refutations, final.
 
 %==============================================================================
 \section{How it works, briefly}\label{sec:how}
@@ -661,9 +782,9 @@ connectives are decomposed; qualifying inductives expand into
 constructor lists; everything else becomes an $\alpha$-normalized
 opaque atom. The fragment translator either accepts the result or
 refuses with a reason. The selected engine searches; its candidates
-are rendered back into Lean syntax --- constructor names restored,
-binders named by role, anonymous-constructor and leading-dot
-spellings preferred with fully qualified fallbacks. Finally the
+are rendered back into Lean syntax, with constructor names restored,
+binders named by role, and anonymous-constructor and leading-dot
+spellings preferred over fully qualified fallbacks. Finally the
 backend re-elaborates each candidate against the original goal, and
 only survivors are shown and bound. The engine boundary is narrow by
 design: the searches behind it are swappable, and nothing they emit is
