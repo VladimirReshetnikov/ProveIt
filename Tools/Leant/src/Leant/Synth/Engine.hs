@@ -66,7 +66,7 @@ import Language.Haskell.Djex
   )
 
 import Leant.Synth.Fragment (Frag (..), fragUnsafeAtoms)
-import Leant.Synth.Render (CtorMap, renderLeanTerm)
+import Leant.Synth.Render (CtorInfo (..), CtorMap, renderLeanTerm)
 
 -- | What the engine established for one goal.  Candidate terms are a lazy
 -- ranked list of rendered variant groups (one group per engine candidate;
@@ -297,12 +297,13 @@ fragToDjinn frag0 = do
                   , fieldType <- fieldTypes
                   , v <- toList fieldType
                   ]
+            let sole = length translated == 1
             constructors <- mapM
               (\(j, (leanName, fields, fieldTypes)) -> do
                 let spelling = "LeantC" ++ show index ++ "_" ++ show j
                 cname <- nameT spelling
                 modifyT (\s -> s { tsCtorMap = Map.insert spelling
-                    (leanName, fields) (tsCtorMap s) })
+                    (CtorInfo leanName fields sole) (tsCtorMap s) })
                 pure (DataConstructor () cname fieldTypes))
               (zip [0 :: Int ..] translated)
             -- kinds stay implicit: Djinn's lowering rejects explicit

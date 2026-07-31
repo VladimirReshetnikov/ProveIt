@@ -33,7 +33,8 @@
 -- The engine is never trusted (design rule 2): a rendering failure just
 -- drops the candidate, and everything shown has been verified.
 module Leant.Synth.Render
-  ( CtorMap
+  ( CtorInfo (..)
+  , CtorMap
   , renderLeanTerm
   ) where
 
@@ -54,10 +55,16 @@ import Language.Haskell.Synthesis.Name
 
 import Leant.Synth.Fragment (Frag (..), Slot (..), fragSpine, leadingTypeArgs)
 
--- | Engine-side constructor spelling -> (full Lean constructor name,
--- field fragments), for the datatypes 'Leant.Synth.Engine' declared to
--- represent expanded inductive occurrences (phase 2).
-type CtorMap = Map.Map String (String, [Frag])
+-- | One constructor of a datatype 'Leant.Synth.Engine' declared to
+-- represent an expanded inductive occurrence (phase 2).
+data CtorInfo = CtorInfo
+  { ciLean :: String    -- ^ full Lean constructor name
+  , ciFields :: [Frag]  -- ^ field fragments
+  , ciSole :: Bool      -- ^ the inductive's only constructor
+  }
+
+-- | Engine-side constructor spellings of the declared datatypes.
+type CtorMap = Map.Map String CtorInfo
 
 -- | Render one candidate expression against the goal fragment.  Returns
 -- a nonempty group of textual variants, best guess first; the caller
@@ -79,7 +86,17 @@ renderLeanTerm cm goalFrag expr0 = do
           | sites == 0 = [[]]
           | sites <= 3 = siteSubsets sites
           | otherwise = [[], [0 .. sites - 1]]
-    mapM (\set -> render cm doms 0 (markSites doms set expr)) sets
+        -- within one instantiation choice, offer the idiomatic
+        -- constructor spellings (anonymous ⟨...⟩ for a sole
+        -- constructor, leading-dot otherwise) before the fully
+        -- qualified fallback; verification keeps the first that
+        -- elaborates
+        styles = [Idiomatic, Explicit]
+    concat <$> mapM
+      (\set -> mapM
+        (\style -> render cm style doms 0 (markSites doms set expr))
+        styles)
+      sets
 
 -- | Instantiation subsets, transport-first: no site instantiated, all
 -- sites, then the mixed subsets by size.
@@ -92,19 +109,19 @@ siteSubsets k = [] : full : sortOn (\s -> (length s, s)) middle
 
 -- Globals -------------------------------------------------------------------
 
-data GlobalKind = GInl | GInr | GUnit | GCtor String
+data GlobalKind = GInl | GInr | GUnit | GCtor CtorInfo
 
 globalKind :: CtorMap -> Name -> Either String GlobalKind
 globalKind cm name
   | nameSpelling name == Just "Left" = Right GInl
   | nameSpelling name == Just "Right" = Right GInr
   | nameSpecial name == Just (TupleConstructor Boxed 0) = Right GUnit
-  | Just (leanName, _) <- declaredCtor cm name = Right (GCtor leanName)
+  | Just info <- declaredCtor cm name = Right (GCtor info)
   | otherwise = Left ("unexpected global in candidate: " ++ show name)
 
 -- | A constructor of one of the engine-declared datatypes, looked up by
 -- its engine spelling.
-declaredCtor :: CtorMap -> Name -> Maybe (String, [Frag])
+declaredCtor :: CtorMap -> Name -> Maybe CtorInfo
 declaredCtor cm name = nameSpelling name >>= (`Map.lookup` cm)
 
 -- Pattern normalization ------------------------------------------------------
@@ -344,7 +361,7 @@ fitCore cm force cf ce n ds = case (cf, ce) of
   -- the corresponding field fragment
   (FInd _ _, _)
     | (Global g, args@(_ : _)) <- appSpine ce
-    , Just (_, fields) <- declaredCtor cm g
+    , Just (CtorInfo _ fields _) <- declaredCtor cm g
     , length args == length fields ->
         let step (done, k, dss) (field, arg) =
               let (arg', k', dss') = fit cm force field arg k dss
@@ -362,7 +379,7 @@ fitCore cm force cf ce n ds = case (cf, ce) of
                 (Just (FSum _ b), Constructor g [p])
                   | Right GInr <- globalKind cm g -> bindDomainPairs p b
                 (Just (FInd _ _), Constructor g ps)
-                  | Just (_, fields) <- declaredCtor cm g
+                  | Just (CtorInfo _ fields _) <- declaredCtor cm g
                   , length ps == length fields ->
                       concat (zipWith bindDomainPairs ps fields)
                 (Just f, TuplePattern _) -> bindDomainPairs pat f
@@ -497,9 +514,13 @@ markOrCount doms set = go
 -- and tagged occurrences additionally instantiate their trailing
 -- quantifiers.
 
-render :: CtorMap -> Map.Map String Frag -> Int -> Expression String
-       -> Either String String
-render cm doms = go
+-- | Constructor-spelling preference for one rendering pass.
+data Style = Idiomatic | Explicit
+  deriving (Eq)
+
+render :: CtorMap -> Style -> Map.Map String Frag -> Int
+       -> Expression String -> Either String String
+render cm style doms = go
  where
   go :: Int -> Expression String -> Either String String
   go req expr = case expr of
@@ -510,27 +531,40 @@ render cm doms = go
         GUnit -> Right (at req 2 "\10216\10217")
         GInl -> Right (at req 0 ".inl")
         GInr -> Right (at req 0 ".inr")
-        GCtor leanName -> Right (at req 2 leanName)
+        GCtor info -> case style of
+          Idiomatic
+            | ciSole info && null (ciFields info) ->
+                Right (at req 2 "\10216\10217")
+            | otherwise -> Right (at req 0 (shortDot (ciLean info)))
+          Explicit -> Right (at req 2 (ciLean info))
     Apply _ _ -> do
       let (headExpr, args) = spine expr []
       case headExpr of
         Local x -> do
           argTxts <- mapM (go 2) args
           renderUse req x argTxts
+        Global g
+          | Right (GCtor info) <- globalKind cm g
+          , style == Idiomatic
+          , ciSole info
+          , length args == length (ciFields info) -> do
+              argTxts <- mapM (go 0) args
+              Right (at req 2
+                ("\10216" ++ intercalate ", " argTxts ++ "\10217"))
         _ -> do
           headTxt <- renderHead headExpr
           argTxts <- mapM (go 2) args
           Right (at req 1 (unwords (headTxt : argTxts)))
     Lambda [] body -> go req body
     Lambda pats body -> do
-      binders <- mapM (renderPattern cm True) pats
+      binders <- mapM (renderPattern cm style True) pats
       bodyTxt <- go 0 body
       Right (at req 0 ("fun " ++ unwords binders ++ " => " ++ bodyTxt))
     Tuple es -> do
       txts <- mapM (go 0) es
       Right (at req 2 ("\10216" ++ intercalate ", " txts ++ "\10217"))
     Let pat rhs body -> do
-      patTxt <- renderPattern cm True pat
+      patTxt <- renderPattern cm style True pat
       rhsTxt <- go 0 rhs
       bodyTxt <- go 0 body
       Right (at req 0
@@ -580,21 +614,24 @@ render cm doms = go
       GInl -> Right ".inl"
       GInr -> Right ".inr"
       GUnit -> Right "\10216\10217"
-      GCtor leanName -> Right leanName
+      GCtor info -> Right $ case style of
+        Idiomatic -> shortDot (ciLean info)
+        Explicit -> ciLean info
   renderHead other = go 1 other
 
   -- non-final match-alternative bodies must not swallow following
   -- alternatives, so open bodies are parenthesized uniformly
   renderAlt (pat, body) = do
-    patTxt <- renderPattern cm False pat
+    patTxt <- renderPattern cm style False pat
     bodyTxt <- go 1 body
     Right ("| " ++ patTxt ++ " => " ++ bodyTxt)
 
 -- | @binder@ selects the irrefutable subset used after @fun@\/@let@;
 -- match alternatives additionally allow constructor patterns.  The
 -- top-level pattern needs no parentheses; nested constructor patterns do.
-renderPattern :: CtorMap -> Bool -> Pattern String -> Either String String
-renderPattern cm = go False
+renderPattern
+  :: CtorMap -> Style -> Bool -> Pattern String -> Either String String
+renderPattern cm style = go False
  where
   go _ _ Wildcard = Right "_"
   go _ _ (Bind x) = Right x
@@ -609,10 +646,14 @@ renderPattern cm = go False
           (GUnit, []) -> Right "_"
           (GInl, [p]) -> wrapped atomic ".inl" p
           (GInr, [p]) -> wrapped atomic ".inr" p
-          (GCtor leanName, []) -> Right leanName
-          (GCtor leanName, _) -> do
+          (GCtor info, _)
+            | Idiomatic <- style, ciSole info -> do
+                subs <- mapM (go True binder) ps
+                Right ("\10216" ++ intercalate ", " subs ++ "\10217")
+          (GCtor info, []) -> Right (spelled info)
+          (GCtor info, _) -> do
             subs <- mapM (go True binder) ps
-            let text = unwords (leanName : subs)
+            let text = unwords (spelled info : subs)
             Right (if atomic then "(" ++ text ++ ")" else text)
           _ -> Left "unexpected constructor pattern shape"
    where
@@ -621,3 +662,13 @@ renderPattern cm = go False
       let text = ctor ++ " " ++ sub
       Right (if needParens then "(" ++ text ++ ")" else text)
   go _ _ (As _ _) = Left "internal: as-pattern survived normalization"
+
+  spelled info = case style of
+    Idiomatic -> shortDot (ciLean info)
+    Explicit -> ciLean info
+
+-- | The leading-dot spelling of a constructor name (@.some@ for
+-- @Option.some@) - resolved by Lean against the expected type, which
+-- verification confirms is known at the use site.
+shortDot :: String -> String
+shortDot leanName = '.' : reverse (takeWhile (/= '.') (reverse leanName))
