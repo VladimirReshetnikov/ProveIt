@@ -483,6 +483,10 @@ Lean kernel surface against an explicit oracle; harnesses and counts are in
 | Kernel-internal fvar leaks into inferred types | `_kernel_fresh` scan + re-check | none (i.e. #10475 is fixed) |
 | Module boundary: `sorry`, private-in-public, section variables | `#print axioms`, visibility | all correctly guarded |
 | `Expr.mdata` as a bypass: positivity, self-occurrence-in-index, `check_no_metavar_no_fvar` | the corresponding kernel check | every check strips `mdata`; all of `hasFVar`/`hasMVar`/`hasLooseBVars` propagate through it |
+| `Nat.sqrt`, `nextPowerOfTwo`, `lcm`, `min`, `max`, `testBit` | compiled implementation | 10,638 comparisons, 0 divergence |
+| Signed fixed-width arithmetic: `Int8`/`Int16`/`Int32`/`Int64`, ten ops each incl. `div`/`mod`/shifts at `minValue` | compiled implementation | 23,160 comparisons, 0 divergence |
+| Unsigned `UInt16`/`UInt32` | compiled implementation | 3,940 comparisons, 0 divergence |
+| `USize`/`ISize`, and word-size-dependent facts | kernel reducibility | kernel is correctly **stuck** — `System.Platform.numBits` is opaque, so even `(1 : USize) + 2 = 3` is not `rfl`-provable, and `numBits = 64` is undecidable. Sound: the theory fixes only `numBits = 32 ∨ numBits = 64` |
 
 Two things did turn up, neither a `False`. `Nat.shiftLeft`'s missing magnitude
 guard is §2.6. And `Kernel.check` with a caller-supplied local context whose
