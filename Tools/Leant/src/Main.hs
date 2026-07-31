@@ -8,12 +8,20 @@
 -- multi-line input, command completion).
 module Main (main) where
 
-import Control.Exception (SomeException, finally, try)
+import Control.Exception (SomeException, evaluate, finally, try)
 import Control.Monad (forM_, unless, when)
 import Control.Monad.IO.Class (liftIO)
-import Data.Char (isAlphaNum, isDigit, isSpace, toLower)
+import Data.Char (isAlpha, isAlphaNum, isAscii, isDigit, isSpace, toLower)
 import Data.IORef
-import Data.List (intercalate, isInfixOf, isPrefixOf, isSuffixOf, nub, stripPrefix)
+import Data.List
+  ( intercalate
+  , isInfixOf
+  , isPrefixOf
+  , isSuffixOf
+  , nub
+  , stripPrefix
+  , tails
+  )
 import Data.Maybe (fromMaybe, isJust)
 import Data.Time.Clock (diffUTCTime, getCurrentTime)
 import Data.Time.Format (defaultTimeLocale, formatTime)
@@ -25,23 +33,23 @@ import System.Directory
   , getHomeDirectory
   , listDirectory
   )
-import System.Environment (getArgs)
+import System.Environment (getArgs, lookupEnv)
 import System.Exit (ExitCode (..), exitWith)
 import System.FilePath ((</>), (<.>), takeDirectory, takeFileName)
 import System.IO
 import System.IO.Error (catchIOError, isEOFError)
 import System.Process (callCommand)
+import System.Timeout (timeout)
 
 import Leant.Backend
 import Leant.Builtins (builtinInfo)
 import Leant.Classify
 import Leant.Format (formatInfo, indentDefBody)
 import Leant.Json
-import Leant.Synth.Engine (SynthOutcome (..), synthesize)
+import Leant.Synth.Engine (SynthOutcome (..), forceOutcome, synthesize)
 import Leant.Synth.Fragment
   ( ParsedGoal (..)
   , GoalSort (..)
-  , fragLeadingAlls
   , fragRefusal
   , fragUnsafeAtoms
   , parseGoalSexp
@@ -1230,6 +1238,21 @@ synthMaxShown, synthMaxTried :: Int
 synthMaxShown = 5
 synthMaxTried = 12
 
+-- | Wall-clock guard on the engine, in seconds (0 waits indefinitely).
+-- Propositional goals answer in microseconds, but bounded hypothesis
+-- instantiation can widen a quantified goal's space enough to run for
+-- minutes, which an interactive REPL must not do silently.
+synthTimeoutSeconds :: IO Int
+synthTimeoutSeconds = do
+  setting <- lookupEnv "LEANT_SYNTH_TIMEOUT"
+  pure $ case setting >>= readMaybeInt of
+    Just n -> n
+    Nothing -> 20
+ where
+  readMaybeInt text = case reads (trim text) of
+    [(n, "")] -> Just n
+    _ -> Nothing
+
 cmdSynth :: St -> String -> IO ()
 cmdSynth st rawArg = do
   state <- readIORef st
@@ -1261,48 +1284,212 @@ cmdSynth st rawArg = do
 
 synthRun :: St -> String -> IO ()
 synthRun st goal = do
+  outcome <- translateGoal st goal
+  case outcome of
+    Right parsed -> synthGo st Nothing goal parsed
+    Left errors
+      | any stuckUniverse errors -> synthUniverseRetry st goal errors
+      | otherwise -> reportTranslationErrors st errors
+ where
+  stuckUniverse = ("stuck at solving universe constraint" `isInfixOf`)
+
+-- | Run the serializer on one goal; 'Left' carries the error texts.
+-- An error next to an emitted translation means Lean recovered from a
+-- bad goal and the translation is garbage, so errors always win.
+translateGoal :: St -> String -> IO (Either [String] ParsedGoal)
+translateGoal st goal = do
   envOr <- ensureSynthEnv st
   case envOr of
-    Left err -> emitLn st =<< cRed st err
+    Left err -> pure (Left [err])
     Right env -> do
       result <- runCmd st (Just env) (serializerProgram goal)
       case result of
-        Left err -> emitLn st =<< cRed st err
+        Left err -> pure (Left [err])
         Right v -> do
           let infos = [d | (sev, d) <- respMessages v, sev == "info"]
               errors = [d | (sev, d) <- respMessages v, sev == "error"]
               sexp = [d | d <- infos, "(goal " `isPrefixOf` trim d]
-          -- an error next to an emitted translation means Lean recovered
-          -- from a bad goal and the translation is garbage - refuse
-          case (respFatal v, errors, sexp) of
-            (Just fatal, _, _) ->
-              emitLn st . (++ fatal) =<< cRed st "REPL error: "
-            (_, _ : _, _) -> do
-              emitLn st =<< cRed st "cannot translate this goal:"
-              forM_ errors $ \e ->
-                forM_ (lines (trim e)) $ \l -> emitLn st ("  " ++ l)
-            (_, [], translated : _) -> case parseGoalSexp (trim translated) of
-              Left err -> emitLn st =<< cRed st
-                ("goal translation failed: " ++ err)
-              Right parsed -> synthGo st goal parsed
-            (Nothing, [], []) -> emitLn st =<< cRed st
-              "goal translation produced no output"
+          pure $ case (respFatal v, errors, sexp) of
+            (Just fatal, _, _) -> Left [fatal]
+            (_, _ : _, _) -> Left errors
+            (_, [], translated : _) ->
+              case parseGoalSexp (trim translated) of
+                Left err -> Left ["goal translation failed: " ++ err]
+                Right parsed -> Right parsed
+            (Nothing, [], []) -> Left ["goal translation produced no output"]
 
-synthGo :: St -> String -> ParsedGoal -> IO ()
-synthGo st goal parsed = case fragRefusal (pgFrag parsed) of
+reportTranslationErrors :: St -> [String] -> IO ()
+reportTranslationErrors st errors = do
+  emitLn st =<< cRed st "cannot translate this goal:"
+  forM_ errors $ \e ->
+    forM_ (lines (trim e)) $ \l -> emitLn st ("  " ++ l)
+
+-- | Auto-bound variables get `Sort ?u`, and Type-level connectives
+-- (\215/\8853) over arrows of such variables leave Lean's universe unifier
+-- stuck.  Binding the same variables at `Type u` makes those constraints
+-- solvable, so: find the goal's auto-implicit-shaped tokens, keep the
+-- ones that resolve to nothing in the synthesis environment's scope
+-- (full name resolution, so opened namespaces and session declarations
+-- are respected and never shadowed), and retry with them bound
+-- explicitly at Type.  When the wrapped goal fails because some
+-- variable must not live at Type (say, an operand of a Prop
+-- connective), that variable's marker universe @u_synth_v@ appears in
+-- the new errors; such variables are dropped and the retry narrows
+-- until it translates or no candidates remain.
+synthUniverseRetry :: St -> String -> [String] -> IO ()
+synthUniverseRetry st goal originalErrors = do
+  let vars = autoShapedTokens goal
+  unknowns <- if null vars then pure [] else do
+    envOr <- ensureSynthEnv st
+    case envOr of
+      Left _ -> pure []
+      Right env -> do
+        result <- runCmd st (Just env) (unknownCheckProgram vars)
+        case result of
+          Right v | not (hasErrors v), Nothing <- respFatal v ->
+            pure (parseUnknowns v)
+          _ -> pure []
+  narrowingRetry unknowns
+ where
+  narrowingRetry [] = giveUp
+  narrowingRetry wrapVars = do
+    let binders = concat
+          [" {" ++ v ++ " : Type u_synth_" ++ v ++ "}" | v <- wrapVars]
+        wrapped = "\8704" ++ binders ++ ", " ++ goal
+    emitLn st =<< cDim st ("(retrying with " ++ unwords wrapVars
+      ++ " : Type \8212 Sort-polymorphic elaboration was stuck)")
+    outcome <- translateGoal st wrapped
+    case outcome of
+      Right parsed -> synthGo st (Just wrapVars) wrapped parsed
+      Left retryErrors -> do
+        let misplaced =
+              [ v | v <- wrapVars
+              , any (mentionsMarker ("u_synth_" ++ v)) retryErrors ]
+            remaining = [v | v <- wrapVars, v `notElem` misplaced]
+        if null misplaced || null remaining
+          then giveUp
+          else narrowingRetry remaining
+
+  giveUp = do
+    emitLn st =<< cDim st
+      "(the auto-Type retry did not apply; the original errors:)"
+    reportTranslationErrors st originalErrors
+    emitLn st =<< cDim st
+      ("hint: annotate the variables' types yourself, e.g. "
+       ++ ":synth (\8704 a b : Type, ...)")
+
+  parseUnknowns v = case
+      [ trim d | (sev, d) <- respMessages v, sev == "info"
+      , "(unknown" `isPrefixOf` trim d ] of
+    (d : _) -> words (takeWhile (/= ')') (drop (length "(unknown") d))
+    [] -> []
+
+-- | Whether an error text names this marker universe.  A plain infix
+-- test would let @u_synth_a@ match inside @u_synth_a1@ and blame a
+-- variable Lean never complained about, so the match must end at a
+-- non-identifier character.
+mentionsMarker :: String -> String -> Bool
+mentionsMarker marker text = any ends (tails text)
+ where
+  ends suffix = case stripPrefix marker suffix of
+    Just (c : _) -> not (isAlphaNum c || c == '_' || c == '\'')
+    Just [] -> True
+    Nothing -> False
+
+-- | Tokens shaped like short auto-implicit variables: one plain letter
+-- (ASCII or Greek), optionally followed by digits, primes, or subscript
+-- digits - a deliberate subset of Lean's relaxed auto-implicit shape
+-- (which admits any unknown atomic identifier; wrapping arbitrary
+-- unknown words would turn typos into phantom Type binders).  Tokens
+-- adjacent to a dot are qualified names or namespace prefixes, reserved
+-- letters (\955, \931, \928) can never be binders, and letterlike notation
+-- symbols (\8469, \8484, ...) are parser tokens rather than identifiers, so
+-- all of those are excluded.
+autoShapedTokens :: String -> [String]
+autoShapedTokens text = nub (go Nothing text)
+ where
+  go prev s = case span (not . identChar) s of
+    (_, []) -> []
+    (skipped, s') ->
+      let (t, rest) = span identChar s'
+          prevChar = if null skipped then prev else Just (last skipped)
+          keep = autoShape t
+            && prevChar /= Just '.'
+            && not (qualifier rest)
+      in [t | keep] ++ go (Just (last t)) rest
+  identChar c = isAlphaNum c || c == '_' || c == '\''
+  autoShape (c : rest) = plainLetter c && all suffixChar rest
+  autoShape [] = False
+  plainLetter c =
+    (isAscii c && isAlpha c)
+      || (c >= '\945' && c <= '\969' && c /= '\955')  -- α..ω minus λ
+      || (c >= '\913' && c <= '\937'                  -- Α..Ω minus Σ Π
+          && c `notElem` "\931\928")
+  suffixChar c =
+    isDigit c || c == '\'' || (c >= '\8320' && c <= '\8329')
+  qualifier ('.' : c : _) = identChar c
+  qualifier _ = False
+
+unknownCheckProgram :: [String] -> String
+unknownCheckProgram vars = unlines
+  [ "open Lean in run_cmd do"
+  , "  let names : List String := ["
+      ++ intercalate ", " (map leanStringLit vars) ++ "]"
+  , "  let mut unknown : List String := []"
+  , "  for s in names do"
+  , "    let resolved \8592 resolveGlobalName (Name.mkSimple s)"
+  , "    if resolved.isEmpty then"
+  , "      unknown := unknown ++ [s]"
+  , "  logInfo (\"(unknown \" ++ String.intercalate \" \" unknown ++ \")\")"
+  ]
+
+synthGo :: St -> Maybe [String] -> String -> ParsedGoal -> IO ()
+synthGo st retriedVars goal parsed = do
+  debugFrag <- lookupEnv "LEANT_SYNTH_DEBUG"
+  when (isJust debugFrag) $
+    emitLn st =<< cDim st ("debug fragment: " ++ show (pgFrag parsed))
+  synthGo' st retriedVars goal parsed
+
+synthGo' :: St -> Maybe [String] -> String -> ParsedGoal -> IO ()
+synthGo' st retriedVars goal parsed = case fragRefusal (pgFrag parsed) of
   Just reason -> emitLn st =<< cRed st ("out of fragment: " ++ reason)
-  Nothing -> case synthesize (pgFrag parsed) of
+  Nothing -> do
+    limit <- synthTimeoutSeconds
+    bounded <- runBounded limit (synthesize (pgFrag parsed))
+    case bounded of
+      Nothing -> do
+        emitLn st =<< cYellow st
+          ("the engine did not finish within " ++ show limit
+           ++ "s \8212 no answer, not a verdict")
+        emitLn st =<< cDim st
+          ("(bounded hypothesis instantiation can widen the search a lot; "
+           ++ "set LEANT_SYNTH_TIMEOUT to another number of seconds, "
+           ++ "or 0 to wait indefinitely)")
+      Just outcome -> report outcome
+ where
+  runBounded limit outcome
+    | limit <= 0 = Just outcome <$ evaluate (forced outcome)
+    | otherwise = do
+        done <- timeout (limit * 1000000) (evaluate (forced outcome))
+        pure (outcome <$ done)
+  forced = forceOutcome synthMaxTried
+
+  report outcome = case outcome of
     Left err -> emitLn st =<< cRed st ("synthesis engine error: " ++ err)
-    Right (SynthCandidates terms notes) -> do
-      -- Djinn treats leading quantifiers as implicit polymorphism; the
-      -- Lean goal's explicit leading binders must be introduced
-      let prefixed = map (prefixBinders (fragLeadingAlls (pgFrag parsed)))
-            (take synthMaxTried terms)
-      (verified, dropped) <- synthVerify st goal prefixed
+    Right (SynthCandidates groups notes) -> do
+      -- LEANT_SYNTH_DEBUG shows the engine's rendered variants before
+      -- verification; the pipeline is otherwise opaque when a candidate
+      -- is dropped
+      debug <- lookupEnv "LEANT_SYNTH_DEBUG"
+      when (isJust debug) $
+        forM_ (zip [1 :: Int ..] (take synthMaxTried groups)) $
+          \(i, group) -> forM_ group $ \variant ->
+            emitLn st =<< cDim st ("debug " ++ show i ++ ": " ++ variant)
+      (verified, dropped) <- synthVerify st goal (take synthMaxTried groups)
       let shown = take synthMaxShown verified
       if null shown
         then emitLn st =<< cRed st
-          ("the engine proposed " ++ show (length terms)
+          ("the engine proposed " ++ show (length groups)
            ++ " candidate(s) but none survived Lean verification")
         else do
           forM_ (zip [1 :: Int ..] shown) $ \(i, term) -> do
@@ -1312,7 +1499,7 @@ synthGo st goal parsed = case fragRefusal (pgFrag parsed) of
           hint <- cDim st (if proving
             then ":synth N closes the goal with `exact` candidate N"
             else ":synth N binds candidate N as `it`")
-          counts <- cDim st (synthCounts (length terms) dropped (length shown))
+          counts <- cDim st (synthCounts (length groups) dropped (length shown))
           emitLn st counts
           emitLn st hint
           modifyIORef' st (\s -> s
@@ -1324,6 +1511,11 @@ synthGo st goal parsed = case fragRefusal (pgFrag parsed) of
             ("provably uninhabited \8212 no closed term of this "
              ++ "polymorphic type exists")
           emitLn st message
+          forM_ retriedVars $ \vars -> emitLn st =<< cDim st
+            ("(for the goal with the unresolved variables " ++ unwords vars
+             ++ " bound at Type; a variable the goal itself binds is "
+             ++ "shadowed harmlessly \8212 annotate types yourself if "
+             ++ "this is not what you meant)")
           when (pgSort parsed == GoalProp) $ emitLn st =<< cDim st
             ("(constructively \8212 a classical proof may still exist; "
              ++ "this is not a disproof of the proposition)")
@@ -1337,16 +1529,6 @@ synthGo st goal parsed = case fragRefusal (pgFrag parsed) of
     Right (SynthNoTerm notes) -> do
       emitLn st =<< cYellow st "no term found within the search bounds"
       forM_ notes $ \note -> emitLn st =<< cDim st ("note: " ++ note)
-
--- | Prepend one anonymous binder per leading goal quantifier, merging
--- into the candidate's own lambda when it has one.
-prefixBinders :: Int -> String -> String
-prefixBinders k term
-  | k <= 0 = term
-  | "fun " `isPrefixOf` term =
-      "fun " ++ concat (replicate k "_ ") ++ drop 4 term
-  | otherwise =
-      "fun " ++ concat (replicate k "_ ") ++ "=> (" ++ term ++ ")"
 
 synthCounts :: Int -> Int -> Int -> String
 synthCounts engine dropped shown =
@@ -1362,26 +1544,35 @@ synthCounts engine dropped shown =
   plural 1 = ""
   plural _ = "s"
 
--- | Verify candidates against the backend, best first, lazily: stop once
--- enough verified candidates are collected (design rule: only
--- backend-verified candidates are ever shown).  Returns the verified
--- terms and how many attempts failed verification.
-synthVerify :: St -> String -> [String] -> IO ([String], Int)
+-- | Verify candidate groups against the backend, best first, lazily:
+-- stop once enough verified candidates are collected (design rule: only
+-- backend-verified candidates are ever shown).  Within a group, textual
+-- variants of one engine candidate are tried in order and the first that
+-- elaborates represents the group.  Returns the verified terms and how
+-- many groups failed entirely.
+synthVerify :: St -> String -> [[String]] -> IO ([String], Int)
 synthVerify st goal = go synthMaxShown 0
  where
   go _ failed [] = pure ([], failed)
   go 0 failed _ = pure ([], failed)
-  go n failed (term : rest) = do
+  go n failed (group : rest) = do
+    ok <- tryGroup group
+    case ok of
+      Just term -> do
+        (rest', failed') <- go (n - 1) failed rest
+        pure (term : rest', failed')
+      Nothing -> go n (failed + 1) rest
+
+  tryGroup [] = pure Nothing
+  tryGroup (term : variants) = do
     env <- rsEnv <$> readIORef st
     let code = "set_option autoImplicit true in example : (" ++ goal
           ++ ") := (" ++ term ++ ")"
     result <- runCmd st env code
     case result of
       Right v | not (hasErrors v), Nothing <- respFatal v
-              , null (respSorries v) -> do
-        (rest', failed') <- go (n - 1) failed rest
-        pure (term : rest', failed')
-      _ -> go n (failed + 1) rest
+              , null (respSorries v) -> pure (Just term)
+      _ -> tryGroup variants
 
 synthSelect :: St -> Int -> IO ()
 synthSelect st n = do

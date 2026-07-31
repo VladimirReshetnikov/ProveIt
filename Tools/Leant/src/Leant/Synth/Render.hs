@@ -8,13 +8,35 @@
 -- (@Prod@\/@Sum@\/@Empty@\/@Unit@), because every candidate is elaborated by
 -- the Lean backend against the fully known goal type before display.
 --
+-- Djinn's Haskell model differs from Lean in two ways this module has to
+-- bridge structurally, by fitting the candidate to the goal fragment:
+--
+--   * quantifiers are implicit for Djinn, so its terms never bind them;
+--     'fit' weaves an anonymous binder for every explicit quantifier the
+--     goal reaches while the candidate is still binding (including inside
+--     tuple components, injections, and match alternatives), and
+--     eta-expands cores left under an explicit quantifier - always for
+--     introduction forms, and as an extra variant for elimination forms
+--     (which may instead be transported whole);
+--   * instantiating a quantified hypothesis is silent for Djinn, while
+--     Lean's explicit binders need @_@ placeholders.  An /applied/
+--     hypothesis is unambiguous: placeholders are woven into the argument
+--     list wherever the hypothesis type's spine has an explicit
+--     quantifier (@h a q@ over @A \8594 \8704 b, b \8594 C@ renders @h a _ q@).  A
+--     use whose /trailing/ quantifiers may or may not be instantiated
+--     (a bare occurrence, or an application consuming only the arrows
+--     before them) is genuinely ambiguous, so such occurrence sites are
+--     enumerated into textual variants (each site kept or instantiated)
+--     and the caller's backend verification keeps the first variant that
+--     elaborates.
+--
 -- The engine is never trusted (design rule 2): a rendering failure just
 -- drops the candidate, and everything shown has been verified.
 module Leant.Synth.Render
   ( renderLeanTerm
   ) where
 
-import Data.List (intercalate)
+import Data.List (intercalate, nub, sortOn, subsequences)
 import qualified Data.Map.Strict as Map
 
 import Language.Haskell.Synthesis.Generated
@@ -29,13 +51,37 @@ import Language.Haskell.Synthesis.Name
   , nameSpelling
   )
 
--- | Render one candidate expression as Lean text, or explain (internally)
--- why it cannot be rendered; the caller drops such candidates.
-renderLeanTerm :: Expression String -> Either String String
-renderLeanTerm expr0 = do
-  let expr1 = normalizeExpr 0 expr0
-  expr2 <- uniquify expr1
-  render 0 expr2
+import Leant.Synth.Fragment (Frag (..), Slot (..), fragSpine, leadingTypeArgs)
+
+-- | Render one candidate expression against the goal fragment.  Returns
+-- a nonempty group of textual variants, best guess first; the caller
+-- verifies them in order and keeps the first that elaborates.
+renderLeanTerm :: Frag -> Expression String -> Either String [String]
+renderLeanTerm goalFrag expr0 = do
+  base <- uniquify (normalizeExpr 0 expr0)
+  texts <- concat <$> mapM variantsFor
+    (nub [fit force goalFrag base 0 [] | force <- [False, True]])
+  case nub texts of
+    [] -> Left "no renderable variant"
+    group -> Right (take 12 group)
+ where
+  variantsFor (expr, _, domPairs) = do
+    let doms = Map.fromList domPairs
+        sites = countSites doms expr
+        sets
+          | sites == 0 = [[]]
+          | sites <= 3 = siteSubsets sites
+          | otherwise = [[], [0 .. sites - 1]]
+    mapM (\set -> render doms 0 (markSites doms set expr)) sets
+
+-- | Instantiation subsets, transport-first: no site instantiated, all
+-- sites, then the mixed subsets by size.
+siteSubsets :: Int -> [[Int]]
+siteSubsets k = [] : full : sortOn (\s -> (length s, s)) middle
+ where
+  full = [0 .. k - 1]
+  middle =
+    [ s | s <- subsequences full, not (null s), length s /= k ]
 
 -- Globals -------------------------------------------------------------------
 
@@ -125,7 +171,8 @@ normalizeExpr fresh expr = case expr of
 --
 -- Djinn's binder identities are strings of its own choosing; rename every
 -- binding site to a fresh Lean-safe name (scoped, so shadowing in the
--- source term stays correct).
+-- source term stays correct).  The name pool leaves @z1, z2, ...@ free
+-- for binders introduced later by 'fit'.
 
 nameSupply :: [String]
 nameSupply =
@@ -202,49 +249,295 @@ uniquify expr0 = fst <$> go Map.empty 0 expr0
       Right (Constructor c ps', env', n')
     As _ _ -> Left "internal: as-pattern survived normalization"
 
+-- Fitting the candidate to the goal fragment ---------------------------------
+--
+-- 'fit' walks the goal fragment and the candidate together, threading a
+-- counter for fresh eta binders and an accumulator of (binder, domain
+-- fragment) pairs for every binder whose domain the goal determines.
+-- With @force@, cores left under an explicit quantifier are eta-expanded
+-- even when they are elimination forms (the non-forced fit transports
+-- those whole; both variants are offered to verification).
+
+fit :: Bool -> Frag -> Expression String -> Int
+    -> [(String, Frag)] -> (Expression String, Int, [(String, Frag)])
+fit force frag expr n doms =
+  let (pats, core) = lambdaSpine expr
+      (pats', remaining, doms1, exhausted) = walk frag pats doms
+      (etaPats, core1, coreFrag, n1)
+        | exhausted && (force || introCore core)
+            && spineHasExplicitAll remaining =
+            etaExpand remaining core n
+        | otherwise = ([], core, remaining, n)
+      (core2, n2, doms2) = fitCore force coreFrag core1 n1 doms1
+      allPats = pats' ++ etaPats
+  in (if null allPats then core2 else Lambda allPats core2, n2, doms2)
+ where
+  lambdaSpine (Lambda ps b) =
+    let (more, coreExpr) = lambdaSpine b in (ps ++ more, coreExpr)
+  lambdaSpine e = ([], e)
+
+  -- an implicit quantifier costs no binder, so peel it even after the
+  -- candidate's binders run out - otherwise the fragment handed on is
+  -- the quantifier rather than the connective underneath it, and the
+  -- body never gets fitted at all
+  walk (FAll False _ rest) ps ds = walk rest ps ds
+  walk f [] ds = ([], f, ds, True)
+  walk (FArr dom rest) (p : ps) ds =
+    let (ps', f', ds', ex) = walk rest ps (bindDomainPairs p dom ++ ds)
+    in (p : ps', f', ds', ex)
+  walk (FAll True _ rest) ps ds =
+    let (ps', f', ds', ex) = walk rest ps ds
+    in (Wildcard : ps', f', ds', ex)
+  walk f ps ds = (ps, f, ds, False)
+
+  introCore e = case e of
+    Tuple _ -> True
+    Global _ -> True
+    Apply h _ -> introCore h
+    _ -> False
+
+  spineHasExplicitAll f = SlotAll True `elem` fragSpine f
+
+  etaExpand f core k = case f of
+    FArr _ rest ->
+      let name = "z" ++ show k
+          (ps, core', f', k') =
+            etaExpand rest (Apply core (Local name)) (k + 1)
+      in (Bind name : ps, core', f', k')
+    FAll True _ rest ->
+      let (ps, core', f', k') = etaExpand rest core k
+      in (Wildcard : ps, core', f', k')
+    FAll False _ rest -> etaExpand rest core k
+    _ -> ([], core, f, k)
+
+-- | Recurse through introduction forms whose component types the goal
+-- fragment determines, and through match alternatives (branches produce
+-- the scrutinized position's type; sum\/product eliminations also reveal
+-- the branch binders' domains when the scrutinee is a known binder,
+-- whose quantifiers - instantiated silently by the engine before the
+-- case split - are peeled first).
+fitCore :: Bool -> Frag -> Expression String -> Int
+        -> [(String, Frag)] -> (Expression String, Int, [(String, Frag)])
+fitCore force cf ce n ds = case (cf, ce) of
+  (FProd a b, Tuple [x, y]) ->
+    let (x', n1, ds1) = fit force a x n ds
+        (y', n2, ds2) = fit force b y n1 ds1
+    in (Tuple [x', y'], n2, ds2)
+  (FSum a _, Apply h@(Global g) x) | isKind GInl g ->
+    let (x', n1, ds1) = fit force a x n ds in (Apply h x', n1, ds1)
+  (FSum _ b, Apply h@(Global g) x) | isKind GInr g ->
+    let (x', n1, ds1) = fit force b x n ds in (Apply h x', n1, ds1)
+  (_, Case scrut alts) ->
+    let scrutFrag = case scrut of
+          Local s -> peelAlls <$> lookup s ds
+          _ -> Nothing
+        goAlt (done, k, dss) (pat, body) =
+          let branchDoms = case (scrutFrag, pat) of
+                (Just (FSum a _), Constructor g [p])
+                  | Right GInl <- globalKind g -> bindDomainPairs p a
+                (Just (FSum _ b), Constructor g [p])
+                  | Right GInr <- globalKind g -> bindDomainPairs p b
+                (Just f, TuplePattern _) -> bindDomainPairs pat f
+                (Just f, Bind x) -> [(x, f)]
+                _ -> []
+              (body', k', dss') = fit force cf body k (branchDoms ++ dss)
+          in (done ++ [(pat, body')], k', dss')
+        (alts', n1, ds1) = foldl goAlt ([], n, ds) alts
+    in (Case scrut alts', n1, ds1)
+  (_, Let pat rhs body) ->
+    let (body', n1, ds1) = fit force cf body n ds
+    in (Let pat rhs body', n1, ds1)
+  _ -> (ce, n, ds)
+ where
+  isKind k g = case (globalKind g, k) of
+    (Right GInl, GInl) -> True
+    (Right GInr, GInr) -> True
+    _ -> False
+  peelAlls (FAll _ _ b) = peelAlls b
+  peelAlls f = f
+
+-- | Binders whose domain type the goal fragment determines, recursing
+-- through tuple destructuring.
+bindDomainPairs :: Pattern String -> Frag -> [(String, Frag)]
+bindDomainPairs (Bind x) dom = [(x, dom)]
+bindDomainPairs (TuplePattern [p, q]) (FProd a b) =
+  bindDomainPairs p a ++ bindDomainPairs q b
+bindDomainPairs _ _ = []
+
+-- Ambiguous instantiation sites ----------------------------------------------
+--
+-- A use of a quantified hypothesis whose type still has leading explicit
+-- quantifiers after the supplied term arguments may be a transport of
+-- the remaining pi type or an instantiation at a type the elaborator
+-- must infer.  Such sites are numbered (in one fixed traversal order)
+-- and 'markSites' tags a chosen subset for instantiation; the tag is a
+-- reserved character no binder name can contain.
+
+instTag :: String
+instTag = "\1"
+
+tagged :: String -> Bool
+tagged = (instTag ==) . take 1
+
+stripTag :: String -> String
+stripTag x = if tagged x then drop 1 x else x
+
+-- | Trailing explicit quantifiers of @frag@ once @k@ term arguments have
+-- been consumed (with @k = 0@ this is 'leadingTypeArgs').
+trailingAlls :: Frag -> Int -> Int
+trailingAlls frag 0 = leadingTypeArgs frag
+trailingAlls (FAll _ _ rest) k = trailingAlls rest k
+trailingAlls (FArr _ rest) k = trailingAlls rest (k - 1)
+trailingAlls _ _ = 0
+
+countSites :: Map.Map String Frag -> Expression String -> Int
+countSites doms expr = snd (markOrCount doms [] expr 0)
+
+markSites :: Map.Map String Frag -> [Int] -> Expression String
+          -> Expression String
+markSites doms set expr = fst (markOrCount doms set expr 0)
+
+-- | One traversal serving both passes: numbers each ambiguous site and
+-- rewrites the chosen ones to tagged names.
+markOrCount :: Map.Map String Frag -> [Int] -> Expression String -> Int
+            -> (Expression String, Int)
+markOrCount doms set = go
+ where
+  go expr i = case expr of
+    Local x -> site x [] i (\x' -> Local x')
+    Apply _ _ ->
+      let (headExpr, args) = spine expr []
+          goArgs [] j = ([], j)
+          goArgs (a : as) j =
+            let (a', j1) = go a j
+                (as', j2) = goArgs as j1
+            in (a' : as', j2)
+      in case headExpr of
+        Local x ->
+          let (args', i1) = goArgs args i
+          in site x args' i1 (\x' -> foldl Apply (Local x') args')
+        _ ->
+          let (h', i1) = go headExpr i
+              (args', i2) = goArgs args i1
+          in (foldl Apply h' args', i2)
+    Tuple es ->
+      let (es', i') = goMany es i in (Tuple es', i')
+    Lambda pats body ->
+      let (body', i') = go body i in (Lambda pats body', i')
+    Let pat rhs body ->
+      let (rhs', i1) = go rhs i
+          (body', i2) = go body i1
+      in (Let pat rhs' body', i2)
+    Case scrut alts ->
+      let (scrut', i1) = go scrut i
+          goAlt (pat, body) j =
+            let (body', j') = go body j in ((pat, body'), j')
+          (alts', i2) = foldl
+            (\(done, j) alt -> let (alt', j') = goAlt alt j
+                               in (done ++ [alt'], j'))
+            ([], i1) alts
+      in (Case scrut' alts', i2)
+    Global _ -> (expr, i)
+    Hole _ -> (expr, i)
+
+  goMany [] i = ([], i)
+  goMany (e : es) i =
+    let (e', i1) = go e i
+        (es', i2) = goMany es i1
+    in (e' : es', i2)
+
+  site x args i rebuild = case Map.lookup x doms of
+    Just frag | trailingAlls frag (length args) > 0 ->
+      ( rebuild (if i `elem` set then instTag ++ x else x)
+      , i + 1
+      )
+    _ -> (rebuild x, i)
+
+  spine (Apply f a) acc = spine f (a : acc)
+  spine f acc = (f, acc)
+
 -- Rendering ------------------------------------------------------------------
 --
 -- Precedence levels: 0 = open (fun/match/let/nomatch), 1 = application,
 -- 2 = atom.  A subterm rendered in a position requiring a higher level is
--- parenthesized.
+-- parenthesized.  @doms@ maps quantified-hypothesis binders to their
+-- domain fragments: applications weave @_@ placeholders through the
+-- argument list wherever the type's spine has an explicit quantifier,
+-- and tagged occurrences additionally instantiate their trailing
+-- quantifiers.
 
-render :: Int -> Expression String -> Either String String
-render req expr = case expr of
-  Local x -> Right (at 2 x)
-  Global name -> do
-    kind <- globalKind name
-    case kind of
-      GUnit -> Right (at 2 "\10216\10217")
-      GInl -> Right (at 0 ".inl")
-      GInr -> Right (at 0 ".inr")
-  Apply _ _ -> do
-    let (headExpr, args) = spine expr []
-    headTxt <- renderHead headExpr
-    argTxts <- mapM (render 2) args
-    Right (at 1 (unwords (headTxt : argTxts)))
-  Lambda [] body -> render req body
-  Lambda pats body -> do
-    binders <- mapM (renderPattern True) pats
-    bodyTxt <- render 0 body
-    Right (at 0 ("fun " ++ unwords binders ++ " => " ++ bodyTxt))
-  Tuple es -> do
-    txts <- mapM (render 0) es
-    Right (at 2 ("\10216" ++ intercalate ", " txts ++ "\10217"))
-  Let pat rhs body -> do
-    patTxt <- renderPattern True pat
-    rhsTxt <- render 0 rhs
-    bodyTxt <- render 0 body
-    Right (at 0 ("let " ++ patTxt ++ " := " ++ rhsTxt ++ "; " ++ bodyTxt))
-  Case scrut [] -> do
-    scrutTxt <- render 2 scrut
-    Right (at 0 ("nomatch " ++ scrutTxt))
-  Case scrut alts -> do
-    scrutTxt <- render 1 scrut
-    altTxts <- mapM renderAlt alts
-    Right (at 0 ("match " ++ scrutTxt ++ " with " ++ unwords altTxts))
-  Hole _ -> Left "candidate contains an unfilled hole"
+render :: Map.Map String Frag -> Int -> Expression String
+       -> Either String String
+render doms = go
  where
-  at level text = if level >= req then text else "(" ++ text ++ ")"
+  go :: Int -> Expression String -> Either String String
+  go req expr = case expr of
+    Local x -> renderUse req x []
+    Global name -> do
+      kind <- globalKind name
+      case kind of
+        GUnit -> Right (at req 2 "\10216\10217")
+        GInl -> Right (at req 0 ".inl")
+        GInr -> Right (at req 0 ".inr")
+    Apply _ _ -> do
+      let (headExpr, args) = spine expr []
+      case headExpr of
+        Local x -> do
+          argTxts <- mapM (go 2) args
+          renderUse req x argTxts
+        _ -> do
+          headTxt <- renderHead headExpr
+          argTxts <- mapM (go 2) args
+          Right (at req 1 (unwords (headTxt : argTxts)))
+    Lambda [] body -> go req body
+    Lambda pats body -> do
+      binders <- mapM (renderPattern True) pats
+      bodyTxt <- go 0 body
+      Right (at req 0 ("fun " ++ unwords binders ++ " => " ++ bodyTxt))
+    Tuple es -> do
+      txts <- mapM (go 0) es
+      Right (at req 2 ("\10216" ++ intercalate ", " txts ++ "\10217"))
+    Let pat rhs body -> do
+      patTxt <- renderPattern True pat
+      rhsTxt <- go 0 rhs
+      bodyTxt <- go 0 body
+      Right (at req 0
+        ("let " ++ patTxt ++ " := " ++ rhsTxt ++ "; " ++ bodyTxt))
+    Case scrut [] -> do
+      scrutTxt <- go 2 scrut
+      Right (at req 0 ("nomatch " ++ scrutTxt))
+    Case scrut alts -> do
+      scrutTxt <- go 1 scrut
+      altTxts <- mapM renderAlt alts
+      Right (at req 0 ("match " ++ scrutTxt ++ " with " ++ unwords altTxts))
+    Hole _ -> Left "candidate contains an unfilled hole"
+
+  -- one use of a (possibly tagged) local with already-rendered term
+  -- arguments: weave mid-spine placeholders, and instantiate the
+  -- trailing quantifiers when the site is tagged
+  renderUse req x argTxts =
+    let name = stripTag x
+        instantiate = tagged x
+        -- a binder the goal fragment does not describe (bound inside an
+        -- argument, say) simply takes its arguments as written
+        woven = case Map.lookup name doms of
+          Nothing -> argTxts
+          Just frag -> weaveArgs frag argTxts
+        trailing = case Map.lookup name doms of
+          Just frag | instantiate -> trailingAlls frag (length argTxts)
+          _ -> 0
+        parts = name : woven ++ replicate trailing "_"
+    in case parts of
+      [only] -> Right (at req 2 only)
+      _ -> Right (at req 1 (unwords parts))
+
+  weaveArgs _ [] = []
+  weaveArgs (FAll True _ rest) as = "_" : weaveArgs rest as
+  weaveArgs (FAll False _ rest) as = weaveArgs rest as
+  weaveArgs (FArr _ rest) (a : as) = a : weaveArgs rest as
+  weaveArgs _ as = as
+
+  at req level text = if level >= req then text else "(" ++ text ++ ")"
 
   spine (Apply f a) args = spine f (a : args)
   spine f args = (f, args)
@@ -255,13 +548,13 @@ render req expr = case expr of
       GInl -> Right ".inl"
       GInr -> Right ".inr"
       GUnit -> Right "\10216\10217"
-  renderHead other = render 1 other
+  renderHead other = go 1 other
 
   -- non-final match-alternative bodies must not swallow following
   -- alternatives, so open bodies are parenthesized uniformly
   renderAlt (pat, body) = do
     patTxt <- renderPattern False pat
-    bodyTxt <- render 1 body
+    bodyTxt <- go 1 body
     Right ("| " ++ patTxt ++ " => " ++ bodyTxt)
 
 -- | @binder@ selects the irrefutable subset used after @fun@\/@let@;
