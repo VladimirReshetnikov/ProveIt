@@ -25,8 +25,12 @@ provably uninhabited — no closed term of this polymorphic type exists
 (2 verified candidates)
 :synth N binds candidate N as `it`
 λ> :synth (Nat → Nat)
-  1  fun a => a
-(1 verified candidate)
+  1  Nat.succ
+  2  fun a => a
+  3  fun _ => Nat.zero
+  4  fun _ => Nat.succ Nat.zero
+  5  fun a => Nat.succ a
+(5 verified candidates)
 :synth N binds candidate N as `it`
 λ> :synth (∀ p q : Prop, (p ↔ q) → ¬p → ¬q)
   1  fun _ _ ⟨_, a⟩ b c => b (a c)

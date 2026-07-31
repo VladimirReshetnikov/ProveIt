@@ -112,7 +112,13 @@ synthesize frag = do
   standard <- viaDiagnostic standardDjinnSession
   targetName <- viaShow (mkIdentifier "leantSynth")
   target <- viaShow (mkDefinitionName targetName)
-  (goal, decls, ctorMap) <- fragToDjinn frag
+  (goal0, decls, ctorMap, premises) <- fragToDjinn frag
+  -- constructor premises of recursive inductives enter as goal
+  -- antecedents (same scope as the goal's variables - a top-level
+  -- declaration would generalize them); the renderer strips the
+  -- matching binders and substitutes the Lean constructor names
+  let goal = foldr (\(_, t) acc -> FunctionType t acc) goal0 premises
+      premiseNames = map fst premises
   session <-
     if null decls
       then Right standard
@@ -142,7 +148,7 @@ synthesize frag = do
         [ (expressionSize expr, group)
         | candidate <- take candidateWindow (batchCandidates batch)
         , let expr = functionClauseExpression (candidateOutput candidate)
-        , Right group <- [renderLeanTerm ctorMap frag expr]
+        , Right group <- [renderLeanTerm ctorMap premiseNames frag expr]
         ]
       terms = map snd (sortOn fst rendered)
   pure $ case resultEvidence result of
@@ -201,6 +207,11 @@ data TransState = TransState
   , tsIndNext :: Int
   , tsCtorMap :: CtorMap
     -- ^ engine constructor spelling -> (Lean name, field fragments)
+  , tsRecs :: Map.Map String ()
+    -- ^ recursive-inductive keys whose constructor premises are
+    -- already registered
+  , tsPrems :: [(String, Type String)]
+    -- ^ constructor premises (Lean name, engine type), in order
   }
 
 newtype Trans a = Trans
@@ -251,7 +262,9 @@ variable key = do
       pure v
 
 fragToDjinn
-  :: Frag -> Either String (Type String, [DjinnDecl], CtorMap)
+  :: Frag
+  -> Either String
+      (Type String, [DjinnDecl], CtorMap, [(String, Type String)])
 fragToDjinn frag0 = do
   eitherC <- viaShow (mkIdentifier "Either")
   voidC <- viaShow (mkIdentifier "Void")
@@ -272,6 +285,7 @@ fragToDjinn frag0 = do
           body' <- go body
           pure (ForallType [v] [] body')
         FInd key ctors -> indOccurrence key ctors
+        FRec key ctors -> recOccurrence key ctors
         FDepth -> failT "internal: depth marker survived refusal check"
 
       -- One declaration per display key: translate the fields first
@@ -317,6 +331,26 @@ fragToDjinn frag0 = do
                              , tsDecls = tsDecls s ++ [decl] })
             pure occurrence
 
+      -- A recursive inductive stays an opaque atom (sharing the
+      -- variable any blocked field occurrence produced), but its
+      -- constructors become premise types the caller prepends to the
+      -- goal as antecedents - introduction rules without elimination.
+      recOccurrence key ctors = do
+        occurrence <- TypeVariable <$> variable ("a:" ++ key)
+        registered <- getsT (Map.member key . tsRecs)
+        if registered
+          then pure occurrence
+          else do
+            modifyT (\s -> s { tsRecs = Map.insert key () (tsRecs s) })
+            mapM_
+              (\(leanName, fields) -> do
+                fieldTypes <- mapM go fields
+                let premise = foldr FunctionType occurrence fieldTypes
+                modifyT (\s -> s
+                  { tsPrems = tsPrems s ++ [(leanName, premise)] }))
+              ctors
+            pure occurrence
+
   (goal, finalState) <- runTrans (go frag0) TransState
     { tsTable = Map.empty
     , tsNext = 0
@@ -324,5 +358,8 @@ fragToDjinn frag0 = do
     , tsDecls = []
     , tsIndNext = 0
     , tsCtorMap = Map.empty
+    , tsRecs = Map.empty
+    , tsPrems = []
     }
-  Right (goal, tsDecls finalState, tsCtorMap finalState)
+  Right (goal, tsDecls finalState, tsCtorMap finalState
+        , tsPrems finalState)

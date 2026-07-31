@@ -57,6 +57,12 @@ data Frag
     -- only when the serializer saw the complete constructor list with
     -- non-dependent explicit fields, so the node itself never poisons a
     -- refutation; its fields answer for themselves
+  | FRec String [(String, [Frag])]
+    -- ^ recursive (or nested) inductive occurrence: an opaque atom for
+    -- elimination, but its listed constructors are sound introduction
+    -- rules the engine receives as premises.  The constructor list may
+    -- be partial (only in-fragment constructors are carried), and the
+    -- key always poisons refutations - structure stays hidden
   | FDepth              -- ^ translator depth bound reached
   deriving (Eq, Show)
 
@@ -98,7 +104,8 @@ synthPrelude = unlines
   , ""
   , "mutual"
   , ""
-  , "partial def go (fuel : Nat) (depth : Nat) (e : Expr) : MetaM String := do"
+  , "partial def go (fuel depth : Nat) (blocked : List String) (e : Expr)"
+  , "    : MetaM String := do"
   , "  match fuel with"
   , "  | 0 => pure \"(depth)\""
   , "  | Nat.succ fuel => do"
@@ -117,19 +124,19 @@ synthPrelude = unlines
   , "        if ts.isSort then"
   , "          withLocalDeclD (Name.mkSimple (\"s\" ++ toString depth)) t"
   , "              fun fv => do"
-  , "            let inner \8592 go fuel (depth + 1) (b.instantiate1 fv)"
+  , "            let inner \8592 go fuel (depth + 1) blocked (b.instantiate1 fv)"
   , "            let tag := if bi.isExplicit then \"(all \" else \"(alli \""
   , "            pure (tag ++ esc (\"s\" ++ toString depth) ++ \" \""
   , "              ++ inner ++ \")\")"
   , "        else atomOf e"
   , "      else if bi.isExplicit then do"
-  , "        let d \8592 go fuel depth t"
-  , "        let r \8592 go fuel depth b"
+  , "        let d \8592 go fuel depth blocked t"
+  , "        let r \8592 go fuel depth blocked b"
   , "        pure (\"(-> \" ++ d ++ \" \" ++ r ++ \")\")"
   , "      else do"
   , "        -- an unused implicit binder is introduced by the elaborator,"
   , "        -- so the term neither binds nor applies it"
-  , "        let r \8592 go fuel depth b"
+  , "        let r \8592 go fuel depth blocked b"
   , "        pure (\"(alli \" ++ esc (\"i\" ++ toString depth) ++ \" \""
   , "          ++ r ++ \")\")"
   , "    | _ =>"
@@ -137,8 +144,8 @@ synthPrelude = unlines
   , "      | Expr.const n _ => do"
   , "        let args := e.getAppArgs"
   , "        let bin (tag : String) : MetaM String := do"
-  , "          let a \8592 go fuel depth args[0]!"
-  , "          let b \8592 go fuel depth args[1]!"
+  , "          let a \8592 go fuel depth blocked args[0]!"
+  , "          let b \8592 go fuel depth blocked args[1]!"
   , "          pure (\"(\" ++ tag ++ \" \" ++ a ++ \" \" ++ b ++ \")\")"
   , "        if args.size == 0 &&"
   , "            (n == ``False || n == ``Empty || n == ``PEmpty) then"
@@ -153,24 +160,27 @@ synthPrelude = unlines
   , "            (n == ``Or || n == ``Sum || n == ``PSum) then"
   , "          bin \"sum\""
   , "        else if args.size == 2 && n == ``Iff then do"
-  , "          let a \8592 go fuel depth args[0]!"
-  , "          let b \8592 go fuel depth args[1]!"
+  , "          let a \8592 go fuel depth blocked args[0]!"
+  , "          let b \8592 go fuel depth blocked args[1]!"
   , "          pure (\"(prod (-> \" ++ a ++ \" \" ++ b ++ \") (-> \""
   , "            ++ b ++ \" \" ++ a ++ \"))\")"
   , "        else if args.size == 1 && n == ``Not then do"
-  , "          let a \8592 go fuel depth args[0]!"
+  , "          let a \8592 go fuel depth blocked args[0]!"
   , "          pure (\"(-> \" ++ a ++ \" (bot))\")"
   , "        else do"
-  , "          match \8592 indOf fuel depth e with"
+  , "          match \8592 indOf fuel depth blocked e with"
   , "          | some s => pure s"
-  , "          | none => atomOf e"
+  , "          | none =>"
+  , "            match \8592 recOf fuel depth blocked e with"
+  , "            | some s => pure s"
+  , "            | none => atomOf e"
   , "      | _ => atomOf e"
   , ""
   , "-- Phase 2: a non-recursive, non-indexed, non-mutual, non-nested"
   , "-- inductive applied to all of its parameters expands into a"
   , "-- generalized sum of products, provided every constructor field is"
   , "-- explicit and non-dependent; anything else falls back to an atom."
-  , "partial def indOf (fuel depth : Nat) (e : Expr)"
+  , "partial def indOf (fuel depth : Nat) (blocked : List String) (e : Expr)"
   , "    : MetaM (Option String) := do"
   , "  match e.getAppFn with"
   , "  | Expr.const n us =>"
@@ -185,7 +195,7 @@ synthPrelude = unlines
   , "        let mut ctors := \"\""
   , "        for c in iv.ctors do"
   , "          let ct \8592 inferType (mkAppN (Expr.const c us) args)"
-  , "          match \8592 ctorFields fuel depth ct with"
+  , "          match \8592 ctorFields fuel depth blocked ct with"
   , "          | none => return none"
   , "          | some fs =>"
   , "            ctors := ctors ++ \" (ctor \" ++ esc c.toString ++ fs ++ \")\""
@@ -194,15 +204,53 @@ synthPrelude = unlines
   , "    | _ => pure none"
   , "  | _ => pure none"
   , ""
-  , "partial def ctorFields (fuel depth : Nat) (t : Expr)"
+  , "-- A recursive (or nested) inductive stays an opaque atom for"
+  , "-- elimination, but its constructors are still sound introduction"
+  , "-- rules: emit the ones whose instantiated fields are explicit and"
+  , "-- non-dependent, with this occurrence's own key blocked so field"
+  , "-- occurrences of the type serialize as the matching atom."
+  , "partial def recOf (fuel depth : Nat) (blocked : List String) (e : Expr)"
+  , "    : MetaM (Option String) := do"
+  , "  match e.getAppFn with"
+  , "  | Expr.const n us =>"
+  , "    match (\8592 getEnv).find? n with"
+  , "    | some (ConstantInfo.inductInfo iv) =>"
+  , "      if iv.numIndices != 0 || !(iv.isRec || iv.isNested)"
+  , "          || iv.isUnsafe || iv.all.length != 1"
+  , "          || e.getAppNumArgs != iv.numParams then"
+  , "        pure none"
+  , "      else do"
+  , "        let pp \8592 Meta.ppExpr e"
+  , "        let key := toString pp"
+  , "        if blocked.contains key then pure none"
+  , "        else do"
+  , "          let args := e.getAppArgs"
+  , "          let blocked := key :: blocked"
+  , "          let mut ctors := \"\""
+  , "          let mut found := false"
+  , "          for c in iv.ctors do"
+  , "            let ct \8592 inferType (mkAppN (Expr.const c us) args)"
+  , "            match \8592 ctorFields fuel depth blocked ct with"
+  , "            | none => pure ()"
+  , "            | some fs =>"
+  , "              found := true"
+  , "              ctors := ctors ++ \" (ctor \" ++ esc c.toString"
+  , "                ++ fs ++ \")\""
+  , "          if !found then pure none"
+  , "          else pure (some (\"(rec \" ++ esc key ++ ctors ++ \")\"))"
+  , "    | _ => pure none"
+  , "  | _ => pure none"
+  , ""
+  , "partial def ctorFields (fuel depth : Nat) (blocked : List String)"
+  , "    (t : Expr)"
   , "    : MetaM (Option String) := do"
   , "  let t \8592 whnfR t"
   , "  match t with"
   , "  | Expr.forallE _ dom body bi =>"
   , "    if body.hasLooseBVars || !bi.isExplicit then pure none"
   , "    else do"
-  , "      let d \8592 go fuel depth dom"
-  , "      match \8592 ctorFields fuel depth body with"
+  , "      let d \8592 go fuel depth blocked dom"
+  , "      match \8592 ctorFields fuel depth blocked body with"
   , "      | none => pure none"
   , "      | some rest => pure (some (\" \" ++ d ++ rest))"
   , "  | _ => pure (some \"\")"
@@ -226,7 +274,7 @@ serializerProgram goal = unlines
   , "  run_tac withMainContext do"
   , "    let tgt \8592 getMainTarget"
   , "    let isP \8592 Meta.isProp tgt"
-  , "    let s \8592 LeantSynth.go 100 0 tgt"
+  , "    let s \8592 LeantSynth.go 100 0 [] tgt"
   , "    logInfo (\"(goal \" ++ (if isP then \"prop\" else \"type\")"
   , "      ++ \" \" ++ s ++ \")\")"
   , "  sorry"
@@ -301,6 +349,11 @@ parseFrag (TL : TSym tag : rest) = case tag of
       (ctors, rest'') <- parseCtors rest'
       Right (FInd key ctors, rest'')
     _ -> Left "malformed (ind ...)"
+  "rec" -> case rest of
+    TStr key : rest' -> do
+      (ctors, rest'') <- parseCtors rest'
+      Right (FRec key ctors, rest'')
+    _ -> Left "malformed (rec ...)"
   other -> Left ("unknown fragment tag " ++ other)
  where
   parseCtors (TR : toks) = Right ([], toks)
@@ -351,6 +404,7 @@ fragRefusal frag
     FSum a b -> hasDepth a || hasDepth b
     FAll _ _ b -> hasDepth b
     FInd _ ctors -> any (any hasDepth . snd) ctors
+    FRec _ ctors -> any (any hasDepth . snd) ctors
     FDepth -> True
     _ -> False
 
@@ -393,6 +447,7 @@ glivenkoSplit = go []
     FProd a b -> quantFree a && quantFree b
     FSum a b -> quantFree a && quantFree b
     FInd _ ctors -> all (all quantFree . snd) ctors
+    FRec _ ctors -> all (all quantFree . snd) ctors
     FAll{} -> False
     _ -> True
 
@@ -407,5 +462,6 @@ fragUnsafeAtoms = nub . go
     FSum a b -> go a ++ go b
     FAll _ _ b -> go b
     FInd _ ctors -> concatMap (concatMap go . snd) ctors
+    FRec key ctors -> key : concatMap (concatMap go . snd) ctors
     FAtom False key -> [key]
     _ -> []

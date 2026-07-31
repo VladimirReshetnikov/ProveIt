@@ -38,6 +38,7 @@ module Leant.Synth.Render
   , renderLeanTerm
   ) where
 
+import Control.Monad (foldM)
 import Data.List (intercalate, nub, sortOn, subsequences)
 import qualified Data.Map.Strict as Map
 
@@ -66,13 +67,19 @@ data CtorInfo = CtorInfo
 -- | Engine-side constructor spellings of the declared datatypes.
 type CtorMap = Map.Map String CtorInfo
 
--- | Render one candidate expression against the goal fragment.  Returns
--- a nonempty group of textual variants, best guess first; the caller
--- verifies them in order and keeps the first that elaborates.
+-- | Render one candidate expression against the goal fragment.  The
+-- candidate proves the premise-extended goal (constructor premises of
+-- recursive inductives are antecedents; see 'Leant.Synth.Engine'), so
+-- the matching leading binders are stripped first and their uses
+-- replaced by the actual Lean constructor names.  Returns a nonempty
+-- group of textual variants, best guess first; the caller verifies
+-- them in order and keeps the first that elaborates.
 renderLeanTerm
-  :: CtorMap -> Frag -> Expression String -> Either String [String]
-renderLeanTerm cm goalFrag expr0 = do
-  base <- uniquify (normalizeExpr 0 expr0)
+  :: CtorMap -> [String] -> Frag -> Expression String
+  -> Either String [String]
+renderLeanTerm cm premises goalFrag expr0 = do
+  stripped <- stripPremises premises (normalizeExpr 0 expr0)
+  base <- uniquify stripped
   texts <- concat <$> mapM variantsFor
     (nub [fit cm force goalFrag base 0 [] | force <- [False, True]])
   case nub texts of
@@ -106,6 +113,69 @@ siteSubsets k = [] : full : sortOn (\s -> (length s, s)) middle
   full = [0 .. k - 1]
   middle =
     [ s | s <- subsequences full, not (null s), length s /= k ]
+
+-- Premise stripping ----------------------------------------------------------
+--
+-- The engine's candidate binds one leading lambda per constructor
+-- premise.  Those binders are removed and every use of one is replaced
+-- by a reserved-marker local carrying the Lean constructor name; the
+-- marker survives uniquification untouched and prints as the bare name.
+
+premiseMark :: String
+premiseMark = "\3"
+
+marked :: String -> Bool
+marked = (premiseMark ==) . take 1
+
+stripPremises
+  :: [String] -> Expression String -> Either String (Expression String)
+stripPremises [] expr = Right expr
+stripPremises names expr = do
+  let (pats, core) = spine expr
+  if length pats < length names
+    then Left "candidate does not bind the constructor premises"
+    else do
+      let (premPats, rest) = splitAt (length names) pats
+      subst <- foldM bindPat Map.empty (zip premPats names)
+      Right (substLocals subst
+        (if null rest then core else Lambda rest core))
+ where
+  spine (Lambda ps b) = let (more, c) = spine b in (ps ++ more, c)
+  spine e = ([], e)
+  bindPat m (Bind x, name) = Right (Map.insert x name m)
+  bindPat m (Wildcard, _) = Right m
+  bindPat _ _ = Left "unexpected premise binder pattern"
+
+-- | Capture-aware substitution of premise binders by marked names: a
+-- binder that rebinds a substituted name shadows it.
+substLocals
+  :: Map.Map String String -> Expression String -> Expression String
+substLocals sub expr
+  | Map.null sub = expr
+  | otherwise = case expr of
+      Local x -> case Map.lookup x sub of
+        Just leanName -> Local (premiseMark ++ leanName)
+        Nothing -> expr
+      Global _ -> expr
+      Hole _ -> expr
+      Apply f a -> Apply (substLocals sub f) (substLocals sub a)
+      Tuple es -> Tuple (map (substLocals sub) es)
+      Lambda pats body ->
+        Lambda pats (substLocals (removeBound pats sub) body)
+      Let pat rhs body -> Let pat (substLocals sub rhs)
+        (substLocals (removeBound [pat] sub) body)
+      Case scrut alts -> Case (substLocals sub scrut)
+        [ (pat, substLocals (removeBound [pat] sub) body)
+        | (pat, body) <- alts
+        ]
+ where
+  removeBound pats m = foldr Map.delete m (concatMap boundNames pats)
+  boundNames pat = case pat of
+    Bind x -> [x]
+    Wildcard -> []
+    As x p -> x : boundNames p
+    TuplePattern ps -> concatMap boundNames ps
+    Constructor _ ps -> concatMap boundNames ps
 
 -- Globals -------------------------------------------------------------------
 
@@ -217,9 +287,11 @@ uniquify expr0 = fst <$> go Map.empty 0 expr0
   go :: Ren -> Int -> Expression String
      -> Either String (Expression String, Int)
   go env n expr = case expr of
-    Local x -> case Map.lookup x env of
-      Just x' -> Right (Local x', n)
-      Nothing -> Left ("unbound local in candidate: " ++ x)
+    Local x
+      | marked x -> Right (expr, n)
+      | otherwise -> case Map.lookup x env of
+          Just x' -> Right (Local x', n)
+          Nothing -> Left ("unbound local in candidate: " ++ x)
     Global _ -> Right (expr, n)
     Hole _ -> Left "candidate contains an unfilled hole"
     Apply f a -> do
@@ -430,6 +502,9 @@ tagged = (instTag ==) . take 1
 stripTag :: String -> String
 stripTag x = if tagged x then drop 1 x else x
 
+stripMark :: String -> String
+stripMark x = if marked x then drop 1 x else x
+
 -- | Trailing explicit quantifiers of @frag@ once @k@ term arguments have
 -- been consumed (with @k = 0@ this is 'leadingTypeArgs').
 trailingAlls :: Frag -> Int -> Int
@@ -582,7 +657,7 @@ render cm style doms = go
   -- arguments: weave mid-spine placeholders, and instantiate the
   -- trailing quantifiers when the site is tagged
   renderUse req x argTxts =
-    let name = stripTag x
+    let name = stripMark (stripTag x)
         instantiate = tagged x
         -- a binder the goal fragment does not describe (bound inside an
         -- argument, say) simply takes its arguments as written
