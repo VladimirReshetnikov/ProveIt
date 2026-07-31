@@ -19,6 +19,7 @@
 -- owns the narrow boundary to the synthesis engine.
 module Leant.Synth.Fragment
   ( Frag (..)
+  , Slot (..)
   , GoalSort (..)
   , ParsedGoal (..)
   , synthPrelude
@@ -26,7 +27,8 @@ module Leant.Synth.Fragment
   , parseGoalSexp
   , fragRefusal
   , fragUnsafeAtoms
-  , fragLeadingAlls
+  , fragSpine
+  , leadingTypeArgs
   ) where
 
 import Data.Char (isSpace)
@@ -40,10 +42,20 @@ data Frag
   | FSum Frag Frag
   | FTop
   | FBot
-  | FAll String Frag    -- ^ forall over a sort (Type\/Prop\/Sort u)
+  | FAll Bool String Frag
+    -- ^ forall over a sort (Type\/Prop\/Sort u); the flag is 'True' for
+    -- an explicit binder (needs a lambda in the Lean term) and 'False'
+    -- for an implicit\/instance one (the elaborator introduces it)
   | FVar String         -- ^ opaque type variable (auto-implicit or opened binder)
   | FAtom Bool String   -- ^ opaque atom: safe-for-refutation flag, display key
   | FDepth              -- ^ translator depth bound reached
+  deriving (Eq, Show)
+
+-- | One position of the goal's leading binder spine, used to line the
+-- rendered candidate's lambda binders up with the Lean goal.
+data Slot
+  = SlotArrow Frag      -- ^ an arrow; carries the domain fragment
+  | SlotAll Bool        -- ^ a quantifier; 'True' when the binder is explicit
   deriving (Eq, Show)
 
 data GoalSort = GoalProp | GoalType
@@ -88,20 +100,27 @@ synthPrelude = unlines
   , "      if t.isSort then"
   , "        pure (\"(var \" ++ esc (toString (\8592 Meta.ppExpr e)) ++ \")\")"
   , "      else atomOf e"
-  , "    | Expr.forallE _ t b _ =>"
+  , "    | Expr.forallE _ t b bi =>"
   , "      if b.hasLooseBVars then do"
   , "        let ts \8592 whnfR t"
   , "        if ts.isSort then"
   , "          withLocalDeclD (Name.mkSimple (\"s\" ++ toString depth)) t"
   , "              fun fv => do"
   , "            let inner \8592 go fuel (depth + 1) (b.instantiate1 fv)"
-  , "            pure (\"(all \" ++ esc (\"s\" ++ toString depth) ++ \" \""
+  , "            let tag := if bi.isExplicit then \"(all \" else \"(alli \""
+  , "            pure (tag ++ esc (\"s\" ++ toString depth) ++ \" \""
   , "              ++ inner ++ \")\")"
   , "        else atomOf e"
-  , "      else do"
+  , "      else if bi.isExplicit then do"
   , "        let d \8592 go fuel depth t"
   , "        let r \8592 go fuel depth b"
   , "        pure (\"(-> \" ++ d ++ \" \" ++ r ++ \")\")"
+  , "      else do"
+  , "        -- an unused implicit binder is introduced by the elaborator,"
+  , "        -- so the term neither binds nor applies it"
+  , "        let r \8592 go fuel depth b"
+  , "        pure (\"(alli \" ++ esc (\"i\" ++ toString depth) ++ \" \""
+  , "          ++ r ++ \")\")"
   , "    | _ =>"
   , "      match e.getAppFn with"
   , "      | Expr.const n _ => do"
@@ -218,11 +237,8 @@ parseFrag (TL : TSym tag : rest) = case tag of
         other -> Left ("unknown atom safety " ++ other)
       Right (FAtom safe key, rest')
     _ -> Left "malformed (atom ...)"
-  "all" -> case rest of
-    TStr name : rest' -> do
-      (body, rest'') <- parseFrag rest'
-      close (FAll name body) rest''
-    _ -> Left "malformed (all ...)"
+  "all" -> allTag True rest
+  "alli" -> allTag False rest
   other -> Left ("unknown fragment tag " ++ other)
  where
   binary ctor toks = do
@@ -230,6 +246,11 @@ parseFrag (TL : TSym tag : rest) = case tag of
     (b, toks'') <- parseFrag toks'
     close (ctor a b) toks''
   nullary value toks = close value toks
+  allTag explicit toks = case toks of
+    TStr name : toks' -> do
+      (body, toks'') <- parseFrag toks'
+      close (FAll explicit name body) toks''
+    _ -> Left "malformed (all ...)"
   close value (TR : toks) = Right (value, toks)
   close _ _ = Left "expected ) in goal translation"
 parseFrag _ = Left "expected ( in goal translation"
@@ -249,23 +270,35 @@ fragRefusal frag
           \transported, never analyzed")
   | otherwise = Nothing
  where
-  peel (FAll _ b) = peel b
+  peel (FAll _ _ b) = peel b
   peel f = f
   hasDepth f = case f of
     FArr a b -> hasDepth a || hasDepth b
     FProd a b -> hasDepth a || hasDepth b
     FSum a b -> hasDepth a || hasDepth b
-    FAll _ b -> hasDepth b
+    FAll _ _ b -> hasDepth b
     FDepth -> True
     _ -> False
 
--- | The number of leading (prenex) sort-quantifiers of the goal.  Djinn
--- models them as implicit polymorphism and its candidates never bind
--- them, while Lean's explicit @\8704@ binders must be introduced \8212 the
--- verifier prepends one anonymous binder per leading quantifier.
-fragLeadingAlls :: Frag -> Int
-fragLeadingAlls (FAll _ body) = 1 + fragLeadingAlls body
-fragLeadingAlls _ = 0
+-- | The goal's leading binder spine (arrows and quantifiers, stopping
+-- at the first other connective).  Djinn models quantifiers as implicit
+-- polymorphism and its candidates bind only arrows; the renderer weaves
+-- anonymous binders for explicit quantifier slots into the candidate's
+-- lambda, and skips implicit ones (Lean introduces those itself).
+fragSpine :: Frag -> [Slot]
+fragSpine (FArr dom body) = SlotArrow dom : fragSpine body
+fragSpine (FAll explicit _ body) = SlotAll explicit : fragSpine body
+fragSpine _ = []
+
+-- | How many explicit type arguments a value of this type needs before
+-- its term arguments (its leading explicit sort-quantifiers).  Used to
+-- render applications of quantified hypotheses as @f _ x@: Djinn's
+-- instantiation evidence is the bare hypothesis, but Lean's explicit
+-- binders demand a placeholder for the elaborator to infer.
+leadingTypeArgs :: Frag -> Int
+leadingTypeArgs (FAll True _ body) = 1 + leadingTypeArgs body
+leadingTypeArgs (FAll False _ body) = leadingTypeArgs body
+leadingTypeArgs _ = 0
 
 -- | Display keys of atoms that poison a negative verdict (they mention
 -- concrete constants whose structure the engine cannot see).
@@ -276,6 +309,6 @@ fragUnsafeAtoms = nub . go
     FArr a b -> go a ++ go b
     FProd a b -> go a ++ go b
     FSum a b -> go a ++ go b
-    FAll _ b -> go b
+    FAll _ _ b -> go b
     FAtom False key -> [key]
     _ -> []

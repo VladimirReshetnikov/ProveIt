@@ -12,8 +12,11 @@
 module Leant.Synth.Engine
   ( SynthOutcome (..)
   , synthesize
+  , forceOutcome
+  , candidateWindow
   ) where
 
+import Data.List (sortOn)
 import qualified Data.Map.Strict as Map
 
 import Language.Haskell.Djex
@@ -28,6 +31,7 @@ import Language.Haskell.Djex
   , batchProgress
   , candidateOutput
   , defaultQueryOptions
+  , expressionSize
   , functionClauseExpression
   , mkDefinitionName
   , mkDjinnRequest
@@ -44,16 +48,45 @@ import Leant.Synth.Fragment (Frag (..), fragUnsafeAtoms)
 import Leant.Synth.Render (renderLeanTerm)
 
 -- | What the engine established for one goal.  Candidate terms are a lazy
--- ranked list of rendered Lean terms; the caller verifies them against
--- the backend before showing anything.
+-- ranked list of rendered variant groups (one group per engine candidate;
+-- within a group, textual variants of the same term); the caller verifies
+-- them against the backend before showing anything.
 data SynthOutcome
-  = SynthCandidates [String] [String]
-    -- ^ rendered candidates (best first), operational notes (truncation)
+  = SynthCandidates [[String]] [String]
+    -- ^ rendered candidate groups (best first), operational notes
   | SynthRefuted Bool
     -- ^ no inhabitant; 'True' means the verdict is sound (complete
     -- translation, no structure-hiding atoms)
   | SynthNoTerm [String]
     -- ^ no candidate and no logical claim, with notes
+
+-- | How many engine candidates take part in the size ranking.  The
+-- backend verification round-trip is the cost center, not rendering, so
+-- this can comfortably exceed the number of candidates ever shown.
+-- | How many engine candidates are collected and take part in the size
+-- ranking.  Djinn's sorted mode computes the whole collection before
+-- returning, so this bounds real work; the default of 200 buys nothing
+-- when at most a handful are ever displayed.  Reaching it truncates the
+-- batch, which carries no negative evidence, so refutations - which
+-- come from an exhausted search rather than a full collection - stay
+-- sound.
+candidateWindow :: Int
+candidateWindow = 60
+
+-- | Drive an outcome's evaluation far enough that the whole search has
+-- run: the verdict itself, plus the first @n@ candidate groups.  The
+-- caller runs this under a wall-clock guard - the engine is pure and
+-- lazy, so without forcing, the search would instead happen later,
+-- outside the guard.
+forceOutcome :: Int -> Either String SynthOutcome -> Int
+forceOutcome n outcome = case outcome of
+  Left err -> length err
+  Right (SynthCandidates groups notes) ->
+    sum (map (sum . map length) (take n groups)) + noteSize notes
+  Right (SynthRefuted sound) -> if sound then 1 else 0
+  Right (SynthNoTerm notes) -> noteSize notes
+ where
+  noteSize = sum . map length
 
 -- | Run the in-process Djinn (LJT) search on a translated goal.
 synthesize :: Frag -> Either String SynthOutcome
@@ -66,19 +99,26 @@ synthesize frag = do
         { requestTarget = target
         , requestGoal = goal
         , requestContexts = []
-        , requestOptions = defaultQueryOptions { optionAlternatives = True }
+        , requestOptions = defaultQueryOptions
+            { optionAlternatives = True
+            , optionCutoff = candidateWindow
+            }
         }
   request <- viaDiagnostic (mkDjinnRequest query)
   result <- viaDiagnostic (runDjinnQuery session request)
   let batch = resultSearch result
       notes = progressNotes (batchProgress batch)
-      terms =
-        [ term
-        | candidate <- batchCandidates batch
-        , Right term <-
-            [renderLeanTerm (functionClauseExpression
-              (candidateOutput candidate))]
+      -- Djinn ranks by unused-binder fraction, which happily puts a
+      -- redundantly re-cased monster ahead of the obvious term.  Prefer
+      -- smaller terms, keeping the engine's order as the tie-break, over
+      -- a bounded prefix (the batch is terminal but can be long).
+      rendered =
+        [ (expressionSize expr, group)
+        | candidate <- take candidateWindow (batchCandidates batch)
+        , let expr = functionClauseExpression (candidateOutput candidate)
+        , Right group <- [renderLeanTerm frag expr]
         ]
+      terms = map snd (sortOn fst rendered)
   pure $ case resultEvidence result of
     ValidatedCandidates -> SynthCandidates terms notes
     ProvedUninhabitable -> SynthRefuted (null (fragUnsafeAtoms frag))
@@ -128,7 +168,7 @@ fragToDjinn frag0 = do
         FAtom _ key ->
           let (v', table', n') = variable table n ("a:" ++ key)
           in Right (TypeVariable v', table', n')
-        FAll binder body -> do
+        FAll _ binder body -> do
           let (v, table1, n1) = variable table n ("v:" ++ binder)
           (body', table2, n2) <- go table1 n1 body
           Right (ForallType [v] [] body', table2, n2)

@@ -92,9 +92,12 @@ provably uninhabited — no closed term of this polymorphic type exists
 
 - Every displayed candidate has been **verified by the Lean backend**
   (`example : (T) := term`) — the synthesis engine is never trusted.
-- Candidates are ranked; `:synth N` binds candidate N as `it` (in prove
-  mode it closes the goal with `exact`). Bare `:synth` targets the
-  current prove-mode goal or the last `sorry`.
+  Where a term's shape is ambiguous in Lean (a quantified hypothesis may
+  be transported whole or instantiated), the renderer offers the
+  alternatives and verification picks the one that elaborates.
+- Candidates are ranked smallest-first; `:synth N` binds candidate N as
+  `it` (in prove mode it closes the goal with `exact`). Bare `:synth`
+  targets the current prove-mode goal or the last `sorry`.
 - Negative verdicts are labeled by strength: "provably uninhabited" only
   when the translation was complete and every opaque atom is a genuine
   quantified variable; otherwise "no term found within bounds". In
@@ -103,6 +106,24 @@ provably uninhabited — no closed term of this polymorphic type exists
   transportable, never analyzed. Session declarations are visible to
   goal translation (the session history is replayed into the synthesis
   environment).
+- Auto-bound goal variables default to `Sort`; when Type-level `×`/`⊕`
+  over arrows leaves Lean's universe unifier stuck, `:synth` retries
+  with the unresolved variables bound at `Type` (noted in the output),
+  narrowing that set if some variable turns out not to belong at `Type`
+  (a `Prop` operand, say). Names that resolve in the session — including
+  through an opened namespace — are never shadowed by the retry.
+- Explicit `∀` binders — leading, nested, trailing, or interleaved — are
+  woven into the candidate's lambda automatically; implicit ones are
+  left to the elaborator; and uses of quantified hypotheses get
+  placeholder type arguments wherever Lean needs them (`f _ x`,
+  `h a _ q`), so bounded rank-N candidates verify.
+- The engine runs under a wall-clock guard, default 20 s
+  (`LEANT_SYNTH_TIMEOUT=N`, `0` waits indefinitely): propositional goals
+  answer in microseconds, but bounded hypothesis instantiation can widen
+  a quantified goal's space enough to run for minutes. A timeout is
+  reported as "no answer", never as a verdict. `LEANT_SYNTH_DEBUG=1`
+  prints the translated fragment and the rendered variants, which is the
+  fastest way to see why a candidate was dropped.
 - The Python implementation deliberately does not grow a synthesis host;
   its `:synth` prints a pointer here.
 
