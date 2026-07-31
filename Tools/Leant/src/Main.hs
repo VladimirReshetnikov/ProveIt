@@ -48,10 +48,12 @@ import Leant.Format (formatInfo, indentDefBody)
 import Leant.Json
 import Leant.Synth.Engine (SynthOutcome (..), forceOutcome, synthesize)
 import Leant.Synth.Fragment
-  ( ParsedGoal (..)
+  ( Frag (..)
+  , ParsedGoal (..)
   , GoalSort (..)
   , fragRefusal
   , fragUnsafeAtoms
+  , glivenkoSplit
   , parseGoalSexp
   , serializerProgram
   , synthPrelude
@@ -1455,7 +1457,7 @@ synthGo' st retriedVars goal parsed = case fragRefusal (pgFrag parsed) of
   Just reason -> emitLn st =<< cRed st ("out of fragment: " ++ reason)
   Nothing -> do
     limit <- synthTimeoutSeconds
-    bounded <- runBounded limit (synthesize (pgFrag parsed))
+    bounded <- runEngineBounded limit (synthesize (pgFrag parsed))
     case bounded of
       Nothing -> do
         emitLn st =<< cYellow st
@@ -1467,13 +1469,6 @@ synthGo' st retriedVars goal parsed = case fragRefusal (pgFrag parsed) of
            ++ "or 0 to wait indefinitely)")
       Just outcome -> report outcome
  where
-  runBounded limit outcome
-    | limit <= 0 = Just outcome <$ evaluate (forced outcome)
-    | otherwise = do
-        done <- timeout (limit * 1000000) (evaluate (forced outcome))
-        pure (outcome <$ done)
-  forced = forceOutcome synthMaxTried
-
   report outcome = case outcome of
     Left err -> emitLn st =<< cRed st ("synthesis engine error: " ++ err)
     Right (SynthCandidates groups notes) -> do
@@ -1507,18 +1502,21 @@ synthGo' st retriedVars goal parsed = case fragRefusal (pgFrag parsed) of
       forM_ notes $ \note -> emitLn st =<< cDim st ("note: " ++ note)
     Right (SynthRefuted sound)
       | sound -> do
-          message <- cYellow st
-            ("provably uninhabited \8212 no closed term of this "
-             ++ "polymorphic type exists")
-          emitLn st message
+          classical <- synthClassical st goal parsed
+          unless classical $ do
+            message <- cYellow st
+              ("provably uninhabited \8212 no closed term of this "
+               ++ "polymorphic type exists")
+            emitLn st message
           forM_ retriedVars $ \vars -> emitLn st =<< cDim st
             ("(for the goal with the unresolved variables " ++ unwords vars
              ++ " bound at Type; a variable the goal itself binds is "
              ++ "shadowed harmlessly \8212 annotate types yourself if "
              ++ "this is not what you meant)")
-          when (pgSort parsed == GoalProp) $ emitLn st =<< cDim st
-            ("(constructively \8212 a classical proof may still exist; "
-             ++ "this is not a disproof of the proposition)")
+          when (not classical && pgSort parsed == GoalProp) $
+            emitLn st =<< cDim st
+              ("(constructively \8212 a classical proof may still exist; "
+               ++ "this is not a disproof of the proposition)")
       | otherwise -> do
           let atoms = fragUnsafeAtoms (pgFrag parsed)
               listing = intercalate "`, `" (take 3 atoms)
@@ -1529,6 +1527,72 @@ synthGo' st retriedVars goal parsed = case fragRefusal (pgFrag parsed) of
     Right (SynthNoTerm notes) -> do
       emitLn st =<< cYellow st "no term found within the search bounds"
       forM_ notes $ \note -> emitLn st =<< cDim st ("note: " ++ note)
+
+-- | Run the pure engine under the wall-clock guard, forcing enough of
+-- the outcome that the whole search happens inside the guard (the
+-- engine is lazy; see 'forceOutcome').  'Nothing' means the guard
+-- fired.
+runEngineBounded
+  :: Int -> Either String SynthOutcome
+  -> IO (Maybe (Either String SynthOutcome))
+runEngineBounded limit outcome
+  | limit <= 0 =
+      Just outcome <$ evaluate (forceOutcome synthMaxTried outcome)
+  | otherwise = do
+      done <- timeout (limit * 1000000)
+        (evaluate (forceOutcome synthMaxTried outcome))
+      pure (outcome <$ done)
+
+-- | The Glivenko fallback (SYNTHESIS_PROPOSAL.md \167 7 B): a sound
+-- constructive refutation of a goal with a quantifier-free body may
+-- still admit a classical proof.  For a propositional body the
+-- double-negation translation is complete \8212 the body is classically
+-- provable exactly when \172\172body is intuitionistically provable \8212 so
+-- run the engine once more on prefix + \172\172body and wrap each candidate
+-- in @Classical.byContradiction@.  Verification against the original
+-- goal keeps the move honest for free: on a goal that is not actually
+-- a @Prop@ (where @byContradiction@ does not apply) every wrapped
+-- candidate fails to elaborate and the ordinary verdict stands, so the
+-- fallback runs for every sound refutation rather than trusting the
+-- serializer's sort classification of Sort-polymorphic goals.
+-- Returns whether verified classical candidates were displayed.
+synthClassical :: St -> String -> ParsedGoal -> IO Bool
+synthClassical st goal parsed = case glivenkoSplit (pgFrag parsed) of
+  Nothing -> pure False
+  Just (prefix, body) -> do
+    limit <- synthTimeoutSeconds
+    let nnFrag = foldr (\(explicit, binder) acc -> FAll explicit binder acc)
+          (FArr (FArr body FBot) FBot) prefix
+    bounded <- runEngineBounded limit (synthesize nnFrag)
+    case bounded of
+      Just (Right (SynthCandidates groups _)) -> do
+        let explicits = length (filter fst prefix)
+            binders = ["cl" ++ show i | i <- [1 .. explicits]]
+            wrap term
+              | null binders =
+                  "Classical.byContradiction (" ++ term ++ ")"
+              | otherwise = "fun " ++ unwords binders
+                  ++ " => Classical.byContradiction ((" ++ term ++ ") "
+                  ++ unwords binders ++ ")"
+            wrapped = map (map wrap) (take synthMaxTried groups)
+        (verified, _) <- synthVerify st goal wrapped
+        let shown = take synthMaxShown verified
+        if null shown
+          then pure False
+          else do
+            emitLn st =<< cYellow st
+              "constructively unprovable \8212 but classically:"
+            forM_ (zip [1 :: Int ..] shown) $ \(i, term) -> do
+              n <- cBold st (show i)
+              emitLn st ("  " ++ n ++ "  " ++ term)
+            proving <- isJust . rsProve <$> readIORef st
+            emitLn st =<< cDim st (if proving
+              then ":synth N closes the goal with `exact` candidate N"
+              else ":synth N binds candidate N as `it`")
+            modifyIORef' st (\s -> s
+              { rsSynthLast = Just (SynthBatch goal shown) })
+            pure True
+      _ -> pure False
 
 synthCounts :: Int -> Int -> Int -> String
 synthCounts engine dropped shown =

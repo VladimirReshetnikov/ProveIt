@@ -30,6 +30,7 @@ module Leant.Synth.Fragment
   , fragRefusal
   , fragUnsafeAtoms
   , fragSpine
+  , glivenkoSplit
   , leadingTypeArgs
   ) where
 
@@ -372,6 +373,28 @@ leadingTypeArgs :: Frag -> Int
 leadingTypeArgs (FAll True _ body) = 1 + leadingTypeArgs body
 leadingTypeArgs (FAll False _ body) = leadingTypeArgs body
 leadingTypeArgs _ = 0
+
+-- | Split a goal into its leading quantifier prefix and a
+-- quantifier-free body, when it has that shape.  This is the fragment
+-- where the Glivenko classical fallback is complete: for propositional
+-- @body@ (the prefix variables are opaque atoms to the engine either
+-- way), @body@ is classically provable exactly when @\172\172body@ is
+-- intuitionistically provable.  Each prefix entry carries the binder's
+-- explicitness.
+glivenkoSplit :: Frag -> Maybe ([(Bool, String)], Frag)
+glivenkoSplit = go []
+ where
+  go acc (FAll explicit binder body) = go ((explicit, binder) : acc) body
+  go acc body
+    | quantFree body = Just (reverse acc, body)
+    | otherwise = Nothing
+  quantFree f = case f of
+    FArr a b -> quantFree a && quantFree b
+    FProd a b -> quantFree a && quantFree b
+    FSum a b -> quantFree a && quantFree b
+    FInd _ ctors -> all (all quantFree . snd) ctors
+    FAll{} -> False
+    _ -> True
 
 -- | Display keys of atoms that poison a negative verdict (they mention
 -- concrete constants whose structure the engine cannot see).

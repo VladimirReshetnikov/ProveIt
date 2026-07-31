@@ -14,7 +14,9 @@ preparing synthesis environment (session imports + Lean)...
 (1 verified candidate)
 :synth N binds candidate N as `it`
 λ> :synth (((A → B) → A) → A)
-provably uninhabited — no closed term of this polymorphic type exists
+constructively unprovable — but classically:
+  1  Classical.byContradiction (fun a => nomatch (a (fun b => nomatch (a (fun _ => b (fun c => nomatch (a (fun _ => c))))))))
+:synth N binds candidate N as `it`
 λ> :synth (∀ a b : Type, a → b)
 provably uninhabited — no closed term of this polymorphic type exists
 λ> :synth (a → a → a)
