@@ -1,0 +1,20 @@
+:synth Bool
+:synth Ordering
+:synth (∀ a : Type, Option a → a ⊕ Unit)
+:synth (∀ a b : Type, a → b → a × Option b)
+:synth (∀ a : Type, Option (Option a) → Option a)
+:synth (∀ e a b : Type, Except e a → (a → b) → Except e b)
+:synth (∀ p : Prop, Decidable p → Decidable (¬ p))
+:synth (∀ a b : Type, Option a → b)
+inductive Traffic | red | amber | green
+
+:synth Traffic
+structure Pair (A B : Type) where
+  fst : A
+  snd : B
+
+:synth (∀ a b : Type, a → b → Pair a b)
+:synth (∀ a b : Type, Pair a b → a)
+:synth (∀ a b : Type, Pair a b → Empty)
+:synth (∀ a : Type, (Bool → a) → a)
+:quit

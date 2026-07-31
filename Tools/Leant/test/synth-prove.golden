@@ -1,0 +1,29 @@
+
+   __                  __
+  / /  ___ ___ ____   / /_
+ / /__/ -_) _ `/ _ \_/ __/
+/____/\__/\_,_/_//_/ \__/
+Leant (Haskell) - a GHCi-style REPL for Lean 4.  Type :help for help, :quit to exit.
+λ> :prove ∀ p : Prop, Decidable p → Decidable (¬ p)
+entering prove mode — type tactics; :help for commands
+⊢ (p : Prop) → Decidable p → Decidable ¬p
+⊢> :synth
+preparing synthesis environment (session imports + Lean)...
+  1  fun _ a => match a with | Decidable.isFalse b => Decidable.isTrue b | Decidable.isTrue c => Decidable.isFalse (fun d => d c)
+(1 verified candidate)
+:synth N closes the goal with `exact` candidate N
+⊢> :synth 1
+All goals accomplished 🎉
+finish with :qed [NAME], inspect with :script
+⊢> :abort
+left prove mode; the script was:
+  exact (fun _ a => match a with | Decidable.isFalse b => Decidable.isTrue b | Decidable.isTrue c => Decidable.isFalse (fun d => d c))
+λ> :synth (∀ a b : Type, Option a → Option b → Option (a × b))
+  1  fun _ _ _ _ => Option.none
+  2  fun _ _ a b => match a with | Option.none => Option.none | Option.some c => (match b with | Option.none => Option.none | Option.some d => Option.some ⟨c, d⟩)
+(2 verified candidates)
+:synth N binds candidate N as `it`
+note: search truncated: candidate limit reached (60)
+λ> :synth 2
+it := fun _ _ a b => match a with | Option.none => Option.none | Option.some c => (match b with | Option.none => Option.none | Option.some d => Option.some ⟨c, d⟩) : (∀ a b : Type, Option a → Option b → Option (a × b))
+λ> :quit

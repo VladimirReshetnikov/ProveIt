@@ -1,0 +1,37 @@
+
+   __                  __
+  / /  ___ ___ ____   / /_
+ / /__/ -_) _ `/ _ \_/ __/
+/____/\__/\_,_/_//_/ \__/
+Leant (Haskell) - a GHCi-style REPL for Lean 4.  Type :help for help, :quit to exit.
+λ> :synth (A × (B ⊕ C) → (A × B) ⊕ (A × C))
+preparing synthesis environment (session imports + Lean)...
+  1  fun ⟨a, b⟩ => match b with | .inl c => .inl ⟨a, c⟩ | .inr d => .inr ⟨a, d⟩
+(1 verified candidate)
+:synth N binds candidate N as `it`
+λ> :synth ((A → B → C) → (A → B) → A → C)
+  1  fun a b c => a c (b c)
+(1 verified candidate)
+:synth N binds candidate N as `it`
+λ> :synth (((A → B) → A) → A)
+provably uninhabited — no closed term of this polymorphic type exists
+λ> :synth (∀ a b : Type, a → b)
+provably uninhabited — no closed term of this polymorphic type exists
+λ> :synth (a → a → a)
+  1  fun _ a => a
+  2  fun a _ => a
+(2 verified candidates)
+:synth N binds candidate N as `it`
+λ> :synth (Nat → Nat)
+  1  fun a => a
+(1 verified candidate)
+:synth N binds candidate N as `it`
+λ> :synth (∀ p q : Prop, (p ↔ q) → ¬p → ¬q)
+  1  fun _ _ ⟨_, a⟩ b c => b (a c)
+(1 verified candidate)
+:synth N binds candidate N as `it`
+λ> :synth (((A → B) → A) → (A → A))
+  1  fun _ a => a
+(1 verified candidate)
+:synth N binds candidate N as `it`
+λ> :quit

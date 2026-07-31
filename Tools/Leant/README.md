@@ -141,6 +141,10 @@ provably uninhabited — no closed term of this polymorphic type exists
   fastest way to see why a candidate was dropped.
 - The Python implementation deliberately does not grow a synthesis host;
   its `:synth` prints a pointer here.
+- Golden transcript tests live in [test/](test/): `bash test/run-tests.sh`
+  pipes each `synth-*.txt` through `leant --plain` and diffs the
+  filtered output against the checked-in `*.golden`; `-u` regenerates
+  the goldens after an intentional behavior change.
 
 ## Differences from the Python version
 
