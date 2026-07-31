@@ -19,7 +19,8 @@ means it was reproduced on this machine with an explicitly pinned toolchain
 in the row. Everything else is recorded from the upstream tracker and is *not*
 independently confirmed — say so when citing it.
 
-Last survey: **2026-07-30** (Lean tracker, Rocq tracker, and Tristan Stérin's
+Last survey: **2026-07-30** (Lean and Rocq trackers, Lean Zulip, and the blog
+posts listed in §5, chiefly Tristan Stérin's
 [*In search of falsehood*](https://tristan.st/blog/in_search_of_falsehood),
 which reports a systematic AI-driven search for proofs of `False` in both
 systems).
@@ -33,7 +34,7 @@ systems).
 | Issue | Defect | Status upstream | Coverage |
 | --- | --- | --- | --- |
 | [#14484](https://github.com/leanprover/lean4/issues/14484) | The checked path for `Declaration.opaqueDecl` does not reject free variables in the body. With the inference cache, a safe metaprogram adds an opaque constant of type `False` whose value is an unbound `fvar`. `#print axioms` reports nothing; `leanchecker --fresh` replays it. | Fixed by PR #14498, merged 2026-07-22; shipped in `v4.32.2`. | **report** — [`Reports/2026-07-29-lean-4.33-backport-gap.md`](Reports/2026-07-29-lean-4.33-backport-gap.md) |
-| [#14576](https://github.com/leanprover/lean4/issues/14576) | In `elim_nested_inductive_fn`, nested-inductive parametric arguments are substituted by `instantiate_pi_params` **without being type-checked**; they never appear in the auxiliary declaration, so they escape all kernel checking. A wrong-structure projection is placed in, hidden behind a deliberate `Expr.hash` + `approxDepth` collision. Found while reviewing a claimed 300-line Collatz proof. | Fixed by PR #14577, merged 2026-07-28; shipped in `v4.32.2`. | **report** — same file |
+| [#14576](https://github.com/leanprover/lean4/issues/14576) | In `elim_nested_inductive_fn`, nested-inductive parametric arguments are substituted by `instantiate_pi_params` **without being type-checked**; they never appear in the auxiliary declaration, so they escape all kernel checking. A wrong-structure projection is inserted there, hidden behind a deliberate `Expr.hash` + `approxDepth` collision. Found while reviewing a claimed 300-line Collatz proof. | Fixed by PR #14577, merged 2026-07-28; shipped in `v4.32.2`. | **report** — same file |
 
 The report's own finding: **`v4.33.0-rc1` predates both fixes and accepts both
 proofs of `False`**, because the 4.33 branch was cut before either landed and
@@ -82,7 +83,29 @@ Closed 2026-05-03/04 after an audit sweep; recorded for completeness. Coverage:
 | Comparator `accepted/` | [`leanprover/comparator`](https://github.com/leanprover/comparator) checks only that challenge and solution *agree* on kernel primitives, never that the primitives are genuine; a challenge that does not import `Init` gets no protection. Comparator's own suite contains the class of construction (`tests/projects/primitive_issue`). | **artifact** — [`Comparator/`](KernelSoundness/Comparator/) |
 | Def-eq history dependence | `equiv_manager`'s union-find turns the non-transitive def-eq relation into its transitive closure, consulted whenever two expressions share a 32-bit `Expr.hash`. Acceptance of `X =?= Z` depends on unrelated earlier checks in the same declaration. **Not unsoundness** — every link is individually valid. | **artifact** + **report** — [`Reports/2026-07-29-defeq-history-dependence.md`](Reports/2026-07-29-defeq-history-dependence.md) |
 
-### 1.6 Paradoxes (negative results about type theory, not Lean defects)
+### 1.6 Historical defects, fixed before 2026
+
+Recorded because both are direct ancestors of exhibits in this directory.
+Coverage: **noted** for both.
+
+| Defect | Substance | Fix |
+| --- | --- | --- |
+| **`reduceBool` / `native_decide` leakage** (2023) | `Lean.reduceBool` runs compiled code, and compiled code could be nondeterministic: a definition calling `IO.getRandomBytes` gave `rfl` proofs of both `Lean.reduceBool foo = false` and `Lean.reduceBool foo = true`, combined by `nomatch` into `False`. `#print axioms` reported no axioms. The root cause was that `IO.RealWorld` was not opaque, so several "real worlds" could coexist. Demonstrated by Mario Carneiro; discussed in the Lean Zulip topic *soundness bug: native_decide leakage*. | [PR #2654](https://github.com/leanprover/lean4/pull/2654), in `v4.2.0-rc2`: `reduceBool`/`reduceNat` now depend on an explicit `trustCompiler` axiom, and `IO.RealWorld` was made opaque. `lean4checker` never accepted these proofs, having no compiled-code support. |
+| **`Expr.Data` / `Level.Data` overflow** (2025) | `Expr` and `Level` pack aggregate data (loose-bvar bound, depth) into a fixed-size computed field. Overflow was handled with `assert!`/`panic!`, which do **not** abort — execution continued with the field's default `0`, so `hasFVar`, `hasMVar`, `hasLevelParam`, and `hasLooseBVars` all silently returned `false` for terms that did have them, i.e. they stopped being conservative. Reported by Mario Carneiro. | [PR #8559](https://github.com/leanprover/lean4/pull/8559) and [PR #8560](https://github.com/leanprover/lean4/pull/8560), both merged 2025-05-31. ([PR #8554](https://github.com/leanprover/lean4/pull/8554) was the original, closed in favour of those two.) |
+
+Both have present-day descendants worth noting:
+
+* Our [`ReduceBoolFreeName.lean`](KernelSoundness/Lean/ReduceBoolFreeName.lean)
+  shows the 2023 axiom-tracking hole **reappearing** when the *name*
+  `Lean.reduceBool` is free: the `trustCompiler` dependency is attached to
+  core's declaration, not enforced by the kernel's hook, so a module that
+  defines the name itself gets the native hook with no axiom recorded.
+* The 2025 `hasFVar`-non-conservativity defect is the same *kind* of failure as
+  [#14484](https://github.com/leanprover/lean4/issues/14484) (§1.1), where the
+  checked `opaqueDecl` path simply never asked whether the body had free
+  variables.
+
+### 1.7 Paradoxes (negative results about type theory, not Lean defects)
 
 Girard/Hurkens and Coquand–Paulin, stated as implications from an ingredient
 Lean withholds. **artifact** — [`Hurkens/`](Hurkens/) and
@@ -175,8 +198,36 @@ soundness record (pre-2026) is not covered at all.
    defect, or isolate any that are not.
 3. **Non-official Lean kernels.** Reproduce the `nanoda` and `lean4lean`
    derivations (§2) against the vendored arena tests.
-4. **Pre-2026 history.** Neither system's earlier soundness record is
-   represented. Lean 4's fixed kernel bugs and Rocq's yearly incidents are both
-   in scope for the stated goal.
+4. **Pre-2026 history.** Two Lean items are now recorded (§1.6); Coq's earlier
+   yearly incidents are still absent, as is anything before 2023 on the Lean
+   side.
 5. **Re-survey cadence.** Both trackers move. This file records its survey date;
    anything added later should update it.
+
+---
+
+## 5. Sources, and how the 2026 wave unfolded
+
+The 2026 cluster came from deliberately pointing a strong model at kernel
+internals, so the primary sources are as much narrative as tracker entries.
+
+| Source | What it contributes |
+| --- | --- |
+| Tristan Stérin, [*In search of falsehood*](https://tristan.st/blog/in_search_of_falsehood) | The search itself: Opus 4.6 run against both kernels with expert pointers, producing 7 proofs of `False` in Coq plus 3 further bugs, 0 in the official Lean kernel with 4 other bugs, and proofs of `False` in the non-official `nanoda` (2) and `lean4lean` (1). Origin of §1.2, §2, §3.1, §3.2. |
+| Leonardo de Moura, [*Who Watches the Provers?*](https://leodemoura.github.io/blog/2026-3-16-who-watches-the-provers/) (2026-03-16) | The Lean FRO's position: multiple independent kernels are the defence, and a bug that one kernel accepts and another rejects is the design working. Cites a 2022 arithmetic defect the official kernel accepted and `nanoda` rejected, fixed within a day. |
+| Lawrence Paulson, [*Broken proofs and broken provers*](https://lawrencecpaulson.github.io/2026/01/15/Broken_proofs.html) (2026-01-15) | Longer view from outside both systems: Isabelle/HOL (2025 normalisation-by-evaluation, 2015 and 2005 overloaded-definition defects), HOL88, LCF, PVS. Argues the practical impact of soundness bugs has been small and that inadequate *models* matter more than unsound *kernels*. Out of this catalog's Lean/Coq scope, but the right context for it. |
+| Lean Zulip, *soundness bug: native_decide leakage* | The 2023 defect in §1.6. |
+
+**One timeline point is worth stating plainly.** De Moura's March 2026 post
+observes that Opus 4.6 "did not manage to find a proof of false in the Lean
+official kernel", in contrast to seven in Coq — a fair summary of the evidence
+then available, and consistent with the blog. Four months later, in July 2026,
+**two** axiom-free proofs of `False` in the official Lean kernel were reported
+and fixed within hours each ([#14484](https://github.com/leanprover/lean4/issues/14484),
+[#14576](https://github.com/leanprover/lean4/issues/14576), §1.1) — the second
+found while reviewing an AI-assisted Collatz proof, i.e. as a side effect of
+the same wave of activity rather than a targeted kernel search.
+
+The reasonable conclusion is not that one system is sounder than the other.
+It is that both trackers now move faster than any static catalog, which is why
+this file carries a survey date and §4 ends with a re-survey item.
