@@ -2,7 +2,8 @@
 
 *Status: phases 0–2 implemented (`:synth` in `Tools/Leant`, engine =
 in-process Djex Djinn/LJT; see [README.md](README.md#synth--automatic-term-synthesis-haskell-only)).
-Phases 3–4 remain future work. Companion to [PROPOSALS.md](PROPOSALS.md).*
+Phases 3–4 remain future work; §7 proposes the next increments in
+value-for-effort order. Companion to [PROPOSALS.md](PROPOSALS.md).*
 
 Djex — vendored read-only in this repository as the
 [`lib/Djex`](../../lib/Djex) submodule (pinned at `6a9fc22`, the state
@@ -404,3 +405,121 @@ current Lean tool combination offers in one place. Phase 2 is worth it
 the moment phase 1 sees real use on structures; phase 3 should wait
 until the ratings/inventory design can be tried against Mathlib-scale
 environments without hurting Leant's startup discipline.
+
+## 7. Post-phase-2 proposals
+
+What phases 0–2 taught, turned into the next increments. Ordered by
+expected value-for-effort (effort scale as in
+[PROPOSALS.md](PROPOSALS.md): S < half a day, M a day or two, L
+several days). Items A–D need no new engine capability — they are
+translator, driver, and renderer work around the existing boundary.
+
+### A. Prove-mode hypotheses as premises — M, highest value
+
+Today `:synth` in prove mode prints "(hypotheses are ignored —
+synthesizing the goal target only)" and works on the bare target. That
+discards exactly the information a mid-proof goal is about: after
+`intro h`, the goal `⊢ B` with `h : A` in context is *unsolvable* for
+the current pipeline even when `A → B` is trivially synthesizable.
+
+Plan: the goal display is already split into context lines and target
+(`goalTarget`); instead of dropping the context, translate the goal as
+`(T₁) → (T₂) → ... → (target)` over the pretty-printed hypothesis
+types, run the unchanged pipeline, and emit the candidate *applied to
+the hypothesis names*: `exact (fun a b => body) h₁ h₂`. Verification
+must move from the session-env `example : (T) := t` check to applying
+`exact (...)` on the live proof state (the backend's proof-state
+tactic protocol, which prove mode already uses) so local hypotheses
+are in scope; a candidate that fails is dropped exactly as today.
+Inaccessible hypotheses (shadowed, `✝`-marked) are skipped with a
+note. This also upgrades the `sorry`-hook flow for free, since it
+shares `goalTarget`.
+
+### B. Classical fallback via Glivenko — S/M, pedagogy flagship
+
+§2.1 promised: "`((A → B) → A) → A` has no constructive inhabitant,
+and here is the closest classical variant". Phase 1 delivered the
+first half; deliver the second. When the engine soundly refutes a
+`Prop` goal whose fragment is purely propositional (no quantifiers),
+re-run it once on `¬¬goal`. By Glivenko's theorem this succeeds
+*exactly* when the goal is classically provable, so the search is
+complete for the fragment; a found term `t : ¬goal → False` renders as
+`Classical.byContradiction t` and is backend-verified like any other
+candidate. Display both verdicts:
+
+```
+λ> :synth (((a → b) → a) → a)
+constructively unprovable — but classically:
+  1  Classical.byContradiction (fun a => a (fun b => b (fun c => (a (fun _ => c)).elim)))
+```
+
+Quantified goals skip the fallback (Glivenko does not extend past the
+propositional fragment without ¬¬-shifts; an unverified claim is worse
+than none). Effort is small because the retry reuses the whole
+pipeline; only the wrapper and the verdict text are new.
+
+### C. Golden transcript tests for `:synth` — S, overdue
+
+The pipeline compiles Lean metaprograms out of Haskell string
+literals, parses S-expressions, drives a foreign proof engine, and
+re-verifies through a subprocess — and has no tests. The three
+hand-run transcripts from the phase-2 session (enumeration, transport,
+`Decidable` elimination, structures, refutations, `:synth N`
+selection, prove-mode integration) should become
+`Tools/Leant/test/synth-*.txt` with expected-output golden files and a
+small runner script diffing actual output (timing lines and the
+backend-startup banner filtered). Pairs with PROPOSALS.md item 5
+(`--script` mode); until that lands, plain stdin piping — which the
+transcripts already use — suffices.
+
+### D. Constructors of recursive inductives as premises — M
+
+Phase 2 leaves `Nat`, `List`, and friends as opaque atoms, so
+`:synth (∀ a, a → List a)` answers "no term found within bounds".
+Without touching elimination (which is where recursion and
+undecidability live), the *constructors* of a recursive inductive are
+still sound introduction rules: declare the atom's key as an abstract
+type and add `List.nil : K`, `List.cons : v → K → K` as value
+premises (fields translate through the existing fragment translation;
+recursive occurrences map to the atom's variable; constructors with
+out-of-fragment fields are simply omitted). Refutation soundness is
+unaffected — such goals already carry unsafe atoms, so negative
+verdicts are already downgraded. Only constructors of inductives that
+actually occur in the goal are declared, keeping the per-query
+environment small.
+
+### E. Rendering polish: anonymous constructors first — S, cosmetic
+
+Candidates over single-constructor structures render as
+`Pair.mk a b` and `match p with | Pair.mk b _ => b`; Lean idiom is
+`⟨a, b⟩` and `p.fst` (or at least `⟨b, _⟩` patterns). Offer the
+anonymous-constructor spelling as the first textual variant (the
+existing variant machinery plus verification already handles
+preference order), and short-dot constructor names (`.some x`) where
+the expected type is known. Pure renderer work; every variant is
+still backend-verified.
+
+### F. Exference behind the same boundary — L, phase-3 vanguard
+
+The deliberate on-ramp to phase 3 that avoids its hard part
+(Mathlib-scale inventories and ratings). Wire Djex's Exference
+adapter as a second engine behind the existing `Leant.Synth.Engine`
+boundary, selectable via `:set synth-engine djinn|exference|both`,
+with its step/queue/depth budgets surfaced as `:set` options. Seed
+its inventory with only what the pipeline already knows: the phase-2
+datatype declarations and (once A lands) the hypothesis premises.
+Value: ranked heuristic candidates on goals where LJT's complete
+search is the wrong tool, `both` mode as the UX dry run for phase 3,
+and the inventory/ratings design can then grow incrementally toward
+browse-env scale — the condition §6 set for starting phase 3 proper.
+
+### Explicitly not proposed
+
+- **Dependent elimination or induction** — still prove mode's job
+  (§5); the transport-only discipline is the design, not a gap.
+- **Mathlib-scale inventory now** — §6's condition stands: not before
+  the ratings/inventory design exists and startup discipline is
+  protected. F is the preparatory step.
+- **Engine-side universe reasoning** — kernel-side verification
+  already discards universe-sloppy candidates; duplicating that in
+  the engine buys nothing (§2.0).

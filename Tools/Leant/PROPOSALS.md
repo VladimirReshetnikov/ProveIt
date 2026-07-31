@@ -5,6 +5,12 @@ Applies to both implementations (Python `Tools/LeantPy`, Haskell
 value-for-effort within each tier. Effort: S (< half a day), M (a day or
 two), L (several days).
 
+Term-synthesis (`:synth`) proposals live in
+[SYNTHESIS_PROPOSAL.md §7](SYNTHESIS_PROPOSAL.md#7-post-phase-2-proposals):
+prove-mode hypotheses as premises, a Glivenko classical fallback,
+golden transcript tests, recursive-inductive constructors as premises,
+rendering polish, and the Exference engine on-ramp.
+
 ## Tier 1 — high value, backend already supports it
 
 ### 1. Interactive proof mode (`:prove`) — L, flagship
