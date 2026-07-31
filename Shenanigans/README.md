@@ -71,6 +71,4 @@ does not yet represent.
    a `try`/`catch` around it silently reports kernel rejections as acceptances —
    use `set_option Elab.async false`, or the synchronous
    `(← getEnv).toKernelEnv.addDecl {}` and `Lean.Kernel.isDefEq`.
-5. **Keep controls.** A probe that shows a defect must be accompanied by the
-   variant with the defect's key ingredient removed, demonstrating that the
-   ingredient is essential rather than incidental.
+   
