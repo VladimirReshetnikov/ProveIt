@@ -132,6 +132,12 @@ provably uninhabited — no closed term of this polymorphic type exists
   left to the elaborator; and uses of quantified hypotheses get
   placeholder type arguments wherever Lean needs them (`f _ x`,
   `h a _ q`), so bounded rank-N candidates verify.
+- A second engine is available: `:set synth-engine exference` switches
+  to Djex's ranked heuristic search (explicit budgets, no negative
+  verdicts; `:set synth-steps N` bounds it, default 4096), and
+  `both` runs the two engines together — Djinn's candidates first,
+  Exference's new ones after, refutations only from Djinn. The default
+  `djinn` remains the complete, terminating LJT search.
 - The engine runs under a wall-clock guard, default 20 s
   (`LEANT_SYNTH_TIMEOUT=N`, `0` waits indefinitely): propositional goals
   answer in microseconds, but bounded hypothesis instantiation can widen

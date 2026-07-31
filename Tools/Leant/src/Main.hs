@@ -46,7 +46,14 @@ import Leant.Builtins (builtinInfo)
 import Leant.Classify
 import Leant.Format (formatInfo, indentDefBody)
 import Leant.Json
-import Leant.Synth.Engine (SynthOutcome (..), forceOutcome, synthesize)
+import Leant.Synth.Engine
+  ( SynthEngine (..)
+  , SynthOutcome (..)
+  , forceOutcome
+  , parseSynthEngine
+  , synthEngineName
+  , synthesize
+  )
 import Leant.Synth.Fragment
   ( Frag (..)
   , ParsedGoal (..)
@@ -158,6 +165,10 @@ data ReplState = ReplState
     -- replayed; rebuilt when the history changes
   , rsSynthLast :: Maybe SynthBatch
     -- ^ the last verified :synth batch, for `:synth N` selection
+  , rsSynthEngine :: SynthEngine
+    -- ^ :set synth-engine djinn|exference|both
+  , rsSynthSteps :: Int
+    -- ^ :set synth-steps N - Exference's step budget
   , rsTimeout :: Maybe Int
   , rsColor :: Bool
   , rsInteractive :: Bool
@@ -699,6 +710,8 @@ helpText = unlines
   , "  :search? TYPE            proof search: what proves TYPE? (via exact?)"
   , "  :synth TYPE              synthesize verified terms of TYPE (LJT engine)"
   , "  :synth N                 pick candidate N from the last :synth batch"
+  , "  :set synth-engine E      djinn (default) | exference | both"
+  , "  :set synth-steps N       Exference step budget (default 4096)"
   , "  :set OPT VAL             set_option OPT VAL (persists in the session)"
   , "  :undo                    revert the last state-changing command"
   , "  :reset                   clear all definitions (keeps imports)"
@@ -753,16 +766,39 @@ dispatchCommand st line = do
         else forM_ imports (\m -> emitLn st ("import " ++ m))
       pure True
     "set" -> do
-      if null arg
-        then emitLn st =<< cRed st "usage: :set OPTION VALUE"
-        else do
-          env <- rsEnv <$> readIORef st
-          result <- runCmd st env ("set_option " ++ arg)
-          case result of
-            Left err -> emitLn st =<< cRed st err
-            Right v -> do
-              errored <- printResponse st Nothing v
-              unless errored (advanceEnv st (respEnv v) ("set_option " ++ arg))
+      -- :synth's own options are intercepted here; anything else is a
+      -- Lean set_option forwarded to the backend
+      case words arg of
+        ["synth-engine", value] -> case parseSynthEngine value of
+          Just engine -> do
+            modifyIORef' st (\s -> s { rsSynthEngine = engine })
+            emitLn st =<< cDim st ("synth engine: " ++ value)
+          Nothing -> emitLn st =<< cRed st
+            "usage: :set synth-engine djinn|exference|both"
+        ["synth-engine"] -> do
+          engine <- rsSynthEngine <$> readIORef st
+          emitLn st =<< cDim st
+            ("synth engine: " ++ synthEngineName engine)
+        ["synth-steps", value]
+          | [(n, "")] <- reads value, n > (0 :: Int) -> do
+              modifyIORef' st (\s -> s { rsSynthSteps = n })
+              emitLn st =<< cDim st ("synth steps: " ++ show n)
+          | otherwise -> emitLn st =<< cRed st
+              "usage: :set synth-steps N   (a positive step budget)"
+        ["synth-steps"] -> do
+          steps <- rsSynthSteps <$> readIORef st
+          emitLn st =<< cDim st ("synth steps: " ++ show steps)
+        _ | null arg ->
+              emitLn st =<< cRed st "usage: :set OPTION VALUE"
+          | otherwise -> do
+              env <- rsEnv <$> readIORef st
+              result <- runCmd st env ("set_option " ++ arg)
+              case result of
+                Left err -> emitLn st =<< cRed st err
+                Right v -> do
+                  errored <- printResponse st Nothing v
+                  unless errored
+                    (advanceEnv st (respEnv v) ("set_option " ++ arg))
       pure True
     "undo" -> do
       state <- readIORef st
@@ -1510,7 +1546,10 @@ synthGo' st args retriedVars goal parsed = case fragRefusal (pgFrag parsed) of
   Just reason -> emitLn st =<< cRed st ("out of fragment: " ++ reason)
   Nothing -> do
     limit <- synthTimeoutSeconds
-    bounded <- runEngineBounded limit (synthesize (pgFrag parsed))
+    state <- readIORef st
+    bounded <- runEngineBounded limit
+      (synthesize (rsSynthEngine state) (rsSynthSteps state)
+        (pgFrag parsed))
     case bounded of
       Nothing -> do
         emitLn st =<< cYellow st
@@ -1614,9 +1653,11 @@ synthClassical st args goal parsed = case glivenkoSplit (pgFrag parsed) of
   Nothing -> pure False
   Just (prefix, body) -> do
     limit <- synthTimeoutSeconds
+    state <- readIORef st
     let nnFrag = foldr (\(explicit, binder) acc -> FAll explicit binder acc)
           (FArr (FArr body FBot) FBot) prefix
-    bounded <- runEngineBounded limit (synthesize nnFrag)
+    bounded <- runEngineBounded limit
+      (synthesize (rsSynthEngine state) (rsSynthSteps state) nnFrag)
     case bounded of
       Just (Right (SynthCandidates groups _)) -> do
         let explicits = length (filter fst prefix)
@@ -2490,6 +2531,8 @@ run opts = do
         , rsSynthBase = Nothing
         , rsSynthEnv = Nothing
         , rsSynthLast = Nothing
+        , rsSynthEngine = EngineDjinn
+        , rsSynthSteps = 4096
         , rsTimeout = if optTimeout opts <= 0 then Nothing
             else Just (optTimeout opts)
         , rsColor = useColor

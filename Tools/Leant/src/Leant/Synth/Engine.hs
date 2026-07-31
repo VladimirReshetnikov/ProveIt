@@ -19,7 +19,10 @@
 -- variables.  The engine-side constructor names are fresh; the mapping
 -- back to the Lean spellings rides along to the renderer.
 module Leant.Synth.Engine
-  ( SynthOutcome (..)
+  ( SynthEngine (..)
+  , SynthOutcome (..)
+  , parseSynthEngine
+  , synthEngineName
   , synthesize
   , forceOutcome
   , candidateWindow
@@ -38,29 +41,42 @@ import Language.Haskell.Djex
   , Completion (..)
   , DataConstructor (..)
   , Declaration (DataTypeDeclaration)
+  , Diagnostic
+  , ExferenceOptions (..)
+  , Expression
   , Name
   , Progress (..)
+  , Selection (..)
+  , SelectionMode (SelectAll)
   , TruncationReason (..)
   , Type (..)
   , TypeParameter (..)
+  , Variable (FlexibleVariable)
   , applyTypeArguments
   , batchCandidates
   , batchProgress
   , candidateOutput
+  , declarationTypeVariables
+  , defaultExferenceOptions
   , defaultQueryOptions
   , djinnSessionEnvironment
   , environmentDeclarations
   , expressionSize
   , functionClauseExpression
+  , mapDeclarationTypeVariables
   , mkDefinitionName
   , mkDjinnRequest
   , mkDjinnSession
   , mkEnvironment
+  , mkExferenceRequest
+  , mkExferenceSession
   , mkIdentifier
   , renderDiagnostic
   , resultEvidence
   , resultSearch
   , runDjinnQuery
+  , runExferenceQuery
+  , selectQueryResults
   , standardDjinnSession
   , tupleName
   )
@@ -106,12 +122,31 @@ forceOutcome n outcome = case outcome of
  where
   noteSize = sum . map length
 
--- | Run the in-process Djinn (LJT) search on a translated goal.
-synthesize :: Frag -> Either String SynthOutcome
-synthesize frag = do
-  standard <- viaDiagnostic standardDjinnSession
-  targetName <- viaShow (mkIdentifier "leantSynth")
-  target <- viaShow (mkDefinitionName targetName)
+-- | Which synthesis engine(s) a query runs (proposal F of
+-- SYNTHESIS_PROPOSAL.md \167 7).  Djinn is the complete, terminating LJT
+-- search with refutation verdicts; Exference is a ranked heuristic
+-- search under explicit budgets, with no negative evidence.
+data SynthEngine = EngineDjinn | EngineExference | EngineBoth
+  deriving (Eq, Show)
+
+parseSynthEngine :: String -> Maybe SynthEngine
+parseSynthEngine value = case value of
+  "djinn" -> Just EngineDjinn
+  "exference" -> Just EngineExference
+  "both" -> Just EngineBoth
+  _ -> Nothing
+
+synthEngineName :: SynthEngine -> String
+synthEngineName engine = case engine of
+  EngineDjinn -> "djinn"
+  EngineExference -> "exference"
+  EngineBoth -> "both"
+
+-- | Run the selected in-process search on a translated goal.  The
+-- step budget applies to Exference only (Djinn's complete search needs
+-- no budget beyond the candidate window).
+synthesize :: SynthEngine -> Int -> Frag -> Either String SynthOutcome
+synthesize engine steps frag = do
   (goal0, decls, ctorMap, premises) <- fragToDjinn frag
   -- constructor premises of recursive inductives enter as goal
   -- antecedents (same scope as the goal's variables - a top-level
@@ -119,6 +154,27 @@ synthesize frag = do
   -- matching binders and substitutes the Lean constructor names
   let goal = foldr (\(_, t) acc -> FunctionType t acc) goal0 premises
       premiseNames = map fst premises
+      render expr = renderLeanTerm ctorMap premiseNames frag expr
+  case engine of
+    EngineDjinn -> djinnRun frag render goal decls
+    EngineExference -> exferenceRun steps render goal decls
+    EngineBoth -> do
+      djinn <- djinnRun frag render goal decls
+      exference <- exferenceRun steps render goal decls
+      pure (mergeOutcomes djinn exference)
+
+-- | The complete LJT search: candidates, or a refutation whose
+-- soundness depends on the translation having hidden nothing.
+djinnRun
+  :: Frag
+  -> (Expression String -> Either String [String])
+  -> Type String
+  -> [DjinnDecl]
+  -> Either String SynthOutcome
+djinnRun frag render goal decls = do
+  standard <- viaDiagnostic standardDjinnSession
+  targetName <- viaShow (mkIdentifier "leantSynth")
+  target <- viaShow (mkDefinitionName targetName)
   session <-
     if null decls
       then Right standard
@@ -148,7 +204,7 @@ synthesize frag = do
         [ (expressionSize expr, group)
         | candidate <- take candidateWindow (batchCandidates batch)
         , let expr = functionClauseExpression (candidateOutput candidate)
-        , Right group <- [renderLeanTerm ctorMap premiseNames frag expr]
+        , Right group <- [render expr]
         ]
       terms = map snd (sortOn fst rendered)
   pure $ case resultEvidence result of
@@ -158,8 +214,81 @@ synthesize frag = do
       ("only a recursive reference to the definition itself would inhabit \
        \this type" : notes)
     NoEvidence -> SynthNoTerm notes
+
+-- | The ranked heuristic search: the same shared environment and goal,
+-- converted to Exference's integer variable domain.  Candidates keep
+-- Exference's own ranking; there is never negative evidence.
+exferenceRun
+  :: Int
+  -> (Expression String -> Either String [String])
+  -> Type String
+  -> [DjinnDecl]
+  -> Either String SynthOutcome
+exferenceRun steps render goal decls = do
+  standard <- viaDiagnostic standardDjinnSession
+  let allDecls =
+        environmentDeclarations (djinnSessionEnvironment standard)
+          ++ decls
+      names = nub
+        (concatMap declarationTypeVariables allDecls ++ toList goal)
+      table = Map.fromList (zip names [0 :: Int ..])
+      convert v = FlexibleVariable (table Map.! v)
+  environment <- viaShow
+    (mkEnvironment (map (mapDeclarationTypeVariables convert) allDecls))
+  session <- viaDiagnostic (mkExferenceSession environment)
+  targetName <- viaShow (mkIdentifier "leantSynth")
+  target <- viaShow (mkDefinitionName targetName)
+  let query = QueryRequest
+        { requestTarget = target
+        , requestGoal = fmap convert goal
+        , requestContexts = []
+        , requestOptions = defaultExferenceOptions
+            { exferenceMaximumSteps = steps
+              -- the queue is the memory hog; a modest bound keeps the
+              -- search interactive on small machines, reported honestly
+              -- as pruning
+            , exferenceMaximumQueueSize = Just 1024
+            }
+        }
+  request <- viaDiagnostic (mkExferenceRequest query)
+  results <- viaDiagnostic (runExferenceQuery session request)
+  let selection =
+        selectQueryResults SelectAll (const (0 :: Int)) (const True) results
+      groups = nub
+        [ group
+        | candidate <- take candidateWindow (selectionCandidates selection)
+        , let expr = fmap (("x" ++) . show)
+                (functionClauseExpression (candidateOutput candidate))
+        , Right group <- [render expr]
+        ]
+      notes = maybe [] progressNotes (selectionProgress selection)
+  pure $ if null groups
+    then SynthNoTerm notes
+    else SynthCandidates groups notes
+
+-- | Both engines on one goal: Djinn's candidates first (they carry the
+-- smallest-term ranking), Exference's new ones after, and negative
+-- verdicts only when neither engine produced a candidate - a refutation
+-- stays Djinn's alone.
+mergeOutcomes :: SynthOutcome -> SynthOutcome -> SynthOutcome
+mergeOutcomes djinn exference = case (djinn, exference) of
+  (SynthCandidates a na, SynthCandidates b nb) ->
+    SynthCandidates (a ++ filter (`notElem` a) b) (na ++ tag nb)
+  (SynthCandidates a na, other) ->
+    SynthCandidates a (na ++ tag (notesOf other))
+  (other, SynthCandidates b nb) ->
+    SynthCandidates b (notesOf other ++ tag nb)
+  (SynthRefuted sound, _) -> SynthRefuted sound
+  (SynthNoTerm na, other) -> SynthNoTerm (na ++ tag (notesOf other))
  where
-  viaDiagnostic = either (Left . renderDiagnostic) Right
+  tag = map ("exference: " ++)
+  notesOf outcome = case outcome of
+    SynthCandidates _ notes -> notes
+    SynthNoTerm notes -> notes
+    SynthRefuted _ -> []
+
+viaDiagnostic :: Either Diagnostic a -> Either String a
+viaDiagnostic = either (Left . renderDiagnostic) Right
 
 viaShow :: Show e => Either e a -> Either String a
 viaShow = either (Left . show) Right
