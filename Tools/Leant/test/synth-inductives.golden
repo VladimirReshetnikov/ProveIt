@@ -6,66 +6,44 @@
 Leant (Haskell) - a GHCi-style REPL for Lean 4.  Type :help for help, :quit to exit.
 λ> :synth Bool
 preparing synthesis environment (session imports + Lean)...
-  1  .false
-  2  .true
-(2 verified candidates)
-:synth N binds candidate N as `it`
+  it1  .false
+  it2  .true
 λ> :synth Ordering
-  1  .lt
-  2  .eq
-  3  .gt
-(3 verified candidates)
-:synth N binds candidate N as `it`
+  it1  .lt
+  it2  .eq
+  it3  .gt
 λ> :synth (∀ a : Type, Option a → a ⊕ Unit)
-  1  fun _ _ => .inr ⟨⟩
-  2  fun _ x => match x with | .none => .inr ⟨⟩ | .some y => .inl y
-(2 verified candidates)
-:synth N binds candidate N as `it`
+  it1  fun _ _ => .inr ⟨⟩
+  it2  fun _ x => match x with | .none => .inr ⟨⟩ | .some y => .inl y
 λ> :synth (∀ a b : Type, a → b → a × Option b)
-  1  fun _ _ x _ => ⟨x, .none⟩
-  2  fun _ _ x y => ⟨x, .some y⟩
-(2 verified candidates)
-:synth N binds candidate N as `it`
+  it1  fun _ _ x _ => ⟨x, .none⟩
+  it2  fun _ _ x y => ⟨x, .some y⟩
 λ> :synth (∀ a : Type, Option (Option a) → Option a)
-  1  fun _ _ => .none
-  2  fun _ x => match x with | .none => (.none) | .some y => y
-(2 verified candidates)
-:synth N binds candidate N as `it`
+  it1  fun _ _ => .none
+  it2  fun _ x => match x with | .none => (.none) | .some y => y
 λ> :synth (∀ e a b : Type, Except e a → (a → b) → Except e b)
-  1  fun _ _ _ x f => match x with | .error y => .error y | .ok z => .ok (f z)
-(1 verified candidate)
-:synth N binds candidate N as `it`
+  it1  fun _ _ _ x f => match x with | .error y => .error y | .ok z => .ok (f z)
 λ> :synth (∀ p : Prop, Decidable p → Decidable (¬ p))
-  1  fun _ x => match x with | .isFalse k => .isTrue k | .isTrue y => .isFalse (fun k1 => k1 y)
-(1 verified candidate)
-:synth N binds candidate N as `it`
+  it1  fun _ x => match x with | .isFalse k => .isTrue k | .isTrue y => .isFalse (fun k1 => k1 y)
 λ> :synth (∀ a b : Type, Option a → b)
 provably uninhabited — no closed term of this polymorphic type exists
 λ> inductive Traffic | red | amber | green
 λ> 
 λ> :synth Traffic
-  1  .red
-  2  .amber
-  3  .green
-(3 verified candidates)
-:synth N binds candidate N as `it`
+  it1  .red
+  it2  .amber
+  it3  .green
 λ> structure Pair (A B : Type) where
 …>   fst : A
 …>   snd : B
 …> 
 λ> :synth (∀ a b : Type, a → b → Pair a b)
-  1  fun _ _ x y => ⟨x, y⟩
-(1 verified candidate)
-:synth N binds candidate N as `it`
+  it1  fun _ _ x y => ⟨x, y⟩
 λ> :synth (∀ a b : Type, Pair a b → a)
-  1  fun _ _ x => match x with | ⟨y, _⟩ => y
-(1 verified candidate)
-:synth N binds candidate N as `it`
+  it1  fun _ _ x => match x with | ⟨y, _⟩ => y
 λ> :synth (∀ a b : Type, Pair a b → Empty)
 provably uninhabited — no closed term of this polymorphic type exists
 λ> :synth (∀ a : Type, (Bool → a) → a)
-  1  fun _ f => f (.false)
-  2  fun _ f => f (.true)
-(2 verified candidates)
-:synth N binds candidate N as `it`
+  it1  fun _ f => f (.false)
+  it2  fun _ f => f (.true)
 λ> :quit

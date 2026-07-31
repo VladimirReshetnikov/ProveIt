@@ -165,27 +165,28 @@ data ReplState = ReplState
     -- ^ the base environment with the session history replayed on top
     -- (so session-local names translate), tagged with the history it
     -- replayed; rebuilt when the history changes
-  , rsSynthLast :: Maybe SynthBatch
-    -- ^ the last verified :synth batch, for `:synth N` selection
+  , rsSynthIts :: [String]
+    -- ^ splice texts for `it1`, `it2`, ... - the last :synth batch's
+    -- candidates.  In the session these are the mangled names the
+    -- candidates were bound under (best candidate bound last, so bare
+    -- `it` is `it1`); in prove mode they are the candidate terms
+    -- applied to the goal's hypotheses, so `exact it1` closes the goal
+  , rsSynthItsProve :: Bool
+    -- ^ the current splice texts mention prove-mode hypotheses and are
+    -- cleared when prove mode ends
   , rsSynthEngine :: SynthEngine
     -- ^ :set synth-engine djinn|exference|both
   , rsSynthSteps :: Int
     -- ^ :set synth-steps N - Exference's step budget
+  , rsSynthClassical :: Bool
+    -- ^ :set synth-classical on|off - offer classical candidates for
+    -- constructively refuted goals
   , rsTimeout :: Maybe Int
   , rsColor :: Bool
   , rsInteractive :: Bool
     -- ^ False when stdin is piped: prompts and echo go through emit (so the
     -- output and transcript read like a session) and Haskeline's own
     -- locale-encoded prompt printing is bypassed.
-  }
-
--- | The goal text and the verified candidate terms of the last :synth.
--- When the goal was wrapped over prove-mode hypotheses, 'sbArgs' holds
--- the hypothesis names a selected candidate must be applied to.
-data SynthBatch = SynthBatch
-  { sbGoal :: String
-  , sbTerms :: [String]
-  , sbArgs :: [String]
   }
 
 -- | Interactive prove mode: the stack holds (proofState, goals, scriptEntry)
@@ -534,10 +535,12 @@ itName :: Int -> String
 itName n = "\171it!" ++ show n ++ "\187"
 
 -- Replace bare `it` (outside strings and comments, at identifier
--- boundaries) with the mangled name of the newest bound result.
-substIt :: Int -> String -> String
-substIt 0 text = text
-substIt counter text = go Nothing text
+-- boundaries) with the mangled name of the newest bound result, and
+-- `it1`, `it2`, ... with the last :synth batch's candidate splices.
+substIt :: Int -> [String] -> String -> String
+substIt counter its text
+  | counter == 0 && null its = text
+  | otherwise = go Nothing text
  where
   target = itName counter
   go _ [] = []
@@ -549,8 +552,15 @@ substIt counter text = go Nothing text
     let (c, r) = takeBlockComment (1 :: Int) rest
     in "/-" ++ c ++ go (Just ' ') r
   go prev ('i' : 't' : rest)
-    | boundaryBefore prev, boundaryAfter rest =
+    | boundaryBefore prev
+    , (digits@(_ : _), rest') <- span isDigit rest
+    , boundaryAfter rest'
+    , index <- read digits
+    , index >= 1 && index <= length its =
+        its !! (index - 1) ++ go (Just '\187') rest'
+    | boundaryBefore prev, boundaryAfter rest, counter > 0 =
         target ++ go (Just '\187') rest
+    | otherwise = 'i' : go (Just 'i') ('t' : rest)
   go _ (c : rest) = c : go (Just c) rest
 
   boundaryBefore Nothing = True
@@ -615,8 +625,9 @@ advanceEnv st newEnv code = modifyIORef' st $ \s -> s
 
 evalInput :: St -> Bool -> String -> IO EvalOutcome
 evalInput st allowIncomplete rawText = do
-  counter <- rsItCounter <$> readIORef st
-  let text = substIt counter (trim rawText)
+  state0 <- readIORef st
+  let text = substIt (rsItCounter state0) (rsSynthIts state0)
+        (trim rawText)
   if null text then pure EvalDone else do
     started <- getCurrentTime
     outcome <-
@@ -711,9 +722,11 @@ helpText = unlines
   , "  :search TEXT             search declaration names (case-insensitive)"
   , "  :search? TYPE            proof search: what proves TYPE? (via exact?)"
   , "  :synth TYPE              synthesize verified terms of TYPE (LJT engine)"
-  , "  :synth N                 pick candidate N from the last :synth batch"
+  , "                           candidates are bound as it1 (= it), it2, ..."
   , "  :set synth-engine E      djinn (default) | exference | both"
   , "  :set synth-steps N       Exference step budget (default 4096)"
+  , "  :set synth-classical B   classical candidates for refuted goals"
+  , "                           (on|off, default on)"
   , "  :set OPT VAL             set_option OPT VAL (persists in the session)"
   , "  :undo                    revert the last state-changing command"
   , "  :reset                   clear all definitions (keeps imports)"
@@ -790,6 +803,19 @@ dispatchCommand st line = do
         ["synth-steps"] -> do
           steps <- rsSynthSteps <$> readIORef st
           emitLn st =<< cDim st ("synth steps: " ++ show steps)
+        ["synth-classical", value]
+          | value `elem` ["on", "true"] -> do
+              modifyIORef' st (\s -> s { rsSynthClassical = True })
+              emitLn st =<< cDim st "synth classical: on"
+          | value `elem` ["off", "false"] -> do
+              modifyIORef' st (\s -> s { rsSynthClassical = False })
+              emitLn st =<< cDim st "synth classical: off"
+          | otherwise -> emitLn st =<< cRed st
+              "usage: :set synth-classical on|off"
+        ["synth-classical"] -> do
+          enabled <- rsSynthClassical <$> readIORef st
+          emitLn st =<< cDim st
+            ("synth classical: " ++ if enabled then "on" else "off")
         _ | null arg ->
               emitLn st =<< cRed st "usage: :set OPTION VALUE"
           | otherwise -> do
@@ -885,7 +911,7 @@ cmdType st rawArg
   | null rawArg = emitLn st =<< cRed st "usage: :type EXPR"
   | otherwise = do
       state <- readIORef st
-      let arg = substIt (rsItCounter state) rawArg
+      let arg = substIt (rsItCounter state) (rsSynthIts state) rawArg
           env = rsEnv state
       result <- runCmd st env ("#check (" ++ arg ++ ")")
       case result of
@@ -1346,12 +1372,12 @@ cmdSynth :: St -> String -> IO ()
 cmdSynth st rawArg = do
   state <- readIORef st
   let arg = trim rawArg
-  if not (null arg) && all isDigit arg && isJust (rsSynthLast state)
-    then synthSelect st (read arg)
-    else do
+  do
       goalOr <-
         if not (null arg)
-          then pure (Right (substIt (rsItCounter state) arg, [], []))
+          then pure
+            (Right (substIt (rsItCounter state) (rsSynthIts state) arg
+            , [], []))
           else case rsProve state of
             Just pv | (_, goal : _, _) : _ <- pvStack pv ->
               pure $ case wrapGoal goal of
@@ -1363,7 +1389,7 @@ cmdSynth st rawArg = do
                 Nothing -> Left "cannot extract the goal target"
               Nothing -> pure (Left
                 ("usage: :synth TYPE   (or bare :synth in prove mode / "
-                 ++ "after a `sorry`, :synth N to pick a candidate)"))
+                 ++ "after a `sorry`)"))
       case goalOr of
         Left err -> emitLn st =<< cRed st err
         Right (goal, args, skipped) -> do
@@ -1574,29 +1600,18 @@ synthGo' st args retriedVars goal parsed = case fragRefusal (pgFrag parsed) of
         forM_ (zip [1 :: Int ..] (take synthMaxTried groups)) $
           \(i, group) -> forM_ group $ \variant ->
             emitLn st =<< cDim st ("debug " ++ show i ++ ": " ++ variant)
-      (verified, dropped) <- synthVerify st goal (take synthMaxTried groups)
-      let shown = take synthMaxShown verified
-      if null shown
-        then emitLn st =<< cRed st
-          ("the engine proposed " ++ show (length groups)
-           ++ " candidate(s) but none survived Lean verification")
-        else do
-          forM_ (zip [1 :: Int ..] shown) $ \(i, term) -> do
-            n <- cBold st (show i)
-            emitLn st ("  " ++ n ++ "  " ++ term)
-          proving <- isJust . rsProve <$> readIORef st
-          hint <- cDim st (if proving
-            then ":synth N closes the goal with `exact` candidate N"
-            else ":synth N binds candidate N as `it`")
-          counts <- cDim st (synthCounts (length groups) dropped (length shown))
-          emitLn st counts
-          emitLn st hint
-          modifyIORef' st (\s -> s
-            { rsSynthLast = Just (SynthBatch goal shown args) })
+      shown <- verifyAndDisplay st args goal (take synthMaxTried groups)
+      unless shown $ emitLn st =<< cRed st
+        ("the engine proposed " ++ show (length groups)
+         ++ " candidate(s) but none survived Lean verification")
       forM_ notes $ \note -> emitLn st =<< cDim st ("note: " ++ note)
     Right (SynthRefuted sound)
       | sound -> do
-          classical <- synthClassical st args goal parsed
+          wantClassical <- rsSynthClassical <$> readIORef st
+          classical <-
+            if wantClassical
+              then synthClassical st args goal parsed
+              else pure False
           unless classical $ do
             message <- cYellow st
               ("provably uninhabited \8212 no closed term of this "
@@ -1704,7 +1719,7 @@ synthClassical st args goal parsed = case glivenkoSplit (pgFrag parsed) of
             Just (Right (SynthCandidates groups _)) ->
               take (synthMaxTried `div` 2) groups
             _ -> []
-    shownEm <- displayClassical st args goal emGroups
+    shownEm <- verifyAndDisplay st args goal emGroups
     if shownEm
       then pure True
       else do
@@ -1725,45 +1740,79 @@ synthClassical st args goal parsed = case glivenkoSplit (pgFrag parsed) of
           (synthesizeTuned engine steps (synthMaxTried, Nothing) []
             nnFrag nnFrag)
         case bounded of
-          Just (Right (SynthCandidates groups _)) -> displayClassical
+          Just (Right (SynthCandidates groups _)) -> verifyAndDisplay
             st args goal (map (map wrap) (take synthMaxTried groups))
           _ -> pure False
 
--- | Verify and display classical candidates; 'True' when any survived.
-displayClassical :: St -> [String] -> String -> [[String]] -> IO Bool
-displayClassical _ _ _ [] = pure False
-displayClassical st args goal groups = do
+-- | Verify candidate groups, bind the survivors as `it1`, `it2`, ...,
+-- and display them.  In the session the candidates become real
+-- definitions (bound best-last, so bare `it` is `it1`); in prove mode
+-- `itN` becomes a splice of the candidate applied to the goal's
+-- hypotheses, so `exact it1` closes the goal.  'True' when anything
+-- was shown.
+verifyAndDisplay :: St -> [String] -> String -> [[String]] -> IO Bool
+verifyAndDisplay _ _ _ [] = pure False
+verifyAndDisplay st args goal groups = do
   (verified, _) <- synthVerify st goal groups
   let shown = take synthMaxShown verified
   if null shown
     then pure False
     else do
-      emitLn st =<< cYellow st
-        "constructively unprovable \8212 but classically:"
-      forM_ (zip [1 :: Int ..] shown) $ \(i, term) -> do
-        n <- cBold st (show i)
-        emitLn st ("  " ++ n ++ "  " ++ term)
       proving <- isJust . rsProve <$> readIORef st
-      emitLn st =<< cDim st (if proving
-        then ":synth N closes the goal with `exact` candidate N"
-        else ":synth N binds candidate N as `it`")
+      splices <-
+        if proving
+          then pure
+            [ case args of
+                [] -> "(" ++ term ++ ")"
+                _ -> "((" ++ term ++ ") " ++ unwords args ++ ")"
+            | term <- shown
+            ]
+          else do
+            -- bind worst-first, so the newest binding - bare `it` -
+            -- is the best candidate
+            counters <- mapM (synthBind st goal) (reverse shown)
+            pure
+              [ maybe ("(" ++ term ++ ")") itName counter
+              | (term, counter) <- zip shown (reverse counters)
+              ]
       modifyIORef' st (\s -> s
-        { rsSynthLast = Just (SynthBatch goal shown args) })
+        { rsSynthIts = splices, rsSynthItsProve = proving })
+      forM_ (zip [1 :: Int ..] shown) $ \(i, term) -> do
+        label <- cBold st ("it" ++ show i)
+        emitLn st ("  " ++ label ++ "  " ++ term)
       pure True
 
-synthCounts :: Int -> Int -> Int -> String
-synthCounts engine dropped shown =
-  "(" ++ show shown ++ " verified candidate" ++ plural shown
-  ++ (if dropped > 0
-        then "; " ++ show dropped ++ " failed verification and were hidden"
-        else "")
-  ++ (if engine > synthMaxTried
-        then "; " ++ show engine ++ " proposed by the engine"
-        else "")
-  ++ ")"
+-- | Leave prove mode.  Prove-scoped `itN` splices mention the goal's
+-- hypotheses and stop making sense outside the proof, so they go too.
+leaveProve :: St -> IO ()
+leaveProve st = modifyIORef' st $ \s -> s
+  { rsProve = Nothing
+  , rsSynthIts = if rsSynthItsProve s then [] else rsSynthIts s
+  , rsSynthItsProve = False
+  }
+
+-- | Bind one verified candidate under the next mangled it-name,
+-- retrying @noncomputable@ (classical data-level terms need it).
+-- 'Nothing' makes the splice fall back to the candidate text itself.
+synthBind :: St -> String -> String -> IO (Maybe Int)
+synthBind st goal term = do
+  plain <- attempt ""
+  case plain of
+    Just n -> pure (Just n)
+    Nothing -> attempt "noncomputable "
  where
-  plural 1 = ""
-  plural _ = "s"
+  attempt keyword = do
+    state <- readIORef st
+    let n = rsItCounter state + 1
+        code = "set_option autoImplicit true in " ++ keyword ++ "def "
+          ++ itName n ++ " : (" ++ goal ++ ") := (" ++ term ++ ")"
+    result <- runCmd st (rsEnv state) code
+    case result of
+      Right v | not (hasErrors v), Nothing <- respFatal v -> do
+        modifyIORef' st (\s -> s { rsItCounter = n })
+        advanceEnv st (respEnv v) code
+        pure (Just n)
+      _ -> pure Nothing
 
 -- | Verify candidate groups against the backend, best first, lazily:
 -- stop once enough verified candidates are collected (design rule: only
@@ -1794,44 +1843,6 @@ synthVerify st goal = go synthMaxShown 0
       Right v | not (hasErrors v), Nothing <- respFatal v
               , null (respSorries v) -> pure (Just term)
       _ -> tryGroup variants
-
-synthSelect :: St -> Int -> IO ()
-synthSelect st n = do
-  state <- readIORef st
-  case rsSynthLast state of
-    Nothing -> emitLn st =<< cRed st "no :synth batch to select from"
-    Just batch
-      | n < 1 || n > length (sbTerms batch) ->
-          emitLn st =<< cRed st ("candidate " ++ show n
-            ++ " is out of range (1.." ++ show (length (sbTerms batch)) ++ ")")
-      | otherwise -> do
-          let term = sbTerms batch !! (n - 1)
-              -- a wrapped-goal candidate proves ∀ (h : T)..., target;
-              -- applying it to the hypothesis names closes the goal
-              applied = case sbArgs batch of
-                [] -> term
-                args -> "(" ++ term ++ ") " ++ unwords args
-          case rsProve state of
-            Just _ -> do
-              advanced <- applyTactic st False ("exact (" ++ applied ++ ")")
-              when advanced $ do
-                goals <- currentGoals st
-                formatGoals st goals
-                when (null goals) $ emitLn st =<< cDim st
-                  "finish with :qed [NAME], inspect with :script"
-            Nothing -> do
-              let k = rsItCounter state + 1
-                  code = "set_option autoImplicit true in def " ++ itName k
-                    ++ " : (" ++ sbGoal batch ++ ") := (" ++ term ++ ")"
-              result <- runCmd st (rsEnv state) code
-              case result of
-                Right v | not (hasErrors v), Nothing <- respFatal v -> do
-                  modifyIORef' st (\s -> s { rsItCounter = k })
-                  advanceEnv st (respEnv v) code
-                  emitLn st =<< cDim st
-                    ("it := " ++ term ++ " : " ++ sbGoal batch)
-                Right v -> () <$ printResponse st Nothing v
-                Left err -> emitLn st =<< cRed st err
 
 completionCandidates :: St -> String -> IO [String]
 completionCandidates st prefix = do
@@ -2076,7 +2087,7 @@ proveEmergencyExit st why = do
     unless (null script) $ do
       emitLn st =<< cDim st "tactic script so far (proof states were lost):"
       forM_ script $ \t -> emitLn st ("  " ++ t)
-  modifyIORef' st (\s -> s { rsProve = Nothing })
+  leaveProve st
 
 cmdProve :: St -> String -> IO ()
 cmdProve st rawArg = do
@@ -2085,7 +2096,8 @@ cmdProve st rawArg = do
     Just _ -> emitLn st =<< cRed st
       "already in prove mode \8212 :abort or :qed first"
     Nothing -> do
-      let arg = substIt (rsItCounter state) (trim rawArg)
+      let arg = substIt (rsItCounter state) (rsSynthIts state)
+            (trim rawArg)
       entered <- if not (null arg)
         then do
           result <- runCmd st (rsEnv state)
@@ -2217,7 +2229,7 @@ proveInput st text = do
               else do
                 emitLn st =<< cDim st "left prove mode; the script was:"
                 forM_ script $ \t -> emitLn st ("  " ++ t)
-          modifyIORef' st (\s -> s { rsProve = Nothing })
+          leaveProve st
           pure True
         _ -> do
           emitLn st =<< cRed st ("no :" ++ word ++ " inside prove mode \8212 "
@@ -2225,8 +2237,9 @@ proveInput st text = do
             ++ ":abort, :quit")
           pure True
     else do
-      counter <- rsItCounter <$> readIORef st
-      advanced <- applyTactic st False (substIt counter stripped)
+      state <- readIORef st
+      advanced <- applyTactic st False
+        (substIt (rsItCounter state) (rsSynthIts state) stripped)
       when advanced $ do
         goals <- currentGoals st
         formatGoals st goals
@@ -2306,7 +2319,7 @@ cmdQed st arg = do
               emitLn st =<< cDim st
                 "replace the `sorry` in the original declaration with:"
               emitLn st body
-              modifyIORef' st (\s -> s { rsProve = Nothing })
+              leaveProve st
             Just stmt -> do
               let name = if null (trim arg)
                     then "prove_" ++ show (rsProveCounter state + 1)
@@ -2330,7 +2343,7 @@ cmdQed st arg = do
                       saved <- color st "32"
                         ("saved: theorem " ++ name ++ " : " ++ stmt)
                       emitLn st saved
-                      modifyIORef' st (\s -> s { rsProve = Nothing })
+                      leaveProve st
 
 -- Main loop -----------------------------------------------------------------
 
@@ -2593,9 +2606,11 @@ run opts = do
         , rsBrowseEnv = Nothing
         , rsSynthBase = Nothing
         , rsSynthEnv = Nothing
-        , rsSynthLast = Nothing
+        , rsSynthIts = []
+        , rsSynthItsProve = False
         , rsSynthEngine = EngineDjinn
         , rsSynthSteps = 4096
+        , rsSynthClassical = True
         , rsTimeout = if optTimeout opts <= 0 then Nothing
             else Just (optTimeout opts)
         , rsColor = useColor

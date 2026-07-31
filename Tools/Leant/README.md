@@ -85,33 +85,34 @@ implemented).
 
 ```
 λ> :synth (A × (B ⊕ C) → (A × B) ⊕ (A × C))
-  1  fun ⟨a, b⟩ => match b with | .inl c => .inl ⟨a, c⟩ | .inr d => .inr ⟨a, d⟩
-(1 verified candidate)
+  it1  fun ⟨x, y⟩ => match y with | .inl z => .inl ⟨x, z⟩ | .inr w => .inr ⟨x, w⟩
 λ> :synth (∀ p q : Prop, ((p → q) → p) → p)
-constructively unprovable — but classically:
-  1  fun _ _ f => match Classical.em _ with | .inl x => x | .inr k => f (fun y => absurd y k)
+  it1  fun _ _ f => match Classical.em _ with | .inl x => x | .inr k => f (fun y => absurd y k)
 λ> :synth (∀ p : Prop, Decidable p → Decidable (¬ p))
-  1  fun _ x => match x with | .isFalse k => .isTrue k | .isTrue y => .isFalse (fun k1 => k1 y)
-(1 verified candidate)
+  it1  fun _ x => match x with | .isFalse k => .isTrue k | .isTrue y => .isFalse (fun k1 => k1 y)
 ```
 
 Binders are named by role — continuations/negations `k`, functions
-`f g h`, values `x y z` — and a constructively refuted `Prop` goal gets
-a classical attempt: first with an excluded-middle case split per
-atomic subformula (shown as `match Classical.em _ with ...`), then via
-the Glivenko double-negation translation wrapped in
-`Classical.byContradiction`. Both presentations are backend-verified
-like every other candidate; single-argument negations render as
-`absurd`.
+`f g h`, values `x y z` — and, unless `:set synth-classical off`, a
+constructively refuted `Prop` goal gets a classical attempt: first
+with an excluded-middle case split per atomic subformula (the
+`match Classical.em _ with ...` shape above — Peirce's law has no
+constructive inhabitant), then via the Glivenko double-negation
+translation wrapped in `Classical.byContradiction`. Both presentations
+are backend-verified like every other candidate; single-argument
+negations render as `absurd`.
 
 - Every displayed candidate has been **verified by the Lean backend**
   (`example : (T) := term`) — the synthesis engine is never trusted.
   Where a term's shape is ambiguous in Lean (a quantified hypothesis may
   be transported whole or instantiated), the renderer offers the
   alternatives and verification picks the one that elaborates.
-- Candidates are ranked smallest-first; `:synth N` binds candidate N as
-  `it` (in prove mode it closes the goal with `exact`). Bare `:synth`
-  targets the current prove-mode goal or the last `sorry`.
+- Candidates are ranked smallest-first and bound automatically as
+  `it1`, `it2`, ... with bare `it` the best candidate; in prove mode
+  `itN` instead splices the candidate applied to the goal's
+  hypotheses, so `exact it1` closes the goal (the splices end with the
+  proof). Bare `:synth` targets the current prove-mode goal or the
+  last `sorry`.
 - Negative verdicts are labeled by strength: "provably uninhabited" only
   when the translation was complete and every opaque atom is a genuine
   quantified variable; otherwise "no term found within bounds". In

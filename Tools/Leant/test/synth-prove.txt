@@ -1,12 +1,17 @@
 :prove ∀ p : Prop, Decidable p → Decidable (¬ p)
 :synth
-:synth 1
+exact it1
 :abort
 :prove ∀ p q : Prop, (p → q) → p → q ∧ p
 intro p q h hp
 :synth
-:synth 1
+exact it1
 :qed mp_and
 :synth (∀ a b : Type, Option a → Option b → Option (a × b))
-:synth 2
+#check it2
+#eval (it1 (some 3) (some true) : Option (Nat × Bool))
+:set synth-classical off
+:synth (∀ p : Prop, p ∨ ¬ p)
+:set synth-classical on
+:synth (∀ p : Prop, p ∨ ¬ p)
 :quit

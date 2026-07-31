@@ -9,10 +9,8 @@ entering prove mode — type tactics; :help for commands
 ⊢ (p : Prop) → Decidable p → Decidable ¬p
 ⊢> :synth
 preparing synthesis environment (session imports + Lean)...
-  1  fun _ x => match x with | .isFalse k => .isTrue k | .isTrue y => .isFalse (fun k1 => k1 y)
-(1 verified candidate)
-:synth N closes the goal with `exact` candidate N
-⊢> :synth 1
+  it1  fun _ x => match x with | .isFalse k => .isTrue k | .isTrue y => .isFalse (fun k1 => k1 y)
+⊢> exact it1
 All goals accomplished 🎉
 finish with :qed [NAME], inspect with :script
 ⊢> :abort
@@ -28,20 +26,35 @@ hp : p
 ⊢ q ∧ p
 ⊢> :synth
 (synthesizing with hypotheses p q h hp as premises)
-  1  fun _ _ f x => ⟨f x, x⟩
-(1 verified candidate)
-:synth N closes the goal with `exact` candidate N
-⊢> :synth 1
+  it1  fun _ _ f x => ⟨f x, x⟩
+⊢> exact it1
 All goals accomplished 🎉
 finish with :qed [NAME], inspect with :script
 ⊢> :qed mp_and
 saved: theorem mp_and : ∀ p q : Prop, (p → q) → p → q ∧ p
 λ> :synth (∀ a b : Type, Option a → Option b → Option (a × b))
-  1  fun _ _ _ _ => .none
-  2  fun _ _ x y => match x with | .none => (.none) | .some z => (match y with | .none => (.none) | .some w => .some ⟨z, w⟩)
-(2 verified candidates)
-:synth N binds candidate N as `it`
+  it1  fun _ _ _ _ => .none
+  it2  fun _ _ x y => match x with | .none => (.none) | .some z => (match y with | .none => (.none) | .some w => .some ⟨z, w⟩)
 note: search truncated: candidate limit reached (60)
-λ> :synth 2
-it := fun _ _ x y => match x with | .none => (.none) | .some z => (match y with | .none => (.none) | .some w => .some ⟨z, w⟩) : (∀ a b : Type, Option a → Option b → Option (a × b))
+λ> #check it2
+it (a b : Type) : Option a → Option b → Option (a × b)
+λ> #eval (it1 (some 3) (some true) : Option (Nat × Bool))
+error: Application type mismatch: The argument
+  some 3
+has type
+  Option ?m.3
+but is expected to have type
+  Type
+in the application
+  it (some 3)
+λ> :set synth-classical off
+synth classical: off
+λ> :synth (∀ p : Prop, p ∨ ¬ p)
+provably uninhabited — no closed term of this polymorphic type exists
+(constructively — a classical proof may still exist; this is not a disproof of the proposition)
+λ> :set synth-classical on
+synth classical: on
+λ> :synth (∀ p : Prop, p ∨ ¬ p)
+  it1  fun _ => Classical.em _
+  it2  fun _ => match Classical.em _ with | .inl x => .inl x | .inr k => .inr k
 λ> :quit
