@@ -101,6 +101,7 @@ it appears to be genuinely vacuous.
 | `Lean/NatAddAccelerator.lean` | `theorem boom : False` via a module-local `Nat` and a non-standard `Nat.add`. | accepts |
 | `Lean/NatBeqAccelerator.lean` | The same, via `Nat.beq` (whose accelerator returns the constants named `Bool.true`/`Bool.false`). | accepts |
 | `Lean/ReduceBoolFreeName.lean` | Different mechanism: the kernel's *native* hook. Defining the free name `Lean.reduceBool` makes the kernel run compiled code and believe it — with **no** `Lean.ofReduceBool`, no `native_decide`, no `@[implemented_by]`. `lean` exits 0 and `#print axioms` reports nothing, so this is an axiom-*tracking* hole. | **rejects** (the interpreter cannot replay `probe`) |
+| `Lean/ProjIndexTruncation.lean` | **Not `prelude`; a live upstream defect.** `Expr.proj` indices are narrowed `size_t`→`unsigned` behind an `is_small()` guard, so index `2^32+k` becomes `k` and the kernel accepts projections out of range for the structure ([lean4#12746](https://github.com/leanprover/lean4/issues/12746), OPEN). Not a `False` on its own — truncation is consistent, and a collision needs 2^32 fields. Ships its own control and a `v4.32.0`/`v4.32.2`/`v4.33.0-rc1` matrix. | n/a (no `False`) |
 | `Lean/NegativeControl.lean` | Control. `set_option debug.skipKernelTC true` smuggles a blatantly ill-typed `bogus : False` into an `.olean`. It too builds with exit 0 and reports no axioms. | **rejects** — which is what makes acceptance of the others meaningful |
 | `Lean/FreeNameSurvey.lean` | `#check`s every kernel-special-cased name under `Init.Prelude` to show which are free. | n/a |
 | `Lean/NativeDecideContrast.lean` | For contrast: the *documented* `native_decide` / `@[implemented_by]` boundary. Unlike the above, it does show up in `#print axioms`. | n/a |
@@ -149,5 +150,25 @@ and so is not obviously covered by that objection; (c) the survey showing this i
 a family of nine free names rather than a one-off; and (d) the `Lean.reduceBool`
 variant, which is a distinct mechanism and an axiom-tracking hole.
 
-No matching issue exists on the `leanprover/lean4` tracker, so none of this is
-fixed — the original form was deemed out of scope.
+**Upstream has now ruled on this family (corrected 2026-07-30).** An earlier
+version of this section said no matching issue existed on the `leanprover/lean4`
+tracker. That is wrong: [lean4#13626](https://github.com/leanprover/lean4/issues/13626)
+("does the kernel assume built-in Bool order?", filed 2026-05-03) is exactly the
+`Lean.reduceBool` free-name mechanism of `ReduceBoolFreeName.lean`, reported
+independently. It was closed 2026-05-04 as working-as-intended, with the
+maintainers' position stated explicitly:
+
+> The kernel assumes that the official prelude is used. If you use `prelude` you
+> are responsible for making sure it matches the kernel's expectations, i.e. It
+> is not supported to write arbitrary code after `prelude`.
+
+This covers **every exhibit in this directory**, including `NatGcdFreeName.lean`:
+that module redefines nothing, but it is still a `prelude` module (`prelude` plus
+`import Init.Prelude`), which is precisely the configuration declared
+unsupported. So the correct status is not "unreported and therefore unfixed" but
+**"reported, and deliberately out of scope"** — a documented policy boundary
+rather than an open hole. The exhibits remain useful as a precise description of
+where that boundary lies and what is on the far side of it.
+
+See [`../CATALOG.md`](../CATALOG.md) for this family's place among all known Lean
+and Rocq defects.

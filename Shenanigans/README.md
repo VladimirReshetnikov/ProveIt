@@ -30,6 +30,7 @@ developments.
 | [`Hurkens/`](Hurkens/) | Hurkens' form of Girard's paradox in Lean 4, axiom-free. Derives `False` from a hypothetical impredicative closure of `Type u` over itself, and from a Tarski-style universe decoding `El : V → Type u` with a section. Both isolate the one judgment Lean's predicative hierarchy denies: `(X : Type u) → F X` lands in `Type (u+1)`, never `Type u`. |
 | [`KernelSoundness/`](KernelSoundness/) | Lean 4 kernel probes. `Mathematical/` holds the paradox-adjacent results (Coquand-Paulin, the Hurkens blocker, `Acc`/proof-irrelevance anomalies, projection-versus-recursor). `Lean/`, `Comparator/`, `Fuzz/`, and `StringIdentity/` hold accelerator, definitional-equality, and name-identity probes with their controls. |
 | [`Reports/`](Reports/) | Write-ups suitable for upstream bug reports, each pinned to specific toolchain versions. |
+| [`CATALOG.md`](CATALOG.md) | **Registry of all known Lean and Rocq type-system defects and kernel loopholes**, with what this directory does and does not yet cover. The working index for the goal of representing every one of them. |
 
 ## Ground rules for anything added here
 
