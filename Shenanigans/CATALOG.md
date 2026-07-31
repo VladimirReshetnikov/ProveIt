@@ -482,6 +482,7 @@ Lean kernel surface against an explicit oracle; harnesses and counts are in
 | `Prop` inductives: subsingleton-elimination restriction | proof-relevance | 40 declarations, correctly restricted |
 | Kernel-internal fvar leaks into inferred types | `_kernel_fresh` scan + re-check | none (i.e. #10475 is fixed) |
 | Module boundary: `sorry`, private-in-public, section variables | `#print axioms`, visibility | all correctly guarded |
+| `Expr.mdata` as a bypass: positivity, self-occurrence-in-index, `check_no_metavar_no_fvar` | the corresponding kernel check | every check strips `mdata`; all of `hasFVar`/`hasMVar`/`hasLooseBVars` propagate through it |
 
 Two things did turn up, neither a `False`. `Nat.shiftLeft`'s missing magnitude
 guard is §2.6. And `Kernel.check` with a caller-supplied local context whose
