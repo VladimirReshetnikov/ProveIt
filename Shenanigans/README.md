@@ -2,8 +2,8 @@
 
 **Nothing in this directory is ordinary mathematics.**
 
-Everything else in this repository proves theorems. This directory does not. It
-collects two related kinds of work:
+Everything else in this repository proves theorems in the ordinary sense. This
+directory does not. It collects two related kinds of work:
 
 * **Paradoxes of proof systems.** Girard's paradox, Hurkens' simplification of
   it, and the Coquand-Paulin counterexample are derivations of `False` from
@@ -19,10 +19,6 @@ collects two related kinds of work:
   defects that produce an axiom-free `False`. Where that happens, the defect is
   a bug in an *implementation*, is reported upstream, and is recorded here with
   the exact toolchain versions affected.
-
-Read a `False` in this directory as a claim about a formal system or a program,
-never as a mathematical fact. Do not import any of it into ordinary
-developments.
 
 For the perspective this second category should be read in, see Leonardo de
 Moura's [*Who Watches the Provers?*](https://leodemoura.github.io/blog/2026-3-16-who-watches-the-provers/).

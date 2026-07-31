@@ -1,7 +1,8 @@
 # Proposal: automatic term synthesis in Leant, borrowing from Djex
 
-*Status: proposal (no implementation yet). Companion to
-[PROPOSALS.md](PROPOSALS.md).*
+*Status: phases 0–1 implemented (`:synth` in `Tools/Leant`, engine =
+in-process Djex Djinn/LJT; see [README.md](README.md#synth--automatic-term-synthesis-haskell-only)).
+Phases 2–4 remain future work. Companion to [PROPOSALS.md](PROPOSALS.md).*
 
 Djex — vendored read-only in this repository as the
 [`lib/Djex`](../../lib/Djex) submodule (pinned at `6a9fc22`, the state

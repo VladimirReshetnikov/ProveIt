@@ -28,7 +28,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
 | [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`. |
 | [`Shenanigans/`](Shenanigans/) | **Not ordinary mathematics.** Paradoxes of proof systems (Girard/Hurkens, Coquand-Paulin) and loopholes in the kernels implementing them. See [the section below](#shenanigans-paradoxes-and-kernel-loopholes). |
-| [`Tools/`](Tools/) | Development tooling. **Leant** ([`Tools/Leant/`](Tools/Leant/README.md)) is a GHCi-style interactive REPL for Lean 4: expression evaluation with persistent sessions, an interactive tactic-by-tactic prove mode, `:browse`/`:doc`/`:search`, tab completion, and session transcripts. The Haskell implementation is primary; a [Python sibling](Tools/LeantPy/README.md) has feature parity. Also Rocq 9.2 compatibility shims. |
+| [`Tools/`](Tools/) | Development tooling. **Leant** ([`Tools/Leant/`](Tools/Leant/README.md)) is a GHCi-style interactive REPL for Lean 4: expression evaluation with persistent sessions, an interactive tactic-by-tactic prove mode, `:browse`/`:doc`/`:search`, verified term synthesis (`:synth`, via the in-process [Djex](lib/Djex) engine), tab completion, and session transcripts. The Haskell implementation is primary; a [Python sibling](Tools/LeantPy/README.md) has feature parity. Also Rocq 9.2 compatibility shims. |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
 Repository-wide configuration remains at the root. [`ProveIt.lean`](ProveIt.lean)

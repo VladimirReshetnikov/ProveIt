@@ -971,6 +971,13 @@ class Leant:
             self.cmd_search(arg)
         elif cmd == "search?":
             self.cmd_search(arg, by_type=True)
+        elif cmd == "synth":
+            # Term synthesis is deliberately Haskell-only: Tools/Leant links
+            # the Djex engine (Djinn/LJT) in-process; this implementation
+            # does not grow a synthesis host (SYNTHESIS_PROPOSAL.md).
+            print(red(":synth is available in the Haskell Leant only"))
+            print(dim("  run Tools/Leant/leant.cmd - it links the Djex "
+                      "synthesis engine in-process"))
         elif cmd == "set":
             if arg:
                 res = self.run_cmd(f"set_option {arg}", env=self.cur_env, cache=True)
