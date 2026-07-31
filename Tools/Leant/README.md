@@ -76,10 +76,11 @@ leant [FILE] [--project DIR] [--plain] [-i MOD]
 ## `:synth` — automatic term synthesis (Haskell-only)
 
 `:synth TYPE` constructs programs and proofs in the structural fragment
-`→ / × / ∧ / ⊕ / ∨ / ↔ / ¬ / ⊥ / ⊤ / ∀` over opaque variables, using the
-Djinn LJT engine from the vendored [Djex](../../lib/Djex) library —
-linked in-process, no subprocess. Design and phasing:
-[SYNTHESIS_PROPOSAL.md](SYNTHESIS_PROPOSAL.md) (phases 0–1 are
+`→ / × / ∧ / ⊕ / ∨ / ↔ / ¬ / ⊥ / ⊤ / ∀` over opaque variables — plus
+inductive datatypes (see below) — using the Djinn LJT engine from the
+vendored [Djex](../../lib/Djex) library — linked in-process, no
+subprocess. Design and phasing:
+[SYNTHESIS_PROPOSAL.md](SYNTHESIS_PROPOSAL.md) (phases 0–2 are
 implemented).
 
 ```
@@ -88,6 +89,9 @@ implemented).
 (1 verified candidate)
 λ> :synth (((a → b) → a) → a)
 provably uninhabited — no closed term of this polymorphic type exists
+λ> :synth (∀ p : Prop, Decidable p → Decidable (¬ p))
+  1  fun _ a => match a with | Decidable.isFalse b => Decidable.isTrue b | Decidable.isTrue c => Decidable.isFalse (fun d => d c)
+(1 verified candidate)
 ```
 
 - Every displayed candidate has been **verified by the Lean backend**
@@ -102,6 +106,17 @@ provably uninhabited — no closed term of this polymorphic type exists
   when the translation was complete and every opaque atom is a genuine
   quantified variable; otherwise "no term found within bounds". In
   `Prop` the verdict notes it is about *constructive* provability.
+- Inductive types expand into generalized sums of products (phase 2):
+  a non-recursive, non-indexed, non-mutual inductive or structure —
+  built-in (`Bool`, `Option`, `Ordering`, `Except`, `Decidable`, ...) or
+  session-declared — applied to all of its parameters, whose constructor
+  fields are explicit and non-dependent, is declared to the engine as a
+  datatype: constructors become introduction rules, case analysis an
+  elimination rule. Candidates render with the real constructor names
+  (`match a with | Option.none => ... | Option.some b => ...`), and
+  refutations over expanded inductives stay sound (the engine saw the
+  complete constructor list). Recursive (`Nat`, `List`), indexed (`Eq`),
+  and dependent-field (`Exists`, unreduced `Sigma`) types stay atoms.
 - Dependent subformulas (`∀ n : Nat, P n`) are carried as opaque atoms:
   transportable, never analyzed. Session declarations are visible to
   goal translation (the session history is replayed into the synthesis

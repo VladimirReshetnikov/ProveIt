@@ -1,8 +1,8 @@
 # Proposal: automatic term synthesis in Leant, borrowing from Djex
 
-*Status: phases 0–1 implemented (`:synth` in `Tools/Leant`, engine =
+*Status: phases 0–2 implemented (`:synth` in `Tools/Leant`, engine =
 in-process Djex Djinn/LJT; see [README.md](README.md#synth--automatic-term-synthesis-haskell-only)).
-Phases 2–4 remain future work. Companion to [PROPOSALS.md](PROPOSALS.md).*
+Phases 3–4 remain future work. Companion to [PROPOSALS.md](PROPOSALS.md).*
 
 Djex — vendored read-only in this repository as the
 [`lib/Djex`](../../lib/Djex) submodule (pinned at `6a9fc22`, the state
@@ -317,12 +317,25 @@ Design rules, all inherited from Djex:
   (polarity- and atom-aware) and to verdict labeling (§2.0). The
   Python REPL's `:synth` prints a pointer to `Tools/Leant` rather than
   growing its own host.
-- **Phase 2 — local inductives (M/L).** Treat non-recursive,
-  non-dependent user inductives and structures as generalized sums of
-  products: constructors as right-rules, `casesOn` as left-rules —
-  precisely how Djinn admits Haskell `data` declarations. Leant already
-  parses environments well enough (`:browse` machinery) to fetch
-  constructor signatures.
+- **Phase 2 — local inductives (M/L, implemented).** Treat
+  non-recursive, non-dependent inductives and structures as generalized
+  sums of products: constructors as right-rules, `casesOn` as
+  left-rules — precisely how Djinn admits Haskell `data` declarations.
+  As built, the serializer expands any qualifying inductive occurrence
+  (non-recursive, non-indexed, non-mutual, fully parameter-applied,
+  explicit non-dependent constructor fields — the check runs on the
+  *instantiated* constructor telescope, so a `Sigma` whose second
+  component ignores the first qualifies too) into its constructor list;
+  the engine declares one fresh datatype per alpha-normalized occurrence
+  key, parameterized over the goal variables its fields mention, and the
+  renderer maps the engine's constructor spellings back to the Lean
+  names. This covers built-ins (`Bool`, `Option`, `Ordering`, `Except`,
+  `Decidable`) and session-declared types alike — no `:browse`
+  machinery was needed; the instantiated-telescope route is simpler and
+  stronger than fetching polymorphic constructor signatures. Refutations
+  over expanded inductives remain sound: the engine sees the complete
+  constructor list, and Lean's elimination restrictions only make Lean
+  *more* restrictive than the engine's model, never less.
 - **Phase 3 — ranked environment search (L, optional).** Exference's
   contribution: inventory = browse-env constants, filtered by the
   existing generated-name blacklist; per-name ratings file

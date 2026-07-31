@@ -33,7 +33,8 @@
 -- The engine is never trusted (design rule 2): a rendering failure just
 -- drops the candidate, and everything shown has been verified.
 module Leant.Synth.Render
-  ( renderLeanTerm
+  ( CtorMap
+  , renderLeanTerm
   ) where
 
 import Data.List (intercalate, nub, sortOn, subsequences)
@@ -53,14 +54,20 @@ import Language.Haskell.Synthesis.Name
 
 import Leant.Synth.Fragment (Frag (..), Slot (..), fragSpine, leadingTypeArgs)
 
+-- | Engine-side constructor spelling -> (full Lean constructor name,
+-- field fragments), for the datatypes 'Leant.Synth.Engine' declared to
+-- represent expanded inductive occurrences (phase 2).
+type CtorMap = Map.Map String (String, [Frag])
+
 -- | Render one candidate expression against the goal fragment.  Returns
 -- a nonempty group of textual variants, best guess first; the caller
 -- verifies them in order and keeps the first that elaborates.
-renderLeanTerm :: Frag -> Expression String -> Either String [String]
-renderLeanTerm goalFrag expr0 = do
+renderLeanTerm
+  :: CtorMap -> Frag -> Expression String -> Either String [String]
+renderLeanTerm cm goalFrag expr0 = do
   base <- uniquify (normalizeExpr 0 expr0)
   texts <- concat <$> mapM variantsFor
-    (nub [fit force goalFrag base 0 [] | force <- [False, True]])
+    (nub [fit cm force goalFrag base 0 [] | force <- [False, True]])
   case nub texts of
     [] -> Left "no renderable variant"
     group -> Right (take 12 group)
@@ -72,7 +79,7 @@ renderLeanTerm goalFrag expr0 = do
           | sites == 0 = [[]]
           | sites <= 3 = siteSubsets sites
           | otherwise = [[], [0 .. sites - 1]]
-    mapM (\set -> render doms 0 (markSites doms set expr)) sets
+    mapM (\set -> render cm doms 0 (markSites doms set expr)) sets
 
 -- | Instantiation subsets, transport-first: no site instantiated, all
 -- sites, then the mixed subsets by size.
@@ -85,14 +92,20 @@ siteSubsets k = [] : full : sortOn (\s -> (length s, s)) middle
 
 -- Globals -------------------------------------------------------------------
 
-data GlobalKind = GInl | GInr | GUnit
+data GlobalKind = GInl | GInr | GUnit | GCtor String
 
-globalKind :: Name -> Either String GlobalKind
-globalKind name
+globalKind :: CtorMap -> Name -> Either String GlobalKind
+globalKind cm name
   | nameSpelling name == Just "Left" = Right GInl
   | nameSpelling name == Just "Right" = Right GInr
   | nameSpecial name == Just (TupleConstructor Boxed 0) = Right GUnit
+  | Just (leanName, _) <- declaredCtor cm name = Right (GCtor leanName)
   | otherwise = Left ("unexpected global in candidate: " ++ show name)
+
+-- | A constructor of one of the engine-declared datatypes, looked up by
+-- its engine spelling.
+declaredCtor :: CtorMap -> Name -> Maybe (String, [Frag])
+declaredCtor cm name = nameSpelling name >>= (`Map.lookup` cm)
 
 -- Pattern normalization ------------------------------------------------------
 --
@@ -258,9 +271,9 @@ uniquify expr0 = fst <$> go Map.empty 0 expr0
 -- even when they are elimination forms (the non-forced fit transports
 -- those whole; both variants are offered to verification).
 
-fit :: Bool -> Frag -> Expression String -> Int
+fit :: CtorMap -> Bool -> Frag -> Expression String -> Int
     -> [(String, Frag)] -> (Expression String, Int, [(String, Frag)])
-fit force frag expr n doms =
+fit cm force frag expr n doms =
   let (pats, core) = lambdaSpine expr
       (pats', remaining, doms1, exhausted) = walk frag pats doms
       (etaPats, core1, coreFrag, n1)
@@ -268,7 +281,7 @@ fit force frag expr n doms =
             && spineHasExplicitAll remaining =
             etaExpand remaining core n
         | otherwise = ([], core, remaining, n)
-      (core2, n2, doms2) = fitCore force coreFrag core1 n1 doms1
+      (core2, n2, doms2) = fitCore cm force coreFrag core1 n1 doms1
       allPats = pats' ++ etaPats
   in (if null allPats then core2 else Lambda allPats core2, n2, doms2)
  where
@@ -316,17 +329,28 @@ fit force frag expr n doms =
 -- the branch binders' domains when the scrutinee is a known binder,
 -- whose quantifiers - instantiated silently by the engine before the
 -- case split - are peeled first).
-fitCore :: Bool -> Frag -> Expression String -> Int
+fitCore :: CtorMap -> Bool -> Frag -> Expression String -> Int
         -> [(String, Frag)] -> (Expression String, Int, [(String, Frag)])
-fitCore force cf ce n ds = case (cf, ce) of
+fitCore cm force cf ce n ds = case (cf, ce) of
   (FProd a b, Tuple [x, y]) ->
-    let (x', n1, ds1) = fit force a x n ds
-        (y', n2, ds2) = fit force b y n1 ds1
+    let (x', n1, ds1) = fit cm force a x n ds
+        (y', n2, ds2) = fit cm force b y n1 ds1
     in (Tuple [x', y'], n2, ds2)
   (FSum a _, Apply h@(Global g) x) | isKind GInl g ->
-    let (x', n1, ds1) = fit force a x n ds in (Apply h x', n1, ds1)
+    let (x', n1, ds1) = fit cm force a x n ds in (Apply h x', n1, ds1)
   (FSum _ b, Apply h@(Global g) x) | isKind GInr g ->
-    let (x', n1, ds1) = fit force b x n ds in (Apply h x', n1, ds1)
+    let (x', n1, ds1) = fit cm force b x n ds in (Apply h x', n1, ds1)
+  -- a fully applied declared constructor: fit each argument against
+  -- the corresponding field fragment
+  (FInd _ _, _)
+    | (Global g, args@(_ : _)) <- appSpine ce
+    , Just (_, fields) <- declaredCtor cm g
+    , length args == length fields ->
+        let step (done, k, dss) (field, arg) =
+              let (arg', k', dss') = fit cm force field arg k dss
+              in (done ++ [arg'], k', dss')
+            (args', n1, ds1) = foldl step ([], n, ds) (zip fields args)
+        in (foldl Apply (Global g) args', n1, ds1)
   (_, Case scrut alts) ->
     let scrutFrag = case scrut of
           Local s -> peelAlls <$> lookup s ds
@@ -334,27 +358,34 @@ fitCore force cf ce n ds = case (cf, ce) of
         goAlt (done, k, dss) (pat, body) =
           let branchDoms = case (scrutFrag, pat) of
                 (Just (FSum a _), Constructor g [p])
-                  | Right GInl <- globalKind g -> bindDomainPairs p a
+                  | Right GInl <- globalKind cm g -> bindDomainPairs p a
                 (Just (FSum _ b), Constructor g [p])
-                  | Right GInr <- globalKind g -> bindDomainPairs p b
+                  | Right GInr <- globalKind cm g -> bindDomainPairs p b
+                (Just (FInd _ _), Constructor g ps)
+                  | Just (_, fields) <- declaredCtor cm g
+                  , length ps == length fields ->
+                      concat (zipWith bindDomainPairs ps fields)
                 (Just f, TuplePattern _) -> bindDomainPairs pat f
                 (Just f, Bind x) -> [(x, f)]
                 _ -> []
-              (body', k', dss') = fit force cf body k (branchDoms ++ dss)
+              (body', k', dss') = fit cm force cf body k (branchDoms ++ dss)
           in (done ++ [(pat, body')], k', dss')
         (alts', n1, ds1) = foldl goAlt ([], n, ds) alts
     in (Case scrut alts', n1, ds1)
   (_, Let pat rhs body) ->
-    let (body', n1, ds1) = fit force cf body n ds
+    let (body', n1, ds1) = fit cm force cf body n ds
     in (Let pat rhs body', n1, ds1)
   _ -> (ce, n, ds)
  where
-  isKind k g = case (globalKind g, k) of
+  isKind k g = case (globalKind cm g, k) of
     (Right GInl, GInl) -> True
     (Right GInr, GInr) -> True
     _ -> False
   peelAlls (FAll _ _ b) = peelAlls b
   peelAlls f = f
+  appSpine expr = spineAcc expr []
+  spineAcc (Apply f a) acc = spineAcc f (a : acc)
+  spineAcc f acc = (f, acc)
 
 -- | Binders whose domain type the goal fragment determines, recursing
 -- through tuple destructuring.
@@ -466,19 +497,20 @@ markOrCount doms set = go
 -- and tagged occurrences additionally instantiate their trailing
 -- quantifiers.
 
-render :: Map.Map String Frag -> Int -> Expression String
+render :: CtorMap -> Map.Map String Frag -> Int -> Expression String
        -> Either String String
-render doms = go
+render cm doms = go
  where
   go :: Int -> Expression String -> Either String String
   go req expr = case expr of
     Local x -> renderUse req x []
     Global name -> do
-      kind <- globalKind name
+      kind <- globalKind cm name
       case kind of
         GUnit -> Right (at req 2 "\10216\10217")
         GInl -> Right (at req 0 ".inl")
         GInr -> Right (at req 0 ".inr")
+        GCtor leanName -> Right (at req 2 leanName)
     Apply _ _ -> do
       let (headExpr, args) = spine expr []
       case headExpr of
@@ -491,14 +523,14 @@ render doms = go
           Right (at req 1 (unwords (headTxt : argTxts)))
     Lambda [] body -> go req body
     Lambda pats body -> do
-      binders <- mapM (renderPattern True) pats
+      binders <- mapM (renderPattern cm True) pats
       bodyTxt <- go 0 body
       Right (at req 0 ("fun " ++ unwords binders ++ " => " ++ bodyTxt))
     Tuple es -> do
       txts <- mapM (go 0) es
       Right (at req 2 ("\10216" ++ intercalate ", " txts ++ "\10217"))
     Let pat rhs body -> do
-      patTxt <- renderPattern True pat
+      patTxt <- renderPattern cm True pat
       rhsTxt <- go 0 rhs
       bodyTxt <- go 0 body
       Right (at req 0
@@ -543,25 +575,26 @@ render doms = go
   spine f args = (f, args)
 
   renderHead (Global name) = do
-    kind <- globalKind name
+    kind <- globalKind cm name
     case kind of
       GInl -> Right ".inl"
       GInr -> Right ".inr"
       GUnit -> Right "\10216\10217"
+      GCtor leanName -> Right leanName
   renderHead other = go 1 other
 
   -- non-final match-alternative bodies must not swallow following
   -- alternatives, so open bodies are parenthesized uniformly
   renderAlt (pat, body) = do
-    patTxt <- renderPattern False pat
+    patTxt <- renderPattern cm False pat
     bodyTxt <- go 1 body
     Right ("| " ++ patTxt ++ " => " ++ bodyTxt)
 
 -- | @binder@ selects the irrefutable subset used after @fun@\/@let@;
 -- match alternatives additionally allow constructor patterns.  The
 -- top-level pattern needs no parentheses; nested constructor patterns do.
-renderPattern :: Bool -> Pattern String -> Either String String
-renderPattern = go False
+renderPattern :: CtorMap -> Bool -> Pattern String -> Either String String
+renderPattern cm = go False
  where
   go _ _ Wildcard = Right "_"
   go _ _ (Bind x) = Right x
@@ -571,11 +604,16 @@ renderPattern = go False
   go atomic binder (Constructor c ps)
     | binder = Left "internal: constructor pattern survived normalization"
     | otherwise = do
-        kind <- globalKind c
+        kind <- globalKind cm c
         case (kind, ps) of
           (GUnit, []) -> Right "_"
           (GInl, [p]) -> wrapped atomic ".inl" p
           (GInr, [p]) -> wrapped atomic ".inr" p
+          (GCtor leanName, []) -> Right leanName
+          (GCtor leanName, _) -> do
+            subs <- mapM (go True binder) ps
+            let text = unwords (leanName : subs)
+            Right (if atomic then "(" ++ text ++ ")" else text)
           _ -> Left "unexpected constructor pattern shape"
    where
     wrapped needParens ctor p = do

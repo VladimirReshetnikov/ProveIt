@@ -6,10 +6,12 @@
 -- S-expression over the LJT core connectives.  Everything structural
 -- (@->@, @And@\/@Prod@\/@PProd@, @Or@\/@Sum@\/@PSum@, @Iff@, @Not@,
 -- @False@\/@Empty@\/@PEmpty@, @True@\/@Unit@\/@PUnit@, non-dependent and
--- sort-quantified foralls) is decomposed; every other subterm becomes an
--- opaque atom carried by its pretty-printed spelling, so alpha-equal
--- dependent subformulas compare equal and can be transported (never
--- analyzed).  Each atom carries a safety bit: an atom built purely from
+-- sort-quantified foralls) is decomposed; a non-recursive, non-indexed
+-- inductive applied to all of its parameters whose constructor fields
+-- are explicit and non-dependent expands into a generalized sum of
+-- products (phase 2); every other subterm becomes an opaque atom
+-- carried by its pretty-printed spelling, so alpha-equal dependent
+-- subformulas compare equal and can be transported (never analyzed).  Each atom carries a safety bit: an atom built purely from
 -- universally quantified variables keeps negative verdicts sound, while
 -- an atom mentioning any constant (e.g. @Nat@, @P 3@) downgrades
 -- \"provably uninhabited\" to \"no term found within bounds\".
@@ -48,6 +50,12 @@ data Frag
     -- for an implicit\/instance one (the elaborator introduces it)
   | FVar String         -- ^ opaque type variable (auto-implicit or opened binder)
   | FAtom Bool String   -- ^ opaque atom: safe-for-refutation flag, display key
+  | FInd String [(String, [Frag])]
+    -- ^ expanded inductive occurrence (phase 2): display key, then one
+    -- entry per constructor (full Lean name, field fragments).  Emitted
+    -- only when the serializer saw the complete constructor list with
+    -- non-dependent explicit fields, so the node itself never poisons a
+    -- refutation; its fields answer for themselves
   | FDepth              -- ^ translator depth bound reached
   deriving (Eq, Show)
 
@@ -86,6 +94,8 @@ synthPrelude = unlines
   , "  let pp \8592 Meta.ppExpr e"
   , "  pure (\"(atom \" ++ (if safe then \"safe\" else \"unsafe\") ++ \" \""
   , "    ++ esc (toString pp) ++ \")\")"
+  , ""
+  , "mutual"
   , ""
   , "partial def go (fuel : Nat) (depth : Nat) (e : Expr) : MetaM String := do"
   , "  match fuel with"
@@ -149,8 +159,54 @@ synthPrelude = unlines
   , "        else if args.size == 1 && n == ``Not then do"
   , "          let a \8592 go fuel depth args[0]!"
   , "          pure (\"(-> \" ++ a ++ \" (bot))\")"
-  , "        else atomOf e"
+  , "        else do"
+  , "          match \8592 indOf fuel depth e with"
+  , "          | some s => pure s"
+  , "          | none => atomOf e"
   , "      | _ => atomOf e"
+  , ""
+  , "-- Phase 2: a non-recursive, non-indexed, non-mutual, non-nested"
+  , "-- inductive applied to all of its parameters expands into a"
+  , "-- generalized sum of products, provided every constructor field is"
+  , "-- explicit and non-dependent; anything else falls back to an atom."
+  , "partial def indOf (fuel depth : Nat) (e : Expr)"
+  , "    : MetaM (Option String) := do"
+  , "  match e.getAppFn with"
+  , "  | Expr.const n us =>"
+  , "    match (\8592 getEnv).find? n with"
+  , "    | some (ConstantInfo.inductInfo iv) =>"
+  , "      if iv.numIndices != 0 || iv.isRec || iv.isNested"
+  , "          || iv.isUnsafe || iv.all.length != 1"
+  , "          || e.getAppNumArgs != iv.numParams then"
+  , "        pure none"
+  , "      else do"
+  , "        let args := e.getAppArgs"
+  , "        let mut ctors := \"\""
+  , "        for c in iv.ctors do"
+  , "          let ct \8592 inferType (mkAppN (Expr.const c us) args)"
+  , "          match \8592 ctorFields fuel depth ct with"
+  , "          | none => return none"
+  , "          | some fs =>"
+  , "            ctors := ctors ++ \" (ctor \" ++ esc c.toString ++ fs ++ \")\""
+  , "        let pp \8592 Meta.ppExpr e"
+  , "        pure (some (\"(ind \" ++ esc (toString pp) ++ ctors ++ \")\"))"
+  , "    | _ => pure none"
+  , "  | _ => pure none"
+  , ""
+  , "partial def ctorFields (fuel depth : Nat) (t : Expr)"
+  , "    : MetaM (Option String) := do"
+  , "  let t \8592 whnfR t"
+  , "  match t with"
+  , "  | Expr.forallE _ dom body bi =>"
+  , "    if body.hasLooseBVars || !bi.isExplicit then pure none"
+  , "    else do"
+  , "      let d \8592 go fuel depth dom"
+  , "      match \8592 ctorFields fuel depth body with"
+  , "      | none => pure none"
+  , "      | some rest => pure (some (\" \" ++ d ++ rest))"
+  , "  | _ => pure (some \"\")"
+  , ""
+  , "end"
   , ""
   , "end LeantSynth"
   ]
@@ -239,8 +295,24 @@ parseFrag (TL : TSym tag : rest) = case tag of
     _ -> Left "malformed (atom ...)"
   "all" -> allTag True rest
   "alli" -> allTag False rest
+  "ind" -> case rest of
+    TStr key : rest' -> do
+      (ctors, rest'') <- parseCtors rest'
+      Right (FInd key ctors, rest'')
+    _ -> Left "malformed (ind ...)"
   other -> Left ("unknown fragment tag " ++ other)
  where
+  parseCtors (TR : toks) = Right ([], toks)
+  parseCtors (TL : TSym "ctor" : TStr name : toks) = do
+    (fields, toks') <- parseFields toks
+    (rest', toks'') <- parseCtors toks'
+    Right ((name, fields) : rest', toks'')
+  parseCtors _ = Left "malformed (ctor ...)"
+  parseFields (TR : toks) = Right ([], toks)
+  parseFields toks = do
+    (field, toks') <- parseFrag toks
+    (fields, toks'') <- parseFields toks'
+    Right (field : fields, toks'')
   binary ctor toks = do
     (a, toks') <- parseFrag toks
     (b, toks'') <- parseFrag toks'
@@ -277,6 +349,7 @@ fragRefusal frag
     FProd a b -> hasDepth a || hasDepth b
     FSum a b -> hasDepth a || hasDepth b
     FAll _ _ b -> hasDepth b
+    FInd _ ctors -> any (any hasDepth . snd) ctors
     FDepth -> True
     _ -> False
 
@@ -310,5 +383,6 @@ fragUnsafeAtoms = nub . go
     FProd a b -> go a ++ go b
     FSum a b -> go a ++ go b
     FAll _ _ b -> go b
+    FInd _ ctors -> concatMap (concatMap go . snd) ctors
     FAtom False key -> [key]
     _ -> []
