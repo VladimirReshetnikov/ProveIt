@@ -360,14 +360,29 @@ the same loop via bare \code{:prove}. Prove mode also cooperates with
 \code{:synth TYPE} answers the question \emph{``write me a term of
 this type''} --- or, on the propositions-as-types side of the mirror,
 \emph{``prove this''} --- and sometimes the stronger question
-\emph{``show me that no such term exists.''} It is built on two
-program-synthesis engines from the vendored Djex library, linked
-in-process: \textbf{Djinn}, a complete and terminating proof search
-for intuitionistic propositional logic (Dyckhoff's LJT calculus) that
-emits programs, and \textbf{Exference}, a ranked heuristic search
-under explicit budgets. Both were built for Haskell types; Leant
-translates Lean goals into their fragment and their answers back into
-Lean.
+\emph{``show me that no such term exists.''} It is built on the
+vendored Djex library, linked in-process. Djex began by merging two
+classic Haskell program synthesizers behind one checked synthesis
+foundation --- \textbf{Djinn}, a complete and terminating proof
+search for intuitionistic propositional logic (Dyckhoff's LJT
+calculus) that emits programs, and \textbf{Exference}, a ranked
+heuristic search under explicit budgets --- and has since moved well
+beyond both originals. It fixes a substantial number of their bugs
+(notably verdict honesty: an exhausted search over an approximated
+space is reported as \emph{no evidence}, never as a refutation);
+it implements markedly better type-class support, with a unified,
+validated constraint contract shared by both engines --- Exference
+resolves givens, superclasses, and instances, Djinn checks contexts
+and synthesizes dictionary-independent terms; and it adds a growing
+level of support for rank-N and impredicative types: goal-side
+quantifiers open through polarity-aware plan families, quantified
+hypotheses are instantiated at a bounded set of sequent-supplied
+types, and impredicative instantiation is admitted under a guard that
+never invents a polytype the query did not supply. That scope is
+still being improved; Leant consumes Djex as a library behind a
+deliberately narrow engine boundary, so each improvement arrives by
+version bump. The engines speak Haskell types; Leant translates Lean
+goals into their fragment and their answers back into Lean.
 
 Three design rules keep this honest:
 
@@ -625,14 +640,16 @@ bounded instantiation can widen the space; hitting it is reported as
 
 Present limits, stated plainly: it will not synthesize recursion or
 induction (recursive types contribute constructors only); it will not
-analyze dependent structure (atoms are transported, never opened); its
-quantifier handling beyond the propositional fragment is a bounded,
-sequent-supplied discipline, so some higher-rank goals answer ``no
-term found within bounds'' rather than anything stronger; and
-class-constrained goals rely on Lean's elaborator to resolve
-instances during verification. The fragment is small on purpose:
-inside it, answers are fast, verified, and --- for refutations ---
-final.
+analyze dependent structure (atoms are transported, never opened);
+quantifier handling beyond the propositional fragment follows Djex's
+bounded rank-N and guarded impredicativity rules --- sound and
+terminating over an undecidable space, and widening as Djex improves
+--- so some higher-rank goals answer ``no term found within bounds''
+rather than anything stronger; and although Djex itself resolves
+type-class evidence, Leant currently leaves instance arguments to
+Lean's elaborator during verification, which is better placed to
+resolve them. The fragment is bounded on purpose: inside it, answers
+are fast, verified, and --- for refutations --- final.
 
 %==============================================================================
 \section{How it works, briefly}\label{sec:how}
