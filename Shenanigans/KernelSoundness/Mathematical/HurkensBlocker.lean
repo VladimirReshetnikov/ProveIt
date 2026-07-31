@@ -5,7 +5,7 @@ universe u v
 def Pw (X : Sort u) : Sort (max 1 u) := X → Prop
 
 -- (1) Impredicativity IS present: a quantifier landing in Prop stays in Prop,
---     because `imax u 0 = 0`.  This is exactly what Hurkens wants to exploit.
+--     because `imax u 0 = 0`.  This is exactly what Hurkens relies on.
 #check fun (X : Type) (p : Pw X) => (∀ x : X, p x : Prop)
 #check fun (X : Type 5) (p : Pw X) => (∀ x : X, p x : Prop)
 

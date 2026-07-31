@@ -72,4 +72,4 @@ Theorem real_false : False.
 Proof. eapply no_cycle. apply cycle. reflexivity. Qed.
 
 Print Assumptions real_false.
-(* On a vulnerable toolchain: "Closed under the global context". *)
+(* On an affected toolchain: "Closed under the global context". *)

@@ -48,5 +48,5 @@ Fixpoint F (n : nat) : nat :=
      for f) k k
   end.
 
-(* On a vulnerable toolchain [F] is accepted and does not terminate on inputs
+(* On an affected toolchain [F] is accepted and does not terminate on inputs
    that drive the cross-call, which ccz181078 turned into a proof of False. *)

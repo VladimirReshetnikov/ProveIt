@@ -8,7 +8,7 @@ def-eq checks were performed earlier while checking the SAME declaration.
 
 This is NOT unsoundness: every link of the chain is an individually valid
 acceptance (proof irrelevance, iota), and transitively closing a semantically
-valid relation stays valid.  The theorem that sneaks through, `cnt N2 hs = 2`,
+valid relation stays valid.  The theorem that is accepted, `cnt N2 hs = 2`,
 is true.  See ../../Reports/2026-07-29-defeq-history-dependence.md.
 
 Reproduces identically on v4.32.0 and on v4.32.2 (patched for lean4 #14576).

@@ -59,7 +59,7 @@ Print Assumptions retract_type_prop_absurd.
     A submission to <https://github.com/codyroux/name-the-biggest-number>
     ([Shenannigans.v], by jakobbotsh, annotated "Works in 8.9.1") reached
     section 1's hypothesis *for real*, with no [Variable] and no axiom, by
-    exploiting universe handling for this inductive: *)
+    using universe handling for this inductive: *)
 
 Inductive foo (A : Type) := bar X : foo X -> foo A | nonempty.
 Arguments nonempty {_}.

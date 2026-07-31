@@ -5,7 +5,7 @@ things in different components: byte-wise in one encoding, up to Unicode
 normalisation, culture-sensitive, case-insensitive, or with ad-hoc rules
 (ignoring `Cf` characters, C-string truncation at NUL). Wherever two components
 of one system disagree about when two strings are the same, something can be
-smuggled past the one that is doing the checking.
+passed by the one that is doing the checking.
 
 `Name` is the identity of every constant in Lean, and `Name`s are built from
 `String`s, so this class of bug would be soundness-relevant here. This directory
@@ -16,7 +16,7 @@ records the investigation.
 names as structural `Lean.Name` — no normalisation, case folding, collation or
 dot-splitting anywhere. Every disagreement found fails **closed**.
 
-One finding is nevertheless a genuine machine-level defect rather than a hazard
+One finding is nevertheless a genuine machine-level defect rather than a risk
 for human readers: **`Name.toString` is not injective, and it is reachable from
 ordinary Lean source.** See [`NameToString.md`](NameToString.md).
 
@@ -75,12 +75,12 @@ the hashes differ, and `Name.toString` escapes them to `«fooـ»` /
 compares identifiers by collation rather than ordinally is not.
 
 The useful fact is the *bare* rejection: an invisible or zero-weight character
-cannot be smuggled into an ordinary-looking identifier. Getting one in requires
+cannot be placed into an ordinary-looking identifier. Getting one in requires
 French quotes, which are conspicuous in source.
 
 ### 3. `Name.toString` is documented as not round-tripping
 
-`NameRoundTrip.lean`. Over 18 adversarial components, three fail
+`NameRoundTrip.lean`. Over 18 constructed components, three fail
 `toName ∘ toString = id`:
 
 ```
@@ -206,7 +206,7 @@ both of which are legal bare Lean identifier characters.
   environment's hash-indexed map; it does not happen.
 * **Numeric name components round-trip faithfully.** `Name.mkNum foo 5` prints
   as `foo.5` while `Name.mkStr foo "5"` prints as `foo.«5»`; both survive
-  `toString ∘ toName`, and they stay distinct. (This is the hazard comparator's
+  `toString ∘ toName`, and they stay distinct. (This is the risk comparator's
   `numeric_namespace` regression test covers.)
 * **The export payload is clean** — and this is why nothing escalates to
   soundness. It is the one boundary a solution author controls, and it carries
@@ -233,7 +233,7 @@ both of which are legal bare Lean identifier characters.
 * **No Cyrillic.** `isLetterLike` admits Greek, Coptic, Greek Extended,
   Letterlike Symbols, Mathematical Alphanumerics, Latin-1 Supplement and Latin
   Extended-A — but *not* Cyrillic, which rules out the most familiar homoglyph
-  attacks (`с`, `а`, `е`, `о`). Perfect confusables do remain inside the
+  substitutions (`с`, `а`, `е`, `о`). Perfect confusables do remain inside the
   admitted set, notably U+212A KELVIN SIGN ≡ `K` and U+2126 OHM SIGN ≡ `Ω`, and
   the Mathematical Alphanumerics NFKC-collapse to ASCII (`ℊ`→`g`, `ℓ`→`l`,
   `ſ`→`s`, `ℯ`→`e`).

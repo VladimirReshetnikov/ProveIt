@@ -89,7 +89,7 @@ valid relation stays valid, so the union-find is an amplifier, not a bug source.
    union-find spreads it transitively across the whole declaration.
 4. The guard is a **32-bit** hash and collisions are cheap to search for.
 
-## Not weaponizable as-is
+## Not usable to derive `False` as-is
 
 The `Acc` + proof-irrelevance pair `F () (p h) ≡ succ (F () h)` and `p h ≡ h` is
 jointly `n ≡ n+1`, but exists only between terms mentioning a hypothesis

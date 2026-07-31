@@ -4,8 +4,8 @@
 #   pwsh Shenanigans/Coq/verify.ps1
 #
 # Paradoxes must COMPILE (they are honest implications, axiom-free).
-# Defect witnesses must be REJECTED -- each one is a proof of False on a
-# vulnerable toolchain, so acceptance here means a regression.
+# Defect witnesses must be REJECTED -- each one is a proof of False on
+# an affected toolchain, so acceptance here means a regression.
 
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot

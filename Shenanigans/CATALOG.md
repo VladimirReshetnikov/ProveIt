@@ -33,7 +33,7 @@ systems).
 | Issue | Defect | Status upstream | Coverage |
 | --- | --- | --- | --- |
 | [#14484](https://github.com/leanprover/lean4/issues/14484) | The checked path for `Declaration.opaqueDecl` does not reject free variables in the body. With the inference cache, a safe metaprogram adds an opaque constant of type `False` whose value is an unbound `fvar`. `#print axioms` reports nothing; `leanchecker --fresh` replays it. | Fixed by PR #14498, merged 2026-07-22; shipped in `v4.32.2`. | **report** — [`Reports/2026-07-29-lean-4.33-backport-gap.md`](Reports/2026-07-29-lean-4.33-backport-gap.md) |
-| [#14576](https://github.com/leanprover/lean4/issues/14576) | In `elim_nested_inductive_fn`, nested-inductive parametric arguments are substituted by `instantiate_pi_params` **without being type-checked**; they never appear in the auxiliary declaration, so they escape all kernel checking. A wrong-structure projection is smuggled in, hidden behind a deliberate `Expr.hash` + `approxDepth` collision. Found while reviewing a claimed 300-line Collatz proof. | Fixed by PR #14577, merged 2026-07-28; shipped in `v4.32.2`. | **report** — same file |
+| [#14576](https://github.com/leanprover/lean4/issues/14576) | In `elim_nested_inductive_fn`, nested-inductive parametric arguments are substituted by `instantiate_pi_params` **without being type-checked**; they never appear in the auxiliary declaration, so they escape all kernel checking. A wrong-structure projection is placed in, hidden behind a deliberate `Expr.hash` + `approxDepth` collision. Found while reviewing a claimed 300-line Collatz proof. | Fixed by PR #14577, merged 2026-07-28; shipped in `v4.32.2`. | **report** — same file |
 
 The report's own finding: **`v4.33.0-rc1` predates both fixes and accepts both
 proofs of `False`**, because the 4.33 branch was cut before either landed and
@@ -43,7 +43,7 @@ neither was cherry-picked.
 
 | Issue | Defect | Status | Coverage |
 | --- | --- | --- | --- |
-| [#12746](https://github.com/leanprover/lean4/issues/12746) | `Expr.proj` indices are narrowed from `size_t` to C++ `unsigned` in `infer_proj`, `reduce_proj`, and `lazy_delta_proj_reduction`, guarded only by `is_small()` (`< 2^63`, not `< 2^32`). Index `2^32 + k` silently becomes `k`, so the kernel infers, reduces, and **accepts** projections that are out of range for the structure. Not a `False` by itself — truncation is applied consistently, and exploiting it needs a structure with 2^32 fields. | OPEN, `P-medium`, filed 2026-03-01 (Opus 4.6). [#13602](https://github.com/leanprover/lean4/issues/13602) is the same defect reported as an accepted theorem; closed as a duplicate. | **artifact** — [`Lean/ProjIndexTruncation.lean`](KernelSoundness/Lean/ProjIndexTruncation.lean). **Verified here** present on `v4.32.0`, `v4.32.2`, `v4.33.0-rc1`; control (small out-of-range index) rejected on all three. |
+| [#12746](https://github.com/leanprover/lean4/issues/12746) | `Expr.proj` indices are narrowed from `size_t` to C++ `unsigned` in `infer_proj`, `reduce_proj`, and `lazy_delta_proj_reduction`, guarded only by `is_small()` (`< 2^63`, not `< 2^32`). Index `2^32 + k` silently becomes `k`, so the kernel infers, reduces, and **accepts** projections that are out of range for the structure. Not a `False` by itself — truncation is applied consistently, and reaching it needs a structure with 2^32 fields. | OPEN, `P-medium`, filed 2026-03-01 (Opus 4.6). [#13602](https://github.com/leanprover/lean4/issues/13602) is the same defect reported as an accepted theorem; closed as a duplicate. | **artifact** — [`Lean/ProjIndexTruncation.lean`](KernelSoundness/Lean/ProjIndexTruncation.lean). **Verified here** present on `v4.32.0`, `v4.32.2`, `v4.33.0-rc1`; control (small out-of-range index) rejected on all three. |
 | [#12747](https://github.com/leanprover/lean4/issues/12747) | `Level.normalize` does not canonicalize when an `imax` collapses to a `max`: outer `succ`s are not distributed, and the C++ kernel does not re-sort/flatten. `Level.isEquiv` and the kernel's `is_equivalent` therefore return `false` for denotationally equal universe levels. **Incompleteness, not unsoundness** — valid statements are rejected. | OPEN, `P-low`, filed 2026-03-01 (Opus 4.6). | **noted** + related artifact. **Verified here** on `v4.32.0`: `example (A : Sort u) (B : Sort v) (C : Sort w) : Sort (imax v (imax u w)) := A → B → C` is rejected with `Sort (imax u v w)` vs `Sort (imax v u w)`. This is very likely the same phenomenon our [`Fuzz/LevelFuzzer.lean`](KernelSoundness/Fuzz/LevelFuzzer.lean) independently counted as **162 incompleteness cases / 0 unsound** — a pairing worth confirming case-by-case (**gap**). |
 
 ### 1.3 Out-of-scope by upstream policy
@@ -60,7 +60,7 @@ redefines nothing but is still `prelude` + `import Init.Prelude`), so the policy
 covers them. It supersedes the Manifold-comment citation those files were
 written against, and it means the family is **not** going to be fixed.
 
-### 1.4 Hardening fixes (defensive, no known exploit published)
+### 1.4 Hardening fixes (defensive, no published derivation of `False`)
 
 Closed 2026-05-03/04 after an audit sweep; recorded for completeness. Coverage:
 **noted** for all.
@@ -78,8 +78,8 @@ Closed 2026-05-03/04 after an audit sweep; recorded for completeness. Coverage:
 | Finding | Nature | Coverage |
 | --- | --- | --- |
 | `Nat` accelerator family (`Nat.add`, `Nat.beq`, and the nine free names under `Init.Prelude`) | Kernel normalizer extensions keyed on *names only*, tried before delta-reduction; two disagreeing reduction rules give `False`. | **artifact** + **report** — [`Reports/2026-07-28-lean-kernel-nat-accelerator-unsoundness.md`](Reports/2026-07-28-lean-kernel-nat-accelerator-unsoundness.md). Out of scope upstream per §1.3. |
-| `StringLitFabrication` | Expanding a *string literal* makes the kernel assemble a term by name and hand it to a recursor rule **without type-checking it**, fabricating an inhabitant of `Empty`. Worst failure mode of the family. | **artifact**. Out of scope upstream per §1.3. |
-| Comparator `evade/` | [`leanprover/comparator`](https://github.com/leanprover/comparator) checks only that challenge and solution *agree* on kernel primitives, never that the primitives are genuine; a challenge that does not import `Init` gets no protection. Comparator's own suite contains the attack class (`tests/projects/primitive_issue`). | **artifact** — [`Comparator/`](KernelSoundness/Comparator/) |
+| `StringLitFabrication` | Expanding a *string literal* makes the kernel assemble a term by name and hand it to a recursor rule **without type-checking it**, fabricating an inhabitant of `Empty`. Most severe failure mode of the family. | **artifact**. Out of scope upstream per §1.3. |
+| Comparator `accepted/` | [`leanprover/comparator`](https://github.com/leanprover/comparator) checks only that challenge and solution *agree* on kernel primitives, never that the primitives are genuine; a challenge that does not import `Init` gets no protection. Comparator's own suite contains the class of construction (`tests/projects/primitive_issue`). | **artifact** — [`Comparator/`](KernelSoundness/Comparator/) |
 | Def-eq history dependence | `equiv_manager`'s union-find turns the non-transitive def-eq relation into its transitive closure, consulted whenever two expressions share a 32-bit `Expr.hash`. Acceptance of `X =?= Z` depends on unrelated earlier checks in the same declaration. **Not unsoundness** — every link is individually valid. | **artifact** + **report** — [`Reports/2026-07-29-defeq-history-dependence.md`](Reports/2026-07-29-defeq-history-dependence.md) |
 
 ### 1.6 Paradoxes (negative results about type theory, not Lean defects)
@@ -101,7 +101,7 @@ here.
 | `nanoda` | 2 proofs of `False` | [lean-kernel-arena PR #16](https://github.com/leanprover/lean-kernel-arena/pull/16), merged 2026-03-04 |
 | `lean4lean` | 1 proof of `False`, via level normalization | [lean-kernel-arena PR #17](https://github.com/leanprover/lean-kernel-arena/pull/17), merged 2026-03-04 |
 
-The `lean4lean` exploit being a *level normalization* bug is notable next to
+The `lean4lean` derivation being a *level normalization* bug is notable next to
 §1.2's #12747: the same area of the theory is an incompleteness in the official
 kernel and a soundness hole in an independent implementation.
 
@@ -174,7 +174,7 @@ soundness record (pre-2026) is not covered at all.
    162 incompleteness cases are instances of the `imax`-to-`max` normalization
    defect, or isolate any that are not.
 3. **Non-official Lean kernels.** Reproduce the `nanoda` and `lean4lean`
-   exploits (§2) against the vendored arena tests.
+   derivations (§2) against the vendored arena tests.
 4. **Pre-2026 history.** Neither system's earlier soundness record is
    represented. Lean 4's fixed kernel bugs and Rocq's yearly incidents are both
    in scope for the stated goal.

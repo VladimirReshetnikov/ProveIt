@@ -13,7 +13,7 @@ checker shipped with the toolchain.
 > run through [`leanprover/comparator`](https://github.com/leanprover/comparator)
 > against a `theorem boom : False := sorry` challenge; all four are rejected,
 > while an honest control is accepted. Comparator's *own regression suite*
-> already contains this attack (`tests/projects/primitive_issue`, asserting
+> already contains this construction (`tests/projects/primitive_issue`, asserting
 > `"exit_code": 1`), and it is essentially identical to `NatGcdFreeName.lean`.
 > Details and exact messages:
 > [`Shenanigans/KernelSoundness/Comparator/README.md`](../KernelSoundness/Comparator/README.md).
@@ -167,7 +167,7 @@ theorem zero_eq_one : Eq 0 1 :=
 `Lean/FreeNameSurvey.lean` enumerates the surface: under `Init.Prelude` **nine**
 kernel-special-cased names are free — `Nat.gcd`, `Nat.land`, `Nat.lor`,
 `Nat.xor`, `Nat.shiftLeft`, `Nat.shiftRight`, `Lean.reduceBool`,
-`Lean.reduceNat`, `eagerReduce`. The hazard is therefore not "a module that
+`Lean.reduceNat`, `eagerReduce`. The issue is therefore not "a module that
 redefines `Nat`" but "a module that defines a name the kernel has already
 claimed but the prelude has not yet reached".
 
@@ -176,7 +176,7 @@ the implicit `import Init` even when it lists explicit imports (verified), so
 this needs `prelude` to control the import prefix — but no core declaration is
 displaced.
 
-## The worst mechanism: the kernel fabricates an inhabitant of an empty type
+## The most severe mechanism: the kernel fabricates an inhabitant of an empty type
 
 `Shenanigans/KernelSoundness/Lean/StringLitFabrication.lean` is not a "two rules
 disagree" bug at all. `string_lit_to_constructor` (`src/kernel/inductive.cpp`)
@@ -267,7 +267,7 @@ uncaught exception: while replaying declaration 'rb_native':
 
 So it is an axiom-*tracking* hole rather than a kernel hole — closely related to
 [lean4#7463](https://github.com/leanprover/lean4/issues/7463) (`@[csimp]` can
-smuggle axioms past `#print axioms`), but reachable without any axiom at all.
+pass axioms by `#print axioms`), but reachable without any axiom at all.
 
 ## Verification
 
@@ -282,7 +282,7 @@ smuggle axioms past `#print axioms`), but reachable without any axiom at all.
 The control matters. `Shenanigans/KernelSoundness/Lean/NegativeControl.lean` uses
 `set_option debug.skipKernelTC true` to install a blatantly ill-typed
 `bogus : False` into the environment; that module also builds with exit `0` and
-also reports no axioms, but `leanchecker` rejects it. The exploit modules are not
+also reports no axioms, but `leanchecker` rejects it. The unsound modules are not
 rejected, so their acceptance is a real kernel judgement rather than a checker
 that is doing nothing.
 
@@ -309,7 +309,7 @@ name.
 
 The counter-argument, and the reason this was dismissed when Breitner raised it,
 is that a module which redefines `Nat` has replaced part of the system rather
-than exploited it: the kernel's arithmetic extension is a *specification* that
+than made use of it: the kernel's arithmetic extension is a *specification* that
 the ambient environment is expected to satisfy, in the same way that
 `kernel/quot.cpp` expects a particular `Eq`. The difference is that `quot.cpp`
 actually *checks* its expectation (`check_eq_type`) before arming the feature,
@@ -320,7 +320,7 @@ unchecked precondition counts as a soundness bug, not about the facts.
 
 Any of these closes it:
 
-1. Have the kernel record, at the point the `Nat` extension is armed, that
+1. Have the kernel record, at the point the `Nat` extension is installed, that
    `Nat`, `Nat.zero`, `Nat.succ`, `Nat.add`, … have their expected declarations
    (shapes and bodies), in the style of `check_eq_type` in `kernel/quot.cpp`,
    which already validates `Eq` before enabling quotients. This is the closest
@@ -344,7 +344,7 @@ Recorded so the search is not repeated:
   agrees: every rewrite in `mk_max` / `mk_imax` / `normalize` is a semantic
   identity, and `is_equivalent` only ever concludes equality from syntactically
   identical normal forms.
-* **Positivity and universe checks reject the classical attacks.** Direct and
+* **Positivity and universe checks reject the classical paradoxes.** Direct and
   non-strictly-positive recursion, non-strict positivity laundered through a
   plain `def`, a `structure`, an `@[irreducible] def`, an `opaque`, `Subtype`,
   `Sigma`, `Quot`, and a mutual block; plus `Type`-in-`Type` via an `inductive`
@@ -369,7 +369,7 @@ Recorded so the search is not repeated:
   merely a verbose spelling of `proj S 0 e`; typing and reduction stay
   consistent and I could not build a type confusion from it.
 
-## Hardening observations (not exploitable as found)
+## Hardening observations (not reachable as found)
 
 * `equiv_manager::is_equiv_core` (`kernel/equiv_manager.cpp:103`) and
   `type_checker::is_def_eq_core` (`kernel/type_checker.cpp:1101`) compare `Proj`

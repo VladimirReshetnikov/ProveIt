@@ -7,7 +7,7 @@ kernel does not re-sort/flatten the result.  `Level.isEquiv` and the kernel's
 `is_equivalent` therefore answer `false` for denotationally equal levels.
 
 This is an INCOMPLETENESS, not unsoundness: the kernel rejects statements that
-are true.  Nothing here proves `False`, and nothing here is dangerous — it is
+are true.  Nothing here proves `False`, and nothing here is harmful — it is
 recorded because a complete catalog of kernel defects includes the ones that
 cost expressiveness rather than soundness, and because an independent Lean
 kernel (`lean4lean`) had a *soundness* hole in this same area

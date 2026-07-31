@@ -6,7 +6,7 @@ rules (see [`../README.md`](../README.md)): a `False` here is a claim about a
 formal system or a program, never a mathematical fact.
 
 > **Warning.** Three files in this directory are proofs of `False` on a
-> vulnerable toolchain. They are *expected to be rejected* by a fixed one and
+> affected toolchain. They are *expected to be rejected* by a fixed one and
 > are not part of any build: they are absent from
 > [`_CoqProject`](../../_CoqProject) and nothing imports them.
 
@@ -91,7 +91,7 @@ different places, so a catalog of one says little about the other.
 * Tristan Stérin, [*In search of falsehood*](https://tristan.st/blog/in_search_of_falsehood)
   — the systematic AI-driven search that produced seven of the eight Coq proofs
   of `False` recorded here (found by Opus 4.6; several were escalated to full
-  `False` exploits by ccz181078/mxdys).
+  derivations of `False` by ccz181078/mxdys).
 * The [`rocq-prover/rocq`](https://github.com/rocq-prover/rocq/issues) tracker.
 * [`codyroux/name-the-biggest-number`](https://github.com/codyroux/name-the-biggest-number).
 * Stdlib [`Hurkens`](https://rocq-prover.org/doc/v8.9/stdlib/Coq.Logic.Hurkens.html).

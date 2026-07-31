@@ -1,4 +1,4 @@
-# Lean kernel soundness — adversarial artifacts
+# Lean kernel soundness — deliberately unsound artifacts
 
 > **Warning.** Every Lean module in `Lean/` in this directory is *deliberately
 > unsound*. Four of them contain a machine-checked proof of `False`. They exist
@@ -18,18 +18,18 @@ Full write-up:
 > FRO's trustworthy proof judge, against a `theorem boom : False := sorry`
 > challenge. **All four are rejected**; an honest control solution is accepted.
 >
-> However, `Comparator/evade/` **is accepted** (exit 0, `Your solution is okay!`,
-> `#print axioms boom` reporting nothing). It exploits the fact that comparator
+> However, `Comparator/accepted/` **is accepted** (exit 0, `Your solution is okay!`,
+> `#print axioms boom` reporting nothing). It relies on the fact that comparator
 > checks only that the challenge and solution *agree* on the kernel primitives,
 > never that those primitives are the real ones — so a challenge that does not
 > import `Init` gets no protection from that mechanism, a precondition comparator
 > documents but does not enforce. A normally-written challenge is unaffected.
 > See [`Comparator/README.md`](Comparator/README.md) for the runs and messages.
 >
-> Comparator's own regression suite already contains this attack:
+> Comparator's own regression suite already contains this construction:
 > `tests/projects/primitive_issue` is essentially identical to
 > `Lean/NatGcdFreeName.lean`, with `"exit_code": 1` asserted. So this is a known
-> attack class with a deployed countermeasure — which is also the reason
+> class of construction with a deployed safeguard — which is also the reason
 > comparator exists, since `#print axioms` plus `leanchecker` demonstrably are
 > **not** sufficient on their own.
 
@@ -48,7 +48,7 @@ it holds two disagreeing reduction rules for one term: delta-reduction
 the extension (fires once the arguments are literals, or a nullary constant).
 Chaining the two through `Eq.rec` gives `False`.
 
-## The worst case: the kernel fabricates an inhabitant of an empty type
+## The most severe failure mode: the kernel fabricates an inhabitant of an empty type
 
 `StringLitFabrication.lean` is qualitatively different from the arithmetic
 exhibits. There, two reduction rules disagreed about a definition I wrote. Here
@@ -86,7 +86,7 @@ Nat.gcd   Nat.land   Nat.lor   Nat.xor   Nat.shiftLeft   Nat.shiftRight
 Lean.reduceBool   Lean.reduceNat   eagerReduce
 ```
 
-The kernel has already armed hard-wired rules for all of them. So the hazard is
+The kernel has already installed hard-wired rules for all of them. So the issue is
 not "a module that redefines `Nat`" but "a module that defines a name the kernel
 has claimed but the prelude has not yet". `dontcare` — the kernel's placeholder
 constant in `is_def_eq_binding` — is free even with all of `Init` imported, but
@@ -97,12 +97,12 @@ it appears to be genuinely vacuous.
 | File | What it is | `leanchecker` |
 | --- | --- | --- |
 | `Lean/NatGcdFreeName.lean` | **Strongest.** Redefines nothing; imports `Init.Prelude` and defines the free name `Nat.gcd`. `theorem boom : False` about the *genuine* core `Nat`. `#print axioms` reports nothing. | accepts |
-| `Lean/StringLitFabrication.lean` | **Worst failure mode.** Nothing "disagrees" with anything: expanding a *string literal* makes the kernel assemble a term by name and feed it to a recursor rule **without type-checking it**, fabricating an inhabitant of `Empty` — a type with no constructors. Trigger is a bare `"a"`; no `Nat`, numerals, `OfNat`, `List` or `Char` needed. | accepts |
+| `Lean/StringLitFabrication.lean` | **Most severe failure mode.** Nothing "disagrees" with anything: expanding a *string literal* makes the kernel assemble a term by name and feed it to a recursor rule **without type-checking it**, fabricating an inhabitant of `Empty` — a type with no constructors. Trigger is a bare `"a"`; no `Nat`, numerals, `OfNat`, `List` or `Char` needed. | accepts |
 | `Lean/NatAddAccelerator.lean` | `theorem boom : False` via a module-local `Nat` and a non-standard `Nat.add`. | accepts |
 | `Lean/NatBeqAccelerator.lean` | The same, via `Nat.beq` (whose accelerator returns the constants named `Bool.true`/`Bool.false`). | accepts |
 | `Lean/ReduceBoolFreeName.lean` | Different mechanism: the kernel's *native* hook. Defining the free name `Lean.reduceBool` makes the kernel run compiled code and believe it — with **no** `Lean.ofReduceBool`, no `native_decide`, no `@[implemented_by]`. `lean` exits 0 and `#print axioms` reports nothing, so this is an axiom-*tracking* hole. | **rejects** (the interpreter cannot replay `probe`) |
 | `Lean/ProjIndexTruncation.lean` | **Not `prelude`; a live upstream defect.** `Expr.proj` indices are narrowed `size_t`→`unsigned` behind an `is_small()` guard, so index `2^32+k` becomes `k` and the kernel accepts projections out of range for the structure ([lean4#12746](https://github.com/leanprover/lean4/issues/12746), OPEN). Not a `False` on its own — truncation is consistent, and a collision needs 2^32 fields. Ships its own control and a `v4.32.0`/`v4.32.2`/`v4.33.0-rc1` matrix. | n/a (no `False`) |
-| `Lean/NegativeControl.lean` | Control. `set_option debug.skipKernelTC true` smuggles a blatantly ill-typed `bogus : False` into an `.olean`. It too builds with exit 0 and reports no axioms. | **rejects** — which is what makes acceptance of the others meaningful |
+| `Lean/NegativeControl.lean` | Control. `set_option debug.skipKernelTC true` places a blatantly ill-typed `bogus : False` into an `.olean`. It too builds with exit 0 and reports no axioms. | **rejects** — which is what makes acceptance of the others meaningful |
 | `Lean/FreeNameSurvey.lean` | `#check`s every kernel-special-cased name under `Init.Prelude` to show which are free. | n/a |
 | `Lean/NativeDecideContrast.lean` | For contrast: the *documented* `native_decide` / `@[implemented_by]` boundary. Unlike the above, it does show up in `#print axioms`. | n/a |
 

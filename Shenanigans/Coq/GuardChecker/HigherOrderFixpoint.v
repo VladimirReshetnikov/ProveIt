@@ -1,7 +1,7 @@
 (** * rocq#21683 -- guard checker: higher-order recursive call through a fixpoint
 
     THIS FILE IS EXPECTED TO BE REJECTED.  It is a regression witness, not a
-    build target.  On a vulnerable Coq it compiles and yields an axiom-free
+    build target.  On an affected Coq it compiles and yields an axiom-free
     [False]; on a fixed one the guard checker rejects [russell].
 
     Category (per ../../README.md): IMPLEMENTATION DEFECT (fixed).
@@ -33,7 +33,7 @@
         Recursive call to russell has principal argument equal to
         "seed" instead of "m".
 
-    Vulnerable versions per the upstream report: the issue was filed against
+    Affected versions per the upstream report: the issue was filed against
     then-current Rocq and fixed within days; this repository has only 9.2, so
     the acceptance side of the matrix is cited, not reproduced.
 *)
@@ -57,5 +57,5 @@ Definition delta (x : russell 1) : False := x x.
 Definition omega : False := delta delta.
 
 Print Assumptions omega.
-(* On a vulnerable toolchain: "Closed under the global context" -- an
+(* On an affected toolchain: "Closed under the global context" -- an
    axiom-free proof of False. *)

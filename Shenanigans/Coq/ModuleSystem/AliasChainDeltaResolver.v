@@ -1,6 +1,6 @@
 (** * rocq#21685 -- module alias chains corrupt the delta-resolver
 
-    THIS FILE IS EXPECTED TO BE REJECTED (or, on a vulnerable toolchain, to
+    THIS FILE IS EXPECTED TO BE REJECTED (or, on an affected toolchain, to
     prove [False]).  Regression witness, not a build target.
 
     Category (per ../../README.md): IMPLEMENTATION DEFECT (fixed).
@@ -15,13 +15,13 @@
     [B'.F M_true] and [B'.F M_false] -- then have [Alias.x] identified, so
     [true = false] is provable by [reflexivity] while [vm_compute] still
     distinguishes the two sides.  The disagreement between the two evaluators
-    is the whole exploit.
+    is the whole construction.
 
     Upstream: <https://github.com/rocq-prover/rocq/issues/21685>
       filed 2026-02-28, closed.  Found autonomously by Opus 4.6; one of the
       seven proofs of [False] in <https://tristan.st/blog/in_search_of_falsehood>.
 
-    Verified with [coqc] on The Rocq Prover 9.2 (OCaml 4.14.2): the exploit
+    Verified with [coqc] on The Rocq Prover 9.2 (OCaml 4.14.2): the construction
     FAILS -- exit code 1, with
 
       Error: Unable to unify "R'.Alias.x" with "R.Alias.x".
@@ -45,7 +45,7 @@ Module B' := A'.B.
 Module R  := B'.F M_true.
 Module R' := B'.F M_false.
 
-(** On a vulnerable toolchain the [assert] succeeds by [reflexivity] -- the
+(** On an affected toolchain the [assert] succeeds by [reflexivity] -- the
     delta-resolver has identified [R.Alias.x] with [R'.Alias.x] -- and
     [vm_compute] then reduces them to [true] and [false], closing [False]. *)
 Lemma boom : False.
@@ -55,4 +55,4 @@ Proof.
 Qed.
 
 Print Assumptions boom.
-(* On a vulnerable toolchain: "Closed under the global context". *)
+(* On an affected toolchain: "Closed under the global context". *)
