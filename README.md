@@ -27,7 +27,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
 | [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`. |
-| [`Shenanigans/`](Shenanigans/) | **Not ordinary mathematics.** Paradoxes of proof systems (Girard/Hurkens, Coquand-Paulin) and loopholes in the kernels implementing them. See [the section below](#shenanigans-paradoxes-and-kernel-loopholes). |
+| [`Shenanigans/`](Shenanigans/) | **Not ordinary mathematics.** A catalog of every known way to get `theorem Paradox : False` accepted in Lean 4 and Rocq/Coq, grouped by what the route costs: paradoxes of type theory, sanctioned escape hatches, implementation defects, and audits that found nothing. See [the section below](#shenanigans-paradoxes-and-kernel-loopholes). |
 | [`Tools/`](Tools/) | Development tooling. **Leant** ([`Tools/Leant/`](Tools/Leant/README.md)) is a GHCi-style interactive REPL for Lean 4: expression evaluation with persistent sessions, an interactive tactic-by-tactic prove mode, `:browse`/`:doc`/`:search`, verified term synthesis (`:synth`, via the in-process [Djex](lib/Djex) engine), tab completion, and session transcripts. The Haskell implementation is primary; a [Python sibling](Tools/LeantPy/README.md) has feature parity. Also Rocq 9.2 compatibility shims. |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
@@ -255,30 +255,50 @@ derived there is a statement about a formal system or a program — never a
 mathematical fact, and never grounds for doubting anything proved elsewhere in
 this repository.
 
-Two kinds of work live there.
+It is organized as a catalog of the ways one can get `theorem Paradox : False`
+accepted in Lean 4 and in Rocq/Coq, grouped by what each route costs — which is
+exactly what the assumption audit reports.
 
-**Paradoxes of proof systems.** Girard's paradox, Hurkens' simplification of it,
-and the Coquand-Paulin counterexample derive `False` from assumptions a type
-theory might plausibly have made but does not. Each is stated as an
-*implication* that hypothesizes the ingredient Lean withholds — an impredicative
-closure of `Type u` over itself, a universe decoding with a section, a
-non-strictly-positive inductive — and shows that granting it is fatal. These are
-negative results about type theory: proofs that a rule *cannot* be added. They
-are axiom-free and their hypotheses are unsatisfiable in Lean, so they say
-nothing against Lean's consistency. They locate its essential restrictions.
+**[`Paradoxes/`](Shenanigans/Paradoxes/) — assume what the theory withholds.**
+Girard/Hurkens, Coquand-Paulin, Cantor, and the subsingleton-elimination
+barrier, each stated as an *implication* that hypothesizes the ingredient the
+system denies and shows that granting it is fatal. These are negative results
+about type theory: proofs that a rule *cannot* be added. They are axiom-free and
+their hypotheses are unsatisfiable, so they say nothing against either system's
+consistency; they locate its essential restrictions. `Blockers.lean` completes
+the picture by machine-checking the exact judgment Lean refuses in each case.
 
-**Loopholes in kernels implementing those systems.** Probes of the Lean 4
-kernel: accelerated `Nat` and `String` primitives, name and string identity,
-definitional-equality caching, and the checked `addDecl` path. Some are genuine
-soundness defects yielding an axiom-free `False`. Those are bugs in an
-*implementation*, not in the type theory; they are reported upstream and
-recorded with the exact toolchain versions affected, since a defect present in
-one release is typically absent in the next.
+**[`EscapeHatches/`](Shenanigans/EscapeHatches/) — use a sanctioned route.**
+`sorry`, `axiom`, `Admitted`, `native_decide` with a lying `@[implemented_by]`,
+Rocq's `Unset Guard/Positivity/Universe Checking`, rewrite rules,
+`-impredicative-set`, and unchecked `addDecl`. Every one is a documented feature
+working as designed, and every one is named by `#print axioms` or
+`Print Assumptions` — except the last two files, which produce honest, closed,
+audit-clean theorems whose *statements* are lies.
+
+**[`KernelDefects/`](Shenanigans/KernelDefects/) — exploit an implementation
+bug.** The only category that is anybody's fault: a closed `False` whose audit
+reports nothing at all. Lean's name-keyed `Nat`/`String`/`reduceBool` accelerator
+family and `Expr.proj` index truncation; four fixed Rocq guard-checker and
+module-system defects kept as regression witnesses. These are bugs in an
+*implementation*, not in a type theory; each is pinned to exact toolchain
+versions and ships with a control.
+
+**[`Audits/`](Shenanigans/Audits/) — look, and find nothing.** Level,
+definitional-equality and compiler fuzzers, the `Acc` and `Expr.proj` metatheory
+probes, and the string- and name-identity study. The negative results are the
+point.
+
+[`Shenanigans/CATALOG.md`](Shenanigans/CATALOG.md) is the completeness ledger:
+every known route in both systems, whether or not this directory represents it.
 
 Nothing in `Shenanigans/` is imported by the mathematical developments, and
-nothing outside it depends on any of it. Its ground rules — no `sorry`, no new
-axioms, mandatory `#print axioms` audits, explicit toolchain pins and version
-matrices, and a control for every claimed defect — are documented in
+nothing outside it depends on any of it, with one deliberate exception — the
+`TypeTheoryParadoxes` library is in [`ProveIt.lean`](ProveIt.lean), because it
+asserts nothing. The ground rules — machine-checked audits on every claim,
+explicit toolchain pins and version matrices, a control for every claimed
+defect, and no `sorry` or new axiom outside `EscapeHatches/`, which exists to
+exhibit them — are documented in
 [`Shenanigans/README.md`](Shenanigans/README.md).
 
 ## Vendored components

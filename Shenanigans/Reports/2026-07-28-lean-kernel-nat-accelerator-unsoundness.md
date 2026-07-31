@@ -16,7 +16,7 @@ checker shipped with the toolchain.
 > already contains this construction (`tests/projects/primitive_issue`, asserting
 > `"exit_code": 1`), and it is essentially identical to `NatGcdFreeName.lean`.
 > Details and exact messages:
-> [`Shenanigans/KernelSoundness/Comparator/README.md`](../KernelSoundness/Comparator/README.md).
+> [`Shenanigans/KernelDefects/Lean/Comparator/README.md`](../KernelDefects/Lean/Comparator/README.md).
 >
 > Two gates are needed and neither suffices alone: with
 > `set_option debug.skipKernelTC true` a bypassed declaration still reports
@@ -40,7 +40,7 @@ The cause is that the kernel's built-in `Nat` normalizer extension is keyed on
 *names only* and is never validated against the declaration it fires on, while a
 `prelude` module may legitimately own those names.
 
-Artifacts: [`Shenanigans/KernelSoundness/`](../KernelSoundness/README.md).
+Artifacts: [`Shenanigans/KernelDefects/Lean/`](../KernelDefects/Lean/README.md).
 
 ## The mechanism
 
@@ -93,7 +93,7 @@ is how `Init/Prelude.lean` itself is written. Nothing warns about it.
 
 ## The proof
 
-Complete module (`Shenanigans/KernelSoundness/Lean/NatAddAccelerator.lean`, elided):
+Complete module (`Shenanigans/KernelDefects/Lean/Accelerators/NatAddAccelerator.lean`, elided):
 
 ```lean
 prelude
@@ -139,14 +139,14 @@ to the literal `1` by the `nargs == 1` branch of `reduce_nat`, and `Nat.zero` is
 accepted directly by `is_nat_lit_ext`. `set_option genCtorIdx false` is only
 bootstrap hygiene, copied from `Init/Prelude.lean`'s own `Nat`.
 
-`Shenanigans/KernelSoundness/Lean/NatBeqAccelerator.lean` is a second, independent
+`Shenanigans/KernelDefects/Lean/Accelerators/NatBeqAccelerator.lean` is a second, independent
 instance through `Nat.beq`, whose accelerator (`reduce_bin_nat_pred`) returns the
 constants named `Bool.true` / `Bool.false` — also by name.
 
 ## Strengthening: nothing has to be redefined
 
 The objection above ("you replaced part of the system") turns out not to be
-decisive. `Shenanigans/KernelSoundness/Lean/NatGcdFreeName.lean` imports
+decisive. `Shenanigans/KernelDefects/Lean/Accelerators/NatGcdFreeName.lean` imports
 `Init.Prelude` and uses the **genuine** core `Nat`, `Nat.add`, `Eq`, `rfl`,
 `True`, `False`, `Nat.rec` and numeric literals, entirely unmodified. It only
 *defines* `Nat.gcd`, which `Init.Prelude` does not claim — core defines it far
@@ -178,7 +178,7 @@ displaced.
 
 ## The most severe mechanism: the kernel fabricates an inhabitant of an empty type
 
-`Shenanigans/KernelSoundness/Lean/StringLitFabrication.lean` is not a "two rules
+`Shenanigans/KernelDefects/Lean/Accelerators/StringLitFabrication.lean` is not a "two rules
 disagree" bug at all. `string_lit_to_constructor` (`src/kernel/inductive.cpp`)
 assembles a term **entirely out of hard-coded names**:
 
@@ -244,7 +244,7 @@ The same shape applies to `nat_lit_to_constructor`, which builds
 
 ## A different mechanism: the native hook, and an axiom-tracking hole
 
-`Shenanigans/KernelSoundness/Lean/ReduceBoolFreeName.lean` defines the free name
+`Shenanigans/KernelDefects/Lean/Accelerators/ReduceBoolFreeName.lean` defines the free name
 `Lean.reduceBool`. The kernel's `reduce_native` matches it by name, runs the
 *compiled code* of a nullary constant argument, and believes the result — while
 delta-reduction on a free-variable argument gives the declared body. Same
@@ -279,7 +279,7 @@ pass axioms by `#print axioms`), but reachable without any axiom at all.
 | `leanchecker --fresh NatAddAccelerator` | exit `0` |
 | `leanchecker NegativeControl` (control) | `leanchecker found a problem`, exit `1` |
 
-The control matters. `Shenanigans/KernelSoundness/Lean/NegativeControl.lean` uses
+The control matters. `Shenanigans/KernelDefects/Lean/Controls/NegativeControl.lean` uses
 `set_option debug.skipKernelTC true` to install a blatantly ill-typed
 `bogus : False` into the environment; that module also builds with exit `0` and
 also reports no axioms, but `leanchecker` rejects it. The unsound modules are not
@@ -391,7 +391,7 @@ Recorded so the search is not repeated:
 
 ## For contrast: the already-documented loophole
 
-`Shenanigans/KernelSoundness/Lean/NativeDecideContrast.lean` derives `False` from
+`Shenanigans/EscapeHatches/Lean/NativeDecide.lean` derives `False` from
 `@[implemented_by]` plus `native_decide`. This is the *known* trust boundary —
 `Lean.reduceBool`'s docstring warns about it — and, unlike the `Nat` accelerator
 hole, it is visible: on `4.32.0` `#print axioms` reports a generated
