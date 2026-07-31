@@ -167,9 +167,12 @@ data ReplState = ReplState
   }
 
 -- | The goal text and the verified candidate terms of the last :synth.
+-- When the goal was wrapped over prove-mode hypotheses, 'sbArgs' holds
+-- the hypothesis names a selected candidate must be applied to.
 data SynthBatch = SynthBatch
   { sbGoal :: String
   , sbTerms :: [String]
+  , sbArgs :: [String]
   }
 
 -- | Interactive prove mode: the stack holds (proofState, goals, scriptEntry)
@@ -1221,20 +1224,66 @@ ensureSynthEnv st = do
         replaySynth env rest
 
 -- | The goal target (the part after \8866) of a pretty-printed goal, plus
--- whether the goal carried hypotheses that :synth will ignore.
-goalTarget :: String -> Maybe (String, Bool)
+-- the context lines before it.
+goalTarget :: String -> Maybe (String, [String])
 goalTarget goalText = case rest of
   [] -> Nothing
   (turnstile : more) ->
     let first' = trim (drop 1 (dropWhile isSpace turnstile))
         target = trim (intercalate "\n" (first' : more))
-        hadContext = any
-          (\l -> not (null (trim l)) && not ("case " `isPrefixOf` trim l))
-          before
-    in if null target then Nothing else Just (target, hadContext)
+    in if null target then Nothing else Just (target, before)
  where
   (before, rest) =
     break (\l -> "\8866" `isPrefixOf` dropWhile isSpace l) (lines goalText)
+
+-- | Wrap a pretty-printed goal's accessible hypotheses around its
+-- target as explicit binders (proposal A of SYNTHESIS_PROPOSAL.md \167 7):
+-- @h : A@ and @n m : T@ context lines become @\8704 (h : A) (n m : T),
+-- target@, so the ordinary pipeline synthesizes with the hypotheses as
+-- premises and a selected candidate is applied to the hypothesis
+-- names.  Returns (wrapped goal, argument names, skipped inaccessible
+-- names).
+wrapGoal :: String -> Maybe (String, [String], [String])
+wrapGoal goalText = do
+  (target, before) <- goalTarget goalText
+  let hyps = parseHyps before
+      usable = [(names, ty) | (names, ty) <- hyps, all accessible names]
+      skipped =
+        [n | (names, _) <- hyps, n <- names, not (accessible n)]
+      args = concatMap fst usable
+      wrapped
+        | null usable = target
+        | otherwise = "\8704" ++ concat
+            [ " (" ++ unwords names ++ " : " ++ ty ++ ")"
+            | (names, ty) <- usable
+            ]
+            ++ ", " ++ target
+  pure (wrapped, args, skipped)
+ where
+  accessible = notElem '\10013'  -- the \10013 marker of inaccessible names
+
+-- | Parse pretty-printed context lines into hypothesis groups
+-- (names, type).  A hypothesis starts on an unindented line holding the
+-- first @ : @ separator; indented lines continue the previous type.
+parseHyps :: [String] -> [([String], String)]
+parseHyps = go . filter (not . null . trim)
+ where
+  go [] = []
+  go (l : ls)
+    | "case " `isPrefixOf` trim l = go ls
+    | take 1 l == " " = go ls  -- stray continuation
+    | (names@(_ : _), ty0) <- splitHyp l =
+        let (conts, rest) = span (\x -> take 1 x == " ") ls
+            ty = unwords (map trim (ty0 : conts))
+        in (names, ty) : go rest
+    | otherwise = go ls
+  splitHyp l = case findSep "" l of
+    Just (namePart, ty) -> (words namePart, ty)
+    Nothing -> ([], "")
+  findSep pre s = case s of
+    (' ' : ':' : ' ' : rest) -> Just (reverse pre, rest)
+    (c : rest) -> findSep (c : pre) rest
+    [] -> Nothing
 
 synthMaxShown, synthMaxTried :: Int
 synthMaxShown = 5
@@ -1264,14 +1313,14 @@ cmdSynth st rawArg = do
     else do
       goalOr <-
         if not (null arg)
-          then pure (Right (substIt (rsItCounter state) arg, False))
+          then pure (Right (substIt (rsItCounter state) arg, [], []))
           else case rsProve state of
             Just pv | (_, goal : _, _) : _ <- pvStack pv ->
-              pure $ case goalTarget goal of
+              pure $ case wrapGoal goal of
                 Just t -> Right t
                 Nothing -> Left "cannot extract the goal target"
             _ -> case rsLastSorry state of
-              Just (_, goal) -> pure $ case goalTarget goal of
+              Just (_, goal) -> pure $ case wrapGoal goal of
                 Just t -> Right t
                 Nothing -> Left "cannot extract the goal target"
               Nothing -> pure (Left
@@ -1279,18 +1328,22 @@ cmdSynth st rawArg = do
                  ++ "after a `sorry`, :synth N to pick a candidate)"))
       case goalOr of
         Left err -> emitLn st =<< cRed st err
-        Right (goal, hadContext) -> do
-          when hadContext $ emitLn st =<< cDim st
-            "(hypotheses are ignored \8212 synthesizing the goal target only)"
-          synthRun st goal
+        Right (goal, args, skipped) -> do
+          unless (null skipped) $ emitLn st =<< cDim st
+            ("(inaccessible hypotheses are not visible to :synth: "
+             ++ unwords skipped ++ ")")
+          unless (null args) $ emitLn st =<< cDim st
+            ("(synthesizing with hypotheses " ++ unwords args
+             ++ " as premises)")
+          synthRun st args goal
 
-synthRun :: St -> String -> IO ()
-synthRun st goal = do
+synthRun :: St -> [String] -> String -> IO ()
+synthRun st args goal = do
   outcome <- translateGoal st goal
   case outcome of
-    Right parsed -> synthGo st Nothing goal parsed
+    Right parsed -> synthGo st args Nothing goal parsed
     Left errors
-      | any stuckUniverse errors -> synthUniverseRetry st goal errors
+      | any stuckUniverse errors -> synthUniverseRetry st args goal errors
       | otherwise -> reportTranslationErrors st errors
  where
   stuckUniverse = ("stuck at solving universe constraint" `isInfixOf`)
@@ -1338,8 +1391,8 @@ reportTranslationErrors st errors = do
 -- connective), that variable's marker universe @u_synth_v@ appears in
 -- the new errors; such variables are dropped and the retry narrows
 -- until it translates or no candidates remain.
-synthUniverseRetry :: St -> String -> [String] -> IO ()
-synthUniverseRetry st goal originalErrors = do
+synthUniverseRetry :: St -> [String] -> String -> [String] -> IO ()
+synthUniverseRetry st args goal originalErrors = do
   let vars = autoShapedTokens goal
   unknowns <- if null vars then pure [] else do
     envOr <- ensureSynthEnv st
@@ -1362,7 +1415,7 @@ synthUniverseRetry st goal originalErrors = do
       ++ " : Type \8212 Sort-polymorphic elaboration was stuck)")
     outcome <- translateGoal st wrapped
     case outcome of
-      Right parsed -> synthGo st (Just wrapVars) wrapped parsed
+      Right parsed -> synthGo st args (Just wrapVars) wrapped parsed
       Left retryErrors -> do
         let misplaced =
               [ v | v <- wrapVars
@@ -1445,15 +1498,15 @@ unknownCheckProgram vars = unlines
   , "  logInfo (\"(unknown \" ++ String.intercalate \" \" unknown ++ \")\")"
   ]
 
-synthGo :: St -> Maybe [String] -> String -> ParsedGoal -> IO ()
-synthGo st retriedVars goal parsed = do
+synthGo :: St -> [String] -> Maybe [String] -> String -> ParsedGoal -> IO ()
+synthGo st args retriedVars goal parsed = do
   debugFrag <- lookupEnv "LEANT_SYNTH_DEBUG"
   when (isJust debugFrag) $
     emitLn st =<< cDim st ("debug fragment: " ++ show (pgFrag parsed))
-  synthGo' st retriedVars goal parsed
+  synthGo' st args retriedVars goal parsed
 
-synthGo' :: St -> Maybe [String] -> String -> ParsedGoal -> IO ()
-synthGo' st retriedVars goal parsed = case fragRefusal (pgFrag parsed) of
+synthGo' :: St -> [String] -> Maybe [String] -> String -> ParsedGoal -> IO ()
+synthGo' st args retriedVars goal parsed = case fragRefusal (pgFrag parsed) of
   Just reason -> emitLn st =<< cRed st ("out of fragment: " ++ reason)
   Nothing -> do
     limit <- synthTimeoutSeconds
@@ -1498,11 +1551,11 @@ synthGo' st retriedVars goal parsed = case fragRefusal (pgFrag parsed) of
           emitLn st counts
           emitLn st hint
           modifyIORef' st (\s -> s
-            { rsSynthLast = Just (SynthBatch goal shown) })
+            { rsSynthLast = Just (SynthBatch goal shown args) })
       forM_ notes $ \note -> emitLn st =<< cDim st ("note: " ++ note)
     Right (SynthRefuted sound)
       | sound -> do
-          classical <- synthClassical st goal parsed
+          classical <- synthClassical st args goal parsed
           unless classical $ do
             message <- cYellow st
               ("provably uninhabited \8212 no closed term of this "
@@ -1556,8 +1609,8 @@ runEngineBounded limit outcome
 -- fallback runs for every sound refutation rather than trusting the
 -- serializer's sort classification of Sort-polymorphic goals.
 -- Returns whether verified classical candidates were displayed.
-synthClassical :: St -> String -> ParsedGoal -> IO Bool
-synthClassical st goal parsed = case glivenkoSplit (pgFrag parsed) of
+synthClassical :: St -> [String] -> String -> ParsedGoal -> IO Bool
+synthClassical st args goal parsed = case glivenkoSplit (pgFrag parsed) of
   Nothing -> pure False
   Just (prefix, body) -> do
     limit <- synthTimeoutSeconds
@@ -1590,7 +1643,7 @@ synthClassical st goal parsed = case glivenkoSplit (pgFrag parsed) of
               then ":synth N closes the goal with `exact` candidate N"
               else ":synth N binds candidate N as `it`")
             modifyIORef' st (\s -> s
-              { rsSynthLast = Just (SynthBatch goal shown) })
+              { rsSynthLast = Just (SynthBatch goal shown args) })
             pure True
       _ -> pure False
 
@@ -1649,9 +1702,14 @@ synthSelect st n = do
             ++ " is out of range (1.." ++ show (length (sbTerms batch)) ++ ")")
       | otherwise -> do
           let term = sbTerms batch !! (n - 1)
+              -- a wrapped-goal candidate proves ∀ (h : T)..., target;
+              -- applying it to the hypothesis names closes the goal
+              applied = case sbArgs batch of
+                [] -> term
+                args -> "(" ++ term ++ ") " ++ unwords args
           case rsProve state of
             Just _ -> do
-              advanced <- applyTactic st False ("exact (" ++ term ++ ")")
+              advanced <- applyTactic st False ("exact (" ++ applied ++ ")")
               when advanced $ do
                 goals <- currentGoals st
                 formatGoals st goals

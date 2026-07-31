@@ -18,6 +18,24 @@ finish with :qed [NAME], inspect with :script
 ⊢> :abort
 left prove mode; the script was:
   exact (fun _ a => match a with | .isFalse b => .isTrue b | .isTrue c => .isFalse (fun d => d c))
+λ> :prove ∀ p q : Prop, (p → q) → p → q ∧ p
+entering prove mode — type tactics; :help for commands
+⊢ ∀ (p q : Prop), (p → q) → p → q ∧ p
+⊢> intro p q h hp
+p q : Prop
+h : p → q
+hp : p
+⊢ q ∧ p
+⊢> :synth
+(synthesizing with hypotheses p q h hp as premises)
+  1  fun _ _ a b => ⟨a b, b⟩
+(1 verified candidate)
+:synth N closes the goal with `exact` candidate N
+⊢> :synth 1
+All goals accomplished 🎉
+finish with :qed [NAME], inspect with :script
+⊢> :qed mp_and
+saved: theorem mp_and : ∀ p q : Prop, (p → q) → p → q ∧ p
 λ> :synth (∀ a b : Type, Option a → Option b → Option (a × b))
   1  fun _ _ _ _ => .none
   2  fun _ _ a b => match a with | .none => (.none) | .some c => (match b with | .none => (.none) | .some d => .some ⟨c, d⟩)
