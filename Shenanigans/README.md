@@ -13,15 +13,26 @@ collects two related kinds of work:
   negative result about type theory — a proof that some rule *cannot* be added —
   not a defect in Lean.
 * **Loopholes in kernels implementing those systems.** Probes of the Lean 4
-  kernel: its accelerated `Nat` and `String` primitives, name and string
-  identity, definitional-equality caching, and the checked `addDecl` path. Some
-  of these are genuine soundness defects that produce an axiom-free `False`.
-  Where that happens, the defect is a bug in an *implementation*, is reported
-  upstream, and is recorded here with the exact toolchain versions affected.
+  kernel — its accelerated `Nat` and `String` primitives, name and string
+  identity, definitional-equality caching, the checked `addDecl` path — and of
+  Coq's guard checker and module system. Some of these are genuine soundness
+  defects that produce an axiom-free `False`. Where that happens, the defect is
+  a bug in an *implementation*, is reported upstream, and is recorded here with
+  the exact toolchain versions affected.
 
 Read a `False` in this directory as a claim about a formal system or a program,
 never as a mathematical fact. Do not import any of it into ordinary
 developments.
+
+For the perspective this second category should be read in, see Leonardo de
+Moura's [*Who Watches the Provers?*](https://leodemoura.github.io/blog/2026-3-16-who-watches-the-provers/).
+Its argument is that a kernel bug is not a crisis but the expected cost of a
+kernel that is fast enough to be usable, and that the defence is having several
+independent implementations disagree: a term one kernel accepts and another
+rejects is the design working. That is the standard applied here — every defect
+is pinned to exact versions, given a control, and checked against an
+independent judge where one exists. [`CATALOG.md`](CATALOG.md) records which
+known defects this directory does and does not yet represent.
 
 ## Contents
 
