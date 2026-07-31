@@ -2,8 +2,9 @@
 
 *Status: phases 0–2 implemented (`:synth` in `Tools/Leant`, engine =
 in-process Djex Djinn/LJT; see [README.md](README.md#synth--automatic-term-synthesis-haskell-only)).
-Phases 3–4 remain future work; §7 proposes the next increments in
-value-for-effort order. Companion to [PROPOSALS.md](PROPOSALS.md).*
+Phase 4 remains future work; §7’s six increments are all implemented,
+and item F delivers the phase-3 engine without its Mathlib-scale
+inventory. Companion to [PROPOSALS.md](PROPOSALS.md).*
 
 Djex — vendored read-only in this repository as the
 [`lib/Djex`](../../lib/Djex) submodule (pinned at `6a9fc22`, the state
@@ -414,7 +415,7 @@ expected value-for-effort (effort scale as in
 several days). Items A–D need no new engine capability — they are
 translator, driver, and renderer work around the existing boundary.
 
-### A. Prove-mode hypotheses as premises — M, highest value
+### A. Prove-mode hypotheses as premises — M, highest value (implemented)
 
 Today `:synth` in prove mode prints "(hypotheses are ignored —
 synthesizing the goal target only)" and works on the bare target. That
@@ -435,7 +436,7 @@ Inaccessible hypotheses (shadowed, `✝`-marked) are skipped with a
 note. This also upgrades the `sorry`-hook flow for free, since it
 shares `goalTarget`.
 
-### B. Classical fallback via Glivenko — S/M, pedagogy flagship
+### B. Classical fallback via Glivenko — S/M, pedagogy flagship (implemented)
 
 §2.1 promised: "`((A → B) → A) → A` has no constructive inhabitant,
 and here is the closest classical variant". Phase 1 delivered the
@@ -458,7 +459,7 @@ propositional fragment without ¬¬-shifts; an unverified claim is worse
 than none). Effort is small because the retry reuses the whole
 pipeline; only the wrapper and the verdict text are new.
 
-### C. Golden transcript tests for `:synth` — S, overdue
+### C. Golden transcript tests for `:synth` — S, overdue (implemented)
 
 The pipeline compiles Lean metaprograms out of Haskell string
 literals, parses S-expressions, drives a foreign proof engine, and
@@ -472,7 +473,7 @@ backend-startup banner filtered). Pairs with PROPOSALS.md item 5
 (`--script` mode); until that lands, plain stdin piping — which the
 transcripts already use — suffices.
 
-### D. Constructors of recursive inductives as premises — M
+### D. Constructors of recursive inductives as premises — M (implemented)
 
 Phase 2 leaves `Nat`, `List`, and friends as opaque atoms, so
 `:synth (∀ a, a → List a)` answers "no term found within bounds".
@@ -488,7 +489,7 @@ verdicts are already downgraded. Only constructors of inductives that
 actually occur in the goal are declared, keeping the per-query
 environment small.
 
-### E. Rendering polish: anonymous constructors first — S, cosmetic
+### E. Rendering polish: anonymous constructors first — S, cosmetic (implemented)
 
 Candidates over single-constructor structures render as
 `Pair.mk a b` and `match p with | Pair.mk b _ => b`; Lean idiom is
@@ -499,7 +500,7 @@ preference order), and short-dot constructor names (`.some x`) where
 the expected type is known. Pure renderer work; every variant is
 still backend-verified.
 
-### F. Exference behind the same boundary — L, phase-3 vanguard
+### F. Exference behind the same boundary — L, phase-3 vanguard (implemented)
 
 The deliberate on-ramp to phase 3 that avoids its hard part
 (Mathlib-scale inventories and ratings). Wire Djex's Exference
