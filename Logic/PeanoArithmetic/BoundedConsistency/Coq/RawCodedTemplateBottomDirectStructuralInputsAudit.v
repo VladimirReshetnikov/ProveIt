@@ -1,0 +1,19 @@
+(** Assumption audit for the canonical bottom-valued direct translation. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplateBottomDirectStructuralInputs.
+
+Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
+
+Check rawBottomRestrictedPATruthDirectSelector.
+Check rawBottomTemplateZeroNumeralParameters.
+Check rawBottomTemplateDirectStructuralInputs.
+Check rawBottomDirectStructuralTemplateTranslation.
+Check rawBottomDirectStructuralTemplatePAAgreement.
+Check raw_bottomTemplateDirectStructuralInputs_exists.
+Check raw_codedTemplatePAAgreement_exists.
+
+Print Assumptions rawBottomRestrictedPATruthDirectSelector.
+Print Assumptions rawBottomDirectStructuralTemplatePAAgreement.
+Print Assumptions raw_bottomTemplateDirectStructuralInputs_exists.
+Print Assumptions raw_codedTemplatePAAgreement_exists.

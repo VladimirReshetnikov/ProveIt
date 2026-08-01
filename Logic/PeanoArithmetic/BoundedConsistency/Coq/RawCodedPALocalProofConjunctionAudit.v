@@ -10,6 +10,8 @@ Check raw_codedPALocalProofOf_andE12.
 Check raw_codedPALocalProofOf_andE21.
 Check raw_codedPALocalProofOf_andE22.
 Check raw_codedPALocalProofOf_andE121.
+Check RawCodedPALocalProofAnd7FieldsAt.
+Check raw_codedPALocalProofOf_and7E.
 
 Print Assumptions raw_codedPALocalProofOf_andE.
 Print Assumptions raw_codedPALocalProofOf_andE1.
@@ -19,3 +21,4 @@ Print Assumptions raw_codedPALocalProofOf_andE12.
 Print Assumptions raw_codedPALocalProofOf_andE21.
 Print Assumptions raw_codedPALocalProofOf_andE22.
 Print Assumptions raw_codedPALocalProofOf_andE121.
+Print Assumptions raw_codedPALocalProofOf_and7E.

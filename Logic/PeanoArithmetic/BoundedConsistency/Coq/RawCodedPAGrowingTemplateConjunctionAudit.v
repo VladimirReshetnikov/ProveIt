@@ -1,0 +1,16 @@
+(** Assumption audit for dependency-ordered growing conjunction. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPAGrowingTemplateConjunction.
+
+Import PABoundedRawCodedPAGrowingTemplateConjunction.
+
+Check RawCodedPAGrowingTemplateLocalProofPairAtEmpty.
+Check raw_codedPAGrowingTemplateLocalProofAt_pair_at_empty.
+Check raw_codedPALocalProofOf_and7I.
+Check raw_codedPAGrowingTemplateLocalProofAt_and7_of_six_local.
+
+Print Assumptions raw_codedPAGrowingTemplateLocalProofAt_pair_at_empty.
+Print Assumptions raw_codedPALocalProofOf_and7I.
+Print Assumptions
+  raw_codedPAGrowingTemplateLocalProofAt_and7_of_six_local.

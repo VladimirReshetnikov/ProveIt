@@ -1,0 +1,1131 @@
+(**
+  The arithmetical hierarchy over the ordered-ring language.
+
+  Foundation states the hierarchy for every language carrying a distinguished
+  strict-order operator.  The port specializes it to the canonical arithmetic
+  language used by every downstream arithmetic theorem, avoiding an otherwise
+  pervasive explicit operator parameter while retaining the exact grammar.
+*)
+
+From Stdlib Require Import Bool.Bool Arith.PeanoNat Lia Lists.List.
+From FoundationModal Require Import
+  GenericEntailment GenericLogicSymbol GenericSemantics.
+From Foundation.Syntax.Predicate Require Import Language Term Quantifier Rew.
+From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
+From Foundation.FirstOrder.Basic Require Import Calculus Operator Padding.
+From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
+From Foundation.FirstOrder Require Import Polarity.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Model.
+
+Set Implicit Arguments.
+Unset Strict Implicit.
+Set Universe Polymorphism.
+
+Import ListNotations.
+
+Definition arithmetic_sigma : bool := true.
+Definition arithmetic_pi : bool := false.
+Definition arithmetic_polarity_alt (pol : bool) : bool := negb pol.
+
+Definition arithmetic_lt_operator :
+    semiformula_has_lt_operator oring_language :=
+  semiformula_lt_operator_of_language
+    (language_oring_lt oring_language_structure).
+
+Definition arithmetic_eq_operator :
+    semiformula_has_eq_operator oring_language :=
+  semiformula_eq_operator_of_language
+    (language_oring_eq oring_language_structure).
+
+Definition arithmetic_le_operator :
+    semiformula_has_le_operator oring_language :=
+  semiformula_le_operator_of_language
+    (language_oring_eq oring_language_structure)
+    (language_oring_lt oring_language_structure).
+
+Definition arithmetic_lt_guard {X n}
+    (t : semiterm oring_language X (S n)) :
+    semiformula oring_language X (S n) :=
+  semiformula_operator_apply
+    (semiformula_lt_operator arithmetic_lt_operator)
+    (fin_two (Semiterm_bvar Fin.F1) t).
+
+Definition arithmetic_bounded_all {X n}
+    (t : semiterm oring_language X (S n))
+    (p : semiformula oring_language X (S n)) :
+    semiformula oring_language X n :=
+  semiformula_bounded_all (arithmetic_lt_guard t) p.
+
+Definition arithmetic_bounded_exists {X n}
+    (t : semiterm oring_language X (S n))
+    (p : semiformula oring_language X (S n)) :
+    semiformula oring_language X n :=
+  semiformula_bounded_exists (arithmetic_lt_guard t) p.
+
+Unset Implicit Arguments.
+Inductive arithmetic_hierarchy (X : Type) :
+    bool -> nat -> forall n,
+      semiformula oring_language X n -> Prop :=
+| AH_verum : forall pol s n,
+    arithmetic_hierarchy X pol s n (Semiformula_verum n)
+| AH_falsum : forall pol s n,
+    arithmetic_hierarchy X pol s n (Semiformula_falsum n)
+| AH_rel : forall pol s n k (r : language_rel oring_language k)
+                  (v : Fin.t k -> semiterm oring_language X n),
+    arithmetic_hierarchy X pol s n (Semiformula_rel r v)
+| AH_nrel : forall pol s n k (r : language_rel oring_language k)
+                   (v : Fin.t k -> semiterm oring_language X n),
+    arithmetic_hierarchy X pol s n (Semiformula_nrel r v)
+| AH_and : forall pol s n (p q : semiformula oring_language X n),
+    arithmetic_hierarchy X pol s n p ->
+    arithmetic_hierarchy X pol s n q ->
+    arithmetic_hierarchy X pol s n (Semiformula_and p q)
+| AH_or : forall pol s n (p q : semiformula oring_language X n),
+    arithmetic_hierarchy X pol s n p ->
+    arithmetic_hierarchy X pol s n q ->
+    arithmetic_hierarchy X pol s n (Semiformula_or p q)
+| AH_ball : forall pol s n
+    (t : semiterm oring_language X (S n))
+    (p : semiformula oring_language X (S n)),
+    semiterm_positive t ->
+    arithmetic_hierarchy X pol s (S n) p ->
+    arithmetic_hierarchy X pol s n (arithmetic_bounded_all t p)
+| AH_bex : forall pol s n
+    (t : semiterm oring_language X (S n))
+    (p : semiformula oring_language X (S n)),
+    semiterm_positive t ->
+    arithmetic_hierarchy X pol s (S n) p ->
+    arithmetic_hierarchy X pol s n (arithmetic_bounded_exists t p)
+| AH_exists : forall s n (p : semiformula oring_language X (S n)),
+    arithmetic_hierarchy X arithmetic_sigma (S s) (S n) p ->
+    arithmetic_hierarchy X arithmetic_sigma (S s) n
+      (Semiformula_exists p)
+| AH_all : forall s n (p : semiformula oring_language X (S n)),
+    arithmetic_hierarchy X arithmetic_pi (S s) (S n) p ->
+    arithmetic_hierarchy X arithmetic_pi (S s) n (Semiformula_all p)
+| AH_sigma : forall s n (p : semiformula oring_language X (S n)),
+    arithmetic_hierarchy X arithmetic_pi s (S n) p ->
+    arithmetic_hierarchy X arithmetic_sigma (S s) n
+      (Semiformula_exists p)
+| AH_pi : forall s n (p : semiformula oring_language X (S n)),
+    arithmetic_hierarchy X arithmetic_sigma s (S n) p ->
+    arithmetic_hierarchy X arithmetic_pi (S s) n (Semiformula_all p)
+| AH_dummy_sigma : forall s n
+    (p : semiformula oring_language X (S n)),
+    arithmetic_hierarchy X arithmetic_pi (S s) (S n) p ->
+    arithmetic_hierarchy X arithmetic_sigma (S (S s)) n
+      (Semiformula_all p)
+| AH_dummy_pi : forall s n
+    (p : semiformula oring_language X (S n)),
+    arithmetic_hierarchy X arithmetic_sigma (S s) (S n) p ->
+    arithmetic_hierarchy X arithmetic_pi (S (S s)) n
+      (Semiformula_exists p).
+Set Implicit Arguments.
+
+Arguments AH_verum {X} pol s n.
+Arguments AH_falsum {X} pol s n.
+Arguments AH_rel {X} pol s n k r v.
+Arguments AH_nrel {X} pol s n k r v.
+Arguments AH_and {X pol s n p q} _ _.
+Arguments AH_or {X pol s n p q} _ _.
+Arguments AH_ball {X pol s n t p} _ _.
+Arguments AH_bex {X pol s n t p} _ _.
+Arguments AH_exists {X s n p} _.
+Arguments AH_all {X s n p} _.
+Arguments AH_sigma {X s n p} _.
+Arguments AH_pi {X s n p} _.
+Arguments AH_dummy_sigma {X s n p} _.
+Arguments AH_dummy_pi {X s n p} _.
+
+Definition arithmetic_delta_zero {X n}
+    (p : semiformula oring_language X n) : Prop :=
+  arithmetic_hierarchy X arithmetic_sigma 0 n p.
+
+Lemma arithmetic_hierarchy_eq : forall X pol s n
+    (t u : semiterm oring_language X n),
+  arithmetic_hierarchy X pol s n
+    (semiformula_operator_apply
+      (semiformula_eq_operator arithmetic_eq_operator) (fin_two t u)).
+Proof.
+  intros. unfold arithmetic_eq_operator.
+  rewrite semiformula_eq_operator_apply. apply AH_rel.
+Qed.
+
+Lemma arithmetic_hierarchy_lt : forall X pol s n
+    (t u : semiterm oring_language X n),
+  arithmetic_hierarchy X pol s n
+    (semiformula_operator_apply
+      (semiformula_lt_operator arithmetic_lt_operator) (fin_two t u)).
+Proof.
+  intros. unfold arithmetic_lt_operator.
+  rewrite semiformula_lt_operator_apply. apply AH_rel.
+Qed.
+
+Lemma arithmetic_hierarchy_le : forall X pol s n
+    (t u : semiterm oring_language X n),
+  arithmetic_hierarchy X pol s n
+    (semiformula_operator_apply
+      (semiformula_le_operator arithmetic_le_operator) (fin_two t u)).
+Proof.
+  intros. unfold arithmetic_le_operator.
+  rewrite semiformula_le_operator_apply. apply AH_or; apply AH_rel.
+Qed.
+
+Lemma arithmetic_lt_guard_rewrite : forall X n Y m
+    (w : rew oring_language X n Y m)
+    (t : semiterm oring_language X (S n)),
+  semiformula_rewrite (rew_q w) (arithmetic_lt_guard t) =
+  arithmetic_lt_guard (rew_apply (rew_q w) t).
+Proof.
+  intros X n Y m w t. unfold arithmetic_lt_guard.
+  rewrite rew_semiformula_operator_apply.
+  f_equal.
+  rewrite (fin_two_eta
+    (fun i => rew_apply (rew_q w)
+      (fin_two (Semiterm_bvar Fin.F1) t i))).
+  rewrite fin_two_first, fin_two_second, rew_q_bvar_zero.
+  reflexivity.
+Qed.
+
+Lemma arithmetic_lt_guard_rewrite_preimage : forall X n Y m
+    (w : rew oring_language X n Y m)
+    (p : semiformula oring_language X (S n))
+    (t : semiterm oring_language Y (S m)),
+  semiformula_rewrite (rew_q w) p = arithmetic_lt_guard t ->
+  exists u : semiterm oring_language X (S n),
+    p = arithmetic_lt_guard u /\ rew_apply (rew_q w) u = t.
+Proof.
+  intros X n Y m w p t H.
+  unfold arithmetic_lt_guard, arithmetic_lt_operator in H.
+  apply (proj1 (semiformula_rewrite_lt_operator_preimage
+    (rew_q w) p (language_oring_lt oring_language_structure)
+    (Semiterm_bvar Fin.F1) t)) in H.
+  destruct H as [z [u [Hz [Hu Hp]]]].
+  apply (proj1 (rew_q_bvar_zero_iff w z)) in Hz. subst z.
+  exists u. split; assumption.
+Qed.
+
+Lemma arithmetic_bounded_all_rewrite_preimage : forall X n Y m
+    (w : rew oring_language X n Y m)
+    (p : semiformula oring_language X n)
+    (t : semiterm oring_language Y (S m))
+    (q : semiformula oring_language Y (S m)),
+  semiformula_rewrite w p = arithmetic_bounded_all t q ->
+  exists (u : semiterm oring_language X (S n))
+         (r : semiformula oring_language X (S n)),
+    p = arithmetic_bounded_all u r /\
+    rew_apply (rew_q w) u = t /\
+    semiformula_rewrite (rew_q w) r = q.
+Proof.
+  intros X n Y m w p t q H.
+  change (semiformula_rewrite w p =
+    Semiformula_all
+      (Semiformula_or (semiformula_neg (arithmetic_lt_guard t)) q)) in H.
+  apply semiformula_rewrite_all_preimage in H.
+  destruct H as [body [Hp Hbody]].
+  apply semiformula_rewrite_or_preimage in Hbody.
+  destruct Hbody as [guard [r [Hbody [Hguard Hr]]]].
+  pose proof (f_equal semiformula_neg Hguard) as Hguard'.
+  rewrite <- semiformula_rewrite_neg,
+    semiformula_neg_involutive in Hguard'.
+  apply arithmetic_lt_guard_rewrite_preimage in Hguard'.
+  destruct Hguard' as [u [Hneg Hu]].
+  pose proof (f_equal semiformula_neg Hneg) as Hneg'.
+  rewrite semiformula_neg_involutive in Hneg'.
+  exists u, r. split.
+  - rewrite Hp, Hbody, Hneg'. reflexivity.
+  - auto.
+Qed.
+
+Lemma arithmetic_bounded_exists_rewrite_preimage : forall X n Y m
+    (w : rew oring_language X n Y m)
+    (p : semiformula oring_language X n)
+    (t : semiterm oring_language Y (S m))
+    (q : semiformula oring_language Y (S m)),
+  semiformula_rewrite w p = arithmetic_bounded_exists t q ->
+  exists (u : semiterm oring_language X (S n))
+         (r : semiformula oring_language X (S n)),
+    p = arithmetic_bounded_exists u r /\
+    rew_apply (rew_q w) u = t /\
+    semiformula_rewrite (rew_q w) r = q.
+Proof.
+  intros X n Y m w p t q H.
+  change (semiformula_rewrite w p =
+    Semiformula_exists (Semiformula_and (arithmetic_lt_guard t) q)) in H.
+  apply semiformula_rewrite_exists_preimage in H.
+  destruct H as [body [Hp Hbody]].
+  apply semiformula_rewrite_and_preimage in Hbody.
+  destruct Hbody as [guard [r [Hbody [Hguard Hr]]]].
+  apply arithmetic_lt_guard_rewrite_preimage in Hguard.
+  destruct Hguard as [u [Hguard Hu]].
+  exists u, r. split.
+  - rewrite Hp, Hbody, Hguard. reflexivity.
+  - auto.
+Qed.
+
+Theorem arithmetic_hierarchy_rewrite : forall X pol s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n p ->
+  forall Y m (w : rew oring_language X n Y m),
+    arithmetic_hierarchy Y pol s m (semiformula_rewrite w p).
+Proof.
+  intros X pol s n p H.
+  induction H; intros Y m w.
+  - simpl. apply AH_verum.
+  - simpl. apply AH_falsum.
+  - simpl. apply AH_rel.
+  - simpl. apply AH_nrel.
+  - simpl. apply AH_and; [apply IHarithmetic_hierarchy1 |
+      apply IHarithmetic_hierarchy2].
+  - simpl. apply AH_or; [apply IHarithmetic_hierarchy1 |
+      apply IHarithmetic_hierarchy2].
+  - unfold arithmetic_bounded_all at 1.
+    rewrite semiformula_rewrite_bounded_all,
+      arithmetic_lt_guard_rewrite.
+    apply AH_ball.
+    + now apply rew_q_positive.
+    + apply IHarithmetic_hierarchy.
+  - unfold arithmetic_bounded_exists at 1.
+    rewrite semiformula_rewrite_bounded_exists,
+      arithmetic_lt_guard_rewrite.
+    apply AH_bex.
+    + now apply rew_q_positive.
+    + apply IHarithmetic_hierarchy.
+  - simpl. apply AH_exists. apply IHarithmetic_hierarchy.
+  - simpl. apply AH_all. apply IHarithmetic_hierarchy.
+  - simpl. apply AH_sigma. apply IHarithmetic_hierarchy.
+  - simpl. apply AH_pi. apply IHarithmetic_hierarchy.
+  - simpl. apply AH_dummy_sigma. apply IHarithmetic_hierarchy.
+  - simpl. apply AH_dummy_pi. apply IHarithmetic_hierarchy.
+Qed.
+
+Theorem arithmetic_hierarchy_rewrite_reflect : forall X pol s n
+    (p : semiformula oring_language X n) Y m
+    (w : rew oring_language X n Y m),
+  arithmetic_hierarchy Y pol s m (semiformula_rewrite w p) ->
+  arithmetic_hierarchy X pol s n p.
+Proof.
+  intros X pol s n p Y m w H.
+  remember (semiformula_rewrite w p) as q eqn:Heq in H.
+  revert X n p w Heq.
+  induction H; intros X0 n0 q0 w Heq.
+  - destruct q0; simpl in Heq; try discriminate; apply AH_verum.
+  - destruct q0; simpl in Heq; try discriminate; apply AH_falsum.
+  - destruct q0; simpl in Heq; try discriminate; apply AH_rel.
+  - destruct q0; simpl in Heq; try discriminate; apply AH_nrel.
+  - symmetry in Heq. apply semiformula_rewrite_and_preimage in Heq.
+    destruct Heq as [a [b [-> [Ha Hb]]]].
+    apply AH_and; [apply IHarithmetic_hierarchy1 with (w := w) |
+      apply IHarithmetic_hierarchy2 with (w := w)]; symmetry; assumption.
+  - symmetry in Heq. apply semiformula_rewrite_or_preimage in Heq.
+    destruct Heq as [a [b [-> [Ha Hb]]]].
+    apply AH_or; [apply IHarithmetic_hierarchy1 with (w := w) |
+      apply IHarithmetic_hierarchy2 with (w := w)]; symmetry; assumption.
+  - symmetry in Heq.
+    apply arithmetic_bounded_all_rewrite_preimage in Heq.
+    destruct Heq as [u [r [-> [Hu Hr]]]].
+    apply AH_ball.
+    + apply (proj1 (rew_q_positive_iff w u)). now rewrite Hu.
+    + apply IHarithmetic_hierarchy with (w := rew_q w).
+      symmetry. exact Hr.
+  - symmetry in Heq.
+    apply arithmetic_bounded_exists_rewrite_preimage in Heq.
+    destruct Heq as [u [r [-> [Hu Hr]]]].
+    apply AH_bex.
+    + apply (proj1 (rew_q_positive_iff w u)). now rewrite Hu.
+    + apply IHarithmetic_hierarchy with (w := rew_q w).
+      symmetry. exact Hr.
+  - symmetry in Heq. apply semiformula_rewrite_exists_preimage in Heq.
+    destruct Heq as [r [-> Hr]]. apply AH_exists.
+    apply IHarithmetic_hierarchy with (w := rew_q w).
+    symmetry. exact Hr.
+  - symmetry in Heq. apply semiformula_rewrite_all_preimage in Heq.
+    destruct Heq as [r [-> Hr]]. apply AH_all.
+    apply IHarithmetic_hierarchy with (w := rew_q w).
+    symmetry. exact Hr.
+  - symmetry in Heq. apply semiformula_rewrite_exists_preimage in Heq.
+    destruct Heq as [r [-> Hr]]. apply AH_sigma.
+    apply IHarithmetic_hierarchy with (w := rew_q w).
+    symmetry. exact Hr.
+  - symmetry in Heq. apply semiformula_rewrite_all_preimage in Heq.
+    destruct Heq as [r [-> Hr]]. apply AH_pi.
+    apply IHarithmetic_hierarchy with (w := rew_q w).
+    symmetry. exact Hr.
+  - symmetry in Heq. apply semiformula_rewrite_all_preimage in Heq.
+    destruct Heq as [r [-> Hr]]. apply AH_dummy_sigma.
+    apply IHarithmetic_hierarchy with (w := rew_q w).
+    symmetry. exact Hr.
+  - symmetry in Heq. apply semiformula_rewrite_exists_preimage in Heq.
+    destruct Heq as [r [-> Hr]]. apply AH_dummy_pi.
+    apply IHarithmetic_hierarchy with (w := rew_q w).
+    symmetry. exact Hr.
+Qed.
+
+Corollary arithmetic_hierarchy_rewrite_iff : forall X pol s n
+    (p : semiformula oring_language X n) Y m
+    (w : rew oring_language X n Y m),
+  arithmetic_hierarchy Y pol s m (semiformula_rewrite w p) <->
+  arithmetic_hierarchy X pol s n p.
+Proof.
+  intros. split.
+  - apply arithmetic_hierarchy_rewrite_reflect.
+  - intro H. now apply arithmetic_hierarchy_rewrite.
+Qed.
+
+Theorem arithmetic_hierarchy_accum : forall X pol s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n p ->
+  forall pol', arithmetic_hierarchy X pol' (S s) n p.
+Proof.
+  intros X pol s n p H; induction H; intro pol';
+    try solve [constructor]; try solve [constructor; eauto].
+  - destruct pol'.
+    + apply AH_exists. apply IHarithmetic_hierarchy.
+    + apply AH_dummy_pi. exact H.
+  - destruct pol'.
+    + apply AH_dummy_sigma. exact H.
+    + apply AH_all. apply IHarithmetic_hierarchy.
+  - destruct pol'.
+    + apply AH_sigma. apply IHarithmetic_hierarchy.
+    + apply AH_dummy_pi. apply IHarithmetic_hierarchy.
+  - destruct pol'.
+    + apply AH_dummy_sigma. apply IHarithmetic_hierarchy.
+    + apply AH_pi. apply IHarithmetic_hierarchy.
+  - destruct pol'.
+    + apply AH_dummy_sigma. apply IHarithmetic_hierarchy.
+    + apply AH_pi. apply IHarithmetic_hierarchy.
+  - destruct pol'.
+    + apply AH_sigma. apply IHarithmetic_hierarchy.
+    + apply AH_dummy_pi. apply IHarithmetic_hierarchy.
+Qed.
+
+Lemma arithmetic_hierarchy_accum_iter : forall X pol s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n p ->
+  forall d pol', arithmetic_hierarchy X pol' (S s + d) n p.
+Proof.
+  intros X pol s n p H d; induction d as [|d IH]; intro pol'.
+  - rewrite Nat.add_0_r. exact (arithmetic_hierarchy_accum H pol').
+  - replace (S s + S d) with (S (S s + d)) by lia.
+    exact (arithmetic_hierarchy_accum (IH pol') pol').
+Qed.
+
+Theorem arithmetic_hierarchy_strict_mono : forall X pol s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n p ->
+  forall pol' s', s < s' -> arithmetic_hierarchy X pol' s' n p.
+Proof.
+  intros X pol s n p H pol' s' Hlt.
+  assert (Hd : exists d, s' = S s + d).
+  { exists (s' - S s). lia. }
+  destruct Hd as [d ->].
+  now apply arithmetic_hierarchy_accum_iter with (pol := pol).
+Qed.
+
+Theorem arithmetic_hierarchy_mono : forall X pol s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n p ->
+  forall s', s <= s' -> arithmetic_hierarchy X pol s' n p.
+Proof.
+  intros X pol s n p H s' Hle.
+  destruct (Nat.eq_dec s s') as [-> | Hne]; [exact H |].
+  apply arithmetic_hierarchy_strict_mono with (pol := pol) (s := s);
+    [exact H | lia].
+Qed.
+
+Theorem arithmetic_hierarchy_zero_alt : forall X pol n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol 0 n p ->
+  arithmetic_hierarchy X (arithmetic_polarity_alt pol) 0 n p.
+Proof.
+  intros X pol n p H. remember 0 as level eqn:Hlevel.
+  induction H; inversion Hlevel; subst; try constructor; eauto.
+Qed.
+
+Corollary arithmetic_hierarchy_zero_iff : forall X pol pol' n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol 0 n p <->
+  arithmetic_hierarchy X pol' 0 n p.
+Proof.
+  intros X pol pol' n p. destruct pol, pol'; simpl; try tauto;
+    split; apply arithmetic_hierarchy_zero_alt.
+Qed.
+
+Theorem arithmetic_hierarchy_of_zero : forall X pol n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol 0 n p ->
+  forall pol' s, arithmetic_hierarchy X pol' s n p.
+Proof.
+  intros X pol n p Hp pol' s. destruct s as [|s].
+  - exact (proj1 (@arithmetic_hierarchy_zero_iff X pol pol' n p) Hp).
+  - eapply arithmetic_hierarchy_strict_mono; eauto; lia.
+Qed.
+
+Theorem arithmetic_hierarchy_and_iff : forall X pol s n
+    (p q : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n (Semiformula_and p q) <->
+  arithmetic_hierarchy X pol s n p /\
+  arithmetic_hierarchy X pol s n q.
+Proof.
+  intros X pol s n p q; split.
+  - intro H. inversion H; subst.
+    match goal with
+    | E1 : existT _ n ?a = existT _ n p,
+      E2 : existT _ n ?b = existT _ n q |- _ =>
+        apply existT_nat_injective in E1;
+        apply existT_nat_injective in E2; subst; auto
+    end.
+  - intros [Hp Hq]. now apply AH_and.
+Qed.
+
+Theorem arithmetic_hierarchy_or_iff : forall X pol s n
+    (p q : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n (Semiformula_or p q) <->
+  arithmetic_hierarchy X pol s n p /\
+  arithmetic_hierarchy X pol s n q.
+Proof.
+  intros X pol s n p q; split.
+  - intro H. inversion H; subst.
+    match goal with
+    | E1 : existT _ n ?a = existT _ n p,
+      E2 : existT _ n ?b = existT _ n q |- _ =>
+        apply existT_nat_injective in E1;
+        apply existT_nat_injective in E2; subst; auto
+    end.
+  - intros [Hp Hq]. now apply AH_or.
+Qed.
+
+Theorem arithmetic_hierarchy_neg : forall X pol s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n p ->
+  arithmetic_hierarchy X (arithmetic_polarity_alt pol) s n
+    (semiformula_neg p).
+Proof.
+  intros X pol s n p H; induction H.
+  - simpl. apply AH_falsum.
+  - simpl. apply AH_verum.
+  - simpl. apply AH_nrel.
+  - simpl. apply AH_rel.
+  - simpl. apply AH_or; assumption.
+  - simpl. apply AH_and; assumption.
+  - unfold arithmetic_bounded_all.
+    rewrite semiformula_neg_bounded_all.
+    apply AH_bex; assumption.
+  - unfold arithmetic_bounded_exists.
+    rewrite semiformula_neg_bounded_exists.
+    apply AH_ball; assumption.
+  - simpl. apply AH_all. exact IHarithmetic_hierarchy.
+  - simpl. apply AH_exists. exact IHarithmetic_hierarchy.
+  - simpl. apply AH_pi. exact IHarithmetic_hierarchy.
+  - simpl. apply AH_sigma. exact IHarithmetic_hierarchy.
+  - simpl. apply AH_dummy_pi. exact IHarithmetic_hierarchy.
+  - simpl. apply AH_dummy_sigma. exact IHarithmetic_hierarchy.
+Qed.
+
+Corollary arithmetic_hierarchy_neg_iff : forall X pol s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n (semiformula_neg p) <->
+  arithmetic_hierarchy X (arithmetic_polarity_alt pol) s n p.
+Proof.
+  intros. split; intro H.
+  - pose proof (arithmetic_hierarchy_neg H) as Hneg.
+    rewrite semiformula_neg_involutive in Hneg.
+    destruct pol; exact Hneg.
+  - pose proof (arithmetic_hierarchy_neg H) as Hneg.
+    destruct pol; exact Hneg.
+Qed.
+
+Corollary arithmetic_hierarchy_imp_iff : forall X pol s n
+    (p q : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n (semiformula_imp p q) <->
+  arithmetic_hierarchy X (arithmetic_polarity_alt pol) s n p /\
+  arithmetic_hierarchy X pol s n q.
+Proof.
+  intros. unfold semiformula_imp.
+  rewrite arithmetic_hierarchy_or_iff,
+    arithmetic_hierarchy_neg_iff. reflexivity.
+Qed.
+
+Corollary arithmetic_hierarchy_iff_iff : forall X pol s n
+    (p q : semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n (semiformula_iff p q) <->
+  arithmetic_hierarchy X pol s n p /\
+  arithmetic_hierarchy X (arithmetic_polarity_alt pol) s n p /\
+  arithmetic_hierarchy X pol s n q /\
+  arithmetic_hierarchy X (arithmetic_polarity_alt pol) s n q.
+Proof.
+  intros. unfold semiformula_iff.
+  rewrite arithmetic_hierarchy_and_iff,
+    !arithmetic_hierarchy_imp_iff.
+  destruct pol; simpl; tauto.
+Qed.
+
+Corollary arithmetic_hierarchy_zero_iff_iff : forall X pol n
+    (p q : semiformula oring_language X n),
+  arithmetic_hierarchy X pol 0 n (semiformula_iff p q) <->
+  arithmetic_hierarchy X pol 0 n p /\
+  arithmetic_hierarchy X pol 0 n q.
+Proof.
+  intros. rewrite arithmetic_hierarchy_iff_iff.
+  split.
+  - intros [Hp [_ [Hq _]]]. now split.
+  - intros [Hp Hq]. repeat split; try assumption;
+      now apply arithmetic_hierarchy_zero_alt.
+Qed.
+
+Theorem arithmetic_hierarchy_of_open : forall X n
+    (p : semiformula oring_language X n),
+  semiformula_open p ->
+  forall pol s, arithmetic_hierarchy X pol s n p.
+Proof.
+  intros X n p; induction p; intros Hopen pol level.
+  - apply AH_verum.
+  - apply AH_falsum.
+  - apply AH_rel.
+  - apply AH_nrel.
+  - apply (proj1 (semiformula_open_and p1 p2)) in Hopen.
+    apply AH_and; [apply IHp1 | apply IHp2]; tauto.
+  - apply (proj1 (semiformula_open_or p1 p2)) in Hopen.
+    apply AH_or; [apply IHp1 | apply IHp2]; tauto.
+  - exfalso. exact (@semiformula_not_open_all
+      oring_language X n p Hopen).
+  - exfalso. exact (@semiformula_not_open_exists
+      oring_language X n p Hopen).
+Qed.
+
+Lemma arithmetic_lt_guard_open : forall X n
+    (t : semiterm oring_language X (S n)),
+  semiformula_open (arithmetic_lt_guard t).
+Proof.
+  intros. unfold arithmetic_lt_guard, arithmetic_lt_operator.
+  apply semiformula_lt_operator_open.
+Qed.
+
+Theorem arithmetic_hierarchy_remove_all : forall X pol s n
+    (p : semiformula oring_language X (S n)),
+  arithmetic_hierarchy X pol s n (Semiformula_all p) ->
+  arithmetic_hierarchy X pol s (S n) p.
+Proof.
+  intros X pol s n p H. inversion H; subst.
+  all: match goal with
+  | E : @existT nat _ _ _ = @existT nat _ _ _ |- _ =>
+      apply existT_nat_injective in E; subst
+  end.
+  - apply (proj2 (@arithmetic_hierarchy_imp_iff
+      X pol s (S n) (arithmetic_lt_guard t) p0)). split.
+    + apply arithmetic_hierarchy_of_open. apply arithmetic_lt_guard_open.
+    + assumption.
+  - assumption.
+  - eapply arithmetic_hierarchy_strict_mono; eauto; lia.
+  - eapply arithmetic_hierarchy_strict_mono; eauto; lia.
+Qed.
+
+Theorem arithmetic_hierarchy_remove_exists : forall X pol s n
+    (p : semiformula oring_language X (S n)),
+  arithmetic_hierarchy X pol s n (Semiformula_exists p) ->
+  arithmetic_hierarchy X pol s (S n) p.
+Proof.
+  intros X pol s n p H. inversion H; subst.
+  all: match goal with
+  | E : @existT nat _ _ _ = @existT nat _ _ _ |- _ =>
+      apply existT_nat_injective in E; subst
+  end.
+  - apply (proj2 (@arithmetic_hierarchy_and_iff
+      X pol s (S n) (arithmetic_lt_guard t) p0)). split.
+    + apply arithmetic_hierarchy_of_open. apply arithmetic_lt_guard_open.
+    + assumption.
+  - assumption.
+  - eapply arithmetic_hierarchy_strict_mono; eauto; lia.
+  - eapply arithmetic_hierarchy_strict_mono; eauto; lia.
+Qed.
+
+Theorem arithmetic_hierarchy_bounded_all_iff : forall X pol s n
+    (t : semiterm oring_language X (S n))
+    (p : semiformula oring_language X (S n)),
+  semiterm_positive t ->
+  (arithmetic_hierarchy X pol s n (arithmetic_bounded_all t p) <->
+   arithmetic_hierarchy X pol s (S n) p).
+Proof.
+  intros X pol s n t p Hpositive; split.
+  - intro H. unfold arithmetic_bounded_all in H.
+    apply arithmetic_hierarchy_remove_all in H.
+    apply (proj1 (@arithmetic_hierarchy_imp_iff
+      X pol s (S n) (arithmetic_lt_guard t) p)) in H. tauto.
+  - intro H. now apply AH_ball.
+Qed.
+
+Theorem arithmetic_hierarchy_bounded_exists_iff : forall X pol s n
+    (t : semiterm oring_language X (S n))
+    (p : semiformula oring_language X (S n)),
+  semiterm_positive t ->
+  (arithmetic_hierarchy X pol s n (arithmetic_bounded_exists t p) <->
+   arithmetic_hierarchy X pol s (S n) p).
+Proof.
+  intros X pol s n t p Hpositive; split.
+  - intro H. unfold arithmetic_bounded_exists in H.
+    apply arithmetic_hierarchy_remove_exists in H.
+    apply (proj1 (@arithmetic_hierarchy_and_iff
+      X pol s (S n) (arithmetic_lt_guard t) p)) in H. tauto.
+  - intro H. now apply AH_bex.
+Qed.
+
+Corollary arithmetic_hierarchy_ball_lt_iff : forall X pol s n
+    (t : semiterm oring_language X n)
+    (p : semiformula oring_language X (S n)),
+  arithmetic_hierarchy X pol s n
+      (semiformula_ball_lt arithmetic_lt_operator t p) <->
+  arithmetic_hierarchy X pol s (S n) p.
+Proof.
+  intros. unfold semiformula_ball_lt, arithmetic_bounded_all,
+    arithmetic_lt_guard.
+  apply arithmetic_hierarchy_bounded_all_iff.
+  apply rew_bshift_positive.
+Qed.
+
+Corollary arithmetic_hierarchy_bex_lt_iff : forall X pol s n
+    (t : semiterm oring_language X n)
+    (p : semiformula oring_language X (S n)),
+  arithmetic_hierarchy X pol s n
+      (semiformula_bex_lt arithmetic_lt_operator t p) <->
+  arithmetic_hierarchy X pol s (S n) p.
+Proof.
+  intros. unfold semiformula_bex_lt, arithmetic_bounded_exists,
+    arithmetic_lt_guard.
+  apply arithmetic_hierarchy_bounded_exists_iff.
+  apply rew_bshift_positive.
+Qed.
+
+Corollary arithmetic_hierarchy_ball_lt_succ_iff : forall X pol s n
+    (t : semiterm oring_language X n)
+    (p : semiformula oring_language X (S n)),
+  arithmetic_hierarchy X pol s n
+      (semiformula_ball_lt_succ arithmetic_lt_operator
+        (semiterm_one_operator_of_language
+          (language_oring_one oring_language_structure))
+        (semiterm_add_operator_of_language
+          (language_oring_add oring_language_structure)) t p) <->
+  arithmetic_hierarchy X pol s (S n) p.
+Proof.
+  intros. unfold semiformula_ball_lt_succ.
+  apply arithmetic_hierarchy_ball_lt_iff.
+Qed.
+
+Corollary arithmetic_hierarchy_bex_lt_succ_iff : forall X pol s n
+    (t : semiterm oring_language X n)
+    (p : semiformula oring_language X (S n)),
+  arithmetic_hierarchy X pol s n
+      (semiformula_bex_lt_succ arithmetic_lt_operator
+        (semiterm_one_operator_of_language
+          (language_oring_one oring_language_structure))
+        (semiterm_add_operator_of_language
+          (language_oring_add oring_language_structure)) t p) <->
+  arithmetic_hierarchy X pol s (S n) p.
+Proof.
+  intros. unfold semiformula_bex_lt_succ.
+  apply arithmetic_hierarchy_bex_lt_iff.
+Qed.
+
+Corollary arithmetic_hierarchy_all_iff : forall X s n
+    (p : semiformula oring_language X (S n)),
+  arithmetic_hierarchy X arithmetic_pi (S s) n (Semiformula_all p) <->
+  arithmetic_hierarchy X arithmetic_pi (S s) (S n) p.
+Proof.
+  split.
+  - apply arithmetic_hierarchy_remove_all.
+  - apply AH_all.
+Qed.
+
+Corollary arithmetic_hierarchy_exists_iff : forall X s n
+    (p : semiformula oring_language X (S n)),
+  arithmetic_hierarchy X arithmetic_sigma (S s) n
+      (Semiformula_exists p) <->
+  arithmetic_hierarchy X arithmetic_sigma (S s) (S n) p.
+Proof.
+  split.
+  - apply arithmetic_hierarchy_remove_exists.
+  - apply AH_exists.
+Qed.
+
+Theorem arithmetic_hierarchy_all_iter_iff : forall X s k n
+    (p : semiformula oring_language X (k + n)),
+  arithmetic_hierarchy X arithmetic_pi (S s) n
+      (first_all_iter (semiformula_universal_quantifier oring_language X)
+        k n p) <->
+  arithmetic_hierarchy X arithmetic_pi (S s) (k + n) p.
+Proof.
+  intros X s k. induction k as [|k IH]; intros n p.
+  - reflexivity.
+  - simpl first_all_iter. rewrite IH.
+    apply arithmetic_hierarchy_all_iff.
+Qed.
+
+Theorem arithmetic_hierarchy_exists_iter_iff : forall X s k n
+    (p : semiformula oring_language X (k + n)),
+  arithmetic_hierarchy X arithmetic_sigma (S s) n
+      (first_exists_iter (semiformula_existential_quantifier oring_language X)
+        k n p) <->
+  arithmetic_hierarchy X arithmetic_sigma (S s) (k + n) p.
+Proof.
+  intros X s k. induction k as [|k IH]; intros n p.
+  - reflexivity.
+  - simpl first_exists_iter. rewrite IH.
+    apply arithmetic_hierarchy_exists_iff.
+Qed.
+
+Theorem arithmetic_hierarchy_exists_closure : forall X s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X arithmetic_sigma (S s) n p ->
+  arithmetic_hierarchy X arithmetic_sigma (S s) 0
+    (first_exists_closure
+      (semiformula_existential_quantifier oring_language X) n p).
+Proof.
+  intros X s n. induction n as [|n IH]; intros p Hp.
+  - exact Hp.
+  - simpl first_exists_closure. apply IH. now apply AH_exists.
+Qed.
+
+Theorem arithmetic_hierarchy_all_closure : forall X s n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X arithmetic_pi (S s) n p ->
+  arithmetic_hierarchy X arithmetic_pi (S s) 0
+    (first_all_closure
+      (semiformula_universal_quantifier oring_language X) n p).
+Proof.
+  intros X s n. induction n as [|n IH]; intros p Hp.
+  - exact Hp.
+  - simpl first_all_closure. apply IH. now apply AH_all.
+Qed.
+
+Lemma arithmetic_hierarchy_repeated_verum : forall X pol s n k,
+  arithmetic_hierarchy X pol s n
+    (@semiformula_repeated_verum oring_language X n k).
+Proof.
+  intros X pol s n k. induction k as [|k IH].
+  - apply AH_verum.
+  - simpl. apply AH_and; [apply AH_verum | exact IH].
+Qed.
+
+Theorem arithmetic_hierarchy_padding_iff : forall X pol s n
+    (p : semiformula oring_language X n) k,
+  arithmetic_hierarchy X pol s n (semiformula_padding p k) <->
+  arithmetic_hierarchy X pol s n p.
+Proof.
+  intros. unfold semiformula_padding.
+  rewrite arithmetic_hierarchy_and_iff. split.
+  - tauto.
+  - intro Hp. split; [exact Hp | apply arithmetic_hierarchy_repeated_verum].
+Qed.
+
+Theorem arithmetic_hierarchy_matrix_conj_iff : forall X pol s n k
+    (v : Fin.t k -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_matrix_conj
+        (semiformula_connectives oring_language X n) k v) <->
+  forall i, arithmetic_hierarchy X pol s n (v i).
+Proof.
+  intros X pol s n k. induction k as [|k IH]; intro v.
+  - simpl. split.
+    + intros _ i. inversion i.
+    + intros _. apply AH_verum.
+  - simpl. rewrite arithmetic_hierarchy_and_iff, IH. split.
+    + intros [Hhead Htail] i.
+      refine (@Fin.caseS' k i
+        (fun j => arithmetic_hierarchy X pol s n (v j)) Hhead _).
+      exact Htail.
+    + intro Hall. split.
+      * apply Hall.
+      * intro i. apply Hall.
+Qed.
+
+Theorem arithmetic_hierarchy_matrix_disj_iff : forall X pol s n k
+    (v : Fin.t k -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_matrix_disj
+        (semiformula_connectives oring_language X n) k v) <->
+  forall i, arithmetic_hierarchy X pol s n (v i).
+Proof.
+  intros X pol s n k. induction k as [|k IH]; intro v.
+  - simpl. split.
+    + intros _ i. inversion i.
+    + intros _. apply AH_falsum.
+  - simpl. rewrite arithmetic_hierarchy_or_iff, IH. split.
+    + intros [Hhead Htail] i.
+      refine (@Fin.caseS' k i
+        (fun j => arithmetic_hierarchy X pol s n (v j)) Hhead _).
+      exact Htail.
+    + intro Hall. split.
+      * apply Hall.
+      * intro i. apply Hall.
+Qed.
+
+Theorem arithmetic_hierarchy_list_conj_iff : forall X pol s n
+    (xs : list (semiformula oring_language X n)),
+  arithmetic_hierarchy X pol s n
+      (generic_list_conj2 (semiformula_connectives oring_language X n) xs) <->
+  forall p, In p xs -> arithmetic_hierarchy X pol s n p.
+Proof.
+  intros X pol s n xs; induction xs as [|p xs IH].
+  - simpl. split.
+    + intros _ q Hq. contradiction.
+    + intros _. apply AH_verum.
+  - destruct xs as [|q xs].
+    + simpl. split.
+      * intros Hp r [Hr | []]. now subst r.
+      * intro Hall. apply Hall. now left.
+    + simpl generic_list_conj2.
+      rewrite arithmetic_hierarchy_and_iff, IH.
+      split.
+      * intros [Hp Hrest] r [-> | Hr]; [exact Hp | now apply Hrest].
+      * intro Hall. split.
+        -- apply Hall. now left.
+        -- intros r Hr. apply Hall. now right.
+Qed.
+
+Theorem arithmetic_hierarchy_list_disj_iff : forall X pol s n
+    (xs : list (semiformula oring_language X n)),
+  arithmetic_hierarchy X pol s n
+      (generic_list_disj2 (semiformula_connectives oring_language X n) xs) <->
+  forall p, In p xs -> arithmetic_hierarchy X pol s n p.
+Proof.
+  intros X pol s n xs; induction xs as [|p xs IH].
+  - simpl. split.
+    + intros _ q Hq. contradiction.
+    + intros _. apply AH_falsum.
+  - destruct xs as [|q xs].
+    + simpl. split.
+      * intros Hp r [Hr | []]. now subst r.
+      * intro Hall. apply Hall. now left.
+    + simpl generic_list_disj2.
+      rewrite arithmetic_hierarchy_or_iff, IH.
+      split.
+      * intros [Hp Hrest] r [-> | Hr]; [exact Hp | now apply Hrest].
+      * intro Hall. split.
+        -- apply Hall. now left.
+        -- intros r Hr. apply Hall. now right.
+Qed.
+
+Theorem arithmetic_hierarchy_list_conj_map_iff : forall I X pol s n
+    (xs : list I) (f : I -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_list_conj_map
+        (semiformula_connectives oring_language X n) f xs) <->
+  forall i, In i xs -> arithmetic_hierarchy X pol s n (f i).
+Proof.
+  intros. unfold generic_list_conj_map.
+  rewrite arithmetic_hierarchy_list_conj_iff. split.
+  - intros Hall i Hi. apply Hall, in_map. exact Hi.
+  - intros Hall p Hp. apply in_map_iff in Hp.
+    destruct Hp as [i [<- Hi]]. now apply Hall.
+Qed.
+
+Theorem arithmetic_hierarchy_list_disj_map_iff : forall I X pol s n
+    (xs : list I) (f : I -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_list_disj_map
+        (semiformula_connectives oring_language X n) f xs) <->
+  forall i, In i xs -> arithmetic_hierarchy X pol s n (f i).
+Proof.
+  intros. unfold generic_list_disj_map.
+  rewrite arithmetic_hierarchy_list_disj_iff. split.
+  - intros Hall i Hi. apply Hall, in_map. exact Hi.
+  - intros Hall p Hp. apply in_map_iff in Hp.
+    destruct Hp as [i [<- Hi]]. now apply Hall.
+Qed.
+
+Theorem arithmetic_hierarchy_finite_conj_iff : forall I X pol s n
+    (cover : finite_cover I) (f : I -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_finset_uconj
+        (semiformula_connectives oring_language X n)
+        (finite_cover_list cover) f) <->
+  forall i, arithmetic_hierarchy X pol s n (f i).
+Proof.
+  intros. unfold generic_finset_uconj, generic_finset_conj_map.
+  rewrite arithmetic_hierarchy_list_conj_map_iff. split.
+  - intros H i. apply H, finite_cover_complete.
+  - intros H i _. apply H.
+Qed.
+
+Theorem arithmetic_hierarchy_finite_disj_iff : forall I X pol s n
+    (cover : finite_cover I) (f : I -> semiformula oring_language X n),
+  arithmetic_hierarchy X pol s n
+      (generic_finset_udisj
+        (semiformula_connectives oring_language X n)
+        (finite_cover_list cover) f) <->
+  forall i, arithmetic_hierarchy X pol s n (f i).
+Proof.
+  intros. unfold generic_finset_udisj, generic_finset_disj_map.
+  rewrite arithmetic_hierarchy_list_disj_map_iff. split.
+  - intros H i. apply H, finite_cover_complete.
+  - intros H i _. apply H.
+Qed.
+
+Lemma arithmetic_hierarchy_sigma_one_of_base : forall X pol level n
+    (p : semiformula oring_language X n),
+  arithmetic_hierarchy X pol level n p ->
+  level = 0 \/ (pol = arithmetic_sigma /\ level = 1) ->
+  arithmetic_hierarchy X arithmetic_sigma 1 n p.
+Proof.
+  intros X pol level n p Hp [-> | [-> ->]].
+  - eapply arithmetic_hierarchy_strict_mono; eauto; lia.
+  - exact Hp.
+Qed.
+
+(** A generalized eliminator for Sigma-1 formulas.  Instead of exposing four
+    ordered-ring-specific equality/order atom cases, it accepts one handler
+    for every positive atom and one for every negative atom.  This both
+    shortens clients and remains valid if the arithmetic signature grows more
+    primitive relations. *)
+Theorem arithmetic_sigma_one_induction : forall X
+    (P : forall n, semiformula oring_language X n -> Prop),
+  (forall n, P n (Semiformula_verum n)) ->
+  (forall n, P n (Semiformula_falsum n)) ->
+  (forall n k (r : language_rel oring_language k)
+          (v : Fin.t k -> semiterm oring_language X n),
+      P n (Semiformula_rel r v)) ->
+  (forall n k (r : language_rel oring_language k)
+          (v : Fin.t k -> semiterm oring_language X n),
+      P n (Semiformula_nrel r v)) ->
+  (forall n (p q : semiformula oring_language X n),
+      arithmetic_hierarchy X arithmetic_sigma 1 n p ->
+      arithmetic_hierarchy X arithmetic_sigma 1 n q ->
+      P n p -> P n q -> P n (Semiformula_and p q)) ->
+  (forall n (p q : semiformula oring_language X n),
+      arithmetic_hierarchy X arithmetic_sigma 1 n p ->
+      arithmetic_hierarchy X arithmetic_sigma 1 n q ->
+      P n p -> P n q -> P n (Semiformula_or p q)) ->
+  (forall n (t : semiterm oring_language X n)
+          (p : semiformula oring_language X (S n)),
+      arithmetic_hierarchy X arithmetic_sigma 1 (S n) p ->
+      P (S n) p ->
+      P n (semiformula_ball_lt arithmetic_lt_operator t p)) ->
+  (forall n (p : semiformula oring_language X (S n)),
+      arithmetic_hierarchy X arithmetic_sigma 1 (S n) p ->
+      P (S n) p -> P n (Semiformula_exists p)) ->
+  forall n (p : semiformula oring_language X n),
+    arithmetic_hierarchy X arithmetic_sigma 1 n p -> P n p.
+Proof.
+  intros X P Hverum Hfalsum Hrel Hnrel Hand Hor Hball Hexists n p Hp.
+  assert (Haux : forall pol level n0
+      (q : semiformula oring_language X n0),
+    arithmetic_hierarchy X pol level n0 q ->
+    level = 0 \/ (pol = arithmetic_sigma /\ level = 1) -> P n0 q).
+  {
+    intros pol level n0 q H.
+    induction H as
+      [pol level n0
+      | pol level n0
+      | pol level n0 k r v
+      | pol level n0 k r v
+      | pol level n0 a b Hp' IHp Hq' IHq
+      | pol level n0 a b Hp' IHp Hq' IHq
+      | pol level n0 t body Hpositive Hp' IHp
+      | pol level n0 t body Hpositive Hp' IHp
+      | s n0 body Hp' IHp
+      | s n0 body Hp' IHp
+      | s n0 body Hp' IHp
+      | s n0 body Hp' IHp
+      | s n0 body Hp' IHp
+      | s n0 body Hp' IHp]; intro Hclass.
+    - apply Hverum.
+    - apply Hfalsum.
+    - apply Hrel.
+    - apply Hnrel.
+    - apply Hand.
+      + now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level).
+      + now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level).
+      + now apply IHp.
+      + now apply IHq.
+    - apply Hor.
+      + now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level).
+      + now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level).
+      + now apply IHp.
+      + now apply IHq.
+    - apply (proj1 (rew_bshift_positive_iff_exists t)) in Hpositive.
+      destruct Hpositive as [u Hu]. subst t.
+      change (P n0 (semiformula_ball_lt arithmetic_lt_operator u body)).
+      apply Hball.
+      + now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level).
+      + now apply IHp.
+    - apply (proj1 (rew_bshift_positive_iff_exists t)) in Hpositive.
+      destruct Hpositive as [u Hu]. subst t.
+      change (P n0 (Semiformula_exists
+        (Semiformula_and
+          (arithmetic_lt_guard (rew_apply rew_bshift u)) body))).
+      assert (Hguard : arithmetic_hierarchy X arithmetic_sigma 1 (S n0)
+          (arithmetic_lt_guard (rew_apply rew_bshift u))).
+      { apply arithmetic_hierarchy_of_open. apply arithmetic_lt_guard_open. }
+      assert (Hbody : arithmetic_hierarchy X arithmetic_sigma 1 (S n0) body).
+      { now apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := pol) (level := level). }
+      apply Hexists.
+      + now apply AH_and.
+      + apply Hand; try assumption.
+        * unfold arithmetic_lt_guard, arithmetic_lt_operator.
+          rewrite semiformula_lt_operator_apply. apply Hrel.
+        * now apply IHp.
+    - destruct Hclass as [Hz | [_ Hlevel]]; [discriminate Hz |].
+      assert (s = 0) by lia. subst s.
+      apply Hexists; [exact Hp' |]. apply IHp. now right.
+    - destruct Hclass as [Hz | [Hpol _]];
+        [discriminate Hz | discriminate Hpol].
+    - destruct Hclass as [Hz | [_ Hlevel]]; [discriminate Hz |].
+      assert (s = 0) by lia. subst s.
+      apply Hexists.
+      + apply arithmetic_hierarchy_sigma_one_of_base with
+          (pol := arithmetic_pi) (level := 0); [exact Hp' | now left].
+      + apply IHp. now left.
+    - destruct Hclass as [Hz | [Hpol _]];
+        [discriminate Hz | discriminate Hpol].
+    - destruct Hclass as [Hz | [_ Hlevel]]; lia.
+    - destruct Hclass as [Hz | [Hpol _]];
+        [discriminate Hz | discriminate Hpol].
+  }
+  apply (Haux arithmetic_sigma 1 n p Hp). now right.
+Qed.
+
+Definition arithmetic_theory_sound_on_hierarchy
+    (T : theory oring_language) (pol : bool) (k : nat) : Prop :=
+  arithmetic_theory_sound_on T
+    (fun sigma => arithmetic_hierarchy Empty_set pol k 0 sigma).
+
+Lemma arithmetic_theory_sound_on_hierarchy_elim :
+  forall (T : theory oring_language) pol k
+         (sigma : sentence oring_language),
+    arithmetic_theory_sound_on_hierarchy T pol k ->
+    first_order_theory_provable T sigma ->
+    arithmetic_hierarchy Empty_set pol k 0 sigma ->
+    first_order_model_realize nat_standard_model sigma.
+Proof.
+  intros T pol k sigma Hsound Hproof Hsigma.
+  exact (arithmetic_theory_sound_on_elim Hsound Hproof Hsigma).
+Qed.
+
+Theorem arithmetic_theory_consistent_of_sigma_one_sound :
+  forall T : theory oring_language,
+    arithmetic_theory_sound_on_hierarchy T arithmetic_sigma 1 ->
+    generic_consistent (first_order_theory_entailment oring_language) T.
+Proof.
+  intros T Hsound.
+  apply arithmetic_theory_consistent_of_sound_on with
+    (F := fun sigma => arithmetic_hierarchy Empty_set arithmetic_sigma 1 0 sigma).
+  - exact Hsound.
+  - apply AH_falsum.
+Qed.
+
+Theorem arithmetic_theory_consistent_of_pi_two_sound :
+  forall T : theory oring_language,
+    arithmetic_theory_sound_on_hierarchy T arithmetic_pi 2 ->
+    generic_consistent (first_order_theory_entailment oring_language) T.
+Proof.
+  intros T Hsound.
+  apply arithmetic_theory_consistent_of_sound_on with
+    (F := fun sigma => arithmetic_hierarchy Empty_set arithmetic_pi 2 0 sigma).
+  - exact Hsound.
+  - apply AH_falsum.
+Qed.

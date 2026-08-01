@@ -17,12 +17,18 @@ From BoundedPAConsistency Require Import
   CodedProof
   RawCodedSyntaxConstructors
   RawCodedContextLists
+  RawCodedContextShift
   RawCodedRestrictedPAProof
+  RawCodedPAAxiomContextSelfShift
   RawCodedFixedLevelTruth
   RawCodedFixedLevelTruthTotality
   RawCodedPAAxiomWitnessPrefix
   RawCodedProofAssumptionLeaf
+  RawCodedProofImpIConstructor
+  RawCodedProofAllIConstructor
+  RawCodedProofExEConstructor
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofComposition
   RawCodedPALocalProofContextInsertUnconditional
   RawCodedPALocalProofWitnessedContextMerge
@@ -58,12 +64,18 @@ Import PAFiniteBetaCoding.
 Import PABoundedCodedProof.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedContextLists.
+Import PABoundedRawCodedContextShift.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedPAAxiomContextSelfShift.
 Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedProofAssumptionLeaf.
+Import PABoundedRawCodedProofImpIConstructor.
+Import PABoundedRawCodedProofAllIConstructor.
+Import PABoundedRawCodedProofExEConstructor.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
@@ -2470,6 +2482,378 @@ Proof.
     now rewrite ih.
 Qed.
 
+(** Repeated universal introduction over an arbitrary self-shifting raw
+    context tail.  This relaxes the zero-tail chain used by closed template
+    proofs and is reusable for every compiler whose finite eigenvariable
+    prefix sits above a witnessed PA-axiom context. *)
+Theorem raw_codedPALocalProofOf_universal_introduction_chain_on_self_shift_tail :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    baseTail count context body deepRoot,
+  RawContextListRealizable M baseTail ->
+  RawContextShift M baseTail baseTail ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseTail
+      (templateContextShiftMany count context))
+    (rawTemplateFormula translation body) deepRoot ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseTail context)
+      (rawTemplateFormula translation
+        (templateFormulaAllMany count body)) root.
+Proof.
+  intros M hPA translation baseTail count.
+  induction count as [|smaller ih];
+    intros context body deepRoot htail hselfShift hdeep.
+  - exists deepRoot. exact hdeep.
+  - cbn [templateContextShiftMany templateFormulaAllMany] in hdeep |- *.
+    destruct
+      (ih (templateContextShift context) body deepRoot
+        htail hselfShift hdeep) as [innerRoot hinner].
+    exists (rawProofAllIRoot M
+      (rawTemplateContextCodeOnTail translation baseTail context)
+      (rawTemplateFormula translation
+        (templateFormulaAllMany smaller body)) innerRoot).
+    split.
+    + exact (raw_proofAllI_ruleCoverage M hPA
+        (rawTemplateContextCodeOnTail translation baseTail context)
+        (rawTemplateContextCodeOnTail translation baseTail
+          (templateContextShift context))
+        (rawTemplateFormula translation
+          (templateFormulaAllMany smaller body)) innerRoot
+        (raw_templateContextOnTail_shift M hPA
+          translation baseTail context hselfShift)
+        (proj1 hinner) (proj2 hinner)).
+    + rewrite rawTemplateFormula_all.
+      exact (raw_proofAllI_endpoint M
+        (rawTemplateContextCodeOnTail translation baseTail context)
+        (rawTemplateFormula translation
+          (templateFormulaAllMany smaller body)) innerRoot).
+Qed.
+
+Corollary raw_codedPALocalProofOf_universal_introduction_chain_on_witnessed_tail :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    witnessList baseContext count context body deepRoot,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext
+      (templateContextShiftMany count context))
+    (rawTemplateFormula translation body) deepRoot ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext context)
+      (rawTemplateFormula translation
+        (templateFormulaAllMany count body)) root.
+Proof.
+  intros M hPA translation witnessList baseContext count context body
+    deepRoot hwitness hdeep.
+  exact
+    (raw_codedPALocalProofOf_universal_introduction_chain_on_self_shift_tail
+      M hPA translation baseContext count context body deepRoot
+      (raw_codedPAAxiomWitnessContext_context_realizable M
+        witnessList baseContext hwitness)
+      (raw_codedPAAxiomWitnessContext_selfShift M hPA
+        witnessList baseContext hwitness)
+      hdeep).
+Qed.
+
+(** Lift an already growing local proof through a finite universal block
+    without changing its selected final witness context or its advertised
+    inclusion from the source tail. *)
+Theorem raw_codedPAGrowingTemplateLocalProofAt_universal_introduction_chain :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext count context body,
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext
+    (templateContextShiftMany count context)
+    (rawTemplateFormula translation body) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext context
+    (rawTemplateFormula translation
+      (templateFormulaAllMany count body)).
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext count context body
+    (finalWitnessList & finalContext & deepRoot &
+      hfinalContext & hsourceIncluded & hdeep).
+  destruct
+    (raw_codedPALocalProofOf_universal_introduction_chain_on_witnessed_tail
+      M hPA translation finalWitnessList finalContext count context body
+      deepRoot hfinalContext hdeep) as [root hroot].
+  unfold RawCodedPAGrowingTemplateLocalProofAt.
+  exists finalWitnessList, finalContext, root.
+  split; [exact hfinalContext |].
+  split; [exact hsourceIncluded | exact hroot].
+Qed.
+
+(** Finite existential elimination over an arbitrary realizable,
+    self-shifting raw tail.  The zero-tail compiler is insufficient after a
+    branch helper has enlarged the witnessed PA context; this form retains
+    that exact tail through every eigenvariable step. *)
+Theorem raw_codedPALocalProofOf_existential_elimination_chain_on_self_shift_tail :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    baseTail count source context conclusion deepContext sourceRoot deepRoot,
+  RawContextListRealizable M baseTail ->
+  RawContextShift M baseTail baseTail ->
+  templateExistentialEliminationContext count source context =
+    Some deepContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseTail context)
+    (rawTemplateFormula translation source) sourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseTail deepContext)
+    (rawTemplateFormula translation
+      (templateFormulaShiftMany count conclusion)) deepRoot ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseTail context)
+      (rawTemplateFormula translation conclusion) root.
+Proof.
+  intros M hPA translation baseTail count.
+  induction count as [|count ih];
+    intros source context conclusion deepContext sourceRoot deepRoot
+      htail hselfShift hdeepContext hsource hdeep.
+  - cbn [templateExistentialEliminationContext
+      templateFormulaShiftMany] in hdeepContext, hdeep.
+    inversion hdeepContext; subst deepContext.
+    exists deepRoot. exact hdeep.
+  - destruct source; try discriminate hdeepContext.
+    cbn [templateExistentialEliminationContext] in hdeepContext.
+    assert (hbodyAssumption : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseTail
+        (source :: templateContextShift context))
+      (rawTemplateFormula translation source)
+      (rawProofAssumptionRoot M
+        (rawTemplateContextCodeOnTail translation baseTail
+          (source :: templateContextShift context))
+        (rawTemplateFormula translation source))).
+    {
+      cbn [rawTemplateContextCodeOnTail].
+      apply (raw_codedPALocalProofOf_assumption M hPA).
+      apply (raw_templateContextOnTail_realizable M hPA).
+      exact htail.
+    }
+    destruct (ih source
+      (source :: templateContextShift context)
+      (templateFormulaRename S conclusion)
+      deepContext
+      (rawProofAssumptionRoot M
+        (rawTemplateContextCodeOnTail translation baseTail
+          (source :: templateContextShift context))
+        (rawTemplateFormula translation source))
+      deepRoot htail hselfShift hdeepContext hbodyAssumption hdeep)
+      as [bodyRoot hbody].
+    exists (rawProofExERoot M
+      (rawTemplateContextCodeOnTail translation baseTail context)
+      (rawTemplateFormula translation source)
+      (rawTemplateFormula translation conclusion)
+      sourceRoot bodyRoot).
+    apply (raw_codedPALocalProofOf_exE M hPA
+      (rawTemplateContextCodeOnTail translation baseTail context)
+      (rawTemplateContextCodeOnTail translation baseTail
+        (templateContextShift context))
+      (rawTemplateFormula translation source)
+      (rawTemplateFormula translation conclusion)
+      (rawTemplateFormula translation
+        (templateFormulaRename S conclusion))
+      sourceRoot bodyRoot).
+    + rewrite <- rawTemplateFormula_ex. exact hsource.
+    + exact (raw_templateContextOnTail_shift M hPA
+        translation baseTail context hselfShift).
+    + exact (rawTemplateFormula_shift translation conclusion).
+    + cbn [rawTemplateContextCodeOnTail] in hbody. exact hbody.
+Qed.
+
+Corollary raw_codedPALocalProofOf_existential_elimination_chain_on_witnessed_tail :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    witnessList baseContext count source context conclusion deepContext
+    sourceRoot deepRoot,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  templateExistentialEliminationContext count source context =
+    Some deepContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext context)
+    (rawTemplateFormula translation source) sourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext deepContext)
+    (rawTemplateFormula translation
+      (templateFormulaShiftMany count conclusion)) deepRoot ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext context)
+      (rawTemplateFormula translation conclusion) root.
+Proof.
+  intros M hPA translation witnessList baseContext count source context
+    conclusion deepContext sourceRoot deepRoot hwitness hdeepContext
+    hsource hdeep.
+  exact
+    (raw_codedPALocalProofOf_existential_elimination_chain_on_self_shift_tail
+      M hPA translation baseContext count source context conclusion
+      deepContext sourceRoot deepRoot
+      (raw_codedPAAxiomWitnessContext_context_realizable M
+        witnessList baseContext hwitness)
+      (raw_codedPAAxiomWitnessContext_selfShift M hPA
+        witnessList baseContext hwitness)
+      hdeepContext hsource hdeep).
+Qed.
+
+(** Dependency-ordered growing existential elimination.  The existential
+    source proof is selected on the initial witnessed tail, while the deep
+    continuation may compile additional PA helper batches.  Transport the
+    source proof to that final tail before rebuilding the elimination chain. *)
+Theorem raw_codedPAGrowingTemplateLocalProofAt_existential_elimination_chain :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext count source context conclusion
+    deepContext sourceRoot,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  templateExistentialEliminationContext count source context =
+    Some deepContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext context)
+    (rawTemplateFormula translation source) sourceRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext deepContext
+    (rawTemplateFormula translation
+      (templateFormulaShiftMany count conclusion)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext context
+    (rawTemplateFormula translation conclusion).
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext count source
+    context conclusion deepContext sourceRoot hsource hdeepContext
+    hsourceProof
+    (finalWitnessList & finalContext & deepRoot &
+      hfinalContext & hsourceIncluded & hdeep).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation
+      sourceWitnessList sourceContext finalWitnessList finalContext
+      context (rawTemplateFormula translation source) sourceRoot
+      hsource hfinalContext hsourceIncluded hsourceProof)
+    as [transportedSourceRoot htransportedSource].
+  destruct
+    (raw_codedPALocalProofOf_existential_elimination_chain_on_witnessed_tail
+      M hPA translation finalWitnessList finalContext count source context
+      conclusion deepContext transportedSourceRoot deepRoot
+      hfinalContext hdeepContext htransportedSource hdeep)
+    as [root hroot].
+  unfold RawCodedPAGrowingTemplateLocalProofAt.
+  exists finalWitnessList, finalContext, root.
+  split; [exact hfinalContext |].
+  split; [exact hsourceIncluded | exact hroot].
+Qed.
+
+(** Normalize the generic growing universal chain to the five row variables
+    introduced after all eight append witnesses. *)
+Corollary raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_row_all5 :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep body,
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext
+    (coqFourStateTableAppendRowPrefix
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep)
+    (rawTemplateFormula translation body) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep [])
+    (rawTemplateFormula translation
+      (templateFormulaAllMany 5 body)).
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep body hbody.
+  apply
+    (raw_codedPAGrowingTemplateLocalProofAt_universal_introduction_chain
+      M hPA translation sourceWitnessList sourceContext 5
+      (coqFourStateTableAppendWitnessContext
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep []) body).
+  exact hbody.
+Qed.
+
+(** Normalize the generic dependency-ordered existential chain to the eight
+    synchronized table-append witnesses.  The append source proof remains on
+    the initial witnessed tail; any helper batches selected by the deep
+    continuation are reconciled before the eight [Ex-E] nodes are built. *)
+Corollary
+    raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext conclusion appendRoot
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedPALocalProofOf M sourceContext
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)) appendRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep [])
+    (rawTemplateFormula translation
+      (templateFormulaShiftMany 8 conclusion)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext []
+    (rawTemplateFormula translation conclusion).
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext conclusion
+    appendRoot modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    hsource happend hcontinuation.
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_existential_elimination_chain
+      M hPA translation sourceWitnessList sourceContext 8
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)
+      [] conclusion
+      (coqFourStateTableAppendWitnessContext
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep [])
+      appendRoot hsource
+      (coqFourStateTableAppendWitnessContext_success
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep [])
+      happend hcontinuation).
+Qed.
+
 (** Agreement on embedded PA syntax identifies the metatheoretic witnessed
     template tail with its synchronized carrier-coded context. *)
 Lemma raw_templateContextCode_embedPAAxiomWitnesses : forall
@@ -3551,6 +3935,310 @@ Proof.
         (coqFourStateTableAppendNamedClosedRowProductionTemplate
           sigmaProduction piProduction)
         hbase hsource hbaseIncluded hequalityBaseInputs).
+Qed.
+
+(** Instantiate the intervening prefix with the two premises of the literal
+    traversal row, construct both premises as represented assumption leaves,
+    run the complete case compiler, and discharge the assumptions in the
+    required [bound -> lookup -> production] order. *)
+Theorem
+    raw_codedPALocalProofOf_four_state_table_append_concrete_closed_row_implications_on_witnessed_row_context :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName rowBound sigmaProduction piProduction
+    inheritedTraversal oldLookup witnesses fixedResultRoot,
+  let baseWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M) in
+  let baseContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M) in
+  let rowPrefix := coqFourStateTableAppendRowPrefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    (ttParameter boundName)
+    (ttParameter coqFourStateTableAppendRowModeParameterName)
+    (ttParameter coqFourStateTableAppendRowFormulaParameterName)
+    (ttParameter coqFourStateTableAppendRowAssignmentCodeParameterName)
+    (ttParameter coqFourStateTableAppendRowAssignmentStepParameterName) in
+  let antecedent := coqLtSuccCasesAntecedentTemplate (ttVar 4) rowBound in
+  let rowLookup :=
+    coqFourStateTableAppendEqualityRowLookupTemplate
+      coqFourStateTableAppendRowModeParameterName
+      coqFourStateTableAppendRowFormulaParameterName
+      coqFourStateTableAppendRowAssignmentCodeParameterName
+      coqFourStateTableAppendRowAssignmentStepParameterName
+      (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0) in
+  let below := coqLtSuccCasesBelowTemplate (ttVar 4) rowBound in
+  let equalityHead := coqLtSuccCasesEqualTemplate (ttVar 4) rowBound in
+  let fixedResult :=
+    coqFourStateTableAppendNamedClosedRowProductionTemplate
+      sigmaProduction piProduction in
+  let result :=
+    coqFourStateTableAppendConcreteClosedRowProductionTemplate
+      sigmaProduction piProduction in
+  templateUniversalOpenMany inheritedTraversal
+    coqFourStateTableAppendConcreteRowVariables =
+    Some (tfImp below (tfImp oldLookup result)) ->
+  RawCodedTemplatePrefixAtomicallyAdequate M translation rowPrefix ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation antecedent) ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation rowLookup) ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation below) ->
+  equalityHead = tfEq (ttVar 4) (ttParameter boundName) ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation equalityHead) ->
+  coqFourStateTableAppendRowModeParameterName <> boundName ->
+  coqFourStateTableAppendRowFormulaParameterName <> boundName ->
+  coqFourStateTableAppendRowAssignmentCodeParameterName <> boundName ->
+  coqFourStateTableAppendRowAssignmentStepParameterName <> boundName ->
+  RawFourStateTableAppendInheritedLocalRootsAt M translation
+    baseContext rowPrefix inheritedTraversal oldLookup ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext rowPrefix)
+    (rawTemplateFormula translation fixedResult) fixedResultRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    baseWitnessList baseContext rowPrefix
+    (rawTemplateFormula translation
+      (tfImp antecedent (tfImp rowLookup result))).
+Proof.
+  intros M hPA translation hagreement
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    boundName rowBound sigmaProduction piProduction
+    inheritedTraversal oldLookup witnesses fixedResultRoot
+    baseWitnessList baseContext rowPrefix antecedent rowLookup below
+    equalityHead fixedResult result
+    hopen hrowPrefix hantecedentAdequate hrowLookupAdequate
+    hbelowAdequate hequalityHead hequalityAdequate
+    hmodeFresh hformulaFresh hassignmentCodeFresh hassignmentStepFresh
+    hinheritedRoots hfixedResult.
+  cbn zeta in *.
+  assert (hbase : RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))).
+  {
+    pose proof (raw_templateEmbeddedPAAxiomWitnessContext
+      M hPA translation hagreement witnesses) as hbaseTemplate.
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement witnesses) in hbaseTemplate.
+    exact hbaseTemplate.
+  }
+  set (actualRowPrefix := coqFourStateTableAppendRowPrefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    (ttParameter boundName)
+    (ttParameter coqFourStateTableAppendRowModeParameterName)
+    (ttParameter coqFourStateTableAppendRowFormulaParameterName)
+    (ttParameter coqFourStateTableAppendRowAssignmentCodeParameterName)
+    (ttParameter coqFourStateTableAppendRowAssignmentStepParameterName)).
+  set (actualAntecedent :=
+    coqLtSuccCasesAntecedentTemplate (ttVar 4) rowBound).
+  set (actualRowLookup :=
+    coqFourStateTableAppendEqualityRowLookupTemplate
+      coqFourStateTableAppendRowModeParameterName
+      coqFourStateTableAppendRowFormulaParameterName
+      coqFourStateTableAppendRowAssignmentCodeParameterName
+      coqFourStateTableAppendRowAssignmentStepParameterName
+      (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)).
+  set (extraPrefix := [actualRowLookup; actualAntecedent]).
+  assert (hextraPrefix :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation extraPrefix).
+  {
+    intros formula [hformula | [hformula | hformula]].
+    - subst formula. exact hrowLookupAdequate.
+    - subst formula. exact hantecedentAdequate.
+    - contradiction.
+  }
+  assert (hcombinedPrefix :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation
+        (extraPrefix ++ actualRowPrefix)).
+  {
+    intros formula hformula.
+    apply in_app_or in hformula.
+    destruct hformula as [hformula | hformula].
+    - exact (hextraPrefix formula hformula).
+    - exact (hrowPrefix formula hformula).
+  }
+  assert (hrowContext : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses (raw_zero M)) actualRowPrefix)).
+  {
+    apply (raw_templateContextOnTail_realizable M hPA).
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) hbase).
+  }
+  destruct hinheritedRoots as
+    (traversalRoot & oldLookupRoot & htraversal & holdLookup).
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) actualRowPrefix)
+    extraPrefix (rawTemplateFormula translation inheritedTraversal)
+    traversalRoot hrowContext hextraPrefix htraversal)
+    as [prefixedTraversalRoot hprefixedTraversal].
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) actualRowPrefix)
+    extraPrefix (rawTemplateFormula translation oldLookup)
+    oldLookupRoot hrowContext hextraPrefix holdLookup)
+    as [prefixedOldLookupRoot hprefixedOldLookup].
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) actualRowPrefix)
+    extraPrefix
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendNamedClosedRowProductionTemplate
+        sigmaProduction piProduction))
+    fixedResultRoot hrowContext hextraPrefix hfixedResult)
+    as [prefixedFixedResultRoot hprefixedFixedResult].
+  assert (hantecedentTail : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses (raw_zero M)) actualRowPrefix)).
+  { exact hrowContext. }
+  pose proof (raw_codedPALocalProofOf_assumption M hPA
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) actualRowPrefix)
+    (rawTemplateFormula translation actualAntecedent)
+    hantecedentTail) as hantecedentHead.
+  assert (hrowLookupSingleton :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation
+        [actualRowLookup]).
+  {
+    intros formula [hformula | hformula].
+    - subst formula. exact hrowLookupAdequate.
+    - contradiction.
+  }
+  assert (hantecedentContext : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses (raw_zero M))
+        (actualAntecedent :: actualRowPrefix))).
+  {
+    apply (raw_templateContextOnTail_realizable M hPA).
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) hbase).
+  }
+  destruct (raw_codedPALocalProof_templatePrefix
+    M hPA translation
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (actualAntecedent :: actualRowPrefix))
+    [actualRowLookup]
+    (rawTemplateFormula translation actualAntecedent)
+    (rawProofAssumptionRoot M
+      (rawListNode M (rawTemplateFormula translation actualAntecedent)
+        (rawTemplateContextCodeOnTail translation
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses (raw_zero M)) actualRowPrefix))
+      (rawTemplateFormula translation actualAntecedent))
+    hantecedentContext hrowLookupSingleton hantecedentHead)
+    as [antecedentRoot hantecedent].
+  pose proof (raw_codedPALocalProofOf_assumption M hPA
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (actualAntecedent :: actualRowPrefix))
+    (rawTemplateFormula translation actualRowLookup)
+    hantecedentContext) as hrowLookup.
+  pose proof
+    (raw_codedPALocalProofOf_four_state_table_append_concrete_closed_row_of_inherited_local_roots_on_witnessed_row_context_under_prefix
+      M hPA translation hagreement
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      boundName rowBound sigmaProduction piProduction
+      inheritedTraversal oldLookup witnesses extraPrefix
+      antecedentRoot
+      (rawProofAssumptionRoot M
+        (rawListNode M (rawTemplateFormula translation actualRowLookup)
+          (rawTemplateContextCodeOnTail translation
+            (rawStandardPAAxiomWitnessPrefixContextCode M
+              witnesses (raw_zero M))
+            (actualAntecedent :: actualRowPrefix)))
+        (rawTemplateFormula translation actualRowLookup))
+      prefixedFixedResultRoot
+      hopen hcombinedPrefix hbelowAdequate
+      hequalityHead hequalityAdequate
+      hmodeFresh hformulaFresh hassignmentCodeFresh hassignmentStepFresh
+      hantecedent
+      (ex_intro _ prefixedTraversalRoot
+        (ex_intro _ prefixedOldLookupRoot
+          (conj hprefixedTraversal hprefixedOldLookup)))
+      hrowLookup hprefixedFixedResult) as hresult.
+  destruct hresult as
+    (finalWitnessList & finalContext & resultRoot &
+      hfinalContext & hbaseFinalIncluded & hresult).
+  pose proof (raw_codedPALocalProofOf_impI M hPA
+    (rawTemplateContextCodeOnTail translation finalContext
+      (actualAntecedent :: actualRowPrefix))
+    (rawTemplateFormula translation actualRowLookup)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+        sigmaProduction piProduction))
+    resultRoot hresult) as hlookupImp.
+  rewrite <- rawTemplateFormula_imp in hlookupImp.
+  pose proof (raw_codedPALocalProofOf_impI M hPA
+    (rawTemplateContextCodeOnTail translation finalContext actualRowPrefix)
+    (rawTemplateFormula translation actualAntecedent)
+    (rawTemplateFormula translation
+      (tfImp actualRowLookup
+        (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+          sigmaProduction piProduction)))
+    (rawProofImpIRoot M
+      (rawTemplateContextCodeOnTail translation finalContext
+        (actualAntecedent :: actualRowPrefix))
+      (rawTemplateFormula translation actualRowLookup)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+          sigmaProduction piProduction)) resultRoot)
+    hlookupImp) as hboundImp.
+  rewrite <- rawTemplateFormula_imp in hboundImp.
+  unfold RawCodedPAGrowingTemplateLocalProofAt.
+  exists finalWitnessList, finalContext,
+    (rawProofImpIRoot M
+      (rawTemplateContextCodeOnTail translation finalContext actualRowPrefix)
+      (rawTemplateFormula translation actualAntecedent)
+      (rawTemplateFormula translation
+        (tfImp actualRowLookup
+          (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+            sigmaProduction piProduction)))
+      (rawProofImpIRoot M
+        (rawTemplateContextCodeOnTail translation finalContext
+          (actualAntecedent :: actualRowPrefix))
+        (rawTemplateFormula translation actualRowLookup)
+        (rawTemplateFormula translation
+          (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+            sigmaProduction piProduction)) resultRoot)).
+  split; [exact hfinalContext |].
+  split; [exact hbaseFinalIncluded | exact hboundImp].
 Qed.
 
 (** Compile [i < S b -> i < b \/ i = b] in the literal appended-row

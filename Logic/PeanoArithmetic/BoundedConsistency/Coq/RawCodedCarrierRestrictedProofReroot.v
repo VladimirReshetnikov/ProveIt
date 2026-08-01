@@ -505,6 +505,37 @@ Proof.
     exact hroot.
 Qed.
 
+(** Every displayed endpoint of the root inherits the carrier-valued formula
+    bound stored in the restricted traversal.  This is the nonstandard-level
+    counterpart of [raw_restrictedProof_endpoint_admissible]'s rank half:
+    [level] is an arbitrary model element, never decoded to a Rocq natural.
+
+    The proof uses the root marker from the certificate, specializes the
+    traversal at [root < S root], and then consumes the endpoint-occurrence
+    field of that exact root node. *)
+Theorem raw_carrierRestrictedProof_endpoint_formula_bounded : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      tail level root,
+  RawCarrierRestrictedProofAt M tail level root ->
+  forall context conclusion,
+  RawProofEndpoint M root context conclusion ->
+  RawCarrierFormulaQuantifierBounded M level conclusion.
+Proof.
+  intros M hPA tail level root
+    (supportCode & supportStep & [htraversal hrootSupported])
+    context conclusion hendpoint.
+  destruct htraversal as [hdefined hnodes].
+  pose proof (hnodes root
+    (raw_assignment_lt_self_succ M hPA root)
+    hrootSupported) as hrootNodeAt.
+  apply (proj1 (raw_carrierRestrictedProofNodeAt_iff M tail level
+    root supportCode supportStep)) in hrootNodeAt.
+  destruct hrootNodeAt as
+    [_ [_ [_ hendpointOccurrences]]].
+  exact (proj2
+    (hendpointOccurrences context conclusion hendpoint)).
+Qed.
+
 (** Shrinking the prefix does not touch any level-dependent node formula. *)
 Theorem raw_carrierRestrictedProofTraversalAt_weaken : forall
     (M : RawPAModel), RawPASatisfies M -> forall

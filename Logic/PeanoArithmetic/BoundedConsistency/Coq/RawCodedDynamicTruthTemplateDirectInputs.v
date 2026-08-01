@@ -33,6 +33,9 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateNumeralTermSyntax
   RawCodedTemplateTernaryApplication
   RawCodedTemplateTernaryApplicationFunctionality
+  RawCodedTernaryPredicateDeepClosure
+  RawCodedTernaryPredicateDeepClosureShiftInterchange
+  RawCodedTernaryPredicateDeepClosureOpeningCommuting
   RawCodedDynamicTruthSigmaSuccessorRowGraph
   RawCodedDynamicTruthUniversalLeafSourceTemplate
   RawCodedDynamicTruthTemplateNumeralParameters.
@@ -60,6 +63,9 @@ Import PABoundedRawCodedTemplateNumeralParameters.
 Import PABoundedRawCodedTemplateNumeralTermSyntax.
 Import PABoundedRawCodedTemplateTernaryApplication.
 Import PABoundedRawCodedTemplateTernaryApplicationFunctionality.
+Import PABoundedRawCodedTernaryPredicateDeepClosure.
+Import PABoundedRawCodedTernaryPredicateDeepClosureShiftInterchange.
+Import PABoundedRawCodedTernaryPredicateDeepClosureOpeningCommuting.
 Import PABoundedRawCodedDynamicTruthSigmaSuccessorRowGraph.
 Import PABoundedRawCodedDynamicTruthUniversalLeafSourceTemplate.
 Import PABoundedRawCodedDynamicTruthTemplateNumeralParameters.
@@ -143,6 +149,48 @@ Arguments rawCoqDynamicTruthTemplateTernary_shift_commuting_on_syntax
   {M lowerPiCode selector} _.
 Arguments rawCoqDynamicTruthTemplateTernary_opening_commuting_on_syntax
   {M lowerPiCode selector} _.
+
+(** Deep closure is the canonical source of both commuting laws.  Keeping
+    this adapter next to the consumer record avoids rebuilding the same pair
+    by hand in every direct-template client. *)
+Theorem
+    raw_coqDynamicTruthTemplateTernaryCommutingOnSyntax_of_deepClosed :
+    forall (M : RawPAModel), RawPASatisfies M -> forall predicate
+      (selector : RawCodedTernaryApplicationSelector M predicate),
+  RawCodedTernaryPredicateDeepClosed M predicate ->
+  RawCoqDynamicTruthTemplateTernaryCommutingOnSyntax
+    M predicate selector.
+Proof.
+  intros M hPA predicate selector hdeep.
+  constructor.
+  - exact (rawTernaryApplicationSelector_shift_commuting_on_syntax
+      M hPA predicate selector
+      (raw_codedTernaryApplicationShiftInterchange_of_deepClosed
+        M hPA predicate hdeep)).
+  - exact
+      (rawTernaryApplicationSelector_opening_commuting_on_syntax_of_deepClosed_concrete
+        M hPA predicate selector hdeep).
+Qed.
+
+(** Atomic adequacy, already included in deep closure, chooses a total
+    selector.  The preceding theorem then equips that particular choice with
+    exactly the two laws required by direct structural translation. *)
+Theorem
+    raw_coqDynamicTruthTemplateTernarySelector_exists_of_deepClosed :
+    forall (M : RawPAModel), RawPASatisfies M -> forall predicate,
+  RawCodedTernaryPredicateDeepClosed M predicate ->
+  exists selector : RawCodedTernaryApplicationSelector M predicate,
+    RawCoqDynamicTruthTemplateTernaryCommutingOnSyntax
+      M predicate selector.
+Proof.
+  intros M hPA predicate hdeep.
+  destruct (raw_codedTernaryApplicationSelector_exists
+    M hPA predicate (proj1 hdeep)) as [selector _].
+  exists selector.
+  exact
+    (raw_coqDynamicTruthTemplateTernaryCommutingOnSyntax_of_deepClosed
+      M hPA predicate selector hdeep).
+Qed.
 
 (** The native lower-row application graph is itself functional.  Its three
     intermediate codes may come from unrelated represented traversal tables,

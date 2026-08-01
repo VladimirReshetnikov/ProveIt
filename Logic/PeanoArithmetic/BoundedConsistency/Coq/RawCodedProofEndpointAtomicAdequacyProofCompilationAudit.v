@@ -1,0 +1,32 @@
+(** Public API and assumption audit for endpoint atomic adequacy projection. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedProofEndpointAtomicAdequacyProofCompilation.
+
+Import
+  PABoundedRawCodedProofEndpointAtomicAdequacyProofCompilation.
+
+Check proofEndpointAtomicAdequacyFormula.
+Check proofEndpointAtomicAdequacyUniversalFormula.
+Check raw_sat_proofEndpointAtomicAdequacyFormula_iff.
+Check PA_proves_proofEndpointAtomicAdequacyFormula.
+Check PA_proves_proofEndpointAtomicAdequacyUniversalFormula.
+Check coqProofEndpointAtomicAdequacyInstanceTemplate.
+Check coqProofEndpointAtomicAdequacyInstanceTemplate_open.
+Check coqProofEndpointAtomicAdequacyAtomicPremise.
+Check coqProofEndpointAtomicAdequacyEndpointPremise.
+Check coqProofEndpointAtomicAdequacyConclusion.
+Check coqProofEndpointAtomicAdequacyInstanceTemplate_imp2_shape.
+Check
+  raw_codedPALocalProofOf_proofEndpointAtomicAdequacy_instance_on_witnessed_tail.
+Check
+  raw_codedPALocalProofOf_proofEndpointAtomicAdequacy_of_roots_on_witnessed_extension.
+
+Print Assumptions
+  PA_proves_proofEndpointAtomicAdequacyFormula.
+Print Assumptions
+  PA_proves_proofEndpointAtomicAdequacyUniversalFormula.
+Print Assumptions
+  raw_codedPALocalProofOf_proofEndpointAtomicAdequacy_instance_on_witnessed_tail.
+Print Assumptions
+  raw_codedPALocalProofOf_proofEndpointAtomicAdequacy_of_roots_on_witnessed_extension.

@@ -1,0 +1,2740 @@
+(** Public surface and kernel-assumption audit for the generic Foundation port. *)
+
+From Foundation.Vorspiel Require Import ExistsUnique.
+From Foundation.Vorspiel Require Import Basic.
+From Foundation.Vorspiel Require Import NotationClass.
+From Foundation.Vorspiel Require Import Quotient.
+From Foundation.Vorspiel Require Import Small.
+From Foundation.Vorspiel Require Import String.
+From Foundation.Vorspiel Require Import Fintype.
+From Foundation.Vorspiel Require Import Denumerable.
+From Foundation.Vorspiel Require Import Graph.
+From Foundation.Vorspiel Require Import Part.
+From Foundation.Vorspiel Require Import ENat.
+From Foundation.Vorspiel Require Import DMatrix.
+From Foundation.Vorspiel Require Import Matrix.
+From Foundation.Vorspiel Require Import Arithmetic.
+From Foundation.Vorspiel.Fin Require Import Basic.
+From Foundation.Vorspiel.Fin Require Import Matrix.
+From Foundation.Vorspiel.Finset Require Import Card.
+From Foundation.Vorspiel.Finset Require Import Basic.
+From Foundation.Vorspiel.List Require Import Basic.
+From Foundation.Vorspiel.List Require Import Chain.
+From Foundation.Vorspiel.List Require Import ChainI.
+From Foundation.Vorspiel.List Require Import Perm.
+From Foundation.Vorspiel.Nat Require Import Basic.
+From Foundation.Vorspiel.Nat Require Import Matrix.
+From Foundation.Vorspiel.Set Require Import Basic.
+From Foundation.Vorspiel.Set Require Import Cofinite.
+From Foundation.Vorspiel.Set Require Import Fin.
+From Foundation.Vorspiel.Order Require Import Heyting.
+From Foundation.Vorspiel.Order Require Import Lattice.
+From Foundation.Vorspiel.Order Require Import Dense.
+From Foundation.Vorspiel.Order Require Import Ideal.
+From Foundation.Vorspiel.Order Require Import LowerSet.
+From Foundation.Vorspiel.Order Require Import Regular.
+From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
+From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
+From Foundation.Syntax.Predicate Require Import Rew.
+From Foundation.FirstOrder.Basic Require Import Operator.
+From Foundation.FirstOrder.Basic Require Import Model.
+From Foundation.FirstOrder.Basic Require Import Definability.
+From Foundation.FirstOrder.Basic Require Import Calculus.
+From Foundation.FirstOrder.Basic Require Import Calculus2.
+From Foundation.FirstOrder.Basic Require Import Padding.
+From Foundation.FirstOrder.Basic Require Import Eq.
+From Foundation.FirstOrder.Basic Require Import Coding.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
+From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.Q Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Q.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Functions.
+From Foundation.FirstOrder.Arithmetic Require Import Schemata.
+From Foundation.FirstOrder.Arithmetic.IOpen Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
+From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
+From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
+From Foundation.FirstOrder.Arithmetic.TA Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
+From Foundation.FirstOrder.Basic Require Import Soundness.
+From Foundation.FirstOrder.Basic Require Import CutFree.
+From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
+From Foundation.FirstOrder.Basic.Semantics Require Import RewriteClosure.
+From Foundation.FirstOrder.Basic.Semantics Require Import OperatorSemantics.
+From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
+From Foundation.FirstOrder.Basic.Semantics Require Import Elementary.
+From Foundation.FirstOrder Require Import Polarity.
+From Foundation.Syntax.Predicate Require Import Relational.
+From Foundation.LinearLogic Require Import LogicSymbol MLL MELL.
+From Foundation.LinearLogic.FirstOrder Require Import
+  Formula Rew Calculus ClassicalEmbedding.
+
+Check choose_unique.
+Print Assumptions choose_unique_spec.
+Print Assumptions choose_unique_uniq.
+Print Assumptions choose_unique_eq_iff_right.
+Print Assumptions choose_unique_eq_iff_left.
+Print Assumptions exists_unique_extend.
+Check extended_choose_unique.
+Print Assumptions extended_choose_unique_spec.
+Print Assumptions extended_choose_unique_spec_not.
+Print Assumptions extended_choose_unique_uniq.
+Print Assumptions extended_choose_unique_eq_iff.
+Print Assumptions empty_function_unique.
+Check type_is_empty.
+Check empty_type_elim.
+Print Assumptions empty_type_function_unique.
+Check lo_tilde.
+Check lo_arrow.
+Check lo_wedge.
+Check lo_vee.
+Check lo_box.
+Check lo_dia.
+Check lo_rhd.
+Check lo_tensor.
+Check lo_par.
+Check lo_with.
+Check lo_plus.
+Check lo_lolli.
+Check lo_bang.
+Check lo_quest.
+Check lo_exp.
+Check lo_smash.
+Check lo_length.
+Check lo_godel_quote.
+Check lo_sigma_symbol.
+Check lo_pi_symbol.
+Check lo_delta_symbol.
+Check explicit_quotient.
+Check quotient_vec_mk.
+Print Assumptions quotient_vec_induction.
+Check quotient_vec_lift.
+Print Assumptions quotient_vec_lift_zero.
+Print Assumptions quotient_vec_lift_mk.
+Print Assumptions quotient_vec_lift_mk_one.
+Print Assumptions quotient_vec_lift_mk_two.
+Print Assumptions option_return_eq_some.
+Check option_to_list.
+Print Assumptions option_to_list_singleton_iff.
+Check function_equal_on.
+Print Assumptions function_equal_on_subset.
+Check predicate_small.
+Check predicate_preimage.
+Print Assumptions small_preimage_of_injective.
+Check fin_string_join.
+Check fin_vec_to_string.
+Print Assumptions fin_string_join_zero.
+Print Assumptions fin_string_join_one.
+Print Assumptions fin_string_join_many.
+Print Assumptions fin_vec_to_string_zero.
+Print Assumptions fin_vec_to_string_one.
+Print Assumptions fin_vec_to_string_many.
+Check finite_cover_data.
+Check finite_cover_sup.
+Print Assumptions finite_cover_elem_le_sup.
+Print Assumptions finite_cover_sup_le_iff.
+Print Assumptions finite_cover_sup_empty.
+Check list_dependent_eq_dec.
+Print Assumptions finite_cover_dependent_eq_dec.
+Print Assumptions cantor_of_nat_components_le.
+Check denumerable_nat_list_fuel.
+Check denumerable_nat_list.
+Print Assumptions denumerable_nat_list_fuel_member_lt.
+Print Assumptions denumerable_nat_list_member_lt.
+Check function_graph_vector.
+Check function_graph.
+Check function_graph2.
+Check function_graph3.
+Check function_graph4.
+Check function_graph5.
+Print Assumptions function_graph_eq.
+Print Assumptions function_graph_iff_left.
+Print Assumptions function_graph_iff_right.
+Print Assumptions function_graph2_eq.
+Print Assumptions function_graph2_iff_left.
+Print Assumptions function_graph2_iff_right.
+Print Assumptions function_graph3_eq.
+Print Assumptions function_graph3_iff_left.
+Print Assumptions function_graph3_iff_right.
+Check partial_value.
+Check partial_dom.
+Check partial_some.
+Check partial_none.
+Check partial_bind.
+Check partial_map.
+Print Assumptions partial_bind_some.
+Print Assumptions partial_map_member_iff.
+Check partial_find_zero.
+Print Assumptions partial_find_zero_member_iff.
+Check fin_partial_product.
+Print Assumptions fin_partial_product_member_iff.
+Print Assumptions partial_unit_dom_iff.
+Check enat.
+Check enat_top.
+Check enat_le.
+Check enat_lt.
+Check enat_find.
+Print Assumptions enat_find_exists_spec.
+Print Assumptions enat_lt_find.
+Print Assumptions enat_exists_of_find_le.
+Print Assumptions enat_find_eq_top_iff.
+Print Assumptions enat_find_le.
+Check dvec_empty.
+Check dvec_cons.
+Print Assumptions dvec_cons_zero.
+Print Assumptions dvec_cons_succ.
+Print Assumptions dvec_eta.
+Print Assumptions dvec_cons_ext_iff.
+Check fin_cover_data.
+Print Assumptions dvec_eq_dec.
+Check matrix_vec_empty.
+Check matrix_vec_cons.
+Check matrix_vec_head.
+Check matrix_vec_tail.
+Print Assumptions matrix_vec_cons_zero.
+Print Assumptions matrix_vec_cons_succ.
+Print Assumptions matrix_vec_eta.
+Print Assumptions matrix_vec_cons_ext_iff.
+Check matrix_vec_eq_dec.
+Check matrix_vec_map.
+Print Assumptions matrix_vec_map_cons.
+Print Assumptions matrix_vec_map_comp.
+Check matrix_vec_to_list.
+Print Assumptions matrix_vec_to_list_length.
+Print Assumptions matrix_vec_to_list_member_iff.
+Check matrix_vec_foldr.
+Check matrix_vec_foldl.
+Print Assumptions matrix_vec_foldr_succ.
+Print Assumptions matrix_vec_foldl_succ.
+Print Assumptions matrix_vec_forall_iff.
+Print Assumptions matrix_vec_exists_iff.
+Check matrix_vec_option_sequence.
+Print Assumptions matrix_vec_option_sequence_some.
+Print Assumptions matrix_vec_cons_injective.
+Check matrix_vec_append.
+Print Assumptions matrix_vec_append_zero.
+Print Assumptions matrix_vec_append_cons.
+Print Assumptions matrix_vec_append_left.
+Print Assumptions matrix_vec_append_right.
+Check matrix_vec_singleton.
+Check matrix_vec_snoc.
+Print Assumptions matrix_vec_snoc_left.
+Print Assumptions matrix_vec_snoc_last.
+Print Assumptions matrix_vec_snoc_cons.
+Print Assumptions matrix_vec_map_append.
+Check matrix_vec_to_nat.
+Print Assumptions matrix_vec_to_nat_empty.
+Print Assumptions matrix_vec_to_nat_cons.
+Check fin_vec_pointwise.
+Print Assumptions fin_vec_forall_bounded_iff.
+Print Assumptions fin_vec_exists_bounded_iff.
+Print Assumptions fin_vec_forall_iff.
+Print Assumptions fin_vec_exists_iff.
+Check nat_to_matrix_vec.
+Print Assumptions nat_to_matrix_vec_encode.
+Print Assumptions nat_to_matrix_vec_member_lt.
+Check nat_truth_eq.
+Check nat_truth_lt.
+Check nat_truth_le.
+Check nat_truth_dvd.
+Print Assumptions nat_truth_eq_positive_iff.
+Print Assumptions nat_truth_lt_positive_iff.
+Print Assumptions nat_truth_le_positive_iff.
+Print Assumptions nat_truth_dvd_positive_iff.
+Check nat_truth_inv.
+Check nat_truth_pos.
+Check nat_truth_and.
+Check nat_truth_or.
+Print Assumptions nat_truth_inv_eq_zero_iff.
+Print Assumptions nat_truth_and_positive_iff.
+Print Assumptions nat_truth_or_positive_iff.
+Check nat_bounded_all.
+Print Assumptions nat_bounded_all_positive_iff.
+Print Assumptions nat_bounded_all_eq_zero_iff.
+Print Assumptions nat_bounded_all_eq_one_iff_positive.
+Check arith_partial_function.
+Check arith_partial_comp.
+Check arith_find_on.
+Check arith_part1.
+Check arithmetic1.
+Print Assumptions arith_find_on_member_iff.
+Print Assumptions arith_partial_comp_some_member_iff.
+Print Assumptions arithmetic1_zero.
+Print Assumptions arithmetic1_one.
+Print Assumptions arithmetic1_add.
+Print Assumptions arithmetic1_mul.
+Print Assumptions arithmetic1_proj.
+Print Assumptions arithmetic1_equal.
+Print Assumptions arithmetic1_lt.
+Print Assumptions arithmetic1_comp.
+Check arithmetic1_unary.
+Check arithmetic1_binary.
+Print Assumptions arithmetic1_comp1.
+Print Assumptions arithmetic1_comp2.
+Print Assumptions arithmetic1_succ.
+Print Assumptions arithmetic1_const.
+Print Assumptions arithmetic1_inv.
+Print Assumptions arithmetic1_pos.
+Print Assumptions arithmetic1_and.
+Print Assumptions arithmetic1_or.
+Print Assumptions nat_truth_le_as_or.
+Print Assumptions arithmetic1_le.
+Print Assumptions nat_truth_if_positive.
+Print Assumptions arithmetic1_if_positive.
+Check arith_find_positive_on.
+Print Assumptions arith_part1_find_positive.
+Print Assumptions arith_find_positive_on_member_iff.
+Check nat_sub_test.
+Print Assumptions nat_sub_test_positive_iff.
+Print Assumptions nat_sub_least_test.
+Print Assumptions arithmetic1_sub_test.
+Print Assumptions arithmetic1_sub.
+Check nat_pair.
+Print Assumptions nat_truth_lt_branch.
+Print Assumptions arithmetic1_pair.
+Check nat_sqrt_test.
+Print Assumptions nat_sqrt_test_positive_iff.
+Print Assumptions nat_sqrt_least_test.
+Print Assumptions arithmetic1_sqrt_test.
+Print Assumptions arithmetic1_sqrt.
+Print Assumptions arithmetic1_if_lt.
+Check nat_square_remainder.
+Print Assumptions arithmetic1_square_remainder.
+Check nat_unpair.
+Print Assumptions arithmetic1_unpair1.
+Print Assumptions arithmetic1_unpair2.
+Check arith_partial_cons.
+Print Assumptions arith_part1_partial_cons.
+Print Assumptions arith_part1_map_total.
+Print Assumptions nat_least_decidable_bound.
+Check nat_dvd_witness_test.
+Print Assumptions nat_dvd_witness_test_positive_iff.
+Print Assumptions nat_truth_le_boolean.
+Print Assumptions nat_truth_dvd_boolean.
+Print Assumptions nat_dvd_witness_least_iff.
+Print Assumptions nat_dvd_witness_least_value.
+Print Assumptions nat_dvd_witness_least_exists.
+Print Assumptions arithmetic1_dvd_witness_test.
+Print Assumptions arithmetic1_dvd.
+Check nat_rem_test.
+Print Assumptions nat_rem_test_positive_iff.
+Print Assumptions nat_divides_sub_mod.
+Print Assumptions nat_rem_is_least.
+Print Assumptions nat_rem_least_test.
+Print Assumptions arithmetic1_rem_test.
+Print Assumptions arithmetic1_rem.
+Check nat_beta.
+Print Assumptions arithmetic1_beta.
+Print Assumptions arithmetic1_tail.
+Check nat_bounded_all_search.
+Print Assumptions nat_bounded_all_search_positive_iff.
+Print Assumptions nat_bounded_all_search_least_exists.
+Print Assumptions nat_bounded_all_search_least_value.
+Print Assumptions arithmetic1_bounded_all.
+Check mll_formula.
+Check mll_neg.
+Print Assumptions mll_neg_involutive.
+Check mll_lolli.
+Check mll_derivation.
+Check mll_id.
+Check mll_cut.
+Check mll_exchange.
+Check mll_tensor_rule.
+Check mll_par_rule.
+Print Assumptions mll_rotate.
+Print Assumptions mll_identity.
+Print Assumptions mll_identity_proof.
+Print Assumptions mll_modus_ponens.
+Print Assumptions mll_excluded_middle.
+Check mell_formula.
+Check mell_neg.
+Print Assumptions mell_neg_involutive.
+Check mell_lolli.
+Check mell_formula_is_quest.
+Print Assumptions mell_formula_is_quest_not_atom.
+Print Assumptions mell_formula_is_quest_not_natom.
+Print Assumptions mell_formula_is_quest_not_tensor.
+Print Assumptions mell_formula_is_quest_not_par.
+Print Assumptions mell_formula_is_quest_not_bang.
+Print Assumptions mell_formula_is_quest_quest.
+Check mell_sequent_is_quest.
+Print Assumptions mell_sequent_is_quest_nil.
+Print Assumptions mell_sequent_is_quest_cons.
+Check mell_derivation.
+Check mell_id.
+Check mell_cut.
+Check mell_exchange.
+Check mell_tensor_rule.
+Check mell_par_rule.
+Check mell_bang_rule.
+Check mell_dereliction.
+Print Assumptions mell_rotate.
+Print Assumptions mell_eta.
+Print Assumptions mell_identity_proof.
+Print Assumptions mell_modus_ponens.
+Check multiplicative_connective.
+Check multiplicative_neutral.
+Check additive_connective.
+Check additive_neutral.
+Check exponential_connective.
+Check multiplicative_de_morgan.
+Check multiplicative_neutral_de_morgan.
+Check additive_de_morgan.
+Check additive_neutral_de_morgan.
+Check exponential_de_morgan.
+Check linear_lolli.
+Print Assumptions linear_lolli_def.
+Print Assumptions linear_tensor_eq_iff.
+Print Assumptions linear_par_eq_iff.
+Print Assumptions involutive_injective.
+Print Assumptions linear_lolli_eq_iff.
+Print Assumptions linear_with_eq_iff.
+Print Assumptions linear_plus_eq_iff.
+Print Assumptions linear_bang_eq_iff.
+Print Assumptions linear_quest_eq_iff.
+Check linear_list_quest.
+Print Assumptions linear_list_quest_def.
+Print Assumptions linear_list_quest_nil.
+Print Assumptions linear_list_quest_cons.
+Print Assumptions linear_list_quest_append.
+Check llfo_semiformula.
+Check LLRel.
+Check LLNRel.
+Check LLOne.
+Check LLFalsum.
+Check LLTensor.
+Check LLPar.
+Check LLVerum.
+Check LLZero.
+Check LLWith.
+Check LLPlus.
+Check LLBang.
+Check LLQuest.
+Check LLAll.
+Check LLExs.
+Check llfo_multiplicative_connective.
+Check llfo_multiplicative_neutral.
+Check llfo_additive_connective.
+Check llfo_additive_neutral.
+Check llfo_exponential_connective.
+Print Assumptions llfo_all_injective.
+Print Assumptions llfo_exs_injective.
+Check llfo_neg.
+Print Assumptions llfo_neg_rel.
+Print Assumptions llfo_neg_nrel.
+Print Assumptions llfo_neg_all.
+Print Assumptions llfo_neg_exs.
+Print Assumptions llfo_neg_involutive.
+Print Assumptions llfo_neg_eq_iff.
+Check llfo_lolli.
+Check llfo_wedge.
+Check llfo_vee.
+Check llfo_imply.
+Check llfo_complexity.
+Print Assumptions llfo_complexity_neg.
+Check llfo_is_quest.
+Print Assumptions llfo_is_quest_quest.
+Print Assumptions llfo_is_quest_not_bang.
+Print Assumptions llfo_is_quest_not_tensor.
+Print Assumptions llfo_is_quest_not_par.
+Print Assumptions llfo_is_quest_not_all.
+Print Assumptions llfo_is_quest_not_exs.
+Print Assumptions llfo_is_quest_not_rel.
+Print Assumptions llfo_is_quest_not_nrel.
+Print Assumptions llfo_is_quest_not_one.
+Print Assumptions llfo_is_quest_not_falsum.
+Print Assumptions llfo_is_quest_not_verum.
+Print Assumptions llfo_is_quest_not_zero.
+Print Assumptions llfo_is_quest_not_with.
+Print Assumptions llfo_is_quest_not_plus.
+Check llfo_negative.
+Check LLNegativeQuest.
+Check LLNegativeVerum.
+Check LLNegativeFalsum.
+Check LLNegativePar.
+Check LLNegativeWith.
+Check LLNegativeAll.
+Check llfo_positive.
+Check LLPositiveBang.
+Check LLPositiveZero.
+Check LLPositiveOne.
+Check LLPositiveTensor.
+Check LLPositivePlus.
+Check LLPositiveExs.
+Print Assumptions llfo_negative_par_iff.
+Print Assumptions llfo_negative_with_iff.
+Print Assumptions llfo_negative_all_iff.
+Print Assumptions llfo_positive_tensor_iff.
+Print Assumptions llfo_positive_plus_iff.
+Print Assumptions llfo_positive_exs_iff.
+Print Assumptions llfo_neg_positive_iff_negative.
+Print Assumptions llfo_neg_negative_iff_positive.
+Print Assumptions llfo_positive_negative_disjoint.
+Check llfo_rewrite.
+Print Assumptions llfo_rewrite_rel.
+Print Assumptions llfo_rewrite_nrel.
+Print Assumptions llfo_rewrite_one.
+Print Assumptions llfo_rewrite_falsum.
+Print Assumptions llfo_rewrite_tensor.
+Print Assumptions llfo_rewrite_par.
+Print Assumptions llfo_rewrite_verum.
+Print Assumptions llfo_rewrite_zero.
+Print Assumptions llfo_rewrite_with.
+Print Assumptions llfo_rewrite_plus.
+Print Assumptions llfo_rewrite_bang.
+Print Assumptions llfo_rewrite_quest.
+Print Assumptions llfo_rewrite_all.
+Print Assumptions llfo_rewrite_exs.
+Print Assumptions llfo_rewrite_neg.
+Print Assumptions llfo_rewrite_ext.
+Print Assumptions llfo_rewrite_id.
+Print Assumptions llfo_rewrite_comp.
+Print Assumptions llfo_complexity_rewrite.
+Print Assumptions llfo_negative_rewrite_iff.
+Print Assumptions llfo_positive_rewrite_iff.
+Print Assumptions llfo_is_quest_rewrite_iff.
+Print Assumptions llfo_rewrite_lolli.
+Check llfo_map.
+Check llfo_emb.
+Check llfo_shift.
+Check llfo_free.
+Check llfo_substitute.
+Print Assumptions llfo_substitute_shift_one_eq_free.
+Print Assumptions llfo_substitute_neg_shift_one_eq_neg_free.
+Print Assumptions llfo_free_neg.
+Print Assumptions llfo_shift_neg.
+Print Assumptions llfo_shift_exs.
+Check llfo_sequent.
+Check llfo_sequent_is_quest.
+Check llfo_sequent_negative.
+Print Assumptions llfo_sequent_is_quest_nil.
+Print Assumptions llfo_sequent_is_quest_cons.
+Print Assumptions llfo_sequent_negative_nil.
+Print Assumptions llfo_sequent_negative_cons.
+Print Assumptions llfo_quest_sequent_is_quest.
+Check llfo_derivation.
+Check LLDIdentity.
+Check LLDCut.
+Check LLDExchange.
+Check LLDOne.
+Check LLDFalsum.
+Check LLDTensor.
+Check LLDPar.
+Check LLDVerum.
+Check LLDWith.
+Check LLDPlusLeft.
+Check LLDPlusRight.
+Check LLDOfCourse.
+Check LLDWeakening.
+Check LLDDereliction.
+Check LLDContraction.
+Check LLDAll.
+Check LLDExs.
+Check llfo_derivation_height.
+Print Assumptions llfo_height_identity.
+Print Assumptions llfo_height_cut.
+Print Assumptions llfo_height_exchange.
+Print Assumptions llfo_height_one.
+Print Assumptions llfo_height_falsum.
+Print Assumptions llfo_height_tensor.
+Print Assumptions llfo_height_par.
+Print Assumptions llfo_height_verum.
+Print Assumptions llfo_height_with.
+Print Assumptions llfo_height_plus_left.
+Print Assumptions llfo_height_plus_right.
+Print Assumptions llfo_height_of_course.
+Print Assumptions llfo_height_weakening.
+Print Assumptions llfo_height_dereliction.
+Print Assumptions llfo_height_contraction.
+Print Assumptions llfo_height_all.
+Print Assumptions llfo_height_exs.
+Print Assumptions llfo_height_cast.
+Check llfo_eta.
+Check llfo_identity_proof.
+Print Assumptions llfo_modus_ponens.
+Print Assumptions llfo_excluded_middle.
+Print Assumptions llfo_exp_comm.
+Print Assumptions llfo_add_quest_append_right.
+Print Assumptions llfo_add_quest_tail.
+Print Assumptions llfo_sequent_is_quest_singleton.
+Print Assumptions llfo_of_negative_par_step.
+Print Assumptions llfo_of_negative_with_step.
+Print Assumptions llfo_of_negative_all_step.
+Print Assumptions llfo_of_negative_rewrite.
+Print Assumptions llfo_of_negative.
+Print Assumptions llfo_remove_quest.
+Print Assumptions llfo_negative_weakening.
+Print Assumptions llfo_negative_contraction.
+Print Assumptions llfo_remove_quest_append_right.
+Print Assumptions llfo_remove_quest_tail.
+Print Assumptions llfo_negative_of_course.
+Print Assumptions llfo_negative_comp_subset.
+Print Assumptions llfo_negative_wk.
+Check llfo_forget.
+Print Assumptions llfo_forget_rel.
+Print Assumptions llfo_forget_nrel.
+Print Assumptions llfo_forget_one.
+Print Assumptions llfo_forget_verum.
+Print Assumptions llfo_forget_falsum.
+Print Assumptions llfo_forget_zero.
+Print Assumptions llfo_forget_tensor.
+Print Assumptions llfo_forget_with.
+Print Assumptions llfo_forget_par.
+Print Assumptions llfo_forget_plus.
+Print Assumptions llfo_forget_bang.
+Print Assumptions llfo_forget_quest.
+Print Assumptions llfo_forget_all.
+Print Assumptions llfo_forget_exs.
+Print Assumptions llfo_forget_neg.
+Print Assumptions llfo_forget_rewrite.
+Check llfo_girard.
+Print Assumptions llfo_girard_rel.
+Print Assumptions llfo_girard_nrel.
+Print Assumptions llfo_girard_verum.
+Print Assumptions llfo_girard_falsum.
+Print Assumptions llfo_girard_neg.
+Print Assumptions llfo_girard_rewrite.
+Check llfo_Girard.
+Print Assumptions llfo_Girard_rewrite.
+Print Assumptions llfo_girard_negative.
+Print Assumptions llfo_girard_positive.
+Print Assumptions llfo_girard_negative_iff.
+Print Assumptions llfo_girard_positive_iff.
+Print Assumptions llfo_Girard_negative.
+Check llfo_girard_sequent.
+Print Assumptions llfo_girard_sequent_negative.
+Print Assumptions llfo_girard_sequent_shift.
+Print Assumptions llfo_girard_sequent_app.
+Print Assumptions llfo_girard_sequent_incl.
+Print Assumptions list_in_of_generic_list_member.
+Print Assumptions llfo_girard_identity.
+Print Assumptions llfo_girard_cut_step.
+Print Assumptions llfo_girard_contraction_step.
+Print Assumptions llfo_girard_verum_step.
+Print Assumptions llfo_girard_or_step.
+Print Assumptions llfo_forget_girard.
+Print Assumptions llfo_forget_Girard.
+Check llfo_forget_sequent.
+Print Assumptions llfo_forget_sequent_shift.
+Print Assumptions llfo_forget_permutation_subset.
+Check llfo_derivation_forget.
+Print Assumptions llfo_proof_forget.
+Print Assumptions list_permutation_two_iff.
+Check list_comp_subset.
+Print Assumptions list_permutation_normalize.
+Print Assumptions list_comp_subset_contract.
+Print Assumptions list_comp_subset_trans.
+Print Assumptions list_comp_subset_cons.
+Print Assumptions list_incl_to_comp_subset.
+Check list_chainI.
+Print Assumptions list_chainI_not_nil.
+Print Assumptions list_chainI_singleton_iff.
+Print Assumptions list_chainI_head_eq.
+Print Assumptions list_chainI_cons_cons_iff.
+Print Assumptions list_chainI_tail_exists.
+Print Assumptions list_chainI_suffix_exists.
+Print Assumptions list_chainI_prefix_suffix.
+Print Assumptions list_chainI_last_eq.
+Print Assumptions list_chainI_endpoints_unique.
+Print Assumptions list_chainI_not_mem_predecessor.
+Print Assumptions list_chainI_nodup.
+Print Assumptions chainI_lists_explicit_finite_cover.
+Print Assumptions list_chainI_predecessor_exists.
+Print Assumptions list_chainI_append_point_iff.
+Print Assumptions list_chainI_relation_of_adjacent_infix.
+Print Assumptions list_chainI_infix_of_prefixed_suffix.
+Check list_strict_inclusion.
+Print Assumptions list_strict_inclusion_of_incl_lt_length.
+Print Assumptions list_length_eq_of_eq.
+Check list_nat_sum.
+Print Assumptions list_nat_sum_le_length_mul.
+Print Assumptions list_doubleton_incl_iff.
+Print Assumptions list_strict_inclusion_length_lt.
+Print Assumptions no_list_strict_descending_chain.
+Check finite_range.
+Print Assumptions finite_range_member_iff.
+Check list_image.
+Print Assumptions list_image_member_iff.
+Print Assumptions list_image_member.
+Print Assumptions set_remove_union_equiv.
+Check explicit_equiv.
+Check finite_cover_transport.
+Print Assumptions finite_cover_transport_member.
+Print Assumptions finite_cover_sup_reindex_equiv.
+Print Assumptions list_flat_map_empty_iff.
+Print Assumptions fin_zero_eta.
+Print Assumptions nat_sub_one_lt_nonzero.
+Print Assumptions vorspiel_fin_enum_complete.
+Print Assumptions vorspiel_fin_enum_nodup.
+Print Assumptions no_fin_embedding_to_smaller.
+Print Assumptions nat_lt_next_fin_last.
+Print Assumptions vorspiel_fin_le_last_nonzero.
+Print Assumptions vorspiel_fin_positive_of_value_nonzero.
+Print Assumptions vorspiel_fin_of_nat_positive.
+Print Assumptions fin_forall_succ_iff.
+Print Assumptions fin_exists_succ_iff.
+Print Assumptions fin_add_cast_value.
+Print Assumptions fin_one_eq_zero.
+Print Assumptions fin_one_not_positive.
+Print Assumptions list_subset_bool_true_iff.
+Print Assumptions list_member_lt_upper.
+Print Assumptions list_nth_map_seq.
+Print Assumptions list_member_le_join.
+Print Assumptions list_of_fin_length.
+Print Assumptions list_of_fin_member_iff.
+Print Assumptions list_of_fin_map.
+Print Assumptions list_fin_member_le_join.
+Print Assumptions list_remove_all_member_iff.
+Print Assumptions list_remove_all_mono.
+Print Assumptions list_remove_all_map_incl.
+Print Assumptions list_induction_with_singleton.
+Check list_rec_with_singleton.
+Print Assumptions list_boundary_of_not_suffix.
+Print Assumptions list_suffix_eq_or_cons.
+Print Assumptions list_suffix_trichotomy.
+Print Assumptions list_exists_of_map_seq.
+Print Assumptions list_nodup_iff_indexed_distinct.
+Print Assumptions list_words_up_to_complete.
+Print Assumptions nodup_lists_explicit_finite_cover.
+Print Assumptions list_singleton_suffix_unique.
+Check list_chain.
+Print Assumptions list_member_index.
+Print Assumptions list_member_indices_distinct.
+Print Assumptions list_chain_map.
+Print Assumptions list_chain_range_strict_mono.
+Print Assumptions list_chain_range_strict_anti.
+Print Assumptions list_chain_seq.
+Print Assumptions fin_value_FS.
+Print Assumptions fin_enum_nth_error_value.
+Print Assumptions list_chain_fin_enum.
+Print Assumptions list_chain_fin_enum_strict_mono.
+Print Assumptions list_chain_fin_enum_strict_anti.
+Print Assumptions list_chain_connected.
+Print Assumptions list_chain_nodup.
+Print Assumptions chain_lists_explicit_finite_cover.
+Print Assumptions list_chain_rev.
+Print Assumptions list_chain_fin_enum_rev.
+Print Assumptions list_chain_app_singleton_iff.
+Print Assumptions list_chain_head_relation.
+Print Assumptions list_chain_head_lower.
+Print Assumptions list_chain_last_relation.
+Print Assumptions list_chain_last_upper.
+Print Assumptions list_chain_app_singleton_last_iff.
+Check chain_list_index.
+Print Assumptions chain_list_index_member.
+Print Assumptions chain_list_index_injective_of_nodup.
+Check type_embedding.
+Print Assumptions list_embedding_of_nodup_length.
+Check nat_cases.
+Print Assumptions nat_cases_zero.
+Print Assumptions nat_cases_succ.
+Print Assumptions nat_ne_succ_max_left.
+Print Assumptions nat_ne_succ_max_right.
+Print Assumptions nat_fold_ext_below.
+Print Assumptions nat_least_number.
+Check nat_to_fin.
+Print Assumptions nat_positive_of_nonzero.
+Print Assumptions nat_one_le_of_odd.
+Print Assumptions nat_square_pair_monotone.
+Check pred_set.
+Check set_subset.
+Print Assumptions set_doubleton_subset_iff.
+Print Assumptions set_subset_insert_iff_remove.
+Print Assumptions set_strict_subset_of_subset_not_equiv.
+Print Assumptions finite_list_subset_chain_union.
+Print Assumptions finite_family_subset_chain_union.
+Check pointed_set_enumeration.
+Check set_finite_approximation.
+Print Assumptions set_finite_approximation_member_iff.
+Print Assumptions set_finite_approximation_nodup.
+Print Assumptions set_finite_approximation_strict.
+Print Assumptions set_finite_approximation_subset.
+Print Assumptions set_finite_approximation_complete.
+Print Assumptions infinitely_finite_approximate.
+Check set_finitely_covered.
+Check set_cofinite.
+Check set_coinfinite.
+Print Assumptions set_finitely_covered_subset.
+Print Assumptions set_coinfinite_iff_not_cofinite.
+Print Assumptions set_cofinite_iff_not_coinfinite.
+Print Assumptions set_cofinite_subset.
+Print Assumptions set_coinfinite_subset.
+Print Assumptions set_full_cofinite.
+Print Assumptions set_cofinite_union_left.
+Print Assumptions set_cofinite_union_right.
+Print Assumptions fin1_full_equiv_singleton.
+Print Assumptions fin1_set_cases.
+Print Assumptions fin1_powerset_iff.
+Print Assumptions fin2_full_equiv_pair.
+Print Assumptions fin2_singleton_not_full.
+Print Assumptions fin2_set_cases.
+Print Assumptions fin2_powerset_iff.
+Print Assumptions fin2_complement_one_equiv_zero.
+Print Assumptions fin2_complement_zero_equiv_one.
+Print Assumptions fin3_full_equiv_triple.
+Check heyting_algebra_data.
+Print Assumptions ha_inf_mono.
+Print Assumptions ha_himp_himp_inf_himp_inf_le.
+Print Assumptions ha_himp_inf_himp_inf_sup_le.
+Print Assumptions ha_complement_of_sup_equiv_inf_complements.
+Check finite_fold.
+Print Assumptions finite_fold_filter_all.
+Print Assumptions finite_sup_filter_all.
+Print Assumptions finite_inf_filter_all.
+Check join_order_data.
+Check order_ideal.
+Print Assumptions principal_ideal_member_iff.
+Print Assumptions bottom_ideal_member_eq_iff.
+Print Assumptions principal_ideal_least.
+Print Assumptions ideal_join_list_member_bound.
+Print Assumptions ideal_join_list_least_upper.
+Print Assumptions ideal_join_list_member.
+Print Assumptions principal_ideal_join_list_least.
+Print Assumptions ideal_join_list_app_left.
+Print Assumptions ideal_join_list_app_right.
+Check generated_ideal.
+Print Assumptions generated_principal_list_member_iff.
+Check ideal_family_sup.
+Print Assumptions ideal_family_sup_member_iff.
+Print Assumptions ideal_family_sup_contains.
+Print Assumptions ideal_family_sup_least.
+Print Assumptions ideal_supremum_member_downward.
+Print Assumptions ideal_proper_iff_top_not_member.
+Check ideal_prime_pair.
+Print Assumptions prime_pair_not_filter_iff_ideal.
+Print Assumptions prime_pair_not_ideal_iff_filter.
+Check boolean_order_data.
+Check boolean_prime_ideal.
+Print Assumptions boolean_prime_pair_ideal_or_compl.
+Print Assumptions boolean_prime_pair_filter_or_compl.
+Print Assumptions boolean_prime_pair_compl_ideal_iff_filter.
+Print Assumptions boolean_prime_pair_compl_filter_iff_ideal.
+Print Assumptions boolean_prime_pair_meet_ideal_iff.
+Print Assumptions boolean_prime_pair_join_filter_iff.
+Print Assumptions boolean_prime_pair_himp_filter_iff.
+Check preorder_data.
+Check directed_on.
+Print Assumptions directed_list_colimit.
+Print Assumptions directed_finite_family_colimit.
+Check order_compatible.
+Print Assumptions order_compatible_sym_iff.
+Print Assumptions order_incompatible_iff.
+Print Assumptions order_incompatible_lower.
+Check order_dense.
+Check order_dense_below.
+Check dense_set.
+Check dense_choose.
+Print Assumptions dense_choose_le.
+Print Assumptions dense_choose_member.
+Check order_pfilter.
+Check principal_pfilter.
+Check descending_chain.
+Check pfilter_of_descending_chain.
+Print Assumptions pfilter_of_descending_chain_member_iff.
+Check pfilter_generic.
+Check dense_family_countable.
+Print Assumptions nat_relation_of_successors.
+Print Assumptions generic_descending_chain_is_descending.
+Print Assumptions exists_generic_pfilter_of_countable.
+Check lower_set.
+Check lower_empty.
+Check lower_full.
+Check lower_union.
+Check lower_family_union.
+Check lower_family_intersection.
+Print Assumptions lower_disjoint_iff_incompatible.
+Print Assumptions lower_dual_member_iff.
+Print Assumptions lower_dual_greatest_disjoint.
+Print Assumptions lower_himp_member_iff.
+Print Assumptions lower_himp_greatest.
+Print Assumptions lower_set_heyting_algebra.
+Check lower_regular.
+Print Assumptions lower_dual_antitone.
+Print Assumptions lower_double_dual_extensive.
+Print Assumptions lower_double_dual_monotone.
+Print Assumptions lower_triple_dual_equiv.
+Print Assumptions lower_regularize_regular.
+Print Assumptions lower_dual_regular.
+Print Assumptions lower_intersection_regular.
+Print Assumptions lower_family_intersection_regular.
+Check regular_lower_set.
+Check regular_bottom.
+Check regular_top.
+Check regular_meet.
+Check regular_join.
+Check regular_compl.
+Check regular_family_sup.
+Check regular_family_inf.
+Print Assumptions regular_meet_greatest.
+Print Assumptions regular_join_least.
+Print Assumptions Foundation.Vorspiel.Order.LowerSet.regular_family_sup_least.
+Print Assumptions Foundation.Vorspiel.Order.LowerSet.regular_family_inf_greatest.
+Print Assumptions regular_meet_compl_bottom.
+Print Assumptions regular_join_compl_top.
+Print Assumptions regular_compl_involutive.
+Check Foundation.Vorspiel.Order.Regular.closure_order_data.
+Check Foundation.Vorspiel.Order.Regular.regular_element.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_value_equiv_closure.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_sup_value.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_sup_contains.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_sup_universal.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_inf_value.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_inf_below.
+Print Assumptions Foundation.Vorspiel.Order.Regular.regular_family_inf_universal.
+
+Check language.
+Check language_relational.
+Check language_is_constant.
+Check empty_language.
+Check graph_language.
+Check binary_language.
+Check equality_language.
+Check oring_language.
+Check constant_language.
+Check language_add.
+Check language_sigma.
+Check language_oring.
+Check oring_language_structure.
+Check language_hom.
+Check language_hom_id.
+Check language_hom_comp.
+Check language_hom_add_left.
+Check language_hom_add_right.
+Check language_hom_sigma.
+Check language_hom_add_left_func.
+Check language_hom_add_left_rel.
+Check language_hom_add_right_func.
+Check language_hom_add_right_rel.
+Check language_hom_sigma_func.
+Check language_hom_sigma_rel.
+Check language_hom_ext.
+Check language_hom_comp_id_left.
+Check language_hom_comp_id_right.
+Check language_hom_comp_assoc.
+Check oring_embedding.
+Check language_decidable_eq.
+Check equality_language_decidable_eq.
+Check oring_language_decidable_eq.
+Check encoding.
+Check equality_language_encodable.
+Check oring_language_encodable.
+Check finite_cover.
+Check language_finite.
+Check oring_language_finite.
+
+Check semiterm.
+Check term.
+Check closed_semiterm.
+Check syntactic_term.
+Check semiterm_from_free_default.
+Check semiterm_from_constant.
+Check fin_pointwise_eq_dec.
+Check fin_forall_exists_choice.
+Check fin_function_eq_dec.
+Check fin_function_pointwise_eq_dec.
+Check semiterm_eq_dec.
+Check semiterm_complexity.
+Check semiterm_complexity_func_lt.
+Check semiterm_bound_occurs.
+Check semiterm_positive.
+Check semiterm_positive_func.
+Check semiterm_no_bound_occurs_of_positive_one.
+Check semiterm_free_occurs.
+Check semiterm_language_map.
+Check semiterm_language_map_positive.
+Check semiterm_language_map_free_occurs.
+Check semiterm_language_map_id.
+Check semiterm_language_map_comp.
+Check semiterm_free_variable_list.
+Check semiterm_free_variable_list_spec.
+Check semiterm_index_of_free_variable.
+Check semiterm_enumerate_free_variable.
+Check semiterm_enumerate_index_of_free_variable.
+
+Check polarity_alt_involutive.
+Check sigma_pi_delta_alt_involutive.
+Check sigma_pi_delta_alt_polarity.
+Check first_universal_quantifier.
+Check first_existential_quantifier.
+Check first_quantifiers.
+Check first_connectives_with_quantifiers.
+Check first_all_closure.
+Check first_all_iter.
+Check first_exists_closure.
+Check first_exists_iter.
+Check first_bounded_all.
+Check first_bounded_exists.
+Check second_universal_quantifier.
+Check second_existential_quantifier.
+Check second_quantifiers.
+Check second_connectives_with_quantifiers.
+Check second_all_closure.
+Check second_all_iter.
+Check second_exists_closure.
+Check second_exists_iter.
+Check second_bounded_all.
+Check second_bounded_exists.
+
+Check semiformula.
+Check semiformula_connectives.
+Check semiformula_lcwq.
+Check semiformula_neg_involutive.
+Check semiformula_neg_all_closure.
+Check semiformula_neg_exists_closure.
+Check semiformula_neg_bounded_all.
+Check semiformula_all_closure_injective.
+Check semiformula_all_iter_injective.
+Check semiformula_complexity.
+Check semiformula_quantifier_rank.
+Check semiformula_open.
+Check semiformula_eq_dec.
+Check semiformula_free_occurs.
+Check semiformula_free_variable_list_spec.
+Check semiformula_fv_sup_fresh.
+Check semiformula_language_map.
+Check semiformula_language_connective_hom.
+Check semiformula_language_map_free_occurs.
+Check semiformula_language_map_id.
+Check semiformula_language_map_comp.
+Check semiformula_language_map_all_iter.
+Check semiformula_language_map_free_variable_list.
+Check semiformula_enumerate_index_of_free_variable.
+Check theory_language_map.
+
+Check rew.
+Check rew_equiv.
+Check rew_id.
+Check rew_comp.
+Check rew_comp_assoc.
+Check rew_bind.
+Check rew_eta.
+Check rew_equiv_of_variables.
+Check rew_rewrite.
+Check rew_rewrite_map.
+Check rew_map.
+Check rew_subst.
+Check rew_emb.
+Check rew_emb_substs.
+Check rew_cast.
+Check fin_cast_refl.
+Check fin_cast_L_zero.
+Check fin_cast_le.
+Check fin_cast_le_refl.
+Check rew_cast_le.
+Check rew_cast_refl.
+Check rew_cast_le_refl.
+Check rew_subst_comp_subst.
+Check rew_subst_comp_emb_substs.
+Check rew_comp_emb_substs.
+Check rew_emb_substs_variables.
+Check rew_emb_substs_variables_empty.
+Check rew_rewrite_comp_rewrite.
+Check rew_bshift.
+Check rew_bshift_add.
+Check rew_bshift_add_zero_cast.
+Check rew_bshift_comp_subst.
+Check rew_shift_comp_subst.
+Check rew_rewrite_comp_emb.
+Check rew_shift_comp_emb.
+Check rew_comp_emb_empty.
+Check rew_subst_bound_occurs.
+Check rew_subst_positive.
+Check rew_emb_substs_bound_occurs.
+Check rew_emb_substs_positive.
+Check rew_q.
+Check rew_q_bshift_apply.
+Check rew_q_comp_apply.
+Check rew_q_respects_equiv.
+Check rew_qpow.
+Check rew_shift.
+Check rew_free.
+Check rew_fix.
+Check rew_shift_injective.
+Check rew_free_comp_fix.
+Check rew_fix_comp_free.
+Check rew_free_bshift_eq_shift.
+Check rew_bshift_positive.
+Check rew_bshift_positive_iff_exists.
+Check rew_bshift_not_bvar_zero.
+Check rew_q_bvar_zero_iff.
+Check rew_q_positive.
+Check rew_q_positive_iff.
+Check rew_bshift_free_occurs.
+Check rew_free_occurs_sources.
+Check semiterm_language_map_rew_bind.
+Check semiterm_language_map_rew_bshift.
+Check semiterm_language_map_rew_shift.
+Check semiterm_language_map_rew_free.
+Check semiterm_language_map_rew_fix.
+Check rew_q_shift.
+Check rew_fix_iter.
+Check rew_fix_iter_zero.
+Check rew_fix_iter_succ.
+Check rew_fix_iter_bvar.
+Check rew_fix_iter_fvar_ge.
+Check rew_fix_iter_fvar_lt.
+Check semiterm_to_closed.
+Check semiterm_emb_to_closed.
+Check semiterm_emb_no_free_occurs.
+Check semiterm_to_closed_emb.
+Check semiformula_rewrite.
+Check semiformula_rewrite_connective_hom.
+Check semiformula_rewrite_all.
+Check semiformula_rewrite_ext.
+Check semiterm_rew_apply_ext_on_free.
+Check semiformula_rewrite_ext_on_free.
+Check rew_language_map.
+Check semiterm_language_map_rew_apply.
+Check rew_language_map_q.
+Check semiformula_language_map_rewrite.
+Check rew_language_map_subst.
+Check rew_language_map_shift.
+Check rew_language_map_free.
+Check semiformula_language_map_substitute.
+Check semiformula_language_map_shift.
+Check semiformula_language_map_free.
+Check semiformula_rewrite_id.
+Check semiformula_rewrite_comp.
+Check semiformula_rewrite_all_iter.
+Check semiformula_rewrite_exists_iter.
+Check semiformula_rewrite_bounded_all.
+Check semiformula_rewrite_complexity.
+Check semiformula_rewrite_quantifier_rank.
+Check semiformula_rewrite_open.
+Check semiformula_rewrite_free_occurs_sources.
+Check rew_rewrite_under_free.
+Check rew_rewrite_under_free_comp_shift.
+Check rew_rewrite_under_free_comp_free.
+Check semiformula_rewrite_under_free_shift.
+Check semiformula_rewrite_under_free_free.
+Check rew_subst_bshift_zero.
+Check rew_rewrite_comp_substitute_one.
+Check semiformula_rewrite_substitute_one.
+Check semiformula_substitute.
+Check semiformula_substitute_id.
+Check semiformula_substitute_comp.
+Check semiformula_shift_injective.
+Check semiformula_free_fix.
+Check semiformula_fix_free.
+Check rew_q_emb.
+Check semiformula_to_closed.
+Check semiformula_emb_to_closed.
+Check semiformula_emb_no_free_occurs.
+Check semiformula_free_bound.
+Check semiformula_fix_all_free.
+Check semiformula_fix_all_free_no_free.
+Check semiformula_universal_closure_open.
+Check semiformula_universal_closure_open_no_free.
+Check semiformula_universal_closure.
+Check semiformula_emb_universal_closure.
+Check semiformula_universal_closure_open_id.
+
+Check semiterm_operator.
+Check semiterm_operator_fn.
+Check semiterm_operator_apply.
+Check semiterm_operator_const_apply.
+Check semiterm_operator_fn_apply.
+Check rew_semiterm_operator_apply.
+Check semiterm_operator_comp.
+Check semiterm_operator_comp_apply.
+Check semiterm_operator_bvar.
+Check semiterm_operator_bvar_apply.
+Check semiterm_operator_comp_bvar_left.
+Check semiterm_operator_comp_bvar_right.
+Check semiterm_operator_comp_assoc.
+Check semiterm_operator_apply_bound_occurs.
+Check semiterm_operator_apply_positive.
+Check semiterm_const_operator_positive.
+Check semiterm_operator_foldr.
+Check semiterm_operator_foldr_cons_apply.
+Check fin_to_list.
+Check semiterm_operator_iterr.
+Check semiterm_operator_iterr_zero.
+Check semiterm_operator_iterr_succ.
+Check semiterm_has_zero_operator.
+Check semiterm_has_one_operator.
+Check semiterm_has_add_operator.
+Check semiterm_has_mul_operator.
+Check semiterm_has_exp_operator.
+Check semiterm_has_sub_operator.
+Check semiterm_has_div_operator.
+Check semiterm_has_star_operator.
+Check semiterm_godel_number_operator.
+Check semiterm_zero_operator_of_language.
+Check semiterm_one_operator_of_language.
+Check semiterm_add_operator_of_language.
+Check semiterm_mul_operator_of_language.
+Check semiterm_exp_operator_of_language.
+Check semiterm_star_operator_of_language.
+Check semiterm_add_operator_positive.
+Check semiterm_mul_operator_positive.
+Check semiterm_exp_operator_positive.
+Check semiterm_operator_numeral.
+Check semiterm_operator_numeral_zero.
+Check semiterm_operator_numeral_one.
+Check semiterm_operator_numeral_succ_nonzero.
+Check semiterm_operator_numeral_succ_succ.
+Check semiterm_godel_number_of_encoding.
+Check semiterm_operator_npow.
+Check semiterm_operator_npow_zero.
+Check semiterm_operator_npow_succ.
+Check semiterm_operator_npow_positive.
+Check fin_max_two.
+Check semiterm_zero_operator_complexity.
+Check semiterm_one_operator_complexity.
+Check semiterm_add_operator_complexity.
+Check semiterm_mul_operator_complexity.
+Check semiformula_operator.
+Check semiformula_operator_apply.
+Check rew_semiformula_operator_apply.
+Check semiformula_rewrite_and_preimage.
+Check semiformula_rewrite_or_preimage.
+Check semiformula_rewrite_all_preimage.
+Check semiformula_rewrite_exists_preimage.
+Check semiformula_operator_comp.
+Check semiformula_operator_comp_apply.
+Check semiformula_operator_comp_bvar_right.
+Check semiformula_operator_comp_assoc.
+Check semiformula_operator_and.
+Check semiformula_operator_or.
+Check semiformula_operator_and_apply.
+Check semiformula_operator_or_apply.
+Check semiformula_has_eq_operator.
+Check semiformula_has_lt_operator.
+Check semiformula_has_le_operator.
+Check semiformula_has_mem_operator.
+Check semiformula_eq_operator_of_language.
+Check semiformula_lt_operator_of_language.
+Check semiformula_mem_operator_of_language.
+Check semiformula_le_operator_of_eq_lt.
+Check semiformula_le_operator_of_language.
+Check semiformula_eq_operator_apply.
+Check semiformula_lt_operator_apply.
+Check semiformula_mem_operator_apply.
+Check semiformula_le_operator_apply.
+Check semiformula_rel_arity_injective.
+Check semiformula_rewrite_binary_relation_preimage.
+Check semiformula_rewrite_eq_operator_preimage.
+Check semiformula_rewrite_lt_operator_preimage.
+Check semiformula_rewrite_mem_operator_preimage.
+Check semiformula_binary_relation_injective.
+Check semiformula_eq_operator_injective.
+Check semiformula_lt_operator_injective.
+Check semiformula_mem_operator_injective.
+Check semiformula_le_operator_injective.
+Check semiformula_eq_operator_open.
+Check semiformula_lt_operator_open.
+Check semiformula_mem_operator_open.
+Check semiformula_le_operator_open.
+Check semiformula_ball_lt.
+Check semiformula_bex_lt.
+Check semiformula_ball_le.
+Check semiformula_bex_le.
+Check semiformula_ball_mem.
+Check semiformula_bex_mem.
+
+Check first_order_structure.
+Check unit_first_order_structure.
+Check first_order_structure_language_map.
+Check carrier_equiv.
+Check first_order_structure_transport.
+Check fin_env_cons.
+Check carrier_equiv_from_fin_env_cons.
+Check semiterm_val.
+Check closed_semiterm_val.
+Check semiterm_val_rewrite.
+Check semiterm_val_rewrite_free.
+Check semiterm_val_rewrite_map.
+Check semiterm_val_substitute.
+Check semiterm_val_map.
+Check semiterm_val_bshift.
+Check semiterm_val_emb_substs.
+Check semiterm_val_language_map.
+Check semiterm_val_transport.
+Check semiterm_val_free_ext.
+Check nat_env_cons.
+Check fin_env_snoc.
+Check fin_env_append.
+Check fin_env_append_left.
+Check fin_env_append_right.
+Check fin_env_append_left_eta.
+Check fin_env_append_right_eta.
+Check semiterm_val_shift.
+Check semiterm_val_rew_free_bvars.
+Check semiterm_val_rew_free_fvars.
+Check semiterm_val_rew_fix_bvars.
+Check semiterm_val_rew_fix_fvars.
+Check semiterm_val_free.
+Check semiterm_val_fix.
+Check semiformula_eval.
+Check formula_eval.
+Check sentence_realize.
+Check semiformula_eval_neg.
+Check semiformula_eval_imp.
+Check semiformula_eval_bounded_all.
+Check semiformula_eval_bounded_exists.
+Check semiterm_val_rew_q_bvars.
+Check semiterm_val_rew_q_fvars.
+Check semiformula_eval_rewrite.
+Check semiformula_eval_map.
+Check semiformula_eval_substitute.
+Check semiformula_eval_bshift.
+Check semiformula_eval_emb_substs.
+Check semiformula_eval_free_ext.
+Check semiformula_eval_language_map.
+Check semiformula_eval_transport.
+Check semiformula_eval_free.
+Check semiformula_eval_shift.
+Check semiformula_eval_all_iter.
+Check semiformula_eval_exists_iter.
+Check semiformula_eval_all_closure.
+Check semiformula_eval_exists_closure.
+Check semiterm_operator_val.
+Check semiterm_val_operator_apply.
+Check semiterm_operator_val_comp.
+Check semiterm_operator_val_bvar.
+Check semiterm_operator_val_fn.
+Check semiterm_operator_val_transport.
+Check semiformula_operator_eval.
+Check semiformula_eval_operator_apply.
+Check semiformula_operator_eval_comp.
+Check semiformula_operator_eval_and.
+Check semiformula_operator_eval_or.
+Check semiformula_operator_eval_transport.
+Check semiformula_eq_operator_eval_of_language.
+Check semiformula_lt_operator_eval_of_language.
+Check semiformula_mem_operator_eval_of_language.
+Check structure_interprets_zero.
+Check structure_interprets_one.
+Check structure_interprets_add.
+Check structure_interprets_mul.
+Check structure_interprets_exp.
+Check structure_interprets_eq.
+Check structure_interprets_relation.
+Check structure_interprets_lt.
+Check structure_interprets_le.
+Check structure_interprets_mem.
+Check structure_interprets_le_of_eq_lt.
+Check structure_interprets_le_of_eq_lt_spec.
+Check semiterm_val_binary_bound.
+Check semiformula_eval_bounded_operator_all.
+Check semiformula_eval_bounded_operator_exists.
+Check semiformula_eval_ball_lt.
+Check semiformula_eval_bex_lt.
+Check semiformula_eval_ball_le.
+Check semiformula_eval_bex_le.
+Check semiformula_eval_ball_mem.
+Check semiformula_eval_bex_mem.
+Check semiformula_eval_ball_relation.
+Check semiformula_eval_bex_relation.
+Check first_order_model.
+Check first_order_model_of_structure.
+Check first_order_model_realize.
+Check first_order_semantics.
+Check sentence_connectives.
+Check first_order_tarski.
+Check first_order_models_theory.
+Check first_order_valid.
+Check first_order_satisfiable.
+Check first_order_consequence.
+Check first_order_models_theory_iff.
+Check first_order_models_of_member.
+Check first_order_models_of_subset.
+Check first_order_models_union_iff.
+Check first_order_valid_iff.
+Check first_order_satisfiable_iff.
+Check first_order_unsatisfiable_iff.
+Check first_order_satisfiable_intro.
+Check first_order_consequence_iff.
+Check first_order_consequence_iff_unsatisfiable.
+Check first_order_consequence_weakening.
+Check first_order_consequence_of_member.
+Check first_order_model_theory.
+Check first_order_model_theory_spec.
+Check first_order_model_models_own_theory.
+Check first_order_model_theory_satisfiable.
+Check first_order_theory_subset_model_theory_iff.
+Check first_order_model_language_pullback.
+Check first_order_model_realize_language_map.
+Check first_order_consequence_language_map.
+Check first_order_hom.
+Check first_order_embedding.
+Check first_order_iso.
+Check first_order_embedding_to_hom.
+Check first_order_hom_semiterm_val.
+Check first_order_embedding_semiterm_val.
+Check first_order_embedding_eval_open.
+Check first_order_embedding_eval_all_closure_open.
+Check first_order_closed_subset.
+Check first_order_closed_subset_structure.
+Check first_order_closed_subset_inclusion.
+Check semiformula_eval_carrier_equiv.
+Check first_order_elementary_equiv.
+Check first_order_elementary_equiv_refl.
+Check first_order_elementary_equiv_sym.
+Check first_order_elementary_equiv_trans.
+Check first_order_elementary_equiv_models_theory.
+Check first_order_elementary_equiv_of_carrier_equiv.
+Check structure_model.
+Check structure_model_equiv.
+Check structure_model_structure.
+Check structure_model_elementary_equiv.
+Check structure_model_nullary.
+Check structure_model_unary.
+Check structure_model_binary.
+Check structure_model_relation.
+Check structure_model_interprets_zero.
+Check structure_model_interprets_one.
+Check structure_model_interprets_add.
+Check structure_model_interprets_mul.
+Check structure_model_interprets_exp.
+Check structure_model_interprets_eq.
+Check structure_model_interprets_lt.
+Check structure_model_interprets_mem.
+Check function_only_structure.
+Check first_order_structure_add.
+Check first_order_structure_add_language_map_left.
+Check first_order_structure_add_language_map_right.
+Check semiterm_val_language_add_left.
+Check semiformula_eval_language_add_left.
+Check first_order_structure_sigma.
+Check semiterm_val_language_sigma.
+Check semiformula_eval_language_sigma.
+Check structure_lift.
+Check structure_lift_structure.
+Check semiterm_val_structure_lift.
+Check semiformula_eval_structure_lift.
+Check structure_lift_elementary_equiv.
+Check first_order_is_defined_by.
+Check first_order_defined.
+Check first_order_is_defined_by_with_params.
+Check first_order_definable.
+Check first_order_defined_function.
+Check first_order_definable_function.
+Check first_order_definable_predicate.
+Check first_order_definable_relation.
+Check semiformula_embed_empty.
+Check semiformula_eval_embed_empty.
+Check first_order_defined_to_definable.
+Check first_order_definable_of_iff.
+Check first_order_definable_const.
+Check first_order_definable_and.
+Check first_order_definable_or.
+Check first_order_definable_imp.
+Check first_order_definable_not.
+Check first_order_definable_iff.
+Check first_order_definable_all.
+Check first_order_definable_exists.
+Check first_order_definable_all_vector.
+Check first_order_definable_exists_vector.
+Check semiformula_list_conj.
+Check semiformula_list_disj.
+Check semiformula_eval_list_conj.
+Check semiformula_eval_list_disj.
+Check first_order_definable_list_all.
+Check first_order_definable_list_exists.
+Check first_order_definable_finite_all.
+Check first_order_definable_finite_exists.
+Check fin_t_finite_cover.
+Check first_order_definable_retraction.
+Check fin_graph_retraction.
+Check fin_graph_retraction_head.
+Check fin_graph_retraction_tail.
+Check fin_graph_retraction_map.
+Check fin_graph_retraction_map_head.
+Check fin_graph_retraction_map_tail.
+Check first_order_definable_graph_family_map.
+Check first_order_definable_graph_family.
+Check first_order_definable_substitution_witness.
+Check first_order_definable_substitution.
+Check fin_function_graph_retraction.
+Check fin_function_graph_retraction_head.
+Check fin_function_graph_retraction_tail.
+Check first_order_definable_function_substitution_witness.
+Check first_order_definable_function_substitution.
+Check first_order_definable_unary_function.
+Check first_order_definable_binary_function.
+Check fin_two_definable_function_family.
+Check first_order_definable_predicate_comp.
+Check first_order_definable_relation_comp.
+Check first_order_definable_unary_function_comp.
+Check first_order_definable_binary_function_comp.
+Check first_order_definable_operator_relation.
+Check first_order_definable_operator_relation_terms.
+Check first_order_definable_eq.
+Check first_order_definable_eq_terms.
+Check first_order_definable_term_graph.
+Check first_order_definable_projection.
+Check first_order_definable_parameter_const.
+Check first_order_definable_lt.
+Check first_order_definable_mem.
+Check first_order_sequent.
+Check first_order_sequent_shift.
+Check first_order_sequent_language_map.
+Check first_order_sequent_language_map_shift.
+Check first_order_sequent_rewrite.
+Check first_order_sequent_rewrite_under_free_shift.
+Check first_order_derivation.
+Check FODIdentity.
+Check FODCut.
+Check FODContraction.
+Check FODVerum.
+Check FODOr.
+Check FODAnd.
+Check FODAll.
+Check FODExists.
+Check first_order_derivation_height.
+Check first_order_derivation_cast.
+Check first_order_derivation_height_cast.
+Check first_order_derivation_contra.
+Check first_order_derivation_top.
+Check first_order_derivation_atomic_identity.
+Check first_order_derivation_rotate.
+Check first_order_derivation_tensor.
+Check first_order_derivation_eta_rewrite.
+Check first_order_derivation_eta.
+Check first_order_one_sided_lk.
+Check first_order_one_sided_lk_cut.
+Check first_order_sequent_is_closed.
+Check first_order_derivation_close.
+Check first_order_derivation_of_is_closed.
+Check first_order_lk.
+Check first_order_lk_entailment.
+Check first_order_lk_principal.
+Check first_order_lk_provable.
+Check first_order_lk_provable_iff.
+Check first_order_lk_provable_cast.
+Check first_order_lk_classical.
+Check first_order_lk_all.
+Check first_order_lk_provable_all_fix_iter.
+Check first_order_lk_provable_universal_closure_open.
+Check first_order_sentence_embed.
+Check first_order_closed_term_embed.
+Check first_order_sentence_embed_substitute.
+Check first_order_sentence_embed_lk_hom.
+Check first_order_sentence_one_sided_lk.
+Check first_order_sentence_one_sided_lk_cut.
+Check first_order_sentence_lk_entailment.
+Check first_order_sentence_lk_system.
+Check first_order_sentence_lk_principal.
+Check first_order_theory_proof.
+Check first_order_theory_entailment.
+Check first_order_theory_contextual.
+Check first_order_theory_provable.
+Check first_order_theory_provable_iff.
+Check first_order_theory_inconsistent_iff.
+Check first_order_empty_theory_provable_iff.
+Check first_order_theory_of_lk_provable.
+Check first_order_theory_axiomatized.
+Check first_order_theory_compact.
+Check first_order_theory_weaker_of_subset.
+Check first_order_theory_classical.
+Check first_order_theory_deduction.
+Check first_order_theory_specialize.
+Check first_order_theory_closure.
+Check first_order_theory_closure_spec.
+Check first_order_derivation2.
+Check FOD2Closed.
+Check FOD2Axiom.
+Check FOD2Verum.
+Check FOD2And.
+Check FOD2Or.
+Check FOD2All.
+Check FOD2Exists.
+Check FOD2Weakening.
+Check FOD2Shift.
+Check FOD2Cut.
+Check first_order_derivable2.
+Check first_order_derivation2_cast.
+Check first_order_derivation_to_derivation2.
+Check first_order_derivation2_proof_data.
+Check first_order_derivation2_axioms.
+Check first_order_derivation2_axioms_member.
+Check first_order_derivation2_lk.
+Check first_order_axiom_suffix.
+Check first_order_axiom_suffix_app.
+Check first_order_sentence_embed_shift.
+Check first_order_axiom_suffix_shift.
+Check first_order_sequent_shift_with_axiom_suffix.
+Check first_order_derivation_extend_axiom_suffix_right.
+Check first_order_derivation_extend_axiom_suffix_left.
+Check first_order_derivation_contract_member.
+Check first_order_derivation2_proof_data_weaken.
+Check first_order_derivation2_proof_data_extend_right.
+Check first_order_derivation2_proof_data_extend_left.
+Check first_order_derivation2_to_proof_data.
+Check first_order_derivation2_to_proof.
+Check first_order_derivation2_cut_axioms.
+Check first_order_derivable2_cut_axioms.
+Check first_order_sentence_embed_neg.
+Check first_order_sentence_embed_neg_map.
+Check first_order_theory_proof2.
+Check first_order_theory_provable2.
+Check first_order_theory_proof_to_proof2.
+Check first_order_theory_proof2_to_proof.
+Check first_order_theory_provable_iff_derivable2.
+Check semiformula_repeated_verum.
+Check semiformula_padding.
+Check semiformula_get_padding_aux.
+Check semiformula_get_padding.
+Check semiformula_get_padding_formula.
+Check semiformula_get_padding_aux_repeated_verum.
+Check semiformula_get_padding_padding.
+Check semiformula_get_padding_formula_padding.
+Check semiformula_padding_injective_iff.
+Check semiformula_rewrite_repeated_verum.
+Check semiformula_rewrite_padding.
+Check semiformula_repeated_verum_raw.
+Check semiformula_padding_iff_raw.
+Check semiformula_padding_iff_provable.
+Check encoding_injective.
+Check fin_nat_code.
+Check fin_nat_code_injective.
+Check fin_nat_decode.
+Check fin_nat_decode_code.
+Check fin_nat_code_component_le.
+Check fin_option_sequence.
+Check fin_option_sequence_some.
+Check semiterm_code.
+Check semiterm_code_bvar.
+Check semiterm_code_fvar.
+Check semiterm_code_func.
+Check semiterm_code_injective.
+Check semiterm_decode_fuel.
+Check semiterm_decode.
+Check semiterm_decode_fuel_code.
+Check semiterm_decode_code.
+Check semiformula_code.
+Check semiformula_code_verum.
+Check semiformula_code_falsum.
+Check semiformula_code_rel.
+Check semiformula_code_nrel.
+Check semiformula_code_and.
+Check semiformula_code_or.
+Check semiformula_code_all.
+Check semiformula_code_exists.
+Check semiformula_code_injective.
+Check semiformula_decode_fuel.
+Check semiformula_decode.
+Check cantor_payload_lt_fuel.
+Check cantor_pair_components_lt_fuel.
+Check semiformula_decode_fuel_code.
+Check semiformula_decode_code.
+Check semiterm_code_emb.
+Check semiformula_code_emb.
+Check semiformula_code_closed_injection.
+Check semiformula_code_closed_injection_rev.
+Check semiterm_encoding.
+Check semiformula_encoding.
+Check semiterm_encoding_encode.
+Check semiformula_encoding_encode.
+Check oring_carrier.
+Check oring_numeral.
+Check nat_oring_carrier.
+Check nat_oring_numeral.
+Check arithmetic_semiterm.
+Check arithmetic_sentence.
+Check semiterm_godel_number_term.
+Check semiterm_godel_number_term_eq.
+Check rew_semiterm_godel_number_term.
+Check semiterm_one_term.
+Check semiterm_add_term.
+Check semiterm_add_one.
+Check semiterm_val_fin_zero.
+Check semiterm_val_fin_two.
+Check semiterm_val_one_term.
+Check semiterm_val_add_term.
+Check semiterm_val_add_one.
+Check structure_interprets_oring.
+Check semiterm_operator_val_numeral.
+Check semiformula_ball_lt_succ.
+Check semiformula_bex_lt_succ.
+Check semiformula_eval_ball_lt_succ.
+Check semiformula_eval_bex_lt_succ.
+Check oring_standard_structure.
+Check oring_standard_structure_zero.
+Check oring_standard_structure_one.
+Check oring_standard_structure_add.
+Check oring_standard_structure_mul.
+Check oring_standard_structure_eq.
+Check oring_standard_structure_lt.
+Check oring_standard_structure_interprets.
+Check first_order_structure_ext.
+Check fin_zero_eta.
+Check oring_standard_structure_unique.
+Check nat_standard_structure.
+Check nat_standard_structure_interprets.
+Check nat_standard_model.
+Check arithmetic_theory_sound_on.
+Check arithmetic_theory_sound_on_elim.
+Check arithmetic_theory_sound_on_of_models.
+Check arithmetic_theory_consistent_of_sound_on.
+Check arithmetic_sigma.
+Check arithmetic_pi.
+Check arithmetic_polarity_alt.
+Check arithmetic_lt_operator.
+Check arithmetic_eq_operator.
+Check arithmetic_le_operator.
+Check arithmetic_lt_guard.
+Check arithmetic_bounded_all.
+Check arithmetic_bounded_exists.
+Check arithmetic_hierarchy.
+Check arithmetic_delta_zero.
+Check arithmetic_hierarchy_eq.
+Check arithmetic_hierarchy_lt.
+Check arithmetic_hierarchy_le.
+Check arithmetic_lt_guard_rewrite.
+Check arithmetic_lt_guard_rewrite_preimage.
+Check arithmetic_bounded_all_rewrite_preimage.
+Check arithmetic_bounded_exists_rewrite_preimage.
+Check arithmetic_hierarchy_rewrite.
+Check arithmetic_hierarchy_rewrite_reflect.
+Check arithmetic_hierarchy_rewrite_iff.
+Check arithmetic_hierarchy_accum.
+Check arithmetic_hierarchy_accum_iter.
+Check arithmetic_hierarchy_strict_mono.
+Check arithmetic_hierarchy_mono.
+Check arithmetic_hierarchy_of_zero.
+Check arithmetic_hierarchy_zero_alt.
+Check arithmetic_hierarchy_zero_iff.
+Check arithmetic_hierarchy_and_iff.
+Check arithmetic_hierarchy_or_iff.
+Check arithmetic_hierarchy_neg.
+Check arithmetic_hierarchy_neg_iff.
+Check arithmetic_hierarchy_imp_iff.
+Check arithmetic_hierarchy_iff_iff.
+Check arithmetic_hierarchy_zero_iff_iff.
+Check arithmetic_hierarchy_of_open.
+Check arithmetic_lt_guard_open.
+Check arithmetic_hierarchy_remove_all.
+Check arithmetic_hierarchy_remove_exists.
+Check arithmetic_hierarchy_bounded_all_iff.
+Check arithmetic_hierarchy_bounded_exists_iff.
+Check arithmetic_hierarchy_ball_lt_iff.
+Check arithmetic_hierarchy_bex_lt_iff.
+Check arithmetic_hierarchy_ball_lt_succ_iff.
+Check arithmetic_hierarchy_bex_lt_succ_iff.
+Check arithmetic_hierarchy_all_iff.
+Check arithmetic_hierarchy_exists_iff.
+Check arithmetic_hierarchy_all_iter_iff.
+Check arithmetic_hierarchy_exists_iter_iff.
+Check arithmetic_hierarchy_exists_closure.
+Check arithmetic_hierarchy_all_closure.
+Check arithmetic_hierarchy_repeated_verum.
+Check arithmetic_hierarchy_padding_iff.
+Check arithmetic_hierarchy_matrix_conj_iff.
+Check arithmetic_hierarchy_matrix_disj_iff.
+Check arithmetic_hierarchy_list_conj_iff.
+Check arithmetic_hierarchy_list_disj_iff.
+Check arithmetic_hierarchy_list_conj_map_iff.
+Check arithmetic_hierarchy_list_disj_map_iff.
+Check arithmetic_hierarchy_finite_conj_iff.
+Check arithmetic_hierarchy_finite_disj_iff.
+Check arithmetic_hierarchy_sigma_one_of_base.
+Check arithmetic_sigma_one_induction.
+Check arithmetic_theory_sound_on_hierarchy.
+Check arithmetic_theory_sound_on_hierarchy_elim.
+Check arithmetic_theory_consistent_of_sigma_one_sound.
+Check arithmetic_theory_consistent_of_pi_two_sound.
+
+Check arithmetic_hierarchy_class.
+Check arithmetic_hierarchy_symbol.
+Check arithmetic_sigma_symbol.
+Check arithmetic_pi_symbol.
+Check arithmetic_delta_symbol.
+Check arithmetic_sorted_polar_formula.
+Check arithmetic_sorted_formula.
+Check arithmetic_sorted_formula_val.
+Check arithmetic_sorted_sigma_prop.
+Check arithmetic_sorted_pi_prop.
+Check arithmetic_sorted_delta_sigma.
+Check arithmetic_sorted_delta_pi.
+Check arithmetic_sorted_rewrite.
+Check arithmetic_sorted_rewrite_val.
+Check arithmetic_sorted_zero_hierarchy.
+Check arithmetic_sorted_of_zero.
+Check arithmetic_sorted_of_zero_val.
+Check arithmetic_sorted_verum.
+Check arithmetic_sorted_falsum.
+Check arithmetic_sorted_and.
+Check arithmetic_sorted_or.
+Check arithmetic_sorted_neg_delta.
+Check arithmetic_sorted_ball.
+Check arithmetic_sorted_bex.
+Check arithmetic_sorted_exists.
+Check arithmetic_sorted_all.
+Check arithmetic_sorted_and_val.
+Check arithmetic_sorted_or_val.
+Check arithmetic_sorted_ball_val.
+Check arithmetic_sorted_bex_val.
+Check first_order_true_arithmetic.
+Check first_order_true_arithmetic_models.
+Check first_order_true_arithmetic_provable_iff.
+Check arithmetic_theory_weaker_than_true_arithmetic.
+Check first_order_structure_monotone.
+Check structure_func_monotone.
+Check semiterm_val_monotone.
+Check semiterm_val_monotone_free.
+Check semiterm_val_monotone_bound.
+Check semiformula_polarity.
+Check semiformula_positive.
+Check semiformula_negative.
+Check semiformula_polarity_neg.
+Check semiformula_polarity_imp.
+Check semiformula_rel_positive.
+Check semiformula_rel_not_negative.
+Check semiformula_nrel_not_positive.
+Check semiformula_nrel_negative.
+Check semiformula_verum_positive.
+Check semiformula_verum_not_negative.
+Check semiformula_falsum_not_positive.
+Check semiformula_falsum_negative.
+Check semiformula_and_positive_iff.
+Check semiformula_and_negative_iff.
+Check semiformula_or_positive_iff.
+Check semiformula_or_negative_iff.
+Check semiformula_exists_positive.
+Check semiformula_exists_not_negative.
+Check semiformula_all_not_positive.
+Check semiformula_all_negative.
+Check semiformula_neg_positive_iff.
+Check semiformula_neg_negative_iff.
+Check semiformula_polarity_rewrite.
+Check first_order_eqv.
+Check first_order_models_equality_axioms.
+Check first_order_eqv_refl.
+Check first_order_eqv_symm.
+Check first_order_eqv_trans.
+Check first_order_eqv_func_ext.
+Check first_order_eqv_rel_ext.
+Check first_order_eqv_equivalence.
+Check first_order_eqv_rel_ext_iff.
+Check first_order_models_equality_axioms_of_interprets_eq.
+Check first_order_eqv_fin_env_cons.
+Check semiterm_val_eqv.
+Check semiformula_eval_eqv.
+Check first_order_derivation_language_map.
+Check first_order_lk_provable_language_map.
+Check first_order_derivation_rewrite.
+Check first_order_derivation_map.
+Check first_order_derivation_shift.
+Check first_order_fresh_map.
+Check semiformula_rewrite_map_substitute_fresh.
+Check semiformula_rewrite_map_fresh_eq_shift.
+Check first_order_sequent_rewrite_map_fresh_eq_shift.
+Check first_order_derivation_generalize_fresh.
+Check first_order_sequent_new_variable.
+Check first_order_sequent_fv_sup_le_new_variable.
+Check first_order_sequent_new_variable_fresh.
+Check generic_list_member_of_list_in.
+Check first_order_derivation_all_new_variable.
+Check generic_list_subset_contract_head.
+Check generic_list_subset_weaken_head.
+Check first_order_derivation_exists_of_instances.
+Check first_order_derivation_exists_of_instances_present.
+Check first_order_derivation_height_identity.
+Check first_order_derivation_height_cut.
+Check first_order_derivation_height_contraction.
+Check first_order_derivation_height_or.
+Check first_order_derivation_height_and.
+Check first_order_derivation_height_all.
+Check first_order_derivation_height_exists.
+Check first_order_is_cut_free.
+Check FOCFIdentity.
+Check FOCFVerum.
+Check FOCFOr.
+Check FOCFAnd.
+Check FOCFAll.
+Check FOCFExists.
+Check FOCFContraction.
+Check first_order_is_cut_free_or_iff.
+Check first_order_is_cut_free_and_iff.
+Check first_order_is_cut_free_all_iff.
+Check first_order_is_cut_free_exists_iff.
+Check first_order_is_cut_free_contraction_iff.
+Check first_order_is_cut_free_cast_iff.
+Check first_order_derivation_root_is_cut.
+Check first_order_is_cut_free_root_is_not_cut.
+Check first_order_is_cut_free_not_cut.
+Check first_order_is_cut_free_language_map_iff.
+Check first_order_is_cut_free_rewrite_iff.
+Check first_order_is_cut_free_map_iff.
+Check first_order_is_cut_free_shift_iff.
+Check first_order_is_cut_free_generalize_fresh_iff.
+Check first_order_is_cut_free_exists_of_instances_iff.
+Check first_order_is_cut_free_exists_of_instances_present_iff.
+Check first_order_is_cut_free_all_new_variable_iff.
+Check first_order_empty_env.
+Check first_order_sequent_true.
+Check fin_env_snoc_empty_eq_cons.
+Check first_order_shifted_context_true.
+Check first_order_derivation_sound.
+Check first_order_derivation_nil_empty.
+Check first_order_sentence_embed_eval.
+Check first_order_lk_sound.
+Check first_order_theory_proof_sound.
+Check first_order_theory_sound.
+Check first_order_theory_consistent_of_satisfiable.
+Check first_order_theory_consistent_of_model.
+Check first_order_theory_unprovable_of_countermodel.
+Check first_order_models_of_provable.
+Check first_order_models_of_weaker_theory.
+
+Check semiterm_bvar_or_fvar_relational.
+Check term_fvar_relational.
+Check fin_cons.
+Check semiterm_relational_val.
+Check semiterm_relational_val_bvar.
+Check semiterm_relational_val_fvar.
+Check semiterm_relational_val_rew.
+Check semiterm_relational_val_bshift.
+
+Print Assumptions language_hom_ext.
+Print Assumptions language_hom_comp_assoc.
+Print Assumptions oring_function_symbols_complete.
+Print Assumptions oring_language_finite.
+Print Assumptions fin_function_pointwise_eq_dec.
+Print Assumptions semiterm_eq_dec.
+Print Assumptions semiterm_complexity_func_lt.
+Print Assumptions semiterm_language_map_positive.
+Print Assumptions semiterm_language_map_comp.
+Print Assumptions semiterm_free_variable_list_spec.
+Print Assumptions semiterm_enumerate_index_of_free_variable.
+Print Assumptions semiterm_language_map_free_variable_list.
+Print Assumptions polarity_alt_involutive.
+Print Assumptions first_all_iter_succ.
+Print Assumptions first_exists_iter_succ.
+Print Assumptions second_all_iter_succ.
+Print Assumptions second_exists_iter_succ.
+Print Assumptions semiformula_neg_involutive.
+Print Assumptions semiformula_neg_all_closure.
+Print Assumptions semiformula_all_iter_injective.
+Print Assumptions semiformula_eq_dec.
+Print Assumptions semiformula_fv_sup_fresh.
+Print Assumptions semiformula_language_connective_hom.
+Print Assumptions semiformula_language_map_free_occurs.
+Print Assumptions semiformula_language_map_id.
+Print Assumptions semiformula_language_map_comp.
+Print Assumptions semiformula_enumerate_index_of_free_variable.
+Print Assumptions rew_comp_assoc.
+Print Assumptions rew_eta.
+Print Assumptions rew_equiv_of_variables.
+Print Assumptions rew_subst_comp_subst.
+Print Assumptions rew_subst_comp_emb_substs.
+Print Assumptions rew_comp_emb_substs.
+Print Assumptions rew_emb_substs_variables.
+Print Assumptions rew_emb_substs_variables_empty.
+Print Assumptions rew_cast_refl.
+Print Assumptions rew_cast_le_refl.
+Print Assumptions rew_bshift_add_zero_cast.
+Print Assumptions rew_bshift_comp_subst.
+Print Assumptions rew_shift_comp_subst.
+Print Assumptions rew_rewrite_comp_emb.
+Print Assumptions rew_comp_emb_empty.
+Print Assumptions rew_subst_bound_occurs.
+Print Assumptions rew_subst_positive.
+Print Assumptions rew_emb_substs_bound_occurs.
+Print Assumptions rew_emb_substs_positive.
+Print Assumptions rew_q_bshift_apply.
+Print Assumptions rew_q_comp_apply.
+Print Assumptions rew_fix_iter_zero.
+Print Assumptions rew_fix_iter_bvar.
+Print Assumptions rew_fix_iter_fvar_ge.
+Print Assumptions rew_fix_iter_fvar_lt.
+Print Assumptions semiterm_emb_to_closed.
+Print Assumptions semiterm_emb_no_free_occurs.
+Print Assumptions semiterm_to_closed_emb.
+Print Assumptions rew_shift_injective.
+Print Assumptions rew_free_comp_fix.
+Print Assumptions rew_fix_comp_free.
+Print Assumptions rew_bshift_positive.
+Print Assumptions rew_bshift_positive_iff_exists.
+Print Assumptions rew_bshift_not_bvar_zero.
+Print Assumptions rew_q_bvar_zero_iff.
+Print Assumptions rew_q_positive_iff.
+Print Assumptions rew_free_occurs_sources.
+Print Assumptions semiterm_language_map_rew_bind.
+Print Assumptions semiformula_rewrite_connective_hom.
+Print Assumptions semiformula_rewrite_and_preimage.
+Print Assumptions semiformula_rewrite_all_preimage.
+Print Assumptions semiformula_rewrite_ext.
+Print Assumptions semiterm_rew_apply_ext_on_free.
+Print Assumptions semiformula_rewrite_ext_on_free.
+Print Assumptions semiterm_language_map_rew_apply.
+Print Assumptions rew_language_map_q.
+Print Assumptions semiformula_language_map_rewrite.
+Print Assumptions semiformula_language_map_substitute.
+Print Assumptions semiformula_language_map_shift.
+Print Assumptions semiformula_language_map_free.
+Print Assumptions semiformula_rewrite_id.
+Print Assumptions semiformula_rewrite_comp.
+Print Assumptions semiformula_rewrite_all_iter.
+Print Assumptions semiformula_rewrite_complexity.
+Print Assumptions semiformula_rewrite_quantifier_rank.
+Print Assumptions semiformula_rewrite_open.
+Print Assumptions semiformula_rewrite_free_occurs_sources.
+Print Assumptions rew_rewrite_under_free_comp_shift.
+Print Assumptions rew_rewrite_under_free_comp_free.
+Print Assumptions semiformula_rewrite_under_free_shift.
+Print Assumptions semiformula_rewrite_under_free_free.
+Print Assumptions rew_subst_bshift_zero.
+Print Assumptions rew_rewrite_comp_substitute_one.
+Print Assumptions semiformula_rewrite_substitute_one.
+Print Assumptions semiformula_substitute_comp.
+Print Assumptions semiformula_shift_injective.
+Print Assumptions semiformula_free_fix.
+Print Assumptions semiformula_fix_free.
+Print Assumptions rew_q_emb.
+Print Assumptions semiformula_emb_to_closed.
+Print Assumptions semiformula_emb_no_free_occurs.
+Print Assumptions semiformula_fix_all_free_no_free.
+Print Assumptions semiformula_universal_closure_open_no_free.
+Print Assumptions semiformula_emb_universal_closure.
+Print Assumptions semiformula_universal_closure_open_id.
+Print Assumptions rew_semiterm_operator_apply.
+Print Assumptions semiterm_operator_comp_assoc.
+Print Assumptions semiterm_operator_apply_bound_occurs.
+Print Assumptions semiterm_operator_apply_positive.
+Print Assumptions semiterm_const_operator_positive.
+Print Assumptions semiterm_operator_foldr_cons_apply.
+Print Assumptions semiterm_add_operator_positive.
+Print Assumptions semiterm_mul_operator_positive.
+Print Assumptions semiterm_exp_operator_positive.
+Print Assumptions semiterm_operator_numeral_succ_nonzero.
+Print Assumptions semiterm_operator_iterr_succ.
+Print Assumptions semiterm_operator_npow_positive.
+Print Assumptions semiterm_add_operator_complexity.
+Print Assumptions rew_semiformula_operator_apply.
+Print Assumptions semiformula_operator_comp_assoc.
+Print Assumptions semiformula_rewrite_binary_relation_preimage.
+Print Assumptions semiformula_rewrite_eq_operator_preimage.
+Print Assumptions semiformula_binary_relation_injective.
+Print Assumptions semiformula_eq_operator_injective.
+Print Assumptions semiformula_le_operator_injective.
+Print Assumptions semiterm_val_rewrite.
+Print Assumptions semiterm_val_language_map.
+Print Assumptions semiterm_val_transport.
+Print Assumptions semiterm_val_free_ext.
+Print Assumptions semiterm_val_shift.
+Print Assumptions semiterm_val_free.
+Print Assumptions semiterm_val_fix.
+Print Assumptions semiformula_eval_neg.
+Print Assumptions semiformula_eval_bounded_all.
+Print Assumptions semiformula_eval_rewrite.
+Print Assumptions semiformula_eval_free_ext.
+Print Assumptions semiformula_eval_language_map.
+Print Assumptions semiformula_eval_transport.
+Print Assumptions semiformula_eval_free.
+Print Assumptions semiformula_eval_shift.
+Print Assumptions semiformula_eval_all_iter.
+Print Assumptions semiformula_eval_exists_iter.
+Print Assumptions semiformula_eval_all_closure.
+Print Assumptions semiformula_eval_exists_closure.
+Print Assumptions semiterm_val_operator_apply.
+Print Assumptions semiterm_operator_val_comp.
+Print Assumptions semiterm_operator_val_transport.
+Print Assumptions semiformula_eval_operator_apply.
+Print Assumptions semiformula_operator_eval_comp.
+Print Assumptions semiformula_operator_eval_transport.
+Print Assumptions structure_interprets_le_of_eq_lt.
+Print Assumptions structure_interprets_le_of_eq_lt_spec.
+Print Assumptions semiformula_eval_bounded_operator_all.
+Print Assumptions semiformula_eval_bounded_operator_exists.
+Print Assumptions semiformula_eval_ball_relation.
+Print Assumptions semiformula_eval_bex_relation.
+Print Assumptions first_order_tarski.
+Print Assumptions first_order_models_theory_iff.
+Print Assumptions first_order_satisfiable_iff.
+Print Assumptions first_order_unsatisfiable_iff.
+Print Assumptions first_order_consequence_iff.
+Print Assumptions first_order_consequence_iff_unsatisfiable.
+Print Assumptions first_order_consequence_weakening.
+Print Assumptions first_order_model_theory_satisfiable.
+Print Assumptions first_order_model_realize_language_map.
+Print Assumptions first_order_consequence_language_map.
+Print Assumptions first_order_hom_semiterm_val.
+Print Assumptions first_order_embedding_eval_open.
+Print Assumptions first_order_embedding_eval_all_closure_open.
+Print Assumptions first_order_closed_subset_inclusion.
+Print Assumptions semiformula_eval_carrier_equiv.
+Print Assumptions first_order_elementary_equiv_models_theory.
+Print Assumptions first_order_elementary_equiv_of_carrier_equiv.
+Print Assumptions structure_model_elementary_equiv.
+Print Assumptions structure_model_interprets_relation.
+Print Assumptions structure_model_interprets_eq.
+Print Assumptions semiterm_val_language_add_left.
+Print Assumptions semiformula_eval_language_add_left.
+Print Assumptions semiterm_val_language_sigma.
+Print Assumptions semiformula_eval_language_sigma.
+Print Assumptions semiterm_val_structure_lift.
+Print Assumptions semiformula_eval_structure_lift.
+Print Assumptions structure_lift_elementary_equiv.
+Print Assumptions semiformula_eval_embed_empty.
+Print Assumptions first_order_defined_to_definable.
+Print Assumptions first_order_definable_of_iff.
+Print Assumptions first_order_definable_const.
+Print Assumptions first_order_definable_and.
+Print Assumptions first_order_definable_all.
+Print Assumptions first_order_definable_exists.
+Print Assumptions first_order_definable_all_vector.
+Print Assumptions first_order_definable_exists_vector.
+Print Assumptions semiformula_eval_list_conj.
+Print Assumptions semiformula_eval_list_disj.
+Print Assumptions first_order_definable_list_all.
+Print Assumptions first_order_definable_list_exists.
+Print Assumptions first_order_definable_finite_all.
+Print Assumptions first_order_definable_finite_exists.
+Print Assumptions first_order_definable_retraction.
+Print Assumptions fin_env_append_left.
+Print Assumptions fin_env_append_right.
+Print Assumptions fin_env_append_left_eta.
+Print Assumptions fin_env_append_right_eta.
+Print Assumptions first_order_definable_graph_family.
+Print Assumptions first_order_definable_graph_family_map.
+Print Assumptions first_order_definable_substitution_witness.
+Print Assumptions first_order_definable_substitution.
+Print Assumptions first_order_definable_function_substitution_witness.
+Print Assumptions first_order_definable_function_substitution.
+Print Assumptions fin_two_definable_function_family.
+Print Assumptions first_order_definable_predicate_comp.
+Print Assumptions first_order_definable_relation_comp.
+Print Assumptions first_order_definable_unary_function_comp.
+Print Assumptions first_order_definable_binary_function_comp.
+Print Assumptions first_order_definable_operator_relation.
+Print Assumptions first_order_definable_operator_relation_terms.
+Print Assumptions first_order_definable_eq.
+Print Assumptions first_order_definable_eq_terms.
+Print Assumptions first_order_definable_term_graph.
+Print Assumptions first_order_definable_projection.
+Print Assumptions first_order_definable_parameter_const.
+Print Assumptions first_order_derivation_height_cast.
+Print Assumptions first_order_derivation_top.
+Print Assumptions first_order_derivation_atomic_identity.
+Print Assumptions first_order_derivation_rotate.
+Print Assumptions first_order_derivation_tensor.
+Print Assumptions semiformula_substitute_shift_one_eq_free.
+Print Assumptions semiformula_substitute_neg_shift_one_eq_neg_free.
+Print Assumptions semiformula_free_neg.
+Print Assumptions semiformula_shift_exists.
+Print Assumptions first_order_derivation_eta_rewrite.
+Print Assumptions first_order_derivation_eta.
+Print Assumptions first_order_one_sided_lk.
+Print Assumptions first_order_one_sided_lk_cut.
+Print Assumptions first_order_derivation_close.
+Print Assumptions first_order_derivation_of_is_closed.
+Print Assumptions first_order_lk_principal.
+Print Assumptions first_order_lk_provable_iff.
+Print Assumptions first_order_lk_provable_cast.
+Print Assumptions first_order_lk_classical.
+Print Assumptions first_order_lk_all.
+Print Assumptions rew_q_fix.
+Print Assumptions semiformula_fix_all.
+Print Assumptions semiformula_fix_all_closure.
+Print Assumptions semiformula_all_iter_closure.
+Print Assumptions semiformula_rewrite_fix_iter_zero.
+Print Assumptions semiformula_fix_rewrite_fix_iter.
+Print Assumptions semiformula_rewrite_cast.
+Print Assumptions semiformula_all_closure_cast.
+Print Assumptions semiformula_all_fix_iter_closure_step.
+Print Assumptions first_order_lk_provable_all_fix_iter.
+Print Assumptions first_order_lk_provable_universal_closure_open.
+Print Assumptions first_order_sentence_embed_substitute.
+Print Assumptions first_order_sentence_embed_lk_hom.
+Print Assumptions first_order_sentence_one_sided_lk.
+Print Assumptions first_order_sentence_one_sided_lk_cut.
+Print Assumptions first_order_sentence_lk_principal.
+Print Assumptions first_order_theory_contextual.
+Print Assumptions first_order_theory_provable_iff.
+Print Assumptions first_order_theory_inconsistent_iff.
+Print Assumptions first_order_empty_theory_provable_iff.
+Print Assumptions first_order_theory_of_lk_provable.
+Print Assumptions first_order_theory_axiomatized.
+Print Assumptions first_order_theory_compact.
+Print Assumptions first_order_theory_weaker_of_subset.
+Print Assumptions first_order_theory_classical.
+Print Assumptions first_order_theory_deduction.
+Print Assumptions first_order_theory_specialize.
+Print Assumptions first_order_theory_closure_spec.
+Print Assumptions first_order_derivation2_cast.
+Print Assumptions first_order_derivation_to_derivation2.
+Print Assumptions first_order_sentence_embed_shift.
+Print Assumptions first_order_axiom_suffix_shift.
+Print Assumptions first_order_derivation2_to_proof_data.
+Print Assumptions first_order_derivation2_cut_axioms.
+Print Assumptions first_order_theory_proof_to_proof2.
+Print Assumptions first_order_theory_proof2_to_proof.
+Print Assumptions first_order_theory_provable_iff_derivable2.
+Print Assumptions semiformula_get_padding_padding.
+Print Assumptions semiformula_padding_injective_iff.
+Print Assumptions semiformula_rewrite_padding.
+Print Assumptions semiformula_padding_iff_raw.
+Print Assumptions semiformula_padding_iff_provable.
+Print Assumptions fin_nat_code_injective.
+Print Assumptions fin_nat_decode_code.
+Print Assumptions fin_option_sequence_some.
+Print Assumptions semiterm_code_injective.
+Print Assumptions semiterm_decode_fuel_code.
+Print Assumptions semiterm_decode_code.
+Print Assumptions semiformula_code_injective.
+Print Assumptions semiformula_decode_fuel_code.
+Print Assumptions semiformula_decode_code.
+Print Assumptions semiterm_code_emb.
+Print Assumptions semiformula_code_emb.
+Print Assumptions semiformula_code_closed_injection.
+Print Assumptions semiterm_encoding.
+Print Assumptions semiformula_encoding.
+Print Assumptions nat_oring_numeral.
+Print Assumptions rew_semiterm_godel_number_term.
+Print Assumptions semiterm_val_add_one.
+Print Assumptions semiterm_operator_val_numeral.
+Print Assumptions semiformula_eval_ball_lt_succ.
+Print Assumptions semiformula_eval_bex_lt_succ.
+Print Assumptions oring_standard_structure_interprets.
+Print Assumptions first_order_structure_ext.
+Print Assumptions oring_standard_structure_unique.
+Print Assumptions nat_standard_structure_interprets.
+Print Assumptions arithmetic_theory_sound_on_of_models.
+Print Assumptions arithmetic_theory_consistent_of_sound_on.
+Print Assumptions arithmetic_lt_guard_rewrite.
+Print Assumptions arithmetic_lt_guard_rewrite_preimage.
+Print Assumptions arithmetic_bounded_all_rewrite_preimage.
+Print Assumptions arithmetic_bounded_exists_rewrite_preimage.
+Print Assumptions arithmetic_hierarchy_rewrite.
+Print Assumptions arithmetic_hierarchy_rewrite_reflect.
+Print Assumptions arithmetic_hierarchy_rewrite_iff.
+Print Assumptions arithmetic_hierarchy_accum.
+Print Assumptions arithmetic_hierarchy_strict_mono.
+Print Assumptions arithmetic_hierarchy_of_zero.
+Print Assumptions arithmetic_hierarchy_zero_iff.
+Print Assumptions arithmetic_hierarchy_and_iff.
+Print Assumptions arithmetic_hierarchy_or_iff.
+Print Assumptions arithmetic_hierarchy_neg.
+Print Assumptions arithmetic_hierarchy_neg_iff.
+Print Assumptions arithmetic_hierarchy_imp_iff.
+Print Assumptions arithmetic_hierarchy_iff_iff.
+Print Assumptions arithmetic_hierarchy_of_open.
+Print Assumptions arithmetic_hierarchy_remove_all.
+Print Assumptions arithmetic_hierarchy_remove_exists.
+Print Assumptions arithmetic_hierarchy_bounded_all_iff.
+Print Assumptions arithmetic_hierarchy_bounded_exists_iff.
+Print Assumptions arithmetic_hierarchy_all_iter_iff.
+Print Assumptions arithmetic_hierarchy_exists_iter_iff.
+Print Assumptions arithmetic_hierarchy_exists_closure.
+Print Assumptions arithmetic_hierarchy_all_closure.
+Print Assumptions arithmetic_hierarchy_padding_iff.
+Print Assumptions arithmetic_hierarchy_matrix_conj_iff.
+Print Assumptions arithmetic_hierarchy_matrix_disj_iff.
+Print Assumptions arithmetic_hierarchy_list_conj_iff.
+Print Assumptions arithmetic_hierarchy_list_disj_iff.
+Print Assumptions arithmetic_hierarchy_list_conj_map_iff.
+Print Assumptions arithmetic_hierarchy_list_disj_map_iff.
+Print Assumptions arithmetic_hierarchy_finite_conj_iff.
+Print Assumptions arithmetic_hierarchy_finite_disj_iff.
+Print Assumptions arithmetic_hierarchy_sigma_one_of_base.
+Print Assumptions arithmetic_sigma_one_induction.
+Print Assumptions arithmetic_theory_consistent_of_sigma_one_sound.
+Print Assumptions arithmetic_theory_consistent_of_pi_two_sound.
+Print Assumptions arithmetic_sorted_rewrite.
+Print Assumptions arithmetic_sorted_rewrite_val.
+Print Assumptions arithmetic_sorted_zero_hierarchy.
+Print Assumptions arithmetic_sorted_of_zero.
+Print Assumptions arithmetic_sorted_of_zero_val.
+Print Assumptions arithmetic_sorted_and.
+Print Assumptions arithmetic_sorted_or.
+Print Assumptions arithmetic_sorted_neg_sigma.
+Print Assumptions arithmetic_sorted_neg_pi.
+Print Assumptions arithmetic_sorted_neg_delta.
+Print Assumptions arithmetic_sorted_ball.
+Print Assumptions arithmetic_sorted_bex.
+Print Assumptions arithmetic_sorted_exists.
+Print Assumptions arithmetic_sorted_all.
+Print Assumptions arithmetic_sorted_exists_iter.
+Print Assumptions arithmetic_sorted_all_iter.
+Print Assumptions arithmetic_sorted_delta_proper.
+Print Assumptions arithmetic_sorted_delta_proper_on.
+Print Assumptions arithmetic_sorted_delta_proper_with_params_on.
+Print Assumptions arithmetic_sorted_delta_uniformly_proper.
+Print Assumptions arithmetic_sorted_delta_pi_eval_iff.
+Print Assumptions arithmetic_sorted_delta_proper_of_zero.
+Print Assumptions arithmetic_sorted_delta_proper_and.
+Print Assumptions arithmetic_sorted_delta_proper_or.
+Print Assumptions arithmetic_sorted_delta_proper_neg.
+Print Assumptions arithmetic_sorted_delta_eval_neg_iff.
+Print Assumptions arithmetic_sorted_delta_proper_ball.
+Print Assumptions arithmetic_sorted_delta_proper_bex.
+Print Assumptions arithmetic_sorted_delta_uniformly_proper_rewrite.
+Print Assumptions arithmetic_sorted_delta_proper_on_rewrite.
+Print Assumptions arithmetic_sorted_delta_proper_on_rewrite_with_params.
+Print Assumptions arithmetic_sorted_delta_proper_with_params_on_subst.
+Print Assumptions arithmetic_sorted_formula_proper.
+Print Assumptions arithmetic_sorted_is_defined_by.
+Print Assumptions arithmetic_sorted_is_defined_by_with_params.
+Print Assumptions arithmetic_sorted_defined.
+Print Assumptions arithmetic_sorted_definable.
+Print Assumptions arithmetic_sorted_defined_to_definable.
+Print Assumptions arithmetic_sorted_definable_of_zero.
+Print Assumptions arithmetic_sorted_definable_of_delta.
+Print Assumptions arithmetic_sorted_definable_delta_of_sigma_pi.
+Print Assumptions arithmetic_sorted_definable_and.
+Print Assumptions arithmetic_sorted_definable_or.
+Print Assumptions arithmetic_sorted_definable_not_sigma.
+Print Assumptions arithmetic_sorted_definable_not_pi.
+Print Assumptions arithmetic_sorted_definable_not_delta.
+Print Assumptions arithmetic_sorted_definable_verum.
+Print Assumptions arithmetic_sorted_definable_falsum.
+Print Assumptions arithmetic_sorted_definable_imp_sigma.
+Print Assumptions arithmetic_sorted_definable_imp_pi.
+Print Assumptions arithmetic_sorted_definable_imp_delta.
+Print Assumptions arithmetic_sorted_definable_iff_delta.
+Print Assumptions arithmetic_sorted_definable_list_conj.
+Print Assumptions arithmetic_sorted_definable_list_disj.
+Print Assumptions arithmetic_sorted_definable_finite_conj.
+Print Assumptions arithmetic_sorted_definable_finite_disj.
+Print Assumptions arithmetic_sorted_eq.
+Print Assumptions arithmetic_sorted_eq_val.
+Print Assumptions arithmetic_sorted_definable_eq_terms.
+Print Assumptions arithmetic_sorted_definable_term_graph.
+Print Assumptions arithmetic_sorted_definable_projection.
+Print Assumptions arithmetic_sorted_definable_parameter_constant.
+Print Assumptions arithmetic_sorted_definable_substitute_bound.
+Print Assumptions arithmetic_sorted_definable_retraction.
+Print Assumptions arithmetic_sorted_definable_ball.
+Print Assumptions arithmetic_sorted_definable_bex.
+Print Assumptions arithmetic_sorted_definable_exists.
+Print Assumptions arithmetic_sorted_definable_all.
+Print Assumptions arithmetic_sorted_definable_exists_vector.
+Print Assumptions arithmetic_sorted_definable_all_vector.
+Print Assumptions arithmetic_sorted_definable_graph_family.
+Print Assumptions arithmetic_sorted_definable_substitution_sigma.
+Print Assumptions arithmetic_sorted_definable_substitution_pi.
+Print Assumptions arithmetic_sorted_definable_substitution.
+Print Assumptions arithmetic_function_graph_reindex.
+Print Assumptions arithmetic_sorted_definable_function_retraction.
+Print Assumptions arithmetic_function_substitution_family.
+Print Assumptions arithmetic_sorted_definable_function_substitution.
+Print Assumptions arithmetic_function_graph_uniqueness_reindex.
+Print Assumptions arithmetic_sorted_definable_function_graph_delta_positive.
+Print Assumptions arithmetic_sorted_definable_function_graph_delta.
+Print Assumptions arithmetic_sorted_definable_function_of_sigma.
+Print Assumptions arithmetic_bounded_function.
+Print Assumptions arithmetic_bounded_variable.
+Print Assumptions arithmetic_bounded_constant.
+Print Assumptions arithmetic_bounded_term_function.
+Print Assumptions arithmetic_bounded_substitute_bound.
+Print Assumptions arithmetic_bounded_retraction.
+Print Assumptions arithmetic_bounded_term_retraction.
+Print Assumptions arithmetic_bounded_compose.
+Print Assumptions arithmetic_bounded_compose_one.
+Print Assumptions arithmetic_bounded_compose_two.
+Print Assumptions fin_graph_reindex.
+Print Assumptions arithmetic_definably_bounded_function.
+Print Assumptions arithmetic_definably_bounded_variable.
+Print Assumptions arithmetic_definably_bounded_constant.
+Print Assumptions arithmetic_definably_bounded_term.
+Print Assumptions arithmetic_bounded_of_pointwise_eq.
+Print Assumptions arithmetic_definably_bounded_of_pointwise_eq.
+Print Assumptions arithmetic_definably_bounded_retraction.
+Print Assumptions arithmetic_interpreted_lt.
+Print Assumptions arithmetic_sorted_definable_substitution_one_strictly_bounded.
+Print Assumptions arithmetic_sorted_definable_compose_predicate_one_strictly_bounded.
+Print Assumptions arithmetic_sorted_definable_bex_vector_terms.
+Print Assumptions arithmetic_sorted_definable_graph_family_zero.
+Print Assumptions arithmetic_sorted_definable_substitution_strictly_bounded_with_params.
+Print Assumptions arithmetic_sorted_definable_substitution_strictly_bounded.
+Print Assumptions arithmetic_bounded_outer_graph_reindex.
+Print Assumptions arithmetic_sorted_definable_function_substitution_strictly_bounded.
+Print Assumptions arithmetic_definably_bounded_lift_to_strict.
+Print Assumptions arithmetic_sorted_definable_substitution_bounded.
+Print Assumptions arithmetic_sorted_definable_function_substitution_bounded.
+Print Assumptions arithmetic_definably_bounded_compose.
+Print Assumptions peano_minus_laws.
+Print Assumptions peano_minus_le_trans.
+Print Assumptions peano_minus_le_lt_trans.
+Print Assumptions peano_minus_lt_le_trans.
+Print Assumptions peano_minus_le_antisym.
+Print Assumptions peano_minus_le_total.
+Print Assumptions peano_minus_add_right_cancel.
+Print Assumptions peano_minus_add_left_cancel.
+Print Assumptions peano_minus_lt_not_ge.
+Print Assumptions peano_minus_lt_of_add_lt_add_right.
+Print Assumptions peano_minus_lt_of_add_lt_add_left.
+Print Assumptions peano_minus_le_of_add_le_add_right.
+Print Assumptions peano_minus_le_of_add_le_add_left.
+Print Assumptions peano_minus_add_mul_distr.
+Print Assumptions peano_minus_zero_mul.
+Print Assumptions peano_minus_one_mul.
+Print Assumptions peano_minus_positive_eq_add_one.
+Print Assumptions peano_minus_lt_of_not_le.
+Print Assumptions peano_minus_le_of_not_lt.
+Print Assumptions peano_minus_add_one_le_of_lt.
+Print Assumptions peano_minus_lt_add_one.
+Print Assumptions peano_minus_le_iff_lt_add_one.
+Print Assumptions peano_minus_add_lt_add_left.
+Print Assumptions peano_minus_add_lt_add_both.
+Print Assumptions peano_minus_add_swap_middle.
+Print Assumptions peano_minus_add_le_add.
+Print Assumptions peano_minus_le_add_right.
+Print Assumptions peano_minus_le_add_left.
+Print Assumptions peano_minus_mul_le_mul.
+Print Assumptions peano_minus_square_le_square.
+Print Assumptions peano_minus_square_lt_square.
+Print Assumptions peano_minus_square_succ.
+Print Assumptions peano_minus_le_square.
+Print Assumptions peano_minus_lt_square_of_one_lt.
+Print Assumptions peano_minus_structure_monotone.
+Print Assumptions peano_minus_not_lt_zero.
+Print Assumptions peano_minus_numeral_succ.
+Print Assumptions peano_minus_numeral_add.
+Print Assumptions peano_minus_numeral_mul.
+Print Assumptions peano_minus_numeral_lt.
+Print Assumptions peano_minus_numeral_ne.
+Print Assumptions peano_minus_eq_numeral_of_lt_numeral.
+Print Assumptions peano_minus_lt_numeral_iff.
+Print Assumptions peano_minus_le_numeral_iff.
+Print Assumptions r0_laws.
+Print Assumptions r0_numeral_eq_iff.
+Print Assumptions r0_numeral_lt_iff.
+Print Assumptions r0_lt_numeral_fin_iff.
+Print Assumptions nat_r0_laws.
+Print Assumptions peano_minus_r0_laws.
+Print Assumptions robinson_q_laws.
+Print Assumptions robinson_q_exists_succ_of_ne_zero.
+Print Assumptions robinson_q_exists_succ_of_ne_zero'.
+Print Assumptions robinson_q_one_ne_zero.
+Print Assumptions robinson_q_zero_add_one.
+Print Assumptions robinson_q_eq_zero_of_add_eq_zero.
+Print Assumptions robinson_q_lt_of_add_nonzero.
+Print Assumptions robinson_q_lt_one_iff_eq_zero.
+Print Assumptions robinson_q_numeral_succ.
+Print Assumptions robinson_q_numeral_add.
+Print Assumptions robinson_q_numeral_mul.
+Print Assumptions robinson_q_numeral_zero_succ_ne.
+Print Assumptions robinson_q_numeral_ne.
+Print Assumptions robinson_q_numeral_eq_iff.
+Print Assumptions robinson_q_numeral_lt.
+Print Assumptions robinson_q_not_lt_zero.
+Print Assumptions robinson_q_lt_numeral_iff.
+Print Assumptions robinson_q_r0_laws.
+Print Assumptions robinson_q_numeral_lt_iff.
+Print Assumptions robinson_q_numeral_add_one.
+Print Assumptions robinson_q_numeral_lt_add.
+Print Assumptions robinson_q_numeral_lt_succ.
+Print Assumptions nat_robinson_q_laws.
+Print Assumptions peano_minus_zero_or_succ.
+Print Assumptions peano_minus_lt_iff_exists_add_succ.
+Print Assumptions peano_minus_robinson_q_laws.
+Print Assumptions omega_add_one.
+Print Assumptions omega_add_one_oring.
+Print Assumptions omega_add_one_numeral.
+Print Assumptions omega_add_one_robinson_q_laws.
+Print Assumptions omega_add_one_r0_laws.
+Print Assumptions omega_add_one_successor_fixed_point.
+Print Assumptions omega_add_one_top_lt_top.
+Print Assumptions omega_add_one_not_peano_minus.
+Print Assumptions peano_minus_sub_spec_exists.
+Print Assumptions peano_minus_sub_spec_functional.
+Print Assumptions peano_minus_sub_spec_exists_unique.
+Print Assumptions peano_minus_sub.
+Print Assumptions peano_minus_sub_specification.
+Print Assumptions peano_minus_sub_spec_of_ge.
+Print Assumptions peano_minus_sub_spec_of_lt.
+Print Assumptions peano_minus_sub_eq_iff.
+Print Assumptions peano_minus_sub_le_self.
+Print Assumptions peano_minus_sub_self.
+Print Assumptions peano_minus_sub_of_le.
+Print Assumptions peano_minus_sub_add_self_of_le.
+Print Assumptions peano_minus_add_sub_self_of_le.
+Print Assumptions peano_minus_add_sub_self.
+Print Assumptions peano_minus_zero_sub.
+Print Assumptions peano_minus_sub_zero.
+Print Assumptions peano_minus_sub_remove_left.
+Print Assumptions peano_minus_sub_sub.
+Print Assumptions peano_minus_pred_lt_self_of_pos.
+Print Assumptions peano_minus_sub_mul.
+Print Assumptions peano_minus_mul_sub.
+Print Assumptions peano_minus_add_sub_of_le.
+Print Assumptions peano_minus_sub_succ_add_succ.
+Print Assumptions peano_minus_le_sub_one_of_lt.
+Print Assumptions peano_minus_sub_le_iff_right.
+Print Assumptions peano_minus_sub_lt_iff_right.
+Print Assumptions peano_minus_dvd.
+Print Assumptions peano_minus_le_mul_self_of_pos_left.
+Print Assumptions peano_minus_le_mul_self_of_pos_right.
+Print Assumptions peano_minus_dvd_iff_bounded.
+Print Assumptions peano_minus_le_of_dvd.
+Print Assumptions peano_minus_not_dvd_of_lt.
+Print Assumptions peano_minus_dvd_antisym.
+Print Assumptions peano_minus_dvd_one_iff.
+Print Assumptions peano_minus_is_prime.
+Print Assumptions peano_minus_prime_gt_one.
+Print Assumptions peano_minus_prime_pos.
+Print Assumptions peano_minus_prime_divisor.
+Print Assumptions peano_minus_one_not_prime.
+Print Assumptions peano_minus_prime_ne_zero.
+Print Assumptions peano_minus_prime_ne_one.
+Print Assumptions peano_minus_pos_sub_iff_lt.
+Print Assumptions peano_minus_sub_eq_zero_iff_le.
+Print Assumptions peano_minus_min.
+Print Assumptions peano_minus_max.
+Print Assumptions peano_minus_min_of_le.
+Print Assumptions peano_minus_min_of_ge.
+Print Assumptions peano_minus_max_of_le.
+Print Assumptions peano_minus_max_of_ge.
+Print Assumptions peano_minus_min_graph_iff.
+Print Assumptions peano_minus_max_graph_iff.
+Print Assumptions peano_minus_min_le_left.
+Print Assumptions peano_minus_min_le_right.
+Print Assumptions peano_minus_le_max_left.
+Print Assumptions peano_minus_le_max_right.
+Print Assumptions first_order_axiom_scheme.
+Print Assumptions arithmetic_zero_term.
+Print Assumptions arithmetic_one_term.
+Print Assumptions arithmetic_add_one_term.
+Print Assumptions arithmetic_predicate_instance.
+Print Assumptions arithmetic_successor_induction.
+Print Assumptions arithmetic_order_induction.
+Print Assumptions arithmetic_least_number.
+Print Assumptions arithmetic_predicate_holds.
+Print Assumptions arithmetic_zero_term_val.
+Print Assumptions arithmetic_add_one_term_val.
+Print Assumptions arithmetic_predicate_instance_eval.
+Print Assumptions fin_env_cons_empty_eq_constant.
+Print Assumptions arithmetic_all_predicate_eval.
+Print Assumptions arithmetic_successor_step_eval.
+Print Assumptions arithmetic_successor_induction_eval.
+Print Assumptions arithmetic_bounded_all_eval.
+Print Assumptions arithmetic_predecessors_eval.
+Print Assumptions arithmetic_order_step_eval.
+Print Assumptions arithmetic_order_induction_eval.
+Print Assumptions arithmetic_exists_predicate_eval.
+Print Assumptions arithmetic_no_predecessors_eval.
+Print Assumptions arithmetic_least_witness_eval.
+Print Assumptions arithmetic_least_number_eval.
+Print Assumptions first_order_axiom_scheme_subset.
+Print Assumptions first_order_scheme_union_subset.
+Print Assumptions first_order_scheme_union_weaker.
+Print Assumptions arithmetic_induction_scheme.
+Print Assumptions arithmetic_induction_scheme_subset.
+Print Assumptions arithmetic_successor_induction_scheme.
+Print Assumptions arithmetic_induction_theory.
+Print Assumptions arithmetic_open_induction_theory.
+Print Assumptions arithmetic_sigma_induction_theory.
+Print Assumptions arithmetic_peano_theory.
+Print Assumptions arithmetic_successor_induction_scheme_intro.
+Print Assumptions arithmetic_successor_induction_scheme_subset.
+Print Assumptions arithmetic_induction_theory_subset.
+Print Assumptions arithmetic_induction_theory_weaker.
+Print Assumptions arithmetic_sigma_induction_subset_mono.
+Print Assumptions arithmetic_sigma_induction_weaker_mono.
+Print Assumptions arithmetic_open_induction_subset_sigma_zero.
+Print Assumptions arithmetic_sigma_induction_subset_peano.
+Print Assumptions semiformula_universal_closure_elim.
+Print Assumptions arithmetic_models_successor_induction.
+Print Assumptions arithmetic_model_predicate_representation.
+Print Assumptions arithmetic_models_induction_theory_successor.
+Print Assumptions arithmetic_successor_induction_principle.
+Print Assumptions arithmetic_order_induction_principle.
+Print Assumptions arithmetic_least_number_principle.
+Print Assumptions arithmetic_order_induction_of_successor.
+Print Assumptions arithmetic_least_number_of_order_induction.
+Print Assumptions arithmetic_least_number_of_successor_induction.
+Print Assumptions arithmetic_boundary_of_least_number.
+Print Assumptions iopen_div_pos_spec.
+Print Assumptions iopen_lt_mul_add_one.
+Print Assumptions iopen_div_exists_unique_pos.
+Print Assumptions iopen_div_spec.
+Print Assumptions iopen_div_exists_unique.
+Print Assumptions iopen_div.
+Print Assumptions iopen_div_specification.
+Print Assumptions iopen_mul_div_le_pos.
+Print Assumptions iopen_lt_mul_div_succ.
+Print Assumptions iopen_div_zero.
+Print Assumptions iopen_eq_mul_div_add_of_pos.
+Print Assumptions iopen_div_graph.
+Print Assumptions iopen_div_eq_of.
+Print Assumptions iopen_div_mul_add.
+Print Assumptions iopen_div_mul_add_left.
+Print Assumptions iopen_zero_div.
+Print Assumptions iopen_div_one.
+Print Assumptions iopen_div_eq_zero_of_lt.
+Print Assumptions iopen_mul_div_le.
+Print Assumptions iopen_div_mul_left.
+Print Assumptions iopen_div_mul_right.
+Print Assumptions iopen_div_self.
+Print Assumptions iopen_rem.
+Print Assumptions iopen_rem_graph.
+Print Assumptions iopen_div_add_rem.
+Print Assumptions iopen_rem_zero.
+Print Assumptions iopen_zero_rem.
+Print Assumptions iopen_rem_mul_add_of_lt.
+Print Assumptions iopen_rem_eq_self_of_lt.
+Print Assumptions iopen_rem_lt.
+Print Assumptions iopen_rem_le.
+Print Assumptions iopen_rem_mul_self_left.
+Print Assumptions iopen_rem_mul_self_right.
+Print Assumptions iopen_rem_self.
+Print Assumptions iopen_rem_eq_zero_iff_dvd.
+Print Assumptions iopen_sqrt_spec.
+Print Assumptions iopen_sqrt_exists_unique.
+Print Assumptions iopen_sqrt.
+Print Assumptions iopen_sqrt_specification.
+Print Assumptions iopen_sqrt_graph.
+Print Assumptions iopen_sqrt_eq_of.
+Print Assumptions iopen_sqrt_square.
+Print Assumptions iopen_sqrt_zero.
+Print Assumptions iopen_sqrt_one.
+Print Assumptions iopen_sqrt_square_le.
+Print Assumptions iopen_sqrt_lt_square_succ.
+Print Assumptions iopen_sqrt_le_self.
+Print Assumptions iopen_sqrt_le_of_le_square.
+Print Assumptions iopen_square_lt_of_lt_sqrt.
+Print Assumptions iopen_sqrt_lt_self_of_one_lt.
+Print Assumptions iopen_pair.
+Print Assumptions iopen_pair_graph.
+Print Assumptions iopen_unpair.
+Print Assumptions iopen_pair_unpair.
+Print Assumptions iopen_sqrt_pair_left.
+Print Assumptions iopen_sqrt_pair_right.
+Print Assumptions iopen_unpair_pair.
+Print Assumptions iopen_pi1.
+Print Assumptions iopen_pi2.
+Print Assumptions iopen_pair_pi.
+Print Assumptions iopen_pi1_pair.
+Print Assumptions iopen_pi2_pair.
+Print Assumptions iopen_pi1_le_self.
+Print Assumptions iopen_pi2_le_self.
+Print Assumptions iopen_le_pair_left.
+Print Assumptions iopen_le_pair_right.
+Print Assumptions iopen_pair_injective.
+Print Assumptions iopen_pair_eq_iff.
+Print Assumptions iopen_list_pair.
+Print Assumptions iopen_list_unpair.
+Print Assumptions iopen_list_unpair_length.
+Print Assumptions iopen_list_unpair_pair.
+Print Assumptions iopen_list_unpair_pair_nth.
+Print Assumptions iopen_list_pair_injective_at_length.
+Print Assumptions iopen_pair_lt_pair_left.
+Print Assumptions iopen_pair_le_pair_left.
+Print Assumptions iopen_pair_lt_pair_right.
+Print Assumptions iopen_pair_le_pair_right.
+Print Assumptions iopen_pair_le_pair.
+Print Assumptions iopen_pair_lt_pair.
+Print Assumptions iopen_pair_polybound.
+Print Assumptions iopen_div_le.
+Print Assumptions iopen_div_monotone.
+Print Assumptions iopen_div_lt_of_lt_mul.
+Print Assumptions iopen_div_mul.
+Print Assumptions iopen_div_cancel_left.
+Print Assumptions iopen_div_cancel_right.
+Print Assumptions iopen_div_add_mul_self.
+Print Assumptions iopen_div_add_mul_self_left.
+Print Assumptions iopen_div_mul_add_self.
+Print Assumptions iopen_div_mul_add_self_left.
+Print Assumptions iopen_rem_eq_of_decomposition.
+Print Assumptions iopen_rem_add_mul_self.
+Print Assumptions iopen_rem_add_mul_self_left.
+Print Assumptions iopen_rem_mul_add_self.
+Print Assumptions iopen_rem_mul_add_self_left.
+Print Assumptions iopen_rem_add_remove_right.
+Print Assumptions iopen_rem_add_remove_left.
+Print Assumptions iopen_rem_div.
+Print Assumptions iopen_rem_one.
+Print Assumptions iopen_rem_add_congr_left.
+Print Assumptions iopen_rem_add_congr_right.
+Print Assumptions iopen_rem_add.
+Print Assumptions iopen_rem_mul_congr_left.
+Print Assumptions iopen_rem_mul_congr_right.
+Print Assumptions iopen_rem_mul.
+Print Assumptions iopen_rem_two.
+Print Assumptions iopen_even_or_odd.
+Print Assumptions iopen_even_or_odd_exact.
+Print Assumptions iopen_two_dvd_mul.
+Print Assumptions iopen_mul_div_self_iff_dvd.
+Print Assumptions iopen_div_lt_of_pos_of_one_lt.
+Print Assumptions iopen_rem_add_remove_right_of_dvd.
+Print Assumptions iopen_rem_add_remove_left_of_dvd.
+Print Assumptions iopen_le_two_mul_div_two_add_one.
+Print Assumptions iopen_sqrt_eq_of_le_of_le.
+Print Assumptions iopen_sqrt_numeral_eq.
+Print Assumptions iopen_sqrt_two.
+Print Assumptions iopen_sqrt_three.
+Print Assumptions iopen_sqrt_four.
+Print Assumptions iopen_two_ne_square.
+Print Assumptions iopen_sqrt_le_add.
+Print Assumptions iopen_lt_pair_left_of_pos.
+Print Assumptions iopen_two_prime.
+Print Assumptions iopen_polynomial_induction.
+Print Assumptions peano_minus_ball_lt_succ.
+Print Assumptions peano_minus_bex_lt_succ.
+Print Assumptions peano_minus_eval_ball_lt_succ.
+Print Assumptions peano_minus_eval_bex_lt_succ.
+Print Assumptions nat_peano_minus_laws.
+Print Assumptions arithmetic_peano_minus_majorant_lift.
+Print Assumptions arithmetic_peano_minus_majorant_lift_spec.
+Print Assumptions arithmetic_sorted_definable_substitution_peano_minus.
+Print Assumptions arithmetic_sorted_definable_function_substitution_peano_minus.
+Print Assumptions arithmetic_definably_bounded_compose_peano_minus.
+Print Assumptions first_order_true_arithmetic_models.
+Print Assumptions first_order_true_arithmetic_provable_iff.
+Print Assumptions arithmetic_theory_weaker_than_true_arithmetic.
+Print Assumptions semiterm_val_monotone.
+Print Assumptions semiterm_val_monotone_free.
+Print Assumptions semiterm_val_monotone_bound.
+Print Assumptions semiformula_polarity_neg.
+Print Assumptions semiformula_polarity_imp.
+Print Assumptions semiformula_and_positive_iff.
+Print Assumptions semiformula_or_negative_iff.
+Print Assumptions semiformula_neg_positive_iff.
+Print Assumptions semiformula_polarity_rewrite.
+Print Assumptions first_order_eqv_equivalence.
+Print Assumptions first_order_models_equality_axioms_of_interprets_eq.
+Print Assumptions semiterm_val_eqv.
+Print Assumptions semiformula_eval_eqv.
+Print Assumptions first_order_sequent_language_map_shift.
+Print Assumptions first_order_derivation_language_map.
+Print Assumptions first_order_lk_provable_language_map.
+Print Assumptions first_order_sequent_rewrite_under_free_shift.
+Print Assumptions first_order_derivation_rewrite.
+Print Assumptions first_order_derivation_map.
+Print Assumptions first_order_derivation_shift.
+Print Assumptions semiformula_rewrite_map_substitute_fresh.
+Print Assumptions semiformula_rewrite_map_fresh_eq_shift.
+Print Assumptions first_order_sequent_rewrite_map_fresh_eq_shift.
+Print Assumptions first_order_derivation_generalize_fresh.
+Print Assumptions first_order_sequent_fv_sup_le_new_variable.
+Print Assumptions first_order_sequent_new_variable_fresh.
+Print Assumptions first_order_derivation_all_new_variable.
+Print Assumptions first_order_derivation_exists_of_instances.
+Print Assumptions first_order_derivation_exists_of_instances_present.
+Print Assumptions first_order_is_cut_free_or_iff.
+Print Assumptions first_order_is_cut_free_and_iff.
+Print Assumptions first_order_is_cut_free_all_iff.
+Print Assumptions first_order_is_cut_free_exists_iff.
+Print Assumptions first_order_is_cut_free_contraction_iff.
+Print Assumptions first_order_is_cut_free_cast_iff.
+Print Assumptions first_order_is_cut_free_root_is_not_cut.
+Print Assumptions first_order_is_cut_free_not_cut.
+Print Assumptions first_order_is_cut_free_language_map_iff.
+Print Assumptions first_order_is_cut_free_rewrite_iff.
+Print Assumptions first_order_is_cut_free_map_iff.
+Print Assumptions first_order_is_cut_free_shift_iff.
+Print Assumptions first_order_is_cut_free_generalize_fresh_iff.
+Print Assumptions first_order_is_cut_free_exists_of_instances_iff.
+Print Assumptions first_order_is_cut_free_exists_of_instances_present_iff.
+Print Assumptions first_order_is_cut_free_all_new_variable_iff.
+Print Assumptions fin_env_snoc_empty_eq_cons.
+Print Assumptions first_order_shifted_context_true.
+Print Assumptions first_order_derivation_sound.
+Print Assumptions first_order_derivation_nil_empty.
+Print Assumptions first_order_sentence_embed_eval.
+Print Assumptions first_order_lk_sound.
+Print Assumptions first_order_theory_proof_sound.
+Print Assumptions first_order_theory_consistent_of_satisfiable.
+Print Assumptions first_order_models_of_weaker_theory.
+Print Assumptions semiterm_bvar_or_fvar_relational.
+Print Assumptions term_fvar_relational.
+Print Assumptions semiterm_relational_val_rew.
+Print Assumptions semiterm_relational_val_bshift.

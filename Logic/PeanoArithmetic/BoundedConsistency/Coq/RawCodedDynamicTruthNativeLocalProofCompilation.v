@@ -41,6 +41,7 @@ From BoundedPAConsistency Require Import
   RawCodedProofImpIConstructor
   RawCodedProofAndIConstructor
   RawCodedProofAllIConstructor
+  RawCodedPALocalProofTripleUniversalIntroduction
   RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofAndIntroduction.
 
@@ -70,6 +71,7 @@ Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedProofImpIConstructor.
 Import PABoundedRawCodedProofAndIConstructor.
 Import PABoundedRawCodedProofAllIConstructor.
+Import PABoundedRawCodedPALocalProofTripleUniversalIntroduction.
 Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofAndIntroduction.
 
@@ -160,34 +162,11 @@ Theorem raw_codedPALocalProofOf_dynamicTruthNativeLocal_close3 : forall
     (rawDynamicTruthLocalFormulaAll3Code M body)
     (rawDynamicTruthNativeLocalClose3Root M body child).
 Proof.
-  intros M hPA body child [hcoverage hendpoint].
-  pose proof (raw_proofAllI_ruleCoverage M hPA
-    (raw_zero M) (raw_zero M) body child
-    (raw_contextShift_empty M hPA) hcoverage hendpoint) as hcoverage1.
-  pose proof (raw_proofAllI_endpoint M
-    (raw_zero M) body child) as hendpoint1.
-  pose proof (raw_proofAllI_ruleCoverage M hPA
-    (raw_zero M) (raw_zero M) (rawFormulaAllCode M body)
-    (rawProofAllIRoot M (raw_zero M) body child)
-    (raw_contextShift_empty M hPA) hcoverage1 hendpoint1) as hcoverage2.
-  pose proof (raw_proofAllI_endpoint M (raw_zero M)
-    (rawFormulaAllCode M body)
-    (rawProofAllIRoot M (raw_zero M) body child)) as hendpoint2.
-  pose proof (raw_proofAllI_ruleCoverage M hPA
-    (raw_zero M) (raw_zero M)
-    (rawFormulaAllCode M (rawFormulaAllCode M body))
-    (rawProofAllIRoot M (raw_zero M)
-      (rawFormulaAllCode M body)
-      (rawProofAllIRoot M (raw_zero M) body child))
-    (raw_contextShift_empty M hPA) hcoverage2 hendpoint2) as hcoverage3.
-  pose proof (raw_proofAllI_endpoint M (raw_zero M)
-    (rawFormulaAllCode M (rawFormulaAllCode M body))
-    (rawProofAllIRoot M (raw_zero M)
-      (rawFormulaAllCode M body)
-      (rawProofAllIRoot M (raw_zero M) body child))) as hendpoint3.
-  split.
-  - exact hcoverage3.
-  - exact hendpoint3.
+  intros M hPA body child hchild.
+  unfold rawDynamicTruthLocalFormulaAll3Code,
+    rawDynamicTruthNativeLocalClose3Root,
+    rawPALocalProofClose3Root.
+  exact (raw_codedPALocalProofOf_close3_empty M hPA body child hchild).
 Qed.
 
 (** ------------------------------------------------------------------

@@ -884,6 +884,21 @@ Proof.
   - exact (k_multinecessitation HK n Hpq).
 Qed.
 
+(** Applied forms of the K algebra.  Foundation exposes these beside the
+    implication theorems because proof-object modus ponens is explicit there;
+    keeping the eliminators factored is equally useful for Prop-valued Coq
+    theoremhood. *)
+Lemma k_box_iter_axiom_K_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (box_iter n (Imp p q)) ->
+    L (Imp (box_iter n p) (box_iter n q)).
+Proof.
+  intros AtomType L HK n p q Himp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_box_iter_axiom_K HK n p q) Himp).
+Qed.
+
 Lemma k_box_congruence :
   forall (AtomType : Type) (L : modal_logic_set AtomType),
     k_entailment L -> forall p q,
@@ -957,6 +972,28 @@ Proof.
     now apply logic_and_elim_right_imp.
 Qed.
 
+Lemma k_box_iter_and_collect_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (And (box_iter n p) (box_iter n q)) ->
+    L (box_iter n (And p q)).
+Proof.
+  intros AtomType L HK n p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_box_iter_and_collect HK n p q) Hp).
+Qed.
+
+Lemma k_box_iter_and_distribute_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (box_iter n (And p q)) ->
+    L (And (box_iter n p) (box_iter n q)).
+Proof.
+  intros AtomType L HK n p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_box_iter_and_distribute HK n p q) Hp).
+Qed.
+
 Lemma k_box_iter_or_collect :
   forall (AtomType : Type) (L : modal_logic_set AtomType),
     k_entailment L -> forall n p q,
@@ -977,6 +1014,17 @@ Proof.
   eapply (logic_modus_ponens Hclass); [|exact Hleft].
   apply (logic_classical_tautology Hclass).
   intro rho; unfold Or, Neg; simpl; tauto.
+Qed.
+
+Lemma k_box_iter_or_collect_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Or (box_iter n p) (box_iter n q)) ->
+    L (box_iter n (Or p q)).
+Proof.
+  intros AtomType L HK n p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_box_iter_or_collect HK n p q) Hp).
 Qed.
 
 (** Boxdot is the conjunction [p /\ box p].  Its normality laws are already
@@ -1116,6 +1164,60 @@ Proof.
           (logic_list_conj2 (q :: Gamma))).
 Qed.
 
+Lemma logic_list_conj2_theorem_iff :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    classical_logic L -> forall Gamma,
+    L (logic_list_conj2 Gamma) <->
+    (forall p, In p Gamma -> L p).
+Proof.
+  intros AtomType L Hclass Gamma; induction Gamma as [|p Gamma IH].
+  - simpl. split.
+    + intros _ q Hq. contradiction.
+    + intros _. exact (logic_mem_top Hclass).
+  - destruct Gamma as [|q Gamma].
+    + simpl. split.
+      * intros Hp r [-> | Hr]; [exact Hp | contradiction].
+      * intros Hall. apply Hall. now left.
+    + simpl in IH |- *. split.
+      * intros Hand r [-> | Hr].
+        -- exact (logic_modus_ponens Hclass
+             (@logic_and_elim_left_imp AtomType L Hclass r
+               (logic_list_conj2 (q :: Gamma))) Hand).
+        -- apply (proj1 IH); [|exact Hr].
+           exact (logic_modus_ponens Hclass
+             (@logic_and_elim_right_imp AtomType L Hclass p
+               (logic_list_conj2 (q :: Gamma))) Hand).
+      * intros Hall. apply logic_and_intro; [exact Hclass | |].
+        -- apply Hall. now left.
+        -- apply (proj2 IH). intros r Hr. apply Hall. now right.
+Qed.
+
+(** Exact theoremhood characterization for a boxed normalized context.  It
+    subsumes the source list theorem and its finite-set wrapper because lists
+    here are duplicate-insensitive context enumerations. *)
+Lemma k_box_iter_list_conj2_theorem_iff :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n Gamma,
+    L (box_iter n (logic_list_conj2 Gamma)) <->
+    (forall p, In p Gamma -> L (box_iter n p)).
+Proof.
+  intros AtomType L HK n Gamma. split.
+  - intro Hboxed.
+    pose proof (logic_modus_ponens (k_classical HK)
+      (k_box_iter_list_conj2_distribute HK n Gamma) Hboxed) as Hall.
+    pose proof (proj1 (@logic_list_conj2_theorem_iff AtomType L
+      (k_classical HK) (map (fun p => box_iter n p) Gamma)) Hall) as Hall'.
+    intros p Hp. apply Hall'. apply in_map_iff.
+    now exists p.
+  - intro Hall.
+    apply (logic_modus_ponens (k_classical HK)
+      (k_box_iter_list_conj2_collect HK n Gamma)).
+    apply (proj2 (@logic_list_conj2_theorem_iff AtomType L
+      (k_classical HK) (map (fun p => box_iter n p) Gamma))).
+    intros r Hr. apply in_map_iff in Hr as [p [<- Hp]].
+    now apply Hall.
+Qed.
+
 Lemma k_dia_regularity :
   forall (AtomType : Type) (L : modal_logic_set AtomType),
     k_entailment L -> forall p q,
@@ -1140,6 +1242,26 @@ Proof.
   - apply k_dia_regularity; [exact HK |]. now apply IH.
 Qed.
 
+Lemma k_dia_regularity_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Imp p q) -> L (Dia p) -> L (Dia q).
+Proof.
+  intros AtomType L HK p q Hpq Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_dia_regularity HK Hpq) Hp).
+Qed.
+
+Lemma k_dia_iter_regularity_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Imp p q) -> L (dia_iter n p) -> L (dia_iter n q).
+Proof.
+  intros AtomType L HK n p q Hpq Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_dia_iter_regularity HK n Hpq) Hp).
+Qed.
+
 Lemma k_dia_or_collect :
   forall (AtomType : Type) (L : modal_logic_set AtomType),
     k_entailment L -> forall p q,
@@ -1159,6 +1281,16 @@ Proof.
   eapply (logic_modus_ponens Hclass); [|exact Hleft].
   apply (logic_classical_tautology Hclass).
   intro rho; unfold Or, Neg; simpl; tauto.
+Qed.
+
+Lemma k_dia_or_collect_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Or (Dia p) (Dia q)) -> L (Dia (Or p q)).
+Proof.
+  intros AtomType L HK p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_dia_or_collect HK p q) Hp).
 Qed.
 
 Lemma k_dia_or_distribute :
@@ -1203,6 +1335,17 @@ Proof.
   intro rho; unfold Or, Neg; simpl; tauto.
 Qed.
 
+Lemma k_dia_iter_or_collect_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall n p q,
+    L (Or (dia_iter n p) (dia_iter n q)) ->
+    L (dia_iter n (Or p q)).
+Proof.
+  intros AtomType L HK n p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_dia_iter_or_collect HK n p q) Hp).
+Qed.
+
 Lemma k_dia_iter_or_distribute :
   forall (AtomType : Type) (L : modal_logic_set AtomType),
     k_entailment L -> forall n p q,
@@ -1229,6 +1372,16 @@ Proof.
     now apply logic_and_elim_left_imp.
   - apply k_dia_regularity; [exact HK |].
     now apply logic_and_elim_right_imp.
+Qed.
+
+Lemma k_dia_and_distribute_apply :
+  forall (AtomType : Type) (L : modal_logic_set AtomType),
+    k_entailment L -> forall p q,
+    L (Dia (And p q)) -> L (And (Dia p) (Dia q)).
+Proof.
+  intros AtomType L HK p q Hp.
+  exact (logic_modus_ponens (k_classical HK)
+    (k_dia_and_distribute HK p q) Hp).
 Qed.
 
 Lemma k_dia_iter_and_distribute :

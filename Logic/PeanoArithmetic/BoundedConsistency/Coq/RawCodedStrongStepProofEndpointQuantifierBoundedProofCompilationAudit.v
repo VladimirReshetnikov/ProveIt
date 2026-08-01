@@ -1,0 +1,23 @@
+(** Assumption audit for the concrete strong-step endpoint-rank compiler. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation.
+
+Import
+  PABoundedRawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation.
+
+Check
+  rawDirect_strongStepProofEndpointQuantifierBoundedSourceBody_agreement.
+Check
+  rawDirect_strongStepProofEndpointQuantifierBoundedSource_substitution.
+Check
+  raw_codedPALocalProof_strongStepProofEndpointQuantifierBoundedLaw_on_witnessed_base.
+Check
+  raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_of_roots_on_witnessed_extension.
+
+Print Assumptions
+  rawDirect_strongStepProofEndpointQuantifierBoundedSource_substitution.
+Print Assumptions
+  raw_codedPALocalProof_strongStepProofEndpointQuantifierBoundedLaw_on_witnessed_base.
+Print Assumptions
+  raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_of_roots_on_witnessed_extension.

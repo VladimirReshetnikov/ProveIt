@@ -11,7 +11,9 @@ From FoundationModal Require Import
   PropositionalSlash PropositionalKripke2 PropositionalKripke2Correspondence
   PropositionalKripke2Hilbert PropositionalHilbertFExtensions PropositionalFMT
   PropositionalHilbertVF PropositionalHilbertVFCorsi
-  PropositionalFMTCompleteness PropositionalHilbertWF
+  PropositionalFMTCompleteness PropositionalHilbertWF PropositionalNeighborhoodNB
+  PropositionalHeytingSemantics PropositionalConsistentTableau
+  PropositionalKripkeTableauCanonical
   PropositionalKreiselPutnam
   PropositionalBoolean PropositionalBooleanNNFormula
   PropositionalBooleanZeroSubst PropositionalBooleanHilbert
@@ -21,10 +23,11 @@ From FoundationModal Require Import
   PropositionalEntailmentLukasiewicz
   PropositionalEntailmentMinimal PropositionalEntailmentInt
   PropositionalEntailmentClassical PropositionalTait
-  NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness Kripke
+  NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness CorsiVF Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
-  Correspondence FiltrationExtensions CanonicalK HilbertNNFormula Loeb
+  Correspondence FiltrationExtensions PropositionalKripkeFiltration
+  CanonicalK HilbertNNFormula Loeb
   FrameProperties
   RelationProperties ConverseWellFounded WeakConverseWellFounded
   CorrespondenceExtensions NormalHilbert LogicInfrastructure
@@ -57,7 +60,7 @@ From FoundationModal Require Import
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 JerabekBoxdot CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
-  CanonicalGrzMcK CanonicalTrivVer MaximalTranslations GLPoint3PlusBoxBot CanonicalS5Grz
+  CanonicalGrzMcK CanonicalTrivVer MaximalTranslations Makinson GLPoint3PlusBoxBot CanonicalS5Grz
   CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
   CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
@@ -1014,7 +1017,10 @@ Print Assumptions ph_hilbert_cl_classical.
 Print Assumptions ph_hilbert_logic_subset_of_schema_inclusion.
 Print Assumptions ph_hilbert_logic_subset_of_provable_schema.
 
-(** Generalized propositional Kripke semantics and Hilbert soundness. *)
+(** Generalized propositional Kripke semantics and Hilbert soundness.
+    Positive forcing, heredity, substitution, validity closure, and
+    frame-class validation combinators are constructive.  Only the exact
+    countermodel-existence converses use propositional excluded middle. *)
 Check pkripke_frame.
 Check pkripke_valuation.
 Check pkripke_model.
@@ -1025,7 +1031,10 @@ Check pkripke_forces_and.
 Check pkripke_forces_or.
 Check pkripke_forces_imp.
 Check pkripke_forces_neg.
+Check pkripke_forces_top.
+Check pkripke_not_of_forces_neg.
 Check pkripke_forces_persistent.
+Check pkripke_not_forces_persistent_back.
 Check pkripke_forcing_relation.
 Check pkripke_generic_int_forcing.
 Check pkripke_substitution_model.
@@ -1037,13 +1046,36 @@ Check pkripke_sound.
 Check pkripke_complete.
 Check ph_hilbert_logic_included.
 Check ph_hilbert_logic_strictly_included.
+Check pkripke_frame_finite.
+Check pkripke_all_frames.
+Check pkripke_finite_frames.
+Check pkripke_frame_class_validates.
+Check pkripke_frame_class_validates_formula.
+Check pkripke_frame_class_validates_inter.
+Check pkripke_frame_class_validates_formula_inter.
+Check pkripke_model_valid_top.
+Check pkripke_model_not_valid_bottom.
+Check pkripke_model_not_valid_iff_world.
+Check pkripke_frame_valid_top.
+Check pkripke_frame_not_valid_bottom.
+Check pkripke_frame_not_valid_iff_valuation.
+Check pkripke_frame_not_valid_iff_valuation_world.
+Check pkripke_frame_not_valid_iff_model_world.
+Check pkripke_frame_class_not_valid_iff_frame.
+Check pkripke_frame_class_not_valid_iff_model.
+Check pkripke_frame_class_not_valid_iff_model_world.
 Check pkripke_frame_valid_substitute.
+Check pkripke_all_frames_validates_efq.
+Check pkripke_finite_frames_validates_efq.
+Check pkripke_frame_class_validates_with_efq.
 Check ph_hilbert_proof_pkripke_sound.
 Check ph_hilbert_pkripke_sound.
 Check ph_hilbert_consistent_of_nonempty_pkripke_class.
 Check ph_hilbert_included_of_pkripke_class_subset.
 Check ph_hilbert_int_pkripke_sound.
 Check ph_hilbert_int_consistent_via_pkripke.
+Check pkripke_all_frames_nonempty.
+Check pkripke_finite_frames_nonempty.
 Check pkripke_frame_strongly_convergent.
 Check pkripke_frame_strongly_connected.
 Check pkripke_strongly_convergent_of_strongly_connected.
@@ -1059,8 +1091,14 @@ Check ph_hilbert_kc_consistent_via_pkripke.
 Check ph_hilbert_lc_pkripke_sound.
 Check ph_hilbert_lc_consistent_via_pkripke.
 Print Assumptions pkripke_forces_persistent.
+Print Assumptions pkripke_not_forces_persistent_back.
 Print Assumptions pkripke_generic_int_forcing.
 Print Assumptions pkripke_forces_substitute.
+Print Assumptions pkripke_frame_class_validates_inter.
+Print Assumptions pkripke_model_not_valid_iff_world.
+Print Assumptions pkripke_frame_not_valid_iff_valuation_world.
+Print Assumptions pkripke_frame_class_not_valid_iff_model_world.
+Print Assumptions pkripke_frame_class_validates_with_efq.
 Print Assumptions ph_hilbert_proof_pkripke_sound.
 Print Assumptions ph_hilbert_consistent_of_nonempty_pkripke_class.
 Print Assumptions ph_hilbert_included_of_pkripke_class_subset.
@@ -1075,6 +1113,47 @@ Print Assumptions ph_hilbert_kc_pkripke_sound.
 Print Assumptions ph_hilbert_kc_consistent_via_pkripke.
 Print Assumptions ph_hilbert_lc_pkripke_sound.
 Print Assumptions ph_hilbert_lc_consistent_via_pkripke.
+
+(** Finite truth-profile filtrations for intuitionistic propositional models. *)
+Check pfilter_truth_profile.
+Check pfilter_profile_agreement.
+Check pfilter_class_agreement.
+Check pfilter_class_representative_eq.
+Check pfilter_world_eq_of_agreement.
+Check pfilter_world_cover.
+Check pfilter_world_cover_complete.
+Check pfilter_world_cover_nodup.
+Check pfilter_world_cover_bound.
+Check pfiltration_data.
+Check pfiltration_model.
+Check pfiltration_truth.
+Check pcoarsest_filtration_rel.
+Check pcoarsest_filtration_data.
+Check pcoarsest_filtration_antisymmetric.
+Check pcoarsest_filtration_model.
+Check pcoarsest_filtration_truth.
+Check pfinest_filtration_edge.
+Check pfilter_path.
+Check pfilter_path_trans.
+Check pfinest_filtration_rel.
+Check pfinest_edge_preserves.
+Check pfinest_path_preserves.
+Check pfinest_filtration_data.
+Check pfinest_filtration_model.
+Check pfinest_filtration_truth.
+Check pfinest_filtration_rel_in_coarsest.
+Check pfinest_filtration_antisymmetric.
+Check pcoarsest_subformula_filtration_truth.
+Check pfinest_subformula_filtration_truth.
+Print Assumptions pfilter_profile_agreement.
+Print Assumptions pfilter_world_cover_complete.
+Print Assumptions pfilter_world_cover_bound.
+Print Assumptions pfiltration_truth.
+Print Assumptions pcoarsest_filtration_antisymmetric.
+Print Assumptions pcoarsest_filtration_truth.
+Print Assumptions pfinest_path_preserves.
+Print Assumptions pfinest_filtration_truth.
+Print Assumptions pfinest_filtration_antisymmetric.
 
 (** Excluded middle over preorder Kripke frames.  Symmetry and right
     Euclideanness coincide; one atomic LEM instance defines them.  The
@@ -1810,6 +1889,268 @@ Print Assumptions phwf_separation_countermodel.
 Print Assumptions phvf_VF_unprovable_phwf_separation.
 Print Assumptions phvf_VF_strictly_included_phwf_WF.
 
+(** Rooted propositional neighborhood semantics and Hilbert WF.  Predicate
+    extensionality is a frame law, so the constructive Rule-E proof needs no
+    functional or propositional extensionality.  Only the negative
+    class-validity witness equivalences use classical predicate logic. *)
+Check nb_subset.
+Check nb_set_equiv.
+Check nb_subset_equiv.
+Check nb_frame.
+Check nb_model.
+Check nb_truthset.
+Check nb_forces.
+Check nb_model_valid.
+Check nb_frame_valid.
+Check nb_frame_class_valid.
+Check nb_model_class_valid.
+Check nb_forces_atom.
+Check nb_not_forces_bottom.
+Check nb_forces_and.
+Check nb_forces_or.
+Check nb_forces_imp.
+Check nb_forces_top.
+Check nb_forces_neg.
+Check nb_forces_iff.
+Check nb_model_valid_imp_iff.
+Check nb_model_valid_iff_iff.
+Check nb_valid_and1.
+Check nb_valid_and2.
+Check nb_valid_or1.
+Check nb_valid_or2.
+Check nb_valid_distribute_and_or.
+Check nb_valid_identity.
+Check nb_valid_efq.
+Check nb_valid_modus_ponens.
+Check nb_valid_fortiori.
+Check nb_valid_and_rule.
+Check nb_valid_rule_C.
+Check nb_valid_rule_D.
+Check nb_valid_rule_I.
+Check nb_valid_rule_E.
+Check nb_phwf_proof_sound.
+Check nb_phwf_frame_schema_valid.
+Check nb_phwf_model_schema_valid.
+Check nb_phwf_frame_sound.
+Check nb_phwf_model_sound.
+Check nb_phwf_frame_complete.
+Check nb_phwf_soundness_frame_class.
+Check nb_phwf_soundness_model_class.
+Check nb_phwf_consistent.
+Check nb_phwf_consistent_of_frame_sound.
+Check nb_phwf_consistent_of_model_sound.
+Check nb_phwf_weaker_of_frame_classes.
+Check nb_model_not_valid_iff.
+Check nb_frame_not_valid_iff.
+Check nb_frame_class_not_valid_iff_frame.
+Check nb_frame_class_not_valid_iff_model.
+Check nb_frame_class_not_valid_iff_model_world.
+Check nb_model_class_not_valid_iff_model.
+Check nb_model_class_not_valid_iff_world.
+Check nb_trivial_frame.
+Check phwf_WF_nb_frame_sound.
+Check phwf_WF_nb_model_sound.
+Check phwf_WF_consistent.
+Check nb_two_frame.
+Check nb_C_frame.
+Check nb_C_model.
+Check nb_axiom_C.
+Check nb_C_countermodel.
+Check phwf_WF_unprovable_axiom_C.
+Check nb_D_frame.
+Check nb_D_model.
+Check nb_axiom_D.
+Check nb_D_countermodel.
+Check phwf_WF_unprovable_axiom_D.
+Check nb_I_frame.
+Check nb_I_model.
+Check nb_axiom_I.
+Check nb_I_countermodel.
+Check phwf_WF_unprovable_axiom_I.
+Check phwf_phf_strictly_included.
+Check phwf_WF_strictly_included_phf_F.
+Print Assumptions nb_model_valid_imp_iff.
+Print Assumptions nb_valid_rule_E.
+Print Assumptions nb_phwf_proof_sound.
+Print Assumptions nb_phwf_soundness_frame_class.
+Print Assumptions nb_phwf_consistent_of_frame_sound.
+Print Assumptions nb_phwf_weaker_of_frame_classes.
+Print Assumptions nb_frame_class_not_valid_iff_model_world.
+Print Assumptions nb_C_countermodel.
+Print Assumptions phwf_WF_unprovable_axiom_C.
+Print Assumptions nb_D_countermodel.
+Print Assumptions phwf_WF_unprovable_axiom_D.
+Print Assumptions nb_I_countermodel.
+Print Assumptions phwf_WF_unprovable_axiom_I.
+Print Assumptions phwf_WF_strictly_included_phf_F.
+
+(** Setoid Heyting semantics, soundness, and quotient-free completeness. *)
+Check pha_equiv.
+Check pha_le.
+Check pha_imp_top_iff_le.
+Check pha_meet_top_iff.
+Check pha_bottom_not_top.
+Check pha_meet_join_cases.
+Check pheyting_eval.
+Check pheyting_eval_top.
+Check pheyting_eval_neg.
+Check pheyting_semantics.
+Check pheyting_value.
+Check pheyting_satisfies.
+Check pheyting_satisfies_imp_iff.
+Check pheyting_satisfies_and_iff.
+Check pheyting_satisfies_iff_iff.
+Check pheyting_satisfies_neg_iff.
+Check pheyting_satisfies_top.
+Check pheyting_not_satisfies_bottom.
+Check pheyting_valid_K.
+Check pheyting_valid_S.
+Check pheyting_valid_and1.
+Check pheyting_valid_and2.
+Check pheyting_valid_and3.
+Check pheyting_valid_or1.
+Check pheyting_valid_or2.
+Check pheyting_valid_or3.
+Check pheyting_valid_mdp.
+Check pheyting_hilbert_proof_sound.
+Check pheyting_models_schema.
+Check pheyting_mod_valid.
+Check pheyting_hilbert_sound.
+Check pheyting_intuitionistic.
+Check pheyting_consistent.
+Check pheyting_lindenbaum_laws.
+Check pheyting_lindenbaum_int_laws.
+Check pheyting_lindenbaum_model.
+Check pheyting_lindenbaum_value_eq.
+Check pheyting_lindenbaum_satisfies_iff.
+Check pheyting_hilbert_complete.
+Print Assumptions pha_imp_top_iff_le.
+Print Assumptions pha_meet_join_cases.
+Print Assumptions pheyting_hilbert_proof_sound.
+Print Assumptions pheyting_hilbert_sound.
+Print Assumptions pheyting_lindenbaum_laws.
+Print Assumptions pheyting_lindenbaum_model.
+Print Assumptions pheyting_lindenbaum_satisfies_iff.
+Print Assumptions pheyting_hilbert_complete.
+
+(** Duplicate-tolerant consistent tableaux and factored saturation.
+    The saturated connective and supplied-classicality laws are closed under
+    the global context.  Constructing a saturated extension, and hence the
+    contextual completeness equivalences, exposes exactly excluded middle
+    and definite description through the enumerated Lindenbaum chain. *)
+Check pct_conj.
+Check pct_disj.
+Check pct_list_covered.
+Check pct_insert_split.
+Check pct_split_insert.
+Check pctableau.
+Check pctableau_subset.
+Check pctableau_consistent.
+Check pctableau_saturated.
+Check pctableau_not_both.
+Check pctableau_not_positive_iff_negative.
+Check pctableau_not_negative_iff_positive.
+Check pctableau_saturated_duality.
+Check pctableau_not_negative_of_provable_context.
+Check pctableau_consistent_insert_positive_iff.
+Check pctableau_consistent_insert_negative_iff.
+Check pctableau_inconsistent_insert_positive_iff.
+Check pctableau_inconsistent_insert_negative_iff.
+Check pctableau_consistent_either.
+Check pct_raw_member_inhabited.
+Check pct_raw_member_of_in.
+Check pct_partition_left.
+Check pct_partition_right.
+Check pct_partition.
+Check pct_partition_left_holds.
+Check pct_partition_right_not_left.
+Check pct_partition_left_origin.
+Check pct_partition_right_origin.
+Check pct_partition_member.
+Check pct_partition_original_included.
+Check pctableau_next.
+Check pctableau_chain.
+Check pctableau_limit.
+Check pctableau_chain_included_le.
+Check pctableau_chain_consistent.
+Check pctableau_limit_list_stage_positive.
+Check pctableau_limit_list_stage_negative.
+Check pctableau_limit_consistent.
+Check pctableau_limit_saturated.
+Check pctableau_lindenbaum.
+Check psctableau.
+Check psct_lindenbaum.
+Check psct_not_both.
+Check psct_not_positive_iff_negative.
+Check psct_not_negative_iff_positive.
+Check psct_equiv_of_positive.
+Check psct_equiv_of_negative.
+Check psct_not_negative_of_provable_context.
+Check pctableau_empty_consistent.
+Check psctableau_inhabited.
+Check psct_theorem_positive_raw.
+Check psct_theorem_positive.
+Check psct_mdp_theorem_positive.
+Check psct_mdp_theorem_negative.
+Check psct_top_positive.
+Check psct_bottom_not_positive.
+Check psct_bottom_negative.
+Check psct_mdp_positive.
+Check psct_and_positive_iff.
+Check psct_or_positive_iff.
+Check psct_or_negative_iff.
+Check psct_imp_positive_cases.
+Check psct_neg_positive_implies_negative.
+Check psct_positive_implies_neg_negative.
+Check psct_conj_positive_iff.
+Check psct_disj_negative_iff.
+Check pct_context_provable.
+Check pct_list_derivation_bind_raw.
+Check psct_context_positive_raw.
+Check pctableau_context_counterexample_consistent.
+Check psct_context_provable_iff.
+Check pct_empty_context_to_proof.
+Check psct_provable_iff.
+Check psct_classical_imp_positive_iff.
+Check psct_classical_imp_negative_iff.
+Check psct_classical_neg_positive_iff.
+Check psct_classical_neg_negative_iff.
+Print Assumptions pct_split_insert.
+Print Assumptions pctableau_not_both.
+Print Assumptions pctableau_consistent_insert_positive_iff.
+Print Assumptions pctableau_consistent_either.
+Print Assumptions pct_partition_member.
+Print Assumptions pct_partition_original_included.
+Print Assumptions pctableau_chain_consistent.
+Print Assumptions pctableau_limit_consistent.
+Print Assumptions pctableau_lindenbaum.
+Print Assumptions psct_and_positive_iff.
+Print Assumptions psct_or_positive_iff.
+Print Assumptions psct_conj_positive_iff.
+Print Assumptions pctableau_context_counterexample_consistent.
+Print Assumptions psct_context_provable_iff.
+Print Assumptions psct_provable_iff.
+Print Assumptions psct_classical_imp_positive_iff.
+Print Assumptions psct_classical_imp_negative_iff.
+
+(** The two-sided canonical Kripke model factors Foundation's tableau-based
+    implication counterextension.  The finite seed calculation reuses the
+    informative positional insert split; canonical extension and completeness
+    inherit exactly the tableau Lindenbaum boundary audited above. *)
+Check psct_canonical_frame.
+Check psct_canonical_valuation.
+Check psct_canonical_model.
+Check psct_imp_counterseed_consistent.
+Check psct_imp_counterextension.
+Check psct_canonical_truth.
+Check psct_canonical_model_valid_iff_provable.
+Check psct_canonical_for_class.
+Check ph_hilbert_pkripke_complete_of_psct_canonical.
+Print Assumptions psct_imp_counterseed_consistent.
+Print Assumptions psct_imp_counterextension.
+Print Assumptions psct_canonical_truth.
+Print Assumptions psct_canonical_model_valid_iff_provable.
+
 (** Enumerated prime-theory construction and canonical completeness.
     Indefinite description selects a finite stage witnessing use of assumptions
     from the increasing union and reifies positional membership after the
@@ -1905,9 +2246,25 @@ Check pformula_disjunctive_of_aczel_slash_iff.
 Check pformula_logic_aczel_slash.
 Check pformula_logic_disjunctive_of_aczel_slash_iff.
 Check pkripke_frame_kreisel_putnam.
+Check psct_unneg.
+Check psct_common_neg.
+Check psct_common_neg_shape.
+Check psct_common_neg_left.
+Check psct_common_neg_right.
+Check psct_common_neg_roundtrip.
+Check psct_kp_seed.
+Check psct_kp_seed_consistent.
+Check psct_positive_union_seed.
+Check psct_positive_union_extension.
+Check psct_no_positive_union_witness.
+Check psct_canonical_frame_kreisel_putnam.
+Check ph_hilbert_pkripke_kp_complete_of_axioms.
+Check ph_hilbert_kp_pkripke_complete_of_codec.
+Check ph_hilbert_kp_pkripke_complete.
 Check pkripke_KP_valid_of_condition.
 Check pkripke_kreisel_putnam_of_strongly_convergent.
 Check ph_hilbert_kp_pkripke_sound.
+Check ph_hilbert_kp_pkripke_sound_complete.
 Check ph_hilbert_kp_consistent_via_pkripke.
 Check pkripke_fork_kreisel_putnam.
 Check pkripke_fork_not_strongly_convergent.
@@ -1957,8 +2314,15 @@ Print Assumptions p_aczel_slash_modus_ponens.
 Print Assumptions pformula_disjunctive_of_aczel_slash_iff.
 Print Assumptions pformula_logic_disjunctive_of_aczel_slash_iff.
 Print Assumptions pkripke_KP_valid_of_condition.
+Print Assumptions psct_common_neg_roundtrip.
+Print Assumptions psct_kp_seed_consistent.
+Print Assumptions psct_no_positive_union_witness.
+Print Assumptions psct_canonical_frame_kreisel_putnam.
+Print Assumptions ph_hilbert_pkripke_kp_complete_of_axioms.
+Print Assumptions ph_hilbert_kp_pkripke_complete.
 Print Assumptions pkripke_kreisel_putnam_of_strongly_convergent.
 Print Assumptions ph_hilbert_kp_pkripke_sound.
+Print Assumptions ph_hilbert_kp_pkripke_sound_complete.
 Print Assumptions ph_hilbert_kp_consistent_via_pkripke.
 Print Assumptions pkripke_fork_kreisel_putnam.
 Print Assumptions ph_hilbert_kp_strictly_included_kc.
@@ -3507,6 +3871,36 @@ Check plon_N_sound_complete.
 Check plon_N_strictly_weaker_K.
 Check plon_N_strictly_weaker_EN.
 
+(** Corsi's weak-Goedel modal companion.  Unlike the pinned source, the NP
+    soundness and completeness boundary is proved rather than axiomatized. *)
+Check corsi_godel_weak.
+Check corsi_godel_weak_decode.
+Check corsi_godel_weak_decode_roundtrip.
+Check corsi_godel_weak_injective.
+Check plon_P_axiom.
+Check plon_NP_axioms.
+Check plon_frame_NP.
+Check plon_P_valid_on_NP_frame.
+Check plon_NP_sound.
+Check plon_NP_consistent.
+Check plon_NP_canonical_frame_serial.
+Check plon_NP_complete.
+Check plon_NP_sound_complete.
+Check plon_hilbert_proves_mono.
+Check plon_N_proves_in_NP.
+Check corsi_plon_to_fmt_frame.
+Check corsi_plon_to_fmt_model.
+Check corsi_plon_to_fmt_truth.
+Check corsi_fmt_to_plon_frame.
+Check corsi_fmt_to_plon_model.
+Check corsi_fmt_to_plon_frame_NP.
+Check corsi_fmt_to_plon_truth.
+Check phvf_VF_provable_implies_plon_N_weak.
+Check plon_NP_weak_provable_implies_phvf_VF.
+Check phvf_VF_iff_plon_N_weak.
+Check phvf_VF_iff_plon_NP_weak.
+Check plon_N_weak_iff_NP_weak.
+
 (** Complete named schema surface from Foundation/Modal/Axioms.lean. *)
 Check Axioms.DiaDuality.
 Check Axioms.K.
@@ -3820,6 +4214,26 @@ Check GL_unprovable_AxiomT.
 Check K4_unprovable_atomic_L.
 Check K4_strictly_weaker_GL.
 Check not_S4_weakerThan_GL.
+(** Makinson's independently checked KD/Triv half.  The conditional theorem
+    exposes the exact Ver boundary admitted by the pinned Lean source. *)
+Check KD_provability_of_classical_satisfiability.
+Check provable_KD_of_classical_satisfiability.
+Check provable_KD_of_classical_tautology.
+Check provable_not_KD_of_classical_unsatisfiable.
+Check makinson_zero_substitution.
+Check makinson_zero_substitution_letterless.
+Check substitute_formula_letterless.
+Check makinson_zero_substitution_formula_letterless.
+Check triv_translate_makinson_zero_substitute.
+Check makinson_zero_substitution_readback.
+Check makinson_subset_Triv_of_KD_subset.
+Check makinson_Ver_family.
+Check makinson_Triv_family.
+Check makinson_families_disjoint.
+Check makinson_Ver_boundary.
+Check makinson_dichotomy_of_Ver_boundary.
+Check makinson_Ver_family_not_Triv_family.
+Check makinson_Triv_family_not_Ver_family.
 Check grz_mini_countermodel.
 Check Grz_finite_sound_complete.
 Check Grz_sound_complete.
@@ -4004,13 +4418,17 @@ Check has_C_of_k.
 Check k_multinecessitation.
 Check k_entailment_of_normal_logic.
 Check k_box_iter_axiom_K.
+Check k_box_iter_axiom_K_apply.
 Check k_box_iter_regularity.
 Check k_box_congruence.
 Check k_box_iter_congruence.
 Check k_box_iter_top.
 Check k_box_iter_and_collect.
 Check k_box_iter_and_distribute.
+Check k_box_iter_and_collect_apply.
+Check k_box_iter_and_distribute_apply.
 Check k_box_iter_or_collect.
+Check k_box_iter_or_collect_apply.
 Check k_boxdot_top.
 Check k_boxdot_axiom_K.
 Check k_boxdot_axiom_T.
@@ -4019,13 +4437,20 @@ Check k_boxdot_box.
 Check k_box_boxdot_to_boxdot_box.
 Check k_box_iter_list_conj2_distribute.
 Check k_box_iter_list_conj2_collect.
+Check logic_list_conj2_theorem_iff.
+Check k_box_iter_list_conj2_theorem_iff.
 Check k_dia_regularity.
 Check k_dia_iter_regularity.
+Check k_dia_regularity_apply.
+Check k_dia_iter_regularity_apply.
 Check k_dia_or_collect.
+Check k_dia_or_collect_apply.
 Check k_dia_or_distribute.
 Check k_dia_iter_or_collect.
+Check k_dia_iter_or_collect_apply.
 Check k_dia_iter_or_distribute.
 Check k_dia_and_distribute.
+Check k_dia_and_distribute_apply.
 Check k_dia_iter_and_distribute.
 Check k_not_dia_bottom.
 Check k_not_dia_iter_bottom.
@@ -6058,6 +6483,14 @@ Print Assumptions plon_complete_of_canonical_frame.
 Print Assumptions plon_N_sound_complete.
 Print Assumptions plon_N_strictly_weaker_K.
 Print Assumptions plon_N_strictly_weaker_EN.
+Print Assumptions corsi_godel_weak_injective.
+Print Assumptions plon_NP_sound.
+Print Assumptions plon_NP_canonical_frame_serial.
+Print Assumptions plon_NP_complete.
+Print Assumptions corsi_plon_to_fmt_truth.
+Print Assumptions corsi_fmt_to_plon_truth.
+Print Assumptions phvf_VF_iff_plon_N_weak.
+Print Assumptions phvf_VF_iff_plon_NP_weak.
 Print Assumptions valid_T_of_reflexive.
 Print Assumptions valid_D_of_serial.
 Print Assumptions valid_B_of_symmetric.
@@ -6197,6 +6630,11 @@ Print Assumptions GL_unprovable_AxiomT.
 Print Assumptions K4_unprovable_atomic_L.
 Print Assumptions K4_strictly_weaker_GL.
 Print Assumptions not_S4_weakerThan_GL.
+Print Assumptions KD_provability_of_classical_satisfiability.
+Print Assumptions makinson_zero_substitution_readback.
+Print Assumptions makinson_subset_Triv_of_KD_subset.
+Print Assumptions makinson_families_disjoint.
+Print Assumptions makinson_dichotomy_of_Ver_boundary.
 Print Assumptions Grz_finite_sound_complete.
 Print Assumptions Grz_sound_complete.
 Print Assumptions finite_partial_order_mckinsey.
@@ -6240,6 +6678,7 @@ Print Assumptions necessitation_of_EN.
 Print Assumptions has_N_of_necessitation.
 Print Assumptions has_K_of_EMC.
 Print Assumptions k_box_iter_axiom_K.
+Print Assumptions k_box_iter_axiom_K_apply.
 Print Assumptions k_box_iter_regularity.
 Print Assumptions k_box_iter_congruence.
 Print Assumptions k_box_iter_and_collect.
@@ -6249,7 +6688,9 @@ Print Assumptions k_boxdot_axiom_K.
 Print Assumptions k_box_boxdot_to_boxdot_box.
 Print Assumptions k_box_iter_list_conj2_distribute.
 Print Assumptions k_box_iter_list_conj2_collect.
+Print Assumptions k_box_iter_list_conj2_theorem_iff.
 Print Assumptions k_dia_iter_regularity.
+Print Assumptions k_dia_iter_regularity_apply.
 Print Assumptions k_dia_or_collect.
 Print Assumptions k_dia_or_distribute.
 Print Assumptions k_dia_iter_or_distribute.

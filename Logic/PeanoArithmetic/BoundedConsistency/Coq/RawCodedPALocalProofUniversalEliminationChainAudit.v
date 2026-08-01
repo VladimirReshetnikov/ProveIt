@@ -6,6 +6,7 @@ From BoundedPAConsistency Require Import
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 
 Check RawCodedUniversalEliminationChain.
+Check raw_codedUniversalEliminationChain_all3_of_diagonal.
 Check RCUENil.
 Check RCUECons.
 Check templateUniversalOpenMany.
@@ -26,6 +27,7 @@ Check
 Print Assumptions raw_templateUniversalOpenMany_elimination_chain.
 Print Assumptions templateUniversalOpenManyOrBot_of_success.
 Print Assumptions raw_codedPALocalProofOf_universal_elimination_chain.
+Print Assumptions raw_codedUniversalEliminationChain_all3_of_diagonal.
 Print Assumptions raw_codedPALocalProofOf_templateUniversalOpenMany.
 Print Assumptions
   raw_codedPALocalProofOf_templateUniversalOpenMany_impE2.

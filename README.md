@@ -9,8 +9,8 @@ or complementary checks. Generated data and exploratory computations are not
 part of the trusted theorem boundary unless a proved checker connects them to
 the formal semantics.
 
-**Toolchains:** Lean `4.32.0` · mathlib `v4.32.0` · Rocq `>= 9.0, < 9.2`
-(developed against `9.0.1`) · MathComp `2.5.0` · [MIT-0](LICENSE)
+**Toolchains:** Lean `4.32.0` · mathlib `v4.32.0` · Rocq `>= 9.2`
+(developed against `9.0.1`) · MathComp boot `2.5.0` · [MIT-0 + Unlicense](LICENSE)
 
 ## Repository map
 
@@ -27,6 +27,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
 | [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`. |
+| [`Tools/`](Tools/) | Development tooling: Rocq 9.2 compatibility shims. **Leant**, the GHCi-style interactive REPL for Lean 4 that grew up here, now lives in its own repository at [VladimirReshetnikov/Leant](https://github.com/VladimirReshetnikov/Leant). |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
 Repository-wide configuration remains at the root. [`ProveIt.lean`](ProveIt.lean)
@@ -260,6 +261,33 @@ and classical boundaries and provides a `coqchk` command.
 - Conditional theorems remain explicitly conditional. The A198683 research
   ledger distinguishes semantic proofs, finite data checks, conditional
   results, and heuristic evidence.
+- Everything tracked here is ordinary mathematics held to those standards. The
+  deliberate paradox and kernel-defect work that used to sit outside them has
+  moved to its own repository; see the section below.
+
+## Shenanigans: moved to its own repository
+
+`Shenanigans/` — the one directory here whose contents were **not ordinary
+mathematics** — now lives at
+[VladimirReshetnikov/Shenanigans](https://github.com/VladimirReshetnikov/Shenanigans),
+with its full history. It is a catalog of the ways one can get
+`theorem Paradox : False` accepted in Lean 4 and in Rocq/Coq, grouped by what
+each route costs — which is exactly what the assumption audit reports: paradoxes
+of type theory that hypothesize an ingredient the system withholds, sanctioned
+escape hatches that the audit names, implementation defects that the audit
+reports nothing at all about, and audits that looked and found nothing.
+
+It was split out precisely so that the two are not confused. A `False` derived
+there is a statement about a formal system or a program — never a mathematical
+fact, and never grounds for doubting anything proved here. Nothing in this
+repository depends on it, and nothing there depends on this one; the single
+deliberate exception, the axiom-free `TypeTheoryParadoxes` library that was
+registered in [`lakefile.toml`](lakefile.toml) and imported by
+[`ProveIt.lean`](ProveIt.lean), went with it.
+
+[`Shenanigans/README.md`](Shenanigans/README.md) is a temporary redirect stub
+holding the old-path-to-new-path map for anyone arriving from a stale link. It
+carries no content of its own and will be removed in due course.
 
 ## Vendored components
 
@@ -288,4 +316,5 @@ build compiles the pinned sources under the `Abel` logical path.
 ## License
 
 Unless a nested license says otherwise, this repository is available under
-the [MIT No Attribution License (MIT-0)](LICENSE).
+the [MIT No Attribution License (MIT-0)](LICENSE), and, in jurisdictions that
+permit it, is additionally dedicated to the public domain under the Unlicense.

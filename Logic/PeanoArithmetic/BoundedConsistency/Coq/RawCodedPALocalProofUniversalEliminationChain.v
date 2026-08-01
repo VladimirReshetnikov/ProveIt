@@ -21,6 +21,9 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedFormulaOperations
+  RawCodedFormulaDiagonalOperation
+  RawCodedFormulaDiagonalOperationComposition
+  RawCodedUniversalClosureDiagonalSubstitution
   RawCodedProofAllEConstructor
   RawCodedRestrictedPAProof
   RawCodedPAAxiomWitnessPrefix
@@ -42,6 +45,9 @@ Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedFormulaOperations.
+Import PABoundedRawCodedFormulaDiagonalOperation.
+Import PABoundedRawCodedFormulaDiagonalOperationComposition.
+Import PABoundedRawCodedUniversalClosureDiagonalSubstitution.
 Import PABoundedRawCodedProofAllEConstructor.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
@@ -72,6 +78,42 @@ Arguments RCUENil {M} formula.
 Arguments RCUECons {M} body replacement instance target _ _.
 Arguments RawCodedUniversalEliminationChain M source target
   : clear implicits.
+
+(** Diagonal stability turns three nested binders into a canonical
+    self-instantiation chain.  Each [All] prefix inherits the same all-depth
+    certificate, so every represented opening by [replacement] has the
+    prefix itself as its checked output. *)
+Theorem raw_codedUniversalEliminationChain_all3_of_diagonal : forall
+    (M : RawPAModel), RawPASatisfies M -> forall replacement body,
+  RawCodedFormulaDiagonalSubstitutionAtAllDepths M replacement body ->
+  RawCodedUniversalEliminationChain M
+    (rawFormulaAllCode M
+      (rawFormulaAllCode M (rawFormulaAllCode M body))) body.
+Proof.
+  intros M hPA replacement body hbody.
+  pose proof
+    (raw_codedFormulaDiagonalSubstitutionAtAllDepths_all
+      M hPA replacement body hbody) as hall1.
+  pose proof
+    (raw_codedFormulaDiagonalSubstitutionAtAllDepths_all
+      M hPA replacement (rawFormulaAllCode M body) hall1) as hall2.
+  apply (RCUECons
+    (rawFormulaAllCode M (rawFormulaAllCode M body)) replacement
+    (rawFormulaAllCode M (rawFormulaAllCode M body)) body).
+  - exact (raw_codedFormulaSingleSubstitution_of_diagonal M hPA
+      replacement (rawFormulaAllCode M (rawFormulaAllCode M body))
+      (hall2 (raw_zero M))).
+  - apply (RCUECons
+      (rawFormulaAllCode M body) replacement
+      (rawFormulaAllCode M body) body).
+    + exact (raw_codedFormulaSingleSubstitution_of_diagonal M hPA
+        replacement (rawFormulaAllCode M body)
+        (hall1 (raw_zero M))).
+    + apply (RCUECons body replacement body body).
+      * exact (raw_codedFormulaSingleSubstitution_of_diagonal M hPA
+          replacement body (hbody (raw_zero M))).
+      * constructor.
+Qed.
 
 (** Metatheoretic traversal of a fixed template's leading universal tower.
     Failure is explicit when a caller asks to eliminate more binders than

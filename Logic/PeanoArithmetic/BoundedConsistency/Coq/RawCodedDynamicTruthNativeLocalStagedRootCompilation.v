@@ -50,6 +50,7 @@ From BoundedPAConsistency Require Import
   RawCodedProofImpIConstructor
   RawCodedProofAllIConstructor
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofTripleUniversalIntroduction
   RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofAndIntroduction
   RawCodedPALocalProofFiniteDisjunction
@@ -112,6 +113,7 @@ Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedProofImpIConstructor.
 Import PABoundedRawCodedProofAllIConstructor.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofTripleUniversalIntroduction.
 Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofAndIntroduction.
 Import PABoundedRawCodedPALocalProofFiniteDisjunction.
@@ -176,32 +178,12 @@ Theorem raw_codedPALocalProofOf_dynamicTruthNativeLocal_close3_on : forall
     (rawDynamicTruthNativeLocalClose3RootOn
       M baseContext body child).
 Proof.
-  intros M hPA baseContext body child hshift [hcoverage hendpoint].
-  pose proof (raw_proofAllI_ruleCoverage M hPA
-    baseContext baseContext body child hshift hcoverage hendpoint)
-    as hcoverage1.
-  pose proof (raw_proofAllI_endpoint M baseContext body child)
-    as hendpoint1.
-  pose proof (raw_proofAllI_ruleCoverage M hPA
-    baseContext baseContext (rawFormulaAllCode M body)
-    (rawProofAllIRoot M baseContext body child)
-    hshift hcoverage1 hendpoint1) as hcoverage2.
-  pose proof (raw_proofAllI_endpoint M baseContext
-    (rawFormulaAllCode M body)
-    (rawProofAllIRoot M baseContext body child)) as hendpoint2.
-  pose proof (raw_proofAllI_ruleCoverage M hPA
-    baseContext baseContext
-    (rawFormulaAllCode M (rawFormulaAllCode M body))
-    (rawProofAllIRoot M baseContext
-      (rawFormulaAllCode M body)
-      (rawProofAllIRoot M baseContext body child))
-    hshift hcoverage2 hendpoint2) as hcoverage3.
-  pose proof (raw_proofAllI_endpoint M baseContext
-    (rawFormulaAllCode M (rawFormulaAllCode M body))
-    (rawProofAllIRoot M baseContext
-      (rawFormulaAllCode M body)
-      (rawProofAllIRoot M baseContext body child))) as hendpoint3.
-  split; assumption.
+  intros M hPA baseContext body child hshift hchild.
+  unfold rawDynamicTruthLocalFormulaAll3Code,
+    rawDynamicTruthNativeLocalClose3RootOn,
+    rawPALocalProofClose3Root.
+  exact (raw_codedPALocalProofOf_close3_on M hPA
+    baseContext body child hshift hchild).
 Qed.
 
 Definition RawDynamicTruthNativeLocalFieldRootOn

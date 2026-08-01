@@ -3592,16 +3592,116 @@ that package checked implication and universal introduction construct the
 carried local field root.  No proof equality, unlinked row choice, semantic
 truth-to-proof conversion, or hidden empty-context transport is used.
 
+`RawCodedDynamicTruthPairedGlobalAdequateOrbitDeepClosure.v` and
+`RawCodedDynamicTruthNativeLocalRowProjectionCompilation.v` shrink this
+residual further.  PA already constructs a deeply closed paired global orbit
+at every level, while functionality of the adequate orbit identifies every
+public trace with that witness.  Consequently the exact native trace inherits
+both ternary shift and opening laws.  The Sigma/Pi row-to-disjunction
+implications can then be compiled on the witnessed PA base and weakened
+through the three open assumptions before they are applied to the literal row
+roots.  The resulting reduced staged package drops both dependent projection
+packages.  The collision pair implications are likewise completed on the
+witnessed base and only then weakened through the open assumptions; the
+finite disjunction matrix consumes those finished pairs directly.  Hence all
+three temporary-context self-shifts disappear as well.  In particular, the
+boundary never demands the capture-incorrect self-shift of an evidence
+context merely to translate a row projection or compile a collision cell.
+The exact row identifications also designate the two lower-application atoms
+inside those same direct structural inputs, so the opaque-quantifier direct
+traces are reconstructed rather than repeated in the callback.  The binder
+principal projections are compiled from the same two direct packages and
+their lower-application identifications.  The public current kernel
+consequently has four components: predecessor exclusivity, two cross-level
+premises, and mixed-QF replay.
+
 `RawCodedDynamicTruthNativeLocalStagedCallbackCompilation.v` connects that
 carried root to the first public dependency-ordered callback.  It extends the
 actual current six-field proof package with the ordered forty-helper batch,
 retaining one witnessed context and all current graph witnesses.  The exact
-residual builder sees this package, the one selected local transform trace,
+current local coordinate can now be recovered from that public package
+without strengthening it: `RawCodedDynamicTruthNativeLocalPositiveExactification.v`
+proves functionality of the three-substitution application, the complete
+local transform, and the orbit/transform composition.  A freshly constructed
+adequate orbit is therefore identified with the public graph output.  The
+callback exposes the resulting exhaustive carrier-level decomposition: zero
+selects the quoted fixed base field, while every successor selects an exact
+adequate predecessor trace, and both cases retain the literal carried local
+proof root in the unchanged helper context.  This is the trace needed to
+project the four remaining predecessor-field collision resources.  Moreover,
+functionality of the paired orbit identifies the successor globals hidden in
+that predecessor trace with the input globals of the next trace.  The
+callback packages this alignment together with the carried current-local
+proof and its two exact ternary evidence applications, so downstream
+collision compilers do not need to repeat the orbit comparison.
+It also projects the carried conjunction proof immediately to deterministic
+triple-universal decision and exclusivity roots.  General adapters then
+consume any verified universal-elimination chain from either root, leaving a
+downstream collision compiler responsible only for the exact substitutions
+that select its desired instance rather than for repeated And-E/All-E proof
+assembly.
+`RawCodedDynamicTruthPredecessorStateExclusivityCompilation.v` consumes that
+projected exclusivity root together with the exact state-member/application
+bridge: one verified three-binder elimination chain and local roots for
+admissibility, Sigma evidence, and Pi evidence under the two literal state
+assumptions.  It transports the opened law into that context, performs the
+three implication eliminations, discharges both assumptions, and restores
+the three universal binders.  The aligned callback therefore reduces the
+former opaque predecessor-exclusivity root to the three concrete table-to-
+application facts.  The repeated three-`All-I` coverage/endpoint calculation
+is factored into
+`RawCodedPALocalProofTripleUniversalIntroduction.v` and reused by both the
+new compiler and the existing native local-field closers.
+The explicit opening chain is itself derivable from one all-depth diagonal
+stability certificate for the exclusive body:
+`raw_codedUniversalEliminationChain_all3_of_diagonal` propagates that
+certificate through both universal prefixes and constructs the three exact
+self-instantiating `All-E` edges.  A reduced diagonal bridge and aligned
+callback adapter expose this smaller structural obligation while preserving
+the original chain-level interface for other clients.
+That fixed-point route is useful for genuinely closed bodies, but it is
+stronger than the natural three-variable invariant.  The general replacement
+is `RawCodedTemplateTripleUniversalOpening.v`: a template body scoped by
+`#2,#1,#0` is restored by eliminating its binders with `#2`, then `#1`, then
+`#0`.  Its two intermediate formulas are shifted bodies, not fixed points.
+Every honest template translation therefore supplies the exact represented
+elimination chain even when opaque leaves translate to nonstandard dynamic
+formula codes.  The predecessor compiler can use this structural route once
+its exact domain/evidence applications are packaged as one such translation.
+
+That final structural package is now generated directly from the native local
+trace.  `RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.v` defines the
+finite `#2,#1,#0` exclusivity template and a dual ternary opaque-code router:
+predicate zero selects the Sigma transform and predicate one selects the Pi
+transform.  Deep closure of the two consecutive orbit entries proves the
+required shift/open laws, while the trace's two ternary-application equations
+identify all four domain/evidence leaves exactly.  The trace compiler carries
+those facts across the paired global successor.  The predecessor compiler can
+therefore build the structural translation and opening chain internally, and
+the aligned staged callback exposes a roots-only endpoint.  Its remaining
+premises are precisely the represented admissibility, Sigma-evidence, and
+Pi-evidence proofs which the three implication eliminations consume; no
+external template bridge or independently supplied translation remains.
+Those three leaves are also bundled as the Prop-valued
+`RawDynamicTruthPredecessorStateLogicalRootsAt`.  This is more than cosmetic:
+the global traversal compiler will obtain concrete proof roots through
+existential proof construction, and Rocq permits those witnesses to be
+eliminated into a proposition but not into the Type-valued structural
+translation record.  Package-shaped predecessor and aligned-callback
+endpoints now preserve that universe boundary explicitly, while the older
+three-premise interfaces remain available as compatibility adapters.
+
+The next-field exact residual builder sees this package, the one selected
+local transform trace,
 and its linked row parameters, and returns only the staged root package.
 Adequate orbit selection, transform extraction, carried-root certificate
 packaging, and positive-graph satisfaction are then concrete.  Thus the
 callback neither assumes an empty-base leaf compiler nor permits an unrelated
-helper context.
+helper context.  Its preferred reduced-builder endpoint uses the internally
+compiled row projections described above.  The dependency-ordered callback,
+universal-soundness, and bridge bundles all consume that reduced endpoint, so
+the two historical projection packages no longer occur in the public master
+residual; the older adapter remains only as a source-compatible theorem.
 
 The old dynamic-soundness base premise is also too rigid as a construction
 target.  It ranges over every witnessed base, including the empty context, but
@@ -4373,6 +4473,102 @@ tail inclusions.  The theorem remains generic in the finite adequate extra
 prefix, while the immediate traversal client will instantiate it with the
 two honest implication assumptions `[rowLookup; rowBound]`.
 
+The literal implication client is now compiled.  It derives both premises
+from represented assumption leaves in the combined row context, weakens the
+pre-split inherited and fixed-production roots beneath those heads, invokes
+the staged case theorem, and then applies represented implication
+introduction twice.  Its output is exactly
+`rowBound -> rowLookup -> closedProduction` over the final grown witnessed
+tail, with no metatheoretic premise proof standing in for either assumption.
+
+Finite binder closure now works above grown witnessed tails as well.  The
+universal-introduction and existential-elimination chain compilers have
+self-shifting-tail and witnessed-tail forms, plus growing wrappers that retain
+the selected final context and the original inclusion evidence.  The
+existential wrapper transports an earlier source proof to the continuation's
+final helper context before rebuilding every `Ex-E` node.  A five-binder
+append-row specialization converts the completed implication proof from the
+shifted row prefix back to the unshifted eight-witness context, ready for the
+outer append existential closure.
+
+The eight-witness specialization is now exposed too.  It accepts the append
+existential source proof on the initial witnessed tail and a deep growing
+continuation under the exact append-witness context.  If that continuation
+selects further helper batches, the source proof is transported to its final
+tail first; the compiler then rebuilds all eight represented existential
+eliminations and returns the unshifted outer conclusion.
+
+The concrete seven-field traversal conjunction and successor witness closure
+are now compiled.  A generic dependency-ordered conjunction theorem moves six
+stable roots from the initial witnessed PA tail to the final tail selected by
+the growing row compiler and constructs the right-associated `And7` record.
+The append-specific assembler supplies the four defined-through fields, root
+bound, and root lookup from the simultaneous table extension.  Literal shape
+lemmas check that these six fields are exactly the first six fields of the
+ten-witness global formula for both actual modes, including the otherwise
+easy-to-miss eight-slot shift of the three public arguments.
+
+A finite existential-introduction compiler then introduces the successor
+bound, old-bound root index, and all eight table witnesses.  The growing
+append eliminator removes the eight table eigenvariables afterward.  The
+result is an exact conditional proof of the shifted and then unshifted
+`dynamicTruthGlobalFormula`: its sole formula-producing premise is the
+seventh field selected from the opened global body, namely the five-universal
+row formula.  The remaining local successor seam is therefore no longer the
+global record or either existential block; it is the syntactic/proof bridge
+from the completed row-implication compiler to that extracted row field.
+
+That seventh field is now decomposed exactly as well.  A partial inverse to a
+finite universal prefix certifies its five literal binders, and the resulting
+body is definitionally `i < S b -> rowLookup -> production`.  In particular,
+the less-than-successor compiler receives the old bound `b` (its antecedent
+constructor supplies the successor), and the four-column lookup is identical
+to the row compiler's equality-side lookup.  An equality-parametric adapter
+now rewrites a completed concrete closed-row implication to the opened local
+production and closes all five universal binders, yielding exactly the
+extracted seventh global field under the eight-witness append context.  Thus
+only the final local polarity production equality remains to be established;
+the growing-tail transport, binder, arithmetic, and lookup layers are no
+longer part of that seam.
+
+The adapter is also composed through the complete global closure.  Given the
+append source proof, the concrete row implication, and that one production
+equality, the public theorem now returns the unshifted
+`dynamicTruthGlobalFormula` on the empty template prefix.  Consequently the
+remaining normalization lemma can be plugged into a single endpoint rather
+than coordinating the five row binders, ten introductions, or eight append
+eliminations itself.
+
+The production equality has been split once more.  Structural lemmas prove
+that finite named-parameter replacement is inert on every embedded ordinary
+PA term or formula, including underneath binders.  Hence the concrete
+closed-row production instantiated by `embedPAFormula localSigma` and
+`embedPAFormula localPi` is already the literal mode-zero/mode-one polarity
+split.
+
+The scoped opening calculation is now closed too.  A generic substitution
+lemma says that any template substitution fixing a displayed scope fixes the
+embedding of an ordinary PA formula at that scope.  The append specialization
+isolates just the ten existential and five universal binders, fuses all eight
+outer renamings and ten openings into one substitution, and checks
+definitionally that it fixes local indices `0..12`.  This proves the concrete
+production equal to the opened global production for arbitrary 13-scoped
+local Sigma/Pi formulae.  The composed global-successor endpoint now consumes
+those two natural scope facts directly; the former production-equality premise
+is no longer exposed to its clients.
+
+The next adapter now isolates the context-side mismatch with the existing row
+compiler.  A generic congruence theorem transports a growing local proof
+between finite template prefixes whenever their translated raw context codes
+agree over every tail; a `Forall2` entrywise criterion is provided as the
+usual way to prove that equality.  Applying this to the global successor means
+the row proof may retain its named carrier-parameter prefix.  The only new
+premise is the exact raw-code equality between that prefix and the concrete
+root-mode/formula/assignment prefix opened by the global traversal.  This is
+strictly weaker than template-syntax equality and is the appropriate next
+boundary because a general template translation deliberately leaves parameter
+and mixed-term interpretation opaque.
+
 `RawCodedTemplateRenamingSubstitution` now includes the missing generic
 substitution-fusion laws for terms, term lists, and formulas.  A separate
 lifted-substitution composition lemma handles the binder case, and a
@@ -4380,3 +4576,802 @@ root-level corollary rewrites opening after an arbitrary substitution into
 one composed substitution.  These identities are syntax-generic and
 assumption-free; they provide the normalization mechanism needed for the
 remaining append first-side contract without table-specific reduction hacks.
+
+Finite named-parameter replacement now commutes with a one-step template
+shift at every binder depth, including opaque argument lists.  The result is
+lifted to ordered finite binding lists, contexts, and arbitrary iterated
+context shifts.  In particular, a replacement term is shifted together with
+the context rather than being treated as a closed atom.  This distinction is
+essential for the append row: its eight witness assumptions occur at eight
+successive depths below the five row binders.  The next context adapter must
+therefore apply the verified shift law at each witness depth; a uniform
+unshifted replacement over the whole prefix would be capture-incorrect.
+
+The append equality branch now avoids that capture trap altogether.  The
+literal global witness variables are projected directly from the concrete
+append lookup, and the existing one-column beta-functionality compiler proves
+inside PA that the independently quantified row mode equals the fixed root
+mode.  The other three lookup equalities are intentionally omitted: after
+the scoped embedded-formula normalization, only the mode occurs in the local
+polarity split.  A one-hole motive transports that split from the fixed mode
+to row variable `#3` using represented symmetry and equality elimination.
+The resulting concrete production is packaged as a growing proof, including
+the finite PA witness batch selected by beta functionality, and its three
+input roots admit dependency-ordered witnessed-tail transport.  This removes
+the former need to equate a prefix containing closed named parameters with a
+prefix containing open de Bruijn variables.
+
+That mode-only package is now threaded through the complete literal row case.
+An adequate-prefix assembler constructs the operational appended lookup with
+the actual global variables, weakens the independently quantified row lookup
+and fixed-mode production beneath `i = b`, and packages all three roots in one
+context.  The base-aware less-than-successor eliminator transports this
+package along its dependency-ordered witness extension, while the predecessor
+callback transports only the inherited traversal and old lookup.  Their two
+growing branches therefore return the embedded concrete row production under
+the exact global row prefix, without any of the four named-field freshness
+hypotheses required by the older parameter-replacement route.
+
+The two traversal premises are closed as honest represented implications as
+well.  A general growing-proof lemma discharges any two context-head
+assumptions while retaining the selected witness list, target context, and
+base-context inclusion.  The concrete append client builds the bound and row
+lookup assumptions, runs the full case compiler, and applies that lemma to
+obtain exactly `bound -> rowLookup -> production`.  This proof is already in
+the literal prefix consumed by the scoped global append endpoint; no prefix
+code equality or carrier-parameter interpretation remains.
+
+Atomic adequacy has also been removed from the public concrete-row boundary.
+Every `RawCodedTemplateTranslation` already carries a represented unit-shift
+trace for each translated formula.  A new lower-level module factors the
+source-column half of formula-shift atomic adequacy away from the unrelated
+formula-bound development; applying it to that mandatory trace proves every
+template formula atomically adequate, and therefore every finite template
+prefix adequate.  The literal row compiler now derives all five former
+adequacy premises internally.
+
+Finally, the row compiler is composed directly with the scoped global append
+endpoint.  Given the append source, the inherited traversal and old lookup,
+and the production at the fixed root mode, it builds the full concrete row,
+closes its five universal binders and both existential witness blocks, and
+returns `dynamicTruthGlobalFormula` on the empty prefix.  Neither an externally
+assembled row proof nor a prefix-equivalence premise survives in this
+interface; the next integration boundary consists only of extracting those
+three genuine proof resources from the current master-successor package.
+
+The predecessor-exclusivity client now accepts those resources in the context
+shape actually produced by growing traversal compilers.  Its reusable
+template closure transports a carried local-exclusivity proof from any
+realizable source context into any witnessed target context containing it;
+the source no longer needs its own PA-witness package or self-shift premise.
+The native-trace and aligned-callback endpoints consume the three logical
+roots directly in that target extension and return predecessor exclusivity in
+the same extension.  This removes the former fixed-context equality obstacle:
+the remaining traversal integration may freely adjoin the PA witnesses needed
+to construct admissibility and the opened Sigma/Pi evidence, provided it
+retains the existing base-context inclusion certificate.
+
+The two polarity-specific append traversals are synchronized at that boundary
+as well.  Completed witnessed-context merging now has a strengthened endpoint
+which retains inclusion of both input contexts, and the generic growing proof
+layer uses it to merge two independently selected empty-prefix proof tails
+while preserving inclusion of their common source.  The append assembly
+bundles each mode's append, inherited-traversal, old-lookup, and fixed-row
+production roots, compiles the mode-0 and mode-1 globals independently, and
+returns both proofs in one witnessed context.  The remaining predecessor work
+is therefore formula elimination inside this common context, not another
+context-coordination or witness-selection problem.
+
+Both synchronized global proofs are now also installed beneath the exact two
+predecessor-state assumptions.  A generic growing-pair adapter retains the
+chosen witnessed target and source inclusion, proves the two-head state
+context realizable, and performs four binder-safe context transplants.  A
+small dependency-directional bridge composes this adapter with the dual-mode
+append packages, so the append source resources now yield Sigma and Pi global
+roots in one literal joint-state context.  What remains is to eliminate the
+ten global existential witnesses, project the seven traversal fields, and
+instantiate the selected row to obtain the admissibility and evidence roots.
+
+The ten-witness elimination boundary is now compiled over that literal state
+context.  The two state-member assumptions are represented as a template
+prefix over the witnessed PA tail, rather than incorrectly treated as a raw
+self-shifting tail, so every eigenvariable step shifts both assumptions.  A
+single endpoint computes the ten deep contexts, performs the complete
+existential-elimination chain, and transports the resulting conclusion back
+to the predecessor joint-state context.  The remaining continuation begins
+only after all ten global witnesses have been opened: it must project the
+seven traversal fields and instantiate the selected row to construct the
+admissibility and Sigma/Pi evidence roots.
+
+That opened conjunction is now exposed as an audited proof resource.  The
+generic local-proof library projects an entire right-associated seven-field
+record through explicit represented `And-E` nodes.  The global specialization
+proves that the tenth existential body is literally the head of the computed
+deep context, constructs the corresponding assumption leaf, and returns all
+seven projections independently.  Consequently the remaining continuation
+starts with the root-bound, selected-root lookup, and five-universal row-law
+proofs already available; it only needs to instantiate that row and apply
+the resulting implications to the predecessor state assumptions.
+
+The five row binders are now instantiated as well.  A named replacement tuple
+records their semantic order—root index, fixed polarity, root formula, and
+the two root-assignment components—and its computed opening is audited to
+have the expected two-implication shape.  For the only public polarities,
+zero and one, those antecedents reduce exactly to the fifth and sixth global
+fields.  The new represented endpoint consumes fields five through seven,
+compiles all five `All-E` nodes and both `Imp-E` nodes, and returns the root-row
+polarity disjunction in the unchanged ten-witness context.  The next step is
+therefore only fixed-polarity disjunction elimination and alignment of the
+selected local formula with the predecessor evidence codes.
+
+The propositional part of that selection is now factored generically.  New
+left and right tagged-choice eliminators consume a proof of
+`((tag₀ ∧ A) ∨ (tag₁ ∧ B))` together with a represented contradiction for
+the opposite tag.  Each selector constructs the two branch assumptions,
+projects the tags or payloads, transports the contradiction beneath the
+opposite branch, and closes an honest `Or-E` proof.  The dynamic specialization
+now only needs to supply the PA proofs that zero differs from one and the
+atomic-adequacy certificates for the two concrete tagged row branches.
+
+Both orientations of zero/one distinctness are now compiled as one ordinary
+PA conjunction.  The compiler allocates a single standard axiom-witness
+prefix, projects represented proofs of `0 = 1 -> bottom` and
+`1 = 0 -> bottom` with explicit `And-E` nodes, and records inclusion of the
+caller's original context in that shared extension.  Keeping both roots in
+one witnessed context avoids a second merge when the tagged row choice is
+selected.  The remaining specialization must transport these roots beneath
+the ten opened global witnesses and establish atomic adequacy of the two
+tagged branches before invoking the generic choice eliminators.
+
+The fixed-polarity selection is now complete in the deepest represented
+context.  Stable template destructors expose both tags and payloads of the
+opened row, with definitional checks that the impossible mode-0 right tag is
+`0 = 1` and the impossible mode-1 left tag is `1 = 0`.  A new generic lemma
+extracts atomic adequacy directly from any template translation's unit-shift
+trace, avoiding a dependency on the append assembler.  The selector grows
+the witnessed PA tail once, opens the row over that extension, inserts both
+closed contradiction proofs beneath the full ten-witness prefix, and invokes
+the represented tagged-choice eliminator.  It returns the polarity-correct
+payload together with the enlarged witnessed context and inclusion of the
+caller's original tail.  The next boundary is to identify that payload with
+the predecessor Sigma/Pi evidence formula and weaken the incoming global
+source proof to the same enlarged tail before existential elimination.
+
+The selection and elimination layers are now composed through one reusable
+mode-generic bridge.  Its only formula-specific premise is the literal
+template equation saying that the selected payload is the tenfold shift of
+the conclusion retained after opening the traversal.  Given that equation,
+the bridge grows the PA witness tail, transports the corresponding global
+source proof beneath the same two predecessor-state assumptions, reuses the
+selected deep proof, and compiles all ten represented `Ex-E` nodes.  It
+returns the requested conclusion in the enlarged joint-state context while
+retaining both the witnessed package and inclusion of the caller's tail.
+Thus the remaining native specialization no longer coordinates contexts or
+proof rules: it must prove the two concrete payload equations and combine
+the resulting Sigma/Pi roots with the already available admissibility root.
+
+The two payloads are now normalized one layer further.  A capture-safe
+opening combinator lifts each replacement through exactly the row binders
+that remain at that step—depths four, three, two, one, and zero for the five
+root-tuple arguments.  Audited definitional lemmas identify the left payload
+with this opening of `embedPAFormula localSigma` and the right payload with
+the analogous opening of `localPi`.  This replaces the full global row spine
+by a small explicit substitution calculation and prevents the tempting but
+incorrect use of five unlifted direct openings.
+
+That capture-safe calculation is now reflected back into ordinary PA syntax.
+Generic commuting lemmas show that embedding a PA formula after the lifted
+five-opening sequence equals opening its embedding, and that embedding an
+iterated PA rename equals the template tenfold shift.  Consequently a new
+public predecessor-evidence endpoint asks only for an equality between two
+ordinary PA formulas: the selected local row after its five root-tuple
+substitutions and the tenfold rename of the desired evidence formula.  Once
+this PA-syntax equality is supplied, all template alignment, witnessed-tail
+growth, source weakening, row selection, and existential elimination are
+derived internally.
+
+The generic endpoint has now been relaxed to the equality it actually uses:
+equality of translated carrier formula codes, rather than equality of the
+templates themselves.  This is essential for native evidence, whose desired
+conclusions are opaque template applications even when their translated
+codes agree with the opened standard row.  A paired compiler then runs the
+Sigma elimination, transports the Pi global source into that witnessed
+extension, runs the Pi elimination, and transports the Sigma result into the
+final common context.  It retains the original-tail inclusion and returns
+both evidence roots together.  The predecessor logical-roots package now
+lacks only the admissibility root and the two native translated-code
+identifications.
+
+The paired compiler is now exposed through a complete logical-roots
+packaging corollary.  In addition to the two global sources and their code
+identifications, it accepts an admissibility root in the caller's original
+joint-state context.  After both polarity eliminations choose their common
+final witnessed tail, the corollary transports that admissibility proof
+beneath the identical predecessor-state prefix and returns the full
+`RawDynamicTruthPredecessorStateLogicalRootsAt` record.  Native integration
+therefore no longer has to coordinate the three proof roots or their
+contexts; its remaining obligations are precisely the admissibility proof
+and the two concrete translated-code equalities.
+
+Admissibility has now been split at its natural represented-proof boundary.
+The new context-generic compiler packages three independently produced local
+roots—formula atomic adequacy, assignment definedness through that formula,
+and the Sigma/Pi domain disjunction—using exactly two `And-I` nodes.  It does
+not require a witnessed context, context realizability, standard formula
+codes, or any traversal hypothesis.  The global-row endpoint has a matching
+component-facing corollary, so later native traversal work can establish
+each of the three facts from its own source and leave their conjunction and
+subsequent context synchronization to the reusable compilers.
+
+The two predecessor-state assumptions are also projected once at a generic
+boundary.  Their literal conjunction shapes are named at both PA-formula and
+raw-code levels, and a new compiler introduces the buried Sigma assumption
+before transporting it beneath the Pi head.  Four audited `And-E` roots then
+expose the Sigma bound, Sigma four-table lookup, Pi bound, and Pi lookup in
+the common joint-state context.  Only realizability of the arbitrary base
+tail is required.  Subsequent admissibility lowering can therefore consume
+atomic lookup resources directly instead of repeating assumption-leaf and
+context-insertion plumbing.
+
+Assignment prefix-definedness now has the missing proof-theoretic elimination
+interface as well.  The Coq assignment layer proves, by specializing the
+bounded universal and applying modus ponens, that definedness through a bound
+together with an index below that bound yields a beta lookup witness at the
+index.  A closed curried implication packages this ordinary PA derivation for
+reuse by the raw proof compiler.  Its represented companion compiles the
+implication over any witnessed tail, transports both caller-supplied premise
+roots through the single resulting standard axiom prefix, and applies two
+checked `Imp-E` nodes.  It returns the enlarged witnessed context explicitly,
+so subsequent admissibility lowering can move other roots into exactly the
+same context rather than choosing an unrelated axiom prefix.
+
+The stronger assignment fact is now available at the object-proof boundary
+too.  PA's internal induction establishing a beta remainder for every code,
+step, and index is closed into the sentence saying that every beta-coded
+assignment is defined through every bound.  Raw-model completeness yields a
+finite ordinary PA proof of that sentence, and the represented compiler opens
+its three universal binders at arbitrary template terms in one witnessed
+extension.  A concrete specialization computes the local slots `#1`, `#0`,
+and `#2` and rewrites the result to the exact standard formula-code numeral
+used by the admissibility record.  Thus local assignment definedness no longer
+depends on projecting or aligning any particular global traversal table.
+
+That compiler now also works beneath any atomically adequate temporary
+template prefix.  It first compiles the closed universal theorem over the
+witnessed base tail, retains the resulting standard axiom-witness extension,
+and inserts the opened instance beneath the caller's unchanged prefix.  The
+predecessor specialization proves that its literal Pi/Sigma state prefix is
+adequate directly from standard PA quotation, identifies the translated
+prefix with the native joint-state context, and returns the exact assignment
+definedness root there.  Crucially, it returns the chosen witness extension as
+well: the remaining atomic-adequacy and domain-disjunction roots can therefore
+be transported into that same context before the generic admissibility
+compiler conjoins all three components.
+
+The synchronization promised by that boundary is now compiled.  Its honest
+interface accepts an atomic-adequacy root and a Sigma/Pi rank-domain
+disjunction root under the original joint-state context; state membership by
+itself cannot supply either invariant for an arbitrary table row.  The
+compiler generates universal assignment coverage, obtains its one standard
+axiom-witness extension, transports both incoming roots beneath the unchanged
+state prefix, and invokes the generic two-`And-I` admissibility assembler.
+Consequently the predecessor client no longer coordinates proof roots or
+witness tails: its only remaining admissibility work is to project those two
+mathematical invariants from the restricted-proof certificate.
+
+The paired global-row eliminator now consumes that honest boundary directly.
+It first builds admissibility in its retained witness extension, transports
+both opened Sigma/Pi global sources beneath the identical predecessor-state
+prefix, and then performs the two ten-binder row eliminations in their final
+common tail.  The resulting endpoint returns the complete
+`RawDynamicTruthPredecessorStateLogicalRootsAt` package and an inclusion of
+the caller's original context.  All assignment, conjunction, source
+weakening, and multi-stage witness synchronization have therefore disappeared
+from the eventual restricted-proof client; only its atomic and rank-domain
+projections, the two source roots, and the native payload-code alignments
+remain visible.
+
+The successor-row rank-domain projection has now been moved to the same
+context-safe local boundary used by the branch projections.  The Sigma and Pi
+proof compilers expose the unclosed code equalities separately from their
+older thirteen-universal field equalities.  Given the exact direct
+translation already selected by the native row trace, the local row compiler
+can therefore compile `sigmaRow -> Ex8 sigmaRowDomain` and
+`piRow -> Ex8 piRowDomain` directly on the witnessed, self-shifting PA base.
+This avoids closing and reopening thirteen environment binders and produces
+implications that can safely be transplanted beneath later temporary
+assumptions.
+
+These projections deliberately do **not** discharge the current
+admissibility-domain root.  Their row domains are indexed at the successor
+stage, whereas the admissibility disjunction is the restricted proof's bound
+on the current formula.  Treating those codes as equal would erase the level
+shift and be unsound.  The current-domain and current-formula atomic roots
+must instead be projected from the restricted-proof occurrence-bound and
+proof-atomic-adequacy fields, together with the current proof-row endpoint;
+the existing seven-field projection package is the next integration source.
+
+The first of those two restricted-proof projections now has a reusable
+represented kernel.  `RawCodedProofEndpointAtomicAdequacyProofCompilation.v`
+internalizes the standard arithmetic implication saying that proof-wide
+atomic adequacy and a root endpoint imply atomic adequacy of the endpoint
+conclusion.  It proves the open implication by raw-model validity, seals it
+only for the completeness step, and closes exactly the three displayed
+parameters with the generic `closeN` theorem; this avoids unfolding the large
+support-table certificate in a syntactic sentence proof.  Its growing local
+endpoint compiles any three template terms over a witnessed PA tail,
+transports both caller premise roots through the selected standard axiom
+prefix, and performs the two represented modus-ponens steps in that exact
+extension.  The remaining atomic specialization is now only the concrete
+identification of the restricted atomic field and current endpoint with
+these two named premises.
+
+The matching current-rank projection is represented as well.
+`RawCodedCarrierRestrictedProofReroot.v` first proves the carrier-level fact
+at an arbitrary, possibly nonstandard hierarchy level by specializing the
+restricted proof's traversal certificate at the displayed root and reading
+the endpoint occurrence invariant.  The endpoint-boundedness compiler then
+abstracts only that named carrier level, proves the resulting fixed universal
+PA source by raw-model completeness, and substitutes the direct level code by
+represented `All-E`.  A concrete strong-step source fixes proof, context, and
+conclusion at `#4`, `#3`, and `#2`; its endpoint premise is the shell's exact
+rule-validity formula, whose extra constructor-local conditions are honestly
+forgotten to obtain the endpoint relation.  This is capture-safe beneath the
+internal restricted-target binders and avoids the impractical normalization
+of closing four arbitrary endpoint terms.  Its separate compilation module
+transports the restricted-proof and rule-validity roots through one standard
+axiom-witness prefix and returns the exact current-formula Sigma/Pi
+rank-domain root after two represented modus-ponens steps.  The remaining
+integration work is to project the strong-step restricted core and proof-wide
+atomic field from their conjunction, synchronize this root with the atomic
+projection, and hand both to the predecessor admissibility package.
+
+That projection and synchronization boundary is now closed.
+`RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.v` proves a
+fixed PA law using the exact rule-validity premise, rather than demanding a
+separately compiled weaker endpoint root.  The endpoint-evidence synchronizer
+first compiles rank boundedness, transports the proof-wide atomic and common
+rule roots into that witnessed extension, compiles atomic adequacy there, and
+then transports the rank result through the second extension.  Concatenating
+the two finite standard witness prefixes produces one literal context holding
+both roots.  Its public wrapper performs represented conjunction elimination
+on the shell's restricted-proof premise, projecting the hierarchy core and
+proof-wide atomic certificate while leaving formula and rule coverage intact.
+Thus the predecessor client now needs only the existing restricted-proof and
+rule-validity roots to obtain both mathematical admissibility invariants; the
+next boundary is their direct handoff to the predecessor assignment and
+global-row compilers.
+
+The endpoint-evidence boundary is now prefix-general rather than restricted
+to a bare witnessed context.  A reusable two-premise law combinator inserts
+any compiled implication beneath an atomically adequate temporary template
+prefix, transports both premise roots through the same witnessed-tail
+extension, and performs the represented implication eliminations there.
+Both endpoint laws and their synchronizer instantiate this combinator.  The
+shell-compatible wrapper consequently preserves all case, endpoint-witness,
+admissibility, and eigenvariable assumptions verbatim while concatenating
+only the standard PA witness tails.  The remaining predecessor handoff is
+therefore a literal formula-code alignment problem, not a missing context
+transport principle.
+
+The two remaining formula-code alignments are now explicit reusable lemmas.
+PA embedding agreement identifies the atomic endpoint conclusion with the
+native local atomic-adequacy numeral.  For the domain root, opening the local
+Sigma and Pi input templates at their reserved level slot produces exactly
+the restricted-target domain contexts with formula argument `#2`.
+Represented cross-trace substitution functionality then identifies those
+direct outputs with the native trace's `sigmaDomain` and `piDomain` whenever
+the shared (possibly nonstandard) numeral-term code is equal.  Consequently
+the boundedness root rewrites literally to `sigmaDomain \/ piDomain` without
+decoding the carrier level or assuming it is standard.
+
+Predecessor admissibility now preserves arbitrary strong-step assumptions.
+The two fixed predecessor-state formulae are concatenated in front of any
+atomically adequate template prefix, and a named normalization lemma identifies
+their translated context with the raw joint-state context whose tail is that
+prefix.  The universal assignment theorem is compiled beneath this complete
+temporary context, while the endpoint atomic and rank-domain roots are
+transported through the same retained standard-axiom extension before the
+three admissibility components are conjoined.  The historical state-only
+compiler is an empty-prefix corollary, so existing clients remain unchanged;
+the next global-row handoff can now retain constructor, endpoint-witness, and
+shell assumptions without pretending that they belong to the witnessed PA
+tail.
+
+The same prefix discipline now extends through the complete global-row
+pipeline.  A prefix-indexed ten-witness context lets the generic existential
+eliminator shift every caller assumption at each eigenvariable; the opened
+traversal body remains the literal head, so its seven fields and selected
+polarity payload are projected without any new semantic premise.  Single and
+paired row-evidence compilers, admissibility synchronization, and the final
+`RawDynamicTruthPredecessorStateLogicalRootsAt` package all retain that prefix
+while independently selected standard PA witness batches grow only the raw
+tail.  Each historical state-only theorem is now the empty-prefix corollary
+of its generalized implementation.  Thus the synchronized strong-step
+endpoint invariants can be handed to predecessor global-row soundness without
+discarding the constructor, restricted-proof, rule-validity, or endpoint
+witness assumptions surrounding them.
+
+That handoff is now compiled as a single context-safe theorem.
+`RawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.v` inserts the two
+predecessor-state assumptions ahead of an arbitrary atomically adequate caller
+prefix, synchronizes the restricted-proof and rule-validity roots into the
+native atomic and Sigma/Pi rank-domain conclusions, and transports both opened
+global-row sources through the same witnessed extension.  It then invokes the
+prefix-general predecessor compiler and returns the complete four-root logical
+package beneath the original caller prefix.  Only finite standard PA-axiom
+witnesses grow the raw tail; no constructor or eigenvariable assumption is
+misclassified as an axiom.  The remaining shell integration is consequently
+the concrete supply of the already-native level, substitution, selected-row,
+and global-source alignments, rather than another proof-context transport.
+
+The global-row spine is now representation-safe at nonstandard levels too.
+Its two local Sigma/Pi leaves are `TemplateFormula`s rather than decoded
+metatheoretic PA formulae, so the direct truth selectors may remain opaque
+while all ten existential openings and all five row openings are compiled.
+Compatibility lemmas prove that embedded ordinary PA leaves reduce literally
+to the previous `dynamicTruthGlobalFormula` spelling.  Thus the generalized
+interface loses no standard-formula behavior, while it can now be instantiated
+by the carrier-indexed truth predicates used in the uniform construction.
+
+The soundness and global-row templates can now share one direct structural
+translation without conflating their opaque leaves.  An extensible tail
+interface preserves soundness predicate slots zero and one for the existing
+five-argument context and conclusion truth selectors, while delegating every
+slot at least two to an independently verified operation-commuting family.
+Its first concrete instance places the lower-Pi and lower-Sigma ternary
+applications in disjoint slots two and three and sends malformed arities or
+unused tail names to the represented bottom formula.  The Sigma universal
+branch and Pi existential branch also expose predicate-parameterized row
+templates; reflexive compatibility lemmas retain their historical slot-zero
+forms.  This removes the representation mismatch identified at the previous
+handoff: the next step is to identify both relocated successor rows with the
+native carrier row codes under the shared hierarchy numeral parameters.
+
+That row identification is now proved.  The shared input adapter constructs
+one four-family direct translator and reuses the existing `[9,1,0]` ternary
+application compatibility theorem through the same numeral-parameter record.
+Direct opening of the two fixed domain templates is functional against the
+native Sigma and Pi domain-substitution traces.  The resulting paired theorem
+identifies both relocated templates with `rawDynamicTruthSigmaSuccessorRowCode`
+and `rawDynamicTruthPiSuccessorRowCode` simultaneously; the soundness leaves
+remain in slots zero and one throughout.  The next integration boundary is
+to obtain the two lower-predicate selectors from the deep-closure fields of
+the native aligned predecessor trace and feed this exact shared input into
+the strong-step predecessor global-row handoff.
+
+The aligned predecessor now produces that shared row package.  Its adequate
+current orbit supplies deep closure and hence honest-syntax commuting
+selectors for the current Pi and Sigma globals.  The current trace supplies
+the lower-level numeral and both admissibility domains; the aligned successor
+supplies both local rows and their next-global wrapper.  Although the two row
+graphs choose upper numeral codes independently, represented numeral-code
+functionality identifies them before construction of the common parameter
+record.  For every later coherent context/conclusion truth-selector pair, one
+extended translator therefore has the correct lower-level term and translates
+both relocated row templates to the literal wrapped local row codes.  The
+remaining strong-step instantiation must construct the two global-source
+proof roots and selected-payload equations; those are proof obligations, not
+mere consequences of the code wrapper equality.
+
+The code half of the global-source boundary is now explicit.  For any
+template translation agreeing with PA quotation, translating the generalized
+ten-existential source is definitionally the native transparent
+`rawDynamicTruthGlobalFormulaCode` polynomial applied to the two translated
+row leaves.  Consequently, once the aligned row equations are known, the
+paired wrapper identifies the two translated sources with the literal native
+next-global Sigma and Pi codes simultaneously.  This does not manufacture
+proof roots.  The existing append traversal compiler does produce and merge
+such roots, but its public package still requires metatheoretic `formula`
+rows; the next proof-producing step is to generalize that package to opaque
+`TemplateFormula` rows (or expose an equivalent trace-linked compiler), then
+establish the two selected-payload equations needed by the strong handoff.
+
+The append traversal compiler is now generalized to those opaque rows.
+`RawCodedFourStateTableAppendTemplateGlobalTraversalAssembly.v` opens the
+native ten-existential source directly, proves that its first six traversal
+fields retain their historical shapes, and isolates its seventh field as a
+five-universal row formula over arbitrary `TemplateFormula` leaves.  A
+concrete row implication can be rewritten to this extracted production,
+closed under the five row binders, combined with the six stable fields,
+closed under all ten source witnesses, and discharged from the eight append
+eigenvariables.  The public endpoint therefore returns a growing proof of
+the literal generalized `coqDynamicTruthGlobalExistentialSource`; it does not
+decode either row or detour through an embedded metatheoretic formula.
+Structural scoping and fixed-substitution lemmas also expose a sufficient
+normalization criterion for concrete row bodies.  The remaining handoff is
+now narrower: instantiate the concrete seventh-field proof and its row
+normalization equality from the aligned native predecessor/selector package,
+then identify the selected polarity payloads expected by the strong-step
+shell.
+
+The fixed native row normalization is now discharged as well.
+`RawCodedDynamicTruthSuccessorRowsAppendNormalization.v` reflects template
+scoping into a compact Boolean computation and verifies that the relocated
+Sigma and Pi successor rows are scoped beneath the append opening's thirteen
+slots.  The same computation confirms that append's field bindings, whose
+parameter names are 2 through 5, leave the rows' hierarchy parameters 0 and
+1 untouched.  Hence their concrete closed production is exactly the seventh
+field extracted from either native generalized source, with no equality
+premise left for downstream clients.  What remains is proof-theoretic rather
+than syntactic: instantiate the concrete row-implication and append-root
+premises from the aligned predecessor trace, transport the resulting two
+global roots under the retained strong-step prefix, and close the selected
+payload alignments.
+
+The native proof-producing client now consumes exactly those two remaining
+premises.  Its conclusion is a growing proof of the literal generalized
+global source for either mode, while the shared Sigma/Pi row choice and its
+production equality are fixed internally by the audited normalization
+lemmas.  Downstream aligned-predecessor code therefore no longer carries a
+scoping certificate, a parameter-inertness equation, or an arbitrary pair
+of row templates.  The source-root boundary is now stated only in terms of
+the append existential root and the concrete row implication that the
+existing four-state-table compilers are designed to construct.
+
+That client is now prefix-flexible as well.  A row implication compiled
+beneath named carrier parameters may be transported to the concrete root
+tuple whenever the two translated prefixes have equal raw context codes for
+every tail.  This is the weakest context condition used by the existing
+growing-proof transport lemma and avoids forcing template-level equality
+between two presentations of the same carrier terms.  Consequently the
+generic named-parameter row compiler can feed the native opaque-row global
+closure directly; the remaining premise construction is confined to its
+inherited traversal, equality-branch production, and append-root resources.
+
+The row compiler and native closure are now composed into one audited
+endpoint.  It fixes parameter name six as the traversal bound (the four row
+fields occupy names two through five), discharges freshness and atomic
+adequacy internally, compiles both arithmetic branches, transports the
+result across the translated-prefix equality, and returns the generalized
+global-source proof.  Its visible inputs are exactly the append existential
+root, the opened inherited traversal equation and roots, the fixed named-row
+production root, and the carrier-level prefix equality.  The assumption
+audit records the stronger classical choice, proof-irrelevance, and
+propositional-extensionality boundary inherited from the complete generic
+row case compiler; the earlier normalization-only clients retain their
+smaller classical/extensionality boundary.
+
+The selected-row boundary no longer requires raw formula-code equality with
+a tenfold-shifted conclusion.  That equality is too strong for native rows:
+the selected row legitimately retains the opened traversal witnesses, which
+must be rewritten by represented equality proofs rather than identified as
+quoted syntax.  The predecessor eliminator now has a lower-level endpoint
+accepting any proof of the shifted conclusion in the exact ten-witness deep
+context, plus a callback endpoint that receives the selected payload proof
+and its chosen witnessed extension.  The historical code-equality theorem
+is retained as a compatibility corollary.  Native integration can therefore
+use the already projected traversal equalities to build an honest transport
+proof before closing the ten existential eliminations.
+
+That proof-producing interface is now synchronized across both polarities.
+The callback contract is factored into a named predicate, and the paired
+compiler requests its Pi callback only after Sigma selection has chosen a
+possibly larger witnessed PA tail.  It transports the Pi source to that
+tail, compiles Pi there, and then transports the completed Sigma evidence to
+the final common context.  The former paired code-equality theorem is a thin
+compatibility client of this dependency-ordered implementation, eliminating
+the duplicated context-transport proof while allowing the native callbacks
+to use distinct proof roots and standard-axiom witness batches.
+
+The selected-payload callbacks now remain available through every later
+context choice.  A uniform family packages the compiler at each witnessed
+extension of the caller's PA tail; admissibility may therefore introduce its
+own standard-axiom witnesses before row selection, and the strong-step
+handoff may transport the two global sources to its endpoint context without
+losing the callback.  Both the atomic/domain logical-root constructor and
+the complete restricted-rule handoff expose this family interface.  Their
+historical raw-code-equality statements are retained as wrappers, so existing
+clients continue to compile while the native proof-producing client can be
+implemented without the impossible syntactic alignment premise.
+
+The first native dependency-ordered callback now accepts that growing proof
+shape.  `RawCodedDynamicTruthNativeLocalGrowingStagedCallbackCompilation.v`
+defines a reduced staged-root builder which may return any witnessed PA
+context containing the current forty-helper context.  Complete binder-safe
+witnessed-context weakening transports the whole ordered helper batch to the
+chosen target, after which the existing reduced row/collision assembly
+produces the ordinary local certificate there.  A fixed-context builder embeds
+by reflexive inclusion, so this is a strict relaxation of the old boundary.
+The dependency-ordered kernel bundle and compact conditional headline expose
+the growing variant directly.  Thus append/global-row traversal may retain
+its finite standard-witness suffix all the way into the native local callback;
+the remaining local obligation is the arithmetic construction of the growing
+staged roots, not any artificial collapse back to the starting context.
+
+The growing local residual is now split at the arithmetic predecessor seam.
+`RawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation.v`
+removes the predecessor implication from the reduced collision kernel and
+reassembles it only after a dependency-ordered predecessor producer has
+chosen its witnessed target context.  The exact current-package case theorem
+then separates zero from successor.  In the successor branch, consecutive
+native traces supply the aligned predecessor record, and the remaining
+global-row client must return only the three logical roots—admissibility,
+Sigma evidence, and Pi evidence—on a witnessed extension.  The audited
+native-trace closure transports the carried exclusivity projection and builds
+the universal predecessor implication there.  The dependency-ordered compact
+headline exposes this split bundle, leaving the zero producer and the three
+unrelated collision roots distinct from the selected-payload obligation.
+
+The aligned positive branch is now connected to the complete strong-step
+handoff.  `RawCodedDynamicTruthNativeAlignedStrongStepLogicalRootsCompilation.v`
+extracts the literal successor-level numeral and both domain-substitution
+traces from the aligned current field.  A proof-producing resource compiler
+supplies a matching direct structural translation, restricted/rule roots,
+the two generalized global-source roots, and the dependency-ordered Sigma/Pi
+selected-payload families.  Applying the strong handoff at the empty temporary
+prefix returns the three logical roots on a witnessed extension; two explicit
+translation equations identify its conclusions with the native evidence
+codes.  The preferred dependency-ordered kernel and compact conditional
+headline consume these strong-step resources directly.  Consequently the
+positive logical-root callback itself is discharged; what remains inside this
+coordinate is the construction of those concrete global-source and selected-
+payload proof resources.
+
+The aligned strong-step boundary now constructs its structural translation
+internally.  The current adequate orbit and aligned successor edge yield deep
+closure of both successor globals; commuting ternary selectors then install
+Sigma in the conclusion-truth slot and Pi in an auxiliary same-arity slot.
+Represented numeral and application functionality identify the resulting
+lower-level term, shared Sigma/Pi row codes, and both direct evidence leaves
+with the exact codes carried by the native trace.  The retained wrapper
+equation ties those shared rows back to the same successor globals.  A reduced
+proof-resource compiler therefore fixes all templates and translations and
+asks only for the restricted/rule roots, the two generalized global-source
+roots, and the two selected-payload proof families.  Its audited adapter
+reconstructs the former strong-step bundle, removing structural alignment
+from the remaining conditional hypothesis.  The dependency-ordered assembly
+and compact conditional headline now expose this reduced proof-resource
+bundle directly.
+
+The global-source half of that reduced bundle now preserves the context
+growth performed by append traversal.  The strong-step handoff accepts Sigma
+and Pi source roots on any witnessed extension of the aligned callback base,
+transports the restricted and rule roots to that extension, and specializes
+the selected-payload families there.  No source proof is contracted back to
+the pre-append context.
+
+`RawCodedDynamicTruthSharedSuccessorAppendGlobalRoots.v` packages the exact
+normalized opaque-row inputs for each root mode.  It compiles the two shared
+successor globals independently, synchronizes their growing contexts, merges
+that context with an arbitrary witnessed callback base, and inserts the two
+predecessor-state assumptions only after the merge.  The aligned native
+adapter and dependency-ordered compact headline expose these append packages
+directly.  Thus context equality, polarity synchronization, and global-root
+transport are all proved internally; the remaining positive-coordinate work
+is to construct the concrete append/inherited/fixed-production roots and the
+two selected-payload proof families.
+
+The native selected-payload seam now records its previously implicit
+free-variable permutation.  Append traversal presents each ternary global
+source in de Bruijn order `(0,1,2)`, whereas derivation soundness applies the
+current formula/assignment tuple as `(2,1,0)`.  The protected three-opening
+protocol therefore produces the source with its outer three variables
+reversed, rather than the literal append source.  The finite Sigma and Pi
+normalizations in
+`RawCodedDynamicTruthNativeGlobalEvidencePermutation.v` prove this fact at
+template level and lift it to exact represented ternary-application traces
+for the direct structural translator.  This rules out an unsound reuse of an
+unpermuted opened source body and gives the forthcoming proof transport a
+precise target: rename the append/global proof by the explicit three-slot
+permutation before rebuilding the native evidence existential witnesses.
+
+The predecessor handoff now also exposes a strictly weaker direct-evidence
+route.  `RawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.v` starts
+from arbitrary Sigma and Pi evidence proofs already living under the joint
+predecessor-state context.  It compiles assignment coverage from the existing
+atomic/domain roots, retains the resulting finite PA-witness extension, and
+transports both evidence proofs to that exact context before packaging the
+three native logical roots.  Both prefix-general and empty-prefix endpoints
+are audited.  Consequently a permuted append compiler need not reopen its
+global certificates and run selected-row callbacks merely to recover the
+same applied formulas: once it produces the native evidence endpoints, only
+the shared admissibility construction remains.
+
+`RawCodedFourStateTableAppendPermutedTemplateGlobalTraversalAssembly.v`
+now performs that permutation at the proof-producing append boundary rather
+than appealing to an unavailable general proof-renaming theorem.  It opens
+the reversed global source, identifies its traversal body with the root tuple
+`(2,1,0)`, compiles the universal seventh row field, introduces the ten global
+witnesses, and eliminates the eight append witnesses.  A root-term-general
+row compiler and the finite shared-row normalization then specialize this
+construction to the native Sigma/Pi successor rows.  The resulting growing
+proof retains the append traversal's witnessed context while concluding the
+permuted global source required by the native evidence application.
+
+The reversed endpoint now has the same named-prefix and inherited-row
+resource interface as the ordinary append client.  The companion
+`RawCodedDynamicTruthSharedSuccessorPermutedAppendGlobalRoots.v` packages one
+trace per polarity, synchronizes their independently growing contexts, merges
+the result with an arbitrary witnessed callback base, and installs both roots
+beneath the predecessor-state assumptions.  A dependency-ordered extension
+of the direct-evidence handoff accepts this growing pair, transports the
+atomic and domain roots to its chosen context, and only then compiles the
+shared admissibility root.  Thus neither permuted evidence proof nor the
+append context must be contracted back to the original callback base.
+
+The remaining strong-step premise has also been split at its true dependency
+boundary.  The new atomic/domain projection in
+`RawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.v` consumes only
+the restricted-proof root, the rule root, and the native domain
+substitutions; it returns both arithmetic roots on a witnessed extension
+beneath the predecessor-state assumptions.  Separately, ternary application
+now has a translation-generic five-trace theorem parameterized only by its
+two protective term shifts.  This isolates the final code-identification
+work for the extended direct translation without reintroducing global-row
+or selected-payload hypotheses.
+
+The aligned structural package now proves the two exact code equations that
+close this seam.  For each polarity, it identifies the translated shared-row
+global source with the successor wrapper code, compiles its protected
+ternary application in the extended direct translation, and uses represented
+application functionality against the native selector trace.  The resulting
+permuted formula code is literally the current Sigma or Pi evidence code.
+
+Consequently the new permuted-append strong-step resource compiler contains
+no selected-payload families.  Its adapter derives atomic/domain roots from
+the restricted and rule proofs, compiles both reversed append traces on a
+synchronized witnessed extension, and applies the dependency-ordered direct
+evidence handoff.  This path is exposed through a corresponding all-model
+dependency bundle and conditional compact PA headline.  The remaining Coq
+gap is now the construction of those concrete residual resource fields, not
+any formula permutation, source contraction, or selected-row transport.
+
+The helper translation itself is no longer one of those residual resources.
+`RawCodedTemplateBottomDirectStructuralInputs.v` constructs a direct
+structural translation whose two opaque five-argument predicates are bottom.
+The one-node bottom operation tree proves stability under every represented
+shift and opening, while numeral-code totality supplies harmless zero-valued
+named parameters.  The generic direct structural agreement theorem then
+shows that this concrete translation still maps every embedded ordinary PA
+term and formula to its exact quotation.  An agreement-free direct
+dependency bundle now exposes only eight proof-producing coordinates and
+reconstructs PA agreement internally before invoking the existing compact
+headline.  The remaining Coq gap consists of the zero predecessor compiler,
+the permuted-append strong-step resources, the reduced staged remainder, and
+the five linked staged implication compilers.
+
+The harmless direct input is now canonical rather than merely existential.
+At standard level zero, the represented numeral-term code is the explicit
+quotation of the zero term; this defines the two-name parameter record in
+`Type` without choice.  Combining it with the bottom selectors gives named
+canonical inputs and a named canonical translation.  The sharpest compact
+headline consequently assumes a plain all-model family of the same eight
+proof-producing coordinates—there is no existential translation or input
+witness left in its statement.
+
+The rank-zero coordinate has now been reduced to its logical content as
+well.  Four explicit ordinary PA formulas name the zero-level Sigma/Pi
+domains and level-one evidence predicates.  Reversing the three predicate
+variables and applying the generic protected ternary operation recovers the
+literal native evidence applications; executable scope checks establish the
+required deep closure.  These facts give a concrete direct-template
+identification of the entire zero local field.  A new adapter projects the
+carried base field's exclusivity conjunct, transports it to the traversal's
+witnessed extension, and closes the predecessor implication from only three
+logical roots (admissibility, Sigma evidence, and Pi evidence).  The sharpest
+canonical compact headline therefore no longer assumes a completed zero
+predecessor compiler.  Its remaining first coordinate is the substantially
+smaller compiler for those three fixed rank-zero roots on an arbitrary
+witnessed PA base.  Its type mentions no native trace, orbit level, global
+predicate code, or successor witness; the other seven coordinates remain the
+permuted-append strong-step resources, reduced staged remainder, and five
+linked staged implication compilers.
+
+That fixed compiler is in turn generated from one ordinary PA derivation.
+The law curries the Sigma- and Pi-state assumptions around a conjunction of
+admissibility, Sigma evidence, and Pi evidence.  Its raw compiler realizes
+the ordinary proof over an arbitrary witnessed tail, inserts the two state
+assumptions, performs two implication eliminations, and projects all three
+roots on the same witnessed extension.  Consequently the sharpest headline's
+first coordinate is now the ordinary `Formula.BProv` statement for this
+single fixed law, rather than any model-indexed proof-code callback.
+
+The native zero trace has also been normalized to the exact global data that
+this smaller compiler must use.  Its adequate orbit at level one inverts to
+one successor edge whose predecessor is forced by the zero orbit equation to
+be the two literal globally wrapped rank-zero base quotations.  The inversion
+retains root closure of both base predicates and atomic adequacy of both
+level-one outputs.  Thus the remaining zero compiler no longer needs to
+inspect an opaque orbit or choose a predecessor pair: it starts from a fixed
+root-closed base, its actual successor edge, and adequate successor outputs.

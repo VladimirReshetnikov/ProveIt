@@ -1,0 +1,15 @@
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeLocalPositiveExactification.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalPositiveExactification.
+
+Check raw_dynamicTruthLocalTernaryApplication_functional.
+Check raw_dynamicTruthNativeLocalFieldTransformAt_functional.
+Check raw_dynamicTruthNativeLocalPositiveAt_functional.
+Check raw_dynamicTruthNativeLocalPositiveAt_exact.
+
+Print Assumptions raw_dynamicTruthLocalTernaryApplication_functional.
+Print Assumptions raw_dynamicTruthNativeLocalFieldTransformAt_functional.
+Print Assumptions raw_dynamicTruthNativeLocalPositiveAt_functional.
+Print Assumptions raw_dynamicTruthNativeLocalPositiveAt_exact.
