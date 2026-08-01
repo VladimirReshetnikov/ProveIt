@@ -32,6 +32,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateDirectStructuralPAAgreement
   RawCodedPALocalProofUniversalEliminationChain
+  RawCodedAssignmentUniversalDefinednessProofCompilation
   RawCodedFixedLevelTruth
   RawCodedFourStateTableAppendSource.
 
@@ -58,6 +59,8 @@ Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
+Import
+  PABoundedRawCodedAssignmentUniversalDefinednessProofCompilation.
 Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFourStateTableAppendSource.
 
@@ -240,6 +243,45 @@ Proof.
   cbn [templateUniversalOpenMany embedPAFormula
     templateFormulaOpen templateFormulaSubst].
   reflexivity.
+Qed.
+
+(** The canonical row traversal always opens append with its eight table
+    columns in variables [#7] through [#0], a named bound, and the four
+    current row fields in variables [#2] through [#0].  At exactly that
+    interface, the four named projections compute to instances of the one
+    universal beta-definedness theorem.
+
+    Stating this calculation at the real traversal boundary is deliberate.
+    For thirteen completely arbitrary open terms the same fact needs a
+    sizeable general simultaneous-substitution theorem: [vm_compute] cannot
+    reduce renaming followed by opening through an opaque term variable.
+    The canonical terms below contain variables, parameters, and an arbitrary
+    numeral mode, so this lemma still audits all three forms used by the row
+    compiler without pretending that arbitrary syntax computes by
+    reflexivity. *)
+Lemma coqFourStateTableAppendCanonicalDefinedTemplate_instances : forall
+    boundParameterName rootMode,
+  let defined := coqFourStateTableAppendDefinedTemplate
+    (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+    (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+    (ttParameter boundParameterName)
+    (embedPATerm (Term.numeral rootMode))
+    (ttVar 2) (ttVar 1) (ttVar 0) in
+  templateAnd4First defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 7) (ttVar 6) (ttParameter boundParameterName) /\
+  templateAnd4Second defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 5) (ttVar 4) (ttParameter boundParameterName) /\
+  templateAnd4Third defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 3) (ttVar 2) (ttParameter boundParameterName) /\
+  templateAnd4Fourth defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 1) (ttVar 0) (ttParameter boundParameterName).
+Proof.
+  intros.
+  repeat split; vm_compute; reflexivity.
 Qed.
 
 (** Assemble any template with the same four-way shape from component local
@@ -609,6 +651,131 @@ Proof.
       assignmentStepCode assignmentStepStep
       bound mode formula assignmentCode assignmentStep definedRoot
       hbase hdefined).
+Qed.
+
+(** Canonical row endpoint with no caller-supplied definedness roots.  PA's
+    universal beta-definedness theorem is compiled once and instantiated at
+    all four table columns on one standard witness tail.  The component
+    append compiler may choose a second finite tail; concatenating the two
+    batches exposes the result through the same single-prefix interface used
+    by the native row-kernel payload.
+
+    The mode remains an arbitrary metatheoretic numeral.  In particular this
+    one theorem supplies both canonical modes zero and one, rather than
+    duplicating the proof-producing argument for the two polarities. *)
+Theorem
+    raw_codedPALocalProofOf_canonical_four_state_table_append_exists_on_witnessed_tail
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      baseWitnessList baseContext boundParameterName rootMode,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext)
+      (rawDirectTemplateFormula inputs
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter boundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0))) root.
+Proof.
+  intros M hPA inputs baseWitnessList baseContext
+    boundParameterName rootMode hbase.
+  set (translation :=
+    rawDirectStructuralTemplateTranslation M hPA inputs).
+  set (defined := coqFourStateTableAppendDefinedTemplate
+    (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+    (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+    (ttParameter boundParameterName)
+    (embedPATerm (Term.numeral rootMode))
+    (ttVar 2) (ttVar 1) (ttVar 0)).
+  destruct
+    (coqFourStateTableAppendCanonicalDefinedTemplate_instances
+      boundParameterName rootMode)
+    as (hmode & hformula & hassignmentCode & hassignmentStep).
+  fold defined in hmode, hformula, hassignmentCode, hassignmentStep.
+  destruct
+    (raw_codedPALocalProofOf_assignmentUniversalDefinedness_four_instances_on_witnessed_tail
+      M hPA translation
+      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+      baseWitnessList baseContext
+      (ttVar 7) (ttVar 6) (ttParameter boundParameterName)
+      (ttVar 5) (ttVar 4) (ttParameter boundParameterName)
+      (ttVar 3) (ttVar 2) (ttParameter boundParameterName)
+      (ttVar 1) (ttVar 0) (ttParameter boundParameterName)
+      hbase)
+    as (definedWitnesses & modeDefinedRoot & formulaDefinedRoot &
+      assignmentCodeDefinedRoot & assignmentStepDefinedRoot &
+      hdefinedContext & hmodeDefined & hformulaDefined &
+      hassignmentCodeDefined & hassignmentStepDefined).
+  assert (hmodeProjection : RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        definedWitnesses baseContext)
+      (rawDirectTemplateFormula inputs (templateAnd4First defined))
+      modeDefinedRoot).
+  {
+    unfold translation in hmodeDefined.
+    rewrite hmode.
+    exact hmodeDefined.
+  }
+  assert (hformulaProjection : RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        definedWitnesses baseContext)
+      (rawDirectTemplateFormula inputs (templateAnd4Second defined))
+      formulaDefinedRoot).
+  {
+    unfold translation in hformulaDefined.
+    rewrite hformula.
+    exact hformulaDefined.
+  }
+  assert (hassignmentCodeProjection : RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        definedWitnesses baseContext)
+      (rawDirectTemplateFormula inputs (templateAnd4Third defined))
+      assignmentCodeDefinedRoot).
+  {
+    unfold translation in hassignmentCodeDefined.
+    rewrite hassignmentCode.
+    exact hassignmentCodeDefined.
+  }
+  assert (hassignmentStepProjection : RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        definedWitnesses baseContext)
+      (rawDirectTemplateFormula inputs (templateAnd4Fourth defined))
+      assignmentStepDefinedRoot).
+  {
+    unfold translation in hassignmentStepDefined.
+    rewrite hassignmentStep.
+    exact hassignmentStepDefined.
+  }
+  destruct
+    (raw_codedPALocalProofOf_four_state_table_append_exists_of_components_on_witnessed_tail
+      M hPA inputs
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        definedWitnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        definedWitnesses baseContext)
+      (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+      (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+      (ttParameter boundParameterName)
+      (embedPATerm (Term.numeral rootMode))
+      (ttVar 2) (ttVar 1) (ttVar 0)
+      modeDefinedRoot formulaDefinedRoot
+      assignmentCodeDefinedRoot assignmentStepDefinedRoot
+      hdefinedContext hmodeProjection hformulaProjection
+      hassignmentCodeProjection hassignmentStepProjection)
+    as (appendWitnesses & appendRoot & happendContext & happend).
+  exists (appendWitnesses ++ definedWitnesses), appendRoot.
+  rewrite rawStandardPAAxiomWitnessPrefixWitnessListCode_app.
+  rewrite rawStandardPAAxiomWitnessPrefixContextCode_app.
+  split; assumption.
 Qed.
 
 End PABoundedRawCodedFourStateTableAppendProofCompilation.
