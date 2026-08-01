@@ -37,6 +37,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeLocalGrowingStagedCallbackCompilation
   RawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
+  RawCodedDynamicTruthNativeZeroCanonicalApplicationNormalizedCompilation
   RawCodedDynamicTruthNativeAlignedStrongStepLogicalRootsCompilation
   RawCodedDynamicTruthNativeCrossLevelStagedCallbackCompilation
   RawCodedDynamicTruthNativeShiftStagedCallbackCompilation
@@ -72,6 +73,8 @@ Import
   PABoundedRawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationNormalizedCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeAlignedStrongStepLogicalRootsCompilation.
 Import
@@ -295,7 +298,8 @@ Arguments
   M hPA : clear implicits.
 
 (** Rank-zero-refined direct boundary.  The former zero predecessor callback
-    has been reduced to four roots on a witnessed extension.  Its first
+    has been reduced to four canonical traversal roots on a witnessed
+    extension.  Its first
     coordinate receives a normalized record of the six exact current field
     roots, the ordered forty-helper batch, and the four structural roots
     projected from the state assumptions.  It also retains the complete
@@ -313,7 +317,7 @@ Definition
      outputs are now fixed to their exact standard quotations.  This prevents
      downstream root construction from depending on arbitrary carrier-level
      representatives of those formulas. *)
-  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalNormalizedResources
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources
     M translation /\
   RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
     M hPA /\
@@ -363,7 +367,11 @@ Proof.
             M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
             (raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnNormalizedResources_of_canonical
               M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
-              hzero)))).
+              (raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalNormalizedResources_of_canonicalApplicationRoots
+                M hPA
+                (rawDirectStructuralTemplateTranslation M hPA inputs)
+                (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+                hzero))))).
   - exact (conj hstrong
       (conj hremainder
         (conj hcrossLevel

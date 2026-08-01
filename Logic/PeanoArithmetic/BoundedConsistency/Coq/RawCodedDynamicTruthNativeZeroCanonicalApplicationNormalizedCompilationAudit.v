@@ -1,0 +1,17 @@
+(** Assumption audit for the normalized canonical-application boundary. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroCanonicalApplicationNormalizedCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationNormalizedCompilation.
+
+Check
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources.
+Check
+  raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalNormalizedResources_of_canonicalApplicationRoots.
+
+Print Assumptions
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources.
+Print Assumptions
+  raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalNormalizedResources_of_canonicalApplicationRoots.
