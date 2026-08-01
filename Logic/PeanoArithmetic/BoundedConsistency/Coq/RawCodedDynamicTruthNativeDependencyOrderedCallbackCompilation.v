@@ -350,6 +350,65 @@ Arguments
   RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
   M hPA : clear implicits.
 
+(** Invocation-aligned row-kernel boundary.  The preceding logical-zero
+    package asks directly for the two completed state applications.  Earlier
+    refinements split that request into an invocation-dependent arithmetic
+    endpoint and model-global row payloads, but the latter quantification is
+    stronger than the callback needs: selected-row production may use the
+    normalized local roots and the exact canonical trace of this invocation.
+
+    This package therefore keeps the complete canonical row-kernel compiler
+    as one first coordinate.  It is strictly no stronger than the completed
+    application compiler, while preserving all resources needed to derive
+    that compiler by the generic append adapter. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  let translation := rawBottomDirectStructuralTemplateTranslation M hPA in
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources
+    M translation /\
+  RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
+    M hPA /\
+  RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
+    M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
+  M hPA : clear implicits.
+
+(** Compile only the invocation-aligned first coordinate.  In particular,
+    no payload is pulled out of the normalized callback and no producer is
+    required to work uniformly over unrelated witnessed PA tails. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers_of_invocation_row_kernel
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
+    M hPA.
+Proof.
+  intros M hPA
+    (hzeroKernel & hstrong & hremainder & hcrossLevel & hshift &
+      hsubstitution & haxiom & hfinal).
+  split.
+  - exact
+      (raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources_of_permuted_append_kernel_resources
+        M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+        (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+        hzeroKernel).
+  - split; [exact hstrong |].
+    split; [exact hremainder |].
+    split; [exact hcrossLevel |].
+    split; [exact hshift |].
+    split; [exact hsubstitution |].
+    split; [exact haxiom | exact hfinal].
+Qed.
+
 (** Row-kernel refinement of the rank-zero direct boundary.  Only the first
     coordinate changes: instead of returning completed canonical state
     applications, it separates the invocation-dependent restricted-proof
@@ -1127,6 +1186,13 @@ Definition
       M hPA.
 
 Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
+      M hPA.
+
+Definition
     RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendRowKernelProofResourceStrongStepKernelCompilersInAllModels
     : Prop :=
   forall (M : RawPAModel) (hPA : RawPASatisfies M),
@@ -1303,6 +1369,24 @@ Proof.
         (raw_dynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers_of_logical_zero
           M hPA (rawBottomTemplateDirectStructuralInputs M hPA)
           (hkernels M hPA)))).
+Qed.
+
+(** All-model handoff from the invocation-aligned row kernel.  The canonical
+    application compiler is reconstructed separately in each model and at
+    each normalized rank-zero callback invocation. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_invocation_permuted_append_row_kernel_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels.
+Proof.
+  intros hkernels.
+  apply
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_permuted_append_proof_resource_strong_step_kernel_compilers.
+  intros M hPA.
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers_of_invocation_row_kernel
+      M hPA (hkernels M hPA)).
 Qed.
 
 Theorem
@@ -1559,6 +1643,25 @@ Proof.
   exact
     (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
       (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_permuted_append_proof_resource_strong_step_kernel_compilers
+        hkernels)).
+Qed.
+
+(** Invocation-aligned canonical headline.  Unlike the model-global payload
+    refinements below, its rank-zero row constructor receives the normalized
+    roots and canonical trace of the actual callback.  This is the weakest
+    current boundary that preserves every resource needed for honest row
+    production rather than asking for unrelated-tail uniformity. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_canonical_logical_zero_invocation_permuted_append_row_kernel_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hkernels.
+  exact
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_invocation_permuted_append_row_kernel_proof_resource_strong_step_kernel_compilers
         hkernels)).
 Qed.
 
