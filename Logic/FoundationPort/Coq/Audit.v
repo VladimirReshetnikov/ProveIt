@@ -850,6 +850,21 @@ Print Assumptions nat_bounded_all_search_positive_iff.
 Print Assumptions nat_bounded_all_search_least_exists.
 Print Assumptions nat_bounded_all_search_least_value.
 Print Assumptions arithmetic1_bounded_all.
+Check nat_primitive_recursion.
+Check beta_sequence_encoder.
+Print Assumptions beta_encoded_recursion_eq.
+Print Assumptions beta_eq_primitive_recursion.
+Print Assumptions beta_recursion_code_exists.
+Check arithmetic_primitive_recursion.
+Print Assumptions beta_eq_arithmetic_primitive_recursion.
+Print Assumptions beta_arithmetic_recursion_code_exists.
+Check nat_recursion_code_test.
+Print Assumptions nat_recursion_code_test_positive_iff.
+Print Assumptions nat_recursion_code_least_exists.
+Print Assumptions nat_recursion_code_value.
+Check arithmetic_recursion_code_test.
+Print Assumptions arithmetic1_recursion_code_test.
+Print Assumptions arithmetic1_primitive_recursion.
 Check arith_code.
 Check arith_code_evaluates.
 Print Assumptions fin_indexed_choice.

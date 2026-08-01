@@ -1221,6 +1221,400 @@ Proof.
         now symmetry.
 Qed.
 
+(** * Finite beta coding and primitive recursion *)
+
+Fixpoint nat_primitive_recursion
+    (base : nat) (step : nat -> nat -> nat) (m : nat) : nat :=
+  match m with
+  | 0 => base
+  | S k => step k (nat_primitive_recursion base step k)
+  end.
+
+Lemma nat_primitive_recursion_zero : forall base step,
+  nat_primitive_recursion base step 0 = base.
+Proof. reflexivity. Qed.
+
+Lemma nat_primitive_recursion_succ : forall base step m,
+  nat_primitive_recursion base step (S m) =
+  step m (nat_primitive_recursion base step m).
+Proof. reflexivity. Qed.
+
+(** The exact data supplied upstream by [Nat.unbeta]: one natural number
+    simultaneously realizes every prescribed finite prefix through
+    [nat_beta].  Packaging the selected encoder in Type is stronger than an
+    existential theorem and lets every downstream construction stay free of
+    choice. *)
+Record beta_sequence_encoder : Type := {
+  beta_encode : nat -> (nat -> nat) -> nat;
+  beta_encode_correct : forall len a i,
+    i < len -> nat_beta (beta_encode len a) i = a i
+}.
+
+Definition beta_encoded_recursion (E : beta_sequence_encoder)
+    (base : nat) (step : nat -> nat -> nat) (bound : nat) : nat :=
+  beta_encode E (S bound) (nat_primitive_recursion base step).
+
+Lemma beta_encoded_recursion_eq : forall E base step bound m,
+  m < S bound ->
+  nat_beta (beta_encoded_recursion E base step bound) m =
+  nat_primitive_recursion base step m.
+Proof.
+  intros E base step bound m Hm.
+  unfold beta_encoded_recursion.
+  now apply beta_encode_correct.
+Qed.
+
+Lemma beta_encoded_recursion_zero : forall E base step bound,
+  nat_beta (beta_encoded_recursion E base step bound) 0 = base.
+Proof.
+  intros E base step bound.
+  rewrite beta_encoded_recursion_eq by lia. reflexivity.
+Qed.
+
+Lemma beta_encoded_recursion_succ : forall E base step bound m,
+  m < bound ->
+  nat_beta (beta_encoded_recursion E base step bound) (S m) =
+  step m (nat_beta (beta_encoded_recursion E base step bound) m).
+Proof.
+  intros E base step bound m Hm.
+  rewrite !beta_encoded_recursion_eq by lia. reflexivity.
+Qed.
+
+(** A beta sequence satisfying the base and all earlier step equations has
+    the unique primitive-recursive value at the requested index.  Unlike the
+    existence lemmas, this theorem needs no encoder. *)
+Lemma beta_eq_primitive_recursion : forall z base step m,
+  nat_beta z 0 = base ->
+  (forall i, i < m ->
+    nat_beta z (S i) = step i (nat_beta z i)) ->
+  nat_beta z m = nat_primitive_recursion base step m.
+Proof.
+  intros z base step m; induction m as [|m IH]; intros Hzero Hstep.
+  - exact Hzero.
+  - rewrite Hstep by lia.
+    rewrite IH; [reflexivity | exact Hzero |].
+    intros i Hi. apply Hstep. lia.
+Qed.
+
+Lemma beta_recursion_code_exists : forall (E : beta_sequence_encoder)
+    base step bound,
+  exists z,
+    nat_beta z 0 = base /\
+    forall i, i < bound ->
+      nat_beta z (S i) = step i (nat_beta z i).
+Proof.
+  intros E base step bound.
+  exists (beta_encoded_recursion E base step bound). split.
+  - apply beta_encoded_recursion_zero.
+  - intros i Hi. now apply beta_encoded_recursion_succ.
+Qed.
+
+(** Vector-parameter specialization matching the source [recSequence] and
+    [beta_eq_rec] declarations. *)
+Definition arithmetic_primitive_recursion {n}
+    (f : (Fin.t n -> nat) -> nat)
+    (g : (Fin.t (S (S n)) -> nat) -> nat)
+    (m : nat) (v : Fin.t n -> nat) : nat :=
+  nat_primitive_recursion (f v)
+    (fun i previous => g (matrix_vec_cons i (matrix_vec_cons previous v))) m.
+
+Lemma arithmetic_primitive_recursion_zero : forall n
+    (f : (Fin.t n -> nat) -> nat) g v,
+  arithmetic_primitive_recursion f g 0 v = f v.
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_primitive_recursion_succ : forall n
+    (f : (Fin.t n -> nat) -> nat) g m v,
+  arithmetic_primitive_recursion f g (S m) v =
+  g (matrix_vec_cons m
+    (matrix_vec_cons (arithmetic_primitive_recursion f g m v) v)).
+Proof. reflexivity. Qed.
+
+Lemma beta_eq_arithmetic_primitive_recursion : forall n
+    (f : (Fin.t n -> nat) -> nat)
+    (g : (Fin.t (S (S n)) -> nat) -> nat) z m v,
+  nat_beta z 0 = f v ->
+  (forall i, i < m ->
+    nat_beta z (S i) =
+      g (matrix_vec_cons i (matrix_vec_cons (nat_beta z i) v))) ->
+  nat_beta z m = arithmetic_primitive_recursion f g m v.
+Proof.
+  intros n f g z m v Hzero Hstep.
+  unfold arithmetic_primitive_recursion.
+  now apply beta_eq_primitive_recursion.
+Qed.
+
+Lemma beta_arithmetic_recursion_code_exists : forall
+    (E : beta_sequence_encoder) n
+    (f : (Fin.t n -> nat) -> nat)
+    (g : (Fin.t (S (S n)) -> nat) -> nat) bound v,
+  exists z,
+    nat_beta z 0 = f v /\
+    forall i, i < bound ->
+      nat_beta z (S i) =
+        g (matrix_vec_cons i (matrix_vec_cons (nat_beta z i) v)).
+Proof.
+  intros E n f g bound v.
+  apply (beta_recursion_code_exists E (f v)
+    (fun i previous => g (matrix_vec_cons i
+      (matrix_vec_cons previous v))) bound).
+Qed.
+
+Definition nat_recursion_code_test
+    (base : nat) (step : nat -> nat -> nat)
+    (bound code : nat) : nat :=
+  nat_truth_and
+    (nat_truth_eq (nat_beta code 0) base)
+    (nat_bounded_all bound (fun i =>
+      nat_truth_eq (nat_beta code (S i))
+        (step i (nat_beta code i)))).
+
+Lemma nat_recursion_code_test_positive_iff : forall base step bound code,
+  0 < nat_recursion_code_test base step bound code <->
+  nat_beta code 0 = base /\
+  forall i, i < bound ->
+    nat_beta code (S i) = step i (nat_beta code i).
+Proof.
+  intros base step bound code.
+  unfold nat_recursion_code_test.
+  rewrite nat_truth_and_positive_iff, nat_truth_eq_positive_iff,
+    nat_bounded_all_positive_iff.
+  setoid_rewrite nat_truth_eq_positive_iff.
+  tauto.
+Qed.
+
+Lemma nat_recursion_code_least_exists : forall
+    (E : beta_sequence_encoder) base step bound,
+  exists code,
+    0 < nat_recursion_code_test base step bound code /\
+    forall earlier, earlier < code ->
+      ~ 0 < nat_recursion_code_test base step bound earlier.
+Proof.
+  intros E base step bound.
+  destruct (beta_recursion_code_exists E base step bound)
+    as [code [Hzero Hstep]].
+  eapply nat_least_decidable_bound with
+    (P := fun z => 0 < nat_recursion_code_test base step bound z)
+    (bound := code).
+  - intro z. destruct (lt_dec 0
+      (nat_recursion_code_test base step bound z)); tauto.
+  - apply nat_recursion_code_test_positive_iff. now split.
+Qed.
+
+Lemma nat_recursion_code_value : forall base step bound code,
+  0 < nat_recursion_code_test base step bound code ->
+  nat_beta code bound = nat_primitive_recursion base step bound.
+Proof.
+  intros base step bound code Hcode.
+  apply nat_recursion_code_test_positive_iff in Hcode.
+  destruct Hcode as [Hzero Hstep].
+  now apply beta_eq_primitive_recursion.
+Qed.
+
+Definition arithmetic_recursion_code_test {n}
+    (f : (Fin.t n -> nat) -> nat)
+    (g : (Fin.t (S (S n)) -> nat) -> nat)
+    (w : Fin.t (S (S n)) -> nat) : nat :=
+  nat_recursion_code_test
+    (f (matrix_vec_tail (matrix_vec_tail w)))
+    (fun i previous => g (matrix_vec_cons i
+      (matrix_vec_cons previous
+        (matrix_vec_tail (matrix_vec_tail w)))))
+    (matrix_vec_head (matrix_vec_tail w))
+    (matrix_vec_head w).
+
+Theorem arithmetic1_recursion_code_test : forall n
+    (f : (Fin.t n -> nat) -> nat)
+    (g : (Fin.t (S (S n)) -> nat) -> nat),
+  arithmetic1 f -> arithmetic1 g ->
+  arithmetic1 (arithmetic_recursion_code_test f g).
+Proof.
+  intros n f g Hf Hg.
+  assert (Hf_tail2 : arithmetic1 (fun w : Fin.t (S (S n)) -> nat =>
+      f (matrix_vec_tail (matrix_vec_tail w)))).
+  { pose proof (arithmetic1_tail n f Hf) as Htail.
+    exact (arithmetic1_tail (S n)
+      (fun w => f (matrix_vec_tail w)) Htail). }
+  assert (Hbeta_zero : arithmetic1 (fun w : Fin.t (S (S n)) -> nat =>
+      nat_beta (matrix_vec_head w) 0)).
+  { eapply arithmetic1_comp2 with (f := nat_beta).
+    - exact arithmetic1_beta.
+    - apply arithmetic1_proj.
+    - apply arithmetic1_zero. }
+  assert (Hbase : arithmetic1 (fun w : Fin.t (S (S n)) -> nat =>
+      nat_truth_eq (nat_beta (matrix_vec_head w) 0)
+        (f (matrix_vec_tail (matrix_vec_tail w))))).
+  { eapply arithmetic1_comp2 with (f := nat_truth_eq).
+    - unfold arithmetic1_binary. apply arithmetic1_equal.
+    - exact Hbeta_zero.
+    - exact Hf_tail2. }
+  assert (Hstep : arithmetic1
+      (fun w : Fin.t (S (S (S n))) -> nat =>
+        nat_truth_eq
+          (nat_beta (matrix_vec_head (matrix_vec_tail w))
+            (S (matrix_vec_head w)))
+          (g (matrix_vec_cons (matrix_vec_head w)
+            (matrix_vec_cons
+              (nat_beta (matrix_vec_head (matrix_vec_tail w))
+                (matrix_vec_head w))
+              (matrix_vec_tail (matrix_vec_tail (matrix_vec_tail w)))))))).
+  { assert (Hprevious : arithmetic1
+        (fun w : Fin.t (S (S (S n))) -> nat =>
+          nat_beta (matrix_vec_head (matrix_vec_tail w))
+            (matrix_vec_head w))).
+    { eapply arithmetic1_comp2 with (f := nat_beta).
+      - exact arithmetic1_beta.
+      - apply arithmetic1_proj.
+      - apply arithmetic1_proj. }
+    assert (Hnext : arithmetic1
+        (fun w : Fin.t (S (S (S n))) -> nat =>
+          nat_beta (matrix_vec_head (matrix_vec_tail w))
+            (S (matrix_vec_head w)))).
+    { eapply arithmetic1_comp2 with (f := nat_beta).
+      - exact arithmetic1_beta.
+      - apply arithmetic1_proj.
+      - eapply arithmetic1_comp1 with (f := S).
+        + exact arithmetic1_succ.
+        + apply arithmetic1_proj. }
+    assert (Hg_step : arithmetic1
+        (fun w : Fin.t (S (S (S n))) -> nat =>
+          g (matrix_vec_cons (matrix_vec_head w)
+            (matrix_vec_cons
+              (nat_beta (matrix_vec_head (matrix_vec_tail w))
+                (matrix_vec_head w))
+              (matrix_vec_tail (matrix_vec_tail (matrix_vec_tail w))))))).
+    { eapply arithmetic1_comp with (f := g).
+      - exact Hg.
+      - intro i.
+        refine (@Fin.caseS' (S n) i
+          (fun j => arithmetic1
+            (fun w : Fin.t (S (S (S n))) -> nat =>
+              matrix_vec_cons (matrix_vec_head w)
+                (matrix_vec_cons
+                  (nat_beta (matrix_vec_head (matrix_vec_tail w))
+                    (matrix_vec_head w))
+                  (matrix_vec_tail (matrix_vec_tail (matrix_vec_tail w)))) j))
+          _ _).
+        + change (arithmetic1
+            (fun w : Fin.t (S (S (S n))) -> nat => matrix_vec_head w)).
+          apply arithmetic1_proj.
+        + intro j.
+          refine (@Fin.caseS' n j
+            (fun k => arithmetic1
+              (fun w : Fin.t (S (S (S n))) -> nat =>
+                matrix_vec_cons
+                  (nat_beta (matrix_vec_head (matrix_vec_tail w))
+                    (matrix_vec_head w))
+                  (matrix_vec_tail (matrix_vec_tail (matrix_vec_tail w))) k))
+            _ _).
+          * change (arithmetic1
+              (fun w : Fin.t (S (S (S n))) -> nat =>
+                nat_beta (matrix_vec_head (matrix_vec_tail w))
+                  (matrix_vec_head w))).
+            exact Hprevious.
+          * intro k. change (arithmetic1
+              (fun w : Fin.t (S (S (S n))) -> nat =>
+                w (Fin.FS (Fin.FS (Fin.FS k))))).
+            apply arithmetic1_proj. }
+    eapply arithmetic1_comp2 with (f := nat_truth_eq).
+    - unfold arithmetic1_binary. apply arithmetic1_equal.
+    - exact Hnext.
+    - exact Hg_step. }
+  assert (Hsteps : arithmetic1
+      (fun w : Fin.t (S (S n)) -> nat =>
+        nat_bounded_all (matrix_vec_head (matrix_vec_tail w))
+          (fun i => nat_truth_eq
+            (nat_beta (matrix_vec_head w) (S i))
+            (g (matrix_vec_cons i
+              (matrix_vec_cons (nat_beta (matrix_vec_head w) i)
+                (matrix_vec_tail (matrix_vec_tail w)))))))).
+  { eapply arithmetic1_bounded_all.
+    - apply arithmetic1_proj.
+    - exact Hstep. }
+  unfold arithmetic_recursion_code_test, nat_recursion_code_test.
+  eapply arithmetic1_comp2 with (f := nat_truth_and).
+  - exact arithmetic1_and.
+  - exact Hbase.
+  - exact Hsteps.
+Qed.
+
+Theorem arithmetic1_primitive_recursion : forall
+    (E : beta_sequence_encoder) n
+    (f : (Fin.t n -> nat) -> nat)
+    (g : (Fin.t (S (S n)) -> nat) -> nat),
+  arithmetic1 f -> arithmetic1 g ->
+  arithmetic1 (fun v : Fin.t (S n) -> nat =>
+    arithmetic_primitive_recursion f g
+      (matrix_vec_head v) (matrix_vec_tail v)).
+Proof.
+  intros E n f g Hf Hg.
+  pose proof (arithmetic1_recursion_code_test n f g Hf Hg) as Htest.
+  unfold arithmetic1.
+  eapply arith_part1_ext with
+    (f := fun v => partial_map
+      (fun code => nat_beta code (matrix_vec_head v))
+      (arith_find_positive_on (arithmetic_recursion_code_test f g) v)).
+  - eapply arith_part1_map_total.
+    + eapply arithmetic1_comp2 with (f := nat_beta).
+      * exact arithmetic1_beta.
+      * apply arithmetic1_proj.
+      * apply arithmetic1_proj.
+    + now apply arith_part1_find_positive.
+  - intros v x. rewrite partial_map_member_iff.
+    change
+      ((exists code,
+          partial_member
+            (arith_find_positive_on
+              (arithmetic_recursion_code_test f g) v) code /\
+          nat_beta code (matrix_vec_head v) = x) <->
+       x = arithmetic_primitive_recursion f g
+         (matrix_vec_head v) (matrix_vec_tail v)).
+    split.
+    + intros [code [Hcode Hvalue]].
+      rewrite arith_find_positive_on_member_iff in Hcode.
+      destruct Hcode as [Hpositive _].
+      change (0 < nat_recursion_code_test
+        (f (matrix_vec_tail v))
+        (fun i previous => g (matrix_vec_cons i
+          (matrix_vec_cons previous (matrix_vec_tail v))))
+        (matrix_vec_head v) code) in Hpositive.
+      pose proof (nat_recursion_code_value
+        (f (matrix_vec_tail v))
+        (fun i previous => g (matrix_vec_cons i
+          (matrix_vec_cons previous (matrix_vec_tail v))))
+        (matrix_vec_head v) code Hpositive) as Hdecoded.
+      unfold arithmetic_primitive_recursion.
+      rewrite <- Hdecoded. now symmetry.
+    + intro Hvalue. subst x.
+      destruct (nat_recursion_code_least_exists E
+        (f (matrix_vec_tail v))
+        (fun i previous => g (matrix_vec_cons i
+          (matrix_vec_cons previous (matrix_vec_tail v))))
+        (matrix_vec_head v)) as [code [Hpositive Hleast]].
+      exists code. split.
+      * rewrite arith_find_positive_on_member_iff.
+        change
+          (0 < nat_recursion_code_test
+              (f (matrix_vec_tail v))
+              (fun i previous => g (matrix_vec_cons i
+                (matrix_vec_cons previous (matrix_vec_tail v))))
+              (matrix_vec_head v) code /\
+           forall earlier, earlier < code ->
+             ~ 0 < nat_recursion_code_test
+               (f (matrix_vec_tail v))
+               (fun i previous => g (matrix_vec_cons i
+                 (matrix_vec_cons previous (matrix_vec_tail v))))
+               (matrix_vec_head v) earlier).
+        now split.
+      * apply (nat_recursion_code_value
+          (f (matrix_vec_tail v))
+          (fun i previous => g (matrix_vec_cons i
+            (matrix_vec_cons previous (matrix_vec_tail v))))
+          (matrix_vec_head v) code) in Hpositive.
+        unfold arithmetic_primitive_recursion in Hpositive.
+        exact Hpositive.
+Qed.
+
 (** * Typed codes for partial arithmetic computations
 
     This is the source [Nat.ArithPart₁.Code] language.  The evaluator is a
