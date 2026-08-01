@@ -277,20 +277,14 @@ Definition llfo_map {L X n Y m} (b : Fin.t n -> Fin.t m) (e : X -> Y)
   llfo_rewrite (rew_map b e) phi.
 
 Definition llfo_lift_bound_map {n m} (b : Fin.t n -> Fin.t m)
-    (i : Fin.t (S n)) : Fin.t (S m) :=
-  @Fin.caseS' n i (fun _ => Fin.t (S m)) Fin.F1
-    (fun j => Fin.FS (b j)).
+    (i : Fin.t (S n)) : Fin.t (S m) := rew_lift_bound_map b i.
 
 Lemma llfo_lift_bound_map_injective : forall n m
     (b : Fin.t n -> Fin.t m),
   (forall i j, b i = b j -> i = j) ->
   forall i j, llfo_lift_bound_map b i = llfo_lift_bound_map b j -> i = j.
 Proof.
-  intros n m b Hb i j H.
-  dependent destruction i; dependent destruction j; simpl in H;
-    try discriminate; try reflexivity.
-  exact (f_equal (fun x : Fin.t n => Fin.FS x)
-    (Hb i j (Fin.FS_inj _ _ H))).
+  exact rew_lift_bound_map_injective.
 Qed.
 
 Lemma llfo_rew_q_map_equiv : forall (L : language) (X : Type) n (Y : Type) m
@@ -298,12 +292,7 @@ Lemma llfo_rew_q_map_equiv : forall (L : language) (X : Type) n (Y : Type) m
   rew_equiv (@rew_q L X n Y m (@rew_map L X n Y m b e))
     (@rew_map L X (S n) Y (S m) (llfo_lift_bound_map b) e).
 Proof.
-  intros. apply rew_equiv_of_variables.
-  - intro i. refine (@Fin.caseS' n i
-      (fun j => rew_apply (rew_q (rew_map b e)) (Semiterm_bvar j) =
-        rew_apply (rew_map (llfo_lift_bound_map b) e)
-          (Semiterm_bvar j)) _ _); reflexivity.
-  - intro x. reflexivity.
+  exact rew_q_map_equiv.
 Qed.
 
 Theorem llfo_map_injective : forall (L : language) (X : Type) n

@@ -11,6 +11,7 @@
 From Stdlib Require Import Arith.Compare_dec Arith.PeanoNat Lia Lists.List Vectors.Fin.
 From Stdlib Require Import Logic.Eqdep_dec.
 From Stdlib Require Import Logic.FunctionalExtensionality.
+From Stdlib Require Import Program.Equality.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 
@@ -417,6 +418,36 @@ Definition rew_q {L X n Y m} (w : rew L X n Y m) :
     rew L X (S n) Y (S m) :=
   rew_bind (rew_q_bound w)
     (fun x => rew_apply rew_bshift (rew_apply w (Semiterm_fvar x))).
+
+Definition rew_lift_bound_map {n m} (b : Fin.t n -> Fin.t m)
+    (i : Fin.t (S n)) : Fin.t (S m) :=
+  @Fin.caseS' n i (fun _ => Fin.t (S m)) Fin.F1
+    (fun j => Fin.FS (b j)).
+
+Lemma rew_lift_bound_map_injective : forall n m
+    (b : Fin.t n -> Fin.t m),
+  (forall i j, b i = b j -> i = j) ->
+  forall i j, rew_lift_bound_map b i = rew_lift_bound_map b j -> i = j.
+Proof.
+  intros n m b Hb i j H.
+  dependent destruction i; dependent destruction j; simpl in H;
+    try discriminate; try reflexivity.
+  exact (f_equal (fun x : Fin.t n => Fin.FS x)
+    (Hb i j (Fin.FS_inj _ _ H))).
+Qed.
+
+Lemma rew_q_map_equiv : forall (L : language) (X : Type) n (Y : Type) m
+    (b : Fin.t n -> Fin.t m) (e : X -> Y),
+  rew_equiv (@rew_q L X n Y m (@rew_map L X n Y m b e))
+    (@rew_map L X (S n) Y (S m) (rew_lift_bound_map b) e).
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i. refine (@Fin.caseS' n i
+      (fun j => rew_apply (rew_q (rew_map b e)) (Semiterm_bvar j) =
+        rew_apply (rew_map (rew_lift_bound_map b) e)
+          (Semiterm_bvar j)) _ _); reflexivity.
+  - intro x. reflexivity.
+Qed.
 
 Lemma rew_bshift_bvar : forall L X n (i : Fin.t n),
   rew_apply (@rew_bshift L X n) (Semiterm_bvar i) = Semiterm_bvar (Fin.FS i).

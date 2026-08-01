@@ -35,7 +35,7 @@ From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Vorspiel.Order Require Import Regular.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
-From Foundation.FirstOrder.Intuitionistic Require Import Formula.
+From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -106,6 +106,27 @@ Print Assumptions ifo_negative_not_or.
 Print Assumptions ifo_negative_not_exs.
 Print Assumptions ifo_negative_not_rel.
 Check ifo_negative_dec.
+Check ifo_rewrite.
+Print Assumptions ifo_rewrite_falsum.
+Print Assumptions ifo_rewrite_rel.
+Print Assumptions ifo_rewrite_and.
+Print Assumptions ifo_rewrite_or.
+Print Assumptions ifo_rewrite_imp.
+Print Assumptions ifo_rewrite_all.
+Print Assumptions ifo_rewrite_exs.
+Print Assumptions ifo_rewrite_neg.
+Print Assumptions ifo_rewrite_verum.
+Print Assumptions ifo_rewrite_ext.
+Print Assumptions ifo_rewrite_id.
+Print Assumptions ifo_rewrite_comp.
+Check ifo_map.
+Check ifo_emb.
+Check ifo_shift.
+Check ifo_free.
+Check ifo_substitute.
+Print Assumptions ifo_map_injective.
+Print Assumptions ifo_complexity_rewrite.
+Print Assumptions ifo_negative_rewrite_iff.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
@@ -1113,6 +1134,9 @@ Check rew_subst_positive.
 Check rew_emb_substs_bound_occurs.
 Check rew_emb_substs_positive.
 Check rew_q.
+Check rew_lift_bound_map.
+Print Assumptions rew_lift_bound_map_injective.
+Print Assumptions rew_q_map_equiv.
 Check rew_q_bshift_apply.
 Check rew_q_comp_apply.
 Check rew_q_respects_equiv.
