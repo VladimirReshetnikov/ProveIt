@@ -164,11 +164,21 @@ correctness, Mathlib recursive decidability, and existence of a verified
 from the definition of the function concerned; no function is marked
 recursive by a kernel special case.
 
-The Rocq development has a deliberately narrower executable boundary.
+The Rocq development currently has a narrower end-to-end executable boundary.
 [`SexticRecursiveCore.v`](Coq/SexticRecursiveCore.v) gives a transparent
 Gallina monicization and bounded factor search, and
 [`SexticFactorCompleteness.v`](Coq/SexticFactorCompleteness.v) proves that
-search complete.  [`SexticRadicalDecidability.v`](Coq/SexticRadicalDecidability.v)
+search complete.  The transparent resolvent layer is developed in
+[`SexticSparsePolynomials.v`](Coq/SexticSparsePolynomials.v),
+[`SexticSparseResolvents.v`](Coq/SexticSparseResolvents.v), and
+[`SexticSparseSymmetricSearch.v`](Coq/SexticSparseSymmetricSearch.v): it
+constructs the degree-fifteen and degree-ten resolvents, proves their Horner
+evaluation equations, and verifies a surjective enumeration and checker for
+elementary-symmetric certificates.  The remaining Coq work is to prove
+certificate existence for those symmetric coefficients and connect the
+resulting unbounded search to the recursive-function interface.
+
+[`SexticRadicalDecidability.v`](Coq/SexticRadicalDecidability.v)
 proves the exact all-roots proposition decidable in Coq's `{P} + {~ P}` sense
 by reflecting it through MathComp-Abel.  That semantic Boolean uses the opaque
 abstract `numfield` construction; unlike the Lean theorem, it is not claimed
