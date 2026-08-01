@@ -22,6 +22,7 @@ From Foundation.FirstOrder.Incompleteness Require Import Tarski.
 From Foundation.FirstOrder.Incompleteness Require Import Dense.
 From Foundation.FirstOrder.Incompleteness Require Import First.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
+From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4392,3 +4393,23 @@ Check pa_consistent_with.
 Print Assumptions pa_consistent_with_unfold.
 Print Assumptions pa_consistent_with_truth_iff.
 Print Assumptions pa_con_truth_iff_logic_consistent.
+Check boot_language_lor_definable.
+Check language_func_code_valid.
+Check language_rel_code_valid.
+Check boot_language_is_func.
+Check boot_language_is_rel.
+Print Assumptions boot_func_quote_inj.
+Print Assumptions boot_rel_quote_inj.
+Print Assumptions boot_code_eq_delta_zero.
+Print Assumptions boot_code_eq_eval.
+Print Assumptions oring_func_code_valid_iff.
+Print Assumptions oring_rel_code_valid_iff.
+Print Assumptions boot_oring_is_func_eval.
+Print Assumptions boot_oring_is_rel_eval.
+Check oring_language_lor_definable.
+Print Assumptions boot_oring_func_zero_index.
+Print Assumptions boot_oring_func_one_index.
+Print Assumptions boot_oring_func_add_index.
+Print Assumptions boot_oring_func_mul_index.
+Print Assumptions boot_oring_rel_eq_index.
+Print Assumptions boot_oring_rel_lt_index.
