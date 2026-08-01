@@ -25,6 +25,7 @@ From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Functions.
+From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Typed Coding.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4485,3 +4486,46 @@ Check boot_term_fv_free.
 Print Assumptions boot_term_fv_free_bvar.
 Print Assumptions boot_term_fv_free_fvar.
 Print Assumptions boot_term_fv_free_bshift.
+Check boot_typed_semiterm.
+Check boot_typed_term.
+Check boot_typed_semiterm_vec.
+Check boot_typed_shift.
+Check boot_typed_bshift.
+Check boot_typed_subst.
+Check boot_typed_free.
+Check boot_typed_q.
+Print Assumptions boot_typed_shift_func.
+Print Assumptions boot_typed_bshift_func.
+Print Assumptions boot_typed_subst_func.
+Print Assumptions boot_typed_free_bvar.
+Print Assumptions boot_typed_q_as_rew_q.
+Print Assumptions boot_typed_bshift_subst_q.
+Print Assumptions boot_typed_bshift_shift_comm.
+Print Assumptions boot_typed_shift_subst.
+Print Assumptions boot_typed_subst_subst.
+Print Assumptions boot_typed_free_bshift.
+Check boot_typed_fv_free.
+Print Assumptions boot_typed_fv_free_bvar.
+Print Assumptions boot_typed_fv_free_fvar.
+Print Assumptions boot_typed_fv_free_bshift.
+Print Assumptions boot_typed_subst_code.
+Print Assumptions boot_typed_shift_code.
+Print Assumptions boot_typed_bshift_code.
+Check boot_typed_quote.
+Check boot_closed_quote.
+Print Assumptions boot_typed_quote_bvar.
+Print Assumptions boot_typed_quote_fvar.
+Print Assumptions boot_typed_quote_func.
+Print Assumptions boot_typed_quote_injective.
+Print Assumptions boot_typed_quote_inj_iff.
+Print Assumptions boot_typed_quote_decode.
+Print Assumptions boot_closed_quote_decode.
+Print Assumptions boot_typed_quote_recognized.
+Print Assumptions boot_typed_quote_sound.
+Print Assumptions boot_closed_quote_emb.
+Print Assumptions boot_typed_quote_shift.
+Print Assumptions boot_typed_quote_bshift.
+Print Assumptions boot_typed_quote_subst.
+Print Assumptions boot_typed_quote_q_succ.
+Print Assumptions boot_typed_quote_encoding.
+Print Assumptions boot_closed_quote_encoding.
