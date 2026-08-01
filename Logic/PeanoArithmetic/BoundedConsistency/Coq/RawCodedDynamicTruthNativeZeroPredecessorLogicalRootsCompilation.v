@@ -45,6 +45,8 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateTernaryApplication
   RawCodedTernaryPredicateRootClosure
   RawCodedTruthCertificateMasterSuccessorBridge
+  RawCodedTruthCertificateMasterFixedHelperBatchExtension
+  RawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation
   RawCodedDynamicLocalFieldGraph
   RawCodedDynamicTruthLocalDecisionExclusiveBase
   RawCodedDynamicTruthTransportFieldBaseGraphs
@@ -110,6 +112,9 @@ Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedTemplateTernaryApplication.
 Import PABoundedRawCodedTernaryPredicateRootClosure.
 Import PABoundedRawCodedTruthCertificateMasterSuccessorBridge.
+Import PABoundedRawCodedTruthCertificateMasterFixedHelperBatchExtension.
+Import
+  PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.
 Import PABoundedRawCodedDynamicLocalFieldGraph.
 Import PABoundedRawCodedDynamicTruthLocalDecisionExclusiveBase.
 Import PABoundedRawCodedDynamicTruthTransportFieldBaseGraphs.
@@ -952,6 +957,69 @@ Proof.
   - exists finalRoot. rewrite <- hfinalCode. exact hfinal.
 Qed.
 
+(** Exact proof-producing state visible after the zero callback has been
+    normalized.  Unlike [RawDynamicTruthNativeLocalCurrentHelperContextAt],
+    this record contains no arbitrary current field codes and no spliced
+    graph witnesses.  It retains all information which can matter to a proof
+    compiler: the six literal field roots, the ordered forty-helper batch,
+    and the four roots projected from the two predecessor assumptions. *)
+Record RawDynamicTruthNativeLocalZeroNormalizedResourcesAt
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M)
+    (witnessList baseContext : M) (helperRoots : list M) : Prop := {
+  rawDynamicTruthNativeLocalZeroNormalized_fields :
+    RawDynamicTruthNativeLocalZeroCurrentFieldRootsAt M
+      witnessList baseContext;
+  rawDynamicTruthNativeLocalZeroNormalized_helpers :
+    RawFixedPAHelperBatchLocalProofs M translation baseContext
+      rawDynamicTruthReadyAndAllMixedQFPAHelpers helperRoots;
+  rawDynamicTruthNativeLocalZeroNormalized_state :
+    RawDynamicTruthPredecessorStateProjectionRootsAt M baseContext
+}.
+
+Arguments RawDynamicTruthNativeLocalZeroNormalizedResourcesAt
+  M translation witnessList baseContext helperRoots : clear implicits.
+
+(** Eliminate the current graphs exactly once.  The helper proof list is
+    taken verbatim from the callback package, while the six field proofs are
+    rewritten by the normalization theorem above. *)
+Theorem raw_dynamicTruthNativeLocalCurrentHelperContextAt_zero_normalized :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M)
+      (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots,
+  RawDynamicTruthNativeLocalCurrentHelperContextAt M translation
+    tail level currentLocal currentCrossLevel currentShift
+    currentSubstitution currentAxiomSoundness currentFinal
+    witnessList baseContext helperRoots ->
+  level = raw_zero M ->
+  RawDynamicTruthPredecessorStateProjectionRootsAt M baseContext ->
+  RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+    witnessList baseContext helperRoots.
+Proof.
+  intros M hPA translation tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    hcurrent hlevel hstate.
+  pose proof hcurrent as hfieldSource.
+  pose proof
+    (raw_dynamicTruthNativeLocalCurrentHelperContextAt_zero_field_roots
+      M hPA translation tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+      hfieldSource hlevel) as hfields.
+  destruct hcurrent as
+    [_ (localRoot & crossLevelRoot & shiftRoot & substitutionRoot &
+      axiomSoundnessRoot & finalRoot & hwitnessed & hlocal & hcrossLevel &
+      hshift & hsubstitution & haxiomSoundness & hfinal & hhelpers)].
+  constructor.
+  - exact hfields.
+  - exact hhelpers.
+  - exact hstate.
+Qed.
+
 (** Call-site-aligned rank-zero boundary.  The native zero callback does not
     receive an isolated trace: it receives that trace together with the
     complete current helper context, namely represented proofs of all six
@@ -1028,6 +1096,65 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperAndStateProjection
   M translation : clear implicits.
+
+(** Fully normalized residual boundary.  The level equation, six current
+    field graphs, and raw trace wrapper have disappeared.  The compiler sees
+    precisely the represented resources available at rank zero and the
+    complete two-successor trace which relates them to the requested four
+    direct evidence roots. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnNormalizedResources
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroFullTraceAt M tail
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+      sigmaEvidence piEvidence ->
+    exists evidenceWitnessList evidenceContext,
+      RawCodedPAAxiomWitnessContext M
+        evidenceWitnessList evidenceContext /\
+      RawContextListIncluded M baseContext evidenceContext /\
+      RawDynamicTruthZeroDirectEvidenceRootsAt M evidenceContext.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnNormalizedResources
+  M translation : clear implicits.
+
+(** Reconstruct the call-site-shaped boundary from the normalized one.  This
+    adapter is the only place where current graph inversion, the level-zero
+    trace equivalence, and state projection are synchronized. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperAndStateProjection_of_normalized_resources
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperAndStateProjection
+    M translation.
+Proof.
+  intros M hPA translation hcompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence hcurrent htrace hlevel hstate.
+  pose proof
+    (raw_dynamicTruthNativeLocalCurrentHelperContextAt_zero_normalized
+      M hPA translation tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+      hcurrent hlevel hstate) as hnormalized.
+  subst level.
+  exact (hcompiler tail witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence hnormalized
+    (proj1 (raw_dynamicTruthNativeLocalProofTraceAt_zero_iff M tail
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+      sigmaEvidence piEvidence) htrace)).
+Qed.
 
 (** Install the four structural state roots before invoking the sharp
     traversal compiler.  The current helper package supplies a witnessed PA

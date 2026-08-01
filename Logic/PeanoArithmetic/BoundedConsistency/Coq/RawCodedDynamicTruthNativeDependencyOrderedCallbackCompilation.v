@@ -296,20 +296,20 @@ Arguments
 
 (** Rank-zero-refined direct boundary.  The former zero predecessor callback
     has been reduced to four roots on a witnessed extension.  Its first
-    coordinate retains the exact current-helper package available at the
-    callback together with the complete native zero trace—including both
-    global successor stages, numeral substitution, and final applications.
-    It is also handed the four structural roots projected from the two state
-    assumptions, and asks only for atomic adequacy, rank domain, and the two
-    evidence roots.  State projection, generic admissibility, syntactic
-    identification, local-field projection, and template closure are
-    consequences rather than caller-supplied proof construction. *)
+    coordinate receives a normalized record of the six exact current field
+    roots, the ordered forty-helper batch, and the four structural roots
+    projected from the state assumptions.  It also retains the complete
+    native zero trace—including both global successor stages, numeral
+    substitution, and final applications—but no arbitrary current codes or
+    spliced graph witnesses.  Generic admissibility, syntactic identification,
+    local-field projection, and template closure are consequences rather than
+    caller-supplied proof construction. *)
 Definition
     RawDynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
     (M : RawPAModel) (hPA : RawPASatisfies M)
     (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
   let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
-  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperAndStateProjection
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnNormalizedResources
     M translation /\
   RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
     M hPA /\
@@ -355,7 +355,9 @@ Proof.
         M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
         (raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext_of_state_projection
           M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
-          hzero)).
+          (raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperAndStateProjection_of_normalized_resources
+            M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+            hzero))).
   - exact (conj hstrong
       (conj hremainder
         (conj hcrossLevel
