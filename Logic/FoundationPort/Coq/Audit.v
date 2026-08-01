@@ -37,6 +37,7 @@ From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
 From Foundation.FirstOrder.NegationTranslation Require Import GoedelGentzen.
+From Foundation.FirstOrder.Kripke Require Import Basic.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -258,6 +259,27 @@ Check ifo_raw_member_cast.
 Check ifo_goedel_gentzen_context_subset.
 Print Assumptions ifo_goedel_gentzen.
 Print Assumptions ifo_goedel_gentzen_provable.
+Check ifo_kripke_model.
+Check ifo_kripke_domain.
+Print Assumptions ifo_kripke_domain_nonempty.
+Print Assumptions ifo_kripke_domain_antimonotone.
+Check ifo_kripke_rel.
+Print Assumptions ifo_kripke_rel_monotone.
+Check ifo_kripke_constant_domain.
+Check ifo_kripke_forcing_exists.
+Print Assumptions ifo_kripke_domain_nonempty_forces.
+Print Assumptions ifo_kripke_domain_persistent.
+Print Assumptions ifo_kripke_constant_domain_forces.
+Check ifo_kripke_filter_carrier.
+Check ifo_kripke_filter_val.
+Check ifo_kripke_filter_witness.
+Print Assumptions ifo_kripke_filter_witness_member.
+Print Assumptions ifo_kripke_filter_witness_domain.
+Print Assumptions ifo_kripke_filter_finite_colimit.
+Print Assumptions ifo_kripke_filter_domain_list_colimit.
+Print Assumptions ifo_kripke_filter_finite_family_domain.
+Check ifo_kripke_filter_structure.
+Print Assumptions ifo_kripke_filter_structure_rel_iff.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
