@@ -52,7 +52,7 @@ From Foundation.FirstOrder.Completeness Require Import CountableSublanguage.
 From Foundation.FirstOrder.Completeness Require Import CanonicalModel.
 From Foundation.FirstOrder.Completeness Require Import CounterModel.
 From Foundation.FirstOrder.Order Require Import Le.
-From Foundation.SecondOrder.Syntax Require Import Formula.
+From Foundation.SecondOrder.Syntax Require Import Formula Rew.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -3794,3 +3794,20 @@ Print Assumptions second_order_complexity_exs0.
 Print Assumptions second_order_complexity_all1.
 Print Assumptions second_order_complexity_exs1.
 Print Assumptions second_order_complexity_neg.
+Check fin_retrusion.
+Print Assumptions fin_retrusion_zero.
+Print Assumptions fin_retrusion_succ.
+Print Assumptions fin_retrusion_id.
+Print Assumptions fin_retrusion_comp.
+Check second_order_rewrite_terms_aux.
+Check second_order_rewrite_terms.
+Print Assumptions second_order_rewrite_terms_equiv.
+Print Assumptions second_order_rewrite_terms_neg.
+Print Assumptions second_order_rewrite_terms_id.
+Print Assumptions second_order_rewrite_terms_comp.
+Check second_order_bmap_aux.
+Check second_order_bmap.
+Print Assumptions second_order_bmap_neg.
+Print Assumptions second_order_bmap_id.
+Print Assumptions second_order_bmap_comp.
+Print Assumptions second_order_bmap_rewrite_terms.
