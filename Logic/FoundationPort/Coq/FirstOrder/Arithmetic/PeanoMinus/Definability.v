@@ -362,3 +362,469 @@ Proof.
   rewrite (arithmetic_substitution_formula_eval Horing Hpa).
   reflexivity.
 Qed.
+
+(** * Divisibility *)
+
+Definition arithmetic_dvd_formula : arithmetic_semisentence 2 :=
+  peano_minus_bex_lt_succ
+    (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1))
+    (arithmetic_eq_formula
+      (@Semiterm_bvar oring_language Empty_set 3
+        (Fin.FS (Fin.FS Fin.F1)))
+      (arithmetic_mul_term
+        (@Semiterm_bvar oring_language Empty_set 3 (Fin.FS Fin.F1))
+        (@Semiterm_bvar oring_language Empty_set 3 Fin.F1))).
+
+Lemma arithmetic_dvd_formula_hierarchy :
+  arithmetic_hierarchy Empty_set arithmetic_sigma 0 2
+    arithmetic_dvd_formula.
+Proof.
+  unfold arithmetic_dvd_formula, peano_minus_bex_lt_succ.
+  apply (proj2 (@arithmetic_hierarchy_bex_lt_succ_iff Empty_set
+    arithmetic_sigma 0 2
+    (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1))
+    (arithmetic_eq_formula
+      (@Semiterm_bvar oring_language Empty_set 3
+        (Fin.FS (Fin.FS Fin.F1)))
+      (arithmetic_mul_term
+        (@Semiterm_bvar oring_language Empty_set 3 (Fin.FS Fin.F1))
+        (@Semiterm_bvar oring_language Empty_set 3 Fin.F1))))).
+  apply arithmetic_hierarchy_eq.
+Qed.
+
+Definition arithmetic_dvd_sorted :
+    arithmetic_sorted_formula Empty_set 2 arithmetic_sigma_zero_symbol :=
+  ArithmeticSortedSigma 0 arithmetic_dvd_formula
+    arithmetic_dvd_formula_hierarchy.
+
+Theorem arithmetic_dvd_formula_eval : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  forall v : Fin.t 2 -> M,
+  semiformula_eval Str v (fun x : Empty_set => match x with end)
+    arithmetic_dvd_formula <->
+  peano_minus_dvd O (v Fin.F1) (v (Fin.FS Fin.F1)).
+Proof.
+  intros M Str O Horing Hpa v.
+  unfold arithmetic_dvd_formula.
+  rewrite (peano_minus_eval_bex_lt_succ Horing Hpa).
+  setoid_rewrite (@arithmetic_eq_formula_eval M Empty_set 3 Str _
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  setoid_rewrite (@arithmetic_mul_term_val M Empty_set 3 Str _
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  cbn [semiterm_val].
+  symmetry. apply (peano_minus_dvd_iff_bounded Hpa).
+Qed.
+
+Definition peano_minus_dvd_defined : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  arithmetic_sorted_defined Str
+    (fun v : Fin.t 2 -> M =>
+      peano_minus_dvd O (v Fin.F1) (v (Fin.FS Fin.F1)))
+    arithmetic_dvd_sorted.
+Proof.
+  intros M Str O Horing Hpa. constructor. split.
+  - exact I.
+  - intro v. apply (arithmetic_dvd_formula_eval Horing Hpa).
+Defined.
+
+Definition peano_minus_dvd_definable_zero : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  arithmetic_sorted_definable_relation Str arithmetic_sigma_zero_symbol
+    (peano_minus_dvd O).
+Proof.
+  intros M Str O Horing Hpa.
+  unfold arithmetic_sorted_definable_relation.
+  exact (arithmetic_sorted_defined_to_definable
+    (peano_minus_dvd_defined Horing Hpa)).
+Defined.
+
+Definition peano_minus_dvd_definable : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  forall symbol,
+  arithmetic_sorted_definable_relation Str symbol (peano_minus_dvd O).
+Proof.
+  intros M Str O Horing Hpa symbol.
+  unfold arithmetic_sorted_definable_relation.
+  exact (arithmetic_sorted_definable_of_zero
+    (peano_minus_dvd_definable_zero Horing Hpa) symbol).
+Defined.
+
+(** * Bounded primality *)
+
+Definition arithmetic_prime_divisor_body : arithmetic_semisentence 2 :=
+  semiformula_imp arithmetic_dvd_formula
+    (Semiformula_or
+      (arithmetic_eq_formula
+        (@Semiterm_bvar oring_language Empty_set 2 Fin.F1)
+        arithmetic_one_term)
+      (arithmetic_eq_formula
+        (@Semiterm_bvar oring_language Empty_set 2 Fin.F1)
+        (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1)))).
+
+Definition arithmetic_prime_bound_formula : arithmetic_semisentence 1 :=
+  peano_minus_ball_lt_succ
+    (@Semiterm_bvar oring_language Empty_set 1 Fin.F1)
+    arithmetic_prime_divisor_body.
+
+Definition arithmetic_prime_formula : arithmetic_semisentence 1 :=
+  Semiformula_and
+    (arithmetic_lt_formula arithmetic_one_term
+      (@Semiterm_bvar oring_language Empty_set 1 Fin.F1))
+    arithmetic_prime_bound_formula.
+
+Lemma arithmetic_prime_formula_hierarchy :
+  arithmetic_hierarchy Empty_set arithmetic_sigma 0 1
+    arithmetic_prime_formula.
+Proof.
+  unfold arithmetic_prime_formula. apply AH_and.
+  - apply arithmetic_hierarchy_lt.
+  - unfold arithmetic_prime_bound_formula, peano_minus_ball_lt_succ.
+    apply (proj2 (@arithmetic_hierarchy_ball_lt_succ_iff Empty_set
+      arithmetic_sigma 0 1
+      (@Semiterm_bvar oring_language Empty_set 1 Fin.F1)
+      arithmetic_prime_divisor_body)).
+    unfold arithmetic_prime_divisor_body.
+    apply (proj2 (@arithmetic_hierarchy_imp_iff Empty_set
+      arithmetic_sigma 0 2 arithmetic_dvd_formula
+      (Semiformula_or
+        (arithmetic_eq_formula
+          (@Semiterm_bvar oring_language Empty_set 2 Fin.F1)
+          arithmetic_one_term)
+        (arithmetic_eq_formula
+          (@Semiterm_bvar oring_language Empty_set 2 Fin.F1)
+          (@Semiterm_bvar oring_language Empty_set 2
+            (Fin.FS Fin.F1)))))). split.
+    + change (arithmetic_hierarchy Empty_set arithmetic_pi 0 2
+        arithmetic_dvd_formula).
+      exact (arithmetic_hierarchy_zero_alt
+        arithmetic_dvd_formula_hierarchy).
+    + apply AH_or; apply arithmetic_hierarchy_eq.
+Qed.
+
+Definition arithmetic_prime_sorted :
+    arithmetic_sorted_formula Empty_set 1 arithmetic_sigma_zero_symbol :=
+  ArithmeticSortedSigma 0 arithmetic_prime_formula
+    arithmetic_prime_formula_hierarchy.
+
+Theorem arithmetic_prime_formula_eval : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  forall v : Fin.t 1 -> M,
+  semiformula_eval Str v (fun x : Empty_set => match x with end)
+    arithmetic_prime_formula <->
+  peano_minus_is_prime O (v Fin.F1).
+Proof.
+  intros M Str O Horing Hpa v.
+  unfold arithmetic_prime_formula, peano_minus_is_prime.
+  rewrite peano_minus_eval_and.
+  rewrite (@arithmetic_lt_formula_eval M Empty_set 1 Str v
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  rewrite (@arithmetic_one_term_val M Empty_set 1 Str v
+    (fun x : Empty_set => match x with end) O Horing).
+  unfold arithmetic_prime_bound_formula.
+  rewrite (peano_minus_eval_ball_lt_succ Horing Hpa).
+  cbn [semiterm_val].
+  setoid_rewrite semiformula_eval_imp.
+  setoid_rewrite (arithmetic_dvd_formula_eval Horing Hpa).
+  setoid_rewrite peano_minus_eval_or.
+  setoid_rewrite (@arithmetic_eq_formula_eval M Empty_set 2 Str _
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  setoid_rewrite (@arithmetic_one_term_val M Empty_set 2 Str _
+    (fun x : Empty_set => match x with end) O Horing).
+  cbn [semiterm_val]. reflexivity.
+Qed.
+
+Definition peano_minus_prime_defined : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  arithmetic_sorted_defined Str
+    (fun v : Fin.t 1 -> M => peano_minus_is_prime O (v Fin.F1))
+    arithmetic_prime_sorted.
+Proof.
+  intros M Str O Horing Hpa. constructor. split.
+  - exact I.
+  - intro v. apply (arithmetic_prime_formula_eval Horing Hpa).
+Defined.
+
+Definition peano_minus_prime_definable_zero : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  arithmetic_sorted_definable_predicate Str arithmetic_sigma_zero_symbol
+    (peano_minus_is_prime O).
+Proof.
+  intros M Str O Horing Hpa.
+  unfold arithmetic_sorted_definable_predicate.
+  exact (arithmetic_sorted_defined_to_definable
+    (peano_minus_prime_defined Horing Hpa)).
+Defined.
+
+Definition peano_minus_prime_definable : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  forall symbol,
+  arithmetic_sorted_definable_predicate Str symbol
+    (peano_minus_is_prime O).
+Proof.
+  intros M Str O Horing Hpa symbol.
+  unfold arithmetic_sorted_definable_predicate.
+  exact (arithmetic_sorted_definable_of_zero
+    (peano_minus_prime_definable_zero Horing Hpa) symbol).
+Defined.
+
+(** * Minimum and maximum *)
+
+Definition arithmetic_min_graph_formula : arithmetic_semisentence 3 :=
+  Semiformula_and
+    (semiformula_imp
+      (arithmetic_le_formula
+        (arithmetic_sub_graph_var (Fin.FS Fin.F1))
+        (arithmetic_sub_graph_var (Fin.FS (Fin.FS Fin.F1))))
+      (arithmetic_eq_formula (arithmetic_sub_graph_var Fin.F1)
+        (arithmetic_sub_graph_var (Fin.FS Fin.F1))))
+    (semiformula_imp
+      (arithmetic_le_formula
+        (arithmetic_sub_graph_var (Fin.FS (Fin.FS Fin.F1)))
+        (arithmetic_sub_graph_var (Fin.FS Fin.F1)))
+      (arithmetic_eq_formula (arithmetic_sub_graph_var Fin.F1)
+        (arithmetic_sub_graph_var (Fin.FS (Fin.FS Fin.F1))))).
+
+Definition arithmetic_max_graph_formula : arithmetic_semisentence 3 :=
+  Semiformula_and
+    (semiformula_imp
+      (arithmetic_le_formula
+        (arithmetic_sub_graph_var (Fin.FS (Fin.FS Fin.F1)))
+        (arithmetic_sub_graph_var (Fin.FS Fin.F1)))
+      (arithmetic_eq_formula (arithmetic_sub_graph_var Fin.F1)
+        (arithmetic_sub_graph_var (Fin.FS Fin.F1))))
+    (semiformula_imp
+      (arithmetic_le_formula
+        (arithmetic_sub_graph_var (Fin.FS Fin.F1))
+        (arithmetic_sub_graph_var (Fin.FS (Fin.FS Fin.F1))))
+      (arithmetic_eq_formula (arithmetic_sub_graph_var Fin.F1)
+        (arithmetic_sub_graph_var (Fin.FS (Fin.FS Fin.F1))))).
+
+Lemma arithmetic_min_graph_formula_open :
+  semiformula_open arithmetic_min_graph_formula.
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_max_graph_formula_open :
+  semiformula_open arithmetic_max_graph_formula.
+Proof. reflexivity. Qed.
+
+Definition arithmetic_min_graph_sorted :
+    arithmetic_sorted_formula Empty_set 3 arithmetic_sigma_zero_symbol :=
+  ArithmeticSortedSigma 0 arithmetic_min_graph_formula
+    (arithmetic_hierarchy_of_open arithmetic_min_graph_formula_open
+      arithmetic_sigma 0).
+
+Definition arithmetic_max_graph_sorted :
+    arithmetic_sorted_formula Empty_set 3 arithmetic_sigma_zero_symbol :=
+  ArithmeticSortedSigma 0 arithmetic_max_graph_formula
+    (arithmetic_hierarchy_of_open arithmetic_max_graph_formula_open
+      arithmetic_sigma 0).
+
+Theorem arithmetic_min_graph_formula_eval : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  forall v : Fin.t 3 -> M,
+  semiformula_eval Str v (fun x : Empty_set => match x with end)
+    arithmetic_min_graph_formula <->
+  v Fin.F1 = @peano_minus_min M O Hpa
+    (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Hpa Horing v.
+  unfold arithmetic_min_graph_formula.
+  rewrite peano_minus_eval_and, !semiformula_eval_imp.
+  rewrite !(@arithmetic_le_formula_eval M Empty_set 3 Str v
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  rewrite !(@arithmetic_eq_formula_eval M Empty_set 3 Str v
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  cbn [arithmetic_sub_graph_var semiterm_val].
+  symmetry. apply (peano_minus_min_graph_iff Hpa).
+Qed.
+
+Theorem arithmetic_max_graph_formula_eval : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  forall v : Fin.t 3 -> M,
+  semiformula_eval Str v (fun x : Empty_set => match x with end)
+    arithmetic_max_graph_formula <->
+  v Fin.F1 = @peano_minus_max M O Hpa
+    (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Hpa Horing v.
+  unfold arithmetic_max_graph_formula.
+  rewrite peano_minus_eval_and, !semiformula_eval_imp.
+  rewrite !(@arithmetic_le_formula_eval M Empty_set 3 Str v
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  rewrite !(@arithmetic_eq_formula_eval M Empty_set 3 Str v
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  cbn [arithmetic_sub_graph_var semiterm_val].
+  symmetry. apply (peano_minus_max_graph_iff Hpa).
+Qed.
+
+Definition peano_minus_min_defined : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  arithmetic_sorted_defined_function Str
+    (fun v : Fin.t 2 -> M =>
+      @peano_minus_min M O Hpa (v Fin.F1) (v (Fin.FS Fin.F1)))
+    arithmetic_min_graph_sorted.
+Proof.
+  intros M Str O Hpa Horing.
+  unfold arithmetic_sorted_defined_function. constructor. split.
+  - exact I.
+  - intro v. apply (arithmetic_min_graph_formula_eval Hpa Horing).
+Defined.
+
+Definition peano_minus_max_defined : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  arithmetic_sorted_defined_function Str
+    (fun v : Fin.t 2 -> M =>
+      @peano_minus_max M O Hpa (v Fin.F1) (v (Fin.FS Fin.F1)))
+    arithmetic_max_graph_sorted.
+Proof.
+  intros M Str O Hpa Horing.
+  unfold arithmetic_sorted_defined_function. constructor. split.
+  - exact I.
+  - intro v. apply (arithmetic_max_graph_formula_eval Hpa Horing).
+Defined.
+
+Definition peano_minus_min_definable_zero : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  arithmetic_sorted_definable_function Str arithmetic_sigma_zero_symbol
+    (fun v : Fin.t 2 -> M =>
+      @peano_minus_min M O Hpa (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Hpa Horing.
+  unfold arithmetic_sorted_definable_function.
+  exact (arithmetic_sorted_defined_to_definable
+    (peano_minus_min_defined Hpa Horing)).
+Defined.
+
+Definition peano_minus_max_definable_zero : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  arithmetic_sorted_definable_function Str arithmetic_sigma_zero_symbol
+    (fun v : Fin.t 2 -> M =>
+      @peano_minus_max M O Hpa (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Hpa Horing.
+  unfold arithmetic_sorted_definable_function.
+  exact (arithmetic_sorted_defined_to_definable
+    (peano_minus_max_defined Hpa Horing)).
+Defined.
+
+Definition peano_minus_min_definable : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  forall symbol,
+  arithmetic_sorted_definable_function Str symbol
+    (fun v : Fin.t 2 -> M =>
+      @peano_minus_min M O Hpa (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Hpa Horing symbol.
+  unfold arithmetic_sorted_definable_function.
+  exact (arithmetic_sorted_definable_of_zero
+    (peano_minus_min_definable_zero Hpa Horing) symbol).
+Defined.
+
+Definition peano_minus_max_definable : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  forall symbol,
+  arithmetic_sorted_definable_function Str symbol
+    (fun v : Fin.t 2 -> M =>
+      @peano_minus_max M O Hpa (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Hpa Horing symbol.
+  unfold arithmetic_sorted_definable_function.
+  exact (arithmetic_sorted_definable_of_zero
+    (peano_minus_max_definable_zero Hpa Horing) symbol).
+Defined.
+
+Definition peano_minus_min_bounded : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  arithmetic_bounded_function Str (peano_minus_le O)
+    (fun v : Fin.t 2 -> M =>
+      @peano_minus_min M O Hpa (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Hpa.
+  refine {| arithmetic_bounded_term :=
+    @Semiterm_bvar oring_language M 2 Fin.F1 |}.
+  intro v. cbn [semiterm_val]. apply (peano_minus_min_le_left Hpa).
+Defined.
+
+Definition peano_minus_max_bounded : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  arithmetic_bounded_function Str (peano_minus_le O)
+    (fun v : Fin.t 2 -> M =>
+      @peano_minus_max M O Hpa (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Hpa Horing.
+  refine {| arithmetic_bounded_term :=
+    arithmetic_add_term
+      (@Semiterm_bvar oring_language M 2 Fin.F1)
+      (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)) |}.
+  intro v.
+  rewrite (@arithmetic_add_term_val M M 2 Str v (fun x => x) O
+    (@Semiterm_bvar oring_language M 2 Fin.F1)
+    (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)) Horing).
+  destruct (@peano_minus_le_total M O Hpa
+    (v Fin.F1) (v (Fin.FS Fin.F1))) as [Hxy | Hyx].
+  - rewrite (peano_minus_max_of_le Hpa Hxy).
+    apply (peano_minus_le_add_left Hpa).
+  - rewrite (peano_minus_max_of_ge Hpa Hyx).
+    apply (peano_minus_le_add_right Hpa).
+Defined.
+
+Definition peano_minus_min_definably_bounded : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  arithmetic_definably_bounded_function Str (peano_minus_le O)
+    (fun v : Fin.t 2 -> M =>
+      @peano_minus_min M O Hpa (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Hpa Horing. constructor.
+  - exact (peano_minus_min_bounded Str Hpa).
+  - exact (peano_minus_min_definable_zero Hpa Horing).
+Defined.
+
+Definition peano_minus_max_definably_bounded : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Hpa : peano_minus_laws O),
+  structure_interprets_oring Str oring_language_structure O ->
+  arithmetic_definably_bounded_function Str (peano_minus_le O)
+    (fun v : Fin.t 2 -> M =>
+      @peano_minus_max M O Hpa (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Hpa Horing. constructor.
+  - exact (peano_minus_max_bounded Hpa Horing).
+  - exact (peano_minus_max_definable_zero Hpa Horing).
+Defined.
