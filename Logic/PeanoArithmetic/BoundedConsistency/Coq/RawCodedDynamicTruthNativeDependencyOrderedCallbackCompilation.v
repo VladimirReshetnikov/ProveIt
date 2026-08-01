@@ -599,6 +599,83 @@ Proof.
     split; [exact haxiom | exact hfinal].
 Qed.
 
+(** The invocation-aligned boundary is genuinely weaker than the former
+    split fixed-production boundary.  Compile the arithmetic endpoint at the
+    normalized invocation, build the two canonical payloads independently,
+    and synchronize only those payloads before reassociating the product.
+    No later dependency-ordered coordinate is touched. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilers_of_independent_growing_fixed_productions
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
+    M hPA.
+Proof.
+  intros M hPA
+    (hzeroIndependentRestrictedRuleRoots & hfixedProductions & hstrong &
+      hremainder & hcrossLevel & hshift & hsubstitution & haxiom & hfinal).
+  set (translation := rawBottomDirectStructuralTemplateTranslation M hPA).
+  assert (hendpoint :
+    RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
+      M translation).
+  {
+    exact
+      (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_independent_growing_restricted_rule_roots
+        M hPA translation hzeroIndependentRestrictedRuleRoots).
+  }
+  assert (hindependentPayloads :
+    RawDynamicTruthZeroCanonicalIndependentPermutedAppendRowKernelPayloadsUnderPrefix
+      M translation coqDynamicTruthPredecessorStateTemplateContext).
+  {
+    unfold translation.
+    exact
+      (raw_dynamicTruthZeroCanonicalBottom_independentPermutedAppendRowKernelPayloadsUnderPrefix_of_independent_growing_fixed_productions
+        M hPA coqDynamicTruthPredecessorStateTemplateContext
+        hfixedProductions).
+  }
+  assert (hpayloadPair :
+    RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
+      M translation coqDynamicTruthPredecessorStateTemplateContext).
+  {
+    exact
+      (raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix_of_independent_payloads
+        M hPA translation
+        (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+        coqDynamicTruthPredecessorStateTemplateContext
+        hindependentPayloads).
+  }
+  split.
+  - exact
+      (raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources_of_endpoint_and_payload_pair
+        M translation hendpoint hpayloadPair).
+  - split; [exact hstrong |].
+    split; [exact hremainder |].
+    split; [exact hcrossLevel |].
+    split; [exact hshift |].
+    split; [exact hsubstitution |].
+    split; [exact haxiom | exact hfinal].
+Qed.
+
+(** Consequently the even older production-or-refutation split also factors
+    through the invocation-aligned boundary.  Bottom elimination is applied
+    only inside the existing source adapter. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilers_of_independent_growing_fixed_productions_or_refutations
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
+    M hPA.
+Proof.
+  intros M hPA hsources.
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroInvocationPermutedAppendRowKernelProofResourceStrongStepKernelCompilers_of_independent_growing_fixed_productions
+      M hPA
+      (raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers_of_productions_or_refutations
+        M hPA hsources)).
+Qed.
+
 (** Synchronize only the second coordinate.  Every later dependency-ordered
     compiler is preserved definitionally. *)
 Theorem

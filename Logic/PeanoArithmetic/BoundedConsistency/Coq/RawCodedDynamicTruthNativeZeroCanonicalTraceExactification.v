@@ -338,6 +338,37 @@ Proof.
   exact dynamicTruthGlobalPiBaseFormula_scoped.
 Qed.
 
+(** The complete selected-row disjunction used by the append compiler is
+    exactly the native level-one closed-row constructor.  This packages the
+    two polarity-specific shape lemmas and the two lower-application
+    renamings into one rewrite at the abstraction level used by fixed-level
+    truth traversal.  Before the eight row witnesses are opened, the current
+    row index is [#4] (and becomes [#12] in the witness body); the selected
+    mode is left abstract so the same lemma serves both canonical modes. *)
+Lemma dynamicTruthZeroClosedSuccessorRow_native_shape : forall mode,
+  pOr
+    (pAnd (pEq mode tZero)
+      (dynamicTruthSigmaSuccessorRowFormula (Term.numeral 1)
+        dynamicTruthGlobalPiBaseFormula))
+    (pAnd (pEq mode (Term.numeral 1))
+      (dynamicTruthPiSuccessorRowFormula (Term.numeral 1)
+        dynamicTruthGlobalSigmaBaseFormula)) =
+  fixedLevelClosedSuccessorRowTermAt 0
+    dynamicTruthZeroLowerSigmaApplication
+    dynamicTruthZeroLowerPiApplication
+    (tVar 12) (tVar 11) (tVar 10) (tVar 9)
+    (tVar 8) (tVar 7) (tVar 6) (tVar 5)
+    (tVar 4) mode (tVar 2) (tVar 1) (tVar 0).
+Proof.
+  intro mode.
+  unfold fixedLevelClosedSuccessorRowTermAt.
+  rewrite dynamicTruthZeroSigmaSuccessorRow_native_shape,
+    dynamicTruthZeroPiSuccessorRow_native_shape.
+  rewrite dynamicTruthZeroLowerPiApplication_row_eq,
+    dynamicTruthZeroLowerSigmaApplication_row_eq.
+  reflexivity.
+Qed.
+
 (** The lower applications inherit the exact native rank-zero meaning of
     the two global base predicates.  Stating this for arbitrary argument
     terms, rather than only the row variables above, makes it directly
