@@ -702,5 +702,67 @@ Proof.
     dynamicTruthZeroInputGlobalPiApplicationNativeForwardFormula_raw_valid.
 Qed.
 
+(** The semantic comparison above is an equivalence, so the converse
+    transports are PA theorems as well.  Naming both directions avoids
+    forcing later proof-producing clients to choose one of the two
+    extensionally equal presentations as their primitive resource. *)
+Definition dynamicTruthZeroInputGlobalSigmaApplicationNativeBackwardFormula :
+    formula :=
+  pImp dynamicTruthZeroSigmaEvidenceFormula
+    dynamicTruthZeroInputGlobalSigmaApplicationFormula.
+
+Definition dynamicTruthZeroInputGlobalPiApplicationNativeBackwardFormula :
+    formula :=
+  pImp dynamicTruthZeroPiEvidenceFormula
+    dynamicTruthZeroInputGlobalPiApplicationFormula.
+
+Lemma
+    dynamicTruthZeroInputGlobalSigmaApplicationNativeBackwardFormula_raw_valid :
+    forall (M : RawPAModel), RawPASatisfies M -> forall e,
+  raw_formula_sat M e
+    dynamicTruthZeroInputGlobalSigmaApplicationNativeBackwardFormula.
+Proof.
+  intros M _hPA e.
+  unfold dynamicTruthZeroInputGlobalSigmaApplicationNativeBackwardFormula.
+  cbn [raw_formula_sat]. intro hevidence.
+  exact (proj2
+    (raw_sat_dynamicTruthZeroInputGlobalSigmaApplicationFormula_native_iff
+      M e) hevidence).
+Qed.
+
+Lemma
+    dynamicTruthZeroInputGlobalPiApplicationNativeBackwardFormula_raw_valid :
+    forall (M : RawPAModel), RawPASatisfies M -> forall e,
+  raw_formula_sat M e
+    dynamicTruthZeroInputGlobalPiApplicationNativeBackwardFormula.
+Proof.
+  intros M _hPA e.
+  unfold dynamicTruthZeroInputGlobalPiApplicationNativeBackwardFormula.
+  cbn [raw_formula_sat]. intro hevidence.
+  exact (proj2
+    (raw_sat_dynamicTruthZeroInputGlobalPiApplicationFormula_native_iff
+      M e) hevidence).
+Qed.
+
+Theorem
+    PA_proves_dynamicTruthZeroInputGlobalSigmaApplicationNativeBackwardFormula :
+  Formula.BProv Formula.Ax_s nil
+    dynamicTruthZeroInputGlobalSigmaApplicationNativeBackwardFormula.
+Proof.
+  apply PA_proves_open_formula_of_raw_valid.
+  exact
+    dynamicTruthZeroInputGlobalSigmaApplicationNativeBackwardFormula_raw_valid.
+Qed.
+
+Theorem
+    PA_proves_dynamicTruthZeroInputGlobalPiApplicationNativeBackwardFormula :
+  Formula.BProv Formula.Ax_s nil
+    dynamicTruthZeroInputGlobalPiApplicationNativeBackwardFormula.
+Proof.
+  apply PA_proves_open_formula_of_raw_valid.
+  exact
+    dynamicTruthZeroInputGlobalPiApplicationNativeBackwardFormula_raw_valid.
+Qed.
+
 End
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalTraceExactification.

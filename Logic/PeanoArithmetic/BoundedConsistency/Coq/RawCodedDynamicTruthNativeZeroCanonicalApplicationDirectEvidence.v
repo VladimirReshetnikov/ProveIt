@@ -31,6 +31,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation
   RawCodedDynamicTruthPredecessorAtomicDomainGlobalRootsSynchronization
+  RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
   RawCodedDynamicTruthNativeZeroCanonicalTraceExactification
   RawCodedDynamicTruthNativeZeroCanonicalApplicationProofTransport.
@@ -61,6 +62,8 @@ Import
   PABoundedRawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorAtomicDomainGlobalRootsSynchronization.
+Import
+  PABoundedRawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
 Import
@@ -295,6 +298,103 @@ Proof.
   - exists piEvidenceRoot. exact hpiEvidence.
 Qed.
 
+(** Converse four-root conversion.  Rather than repeating the transport of
+    the atomic and domain leaves, package the two backward implication
+    results through the existing growing-global synchronization theorem. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalApplicationRoots_of_directEvidenceRoots :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall sourceWitnessList sourceContext,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawDynamicTruthZeroDirectEvidenceRootsAt M sourceContext ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawDynamicTruthZeroCanonicalApplicationRootsAt M targetContext.
+Proof.
+  intros M hPA translation hagreement sourceWitnessList sourceContext
+    hsource hroots.
+  destruct hroots as
+    [(atomicRoot & hatomic) (domainRoot & hdomain)
+      (sigmaEvidenceRoot & hsigmaEvidence)
+      (piEvidenceRoot & hpiEvidence)].
+  assert (hsigmaEvidenceTemplate : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation sourceContext
+        coqDynamicTruthPredecessorStateTemplateContext)
+      (rawQuotedFormulaCode M dynamicTruthZeroSigmaEvidenceFormula)
+      sigmaEvidenceRoot).
+  {
+    unfold rawDynamicTruthZeroSigmaEvidenceCode in hsigmaEvidence.
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContextCode
+      M translation hagreement sourceContext).
+    exact hsigmaEvidence.
+  }
+  assert (hpiEvidenceTemplate : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation sourceContext
+        coqDynamicTruthPredecessorStateTemplateContext)
+      (rawQuotedFormulaCode M dynamicTruthZeroPiEvidenceFormula)
+      piEvidenceRoot).
+  {
+    unfold rawDynamicTruthZeroPiEvidenceCode in hpiEvidence.
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContextCode
+      M translation hagreement sourceContext).
+    exact hpiEvidence.
+  }
+  destruct
+    (raw_dynamicTruthZeroCanonicalApplicationRoots_of_nativeEvidenceRoots_under_prefix
+      M hPA translation hagreement sourceWitnessList sourceContext
+      coqDynamicTruthPredecessorStateTemplateContext
+      sigmaEvidenceRoot piEvidenceRoot
+      (raw_dynamicTruthPredecessorStateTemplateContext_atomically_adequate
+        M hPA translation hagreement)
+      hsource hsigmaEvidenceTemplate hpiEvidenceTemplate)
+    as (applicationWitnessList & applicationContext &
+      sigmaApplicationRoot & piApplicationRoot & happlicationWitnessed &
+      hsourceApplicationIncluded & hsigmaApplicationTemplate &
+      hpiApplicationTemplate).
+  assert (hsigmaApplication : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M applicationContext)
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+      sigmaApplicationRoot).
+  {
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContextCode
+      M translation hagreement applicationContext).
+    exact hsigmaApplicationTemplate.
+  }
+  assert (hpiApplication : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M applicationContext)
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalPiApplicationFormula)
+      piApplicationRoot).
+  {
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContextCode
+      M translation hagreement applicationContext).
+    exact hpiApplicationTemplate.
+  }
+  assert (hglobals :
+      RawDynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom M
+        sourceContext
+        (rawQuotedFormulaCode M
+          dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+        (rawQuotedFormulaCode M
+          dynamicTruthZeroInputGlobalPiApplicationFormula)).
+  {
+    exists applicationWitnessList, applicationContext.
+    split; [exact happlicationWitnessed |].
+    split; [exact hsourceApplicationIncluded |].
+    constructor.
+    - exists sigmaApplicationRoot. exact hsigmaApplication.
+    - exists piApplicationRoot. exact hpiApplication.
+  }
+  exact
+    (raw_dynamicTruthZeroCanonicalApplicationRootsAt_of_growing_global_roots
+      M hPA translation hagreement sourceWitnessList sourceContext
+      atomicRoot domainRoot hsource hatomic hdomain hglobals).
+Qed.
+
 (** Closed specialization requiring no translation witness from callers. *)
 Corollary
     raw_dynamicTruthZeroDirectEvidenceRoots_of_canonicalApplicationRoots_bottom :
@@ -310,6 +410,25 @@ Proof.
   intros M hPA sourceWitnessList sourceContext hsource hroots.
   exact
     (raw_dynamicTruthZeroDirectEvidenceRoots_of_canonicalApplicationRoots
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      sourceWitnessList sourceContext hsource hroots).
+Qed.
+
+Corollary
+    raw_dynamicTruthZeroCanonicalApplicationRoots_of_directEvidenceRoots_bottom :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      sourceWitnessList sourceContext,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawDynamicTruthZeroDirectEvidenceRootsAt M sourceContext ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawDynamicTruthZeroCanonicalApplicationRootsAt M targetContext.
+Proof.
+  intros M hPA sourceWitnessList sourceContext hsource hroots.
+  exact
+    (raw_dynamicTruthZeroCanonicalApplicationRoots_of_directEvidenceRoots
       M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
       (rawBottomDirectStructuralTemplatePAAgreement M hPA)
       sourceWitnessList sourceContext hsource hroots).

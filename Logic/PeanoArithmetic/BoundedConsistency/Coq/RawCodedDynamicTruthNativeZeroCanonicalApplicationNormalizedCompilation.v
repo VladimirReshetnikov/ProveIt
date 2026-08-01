@@ -330,5 +330,62 @@ Proof.
   - exact hevidence.
 Qed.
 
+(** Converse compiler adapter.  The normalized traversal may therefore stop
+    at either the native evidence pair or the canonical global-application
+    pair; the two resource boundaries differ only by PA-provable formulas
+    and finite standard-axiom witness growth. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources_of_directEvidence
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hagreement hcompiler tail witnessList
+    baseContext helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (evidenceWitnessList & evidenceContext & hevidenceWitnessed &
+      hbaseEvidenceIncluded & hevidence).
+  destruct
+    (raw_dynamicTruthZeroCanonicalApplicationRoots_of_directEvidenceRoots
+      M hPA translation hagreement evidenceWitnessList evidenceContext
+      hevidenceWitnessed hevidence)
+    as (applicationWitnessList & applicationContext &
+      happlicationWitnessed & hevidenceApplicationIncluded &
+      happlications).
+  exists applicationWitnessList, applicationContext.
+  split; [exact happlicationWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hevidenceApplicationIncluded member
+      (hbaseEvidenceIncluded member hmember)).
+  - exact happlications.
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsAndDirectEvidenceCompilers_equivalent
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  (RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources
+      M translation <->
+   RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalNormalizedResources
+      M translation).
+Proof.
+  intros M hPA translation hagreement. split.
+  - exact
+      (raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalNormalizedResources_of_canonicalApplicationRoots
+        M hPA translation hagreement).
+  - exact
+      (raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources_of_directEvidence
+        M hPA translation hagreement).
+Qed.
+
 End
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationNormalizedCompilation.

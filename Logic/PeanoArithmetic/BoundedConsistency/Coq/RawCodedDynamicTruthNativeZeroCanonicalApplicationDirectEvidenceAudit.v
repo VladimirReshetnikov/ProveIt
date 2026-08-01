@@ -10,8 +10,11 @@ Check RawDynamicTruthZeroCanonicalApplicationRootsAt.
 Check
   raw_dynamicTruthZeroCanonicalApplicationRootsAt_of_growing_global_roots.
 Check raw_dynamicTruthZeroDirectEvidenceRoots_of_canonicalApplicationRoots.
+Check raw_dynamicTruthZeroCanonicalApplicationRoots_of_directEvidenceRoots.
 Check
   raw_dynamicTruthZeroDirectEvidenceRoots_of_canonicalApplicationRoots_bottom.
+Check
+  raw_dynamicTruthZeroCanonicalApplicationRoots_of_directEvidenceRoots_bottom.
 
 Print Assumptions RawDynamicTruthZeroCanonicalApplicationRootsAt.
 Print Assumptions
@@ -19,4 +22,8 @@ Print Assumptions
 Print Assumptions
   raw_dynamicTruthZeroDirectEvidenceRoots_of_canonicalApplicationRoots.
 Print Assumptions
+  raw_dynamicTruthZeroCanonicalApplicationRoots_of_directEvidenceRoots.
+Print Assumptions
   raw_dynamicTruthZeroDirectEvidenceRoots_of_canonicalApplicationRoots_bottom.
+Print Assumptions
+  raw_dynamicTruthZeroCanonicalApplicationRoots_of_directEvidenceRoots_bottom.

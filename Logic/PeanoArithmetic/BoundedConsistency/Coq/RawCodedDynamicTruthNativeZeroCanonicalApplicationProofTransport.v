@@ -76,6 +76,166 @@ Lemma rawQuotedFormulaCode_imp : forall (M : RawPAModel) left right,
     (rawQuotedFormulaCode M left) (rawQuotedFormulaCode M right).
 Proof. reflexivity. Qed.
 
+(** Generic one-step represented implication transport.  The source and
+    target are arbitrary ordinary PA formulas; the only formula-specific
+    input is an ordinary PA proof of their implication.  The theorem keeps
+    an arbitrary adequate template prefix fixed while allowing the standard
+    PA witness tail to grow. *)
+Theorem raw_codedPALocalProofOf_target_of_PA_implication_under_prefix :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall sourceWitnessList sourceContext prefix
+      sourceFormula targetFormula sourceRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  Formula.BProv Formula.Ax_s nil (pImp sourceFormula targetFormula) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M sourceFormula) sourceRoot ->
+  exists targetWitnessList targetContext targetRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawQuotedFormulaCode M targetFormula) targetRoot.
+Proof.
+  intros M hPA translation hagreement sourceWitnessList sourceContext
+    prefix sourceFormula targetFormula sourceRoot hprefix hsource
+    himplication hsourceRoot.
+  destruct
+    (raw_codedTemplatePALocalProofOf_of_BProv_on_witnessed_tail
+      M hPA translation hagreement sourceWitnessList sourceContext
+      (pImp sourceFormula targetFormula) hsource himplication)
+    as (witnesses & implicationRoot & htargetWitnessed &
+      himplicationRoot).
+  set (targetWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses sourceWitnessList).
+  set (targetContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses sourceContext).
+  assert (hincluded : RawContextListIncluded M
+      sourceContext targetContext).
+  {
+    unfold targetContext.
+    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+      M hPA witnesses sourceContext).
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation sourceWitnessList sourceContext
+      targetWitnessList targetContext prefix
+      (rawQuotedFormulaCode M sourceFormula) sourceRoot
+      hsource htargetWitnessed hincluded hsourceRoot)
+    as [transportedSourceRoot htransportedSource].
+  pose proof
+    (raw_codedPAAxiomWitnessContext_context_realizable M
+      targetWitnessList targetContext htargetWitnessed)
+    as htargetRealizable.
+  destruct (raw_codedPALocalProof_templatePrefix M hPA translation
+    targetContext prefix
+    (rawTemplateFormula translation
+      (embedPAFormula (pImp sourceFormula targetFormula)))
+    implicationRoot htargetRealizable hprefix himplicationRoot)
+    as [prefixedImplicationRoot hprefixedImplication].
+  rewrite (rawTemplateFormula_embedPA hagreement
+    (pImp sourceFormula targetFormula)) in hprefixedImplication.
+  rewrite rawQuotedFormulaCode_imp in hprefixedImplication.
+  pose proof (raw_codedPALocalProofOf_impE M hPA
+    (rawTemplateContextCodeOnTail translation targetContext prefix)
+    (rawQuotedFormulaCode M sourceFormula)
+    (rawQuotedFormulaCode M targetFormula)
+    prefixedImplicationRoot transportedSourceRoot
+    hprefixedImplication htransportedSource) as htargetRoot.
+  lazymatch type of htargetRoot with
+  | RawCodedPALocalProofOf _ _ _ ?targetRoot =>
+      exists targetWitnessList, targetContext, targetRoot;
+      split; [exact htargetWitnessed |];
+      split; [exact hincluded | exact htargetRoot]
+  end.
+Qed.
+
+(** Dependency-ordered paired form.  The second implication is compiled on
+    the extension selected by the first; the first result and the second
+    source are transported explicitly so the conclusion shares one final
+    witnessed tail. *)
+Theorem raw_codedPALocalProofOf_pair_of_PA_implications_under_prefix :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall sourceWitnessList sourceContext prefix
+      sigmaSourceFormula sigmaTargetFormula
+      piSourceFormula piTargetFormula sigmaSourceRoot piSourceRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  Formula.BProv Formula.Ax_s nil
+    (pImp sigmaSourceFormula sigmaTargetFormula) ->
+  Formula.BProv Formula.Ax_s nil
+    (pImp piSourceFormula piTargetFormula) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M sigmaSourceFormula) sigmaSourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M piSourceFormula) piSourceRoot ->
+  exists targetWitnessList targetContext sigmaTargetRoot piTargetRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawQuotedFormulaCode M sigmaTargetFormula) sigmaTargetRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawQuotedFormulaCode M piTargetFormula) piTargetRoot.
+Proof.
+  intros M hPA translation hagreement sourceWitnessList sourceContext
+    prefix sigmaSourceFormula sigmaTargetFormula
+    piSourceFormula piTargetFormula sigmaSourceRoot piSourceRoot
+    hprefix hsource hsigmaImplication hpiImplication
+    hsigmaSource hpiSource.
+  destruct
+    (raw_codedPALocalProofOf_target_of_PA_implication_under_prefix
+      M hPA translation hagreement sourceWitnessList sourceContext prefix
+      sigmaSourceFormula sigmaTargetFormula sigmaSourceRoot
+      hprefix hsource hsigmaImplication hsigmaSource)
+    as (sigmaWitnessList & sigmaContext & sigmaTargetRoot &
+      hsigmaWitnessed & hsourceSigmaIncluded & hsigmaTarget).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation sourceWitnessList sourceContext
+      sigmaWitnessList sigmaContext prefix
+      (rawQuotedFormulaCode M piSourceFormula) piSourceRoot
+      hsource hsigmaWitnessed hsourceSigmaIncluded hpiSource)
+    as [transportedPiSourceRoot htransportedPiSource].
+  destruct
+    (raw_codedPALocalProofOf_target_of_PA_implication_under_prefix
+      M hPA translation hagreement sigmaWitnessList sigmaContext prefix
+      piSourceFormula piTargetFormula transportedPiSourceRoot
+      hprefix hsigmaWitnessed hpiImplication htransportedPiSource)
+    as (targetWitnessList & targetContext & piTargetRoot &
+      htargetWitnessed & hsigmaTargetIncluded & hpiTarget).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation sigmaWitnessList sigmaContext
+      targetWitnessList targetContext prefix
+      (rawQuotedFormulaCode M sigmaTargetFormula) sigmaTargetRoot
+      hsigmaWitnessed htargetWitnessed hsigmaTargetIncluded hsigmaTarget)
+    as [transportedSigmaTargetRoot htransportedSigmaTarget].
+  assert (hsourceTargetIncluded : RawContextListIncluded M
+      sourceContext targetContext).
+  {
+    intros member hmember.
+    exact (hsigmaTargetIncluded member
+      (hsourceSigmaIncluded member hmember)).
+  }
+  exists targetWitnessList, targetContext,
+    transportedSigmaTargetRoot, piTargetRoot.
+  split; [exact htargetWitnessed |].
+  split; [exact hsourceTargetIncluded |].
+  split; assumption.
+Qed.
+
 (** Transport a pair of canonical application roots to the native evidence
     roots on one common witnessed extension.  The temporary prefix is kept
     completely abstract; only its ordinary atomic-adequacy invariant is
@@ -114,164 +274,67 @@ Proof.
   intros M hPA translation hagreement sourceWitnessList sourceContext
     prefix sigmaApplicationRoot piApplicationRoot hprefix hsource
     hsigmaApplication hpiApplication.
+  exact
+    (raw_codedPALocalProofOf_pair_of_PA_implications_under_prefix
+      M hPA translation hagreement sourceWitnessList sourceContext prefix
+      dynamicTruthZeroInputGlobalSigmaApplicationFormula
+      dynamicTruthZeroSigmaEvidenceFormula
+      dynamicTruthZeroInputGlobalPiApplicationFormula
+      dynamicTruthZeroPiEvidenceFormula
+      sigmaApplicationRoot piApplicationRoot hprefix hsource
+      PA_proves_dynamicTruthZeroInputGlobalSigmaApplicationNativeForwardFormula
+      PA_proves_dynamicTruthZeroInputGlobalPiApplicationNativeForwardFormula
+      hsigmaApplication hpiApplication).
+Qed.
 
-  (** Materialize the Sigma implication first. *)
-  destruct
-    (raw_codedTemplatePALocalProofOf_of_BProv_on_witnessed_tail
-      M hPA translation hagreement sourceWitnessList sourceContext
-      dynamicTruthZeroInputGlobalSigmaApplicationNativeForwardFormula
-      hsource
-      PA_proves_dynamicTruthZeroInputGlobalSigmaApplicationNativeForwardFormula)
-    as (sigmaWitnesses & sigmaImplicationRoot & hsigmaWitnessed &
-      hsigmaImplication).
-  set (sigmaWitnessList :=
-    rawStandardPAAxiomWitnessPrefixWitnessListCode M
-      sigmaWitnesses sourceWitnessList).
-  set (sigmaContext :=
-    rawStandardPAAxiomWitnessPrefixContextCode M
-      sigmaWitnesses sourceContext).
-  assert (hsourceSigmaIncluded :
-      RawContextListIncluded M sourceContext sigmaContext).
-  {
-    unfold sigmaContext.
-    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
-      M hPA sigmaWitnesses sourceContext).
-  }
-
-  (** Materialize the Pi implication above the first selected extension. *)
-  destruct
-    (raw_codedTemplatePALocalProofOf_of_BProv_on_witnessed_tail
-      M hPA translation hagreement sigmaWitnessList sigmaContext
-      dynamicTruthZeroInputGlobalPiApplicationNativeForwardFormula
-      hsigmaWitnessed
-      PA_proves_dynamicTruthZeroInputGlobalPiApplicationNativeForwardFormula)
-    as (piWitnesses & piImplicationRoot & htargetWitnessed &
-      hpiImplication).
-  set (targetWitnessList :=
-    rawStandardPAAxiomWitnessPrefixWitnessListCode M
-      piWitnesses sigmaWitnessList).
-  set (targetContext :=
-    rawStandardPAAxiomWitnessPrefixContextCode M
-      piWitnesses sigmaContext).
-  assert (hsigmaTargetIncluded :
-      RawContextListIncluded M sigmaContext targetContext).
-  {
-    unfold targetContext.
-    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
-      M hPA piWitnesses sigmaContext).
-  }
-  assert (hsourceTargetIncluded :
-      RawContextListIncluded M sourceContext targetContext).
-  {
-    intros member hmember.
-    exact (hsigmaTargetIncluded member
-      (hsourceSigmaIncluded member hmember)).
-  }
-
-  (** Move the first implication and both caller roots to the final tail. *)
-  assert (hsigmaImplicationEmpty : RawCodedPALocalProofOf M
-      (rawTemplateContextCodeOnTail translation sigmaContext nil)
-      (rawTemplateFormula translation
-        (embedPAFormula
-          dynamicTruthZeroInputGlobalSigmaApplicationNativeForwardFormula))
-      sigmaImplicationRoot).
-  { cbn [rawTemplateContextCodeOnTail]. exact hsigmaImplication. }
-  destruct
-    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
-      M hPA translation sigmaWitnessList sigmaContext
-      targetWitnessList targetContext nil
-      (rawTemplateFormula translation
-        (embedPAFormula
-          dynamicTruthZeroInputGlobalSigmaApplicationNativeForwardFormula))
-      sigmaImplicationRoot hsigmaWitnessed htargetWitnessed
-      hsigmaTargetIncluded hsigmaImplicationEmpty)
-    as [transportedSigmaImplicationRoot htransportedSigmaImplication].
-  cbn [rawTemplateContextCodeOnTail] in htransportedSigmaImplication.
-
-  destruct
-    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
-      M hPA translation sourceWitnessList sourceContext
-      targetWitnessList targetContext prefix
+(** Converse transport.  Native evidence and canonical applications are now
+    interchangeable proof resources under every adequate temporary prefix,
+    not merely semantically equivalent formulas. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalApplicationRoots_of_nativeEvidenceRoots_under_prefix :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall sourceWitnessList sourceContext prefix sigmaEvidenceRoot
+      piEvidenceRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M dynamicTruthZeroSigmaEvidenceFormula)
+    sigmaEvidenceRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M dynamicTruthZeroPiEvidenceFormula)
+    piEvidenceRoot ->
+  exists targetWitnessList targetContext sigmaApplicationRoot
+      piApplicationRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
       (rawQuotedFormulaCode M
         dynamicTruthZeroInputGlobalSigmaApplicationFormula)
-      sigmaApplicationRoot hsource htargetWitnessed hsourceTargetIncluded
-      hsigmaApplication)
-    as [transportedSigmaApplicationRoot htransportedSigmaApplication].
-  destruct
-    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
-      M hPA translation sourceWitnessList sourceContext
-      targetWitnessList targetContext prefix
+      sigmaApplicationRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
       (rawQuotedFormulaCode M
         dynamicTruthZeroInputGlobalPiApplicationFormula)
-      piApplicationRoot hsource htargetWitnessed hsourceTargetIncluded
-      hpiApplication)
-    as [transportedPiApplicationRoot htransportedPiApplication].
-
-  (** Insert the same temporary prefix above both fixed implications. *)
-  pose proof
-    (raw_codedPAAxiomWitnessContext_context_realizable M
-      targetWitnessList targetContext htargetWitnessed)
-    as htargetRealizable.
-  destruct (raw_codedPALocalProof_templatePrefix M hPA translation
-    targetContext prefix
-    (rawTemplateFormula translation
-      (embedPAFormula
-        dynamicTruthZeroInputGlobalSigmaApplicationNativeForwardFormula))
-    transportedSigmaImplicationRoot htargetRealizable hprefix
-    htransportedSigmaImplication)
-    as [prefixedSigmaImplicationRoot hprefixedSigmaImplication].
-  destruct (raw_codedPALocalProof_templatePrefix M hPA translation
-    targetContext prefix
-    (rawTemplateFormula translation
-      (embedPAFormula
-        dynamicTruthZeroInputGlobalPiApplicationNativeForwardFormula))
-    piImplicationRoot htargetRealizable hprefix hpiImplication)
-    as [prefixedPiImplicationRoot hprefixedPiImplication].
-
-  (** Agreement converts embedded ordinary PA syntax to structural
-      quotation; implication compositionality then exposes the exact two
-      [Imp-E] endpoints without reducing either large formula. *)
-  rewrite (rawTemplateFormula_embedPA hagreement
-    dynamicTruthZeroInputGlobalSigmaApplicationNativeForwardFormula)
-    in hprefixedSigmaImplication.
-  unfold dynamicTruthZeroInputGlobalSigmaApplicationNativeForwardFormula
-    in hprefixedSigmaImplication.
-  rewrite rawQuotedFormulaCode_imp in hprefixedSigmaImplication.
-  pose proof (raw_codedPALocalProofOf_impE M hPA
-    (rawTemplateContextCodeOnTail translation targetContext prefix)
-    (rawQuotedFormulaCode M
-      dynamicTruthZeroInputGlobalSigmaApplicationFormula)
-    (rawQuotedFormulaCode M dynamicTruthZeroSigmaEvidenceFormula)
-    prefixedSigmaImplicationRoot transportedSigmaApplicationRoot
-    hprefixedSigmaImplication htransportedSigmaApplication)
-    as hsigmaEvidence.
-
-  rewrite (rawTemplateFormula_embedPA hagreement
-    dynamicTruthZeroInputGlobalPiApplicationNativeForwardFormula)
-    in hprefixedPiImplication.
-  unfold dynamicTruthZeroInputGlobalPiApplicationNativeForwardFormula
-    in hprefixedPiImplication.
-  rewrite rawQuotedFormulaCode_imp in hprefixedPiImplication.
-  pose proof (raw_codedPALocalProofOf_impE M hPA
-    (rawTemplateContextCodeOnTail translation targetContext prefix)
-    (rawQuotedFormulaCode M
-      dynamicTruthZeroInputGlobalPiApplicationFormula)
-    (rawQuotedFormulaCode M dynamicTruthZeroPiEvidenceFormula)
-    prefixedPiImplicationRoot transportedPiApplicationRoot
-    hprefixedPiImplication htransportedPiApplication)
-    as hpiEvidence.
-
-  lazymatch type of hsigmaEvidence with
-  | RawCodedPALocalProofOf _ _ _ ?sigmaEvidenceRoot =>
-      lazymatch type of hpiEvidence with
-      | RawCodedPALocalProofOf _ _ _ ?piEvidenceRoot =>
-          exists targetWitnessList, targetContext,
-            sigmaEvidenceRoot, piEvidenceRoot;
-          split; [exact htargetWitnessed |];
-          split; [exact hsourceTargetIncluded |];
-          split; [exact hsigmaEvidence | exact hpiEvidence]
-      end
-  end.
+      piApplicationRoot.
+Proof.
+  intros M hPA translation hagreement sourceWitnessList sourceContext
+    prefix sigmaEvidenceRoot piEvidenceRoot hprefix hsource hsigma hpi.
+  exact
+    (raw_codedPALocalProofOf_pair_of_PA_implications_under_prefix
+      M hPA translation hagreement sourceWitnessList sourceContext prefix
+      dynamicTruthZeroSigmaEvidenceFormula
+      dynamicTruthZeroInputGlobalSigmaApplicationFormula
+      dynamicTruthZeroPiEvidenceFormula
+      dynamicTruthZeroInputGlobalPiApplicationFormula
+      sigmaEvidenceRoot piEvidenceRoot hprefix hsource
+      PA_proves_dynamicTruthZeroInputGlobalSigmaApplicationNativeBackwardFormula
+      PA_proves_dynamicTruthZeroInputGlobalPiApplicationNativeBackwardFormula
+      hsigma hpi).
 Qed.
 
 (** Empty-prefix specialization for clients whose application roots already
@@ -308,6 +371,45 @@ Proof.
     (raw_dynamicTruthZeroNativeEvidenceRoots_of_canonicalApplicationRoots_under_prefix
       M hPA translation hagreement sourceWitnessList sourceContext nil
       sigmaApplicationRoot piApplicationRoot
+      (fun formula hformula => match hformula with end)
+      hsource hsigma hpi) as hresult.
+  cbn [rawTemplateContextCodeOnTail] in hresult.
+  exact hresult.
+Qed.
+
+(** Closed-prefix converse specialization. *)
+Corollary
+    raw_dynamicTruthZeroCanonicalApplicationRoots_of_nativeEvidenceRoots :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall sourceWitnessList sourceContext sigmaEvidenceRoot piEvidenceRoot,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedPALocalProofOf M sourceContext
+    (rawQuotedFormulaCode M dynamicTruthZeroSigmaEvidenceFormula)
+    sigmaEvidenceRoot ->
+  RawCodedPALocalProofOf M sourceContext
+    (rawQuotedFormulaCode M dynamicTruthZeroPiEvidenceFormula)
+    piEvidenceRoot ->
+  exists targetWitnessList targetContext sigmaApplicationRoot
+      piApplicationRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M targetContext
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+      sigmaApplicationRoot /\
+    RawCodedPALocalProofOf M targetContext
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalPiApplicationFormula)
+      piApplicationRoot.
+Proof.
+  intros M hPA translation hagreement sourceWitnessList sourceContext
+    sigmaEvidenceRoot piEvidenceRoot hsource hsigma hpi.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalApplicationRoots_of_nativeEvidenceRoots_under_prefix
+      M hPA translation hagreement sourceWitnessList sourceContext nil
+      sigmaEvidenceRoot piEvidenceRoot
       (fun formula hformula => match hformula with end)
       hsource hsigma hpi) as hresult.
   cbn [rawTemplateContextCodeOnTail] in hresult.
