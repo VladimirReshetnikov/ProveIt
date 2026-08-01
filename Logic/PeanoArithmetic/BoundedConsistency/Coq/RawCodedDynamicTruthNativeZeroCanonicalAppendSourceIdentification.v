@@ -17,6 +17,7 @@ From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
+  RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
   RawCodedRestrictedPAProof
   RawCodedPAAxiomWitnessPrefix
@@ -25,6 +26,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedPALocalProofUniversalIntroductionChain
+  RawCodedPALocalProofUniversalEliminationChain
   RawCodedLtSuccCasesProofCompilation
   RawCodedPAGrowingTemplateConjunction
   RawCodedFourStateTableAppendSource
@@ -56,6 +58,7 @@ Import PABoundedCodedProof.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
@@ -64,6 +67,7 @@ Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
+Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedFourStateTableAppendSource.
@@ -306,6 +310,23 @@ Proof.
   intros rootMode bound [-> | ->]; vm_compute; reflexivity.
 Qed.
 
+(** The concrete canonical row pair is exactly the opened production selected
+    by either legal root mode.  Keeping this small kernel-computed fact next
+    to the canonical rows removes a redundant syntax equality from every
+    proof-producing resource package. *)
+Lemma coqFourStateTableAppendZeroCanonicalRowProduction_eq : forall
+    rootMode bound,
+  rootMode = 0 \/ rootMode = 1 ->
+  coqFourStateTableAppendConcreteClosedRowProductionTemplate
+      (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+      (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula) =
+    coqFourStateTableAppendOpenedTemplateGlobalRowProduction rootMode
+      (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+      (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula) bound.
+Proof.
+  intros rootMode bound [-> | ->]; vm_compute; reflexivity.
+Qed.
+
 (** Earlier, more primitive row boundary.  Instead of assuming the already
     universally closed seventh field, it asks only for the concrete
     two-premise row implication in the exact context obtained after the
@@ -372,6 +393,116 @@ Definition
 Arguments
   RawDynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt
   M translation rootMode outerPrefix witnesses : clear implicits.
+
+(** Proof-producing kernel beneath the completed row implication.  Arithmetic
+    case splitting and the two implication introductions are structural
+    consequences; the caller only supplies append existence, the inherited
+    traversal/lookup pair, and the fixed canonical production at the literal
+    suffix-preserving row context. *)
+Definition
+    RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (rootMode : nat) (outerPrefix : TemplateContext)
+    (witnesses : StandardPAAxiomWitnessPrefix) : Prop :=
+  exists appendRoot fixedProductionRoot : M,
+  exists inheritedTraversal oldLookup : TemplateFormula,
+    (rootMode = 0 \/ rootMode = 1) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0))) appendRoot /\
+    templateUniversalOpenMany inheritedTraversal
+      coqFourStateTableAppendConcreteRowVariables =
+      Some
+        (tfImp
+          (coqLtSuccCasesBelowTemplate
+            (ttVar 4)
+            (ttParameter coqDynamicTruthAppendRowBoundParameterName))
+          (tfImp oldLookup
+            (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+              (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+              (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula)))) /\
+    RawFourStateTableAppendInheritedLocalRootsAt M translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (templateContextShiftMany 5
+        (coqFourStateTableAppendWitnessContext
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix))
+      inheritedTraversal oldLookup /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses (raw_zero M))
+        (templateContextShiftMany 5
+          (coqFourStateTableAppendWitnessContext
+            (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+            (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+            (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+            (embedPATerm (Term.numeral rootMode))
+            (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)))
+      (rawTemplateFormula translation
+        (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+          (coqFourStateTableAppendEmbeddedModeProductionMotive
+            dynamicTruthZeroCanonicalSigmaRowFormula
+            dynamicTruthZeroCanonicalPiRowFormula)))
+      fixedProductionRoot.
+
+Arguments
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+  M translation rootMode outerPrefix witnesses : clear implicits.
+
+(** Compile the three-root canonical kernel through the suffix-preserving
+    arithmetic case split. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_kernel :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode outerPrefix witnesses,
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+    M translation rootMode outerPrefix witnesses ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt
+    M translation rootMode outerPrefix witnesses.
+Proof.
+  intros M hPA translation hagreement rootMode outerPrefix witnesses
+    (appendRoot & fixedProductionRoot & inheritedTraversal & oldLookup &
+      hrootMode & happend & hopen & hinherited & hfixedProduction).
+  exists (ttVar 7), (ttVar 6), (ttVar 5), (ttVar 4),
+    (ttVar 3), (ttVar 2), (ttVar 1), (ttVar 0), appendRoot.
+  split; [exact hrootMode |].
+  split.
+  - exact (coqFourStateTableAppendZeroCanonicalRowProduction_eq
+      rootMode (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+      hrootMode).
+  - split; [exact happend |].
+    exact
+      (raw_codedPALocalProofOf_four_state_table_append_concrete_global_closed_row_implications_on_literal_row_context_under_suffix
+        M hPA translation hagreement
+        rootMode coqDynamicTruthAppendRowBoundParameterName
+        dynamicTruthZeroCanonicalSigmaRowFormula
+        dynamicTruthZeroCanonicalPiRowFormula witnesses outerPrefix
+        (ttVar 2) (ttVar 1) (ttVar 0)
+        (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+        inheritedTraversal oldLookup fixedProductionRoot
+        hrootMode hopen
+        (raw_codedTemplatePrefix_atomically_adequate M hPA translation _)
+        (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+        (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+        (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+        eq_refl
+        (raw_codedTemplateFormula_atomically_adequate M hPA translation _)
+        hinherited hfixedProduction).
+Qed.
 
 (** Literal-tail form consumed directly by the low-level append constructors.
     The caller prefix and the closed PA witness formulas are supplied as one
