@@ -39,6 +39,7 @@ From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
 From Foundation.FirstOrder.NegationTranslation Require Import GoedelGentzen.
 From Foundation.FirstOrder.Kripke Require Import Basic Intuitionistic WeakForcing.
 From Foundation.FirstOrder Require Import Hauptsatz.
+From Foundation.FirstOrder.Completeness Require Import CanonicalModel.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -3118,3 +3119,19 @@ Print Assumptions first_order_canonical_reflection.
 Print Assumptions first_order_sequent_neg_involutive.
 Print Assumptions ifo_generic_list_conj2_eq.
 Print Assumptions first_order_hauptsatz.
+Check first_order_canonical_world.
+Check first_order_canonical_world_order.
+Print Assumptions first_order_canonical_world_nil.
+Print Assumptions first_order_canonical_world_of_unprovable.
+Check first_order_canonical_is_forced.
+Check first_order_canonical_forcing_relation.
+Check first_order_canonical_is_weakly_forced.
+Check first_order_canonical_weak_forcing_relation.
+Print Assumptions first_order_inhabited_forall_choice.
+Print Assumptions first_order_canonical_is_forced_rel.
+Print Assumptions first_order_canonical_is_forced_all.
+Print Assumptions first_order_canonical_is_forced_and.
+Print Assumptions first_order_canonical_is_forced_or.
+Print Assumptions first_order_canonical_is_forced_not_falsum.
+Print Assumptions first_order_canonical_is_forced_exists.
+Print Assumptions first_order_canonical_is_forced_monotone.
