@@ -526,6 +526,178 @@ Arguments
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
   M translation rootMode outerPrefix witnesses : clear implicits.
 
+(** A canonical row payload is monotone in its finite batch of standard PA
+    witnesses.  The caller may add witnesses on either side of the original
+    batch; all four represented roots are transported while the local row
+    prefix and its two syntactic formulas remain unchanged.  This is the
+    useful general form for independently compiled Sigma and Pi branches,
+    whose witness batches need not have been coordinated in advance. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt_standardWitnessTail_surround :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
+    rootMode outerPrefix witnesses prefix suffix,
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    M translation rootMode outerPrefix witnesses ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    M translation rootMode outerPrefix
+      (prefix ++ (witnesses ++ suffix)).
+Proof.
+  intros M hPA translation hagreement
+    rootMode outerPrefix witnesses prefix suffix
+    (appendRoot & fixedProductionRoot & inheritedTraversal & oldLookup &
+      happend & hopen &
+      (traversalRoot & oldLookupRoot & htraversal & holdLookup) &
+      hfixedProduction).
+  set (rowPrefix :=
+    templateContextShiftMany 5
+      (coqFourStateTableAppendWitnessContext
+        (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+        (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+        (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+        (embedPATerm (Term.numeral rootMode))
+        (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)).
+  assert (happendSource : RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation
+        (embedPAContext (map witnessedAxiom witnesses)))
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0))) appendRoot).
+  {
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement witnesses).
+    exact happend.
+  }
+  destruct
+    (raw_codedPALocalProof_standardWitnessTail_surround_under_prefix
+      M hPA translation hagreement nil prefix witnesses suffix
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0)))
+      appendRoot happendSource)
+    as [transportedAppendRoot htransportedAppend].
+  cbn [List.app] in htransportedAppend.
+  rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+    M translation hagreement (prefix ++ (witnesses ++ suffix)))
+    in htransportedAppend.
+  assert (hbase : RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))).
+  {
+    pose proof (raw_templateEmbeddedPAAxiomWitnessContext
+      M hPA translation hagreement witnesses) as hwitnessed.
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement witnesses) in hwitnessed.
+    exact hwitnessed.
+  }
+  assert (htarget : RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        (prefix ++ (witnesses ++ suffix)) (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        (prefix ++ (witnesses ++ suffix)) (raw_zero M))).
+  {
+    pose proof (raw_templateEmbeddedPAAxiomWitnessContext
+      M hPA translation hagreement
+      (prefix ++ (witnesses ++ suffix))) as hwitnessed.
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement (prefix ++ (witnesses ++ suffix)))
+      in hwitnessed.
+    exact hwitnessed.
+  }
+  assert (hincluded : RawContextListIncluded M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        (prefix ++ (witnesses ++ suffix)) (raw_zero M))).
+  {
+    pose proof
+      (raw_templateEmbeddedPAAxiomWitnessContext_surrounded_included
+        M hPA translation hagreement prefix witnesses suffix)
+      as hsurrounded.
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement witnesses) in hsurrounded.
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement (prefix ++ (witnesses ++ suffix)))
+      in hsurrounded.
+    exact hsurrounded.
+  }
+  assert (hlocalRoots : RawFourStateTableAppendInheritedLocalRootsAt
+      M translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      rowPrefix inheritedTraversal oldLookup).
+  {
+    exists traversalRoot, oldLookupRoot.
+    fold rowPrefix in htraversal, holdLookup.
+    exact (conj htraversal holdLookup).
+  }
+  pose proof
+    (raw_fourStateTableAppendInheritedLocalRootsAt_transport
+      M hPA translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        (prefix ++ (witnesses ++ suffix)) (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        (prefix ++ (witnesses ++ suffix)) (raw_zero M))
+      rowPrefix inheritedTraversal oldLookup
+      hbase htarget hincluded hlocalRoots)
+    as htransportedLocalRoots.
+  assert (hfixedProductionSource : RawCodedPALocalProofOf M
+      (rawTemplateContextCode translation
+        (rowPrefix ++ embedPAContext (map witnessedAxiom witnesses)))
+      (rawTemplateFormula translation
+        (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+          (coqFourStateTableAppendEmbeddedModeProductionMotive
+            dynamicTruthZeroCanonicalSigmaRowFormula
+            dynamicTruthZeroCanonicalPiRowFormula)))
+      fixedProductionRoot).
+  {
+    rewrite raw_templateContextCode_app_on_tail_general.
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement witnesses).
+    fold rowPrefix in hfixedProduction.
+    exact hfixedProduction.
+  }
+  destruct
+    (raw_codedPALocalProof_standardWitnessTail_surround_under_prefix
+      M hPA translation hagreement rowPrefix prefix witnesses suffix
+      (rawTemplateFormula translation
+        (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+          (coqFourStateTableAppendEmbeddedModeProductionMotive
+            dynamicTruthZeroCanonicalSigmaRowFormula
+            dynamicTruthZeroCanonicalPiRowFormula)))
+      fixedProductionRoot hfixedProductionSource)
+    as [transportedFixedProductionRoot htransportedFixedProduction].
+  rewrite raw_templateContextCode_app_on_tail_general
+    in htransportedFixedProduction.
+  rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+    M translation hagreement (prefix ++ (witnesses ++ suffix)))
+    in htransportedFixedProduction.
+  exists transportedAppendRoot, transportedFixedProductionRoot,
+    inheritedTraversal, oldLookup.
+  split; [exact htransportedAppend |].
+  split; [exact hopen |].
+  split.
+  - fold rowPrefix in htransportedLocalRoots.
+    exact htransportedLocalRoots.
+  - fold rowPrefix in htransportedFixedProduction.
+    exact htransportedFixedProduction.
+Qed.
+
 Theorem
     raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt_of_payload :
   forall (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
@@ -593,6 +765,43 @@ Definition
 Arguments
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
   M translation outerPrefix : clear implicits.
+
+(** Synchronize independently compiled canonical Sigma and Pi payloads by
+    surrounding both standard witness batches with the other branch's
+    witnesses.  The common batch is their concatenation; no equality between
+    the original batches and no preselected common proof roots is required. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix_of_independent_witnesses :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
+    outerPrefix sigmaWitnesses piWitnesses,
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    M translation 0 outerPrefix sigmaWitnesses ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    M translation 1 outerPrefix piWitnesses ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
+    M translation outerPrefix.
+Proof.
+  intros M hPA translation hagreement outerPrefix
+    sigmaWitnesses piWitnesses hsigma hpi.
+  exists (sigmaWitnesses ++ piWitnesses).
+  split.
+  - change (RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+      M translation 0 outerPrefix
+        (nil ++ (sigmaWitnesses ++ piWitnesses))).
+    exact
+      (raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt_standardWitnessTail_surround
+        M hPA translation hagreement 0 outerPrefix sigmaWitnesses
+        nil piWitnesses hsigma).
+  - replace (sigmaWitnesses ++ piWitnesses) with
+      (sigmaWitnesses ++ (piWitnesses ++ nil))
+      by now rewrite List.app_nil_r.
+    exact
+      (raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt_standardWitnessTail_surround
+        M hPA translation hagreement 1 outerPrefix piWitnesses
+        sigmaWitnesses nil hpi).
+Qed.
 
 (** Compile the three-root canonical kernel through the suffix-preserving
     arithmetic case split. *)
