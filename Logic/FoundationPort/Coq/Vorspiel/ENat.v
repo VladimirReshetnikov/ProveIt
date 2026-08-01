@@ -101,3 +101,23 @@ Proof.
   destruct (le_lt_dec k n) as [Hkn | Hnk]; [exact Hkn |].
   exfalso. exact (Hleast n Hnk Hn).
 Qed.
+
+(** Two order consequences used by minimization clients.  Keeping them at
+    the extended-natural boundary avoids repeating representation case
+    analyses in every least-index construction. *)
+Lemma enat_lt_succ_of_le : forall x n,
+  enat_le x (enat_of_nat n) ->
+  enat_lt x (enat_of_nat (S n)).
+Proof.
+  intros [k |] n Hle; simpl in *; lia.
+Qed.
+
+Theorem enat_find_eq_zero : forall P,
+  P 0 -> enat_find P = enat_of_nat 0.
+Proof.
+  intros P Hzero.
+  pose proof (@enat_find_le P 0 Hzero) as Hle.
+  destruct (enat_find P) as [k |] eqn:Hfind; simpl in Hle.
+  - assert (k = 0) by lia. now subst.
+  - contradiction.
+Qed.

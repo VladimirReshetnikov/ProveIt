@@ -17,6 +17,7 @@ From Foundation.Vorspiel Require Import Matrix.
 From Foundation.Vorspiel Require Import Arithmetic.
 From Foundation.Vorspiel Require Import BetaEncoding.
 From Foundation.FirstOrder.Incompleteness Require Import ProvabilityAbstraction.
+From Foundation.FirstOrder.Incompleteness Require Import Height.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -700,6 +701,8 @@ Print Assumptions enat_lt_find.
 Print Assumptions enat_exists_of_find_le.
 Print Assumptions enat_find_eq_top_iff.
 Print Assumptions enat_find_le.
+Print Assumptions enat_lt_succ_of_le.
+Print Assumptions enat_find_eq_zero.
 Check dvec_empty.
 Check dvec_cons.
 Print Assumptions dvec_cons_zero.
@@ -4357,3 +4360,17 @@ Check pa_safe.
 Check pa_formalized_noncontradiction.
 Print Assumptions pa_jeroslow_not_safe.
 Print Assumptions pa_unprovable_flon.
+Check pa_iter.
+Check pa_dia_iter.
+Print Assumptions pa_iter_add.
+Print Assumptions pa_neg_iterated_prov.
+Print Assumptions pa_iterated_bottom_step.
+Print Assumptions pa_box_bottom_monotone.
+Print Assumptions pa_iterated_bottom_unprovable.
+Check pa_height.
+Print Assumptions pa_height_eq_top_iff.
+Print Assumptions pa_height_le_of_iterated_bottom.
+Print Assumptions pa_height_lt_pos_of_base_iterated_bottom.
+Print Assumptions pa_height_le_iff_iterated_bottom.
+Print Assumptions pa_height_eq_top_of_kreisel_consistent.
+Print Assumptions pa_height_eq_zero_of_inconsistent.
