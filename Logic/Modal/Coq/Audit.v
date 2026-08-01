@@ -61,7 +61,8 @@ From FoundationModal Require Import
   CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 JerabekBoxdot CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer MaximalTranslations Makinson GLPoint3PlusBoxBot CanonicalS5Grz
-  CanonicalK4n CanonicalGeach CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
+  CanonicalK4n MaximalCanonicalLaws CanonicalGeach
+  CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
   CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
 
@@ -5849,6 +5850,34 @@ Check S4Point3_strictly_weaker_GrzPoint3.
 (** Canonical weak-n transitivity and the infinite strict K4n hierarchy. *)
 Check schema_FourN_substitution_closed.
 Check normal_canonical_rel_iter_iff_box_iter.
+Check normal_canonical_truth_neg_iff.
+Check normal_canonical_truth_pair.
+Check normal_canonical_model_valid_iff_provable.
+Check normal_mct_box_iter_rel_iff.
+Check normal_mct_box_rel_iff.
+Check normal_mct_box_iter_negneg_iff.
+Check normal_mct_box_negneg_iff.
+Check normal_mct_box_iter_dual.
+Check normal_mct_box_dual.
+Check normal_mct_dia_iter_dual.
+Check normal_mct_dia_dual.
+Check normal_mct_dia_iter_rel_iff.
+Check normal_mct_dia_rel_iff.
+Check normal_canonical_rel_iter_iff_dia_iter.
+Check normal_canonical_rel_iter_iff_neg_box_iter.
+Check normal_canonical_rel_iter_iff_neg_dia_iter.
+Check normal_canonical_relation_iff_box_mem.
+Check normal_canonical_relation_iff_neg_box_mem.
+Check normal_canonical_relation_iff_dia_mem.
+Check normal_canonical_relation_iff_neg_dia_mem.
+Check normal_canonical_rel_iter_iff_box_iter_satisfies.
+Check normal_canonical_rel_iter_iff_dia_iter_satisfies.
+Check normal_canonical_relation_iff_box_satisfies.
+Check normal_canonical_relation_iff_dia_satisfies.
+Check normal_mct_box_iter_list_conj_iff.
+Check normal_mct_box_iter_list_conj2_iff.
+Check normal_mct_box_list_conj_iff.
+Check normal_mct_box_list_conj2_iff.
 Check normal_canonical_weakly_transitive_of_schema_FourN.
 Check K4n_canonical_frame.
 Check K4n_sound_complete.
@@ -7470,6 +7499,20 @@ Print Assumptions GrzPoint2_strictly_weaker_GrzPoint3.
 Print Assumptions S4Point3_strictly_weaker_GrzPoint3.
 Print Assumptions schema_FourN_substitution_closed.
 Print Assumptions normal_canonical_rel_iter_iff_box_iter.
+Print Assumptions normal_canonical_truth_pair.
+Print Assumptions normal_canonical_model_valid_iff_provable.
+Print Assumptions normal_mct_box_iter_rel_iff.
+Print Assumptions normal_mct_box_iter_negneg_iff.
+Print Assumptions normal_mct_box_iter_dual.
+Print Assumptions normal_mct_dia_iter_dual.
+Print Assumptions normal_mct_dia_iter_rel_iff.
+Print Assumptions normal_canonical_rel_iter_iff_dia_iter.
+Print Assumptions normal_canonical_rel_iter_iff_neg_box_iter.
+Print Assumptions normal_canonical_rel_iter_iff_neg_dia_iter.
+Print Assumptions normal_canonical_rel_iter_iff_box_iter_satisfies.
+Print Assumptions normal_canonical_rel_iter_iff_dia_iter_satisfies.
+Print Assumptions normal_mct_box_iter_list_conj_iff.
+Print Assumptions normal_mct_box_iter_list_conj2_iff.
 Print Assumptions normal_canonical_weakly_transitive_of_schema_FourN.
 Print Assumptions K4n_complete.
 Print Assumptions K4n_zero_equiv_KTc.
