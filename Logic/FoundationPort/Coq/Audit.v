@@ -35,7 +35,8 @@ From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Vorspiel.Order Require Import Ideal.
 From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Vorspiel.Order Require Import Regular.
-From Foundation.Modal Require Import MaximalConsistentSet MaximalCanonical Tableau.
+From Foundation.Modal Require Import
+  MaximalConsistentSet MaximalCanonical Tableau ComplementClosedConsistentList.
 
 Check partial_order_laws.
 Check order_chain.
@@ -169,6 +170,67 @@ Print Assumptions amt_positive_dia_iff.
 Print Assumptions amt_negative_dia_iff.
 Print Assumptions amt_positive_difference_of_neq.
 Print Assumptions amt_negative_difference_of_neq.
+Check abstract_list_subset.
+Check abstract_finite_theory.
+Check abstract_finite_consistent.
+Check abstract_finite_inconsistent.
+Print Assumptions abstract_context_derives_extensional.
+Print Assumptions abstract_context_consistent_extensional.
+Print Assumptions abstract_finite_theory_cons_insert.
+Print Assumptions abstract_finite_derives_empty_iff.
+Print Assumptions abstract_finite_empty_consistent.
+Print Assumptions abstract_finite_consistent_insert_iff.
+Print Assumptions abstract_finite_consistent_insert_neg_iff.
+Print Assumptions abstract_finite_provable_iff_insert_neg_inconsistent.
+Print Assumptions abstract_finite_neg_provable_iff_insert_inconsistent.
+Print Assumptions abstract_finite_singleton_neg_consistent_iff.
+Print Assumptions abstract_finite_singleton_consistent_iff_neg_unprovable.
+Print Assumptions abstract_finite_singleton_complement_consistent_iff.
+Print Assumptions abstract_finite_singleton_complement_inconsistent_iff.
+Print Assumptions abstract_finite_union_consistent_intro.
+Print Assumptions abstract_derives_complement_bottom.
+Print Assumptions abstract_derives_neg_complement_bottom.
+Print Assumptions abstract_derives_of_neg_complement.
+Print Assumptions abstract_derives_neg_of_complement.
+Check abstract_finite_next.
+Check abstract_finite_enumerate.
+Print Assumptions abstract_finite_next_consistent.
+Print Assumptions abstract_finite_enumerate_consistent.
+Print Assumptions abstract_finite_next_includes.
+Print Assumptions abstract_finite_enumerate_includes.
+Print Assumptions abstract_finite_enumerate_either.
+Print Assumptions abstract_finite_enumerate_origin.
+Print Assumptions abstract_exists_consistent_complementary_closed.
+Check abstract_predicate_complementary_closed.
+Check abstract_finite_maximal_context.
+Check afmc_carrier.
+Check afmc_finite.
+Check afmc_consistent.
+Check afmc_closed.
+Check afmc_mem.
+Print Assumptions afmc_mem_complement_of_not_mem.
+Print Assumptions afmc_mem_of_not_mem_complement.
+Print Assumptions afmc_equality_def.
+Print Assumptions abstract_finite_context_lindenbaum.
+Print Assumptions abstract_finite_maximal_context_inhabited.
+Print Assumptions afmc_membership_iff_derivable.
+Print Assumptions afmc_mem_top.
+Print Assumptions afmc_bottom_absent.
+Print Assumptions afmc_mem_iff_not_mem_complement.
+Print Assumptions afmc_not_mem_iff_mem_complement.
+Print Assumptions afmc_mem_imp_iff.
+Print Assumptions afmc_not_mem_imp_iff.
+Check abstract_finite_powerset.
+Print Assumptions abstract_finite_powerset_contains_filter.
+Check afmc_mem_dec.
+Check afmc_selector.
+Check afmc_representative.
+Print Assumptions afmc_representative_spec.
+Check abstract_option_list.
+Check afmc_candidate.
+Check afmc_explicit_cover.
+Print Assumptions afmc_candidate_complete.
+Print Assumptions afmc_explicit_cover_complete.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
