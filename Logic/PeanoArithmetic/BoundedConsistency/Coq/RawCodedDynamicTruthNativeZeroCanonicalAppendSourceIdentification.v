@@ -20,6 +20,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
   RawCodedRestrictedPAProof
+  RawCodedPAProofLeafCertificates
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
   RawCodedPALocalProofWitnessedContextMerge
@@ -61,6 +62,7 @@ Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedPAProofLeafCertificates.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
@@ -525,6 +527,42 @@ Definition
 Arguments
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
   M translation rootMode outerPrefix witnesses : clear implicits.
+
+(** The append coordinate of every canonical row payload is now produced
+    internally.  Keeping the witnessed-context certificate in the result is
+    stronger than the payload projection itself: subsequent compilers may
+    select their own finite witness batches and use the standard surrounding
+    transport theorem to synchronize all coordinates afterward. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalPermutedAppendRoot_on_standardWitnessTail :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall rootMode,
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (appendRoot : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0))) appendRoot.
+Proof.
+  intros M hPA translation hagreement rootMode.
+  exact
+    (raw_codedPALocalProofOf_canonical_four_state_table_append_exists_on_witnessed_tail
+      M hPA translation hagreement
+      (raw_zero M) (raw_zero M)
+      coqDynamicTruthAppendRowBoundParameterName rootMode
+      (raw_codedPAAxiomWitnessContext_empty M hPA)).
+Qed.
 
 (** A canonical row payload is monotone in its finite batch of standard PA
     witnesses.  The caller may add witnesses on either side of the original

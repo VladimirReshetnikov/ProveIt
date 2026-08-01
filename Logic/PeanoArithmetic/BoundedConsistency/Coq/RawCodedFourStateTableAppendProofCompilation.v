@@ -29,8 +29,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofComposition
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
-  RawCodedTemplateDirectStructuralTranslation
-  RawCodedTemplateDirectStructuralPAAgreement
+  RawCodedTemplatePAEmbedding
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedAssignmentUniversalDefinednessProofCompilation
   RawCodedFixedLevelTruth
@@ -56,8 +55,7 @@ Import PABoundedRawCodedPALocalProofConjunction.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
-Import PABoundedRawCodedTemplateDirectStructuralTranslation.
-Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
+Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import
   PABoundedRawCodedAssignmentUniversalDefinednessProofCompilation.
@@ -392,7 +390,8 @@ Qed.
 Theorem
     raw_codedPALocalProofOf_four_state_table_append_instance_on_witnessed_tail :
   forall (M : RawPAModel), RawPASatisfies M -> forall
-    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
     baseWitnessList baseContext
     modeCode modeStep formulaCode formulaStep
     assignmentCodeCode assignmentCodeStep
@@ -408,14 +407,14 @@ Theorem
     RawCodedPALocalProofOf M
       (rawStandardPAAxiomWitnessPrefixContextCode M
         witnesses baseContext)
-      (rawDirectTemplateFormula inputs
+      (rawTemplateFormula translation
         (coqFourStateTableAppendInstanceTemplate
           modeCode modeStep formulaCode formulaStep
           assignmentCodeCode assignmentCodeStep
           assignmentStepCode assignmentStepStep
           bound mode formula assignmentCode assignmentStep)) root.
 Proof.
-  intros M hPA inputs baseWitnessList baseContext
+  intros M hPA translation hagreement baseWitnessList baseContext
     modeCode modeStep formulaCode formulaStep
     assignmentCodeCode assignmentCodeStep
     assignmentStepCode assignmentStepStep
@@ -423,8 +422,7 @@ Proof.
   exact
     (raw_codedTemplatePALocalProofOf_of_BProv_open_many_on_witnessed_tail
       M hPA
-      (rawDirectStructuralTemplateTranslation M hPA inputs)
-      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+      translation hagreement
       baseWitnessList baseContext codedFourStateTableAppendFormula
       [modeCode; modeStep; formulaCode; formulaStep;
        assignmentCodeCode; assignmentCodeStep;
@@ -449,7 +447,8 @@ Qed.
 Theorem
     raw_codedPALocalProofOf_four_state_table_append_exists_of_defined_on_witnessed_tail
     : forall (M : RawPAModel), RawPASatisfies M -> forall
-      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
       baseWitnessList baseContext
       modeCode modeStep formulaCode formulaStep
       assignmentCodeCode assignmentCodeStep
@@ -457,7 +456,7 @@ Theorem
       bound mode formula assignmentCode assignmentStep definedRoot,
   RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
   RawCodedPALocalProofOf M baseContext
-    (rawDirectTemplateFormula inputs
+    (rawTemplateFormula translation
       (coqFourStateTableAppendDefinedTemplate
         modeCode modeStep formulaCode formulaStep
         assignmentCodeCode assignmentCodeStep
@@ -472,14 +471,14 @@ Theorem
     RawCodedPALocalProofOf M
       (rawStandardPAAxiomWitnessPrefixContextCode M
         witnesses baseContext)
-      (rawDirectTemplateFormula inputs
+      (rawTemplateFormula translation
         (coqFourStateTableAppendExistsTemplate
           modeCode modeStep formulaCode formulaStep
           assignmentCodeCode assignmentCodeStep
           assignmentStepCode assignmentStepStep
           bound mode formula assignmentCode assignmentStep)) root.
 Proof.
-  intros M hPA inputs baseWitnessList baseContext
+  intros M hPA translation hagreement baseWitnessList baseContext
     modeCode modeStep formulaCode formulaStep
     assignmentCodeCode assignmentCodeStep
     assignmentStepCode assignmentStepStep
@@ -487,7 +486,7 @@ Proof.
     hbase hdefined.
   destruct
     (raw_codedPALocalProofOf_four_state_table_append_instance_on_witnessed_tail
-      M hPA inputs baseWitnessList baseContext
+      M hPA translation hagreement baseWitnessList baseContext
       modeCode modeStep formulaCode formulaStep
       assignmentCodeCode assignmentCodeStep
       assignmentStepCode assignmentStepStep
@@ -495,7 +494,7 @@ Proof.
     (witnesses & implicationRoot & hextended & himplication).
   destruct (raw_codedPALocalProofOf_standardPAAxiomWitnessPrefix
     M hPA witnesses baseContext
-    (rawDirectTemplateFormula inputs
+    (rawTemplateFormula translation
       (coqFourStateTableAppendDefinedTemplate
         modeCode modeStep formulaCode formulaStep
         assignmentCodeCode assignmentCodeStep
@@ -506,16 +505,17 @@ Proof.
       M baseWitnessList baseContext hbase)
     hdefined) as [transportedDefinedRoot htransportedDefined].
   rewrite coqFourStateTableAppendInstanceTemplate_shape in himplication.
+  rewrite rawTemplateFormula_imp in himplication.
   change (RawCodedPALocalProofOf M
     (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
     (rawFormulaImpCode M
-      (rawDirectTemplateFormula inputs
+      (rawTemplateFormula translation
         (coqFourStateTableAppendDefinedTemplate
           modeCode modeStep formulaCode formulaStep
           assignmentCodeCode assignmentCodeStep
           assignmentStepCode assignmentStepStep
           bound mode formula assignmentCode assignmentStep))
-      (rawDirectTemplateFormula inputs
+      (rawTemplateFormula translation
         (coqFourStateTableAppendExistsTemplate
           modeCode modeStep formulaCode formulaStep
           assignmentCodeCode assignmentCodeStep
@@ -525,13 +525,13 @@ Proof.
   exists witnesses.
   exists (rawProofImpERoot M
     (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
-    (rawDirectTemplateFormula inputs
+    (rawTemplateFormula translation
       (coqFourStateTableAppendDefinedTemplate
         modeCode modeStep formulaCode formulaStep
         assignmentCodeCode assignmentCodeStep
         assignmentStepCode assignmentStepStep
         bound mode formula assignmentCode assignmentStep))
-    (rawDirectTemplateFormula inputs
+    (rawTemplateFormula translation
       (coqFourStateTableAppendExistsTemplate
         modeCode modeStep formulaCode formulaStep
         assignmentCodeCode assignmentCodeStep
@@ -541,13 +541,13 @@ Proof.
   split; [exact hextended |].
   exact (raw_codedPALocalProofOf_impE M hPA
     (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
-    (rawDirectTemplateFormula inputs
+    (rawTemplateFormula translation
       (coqFourStateTableAppendDefinedTemplate
         modeCode modeStep formulaCode formulaStep
         assignmentCodeCode assignmentCodeStep
         assignmentStepCode assignmentStepStep
         bound mode formula assignmentCode assignmentStep))
-    (rawDirectTemplateFormula inputs
+    (rawTemplateFormula translation
       (coqFourStateTableAppendExistsTemplate
         modeCode modeStep formulaCode formulaStep
         assignmentCodeCode assignmentCodeStep
@@ -565,7 +565,8 @@ Qed.
 Theorem
     raw_codedPALocalProofOf_four_state_table_append_exists_of_components_on_witnessed_tail
     : forall (M : RawPAModel), RawPASatisfies M -> forall
-      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
       baseWitnessList baseContext
       modeCode modeStep formulaCode formulaStep
       assignmentCodeCode assignmentCodeStep
@@ -580,16 +581,16 @@ Theorem
     bound mode formula assignmentCode assignmentStep in
   RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
   RawCodedPALocalProofOf M baseContext
-    (rawDirectTemplateFormula inputs (templateAnd4First defined))
+    (rawTemplateFormula translation (templateAnd4First defined))
     modeDefinedRoot ->
   RawCodedPALocalProofOf M baseContext
-    (rawDirectTemplateFormula inputs (templateAnd4Second defined))
+    (rawTemplateFormula translation (templateAnd4Second defined))
     formulaDefinedRoot ->
   RawCodedPALocalProofOf M baseContext
-    (rawDirectTemplateFormula inputs (templateAnd4Third defined))
+    (rawTemplateFormula translation (templateAnd4Third defined))
     assignmentCodeDefinedRoot ->
   RawCodedPALocalProofOf M baseContext
-    (rawDirectTemplateFormula inputs (templateAnd4Fourth defined))
+    (rawTemplateFormula translation (templateAnd4Fourth defined))
     assignmentStepDefinedRoot ->
   exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
     RawCodedPAAxiomWitnessContext M
@@ -600,14 +601,14 @@ Theorem
     RawCodedPALocalProofOf M
       (rawStandardPAAxiomWitnessPrefixContextCode M
         witnesses baseContext)
-      (rawDirectTemplateFormula inputs
+      (rawTemplateFormula translation
         (coqFourStateTableAppendExistsTemplate
           modeCode modeStep formulaCode formulaStep
           assignmentCodeCode assignmentCodeStep
           assignmentStepCode assignmentStepStep
           bound mode formula assignmentCode assignmentStep)) root.
 Proof.
-  intros M hPA inputs baseWitnessList baseContext
+  intros M hPA translation hagreement baseWitnessList baseContext
     modeCode modeStep formulaCode formulaStep
     assignmentCodeCode assignmentCodeStep
     assignmentStepCode assignmentStepStep
@@ -636,7 +637,7 @@ Proof.
       bound mode formula assignmentCode assignmentStep).
   }
   destruct (raw_codedPALocalProofOf_templateAnd4 M hPA
-    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    translation
     baseContext defined
     modeDefinedRoot formulaDefinedRoot
     assignmentCodeDefinedRoot assignmentStepDefinedRoot
@@ -645,7 +646,7 @@ Proof.
     as [definedRoot hdefined].
   exact
     (raw_codedPALocalProofOf_four_state_table_append_exists_of_defined_on_witnessed_tail
-      M hPA inputs baseWitnessList baseContext
+      M hPA translation hagreement baseWitnessList baseContext
       modeCode modeStep formulaCode formulaStep
       assignmentCodeCode assignmentCodeStep
       assignmentStepCode assignmentStepStep
@@ -666,7 +667,8 @@ Qed.
 Theorem
     raw_codedPALocalProofOf_canonical_four_state_table_append_exists_on_witnessed_tail
     : forall (M : RawPAModel), RawPASatisfies M -> forall
-      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
       baseWitnessList baseContext boundParameterName rootMode,
   RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
   exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
@@ -678,7 +680,7 @@ Theorem
     RawCodedPALocalProofOf M
       (rawStandardPAAxiomWitnessPrefixContextCode M
         witnesses baseContext)
-      (rawDirectTemplateFormula inputs
+      (rawTemplateFormula translation
         (coqFourStateTableAppendExistsTemplate
           (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
           (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
@@ -686,10 +688,8 @@ Theorem
           (embedPATerm (Term.numeral rootMode))
           (ttVar 2) (ttVar 1) (ttVar 0))) root.
 Proof.
-  intros M hPA inputs baseWitnessList baseContext
+  intros M hPA translation hagreement baseWitnessList baseContext
     boundParameterName rootMode hbase.
-  set (translation :=
-    rawDirectStructuralTemplateTranslation M hPA inputs).
   set (defined := coqFourStateTableAppendDefinedTemplate
     (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
     (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
@@ -704,7 +704,7 @@ Proof.
   destruct
     (raw_codedPALocalProofOf_assignmentUniversalDefinedness_four_instances_on_witnessed_tail
       M hPA translation
-      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+      hagreement
       baseWitnessList baseContext
       (ttVar 7) (ttVar 6) (ttParameter boundParameterName)
       (ttVar 5) (ttVar 4) (ttParameter boundParameterName)
@@ -718,46 +718,42 @@ Proof.
   assert (hmodeProjection : RawCodedPALocalProofOf M
       (rawStandardPAAxiomWitnessPrefixContextCode M
         definedWitnesses baseContext)
-      (rawDirectTemplateFormula inputs (templateAnd4First defined))
+      (rawTemplateFormula translation (templateAnd4First defined))
       modeDefinedRoot).
   {
-    unfold translation in hmodeDefined.
     rewrite hmode.
     exact hmodeDefined.
   }
   assert (hformulaProjection : RawCodedPALocalProofOf M
       (rawStandardPAAxiomWitnessPrefixContextCode M
         definedWitnesses baseContext)
-      (rawDirectTemplateFormula inputs (templateAnd4Second defined))
+      (rawTemplateFormula translation (templateAnd4Second defined))
       formulaDefinedRoot).
   {
-    unfold translation in hformulaDefined.
     rewrite hformula.
     exact hformulaDefined.
   }
   assert (hassignmentCodeProjection : RawCodedPALocalProofOf M
       (rawStandardPAAxiomWitnessPrefixContextCode M
         definedWitnesses baseContext)
-      (rawDirectTemplateFormula inputs (templateAnd4Third defined))
+      (rawTemplateFormula translation (templateAnd4Third defined))
       assignmentCodeDefinedRoot).
   {
-    unfold translation in hassignmentCodeDefined.
     rewrite hassignmentCode.
     exact hassignmentCodeDefined.
   }
   assert (hassignmentStepProjection : RawCodedPALocalProofOf M
       (rawStandardPAAxiomWitnessPrefixContextCode M
         definedWitnesses baseContext)
-      (rawDirectTemplateFormula inputs (templateAnd4Fourth defined))
+      (rawTemplateFormula translation (templateAnd4Fourth defined))
       assignmentStepDefinedRoot).
   {
-    unfold translation in hassignmentStepDefined.
     rewrite hassignmentStep.
     exact hassignmentStepDefined.
   }
   destruct
     (raw_codedPALocalProofOf_four_state_table_append_exists_of_components_on_witnessed_tail
-      M hPA inputs
+      M hPA translation hagreement
       (rawStandardPAAxiomWitnessPrefixWitnessListCode M
         definedWitnesses baseWitnessList)
       (rawStandardPAAxiomWitnessPrefixContextCode M

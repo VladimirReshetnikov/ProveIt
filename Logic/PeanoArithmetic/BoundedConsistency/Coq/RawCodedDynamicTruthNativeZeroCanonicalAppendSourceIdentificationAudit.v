@@ -29,6 +29,8 @@ Check
 Check
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt.
 Check
+  raw_dynamicTruthZeroCanonicalPermutedAppendRoot_on_standardWitnessTail.
+Check
   raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt_standardWitnessTail_surround.
 Check
   raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt_of_payload.
@@ -85,6 +87,8 @@ Print Assumptions
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt.
 Print Assumptions
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt.
+Print Assumptions
+  raw_dynamicTruthZeroCanonicalPermutedAppendRoot_on_standardWitnessTail.
 Print Assumptions
   raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt_standardWitnessTail_surround.
 Print Assumptions
