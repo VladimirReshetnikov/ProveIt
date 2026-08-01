@@ -19,6 +19,7 @@ From Foundation.Vorspiel Require Import BetaEncoding.
 From Foundation.FirstOrder.Incompleteness Require Import ProvabilityAbstraction.
 From Foundation.FirstOrder.Incompleteness Require Import Height.
 From Foundation.FirstOrder.Incompleteness Require Import Tarski.
+From Foundation.FirstOrder.Incompleteness Require Import Dense.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4377,3 +4378,8 @@ Print Assumptions pa_height_eq_top_of_kreisel_consistent.
 Print Assumptions pa_height_eq_zero_of_inconsistent.
 Print Assumptions pa_not_exists_tarski_predicate.
 Print Assumptions pa_undefinability_of_truth.
+Check pa_adjoin.
+Print Assumptions pa_consistent_adjoin_of_unprovable_neg.
+Print Assumptions pa_consistent_adjoin_neg_of_unprovable.
+Check pa_lindenbaum_lt.
+Print Assumptions pa_dense_of_adjoin_incomplete.
