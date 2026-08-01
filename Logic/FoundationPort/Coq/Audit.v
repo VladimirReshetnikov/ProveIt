@@ -3195,6 +3195,10 @@ Print Assumptions arithmetic_iopen_div_definable_zero.
 Print Assumptions arithmetic_iopen_div_definable.
 Print Assumptions arithmetic_iopen_div_bounded.
 Print Assumptions arithmetic_iopen_div_definably_bounded.
+Print Assumptions arithmetic_iopen_rem_definably_bounded.
+Print Assumptions arithmetic_iopen_rem_bounded.
+Print Assumptions arithmetic_iopen_rem_definable_zero.
+Print Assumptions arithmetic_iopen_rem_definable.
 Print Assumptions iopen_div_eq_of.
 Print Assumptions iopen_div_mul_add.
 Print Assumptions iopen_div_mul_add_left.

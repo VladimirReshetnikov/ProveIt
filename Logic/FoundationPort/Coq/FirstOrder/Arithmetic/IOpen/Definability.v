@@ -11,13 +11,14 @@
 From Stdlib Require Import Vectors.Fin.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
+From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Syntax Hierarchy.
 From Foundation.FirstOrder.Arithmetic Require Import Schemata.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import
   Hierarchy Definable BoundedDefinable.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import
-  Basic Theory Definability.
+  Basic Theory Functions Definability.
 From Foundation.FirstOrder.Arithmetic.IOpen Require Import Basic.
 
 Set Implicit Arguments.
@@ -174,4 +175,129 @@ Proof.
   intros M Str O Horing Hpa Hleast. constructor.
   - exact (arithmetic_iopen_div_bounded Str Hpa Hleast).
   - exact (arithmetic_iopen_div_definable_zero Horing Hpa Hleast).
+Defined.
+
+(** * Remainder by definably-bounded composition *)
+
+(** The source writes an explicit bounded existential joining the division
+    and subtraction graphs.  The generic composition theorem constructs the
+    same kind of Sigma-zero witness while sharing both component proofs. *)
+Definition arithmetic_iopen_rem_definably_bounded : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  arithmetic_definably_bounded_function Str (peano_minus_le O)
+    (fun v : Fin.t 2 -> M =>
+      iopen_rem O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Horing Hpa Hleast.
+  pose (Ha := arithmetic_definably_bounded_variable (Str := Str)
+    (le := peano_minus_le O) (fun x => peano_minus_le_refl x)
+    (structure_oring_eq Horing) (k := 2) Fin.F1).
+  pose (Hb := arithmetic_definably_bounded_variable (Str := Str)
+    (le := peano_minus_le O) (fun x => peano_minus_le_refl x)
+    (structure_oring_eq Horing) (k := 2) (Fin.FS Fin.F1)).
+  pose (Hdiv := arithmetic_iopen_div_definably_bounded
+    Horing Hpa Hleast).
+  assert (Hmul : arithmetic_definably_bounded_function Str
+      (peano_minus_le O)
+      (fun v : Fin.t 2 -> M =>
+        oring_mul O (v (Fin.FS Fin.F1))
+          (iopen_div O (v Fin.F1) (v (Fin.FS Fin.F1))))).
+  { apply (arithmetic_definably_bounded_compose_peano_minus
+      Horing Hpa
+      (F := fun w : Fin.t 2 -> M =>
+        oring_mul O (w Fin.F1) (w (Fin.FS Fin.F1)))
+      (f := fin_two
+        (fun v : Fin.t 2 -> M => v (Fin.FS Fin.F1))
+        (fun v : Fin.t 2 -> M =>
+          iopen_div O (v Fin.F1) (v (Fin.FS Fin.F1))))
+      (arithmetic_definably_bounded_mul (Str := Str) (O := O)
+        (le := peano_minus_le O) (fun x => peano_minus_le_refl x)
+        Horing)).
+    intro i. refine (@Fin.caseS' 1 i
+      (fun j => arithmetic_definably_bounded_function Str
+        (peano_minus_le O)
+        (fin_two
+          (fun v : Fin.t 2 -> M => v (Fin.FS Fin.F1))
+          (fun v : Fin.t 2 -> M =>
+            iopen_div O (v Fin.F1) (v (Fin.FS Fin.F1))) j)) Hb _).
+    intro j. refine (@Fin.caseS' 0 j
+      (fun q => arithmetic_definably_bounded_function Str
+        (peano_minus_le O)
+        (fin_two
+          (fun v : Fin.t 2 -> M => v (Fin.FS Fin.F1))
+          (fun v : Fin.t 2 -> M =>
+            iopen_div O (v Fin.F1) (v (Fin.FS Fin.F1))) (Fin.FS q)))
+      Hdiv _).
+    intro q. inversion q. }
+  unfold iopen_rem.
+  apply (arithmetic_definably_bounded_compose_peano_minus
+    Horing Hpa
+    (F := fun w : Fin.t 2 -> M =>
+      peano_minus_sub O (w Fin.F1) (w (Fin.FS Fin.F1)))
+    (f := fin_two
+      (fun v : Fin.t 2 -> M => v Fin.F1)
+      (fun v : Fin.t 2 -> M =>
+        oring_mul O (v (Fin.FS Fin.F1))
+          (iopen_div O (v Fin.F1) (v (Fin.FS Fin.F1)))))
+    (peano_minus_sub_definably_bounded (Str := Str) (O := O)
+      Horing Hpa)).
+  intro i. refine (@Fin.caseS' 1 i
+    (fun j => arithmetic_definably_bounded_function Str
+      (peano_minus_le O)
+      (fin_two (fun v : Fin.t 2 -> M => v Fin.F1)
+        (fun v : Fin.t 2 -> M =>
+          oring_mul O (v (Fin.FS Fin.F1))
+            (iopen_div O (v Fin.F1) (v (Fin.FS Fin.F1)))) j)) Ha _).
+  intro j. refine (@Fin.caseS' 0 j
+    (fun q => arithmetic_definably_bounded_function Str
+      (peano_minus_le O)
+      (fin_two (fun v : Fin.t 2 -> M => v Fin.F1)
+        (fun v : Fin.t 2 -> M =>
+          oring_mul O (v (Fin.FS Fin.F1))
+            (iopen_div O (v Fin.F1) (v (Fin.FS Fin.F1)))) (Fin.FS q)))
+    Hmul _).
+  intro q. inversion q.
+Defined.
+
+Definition arithmetic_iopen_rem_bounded : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  arithmetic_bounded_function Str (peano_minus_le O)
+    (fun v : Fin.t 2 -> M =>
+      iopen_rem O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Horing Hpa Hleast.
+  exact (arithmetic_definably_bounded_bound
+    (arithmetic_iopen_rem_definably_bounded Horing Hpa Hleast)).
+Defined.
+
+Definition arithmetic_iopen_rem_definable_zero : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  arithmetic_sorted_definable_function Str arithmetic_sigma_zero_symbol
+    (fun v : Fin.t 2 -> M =>
+      iopen_rem O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Horing Hpa Hleast.
+  exact (arithmetic_definably_bounded_definition
+    (arithmetic_iopen_rem_definably_bounded Horing Hpa Hleast)).
+Defined.
+
+Definition arithmetic_iopen_rem_definable : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O -> arithmetic_least_number_principle O ->
+  forall symbol,
+  arithmetic_sorted_definable_function Str symbol
+    (fun v : Fin.t 2 -> M =>
+      iopen_rem O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Horing Hpa Hleast symbol.
+  unfold arithmetic_sorted_definable_function.
+  exact (arithmetic_sorted_definable_of_zero
+    (arithmetic_iopen_rem_definable_zero Horing Hpa Hleast) symbol).
 Defined.
