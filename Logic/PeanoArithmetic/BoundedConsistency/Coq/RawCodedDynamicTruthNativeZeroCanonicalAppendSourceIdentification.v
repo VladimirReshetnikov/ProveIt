@@ -766,6 +766,24 @@ Arguments
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
   M translation outerPrefix : clear implicits.
 
+(** Weak producer-facing form of the payload pair.  Each polarity may choose
+    its own finite standard witness batch; synchronization is a consequence,
+    not an obligation imposed on the two branch compilers. *)
+Definition
+    RawDynamicTruthZeroCanonicalIndependentPermutedAppendRowKernelPayloadsUnderPrefix
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (outerPrefix : TemplateContext) : Prop :=
+  (exists sigmaWitnesses : StandardPAAxiomWitnessPrefix,
+    RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+      M translation 0 outerPrefix sigmaWitnesses) /\
+  (exists piWitnesses : StandardPAAxiomWitnessPrefix,
+    RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+      M translation 1 outerPrefix piWitnesses).
+
+Arguments
+  RawDynamicTruthZeroCanonicalIndependentPermutedAppendRowKernelPayloadsUnderPrefix
+  M translation outerPrefix : clear implicits.
+
 (** Synchronize independently compiled canonical Sigma and Pi payloads by
     surrounding both standard witness batches with the other branch's
     witnesses.  The common batch is their concatenation; no equality between
@@ -801,6 +819,26 @@ Proof.
       (raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt_standardWitnessTail_surround
         M hPA translation hagreement 1 outerPrefix piWitnesses
         sigmaWitnesses nil hpi).
+Qed.
+
+(** Eliminate the weak independent package into the synchronized payload
+    pair used by the row compiler. *)
+Corollary
+    raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix_of_independent_payloads :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall outerPrefix,
+  RawDynamicTruthZeroCanonicalIndependentPermutedAppendRowKernelPayloadsUnderPrefix
+    M translation outerPrefix ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
+    M translation outerPrefix.
+Proof.
+  intros M hPA translation hagreement outerPrefix
+    [[sigmaWitnesses hsigma] [piWitnesses hpi]].
+  exact
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix_of_independent_witnesses
+      M hPA translation hagreement outerPrefix
+      sigmaWitnesses piWitnesses hsigma hpi).
 Qed.
 
 (** Compile the three-root canonical kernel through the suffix-preserving
