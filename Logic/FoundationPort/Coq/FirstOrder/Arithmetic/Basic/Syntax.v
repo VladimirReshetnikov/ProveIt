@@ -73,6 +73,12 @@ Definition arithmetic_lt_formula {X n}
     semiformula oring_language X n :=
   @Semiformula_rel oring_language X n 2 ORing_lt (fin_two t u).
 
+Definition arithmetic_le_formula {X n}
+    (t u : semiterm oring_language X n) :
+    semiformula oring_language X n :=
+  Semiformula_or (arithmetic_eq_formula t u)
+    (arithmetic_lt_formula t u).
+
 Definition arithmetic_eq_disjunction {X n} k
     (t : semiterm oring_language X n) : semiformula oring_language X n :=
   generic_matrix_disj (semiformula_connectives oring_language X n) k
@@ -223,6 +229,21 @@ Proof.
         (language_oring_lt oring_language_structure))) <->
     oring_lt O (semiterm_val Str b f t) (semiterm_val Str b f u)).
   apply structure_relation_operator. exact (structure_oring_lt H).
+Qed.
+
+Lemma arithmetic_le_formula_eval : forall M X n
+    (Str : first_order_structure oring_language M)
+    (b : Fin.t n -> M) (f : X -> M) (O : oring_carrier M)
+    (t u : semiterm oring_language X n),
+  structure_interprets_oring Str oring_language_structure O ->
+  (semiformula_eval Str b f (arithmetic_le_formula t u) <->
+   semiterm_val Str b f t = semiterm_val Str b f u \/
+   oring_lt O (semiterm_val Str b f t) (semiterm_val Str b f u)).
+Proof.
+  intros. unfold arithmetic_le_formula. simpl.
+  rewrite (@arithmetic_eq_formula_eval M X n Str b f O t u H),
+    (@arithmetic_lt_formula_eval M X n Str b f O t u H).
+  reflexivity.
 Qed.
 
 Lemma arithmetic_eq_disjunction_eval : forall M X n

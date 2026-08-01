@@ -67,6 +67,7 @@ From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Q Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Theory.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Q.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Functions.
 From Foundation.FirstOrder.Arithmetic Require Import Schemata.
@@ -2803,6 +2804,7 @@ Check arithmetic_mul_term.
 Check arithmetic_numeral_term.
 Check arithmetic_eq_formula.
 Check arithmetic_lt_formula.
+Check arithmetic_le_formula.
 Check arithmetic_eq_disjunction.
 Print Assumptions arithmetic_one_term_val.
 Print Assumptions arithmetic_add_term_val.
@@ -2811,6 +2813,7 @@ Print Assumptions arithmetic_numeral_term_val.
 Print Assumptions first_order_matrix_disj_eval.
 Print Assumptions arithmetic_eq_formula_eval.
 Print Assumptions arithmetic_lt_formula_eval.
+Print Assumptions arithmetic_le_formula_eval.
 Print Assumptions arithmetic_eq_disjunction_eval.
 Check robinson_q_succ_ne_zero_sentence.
 Check robinson_q_succ_inj_sentence.
@@ -2865,9 +2868,62 @@ Print Assumptions r0_weaker_than_robinson_q.
 Print Assumptions robinson_q_add_zero_provable.
 Print Assumptions r0_add_zero_unprovable.
 Print Assumptions r0_strictly_weaker_than_robinson_q.
+Check peano_minus_add_zero_sentence.
+Check peano_minus_add_assoc_sentence.
+Check peano_minus_add_comm_sentence.
+Check peano_minus_add_eq_of_lt_sentence.
+Check peano_minus_zero_le_sentence.
+Check peano_minus_zero_lt_one_sentence.
+Check peano_minus_one_le_of_zero_lt_sentence.
+Check peano_minus_add_lt_add_sentence.
+Check peano_minus_mul_zero_sentence.
+Check peano_minus_mul_one_sentence.
+Check peano_minus_mul_assoc_sentence.
+Check peano_minus_mul_comm_sentence.
+Check peano_minus_mul_lt_mul_sentence.
+Check peano_minus_mul_add_distr_sentence.
+Check peano_minus_lt_irrefl_sentence.
+Check peano_minus_lt_trans_sentence.
+Check peano_minus_lt_trichotomy_sentence.
+Check peano_minus_axiom.
+Check peano_minus_axiom_list.
+Print Assumptions peano_minus_axiom_list_complete.
+Print Assumptions peano_minus_axiom_finitely_covered.
+Print Assumptions peano_minus_proves_equality.
+Print Assumptions peano_minus_add_zero_realize_iff.
+Print Assumptions peano_minus_add_assoc_realize_iff.
+Print Assumptions peano_minus_add_comm_realize_iff.
+Print Assumptions peano_minus_add_eq_of_lt_realize_iff.
+Print Assumptions peano_minus_zero_le_realize_iff.
+Print Assumptions peano_minus_zero_lt_one_realize_iff.
+Print Assumptions peano_minus_one_le_of_zero_lt_realize_iff.
+Print Assumptions peano_minus_add_lt_add_realize_iff.
+Print Assumptions peano_minus_mul_zero_realize_iff.
+Print Assumptions peano_minus_mul_one_realize_iff.
+Print Assumptions peano_minus_mul_assoc_realize_iff.
+Print Assumptions peano_minus_mul_comm_realize_iff.
+Print Assumptions peano_minus_mul_lt_mul_realize_iff.
+Print Assumptions peano_minus_mul_add_distr_realize_iff.
+Print Assumptions peano_minus_lt_irrefl_realize_iff.
+Print Assumptions peano_minus_lt_trans_realize_iff.
+Print Assumptions peano_minus_lt_trichotomy_realize_iff.
+Print Assumptions first_order_model_models_peano_minus_iff.
+Print Assumptions nat_standard_model_models_peano_minus.
+Print Assumptions peano_minus_consistent.
+Print Assumptions peano_minus_proof_complete.
+Print Assumptions robinson_q_weaker_than_peano_minus.
+Print Assumptions r0_weaker_than_peano_minus.
+Print Assumptions r0_strictly_weaker_than_peano_minus.
 Print Assumptions peano_minus_zero_or_succ.
 Print Assumptions peano_minus_lt_iff_exists_add_succ.
 Print Assumptions peano_minus_robinson_q_laws.
+Check omega_add_one_model.
+Print Assumptions omega_add_one_model_models_robinson_q.
+Check peano_minus_successor_nonfixed_sentence.
+Print Assumptions peano_minus_successor_nonfixed_realize_iff.
+Print Assumptions peano_minus_successor_nonfixed_provable.
+Print Assumptions robinson_q_successor_nonfixed_unprovable.
+Print Assumptions robinson_q_strictly_weaker_than_peano_minus.
 Print Assumptions omega_add_one.
 Print Assumptions omega_add_one_oring.
 Print Assumptions omega_add_one_numeral.

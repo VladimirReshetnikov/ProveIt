@@ -9,10 +9,15 @@
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lia.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
+From FoundationModal Require Import GenericAdjunctiveSet GenericEntailment.
+From Foundation.Syntax.Predicate Require Import Language Term.
+From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
+From Foundation.FirstOrder.Basic Require Import Calculus Operator Soundness.
+From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory Semantics.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Model Syntax.
 From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Q Require Import Basic.
-From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic Theory.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -159,4 +164,97 @@ Proof.
   intro H.
   exact (@peano_minus_lt_irrefl omega_add_one omega_add_one_oring H
     None omega_add_one_top_lt_top).
+Qed.
+
+(** * The concrete Q countermodel and strict theory comparison *)
+
+Definition omega_add_one_model : first_order_model oring_language :=
+  first_order_model_of_structure (inhabits None)
+    (oring_standard_structure omega_add_one_oring).
+
+Theorem omega_add_one_model_models_robinson_q :
+  first_order_models_theory omega_add_one_model robinson_q_axiom.
+Proof.
+  apply (proj2 (@first_order_model_models_robinson_q_iff
+    omega_add_one_model omega_add_one_oring
+    (oring_standard_structure_interprets omega_add_one_oring))).
+  exact omega_add_one_robinson_q_laws.
+Qed.
+
+Definition peano_minus_successor_nonfixed_sentence :
+    sentence oring_language :=
+  @arithmetic_all_sentence 1
+    (semiformula_neg
+      (arithmetic_eq_formula
+        (arithmetic_add_one_term
+          (@Semiterm_bvar oring_language Empty_set 1 Fin.F1))
+        (@Semiterm_bvar oring_language Empty_set 1 Fin.F1))).
+
+Lemma peano_minus_successor_nonfixed_realize_iff : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  (sentence_realize Str peano_minus_successor_nonfixed_sentence <->
+   forall x, oring_add O x (oring_one O) <> x).
+Proof.
+  intros M Str O Horing.
+  unfold peano_minus_successor_nonfixed_sentence.
+  rewrite arithmetic_all_sentence_eval. split.
+  - intros H x. specialize (H (fin_one x)).
+    rewrite semiformula_eval_neg in H.
+    rewrite (@arithmetic_eq_formula_eval M Empty_set 1 Str (fin_one x)
+      arithmetic_empty_free_env O _ _ Horing) in H.
+    rewrite (@arithmetic_add_one_term_val M Empty_set 1 Str (fin_one x)
+      arithmetic_empty_free_env O _ Horing) in H.
+    simpl in H. exact H.
+  - intros H e. specialize (H (e Fin.F1)).
+    rewrite semiformula_eval_neg.
+    rewrite (@arithmetic_eq_formula_eval M Empty_set 1 Str e
+      arithmetic_empty_free_env O _ _ Horing).
+    rewrite (@arithmetic_add_one_term_val M Empty_set 1 Str e
+      arithmetic_empty_free_env O _ Horing).
+    simpl. exact H.
+Qed.
+
+Lemma peano_minus_successor_nonfixed_provable :
+  first_order_theory_provable peano_minus_axiom
+    peano_minus_successor_nonfixed_sentence.
+Proof.
+  apply peano_minus_proof_complete.
+  intros m O Horing Hpa.
+  unfold first_order_model_realize.
+  apply (proj2 (peano_minus_successor_nonfixed_realize_iff Horing)).
+  intros x Hfixed.
+  pose proof (peano_minus_lt_add_one Hpa x) as Hlt.
+  rewrite Hfixed in Hlt.
+  exact (@peano_minus_lt_irrefl _ O Hpa x Hlt).
+Qed.
+
+Theorem robinson_q_successor_nonfixed_unprovable :
+  ~ first_order_theory_provable robinson_q_axiom
+      peano_minus_successor_nonfixed_sentence.
+Proof.
+  apply (first_order_theory_unprovable_of_countermodel
+    omega_add_one_model_models_robinson_q).
+  intro Hreal.
+  pose proof (proj1 (@peano_minus_successor_nonfixed_realize_iff
+    omega_add_one
+    (oring_standard_structure omega_add_one_oring)
+    omega_add_one_oring
+    (oring_standard_structure_interprets omega_add_one_oring))
+    Hreal None) as Hbad.
+  exact (Hbad eq_refl).
+Qed.
+
+Theorem robinson_q_strictly_weaker_than_peano_minus :
+  generic_strictly_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    robinson_q_axiom peano_minus_axiom.
+Proof.
+  constructor.
+  - exact robinson_q_weaker_than_peano_minus.
+  - intro Hreverse. apply robinson_q_successor_nonfixed_unprovable.
+    exact (generic_weaker_subset Hreverse
+      peano_minus_successor_nonfixed_sentence
+      peano_minus_successor_nonfixed_provable).
 Qed.
