@@ -1,0 +1,30 @@
+diff --git a/src/kernel/inductive.cpp b/src/kernel/inductive.cpp
+index 7a09077..36780fd 100644
+--- a/src/kernel/inductive.cpp
++++ b/src/kernel/inductive.cpp
+@@ -970,6 +970,13 @@ struct elim_nested_inductive_fn {
+         levels const & I_lvls = const_levels(fn);
+         lean_assert(I_val->get_nparams() <= args.size());
+         unsigned I_nparams = I_val->get_nparams();
++        if (getenv("LEAN_DUMP_NESTED")) {
++            std::cerr << "[NESTED] occurrence " << e << "\n";
++            for (unsigned i = 0; i < I_nparams; i++)
++                std::cerr << "[NESTED]   param[" << i << "] = " << args[i] << "\n";
++            for (unsigned i = I_nparams; i < args.size(); i++)
++                std::cerr << "[NESTED]   INDEX[" << i << "] = " << args[i] << "\n";
++        }
+         expr IAs = mk_app(fn, I_nparams, args.data()); /* `I As` */
+         /* Check whether we have already created an auxiliary inductive_type for `I As` */
+         optional<name> auxI_name;
+@@ -1020,6 +1027,11 @@ struct elim_nested_inductive_fn {
+                     auxJ_cnstr_type         = lctx.mk_pi(As, auxJ_cnstr_type);
+                     auxJ_constructors.push_back(constructor(auxJ_cnstr_name, auxJ_cnstr_type));
+                 }
++                if (getenv("LEAN_DUMP_NESTED")) {
++                    std::cerr << "[NESTED] aux " << auxJ_name << " : " << auxJ_type << "\n";
++                    for (constructor const & c : auxJ_constructors)
++                        std::cerr << "[NESTED]   ctor " << constructor_name(c) << " : " << constructor_type(c) << "\n";
++                }
+                 m_new_types.push_back(inductive_type(auxJ_name, auxJ_type, constructors(auxJ_constructors)));
+             }
+             lean_assert(result);

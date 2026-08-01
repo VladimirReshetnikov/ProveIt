@@ -442,15 +442,34 @@ were disabled — precisely because coqchk reports rather than rejects them.
 
 Ordered by value.
 
-0. **lean4#14582 needs an instrumented kernel build, and this is now demonstrated
-   rather than assumed.** The nested-inductive auxiliary declarations where the
+0. **lean4#14582 needs an instrumented kernel build. The instrumentation is
+   written and compiles; what remains is the bootstrap.**
+   [`Audits/nested-instrumentation.patch`](Audits/nested-instrumentation.patch)
+   applies to `src/kernel/inductive.cpp` at `v4.32.0` and dumps, under
+   `LEAN_DUMP_NESTED=1`, every nested occurrence with its parameter and index
+   arguments and every auxiliary type and constructor the kernel synthesises —
+   exactly the artifacts that never reach the environment. Build recipe worked
+   out here, on Windows with MinGW GCC 16.1 and CMake 4.3:
+   `cmake -G "Unix Makefiles" .. -DUSE_MIMALLOC=OFF -DCMAKE_MAKE_PROGRAM=mingw32-make`
+   (the default Ninja generator is rejected, `make` must be shimmed to
+   `mingw32-make`, and the mimalloc `FetchContent` step fails). Compiling the
+   kernel standalone gets 59 of 61 sources with
+   `-std=c++20 -DLEAN_MULTI_THREAD -DLEAN_WINDOWS -DLEAN_WIN_STACK_SIZE=…` plus a
+   hand-written `githash.h`; only `io.cpp` and `init_module.cpp` fail, needing
+   libuv and ICU, and the kernel does not use either.
+   **The blocker is not the kernel — it is the environment.** `lean::environment`
+   has no C++-side constructor for an empty kernel environment; every constructor
+   wraps an existing Lean object, and `Kernel.Environment` is built on the Lean
+   side. So a standalone C++ harness cannot create anything to declare into, and
+   the instrumented kernel is only useful inside a full stage0→stage1 build.
+1. **lean4#14582's territory is invisible from inside Lean.** The nested-inductive auxiliary declarations where the
    defect lives never enter the environment: they are created in a temporary
    kernel environment and rewritten by `restore_nested`, so a search from inside
    Lean re-checks only the surviving recursors. This is the same property that
    made lean4#14616's exploit uncapturable as an arena export test. Black-box
    probing cannot reach it; instrumenting `replace_if_nested`/`restore_nested` in
    a source build can.
-1. **The Lean Kernel Arena corpus (§3).** Fourteen catalogued attacks, four of
+2. **The Lean Kernel Arena corpus (§3).** Fourteen catalogued attacks, four of
    which the official kernel has fallen for, plus the `undecidability/` category
    that formalises what [`Audits/Lean/Metatheory/`](Audits/Lean/Metatheory/)
    measured independently. This is the single largest gap, and it is now the
