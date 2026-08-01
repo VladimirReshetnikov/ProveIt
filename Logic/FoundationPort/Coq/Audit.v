@@ -128,6 +128,10 @@ Check ifo_emb.
 Check ifo_shift.
 Check ifo_free.
 Check ifo_substitute.
+Print Assumptions ifo_free_bshift.
+Print Assumptions ifo_free_imp_bshift.
+Print Assumptions ifo_shift_all.
+Print Assumptions ifo_substitute_shift_one_eq_free.
 Print Assumptions ifo_map_injective.
 Print Assumptions ifo_complexity_rewrite.
 Print Assumptions ifo_negative_rewrite_iff.
@@ -145,6 +149,22 @@ Check ifo_hilbert_proof_depth.
 Print Assumptions ifo_hilbert_proof_depth_cast.
 Check ifo_hilbert_modus_ponens.
 Check ifo_hilbert_identity.
+Print Assumptions ifo_hilbert_neg_equiv.
+Check ifo_hilbert_minimal_capability.
+Check ifo_context_derivation.
+Check ifo_context_assumption.
+Check ifo_context_theorem.
+Check ifo_context_cast.
+Check ifo_context_mdp.
+Check ifo_context_weaken.
+Check ifo_context_deduct.
+Check ifo_context_deduct_inverse.
+Print Assumptions ifo_hilbert_specialize.
+Print Assumptions ifo_hilbert_imply_all.
+Print Assumptions ifo_context_generalize.
+Print Assumptions ifo_context_specialize.
+Print Assumptions ifo_hilbert_all_imply_all_of_all_imply.
+Print Assumptions ifo_hilbert_all_iff_all_of_free_iff.
 Check ifo_hilbert_proof_weaken.
 
 Check choose_unique.

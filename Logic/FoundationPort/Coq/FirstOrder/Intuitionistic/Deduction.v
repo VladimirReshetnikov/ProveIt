@@ -7,6 +7,8 @@ From FoundationModal Require Import GenericAdjunctiveSet GenericCalculus
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew.
 
+Import ListNotations.
+
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
@@ -205,6 +207,11 @@ Proof.
   apply GLD_theorem. cbn. exact d.
 Defined.
 
+Definition ifo_context_cast {L H Gamma phi psi}
+    (d : @ifo_context_derivation L H Gamma phi) (e : phi = psi) :
+    @ifo_context_derivation L H Gamma psi :=
+  match e with eq_refl => d end.
+
 Definition ifo_context_mdp {L H Gamma phi psi}
     (dpq : @ifo_context_derivation L H Gamma (IFOImp phi psi))
     (dp : @ifo_context_derivation L H Gamma phi) :
@@ -232,6 +239,124 @@ Definition ifo_context_deduct_inverse {L H Gamma phi psi}
     (d : @ifo_context_derivation L H Gamma (IFOImp phi psi)) :
     @ifo_context_derivation L H (phi :: Gamma) psi :=
   generic_list_deduction_inverse_raw d.
+
+(** Universal elimination does not need any structural hypothesis on the
+    Hilbert axiom set. *)
+Definition ifo_hilbert_specialize {L H} (phi : ifo_semiproposition L 1)
+    (d : @ifo_hilbert_proof L H (IFOAll phi)) (t : syntactic_term L) :
+    @ifo_hilbert_proof L H
+      (ifo_substitute (fun _ : Fin.t 1 => t) phi) :=
+  IFOHPMdp (IFOHPAll1 phi t) d.
+
+(** Generalization with one closed antecedent.  The rewrite equality which
+    expresses the eigenvariable side condition is factored in [Rew]. *)
+Definition ifo_hilbert_imply_all {L H} (phi : ifo_proposition L)
+    (psi : ifo_semiproposition L 1)
+    (d : @ifo_hilbert_proof L H
+      (IFOImp (ifo_shift phi) (@ifo_free L 0 psi))) :
+    @ifo_hilbert_proof L H (IFOImp phi (IFOAll psi)).
+Proof.
+  apply (IFOHPMdp (IFOHPAll2 phi psi)).
+  apply IFOHPGen.
+  refine (ifo_hilbert_proof_cast d _).
+  symmetry. apply ifo_free_imp_bshift.
+Defined.
+
+(** Foundation derives finite-context generalization through a conjunction
+    encoding.  Structural recursion over positional list contexts is both
+    stronger and constructive: duplicates are retained and no formula
+    equality decision is required. *)
+Fixpoint ifo_context_generalize {L H Gamma} (phi : ifo_semiproposition L 1)
+    (d : @ifo_context_derivation L H (map ifo_shift Gamma)
+      (@ifo_free L 0 phi)) {struct Gamma} :
+    @ifo_context_derivation L H Gamma (IFOAll phi).
+Proof.
+  destruct Gamma as [|a Gamma].
+  - simpl in d. apply ifo_context_theorem. apply IFOHPGen.
+    exact (generic_empty_derivation_raw (ifo_hilbert_modus_ponens H) d).
+  - simpl in d.
+    pose (dimp := ifo_context_deduct d).
+    pose (dbody := ifo_context_cast dimp
+      (eq_sym (ifo_free_imp_bshift (L := L) a phi))).
+    pose (dall := @ifo_context_generalize L H Gamma
+      (IFOImp (ifo_bshift a) phi) dbody).
+    apply (ifo_context_mdp
+      (ifo_context_mdp
+        (ifo_context_theorem (Gamma := a :: Gamma) (IFOHPAll2 a phi))
+        (ifo_context_weaken
+          (fun p hp => GRLM_there a hp) dall))
+      (ifo_context_assumption (GRLM_here Gamma))).
+Defined.
+
+Definition ifo_context_specialize {L H Gamma}
+    (phi : ifo_semiproposition L 1)
+    (d : @ifo_context_derivation L H Gamma (IFOAll phi))
+    (t : syntactic_term L) :
+    @ifo_context_derivation L H Gamma
+      (ifo_substitute (fun _ : Fin.t 1 => t) phi) :=
+  ifo_context_mdp
+    (ifo_context_theorem (Gamma := Gamma) (IFOHPAll1 phi t)) d.
+
+(** Universal implication is functorial.  The proof uses the stronger direct
+    list-context generalization above, so it avoids Foundation's decidable
+    equality requirement for conjunction-encoded finite contexts. *)
+Definition ifo_hilbert_all_imply_all_of_all_imply {L H}
+    (phi psi : ifo_semiproposition L 1) :
+    @ifo_hilbert_proof L H
+      (IFOImp (IFOAll (IFOImp phi psi))
+        (IFOImp (IFOAll phi) (IFOAll psi))).
+Proof.
+  set (Gamma := [IFOAll phi; IFOAll (IFOImp phi psi)]).
+  assert (dallphi : @ifo_context_derivation L H (map ifo_shift Gamma)
+      (ifo_shift (IFOAll phi))).
+  { apply ifo_context_assumption. unfold Gamma. simpl.
+    exact (GRLM_here _). }
+  assert (dallimp : @ifo_context_derivation L H (map ifo_shift Gamma)
+      (ifo_shift (IFOAll (IFOImp phi psi)))).
+  { apply ifo_context_assumption. unfold Gamma. simpl.
+    exact (GRLM_there _ (GRLM_here _)). }
+  pose (dphi0 := ifo_context_specialize (phi := ifo_shift phi)
+    (ifo_context_cast dallphi (ifo_shift_all (L := L) phi))
+    (Semiterm_fvar 0)).
+  pose (dimp0 := ifo_context_specialize
+    (phi := ifo_shift (IFOImp phi psi))
+    (ifo_context_cast dallimp (ifo_shift_all (L := L) (IFOImp phi psi)))
+    (Semiterm_fvar 0)).
+  pose (dphi := ifo_context_cast dphi0
+    (ifo_substitute_shift_one_eq_free (L := L) phi)).
+  pose (dimp := ifo_context_cast dimp0
+    (ifo_substitute_shift_one_eq_free (L := L) (IFOImp phi psi))).
+  pose (dpsi := ifo_context_mdp dimp dphi).
+  pose (dallpsi := @ifo_context_generalize L H Gamma psi dpsi).
+  unfold Gamma in dallpsi.
+  exact (generic_empty_derivation_raw (ifo_hilbert_modus_ponens H)
+    (ifo_context_deduct (ifo_context_deduct dallpsi))).
+Defined.
+
+Definition ifo_hilbert_all_iff_all_of_free_iff {L H}
+    (phi psi : ifo_semiproposition L 1)
+    (d : @ifo_hilbert_proof L H
+      (IFOAnd
+        (IFOImp (@ifo_free L 0 phi) (@ifo_free L 0 psi))
+        (IFOImp (@ifo_free L 0 psi) (@ifo_free L 0 phi)))) :
+    @ifo_hilbert_proof L H
+      (IFOAnd
+        (IFOImp (IFOAll phi) (IFOAll psi))
+        (IFOImp (IFOAll psi) (IFOAll phi))).
+Proof.
+  pose (Hm := ifo_hilbert_minimal_capability H).
+  pose (dfwd := generic_minimal_iff_elim_left_raw Hm
+    (@ifo_free L 0 phi) (@ifo_free L 0 psi) d).
+  pose (drev := generic_minimal_iff_elim_right_raw Hm
+    (@ifo_free L 0 phi) (@ifo_free L 0 psi) d).
+  pose (dallfwd := IFOHPGen (phi := IFOImp phi psi) dfwd).
+  pose (dallrev := IFOHPGen (phi := IFOImp psi phi) drev).
+  apply (generic_minimal_iff_intro_raw Hm (IFOAll phi) (IFOAll psi)).
+  - exact (IFOHPMdp
+      (ifo_hilbert_all_imply_all_of_all_imply phi psi) dallfwd).
+  - exact (IFOHPMdp
+      (ifo_hilbert_all_imply_all_of_all_imply psi phi) dallrev).
+Defined.
 
 Fixpoint ifo_hilbert_proof_weaken {L H K phi}
     (h : ifo_hilbert_le H K) (d : @ifo_hilbert_proof L H phi) :

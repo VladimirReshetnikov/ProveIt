@@ -146,6 +146,46 @@ Definition ifo_substitute {L X n m}
     (b : Fin.t n -> semiterm L X m) (phi : ifo_semiformula L X n) :
     ifo_semiformula L X m := ifo_rewrite (rew_subst b) phi.
 
+(** Freeing a freshly weakened closed formula is the ordinary shift of its
+    free variables.  Keeping this equality at the formula layer avoids
+    repeating rewrite-composition arguments in quantified proof systems. *)
+Lemma ifo_free_bshift : forall L (phi : ifo_proposition L),
+  @ifo_free L 0 (ifo_bshift phi) = ifo_shift phi.
+Proof.
+  intros L phi. unfold ifo_free, ifo_bshift, ifo_shift.
+  rewrite <- ifo_rewrite_comp.
+  apply ifo_rewrite_ext, rew_free_bshift_eq_shift.
+Qed.
+
+Lemma ifo_free_imp_bshift : forall L (phi : ifo_proposition L)
+    (psi : ifo_semiproposition L 1),
+  @ifo_free L 0 (IFOImp (ifo_bshift phi) psi) =
+  IFOImp (ifo_shift phi) (@ifo_free L 0 psi).
+Proof.
+  intros L phi psi. unfold ifo_free. simpl. f_equal.
+  apply ifo_free_bshift.
+Qed.
+
+Lemma ifo_shift_all : forall L (phi : ifo_semiproposition L 1),
+  ifo_shift (IFOAll phi) = IFOAll (ifo_shift phi).
+Proof.
+  intros L phi. unfold ifo_shift. simpl. f_equal.
+  apply ifo_rewrite_ext, rew_q_shift.
+Qed.
+
+Lemma ifo_substitute_shift_one_eq_free : forall L
+    (phi : ifo_semiproposition L 1),
+  ifo_substitute (fun _ : Fin.t 1 => Semiterm_fvar 0)
+      (ifo_shift phi) = @ifo_free L 0 phi.
+Proof.
+  intros L phi. unfold ifo_substitute, ifo_shift, ifo_free.
+  rewrite <- ifo_rewrite_comp.
+  apply ifo_rewrite_ext, rew_equiv_of_variables.
+  - intro i. assert (Hi : i = Fin.F1) by apply fin_one_eq_f1.
+    now subst i.
+  - intro x. reflexivity.
+Qed.
+
 Theorem ifo_map_injective : forall (L : language) (X : Type) n
     (Y : Type) m (b : Fin.t n -> Fin.t m) (e : X -> Y),
   (forall i j, b i = b j -> i = j) ->
