@@ -63,9 +63,8 @@ theorem quadratic_formula_plus {a b c s : K} (ha : a ≠ 0)
 theorem quadratic_formula_minus {a b c s : K} (ha : a ≠ 0)
     (hs : s ^ 2 = b ^ 2 - 4 * a * c) :
     quadratic a b c ((-b - s) / (2 * a)) = 0 := by
-  unfold quadratic
-  field_simp [ha]
-  linear_combination hs
+  simpa [sub_eq_add_neg] using
+    (quadratic_formula_plus (s := -s) ha (by simpa using hs))
 
 /-- Every entry returned by `solveQuadratic` is a root. -/
 theorem solveQuadratic_correct {a b c s : K} (ha : a ≠ 0)
@@ -90,14 +89,17 @@ theorem quadratic_eq_zero_iff {a b c s x : K} (ha : a ≠ 0)
     quadratic a b c x = 0 ↔
       x = (-b + s) / (2 * a) ∨ x = (-b - s) / (2 * a) := by
   rw [quadratic_formula_factorization ha hs]
-  constructor
-  · intro h
-    rcases mul_eq_zero.mp h with h | h
-    · rcases mul_eq_zero.mp h with h | h
-      · exact (ha h).elim
-      · exact Or.inl (sub_eq_zero.mp h)
-    · exact Or.inr (sub_eq_zero.mp h)
-  · rintro (rfl | rfl) <;> ring
+  simp only [mul_eq_zero, ha, false_or, sub_eq_zero]
+
+/-- Monic specialization of the quadratic root characterization, convenient
+when a larger polynomial has been factored into monic quadratics. -/
+theorem monic_quadratic_eq_zero_iff {b c s x : K}
+    (hs : s ^ 2 = b ^ 2 - 4 * c) :
+    x ^ 2 + b * x + c = 0 ↔
+      x = (-b + s) / 2 ∨ x = (-b - s) / 2 := by
+  simpa [quadratic] using
+    (quadratic_eq_zero_iff (a := (1 : K)) (b := b) (c := c) (s := s) (x := x)
+      one_ne_zero (by simpa using hs))
 
 end Field
 

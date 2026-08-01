@@ -100,27 +100,27 @@ theorem solveDepressedQuartic_correct {p q r m s t ρ σ : K}
     (hσ : σ ^ 2 = s ^ 2 - 4 * (m + t)) (i : Fin 4) :
     depressedQuartic p q r (solveDepressedQuartic m s t ρ σ i) = 0 := by
   rw [ferrari_factorization hs hst ht]
+  have hρ' : ρ ^ 2 = (-s) ^ 2 - 4 * (1 : K) * (m - t) := by
+    simpa using hρ
+  have hσ' : σ ^ 2 = s ^ 2 - 4 * (1 : K) * (m + t) := by
+    simpa using hσ
   fin_cases i
   · apply mul_eq_zero.mpr
     left
-    change ((s + ρ) / 2) ^ 2 - s * ((s + ρ) / 2) + (m - t) = 0
-    field_simp
-    linear_combination hρ
+    simpa [solveDepressedQuartic, quadratic, sub_eq_add_neg] using
+      (quadratic_formula_plus (a := (1 : K)) one_ne_zero hρ')
   · apply mul_eq_zero.mpr
     left
-    change ((s - ρ) / 2) ^ 2 - s * ((s - ρ) / 2) + (m - t) = 0
-    field_simp
-    linear_combination hρ
+    simpa [solveDepressedQuartic, quadratic, sub_eq_add_neg] using
+      (quadratic_formula_minus (a := (1 : K)) one_ne_zero hρ')
   · apply mul_eq_zero.mpr
     right
-    change ((-s + σ) / 2) ^ 2 + s * ((-s + σ) / 2) + (m + t) = 0
-    field_simp
-    linear_combination hσ
+    simpa [solveDepressedQuartic, quadratic] using
+      (quadratic_formula_plus (a := (1 : K)) one_ne_zero hσ')
   · apply mul_eq_zero.mpr
     right
-    change ((-s - σ) / 2) ^ 2 + s * ((-s - σ) / 2) + (m + t) = 0
-    field_simp
-    linear_combination hσ
+    simpa [solveDepressedQuartic, quadratic] using
+      (quadratic_formula_minus (a := (1 : K)) one_ne_zero hσ')
 
 /-- Every root of the depressed quartic occurs in the four-entry Ferrari
 collection. -/
@@ -133,22 +133,14 @@ theorem solveDepressedQuartic_exhaustive {p q r m s t ρ σ y : K}
     ∃ i, solveDepressedQuartic m s t ρ σ i = y := by
   rw [ferrari_factorization hs hst ht] at hy
   rcases mul_eq_zero.mp hy with hfirst | hsecond
-  · have hquadratic : quadratic 1 (-s) (m - t) y = 0 := by
-      simpa [quadratic, sub_eq_add_neg] using hfirst
-    have hdisc : ρ ^ 2 = (-s) ^ 2 - 4 * 1 * (m - t) := by
-      rw [hρ]
-      ring
-    rcases (quadratic_eq_zero_iff (a := (1 : K)) (b := -s)
-      (c := m - t) (s := ρ) (x := y) one_ne_zero hdisc).mp hquadratic with h | h
+  · rcases (monic_quadratic_eq_zero_iff (b := -s) (c := m - t)
+      (s := ρ) (x := y) (by simpa using hρ)).mp (by
+        simpa [sub_eq_add_neg] using hfirst) with h | h
     · exact ⟨0, by simpa [solveDepressedQuartic] using h.symm⟩
     · exact ⟨1, by simpa [solveDepressedQuartic] using h.symm⟩
-  · have hquadratic : quadratic 1 s (m + t) y = 0 := by
-      simpa [quadratic, sub_eq_add_neg] using hsecond
-    have hdisc : σ ^ 2 = s ^ 2 - 4 * 1 * (m + t) := by
-      rw [hσ]
-      ring
-    rcases (quadratic_eq_zero_iff (a := (1 : K)) (b := s)
-      (c := m + t) (s := σ) (x := y) one_ne_zero hdisc).mp hquadratic with h | h
+  · rcases (monic_quadratic_eq_zero_iff (b := s) (c := m + t)
+      (s := σ) (x := y) (by simpa using hσ)).mp (by
+        simpa using hsecond) with h | h
     · exact ⟨2, by simpa [solveDepressedQuartic] using h.symm⟩
     · exact ⟨3, by simpa [solveDepressedQuartic] using h.symm⟩
 
@@ -186,7 +178,7 @@ theorem solveQuartic_exhaustive {a b c d e m s t ρ σ x : K} (ha : a ≠ 0)
     rw [← depress_monic_quartic]
     convert hmonic using 1
     dsimp [y]
-    ring
+    ring_nf
   obtain ⟨i, hi⟩ := solveDepressedQuartic_exhaustive hs hst ht hρ hσ hdepressed
   refine ⟨i, ?_⟩
   simp only [solveQuartic]
