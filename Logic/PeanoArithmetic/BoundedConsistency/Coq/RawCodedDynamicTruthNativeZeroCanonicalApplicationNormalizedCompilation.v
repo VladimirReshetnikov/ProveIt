@@ -676,6 +676,66 @@ Proof.
         exact holdLookupTemplate.
 Qed.
 
+(** Complete one canonical payload from its sole unresolved coordinate.  The
+    append and vacuous inherited branch are compiled first; the generic
+    synchronizer then runs the fixed-production compiler on that witnessed
+    tail and transports all earlier roots across its helper batch. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalBottom_permutedAppendRowKernelPayload_on_standardWitnessTail_of_growing_fixed_production :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    rootMode outerPrefix,
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+    rootMode outerPrefix ->
+  exists witnesses : StandardPAAxiomWitnessPrefix,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) /\
+    RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+      M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      rootMode outerPrefix witnesses.
+Proof.
+  intros M hPA rootMode outerPrefix hfixedCompiler.
+  destruct
+    (raw_dynamicTruthZeroCanonicalBottom_permutedAppendInheritedRowResourcesUnderPrefix_on_standardWitnessTail
+      M hPA rootMode outerPrefix) as
+    (inheritedWitnesses & hinheritedWitnessed & hinheritedResources).
+  exact
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayload_on_standardWitnessTail_of_inherited_and_growing_fixed_production
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      rootMode outerPrefix inheritedWitnesses
+      hinheritedWitnessed hinheritedResources hfixedCompiler).
+Qed.
+
+(** The two independent fixed rows are sufficient for the former complete
+    independent-payload premise.  Each branch keeps its own witness batch;
+    the existing pair adapter performs cross-branch synchronization only when
+    the downstream append traversal actually needs a common tail. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalBottom_independentPermutedAppendRowKernelPayloadsUnderPrefix_of_independent_growing_fixed_productions :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M) outerPrefix,
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA) outerPrefix ->
+  RawDynamicTruthZeroCanonicalIndependentPermutedAppendRowKernelPayloadsUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA) outerPrefix.
+Proof.
+  intros M hPA outerPrefix [hsigmaFixed hpiFixed].
+  split.
+  - destruct
+      (raw_dynamicTruthZeroCanonicalBottom_permutedAppendRowKernelPayload_on_standardWitnessTail_of_growing_fixed_production
+        M hPA 0 outerPrefix hsigmaFixed) as
+      (sigmaWitnesses & _ & hsigmaPayload).
+    exists sigmaWitnesses. exact hsigmaPayload.
+  - destruct
+      (raw_dynamicTruthZeroCanonicalBottom_permutedAppendRowKernelPayload_on_standardWitnessTail_of_growing_fixed_production
+        M hPA 1 outerPrefix hpiFixed) as
+      (piWitnesses & _ & hpiPayload).
+    exists piWitnesses. exact hpiPayload.
+Qed.
+
 (** Both arithmetic premises are literal assumptions of the direct
     strong-step endpoint.  When they occur in [callerPrefix], prepend the
     two predecessor-state formulas, compile the assumption leaves with the

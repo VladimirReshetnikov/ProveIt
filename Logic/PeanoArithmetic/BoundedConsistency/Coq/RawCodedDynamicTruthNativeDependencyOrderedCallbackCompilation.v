@@ -430,6 +430,62 @@ Arguments
   RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
   M hPA : clear implicits.
 
+(** Canonical boundary with all mechanically generated rank-zero append
+    coordinates removed.  Its second field contains only the two growing
+    fixed-row compilers; append existence, the vacuous inherited traversal,
+    both lookup roots, and all finite-tail synchronization are consequences
+    of the adapters in the canonical application module. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  let translation := rawBottomDirectStructuralTemplateTranslation M hPA in
+  RawDynamicTruthNativeLocalZeroCanonicalIndependentGrowingRestrictedRuleRootCompilersOnCanonicalNormalizedResources
+    M hPA translation /\
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersUnderPrefix
+    M translation coqDynamicTruthPredecessorStateTemplateContext /\
+  RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
+    M hPA /\
+  RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
+    M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers
+  M hPA : clear implicits.
+
+(** Reconstruct the former independent complete-payload coordinate from the
+    strictly smaller pair of fixed-production compilers.  Every other
+    dependency-ordered field is preserved verbatim. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentPermutedAppendRowKernelProofResourceStrongStepKernelCompilers_of_independent_growing_fixed_productions
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
+    M hPA.
+Proof.
+  intros M hPA
+    (hzeroIndependentRestrictedRuleRoots & hfixedProductions &
+      hstrong & hremainder & hcrossLevel & hshift & hsubstitution &
+      haxiom & hfinal).
+  split; [exact hzeroIndependentRestrictedRuleRoots |].
+  split.
+  - exact
+      (raw_dynamicTruthZeroCanonicalBottom_independentPermutedAppendRowKernelPayloadsUnderPrefix_of_independent_growing_fixed_productions
+        M hPA coqDynamicTruthPredecessorStateTemplateContext
+        hfixedProductions).
+  - split; [exact hstrong |].
+    split; [exact hremainder |].
+    split; [exact hcrossLevel |].
+    split; [exact hshift |].
+    split; [exact hsubstitution |].
+    split; [exact haxiom | exact hfinal].
+Qed.
+
 (** Synchronize only the second coordinate.  Every later dependency-ordered
     compiler is preserved definitionally. *)
 Theorem
@@ -1030,6 +1086,13 @@ Definition
     RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
       M hPA.
 
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers
+      M hPA.
+
 Theorem
     raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers
     :
@@ -1216,6 +1279,23 @@ Proof.
     (raw_dynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendRowKernelProofResourceStrongStepKernelCompilers_of_independent_row_kernels
       M hPA (rawBottomTemplateDirectStructuralInputs M hPA)
       (hkernels M hPA)).
+Qed.
+
+(** Weakest rank-zero all-model adapter: the model-global append premise has
+    been reduced to the two fixed canonical row constructions. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_independent_growing_fixed_production_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels.
+Proof.
+  intros hkernels.
+  apply
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_independent_permuted_append_row_kernel_proof_resource_strong_step_kernel_compilers.
+  intros M hPA.
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentPermutedAppendRowKernelProofResourceStrongStepKernelCompilers_of_independent_growing_fixed_productions
+      M hPA (hkernels M hPA)).
 Qed.
 
 (** Exact conditional compact headline.  This does not discharge any member
@@ -1433,6 +1513,23 @@ Proof.
   exact
     (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
       (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_independent_permuted_append_row_kernel_proof_resource_strong_step_kernel_compilers
+        hkernels)).
+Qed.
+
+(** Current weakest canonical headline.  Append existence and inherited-row
+    traversal are no longer hypotheses; only the two fixed first-successor
+    row compilers remain in the rank-zero append coordinate. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_canonical_logical_zero_independent_growing_fixed_production_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hkernels.
+  exact
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_independent_growing_fixed_production_proof_resource_strong_step_kernel_compilers
         hkernels)).
 Qed.
 

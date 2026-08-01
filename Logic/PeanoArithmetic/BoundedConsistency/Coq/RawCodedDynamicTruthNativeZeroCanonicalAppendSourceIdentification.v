@@ -576,6 +576,64 @@ Arguments
   RawDynamicTruthZeroCanonicalPermutedAppendInheritedRowResourcesUnderPrefixAt
   M translation rootMode outerPrefix witnesses : clear implicits.
 
+(** The only proof-producing coordinate not contained in the inherited-row
+    package is the row selected by the fixed root mode.  Its compiler starts
+    from an arbitrary honestly witnessed PA tail and may prepend one further
+    finite batch of standard PA helpers.  This growing form is deliberately
+    weaker than asking a producer to predict the append compiler's witness
+    batch or to reconstruct the append and inherited roots itself. *)
+Definition
+    RawDynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (rootMode : nat) (outerPrefix : TemplateContext) : Prop :=
+  forall sourceWitnessList sourceContext,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix)
+      (fixedProductionRoot : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses sourceWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses sourceContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses sourceContext)
+        (templateContextShiftMany 5
+          (coqFourStateTableAppendWitnessContext
+            (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+            (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+            (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+            (embedPATerm (Term.numeral rootMode))
+            (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)))
+      (rawTemplateFormula translation
+        (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+          (coqFourStateTableAppendEmbeddedModeProductionMotive
+            dynamicTruthZeroCanonicalSigmaRowFormula
+            dynamicTruthZeroCanonicalPiRowFormula)))
+      fixedProductionRoot.
+
+Arguments
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt
+  M translation rootMode outerPrefix : clear implicits.
+
+(** Sigma and Pi row construction may use different finite PA-helper batches.
+    The payload synchronizer handles those batches later, so the weakest
+    model-local interface is simply the conjunction of the two growing
+    fixed-production compilers. *)
+Definition
+    RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersUnderPrefix
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (outerPrefix : TemplateContext) : Prop :=
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt
+    M translation 0 outerPrefix /\
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt
+    M translation 1 outerPrefix.
+
+Arguments
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersUnderPrefix
+  M translation outerPrefix : clear implicits.
+
 (** Proof-producing content of a canonical row kernel, separated from the
     finite legal-mode side condition.  Clients fixed at modes zero and one
     should expose this payload: the disjunction is then supplied once by the
@@ -640,6 +698,112 @@ Definition
 Arguments
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
   M translation rootMode outerPrefix witnesses : clear implicits.
+
+(** Attach an independently growing fixed-production compiler to the three
+    roots already present in the inherited-row package.  The production's
+    helper batch is prepended to the inherited batch, and the earlier append,
+    traversal, and lookup proofs are transported to that exact common tail.
+    Thus the caller supplies only the genuinely missing row proof; witness
+    synchronization is a theorem rather than part of the compiler contract. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayload_on_standardWitnessTail_of_inherited_and_growing_fixed_production :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
+    rootMode outerPrefix inheritedWitnesses,
+  RawCodedPAAxiomWitnessContext M
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      inheritedWitnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      inheritedWitnesses (raw_zero M)) ->
+  RawDynamicTruthZeroCanonicalPermutedAppendInheritedRowResourcesUnderPrefixAt
+    M translation rootMode outerPrefix inheritedWitnesses ->
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt
+    M translation rootMode outerPrefix ->
+  exists witnesses : StandardPAAxiomWitnessPrefix,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) /\
+    RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+      M translation rootMode outerPrefix witnesses.
+Proof.
+  intros M hPA translation hagreement rootMode outerPrefix
+    inheritedWitnesses hinheritedWitnessed
+    (appendRoot & inheritedTraversal & oldLookup &
+      happend & hopen & hinheritedRoots)
+    hfixedCompiler.
+  set (inheritedWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      inheritedWitnesses (raw_zero M)).
+  set (inheritedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      inheritedWitnesses (raw_zero M)).
+  set (rowPrefix :=
+    templateContextShiftMany 5
+      (coqFourStateTableAppendWitnessContext
+        (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+        (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+        (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+        (embedPATerm (Term.numeral rootMode))
+        (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)).
+  destruct
+    (hfixedCompiler inheritedWitnessList inheritedContext
+      hinheritedWitnessed) as
+    (productionWitnesses & fixedProductionRoot &
+      hfinalWitnessed & hfixedProduction).
+  assert (hincluded : RawContextListIncluded M inheritedContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        productionWitnesses inheritedContext)).
+  {
+    exact
+      (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+        M hPA productionWitnesses inheritedContext).
+  }
+  destruct
+    (raw_codedPALocalProofOf_standardPAAxiomWitnessPrefix
+      M hPA productionWitnesses inheritedContext
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0))) appendRoot
+      (raw_codedPAAxiomWitnessContext_context_realizable M
+        inheritedWitnessList inheritedContext hinheritedWitnessed)
+      happend) as [transportedAppendRoot htransportedAppend].
+  pose proof
+    (raw_fourStateTableAppendInheritedLocalRootsAt_transport
+      M hPA translation inheritedWitnessList inheritedContext
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        productionWitnesses inheritedWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        productionWitnesses inheritedContext)
+      rowPrefix inheritedTraversal oldLookup
+      hinheritedWitnessed hfinalWitnessed hincluded hinheritedRoots)
+    as htransportedInheritedRoots.
+  exists (productionWitnesses ++ inheritedWitnesses).
+  split.
+  - rewrite rawStandardPAAxiomWitnessPrefixWitnessListCode_app.
+    rewrite rawStandardPAAxiomWitnessPrefixContextCode_app.
+    exact hfinalWitnessed.
+  - unfold
+      RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt.
+    rewrite rawStandardPAAxiomWitnessPrefixContextCode_app.
+    exists transportedAppendRoot, fixedProductionRoot,
+      inheritedTraversal, oldLookup.
+    split.
+    + fold inheritedContext in htransportedAppend.
+      exact htransportedAppend.
+    + split; [exact hopen |].
+      split.
+      * fold rowPrefix in htransportedInheritedRoots.
+        exact htransportedInheritedRoots.
+      * fold rowPrefix in hfixedProduction.
+        exact hfixedProduction.
+Qed.
 
 (** The append coordinate of every canonical row payload is now produced
     internally.  Keeping the witnessed-context certificate in the result is
