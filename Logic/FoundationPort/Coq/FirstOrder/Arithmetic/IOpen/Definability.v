@@ -429,3 +429,168 @@ Proof.
   - exact (arithmetic_iopen_sqrt_bounded Str Hpa Hleast).
   - exact (arithmetic_iopen_sqrt_definable_zero Horing Hpa Hleast).
 Defined.
+
+(** * Pairing *)
+
+Definition arithmetic_iopen_pair_graph_formula : arithmetic_semisentence 3 :=
+  Semiformula_or
+    (Semiformula_and
+      (arithmetic_lt_formula
+        (@Semiterm_bvar oring_language Empty_set 3 (Fin.FS Fin.F1))
+        (@Semiterm_bvar oring_language Empty_set 3
+          (Fin.FS (Fin.FS Fin.F1))))
+      (arithmetic_eq_formula
+        (@Semiterm_bvar oring_language Empty_set 3 Fin.F1)
+        (arithmetic_add_term
+          (arithmetic_mul_term
+            (@Semiterm_bvar oring_language Empty_set 3
+              (Fin.FS (Fin.FS Fin.F1)))
+            (@Semiterm_bvar oring_language Empty_set 3
+              (Fin.FS (Fin.FS Fin.F1))))
+          (@Semiterm_bvar oring_language Empty_set 3 (Fin.FS Fin.F1)))))
+    (Semiformula_and
+      (arithmetic_le_formula
+        (@Semiterm_bvar oring_language Empty_set 3
+          (Fin.FS (Fin.FS Fin.F1)))
+        (@Semiterm_bvar oring_language Empty_set 3 (Fin.FS Fin.F1)))
+      (arithmetic_eq_formula
+        (@Semiterm_bvar oring_language Empty_set 3 Fin.F1)
+        (arithmetic_add_term
+          (arithmetic_add_term
+            (arithmetic_mul_term
+              (@Semiterm_bvar oring_language Empty_set 3 (Fin.FS Fin.F1))
+              (@Semiterm_bvar oring_language Empty_set 3 (Fin.FS Fin.F1)))
+            (@Semiterm_bvar oring_language Empty_set 3 (Fin.FS Fin.F1)))
+          (@Semiterm_bvar oring_language Empty_set 3
+            (Fin.FS (Fin.FS Fin.F1)))))).
+
+Lemma arithmetic_iopen_pair_graph_formula_open :
+  semiformula_open arithmetic_iopen_pair_graph_formula.
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_iopen_pair_graph_formula_hierarchy :
+  arithmetic_hierarchy Empty_set arithmetic_sigma 0 3
+    arithmetic_iopen_pair_graph_formula.
+Proof.
+  exact (arithmetic_hierarchy_of_open
+    arithmetic_iopen_pair_graph_formula_open arithmetic_sigma 0).
+Qed.
+
+Definition arithmetic_iopen_pair_graph_sorted :
+    arithmetic_sorted_formula Empty_set 3 arithmetic_sigma_zero_symbol :=
+  ArithmeticSortedSigma 0 arithmetic_iopen_pair_graph_formula
+    arithmetic_iopen_pair_graph_formula_hierarchy.
+
+Theorem arithmetic_iopen_pair_graph_formula_eval : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O -> forall v : Fin.t 3 -> M,
+  semiformula_eval Str v (fun x : Empty_set => match x with end)
+    arithmetic_iopen_pair_graph_formula <->
+  v Fin.F1 = iopen_pair O
+    (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Horing Hpa v.
+  unfold arithmetic_iopen_pair_graph_formula.
+  rewrite peano_minus_eval_or.
+  setoid_rewrite peano_minus_eval_and.
+  repeat rewrite (@arithmetic_lt_formula_eval M Empty_set 3 Str v
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  repeat rewrite (@arithmetic_le_formula_eval M Empty_set 3 Str v
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  repeat rewrite (@arithmetic_eq_formula_eval M Empty_set 3 Str v
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  repeat rewrite (@arithmetic_add_term_val M Empty_set 3 Str v
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  repeat rewrite (@arithmetic_mul_term_val M Empty_set 3 Str v
+    (fun x : Empty_set => match x with end) O _ _ Horing).
+  cbn [semiterm_val].
+  symmetry. apply (iopen_pair_graph Hpa).
+Qed.
+
+Definition arithmetic_iopen_pair_defined : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  arithmetic_sorted_defined_function Str
+    (fun v : Fin.t 2 -> M =>
+      iopen_pair O (v Fin.F1) (v (Fin.FS Fin.F1)))
+    arithmetic_iopen_pair_graph_sorted.
+Proof.
+  intros M Str O Horing Hpa.
+  unfold arithmetic_sorted_defined_function. constructor. split.
+  - exact I.
+  - intro v. apply (arithmetic_iopen_pair_graph_formula_eval Horing Hpa).
+Defined.
+
+Definition arithmetic_iopen_pair_definable_zero : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  arithmetic_sorted_definable_function Str arithmetic_sigma_zero_symbol
+    (fun v : Fin.t 2 -> M =>
+      iopen_pair O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Horing Hpa.
+  unfold arithmetic_sorted_definable_function.
+  exact (arithmetic_sorted_defined_to_definable
+    (arithmetic_iopen_pair_defined Horing Hpa)).
+Defined.
+
+Definition arithmetic_iopen_pair_definable : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O -> forall symbol,
+  arithmetic_sorted_definable_function Str symbol
+    (fun v : Fin.t 2 -> M =>
+      iopen_pair O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Horing Hpa symbol.
+  unfold arithmetic_sorted_definable_function.
+  exact (arithmetic_sorted_definable_of_zero
+    (arithmetic_iopen_pair_definable_zero Horing Hpa) symbol).
+Defined.
+
+Definition arithmetic_iopen_pair_bounded : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  arithmetic_bounded_function Str (peano_minus_le O)
+    (fun v : Fin.t 2 -> M =>
+      iopen_pair O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Horing Hpa.
+  refine {| arithmetic_bounded_term :=
+    arithmetic_mul_term
+      (arithmetic_add_term
+        (arithmetic_add_term
+          (@Semiterm_bvar oring_language M 2 Fin.F1)
+          (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)))
+        arithmetic_one_term)
+      (arithmetic_add_term
+        (arithmetic_add_term
+          (@Semiterm_bvar oring_language M 2 Fin.F1)
+          (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)))
+        arithmetic_one_term) |}.
+  intro v.
+  repeat rewrite (@arithmetic_mul_term_val M M 2 Str v (fun x => x) O
+    _ _ Horing).
+  repeat rewrite (@arithmetic_add_term_val M M 2 Str v (fun x => x) O
+    _ _ Horing).
+  repeat rewrite (@arithmetic_one_term_val M M 2 Str v (fun x => x) O
+    Horing).
+  cbn [semiterm_val]. apply (iopen_pair_polybound Hpa).
+Defined.
+
+Definition arithmetic_iopen_pair_definably_bounded : forall M
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  peano_minus_laws O ->
+  arithmetic_definably_bounded_function Str (peano_minus_le O)
+    (fun v : Fin.t 2 -> M =>
+      iopen_pair O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  intros M Str O Horing Hpa. constructor.
+  - exact (arithmetic_iopen_pair_bounded Horing Hpa).
+  - exact (arithmetic_iopen_pair_definable_zero Horing Hpa).
+Defined.

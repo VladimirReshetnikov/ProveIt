@@ -3209,6 +3209,16 @@ Print Assumptions arithmetic_iopen_sqrt_definable_zero.
 Print Assumptions arithmetic_iopen_sqrt_definable.
 Print Assumptions arithmetic_iopen_sqrt_bounded.
 Print Assumptions arithmetic_iopen_sqrt_definably_bounded.
+Print Assumptions arithmetic_iopen_pair_graph_formula.
+Print Assumptions arithmetic_iopen_pair_graph_formula_open.
+Print Assumptions arithmetic_iopen_pair_graph_formula_hierarchy.
+Print Assumptions arithmetic_iopen_pair_graph_sorted.
+Print Assumptions arithmetic_iopen_pair_graph_formula_eval.
+Print Assumptions arithmetic_iopen_pair_defined.
+Print Assumptions arithmetic_iopen_pair_definable_zero.
+Print Assumptions arithmetic_iopen_pair_definable.
+Print Assumptions arithmetic_iopen_pair_bounded.
+Print Assumptions arithmetic_iopen_pair_definably_bounded.
 Print Assumptions iopen_div_eq_of.
 Print Assumptions iopen_div_mul_add.
 Print Assumptions iopen_div_mul_add_left.
