@@ -18,6 +18,7 @@ From Foundation.Vorspiel Require Import Arithmetic.
 From Foundation.Vorspiel Require Import BetaEncoding.
 From Foundation.FirstOrder.Incompleteness Require Import ProvabilityAbstraction.
 From Foundation.FirstOrder.Incompleteness Require Import Height.
+From Foundation.FirstOrder.Incompleteness Require Import Tarski.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4374,3 +4375,5 @@ Print Assumptions pa_height_lt_pos_of_base_iterated_bottom.
 Print Assumptions pa_height_le_iff_iterated_bottom.
 Print Assumptions pa_height_eq_top_of_kreisel_consistent.
 Print Assumptions pa_height_eq_zero_of_inconsistent.
+Print Assumptions pa_not_exists_tarski_predicate.
+Print Assumptions pa_undefinability_of_truth.
