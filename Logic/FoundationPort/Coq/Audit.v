@@ -52,6 +52,7 @@ From Foundation.FirstOrder.Completeness Require Import CountableSublanguage.
 From Foundation.FirstOrder.Completeness Require Import CanonicalModel.
 From Foundation.FirstOrder.Completeness Require Import CounterModel.
 From Foundation.FirstOrder.Order Require Import Le.
+From Foundation.SecondOrder.Syntax Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -3736,3 +3737,60 @@ Check first_order_order_le_iff_sentence.
 Print Assumptions first_order_order_le_iff_sentence_realize.
 Print Assumptions first_order_order_le_iff_provable.
 Print Assumptions first_order_order_complete.
+Check second_order_semiformula.
+Check second_order_formula.
+Check second_order_semisentence.
+Check second_order_sentence.
+Check second_order_semiproposition.
+Check second_order_proposition.
+Check second_order_semiformula_rect.
+Check second_order_semiformula_ind.
+Check second_order_neg.
+Check second_order_imp.
+Check second_order_iff.
+Print Assumptions second_order_neg_rel.
+Print Assumptions second_order_neg_nrel.
+Print Assumptions second_order_neg_bpred.
+Print Assumptions second_order_neg_nbpred.
+Print Assumptions second_order_neg_fpred.
+Print Assumptions second_order_neg_nfpred.
+Print Assumptions second_order_neg_verum.
+Print Assumptions second_order_neg_falsum.
+Print Assumptions second_order_neg_and.
+Print Assumptions second_order_neg_or.
+Print Assumptions second_order_neg_all0.
+Print Assumptions second_order_neg_exs0.
+Print Assumptions second_order_neg_all1.
+Print Assumptions second_order_neg_exs1.
+Print Assumptions second_order_neg_involutive.
+Print Assumptions second_order_neg_injective.
+Check second_order_and_left.
+Check second_order_and_right.
+Check second_order_or_left.
+Check second_order_or_right.
+Check second_order_all0_body.
+Check second_order_exs0_body.
+Check second_order_all1_body.
+Check second_order_exs1_body.
+Print Assumptions second_order_and_injective.
+Print Assumptions second_order_or_injective.
+Print Assumptions second_order_all0_injective.
+Print Assumptions second_order_exs0_injective.
+Print Assumptions second_order_all1_injective.
+Print Assumptions second_order_exs1_injective.
+Check second_order_complexity.
+Print Assumptions second_order_complexity_rel.
+Print Assumptions second_order_complexity_nrel.
+Print Assumptions second_order_complexity_bpred.
+Print Assumptions second_order_complexity_nbpred.
+Print Assumptions second_order_complexity_fpred.
+Print Assumptions second_order_complexity_nfpred.
+Print Assumptions second_order_complexity_verum.
+Print Assumptions second_order_complexity_falsum.
+Print Assumptions second_order_complexity_and.
+Print Assumptions second_order_complexity_or.
+Print Assumptions second_order_complexity_all0.
+Print Assumptions second_order_complexity_exs0.
+Print Assumptions second_order_complexity_all1.
+Print Assumptions second_order_complexity_exs1.
+Print Assumptions second_order_complexity_neg.
