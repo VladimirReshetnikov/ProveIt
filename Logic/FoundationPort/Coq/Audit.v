@@ -24,6 +24,7 @@ From Foundation.FirstOrder.Incompleteness Require Import First.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
+From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Functions.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4454,3 +4455,33 @@ Print Assumptions boot_fin_max_le_iff.
 Print Assumptions boot_semiterm_bv_component_le.
 Print Assumptions boot_semiterm_bv_le_iff.
 Print Assumptions semiterm_code_is_semiterm_iff_bv.
+Check boot_rewrite_code.
+Check boot_rewrite_code_total.
+Print Assumptions boot_rewrite_code_quote.
+Print Assumptions boot_rewrite_code_total_quote.
+Print Assumptions boot_rewrite_code_some_iff.
+Print Assumptions boot_is_semiterm_decode_quote.
+Print Assumptions boot_rewrite_code_total_preserves.
+Print Assumptions boot_rewrite_code_total_ext.
+Print Assumptions boot_rewrite_code_total_comp.
+Check boot_term_subst_code.
+Print Assumptions boot_term_subst_code_bvar.
+Print Assumptions boot_term_subst_code_fvar.
+Print Assumptions boot_term_subst_code_func.
+Print Assumptions boot_term_subst_code_preserves.
+Print Assumptions boot_term_subst_code_comp.
+Check boot_term_shift_code.
+Check boot_term_bshift_code.
+Print Assumptions boot_term_shift_code_bvar.
+Print Assumptions boot_term_shift_code_fvar.
+Print Assumptions boot_term_bshift_code_bvar.
+Print Assumptions boot_term_bshift_code_fvar.
+Print Assumptions boot_term_shift_code_preserves.
+Print Assumptions boot_term_bshift_code_preserves.
+Print Assumptions rew_bshift_shift_comm.
+Print Assumptions boot_term_bshift_shift_comm.
+Print Assumptions boot_term_shift_subst.
+Check boot_term_fv_free.
+Print Assumptions boot_term_fv_free_bvar.
+Print Assumptions boot_term_fv_free_fvar.
+Print Assumptions boot_term_fv_free_bshift.
