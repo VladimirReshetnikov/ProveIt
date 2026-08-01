@@ -39,6 +39,7 @@ From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
 From Foundation.FirstOrder.NegationTranslation Require Import GoedelGentzen.
 From Foundation.FirstOrder.Kripke Require Import Basic Intuitionistic WeakForcing.
 From Foundation.FirstOrder Require Import Hauptsatz.
+From Foundation.FirstOrder.Completeness Require Import CountableSublanguage.
 From Foundation.FirstOrder.Completeness Require Import CanonicalModel.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
@@ -3157,3 +3158,49 @@ Print Assumptions first_order_canonical_is_weakly_forced_imp.
 Check first_order_canonical_classical_kripke.
 Print Assumptions first_order_canonical_weak_completeness.
 Print Assumptions first_order_canonical_weak_reflection.
+Check language_sublanguage.
+Check language_sublanguage_unsub.
+Print Assumptions language_sublanguage_unsub_func.
+Print Assumptions language_sublanguage_unsub_rel.
+Check language_hom_injective.
+Print Assumptions language_sublanguage_unsub_injective.
+Check indexed_singleton.
+Print Assumptions indexed_singleton_same.
+Check semiterm_function_symbols.
+Print Assumptions semiterm_function_symbols_root.
+Print Assumptions semiterm_function_symbols_child.
+Check semiterm_to_sublanguage.
+Print Assumptions semiterm_language_map_to_sublanguage.
+Check semiformula_function_symbols.
+Check semiformula_relation_symbols.
+Print Assumptions semiformula_function_symbols_atom.
+Print Assumptions semiformula_relation_symbols_rel.
+Print Assumptions semiformula_relation_symbols_nrel.
+Check semiformula_to_sublanguage.
+Print Assumptions semiformula_language_map_to_sublanguage.
+Check semiformula_predicate_sublanguage.
+Check semiformula_to_predicate_sublanguage.
+Print Assumptions semiformula_language_map_to_predicate_sublanguage.
+Print Assumptions list_index_lt_length.
+Check list_member_position.
+Print Assumptions fin_to_nat_FS_value.
+Print Assumptions chain_list_index_nth.
+Print Assumptions chain_list_index_member_position.
+Check semiformula_sublanguage.
+Check semiformula_sublanguage_unsub.
+Check semiformula_sublanguage_number.
+Check semiformula_to_own_sublanguage.
+Print Assumptions semiformula_language_map_to_own_sublanguage.
+Check fin_encoding.
+Check semiformula_sublanguage_encodable.
+Check language_sublanguage_decidable_eq.
+Check semiformula_sublanguage_decidable_eq.
+Check first_order_structure_extend.
+Print Assumptions first_order_structure_extend_func.
+Print Assumptions first_order_structure_extend_rel.
+Print Assumptions semiterm_val_language_map_extend.
+Print Assumptions semiformula_eval_language_map_extend.
+Check first_order_model_extend.
+Print Assumptions first_order_model_extend_realize_language_map.
+Print Assumptions first_order_consequence_language_map_iff_injective.
+Print Assumptions first_order_satisfiable_language_map.
