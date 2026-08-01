@@ -260,6 +260,131 @@ Proof.
   exact hproof.
 Qed.
 
+(** Synchronize two caller-produced roots with an assignment root that has
+    selected a larger witnessed PA tail.  The formula codes are arbitrary;
+    only their shared temporary prefix matters.  This isolates the context
+    bookkeeping from both the historical local layout and the corrected
+    predecessor-child layout. *)
+Theorem
+    raw_dynamicTruthPredecessorAdmissibleCodeOf_on_retained_witnessed_extension_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix
+      atomicCode assignmentCode sigmaDomain piDomain
+      atomicRoot domainRoot
+      (witnesses : StandardPAAxiomWitnessPrefix) assignmentRoot,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPAAxiomWitnessContext M
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList)
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext) ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    atomicCode atomicRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix))
+    assignmentCode assignmentRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawFormulaOrCode M sigmaDomain piDomain) domainRoot ->
+  exists admissibleRoot,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses baseContext) prefix))
+      (rawDynamicTruthAdmissibleCodeOf M
+        atomicCode assignmentCode sigmaDomain piDomain)
+      admissibleRoot.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    prefix atomicCode assignmentCode sigmaDomain piDomain
+    atomicRoot domainRoot witnesses assignmentRoot
+    hbase hextended hatomic hassignment hdomain.
+  set (extendedWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext).
+  assert (hincluded : RawContextListIncluded M baseContext extendedContext).
+  {
+    unfold extendedContext.
+    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+      M hPA witnesses baseContext).
+  }
+  assert (hatomicTemplate : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (coqDynamicTruthPredecessorStateTemplateContext ++ prefix))
+      atomicCode atomicRoot).
+  {
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement baseContext prefix).
+    exact hatomic.
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix)
+      atomicCode atomicRoot
+      hbase hextended hincluded hatomicTemplate)
+    as [transportedAtomicRoot htransportedAtomic].
+  assert (htransportedAtomicJoint : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation extendedContext prefix))
+      atomicCode transportedAtomicRoot).
+  {
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement extendedContext prefix).
+    exact htransportedAtomic.
+  }
+  assert (hdomainTemplate : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (coqDynamicTruthPredecessorStateTemplateContext ++ prefix))
+      (rawFormulaOrCode M sigmaDomain piDomain) domainRoot).
+  {
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement baseContext prefix).
+    exact hdomain.
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix)
+      (rawFormulaOrCode M sigmaDomain piDomain) domainRoot
+      hbase hextended hincluded hdomainTemplate)
+    as [transportedDomainRoot htransportedDomain].
+  assert (htransportedDomainJoint : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation extendedContext prefix))
+      (rawFormulaOrCode M sigmaDomain piDomain)
+      transportedDomainRoot).
+  {
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement extendedContext prefix).
+    exact htransportedDomain.
+  }
+  apply
+    (raw_codedPALocalProofOf_dynamicTruthAdmissibleCodeOf_components
+      M hPA
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation extendedContext prefix))
+      atomicCode assignmentCode sigmaDomain piDomain).
+  constructor.
+  - exists transportedAtomicRoot. exact htransportedAtomicJoint.
+  - exists assignmentRoot. exact hassignment.
+  - exists transportedDomainRoot. exact htransportedDomainJoint.
+Qed.
+
 (** Prefix-general predecessor admissibility.  State membership alone does
     not imply that an arbitrary table row is syntactically adequate or lies
     in the requested rank union.  Callers therefore supply exactly those two
@@ -305,89 +430,113 @@ Proof.
       M hPA translation hagreement baseWitnessList baseContext prefix
       hprefix hbase)
     as (witnesses & assignmentRoot & hextended & hassignment).
-  set (extendedWitnessList :=
-    rawStandardPAAxiomWitnessPrefixWitnessListCode M
-      witnesses baseWitnessList).
-  set (extendedContext :=
-    rawStandardPAAxiomWitnessPrefixContextCode M
-      witnesses baseContext).
-  assert (hincluded : RawContextListIncluded M baseContext extendedContext).
-  {
-    unfold extendedContext.
-    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
-      M hPA witnesses baseContext).
-  }
-  assert (hatomicTemplate : RawCodedPALocalProofOf M
-      (rawTemplateContextCodeOnTail translation baseContext
-        (coqDynamicTruthPredecessorStateTemplateContext ++ prefix))
-      (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot).
-  {
-    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
-      M translation hagreement baseContext prefix).
-    exact hatomic.
-  }
   destruct
-    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
-      M hPA translation baseWitnessList baseContext
-      extendedWitnessList extendedContext
-      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix)
-      (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot
-      hbase hextended hincluded hatomicTemplate)
-    as [transportedAtomicRoot htransportedAtomic].
-  assert (htransportedAtomicJoint : RawCodedPALocalProofOf M
-      (rawDynamicTruthPredecessorJointStateContext M
-        (rawTemplateContextCodeOnTail translation extendedContext prefix))
+    (raw_dynamicTruthPredecessorAdmissibleCodeOf_on_retained_witnessed_extension_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix
       (rawDynamicTruthLocalAtomicAdequacyCode M)
-      transportedAtomicRoot).
-  {
-    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
-      M translation hagreement extendedContext prefix).
-    exact htransportedAtomic.
-  }
-  assert (hdomainTemplate : RawCodedPALocalProofOf M
-      (rawTemplateContextCodeOnTail translation baseContext
-        (coqDynamicTruthPredecessorStateTemplateContext ++ prefix))
-      (rawFormulaOrCode M sigmaDomain piDomain) domainRoot).
-  {
-    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
-      M translation hagreement baseContext prefix).
-    exact hdomain.
-  }
-  destruct
-    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
-      M hPA translation baseWitnessList baseContext
-      extendedWitnessList extendedContext
-      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix)
-      (rawFormulaOrCode M sigmaDomain piDomain) domainRoot
-      hbase hextended hincluded hdomainTemplate)
-    as [transportedDomainRoot htransportedDomain].
-  assert (htransportedDomainJoint : RawCodedPALocalProofOf M
-      (rawDynamicTruthPredecessorJointStateContext M
-        (rawTemplateContextCodeOnTail translation extendedContext prefix))
-      (rawFormulaOrCode M sigmaDomain piDomain)
-      transportedDomainRoot).
-  {
-    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
-      M translation hagreement extendedContext prefix).
-    exact htransportedDomain.
-  }
-  assert (hcomponents : RawDynamicTruthLocalAdmissibilityComponentsAt M
-      (rawDynamicTruthPredecessorJointStateContext M
-        (rawTemplateContextCodeOnTail translation extendedContext prefix))
-      sigmaDomain piDomain).
-  {
-    constructor.
-    - exists transportedAtomicRoot. exact htransportedAtomicJoint.
-    - exists assignmentRoot. exact hassignment.
-    - exists transportedDomainRoot. exact htransportedDomainJoint.
-  }
-  destruct
-    (raw_codedPALocalProofOf_dynamicTruthLocalAdmissible_of_components
-      M hPA (rawDynamicTruthPredecessorJointStateContext M
-        (rawTemplateContextCodeOnTail translation extendedContext prefix))
-      sigmaDomain piDomain hcomponents)
+      (rawDynamicTruthLocalAssignmentDefinedCode M)
+      sigmaDomain piDomain atomicRoot domainRoot witnesses assignmentRoot
+      hbase hextended hatomic hassignment hdomain)
     as [admissibleRoot hadmissible].
-  exists witnesses, admissibleRoot. split; assumption.
+  exists witnesses, admissibleRoot. split; [exact hextended |].
+  exact hadmissible.
+Qed.
+
+(** Correct predecessor-child admissibility.  The atomic and assignment
+    leaves refer to the common child [#0]; the row-domain disjunction stays
+    abstract so the synchronized table projection can identify it without
+    any additional syntactic assumption. *)
+Theorem
+    raw_dynamicTruthPredecessorChildAdmissibility_on_witnessed_extension_under_prefix_of_atomic_and_domain :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix sigmaDomain piDomain
+      atomicRoot domainRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawDynamicTruthPredecessorLocalAtomicAdequacyCode M) atomicRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawFormulaOrCode M sigmaDomain piDomain) domainRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) admissibleRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses baseContext) prefix))
+      (rawDynamicTruthPredecessorLocalAdmissibleCode M
+        sigmaDomain piDomain)
+      admissibleRoot.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    prefix sigmaDomain piDomain atomicRoot domainRoot
+    hprefix hbase hatomic hdomain.
+  destruct
+    (raw_dynamicTruthPredecessorChildAssignmentRoot_on_witnessed_extension_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      hprefix hbase)
+    as (witnesses & assignmentRoot & hextended & hassignment).
+  destruct
+    (raw_dynamicTruthPredecessorAdmissibleCodeOf_on_retained_witnessed_extension_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      (rawDynamicTruthPredecessorLocalAtomicAdequacyCode M)
+      (rawDynamicTruthPredecessorLocalAssignmentDefinedCode M)
+      sigmaDomain piDomain atomicRoot domainRoot witnesses assignmentRoot
+      hbase hextended hatomic hassignment hdomain)
+    as [admissibleRoot hadmissible].
+  exists witnesses, admissibleRoot. split; [exact hextended |].
+  exact hadmissible.
+Qed.
+
+(** State-only specialization of corrected child admissibility. *)
+Corollary
+    raw_dynamicTruthPredecessorChildAdmissibility_on_witnessed_extension_of_atomic_and_domain :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext sigmaDomain piDomain
+      atomicRoot domainRoot,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M baseContext)
+    (rawDynamicTruthPredecessorLocalAtomicAdequacyCode M) atomicRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M baseContext)
+    (rawFormulaOrCode M sigmaDomain piDomain) domainRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) admissibleRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext))
+      (rawDynamicTruthPredecessorLocalAdmissibleCode M
+        sigmaDomain piDomain)
+      admissibleRoot.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    sigmaDomain piDomain atomicRoot domainRoot hbase hatomic hdomain.
+  pose proof
+    (raw_dynamicTruthPredecessorChildAdmissibility_on_witnessed_extension_under_prefix_of_atomic_and_domain
+      M hPA translation hagreement baseWitnessList baseContext []
+      sigmaDomain piDomain atomicRoot domainRoot
+      (fun formula hformula => match hformula with end)
+      hbase hatomic hdomain) as hresult.
+  cbn [rawTemplateContextCodeOnTail] in hresult.
+  exact hresult.
 Qed.
 
 (** Historical state-only endpoint, now an empty-prefix specialization of
