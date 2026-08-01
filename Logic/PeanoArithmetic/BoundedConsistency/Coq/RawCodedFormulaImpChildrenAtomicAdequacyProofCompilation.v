@@ -70,6 +70,36 @@ Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 
+(** Shared two-premise modus-ponens spine for constructor laws.  It lives in
+    this leaf compiler module so downstream constructor compilers can reuse
+    it without changing the checksum of the foundational composition
+    library and forcing unrelated proof developments to rebuild. *)
+Corollary raw_codedPALocalProofOf_impE2_general : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context first second conclusion implicationRoot firstRoot secondRoot,
+  RawCodedPALocalProofOf M context
+    (rawFormulaImpCode M first
+      (rawFormulaImpCode M second conclusion)) implicationRoot ->
+  RawCodedPALocalProofOf M context first firstRoot ->
+  RawCodedPALocalProofOf M context second secondRoot ->
+  exists root, RawCodedPALocalProofOf M context conclusion root.
+Proof.
+  intros M hPA context first second conclusion
+    implicationRoot firstRoot secondRoot himp hfirst hsecond.
+  pose proof (raw_codedPALocalProofOf_impE M hPA context
+    first (rawFormulaImpCode M second conclusion)
+    implicationRoot firstRoot himp hfirst) as himp2.
+  lazymatch type of himp2 with
+  | RawCodedPALocalProofOf _ _ _ ?imp2Root =>
+      pose proof (raw_codedPALocalProofOf_impE M hPA context
+        second conclusion imp2Root secondRoot himp2 hsecond) as hresult;
+      lazymatch type of hresult with
+      | RawCodedPALocalProofOf _ _ _ ?resultRoot =>
+          exists resultRoot; exact hresult
+      end
+  end.
+Qed.
+
 (** Binder order is parent, left child, right child.  The body therefore
     sees those values at de Bruijn indices [2], [1], and [0]. *)
 Definition codedFormulaImpChildrenAtomicAdequacyBodyFormula : formula :=
@@ -302,10 +332,90 @@ Proof.
   exists witnesses, proofRoot. split; assumption.
 Qed.
 
-(** Transport both premise proofs to the theorem compiler's chosen
-    standard-axiom extension and perform the two represented [Imp-E] steps.
-    Keeping this context kernel generic avoids repeating it in the Sigma and
-    Pi implication leaves. *)
+(** Generic context synchronization for any two-premise represented law.
+    The theorem compiler has already chosen [witnesses]; this kernel moves
+    both caller premises to that exact standard-axiom extension and applies
+    the shared two-step modus-ponens spine. *)
+Theorem
+    raw_codedPALocalProofOf_templateImp2_of_roots_on_standard_witnessed_extension_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix witnesses
+      source first second conclusion implicationRoot firstRoot secondRoot,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPAAxiomWitnessContext M
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList)
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext) ->
+  source = tfImp first (tfImp second conclusion) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) prefix)
+    (rawTemplateFormula translation source) implicationRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation first) firstRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation second) secondRoot ->
+  exists resultRoot,
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      (rawTemplateFormula translation conclusion) resultRoot.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext prefix
+    witnesses source first second conclusion implicationRoot
+    firstRoot secondRoot hbase hextended hsource
+    himplication hfirst hsecond.
+  set (extendedWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext).
+  assert (hincluded : RawContextListIncluded M baseContext extendedContext).
+  {
+    unfold extendedContext.
+    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+      M hPA witnesses baseContext).
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (rawTemplateFormula translation first)
+      firstRoot hbase hextended hincluded hfirst)
+    as [transportedFirstRoot htransportedFirst].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (rawTemplateFormula translation second)
+      secondRoot hbase hextended hincluded hsecond)
+    as [transportedSecondRoot htransportedSecond].
+  rewrite hsource in himplication.
+  rewrite !rawTemplateFormula_imp in himplication.
+  destruct (raw_codedPALocalProofOf_impE2_general M hPA
+    (rawTemplateContextCodeOnTail translation extendedContext prefix)
+    (rawTemplateFormula translation first)
+    (rawTemplateFormula translation second)
+    (rawTemplateFormula translation conclusion)
+    implicationRoot transportedFirstRoot transportedSecondRoot
+    himplication htransportedFirst htransportedSecond)
+    as [resultRoot hresult].
+  exists resultRoot. split; assumption.
+Qed.
+
+(** Specialize the generic synchronization kernel to implication-child
+    atomic adequacy. *)
 Theorem
     raw_codedPALocalProofOf_formulaImpChildrenAtomicAdequacy_of_roots_on_witnessed_extension_under_prefix :
   forall (M : RawPAModel), RawPASatisfies M -> forall
@@ -349,72 +459,26 @@ Proof.
       M hPA translation hagreement baseWitnessList baseContext prefix
       parent left right hprefix hbase)
     as (witnesses & implicationRoot & hextended & himplication).
-  set (extendedWitnessList :=
-    rawStandardPAAxiomWitnessPrefixWitnessListCode M
-      witnesses baseWitnessList).
-  set (extendedContext :=
-    rawStandardPAAxiomWitnessPrefixContextCode M
-      witnesses baseContext).
-  assert (hincluded : RawContextListIncluded M baseContext extendedContext).
-  {
-    unfold extendedContext.
-    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
-      M hPA witnesses baseContext).
-  }
   destruct
-    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
-      M hPA translation baseWitnessList baseContext
-      extendedWitnessList extendedContext prefix
-      (rawTemplateFormula translation
-        (coqFormulaImpChildrenAtomicAdequacyParentPremiseTemplate
-          parent left right))
-      parentRoot hbase hextended hincluded hparent)
-    as [transportedParentRoot htransportedParent].
-  destruct
-    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
-      M hPA translation baseWitnessList baseContext
-      extendedWitnessList extendedContext prefix
-      (rawTemplateFormula translation
-        (coqFormulaImpChildrenAtomicAdequacyShapePremiseTemplate
-          parent left right))
-      shapeRoot hbase hextended hincluded hshape)
-    as [transportedShapeRoot htransportedShape].
-  rewrite coqFormulaImpChildrenAtomicAdequacyInstanceTemplate_imp2_shape
-    in himplication.
-  rewrite !rawTemplateFormula_imp in himplication.
-  pose proof (raw_codedPALocalProofOf_impE M hPA
-    (rawTemplateContextCodeOnTail translation extendedContext prefix)
-    (rawTemplateFormula translation
+    (raw_codedPALocalProofOf_templateImp2_of_roots_on_standard_witnessed_extension_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      witnesses
+      (coqFormulaImpChildrenAtomicAdequacyInstanceTemplate
+        parent left right)
       (coqFormulaImpChildrenAtomicAdequacyParentPremiseTemplate
-        parent left right))
-    (rawFormulaImpCode M
-      (rawTemplateFormula translation
-        (coqFormulaImpChildrenAtomicAdequacyShapePremiseTemplate
-          parent left right))
-      (rawTemplateFormula translation
-        (coqFormulaImpChildrenAtomicAdequacyConclusionTemplate
-          parent left right)))
-    implicationRoot transportedParentRoot
-    himplication htransportedParent) as hafterParent.
-  lazymatch type of hafterParent with
-  | RawCodedPALocalProofOf _ _ _ ?afterParentRoot =>
-      pose proof (raw_codedPALocalProofOf_impE M hPA
-        (rawTemplateContextCodeOnTail translation extendedContext prefix)
-        (rawTemplateFormula translation
-          (coqFormulaImpChildrenAtomicAdequacyShapePremiseTemplate
-            parent left right))
-        (rawTemplateFormula translation
-          (coqFormulaImpChildrenAtomicAdequacyConclusionTemplate
-            parent left right))
-        afterParentRoot transportedShapeRoot
-        hafterParent htransportedShape) as hresult;
-      lazymatch type of hresult with
-      | RawCodedPALocalProofOf _ _ _ ?resultRoot =>
-          exists witnesses, resultRoot;
-          split; [exact hextended |];
-          split; [exact hincluded | exact hresult]
-      end
-  end.
+        parent left right)
+      (coqFormulaImpChildrenAtomicAdequacyShapePremiseTemplate
+        parent left right)
+      (coqFormulaImpChildrenAtomicAdequacyConclusionTemplate
+        parent left right)
+      implicationRoot parentRoot shapeRoot hbase hextended
+      (coqFormulaImpChildrenAtomicAdequacyInstanceTemplate_imp2_shape
+        parent left right)
+      himplication hparent hshape)
+    as (resultRoot & hincluded & hresult).
+  exists witnesses, resultRoot.
+  split; [exact hextended |].
+  split; [exact hincluded | exact hresult].
 Qed.
 
 End PABoundedRawCodedFormulaImpChildrenAtomicAdequacyProofCompilation.
