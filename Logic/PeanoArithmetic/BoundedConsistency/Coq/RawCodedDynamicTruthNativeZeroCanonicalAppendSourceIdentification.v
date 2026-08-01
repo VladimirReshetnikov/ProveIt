@@ -617,6 +617,110 @@ Arguments
   RawDynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt
   M translation rootMode outerPrefix : clear implicits.
 
+(** A producer need not build the large selected successor row when the
+    temporary append context is already contradictory.  This disjunctive
+    interface is strictly weaker than the fixed-production compiler above:
+    every old producer chooses the left branch, while a bottom-specific
+    collision argument may choose the right branch and share one compact
+    refutation across otherwise unrelated row conclusions. *)
+Definition
+    RawDynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (rootMode : nat) (outerPrefix : TemplateContext) : Prop :=
+  forall sourceWitnessList sourceContext,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (sourceRoot : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses sourceWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses sourceContext) /\
+    (RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses sourceContext)
+        (templateContextShiftMany 5
+          (coqFourStateTableAppendWitnessContext
+            (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+            (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+            (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+            (embedPATerm (Term.numeral rootMode))
+            (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)))
+      (rawTemplateFormula translation
+        (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+          (coqFourStateTableAppendEmbeddedModeProductionMotive
+            dynamicTruthZeroCanonicalSigmaRowFormula
+            dynamicTruthZeroCanonicalPiRowFormula))) sourceRoot \/
+     RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses sourceContext)
+        (templateContextShiftMany 5
+          (coqFourStateTableAppendWitnessContext
+            (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+            (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+            (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+            (embedPATerm (Term.numeral rootMode))
+            (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)))
+      (rawFormulaBotCode M) sourceRoot).
+
+Arguments
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt
+  M translation rootMode outerPrefix : clear implicits.
+
+(** Represented bottom elimination is the only extra proof node needed to
+    turn the relaxed source interface back into the exact fixed-production
+    interface consumed by append synchronization. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt_of_production_or_refutation
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M) rootMode outerPrefix,
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt
+    M translation rootMode outerPrefix ->
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt
+    M translation rootMode outerPrefix.
+Proof.
+  intros M hPA translation rootMode outerPrefix hcompiler
+    sourceWitnessList sourceContext hsource.
+  destruct (hcompiler sourceWitnessList sourceContext hsource) as
+    (witnesses & sourceRoot & hextended & [hproduction | hrefutation]).
+  - exists witnesses, sourceRoot. split; assumption.
+  - exists witnesses. eexists.
+    split; [exact hextended |].
+    exact (raw_codedPALocalProofOf_botE M hPA
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses sourceContext)
+        (templateContextShiftMany 5
+          (coqFourStateTableAppendWitnessContext
+            (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+            (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+            (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+            (embedPATerm (Term.numeral rootMode))
+            (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)))
+      sourceRoot hrefutation
+      (rawTemplateFormula translation
+        (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+          (coqFourStateTableAppendEmbeddedModeProductionMotive
+            dynamicTruthZeroCanonicalSigmaRowFormula
+            dynamicTruthZeroCanonicalPiRowFormula)))).
+Qed.
+
+(** The two polarities may independently choose direct production or
+    refutation and may still allocate unrelated helper batches. *)
+Definition
+    RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (outerPrefix : TemplateContext) : Prop :=
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt
+    M translation 0 outerPrefix /\
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt
+    M translation 1 outerPrefix.
+
+Arguments
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+  M translation outerPrefix : clear implicits.
+
 (** Sigma and Pi row construction may use different finite PA-helper batches.
     The payload synchronizer handles those batches later, so the weakest
     model-local interface is simply the conjunction of the two growing
@@ -633,6 +737,24 @@ Definition
 Arguments
   RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersUnderPrefix
   M translation outerPrefix : clear implicits.
+
+Theorem
+    raw_dynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersUnderPrefix_of_production_or_refutation
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M) outerPrefix,
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    M translation outerPrefix ->
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersUnderPrefix
+    M translation outerPrefix.
+Proof.
+  intros M hPA translation outerPrefix [hsigma hpi]. split.
+  - exact
+      (raw_dynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt_of_production_or_refutation
+        M hPA translation 0 outerPrefix hsigma).
+  - exact
+      (raw_dynamicTruthZeroCanonicalGrowingFixedProductionCompilerUnderPrefixAt_of_production_or_refutation
+        M hPA translation 1 outerPrefix hpi).
+Qed.
 
 (** Proof-producing content of a canonical row kernel, separated from the
     finite legal-mode side condition.  Clients fixed at modes zero and one

@@ -736,6 +736,29 @@ Proof.
     exists piWitnesses. exact hpiPayload.
 Qed.
 
+(** Relax the final canonical row boundary once more: either polarity may
+    return a direct row proof or a refutation of its exact temporary append
+    context.  The source-level adapter inserts represented bottom
+    elimination before the existing append/inherited synchronization, so
+    no downstream payload type changes. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalBottom_independentPermutedAppendRowKernelPayloadsUnderPrefix_of_independent_growing_fixed_productions_or_refutations
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M) outerPrefix,
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA) outerPrefix ->
+  RawDynamicTruthZeroCanonicalIndependentPermutedAppendRowKernelPayloadsUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA) outerPrefix.
+Proof.
+  intros M hPA outerPrefix hsources.
+  apply
+    (raw_dynamicTruthZeroCanonicalBottom_independentPermutedAppendRowKernelPayloadsUnderPrefix_of_independent_growing_fixed_productions
+      M hPA outerPrefix).
+  exact
+    (raw_dynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersUnderPrefix_of_production_or_refutation
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      outerPrefix hsources).
+Qed.
+
 (** Both arithmetic premises are literal assumptions of the direct
     strong-step endpoint.  When they occur in [callerPrefix], prepend the
     two predecessor-state formulas, compile the assumption leaves with the

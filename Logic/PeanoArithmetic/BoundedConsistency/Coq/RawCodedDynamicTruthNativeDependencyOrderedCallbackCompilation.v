@@ -457,6 +457,60 @@ Arguments
   RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers
   M hPA : clear implicits.
 
+(** Strict relaxation of the current rank-zero boundary.  Each selected row
+    source may either prove its production or refute the exact temporary row
+    context.  The latter branch is useful at the canonical bottom collision:
+    one small contradiction proof can feed represented bottom elimination
+    instead of reconstructing either large successor-row syntax tree. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  let translation := rawBottomDirectStructuralTemplateTranslation M hPA in
+  RawDynamicTruthNativeLocalZeroCanonicalIndependentGrowingRestrictedRuleRootCompilersOnCanonicalNormalizedResources
+    M hPA translation /\
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    M translation coqDynamicTruthPredecessorStateTemplateContext /\
+  RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
+    M hPA /\
+  RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
+    M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+  M hPA : clear implicits.
+
+(** Eliminate only the relaxed second coordinate; every other compiler is
+    passed through definitionally. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers_of_productions_or_refutations
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers
+    M hPA.
+Proof.
+  intros M hPA
+    (hzeroIndependentRestrictedRuleRoots & hsources & hstrong &
+      hremainder & hcrossLevel & hshift & hsubstitution & haxiom & hfinal).
+  split; [exact hzeroIndependentRestrictedRuleRoots |].
+  split.
+  - exact
+      (raw_dynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersUnderPrefix_of_production_or_refutation
+        M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+        coqDynamicTruthPredecessorStateTemplateContext hsources).
+  - split; [exact hstrong |].
+    split; [exact hremainder |].
+    split; [exact hcrossLevel |].
+    split; [exact hshift |].
+    split; [exact hsubstitution |].
+    split; [exact haxiom | exact hfinal].
+Qed.
+
 (** Reconstruct the former independent complete-payload coordinate from the
     strictly smaller pair of fixed-production compilers.  Every other
     dependency-ordered field is preserved verbatim. *)
@@ -1093,6 +1147,13 @@ Definition
     RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers
       M hPA.
 
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+      M hPA.
+
 Theorem
     raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers
     :
@@ -1295,6 +1356,22 @@ Proof.
   intros M hPA.
   exact
     (raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentPermutedAppendRowKernelProofResourceStrongStepKernelCompilers_of_independent_growing_fixed_productions
+      M hPA (hkernels M hPA)).
+Qed.
+
+(** All-model adapter for the production-or-refutation boundary. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_independent_growing_fixed_production_or_refutation_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels.
+Proof.
+  intros hkernels.
+  apply
+    raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_independent_growing_fixed_production_proof_resource_strong_step_kernel_compilers.
+  intros M hPA.
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionProofResourceStrongStepKernelCompilers_of_productions_or_refutations
       M hPA (hkernels M hPA)).
 Qed.
 
@@ -1530,6 +1607,23 @@ Proof.
   exact
     (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
       (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_independent_growing_fixed_production_proof_resource_strong_step_kernel_compilers
+        hkernels)).
+Qed.
+
+(** New weakest conditional headline.  In particular, completing the
+    canonical bottom collision by a represented refutation now suffices;
+    neither enormous selected successor row has to be produced directly. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_canonical_logical_zero_independent_growing_fixed_production_or_refutation_proof_resource_strong_step_kernel_compilers
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hkernels.
+  exact
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
+      (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_canonical_logical_zero_independent_growing_fixed_production_or_refutation_proof_resource_strong_step_kernel_compilers
         hkernels)).
 Qed.
 
