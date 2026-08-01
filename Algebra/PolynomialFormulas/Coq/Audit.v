@@ -5,6 +5,7 @@ From PolynomialFormulas Require Import
   SexticPowerSumSymmetric SexticNewtonPowerSums SexticResolventSymmetry
   SexticComputedResolvents SexticRationalRootSearch
   SexticComputedResolventBridge
+  SexticSeparatingSearch
   SexticRadicalDecidability.
 
 (** Kernel-assumption audit for the degree-one-through-four solver theorems
@@ -27,6 +28,7 @@ Import PolynomialFormulasSexticResolventSymmetry.
 Import PolynomialFormulasSexticComputedResolvents.
 Import PolynomialFormulasSexticRationalRootSearch.
 Import PolynomialFormulasSexticComputedResolventBridge.
+Import PolynomialFormulasSexticSeparatingSearch.
 Import PolynomialFormulasSexticRadicalDecidability.
 
 Check solve_linear_correct.
@@ -83,6 +85,15 @@ Check pair_scaled_resolvent_poly_correct.
 Check triple_scaled_resolvent_poly_correct.
 Check pair_scaled_semantic_rational_rootP.
 Check triple_scaled_semantic_rational_rootP.
+Check collision_product_neq0_iff.
+Check pair_sparse_collision_invariant.
+Check triple_sparse_collision_invariant.
+Check pair_scaled_collision_value_correct.
+Check triple_scaled_collision_value_correct.
+Check pair_separatesP.
+Check triple_separatesP.
+Check pair_separating_search_eventually.
+Check triple_separating_search_eventually.
 Check all_roots_radical_sextic_int_semantic_decidable.
 Check sextic_radical_semantic_codeP.
 
@@ -140,5 +151,14 @@ Print Assumptions pair_scaled_resolvent_poly_correct.
 Print Assumptions triple_scaled_resolvent_poly_correct.
 Print Assumptions pair_scaled_semantic_rational_rootP.
 Print Assumptions triple_scaled_semantic_rational_rootP.
+Print Assumptions collision_product_neq0_iff.
+Print Assumptions pair_sparse_collision_invariant.
+Print Assumptions triple_sparse_collision_invariant.
+Print Assumptions pair_scaled_collision_value_correct.
+Print Assumptions triple_scaled_collision_value_correct.
+Print Assumptions pair_separatesP.
+Print Assumptions triple_separatesP.
+Print Assumptions pair_separating_search_eventually.
+Print Assumptions triple_separating_search_eventually.
 Print Assumptions all_roots_radical_sextic_int_semantic_decidable.
 Print Assumptions sextic_radical_semantic_codeP.
