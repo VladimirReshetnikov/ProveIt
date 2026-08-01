@@ -196,6 +196,102 @@ Proof.
   - intro x. reflexivity.
 Qed.
 
+(** Rewrite laws needed by proof transport through the quantified Hilbert
+    constructors. *)
+Lemma ifo_rewrite_under_free_free : forall L
+    (f : nat -> syntactic_term L) (phi : ifo_semiproposition L 1),
+  ifo_rewrite (rew_rewrite (rew_rewrite_under_free f))
+      (@ifo_free L 0 phi) =
+  @ifo_free L 0 (ifo_rewrite (rew_q (rew_rewrite f)) phi).
+Proof.
+  intros L f phi. unfold ifo_free.
+  rewrite <- !ifo_rewrite_comp.
+  apply ifo_rewrite_ext, rew_rewrite_under_free_comp_free.
+Qed.
+
+Lemma ifo_rewrite_substitute_one : forall L
+    (f : nat -> syntactic_term L) (t : syntactic_term L)
+    (phi : ifo_semiproposition L 1),
+  ifo_rewrite (rew_rewrite f)
+      (ifo_substitute (fun _ : Fin.t 1 => t) phi) =
+  ifo_substitute
+      (fun _ : Fin.t 1 => rew_apply (rew_rewrite f) t)
+      (ifo_rewrite (rew_q (rew_rewrite f)) phi).
+Proof.
+  intros L f t phi. unfold ifo_substitute.
+  rewrite <- !ifo_rewrite_comp.
+  apply ifo_rewrite_ext, rew_rewrite_comp_substitute_one.
+Qed.
+
+Lemma ifo_rewrite_q_bshift : forall L X n Y m
+    (w : rew L X n Y m) (phi : ifo_semiformula L X n),
+  ifo_rewrite (rew_q w) (ifo_bshift phi) =
+  ifo_bshift (ifo_rewrite w phi).
+Proof.
+  intros L X n Y m w phi. unfold ifo_bshift.
+  rewrite <- !ifo_rewrite_comp.
+  apply ifo_rewrite_ext. intro t. apply rew_q_bshift_apply.
+Qed.
+
+Lemma ifo_rewrite_all1_shape : forall L
+    (f : nat -> syntactic_term L) (phi : ifo_semiproposition L 1)
+    (t : syntactic_term L),
+  ifo_rewrite (rew_rewrite f)
+      (IFOImp (IFOAll phi)
+        (ifo_substitute (fun _ : Fin.t 1 => t) phi)) =
+  IFOImp (IFOAll (ifo_rewrite (rew_q (rew_rewrite f)) phi))
+    (ifo_substitute
+      (fun _ : Fin.t 1 => rew_apply (rew_rewrite f) t)
+      (ifo_rewrite (rew_q (rew_rewrite f)) phi)).
+Proof.
+  intros. simpl. f_equal. apply ifo_rewrite_substitute_one.
+Qed.
+
+Lemma ifo_rewrite_all2_shape : forall L
+    (f : nat -> syntactic_term L) (phi : ifo_proposition L)
+    (psi : ifo_semiproposition L 1),
+  ifo_rewrite (rew_rewrite f)
+      (IFOImp (IFOAll (IFOImp (ifo_bshift phi) psi))
+        (IFOImp phi (IFOAll psi))) =
+  IFOImp
+    (IFOAll (IFOImp (ifo_bshift (ifo_rewrite (rew_rewrite f) phi))
+      (ifo_rewrite (rew_q (rew_rewrite f)) psi)))
+    (IFOImp (ifo_rewrite (rew_rewrite f) phi)
+      (IFOAll (ifo_rewrite (rew_q (rew_rewrite f)) psi))).
+Proof.
+  intros. simpl. now rewrite ifo_rewrite_q_bshift.
+Qed.
+
+Lemma ifo_rewrite_ex1_shape : forall L
+    (f : nat -> syntactic_term L) (t : syntactic_term L)
+    (phi : ifo_semiproposition L 1),
+  ifo_rewrite (rew_rewrite f)
+      (IFOImp (ifo_substitute (fun _ : Fin.t 1 => t) phi)
+        (IFOExs phi)) =
+  IFOImp
+    (ifo_substitute
+      (fun _ : Fin.t 1 => rew_apply (rew_rewrite f) t)
+      (ifo_rewrite (rew_q (rew_rewrite f)) phi))
+    (IFOExs (ifo_rewrite (rew_q (rew_rewrite f)) phi)).
+Proof.
+  intros. simpl. f_equal. apply ifo_rewrite_substitute_one.
+Qed.
+
+Lemma ifo_rewrite_ex2_shape : forall L
+    (f : nat -> syntactic_term L) (phi : ifo_semiproposition L 1)
+    (psi : ifo_proposition L),
+  ifo_rewrite (rew_rewrite f)
+      (IFOImp (IFOAll (IFOImp phi (ifo_bshift psi)))
+        (IFOImp (IFOExs phi) psi)) =
+  IFOImp
+    (IFOAll (IFOImp (ifo_rewrite (rew_q (rew_rewrite f)) phi)
+      (ifo_bshift (ifo_rewrite (rew_rewrite f) psi))))
+    (IFOImp (IFOExs (ifo_rewrite (rew_q (rew_rewrite f)) phi))
+      (ifo_rewrite (rew_rewrite f) psi)).
+Proof.
+  intros. simpl. now rewrite ifo_rewrite_q_bshift.
+Qed.
+
 Theorem ifo_map_injective : forall (L : language) (X : Type) n
     (Y : Type) m (b : Fin.t n -> Fin.t m) (e : X -> Y),
   (forall i j, b i = b j -> i = j) ->

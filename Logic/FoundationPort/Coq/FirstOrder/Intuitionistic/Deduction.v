@@ -547,6 +547,89 @@ Proof.
     (generic_minimal_neg_iff_congr_raw Hm (ifo_neg phi) psi d)).
 Defined.
 
+(** Simultaneously rewrite every free variable in a Hilbert derivation. *)
+Fixpoint ifo_hilbert_proof_rewrite {L H phi}
+    (f : nat -> syntactic_term L) (d : @ifo_hilbert_proof L H phi)
+    {struct d} :
+    @ifo_hilbert_proof L H (ifo_rewrite (rew_rewrite f) phi).
+Proof.
+  destruct d as
+    [phi hphi
+    | phi psi dpq dp
+    | phi d
+    |
+    | phi psi
+    | phi psi chi
+    | phi psi
+    | phi psi
+    | phi psi
+    | phi psi
+    | phi psi
+    | phi psi chi
+    | phi t
+    | phi psi
+    | t phi
+    | phi psi].
+  - exact (IFOHPEaxm (@ifo_hilbert_axiom_rewrite L H phi hphi f)).
+  - simpl. exact (IFOHPMdp
+      (@ifo_hilbert_proof_rewrite L H (IFOImp phi psi) f dpq)
+      (@ifo_hilbert_proof_rewrite L H phi f dp)).
+  - simpl. apply IFOHPGen.
+    refine (ifo_hilbert_proof_cast
+      (@ifo_hilbert_proof_rewrite L H (@ifo_free L 0 phi)
+        (rew_rewrite_under_free f) d) _).
+    apply ifo_rewrite_under_free_free.
+  - simpl. exact IFOHPVerum.
+  - simpl. exact (IFOHPK (ifo_rewrite (rew_rewrite f) phi)
+      (ifo_rewrite (rew_rewrite f) psi)).
+  - simpl. exact (IFOHPS (ifo_rewrite (rew_rewrite f) phi)
+      (ifo_rewrite (rew_rewrite f) psi)
+      (ifo_rewrite (rew_rewrite f) chi)).
+  - simpl. exact (IFOHPAnd1 (ifo_rewrite (rew_rewrite f) phi)
+      (ifo_rewrite (rew_rewrite f) psi)).
+  - simpl. exact (IFOHPAnd2 (ifo_rewrite (rew_rewrite f) phi)
+      (ifo_rewrite (rew_rewrite f) psi)).
+  - simpl. exact (IFOHPAnd3 (ifo_rewrite (rew_rewrite f) phi)
+      (ifo_rewrite (rew_rewrite f) psi)).
+  - simpl. exact (IFOHPOr1 (ifo_rewrite (rew_rewrite f) phi)
+      (ifo_rewrite (rew_rewrite f) psi)).
+  - simpl. exact (IFOHPOr2 (ifo_rewrite (rew_rewrite f) phi)
+      (ifo_rewrite (rew_rewrite f) psi)).
+  - simpl. exact (IFOHPOr3 (ifo_rewrite (rew_rewrite f) phi)
+      (ifo_rewrite (rew_rewrite f) psi)
+      (ifo_rewrite (rew_rewrite f) chi)).
+  - refine (ifo_hilbert_proof_cast
+      (IFOHPAll1 (ifo_rewrite (rew_q (rew_rewrite f)) phi)
+        (rew_apply (rew_rewrite f) t)) _).
+    symmetry. apply ifo_rewrite_all1_shape.
+  - refine (ifo_hilbert_proof_cast
+      (IFOHPAll2 (ifo_rewrite (rew_rewrite f) phi)
+        (ifo_rewrite (rew_q (rew_rewrite f)) psi)) _).
+    symmetry. apply ifo_rewrite_all2_shape.
+  - refine (ifo_hilbert_proof_cast
+      (IFOHPEx1 (rew_apply (rew_rewrite f) t)
+        (ifo_rewrite (rew_q (rew_rewrite f)) phi)) _).
+    symmetry. apply ifo_rewrite_ex1_shape.
+  - refine (ifo_hilbert_proof_cast
+      (IFOHPEx2 (ifo_rewrite (rew_q (rew_rewrite f)) phi)
+        (ifo_rewrite (rew_rewrite f) psi)) _).
+    symmetry. apply ifo_rewrite_ex2_shape.
+Defined.
+
+Lemma ifo_hilbert_proof_depth_rewrite : forall L H phi
+    (d : @ifo_hilbert_proof L H phi) f,
+  ifo_hilbert_proof_depth (ifo_hilbert_proof_rewrite f d) =
+  ifo_hilbert_proof_depth d.
+Proof.
+  intros L H phi d. induction d; intro f; cbn;
+    try rewrite ifo_hilbert_proof_depth_cast; try reflexivity.
+  all: try (now rewrite (IHd1 f), (IHd2 f)).
+  all: try (now rewrite ifo_hilbert_proof_depth_cast,
+      (IHd (rew_rewrite_under_free f))).
+  all: try (now rewrite (IHd (rew_rewrite_under_free f))).
+  f_equal. apply f_equal2; [exact (IHd1 f) | exact (IHd2 f)].
+Qed.
+
 Fixpoint ifo_hilbert_proof_weaken {L H K phi}
     (h : ifo_hilbert_le H K) (d : @ifo_hilbert_proof L H phi) :
     @ifo_hilbert_proof L K phi :=

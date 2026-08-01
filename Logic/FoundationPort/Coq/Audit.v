@@ -133,6 +133,13 @@ Print Assumptions ifo_free_imp_bshift.
 Print Assumptions ifo_shift_all.
 Print Assumptions ifo_shift_double_neg_all.
 Print Assumptions ifo_substitute_shift_one_eq_free.
+Print Assumptions ifo_rewrite_under_free_free.
+Print Assumptions ifo_rewrite_substitute_one.
+Print Assumptions ifo_rewrite_q_bshift.
+Print Assumptions ifo_rewrite_all1_shape.
+Print Assumptions ifo_rewrite_all2_shape.
+Print Assumptions ifo_rewrite_ex1_shape.
+Print Assumptions ifo_rewrite_ex2_shape.
 Print Assumptions ifo_map_injective.
 Print Assumptions ifo_complexity_rewrite.
 Print Assumptions ifo_negative_rewrite_iff.
@@ -173,6 +180,8 @@ Print Assumptions ifo_hilbert_double_neg_iff_negative.
 Print Assumptions ifo_hilbert_efq_negative_rewrite.
 Print Assumptions ifo_hilbert_efq_negative.
 Print Assumptions ifo_hilbert_iff_neg_of_neg_iff.
+Print Assumptions ifo_hilbert_proof_rewrite.
+Print Assumptions ifo_hilbert_proof_depth_rewrite.
 Check ifo_hilbert_proof_weaken.
 
 Check choose_unique.
