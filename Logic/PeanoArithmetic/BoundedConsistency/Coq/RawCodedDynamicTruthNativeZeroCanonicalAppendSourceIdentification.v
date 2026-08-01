@@ -461,6 +461,121 @@ Arguments
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
   M translation rootMode outerPrefix witnesses : clear implicits.
 
+(** Proof-producing content of a canonical row kernel, separated from the
+    finite legal-mode side condition.  Clients fixed at modes zero and one
+    should expose this payload: the disjunction is then supplied once by the
+    adapters below instead of being repeated in every model-local producer. *)
+Definition
+    RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (rootMode : nat) (outerPrefix : TemplateContext)
+    (witnesses : StandardPAAxiomWitnessPrefix) : Prop :=
+  exists appendRoot fixedProductionRoot : M,
+  exists inheritedTraversal oldLookup : TemplateFormula,
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0))) appendRoot /\
+    templateUniversalOpenMany inheritedTraversal
+      coqFourStateTableAppendConcreteRowVariables =
+      Some
+        (tfImp
+          (coqLtSuccCasesBelowTemplate
+            (ttVar 4)
+            (ttParameter coqDynamicTruthAppendRowBoundParameterName))
+          (tfImp oldLookup
+            (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+              (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+              (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula)))) /\
+    RawFourStateTableAppendInheritedLocalRootsAt M translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (templateContextShiftMany 5
+        (coqFourStateTableAppendWitnessContext
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix))
+      inheritedTraversal oldLookup /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses (raw_zero M))
+        (templateContextShiftMany 5
+          (coqFourStateTableAppendWitnessContext
+            (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+            (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+            (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+            (embedPATerm (Term.numeral rootMode))
+            (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)))
+      (rawTemplateFormula translation
+        (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+          (coqFourStateTableAppendEmbeddedModeProductionMotive
+            dynamicTruthZeroCanonicalSigmaRowFormula
+            dynamicTruthZeroCanonicalPiRowFormula)))
+      fixedProductionRoot.
+
+Arguments
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+  M translation rootMode outerPrefix witnesses : clear implicits.
+
+Theorem
+    raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt_of_payload :
+  forall (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    rootMode outerPrefix witnesses,
+  rootMode = 0 \/ rootMode = 1 ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    M translation rootMode outerPrefix witnesses ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+    M translation rootMode outerPrefix witnesses.
+Proof.
+  intros M translation rootMode outerPrefix witnesses hrootMode
+    (appendRoot & fixedProductionRoot & inheritedTraversal & oldLookup &
+      happend & hopen & hinherited & hfixedProduction).
+  exists appendRoot, fixedProductionRoot, inheritedTraversal, oldLookup.
+  split; [exact hrootMode |].
+  split; [exact happend |].
+  split; [exact hopen |].
+  split; [exact hinherited | exact hfixedProduction].
+Qed.
+
+Corollary
+    raw_dynamicTruthZeroCanonicalSigmaPermutedAppendRowKernelInputsUnderPrefixAt_of_payload :
+  forall (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    outerPrefix witnesses,
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    M translation 0 outerPrefix witnesses ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+    M translation 0 outerPrefix witnesses.
+Proof.
+  intros M translation outerPrefix witnesses hpayload.
+  exact
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt_of_payload
+      M translation 0 outerPrefix witnesses (or_introl eq_refl) hpayload).
+Qed.
+
+Corollary
+    raw_dynamicTruthZeroCanonicalPiPermutedAppendRowKernelInputsUnderPrefixAt_of_payload :
+  forall (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    outerPrefix witnesses,
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    M translation 1 outerPrefix witnesses ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+    M translation 1 outerPrefix witnesses.
+Proof.
+  intros M translation outerPrefix witnesses hpayload.
+  exact
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt_of_payload
+      M translation 1 outerPrefix witnesses (or_intror eq_refl) hpayload).
+Qed.
+
 (** Compile the three-root canonical kernel through the suffix-preserving
     arithmetic case split. *)
 Theorem

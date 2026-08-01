@@ -204,10 +204,10 @@ Definition
         (rawFormulaOrCode M
           (rawDynamicTruthZeroSigmaDomainCode M)
           (rawDynamicTruthZeroPiDomainCode M)) domainRoot /\
-      RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+      RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
         M translation 0 coqDynamicTruthPredecessorStateTemplateContext
           appendWitnesses /\
-      RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+      RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
         M translation 1 coqDynamicTruthPredecessorStateTemplateContext
           appendWitnesses.
 
@@ -249,12 +249,16 @@ Proof.
       (raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_kernel
         M hPA translation hagreement 0
         coqDynamicTruthPredecessorStateTemplateContext appendWitnesses
-        hsigmaKernel).
+        (raw_dynamicTruthZeroCanonicalSigmaPermutedAppendRowKernelInputsUnderPrefixAt_of_payload
+          M translation coqDynamicTruthPredecessorStateTemplateContext
+          appendWitnesses hsigmaKernel)).
   - exact
       (raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_kernel
         M hPA translation hagreement 1
         coqDynamicTruthPredecessorStateTemplateContext appendWitnesses
-        hpiKernel).
+        (raw_dynamicTruthZeroCanonicalPiPermutedAppendRowKernelInputsUnderPrefixAt_of_payload
+          M translation coqDynamicTruthPredecessorStateTemplateContext
+          appendWitnesses hpiKernel)).
 Qed.
 
 (** Compile the concrete synchronized row-implication packages into the abstract
