@@ -6,6 +6,7 @@ From PolynomialFormulas Require Import
   SexticComputedResolvents SexticRationalRootSearch
   SexticComputedResolventBridge
   SexticSeparatingSearch
+  SexticSeparatingExistence
   SexticRadicalDecidability.
 
 (** Kernel-assumption audit for the degree-one-through-four solver theorems
@@ -29,6 +30,7 @@ Import PolynomialFormulasSexticComputedResolvents.
 Import PolynomialFormulasSexticRationalRootSearch.
 Import PolynomialFormulasSexticComputedResolventBridge.
 Import PolynomialFormulasSexticSeparatingSearch.
+Import PolynomialFormulasSexticSeparatingExistence.
 Import PolynomialFormulasSexticRadicalDecidability.
 
 Check solve_linear_correct.
@@ -98,6 +100,14 @@ Check pair_separatesP.
 Check triple_separatesP.
 Check pair_separating_search_eventually.
 Check triple_separating_search_eventually.
+Check exists_nat_horner_ne_zero.
+Check exists_nat_bipoly_eval_ne_zero.
+Check pair_descriptor_bipolynomial_injective.
+Check triple_descriptor_bipolynomial_injective.
+Check exists_pair_descriptor_injective.
+Check exists_triple_descriptor_injective.
+Check pair_separating_search_terminates.
+Check triple_separating_search_terminates.
 Check all_roots_radical_sextic_int_semantic_decidable.
 Check sextic_radical_semantic_codeP.
 
@@ -168,5 +178,13 @@ Print Assumptions pair_separatesP.
 Print Assumptions triple_separatesP.
 Print Assumptions pair_separating_search_eventually.
 Print Assumptions triple_separating_search_eventually.
+Print Assumptions exists_nat_horner_ne_zero.
+Print Assumptions exists_nat_bipoly_eval_ne_zero.
+Print Assumptions pair_descriptor_bipolynomial_injective.
+Print Assumptions triple_descriptor_bipolynomial_injective.
+Print Assumptions exists_pair_descriptor_injective.
+Print Assumptions exists_triple_descriptor_injective.
+Print Assumptions pair_separating_search_terminates.
+Print Assumptions triple_separating_search_terminates.
 Print Assumptions all_roots_radical_sextic_int_semantic_decidable.
 Print Assumptions sextic_radical_semantic_codeP.
