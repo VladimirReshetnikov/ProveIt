@@ -5,7 +5,11 @@ Import PABoundedRawCodedPALocalProofTripleUniversalIntroduction.
 
 Check rawPALocalProofClose3Root.
 Check raw_codedPALocalProofOf_close3_on.
+Check rawPALocalProofClose3BetweenRoot.
+Check raw_codedPALocalProofOf_close3_between.
 Check raw_codedPALocalProofOf_close3_empty.
 
 Print Assumptions raw_codedPALocalProofOf_close3_on.
+Print Assumptions rawPALocalProofClose3BetweenRoot.
+Print Assumptions raw_codedPALocalProofOf_close3_between.
 Print Assumptions raw_codedPALocalProofOf_close3_empty.
