@@ -70,6 +70,7 @@ From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Theory.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Q.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Functions.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Definability.
 From Foundation.FirstOrder.Arithmetic Require Import Schemata.
 From Foundation.FirstOrder.Arithmetic.IOpen Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
@@ -2987,6 +2988,25 @@ Print Assumptions peano_minus_min_le_left.
 Print Assumptions peano_minus_min_le_right.
 Print Assumptions peano_minus_le_max_left.
 Print Assumptions peano_minus_le_max_right.
+Print Assumptions arithmetic_sub_graph_var.
+Print Assumptions arithmetic_sub_graph_formula.
+Print Assumptions arithmetic_sub_graph_formula_open.
+Print Assumptions arithmetic_sub_graph_formula_hierarchy.
+Print Assumptions arithmetic_sub_graph_sorted.
+Print Assumptions arithmetic_sub_graph_formula_eval.
+Print Assumptions peano_minus_sub_defined.
+Print Assumptions peano_minus_sub_definable_zero.
+Print Assumptions peano_minus_sub_definable.
+Print Assumptions peano_minus_sub_bounded.
+Print Assumptions peano_minus_sub_definably_bounded.
+Print Assumptions arithmetic_sub_graph_instance.
+Print Assumptions arithmetic_sub_predicate_instance.
+Print Assumptions arithmetic_substitution_formula.
+Print Assumptions arithmetic_substitution_formula_hierarchy.
+Print Assumptions arithmetic_substitution_formula_eval.
+Print Assumptions arithmetic_reverse_induction_formula.
+Print Assumptions arithmetic_reverse_induction_formula_hierarchy.
+Print Assumptions arithmetic_reverse_induction_formula_eval.
 Print Assumptions first_order_axiom_scheme.
 Print Assumptions arithmetic_zero_term.
 Print Assumptions arithmetic_one_term.
@@ -2996,6 +3016,8 @@ Print Assumptions arithmetic_successor_induction.
 Print Assumptions arithmetic_order_induction.
 Print Assumptions arithmetic_least_number.
 Print Assumptions arithmetic_predicate_holds.
+Print Assumptions arithmetic_predecessor_formula.
+Print Assumptions arithmetic_predecessor_formula_hierarchy.
 Print Assumptions arithmetic_zero_term_val.
 Print Assumptions arithmetic_add_one_term_val.
 Print Assumptions arithmetic_predicate_instance_eval.
@@ -3005,6 +3027,7 @@ Print Assumptions arithmetic_successor_step_eval.
 Print Assumptions arithmetic_successor_induction_eval.
 Print Assumptions arithmetic_bounded_all_eval.
 Print Assumptions arithmetic_predecessors_eval.
+Print Assumptions arithmetic_predecessor_formula_eval.
 Print Assumptions arithmetic_order_step_eval.
 Print Assumptions arithmetic_order_induction_eval.
 Print Assumptions arithmetic_exists_predicate_eval.
@@ -3062,6 +3085,13 @@ Print Assumptions semiformula_universal_closure_elim.
 Print Assumptions arithmetic_models_successor_induction.
 Print Assumptions arithmetic_model_predicate_representation.
 Print Assumptions arithmetic_models_induction_theory_successor.
+Print Assumptions arithmetic_models_hierarchy_negative_induction.
+Print Assumptions arithmetic_models_hierarchy_scheme_alt.
+Print Assumptions arithmetic_models_induction_on_hierarchy_alt.
+Print Assumptions arithmetic_models_isigma_iff_ipi.
+Print Assumptions arithmetic_models_hierarchy_successor_induction.
+Print Assumptions arithmetic_models_hierarchy_order_induction.
+Print Assumptions arithmetic_models_hierarchy_least_number.
 Print Assumptions arithmetic_successor_induction_principle.
 Print Assumptions arithmetic_order_induction_principle.
 Print Assumptions arithmetic_least_number_principle.
