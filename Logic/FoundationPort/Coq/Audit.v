@@ -28,11 +28,18 @@ From Foundation.Vorspiel.Set Require Import Basic.
 From Foundation.Vorspiel.Set Require Import Cofinite.
 From Foundation.Vorspiel.Set Require Import Fin.
 From Foundation.Vorspiel.Order Require Import Heyting.
+From Foundation.Vorspiel.Order Require Import Zorn.
 From Foundation.Vorspiel.Order Require Import Lattice.
 From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Vorspiel.Order Require Import Ideal.
 From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Vorspiel.Order Require Import Regular.
+
+Check partial_order_laws.
+Check order_chain.
+Check order_maximal.
+Check zorn_maximal_element.
+Print Assumptions zorn_maximal_element.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
@@ -3257,7 +3264,18 @@ Check set_union.
 Check set_complement.
 Check set_universal.
 Check set_void.
+Check set_filter.
+Check filter_included.
+Print Assumptions set_filter_maximal_extension.
+Print Assumptions maximal_filter_decides.
 Check set_ultrafilter.
+Check ultrafilter_as_filter.
+Print Assumptions set_ultrafilter_extension.
+Check set_list_intersection.
+Print Assumptions set_list_intersection_member_iff.
+Check set_family_finite_intersection_property.
+Print Assumptions family_generated_filter.
+Print Assumptions ultrafilter_of_finite_intersection_property.
 Print Assumptions ultrafilter_member_equiv.
 Print Assumptions ultrafilter_intersection_mem.
 Print Assumptions ultrafilter_member_intersection_left.
@@ -3277,3 +3295,10 @@ Print Assumptions first_order_ultraproduct_formula_realize.
 Print Assumptions first_order_ultraproduct_sentence_realize.
 Check first_order_ultraproduct_model.
 Print Assumptions first_order_ultraproduct_model_realize.
+Check first_order_finite_subtheory.
+Check finite_subtheory_theory.
+Check first_order_sentence_domain.
+Print Assumptions first_order_sentence_domains_fip.
+Print Assumptions first_order_ultrafilter_exists.
+Print Assumptions first_order_compactness_aux.
+Print Assumptions first_order_compactness.

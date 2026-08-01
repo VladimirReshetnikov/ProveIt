@@ -1,7 +1,7 @@
 (** Pointwise first-order ultraproducts and Łoś's theorem. *)
 
-From Stdlib Require Import Logic.ClassicalEpsilon Logic.Classical_Prop
-  Logic.FunctionalExtensionality Vectors.Fin.
+From Stdlib Require Import Logic.ClassicalChoice Logic.ClassicalEpsilon
+  Logic.Classical_Prop Logic.FunctionalExtensionality Lists.List Vectors.Fin.
 From Foundation.Vorspiel.Set Require Import Basic Ultrafilter.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
@@ -11,6 +11,8 @@ From Foundation.FirstOrder.Basic.Semantics Require Import
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
+
+Import ListNotations.
 
 Record first_order_ultraproduct {I : Type} (A : I -> Type)
     (U : set_ultrafilter I) : Type := {
@@ -254,4 +256,128 @@ Corollary first_order_ultraproduct_model_realize : forall L I
 Proof.
   intros. exact (@first_order_ultraproduct_sentence_realize
     L I A S U HA sigma).
+Qed.
+
+(** * Semantic compactness *)
+
+(** Lists give the finite subtheories directly.  Unlike finite sets, this
+    representation needs neither decidable sentence equality nor quotienting;
+    duplicate assumptions are semantically harmless. *)
+Record first_order_finite_subtheory {L} (T : theory L) : Type := {
+  finite_subtheory_sentences : list (sentence L);
+  finite_subtheory_subset : forall sigma,
+    In sigma finite_subtheory_sentences -> T sigma
+}.
+
+Arguments finite_subtheory_sentences {L T} _.
+
+Definition finite_subtheory_theory {L} {T : theory L}
+    (Gamma : first_order_finite_subtheory T) : theory L :=
+  fun sigma => In sigma (finite_subtheory_sentences Gamma).
+
+Definition empty_finite_subtheory {L} (T : theory L) :
+    first_order_finite_subtheory T :=
+  {| finite_subtheory_sentences := [];
+     finite_subtheory_subset := fun sigma H => match H with end |}.
+
+Definition first_order_sentence_domain {L I}
+    (M : I -> first_order_model L) (sigma : sentence L) : pred_set I :=
+  fun i => first_order_model_realize (M i) sigma.
+
+Lemma first_order_sentence_domains_fip : forall L (T : theory L)
+    (M : first_order_finite_subtheory T -> first_order_model L),
+  (forall i, first_order_models_theory (M i) (finite_subtheory_theory i)) ->
+  set_family_finite_intersection_property
+    (fun d => exists sigma, T sigma /\
+      d = first_order_sentence_domain M sigma).
+Proof.
+  intros L T M HM domains Hdomains.
+  destruct domains as [|d domains].
+  - exists (empty_finite_subtheory T). cbn. constructor.
+  - destruct (Hdomains d (or_introl eq_refl)) as
+      [sigma0 [HT0 Hd0]].
+    pose (pick := fun e : pred_set (first_order_finite_subtheory T) =>
+      epsilon (inhabits sigma0) (fun sigma =>
+        T sigma /\ e = first_order_sentence_domain M sigma)).
+    assert (Hpick : forall e, In e (d :: domains) ->
+      T (pick e) /\ e = first_order_sentence_domain M (pick e)).
+    { intros e He. unfold pick. apply epsilon_spec.
+      exact (Hdomains e He). }
+    pose (sentences := map pick (d :: domains)).
+    assert (Hsentences : forall sigma, In sigma sentences -> T sigma).
+    { intros sigma Hsigma. unfold sentences in Hsigma.
+      apply in_map_iff in Hsigma. destruct Hsigma as [e [<- He]].
+      exact (proj1 (Hpick e He)). }
+    pose (i := {| finite_subtheory_sentences := sentences;
+      finite_subtheory_subset := Hsentences |}).
+    exists i. apply (proj2 (@set_list_intersection_member_iff
+      (first_order_finite_subtheory T) (d :: domains) i)).
+    intros e He.
+    destruct (Hpick e He) as [_ Heq]. rewrite Heq.
+    apply (first_order_models_of_member (HM i)).
+    unfold finite_subtheory_theory, sentences.
+    apply in_map. exact He.
+Qed.
+
+Theorem first_order_ultrafilter_exists : forall L (T : theory L)
+    (M : first_order_finite_subtheory T -> first_order_model L),
+  (forall i, first_order_models_theory (M i) (finite_subtheory_theory i)) ->
+  exists U : set_ultrafilter (first_order_finite_subtheory T),
+    forall sigma, T sigma ->
+      ultrafilter_member U (first_order_sentence_domain M sigma).
+Proof.
+  intros L T M HM.
+  destruct (ultrafilter_of_finite_intersection_property
+    (first_order_sentence_domains_fip HM)) as [U HU].
+  exists U. intros sigma Hsigma. apply HU.
+  now exists sigma.
+Qed.
+
+Theorem first_order_compactness_aux : forall L (T : theory L),
+  first_order_satisfiable T <->
+  forall i : first_order_finite_subtheory T,
+    first_order_satisfiable (finite_subtheory_theory i).
+Proof.
+  intros L T. split.
+  - intros [m Hm] i. exists m.
+    eapply first_order_models_of_subset; [exact Hm |].
+    intros sigma Hsigma. exact (@finite_subtheory_subset L T i sigma Hsigma).
+  - intro Hfinite.
+    assert (Hmodels : forall i : first_order_finite_subtheory T,
+      exists m : first_order_model L,
+        first_order_models_theory m (finite_subtheory_theory i)).
+    { intro i. exact (Hfinite i). }
+    destruct (@choice (first_order_finite_subtheory T)
+      (first_order_model L)
+      (fun i m => first_order_models_theory m (finite_subtheory_theory i))
+      Hmodels) as [M HM].
+    destruct (@first_order_ultrafilter_exists L T M HM) as [U HU].
+    pose (A := fun i : first_order_finite_subtheory T =>
+      first_order_model_domain (M i)).
+    pose (S := fun i : first_order_finite_subtheory T =>
+      first_order_model_structure (M i)).
+    pose (HA := fun i : first_order_finite_subtheory T =>
+      first_order_model_nonempty (M i)).
+    exists (@first_order_ultraproduct_model L
+      (first_order_finite_subtheory T) A S U HA).
+    apply (proj2 (first_order_models_theory_iff
+      (@first_order_ultraproduct_model L
+        (first_order_finite_subtheory T) A S U HA) T)).
+    intros sigma Hsigma.
+    apply (proj2 (@first_order_ultraproduct_model_realize L
+      (first_order_finite_subtheory T) A S U HA sigma)).
+    exact (HU sigma Hsigma).
+Qed.
+
+Theorem first_order_compactness : forall L (T : theory L),
+  first_order_satisfiable T <->
+  forall Gamma : list (sentence L),
+    (forall sigma, In sigma Gamma -> T sigma) ->
+    first_order_satisfiable (fun sigma => In sigma Gamma).
+Proof.
+  intros L T. rewrite first_order_compactness_aux. split.
+  - intros Hall Gamma Hsubset.
+    exact (Hall {| finite_subtheory_sentences := Gamma;
+      finite_subtheory_subset := Hsubset |}).
+  - intros Hall [Gamma Hsubset]. exact (Hall Gamma Hsubset).
 Qed.
