@@ -35,6 +35,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplatePAEmbeddingSelfShiftTail
   RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedTemplateLocalProofWitnessedTailTransport
+  RawCodedDynamicTruthImpBranchExclusivity
   RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification
   RawCodedDynamicTruthNativeZeroCanonicalTraceExactification.
 
@@ -62,6 +63,7 @@ Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplatePAEmbeddingSelfShiftTail.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
+Import PABoundedRawCodedDynamicTruthImpBranchExclusivity.
 Import
   PABoundedRawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
 Import
@@ -337,6 +339,97 @@ Proof.
       hsigma hpi).
 Qed.
 
+(** Two PA implications map a binary disjunction without selecting either
+    branch metatheoretically.  This ordinary-PA lemma is deliberately
+    formula-generic; soundness supplies the two semantic branch maps, and
+    open completeness packages their disjunction as one PA derivation. *)
+Theorem PA_proves_disjunction_map_of_implications : forall
+    leftSource rightSource leftTarget rightTarget,
+  Formula.BProv Formula.Ax_s nil (pImp leftSource leftTarget) ->
+  Formula.BProv Formula.Ax_s nil (pImp rightSource rightTarget) ->
+  Formula.BProv Formula.Ax_s nil
+    (pImp (pOr leftSource rightSource)
+      (pOr leftTarget rightTarget)).
+Proof.
+  intros leftSource rightSource leftTarget rightTarget
+    hleftImp hrightImp.
+  apply PA_proves_open_formula_of_raw_valid.
+  intros M hPA e.
+  cbn [raw_formula_sat].
+  intros [hleft | hright].
+  - left.
+    pose proof
+      (raw_sat_of_BProv_axs M (pImp leftSource leftTarget)
+        hPA hleftImp e) as himp.
+    cbn [raw_formula_sat] in himp.
+    exact (himp hleft).
+  - right.
+    pose proof
+      (raw_sat_of_BProv_axs M (pImp rightSource rightTarget)
+        hPA hrightImp e) as himp.
+    cbn [raw_formula_sat] in himp.
+    exact (himp hright).
+Qed.
+
+(** Represented counterpart of [PA_proves_disjunction_map_of_implications].
+    The source disjunction is transported by one compiled PA theorem, so the
+    result requires one witness extension rather than independently growing
+    and subsequently merging two branch contexts. *)
+Theorem
+    raw_codedPALocalProofOf_disjunction_targets_of_PA_implications_under_prefix
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall sourceWitnessList sourceContext prefix
+      leftSource rightSource leftTarget rightTarget decisionRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  Formula.BProv Formula.Ax_s nil (pImp leftSource leftTarget) ->
+  Formula.BProv Formula.Ax_s nil (pImp rightSource rightTarget) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawFormulaOrCode M
+      (rawQuotedFormulaCode M leftSource)
+      (rawQuotedFormulaCode M rightSource)) decisionRoot ->
+  exists targetWitnessList targetContext targetDecisionRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawFormulaOrCode M
+        (rawQuotedFormulaCode M leftTarget)
+        (rawQuotedFormulaCode M rightTarget)) targetDecisionRoot.
+Proof.
+  intros M hPA translation hagreement sourceWitnessList sourceContext
+    prefix leftSource rightSource leftTarget rightTarget decisionRoot
+    hprefix hsource hleftImp hrightImp hdecision.
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M (pOr leftSource rightSource))
+    decisionRoot) in hdecision.
+  destruct
+    (raw_codedPALocalProofOf_target_of_PA_implication_under_prefix
+      M hPA translation hagreement sourceWitnessList sourceContext prefix
+      (pOr leftSource rightSource) (pOr leftTarget rightTarget)
+      decisionRoot hprefix hsource
+      (PA_proves_disjunction_map_of_implications
+        leftSource rightSource leftTarget rightTarget
+        hleftImp hrightImp)
+      hdecision)
+    as (targetWitnessList & targetContext & targetDecisionRoot &
+      htargetWitnessed & hincluded & htargetDecision).
+  exists targetWitnessList, targetContext, targetDecisionRoot.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation targetContext prefix)
+    (rawFormulaOrCode M
+      (rawQuotedFormulaCode M leftTarget)
+      (rawQuotedFormulaCode M rightTarget)) targetDecisionRoot)
+    in htargetDecision.
+  exact htargetDecision.
+Qed.
+
 (** Preserve a rank-zero decision while changing its two payloads from the
     native fixed certificates to the canonical global applications.  A
     single PA implication is compiled, so the two alternatives remain in
@@ -370,33 +463,17 @@ Theorem
 Proof.
   intros M hPA translation hagreement sourceWitnessList sourceContext
     prefix decisionRoot hprefix hsource hdecision.
-  change (RawCodedPALocalProofOf M
-    (rawTemplateContextCodeOnTail translation sourceContext prefix)
-    (rawQuotedFormulaCode M
-      dynamicTruthZeroNativeEvidenceDecisionFormula)
-    decisionRoot) in hdecision.
-  destruct
-    (raw_codedPALocalProofOf_target_of_PA_implication_under_prefix
+  exact
+    (raw_codedPALocalProofOf_disjunction_targets_of_PA_implications_under_prefix
       M hPA translation hagreement sourceWitnessList sourceContext prefix
-      dynamicTruthZeroNativeEvidenceDecisionFormula
-      dynamicTruthZeroCanonicalApplicationDecisionFormula decisionRoot
+      dynamicTruthZeroSigmaEvidenceFormula
+      dynamicTruthZeroPiEvidenceFormula
+      dynamicTruthZeroInputGlobalSigmaApplicationFormula
+      dynamicTruthZeroInputGlobalPiApplicationFormula decisionRoot
       hprefix hsource
-      PA_proves_dynamicTruthZeroNativeEvidenceToCanonicalApplicationDecisionFormula
-      hdecision)
-    as (targetWitnessList & targetContext & applicationDecisionRoot &
-      htargetWitnessed & hincluded & happlicationDecision).
-  exists targetWitnessList, targetContext, applicationDecisionRoot.
-  split; [exact htargetWitnessed |].
-  split; [exact hincluded |].
-  change (RawCodedPALocalProofOf M
-    (rawTemplateContextCodeOnTail translation targetContext prefix)
-    (rawFormulaOrCode M
-      (rawQuotedFormulaCode M
-        dynamicTruthZeroInputGlobalSigmaApplicationFormula)
-      (rawQuotedFormulaCode M
-        dynamicTruthZeroInputGlobalPiApplicationFormula))
-    applicationDecisionRoot) in happlicationDecision.
-  exact happlicationDecision.
+      PA_proves_dynamicTruthZeroInputGlobalSigmaApplicationNativeBackwardFormula
+      PA_proves_dynamicTruthZeroInputGlobalPiApplicationNativeBackwardFormula
+      hdecision).
 Qed.
 
 (** Empty-prefix specialization for clients whose application roots already

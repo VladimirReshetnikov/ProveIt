@@ -9,6 +9,9 @@ Import
 Check rawQuotedFormulaCode_imp.
 Check raw_codedPALocalProofOf_target_of_PA_implication_under_prefix.
 Check raw_codedPALocalProofOf_pair_of_PA_implications_under_prefix.
+Check PA_proves_disjunction_map_of_implications.
+Check
+  raw_codedPALocalProofOf_disjunction_targets_of_PA_implications_under_prefix.
 Check
   raw_dynamicTruthZeroNativeEvidenceRoots_of_canonicalApplicationRoots_under_prefix.
 Check
@@ -23,6 +26,9 @@ Print Assumptions
   raw_codedPALocalProofOf_target_of_PA_implication_under_prefix.
 Print Assumptions
   raw_codedPALocalProofOf_pair_of_PA_implications_under_prefix.
+Print Assumptions PA_proves_disjunction_map_of_implications.
+Print Assumptions
+  raw_codedPALocalProofOf_disjunction_targets_of_PA_implications_under_prefix.
 Print Assumptions
   raw_dynamicTruthZeroNativeEvidenceRoots_of_canonicalApplicationRoots_under_prefix.
 Print Assumptions
