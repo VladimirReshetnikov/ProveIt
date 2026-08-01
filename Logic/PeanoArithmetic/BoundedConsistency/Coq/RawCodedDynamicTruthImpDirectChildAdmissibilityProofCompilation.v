@@ -27,11 +27,13 @@ From BoundedPAConsistency Require Import
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
   RawCodedPALocalProofComposition
+  RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
   RawCodedTemplateLocalProofWitnessedTailTransport
+  RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedFormulaImpChildrenAtomicAdequacyProofCompilation
   RawCodedDynamicTruthImpChildrenDomainProofCompilation.
@@ -52,11 +54,13 @@ Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
+Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
+Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import
   PABoundedRawCodedFormulaImpChildrenAtomicAdequacyProofCompilation.
@@ -346,6 +350,208 @@ Proof.
       extendedWitnessList extendedContext hextended)
     hprefix hsource) as [proofRoot hproof].
   exists witnesses, proofRoot. split; assumption.
+Qed.
+
+(** Generic synchronization kernel for a four-premise represented law.
+    The first premise is eliminated directly and the remaining implication
+    spine is delegated to the existing three-premise composition lemma. *)
+Theorem
+    raw_codedPALocalProofOf_templateImp4_of_roots_on_standard_witnessed_extension_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix witnesses
+      source first second third fourth conclusion
+      implicationRoot firstRoot secondRoot thirdRoot fourthRoot,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPAAxiomWitnessContext M
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList)
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext) ->
+  source = tfImp first
+    (tfImp second (tfImp third (tfImp fourth conclusion))) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) prefix)
+    (rawTemplateFormula translation source) implicationRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation first) firstRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation second) secondRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation third) thirdRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation fourth) fourthRoot ->
+  exists resultRoot,
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      (rawTemplateFormula translation conclusion) resultRoot.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext prefix
+    witnesses source first second third fourth conclusion
+    implicationRoot firstRoot secondRoot thirdRoot fourthRoot
+    hbase hextended hsource himplication
+    hfirst hsecond hthird hfourth.
+  set (extendedWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext).
+  assert (hincluded : RawContextListIncluded M baseContext extendedContext).
+  {
+    unfold extendedContext.
+    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+      M hPA witnesses baseContext).
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (rawTemplateFormula translation first)
+      firstRoot hbase hextended hincluded hfirst)
+    as [transportedFirstRoot htransportedFirst].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (rawTemplateFormula translation second)
+      secondRoot hbase hextended hincluded hsecond)
+    as [transportedSecondRoot htransportedSecond].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (rawTemplateFormula translation third)
+      thirdRoot hbase hextended hincluded hthird)
+    as [transportedThirdRoot htransportedThird].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (rawTemplateFormula translation fourth)
+      fourthRoot hbase hextended hincluded hfourth)
+    as [transportedFourthRoot htransportedFourth].
+  rewrite hsource in himplication.
+  rewrite !rawTemplateFormula_imp in himplication.
+  pose proof (raw_codedPALocalProofOf_impE M hPA
+    (rawTemplateContextCodeOnTail translation extendedContext prefix)
+    (rawTemplateFormula translation first)
+    (rawFormulaImpCode M
+      (rawTemplateFormula translation second)
+      (rawFormulaImpCode M
+        (rawTemplateFormula translation third)
+        (rawFormulaImpCode M
+          (rawTemplateFormula translation fourth)
+          (rawTemplateFormula translation conclusion))))
+    implicationRoot transportedFirstRoot
+    himplication htransportedFirst) as hafterFirst.
+  lazymatch type of hafterFirst with
+  | RawCodedPALocalProofOf _ _ _ ?afterFirstRoot =>
+      destruct (raw_codedPALocalProofOf_impE3 M hPA
+        (rawTemplateContextCodeOnTail translation extendedContext prefix)
+        (rawTemplateFormula translation second)
+        (rawTemplateFormula translation third)
+        (rawTemplateFormula translation fourth)
+        (rawTemplateFormula translation conclusion)
+        afterFirstRoot transportedSecondRoot transportedThirdRoot
+        transportedFourthRoot hafterFirst htransportedSecond
+        htransportedThird htransportedFourth) as [resultRoot hresult];
+      exists resultRoot; split; [exact hincluded | exact hresult]
+  end.
+Qed.
+
+(** Full context-safe application of the direct-child core. *)
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthImpDirectChildAdmissibilityCore_of_roots_on_witnessed_extension_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix level parent left right child
+      atomicRoot domainRoot shapeRoot guardRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+        level parent left right child)) atomicRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqDynamicTruthImpDirectChildDomainPremiseTemplate
+        level parent left right child)) domainRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqDynamicTruthImpDirectChildShapePremiseTemplate
+        level parent left right child)) shapeRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqDynamicTruthImpDirectChildGuardPremiseTemplate
+        level parent left right child)) guardRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) resultRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      (rawTemplateFormula translation
+        (coqDynamicTruthImpDirectChildAdmissibilityCoreConclusionTemplate
+          level parent left right child)) resultRoot.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext prefix
+    level parent left right child atomicRoot domainRoot shapeRoot guardRoot
+    hprefix hbase hatomic hdomain hshape hguard.
+  destruct
+    (raw_codedPALocalProofOf_dynamicTruthImpDirectChildAdmissibilityCore_instance_on_witnessed_tail_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      level parent left right child hprefix hbase)
+    as (witnesses & implicationRoot & hextended & himplication).
+  destruct
+    (raw_codedPALocalProofOf_templateImp4_of_roots_on_standard_witnessed_extension_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      witnesses
+      (coqDynamicTruthImpDirectChildAdmissibilityCoreInstanceTemplate
+        level parent left right child)
+      (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+        level parent left right child)
+      (coqDynamicTruthImpDirectChildDomainPremiseTemplate
+        level parent left right child)
+      (coqDynamicTruthImpDirectChildShapePremiseTemplate
+        level parent left right child)
+      (coqDynamicTruthImpDirectChildGuardPremiseTemplate
+        level parent left right child)
+      (coqDynamicTruthImpDirectChildAdmissibilityCoreConclusionTemplate
+        level parent left right child)
+      implicationRoot atomicRoot domainRoot shapeRoot guardRoot
+      hbase hextended
+      (coqDynamicTruthImpDirectChildAdmissibilityCoreInstanceTemplate_imp4_shape
+        level parent left right child)
+      himplication hatomic hdomain hshape hguard)
+    as (resultRoot & hincluded & hresult).
+  exists witnesses, resultRoot.
+  split; [exact hextended |].
+  split; [exact hincluded | exact hresult].
 Qed.
 
 End
