@@ -129,6 +129,9 @@ Definition ifo_map {L X n Y m} (b : Fin.t n -> Fin.t m) (e : X -> Y)
     (phi : ifo_semiformula L X n) : ifo_semiformula L Y m :=
   ifo_rewrite (rew_map b e) phi.
 
+Definition ifo_bshift {L X n} (phi : ifo_semiformula L X n) :
+    ifo_semiformula L X (S n) := ifo_rewrite rew_bshift phi.
+
 Definition ifo_emb {L O X n} (empty : O -> False)
     (phi : ifo_semiformula L O n) : ifo_semiformula L X n :=
   ifo_rewrite (rew_emb empty) phi.

@@ -2,6 +2,7 @@
 
 From Stdlib Require Import Arith.PeanoNat Logic.Eqdep_dec
   Logic.FunctionalExtensionality Program.Equality Vectors.Fin.
+From FoundationModal Require Import GenericSemantics.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 
 Set Implicit Arguments.
@@ -40,6 +41,15 @@ Definition ifo_neg {L X n} (phi : ifo_semiformula L X n) :
 
 Definition ifo_verum {L X n} : ifo_semiformula L X n :=
   IFOImp IFOFalsum IFOFalsum.
+
+Definition ifo_connectives L X n :
+    generic_connectives (ifo_semiformula L X n) :=
+  {| generic_top := ifo_verum;
+     generic_bottom := IFOFalsum;
+     generic_and := IFOAnd;
+     generic_or := IFOOr;
+     generic_imp := IFOImp;
+     generic_neg := ifo_neg |}.
 
 Lemma ifo_and_injective : forall L X n
     (phi1 phi2 psi1 psi2 : ifo_semiformula L X n),
@@ -94,6 +104,16 @@ Definition ifo_universal_quantifier L X :
 Definition ifo_existential_quantifier L X :
     first_existential_quantifier (ifo_semiformula L X) :=
   {| first_exists := fun n phi => @IFOExs L X n phi |}.
+
+Definition ifo_quantifiers L X :
+    first_quantifiers (ifo_semiformula L X) :=
+  {| first_quantifier_all := ifo_universal_quantifier L X;
+     first_quantifier_exists := ifo_existential_quantifier L X |}.
+
+Definition ifo_lcwq L X :
+    first_connectives_with_quantifiers (ifo_semiformula L X) :=
+  {| first_lcwq_quantifiers := ifo_quantifiers L X;
+     first_lcwq_connectives := ifo_connectives L X |}.
 
 Lemma ifo_all_closure_injective : forall L X n
     (phi psi : ifo_semiformula L X n),

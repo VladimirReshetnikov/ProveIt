@@ -35,7 +35,7 @@ From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Vorspiel.Order Require Import Regular.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
-From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew.
+From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -81,6 +81,7 @@ Check ifo_semiproposition.
 Check ifo_proposition.
 Check ifo_neg.
 Check ifo_verum.
+Check ifo_connectives.
 Print Assumptions ifo_and_injective.
 Print Assumptions ifo_or_injective.
 Print Assumptions ifo_imp_injective.
@@ -88,6 +89,8 @@ Print Assumptions ifo_all_injective.
 Print Assumptions ifo_exs_injective.
 Check ifo_universal_quantifier.
 Check ifo_existential_quantifier.
+Check ifo_quantifiers.
+Check ifo_lcwq.
 Print Assumptions ifo_all_closure_injective.
 Print Assumptions ifo_exs_closure_injective.
 Print Assumptions ifo_all_iter_injective.
@@ -120,6 +123,7 @@ Print Assumptions ifo_rewrite_ext.
 Print Assumptions ifo_rewrite_id.
 Print Assumptions ifo_rewrite_comp.
 Check ifo_map.
+Check ifo_bshift.
 Check ifo_emb.
 Check ifo_shift.
 Check ifo_free.
@@ -127,6 +131,21 @@ Check ifo_substitute.
 Print Assumptions ifo_map_injective.
 Print Assumptions ifo_complexity_rewrite.
 Print Assumptions ifo_negative_rewrite_iff.
+Check ifo_hilbert.
+Check ifo_hilbert_le.
+Check ifo_hilbert_minimal.
+Check ifo_hilbert_intuitionistic.
+Check ifo_hilbert_classical.
+Print Assumptions ifo_hilbert_minimal_le.
+Print Assumptions ifo_hilbert_intuitionistic_le_classical.
+Check ifo_hilbert_proof.
+Check ifo_hilbert_entailment.
+Check ifo_hilbert_proof_cast.
+Check ifo_hilbert_proof_depth.
+Print Assumptions ifo_hilbert_proof_depth_cast.
+Check ifo_hilbert_modus_ponens.
+Check ifo_hilbert_identity.
+Check ifo_hilbert_proof_weaken.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
