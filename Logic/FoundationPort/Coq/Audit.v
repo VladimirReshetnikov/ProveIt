@@ -2744,16 +2744,42 @@ Print Assumptions r0_numeral_lt_iff.
 Print Assumptions r0_lt_numeral_fin_iff.
 Print Assumptions nat_r0_laws.
 Print Assumptions peano_minus_r0_laws.
+Check r0_numeral_add_sentence.
+Check r0_numeral_mul_sentence.
+Check r0_numeral_ne_sentence.
+Check r0_initial_segment_sentence.
+Check r0_axiom.
+Print Assumptions r0_proves_equality.
+Print Assumptions r0_numeral_add_realize_iff.
+Print Assumptions r0_numeral_mul_realize_iff.
+Print Assumptions r0_numeral_ne_realize_iff.
+Print Assumptions r0_initial_segment_realize_iff.
+Print Assumptions first_order_model_models_r0_iff.
+Print Assumptions nat_standard_model_models_r0.
+Print Assumptions r0_consistent.
+Print Assumptions r0_proof_complete.
+Check r0_omega_add_one.
+Check r0_omega_add_one_oring.
+Print Assumptions r0_omega_add_one_numeral.
+Print Assumptions r0_omega_add_one_laws.
+Check r0_omega_add_one_model.
+Print Assumptions r0_omega_add_one_model_models_r0.
+Print Assumptions r0_omega_add_one_top_add_zero.
 Check oring_language_eq_operator.
 Check arithmetic_add_term.
 Check arithmetic_mul_term.
+Check arithmetic_numeral_term.
 Check arithmetic_eq_formula.
 Check arithmetic_lt_formula.
+Check arithmetic_eq_disjunction.
 Print Assumptions arithmetic_one_term_val.
 Print Assumptions arithmetic_add_term_val.
 Print Assumptions arithmetic_mul_term_val.
+Print Assumptions arithmetic_numeral_term_val.
+Print Assumptions first_order_matrix_disj_eval.
 Print Assumptions arithmetic_eq_formula_eval.
 Print Assumptions arithmetic_lt_formula_eval.
+Print Assumptions arithmetic_eq_disjunction_eval.
 Check robinson_q_succ_ne_zero_sentence.
 Check robinson_q_succ_inj_sentence.
 Check robinson_q_zero_or_succ_sentence.
@@ -2803,6 +2829,10 @@ Print Assumptions nat_robinson_q_laws.
 Print Assumptions nat_standard_model_models_robinson_q.
 Print Assumptions robinson_q_consistent.
 Print Assumptions robinson_q_proof_complete.
+Print Assumptions r0_weaker_than_robinson_q.
+Print Assumptions robinson_q_add_zero_provable.
+Print Assumptions r0_add_zero_unprovable.
+Print Assumptions r0_strictly_weaker_than_robinson_q.
 Print Assumptions peano_minus_zero_or_succ.
 Print Assumptions peano_minus_lt_iff_exists_add_succ.
 Print Assumptions peano_minus_robinson_q_laws.

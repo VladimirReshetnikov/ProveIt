@@ -908,3 +908,56 @@ Proof.
   apply (Hvalid m O Horing).
   now apply (proj1 (@first_order_model_models_robinson_q_iff m O Horing)).
 Qed.
+
+Theorem r0_weaker_than_robinson_q :
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    r0_axiom robinson_q_axiom.
+Proof.
+  apply (arithmetic_theory_weaker_of_models robinson_q_proves_equality).
+  intros m O Horing Hq.
+  apply (proj2 (@first_order_model_models_r0_iff m O Horing)).
+  apply robinson_q_r0_laws.
+  now apply (proj1 (@first_order_model_models_robinson_q_iff m O Horing)).
+Qed.
+
+Lemma robinson_q_add_zero_provable :
+  first_order_theory_provable robinson_q_axiom
+    robinson_q_add_zero_sentence.
+Proof.
+  exact (@generic_axiomatized_by_axiom
+    (theory oring_language) (sentence oring_language)
+    (first_order_theory_entailment oring_language)
+    (generic_predicate_adjunctive_set (sentence oring_language))
+    (first_order_theory_axiomatized oring_language)
+    robinson_q_axiom robinson_q_add_zero_sentence RobinsonQAddZero).
+Qed.
+
+Theorem r0_add_zero_unprovable :
+  ~ first_order_theory_provable r0_axiom robinson_q_add_zero_sentence.
+Proof.
+  apply (first_order_theory_unprovable_of_countermodel
+    r0_omega_add_one_model_models_r0).
+  intro Hreal.
+  pose proof (proj1 (@robinson_q_add_zero_realize_iff
+    r0_omega_add_one
+    (oring_standard_structure r0_omega_add_one_oring)
+    r0_omega_add_one_oring
+    (oring_standard_structure_interprets r0_omega_add_one_oring))
+    Hreal None) as Hbad.
+  discriminate Hbad.
+Qed.
+
+Theorem r0_strictly_weaker_than_robinson_q :
+  generic_strictly_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    r0_axiom robinson_q_axiom.
+Proof.
+  constructor.
+  - exact r0_weaker_than_robinson_q.
+  - intro Hreverse. apply r0_add_zero_unprovable.
+    exact (generic_weaker_subset Hreverse
+      robinson_q_add_zero_sentence robinson_q_add_zero_provable).
+Qed.
