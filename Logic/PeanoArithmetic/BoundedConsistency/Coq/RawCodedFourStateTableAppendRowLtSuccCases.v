@@ -1340,6 +1340,37 @@ Arguments RawFourStateTableAppendInheritedLocalRootsAt
   M translation context prefix inheritedTraversal oldLookup
   : clear implicits.
 
+(** The inherited traversal and old-row lookup are often literal members of
+    the finite row prefix.  Package both canonical assumption leaves at once
+    instead of making every append client spell out two [trpAss] compilers.
+    The prefix may contain arbitrary additional hypotheses and the witnessed
+    PA tail is left completely abstract. *)
+Theorem raw_fourStateTableAppendInheritedLocalRootsAt_of_template_assumptions :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    witnessList baseContext prefix inheritedTraversal oldLookup,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  In inheritedTraversal prefix ->
+  In oldLookup prefix ->
+  RawFourStateTableAppendInheritedLocalRootsAt M translation
+    baseContext prefix inheritedTraversal oldLookup.
+Proof.
+  intros M hPA translation witnessList baseContext prefix
+    inheritedTraversal oldLookup hwitness hinherited holdLookup.
+  exists
+    (rawTemplateProofCodeOnTail translation baseContext
+      (trpAss prefix inheritedTraversal)),
+    (rawTemplateProofCodeOnTail translation baseContext
+      (trpAss prefix oldLookup)).
+  split.
+  - exact (raw_templateAssumptionOnPAAxiomContext_localProof
+      M hPA translation witnessList baseContext prefix inheritedTraversal
+      hwitness hinherited).
+  - exact (raw_templateAssumptionOnPAAxiomContext_localProof
+      M hPA translation witnessList baseContext prefix oldLookup
+      hwitness holdLookup).
+Qed.
+
 (** Transport the two roots chosen before the arithmetic case split to the
     current dependency-ordered witnessed-tail extension. *)
 Theorem raw_fourStateTableAppendInheritedLocalRootsAt_transport :

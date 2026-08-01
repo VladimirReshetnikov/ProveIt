@@ -783,33 +783,21 @@ Proof.
     hbase hrestrictedIn hruleIn hlevel hsigmaDomain hpiDomain.
   set (translation :=
     rawDirectStructuralTemplateTranslation M hPA inputs).
-  set (restrictedDerivation :=
-    trpAss prefix
-      coqRestrictedPADerivationSoundnessRestrictedProofTemplate).
-  set (ruleDerivation :=
-    trpAss prefix
-      coqStrongStepProofEndpointAtomicAdequacyRulePremise).
-  assert (hrestrictedValid :
-      TemplateRawProofValid restrictedDerivation).
-  {
-    exact (proj1 (templateRawDerives_assumption prefix
-      coqRestrictedPADerivationSoundnessRestrictedProofTemplate
-      hrestrictedIn)).
-  }
-  assert (hruleValid : TemplateRawProofValid ruleDerivation).
-  {
-    exact (proj1 (templateRawDerives_assumption prefix
-      coqStrongStepProofEndpointAtomicAdequacyRulePremise hruleIn)).
-  }
+  set (restrictedDerivation := trpAss prefix
+    coqRestrictedPADerivationSoundnessRestrictedProofTemplate).
+  set (ruleDerivation := trpAss prefix
+    coqStrongStepProofEndpointAtomicAdequacyRulePremise).
   pose proof
-    (raw_templateProofOnPAAxiomContext_localProof
+    (raw_templateAssumptionOnPAAxiomContext_localProof
       M hPA translation baseWitnessList baseContext
-      restrictedDerivation hbase hrestrictedValid)
+      prefix coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+      hbase hrestrictedIn)
     as hrestricted.
   pose proof
-    (raw_templateProofOnPAAxiomContext_localProof
+    (raw_templateAssumptionOnPAAxiomContext_localProof
       M hPA translation baseWitnessList baseContext
-      ruleDerivation hbase hruleValid)
+      prefix coqStrongStepProofEndpointAtomicAdequacyRulePremise
+      hbase hruleIn)
     as hrule.
   cbn [restrictedDerivation] in hrestricted.
   cbn [ruleDerivation] in hrule.
