@@ -7,13 +7,182 @@
   particular entailment calculus.
 *)
 
-From Stdlib Require Import Arith.PeanoNat Lia Logic.Classical_Prop.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
+From Stdlib Require Import Arith.PeanoNat Lia Lists.List Logic.Classical_Prop
+  Vectors.Fin.
+From FoundationModal Require Import GenericAdjunctiveSet GenericEntailment.
+From Foundation.Vorspiel.Set Require Import Cofinite.
+From Foundation.Syntax.Predicate Require Import Language Quantifier Term.
+From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
+From Foundation.FirstOrder.Basic Require Import Calculus Eq Operator.
+From Foundation.FirstOrder.Basic.Semantics Require Import
+  ModelTheory RewriteClosure Semantics OperatorSemantics.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Syntax.
 From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
+
+Import ListNotations.
+
+(** * The concrete Robinson-Q theory *)
+
+Definition arithmetic_empty_free_env {A} : Empty_set -> A :=
+  fun x => match x with end.
+
+Definition arithmetic_all_sentence k
+    (p : semisentence oring_language k) : sentence oring_language :=
+  first_all_closure
+    (semiformula_universal_quantifier oring_language Empty_set) k p.
+
+Definition robinson_q_succ_ne_zero_sentence : sentence oring_language :=
+  @arithmetic_all_sentence 1
+    (semiformula_neg
+      (arithmetic_eq_formula
+        (arithmetic_add_one_term
+          (@Semiterm_bvar oring_language Empty_set 1 Fin.F1))
+        arithmetic_zero_term)).
+
+Definition robinson_q_succ_inj_sentence : sentence oring_language :=
+  @arithmetic_all_sentence 2
+    (semiformula_imp
+      (arithmetic_eq_formula
+        (arithmetic_add_one_term
+          (@Semiterm_bvar oring_language Empty_set 2 Fin.F1))
+        (arithmetic_add_one_term
+          (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1))))
+      (arithmetic_eq_formula
+        (@Semiterm_bvar oring_language Empty_set 2 Fin.F1)
+        (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1)))).
+
+Definition robinson_q_zero_or_succ_sentence : sentence oring_language :=
+  @arithmetic_all_sentence 1
+    (Semiformula_or
+      (arithmetic_eq_formula
+        (@Semiterm_bvar oring_language Empty_set 1 Fin.F1)
+        arithmetic_zero_term)
+      (Semiformula_exists
+        (arithmetic_eq_formula
+          (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1))
+          (arithmetic_add_one_term
+            (@Semiterm_bvar oring_language Empty_set 2 Fin.F1))))).
+
+Definition robinson_q_add_zero_sentence : sentence oring_language :=
+  @arithmetic_all_sentence 1
+    (arithmetic_eq_formula
+      (arithmetic_add_term
+        (@Semiterm_bvar oring_language Empty_set 1 Fin.F1)
+        arithmetic_zero_term)
+      (@Semiterm_bvar oring_language Empty_set 1 Fin.F1)).
+
+Definition robinson_q_add_succ_sentence : sentence oring_language :=
+  @arithmetic_all_sentence 2
+    (arithmetic_eq_formula
+      (arithmetic_add_term
+        (@Semiterm_bvar oring_language Empty_set 2 Fin.F1)
+        (arithmetic_add_one_term
+          (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1))))
+      (arithmetic_add_one_term
+        (arithmetic_add_term
+          (@Semiterm_bvar oring_language Empty_set 2 Fin.F1)
+          (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1))))).
+
+Definition robinson_q_mul_zero_sentence : sentence oring_language :=
+  @arithmetic_all_sentence 1
+    (arithmetic_eq_formula
+      (arithmetic_mul_term
+        (@Semiterm_bvar oring_language Empty_set 1 Fin.F1)
+        arithmetic_zero_term)
+      arithmetic_zero_term).
+
+Definition robinson_q_mul_succ_sentence : sentence oring_language :=
+  @arithmetic_all_sentence 2
+    (arithmetic_eq_formula
+      (arithmetic_mul_term
+        (@Semiterm_bvar oring_language Empty_set 2 Fin.F1)
+        (arithmetic_add_one_term
+          (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1))))
+      (arithmetic_add_term
+        (arithmetic_mul_term
+          (@Semiterm_bvar oring_language Empty_set 2 Fin.F1)
+          (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1)))
+        (@Semiterm_bvar oring_language Empty_set 2 Fin.F1))).
+
+Definition robinson_q_lt_def_sentence : sentence oring_language :=
+  @arithmetic_all_sentence 2
+    (semiformula_iff
+      (arithmetic_lt_formula
+        (@Semiterm_bvar oring_language Empty_set 2 Fin.F1)
+        (@Semiterm_bvar oring_language Empty_set 2 (Fin.FS Fin.F1)))
+      (Semiformula_exists
+        (arithmetic_eq_formula
+          (arithmetic_add_term
+            (@Semiterm_bvar oring_language Empty_set 3 (Fin.FS Fin.F1))
+            (arithmetic_add_one_term
+              (@Semiterm_bvar oring_language Empty_set 3 Fin.F1)))
+          (@Semiterm_bvar oring_language Empty_set 3
+            (Fin.FS (Fin.FS Fin.F1)))))).
+
+Inductive robinson_q_axiom : theory oring_language :=
+| RobinsonQEquality : forall sigma,
+    first_order_equality_axiom oring_language_eq_operator sigma ->
+    robinson_q_axiom sigma
+| RobinsonQSuccNeZero : robinson_q_axiom robinson_q_succ_ne_zero_sentence
+| RobinsonQSuccInj : robinson_q_axiom robinson_q_succ_inj_sentence
+| RobinsonQZeroOrSucc : robinson_q_axiom robinson_q_zero_or_succ_sentence
+| RobinsonQAddZero : robinson_q_axiom robinson_q_add_zero_sentence
+| RobinsonQAddSucc : robinson_q_axiom robinson_q_add_succ_sentence
+| RobinsonQMulZero : robinson_q_axiom robinson_q_mul_zero_sentence
+| RobinsonQMulSucc : robinson_q_axiom robinson_q_mul_succ_sentence
+| RobinsonQLtDef : robinson_q_axiom robinson_q_lt_def_sentence.
+
+Definition robinson_q_axiom_list : list (sentence oring_language) :=
+  first_order_equality_axiom_list oring_language_eq_operator
+    oring_language_finite ++
+  [robinson_q_succ_ne_zero_sentence;
+   robinson_q_succ_inj_sentence;
+   robinson_q_zero_or_succ_sentence;
+   robinson_q_add_zero_sentence;
+   robinson_q_add_succ_sentence;
+   robinson_q_mul_zero_sentence;
+   robinson_q_mul_succ_sentence;
+   robinson_q_lt_def_sentence].
+
+Lemma robinson_q_axiom_list_complete : forall sigma,
+  robinson_q_axiom sigma -> In sigma robinson_q_axiom_list.
+Proof.
+  intros sigma Hsigma. destruct Hsigma; unfold robinson_q_axiom_list.
+  - apply in_or_app. left.
+    now apply first_order_equality_axiom_list_complete.
+  - apply in_or_app. right. simpl; tauto.
+  - apply in_or_app. right. simpl; tauto.
+  - apply in_or_app. right. simpl; tauto.
+  - apply in_or_app. right. simpl; tauto.
+  - apply in_or_app. right. simpl; tauto.
+  - apply in_or_app. right. simpl; tauto.
+  - apply in_or_app. right. simpl; tauto.
+  - apply in_or_app. right. simpl; tauto.
+Qed.
+
+Theorem robinson_q_axiom_finitely_covered :
+  set_finitely_covered robinson_q_axiom.
+Proof.
+  exists robinson_q_axiom_list.
+  intros sigma Hsigma. now apply robinson_q_axiom_list_complete.
+Qed.
+
+Theorem robinson_q_proves_equality :
+  first_order_theory_proves_equality
+    robinson_q_axiom oring_language_eq_operator.
+Proof.
+  intros sigma Hsigma.
+  exact (@generic_axiomatized_by_axiom
+    (theory oring_language) (sentence oring_language)
+    (first_order_theory_entailment oring_language)
+    (generic_predicate_adjunctive_set (sentence oring_language))
+    (first_order_theory_axiomatized oring_language)
+    robinson_q_axiom sigma (RobinsonQEquality Hsigma)).
+Qed.
 
 Record robinson_q_laws {M : Type} (O : oring_carrier M) : Prop := {
   robinson_q_succ_ne_zero : forall a,

@@ -61,6 +61,7 @@ From Foundation.FirstOrder.Basic Require Import Padding.
 From Foundation.FirstOrder.Basic Require Import Eq.
 From Foundation.FirstOrder.Basic Require Import Coding.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Syntax.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
@@ -2741,6 +2742,29 @@ Print Assumptions r0_numeral_lt_iff.
 Print Assumptions r0_lt_numeral_fin_iff.
 Print Assumptions nat_r0_laws.
 Print Assumptions peano_minus_r0_laws.
+Check oring_language_eq_operator.
+Check arithmetic_add_term.
+Check arithmetic_mul_term.
+Check arithmetic_eq_formula.
+Check arithmetic_lt_formula.
+Print Assumptions arithmetic_one_term_val.
+Print Assumptions arithmetic_add_term_val.
+Print Assumptions arithmetic_mul_term_val.
+Print Assumptions arithmetic_eq_formula_eval.
+Print Assumptions arithmetic_lt_formula_eval.
+Check robinson_q_succ_ne_zero_sentence.
+Check robinson_q_succ_inj_sentence.
+Check robinson_q_zero_or_succ_sentence.
+Check robinson_q_add_zero_sentence.
+Check robinson_q_add_succ_sentence.
+Check robinson_q_mul_zero_sentence.
+Check robinson_q_mul_succ_sentence.
+Check robinson_q_lt_def_sentence.
+Check robinson_q_axiom.
+Check robinson_q_axiom_list.
+Print Assumptions robinson_q_axiom_list_complete.
+Print Assumptions robinson_q_axiom_finitely_covered.
+Print Assumptions robinson_q_proves_equality.
 Print Assumptions robinson_q_laws.
 Print Assumptions robinson_q_exists_succ_of_ne_zero.
 Print Assumptions robinson_q_exists_succ_of_ne_zero'.

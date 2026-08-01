@@ -16,7 +16,7 @@ From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Calculus Eq Operator Soundness.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics OperatorSemantics ModelTheory.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Syntax.
 From Foundation.FirstOrder.Completeness Require Import CounterModel.
 
 Set Implicit Arguments.
@@ -165,11 +165,6 @@ Definition oring_carrier_of_structure {M}
      oring_add := fun a b => structure_func Str ORing_add (fin_two a b);
      oring_mul := fun a b => structure_func Str ORing_mul (fin_two a b);
      oring_lt := fun a b => structure_rel Str ORing_lt (fin_two a b) |}.
-
-Definition oring_language_eq_operator :
-    semiformula_has_eq_operator oring_language :=
-  semiformula_eq_operator_of_language
-    (language_oring_eq oring_language_structure).
 
 Theorem structure_interprets_oring_of_structure : forall M
     (Str : first_order_structure oring_language M),

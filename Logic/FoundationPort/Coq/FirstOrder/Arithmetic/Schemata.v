@@ -7,31 +7,12 @@ From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Calculus Operator Soundness.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics RewriteClosure OperatorSemantics ModelTheory Elementary.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Hierarchy.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Syntax Hierarchy.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
-
-Definition arithmetic_zero_term {X n} : semiterm oring_language X n :=
-  semiterm_operator_const_apply
-    (semiterm_zero_operator
-      (semiterm_zero_operator_of_language
-        (language_oring_zero oring_language_structure))).
-
-Definition arithmetic_one_term {X n} : semiterm oring_language X n :=
-  semiterm_one_term
-    (semiterm_one_operator_of_language
-      (language_oring_one oring_language_structure)).
-
-Definition arithmetic_add_one_term {X n}
-    (t : semiterm oring_language X n) : semiterm oring_language X n :=
-  semiterm_add_one
-    (semiterm_one_operator_of_language
-      (language_oring_one oring_language_structure))
-    (semiterm_add_operator_of_language
-      (language_oring_add oring_language_structure)) t.
 
 Definition arithmetic_predicate_instance {X n}
     (phi : semiformula oring_language X 1)
@@ -79,32 +60,6 @@ Definition arithmetic_predicate_holds {M X}
     (f : X -> M) (phi : semiformula oring_language X 1)
     (x : M) : Prop :=
   semiformula_eval Str (fun _ : Fin.t 1 => x) f phi.
-
-Lemma arithmetic_zero_term_val : forall M X n
-    (Str : first_order_structure oring_language M)
-    (b : Fin.t n -> M) (f : X -> M) (O : oring_carrier M),
-  structure_interprets_oring Str oring_language_structure O ->
-  semiterm_val Str b f arithmetic_zero_term = oring_zero O.
-Proof.
-  intros M X n Str b f O Horing.
-  unfold arithmetic_zero_term, semiterm_operator_const_apply.
-  rewrite semiterm_val_operator_apply, semiterm_val_fin_zero.
-  apply structure_zero_operator. exact (structure_oring_zero Horing).
-Qed.
-
-Lemma arithmetic_add_one_term_val : forall M X n
-    (Str : first_order_structure oring_language M)
-    (b : Fin.t n -> M) (f : X -> M) (O : oring_carrier M)
-    (t : semiterm oring_language X n),
-  structure_interprets_oring Str oring_language_structure O ->
-  semiterm_val Str b f (arithmetic_add_one_term t) =
-  oring_add O (semiterm_val Str b f t) (oring_one O).
-Proof.
-  intros M X n Str b f O t Horing. unfold arithmetic_add_one_term.
-  apply semiterm_val_add_one.
-  - exact (structure_oring_one Horing).
-  - exact (structure_oring_add Horing).
-Qed.
 
 Lemma arithmetic_predicate_instance_eval : forall M X n
     (Str : first_order_structure oring_language M)
