@@ -35,6 +35,7 @@ From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Vorspiel.Order Require Import Regular.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
+From Foundation.FirstOrder.Intuitionistic Require Import Formula.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -71,6 +72,40 @@ From Foundation.Syntax.Predicate Require Import Relational.
 From Foundation.LinearLogic Require Import LogicSymbol MLL MELL.
 From Foundation.LinearLogic.FirstOrder Require Import
   Formula Rew Calculus ClassicalEmbedding.
+
+Check ifo_semiformula.
+Check ifo_formula.
+Check ifo_sentence.
+Check ifo_semisentence.
+Check ifo_semiproposition.
+Check ifo_proposition.
+Check ifo_neg.
+Check ifo_verum.
+Print Assumptions ifo_and_injective.
+Print Assumptions ifo_or_injective.
+Print Assumptions ifo_imp_injective.
+Print Assumptions ifo_all_injective.
+Print Assumptions ifo_exs_injective.
+Check ifo_universal_quantifier.
+Check ifo_existential_quantifier.
+Print Assumptions ifo_all_closure_injective.
+Print Assumptions ifo_exs_closure_injective.
+Print Assumptions ifo_all_iter_injective.
+Print Assumptions ifo_exs_iter_injective.
+Check ifo_complexity.
+Print Assumptions ifo_complexity_verum.
+Print Assumptions ifo_complexity_neg.
+Check ifo_semiformula_eq_dec.
+Check ifo_negative.
+Print Assumptions ifo_negative_and_iff.
+Print Assumptions ifo_negative_imp_iff.
+Print Assumptions ifo_negative_all_iff.
+Print Assumptions ifo_negative_verum.
+Print Assumptions ifo_negative_neg.
+Print Assumptions ifo_negative_not_or.
+Print Assumptions ifo_negative_not_exs.
+Print Assumptions ifo_negative_not_rel.
+Check ifo_negative_dec.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
