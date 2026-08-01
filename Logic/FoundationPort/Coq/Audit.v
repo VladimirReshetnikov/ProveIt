@@ -36,6 +36,7 @@ From Foundation.Vorspiel.Order Require Import Regular.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
+From Foundation.FirstOrder.NegationTranslation Require Import GoedelGentzen.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -210,6 +211,32 @@ Check ifo_theory_classical_capability.
 Check ifo_hilbert_classical_lem_capability.
 Check ifo_hilbert_classical_efq_capability.
 Print Assumptions ifo_hilbert_classical_system_capability.
+Check ifo_double_negation_translation.
+Print Assumptions ifo_double_negation_rel.
+Print Assumptions ifo_double_negation_nrel.
+Print Assumptions ifo_double_negation_verum.
+Print Assumptions ifo_double_negation_falsum.
+Print Assumptions ifo_double_negation_and.
+Print Assumptions ifo_double_negation_or.
+Print Assumptions ifo_double_negation_all.
+Print Assumptions ifo_double_negation_exists.
+Print Assumptions ifo_double_negation_imp.
+Print Assumptions ifo_double_negation_negative.
+Check semiformula_list_conj2.
+Check ifo_list_conj2.
+Print Assumptions ifo_double_negation_list_conj2.
+Print Assumptions ifo_rewrite_double_negation.
+Print Assumptions ifo_substitute_double_negation.
+Print Assumptions ifo_emb_double_negation.
+Check ifo_double_negation_sequent.
+Print Assumptions ifo_double_negation_sequent_nil.
+Print Assumptions ifo_double_negation_sequent_cons.
+Print Assumptions ifo_double_negation_sequent_append.
+Print Assumptions ifo_shift_double_negation_sequent.
+Check ifo_double_negation_theory.
+Print Assumptions ifo_double_negation_theory_axiom_eq.
+Check ifo_double_negation_theory_intro.
+Check ifo_double_negation_theory_source.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
