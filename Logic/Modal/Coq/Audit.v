@@ -3850,8 +3850,14 @@ Print Assumptions modal_to_pformula_to_modal.
 Print Assumptions modal_degree_zero_iff_propositional.
 
 Check nnformula_eq_dec.
+Check nnformula_encode_with.
+Check nnformula_decode_with.
+Check nnformula_enum_with.
 Check nn_neg_involutive.
 Check nn_neg_injective.
+Check nn_imp_injective.
+Check nn_is_prebox_iff.
+Check nn_is_predia_iff.
 Check nn_degree_neg.
 Check nn_degree_to_formula.
 Check nn_dnf_part_degree_zero.
@@ -3872,6 +3878,15 @@ Check modal_formula_decode_code.
 Check modal_formula_enum_surjective.
 Check nnformula_decode_code.
 Check nnformula_enum_surjective.
+Print Assumptions nn_or_injective.
+Print Assumptions nn_and_injective.
+Print Assumptions nn_box_injective.
+Print Assumptions nn_dia_injective.
+Print Assumptions nn_imp_injective.
+Print Assumptions nn_is_prebox_iff.
+Print Assumptions nn_is_predia_iff.
+Print Assumptions nnformula_decode_encode_with.
+Print Assumptions nnformula_enum_with_surjective.
 
 Check plon_satisfies_box.
 Check plon_not_satisfies_box.
@@ -6487,6 +6502,9 @@ Print Assumptions normal_consistent_of_sound_frame_class.
 Print Assumptions normal_consistent_of_sound_frame.
 Print Assumptions normal_weaker_than_of_subset_frame_class.
 Print Assumptions nn_neg_involutive.
+Print Assumptions nn_imp_injective.
+Print Assumptions nn_is_prebox_iff.
+Print Assumptions nn_is_predia_iff.
 Print Assumptions nn_degree_to_formula.
 Print Assumptions nn_dnf_part_degree_zero.
 Print Assumptions nn_satisfies_atom.
@@ -6498,6 +6516,8 @@ Print Assumptions modal_formula_decode_code.
 Print Assumptions modal_formula_enum_surjective.
 Print Assumptions nnformula_decode_code.
 Print Assumptions nnformula_enum_surjective.
+Print Assumptions nnformula_decode_encode_with.
+Print Assumptions nnformula_enum_with_surjective.
 Print Assumptions plon_satisfies_box.
 Print Assumptions plon_not_satisfies_box.
 Print Assumptions plon_model_valid_elim_contra.
