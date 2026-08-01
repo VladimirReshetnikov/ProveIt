@@ -39,6 +39,8 @@ From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
 From Foundation.FirstOrder.NegationTranslation Require Import GoedelGentzen.
 From Foundation.FirstOrder.Kripke Require Import Basic Intuitionistic WeakForcing.
 From Foundation.FirstOrder Require Import Hauptsatz.
+From Foundation.FirstOrder Require Import Ultraproduct.
+From Foundation.Vorspiel.Set Require Import Ultrafilter.
 From Foundation.FirstOrder.Completeness Require Import CountableSublanguage.
 From Foundation.FirstOrder.Completeness Require Import CanonicalModel.
 From Foundation.FirstOrder.Completeness Require Import CounterModel.
@@ -3250,3 +3252,28 @@ Print Assumptions semiformula_rewrite_bind_identity.
 Print Assumptions first_order_generic_reflection.
 Check classical_language_decidable_eq.
 Print Assumptions first_order_satisfiable_of_irrefutable.
+Check set_intersection.
+Check set_union.
+Check set_complement.
+Check set_universal.
+Check set_void.
+Check set_ultrafilter.
+Print Assumptions ultrafilter_member_equiv.
+Print Assumptions ultrafilter_intersection_mem.
+Print Assumptions ultrafilter_member_intersection_left.
+Print Assumptions ultrafilter_member_intersection_right.
+Print Assumptions ultrafilter_member_decides.
+Check first_order_ultraproduct.
+Print Assumptions first_order_ultraproduct_ext.
+Check first_order_ultraproduct_structure.
+Print Assumptions first_order_ultraproduct_structure_func.
+Print Assumptions first_order_ultraproduct_structure_rel.
+Check first_order_ultraproduct_inhabited.
+Print Assumptions first_order_ultraproduct_term_value.
+Print Assumptions first_order_ultraproduct_term_value_eq.
+Print Assumptions first_order_ultraproduct_fin_env_cons.
+Print Assumptions first_order_ultraproduct_formula_eval.
+Print Assumptions first_order_ultraproduct_formula_realize.
+Print Assumptions first_order_ultraproduct_sentence_realize.
+Check first_order_ultraproduct_model.
+Print Assumptions first_order_ultraproduct_model_realize.
