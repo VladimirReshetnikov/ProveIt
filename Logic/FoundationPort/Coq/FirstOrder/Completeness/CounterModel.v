@@ -15,8 +15,9 @@ From FoundationModal Require Import GenericAdjunctiveSet GenericEntailment Gener
 From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
-From Foundation.FirstOrder.Basic Require Import Calculus Calculus2 Coding Soundness.
-From Foundation.FirstOrder.Basic.Semantics Require Import Semantics ModelTheory Elementary.
+From Foundation.FirstOrder.Basic Require Import Calculus Calculus2 Coding Eq Operator Soundness.
+From Foundation.FirstOrder.Basic.Semantics Require Import
+  Semantics ModelTheory Elementary OperatorSemantics.
 From Foundation.FirstOrder Require Import Hauptsatz.
 From Foundation.FirstOrder Require Import Ultraproduct.
 From Foundation.FirstOrder.Completeness Require Import
@@ -870,4 +871,39 @@ Proof.
   destruct (normalize m Hm) as [n [HC [Hequiv Hn]]].
   apply (proj2 (first_order_elementary_equiv_realize Hequiv sigma)).
   exact (Hrestricted n HC Hn).
+Qed.
+
+(** Completeness can therefore be tested only on models where the selected
+    equality operator is literal Coq equality.  The first premise is exactly
+    the semantic content of the source's syntactic inclusion [EQ <= T], and
+    is strictly more general because no particular presentation of the
+    equality axioms is required. *)
+Theorem first_order_theory_proof_complete_on_eq_models : forall L
+    (T : theory L) (sigma : sentence L)
+    (Heq : semiformula_has_eq_operator L),
+  (forall m, first_order_models_theory m T ->
+    first_order_models_equality_axioms
+      (first_order_model_structure m) Heq) ->
+  (forall m,
+    structure_interprets_eq (first_order_model_structure m) Heq ->
+    first_order_models_theory m T ->
+    first_order_model_realize m sigma) ->
+  first_order_theory_provable T sigma.
+Proof.
+  intros L T sigma Heq Hequality Hrestricted.
+  eapply first_order_theory_proof_complete_on_model_class
+    with (C := fun m =>
+      structure_interprets_eq (first_order_model_structure m) Heq).
+  - intros m Hm.
+    pose (Haxioms := Hequality m Hm).
+    exists (first_order_eq_quotient_model Haxioms).
+    split.
+    + exact (@first_order_eq_quotient_model_interprets_eq
+        L m Heq Haxioms).
+    + split.
+      * exact (@first_order_eq_quotient_elementary_equiv
+          L m Heq Haxioms).
+      * apply (proj1 (first_order_eq_quotient_models_theory Haxioms T)).
+        exact Hm.
+  - exact Hrestricted.
 Qed.

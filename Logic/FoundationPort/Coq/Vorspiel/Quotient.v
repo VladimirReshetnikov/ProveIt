@@ -6,7 +6,8 @@
     value, and choosing a representative of a constructed class is related
     to the original value. *)
 
-From Stdlib Require Import Logic.FunctionalExtensionality Vectors.Fin.
+From Stdlib Require Import Classes.RelationClasses Logic.ClassicalEpsilon Logic.FunctionalExtensionality
+  Logic.ProofIrrelevance Logic.PropExtensionality Vectors.Fin.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -27,6 +28,93 @@ Arguments quotient_mk {A R} _ _.
 Arguments quotient_repr {A R} _ _.
 Arguments quotient_repr_mk_related {A R} _ _.
 Arguments quotient_mk_repr {A R} _ _.
+
+(** A concrete quotient representation for every equivalence relation.
+    Quotient values are predicates extensionally equal to one equivalence
+    class.  Classical description chooses representatives; propositional and
+    functional extensionality identify equal classes.  This supplies the
+    quotient construction that Rocq intentionally leaves out of its kernel. *)
+Definition equivalence_class_carrier {A}
+    (R : A -> A -> Prop) : Type :=
+  { P : A -> Prop |
+    exists a : A, forall x, P x <-> R x a }.
+
+Definition equivalence_class_mk {A} (R : A -> A -> Prop)
+    (Hrefl : Reflexive R) (a : A) :
+    equivalence_class_carrier R.
+Proof.
+  exists (fun x => R x a). exists a. intro x. reflexivity.
+Defined.
+
+Definition equivalence_class_repr {A} {R : A -> A -> Prop}
+    (q : equivalence_class_carrier R) : A :=
+  proj1_sig (constructive_indefinite_description _ (proj2_sig q)).
+
+Lemma equivalence_class_repr_spec : forall A (R : A -> A -> Prop)
+    (q : equivalence_class_carrier R) x,
+  proj1_sig q x <-> R x (equivalence_class_repr q).
+Proof.
+  intros A R [P HP] x. unfold equivalence_class_repr. simpl.
+  exact (proj2_sig (constructive_indefinite_description
+    (fun a => forall y, P y <-> R y a) HP) x).
+Qed.
+
+Lemma equivalence_class_repr_mk_related : forall A
+    (R : A -> A -> Prop) (Hequiv : Equivalence R) a,
+  R (equivalence_class_repr
+      (@equivalence_class_mk A R (@Equivalence_Reflexive A R Hequiv) a)) a.
+Proof.
+  intros A R Hequiv a.
+  pose (b := equivalence_class_repr
+    (@equivalence_class_mk A R (@Equivalence_Reflexive A R Hequiv) a)).
+  apply (proj2 (@equivalence_class_repr_spec A R
+    (@equivalence_class_mk A R (@Equivalence_Reflexive A R Hequiv) a) b)).
+  apply (@Equivalence_Reflexive A R Hequiv).
+Qed.
+
+Lemma equivalence_class_mk_repr : forall A
+    (R : A -> A -> Prop) (Hequiv : Equivalence R)
+    (q : equivalence_class_carrier R),
+  @equivalence_class_mk A R (@Equivalence_Reflexive A R Hequiv)
+      (equivalence_class_repr q) = q.
+Proof.
+  intros A R Hequiv [P HP].
+  apply eq_sig_hprop; [intros; apply proof_irrelevance |].
+  apply functional_extensionality. intro x.
+  apply propositional_extensionality.
+  symmetry. apply equivalence_class_repr_spec.
+Qed.
+
+Lemma equivalence_class_mk_eq_iff : forall A
+    (R : A -> A -> Prop) (Hequiv : Equivalence R) a b,
+  @equivalence_class_mk A R (@Equivalence_Reflexive A R Hequiv) a =
+  @equivalence_class_mk A R (@Equivalence_Reflexive A R Hequiv) b <->
+  R a b.
+Proof.
+  intros A R Hequiv a b. split.
+  - intro H.
+    assert (Hpred : (fun x => R x a) = (fun x => R x b)).
+    { now inversion H. }
+    assert (Haa : R a a) by apply (@Equivalence_Reflexive A R Hequiv).
+    change (R a b). change ((fun x => R x b) a).
+    rewrite <- Hpred. exact Haa.
+  - intro Hab. apply eq_sig_hprop; [intros; apply proof_irrelevance |].
+    apply functional_extensionality. intro x.
+    apply propositional_extensionality. split; intro Hx.
+    + exact (@Equivalence_Transitive A R Hequiv x a b Hx Hab).
+    + exact (@Equivalence_Transitive A R Hequiv x b a Hx
+        (@Equivalence_Symmetric A R Hequiv a b Hab)).
+Qed.
+
+Definition equivalence_class_quotient {A} (R : A -> A -> Prop)
+    (Hequiv : Equivalence R) : @explicit_quotient A R :=
+  {| quotient_carrier := equivalence_class_carrier R;
+     quotient_mk :=
+       @equivalence_class_mk A R (@Equivalence_Reflexive A R Hequiv);
+     quotient_repr := equivalence_class_repr;
+     quotient_repr_mk_related :=
+       equivalence_class_repr_mk_related Hequiv;
+     quotient_mk_repr := equivalence_class_mk_repr Hequiv |}.
 
 Definition quotient_vec_mk {A R} (Q : @explicit_quotient A R) {n}
     (v : Fin.t n -> A) : Fin.t n -> quotient_carrier Q :=
