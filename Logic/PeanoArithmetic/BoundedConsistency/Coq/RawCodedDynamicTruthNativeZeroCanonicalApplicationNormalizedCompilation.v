@@ -412,6 +412,82 @@ Arguments
   RawDynamicTruthNativeLocalZeroCanonicalGrowingRestrictedRuleRootsCompilerOnCanonicalNormalizedResources
   M hPA translation : clear implicits.
 
+(** The two proof analyses are independent and may append different standard
+    PA prefixes.  Each result preserves the predecessor-state assumptions;
+    synchronization is an internal consumer responsibility rather than a
+    producer-side equality constraint on chosen tails. *)
+Definition
+    RawDynamicTruthNativeLocalZeroCanonicalIndependentGrowingRestrictedRuleRootCompilersOnCanonicalNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext
+      coqDynamicTruthPredecessorStateTemplateContext
+      (rawDirectTemplateFormula
+        (rawBottomTemplateDirectStructuralInputs M hPA)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate) /\
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext
+      coqDynamicTruthPredecessorStateTemplateContext
+      (rawDirectTemplateFormula
+        (rawBottomTemplateDirectStructuralInputs M hPA)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise).
+
+Arguments
+  RawDynamicTruthNativeLocalZeroCanonicalIndependentGrowingRestrictedRuleRootCompilersOnCanonicalNormalizedResources
+  M hPA translation : clear implicits.
+
+(** Merge the independently selected witnessed tails while retaining the
+    shared predecessor-state prefix verbatim. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroCanonicalGrowingRestrictedRuleRootsCompilerOnCanonicalNormalizedResources_of_independent
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroCanonicalIndependentGrowingRestrictedRuleRootCompilersOnCanonicalNormalizedResources
+    M hPA translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalGrowingRestrictedRuleRootsCompilerOnCanonicalNormalizedResources
+    M hPA translation.
+Proof.
+  intros M hPA translation hcompilers tail witnessList baseContext
+    helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  destruct
+    (hcompilers tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (hrestricted & hrule).
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_pair_at_prefix
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext
+      coqDynamicTruthPredecessorStateTemplateContext
+      (rawDirectTemplateFormula
+        (rawBottomTemplateDirectStructuralInputs M hPA)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+      (rawDirectTemplateFormula
+        (rawBottomTemplateDirectStructuralInputs M hPA)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+      hrestricted hrule) as hpair.
+  destruct hpair as
+    (rootWitnessList & rootContext & restrictedRoot & ruleRoot &
+      hrootWitnessed & hbaseRootIncluded & hrestrictedRoot & hruleRoot).
+  rewrite (raw_dynamicTruthPredecessorStateTemplateContextCode
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+    (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+    rootContext) in hrestrictedRoot, hruleRoot.
+  exists rootWitnessList, rootContext, restrictedRoot, ruleRoot.
+  split; [exact hrootWitnessed |].
+  split; [exact hbaseRootIncluded |].
+  split; assumption.
+Qed.
+
 (** Exact-tail production remains a sufficient compatibility interface. *)
 Theorem
     raw_dynamicTruthNativeLocalZeroCanonicalGrowingRestrictedRuleRootsCompilerOnCanonicalNormalizedResources_of_fixed
@@ -559,6 +635,26 @@ Proof.
       (rawDynamicTruthZeroPiDomainCode M)
       restrictedRoot ruleRoot hrootWitnessed hbaseRootIncluded
       hlevel hsigmaDomain hpiDomain hrestricted hrule).
+Qed.
+
+(** Independent root producers suffice for the complete endpoint; their
+    witnessed tails are synchronized before the endpoint law adds its own
+    standard PA prefix. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_independent_growing_restricted_rule_roots
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroCanonicalIndependentGrowingRestrictedRuleRootCompilersOnCanonicalNormalizedResources
+    M hPA translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hroots.
+  exact
+    (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_growing_restricted_rule_roots
+      M hPA translation
+      (raw_dynamicTruthNativeLocalZeroCanonicalGrowingRestrictedRuleRootsCompilerOnCanonicalNormalizedResources_of_independent
+        M hPA translation hroots)).
 Qed.
 
 (** Merge independently selected atomic and domain witnessed tails.  The

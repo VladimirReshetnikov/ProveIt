@@ -354,17 +354,18 @@ Arguments
     coordinate changes: instead of returning completed canonical state
     applications, it separates the invocation-dependent restricted-proof
     and rule-validity roots from one model-global synchronized rank-0/rank-1
-    append payload pair.  Root production may grow to one witnessed PA tail;
-    the canonical bottom interpretation and all zero-domain alignments are
-    constructed internally before the generic strong-step compiler derives
-    both arithmetic endpoint roots.  The remaining seven dependency-ordered
-    coordinates are preserved exactly. *)
+    append payload pair.  The two root producers may grow independently;
+    their witnessed PA tails are synchronized internally.  The canonical
+    bottom interpretation and all zero-domain alignments are then constructed
+    before the generic strong-step compiler derives both arithmetic endpoint
+    roots.  The remaining seven dependency-ordered coordinates are preserved
+    exactly. *)
 Definition
     RawDynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
     (M : RawPAModel) (hPA : RawPASatisfies M)
     (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
   let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
-  RawDynamicTruthNativeLocalZeroCanonicalGrowingRestrictedRuleRootsCompilerOnCanonicalNormalizedResources
+  RawDynamicTruthNativeLocalZeroCanonicalIndependentGrowingRestrictedRuleRootCompilersOnCanonicalNormalizedResources
     M hPA translation /\
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
     M translation coqDynamicTruthPredecessorStateTemplateContext /\
@@ -405,7 +406,8 @@ Theorem
     M hPA inputs.
 Proof.
   intros M hPA inputs
-    (hzeroGrowingRestrictedRuleRoots & hzeroPayloads & hstrong & hremainder &
+    (hzeroIndependentRestrictedRuleRoots & hzeroPayloads & hstrong &
+      hremainder &
       hcrossLevel & hshift & hsubstitution & haxiom & hfinal).
   split.
   - exact
@@ -414,9 +416,9 @@ Proof.
         (rawDirectStructuralTemplatePAAgreement M hPA inputs)
         (raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources_of_endpoint_and_payload_pair
           M (rawDirectStructuralTemplateTranslation M hPA inputs)
-          (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_growing_restricted_rule_roots
+          (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_independent_growing_restricted_rule_roots
             M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
-            hzeroGrowingRestrictedRuleRoots)
+            hzeroIndependentRestrictedRuleRoots)
           hzeroPayloads)).
   - split; [exact hstrong |].
     split; [exact hremainder |].
