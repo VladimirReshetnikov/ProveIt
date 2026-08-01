@@ -23,6 +23,10 @@ Lemma fin_retrusion_succ : forall n m (f : Fin.t n -> Fin.t m)
   fin_retrusion f (Fin.FS i) = Fin.FS (f i).
 Proof. reflexivity. Qed.
 
+Lemma fin_retrusion_comp_succ : forall n m (f : Fin.t n -> Fin.t m),
+  (fun i => fin_retrusion f (Fin.FS i)) = fun i => Fin.FS (f i).
+Proof. reflexivity. Qed.
+
 Lemma fin_retrusion_id : forall n,
   @fin_retrusion n n (fun i => i) = fun i => i.
 Proof.
@@ -524,3 +528,502 @@ Proof.
       apply second_order_predicate_rew_q_id_equiv.
     + exact IHp.
 Qed.
+
+(** Postcomposition by a renaming of target bound predicates. *)
+Definition second_order_predicate_rew_bLeft {L P1 N1 P2 N2 N3 X}
+    (f : Fin.t N2 -> Fin.t N3)
+    (Omega : second_order_predicate_rew L P1 N1 P2 N2 X) :
+    second_order_predicate_rew L P1 N1 P2 N3 X :=
+  {| second_order_predicate_rew_bound := fun A =>
+       second_order_bmap f (second_order_predicate_rew_bound Omega A);
+     second_order_predicate_rew_free := fun A =>
+       second_order_bmap f (second_order_predicate_rew_free Omega A) |}.
+
+Lemma second_order_predicate_rew_bLeft_q_equiv :
+  forall L P1 N1 P2 N2 N3 X
+    (f : Fin.t N2 -> Fin.t N3)
+    (Omega : second_order_predicate_rew L P1 N1 P2 N2 X),
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_bLeft (fin_retrusion f)
+      (second_order_predicate_rew_q Omega))
+    (second_order_predicate_rew_q
+      (second_order_predicate_rew_bLeft f Omega)).
+Proof.
+  intros. split.
+  - intro A. refine (@Fin.caseS' N1 A (fun i =>
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_bLeft (fin_retrusion f)
+          (second_order_predicate_rew_q Omega)) i =
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_q
+          (second_order_predicate_rew_bLeft f Omega)) i) _ _).
+    + reflexivity.
+    + intro B. simpl. rewrite !second_order_bmap_comp. reflexivity.
+  - intro A. simpl. rewrite !second_order_bmap_comp. reflexivity.
+Qed.
+
+Theorem second_order_predicate_rew_app_bmap : forall L P1 X N1 n P2 N2 N3
+    (Omega : second_order_predicate_rew L P1 N1 P2 N2 X)
+    (f : Fin.t N2 -> Fin.t N3)
+    (p : second_order_semiformula L P1 X N1 n),
+  second_order_bmap f (second_order_predicate_rew_app Omega p) =
+  second_order_predicate_rew_app
+    (second_order_predicate_rew_bLeft f Omega) p.
+Proof.
+  intros L P1 X N1 n P2 N2 N3 Omega f p.
+  revert P2 N2 N3 Omega f.
+  induction p; intros; simpl; try reflexivity.
+  - apply second_order_bmap_rewrite_terms.
+  - rewrite second_order_bmap_neg. f_equal.
+    apply second_order_bmap_rewrite_terms.
+  - apply second_order_bmap_rewrite_terms.
+  - rewrite second_order_bmap_neg. f_equal.
+    apply second_order_bmap_rewrite_terms.
+  - now rewrite IHp1, IHp2.
+  - now rewrite IHp1, IHp2.
+  - now rewrite IHp.
+  - now rewrite IHp.
+  - f_equal. transitivity
+      (second_order_predicate_rew_app
+        (second_order_predicate_rew_bLeft (fin_retrusion f)
+          (second_order_predicate_rew_q Omega)) p).
+    + apply IHp.
+    + apply second_order_predicate_rew_app_equiv.
+      apply second_order_predicate_rew_bLeft_q_equiv.
+  - f_equal. transitivity
+      (second_order_predicate_rew_app
+        (second_order_predicate_rew_bLeft (fin_retrusion f)
+          (second_order_predicate_rew_q Omega)) p).
+    + apply IHp.
+    + apply second_order_predicate_rew_app_equiv.
+      apply second_order_predicate_rew_bLeft_q_equiv.
+Qed.
+
+(** Precomposition by a renaming of source bound predicates. *)
+Definition second_order_predicate_rew_bRight {L P1 N0 N1 P2 N2 X}
+    (f : Fin.t N0 -> Fin.t N1)
+    (Omega : second_order_predicate_rew L P1 N1 P2 N2 X) :
+    second_order_predicate_rew L P1 N0 P2 N2 X :=
+  {| second_order_predicate_rew_bound := fun A =>
+       second_order_predicate_rew_bound Omega (f A);
+     second_order_predicate_rew_free :=
+       second_order_predicate_rew_free Omega |}.
+
+Lemma second_order_predicate_rew_bRight_q_equiv :
+  forall L P1 N0 N1 P2 N2 X
+    (f : Fin.t N0 -> Fin.t N1)
+    (Omega : second_order_predicate_rew L P1 N1 P2 N2 X),
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_bRight (fin_retrusion f)
+      (second_order_predicate_rew_q Omega))
+    (second_order_predicate_rew_q
+      (second_order_predicate_rew_bRight f Omega)).
+Proof.
+  intros. split.
+  - intro A. refine (@Fin.caseS' N0 A (fun i =>
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_bRight (fin_retrusion f)
+          (second_order_predicate_rew_q Omega)) i =
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_q
+          (second_order_predicate_rew_bRight f Omega)) i) eq_refl _).
+    intro B. reflexivity.
+  - intro A. reflexivity.
+Qed.
+
+Theorem second_order_predicate_rew_bmap_app : forall L P1 X N0 N1 n P2 N2
+    (f : Fin.t N0 -> Fin.t N1)
+    (Omega : second_order_predicate_rew L P1 N1 P2 N2 X)
+    (p : second_order_semiformula L P1 X N0 n),
+  second_order_predicate_rew_app Omega (second_order_bmap f p) =
+  second_order_predicate_rew_app
+    (second_order_predicate_rew_bRight f Omega) p.
+Proof.
+  intros L P1 X N0 N1 n P2 N2 f Omega p.
+  revert N1 P2 N2 f Omega.
+  induction p; intros; simpl; try reflexivity.
+  - now rewrite IHp1, IHp2.
+  - now rewrite IHp1, IHp2.
+  - now rewrite IHp.
+  - now rewrite IHp.
+  - f_equal. transitivity
+      (second_order_predicate_rew_app
+        (second_order_predicate_rew_bRight (fin_retrusion f)
+          (second_order_predicate_rew_q Omega)) p).
+    + apply IHp.
+    + apply second_order_predicate_rew_app_equiv.
+      apply second_order_predicate_rew_bRight_q_equiv.
+  - f_equal. transitivity
+      (second_order_predicate_rew_app
+        (second_order_predicate_rew_bRight (fin_retrusion f)
+          (second_order_predicate_rew_q Omega)) p).
+    + apply IHp.
+    + apply second_order_predicate_rew_app_equiv.
+      apply second_order_predicate_rew_bRight_q_equiv.
+Qed.
+
+Lemma second_order_predicate_rew_q_bRight_succ :
+  forall L P1 N1 P2 N2 X
+    (Omega : second_order_predicate_rew L P1 N1 P2 N2 X),
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_bLeft Fin.FS Omega)
+    (second_order_predicate_rew_bRight Fin.FS
+      (second_order_predicate_rew_q Omega)).
+Proof. intros. split; intro A; reflexivity. Qed.
+
+(** Composition substitutes the output templates of the first rewrite into
+    the second. *)
+Definition second_order_predicate_rew_comp
+    {L P1 N1 P2 N2 P3 N3 X}
+    (Omega23 : second_order_predicate_rew L P2 N2 P3 N3 X)
+    (Omega12 : second_order_predicate_rew L P1 N1 P2 N2 X) :
+    second_order_predicate_rew L P1 N1 P3 N3 X :=
+  {| second_order_predicate_rew_bound := fun A =>
+       second_order_predicate_rew_app Omega23
+         (second_order_predicate_rew_bound Omega12 A);
+     second_order_predicate_rew_free := fun A =>
+       second_order_predicate_rew_app Omega23
+         (second_order_predicate_rew_free Omega12 A) |}.
+
+Lemma second_order_predicate_rew_q_comp_equiv :
+  forall L P1 N1 P2 N2 P3 N3 X
+    (Omega23 : second_order_predicate_rew L P2 N2 P3 N3 X)
+    (Omega12 : second_order_predicate_rew L P1 N1 P2 N2 X),
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_q
+      (second_order_predicate_rew_comp Omega23 Omega12))
+    (second_order_predicate_rew_comp
+      (second_order_predicate_rew_q Omega23)
+      (second_order_predicate_rew_q Omega12)).
+Proof.
+  intros. split.
+  - intro A. refine (@Fin.caseS' N1 A (fun i =>
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_q
+          (second_order_predicate_rew_comp Omega23 Omega12)) i =
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_comp
+          (second_order_predicate_rew_q Omega23)
+          (second_order_predicate_rew_q Omega12)) i) _ _).
+    + reflexivity.
+    + intro B. simpl.
+      rewrite second_order_predicate_rew_app_bmap.
+      rewrite second_order_predicate_rew_bmap_app.
+      apply second_order_predicate_rew_app_equiv.
+      apply second_order_predicate_rew_q_bRight_succ.
+  - intro A. simpl.
+    rewrite second_order_predicate_rew_app_bmap.
+    rewrite second_order_predicate_rew_bmap_app.
+    apply second_order_predicate_rew_app_equiv.
+    apply second_order_predicate_rew_q_bRight_succ.
+Qed.
+
+Theorem second_order_predicate_rew_app_comp :
+  forall L P1 N1 P2 N2 P3 N3 X n
+    (Omega23 : second_order_predicate_rew L P2 N2 P3 N3 X)
+    (Omega12 : second_order_predicate_rew L P1 N1 P2 N2 X)
+    (p : second_order_semiformula L P1 X N1 n),
+  second_order_predicate_rew_app
+    (second_order_predicate_rew_comp Omega23 Omega12) p =
+  second_order_predicate_rew_app Omega23
+    (second_order_predicate_rew_app Omega12 p).
+Proof.
+  intros L P1 N1 P2 N2 P3 N3 X n Omega23 Omega12 p.
+  revert P2 N2 P3 N3 Omega23 Omega12.
+  induction p; intros; simpl; try reflexivity.
+  - symmetry. apply second_order_predicate_rew_app_subst.
+  - rewrite second_order_predicate_rew_app_neg.
+    f_equal. symmetry. apply second_order_predicate_rew_app_subst.
+  - symmetry. apply second_order_predicate_rew_app_subst.
+  - rewrite second_order_predicate_rew_app_neg.
+    f_equal. symmetry. apply second_order_predicate_rew_app_subst.
+  - now rewrite IHp1, IHp2.
+  - now rewrite IHp1, IHp2.
+  - now rewrite IHp.
+  - now rewrite IHp.
+  - f_equal. transitivity
+      (second_order_predicate_rew_app
+        (second_order_predicate_rew_comp
+          (second_order_predicate_rew_q Omega23)
+          (second_order_predicate_rew_q Omega12)) p).
+    + apply second_order_predicate_rew_app_equiv.
+      apply second_order_predicate_rew_q_comp_equiv.
+    + apply IHp.
+  - f_equal. transitivity
+      (second_order_predicate_rew_app
+        (second_order_predicate_rew_comp
+          (second_order_predicate_rew_q Omega23)
+          (second_order_predicate_rew_q Omega12)) p).
+    + apply second_order_predicate_rew_app_equiv.
+      apply second_order_predicate_rew_q_comp_equiv.
+    + apply IHp.
+Qed.
+
+Lemma second_order_instantiate_bvar : forall L P X N
+    (p : second_order_semiformula L P X N 1),
+  second_order_instantiate p (Semiterm_bvar Fin.F1) = p.
+Proof.
+  intros. unfold second_order_instantiate.
+  transitivity (second_order_rewrite_terms rew_id p).
+  - apply second_order_rewrite_terms_equiv.
+    apply rew_equiv_of_variables.
+    + intro i. rewrite (fin_one_eq_f1 i). reflexivity.
+    + intro x. reflexivity.
+  - apply second_order_rewrite_terms_id.
+Qed.
+
+Lemma second_order_predicate_rew_comp_id_left :
+  forall L P1 N1 P2 N2 X
+    (Omega : second_order_predicate_rew L P1 N1 P2 N2 X),
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_comp second_order_predicate_rew_id Omega)
+    Omega.
+Proof.
+  intros. split; intro A; simpl;
+    apply second_order_predicate_rew_app_id.
+Qed.
+
+Lemma second_order_predicate_rew_comp_id_right :
+  forall L P1 N1 P2 N2 X
+    (Omega : second_order_predicate_rew L P1 N1 P2 N2 X),
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_comp Omega second_order_predicate_rew_id)
+    Omega.
+Proof.
+  intros. split; intro A; simpl;
+    apply second_order_instantiate_bvar.
+Qed.
+
+(** Apply an individual rewrite uniformly to every predicate template. *)
+Definition second_order_predicate_rew_map
+    {L P1 N1 P2 N2 X1 X2}
+    (w : rew L X1 1 X2 1)
+    (Omega : second_order_predicate_rew L P1 N1 P2 N2 X1) :
+    second_order_predicate_rew L P1 N1 P2 N2 X2 :=
+  {| second_order_predicate_rew_bound := fun A =>
+       second_order_rewrite_terms w
+         (second_order_predicate_rew_bound Omega A);
+     second_order_predicate_rew_free := fun A =>
+       second_order_rewrite_terms w
+         (second_order_predicate_rew_free Omega A) |}.
+
+(** Rename free predicate variables while retaining every bound predicate. *)
+Definition second_order_predicate_rew_rename {L P1 P2 N X}
+    (f : P1 -> P2) : second_order_predicate_rew L P1 N P2 N X :=
+  {| second_order_predicate_rew_bound := fun A =>
+       SOFormula_bpred A (Semiterm_bvar Fin.F1);
+     second_order_predicate_rew_free := fun A =>
+       SOFormula_fpred (f A) (Semiterm_bvar Fin.F1) |}.
+
+Lemma second_order_predicate_rew_q_rename_equiv : forall L P1 P2 N X
+    (f : P1 -> P2),
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_q
+      (@second_order_predicate_rew_rename L P1 P2 N X f))
+    (second_order_predicate_rew_rename f).
+Proof.
+  intros. split.
+  - intro A. refine (@Fin.caseS' N A (fun i =>
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_q
+          (second_order_predicate_rew_rename f)) i =
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_rename f) i) eq_refl _).
+    intro B. reflexivity.
+  - intro A. reflexivity.
+Qed.
+
+Definition second_order_predicate_rew_shift {L N X} :
+    second_order_predicate_rew L nat N nat N X :=
+  second_order_predicate_rew_rename S.
+
+Lemma second_order_predicate_rew_q_shift_equiv : forall L N X,
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_q
+      (@second_order_predicate_rew_shift L N X))
+    second_order_predicate_rew_shift.
+Proof. intros. apply second_order_predicate_rew_q_rename_equiv. Qed.
+
+(** Turn the last bound predicate into free predicate zero, shifting every
+    pre-existing free predicate. *)
+Definition second_order_predicate_rew_free_last {L N X} :
+    second_order_predicate_rew L nat (N + 1) nat N X :=
+  {| second_order_predicate_rew_bound := fun A =>
+       @Fin.case_L_R' N 1
+         (fun _ => second_order_semiformula L nat X N 1) A
+         (fun B => SOFormula_bpred B (Semiterm_bvar Fin.F1))
+         (fun _ => SOFormula_fpred 0 (Semiterm_bvar Fin.F1));
+     second_order_predicate_rew_free := fun A =>
+       SOFormula_fpred (S A) (Semiterm_bvar Fin.F1) |}.
+
+Lemma second_order_predicate_rew_free_last_old : forall L N X
+    (A : Fin.t N),
+  second_order_predicate_rew_bound
+    (@second_order_predicate_rew_free_last L N X) (Fin.L 1 A) =
+  SOFormula_bpred A (Semiterm_bvar Fin.F1).
+Proof.
+  intros. change
+    (@Fin.case_L_R' N 1
+      (fun _ => second_order_semiformula L nat X N 1) (Fin.L 1 A)
+      (fun B => SOFormula_bpred B (Semiterm_bvar Fin.F1))
+      (fun _ => SOFormula_fpred 0 (Semiterm_bvar Fin.F1)) =
+    SOFormula_bpred A (Semiterm_bvar Fin.F1)).
+  exact (@Fin.case_L_R'_L N 1 _ A _ _).
+Qed.
+
+Lemma second_order_predicate_rew_free_last_new : forall L N X,
+  second_order_predicate_rew_bound
+    (@second_order_predicate_rew_free_last L N X) (Fin.R N Fin.F1) =
+  SOFormula_fpred 0 (Semiterm_bvar Fin.F1).
+Proof.
+  intros. change
+    (@Fin.case_L_R' N 1
+      (fun _ => second_order_semiformula L nat X N 1) (Fin.R N Fin.F1)
+      (fun B => SOFormula_bpred B (Semiterm_bvar Fin.F1))
+      (fun _ => SOFormula_fpred 0 (Semiterm_bvar Fin.F1)) =
+    SOFormula_fpred 0 (Semiterm_bvar Fin.F1)).
+  exact (@Fin.case_L_R'_R N 1 _ Fin.F1 _ _).
+Qed.
+
+Lemma second_order_predicate_rew_free_last_free : forall L N X A,
+  second_order_predicate_rew_free
+    (@second_order_predicate_rew_free_last L N X) A =
+  SOFormula_fpred (S A) (Semiterm_bvar Fin.F1).
+Proof. reflexivity. Qed.
+
+Lemma second_order_predicate_rew_q_free_last_equiv : forall L N X,
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_q
+      (@second_order_predicate_rew_free_last L N X))
+    (@second_order_predicate_rew_free_last L (S N) X).
+Proof.
+  intros. split.
+  - intro A. refine (@Fin.caseS' (N + 1) A (fun i =>
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_q
+          (@second_order_predicate_rew_free_last L N X)) i =
+      second_order_predicate_rew_bound
+        (@second_order_predicate_rew_free_last L (S N) X) i) _ _).
+    + reflexivity.
+    + intro B. refine (@Fin.case_L_R' N 1 (fun j =>
+        second_order_predicate_rew_bound
+          (second_order_predicate_rew_q
+            (@second_order_predicate_rew_free_last L N X)) (Fin.FS j) =
+        second_order_predicate_rew_bound
+          (@second_order_predicate_rew_free_last L (S N) X)
+          (Fin.FS j)) B _ _).
+      * intro C. rewrite second_order_predicate_rew_q_bound_succ.
+        change
+          (second_order_bmap Fin.FS
+            (second_order_predicate_rew_bound
+              (@second_order_predicate_rew_free_last L N X) (Fin.L 1 C)) =
+          second_order_predicate_rew_bound
+            (@second_order_predicate_rew_free_last L (S N) X)
+            (Fin.L 1 (Fin.FS C))).
+        rewrite !second_order_predicate_rew_free_last_old. reflexivity.
+      * intro C. rewrite (fin_one_eq_f1 C).
+        rewrite second_order_predicate_rew_q_bound_succ.
+        change
+          (second_order_bmap Fin.FS
+            (second_order_predicate_rew_bound
+              (@second_order_predicate_rew_free_last L N X)
+              (Fin.R N Fin.F1)) =
+          second_order_predicate_rew_bound
+            (@second_order_predicate_rew_free_last L (S N) X)
+            (Fin.R (S N) Fin.F1)).
+        rewrite !second_order_predicate_rew_free_last_new. reflexivity.
+  - intro A. reflexivity.
+Qed.
+
+Definition second_order_predicate_rew_emb {L O P N X}
+    (empty : O -> False) : second_order_predicate_rew L O N P N X :=
+  second_order_predicate_rew_rename (fun x => False_rect _ (empty x)).
+
+Lemma second_order_predicate_rew_q_emb_equiv : forall L O P N X
+    (empty : O -> False),
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_q
+      (@second_order_predicate_rew_emb L O P N X empty))
+    (second_order_predicate_rew_emb empty).
+Proof. intros. apply second_order_predicate_rew_q_rename_equiv. Qed.
+
+(** Substitute only bound predicates and preserve free predicates. *)
+Definition second_order_predicate_rew_subst {L P N1 N2 X}
+    (Phi : Fin.t N1 -> second_order_semiformula L P X N2 1) :
+    second_order_predicate_rew L P N1 P N2 X :=
+  {| second_order_predicate_rew_bound := Phi;
+     second_order_predicate_rew_free := fun A =>
+       SOFormula_fpred A (Semiterm_bvar Fin.F1) |}.
+
+Definition second_order_predicate_subst_q_family {L P N1 N2 X}
+    (Phi : Fin.t N1 -> second_order_semiformula L P X N2 1) :
+    Fin.t (S N1) -> second_order_semiformula L P X (S N2) 1 :=
+  fun A => @Fin.caseS' N1 A
+    (fun _ => second_order_semiformula L P X (S N2) 1)
+    (SOFormula_bpred Fin.F1 (Semiterm_bvar Fin.F1))
+    (fun B => second_order_bmap Fin.FS (Phi B)).
+
+Lemma second_order_predicate_rew_q_subst_equiv : forall L P N1 N2 X
+    (Phi : Fin.t N1 -> second_order_semiformula L P X N2 1),
+  second_order_predicate_rew_equiv
+    (second_order_predicate_rew_q
+      (second_order_predicate_rew_subst Phi))
+    (second_order_predicate_rew_subst
+      (second_order_predicate_subst_q_family Phi)).
+Proof.
+  intros. split.
+  - intro A. refine (@Fin.caseS' N1 A (fun i =>
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_q
+          (second_order_predicate_rew_subst Phi)) i =
+      second_order_predicate_rew_bound
+        (second_order_predicate_rew_subst
+          (second_order_predicate_subst_q_family Phi)) i) eq_refl _).
+    intro B. reflexivity.
+  - intro A. reflexivity.
+Qed.
+
+Definition second_order_substitute_predicates {L P X N1 N2 n}
+    (Phi : Fin.t N1 -> second_order_semiformula L P X N2 1)
+    (p : second_order_semiformula L P X N1 n) :
+    second_order_semiformula L P X N2 n :=
+  second_order_predicate_rew_app
+    (second_order_predicate_rew_subst Phi) p.
+
+(** Source-facing specializations on the canonical natural-number variable
+    types. *)
+Definition second_order_semiproposition_free_individual {L N n}
+    (p : second_order_semiproposition L N (n + 1)) :
+    second_order_semiproposition L N n :=
+  second_order_rewrite_terms rew_free p.
+
+Definition second_order_semiproposition_shift_individual {L N n}
+    (p : second_order_semiproposition L N n) :
+    second_order_semiproposition L N n :=
+  second_order_rewrite_terms rew_shift p.
+
+Definition second_order_semiproposition_free_predicate {L N n}
+    (p : second_order_semiproposition L (N + 1) n) :
+    second_order_semiproposition L N n :=
+  second_order_predicate_rew_app second_order_predicate_rew_free_last p.
+
+Definition second_order_semiproposition_shift_predicate {L N n}
+    (p : second_order_semiproposition L N n) :
+    second_order_semiproposition L N n :=
+  second_order_predicate_rew_app second_order_predicate_rew_shift p.
+
+Definition second_order_semiproposition_substitute_predicates {L N1 N2 n}
+    (Phi : Fin.t N1 -> second_order_semiproposition L N2 1)
+    (p : second_order_semiproposition L N1 n) :
+    second_order_semiproposition L N2 n :=
+  second_order_substitute_predicates Phi p.
+
+(** Embed a formula with no free variables of either sort into arbitrary free
+    variable types. *)
+Definition second_order_semisentence_embed {L P X N n}
+    (p : second_order_semisentence L N n) :
+    second_order_semiformula L P X N n :=
+  second_order_predicate_rew_app
+    (second_order_predicate_rew_emb (fun x : Empty_set => match x with end))
+    (second_order_rewrite_terms
+      (rew_emb (fun x : Empty_set => match x with end)) p).
