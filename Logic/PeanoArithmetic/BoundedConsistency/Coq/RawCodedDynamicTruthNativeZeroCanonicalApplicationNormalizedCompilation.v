@@ -28,6 +28,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofUniversalIntroductionChain
   RawCodedLtSuccCasesProofCompilation
   RawCodedPAGrowingTemplateConjunction
+  RawCodedPAGrowingTemplateDisjunction
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
@@ -77,6 +78,7 @@ Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
+Import PABoundedRawCodedPAGrowingTemplateDisjunction.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
@@ -1089,6 +1091,110 @@ Proof.
   exact
     (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions
       M hPA translation callerPrefix hrestrictedIn hruleIn).
+Qed.
+
+(** Invocation-aligned case boundary for the canonical application choice.
+    The normalized endpoint constructs the disjunction first.  Each branch
+    compiler may then select its own PA helper extension while retaining the
+    corresponding application as a temporary head; the generic growing
+    [Or-E] synchronizes those extensions and returns their common target.
+
+    This is the proof-theoretically honest replacement for treating the
+    application decision as a pair. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingOfCanonicalApplicationDecisionBranchesUnderCallerPrefixOnCanonicalNormalizedResources
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M) callerPrefix conclusion
+      (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+    witnessList baseContext helperRoots ->
+  RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawCodedPAGrowingTemplateBranchCompilerOnWitnessedExtensions
+    M (rawBottomDirectStructuralTemplateTranslation M hPA) baseContext
+    (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix)
+    (embedPAFormula
+      dynamicTruthZeroInputGlobalSigmaApplicationFormula) conclusion ->
+  RawCodedPAGrowingTemplateBranchCompilerOnWitnessedExtensions
+    M (rawBottomDirectStructuralTemplateTranslation M hPA) baseContext
+    (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix)
+    (embedPAFormula
+      dynamicTruthZeroInputGlobalPiApplicationFormula) conclusion ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawBottomDirectStructuralTemplateTranslation M hPA)
+    witnessList baseContext
+    (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix)
+    conclusion.
+Proof.
+  intros M hPA translation callerPrefix conclusion tail witnessList
+    baseContext helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hrestrictedIn hruleIn hresources htrace
+    hsigmaBranch hpiBranch.
+  pose proof
+    (raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions
+      M hPA translation callerPrefix hrestrictedIn hruleIn)
+    as hdecisionCompiler.
+  destruct
+    (hdecisionCompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (decisionWitnessList & decisionContext & decisionRoot &
+      hdecisionWitnessed & hbaseDecisionIncluded & hdecision).
+  set (combinedPrefix :=
+    coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix).
+  assert (hdecisionCombined : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawBottomDirectStructuralTemplateTranslation M hPA)
+        decisionContext combinedPrefix)
+      (rawFormulaOrCode M
+        (rawTemplateFormula
+          (rawBottomDirectStructuralTemplateTranslation M hPA)
+          (embedPAFormula
+            dynamicTruthZeroInputGlobalSigmaApplicationFormula))
+        (rawTemplateFormula
+          (rawBottomDirectStructuralTemplateTranslation M hPA)
+          (embedPAFormula
+            dynamicTruthZeroInputGlobalPiApplicationFormula)))
+      decisionRoot).
+  {
+    unfold combinedPrefix.
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      decisionContext callerPrefix).
+    rewrite !rawTemplateFormula_embedPA by
+      exact (rawBottomDirectStructuralTemplatePAAgreement M hPA).
+    exact hdecision.
+  }
+  assert (hdecisionGrowing : RawCodedPAGrowingTemplateLocalProofAt M
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext combinedPrefix
+      (rawFormulaOrCode M
+        (rawTemplateFormula
+          (rawBottomDirectStructuralTemplateTranslation M hPA)
+          (embedPAFormula
+            dynamicTruthZeroInputGlobalSigmaApplicationFormula))
+        (rawTemplateFormula
+          (rawBottomDirectStructuralTemplateTranslation M hPA)
+          (embedPAFormula
+            dynamicTruthZeroInputGlobalPiApplicationFormula)))).
+  {
+    exists decisionWitnessList, decisionContext, decisionRoot.
+    split; [exact hdecisionWitnessed |].
+    split; [exact hbaseDecisionIncluded | exact hdecisionCombined].
+  }
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_orE_of_branch_compiler_families
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext combinedPrefix
+      (embedPAFormula
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+      (embedPAFormula
+        dynamicTruthZeroInputGlobalPiApplicationFormula)
+      conclusion hdecisionGrowing hsigmaBranch hpiBranch).
 Qed.
 
 (** Canonical rank-zero clients need only produce the two genuinely logical
