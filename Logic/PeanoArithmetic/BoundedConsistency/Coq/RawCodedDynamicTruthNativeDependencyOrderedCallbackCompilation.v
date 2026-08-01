@@ -27,6 +27,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateBottomDirectStructuralInputs
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
+  RawCodedPALocalProofUniversalIntroductionChain
   RawCodedDynamicTruthNativeCrossLevelGuardRootCompilation
   RawCodedDynamicTruthNativeShiftStagedRootCompilation
   RawCodedDynamicTruthNativeSubstitutionStagedRootCompilation
@@ -65,6 +66,7 @@ Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedDynamicTruthNativeCrossLevelGuardRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeShiftStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeSubstitutionStagedRootCompilation.
@@ -619,6 +621,46 @@ Proof.
           (conj hshift
             (conj hsubstitution
               (conj haxiom hfinal))))))).
+Qed.
+
+(** Prefix-aware rank-zero projection from the former nine-coordinate
+    package.  This adapter is intentionally retained while the direct-shell
+    assumption coordinate is being eliminated: it verifies that every other
+    part of the normalized callback can cross the three predecessor binders.
+    The fixed-row producers are weakened by the exact shifted caller suffix,
+    their independent witness batches are synchronized, and the endpoint
+    roots are retained without any context contraction. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedLegacyLogicalZeroGrowingPredecessorRootUnderCallerPrefix
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeLocalZeroGrowingPredecessorRootCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix
+    (hrestrictedRuleRoots & hsources & _hstrong & _hremainder &
+      _hcrossLevel & _hshift & _hsubstitution & _haxiom & _hfinal).
+  set (shiftedCaller := templateContextShiftMany 3 callerPrefix).
+  pose proof
+    (raw_dynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix_app
+      M hPA coqDynamicTruthPredecessorStateTemplateContext shiftedCaller
+      hsources) as hshiftedSources.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalBottom_independentPermutedAppendRowKernelPayloadsUnderPrefix_of_independent_growing_fixed_productions_or_refutations
+      M hPA
+      (coqDynamicTruthPredecessorStateTemplateContext ++ shiftedCaller)
+      hshiftedSources) as hindependentPayloads.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix_of_independent_payloads
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      (coqDynamicTruthPredecessorStateTemplateContext ++ shiftedCaller)
+      hindependentPayloads) as hpayloadPair.
+  unfold shiftedCaller in hpayloadPair.
+  exact
+    (raw_dynamicTruthNativeLocalZeroGrowingPredecessorRootCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_independent_growing_restricted_rule_roots_and_shifted_payload_pair
+      M hPA callerPrefix hrestrictedRuleRoots hpayloadPair).
 Qed.
 
 (** Eliminate only the relaxed second coordinate; every other compiler is

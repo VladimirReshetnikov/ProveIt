@@ -152,6 +152,39 @@ Proof.
     exact hsuffixed.
 Qed.
 
+(** Lift a proof-producing growing computation through the same suffix
+    insertion.  The producer is allowed to choose its witnessed PA endpoint
+    before the caller's temporary assumptions are installed; only atomic
+    adequacy of the complete visible prefix is needed.  Factoring this
+    operation here avoids destructing and rebuilding the three existential
+    endpoint fields in every prefix-aware callback. *)
+Theorem raw_codedPAGrowingTemplateLocalProofAt_suffix : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext prefix suffix conclusion,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation
+    (prefix ++ suffix) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix conclusion ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext (prefix ++ suffix) conclusion.
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext
+    prefix suffix conclusion hadequate
+    (targetWitnessList & targetContext & root & htargetWitnessed &
+      hincluded & hproof).
+  destruct
+    (raw_codedPALocalProof_templateSuffix M hPA translation
+      targetContext prefix suffix conclusion root
+      (raw_codedPAAxiomWitnessContext_context_realizable M
+        targetWitnessList targetContext htargetWitnessed)
+      hadequate hproof)
+    as [suffixedRoot hsuffixed].
+  exists targetWitnessList, targetContext, suffixedRoot.
+  split; [exact htargetWitnessed |].
+  split; assumption.
+Qed.
+
 (** Rebase one growing proof onto an arbitrary witnessed caller tail.  No
     relation between the producer's original source and the new caller is
     required: only the witnessed target actually selected by the producer
