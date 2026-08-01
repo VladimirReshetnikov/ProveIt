@@ -27,6 +27,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
+  RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateBottomDirectStructuralInputs
   RawCodedTemplatePAEmbedding
@@ -36,10 +37,12 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification
   RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
+  RawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
   RawCodedDynamicTruthNativeZeroCanonicalTraceExactification
   RawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification
+  RawCodedDynamicTruthNativeZeroCanonicalApplicationProofTransport
   RawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence
   RawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
 
@@ -63,6 +66,7 @@ Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
+Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedTemplatePAEmbedding.
@@ -76,6 +80,8 @@ Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
 Import
+  PABoundedRawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.
+Import
   PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
@@ -83,6 +89,8 @@ Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalTraceExactification.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationProofTransport.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
 Import
@@ -207,6 +215,36 @@ Definition
 
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+  M hPA callerPrefix : clear implicits.
+
+(** Final rank-zero logical roots under the retained caller prefix.  This is
+    the exact prefix-parametric counterpart of the state-only normalized
+    callback result consumed by direct rule dispatch. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (callerPrefix : TemplateContext) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists targetWitnessList targetContext,
+      RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+      RawContextListIncluded M baseContext targetContext /\
+      RawDynamicTruthPredecessorStateLogicalRootsAt M
+        (rawTemplateContextCodeOnTail
+          (rawBottomDirectStructuralTemplateTranslation M hPA)
+          targetContext callerPrefix)
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M).
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
   M hPA callerPrefix : clear implicits.
 
 (** Concrete append-facing residue.  Arithmetic normalization first chooses
@@ -1057,6 +1095,209 @@ Proof.
       (raw_directStructuralTemplatePrefix_atomically_adequate M hPA
         (rawBottomTemplateDirectStructuralInputs M hPA) combinedPrefix)
       hendpointWitnessed hsigmaInputs hpiInputs).
+Qed.
+
+(** Convert the synchronized canonical applications to the fixed native
+    evidence pair, transport the arithmetic leaves through the same witness
+    extension, and invoke prefix-general admissibility.  This is the first
+    complete rank-zero logical-root compiler which never contracts the
+    direct-shell assumptions. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_state_application_resources
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix ->
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix hcompiler
+    tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace.
+  set (translation := rawBottomDirectStructuralTemplateTranslation M hPA).
+  set (combinedPrefix :=
+    coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix).
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hatomic & hdomain &
+      applicationWitnessList & applicationContext &
+      sigmaApplicationRoot & piApplicationRoot &
+      happlicationWitnessed & hendpointApplicationIncluded &
+      hsigmaApplication & hpiApplication).
+  assert (hatomicCombined : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation endpointContext
+        combinedPrefix)
+      (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot).
+  {
+    unfold combinedPrefix, translation.
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      endpointContext callerPrefix).
+    exact hatomic.
+  }
+  assert (hdomainCombined : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation endpointContext
+        combinedPrefix)
+      (rawFormulaOrCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)) domainRoot).
+  {
+    unfold combinedPrefix, translation.
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      endpointContext callerPrefix).
+    exact hdomain.
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation endpointWitnessList endpointContext
+      applicationWitnessList applicationContext combinedPrefix
+      (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot
+      hendpointWitnessed happlicationWitnessed
+      hendpointApplicationIncluded hatomicCombined)
+    as [applicationAtomicRoot happlicationAtomic].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation endpointWitnessList endpointContext
+      applicationWitnessList applicationContext combinedPrefix
+      (rawFormulaOrCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)) domainRoot
+      hendpointWitnessed happlicationWitnessed
+      hendpointApplicationIncluded hdomainCombined)
+    as [applicationDomainRoot happlicationDomain].
+  destruct
+    (raw_dynamicTruthZeroNativeEvidenceRoots_of_canonicalApplicationRoots_under_prefix
+      M hPA translation (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      applicationWitnessList applicationContext combinedPrefix
+      sigmaApplicationRoot piApplicationRoot
+      (raw_directStructuralTemplatePrefix_atomically_adequate M hPA
+        (rawBottomTemplateDirectStructuralInputs M hPA) combinedPrefix)
+      happlicationWitnessed hsigmaApplication hpiApplication)
+    as (evidenceWitnessList & evidenceContext &
+      sigmaEvidenceRoot & piEvidenceRoot & hevidenceWitnessed &
+      happlicationEvidenceIncluded & hsigmaEvidenceCombined &
+      hpiEvidenceCombined).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation applicationWitnessList applicationContext
+      evidenceWitnessList evidenceContext combinedPrefix
+      (rawDynamicTruthLocalAtomicAdequacyCode M) applicationAtomicRoot
+      happlicationWitnessed hevidenceWitnessed
+      happlicationEvidenceIncluded happlicationAtomic)
+    as [evidenceAtomicRoot hevidenceAtomicCombined].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation applicationWitnessList applicationContext
+      evidenceWitnessList evidenceContext combinedPrefix
+      (rawFormulaOrCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)) applicationDomainRoot
+      happlicationWitnessed hevidenceWitnessed
+      happlicationEvidenceIncluded happlicationDomain)
+    as [evidenceDomainRoot hevidenceDomainCombined].
+  assert (hevidenceAtomic : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation evidenceContext
+          callerPrefix))
+      (rawDynamicTruthLocalAtomicAdequacyCode M) evidenceAtomicRoot).
+  {
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      evidenceContext callerPrefix).
+    exact hevidenceAtomicCombined.
+  }
+  assert (hevidenceDomain : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation evidenceContext
+          callerPrefix))
+      (rawFormulaOrCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)) evidenceDomainRoot).
+  {
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      evidenceContext callerPrefix).
+    exact hevidenceDomainCombined.
+  }
+  assert (hsigmaEvidence : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation evidenceContext
+          callerPrefix))
+      (rawDynamicTruthZeroSigmaEvidenceCode M) sigmaEvidenceRoot).
+  {
+    unfold rawDynamicTruthZeroSigmaEvidenceCode.
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      evidenceContext callerPrefix).
+    exact hsigmaEvidenceCombined.
+  }
+  assert (hpiEvidence : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation evidenceContext
+          callerPrefix))
+      (rawDynamicTruthZeroPiEvidenceCode M) piEvidenceRoot).
+  {
+    unfold rawDynamicTruthZeroPiEvidenceCode.
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      evidenceContext callerPrefix).
+    exact hpiEvidenceCombined.
+  }
+  destruct
+    (raw_dynamicTruthPredecessorStateLogicalRootsAt_of_direct_evidence_under_prefix_atomic_and_domain
+      M hPA translation (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      evidenceWitnessList evidenceContext callerPrefix
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M)
+      evidenceAtomicRoot evidenceDomainRoot sigmaEvidenceRoot piEvidenceRoot
+      (raw_directStructuralTemplatePrefix_atomically_adequate M hPA
+        (rawBottomTemplateDirectStructuralInputs M hPA) callerPrefix)
+      hevidenceWitnessed hevidenceAtomic hevidenceDomain
+      hsigmaEvidence hpiEvidence)
+    as (targetWitnessList & targetContext & htargetWitnessed &
+      hevidenceTargetIncluded & hlogicalRoots).
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hevidenceTargetIncluded member
+      (happlicationEvidenceIncluded member
+        (hendpointApplicationIncluded member
+          (hbaseEndpointIncluded member hmember)))).
+  - exact hlogicalRoots.
+Qed.
+
+(** End-to-end retained-assumption rank-zero closure.  The former pair of
+    independently growing restricted/rule root compilers is absent: those
+    roots are assumption leaves, while the synchronized append payload pair
+    remains the sole proof-producing traversal resource. *)
+Corollary
+    raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_payload_pair
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix) ->
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix hrestrictedIn hruleIn hpayloads.
+  exact
+    (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_state_application_resources
+      M hPA callerPrefix
+      (raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_permuted_append_kernel_resources
+        M hPA callerPrefix
+        (raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_payload_pair
+          M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+          callerPrefix hrestrictedIn hruleIn hpayloads))).
 Qed.
 
 (** Combine the invocation-dependent endpoint with the model-global,
