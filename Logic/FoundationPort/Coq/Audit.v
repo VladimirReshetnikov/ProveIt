@@ -27,6 +27,7 @@ From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Functions.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Typed Coding.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Basic.
+From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Functions.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4553,3 +4554,32 @@ Print Assumptions semiformula_code_is_semiformula.
 Print Assumptions boot_is_semiformula_has_quote.
 Print Assumptions boot_is_semiformula_quote_iff.
 Print Assumptions boot_is_semiformula_decode_quote.
+Check boot_formula_transform_code.
+Check boot_formula_transform_code_total.
+Print Assumptions boot_formula_transform_code_quote.
+Print Assumptions boot_formula_transform_code_total_quote.
+Print Assumptions boot_formula_transform_code_some_iff.
+Print Assumptions boot_formula_transform_code_total_preserves.
+Check boot_formula_rewrite_code.
+Print Assumptions boot_formula_rewrite_code_quote.
+Print Assumptions boot_formula_rewrite_code_preserves.
+Print Assumptions boot_formula_rewrite_code_comp.
+Check boot_formula_subst_code.
+Check boot_formula_shift_code.
+Check boot_formula_bshift_code.
+Print Assumptions boot_formula_subst_code_quote.
+Print Assumptions boot_formula_shift_code_quote.
+Print Assumptions boot_formula_bshift_code_quote.
+Print Assumptions boot_formula_subst_code_preserves.
+Print Assumptions boot_formula_shift_code_preserves.
+Print Assumptions boot_formula_bshift_code_preserves.
+Print Assumptions boot_formula_subst_code_comp.
+Check boot_formula_neg_code.
+Print Assumptions boot_formula_neg_code_quote.
+Print Assumptions boot_formula_neg_verum.
+Print Assumptions boot_formula_neg_falsum.
+Print Assumptions boot_formula_neg_and_quote.
+Print Assumptions boot_formula_neg_or_quote.
+Print Assumptions boot_formula_neg_code_preserves.
+Print Assumptions boot_formula_neg_code_involutive.
+Print Assumptions boot_formula_neg_rewrite.
