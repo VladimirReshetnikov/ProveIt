@@ -51,6 +51,7 @@ From Foundation.Vorspiel.Set Require Import Ultrafilter.
 From Foundation.FirstOrder.Completeness Require Import CountableSublanguage.
 From Foundation.FirstOrder.Completeness Require Import CanonicalModel.
 From Foundation.FirstOrder.Completeness Require Import CounterModel.
+From Foundation.FirstOrder.Order Require Import Le.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -3726,3 +3727,12 @@ Check first_order_exists_unique.
 Print Assumptions first_order_exists_unique_reindex_env.
 Print Assumptions first_order_exists_unique_eval.
 Print Assumptions first_order_theory_proof_complete_on_eq_models_of_proves.
+Check first_order_order_le_operator.
+Print Assumptions first_order_order_le_apply.
+Check first_order_order_le_atom.
+Check first_order_order_eq_or_lt_atom.
+Print Assumptions first_order_order_le_atom_eq.
+Check first_order_order_le_iff_sentence.
+Print Assumptions first_order_order_le_iff_sentence_realize.
+Print Assumptions first_order_order_le_iff_provable.
+Print Assumptions first_order_order_complete.
