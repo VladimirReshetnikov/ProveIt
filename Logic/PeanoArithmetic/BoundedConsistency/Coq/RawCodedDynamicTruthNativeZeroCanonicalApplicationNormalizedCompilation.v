@@ -19,6 +19,7 @@ From BoundedPAConsistency Require Import
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
   RawCodedPALocalProofWitnessedContextMerge
+  RawCodedLtSuccCasesProofCompilation
   RawCodedPAGrowingTemplateConjunction
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
@@ -43,6 +44,7 @@ Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
@@ -204,6 +206,89 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
+
+(** Independently growing atomic-adequacy endpoint. *)
+Definition
+    RawDynamicTruthNativeLocalZeroCanonicalAtomicEndpointCompilerOnCanonicalNormalizedResources
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    RawCodedPAGrowingTemplateLocalProofAt M translation
+      witnessList baseContext coqDynamicTruthPredecessorStateTemplateContext
+      (rawDynamicTruthLocalAtomicAdequacyCode M).
+
+Arguments
+  RawDynamicTruthNativeLocalZeroCanonicalAtomicEndpointCompilerOnCanonicalNormalizedResources
+  M translation : clear implicits.
+
+(** Independently growing rank-domain endpoint. *)
+Definition
+    RawDynamicTruthNativeLocalZeroCanonicalDomainEndpointCompilerOnCanonicalNormalizedResources
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    RawCodedPAGrowingTemplateLocalProofAt M translation
+      witnessList baseContext coqDynamicTruthPredecessorStateTemplateContext
+      (rawFormulaOrCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)).
+
+Arguments
+  RawDynamicTruthNativeLocalZeroCanonicalDomainEndpointCompilerOnCanonicalNormalizedResources
+  M translation : clear implicits.
+
+(** Merge independently selected atomic and domain witnessed tails.  The
+    shared predecessor-state prefix is transported verbatim by the generic
+    growing-pair constructor, so the result has exactly the endpoint shape
+    consumed by canonical application compilation. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_atomic_and_domain
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalAtomicEndpointCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalDomainEndpointCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hagreement hatomicCompiler hdomainCompiler
+    tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace.
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_pair_at_prefix
+      M hPA translation witnessList baseContext
+      coqDynamicTruthPredecessorStateTemplateContext
+      (rawDynamicTruthLocalAtomicAdequacyCode M)
+      (rawFormulaOrCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M))
+      (hatomicCompiler tail witnessList baseContext helperRoots
+        sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+      (hdomainCompiler tail witnessList baseContext helperRoots
+        sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace))
+    as hpair.
+  destruct hpair as
+    (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hatomic & hdomain).
+  exists endpointWitnessList, endpointContext, atomicRoot, domainRoot.
+  split; [exact hendpointWitnessed |].
+  split; [exact hbaseEndpointIncluded |].
+  rewrite (raw_dynamicTruthPredecessorStateTemplateContextCode
+    M translation hagreement endpointContext) in hatomic, hdomain.
+  split; assumption.
+Qed.
 
 (** Kernel-facing form of the synchronized canonical append residual.  The
     arithmetic endpoint is unchanged, but each polarity supplies only the

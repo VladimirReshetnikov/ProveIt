@@ -361,7 +361,9 @@ Definition
     (M : RawPAModel) (hPA : RawPASatisfies M)
     (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
   let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
-  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
+  RawDynamicTruthNativeLocalZeroCanonicalAtomicEndpointCompilerOnCanonicalNormalizedResources
+    M translation /\
+  RawDynamicTruthNativeLocalZeroCanonicalDomainEndpointCompilerOnCanonicalNormalizedResources
     M translation /\
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
     M translation coqDynamicTruthPredecessorStateTemplateContext /\
@@ -402,8 +404,8 @@ Theorem
     M hPA inputs.
 Proof.
   intros M hPA inputs
-    (hzeroEndpoint & hzeroPayloads & hstrong & hremainder & hcrossLevel & hshift &
-      hsubstitution & haxiom & hfinal).
+    (hzeroAtomic & hzeroDomain & hzeroPayloads & hstrong & hremainder &
+      hcrossLevel & hshift & hsubstitution & haxiom & hfinal).
   split.
   - exact
       (raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources_of_permuted_append_kernel_resources
@@ -411,7 +413,11 @@ Proof.
         (rawDirectStructuralTemplatePAAgreement M hPA inputs)
         (raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources_of_endpoint_and_payload_pair
           M (rawDirectStructuralTemplateTranslation M hPA inputs)
-          hzeroEndpoint hzeroPayloads)).
+          (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_atomic_and_domain
+            M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+            (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+            hzeroAtomic hzeroDomain)
+          hzeroPayloads)).
   - split; [exact hstrong |].
     split; [exact hremainder |].
     split; [exact hcrossLevel |].
