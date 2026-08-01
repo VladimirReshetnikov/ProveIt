@@ -487,6 +487,10 @@ Lean kernel surface against an explicit oracle; harnesses and counts are in
 | Signed fixed-width arithmetic: `Int8`/`Int16`/`Int32`/`Int64`, ten ops each incl. `div`/`mod`/shifts at `minValue` | compiled implementation | 23,160 comparisons, 0 divergence |
 | Unsigned `UInt16`/`UInt32` | compiled implementation | 3,940 comparisons, 0 divergence |
 | `USize`/`ISize`, and word-size-dependent facts | kernel reducibility | kernel is correctly **stuck** — `System.Platform.numBits` is opaque, so even `(1 : USize) + 2 = 3` is not `rfl`-provable, and `numBits = 64` is undecidable. Sound: the theory fixes only `numBits = 32 ∨ numBits = 64` |
+| Arbitrary-precision `Int`: `ediv`/`emod`/`fdiv`/`fmod`/`tdiv`/`tmod`/`bdiv`/`bmod`/`gcd` at ±2^32, ±2^64, ±2^70 | compiled implementation | 16,428 comparisons, 0 divergence |
+| `BitVec` at width 8: `sdiv`/`smod`/`srem`/`udiv`/`umod`, shifts and rotates past the width, `setWidth`/`signExtend` up and down, signed and unsigned comparisons | compiled implementation | 5,070 comparisons, 0 divergence |
+| **Every `@[implemented_by]` pair** in core + Batteries + Mathlib | the pair carries *no* proof obligation, so the two sides must be compared directly | 173 pairs; **166 have `unsafe` implementations** the kernel cannot reduce, and the remaining 7 bottom out in irreducible `USize` operations, so none is kernel-differentiable |
+| `Nat.repr` vs `Nat.reprFast` across both of its internal boundaries (the 128-entry memo table, and `USize.size`) | an independent decimal conversion built from `Nat.div`/`Nat.mod` | 336 comparisons, 0 divergence. `reprFast` is correct by construction: it uses `USize.ofNatLT n h` with a proof `h : n < USize.size`, and falls back to the general path above it |
 
 Two things did turn up, neither a `False`. `Nat.shiftLeft`'s missing magnitude
 guard is §2.6. And `Kernel.check` with a caller-supplied local context whose
