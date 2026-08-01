@@ -183,6 +183,33 @@ Print Assumptions ifo_hilbert_iff_neg_of_neg_iff.
 Print Assumptions ifo_hilbert_proof_rewrite.
 Print Assumptions ifo_hilbert_proof_depth_rewrite.
 Check ifo_hilbert_proof_weaken.
+Check ifo_sentence_embed.
+Print Assumptions ifo_sentence_embed_imp.
+Check ifo_theory.
+Check ifo_theory_le.
+Check ifo_theory_empty.
+Check ifo_theory_adjoin_axiom.
+Check ifo_theory_adjoin.
+Check ifo_theory_formula_context.
+Check ifo_theory_proof.
+Check ifo_theory_entailment.
+Check ifo_theory_proof_cast.
+Print Assumptions ifo_theory_proof_weaken.
+Check ifo_theory_assumption.
+Check ifo_theory_of_hilbert.
+Print Assumptions ifo_theory_adjoin_context_forward.
+Print Assumptions ifo_theory_adjoin_context_backward.
+Print Assumptions ifo_theory_deduct.
+Print Assumptions ifo_theory_deduct_inverse.
+Check ifo_theory_modus_ponens.
+Check ifo_theory_minimal_capability.
+Check ifo_hilbert_intuitionistic_capability.
+Check ifo_hilbert_intuitionistic_system_capability.
+Check ifo_theory_intuitionistic_capability.
+Check ifo_theory_classical_capability.
+Check ifo_hilbert_classical_lem_capability.
+Check ifo_hilbert_classical_efq_capability.
+Print Assumptions ifo_hilbert_classical_system_capability.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.

@@ -1,9 +1,10 @@
 (** Type-valued Hilbert deduction for intuitionistic first-order logic. *)
 
-From Stdlib Require Import Arith.PeanoNat Lists.List Vectors.Fin.
+From Stdlib Require Import Arith.PeanoNat Lists.List Program.Equality Vectors.Fin.
 From FoundationModal Require Import GenericAdjunctiveSet GenericCalculus
   GenericEntailment GenericLogicSymbol GenericSemantics
-  PropositionalEntailmentAxioms PropositionalEntailmentMinimal.
+  PropositionalEntailmentAxioms PropositionalEntailmentMinimal
+  PropositionalEntailmentInt.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew.
 
@@ -653,3 +654,285 @@ Fixpoint ifo_hilbert_proof_weaken {L H K phi}
   | IFOHPEx1 t p => IFOHPEx1 t p
   | IFOHPEx2 p q => IFOHPEx2 p q
   end.
+
+(** * Sentence theories *)
+
+Definition ifo_empty_elim (x : Empty_set) : False := match x with end.
+
+Definition ifo_sentence_embed {L} (phi : ifo_sentence L) :
+    ifo_proposition L :=
+  @ifo_emb L Empty_set nat 0 ifo_empty_elim phi.
+
+Lemma ifo_sentence_embed_imp : forall L (phi psi : ifo_sentence L),
+  ifo_sentence_embed (IFOImp phi psi) =
+  IFOImp (ifo_sentence_embed phi) (ifo_sentence_embed psi).
+Proof. reflexivity. Qed.
+
+(** A Type-valued axiom family includes Foundation's Prop-valued sets as a
+    special case and preserves assumption witnesses constructively. *)
+Record ifo_theory (L : language) : Type := {
+  ifo_theory_axiom : ifo_sentence L -> Type
+}.
+
+Definition ifo_theory_le {L} (T U : ifo_theory L) : Type :=
+  forall phi, ifo_theory_axiom T phi -> ifo_theory_axiom U phi.
+
+Definition ifo_theory_empty {L} : ifo_theory L :=
+  {| ifo_theory_axiom := fun _ => Empty_set |}.
+
+Inductive ifo_theory_adjoin_axiom {L}
+    (phi : ifo_sentence L) (T : ifo_theory L) :
+    ifo_sentence L -> Type :=
+| IFOTheoryAdjoinHere : ifo_theory_adjoin_axiom phi T phi
+| IFOTheoryAdjoinThere : forall psi, ifo_theory_axiom T psi ->
+    ifo_theory_adjoin_axiom phi T psi.
+
+Arguments IFOTheoryAdjoinHere {L phi T}.
+Arguments IFOTheoryAdjoinThere {L phi T psi} _.
+
+Definition ifo_theory_adjoin {L} (phi : ifo_sentence L)
+    (T : ifo_theory L) : ifo_theory L :=
+  {| ifo_theory_axiom := ifo_theory_adjoin_axiom phi T |}.
+
+(** Proof-relevant image of a sentence theory under embedding. *)
+Definition ifo_theory_formula_context {L} (T : ifo_theory L)
+    (p : ifo_proposition L) : Type :=
+  { phi : ifo_sentence L &
+    (ifo_theory_axiom T phi * (ifo_sentence_embed phi = p))%type }.
+
+Definition ifo_theory_proof {L H} (T : ifo_theory L)
+    (phi : ifo_sentence L) : Type :=
+  generic_type_context_derivation (ifo_hilbert_entailment L) H
+    (ifo_connectives L nat 0) (ifo_theory_formula_context T)
+    (ifo_sentence_embed phi).
+
+Definition ifo_theory_entailment (L : language) (H : ifo_hilbert L) :
+    generic_entailment (ifo_theory L) (ifo_sentence L) :=
+  {| generic_proof := @ifo_theory_proof L H |}.
+
+Definition ifo_theory_proof_cast {L H T phi psi}
+    (d : @ifo_theory_proof L H T phi) (e : phi = psi) :
+    @ifo_theory_proof L H T psi :=
+  match e with eq_refl => d end.
+
+Definition ifo_theory_proof_weaken {L H T U phi}
+    (incl : ifo_theory_le T U) (d : @ifo_theory_proof L H T phi) :
+    @ifo_theory_proof L H U phi.
+Proof.
+  refine (generic_type_context_derivation_weaken_raw _ d).
+  intros p [psi [hpsi e]]. exists psi. split; [exact (incl psi hpsi) | exact e].
+Defined.
+
+Definition ifo_theory_assumption {L H T phi}
+    (h : ifo_theory_axiom T phi) : @ifo_theory_proof L H T phi :=
+  GTCD_assumption (existT _ phi (h, eq_refl)).
+
+Definition ifo_theory_of_hilbert {L H T phi}
+    (d : @ifo_hilbert_proof L H (ifo_sentence_embed phi)) :
+    @ifo_theory_proof L H T phi.
+Proof. apply GTCD_theorem. cbn. exact d. Defined.
+
+Definition ifo_theory_adjoin_context_forward {L T phi p}
+    (h : @ifo_theory_formula_context L (ifo_theory_adjoin phi T) p) :
+    generic_type_context_adjoin (ifo_sentence_embed phi)
+      (ifo_theory_formula_context T) p.
+Proof.
+  destruct h as [psi [hpsi e]].
+  change (ifo_theory_adjoin_axiom phi T psi) in hpsi.
+  dependent destruction hpsi.
+  - destruct e. exact GTCA_here.
+  - apply GTCA_there. exists psi. now split.
+Defined.
+
+Definition ifo_theory_adjoin_context_backward {L T phi p}
+    (h : generic_type_context_adjoin (ifo_sentence_embed phi)
+      (ifo_theory_formula_context T) p) :
+    @ifo_theory_formula_context L (ifo_theory_adjoin phi T) p.
+Proof.
+  destruct h as [|p hp].
+  - exists phi. split; [exact IFOTheoryAdjoinHere | reflexivity].
+  - destruct hp as [psi [hpsi e]]. exists psi.
+    split; [exact (IFOTheoryAdjoinThere hpsi) | exact e].
+Defined.
+
+Definition ifo_theory_deduct {L H T phi psi}
+    (d : @ifo_theory_proof L H (ifo_theory_adjoin phi T) psi) :
+    @ifo_theory_proof L H T (IFOImp phi psi).
+Proof.
+  change (generic_type_context_derivation (ifo_hilbert_entailment L) H
+    (ifo_connectives L nat 0) (ifo_theory_formula_context T)
+    (IFOImp (ifo_sentence_embed phi) (ifo_sentence_embed psi))).
+  apply (generic_minimal_type_context_deduction_raw
+    (ifo_hilbert_minimal_capability H)).
+  exact (generic_type_context_derivation_weaken_raw
+    (fun p hp => ifo_theory_adjoin_context_forward hp) d).
+Defined.
+
+Definition ifo_theory_deduct_inverse {L H T phi psi}
+    (d : @ifo_theory_proof L H T (IFOImp phi psi)) :
+    @ifo_theory_proof L H (ifo_theory_adjoin phi T) psi.
+Proof.
+  change (generic_type_context_derivation (ifo_hilbert_entailment L) H
+    (ifo_connectives L nat 0) (ifo_theory_formula_context T)
+    (IFOImp (ifo_sentence_embed phi) (ifo_sentence_embed psi))) in d.
+  pose (d' := generic_type_context_deduction_inverse_raw d).
+  exact (generic_type_context_derivation_weaken_raw
+    (fun p hp => ifo_theory_adjoin_context_backward hp) d').
+Defined.
+
+Definition ifo_theory_modus_ponens {L H} (T : ifo_theory L) :
+    generic_modus_ponens (@ifo_theory_entailment L H)
+      (ifo_connectives L Empty_set 0) T.
+Proof.
+  constructor. intros phi psi dpq dp. cbn in dpq, dp |- *.
+  exact (GTCD_mdp dpq dp).
+Defined.
+
+Definition ifo_theory_minimal_capability {L H} (T : ifo_theory L) :
+    generic_minimal_entailment (@ifo_theory_entailment L H)
+      (ifo_connectives L Empty_set 0) T.
+Proof.
+  constructor.
+  - exact (ifo_theory_modus_ponens T).
+  - intro phi. apply ifo_theory_of_hilbert.
+    exact (ifo_hilbert_neg_equiv (ifo_sentence_embed phi)).
+  - apply ifo_theory_of_hilbert. exact IFOHPVerum.
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (IFOHPK (ifo_sentence_embed phi) (ifo_sentence_embed psi)).
+  - intros phi psi chi. apply ifo_theory_of_hilbert.
+    exact (IFOHPS (ifo_sentence_embed phi) (ifo_sentence_embed psi)
+      (ifo_sentence_embed chi)).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (IFOHPAnd1 (ifo_sentence_embed phi) (ifo_sentence_embed psi)).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (IFOHPAnd2 (ifo_sentence_embed phi) (ifo_sentence_embed psi)).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (IFOHPAnd3 (ifo_sentence_embed phi) (ifo_sentence_embed psi)).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (IFOHPOr1 (ifo_sentence_embed phi) (ifo_sentence_embed psi)).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (IFOHPOr2 (ifo_sentence_embed phi) (ifo_sentence_embed psi)).
+  - intros phi psi chi. apply ifo_theory_of_hilbert.
+    exact (IFOHPOr3 (ifo_sentence_embed phi) (ifo_sentence_embed psi)
+      (ifo_sentence_embed chi)).
+Defined.
+
+Definition ifo_hilbert_intuitionistic_capability {L} (H : ifo_hilbert L)
+    (efq : forall phi : ifo_proposition L,
+      @ifo_hilbert_proof L H (IFOImp IFOFalsum phi)) :
+    generic_intuitionistic_entailment (ifo_hilbert_entailment L)
+      (ifo_connectives L nat 0) H.
+Proof.
+  constructor.
+  - exact (ifo_hilbert_minimal_capability H).
+  - constructor. exact efq.
+Defined.
+
+Definition ifo_hilbert_intuitionistic_system_capability (L : language) :
+    generic_intuitionistic_entailment (ifo_hilbert_entailment L)
+      (ifo_connectives L nat 0) (ifo_hilbert_intuitionistic L) :=
+  @ifo_hilbert_intuitionistic_capability L (ifo_hilbert_intuitionistic L)
+    (fun phi => @IFOHPEaxm L (ifo_hilbert_intuitionistic L)
+      (IFOImp IFOFalsum phi) (IFOIntEFQ phi)).
+
+Definition ifo_theory_intuitionistic_capability {L H}
+    (T : ifo_theory L)
+    (Hi : generic_intuitionistic_entailment (ifo_hilbert_entailment L)
+      (ifo_connectives L nat 0) H) :
+    generic_intuitionistic_entailment (@ifo_theory_entailment L H)
+      (ifo_connectives L Empty_set 0) T.
+Proof.
+  constructor.
+  - exact (ifo_theory_minimal_capability T).
+  - constructor. intro phi. apply ifo_theory_of_hilbert.
+    exact (generic_efq_raw (generic_intuitionistic_has_efq Hi)
+      (ifo_sentence_embed phi)).
+Defined.
+
+Definition ifo_theory_classical_capability {L H}
+    (T : ifo_theory L)
+    (Hc : generic_classical_entailment (ifo_hilbert_entailment L)
+      (ifo_connectives L nat 0) H) :
+    generic_classical_entailment (@ifo_theory_entailment L H)
+      (ifo_connectives L Empty_set 0) T.
+Proof.
+  constructor.
+  - exact (ifo_theory_modus_ponens T).
+  - intro phi. apply ifo_theory_of_hilbert.
+    exact (generic_classical_neg_equiv Hc (ifo_sentence_embed phi)).
+  - apply ifo_theory_of_hilbert. exact (generic_classical_verum Hc).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (generic_classical_K Hc (ifo_sentence_embed phi)
+      (ifo_sentence_embed psi)).
+  - intros phi psi chi. apply ifo_theory_of_hilbert.
+    exact (generic_classical_S Hc (ifo_sentence_embed phi)
+      (ifo_sentence_embed psi) (ifo_sentence_embed chi)).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (generic_classical_and1 Hc (ifo_sentence_embed phi)
+      (ifo_sentence_embed psi)).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (generic_classical_and2 Hc (ifo_sentence_embed phi)
+      (ifo_sentence_embed psi)).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (generic_classical_and3 Hc (ifo_sentence_embed phi)
+      (ifo_sentence_embed psi)).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (generic_classical_or1 Hc (ifo_sentence_embed phi)
+      (ifo_sentence_embed psi)).
+  - intros phi psi. apply ifo_theory_of_hilbert.
+    exact (generic_classical_or2 Hc (ifo_sentence_embed phi)
+      (ifo_sentence_embed psi)).
+  - intros phi psi chi. apply ifo_theory_of_hilbert.
+    exact (generic_classical_or3 Hc (ifo_sentence_embed phi)
+      (ifo_sentence_embed psi) (ifo_sentence_embed chi)).
+  - intro phi. apply ifo_theory_of_hilbert.
+    exact (generic_classical_dne Hc (ifo_sentence_embed phi)).
+Defined.
+
+Definition ifo_hilbert_classical_lem_capability (L : language) :
+    generic_has_axiom_lem (ifo_hilbert_entailment L)
+      (ifo_connectives L nat 0) (ifo_hilbert_classical L).
+Proof.
+  constructor. intro phi.
+  exact (@IFOHPEaxm L (ifo_hilbert_classical L)
+    (IFOOr phi (ifo_neg phi)) (IFOClassicalLEM phi)).
+Defined.
+
+Definition ifo_hilbert_classical_efq_capability (L : language) :
+    generic_has_axiom_efq (ifo_hilbert_entailment L)
+      (ifo_connectives L nat 0) (ifo_hilbert_classical L).
+Proof.
+  constructor. intro phi.
+  exact (@IFOHPEaxm L (ifo_hilbert_classical L)
+    (IFOImp IFOFalsum phi) (IFOClassicalEFQ phi)).
+Defined.
+
+Definition ifo_hilbert_classical_system_capability (L : language) :
+    generic_classical_entailment (ifo_hilbert_entailment L)
+      (ifo_connectives L nat 0) (ifo_hilbert_classical L).
+Proof.
+  pose (H := ifo_hilbert_classical L).
+  pose (Hm := ifo_hilbert_minimal_capability H).
+  constructor.
+  - exact (ifo_hilbert_modus_ponens H).
+  - exact (@ifo_hilbert_neg_equiv L H).
+  - exact IFOHPVerum.
+  - exact (fun p q => IFOHPK p q).
+  - exact (fun p q r => IFOHPS p q r).
+  - exact (fun p q => IFOHPAnd1 p q).
+  - exact (fun p q => IFOHPAnd2 p q).
+  - exact (fun p q => IFOHPAnd3 p q).
+  - exact (fun p q => IFOHPOr1 p q).
+  - exact (fun p q => IFOHPOr2 p q).
+  - exact (fun p q r => IFOHPOr3 p q r).
+  - intro p. exact (generic_dne_of_lem_efq_raw
+      (ifo_hilbert_modus_ponens H)
+      (fun q r => IFOHPK q r)
+      (fun q r s => IFOHPS q r s)
+      (fun q r s => IFOHPOr3 q r s)
+      (ifo_hilbert_classical_lem_capability L)
+      (ifo_hilbert_classical_efq_capability L)
+      (fun q => generic_minimal_iff_elim_left_raw Hm
+        (ifo_neg q) (IFOImp q IFOFalsum)
+        (generic_minimal_neg_equiv Hm q)) p).
+Defined.
