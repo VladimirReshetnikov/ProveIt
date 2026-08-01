@@ -4345,3 +4345,15 @@ Print Assumptions pa_unrefutable_rosser.
 Print Assumptions pa_rosser_independent.
 Print Assumptions pa_rosser_first_incompleteness.
 Print Assumptions pa_kreisel_remark.
+Check pa_refutability.
+Print Assumptions pa_R1.
+Print Assumptions pa_R1_weaker.
+Check pa_jeroslow.
+Print Assumptions pa_jeroslow_spec.
+Print Assumptions pa_jeroslow_spec_weaker.
+Check pa_refutability_sound_on.
+Print Assumptions pa_unprovable_jeroslow.
+Check pa_safe.
+Check pa_formalized_noncontradiction.
+Print Assumptions pa_jeroslow_not_safe.
+Print Assumptions pa_unprovable_flon.

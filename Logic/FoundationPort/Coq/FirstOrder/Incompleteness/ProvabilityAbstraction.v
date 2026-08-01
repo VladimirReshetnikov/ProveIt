@@ -719,3 +719,136 @@ Proof.
     intro rho. unfold Neg. simpl. tauto. }
   exact (Hweak _ (pa_Ros HR Hnotbot)).
 Qed.
+
+(** * Abstract refutability and Jeroslow's sentence
+
+    The source represents refutability by a quoted unary formula.  As for
+    provability above, only the induced formula endomorphism and its R1 law
+    are used by the proofs. *)
+
+Record pa_refutability {A : Type}
+    (L0 L : modal_logic_set A) : Type := {
+  pa_refute : formula A -> formula A;
+  pa_R1_raw : forall p, L (Neg p) -> L0 (pa_refute p)
+}.
+
+Arguments pa_refute {A L0 L} _ _.
+Arguments pa_R1_raw {A L0 L} _ _ _.
+
+Lemma pa_R1 : forall (A : Type) (L0 L : modal_logic_set A)
+    (W : pa_refutability L0 L) p,
+  L (Neg p) -> L0 (pa_refute W p).
+Proof. intros; now apply pa_R1_raw. Qed.
+
+Lemma pa_R1_weaker : forall (A : Type)
+    (L0 L : modal_logic_set A) (Hweak : logic_subset L0 L)
+    (W : pa_refutability L0 L) p,
+  L (Neg p) -> L (pa_refute W p).
+Proof.
+  intros A L0 L Hweak W p Hneg.
+  exact (Hweak _ (pa_R1 W Hneg)).
+Qed.
+
+Definition pa_jeroslow {A L0 L} (D : pa_diagonalization L0)
+    (W : pa_refutability L0 L) : formula A :=
+  pa_fixedpoint D (pa_refute W).
+
+Lemma pa_jeroslow_spec : forall (A : Type)
+    (L0 L : modal_logic_set A) (D : pa_diagonalization L0)
+    (W : pa_refutability L0 L),
+  L0 (Iff (pa_jeroslow D W) (pa_refute W (pa_jeroslow D W))).
+Proof.
+  intros A L0 L D W. unfold pa_jeroslow.
+  exact (pa_diagonal D (pa_refute W)).
+Qed.
+
+Lemma pa_jeroslow_spec_weaker : forall (A : Type)
+    (L0 L : modal_logic_set A) (Hweak : logic_subset L0 L)
+    (D : pa_diagonalization L0) (W : pa_refutability L0 L),
+  L (Iff (pa_jeroslow D W) (pa_refute W (pa_jeroslow D W))).
+Proof. intros. now apply Hweak, pa_jeroslow_spec. Qed.
+
+Record pa_refutability_sound_on {A : Type}
+    {L0 L : modal_logic_set A} (W : pa_refutability L0 L)
+    (p : formula A) : Prop := {
+  pa_refutability_sound : L (pa_refute W p) -> L (Neg p)
+}.
+
+Theorem pa_unprovable_jeroslow : forall (A : Type)
+    (L0 L : modal_logic_set A)
+    (Hclass : classical_logic L) (Hweak : logic_subset L0 L)
+    (D : pa_diagonalization L0) (W : pa_refutability L0 L),
+  pa_refutability_sound_on W (pa_jeroslow D W) ->
+  logic_consistent L -> ~ L (pa_jeroslow D W).
+Proof.
+  intros A L0 L Hclass Hweak D W Hsound Hconsistent HJ.
+  pose proof (pa_jeroslow_spec_weaker Hweak D W) as Hspec.
+  pose proof (pa_iff_left Hclass Hspec) as HJ_WJ.
+  pose proof (logic_modus_ponens Hclass HJ_WJ HJ) as HWJ.
+  pose proof (pa_refutability_sound Hsound HWJ) as HnegJ.
+  exact (logic_not_neg_of Hclass Hconsistent HJ HnegJ).
+Qed.
+
+(** Formalized law of noncontradiction at one code. *)
+Definition pa_safe {A L0 L}
+    (B : pa_provability L0 L) (W : pa_refutability L0 L)
+    (p : formula A) : formula A :=
+  Neg (And (pa_box B p) (pa_refute W p)).
+
+(** A universal formalized law is used downstream only through
+    specialization.  Packaging that eliminator removes all quantifier and
+    coding hypotheses while retaining exactly the source theorem's force. *)
+Record pa_formalized_noncontradiction {A : Type}
+    {L0 L : modal_logic_set A}
+    (B : pa_provability L0 L) (W : pa_refutability L0 L) : Type := {
+  pa_flon : formula A;
+  pa_flon_specialize : forall p,
+    L (Imp pa_flon (pa_safe B W p))
+}.
+
+Arguments pa_flon {A L0 L B W} _.
+Arguments pa_flon_specialize {A L0 L B W} _ _.
+
+Lemma pa_jeroslow_not_safe : forall (A : Type)
+    (L0 L : modal_logic_set A)
+    (Hclass : classical_logic L) (Hweak : logic_subset L0 L)
+    (D : pa_diagonalization L0) (B : pa_provability L0 L)
+    (W : pa_refutability L0 L),
+  pa_formalized_complete_on B (pa_jeroslow D W) ->
+  L (Imp (pa_jeroslow D W)
+    (And (pa_box B (pa_jeroslow D W))
+      (pa_refute W (pa_jeroslow D W)))).
+Proof.
+  intros A L0 L Hclass Hweak D B W Hcomplete.
+  apply (logic_imp_and_intro Hclass).
+  - apply Hweak. exact (pa_formalized_complete Hcomplete).
+  - apply pa_iff_left; [exact Hclass |].
+    exact (pa_jeroslow_spec_weaker Hweak D W).
+Qed.
+
+Theorem pa_unprovable_flon : forall (A : Type)
+    (L0 L : modal_logic_set A)
+    (Hclass0 : classical_logic L0) (Hclass : classical_logic L)
+    (Hweak : logic_subset L0 L) (D : pa_diagonalization L0)
+    (B : pa_provability L0 L) (W : pa_refutability L0 L)
+    (F : pa_formalized_noncontradiction B W),
+  pa_formalized_complete_on B (pa_jeroslow D W) ->
+  logic_consistent L -> ~ L (pa_flon F).
+Proof.
+  intros A L0 L Hclass0 Hclass Hweak D B W F Hcomplete
+    Hconsistent Hflon.
+  set (J := pa_jeroslow D W).
+  pose proof (logic_modus_ponens Hclass
+    (pa_flon_specialize F J) Hflon) as Hsafe.
+  pose proof (@pa_jeroslow_not_safe A L0 L Hclass Hweak
+    D B W Hcomplete) as Hnot_safe.
+  assert (HnegJ : L (Neg J)).
+  { eapply pa_tautology2;
+      [exact Hclass | | exact Hnot_safe | exact Hsafe].
+    intro rho. unfold pa_safe, Neg. simpl. tauto. }
+  pose proof (pa_R1_weaker Hweak W HnegJ) as HWJ.
+  pose proof (pa_jeroslow_spec_weaker Hweak D W) as Hspec.
+  pose proof (logic_modus_ponens Hclass
+    (pa_iff_right Hclass Hspec) HWJ) as HJ.
+  exact (logic_not_neg_of Hclass Hconsistent HJ HnegJ).
+Qed.
