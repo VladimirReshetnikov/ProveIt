@@ -13,7 +13,9 @@ From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
+  CodedSyntax
   RawCodedSyntaxConstructors
+  RawCodedFormulaOperations
   RawCodedContextLists
   RawCodedRestrictedPAProof
   RawCodedPAAxiomWitnessPrefix
@@ -23,14 +25,19 @@ From BoundedPAConsistency Require Import
   RawCodedPAGrowingTemplateConjunction
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
+  RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplatePAEmbedding
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
+  RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
   RawCodedDynamicTruthNativeZeroCanonicalTraceExactification
   RawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification
-  RawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
+  RawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence
+  RawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
 
 Module
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationNormalizedCompilation.
@@ -39,6 +46,8 @@ Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedCodedSyntax.
+Import PABoundedRawCodedFormulaOperations.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
@@ -48,7 +57,12 @@ Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import
+  PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
+Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
@@ -62,6 +76,8 @@ Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
+Import
+  PABoundedRawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
 
 (** Producer-facing split of the canonical application package.  Arithmetic
     endpoint compilation may first choose a witnessed context carrying
@@ -246,6 +262,84 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroCanonicalDomainEndpointCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
+
+(** Primitive arithmetic resources for the rank-zero endpoint.  The
+    normalized callback need not manufacture atomic adequacy and the rank
+    disjunction directly: the generic strong-step endpoint theorem derives
+    both from restricted-proof validity and rule validity.  The producer
+    chooses the structural interpretation used by those two formulas and
+    records only the three alignments needed by that theorem. *)
+Definition
+    RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleEndpointInputsCompilerOnCanonicalNormalizedResources
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists inputs : RawCodedTemplateDirectStructuralInputs M,
+    exists levelNumeral restrictedRoot ruleRoot : M,
+      rawDirectTemplateTerm inputs
+        coqRestrictedPASoundnessLowerLevelTerm = levelNumeral /\
+      RawCodedFormulaSingleSubstitution M levelNumeral
+        (rawNumeralValue M
+          (formulaCode dynamicTruthLocalSigmaInputDomainTemplate))
+        (rawDynamicTruthZeroSigmaDomainCode M) /\
+      RawCodedFormulaSingleSubstitution M levelNumeral
+        (rawNumeralValue M
+          (formulaCode dynamicTruthLocalPiInputDomainTemplate))
+        (rawDynamicTruthZeroPiDomainCode M) /\
+      RawCodedPALocalProofOf M baseContext
+        (rawDirectTemplateFormula inputs
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+        restrictedRoot /\
+      RawCodedPALocalProofOf M baseContext
+        (rawDirectTemplateFormula inputs
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+        ruleRoot.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleEndpointInputsCompilerOnCanonicalNormalizedResources
+  M translation : clear implicits.
+
+(** Compile the primitive restricted/rule pair into one synchronized
+    arithmetic endpoint.  The witnessed source context is recovered from the
+    normalized field package; every PA-law proof, prefix insertion, and
+    context-growth step is delegated to the reusable strong-step compiler. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_restricted_rule_inputs
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleEndpointInputsCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hcompiler tail witnessList baseContext
+    helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (inputs & levelNumeral & restrictedRoot & ruleRoot &
+      hlevel & hsigmaDomain & hpiDomain & hrestricted & hrule).
+  pose proof
+    (rawDynamicTruthNativeLocalZeroNormalized_fields
+      M translation witnessList baseContext helperRoots hresources)
+    as hfields.
+  pose proof
+    (rawDynamicTruthNativeLocalZeroCurrentFields_witnessed
+      M witnessList baseContext hfields) as hwitnessed.
+  exact
+    (raw_codedPALocalProof_strongStepPredecessor_atomic_and_domain_of_restricted_and_rule_roots
+      M hPA inputs witnessList baseContext levelNumeral
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      restrictedRoot ruleRoot hwitnessed
+      hlevel hsigmaDomain hpiDomain hrestricted hrule).
+Qed.
 
 (** Merge independently selected atomic and domain witnessed tails.  The
     shared predecessor-state prefix is transported verbatim by the generic

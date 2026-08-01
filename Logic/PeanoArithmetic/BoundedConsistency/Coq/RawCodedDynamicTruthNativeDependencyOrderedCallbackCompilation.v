@@ -352,18 +352,17 @@ Arguments
 
 (** Row-kernel refinement of the rank-zero direct boundary.  Only the first
     coordinate changes: instead of returning completed canonical state
-    applications, it separates the invocation-dependent arithmetic endpoint
-    from one model-global synchronized rank-0/rank-1 append payload pair.
-    The remaining seven dependency-ordered coordinates are preserved
-    exactly. *)
+    applications, it separates the invocation-dependent restricted-proof
+    and rule-validity inputs from one model-global synchronized rank-0/rank-1
+    append payload pair.  The generic strong-step compiler derives both
+    arithmetic endpoint roots from those inputs.  The remaining seven
+    dependency-ordered coordinates are preserved exactly. *)
 Definition
     RawDynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
     (M : RawPAModel) (hPA : RawPASatisfies M)
     (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
   let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
-  RawDynamicTruthNativeLocalZeroCanonicalAtomicEndpointCompilerOnCanonicalNormalizedResources
-    M translation /\
-  RawDynamicTruthNativeLocalZeroCanonicalDomainEndpointCompilerOnCanonicalNormalizedResources
+  RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleEndpointInputsCompilerOnCanonicalNormalizedResources
     M translation /\
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
     M translation coqDynamicTruthPredecessorStateTemplateContext /\
@@ -404,7 +403,7 @@ Theorem
     M hPA inputs.
 Proof.
   intros M hPA inputs
-    (hzeroAtomic & hzeroDomain & hzeroPayloads & hstrong & hremainder &
+    (hzeroRestrictedRule & hzeroPayloads & hstrong & hremainder &
       hcrossLevel & hshift & hsubstitution & haxiom & hfinal).
   split.
   - exact
@@ -413,10 +412,9 @@ Proof.
         (rawDirectStructuralTemplatePAAgreement M hPA inputs)
         (raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources_of_endpoint_and_payload_pair
           M (rawDirectStructuralTemplateTranslation M hPA inputs)
-          (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_atomic_and_domain
+          (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_restricted_rule_inputs
             M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
-            (rawDirectStructuralTemplatePAAgreement M hPA inputs)
-            hzeroAtomic hzeroDomain)
+            hzeroRestrictedRule)
           hzeroPayloads)).
   - split; [exact hstrong |].
     split; [exact hremainder |].
