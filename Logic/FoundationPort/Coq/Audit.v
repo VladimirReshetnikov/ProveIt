@@ -16,6 +16,7 @@ From Foundation.Vorspiel Require Import DMatrix.
 From Foundation.Vorspiel Require Import Matrix.
 From Foundation.Vorspiel Require Import Arithmetic.
 From Foundation.Vorspiel Require Import BetaEncoding.
+From Foundation.FirstOrder.Incompleteness Require Import ProvabilityAbstraction.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4299,3 +4300,47 @@ Check second_order_theory_provable.
 Print Assumptions second_order_theory_provable_iff.
 Check second_order_schema_theory.
 Print Assumptions second_order_schema_theory_provable_iff.
+Check pa_provability.
+Check pa_hbl2.
+Check pa_hbl3.
+Check pa_hbl.
+Check pa_mono.
+Check pa_ext.
+Check pa_rosser.
+Check pa_formalized_complete_on.
+Check pa_kreisel.
+Check pa_sound_on.
+Print Assumptions pa_syntactical_sound.
+Print Assumptions pa_hbl3_of_formalized_complete.
+Print Assumptions pa_mono_of_hbl2.
+Print Assumptions pa_ext_of_hbl2.
+Print Assumptions pa_bew_distribute_imply.
+Print Assumptions pa_bew_distribute_and.
+Print Assumptions pa_bew_distribute_and_provable.
+Print Assumptions pa_bew_collect_and.
+Print Assumptions pa_dia_mono.
+Print Assumptions pa_mono_weaker.
+Print Assumptions pa_ext_weaker.
+Check pa_diagonalization.
+Check pa_godel.
+Print Assumptions pa_godel_spec.
+Print Assumptions pa_unprovable_godel.
+Print Assumptions pa_unrefutable_godel.
+Print Assumptions pa_godel_independent.
+Print Assumptions pa_first_incompleteness.
+Print Assumptions pa_formalized_consistent_of_unprovable.
+Print Assumptions pa_formalized_unprovable_godel.
+Print Assumptions pa_godel_iff_con.
+Print Assumptions pa_con_unprovable.
+Print Assumptions pa_con_unrefutable.
+Print Assumptions pa_con_independent.
+Check pa_kreisel_sentence.
+Print Assumptions pa_kreisel_spec.
+Print Assumptions pa_lob_theorem.
+Print Assumptions pa_formalized_lob_theorem.
+Print Assumptions pa_formalized_unprovable_not_con.
+Print Assumptions pa_formalized_unrefutable_godel.
+Print Assumptions pa_unrefutable_rosser.
+Print Assumptions pa_rosser_independent.
+Print Assumptions pa_rosser_first_incompleteness.
+Print Assumptions pa_kreisel_remark.
