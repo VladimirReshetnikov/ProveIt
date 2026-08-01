@@ -1549,6 +1549,10 @@ Check phf_deducible_of_provable.
 Check phf_deduction_empty_iff.
 Check phf_deduction_weaken.
 Check phf_weak_deduction_iff.
+Check phf_list_conj2.
+Check phf_provable_list_conj2_elim.
+Check phf_deduction_list_conj2.
+Check phf_deduction_list_iff.
 Check phf_deduction_finite_list_support.
 Print Assumptions phf_provable_imp_trans.
 Print Assumptions phf_proof_rule_C.
@@ -1565,6 +1569,9 @@ Print Assumptions phf_F_Rfl_disjunctive.
 Print Assumptions phf_F_Tra1_disjunctive.
 Print Assumptions phf_deduction_empty_iff.
 Print Assumptions phf_weak_deduction_iff.
+Print Assumptions phf_provable_list_conj2_elim.
+Print Assumptions phf_deduction_list_conj2.
+Print Assumptions phf_deduction_list_iff.
 Print Assumptions phf_deduction_finite_list_support.
 
 (** Formula-indexed rooted semantics and elementary NT-seriality. *)
