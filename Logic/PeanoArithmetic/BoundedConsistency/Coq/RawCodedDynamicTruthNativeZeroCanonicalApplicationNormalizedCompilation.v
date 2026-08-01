@@ -18,10 +18,13 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
   RawCodedPALocalProofExistential
   RawCodedPALocalProofWitnessedContextMerge
+  RawCodedPAGrowingTemplateConjunction
   RawCodedTemplateProofCompiler
+  RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
   RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
+  RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
   RawCodedDynamicTruthNativeZeroCanonicalTraceExactification
   RawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
@@ -37,11 +40,15 @@ Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
 Import
@@ -85,6 +92,143 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
+
+(** Append-facing form of the same residual.  Unlike an empty-prefix pair,
+    these applications are compiled with the two predecessor-state formulas
+    already present.  This is essential: the canonical Sigma application is
+    not itself an open theorem of PA. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists endpointWitnessList endpointContext atomicRoot domainRoot,
+      RawCodedPAAxiomWitnessContext M endpointWitnessList endpointContext /\
+      RawContextListIncluded M baseContext endpointContext /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M endpointContext)
+        (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M endpointContext)
+        (rawFormulaOrCode M
+          (rawDynamicTruthZeroSigmaDomainCode M)
+          (rawDynamicTruthZeroPiDomainCode M)) domainRoot /\
+      RawCodedPAGrowingTemplateLocalProofPairAt M translation
+        endpointContext coqDynamicTruthPredecessorStateTemplateContext
+        (rawQuotedFormulaCode M
+          dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+        (rawQuotedFormulaCode M
+          dynamicTruthZeroInputGlobalPiApplicationFormula).
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources
+  M translation : clear implicits.
+
+(** Interpret the shared template prefix as the literal joint state context.
+    The growing pair already records the final witnessed tail and inclusion,
+    so no post-hoc assumption insertion occurs. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources_of_state_application_resources
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hagreement hcompiler tail witnessList
+    baseContext helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hatomic & hdomain &
+      applicationWitnessList & applicationContext &
+      sigmaApplicationRoot & piApplicationRoot &
+      happlicationWitnessed & hendpointApplicationIncluded &
+      hsigmaApplication & hpiApplication).
+  rewrite (raw_dynamicTruthPredecessorStateTemplateContextCode
+    M translation hagreement applicationContext) in
+    hsigmaApplication, hpiApplication.
+  exists endpointWitnessList, endpointContext, atomicRoot, domainRoot.
+  split; [exact hendpointWitnessed |].
+  split; [exact hbaseEndpointIncluded |].
+  split; [exact hatomic |].
+  split; [exact hdomain |].
+  exists applicationWitnessList, applicationContext.
+  split; [exact happlicationWitnessed |].
+  split; [exact hendpointApplicationIncluded |].
+  constructor.
+  - exists sigmaApplicationRoot. exact hsigmaApplication.
+  - exists piApplicationRoot. exact hpiApplication.
+Qed.
+
+(** Conversely, expose any concrete joint-state global-root package through
+    the structurally named state prefix.  Thus the append-facing form is an
+    exact reformulation, not an additional compiler assumption. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources_of_global_application_resources
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M _hPA translation hagreement hcompiler tail witnessList
+    baseContext helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hatomic & hdomain &
+      applicationWitnessList & applicationContext &
+      happlicationWitnessed & hendpointApplicationIncluded &
+      happlications).
+  destruct happlications as
+    [(sigmaApplicationRoot & hsigmaApplication)
+      (piApplicationRoot & hpiApplication)].
+  exists endpointWitnessList, endpointContext, atomicRoot, domainRoot.
+  split; [exact hendpointWitnessed |].
+  split; [exact hbaseEndpointIncluded |].
+  split; [exact hatomic |].
+  split; [exact hdomain |].
+  exists applicationWitnessList, applicationContext,
+    sigmaApplicationRoot, piApplicationRoot.
+  split; [exact happlicationWitnessed |].
+  split; [exact hendpointApplicationIncluded |].
+  rewrite (raw_dynamicTruthPredecessorStateTemplateContextCode
+    M translation hagreement applicationContext).
+  split; assumption.
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationResourceCompilers_equivalent
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  (RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources
+      M translation <->
+   RawDynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources
+      M translation).
+Proof.
+  intros M hPA translation hagreement. split.
+  - exact
+      (raw_dynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources_of_state_application_resources
+        M hPA translation hagreement).
+  - exact
+      (raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources_of_global_application_resources
+        M hPA translation hagreement).
+Qed.
 
 (** Exact proof-producing residue after rank-zero normalization.  The output
     may grow the witnessed tail and concludes canonical applications, not

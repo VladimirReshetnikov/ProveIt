@@ -299,7 +299,8 @@ Arguments
 
 (** Rank-zero-refined direct boundary.  The former zero predecessor callback
     has been reduced to four canonical traversal roots on a witnessed
-    extension.  Its first
+    extension, with the two global applications compiled under the named
+    predecessor-state prefix rather than over a bare PA context.  Its first
     coordinate receives a normalized record of the six exact current field
     roots, the ordered forty-helper batch, and the four structural roots
     projected from the state assumptions.  It also retains the complete
@@ -317,7 +318,7 @@ Definition
      outputs are now fixed to their exact standard quotations.  This prevents
      downstream root construction from depending on arbitrary carrier-level
      representatives of those formulas. *)
-  RawDynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources
     M translation /\
   RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
     M hPA /\
@@ -375,7 +376,11 @@ Proof.
                   M hPA
                   (rawDirectStructuralTemplateTranslation M hPA inputs)
                   (rawDirectStructuralTemplatePAAgreement M hPA inputs)
-                  hzero)))))).
+                  (raw_dynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources_of_state_application_resources
+                    M hPA
+                    (rawDirectStructuralTemplateTranslation M hPA inputs)
+                    (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+                    hzero))))))).
   - exact (conj hstrong
       (conj hremainder
         (conj hcrossLevel
