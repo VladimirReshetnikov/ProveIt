@@ -1,0 +1,25 @@
+(** Assumption audit for canonical append-source identification. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification.
+
+Check dynamicTruthZeroCanonicalSigmaRowFormula.
+Check dynamicTruthZeroCanonicalPiRowFormula.
+Check coqFourStateTableAppendPermutedTemplateGlobalSource_zero_sigma.
+Check coqFourStateTableAppendPermutedTemplateGlobalSource_zero_pi.
+Check rawTemplateFormula_zeroCanonicalPermutedGlobalSource_sigma.
+Check rawTemplateFormula_zeroCanonicalPermutedGlobalSource_pi.
+Check
+  raw_dynamicTruthZeroCanonicalGlobalApplicationRoots_of_permuted_append_pair.
+
+Print Assumptions
+  coqFourStateTableAppendPermutedTemplateGlobalSource_zero_sigma.
+Print Assumptions
+  coqFourStateTableAppendPermutedTemplateGlobalSource_zero_pi.
+Print Assumptions rawTemplateFormula_zeroCanonicalPermutedGlobalSource_sigma.
+Print Assumptions rawTemplateFormula_zeroCanonicalPermutedGlobalSource_pi.
+Print Assumptions
+  raw_dynamicTruthZeroCanonicalGlobalApplicationRoots_of_permuted_append_pair.

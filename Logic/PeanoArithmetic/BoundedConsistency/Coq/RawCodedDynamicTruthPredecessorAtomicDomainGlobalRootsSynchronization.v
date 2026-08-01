@@ -14,8 +14,11 @@ From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedContextLists
   RawCodedRestrictedPAProof
+  RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
   RawCodedPALocalProofWitnessedContextMerge
+  RawCodedPALocalProofWitnessedContextMergeTransportComplete
+  RawCodedPAGrowingTemplateConjunction
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
@@ -33,8 +36,11 @@ Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import PABoundedRawCodedPALocalProofWitnessedContextMergeTransportComplete.
+Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
@@ -70,6 +76,52 @@ Record RawDynamicTruthPredecessorAtomicDomainGlobalRootsAt
 
 Arguments RawDynamicTruthPredecessorAtomicDomainGlobalRootsAt
   M baseContext sigmaDomain piDomain sigmaGlobal piGlobal : clear implicits.
+
+(** Rebase a synchronized pair produced from any auxiliary PA context onto
+    an arbitrary witnessed callback context.  The producer's final witnessed
+    context is merged with the callback base, both roots are weakened once,
+    and the existing state-prefix insertion theorem finishes the job. *)
+Theorem
+    raw_dynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom_of_rebased_growing_pair :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      producerSourceContext sourceWitnessList sourceContext
+      sigmaGlobal piGlobal,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedPAGrowingTemplateLocalProofPairAtEmpty M producerSourceContext
+    sigmaGlobal piGlobal ->
+  RawDynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom M
+    sourceContext sigmaGlobal piGlobal.
+Proof.
+  intros M hPA producerSourceContext sourceWitnessList sourceContext
+    sigmaGlobal piGlobal hsource
+    (producerWitnessList & producerContext & sigmaRoot & piRoot &
+      hproducer & _hproducerSourceIncluded & hsigma & hpi).
+  destruct
+    (raw_codedPAAxiomWitnessContext_prefixMerge M hPA
+      producerWitnessList producerContext sourceWitnessList sourceContext
+      hproducer hsource)
+    as (mergedWitnessList & mergedContext & hmerged &
+      _hproducerWitnessIncluded & hproducerIncluded &
+      _hsourceWitnessIncluded & hsourceIncluded & _hsourceTransport).
+  destruct
+    (raw_codedPALocalProofWitnessedContextInclusionWeakening_complete M hPA
+      producerWitnessList producerContext mergedWitnessList mergedContext
+      sigmaGlobal sigmaRoot hproducer hmerged hproducerIncluded hsigma)
+    as [transportedSigmaRoot htransportedSigma].
+  destruct
+    (raw_codedPALocalProofWitnessedContextInclusionWeakening_complete M hPA
+      producerWitnessList producerContext mergedWitnessList mergedContext
+      piGlobal piRoot hproducer hmerged hproducerIncluded hpi)
+    as [transportedPiRoot htransportedPi].
+  apply
+    (raw_dynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom_of_growing_pair
+      M hPA sourceContext sigmaGlobal piGlobal).
+  exists mergedWitnessList, mergedContext,
+    transportedSigmaRoot, transportedPiRoot.
+  split; [exact hmerged |].
+  split; [exact hsourceIncluded |].
+  split; assumption.
+Qed.
 
 (** Move the two already-compiled arithmetic leaves to the witnessed context
     selected by global traversal.  The translation is arbitrary up to PA
