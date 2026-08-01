@@ -37,7 +37,7 @@ From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
 From Foundation.FirstOrder.NegationTranslation Require Import GoedelGentzen.
-From Foundation.FirstOrder.Kripke Require Import Basic.
+From Foundation.FirstOrder.Kripke Require Import Basic Intuitionistic.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -280,6 +280,42 @@ Print Assumptions ifo_kripke_filter_domain_list_colimit.
 Print Assumptions ifo_kripke_filter_finite_family_domain.
 Check ifo_kripke_filter_structure.
 Print Assumptions ifo_kripke_filter_structure_rel_iff.
+Check ifo_kripke_forces.
+Print Assumptions ifo_kripke_forces_falsum.
+Print Assumptions ifo_kripke_forces_rel.
+Print Assumptions ifo_kripke_forces_and.
+Print Assumptions ifo_kripke_forces_or.
+Print Assumptions ifo_kripke_forces_imp.
+Print Assumptions ifo_kripke_forces_neg.
+Print Assumptions ifo_kripke_forces_verum.
+Print Assumptions ifo_kripke_forces_all.
+Print Assumptions ifo_kripke_forces_exs.
+Print Assumptions ifo_kripke_forces_iff.
+Check ifo_kripke_list_conj.
+Check ifo_kripke_list_disj.
+Print Assumptions ifo_kripke_forces_list_conj.
+Print Assumptions ifo_kripke_forces_list_disj.
+Print Assumptions ifo_kripke_forces_rewrite.
+Check ifo_nat_env_cons.
+Check ifo_fin_env_snoc.
+Print Assumptions ifo_kripke_forces_free.
+Print Assumptions ifo_kripke_forces_substitute.
+Print Assumptions ifo_kripke_forces_emb.
+Print Assumptions ifo_kripke_forces_bshift.
+Print Assumptions ifo_kripke_forces_monotone.
+Print Assumptions ifo_kripke_triple_negation_elim.
+Print Assumptions ifo_kripke_forces_all_constant_domain.
+Print Assumptions ifo_kripke_forces_exs_constant_domain.
+Print Assumptions ifo_kripke_intuitionistic_sound.
+Check ifo_kripke_sentence_forces.
+Check ifo_kripke_sentence_forcing_relation.
+Print Assumptions ifo_kripke_sentence_forces_monotone.
+Print Assumptions ifo_kripke_sentence_int_kripke.
+Print Assumptions ifo_kripke_type_context_sound.
+Check ifo_kripke_world_forces_theory.
+Check ifo_kripke_globally_forces_theory.
+Print Assumptions ifo_kripke_intuitionistic_theory_sound_at.
+Print Assumptions ifo_kripke_intuitionistic_theory_sound.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
