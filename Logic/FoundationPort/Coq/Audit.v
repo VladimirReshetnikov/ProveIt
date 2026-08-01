@@ -35,7 +35,7 @@ From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Vorspiel.Order Require Import Ideal.
 From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Vorspiel.Order Require Import Regular.
-From Foundation.Modal Require Import MaximalConsistentSet.
+From Foundation.Modal Require Import MaximalConsistentSet MaximalCanonical.
 
 Check partial_order_laws.
 Check order_chain.
@@ -73,6 +73,36 @@ Print Assumptions abstract_maximal_extension_derivable_mem.
 Check abstract_maximal_extension_classical.
 Check abstract_maximal_extension_as_generic.
 Print Assumptions abstract_lindenbaum_extension.
+Check abstract_normal_mct.
+Check anmct_generic.
+Check anmct_mem.
+Print Assumptions anmct_context_consistent.
+Print Assumptions anmct_derivable_iff.
+Print Assumptions anmct_theorem_mem.
+Print Assumptions abstract_normal_lindenbaum_extension.
+Check abstract_canonical_relation_iter.
+Check abstract_canonical_relation.
+Print Assumptions abstract_context_derives_box_iter_from_preboxed.
+Print Assumptions abstract_canonical_successor_of_neg_box_iter.
+Print Assumptions abstract_canonical_successor_of_neg_box.
+Print Assumptions anmct_box_iter_relation_iff.
+Print Assumptions anmct_box_relation_iff.
+Print Assumptions anmct_box_iter_negneg_iff.
+Print Assumptions anmct_box_negneg_iff.
+Print Assumptions anmct_box_iter_dual.
+Print Assumptions anmct_box_dual.
+Print Assumptions anmct_dia_iter_dual.
+Print Assumptions anmct_dia_dual.
+Print Assumptions anmct_dia_iter_relation_iff.
+Print Assumptions anmct_dia_relation_iff.
+Print Assumptions abstract_canonical_relation_iter_iff_dia_iter.
+Print Assumptions abstract_canonical_relation_iter_iff_neg_box_iter.
+Print Assumptions abstract_canonical_relation_iter_iff_neg_dia_iter.
+Print Assumptions abstract_canonical_relation_iff_dia.
+Print Assumptions abstract_canonical_relation_iff_neg_box.
+Print Assumptions abstract_canonical_relation_iff_neg_dia.
+Print Assumptions anmct_box_iter_list_conj_iff.
+Print Assumptions anmct_box_list_conj_iff.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
