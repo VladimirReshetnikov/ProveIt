@@ -507,6 +507,10 @@ Print Assumptions llfo_positive_rewrite_iff.
 Print Assumptions llfo_is_quest_rewrite_iff.
 Print Assumptions llfo_rewrite_lolli.
 Check llfo_map.
+Check llfo_lift_bound_map.
+Print Assumptions llfo_lift_bound_map_injective.
+Print Assumptions llfo_rew_q_map_equiv.
+Print Assumptions llfo_map_injective.
 Check llfo_emb.
 Check llfo_shift.
 Check llfo_free.
@@ -1043,6 +1047,7 @@ Check rew_equiv_of_variables.
 Check rew_rewrite.
 Check rew_rewrite_map.
 Check rew_map.
+Print Assumptions rew_map_injective.
 Check rew_subst.
 Check rew_emb.
 Check rew_emb_substs.

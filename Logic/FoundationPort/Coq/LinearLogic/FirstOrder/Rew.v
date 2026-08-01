@@ -276,6 +276,127 @@ Definition llfo_map {L X n Y m} (b : Fin.t n -> Fin.t m) (e : X -> Y)
     (phi : llfo_semiformula L X n) : llfo_semiformula L Y m :=
   llfo_rewrite (rew_map b e) phi.
 
+Definition llfo_lift_bound_map {n m} (b : Fin.t n -> Fin.t m)
+    (i : Fin.t (S n)) : Fin.t (S m) :=
+  @Fin.caseS' n i (fun _ => Fin.t (S m)) Fin.F1
+    (fun j => Fin.FS (b j)).
+
+Lemma llfo_lift_bound_map_injective : forall n m
+    (b : Fin.t n -> Fin.t m),
+  (forall i j, b i = b j -> i = j) ->
+  forall i j, llfo_lift_bound_map b i = llfo_lift_bound_map b j -> i = j.
+Proof.
+  intros n m b Hb i j H.
+  dependent destruction i; dependent destruction j; simpl in H;
+    try discriminate; try reflexivity.
+  exact (f_equal (fun x : Fin.t n => Fin.FS x)
+    (Hb i j (Fin.FS_inj _ _ H))).
+Qed.
+
+Lemma llfo_rew_q_map_equiv : forall (L : language) (X : Type) n (Y : Type) m
+    (b : Fin.t n -> Fin.t m) (e : X -> Y),
+  rew_equiv (@rew_q L X n Y m (@rew_map L X n Y m b e))
+    (@rew_map L X (S n) Y (S m) (llfo_lift_bound_map b) e).
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i. refine (@Fin.caseS' n i
+      (fun j => rew_apply (rew_q (rew_map b e)) (Semiterm_bvar j) =
+        rew_apply (rew_map (llfo_lift_bound_map b) e)
+          (Semiterm_bvar j)) _ _); reflexivity.
+  - intro x. reflexivity.
+Qed.
+
+Theorem llfo_map_injective : forall (L : language) (X : Type) n
+    (Y : Type) m (b : Fin.t n -> Fin.t m) (e : X -> Y),
+  (forall i j, b i = b j -> i = j) ->
+  (forall x y, e x = e y -> x = y) ->
+  forall phi psi : llfo_semiformula L X n,
+    llfo_map b e phi = llfo_map b e psi -> phi = psi.
+Proof.
+  intros L X n Y m b e Hb He phi. revert Y m b e Hb He.
+  refine (@llfo_semiformula_rect L X
+    (fun n phi => forall (Y : Type) m
+      (b : Fin.t n -> Fin.t m) (e : X -> Y),
+      (forall i j, b i = b j -> i = j) ->
+      (forall x y, e x = e y -> x = y) ->
+      forall psi, llfo_map b e phi = llfo_map b e psi -> phi = psi)
+    _ _ _ _ _ _ _ _ _ _ _ _ _ _ n phi); clear phi n.
+  - intros n k R v Y m b e Hb He psi H.
+    destruct psi as [n l S w | | | | | | | | | | | | | ];
+      try discriminate.
+    assert (Hkl : k = l).
+    { pose proof (f_equal llfo_outer_rel_payload H) as Hp; simpl in Hp.
+      apply option_some_injective in Hp. now injection Hp. }
+    subst l. destruct (llfo_rel_injective_same_arity H) as [HRS Hvw].
+    subst S. f_equal. apply functional_extensionality. intro i.
+    eapply (@rew_map_injective L X n Y m b e Hb He).
+    exact (f_equal (fun h => h i) Hvw).
+  - intros n k R v Y m b e Hb He psi H.
+    destruct psi as [| n l S w | | | | | | | | | | | | ];
+      try discriminate.
+    assert (Hkl : k = l).
+    { pose proof (f_equal llfo_outer_nrel_payload H) as Hp; simpl in Hp.
+      apply option_some_injective in Hp. now injection Hp. }
+    subst l. destruct (llfo_nrel_injective_same_arity H) as [HRS Hvw].
+    subst S. f_equal. apply functional_extensionality. intro i.
+    eapply (@rew_map_injective L X n Y m b e Hb He).
+    exact (f_equal (fun h => h i) Hvw).
+  - intros n Y m b e Hb He psi H. destruct psi; try discriminate.
+    reflexivity.
+  - intros n Y m b e Hb He psi H. destruct psi; try discriminate.
+    reflexivity.
+  - intros n a IHa c IHc Y m b e Hb He psi H.
+    destruct psi; try discriminate. f_equal.
+    + eapply IHa; eauto. now dependent destruction H.
+    + eapply IHc; eauto. now dependent destruction H.
+  - intros n a IHa c IHc Y m b e Hb He psi H.
+    destruct psi; try discriminate. f_equal.
+    + eapply IHa; eauto. now dependent destruction H.
+    + eapply IHc; eauto. now dependent destruction H.
+  - intros n Y m b e Hb He psi H. destruct psi; try discriminate.
+    reflexivity.
+  - intros n Y m b e Hb He psi H. destruct psi; try discriminate.
+    reflexivity.
+  - intros n a IHa c IHc Y m b e Hb He psi H.
+    destruct psi; try discriminate. f_equal.
+    + eapply IHa; eauto. now dependent destruction H.
+    + eapply IHc; eauto. now dependent destruction H.
+  - intros n a IHa c IHc Y m b e Hb He psi H.
+    destruct psi; try discriminate. f_equal.
+    + eapply IHa; eauto. now dependent destruction H.
+    + eapply IHc; eauto. now dependent destruction H.
+  - intros n a IHa Y m b e Hb He psi H.
+    destruct psi; try discriminate. f_equal.
+    eapply IHa; eauto. now dependent destruction H.
+  - intros n a IHa Y m b e Hb He psi H.
+    destruct psi; try discriminate. f_equal.
+    eapply IHa; eauto. now dependent destruction H.
+  - intros n a IHa Y m b e Hb He psi H.
+    destruct psi; try discriminate. f_equal.
+    apply IHa with (Y := Y) (m := S m)
+      (b := llfo_lift_bound_map b) (e := e).
+    + now apply llfo_lift_bound_map_injective.
+    + exact He.
+    + unfold llfo_map.
+      rewrite <- (@llfo_rewrite_ext L X (S n) Y (S m) _ _ a
+        (llfo_rew_q_map_equiv (L := L) b e)).
+      rewrite <- (@llfo_rewrite_ext L X (S n) Y (S m) _ _ psi
+        (llfo_rew_q_map_equiv (L := L) b e)).
+      now apply (proj1 (llfo_all_injective _ _)) in H.
+  - intros n a IHa Y m b e Hb He psi H.
+    destruct psi; try discriminate. f_equal.
+    apply IHa with (Y := Y) (m := S m)
+      (b := llfo_lift_bound_map b) (e := e).
+    + now apply llfo_lift_bound_map_injective.
+    + exact He.
+    + unfold llfo_map.
+      rewrite <- (@llfo_rewrite_ext L X (S n) Y (S m) _ _ a
+        (llfo_rew_q_map_equiv (L := L) b e)).
+      rewrite <- (@llfo_rewrite_ext L X (S n) Y (S m) _ _ psi
+        (llfo_rew_q_map_equiv (L := L) b e)).
+      now apply (proj1 (llfo_exs_injective _ _)) in H.
+Qed.
+
 Definition llfo_emb {L O X n} (empty : O -> False)
     (phi : llfo_semiformula L O n) : llfo_semiformula L X n :=
   llfo_rewrite (rew_emb empty) phi.

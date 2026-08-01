@@ -258,6 +258,25 @@ Lemma rew_map_fvar : forall L X n Y m b e (x : X),
   rew_apply (@rew_map L X n Y m b e) (Semiterm_fvar x) = Semiterm_fvar (e x).
 Proof. reflexivity. Qed.
 
+Theorem rew_map_injective : forall L X n Y m
+    (b : Fin.t n -> Fin.t m) (e : X -> Y),
+  (forall i j, b i = b j -> i = j) ->
+  (forall x y, e x = e y -> x = y) ->
+  forall t u : semiterm L X n,
+    rew_apply (rew_map b e) t = rew_apply (rew_map b e) u -> t = u.
+Proof.
+  intros L X n Y m b e Hb He t.
+  induction t as [i | x | k f v IH]; intro u;
+    destruct u as [j | y | l g w]; simpl; intro H;
+    try discriminate.
+  - f_equal. apply Hb. now injection H.
+  - f_equal. apply He. now injection H.
+  - pose proof (semiterm_func_arity_injective H) as Hkl. subst l.
+    destruct (semiterm_func_injective_same_arity H) as [Hfg Hvw].
+    subst g. f_equal. apply functional_extensionality. intro i.
+    apply (IH i (w i)). exact (f_equal (fun h => h i) Hvw).
+Qed.
+
 Lemma rew_subst_bvar : forall L X n m b (i : Fin.t n),
   rew_apply (@rew_subst L X n m b) (Semiterm_bvar i) = b i.
 Proof. reflexivity. Qed.
