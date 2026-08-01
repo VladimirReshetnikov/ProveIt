@@ -35,7 +35,7 @@ From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Vorspiel.Order Require Import Ideal.
 From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Vorspiel.Order Require Import Regular.
-From Foundation.Modal Require Import MaximalConsistentSet MaximalCanonical.
+From Foundation.Modal Require Import MaximalConsistentSet MaximalCanonical Tableau.
 
 Check partial_order_laws.
 Check order_chain.
@@ -103,6 +103,72 @@ Print Assumptions abstract_canonical_relation_iff_neg_box.
 Print Assumptions abstract_canonical_relation_iff_neg_dia.
 Print Assumptions anmct_box_iter_list_conj_iff.
 Print Assumptions anmct_box_list_conj_iff.
+Check abstract_tableau.
+Check at_positive.
+Check at_negative.
+Check abstract_tableau_subset.
+Check abstract_tableau_seed.
+Check abstract_tableau_consistent.
+Check abstract_tableau_inconsistent.
+Check abstract_tableau_insert_positive.
+Check abstract_tableau_insert_negative.
+Check abstract_empty_tableau.
+Check abstract_singleton_negative_tableau.
+Check abstract_maximal_tableau.
+Check amt_positive.
+Check amt_negative.
+Check amt_as_tableau.
+Print Assumptions abstract_context_derives_empty_iff_classical.
+Print Assumptions abstract_singleton_negative_seed.
+Print Assumptions abstract_tableau_insert_positive_seed.
+Print Assumptions abstract_tableau_insert_negative_seed.
+Print Assumptions abstract_tableau_insert_positive_consistent_iff.
+Print Assumptions abstract_tableau_insert_negative_consistent_iff.
+Print Assumptions abstract_tableau_either_expand_consistent.
+Print Assumptions abstract_singleton_negative_consistent_iff.
+Print Assumptions abstract_empty_tableau_consistent_iff.
+Print Assumptions abstract_tableau_lindenbaum.
+Print Assumptions amt_neither.
+Print Assumptions amt_saturated.
+Print Assumptions amt_not_positive_iff_negative.
+Print Assumptions amt_not_negative_iff_positive.
+Print Assumptions anmct_extensional.
+Print Assumptions amt_positive_extensional.
+Print Assumptions amt_negative_extensional.
+Print Assumptions amt_inclusion_extensional.
+Print Assumptions amt_context_derivable_iff.
+Print Assumptions amt_theorem_iff.
+Print Assumptions amt_positive_bottom_absent.
+Print Assumptions amt_negative_bottom.
+Print Assumptions amt_positive_top.
+Print Assumptions amt_negative_top_absent.
+Print Assumptions amt_positive_neg_iff.
+Print Assumptions amt_negative_neg_iff.
+Print Assumptions amt_positive_imp_iff.
+Print Assumptions amt_positive_imp_function_iff.
+Print Assumptions amt_negative_imp_iff.
+Print Assumptions amt_positive_and_iff.
+Print Assumptions amt_negative_and_iff.
+Print Assumptions amt_positive_or_iff.
+Print Assumptions amt_negative_or_iff.
+Print Assumptions amt_positive_mdp.
+Print Assumptions amt_negative_contravariant_mdp.
+Print Assumptions amt_positive_list_conj_iff.
+Print Assumptions amt_negative_list_conj_iff.
+Print Assumptions amt_positive_list_disj_iff.
+Print Assumptions amt_negative_list_disj_iff.
+Check amt_relation_iter.
+Check amt_relation.
+Print Assumptions amt_positive_box_iter_iff.
+Print Assumptions amt_negative_box_iter_iff.
+Print Assumptions amt_positive_dia_iter_iff.
+Print Assumptions amt_negative_dia_iter_iff.
+Print Assumptions amt_positive_box_iff.
+Print Assumptions amt_negative_box_iff.
+Print Assumptions amt_positive_dia_iff.
+Print Assumptions amt_negative_dia_iff.
+Print Assumptions amt_positive_difference_of_neq.
+Print Assumptions amt_negative_difference_of_neq.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
