@@ -35,12 +35,44 @@ From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Vorspiel.Order Require Import Ideal.
 From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Vorspiel.Order Require Import Regular.
+From Foundation.Modal Require Import MaximalConsistentSet.
 
 Check partial_order_laws.
 Check order_chain.
 Check order_maximal.
 Check zorn_maximal_element.
 Print Assumptions zorn_maximal_element.
+Check abstract_formula_theory.
+Check abstract_theory_included.
+Check abstract_theory_insert.
+Check abstract_context_derives.
+Check abstract_context_consistent.
+Check abstract_context_derives_weaken.
+Check abstract_context_derives_imply_intro.
+Check abstract_context_derives_under_mp.
+Print Assumptions abstract_context_deduction.
+Check abstract_context_undeduction.
+Check abstract_context_dne.
+Print Assumptions abstract_insert_consistent_iff.
+Print Assumptions abstract_insert_neg_consistent_iff.
+Print Assumptions abstract_either_insert_consistent.
+Check abstract_consistent_extension.
+Check abstract_extension_carrier.
+Check abstract_extension_included.
+Print Assumptions abstract_extension_included_order.
+Check abstract_base_extension.
+Check abstract_chain_with_base.
+Print Assumptions abstract_chain_with_base_ordered.
+Check abstract_chain_union.
+Print Assumptions abstract_chain_union_derivation_stage.
+Print Assumptions abstract_chain_union_consistent.
+Check abstract_chain_union_extension.
+Print Assumptions abstract_extension_chain_upper_bound.
+Print Assumptions abstract_maximal_extension_complete.
+Print Assumptions abstract_maximal_extension_derivable_mem.
+Check abstract_maximal_extension_classical.
+Check abstract_maximal_extension_as_generic.
+Print Assumptions abstract_lindenbaum_extension.
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
