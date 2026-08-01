@@ -15,6 +15,7 @@ From Foundation.Vorspiel Require Import ENat.
 From Foundation.Vorspiel Require Import DMatrix.
 From Foundation.Vorspiel Require Import Matrix.
 From Foundation.Vorspiel Require Import Arithmetic.
+From Foundation.Vorspiel Require Import BetaEncoding.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -820,6 +821,9 @@ Print Assumptions arithmetic1_if_lt.
 Check nat_square_remainder.
 Print Assumptions arithmetic1_square_remainder.
 Check nat_unpair.
+Print Assumptions nat_unpair_pair.
+Print Assumptions nat_unpair1_pair.
+Print Assumptions nat_unpair2_pair.
 Print Assumptions arithmetic1_unpair1.
 Print Assumptions arithmetic1_unpair2.
 Check arith_partial_cons.
@@ -843,6 +847,7 @@ Print Assumptions nat_rem_least_test.
 Print Assumptions arithmetic1_rem_test.
 Print Assumptions arithmetic1_rem.
 Check nat_beta.
+Print Assumptions nat_beta_pair.
 Print Assumptions arithmetic1_beta.
 Print Assumptions arithmetic1_tail.
 Check nat_bounded_all_search.
@@ -875,6 +880,20 @@ Check arith_code.
 Check arith_code_evaluates.
 Print Assumptions fin_indexed_choice.
 Print Assumptions arith_part1_has_code.
+Print Assumptions beta_bezout_identity.
+Print Assumptions mathcomp_modn_eq_nat_modulo.
+Print Assumptions beta_factorial_divides.
+Print Assumptions beta_prefix_bound_gt.
+Print Assumptions beta_stride_divides_difference.
+Print Assumptions beta_moduli_coprime.
+Print Assumptions beta_modulus_divides_product.
+Print Assumptions beta_modulus_product_coprime_later.
+Print Assumptions beta_crt_prefix_correct.
+Print Assumptions concrete_beta_encode_correct.
+Check concrete_beta_sequence_encoder.
+Print Assumptions arithmetic1_primitive_recursion_concrete.
+Print Assumptions arithmetic1_of_primitive_recursive1_concrete.
+Print Assumptions arith_part1_iff_partial_recursive1_concrete.
 Check mll_formula.
 Check mll_neg.
 Print Assumptions mll_neg_involutive.

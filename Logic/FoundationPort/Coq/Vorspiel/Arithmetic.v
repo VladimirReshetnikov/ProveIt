@@ -725,6 +725,43 @@ Definition nat_unpair2 (n : nat) : nat :=
 Definition nat_unpair (n : nat) : nat * nat :=
   (nat_unpair1 n, nat_unpair2 n).
 
+Lemma nat_unpair_pair : forall a b,
+  nat_unpair (nat_pair a b) = (a, b).
+Proof.
+  intros a b.
+  unfold nat_unpair, nat_unpair1, nat_unpair2,
+    nat_square_remainder, nat_pair.
+  destruct (lt_dec a b) as [Hab | Hab].
+  - assert (Hsqrt : Nat.sqrt (b * b + a) = b).
+    { apply Nat.sqrt_unique. nia. }
+    rewrite Hsqrt.
+    assert (Hrem : b * b + a - b * b = a) by lia.
+    rewrite Hrem.
+    destruct (lt_dec a b); [reflexivity | contradiction].
+  - assert (Hba : b <= a) by lia.
+    assert (Hsqrt : Nat.sqrt (a * a + a + b) = a).
+    { apply Nat.sqrt_unique. nia. }
+    rewrite Hsqrt.
+    assert (Hrem : a * a + a + b - a * a = a + b) by lia.
+    rewrite Hrem.
+    destruct (lt_dec (a + b) a); [lia |].
+    f_equal; lia.
+Qed.
+
+Corollary nat_unpair1_pair : forall a b,
+  nat_unpair1 (nat_pair a b) = a.
+Proof.
+  intros a b. pose proof (nat_unpair_pair a b) as H.
+  now injection H.
+Qed.
+
+Corollary nat_unpair2_pair : forall a b,
+  nat_unpair2 (nat_pair a b) = b.
+Proof.
+  intros a b. pose proof (nat_unpair_pair a b) as H.
+  now injection H.
+Qed.
+
 Theorem arithmetic1_unpair1 : arithmetic1_unary nat_unpair1.
 Proof.
   unfold arithmetic1_unary, nat_unpair1.
@@ -1065,6 +1102,13 @@ Qed.
 
 Definition nat_beta (z i : nat) : nat :=
   nat_unpair1 z mod S (S i * nat_unpair2 z).
+
+Lemma nat_beta_pair : forall a b i,
+  nat_beta (nat_pair a b) i = a mod S (S i * b).
+Proof.
+  intros a b i. unfold nat_beta.
+  now rewrite nat_unpair1_pair, nat_unpair2_pair.
+Qed.
 
 Theorem arithmetic1_beta : arithmetic1_binary nat_beta.
 Proof.
