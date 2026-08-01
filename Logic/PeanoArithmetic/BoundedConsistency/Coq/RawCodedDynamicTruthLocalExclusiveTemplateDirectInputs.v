@@ -32,12 +32,14 @@ From BoundedPAConsistency Require Import
   RawCodedTermOperationCrossTraceFunctionality
   RawCodedFormulaOperationCrossTraceFunctionality
   RawCodedTemplateSyntax
+  RawCodedTemplateProofCompiler
   RawCodedTemplateStructuralTranslation
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateNumeralParameters
   RawCodedTemplateNumeralTermSyntax
   RawCodedTemplateTernaryApplication
   RawCodedTemplateTernaryApplicationFunctionality
+  RawCodedPALocalProofUniversalEliminationChain
   RawCodedTernaryPredicateDeepClosure
   RawCodedDynamicTruthUniversalLeafSourceTemplate
   RawCodedDynamicTruthTemplateNumeralParameters
@@ -64,12 +66,14 @@ Import PABoundedRawCodedTermOperationsStandardAdequacy.
 Import PABoundedRawCodedTermOperationCrossTraceFunctionality.
 Import PABoundedRawCodedFormulaOperationCrossTraceFunctionality.
 Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateNumeralParameters.
 Import PABoundedRawCodedTemplateNumeralTermSyntax.
 Import PABoundedRawCodedTemplateTernaryApplication.
 Import PABoundedRawCodedTemplateTernaryApplicationFunctionality.
+Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedTernaryPredicateDeepClosure.
 Import PABoundedRawCodedDynamicTruthUniversalLeafSourceTemplate.
 Import PABoundedRawCodedDynamicTruthTemplateNumeralParameters.
@@ -113,10 +117,26 @@ Definition coqDynamicTruthLocalAdmissibleTemplate : TemplateFormula :=
       (tfOr coqDynamicTruthLocalSigmaDomainTemplate
         coqDynamicTruthLocalPiDomainTemplate)).
 
+(** The decision and exclusivity halves use exactly the same four dynamic
+    leaves.  Naming the decision body here, beside the older exclusivity
+    body, lets both represented All-E chains share one honest direct
+    translation and one leaf-identification record. *)
+Definition coqDynamicTruthLocalDecisionBodyTemplate : TemplateFormula :=
+  tfImp coqDynamicTruthLocalAdmissibleTemplate
+    (tfOr coqDynamicTruthLocalSigmaEvidenceTemplate
+      coqDynamicTruthLocalPiEvidenceTemplate).
+
 Definition coqDynamicTruthLocalExclusiveBodyTemplate : TemplateFormula :=
   tfImp coqDynamicTruthLocalAdmissibleTemplate
     (tfImp coqDynamicTruthLocalSigmaEvidenceTemplate
       (tfImp coqDynamicTruthLocalPiEvidenceTemplate tfBot)).
+
+(** Both bodies have the same three free application variables. *)
+Lemma coqDynamicTruthLocalDecisionBodyTemplate_scoped :
+  TemplateFormulaScoped 3 coqDynamicTruthLocalDecisionBodyTemplate.
+Proof.
+  vm_compute. repeat split; lia.
+Qed.
 
 (** The scope check is wholly metatheoretic and finite.  It certifies the
     exact body expected by the [#2], [#1], [#0] universal-opening chain. *)
@@ -699,6 +719,91 @@ Record RawCoqDynamicTruthLocalExclusiveTemplateIdentification
 Arguments RawCoqDynamicTruthLocalExclusiveTemplateIdentification
   M inputs sigmaDomain piDomain sigmaEvidence piEvidence : clear implicits.
 
+(** The four leaf equalities also determine the complete decision code.
+    This is deliberately stated on the existing identification record:
+    constructing a second selector package for the other conjunct would be
+    redundant and would make synchronization strictly harder. *)
+Theorem rawCoqDynamicTruthLocalDecisionBodyTemplate_identified : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  rawDirectTemplateFormula inputs
+      coqDynamicTruthLocalDecisionBodyTemplate =
+    rawDynamicTruthLocalDecisionCode M
+      sigmaDomain piDomain sigmaEvidence piEvidence.
+Proof.
+  intros M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    [hsigmaDomain hpiDomain hsigmaEvidence hpiEvidence].
+  unfold coqDynamicTruthLocalDecisionBodyTemplate,
+    coqDynamicTruthLocalAdmissibleTemplate,
+    rawDynamicTruthLocalDecisionCode,
+    rawDynamicTruthLocalAdmissibleCode.
+  change
+    (rawFormulaImpCode M
+      (rawFormulaAndCode M
+        (rawDirectTemplateFormula inputs
+          (embedPAFormula
+            (codedFormulaAtomicallyAdequateTermAt (tVar 2))))
+        (rawFormulaAndCode M
+          (rawDirectTemplateFormula inputs
+            (embedPAFormula
+              (codedAssignmentDefinedThroughTermAt
+                (tVar 1) (tVar 0) (tVar 2))))
+          (rawFormulaOrCode M
+            (rawDirectTemplateFormula inputs
+              coqDynamicTruthLocalSigmaDomainTemplate)
+            (rawDirectTemplateFormula inputs
+              coqDynamicTruthLocalPiDomainTemplate))))
+      (rawFormulaOrCode M
+        (rawDirectTemplateFormula inputs
+          coqDynamicTruthLocalSigmaEvidenceTemplate)
+        (rawDirectTemplateFormula inputs
+          coqDynamicTruthLocalPiEvidenceTemplate)) =
+     rawFormulaImpCode M
+      (rawFormulaAndCode M
+        (rawNumeralValue M
+          (formulaCode
+            (codedFormulaAtomicallyAdequateTermAt (tVar 2))))
+        (rawFormulaAndCode M
+          (rawNumeralValue M
+            (formulaCode
+              (codedAssignmentDefinedThroughTermAt
+                (tVar 1) (tVar 0) (tVar 2))))
+          (rawFormulaOrCode M sigmaDomain piDomain)))
+      (rawFormulaOrCode M sigmaEvidence piEvidence)).
+  assert (hatomic :
+      rawDirectTemplateFormula inputs
+        (embedPAFormula
+          (codedFormulaAtomicallyAdequateTermAt (tVar 2))) =
+      rawNumeralValue M
+        (formulaCode
+          (codedFormulaAtomicallyAdequateTermAt (tVar 2)))).
+  {
+    unfold rawDirectTemplateFormula.
+    rewrite rawStructuralTemplateFormulaWith_embedPA.
+    apply rawQuotedFormulaCode_standard. exact hPA.
+  }
+  assert (hassignment :
+      rawDirectTemplateFormula inputs
+        (embedPAFormula
+          (codedAssignmentDefinedThroughTermAt
+            (tVar 1) (tVar 0) (tVar 2))) =
+      rawNumeralValue M
+        (formulaCode
+          (codedAssignmentDefinedThroughTermAt
+            (tVar 1) (tVar 0) (tVar 2)))).
+  {
+    unfold rawDirectTemplateFormula.
+    rewrite rawStructuralTemplateFormulaWith_embedPA.
+    apply rawQuotedFormulaCode_standard. exact hPA.
+  }
+  rewrite hatomic, hassignment.
+  rewrite hsigmaDomain, hpiDomain, hsigmaEvidence, hpiEvidence.
+  reflexivity.
+Qed.
+
 (** The four leaf equalities determine the complete exclusivity code by
     transparent constructor computation. *)
 Theorem rawCoqDynamicTruthLocalExclusiveBodyTemplate_identified : forall
@@ -783,6 +888,80 @@ Proof.
   rewrite hatomic, hassignment.
   rewrite hsigmaDomain, hpiDomain, hsigmaEvidence, hpiEvidence.
   reflexivity.
+Qed.
+
+(** Reusable represented opening chains for the two local laws.  Keeping
+    these beside the shared identification removes the repeated sequence of
+    choosing the direct translation, opening [#2,#1,#0], and rewriting four
+    dynamic leaves from every later callback compiler. *)
+Corollary rawCoqDynamicTruthLocalDecisionEliminationChain_identified :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawCodedUniversalEliminationChain M
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalDecisionCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence))
+    (rawDynamicTruthLocalDecisionCode M
+      sigmaDomain piDomain sigmaEvidence piEvidence).
+Proof.
+  intros M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    hidentification.
+  pose proof
+    (raw_template_all3_variables_elimination_chain M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      coqDynamicTruthLocalDecisionBodyTemplate
+      coqDynamicTruthLocalDecisionBodyTemplate_scoped) as hchain.
+  rewrite !rawTemplateFormula_all in hchain.
+  change
+    (RawCodedUniversalEliminationChain M
+      (rawDynamicTruthLocalFormulaAll3Code M
+        (rawDirectTemplateFormula inputs
+          coqDynamicTruthLocalDecisionBodyTemplate))
+      (rawDirectTemplateFormula inputs
+        coqDynamicTruthLocalDecisionBodyTemplate)) in hchain.
+  rewrite
+    (rawCoqDynamicTruthLocalDecisionBodyTemplate_identified
+      M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+      hidentification) in hchain.
+  exact hchain.
+Qed.
+
+Corollary rawCoqDynamicTruthLocalExclusiveEliminationChain_identified :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawCodedUniversalEliminationChain M
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalExclusiveCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence))
+    (rawDynamicTruthLocalExclusiveCode M
+      sigmaDomain piDomain sigmaEvidence piEvidence).
+Proof.
+  intros M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    hidentification.
+  pose proof
+    (raw_template_all3_variables_elimination_chain M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      coqDynamicTruthLocalExclusiveBodyTemplate
+      coqDynamicTruthLocalExclusiveBodyTemplate_scoped) as hchain.
+  rewrite !rawTemplateFormula_all in hchain.
+  change
+    (RawCodedUniversalEliminationChain M
+      (rawDynamicTruthLocalFormulaAll3Code M
+        (rawDirectTemplateFormula inputs
+          coqDynamicTruthLocalExclusiveBodyTemplate))
+      (rawDirectTemplateFormula inputs
+        coqDynamicTruthLocalExclusiveBodyTemplate)) in hchain.
+  rewrite
+    (rawCoqDynamicTruthLocalExclusiveBodyTemplate_identified
+      M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+      hidentification) in hchain.
+  exact hchain.
 Qed.
 
 (** Build the complete identification from the exact native traces and two

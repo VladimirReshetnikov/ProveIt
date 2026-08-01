@@ -25,6 +25,7 @@ From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofUniversalEliminationChain
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
@@ -33,6 +34,8 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
+  RawCodedDynamicTruthNativeLocalPositiveGraph
+  RawCodedDynamicTruthLocalFieldProjectionCompilation
   RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation
@@ -51,6 +54,7 @@ Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -60,6 +64,8 @@ Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import
   PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
+Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
 Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
@@ -189,6 +195,131 @@ Proof.
   - exists admissibleRoot. exact hadmissible.
   - exists transportedSigmaRoot. exact htransportedSigmaJoint.
   - exists transportedPiRoot. exact htransportedPiJoint.
+Qed.
+
+(** A projected local decision law is useful on every witnessed extension,
+    not only in the callback context where its conjunction was first
+    eliminated.  Transport the closed triple-universal proof to the
+    admissibility extension, insert the exact temporary prefix retained by
+    the caller, and apply the opened decision implication there.
+
+    The single adequacy premise is deliberately stated for the combined
+    predecessor-state/caller prefix.  It is both necessary for inserting
+    that prefix and sufficient for the smaller caller prefix required by
+    admissibility, so clients do not have to provide two overlapping
+    certificates. *)
+Theorem
+    raw_dynamicTruthPredecessorEvidenceDecision_of_projected_decision_under_prefix_atomic_and_domain :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      decisionSourceRoot atomicRoot domainRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation
+    (coqDynamicTruthPredecessorStateTemplateContext ++ prefix) ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedUniversalEliminationChain M
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalDecisionCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence))
+    (rawDynamicTruthLocalDecisionCode M
+      sigmaDomain piDomain sigmaEvidence piEvidence) ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalDecisionCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence))
+    decisionSourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawFormulaOrCode M sigmaDomain piDomain) domainRoot ->
+  exists targetWitnessList targetContext decisionRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation targetContext prefix))
+      (rawFormulaOrCode M sigmaEvidence piEvidence) decisionRoot.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext prefix
+    sigmaDomain piDomain sigmaEvidence piEvidence
+    decisionSourceRoot atomicRoot domainRoot
+    hcombinedPrefix hbase hchain hdecision hatomic hdomain.
+  assert (hprefix : RawCodedTemplatePrefixAtomicallyAdequate
+      M translation prefix).
+  {
+    intros formula hformula.
+    exact (hcombinedPrefix formula (in_or_app _ _ _ (or_intror hformula))).
+  }
+  destruct
+    (raw_dynamicTruthPredecessorLocalAdmissibility_on_witnessed_extension_under_prefix_of_atomic_and_domain
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      sigmaDomain piDomain atomicRoot domainRoot
+      hprefix hbase hatomic hdomain)
+    as (witnesses & admissibleRoot & htargetWitnessed & hadmissible).
+  set (targetWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList).
+  set (targetContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext).
+  assert (hincluded : RawContextListIncluded M baseContext targetContext).
+  {
+    unfold targetContext.
+    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+      M hPA witnesses baseContext).
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      targetWitnessList targetContext []
+      (rawDynamicTruthLocalFormulaAll3Code M
+        (rawDynamicTruthLocalDecisionCode M
+          sigmaDomain piDomain sigmaEvidence piEvidence))
+      decisionSourceRoot hbase htargetWitnessed hincluded hdecision)
+    as [transportedDecisionRoot htransportedDecision].
+  cbn [rawTemplateContextCodeOnTail] in htransportedDecision.
+  destruct
+    (raw_codedPALocalProof_templatePrefix
+      M hPA translation targetContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix)
+      (rawDynamicTruthLocalFormulaAll3Code M
+        (rawDynamicTruthLocalDecisionCode M
+          sigmaDomain piDomain sigmaEvidence piEvidence))
+      transportedDecisionRoot
+      (raw_codedPAAxiomWitnessContext_context_realizable
+        M targetWitnessList targetContext htargetWitnessed)
+      hcombinedPrefix htransportedDecision)
+    as [prefixedDecisionRoot hprefixedDecision].
+  assert (hjointDecision : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation targetContext prefix))
+      (rawDynamicTruthLocalFormulaAll3Code M
+        (rawDynamicTruthLocalDecisionCode M
+          sigmaDomain piDomain sigmaEvidence piEvidence))
+      prefixedDecisionRoot).
+  {
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement targetContext prefix).
+    exact hprefixedDecision.
+  }
+  destruct
+    (raw_codedPALocalProofOf_dynamicTruthLocalEvidenceDecision_of_elimination_chain
+      M hPA
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation targetContext prefix))
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      prefixedDecisionRoot admissibleRoot
+      hchain hjointDecision hadmissible)
+    as [decisionRoot hdecisionRoot].
+  exists targetWitnessList, targetContext, decisionRoot.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded | exact hdecisionRoot].
 Qed.
 
 (** Empty-prefix specialization for clients whose evidence roots already

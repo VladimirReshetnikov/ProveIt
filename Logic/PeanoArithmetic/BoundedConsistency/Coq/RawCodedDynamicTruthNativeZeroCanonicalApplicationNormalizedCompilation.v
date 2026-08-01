@@ -41,6 +41,8 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
   RawCodedDynamicTruthNativeLocalPositiveGraph
+  RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
+  RawCodedDynamicTruthLocalFieldProjectionCompilation
   RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification
   RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
@@ -89,6 +91,9 @@ Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import
   PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+Import
+  PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
+Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
 Import
   PABoundedRawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
 Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
@@ -371,6 +376,39 @@ Definition
 
 Arguments
   RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+  M hPA translation callerPrefix : clear implicits.
+
+(** Decision-only consequence of a normalized rank-zero invocation.  The
+    stored local field already contains totality of the two fixed evidence
+    predicates; an arithmetic endpoint supplies exactly the admissibility
+    premises needed to use it.  The result retains the caller prefix and may
+    grow the witnessed PA tail, just like the surrounding callback
+    interfaces. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingEvidenceDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (translation : RawCodedTemplateTranslation M)
+    (callerPrefix : TemplateContext) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists targetWitnessList targetContext decisionRoot,
+      RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+      RawContextListIncluded M baseContext targetContext /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M
+          (rawTemplateContextCodeOnTail
+            (rawBottomDirectStructuralTemplateTranslation M hPA)
+            targetContext callerPrefix))
+        (rawFormulaOrCode M
+          (rawDynamicTruthZeroSigmaEvidenceCode M)
+          (rawDynamicTruthZeroPiEvidenceCode M)) decisionRoot.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingEvidenceDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources
   M hPA translation callerPrefix : clear implicits.
 
 (** Independently growing atomic-adequacy endpoint. *)
@@ -823,6 +861,95 @@ Proof.
   split; [exact hendpointWitnessed |].
   split; [exact hbaseEndpointIncluded |].
   split; assumption.
+Qed.
+
+(** Consume the normalized decision projection on the arithmetic endpoint's
+    witnessed extension.  The endpoint and local-field projection are
+    intentionally synchronized here rather than in their producer: this
+    keeps the endpoint interface independent of local truth totality and
+    permits both components to choose their natural source contexts. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingEvidenceDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_endpoint :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (translation : RawCodedTemplateTranslation M) callerPrefix,
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix ->
+  RawDynamicTruthNativeLocalZeroGrowingEvidenceDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix.
+Proof.
+  intros M hPA translation callerPrefix hendpoint
+    tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace.
+  pose proof
+    (rawDynamicTruthNativeLocalZeroNormalized_fields
+      M translation witnessList baseContext helperRoots hresources)
+    as hfields.
+  pose proof
+    (rawDynamicTruthNativeLocalZeroCurrentFields_witnessed
+      M witnessList baseContext hfields) as hbaseWitnessed.
+  destruct
+    (rawDynamicTruthNativeLocalZeroNormalized_localProjections
+      M translation witnessList baseContext helperRoots hresources)
+    as [sourceRoot hprojected].
+  destruct hprojected as [hdecisionProjection _hexclusiveProjection].
+  destruct
+    (hendpoint tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hatomic & hdomain).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext endpointWitnessList endpointContext []
+      (rawDynamicTruthLocalFormulaAll3Code M
+        (rawDynamicTruthLocalDecisionCode M
+          (rawDynamicTruthZeroSigmaDomainCode M)
+          (rawDynamicTruthZeroPiDomainCode M)
+          (rawDynamicTruthZeroSigmaEvidenceCode M)
+          (rawDynamicTruthZeroPiEvidenceCode M)))
+      (rawDynamicTruthLocalDecisionProjectionRoot M baseContext
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M) sourceRoot)
+      hbaseWitnessed hendpointWitnessed hbaseEndpointIncluded
+      hdecisionProjection)
+    as [endpointDecisionRoot hendpointDecision].
+  cbn [rawTemplateContextCodeOnTail] in hendpointDecision.
+  destruct
+    (raw_dynamicTruthZeroLocalExclusiveTemplateIdentification_exists M hPA)
+    as [inputs hidentification].
+  pose proof
+    (rawCoqDynamicTruthLocalDecisionEliminationChain_identified
+      M hPA inputs
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M)
+      hidentification) as hdecisionChain.
+  destruct
+    (raw_dynamicTruthPredecessorEvidenceDecision_of_projected_decision_under_prefix_atomic_and_domain
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      endpointWitnessList endpointContext callerPrefix
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M)
+      endpointDecisionRoot atomicRoot domainRoot
+      (raw_directStructuralTemplatePrefix_atomically_adequate M hPA
+        (rawBottomTemplateDirectStructuralInputs M hPA)
+        (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix))
+      hendpointWitnessed hdecisionChain hendpointDecision hatomic hdomain)
+    as (targetWitnessList & targetContext & decisionRoot &
+      htargetWitnessed & hendpointTargetIncluded & hdecision).
+  exists targetWitnessList, targetContext, decisionRoot.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hendpointTargetIncluded member
+      (hbaseEndpointIncluded member hmember)).
+  - exact hdecision.
 Qed.
 
 (** Canonical rank-zero clients need only produce the two genuinely logical
