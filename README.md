@@ -20,7 +20,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 
 | Topic | Contents |
 | --- | --- |
-| [`Algebra/`](Algebra/) | Linear-through-quartic root formulas and solver functions; Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction. |
+| [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; a Lean-verified primitive-recursive radical-solvability criterion for individual integer quintics; and Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction. |
 | [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
 | [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
@@ -41,6 +41,25 @@ is the broad Lean import surface.
   cubic resolvent and quartic factorization. Executable root-collection
   functions have entrywise correctness and exhaustiveness theorems, with a
   complex Coq cubic development covering nonreal roots and exact examples.
+- Lean and Rocq/Coq rational Abel--Ruffini obstructions: every root of the
+  explicit quintic `X^5 - 4X + 2` lacks a radical expression, and padding it
+  with zero roots refutes a universal complete radical formula in every degree
+  at least five.  Lean additionally proves that `X^n - X - 1` has exact degree
+  `n`, exactly `n` complex roots, and no root solvable by radicals over `Q` for
+  every `n > 4`.  An independent symmetric rational-function construction
+  supplies a second all-roots theorem.  The distinct scopes and assumptions
+  are documented and kernel-audited.
+- A Lean formalization that radical solvability of an individual integer
+  quintic is primitive recursive. It verifies the complete bounded factor
+  search, scalar Frobenius--Dummit resolvent and Chapman's correction, the
+  irreducible Galois criterion, the bounded rational-root test, correctness of
+  the assembled Boolean, `ComputablePred`, and existence of a
+  `PartrecToTM2` program. A certified 302-term sparse coefficient table makes
+  the final Lean Boolean directly evaluable; its four largest finite
+  identities use the repository's documented `native_decide` trust boundary.
+  A Rocq reflector independently checks the exact all-roots radical-expression
+  semantics on natural-number encodings, but remains a semantic rather than
+  extracted coefficient implementation.
 - A Lean/Coq proof that the Jacobian conjecture is false in dimension three:
   an explicit polynomial map has formal Jacobian determinant `-2` but
   identifies distinct integral and rational points.  A stabilization
@@ -204,7 +223,8 @@ including the vendored certificates under
 `lib/Coq-BB5`:
 
 ```powershell
-git submodule update --init lib/Coq-Synthetic-Computability
+git submodule update --init lib/Coq-Synthetic-Computability lib/MathComp-Abel
+opam install --yes --deps-only ./lib/MathComp-Abel/coq-mathcomp-abel.opam
 pwsh -NoProfile -File Computability/TuringDegrees/Coq/BuildSyntheticComputability.ps1
 rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
@@ -287,6 +307,11 @@ is retained, and the Turing-degree project owns a small, reproducible Rocq
 is a read-only submodule of `FormalizedFormalLogic/Foundation`, pinned at
 commit `32e1a095...`; its Apache-2.0 license is retained.  The corresponding
 Coq port lives outside `lib/` under [`Logic/Modal/`](Logic/Modal/).
+[`lib/MathComp-Abel`](lib/MathComp-Abel/) is the axiom-free MathComp
+Abel--Galois and Abel--Ruffini development, pinned at commit `bce31b97...`;
+its CeCILL-B license is retained.  The polynomial-formulas project wraps its
+explicit radical-term semantics and quintic obstruction, while the root Rocq
+build compiles the pinned sources under the `Abel` logical path.
 
 ## License
 

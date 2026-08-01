@@ -45,20 +45,8 @@ Theorem quartic_normalization (a b c d e x : R) (ha : a <> 0) :
   quartic a b c d e x =
     a * monic_quartic (b / a) (c / a) (d / a) (e / a) x.
 Proof.
-  set (A := b / a).
-  set (B := c / a).
-  set (C := d / a).
-  set (D := e / a).
-  assert (hA : a * A = b) by (unfold A; field; exact ha).
-  assert (hB : a * B = c) by (unfold B; field; exact ha).
-  assert (hC : a * C = d) by (unfold C; field; exact ha).
-  assert (hD : a * D = e) by (unfold D; field; exact ha).
   unfold quartic, monic_quartic.
-  assert (hexpand : a * (x ^ 4 + A * x ^ 3 + B * x ^ 2 + C * x + D) =
-      a * x ^ 4 + (a * A) * x ^ 3 + (a * B) * x ^ 2 +
-        (a * C) * x + a * D) by ring.
-  rewrite hexpand, hA, hB, hC, hD.
-  ring.
+  field; exact ha.
 Qed.
 
 Theorem depress_monic_quartic (A B C D y : R) :
@@ -66,9 +54,18 @@ Theorem depress_monic_quartic (A B C D y : R) :
     depressed_quartic (quartic_p A B) (quartic_q A B C) (quartic_r A B C D) y.
 Proof.
   unfold monic_quartic, depressed_quartic, quartic_p, quartic_q, quartic_r.
-  set (h := A / 4).
-  assert (hA : A = 4 * h) by (unfold h; field).
-  rewrite hA.
+  field.
+Qed.
+
+(** Transport a root of the depressed equation back through normalization
+    and the quartic translation. *)
+Lemma lift_depressed_quartic_root (a b c d e y : R) (ha : a <> 0)
+    (hy : depressed_quartic (quartic_p (b / a) (c / a))
+      (quartic_q (b / a) (c / a) (d / a))
+      (quartic_r (b / a) (c / a) (d / a) (e / a)) y = 0) :
+  quartic a b c d e (y - (b / a) / 4) = 0.
+Proof.
+  rewrite (quartic_normalization a b c d e _ ha), depress_monic_quartic, hy.
   ring.
 Qed.
 
@@ -79,12 +76,10 @@ Theorem ferrari_factorization (p q r m s t y : R)
     (y ^ 2 - s * y + (m - t)) * (y ^ 2 + s * y + (m + t)).
 Proof.
   unfold depressed_quartic.
-  assert (hexpand :
-      (y ^ 2 - s * y + (m - t)) * (y ^ 2 + s * y + (m + t)) =
-      y ^ 4 + (2 * m - s ^ 2) * y ^ 2 - (2 * s * t) * y +
-        (m ^ 2 - t ^ 2)) by ring.
-  rewrite hexpand, hs, hst, ht.
-  ring.
+  assert (hp : p = 2 * m - s ^ 2) by nra.
+  assert (hq : q = -(2 * s * t)) by nra.
+  assert (hr : r = m ^ 2 - t ^ 2) by nra.
+  rewrite hp, hq, hr; ring.
 Qed.
 
 Theorem ferrari_parameters_of_resolvent (p q r m s : R)
@@ -93,10 +88,10 @@ Theorem ferrari_parameters_of_resolvent (p q r m s : R)
   2 * s * (-q / (2 * s)) = -q /\
   (-q / (2 * s)) ^ 2 = m ^ 2 - r.
 Proof.
-  split.
-  - field; exact hs0.
-  - set (t := -q / (2 * s)).
-    assert (hlin : 2 * s * t = -q) by (unfold t; field; exact hs0).
+  set (t := -q / (2 * s)).
+  assert (hlin : 2 * s * t = -q) by (unfold t; field; exact hs0).
+  change (2 * s * t = -q /\ t ^ 2 = m ^ 2 - r).
+  split; [exact hlin |].
     assert (hlinsq : (2 * s * t) ^ 2 = (-q) ^ 2) by now rewrite hlin.
     assert (hq : q ^ 2 = 4 * s ^ 2 * (m ^ 2 - r)).
     { unfold ferrari_resolvent in hres.
@@ -111,9 +106,7 @@ Lemma ferrari_first_plus (m s t rho : R)
     (hrho : rho ^ 2 = s ^ 2 - 4 * (m - t)) :
   ((s + rho) / 2) ^ 2 - s * ((s + rho) / 2) + (m - t) = 0.
 Proof.
-  set (y := (s + rho) / 2).
-  assert (hy : 2 * y = s + rho) by (unfold y; field).
-  assert (hysq : (2 * y) ^ 2 = (s + rho) ^ 2) by now rewrite hy.
+  pose proof (monic_quadratic_roots (-s) (m - t) rho ltac:(nra)) as [h _].
   nra.
 Qed.
 
@@ -121,9 +114,7 @@ Lemma ferrari_first_minus (m s t rho : R)
     (hrho : rho ^ 2 = s ^ 2 - 4 * (m - t)) :
   ((s - rho) / 2) ^ 2 - s * ((s - rho) / 2) + (m - t) = 0.
 Proof.
-  set (y := (s - rho) / 2).
-  assert (hy : 2 * y = s - rho) by (unfold y; field).
-  assert (hysq : (2 * y) ^ 2 = (s - rho) ^ 2) by now rewrite hy.
+  pose proof (monic_quadratic_roots (-s) (m - t) rho ltac:(nra)) as [_ h].
   nra.
 Qed.
 
@@ -131,9 +122,7 @@ Lemma ferrari_second_plus (m s t sigma : R)
     (hsigma : sigma ^ 2 = s ^ 2 - 4 * (m + t)) :
   ((-s + sigma) / 2) ^ 2 + s * ((-s + sigma) / 2) + (m + t) = 0.
 Proof.
-  set (y := (-s + sigma) / 2).
-  assert (hy : 2 * y = -s + sigma) by (unfold y; field).
-  assert (hysq : (2 * y) ^ 2 = (-s + sigma) ^ 2) by now rewrite hy.
+  pose proof (monic_quadratic_roots s (m + t) sigma ltac:(nra)) as [h _].
   nra.
 Qed.
 
@@ -141,9 +130,7 @@ Lemma ferrari_second_minus (m s t sigma : R)
     (hsigma : sigma ^ 2 = s ^ 2 - 4 * (m + t)) :
   ((-s - sigma) / 2) ^ 2 + s * ((-s - sigma) / 2) + (m + t) = 0.
 Proof.
-  set (y := (-s - sigma) / 2).
-  assert (hy : 2 * y = -s - sigma) by (unfold y; field).
-  assert (hysq : (2 * y) ^ 2 = (-s - sigma) ^ 2) by now rewrite hy.
+  pose proof (monic_quadratic_roots s (m + t) sigma ltac:(nra)) as [_ h].
   nra.
 Qed.
 
@@ -186,27 +173,19 @@ Theorem solve_quartic_correct (a b c d e m s t rho sigma : R) (ha : a <> 0)
   quartic a b c d e (fst (snd (snd roots))) = 0 /\
   quartic a b c d e (snd (snd (snd roots))) = 0.
 Proof.
-  unfold solve_quartic.
-  cbn.
+  cbn [solve_quartic].
   pose proof (solve_depressed_quartic_correct
     (quartic_p (b / a) (c / a))
     (quartic_q (b / a) (c / a) (d / a))
     (quartic_r (b / a) (c / a) (d / a) (e / a))
     m s t rho sigma hs hst ht hrho hsigma) as hroots.
-  unfold solve_depressed_quartic in hroots.
-  cbn in hroots.
+  cbn [solve_depressed_quartic] in hroots.
   destruct hroots as [h0 [h1 [h2 h3]]].
-  unfold solve_depressed_quartic in h0, h1, h2, h3.
-  cbn in h0, h1, h2, h3.
   repeat split.
-  - change (quartic a b c d e ((s + rho) / 2 - (b / a) / 4) = 0).
-    rewrite (quartic_normalization a b c d e _ ha), depress_monic_quartic, h0; ring.
-  - change (quartic a b c d e ((s - rho) / 2 - (b / a) / 4) = 0).
-    rewrite (quartic_normalization a b c d e _ ha), depress_monic_quartic, h1; ring.
-  - change (quartic a b c d e ((-s + sigma) / 2 - (b / a) / 4) = 0).
-    rewrite (quartic_normalization a b c d e _ ha), depress_monic_quartic, h2; ring.
-  - change (quartic a b c d e ((-s - sigma) / 2 - (b / a) / 4) = 0).
-    rewrite (quartic_normalization a b c d e _ ha), depress_monic_quartic, h3; ring.
+  - now apply lift_depressed_quartic_root.
+  - now apply lift_depressed_quartic_root.
+  - now apply lift_depressed_quartic_root.
+  - now apply lift_depressed_quartic_root.
 Qed.
 
 (** Every root of the depressed quartic occurs in the four-entry Ferrari

@@ -60,6 +60,22 @@ theorem cardano_depressed {p q u v : K}
   unfold depressedCubic
   linear_combination hu + (3 * (u + v)) * huv
 
+omit [CharZero K] in
+/-- Multiplying a compatible radical pair by reciprocal cube roots of unity
+preserves both of Cardano's compatibility equations. -/
+theorem cardano_twist {p q u v ζ ξ : K}
+    (hu : u ^ 3 + v ^ 3 = -q) (huv : u * v = -p / 3)
+    (hζ : ζ ^ 3 = 1) (hξ : ξ ^ 3 = 1) (hζξ : ζ * ξ = 1) :
+    (ζ * u) ^ 3 + (ξ * v) ^ 3 = -q ∧
+      (ζ * u) * (ξ * v) = -p / 3 := by
+  constructor
+  · calc
+      (ζ * u) ^ 3 + (ξ * v) ^ 3 = ζ ^ 3 * u ^ 3 + ξ ^ 3 * v ^ 3 := by ring
+      _ = -q := by rw [hζ, hξ]; simpa using hu
+  · calc
+      (ζ * u) * (ξ * v) = (ζ * ξ) * (u * v) := by ring
+      _ = -p / 3 := by rw [hζξ]; simpa using huv
+
 /-- The two radicals occurring in Cardano's displayed formula are compatible
 exactly when their product is `-p/3`; under that branch condition their sum is
 a root. -/
@@ -77,6 +93,15 @@ theorem cardano_discriminant_equation {p q s : K}
   unfold cubicDelta at hs
   linear_combination -hs
 
+/-- Cardano's argument only needs a compatible pair of cube roots; the
+displayed square-root equations are one way of constructing such a pair. -/
+theorem cardano_formula_of_compatible_pair {a b c d u v : K} (ha : a ≠ 0)
+    (hu : u ^ 3 + v ^ 3 = -cubicQ (b / a) (c / a) (d / a))
+    (huv : u * v = -cubicP (b / a) (c / a) / 3) :
+    cubic a b c d (u + v - (b / a) / 3) = 0 := by
+  rw [cubic_normalization ha, depress_monic_cubic, cardano_depressed hu huv]
+  ring
+
 omit [CharZero K] in
 /-- The quadratic equation characterizing a primitive cube root of unity
 implies the cube-root equation used by the three Cardano branches. -/
@@ -85,6 +110,17 @@ theorem primitiveCubeRoot_cubed {ω : K} (hω : ω ^ 2 + ω + 1 = 0) : ω ^ 3 = 
   calc
     ω ^ 3 - 1 = (ω - 1) * (ω ^ 2 + ω + 1) := by ring
     _ = 0 := by rw [hω]; ring
+
+omit [CharZero K] in
+/-- A depressed cubic factors through any three roots with the expected
+elementary symmetric sums. -/
+theorem depressedCubic_factorization {p q r₀ r₁ r₂ y : K}
+    (hsum : r₀ + r₁ + r₂ = 0)
+    (hpairs : r₀ * r₁ + r₀ * r₂ + r₁ * r₂ = p)
+    (hproduct : r₀ * r₁ * r₂ = -q) :
+    depressedCubic p q y = (y - r₀) * (y - r₁) * (y - r₂) := by
+  unfold depressedCubic
+  linear_combination (y ^ 2) * hsum - y * hpairs + hproduct
 
 /-- Cardano's three depressed-cubic values give a complete linear
 factorization when `ω` is a primitive cube root of unity. -/
@@ -100,40 +136,18 @@ theorem cardano_factorization {p q u v ω y : K}
   let r₂ := ω ^ 2 * u + ω * v
   have hsum : r₀ + r₁ + r₂ = 0 := by
     dsimp [r₀, r₁, r₂]
-    calc
-      u + v + (ω * u + ω ^ 2 * v) + (ω ^ 2 * u + ω * v) =
-          (u + v) * (ω ^ 2 + ω + 1) := by ring
-      _ = 0 := by rw [hω]; ring
-  have hpairs : r₀ * r₁ + r₀ * r₂ + r₁ * r₂ = -3 * (u * v) := by
+    linear_combination (u + v) * hω
+  have hpairs : r₀ * r₁ + r₀ * r₂ + r₁ * r₂ = p := by
     dsimp [r₀, r₁, r₂]
-    calc
-      (u + v) * (ω * u + ω ^ 2 * v) +
-          (u + v) * (ω ^ 2 * u + ω * v) +
-          (ω * u + ω ^ 2 * v) * (ω ^ 2 * u + ω * v) =
-        -3 * (u * v) +
-          (u * v * ω ^ 2 + (u ^ 2 - u * v + v ^ 2) * ω + 3 * u * v) *
-            (ω ^ 2 + ω + 1) := by ring
-      _ = -3 * (u * v) := by rw [hω]; ring
-  have hproduct : r₀ * r₁ * r₂ = u ^ 3 + v ^ 3 := by
+    linear_combination
+      (u * v * ω ^ 2 + (u ^ 2 - u * v + v ^ 2) * ω + 3 * u * v) * hω -
+        3 * huv
+  have hproduct : r₀ * r₁ * r₂ = -q := by
     dsimp [r₀, r₁, r₂]
-    calc
-      (u + v) * (ω * u + ω ^ 2 * v) * (ω ^ 2 * u + ω * v) =
-        u ^ 3 + v ^ 3 +
-          ((v * u ^ 2 + v ^ 2 * u) * ω ^ 2 +
-            (u ^ 3 + v ^ 3) * ω - (u ^ 3 + v ^ 3)) *
-              (ω ^ 2 + ω + 1) := by ring
-      _ = u ^ 3 + v ^ 3 := by rw [hω]; ring
-  have hexpand :
-      (y - r₀) * (y - r₁) * (y - r₂) =
-        y ^ 3 - (r₀ + r₁ + r₂) * y ^ 2 +
-          (r₀ * r₁ + r₀ * r₂ + r₁ * r₂) * y - r₀ * r₁ * r₂ := by
-    ring
-  rw [hexpand, hsum, hpairs, hproduct]
-  unfold depressedCubic
-  have hp : p = -3 * (u * v) := by rw [huv]; ring
-  have hq : q = -(u ^ 3 + v ^ 3) := by rw [hu]; ring
-  rw [hp, hq]
-  ring
+    linear_combination
+      ((v * u ^ 2 + v ^ 2 * u) * ω ^ 2 +
+        (u ^ 3 + v ^ 3) * ω - (u ^ 3 + v ^ 3)) * hω + hu
+  exact depressedCubic_factorization hsum hpairs hproduct
 
 /-- A general cubic is the leading coefficient times the three linear factors
 provided by Cardano's formula. -/
@@ -184,10 +198,8 @@ theorem cardano_formula {a b c d s u v : K} (ha : a ≠ 0)
     (hv : v ^ 3 = -cubicQ (b / a) (c / a) (d / a) / 2 - s)
     (huv : u * v = -cubicP (b / a) (c / a) / 3) :
     cubic a b c d (u + v - (b / a) / 3) = 0 := by
-  rw [cubic_normalization ha]
-  rw [depress_monic_cubic]
-  rw [cardano_radical_pair hu hv huv]
-  ring
+  apply cardano_formula_of_compatible_pair ha _ huv
+  linear_combination hu + hv
 
 /-- Every entry computed by `solveCubic` is a root of the input cubic. -/
 theorem solveCubic_correct {a b c d s u v ω : K} (ha : a ≠ 0)
@@ -198,38 +210,23 @@ theorem solveCubic_correct {a b c d s u v ω : K} (ha : a ≠ 0)
     (huv : u * v = -cubicP (b / a) (c / a) / 3)
     (hω : ω ^ 3 = 1) (i : Fin 3) :
     cubic a b c d (solveCubic a b c d u v ω i) = 0 := by
+  have hsum : u ^ 3 + v ^ 3 = -cubicQ (b / a) (c / a) (d / a) := by
+    linear_combination hu + hv
   have hω₂ : (ω ^ 2) ^ 3 = 1 := by
     calc
       (ω ^ 2) ^ 3 = (ω ^ 3) ^ 2 := by ring
       _ = 1 := by rw [hω]; ring
-  have hu₁ : (ω * u) ^ 3 = -cubicQ (b / a) (c / a) (d / a) / 2 + s := by
+  have hωω₂ : ω * ω ^ 2 = 1 := by
     calc
-      (ω * u) ^ 3 = ω ^ 3 * u ^ 3 := by ring
-      _ = _ := by rw [hω, hu]; ring
-  have hv₁ : (ω ^ 2 * v) ^ 3 = -cubicQ (b / a) (c / a) (d / a) / 2 - s := by
-    calc
-      (ω ^ 2 * v) ^ 3 = (ω ^ 2) ^ 3 * v ^ 3 := by ring
-      _ = _ := by rw [hω₂, hv]; ring
-  have huv₁ : (ω * u) * (ω ^ 2 * v) = -cubicP (b / a) (c / a) / 3 := by
-    calc
-      (ω * u) * (ω ^ 2 * v) = ω ^ 3 * (u * v) := by ring
-      _ = _ := by rw [hω, huv]; ring
-  have hu₂ : (ω ^ 2 * u) ^ 3 = -cubicQ (b / a) (c / a) (d / a) / 2 + s := by
-    calc
-      (ω ^ 2 * u) ^ 3 = (ω ^ 2) ^ 3 * u ^ 3 := by ring
-      _ = _ := by rw [hω₂, hu]; ring
-  have hv₂ : (ω * v) ^ 3 = -cubicQ (b / a) (c / a) (d / a) / 2 - s := by
-    calc
-      (ω * v) ^ 3 = ω ^ 3 * v ^ 3 := by ring
-      _ = _ := by rw [hω, hv]; ring
-  have huv₂ : (ω ^ 2 * u) * (ω * v) = -cubicP (b / a) (c / a) / 3 := by
-    calc
-      (ω ^ 2 * u) * (ω * v) = ω ^ 3 * (u * v) := by ring
-      _ = _ := by rw [hω, huv]; ring
+      ω * ω ^ 2 = ω ^ 3 := by ring
+      _ = 1 := hω
+  obtain ⟨hsum₁, huv₁⟩ := cardano_twist hsum huv hω hω₂ hωω₂
+  obtain ⟨hsum₂, huv₂⟩ := cardano_twist hsum huv hω₂ hω (by
+    simpa [mul_comm] using hωω₂)
   fin_cases i
   · exact cardano_formula ha hs hu hv huv
-  · exact cardano_formula ha hs hu₁ hv₁ huv₁
-  · exact cardano_formula ha hs hu₂ hv₂ huv₂
+  · exact cardano_formula_of_compatible_pair ha hsum₁ huv₁
+  · exact cardano_formula_of_compatible_pair ha hsum₂ huv₂
 
 /-- Every root of the input cubic occurs in `solveCubic` when `ω` is a
 primitive cube root of unity. -/
@@ -241,13 +238,11 @@ theorem solveCubic_exhaustive {a b c d s u v ω x : K} (ha : a ≠ 0)
     (hx : cubic a b c d x = 0) :
     ∃ i, solveCubic a b c d u v ω i = x := by
   rw [cubic_factorization ha hu hv huv hω] at hx
-  rcases mul_eq_zero.mp hx with ha0 | hroots
-  · exact (ha ha0).elim
-  rcases mul_eq_zero.mp hroots with hfirst | hthird
-  · rcases mul_eq_zero.mp hfirst with hzero | hsecond
-    · exact ⟨0, (sub_eq_zero.mp hzero).symm⟩
-    · exact ⟨1, (sub_eq_zero.mp hsecond).symm⟩
-  · exact ⟨2, (sub_eq_zero.mp hthird).symm⟩
+  simp only [mul_eq_zero, ha, false_or, sub_eq_zero] at hx
+  rcases hx with (h | h) | h
+  · exact ⟨0, h.symm⟩
+  · exact ⟨1, h.symm⟩
+  · exact ⟨2, h.symm⟩
 
 /-- The Cardano collection contains exactly all roots of the cubic. -/
 theorem cubic_eq_zero_iff {a b c d s u v ω x : K} (ha : a ≠ 0)
