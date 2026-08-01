@@ -41,6 +41,7 @@ From Foundation.FirstOrder.Kripke Require Import Basic Intuitionistic WeakForcin
 From Foundation.FirstOrder Require Import Hauptsatz.
 From Foundation.FirstOrder.Completeness Require Import CountableSublanguage.
 From Foundation.FirstOrder.Completeness Require Import CanonicalModel.
+From Foundation.FirstOrder.Completeness Require Import CounterModel.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -3130,6 +3131,7 @@ Check first_order_canonical_forcing_relation.
 Check first_order_canonical_is_weakly_forced.
 Check first_order_canonical_weak_forcing_relation.
 Print Assumptions first_order_canonical_is_weakly_forced_iff_is_forced.
+Print Assumptions first_order_canonical_is_weakly_forced_cast.
 Print Assumptions first_order_inhabited_forall_choice.
 Print Assumptions first_order_canonical_is_forced_rel.
 Print Assumptions first_order_canonical_is_forced_all.
@@ -3186,6 +3188,11 @@ Check list_member_position.
 Print Assumptions fin_to_nat_FS_value.
 Print Assumptions chain_list_index_nth.
 Print Assumptions chain_list_index_member_position.
+Print Assumptions nth_error_list_index.
+Check list_member_decode.
+Print Assumptions sig_prop_ext.
+Check list_member_encoding.
+Check semiformula_predicate_sublanguage_encodable.
 Check semiformula_sublanguage.
 Check semiformula_sublanguage_unsub.
 Check semiformula_sublanguage_number.
@@ -3204,3 +3211,42 @@ Check first_order_model_extend.
 Print Assumptions first_order_model_extend_realize_language_map.
 Print Assumptions first_order_consequence_language_map_iff_injective.
 Print Assumptions first_order_satisfiable_language_map.
+Print Assumptions first_order_lk_provable_em.
+Check first_order_decidable_points.
+Print Assumptions first_order_decidable_points_member.
+Check first_order_henkin_points.
+Print Assumptions first_order_henkin_points_member.
+Check first_order_dense_requirements.
+Check nat_encoding.
+Check encoding_enumerate.
+Print Assumptions encoding_enumerate_encode.
+Check first_order_dense_requirement_enum.
+Print Assumptions first_order_dense_requirement_enum_member.
+Print Assumptions first_order_dense_requirements_countable.
+Print Assumptions first_order_exists_generic_pfilter.
+Check first_order_generic_pfilter.
+Print Assumptions first_order_generic_pfilter_generic.
+Print Assumptions first_order_generic_pfilter_contains.
+Check first_order_generic_forces.
+Print Assumptions first_order_generic_forces_cast.
+Print Assumptions first_order_generic_forces_em.
+Print Assumptions first_order_generic_forces_neg.
+Print Assumptions first_order_generic_forces_verum.
+Print Assumptions first_order_generic_forces_not_falsum.
+Print Assumptions first_order_generic_forces_nrel.
+Print Assumptions first_order_generic_forces_henkin.
+Print Assumptions first_order_generic_forces_exists.
+Print Assumptions first_order_generic_forces_all.
+Print Assumptions first_order_generic_forces_and.
+Print Assumptions first_order_generic_forces_or.
+Check first_order_generic_term_structure.
+Print Assumptions first_order_generic_term_structure_func.
+Print Assumptions first_order_generic_term_structure_rel.
+Print Assumptions first_order_generic_term_val.
+Print Assumptions rew_substitute_q_bind.
+Print Assumptions semiformula_substitute_q_bind.
+Print Assumptions first_order_generic_forcing_lemma.
+Print Assumptions semiformula_rewrite_bind_identity.
+Print Assumptions first_order_generic_reflection.
+Check classical_language_decidable_eq.
+Print Assumptions first_order_satisfiable_of_irrefutable.

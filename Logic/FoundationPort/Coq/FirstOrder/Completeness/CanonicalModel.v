@@ -94,6 +94,17 @@ Lemma first_order_canonical_is_weakly_forced_iff_is_forced : forall L
     (ifo_double_negation_translation phi).
 Proof. reflexivity. Qed.
 
+(** Equality transport for weak forcing.  Quantifier constructions frequently
+    expose formulas through two extensionally identical rewrite expressions;
+    keeping the transport at this layer prevents every client from unfolding
+    the double-negation translation. *)
+Lemma first_order_canonical_is_weakly_forced_cast : forall L
+    (p : first_order_canonical_world L) (phi psi : proposition L),
+  phi = psi ->
+  first_order_canonical_is_weakly_forced p phi ->
+  first_order_canonical_is_weakly_forced p psi.
+Proof. intros L p phi psi -> Hphi; exact Hphi. Qed.
+
 Lemma first_order_canonical_is_forced_rel : forall L
     (D : language_decidable_eq L) (p : first_order_canonical_world L)
     k (R : language_rel L k) (v : Fin.t k -> syntactic_term L),
