@@ -3812,6 +3812,27 @@ Print Assumptions second_order_bmap_neg.
 Print Assumptions second_order_bmap_id.
 Print Assumptions second_order_bmap_comp.
 Print Assumptions second_order_bmap_rewrite_terms.
+Print Assumptions second_order_rewrite_terms_comp2.
+Check second_order_instantiate.
+Print Assumptions second_order_instantiate_neg.
+Print Assumptions second_order_instantiate_rewrite.
+Check second_order_predicate_rew.
+Check second_order_predicate_rew_q.
+Print Assumptions second_order_predicate_rew_q_bound_zero.
+Print Assumptions second_order_predicate_rew_q_bound_succ.
+Print Assumptions second_order_predicate_rew_q_free.
+Check second_order_predicate_rew_app_aux.
+Check second_order_predicate_rew_app.
+Check second_order_predicate_rew_equiv.
+Print Assumptions second_order_predicate_rew_q_equiv.
+Print Assumptions second_order_predicate_rew_app_equiv.
+Print Assumptions second_order_predicate_rew_app_neg.
+Print Assumptions rew_q_fixes_free.
+Print Assumptions second_order_predicate_rew_app_rewrite_terms.
+Print Assumptions second_order_predicate_rew_app_subst.
+Check second_order_predicate_rew_id.
+Print Assumptions second_order_predicate_rew_q_id_equiv.
+Print Assumptions second_order_predicate_rew_app_id.
 Check second_order_eval_aux.
 Check second_order_eval.
 Print Assumptions second_order_eval_rel.
