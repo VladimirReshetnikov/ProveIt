@@ -20,6 +20,7 @@ From Foundation.FirstOrder.Incompleteness Require Import ProvabilityAbstraction.
 From Foundation.FirstOrder.Incompleteness Require Import Height.
 From Foundation.FirstOrder.Incompleteness Require Import Tarski.
 From Foundation.FirstOrder.Incompleteness Require Import Dense.
+From Foundation.FirstOrder.Incompleteness Require Import First.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4383,3 +4384,5 @@ Print Assumptions pa_consistent_adjoin_of_unprovable_neg.
 Print Assumptions pa_consistent_adjoin_neg_of_unprovable.
 Check pa_lindenbaum_lt.
 Print Assumptions pa_dense_of_adjoin_incomplete.
+Print Assumptions pa_exists_true_unprovable_of_incomplete.
+Print Assumptions pa_incomplete_strictly_weaker_than_truth.
