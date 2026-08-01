@@ -21,6 +21,7 @@ From Foundation.FirstOrder.Incompleteness Require Import Height.
 From Foundation.FirstOrder.Incompleteness Require Import Tarski.
 From Foundation.FirstOrder.Incompleteness Require Import Dense.
 From Foundation.FirstOrder.Incompleteness Require Import First.
+From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4386,3 +4387,8 @@ Check pa_lindenbaum_lt.
 Print Assumptions pa_dense_of_adjoin_incomplete.
 Print Assumptions pa_exists_true_unprovable_of_incomplete.
 Print Assumptions pa_incomplete_strictly_weaker_than_truth.
+Print Assumptions pa_logic_consistent_iff_unprovable_bottom.
+Check pa_consistent_with.
+Print Assumptions pa_consistent_with_unfold.
+Print Assumptions pa_consistent_with_truth_iff.
+Print Assumptions pa_con_truth_iff_logic_consistent.
