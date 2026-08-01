@@ -45,6 +45,8 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
   RawCodedDynamicTruthNativeLocalPositiveGraph
+  RawCodedDynamicTruthLocalDecisionExclusiveBase
+  RawCodedDynamicTruthImpBranchExclusivity
   RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
   RawCodedDynamicTruthLocalFieldProjectionCompilation
   RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification
@@ -99,6 +101,8 @@ Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import
   PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+Import PABoundedRawCodedDynamicTruthLocalDecisionExclusiveBase.
+Import PABoundedRawCodedDynamicTruthImpBranchExclusivity.
 Import
   PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
 Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
@@ -275,6 +279,80 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
   M hPA callerPrefix : clear implicits.
+
+(** Closed predecessor implication under the caller prefix.  This is the
+    normalized, prefix-aware zero-callback boundary needed by a direct
+    strong-step rule case: a producer may grow the witnessed PA tail, but it
+    must preserve every surrounding rule assumption while returning the
+    completed implication. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingPredecessorRootCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (callerPrefix : TemplateContext) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists targetWitnessList targetContext,
+      RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+      RawContextListIncluded M baseContext targetContext /\
+      exists predecessorRoot,
+        RawCodedPALocalProofOf M
+          (rawTemplateContextCodeOnTail
+            (rawBottomDirectStructuralTemplateTranslation M hPA)
+            targetContext callerPrefix)
+          (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+          predecessorRoot.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingPredecessorRootCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+  M hPA callerPrefix : clear implicits.
+
+(** Close the three predecessor binders after compiling their logical roots.
+    The body of the implication sees [callerPrefix] renamed by all three
+    binders, hence the logical producer is instantiated at
+    [templateContextShiftMany 3 callerPrefix].  Direct structural translation
+    makes that shifted finite prefix atomically adequate automatically. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingPredecessorRootCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_shifted_logical_roots
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA (templateContextShiftMany 3 callerPrefix) ->
+  RawDynamicTruthNativeLocalZeroGrowingPredecessorRootCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix hlogical tail witnessList baseContext
+    helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  pose proof hresources as hbaseResources.
+  destruct hbaseResources as [hfields _hlocalProjections _hhelpers _hstate].
+  destruct hfields as
+    [hbaseWitnessed (localRoot & hlocal) _hcrossLevel _hshift
+      _hsubstitution _haxiomSoundness _hfinal].
+  destruct
+    (hlogical tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (targetWitnessList & targetContext & htargetWitnessed &
+      hincluded & hlogicalRoots).
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  exact
+    (raw_dynamicTruthNativeLocalZeroPredecessorRootAt_under_template_prefix_of_logical_roots
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext
+      (rawQuotedFormulaCode M
+        dynamicTruthLocalDecisionExclusiveBaseFormula)
+      localRoot targetWitnessList targetContext callerPrefix
+      hbaseWitnessed eq_refl hlocal htargetWitnessed hincluded
+      (raw_directStructuralTemplatePrefix_atomically_adequate
+        M hPA (rawBottomTemplateDirectStructuralInputs M hPA)
+        (templateContextShiftMany 3 callerPrefix))
+      hlogicalRoots).
+Qed.
 
 (** Concrete append-facing residue.  Arithmetic normalization first chooses
     one witnessed endpoint carrying atomic adequacy and the rank-domain

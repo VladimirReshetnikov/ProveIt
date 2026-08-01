@@ -27,6 +27,7 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruthTotality
   RawCodedPAAxiomWitness
   RawCodedPAAxiomWitnessPrefix
+  RawCodedPAAxiomContextSelfShift
   RawCodedProofAtomicAdequacyStandard
   RawCodedRestrictedPAProof
   RawCodedPALocalProofExistential
@@ -35,11 +36,15 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofConjunction
   RawCodedPALocalProofContextInsertUnconditional
   RawCodedPALocalProofWitnessedContextMerge
+  RawCodedPALocalProofWitnessedContextMergeTransportComplete
+  RawCodedPALocalProofUniversalIntroductionChain
   RawCodedTemplateProofCompiler
+  RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateDirectStructuralPAAgreement
   RawCodedTemplatePAEmbedding
   RawCodedTemplatePAEmbeddingSelfShiftTail
+  RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedTemplateBottomDirectStructuralInputs
   RawCodedTemplateTernaryApplication
@@ -98,6 +103,7 @@ Import PABoundedRawCodedContextStructure.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedPAAxiomWitness.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
+Import PABoundedRawCodedPAAxiomContextSelfShift.
 Import PABoundedRawCodedProofAtomicAdequacyStandard.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofExistential.
@@ -106,11 +112,15 @@ Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofConjunction.
 Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import PABoundedRawCodedPALocalProofWitnessedContextMergeTransportComplete.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplatePAEmbeddingSelfShiftTail.
+Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedTemplateTernaryApplication.
@@ -1593,6 +1603,146 @@ Proof.
       htargetWitnessed hincluded hexclusiveProjection
       (raw_dynamicTruthPredecessorStateTemplateApplicationBridgeAt_of_direct_logical_roots
         M hPA targetContext
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M)
+        inputs hidentification hlogicalRoots)).
+Qed.
+
+(** Prefix-preserving counterpart of the preceding closure.  The direct
+    strong-step shell does not provide its restricted-proof and rule-validity
+    premises over the bare PA-axiom tail: they remain ordinary assumptions
+    while the predecessor implication is assembled.  Consequently the three
+    logical roots live below a caller prefix.
+
+    Closing the predecessor implication introduces three binders.  Its body
+    therefore sees the caller prefix renamed three times.  We first transport
+    the stored rank-zero exclusivity projection to the selected witnessed PA
+    extension, then weaken it by precisely that renamed prefix.  The generic
+    prefix-aware closure returns the completed predecessor implication below
+    the original, unrenamed prefix.  No contraction of caller assumptions is
+    performed at any point. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroPredecessorRootAt_under_template_prefix_of_logical_roots
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M)
+      baseWitnessList baseContext currentLocal currentLocalRoot
+      targetWitnessList targetContext prefix,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  currentLocal = rawQuotedFormulaCode M
+    dynamicTruthLocalDecisionExclusiveBaseFormula ->
+  RawCodedPALocalProofOf M baseContext currentLocal currentLocalRoot ->
+  RawCodedPAAxiomWitnessContext M targetWitnessList targetContext ->
+  RawContextListIncluded M baseContext targetContext ->
+  RawCodedTemplatePrefixAtomicallyAdequate M translation
+    (templateContextShiftMany 3 prefix) ->
+  RawDynamicTruthPredecessorStateLogicalRootsAt M
+    (rawTemplateContextCodeOnTail translation targetContext
+      (templateContextShiftMany 3 prefix))
+    (rawDynamicTruthZeroSigmaDomainCode M)
+    (rawDynamicTruthZeroPiDomainCode M)
+    (rawDynamicTruthZeroSigmaEvidenceCode M)
+    (rawDynamicTruthZeroPiEvidenceCode M) ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA translation
+    baseWitnessList baseContext currentLocal currentLocalRoot
+    targetWitnessList targetContext prefix
+    hbaseWitnessed hfield hcurrentProof htargetWitnessed hincluded
+    hshiftedPrefixAdequate hlogicalRoots.
+  assert (hbaseFormulaProof :
+    RawCodedPALocalProofOf M baseContext
+      (rawQuotedFormulaCode M
+        dynamicTruthLocalDecisionExclusiveBaseFormula)
+      currentLocalRoot).
+  {
+    rewrite <- hfield.
+    exact hcurrentProof.
+  }
+  assert (hzeroFieldProof :
+    RawCodedPALocalProofOf M baseContext
+      (rawDynamicTruthLocalDecisionExclusiveFieldCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M))
+      currentLocalRoot).
+  {
+    rewrite raw_dynamicTruthZeroLocalDecisionExclusiveFieldCode
+      by exact hPA.
+    exact hbaseFormulaProof.
+  }
+  pose proof
+    (raw_dynamicTruthLocalDecisionExclusiveProjectedRootsAt_of_local
+      M hPA baseContext
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M)
+      currentLocalRoot hzeroFieldProof) as hprojected.
+  destruct hprojected as [_hdecisionProjection hexclusiveProjection].
+  set (exclusiveCode :=
+    rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalExclusiveCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M))).
+  assert (hbaseRealizable : RawContextListRealizable M baseContext).
+  {
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      baseWitnessList baseContext hbaseWitnessed).
+  }
+  assert (htargetRealizable : RawContextListRealizable M targetContext).
+  {
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      targetWitnessList targetContext htargetWitnessed).
+  }
+  destruct
+    (raw_codedPALocalProof_contextInclusionWeakening_of_binderReady
+      M hPA baseContext targetContext exclusiveCode
+      (rawDynamicTruthLocalExclusiveProjectionRoot M baseContext
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M)
+        currentLocalRoot)
+      hbaseRealizable htargetRealizable hincluded
+      (raw_contextBinderReady_witnessed_target M hPA
+        baseContext targetContext targetWitnessList
+        hincluded htargetWitnessed)
+      hexclusiveProjection) as
+    [transportedExclusiveRoot htransportedExclusive].
+  destruct
+    (raw_codedPALocalProof_templatePrefix
+      M hPA translation targetContext
+      (templateContextShiftMany 3 prefix)
+      exclusiveCode transportedExclusiveRoot
+      htargetRealizable hshiftedPrefixAdequate htransportedExclusive) as
+    [prefixedExclusiveRoot hprefixedExclusive].
+  destruct
+    (raw_dynamicTruthZeroLocalExclusiveTemplateIdentification_exists M hPA)
+    as [inputs hidentification].
+  exact
+    (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_local_exclusive_template_under_template_prefix
+      M hPA translation targetContext prefix
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M)
+      prefixedExclusiveRoot htargetRealizable
+      (raw_codedPAAxiomWitnessContext_selfShift M hPA
+        targetWitnessList targetContext htargetWitnessed)
+      hprefixedExclusive
+      (raw_dynamicTruthPredecessorStateTemplateApplicationBridgeAt_of_direct_logical_roots
+        M hPA
+        (rawTemplateContextCodeOnTail translation targetContext
+          (templateContextShiftMany 3 prefix))
         (rawDynamicTruthZeroSigmaDomainCode M)
         (rawDynamicTruthZeroPiDomainCode M)
         (rawDynamicTruthZeroSigmaEvidenceCode M)
