@@ -158,6 +158,27 @@ Proof.
   apply functional_extensionality. exact IH.
 Qed.
 
+Lemma semiterm_val_rew_emb_bvars :
+  forall L M X n (S : first_order_structure L M)
+         (b : Fin.t n -> M) (f : X -> M),
+    (fun i : Fin.t n => semiterm_val S b f
+      (rew_apply (rew_emb (fun x : Empty_set => match x with end))
+        (@Semiterm_bvar L Empty_set n i))) = b.
+Proof.
+  intros. apply functional_extensionality. intro i. reflexivity.
+Qed.
+
+Lemma semiterm_val_rew_emb_fvars :
+  forall L M X n (S : first_order_structure L M)
+         (b : Fin.t n -> M) (f : X -> M),
+    (fun x : Empty_set => semiterm_val S b f
+      (rew_apply (rew_emb (fun y : Empty_set => match y with end))
+        (@Semiterm_fvar L Empty_set n x))) =
+    (fun x : Empty_set => match x with end).
+Proof.
+  intros. apply functional_extensionality. intros [].
+Qed.
+
 Lemma semiterm_val_rewrite_free :
   forall L M X Y n (S : first_order_structure L M)
          (b : Fin.t n -> M) (f : Y -> M)
@@ -269,6 +290,23 @@ Proof.
   - apply H. reflexivity.
   - f_equal. apply functional_extensionality. intro i.
     apply IH. intros x Hx. apply H. now exists i.
+Qed.
+
+(** Valuation of a term with no free occurrences is exactly valuation of its
+    constructive closed conversion.  The direct occurrence premise strictly
+    removes the source's decidable-equality and finite-set-empty wrappers. *)
+Lemma semiterm_val_to_closed :
+  forall L M X n (S : first_order_structure L M)
+         (b : Fin.t n -> M) (f : X -> M) (t : semiterm L X n)
+         (H : forall x, ~ semiterm_free_occurs x t),
+    semiterm_val S b f t =
+    closed_semiterm_val S b (@semiterm_to_closed L X n t H).
+Proof.
+  intros L M X n S b f t H.
+  rewrite <- (@semiterm_emb_to_closed L X n t H) at 1.
+  unfold closed_semiterm_val. rewrite semiterm_val_rewrite.
+  rewrite semiterm_val_rew_emb_bvars, semiterm_val_rew_emb_fvars.
+  reflexivity.
 Qed.
 
 (** * Evaluation of formulas *)
@@ -555,6 +593,50 @@ Proof.
   - split; intros Hex; destruct Hex as [x Hx]; exists x.
     + apply (proj1 (IHp (fin_env_cons x b) H)). exact Hx.
     + apply (proj2 (IHp (fin_env_cons x b) H)). exact Hx.
+Qed.
+
+Lemma semiformula_eval_bound_ext :
+  forall L M X n (S : first_order_structure L M)
+         (b c : Fin.t n -> M) (f : X -> M) (p : semiformula L X n),
+    (forall i, b i = c i) ->
+    (semiformula_eval S b f p <-> semiformula_eval S c f p).
+Proof.
+  intros L M X n S b c f p H.
+  assert (b = c) by (apply functional_extensionality; exact H).
+  now subst c.
+Qed.
+
+(** Evaluation likewise commutes exactly with constructive closed conversion,
+    without a decidable equality on the type of free variables. *)
+Lemma semiformula_eval_to_closed :
+  forall L M X n (S : first_order_structure L M)
+         (b : Fin.t n -> M) (f : X -> M) (p : semiformula L X n)
+         (H : forall x, ~ semiformula_free_occurs x p),
+    semiformula_eval S b f p <->
+    semiformula_eval S b (fun x : Empty_set => match x with end)
+      (@semiformula_to_closed L X n p H).
+Proof.
+  intros L M X n S b f p H.
+  rewrite <- (@semiformula_emb_to_closed L X n p H) at 1.
+  rewrite semiformula_eval_rewrite.
+  rewrite semiterm_val_rew_emb_bvars, semiterm_val_rew_emb_fvars.
+  reflexivity.
+Qed.
+
+(** Enumerating the finite free-variable support and reading it back through
+    first occurrence leaves evaluation unchanged.  Duplicate entries are
+    harmless, and the default is never observed on a variable that occurs. *)
+Theorem semiformula_eval_enumerate_index_of_free_variable :
+  forall L M n (S : first_order_structure L M) (b : Fin.t n -> M)
+         (eq_dec : forall x y : M, {x = y} + {x <> y})
+         (default : M) (p : semiformula L M n),
+    semiformula_eval S b
+      (fun x => semiformula_enumerate_free_variable default p
+        (semiformula_index_of_free_variable eq_dec p x)) p <->
+    semiformula_eval S b (fun x => x) p.
+Proof.
+  intros. apply semiformula_eval_free_ext.
+  intros x Hx. apply semiformula_enumerate_index_of_free_variable. exact Hx.
 Qed.
 
 Lemma semiformula_eval_language_map :

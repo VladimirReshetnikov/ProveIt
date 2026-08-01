@@ -287,3 +287,78 @@ Proof.
     + intros [e H]. exists (fun i => e (Fin.FS i)), (e Fin.F1).
       now rewrite fin_env_cons_eta.
 Qed.
+
+(** * Exact semantics of syntactic universal closure *)
+
+Definition rew_fix_iter_free_env {L M k}
+    (Str : first_order_structure L M) (e : Fin.t k -> M)
+    (f : nat -> M) (x : nat) : M :=
+  semiterm_val Str e f
+    (rew_apply (@rew_fix_iter L 0 k) (@Semiterm_fvar L nat 0 x)).
+
+(** This is the common semantic core of universal closure: after the first
+    [k] free variables have been fixed as bounds, evaluating under a bound
+    environment is exactly evaluation under the induced free environment. *)
+Lemma semiformula_eval_fix_all_free :
+  forall L M (Str : first_order_structure L M) (f : nat -> M)
+         (p : proposition L) (e : Fin.t (semiformula_free_bound p) -> M),
+    semiformula_eval Str e f (semiformula_fix_all_free p) <->
+    formula_eval Str (rew_fix_iter_free_env Str e f) p.
+Proof.
+  intros L M Str f p e.
+  unfold semiformula_fix_all_free, formula_eval,
+    rew_fix_iter_free_env.
+  rewrite semiformula_eval_rewrite.
+  apply semiformula_eval_bound_ext. intro i. inversion i.
+Qed.
+
+Theorem formula_eval_universal_closure_open :
+  forall L M (Str : first_order_structure L M) (f : nat -> M)
+         (p : proposition L),
+    formula_eval Str f (semiformula_universal_closure_open p) <->
+    forall g : nat -> M, formula_eval Str g p.
+Proof.
+  intros L M Str f p.
+  unfold formula_eval at 1.
+  unfold semiformula_universal_closure_open.
+  rewrite semiformula_eval_all_closure.
+  setoid_rewrite semiformula_eval_fix_all_free.
+  split.
+  - intros Hall g.
+    set (e := fun i : Fin.t (semiformula_free_bound p) =>
+      g (fin_value i)).
+    pose proof (Hall e) as Heval.
+    assert (Hagree : forall x, semiformula_free_occurs x p ->
+      rew_fix_iter_free_env Str e f x = g x).
+    { intros x Hx. unfold rew_fix_iter_free_env.
+      rewrite rew_fix_iter_fvar_lt with
+        (h := semiformula_lt_free_bound_of_occurs Hx).
+      cbn [semiterm_val]. unfold e.
+      f_equal. transitivity (0 + x).
+      + exact (@fin_value_add_right_of_lt 0 x
+          (semiformula_free_bound p)
+          (semiformula_lt_free_bound_of_occurs Hx)).
+      + reflexivity. }
+    exact (proj1 (@semiformula_eval_free_ext L M nat 0 Str
+      (fun i : Fin.t 0 => match i with end)
+      (rew_fix_iter_free_env Str e f) g p Hagree) Heval).
+  - intros Hall e. apply Hall.
+Qed.
+
+(** An explicit inhabitant replaces the source's typeclass [Nonempty]
+    premise and pinpoints its only role: supplying a dummy interpretation for
+    the free variables already known not to occur. *)
+Theorem sentence_realize_universal_closure :
+  forall L M (Str : first_order_structure L M) (d : M)
+         (p : proposition L),
+    sentence_realize Str (semiformula_universal_closure p) <->
+    forall g : nat -> M, formula_eval Str g p.
+Proof.
+  intros L M Str d p.
+  transitivity
+    (formula_eval Str (fun _ : nat => d)
+      (semiformula_universal_closure_open p)).
+  - symmetry. unfold sentence_realize, formula_eval.
+    apply semiformula_eval_to_closed.
+  - apply formula_eval_universal_closure_open.
+Qed.

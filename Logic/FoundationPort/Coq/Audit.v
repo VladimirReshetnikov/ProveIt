@@ -1617,6 +1617,9 @@ Check semiterm_val_emb_substs.
 Check semiterm_val_language_map.
 Check semiterm_val_transport.
 Check semiterm_val_free_ext.
+Check semiterm_val_rew_emb_bvars.
+Check semiterm_val_rew_emb_fvars.
+Check semiterm_val_to_closed.
 Check nat_env_cons.
 Check fin_env_snoc.
 Check fin_env_append.
@@ -1647,6 +1650,9 @@ Check semiformula_eval_substitute.
 Check semiformula_eval_bshift.
 Check semiformula_eval_emb_substs.
 Check semiformula_eval_free_ext.
+Check semiformula_eval_bound_ext.
+Check semiformula_eval_to_closed.
+Check semiformula_eval_enumerate_index_of_free_variable.
 Check semiformula_eval_language_map.
 Check semiformula_eval_transport.
 Check semiformula_eval_free.
@@ -1655,6 +1661,10 @@ Check semiformula_eval_all_iter.
 Check semiformula_eval_exists_iter.
 Check semiformula_eval_all_closure.
 Check semiformula_eval_exists_closure.
+Check rew_fix_iter_free_env.
+Check semiformula_eval_fix_all_free.
+Check formula_eval_universal_closure_open.
+Check sentence_realize_universal_closure.
 Check semiterm_operator_val.
 Check semiterm_val_operator_apply.
 Check semiterm_operator_val_comp.
@@ -2406,6 +2416,9 @@ Print Assumptions semiterm_val_rewrite.
 Print Assumptions semiterm_val_language_map.
 Print Assumptions semiterm_val_transport.
 Print Assumptions semiterm_val_free_ext.
+Print Assumptions semiterm_val_rew_emb_bvars.
+Print Assumptions semiterm_val_rew_emb_fvars.
+Print Assumptions semiterm_val_to_closed.
 Print Assumptions semiterm_val_shift.
 Print Assumptions semiterm_val_free.
 Print Assumptions semiterm_val_fix.
@@ -2414,6 +2427,9 @@ Print Assumptions semiformula_eval_iff.
 Print Assumptions semiformula_eval_bounded_all.
 Print Assumptions semiformula_eval_rewrite.
 Print Assumptions semiformula_eval_free_ext.
+Print Assumptions semiformula_eval_bound_ext.
+Print Assumptions semiformula_eval_to_closed.
+Print Assumptions semiformula_eval_enumerate_index_of_free_variable.
 Print Assumptions semiformula_eval_language_map.
 Print Assumptions semiformula_eval_transport.
 Print Assumptions semiformula_eval_free.
@@ -2422,6 +2438,9 @@ Print Assumptions semiformula_eval_all_iter.
 Print Assumptions semiformula_eval_exists_iter.
 Print Assumptions semiformula_eval_all_closure.
 Print Assumptions semiformula_eval_exists_closure.
+Print Assumptions semiformula_eval_fix_all_free.
+Print Assumptions formula_eval_universal_closure_open.
+Print Assumptions sentence_realize_universal_closure.
 Print Assumptions semiterm_val_operator_apply.
 Print Assumptions semiterm_operator_val_comp.
 Print Assumptions semiterm_operator_val_transport.
