@@ -358,6 +358,195 @@ Proof.
       (ifo_hilbert_all_imply_all_of_all_imply psi phi) dallrev).
 Defined.
 
+(** Double-negation elimination is stable under every capture-avoiding
+    rewrite of a weak-negative formula into the proposition fragment.  This
+    strengthens the source theorem, removes its decidable-equality premise,
+    and makes termination structural on the negativity witness. *)
+Fixpoint ifo_hilbert_dne_negative_rewrite {L H X n}
+    (phi : ifo_semiformula L X n) {struct phi} :
+    ifo_negative n phi -> forall w : rew L X n nat 0,
+    @ifo_hilbert_proof L H
+      (IFOImp (ifo_neg (ifo_neg (ifo_rewrite w phi)))
+        (ifo_rewrite w phi)).
+Proof.
+  destruct phi as [n | n k R v | n phi psi | n phi psi |
+    n phi psi | n phi | n phi]; intros h w.
+  - simpl. exact (generic_minimal_double_neg_bottom_elim_raw
+      (ifo_hilbert_minimal_capability H)).
+  - exact (False_rect _ (ifo_negative_not_rel h)).
+  - simpl. pose (Hm := ifo_hilbert_minimal_capability H).
+    pose (dleftnn := generic_minimal_double_neg_map_raw Hm
+      (IFOAnd (ifo_rewrite w phi) (ifo_rewrite w psi))
+      (ifo_rewrite w phi)
+      (IFOHPAnd1 (ifo_rewrite w phi) (ifo_rewrite w psi))).
+    pose (drightnn := generic_minimal_double_neg_map_raw Hm
+      (IFOAnd (ifo_rewrite w phi) (ifo_rewrite w psi))
+      (ifo_rewrite w psi)
+      (IFOHPAnd2 (ifo_rewrite w phi) (ifo_rewrite w psi))).
+    apply (generic_minimal_right_and_intro_raw Hm
+      (ifo_neg (ifo_neg
+        (IFOAnd (ifo_rewrite w phi) (ifo_rewrite w psi))))
+      (ifo_rewrite w phi) (ifo_rewrite w psi)).
+    + exact (generic_minimal_imp_trans_raw Hm _ _ _ dleftnn
+        (@ifo_hilbert_dne_negative_rewrite L H X n phi
+          (proj1 (proj1 (ifo_negative_and_iff phi psi) h)) w)).
+    + exact (generic_minimal_imp_trans_raw Hm _ _ _ drightnn
+        (@ifo_hilbert_dne_negative_rewrite L H X n psi
+          (proj2 (proj1 (ifo_negative_and_iff phi psi) h)) w)).
+  - exact (False_rect _ (ifo_negative_not_or h)).
+  - simpl. pose (Hm := ifo_hilbert_minimal_capability H).
+    pose (ddist := generic_minimal_double_neg_imp_distribution_raw Hm
+      (ifo_rewrite w phi) (ifo_rewrite w psi)).
+    pose (dpre := generic_minimal_imp_lift_left_raw Hm
+      (ifo_neg (ifo_neg (ifo_rewrite w phi))) (ifo_rewrite w phi)
+      (ifo_neg (ifo_neg (ifo_rewrite w psi)))
+      (generic_minimal_dni_raw Hm (ifo_rewrite w phi))).
+    pose (dpost := generic_minimal_imp_lift_right_raw Hm
+      (ifo_neg (ifo_neg (ifo_rewrite w psi))) (ifo_rewrite w psi)
+      (ifo_rewrite w phi)
+      (@ifo_hilbert_dne_negative_rewrite L H X n psi
+        (proj1 (ifo_negative_imp_iff phi psi) h) w)).
+    exact (generic_minimal_imp_trans_raw Hm _ _ _ ddist
+      (generic_minimal_imp_trans_raw Hm _ _ _ dpre dpost)).
+  - simpl. pose (Hm := ifo_hilbert_minimal_capability H).
+    set (body := ifo_rewrite (rew_q w) phi).
+    set (a := IFOAll body).
+    set (Gamma := [ifo_neg (ifo_neg a)]).
+    pose (ihfree := @ifo_hilbert_dne_negative_rewrite L H X (S n) phi
+      (proj1 (ifo_negative_all_iff phi) h)
+      (rew_comp (@rew_free L 0) (rew_q w))).
+    rewrite ifo_rewrite_comp in ihfree.
+    assert (dnnall : @ifo_context_derivation L H (map ifo_shift Gamma)
+        (ifo_neg (ifo_neg (IFOAll (ifo_shift body))))).
+    { refine (@ifo_context_cast L H (map ifo_shift Gamma)
+        (ifo_shift (ifo_neg (ifo_neg a)))
+        (ifo_neg (ifo_neg (IFOAll (ifo_shift body)))) _ _).
+      - apply ifo_context_assumption. unfold Gamma. simpl.
+        exact (GRLM_here _).
+      - unfold a. apply ifo_shift_double_neg_all. }
+    assert (dnfree : @ifo_context_derivation L H
+        (ifo_neg (@ifo_free L 0 body) :: map ifo_shift Gamma)
+        (ifo_neg (@ifo_free L 0 body))).
+    { apply ifo_context_assumption. exact (GRLM_here _). }
+    assert (dallshift : @ifo_context_derivation L H
+        (IFOAll (ifo_shift body) ::
+          ifo_neg (@ifo_free L 0 body) :: map ifo_shift Gamma)
+        (IFOAll (ifo_shift body))).
+    { apply ifo_context_assumption. exact (GRLM_here _). }
+    pose (dfree0 := ifo_context_specialize (phi := ifo_shift body)
+      dallshift (Semiterm_fvar 0)).
+    pose (dfree := ifo_context_cast dfree0
+      (ifo_substitute_shift_one_eq_free (L := L) body)).
+    pose (dbot0 := ifo_context_mdp
+      (ifo_context_weaken
+        (fun p hp => GRLM_there (IFOAll (ifo_shift body)) hp) dnfree)
+      dfree).
+    pose (dnegall := ifo_context_deduct dbot0).
+    pose (dbot1 := ifo_context_mdp
+      (ifo_context_weaken
+        (fun p hp => GRLM_there (ifo_neg (@ifo_free L 0 body)) hp)
+        dnnall) dnegall).
+    pose (dnnfree := ifo_context_deduct dbot1).
+    pose (dfree_final := ifo_context_mdp
+      (ifo_context_theorem (Gamma := map ifo_shift Gamma) ihfree) dnnfree).
+    pose (dall := @ifo_context_generalize L H Gamma body dfree_final).
+    unfold Gamma, a in dall.
+    exact (generic_empty_derivation_raw (ifo_hilbert_modus_ponens H)
+      (ifo_context_deduct dall)).
+  - exact (False_rect _ (ifo_negative_not_exs h)).
+Defined.
+
+Definition ifo_hilbert_dne_negative {L H} (phi : ifo_proposition L)
+    (h : ifo_negative 0 phi) :
+    @ifo_hilbert_proof L H (IFOImp (ifo_neg (ifo_neg phi)) phi).
+Proof.
+  refine (ifo_hilbert_proof_cast
+    (@ifo_hilbert_dne_negative_rewrite L H nat 0 phi h rew_id) _).
+  now rewrite ifo_rewrite_id.
+Defined.
+
+Definition ifo_context_of_double_neg_negative {L H Gamma}
+    (phi : ifo_proposition L)
+    (d : @ifo_context_derivation L H Gamma (ifo_neg (ifo_neg phi)))
+    (h : ifo_negative 0 phi) :
+    @ifo_context_derivation L H Gamma phi :=
+  ifo_context_mdp
+    (ifo_context_theorem (Gamma := Gamma)
+      (@ifo_hilbert_dne_negative L H phi h)) d.
+
+Definition ifo_hilbert_double_neg_iff_negative {L H}
+    (phi : ifo_proposition L) (h : ifo_negative 0 phi) :
+    @ifo_hilbert_proof L H
+      (IFOAnd (IFOImp (ifo_neg (ifo_neg phi)) phi)
+        (IFOImp phi (ifo_neg (ifo_neg phi)))) :=
+  generic_minimal_iff_intro_raw (ifo_hilbert_minimal_capability H)
+    (ifo_neg (ifo_neg phi)) phi
+    (@ifo_hilbert_dne_negative L H phi h)
+    (generic_minimal_dni_raw (ifo_hilbert_minimal_capability H) phi).
+
+(** The weak-negative fragment also admits ex falso in every Hilbert system,
+    even the minimal one.  As for DNE, the rewrite-parametric statement is
+    structurally recursive and strictly more general than the source result. *)
+Fixpoint ifo_hilbert_efq_negative_rewrite {L H X n}
+    (phi : ifo_semiformula L X n) {struct phi} :
+    ifo_negative n phi -> forall w : rew L X n nat 0,
+    @ifo_hilbert_proof L H (IFOImp IFOFalsum (ifo_rewrite w phi)).
+Proof.
+  destruct phi as [n | n k R v | n phi psi | n phi psi |
+    n phi psi | n phi | n phi]; intros h w.
+  - simpl. exact (ifo_hilbert_identity IFOFalsum).
+  - exact (False_rect _ (ifo_negative_not_rel h)).
+  - simpl. apply (generic_minimal_right_and_intro_raw
+      (ifo_hilbert_minimal_capability H) IFOFalsum
+      (ifo_rewrite w phi) (ifo_rewrite w psi)).
+    + exact (@ifo_hilbert_efq_negative_rewrite L H X n phi
+        (proj1 (proj1 (ifo_negative_and_iff phi psi) h)) w).
+    + exact (@ifo_hilbert_efq_negative_rewrite L H X n psi
+        (proj2 (proj1 (ifo_negative_and_iff phi psi) h)) w).
+  - exact (False_rect _ (ifo_negative_not_or h)).
+  - simpl. exact (generic_minimal_imp_trans_raw
+      (ifo_hilbert_minimal_capability H)
+      IFOFalsum (ifo_rewrite w psi)
+      (IFOImp (ifo_rewrite w phi) (ifo_rewrite w psi))
+      (@ifo_hilbert_efq_negative_rewrite L H X n psi
+        (proj1 (ifo_negative_imp_iff phi psi) h) w)
+      (IFOHPK (ifo_rewrite w psi) (ifo_rewrite w phi))).
+  - simpl. set (body := ifo_rewrite (rew_q w) phi).
+    pose (ihfree := @ifo_hilbert_efq_negative_rewrite L H X (S n) phi
+      (proj1 (ifo_negative_all_iff phi) h)
+      (rew_comp (@rew_free L 0) (rew_q w))).
+    rewrite ifo_rewrite_comp in ihfree.
+    exact (@ifo_hilbert_imply_all L H IFOFalsum body ihfree).
+  - exact (False_rect _ (ifo_negative_not_exs h)).
+Defined.
+
+Definition ifo_hilbert_efq_negative {L H} (phi : ifo_proposition L)
+    (h : ifo_negative 0 phi) :
+    @ifo_hilbert_proof L H (IFOImp IFOFalsum phi).
+Proof.
+  refine (ifo_hilbert_proof_cast
+    (@ifo_hilbert_efq_negative_rewrite L H nat 0 phi h rew_id) _).
+  now rewrite ifo_rewrite_id.
+Defined.
+
+Definition ifo_hilbert_iff_neg_of_neg_iff {L H}
+    (phi psi : ifo_proposition L) (h : ifo_negative 0 phi)
+    (d : @ifo_hilbert_proof L H
+      (IFOAnd (IFOImp (ifo_neg phi) psi)
+        (IFOImp psi (ifo_neg phi)))) :
+    @ifo_hilbert_proof L H
+      (IFOAnd (IFOImp phi (ifo_neg psi))
+        (IFOImp (ifo_neg psi) phi)).
+Proof.
+  pose (Hm := ifo_hilbert_minimal_capability H).
+  exact (generic_minimal_iff_trans_raw Hm phi
+    (ifo_neg (ifo_neg phi)) (ifo_neg psi)
+    (generic_minimal_iff_symm_raw Hm
+      (ifo_neg (ifo_neg phi)) phi
+      (@ifo_hilbert_double_neg_iff_negative L H phi h))
+    (generic_minimal_neg_iff_congr_raw Hm (ifo_neg phi) psi d)).
+Defined.
+
 Fixpoint ifo_hilbert_proof_weaken {L H K phi}
     (h : ifo_hilbert_le H K) (d : @ifo_hilbert_proof L H phi) :
     @ifo_hilbert_proof L K phi :=

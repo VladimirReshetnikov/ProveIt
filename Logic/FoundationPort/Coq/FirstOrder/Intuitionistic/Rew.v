@@ -173,6 +173,16 @@ Proof.
   apply ifo_rewrite_ext, rew_q_shift.
 Qed.
 
+Lemma ifo_shift_double_neg_all : forall L
+    (phi : ifo_semiproposition L 1),
+  ifo_shift (ifo_neg (ifo_neg (IFOAll phi))) =
+  ifo_neg (ifo_neg (IFOAll (ifo_shift phi))).
+Proof.
+  intros L phi. unfold ifo_shift, ifo_neg. simpl.
+  f_equal. f_equal. f_equal.
+  apply ifo_rewrite_ext, rew_q_shift.
+Qed.
+
 Lemma ifo_substitute_shift_one_eq_free : forall L
     (phi : ifo_semiproposition L 1),
   ifo_substitute (fun _ : Fin.t 1 => Semiterm_fvar 0)
