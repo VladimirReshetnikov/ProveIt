@@ -1998,9 +1998,14 @@ Check oring_standard_structure_interprets.
 Check first_order_structure_ext.
 Check fin_zero_eta.
 Check oring_standard_structure_unique.
+Check oring_carrier_of_structure.
+Check oring_language_eq_operator.
+Check structure_interprets_oring_of_structure.
 Check nat_standard_structure.
 Check nat_standard_structure_interprets.
 Check nat_standard_model.
+Check arithmetic_theory_proof_complete.
+Check arithmetic_theory_weaker_of_models.
 Check arithmetic_theory_sound_on.
 Check arithmetic_theory_sound_on_elim.
 Check arithmetic_theory_sound_on_of_models.
@@ -2528,6 +2533,9 @@ Print Assumptions semiformula_eval_bex_lt_succ.
 Print Assumptions oring_standard_structure_interprets.
 Print Assumptions first_order_structure_ext.
 Print Assumptions oring_standard_structure_unique.
+Print Assumptions structure_interprets_oring_of_structure.
+Print Assumptions arithmetic_theory_proof_complete.
+Print Assumptions arithmetic_theory_weaker_of_models.
 Print Assumptions nat_standard_structure_interprets.
 Print Assumptions arithmetic_theory_sound_on_of_models.
 Print Assumptions arithmetic_theory_consistent_of_sound_on.

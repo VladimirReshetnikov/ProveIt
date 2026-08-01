@@ -13,10 +13,11 @@ From Stdlib Require Import Logic.PropExtensionality.
 From FoundationModal Require Import GenericEntailment.
 From Foundation.Syntax.Predicate Require Import Language Term.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
-From Foundation.FirstOrder.Basic Require Import Calculus Operator Soundness.
+From Foundation.FirstOrder.Basic Require Import Calculus Eq Operator Soundness.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics OperatorSemantics ModelTheory.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
+From Foundation.FirstOrder.Completeness Require Import CounterModel.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -153,6 +154,38 @@ Proof.
       apply structure_relation_operator. exact (structure_oring_lt Horing).
 Qed.
 
+(** Every arithmetic-language structure canonically determines carrier
+    operations by reading its primitive symbols.  This is the explicit Coq
+    counterpart of the source's inferred [ORingStructure] instance and is
+    useful independently of completeness. *)
+Definition oring_carrier_of_structure {M}
+    (Str : first_order_structure oring_language M) : oring_carrier M :=
+  {| oring_zero := structure_func Str ORing_zero fin_zero;
+     oring_one := structure_func Str ORing_one fin_zero;
+     oring_add := fun a b => structure_func Str ORing_add (fin_two a b);
+     oring_mul := fun a b => structure_func Str ORing_mul (fin_two a b);
+     oring_lt := fun a b => structure_rel Str ORing_lt (fin_two a b) |}.
+
+Definition oring_language_eq_operator :
+    semiformula_has_eq_operator oring_language :=
+  semiformula_eq_operator_of_language
+    (language_oring_eq oring_language_structure).
+
+Theorem structure_interprets_oring_of_structure : forall M
+    (Str : first_order_structure oring_language M),
+  structure_interprets_eq Str oring_language_eq_operator ->
+  structure_interprets_oring Str oring_language_structure
+    (oring_carrier_of_structure Str).
+Proof.
+  intros M Str Heq. constructor.
+  - constructor. reflexivity.
+  - constructor. reflexivity.
+  - constructor. intros; reflexivity.
+  - constructor. intros; reflexivity.
+  - exact Heq.
+  - constructor. intros; reflexivity.
+Qed.
+
 Definition nat_standard_structure : first_order_structure oring_language nat :=
   oring_standard_structure nat_oring_carrier.
 
@@ -164,6 +197,55 @@ Proof. apply oring_standard_structure_interprets. Qed.
 (** The natural-number model used by arithmetic soundness. *)
 Definition nat_standard_model : first_order_model oring_language :=
   first_order_model_of_structure (inhabits 0) nat_standard_structure.
+
+(** Arithmetic completeness needs to test only structures equipped with the
+    operations read from their language interpretation.  The equality-theory
+    premise is syntactic, exactly as in the source theorem; quotient
+    normalization supplies literal equality before the canonical carrier is
+    assembled. *)
+Theorem arithmetic_theory_proof_complete : forall
+    (T : theory oring_language) (sigma : sentence oring_language),
+  first_order_theory_proves_equality T oring_language_eq_operator ->
+  (forall (m : first_order_model oring_language)
+          (O : oring_carrier (first_order_model_domain m)),
+    structure_interprets_oring (first_order_model_structure m)
+      oring_language_structure O ->
+    first_order_models_theory m T ->
+    first_order_model_realize m sigma) ->
+  first_order_theory_provable T sigma.
+Proof.
+  intros T sigma Hequality Hmodels.
+  apply (first_order_theory_proof_complete_on_eq_models_of_proves
+    Hequality).
+  intros m Heq Hm.
+  exact (Hmodels m
+    (oring_carrier_of_structure (first_order_model_structure m))
+    (structure_interprets_oring_of_structure Heq) Hm).
+Qed.
+
+(** If every ordered-ring model of [S] is a model of [T], semantic
+    containment plus completeness turns each theorem of [T] into a theorem
+    of [S].  No literal theory inclusion is required. *)
+Theorem arithmetic_theory_weaker_of_models : forall
+    (T S : theory oring_language),
+  first_order_theory_proves_equality S oring_language_eq_operator ->
+  (forall (m : first_order_model oring_language)
+          (O : oring_carrier (first_order_model_domain m)),
+    structure_interprets_oring (first_order_model_structure m)
+      oring_language_structure O ->
+    first_order_models_theory m S ->
+    first_order_models_theory m T) ->
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language) T S.
+Proof.
+  intros T S Hequality Hmodels. constructor.
+  intros sigma Hproof.
+  apply (arithmetic_theory_proof_complete Hequality).
+  intros m O Horing HS.
+  exact (first_order_models_of_provable
+    (Hmodels m O Horing HS) Hproof).
+Qed.
 
 (** Soundness restricted to a selected syntactic class of arithmetic
     sentences.  Keeping the class explicit mirrors Foundation's [SoundOn]
