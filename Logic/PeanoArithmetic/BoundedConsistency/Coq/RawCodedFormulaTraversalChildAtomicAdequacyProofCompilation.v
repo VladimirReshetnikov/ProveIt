@@ -29,12 +29,15 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofComposition
+  RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
   RawCodedTemplatePAEmbeddingSelfShiftTail
   RawCodedTemplateLocalProofWitnessedTailTransport
+  RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedPALocalProofUniversalEliminationChain.
 
 Module PABoundedRawCodedFormulaTraversalChildAtomicAdequacyProofCompilation.
@@ -55,12 +58,15 @@ Import PABoundedRawCodedFormulaBoundAtomicallyAdequateTotality.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofComposition.
+Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplatePAEmbeddingSelfShiftTail.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
+Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 
 (** Binder order is formula table code, table step, traversal bound, root
@@ -172,6 +178,76 @@ Proof.
   reflexivity.
 Qed.
 
+(** Named projections keep clients independent of the concrete right-nested
+    implication tree.  In particular, the predecessor specialization can
+    identify each premise separately before any proof-code assembly begins. *)
+Definition coqFormulaTraversalChildAtomicAdequacySyntaxPremiseTemplate
+    formulaCode formulaStep bound rootIndex root childIndex child :=
+  templateImpAntecedent
+    (coqFormulaTraversalChildAtomicAdequacyInstanceTemplate
+      formulaCode formulaStep bound rootIndex root childIndex child).
+
+Definition coqFormulaTraversalChildAtomicAdequacyAtomicPremiseTemplate
+    formulaCode formulaStep bound rootIndex root childIndex child :=
+  templateImpAntecedent (templateImpConsequent
+    (coqFormulaTraversalChildAtomicAdequacyInstanceTemplate
+      formulaCode formulaStep bound rootIndex root childIndex child)).
+
+Definition coqFormulaTraversalChildAtomicAdequacyBoundPremiseTemplate
+    formulaCode formulaStep bound rootIndex root childIndex child :=
+  templateImpAntecedent (templateImpConsequent (templateImpConsequent
+    (coqFormulaTraversalChildAtomicAdequacyInstanceTemplate
+      formulaCode formulaStep bound rootIndex root childIndex child))).
+
+Definition coqFormulaTraversalChildAtomicAdequacyLookupPremiseTemplate
+    formulaCode formulaStep bound rootIndex root childIndex child :=
+  templateImpAntecedent (templateImpConsequent (templateImpConsequent
+    (templateImpConsequent
+      (coqFormulaTraversalChildAtomicAdequacyInstanceTemplate
+        formulaCode formulaStep bound rootIndex root childIndex child)))).
+
+Definition coqFormulaTraversalChildAtomicAdequacyConclusionTemplate
+    formulaCode formulaStep bound rootIndex root childIndex child :=
+  templateImpConsequent (templateImpConsequent (templateImpConsequent
+    (templateImpConsequent
+      (coqFormulaTraversalChildAtomicAdequacyInstanceTemplate
+        formulaCode formulaStep bound rootIndex root childIndex child)))).
+
+Lemma coqFormulaTraversalChildAtomicAdequacyInstanceTemplate_imp4_shape :
+  forall formulaCode formulaStep bound rootIndex root childIndex child,
+  coqFormulaTraversalChildAtomicAdequacyInstanceTemplate
+      formulaCode formulaStep bound rootIndex root childIndex child =
+  tfImp
+    (coqFormulaTraversalChildAtomicAdequacySyntaxPremiseTemplate
+      formulaCode formulaStep bound rootIndex root childIndex child)
+    (tfImp
+      (coqFormulaTraversalChildAtomicAdequacyAtomicPremiseTemplate
+        formulaCode formulaStep bound rootIndex root childIndex child)
+      (tfImp
+        (coqFormulaTraversalChildAtomicAdequacyBoundPremiseTemplate
+          formulaCode formulaStep bound rootIndex root childIndex child)
+        (tfImp
+          (coqFormulaTraversalChildAtomicAdequacyLookupPremiseTemplate
+            formulaCode formulaStep bound rootIndex root childIndex child)
+          (coqFormulaTraversalChildAtomicAdequacyConclusionTemplate
+            formulaCode formulaStep bound rootIndex root childIndex child)))).
+Proof.
+  intros formulaCode formulaStep bound rootIndex root childIndex child.
+  unfold coqFormulaTraversalChildAtomicAdequacySyntaxPremiseTemplate,
+    coqFormulaTraversalChildAtomicAdequacyAtomicPremiseTemplate,
+    coqFormulaTraversalChildAtomicAdequacyBoundPremiseTemplate,
+    coqFormulaTraversalChildAtomicAdequacyLookupPremiseTemplate,
+    coqFormulaTraversalChildAtomicAdequacyConclusionTemplate,
+    coqFormulaTraversalChildAtomicAdequacyInstanceTemplate,
+    templateUniversalOpenManyOrBot,
+    codedFormulaTraversalChildAtomicAdequacyFormula,
+    codedFormulaTraversalChildAtomicAdequacyBodyFormula.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst
+    templateImpAntecedent templateImpConsequent].
+  reflexivity.
+Qed.
+
 (** Compile one arbitrary seven-term instance on a finite witnessed PA-axiom
     extension.  The result remains an implication; clients can synchronize
     their four premise roots with this extension before applying [Imp-E]. *)
@@ -260,6 +336,212 @@ Proof.
       extendedWitnessList extendedContext hextended)
     hprefix hsource) as [proofRoot hproof].
   exists witnesses, proofRoot. split; assumption.
+Qed.
+
+(** Compile the generic law, retain the selected PA witness extension, move
+    all four caller roots to that exact tail, and eliminate the implication
+    spine.  This is the reusable context-management kernel; it assumes no
+    relationship between the seven terms beyond the four represented
+    premises themselves. *)
+Theorem
+    raw_codedPALocalProofOf_formulaTraversalChildAtomicAdequacy_of_roots_on_witnessed_extension_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix
+      formulaCode formulaStep bound rootIndex root childIndex child
+      syntaxRoot atomicRoot boundRoot lookupRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqFormulaTraversalChildAtomicAdequacySyntaxPremiseTemplate
+        formulaCode formulaStep bound rootIndex root childIndex child))
+    syntaxRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqFormulaTraversalChildAtomicAdequacyAtomicPremiseTemplate
+        formulaCode formulaStep bound rootIndex root childIndex child))
+    atomicRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqFormulaTraversalChildAtomicAdequacyBoundPremiseTemplate
+        formulaCode formulaStep bound rootIndex root childIndex child))
+    boundRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation
+      (coqFormulaTraversalChildAtomicAdequacyLookupPremiseTemplate
+        formulaCode formulaStep bound rootIndex root childIndex child))
+    lookupRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) resultRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      (rawTemplateFormula translation
+        (coqFormulaTraversalChildAtomicAdequacyConclusionTemplate
+          formulaCode formulaStep bound rootIndex root childIndex child))
+      resultRoot.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext prefix
+    formulaCode formulaStep bound rootIndex root childIndex child
+    syntaxRoot atomicRoot boundRoot lookupRoot hprefix hbase
+    hsyntax hatomic hbound hlookup.
+  destruct
+    (raw_codedPALocalProofOf_formulaTraversalChildAtomicAdequacy_instance_on_witnessed_tail_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      formulaCode formulaStep bound rootIndex root childIndex child
+      hprefix hbase)
+    as (witnesses & implicationRoot & hextended & himplication).
+  set (extendedWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext).
+  assert (hincluded : RawContextListIncluded M baseContext extendedContext).
+  {
+    unfold extendedContext.
+    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+      M hPA witnesses baseContext).
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (rawTemplateFormula translation
+        (coqFormulaTraversalChildAtomicAdequacySyntaxPremiseTemplate
+          formulaCode formulaStep bound rootIndex root childIndex child))
+      syntaxRoot hbase hextended hincluded hsyntax)
+    as [transportedSyntaxRoot htransportedSyntax].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (rawTemplateFormula translation
+        (coqFormulaTraversalChildAtomicAdequacyAtomicPremiseTemplate
+          formulaCode formulaStep bound rootIndex root childIndex child))
+      atomicRoot hbase hextended hincluded hatomic)
+    as [transportedAtomicRoot htransportedAtomic].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (rawTemplateFormula translation
+        (coqFormulaTraversalChildAtomicAdequacyBoundPremiseTemplate
+          formulaCode formulaStep bound rootIndex root childIndex child))
+      boundRoot hbase hextended hincluded hbound)
+    as [transportedBoundRoot htransportedBound].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (rawTemplateFormula translation
+        (coqFormulaTraversalChildAtomicAdequacyLookupPremiseTemplate
+          formulaCode formulaStep bound rootIndex root childIndex child))
+      lookupRoot hbase hextended hincluded hlookup)
+    as [transportedLookupRoot htransportedLookup].
+  rewrite
+    coqFormulaTraversalChildAtomicAdequacyInstanceTemplate_imp4_shape
+    in himplication.
+  rewrite !rawTemplateFormula_imp in himplication.
+  pose proof (raw_codedPALocalProofOf_impE M hPA
+    (rawTemplateContextCodeOnTail translation extendedContext prefix)
+    (rawTemplateFormula translation
+      (coqFormulaTraversalChildAtomicAdequacySyntaxPremiseTemplate
+        formulaCode formulaStep bound rootIndex root childIndex child))
+    (rawFormulaImpCode M
+      (rawTemplateFormula translation
+        (coqFormulaTraversalChildAtomicAdequacyAtomicPremiseTemplate
+          formulaCode formulaStep bound rootIndex root childIndex child))
+      (rawFormulaImpCode M
+        (rawTemplateFormula translation
+          (coqFormulaTraversalChildAtomicAdequacyBoundPremiseTemplate
+            formulaCode formulaStep bound rootIndex root childIndex child))
+        (rawFormulaImpCode M
+          (rawTemplateFormula translation
+            (coqFormulaTraversalChildAtomicAdequacyLookupPremiseTemplate
+              formulaCode formulaStep bound rootIndex root childIndex child))
+          (rawTemplateFormula translation
+            (coqFormulaTraversalChildAtomicAdequacyConclusionTemplate
+              formulaCode formulaStep bound rootIndex root childIndex child)))))
+    implicationRoot transportedSyntaxRoot
+    himplication htransportedSyntax) as hafterSyntax.
+  lazymatch type of hafterSyntax with
+  | RawCodedPALocalProofOf _ _ _ ?afterSyntaxRoot =>
+      pose proof (raw_codedPALocalProofOf_impE M hPA
+        (rawTemplateContextCodeOnTail translation extendedContext prefix)
+        (rawTemplateFormula translation
+          (coqFormulaTraversalChildAtomicAdequacyAtomicPremiseTemplate
+            formulaCode formulaStep bound rootIndex root childIndex child))
+        (rawFormulaImpCode M
+          (rawTemplateFormula translation
+            (coqFormulaTraversalChildAtomicAdequacyBoundPremiseTemplate
+              formulaCode formulaStep bound rootIndex root childIndex child))
+          (rawFormulaImpCode M
+            (rawTemplateFormula translation
+              (coqFormulaTraversalChildAtomicAdequacyLookupPremiseTemplate
+                formulaCode formulaStep bound rootIndex root childIndex child))
+            (rawTemplateFormula translation
+              (coqFormulaTraversalChildAtomicAdequacyConclusionTemplate
+                formulaCode formulaStep bound rootIndex root childIndex child))))
+        afterSyntaxRoot transportedAtomicRoot
+        hafterSyntax htransportedAtomic) as hafterAtomic;
+      lazymatch type of hafterAtomic with
+      | RawCodedPALocalProofOf _ _ _ ?afterAtomicRoot =>
+          pose proof (raw_codedPALocalProofOf_impE M hPA
+            (rawTemplateContextCodeOnTail translation extendedContext prefix)
+            (rawTemplateFormula translation
+              (coqFormulaTraversalChildAtomicAdequacyBoundPremiseTemplate
+                formulaCode formulaStep bound rootIndex root
+                childIndex child))
+            (rawFormulaImpCode M
+              (rawTemplateFormula translation
+                (coqFormulaTraversalChildAtomicAdequacyLookupPremiseTemplate
+                  formulaCode formulaStep bound rootIndex root
+                  childIndex child))
+              (rawTemplateFormula translation
+                (coqFormulaTraversalChildAtomicAdequacyConclusionTemplate
+                  formulaCode formulaStep bound rootIndex root
+                  childIndex child)))
+            afterAtomicRoot transportedBoundRoot
+            hafterAtomic htransportedBound) as hafterBound;
+          lazymatch type of hafterBound with
+          | RawCodedPALocalProofOf _ _ _ ?afterBoundRoot =>
+              pose proof (raw_codedPALocalProofOf_impE M hPA
+                (rawTemplateContextCodeOnTail translation
+                  extendedContext prefix)
+                (rawTemplateFormula translation
+                  (coqFormulaTraversalChildAtomicAdequacyLookupPremiseTemplate
+                    formulaCode formulaStep bound rootIndex root
+                    childIndex child))
+                (rawTemplateFormula translation
+                  (coqFormulaTraversalChildAtomicAdequacyConclusionTemplate
+                    formulaCode formulaStep bound rootIndex root
+                    childIndex child))
+                afterBoundRoot transportedLookupRoot
+                hafterBound htransportedLookup) as hresult;
+              lazymatch type of hresult with
+              | RawCodedPALocalProofOf _ _ _ ?resultRoot =>
+                  exists witnesses, resultRoot;
+                  split; [exact hextended |];
+                  split; [exact hincluded | exact hresult]
+              end
+          end
+      end
+  end.
 Qed.
 
 End PABoundedRawCodedFormulaTraversalChildAtomicAdequacyProofCompilation.
