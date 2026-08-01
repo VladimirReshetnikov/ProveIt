@@ -28,6 +28,7 @@ From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Functions.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Typed Coding.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Functions.
+From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Typed Coding.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4583,3 +4584,59 @@ Print Assumptions boot_formula_neg_or_quote.
 Print Assumptions boot_formula_neg_code_preserves.
 Print Assumptions boot_formula_neg_code_involutive.
 Print Assumptions boot_formula_neg_rewrite.
+Check boot_typed_semiformula.
+Check boot_typed_formula.
+Check boot_typed_formula_neg.
+Check boot_typed_formula_imp.
+Check boot_typed_formula_iff.
+Check boot_typed_formula_shift.
+Check boot_typed_formula_subst.
+Check boot_typed_formula_free.
+Print Assumptions boot_typed_formula_neg_involutive.
+Print Assumptions boot_typed_formula_neg_inj_iff.
+Print Assumptions boot_typed_formula_neg_and.
+Print Assumptions boot_typed_formula_neg_all.
+Print Assumptions boot_typed_formula_shift_rel.
+Print Assumptions boot_typed_formula_shift_all.
+Print Assumptions boot_typed_formula_shift_exists.
+Print Assumptions boot_typed_formula_shift_neg.
+Print Assumptions boot_typed_formula_shift_iff.
+Print Assumptions boot_typed_q_subst_equiv.
+Print Assumptions boot_typed_formula_subst_rel.
+Print Assumptions boot_typed_formula_subst_all.
+Print Assumptions boot_typed_formula_subst_exists.
+Print Assumptions boot_typed_formula_subst_neg.
+Print Assumptions boot_typed_formula_subst_id.
+Print Assumptions boot_typed_formula_subst_subst.
+Print Assumptions boot_typed_formula_shift_subst.
+Print Assumptions boot_typed_formula_free_as_shift_subst.
+Print Assumptions boot_typed_formula_free_neg.
+Check boot_typed_formula_fv_free.
+Print Assumptions boot_typed_formula_fv_free_and_iff.
+Print Assumptions boot_typed_formula_fv_free_or_iff.
+Print Assumptions boot_typed_formula_fv_free_neg_iff.
+Print Assumptions boot_typed_formula_subst_code.
+Print Assumptions boot_typed_formula_shift_code.
+Print Assumptions boot_typed_formula_neg_code.
+Check boot_typed_formula_quote.
+Check boot_closed_formula_quote.
+Print Assumptions boot_typed_formula_quote_verum.
+Print Assumptions boot_typed_formula_quote_rel.
+Print Assumptions boot_typed_formula_quote_nrel.
+Print Assumptions boot_typed_formula_quote_and.
+Print Assumptions boot_typed_formula_quote_all.
+Print Assumptions boot_typed_formula_quote_neg.
+Print Assumptions boot_typed_formula_quote_imp.
+Print Assumptions boot_typed_formula_quote_iff.
+Print Assumptions boot_typed_formula_quote_injective.
+Print Assumptions boot_typed_formula_quote_inj_iff.
+Print Assumptions boot_typed_formula_quote_decode.
+Print Assumptions boot_closed_formula_quote_decode.
+Print Assumptions boot_typed_formula_quote_recognized.
+Print Assumptions boot_typed_formula_quote_sound.
+Print Assumptions boot_closed_formula_quote_emb.
+Print Assumptions boot_typed_formula_quote_shift.
+Print Assumptions boot_typed_formula_quote_subst.
+Print Assumptions boot_typed_formula_quote_free.
+Print Assumptions boot_typed_formula_quote_encoding.
+Print Assumptions boot_closed_formula_quote_encoding.
