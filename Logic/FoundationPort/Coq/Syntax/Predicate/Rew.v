@@ -2523,3 +2523,96 @@ Proof.
     + unfold semiformula_bounded_exists in Hp. exact Hp.
     + simpl. now rewrite Hq, Hr.
 Qed.
+
+(** * Lifted casts *)
+
+Lemma rew_q_cast : forall L X n m (h : n = m),
+  rew_equiv (rew_q (@rew_cast L X n m h))
+    (@rew_cast L X (S n) (S m) (f_equal S h)).
+Proof.
+  intros L X n m h. destruct h.
+  apply rew_equiv_of_variables.
+  - intro i. refine (@Fin.caseS' n i (fun j =>
+      rew_apply (rew_q (rew_cast eq_refl)) (Semiterm_bvar j) =
+      rew_apply (rew_cast (f_equal S eq_refl)) (Semiterm_bvar j)) _ _).
+    + reflexivity.
+    + intro j. reflexivity.
+  - intro x. reflexivity.
+Qed.
+
+Lemma fin_cast_le_zero : forall n m (h : n <= m),
+  fin_cast_le (le_n_S n m h) (@Fin.F1 n) = @Fin.F1 m.
+Proof.
+  intros. apply fin_value_ext. rewrite fin_value_cast_le. reflexivity.
+Qed.
+
+Lemma fin_cast_le_succ : forall n m (h : n <= m) (i : Fin.t n),
+  fin_cast_le (le_n_S n m h) (Fin.FS i) =
+  Fin.FS (fin_cast_le h i).
+Proof.
+  intros. apply fin_value_ext.
+  rewrite fin_value_cast_le, !fin_value_FS, fin_value_cast_le. reflexivity.
+Qed.
+
+Lemma rew_q_cast_le : forall L X n m (h : n <= m),
+  rew_equiv (rew_q (@rew_cast_le L X n m h))
+    (@rew_cast_le L X (S n) (S m) (le_n_S n m h)).
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - intro i. refine (@Fin.caseS' n i (fun j =>
+      rew_apply (rew_q (rew_cast_le h)) (Semiterm_bvar j) =
+      rew_apply (rew_cast_le (le_n_S n m h))
+        (Semiterm_bvar j)) _ _).
+    + reflexivity.
+    + intro j. simpl. f_equal. symmetry. apply fin_cast_le_succ.
+  - intro x. reflexivity.
+Qed.
+
+Lemma rew_qpow_cast_le_bvar : forall L X n m (h : n <= m) k
+    (i : Fin.t (k + n)),
+  rew_apply (rew_qpow (@rew_cast_le L X n m h) k)
+      (Semiterm_bvar i) =
+  Semiterm_bvar
+    (fin_cast_le (proj1 (Nat.add_le_mono_l n m k) h) i).
+Proof.
+  intros L X n m h k. induction k as [|k IH]; intro i.
+  - simpl. f_equal. apply fin_value_ext.
+    rewrite !fin_value_cast_le. reflexivity.
+  - refine (@Fin.caseS' (k + n) i (fun j =>
+      rew_apply (rew_qpow (rew_cast_le h) (S k))
+        (Semiterm_bvar j) =
+      Semiterm_bvar
+        (fin_cast_le (proj1 (Nat.add_le_mono_l n m (S k)) h) j)) _ _).
+    + reflexivity.
+    + intro j. simpl. rewrite IH.
+      change
+        (@Semiterm_bvar L X (S k + m)
+          (Fin.FS (fin_cast_le
+            (proj1 (Nat.add_le_mono_l n m k) h) j)) =
+         @Semiterm_bvar L X (S k + m)
+          (fin_cast_le
+            (proj1 (Nat.add_le_mono_l n m (S k)) h) (Fin.FS j))).
+      f_equal. apply fin_value_ext.
+      etransitivity.
+      * apply fin_value_FS.
+      * rewrite fin_value_cast_le, fin_value_cast_le.
+        symmetry. apply fin_value_FS.
+Qed.
+
+Lemma rew_qpow_cast_le_fvar : forall L X n m (h : n <= m) k x,
+  rew_apply (rew_qpow (@rew_cast_le L X n m h) k)
+      (Semiterm_fvar x) = Semiterm_fvar x.
+Proof.
+  intros L X n m h k. induction k as [|k IH]; intro x;
+    simpl; [reflexivity | now rewrite IH].
+Qed.
+
+Theorem rew_qpow_cast_le : forall L X n m (h : n <= m) k,
+  rew_equiv (rew_qpow (@rew_cast_le L X n m h) k)
+    (@rew_cast_le L X (k + n) (k + m)
+      (proj1 (Nat.add_le_mono_l n m k) h)).
+Proof.
+  intros. apply rew_equiv_of_variables.
+  - apply rew_qpow_cast_le_bvar.
+  - apply rew_qpow_cast_le_fvar.
+Qed.

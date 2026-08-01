@@ -2342,6 +2342,13 @@ Print Assumptions semiformula_universal_closure_open_no_free.
 Print Assumptions semiformula_emb_universal_closure.
 Print Assumptions semiformula_universal_closure_open_id.
 Print Assumptions semiformula_rewrite_map_injective.
+Print Assumptions rew_q_cast.
+Print Assumptions fin_cast_le_zero.
+Print Assumptions fin_cast_le_succ.
+Print Assumptions rew_q_cast_le.
+Print Assumptions rew_qpow_cast_le_bvar.
+Print Assumptions rew_qpow_cast_le_fvar.
+Print Assumptions rew_qpow_cast_le.
 Print Assumptions semiformula_rewrite_emb_injective.
 Print Assumptions semiformula_rewrite_eq_verum_iff.
 Print Assumptions semiformula_rewrite_eq_falsum_iff.
