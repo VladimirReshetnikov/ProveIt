@@ -137,10 +137,12 @@ Arguments
 (** Concrete append-facing residue.  Arithmetic normalization first chooses
     one witnessed endpoint carrying atomic adequacy and the rank-domain
     disjunction.  The remaining traversal producer supplies both canonical
-    append packages under the literal predecessor-state prefix, at one
-    standard helper batch.  Packaging the two polarities together records
-    the synchronization required by the downstream growing pair and avoids
-    two independently chosen append contexts. *)
+    row-implication packages under the literal predecessor-state prefix, at
+    one standard helper batch.  The five row binders and seventh-field
+    normalization are compiled by the adapter below.  Packaging both
+    polarities together records the synchronization required by the
+    downstream growing pair and avoids two independently chosen append
+    contexts. *)
 Definition
     RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendInputResourcesCompilerOnCanonicalNormalizedResources
     (M : RawPAModel)
@@ -163,10 +165,10 @@ Definition
         (rawFormulaOrCode M
           (rawDynamicTruthZeroSigmaDomainCode M)
           (rawDynamicTruthZeroPiDomainCode M)) domainRoot /\
-      RawDynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt
+      RawDynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt
         M translation 0 coqDynamicTruthPredecessorStateTemplateContext
           appendWitnesses /\
-      RawDynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt
+      RawDynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt
         M translation 1 coqDynamicTruthPredecessorStateTemplateContext
           appendWitnesses.
 
@@ -174,7 +176,7 @@ Arguments
   RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendInputResourcesCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
 
-(** Compile the concrete synchronized append packages into the abstract
+(** Compile the concrete synchronized row-implication packages into the abstract
     state-application resource interface used by the existing normalized
     callback.  No represented proof is moved back to the normalized base:
     the arithmetic endpoint is retained as the source of the growing pair,
@@ -197,7 +199,15 @@ Proof.
       sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
     as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
       appendWitnesses & hendpointWitnessed & hbaseEndpointIncluded &
-      hatomic & hdomain & hsigmaInputs & hpiInputs).
+      hatomic & hdomain & hsigmaRows & hpiRows).
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt_of_row_implication_inputs
+      M hPA translation 0 coqDynamicTruthPredecessorStateTemplateContext
+      appendWitnesses hsigmaRows) as hsigmaInputs.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt_of_row_implication_inputs
+      M hPA translation 1 coqDynamicTruthPredecessorStateTemplateContext
+      appendWitnesses hpiRows) as hpiInputs.
   exists endpointWitnessList, endpointContext, atomicRoot, domainRoot.
   split; [exact hendpointWitnessed |].
   split; [exact hbaseEndpointIncluded |].

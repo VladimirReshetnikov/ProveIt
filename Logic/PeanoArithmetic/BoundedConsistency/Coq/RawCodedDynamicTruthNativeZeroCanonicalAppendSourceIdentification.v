@@ -23,6 +23,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateLocalProofStandardWitnessTailTransport
+  RawCodedPALocalProofUniversalIntroductionChain
   RawCodedLtSuccCasesProofCompilation
   RawCodedPAGrowingTemplateConjunction
   RawCodedFourStateTableAppendSource
@@ -30,6 +31,7 @@ From BoundedPAConsistency Require Import
   RawCodedFourStateTableAppendExistentialElimination
   RawCodedFourStateTableAppendRowLtSuccCases
   RawCodedFourStateTableAppendGlobalTraversalAssembly
+  RawCodedFourStateTableAppendTemplateGlobalTraversalAssembly
   RawCodedDynamicTruthSuccessorRowsAppendNormalization
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
@@ -59,6 +61,7 @@ Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedFourStateTableAppendSource.
@@ -66,6 +69,7 @@ Import PABoundedRawCodedFourStateTableAppendProofCompilation.
 Import PABoundedRawCodedFourStateTableAppendExistentialElimination.
 Import PABoundedRawCodedFourStateTableAppendRowLtSuccCases.
 Import PABoundedRawCodedFourStateTableAppendGlobalTraversalAssembly.
+Import PABoundedRawCodedFourStateTableAppendTemplateGlobalTraversalAssembly.
 Import PABoundedRawCodedDynamicTruthSuccessorRowsAppendNormalization.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
@@ -282,6 +286,150 @@ Definition RawDynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt
 
 Arguments RawDynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt
   M translation rootMode outerPrefix witnesses : clear implicits.
+
+(** Reversing the three exposed global arguments does not change the
+    canonical row law.  Both installed local rows are closed with respect to
+    those outer arguments; kernel normalization audits that fact for the two
+    legal root modes. *)
+Lemma coqFourStateTableAppendOpenedPermutedZeroCanonicalRows_eq : forall
+    rootMode bound,
+  rootMode = 0 \/ rootMode = 1 ->
+  coqFourStateTableAppendOpenedPermutedTemplateGlobalRows rootMode
+      (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+      (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula) bound =
+  coqFourStateTableAppendOpenedTemplateGlobalRows rootMode
+      (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+      (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula) bound.
+Proof.
+  intros rootMode bound [-> | ->]; vm_compute; reflexivity.
+Qed.
+
+(** Earlier, more primitive row boundary.  Instead of assuming the already
+    universally closed seventh field, it asks only for the concrete
+    two-premise row implication in the exact context obtained after the
+    append witnesses and five row eigenvariables have shifted the caller
+    prefix.  Universal closure and permutation normalization are compiled by
+    the adapter below. *)
+Definition
+    RawDynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (rootMode : nat) (outerPrefix : TemplateContext)
+    (witnesses : StandardPAAxiomWitnessPrefix) : Prop :=
+  exists modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep : TemplateTerm,
+  exists appendRoot : M,
+    (rootMode = 0 \/ rootMode = 1) /\
+    coqFourStateTableAppendConcreteClosedRowProductionTemplate
+        (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+        (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula) =
+      coqFourStateTableAppendOpenedTemplateGlobalRowProduction rootMode
+        (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+        (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula)
+        (ttParameter coqDynamicTruthAppendRowBoundParameterName) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0))) appendRoot /\
+    RawCodedPAGrowingTemplateLocalProofAt M translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (templateContextShiftMany 5
+        (coqFourStateTableAppendWitnessContext
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix))
+      (rawTemplateFormula translation
+        (tfImp
+          (coqLtSuccCasesAntecedentTemplate
+            (ttVar 4)
+            (ttParameter coqDynamicTruthAppendRowBoundParameterName))
+          (tfImp
+            (coqFourStateTableAppendEqualityRowLookupTemplate
+              coqFourStateTableAppendRowModeParameterName
+              coqFourStateTableAppendRowFormulaParameterName
+              coqFourStateTableAppendRowAssignmentCodeParameterName
+              coqFourStateTableAppendRowAssignmentStepParameterName
+              (ttVar 4) (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0))
+            (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+              (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+              (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula))))).
+
+Arguments
+  RawDynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt
+  M translation rootMode outerPrefix witnesses : clear implicits.
+
+(** Close the five row binders and identify the unchanged permuted seventh
+    field.  This is pure structural proof compilation; the only genuinely
+    proof-producing input remains the concrete row implication above. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt_of_row_implication_inputs :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  forall rootMode outerPrefix witnesses,
+  RawDynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt
+    M translation rootMode outerPrefix witnesses ->
+  RawDynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt
+    M translation rootMode outerPrefix witnesses.
+Proof.
+  intros M hPA translation rootMode outerPrefix witnesses
+    (modeCode & modeStep & formulaCode & formulaStep &
+      assignmentCodeCode & assignmentCodeStep &
+      assignmentStepCode & assignmentStepStep & appendRoot &
+      hrootMode & hproduction & happend & hrow).
+  exists modeCode, modeStep, formulaCode, formulaStep,
+    assignmentCodeCode, assignmentCodeStep,
+    assignmentStepCode, assignmentStepStep, appendRoot.
+  split; [exact hrootMode |].
+  split; [exact happend |].
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_opened_template_global_rows_of_concrete_row_at_root_terms_under_prefix
+      M hPA translation rootMode
+      (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+      (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula)
+      coqDynamicTruthAppendRowBoundParameterName
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttVar 2) (ttVar 1) (ttVar 0)
+      outerPrefix witnesses
+      (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+      (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula)
+      hproduction hrow) as hclosedRows.
+  change (RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+      (embedPATerm (Term.numeral rootMode))
+      (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendOpenedPermutedTemplateGlobalRows rootMode
+        (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+        (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula)
+        (ttParameter coqDynamicTruthAppendRowBoundParameterName)))).
+  rewrite (coqFourStateTableAppendOpenedPermutedZeroCanonicalRows_eq
+    rootMode (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+    hrootMode).
+  exact hclosedRows.
+Qed.
 
 (** Close one polarity without discharging the caller prefix.  The generic
     prefix inserter places the append-existence proof beneath that prefix;
