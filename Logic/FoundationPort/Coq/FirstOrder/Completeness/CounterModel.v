@@ -9,12 +9,16 @@
 From Stdlib Require Import Arith.PeanoNat Lists.List Logic.ClassicalChoice
   Logic.ClassicalDescription Logic.ClassicalEpsilon Logic.Classical_Prop
   Logic.FunctionalExtensionality Vectors.Fin.
+From FoundationModal Require Import GenericAdjunctiveSet GenericEntailment GenericLogicSymbol
+  GenericSemantics PropositionalEntailmentAxioms PropositionalEntailmentMinimal
+  PropositionalEntailmentClassical.
 From Foundation.Vorspiel.Order Require Import Dense.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
-From Foundation.FirstOrder.Basic Require Import Calculus Coding Soundness.
-From Foundation.FirstOrder.Basic.Semantics Require Import Semantics ModelTheory.
+From Foundation.FirstOrder.Basic Require Import Calculus Calculus2 Coding Soundness.
+From Foundation.FirstOrder.Basic.Semantics Require Import Semantics ModelTheory Elementary.
 From Foundation.FirstOrder Require Import Hauptsatz.
+From Foundation.FirstOrder Require Import Ultraproduct.
 From Foundation.FirstOrder.Completeness Require Import
   CanonicalModel CountableSublanguage.
 
@@ -708,4 +712,162 @@ Proof.
       first_order_identity_free_env)).
     exact Hpi_model. }
   unfold rho in Hmap. now rewrite Hmap in Hmapped.
+Qed.
+
+(** * Theory-level completeness *)
+
+Lemma first_order_model_realize_list_conj2 : forall L
+    (m : first_order_model L) (Gamma : list (sentence L)),
+  first_order_model_realize m
+      (generic_list_conj2 (sentence_connectives L) Gamma) <->
+  forall sigma, In sigma Gamma -> first_order_model_realize m sigma.
+Proof.
+  intros L m Gamma.
+  exact (@generic_models_list_conj2
+    (first_order_model L) (sentence L) (sentence_connectives L)
+    (first_order_semantics L) (first_order_semantics_top L)
+    (first_order_semantics_and L) m Gamma).
+Qed.
+
+Lemma first_order_raw_list_member_in : forall A (x : A) xs,
+  generic_raw_list_member x xs -> In x xs.
+Proof.
+  intros A x xs H. induction H.
+  - now left.
+  - now right.
+Qed.
+
+Definition first_order_theory_explosion (L : language) :
+    generic_deductive_explosion
+      (first_order_theory_entailment L)
+      (generic_bottom (sentence_connectives L)) :=
+  @generic_deductive_explosion_of_classical
+    (theory L) (sentence L)
+    (first_order_theory_entailment L) (sentence_connectives L)
+    (@first_order_theory_classical L).
+
+(** Completeness I: compactness reduces consistency to a single finite
+    conjunction, whose singleton countermodel is supplied by the generic term
+    model above. *)
+Theorem first_order_satisfiable_of_consistent : forall L (T : theory L),
+  generic_consistent (first_order_theory_entailment L) T ->
+  first_order_satisfiable T.
+Proof.
+  intros L T Hconsistent.
+  apply (proj2 (first_order_compactness T)).
+  intros Gamma Hsubset.
+  pose (sigma := generic_list_conj2 (sentence_connectives L) Gamma).
+  assert (Hsigma : first_order_theory_provable T sigma).
+  { constructor. apply (generic_minimal_list_conj2_intro_raw
+      (generic_minimal_of_classical (first_order_theory_classical T))).
+    intros tau Htau.
+    apply (generic_axiomatized_by_axiom_raw
+      (first_order_theory_axiomatized L)).
+    apply Hsubset. now apply first_order_raw_list_member_in. }
+  assert (Hirrefutable : ~ first_order_lk_provable
+      (semiformula_neg (first_order_sentence_embed sigma))).
+  { intro Hneg_lk.
+    assert (Hneg : first_order_theory_provable T (semiformula_neg sigma)).
+    { apply first_order_theory_of_lk_provable.
+      change (first_order_lk_provable
+        (first_order_sentence_embed (semiformula_neg sigma))).
+      eapply first_order_lk_provable_cast; [exact Hneg_lk |].
+      symmetry. apply first_order_sentence_embed_neg. }
+    destruct Hsigma as [dsigma]. destruct Hneg as [dneg].
+    apply (@generic_consistent_not_bottom
+      (theory L) (sentence L) (first_order_theory_entailment L)
+      (generic_bottom (sentence_connectives L))
+      (first_order_theory_explosion L) T Hconsistent).
+    constructor. exact (generic_minimal_neg_mdp_raw
+      (generic_minimal_of_classical (first_order_theory_classical T))
+      sigma dneg dsigma). }
+  destruct (@first_order_satisfiable_of_irrefutable L sigma Hirrefutable)
+    as [m Hm].
+  exists m. apply (proj2 (first_order_models_theory_iff m _)).
+  intros tau Htau.
+  apply (proj1 (first_order_model_realize_list_conj2 m Gamma)).
+  exact (first_order_models_of_member Hm eq_refl).
+  exact Htau.
+Qed.
+
+Theorem first_order_satisfiable_iff_consistent : forall L (T : theory L),
+  first_order_satisfiable T <->
+  generic_consistent (first_order_theory_entailment L) T.
+Proof.
+  intros L T. split.
+  - apply first_order_theory_consistent_of_satisfiable.
+  - apply first_order_satisfiable_of_consistent.
+Qed.
+
+(** Completeness II: if a consequence were unprovable, adjoining its
+    negation would remain consistent and hence have a model. *)
+Theorem first_order_theory_proof_complete : forall L
+    (T : theory L) (sigma : sentence L),
+  first_order_consequence T sigma ->
+  first_order_theory_provable T sigma.
+Proof.
+  intros L T sigma Hconsequence. apply NNPP. intro Hunprovable.
+  pose (Tneg := generic_adjunctive_adjoin
+    (generic_predicate_adjunctive_set (sentence L))
+    (semiformula_neg sigma) T).
+  assert (Hconsistent :
+    generic_consistent (first_order_theory_entailment L) Tneg).
+  { apply (proj1 (@generic_classical_unprovable_iff_consistent_adjoin
+      (theory L) (sentence L) (first_order_theory_entailment L)
+      (sentence_connectives L)
+      (generic_predicate_adjunctive_set (sentence L))
+      (first_order_theory_axiomatized L)
+      (first_order_theory_deduction L) T sigma
+      (first_order_theory_classical T)
+      (generic_intuitionistic_of_classical
+        (first_order_theory_classical Tneg)))).
+    exact Hunprovable. }
+  destruct (first_order_satisfiable_of_consistent Hconsistent) as [m Hm].
+  assert (HT : first_order_models_theory m T).
+  { eapply first_order_models_of_subset; [exact Hm |].
+    intros tau Htau. unfold Tneg. now right. }
+  assert (Hneg : first_order_model_realize m (semiformula_neg sigma)).
+  { apply (first_order_models_of_member Hm).
+    unfold Tneg. now left. }
+  unfold first_order_model_realize, sentence_realize, formula_eval in Hneg.
+  apply (proj1 (semiformula_eval_neg
+    (first_order_model_structure m)
+    (fun i : Fin.t 0 => match i with end)
+    (fun x : Empty_set => match x with end) sigma)) in Hneg.
+  exact (Hneg (Hconsequence m HT)).
+Qed.
+
+Theorem first_order_theory_proof_complete_iff : forall L
+    (T : theory L) (sigma : sentence L),
+  first_order_consequence T sigma <->
+  first_order_theory_provable T sigma.
+Proof.
+  intros L T sigma. split.
+  - apply first_order_theory_proof_complete.
+  - apply first_order_theory_proof_sound.
+Qed.
+
+(** A reusable form of completeness restricted to a semantic class.  The
+    source specializes [C] to structures interpreting equality literally and
+    obtains [normalize] from its quotient-model construction.  Stating the
+    reduction separately exposes the precise model-theoretic ingredient and
+    applies equally to any elementary normalization. *)
+Theorem first_order_theory_proof_complete_on_model_class : forall L
+    (T : theory L) (sigma : sentence L)
+    (C : first_order_model L -> Prop),
+  (forall m, first_order_models_theory m T ->
+    exists n,
+      C n /\
+      first_order_elementary_equiv m n /\
+      first_order_models_theory n T) ->
+  (forall m, C m -> first_order_models_theory m T ->
+    first_order_model_realize m sigma) ->
+  first_order_theory_provable T sigma.
+Proof.
+  intros L T sigma C normalize Hrestricted.
+  apply first_order_theory_proof_complete.
+  intros m Hm.
+  destruct (normalize m Hm) as [n [HC [Hequiv Hn]]].
+  apply (proj2 (first_order_elementary_equiv_realize Hequiv sigma)).
+  exact (Hrestricted n HC Hn).
 Qed.

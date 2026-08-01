@@ -3302,3 +3302,11 @@ Print Assumptions first_order_sentence_domains_fip.
 Print Assumptions first_order_ultrafilter_exists.
 Print Assumptions first_order_compactness_aux.
 Print Assumptions first_order_compactness.
+Print Assumptions first_order_model_realize_list_conj2.
+Print Assumptions first_order_raw_list_member_in.
+Check first_order_theory_explosion.
+Print Assumptions first_order_satisfiable_of_consistent.
+Print Assumptions first_order_satisfiable_iff_consistent.
+Print Assumptions first_order_theory_proof_complete.
+Print Assumptions first_order_theory_proof_complete_iff.
+Print Assumptions first_order_theory_proof_complete_on_model_class.
