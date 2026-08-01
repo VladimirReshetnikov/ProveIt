@@ -50,7 +50,7 @@ From FoundationModal Require Import
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
   HilbertWithRESystems HilbertWithRESymmetrySystems
   HilbertWithRENormal HilbertWithREEquivalences
-  KripkeSemantics KripkeHilbert CanonicalExtensions
+  KripkeSemantics KripkeHilbert CanonicalExtensions MaximalTheoryLaws
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
   GLUnnecessitation GLModalDisjunction GLIndependence QuasiNormalS QuasiNormalD
@@ -6058,6 +6058,42 @@ Check logic_neg_complement_bottom.
 Check logic_of_neg_complement.
 Check logic_neg_of_complement.
 
+(** Atom-polymorphic algebraic core of maximal consistent theories. *)
+Check generic_maximal_classical_theory.
+Check gmct_not_both.
+Check gmct_bottom_absent.
+Check gmct_neg_iff.
+Check gmct_tautology_mem.
+Check gmct_top_mem.
+Check gmct_imp_iff.
+Check gmct_negneg_iff.
+Check gmct_and_iff.
+Check gmct_or_iff.
+Check gmct_iff_iff.
+Check gmct_classical_truth_lemma.
+Check gmct_mdp.
+Check gmct_iff_congr.
+Check gmct_inclusion_extensional.
+Check gmct_neg_imp.
+Check gmct_neg_congr.
+Check gmct_list_conj_iff.
+Check gmct_list_conj2_iff.
+Check gmct_list_conj_members_iff.
+Check gmct_list_conj2_members_iff.
+Check gmct_list_disj2_iff.
+Check normal_mct_classical_logic.
+Check normal_mct_as_generic.
+Check normal_mct_top_mem.
+Check normal_mct_negneg_iff.
+Check normal_mct_and_iff.
+Check normal_mct_or_iff.
+Check normal_mct_iff_iff.
+Check normal_mct_list_conj_iff.
+Check normal_mct_list_conj2_iff.
+Check normal_mct_list_conj_members_iff.
+Check normal_mct_list_conj2_members_iff.
+Check normal_mct_list_disj2_iff.
+
 (** Schema-generic finite consistency and complement-complete contexts over
     natural-number atoms. *)
 Check finite_consistent_insert_iff.
@@ -7552,6 +7588,23 @@ Print Assumptions logic_complement_bottom.
 Print Assumptions logic_neg_complement_bottom.
 Print Assumptions logic_of_neg_complement.
 Print Assumptions logic_neg_of_complement.
+Print Assumptions gmct_not_both.
+Print Assumptions gmct_neg_iff.
+Print Assumptions gmct_imp_iff.
+Print Assumptions gmct_and_iff.
+Print Assumptions gmct_or_iff.
+Print Assumptions gmct_classical_truth_lemma.
+Print Assumptions gmct_inclusion_extensional.
+Print Assumptions gmct_neg_congr.
+Print Assumptions gmct_list_conj_iff.
+Print Assumptions gmct_list_conj2_iff.
+Print Assumptions gmct_list_conj_members_iff.
+Print Assumptions gmct_list_conj2_members_iff.
+Print Assumptions gmct_list_disj2_iff.
+Print Assumptions normal_mct_classical_logic.
+Print Assumptions normal_mct_and_iff.
+Print Assumptions normal_mct_list_conj_iff.
+Print Assumptions normal_mct_list_conj_members_iff.
 Print Assumptions normal_derives_complement_bottom.
 Print Assumptions normal_derives_neg_complement_bottom.
 Print Assumptions normal_derives_of_neg_complement.
