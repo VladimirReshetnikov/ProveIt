@@ -337,6 +337,68 @@ Proof.
       hsigma hpi).
 Qed.
 
+(** Preserve a rank-zero decision while changing its two payloads from the
+    native fixed certificates to the canonical global applications.  A
+    single PA implication is compiled, so the two alternatives remain in
+    one represented disjunction and choose only one common witness
+    extension.  This is strictly weaker than the paired transport above. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalApplicationDecision_of_nativeEvidenceDecision_under_prefix
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall sourceWitnessList sourceContext prefix decisionRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawFormulaOrCode M
+      (rawQuotedFormulaCode M dynamicTruthZeroSigmaEvidenceFormula)
+      (rawQuotedFormulaCode M dynamicTruthZeroPiEvidenceFormula))
+    decisionRoot ->
+  exists targetWitnessList targetContext applicationDecisionRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawFormulaOrCode M
+        (rawQuotedFormulaCode M
+          dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+        (rawQuotedFormulaCode M
+          dynamicTruthZeroInputGlobalPiApplicationFormula))
+      applicationDecisionRoot.
+Proof.
+  intros M hPA translation hagreement sourceWitnessList sourceContext
+    prefix decisionRoot hprefix hsource hdecision.
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M
+      dynamicTruthZeroNativeEvidenceDecisionFormula)
+    decisionRoot) in hdecision.
+  destruct
+    (raw_codedPALocalProofOf_target_of_PA_implication_under_prefix
+      M hPA translation hagreement sourceWitnessList sourceContext prefix
+      dynamicTruthZeroNativeEvidenceDecisionFormula
+      dynamicTruthZeroCanonicalApplicationDecisionFormula decisionRoot
+      hprefix hsource
+      PA_proves_dynamicTruthZeroNativeEvidenceToCanonicalApplicationDecisionFormula
+      hdecision)
+    as (targetWitnessList & targetContext & applicationDecisionRoot &
+      htargetWitnessed & hincluded & happlicationDecision).
+  exists targetWitnessList, targetContext, applicationDecisionRoot.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation targetContext prefix)
+    (rawFormulaOrCode M
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalPiApplicationFormula))
+    applicationDecisionRoot) in happlicationDecision.
+  exact happlicationDecision.
+Qed.
+
 (** Empty-prefix specialization for clients whose application roots already
     live directly on a witnessed PA context. *)
 Corollary

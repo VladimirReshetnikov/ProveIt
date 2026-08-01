@@ -842,5 +842,59 @@ Proof.
     dynamicTruthZeroInputGlobalPiApplicationNativeBackwardFormula_raw_valid.
 Qed.
 
+(** The local decision field exposes only one of the two native
+    certificates.  Transporting that disjunction branch-by-branch is more
+    useful than first demanding both certificates: it preserves exactly the
+    information supplied by rank-zero totality. *)
+Definition dynamicTruthZeroNativeEvidenceDecisionFormula : formula :=
+  pOr dynamicTruthZeroSigmaEvidenceFormula
+    dynamicTruthZeroPiEvidenceFormula.
+
+Definition dynamicTruthZeroCanonicalApplicationDecisionFormula : formula :=
+  pOr dynamicTruthZeroInputGlobalSigmaApplicationFormula
+    dynamicTruthZeroInputGlobalPiApplicationFormula.
+
+Definition
+    dynamicTruthZeroNativeEvidenceToCanonicalApplicationDecisionFormula
+    : formula :=
+  pImp dynamicTruthZeroNativeEvidenceDecisionFormula
+    dynamicTruthZeroCanonicalApplicationDecisionFormula.
+
+(** This validity proof deliberately consumes only the two one-polarity
+    semantic equivalences.  In particular, it does not strengthen a local
+    decision into a pair of certificates. *)
+Lemma
+    dynamicTruthZeroNativeEvidenceToCanonicalApplicationDecisionFormula_raw_valid
+    : forall (M : RawPAModel), RawPASatisfies M -> forall e,
+  raw_formula_sat M e
+    dynamicTruthZeroNativeEvidenceToCanonicalApplicationDecisionFormula.
+Proof.
+  intros M _hPA e.
+  unfold
+    dynamicTruthZeroNativeEvidenceToCanonicalApplicationDecisionFormula,
+    dynamicTruthZeroNativeEvidenceDecisionFormula,
+    dynamicTruthZeroCanonicalApplicationDecisionFormula.
+  cbn [raw_formula_sat].
+  intros [hsigma | hpi].
+  - left.
+    exact (proj2
+      (raw_sat_dynamicTruthZeroInputGlobalSigmaApplicationFormula_native_iff
+        M e) hsigma).
+  - right.
+    exact (proj2
+      (raw_sat_dynamicTruthZeroInputGlobalPiApplicationFormula_native_iff
+        M e) hpi).
+Qed.
+
+Theorem
+    PA_proves_dynamicTruthZeroNativeEvidenceToCanonicalApplicationDecisionFormula
+    : Formula.BProv Formula.Ax_s nil
+      dynamicTruthZeroNativeEvidenceToCanonicalApplicationDecisionFormula.
+Proof.
+  apply PA_proves_open_formula_of_raw_valid.
+  exact
+    dynamicTruthZeroNativeEvidenceToCanonicalApplicationDecisionFormula_raw_valid.
+Qed.
+
 End
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalTraceExactification.

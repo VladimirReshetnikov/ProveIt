@@ -411,6 +411,39 @@ Arguments
   RawDynamicTruthNativeLocalZeroGrowingEvidenceDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources
   M hPA translation callerPrefix : clear implicits.
 
+(** The same decision after replacing each native certificate by its
+    canonical permuted global application.  Keeping a disjunction here is
+    essential: normalized rank-zero totality proves one polarity, whereas
+    the older application-pair boundary asks for both. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (translation : RawCodedTemplateTranslation M)
+    (callerPrefix : TemplateContext) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists targetWitnessList targetContext decisionRoot,
+      RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+      RawContextListIncluded M baseContext targetContext /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M
+          (rawTemplateContextCodeOnTail
+            (rawBottomDirectStructuralTemplateTranslation M hPA)
+            targetContext callerPrefix))
+        (rawFormulaOrCode M
+          (rawQuotedFormulaCode M
+            dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+          (rawQuotedFormulaCode M
+            dynamicTruthZeroInputGlobalPiApplicationFormula)) decisionRoot.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+  M hPA translation callerPrefix : clear implicits.
+
 (** Independently growing atomic-adequacy endpoint. *)
 Definition
     RawDynamicTruthNativeLocalZeroCanonicalAtomicEndpointCompilerOnCanonicalNormalizedResources
@@ -950,6 +983,112 @@ Proof.
     exact (hendpointTargetIncluded member
       (hbaseEndpointIncluded member hmember)).
   - exact hdecision.
+Qed.
+
+(** Compile the one-disjunction PA transport at the exact witnessed endpoint
+    selected by the evidence-decision compiler.  The predecessor-state and
+    caller prefixes are combined only while invoking the generic transport;
+    the public result is folded back to the joint-state presentation. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_evidence_decision
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M) callerPrefix,
+  RawDynamicTruthNativeLocalZeroGrowingEvidenceDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix.
+Proof.
+  intros M hPA translation callerPrefix hcompiler
+    tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace.
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (decisionWitnessList & decisionContext & decisionRoot &
+      hdecisionWitnessed & hbaseDecisionIncluded & hdecision).
+  set (combinedPrefix :=
+    coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix).
+  assert (hdecisionCombined : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawBottomDirectStructuralTemplateTranslation M hPA)
+        decisionContext combinedPrefix)
+      (rawFormulaOrCode M
+        (rawQuotedFormulaCode M dynamicTruthZeroSigmaEvidenceFormula)
+        (rawQuotedFormulaCode M dynamicTruthZeroPiEvidenceFormula))
+      decisionRoot).
+  {
+    unfold combinedPrefix.
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      decisionContext callerPrefix).
+    unfold rawDynamicTruthZeroSigmaEvidenceCode,
+      rawDynamicTruthZeroPiEvidenceCode in hdecision.
+    exact hdecision.
+  }
+  destruct
+    (raw_dynamicTruthZeroCanonicalApplicationDecision_of_nativeEvidenceDecision_under_prefix
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      decisionWitnessList decisionContext combinedPrefix decisionRoot
+      (raw_directStructuralTemplatePrefix_atomically_adequate M hPA
+        (rawBottomTemplateDirectStructuralInputs M hPA) combinedPrefix)
+      hdecisionWitnessed hdecisionCombined)
+    as (targetWitnessList & targetContext & applicationDecisionRoot &
+      htargetWitnessed & hdecisionTargetIncluded & happlicationDecision).
+  exists targetWitnessList, targetContext, applicationDecisionRoot.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hdecisionTargetIncluded member
+      (hbaseDecisionIncluded member hmember)).
+  - unfold combinedPrefix in happlicationDecision.
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      targetContext callerPrefix) in happlicationDecision.
+    exact happlicationDecision.
+Qed.
+
+(** Direct composition with the arithmetic endpoint. *)
+Corollary
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_endpoint
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M) callerPrefix,
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix.
+Proof.
+  intros M hPA translation callerPrefix hendpoint.
+  apply
+    (raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_evidence_decision
+      M hPA translation callerPrefix).
+  exact
+    (raw_dynamicTruthNativeLocalZeroGrowingEvidenceDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_endpoint
+      M hPA translation callerPrefix hendpoint).
+Qed.
+
+(** At the direct strong-step shell the endpoint itself is already supplied
+    by two literal caller assumptions, so the canonical application choice
+    has no remaining arithmetic or local-field premise. *)
+Corollary
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M) callerPrefix,
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix.
+Proof.
+  intros M hPA translation callerPrefix hrestrictedIn hruleIn.
+  apply
+    (raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationDecisionCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_endpoint
+      M hPA translation callerPrefix).
+  exact
+    (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions
+      M hPA translation callerPrefix hrestrictedIn hruleIn).
 Qed.
 
 (** Canonical rank-zero clients need only produce the two genuinely logical
