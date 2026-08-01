@@ -5359,19 +5359,27 @@ without the global traversal hypotheses, do not say that the tables encode
 the canonical truth construction.  Treating this open law as the remaining
 PA theorem would therefore hide rather than solve the traversal obligation.
 
-The native zero trace has also been normalized to the exact global data that
-the honest smaller compiler must use.  Its adequate orbit at level one
-inverts to
-one successor edge whose predecessor is forced by the zero orbit equation to
-be the two literal globally wrapped rank-zero base quotations.  The inversion
-retains root closure of both base predicates and atomic adequacy of both
-level-one outputs.  Thus the remaining zero compiler no longer needs to
-inspect an opaque orbit or choose a predecessor pair: it starts from a fixed
-root-closed base, its actual successor edge, and adequate successor outputs.
-Its output is now factored into exactly four direct roots—atomic adequacy of
-the current formula, the zero-level Sigma/Pi domain disjunction, and the two
-level-one evidence formulas.  The generic direct-evidence handoff constructs
-admissibility on a common witnessed extension.  The sharpest canonical
-compact headline uses this guarded compiler as its first coordinate; the
-other seven coordinates remain the permuted-append strong-step resources,
-the reduced staged remainder, and five linked staged implication compilers.
+The native zero trace can also be normalized to useful first-step global
+data.  Its adequate orbit at level one inverts to one successor edge whose
+predecessor is forced by the zero orbit equation to be the two literal
+globally wrapped rank-zero base quotations.  The inversion retains root
+closure of both base predicates and atomic adequacy of both level-one
+outputs.  This gives a valid stronger one-step adapter, but it is not the
+headline premise: the original trace additionally carries the next global
+successor, its represented numeral substitution, and both final ternary
+applications, and discarding those facts would force the concrete compiler
+to reconstruct information already available at its call site.
+
+The headline therefore retains the complete native zero trace while
+factoring its output into exactly four direct roots—atomic adequacy of the
+current formula, the zero-level Sigma/Pi domain disjunction, and the two
+level-one evidence formulas.  A shared direct-evidence handoff constructs
+admissibility on a common witnessed extension and is reused by both the full
+trace and stronger one-step interfaces.  The full trace is normalized at the
+literal carrier zero, eliminating the redundant arbitrary-level parameter
+and equality while preserving both successors, both substitutions, and both
+applications.  A formal adapter proves that every one-step compiler is also
+a full-trace compiler, so this change strictly relaxes rather than replaces
+the earlier boundary.  The other seven coordinates remain
+the permuted-append strong-step resources, the reduced staged remainder, and
+five linked staged implication compilers.
