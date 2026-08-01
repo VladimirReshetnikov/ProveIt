@@ -970,6 +970,13 @@ Record RawDynamicTruthNativeLocalZeroNormalizedResourcesAt
   rawDynamicTruthNativeLocalZeroNormalized_fields :
     RawDynamicTruthNativeLocalZeroCurrentFieldRootsAt M
       witnessList baseContext;
+  rawDynamicTruthNativeLocalZeroNormalized_localProjections :
+    exists sourceRoot,
+      RawDynamicTruthLocalDecisionExclusiveProjectedRootsAt M baseContext
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M) sourceRoot;
   rawDynamicTruthNativeLocalZeroNormalized_helpers :
     RawFixedPAHelperBatchLocalProofs M translation baseContext
       rawDynamicTruthReadyAndAllMixedQFPAHelpers helperRoots;
@@ -1010,12 +1017,36 @@ Proof.
       currentLocal currentCrossLevel currentShift currentSubstitution
       currentAxiomSoundness currentFinal witnessList baseContext helperRoots
       hfieldSource hlevel) as hfields.
+  pose proof hfields as hfieldsForRecord.
+  destruct hfields as
+    [hfieldsWitnessed (localRoot & hlocalField)
+      hcrossField hshiftField hsubstitutionField haxiomField hfinalField].
+  assert (hzeroLocalField : RawCodedPALocalProofOf M baseContext
+      (rawDynamicTruthLocalDecisionExclusiveFieldCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M)) localRoot).
+  {
+    rewrite raw_dynamicTruthZeroLocalDecisionExclusiveFieldCode
+      by exact hPA.
+    exact hlocalField.
+  }
+  pose proof
+    (raw_dynamicTruthLocalDecisionExclusiveProjectedRootsAt_of_local
+      M hPA baseContext
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M)
+      localRoot hzeroLocalField) as hlocalProjections.
   destruct hcurrent as
-    [_ (localRoot & crossLevelRoot & shiftRoot & substitutionRoot &
+    [_ (storedLocalRoot & crossLevelRoot & shiftRoot & substitutionRoot &
       axiomSoundnessRoot & finalRoot & hwitnessed & hlocal & hcrossLevel &
       hshift & hsubstitution & haxiomSoundness & hfinal & hhelpers)].
   constructor.
-  - exact hfields.
+  - exact hfieldsForRecord.
+  - exists localRoot. exact hlocalProjections.
   - exact hhelpers.
   - exact hstate.
 Qed.

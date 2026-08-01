@@ -5407,9 +5407,12 @@ lookups.  Their compiler needs only realizability of the witnessed tail, so
 an adapter installs them unconditionally before invoking the residual
 traversal completion.  The headline now packages these projections with the
 six literal current-field roots and the ordered forty-helper proof batch in a
-single normalized resource record.  Its residual sees the exact rank-zero
-full trace directly; arbitrary current field codes, five spliced graph
-witnesses, and the carrier-valued level equation are eliminated by one
+single normalized resource record.  That record also carries the two exact
+decision/exclusivity projections of the local base theorem, already aligned
+with the four literal zero leaves, so later work need not repeat quotation
+alignment or conjunction elimination.  Its residual sees the exact
+rank-zero full trace directly; arbitrary current field codes, five spliced
+graph witnesses, and the carrier-valued level equation are eliminated by one
 adapter before proof construction begins.  The other seven coordinates remain
 the permuted-append strong-step resources, the reduced staged remainder, and
 five linked staged implication compilers.
