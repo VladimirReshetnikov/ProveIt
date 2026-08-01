@@ -7,8 +7,14 @@ Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 
 Check rawDynamicTruthLocalAtomicAdequacyCode.
 Check rawDynamicTruthLocalAssignmentDefinedCode.
+Check rawDynamicTruthAdmissibleCodeOf.
+Check RawDynamicTruthAdmissibilityCodeComponentsAt.
+Check
+  raw_codedPALocalProofOf_dynamicTruthAdmissibleCodeOf_components.
 Check RawDynamicTruthLocalAdmissibilityComponentsAt.
 Check raw_codedPALocalProofOf_dynamicTruthLocalAdmissible_of_components.
 
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthAdmissibleCodeOf_components.
 Print Assumptions
   raw_codedPALocalProofOf_dynamicTruthLocalAdmissible_of_components.

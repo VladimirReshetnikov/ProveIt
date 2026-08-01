@@ -58,6 +58,69 @@ Definition rawDynamicTruthLocalAssignmentDefinedCode
 Arguments rawDynamicTruthLocalAtomicAdequacyCode M : clear implicits.
 Arguments rawDynamicTruthLocalAssignmentDefinedCode M : clear implicits.
 
+(** Logical assembly does not depend on which free PA terms occupy the
+    formula and assignment coordinates.  Exposing the two quoted leaf codes
+    makes the conjunction compiler reusable after capture-avoiding
+    instantiation beneath unrelated binders. *)
+Definition rawDynamicTruthAdmissibleCodeOf
+    (M : RawPAModel) (atomicCode assignmentCode sigmaDomain piDomain : M)
+    : M :=
+  rawFormulaAndCode M atomicCode
+    (rawFormulaAndCode M assignmentCode
+      (rawFormulaOrCode M sigmaDomain piDomain)).
+
+Arguments rawDynamicTruthAdmissibleCodeOf
+  M atomicCode assignmentCode sigmaDomain piDomain : clear implicits.
+
+Record RawDynamicTruthAdmissibilityCodeComponentsAt
+    (M : RawPAModel)
+    (context atomicCode assignmentCode sigmaDomain piDomain : M) : Prop := {
+  rawDynamicTruthAdmissibilityCodeComponents_atomic : exists root,
+    RawCodedPALocalProofOf M context atomicCode root;
+  rawDynamicTruthAdmissibilityCodeComponents_assignment : exists root,
+    RawCodedPALocalProofOf M context assignmentCode root;
+  rawDynamicTruthAdmissibilityCodeComponents_domain : exists root,
+    RawCodedPALocalProofOf M context
+      (rawFormulaOrCode M sigmaDomain piDomain) root
+}.
+
+Arguments RawDynamicTruthAdmissibilityCodeComponentsAt
+  M context atomicCode assignmentCode sigmaDomain piDomain
+  : clear implicits.
+
+(** General conjunction assembly for already identified leaf codes. *)
+Theorem raw_codedPALocalProofOf_dynamicTruthAdmissibleCodeOf_components :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+      context atomicCode assignmentCode sigmaDomain piDomain,
+  RawDynamicTruthAdmissibilityCodeComponentsAt M context
+    atomicCode assignmentCode sigmaDomain piDomain ->
+  exists root,
+    RawCodedPALocalProofOf M context
+      (rawDynamicTruthAdmissibleCodeOf M
+        atomicCode assignmentCode sigmaDomain piDomain) root.
+Proof.
+  intros M hPA context atomicCode assignmentCode sigmaDomain piDomain
+    [[atomicRoot hatomic] [assignmentRoot hassignment]
+      [domainRoot hdomain]].
+  pose proof (raw_codedPALocalProofOf_andI M hPA context
+    assignmentCode (rawFormulaOrCode M sigmaDomain piDomain)
+    assignmentRoot domainRoot hassignment hdomain) as hassignmentAndDomain.
+  lazymatch type of hassignmentAndDomain with
+  | RawCodedPALocalProofOf _ _ _ ?assignmentAndDomainRoot =>
+      pose proof (raw_codedPALocalProofOf_andI M hPA context
+        atomicCode
+        (rawFormulaAndCode M assignmentCode
+          (rawFormulaOrCode M sigmaDomain piDomain))
+        atomicRoot assignmentAndDomainRoot
+        hatomic hassignmentAndDomain) as hadmissible;
+      exists (rawProofAndIRoot M context atomicCode
+        (rawFormulaAndCode M assignmentCode
+          (rawFormulaOrCode M sigmaDomain piDomain))
+        atomicRoot assignmentAndDomainRoot);
+      exact hadmissible
+  end.
+Qed.
+
 (** The independently produced represented roots.  Keeping this record in
     [Prop] permits callers to eliminate existential proof-code choices while
     constructing the final [Prop]-valued logical-roots package. *)
@@ -89,32 +152,19 @@ Theorem raw_codedPALocalProofOf_dynamicTruthLocalAdmissible_of_components :
       (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain) root.
 Proof.
   intros M hPA context sigmaDomain piDomain
-    [[atomicRoot hatomic] [assignmentRoot hassignment]
-      [domainRoot hdomain]].
-  pose proof (raw_codedPALocalProofOf_andI M hPA context
-    (rawDynamicTruthLocalAssignmentDefinedCode M)
-    (rawFormulaOrCode M sigmaDomain piDomain)
-    assignmentRoot domainRoot hassignment hdomain) as hassignmentAndDomain.
-  lazymatch type of hassignmentAndDomain with
-  | RawCodedPALocalProofOf _ _ _ ?assignmentAndDomainRoot =>
-      pose proof (raw_codedPALocalProofOf_andI M hPA context
-        (rawDynamicTruthLocalAtomicAdequacyCode M)
-        (rawFormulaAndCode M
-          (rawDynamicTruthLocalAssignmentDefinedCode M)
-          (rawFormulaOrCode M sigmaDomain piDomain))
-        atomicRoot assignmentAndDomainRoot
-        hatomic hassignmentAndDomain) as hadmissible;
-      exists (rawProofAndIRoot M context
-        (rawDynamicTruthLocalAtomicAdequacyCode M)
-        (rawFormulaAndCode M
-          (rawDynamicTruthLocalAssignmentDefinedCode M)
-          (rawFormulaOrCode M sigmaDomain piDomain))
-        atomicRoot assignmentAndDomainRoot);
-      unfold rawDynamicTruthLocalAdmissibleCode,
-        rawDynamicTruthLocalAtomicAdequacyCode,
-        rawDynamicTruthLocalAssignmentDefinedCode;
-      exact hadmissible
-  end.
+    [hatomic hassignment hdomain].
+  change (exists root, RawCodedPALocalProofOf M context
+    (rawDynamicTruthAdmissibleCodeOf M
+      (rawDynamicTruthLocalAtomicAdequacyCode M)
+      (rawDynamicTruthLocalAssignmentDefinedCode M)
+      sigmaDomain piDomain) root).
+  apply
+    (raw_codedPALocalProofOf_dynamicTruthAdmissibleCodeOf_components
+      M hPA context
+      (rawDynamicTruthLocalAtomicAdequacyCode M)
+      (rawDynamicTruthLocalAssignmentDefinedCode M)
+      sigmaDomain piDomain).
+  constructor; assumption.
 Qed.
 
 End PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.

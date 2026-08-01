@@ -146,6 +146,95 @@ Proof.
   vm_compute. repeat split; lia.
 Qed.
 
+(** The local law is universally ordered as formula, assignment code, and
+    assignment step.  In a predecessor body these coordinates are the
+    common child [#0] and the two outer assignment coordinates [#4,#3].
+    Naming every opened component prevents later bridge code from silently
+    reverting to the unrelated predecessor row variables [#2,#1]. *)
+Definition coqDynamicTruthPredecessorLocalSigmaDomainTemplate
+    : TemplateFormula :=
+  templateAll3Open coqDynamicTruthLocalSigmaDomainTemplate
+    (ttVar 0) (ttVar 4) (ttVar 3).
+
+Definition coqDynamicTruthPredecessorLocalPiDomainTemplate
+    : TemplateFormula :=
+  templateAll3Open coqDynamicTruthLocalPiDomainTemplate
+    (ttVar 0) (ttVar 4) (ttVar 3).
+
+Definition coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate
+    : TemplateFormula :=
+  templateAll3Open coqDynamicTruthLocalSigmaEvidenceTemplate
+    (ttVar 0) (ttVar 4) (ttVar 3).
+
+Definition coqDynamicTruthPredecessorLocalPiEvidenceTemplate
+    : TemplateFormula :=
+  templateAll3Open coqDynamicTruthLocalPiEvidenceTemplate
+    (ttVar 0) (ttVar 4) (ttVar 3).
+
+Definition coqDynamicTruthPredecessorLocalAtomicAdequacyTemplate
+    : TemplateFormula :=
+  templateAll3Open
+    (embedPAFormula
+      (codedFormulaAtomicallyAdequateTermAt (tVar 2)))
+    (ttVar 0) (ttVar 4) (ttVar 3).
+
+Definition coqDynamicTruthPredecessorLocalAssignmentDefinedTemplate
+    : TemplateFormula :=
+  templateAll3Open
+    (embedPAFormula
+      (codedAssignmentDefinedThroughTermAt
+        (tVar 1) (tVar 0) (tVar 2)))
+    (ttVar 0) (ttVar 4) (ttVar 3).
+
+Definition coqDynamicTruthPredecessorLocalAdmissibleTemplate
+    : TemplateFormula :=
+  templateAll3Open coqDynamicTruthLocalAdmissibleTemplate
+    (ttVar 0) (ttVar 4) (ttVar 3).
+
+Definition coqDynamicTruthPredecessorLocalExclusiveBodyTemplate
+    : TemplateFormula :=
+  templateAll3Open coqDynamicTruthLocalExclusiveBodyTemplate
+    (ttVar 0) (ttVar 4) (ttVar 3).
+
+Lemma coqDynamicTruthPredecessorLocalAtomicAdequacyTemplate_view :
+  coqDynamicTruthPredecessorLocalAtomicAdequacyTemplate =
+  embedPAFormula (codedFormulaAtomicallyAdequateTermAt (tVar 0)).
+Proof. reflexivity. Qed.
+
+Lemma coqDynamicTruthPredecessorLocalAssignmentDefinedTemplate_view :
+  coqDynamicTruthPredecessorLocalAssignmentDefinedTemplate =
+  embedPAFormula
+    (codedAssignmentDefinedThroughTermAt
+      (tVar 4) (tVar 3) (tVar 0)).
+Proof. reflexivity. Qed.
+
+Lemma coqDynamicTruthPredecessorLocalAdmissibleTemplate_shape :
+  coqDynamicTruthPredecessorLocalAdmissibleTemplate =
+  tfAnd coqDynamicTruthPredecessorLocalAtomicAdequacyTemplate
+    (tfAnd coqDynamicTruthPredecessorLocalAssignmentDefinedTemplate
+      (tfOr coqDynamicTruthPredecessorLocalSigmaDomainTemplate
+        coqDynamicTruthPredecessorLocalPiDomainTemplate)).
+Proof. reflexivity. Qed.
+
+(** Opening is homomorphic over the implication/conjunction structure, so
+    the predecessor body retains the same logical skeleton with all five
+    leaves instantiated coherently. *)
+Lemma coqDynamicTruthPredecessorLocalExclusiveBodyTemplate_shape :
+  coqDynamicTruthPredecessorLocalExclusiveBodyTemplate =
+  tfImp coqDynamicTruthPredecessorLocalAdmissibleTemplate
+    (tfImp coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate
+      (tfImp coqDynamicTruthPredecessorLocalPiEvidenceTemplate tfBot)).
+Proof.
+  reflexivity.
+Qed.
+
+Lemma coqDynamicTruthPredecessorLocalExclusiveBodyTemplate_scoped :
+  TemplateFormulaScoped 5
+    coqDynamicTruthPredecessorLocalExclusiveBodyTemplate.
+Proof.
+  vm_compute. repeat split; lia.
+Qed.
+
 (** ------------------------------------------------------------------
     Total routing of the two opaque ternary atoms. *)
 

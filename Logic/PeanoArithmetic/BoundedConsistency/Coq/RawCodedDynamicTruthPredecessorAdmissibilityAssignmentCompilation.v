@@ -12,6 +12,9 @@ From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
+  CodedSyntax
+  RawCodedAssignment
+  RawCodedFixedLevelTruthTotality
   RawCodedSyntaxConstructors
   RawCodedContextLists
   RawCodedRestrictedPAProof
@@ -39,6 +42,9 @@ Import PA.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
+Import PABoundedCodedSyntax.
+Import PABoundedRawCodedAssignment.
+Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
@@ -59,6 +65,34 @@ Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
+
+(** Exact fixed leaves after the local formula/assignment theorem is opened
+    inside the predecessor body's Sigma-index, Pi-index, and child binders. *)
+Definition rawDynamicTruthPredecessorLocalAtomicAdequacyCode
+    (M : RawPAModel) : M :=
+  rawNumeralValue M
+    (formulaCode (codedFormulaAtomicallyAdequateTermAt (tVar 0))).
+
+Definition rawDynamicTruthPredecessorLocalAssignmentDefinedCode
+    (M : RawPAModel) : M :=
+  rawNumeralValue M
+    (formulaCode
+      (codedAssignmentDefinedThroughTermAt
+        (tVar 4) (tVar 3) (tVar 0))).
+
+Definition rawDynamicTruthPredecessorLocalAdmissibleCode
+    (M : RawPAModel) (sigmaDomain piDomain : M) : M :=
+  rawDynamicTruthAdmissibleCodeOf M
+    (rawDynamicTruthPredecessorLocalAtomicAdequacyCode M)
+    (rawDynamicTruthPredecessorLocalAssignmentDefinedCode M)
+    sigmaDomain piDomain.
+
+Arguments rawDynamicTruthPredecessorLocalAtomicAdequacyCode M
+  : clear implicits.
+Arguments rawDynamicTruthPredecessorLocalAssignmentDefinedCode M
+  : clear implicits.
+Arguments rawDynamicTruthPredecessorLocalAdmissibleCode
+  M sigmaDomain piDomain : clear implicits.
 
 (** Both temporary assumptions are embedded ordinary PA formulae, so PA
     agreement turns their translated codes into standard quotation and the
@@ -145,6 +179,49 @@ Proof.
     (rawStandardPAAxiomWitnessPrefixContextCode M
       witnesses baseContext) prefix) in hproof.
   unfold rawDynamicTruthLocalAssignmentDefinedCode.
+  exact hproof.
+Qed.
+
+(** Correct child-coordinate form of the preceding compiler.  It is kept as
+    a separate endpoint while downstream predecessor bridges migrate away
+    from the historical local-field layout. *)
+Theorem
+    raw_dynamicTruthPredecessorChildAssignmentRoot_on_witnessed_extension_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) root,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses baseContext) prefix))
+      (rawDynamicTruthPredecessorLocalAssignmentDefinedCode M) root.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    prefix hprefix hbase.
+  destruct
+    (raw_codedPALocalProofOf_assignmentDefinedThrough_predecessor_child_numeral_on_witnessed_tail_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix)
+      (raw_dynamicTruthPredecessorStateTemplateContext_app_atomically_adequate
+        M hPA translation hagreement prefix hprefix)
+      hbase)
+    as (witnesses & root & hextended & hproof).
+  exists witnesses, root. split; [exact hextended |].
+  rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+    M translation hagreement
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext) prefix) in hproof.
+  unfold rawDynamicTruthPredecessorLocalAssignmentDefinedCode.
   exact hproof.
 Qed.
 
