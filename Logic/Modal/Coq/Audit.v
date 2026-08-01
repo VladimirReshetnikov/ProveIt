@@ -56,7 +56,7 @@ From FoundationModal Require Import
   GLUnnecessitation GLModalDisjunction GLIndependence QuasiNormalS QuasiNormalD
   GLPlusBoxBot
   KHenIncompleteness GLAlternativeSystems HilbertRuleSystemBridges
-  CanonicalGrz StructuralFrames FiniteCWFFrameRank
+  CanonicalGrz StructuralFrames TreeFinite FiniteCWFFrameRank
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 JerabekBoxdot CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
@@ -6320,6 +6320,26 @@ Check fin_le_finite.
 Check nat_lt_validates_Z.
 Check nat_le_validates_Dum.
 Check trans_tree_is_tree.
+Check tree_step_snoc.
+Check tree_immediate_snoc_of_eq.
+Check rooted_path_nodes_length.
+Check rooted_path_nodes_end.
+Check rooted_path_nodes_start.
+Check tree_nodes_injective.
+Check tree_immediate_nodes_iff.
+Check tree_rel_iter_nodes_iff.
+Check trans_tree_rel_nodes_iff.
+Check rooted_path_nodes_nodup.
+Check lists_exact.
+Check lists_upto.
+Check lists_exact_complete.
+Check lists_upto_complete.
+Check tree_nodes_realized_unique.
+Check tree_unravelling_cover.
+Check tree_unravelling_cover_complete.
+Check trans_tree_unravelling_finite.
+Check frame_is_finite_tree.
+Check trans_tree_is_finite_tree.
 Check trans_tree_unravelling_truth_at_root.
 Check rank_eq_iff_iter_terminal.
 Check rank_lt_iff_satisfies_box_bottom.
@@ -7605,15 +7625,28 @@ Print Assumptions extend_root_T_conjunction_witness.
     extensionality and proof irrelevance; duplicate-free bounded-subtype
     enumeration uses only proof irrelevance.  Filtering a finite cover into a
     point-generated subtype uses informative excluded middle, classical
-    description, and proof irrelevance.  Cluster classification, linear-frame
-    semantics, and corrected balloon maximality use classical propositional
-    logic. *)
+    description, and proof irrelevance.  The finite tree cover likewise uses
+    definite description to recover the unique intrinsic path represented by
+    each realized node list; its length bound and relation normal forms are
+    constructive.  Cluster classification, linear-frame semantics, and
+    corrected balloon maximality use classical propositional logic. *)
 Print Assumptions point_generated_frame_finite.
 Print Assumptions cluster_shape_trichotomy.
 Print Assumptions skeleton_partial_order.
 Print Assumptions skeleton_finite.
 Print Assumptions bounded_nat_finite_cover.
 Print Assumptions nat_lt_validates_Z.
+Print Assumptions tree_nodes_injective.
+Print Assumptions tree_immediate_nodes_iff.
+Print Assumptions tree_rel_iter_nodes_iff.
+Print Assumptions trans_tree_rel_nodes_iff.
+Print Assumptions rooted_path_nodes_nodup.
+Print Assumptions lists_exact_complete.
+Print Assumptions lists_upto_complete.
+Print Assumptions tree_nodes_realized_unique.
+Print Assumptions tree_unravelling_cover_complete.
+Print Assumptions trans_tree_unravelling_finite.
+Print Assumptions trans_tree_is_finite_tree.
 Print Assumptions trans_tree_unravelling_truth_at_root.
 Print Assumptions rank_eq_iff_iter_terminal.
 Print Assumptions point_generated_rank_spec.
