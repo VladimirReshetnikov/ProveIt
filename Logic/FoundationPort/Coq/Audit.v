@@ -53,6 +53,7 @@ From Foundation.FirstOrder.Completeness Require Import CanonicalModel.
 From Foundation.FirstOrder.Completeness Require Import CounterModel.
 From Foundation.FirstOrder.Order Require Import Le.
 From Foundation.SecondOrder.Syntax Require Import Formula Rew.
+From Foundation.SecondOrder Require Import Semantics.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -3811,3 +3812,35 @@ Print Assumptions second_order_bmap_neg.
 Print Assumptions second_order_bmap_id.
 Print Assumptions second_order_bmap_comp.
 Print Assumptions second_order_bmap_rewrite_terms.
+Check second_order_eval_aux.
+Check second_order_eval.
+Print Assumptions second_order_eval_rel.
+Print Assumptions second_order_eval_nrel.
+Print Assumptions second_order_eval_bpred.
+Print Assumptions second_order_eval_nbpred.
+Print Assumptions second_order_eval_fpred.
+Print Assumptions second_order_eval_nfpred.
+Print Assumptions second_order_eval_verum.
+Print Assumptions second_order_eval_falsum.
+Print Assumptions second_order_eval_and.
+Print Assumptions second_order_eval_or.
+Print Assumptions second_order_eval_all0.
+Print Assumptions second_order_eval_exs0.
+Print Assumptions second_order_eval_all1.
+Print Assumptions second_order_eval_exs1.
+Print Assumptions classical_not_forall_iff_exists_not.
+Print Assumptions classical_not_guarded_all_iff.
+Print Assumptions second_order_eval_neg.
+Print Assumptions second_order_eval_imp.
+Print Assumptions second_order_eval_iff.
+Check second_order_model.
+Check second_order_model_of.
+Check second_order_model_realize.
+Print Assumptions second_order_model_of_realize.
+Print Assumptions second_order_model_realize_verum.
+Print Assumptions second_order_model_realize_falsum.
+Print Assumptions second_order_model_realize_neg.
+Print Assumptions second_order_model_realize_and.
+Print Assumptions second_order_model_realize_or.
+Print Assumptions second_order_model_realize_imp.
+Print Assumptions second_order_model_realize_iff.
