@@ -21,7 +21,11 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofComposition
+  RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofWitnessedContextMerge
+  RawCodedPALocalProofExistentialEliminationChain
+  RawCodedPALocalProofUniversalIntroductionChain
   RawCodedLtSuccCasesProofCompilation
   RawCodedPAGrowingTemplateConjunction
   RawCodedTemplateSyntax
@@ -31,6 +35,9 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateBottomDirectStructuralInputs
   RawCodedTemplatePAEmbedding
+  RawCodedFourStateTableAppendProofCompilation
+  RawCodedFourStateTableAppendExistentialElimination
+  RawCodedFourStateTableAppendRowLtSuccCases
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
   RawCodedDynamicTruthNativeLocalPositiveGraph
@@ -39,6 +46,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
+  RawCodedDynamicTruthSuccessorRowsAppendNormalization
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
   RawCodedDynamicTruthNativeZeroCanonicalTraceExactification
   RawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification
@@ -60,7 +68,11 @@ Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofComposition.
+Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedTemplateSyntax.
@@ -70,6 +82,9 @@ Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedFourStateTableAppendProofCompilation.
+Import PABoundedRawCodedFourStateTableAppendExistentialElimination.
+Import PABoundedRawCodedFourStateTableAppendRowLtSuccCases.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import
   PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
@@ -83,6 +98,7 @@ Import
   PABoundedRawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.
 Import
   PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
+Import PABoundedRawCodedDynamicTruthSuccessorRowsAppendNormalization.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
 Import
@@ -471,6 +487,193 @@ Proof.
     + rewrite <- (rawQuotedFormulaCode_standard M hPA
         dynamicTruthLocalPiInputDomainTemplate).
       exact (raw_dynamicTruthZeroPiDomain_substitution M hPA).
+Qed.
+
+(** The append traversal reserves parameter name six for its row bound.  In
+    the canonical bottom translation every successor parameter name selects
+    the upper numeral, which is also zero.  Consequently its represented
+    below-branch is the no-less-than-zero antecedent compiled in the light
+    arithmetic layer. *)
+Lemma raw_dynamicTruthZeroCanonicalBottom_append_below_parameter_zero :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  rawTemplateFormula (rawBottomDirectStructuralTemplateTranslation M hPA)
+    (coqLtSuccCasesBelowTemplate
+      (ttVar 4)
+      (ttParameter coqDynamicTruthAppendRowBoundParameterName)) =
+  rawTemplateFormula (rawBottomDirectStructuralTemplateTranslation M hPA)
+    (coqNoLtZeroAntecedentTemplate (ttVar 4)).
+Proof.
+  intros M hPA.
+  rewrite coqNoLtZeroAntecedentTemplate_append_below_zero.
+  reflexivity.
+Qed.
+
+(** Compile append existence first, then grow that witnessed tail once for
+    the vacuous inherited traversal.  The result is the complete inherited
+    half of the canonical row payload on one synchronized standard witness
+    batch.  No predecessor lookup theorem is assumed: [bottom -> bottom] is
+    proved locally and the impossible [rowIndex < 0] premise supplies every
+    row production. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalBottom_permutedAppendInheritedRowResourcesUnderPrefix_on_standardWitnessTail :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    rootMode outerPrefix,
+  exists witnesses : StandardPAAxiomWitnessPrefix,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) /\
+    RawDynamicTruthZeroCanonicalPermutedAppendInheritedRowResourcesUnderPrefixAt
+      M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      rootMode outerPrefix witnesses.
+Proof.
+  intros M hPA rootMode outerPrefix.
+  set (translation := rawBottomDirectStructuralTemplateTranslation M hPA).
+  set (inputs := rawBottomTemplateDirectStructuralInputs M hPA).
+  set (rowPrefix :=
+    templateContextShiftMany 5
+      (coqFourStateTableAppendWitnessContext
+        (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+        (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+        (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+        (embedPATerm (Term.numeral rootMode))
+        (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)).
+  destruct
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRoot_on_standardWitnessTail
+      M hPA translation
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA) rootMode)
+    as (appendWitnesses & appendRoot & happendWitnessed & happend).
+  destruct
+    (raw_codedPALocalProofOf_below_zero_imp_ignored_imp_on_witnessed_tail_under_prefix
+      M hPA translation
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        appendWitnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        appendWitnesses (raw_zero M))
+      (templateContextShiftMany 5 rowPrefix) (ttVar 4)
+      coqDynamicTruthZeroCanonicalVacuousOldLookupTemplate
+      (templateFormulaShiftMany 5
+        (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+          (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+          (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula)))
+      (raw_directStructuralTemplatePrefix_atomically_adequate
+        M hPA inputs (templateContextShiftMany 5 rowPrefix))
+      ((raw_directStructuralTemplatePrefix_atomically_adequate
+          M hPA inputs [coqNoLtZeroAntecedentTemplate (ttVar 4)])
+        (coqNoLtZeroAntecedentTemplate (ttVar 4))
+        (or_introl eq_refl))
+      ((raw_directStructuralTemplatePrefix_atomically_adequate
+          M hPA inputs
+          [coqDynamicTruthZeroCanonicalVacuousOldLookupTemplate])
+        coqDynamicTruthZeroCanonicalVacuousOldLookupTemplate
+        (or_introl eq_refl))
+      happendWitnessed)
+    as (traversalWitnesses & bodyRoot & hfinalWitnessed & hbody).
+  set (finalWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      traversalWitnesses
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        appendWitnesses (raw_zero M))).
+  set (finalContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      traversalWitnesses
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        appendWitnesses (raw_zero M))).
+  assert (hboundBody : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation finalContext
+        (templateContextShiftMany 5 rowPrefix))
+      (rawTemplateFormula translation
+        coqDynamicTruthZeroCanonicalVacuousInheritedBoundRowBodyTemplate)
+      bodyRoot).
+  {
+    unfold coqDynamicTruthZeroCanonicalVacuousInheritedBoundRowBodyTemplate.
+    rewrite !rawTemplateFormula_imp.
+    unfold translation in hbody |- *.
+    rewrite raw_dynamicTruthZeroCanonicalBottom_append_below_parameter_zero.
+    exact hbody.
+  }
+  destruct
+    (raw_codedPALocalProofOf_universal_introduction_chain_on_witnessed_tail
+      M hPA translation finalWitnessList finalContext 5
+      rowPrefix
+      coqDynamicTruthZeroCanonicalVacuousInheritedBoundRowBodyTemplate
+      bodyRoot hfinalWitnessed hboundBody)
+    as [traversalRoot htraversal].
+  set (visibleRowContext :=
+    rawTemplateContextCodeOnTail translation finalContext rowPrefix).
+  assert (hvisibleRowContext : RawContextListRealizable M visibleRowContext).
+  {
+    unfold visibleRowContext.
+    exact (raw_templateContextOnTail_realizable M hPA translation
+      finalContext rowPrefix
+      (raw_codedPAAxiomWitnessContext_context_realizable M
+        finalWitnessList finalContext hfinalWitnessed)).
+  }
+  pose proof (raw_codedPALocalProofOf_assumption M hPA
+    visibleRowContext (rawFormulaBotCode M) hvisibleRowContext)
+    as holdLookupBody.
+  pose proof (raw_codedPALocalProofOf_impI M hPA
+    visibleRowContext (rawFormulaBotCode M) (rawFormulaBotCode M)
+    _ holdLookupBody) as holdLookup.
+  lazymatch type of holdLookup with
+  | RawCodedPALocalProofOf _ _ _ ?oldLookupRoot =>
+      assert (holdLookupTemplate : RawCodedPALocalProofOf M
+        visibleRowContext
+        (rawTemplateFormula translation
+          coqDynamicTruthZeroCanonicalVacuousOldLookupTemplate)
+        oldLookupRoot)
+  end.
+  {
+    unfold coqDynamicTruthZeroCanonicalVacuousOldLookupTemplate.
+    rewrite rawTemplateFormula_imp, rawTemplateFormula_bot.
+    exact holdLookup.
+  }
+  destruct
+    (raw_codedPALocalProofOf_standardPAAxiomWitnessPrefix
+      M hPA traversalWitnesses
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        appendWitnesses (raw_zero M))
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0))) appendRoot
+      (raw_codedPAAxiomWitnessContext_context_realizable M
+        (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+          appendWitnesses (raw_zero M))
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          appendWitnesses (raw_zero M)) happendWitnessed)
+      happend)
+    as [transportedAppendRoot htransportedAppend].
+  exists (traversalWitnesses ++ appendWitnesses).
+  rewrite rawStandardPAAxiomWitnessPrefixWitnessListCode_app.
+  rewrite rawStandardPAAxiomWitnessPrefixContextCode_app.
+  split; [exact hfinalWitnessed |].
+  exists transportedAppendRoot,
+    coqDynamicTruthZeroCanonicalVacuousInheritedTraversalTemplate,
+    coqDynamicTruthZeroCanonicalVacuousOldLookupTemplate.
+  split.
+  - rewrite rawStandardPAAxiomWitnessPrefixContextCode_app.
+    exact htransportedAppend.
+  - split.
+    + exact
+        coqDynamicTruthZeroCanonicalVacuousInheritedTraversalTemplate_open.
+    + exists traversalRoot.
+      lazymatch type of holdLookupTemplate with
+      | RawCodedPALocalProofOf _ _ _ ?oldLookupRoot =>
+          exists oldLookupRoot
+      end.
+      split.
+      * fold finalContext in htraversal.
+        rewrite rawStandardPAAxiomWitnessPrefixContextCode_app.
+        exact htraversal.
+      * unfold visibleRowContext in holdLookupTemplate.
+        rewrite rawStandardPAAxiomWitnessPrefixContextCode_app.
+        exact holdLookupTemplate.
 Qed.
 
 (** Both arithmetic premises are literal assumptions of the direct

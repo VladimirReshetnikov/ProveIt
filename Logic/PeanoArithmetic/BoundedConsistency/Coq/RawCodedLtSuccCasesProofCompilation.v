@@ -58,6 +58,241 @@ Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedLtSuccCasesSource.
 
+(** The degenerate lower-bound kernel belongs next to the successor-bound
+    case split, rather than in one particular carrier-soundness client.  It
+    is useful whenever a structurally chosen template parameter denotes
+    zero: the corresponding strict-lower branch is then vacuous. *)
+Definition coqNoLtZeroFormula : formula :=
+  pAll (pImp
+    (Formula.ltTermAt (tVar 0) tZero)
+    pBot).
+
+Definition coqNoLtZeroInstanceTemplate
+    (index : TemplateTerm) : TemplateFormula :=
+  templateUniversalOpenManyOrBot
+    (embedPAFormula coqNoLtZeroFormula) [index].
+
+Definition coqNoLtZeroAntecedentTemplate
+    (index : TemplateTerm) : TemplateFormula :=
+  templateImpAntecedent (coqNoLtZeroInstanceTemplate index).
+
+Lemma coqNoLtZeroFormula_bprov :
+  Formula.BProv Formula.Ax_s [] coqNoLtZeroFormula.
+Proof.
+  unfold coqNoLtZeroFormula.
+  apply Formula.BProv_allI_of_sentences.
+  - exact Formula.sentence_ax_s.
+  - apply Formula.BProv_impI.
+    apply (Formula.BProv_Ax_s_ltTermAt_leTermAt_bot
+      [Formula.ltTermAt (tVar 0) tZero]
+      (tVar 0) tZero).
+    + apply Formula.BProv_ass_head.
+    + apply Formula.BProv_Ax_s_leTermAt_zero_left.
+Qed.
+
+Lemma coqNoLtZeroInstanceTemplate_open : forall index,
+  templateUniversalOpenMany
+    (embedPAFormula coqNoLtZeroFormula) [index] =
+  Some (coqNoLtZeroInstanceTemplate index).
+Proof.
+  intro index.
+  unfold coqNoLtZeroFormula, coqNoLtZeroInstanceTemplate,
+    templateUniversalOpenManyOrBot.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst].
+  reflexivity.
+Qed.
+
+Lemma coqNoLtZeroInstanceTemplate_shape : forall index,
+  coqNoLtZeroInstanceTemplate index =
+    tfImp (coqNoLtZeroAntecedentTemplate index) tfBot.
+Proof.
+  intro index.
+  unfold coqNoLtZeroFormula, coqNoLtZeroInstanceTemplate,
+    coqNoLtZeroAntecedentTemplate, templateImpAntecedent,
+    templateUniversalOpenManyOrBot.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst].
+  reflexivity.
+Qed.
+
+(** Compile the no-less-than-zero theorem on an arbitrary honestly witnessed
+    PA tail.  The theorem is translation-generic because it contains only
+    embedded PA syntax. *)
+Theorem raw_codedPALocalProofOf_no_lt_zero_on_witnessed_tail :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext index,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext)
+      (rawTemplateFormula translation
+        (coqNoLtZeroInstanceTemplate index)) root.
+Proof.
+  intros M hPA translation hagreement
+    baseWitnessList baseContext index hbase.
+  exact
+    (raw_codedTemplatePALocalProofOf_of_BProv_open_many_on_witnessed_tail
+      M hPA translation hagreement baseWitnessList baseContext
+      coqNoLtZeroFormula [index]
+      (coqNoLtZeroInstanceTemplate index) hbase
+      coqNoLtZeroFormula_bprov
+      (coqNoLtZeroInstanceTemplate_open index)).
+Qed.
+
+(** Prefix-preserving form used below temporary assumptions and
+    eigenvariables.  Only atomic adequacy of that finite prefix is needed. *)
+Theorem
+    raw_codedPALocalProofOf_no_lt_zero_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix index,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      (rawTemplateFormula translation
+        (coqNoLtZeroInstanceTemplate index)) root.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    prefix index hprefix hbase.
+  destruct
+    (raw_codedPALocalProofOf_no_lt_zero_on_witnessed_tail
+      M hPA translation hagreement baseWitnessList baseContext index hbase)
+    as (witnesses & sourceRoot & hextended & hsource).
+  set (extendedWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext).
+  destruct (raw_codedPALocalProof_templatePrefix M hPA translation
+    extendedContext prefix
+    (rawTemplateFormula translation
+      (coqNoLtZeroInstanceTemplate index)) sourceRoot
+    (raw_codedPAAxiomWitnessPrefix_context_realizable_of_witnessed M
+      extendedWitnessList extendedContext hextended)
+    hprefix hsource) as [root hroot].
+  exists witnesses, root. split; assumption.
+Qed.
+
+(** From the impossible strict bound derive an arbitrary conclusion, while
+    retaining one further implication premise.  The retained premise is
+    intentionally unconstrained: append-row clients use it for the old-row
+    lookup, but the construction is a general intuitionistic ex-falso
+    schema.  Atomic adequacy is required only for formulas inserted into the
+    temporary context. *)
+Theorem
+    raw_codedPALocalProofOf_below_zero_imp_ignored_imp_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix index ignored consequent,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation
+      (coqNoLtZeroAntecedentTemplate index)) ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation ignored) ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      (rawTemplateFormula translation
+        (tfImp (coqNoLtZeroAntecedentTemplate index)
+          (tfImp ignored consequent))) root.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    prefix index ignored consequent hprefix hantecedentAdequate
+    hignoredAdequate hbase.
+  set (antecedent := coqNoLtZeroAntecedentTemplate index).
+  set (deepPrefix := ignored :: antecedent :: prefix).
+  assert (hdeepPrefix :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation deepPrefix).
+  {
+    intros formula hformula.
+    unfold deepPrefix in hformula.
+    destruct hformula as [hformula | [hformula | hformula]].
+    - now subst formula.
+    - subst formula. exact hantecedentAdequate.
+    - exact (hprefix formula hformula).
+  }
+  destruct
+    (raw_codedPALocalProofOf_no_lt_zero_on_witnessed_tail_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext
+      deepPrefix index hdeepPrefix hbase)
+    as (witnesses & noLtRoot & hextended & hnoLt).
+  set (extendedWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext).
+  assert (hantecedent : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)
+      (rawTemplateFormula translation antecedent)
+      (rawTemplateProofCodeOnTail translation extendedContext
+        (trpAss deepPrefix antecedent))).
+  {
+    apply (raw_templateAssumptionOnPAAxiomContext_localProof
+      M hPA translation extendedWitnessList extendedContext
+      deepPrefix antecedent hextended).
+    unfold deepPrefix. right. left. reflexivity.
+  }
+  rewrite coqNoLtZeroInstanceTemplate_shape,
+    rawTemplateFormula_imp, rawTemplateFormula_bot in hnoLt.
+  fold antecedent in hnoLt.
+  pose proof (raw_codedPALocalProofOf_impE M hPA
+    (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)
+    (rawTemplateFormula translation antecedent)
+    (rawFormulaBotCode M) noLtRoot
+    (rawTemplateProofCodeOnTail translation extendedContext
+      (trpAss deepPrefix antecedent)) hnoLt hantecedent) as hbot.
+  pose proof (raw_codedPALocalProofOf_botE M hPA
+    (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)
+    _ hbot (rawTemplateFormula translation consequent)) as hconsequent.
+  unfold deepPrefix in hconsequent.
+  cbn [rawTemplateContextCodeOnTail] in hconsequent.
+  pose proof (raw_codedPALocalProofOf_impI M hPA
+    (rawTemplateContextCodeOnTail translation extendedContext
+      (antecedent :: prefix))
+    (rawTemplateFormula translation ignored)
+    (rawTemplateFormula translation consequent)
+    _ hconsequent) as hignored.
+  rewrite <- rawTemplateFormula_imp in hignored.
+  cbn [rawTemplateContextCodeOnTail] in hignored.
+  pose proof (raw_codedPALocalProofOf_impI M hPA
+    (rawTemplateContextCodeOnTail translation extendedContext prefix)
+    (rawTemplateFormula translation antecedent)
+    (rawTemplateFormula translation (tfImp ignored consequent))
+    _ hignored) as hresult.
+  rewrite <- rawTemplateFormula_imp in hresult.
+  exists witnesses. eexists. split; [exact hextended |].
+  exact hresult.
+Qed.
+
 Definition coqLtSuccCasesInstanceTemplate
     (index bound : TemplateTerm) : TemplateFormula :=
   templateUniversalOpenManyOrBot

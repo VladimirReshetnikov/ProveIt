@@ -23,9 +23,12 @@ From BoundedPAConsistency Require Import
   RawCodedPAProofLeafCertificates
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofComposition
+  RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateLocalProofStandardWitnessTailTransport
+  RawCodedPALocalProofExistentialEliminationChain
   RawCodedPALocalProofUniversalIntroductionChain
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedLtSuccCasesProofCompilation
@@ -65,9 +68,12 @@ Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAProofLeafCertificates.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofComposition.
+Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
@@ -461,6 +467,113 @@ Definition
 
 Arguments
   RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+  M translation rootMode outerPrefix witnesses : clear implicits.
+
+(** A harmless theorem is used as the old-row lookup in the rank-zero
+    traversal.  The strict-lower premise is impossible when the bottom
+    structural translation interprets the append bound as zero, so no
+    semantic lookup fact is consumed.  Choosing [bottom -> bottom] keeps the
+    lookup independently provable in every represented context. *)
+Definition coqDynamicTruthZeroCanonicalVacuousOldLookupTemplate
+    : TemplateFormula :=
+  tfImp tfBot tfBot.
+
+Definition coqDynamicTruthZeroCanonicalVacuousInheritedRowBodyTemplate
+    : TemplateFormula :=
+  tfImp
+    (coqLtSuccCasesBelowTemplate
+      (ttVar 4)
+      (ttParameter coqDynamicTruthAppendRowBoundParameterName))
+    (tfImp coqDynamicTruthZeroCanonicalVacuousOldLookupTemplate
+      (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+        (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+        (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula))).
+
+(** The two fixed local-row formulas refer to variables outside the five
+    traversal binders.  Protect precisely that production suffix by five
+    shifts; the row-index and lookup spine intentionally remains bound. *)
+Definition coqDynamicTruthZeroCanonicalVacuousInheritedBoundRowBodyTemplate
+    : TemplateFormula :=
+  tfImp
+    (coqLtSuccCasesBelowTemplate
+      (ttVar 4)
+      (ttParameter coqDynamicTruthAppendRowBoundParameterName))
+    (tfImp coqDynamicTruthZeroCanonicalVacuousOldLookupTemplate
+      (templateFormulaShiftMany 5
+        (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+          (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+          (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula)))).
+
+Definition coqDynamicTruthZeroCanonicalVacuousInheritedTraversalTemplate
+    : TemplateFormula :=
+  templateFormulaAllMany 5
+    coqDynamicTruthZeroCanonicalVacuousInheritedBoundRowBodyTemplate.
+
+(** Opening the five binders at their canonical de Bruijn variables is the
+    identity on the row body.  Keeping this calculation named prevents the
+    payload constructor from hiding a binder-sensitive kernel reduction. *)
+Lemma
+    coqDynamicTruthZeroCanonicalVacuousInheritedTraversalTemplate_open :
+  templateUniversalOpenMany
+    coqDynamicTruthZeroCanonicalVacuousInheritedTraversalTemplate
+    coqFourStateTableAppendConcreteRowVariables =
+  Some coqDynamicTruthZeroCanonicalVacuousInheritedRowBodyTemplate.
+Proof. reflexivity. Qed.
+
+(** The no-less-than-zero antecedent compiled by the arithmetic helper is
+    exactly the append below-branch when the latter's bound is literal zero. *)
+Lemma coqNoLtZeroAntecedentTemplate_append_below_zero :
+  coqNoLtZeroAntecedentTemplate (ttVar 4) =
+  coqLtSuccCasesBelowTemplate (ttVar 4) ttZero.
+Proof. reflexivity. Qed.
+
+(** Intermediate row resource after append existence and inherited traversal
+    have been compiled, but before the fixed-mode production is attached.
+    This factors the two independent proof-producing phases and lets the
+    second phase grow the witnessed PA tail without reconstructing either
+    inherited root. *)
+Definition
+    RawDynamicTruthZeroCanonicalPermutedAppendInheritedRowResourcesUnderPrefixAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (rootMode : nat) (outerPrefix : TemplateContext)
+    (witnesses : StandardPAAxiomWitnessPrefix) : Prop :=
+  exists appendRoot : M,
+  exists inheritedTraversal oldLookup : TemplateFormula,
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0))) appendRoot /\
+    templateUniversalOpenMany inheritedTraversal
+      coqFourStateTableAppendConcreteRowVariables =
+      Some
+        (tfImp
+          (coqLtSuccCasesBelowTemplate
+            (ttVar 4)
+            (ttParameter coqDynamicTruthAppendRowBoundParameterName))
+          (tfImp oldLookup
+            (coqFourStateTableAppendConcreteClosedRowProductionTemplate
+              (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+              (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula)))) /\
+    RawFourStateTableAppendInheritedLocalRootsAt M translation
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (templateContextShiftMany 5
+        (coqFourStateTableAppendWitnessContext
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix))
+      inheritedTraversal oldLookup.
+
+Arguments
+  RawDynamicTruthZeroCanonicalPermutedAppendInheritedRowResourcesUnderPrefixAt
   M translation rootMode outerPrefix witnesses : clear implicits.
 
 (** Proof-producing content of a canonical row kernel, separated from the
