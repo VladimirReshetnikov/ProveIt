@@ -442,15 +442,34 @@ were disabled — precisely because coqchk reports rather than rejects them.
 
 Ordered by value.
 
-0. **lean4#14582 needs an instrumented kernel build, and this is now demonstrated
-   rather than assumed.** The nested-inductive auxiliary declarations where the
+0. **lean4#14582 needs an instrumented kernel build. The instrumentation is
+   written and compiles; what remains is the bootstrap.**
+   [`Audits/nested-instrumentation.patch`](Audits/nested-instrumentation.patch)
+   applies to `src/kernel/inductive.cpp` at `v4.32.0` and dumps, under
+   `LEAN_DUMP_NESTED=1`, every nested occurrence with its parameter and index
+   arguments and every auxiliary type and constructor the kernel synthesises —
+   exactly the artifacts that never reach the environment. Build recipe worked
+   out here, on Windows with MinGW GCC 16.1 and CMake 4.3:
+   `cmake -G "Unix Makefiles" .. -DUSE_MIMALLOC=OFF -DCMAKE_MAKE_PROGRAM=mingw32-make`
+   (the default Ninja generator is rejected, `make` must be shimmed to
+   `mingw32-make`, and the mimalloc `FetchContent` step fails). Compiling the
+   kernel standalone gets 59 of 61 sources with
+   `-std=c++20 -DLEAN_MULTI_THREAD -DLEAN_WINDOWS -DLEAN_WIN_STACK_SIZE=…` plus a
+   hand-written `githash.h`; only `io.cpp` and `init_module.cpp` fail, needing
+   libuv and ICU, and the kernel does not use either.
+   **The blocker is not the kernel — it is the environment.** `lean::environment`
+   has no C++-side constructor for an empty kernel environment; every constructor
+   wraps an existing Lean object, and `Kernel.Environment` is built on the Lean
+   side. So a standalone C++ harness cannot create anything to declare into, and
+   the instrumented kernel is only useful inside a full stage0→stage1 build.
+1. **lean4#14582's territory is invisible from inside Lean.** The nested-inductive auxiliary declarations where the
    defect lives never enter the environment: they are created in a temporary
    kernel environment and rewritten by `restore_nested`, so a search from inside
    Lean re-checks only the surviving recursors. This is the same property that
    made lean4#14616's exploit uncapturable as an arena export test. Black-box
    probing cannot reach it; instrumenting `replace_if_nested`/`restore_nested` in
    a source build can.
-1. **The Lean Kernel Arena corpus (§3).** Fourteen catalogued attacks, four of
+2. **The Lean Kernel Arena corpus (§3).** Fourteen catalogued attacks, four of
    which the official kernel has fallen for, plus the `undecidability/` category
    that formalises what [`Audits/Lean/Metatheory/`](Audits/Lean/Metatheory/)
    measured independently. This is the single largest gap, and it is now the
@@ -499,12 +518,15 @@ Lean kernel surface against an explicit oracle; harnesses and counts are in
 | Arbitrary-precision `Int`: `ediv`/`emod`/`fdiv`/`fmod`/`tdiv`/`tmod`/`bdiv`/`bmod`/`gcd` at ±2^32, ±2^64, ±2^70 | compiled implementation | 16,428 comparisons, 0 divergence |
 | `BitVec` at width 8: `sdiv`/`smod`/`srem`/`udiv`/`umod`, shifts and rotates past the width, `setWidth`/`signExtend` up and down, signed and unsigned comparisons | compiled implementation | 5,070 comparisons, 0 divergence |
 | **Every `@[implemented_by]` pair** in core + Batteries + Mathlib | the pair carries *no* proof obligation, so the two sides must be compared directly | 173 pairs; **166 have `unsafe` implementations** the kernel cannot reduce, and the remaining 7 bottom out in irreducible `USize` operations, so none is kernel-differentiable |
+| **Every `@[csimp]` theorem** in core + Batteries + Mathlib, audited for axiom dependencies | lean4#7463 (**OPEN**) shows axioms used in a `csimp` proof are not propagated through `native_decide`, so a `csimp` lemma resting on `sorryAx` or a custom axiom would make the compiler disagree with the kernel while `#print axioms` stays clean | 181 entries; **every one rests only on `propext` / `Quot.sound` / `Classical.choice`**. #7463 is therefore a latent hole with no live instance in the ecosystem, not an exploitable one |
+| `Char` and `ByteArray` — the remaining `@[extern]` families that are *kernel-reducible* (they bottom out in `UInt8`/`UInt32`, not the opaque `USize`) | compiled implementation, at the UTF-16 surrogate range, the `0x10FFFF` cap, and past `2^32`; and at out-of-range `ByteArray` indices | 315 comparisons, 0 divergence. `Char.ofNat` substitutes the default for every invalid scalar value consistently on both sides, and `toNat`/`utf8Size`/`isAlpha`/`isDigit`/`isWhitespace`/`isUpper`/`isLower` all agree |
 | `Nat.repr` vs `Nat.reprFast` across both of its internal boundaries (the 128-entry memo table, and `USize.size`) | an independent decimal conversion built from `Nat.div`/`Nat.mod` | 336 comparisons, 0 divergence. `reprFast` is correct by construction: it uses `USize.ofNatLT n h` with a proof `h : n < USize.size`, and falls back to the general path above it |
 | `Declaration.mutualDefnDecl` — the one declaration path never probed | kernel acceptance by safety level | firewalled by design: `add_mutual` **rejects** a block whose safety is `safe` (`declaration is not tagged as unsafe/partial`), so every kernel-level mutual block is `unsafe`/`partial` and the `infer_constant` gate stops a safe declaration depending on it. Headers are checked before any body, and #14608's same-`lparams` requirement is enforced |
 | `Float`: is anything *proved* about it anywhere in core or Mathlib? | IEEE-754 violates reflexivity (`NaN`) and congruence (zero vs. negative zero), so any lawfulness lemma would be false and `native_decide`-exploitable | **zero** `Lawful*` or `DecidableEq` instances mentioning `Float`/`Float32`; all 25 theorems that mention them are auto-generated structure lemmas (`.mk.inj`, `.mk.injEq`, `.sizeOf_spec`, `.ext`) or `Nonempty` instances. The "prove nothing, so nothing can be contradicted" discipline holds across the whole ecosystem |
 | `Array.qsort`, `Array.insertionSort`, `List.mergeSort`, `Array.binSearch` — all with `unsafe` fast implementations | an independent insertion sort, and membership for the search | 197,604 comparisons over pseudorandom inputs at lengths 0–129, **0 divergences** |
 | Large `Nat.shiftLeft` *below* the panic threshold — is `mul2k` correct at scale? | round trip through `shiftRight`, cross-check against the `Nat.pow` accelerator, popcount, and low-64-bit agreement with the compiled implementation, at shifts up to 2^24 | 95 checks, 0 divergence. This closes the `shiftLeft` finding from the other side: the value is **correct** everywhere it is computed, so the defect is purely the uncatchable abort above `UINT_MAX` and never a wrong result |
-| Nested-inductive auxiliary declarations — can the missing re-check of lean4#14621 be exercised from inside Lean? | re-run `Kernel.check` on the type and value of every declaration the kernel generated for nine nested inductives, including the non-uniform shapes of #14582 | 240 surviving declarations re-checked, **0 failures** — but the test cannot reach the interesting artifacts: **zero** constants containing `_nested` persist in the environment. The auxiliary types are transient, built in a temporary kernel environment and mapped back by `restore_nested`, so only recursors, `below`/`brecOn`/`sizeOf`/`noConfusion` survive |
+| Nested-inductive auxiliary declarations — can the missing re-check of lean4#14621 be exercised from inside Lean? | re-run `Kernel.check` on the type and value of every declaration the kernel generated for nine nested inductives, including the non-uniform shapes of #14582 | 240 surviving declarations re-checked, **0 failures** — but the test cannot reach the interesting artifacts: **zero** constants containing `_nested` persist in the environment. The auxiliary types are transient, built in a temporary kernel environment and mapped back by `restore_nested`, so only recursors, `below`/`brecOn`/`sizeOf`/`noConfusion` survive. Confirmed at the lowest level reachable from Lean: feeding a raw nested `inductDecl` to `Kernel.Environment.addDecl` and diffing the returned environment yields exactly four new constants — the type, its constructor, and the two recursors — and no `_nested` name at all |
+| lean4#14582's **open question**, tested directly: `is_nested_inductive_app` scans only the first `nparams` arguments for occurrences of the types being declared, and never the indices — so can a declared type reach an index unchecked? | build the #2125 circularity through a *field's* index rather than the conclusion's: `K a b` inhabited iff `b = false`, `f a := decide (Nonempty a)`, then `E \| node : K E (f E) → E`, which would give `E` inhabited ↔ `E` empty | **rejected** — `(kernel) arg #1 of 'E.node' contains a non valid occurrence of the datatypes being declared`. The positivity checker covers the indices independently, whether or not the nested-detection saw them. Rejected both when `E` is in the index alone (nested path not taken) and when it is in the parameter *and* the index (nested path taken). Control: `E` in a phantom parameter alone is accepted, and is sound — `K E false` is isomorphic to `Unit` |
 
 Two things did turn up, neither a `False`. `Nat.shiftLeft`'s missing magnitude
 guard is §2.6. And `Kernel.check` with a caller-supplied local context whose
