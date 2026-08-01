@@ -317,7 +317,7 @@ Definition
      outputs are now fixed to their exact standard quotations.  This prevents
      downstream root construction from depending on arbitrary carrier-level
      representatives of those formulas. *)
-  RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources
     M translation /\
   RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
     M hPA /\
@@ -371,7 +371,11 @@ Proof.
                 M hPA
                 (rawDirectStructuralTemplateTranslation M hPA inputs)
                 (rawDirectStructuralTemplatePAAgreement M hPA inputs)
-                hzero))))).
+                (raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources_of_global_application_resources
+                  M hPA
+                  (rawDirectStructuralTemplateTranslation M hPA inputs)
+                  (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+                  hzero)))))).
   - exact (conj hstrong
       (conj hremainder
         (conj hcrossLevel
@@ -1173,10 +1177,12 @@ Proof.
         hkernels)).
 Qed.
 
-(** Canonical rank-zero-refined headline.  Its first coordinate is now one
-    ordinary PA derivation of the fixed state-to-roots law; every
-    model-internal proof code, context extension, and predecessor implication
-    is constructed internally. *)
+(** Canonical rank-zero-refined headline.  Its first coordinate now exposes
+    the two genuinely proof-producing stages separately: arithmetic endpoint
+    roots on one witnessed extension, followed by the canonical first-
+    successor global applications on a possibly larger extension.  Context
+    synchronization, conversion to native evidence, admissibility, and the
+    predecessor implication are constructed internally. *)
 Corollary
     PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_canonical_logical_zero_permuted_append_proof_resource_strong_step_kernel_compilers
     :

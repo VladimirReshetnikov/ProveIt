@@ -35,7 +35,8 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
-  RawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation.
+  RawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation
+  RawCodedDynamicTruthPredecessorAtomicDomainGlobalRootsSynchronization.
 
 Module
   PABoundedRawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.
@@ -64,6 +65,8 @@ Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorAtomicDomainGlobalRootsSynchronization.
 
 (** The evidence endpoints are arbitrary carrier formula codes.  The only
     syntactic data retained here is the caller prefix, needed to transport
@@ -263,70 +266,24 @@ Proof.
   intros M hPA translation hagreement
     baseWitnessList baseContext sigmaDomain piDomain
     sigmaEvidence piEvidence atomicRoot domainRoot
-    hbase hatomic hdomain
-    (evidenceWitnessList & evidenceContext & hevidenceWitnessed &
-      hbaseEvidenceIncluded & hevidenceRoots).
-  destruct hevidenceRoots as
-    [[sigmaRoot hsigma] [piRoot hpi]].
-  assert (hatomicTemplate : RawCodedPALocalProofOf M
-      (rawTemplateContextCodeOnTail translation baseContext
-        coqDynamicTruthPredecessorStateTemplateContext)
-      (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot).
-  {
-    rewrite (raw_dynamicTruthPredecessorStateTemplateContextCode
-      M translation hagreement baseContext).
-    exact hatomic.
-  }
+    hbase hatomic hdomain hglobalRoots.
   destruct
-    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
-      M hPA translation baseWitnessList baseContext
-      evidenceWitnessList evidenceContext
-      coqDynamicTruthPredecessorStateTemplateContext
-      (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot
-      hbase hevidenceWitnessed hbaseEvidenceIncluded hatomicTemplate)
-    as [transportedAtomicRoot htransportedAtomic].
-  assert (htransportedAtomicJoint : RawCodedPALocalProofOf M
-      (rawDynamicTruthPredecessorJointStateContext M evidenceContext)
-      (rawDynamicTruthLocalAtomicAdequacyCode M)
-      transportedAtomicRoot).
-  {
-    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContextCode
-      M translation hagreement evidenceContext).
-    exact htransportedAtomic.
-  }
-  assert (hdomainTemplate : RawCodedPALocalProofOf M
-      (rawTemplateContextCodeOnTail translation baseContext
-        coqDynamicTruthPredecessorStateTemplateContext)
-      (rawFormulaOrCode M sigmaDomain piDomain) domainRoot).
-  {
-    rewrite (raw_dynamicTruthPredecessorStateTemplateContextCode
-      M translation hagreement baseContext).
-    exact hdomain.
-  }
-  destruct
-    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
-      M hPA translation baseWitnessList baseContext
-      evidenceWitnessList evidenceContext
-      coqDynamicTruthPredecessorStateTemplateContext
-      (rawFormulaOrCode M sigmaDomain piDomain) domainRoot
-      hbase hevidenceWitnessed hbaseEvidenceIncluded hdomainTemplate)
-    as [transportedDomainRoot htransportedDomain].
-  assert (htransportedDomainJoint : RawCodedPALocalProofOf M
-      (rawDynamicTruthPredecessorJointStateContext M evidenceContext)
-      (rawFormulaOrCode M sigmaDomain piDomain)
-      transportedDomainRoot).
-  {
-    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContextCode
-      M translation hagreement evidenceContext).
-    exact htransportedDomain.
-  }
+    (raw_dynamicTruthPredecessorAtomicDomainGlobalRootsAt_of_growing_global_roots
+      M hPA translation hagreement baseWitnessList baseContext
+      sigmaDomain piDomain sigmaEvidence piEvidence atomicRoot domainRoot
+      hbase hatomic hdomain hglobalRoots)
+    as (evidenceWitnessList & evidenceContext & hevidenceWitnessed &
+      hbaseEvidenceIncluded & hsynchronized).
+  destruct hsynchronized as
+    [(transportedAtomicRoot & htransportedAtomic)
+      (transportedDomainRoot & htransportedDomain)
+      (sigmaRoot & hsigma) (piRoot & hpi)].
   destruct
     (raw_dynamicTruthPredecessorStateLogicalRootsAt_of_direct_evidence_atomic_and_domain
       M hPA translation hagreement evidenceWitnessList evidenceContext
-      sigmaDomain piDomain sigmaEvidence piEvidence
-      transportedAtomicRoot transportedDomainRoot sigmaRoot piRoot
-      hevidenceWitnessed htransportedAtomicJoint htransportedDomainJoint
-      hsigma hpi)
+      sigmaDomain piDomain sigmaEvidence piEvidence transportedAtomicRoot
+      transportedDomainRoot sigmaRoot piRoot hevidenceWitnessed
+      htransportedAtomic htransportedDomain hsigma hpi)
     as (targetWitnessList & targetContext & htargetWitnessed &
       hevidenceTargetIncluded & hlogicalRoots).
   exists targetWitnessList, targetContext.

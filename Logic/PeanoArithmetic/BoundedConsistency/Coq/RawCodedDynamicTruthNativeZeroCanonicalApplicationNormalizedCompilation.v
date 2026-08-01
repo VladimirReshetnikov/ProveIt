@@ -13,12 +13,17 @@ From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
+  RawCodedSyntaxConstructors
   RawCodedContextLists
   RawCodedRestrictedPAProof
+  RawCodedPALocalProofExistential
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateProofCompiler
   RawCodedTemplatePAEmbedding
+  RawCodedDynamicTruthLocalAdmissibilityCompilation
+  RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
+  RawCodedDynamicTruthNativeZeroCanonicalTraceExactification
   RawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
 
 Module
@@ -27,15 +32,59 @@ Module
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
+Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
 Import
+  PABoundedRawCodedDynamicTruthNativeZeroCanonicalTraceExactification.
+Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
+
+(** Producer-facing split of the canonical application package.  Arithmetic
+    endpoint compilation may first choose a witnessed context carrying
+    atomic adequacy and the domain disjunction.  Global traversal is then
+    allowed to grow once more while returning the two canonical applications
+    through the standard growing-pair interface. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists endpointWitnessList endpointContext atomicRoot domainRoot,
+      RawCodedPAAxiomWitnessContext M endpointWitnessList endpointContext /\
+      RawContextListIncluded M baseContext endpointContext /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M endpointContext)
+        (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M endpointContext)
+        (rawFormulaOrCode M
+          (rawDynamicTruthZeroSigmaDomainCode M)
+          (rawDynamicTruthZeroPiDomainCode M)) domainRoot /\
+      RawDynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom M
+        endpointContext
+        (rawQuotedFormulaCode M
+          dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+        (rawQuotedFormulaCode M
+          dynamicTruthZeroInputGlobalPiApplicationFormula).
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources
+  M translation : clear implicits.
 
 (** Exact proof-producing residue after rank-zero normalization.  The output
     may grow the witnessed tail and concludes canonical applications, not
@@ -60,6 +109,45 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
+
+(** Synchronize the split producer resources into the compact four-root
+    application package.  Both possible context-growth steps are retained
+    and their inclusions are composed, rather than requiring contraction to
+    the normalized callback base. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources_of_global_application_resources
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalGlobalApplicationResourcesCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalApplicationRootsCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hagreement hcompiler tail witnessList
+    baseContext helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hatomic & hdomain &
+      hglobals).
+  destruct
+    (raw_dynamicTruthZeroCanonicalApplicationRootsAt_of_growing_global_roots
+      M hPA translation hagreement endpointWitnessList endpointContext
+      atomicRoot domainRoot hendpointWitnessed hatomic hdomain hglobals)
+    as (applicationWitnessList & applicationContext &
+      happlicationWitnessed & hendpointApplicationIncluded &
+      happlications).
+  exists applicationWitnessList, applicationContext.
+  split; [exact happlicationWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hendpointApplicationIncluded member
+      (hbaseEndpointIncluded member hmember)).
+  - exact happlications.
+Qed.
 
 (** Canonical application production suffices for native direct evidence.
     The two possible context extensions are composed explicitly, keeping the

@@ -30,6 +30,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation
+  RawCodedDynamicTruthPredecessorAtomicDomainGlobalRootsSynchronization
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
   RawCodedDynamicTruthNativeZeroCanonicalTraceExactification
   RawCodedDynamicTruthNativeZeroCanonicalApplicationProofTransport.
@@ -58,6 +59,8 @@ Import
   PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 Import
   PABoundedRawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorAtomicDomainGlobalRootsSynchronization.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
 Import
@@ -94,6 +97,56 @@ Record RawDynamicTruthZeroCanonicalApplicationRootsAt
 
 Arguments RawDynamicTruthZeroCanonicalApplicationRootsAt M baseContext
   : clear implicits.
+
+(** Existing growing-global traversal clients can stop at their native pair
+    package.  The generic synchronization lemma moves the arithmetic leaves
+    to the traversal-selected context; literal canonical conclusion codes
+    then give the application record without further proof construction. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalApplicationRootsAt_of_growing_global_roots :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext atomicRoot domainRoot,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M baseContext)
+    (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M baseContext)
+    (rawFormulaOrCode M
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)) domainRoot ->
+  RawDynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom M
+    baseContext
+    (rawQuotedFormulaCode M
+      dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+    (rawQuotedFormulaCode M
+      dynamicTruthZeroInputGlobalPiApplicationFormula) ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthZeroCanonicalApplicationRootsAt M targetContext.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    atomicRoot domainRoot hbase hatomic hdomain hglobals.
+  destruct
+    (raw_dynamicTruthPredecessorAtomicDomainGlobalRootsAt_of_growing_global_roots
+      M hPA translation hagreement baseWitnessList baseContext
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalPiApplicationFormula)
+      atomicRoot domainRoot hbase hatomic hdomain hglobals)
+    as (targetWitnessList & targetContext & htarget & hincluded & hroots).
+  destruct hroots as [hatomic' hdomain' hsigma hpi].
+  exists targetWitnessList, targetContext.
+  split; [exact htarget |].
+  split; [exact hincluded |].
+  constructor; assumption.
+Qed.
 
 (** Convert the canonical applications while preserving the two structural
     leaves.  Every source root is transported to the one witnessed context
