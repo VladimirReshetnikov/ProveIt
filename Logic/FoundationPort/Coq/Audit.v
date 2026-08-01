@@ -3095,3 +3095,5 @@ Print Assumptions first_order_canonical_forces_explosion_aux.
 Print Assumptions first_order_canonical_forces_explosion.
 Print Assumptions first_order_canonical_efq.
 Print Assumptions first_order_canonical_modus_ponens.
+Print Assumptions first_order_canonical_minimal_sound_bounded.
+Print Assumptions first_order_canonical_minimal_sound.

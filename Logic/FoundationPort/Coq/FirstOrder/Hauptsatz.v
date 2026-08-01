@@ -1,10 +1,12 @@
 (** Canonical forcing infrastructure for first-order cut elimination. *)
 
-From Stdlib Require Import Logic.FunctionalExtensionality Lists.List Vectors.Fin.
+From Stdlib Require Import Arith.PeanoNat Arith.Wf_nat Lia
+  Logic.FunctionalExtensionality
+  Lists.List Vectors.Fin.
 From FoundationModal Require Import GenericCalculus.
 From Foundation.Syntax.Predicate Require Import Language Term Relational Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
-From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew.
+From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
 From Foundation.FirstOrder.Basic Require Import Calculus CutFree.
 From Foundation.FirstOrder.Kripke Require Import WeakForcing.
 
@@ -631,3 +633,115 @@ Definition first_order_canonical_modus_ponens {L : language}
     (Hphi : first_order_canonical_forces p phi) :
     first_order_canonical_forces p psi :=
   Himp p (first_order_stronger_than_refl p) Hphi.
+
+(** The explicit bound makes generalization well founded even though its
+    recursive call is made on a rewritten proof rather than a syntactic
+    subterm.  Rewriting and casting preserve proof depth exactly. *)
+Lemma first_order_canonical_minimal_sound_bounded : forall L n
+    (phi : ifo_proposition L)
+    (d : @ifo_hilbert_proof L (ifo_hilbert_minimal L) phi),
+  ifo_hilbert_proof_depth d < n ->
+  first_order_canonical_forces_all phi.
+Proof.
+  intro L.
+  refine (well_founded_induction_type lt_wf
+    (fun n => forall (phi : ifo_proposition L)
+      (d : @ifo_hilbert_proof L (ifo_hilbert_minimal L) phi),
+      ifo_hilbert_proof_depth d < n ->
+      first_order_canonical_forces_all phi) _).
+  intros n H phi d Hdepth.
+  destruct d as [phi Hax | phi psi dimp dphi | phi dbody |
+    | phi psi | phi psi chi | phi psi | phi psi | phi psi |
+    phi psi | phi psi | phi psi chi | phi t | phi psi | t phi |
+    phi psi].
+  - change False in Hax. contradiction.
+  - cbn in Hdepth.
+    assert (Hsimp : ifo_hilbert_proof_depth dimp <
+      Nat.max (ifo_hilbert_proof_depth dimp)
+        (ifo_hilbert_proof_depth dphi) + 1).
+    { pose proof (Nat.le_max_l (ifo_hilbert_proof_depth dimp)
+        (ifo_hilbert_proof_depth dphi)). lia. }
+    assert (Hsphi : ifo_hilbert_proof_depth dphi <
+      Nat.max (ifo_hilbert_proof_depth dimp)
+        (ifo_hilbert_proof_depth dphi) + 1).
+    { pose proof (Nat.le_max_r (ifo_hilbert_proof_depth dimp)
+        (ifo_hilbert_proof_depth dphi)). lia. }
+    pose (Himp := H
+      (Nat.max (ifo_hilbert_proof_depth dimp)
+        (ifo_hilbert_proof_depth dphi) + 1) Hdepth
+      (IFOImp phi psi) dimp Hsimp).
+    pose (Hphi := H
+      (Nat.max (ifo_hilbert_proof_depth dimp)
+        (ifo_hilbert_proof_depth dphi) + 1) Hdepth
+      phi dphi Hsphi).
+    intro p. exact (first_order_canonical_modus_ponens (Himp p) (Hphi p)).
+  - intro p. intros t.
+    pose (drew := ifo_hilbert_proof_rewrite
+      (first_order_nat_env_cons t first_order_identity_free_env) dbody).
+    pose (dsub := ifo_hilbert_proof_cast drew
+      (ifo_rewrite_free_identity_cons phi t)).
+    assert (Hdsub : ifo_hilbert_proof_depth dsub =
+        ifo_hilbert_proof_depth dbody).
+    { unfold dsub, drew. rewrite ifo_hilbert_proof_depth_cast.
+      apply ifo_hilbert_proof_depth_rewrite. }
+    assert (Hbound : ifo_hilbert_proof_depth dbody + 1 < n).
+    { cbn in Hdepth. exact Hdepth. }
+    pose (Hsub := H (ifo_hilbert_proof_depth dbody + 1) Hbound
+      (ifo_substitute (fun _ : Fin.t 1 => t) phi) dsub).
+    assert (Hlt : ifo_hilbert_proof_depth dsub <
+        ifo_hilbert_proof_depth dbody + 1) by lia.
+    pose (Hsubp := Hsub Hlt p).
+    exact (first_order_type_biequivalence_forward
+      (first_order_canonical_forces_substitute_one phi t) Hsubp).
+  - intros p q sqp Hbot. exact Hbot.
+  - intros p q sqp Hphi r srq Hpsi.
+    exact (first_order_canonical_forces_monotone srq Hphi).
+  - intros p q sqp Hfirst r srq Hsecond s ssr Hphi.
+    pose (Hpsi := Hsecond s ssr Hphi).
+    pose (Hpsi_chi := Hfirst s
+      (first_order_stronger_than_trans ssr srq) Hphi).
+    exact (Hpsi_chi s (first_order_stronger_than_refl s) Hpsi).
+  - intros p q sqp [Hphi Hpsi]. exact Hphi.
+  - intros p q sqp [Hphi Hpsi]. exact Hpsi.
+  - intros p q sqp Hphi r srq Hpsi. split.
+    + exact (first_order_canonical_forces_monotone srq Hphi).
+    + exact Hpsi.
+  - intros p q sqp Hphi. now left.
+  - intros p q sqp Hpsi. now right.
+  - intros p q sqp Hphi_chi r srq Hpsi_chi s ssr Hor.
+    destruct Hor as [Hphi | Hpsi].
+    + exact (Hphi_chi s
+        (first_order_stronger_than_trans ssr srq) Hphi).
+    + exact (Hpsi_chi s ssr Hpsi).
+  - intros p q sqp Hall.
+    apply (first_order_type_biequivalence_backward
+      (first_order_canonical_forces_substitute_one phi t)).
+    exact (Hall t).
+  - intros p q sqp Hall r srq Hphi t.
+    pose (Hbody := Hall t).
+    pose (E := @first_order_canonical_forces_bshift
+      L nat 0 r phi first_order_empty_bound_env
+      first_order_identity_free_env t).
+    apply (Hbody r srq).
+    exact (first_order_type_biequivalence_backward E Hphi).
+  - intros p q sqp Hsub.
+    exists t.
+    exact (first_order_type_biequivalence_forward
+      (first_order_canonical_forces_substitute_one phi t) Hsub).
+  - intros p q sqp Hall r srq [t Hbody].
+    pose (Hshift := (Hall t) r srq Hbody).
+    pose (E := @first_order_canonical_forces_bshift
+      L nat 0 r psi first_order_empty_bound_env
+      first_order_identity_free_env t).
+    exact (first_order_type_biequivalence_forward E Hshift).
+Qed.
+
+Theorem first_order_canonical_minimal_sound : forall L
+    (phi : ifo_proposition L)
+    (d : @ifo_hilbert_proof L (ifo_hilbert_minimal L) phi),
+  first_order_canonical_forces_all phi.
+Proof.
+  intros L phi d.
+  eapply first_order_canonical_minimal_sound_bounded.
+  exact (Nat.lt_succ_diag_r (ifo_hilbert_proof_depth d)).
+Qed.
