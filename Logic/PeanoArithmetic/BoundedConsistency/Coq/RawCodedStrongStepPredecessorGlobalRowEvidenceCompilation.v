@@ -731,6 +731,68 @@ Proof.
   split; assumption.
 Qed.
 
+(** Root production may itself append standard PA axioms before entering the
+    state prefix.  Apply the exact state-prefix endpoint on that witnessed
+    source and compose the caller-to-source and source-to-target inclusions;
+    no proof needs to be contracted back to the original tail. *)
+Theorem
+    raw_codedPALocalProof_strongStepPredecessor_atomic_and_domain_of_restricted_and_rule_roots_under_predecessor_state_on_witnessed_extension_from :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    baseContext sourceWitnessList sourceContext
+    levelNumeral sigmaDomain piDomain restrictedRoot ruleRoot,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawContextListIncluded M baseContext sourceContext ->
+  rawDirectTemplateTerm inputs
+    coqRestrictedPASoundnessLowerLevelTerm = levelNumeral ->
+  RawCodedFormulaSingleSubstitution M levelNumeral
+    (rawNumeralValue M
+      (formulaCode dynamicTruthLocalSigmaInputDomainTemplate))
+    sigmaDomain ->
+  RawCodedFormulaSingleSubstitution M levelNumeral
+    (rawNumeralValue M
+      (formulaCode dynamicTruthLocalPiInputDomainTemplate))
+    piDomain ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M sourceContext)
+    (rawDirectTemplateFormula inputs
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M sourceContext)
+    (rawDirectTemplateFormula inputs
+      coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+    ruleRoot ->
+  exists targetWitnessList targetContext atomicRoot domainRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M targetContext)
+      (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot /\
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M targetContext)
+      (rawFormulaOrCode M sigmaDomain piDomain) domainRoot.
+Proof.
+  intros M hPA inputs baseContext sourceWitnessList sourceContext
+    levelNumeral sigmaDomain piDomain restrictedRoot ruleRoot
+    hsourceWitnessed hbaseSourceIncluded hlevel
+    hsigmaDomain hpiDomain hrestricted hrule.
+  destruct
+    (raw_codedPALocalProof_strongStepPredecessor_atomic_and_domain_of_restricted_and_rule_roots_under_predecessor_state
+      M hPA inputs sourceWitnessList sourceContext levelNumeral
+      sigmaDomain piDomain restrictedRoot ruleRoot hsourceWitnessed
+      hlevel hsigmaDomain hpiDomain hrestricted hrule)
+    as (targetWitnessList & targetContext & atomicRoot & domainRoot &
+      htargetWitnessed & hsourceTargetIncluded & hatomic & hdomain).
+  exists targetWitnessList, targetContext, atomicRoot, domainRoot.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hsourceTargetIncluded member
+      (hbaseSourceIncluded member hmember)).
+  - split; assumption.
+Qed.
+
 (** Extract the dependency prefix of the complete handoff.  Restricted-proof
     and rule validity alone determine atomic adequacy and the disjunction of
     the two rank domains.  Keeping this endpoint independent of global-row
