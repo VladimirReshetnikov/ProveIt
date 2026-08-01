@@ -85,6 +85,10 @@ Check pair_scaled_resolvent_poly_correct.
 Check triple_scaled_resolvent_poly_correct.
 Check pair_scaled_semantic_rational_rootP.
 Check triple_scaled_semantic_rational_rootP.
+Check pair_semantic_root_iff_rational_descriptor.
+Check triple_semantic_root_iff_rational_descriptor.
+Check pair_scaled_rational_descriptorP.
+Check triple_scaled_rational_descriptorP.
 Check collision_product_neq0_iff.
 Check pair_sparse_collision_invariant.
 Check triple_sparse_collision_invariant.
@@ -151,6 +155,10 @@ Print Assumptions pair_scaled_resolvent_poly_correct.
 Print Assumptions triple_scaled_resolvent_poly_correct.
 Print Assumptions pair_scaled_semantic_rational_rootP.
 Print Assumptions triple_scaled_semantic_rational_rootP.
+Print Assumptions pair_semantic_root_iff_rational_descriptor.
+Print Assumptions triple_semantic_root_iff_rational_descriptor.
+Print Assumptions pair_scaled_rational_descriptorP.
+Print Assumptions triple_scaled_rational_descriptorP.
 Print Assumptions collision_product_neq0_iff.
 Print Assumptions pair_sparse_collision_invariant.
 Print Assumptions triple_sparse_collision_invariant.

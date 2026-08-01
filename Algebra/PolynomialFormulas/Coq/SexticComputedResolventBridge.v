@@ -90,6 +90,64 @@ Definition triple_semantic_has_rational_root
   exists q : rat,
     (coefficient_list_poly roots (triple_sparse_resolvent x)).[ratrC q] = 0.
 
+Definition pair_has_rational_descriptor
+    (roots : 6.-tuple algC) (x : parameter) : Prop :=
+  exists p : pair_partition, exists q : rat,
+    sparse_eval_ring roots (pair_sparse_descriptor_value x p) = ratrC q.
+
+Definition triple_has_rational_descriptor
+    (roots : 6.-tuple algC) (x : parameter) : Prop :=
+  exists p : triple_partition, exists q : rat,
+    sparse_eval_ring roots (triple_sparse_descriptor_value x p) = ratrC q.
+
+Lemma pair_semantic_root_iff_rational_descriptor roots x :
+  pair_semantic_has_rational_root roots x <->
+    pair_has_rational_descriptor roots x.
+Proof.
+rewrite /pair_semantic_has_rational_root /pair_has_rational_descriptor.
+split.
+- move=> [q hq].
+  rewrite coefficient_list_poly_pair_resolvent horner_prod in hq.
+  have hprod :
+      (\prod_(p : pair_partition)
+        ('X - (sparse_eval_ring roots
+          (pair_sparse_descriptor_value x p))%:P).[ratrC q]) == 0
+      by exact/eqP.
+  move/prodf_eq0: hprod=> [p _ hp].
+  exists p, q; move: hp.
+  rewrite hornerXsubC subr_eq0=> /eqP hp.
+  exact: esym hp.
+- move=> [p [q hp]]; exists q.
+  rewrite coefficient_list_poly_pair_resolvent horner_prod.
+  apply/eqP; apply/prodf_eq0; exists p=> //.
+  apply/eqP.
+  by rewrite hornerXsubC hp subrr.
+Qed.
+
+Lemma triple_semantic_root_iff_rational_descriptor roots x :
+  triple_semantic_has_rational_root roots x <->
+    triple_has_rational_descriptor roots x.
+Proof.
+rewrite /triple_semantic_has_rational_root /triple_has_rational_descriptor.
+split.
+- move=> [q hq].
+  rewrite coefficient_list_poly_triple_resolvent horner_prod in hq.
+  have hprod :
+      (\prod_(p : triple_partition)
+        ('X - (sparse_eval_ring roots
+          (triple_sparse_descriptor_value x p))%:P).[ratrC q]) == 0
+      by exact/eqP.
+  move/prodf_eq0: hprod=> [p _ hp].
+  exists p, q; move: hp.
+  rewrite hornerXsubC subr_eq0=> /eqP hp.
+  exact: esym hp.
+- move=> [p [q hp]]; exists q.
+  rewrite coefficient_list_poly_triple_resolvent horner_prod.
+  apply/eqP; apply/prodf_eq0; exists p=> //.
+  apply/eqP.
+  by rewrite hornerXsubC hp subrr.
+Qed.
+
 Lemma int_poly_horner_ratr (p : {poly int}) q :
   (map_poly (intr : int -> algC) p).[ratrC q] =
     ratrC ((map_poly (intr : int -> rat) p).[q]).
@@ -170,6 +228,28 @@ apply: (iffP (triple_scaled_rational_rootP f x)).
     roots f x hvieta)).
 - exact: (proj2 (@triple_scaled_resolvent_has_rational_root_correct
     roots f x hvieta)).
+Qed.
+
+Theorem pair_scaled_rational_descriptorP roots f x
+    (hvieta : @cast_int_values algC (monic_elementary_values f) =
+      elementary_values roots) :
+  reflect (pair_has_rational_descriptor roots x)
+    (pair_scaled_rational_rootb f x).
+Proof.
+apply: (iffP (@pair_scaled_semantic_rational_rootP roots f x hvieta)).
+- exact: (proj1 (pair_semantic_root_iff_rational_descriptor roots x)).
+- exact: (proj2 (pair_semantic_root_iff_rational_descriptor roots x)).
+Qed.
+
+Theorem triple_scaled_rational_descriptorP roots f x
+    (hvieta : @cast_int_values algC (monic_elementary_values f) =
+      elementary_values roots) :
+  reflect (triple_has_rational_descriptor roots x)
+    (triple_scaled_rational_rootb f x).
+Proof.
+apply: (iffP (@triple_scaled_semantic_rational_rootP roots f x hvieta)).
+- exact: (proj1 (triple_semantic_root_iff_rational_descriptor roots x)).
+- exact: (proj2 (triple_semantic_root_iff_rational_descriptor roots x)).
 Qed.
 
 End RationalRoots.
