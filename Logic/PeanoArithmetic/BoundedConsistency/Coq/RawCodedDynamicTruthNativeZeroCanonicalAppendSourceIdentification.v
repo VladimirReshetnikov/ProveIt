@@ -111,6 +111,47 @@ Definition dynamicTruthZeroCanonicalPiRowFormula : formula :=
   dynamicTruthPiSuccessorRowFormula (Term.numeral 1)
     dynamicTruthGlobalSigmaBaseFormula.
 
+(** Expose the fixed-production target as the named native closed-row
+    formula.  This is the exact bridge between the template-facing append
+    compiler and the formula-facing fixed-level truth API. *)
+Lemma coqFourStateTableAppendZeroCanonicalFixedProduction_native : forall
+    rootMode,
+  templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+    (coqFourStateTableAppendEmbeddedModeProductionMotive
+      dynamicTruthZeroCanonicalSigmaRowFormula
+      dynamicTruthZeroCanonicalPiRowFormula) =
+  embedPAFormula
+    (dynamicTruthZeroClosedSuccessorRowFormula
+      (Term.numeral rootMode)).
+Proof.
+  intro rootMode.
+  rewrite coqFourStateTableAppendEmbeddedModeProductionMotive_open.
+  unfold dynamicTruthZeroClosedSuccessorRowFormula,
+    dynamicTruthZeroCanonicalSigmaRowFormula,
+    dynamicTruthZeroCanonicalPiRowFormula.
+  reflexivity.
+Qed.
+
+(** Carrier-level spelling for every PA-agreeing template translation. *)
+Theorem rawTemplateFormula_zeroCanonicalFixedProduction_native : forall
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall rootMode,
+  rawTemplateFormula translation
+    (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+      (coqFourStateTableAppendEmbeddedModeProductionMotive
+        dynamicTruthZeroCanonicalSigmaRowFormula
+        dynamicTruthZeroCanonicalPiRowFormula)) =
+  rawQuotedFormulaCode M
+    (dynamicTruthZeroClosedSuccessorRowFormula
+      (Term.numeral rootMode)).
+Proof.
+  intros M translation hagreement rootMode.
+  rewrite coqFourStateTableAppendZeroCanonicalFixedProduction_native.
+  exact (rawTemplateFormula_embedPA hagreement
+    (dynamicTruthZeroClosedSuccessorRowFormula
+      (Term.numeral rootMode))).
+Qed.
+
 (** Reversing the exposed tuple is definitionally the protected three-open
     application at [#2,#1,#0].  Kernel computation is intentional here: it
     audits the complete binder-sensitive syntax tree. *)

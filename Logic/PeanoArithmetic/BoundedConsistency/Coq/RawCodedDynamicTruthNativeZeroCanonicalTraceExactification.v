@@ -338,6 +338,17 @@ Proof.
   exact dynamicTruthGlobalPiBaseFormula_scoped.
 Qed.
 
+(** Formula-level selected row, shared by both fixed canonical modes. *)
+Definition dynamicTruthZeroClosedSuccessorRowFormula
+    (mode : term) : formula :=
+  pOr
+    (pAnd (pEq mode tZero)
+      (dynamicTruthSigmaSuccessorRowFormula (Term.numeral 1)
+        dynamicTruthGlobalPiBaseFormula))
+    (pAnd (pEq mode (Term.numeral 1))
+      (dynamicTruthPiSuccessorRowFormula (Term.numeral 1)
+        dynamicTruthGlobalSigmaBaseFormula)).
+
 (** The complete selected-row disjunction used by the append compiler is
     exactly the native level-one closed-row constructor.  This packages the
     two polarity-specific shape lemmas and the two lower-application
@@ -346,13 +357,7 @@ Qed.
     row index is [#4] (and becomes [#12] in the witness body); the selected
     mode is left abstract so the same lemma serves both canonical modes. *)
 Lemma dynamicTruthZeroClosedSuccessorRow_native_shape : forall mode,
-  pOr
-    (pAnd (pEq mode tZero)
-      (dynamicTruthSigmaSuccessorRowFormula (Term.numeral 1)
-        dynamicTruthGlobalPiBaseFormula))
-    (pAnd (pEq mode (Term.numeral 1))
-      (dynamicTruthPiSuccessorRowFormula (Term.numeral 1)
-        dynamicTruthGlobalSigmaBaseFormula)) =
+  dynamicTruthZeroClosedSuccessorRowFormula mode =
   fixedLevelClosedSuccessorRowTermAt 0
     dynamicTruthZeroLowerSigmaApplication
     dynamicTruthZeroLowerPiApplication
@@ -361,6 +366,7 @@ Lemma dynamicTruthZeroClosedSuccessorRow_native_shape : forall mode,
     (tVar 4) mode (tVar 2) (tVar 1) (tVar 0).
 Proof.
   intro mode.
+  unfold dynamicTruthZeroClosedSuccessorRowFormula.
   unfold fixedLevelClosedSuccessorRowTermAt.
   rewrite dynamicTruthZeroSigmaSuccessorRow_native_shape,
     dynamicTruthZeroPiSuccessorRow_native_shape.
@@ -447,6 +453,47 @@ Proof.
   rewrite raw_sat_dynamicTruthGlobalPiBaseFormula_native_iff.
   rewrite !raw_sat_fixedLevelPiFalsityCertificateTermAt_iff.
   cbn [raw_term_eval scons]. reflexivity.
+Qed.
+
+(** Semantic counterpart of the closed-row shape theorem.  The dynamic base
+    predicates are eliminated in favor of the native rank-zero certificate
+    relations, so downstream construction can work entirely with the mature
+    fixed-level truth API. *)
+Theorem raw_sat_dynamicTruthZeroClosedSuccessorRowFormula_native_iff :
+  forall (M : RawPAModel) e mode,
+  raw_formula_sat M e
+    (dynamicTruthZeroClosedSuccessorRowFormula mode) <->
+  RawFixedLevelClosedSuccessorRow M 0
+    (RawFixedLevelSigmaTruthCertificate M 0)
+    (RawFixedLevelPiFalsityCertificate M 0)
+    (raw_term_eval M e (tVar 12))
+    (raw_term_eval M e (tVar 11))
+    (raw_term_eval M e (tVar 10))
+    (raw_term_eval M e (tVar 9))
+    (raw_term_eval M e (tVar 8))
+    (raw_term_eval M e (tVar 7))
+    (raw_term_eval M e (tVar 6))
+    (raw_term_eval M e (tVar 5))
+    (raw_term_eval M e (tVar 4))
+    (raw_term_eval M e mode)
+    (raw_term_eval M e (tVar 2))
+    (raw_term_eval M e (tVar 1))
+    (raw_term_eval M e (tVar 0)).
+Proof.
+  intros M e mode.
+  rewrite dynamicTruthZeroClosedSuccessorRow_native_shape.
+  apply
+    (raw_sat_fixedLevelClosedSuccessorRowTermAt_iff M
+      dynamicTruthZeroLowerSigmaApplication
+      dynamicTruthZeroLowerPiApplication
+      (RawFixedLevelSigmaTruthCertificate M 0)
+      (RawFixedLevelPiFalsityCertificate M 0)).
+  - intros localEnvironment code assignmentCode assignmentStep.
+    rewrite raw_sat_dynamicTruthZeroLowerSigmaApplication_native_iff.
+    apply raw_sat_fixedLevelSigmaTruthCertificateTermAt_iff.
+  - intros localEnvironment code assignmentCode assignmentStep.
+    rewrite raw_sat_dynamicTruthZeroLowerPiApplication_native_iff.
+    apply raw_sat_fixedLevelPiFalsityCertificateTermAt_iff.
 Qed.
 
 (** After exposing the two local-row shapes, the reordered global body is
