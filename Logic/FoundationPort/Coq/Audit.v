@@ -72,7 +72,7 @@ From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Q.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Functions.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Definability.
 From Foundation.FirstOrder.Arithmetic Require Import Schemata.
-From Foundation.FirstOrder.Arithmetic.IOpen Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.IOpen Require Import Basic Definability.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
@@ -3185,6 +3185,16 @@ Print Assumptions iopen_lt_mul_div_succ.
 Print Assumptions iopen_div_zero.
 Print Assumptions iopen_eq_mul_div_add_of_pos.
 Print Assumptions iopen_div_graph.
+Print Assumptions arithmetic_iopen_div_graph_formula.
+Print Assumptions arithmetic_iopen_div_graph_formula_open.
+Print Assumptions arithmetic_iopen_div_graph_formula_hierarchy.
+Print Assumptions arithmetic_iopen_div_graph_sorted.
+Print Assumptions arithmetic_iopen_div_graph_formula_eval.
+Print Assumptions arithmetic_iopen_div_defined.
+Print Assumptions arithmetic_iopen_div_definable_zero.
+Print Assumptions arithmetic_iopen_div_definable.
+Print Assumptions arithmetic_iopen_div_bounded.
+Print Assumptions arithmetic_iopen_div_definably_bounded.
 Print Assumptions iopen_div_eq_of.
 Print Assumptions iopen_div_mul_add.
 Print Assumptions iopen_div_mul_add_left.
