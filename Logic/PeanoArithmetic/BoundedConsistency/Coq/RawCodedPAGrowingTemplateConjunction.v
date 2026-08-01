@@ -118,6 +118,50 @@ Proof.
   - split; assumption.
 Qed.
 
+(** Rebase an already synchronized pair onto an arbitrary witnessed caller
+    tail.  The two final proofs are weakened through one witnessed-context
+    merge while their shared finite prefix is preserved verbatim. *)
+Theorem raw_codedPAGrowingTemplateLocalProofPairAt_rebase : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    producerSourceContext prefix leftConclusion rightConclusion
+    baseWitnessList baseContext,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPAGrowingTemplateLocalProofPairAt M translation
+    producerSourceContext prefix leftConclusion rightConclusion ->
+  RawCodedPAGrowingTemplateLocalProofPairAt M translation
+    baseContext prefix leftConclusion rightConclusion.
+Proof.
+  intros M hPA translation producerSourceContext prefix
+    leftConclusion rightConclusion baseWitnessList baseContext hbase
+    (producerWitnessList & producerContext & leftRoot & rightRoot &
+      hproducerWitnessed & _hproducerSourceIncluded & hleft & hright).
+  destruct
+    (raw_codedPAAxiomWitnessContext_prefixMerge M hPA
+      producerWitnessList producerContext baseWitnessList baseContext
+      hproducerWitnessed hbase)
+    as (targetWitnessList & targetContext & htargetWitnessed &
+      _hproducerWitnessIncluded & hproducerIncluded &
+      _hbaseWitnessIncluded & hbaseIncluded & _hbaseTransport).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation producerWitnessList producerContext
+      targetWitnessList targetContext prefix leftConclusion leftRoot
+      hproducerWitnessed htargetWitnessed hproducerIncluded hleft)
+    as [transportedLeftRoot htransportedLeft].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation producerWitnessList producerContext
+      targetWitnessList targetContext prefix rightConclusion rightRoot
+      hproducerWitnessed htargetWitnessed hproducerIncluded hright)
+    as [transportedRightRoot htransportedRight].
+  exists targetWitnessList, targetContext,
+    transportedLeftRoot, transportedRightRoot.
+  split; [exact htargetWitnessed |].
+  split; [exact hbaseIncluded |].
+  split; assumption.
+Qed.
+
 (** A pair of independently growing empty-prefix proofs after synchronization.
     The package keeps the original-tail inclusion because later clients must
     also transport roots which were compiled before either growing branch. *)

@@ -87,6 +87,8 @@ Check
 Check
   raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_row_all5.
 Check
+  raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination_under_prefix.
+Check
   raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination.
 Check
   raw_fourStateTableAppendEqualityProductionInputsAt_on_witnessed_row_context_under_prefix_of_local_roots.
@@ -169,6 +171,8 @@ Print Assumptions
   raw_codedPAGrowingTemplateLocalProofAt_existential_elimination_chain.
 Print Assumptions
   raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_row_all5.
+Print Assumptions
+  raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination_under_prefix.
 Print Assumptions
   raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination.
 Print Assumptions

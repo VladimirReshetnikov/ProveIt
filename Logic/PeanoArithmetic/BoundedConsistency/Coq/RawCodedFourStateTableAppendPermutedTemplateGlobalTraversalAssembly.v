@@ -321,6 +321,159 @@ Qed.
     statement mirrors the generic opaque-row endpoint, but every occurrence
     of the root tuple is consistently [2,1,0]. *)
 Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_permuted_template_global_of_append_rows_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode (localSigma localPi : TemplateFormula) boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    outerPrefix witnesses appendRoot,
+  rootMode = 0 \/ rootMode = 1 ->
+  let sourceWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M) in
+  let sourceContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M) in
+  let bound := ttParameter boundName in
+  let mode := embedPATerm (Term.numeral rootMode) in
+  let formula := ttVar 2 in
+  let assignmentCode := ttVar 1 in
+  let assignmentStep := ttVar 0 in
+  let prefix := coqFourStateTableAppendWitnessContext
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep outerPrefix in
+  let opened :=
+    coqFourStateTableAppendOpenedPermutedTemplateGlobalFormula
+      rootMode localSigma localPi bound in
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext outerPrefix)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)) appendRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix
+    (rawTemplateFormula translation (templateAnd7Seventh opened)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext outerPrefix
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendPermutedTemplateGlobalSource
+        rootMode localSigma localPi)).
+Proof.
+  intros M hPA translation hagreement
+    rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    outerPrefix witnesses appendRoot hrootMode
+    sourceWitnessList sourceContext bound mode formula
+    assignmentCode assignmentStep prefix opened happend hrows.
+  cbn zeta in *.
+  assert (hsource : RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))).
+  {
+    pose proof (raw_templateEmbeddedPAAxiomWitnessContext
+      M hPA translation hagreement witnesses) as hwitnessed.
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement witnesses) in hwitnessed.
+    exact hwitnessed.
+  }
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_traversal_body_under_prefix
+      M hPA translation hagreement
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      (ttVar 2) (ttVar 1) (ttVar 0)
+      outerPrefix witnesses
+      (coqFourStateTableAppendOpenedPermutedTemplateGlobalRows
+        rootMode localSigma localPi (ttParameter boundName)) hrows)
+    as hbody.
+  pose proof
+    (coqFourStateTableAppendOpenedPermutedTemplateGlobalFormula_shape
+      rootMode localSigma localPi boundName
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep hrootMode)
+    as hopenedShape.
+  rewrite <- hopenedShape in hbody.
+  destruct hbody as
+    (finalWitnessList & finalContext & bodyRoot &
+      hfinal & hincluded & hbody).
+  destruct
+    (raw_codedPALocalProofOf_templateExistentialOpenMany
+      M hPA translation
+      (rawTemplateContextCodeOnTail translation finalContext
+        (coqFourStateTableAppendWitnessContext
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix))
+      (templateFormulaShiftMany 8
+        (coqFourStateTableAppendPermutedTemplateGlobalSource
+          rootMode localSigma localPi))
+      (coqFourStateTableAppendGlobalTraversalWitnesses
+        (ttParameter boundName))
+      (coqFourStateTableAppendOpenedPermutedTemplateGlobalFormula
+        rootMode localSigma localPi (ttParameter boundName))
+      bodyRoot
+      (coqFourStateTableAppendOpenedPermutedTemplateGlobalFormula_success
+        rootMode localSigma localPi (ttParameter boundName)) hbody)
+    as [globalRoot hglobal].
+  assert (hcontinuation : RawCodedPAGrowingTemplateLocalProofAt M translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (coqFourStateTableAppendWitnessContext
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+        (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany 8
+          (coqFourStateTableAppendPermutedTemplateGlobalSource
+            rootMode localSigma localPi)))).
+  {
+    unfold RawCodedPAGrowingTemplateLocalProofAt.
+    exists finalWitnessList, finalContext, globalRoot.
+    split; [exact hfinal |].
+    split; [exact hincluded | exact hglobal].
+  }
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination_under_prefix
+      M hPA translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      outerPrefix
+      (coqFourStateTableAppendPermutedTemplateGlobalSource
+        rootMode localSigma localPi)
+      appendRoot
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      (ttVar 2) (ttVar 1) (ttVar 0)
+      hsource happend hcontinuation).
+Qed.
+
+(** Empty-prefix compatibility specialization. *)
+Corollary
     raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_permuted_template_global_of_append_rows :
   forall (M : RawPAModel), RawPASatisfies M -> forall
     (translation : RawCodedTemplateTranslation M),
@@ -374,100 +527,13 @@ Proof.
     witnesses appendRoot hrootMode
     sourceWitnessList sourceContext bound mode formula
     assignmentCode assignmentStep prefix opened happend hrows.
-  cbn zeta in *.
-  assert (hsource : RawCodedPAAxiomWitnessContext M
-      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
-        witnesses (raw_zero M))
-      (rawStandardPAAxiomWitnessPrefixContextCode M
-        witnesses (raw_zero M))).
-  {
-    pose proof (raw_templateEmbeddedPAAxiomWitnessContext
-      M hPA translation hagreement witnesses) as hwitnessed.
-    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
-      M translation hagreement witnesses) in hwitnessed.
-    exact hwitnessed.
-  }
-  pose proof
-    (raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_traversal_body
-      M hPA translation hagreement
-      modeCode modeStep formulaCode formulaStep
-      assignmentCodeCode assignmentCodeStep
-      assignmentStepCode assignmentStepStep
-      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
-      (ttVar 2) (ttVar 1) (ttVar 0)
-      witnesses
-      (coqFourStateTableAppendOpenedPermutedTemplateGlobalRows
-        rootMode localSigma localPi (ttParameter boundName)) hrows)
-    as hbody.
-  pose proof
-    (coqFourStateTableAppendOpenedPermutedTemplateGlobalFormula_shape
-      rootMode localSigma localPi boundName
-      modeCode modeStep formulaCode formulaStep
-      assignmentCodeCode assignmentCodeStep
-      assignmentStepCode assignmentStepStep hrootMode)
-    as hopenedShape.
-  rewrite <- hopenedShape in hbody.
-  destruct hbody as
-    (finalWitnessList & finalContext & bodyRoot &
-      hfinal & hincluded & hbody).
-  destruct
-    (raw_codedPALocalProofOf_templateExistentialOpenMany
-      M hPA translation
-      (rawTemplateContextCodeOnTail translation finalContext
-        (coqFourStateTableAppendWitnessContext
-          modeCode modeStep formulaCode formulaStep
-          assignmentCodeCode assignmentCodeStep
-          assignmentStepCode assignmentStepStep
-          (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
-          (ttVar 2) (ttVar 1) (ttVar 0) []))
-      (templateFormulaShiftMany 8
-        (coqFourStateTableAppendPermutedTemplateGlobalSource
-          rootMode localSigma localPi))
-      (coqFourStateTableAppendGlobalTraversalWitnesses
-        (ttParameter boundName))
-      (coqFourStateTableAppendOpenedPermutedTemplateGlobalFormula
-        rootMode localSigma localPi (ttParameter boundName))
-      bodyRoot
-      (coqFourStateTableAppendOpenedPermutedTemplateGlobalFormula_success
-        rootMode localSigma localPi (ttParameter boundName)) hbody)
-    as [globalRoot hglobal].
-  assert (hcontinuation : RawCodedPAGrowingTemplateLocalProofAt M translation
-      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
-        witnesses (raw_zero M))
-      (rawStandardPAAxiomWitnessPrefixContextCode M
-        witnesses (raw_zero M))
-      (coqFourStateTableAppendWitnessContext
-        modeCode modeStep formulaCode formulaStep
-        assignmentCodeCode assignmentCodeStep
-        assignmentStepCode assignmentStepStep
-        (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
-        (ttVar 2) (ttVar 1) (ttVar 0) [])
-      (rawTemplateFormula translation
-        (templateFormulaShiftMany 8
-          (coqFourStateTableAppendPermutedTemplateGlobalSource
-            rootMode localSigma localPi)))).
-  {
-    unfold RawCodedPAGrowingTemplateLocalProofAt.
-    exists finalWitnessList, finalContext, globalRoot.
-    split; [exact hfinal |].
-    split; [exact hincluded | exact hglobal].
-  }
   exact
-    (raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination
-      M hPA translation
-      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
-        witnesses (raw_zero M))
-      (rawStandardPAAxiomWitnessPrefixContextCode M
-        witnesses (raw_zero M))
-      (coqFourStateTableAppendPermutedTemplateGlobalSource
-        rootMode localSigma localPi)
-      appendRoot
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_permuted_template_global_of_append_rows_under_prefix
+      M hPA translation hagreement rootMode localSigma localPi boundName
       modeCode modeStep formulaCode formulaStep
       assignmentCodeCode assignmentCodeStep
-      assignmentStepCode assignmentStepStep
-      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
-      (ttVar 2) (ttVar 1) (ttVar 0)
-      hsource happend hcontinuation).
+      assignmentStepCode assignmentStepStep [] witnesses appendRoot
+      hrootMode happend hrows).
 Qed.
 
 (** Native shared-row specialization of the reversed reconstruction. *)
