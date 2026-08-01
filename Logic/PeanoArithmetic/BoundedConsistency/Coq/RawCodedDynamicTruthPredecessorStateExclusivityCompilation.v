@@ -307,6 +307,84 @@ Qed.
 (** Binder-free body of the general exclusivity bridge.  Separating this
     construction from universal introduction lets callers close the body
     across a genuinely shifting temporary template prefix. *)
+Theorem raw_codedPALocalProofOf_exclusive_bridge_body_codes : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context first second sourceCode admissibleCode
+      sigmaEvidence piEvidence sourceRoot,
+  RawContextListRealizable M context ->
+  RawCodedFormulaAtomicallyAdequate M first ->
+  RawCodedFormulaAtomicallyAdequate M second ->
+  RawCodedPALocalProofOf M context sourceCode sourceRoot ->
+  RawCodedUniversalEliminationChain M sourceCode
+    (rawFormulaImpCode M admissibleCode
+      (rawFormulaImpCode M sigmaEvidence
+        (rawFormulaImpCode M piEvidence (rawFormulaBotCode M)))) ->
+  (exists admissibleRoot,
+    RawCodedPALocalProofOf M
+      (rawListNode M second (rawListNode M first context))
+      admissibleCode admissibleRoot) ->
+  (exists sigmaRoot,
+    RawCodedPALocalProofOf M
+      (rawListNode M second (rawListNode M first context))
+      sigmaEvidence sigmaRoot) ->
+  (exists piRoot,
+    RawCodedPALocalProofOf M
+      (rawListNode M second (rawListNode M first context))
+      piEvidence piRoot) ->
+  exists bodyRoot,
+    RawCodedPALocalProofOf M context
+      (rawFormulaImpCode M first
+        (rawFormulaImpCode M second (rawFormulaBotCode M))) bodyRoot.
+Proof.
+  intros M hPA context first second sourceCode admissibleCode
+    sigmaEvidence piEvidence sourceRoot hcontext
+    hfirstAdequate hsecondAdequate hsource
+    hchain [admissibleRoot hadmissible]
+    [sigmaRoot hsigma] [piRoot hpi].
+  destruct (raw_codedPALocalProofOf_universal_elimination_chain
+    M hPA context sourceCode
+    (rawFormulaImpCode M admissibleCode
+      (rawFormulaImpCode M sigmaEvidence
+        (rawFormulaImpCode M piEvidence (rawFormulaBotCode M))))
+    hchain sourceRoot hsource) as [openedRoot hopened].
+  destruct (raw_codedPALocalProof_adequateConsTransplant
+    M hPA context first
+    (rawFormulaImpCode M admissibleCode
+      (rawFormulaImpCode M sigmaEvidence
+        (rawFormulaImpCode M piEvidence (rawFormulaBotCode M))))
+    openedRoot hfirstAdequate hcontext hopened)
+    as [firstLiftedRoot hfirstLifted].
+  assert (hfirstContext :
+      RawContextListRealizable M (rawListNode M first context)).
+  { exact (raw_contextList_cons_realizable M hPA context first hcontext). }
+  destruct (raw_codedPALocalProof_adequateConsTransplant
+    M hPA (rawListNode M first context) second
+    (rawFormulaImpCode M admissibleCode
+      (rawFormulaImpCode M sigmaEvidence
+        (rawFormulaImpCode M piEvidence (rawFormulaBotCode M))))
+    firstLiftedRoot hsecondAdequate hfirstContext hfirstLifted)
+    as [jointRoot hjoint].
+  destruct (raw_codedPALocalProofOf_impE3 M hPA
+    (rawListNode M second (rawListNode M first context))
+    admissibleCode sigmaEvidence piEvidence (rawFormulaBotCode M)
+    jointRoot admissibleRoot sigmaRoot piRoot
+    hjoint hadmissible hsigma hpi) as [bottomRoot hbottom].
+  pose proof (raw_codedPALocalProofOf_impI M hPA
+    (rawListNode M first context) second (rawFormulaBotCode M)
+    bottomRoot hbottom) as hsecondImp.
+  pose proof (raw_codedPALocalProofOf_impI M hPA
+    context first
+    (rawFormulaImpCode M second (rawFormulaBotCode M))
+    (rawProofImpIRoot M (rawListNode M first context)
+      second (rawFormulaBotCode M) bottomRoot)
+    hsecondImp) as hbody.
+  exists (rawProofImpIRoot M context first
+    (rawFormulaImpCode M second (rawFormulaBotCode M))
+    (rawProofImpIRoot M (rawListNode M first context)
+      second (rawFormulaBotCode M) bottomRoot)).
+  exact hbody.
+Qed.
+
 Theorem raw_codedPALocalProofOf_exclusive_bridge_body : forall
     (M : RawPAModel), RawPASatisfies M -> forall
       context first second sigmaDomain piDomain
@@ -346,57 +424,72 @@ Proof.
   intros M hPA context first second sigmaDomain piDomain
     sigmaEvidence piEvidence sourceRoot hcontext
     hfirstAdequate hsecondAdequate hsource
-    hchain [admissibleRoot hadmissible]
-    [sigmaRoot hsigma] [piRoot hpi].
-  destruct (raw_codedPALocalProofOf_universal_elimination_chain
-    M hPA context
+    hchain hadmissible hsigma hpi.
+  exact (raw_codedPALocalProofOf_exclusive_bridge_body_codes
+    M hPA context first second
     (rawDynamicTruthLocalFormulaAll3Code M
       (rawDynamicTruthLocalExclusiveCode M
         sigmaDomain piDomain sigmaEvidence piEvidence))
-    (rawDynamicTruthLocalExclusiveCode M
-      sigmaDomain piDomain sigmaEvidence piEvidence)
-    hchain sourceRoot hsource) as [openedRoot hopened].
-  destruct (raw_codedPALocalProof_adequateConsTransplant
-    M hPA context first
-    (rawDynamicTruthLocalExclusiveCode M
-      sigmaDomain piDomain sigmaEvidence piEvidence)
-    openedRoot hfirstAdequate hcontext hopened)
-    as [firstLiftedRoot hfirstLifted].
-  assert (hfirstContext :
-      RawContextListRealizable M (rawListNode M first context)).
-  { exact (raw_contextList_cons_realizable M hPA context first hcontext). }
-  destruct (raw_codedPALocalProof_adequateConsTransplant
-    M hPA (rawListNode M first context) second
-    (rawDynamicTruthLocalExclusiveCode M
-      sigmaDomain piDomain sigmaEvidence piEvidence)
-    firstLiftedRoot hsecondAdequate hfirstContext hfirstLifted)
-    as [jointRoot hjoint].
-  destruct (raw_codedPALocalProofOf_impE3 M hPA
-    (rawListNode M second (rawListNode M first context))
-    (rawDynamicTruthLocalAdmissibleCode M
-      sigmaDomain piDomain)
-    sigmaEvidence piEvidence (rawFormulaBotCode M)
-    jointRoot admissibleRoot sigmaRoot piRoot
-    hjoint hadmissible hsigma hpi) as [bottomRoot hbottom].
-  pose proof (raw_codedPALocalProofOf_impI M hPA
-    (rawListNode M first context) second (rawFormulaBotCode M)
-    bottomRoot hbottom) as hsecondImp.
-  pose proof (raw_codedPALocalProofOf_impI M hPA
-    context first
-    (rawFormulaImpCode M second (rawFormulaBotCode M))
-    (rawProofImpIRoot M (rawListNode M first context)
-      second (rawFormulaBotCode M) bottomRoot)
-    hsecondImp) as hbody.
-  exists (rawProofImpIRoot M context first
-    (rawFormulaImpCode M second (rawFormulaBotCode M))
-    (rawProofImpIRoot M (rawListNode M first context)
-      second (rawFormulaBotCode M) bottomRoot)).
-  exact hbody.
+    (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
+    sigmaEvidence piEvidence sourceRoot hcontext
+    hfirstAdequate hsecondAdequate hsource hchain
+    hadmissible hsigma hpi).
 Qed.
 
 (** General proof-theoretic kernel.  The two assumptions need not be state
     atoms: any adequate formulas can be discharged.  Likewise the opened
     exclusive body can come from any verified elimination chain. *)
+Theorem raw_codedPALocalProofOf_exclusive_bridge_close3_codes : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context first second sourceCode admissibleCode
+      sigmaEvidence piEvidence sourceRoot,
+  RawContextListRealizable M context ->
+  RawContextShift M context context ->
+  RawCodedFormulaAtomicallyAdequate M first ->
+  RawCodedFormulaAtomicallyAdequate M second ->
+  RawCodedPALocalProofOf M context sourceCode sourceRoot ->
+  RawCodedUniversalEliminationChain M sourceCode
+    (rawFormulaImpCode M admissibleCode
+      (rawFormulaImpCode M sigmaEvidence
+        (rawFormulaImpCode M piEvidence (rawFormulaBotCode M)))) ->
+  (exists admissibleRoot,
+    RawCodedPALocalProofOf M
+      (rawListNode M second (rawListNode M first context))
+      admissibleCode admissibleRoot) ->
+  (exists sigmaRoot,
+    RawCodedPALocalProofOf M
+      (rawListNode M second (rawListNode M first context))
+      sigmaEvidence sigmaRoot) ->
+  (exists piRoot,
+    RawCodedPALocalProofOf M
+      (rawListNode M second (rawListNode M first context))
+      piEvidence piRoot) ->
+  exists resultRoot,
+    RawCodedPALocalProofOf M context
+      (rawFormulaAllCode M (rawFormulaAllCode M (rawFormulaAllCode M
+        (rawFormulaImpCode M first
+          (rawFormulaImpCode M second (rawFormulaBotCode M))))))
+      resultRoot.
+Proof.
+  intros M hPA context first second sourceCode admissibleCode
+    sigmaEvidence piEvidence sourceRoot hcontext hshift
+    hfirstAdequate hsecondAdequate hsource hchain
+    hadmissible hsigma hpi.
+  destruct
+    (raw_codedPALocalProofOf_exclusive_bridge_body_codes
+      M hPA context first second sourceCode admissibleCode
+      sigmaEvidence piEvidence sourceRoot hcontext
+      hfirstAdequate hsecondAdequate hsource hchain
+      hadmissible hsigma hpi) as [bodyRoot hbody].
+  exists (rawPALocalProofClose3Root M context
+    (rawFormulaImpCode M first
+      (rawFormulaImpCode M second (rawFormulaBotCode M))) bodyRoot).
+  exact (raw_codedPALocalProofOf_close3_on M hPA context
+    (rawFormulaImpCode M first
+      (rawFormulaImpCode M second (rawFormulaBotCode M)))
+    bodyRoot hshift hbody).
+Qed.
+
 Theorem raw_codedPALocalProofOf_exclusive_bridge_close3 : forall
     (M : RawPAModel), RawPASatisfies M -> forall
       context first second sigmaDomain piDomain
@@ -440,19 +533,87 @@ Proof.
     sigmaEvidence piEvidence sourceRoot hcontext hshift
     hfirstAdequate hsecondAdequate hsource hchain
     hadmissible hsigma hpi.
+  exact (raw_codedPALocalProofOf_exclusive_bridge_close3_codes
+    M hPA context first second
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalExclusiveCode M
+        sigmaDomain piDomain sigmaEvidence piEvidence))
+    (rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain)
+    sigmaEvidence piEvidence sourceRoot hcontext hshift
+    hfirstAdequate hsecondAdequate hsource hchain
+    hadmissible hsigma hpi).
+Qed.
+
+(** Correct structural predecessor bridge.  The projected master-local law
+    is opened at child [#0] and outer assignment [#4,#3]; each logical root
+    is therefore stated using the corresponding opened template code. *)
+Theorem
+    raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_instantiated_template :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    baseContext sourceRoot,
+  RawContextListRealizable M baseContext ->
+  RawContextShift M baseContext baseContext ->
+  RawCodedPALocalProofOf M baseContext
+    (rawTemplateFormula translation
+      (tfAll (tfAll (tfAll
+        coqDynamicTruthLocalExclusiveBodyTemplate))))
+    sourceRoot ->
+  (exists admissibleRoot,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalAdmissibleTemplate)
+      admissibleRoot) ->
+  (exists sigmaRoot,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate)
+      sigmaRoot) ->
+  (exists piRoot,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalPiEvidenceTemplate)
+      piRoot) ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M baseContext
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA translation baseContext sourceRoot
+    hcontext hshift hsource hadmissible hsigma hpi.
+  pose proof
+    (raw_template_predecessorLocalExclusive_elimination_chain
+      M translation) as hchain.
+  rewrite rawTemplateFormula_predecessorLocalExclusiveBody_shape
+    in hchain.
   destruct
-    (raw_codedPALocalProofOf_exclusive_bridge_body
-      M hPA context first second sigmaDomain piDomain
-      sigmaEvidence piEvidence sourceRoot hcontext
-      hfirstAdequate hsecondAdequate hsource hchain
-      hadmissible hsigma hpi) as [bodyRoot hbody].
-  exists (rawPALocalProofClose3Root M context
-    (rawFormulaImpCode M first
-      (rawFormulaImpCode M second (rawFormulaBotCode M))) bodyRoot).
-  exact (raw_codedPALocalProofOf_close3_on M hPA context
-    (rawFormulaImpCode M first
-      (rawFormulaImpCode M second (rawFormulaBotCode M)))
-    bodyRoot hshift hbody).
+    (raw_codedPALocalProofOf_exclusive_bridge_close3_codes
+      M hPA baseContext
+      (rawDynamicTruthPredecessorSigmaStateMemberBodyCode M)
+      (rawDynamicTruthPredecessorPiStateMemberBodyCode M)
+      (rawTemplateFormula translation
+        (tfAll (tfAll (tfAll
+          coqDynamicTruthLocalExclusiveBodyTemplate))))
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalAdmissibleTemplate)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalPiEvidenceTemplate)
+      sourceRoot hcontext hshift
+      (raw_quotedFormula_atomically_adequate M hPA
+        dynamicTruthPredecessorSigmaStateMemberBodyFormula)
+      (raw_quotedFormula_atomically_adequate M hPA
+        dynamicTruthPredecessorPiStateMemberBodyFormula)
+      hsource hchain hadmissible hsigma hpi)
+    as [predecessorRoot hpredecessor].
+  exists predecessorRoot.
+  rewrite rawDynamicTruthImpPredecessorStateExclusivityCode_as_all3
+    by exact hPA.
+  exact hpredecessor.
 Qed.
 
 (** Exact table/application residue for the predecessor specialization.  The

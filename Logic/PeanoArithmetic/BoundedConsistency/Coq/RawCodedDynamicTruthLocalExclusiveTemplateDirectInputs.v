@@ -235,6 +235,45 @@ Proof.
   vm_compute. repeat split; lia.
 Qed.
 
+Lemma rawTemplateFormula_predecessorLocalExclusiveBody_shape : forall
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M),
+  rawTemplateFormula translation
+      coqDynamicTruthPredecessorLocalExclusiveBodyTemplate =
+  rawFormulaImpCode M
+    (rawTemplateFormula translation
+      coqDynamicTruthPredecessorLocalAdmissibleTemplate)
+    (rawFormulaImpCode M
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate)
+      (rawFormulaImpCode M
+        (rawTemplateFormula translation
+          coqDynamicTruthPredecessorLocalPiEvidenceTemplate)
+        (rawFormulaBotCode M))).
+Proof.
+  intros M translation.
+  rewrite coqDynamicTruthPredecessorLocalExclusiveBodyTemplate_shape.
+  rewrite !rawTemplateFormula_imp, rawTemplateFormula_bot.
+  reflexivity.
+Qed.
+
+(** Exact represented opening from the master local law to its predecessor
+    child instance.  This theorem intentionally leaves both endpoint codes
+    structural; clients may identify their leaves independently. *)
+Corollary raw_template_predecessorLocalExclusive_elimination_chain : forall
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M),
+  RawCodedUniversalEliminationChain M
+    (rawTemplateFormula translation
+      (tfAll (tfAll (tfAll
+        coqDynamicTruthLocalExclusiveBodyTemplate))))
+    (rawTemplateFormula translation
+      coqDynamicTruthPredecessorLocalExclusiveBodyTemplate).
+Proof.
+  intros M translation.
+  exact (raw_template_all3_elimination_chain M translation
+    coqDynamicTruthLocalExclusiveBodyTemplate
+    (ttVar 0) (ttVar 4) (ttVar 3)).
+Qed.
+
 (** ------------------------------------------------------------------
     Total routing of the two opaque ternary atoms. *)
 
