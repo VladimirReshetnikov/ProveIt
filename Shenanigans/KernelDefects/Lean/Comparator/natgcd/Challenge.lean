@@ -1,1 +1,0 @@
-theorem boom : False := sorry

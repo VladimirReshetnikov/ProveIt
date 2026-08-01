@@ -27,7 +27,6 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
 | [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`. |
-| [`Shenanigans/`](Shenanigans/) | **Not ordinary mathematics.** A catalog of every known way to get `theorem Paradox : False` accepted in Lean 4 and Rocq/Coq, grouped by what the route costs: paradoxes of type theory, sanctioned escape hatches, implementation defects, and audits that found nothing. See [the section below](#shenanigans-paradoxes-and-kernel-loopholes). |
 | [`Tools/`](Tools/) | Development tooling: Rocq 9.2 compatibility shims. **Leant**, the GHCi-style interactive REPL for Lean 4 that grew up here, now lives in its own repository at [VladimirReshetnikov/Leant](https://github.com/VladimirReshetnikov/Leant). |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
@@ -242,64 +241,29 @@ and classical boundaries and provides a `coqchk` command.
 - Conditional theorems remain explicitly conditional. The A198683 research
   ledger distinguishes semantic proofs, finite data checks, conditional
   results, and heuristic evidence.
-- [`Shenanigans/`](Shenanigans/) sits outside this boundary by design: it
-  studies paradoxes and kernel defects rather than asserting mathematics. See
-  the section below.
+- Everything tracked here is ordinary mathematics held to those standards. The
+  deliberate paradox and kernel-defect work that used to sit outside them has
+  moved to its own repository; see the section below.
 
-## Shenanigans: paradoxes and kernel loopholes
+## Shenanigans: moved to its own repository
 
-[`Shenanigans/`](Shenanigans/) is the one directory whose contents are **not
-ordinary mathematics**. Proofs and attempted proofs inside it concern paradoxes
-in proof systems and loopholes in the kernels implementing them. A `False`
-derived there is a statement about a formal system or a program — never a
-mathematical fact, and never grounds for doubting anything proved elsewhere in
-this repository.
+`Shenanigans/` — the one directory here whose contents were **not ordinary
+mathematics** — now lives at
+[VladimirReshetnikov/Shenanigans](https://github.com/VladimirReshetnikov/Shenanigans),
+with its full history. It is a catalog of the ways one can get
+`theorem Paradox : False` accepted in Lean 4 and in Rocq/Coq, grouped by what
+each route costs — which is exactly what the assumption audit reports: paradoxes
+of type theory that hypothesize an ingredient the system withholds, sanctioned
+escape hatches that the audit names, implementation defects that the audit
+reports nothing at all about, and audits that looked and found nothing.
 
-It is organized as a catalog of the ways one can get `theorem Paradox : False`
-accepted in Lean 4 and in Rocq/Coq, grouped by what each route costs — which is
-exactly what the assumption audit reports.
-
-**[`Paradoxes/`](Shenanigans/Paradoxes/) — assume what the theory withholds.**
-Girard/Hurkens, Coquand-Paulin, Cantor, and the subsingleton-elimination
-barrier, each stated as an *implication* that hypothesizes the ingredient the
-system denies and shows that granting it is fatal. These are negative results
-about type theory: proofs that a rule *cannot* be added. They are axiom-free and
-their hypotheses are unsatisfiable, so they say nothing against either system's
-consistency; they locate its essential restrictions. `Blockers.lean` completes
-the picture by machine-checking the exact judgment Lean refuses in each case.
-
-**[`EscapeHatches/`](Shenanigans/EscapeHatches/) — use a sanctioned route.**
-`sorry`, `axiom`, `Admitted`, `native_decide` with a lying `@[implemented_by]`,
-Rocq's `Unset Guard/Positivity/Universe Checking`, rewrite rules,
-`-impredicative-set`, and unchecked `addDecl`. Every one is a documented feature
-working as designed, and every one is named by `#print axioms` or
-`Print Assumptions` — except the last two files, which produce honest, closed,
-audit-clean theorems whose *statements* are lies.
-
-**[`KernelDefects/`](Shenanigans/KernelDefects/) — exploit an implementation
-bug.** The only category that is anybody's fault: a closed `False` whose audit
-reports nothing at all. Lean's name-keyed `Nat`/`String`/`reduceBool` accelerator
-family and `Expr.proj` index truncation; four fixed Rocq guard-checker and
-module-system defects kept as regression witnesses. These are bugs in an
-*implementation*, not in a type theory; each is pinned to exact toolchain
-versions and ships with a control.
-
-**[`Audits/`](Shenanigans/Audits/) — look, and find nothing.** Level,
-definitional-equality and compiler fuzzers, the `Acc` and `Expr.proj` metatheory
-probes, and the string- and name-identity study. The negative results are the
-point.
-
-[`Shenanigans/CATALOG.md`](Shenanigans/CATALOG.md) is the completeness ledger:
-every known route in both systems, whether or not this directory represents it.
-
-Nothing in `Shenanigans/` is imported by the mathematical developments, and
-nothing outside it depends on any of it, with one deliberate exception — the
-`TypeTheoryParadoxes` library is in [`ProveIt.lean`](ProveIt.lean), because it
-asserts nothing. The ground rules — machine-checked audits on every claim,
-explicit toolchain pins and version matrices, a control for every claimed
-defect, and no `sorry` or new axiom outside `EscapeHatches/`, which exists to
-exhibit them — are documented in
-[`Shenanigans/README.md`](Shenanigans/README.md).
+It was split out precisely so that the two are not confused. A `False` derived
+there is a statement about a formal system or a program — never a mathematical
+fact, and never grounds for doubting anything proved here. Nothing in this
+repository depends on it, and nothing there depends on this one; the single
+deliberate exception, the axiom-free `TypeTheoryParadoxes` library that was
+registered in [`lakefile.toml`](lakefile.toml) and imported by
+[`ProveIt.lean`](ProveIt.lean), went with it.
 
 ## Vendored components
 
