@@ -9,6 +9,7 @@
   transport.
 *)
 
+From Stdlib Require Import List.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
@@ -23,6 +24,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedLtSuccCasesProofCompilation
   RawCodedPAGrowingTemplateConjunction
+  RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplateDirectStructuralTranslation
@@ -58,6 +60,7 @@ Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
+Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
@@ -84,6 +87,8 @@ Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
 Import
   PABoundedRawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
+
+Import ListNotations.
 
 (** Producer-facing split of the canonical application package.  Arithmetic
     endpoint compilation may first choose a witnessed context carrying
@@ -158,6 +163,52 @@ Arguments
   RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
 
+(** Canonical application resources which retain the caller assumptions of
+    the direct strong-step shell.  Both arithmetic roots live under the
+    joint predecessor state above [callerPrefix], and the synchronized
+    application pair retains the definitionally equal combined template
+    prefix. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (callerPrefix : TemplateContext) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists endpointWitnessList endpointContext atomicRoot domainRoot,
+      RawCodedPAAxiomWitnessContext M endpointWitnessList endpointContext /\
+      RawContextListIncluded M baseContext endpointContext /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M
+          (rawTemplateContextCodeOnTail
+            (rawBottomDirectStructuralTemplateTranslation M hPA)
+            endpointContext callerPrefix))
+        (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M
+          (rawTemplateContextCodeOnTail
+            (rawBottomDirectStructuralTemplateTranslation M hPA)
+            endpointContext callerPrefix))
+        (rawFormulaOrCode M
+          (rawDynamicTruthZeroSigmaDomainCode M)
+          (rawDynamicTruthZeroPiDomainCode M)) domainRoot /\
+      RawCodedPAGrowingTemplateLocalProofPairAt M
+        (rawBottomDirectStructuralTemplateTranslation M hPA)
+        endpointContext
+        (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix)
+        (rawQuotedFormulaCode M
+          dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+        (rawQuotedFormulaCode M
+          dynamicTruthZeroInputGlobalPiApplicationFormula).
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+  M hPA callerPrefix : clear implicits.
+
 (** Concrete append-facing residue.  Arithmetic normalization first chooses
     one witnessed endpoint carrying atomic adequacy and the rank-domain
     disjunction.  The remaining traversal producer supplies both canonical
@@ -228,6 +279,45 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
+
+(** Prefix-preserving endpoint used inside the direct strong-step shell.
+    The caller prefix contains proof-analysis assumptions which must survive
+    the rank-zero traversal.  The two predecessor-state assumptions remain
+    outermost, while the caller prefix is retained immediately above the
+    witnessed PA tail.  The bottom structural translation is fixed because
+    rank zero fixes all three arithmetic alignments canonically. *)
+Definition
+    RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (translation : RawCodedTemplateTranslation M)
+    (callerPrefix : TemplateContext) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists endpointWitnessList endpointContext atomicRoot domainRoot,
+      RawCodedPAAxiomWitnessContext M endpointWitnessList endpointContext /\
+      RawContextListIncluded M baseContext endpointContext /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M
+          (rawTemplateContextCodeOnTail
+            (rawBottomDirectStructuralTemplateTranslation M hPA)
+            endpointContext callerPrefix))
+        (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M
+          (rawTemplateContextCodeOnTail
+            (rawBottomDirectStructuralTemplateTranslation M hPA)
+            endpointContext callerPrefix))
+        (rawFormulaOrCode M
+          (rawDynamicTruthZeroSigmaDomainCode M)
+          (rawDynamicTruthZeroPiDomainCode M)) domainRoot.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+  M hPA translation callerPrefix : clear implicits.
 
 (** Independently growing atomic-adequacy endpoint. *)
 Definition
@@ -343,6 +433,72 @@ Proof.
     + rewrite <- (rawQuotedFormulaCode_standard M hPA
         dynamicTruthLocalPiInputDomainTemplate).
       exact (raw_dynamicTruthZeroPiDomain_substitution M hPA).
+Qed.
+
+(** Both arithmetic premises are literal assumptions of the direct
+    strong-step endpoint.  When they occur in [callerPrefix], prepend the
+    two predecessor-state formulas, compile the assumption leaves with the
+    generic strong-step endpoint, and use the exact context-app identity to
+    expose the native joint-state shape expected downstream. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M) callerPrefix,
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix.
+Proof.
+  intros M hPA translation callerPrefix hrestrictedIn hruleIn
+    tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace.
+  pose proof
+    (rawDynamicTruthNativeLocalZeroNormalized_fields
+      M translation witnessList baseContext helperRoots hresources)
+    as hfields.
+  pose proof
+    (rawDynamicTruthNativeLocalZeroCurrentFields_witnessed
+      M witnessList baseContext hfields) as hwitnessed.
+  destruct
+    (raw_dynamicTruthNativeLocalZeroCanonicalBottomEndpointAlignments
+      M hPA) as (hlevel & hsigmaDomain & hpiDomain).
+  destruct
+    (raw_codedPALocalProof_strongStepPredecessor_atomic_and_domain_from_template_assumptions_under_prefix
+      M hPA (rawBottomTemplateDirectStructuralInputs M hPA)
+      witnessList baseContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix)
+      (rawQuotedTermCode M (Term.numeral 0))
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      hwitnessed
+      (in_or_app _ _ _ (or_intror hrestrictedIn))
+      (in_or_app _ _ _ (or_intror hruleIn))
+      hlevel hsigmaDomain hpiDomain)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hatomic & hdomain).
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      endpointContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix))
+    (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot) in hatomic.
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      endpointContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix))
+    (rawFormulaOrCode M
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)) domainRoot) in hdomain.
+  rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+    (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+    endpointContext callerPrefix) in hatomic, hdomain.
+  exists endpointWitnessList, endpointContext, atomicRoot, domainRoot.
+  split; [exact hendpointWitnessed |].
+  split; [exact hbaseEndpointIncluded |].
+  split; assumption.
 Qed.
 
 (** Canonical rank-zero clients need only produce the two genuinely logical
@@ -738,6 +894,170 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
+
+(** Row-kernel resources under the caller assumptions of the direct
+    strong-step shell.  Arithmetic roots and both append payloads share the
+    exact combined prefix [state ++ callerPrefix]; no contraction back to
+    the state-only context is requested. *)
+Definition
+    RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (translation : RawCodedTemplateTranslation M)
+    (callerPrefix : TemplateContext) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists endpointWitnessList endpointContext atomicRoot domainRoot,
+    exists appendWitnesses : StandardPAAxiomWitnessPrefix,
+      RawCodedPAAxiomWitnessContext M endpointWitnessList endpointContext /\
+      RawContextListIncluded M baseContext endpointContext /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M
+          (rawTemplateContextCodeOnTail
+            (rawBottomDirectStructuralTemplateTranslation M hPA)
+            endpointContext callerPrefix))
+        (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M
+          (rawTemplateContextCodeOnTail
+            (rawBottomDirectStructuralTemplateTranslation M hPA)
+            endpointContext callerPrefix))
+        (rawFormulaOrCode M
+          (rawDynamicTruthZeroSigmaDomainCode M)
+          (rawDynamicTruthZeroPiDomainCode M)) domainRoot /\
+      RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+        M translation 0
+          (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix)
+          appendWitnesses /\
+      RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+        M translation 1
+          (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix)
+          appendWitnesses.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+  M hPA translation callerPrefix : clear implicits.
+
+(** Product reassociation at the retained caller prefix. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_endpoint_and_payload_pair
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M) callerPrefix,
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
+    M translation
+      (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix) ->
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix.
+Proof.
+  intros M hPA translation callerPrefix hendpoint hpayloads
+    tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace.
+  destruct
+    (hendpoint tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hatomic & hdomain).
+  destruct hpayloads as (appendWitnesses & hsigmaPayload & hpiPayload).
+  exists endpointWitnessList, endpointContext, atomicRoot, domainRoot,
+    appendWitnesses.
+  split; [exact hendpointWitnessed |].
+  split; [exact hbaseEndpointIncluded |].
+  split; [exact hatomic |].
+  split; [exact hdomain |].
+  split; assumption.
+Qed.
+
+(** Canonical rank-zero kernel resources need no restricted/rule root
+    producer once the direct-shell assumptions are retained. *)
+Corollary
+    raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_payload_pair
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M) callerPrefix,
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
+    M translation
+      (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix) ->
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA translation callerPrefix.
+Proof.
+  intros M hPA translation callerPrefix hrestrictedIn hruleIn hpayloads.
+  exact
+    (raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_endpoint_and_payload_pair
+      M hPA translation callerPrefix
+      (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions
+        M hPA translation callerPrefix hrestrictedIn hruleIn)
+      hpayloads).
+Qed.
+
+(** Compile prefix-aware row kernels to the synchronized canonical
+    application pair without changing or contracting the combined prefix. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_permuted_append_kernel_resources
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      callerPrefix ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix hcompiler
+    tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace.
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      appendWitnesses & hendpointWitnessed & hbaseEndpointIncluded &
+      hatomic & hdomain & hsigmaPayload & hpiPayload).
+  set (combinedPrefix :=
+    coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix).
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_kernel
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA) 0
+      combinedPrefix appendWitnesses
+      (raw_dynamicTruthZeroCanonicalSigmaPermutedAppendRowKernelInputsUnderPrefixAt_of_payload
+        M (rawBottomDirectStructuralTemplateTranslation M hPA)
+        combinedPrefix appendWitnesses hsigmaPayload))
+    as hsigmaRows.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_kernel
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA) 1
+      combinedPrefix appendWitnesses
+      (raw_dynamicTruthZeroCanonicalPiPermutedAppendRowKernelInputsUnderPrefixAt_of_payload
+        M (rawBottomDirectStructuralTemplateTranslation M hPA)
+        combinedPrefix appendWitnesses hpiPayload))
+    as hpiRows.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt_of_row_implication_inputs
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA) 0
+      combinedPrefix appendWitnesses hsigmaRows) as hsigmaInputs.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt_of_row_implication_inputs
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA) 1
+      combinedPrefix appendWitnesses hpiRows) as hpiInputs.
+  exists endpointWitnessList, endpointContext, atomicRoot, domainRoot.
+  split; [exact hendpointWitnessed |].
+  split; [exact hbaseEndpointIncluded |].
+  split; [exact hatomic |].
+  split; [exact hdomain |].
+  exact
+    (raw_dynamicTruthZeroCanonicalApplicationPair_of_permuted_append_inputs_under_prefix
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      combinedPrefix appendWitnesses endpointWitnessList endpointContext
+      (raw_directStructuralTemplatePrefix_atomically_adequate M hPA
+        (rawBottomTemplateDirectStructuralInputs M hPA) combinedPrefix)
+      hendpointWitnessed hsigmaInputs hpiInputs).
+Qed.
 
 (** Combine the invocation-dependent endpoint with the model-global,
     synchronized canonical row payloads.  This is only product reassociation:
