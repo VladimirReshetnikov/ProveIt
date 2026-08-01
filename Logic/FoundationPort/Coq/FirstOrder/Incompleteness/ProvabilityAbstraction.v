@@ -336,6 +336,18 @@ Definition pa_independent {A} (L : modal_logic_set A)
 Definition pa_incomplete {A} (L : modal_logic_set A) : Prop :=
   exists p, pa_independent L p.
 
+(** The common proof behind both strict-extension instances in the source's
+    second-incompleteness wrapper.  The stronger logic need only include the
+    old one and prove a formula which the old one does not. *)
+Lemma pa_strictly_weaker_of_unprovable : forall (A : Type)
+    (L Lplus : modal_logic_set A) p,
+  logic_subset L Lplus -> ~ L p -> Lplus p ->
+  logic_strictly_weaker L Lplus.
+Proof.
+  intros A L Lplus p Hweak Hnot Hp. split; [exact Hweak |].
+  exists p. now split.
+Qed.
+
 Theorem pa_unprovable_godel : forall (A : Type)
     (L0 L : modal_logic_set A)
     (Hclass0 : classical_logic L0) (Hclass : classical_logic L)

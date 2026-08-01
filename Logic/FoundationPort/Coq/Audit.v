@@ -4324,6 +4324,7 @@ Print Assumptions pa_ext_weaker.
 Check pa_diagonalization.
 Check pa_godel.
 Print Assumptions pa_godel_spec.
+Print Assumptions pa_strictly_weaker_of_unprovable.
 Print Assumptions pa_unprovable_godel.
 Print Assumptions pa_unrefutable_godel.
 Print Assumptions pa_godel_independent.
