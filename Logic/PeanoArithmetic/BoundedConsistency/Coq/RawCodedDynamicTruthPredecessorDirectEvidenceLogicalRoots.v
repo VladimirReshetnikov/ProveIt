@@ -24,6 +24,7 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
   RawCodedSyntaxConstructors
   RawCodedPAAxiomWitnessPrefix
+  RawCodedPAAxiomContextSelfShift
   RawCodedPALocalProofExistential
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedPALocalProofWitnessedContextMerge
@@ -35,6 +36,8 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthNativeLocalPositiveGraph
+  RawCodedDynamicTruthImpBranchExclusivity
+  RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
   RawCodedDynamicTruthLocalFieldProjectionCompilation
   RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
@@ -53,6 +56,7 @@ Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
+Import PABoundedRawCodedPAAxiomContextSelfShift.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
@@ -65,6 +69,8 @@ Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import
   PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+Import PABoundedRawCodedDynamicTruthImpBranchExclusivity.
+Import PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
 Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
 Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 Import
@@ -195,6 +201,183 @@ Proof.
   - exists admissibleRoot. exact hadmissible.
   - exists transportedSigmaRoot. exact htransportedSigmaJoint.
   - exists transportedPiRoot. exact htransportedPiJoint.
+Qed.
+
+(** End-to-end corrected predecessor closure from instantiated template
+    leaves.  Admissibility may append standard PA axioms; the source local
+    law and both evidence roots are transported to that retained extension
+    under the identical three-times-shifted caller prefix before the
+    prefix-preserving exclusivity bridge closes its binders. *)
+Theorem
+    raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_instantiated_evidence_under_template_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix
+      sourceRoot atomicRoot domainRoot sigmaRoot piRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation
+    (templateContextShift (templateContextShift
+      (templateContextShift prefix))) ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext
+      (templateContextShift (templateContextShift
+        (templateContextShift prefix))))
+    (rawTemplateFormula translation
+      (tfAll (tfAll (tfAll
+        coqDynamicTruthLocalExclusiveBodyTemplate))))
+    sourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (templateContextShift (templateContextShift
+          (templateContextShift prefix)))))
+    (rawTemplateFormula translation
+      coqDynamicTruthPredecessorLocalAtomicAdequacyTemplate)
+    atomicRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (templateContextShift (templateContextShift
+          (templateContextShift prefix)))))
+    (rawFormulaOrCode M
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaDomainTemplate)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalPiDomainTemplate))
+    domainRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (templateContextShift (templateContextShift
+          (templateContextShift prefix)))))
+    (rawTemplateFormula translation
+      coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate)
+    sigmaRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (templateContextShift (templateContextShift
+          (templateContextShift prefix)))))
+    (rawTemplateFormula translation
+      coqDynamicTruthPredecessorLocalPiEvidenceTemplate)
+    piRoot ->
+  exists targetWitnessList targetContext predecessorRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext prefix
+    sourceRoot atomicRoot domainRoot sigmaRoot piRoot
+    hshiftedPrefix hbase hsource hatomic hdomain hsigma hpi.
+  set (prefix3 := templateContextShift (templateContextShift
+    (templateContextShift prefix))).
+  destruct
+    (raw_dynamicTruthPredecessorChildAdmissibilityTemplate_on_witnessed_extension_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix3
+      atomicRoot domainRoot hshiftedPrefix hbase hatomic hdomain)
+    as (witnesses & admissibleRoot & htargetWitnessed & hadmissible).
+  set (targetWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList).
+  set (targetContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext).
+  assert (hincluded : RawContextListIncluded M baseContext targetContext).
+  {
+    unfold targetContext.
+    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+      M hPA witnesses baseContext).
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      targetWitnessList targetContext prefix3
+      (rawTemplateFormula translation
+        (tfAll (tfAll (tfAll
+          coqDynamicTruthLocalExclusiveBodyTemplate))))
+      sourceRoot hbase htargetWitnessed hincluded hsource)
+    as [transportedSourceRoot htransportedSource].
+  assert (hsigmaTemplate : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (coqDynamicTruthPredecessorStateTemplateContext ++ prefix3))
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate)
+      sigmaRoot).
+  {
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement baseContext prefix3).
+    exact hsigma.
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      targetWitnessList targetContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix3)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate)
+      sigmaRoot hbase htargetWitnessed hincluded hsigmaTemplate)
+    as [transportedSigmaRoot htransportedSigmaTemplate].
+  assert (htransportedSigma : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation targetContext prefix3))
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate)
+      transportedSigmaRoot).
+  {
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement targetContext prefix3).
+    exact htransportedSigmaTemplate.
+  }
+  assert (hpiTemplate : RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext
+        (coqDynamicTruthPredecessorStateTemplateContext ++ prefix3))
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalPiEvidenceTemplate)
+      piRoot).
+  {
+    rewrite (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement baseContext prefix3).
+    exact hpi.
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation baseWitnessList baseContext
+      targetWitnessList targetContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix3)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalPiEvidenceTemplate)
+      piRoot hbase htargetWitnessed hincluded hpiTemplate)
+    as [transportedPiRoot htransportedPiTemplate].
+  assert (htransportedPi : RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation targetContext prefix3))
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalPiEvidenceTemplate)
+      transportedPiRoot).
+  {
+    rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
+      M translation hagreement targetContext prefix3).
+    exact htransportedPiTemplate.
+  }
+  destruct
+    (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_instantiated_template_under_template_prefix
+      M hPA translation targetContext prefix transportedSourceRoot
+      (raw_codedPAAxiomWitnessContext_context_realizable M
+        targetWitnessList targetContext htargetWitnessed)
+      (raw_codedPAAxiomWitnessContext_selfShift M hPA
+        targetWitnessList targetContext htargetWitnessed)
+      htransportedSource
+      (ex_intro _ admissibleRoot hadmissible)
+      (ex_intro _ transportedSigmaRoot htransportedSigma)
+      (ex_intro _ transportedPiRoot htransportedPi))
+    as [predecessorRoot hpredecessor].
+  exists targetWitnessList, targetContext, predecessorRoot.
+  split; [exact htargetWitnessed |].
+  split; assumption.
 Qed.
 
 (** A projected local decision law is useful on every witnessed extension,
