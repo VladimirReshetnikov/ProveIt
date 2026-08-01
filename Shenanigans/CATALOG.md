@@ -442,6 +442,14 @@ were disabled — precisely because coqchk reports rather than rejects them.
 
 Ordered by value.
 
+0. **lean4#14582 needs an instrumented kernel build, and this is now demonstrated
+   rather than assumed.** The nested-inductive auxiliary declarations where the
+   defect lives never enter the environment: they are created in a temporary
+   kernel environment and rewritten by `restore_nested`, so a search from inside
+   Lean re-checks only the surviving recursors. This is the same property that
+   made lean4#14616's exploit uncapturable as an arena export test. Black-box
+   probing cannot reach it; instrumenting `replace_if_nested`/`restore_nested` in
+   a source build can.
 1. **The Lean Kernel Arena corpus (§3).** Fourteen catalogued attacks, four of
    which the official kernel has fallen for, plus the `undecidability/` category
    that formalises what [`Audits/Lean/Metatheory/`](Audits/Lean/Metatheory/)
@@ -496,6 +504,7 @@ Lean kernel surface against an explicit oracle; harnesses and counts are in
 | `Float`: is anything *proved* about it anywhere in core or Mathlib? | IEEE-754 violates reflexivity (`NaN`) and congruence (zero vs. negative zero), so any lawfulness lemma would be false and `native_decide`-exploitable | **zero** `Lawful*` or `DecidableEq` instances mentioning `Float`/`Float32`; all 25 theorems that mention them are auto-generated structure lemmas (`.mk.inj`, `.mk.injEq`, `.sizeOf_spec`, `.ext`) or `Nonempty` instances. The "prove nothing, so nothing can be contradicted" discipline holds across the whole ecosystem |
 | `Array.qsort`, `Array.insertionSort`, `List.mergeSort`, `Array.binSearch` — all with `unsafe` fast implementations | an independent insertion sort, and membership for the search | 197,604 comparisons over pseudorandom inputs at lengths 0–129, **0 divergences** |
 | Large `Nat.shiftLeft` *below* the panic threshold — is `mul2k` correct at scale? | round trip through `shiftRight`, cross-check against the `Nat.pow` accelerator, popcount, and low-64-bit agreement with the compiled implementation, at shifts up to 2^24 | 95 checks, 0 divergence. This closes the `shiftLeft` finding from the other side: the value is **correct** everywhere it is computed, so the defect is purely the uncatchable abort above `UINT_MAX` and never a wrong result |
+| Nested-inductive auxiliary declarations — can the missing re-check of lean4#14621 be exercised from inside Lean? | re-run `Kernel.check` on the type and value of every declaration the kernel generated for nine nested inductives, including the non-uniform shapes of #14582 | 240 surviving declarations re-checked, **0 failures** — but the test cannot reach the interesting artifacts: **zero** constants containing `_nested` persist in the environment. The auxiliary types are transient, built in a temporary kernel environment and mapped back by `restore_nested`, so only recursors, `below`/`brecOn`/`sizeOf`/`noConfusion` survive |
 
 Two things did turn up, neither a `False`. `Nat.shiftLeft`'s missing magnitude
 guard is §2.6. And `Kernel.check` with a caller-supplied local context whose
