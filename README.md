@@ -20,7 +20,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 
 | Topic | Contents |
 | --- | --- |
-| [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; recursive decidability of radical solvability for individual integer quintics; and Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction. |
+| [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; a Lean-verified primitive-recursive radical-solvability criterion for individual integer quintics; and Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction. |
 | [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
 | [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
@@ -48,12 +48,17 @@ is the broad Lean import surface.
   every `n > 4`.  An independent symmetric rational-function construction
   supplies a second all-roots theorem.  The distinct scopes and assumptions
   are documented and kernel-audited.
-- An external mathematical proof that radical solvability of an individual
-  integer quintic is primitive recursive: bounded factorization handles
-  reducible inputs, while Dummit's Frobenius sextic and a bounded rational-root
-  test handle irreducible inputs. A Rocq reflector independently checks the
-  exact all-roots radical-expression predicate on natural-number encodings;
-  the coefficient algorithm itself is not formalized or extracted.
+- A Lean formalization that radical solvability of an individual integer
+  quintic is primitive recursive. It verifies the complete bounded factor
+  search, scalar Frobenius--Dummit resolvent and Chapman's correction, the
+  irreducible Galois criterion, the bounded rational-root test, correctness of
+  the assembled Boolean, `ComputablePred`, and existence of a
+  `PartrecToTM2` program. A certified 302-term sparse coefficient table makes
+  the final Lean Boolean directly evaluable; its four largest finite
+  identities use the repository's documented `native_decide` trust boundary.
+  A Rocq reflector independently checks the exact all-roots radical-expression
+  semantics on natural-number encodings, but remains a semantic rather than
+  extracted coefficient implementation.
 - A Lean/Coq proof that the Jacobian conjecture is false in dimension three:
   an explicit polynomial map has formal Jacobian determinant `-2` but
   identifies distinct integral and rational points.  A stabilization

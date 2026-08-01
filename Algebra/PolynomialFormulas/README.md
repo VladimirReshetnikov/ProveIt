@@ -100,25 +100,47 @@ therefore have deliberately distinct scopes.
 
 ## Deciding an individual integer quintic
 
-The companion external mathematical proof
-[`Decidability.md`](Decidability.md) shows that it is recursive—in fact,
+The mathematical proof and implementation outline in
+[`Decidability.md`](Decidability.md) show that it is recursive—in fact,
 primitive recursive—to decide whether every root of a given
-integer-coefficient quintic is expressible in radicals. It gives a completely
-bounded coefficient algorithm: monicize the polynomial, detect reducibility by
-enumerating bounded linear and quadratic factors, and in the irreducible case
-apply Dummit's explicit Frobenius sextic and a bounded rational-root search.
+integer-coefficient quintic is expressible in radicals. The procedure
+monicizes the polynomial, detects reducibility by enumerating bounded linear
+and quadratic factors, and in the irreducible case applies the scalar
+Frobenius--Dummit sextic and a bounded rational-root search.
+
+Lean now formalizes this argument end to end. The checked development proves
+completeness of the bounded factor search, handles the reducible branch using
+the radical solvability of polynomials of degree at most four, constructs the
+actual scalar Frobenius--Dummit resolvent, and formalizes the $F_{20}$ subgroup
+classification and Chapman's repeated-resolvent-root correction. It then
+specializes the resolvent coefficients by Vieta, proves the irreducible
+Galois-group criterion and the bounded rational-root test, and assembles a
+Boolean characteristic function for the all-complex-roots radical predicate.
+The coefficient transformations and searches are proved primitive recursive;
+the final theorems give `ComputablePred` and the existence of a
+`PartrecToTM2` program satisfying the stated execution relation on encoded
+integer quintics.
+
+The seven elementary-symmetric coefficient polynomials are also present as a
+302-term sparse table. A proved sparse-normalization procedure certifies the
+table against the six scalar roots over every commutative ring, and Lean then
+identifies the table with the abstract symmetric-polynomial construction.
+Consequently the final Boolean is directly evaluable, in addition to being
+proved primitive recursive. The four largest certificate reductions use
+`native_decide` and therefore include Lean's native compiler/runtime in the
+documented trust boundary; the remaining three use ordinary kernel `decide`.
+No claim is made that the bounded implementation is optimized, or that the
+existential `PartrecToTM2` code has been printed as a standalone extracted
+solver.
 
 The Rocq file
-[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v) provides
-the kernel-checked semantic bridge. It reflects the exact all-roots
+[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v) provides an
+independent kernel-checked semantic bridge. It reflects the exact all-roots
 `algterm rat` predicate to a Boolean for degree-five integer polynomials and
-for their natural-number encodings. The explicit coefficient algorithm and
-its primitive-recursiveness proof are not formalized or extracted in either
-prover; that external argument, not the opaque splitting-field construction
-behind the reflector, establishes the recursive/Turing-machine claim. No
-parallel Lean computability theorem is claimed: the available mathlib Galois
-API is noncomputable and lacks the converse solvability criterion needed for
-such a theorem.
+their natural-number encodings. That reflector still uses MathComp-Abel's
+opaque abstract splitting field; it is semantic rather than an extracted
+implementation of the bounded coefficient procedure, and direct standard
+extraction remains unavailable because of MathComp sort polymorphism.
 
 ## Calculator interface and scope
 

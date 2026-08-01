@@ -199,11 +199,58 @@ integer polynomials of arbitrary degree. Combining it with the
 Lenstra--Lenstra--Lovász rational factorization algorithm also proves the
 present theorem (and more) in polynomial time.
 
-## Kernel-checked semantic bridge
+## Formalized verification status
+
+The Lean development now formalizes the full mathematical reduction and its
+computability endpoint. In particular, it verifies:
+
+- integral monicization and completeness of the bounded linear/quadratic
+  factor search;
+- the degree-at-most-four radical-solvability argument for the reducible
+  branch;
+- the scalar Frobenius--Dummit invariant and sextic, the six
+  $S_5/F_{20}$ cosets, the solvable-transitive-subgroup criterion, and
+  Chapman's repeated-root/no-collision step;
+- specialization of the universal resolvent at an ordered root tuple and the
+  equivalence between a rational resolvent root and solvability of the
+  irreducible quintic's Galois group;
+- a directly evaluable sparse table for all seven integer coefficients of the
+  sextic, together with a symbolic-normalization certificate equating that
+  table with the universal resolvent;
+- completeness of the bounded rational-root search;
+- primitive-recursiveness of the coefficient transformations, both bounded
+  searches, the explicit resolvent-coefficient function, and the assembled
+  Boolean criterion;
+- correctness of that criterion for the semantic all-complex-roots radical
+  predicate, hence a `ComputablePred` theorem and existence of a
+  `PartrecToTM2` program whose execution realizes the encoded criterion.
+
+This is stronger than merely installing a classical `Decidable` instance:
+the Lean proof explicitly passes through a primitive-recursive Boolean
+characteristic function and mathlib's Turing-machine execution relation.
+
+The repository contains the seven coefficient polynomials as a 302-term
+sparse table. Lean first proves the table correct over every commutative ring,
+then proves its directly evaluable coefficient function equal to the abstract
+one selected by the fundamental theorem of symmetric polynomials. Thus
+`quinticRadicalDecision` is a reducible Lean Boolean function, not merely a
+classically selected characteristic function. The development does not claim
+that this deliberately simple bounded search is efficient, nor does it ship a
+standalone extracted solver or display the numeric code of the existentially
+obtained Turing program.
+
+The largest finite table identities are intentionally checked with
+`native_decide`: coefficient indices zero through three use Lean's native
+compiler, while indices four through six use ordinary kernel reduction. As
+with other documented native certificates in this repository, those four
+proofs therefore expose four generated native-decision axioms in the
+assumption audit and include the native compiler/runtime in their trust
+boundary. All symbolic bridge lemmas and the final semantic reductions are
+ordinary Lean proofs.
 
 The Rocq file
-[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v) checks the
-precise semantic endpoint:
+[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v)
+independently checks the precise semantic endpoint:
 
 - `integer_radical_decisionP` reflects the all-roots `algterm rat`
   predicate for every size-six integer polynomial;
@@ -212,22 +259,13 @@ precise semantic endpoint:
   codes;
 - the assumption audit reports these results closed under the global context.
 
-That Boolean uses MathComp-Abel's abstract `numfield` splitting field. It is
-a kernel-checked semantic reflector, not the executable realization of the
-bounded coefficient algorithm above: the construction is opaque, and direct
-standard extraction currently fails on MathComp sort polymorphism. The
-recursive claim therefore rests on the external mathematical argument for the
-explicit bounded algorithm above, rather than on confusing proposition-level
-decidability or opacity with effective computation. That coefficient
-algorithm and its primitive-recursiveness proof are not formalized or
-extracted in either prover.
-
-There is no parallel Lean declaration claiming computability. Mathlib's
-available splitting-field and Galois-group constructions are noncomputable,
-and its current Abel--Ruffini API supplies the obstruction direction needed
-elsewhere in this project, not the converse radical-solvability criterion
-needed here. Adding a classical `Decidable` instance would not prove the
-recursive/Turing-machine claim.
+The Rocq Boolean uses MathComp-Abel's abstract `numfield` splitting field. It
+remains a kernel-checked semantic reflector rather than an extracted version
+of the bounded coefficient algorithm: the construction is opaque, and direct
+standard extraction currently fails on MathComp sort polymorphism. Thus the
+two formalizations have complementary endpoints: Lean verifies the
+primitive-recursive coefficient criterion and machine existence, while Rocq
+independently verifies the radical-expression semantics of its reflector.
 
 ## Primary sources
 
