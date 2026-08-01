@@ -2252,3 +2252,274 @@ Proof.
     + intro x; reflexivity.
   - apply semiformula_rewrite_id.
 Qed.
+
+(** Formula-level injectivity of simultaneous variable maps.  The source
+    installs this as an [InjMapRewriting] instance; the explicit theorem is
+    more reusable in Coq and needs no equality decision on formulas. *)
+Theorem semiformula_rewrite_map_injective : forall L X n Y m
+    (b : Fin.t n -> Fin.t m) (e : X -> Y),
+  (forall i j, b i = b j -> i = j) ->
+  (forall x y, e x = e y -> x = y) ->
+  forall p q : semiformula L X n,
+    semiformula_rewrite (rew_map b e) p =
+    semiformula_rewrite (rew_map b e) q -> p = q.
+Proof.
+  intros L X n Y m b e Hb He p. revert Y m b e Hb He.
+  induction p as [n | n | n k r v | n k r v |
+      n p IHp q IHq | n p IHp q IHq | n p IHp | n p IHp];
+    intros Y m b e Hb He s H;
+    destruct s as [n' | n' | n' k' r' v' | n' k' r' v' |
+      n' p' q' | n' p' q' | n' p' | n' p'];
+    simpl in H; try discriminate; try reflexivity.
+  - pose proof (f_equal semiformula_outer_rel_payload H) as Hp.
+    simpl in Hp. apply option_some_injective in Hp.
+    pose proof (f_equal (@projT1 nat (fun j =>
+      (language_rel L j * (Fin.t j -> semiterm L Y m))%type)) Hp) as Hk.
+    simpl in Hk. subst k'.
+    apply (@inj_pair2_eq_dec nat Nat.eq_dec
+      (fun j => (language_rel L j *
+        (Fin.t j -> semiterm L Y m))%type)) in Hp.
+    injection Hp as Hr Hv. subst r'. f_equal.
+    apply functional_extensionality. intro i.
+    apply (@rew_map_injective L X _ Y m b e Hb He (v i) (v' i)).
+    exact (f_equal (fun a => a i) Hv).
+  - pose proof (f_equal semiformula_outer_nrel_payload H) as Hp.
+    simpl in Hp. apply option_some_injective in Hp.
+    pose proof (f_equal (@projT1 nat (fun j =>
+      (language_rel L j * (Fin.t j -> semiterm L Y m))%type)) Hp) as Hk.
+    simpl in Hk. subst k'.
+    apply (@inj_pair2_eq_dec nat Nat.eq_dec
+      (fun j => (language_rel L j *
+        (Fin.t j -> semiterm L Y m))%type)) in Hp.
+    injection Hp as Hr Hv. subst r'. f_equal.
+    apply functional_extensionality. intro i.
+    apply (@rew_map_injective L X _ Y m b e Hb He (v i) (v' i)).
+    exact (f_equal (fun a => a i) Hv).
+  - apply (proj1 (semiformula_and_injective _ _ _ _)) in H.
+    destruct H as [Hp Hq]. f_equal.
+    + now apply (IHp Y m b e Hb He p').
+    + now apply (IHq Y m b e Hb He q').
+  - apply (proj1 (semiformula_or_injective _ _ _ _)) in H.
+    destruct H as [Hp Hq]. f_equal.
+    + now apply (IHp Y m b e Hb He p').
+    + now apply (IHq Y m b e Hb He q').
+  - apply (proj1 (semiformula_all_injective _ _)) in H.
+    f_equal. apply (IHp Y (S m) (rew_lift_bound_map b) e).
+    + now apply rew_lift_bound_map_injective.
+    + exact He.
+    + transitivity
+        (semiformula_rewrite (rew_q (rew_map b e)) p).
+      * symmetry. apply semiformula_rewrite_ext. apply rew_q_map_equiv.
+      * transitivity
+          (semiformula_rewrite (rew_q (rew_map b e)) p').
+        -- exact H.
+        -- apply semiformula_rewrite_ext. apply rew_q_map_equiv.
+  - apply (proj1 (semiformula_exists_injective _ _)) in H.
+    f_equal. apply (IHp Y (S m) (rew_lift_bound_map b) e).
+    + now apply rew_lift_bound_map_injective.
+    + exact He.
+    + transitivity
+        (semiformula_rewrite (rew_q (rew_map b e)) p).
+      * symmetry. apply semiformula_rewrite_ext. apply rew_q_map_equiv.
+      * transitivity
+          (semiformula_rewrite (rew_q (rew_map b e)) p').
+        -- exact H.
+        -- apply semiformula_rewrite_ext. apply rew_q_map_equiv.
+Qed.
+
+Corollary semiformula_rewrite_emb_injective : forall L O X n
+    (empty : O -> False) (p q : semiformula L O n),
+  @semiformula_rewrite L O n X n (@rew_emb L O X n empty) p =
+  @semiformula_rewrite L O n X n (@rew_emb L O X n empty) q -> p = q.
+Proof.
+  intros. unfold rew_emb in H.
+  eapply semiformula_rewrite_map_injective; [| | exact H].
+  - intros i j Hij. exact Hij.
+  - intros x. exact (False_rect _ (empty x)).
+Qed.
+
+(** Exact outer-constructor readback for arbitrary rewrites.  No injectivity
+    premise is needed because rewriting never changes the formula skeleton. *)
+Lemma semiformula_rewrite_eq_verum_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n),
+  semiformula_rewrite w p = Semiformula_verum m <->
+  p = Semiformula_verum n.
+Proof. intros; destruct p; simpl; split; intro H; try discriminate; reflexivity. Qed.
+
+Lemma semiformula_rewrite_eq_falsum_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n),
+  semiformula_rewrite w p = Semiformula_falsum m <->
+  p = Semiformula_falsum n.
+Proof. intros; destruct p; simpl; split; intro H; try discriminate; reflexivity. Qed.
+
+Lemma semiformula_rewrite_eq_rel_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n) k
+    (r : language_rel L k) (v : Fin.t k -> semiterm L Y m),
+  semiformula_rewrite w p = Semiformula_rel r v <->
+  exists v' : Fin.t k -> semiterm L X n,
+    p = Semiformula_rel r v' /\
+    (fun i => rew_apply w (v' i)) = v.
+Proof.
+  intros L X n Y m w p k r v. split.
+  - intro H. destruct p as [| |n' k' r' v'| | | | |];
+      simpl in H; try discriminate.
+    pose proof (f_equal semiformula_outer_rel_payload H) as Hp.
+    simpl in Hp. apply option_some_injective in Hp.
+    pose proof (f_equal (@projT1 nat (fun j =>
+      (language_rel L j * (Fin.t j -> semiterm L Y m))%type)) Hp) as Hk.
+    simpl in Hk. subst k'.
+    apply (@inj_pair2_eq_dec nat Nat.eq_dec
+      (fun j => (language_rel L j *
+        (Fin.t j -> semiterm L Y m))%type)) in Hp.
+    injection Hp as Hr Hv. subst r'. exists v'. split; [reflexivity |].
+    exact Hv.
+  - intros [v' [-> Hv]]. simpl. now rewrite Hv.
+Qed.
+
+Lemma semiformula_rewrite_eq_nrel_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n) k
+    (r : language_rel L k) (v : Fin.t k -> semiterm L Y m),
+  semiformula_rewrite w p = Semiformula_nrel r v <->
+  exists v' : Fin.t k -> semiterm L X n,
+    p = Semiformula_nrel r v' /\
+    (fun i => rew_apply w (v' i)) = v.
+Proof.
+  intros L X n Y m w p k r v. split.
+  - intro H. destruct p as [| | |n' k' r' v'| | | |];
+      simpl in H; try discriminate.
+    pose proof (f_equal semiformula_outer_nrel_payload H) as Hp.
+    simpl in Hp. apply option_some_injective in Hp.
+    pose proof (f_equal (@projT1 nat (fun j =>
+      (language_rel L j * (Fin.t j -> semiterm L Y m))%type)) Hp) as Hk.
+    simpl in Hk. subst k'.
+    apply (@inj_pair2_eq_dec nat Nat.eq_dec
+      (fun j => (language_rel L j *
+        (Fin.t j -> semiterm L Y m))%type)) in Hp.
+    injection Hp as Hr Hv. subst r'. exists v'. split; [reflexivity |].
+    exact Hv.
+  - intros [v' [-> Hv]]. simpl. now rewrite Hv.
+Qed.
+
+Lemma semiformula_rewrite_eq_and_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q r : semiformula L Y m),
+  semiformula_rewrite w p = Semiformula_and q r <->
+  exists q' r' : semiformula L X n,
+    p = Semiformula_and q' r' /\
+    semiformula_rewrite w q' = q /\
+    semiformula_rewrite w r' = r.
+Proof.
+  intros. split; [apply semiformula_rewrite_and_preimage |].
+  intros [q' [r' [Hp [Hq Hr]]]]. rewrite Hp. simpl.
+  now rewrite Hq, Hr.
+Qed.
+
+Lemma semiformula_rewrite_eq_or_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q r : semiformula L Y m),
+  semiformula_rewrite w p = Semiformula_or q r <->
+  exists q' r' : semiformula L X n,
+    p = Semiformula_or q' r' /\
+    semiformula_rewrite w q' = q /\
+    semiformula_rewrite w r' = r.
+Proof.
+  intros. split; [apply semiformula_rewrite_or_preimage |].
+  intros [q' [r' [Hp [Hq Hr]]]]. rewrite Hp. simpl.
+  now rewrite Hq, Hr.
+Qed.
+
+Lemma semiformula_rewrite_eq_all_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q : semiformula L Y (S m)),
+  semiformula_rewrite w p = Semiformula_all q <->
+  exists q' : semiformula L X (S n),
+    p = Semiformula_all q' /\
+    semiformula_rewrite (rew_q w) q' = q.
+Proof.
+  intros. split; [apply semiformula_rewrite_all_preimage |].
+  intros [q' [Hp Hq]]. rewrite Hp. simpl. now rewrite Hq.
+Qed.
+
+Lemma semiformula_rewrite_eq_exists_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q : semiformula L Y (S m)),
+  semiformula_rewrite w p = Semiformula_exists q <->
+  exists q' : semiformula L X (S n),
+    p = Semiformula_exists q' /\
+    semiformula_rewrite (rew_q w) q' = q.
+Proof.
+  intros. split; [apply semiformula_rewrite_exists_preimage |].
+  intros [q' [Hp Hq]]. rewrite Hp. simpl. now rewrite Hq.
+Qed.
+
+Lemma semiformula_rewrite_eq_imp_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q r : semiformula L Y m),
+  semiformula_rewrite w p = semiformula_imp q r <->
+  exists q' r' : semiformula L X n,
+    semiformula_rewrite w q' = q /\
+    semiformula_rewrite w r' = r /\
+    p = semiformula_imp q' r'.
+Proof.
+  intros. unfold semiformula_imp at 1.
+  rewrite semiformula_rewrite_eq_or_iff. split.
+  - intros [u [v [Hp [Hu Hv]]]].
+    exists (semiformula_neg u), v. split.
+    + rewrite semiformula_rewrite_neg, Hu.
+      apply semiformula_neg_involutive.
+    + split; [exact Hv |]. unfold semiformula_imp.
+      now rewrite semiformula_neg_involutive.
+  - intros [q' [r' [Hq [Hr Hp]]]].
+    exists (semiformula_neg q'), r'. split.
+    + unfold semiformula_imp in Hp. exact Hp.
+    + split; [|exact Hr].
+      rewrite semiformula_rewrite_neg, Hq.
+      reflexivity.
+Qed.
+
+Lemma semiformula_rewrite_eq_bounded_all_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q r : semiformula L Y (S m)),
+  semiformula_rewrite w p = semiformula_bounded_all q r <->
+  exists q' r' : semiformula L X (S n),
+    semiformula_rewrite (rew_q w) q' = q /\
+    semiformula_rewrite (rew_q w) r' = r /\
+    p = semiformula_bounded_all q' r'.
+Proof.
+  intros. unfold semiformula_bounded_all at 1.
+  rewrite semiformula_rewrite_eq_all_iff. split.
+  - intros [u [Hp Hu]].
+    apply (proj1 (@semiformula_rewrite_eq_imp_iff
+      L X (S n) Y (S m) (rew_q w) u q r)) in Hu.
+    destruct Hu as [q' [r' [Hq [Hr Hu]]]].
+    exists q', r'. repeat split; try assumption.
+    unfold semiformula_bounded_all. now rewrite Hp, Hu.
+  - intros [q' [r' [Hq [Hr Hp]]]].
+    exists (semiformula_imp q' r'). split.
+    + unfold semiformula_bounded_all in Hp. exact Hp.
+    + unfold semiformula_imp. simpl.
+      rewrite semiformula_rewrite_neg, Hq, Hr. reflexivity.
+Qed.
+
+Lemma semiformula_rewrite_eq_bounded_exists_iff : forall L X n Y m
+    (w : rew L X n Y m) (p : semiformula L X n)
+    (q r : semiformula L Y (S m)),
+  semiformula_rewrite w p = semiformula_bounded_exists q r <->
+  exists q' r' : semiformula L X (S n),
+    semiformula_rewrite (rew_q w) q' = q /\
+    semiformula_rewrite (rew_q w) r' = r /\
+    p = semiformula_bounded_exists q' r'.
+Proof.
+  intros. unfold semiformula_bounded_exists at 1.
+  rewrite semiformula_rewrite_eq_exists_iff. split.
+  - intros [u [Hp Hu]].
+    apply (proj1 (@semiformula_rewrite_eq_and_iff
+      L X (S n) Y (S m) (rew_q w) u q r)) in Hu.
+    destruct Hu as [q' [r' [Hu [Hq Hr]]]].
+    exists q', r'. repeat split; try assumption.
+    unfold semiformula_bounded_exists. now rewrite Hp, Hu.
+  - intros [q' [r' [Hq [Hr Hp]]]].
+    exists (Semiformula_and q' r'). split.
+    + unfold semiformula_bounded_exists in Hp. exact Hp.
+    + simpl. now rewrite Hq, Hr.
+Qed.
