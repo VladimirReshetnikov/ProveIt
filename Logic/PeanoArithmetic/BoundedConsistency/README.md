@@ -5392,6 +5392,19 @@ field projection, witnessed transport, and direct-template closure have also
 been extracted into one pointwise lemma shared by both routes.  Thus the
 remaining rank-zero construction may use the proof resources genuinely
 available at its invocation, while still returning only the four direct
-roots.  The other seven coordinates remain
+roots.  A single zero-field normalization theorem additionally inverts all
+five spliced graph coordinates and the compact final graph, rewriting all six
+carried roots to exact targets: rank-zero local totality/exclusivity,
+level-zero cross-level coherence, shift transport, substitution transport,
+axiom soundness, and the literal code of `Con_0(PA)`.  Later leaf compilers can
+therefore consume these exact proof targets without repeating graph inversion
+or formula-code functionality.  The direct-evidence interface consequently
+drops the duplicate local-field equality and proof-root arguments: they are
+derivable from the retained current package and zero equality.  It also
+receives the four represented atoms obtained structurally from the two joint
+predecessor assumptions: both strict row bounds and both synchronized table
+lookups.  Their compiler needs only realizability of the witnessed tail, so
+an adapter installs them unconditionally before invoking the residual
+traversal completion.  The other seven coordinates remain
 the permuted-append strong-step resources, the reduced staged remainder, and
 five linked staged implication compilers.

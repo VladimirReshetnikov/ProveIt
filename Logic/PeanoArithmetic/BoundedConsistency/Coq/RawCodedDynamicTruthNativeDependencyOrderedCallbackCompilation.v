@@ -298,17 +298,18 @@ Arguments
     has been reduced to four roots on a witnessed extension.  Its first
     coordinate retains the exact current-helper package available at the
     callback together with the complete native zero trace—including both
-    global successor stages, numeral substitution, and final applications—
-    and asks only for atomic adequacy, rank domain, and the two evidence
-    roots.  Generic admissibility, syntactic identification, local-field
-    projection, and template closure are consequences rather than
-    caller-supplied proof construction. *)
+    global successor stages, numeral substitution, and final applications.
+    It is also handed the four structural roots projected from the two state
+    assumptions, and asks only for atomic adequacy, rank domain, and the two
+    evidence roots.  State projection, generic admissibility, syntactic
+    identification, local-field projection, and template closure are
+    consequences rather than caller-supplied proof construction. *)
 Definition
     RawDynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
     (M : RawPAModel) (hPA : RawPASatisfies M)
     (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
   let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
-  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperAndStateProjection
     M translation /\
   RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
     M hPA /\
@@ -351,7 +352,10 @@ Proof.
   split.
   - exact
       (raw_dynamicTruthNativeLocalZeroPredecessorRootCompiler_of_current_helper_direct_evidence
-        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs) hzero).
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext_of_state_projection
+          M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+          hzero)).
   - exact (conj hstrong
       (conj hremainder
         (conj hcrossLevel

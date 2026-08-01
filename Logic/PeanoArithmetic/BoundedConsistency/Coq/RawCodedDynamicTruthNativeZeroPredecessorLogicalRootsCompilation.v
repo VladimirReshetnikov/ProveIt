@@ -15,10 +15,13 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   BoundedConsistency
   CodedSyntax
+  CompactRestrictedPAConsistencyFormulaCodeGraph
   RawCodedSyntaxConstructors
   RawCodedNumeralTermCode
   RawCodedAssignment
   RawCodedFormulaOperations
+  RawCodedRestrictedPAConsistency
+  RawCodedRestrictedPAConsistencyFormulaCode
   RawCodedContextLists
   RawCodedContextStructure
   RawCodedFixedLevelTruthTotality
@@ -41,17 +44,28 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateBottomDirectStructuralInputs
   RawCodedTemplateTernaryApplication
   RawCodedTernaryPredicateRootClosure
+  RawCodedTruthCertificateMasterSuccessorBridge
+  RawCodedDynamicLocalFieldGraph
   RawCodedDynamicTruthLocalDecisionExclusiveBase
+  RawCodedDynamicTruthTransportFieldBaseGraphs
+  RawCodedDynamicTruthAxiomSoundnessBaseGraph
+  RawCodedDynamicTruthMasterSplicedBasePackage
+  RawCodedDynamicTruthNativeMasterEndpoint
   RawCodedDynamicTruthPairedGlobalSuccessorGraph
   RawCodedDynamicTruthGlobalBaseRootClosure
   RawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph
   RawCodedDynamicTruthNativeLocalPositiveGraph
+  RawCodedDynamicTruthNativeCrossLevelPositiveGraph
+  RawCodedDynamicTruthNativeShiftPositiveGraph
+  RawCodedDynamicTruthNativeSubstitutionPositiveGraph
+  RawCodedDynamicTruthNativeAxiomSoundnessPositiveGraph
   RawCodedDynamicTruthNativeLocalProofCompilation
   RawCodedDynamicTruthLocalFieldProjectionCompilation
   RawCodedDynamicTruthLocalCollisionMatrixAssembly
   RawCodedDynamicTruthImpBranchExclusivity
   RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
+  RawCodedDynamicTruthPredecessorStateProjectionCompilation
   RawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots
   RawCodedDynamicTruthNativeLocalStagedCallbackCompilation
   RawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation
@@ -66,10 +80,13 @@ Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedConsistency.
 Import PABoundedCodedSyntax.
+Import PABoundedCompactRestrictedPAConsistencyFormulaCodeGraph.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedNumeralTermCode.
 Import PABoundedRawCodedAssignment.
 Import PABoundedRawCodedFormulaOperations.
+Import PABoundedRawCodedRestrictedPAConsistency.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedContextStructure.
 Import PABoundedRawCodedFixedLevelTruthTotality.
@@ -92,11 +109,21 @@ Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedTemplateTernaryApplication.
 Import PABoundedRawCodedTernaryPredicateRootClosure.
+Import PABoundedRawCodedTruthCertificateMasterSuccessorBridge.
+Import PABoundedRawCodedDynamicLocalFieldGraph.
 Import PABoundedRawCodedDynamicTruthLocalDecisionExclusiveBase.
+Import PABoundedRawCodedDynamicTruthTransportFieldBaseGraphs.
+Import PABoundedRawCodedDynamicTruthAxiomSoundnessBaseGraph.
+Import PABoundedRawCodedDynamicTruthMasterSplicedBasePackage.
+Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
 Import PABoundedRawCodedDynamicTruthPairedGlobalSuccessorGraph.
 Import PABoundedRawCodedDynamicTruthGlobalBaseRootClosure.
 Import PABoundedRawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+Import PABoundedRawCodedDynamicTruthNativeCrossLevelPositiveGraph.
+Import PABoundedRawCodedDynamicTruthNativeShiftPositiveGraph.
+Import PABoundedRawCodedDynamicTruthNativeSubstitutionPositiveGraph.
+Import PABoundedRawCodedDynamicTruthNativeAxiomSoundnessPositiveGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
 Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
 Import PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssembly.
@@ -104,6 +131,8 @@ Import PABoundedRawCodedDynamicTruthImpBranchExclusivity.
 Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorStateProjectionCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.
 Import PABoundedRawCodedDynamicTruthNativeLocalStagedCallbackCompilation.
@@ -775,6 +804,154 @@ Proof.
     hinputSigmaAdequate hinputPiAdequate).
 Qed.
 
+(** The represented proof resources actually carried at a zero current
+    level, after eliminating the five spliced graph wrappers.  The first five
+    targets are now literal quotations of their fixed base theorems.  The
+    sixth target remains the compact restricted-consistency code selected by
+    its own graph; it is retained because the callback already carries its
+    represented proof even though the four zero roots need not consume it. *)
+Record RawDynamicTruthNativeLocalZeroCurrentFieldRootsAt
+    (M : RawPAModel) (witnessList baseContext : M) : Prop := {
+  rawDynamicTruthNativeLocalZeroCurrentFields_witnessed :
+    RawCodedPAAxiomWitnessContext M witnessList baseContext;
+  rawDynamicTruthNativeLocalZeroCurrentFields_local : exists root,
+    RawCodedPALocalProofOf M baseContext
+      (rawQuotedFormulaCode M
+        dynamicTruthLocalDecisionExclusiveBaseFormula) root;
+  rawDynamicTruthNativeLocalZeroCurrentFields_crossLevel : exists root,
+    RawCodedPALocalProofOf M baseContext
+      (rawQuotedFormulaCode M
+        dynamicTruthCrossLevelBaseFieldFormula) root;
+  rawDynamicTruthNativeLocalZeroCurrentFields_shift : exists root,
+    RawCodedPALocalProofOf M baseContext
+      (rawQuotedFormulaCode M dynamicTruthShiftBaseFieldFormula) root;
+  rawDynamicTruthNativeLocalZeroCurrentFields_substitution : exists root,
+    RawCodedPALocalProofOf M baseContext
+      (rawQuotedFormulaCode M
+        dynamicTruthSubstitutionBaseFieldFormula) root;
+  rawDynamicTruthNativeLocalZeroCurrentFields_axiomSoundness : exists root,
+    RawCodedPALocalProofOf M baseContext
+      (rawQuotedFormulaCode M
+        dynamicTruthAxiomSoundnessBaseFieldFormula) root;
+  rawDynamicTruthNativeLocalZeroCurrentFields_final : exists root,
+    RawCodedPALocalProofOf M baseContext
+      (rawNumeralValue M
+        (formulaCode (restrictedPAConsistencyFormula 0))) root
+}.
+
+Arguments RawDynamicTruthNativeLocalZeroCurrentFieldRootsAt
+  M witnessList baseContext : clear implicits.
+
+(** Normalize all five spliced current-field graphs in one pass and rewrite
+    their already-carried local proofs to the exact fixed targets.  This is
+    the proof-resource analogue of the earlier local-coordinate zero case,
+    but it retains every current theorem potentially useful to the rank-zero
+    traversal compiler. *)
+Theorem raw_dynamicTruthNativeLocalCurrentHelperContextAt_zero_field_roots :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M)
+      (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots,
+  RawDynamicTruthNativeLocalCurrentHelperContextAt M translation
+    tail level currentLocal currentCrossLevel currentShift
+    currentSubstitution currentAxiomSoundness currentFinal
+    witnessList baseContext helperRoots ->
+  level = raw_zero M ->
+  RawDynamicTruthNativeLocalZeroCurrentFieldRootsAt M
+    witnessList baseContext.
+Proof.
+  intros M hPA translation tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    hcurrent hlevel.
+  destruct hcurrent as [[hgraphs _hcommon] hproofs].
+  unfold RawSixFieldMasterGraphWitnessesAt in hgraphs.
+  destruct hgraphs as
+    (hlocalGraph & hcrossGraph & hshiftGraph & hsubstitutionGraph &
+      haxiomGraph & hfinalGraph).
+  destruct hproofs as
+    (localRoot & crossLevelRoot & shiftRoot & substitutionRoot &
+      axiomSoundnessRoot & finalRoot & hwitnessed & hlocal & hcrossLevel &
+      hshift & hsubstitution & haxiomSoundness & hfinal & hhelpers).
+  subst level.
+  unfold dynamicTruthNativeSplicedLocalFieldGraph,
+    dynamicTruthSplicedLocalFieldGraph in hlocalGraph.
+  apply (proj1
+    (raw_dynamicLocalFieldGraph_zero_iff M hPA
+      dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph
+      dynamicTruthNativeLocalPositiveGraph tail currentLocal))
+    in hlocalGraph.
+  pose proof (proj1
+    (dynamicTruthLocalDecisionExclusiveBaseFormulaCodeGraph_representation
+      M hPA tail (raw_zero M) currentLocal) hlocalGraph) as hlocalCode.
+  unfold dynamicTruthNativeSplicedCrossLevelFieldGraph,
+    dynamicTruthSplicedCrossLevelFieldGraph in hcrossGraph.
+  apply (proj1
+    (raw_dynamicLocalFieldGraph_zero_iff M hPA
+      dynamicTruthCrossLevelBaseFieldGraph
+      dynamicTruthNativeCrossLevelPositiveGraph tail currentCrossLevel))
+    in hcrossGraph.
+  pose proof (proj1
+    (dynamicTruthCrossLevelBaseFieldGraph_zero_iff
+      M hPA tail currentCrossLevel) hcrossGraph) as hcrossCode.
+  unfold dynamicTruthNativeSplicedShiftFieldGraph,
+    dynamicTruthSplicedShiftFieldGraph in hshiftGraph.
+  apply (proj1
+    (raw_dynamicLocalFieldGraph_zero_iff M hPA
+      dynamicTruthShiftBaseFieldGraph
+      dynamicTruthNativeShiftPositiveGraph tail currentShift))
+    in hshiftGraph.
+  pose proof (proj1
+    (dynamicTruthShiftBaseFieldGraph_zero_iff
+      M hPA tail currentShift) hshiftGraph) as hshiftCode.
+  unfold dynamicTruthNativeSplicedSubstitutionFieldGraph,
+    dynamicTruthSplicedSubstitutionFieldGraph in hsubstitutionGraph.
+  apply (proj1
+    (raw_dynamicLocalFieldGraph_zero_iff M hPA
+      dynamicTruthSubstitutionBaseFieldGraph
+      dynamicTruthNativeSubstitutionPositiveGraph
+      tail currentSubstitution)) in hsubstitutionGraph.
+  pose proof (proj1
+    (dynamicTruthSubstitutionBaseFieldGraph_zero_iff
+      M hPA tail currentSubstitution) hsubstitutionGraph)
+    as hsubstitutionCode.
+  unfold dynamicTruthNativeSplicedAxiomSoundnessFieldGraph,
+    dynamicTruthSplicedAxiomSoundnessFieldGraph in haxiomGraph.
+  apply (proj1
+    (raw_dynamicLocalFieldGraph_zero_iff M hPA
+      dynamicTruthAxiomSoundnessBaseFieldGraph
+      dynamicTruthNativeAxiomSoundnessPositiveGraph
+      tail currentAxiomSoundness)) in haxiomGraph.
+  pose proof (proj1
+    (dynamicTruthAxiomSoundnessBaseFieldGraph_zero_iff
+      M hPA tail currentAxiomSoundness) haxiomGraph) as haxiomCode.
+  pose proof (proj1
+    (compactRestrictedPAConsistencyFormulaCodeGraph_representation
+      M tail (raw_zero M) currentFinal) hfinalGraph) as hfinalTarget.
+  pose proof
+    (raw_restrictedPAConsistencyFormulaCodeAt_standard M hPA 0)
+    as hfinalStandard.
+  change (rawNumeralValue M 0) with (raw_zero M) in hfinalStandard.
+  pose proof
+    (raw_restrictedPAConsistencyFormulaCodeAt_functional M hPA
+      (raw_zero M) currentFinal
+      (rawNumeralValue M
+        (formulaCode (restrictedPAConsistencyFormula 0)))
+      hfinalTarget hfinalStandard) as hfinalCode.
+  constructor.
+  - exact hwitnessed.
+  - exists localRoot. rewrite <- hlocalCode. exact hlocal.
+  - exists crossLevelRoot. rewrite <- hcrossCode. exact hcrossLevel.
+  - exists shiftRoot. rewrite <- hshiftCode. exact hshift.
+  - exists substitutionRoot.
+    rewrite <- hsubstitutionCode. exact hsubstitution.
+  - exists axiomSoundnessRoot.
+    rewrite <- haxiomCode. exact haxiomSoundness.
+  - exists finalRoot. rewrite <- hfinalCode. exact hfinal.
+Qed.
+
 (** Call-site-aligned rank-zero boundary.  The native zero callback does not
     receive an isolated trace: it receives that trace together with the
     complete current helper context, namely represented proofs of all six
@@ -786,7 +963,9 @@ Qed.
     trace fixes codes and relational successor witnesses, but it does not by
     itself manufacture represented PA proofs of the selected formulas.  The
     current package is the proof-producing resource already present at the
-    callback. *)
+    callback.  The separately supplied local-field equality and proof root
+    are deliberately absent: both are already derivable from this package at
+    level zero, as witnessed by the normalization theorem above. *)
 Definition
     RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext
     (M : RawPAModel)
@@ -796,7 +975,7 @@ Definition
       currentAxiomSoundness currentFinal
       witnessList baseContext (helperRoots : list M)
       inputGlobalSigma inputGlobalPi
-      sigmaDomain piDomain sigmaEvidence piEvidence currentLocalRoot,
+      sigmaDomain piDomain sigmaEvidence piEvidence,
     RawDynamicTruthNativeLocalCurrentHelperContextAt M translation
       tail level currentLocal currentCrossLevel currentShift
       currentSubstitution currentAxiomSoundness currentFinal
@@ -805,9 +984,6 @@ Definition
       inputGlobalSigma inputGlobalPi sigmaDomain piDomain
       sigmaEvidence piEvidence ->
     level = raw_zero M ->
-    currentLocal = rawQuotedFormulaCode M
-      dynamicTruthLocalDecisionExclusiveBaseFormula ->
-    RawCodedPALocalProofOf M baseContext currentLocal currentLocalRoot ->
     exists evidenceWitnessList evidenceContext,
       RawCodedPAAxiomWitnessContext M
         evidenceWitnessList evidenceContext /\
@@ -817,6 +993,76 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext
   M translation : clear implicits.
+
+(** Sharp traversal-completion boundary.  The two predecessor assumptions
+    are conjunctions of a row bound and a synchronized table lookup.  Their
+    four represented projections are entirely structural and can always be
+    built from the witnessed callback tail.  Supplying them explicitly to
+    the remaining compiler prevents the traversal-specific proof from
+    repeating assumption introduction and four [And-E] steps. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperAndStateProjection
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      witnessList baseContext (helperRoots : list M)
+      inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalCurrentHelperContextAt M translation
+      tail level currentLocal currentCrossLevel currentShift
+      currentSubstitution currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalProofTraceAt M tail level
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+      sigmaEvidence piEvidence ->
+    level = raw_zero M ->
+    RawDynamicTruthPredecessorStateProjectionRootsAt M baseContext ->
+    exists evidenceWitnessList evidenceContext,
+      RawCodedPAAxiomWitnessContext M
+        evidenceWitnessList evidenceContext /\
+      RawContextListIncluded M baseContext evidenceContext /\
+      RawDynamicTruthZeroDirectEvidenceRootsAt M evidenceContext.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperAndStateProjection
+  M translation : clear implicits.
+
+(** Install the four structural state roots before invoking the sharp
+    traversal compiler.  The current helper package supplies a witnessed PA
+    tail, hence a realizable context, which is the sole premise of the
+    projection theorem. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext_of_state_projection
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperAndStateProjection
+    M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext
+    M translation.
+Proof.
+  intros M hPA translation hcompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence hcurrent htrace hlevel.
+  pose proof hcurrent as hfields.
+  destruct hfields as
+    [_ (storedLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+      currentSubstitutionRoot & currentAxiomSoundnessRoot &
+      currentFinalRoot & hbaseWitnessed & hhelperRoots)].
+  pose proof
+    (raw_dynamicTruthPredecessorStateProjectionRootsAt_of_realizable
+      M hPA baseContext
+      (raw_codedPAAxiomWitnessContext_context_realizable
+        M witnessList baseContext hbaseWitnessed)) as hstateRoots.
+  exact (hcompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence hcurrent htrace hlevel hstateRoots).
+Qed.
 
 (** Every former tail-only compiler satisfies the weaker callback-aligned
     interface.  This implication is intentionally one-way: a future concrete
@@ -835,8 +1081,7 @@ Proof.
     currentLocal currentCrossLevel currentShift currentSubstitution
     currentAxiomSoundness currentFinal witnessList baseContext helperRoots
     inputGlobalSigma inputGlobalPi sigmaDomain piDomain
-    sigmaEvidence piEvidence currentLocalRoot hcurrent htrace hlevel
-    _hfield _hcurrentProof.
+    sigmaEvidence piEvidence hcurrent htrace hlevel.
   pose proof hcurrent as hfields.
   destruct hfields as
     [_ (storedLocalRoot & currentCrossLevelRoot & currentShiftRoot &
@@ -1064,8 +1309,7 @@ Proof.
     currentAxiomSoundness currentFinal
     witnessList baseContext helperRoots
     inputGlobalSigma inputGlobalPi sigmaDomain piDomain
-    sigmaEvidence piEvidence currentLocalRoot
-    hcurrent htrace hlevel hfield hcurrentProof) as
+    sigmaEvidence piEvidence hcurrent htrace hlevel) as
     (evidenceWitnessList & evidenceContext & hevidenceWitnessed &
       hbaseEvidenceIncluded & hroots).
   destruct (raw_dynamicTruthZeroGrowingLogicalRoots_of_direct_evidence
