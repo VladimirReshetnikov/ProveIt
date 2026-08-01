@@ -270,6 +270,147 @@ Proof.
   reflexivity.
 Qed.
 
+(** Row-binder form of the prefix-preserving witnessed-tail identity.  The
+    append witnesses contribute eight shifts and the opened row contributes
+    another five.  Consequently the caller prefix is renamed thirteen
+    times, whereas the embedded PA axioms remain fixed because they are
+    sentences.  Keeping the statement in terms of the computed witness
+    context lets row clients rewrite their literal local-proof context in a
+    single step, without unfolding either existential elimination chain. *)
+Lemma raw_fourStateTableAppendRowContext_witnessed_tail_code_under_prefix :
+  forall (M : RawPAModel) (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep outerPrefix witnesses,
+  rawTemplateContextCode translation
+    (templateContextShiftMany 5
+      (coqFourStateTableAppendWitnessContext
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep
+        (outerPrefix ++ embedPAContext (map witnessedAxiom witnesses)))) =
+  rawTemplateContextCodeOnTail translation
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (templateContextShiftMany 5
+      (coqFourStateTableAppendWitnessContext
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep outerPrefix)).
+Proof.
+  intros M translation hagreement
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep outerPrefix witnesses.
+  pose proof
+    (coqFourStateTableAppendRowContext_affine
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      (outerPrefix ++ embedPAContext (map witnessedAxiom witnesses)))
+    as hsourceAffine.
+  pose proof
+    (coqFourStateTableAppendRowContext_affine
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep outerPrefix)
+    as htargetAffine.
+  rewrite hsourceAffine, htargetAffine.
+  set (rowPrefix := coqFourStateTableAppendRowPrefix
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep).
+  rewrite templateContextShiftMany_app,
+    templateContextShiftMany_embedPAAxiomWitnesses_fixed.
+  rewrite !raw_templateContextCode_app_on_tail_general.
+  rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+    M translation hagreement witnesses).
+  rewrite rawTemplateContextCodeOnTail_app.
+  reflexivity.
+Qed.
+
+(** Expose the row-context equation as a proof adapter.  Low-level append
+    constructors are naturally polymorphic in their literal template tail,
+    so they can run on [outerPrefix ++ embedded PA witnesses].  Higher-level
+    traversal code instead records a growing proof over the synchronized
+    carrier witness context and keeps [outerPrefix] as its visible prefix.
+    This lemma is the sole conversion between those two presentations. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_of_local_on_append_row_context_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep outerPrefix witnesses
+    conclusion root,
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCode translation
+      (templateContextShiftMany 5
+        (coqFourStateTableAppendWitnessContext
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep
+          (outerPrefix ++ embedPAContext
+            (map witnessedAxiom witnesses)))))
+    conclusion root ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (templateContextShiftMany 5
+      (coqFourStateTableAppendWitnessContext
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep outerPrefix))
+    conclusion.
+Proof.
+  intros M hPA translation hagreement
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep outerPrefix witnesses
+    conclusion root hroot.
+  exists
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M)),
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M)), root.
+  split.
+  - pose proof (raw_templateEmbeddedPAAxiomWitnessContext
+      M hPA translation hagreement witnesses) as hwitnessed.
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement witnesses) in hwitnessed.
+    exact hwitnessed.
+  - split.
+    + exact (raw_contextListIncluded_refl M
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses (raw_zero M))).
+    + rewrite <-
+        (raw_fourStateTableAppendRowContext_witnessed_tail_code_under_prefix
+          M translation hagreement
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          bound mode formula assignmentCode assignmentStep
+          outerPrefix witnesses).
+      exact hroot.
+Qed.
+
 (** The literal right-associated record shape consumed by the global truth
     traversal.  The row field is left abstract so the assembler can be reused
     before and after its five universal introductions. *)

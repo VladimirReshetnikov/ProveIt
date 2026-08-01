@@ -165,10 +165,10 @@ Definition
         (rawFormulaOrCode M
           (rawDynamicTruthZeroSigmaDomainCode M)
           (rawDynamicTruthZeroPiDomainCode M)) domainRoot /\
-      RawDynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt
+      RawDynamicTruthZeroCanonicalPermutedAppendLiteralRowImplicationInputsUnderPrefixAt
         M translation 0 coqDynamicTruthPredecessorStateTemplateContext
           appendWitnesses /\
-      RawDynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt
+      RawDynamicTruthZeroCanonicalPermutedAppendLiteralRowImplicationInputsUnderPrefixAt
         M translation 1 coqDynamicTruthPredecessorStateTemplateContext
           appendWitnesses.
 
@@ -201,13 +201,23 @@ Proof.
       appendWitnesses & hendpointWitnessed & hbaseEndpointIncluded &
       hatomic & hdomain & hsigmaRows & hpiRows).
   pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_literal
+      M hPA translation hagreement 0
+      coqDynamicTruthPredecessorStateTemplateContext
+      appendWitnesses hsigmaRows) as hsigmaGrowingRows.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_literal
+      M hPA translation hagreement 1
+      coqDynamicTruthPredecessorStateTemplateContext
+      appendWitnesses hpiRows) as hpiGrowingRows.
+  pose proof
     (raw_dynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt_of_row_implication_inputs
       M hPA translation 0 coqDynamicTruthPredecessorStateTemplateContext
-      appendWitnesses hsigmaRows) as hsigmaInputs.
+      appendWitnesses hsigmaGrowingRows) as hsigmaInputs.
   pose proof
     (raw_dynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt_of_row_implication_inputs
       M hPA translation 1 coqDynamicTruthPredecessorStateTemplateContext
-      appendWitnesses hpiRows) as hpiInputs.
+      appendWitnesses hpiGrowingRows) as hpiInputs.
   exists endpointWitnessList, endpointContext, atomicRoot, domainRoot.
   split; [exact hendpointWitnessed |].
   split; [exact hbaseEndpointIncluded |].
