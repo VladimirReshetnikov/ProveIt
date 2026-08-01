@@ -48,6 +48,27 @@ Fixpoint templateFormulaShiftMany
       templateFormulaShiftMany smaller (templateFormulaRename S formula)
   end.
 
+(** The variable map computed by the same finite shift iteration.  Keeping
+    this function explicit lets clients pass an iterated binder shift to
+    renaming-natural lemmas without unfolding the formula itself. *)
+Fixpoint templateShiftRenamingMany (count index : nat) : nat :=
+  match count with
+  | 0 => index
+  | S smaller => templateShiftRenamingMany smaller (S index)
+  end.
+
+Lemma templateFormulaShiftMany_as_rename : forall count formula,
+  templateFormulaShiftMany count formula =
+  templateFormulaRename (templateShiftRenamingMany count) formula.
+Proof.
+  induction count as [|smaller ih]; intro formula.
+  - cbn [templateFormulaShiftMany templateShiftRenamingMany].
+    symmetry. apply templateFormulaRename_id.
+  - cbn [templateFormulaShiftMany templateShiftRenamingMany].
+    rewrite ih, templateFormulaRename_comp.
+    reflexivity.
+Qed.
+
 (** Compute the literal deepest context created by [count] eliminations.
     At each successful step the opened body is consed over the shifted prior
     context.  Failure records that the source had too few leading binders. *)

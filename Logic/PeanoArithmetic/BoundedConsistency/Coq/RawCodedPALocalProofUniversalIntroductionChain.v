@@ -8,6 +8,7 @@
   traversal or formula.
 *)
 
+From Stdlib Require Import List.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
@@ -15,7 +16,8 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofExistential
   RawCodedProofAllIConstructor
   RawCodedTemplateSyntax
-  RawCodedTemplateProofCompiler.
+  RawCodedTemplateProofCompiler
+  RawCodedPALocalProofExistentialEliminationChain.
 
 Module PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 
@@ -27,6 +29,7 @@ Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedProofAllIConstructor.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 
 (** Iterate the eigenvariable context shift from the outside inward. *)
 Fixpoint templateContextShiftMany
@@ -44,6 +47,23 @@ Fixpoint templateFormulaAllMany
   | 0 => body
   | S smaller => tfAll (templateFormulaAllMany smaller body)
   end.
+
+(** Membership follows the exact iterated eigenvariable shift.  This small
+    fact is the safe replacement for treating an outer assumption as if it
+    remained syntactically unchanged below binders: what is inherited is its
+    correspondingly shifted formula. *)
+Lemma templateContextShiftMany_member : forall count context formula,
+  In formula context ->
+  In (templateFormulaShiftMany count formula)
+    (templateContextShiftMany count context).
+Proof.
+  induction count as [|smaller ih]; intros context formula hmember.
+  - exact hmember.
+  - cbn [templateContextShiftMany templateFormulaShiftMany].
+    apply ih.
+    unfold templateContextShift, templateContextRename.
+    apply in_map. exact hmember.
+Qed.
 
 (** Rebuild all represented [AllI] roots.  The proof uses only the exact
     represented context-shift trace already supplied by the template

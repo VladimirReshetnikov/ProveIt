@@ -620,9 +620,173 @@ Proof.
     variables
     (parameters coqRestrictedPASoundnessLowerLevelParameterName)
     (variables 4) hrestricted
-    (variables 3) (variables 2)
-    (raw_proofRuleValid_endpoint M (variables 4)
-      (variables 3) (variables 2) hrule)).
+      (variables 3) (variables 2)
+      (raw_proofRuleValid_endpoint M (variables 4)
+        (variables 3) (variables 2) hrule)).
+Qed.
+
+(** Reify the strong-step endpoint law after an arbitrary ambient variable
+    renaming.  Named-parameter abstraction is performed after renaming, so
+    opening the leading level binder will recover the renamed law without
+    capturing any of its inherited endpoint variables. *)
+Definition
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyTemplate
+    (renaming : nat -> nat) : TemplateFormula :=
+  templateFormulaAbstractParameter
+    coqRestrictedPASoundnessLowerLevelParameterName
+    (templateFormulaRename renaming
+      coqStrongStepProofEndpointQuantifierBoundedLawTemplate).
+
+Definition
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+    (renaming : nat -> nat) : formula :=
+  match templateFormulaAsPAFormula
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyTemplate
+      renaming) with
+  | Some output => output
+  | None => pBot
+  end.
+
+Definition
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula
+    (renaming : nat -> nat) : formula :=
+  pAll
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+      renaming).
+
+Lemma
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSource_reifies :
+  forall renaming,
+  templateFormulaAsPAFormula
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyTemplate
+      renaming) =
+  Some
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+      renaming).
+Proof.
+  intro renaming.
+  unfold
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyTemplate,
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula,
+    coqStrongStepProofEndpointQuantifierBoundedLawTemplate,
+    coqRestrictedPASoundnessLowerLevelTerm.
+  cbn [templateFormulaRename templateFormulaAbstractParameter
+    templateFormulaAsPAFormula].
+  reflexivity.
+Qed.
+
+Theorem
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSource_embed :
+  forall renaming,
+  embedPAFormula
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+      renaming) =
+  coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyTemplate
+    renaming.
+Proof.
+  intro renaming.
+  apply templateFormulaAsPAFormula_sound.
+  exact
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSource_reifies
+      renaming).
+Qed.
+
+Theorem
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSource_open :
+  forall renaming,
+  templateFormulaOpen coqRestrictedPASoundnessLowerLevelTerm
+    (embedPAFormula
+      (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+        renaming)) =
+  templateFormulaRename renaming
+    coqStrongStepProofEndpointQuantifierBoundedLawTemplate.
+Proof.
+  intro renaming.
+  rewrite
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSource_embed.
+  unfold
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyTemplate.
+  apply templateFormulaAbstractParameter_open.
+Qed.
+
+Theorem
+    raw_coqStrongStepProofEndpointQuantifierBoundedRenamedLawTemplate_valid :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    renaming variables parameters predicates,
+  rawTemplateFormulaSat M variables parameters predicates
+    (templateFormulaRename renaming
+      coqStrongStepProofEndpointQuantifierBoundedLawTemplate).
+Proof.
+  intros M hPA renaming variables parameters predicates.
+  apply (proj2 (rawTemplateFormulaSat_rename M variables parameters
+    predicates renaming
+    coqStrongStepProofEndpointQuantifierBoundedLawTemplate)).
+  exact
+    (raw_coqStrongStepProofEndpointQuantifierBoundedLawTemplate_valid
+      M hPA (fun index => variables (renaming index))
+      parameters predicates).
+Qed.
+
+Theorem
+    raw_coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula_valid :
+  forall (M : RawPAModel), RawPASatisfies M -> forall renaming variables,
+  raw_formula_sat M variables
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula
+      renaming).
+Proof.
+  intros M hPA renaming variables.
+  unfold
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula.
+  cbn [raw_formula_sat]. intro level.
+  pose (parameters :=
+    (fun _ : TemplateParameterName => raw_zero M)).
+  pose (predicates :=
+    (fun (_ : TemplatePredicateName) (_ : list M) => True)).
+  apply (proj1 (rawTemplateFormulaSat_embedPA M
+    (scons M level variables) parameters predicates
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+      renaming))).
+  rewrite
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSource_embed.
+  unfold
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyTemplate.
+  apply (proj2 (rawTemplateFormulaSat_abstractParameter M
+    variables parameters predicates
+    coqRestrictedPASoundnessLowerLevelParameterName level
+    (templateFormulaRename renaming
+      coqStrongStepProofEndpointQuantifierBoundedLawTemplate))).
+  apply
+    raw_coqStrongStepProofEndpointQuantifierBoundedRenamedLawTemplate_valid.
+  exact hPA.
+Qed.
+
+Theorem
+    PA_proves_coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula :
+  forall renaming,
+  Formula.BProv Formula.Ax_s []
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula
+      renaming).
+Proof.
+  intro renaming.
+  assert (hclosed : Formula.BProv Formula.Ax_s []
+      (Formula.sealPA
+        (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula
+          renaming))).
+  {
+    apply PA_BProv_of_raw_valid.
+    - apply Formula.sealPA_sentence.
+    - intros M hPA variables.
+      apply raw_formula_sat_sealPA_of_valid.
+      intro inner.
+      exact
+        (raw_coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula_valid
+          M hPA renaming inner).
+  }
+  pose proof (Formula.BProv_sealPA_allE_rename Formula.Ax_s []
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula
+      renaming)
+    (fun index => index) hclosed) as hopen.
+  now rewrite Formula.rename_id in hopen.
 Qed.
 
 Definition coqStrongStepProofEndpointQuantifierBoundedSourceBodyTemplate

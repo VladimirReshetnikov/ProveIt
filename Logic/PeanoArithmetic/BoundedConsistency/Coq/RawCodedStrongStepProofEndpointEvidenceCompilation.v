@@ -22,6 +22,8 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofExistential
   RawCodedPALocalProofComposition
   RawCodedPALocalProofConjunction
+  RawCodedPALocalProofExistentialEliminationChain
+  RawCodedPALocalProofUniversalIntroductionChain
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedProofAtomicAdequacy
   RawCodedProofRules
@@ -64,6 +66,8 @@ Import PABoundedRawCodedFormulaOperationCrossTraceFunctionality.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofComposition.
 Import PABoundedRawCodedPALocalProofConjunction.
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedProofAtomicAdequacy.
 Import PABoundedRawCodedProofRules.
@@ -233,6 +237,65 @@ Proof.
     as hproject.
   rewrite !templateFormulaRename_id in hproject.
   exact (hproject hrestricted).
+Qed.
+
+(** A renamed restricted package which is already present in the temporary
+    prefix needs no separate proof producer.  Compile its assumption leaf
+    over the witnessed PA tail and immediately expose all four projections.
+    This is the form used after entering eigenvariables: the prefix contains
+    the renamed package literally, even though it no longer contains the
+    unrenamed outer-shell formula. *)
+Corollary
+    raw_codedPALocalProof_restrictedProofTemplate_renamed_projections_of_template_assumption :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    witnessList baseContext prefix (renaming : nat -> nat),
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  In (templateFormulaRename renaming
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+    prefix ->
+  exists coreRoot atomicRoot formulaCoverageRoot ruleCoverageRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext prefix)
+      (rawTemplateFormula translation
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise))
+      coreRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext prefix)
+      (rawTemplateFormula translation
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointAtomicAdequacyAtomicPremise))
+      atomicRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext prefix)
+      (rawTemplateFormula translation
+        (templateFormulaRename renaming
+          (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 4)))))
+      formulaCoverageRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext prefix)
+      (rawTemplateFormula translation
+        (templateFormulaRename renaming
+          (embedPAFormula (proofRuleCoverageTermAt (tVar 4)))))
+      ruleCoverageRoot.
+Proof.
+  intros M hPA translation witnessList baseContext prefix renaming
+    hwitnessed hmember.
+  pose proof
+    (raw_templateAssumptionOnPAAxiomContext_localProof
+      M hPA translation witnessList baseContext prefix
+      (templateFormulaRename renaming
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+      hwitnessed hmember) as hrestricted.
+  lazymatch type of hrestricted with
+  | RawCodedPALocalProofOf _ _ _ ?restrictedRoot =>
+      exact
+        (raw_codedPALocalProof_restrictedProofTemplate_renamed_projections
+          M hPA translation
+          (rawTemplateContextCodeOnTail translation baseContext prefix)
+          renaming restrictedRoot hrestricted)
+  end.
 Qed.
 
 (** The native local-domain templates deliberately reserve variable zero for
@@ -573,6 +636,412 @@ Proof.
       hprefix hbase hatomic hrule).
 Qed.
 
+(** Assumption-only specialization of the renamed atomic endpoint.  Both
+    premises are inherited from the shifted direct shell; the restricted
+    package is projected once and the represented PA law is then applied on
+    the same retained prefix.  Only the standard PA witness tail may grow. *)
+Corollary
+    raw_codedPALocalProof_strongStepProofEndpointAtomicAdequacy_renamed_of_template_assumptions_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
+    (renaming : nat -> nat)
+    baseWitnessList baseContext prefix,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  In (templateFormulaRename renaming
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+    prefix ->
+  In (templateFormulaRename renaming
+      coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+    prefix ->
+  exists targetWitnessList targetContext resultRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawTemplateFormula translation
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointAtomicAdequacyConclusion))
+      resultRoot.
+Proof.
+  intros M hPA translation hagreement renaming
+    baseWitnessList baseContext prefix hprefix hbase
+    hrestrictedIn hruleIn.
+  destruct
+    (raw_codedPALocalProof_restrictedProofTemplate_renamed_projections_of_template_assumption
+      M hPA translation baseWitnessList baseContext prefix renaming
+      hbase hrestrictedIn)
+    as (coreRoot & atomicRoot & formulaCoverageRoot &
+      ruleCoverageRoot & hcore & hatomic &
+      hformulaCoverage & hruleCoverage).
+  pose proof
+    (raw_templateAssumptionOnPAAxiomContext_localProof
+      M hPA translation baseWitnessList baseContext prefix
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+      hbase hruleIn) as hrule.
+  lazymatch type of hrule with
+  | RawCodedPALocalProofOf _ _ _ ?ruleRoot =>
+      exact
+        (raw_codedPALocalProof_strongStepProofEndpointAtomicAdequacy_renamed_of_roots_on_witnessed_tail_under_prefix
+          M hPA translation hagreement renaming
+          baseWitnessList baseContext prefix atomicRoot ruleRoot
+          hprefix hbase hatomic hrule)
+  end.
+Qed.
+
+(** Binder-count interface for the preceding renaming-natural result.
+    Membership is shifted structurally through the eigenvariable context,
+    then [templateFormulaShiftMany_as_rename] presents the inherited formulas
+    in the uniform renaming form expected by the endpoint compiler. *)
+Corollary
+    raw_codedPALocalProof_strongStepProofEndpointAtomicAdequacy_of_template_assumptions_after_binders_on_witnessed_tail :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
+    binderCount baseWitnessList baseContext callerPrefix,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation
+    (templateContextShiftMany binderCount callerPrefix) ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  exists targetWitnessList targetContext resultRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext
+        (templateContextShiftMany binderCount callerPrefix))
+      (rawTemplateFormula translation
+        (templateFormulaRename
+          (templateShiftRenamingMany binderCount)
+          coqStrongStepProofEndpointAtomicAdequacyConclusion))
+      resultRoot.
+Proof.
+  intros M hPA translation hagreement binderCount
+    baseWitnessList baseContext callerPrefix hprefix hbase
+    hrestrictedIn hruleIn.
+  apply
+    (raw_codedPALocalProof_strongStepProofEndpointAtomicAdequacy_renamed_of_template_assumptions_on_witnessed_tail_under_prefix
+      M hPA translation hagreement
+      (templateShiftRenamingMany binderCount)
+      baseWitnessList baseContext
+      (templateContextShiftMany binderCount callerPrefix)
+      hprefix hbase).
+  - rewrite <- templateFormulaShiftMany_as_rename.
+    exact (templateContextShiftMany_member binderCount callerPrefix
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+      hrestrictedIn).
+  - rewrite <- templateFormulaShiftMany_as_rename.
+    exact (templateContextShiftMany_member binderCount callerPrefix
+      coqStrongStepProofEndpointAtomicAdequacyRulePremise hruleIn).
+Qed.
+
+(** Renaming-natural rank-domain specialization.  Unlike the ordinary PA
+    atomic law, this law contains a named nonstandard level parameter.  The
+    renamed source compiler abstracts and reopens that parameter after
+    renaming, then the generic prefix-safe two-premise adapter synchronizes
+    the resulting law with both inherited roots. *)
+Theorem
+    raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_renamed_of_roots_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    (renaming : nat -> nat)
+    baseWitnessList baseContext prefix coreRoot ruleRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M
+    (rawDirectStructuralTemplateTranslation M hPA inputs) prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext prefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise))
+    coreRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext prefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointQuantifierBoundedEndpointPremise))
+    ruleRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) resultRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointQuantifierBoundedConclusion))
+      resultRoot.
+Proof.
+  intros M hPA inputs renaming baseWitnessList baseContext prefix
+    coreRoot ruleRoot hprefix hbase hcore hrule.
+  set (translation :=
+    rawDirectStructuralTemplateTranslation M hPA inputs).
+  destruct
+    (raw_codedPALocalProof_strongStepProofEndpointQuantifierBoundedRenamedLaw_on_witnessed_base
+      M hPA inputs renaming baseWitnessList baseContext hbase)
+    as (witnesses & lawRoot & hextended & hlaw).
+  set (extendedWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses baseWitnessList).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext).
+  assert (hincluded : RawContextListIncluded M baseContext extendedContext).
+  {
+    unfold extendedContext.
+    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
+      M hPA witnesses baseContext).
+  }
+  change (RawCodedPALocalProofOf M extendedContext
+    (rawTemplateFormula translation
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointQuantifierBoundedLawTemplate))
+    lawRoot) in hlaw.
+  destruct
+    (raw_codedPALocalProof_twoPremiseLaw_on_witnessed_tail_under_prefix
+      M hPA translation baseWitnessList baseContext
+      extendedWitnessList extendedContext prefix
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointQuantifierBoundedLawTemplate)
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise)
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointQuantifierBoundedEndpointPremise)
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointQuantifierBoundedConclusion)
+      lawRoot coreRoot ruleRoot hprefix hbase hextended hincluded)
+    as [resultRoot hresult].
+  - rewrite
+      coqStrongStepProofEndpointQuantifierBoundedLawTemplate_imp2_shape.
+    cbn [templateFormulaRename]. reflexivity.
+  - exact hlaw.
+  - exact hcore.
+  - exact hrule.
+  - exists witnesses, resultRoot.
+    split; [exact hextended |].
+    split; [exact hincluded | exact hresult].
+Qed.
+
+(** Compile the renamed rank-domain conclusion directly from inherited
+    assumptions.  The restricted package projection supplies its hierarchy
+    core, while the common rule-validity premise is a second assumption
+    leaf in the same renamed prefix. *)
+Corollary
+    raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_renamed_of_template_assumptions_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    (renaming : nat -> nat)
+    baseWitnessList baseContext prefix,
+  RawCodedTemplatePrefixAtomicallyAdequate M
+    (rawDirectStructuralTemplateTranslation M hPA inputs) prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  In (templateFormulaRename renaming
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+    prefix ->
+  In (templateFormulaRename renaming
+      coqStrongStepProofEndpointQuantifierBoundedEndpointPremise)
+    prefix ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) resultRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointQuantifierBoundedConclusion))
+      resultRoot.
+Proof.
+  intros M hPA inputs renaming baseWitnessList baseContext prefix
+    hprefix hbase hrestrictedIn hruleIn.
+  set (translation :=
+    rawDirectStructuralTemplateTranslation M hPA inputs).
+  destruct
+    (raw_codedPALocalProof_restrictedProofTemplate_renamed_projections_of_template_assumption
+      M hPA translation baseWitnessList baseContext prefix renaming
+      hbase hrestrictedIn)
+    as (coreRoot & atomicRoot & formulaCoverageRoot &
+      ruleCoverageRoot & hcore & hatomic &
+      hformulaCoverage & hruleCoverage).
+  pose proof
+    (raw_templateAssumptionOnPAAxiomContext_localProof
+      M hPA translation baseWitnessList baseContext prefix
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointQuantifierBoundedEndpointPremise)
+      hbase hruleIn) as hrule.
+  lazymatch type of hrule with
+  | RawCodedPALocalProofOf _ _ _ ?ruleRoot =>
+      exact
+        (raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_renamed_of_roots_on_witnessed_tail_under_prefix
+          M hPA inputs renaming baseWitnessList baseContext prefix
+          coreRoot ruleRoot hprefix hbase hcore hrule)
+  end.
+Qed.
+
+(** Binder-count form matching the direct predecessor closure. *)
+Corollary
+    raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_of_template_assumptions_after_binders_on_witnessed_tail :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    binderCount baseWitnessList baseContext callerPrefix,
+  RawCodedTemplatePrefixAtomicallyAdequate M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    (templateContextShiftMany binderCount callerPrefix) ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) resultRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext)
+        (templateContextShiftMany binderCount callerPrefix))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename
+          (templateShiftRenamingMany binderCount)
+          coqStrongStepProofEndpointQuantifierBoundedConclusion))
+      resultRoot.
+Proof.
+  intros M hPA inputs binderCount baseWitnessList baseContext
+    callerPrefix hprefix hbase hrestrictedIn hruleIn.
+  apply
+    (raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_renamed_of_template_assumptions_on_witnessed_tail_under_prefix
+      M hPA inputs (templateShiftRenamingMany binderCount)
+      baseWitnessList baseContext
+      (templateContextShiftMany binderCount callerPrefix)
+      hprefix hbase).
+  - rewrite <- templateFormulaShiftMany_as_rename.
+    exact (templateContextShiftMany_member binderCount callerPrefix
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+      hrestrictedIn).
+  - rewrite <- templateFormulaShiftMany_as_rename.
+    apply (templateContextShiftMany_member binderCount callerPrefix
+      coqStrongStepProofEndpointQuantifierBoundedEndpointPremise).
+    rewrite <- coqStrongStepEndpointEvidence_rule_premises_agree.
+    exact hruleIn.
+Qed.
+
+(** Synchronize both renamed endpoint conclusions after any finite binder
+    prefix.  Rank boundedness is compiled first; atomic adequacy then grows
+    that witnessed PA tail once more, and the rank root is transported to
+    the final tail under the identical shifted caller prefix.  Consequently
+    callers receive both roots in one literal context and need provide only
+    membership of the two original direct-shell assumptions. *)
+Theorem
+    raw_codedPALocalProof_strongStepEndpointEvidence_of_template_assumptions_after_binders_on_witnessed_tail :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    binderCount baseWitnessList baseContext callerPrefix,
+  RawCodedTemplatePrefixAtomicallyAdequate M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    (templateContextShiftMany binderCount callerPrefix) ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  exists targetWitnessList targetContext atomicRoot rankRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (templateContextShiftMany binderCount callerPrefix))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename
+          (templateShiftRenamingMany binderCount)
+          coqStrongStepProofEndpointAtomicAdequacyConclusion))
+      atomicRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (templateContextShiftMany binderCount callerPrefix))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename
+          (templateShiftRenamingMany binderCount)
+          coqStrongStepProofEndpointQuantifierBoundedConclusion))
+      rankRoot.
+Proof.
+  intros M hPA inputs binderCount baseWitnessList baseContext
+    callerPrefix hprefix hbase hrestrictedIn hruleIn.
+  set (translation :=
+    rawDirectStructuralTemplateTranslation M hPA inputs).
+  set (renaming := templateShiftRenamingMany binderCount).
+  set (shiftedPrefix :=
+    templateContextShiftMany binderCount callerPrefix).
+  destruct
+    (raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_of_template_assumptions_after_binders_on_witnessed_tail
+      M hPA inputs binderCount baseWitnessList baseContext callerPrefix
+      hprefix hbase hrestrictedIn hruleIn)
+    as (rankWitnesses & rankRoot & hrankWitnessed &
+      hbaseRankIncluded & hrank).
+  set (rankWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      rankWitnesses baseWitnessList).
+  set (rankContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      rankWitnesses baseContext).
+  destruct
+    (raw_codedPALocalProof_strongStepProofEndpointAtomicAdequacy_of_template_assumptions_after_binders_on_witnessed_tail
+      M hPA translation
+      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+      binderCount rankWitnessList rankContext callerPrefix
+      hprefix hrankWitnessed hrestrictedIn hruleIn)
+    as (targetWitnessList & targetContext & atomicRoot &
+      htargetWitnessed & hrankTargetIncluded & hatomic).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation rankWitnessList rankContext
+      targetWitnessList targetContext shiftedPrefix
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointQuantifierBoundedConclusion))
+      rankRoot hrankWitnessed htargetWitnessed
+      hrankTargetIncluded hrank)
+    as [rankOnTargetRoot hrankOnTarget].
+  exists targetWitnessList, targetContext, atomicRoot, rankOnTargetRoot.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hrankTargetIncluded member
+      (hbaseRankIncluded member hmember)).
+  - split; assumption.
+Qed.
+
 (** Rank-domain specialization of the generic under-prefix law. *)
 Theorem
     raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_of_roots_on_witnessed_tail_under_prefix :
@@ -616,40 +1085,17 @@ Theorem
 Proof.
   intros M hPA inputs baseWitnessList baseContext prefix
     coreRoot ruleRoot hprefix hbase hcore hrule.
-  set (translation :=
-    rawDirectStructuralTemplateTranslation M hPA inputs).
   destruct
-    (raw_codedPALocalProof_strongStepProofEndpointQuantifierBoundedLaw_on_witnessed_base
-      M hPA inputs baseWitnessList baseContext hbase)
-    as (witnesses & lawRoot & hextended & hlaw).
-  set (extendedWitnessList :=
-    rawStandardPAAxiomWitnessPrefixWitnessListCode M
-      witnesses baseWitnessList).
-  set (extendedContext :=
-    rawStandardPAAxiomWitnessPrefixContextCode M
-      witnesses baseContext).
-  assert (hincluded : RawContextListIncluded M baseContext extendedContext).
-  {
-    unfold extendedContext.
-    exact (raw_standardPAAxiomWitnessPrefixContextCode_target_included
-      M hPA witnesses baseContext).
-  }
-  change (RawCodedPALocalProofOf M extendedContext
-    (rawTemplateFormula translation
-      coqStrongStepProofEndpointQuantifierBoundedLawTemplate)
-    lawRoot) in hlaw.
-  destruct
-    (raw_codedPALocalProof_twoPremiseLaw_on_witnessed_tail_under_prefix
-      M hPA translation baseWitnessList baseContext
-      extendedWitnessList extendedContext prefix
-      coqStrongStepProofEndpointQuantifierBoundedLawTemplate
-      coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise
-      coqStrongStepProofEndpointQuantifierBoundedEndpointPremise
-      coqStrongStepProofEndpointQuantifierBoundedConclusion
-      lawRoot coreRoot ruleRoot hprefix hbase hextended hincluded
-      coqStrongStepProofEndpointQuantifierBoundedLawTemplate_imp2_shape
-      hlaw hcore hrule)
-    as [resultRoot hresult].
+    (raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_renamed_of_roots_on_witnessed_tail_under_prefix
+      M hPA inputs (fun index => index)
+      baseWitnessList baseContext prefix coreRoot ruleRoot
+      hprefix hbase) as (witnesses & resultRoot &
+        hextended & hincluded & hresult).
+  - rewrite !templateFormulaRename_id.
+    exact hcore.
+  - rewrite !templateFormulaRename_id.
+    exact hrule.
+  - rewrite !templateFormulaRename_id in hresult.
   exists witnesses, resultRoot.
   split; [exact hextended |].
   split; [exact hincluded | exact hresult].
