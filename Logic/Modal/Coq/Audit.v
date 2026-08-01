@@ -30,7 +30,7 @@ From FoundationModal Require Import
   CanonicalK HilbertNNFormula Loeb
   FrameProperties
   RelationProperties ConverseWellFounded WeakConverseWellFounded
-  CorrespondenceExtensions NormalHilbert LogicInfrastructure
+  CorrespondenceExtensions NormalHilbert LogicInfrastructure ComplementEntailment
   HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentK4 EntailmentS4
   GodelTranslation
   StandardModalCompanions
@@ -6051,6 +6051,12 @@ Check complementary_member_cases.
 Check complementary_mem_box.
 Check satisfies_complement_incompatible.
 Check satisfies_neg_complement_incompatible.
+Check classical_logic_double_neg_elim.
+Check classical_logic_double_neg_intro.
+Check logic_complement_bottom.
+Check logic_neg_complement_bottom.
+Check logic_of_neg_complement.
+Check logic_neg_of_complement.
 
 (** Schema-generic finite consistency and complement-complete contexts over
     natural-number atoms. *)
@@ -7540,6 +7546,12 @@ Print Assumptions s5_modal_reduction.
 Print Assumptions complement_cases.
 Print Assumptions complementary_mem_box.
 Print Assumptions satisfies_complement_incompatible.
+Print Assumptions classical_logic_double_neg_elim.
+Print Assumptions classical_logic_double_neg_intro.
+Print Assumptions logic_complement_bottom.
+Print Assumptions logic_neg_complement_bottom.
+Print Assumptions logic_of_neg_complement.
+Print Assumptions logic_neg_of_complement.
 Print Assumptions normal_derives_complement_bottom.
 Print Assumptions normal_derives_neg_complement_bottom.
 Print Assumptions normal_derives_of_neg_complement.
