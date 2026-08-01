@@ -3,6 +3,7 @@ import PolynomialFormulas.Cubic
 import PolynomialFormulas.Quartic
 import PolynomialFormulas.AbelRuffini
 import PolynomialFormulas.QuinticRadicalDecision
+import PolynomialFormulas.SexticRadicalDecision
 import PolynomialFormulas.SelmerAbelRuffini
 import PolynomialFormulas.GenericAbelRuffini
 import PolynomialFormulas.Examples
@@ -13,5 +14,7 @@ usual rational-coefficient Abel--Ruffini obstruction, the rational Selmer
 all-roots obstruction, and the generic rootwise obstruction in every degree
 at least five.  It also exports the directly evaluable, verified
 primitive-recursive decision for radical solvability of integer quintics and
-its Turing-machine realization theorem.
+its Turing-machine realization theorem.  It also exports the recursive
+(not presently claimed primitive-recursive) sextic decision and its verified
+Turing-machine realization theorem.
 -/

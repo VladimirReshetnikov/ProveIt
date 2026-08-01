@@ -142,6 +142,40 @@ opaque abstract splitting field; it is semantic rather than an extracted
 implementation of the bounded coefficient procedure, and direct standard
 extraction remains unavailable because of MathComp sort polymorphism.
 
+## Deciding an individual integer sextic
+
+Lean also formalizes a recursive decision for exact degree-six integer
+polynomials.  After integral monicization, a finite search for monic factors
+of degrees one through three decides reducibility.  A nonlinear factor leaves
+only factors of degree at most four; a linear factor reduces the question to
+the verified quintic criterion.  On the irreducible branch, two separating
+block-system resolvents of degrees fifteen and ten detect whether the Galois
+group is solvable.  Their integer coefficients are computed from sparse
+symmetric polynomials, and bounded rational-root searches decide the two
+tests.
+
+The separating parameters are obtained by a proved terminating unbounded
+search.  Accordingly the assembled Boolean is proved `Computable`, rather
+than `Primrec`.  The public results
+`sexticRadicalDecision_correct`, `allRootsRadical_computablePred`, and
+`has_verified_sextic_radical_turing_machine` respectively prove semantic
+correctness, Mathlib recursive decidability, and existence of a verified
+`PartrecToTM2` program.  Each computability fact is derived compositionally
+from the definition of the function concerned; no function is marked
+recursive by a kernel special case.
+
+The Rocq development has a deliberately narrower executable boundary.
+[`SexticRecursiveCore.v`](Coq/SexticRecursiveCore.v) gives a transparent
+Gallina monicization and bounded factor search, and
+[`SexticFactorCompleteness.v`](Coq/SexticFactorCompleteness.v) proves that
+search complete.  [`SexticRadicalDecidability.v`](Coq/SexticRadicalDecidability.v)
+proves the exact all-roots proposition decidable in Coq's `{P} + {~ P}` sense
+by reflecting it through MathComp-Abel.  That semantic Boolean uses the opaque
+abstract `numfield` construction; unlike the Lean theorem, it is not claimed
+to be an extracted or recursively verified coefficient program.  The theorem
+names include `semantic` to prevent those two meanings of “decidable” from
+being confused.
+
 ## Calculator interface and scope
 
 The solver functions are ordinary reducible definitions.  For example, the

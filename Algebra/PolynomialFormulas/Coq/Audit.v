@@ -1,6 +1,7 @@
 From PolynomialFormulas Require Import
   Basic Cubic CubicComplex Quartic AbelRuffini AbelRuffiniRootwise
-  QuinticRadicalDecidability.
+  QuinticRadicalDecidability SexticRecursiveCore SexticFactorCompleteness
+  SexticRadicalDecidability.
 
 (** Kernel-assumption audit for the degree-one-through-four solver theorems
     and the Abel--Ruffini obstruction above degree four. *)
@@ -11,6 +12,9 @@ Import LeanProofs.PolynomialFormulasQuartic.
 Import LeanProofs.PolynomialFormulasAbelRuffini.
 Import PolynomialFormulasAbelRuffiniRootwise.
 Import PolynomialFormulasQuinticRadicalDecidability.
+Import PolynomialFormulasSexticRecursiveCore.
+Import PolynomialFormulasSexticFactorCompleteness.
+Import PolynomialFormulasSexticRadicalDecidability.
 
 Check solve_linear_correct.
 Check solve_quadratic_correct.
@@ -40,6 +44,9 @@ Check quintic_every_root_has_radical_expressionP.
 Check integer_radical_decisionP.
 Check quintic_radical_decision_codeK.
 Check quintic_radical_decision_codeP.
+Check has_bounded_proper_factorP.
+Check all_roots_radical_sextic_int_semantic_decidable.
+Check sextic_radical_semantic_codeP.
 
 Print Assumptions solve_linear_correct.
 Print Assumptions solve_quadratic_correct.
@@ -69,3 +76,6 @@ Print Assumptions quintic_every_root_has_radical_expressionP.
 Print Assumptions integer_radical_decisionP.
 Print Assumptions quintic_radical_decision_codeK.
 Print Assumptions quintic_radical_decision_codeP.
+Print Assumptions has_bounded_proper_factorP.
+Print Assumptions all_roots_radical_sextic_int_semantic_decidable.
+Print Assumptions sextic_radical_semantic_codeP.
