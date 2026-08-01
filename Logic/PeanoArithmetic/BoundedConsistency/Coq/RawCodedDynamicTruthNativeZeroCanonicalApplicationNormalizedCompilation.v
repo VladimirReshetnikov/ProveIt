@@ -16,6 +16,7 @@ From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedContextLists
   RawCodedRestrictedPAProof
+  RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedPAGrowingTemplateConjunction
@@ -27,6 +28,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
   RawCodedDynamicTruthNativeZeroCanonicalTraceExactification
+  RawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification
   RawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
 
 Module
@@ -38,6 +40,7 @@ Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
@@ -53,6 +56,8 @@ Import
   PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalTraceExactification.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
 
@@ -128,6 +133,82 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
+
+(** Concrete append-facing residue.  Arithmetic normalization first chooses
+    one witnessed endpoint carrying atomic adequacy and the rank-domain
+    disjunction.  The remaining traversal producer supplies both canonical
+    append packages under the literal predecessor-state prefix, at one
+    standard helper batch.  Packaging the two polarities together records
+    the synchronization required by the downstream growing pair and avoids
+    two independently chosen append contexts. *)
+Definition
+    RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendInputResourcesCompilerOnCanonicalNormalizedResources
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists endpointWitnessList endpointContext atomicRoot domainRoot,
+    exists appendWitnesses : StandardPAAxiomWitnessPrefix,
+      RawCodedPAAxiomWitnessContext M endpointWitnessList endpointContext /\
+      RawContextListIncluded M baseContext endpointContext /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M endpointContext)
+        (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M endpointContext)
+        (rawFormulaOrCode M
+          (rawDynamicTruthZeroSigmaDomainCode M)
+          (rawDynamicTruthZeroPiDomainCode M)) domainRoot /\
+      RawDynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt
+        M translation 0 coqDynamicTruthPredecessorStateTemplateContext
+          appendWitnesses /\
+      RawDynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt
+        M translation 1 coqDynamicTruthPredecessorStateTemplateContext
+          appendWitnesses.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendInputResourcesCompilerOnCanonicalNormalizedResources
+  M translation : clear implicits.
+
+(** Compile the concrete synchronized append packages into the abstract
+    state-application resource interface used by the existing normalized
+    callback.  No represented proof is moved back to the normalized base:
+    the arithmetic endpoint is retained as the source of the growing pair,
+    and append traversal may extend it further. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources_of_permuted_append_input_resources
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendInputResourcesCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hagreement hcompiler tail witnessList
+    baseContext helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      appendWitnesses & hendpointWitnessed & hbaseEndpointIncluded &
+      hatomic & hdomain & hsigmaInputs & hpiInputs).
+  exists endpointWitnessList, endpointContext, atomicRoot, domainRoot.
+  split; [exact hendpointWitnessed |].
+  split; [exact hbaseEndpointIncluded |].
+  split; [exact hatomic |].
+  split; [exact hdomain |].
+  exact
+    (raw_dynamicTruthZeroCanonicalStateApplicationPair_of_permuted_append_inputs
+      M hPA translation hagreement appendWitnesses
+      endpointWitnessList endpointContext hendpointWitnessed
+      hsigmaInputs hpiInputs).
+Qed.
 
 (** Interpret the shared template prefix as the literal joint state context.
     The growing pair already records the final witnessed tail and inclusion,

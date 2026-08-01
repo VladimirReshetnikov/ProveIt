@@ -32,6 +32,8 @@ From BoundedPAConsistency Require Import
   RawCodedFourStateTableAppendGlobalTraversalAssembly
   RawCodedDynamicTruthSuccessorRowsAppendNormalization
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
+  RawCodedDynamicTruthPredecessorGlobalExistentialElimination
+  RawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation
   RawCodedDynamicTruthPredecessorAtomicDomainGlobalRootsSynchronization
   RawCodedDynamicTruthSigmaSuccessorRowGraph
   RawCodedDynamicTruthPiSuccessorRowGraph
@@ -67,6 +69,10 @@ Import PABoundedRawCodedFourStateTableAppendGlobalTraversalAssembly.
 Import PABoundedRawCodedDynamicTruthSuccessorRowsAppendNormalization.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorAtomicDomainGlobalRootsSynchronization.
 Import PABoundedRawCodedDynamicTruthSigmaSuccessorRowGraph.
@@ -436,6 +442,42 @@ Proof.
       (rawQuotedFormulaCode M
         dynamicTruthZeroInputGlobalPiApplicationFormula)
       sourceWitnessList sourceContext hsource hpair).
+Qed.
+
+(** Canonical rank-zero client.  The only temporary assumptions retained by
+    the append traversal are the two predecessor-state membership formulas.
+    Their atomic adequacy follows uniformly from PA agreement, so callers do
+    not need to repeat that structural side condition. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalStateApplicationPair_of_permuted_append_inputs :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall witnesses sourceWitnessList sourceContext,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawDynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt
+    M translation 0 coqDynamicTruthPredecessorStateTemplateContext
+      witnesses ->
+  RawDynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt
+    M translation 1 coqDynamicTruthPredecessorStateTemplateContext
+      witnesses ->
+  RawCodedPAGrowingTemplateLocalProofPairAt M translation
+    sourceContext coqDynamicTruthPredecessorStateTemplateContext
+    (rawQuotedFormulaCode M
+      dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+    (rawQuotedFormulaCode M
+      dynamicTruthZeroInputGlobalPiApplicationFormula).
+Proof.
+  intros M hPA translation hagreement witnesses
+    sourceWitnessList sourceContext hsource hsigma hpi.
+  exact
+    (raw_dynamicTruthZeroCanonicalApplicationPair_of_permuted_append_inputs_under_prefix
+      M hPA translation hagreement
+      coqDynamicTruthPredecessorStateTemplateContext witnesses
+      sourceWitnessList sourceContext
+      (raw_dynamicTruthPredecessorStateTemplateContext_atomically_adequate
+        M hPA translation hagreement)
+      hsource hsigma hpi).
 Qed.
 
 (** Close one canonical polarity from its primitive append package. *)
