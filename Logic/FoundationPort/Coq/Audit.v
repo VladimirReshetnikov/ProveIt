@@ -37,7 +37,7 @@ From Foundation.Syntax.Predicate Require Import Language Term Quantifier.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
 From Foundation.FirstOrder.NegationTranslation Require Import GoedelGentzen.
-From Foundation.FirstOrder.Kripke Require Import Basic Intuitionistic.
+From Foundation.FirstOrder.Kripke Require Import Basic Intuitionistic WeakForcing.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -316,6 +316,24 @@ Check ifo_kripke_world_forces_theory.
 Check ifo_kripke_globally_forces_theory.
 Print Assumptions ifo_kripke_intuitionistic_theory_sound_at.
 Print Assumptions ifo_kripke_intuitionistic_theory_sound.
+Check ifo_kripke_weakly_forces.
+Print Assumptions ifo_preorder_exists_below.
+Print Assumptions ifo_kripke_weakly_forces_rel.
+Print Assumptions ifo_kripke_weakly_forces_nrel.
+Print Assumptions ifo_kripke_weakly_forces_verum.
+Print Assumptions ifo_kripke_weakly_forces_falsum.
+Print Assumptions ifo_kripke_weakly_forces_and.
+Print Assumptions ifo_kripke_weakly_forces_or.
+Print Assumptions ifo_kripke_weakly_forces_all.
+Print Assumptions ifo_kripke_weakly_forces_exs.
+Print Assumptions ifo_kripke_weakly_forces_rewrite.
+Print Assumptions ifo_kripke_weakly_forces_emb.
+Print Assumptions ifo_kripke_weakly_forces_monotone.
+Print Assumptions ifo_kripke_weakly_forces_all_constant_domain.
+Print Assumptions ifo_kripke_weakly_forces_exs_constant_domain.
+Print Assumptions ifo_kripke_weakly_forces_generic.
+Print Assumptions ifo_kripke_weakly_forces_generic_iff.
+Print Assumptions ifo_kripke_weakly_forces_generic_iff_not.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
