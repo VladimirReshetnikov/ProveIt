@@ -26,6 +26,7 @@ From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Functions.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Typed Coding.
+From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4529,3 +4530,26 @@ Print Assumptions boot_typed_quote_subst.
 Print Assumptions boot_typed_quote_q_succ.
 Print Assumptions boot_typed_quote_encoding.
 Print Assumptions boot_closed_quote_encoding.
+Check boot_qq_verum.
+Check boot_qq_falsum.
+Check boot_qq_rel.
+Check boot_qq_nrel.
+Check boot_qq_and.
+Check boot_qq_or.
+Check boot_qq_all.
+Check boot_qq_exists.
+Print Assumptions boot_qq_rel_quote.
+Print Assumptions boot_qq_nrel_quote.
+Print Assumptions boot_qq_and_quote.
+Print Assumptions boot_qq_or_quote.
+Print Assumptions boot_qq_all_quote.
+Print Assumptions boot_qq_exists_quote.
+Check boot_is_semiformula.
+Check boot_is_formula.
+Check boot_is_uformula.
+Print Assumptions boot_is_semiformula_case_iff.
+Print Assumptions boot_is_semiformula_is_uformula.
+Print Assumptions semiformula_code_is_semiformula.
+Print Assumptions boot_is_semiformula_has_quote.
+Print Assumptions boot_is_semiformula_quote_iff.
+Print Assumptions boot_is_semiformula_decode_quote.
