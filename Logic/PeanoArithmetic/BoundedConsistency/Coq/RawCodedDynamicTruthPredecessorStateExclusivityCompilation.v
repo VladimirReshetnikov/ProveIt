@@ -616,6 +616,131 @@ Proof.
   exact hpredecessor.
 Qed.
 
+(** Prefix-preserving form of the corrected structural bridge.  The opened
+    leaves live under the caller prefix shifted through all three
+    predecessor binders; the conclusion is closed back to the unshifted
+    prefix using the translation's three exact context-shift edges. *)
+Theorem
+    raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_instantiated_template_under_template_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    baseTail prefix sourceRoot,
+  RawContextListRealizable M baseTail ->
+  RawContextShift M baseTail baseTail ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseTail
+      (templateContextShift (templateContextShift
+        (templateContextShift prefix))))
+    (rawTemplateFormula translation
+      (tfAll (tfAll (tfAll
+        coqDynamicTruthLocalExclusiveBodyTemplate))))
+    sourceRoot ->
+  (exists admissibleRoot,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation baseTail
+          (templateContextShift (templateContextShift
+            (templateContextShift prefix)))))
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalAdmissibleTemplate)
+      admissibleRoot) ->
+  (exists sigmaRoot,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation baseTail
+          (templateContextShift (templateContextShift
+            (templateContextShift prefix)))))
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate)
+      sigmaRoot) ->
+  (exists piRoot,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation baseTail
+          (templateContextShift (templateContextShift
+            (templateContextShift prefix)))))
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalPiEvidenceTemplate)
+      piRoot) ->
+  exists predecessorRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseTail prefix)
+      (rawDynamicTruthImpPredecessorStateExclusivityCode M)
+      predecessorRoot.
+Proof.
+  intros M hPA translation baseTail prefix sourceRoot
+    htailRealizable htailShift hsource hadmissible hsigma hpi.
+  set (context0 :=
+    rawTemplateContextCodeOnTail translation baseTail prefix).
+  set (context1 := rawTemplateContextCodeOnTail translation baseTail
+    (templateContextShift prefix)).
+  set (context2 := rawTemplateContextCodeOnTail translation baseTail
+    (templateContextShift (templateContextShift prefix))).
+  set (context3 := rawTemplateContextCodeOnTail translation baseTail
+    (templateContextShift (templateContextShift
+      (templateContextShift prefix)))).
+  assert (hcontext3 : RawContextListRealizable M context3).
+  {
+    unfold context3.
+    exact (raw_templateContextOnTail_realizable M hPA translation
+      baseTail _ htailRealizable).
+  }
+  pose proof
+    (raw_template_predecessorLocalExclusive_elimination_chain
+      M translation) as hchain.
+  rewrite rawTemplateFormula_predecessorLocalExclusiveBody_shape
+    in hchain.
+  destruct
+    (raw_codedPALocalProofOf_exclusive_bridge_body_codes
+      M hPA context3
+      (rawDynamicTruthPredecessorSigmaStateMemberBodyCode M)
+      (rawDynamicTruthPredecessorPiStateMemberBodyCode M)
+      (rawTemplateFormula translation
+        (tfAll (tfAll (tfAll
+          coqDynamicTruthLocalExclusiveBodyTemplate))))
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalAdmissibleTemplate)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaEvidenceTemplate)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalPiEvidenceTemplate)
+      sourceRoot hcontext3
+      (raw_quotedFormula_atomically_adequate M hPA
+        dynamicTruthPredecessorSigmaStateMemberBodyFormula)
+      (raw_quotedFormula_atomically_adequate M hPA
+        dynamicTruthPredecessorPiStateMemberBodyFormula)
+      hsource hchain hadmissible hsigma hpi)
+    as [bodyRoot hbody].
+  assert (hshift01 : RawContextShift M context0 context1).
+  {
+    unfold context0, context1.
+    exact (raw_templateContextOnTail_shift M hPA translation
+      baseTail prefix htailShift).
+  }
+  assert (hshift12 : RawContextShift M context1 context2).
+  {
+    unfold context1, context2.
+    exact (raw_templateContextOnTail_shift M hPA translation
+      baseTail (templateContextShift prefix) htailShift).
+  }
+  assert (hshift23 : RawContextShift M context2 context3).
+  {
+    unfold context2, context3.
+    exact (raw_templateContextOnTail_shift M hPA translation
+      baseTail (templateContextShift (templateContextShift prefix))
+      htailShift).
+  }
+  exists (rawPALocalProofClose3BetweenRoot M
+    context0 context1 context2
+    (rawDynamicTruthPredecessorStateExclusivityBodyCode M) bodyRoot).
+  rewrite rawDynamicTruthImpPredecessorStateExclusivityCode_as_all3
+    by exact hPA.
+  exact (raw_codedPALocalProofOf_close3_between M hPA
+    context0 context1 context2 context3
+    (rawDynamicTruthPredecessorStateExclusivityBodyCode M) bodyRoot
+    hshift01 hshift12 hshift23 hbody).
+Qed.
+
 (** Exact table/application residue for the predecessor specialization.  The
     record exposes the substitution chain and each of the three bridge roots
     independently, which lets later graph compilers discharge them as soon
