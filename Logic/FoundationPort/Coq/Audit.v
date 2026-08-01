@@ -29,6 +29,7 @@ From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Typed Coding
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Functions.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Typed Coding.
+From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Theory.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4640,3 +4641,21 @@ Print Assumptions boot_typed_formula_quote_subst.
 Print Assumptions boot_typed_formula_quote_free.
 Print Assumptions boot_typed_formula_quote_encoding.
 Print Assumptions boot_closed_formula_quote_encoding.
+Check boot_theory_code_member.
+Check boot_theory_formula_code_member.
+Print Assumptions boot_theory_formula_code_member_iff.
+Check boot_theory_encoding.
+Check boot_theory_classifier.
+Print Assumptions boot_theory_classifier_formula_spec.
+Print Assumptions boot_theory_classifier_quote_iff.
+Check boot_empty_theory.
+Check boot_empty_theory_encoding.
+Check boot_theory_union.
+Check boot_theory_union_encoding.
+Check boot_singleton_theory.
+Check boot_singleton_theory_encoding.
+Check boot_list_theory.
+Check boot_list_theory_classifier.
+Print Assumptions boot_list_theory_classifier_spec.
+Check boot_list_theory_encoding.
+Check boot_theory_encoding_equiv.
