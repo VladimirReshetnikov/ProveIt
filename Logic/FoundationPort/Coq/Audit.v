@@ -2717,6 +2717,10 @@ Print Assumptions arithmetic_definably_bounded_lift_to_strict.
 Print Assumptions arithmetic_sorted_definable_substitution_bounded.
 Print Assumptions arithmetic_sorted_definable_function_substitution_bounded.
 Print Assumptions arithmetic_definably_bounded_compose.
+Print Assumptions arithmetic_bounded_add.
+Print Assumptions arithmetic_bounded_mul.
+Print Assumptions arithmetic_definably_bounded_add.
+Print Assumptions arithmetic_definably_bounded_mul.
 Print Assumptions peano_minus_laws.
 Print Assumptions peano_minus_le_trans.
 Print Assumptions peano_minus_le_lt_trans.
