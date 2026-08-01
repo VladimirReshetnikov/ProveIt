@@ -30,6 +30,7 @@ From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Functions.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Typed Coding.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Theory.
+From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4659,3 +4660,45 @@ Check boot_list_theory_classifier.
 Print Assumptions boot_list_theory_classifier_spec.
 Check boot_list_theory_encoding.
 Check boot_theory_encoding_equiv.
+Check boot_nat_list_code.
+Print Assumptions boot_nat_list_code_injective.
+Print Assumptions boot_nat_list_code_member_le.
+Check boot_sequent_quote.
+Print Assumptions boot_sequent_quote_injective.
+Print Assumptions boot_sequent_quote_member_iff.
+Check boot_is_formula_set.
+Print Assumptions boot_is_formula_set_cons_iff.
+Print Assumptions boot_is_formula_set_app_iff.
+Print Assumptions boot_is_formula_set_quote.
+Check boot_sequent_shift_code.
+Print Assumptions boot_is_formula_set_shift.
+Print Assumptions boot_sequent_shift_quote.
+Check boot_formula_free_code.
+Print Assumptions boot_formula_free_code_quote.
+Print Assumptions boot_formula_free_code_preserves.
+Check boot_proof_node.
+Check boot_proof_conseq.
+Print Assumptions boot_proof_node_nonzero.
+Print Assumptions boot_proof_conseq_node.
+Check boot_axL.
+Check boot_verum_intro.
+Check boot_and_intro.
+Check boot_or_intro.
+Check boot_all_intro.
+Check boot_exists_intro.
+Check boot_weakening_rule.
+Check boot_shift_rule.
+Check boot_cut_rule.
+Check boot_axiom_rule.
+Print Assumptions boot_proof_conseq_axL.
+Print Assumptions boot_proof_conseq_and_intro.
+Print Assumptions boot_proof_conseq_exists_intro.
+Print Assumptions boot_proof_conseq_cut_rule.
+Check boot_derivation_code.
+Check boot_derivation.
+Check boot_derivation_of.
+Check boot_proof.
+Check boot_provable.
+Print Assumptions boot_derivation_code_formula_set.
+Print Assumptions boot_derivation_code_conseq.
+Print Assumptions boot_derivation_code_nonzero.
