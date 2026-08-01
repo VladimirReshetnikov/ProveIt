@@ -4,7 +4,7 @@ From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
-  PropositionalFormula PropositionalNNFormula PropositionalTranslation
+  PropositionalFormula FormulaPropositional PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalKripkePreservation PropositionalKripkeCanonical
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
@@ -3821,6 +3821,33 @@ Print Assumptions stable_identity.
 Print Assumptions stable_compose.
 Print Assumptions stable_identity_compose.
 Print Assumptions stable_compose_associative.
+
+(** Shared modal-formula structure, freshness, and the exact boundary between
+    propositional formulas and formulas of modal degree zero. *)
+Check formula_eq_dec.
+Check formula_is_box.
+Check formula_negated.
+Check formula_letterless.
+Check formula_atoms.
+Check formula_fresh_atom.
+Check pformula_to_modal.
+Check modal_to_pformula.
+Print Assumptions formula_imp_injective.
+Print Assumptions formula_neg_injective.
+Print Assumptions formula_or_injective.
+Print Assumptions formula_and_injective.
+Print Assumptions formula_box_injective.
+Print Assumptions formula_dia_injective.
+Print Assumptions formula_negated_iff.
+Print Assumptions formula_not_negated_iff.
+Print Assumptions formula_atom_in_atoms_iff_subformula.
+Print Assumptions formula_atom_lt_fresh.
+Print Assumptions formula_fresh_atom_not_in.
+Print Assumptions formula_fresh_atom_not_subformula.
+Print Assumptions pformula_to_modal_degree_zero.
+Print Assumptions pformula_to_modal_letterless.
+Print Assumptions modal_to_pformula_to_modal.
+Print Assumptions modal_degree_zero_iff_propositional.
 
 Check nnformula_eq_dec.
 Check nn_neg_involutive.
