@@ -1,0 +1,18 @@
+(** Assumption audit for represented canonical-application proof transport. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroCanonicalApplicationProofTransport.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationProofTransport.
+
+Check rawQuotedFormulaCode_imp.
+Check
+  raw_dynamicTruthZeroNativeEvidenceRoots_of_canonicalApplicationRoots_under_prefix.
+Check raw_dynamicTruthZeroNativeEvidenceRoots_of_canonicalApplicationRoots.
+
+Print Assumptions rawQuotedFormulaCode_imp.
+Print Assumptions
+  raw_dynamicTruthZeroNativeEvidenceRoots_of_canonicalApplicationRoots_under_prefix.
+Print Assumptions
+  raw_dynamicTruthZeroNativeEvidenceRoots_of_canonicalApplicationRoots.
