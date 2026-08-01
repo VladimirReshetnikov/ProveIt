@@ -25,6 +25,8 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateDirectStructuralPAAgreement
   RawCodedTemplateBottomDirectStructuralInputs
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
   RawCodedDynamicTruthNativeCrossLevelGuardRootCompilation
   RawCodedDynamicTruthNativeShiftStagedRootCompilation
   RawCodedDynamicTruthNativeSubstitutionStagedRootCompilation
@@ -61,6 +63,8 @@ Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeCrossLevelGuardRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeShiftStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeSubstitutionStagedRootCompilation.
@@ -542,6 +546,80 @@ Definition
 Arguments
   RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
   M hPA : clear implicits.
+
+(** Assumption-retaining rank-zero boundary.  The preceding package still
+    asks for two model-global compilers for the restricted-proof and rule
+    roots.  Those formulas are already assumptions of the direct strong-step
+    proof shell, so the prefix-parametric rank-zero closure can use assumption
+    leaves instead.  This strictly weaker package deletes that coordinate;
+    its first field is now only the pair of fixed-production-or-refutation
+    compilers, followed by the seven unchanged dependency-ordered fields. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  let translation := rawBottomDirectStructuralTemplateTranslation M hPA in
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    M translation coqDynamicTruthPredecessorStateTemplateContext /\
+  RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
+    M hPA /\
+  RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
+    M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+  M hPA : clear implicits.
+
+(** Compile the package's rank-zero coordinate at any rule-case prefix which
+    visibly contains the two direct strong-step assumptions.  The fixed-row
+    compilers themselves remain caller-independent: suffix insertion adapts
+    them internally to the selected prefix. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedAssumptionRetainingLogicalZeroGrowingLogicalRootsUnderCallerPrefix
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  RawDynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+    M hPA ->
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix
+    (hsources & _hstrong & _hremainder & _hcrossLevel & _hshift &
+      _hsubstitution & _haxiom & _hfinal)
+    hrestrictedIn hruleIn.
+  exact
+    (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_state_fixed_productions_or_refutations
+      M hPA callerPrefix hrestrictedIn hruleIn hsources).
+Qed.
+
+(** Compatibility projection from the older nine-coordinate package.  It
+    forgets the now-redundant independent restricted/rule root producers and
+    preserves every remaining field definitionally. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers_of_legacy
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+    M hPA.
+Proof.
+  intros M hPA
+    (_hzeroRoots & hsources & hstrong & hremainder & hcrossLevel &
+      hshift & hsubstitution & haxiom & hfinal).
+  exact (conj hsources
+    (conj hstrong
+      (conj hremainder
+        (conj hcrossLevel
+          (conj hshift
+            (conj hsubstitution
+              (conj haxiom hfinal))))))).
+Qed.
 
 (** Eliminate only the relaxed second coordinate; every other compiler is
     passed through definitionally. *)
@@ -1296,6 +1374,27 @@ Definition
   forall (M : RawPAModel) (hPA : RawPASatisfies M),
     RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
       M hPA.
+
+Definition
+    RawDynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    RawDynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+      M hPA.
+
+(** All-model compatibility projection corresponding to the model-local
+    coordinate deletion above. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilersInAllModels_of_legacy
+    :
+  RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroIndependentGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilersInAllModels ->
+  RawDynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilersInAllModels.
+Proof.
+  intros hlegacy M hPA.
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers_of_legacy
+      M hPA (hlegacy M hPA)).
+Qed.
 
 Theorem
     raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_kernel_compilers

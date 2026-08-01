@@ -15,10 +15,12 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   CodedProof
   RawCodedSyntaxConstructors
+  RawCodedContextLists
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
+  RawCodedTemplateBottomDirectStructuralInputs
   RawCodedRestrictedPAProof
   RawCodedPAProofLeafCertificates
   RawCodedPAAxiomWitnessPrefix
@@ -50,7 +52,8 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthPairedGlobalSuccessorGraph
   RawCodedDynamicTruthGlobalBaseRootClosure
   RawCodedFourStateTableAppendPermutedTemplateGlobalTraversalAssembly
-  RawCodedDynamicTruthNativeZeroCanonicalTraceExactification.
+  RawCodedDynamicTruthNativeZeroCanonicalTraceExactification
+  RawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
 
 Module
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification.
@@ -61,10 +64,12 @@ Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedCodedProof.
 Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAProofLeafCertificates.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
@@ -103,6 +108,7 @@ Import
   PABoundedRawCodedFourStateTableAppendPermutedTemplateGlobalTraversalAssembly.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalTraceExactification.
+Import PABoundedRawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
 
 (** Literal local rows used by the first global successor. *)
 Definition dynamicTruthZeroCanonicalSigmaRowFormula : formula :=
@@ -711,6 +717,98 @@ Arguments
   RawDynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt
   M translation rootMode outerPrefix : clear implicits.
 
+(** Retain an additional caller suffix below the complete temporary append
+    context.  The append eliminator introduces eight witnesses and the row
+    proof introduces five binders, so the suffix is renamed thirteen times.
+    The generic template-suffix lemma inserts those renamed assumptions at
+    the exact represented depth and transports either disjunct uniformly.
+
+    This specialization uses the canonical bottom direct translation, whose
+    structural adequacy theorem covers every translated temporary formula.
+    It therefore asks callers for no separate syntactic side condition. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt_app
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      rootMode outerPrefix callerSuffix,
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      rootMode outerPrefix ->
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      rootMode (outerPrefix ++ callerSuffix).
+Proof.
+  intros M hPA rootMode outerPrefix callerSuffix hcompiler
+    sourceWitnessList sourceContext hsource.
+  destruct (hcompiler sourceWitnessList sourceContext hsource) as
+    (witnesses & sourceRoot & hextended & hsourceProof).
+  set (translation := rawBottomDirectStructuralTemplateTranslation M hPA).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M witnesses sourceContext).
+  set (oldPrefix := templateContextShiftMany 5
+    (coqFourStateTableAppendWitnessContext
+      (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+      (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+      (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+      (embedPATerm (Term.numeral rootMode))
+      (ttVar 2) (ttVar 1) (ttVar 0) outerPrefix)).
+  set (newPrefix := templateContextShiftMany 5
+    (coqFourStateTableAppendWitnessContext
+      (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+      (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+      (ttParameter coqDynamicTruthAppendRowBoundParameterName)
+      (embedPATerm (Term.numeral rootMode))
+      (ttVar 2) (ttVar 1) (ttVar 0)
+      (outerPrefix ++ callerSuffix))).
+  assert (hprefixShape :
+      oldPrefix ++ templateContextShiftMany 13 callerSuffix = newPrefix).
+  {
+    unfold oldPrefix, newPrefix.
+    rewrite !coqFourStateTableAppendRowContext_affine.
+    rewrite templateContextShiftMany_app.
+    rewrite <- app_assoc. reflexivity.
+  }
+  assert (hcombinedAdequate :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation
+        (oldPrefix ++ templateContextShiftMany 13 callerSuffix)).
+  {
+    rewrite hprefixShape.
+    exact (raw_directStructuralTemplatePrefix_atomically_adequate
+      M hPA (rawBottomTemplateDirectStructuralInputs M hPA) newPrefix).
+  }
+  assert (hextendedRealizable : RawContextListRealizable M extendedContext).
+  {
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses sourceWitnessList)
+      extendedContext hextended).
+  }
+  destruct hsourceProof as [hproduction | hrefutation].
+  - destruct
+      (raw_codedPALocalProof_templateSuffix
+        M hPA translation extendedContext oldPrefix
+        (templateContextShiftMany 13 callerSuffix)
+        (rawTemplateFormula translation
+          (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+            (coqFourStateTableAppendEmbeddedModeProductionMotive
+              dynamicTruthZeroCanonicalSigmaRowFormula
+              dynamicTruthZeroCanonicalPiRowFormula)))
+        sourceRoot hextendedRealizable hcombinedAdequate hproduction)
+      as [targetRoot htarget].
+    exists witnesses, targetRoot. split; [exact hextended |].
+    left. unfold translation, extendedContext in htarget |- *.
+    rewrite hprefixShape in htarget. exact htarget.
+  - destruct
+      (raw_codedPALocalProof_templateSuffix
+        M hPA translation extendedContext oldPrefix
+        (templateContextShiftMany 13 callerSuffix)
+        (rawFormulaBotCode M) sourceRoot
+        hextendedRealizable hcombinedAdequate hrefutation)
+      as [targetRoot htarget].
+    exists witnesses, targetRoot. split; [exact hextended |].
+    right. unfold translation, extendedContext in htarget |- *.
+    rewrite hprefixShape in htarget. exact htarget.
+Qed.
+
 (** Represented bottom elimination is the only extra proof node needed to
     turn the relaxed source interface back into the exact fixed-production
     interface consumed by append synchronization. *)
@@ -763,6 +861,28 @@ Definition
 Arguments
   RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
   M translation outerPrefix : clear implicits.
+
+(** Extend both independent polarity compilers by the same retained caller
+    suffix.  Their standard-witness batches remain independent; only the
+    visible temporary context is enlarged. *)
+Corollary
+    raw_dynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix_app
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      outerPrefix callerSuffix,
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA) outerPrefix ->
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (outerPrefix ++ callerSuffix).
+Proof.
+  intros M hPA outerPrefix callerSuffix [hsigma hpi]. split.
+  - exact
+      (raw_dynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt_app
+        M hPA 0 outerPrefix callerSuffix hsigma).
+  - exact
+      (raw_dynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerUnderPrefixAt_app
+        M hPA 1 outerPrefix callerSuffix hpi).
+Qed.
 
 (** Sigma and Pi row construction may use different finite PA-helper batches.
     The payload synchronizer handles those batches later, so the weakest

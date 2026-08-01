@@ -2199,6 +2199,64 @@ Proof.
         M hPA callerPrefix hrestrictedIn hruleIn hpayloads)).
 Qed.
 
+(** Direct residual-boundary form of the branch-sensitive closure.  A caller
+    need not manufacture the intermediate append payloads: for each polarity
+    it may instead compile the fixed row or refute the exact temporary append
+    context.  Represented bottom elimination turns the refutation alternative
+    into the missing row, while the independent-payload adapter deliberately
+    preserves the fact that the two polarities may allocate unrelated finite
+    batches of PA witnesses. *)
+Corollary
+    raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_independent_growing_fixed_productions_or_refutations
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix) ->
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix hrestrictedIn hruleIn hsources.
+  apply
+    (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_independent_opposite_payloads
+      M hPA callerPrefix hrestrictedIn hruleIn).
+  exact
+    (raw_dynamicTruthZeroCanonicalBottom_independentPermutedAppendRowKernelPayloadsUnderPrefix_of_independent_growing_fixed_productions_or_refutations
+      M hPA
+      (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix)
+      hsources).
+Qed.
+
+(** Caller-independent residual form.  The two fixed-row compilers need only
+    know the canonical predecessor-state prefix.  Generic suffix insertion
+    weakens them to the proof shell's retained assumptions before invoking
+    the preceding branch-sensitive closure.  This is the form suitable for
+    dependency-ordered packages, whose row producers are model-global while
+    the caller prefix is selected by an individual rule-case invocation. *)
+Corollary
+    raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_state_fixed_productions_or_refutations
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      coqDynamicTruthPredecessorStateTemplateContext ->
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix hrestrictedIn hruleIn hsources.
+  apply
+    (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_independent_growing_fixed_productions_or_refutations
+      M hPA callerPrefix hrestrictedIn hruleIn).
+  exact
+    (raw_dynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix_app
+      M hPA coqDynamicTruthPredecessorStateTemplateContext callerPrefix
+      hsources).
+Qed.
+
 (** End-to-end retained-assumption rank-zero closure.  The former pair of
     independently growing restricted/rule root compilers is absent: those
     roots are assumption leaves, while the synchronized append payload pair
