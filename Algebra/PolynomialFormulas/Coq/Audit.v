@@ -3,7 +3,8 @@ From PolynomialFormulas Require Import
   QuinticRadicalDecidability SexticRecursiveCore SexticFactorCompleteness
   SexticSparsePolynomials SexticSparseResolvents SexticSparseSymmetricSearch
   SexticPowerSumSymmetric SexticNewtonPowerSums SexticResolventSymmetry
-  SexticComputedResolvents
+  SexticComputedResolvents SexticRationalRootSearch
+  SexticComputedResolventBridge
   SexticRadicalDecidability.
 
 (** Kernel-assumption audit for the degree-one-through-four solver theorems
@@ -24,6 +25,8 @@ Import PolynomialFormulasSexticPowerSumSymmetric.
 Import PolynomialFormulasSexticNewtonPowerSums.
 Import PolynomialFormulasSexticResolventSymmetry.
 Import PolynomialFormulasSexticComputedResolvents.
+Import PolynomialFormulasSexticRationalRootSearch.
+Import PolynomialFormulasSexticComputedResolventBridge.
 Import PolynomialFormulasSexticRadicalDecidability.
 
 Check solve_linear_correct.
@@ -70,6 +73,16 @@ Check pair_sparse_resolvent_coefficient_invariant.
 Check triple_sparse_resolvent_coefficient_invariant.
 Check pair_scaled_resolvent_coefficient_correct_unconditional.
 Check triple_scaled_resolvent_coefficient_correct_unconditional.
+Check denq_dvd_leading_coefficient.
+Check numq_dvd_constant_coefficient.
+Check has_bounded_rational_root_of_rational.
+Check rational_rootP.
+Check pair_scaled_rational_rootP.
+Check triple_scaled_rational_rootP.
+Check pair_scaled_resolvent_poly_correct.
+Check triple_scaled_resolvent_poly_correct.
+Check pair_scaled_semantic_rational_rootP.
+Check triple_scaled_semantic_rational_rootP.
 Check all_roots_radical_sextic_int_semantic_decidable.
 Check sextic_radical_semantic_codeP.
 
@@ -117,5 +130,15 @@ Print Assumptions pair_sparse_resolvent_coefficient_invariant.
 Print Assumptions triple_sparse_resolvent_coefficient_invariant.
 Print Assumptions pair_scaled_resolvent_coefficient_correct_unconditional.
 Print Assumptions triple_scaled_resolvent_coefficient_correct_unconditional.
+Print Assumptions denq_dvd_leading_coefficient.
+Print Assumptions numq_dvd_constant_coefficient.
+Print Assumptions has_bounded_rational_root_of_rational.
+Print Assumptions rational_rootP.
+Print Assumptions pair_scaled_rational_rootP.
+Print Assumptions triple_scaled_rational_rootP.
+Print Assumptions pair_scaled_resolvent_poly_correct.
+Print Assumptions triple_scaled_resolvent_poly_correct.
+Print Assumptions pair_scaled_semantic_rational_rootP.
+Print Assumptions triple_scaled_semantic_rational_rootP.
 Print Assumptions all_roots_radical_sextic_int_semantic_decidable.
 Print Assumptions sextic_radical_semantic_codeP.
