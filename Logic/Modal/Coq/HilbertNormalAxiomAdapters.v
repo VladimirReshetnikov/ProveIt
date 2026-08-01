@@ -22,6 +22,7 @@
 From FoundationModal Require Import
   Syntax Axioms LogicInfrastructure EntailmentExtensions
   EntailmentNamedExtensions HilbertAxiom HilbertWithRE HilbertNormal.
+From FoundationModal Require Export EntailmentBasicFull.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -88,70 +89,9 @@ Arguments raw_H1_mem {AtomType Ax} _.
 Arguments raw_Geach_p {AtomType g Ax} _.
 Arguments raw_Geach_mem {AtomType g Ax} _.
 
-(** * Source-facing theorem capabilities not already in the entailment layer *)
-
-Record has_FourN {AtomType} (n : nat)
-    (L0 : modal_logic_set AtomType) : Prop := {
-  has_FourN_axiom : forall p, L0 (FourN n p)
-}.
-
-Record has_L {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_L_axiom : forall p, L0 (L p)
-}.
-
-Record has_Z {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_Z_axiom : forall p, L0 (Z p)
-}.
-
-Record has_Hen {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_Hen_axiom : forall p, L0 (Hen p)
-}.
-
-Record has_WeakPoint2 {AtomType}
-    (L0 : modal_logic_set AtomType) : Prop := {
-  has_WeakPoint2_axiom : forall p q, L0 (WeakPoint2 p q)
-}.
-
-Record has_Point3 {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_Point3_axiom : forall p q, L0 (Point3 p q)
-}.
-
-Record has_WeakPoint3 {AtomType}
-    (L0 : modal_logic_set AtomType) : Prop := {
-  has_WeakPoint3_axiom : forall p q, L0 (WeakPoint3 p q)
-}.
-
-Record has_Point4 {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_Point4_axiom : forall p, L0 (Point4 p)
-}.
-
-Record has_Grz {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_Grz_axiom : forall p, L0 (Grz p)
-}.
-
-Record has_Dum {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_Dum_axiom : forall p, L0 (Dum p)
-}.
-
-Record has_Tc {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_Tc_axiom : forall p, L0 (Tc p)
-}.
-
-Record has_Ver {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_Ver_axiom : forall p, L0 (Ver p)
-}.
-
-Record has_McK {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_McK_axiom : forall p, L0 (McK p)
-}.
-
-Record has_Mk {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_Mk_axiom : forall p q, L0 (Mk p q)
-}.
-
-Record has_H {AtomType} (L0 : modal_logic_set AtomType) : Prop := {
-  has_H_axiom : forall p, L0 (H p)
-}.
+(** The source-facing theorem capabilities now live in
+    [EntailmentBasicFull], alongside the other capabilities from
+    Modal/Entailment/Basic.lean.  This adapter module only consumes them. *)
 
 (** The weakest local structural counterpart of Foundation's
     [Logic.IsNormal].  The source's [Cl] superclass is represented by its

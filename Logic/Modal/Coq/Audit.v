@@ -31,7 +31,7 @@ From FoundationModal Require Import
   FrameProperties
   RelationProperties ConverseWellFounded WeakConverseWellFounded
   CorrespondenceExtensions NormalHilbert LogicInfrastructure ComplementEntailment
-  HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentK4 EntailmentS4
+  HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentBasicFull EntailmentKT EntailmentK4 EntailmentS4
   GodelTranslation
   StandardModalCompanions
   EntailmentS5 HilbertWithRE HilbertNormal AlgebraicSemantics
@@ -69,6 +69,11 @@ From FoundationModal Require Import
 Check substitute_comp.
 Check satisfies_substitute.
 Check valid_K.
+Check multinecessitation.
+Check multiunnecessitation.
+Check lift_unary_schema.
+Check lift_binary_schema.
+Check modal_disjunctive_iff_unnecessitation_under_disjunction.
 
 (** The complete sixty-seven-declaration Logic/Semantics.lean surface:
     generic Tarski clauses, ordinary and singleton-normalized finite folds,
