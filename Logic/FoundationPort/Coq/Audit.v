@@ -38,6 +38,7 @@ From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew Deduction.
 From Foundation.FirstOrder.NegationTranslation Require Import GoedelGentzen.
 From Foundation.FirstOrder.Kripke Require Import Basic Intuitionistic WeakForcing.
+From Foundation.FirstOrder Require Import Hauptsatz.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -3058,3 +3059,20 @@ Print Assumptions semiterm_bvar_or_fvar_relational.
 Print Assumptions term_fvar_relational.
 Print Assumptions semiterm_relational_val_rew.
 Print Assumptions semiterm_relational_val_bshift.
+Check first_order_positive_derivation_graft_cut_free.
+Check first_order_stronger_than.
+Print Assumptions first_order_stronger_than_refl.
+Print Assumptions first_order_stronger_than_trans.
+Print Assumptions first_order_stronger_than_of_subset.
+Check first_order_sequent_meet.
+Print Assumptions first_order_stronger_than_meet_left.
+Print Assumptions first_order_stronger_than_meet_right.
+Check first_order_canonical_forces_aux.
+Check first_order_canonical_forces.
+Check first_order_canonical_forces_all.
+Print Assumptions first_order_canonical_forces_monotone_aux.
+Print Assumptions first_order_canonical_forces_monotone.
+Print Assumptions first_order_canonical_forces_explosion_aux.
+Print Assumptions first_order_canonical_forces_explosion.
+Print Assumptions first_order_canonical_efq.
+Print Assumptions first_order_canonical_modus_ponens.
