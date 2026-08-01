@@ -1,14 +1,17 @@
 (** Generic axiom schemes underlying arithmetic induction theories. *)
 
-From Stdlib Require Import Logic.Classical_Prop Logic.FunctionalExtensionality.
+From Stdlib Require Import Arith.PeanoNat Logic.Classical_Prop
+  Logic.FunctionalExtensionality.
 From FoundationModal Require Import GenericEntailment.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
-From Foundation.FirstOrder.Basic Require Import Calculus Operator Soundness.
+From Foundation.FirstOrder.Basic Require Import Calculus Eq Operator Soundness.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics RewriteClosure OperatorSemantics ModelTheory Elementary.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Syntax Hierarchy.
-From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Syntax Model Hierarchy.
+From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic Theory.
+From Foundation.FirstOrder.Arithmetic.TA Require Import Basic.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -351,6 +354,36 @@ Definition first_order_theory_union {L : language}
     (T U : theory L) : theory L :=
   fun sigma => T sigma \/ U sigma.
 
+Lemma first_order_theory_union_subset_left : forall L
+    (T U : theory L) sigma,
+  T sigma -> first_order_theory_union T U sigma.
+Proof. intros L T U sigma HT. now left. Qed.
+
+Lemma first_order_theory_union_subset_right : forall L
+    (T U : theory L) sigma,
+  U sigma -> first_order_theory_union T U sigma.
+Proof. intros L T U sigma HU. now right. Qed.
+
+Theorem first_order_theory_weaker_than_union_left : forall L
+    (T U : theory L),
+  generic_weaker_than
+    (first_order_theory_entailment L) (first_order_theory_entailment L)
+    T (first_order_theory_union T U).
+Proof.
+  intros L T U. apply first_order_theory_weaker_of_subset.
+  intros sigma HT. now left.
+Qed.
+
+Theorem first_order_theory_weaker_than_union_right : forall L
+    (T U : theory L),
+  generic_weaker_than
+    (first_order_theory_entailment L) (first_order_theory_entailment L)
+    U (first_order_theory_union T U).
+Proof.
+  intros L T U. apply first_order_theory_weaker_of_subset.
+  intros sigma HU. now right.
+Qed.
+
 Lemma first_order_axiom_scheme_intro : forall L I
     (C : I -> Prop) (axiom : I -> sentence L) i,
   C i -> first_order_axiom_scheme C axiom (axiom i).
@@ -441,14 +474,38 @@ Definition arithmetic_open_induction_theory (T : theory oring_language) :
     theory oring_language :=
   arithmetic_induction_theory T (@semiformula_open oring_language nat 1).
 
+Definition arithmetic_hierarchy_induction_theory
+    (T : theory oring_language) (pol : bool) (k : nat) :
+    theory oring_language :=
+  arithmetic_induction_theory T
+    (fun phi => arithmetic_hierarchy nat pol k 1 phi).
+
 Definition arithmetic_sigma_induction_theory
     (T : theory oring_language) (k : nat) : theory oring_language :=
-  arithmetic_induction_theory T
-    (fun phi => arithmetic_hierarchy nat arithmetic_sigma k 1 phi).
+  arithmetic_hierarchy_induction_theory T arithmetic_sigma k.
 
 Definition arithmetic_peano_theory (T : theory oring_language) :
     theory oring_language :=
   arithmetic_induction_theory T (fun _ => True).
+
+(** The source fixes PA-minus as the base of every named induction theory.
+    Keeping the generic constructors above exposes the stronger reusable API;
+    these aliases are its exact concrete specializations. *)
+Definition arithmetic_iopen : theory oring_language :=
+  arithmetic_open_induction_theory peano_minus_axiom.
+
+Definition arithmetic_induction_on_hierarchy (pol : bool) (k : nat) :
+    theory oring_language :=
+  arithmetic_hierarchy_induction_theory peano_minus_axiom pol k.
+
+Definition arithmetic_isigma (k : nat) : theory oring_language :=
+  arithmetic_induction_on_hierarchy arithmetic_sigma k.
+
+Definition arithmetic_ipi (k : nat) : theory oring_language :=
+  arithmetic_induction_on_hierarchy arithmetic_pi k.
+
+Definition first_order_peano_arithmetic : theory oring_language :=
+  arithmetic_peano_theory peano_minus_axiom.
 
 Lemma arithmetic_successor_induction_scheme_intro : forall C phi,
   C phi -> arithmetic_successor_induction_scheme C
@@ -517,12 +574,211 @@ Proof.
   intros phi Hopen. now apply arithmetic_hierarchy_of_open.
 Qed.
 
+Lemma arithmetic_open_induction_subset_hierarchy : forall T pol k sigma,
+  arithmetic_open_induction_theory T sigma ->
+  arithmetic_hierarchy_induction_theory T pol k sigma.
+Proof.
+  intros T pol k. apply arithmetic_induction_theory_subset.
+  intros phi Hopen. now apply arithmetic_hierarchy_of_open.
+Qed.
+
 Lemma arithmetic_sigma_induction_subset_peano : forall T k sigma,
   arithmetic_sigma_induction_theory T k sigma ->
   arithmetic_peano_theory T sigma.
 Proof.
   intros T k. apply arithmetic_induction_theory_subset.
   intros phi Hphi. exact I.
+Qed.
+
+(** * Concrete PA-minus induction hierarchy *)
+
+Lemma peano_minus_subset_iopen : forall sigma,
+  peano_minus_axiom sigma -> arithmetic_iopen sigma.
+Proof.
+  intros sigma Hsigma. now left.
+Qed.
+
+Theorem peano_minus_weaker_than_iopen :
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    peano_minus_axiom arithmetic_iopen.
+Proof.
+  apply first_order_theory_weaker_of_subset.
+  exact peano_minus_subset_iopen.
+Qed.
+
+Lemma arithmetic_iopen_subset_induction_on_hierarchy : forall pol k sigma,
+  arithmetic_iopen sigma -> arithmetic_induction_on_hierarchy pol k sigma.
+Proof.
+  intros pol k. exact (arithmetic_open_induction_subset_hierarchy
+    (T := peano_minus_axiom) pol k).
+Qed.
+
+Theorem arithmetic_iopen_weaker_than_induction_on_hierarchy : forall pol k,
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    arithmetic_iopen (arithmetic_induction_on_hierarchy pol k).
+Proof.
+  intros pol k. apply first_order_theory_weaker_of_subset.
+  exact (arithmetic_iopen_subset_induction_on_hierarchy pol k).
+Qed.
+
+Lemma arithmetic_isigma_subset_mono : forall k l,
+  k <= l -> forall sigma,
+  arithmetic_isigma k sigma -> arithmetic_isigma l sigma.
+Proof.
+  intros k l Hkl. exact (arithmetic_sigma_induction_subset_mono
+    (T := peano_minus_axiom) Hkl).
+Qed.
+
+Theorem arithmetic_isigma_weaker_mono : forall k l,
+  k <= l ->
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    (arithmetic_isigma k) (arithmetic_isigma l).
+Proof.
+  intros k l Hkl. apply first_order_theory_weaker_of_subset.
+  exact (arithmetic_isigma_subset_mono Hkl).
+Qed.
+
+Lemma arithmetic_iopen_subset_isigma_zero : forall sigma,
+  arithmetic_iopen sigma -> arithmetic_isigma 0 sigma.
+Proof.
+  exact (arithmetic_open_induction_subset_sigma_zero
+    (T := peano_minus_axiom)).
+Qed.
+
+Theorem arithmetic_iopen_weaker_than_isigma_zero :
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    arithmetic_iopen (arithmetic_isigma 0).
+Proof.
+  apply first_order_theory_weaker_of_subset.
+  exact arithmetic_iopen_subset_isigma_zero.
+Qed.
+
+Lemma arithmetic_isigma_subset_peano : forall k sigma,
+  arithmetic_isigma k sigma -> first_order_peano_arithmetic sigma.
+Proof.
+  exact (arithmetic_sigma_induction_subset_peano
+    (T := peano_minus_axiom)).
+Qed.
+
+Theorem arithmetic_isigma_weaker_than_peano : forall k,
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    (arithmetic_isigma k) first_order_peano_arithmetic.
+Proof.
+  intro k. apply first_order_theory_weaker_of_subset.
+  exact (arithmetic_isigma_subset_peano (k := k)).
+Qed.
+
+Corollary arithmetic_isigma_zero_weaker_than_isigma_one :
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    (arithmetic_isigma 0) (arithmetic_isigma 1).
+Proof. apply arithmetic_isigma_weaker_mono. now repeat constructor. Qed.
+
+Corollary arithmetic_isigma_one_weaker_than_peano :
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    (arithmetic_isigma 1) first_order_peano_arithmetic.
+Proof. apply arithmetic_isigma_weaker_than_peano. Qed.
+
+Lemma arithmetic_induction_theory_proves_equality : forall T C,
+  first_order_theory_proves_equality T oring_language_eq_operator ->
+  first_order_theory_proves_equality
+    (arithmetic_induction_theory T C) oring_language_eq_operator.
+Proof.
+  intros T C Heq sigma Hsigma.
+  apply (generic_weaker_subset
+    (first_order_theory_weaker_than_union_left T
+      (arithmetic_successor_induction_scheme C)) sigma).
+  exact (Heq sigma Hsigma).
+Qed.
+
+Lemma arithmetic_induction_on_hierarchy_proves_equality : forall pol k,
+  first_order_theory_proves_equality
+    (arithmetic_induction_on_hierarchy pol k)
+    oring_language_eq_operator.
+Proof.
+  intros pol k. apply arithmetic_induction_theory_proves_equality.
+  exact peano_minus_proves_equality.
+Qed.
+
+Lemma arithmetic_iopen_proves_equality :
+  first_order_theory_proves_equality arithmetic_iopen
+    oring_language_eq_operator.
+Proof.
+  apply arithmetic_induction_theory_proves_equality.
+  exact peano_minus_proves_equality.
+Qed.
+
+Theorem arithmetic_equality_weaker_than_induction_on_hierarchy :
+    forall pol k,
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    (@first_order_equality_axiom oring_language
+      oring_language_eq_operator)
+    (arithmetic_induction_on_hierarchy pol k).
+Proof.
+  intros pol k.
+  apply (arithmetic_theory_weaker_of_models
+    (arithmetic_induction_on_hierarchy_proves_equality pol k)).
+  intros m O Horing Hmodels.
+  exact (first_order_model_models_equality_theory_of_interprets_eq
+    (structure_oring_eq Horing)).
+Qed.
+
+Theorem arithmetic_equality_weaker_than_iopen :
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    (@first_order_equality_axiom oring_language
+      oring_language_eq_operator) arithmetic_iopen.
+Proof.
+  apply (arithmetic_theory_weaker_of_models
+    arithmetic_iopen_proves_equality).
+  intros m O Horing Hmodels.
+  exact (first_order_model_models_equality_theory_of_interprets_eq
+    (structure_oring_eq Horing)).
+Qed.
+
+Theorem semiformula_universal_closure_intro : forall L M
+    (Str : first_order_structure L M) (p : proposition L),
+  inhabited M ->
+  (forall f : nat -> M, formula_eval Str f p) ->
+  sentence_realize Str (semiformula_universal_closure p).
+Proof.
+  intros L M Str p [d] Hall.
+  apply (proj1 (@first_order_sentence_embed_eval L M Str
+    (fun _ => d) (semiformula_universal_closure p))).
+  unfold first_order_sentence_embed.
+  rewrite semiformula_emb_universal_closure.
+  unfold formula_eval, semiformula_universal_closure_open.
+  apply (proj2 (@semiformula_eval_all_closure L M nat
+    (semiformula_free_bound p) Str
+    (fun i : Fin.t 0 => match i with end) (fun _ => d)
+    (semiformula_fix_all_free p))).
+  intro e. unfold semiformula_fix_all_free.
+  rewrite semiformula_eval_rewrite.
+  set (g := fun x => semiterm_val Str e (fun _ => d)
+    (rew_apply (rew_fix_iter 0 (semiformula_free_bound p))
+      (Semiterm_fvar x))).
+  refine (proj1 (@semiformula_eval_bound_extensional L M nat 0 Str
+    (fun i : Fin.t 0 => match i with end)
+    (fun i : Fin.t 0 => semiterm_val Str e (fun _ => d)
+      (rew_apply (rew_fix_iter 0 (semiformula_free_bound p))
+        (Semiterm_bvar i))) g p _) (Hall g)).
+  intro i. inversion i.
 Qed.
 
 Theorem semiformula_universal_closure_elim : forall L M
@@ -732,4 +988,206 @@ Proof.
     + apply NNPP. apply (Hmin x).
       rewrite Hx. apply (peano_minus_lt_add_one Hpa).
     + now rewrite <- Hx.
+Qed.
+
+(** * The standard model and metatheory *)
+
+Theorem nat_standard_model_realizes_successor_induction : forall
+    (phi : arithmetic_semiproposition 1),
+  first_order_model_realize nat_standard_model
+    (semiformula_universal_closure
+      (arithmetic_successor_induction phi)).
+Proof.
+  intro phi. unfold first_order_model_realize.
+  apply semiformula_universal_closure_intro.
+  - exact (inhabits 0).
+  - intro f.
+    apply (proj2 (@arithmetic_successor_induction_eval nat nat
+      nat_standard_structure f nat_oring_carrier phi
+      nat_standard_structure_interprets)).
+    intros Hzero Hsucc x. induction x as [|x IH].
+    + exact Hzero.
+    + replace (S x) with
+          (oring_add nat_oring_carrier x (oring_one nat_oring_carrier)).
+      * now apply Hsucc.
+      * cbn. apply Nat.add_1_r.
+Qed.
+
+Theorem nat_standard_model_models_successor_induction_scheme : forall C,
+  first_order_models_theory nat_standard_model
+    (arithmetic_successor_induction_scheme C).
+Proof.
+  intro C. apply (proj2 (first_order_models_theory_iff
+    nat_standard_model (arithmetic_successor_induction_scheme C))).
+  intros sigma [phi [Hphi ->]].
+  apply nat_standard_model_realizes_successor_induction.
+Qed.
+
+Theorem nat_standard_model_models_induction_theory : forall C,
+  first_order_models_theory nat_standard_model
+    (arithmetic_induction_theory peano_minus_axiom C).
+Proof.
+  intro C. apply (proj2 (@first_order_models_union_iff oring_language
+    nat_standard_model peano_minus_axiom
+    (arithmetic_successor_induction_scheme C))).
+  split.
+  - exact nat_standard_model_models_peano_minus.
+  - apply nat_standard_model_models_successor_induction_scheme.
+Qed.
+
+Theorem nat_standard_model_models_iopen :
+  first_order_models_theory nat_standard_model arithmetic_iopen.
+Proof. apply nat_standard_model_models_induction_theory. Qed.
+
+Theorem nat_standard_model_models_induction_on_hierarchy : forall pol k,
+  first_order_models_theory nat_standard_model
+    (arithmetic_induction_on_hierarchy pol k).
+Proof.
+  intros pol k. apply nat_standard_model_models_induction_theory.
+Qed.
+
+Theorem nat_standard_model_models_isigma : forall k,
+  first_order_models_theory nat_standard_model (arithmetic_isigma k).
+Proof.
+  intro k. apply nat_standard_model_models_induction_on_hierarchy.
+Qed.
+
+Theorem nat_standard_model_models_ipi : forall k,
+  first_order_models_theory nat_standard_model (arithmetic_ipi k).
+Proof.
+  intro k. apply nat_standard_model_models_induction_on_hierarchy.
+Qed.
+
+Theorem nat_standard_model_models_peano :
+  first_order_models_theory nat_standard_model
+    first_order_peano_arithmetic.
+Proof. apply nat_standard_model_models_induction_theory. Qed.
+
+Theorem arithmetic_induction_on_hierarchy_consistent : forall pol k,
+  generic_consistent
+    (first_order_theory_entailment oring_language)
+    (arithmetic_induction_on_hierarchy pol k).
+Proof.
+  intros pol k. exact (first_order_theory_consistent_of_model
+    (nat_standard_model_models_induction_on_hierarchy pol k)).
+Qed.
+
+Theorem first_order_peano_arithmetic_consistent :
+  generic_consistent
+    (first_order_theory_entailment oring_language)
+    first_order_peano_arithmetic.
+Proof.
+  exact (first_order_theory_consistent_of_model
+    nat_standard_model_models_peano).
+Qed.
+
+Theorem first_order_peano_weaker_than_true_arithmetic :
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    first_order_peano_arithmetic first_order_true_arithmetic.
+Proof.
+  apply arithmetic_theory_weaker_than_true_arithmetic.
+  exact nat_standard_model_models_peano.
+Qed.
+
+(** Model inheritance is stated independently of proof-theoretic weakening,
+    so clients do not need to invoke soundness merely to forget axioms. *)
+Theorem arithmetic_models_isigma_of_le : forall
+    (m : first_order_model oring_language) k l,
+  k <= l ->
+  first_order_models_theory m (arithmetic_isigma l) ->
+  first_order_models_theory m (arithmetic_isigma k).
+Proof.
+  intros m k l Hkl Hmodels.
+  eapply first_order_models_of_subset; [exact Hmodels |].
+  exact (arithmetic_isigma_subset_mono Hkl).
+Qed.
+
+Theorem arithmetic_models_iopen_of_isigma_zero : forall
+    (m : first_order_model oring_language),
+  first_order_models_theory m (arithmetic_isigma 0) ->
+  first_order_models_theory m arithmetic_iopen.
+Proof.
+  intros m Hmodels.
+  eapply first_order_models_of_subset; [exact Hmodels |].
+  exact arithmetic_iopen_subset_isigma_zero.
+Qed.
+
+Theorem arithmetic_models_peano_minus_of_iopen : forall
+    (m : first_order_model oring_language),
+  first_order_models_theory m arithmetic_iopen ->
+  first_order_models_theory m peano_minus_axiom.
+Proof.
+  intros m Hmodels.
+  eapply first_order_models_of_subset; [exact Hmodels |].
+  exact peano_minus_subset_iopen.
+Qed.
+
+Theorem r0_weaker_than_of_peano_minus : forall
+    (T : theory oring_language),
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    peano_minus_axiom T ->
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language) r0_axiom T.
+Proof.
+  intros T Hweak.
+  exact (generic_weaker_than_trans r0_weaker_than_peano_minus Hweak).
+Qed.
+
+Theorem peano_minus_weaker_than_of_isigma_zero : forall
+    (T : theory oring_language),
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    (arithmetic_isigma 0) T ->
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    peano_minus_axiom T.
+Proof.
+  intros T Hweak.
+  exact (generic_weaker_than_trans peano_minus_weaker_than_iopen
+    (generic_weaker_than_trans arithmetic_iopen_weaker_than_isigma_zero
+      Hweak)).
+Qed.
+
+Theorem peano_minus_weaker_than_of_isigma_one : forall
+    (T : theory oring_language),
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    (arithmetic_isigma 1) T ->
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    peano_minus_axiom T.
+Proof.
+  intros T Hweak.
+  apply peano_minus_weaker_than_of_isigma_zero.
+  exact (generic_weaker_than_trans
+    arithmetic_isigma_zero_weaker_than_isigma_one Hweak).
+Qed.
+
+Theorem peano_minus_weaker_than_of_peano : forall
+    (T : theory oring_language),
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    first_order_peano_arithmetic T ->
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language)
+    peano_minus_axiom T.
+Proof.
+  intros T Hweak.
+  exact (generic_weaker_than_trans peano_minus_weaker_than_iopen
+    (generic_weaker_than_trans
+      (arithmetic_iopen_weaker_than_induction_on_hierarchy
+        arithmetic_sigma 0)
+      (generic_weaker_than_trans
+        (arithmetic_isigma_weaker_than_peano 0) Hweak))).
 Qed.
