@@ -10,6 +10,7 @@ From Foundation.Vorspiel Require Import Fintype.
 From Foundation.Vorspiel Require Import Denumerable.
 From Foundation.Vorspiel Require Import Graph.
 From Foundation.Vorspiel Require Import Part.
+From Foundation.Vorspiel Require Import Computability.
 From Foundation.Vorspiel Require Import ENat.
 From Foundation.Vorspiel Require Import DMatrix.
 From Foundation.Vorspiel Require Import Matrix.
@@ -477,6 +478,26 @@ Print Assumptions partial_find_zero_member_iff.
 Check fin_partial_product.
 Print Assumptions fin_partial_product_member_iff.
 Print Assumptions partial_unit_dom_iff.
+Check enumerable_decoder.
+Check nat_enumerable_decoder.
+Check partial_computable.
+Check partial_projection.
+Print Assumptions partial_projection_member_iff.
+Print Assumptions partial_computable_projection.
+Check semidecidable.
+Print Assumptions semidecidable_true.
+Print Assumptions semidecidable_false.
+Print Assumptions semidecidable_const.
+Print Assumptions semidecidable_iff_partial_computable_unit.
+Print Assumptions semidecidable_and.
+Print Assumptions semidecidable_or.
+Print Assumptions semidecidable_projection.
+Print Assumptions semidecidable_comp.
+Check decidable_predicate.
+Print Assumptions decidable_predicate_semidecidable.
+Print Assumptions decidable_predicate_const.
+Print Assumptions decidable_predicate_and.
+Print Assumptions decidable_predicate_or.
 Check enat.
 Check enat_top.
 Check enat_le.
