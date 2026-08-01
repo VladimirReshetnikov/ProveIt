@@ -1615,6 +1615,146 @@ Proof.
         exact Hpositive.
 Qed.
 
+(** * External primitive- and partial-recursiveness interfaces
+
+    These relations are Coq-native counterparts of the external [Primrec']
+    and [Partrec'] classes consumed by the source file.  Their primitive
+    basis exposes the same arithmetic operations already primitive in
+    [arith_part1], avoiding an irrelevant encoding detour.  Primitive
+    recursion is the only constructor that needs a beta encoder. *)
+
+Inductive primitive_recursive1 : forall n,
+    ((Fin.t n -> nat) -> nat) -> Prop :=
+| primitive_recursive1_zero : forall n,
+    primitive_recursive1 n (fun _ => 0)
+| primitive_recursive1_one : forall n,
+    primitive_recursive1 n (fun _ => 1)
+| primitive_recursive1_add : forall n (i j : Fin.t n),
+    primitive_recursive1 n (fun v => v i + v j)
+| primitive_recursive1_mul : forall n (i j : Fin.t n),
+    primitive_recursive1 n (fun v => v i * v j)
+| primitive_recursive1_proj : forall n (i : Fin.t n),
+    primitive_recursive1 n (fun v => v i)
+| primitive_recursive1_equal : forall n (i j : Fin.t n),
+    primitive_recursive1 n (fun v => nat_truth_eq (v i) (v j))
+| primitive_recursive1_lt : forall n (i j : Fin.t n),
+    primitive_recursive1 n (fun v => nat_truth_lt (v i) (v j))
+| primitive_recursive1_comp : forall m n
+    (f : (Fin.t n -> nat) -> nat)
+    (g : Fin.t n -> (Fin.t m -> nat) -> nat),
+    primitive_recursive1 n f ->
+    (forall i, primitive_recursive1 m (g i)) ->
+    primitive_recursive1 m (fun v => f (fun i => g i v))
+| primitive_recursive1_rec : forall n
+    (f : (Fin.t n -> nat) -> nat)
+    (g : (Fin.t (S (S n)) -> nat) -> nat),
+    primitive_recursive1 n f ->
+    primitive_recursive1 (S (S n)) g ->
+    primitive_recursive1 (S n)
+      (fun v => arithmetic_primitive_recursion f g
+        (matrix_vec_head v) (matrix_vec_tail v)).
+
+Theorem arithmetic1_of_primitive_recursive1 : forall
+    (E : beta_sequence_encoder) n
+    (f : (Fin.t n -> nat) -> nat),
+  primitive_recursive1 n f -> arithmetic1 f.
+Proof.
+  intros E n f H; induction H as
+    [n
+    |n
+    |n i j
+    |n i j
+    |n i
+    |n i j
+    |n i j
+    |m n f g Hf IHf Hg IHg
+    |n f g Hf IHf Hg IHg].
+  - apply arithmetic1_zero.
+  - apply arithmetic1_one.
+  - apply arithmetic1_add.
+  - apply arithmetic1_mul.
+  - apply arithmetic1_proj.
+  - apply arithmetic1_equal.
+  - apply arithmetic1_lt.
+  - now apply arithmetic1_comp.
+  - now apply (arithmetic1_primitive_recursion E n f g).
+Qed.
+
+Inductive partial_recursive1 : forall n,
+    arith_partial_function n -> Prop :=
+| partial_recursive1_total : forall n
+    (f : (Fin.t n -> nat) -> nat),
+    primitive_recursive1 n f ->
+    partial_recursive1 n (fun v => partial_some (f v))
+| partial_recursive1_comp : forall m n
+    (f : arith_partial_function n)
+    (g : Fin.t n -> arith_partial_function m),
+    partial_recursive1 n f ->
+    (forall i, partial_recursive1 m (g i)) ->
+    partial_recursive1 m (arith_partial_comp f g)
+| partial_recursive1_find : forall n
+    (f : (Fin.t (S n) -> nat) -> nat),
+    partial_recursive1 (S n) (fun v => partial_some (f v)) ->
+    partial_recursive1 n (arith_find_on f)
+| partial_recursive1_ext : forall n
+    (f g : arith_partial_function n),
+    partial_recursive1 n f ->
+    (forall v x,
+      partial_member (f v) x <-> partial_member (g v) x) ->
+    partial_recursive1 n g.
+
+Theorem arith_part1_of_partial_recursive1 : forall
+    (E : beta_sequence_encoder) n (f : arith_partial_function n),
+  partial_recursive1 n f -> arith_part1 n f.
+Proof.
+  intros E n f H; induction H as
+    [n f Hf
+    |m n f g Hf IHf Hg IHg
+    |n f Hf IHf
+    |n f g Hf IHf Heq].
+  - unfold arithmetic1.
+    now apply (arithmetic1_of_primitive_recursive1 E n f).
+  - now apply arith_part1_comp.
+  - now apply arith_part1_find.
+  - exact (arith_part1_ext n f g IHf Heq).
+Qed.
+
+Theorem partial_recursive1_of_arith_part1 : forall n
+    (f : arith_partial_function n),
+  arith_part1 n f -> partial_recursive1 n f.
+Proof.
+  intros n f H; induction H as
+    [n
+    |n
+    |n i j
+    |n i j
+    |n i
+    |n i j
+    |n i j
+    |m n f g Hf IHf Hg IHg
+    |n f Hf IHf
+    |n f g Hf IHf Heq].
+  - apply partial_recursive1_total, primitive_recursive1_zero.
+  - apply partial_recursive1_total, primitive_recursive1_one.
+  - apply partial_recursive1_total, primitive_recursive1_add.
+  - apply partial_recursive1_total, primitive_recursive1_mul.
+  - apply partial_recursive1_total, primitive_recursive1_proj.
+  - apply partial_recursive1_total, primitive_recursive1_equal.
+  - apply partial_recursive1_total, primitive_recursive1_lt.
+  - now apply partial_recursive1_comp.
+  - now apply partial_recursive1_find.
+  - exact (partial_recursive1_ext n f g IHf Heq).
+Qed.
+
+Theorem arith_part1_iff_partial_recursive1 : forall
+    (E : beta_sequence_encoder) n (f : arith_partial_function n),
+  arith_part1 n f <-> partial_recursive1 n f.
+Proof.
+  intros E n f; split.
+  - apply partial_recursive1_of_arith_part1.
+  - apply arith_part1_of_partial_recursive1, E.
+Qed.
+
 (** * Typed codes for partial arithmetic computations
 
     This is the source [Nat.ArithPart₁.Code] language.  The evaluator is a

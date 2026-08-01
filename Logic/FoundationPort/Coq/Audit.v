@@ -865,6 +865,12 @@ Print Assumptions nat_recursion_code_value.
 Check arithmetic_recursion_code_test.
 Print Assumptions arithmetic1_recursion_code_test.
 Print Assumptions arithmetic1_primitive_recursion.
+Check primitive_recursive1.
+Print Assumptions arithmetic1_of_primitive_recursive1.
+Check partial_recursive1.
+Print Assumptions arith_part1_of_partial_recursive1.
+Print Assumptions partial_recursive1_of_arith_part1.
+Print Assumptions arith_part1_iff_partial_recursive1.
 Check arith_code.
 Check arith_code_evaluates.
 Print Assumptions fin_indexed_choice.
