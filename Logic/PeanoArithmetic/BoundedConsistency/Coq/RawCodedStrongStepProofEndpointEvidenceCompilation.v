@@ -112,6 +112,129 @@ Lemma coqRestrictedPADerivationSoundnessRestrictedProofTemplate_view :
         (embedPAFormula (proofRuleCoverageTermAt (tVar 4))))).
 Proof. reflexivity. Qed.
 
+(** Project all four stable fields from the restricted-proof package after
+    an arbitrary ambient renaming.  The same nested And-E sequence was
+    previously repeated by the exact-tail and under-prefix endpoint
+    wrappers.  Stating it renaming-naturally both removes that duplication
+    and exposes precisely the inherited resources available inside a deep
+    direct-shell eigenvariable context. *)
+Theorem
+    raw_codedPALocalProof_restrictedProofTemplate_renamed_projections :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    localContext (renaming : nat -> nat) restrictedRoot,
+  RawCodedPALocalProofOf M localContext
+    (rawTemplateFormula translation
+      (templateFormulaRename renaming
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate))
+    restrictedRoot ->
+  exists coreRoot atomicRoot formulaCoverageRoot ruleCoverageRoot,
+    RawCodedPALocalProofOf M localContext
+      (rawTemplateFormula translation
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise))
+      coreRoot /\
+    RawCodedPALocalProofOf M localContext
+      (rawTemplateFormula translation
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointAtomicAdequacyAtomicPremise))
+      atomicRoot /\
+    RawCodedPALocalProofOf M localContext
+      (rawTemplateFormula translation
+        (templateFormulaRename renaming
+          (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 4)))))
+      formulaCoverageRoot /\
+    RawCodedPALocalProofOf M localContext
+      (rawTemplateFormula translation
+        (templateFormulaRename renaming
+          (embedPAFormula (proofRuleCoverageTermAt (tVar 4)))))
+      ruleCoverageRoot.
+Proof.
+  intros M hPA translation localContext renaming restrictedRoot
+    hrestricted.
+  rewrite coqRestrictedPADerivationSoundnessRestrictedProofTemplate_view
+    in hrestricted.
+  cbn [templateFormulaRename] in hrestricted.
+  rewrite !rawTemplateFormula_and in hrestricted.
+  pose proof
+    (raw_codedPALocalProofOf_andE1 M hPA localContext _ _
+      restrictedRoot hrestricted) as hcore.
+  pose proof
+    (raw_codedPALocalProofOf_andE2 M hPA localContext _ _
+      restrictedRoot hrestricted) as hcertificates.
+  lazymatch type of hcertificates with
+  | RawCodedPALocalProofOf _ _ _ ?certificatesRoot =>
+      pose proof
+        (raw_codedPALocalProofOf_andE1 M hPA localContext _ _
+          certificatesRoot hcertificates) as hatomic;
+      pose proof
+        (raw_codedPALocalProofOf_andE2 M hPA localContext _ _
+          certificatesRoot hcertificates) as hcoverages
+  end.
+  lazymatch type of hcoverages with
+  | RawCodedPALocalProofOf _ _ _ ?coveragesRoot =>
+      pose proof
+        (raw_codedPALocalProofOf_andE1 M hPA localContext _ _
+          coveragesRoot hcoverages) as hformulaCoverage;
+      pose proof
+        (raw_codedPALocalProofOf_andE2 M hPA localContext _ _
+          coveragesRoot hcoverages) as hruleCoverage
+  end.
+  lazymatch type of hcore with
+  | RawCodedPALocalProofOf _ _ _ ?coreRoot => exists coreRoot
+  end.
+  lazymatch type of hatomic with
+  | RawCodedPALocalProofOf _ _ _ ?atomicRoot => exists atomicRoot
+  end.
+  lazymatch type of hformulaCoverage with
+  | RawCodedPALocalProofOf _ _ _ ?formulaCoverageRoot =>
+      exists formulaCoverageRoot
+  end.
+  lazymatch type of hruleCoverage with
+  | RawCodedPALocalProofOf _ _ _ ?ruleCoverageRoot =>
+      exists ruleCoverageRoot
+  end.
+  repeat (first [assumption | split]).
+Qed.
+
+(** Identity renaming is the common outer-shell case.  Keeping it as a
+    corollary lets callers use the structural projection theorem without
+    repeating normalization of four renamed conclusions. *)
+Corollary raw_codedPALocalProof_restrictedProofTemplate_projections :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    localContext restrictedRoot,
+  RawCodedPALocalProofOf M localContext
+    (rawTemplateFormula translation
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+    restrictedRoot ->
+  exists coreRoot atomicRoot formulaCoverageRoot ruleCoverageRoot,
+    RawCodedPALocalProofOf M localContext
+      (rawTemplateFormula translation
+        coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise)
+      coreRoot /\
+    RawCodedPALocalProofOf M localContext
+      (rawTemplateFormula translation
+        coqStrongStepProofEndpointAtomicAdequacyAtomicPremise)
+      atomicRoot /\
+    RawCodedPALocalProofOf M localContext
+      (rawTemplateFormula translation
+        (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 4))))
+      formulaCoverageRoot /\
+    RawCodedPALocalProofOf M localContext
+      (rawTemplateFormula translation
+        (embedPAFormula (proofRuleCoverageTermAt (tVar 4))))
+      ruleCoverageRoot.
+Proof.
+  intros M hPA translation localContext restrictedRoot hrestricted.
+  pose proof
+    (raw_codedPALocalProof_restrictedProofTemplate_renamed_projections
+      M hPA translation localContext (fun index => index) restrictedRoot)
+    as hproject.
+  rewrite !templateFormulaRename_id in hproject.
+  exact (hproject hrestricted).
+Qed.
+
 (** The native local-domain templates deliberately reserve variable zero for
     the level numeral.  Opening that slot moves their formula argument from
     [#3] to the strong-step conclusion slot [#2], yielding exactly the two
@@ -948,56 +1071,17 @@ Proof.
     (rawTemplateFormula translation
       coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
     restrictedRoot) in hrestricted.
-  rewrite coqRestrictedPADerivationSoundnessRestrictedProofTemplate_view
-    in hrestricted.
-  rewrite !rawTemplateFormula_and in hrestricted.
-  pose proof (raw_codedPALocalProofOf_andE1 M hPA baseContext
-    (rawDirectTemplateFormula inputs
-      coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise)
-    (rawFormulaAndCode M
-      (rawDirectTemplateFormula inputs
-        coqStrongStepProofEndpointAtomicAdequacyAtomicPremise)
-      (rawFormulaAndCode M
-        (rawDirectTemplateFormula inputs
-          (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 4))))
-        (rawDirectTemplateFormula inputs
-          (embedPAFormula (proofRuleCoverageTermAt (tVar 4))))))
-    restrictedRoot hrestricted) as hcore.
-  pose proof (raw_codedPALocalProofOf_andE2 M hPA baseContext
-    (rawDirectTemplateFormula inputs
-      coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise)
-    (rawFormulaAndCode M
-      (rawDirectTemplateFormula inputs
-        coqStrongStepProofEndpointAtomicAdequacyAtomicPremise)
-      (rawFormulaAndCode M
-        (rawDirectTemplateFormula inputs
-          (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 4))))
-        (rawDirectTemplateFormula inputs
-          (embedPAFormula (proofRuleCoverageTermAt (tVar 4))))))
-    restrictedRoot hrestricted) as hcertificates.
-  lazymatch type of hcertificates with
-  | RawCodedPALocalProofOf _ _ _ ?certificatesRoot =>
-      pose proof (raw_codedPALocalProofOf_andE1 M hPA baseContext
-        (rawDirectTemplateFormula inputs
-          coqStrongStepProofEndpointAtomicAdequacyAtomicPremise)
-        (rawFormulaAndCode M
-          (rawDirectTemplateFormula inputs
-            (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 4))))
-          (rawDirectTemplateFormula inputs
-            (embedPAFormula (proofRuleCoverageTermAt (tVar 4)))))
-        certificatesRoot hcertificates) as hatomic;
-      lazymatch type of hcore with
-      | RawCodedPALocalProofOf _ _ _ ?coreRoot =>
-          lazymatch type of hatomic with
-          | RawCodedPALocalProofOf _ _ _ ?atomicRoot =>
-              exact
-                (raw_codedPALocalProof_strongStepEndpointEvidence_of_roots
-                  M hPA inputs baseWitnessList baseContext
-                  coreRoot atomicRoot ruleRoot
-                  hbase hcore hatomic hrule)
-          end
-      end
-  end.
+  destruct
+    (raw_codedPALocalProof_restrictedProofTemplate_projections
+      M hPA translation baseContext restrictedRoot hrestricted)
+    as (coreRoot & atomicRoot & formulaCoverageRoot &
+      ruleCoverageRoot & hcore & hatomic &
+      _ & _).
+  exact
+    (raw_codedPALocalProof_strongStepEndpointEvidence_of_roots
+      M hPA inputs baseWitnessList baseContext
+      coreRoot atomicRoot ruleRoot
+      hbase hcore hatomic hrule).
 Qed.
 
 (** Fully shell-compatible wrapper: both assumptions remain beneath the
@@ -1061,56 +1145,17 @@ Proof.
     (rawTemplateFormula translation
       coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
     restrictedRoot) in hrestricted.
-  rewrite coqRestrictedPADerivationSoundnessRestrictedProofTemplate_view
-    in hrestricted.
-  rewrite !rawTemplateFormula_and in hrestricted.
-  pose proof (raw_codedPALocalProofOf_andE1 M hPA localContext
-    (rawDirectTemplateFormula inputs
-      coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise)
-    (rawFormulaAndCode M
-      (rawDirectTemplateFormula inputs
-        coqStrongStepProofEndpointAtomicAdequacyAtomicPremise)
-      (rawFormulaAndCode M
-        (rawDirectTemplateFormula inputs
-          (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 4))))
-        (rawDirectTemplateFormula inputs
-          (embedPAFormula (proofRuleCoverageTermAt (tVar 4))))))
-    restrictedRoot hrestricted) as hcore.
-  pose proof (raw_codedPALocalProofOf_andE2 M hPA localContext
-    (rawDirectTemplateFormula inputs
-      coqStrongStepProofEndpointQuantifierBoundedRestrictedPremise)
-    (rawFormulaAndCode M
-      (rawDirectTemplateFormula inputs
-        coqStrongStepProofEndpointAtomicAdequacyAtomicPremise)
-      (rawFormulaAndCode M
-        (rawDirectTemplateFormula inputs
-          (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 4))))
-        (rawDirectTemplateFormula inputs
-          (embedPAFormula (proofRuleCoverageTermAt (tVar 4))))))
-    restrictedRoot hrestricted) as hcertificates.
-  lazymatch type of hcertificates with
-  | RawCodedPALocalProofOf _ _ _ ?certificatesRoot =>
-      pose proof (raw_codedPALocalProofOf_andE1 M hPA localContext
-        (rawDirectTemplateFormula inputs
-          coqStrongStepProofEndpointAtomicAdequacyAtomicPremise)
-        (rawFormulaAndCode M
-          (rawDirectTemplateFormula inputs
-            (embedPAFormula (proofHasFormulaCoverageTermAt (tVar 4))))
-          (rawDirectTemplateFormula inputs
-            (embedPAFormula (proofRuleCoverageTermAt (tVar 4)))))
-        certificatesRoot hcertificates) as hatomic;
-      lazymatch type of hcore with
-      | RawCodedPALocalProofOf _ _ _ ?coreRoot =>
-          lazymatch type of hatomic with
-          | RawCodedPALocalProofOf _ _ _ ?atomicRoot =>
-              exact
-                (raw_codedPALocalProof_strongStepEndpointEvidence_of_roots_on_witnessed_tail_under_prefix
-                  M hPA inputs baseWitnessList baseContext prefix
-                  coreRoot atomicRoot ruleRoot
-                  hprefix hbase hcore hatomic hrule)
-          end
-      end
-  end.
+  destruct
+    (raw_codedPALocalProof_restrictedProofTemplate_projections
+      M hPA translation localContext restrictedRoot hrestricted)
+    as (coreRoot & atomicRoot & formulaCoverageRoot &
+      ruleCoverageRoot & hcore & hatomic &
+      _ & _).
+  exact
+    (raw_codedPALocalProof_strongStepEndpointEvidence_of_roots_on_witnessed_tail_under_prefix
+      M hPA inputs baseWitnessList baseContext prefix
+      coreRoot atomicRoot ruleRoot
+      hprefix hbase hcore hatomic hrule).
 Qed.
 
 End PABoundedRawCodedStrongStepProofEndpointEvidenceCompilation.
