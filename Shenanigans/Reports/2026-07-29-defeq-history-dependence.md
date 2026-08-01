@@ -9,10 +9,10 @@ adversary can engineer cheaply.
 Reproduces identically on **v4.32.0 and v4.32.2** (the kernel patched for #14576),
 so this is independent of the recent nested-inductive and `opaqueDecl` defects.
 
-Witness: [`../KernelSoundness/Lean/DefEqHistoryDependence.lean`](../KernelSoundness/Lean/DefEqHistoryDependence.lean).
+Witness: [`../KernelDefects/Lean/DefEq/DefEqHistoryDependence.lean`](../KernelDefects/Lean/DefEq/DefEqHistoryDependence.lean).
 Run from a tree pinned to the toolchain under test:
 
-    lean --trust=0 Shenanigans/KernelSoundness/Lean/DefEqHistoryDependence.lean
+    lean --trust=0 Shenanigans/KernelDefects/Lean/DefEq/DefEqHistoryDependence.lean
 
 ## Mechanism
 

@@ -43,8 +43,9 @@
   canonical list of distinct permutations.
 
 Deliberate paradoxes and kernel-loophole work — Girard/Hurkens, Coquand-Paulin,
-and the Lean kernel soundness probes — live in [`Shenanigans/`](../Shenanigans/),
-outside the ordinary mathematics of this directory.
+the sanctioned escape hatches, and the Lean and Rocq kernel defects — live in
+[`Shenanigans/`](../Shenanigans/), outside the ordinary mathematics of this
+directory.
 
 The natural-deduction developments, FirstOrder, and PAHF are mathlib-free and
 have standalone Lake configurations as well as root integration targets.
