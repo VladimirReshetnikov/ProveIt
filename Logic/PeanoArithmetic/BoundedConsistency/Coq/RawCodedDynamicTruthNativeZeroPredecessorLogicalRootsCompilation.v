@@ -54,8 +54,12 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthMasterSplicedBasePackage
   RawCodedDynamicTruthNativeMasterEndpoint
   RawCodedDynamicTruthPairedGlobalSuccessorGraph
+  RawCodedDynamicTruthPairedGlobalStandardSuccessor
+  RawCodedDynamicTruthPairedGlobalOrbitFunctionality
   RawCodedDynamicTruthGlobalBaseRootClosure
   RawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph
+  RawCodedDynamicTruthSigmaSuccessorRowGraph
+  RawCodedDynamicTruthPiSuccessorRowGraph
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthNativeCrossLevelPositiveGraph
   RawCodedDynamicTruthNativeShiftPositiveGraph
@@ -122,8 +126,12 @@ Import PABoundedRawCodedDynamicTruthAxiomSoundnessBaseGraph.
 Import PABoundedRawCodedDynamicTruthMasterSplicedBasePackage.
 Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
 Import PABoundedRawCodedDynamicTruthPairedGlobalSuccessorGraph.
+Import PABoundedRawCodedDynamicTruthPairedGlobalStandardSuccessor.
+Import PABoundedRawCodedDynamicTruthPairedGlobalOrbitFunctionality.
 Import PABoundedRawCodedDynamicTruthGlobalBaseRootClosure.
 Import PABoundedRawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph.
+Import PABoundedRawCodedDynamicTruthSigmaSuccessorRowGraph.
+Import PABoundedRawCodedDynamicTruthPiSuccessorRowGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthNativeCrossLevelPositiveGraph.
 Import PABoundedRawCodedDynamicTruthNativeShiftPositiveGraph.
@@ -579,6 +587,117 @@ Proof.
     (proj2 (raw_dynamicTruthNativeLocalProofTraceAt_zero_iff M tail
       inputGlobalSigma inputGlobalPi sigmaDomain piDomain
       sigmaEvidence piEvidence) hfull) eq_refl).
+Qed.
+
+(** Exact standard formulas produced by the first global successor above
+    rank zero.  Their local rows share the closed numeral [1] and consume
+    the two literal global base predicates in the opposite polarity. *)
+Definition dynamicTruthZeroInputGlobalSigmaFormula : formula :=
+  dynamicTruthGlobalFormula tZero
+    (dynamicTruthSigmaSuccessorRowFormula (Term.numeral 1)
+      dynamicTruthGlobalPiBaseFormula)
+    (dynamicTruthPiSuccessorRowFormula (Term.numeral 1)
+      dynamicTruthGlobalSigmaBaseFormula).
+
+Definition dynamicTruthZeroInputGlobalPiFormula : formula :=
+  dynamicTruthGlobalFormula (Term.numeral 1)
+    (dynamicTruthSigmaSuccessorRowFormula (Term.numeral 1)
+      dynamicTruthGlobalPiBaseFormula)
+    (dynamicTruthPiSuccessorRowFormula (Term.numeral 1)
+      dynamicTruthGlobalSigmaBaseFormula).
+
+(** Construct the canonical first successor without any carrier-level
+    syntax choice.  The newly shared paired-standard theorem ensures that
+    Sigma and Pi use one represented numeral and one local-row pair. *)
+Theorem raw_dynamicTruthZeroInputGlobalSuccessor_standard : forall
+    (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthPairedGlobalSuccessorAt M
+    (rawDynamicTruthGlobalSigmaBaseCode M)
+    (rawDynamicTruthGlobalPiBaseCode M)
+    (raw_zero M)
+    (rawQuotedFormulaCode M dynamicTruthZeroInputGlobalSigmaFormula)
+    (rawQuotedFormulaCode M dynamicTruthZeroInputGlobalPiFormula).
+Proof.
+  intros M hPA.
+  rewrite (rawDynamicTruthGlobalSigmaBaseCode_quoted M hPA),
+    (rawDynamicTruthGlobalPiBaseCode_quoted M hPA).
+  unfold dynamicTruthZeroInputGlobalSigmaFormula,
+    dynamicTruthZeroInputGlobalPiFormula.
+  apply (raw_dynamicTruthPairedGlobalSuccessor_standard M hPA
+    (raw_zero M) (Term.numeral 1)
+    dynamicTruthGlobalSigmaBaseFormula
+    dynamicTruthGlobalPiBaseFormula).
+  - change (RawNumeralTermCodeAt M (rawNumeralValue M 1)
+      (rawQuotedTermCode M (Term.numeral 1))).
+    exact (raw_numeralTermCodeAt_standard M hPA 1).
+  - exact dynamicTruthGlobalPiBaseFormula_scoped.
+  - exact dynamicTruthGlobalSigmaBaseFormula_scoped.
+Qed.
+
+(** Functionality turns the relational orbit edge carried by every zero
+    trace into literal code equalities.  Downstream proof compilation may
+    therefore work with fixed standard formulas instead of arbitrary input
+    predicate codes plus a separate successor witness. *)
+Theorem raw_dynamicTruthNativeLocalZeroFullTraceAt_input_globals : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      (tail : nat -> M) inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawDynamicTruthNativeLocalZeroFullTraceAt M tail
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence ->
+  inputGlobalSigma =
+      rawQuotedFormulaCode M dynamicTruthZeroInputGlobalSigmaFormula /\
+  inputGlobalPi =
+      rawQuotedFormulaCode M dynamicTruthZeroInputGlobalPiFormula.
+Proof.
+  intros M hPA tail inputGlobalSigma inputGlobalPi
+    sigmaDomain piDomain sigmaEvidence piEvidence hfull.
+  pose proof
+    (raw_dynamicTruthNativeLocalZeroFullTraceAt_global_predecessor
+      M hPA tail inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence hfull)
+    as (hactual & _).
+  exact (raw_dynamicTruthPairedGlobalSuccessorAt_functional M hPA
+    (rawDynamicTruthGlobalSigmaBaseCode M)
+    (rawDynamicTruthGlobalPiBaseCode M) (raw_zero M)
+    inputGlobalSigma inputGlobalPi
+    (rawQuotedFormulaCode M dynamicTruthZeroInputGlobalSigmaFormula)
+    (rawQuotedFormulaCode M dynamicTruthZeroInputGlobalPiFormula)
+    hactual (raw_dynamicTruthZeroInputGlobalSuccessor_standard M hPA)).
+Qed.
+
+(** Canonicalized full trace.  The two first-successor outputs are fixed by
+    syntax, so they need not remain binders in the proof-producing boundary. *)
+Definition RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt
+    (M : RawPAModel) (tail : nat -> M)
+    (sigmaDomain piDomain sigmaEvidence piEvidence : M) : Prop :=
+  RawDynamicTruthNativeLocalZeroFullTraceAt M tail
+    (rawQuotedFormulaCode M dynamicTruthZeroInputGlobalSigmaFormula)
+    (rawQuotedFormulaCode M dynamicTruthZeroInputGlobalPiFormula)
+    sigmaDomain piDomain sigmaEvidence piEvidence.
+
+Arguments RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt
+  M tail sigmaDomain piDomain sigmaEvidence piEvidence : clear implicits.
+
+Corollary raw_dynamicTruthNativeLocalZeroFullTraceAt_canonical : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      (tail : nat -> M) inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawDynamicTruthNativeLocalZeroFullTraceAt M tail
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence ->
+  RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+    sigmaDomain piDomain sigmaEvidence piEvidence.
+Proof.
+  intros M hPA tail inputGlobalSigma inputGlobalPi
+    sigmaDomain piDomain sigmaEvidence piEvidence hfull.
+  destruct
+    (raw_dynamicTruthNativeLocalZeroFullTraceAt_input_globals
+      M hPA tail inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence hfull)
+    as [hsigma hpi].
+  subst inputGlobalSigma. subst inputGlobalPi.
+  exact hfull.
 Qed.
 
 (** Proof-producing boundary after canonical orbit inversion.  In contrast
@@ -1154,6 +1273,49 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnNormalizedResources
   M translation : clear implicits.
+
+(** Canonical normalized boundary.  Compared with the preceding compatibility
+    interface it removes the two arbitrary input-global binders.  The orbit
+    and successor relations determine those codes uniquely, and the theorem
+    below recovers the older interface automatically. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalNormalizedResources
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists evidenceWitnessList evidenceContext,
+      RawCodedPAAxiomWitnessContext M
+        evidenceWitnessList evidenceContext /\
+      RawContextListIncluded M baseContext evidenceContext /\
+      RawDynamicTruthZeroDirectEvidenceRootsAt M evidenceContext.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalNormalizedResources
+  M translation : clear implicits.
+
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnNormalizedResources_of_canonical
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hcompiler tail witnessList baseContext
+    helperRoots inputGlobalSigma inputGlobalPi
+    sigmaDomain piDomain sigmaEvidence piEvidence hresources hfull.
+  exact (hcompiler tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence hresources
+    (raw_dynamicTruthNativeLocalZeroFullTraceAt_canonical
+      M hPA tail inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence hfull)).
+Qed.
 
 (** Reconstruct the call-site-shaped boundary from the normalized one.  This
     adapter is the only place where current graph inversion, the level-zero
