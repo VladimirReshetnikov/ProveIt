@@ -28,7 +28,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | [`NumberTheory/`](NumberTheory/) | FLT for exponent four, floor-square-root sums, rational enumeration, and an arithmetic RH sentence. |
 | [`SetTheory/`](SetTheory/) | First-order ZF, the Closure axiomatization's equivalence with ZF, and bounded-complexity consistency `ZFC ⊢ Conₙ(ZFC)`. |
 | [`Shenanigans/`](Shenanigans/) | **Not ordinary mathematics.** A catalog of every known way to get `theorem Paradox : False` accepted in Lean 4 and Rocq/Coq, grouped by what the route costs: paradoxes of type theory, sanctioned escape hatches, implementation defects, and audits that found nothing. See [the section below](#shenanigans-paradoxes-and-kernel-loopholes). |
-| [`Tools/`](Tools/) | Development tooling. **Leant** ([`Tools/Leant/`](Tools/Leant/README.md)) is a GHCi-style interactive REPL for Lean 4: expression evaluation with persistent sessions, an interactive tactic-by-tactic prove mode, `:browse`/`:doc`/`:search`, verified term synthesis (`:synth`, via the in-process [Djex](lib/Djex) engine), tab completion, and session transcripts. The Haskell implementation is primary; a [Python sibling](Tools/LeantPy/README.md) has feature parity. Also Rocq 9.2 compatibility shims. |
+| [`Tools/`](Tools/) | Development tooling: Rocq 9.2 compatibility shims. **Leant**, the GHCi-style interactive REPL for Lean 4 that grew up here, now lives in its own repository at [VladimirReshetnikov/Leant](https://github.com/VladimirReshetnikov/Leant). |
 | [`lib/`](lib/) | Vendored third-party code only. |
 
 Repository-wide configuration remains at the root. [`ProveIt.lean`](ProveIt.lean)
