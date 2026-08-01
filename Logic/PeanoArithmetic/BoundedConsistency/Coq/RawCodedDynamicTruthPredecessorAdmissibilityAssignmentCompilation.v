@@ -31,6 +31,7 @@ From BoundedPAConsistency Require Import
   RawCodedAssignmentUniversalDefinednessProofCompilation
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthLocalAdmissibilityCompilation
+  RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 
@@ -61,6 +62,8 @@ Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedAssignmentUniversalDefinednessProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
+Import
+  PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
 Import
@@ -93,6 +96,61 @@ Arguments rawDynamicTruthPredecessorLocalAssignmentDefinedCode M
   : clear implicits.
 Arguments rawDynamicTruthPredecessorLocalAdmissibleCode
   M sigmaDomain piDomain : clear implicits.
+
+Lemma rawTemplateFormula_predecessorLocalAtomicAdequacy : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  rawTemplateFormula translation
+    coqDynamicTruthPredecessorLocalAtomicAdequacyTemplate =
+  rawDynamicTruthPredecessorLocalAtomicAdequacyCode M.
+Proof.
+  intros M hPA translation hagreement.
+  rewrite coqDynamicTruthPredecessorLocalAtomicAdequacyTemplate_view.
+  rewrite (rawTemplateFormula_embedPA hagreement
+    (codedFormulaAtomicallyAdequateTermAt (tVar 0))).
+  rewrite rawQuotedFormulaCode_standard by exact hPA.
+  reflexivity.
+Qed.
+
+Lemma rawTemplateFormula_predecessorLocalAssignmentDefined : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  rawTemplateFormula translation
+    coqDynamicTruthPredecessorLocalAssignmentDefinedTemplate =
+  rawDynamicTruthPredecessorLocalAssignmentDefinedCode M.
+Proof.
+  intros M hPA translation hagreement.
+  rewrite coqDynamicTruthPredecessorLocalAssignmentDefinedTemplate_view.
+  rewrite (rawTemplateFormula_embedPA hagreement
+    (codedAssignmentDefinedThroughTermAt
+      (tVar 4) (tVar 3) (tVar 0))).
+  rewrite rawQuotedFormulaCode_standard by exact hPA.
+  reflexivity.
+Qed.
+
+Lemma rawTemplateFormula_predecessorLocalAdmissible : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  rawTemplateFormula translation
+    coqDynamicTruthPredecessorLocalAdmissibleTemplate =
+  rawDynamicTruthPredecessorLocalAdmissibleCode M
+    (rawTemplateFormula translation
+      coqDynamicTruthPredecessorLocalSigmaDomainTemplate)
+    (rawTemplateFormula translation
+      coqDynamicTruthPredecessorLocalPiDomainTemplate).
+Proof.
+  intros M hPA translation hagreement.
+  rewrite coqDynamicTruthPredecessorLocalAdmissibleTemplate_shape.
+  rewrite !rawTemplateFormula_and, rawTemplateFormula_or.
+  rewrite (rawTemplateFormula_predecessorLocalAtomicAdequacy
+    M hPA translation hagreement).
+  rewrite (rawTemplateFormula_predecessorLocalAssignmentDefined
+    M hPA translation hagreement).
+  reflexivity.
+Qed.
 
 (** Both temporary assumptions are embedded ordinary PA formulae, so PA
     agreement turns their translated codes into standard quotation and the
@@ -496,6 +554,66 @@ Proof.
     as [admissibleRoot hadmissible].
   exists witnesses, admissibleRoot. split; [exact hextended |].
   exact hadmissible.
+Qed.
+
+(** Template-facing corrected admissibility.  All three component codes and
+    the assembled conclusion are identified from one honest translation,
+    which is precisely the interface required by the instantiated
+    exclusivity bridge. *)
+Theorem
+    raw_dynamicTruthPredecessorChildAdmissibilityTemplate_on_witnessed_extension_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix atomicRoot domainRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawTemplateFormula translation
+      coqDynamicTruthPredecessorLocalAtomicAdequacyTemplate)
+    atomicRoot ->
+  RawCodedPALocalProofOf M
+    (rawDynamicTruthPredecessorJointStateContext M
+      (rawTemplateContextCodeOnTail translation baseContext prefix))
+    (rawFormulaOrCode M
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaDomainTemplate)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalPiDomainTemplate))
+    domainRoot ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) admissibleRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M
+        (rawTemplateContextCodeOnTail translation
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses baseContext) prefix))
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalAdmissibleTemplate)
+      admissibleRoot.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    prefix atomicRoot domainRoot hprefix hbase hatomic hdomain.
+  rewrite (rawTemplateFormula_predecessorLocalAtomicAdequacy
+    M hPA translation hagreement) in hatomic.
+  destruct
+    (raw_dynamicTruthPredecessorChildAdmissibility_on_witnessed_extension_under_prefix_of_atomic_and_domain
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalSigmaDomainTemplate)
+      (rawTemplateFormula translation
+        coqDynamicTruthPredecessorLocalPiDomainTemplate)
+      atomicRoot domainRoot hprefix hbase hatomic hdomain)
+    as (witnesses & admissibleRoot & hextended & hadmissible).
+  rewrite <- (rawTemplateFormula_predecessorLocalAdmissible
+    M hPA translation hagreement) in hadmissible.
+  exists witnesses, admissibleRoot. split; assumption.
 Qed.
 
 (** State-only specialization of corrected child admissibility. *)
