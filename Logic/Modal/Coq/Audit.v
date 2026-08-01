@@ -4578,6 +4578,11 @@ Check iff_Boxdot_BoxdotBoxdot_raw.
 Check iff_boxdot_boxdotboxdot.
 Check boxdot_axiomFour_raw.
 Check boxdot_axiomFour.
+Check box_iter_theory.
+Check finite_theory_box_iter_extensional.
+Check normal_derives_box_iter_two_context_to_box.
+Check normal_derives_boxbox_context_to_box.
+Check normal_derives_finite_box_iter_two_context_to_box.
 Check s4_entailment.
 Check Diadot.
 Check iff_box_boxdot_raw.
@@ -6773,6 +6778,10 @@ Print Assumptions iff_Box_BoxBoxdot_raw.
 Print Assumptions iff_Box_BoxdotBox_raw.
 Print Assumptions iff_Boxdot_BoxdotBoxdot_raw.
 Print Assumptions boxdot_axiomFour_raw.
+Print Assumptions finite_theory_box_iter_extensional.
+Print Assumptions normal_derives_box_iter_two_context_to_box.
+Print Assumptions normal_derives_boxbox_context_to_box.
+Print Assumptions normal_derives_finite_box_iter_two_context_to_box.
 Print Assumptions iff_box_boxdot_raw.
 Print Assumptions iff_dia_diadot_raw.
 Print Assumptions godel_translate_rename.
