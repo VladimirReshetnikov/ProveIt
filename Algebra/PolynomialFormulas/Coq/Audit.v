@@ -2,6 +2,8 @@ From PolynomialFormulas Require Import
   Basic Cubic CubicComplex Quartic AbelRuffini AbelRuffiniRootwise
   QuinticRadicalDecidability SexticRecursiveCore SexticFactorCompleteness
   SexticSparsePolynomials SexticSparseResolvents SexticSparseSymmetricSearch
+  SexticPowerSumSymmetric SexticNewtonPowerSums SexticResolventSymmetry
+  SexticComputedResolvents
   SexticRadicalDecidability.
 
 (** Kernel-assumption audit for the degree-one-through-four solver theorems
@@ -18,6 +20,10 @@ Import PolynomialFormulasSexticFactorCompleteness.
 Import PolynomialFormulasSexticSparsePolynomials.
 Import PolynomialFormulasSexticSparseResolvents.
 Import PolynomialFormulasSexticSparseSymmetricSearch.
+Import PolynomialFormulasSexticPowerSumSymmetric.
+Import PolynomialFormulasSexticNewtonPowerSums.
+Import PolynomialFormulasSexticResolventSymmetry.
+Import PolynomialFormulasSexticComputedResolvents.
 Import PolynomialFormulasSexticRadicalDecidability.
 
 Check solve_linear_correct.
@@ -57,6 +63,13 @@ Check coefficient_list_eval_pair_resolvent.
 Check coefficient_list_eval_triple_resolvent.
 Check elementary_certificate_eval.
 Check elementary_certificate_eventually.
+Check injective_assignment_sum_power_formula.
+Check newton_sparse_power_correct.
+Check newton_symmetrize_invariant_correct.
+Check pair_sparse_resolvent_coefficient_invariant.
+Check triple_sparse_resolvent_coefficient_invariant.
+Check pair_scaled_resolvent_coefficient_correct_unconditional.
+Check triple_scaled_resolvent_coefficient_correct_unconditional.
 Check all_roots_radical_sextic_int_semantic_decidable.
 Check sextic_radical_semantic_codeP.
 
@@ -97,5 +110,12 @@ Print Assumptions coefficient_list_eval_pair_resolvent.
 Print Assumptions coefficient_list_eval_triple_resolvent.
 Print Assumptions elementary_certificate_eval.
 Print Assumptions elementary_certificate_eventually.
+Print Assumptions injective_assignment_sum_power_formula.
+Print Assumptions newton_sparse_power_correct.
+Print Assumptions newton_symmetrize_invariant_correct.
+Print Assumptions pair_sparse_resolvent_coefficient_invariant.
+Print Assumptions triple_sparse_resolvent_coefficient_invariant.
+Print Assumptions pair_scaled_resolvent_coefficient_correct_unconditional.
+Print Assumptions triple_scaled_resolvent_coefficient_correct_unconditional.
 Print Assumptions all_roots_radical_sextic_int_semantic_decidable.
 Print Assumptions sextic_radical_semantic_codeP.
