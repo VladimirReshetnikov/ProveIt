@@ -35,6 +35,8 @@ Check
 Check
   raw_dynamicTruthZeroCanonicalPiPermutedAppendRowKernelInputsUnderPrefixAt_of_payload.
 Check
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix.
+Check
   raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_kernel.
 Check
   raw_dynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt_of_row_implication_inputs.
@@ -81,6 +83,8 @@ Print Assumptions
   raw_dynamicTruthZeroCanonicalSigmaPermutedAppendRowKernelInputsUnderPrefixAt_of_payload.
 Print Assumptions
   raw_dynamicTruthZeroCanonicalPiPermutedAppendRowKernelInputsUnderPrefixAt_of_payload.
+Print Assumptions
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix.
 Print Assumptions
   raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_kernel.
 Print Assumptions

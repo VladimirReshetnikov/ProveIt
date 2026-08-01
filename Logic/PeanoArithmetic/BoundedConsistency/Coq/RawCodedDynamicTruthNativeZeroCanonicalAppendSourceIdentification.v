@@ -576,6 +576,24 @@ Proof.
       M translation 1 outerPrefix witnesses (or_intror eq_refl) hpayload).
 Qed.
 
+(** Both canonical polarities share the same finite PA witness batch.  This
+    package is independent of a particular normalized callback invocation;
+    it can therefore be constructed once per model and reused at every
+    rank-zero trace. *)
+Definition
+    RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (outerPrefix : TemplateContext) : Prop :=
+  exists witnesses : StandardPAAxiomWitnessPrefix,
+    RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+      M translation 0 outerPrefix witnesses /\
+    RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+      M translation 1 outerPrefix witnesses.
+
+Arguments
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
+  M translation outerPrefix : clear implicits.
+
 (** Compile the three-root canonical kernel through the suffix-preserving
     arithmetic case split. *)
 Theorem

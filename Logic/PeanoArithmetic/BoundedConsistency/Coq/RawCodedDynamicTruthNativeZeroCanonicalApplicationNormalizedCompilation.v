@@ -176,6 +176,35 @@ Arguments
   RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendInputResourcesCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
 
+(** Invocation-dependent arithmetic endpoint, separated from the canonical
+    append traversal.  The endpoint consumes normalized roots and the trace;
+    it does not choose append witnesses or mention either polarity. *)
+Definition
+    RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists endpointWitnessList endpointContext atomicRoot domainRoot,
+      RawCodedPAAxiomWitnessContext M endpointWitnessList endpointContext /\
+      RawContextListIncluded M baseContext endpointContext /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M endpointContext)
+        (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M endpointContext)
+        (rawFormulaOrCode M
+          (rawDynamicTruthZeroSigmaDomainCode M)
+          (rawDynamicTruthZeroPiDomainCode M)) domainRoot.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
+  M translation : clear implicits.
+
 (** Kernel-facing form of the synchronized canonical append residual.  The
     arithmetic endpoint is unchanged, but each polarity supplies only the
     append root, inherited traversal/lookup roots, and fixed mode production
@@ -214,6 +243,38 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
+
+(** Combine the invocation-dependent endpoint with the model-global,
+    synchronized canonical row payloads.  This is only product reassociation:
+    no represented proof code or witnessed context is changed. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources_of_endpoint_and_payload_pair
+    : forall (M : RawPAModel)
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
+    M translation coqDynamicTruthPredecessorStateTemplateContext ->
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M translation hendpoint hpayloads tail witnessList baseContext
+    helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  destruct
+    (hendpoint tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hatomic & hdomain).
+  destruct hpayloads as (appendWitnesses & hsigmaPayload & hpiPayload).
+  exists endpointWitnessList, endpointContext, atomicRoot, domainRoot,
+    appendWitnesses.
+  split; [exact hendpointWitnessed |].
+  split; [exact hbaseEndpointIncluded |].
+  split; [exact hatomic |].
+  split; [exact hdomain |].
+  split; assumption.
+Qed.
 
 (** Compile both synchronized kernel packages to the row-implication
     interface.  All endpoint witnesses and roots are preserved verbatim; the

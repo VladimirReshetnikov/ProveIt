@@ -36,7 +36,9 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeLocalStagedCallbackCompilation
   RawCodedDynamicTruthNativeLocalGrowingStagedCallbackCompilation
   RawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation
+  RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
+  RawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification
   RawCodedDynamicTruthNativeZeroCanonicalApplicationNormalizedCompilation
   RawCodedDynamicTruthNativeAlignedStrongStepLogicalRootsCompilation
   RawCodedDynamicTruthNativeCrossLevelStagedCallbackCompilation
@@ -72,7 +74,11 @@ Import
 Import
   PABoundedRawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation.
 Import
+  PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
+Import
   PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationNormalizedCompilation.
 Import
@@ -346,16 +352,19 @@ Arguments
 
 (** Row-kernel refinement of the rank-zero direct boundary.  Only the first
     coordinate changes: instead of returning completed canonical state
-    applications, it supplies the synchronized rank-0/rank-1 append kernels
-    from which those applications are compiled.  The remaining seven
-    dependency-ordered coordinates are preserved exactly. *)
+    applications, it separates the invocation-dependent arithmetic endpoint
+    from one model-global synchronized rank-0/rank-1 append payload pair.
+    The remaining seven dependency-ordered coordinates are preserved
+    exactly. *)
 Definition
     RawDynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendRowKernelProofResourceStrongStepKernelCompilers
     (M : RawPAModel) (hPA : RawPASatisfies M)
     (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
   let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
-  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
     M translation /\
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadPairUnderPrefix
+    M translation coqDynamicTruthPredecessorStateTemplateContext /\
   RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
     M hPA /\
   RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
@@ -393,14 +402,16 @@ Theorem
     M hPA inputs.
 Proof.
   intros M hPA inputs
-    (hzeroKernels & hstrong & hremainder & hcrossLevel & hshift &
+    (hzeroEndpoint & hzeroPayloads & hstrong & hremainder & hcrossLevel & hshift &
       hsubstitution & haxiom & hfinal).
   split.
   - exact
       (raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources_of_permuted_append_kernel_resources
         M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
         (rawDirectStructuralTemplatePAAgreement M hPA inputs)
-        hzeroKernels).
+        (raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources_of_endpoint_and_payload_pair
+          M (rawDirectStructuralTemplateTranslation M hPA inputs)
+          hzeroEndpoint hzeroPayloads)).
   - split; [exact hstrong |].
     split; [exact hremainder |].
     split; [exact hcrossLevel |].
