@@ -26,6 +26,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateNumeralParameters
   RawCodedRestrictedPAConsistencyFormulaCode
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedDynamicTruthTemplateNumeralParameters
   RawCodedRestrictedPADerivationSoundnessTemplateDirectInputs
   RawCodedTemplateDirectStructuralPAAgreement.
@@ -45,6 +46,7 @@ Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateNumeralParameters.
 Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import PABoundedRawCodedDynamicTruthTemplateNumeralParameters.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessTemplateDirectInputs.
@@ -100,6 +102,17 @@ Definition rawBottomTemplateDirectStructuralInputs
       (rawBottomTemplateZeroNumeralParameters M hPA)).
 
 Arguments rawBottomTemplateDirectStructuralInputs M hPA : clear implicits.
+
+(** The canonical helper translation interprets both named numeral
+    parameters by the standard code of zero.  Exposing the lower parameter
+    explicitly avoids making rank-zero clients unfold the selector and
+    structural-input records merely to align a domain substitution. *)
+Lemma rawBottomDirectTemplate_lowerLevelTerm : forall
+    (M : RawPAModel) (hPA : RawPASatisfies M),
+  rawDirectTemplateTerm (rawBottomTemplateDirectStructuralInputs M hPA)
+      coqRestrictedPASoundnessLowerLevelTerm =
+    rawQuotedTermCode M (Term.numeral 0).
+Proof. reflexivity. Qed.
 
 Definition rawBottomDirectStructuralTemplateTranslation
     (M : RawPAModel) (hPA : RawPASatisfies M)

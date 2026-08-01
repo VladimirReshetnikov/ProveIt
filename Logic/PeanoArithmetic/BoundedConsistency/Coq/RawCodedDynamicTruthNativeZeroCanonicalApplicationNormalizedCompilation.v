@@ -26,10 +26,12 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplateDirectStructuralTranslation
+  RawCodedTemplateBottomDirectStructuralInputs
   RawCodedTemplatePAEmbedding
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
   RawCodedDynamicTruthNativeLocalPositiveGraph
+  RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification
   RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
@@ -42,6 +44,7 @@ From BoundedPAConsistency Require Import
 Module
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationNormalizedCompilation.
 
+Import PA.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
@@ -58,11 +61,14 @@ Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import
   PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+Import
+  PABoundedRawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
 Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
@@ -268,7 +274,9 @@ Arguments
     disjunction directly: the generic strong-step endpoint theorem derives
     both from restricted-proof validity and rule validity.  The producer
     chooses the structural interpretation used by those two formulas and
-    records only the three alignments needed by that theorem. *)
+    records only the three alignments needed by that theorem.  Both roots may
+    use the predecessor-state assumptions already present at their actual
+    call site; no contraction to the bare PA tail is required. *)
 Definition
     RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleEndpointInputsCompilerOnCanonicalNormalizedResources
     (M : RawPAModel)
@@ -291,11 +299,13 @@ Definition
         (rawNumeralValue M
           (formulaCode dynamicTruthLocalPiInputDomainTemplate))
         (rawDynamicTruthZeroPiDomainCode M) /\
-      RawCodedPALocalProofOf M baseContext
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M baseContext)
         (rawDirectTemplateFormula inputs
           coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
         restrictedRoot /\
-      RawCodedPALocalProofOf M baseContext
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M baseContext)
         (rawDirectTemplateFormula inputs
           coqStrongStepProofEndpointAtomicAdequacyRulePremise)
         ruleRoot.
@@ -303,6 +313,70 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleEndpointInputsCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
+
+(** Canonical rank-zero clients need only produce the two genuinely logical
+    roots.  The bottom structural interpretation fixes the lower parameter
+    to numeral zero, and the standard zero-domain substitutions discharge
+    all three structural alignment obligations from the preceding generic
+    interface. *)
+Definition
+    RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleRootsCompilerOnCanonicalNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists restrictedRoot ruleRoot : M,
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M baseContext)
+        (rawDirectTemplateFormula
+          (rawBottomTemplateDirectStructuralInputs M hPA)
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+        restrictedRoot /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M baseContext)
+        (rawDirectTemplateFormula
+          (rawBottomTemplateDirectStructuralInputs M hPA)
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+        ruleRoot.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleRootsCompilerOnCanonicalNormalizedResources
+  M hPA translation : clear implicits.
+
+Theorem
+    raw_dynamicTruthNativeLocalZeroCanonicalRestrictedRuleEndpointInputsCompilerOnCanonicalNormalizedResources_of_roots
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleRootsCompilerOnCanonicalNormalizedResources
+    M hPA translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleEndpointInputsCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hcompiler tail witnessList baseContext
+    helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (restrictedRoot & ruleRoot & hrestricted & hrule).
+  exists (rawBottomTemplateDirectStructuralInputs M hPA),
+    (rawQuotedTermCode M (Term.numeral 0)), restrictedRoot, ruleRoot.
+  split.
+  - exact (rawBottomDirectTemplate_lowerLevelTerm M hPA).
+  - split.
+    + rewrite <- (rawQuotedFormulaCode_standard M hPA
+        dynamicTruthLocalSigmaInputDomainTemplate).
+      exact (raw_dynamicTruthZeroSigmaDomain_substitution M hPA).
+    + split.
+      * rewrite <- (rawQuotedFormulaCode_standard M hPA
+          dynamicTruthLocalPiInputDomainTemplate).
+        exact (raw_dynamicTruthZeroPiDomain_substitution M hPA).
+      * split; assumption.
+Qed.
 
 (** Compile the primitive restricted/rule pair into one synchronized
     arithmetic endpoint.  The witnessed source context is recovered from the
@@ -333,12 +407,32 @@ Proof.
     (rawDynamicTruthNativeLocalZeroCurrentFields_witnessed
       M witnessList baseContext hfields) as hwitnessed.
   exact
-    (raw_codedPALocalProof_strongStepPredecessor_atomic_and_domain_of_restricted_and_rule_roots
+    (raw_codedPALocalProof_strongStepPredecessor_atomic_and_domain_of_restricted_and_rule_roots_under_predecessor_state
       M hPA inputs witnessList baseContext levelNumeral
       (rawDynamicTruthZeroSigmaDomainCode M)
       (rawDynamicTruthZeroPiDomainCode M)
       restrictedRoot ruleRoot hwitnessed
       hlevel hsigmaDomain hpiDomain hrestricted hrule).
+Qed.
+
+(** Canonical root production is sufficient for the synchronized endpoint;
+    structural inputs and both zero-domain traces are reconstructed rather
+    than exposed to the dependency-ordered client. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_restricted_rule_roots
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroCanonicalRestrictedRuleRootsCompilerOnCanonicalNormalizedResources
+    M hPA translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hroots.
+  exact
+    (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerOnCanonicalNormalizedResources_of_restricted_rule_inputs
+      M hPA translation
+      (raw_dynamicTruthNativeLocalZeroCanonicalRestrictedRuleEndpointInputsCompilerOnCanonicalNormalizedResources_of_roots
+        M hPA translation hroots)).
 Qed.
 
 (** Merge independently selected atomic and domain witnessed tails.  The
