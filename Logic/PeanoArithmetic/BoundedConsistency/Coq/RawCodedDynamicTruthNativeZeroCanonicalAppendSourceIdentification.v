@@ -33,6 +33,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofUniversalEliminationChain
   RawCodedLtSuccCasesProofCompilation
   RawCodedPAGrowingTemplateConjunction
+  RawCodedPAGrowingTemplateRebase
   RawCodedFourStateTableAppendSource
   RawCodedFourStateTableAppendProofCompilation
   RawCodedFourStateTableAppendExistentialElimination
@@ -78,6 +79,7 @@ Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedPALocalProofUniversalEliminationChain.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
+Import PABoundedRawCodedPAGrowingTemplateRebase.
 Import PABoundedRawCodedFourStateTableAppendSource.
 Import PABoundedRawCodedFourStateTableAppendProofCompilation.
 Import PABoundedRawCodedFourStateTableAppendExistentialElimination.
@@ -1611,6 +1613,124 @@ Proof.
       assignmentCodeCode assignmentCodeStep
       assignmentStepCode assignmentStepStep outerPrefix witnesses
       prefixedAppendRoot hrootMode hprefixedAppend hrows).
+Qed.
+
+(** Compile one legal canonical mode directly from its row-kernel payload.
+    This packages the otherwise repetitive payload-to-kernel, row-closing,
+    and append-elimination pipeline.  Crucially, it has no premise for the
+    opposite polarity, so it can be invoked inside a disjunction branch
+    whose head already supplies that other application. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_zero_canonical_permuted_global_of_kernel_payload_under_prefix :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode outerPrefix witnesses,
+  rootMode = 0 \/ rootMode = 1 ->
+  RawCodedTemplatePrefixAtomicallyAdequate M translation outerPrefix ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    M translation rootMode outerPrefix witnesses ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M))
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M)) outerPrefix
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendPermutedTemplateGlobalSource rootMode
+        (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
+        (embedPAFormula dynamicTruthZeroCanonicalPiRowFormula))).
+Proof.
+  intros M hPA translation hagreement rootMode outerPrefix witnesses
+    hrootMode hprefix hpayload.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt_of_payload
+      M translation rootMode outerPrefix witnesses hrootMode hpayload)
+    as hkernel.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_kernel
+      M hPA translation hagreement rootMode outerPrefix witnesses hkernel)
+    as hrows.
+  pose proof
+    (raw_dynamicTruthZeroCanonicalPermutedAppendInputsUnderPrefixAt_of_row_implication_inputs
+      M hPA translation rootMode outerPrefix witnesses hrows)
+    as hinputs.
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_zero_canonical_permuted_global_of_inputs_under_prefix
+      M hPA translation hagreement rootMode outerPrefix witnesses
+      hprefix hinputs).
+Qed.
+
+(** Rebase the unary Sigma traversal onto a caller-selected witnessed tail
+    and expose the literal canonical application code. *)
+Corollary
+    raw_dynamicTruthZeroCanonicalSigmaApplication_of_permuted_append_kernel_payload_under_prefix :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall outerPrefix witnesses sourceWitnessList sourceContext,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation outerPrefix ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    M translation 0 outerPrefix witnesses ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext outerPrefix
+    (rawQuotedFormulaCode M
+      dynamicTruthZeroInputGlobalSigmaApplicationFormula).
+Proof.
+  intros M hPA translation hagreement outerPrefix witnesses
+    sourceWitnessList sourceContext hprefix hsource hpayload.
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_zero_canonical_permuted_global_of_kernel_payload_under_prefix
+      M hPA translation hagreement 0 outerPrefix witnesses
+      (or_introl eq_refl) hprefix hpayload) as hglobal.
+  rewrite (rawTemplateFormula_zeroCanonicalPermutedGlobalSource_sigma
+    M translation hagreement) in hglobal.
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_rebase
+      M hPA translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) outerPrefix
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+      sourceWitnessList sourceContext hsource hglobal).
+Qed.
+
+(** Pi counterpart of the unary rebased application compiler. *)
+Corollary
+    raw_dynamicTruthZeroCanonicalPiApplication_of_permuted_append_kernel_payload_under_prefix :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall outerPrefix witnesses sourceWitnessList sourceContext,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation outerPrefix ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawDynamicTruthZeroCanonicalPermutedAppendRowKernelPayloadUnderPrefixAt
+    M translation 1 outerPrefix witnesses ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext outerPrefix
+    (rawQuotedFormulaCode M
+      dynamicTruthZeroInputGlobalPiApplicationFormula).
+Proof.
+  intros M hPA translation hagreement outerPrefix witnesses
+    sourceWitnessList sourceContext hprefix hsource hpayload.
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_zero_canonical_permuted_global_of_kernel_payload_under_prefix
+      M hPA translation hagreement 1 outerPrefix witnesses
+      (or_intror eq_refl) hprefix hpayload) as hglobal.
+  rewrite (rawTemplateFormula_zeroCanonicalPermutedGlobalSource_pi
+    M translation hagreement) in hglobal.
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_rebase
+      M hPA translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M)) outerPrefix
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalPiApplicationFormula)
+      sourceWitnessList sourceContext hsource hglobal).
 Qed.
 
 (** Synchronize both state-dependent polarities without dropping their

@@ -17,6 +17,8 @@ From BoundedPAConsistency Require Import
   CodedSyntax
   RawCodedSyntaxConstructors
   RawCodedFormulaOperations
+  RawCodedFixedLevelTruthTotality
+  RawCodedProofAtomicAdequacyStandard
   RawCodedContextLists
   RawCodedRestrictedPAProof
   RawCodedPAAxiomWitnessPrefix
@@ -28,6 +30,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofUniversalIntroductionChain
   RawCodedLtSuccCasesProofCompilation
   RawCodedPAGrowingTemplateConjunction
+  RawCodedPAGrowingTemplateConjunctionProjection
   RawCodedPAGrowingTemplateDisjunction
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
@@ -67,6 +70,8 @@ Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedCodedSyntax.
 Import PABoundedRawCodedFormulaOperations.
+Import PABoundedRawCodedFixedLevelTruthTotality.
+Import PABoundedRawCodedProofAtomicAdequacyStandard.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
@@ -78,6 +83,7 @@ Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPAGrowingTemplateConjunction.
+Import PABoundedRawCodedPAGrowingTemplateConjunctionProjection.
 Import PABoundedRawCodedPAGrowingTemplateDisjunction.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -1197,6 +1203,245 @@ Proof.
       conclusion hdecisionGrowing hsigmaBranch hpiBranch).
 Qed.
 
+(** Resolve the canonical application decision into a genuine conjunction
+    using only the payload for the application missing in each branch.  The
+    Sigma branch compiles Pi, while the Pi branch compiles Sigma; independent
+    standard-witness batches are therefore sufficient.  This strictly
+    relaxes the older interface which required both applications to be
+    constructed before the decision was inspected. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationConjunctionUnderCallerPrefixOnCanonicalNormalizedResources_of_independent_opposite_payloads
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M) callerPrefix
+      (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+    witnessList baseContext helperRoots ->
+  RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawDynamicTruthZeroCanonicalIndependentPermutedAppendRowKernelPayloadsUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+    (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix) ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawBottomDirectStructuralTemplateTranslation M hPA)
+    witnessList baseContext
+    (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix)
+    (rawFormulaAndCode M
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalPiApplicationFormula)).
+Proof.
+  intros M hPA translation callerPrefix tail witnessList baseContext
+    helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hrestrictedIn hruleIn hresources htrace
+    [[sigmaWitnesses hsigmaPayload] [piWitnesses hpiPayload]].
+  set (directTranslation :=
+    rawBottomDirectStructuralTemplateTranslation M hPA).
+  set (combinedPrefix :=
+    coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix).
+  assert (hcombinedAdequate : RawCodedTemplatePrefixAtomicallyAdequate
+      M directTranslation combinedPrefix).
+  {
+    exact
+      (raw_directStructuralTemplatePrefix_atomically_adequate M hPA
+        (rawBottomTemplateDirectStructuralInputs M hPA) combinedPrefix).
+  }
+  assert (hsigmaApplicationAdequate : RawCodedFormulaAtomicallyAdequate M
+      (rawTemplateFormula directTranslation
+        (embedPAFormula
+          dynamicTruthZeroInputGlobalSigmaApplicationFormula))).
+  {
+    unfold directTranslation.
+    rewrite rawTemplateFormula_embedPA by
+      exact (rawBottomDirectStructuralTemplatePAAgreement M hPA).
+    exact
+      (raw_quotedFormula_atomically_adequate M hPA
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula).
+  }
+  assert (hpiApplicationAdequate : RawCodedFormulaAtomicallyAdequate M
+      (rawTemplateFormula directTranslation
+        (embedPAFormula
+          dynamicTruthZeroInputGlobalPiApplicationFormula))).
+  {
+    unfold directTranslation.
+    rewrite rawTemplateFormula_embedPA by
+      exact (rawBottomDirectStructuralTemplatePAAgreement M hPA).
+    exact
+      (raw_quotedFormula_atomically_adequate M hPA
+        dynamicTruthZeroInputGlobalPiApplicationFormula).
+  }
+  assert (hsigmaBranch :
+      RawCodedPAGrowingTemplateBranchCompilerOnWitnessedExtensions
+        M directTranslation baseContext combinedPrefix
+        (embedPAFormula
+          dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+        (rawFormulaAndCode M
+          (rawTemplateFormula directTranslation
+            (embedPAFormula
+              dynamicTruthZeroInputGlobalSigmaApplicationFormula))
+          (rawTemplateFormula directTranslation
+            (embedPAFormula
+              dynamicTruthZeroInputGlobalPiApplicationFormula)))).
+  {
+    intros sourceWitnessList sourceContext hsource _hbaseIncluded.
+    pose proof
+      (raw_dynamicTruthZeroCanonicalPiApplication_of_permuted_append_kernel_payload_under_prefix
+        M hPA directTranslation
+        (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+        combinedPrefix piWitnesses sourceWitnessList sourceContext
+        hcombinedAdequate hsource hpiPayload) as hpiApplication.
+    assert (hpiTemplate : RawCodedPAGrowingTemplateLocalProofAt M
+        directTranslation sourceWitnessList sourceContext combinedPrefix
+        (rawTemplateFormula directTranslation
+          (embedPAFormula
+            dynamicTruthZeroInputGlobalPiApplicationFormula))).
+    {
+      rewrite rawTemplateFormula_embedPA by
+        exact (rawBottomDirectStructuralTemplatePAAgreement M hPA).
+      exact hpiApplication.
+    }
+    exact
+      (raw_codedPAGrowingTemplateLocalProofAt_and_of_head_left
+        M hPA directTranslation sourceWitnessList sourceContext
+        combinedPrefix
+        (embedPAFormula
+          dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+        (rawTemplateFormula directTranslation
+          (embedPAFormula
+            dynamicTruthZeroInputGlobalPiApplicationFormula))
+        hsigmaApplicationAdequate
+        hpiTemplate).
+  }
+  assert (hpiBranch :
+      RawCodedPAGrowingTemplateBranchCompilerOnWitnessedExtensions
+        M directTranslation baseContext combinedPrefix
+        (embedPAFormula
+          dynamicTruthZeroInputGlobalPiApplicationFormula)
+        (rawFormulaAndCode M
+          (rawTemplateFormula directTranslation
+            (embedPAFormula
+              dynamicTruthZeroInputGlobalSigmaApplicationFormula))
+          (rawTemplateFormula directTranslation
+            (embedPAFormula
+              dynamicTruthZeroInputGlobalPiApplicationFormula)))).
+  {
+    intros sourceWitnessList sourceContext hsource _hbaseIncluded.
+    pose proof
+      (raw_dynamicTruthZeroCanonicalSigmaApplication_of_permuted_append_kernel_payload_under_prefix
+        M hPA directTranslation
+        (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+        combinedPrefix sigmaWitnesses sourceWitnessList sourceContext
+        hcombinedAdequate hsource hsigmaPayload) as hsigmaApplication.
+    assert (hsigmaTemplate : RawCodedPAGrowingTemplateLocalProofAt M
+        directTranslation sourceWitnessList sourceContext combinedPrefix
+        (rawTemplateFormula directTranslation
+          (embedPAFormula
+            dynamicTruthZeroInputGlobalSigmaApplicationFormula))).
+    {
+      rewrite rawTemplateFormula_embedPA by
+        exact (rawBottomDirectStructuralTemplatePAAgreement M hPA).
+      exact hsigmaApplication.
+    }
+    exact
+      (raw_codedPAGrowingTemplateLocalProofAt_and_of_head_right
+        M hPA directTranslation sourceWitnessList sourceContext
+        combinedPrefix
+        (rawTemplateFormula directTranslation
+          (embedPAFormula
+            dynamicTruthZeroInputGlobalSigmaApplicationFormula))
+        (embedPAFormula
+          dynamicTruthZeroInputGlobalPiApplicationFormula)
+        hpiApplicationAdequate
+        hsigmaTemplate).
+  }
+  pose proof
+    (raw_dynamicTruthNativeLocalZeroGrowingOfCanonicalApplicationDecisionBranchesUnderCallerPrefixOnCanonicalNormalizedResources
+      M hPA translation callerPrefix
+      (rawFormulaAndCode M
+        (rawTemplateFormula directTranslation
+          (embedPAFormula
+            dynamicTruthZeroInputGlobalSigmaApplicationFormula))
+        (rawTemplateFormula directTranslation
+          (embedPAFormula
+            dynamicTruthZeroInputGlobalPiApplicationFormula)))
+      tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      hrestrictedIn hruleIn hresources htrace hsigmaBranch hpiBranch)
+    as happlications.
+  unfold directTranslation, combinedPrefix in happlications |- *.
+  rewrite !rawTemplateFormula_embedPA in happlications by
+    exact (rawBottomDirectStructuralTemplatePAAgreement M hPA).
+  exact happlications.
+Qed.
+
+(** Package the branch-produced conjunction as the older state-application
+    resource.  Arithmetic endpoint compilation and application traversal may
+    select unrelated witnessed extensions; unary conjunction projection and
+    pair rebasing merge them only after both computations have finished. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_independent_opposite_payloads
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthZeroCanonicalIndependentPermutedAppendRowKernelPayloadsUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+    (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix) ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix hrestrictedIn hruleIn hpayloads
+    tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace.
+  set (directTranslation :=
+    rawBottomDirectStructuralTemplateTranslation M hPA).
+  set (combinedPrefix :=
+    coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix).
+  pose proof
+    (raw_dynamicTruthNativeLocalZeroCanonicalEndpointResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions
+      M hPA directTranslation callerPrefix hrestrictedIn hruleIn)
+    as hendpointCompiler.
+  destruct
+    (hendpointCompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hatomic & hdomain).
+  pose proof
+    (raw_dynamicTruthNativeLocalZeroGrowingCanonicalApplicationConjunctionUnderCallerPrefixOnCanonicalNormalizedResources_of_independent_opposite_payloads
+      M hPA directTranslation callerPrefix tail witnessList baseContext
+      helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+      hrestrictedIn hruleIn hresources htrace hpayloads)
+    as hconjunction.
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofPairAt_of_and
+      M hPA directTranslation witnessList baseContext combinedPrefix
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalPiApplicationFormula)
+      hconjunction) as happlicationPair.
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofPairAt_rebase
+      M hPA directTranslation baseContext combinedPrefix
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula)
+      (rawQuotedFormulaCode M
+        dynamicTruthZeroInputGlobalPiApplicationFormula)
+      endpointWitnessList endpointContext hendpointWitnessed
+      happlicationPair) as hrebasedApplications.
+  exists endpointWitnessList, endpointContext, atomicRoot, domainRoot.
+  split; [exact hendpointWitnessed |].
+  split; [exact hbaseEndpointIncluded |].
+  split; [exact hatomic |].
+  split; [exact hdomain |].
+  unfold directTranslation, combinedPrefix in hrebasedApplications |- *.
+  exact hrebasedApplications.
+Qed.
+
 (** Canonical rank-zero clients need only produce the two genuinely logical
     roots.  The bottom structural interpretation fixes the lower parameter
     to numeral zero, and the standard zero-domain substitutions discharge
@@ -1931,6 +2176,29 @@ Proof.
   - exact hlogicalRoots.
 Qed.
 
+(** End-to-end branch-sensitive closure.  Each polarity is compiled only in
+    the branch where it is absent, so the two row payloads may retain
+    independent standard-witness batches. *)
+Corollary
+    raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_independent_opposite_payloads
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  RawDynamicTruthZeroCanonicalIndependentPermutedAppendRowKernelPayloadsUnderPrefix
+    M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (coqDynamicTruthPredecessorStateTemplateContext ++ callerPrefix) ->
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix hrestrictedIn hruleIn hpayloads.
+  exact
+    (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_state_application_resources
+      M hPA callerPrefix
+      (raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_independent_opposite_payloads
+        M hPA callerPrefix hrestrictedIn hruleIn hpayloads)).
+Qed.
+
 (** End-to-end retained-assumption rank-zero closure.  The former pair of
     independently growing restricted/rule root compilers is absent: those
     roots are assumption leaves, while the synchronized append payload pair
@@ -1947,15 +2215,13 @@ Corollary
   RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources
     M hPA callerPrefix.
 Proof.
-  intros M hPA callerPrefix hrestrictedIn hruleIn hpayloads.
+  intros M hPA callerPrefix hrestrictedIn hruleIn
+    (witnesses & hsigmaPayload & hpiPayload).
   exact
-    (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_state_application_resources
-      M hPA callerPrefix
-      (raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_permuted_append_kernel_resources
-        M hPA callerPrefix
-        (raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_payload_pair
-          M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
-          callerPrefix hrestrictedIn hruleIn hpayloads))).
+    (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_template_assumptions_and_independent_opposite_payloads
+      M hPA callerPrefix hrestrictedIn hruleIn
+      (conj (ex_intro _ witnesses hsigmaPayload)
+        (ex_intro _ witnesses hpiPayload))).
 Qed.
 
 (** Combine the invocation-dependent endpoint with the model-global,

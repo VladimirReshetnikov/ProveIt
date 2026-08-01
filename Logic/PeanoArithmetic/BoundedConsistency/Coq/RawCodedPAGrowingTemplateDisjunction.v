@@ -18,9 +18,11 @@ From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
+  RawCodedFixedLevelTruthTotality
   RawCodedContextLists
   RawCodedRestrictedPAProof
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofAndIntroduction
   RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateSyntax
@@ -37,9 +39,11 @@ Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofAndIntroduction.
 Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateSyntax.
@@ -143,6 +147,136 @@ Definition RawCodedPAGrowingTemplateBranchCompilerOnWitnessedExtensions
 Arguments
   RawCodedPAGrowingTemplateBranchCompilerOnWitnessedExtensions
   M translation baseContext prefix head conclusion : clear implicits.
+
+(** Add a branch head to an independently growing proof and conjoin the
+    available assumption on the left.  The opposite proof may choose its own
+    witnessed extension before the assumption leaf is constructed; hence no
+    synchronization premise is exposed to formula-specific clients. *)
+Theorem raw_codedPAGrowingTemplateLocalProofAt_and_of_head_left : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext prefix head rightConclusion,
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation head) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix rightConclusion ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext (head :: prefix)
+    (rawFormulaAndCode M
+      (rawTemplateFormula translation head) rightConclusion).
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext prefix
+    head rightConclusion hhead
+    (targetWitnessList & targetContext & rightRoot &
+      htargetWitnessed & hsourceTargetIncluded & hright).
+  assert (htailRealizable : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)).
+  {
+    apply (raw_templateContextOnTail_realizable M hPA).
+    exact
+      (raw_codedPAAxiomWitnessContext_context_realizable M
+        targetWitnessList targetContext htargetWitnessed).
+  }
+  assert (hheadPrefix : RawCodedTemplatePrefixAtomicallyAdequate
+      M translation [head]).
+  {
+    intros formula [hformula | hformula].
+    - subst formula. exact hhead.
+    - contradiction.
+  }
+  destruct
+    (raw_codedPALocalProof_templatePrefix M hPA translation
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      [head] rightConclusion rightRoot htailRealizable hheadPrefix hright)
+    as [prefixedRightRoot hprefixedRight].
+  pose proof
+    (raw_codedPALocalProofOf_assumption M hPA
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawTemplateFormula translation head) htailRealizable)
+    as hheadProof.
+  cbn [rawTemplateContextCodeOnTail] in
+    hprefixedRight, hheadProof |- *.
+  lazymatch type of hheadProof with
+  | RawCodedPALocalProofOf _ _ _ ?headRoot =>
+      pose proof
+        (raw_codedPALocalProofOf_andI M hPA
+          (rawListNode M (rawTemplateFormula translation head)
+            (rawTemplateContextCodeOnTail translation targetContext prefix))
+          (rawTemplateFormula translation head) rightConclusion
+          headRoot prefixedRightRoot hheadProof hprefixedRight)
+        as hconjunction
+  end.
+  lazymatch type of hconjunction with
+  | RawCodedPALocalProofOf _ _ _ ?conjunctionRoot =>
+      exists targetWitnessList, targetContext, conjunctionRoot;
+      split; [exact htargetWitnessed |];
+      split; [exact hsourceTargetIncluded | exact hconjunction]
+  end.
+Qed.
+
+(** Symmetric orientation: the growing proof supplies the left conjunct and
+    the branch head is inserted as the right conjunct. *)
+Theorem raw_codedPAGrowingTemplateLocalProofAt_and_of_head_right : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext prefix leftConclusion head,
+  RawCodedFormulaAtomicallyAdequate M
+    (rawTemplateFormula translation head) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix leftConclusion ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext (head :: prefix)
+    (rawFormulaAndCode M
+      leftConclusion (rawTemplateFormula translation head)).
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext prefix
+    leftConclusion head hhead
+    (targetWitnessList & targetContext & leftRoot &
+      htargetWitnessed & hsourceTargetIncluded & hleft).
+  assert (htailRealizable : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)).
+  {
+    apply (raw_templateContextOnTail_realizable M hPA).
+    exact
+      (raw_codedPAAxiomWitnessContext_context_realizable M
+        targetWitnessList targetContext htargetWitnessed).
+  }
+  assert (hheadPrefix : RawCodedTemplatePrefixAtomicallyAdequate
+      M translation [head]).
+  {
+    intros formula [hformula | hformula].
+    - subst formula. exact hhead.
+    - contradiction.
+  }
+  destruct
+    (raw_codedPALocalProof_templatePrefix M hPA translation
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      [head] leftConclusion leftRoot htailRealizable hheadPrefix hleft)
+    as [prefixedLeftRoot hprefixedLeft].
+  pose proof
+    (raw_codedPALocalProofOf_assumption M hPA
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawTemplateFormula translation head) htailRealizable)
+    as hheadProof.
+  cbn [rawTemplateContextCodeOnTail] in
+    hprefixedLeft, hheadProof |- *.
+  lazymatch type of hheadProof with
+  | RawCodedPALocalProofOf _ _ _ ?headRoot =>
+      pose proof
+        (raw_codedPALocalProofOf_andI M hPA
+          (rawListNode M (rawTemplateFormula translation head)
+            (rawTemplateContextCodeOnTail translation targetContext prefix))
+          leftConclusion (rawTemplateFormula translation head)
+          prefixedLeftRoot headRoot hprefixedLeft hheadProof)
+        as hconjunction
+  end.
+  lazymatch type of hconjunction with
+  | RawCodedPALocalProofOf _ _ _ ?conjunctionRoot =>
+      exists targetWitnessList, targetContext, conjunctionRoot;
+      split; [exact htargetWitnessed |];
+      split; [exact hsourceTargetIncluded | exact hconjunction]
+  end.
+Qed.
 
 (** First let a decision producer choose its witnessed endpoint, then invoke
     both branch families there and reuse the synchronized [Or-E] theorem.
