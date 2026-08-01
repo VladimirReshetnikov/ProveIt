@@ -2742,6 +2742,14 @@ Print Assumptions r0_laws.
 Print Assumptions r0_numeral_eq_iff.
 Print Assumptions r0_numeral_lt_iff.
 Print Assumptions r0_lt_numeral_fin_iff.
+Print Assumptions r0_semiterm_val_numeral.
+Print Assumptions r0_numeral_fin_env_cons.
+Print Assumptions r0_positive_atom_transport.
+Print Assumptions r0_negative_atom_transport.
+Print Assumptions r0_sigma_one_eval_transport.
+Print Assumptions r0_sigma_one_model_complete.
+Print Assumptions r0_sigma_one_semisentence_transport.
+Print Assumptions r0_pi_one_model_reflection.
 Print Assumptions nat_r0_laws.
 Print Assumptions peano_minus_r0_laws.
 Check r0_numeral_add_sentence.
@@ -2758,6 +2766,8 @@ Print Assumptions first_order_model_models_r0_iff.
 Print Assumptions nat_standard_model_models_r0.
 Print Assumptions r0_consistent.
 Print Assumptions r0_proof_complete.
+Print Assumptions r0_sigma_one_proof_complete.
+Print Assumptions r0_sigma_one_provable_iff.
 Check r0_omega_add_one.
 Check r0_omega_add_one_oring.
 Print Assumptions r0_omega_add_one_numeral.

@@ -7,14 +7,16 @@
   retaining the exact numeral arithmetic and finite-interval content.
 *)
 
-From Stdlib Require Import Arith.PeanoNat Lia Logic.Classical_Prop Vectors.Fin.
+From Stdlib Require Import Arith.PeanoNat Lia Logic.Classical_Prop
+  Logic.FunctionalExtensionality Vectors.Fin.
 From FoundationModal Require Import GenericAdjunctiveSet GenericEntailment.
 From Foundation.Syntax.Predicate Require Import Language Quantifier Term.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Calculus Eq Operator Soundness.
 From Foundation.FirstOrder.Basic.Semantics Require Import
-  ModelTheory RewriteClosure Semantics OperatorSemantics.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Syntax Model.
+  ModelTheory RewriteClosure Semantics OperatorSemantics Elementary.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import
+  Misc Syntax Model Hierarchy.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -74,8 +76,8 @@ Proof.
     r0_axiom sigma (R0Equality Hsigma)).
 Qed.
 
-Definition r0_empty_bound_env : Fin.t 0 -> nat :=
-  fun i => match i with end.
+Definition r0_empty_bound_env {A} : Fin.t 0 -> A :=
+  fun i => Fin.case0 (fun _ => A) i.
 
 Definition r0_empty_free_env {A} : Empty_set -> A :=
   fun x => match x with end.
@@ -258,6 +260,346 @@ Proof.
       intros x. exact (r0_lt_numeral_fin_iff Hlaws n x).
 Qed.
 
+(** * Sigma-one truth transport *)
+
+Theorem r0_semiterm_val_numeral : forall M X n
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  r0_laws O ->
+  forall (t : semiterm oring_language X n)
+         (bv : Fin.t n -> nat) (fv : X -> nat),
+  semiterm_val Str
+      (fun i => oring_numeral O (bv i))
+      (fun x => oring_numeral O (fv x)) t =
+  oring_numeral O (semiterm_val nat_standard_structure bv fv t).
+Proof.
+  intros M X n Str O Horing Hr0 t.
+  pose proof (oring_standard_structure_unique Horing) as HStr. subst Str.
+  induction t as [i | x | k F v IH]; intros bv fv;
+    cbn [semiterm_val oring_standard_structure nat_standard_structure].
+  - reflexivity.
+  - reflexivity.
+  - destruct F.
+    + reflexivity.
+    + reflexivity.
+    + change
+        (oring_add O
+           (semiterm_val (oring_standard_structure O)
+             (fun i => oring_numeral O (bv i))
+             (fun x => oring_numeral O (fv x)) (v Fin.F1))
+           (semiterm_val (oring_standard_structure O)
+             (fun i => oring_numeral O (bv i))
+             (fun x => oring_numeral O (fv x)) (v (Fin.FS Fin.F1))) =
+         oring_numeral O
+           (Nat.add
+             (semiterm_val nat_standard_structure bv fv (v Fin.F1))
+             (semiterm_val nat_standard_structure bv fv
+               (v (Fin.FS Fin.F1))))).
+      rewrite (IH Fin.F1 bv fv), (IH (Fin.FS Fin.F1) bv fv).
+      exact (r0_numeral_add Hr0 _ _).
+    + change
+        (oring_mul O
+           (semiterm_val (oring_standard_structure O)
+             (fun i => oring_numeral O (bv i))
+             (fun x => oring_numeral O (fv x)) (v Fin.F1))
+           (semiterm_val (oring_standard_structure O)
+             (fun i => oring_numeral O (bv i))
+             (fun x => oring_numeral O (fv x)) (v (Fin.FS Fin.F1))) =
+         oring_numeral O
+           (Nat.mul
+             (semiterm_val nat_standard_structure bv fv (v Fin.F1))
+             (semiterm_val nat_standard_structure bv fv
+               (v (Fin.FS Fin.F1))))).
+      rewrite (IH Fin.F1 bv fv), (IH (Fin.FS Fin.F1) bv fv).
+      exact (r0_numeral_mul Hr0 _ _).
+Qed.
+
+Lemma r0_numeral_fin_env_cons : forall M n (O : oring_carrier M)
+    (x : nat) (bv : Fin.t n -> nat),
+  (fun i => oring_numeral O (fin_env_cons x bv i)) =
+  fin_env_cons (oring_numeral O x) (fun i => oring_numeral O (bv i)).
+Proof.
+  intros. apply functional_extensionality. intro i.
+  refine (@Fin.caseS' n i (fun j =>
+    oring_numeral O (fin_env_cons x bv j) =
+    fin_env_cons (oring_numeral O x)
+      (fun q => oring_numeral O (bv q)) j) eq_refl _).
+  intros q. reflexivity.
+Qed.
+
+Lemma r0_positive_atom_transport : forall M X n
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  r0_laws O ->
+  forall k (r : language_rel oring_language k)
+         (v : Fin.t k -> semiterm oring_language X n)
+         (bv : Fin.t n -> nat) (fv : X -> nat),
+  semiformula_eval nat_standard_structure bv fv (Semiformula_rel r v) ->
+  semiformula_eval Str
+    (fun i => oring_numeral O (bv i))
+    (fun x => oring_numeral O (fv x)) (Semiformula_rel r v).
+Proof.
+  intros M X n Str O Horing Hr0 k r v bv fv H.
+  pose proof (oring_standard_structure_unique Horing) as HStr. subst Str.
+  destruct r.
+  - change
+      (semiterm_val nat_standard_structure bv fv (v Fin.F1) =
+       semiterm_val nat_standard_structure bv fv (v (Fin.FS Fin.F1))) in H.
+    change
+      (semiterm_val (oring_standard_structure O)
+         (fun i => oring_numeral O (bv i))
+         (fun x => oring_numeral O (fv x)) (v Fin.F1) =
+       semiterm_val (oring_standard_structure O)
+         (fun i => oring_numeral O (bv i))
+         (fun x => oring_numeral O (fv x)) (v (Fin.FS Fin.F1))).
+    repeat rewrite (r0_semiterm_val_numeral
+      (oring_standard_structure_interprets O) Hr0).
+    now rewrite H.
+  - change
+      (Nat.lt
+        (semiterm_val nat_standard_structure bv fv (v Fin.F1))
+        (semiterm_val nat_standard_structure bv fv (v (Fin.FS Fin.F1)))) in H.
+    change
+      (oring_lt O
+        (semiterm_val (oring_standard_structure O)
+          (fun i => oring_numeral O (bv i))
+          (fun x => oring_numeral O (fv x)) (v Fin.F1))
+        (semiterm_val (oring_standard_structure O)
+          (fun i => oring_numeral O (bv i))
+          (fun x => oring_numeral O (fv x)) (v (Fin.FS Fin.F1)))).
+    repeat rewrite (r0_semiterm_val_numeral
+      (oring_standard_structure_interprets O) Hr0).
+    apply (proj2 (r0_numeral_lt_iff Hr0 _ _)). exact H.
+Qed.
+
+Lemma r0_negative_atom_transport : forall M X n
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  r0_laws O ->
+  forall k (r : language_rel oring_language k)
+         (v : Fin.t k -> semiterm oring_language X n)
+         (bv : Fin.t n -> nat) (fv : X -> nat),
+  semiformula_eval nat_standard_structure bv fv (Semiformula_nrel r v) ->
+  semiformula_eval Str
+    (fun i => oring_numeral O (bv i))
+    (fun x => oring_numeral O (fv x)) (Semiformula_nrel r v).
+Proof.
+  intros M X n Str O Horing Hr0 k r v bv fv H.
+  pose proof (oring_standard_structure_unique Horing) as HStr. subst Str.
+  destruct r.
+  - change
+      (semiterm_val nat_standard_structure bv fv (v Fin.F1) <>
+       semiterm_val nat_standard_structure bv fv (v (Fin.FS Fin.F1))) in H.
+    change
+      (semiterm_val (oring_standard_structure O)
+         (fun i => oring_numeral O (bv i))
+         (fun x => oring_numeral O (fv x)) (v Fin.F1) <>
+       semiterm_val (oring_standard_structure O)
+         (fun i => oring_numeral O (bv i))
+         (fun x => oring_numeral O (fv x)) (v (Fin.FS Fin.F1))).
+    repeat rewrite (r0_semiterm_val_numeral
+      (oring_standard_structure_interprets O) Hr0).
+    intro Heq. apply H.
+    now apply (proj1 (r0_numeral_eq_iff Hr0 _ _)) in Heq.
+  - change
+      (~ Nat.lt
+        (semiterm_val nat_standard_structure bv fv (v Fin.F1))
+        (semiterm_val nat_standard_structure bv fv (v (Fin.FS Fin.F1)))) in H.
+    change
+      (~ oring_lt O
+        (semiterm_val (oring_standard_structure O)
+          (fun i => oring_numeral O (bv i))
+          (fun x => oring_numeral O (fv x)) (v Fin.F1))
+        (semiterm_val (oring_standard_structure O)
+          (fun i => oring_numeral O (bv i))
+          (fun x => oring_numeral O (fv x)) (v (Fin.FS Fin.F1)))).
+    repeat rewrite (r0_semiterm_val_numeral
+      (oring_standard_structure_interprets O) Hr0).
+    intro Hlt. apply H.
+    now apply (proj1 (r0_numeral_lt_iff Hr0 _ _)) in Hlt.
+Qed.
+
+Theorem r0_sigma_one_eval_transport : forall M X
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  r0_laws O ->
+  forall n (p : semiformula oring_language X n),
+  arithmetic_hierarchy X arithmetic_sigma 1 n p ->
+  forall (bv : Fin.t n -> nat) (fv : X -> nat),
+  semiformula_eval nat_standard_structure bv fv p ->
+  semiformula_eval Str
+    (fun i => oring_numeral O (bv i))
+    (fun x => oring_numeral O (fv x)) p.
+Proof.
+  intros M X Str O Horing Hr0.
+  set (P := fun n (p : semiformula oring_language X n) =>
+    forall (bv : Fin.t n -> nat) (fv : X -> nat),
+      semiformula_eval nat_standard_structure bv fv p ->
+      semiformula_eval Str
+        (fun i => oring_numeral O (bv i))
+        (fun x => oring_numeral O (fv x)) p).
+  assert (Hverum : forall n, P n (Semiformula_verum n)).
+  { intros n bv fv _. exact I. }
+  assert (Hfalsum : forall n, P n (Semiformula_falsum n)).
+  { intros n bv fv H. exact H. }
+  assert (Hrel : forall n k (r : language_rel oring_language k)
+      (v : Fin.t k -> semiterm oring_language X n),
+      P n (Semiformula_rel r v)).
+  { intros n k r v bv fv H.
+    exact (@r0_positive_atom_transport M X n Str O Horing Hr0
+      k r v bv fv H). }
+  assert (Hnrel : forall n k (r : language_rel oring_language k)
+      (v : Fin.t k -> semiterm oring_language X n),
+      P n (Semiformula_nrel r v)).
+  { intros n k r v bv fv H.
+    exact (@r0_negative_atom_transport M X n Str O Horing Hr0
+      k r v bv fv H). }
+  assert (Hand : forall n (p q : semiformula oring_language X n),
+      arithmetic_hierarchy X arithmetic_sigma 1 n p ->
+      arithmetic_hierarchy X arithmetic_sigma 1 n q ->
+      P n p -> P n q -> P n (Semiformula_and p q)).
+  { intros n p q _ _ IHp IHq bv fv [Hp Hq].
+    split; [now apply IHp | now apply IHq]. }
+  assert (Hor : forall n (p q : semiformula oring_language X n),
+      arithmetic_hierarchy X arithmetic_sigma 1 n p ->
+      arithmetic_hierarchy X arithmetic_sigma 1 n q ->
+      P n p -> P n q -> P n (Semiformula_or p q)).
+  { intros n p q _ _ IHp IHq bv fv [Hp | Hq].
+    - left. now apply IHp.
+    - right. now apply IHq. }
+  assert (Hball : forall n (t : semiterm oring_language X n)
+      (p : semiformula oring_language X (S n)),
+      arithmetic_hierarchy X arithmetic_sigma 1 (S n) p ->
+      P (S n) p ->
+      P n (semiformula_ball_lt arithmetic_lt_operator t p)).
+  { unfold P.
+    intros n t p _ IHp bv fv Hnat.
+    rewrite semiformula_eval_ball_lt in Hnat.
+    rewrite semiformula_eval_ball_lt.
+    setoid_rewrite (structure_relation_operator
+      (structure_oring_lt nat_standard_structure_interprets)) in Hnat.
+    unfold arithmetic_lt_operator.
+    rewrite (r0_semiterm_val_numeral Horing Hr0 t bv fv).
+    intros x Hx.
+    apply (proj1 (structure_relation_operator
+      (structure_oring_lt Horing) x
+      (oring_numeral O (semiterm_val nat_standard_structure bv fv t)))) in Hx.
+    destruct (proj1 (r0_lt_numeral Hr0 _ _) Hx) as [i [Hi Hxi]].
+    subst x.
+    pose proof (IHp (fin_env_cons i bv) fv (Hnat i Hi)) as Hp.
+    rewrite (r0_numeral_fin_env_cons O i bv) in Hp. exact Hp. }
+  assert (Hexists : forall n (p : semiformula oring_language X (S n)),
+      arithmetic_hierarchy X arithmetic_sigma 1 (S n) p ->
+      P (S n) p -> P n (Semiformula_exists p)).
+  { intros n p _ IHp bv fv [i Hi].
+    exists (oring_numeral O i).
+    pose proof (IHp (fin_env_cons i bv) fv Hi) as Hp.
+    rewrite (r0_numeral_fin_env_cons O i bv) in Hp. exact Hp. }
+  intros n p Hp.
+  exact (arithmetic_sigma_one_induction Hverum Hfalsum Hrel Hnrel
+    Hand Hor Hball Hexists Hp).
+Qed.
+
+(** Sigma-one truth in the standard natural-number structure is upward
+    absolute to every structure satisfying the concrete R0 laws. *)
+Theorem r0_sigma_one_model_complete : forall M
+    (Str : first_order_structure oring_language M)
+    (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  r0_laws O ->
+  forall sigma : sentence oring_language,
+    arithmetic_hierarchy Empty_set arithmetic_sigma 1 0 sigma ->
+    sentence_realize nat_standard_structure sigma ->
+    sentence_realize Str sigma.
+Proof.
+  intros M Str O Horing Hr0 sigma Hsigma Hnat.
+  unfold sentence_realize, formula_eval in Hnat.
+  unfold sentence_realize, formula_eval.
+  match type of Hnat with
+  | semiformula_eval _ ?bv ?fv _ =>
+      pose proof (@r0_sigma_one_eval_transport M Empty_set Str O Horing Hr0
+        0 sigma Hsigma bv fv Hnat) as H;
+      match goal with
+      | |- semiformula_eval _ ?tb ?tf _ =>
+          assert (Hbound : forall i : Fin.t 0,
+            oring_numeral O (bv i) = tb i);
+          [intro i; exact (Fin.case0 (fun j =>
+             oring_numeral O (bv j) = tb j) i)|];
+          apply (proj1 (@semiformula_eval_bound_extensional
+            oring_language M Empty_set 0 Str
+            (fun i : Fin.t 0 => oring_numeral O (bv i)) tb
+            (fun x : Empty_set => oring_numeral O (fv x)) sigma Hbound)) in H;
+          assert (Hfree : forall x : Empty_set,
+            semiformula_free_occurs x sigma ->
+            oring_numeral O (fv x) = tf x);
+          [intros x _; destruct x|];
+          apply (proj1 (@semiformula_eval_free_ext
+            oring_language M Empty_set 0 Str tb
+            (fun x : Empty_set => oring_numeral O (fv x)) tf sigma Hfree)) in H;
+          exact H
+      end
+  end.
+Qed.
+
+(** The parameter-free variant used by later definability developments. *)
+Corollary r0_sigma_one_semisentence_transport : forall M n
+    (Str : first_order_structure oring_language M)
+    (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  r0_laws O ->
+  forall sigma : semiformula oring_language Empty_set n,
+    arithmetic_hierarchy Empty_set arithmetic_sigma 1 n sigma ->
+    forall bv : Fin.t n -> nat,
+      semiformula_eval nat_standard_structure bv (@r0_empty_free_env nat) sigma ->
+      semiformula_eval Str (fun i => oring_numeral O (bv i))
+        (@r0_empty_free_env M) sigma.
+Proof.
+  intros M n Str O Horing Hr0 sigma Hsigma bv Hnat.
+  pose proof (@r0_sigma_one_eval_transport M Empty_set Str O Horing Hr0
+    n sigma Hsigma bv (@r0_empty_free_env nat) Hnat) as H.
+  assert (Hfree : forall x : Empty_set,
+      semiformula_free_occurs x sigma ->
+      oring_numeral O (@r0_empty_free_env nat x) =
+      @r0_empty_free_env M x).
+  { intros x _. destruct x. }
+  apply (proj1 (@semiformula_eval_free_ext
+    oring_language M Empty_set n Str
+    (fun i => oring_numeral O (bv i))
+    (fun x => oring_numeral O (@r0_empty_free_env nat x))
+    (@r0_empty_free_env M) sigma Hfree)) in H.
+  exact H.
+Qed.
+
+(** Dually, Pi-one truth reflects from an R0 structure back to the standard
+    natural-number structure. *)
+Theorem r0_pi_one_model_reflection : forall M
+    (Str : first_order_structure oring_language M)
+    (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  r0_laws O ->
+  forall sigma : sentence oring_language,
+    arithmetic_hierarchy Empty_set arithmetic_pi 1 0 sigma ->
+    sentence_realize Str sigma ->
+    sentence_realize nat_standard_structure sigma.
+Proof.
+  intros M Str O Horing Hr0 sigma Hsigma HM.
+  apply NNPP. intro Hnat.
+  assert (Hneg_sigma : arithmetic_hierarchy Empty_set arithmetic_sigma 1 0
+      (semiformula_neg sigma)).
+  { pose proof (arithmetic_hierarchy_neg Hsigma) as Hneg.
+    exact Hneg. }
+  assert (Hneg_nat : sentence_realize nat_standard_structure
+      (semiformula_neg sigma)).
+  { unfold sentence_realize, formula_eval in Hnat.
+    unfold sentence_realize, formula_eval.
+    rewrite semiformula_eval_neg. exact Hnat. }
+  pose proof (r0_sigma_one_model_complete Horing Hr0 Hneg_sigma Hneg_nat)
+    as Hneg_M.
+  unfold sentence_realize, formula_eval in Hneg_M.
+  rewrite semiformula_eval_neg in Hneg_M.
+  exact (Hneg_M HM).
+Qed.
+
 Definition nat_r0_laws : r0_laws nat_oring_carrier.
 Proof.
   constructor.
@@ -301,6 +643,45 @@ Proof.
   intros m O Horing Hmodels.
   apply (Hvalid m O Horing).
   now apply (proj1 (@first_order_model_models_r0_iff m O Horing)).
+Qed.
+
+(** Every true Sigma-one sentence is already provable in R0, and therefore
+    in every syntactic extension of R0. *)
+Theorem r0_sigma_one_proof_complete : forall
+    (T : theory oring_language) (sigma : sentence oring_language),
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language) r0_axiom T ->
+  arithmetic_hierarchy Empty_set arithmetic_sigma 1 0 sigma ->
+  first_order_model_realize nat_standard_model sigma ->
+  first_order_theory_provable T sigma.
+Proof.
+  intros T sigma Hweak Hsigma Hnat.
+  apply (generic_weaker_subset Hweak sigma).
+  apply r0_proof_complete.
+  intros m O Horing Hr0.
+  unfold first_order_model_realize in Hnat |-.
+  exact (r0_sigma_one_model_complete Horing Hr0 Hsigma Hnat).
+Qed.
+
+(** On Sigma-one sentences, standard truth and provability coincide for any
+    Sigma-one-sound extension of R0. *)
+Theorem r0_sigma_one_provable_iff : forall
+    (T : theory oring_language),
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language) r0_axiom T ->
+  arithmetic_theory_sound_on_hierarchy T arithmetic_sigma 1 ->
+  forall sigma : sentence oring_language,
+    arithmetic_hierarchy Empty_set arithmetic_sigma 1 0 sigma ->
+    (first_order_model_realize nat_standard_model sigma <->
+     first_order_theory_provable T sigma).
+Proof.
+  intros T Hweak Hsound sigma Hsigma. split.
+  - now apply (r0_sigma_one_proof_complete Hweak Hsigma).
+  - intro Hproof.
+    exact (arithmetic_theory_sound_on_hierarchy_elim
+      Hsound Hproof Hsigma).
 Qed.
 
 (** The source's omega-plus-one R0 countermodel.  Unlike the Q countermodel
