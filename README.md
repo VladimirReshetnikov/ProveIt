@@ -265,6 +265,10 @@ deliberate exception, the axiom-free `TypeTheoryParadoxes` library that was
 registered in [`lakefile.toml`](lakefile.toml) and imported by
 [`ProveIt.lean`](ProveIt.lean), went with it.
 
+[`Shenanigans/README.md`](Shenanigans/README.md) is a temporary redirect stub
+holding the old-path-to-new-path map for anyone arriving from a stale link. It
+carries no content of its own and will be removed in due course.
+
 ## Vendored components
 
 Only [`lib/`](lib/) contains vendored code. `lib/Coq-BB5/BB2`, `BB3`, and
