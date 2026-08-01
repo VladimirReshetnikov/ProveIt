@@ -5340,8 +5340,8 @@ headline consequently assumes a plain all-model family of the same eight
 proof-producing coordinates—there is no existential translation or input
 witness left in its statement.
 
-The rank-zero coordinate has now been reduced to its logical content as
-well.  Four explicit ordinary PA formulas name the zero-level Sigma/Pi
+The rank-zero coordinate has now been reduced to its guarded logical content
+as well.  Four explicit ordinary PA formulas name the zero-level Sigma/Pi
 domains and level-one evidence predicates.  Reversing the three predicate
 variables and applying the generic protected ternary operation recovers the
 literal native evidence applications; executable scope checks establish the
@@ -5349,29 +5349,29 @@ required deep closure.  These facts give a concrete direct-template
 identification of the entire zero local field.  A new adapter projects the
 carried base field's exclusivity conjunct, transports it to the traversal's
 witnessed extension, and closes the predecessor implication from only three
-logical roots (admissibility, Sigma evidence, and Pi evidence).  The sharpest
-canonical compact headline therefore no longer assumes a completed zero
-predecessor compiler.  Its remaining first coordinate is the substantially
-smaller compiler for those three fixed rank-zero roots on an arbitrary
-witnessed PA base.  Its type mentions no native trace, orbit level, global
-predicate code, or successor witness; the other seven coordinates remain the
-permuted-append strong-step resources, reduced staged remainder, and five
-linked staged implication compilers.
+logical roots (admissibility, Sigma evidence, and Pi evidence).
 
-That fixed compiler is in turn generated from one ordinary PA derivation.
-The law curries the Sigma- and Pi-state assumptions around a conjunction of
-admissibility, Sigma evidence, and Pi evidence.  Its raw compiler realizes
-the ordinary proof over an arbitrary witnessed tail, inserts the two state
-assumptions, performs two implication eliminations, and projects all three
-roots on the same witnessed extension.  Consequently the sharpest headline's
-first coordinate is now the ordinary `Formula.BProv` statement for this
-single fixed law, rather than any model-indexed proof-code callback.
+An intermediate sufficient-condition theorem still shows how a proof of one
+open ordinary PA formula would generate those three roots.  That formula
+curries the Sigma- and Pi-state assumptions around their conjunction.  It is
+not used by the headline: the state atoms contain free table variables and,
+without the global traversal hypotheses, do not say that the tables encode
+the canonical truth construction.  Treating this open law as the remaining
+PA theorem would therefore hide rather than solve the traversal obligation.
 
 The native zero trace has also been normalized to the exact global data that
-this smaller compiler must use.  Its adequate orbit at level one inverts to
+the honest smaller compiler must use.  Its adequate orbit at level one
+inverts to
 one successor edge whose predecessor is forced by the zero orbit equation to
 be the two literal globally wrapped rank-zero base quotations.  The inversion
 retains root closure of both base predicates and atomic adequacy of both
 level-one outputs.  Thus the remaining zero compiler no longer needs to
 inspect an opaque orbit or choose a predecessor pair: it starts from a fixed
 root-closed base, its actual successor edge, and adequate successor outputs.
+Its output is now factored into exactly four direct roots—atomic adequacy of
+the current formula, the zero-level Sigma/Pi domain disjunction, and the two
+level-one evidence formulas.  The generic direct-evidence handoff constructs
+admissibility on a common witnessed extension.  The sharpest canonical
+compact headline uses this guarded compiler as its first coordinate; the
+other seven coordinates remain the permuted-append strong-step resources,
+the reduced staged remainder, and five linked staged implication compilers.

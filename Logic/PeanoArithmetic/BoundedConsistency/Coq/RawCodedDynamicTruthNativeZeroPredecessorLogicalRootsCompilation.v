@@ -44,7 +44,9 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthNativeLocalProofCompilation
   RawCodedDynamicTruthLocalFieldProjectionCompilation
+  RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
+  RawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots
   RawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation
   RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
 
@@ -85,8 +87,11 @@ Import PABoundedRawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
 Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
+Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation.
 Import
@@ -132,16 +137,17 @@ Proof.
   reflexivity.
 Qed.
 
-(** Sharp fixed rank-zero proof boundary.  Once the four formulas have been
+(** Strong fixed rank-zero proof boundary.  Once the four formulas have been
     identified with literal quotations, their logical-root package depends
     only on the witnessed PA tail under the two fixed predecessor-state
     assumptions.  In particular, neither a native trace nor any global code
     selected by that trace occurs in the result type.
 
-    This is the finite proof compiler that remains to be constructed.  The
-    more elaborate interfaces below are retained as adapters for existing
-    callback call sites and as an audit of where the fixed formulas came
-    from. *)
+    This interface is useful as a sufficient condition, but it is stronger
+    than the traversal problem: the state assumptions alone do not record
+    that their lookup tables came from the canonical global successor.  The
+    public residual below therefore retains that successor data rather than
+    claiming that this fixed compiler is constructible in isolation. *)
 Definition RawDynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase
     (M : RawPAModel) : Prop :=
   forall sourceWitnessList baseContext,
@@ -159,9 +165,10 @@ Arguments RawDynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase
   M : clear implicits.
 
 (** Curry the two fixed state assumptions around one conjunction containing
-    all three desired leaves.  Proving this single ordinary PA formula is
-    enough to construct every model-internal proof code in the sharp
-    rank-zero compiler. *)
+    all three desired leaves.  Proving this single ordinary PA formula is a
+    sufficient condition for the strong fixed compiler above.  No theorem
+    below claims that PA proves this open formula: its free table variables
+    deliberately make the missing global-source hypotheses visible. *)
 Definition dynamicTruthZeroLogicalRootsLawFormula : formula :=
   pImp dynamicTruthPredecessorSigmaStateMemberBodyFormula
     (pImp dynamicTruthPredecessorPiStateMemberBodyFormula
@@ -462,6 +469,117 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnCanonicalGlobalStep
   M : clear implicits.
+
+(** The proof-producing residue of the canonical rank-zero traversal.
+    Atomic adequacy and the rank-domain disjunction are kept separate from
+    the two polarity roots: the generic direct-evidence handoff can then
+    construct admissibility once, on the exact witnessed context chosen by
+    the traversal.  Unlike [dynamicTruthZeroLogicalRootsLawFormula], this
+    package is guarded by the canonical global successor data at its call
+    site and therefore does not forget why the two state lookups denote
+    genuine truth-certificate rows. *)
+Record RawDynamicTruthZeroDirectEvidenceRootsAt
+    (M : RawPAModel) (baseContext : M) : Prop := {
+  rawDynamicTruthZeroDirectEvidence_atomic : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawDynamicTruthLocalAtomicAdequacyCode M) root;
+  rawDynamicTruthZeroDirectEvidence_domain : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawFormulaOrCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)) root;
+  rawDynamicTruthZeroDirectEvidence_sigma : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawDynamicTruthZeroSigmaEvidenceCode M) root;
+  rawDynamicTruthZeroDirectEvidence_pi : exists root,
+    RawCodedPALocalProofOf M
+      (rawDynamicTruthPredecessorJointStateContext M baseContext)
+      (rawDynamicTruthZeroPiEvidenceCode M) root
+}.
+
+Arguments RawDynamicTruthZeroDirectEvidenceRootsAt M baseContext
+  : clear implicits.
+
+(** Honest canonical rank-zero resource boundary.  A compiler may use the
+    exact successor edge from the two fixed global base predicates, their
+    root-closure proofs, and adequacy of the two successor outputs.  It may
+    also grow the caller's witnessed PA context before returning the four
+    direct roots. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalGlobalStep
+    (M : RawPAModel) : Prop :=
+  forall sourceWitnessList baseContext inputGlobalSigma inputGlobalPi,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList baseContext ->
+    RawDynamicTruthPairedGlobalSuccessorAt M
+      (rawDynamicTruthGlobalSigmaBaseCode M)
+      (rawDynamicTruthGlobalPiBaseCode M)
+      (raw_zero M) inputGlobalSigma inputGlobalPi ->
+    RawCodedTernaryPredicateRootClosed M
+      (rawDynamicTruthGlobalSigmaBaseCode M) ->
+    RawCodedTernaryPredicateRootClosed M
+      (rawDynamicTruthGlobalPiBaseCode M) ->
+    RawCodedFormulaAtomicallyAdequate M inputGlobalSigma ->
+    RawCodedFormulaAtomicallyAdequate M inputGlobalPi ->
+    exists evidenceWitnessList evidenceContext,
+      RawCodedPAAxiomWitnessContext M
+        evidenceWitnessList evidenceContext /\
+      RawContextListIncluded M baseContext evidenceContext /\
+      RawDynamicTruthZeroDirectEvidenceRootsAt M evidenceContext.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalGlobalStep
+  M : clear implicits.
+
+(** Compile the four canonical traversal roots into the three logical roots.
+    The only nontrivial extra work is admissibility: its generic compiler may
+    add PA-axiom witnesses, so inclusions are composed across the traversal
+    context and the admissibility context. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnCanonicalGlobalStep_of_direct_evidence
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalGlobalStep
+    M ->
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnCanonicalGlobalStep
+    M.
+Proof.
+  intros M hPA hdirect sourceWitnessList baseContext
+    inputGlobalSigma inputGlobalPi hsource hsuccessor
+    hbaseSigmaClosed hbasePiClosed hinputSigmaAdequate hinputPiAdequate.
+  destruct (hdirect sourceWitnessList baseContext
+    inputGlobalSigma inputGlobalPi hsource hsuccessor
+    hbaseSigmaClosed hbasePiClosed
+    hinputSigmaAdequate hinputPiAdequate) as
+    (evidenceWitnessList & evidenceContext & hevidenceWitnessed &
+      hbaseEvidenceIncluded & hroots).
+  destruct hroots as
+    [(atomicRoot & hatomic) (domainRoot & hdomain)
+      (sigmaRoot & hsigma) (piRoot & hpi)].
+  set (inputs := rawBottomTemplateDirectStructuralInputs M hPA).
+  set (translation := rawDirectStructuralTemplateTranslation M hPA inputs).
+  destruct
+    (raw_dynamicTruthPredecessorStateLogicalRootsAt_of_direct_evidence_atomic_and_domain
+      M hPA translation
+      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+      evidenceWitnessList evidenceContext
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M)
+      atomicRoot domainRoot sigmaRoot piRoot
+      hevidenceWitnessed hatomic hdomain hsigma hpi) as
+    (targetWitnessList & targetContext & htargetWitnessed &
+      hevidenceTargetIncluded & hlogicalRoots).
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hevidenceTargetIncluded member
+      (hbaseEvidenceIncluded member hmember)).
+  - exact hlogicalRoots.
+Qed.
 
 (** Arithmetic/proof-traversal boundary for rank zero.  The source witness
     list is passed explicitly because it is already stored in the current

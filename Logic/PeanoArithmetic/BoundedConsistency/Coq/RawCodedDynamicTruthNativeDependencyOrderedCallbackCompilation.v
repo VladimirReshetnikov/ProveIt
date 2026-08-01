@@ -295,17 +295,19 @@ Arguments
   M hPA : clear implicits.
 
 (** Rank-zero-refined direct boundary.  The former zero predecessor callback
-    has been reduced to the same kind of resource used at positive levels:
-    three logical roots on a witnessed extension.  All syntactic
-    identification, local-field projection, and template closure are now
-    consequences rather than caller-supplied proof construction. *)
+    has been reduced to a canonical one-step traversal resource.  Its first
+    coordinate retains the successor edge from the two literal global base
+    predicates and asks only for atomic adequacy, rank domain, and the two
+    evidence roots on a witnessed extension.  Generic admissibility,
+    syntactic identification, local-field projection, and template closure
+    are consequences rather than caller-supplied proof construction. *)
 Definition
     RawDynamicTruthNativeDependencyOrderedDirectLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
     (M : RawPAModel) (hPA : RawPASatisfies M)
     (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
   let translation := rawDirectStructuralTemplateTranslation M hPA inputs in
-  Formula.BProv Formula.Ax_s nil
-    dynamicTruthZeroLogicalRootsLawFormula /\
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCanonicalGlobalStep
+    M /\
   RawDynamicTruthNativeAlignedStrongStepPermutedAppendProofResourcesCompilerWithPA
     M hPA /\
   RawDynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder
@@ -330,8 +332,9 @@ Arguments
   RawDynamicTruthNativeDependencyOrderedCanonicalLogicalZeroPermutedAppendProofResourceStrongStepKernelCompilers
   M hPA : clear implicits.
 
-(** Reconstruct the previous direct boundary by closing its zero coordinate
-    through the concrete rank-zero template theorem. *)
+(** Reconstruct the previous direct boundary by compiling the guarded
+    canonical traversal roots to admissibility and then closing the concrete
+    rank-zero template. *)
 Theorem
     raw_dynamicTruthNativeDependencyOrderedDirectPermutedAppendProofResourceStrongStepKernelCompilers_of_logical_zero
     : forall (M : RawPAModel) (hPA : RawPASatisfies M),
@@ -348,10 +351,10 @@ Proof.
   - exact
       (raw_dynamicTruthNativeLocalZeroPredecessorRootCompiler_of_growing_logical_roots
         M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
-        (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_fixed_logical_roots
-          M
-          (raw_dynamicTruthZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_PA_law
-            hzero M hPA))).
+        (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase_of_canonical_global_step
+          M hPA
+          (raw_dynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnCanonicalGlobalStep_of_direct_evidence
+            M hPA hzero))).
   - exact (conj hstrong
       (conj hremainder
         (conj hcrossLevel
