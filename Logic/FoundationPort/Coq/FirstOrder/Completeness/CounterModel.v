@@ -907,3 +907,20 @@ Proof.
         exact Hm.
   - exact Hrestricted.
 Qed.
+
+Corollary first_order_theory_proof_complete_on_eq_models_of_proves :
+  forall L (T : theory L) (sigma : sentence L)
+    (Heq : semiformula_has_eq_operator L),
+  first_order_theory_proves_equality T Heq ->
+  (forall m,
+    structure_interprets_eq (first_order_model_structure m) Heq ->
+    first_order_models_theory m T ->
+    first_order_model_realize m sigma) ->
+  first_order_theory_provable T sigma.
+Proof.
+  intros L T sigma Heq Hproves Hrestricted.
+  apply (@first_order_theory_proof_complete_on_eq_models
+    L T sigma Heq).
+  - now apply first_order_theory_models_equality_of_proves.
+  - exact Hrestricted.
+Qed.
