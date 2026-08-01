@@ -61,7 +61,7 @@ From FoundationModal Require Import
   CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 JerabekBoxdot CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer MaximalTranslations Makinson GLPoint3PlusBoxBot CanonicalS5Grz
-  CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
+  CanonicalK4n CanonicalGeach CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
   CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
 
@@ -6119,6 +6119,11 @@ Check finest_tc_rooted_is_piecewise_strongly_convergent.
 Check finest_tc_rooted_is_piecewise_strongly_connected.
 
 Check valid_Geach_atom_iff_geach_convergent.
+Check schema_Geach.
+Check normal_geach_seed.
+Check normal_canonical_dia_iter_mem_of_rel_iter.
+Check normal_canonical_geach_convergent.
+Check schema_Geach_canonical_frame.
 Check valid_T_iff_reflexive.
 Check valid_D_iff_serial.
 Check valid_B_iff_symmetric.
@@ -7750,6 +7755,11 @@ Print Assumptions
     middle. *)
 Print Assumptions satisfies_dia_elim.
 Print Assumptions valid_Geach_atom_iff_geach_convergent.
+Print Assumptions schema_Geach_substitution_closed.
+Print Assumptions normal_geach_seed_finite_split.
+Print Assumptions normal_geach_seed_consistent.
+Print Assumptions normal_canonical_geach_convergent.
+Print Assumptions schema_Geach_canonical_frame.
 Print Assumptions valid_Point3_iff_piecewise_strong_connected.
 Print Assumptions valid_Loeb_atom_iff_transitive_cwf.
 Print Assumptions standard_translation_diamond_is_existential.
