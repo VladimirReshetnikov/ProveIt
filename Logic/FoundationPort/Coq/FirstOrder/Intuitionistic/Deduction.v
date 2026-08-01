@@ -1,7 +1,8 @@
 (** Type-valued Hilbert deduction for intuitionistic first-order logic. *)
 
 From Stdlib Require Import Arith.PeanoNat Lists.List Vectors.Fin.
-From FoundationModal Require Import GenericCalculus GenericEntailment GenericLogicSymbol
+From FoundationModal Require Import GenericAdjunctiveSet GenericCalculus
+  GenericEntailment GenericLogicSymbol GenericSemantics
   PropositionalEntailmentAxioms PropositionalEntailmentMinimal.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Intuitionistic Require Import Formula Rew.
@@ -159,6 +160,78 @@ Definition ifo_hilbert_identity {L H} (phi : ifo_proposition L) :
     (ifo_hilbert_entailment L) (ifo_connectives L nat 0) H
     (ifo_hilbert_modus_ponens H)
     (fun p q => IFOHPK p q) (fun p q r => IFOHPS p q r) phi.
+
+Definition ifo_hilbert_neg_equiv {L H} (phi : ifo_proposition L) :
+    @ifo_hilbert_proof L H
+      (generic_axiom_neg_equiv (ifo_connectives L nat 0) phi).
+Proof.
+  unfold generic_axiom_neg_equiv, generic_formula_iff. cbn. unfold ifo_neg.
+  exact (IFOHPMdp (IFOHPMdp (IFOHPAnd3 _ _)
+    (ifo_hilbert_identity (IFOImp phi IFOFalsum)))
+    (ifo_hilbert_identity (IFOImp phi IFOFalsum))).
+Defined.
+
+Definition ifo_hilbert_minimal_capability {L} (H : ifo_hilbert L) :
+    generic_minimal_entailment (ifo_hilbert_entailment L)
+      (ifo_connectives L nat 0) H.
+Proof.
+  constructor.
+  - exact (ifo_hilbert_modus_ponens H).
+  - exact (@ifo_hilbert_neg_equiv L H).
+  - exact IFOHPVerum.
+  - exact (fun p q => IFOHPK p q).
+  - exact (fun p q r => IFOHPS p q r).
+  - exact (fun p q => IFOHPAnd1 p q).
+  - exact (fun p q => IFOHPAnd2 p q).
+  - exact (fun p q => IFOHPAnd3 p q).
+  - exact (fun p q => IFOHPOr1 p q).
+  - exact (fun p q => IFOHPOr2 p q).
+  - exact (fun p q r => IFOHPOr3 p q r).
+Defined.
+
+Definition ifo_context_derivation {L} (H : ifo_hilbert L)
+    (Gamma : list (ifo_proposition L)) (phi : ifo_proposition L) : Type :=
+  generic_list_derivation (ifo_hilbert_entailment L) H
+    (ifo_connectives L nat 0) Gamma phi.
+
+Definition ifo_context_assumption {L H Gamma phi}
+    (h : generic_raw_list_member phi Gamma) :
+    @ifo_context_derivation L H Gamma phi := GLD_assumption h.
+
+Definition ifo_context_theorem {L H Gamma phi}
+    (d : @ifo_hilbert_proof L H phi) :
+    @ifo_context_derivation L H Gamma phi.
+Proof.
+  apply GLD_theorem. cbn. exact d.
+Defined.
+
+Definition ifo_context_mdp {L H Gamma phi psi}
+    (dpq : @ifo_context_derivation L H Gamma (IFOImp phi psi))
+    (dp : @ifo_context_derivation L H Gamma phi) :
+    @ifo_context_derivation L H Gamma psi.
+Proof.
+  change (generic_list_derivation (ifo_hilbert_entailment L) H
+    (ifo_connectives L nat 0) Gamma
+    (generic_imp (ifo_connectives L nat 0) phi psi)) in dpq.
+  exact (GLD_mdp dpq dp).
+Defined.
+
+Definition ifo_context_weaken {L H Gamma Delta phi}
+    (incl : forall p, generic_raw_list_member p Gamma ->
+      generic_raw_list_member p Delta)
+    (d : @ifo_context_derivation L H Gamma phi) :
+    @ifo_context_derivation L H Delta phi :=
+  generic_list_derivation_weaken_raw incl d.
+
+Definition ifo_context_deduct {L H Gamma phi psi}
+    (d : @ifo_context_derivation L H (phi :: Gamma) psi) :
+    @ifo_context_derivation L H Gamma (IFOImp phi psi) :=
+  generic_minimal_list_deduction_raw (ifo_hilbert_minimal_capability H) d.
+
+Definition ifo_context_deduct_inverse {L H Gamma phi psi}
+    (d : @ifo_context_derivation L H Gamma (IFOImp phi psi)) :
+    @ifo_context_derivation L H (phi :: Gamma) psi :=
+  generic_list_deduction_inverse_raw d.
 
 Fixpoint ifo_hilbert_proof_weaken {L H K phi}
     (h : ifo_hilbert_le H K) (d : @ifo_hilbert_proof L H phi) :
