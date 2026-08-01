@@ -237,6 +237,11 @@ Check ifo_double_negation_theory.
 Print Assumptions ifo_double_negation_theory_axiom_eq.
 Check ifo_double_negation_theory_intro.
 Check ifo_double_negation_theory_source.
+Print Assumptions ifo_hilbert_neg_double_negation_rewrite.
+Print Assumptions ifo_hilbert_neg_double_negation.
+Print Assumptions ifo_hilbert_neg_neg_double_negation.
+Print Assumptions ifo_hilbert_imp_iff_neg_and_negative.
+Print Assumptions ifo_hilbert_imp_double_negation.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.
