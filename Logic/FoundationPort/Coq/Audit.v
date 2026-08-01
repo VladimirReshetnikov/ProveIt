@@ -54,6 +54,7 @@ From Foundation.FirstOrder.Completeness Require Import CounterModel.
 From Foundation.FirstOrder.Order Require Import Le.
 From Foundation.SecondOrder.Syntax Require Import Formula Rew.
 From Foundation.SecondOrder Require Import Semantics.
+From Foundation.SecondOrder Require Import Derivation.
 From Foundation.Syntax.Predicate Require Import Rew.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic Require Import Model.
@@ -3901,3 +3902,35 @@ Print Assumptions second_order_model_realize_and.
 Print Assumptions second_order_model_realize_or.
 Print Assumptions second_order_model_realize_imp.
 Print Assumptions second_order_model_realize_iff.
+Check second_order_sequent.
+Check second_order_sequent_shift_individual.
+Print Assumptions second_order_sequent_shift_individual_nil.
+Print Assumptions second_order_sequent_shift_individual_cons.
+Check second_order_sequent_shift_predicate.
+Print Assumptions second_order_sequent_shift_predicate_nil.
+Print Assumptions second_order_sequent_shift_predicate_cons.
+Check second_order_sequent_neg.
+Print Assumptions second_order_sequent_neg_nil.
+Print Assumptions second_order_sequent_neg_cons.
+Check second_order_lk_derivation.
+Check SO_LK_identity.
+Check SO_LK_cut.
+Check SO_LK_weakening.
+Check SO_LK_verum.
+Check SO_LK_and.
+Check SO_LK_or.
+Check SO_LK_all_individual.
+Check SO_LK_exists_individual.
+Check SO_LK_all_predicate.
+Check SO_LK_exists_predicate.
+Check second_order_lk_derivation_cast.
+Check second_order_sentence_as_proposition.
+Check second_order_lk_proof.
+Check second_order_schema.
+Check second_order_schema_derivation.
+Check second_order_schema_provable.
+Check second_order_theory.
+Check second_order_theory_provable.
+Print Assumptions second_order_theory_provable_iff.
+Check second_order_schema_theory.
+Print Assumptions second_order_schema_theory_provable_iff.
