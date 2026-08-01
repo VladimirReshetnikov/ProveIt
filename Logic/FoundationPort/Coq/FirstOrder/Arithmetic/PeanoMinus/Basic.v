@@ -796,6 +796,258 @@ Proof.
     + right. apply (peano_minus_numeral_lt H). lia.
 Qed.
 
+(** * Small numerals and powers *)
+
+Lemma peano_minus_lt_iff_add_one_le : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  oring_lt O x y <->
+  peano_minus_le O (oring_add O x (oring_one O)) y.
+Proof.
+  intros M O H x y. split.
+  - apply (peano_minus_add_one_le_of_lt H).
+  - intro Hle. exact (@peano_minus_lt_le_trans M O H
+      x (oring_add O x (oring_one O)) y
+      (peano_minus_lt_add_one H x) Hle).
+Qed.
+
+Lemma peano_minus_positive_iff_one_le : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_lt O (oring_zero O) x <->
+  peano_minus_le O (oring_one O) x.
+Proof.
+  intros M O H x. rewrite (peano_minus_lt_iff_add_one_le H).
+  now rewrite (peano_minus_add_zero_left H).
+Qed.
+
+Lemma peano_minus_one_lt_iff_two_le : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_lt O (oring_one O) x <->
+  peano_minus_le O (oring_numeral O 2) x.
+Proof.
+  intros M O H x. apply (peano_minus_lt_iff_add_one_le H).
+Qed.
+
+Lemma peano_minus_lt_two_iff_le_one : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_lt O x (oring_numeral O 2) <->
+  peano_minus_le O x (oring_one O).
+Proof.
+  intros M O H x. symmetry.
+  apply (peano_minus_le_iff_lt_add_one H).
+Qed.
+
+Fixpoint peano_minus_pow {M} (O : oring_carrier M) (x : M)
+    (n : nat) : M :=
+  match n with
+  | 0 => oring_one O
+  | S k => oring_mul O (peano_minus_pow O x k) x
+  end.
+
+Lemma peano_minus_pow_zero : forall M (O : oring_carrier M) x,
+  peano_minus_pow O x 0 = oring_one O.
+Proof. reflexivity. Qed.
+
+Lemma peano_minus_pow_succ : forall M (O : oring_carrier M) x n,
+  peano_minus_pow O x (S n) =
+  oring_mul O (peano_minus_pow O x n) x.
+Proof. reflexivity. Qed.
+
+Lemma peano_minus_pow_one : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  peano_minus_pow O x 1 = x.
+Proof. intros. simpl. apply (@peano_minus_one_mul M O H). Qed.
+
+Lemma peano_minus_pow_two : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  peano_minus_pow O x 2 = oring_mul O x x.
+Proof.
+  intros. simpl. now rewrite (@peano_minus_one_mul M O H).
+Qed.
+
+Lemma peano_minus_pow_three : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  peano_minus_pow O x 3 =
+  oring_mul O (oring_mul O x x) x.
+Proof.
+  intros. simpl. now rewrite (@peano_minus_one_mul M O H).
+Qed.
+
+Lemma peano_minus_pow_four : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  peano_minus_pow O x 4 =
+  oring_mul O (oring_mul O (oring_mul O x x) x) x.
+Proof.
+  intros. simpl. now rewrite (@peano_minus_one_mul M O H).
+Qed.
+
+Lemma peano_minus_pow_four_square_square : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  peano_minus_pow O x 4 =
+  oring_mul O (oring_mul O x x) (oring_mul O x x).
+Proof.
+  intros M O H x. rewrite (peano_minus_pow_four H).
+  rewrite (@peano_minus_mul_assoc M O H
+    (oring_mul O x x) x x). reflexivity.
+Qed.
+
+Lemma peano_minus_pow_le_pow : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall n x y,
+  peano_minus_le O x y ->
+  peano_minus_le O (peano_minus_pow O x n) (peano_minus_pow O y n).
+Proof.
+  intros M O H n; induction n as [|n IH]; intros x y Hxy; simpl.
+  - apply peano_minus_le_refl.
+  - apply (peano_minus_mul_le_mul H); [now apply IH | exact Hxy].
+Qed.
+
+Lemma peano_minus_square_le_square_iff : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  peano_minus_le O (oring_mul O x x) (oring_mul O y y) <->
+  peano_minus_le O x y.
+Proof.
+  intros M O H x y. split.
+  - intro Hsq. destruct (@peano_minus_le_total M O H x y) as [Hxy | Hyx];
+      [exact Hxy |].
+    destruct Hyx as [-> | Hyx]; [apply peano_minus_le_refl |].
+    exfalso. exact (@peano_minus_lt_not_ge M O H
+      (oring_mul O y y) (oring_mul O x x)
+      (@peano_minus_square_lt_square M O H y x Hyx) Hsq).
+  - apply (peano_minus_square_le_square H).
+Qed.
+
+Lemma peano_minus_square_lt_square_iff : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x y,
+  oring_lt O (oring_mul O x x) (oring_mul O y y) <->
+  oring_lt O x y.
+Proof.
+  intros M O H x y. split.
+  - intro Hsq.
+    destruct (@peano_minus_lt_trichotomy M O H x y)
+      as [Hxy | [-> | Hyx]]; [exact Hxy | |].
+    + exfalso. exact (@peano_minus_lt_irrefl M O H _ Hsq).
+    + exfalso. exact (@peano_minus_lt_irrefl M O H _
+        (@peano_minus_lt_trans M O H _ _ _
+          (@peano_minus_square_lt_square M O H y x Hyx) Hsq)).
+  - apply (@peano_minus_square_lt_square M O H).
+Qed.
+
+Lemma peano_minus_zero_lt_square_iff : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_lt O (oring_zero O) (oring_mul O x x) <->
+  oring_lt O (oring_zero O) x.
+Proof.
+  intros M O H x.
+  rewrite <- (@peano_minus_zero_mul M O H (oring_zero O)) at 1.
+  apply (peano_minus_square_lt_square_iff H).
+Qed.
+
+Lemma peano_minus_one_lt_square_iff : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_lt O (oring_one O) (oring_mul O x x) <->
+  oring_lt O (oring_one O) x.
+Proof.
+  intros M O H x.
+  rewrite <- (@peano_minus_one_mul M O H (oring_one O)) at 1.
+  apply (peano_minus_square_lt_square_iff H).
+Qed.
+
+Lemma peano_minus_square_eq_one_iff : forall M
+    (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_mul O x x = oring_one O <-> x = oring_one O.
+Proof.
+  intros M O H x. split.
+  - intro Hsq. apply (@peano_minus_le_antisym M O H).
+    + apply (proj1 (peano_minus_square_le_square_iff H x (oring_one O))).
+      rewrite (@peano_minus_one_mul M O H). now left.
+    + apply (proj1 (peano_minus_square_le_square_iff H (oring_one O) x)).
+      rewrite (@peano_minus_one_mul M O H), Hsq. apply peano_minus_le_refl.
+  - intros ->. apply (@peano_minus_one_mul M O H).
+Qed.
+
+Lemma peano_minus_two_mul_two : forall M (O : oring_carrier M),
+  peano_minus_laws O ->
+  oring_mul O (oring_numeral O 2) (oring_numeral O 2) =
+  oring_numeral O 4.
+Proof.
+  intros. rewrite (peano_minus_numeral_mul H). reflexivity.
+Qed.
+
+Lemma peano_minus_two_pow_two : forall M (O : oring_carrier M),
+  peano_minus_laws O ->
+  peano_minus_pow O (oring_numeral O 2) 2 = oring_numeral O 4.
+Proof.
+  intros. rewrite (peano_minus_pow_two H).
+  apply peano_minus_two_mul_two. exact H.
+Qed.
+
+Lemma peano_minus_lt_one_iff_zero : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  oring_lt O x (oring_numeral O 1) <-> x = oring_zero O.
+Proof.
+  intros M O H x. rewrite (peano_minus_lt_numeral_iff H).
+  split.
+  - intros [m [Hm ->]]. assert (m = 0) by lia. subst m. reflexivity.
+  - intros ->. exists 0. split; [lia | reflexivity].
+Qed.
+
+Lemma peano_minus_le_one_iff : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  peano_minus_le O x (oring_numeral O 1) <->
+  x = oring_numeral O 0 \/ x = oring_numeral O 1.
+Proof.
+  intros M O H x. rewrite (peano_minus_le_numeral_iff H). split.
+  - intros [m [Hm ->]]. destruct m as [|m]; [now left |].
+    assert (m = 0) by lia. subst m. now right.
+  - intros [Hx | Hx]; subst x.
+    + exists 0. split; [lia | reflexivity].
+    + exists 1. split; [lia | reflexivity].
+Qed.
+
+Lemma peano_minus_le_two_iff : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  peano_minus_le O x (oring_numeral O 2) <->
+  x = oring_numeral O 0 \/ x = oring_numeral O 1 \/
+  x = oring_numeral O 2.
+Proof.
+  intros M O H x. rewrite (peano_minus_le_numeral_iff H). split.
+  - intros [m [Hm ->]]. destruct m as [|[|m]].
+    + now left.
+    + now right; left.
+    + assert (m = 0) by lia. subst m. now right; right.
+  - intros [Hx | [Hx | Hx]]; subst x.
+    + exists 0. split; [lia | reflexivity].
+    + exists 1. split; [lia | reflexivity].
+    + exists 2. split; [lia | reflexivity].
+Qed.
+
+Lemma peano_minus_le_three_iff : forall M (O : oring_carrier M),
+  peano_minus_laws O -> forall x,
+  peano_minus_le O x (oring_numeral O 3) <->
+  x = oring_numeral O 0 \/ x = oring_numeral O 1 \/
+  x = oring_numeral O 2 \/ x = oring_numeral O 3.
+Proof.
+  intros M O H x. rewrite (peano_minus_le_numeral_iff H). split.
+  - intros [m [Hm ->]]. destruct m as [|[|[|m]]].
+    + now left.
+    + now right; left.
+    + now right; right; left.
+    + assert (m = 0) by lia. subst m. now right; right; right.
+  - intros [Hx | [Hx | [Hx | Hx]]]; subst x.
+    + exists 0. split; [lia | reflexivity].
+    + exists 1. split; [lia | reflexivity].
+    + exists 2. split; [lia | reflexivity].
+    + exists 3. split; [lia | reflexivity].
+Qed.
+
 Definition peano_minus_r0_laws : forall M (O : oring_carrier M),
   peano_minus_laws O -> r0_laws O.
 Proof.
