@@ -1,0 +1,18 @@
+(** Assumption audit for the canonical-application direct-evidence bridge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationDirectEvidence.
+
+Check RawDynamicTruthZeroCanonicalApplicationRootsAt.
+Check raw_dynamicTruthZeroDirectEvidenceRoots_of_canonicalApplicationRoots.
+Check
+  raw_dynamicTruthZeroDirectEvidenceRoots_of_canonicalApplicationRoots_bottom.
+
+Print Assumptions RawDynamicTruthZeroCanonicalApplicationRootsAt.
+Print Assumptions
+  raw_dynamicTruthZeroDirectEvidenceRoots_of_canonicalApplicationRoots.
+Print Assumptions
+  raw_dynamicTruthZeroDirectEvidenceRoots_of_canonicalApplicationRoots_bottom.
