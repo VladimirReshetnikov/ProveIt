@@ -242,6 +242,22 @@ Print Assumptions ifo_hilbert_neg_double_negation.
 Print Assumptions ifo_hilbert_neg_neg_double_negation.
 Print Assumptions ifo_hilbert_imp_iff_neg_and_negative.
 Print Assumptions ifo_hilbert_imp_double_negation.
+Check ifo_goedel_gentzen_formula.
+Check ifo_goedel_gentzen_context.
+Print Assumptions ifo_goedel_gentzen_context_nil.
+Print Assumptions ifo_goedel_gentzen_context_cons.
+Print Assumptions ifo_goedel_gentzen_context_append.
+Print Assumptions ifo_free_double_negation.
+Print Assumptions ifo_shift_goedel_gentzen_formula.
+Print Assumptions ifo_shift_goedel_gentzen_context.
+Check ifo_context_cast_context.
+Check ifo_raw_member_of_member_dec.
+Check ifo_member_of_raw_member.
+Check ifo_raw_map_member_preimage.
+Check ifo_raw_member_cast.
+Check ifo_goedel_gentzen_context_subset.
+Print Assumptions ifo_goedel_gentzen.
+Print Assumptions ifo_goedel_gentzen_provable.
 
 Check choose_unique.
 Print Assumptions choose_unique_spec.

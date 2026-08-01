@@ -1,8 +1,8 @@
 (** Gödel--Gentzen negative translation from classical NNF formulas into
     intuitionistic first-order formulas. *)
 
-From Stdlib Require Import Lists.List Vectors.Fin.
-From FoundationModal Require Import GenericCalculus
+From Stdlib Require Import Arith.PeanoNat Lists.List Program.Equality Vectors.Fin.
+From FoundationModal Require Import GenericAdjunctiveSet GenericCalculus
   PropositionalEntailmentAxioms PropositionalEntailmentMinimal.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
@@ -442,3 +442,315 @@ Proof.
   pose (eneg := generic_minimal_neg_iff_congr_raw Hm _ _ einside).
   exact (generic_minimal_iff_trans_raw Hm _ _ _ ebase eneg).
 Defined.
+
+(** Context used by the recursive translation: every classical sequent
+    formula is first structurally negated and then negatively translated. *)
+Definition ifo_goedel_gentzen_formula {L} (phi : proposition L) :
+    ifo_proposition L :=
+  ifo_double_negation_translation (semiformula_neg phi).
+
+Definition ifo_goedel_gentzen_context {L}
+    (Gamma : first_order_sequent L) : list (ifo_proposition L) :=
+  map ifo_goedel_gentzen_formula Gamma.
+
+Lemma ifo_goedel_gentzen_context_nil : forall L,
+  @ifo_goedel_gentzen_context L [] = [].
+Proof. reflexivity. Qed.
+
+Lemma ifo_goedel_gentzen_context_cons : forall L
+    (phi : proposition L) Gamma,
+  ifo_goedel_gentzen_context (phi :: Gamma) =
+  ifo_goedel_gentzen_formula phi :: ifo_goedel_gentzen_context Gamma.
+Proof. reflexivity. Qed.
+
+Lemma ifo_goedel_gentzen_context_append : forall L
+    (Gamma Delta : first_order_sequent L),
+  ifo_goedel_gentzen_context (Gamma ++ Delta) =
+  ifo_goedel_gentzen_context Gamma ++ ifo_goedel_gentzen_context Delta.
+Proof. intros. unfold ifo_goedel_gentzen_context. apply map_app. Qed.
+
+Lemma ifo_free_double_negation : forall L
+    (phi : semiproposition L 1),
+  @ifo_free L 0 (ifo_double_negation_translation phi) =
+  ifo_double_negation_translation (@semiformula_free L 0 phi).
+Proof.
+  intros L phi. unfold ifo_free, semiformula_free.
+  apply ifo_rewrite_double_negation.
+Qed.
+
+Lemma ifo_shift_goedel_gentzen_formula : forall L
+    (phi : proposition L),
+  ifo_shift (ifo_goedel_gentzen_formula phi) =
+  ifo_goedel_gentzen_formula (semiformula_shift phi).
+Proof.
+  intros L phi. unfold ifo_goedel_gentzen_formula,
+    ifo_shift, semiformula_shift.
+  rewrite ifo_rewrite_double_negation, semiformula_rewrite_neg.
+  reflexivity.
+Qed.
+
+Theorem ifo_shift_goedel_gentzen_context : forall L
+    (Gamma : first_order_sequent L),
+  map ifo_shift (ifo_goedel_gentzen_context Gamma) =
+  ifo_goedel_gentzen_context (first_order_sequent_shift Gamma).
+Proof.
+  intros L Gamma. induction Gamma as [|phi Gamma IH]; simpl.
+  - reflexivity.
+  - now rewrite ifo_shift_goedel_gentzen_formula, IH.
+Qed.
+
+Definition ifo_context_cast_context {L H Gamma Delta phi}
+    (d : @ifo_context_derivation L H Gamma phi) (e : Gamma = Delta) :
+    @ifo_context_derivation L H Delta phi :=
+  match e with eq_refl => d end.
+
+(** Turn propositional list membership into a proof-relevant positional
+    witness when equality is decidable.  This isolates the sole role of the
+    source module's decidable-language assumption in contraction. *)
+Fixpoint ifo_raw_member_of_member_dec {A : Type}
+    (eq_dec : forall x y : A, {x = y} + {x <> y})
+    (x : A) (xs : list A) {struct xs} :
+    generic_list_member x xs -> generic_raw_list_member x xs.
+Proof.
+  destruct xs as [|y ys]; intro h.
+  - exact (False_rect _ h).
+  - destruct (eq_dec x y) as [e | ne].
+    + subst y. exact (GRLM_here ys).
+    + apply (GRLM_there y).
+      apply (@ifo_raw_member_of_member_dec A eq_dec x ys).
+      assert (htail : generic_list_member x ys).
+      { destruct h as [hxy | htail]; [contradiction | exact htail]. }
+      exact htail.
+Defined.
+
+Fixpoint ifo_member_of_raw_member {A : Type} {x : A} {xs : list A}
+    (h : generic_raw_list_member x xs) : generic_list_member x xs :=
+  match h with
+  | GRLM_here _ => or_introl eq_refl
+  | GRLM_there _ htail => or_intror (ifo_member_of_raw_member htail)
+  end.
+
+Fixpoint ifo_raw_map_member_preimage {A B : Type} (f : A -> B)
+    (xs : list A) {y : B}
+    (h : generic_raw_list_member y (map f xs)) {struct xs} :
+    { x : A & (generic_raw_list_member x xs * (f x = y))%type }.
+Proof.
+  destruct xs as [|x xs].
+  - inversion h.
+  - dependent destruction h.
+    + exists x. split; [exact (GRLM_here xs) | reflexivity].
+    + destruct (@ifo_raw_map_member_preimage A B f xs y h)
+        as [z [hz ez]].
+      exists z. split; [exact (GRLM_there x hz) | exact ez].
+Defined.
+
+Definition ifo_raw_member_cast {A : Type} {x y : A} {xs : list A}
+    (e : x = y) (h : generic_raw_list_member x xs) :
+    generic_raw_list_member y xs :=
+  match e with eq_refl => h end.
+
+Definition ifo_goedel_gentzen_context_subset {L}
+    (D : language_decidable_eq L)
+    {Gamma Delta : first_order_sequent L}
+    (incl : generic_list_subset Gamma Delta) :
+    forall p,
+      generic_raw_list_member p (ifo_goedel_gentzen_context Gamma) ->
+      generic_raw_list_member p (ifo_goedel_gentzen_context Delta).
+Proof.
+  intros p hp.
+  destruct (@ifo_raw_map_member_preimage
+    (proposition L) (ifo_proposition L)
+    (@ifo_goedel_gentzen_formula L) Gamma p hp)
+    as [phi [hphi ephi]].
+  pose (hDelta := incl phi (ifo_member_of_raw_member hphi)).
+  pose (rawDelta := @ifo_raw_member_of_member_dec
+    (proposition L) (semiformula_eq_dec D Nat.eq_dec)
+    phi Delta hDelta).
+  exact (ifo_raw_member_cast ephi
+    (generic_raw_list_member_map ifo_goedel_gentzen_formula rawDelta)).
+Defined.
+
+(** Recursive Gödel--Gentzen translation of the complete eight-constructor
+    one-sided first-order LK calculus. *)
+Fixpoint ifo_goedel_gentzen {L H}
+    (D : language_decidable_eq L) {Gamma : first_order_sequent L}
+    (d : first_order_derivation L Gamma) {struct d} :
+    @ifo_context_derivation L H (ifo_goedel_gentzen_context Gamma)
+      IFOFalsum.
+Proof.
+  destruct d as [k R v | phi Gamma Delta dp dn |
+    Gamma Delta d incl | | phi psi Gamma d |
+    phi psi Gamma dphi dpsi | phi Gamma d | phi t Gamma d].
+  - cbn [ifo_goedel_gentzen_context ifo_goedel_gentzen_formula].
+    exact (ifo_context_mdp
+      (ifo_context_assumption
+        (GRLM_there (ifo_neg (IFORel R v)) (GRLM_here [])))
+      (ifo_context_assumption (GRLM_here [_]))).
+  - pose (ihp := @ifo_goedel_gentzen L H D (phi :: Gamma) dp).
+    pose (ihn0 := @ifo_goedel_gentzen L H D
+      (semiformula_neg phi :: Delta) dn).
+    pose (dntp := ifo_context_deduct ihp).
+    assert (econtext :
+        ifo_goedel_gentzen_context (semiformula_neg phi :: Delta) =
+        ifo_double_negation_translation phi ::
+          ifo_goedel_gentzen_context Delta).
+    { unfold ifo_goedel_gentzen_context. simpl. f_equal.
+      unfold ifo_goedel_gentzen_formula.
+      now rewrite semiformula_neg_involutive. }
+    pose (ihn := ifo_context_cast_context ihn0 econtext).
+    pose (dnt := ifo_context_deduct ihn).
+    pose (Hm := ifo_hilbert_minimal_capability H).
+    pose (eneg := @ifo_hilbert_neg_double_negation L H phi).
+    pose (dleft := generic_minimal_iff_elim_left_raw Hm _ _ eneg).
+    pose (dcontra := generic_minimal_contraposition_raw Hm _ _ dleft).
+    pose (dnntp := ifo_context_mdp
+      (ifo_context_theorem
+        (Gamma := ifo_goedel_gentzen_context Gamma) dcontra) dntp).
+    assert (eappend :
+        ifo_goedel_gentzen_context (Gamma ++ Delta) =
+        ifo_goedel_gentzen_context Gamma ++
+          ifo_goedel_gentzen_context Delta).
+    { apply ifo_goedel_gentzen_context_append. }
+    refine (ifo_context_cast_context _ (eq_sym eappend)).
+    exact (ifo_context_mdp
+      (ifo_context_weaken
+        (fun p hp => generic_raw_list_member_app_left _ hp) dnntp)
+      (ifo_context_weaken
+        (fun p hp => generic_raw_list_member_app_right _ hp) dnt)).
+  - exact (ifo_context_weaken
+      (ifo_goedel_gentzen_context_subset D incl)
+      (@ifo_goedel_gentzen L H D Gamma d)).
+  - cbn [ifo_goedel_gentzen_context ifo_goedel_gentzen_formula].
+    exact (ifo_context_assumption (GRLM_here [])).
+  - pose (ih := @ifo_goedel_gentzen L H D
+      (phi :: psi :: Gamma) d).
+    pose (dphi := ifo_context_deduct ih).
+    pose (dpsi := ifo_context_deduct dphi).
+    set (head := ifo_goedel_gentzen_formula (Semiformula_or phi psi)).
+    set (tail := ifo_goedel_gentzen_context Gamma).
+    assert (dhead : @ifo_context_derivation L H (head :: tail)
+        (IFOAnd (ifo_goedel_gentzen_formula phi)
+          (ifo_goedel_gentzen_formula psi))).
+    { apply ifo_context_assumption. unfold head, tail,
+        ifo_goedel_gentzen_formula. simpl. exact (GRLM_here _). }
+    pose (dleft := ifo_context_mdp
+      (ifo_context_theorem (Gamma := head :: tail)
+        (IFOHPAnd1 (ifo_goedel_gentzen_formula phi)
+          (ifo_goedel_gentzen_formula psi))) dhead).
+    pose (dright := ifo_context_mdp
+      (ifo_context_theorem (Gamma := head :: tail)
+        (IFOHPAnd2 (ifo_goedel_gentzen_formula phi)
+          (ifo_goedel_gentzen_formula psi))) dhead).
+    pose (dimp := ifo_context_weaken
+      (fun p hp => GRLM_there head hp) dpsi).
+    change (@ifo_context_derivation L H (head :: tail) IFOFalsum).
+    exact (ifo_context_mdp (ifo_context_mdp dimp dright) dleft).
+  - pose (ihphi := @ifo_goedel_gentzen L H D
+      (phi :: Gamma) dphi).
+    pose (ihpsi := @ifo_goedel_gentzen L H D
+      (psi :: Gamma) dpsi).
+    pose (dnphi := ifo_context_deduct ihphi).
+    pose (dnpsi := ifo_context_deduct ihpsi).
+    set (head := ifo_goedel_gentzen_formula (Semiformula_and phi psi)).
+    set (tail := ifo_goedel_gentzen_context Gamma).
+    assert (dand : @ifo_context_derivation L H tail
+        (IFOAnd (ifo_neg (ifo_goedel_gentzen_formula phi))
+          (ifo_neg (ifo_goedel_gentzen_formula psi)))).
+    { exact (ifo_context_mdp
+        (ifo_context_mdp
+          (ifo_context_theorem (Gamma := tail)
+            (IFOHPAnd3 (ifo_neg (ifo_goedel_gentzen_formula phi))
+              (ifo_neg (ifo_goedel_gentzen_formula psi)))) dnphi) dnpsi). }
+    assert (dhead : @ifo_context_derivation L H (head :: tail)
+        (ifo_neg
+          (IFOAnd (ifo_neg (ifo_goedel_gentzen_formula phi))
+            (ifo_neg (ifo_goedel_gentzen_formula psi))))).
+    { apply ifo_context_assumption. unfold head, tail,
+        ifo_goedel_gentzen_formula. simpl. exact (GRLM_here _). }
+    change (@ifo_context_derivation L H (head :: tail) IFOFalsum).
+    exact (ifo_context_mdp dhead
+      (ifo_context_weaken (fun p hp => GRLM_there head hp) dand)).
+  - set (body := ifo_double_negation_translation (semiformula_neg phi)).
+    pose (ih0 := @ifo_goedel_gentzen L H D
+      (@semiformula_free L 0 phi :: first_order_sequent_shift Gamma) d).
+    assert (ehead :
+        ifo_goedel_gentzen_formula (@semiformula_free L 0 phi) =
+        @ifo_free L 0 body).
+    { unfold body, ifo_goedel_gentzen_formula.
+      rewrite ifo_free_double_negation, semiformula_free_neg.
+      reflexivity. }
+    assert (econtext :
+        ifo_goedel_gentzen_context
+          (@semiformula_free L 0 phi :: first_order_sequent_shift Gamma) =
+        @ifo_free L 0 body ::
+          map ifo_shift (ifo_goedel_gentzen_context Gamma)).
+    { unfold ifo_goedel_gentzen_context. simpl. f_equal.
+      - exact ehead.
+      - symmetry. apply ifo_shift_goedel_gentzen_context. }
+    pose (ih := ifo_context_cast_context ih0 econtext).
+    pose (dnfree := ifo_context_deduct ih).
+    assert (dnfree' : @ifo_context_derivation L H
+        (map ifo_shift (ifo_goedel_gentzen_context Gamma))
+        (@ifo_free L 0 (ifo_neg body))).
+    { exact dnfree. }
+    pose (dall := @ifo_context_generalize L H
+      (ifo_goedel_gentzen_context Gamma) (ifo_neg body) dnfree').
+    set (head := ifo_goedel_gentzen_formula (Semiformula_all phi)).
+    set (tail := ifo_goedel_gentzen_context Gamma).
+    assert (dhead : @ifo_context_derivation L H (head :: tail)
+        (ifo_neg (IFOAll (ifo_neg body)))).
+    { apply ifo_context_assumption. unfold head, tail, body,
+        ifo_goedel_gentzen_formula. simpl. exact (GRLM_here _). }
+    change (@ifo_context_derivation L H (head :: tail) IFOFalsum).
+    exact (ifo_context_mdp dhead
+      (ifo_context_weaken (fun p hp => GRLM_there head hp) dall)).
+  - set (body := ifo_double_negation_translation (semiformula_neg phi)).
+    set (instance := ifo_substitute (fun _ : Fin.t 1 => t) body).
+    pose (ih0 := @ifo_goedel_gentzen L H D
+      (semiformula_substitute (fun _ : Fin.t 1 => t) phi :: Gamma) d).
+    assert (ehead :
+        ifo_goedel_gentzen_formula
+          (semiformula_substitute (fun _ : Fin.t 1 => t) phi) = instance).
+    { unfold instance, body, ifo_goedel_gentzen_formula,
+        ifo_substitute, semiformula_substitute.
+      rewrite ifo_rewrite_double_negation, semiformula_rewrite_neg.
+      reflexivity. }
+    assert (econtext :
+        ifo_goedel_gentzen_context
+          (semiformula_substitute (fun _ : Fin.t 1 => t) phi :: Gamma) =
+        instance :: ifo_goedel_gentzen_context Gamma).
+    { unfold ifo_goedel_gentzen_context. simpl. now rewrite ehead. }
+    pose (ih := ifo_context_cast_context ih0 econtext).
+    pose (dninstance := ifo_context_deduct ih).
+    set (head := ifo_goedel_gentzen_formula (Semiformula_exists phi)).
+    set (tail := ifo_goedel_gentzen_context Gamma).
+    assert (dall : @ifo_context_derivation L H (head :: tail)
+        (IFOAll body)).
+    { apply ifo_context_assumption. unfold head, tail, body,
+        ifo_goedel_gentzen_formula. simpl. exact (GRLM_here _). }
+    pose (dinstance := ifo_context_specialize (phi := body) dall t).
+    change (@ifo_context_derivation L H (head :: tail) IFOFalsum).
+    exact (ifo_context_mdp
+      (ifo_context_weaken (fun p hp => GRLM_there head hp) dninstance)
+      dinstance).
+Defined.
+
+Theorem ifo_goedel_gentzen_provable : forall L
+    (D : language_decidable_eq L) (H : ifo_hilbert L)
+    (phi : proposition L),
+  first_order_lk_provable phi ->
+  inhabited
+    (@ifo_hilbert_proof L H (ifo_double_negation_translation phi)).
+Proof.
+  intros L D H phi Hphi.
+  apply (proj1 (@first_order_lk_provable_iff L phi)) in Hphi.
+  destruct Hphi as [d].
+  pose (dbot := @ifo_goedel_gentzen L H D [phi] d).
+  pose (dneg := ifo_context_deduct dbot).
+  pose (dneg0 := generic_empty_derivation_raw
+    (ifo_hilbert_modus_ponens H) dneg).
+  pose (Hm := ifo_hilbert_minimal_capability H).
+  pose (eneg := @ifo_hilbert_neg_neg_double_negation L H phi).
+  constructor.
+  exact (IFOHPMdp (generic_minimal_iff_elim_left_raw Hm _ _ eneg) dneg0).
+Qed.
