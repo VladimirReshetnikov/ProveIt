@@ -23,6 +23,7 @@ From Foundation.FirstOrder.Incompleteness Require Import Dense.
 From Foundation.FirstOrder.Incompleteness Require Import First.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
+From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4413,3 +4414,43 @@ Print Assumptions boot_oring_func_add_index.
 Print Assumptions boot_oring_func_mul_index.
 Print Assumptions boot_oring_rel_eq_index.
 Print Assumptions boot_oring_rel_lt_index.
+Check boot_qq_bvar.
+Check boot_qq_fvar.
+Check boot_qq_func.
+Print Assumptions boot_qq_bvar_argument_le.
+Print Assumptions boot_qq_fvar_argument_le.
+Print Assumptions boot_qq_func_arity_le.
+Print Assumptions boot_qq_func_symbol_le.
+Print Assumptions boot_qq_func_arguments_le.
+Print Assumptions boot_qq_func_component_le.
+Print Assumptions boot_qq_bvar_injective.
+Print Assumptions boot_qq_fvar_injective.
+Print Assumptions boot_qq_func_injective.
+Check boot_term_code.
+Check boot_is_uterm.
+Check boot_is_uterm_vec.
+Check boot_is_semiterm.
+Check boot_is_semiterm_vec.
+Print Assumptions boot_term_code_case_iff.
+Print Assumptions boot_term_code_func_iff.
+Print Assumptions boot_term_code_vec_cons_iff.
+Print Assumptions boot_term_code_monotone.
+Print Assumptions boot_is_semiterm_weaken.
+Print Assumptions boot_is_uterm_case_iff.
+Print Assumptions boot_is_uterm_func_iff.
+Print Assumptions boot_is_semiterm_case_iff.
+Print Assumptions boot_is_semiterm_func_iff.
+Print Assumptions boot_term_code_induction.
+Print Assumptions boot_is_uterm_induction.
+Print Assumptions boot_is_semiterm_induction.
+Print Assumptions semiterm_code_policy_iff.
+Print Assumptions semiterm_code_is_uterm.
+Print Assumptions semiterm_code_is_semiterm.
+Check boot_nat_encoding.
+Print Assumptions boot_is_semiterm_has_quote.
+Print Assumptions boot_is_semiterm_quote_iff.
+Check boot_semiterm_bv.
+Print Assumptions boot_fin_max_le_iff.
+Print Assumptions boot_semiterm_bv_component_le.
+Print Assumptions boot_semiterm_bv_le_iff.
+Print Assumptions semiterm_code_is_semiterm_iff_bv.
