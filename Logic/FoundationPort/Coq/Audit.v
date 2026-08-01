@@ -435,6 +435,13 @@ Check llfo_vee.
 Check llfo_imply.
 Check llfo_complexity.
 Print Assumptions llfo_complexity_neg.
+Check llfo_rel_payload.
+Check llfo_outer_rel_payload.
+Check llfo_outer_nrel_payload.
+Print Assumptions llfo_rel_injective_same_arity.
+Print Assumptions llfo_nrel_injective_same_arity.
+Check llfo_semiformula_eq_dec.
+Check llfo_proposition_eq_dec.
 Check llfo_is_quest.
 Print Assumptions llfo_is_quest_quest.
 Print Assumptions llfo_is_quest_not_bang.
@@ -470,6 +477,8 @@ Print Assumptions llfo_negative_all_iff.
 Print Assumptions llfo_positive_tensor_iff.
 Print Assumptions llfo_positive_plus_iff.
 Print Assumptions llfo_positive_exs_iff.
+Check llfo_negative_dec.
+Check llfo_positive_dec.
 Print Assumptions llfo_neg_positive_iff_negative.
 Print Assumptions llfo_neg_negative_iff_positive.
 Print Assumptions llfo_positive_negative_disjoint.
@@ -639,6 +648,8 @@ Check llfo_derivation_forget.
 Print Assumptions llfo_proof_forget.
 Print Assumptions llfo_proof_forget_Girard.
 Print Assumptions llfo_girard_faithful.
+Print Assumptions llfo_proof_girard_decidable.
+Print Assumptions llfo_girard_faithful_decidable.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.

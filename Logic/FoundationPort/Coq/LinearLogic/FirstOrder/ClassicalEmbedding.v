@@ -1072,3 +1072,18 @@ Definition llfo_girard_faithful {L}
     (first_order_derivation L [phi] -> llfo_proof (llfo_Girard phi)) :=
   (@llfo_proof_forget_Girard L phi,
    @llfo_proof_girard L eq_dec phi).
+
+(** Source-style specialization: Foundation supplies formula equality through
+    the language's decidable symbols.  The more general theorem above remains
+    useful when callers already have a formula equality procedure. *)
+Definition llfo_proof_girard_decidable {L} (D : language_decidable_eq L)
+    (phi : proposition L)
+    (d : first_order_derivation L [phi]) :
+    llfo_proof (llfo_Girard phi) :=
+  @llfo_proof_girard L (llfo_proposition_eq_dec D) phi d.
+
+Definition llfo_girard_faithful_decidable {L}
+    (D : language_decidable_eq L) (phi : proposition L) :
+    (llfo_proof (llfo_Girard phi) -> first_order_derivation L [phi]) *
+    (first_order_derivation L [phi] -> llfo_proof (llfo_Girard phi)) :=
+  @llfo_girard_faithful L (llfo_proposition_eq_dec D) phi.
