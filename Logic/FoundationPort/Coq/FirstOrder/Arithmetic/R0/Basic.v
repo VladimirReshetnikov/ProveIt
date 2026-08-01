@@ -500,6 +500,35 @@ Proof.
     Hand Hor Hball Hexists Hp).
 Qed.
 
+(** Pi-one truth reflects along the same numeral embedding.  Factoring this
+    valuation-parametric dual avoids repeating the sentence-only classical
+    contraposition in every absoluteness client. *)
+Theorem r0_pi_one_eval_reflection : forall M X
+    (Str : first_order_structure oring_language M) (O : oring_carrier M),
+  structure_interprets_oring Str oring_language_structure O ->
+  r0_laws O ->
+  forall n (p : semiformula oring_language X n),
+  arithmetic_hierarchy X arithmetic_pi 1 n p ->
+  forall (bv : Fin.t n -> nat) (fv : X -> nat),
+  semiformula_eval Str
+    (fun i => oring_numeral O (bv i))
+    (fun x => oring_numeral O (fv x)) p ->
+  semiformula_eval nat_standard_structure bv fv p.
+Proof.
+  intros M X Str O Horing Hr0 n p Hp bv fv HM.
+  apply NNPP. intro Hnat.
+  assert (Hneg_hierarchy :
+      arithmetic_hierarchy X arithmetic_sigma 1 n (semiformula_neg p)).
+  { exact (arithmetic_hierarchy_neg Hp). }
+  assert (Hneg_nat :
+      semiformula_eval nat_standard_structure bv fv (semiformula_neg p)).
+  { rewrite semiformula_eval_neg. exact Hnat. }
+  pose proof (@r0_sigma_one_eval_transport M X Str O Horing Hr0
+    n (semiformula_neg p) Hneg_hierarchy bv fv Hneg_nat) as Hneg_M.
+  rewrite semiformula_eval_neg in Hneg_M.
+  exact (Hneg_M HM).
+Qed.
+
 (** Sigma-one truth in the standard natural-number structure is upward
     absolute to every structure satisfying the concrete R0 laws. *)
 Theorem r0_sigma_one_model_complete : forall M

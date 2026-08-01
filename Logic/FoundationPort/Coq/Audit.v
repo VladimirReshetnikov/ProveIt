@@ -74,6 +74,7 @@ From Foundation.FirstOrder.Arithmetic.IOpen Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
+From Foundation.FirstOrder.Arithmetic.Definability Require Import Absoluteness.
 From Foundation.FirstOrder.Arithmetic.TA Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
@@ -2581,6 +2582,26 @@ Print Assumptions arithmetic_hierarchy_sigma_one_of_base.
 Print Assumptions arithmetic_sigma_one_induction.
 Print Assumptions arithmetic_theory_consistent_of_sigma_one_sound.
 Print Assumptions arithmetic_theory_consistent_of_pi_two_sound.
+Print Assumptions arithmetic_empty_valuation_unique.
+Print Assumptions arithmetic_sigma_one_upward_absolute.
+Print Assumptions arithmetic_pi_one_downward_absolute.
+Print Assumptions arithmetic_sigma_zero_absolute.
+Print Assumptions arithmetic_delta_one_absolute.
+Print Assumptions arithmetic_sigma_one_semisentence_upward_absolute.
+Print Assumptions arithmetic_pi_one_semisentence_downward_absolute.
+Print Assumptions arithmetic_sigma_zero_semisentence_absolute.
+Print Assumptions arithmetic_delta_one_semisentence_absolute.
+Print Assumptions arithmetic_delta_one_defined_absolute.
+Print Assumptions arithmetic_sigma_zero_defined_absolute.
+Print Assumptions arithmetic_delta_one_defined_function_absolute.
+Print Assumptions arithmetic_sigma_zero_defined_function_absolute.
+Check arithmetic_numeral_instance.
+Print Assumptions arithmetic_numeral_instance_hierarchy.
+Print Assumptions arithmetic_numeral_instance_realize_iff_in_structure.
+Print Assumptions arithmetic_numeral_instance_realize_iff.
+Print Assumptions arithmetic_sigma_one_provable_iff_with_numeral_parameters.
+Print Assumptions arithmetic_sigma_zero_model_iff_provable_with_numeral_parameters.
+Print Assumptions arithmetic_delta_one_model_iff_provable_with_numeral_parameters.
 Print Assumptions arithmetic_sorted_rewrite.
 Print Assumptions arithmetic_sorted_rewrite_val.
 Print Assumptions arithmetic_sorted_zero_hierarchy.
@@ -2747,6 +2768,7 @@ Print Assumptions r0_numeral_fin_env_cons.
 Print Assumptions r0_positive_atom_transport.
 Print Assumptions r0_negative_atom_transport.
 Print Assumptions r0_sigma_one_eval_transport.
+Print Assumptions r0_pi_one_eval_reflection.
 Print Assumptions r0_sigma_one_model_complete.
 Print Assumptions r0_sigma_one_semisentence_transport.
 Print Assumptions r0_pi_one_model_reflection.
