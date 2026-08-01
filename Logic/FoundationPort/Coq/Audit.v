@@ -599,6 +599,12 @@ Print Assumptions llfo_girard_neg.
 Print Assumptions llfo_girard_rewrite.
 Check llfo_Girard.
 Print Assumptions llfo_Girard_rewrite.
+Print Assumptions llfo_Girard_eq_quest.
+Print Assumptions llfo_Girard_eq_raw.
+Print Assumptions llfo_Girard_all_of_positive.
+Print Assumptions llfo_Girard_all_of_negative.
+Print Assumptions llfo_Girard_exs_of_positive.
+Print Assumptions llfo_Girard_exs_of_negative.
 Print Assumptions llfo_girard_negative.
 Print Assumptions llfo_girard_positive.
 Print Assumptions llfo_girard_negative_iff.
@@ -620,6 +626,10 @@ Print Assumptions llfo_girard_duplicated_context_incl.
 Print Assumptions llfo_girard_collapse_duplicated_context.
 Print Assumptions llfo_girard_and_step.
 Print Assumptions llfo_girard_or_step.
+Print Assumptions llfo_girard_all_step.
+Print Assumptions llfo_girard_exs_step.
+Print Assumptions llfo_derivation_girard.
+Print Assumptions llfo_proof_girard.
 Print Assumptions llfo_forget_girard.
 Print Assumptions llfo_forget_Girard.
 Check llfo_forget_sequent.
@@ -627,6 +637,8 @@ Print Assumptions llfo_forget_sequent_shift.
 Print Assumptions llfo_forget_permutation_subset.
 Check llfo_derivation_forget.
 Print Assumptions llfo_proof_forget.
+Print Assumptions llfo_proof_forget_Girard.
+Print Assumptions llfo_girard_faithful.
 Print Assumptions list_permutation_two_iff.
 Check list_comp_subset.
 Print Assumptions list_permutation_normalize.

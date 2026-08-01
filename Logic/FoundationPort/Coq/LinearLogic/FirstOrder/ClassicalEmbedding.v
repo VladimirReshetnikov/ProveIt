@@ -216,6 +216,43 @@ Proof.
   destruct (semiformula_polarity phi); reflexivity.
 Qed.
 
+Lemma llfo_Girard_eq_quest : forall L X n (phi : semiformula L X n),
+  semiformula_polarity phi = true ->
+  llfo_Girard phi = LLQuest (llfo_girard phi).
+Proof. intros. unfold llfo_Girard. now rewrite H. Qed.
+
+Lemma llfo_Girard_eq_raw : forall L X n (phi : semiformula L X n),
+  semiformula_polarity phi = false ->
+  llfo_Girard phi = llfo_girard phi.
+Proof. intros. unfold llfo_Girard. now rewrite H. Qed.
+
+Lemma llfo_Girard_all_of_positive : forall L X n
+    (phi : semiformula L X (S n)),
+  semiformula_polarity phi = true ->
+  llfo_Girard (Semiformula_all phi) =
+  LLAll (LLQuest (llfo_girard phi)).
+Proof. intros. unfold llfo_Girard. simpl. unfold llfo_girard. now rewrite H. Qed.
+
+Lemma llfo_Girard_all_of_negative : forall L X n
+    (phi : semiformula L X (S n)),
+  semiformula_polarity phi = false ->
+  llfo_Girard (Semiformula_all phi) = LLAll (llfo_girard phi).
+Proof. intros. unfold llfo_Girard. simpl. unfold llfo_girard. now rewrite H. Qed.
+
+Lemma llfo_Girard_exs_of_positive : forall L X n
+    (phi : semiformula L X (S n)),
+  semiformula_polarity phi = true ->
+  llfo_Girard (Semiformula_exists phi) =
+  LLQuest (LLExs (llfo_girard phi)).
+Proof. intros. unfold llfo_Girard. simpl. unfold llfo_girard. now rewrite H. Qed.
+
+Lemma llfo_Girard_exs_of_negative : forall L X n
+    (phi : semiformula L X (S n)),
+  semiformula_polarity phi = false ->
+  llfo_Girard (Semiformula_exists phi) =
+  LLQuest (LLExs (LLBang (llfo_girard phi))).
+Proof. intros. unfold llfo_Girard. simpl. unfold llfo_girard. now rewrite H. Qed.
+
 Theorem llfo_girard_negative : forall L X n (phi : semiformula L X n),
   semiformula_negative phi -> llfo_negative n (llfo_girard phi).
 Proof.
@@ -713,6 +750,182 @@ Proof.
       now rewrite Hphi, Hpsi.
 Defined.
 
+Definition llfo_girard_all_step {L}
+    (phi : semiproposition L 1) (Gamma : first_order_sequent L)
+    (d : llfo_derivation L
+      (llfo_girard_sequent
+        (@semiformula_free L 0 phi :: first_order_sequent_shift Gamma))) :
+    llfo_derivation L
+      (llfo_girard_sequent (Semiformula_all phi :: Gamma)).
+Proof.
+  destruct (semiformula_polarity phi) eqn:Hphi.
+  - assert (dprem : llfo_derivation L
+        (@llfo_free L 0 (LLQuest (llfo_girard phi)) ::
+         llfo_shift_sequent (llfo_girard_sequent Gamma))).
+    { eapply llfo_derivation_cast; [exact d |].
+      change
+        (llfo_Girard (@semiformula_free L 0 phi) ::
+           llfo_girard_sequent (first_order_sequent_shift Gamma) =
+         @llfo_free L 0 (LLQuest (llfo_girard phi)) ::
+           llfo_shift_sequent (llfo_girard_sequent Gamma)).
+      f_equal.
+      - unfold semiformula_free, llfo_free.
+        transitivity (llfo_rewrite (@rew_free L 0) (llfo_Girard phi)).
+        + apply llfo_Girard_rewrite.
+        + now rewrite (llfo_Girard_eq_quest Hphi).
+      - apply eq_sym, llfo_girard_sequent_shift. }
+    eapply llfo_derivation_cast.
+    + exact (@LLDAll L (LLQuest (llfo_girard phi))
+        (llfo_girard_sequent Gamma) dprem).
+    + change
+        (LLAll (LLQuest (llfo_girard phi)) ::
+           llfo_girard_sequent Gamma =
+         llfo_Girard (Semiformula_all phi) ::
+           llfo_girard_sequent Gamma).
+      f_equal. apply eq_sym. now apply llfo_Girard_all_of_positive.
+  - assert (dprem : llfo_derivation L
+        (@llfo_free L 0 (llfo_girard phi) ::
+         llfo_shift_sequent (llfo_girard_sequent Gamma))).
+    { eapply llfo_derivation_cast; [exact d |].
+      change
+        (llfo_Girard (@semiformula_free L 0 phi) ::
+           llfo_girard_sequent (first_order_sequent_shift Gamma) =
+         @llfo_free L 0 (llfo_girard phi) ::
+           llfo_shift_sequent (llfo_girard_sequent Gamma)).
+      f_equal.
+      - unfold semiformula_free, llfo_free.
+        transitivity (llfo_rewrite (@rew_free L 0) (llfo_Girard phi)).
+        + apply llfo_Girard_rewrite.
+        + now rewrite (llfo_Girard_eq_raw Hphi).
+      - apply eq_sym, llfo_girard_sequent_shift. }
+    eapply llfo_derivation_cast.
+    + exact (@LLDAll L (llfo_girard phi)
+        (llfo_girard_sequent Gamma) dprem).
+    + change
+        (LLAll (llfo_girard phi) :: llfo_girard_sequent Gamma =
+         llfo_Girard (Semiformula_all phi) ::
+           llfo_girard_sequent Gamma).
+      f_equal. apply eq_sym. now apply llfo_Girard_all_of_negative.
+Defined.
+
+Definition llfo_girard_exs_step {L}
+    (phi : semiproposition L 1) (t : syntactic_term L)
+    (Gamma : first_order_sequent L)
+    (d : llfo_derivation L
+      (llfo_girard_sequent
+        (semiformula_substitute (fun _ : Fin.t 1 => t) phi :: Gamma))) :
+    llfo_derivation L
+      (llfo_girard_sequent (Semiformula_exists phi :: Gamma)).
+Proof.
+  set (inst := llfo_substitute (fun _ : Fin.t 1 => t) (llfo_girard phi)).
+  destruct (semiformula_polarity phi) eqn:Hphi.
+  - assert (dprem : llfo_derivation L
+        (LLQuest inst :: llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact d |].
+      change
+        (llfo_Girard
+           (semiformula_substitute (fun _ : Fin.t 1 => t) phi) ::
+           llfo_girard_sequent Gamma =
+         LLQuest inst :: llfo_girard_sequent Gamma).
+      f_equal. unfold semiformula_substitute, inst, llfo_substitute.
+      transitivity
+        (llfo_rewrite (rew_subst (fun _ : Fin.t 1 => t))
+          (llfo_Girard phi)).
+      - apply llfo_Girard_rewrite.
+      - now rewrite (llfo_Girard_eq_quest Hphi). }
+    assert (dexs : llfo_derivation L
+        [LLExs (llfo_girard phi); llfo_neg inst]).
+    { exact (@LLDExs L (llfo_girard phi) [llfo_neg inst] t
+        (LLDIdentity inst)). }
+    assert (dbridge : llfo_derivation L
+        [llfo_neg (LLQuest inst); LLQuest (LLExs (llfo_girard phi))]).
+    { apply LLDOfCourse.
+      - exact (llfo_rotate (LLDDereliction dexs)).
+      - apply llfo_sequent_is_quest_singleton. }
+    eapply llfo_derivation_cast.
+    + exact (@llfo_inv_rotate L (LLQuest (LLExs (llfo_girard phi)))
+        (llfo_girard_sequent Gamma)
+        (@LLDCut L (LLQuest inst) (llfo_girard_sequent Gamma)
+          [LLQuest (LLExs (llfo_girard phi))] dprem dbridge)).
+    + change
+        (LLQuest (LLExs (llfo_girard phi)) ::
+           llfo_girard_sequent Gamma =
+         llfo_Girard (Semiformula_exists phi) ::
+           llfo_girard_sequent Gamma).
+      f_equal. apply eq_sym. now apply llfo_Girard_exs_of_positive.
+  - assert (dprem : llfo_derivation L
+        (inst :: llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact d |].
+      change
+        (llfo_Girard
+           (semiformula_substitute (fun _ : Fin.t 1 => t) phi) ::
+           llfo_girard_sequent Gamma =
+         inst :: llfo_girard_sequent Gamma).
+      f_equal. unfold semiformula_substitute, inst, llfo_substitute.
+      transitivity
+        (llfo_rewrite (rew_subst (fun _ : Fin.t 1 => t))
+          (llfo_Girard phi)).
+      - apply llfo_Girard_rewrite.
+      - now rewrite (llfo_Girard_eq_raw Hphi). }
+    assert (dpromoted : llfo_derivation L
+        (LLBang inst :: llfo_girard_sequent Gamma)).
+    { exact (llfo_negative_of_course dprem
+        (@llfo_girard_sequent_negative L Gamma)). }
+    eapply llfo_derivation_cast.
+    + exact (@LLDDereliction L
+        (LLExs (LLBang (llfo_girard phi)))
+        (llfo_girard_sequent Gamma)
+        (@LLDExs L (LLBang (llfo_girard phi))
+          (llfo_girard_sequent Gamma) t dpromoted)).
+    + change
+        (LLQuest (LLExs (LLBang (llfo_girard phi))) ::
+           llfo_girard_sequent Gamma =
+         llfo_Girard (Semiformula_exists phi) ::
+           llfo_girard_sequent Gamma).
+      f_equal. apply eq_sym. now apply llfo_Girard_exs_of_negative.
+Defined.
+
+Fixpoint llfo_derivation_girard {L}
+    (eq_dec : forall phi psi : llfo_proposition L,
+      {phi = psi} + {phi <> psi})
+    {Gamma} (d : first_order_derivation L Gamma) :
+    llfo_derivation L (llfo_girard_sequent Gamma).
+Proof.
+  destruct d as
+    [k R v
+    | phi Gamma Delta dpos dneg
+    | Gamma Delta d hsub
+    |
+    | phi psi Gamma d
+    | phi psi Gamma dphi dpsi
+    | phi Gamma d
+    | phi t Gamma d].
+  - exact (@llfo_girard_identity L k R v).
+  - exact (@llfo_girard_cut_step L phi Gamma Delta
+      (@llfo_derivation_girard L eq_dec _ dpos)
+      (@llfo_derivation_girard L eq_dec _ dneg)).
+  - exact (@llfo_girard_contraction_step L eq_dec Gamma Delta
+      (@llfo_derivation_girard L eq_dec _ d) hsub).
+  - exact (@llfo_girard_verum_step L).
+  - exact (@llfo_girard_or_step L phi psi Gamma
+      (@llfo_derivation_girard L eq_dec _ d)).
+  - exact (@llfo_girard_and_step L eq_dec phi psi Gamma
+      (@llfo_derivation_girard L eq_dec _ dphi)
+      (@llfo_derivation_girard L eq_dec _ dpsi)).
+  - exact (@llfo_girard_all_step L phi Gamma
+      (@llfo_derivation_girard L eq_dec _ d)).
+  - exact (@llfo_girard_exs_step L phi t Gamma
+      (@llfo_derivation_girard L eq_dec _ d)).
+Defined.
+
+Definition llfo_proof_girard {L}
+    (eq_dec : forall phi psi : llfo_proposition L,
+      {phi = psi} + {phi <> psi})
+    (phi : proposition L)
+    (d : first_order_derivation L [phi]) :
+    llfo_proof (llfo_Girard phi) :=
+  @llfo_derivation_girard L eq_dec [phi] d.
+
 Theorem llfo_forget_girard : forall L X n (phi : semiformula L X n),
   llfo_forget (llfo_girard phi) = phi.
 Proof.
@@ -841,3 +1054,21 @@ Theorem llfo_proof_forget : forall L (phi : llfo_proposition L),
   llfo_proof phi ->
   first_order_derivation L [llfo_forget phi].
 Proof. intros L phi d. exact (@llfo_derivation_forget L _ d). Qed.
+
+Definition llfo_proof_forget_Girard {L} (phi : proposition L)
+    (d : llfo_proof (llfo_Girard phi)) :
+    first_order_derivation L [phi].
+Proof.
+  eapply first_order_derivation_cast.
+  - exact (llfo_proof_forget d).
+  - simpl. now rewrite llfo_forget_Girard.
+Defined.
+
+Definition llfo_girard_faithful {L}
+    (eq_dec : forall phi psi : llfo_proposition L,
+      {phi = psi} + {phi <> psi})
+    (phi : proposition L) :
+    (llfo_proof (llfo_Girard phi) -> first_order_derivation L [phi]) *
+    (first_order_derivation L [phi] -> llfo_proof (llfo_Girard phi)) :=
+  (@llfo_proof_forget_Girard L phi,
+   @llfo_proof_girard L eq_dec phi).
