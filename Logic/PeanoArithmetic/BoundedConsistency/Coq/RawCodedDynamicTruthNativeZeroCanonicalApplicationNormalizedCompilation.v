@@ -176,6 +176,87 @@ Arguments
   RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendInputResourcesCompilerOnCanonicalNormalizedResources
   M translation : clear implicits.
 
+(** Kernel-facing form of the synchronized canonical append residual.  The
+    arithmetic endpoint is unchanged, but each polarity supplies only the
+    append root, inherited traversal/lookup roots, and fixed mode production
+    needed by the generic row compiler.  Keeping one shared standard helper
+    batch records that the two growing applications start from the same
+    witnessed PA tail. *)
+Definition
+    RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroNormalizedResourcesAt M translation
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists endpointWitnessList endpointContext atomicRoot domainRoot,
+    exists appendWitnesses : StandardPAAxiomWitnessPrefix,
+      RawCodedPAAxiomWitnessContext M endpointWitnessList endpointContext /\
+      RawContextListIncluded M baseContext endpointContext /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M endpointContext)
+        (rawDynamicTruthLocalAtomicAdequacyCode M) atomicRoot /\
+      RawCodedPALocalProofOf M
+        (rawDynamicTruthPredecessorJointStateContext M endpointContext)
+        (rawFormulaOrCode M
+          (rawDynamicTruthZeroSigmaDomainCode M)
+          (rawDynamicTruthZeroPiDomainCode M)) domainRoot /\
+      RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+        M translation 0 coqDynamicTruthPredecessorStateTemplateContext
+          appendWitnesses /\
+      RawDynamicTruthZeroCanonicalPermutedAppendRowKernelInputsUnderPrefixAt
+        M translation 1 coqDynamicTruthPredecessorStateTemplateContext
+          appendWitnesses.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources
+  M translation : clear implicits.
+
+(** Compile both synchronized kernel packages to the row-implication
+    interface.  All endpoint witnesses and roots are preserved verbatim; the
+    only constructed objects are the two represented arithmetic case splits
+    and their implication introductions. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendInputResourcesCompilerOnCanonicalNormalizedResources_of_kernel_resources
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendInputResourcesCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hagreement hcompiler tail witnessList
+    baseContext helperRoots sigmaDomain piDomain sigmaEvidence piEvidence
+    hresources htrace.
+  destruct
+    (hcompiler tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace)
+    as (endpointWitnessList & endpointContext & atomicRoot & domainRoot &
+      appendWitnesses & hendpointWitnessed & hbaseEndpointIncluded &
+      hatomic & hdomain & hsigmaKernel & hpiKernel).
+  exists endpointWitnessList, endpointContext, atomicRoot, domainRoot,
+    appendWitnesses.
+  split; [exact hendpointWitnessed |].
+  split; [exact hbaseEndpointIncluded |].
+  split; [exact hatomic |].
+  split; [exact hdomain |].
+  split.
+  - exact
+      (raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_kernel
+        M hPA translation hagreement 0
+        coqDynamicTruthPredecessorStateTemplateContext appendWitnesses
+        hsigmaKernel).
+  - exact
+      (raw_dynamicTruthZeroCanonicalPermutedAppendRowImplicationInputsUnderPrefixAt_of_kernel
+        M hPA translation hagreement 1
+        coqDynamicTruthPredecessorStateTemplateContext appendWitnesses
+        hpiKernel).
+Qed.
+
 (** Compile the concrete synchronized row-implication packages into the abstract
     state-application resource interface used by the existing normalized
     callback.  No represented proof is moved back to the normalized base:
@@ -218,6 +299,27 @@ Proof.
       M hPA translation hagreement appendWitnesses
       endpointWitnessList endpointContext hendpointWitnessed
       hsigmaInputs hpiInputs).
+Qed.
+
+(** Direct kernel-to-application adapter used by dependency-ordered callback
+    assembly.  Factoring this composition here keeps the synchronized
+    two-polarity traversal argument out of every higher-level bundle. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources_of_permuted_append_kernel_resources
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  RawDynamicTruthNativeLocalZeroCanonicalPermutedAppendKernelResourcesCompilerOnCanonicalNormalizedResources
+    M translation ->
+  RawDynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources
+    M translation.
+Proof.
+  intros M hPA translation hagreement hcompiler.
+  exact
+    (raw_dynamicTruthNativeLocalZeroGrowingCanonicalStateApplicationResourcesCompilerOnCanonicalNormalizedResources_of_permuted_append_input_resources
+      M hPA translation hagreement
+      (raw_dynamicTruthNativeLocalZeroCanonicalPermutedAppendInputResourcesCompilerOnCanonicalNormalizedResources_of_kernel_resources
+        M hPA translation hagreement hcompiler)).
 Qed.
 
 (** Interpret the shared template prefix as the literal joint state context.
