@@ -399,6 +399,251 @@ Definition llfo_girard_verum_step {L} :
       (llfo_girard_sequent [@Semiformula_verum L nat 0]) :=
   LLDDereliction LLDOne.
 
+Definition llfo_move_middle_to_front {L phi Gamma Delta}
+    (d : llfo_derivation L (Gamma ++ phi :: Delta)) :
+    llfo_derivation L (phi :: Gamma ++ Delta) :=
+  @LLDExchange L (Gamma ++ phi :: Delta) (phi :: Gamma ++ Delta) d
+    (Permutation_sym (Permutation_middle Gamma Delta phi)).
+
+Definition llfo_swap_app {L Gamma Delta}
+    (d : llfo_derivation L (Gamma ++ Delta)) :
+    llfo_derivation L (Delta ++ Gamma) :=
+  @LLDExchange L (Gamma ++ Delta) (Delta ++ Gamma) d
+    (Permutation_app_comm Gamma Delta).
+
+Lemma llfo_girard_duplicated_context_incl : forall L
+    (theta : llfo_proposition L) (Gamma : first_order_sequent L),
+  incl
+    (llfo_girard_sequent Gamma ++
+      LLQuest theta :: llfo_girard_sequent Gamma)
+    (LLQuest theta :: llfo_girard_sequent Gamma).
+Proof.
+  intros L theta Gamma phi Hphi.
+  apply in_app_iff in Hphi. destruct Hphi as [Hleft | [<- | Hright]].
+  - now right.
+  - now left.
+  - now right.
+Qed.
+
+Definition llfo_girard_collapse_duplicated_context {L}
+    (eq_dec : forall phi psi : llfo_proposition L,
+      {phi = psi} + {phi <> psi})
+    (theta : llfo_proposition L) (Gamma : first_order_sequent L)
+    (d : llfo_derivation L
+      (llfo_girard_sequent Gamma ++
+       LLQuest theta :: llfo_girard_sequent Gamma)) :
+    llfo_derivation L
+      (LLQuest theta :: llfo_girard_sequent Gamma) :=
+  llfo_negative_wk eq_dec d
+    (@llfo_girard_duplicated_context_incl L theta Gamma)
+    (proj2 (llfo_sequent_negative_cons
+      (LLQuest theta) (llfo_girard_sequent Gamma))
+      (conj (LLNegativeQuest theta)
+        (@llfo_girard_sequent_negative L Gamma))).
+
+Definition llfo_girard_and_step {L}
+    (eq_dec : forall phi psi : llfo_proposition L,
+      {phi = psi} + {phi <> psi})
+    (phi psi : proposition L) (Gamma : first_order_sequent L)
+    (dphi : llfo_derivation L
+      (llfo_girard_sequent (phi :: Gamma)))
+    (dpsi : llfo_derivation L
+      (llfo_girard_sequent (psi :: Gamma))) :
+    llfo_derivation L
+      (llfo_girard_sequent (Semiformula_and phi psi :: Gamma)).
+Proof.
+  destruct (semiformula_polarity phi) eqn:Hphi,
+    (semiformula_polarity psi) eqn:Hpsi.
+  - assert (dphi' : llfo_derivation L
+        (LLQuest (llfo_girard phi) :: llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact dphi |].
+      unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. now rewrite Hphi. }
+    assert (dpsi' : llfo_derivation L
+        (LLQuest (llfo_girard psi) :: llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact dpsi |].
+      unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. now rewrite Hpsi. }
+    assert (dbridge : llfo_derivation L
+        [llfo_neg (llfo_girard phi); llfo_neg (llfo_girard psi);
+         LLQuest (LLTensor (llfo_girard phi) (llfo_girard psi))]).
+    { exact (llfo_rotate (LLDDereliction
+        (@LLDTensor L (llfo_girard phi) (llfo_girard psi)
+          [llfo_neg (llfo_girard phi)] [llfo_neg (llfo_girard psi)]
+          (LLDIdentity (llfo_girard phi))
+          (LLDIdentity (llfo_girard psi))))). }
+    assert (dbridge_phi : llfo_derivation L
+        [llfo_neg (LLQuest (llfo_girard phi));
+         llfo_neg (llfo_girard psi);
+         LLQuest (LLTensor (llfo_girard phi) (llfo_girard psi))]).
+    { apply llfo_negative_of_course; [exact dbridge |].
+      apply llfo_sequent_negative_cons. split.
+      - apply (proj2 (llfo_neg_negative_iff_positive
+          (llfo_girard psi))). now apply llfo_girard_positive.
+      - apply llfo_sequent_negative_cons. split; [constructor |].
+        apply llfo_sequent_negative_nil. }
+    assert (dcut_phi : llfo_derivation L
+        (llfo_neg (llfo_girard psi) ::
+         LLQuest (LLTensor (llfo_girard phi) (llfo_girard psi)) ::
+         llfo_girard_sequent Gamma)).
+    { exact (@llfo_swap_app L (llfo_girard_sequent Gamma)
+        [llfo_neg (llfo_girard psi);
+         LLQuest (LLTensor (llfo_girard phi) (llfo_girard psi))]
+        (@LLDCut L (LLQuest (llfo_girard phi))
+        (llfo_girard_sequent Gamma)
+        [llfo_neg (llfo_girard psi);
+         LLQuest (LLTensor (llfo_girard phi) (llfo_girard psi))]
+        dphi' dbridge_phi)). }
+    assert (dbridge_psi : llfo_derivation L
+        (llfo_neg (LLQuest (llfo_girard psi)) ::
+         LLQuest (LLTensor (llfo_girard phi) (llfo_girard psi)) ::
+         llfo_girard_sequent Gamma)).
+    { apply llfo_negative_of_course; [exact dcut_phi |].
+      apply llfo_sequent_negative_cons. split; [constructor |].
+      apply llfo_girard_sequent_negative. }
+    eapply llfo_derivation_cast.
+    + apply (@llfo_girard_collapse_duplicated_context L eq_dec
+        (LLTensor (llfo_girard phi) (llfo_girard psi)) Gamma).
+      exact (@LLDCut L (LLQuest (llfo_girard psi))
+        (llfo_girard_sequent Gamma)
+        (LLQuest (LLTensor (llfo_girard phi) (llfo_girard psi)) ::
+         llfo_girard_sequent Gamma) dpsi' dbridge_psi).
+    + unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. cbn [semiformula_polarity llfo_girard].
+      now rewrite Hphi, Hpsi.
+  - assert (dphi' : llfo_derivation L
+        (LLQuest (llfo_girard phi) :: llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact dphi |].
+      unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. now rewrite Hphi. }
+    assert (dpsi' : llfo_derivation L
+        (llfo_girard psi :: llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact dpsi |].
+      unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. now rewrite Hpsi. }
+    assert (dbridge : llfo_derivation L
+        [llfo_neg (llfo_girard phi); llfo_neg (LLBang (llfo_girard psi));
+         LLQuest (LLTensor (llfo_girard phi) (LLBang (llfo_girard psi)))]).
+    { exact (llfo_rotate (LLDDereliction
+        (@LLDTensor L (llfo_girard phi) (LLBang (llfo_girard psi))
+          [llfo_neg (llfo_girard phi)]
+          [llfo_neg (LLBang (llfo_girard psi))]
+          (LLDIdentity (llfo_girard phi))
+          (LLDIdentity (LLBang (llfo_girard psi)))))). }
+    assert (dbridge_phi : llfo_derivation L
+        [llfo_neg (LLQuest (llfo_girard phi));
+         llfo_neg (LLBang (llfo_girard psi));
+         LLQuest (LLTensor (llfo_girard phi) (LLBang (llfo_girard psi)))]).
+    { apply LLDOfCourse; [exact dbridge |].
+      apply llfo_sequent_is_quest_cons. split; [constructor |].
+      apply llfo_sequent_is_quest_cons. split; [constructor |].
+      apply llfo_sequent_is_quest_nil. }
+    assert (dcut_phi : llfo_derivation L
+        (llfo_neg (LLBang (llfo_girard psi)) ::
+         LLQuest (LLTensor (llfo_girard phi) (LLBang (llfo_girard psi))) ::
+         llfo_girard_sequent Gamma)).
+    { exact (@llfo_swap_app L (llfo_girard_sequent Gamma)
+        [llfo_neg (LLBang (llfo_girard psi));
+         LLQuest
+          (LLTensor (llfo_girard phi) (LLBang (llfo_girard psi)))]
+        (@LLDCut L (LLQuest (llfo_girard phi))
+        (llfo_girard_sequent Gamma)
+        [llfo_neg (LLBang (llfo_girard psi));
+         LLQuest (LLTensor (llfo_girard phi) (LLBang (llfo_girard psi)))]
+        dphi' dbridge_phi)). }
+    eapply llfo_derivation_cast.
+    + apply (@llfo_girard_collapse_duplicated_context L eq_dec
+        (LLTensor (llfo_girard phi) (LLBang (llfo_girard psi))) Gamma).
+      exact (@LLDCut L (LLBang (llfo_girard psi))
+        (llfo_girard_sequent Gamma)
+        (LLQuest
+           (LLTensor (llfo_girard phi) (LLBang (llfo_girard psi))) ::
+         llfo_girard_sequent Gamma)
+        (llfo_negative_of_course dpsi'
+          (@llfo_girard_sequent_negative L Gamma)) dcut_phi).
+    + unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. cbn [semiformula_polarity llfo_girard].
+      now rewrite Hphi, Hpsi.
+  - assert (dphi' : llfo_derivation L
+        (llfo_girard phi :: llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact dphi |].
+      unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. now rewrite Hphi. }
+    assert (dpsi' : llfo_derivation L
+        (LLQuest (llfo_girard psi) :: llfo_girard_sequent Gamma)).
+    { eapply llfo_derivation_cast; [exact dpsi |].
+      unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. now rewrite Hpsi. }
+    assert (dbridge : llfo_derivation L
+        [llfo_neg (LLBang (llfo_girard phi)); llfo_neg (llfo_girard psi);
+         LLQuest (LLTensor (LLBang (llfo_girard phi)) (llfo_girard psi))]).
+    { exact (llfo_rotate (LLDDereliction
+        (@LLDTensor L (LLBang (llfo_girard phi)) (llfo_girard psi)
+          [llfo_neg (LLBang (llfo_girard phi))]
+          [llfo_neg (llfo_girard psi)]
+          (LLDIdentity (LLBang (llfo_girard phi)))
+          (LLDIdentity (llfo_girard psi))))). }
+    assert (dbridge_psi : llfo_derivation L
+        [llfo_neg (LLBang (llfo_girard phi));
+         llfo_neg (LLQuest (llfo_girard psi));
+         LLQuest (LLTensor (LLBang (llfo_girard phi)) (llfo_girard psi))]).
+    { assert (dpromoted : llfo_derivation L
+          [llfo_neg (LLQuest (llfo_girard psi));
+           LLQuest
+             (LLTensor (LLBang (llfo_girard phi)) (llfo_girard psi));
+           llfo_neg (LLBang (llfo_girard phi))]).
+      { apply LLDOfCourse.
+        - exact (llfo_rotate dbridge).
+        - apply llfo_sequent_is_quest_cons. split; [constructor |].
+          apply llfo_sequent_is_quest_cons. split; [constructor |].
+          apply llfo_sequent_is_quest_nil. }
+      exact (@llfo_inv_rotate L (llfo_neg (LLBang (llfo_girard phi)))
+        [llfo_neg (LLQuest (llfo_girard psi));
+         LLQuest (LLTensor (LLBang (llfo_girard phi)) (llfo_girard psi))]
+        dpromoted). }
+    assert (dcut_phi : llfo_derivation L
+        (llfo_neg (LLQuest (llfo_girard psi)) ::
+         LLQuest (LLTensor (LLBang (llfo_girard phi)) (llfo_girard psi)) ::
+         llfo_girard_sequent Gamma)).
+    { exact (@llfo_swap_app L (llfo_girard_sequent Gamma)
+        [llfo_neg (LLQuest (llfo_girard psi));
+         LLQuest
+          (LLTensor (LLBang (llfo_girard phi)) (llfo_girard psi))]
+        (@LLDCut L (LLBang (llfo_girard phi))
+        (llfo_girard_sequent Gamma)
+        [llfo_neg (LLQuest (llfo_girard psi));
+         LLQuest (LLTensor (LLBang (llfo_girard phi)) (llfo_girard psi))]
+        (llfo_negative_of_course dphi'
+          (@llfo_girard_sequent_negative L Gamma)) dbridge_psi)). }
+    eapply llfo_derivation_cast.
+    + apply (@llfo_girard_collapse_duplicated_context L eq_dec
+        (LLTensor (LLBang (llfo_girard phi)) (llfo_girard psi)) Gamma).
+      exact (@LLDCut L (LLQuest (llfo_girard psi))
+        (llfo_girard_sequent Gamma)
+        (LLQuest
+           (LLTensor (LLBang (llfo_girard phi)) (llfo_girard psi)) ::
+         llfo_girard_sequent Gamma) dpsi' dcut_phi).
+    + unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. cbn [semiformula_polarity llfo_girard].
+      now rewrite Hphi, Hpsi.
+  - eapply llfo_derivation_cast.
+    + assert (dphi' : llfo_derivation L
+          (llfo_girard phi :: llfo_girard_sequent Gamma)).
+      { eapply llfo_derivation_cast; [exact dphi |].
+        unfold llfo_girard_sequent. cbn [map].
+        unfold llfo_Girard. now rewrite Hphi. }
+      assert (dpsi' : llfo_derivation L
+          (llfo_girard psi :: llfo_girard_sequent Gamma)).
+      { eapply llfo_derivation_cast; [exact dpsi |].
+        unfold llfo_girard_sequent. cbn [map].
+        unfold llfo_Girard. now rewrite Hpsi. }
+      exact (@LLDWith L (llfo_girard phi) (llfo_girard psi)
+        (llfo_girard_sequent Gamma) dphi' dpsi').
+    + unfold llfo_girard_sequent. cbn [map].
+      unfold llfo_Girard. cbn [semiformula_polarity llfo_girard].
+      now rewrite Hphi, Hpsi.
+Defined.
+
 Definition llfo_girard_or_step {L} (phi psi : proposition L)
     (Gamma : first_order_sequent L)
     (d : llfo_derivation L

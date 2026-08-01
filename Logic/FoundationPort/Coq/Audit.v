@@ -614,6 +614,11 @@ Print Assumptions llfo_girard_identity.
 Print Assumptions llfo_girard_cut_step.
 Print Assumptions llfo_girard_contraction_step.
 Print Assumptions llfo_girard_verum_step.
+Print Assumptions llfo_move_middle_to_front.
+Print Assumptions llfo_swap_app.
+Print Assumptions llfo_girard_duplicated_context_incl.
+Print Assumptions llfo_girard_collapse_duplicated_context.
+Print Assumptions llfo_girard_and_step.
 Print Assumptions llfo_girard_or_step.
 Print Assumptions llfo_forget_girard.
 Print Assumptions llfo_forget_Girard.
