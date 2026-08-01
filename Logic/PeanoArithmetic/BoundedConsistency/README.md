@@ -5378,8 +5378,20 @@ admissibility on a common witnessed extension and is reused by both the full
 trace and stronger one-step interfaces.  The full trace is normalized at the
 literal carrier zero, eliminating the redundant arbitrary-level parameter
 and equality while preserving both successors, both substitutions, and both
-applications.  A formal adapter proves that every one-step compiler is also
-a full-trace compiler, so this change strictly relaxes rather than replaces
-the earlier boundary.  The other seven coordinates remain
+applications.
+
+The first headline coordinate is now restricted further to the actual zero
+callback.  In addition to the trace, that callback already carries one
+witnessed context containing represented proofs of all six current master
+fields and the synchronized forty-helper batch.  A compiler quantified over
+arbitrary witnessed tails and traces discarded these proof resources and was
+strictly stronger than necessary.  The call-site-aligned compiler retains
+the complete current helper package; a formal one-way adapter proves that
+every former tail-only compiler supplies the new interface.  The common
+field projection, witnessed transport, and direct-template closure have also
+been extracted into one pointwise lemma shared by both routes.  Thus the
+remaining rank-zero construction may use the proof resources genuinely
+available at its invocation, while still returning only the four direct
+roots.  The other seven coordinates remain
 the permuted-append strong-step resources, the reduced staged remainder, and
 five linked staged implication compilers.

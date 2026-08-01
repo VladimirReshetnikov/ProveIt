@@ -48,9 +48,12 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthNativeLocalProofCompilation
   RawCodedDynamicTruthLocalFieldProjectionCompilation
+  RawCodedDynamicTruthLocalCollisionMatrixAssembly
+  RawCodedDynamicTruthImpBranchExclusivity
   RawCodedDynamicTruthLocalAdmissibilityCompilation
   RawCodedDynamicTruthPredecessorStateExclusivityCompilation
   RawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots
+  RawCodedDynamicTruthNativeLocalStagedCallbackCompilation
   RawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation
   RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
 
@@ -96,11 +99,14 @@ Import PABoundedRawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
 Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
+Import PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssembly.
+Import PABoundedRawCodedDynamicTruthImpBranchExclusivity.
 Import PABoundedRawCodedDynamicTruthLocalAdmissibilityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorStateExclusivityCompilation.
 Import
   PABoundedRawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.
+Import PABoundedRawCodedDynamicTruthNativeLocalStagedCallbackCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation.
 Import
@@ -769,6 +775,82 @@ Proof.
     hinputSigmaAdequate hinputPiAdequate).
 Qed.
 
+(** Call-site-aligned rank-zero boundary.  The native zero callback does not
+    receive an isolated trace: it receives that trace together with the
+    complete current helper context, namely represented proofs of all six
+    current master fields and the synchronized forty-helper batch.  A
+    compiler quantified over arbitrary witnessed tails and traces is
+    therefore stronger than the theorem actually needs.
+
+    Keeping the current package available is mathematically important.  The
+    trace fixes codes and relational successor witnesses, but it does not by
+    itself manufacture represented PA proofs of the selected formulas.  The
+    current package is the proof-producing resource already present at the
+    callback. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      witnessList baseContext (helperRoots : list M)
+      inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence currentLocalRoot,
+    RawDynamicTruthNativeLocalCurrentHelperContextAt M translation
+      tail level currentLocal currentCrossLevel currentShift
+      currentSubstitution currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalProofTraceAt M tail level
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+      sigmaEvidence piEvidence ->
+    level = raw_zero M ->
+    currentLocal = rawQuotedFormulaCode M
+      dynamicTruthLocalDecisionExclusiveBaseFormula ->
+    RawCodedPALocalProofOf M baseContext currentLocal currentLocalRoot ->
+    exists evidenceWitnessList evidenceContext,
+      RawCodedPAAxiomWitnessContext M
+        evidenceWitnessList evidenceContext /\
+      RawContextListIncluded M baseContext evidenceContext /\
+      RawDynamicTruthZeroDirectEvidenceRootsAt M evidenceContext.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext
+  M translation : clear implicits.
+
+(** Every former tail-only compiler satisfies the weaker callback-aligned
+    interface.  This implication is intentionally one-way: a future concrete
+    construction may use any of the represented current-field or helper
+    proofs which the old interface discarded. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext_of_witnessed_base
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnWitnessedBase
+    M ->
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext
+    M translation.
+Proof.
+  intros M hPA translation hbaseCompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence currentLocalRoot hcurrent htrace hlevel
+    _hfield _hcurrentProof.
+  pose proof hcurrent as hfields.
+  destruct hfields as
+    [_ (storedLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+      currentSubstitutionRoot & currentAxiomSoundnessRoot &
+      currentFinalRoot & hbaseWitnessed & hhelperRoots)].
+  subst level.
+  exact (hbaseCompiler tail baseContext
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence witnessList hbaseWitnessed
+    (proj1 (raw_dynamicTruthNativeLocalProofTraceAt_zero_iff M tail
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+      sigmaEvidence piEvidence) htrace)).
+Qed.
+
 (** Arithmetic/proof-traversal boundary for rank zero.  The source witness
     list is passed explicitly because it is already stored in the current
     helper package; asking a compiler to rediscover it would be stronger.
@@ -867,35 +949,33 @@ Proof.
     hinputSigmaAdequate hinputPiAdequate).
 Qed.
 
-(** Assemble the former zero callback from the smaller logical-root
-    compiler.  The carried base proof is first identified with the concrete
-    four-leaf field, then its exclusivity conjunct is projected.  The generic
-    witnessed-context closure transports that conjunct and consumes the
-    three newly compiled leaves. *)
-Theorem
-    raw_dynamicTruthNativeLocalZeroPredecessorRootCompiler_of_growing_logical_roots
-    : forall (M : RawPAModel), RawPASatisfies M -> forall
-      (translation : RawCodedTemplateTranslation M),
-  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase M ->
-  RawDynamicTruthNativeLocalZeroPredecessorRootCompiler M translation.
+(** Close the concrete rank-zero local field once the three predecessor
+    logical roots have been compiled on a witnessed extension.  This is the
+    proof-theoretic tail shared by every rank-zero resource interface: it
+    identifies the stored base field, projects its exclusivity conjunct, and
+    transports that conjunct to the chosen target before applying the direct
+    template bridge. *)
+Theorem raw_dynamicTruthNativeLocalZeroPredecessorRootAt_of_logical_roots :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      baseWitnessList baseContext currentLocal currentLocalRoot
+      targetWitnessList targetContext,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  currentLocal = rawQuotedFormulaCode M
+    dynamicTruthLocalDecisionExclusiveBaseFormula ->
+  RawCodedPALocalProofOf M baseContext currentLocal currentLocalRoot ->
+  RawCodedPAAxiomWitnessContext M targetWitnessList targetContext ->
+  RawContextListIncluded M baseContext targetContext ->
+  RawDynamicTruthPredecessorStateLogicalRootsAt M targetContext
+    (rawDynamicTruthZeroSigmaDomainCode M)
+    (rawDynamicTruthZeroPiDomainCode M)
+    (rawDynamicTruthZeroSigmaEvidenceCode M)
+    (rawDynamicTruthZeroPiEvidenceCode M) ->
+  RawDynamicTruthLocalRootAt M targetContext
+    (rawDynamicTruthImpPredecessorStateExclusivityCode M).
 Proof.
-  intros M hPA translation hlogical tail level
-    currentLocal currentCrossLevel currentShift currentSubstitution
-    currentAxiomSoundness currentFinal
-    witnessList baseContext helperRoots
-    inputGlobalSigma inputGlobalPi
-    sigmaDomain piDomain sigmaEvidence piEvidence currentLocalRoot
-    hcurrent htrace hlevel hfield hcurrentProof.
-  pose proof hcurrent as hfields.
-  destruct hfields as
-    [_ (storedLocalRoot & currentCrossLevelRoot & currentShiftRoot &
-      currentSubstitutionRoot & currentAxiomSoundnessRoot &
-      currentFinalRoot & hbaseWitnessed & hhelperRoots)].
-  destruct (hlogical tail level baseContext
-      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
-      sigmaEvidence piEvidence witnessList hbaseWitnessed htrace hlevel) as
-    (targetWitnessList & targetContext & htargetWitnessed &
-      hincluded & hlogicalRoots).
+  intros M hPA baseWitnessList baseContext currentLocal currentLocalRoot
+    targetWitnessList targetContext hbaseWitnessed hfield hcurrentProof
+    htargetWitnessed hincluded hlogicalRoots.
   assert (hbaseFormulaProof :
     RawCodedPALocalProofOf M baseContext
       (rawQuotedFormulaCode M
@@ -930,9 +1010,6 @@ Proof.
   destruct
     (raw_dynamicTruthZeroLocalExclusiveTemplateIdentification_exists M hPA)
     as [inputs hidentification].
-  exists targetWitnessList, targetContext.
-  split; [exact htargetWitnessed |].
-  split; [exact hincluded |].
   exact
     (raw_dynamicTruthImpPredecessorStateExclusivityRoot_of_local_exclusive_template_on_witnessed_extension
       M hPA baseContext targetWitnessList targetContext
@@ -947,7 +1024,7 @@ Proof.
         (rawDynamicTruthZeroPiEvidenceCode M)
         currentLocalRoot)
       (raw_codedPAAxiomWitnessContext_context_realizable M
-        witnessList baseContext hbaseWitnessed)
+        baseWitnessList baseContext hbaseWitnessed)
       htargetWitnessed hincluded hexclusiveProjection
       (raw_dynamicTruthPredecessorStateTemplateApplicationBridgeAt_of_direct_logical_roots
         M hPA targetContext
@@ -956,6 +1033,91 @@ Proof.
         (rawDynamicTruthZeroSigmaEvidenceCode M)
         (rawDynamicTruthZeroPiEvidenceCode M)
         inputs hidentification hlogicalRoots)).
+Qed.
+
+(** Discharge the native zero callback from the weakest call-site-aligned
+    four-root producer.  The current helper package is copied only to recover
+    its witnessed base; all final field projection and template closure is
+    delegated to the shared lemma above. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroPredecessorRootCompiler_of_current_helper_direct_evidence
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroGrowingDirectEvidenceCompilerOnCurrentHelperContext
+    M translation ->
+  RawDynamicTruthNativeLocalZeroPredecessorRootCompiler M translation.
+Proof.
+  intros M hPA translation hdirect tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi
+    sigmaDomain piDomain sigmaEvidence piEvidence currentLocalRoot
+    hcurrent htrace hlevel hfield hcurrentProof.
+  pose proof hcurrent as hfields.
+  destruct hfields as
+    [_ (storedLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+      currentSubstitutionRoot & currentAxiomSoundnessRoot &
+      currentFinalRoot & hbaseWitnessed & hhelperRoots)].
+  destruct (hdirect tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+    sigmaEvidence piEvidence currentLocalRoot
+    hcurrent htrace hlevel hfield hcurrentProof) as
+    (evidenceWitnessList & evidenceContext & hevidenceWitnessed &
+      hbaseEvidenceIncluded & hroots).
+  destruct (raw_dynamicTruthZeroGrowingLogicalRoots_of_direct_evidence
+    M hPA baseContext evidenceWitnessList evidenceContext
+    hevidenceWitnessed hbaseEvidenceIncluded hroots) as
+    (targetWitnessList & targetContext & htargetWitnessed &
+      hbaseTargetIncluded & hlogicalRoots).
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split; [exact hbaseTargetIncluded |].
+  exact (raw_dynamicTruthNativeLocalZeroPredecessorRootAt_of_logical_roots
+    M hPA witnessList baseContext currentLocal currentLocalRoot
+    targetWitnessList targetContext hbaseWitnessed hfield hcurrentProof
+    htargetWitnessed hbaseTargetIncluded hlogicalRoots).
+Qed.
+
+(** Assemble the former zero callback from the smaller logical-root
+    compiler.  The carried base proof is first identified with the concrete
+    four-leaf field, then its exclusivity conjunct is projected.  The generic
+    witnessed-context closure transports that conjunct and consumes the
+    three newly compiled leaves. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroPredecessorRootCompiler_of_growing_logical_roots
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeLocalZeroGrowingLogicalRootsCompilerOnWitnessedBase M ->
+  RawDynamicTruthNativeLocalZeroPredecessorRootCompiler M translation.
+Proof.
+  intros M hPA translation hlogical tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi
+    sigmaDomain piDomain sigmaEvidence piEvidence currentLocalRoot
+    hcurrent htrace hlevel hfield hcurrentProof.
+  pose proof hcurrent as hfields.
+  destruct hfields as
+    [_ (storedLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+      currentSubstitutionRoot & currentAxiomSoundnessRoot &
+      currentFinalRoot & hbaseWitnessed & hhelperRoots)].
+  destruct (hlogical tail level baseContext
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+      sigmaEvidence piEvidence witnessList hbaseWitnessed htrace hlevel) as
+    (targetWitnessList & targetContext & htargetWitnessed &
+      hincluded & hlogicalRoots).
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  exact (raw_dynamicTruthNativeLocalZeroPredecessorRootAt_of_logical_roots
+    M hPA witnessList baseContext currentLocal currentLocalRoot
+    targetWitnessList targetContext hbaseWitnessed hfield hcurrentProof
+    htargetWitnessed hincluded hlogicalRoots).
 Qed.
 
 End
