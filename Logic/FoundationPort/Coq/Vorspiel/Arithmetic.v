@@ -1220,3 +1220,133 @@ Proof.
           (bound v) (phi v) k Hk Hleast).
         now symmetry.
 Qed.
+
+(** * Typed codes for partial arithmetic computations
+
+    This is the source [Nat.ArithPart₁.Code] language.  The evaluator is a
+    proof-relevant relation, not a partial interpreter: a derivation records
+    exactly how a typed code denotes a partial function.  The final
+    extensional constructor is a strict generalization needed to reflect the
+    stronger [arith_part1_ext] rule of this port. *)
+
+Inductive arith_code : nat -> Type :=
+| arith_code_zero : forall n, arith_code n
+| arith_code_one : forall n, arith_code n
+| arith_code_add : forall n, Fin.t n -> Fin.t n -> arith_code n
+| arith_code_mul : forall n, Fin.t n -> Fin.t n -> arith_code n
+| arith_code_proj : forall n, Fin.t n -> arith_code n
+| arith_code_equal : forall n, Fin.t n -> Fin.t n -> arith_code n
+| arith_code_lt : forall n, Fin.t n -> Fin.t n -> arith_code n
+| arith_code_comp : forall m n,
+    arith_code n -> (Fin.t n -> arith_code m) -> arith_code m
+| arith_code_find : forall n, arith_code (S n) -> arith_code n.
+
+Arguments arith_code_add {n} _ _.
+Arguments arith_code_mul {n} _ _.
+Arguments arith_code_proj {n} _.
+Arguments arith_code_equal {n} _ _.
+Arguments arith_code_lt {n} _ _.
+Arguments arith_code_comp {m n} _ _.
+Arguments arith_code_find {n} _.
+
+Inductive arith_code_evaluates : forall n,
+    arith_code n -> arith_partial_function n -> Prop :=
+| arith_code_eval_zero : forall n,
+    arith_code_evaluates n (arith_code_zero n)
+      (fun _ => partial_some 0)
+| arith_code_eval_one : forall n,
+    arith_code_evaluates n (arith_code_one n)
+      (fun _ => partial_some 1)
+| arith_code_eval_add : forall n (i j : Fin.t n),
+    arith_code_evaluates n (arith_code_add i j)
+      (fun v => partial_some (v i + v j))
+| arith_code_eval_mul : forall n (i j : Fin.t n),
+    arith_code_evaluates n (arith_code_mul i j)
+      (fun v => partial_some (v i * v j))
+| arith_code_eval_proj : forall n (i : Fin.t n),
+    arith_code_evaluates n (arith_code_proj i)
+      (fun v => partial_some (v i))
+| arith_code_eval_equal : forall n (i j : Fin.t n),
+    arith_code_evaluates n (arith_code_equal i j)
+      (fun v => partial_some (nat_truth_eq (v i) (v j)))
+| arith_code_eval_lt : forall n (i j : Fin.t n),
+    arith_code_evaluates n (arith_code_lt i j)
+      (fun v => partial_some (nat_truth_lt (v i) (v j)))
+| arith_code_eval_comp : forall m n
+    (c : arith_code n) (d : Fin.t n -> arith_code m)
+    (f : arith_partial_function n)
+    (g : Fin.t n -> arith_partial_function m),
+    arith_code_evaluates n c f ->
+    (forall i, arith_code_evaluates m (d i) (g i)) ->
+    arith_code_evaluates m (arith_code_comp c d)
+      (arith_partial_comp f g)
+| arith_code_eval_find : forall n (c : arith_code (S n))
+    (f : (Fin.t (S n) -> nat) -> nat),
+    arith_code_evaluates (S n) c (fun v => partial_some (f v)) ->
+    arith_code_evaluates n (arith_code_find c) (arith_find_on f)
+| arith_code_eval_ext : forall n (c : arith_code n)
+    (f g : arith_partial_function n),
+    arith_code_evaluates n c f ->
+    (forall v x, partial_member (f v) x <-> partial_member (g v) x) ->
+    arith_code_evaluates n c g.
+
+(** Constructive choice for a finite dependent family.  This replaces the
+    source proof's unrestricted [choose] step in the composition case. *)
+Lemma fin_indexed_choice : forall n
+    (A : Fin.t n -> Type) (P : forall i, A i -> Prop),
+  (forall i, exists x, P i x) ->
+  exists f : forall i, A i, forall i, P i (f i).
+Proof.
+  induction n as [|n IH]; intros A P H.
+  - set (chosen := fun i : Fin.t 0 => Fin.case0 (fun j => A j) i).
+    exists chosen. intro i.
+    exact (Fin.case0 (fun j => P j (chosen j)) i).
+  - destruct (H Fin.F1) as [x Hx].
+    destruct (IH (fun i => A (Fin.FS i))
+      (fun i y => P (Fin.FS i) y)) as [f Hf].
+    { intro i. apply H. }
+    set (chosen := fun i : Fin.t (S n) =>
+      Fin.caseS' i (fun j => A j) x f).
+    exists chosen. intro i. unfold chosen.
+    refine (Fin.caseS' i
+      (fun j => P j (Fin.caseS' j (fun k => A k) x f)) _ _).
+    + exact Hx.
+    + exact Hf.
+Qed.
+
+Theorem arith_part1_has_code : forall n (f : arith_partial_function n),
+  arith_part1 n f ->
+  exists c : arith_code n, arith_code_evaluates n c f.
+Proof.
+  intros n f H.
+  induction H as
+    [n
+    |n
+    |n i j
+    |n i j
+    |n i
+    |n i j
+    |n i j
+    |m n f g Hf IHf Hg IHg
+    |n f Hf IHf
+    |n f g Hf IHf Heq].
+  - exists (arith_code_zero n). constructor.
+  - exists (arith_code_one n). constructor.
+  - exists (arith_code_add i j). constructor.
+  - exists (arith_code_mul i j). constructor.
+  - exists (arith_code_proj i). constructor.
+  - exists (arith_code_equal i j). constructor.
+  - exists (arith_code_lt i j). constructor.
+  - destruct IHf as [c Hc].
+    destruct (@fin_indexed_choice n
+      (fun _ => arith_code m)
+      (fun i d => arith_code_evaluates m d (g i)) IHg)
+      as [d Hd].
+    exists (arith_code_comp c d).
+    now apply arith_code_eval_comp.
+  - destruct IHf as [c Hc].
+    exists (arith_code_find c).
+    now apply arith_code_eval_find.
+  - destruct IHf as [c Hc]. exists c.
+    exact (arith_code_eval_ext n c f g Hc Heq).
+Qed.

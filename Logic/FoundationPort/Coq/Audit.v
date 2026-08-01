@@ -850,6 +850,10 @@ Print Assumptions nat_bounded_all_search_positive_iff.
 Print Assumptions nat_bounded_all_search_least_exists.
 Print Assumptions nat_bounded_all_search_least_value.
 Print Assumptions arithmetic1_bounded_all.
+Check arith_code.
+Check arith_code_evaluates.
+Print Assumptions fin_indexed_choice.
+Print Assumptions arith_part1_has_code.
 Check mll_formula.
 Check mll_neg.
 Print Assumptions mll_neg_involutive.
