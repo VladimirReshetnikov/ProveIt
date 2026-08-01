@@ -1608,6 +1608,7 @@ Check formula_eval.
 Check sentence_realize.
 Check semiformula_eval_neg.
 Check semiformula_eval_imp.
+Check semiformula_eval_iff.
 Check semiformula_eval_bounded_all.
 Check semiformula_eval_bounded_exists.
 Check semiterm_val_rew_q_bvars.
@@ -2361,6 +2362,7 @@ Print Assumptions semiterm_val_shift.
 Print Assumptions semiterm_val_free.
 Print Assumptions semiterm_val_fix.
 Print Assumptions semiformula_eval_neg.
+Print Assumptions semiformula_eval_iff.
 Print Assumptions semiformula_eval_bounded_all.
 Print Assumptions semiformula_eval_rewrite.
 Print Assumptions semiformula_eval_free_ext.
@@ -2765,7 +2767,17 @@ Check robinson_q_axiom_list.
 Print Assumptions robinson_q_axiom_list_complete.
 Print Assumptions robinson_q_axiom_finitely_covered.
 Print Assumptions robinson_q_proves_equality.
+Print Assumptions arithmetic_all_sentence_eval.
+Print Assumptions robinson_q_succ_ne_zero_realize_iff.
+Print Assumptions robinson_q_succ_inj_realize_iff.
+Print Assumptions robinson_q_zero_or_succ_realize_iff.
+Print Assumptions robinson_q_add_zero_realize_iff.
+Print Assumptions robinson_q_add_succ_realize_iff.
+Print Assumptions robinson_q_mul_zero_realize_iff.
+Print Assumptions robinson_q_mul_succ_realize_iff.
+Print Assumptions robinson_q_lt_def_realize_iff.
 Print Assumptions robinson_q_laws.
+Print Assumptions first_order_model_models_robinson_q_iff.
 Print Assumptions robinson_q_exists_succ_of_ne_zero.
 Print Assumptions robinson_q_exists_succ_of_ne_zero'.
 Print Assumptions robinson_q_one_ne_zero.
@@ -2788,6 +2800,9 @@ Print Assumptions robinson_q_numeral_add_one.
 Print Assumptions robinson_q_numeral_lt_add.
 Print Assumptions robinson_q_numeral_lt_succ.
 Print Assumptions nat_robinson_q_laws.
+Print Assumptions nat_standard_model_models_robinson_q.
+Print Assumptions robinson_q_consistent.
+Print Assumptions robinson_q_proof_complete.
 Print Assumptions peano_minus_zero_or_succ.
 Print Assumptions peano_minus_lt_iff_exists_add_succ.
 Print Assumptions peano_minus_robinson_q_laws.

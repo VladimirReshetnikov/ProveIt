@@ -327,6 +327,17 @@ Proof.
   intros. unfold semiformula_imp. simpl. rewrite semiformula_eval_neg. tauto.
 Qed.
 
+Lemma semiformula_eval_iff :
+  forall L M X n (S : first_order_structure L M)
+         (b : Fin.t n -> M) (f : X -> M)
+         (p q : semiformula L X n),
+    semiformula_eval S b f (semiformula_iff p q) <->
+    (semiformula_eval S b f p <-> semiformula_eval S b f q).
+Proof.
+  intros. unfold semiformula_iff, semiformula_imp. simpl.
+  rewrite !semiformula_eval_neg. tauto.
+Qed.
+
 Lemma semiformula_eval_bounded_all :
   forall L M X n (S : first_order_structure L M)
          (b : Fin.t n -> M) (f : X -> M)
