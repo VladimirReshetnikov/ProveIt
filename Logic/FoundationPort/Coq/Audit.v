@@ -40,7 +40,7 @@ From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
   D1 D2 D3.
 From Foundation.FirstOrder.Basic Require Import BinderNotation.
 From Foundation.FirstOrder Require Import Basic.
-From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF.
+From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF FixedPoint.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4952,3 +4952,25 @@ Check hfs_pr_result_graph.
 Print Assumptions hfs_pr_result_graph_iff.
 Print Assumptions hfs_pr_result_graph_functional.
 Print Assumptions hfs_pr_result_graph_exists_unique.
+Check hfs_fp_construction.
+Check hfs_fp_finite.
+Check hfs_fp_strong_finite.
+Check hfs_collect_below.
+Print Assumptions hfs_mem_collect_below_iff.
+Check hfs_restrict_below.
+Print Assumptions hfs_mem_restrict_below_iff.
+Check hfs_prefix_codes.
+Print Assumptions hfs_in_prefix_codes_iff.
+Print Assumptions hfs_fp_strong_finite_implies_finite.
+Check hfs_fp_successor.
+Check hfs_fp_stage.
+Print Assumptions hfs_fp_mem_successor_iff.
+Print Assumptions hfs_fp_mem_stage_succ_iff.
+Print Assumptions hfs_fp_stage_cumulative.
+Check hfs_fp_fixedpoint.
+Print Assumptions hfs_fp_unfold.
+Print Assumptions hfs_fp_mem_stage_self.
+Print Assumptions hfs_fp_fixedpoint_iff_self_stage.
+Print Assumptions hfs_fp_finite_upper_stage.
+Print Assumptions hfs_fp_case.
+Print Assumptions hfs_fp_induction.
