@@ -40,7 +40,7 @@ From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
   D1 D2 D3.
 From Foundation.FirstOrder.Basic Require Import BinderNotation.
 From Foundation.FirstOrder Require Import Basic.
-From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding.
+From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4881,3 +4881,56 @@ Print Assumptions hfs_mem_arithmetize_list_iff.
 Print Assumptions hfs_arithmetize_list_app.
 Print Assumptions hfs_arithmetize_list_nodup.
 Print Assumptions hfs_arithmetize_list_insert.
+Check hfs_index_pair.
+Check hfs_index_fst.
+Check hfs_index_snd.
+Print Assumptions hfs_index_fst_pair.
+Print Assumptions hfs_index_snd_pair.
+Print Assumptions hfs_index_pair_injective.
+Check hfs_sequence_code_from.
+Check hfs_sequence_code_list.
+Print Assumptions hfs_mem_sequence_code_list_iff.
+Print Assumptions hfs_mem_sequence_index_iff.
+Print Assumptions hfs_sequence_code_list_injective.
+Check hfs_is_sequence.
+Check hfs_sequence_length_graph.
+Check hfs_sequence_nth_graph.
+Print Assumptions hfs_sequence_values_unique.
+Print Assumptions hfs_sequence_length_graph_functional.
+Print Assumptions hfs_sequence_nth_graph_functional.
+Check hfs_sequence.
+Check hfs_sequence_code.
+Check hfs_sequence_length.
+Check hfs_sequence_nth.
+Check hfs_sequence_znth.
+Check hfs_sequence_empty.
+Check hfs_sequence_cons.
+Check hfs_sequence_take.
+Print Assumptions hfs_sequence_code_injective.
+Print Assumptions hfs_sequence_znth_in_range.
+Print Assumptions hfs_sequence_znth_out_of_range.
+Print Assumptions hfs_sequence_length_zero_iff.
+Print Assumptions hfs_sequence_cons_code.
+Print Assumptions hfs_mem_sequence_cons_code_iff.
+Print Assumptions hfs_sequence_cons_length.
+Print Assumptions hfs_sequence_cons_nth_old.
+Print Assumptions hfs_sequence_cons_nth_last.
+Print Assumptions hfs_sequence_cons_code_subset.
+Print Assumptions hfs_sequence_cons_code_strict.
+Print Assumptions hfs_sequence_extensionality.
+Print Assumptions hfs_sequence_eq_of_length_and_code_subset.
+Print Assumptions hfs_sequence_cons_injective.
+Print Assumptions hfs_sequence_cases.
+Print Assumptions hfs_sequence_induction.
+Print Assumptions hfs_sequence_take_length.
+Print Assumptions hfs_sequence_take_nth.
+Print Assumptions hfs_sequence_take_code_subset.
+Print Assumptions hfs_sequence_take_full.
+Check hfs_sequence_singleton.
+Check hfs_sequence_doubleton.
+Print Assumptions hfs_sequence_singleton_nth.
+Check hfs_vector_to_sequence.
+Print Assumptions vorspiel_fin_enum_nth_error.
+Print Assumptions hfs_vector_to_sequence_length.
+Print Assumptions hfs_vector_to_sequence_nth.
+Print Assumptions hfs_vector_to_sequence_mem.
