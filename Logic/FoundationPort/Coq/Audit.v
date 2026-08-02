@@ -40,7 +40,7 @@ From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
   D1 D2 D3.
 From Foundation.FirstOrder.Basic Require Import BinderNotation.
 From Foundation.FirstOrder Require Import Basic.
-From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq.
+From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4934,3 +4934,21 @@ Print Assumptions vorspiel_fin_enum_nth_error.
 Print Assumptions hfs_vector_to_sequence_length.
 Print Assumptions hfs_vector_to_sequence_nth.
 Print Assumptions hfs_vector_to_sequence_mem.
+Check hfs_pr_construction.
+Check hfs_pr_result.
+Print Assumptions hfs_pr_result_zero.
+Print Assumptions hfs_pr_result_succ.
+Check hfs_pr_trace.
+Print Assumptions hfs_pr_trace_length.
+Print Assumptions hfs_pr_trace_nth.
+Print Assumptions hfs_pr_trace_last.
+Print Assumptions hfs_pr_trace_mem.
+Check hfs_pr_computation.
+Print Assumptions hfs_pr_trace_computation.
+Print Assumptions hfs_pr_computation_value.
+Print Assumptions hfs_pr_computations_agree.
+Print Assumptions hfs_pr_computation_eq_trace.
+Check hfs_pr_result_graph.
+Print Assumptions hfs_pr_result_graph_iff.
+Print Assumptions hfs_pr_result_graph_functional.
+Print Assumptions hfs_pr_result_graph_exists_unique.
