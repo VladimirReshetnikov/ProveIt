@@ -4451,6 +4451,12 @@ Print Assumptions pa_consistent_adjoin_of_unprovable_neg.
 Print Assumptions pa_consistent_adjoin_neg_of_unprovable.
 Check pa_lindenbaum_lt.
 Print Assumptions pa_dense_of_adjoin_incomplete.
+Check r0_sigma_one_definable.
+Check r0_sigma_one_definable_predicate.
+Check r0_arithmetically_semidecidable_predicate.
+Print Assumptions
+  r0_arithmetically_semidecidable_iff_sigma_one_definable.
+Print Assumptions r0_re_iff_sigma_one.
 Print Assumptions pa_exists_true_unprovable_of_incomplete.
 Print Assumptions pa_incomplete_strictly_weaker_than_truth.
 Print Assumptions pa_logic_consistent_iff_unprovable_bottom.

@@ -1,16 +1,85 @@
-(** Semantic consequences of first incompleteness.
+(** Recursive predicates and semantic consequences of first incompleteness.
 
-    Foundation specializes these results to arithmetic truth in the natural
-    numbers.  The selection argument itself needs only that truth is
-    bivalent and that a false formula has a true negation. *)
+    The arithmetic layer identifies certified recursively enumerable
+    predicates with Sigma-one definability.  Foundation specializes the
+    remaining results to arithmetic truth in the natural numbers; their
+    selection argument itself needs only that truth is bivalent and that a
+    false formula has a true negation. *)
 
+From Stdlib Require Import Vectors.Fin.
 From FoundationModal Require Import Syntax LogicInfrastructure.
+From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import
+  Hierarchy Misc Model.
+From Foundation.FirstOrder.Arithmetic.Definability Require Import
+  Hierarchy Definable.
+From Foundation.FirstOrder.Arithmetic.R0 Require Import
+  Representation CertifiedSigmaOne.
 From Foundation.FirstOrder.Incompleteness Require Import
   ProvabilityAbstraction.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
+
+(** A predicate on finite vectors is Sigma-one when a sorted arithmetic
+    formula with natural parameters defines it in the standard model. *)
+Definition r0_sigma_one_definable {n}
+    (P : (Fin.t n -> nat) -> Prop) : Prop :=
+  exists p : arithmetic_sorted_formula nat n arithmetic_sigma_one_symbol,
+    arithmetic_sorted_is_defined_by_with_params
+      nat_standard_structure P p.
+
+(** Arbitrary-arity strengthening of the source theorem [re_iff_sigma1].
+    The recursive-enumerability side retains an explicit arithmetic
+    partial-recursion certificate. *)
+Theorem r0_arithmetically_semidecidable_iff_sigma_one_definable : forall n
+    (P : (Fin.t n -> nat) -> Prop),
+  arithmetically_semidecidable P <-> r0_sigma_one_definable P.
+Proof.
+  intros n P. split.
+  - intro Hsemi.
+    destruct (r0_arithmetically_semidecidable_representation Hsemi)
+      as [p [Hp Hspec]].
+    set (sp := ArithmeticSortedSigma 1 p Hp).
+    assert (Hdefined :
+        arithmetic_sorted_defined nat_standard_structure P sp).
+    { constructor. split.
+      - exact I.
+      - exact Hspec. }
+    pose (Hdef := arithmetic_sorted_defined_to_definable Hdefined).
+    exists (arithmetic_sorted_definable_formula Hdef).
+    exact (arithmetic_sorted_definable_spec Hdef).
+  - intros [p [Hp Hspec]].
+    destruct (r0_sigma_one_arithmetically_semidecidable
+      (fun x : nat => x) (arithmetic_sorted_sigma_prop p))
+      as [f [Hf Hdom]].
+    exists f. split; [exact Hf |].
+    intro v.
+    transitivity
+      (semiformula_eval nat_standard_structure v
+        (fun x : nat => x) (arithmetic_sorted_formula_val p)).
+    + symmetry. exact (Hspec v).
+    + exact (Hdom v).
+Qed.
+
+(** Unary source-facing specialization. *)
+Definition r0_sigma_one_definable_predicate (P : nat -> Prop) : Prop :=
+  r0_sigma_one_definable
+    (fun v : Fin.t 1 -> nat => P (v Fin.F1)).
+
+Definition r0_arithmetically_semidecidable_predicate
+    (P : nat -> Prop) : Prop :=
+  arithmetically_semidecidable
+    (fun v : Fin.t 1 -> nat => P (v Fin.F1)).
+
+Corollary r0_re_iff_sigma_one : forall P : nat -> Prop,
+  r0_arithmetically_semidecidable_predicate P <->
+  r0_sigma_one_definable_predicate P.
+Proof.
+  intro P.
+  apply r0_arithmetically_semidecidable_iff_sigma_one_definable.
+Qed.
 
 (** Every independent formula has a true, still-unprovable orientation.
     Making the truth split explicit keeps this theorem constructive. *)
