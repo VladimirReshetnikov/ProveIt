@@ -22,6 +22,7 @@ From Foundation.FirstOrder.Incompleteness Require Import Tarski.
 From Foundation.FirstOrder.Incompleteness Require Import Dense.
 From Foundation.FirstOrder.Incompleteness Require Import First.
 From Foundation.FirstOrder.Incompleteness Require Import WitnessComparison.
+From Foundation.FirstOrder.Incompleteness Require Import RosserProvability.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
@@ -4470,6 +4471,21 @@ Print Assumptions boot_provability_comparison_lt_irrefl.
 Print Assumptions boot_provability_comparison_lt_trans.
 Print Assumptions boot_provability_comparison_not_lt_of_le.
 Print Assumptions boot_provability_comparison_find_minimal_proof.
+Print Assumptions boot_sentence_code_neg.
+Check boot_rosser_provable.
+Check boot_sentence_rosser_provable.
+Print Assumptions boot_rosser_quote.
+Print Assumptions boot_sentence_rosser_quote.
+Print Assumptions boot_rosser_quote_witness_iff.
+Print Assumptions boot_sentence_rosser_witness_iff.
+Print Assumptions boot_rosser_provable_to_provable.
+Print Assumptions boot_standard_proof_sound.
+Print Assumptions boot_sentence_rosser_provable_sound.
+Print Assumptions first_order_consistent_not_both.
+Print Assumptions boot_rosser_internalize.
+Print Assumptions boot_sentence_rosser_internalize.
+Print Assumptions boot_not_rosser_provable.
+Print Assumptions boot_not_sentence_rosser_provable.
 Print Assumptions pa_exists_true_unprovable_of_incomplete.
 Print Assumptions pa_incomplete_strictly_weaker_than_truth.
 Print Assumptions pa_logic_consistent_iff_unprovable_bottom.
