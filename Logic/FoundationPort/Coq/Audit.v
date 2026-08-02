@@ -4507,6 +4507,18 @@ Check pa_consistent_with.
 Print Assumptions pa_consistent_with_unfold.
 Print Assumptions pa_consistent_with_truth_iff.
 Print Assumptions pa_con_truth_iff_logic_consistent.
+Check boot_consistent.
+Check boot_consistent_with.
+Check boot_sentence_consistent_with.
+Print Assumptions boot_consistent_with_quote.
+Print Assumptions boot_sentence_consistent_with_quote.
+Print Assumptions boot_sentence_consistent_with_iff_theory.
+Print Assumptions boot_consistent_iff_first_order_consistent.
+Print Assumptions boot_sentence_consistent_with_iff_adjoin_consistent.
+Print Assumptions
+  boot_sentence_consistent_with_iff_union_singleton_consistent.
+Print Assumptions
+  boot_sentence_consistent_with_iff_boot_consistent_union_singleton.
 Check boot_language_lor_definable.
 Check language_func_code_valid.
 Check language_rel_code_valid.
