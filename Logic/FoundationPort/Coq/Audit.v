@@ -41,6 +41,7 @@ From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
 From Foundation.FirstOrder.Basic Require Import BinderNotation.
 From Foundation.FirstOrder Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF FixedPoint.
+From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4974,3 +4975,15 @@ Print Assumptions hfs_fp_fixedpoint_iff_self_stage.
 Print Assumptions hfs_fp_finite_upper_stage.
 Print Assumptions hfs_fp_case.
 Print Assumptions hfs_fp_induction.
+Print Assumptions nat_positive_successor_induction.
+Print Assumptions nat_bounded_order_induction.
+Print Assumptions nat_bounded_order_induction_unary.
+Print Assumptions nat_bounded_order_induction_two_parameters.
+Print Assumptions nat_bounded_order_induction_three_parameters.
+Print Assumptions nat_bounded_order_induction_family.
+Print Assumptions nat_measure_induction.
+Print Assumptions nat_measured_bounded_order_induction.
+Print Assumptions nat_measured_numeric_bounded_order_induction.
+Print Assumptions nat_disjunctive_successor_induction.
+Print Assumptions nat_disjunctive_order_induction.
+Print Assumptions nat_indexed_disjunctive_order_induction.
