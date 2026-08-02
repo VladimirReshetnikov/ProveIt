@@ -41,6 +41,8 @@ From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
 From Foundation.FirstOrder.Basic Require Import BinderNotation.
 From Foundation.FirstOrder Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF FixedPoint.
+From Foundation.FirstOrder.Arithmetic.HFS Require Import Vec.
+From Foundation.FirstOrder.Arithmetic Require Import HFS.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
@@ -4987,3 +4989,38 @@ Print Assumptions nat_measured_numeric_bounded_order_induction.
 Print Assumptions nat_disjunctive_successor_induction.
 Print Assumptions nat_disjunctive_order_induction.
 Print Assumptions nat_indexed_disjunctive_order_induction.
+Check hfs_vector_adjoin_code.
+Check hfs_vector_code_list.
+Print Assumptions hfs_vector_adjoin_code_injective.
+Print Assumptions hfs_vector_code_list_injective.
+Check hfs_vector.
+Check hfs_vector_code.
+Print Assumptions hfs_vector_code_adjoin.
+Check hfs_vector_empty.
+Check hfs_vector_adjoin.
+Check hfs_vector_head.
+Check hfs_vector_tail.
+Check hfs_vector_nth.
+Check hfs_vector_length.
+Print Assumptions hfs_vector_code_injective.
+Print Assumptions hfs_vector_adjoin_injective.
+Print Assumptions hfs_vector_cases.
+Print Assumptions hfs_vector_induction.
+Print Assumptions hfs_vector_nth_empty.
+Print Assumptions hfs_vector_nth_adjoin_zero.
+Print Assumptions hfs_vector_nth_adjoin_succ.
+Print Assumptions hfs_vector_length_zero_iff.
+Print Assumptions hfs_vector_nth_out_of_range.
+Print Assumptions hfs_vector_bounded_extensionality.
+Check hfs_vector_singleton.
+Check hfs_vector_doubleton.
+Print Assumptions hfs_vector_length_one_iff.
+Print Assumptions hfs_vector_length_two_iff.
+Check hfs_vector_recursion.
+Check hfs_vector_rec.
+Print Assumptions hfs_vector_rec_empty.
+Print Assumptions hfs_vector_rec_adjoin_law.
+Print Assumptions hfs_vector_rec_unique.
+Check hfs_vector_as_sequence.
+Print Assumptions hfs_vector_as_sequence_length.
+Print Assumptions hfs_vector_as_sequence_nth.
