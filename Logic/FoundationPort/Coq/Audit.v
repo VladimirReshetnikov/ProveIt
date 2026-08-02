@@ -38,6 +38,7 @@ From Foundation.FirstOrder.Bootstrapping Require Import Syntax.
 From Foundation.FirstOrder.Bootstrapping Require Import FixedPoint.
 From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
   D1 D2 D3.
+From Foundation.FirstOrder.Basic Require Import BinderNotation.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4825,3 +4826,17 @@ Check boot_arithmetic_subst_numeral_params.
 Print Assumptions boot_arithmetic_subst_numeral_quote.
 Print Assumptions boot_arithmetic_subst_numerals_quote.
 Print Assumptions boot_arithmetic_subst_numeral_params_quote.
+Check semiformula_nest_argument_terms.
+Check semiformula_nest_result_terms.
+Check semiformula_nest_body.
+Check semiformula_nest.
+Print Assumptions semiformula_nest_argument_terms_eval.
+Print Assumptions semiformula_nest_result_terms_eval.
+Print Assumptions semiformula_eval_nest.
+Check semiformula_nest_func_argument_terms.
+Check semiformula_nest_func_result_terms.
+Check semiformula_nest_func_body.
+Check semiformula_nest_func.
+Print Assumptions semiformula_nest_func_argument_terms_eval.
+Print Assumptions semiformula_nest_func_result_terms_eval.
+Print Assumptions semiformula_eval_nest_func.
