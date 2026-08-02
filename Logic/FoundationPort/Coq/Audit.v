@@ -34,6 +34,9 @@ From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Theory.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Typed.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Coding.
+From Foundation.FirstOrder.Bootstrapping Require Import Syntax.
+From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
+  D1 D2 D3.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4781,3 +4784,22 @@ Print Assumptions boot_formula_disj_seq_subst_code_zero.
 Print Assumptions boot_formula_disj_seq_subst_code_succ.
 Print Assumptions boot_formula_disj_seq_subst_code_quote.
 Print Assumptions boot_formula_disj_seq_subst_code_recognized.
+Check boot_sentence_code.
+Print Assumptions boot_sentence_code_closed_quote.
+Check boot_sentence_provable.
+Print Assumptions boot_derivable_quote.
+Print Assumptions boot_internalize_provability.
+Print Assumptions boot_sentence_provable_iff_theory.
+Print Assumptions boot_sentence_provable_sound.
+Check boot_derivation2_one_sided_lk.
+Check boot_derivation2_one_sided_lk_cut.
+Check boot_derivation2_entailment.
+Check boot_derivation2_principal.
+Check boot_derivation2_modus_ponens.
+Print Assumptions boot_derivation2_modus_ponens_raw.
+Print Assumptions boot_formula_provability_modus_ponens.
+Print Assumptions boot_provability_modus_ponens.
+Print Assumptions boot_provability_D2.
+Print Assumptions boot_r0_sigma_one_complete.
+Print Assumptions boot_r0_sigma_one_complete_of_subset.
+Print Assumptions boot_r0_sigma_one_provable_iff.
