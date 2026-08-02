@@ -7,6 +7,13 @@ From PolynomialFormulas Require Import
   SexticComputedResolventBridge
   SexticSeparatingSearch
   SexticSeparatingExistence
+  SexticSeparatingSelector
+  SexticTotalSeparatingSelector
+  SexticDescriptorAction
+  SexticGaloisAction
+  SexticVietaBridge
+  SexticDescriptorGaloisCriterion
+  SexticReducibleSemantics
   SexticRadicalDecidability.
 
 (** Kernel-assumption audit for the degree-one-through-four solver theorems
@@ -31,6 +38,13 @@ Import PolynomialFormulasSexticRationalRootSearch.
 Import PolynomialFormulasSexticComputedResolventBridge.
 Import PolynomialFormulasSexticSeparatingSearch.
 Import PolynomialFormulasSexticSeparatingExistence.
+Import PolynomialFormulasSexticSeparatingSelector.
+Import PolynomialFormulasSexticTotalSeparatingSelector.
+Import PolynomialFormulasSexticDescriptorAction.
+Import PolynomialFormulasSexticGaloisAction.
+Import PolynomialFormulasSexticVietaBridge.
+Import PolynomialFormulasSexticDescriptorGaloisCriterion.
+Import PolynomialFormulasSexticReducibleSemantics.
 Import PolynomialFormulasSexticRadicalDecidability.
 
 Check solve_linear_correct.
@@ -108,6 +122,32 @@ Check exists_pair_descriptor_injective.
 Check exists_triple_descriptor_injective.
 Check pair_separating_search_terminates.
 Check triple_separating_search_terminates.
+Check first_true_indexP.
+Check first_true_index_minimal.
+Check first_true_index_proof_irrelevant.
+Check pair_separating_parameter_from_roots_injective.
+Check triple_separating_parameter_from_roots_injective.
+Check proper_rational_divisor_has_small_factor.
+Check no_bounded_proper_factor_irreducible.
+Check pair_total_separates_eventually_of_roots.
+Check triple_total_separates_eventually_of_roots.
+Check pair_descriptor_perm.
+Check triple_descriptor_perm.
+Check pair_partition_action_fixedP.
+Check triple_partition_action_fixedP.
+Check sextic_galois_image_transitive.
+Check sextic_galois_image_solvableE.
+Check fixed_iff_rational.
+Check prod_XsubC_sixE.
+Check monic_sextic_vieta.
+Check pair_descriptor_rational_iff_stabilizer.
+Check triple_descriptor_rational_iff_stabilizer.
+Check sextic_galois_solvable_iff_rational_descriptors.
+Check sextic_scaled_resolvent_solvableP.
+Check radical_formula_solves_mul.
+Check radical_formula_solves_scale.
+Check all_roots_radical_int_mul.
+Check all_roots_radical_int_scale.
 Check all_roots_radical_sextic_int_semantic_decidable.
 Check sextic_radical_semantic_codeP.
 
@@ -186,5 +226,31 @@ Print Assumptions exists_pair_descriptor_injective.
 Print Assumptions exists_triple_descriptor_injective.
 Print Assumptions pair_separating_search_terminates.
 Print Assumptions triple_separating_search_terminates.
+Print Assumptions first_true_indexP.
+Print Assumptions first_true_index_minimal.
+Print Assumptions first_true_index_proof_irrelevant.
+Print Assumptions pair_separating_parameter_from_roots_injective.
+Print Assumptions triple_separating_parameter_from_roots_injective.
+Print Assumptions proper_rational_divisor_has_small_factor.
+Print Assumptions no_bounded_proper_factor_irreducible.
+Print Assumptions pair_total_separates_eventually_of_roots.
+Print Assumptions triple_total_separates_eventually_of_roots.
+Print Assumptions pair_descriptor_perm.
+Print Assumptions triple_descriptor_perm.
+Print Assumptions pair_partition_action_fixedP.
+Print Assumptions triple_partition_action_fixedP.
+Print Assumptions sextic_galois_image_transitive.
+Print Assumptions sextic_galois_image_solvableE.
+Print Assumptions fixed_iff_rational.
+Print Assumptions prod_XsubC_sixE.
+Print Assumptions monic_sextic_vieta.
+Print Assumptions pair_descriptor_rational_iff_stabilizer.
+Print Assumptions triple_descriptor_rational_iff_stabilizer.
+Print Assumptions sextic_galois_solvable_iff_rational_descriptors.
+Print Assumptions sextic_scaled_resolvent_solvableP.
+Print Assumptions radical_formula_solves_mul.
+Print Assumptions radical_formula_solves_scale.
+Print Assumptions all_roots_radical_int_mul.
+Print Assumptions all_roots_radical_int_scale.
 Print Assumptions all_roots_radical_sextic_int_semantic_decidable.
 Print Assumptions sextic_radical_semantic_codeP.
