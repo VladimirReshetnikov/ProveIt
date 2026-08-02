@@ -16,7 +16,11 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   RawCodedContextLists
   RawCodedRestrictedPAProof
+  RawCodedRestrictedPAConsistencyFormulaCode
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedRestrictedTargetTemplateContext
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofExistentialEliminationChain
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
@@ -36,7 +40,11 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
   RawCodedDynamicTruthNativeZeroGuardedNormalization
-  RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
+  RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification
+  RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
+  RawCodedProofEndpointQuantifierBoundedProofCompilation
+  RawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation
+  RawCodedStrongStepProofEndpointEvidenceCompilation.
 
 Import ListNotations.
 
@@ -49,7 +57,11 @@ Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import PABoundedRawCodedRestrictedTargetTemplateContext.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -74,6 +86,11 @@ Import
 Import PABoundedRawCodedDynamicTruthNativeZeroGuardedNormalization.
 Import
   PABoundedRawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
+Import PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
+Import PABoundedRawCodedProofEndpointQuantifierBoundedProofCompilation.
+Import
+  PABoundedRawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation.
+Import PABoundedRawCodedStrongStepProofEndpointEvidenceCompilation.
 
 (** Local direct-translation adequacy avoids importing the substantially
     stronger global-row compiler merely for this elementary consequence of
@@ -87,6 +104,85 @@ Proof.
   intros M hPA inputs prefix formula _.
   exact (raw_codedTemplateFormula_atomically_adequate_core M hPA
     (rawDirectStructuralTemplateTranslation M hPA inputs) formula).
+Qed.
+
+(** Five introduced variables move the endpoint formula coordinate [#2] to
+    the guarded parent coordinate [#7]. *)
+Lemma coqDynamicTruthImpGuardedParentAtomicTemplate_eq_endpoint_shift5 :
+  coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+    coqDynamicTruthImpGuardedLevelTerm
+    coqDynamicTruthImpGuardedParentTerm
+    coqDynamicTruthImpGuardedLeftTerm
+    coqDynamicTruthImpGuardedRightTerm
+    coqDynamicTruthImpGuardedChildTerm =
+  templateFormulaRename (templateShiftRenamingMany 5)
+    coqStrongStepProofEndpointAtomicAdequacyConclusion.
+Proof. vm_compute. reflexivity. Qed.
+
+(** Unlike atomic adequacy, the domain endpoint is not literally the same
+    template after five shifts: the generic endpoint names the lower-level
+    parameter, whereas the guarded predecessor domain names the upper-level
+    parameter.  Direct inputs for the local collision law identify those two
+    translated numeral terms.  Stating the bridge on translated formula
+    codes therefore captures the actual reusable hypothesis without claiming
+    a false syntactic identity. *)
+Lemma coqDynamicTruthImpGuardedParentDomainTemplate_view :
+  coqDynamicTruthImpDirectChildDomainPremiseTemplate
+    coqDynamicTruthImpGuardedLevelTerm
+    coqDynamicTruthImpGuardedParentTerm
+    coqDynamicTruthImpGuardedLeftTerm
+    coqDynamicTruthImpGuardedRightTerm
+    coqDynamicTruthImpGuardedChildTerm =
+  restrictedTargetTemplateFormulaContext
+    coqRestrictedPASoundnessUpperLevelTerm
+    (restrictedTargetFormulaQuantifierBoundedContext (tVar 7)).
+Proof. vm_compute. reflexivity. Qed.
+
+Lemma coqStrongStepProofEndpointQuantifierBoundedConclusion_shift5_view :
+  templateFormulaRename (templateShiftRenamingMany 5)
+    coqStrongStepProofEndpointQuantifierBoundedConclusion =
+  restrictedTargetTemplateFormulaContext
+    coqRestrictedPASoundnessLowerLevelTerm
+    (restrictedTargetFormulaQuantifierBoundedContext (tVar 7)).
+Proof.
+  rewrite coqStrongStepProofEndpointQuantifierBoundedConclusion_view.
+  vm_compute. reflexivity.
+Qed.
+
+Lemma raw_coqDynamicTruthImpGuardedParentDomain_eq_endpoint_shift5 :
+    forall (M : RawPAModel)
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  rawDirectTemplateFormula inputs
+      (coqDynamicTruthImpDirectChildDomainPremiseTemplate
+        coqDynamicTruthImpGuardedLevelTerm
+        coqDynamicTruthImpGuardedParentTerm
+        coqDynamicTruthImpGuardedLeftTerm
+        coqDynamicTruthImpGuardedRightTerm
+        coqDynamicTruthImpGuardedChildTerm) =
+  rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointQuantifierBoundedConclusion).
+Proof.
+  intros M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    hidentification.
+  pose proof
+    (rawCoqDynamicTruthLocalExclusive_levelAlignment
+      M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+      hidentification) as hlevel.
+  rewrite coqDynamicTruthImpGuardedParentDomainTemplate_view.
+  rewrite coqStrongStepProofEndpointQuantifierBoundedConclusion_shift5_view.
+  unfold rawDirectTemplateFormula.
+  rewrite !rawStructuralWith_restrictedTargetTemplateFormulaContext.
+  change
+    (rawDirectTemplateTerm inputs
+       coqRestrictedPASoundnessLowerLevelTerm =
+     rawDirectTemplateTerm inputs
+       coqRestrictedPASoundnessUpperLevelTerm) in hlevel.
+  fold (rawDirectTemplateTerm inputs).
+  now rewrite hlevel.
 Qed.
 
 (** All five roots inhabit the same deepest branch context.  Existential

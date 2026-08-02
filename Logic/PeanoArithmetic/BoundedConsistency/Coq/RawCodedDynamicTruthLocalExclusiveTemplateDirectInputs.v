@@ -823,9 +823,16 @@ End DirectFields.
 Arguments rawCoqDynamicTruthLocalExclusiveDirectStructuralInputs
   M _ _ _ _ _ _ _ _ _ _ : clear implicits.
 
-(** The exact four equalities needed to identify the finite surrounding
-    formula.  Keeping them in a record lets graph clients forget selectors,
-    numeral packages, and operation witnesses after construction. *)
+(** The exact leaf equalities needed to identify the finite surrounding
+    formula, together with the diagonal level alignment used by later
+    endpoint compilers.  Keeping them in a record lets graph clients forget
+    selectors, numeral packages, and operation witnesses after construction.
+
+    The alignment is intentionally stated at the translated-term level.  It
+    is weaker than remembering how the numeral parameters were built, while
+    still allowing a theorem expressed using the generic lower-level endpoint
+    to be reused by the guarded branch, whose domain formula names the upper
+    level. *)
 Record RawCoqDynamicTruthLocalExclusiveTemplateIdentification
     (M : RawPAModel)
     (inputs : RawCodedTemplateDirectStructuralInputs M)
@@ -841,7 +848,12 @@ Record RawCoqDynamicTruthLocalExclusiveTemplateIdentification
       coqDynamicTruthLocalSigmaEvidenceTemplate = sigmaEvidence;
   rawCoqDynamicTruthLocalExclusive_piEvidence :
     rawDirectTemplateFormula inputs
-      coqDynamicTruthLocalPiEvidenceTemplate = piEvidence
+      coqDynamicTruthLocalPiEvidenceTemplate = piEvidence;
+  rawCoqDynamicTruthLocalExclusive_levelAlignment :
+    rawDirectTemplateTerm inputs
+      coqDynamicTruthLowerLevelTerm =
+    rawDirectTemplateTerm inputs
+      coqDynamicTruthUpperLevelTerm
 }.
 
 Arguments RawCoqDynamicTruthLocalExclusiveTemplateIdentification
@@ -863,7 +875,7 @@ Theorem rawCoqDynamicTruthLocalDecisionBodyTemplate_identified : forall
       sigmaDomain piDomain sigmaEvidence piEvidence.
 Proof.
   intros M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
-    [hsigmaDomain hpiDomain hsigmaEvidence hpiEvidence].
+    [hsigmaDomain hpiDomain hsigmaEvidence hpiEvidence _].
   unfold coqDynamicTruthLocalDecisionBodyTemplate,
     coqDynamicTruthLocalAdmissibleTemplate,
     rawDynamicTruthLocalDecisionCode,
@@ -946,7 +958,7 @@ Theorem rawCoqDynamicTruthLocalExclusiveBodyTemplate_identified : forall
       sigmaDomain piDomain sigmaEvidence piEvidence.
 Proof.
   intros M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
-    [hsigmaDomain hpiDomain hsigmaEvidence hpiEvidence].
+    [hsigmaDomain hpiDomain hsigmaEvidence hpiEvidence _].
   unfold coqDynamicTruthLocalExclusiveBodyTemplate,
     coqDynamicTruthLocalAdmissibleTemplate,
     rawDynamicTruthLocalExclusiveCode,
@@ -1189,6 +1201,7 @@ Proof.
       M hPA upperLevel upperLevel globalSigmaCode globalPiCode
       sigmaSelector piSelector hsigmaCommuting hpiCommuting package
       piEvidence hpiEvidence).
+  - reflexivity.
 Qed.
 
 (** Deep closure is the natural selector-free interface. *)

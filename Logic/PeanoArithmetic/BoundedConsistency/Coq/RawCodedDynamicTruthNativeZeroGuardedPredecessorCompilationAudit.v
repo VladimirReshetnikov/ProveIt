@@ -9,6 +9,11 @@ Module
 Import
   PABoundedRawCodedDynamicTruthNativeZeroGuardedPredecessorCompilation.
 
+Check coqDynamicTruthImpGuardedParentAtomicTemplate_eq_endpoint_shift5.
+Check coqDynamicTruthImpGuardedParentDomainTemplate_view.
+Check
+  coqStrongStepProofEndpointQuantifierBoundedConclusion_shift5_view.
+Check raw_coqDynamicTruthImpGuardedParentDomain_eq_endpoint_shift5.
 Check RawDynamicTruthImpGuardedBranchRootsAt.
 Check
   raw_dynamicTruthImpGuardedPredecessorRoot_on_witnessed_extension_of_branch_roots.
@@ -22,6 +27,8 @@ Check
 Check
   raw_dynamicTruthNativeLocalZeroGrowingGuardedPredecessorRootCompilerOnNormalizedResources_of_branch_roots.
 
+Print Assumptions
+  raw_coqDynamicTruthImpGuardedParentDomain_eq_endpoint_shift5.
 Print Assumptions
   raw_dynamicTruthImpGuardedPredecessorRoot_on_witnessed_extension_of_branch_roots.
 Print Assumptions raw_dynamicTruthImpGuardedBranchSource_of_zero_normalized.
