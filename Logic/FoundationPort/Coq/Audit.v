@@ -21,6 +21,7 @@ From Foundation.FirstOrder.Incompleteness Require Import Height.
 From Foundation.FirstOrder.Incompleteness Require Import Tarski.
 From Foundation.FirstOrder.Incompleteness Require Import Dense.
 From Foundation.FirstOrder.Incompleteness Require Import First.
+From Foundation.FirstOrder.Incompleteness Require Import WitnessComparison.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
@@ -4457,6 +4458,18 @@ Check r0_arithmetically_semidecidable_predicate.
 Print Assumptions
   r0_arithmetically_semidecidable_iff_sigma_one_definable.
 Print Assumptions r0_re_iff_sigma_one.
+Check boot_provability_comparison_le.
+Check boot_provability_comparison_lt.
+Print Assumptions boot_provability_comparison_le_of_lt.
+Print Assumptions boot_provability_comparison_le_to_provable.
+Print Assumptions boot_provability_comparison_le_trans.
+Print Assumptions boot_proof_conclusion_unique.
+Print Assumptions boot_provability_comparison_le_antisymm.
+Print Assumptions boot_provability_comparison_iff_le_refl_provable.
+Print Assumptions boot_provability_comparison_lt_irrefl.
+Print Assumptions boot_provability_comparison_lt_trans.
+Print Assumptions boot_provability_comparison_not_lt_of_le.
+Print Assumptions boot_provability_comparison_find_minimal_proof.
 Print Assumptions pa_exists_true_unprovable_of_incomplete.
 Print Assumptions pa_incomplete_strictly_weaker_than_truth.
 Print Assumptions pa_logic_consistent_iff_unprovable_bottom.
