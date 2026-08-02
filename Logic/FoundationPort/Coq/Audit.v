@@ -288,7 +288,8 @@ From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Syntax.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
-From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic Representation.
+From Foundation.FirstOrder.Arithmetic.R0 Require Import
+  Basic CodeGraph Representation.
 From Foundation.FirstOrder.Arithmetic.Q Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Theory.
@@ -3222,6 +3223,14 @@ Print Assumptions r0_sigma_one_provable_iff.
 Print Assumptions primitive_recursive1_constant.
 Print Assumptions primitive_recursive1_compose_binary.
 Print Assumptions r0_semiterm_primitive_recursive.
+Check r0_arith_code_graph.
+Check r0_arith_code_graph_open.
+Check r0_arith_code_graph_semisentence.
+Print Assumptions r0_arith_code_graph_sigma_one.
+Print Assumptions r0_arith_code_graph_open_sigma_one.
+Print Assumptions r0_arith_code_graph_semisentence_sigma_one.
+Check r0_arith_code_graph_open_sorted.
+Check r0_arith_code_graph_semisentence_sorted.
 Check r0_omega_add_one.
 Check r0_omega_add_one_oring.
 Print Assumptions r0_omega_add_one_numeral.
