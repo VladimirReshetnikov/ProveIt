@@ -47,6 +47,7 @@ From Foundation.FirstOrder Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF FixedPoint.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Vec.
 From Foundation.FirstOrder.Arithmetic Require Import HFS.
+From Foundation.FirstOrder.Arithmetic.Exponential Require Import Bit.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
@@ -4968,6 +4969,68 @@ Check semiformula_nest_func.
 Print Assumptions semiformula_nest_func_argument_terms_eval.
 Print Assumptions semiformula_nest_func_result_terms_eval.
 Print Assumptions semiformula_eval_nest_func.
+Check nat_bit.
+Check nat_bit_empty.
+Check nat_bit_singleton.
+Check nat_bit_insert.
+Check nat_bit_remove.
+Check nat_bit_subset.
+Print Assumptions nat_bit_mem_iff.
+Print Assumptions nat_bit_exp_le_of_mem.
+Print Assumptions nat_bit_lt_of_mem.
+Print Assumptions nat_bit_not_mem_of_lt_exp.
+Print Assumptions nat_bit_empty_eq_zero.
+Print Assumptions nat_bit_not_mem_empty.
+Print Assumptions nat_bit_not_mem_zero.
+Print Assumptions nat_bit_singleton_eq_pow.
+Print Assumptions nat_bit_singleton_injective.
+Print Assumptions nat_bit_insert_eq.
+Print Assumptions nat_bit_remove_eq.
+Print Assumptions nat_bit_singleton_eq_insert_empty.
+Print Assumptions nat_bit_mem_insert_iff.
+Print Assumptions nat_bit_mem_remove_iff.
+Print Assumptions nat_bit_not_mem_remove_self.
+Print Assumptions nat_bit_one_eq_singleton_empty.
+Print Assumptions nat_bit_mem_singleton_iff.
+Print Assumptions nat_bit_remove_lt_of_mem.
+Print Assumptions nat_bit_pos_of_nonempty.
+Print Assumptions nat_bit_mem_insert.
+Print Assumptions nat_bit_insert_eq_self_of_mem.
+Print Assumptions nat_bit_subset_iff.
+Print Assumptions nat_bit_subset_refl.
+Print Assumptions nat_bit_subset_trans.
+Print Assumptions nat_bit_eq_zero_of_subset_zero.
+Print Assumptions nat_bit_le_of_subset.
+Print Assumptions nat_bit_ext.
+Print Assumptions nat_bit_ext_iff.
+Print Assumptions nat_bit_pos_iff_nonempty.
+Print Assumptions nat_bit_nonempty_of_pos.
+Print Assumptions nat_bit_eq_empty_or_nonempty.
+Print Assumptions nat_bit_nonempty_iff.
+Print Assumptions nat_bit_isempty_iff.
+Print Assumptions nat_bit_empty_subset.
+Print Assumptions nat_bit_log2_mem_of_pos.
+Print Assumptions nat_bit_le_log2_of_mem.
+Print Assumptions nat_bit_lt_size_of_mem.
+Print Assumptions nat_bit_lt_of_lt_log2.
+Print Assumptions nat_bit_succ_mem_iff_div2.
+Print Assumptions nat_bit_subset_div2.
+Print Assumptions nat_bit_zero_not_mem_iff_even.
+Print Assumptions nat_bit_zero_not_mem_double.
+Print Assumptions nat_bit_zero_mem_double_add_one.
+Print Assumptions nat_bit_succ_mem_double_iff.
+Print Assumptions nat_bit_succ_mem_double_add_one_iff.
+Check nat_bit_under.
+Print Assumptions nat_bit_le_under.
+Print Assumptions nat_bit_under_lt_pow.
+Print Assumptions nat_bit_mem_under_iff.
+Print Assumptions nat_bit_not_mem_under_self.
+Print Assumptions nat_bit_under_injective.
+Print Assumptions nat_bit_under_zero.
+Print Assumptions nat_bit_under_succ.
+Print Assumptions nat_bit_under_succ_arithmetic.
+Print Assumptions nat_bit_lt_pow_iff.
+Print Assumptions nat_bit_insert_remove.
 Check hfs_code.
 Check hfs_mem.
 Check hfs_empty.
