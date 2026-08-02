@@ -23,6 +23,7 @@ From Foundation.FirstOrder.Incompleteness Require Import Dense.
 From Foundation.FirstOrder.Incompleteness Require Import First.
 From Foundation.FirstOrder.Incompleteness Require Import WitnessComparison.
 From Foundation.FirstOrder.Incompleteness Require Import RosserProvability.
+From Foundation.FirstOrder.Incompleteness Require Import Jeroslow.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
@@ -4486,6 +4487,19 @@ Print Assumptions boot_rosser_internalize.
 Print Assumptions boot_sentence_rosser_internalize.
 Print Assumptions boot_not_rosser_provable.
 Print Assumptions boot_not_sentence_rosser_provable.
+Check boot_refutable.
+Check boot_sentence_refutable.
+Print Assumptions boot_refutable_quote.
+Print Assumptions boot_sentence_refutable_quote.
+Print Assumptions boot_sentence_refutable_witness_iff.
+Print Assumptions boot_sentence_refutable_iff_theory.
+Print Assumptions boot_internalize_refutation.
+Print Assumptions boot_internalize_refutability.
+Print Assumptions boot_standard_refutation_sound.
+Print Assumptions boot_sentence_refutable_sound.
+Print Assumptions boot_sentence_consistent_not_both.
+Print Assumptions boot_sentence_provable_not_refutable.
+Print Assumptions boot_sentence_refutable_not_provable.
 Print Assumptions pa_exists_true_unprovable_of_incomplete.
 Print Assumptions pa_incomplete_strictly_weaker_than_truth.
 Print Assumptions pa_logic_consistent_iff_unprovable_bottom.
