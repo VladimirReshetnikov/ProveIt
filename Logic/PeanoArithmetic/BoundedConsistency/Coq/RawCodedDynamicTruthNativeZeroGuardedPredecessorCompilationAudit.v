@@ -1,0 +1,28 @@
+(** Assumption audit for guarded rank-zero predecessor compilation. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroGuardedPredecessorCompilation.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedPredecessorCompilationAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedPredecessorCompilation.
+
+Check RawDynamicTruthImpGuardedBranchRootsAt.
+Check
+  raw_dynamicTruthImpGuardedPredecessorRoot_on_witnessed_extension_of_branch_roots.
+Check
+  RawDynamicTruthNativeLocalZeroGrowingGuardedBranchRootsCompilerOnNormalizedResources.
+Check
+  RawDynamicTruthNativeLocalZeroGrowingGuardedPredecessorRootCompilerOnNormalizedResources.
+Check
+  raw_dynamicTruthNativeLocalZeroGrowingGuardedPredecessorRootCompilerOnNormalizedResources_of_branch_roots.
+
+Print Assumptions
+  raw_dynamicTruthImpGuardedPredecessorRoot_on_witnessed_extension_of_branch_roots.
+Print Assumptions
+  raw_dynamicTruthNativeLocalZeroGrowingGuardedPredecessorRootCompilerOnNormalizedResources_of_branch_roots.
+
+End
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedPredecessorCompilationAudit.
