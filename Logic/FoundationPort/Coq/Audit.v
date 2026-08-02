@@ -35,6 +35,7 @@ From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Typed.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Coding.
 From Foundation.FirstOrder.Bootstrapping Require Import Syntax.
+From Foundation.FirstOrder.Bootstrapping Require Import FixedPoint.
 From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
   D1 D2 D3.
 From Foundation.Vorspiel.Fin Require Import Basic.
@@ -4803,3 +4804,24 @@ Print Assumptions boot_provability_D2.
 Print Assumptions boot_r0_sigma_one_complete.
 Print Assumptions boot_r0_sigma_one_complete_of_subset.
 Print Assumptions boot_r0_sigma_one_provable_iff.
+Check boot_subst_numeral_code.
+Print Assumptions boot_subst_numeral_code_quote.
+Print Assumptions boot_subst_numeral_code_quote_quote.
+Print Assumptions boot_subst_numeral_code_recognized.
+Check boot_subst_numerals_code.
+Print Assumptions boot_subst_numerals_code_quote.
+Print Assumptions boot_subst_numerals_code_quote_quote.
+Print Assumptions boot_subst_numerals_code_recognized.
+Print Assumptions boot_subst_numeral_code_as_numerals.
+Check boot_subst_numeral_params_code.
+Print Assumptions boot_subst_numeral_params_code_quote.
+Print Assumptions boot_subst_numeral_params_code_quote_quote.
+Print Assumptions boot_subst_numeral_params_code_recognized.
+Print Assumptions boot_subst_numeral_params_zero.
+Check boot_arithmetic_numeral.
+Check boot_arithmetic_subst_numeral.
+Check boot_arithmetic_subst_numerals.
+Check boot_arithmetic_subst_numeral_params.
+Print Assumptions boot_arithmetic_subst_numeral_quote.
+Print Assumptions boot_arithmetic_subst_numerals_quote.
+Print Assumptions boot_arithmetic_subst_numeral_params_quote.
