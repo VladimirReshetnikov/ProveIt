@@ -189,6 +189,65 @@ Arguments RawCodedDynamicTruthSelectedPayloadShiftCompilerAt
   M translation witnessList baseContext prefix rootMode
   localSigma localPi conclusion : clear implicits.
 
+(** Selected-payload callback over an arbitrary source prefix.  This is
+    strictly weaker than the predecessor-state interface above: the callback
+    only promises to preserve the exact prefix through the ten existential
+    witnesses and does not require that prefix to have any fixed head. *)
+Definition RawCodedDynamicTruthSelectedPayloadShiftCompilerAtOnTemplatePrefix
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (witnessList baseContext : M) (sourcePrefix : TemplateContext)
+    (rootMode : nat) (localSigma localPi conclusion : TemplateFormula)
+    : Prop :=
+  forall witnesses selectedRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses witnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) ->
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) ->
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext)
+        (coqDynamicTruthGlobalExistentialDeepContextOn
+          rootMode localSigma localPi sourcePrefix))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
+          rootMode localSigma localPi)) selectedRoot ->
+    exists shiftedRoot,
+      RawCodedPALocalProofOf M
+        (rawTemplateContextCodeOnTail translation
+          (rawStandardPAAxiomWitnessPrefixContextCode M
+            witnesses baseContext)
+          (coqDynamicTruthGlobalExistentialDeepContextOn
+            rootMode localSigma localPi sourcePrefix))
+        (rawTemplateFormula translation
+          (templateFormulaShiftMany 10 conclusion)) shiftedRoot.
+
+Arguments RawCodedDynamicTruthSelectedPayloadShiftCompilerAtOnTemplatePrefix
+  M translation witnessList baseContext sourcePrefix rootMode
+  localSigma localPi conclusion : clear implicits.
+
+Definition
+    RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensionsOnTemplatePrefix
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (baseContext : M) (sourcePrefix : TemplateContext)
+    (rootMode : nat) (localSigma localPi conclusion : TemplateFormula)
+    : Prop :=
+  forall witnessList extendedContext,
+    RawCodedPAAxiomWitnessContext M witnessList extendedContext ->
+    RawContextListIncluded M baseContext extendedContext ->
+    RawCodedDynamicTruthSelectedPayloadShiftCompilerAtOnTemplatePrefix
+      M translation witnessList extendedContext sourcePrefix rootMode
+      localSigma localPi conclusion.
+
+Arguments
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensionsOnTemplatePrefix
+  M translation baseContext sourcePrefix rootMode
+  localSigma localPi conclusion : clear implicits.
+
 (** Uniform callback family over every witnessed extension of a fixed caller
     context.  Earlier phases such as admissibility may choose their own
     standard-axiom witness batch before row selection starts. *)
@@ -209,6 +268,171 @@ Arguments
   RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensions
   M translation baseContext prefix rootMode
   localSigma localPi conclusion : clear implicits.
+
+(** Context-general row evidence.  Witness-tail growth is synchronized by
+    transporting the incoming global source across the selector's standard
+    PA extension while preserving [sourcePrefix] literally. *)
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthGlobal_row_evidence_of_selected_compiler_on_template_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall witnessList baseContext sourcePrefix rootMode localSigma localPi
+      conclusion sourceRoot,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  rootMode = 0 \/ rootMode = 1 ->
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerAtOnTemplatePrefix
+    M translation witnessList baseContext sourcePrefix rootMode
+    localSigma localPi conclusion ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext sourcePrefix)
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource
+        rootMode localSigma localPi)) sourceRoot ->
+  exists witnesses evidenceRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses witnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) sourcePrefix)
+      (rawTemplateFormula translation conclusion) evidenceRoot.
+Proof.
+  intros M hPA translation hagreement witnessList baseContext sourcePrefix
+    rootMode localSigma localPi conclusion sourceRoot
+    hwitnessed hrootMode hcompiler hsource.
+  destruct
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_selected_on_template_prefix
+      M hPA translation hagreement witnessList baseContext sourcePrefix
+      rootMode localSigma localPi hwitnessed hrootMode)
+    as (witnesses & selectedRoot & hextended & hincluded & hselected).
+  destruct (hcompiler witnesses selectedRoot hextended hincluded hselected)
+    as [shiftedRoot hshifted].
+  set (extendedWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses witnessList).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses baseContext).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation witnessList baseContext
+      extendedWitnessList extendedContext sourcePrefix
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalExistentialSource
+          rootMode localSigma localPi))
+      sourceRoot hwitnessed hextended hincluded hsource)
+    as [transportedSourceRoot htransportedSource].
+  destruct
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_existential_elimination_under_template_prefix
+      M hPA translation extendedWitnessList extendedContext sourcePrefix
+      rootMode localSigma localPi conclusion transportedSourceRoot
+      shiftedRoot hextended htransportedSource hshifted)
+    as [evidenceRoot hevidence].
+  exists witnesses, evidenceRoot.
+  split; [exact hextended |].
+  split; [exact hincluded | exact hevidence].
+Qed.
+
+(** Pair the two arbitrary-prefix row passes on one final witnessed PA tail.
+    The second selector may grow the tail once more; the first evidence root
+    and the still-unused Pi source are transported only across literal
+    [sourcePrefix], so no state-context normalization is involved. *)
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthGlobal_row_evidence_pair_of_selected_compiler_families_on_template_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall witnessList baseContext sourcePrefix localSigma localPi
+      sigmaConclusion piConclusion sigmaSourceRoot piSourceRoot,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensionsOnTemplatePrefix
+    M translation baseContext sourcePrefix 0
+    localSigma localPi sigmaConclusion ->
+  RawCodedDynamicTruthSelectedPayloadShiftCompilerOnWitnessedExtensionsOnTemplatePrefix
+    M translation baseContext sourcePrefix 1
+    localSigma localPi piConclusion ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext sourcePrefix)
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource 0 localSigma localPi))
+    sigmaSourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext sourcePrefix)
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource 1 localSigma localPi))
+    piSourceRoot ->
+  exists targetWitnessList targetContext sigmaRoot piRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext sourcePrefix)
+      (rawTemplateFormula translation sigmaConclusion) sigmaRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext sourcePrefix)
+      (rawTemplateFormula translation piConclusion) piRoot.
+Proof.
+  intros M hPA translation hagreement witnessList baseContext sourcePrefix
+    localSigma localPi sigmaConclusion piConclusion
+    sigmaSourceRoot piSourceRoot hwitnessed
+    hsigmaFamily hpiFamily hsigmaSource hpiSource.
+  destruct
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_row_evidence_of_selected_compiler_on_template_prefix
+      M hPA translation hagreement witnessList baseContext sourcePrefix
+      0 localSigma localPi sigmaConclusion sigmaSourceRoot
+      hwitnessed (or_introl eq_refl)
+      (hsigmaFamily witnessList baseContext hwitnessed
+        (fun member hmember => hmember)) hsigmaSource)
+    as (sigmaWitnesses & sigmaRoot & hsigmaWitnessed &
+      hsigmaIncluded & hsigma).
+  set (sigmaWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      sigmaWitnesses witnessList).
+  set (sigmaContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      sigmaWitnesses baseContext).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation witnessList baseContext
+      sigmaWitnessList sigmaContext sourcePrefix
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalExistentialSource 1 localSigma localPi))
+      piSourceRoot hwitnessed hsigmaWitnessed hsigmaIncluded hpiSource)
+    as [transportedPiSourceRoot htransportedPiSource].
+  destruct
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_row_evidence_of_selected_compiler_on_template_prefix
+      M hPA translation hagreement sigmaWitnessList sigmaContext
+      sourcePrefix 1 localSigma localPi piConclusion
+      transportedPiSourceRoot hsigmaWitnessed (or_intror eq_refl)
+      (hpiFamily sigmaWitnessList sigmaContext
+        hsigmaWitnessed hsigmaIncluded) htransportedPiSource)
+    as (piWitnesses & piRoot & hpiWitnessed & hpiIncluded & hpi).
+  set (piWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      piWitnesses sigmaWitnessList).
+  set (piContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      piWitnesses sigmaContext).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation sigmaWitnessList sigmaContext
+      piWitnessList piContext sourcePrefix
+      (rawTemplateFormula translation sigmaConclusion) sigmaRoot
+      hsigmaWitnessed hpiWitnessed hpiIncluded hsigma)
+    as [transportedSigmaRoot htransportedSigma].
+  exists piWitnessList, piContext, transportedSigmaRoot, piRoot.
+  split; [exact hpiWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hpiIncluded member (hsigmaIncluded member hmember)).
+  - split; assumption.
+Qed.
 
 (** Formula-specific compiler interface.  The callback receives the selected
     row proof and the exact witnessed extension chosen by tag selection, then
