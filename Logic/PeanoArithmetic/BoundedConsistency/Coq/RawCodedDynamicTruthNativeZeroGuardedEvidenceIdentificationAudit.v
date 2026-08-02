@@ -14,6 +14,7 @@ Check coqDynamicTruthImpGuardedLocalSigmaEvidenceTemplate_rename.
 Check coqDynamicTruthImpGuardedLocalPiEvidenceTemplate_rename.
 Check dynamicTruthZeroSigmaPredicateFormula_guarded_application.
 Check dynamicTruthZeroPiPredicateFormula_guarded_application.
+Check rawTernaryApplicationOutput_quoted_standard.
 Check RawDynamicTruthZeroGuardedEvidenceIdentification.
 Check raw_dynamicTruthZeroGuardedEvidenceIdentification_exists.
 
@@ -21,6 +22,7 @@ Print Assumptions
   coqDynamicTruthImpGuardedLocalSigmaEvidenceTemplate_rename.
 Print Assumptions
   coqDynamicTruthImpGuardedLocalPiEvidenceTemplate_rename.
+Print Assumptions rawTernaryApplicationOutput_quoted_standard.
 Print Assumptions
   raw_dynamicTruthZeroGuardedEvidenceIdentification_exists.
 
