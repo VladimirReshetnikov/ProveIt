@@ -29,6 +29,7 @@ From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Typed Coding
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Functions.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Typed Coding.
+From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Iteration.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Theory.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Typed.
@@ -4726,3 +4727,57 @@ Print Assumptions boot_derivation_sound.
 Print Assumptions boot_proof_sound.
 Print Assumptions boot_provable_sound.
 Print Assumptions boot_provable_quote_iff.
+Check boot_formula_replicate.
+Print Assumptions boot_formula_replicate_zero.
+Print Assumptions boot_formula_replicate_succ.
+Check boot_formula_list_conj.
+Check boot_formula_list_disj.
+Check boot_formula_weight.
+Print Assumptions boot_formula_weight_zero.
+Print Assumptions boot_formula_weight_succ.
+Print Assumptions boot_formula_neg_list_conj.
+Print Assumptions boot_formula_neg_list_disj.
+Print Assumptions boot_formula_rewrite_list_conj.
+Print Assumptions boot_formula_rewrite_list_disj.
+Print Assumptions boot_formula_shift_list_conj.
+Print Assumptions boot_formula_subst_list_disj.
+Check boot_qq_conj_list.
+Check boot_qq_disj_list.
+Print Assumptions boot_formula_list_conj_quote.
+Print Assumptions boot_formula_list_disj_quote.
+Print Assumptions boot_is_semiformula_and_iff.
+Print Assumptions boot_is_semiformula_or_iff.
+Print Assumptions boot_qq_conj_list_recognized_iff.
+Print Assumptions boot_qq_disj_list_recognized_iff.
+Print Assumptions boot_qq_conj_list_length_le.
+Check boot_qq_verums.
+Print Assumptions boot_qq_verums_bound.
+Print Assumptions boot_qq_verums_recognized.
+Print Assumptions boot_formula_weight_quote.
+Check boot_formula_subst_iteration.
+Print Assumptions boot_formula_subst_iteration_zero.
+Print Assumptions boot_formula_subst_iteration_succ.
+Print Assumptions boot_formula_subst_iteration_length.
+Print Assumptions boot_formula_subst_iteration_nth_error.
+Print Assumptions boot_typed_subst_fin_coding_cons.
+Print Assumptions boot_typed_shift_fin_coding_cons.
+Print Assumptions boot_formula_subst_iteration_neg.
+Print Assumptions boot_formula_subst_iteration_shift.
+Print Assumptions boot_formula_subst_iteration_subst.
+Check boot_formula_subst_iteration_conj.
+Check boot_formula_disj_seq_subst.
+Print Assumptions boot_formula_disj_seq_subst_zero.
+Print Assumptions boot_formula_disj_seq_subst_succ.
+Print Assumptions boot_formula_neg_conj_subst_iteration.
+Print Assumptions boot_formula_neg_disj_subst_iteration.
+Print Assumptions boot_formula_shift_conj_subst_iteration.
+Print Assumptions boot_formula_shift_disj_subst_iteration.
+Print Assumptions boot_formula_subst_conj_subst_iteration.
+Print Assumptions boot_formula_subst_disj_subst_iteration.
+Check boot_formula_subst_iteration_codes.
+Print Assumptions boot_formula_subst_iteration_codes_quote.
+Check boot_formula_disj_seq_subst_code.
+Print Assumptions boot_formula_disj_seq_subst_code_zero.
+Print Assumptions boot_formula_disj_seq_subst_code_succ.
+Print Assumptions boot_formula_disj_seq_subst_code_quote.
+Print Assumptions boot_formula_disj_seq_subst_code_recognized.
