@@ -282,6 +282,36 @@ Proof.
   repeat split; vm_compute; reflexivity.
 Qed.
 
+(** The guarded predecessor applies the same append table to child [#2]
+    and assignment coordinates [#6,#5].  These concrete terms admit the
+    same four beta-definedness projections as the historical [#2,#1,#0]
+    tuple; keeping the calculation separate lets the proof-producing
+    endpoint below stay parametric in all three root terms. *)
+Lemma coqFourStateTableAppendGuardedDefinedTemplate_instances : forall
+    boundParameterName rootMode,
+  let defined := coqFourStateTableAppendDefinedTemplate
+    (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+    (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+    (ttParameter boundParameterName)
+    (embedPATerm (Term.numeral rootMode))
+    (ttVar 2) (ttVar 6) (ttVar 5) in
+  templateAnd4First defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 7) (ttVar 6) (ttParameter boundParameterName) /\
+  templateAnd4Second defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 5) (ttVar 4) (ttParameter boundParameterName) /\
+  templateAnd4Third defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 3) (ttVar 2) (ttParameter boundParameterName) /\
+  templateAnd4Fourth defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 1) (ttVar 0) (ttParameter boundParameterName).
+Proof.
+  intros.
+  repeat split; vm_compute; reflexivity.
+Qed.
+
 (** Assemble any template with the same four-way shape from component local
     proofs.  Returning an existential root keeps clients independent of the
     particular right-associated proof-tree code. *)
@@ -654,22 +684,37 @@ Proof.
       hbase hdefined).
 Qed.
 
-(** Canonical row endpoint with no caller-supplied definedness roots.  PA's
-    universal beta-definedness theorem is compiled once and instantiated at
-    all four table columns on one standard witness tail.  The component
-    append compiler may choose a second finite tail; concatenating the two
-    batches exposes the result through the same single-prefix interface used
-    by the native row-kernel payload.
-
-    The mode remains an arbitrary metatheoretic numeral.  In particular this
-    one theorem supplies both canonical modes zero and one, rather than
-    duplicating the proof-producing argument for the two polarities. *)
+(** Coordinate-parametric row endpoint with no caller-supplied definedness
+    roots.  The only syntactic premise exposes the four projections of the
+    selected append instance as applications of the one universal
+    beta-definedness theorem.  Concrete coordinate layouts discharge that
+    premise by finite computation, while all proof-tail synchronization is
+    shared here. *)
 Theorem
-    raw_codedPALocalProofOf_canonical_four_state_table_append_exists_on_witnessed_tail
+    raw_codedPALocalProofOf_four_state_table_append_exists_on_witnessed_tail_of_defined_instances
     : forall (M : RawPAModel), RawPASatisfies M -> forall
       (translation : RawCodedTemplateTranslation M),
   RawCodedTemplatePAAgreement M translation -> forall
-      baseWitnessList baseContext boundParameterName rootMode,
+      baseWitnessList baseContext boundParameterName rootMode
+      rootFormula rootAssignmentCode rootAssignmentStep,
+  let defined := coqFourStateTableAppendDefinedTemplate
+    (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+    (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+    (ttParameter boundParameterName)
+    (embedPATerm (Term.numeral rootMode))
+    rootFormula rootAssignmentCode rootAssignmentStep in
+  (templateAnd4First defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 7) (ttVar 6) (ttParameter boundParameterName) /\
+   templateAnd4Second defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 5) (ttVar 4) (ttParameter boundParameterName) /\
+   templateAnd4Third defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 3) (ttVar 2) (ttParameter boundParameterName) /\
+   templateAnd4Fourth defined =
+      coqAssignmentUniversalDefinednessInstanceTemplate
+        (ttVar 1) (ttVar 0) (ttParameter boundParameterName)) ->
   RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
   exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
     RawCodedPAAxiomWitnessContext M
@@ -686,21 +731,12 @@ Theorem
           (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
           (ttParameter boundParameterName)
           (embedPATerm (Term.numeral rootMode))
-          (ttVar 2) (ttVar 1) (ttVar 0))) root.
+          rootFormula rootAssignmentCode rootAssignmentStep)) root.
 Proof.
   intros M hPA translation hagreement baseWitnessList baseContext
-    boundParameterName rootMode hbase.
-  set (defined := coqFourStateTableAppendDefinedTemplate
-    (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
-    (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
-    (ttParameter boundParameterName)
-    (embedPATerm (Term.numeral rootMode))
-    (ttVar 2) (ttVar 1) (ttVar 0)).
-  destruct
-    (coqFourStateTableAppendCanonicalDefinedTemplate_instances
-      boundParameterName rootMode)
-    as (hmode & hformula & hassignmentCode & hassignmentStep).
-  fold defined in hmode, hformula, hassignmentCode, hassignmentStep.
+    boundParameterName rootMode rootFormula rootAssignmentCode
+    rootAssignmentStep defined
+    (hmode & hformula & hassignmentCode & hassignmentStep) hbase.
   destruct
     (raw_codedPALocalProofOf_assignmentUniversalDefinedness_four_instances_on_witnessed_tail
       M hPA translation
@@ -762,7 +798,7 @@ Proof.
       (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
       (ttParameter boundParameterName)
       (embedPATerm (Term.numeral rootMode))
-      (ttVar 2) (ttVar 1) (ttVar 0)
+      rootFormula rootAssignmentCode rootAssignmentStep
       modeDefinedRoot formulaDefinedRoot
       assignmentCodeDefinedRoot assignmentStepDefinedRoot
       hdefinedContext hmodeProjection hformulaProjection
@@ -772,6 +808,89 @@ Proof.
   rewrite rawStandardPAAxiomWitnessPrefixWitnessListCode_app.
   rewrite rawStandardPAAxiomWitnessPrefixContextCode_app.
   split; assumption.
+Qed.
+
+(** Canonical row endpoint with no caller-supplied definedness roots.  PA's
+    universal beta-definedness theorem is compiled once and instantiated at
+    all four table columns on one standard witness tail.  The component
+    append compiler may choose a second finite tail; concatenating the two
+    batches exposes the result through the same single-prefix interface used
+    by the native row-kernel payload.
+
+    The mode remains an arbitrary metatheoretic numeral.  In particular this
+    one theorem supplies both canonical modes zero and one, rather than
+    duplicating the proof-producing argument for the two polarities. *)
+Theorem
+    raw_codedPALocalProofOf_canonical_four_state_table_append_exists_on_witnessed_tail
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
+      baseWitnessList baseContext boundParameterName rootMode,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter boundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 1) (ttVar 0))) root.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    boundParameterName rootMode hbase.
+  exact
+    (raw_codedPALocalProofOf_four_state_table_append_exists_on_witnessed_tail_of_defined_instances
+      M hPA translation hagreement baseWitnessList baseContext
+      boundParameterName rootMode
+      (ttVar 2) (ttVar 1) (ttVar 0)
+      (coqFourStateTableAppendCanonicalDefinedTemplate_instances
+        boundParameterName rootMode) hbase).
+Qed.
+
+(** Guarded-coordinate counterpart of the canonical endpoint.  It shares
+    the complete proof compiler above and differs only in the three exposed
+    root arguments. *)
+Corollary
+    raw_codedPALocalProofOf_guarded_four_state_table_append_exists_on_witnessed_tail
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
+      baseWitnessList baseContext boundParameterName rootMode,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext)
+      (rawTemplateFormula translation
+        (coqFourStateTableAppendExistsTemplate
+          (ttVar 7) (ttVar 6) (ttVar 5) (ttVar 4)
+          (ttVar 3) (ttVar 2) (ttVar 1) (ttVar 0)
+          (ttParameter boundParameterName)
+          (embedPATerm (Term.numeral rootMode))
+          (ttVar 2) (ttVar 6) (ttVar 5))) root.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    boundParameterName rootMode hbase.
+  exact
+    (raw_codedPALocalProofOf_four_state_table_append_exists_on_witnessed_tail_of_defined_instances
+      M hPA translation hagreement baseWitnessList baseContext
+      boundParameterName rootMode
+      (ttVar 2) (ttVar 6) (ttVar 5)
+      (coqFourStateTableAppendGuardedDefinedTemplate_instances
+        boundParameterName rootMode) hbase).
 Qed.
 
 End PABoundedRawCodedFourStateTableAppendProofCompilation.
