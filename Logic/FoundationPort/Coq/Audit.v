@@ -5021,6 +5021,22 @@ Check hfs_vector_rec.
 Print Assumptions hfs_vector_rec_empty.
 Print Assumptions hfs_vector_rec_adjoin_law.
 Print Assumptions hfs_vector_rec_unique.
+Check hfs_vector_max.
+Print Assumptions hfs_vector_max_adjoin.
+Print Assumptions hfs_vector_nth_le_max.
+Print Assumptions hfs_vector_max_le_iff.
+Check hfs_vector_take_last.
+Print Assumptions hfs_vector_take_last_adjoin.
+Print Assumptions hfs_vector_take_last_length.
+Print Assumptions hfs_vector_take_last_all.
+Print Assumptions hfs_vector_take_last_nth.
+Print Assumptions hfs_vector_take_last_succ.
+Check hfs_vector_snoc.
+Check hfs_vector_concat.
+Print Assumptions hfs_vector_concat_adjoin.
+Print Assumptions hfs_vector_concat_length.
+Print Assumptions hfs_vector_concat_nth_old.
+Print Assumptions hfs_vector_concat_nth_last.
 Check hfs_vector_as_sequence.
 Print Assumptions hfs_vector_as_sequence_length.
 Print Assumptions hfs_vector_as_sequence_nth.

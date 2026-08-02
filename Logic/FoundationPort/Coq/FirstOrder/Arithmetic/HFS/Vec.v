@@ -292,6 +292,234 @@ Proof.
   - rewrite Hcons, hfs_vector_rec_adjoin_law. now rewrite IHv.
 Qed.
 
+(** * Maximum entry *)
+
+Definition hfs_vector_max_recursion : hfs_vector_recursion unit :=
+  {| hfs_vector_rec_nil := fun _ => 0%N;
+     hfs_vector_rec_adjoin :=
+       fun _ x _tail_code recursive_max => N.max x recursive_max |}.
+
+Definition hfs_vector_max (v : hfs_vector) : hfs_code :=
+  hfs_vector_rec hfs_vector_max_recursion tt v.
+
+Lemma hfs_vector_max_empty :
+  hfs_vector_max hfs_vector_empty = 0%N.
+Proof. reflexivity. Qed.
+
+Lemma hfs_vector_max_adjoin : forall x v,
+  hfs_vector_max (hfs_vector_adjoin x v) =
+  N.max x (hfs_vector_max v).
+Proof. intros x [xs]. reflexivity. Qed.
+
+Theorem hfs_vector_nth_le_max : forall v i,
+  i < hfs_vector_length v ->
+  (hfs_vector_nth v i <= hfs_vector_max v)%N.
+Proof.
+  induction v using hfs_vector_induction; intros i Hi.
+  - rewrite hfs_vector_length_empty in Hi. lia.
+  - destruct i as [|i].
+    + rewrite hfs_vector_nth_adjoin_zero, hfs_vector_max_adjoin.
+      apply N.le_max_l.
+    + rewrite hfs_vector_nth_adjoin_succ, hfs_vector_max_adjoin.
+      apply N.le_trans with (m := hfs_vector_max v).
+      * apply IHv. rewrite hfs_vector_length_adjoin in Hi. lia.
+      * apply N.le_max_r.
+Qed.
+
+Theorem hfs_vector_max_le : forall v z,
+  (forall i, i < hfs_vector_length v ->
+    (hfs_vector_nth v i <= z)%N) ->
+  (hfs_vector_max v <= z)%N.
+Proof.
+  induction v using hfs_vector_induction; intros z Hbound.
+  - rewrite hfs_vector_max_empty. apply N.le_0_l.
+  - rewrite hfs_vector_max_adjoin. apply N.max_lub.
+    + specialize (Hbound 0).
+      rewrite hfs_vector_nth_adjoin_zero in Hbound. apply Hbound.
+      rewrite hfs_vector_length_adjoin. lia.
+    + apply IHv. intros i Hi.
+      specialize (Hbound (S i)).
+      rewrite hfs_vector_nth_adjoin_succ in Hbound. apply Hbound.
+      rewrite hfs_vector_length_adjoin. lia.
+Qed.
+
+Theorem hfs_vector_max_le_iff : forall v z,
+  (hfs_vector_max v <= z)%N <->
+  forall i, i < hfs_vector_length v ->
+    (hfs_vector_nth v i <= z)%N.
+Proof.
+  intros v z. split.
+  - intros Hmax i Hi. eapply N.le_trans.
+    + now apply hfs_vector_nth_le_max.
+    + exact Hmax.
+  - apply hfs_vector_max_le.
+Qed.
+
+(** * Suffixes *)
+
+Definition hfs_vector_take_last (v : hfs_vector) (k : nat) : hfs_vector :=
+  hfs_vector_of_list
+    (skipn (hfs_vector_length v - k) (hfs_vector_values v)).
+
+Lemma hfs_vector_take_last_values : forall v k,
+  hfs_vector_values (hfs_vector_take_last v k) =
+  skipn (hfs_vector_length v - k) (hfs_vector_values v).
+Proof. reflexivity. Qed.
+
+Lemma hfs_vector_take_last_empty : forall k,
+  hfs_vector_take_last hfs_vector_empty k = hfs_vector_empty.
+Proof. reflexivity. Qed.
+
+Lemma hfs_vector_take_last_adjoin : forall x v k,
+  hfs_vector_take_last (hfs_vector_adjoin x v) k =
+  if Nat.ltb (hfs_vector_length v) k
+  then hfs_vector_adjoin x v
+  else hfs_vector_take_last v k.
+Proof.
+  intros x [xs] k.
+  change
+    (hfs_vector_of_list (skipn (S (length xs) - k) (x :: xs)) =
+     if Nat.ltb (length xs) k
+     then hfs_vector_of_list (x :: xs)
+     else hfs_vector_of_list (skipn (length xs - k) xs)).
+  destruct (Nat.ltb (length xs) k) eqn:Hcompare.
+  - apply Nat.ltb_lt in Hcompare.
+    replace (S (length xs) - k) with 0 by lia. reflexivity.
+  - apply Nat.ltb_ge in Hcompare.
+    replace (S (length xs) - k) with (S (length xs - k)) by lia.
+    reflexivity.
+Qed.
+
+Theorem hfs_vector_take_last_length : forall v k,
+  hfs_vector_length (hfs_vector_take_last v k) =
+  Nat.min k (hfs_vector_length v).
+Proof.
+  intros [xs] k. unfold hfs_vector_take_last, hfs_vector_length. simpl.
+  rewrite length_skipn.
+  destruct (Nat.le_ge_cases k (length xs)) as [Hle | Hge].
+  - rewrite Nat.min_l by exact Hle. lia.
+  - rewrite Nat.min_r by exact Hge. lia.
+Qed.
+
+Corollary hfs_vector_take_last_length_exact : forall v k,
+  k <= hfs_vector_length v ->
+  hfs_vector_length (hfs_vector_take_last v k) = k.
+Proof.
+  intros v k Hle. rewrite hfs_vector_take_last_length.
+  now apply Nat.min_l.
+Qed.
+
+Theorem hfs_vector_take_last_all : forall v k,
+  hfs_vector_length v <= k -> hfs_vector_take_last v k = v.
+Proof.
+  intros [xs] k Hle. change (length xs <= k) in Hle.
+  apply hfs_vector_eq.
+  change (skipn (length xs - k) xs = xs).
+  replace (length xs - k) with 0 by lia. reflexivity.
+Qed.
+
+Corollary hfs_vector_take_last_full : forall v,
+  hfs_vector_take_last v (hfs_vector_length v) = v.
+Proof. intro v. apply hfs_vector_take_last_all. reflexivity. Qed.
+
+Lemma hfs_vector_take_last_zero : forall v,
+  hfs_vector_take_last v 0 = hfs_vector_empty.
+Proof.
+  intros [xs]. unfold hfs_vector_take_last, hfs_vector_length,
+    hfs_vector_empty. simpl. rewrite Nat.sub_0_r. f_equal.
+  apply skipn_all.
+Qed.
+
+Theorem hfs_vector_take_last_nth : forall v k j,
+  hfs_vector_nth (hfs_vector_take_last v k) j =
+  hfs_vector_nth v (hfs_vector_length v - k + j).
+Proof.
+  intros [xs] k j. unfold hfs_vector_take_last, hfs_vector_nth,
+    hfs_vector_length. simpl. now apply nth_skipn.
+Qed.
+
+Lemma skipn_nth_cons : forall A (xs : list A) default start,
+  start < length xs ->
+  skipn start xs = nth start xs default :: skipn (S start) xs.
+Proof.
+  intros A xs default start. revert xs.
+  induction start as [|start IH]; intros [|x xs] Hlength;
+    simpl in *; try lia.
+  - reflexivity.
+  - apply IH. lia.
+Qed.
+
+Theorem hfs_vector_take_last_succ : forall v i,
+  i < hfs_vector_length v ->
+  hfs_vector_take_last v (S i) =
+  hfs_vector_adjoin
+    (hfs_vector_nth v (hfs_vector_length v - S i))
+    (hfs_vector_take_last v i).
+Proof.
+  intros [xs] i Hi. change (i < length xs) in Hi.
+  change
+    (hfs_vector_of_list (skipn (length xs - S i) xs) =
+     hfs_vector_of_list
+       (nth (length xs - S i) xs hfs_empty ::
+        skipn (length xs - i) xs)).
+  f_equal.
+  set (start := length xs - S i).
+  rewrite (@skipn_nth_cons hfs_code xs hfs_empty start) by
+    (unfold start; lia).
+  replace (length xs - i) with (S start) by (unfold start; lia).
+  reflexivity.
+Qed.
+
+(** * Appending one entry *)
+
+(** Foundation calls this operation [concat], although its second argument is
+    one entry rather than another vector.  [snoc] records the standard list
+    terminology; [concat] remains as a source-compatible alias. *)
+Definition hfs_vector_snoc (v : hfs_vector) (z : hfs_code) : hfs_vector :=
+  hfs_vector_of_list (hfs_vector_values v ++ [z]).
+
+Definition hfs_vector_concat := hfs_vector_snoc.
+
+Lemma hfs_vector_concat_empty : forall z,
+  hfs_vector_concat hfs_vector_empty z = hfs_vector_singleton z.
+Proof. reflexivity. Qed.
+
+Lemma hfs_vector_concat_adjoin : forall x v z,
+  hfs_vector_concat (hfs_vector_adjoin x v) z =
+  hfs_vector_adjoin x (hfs_vector_concat v z).
+Proof. reflexivity. Qed.
+
+Theorem hfs_vector_concat_length : forall v z,
+  hfs_vector_length (hfs_vector_concat v z) =
+  S (hfs_vector_length v).
+Proof.
+  intros [xs] z. unfold hfs_vector_concat, hfs_vector_snoc,
+    hfs_vector_length. simpl. rewrite length_app. simpl. lia.
+Qed.
+
+Theorem hfs_vector_concat_nth_old : forall v z i,
+  i < hfs_vector_length v ->
+  hfs_vector_nth (hfs_vector_concat v z) i = hfs_vector_nth v i.
+Proof.
+  intros [xs] z i Hi. unfold hfs_vector_concat, hfs_vector_snoc,
+    hfs_vector_nth, hfs_vector_length in *. simpl in *.
+  now apply app_nth1.
+Qed.
+
+Theorem hfs_vector_concat_nth_last : forall v z,
+  hfs_vector_nth (hfs_vector_concat v z) (hfs_vector_length v) = z.
+Proof.
+  intros [xs] z. unfold hfs_vector_concat, hfs_vector_snoc,
+    hfs_vector_nth, hfs_vector_length. simpl. apply nth_middle.
+Qed.
+
+Corollary hfs_vector_concat_nth_at_length : forall v z i,
+  hfs_vector_length v = i ->
+  hfs_vector_nth (hfs_vector_concat v z) i = z.
+Proof. intros v z i <-. apply hfs_vector_concat_nth_last. Qed.
+
+(** * Conversion to the indexed sequence representation *)
+
 Definition hfs_vector_as_sequence (v : hfs_vector) : hfs_sequence :=
   hfs_sequence_of_list (hfs_vector_values v).
 
