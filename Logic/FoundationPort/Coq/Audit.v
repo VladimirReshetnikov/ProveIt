@@ -25,6 +25,7 @@ From Foundation.FirstOrder.Incompleteness Require Import WitnessComparison.
 From Foundation.FirstOrder.Incompleteness Require Import RosserProvability.
 From Foundation.FirstOrder.Incompleteness Require Import Jeroslow.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
+From Foundation.FirstOrder.Incompleteness Require Import RestrictedProvability.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Functions.
@@ -4519,6 +4520,23 @@ Print Assumptions
   boot_sentence_consistent_with_iff_union_singleton_consistent.
 Print Assumptions
   boot_sentence_consistent_with_iff_boot_consistent_union_singleton.
+Check boot_bounded_provable.
+Check boot_restricted_provable.
+Check boot_sentence_restricted_provable.
+Print Assumptions boot_bounded_provable_witness_iff.
+Print Assumptions boot_restricted_provable_witness_iff.
+Print Assumptions boot_restricted_quote_witness_iff.
+Print Assumptions boot_sentence_restricted_provable_witness_iff.
+Print Assumptions boot_bounded_provable_mono.
+Print Assumptions boot_restricted_provable_mono.
+Print Assumptions boot_bounded_provable_to_provable.
+Print Assumptions boot_restricted_provable_to_provable.
+Print Assumptions boot_sentence_restricted_provable_sound.
+Print Assumptions nat_lt_two_pow_succ.
+Print Assumptions boot_sentence_provable_iff_exists_restricted.
+Print Assumptions boot_bounded_proof_code_lower_bound.
+Print Assumptions boot_restricted_proof_code_lower_bound.
+Print Assumptions boot_sentence_restricted_proof_code_lower_bound.
 Check boot_language_lor_definable.
 Check language_func_code_valid.
 Check language_rel_code_valid.
