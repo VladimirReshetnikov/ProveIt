@@ -40,6 +40,7 @@ From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
   D1 D2 D3.
 From Foundation.FirstOrder.Basic Require Import BinderNotation.
 From Foundation.FirstOrder Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4841,3 +4842,42 @@ Check semiformula_nest_func.
 Print Assumptions semiformula_nest_func_argument_terms_eval.
 Print Assumptions semiformula_nest_func_result_terms_eval.
 Print Assumptions semiformula_eval_nest_func.
+Check hfs_code.
+Check hfs_mem.
+Check hfs_empty.
+Check hfs_insert.
+Check hfs_remove.
+Check hfs_subset.
+Check hfs_equiv.
+Print Assumptions hfs_extensionality.
+Print Assumptions hfs_equiv_iff_eq.
+Print Assumptions hfs_mem_empty_iff.
+Print Assumptions hfs_mem_insert_iff.
+Print Assumptions hfs_mem_remove_iff.
+Print Assumptions hfs_subset_trans.
+Print Assumptions hfs_subset_antisym.
+Print Assumptions hfs_insert_subset_insert.
+Print Assumptions hfs_remove_subset.
+Print Assumptions hfs_insert_remove.
+Check hfs_singleton.
+Check hfs_pair.
+Print Assumptions hfs_mem_singleton_iff.
+Print Assumptions hfs_mem_pair_iff.
+Check hfs_union.
+Check hfs_inter.
+Print Assumptions hfs_mem_union_iff.
+Print Assumptions hfs_mem_inter_iff.
+Print Assumptions hfs_union_comm.
+Print Assumptions hfs_inter_comm.
+Print Assumptions hfs_union_subset_left.
+Print Assumptions hfs_union_subset_right.
+Print Assumptions hfs_inter_eq_left_of_subset.
+Print Assumptions hfs_insert_eq_union_singleton.
+Check hfs_disjoint.
+Print Assumptions hfs_disjoint_iff.
+Print Assumptions hfs_disjoint_sym.
+Check hfs_arithmetize_list.
+Print Assumptions hfs_mem_arithmetize_list_iff.
+Print Assumptions hfs_arithmetize_list_app.
+Print Assumptions hfs_arithmetize_list_nodup.
+Print Assumptions hfs_arithmetize_list_insert.
