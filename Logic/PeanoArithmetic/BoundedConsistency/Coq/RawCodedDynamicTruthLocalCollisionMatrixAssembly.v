@@ -55,7 +55,9 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthBinderOffDiagonalExclusivity
   RawCodedDynamicTruthQuantifierBranchExclusivity
   RawCodedDynamicTruthQuantifierConditionalCellCompilation
-  RawCodedDynamicTruthMixedQFBranchExclusivity.
+  RawCodedDynamicTruthMixedQFBranchExclusivity
+  RawCodedDynamicTruthImpGuardedBranchExclusivity
+  RawCodedDynamicTruthImpGuardedCollisionHelperBatch.
 
 Import ListNotations.
 
@@ -85,6 +87,8 @@ Import PABoundedRawCodedDynamicTruthBinderOffDiagonalExclusivity.
 Import PABoundedRawCodedDynamicTruthQuantifierBranchExclusivity.
 Import PABoundedRawCodedDynamicTruthQuantifierConditionalCellCompilation.
 Import PABoundedRawCodedDynamicTruthMixedQFBranchExclusivity.
+Import PABoundedRawCodedDynamicTruthImpGuardedBranchExclusivity.
+Import PABoundedRawCodedDynamicTruthImpGuardedCollisionHelperBatch.
 
 (** ------------------------------------------------------------------
     Literal row order and exact carrier codes. *)
@@ -804,12 +808,26 @@ Qed.
 (** ------------------------------------------------------------------
     The complete forty-two-cell pair family. *)
 
-Theorem raw_dynamicTruthLocalCollisionMatrix_pair : forall
+Theorem raw_dynamicTruthLocalCollisionMatrix_pair_of_imp_pairs : forall
     (M : RawPAModel), RawPASatisfies M -> forall
       context lowerPiApplication lowerSigmaApplication
       sigmaBranch piBranch,
   RawDynamicTruthLocalCollisionMatrixInputs M context
     lowerPiApplication lowerSigmaApplication ->
+  (exists pairRoot : M,
+    RawCodedPALocalProofOf M context
+      (rawFormulaImpCode M
+        (rawDynamicTruthSigmaImpFalseLeftEx8BranchCode M)
+        (rawFormulaImpCode M
+          (rawDynamicTruthPiImpEx8BranchCode M)
+          (rawFormulaBotCode M))) pairRoot) ->
+  (exists pairRoot : M,
+    RawCodedPALocalProofOf M context
+      (rawFormulaImpCode M
+        (rawDynamicTruthSigmaImpTrueRightEx8BranchCode M)
+        (rawFormulaImpCode M
+          (rawDynamicTruthPiImpEx8BranchCode M)
+          (rawFormulaBotCode M))) pairRoot) ->
   exists pairRoot : M,
     RawCodedPALocalProofOf M context
       (rawFormulaImpCode M
@@ -820,7 +838,8 @@ Theorem raw_dynamicTruthLocalCollisionMatrix_pair : forall
             lowerSigmaApplication piBranch)
           (rawFormulaBotCode M))) pairRoot.
 Proof.
-  intros M hPA context lowerPi lowerSigma sigmaBranch piBranch hinputs.
+  intros M hPA context lowerPi lowerSigma sigmaBranch piBranch
+    hinputs himpFalsePair himpTruePair.
   destruct sigmaBranch.
   - destruct piBranch.
     + exact (raw_dynamicTruthLocal_qf_pair
@@ -868,8 +887,7 @@ Proof.
         (rawDynamicTruthLocalCollision_mixed_cell_roots
           M context lowerPi lowerSigma hinputs)
         DTMQFSigmaImpFalseLeftPiQF).
-    + exact (raw_dynamicTruthLocal_impFalse_pair M hPA
-        context lowerPi lowerSigma hinputs).
+    + exact himpFalsePair.
     + apply (rawDynamicTruthLocalCollision_fixed_pairs
         M context lowerPi lowerSigma hinputs
         DTSigmaImpFalseLeft DTPiAnd).
@@ -913,8 +931,7 @@ Proof.
         (rawDynamicTruthLocalCollision_mixed_cell_roots
           M context lowerPi lowerSigma hinputs)
         DTMQFSigmaImpTrueRightPiQF).
-    + exact (raw_dynamicTruthLocal_impTrue_pair M hPA
-        context lowerPi lowerSigma hinputs).
+    + exact himpTruePair.
     + apply (rawDynamicTruthLocalCollision_fixed_pairs
         M context lowerPi lowerSigma hinputs
         DTSigmaImpTrueRight DTPiAnd).
@@ -1122,6 +1139,69 @@ Proof.
           M context lowerPi lowerSigma hinputs DTBODSigmaAllPiEx)).
 Qed.
 
+(** Compatibility wrapper using the historical implication resources stored
+    in the common matrix-input record. *)
+Theorem raw_dynamicTruthLocalCollisionMatrix_pair : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context lowerPiApplication lowerSigmaApplication
+      sigmaBranch piBranch,
+  RawDynamicTruthLocalCollisionMatrixInputs M context
+    lowerPiApplication lowerSigmaApplication ->
+  exists pairRoot : M,
+    RawCodedPALocalProofOf M context
+      (rawFormulaImpCode M
+        (rawDynamicTruthLocalSigmaBranchCode M
+          lowerPiApplication sigmaBranch)
+        (rawFormulaImpCode M
+          (rawDynamicTruthLocalPiBranchCode M
+            lowerSigmaApplication piBranch)
+          (rawFormulaBotCode M))) pairRoot.
+Proof.
+  intros M hPA context lowerPi lowerSigma sigmaBranch piBranch hinputs.
+  exact (raw_dynamicTruthLocalCollisionMatrix_pair_of_imp_pairs
+    M hPA context lowerPi lowerSigma sigmaBranch piBranch hinputs
+    (raw_dynamicTruthLocal_impFalse_pair M hPA
+      context lowerPi lowerSigma hinputs)
+    (raw_dynamicTruthLocal_impTrue_pair M hPA
+      context lowerPi lowerSigma hinputs)).
+Qed.
+
+(** Corrected implication wrapper.  Every non-implication matrix cell still
+    comes from the established common input package; only the two diagonal
+    implication pairs are replaced by applications of the guarded cells. *)
+Theorem raw_dynamicTruthLocalCollisionMatrix_pair_guarded_imp : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context lowerPiApplication lowerSigmaApplication
+      sigmaBranch piBranch,
+  RawDynamicTruthLocalCollisionMatrixInputs M context
+    lowerPiApplication lowerSigmaApplication ->
+  RawDynamicTruthLocalRootAt M context
+    (rawDynamicTruthImpGuardedPredecessorStateExclusivityCode M) ->
+  RawDynamicTruthLocalRootAt M context
+    (rawDynamicTruthImpFalseLeftGuardedConditionalCellCode M) ->
+  RawDynamicTruthLocalRootAt M context
+    (rawDynamicTruthImpTrueRightGuardedConditionalCellCode M) ->
+  exists pairRoot : M,
+    RawCodedPALocalProofOf M context
+      (rawFormulaImpCode M
+        (rawDynamicTruthLocalSigmaBranchCode M
+          lowerPiApplication sigmaBranch)
+        (rawFormulaImpCode M
+          (rawDynamicTruthLocalPiBranchCode M
+            lowerSigmaApplication piBranch)
+          (rawFormulaBotCode M))) pairRoot.
+Proof.
+  intros M hPA context lowerPi lowerSigma sigmaBranch piBranch
+    hinputs [predecessorRoot hpredecessor]
+    [falseCellRoot hfalseCell] [trueCellRoot htrueCell].
+  exact (raw_dynamicTruthLocalCollisionMatrix_pair_of_imp_pairs
+    M hPA context lowerPi lowerSigma sigmaBranch piBranch hinputs
+    (raw_dynamicTruthImpFalseLeftGuarded_pair M hPA context
+      falseCellRoot predecessorRoot hfalseCell hpredecessor)
+    (raw_dynamicTruthImpTrueRightGuarded_pair M hPA context
+      trueCellRoot predecessorRoot htrueCell hpredecessor)).
+Qed.
+
 Theorem raw_dynamicTruthLocalCollisionMatrix_pair_family : forall
     (M : RawPAModel), RawPASatisfies M -> forall
       context lowerPiApplication lowerSigmaApplication,
@@ -1144,6 +1224,37 @@ Proof.
   subst right.
   exact (raw_dynamicTruthLocalCollisionMatrix_pair M hPA context
     lowerPi lowerSigma sigmaBranch piBranch hinputs).
+Qed.
+
+Theorem raw_dynamicTruthLocalCollisionMatrix_pair_family_guarded_imp : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+      context lowerPiApplication lowerSigmaApplication,
+  RawDynamicTruthLocalCollisionMatrixInputs M context
+    lowerPiApplication lowerSigmaApplication ->
+  RawDynamicTruthLocalRootAt M context
+    (rawDynamicTruthImpGuardedPredecessorStateExclusivityCode M) ->
+  RawDynamicTruthLocalRootAt M context
+    (rawDynamicTruthImpFalseLeftGuardedConditionalCellCode M) ->
+  RawDynamicTruthLocalRootAt M context
+    (rawDynamicTruthImpTrueRightGuardedConditionalCellCode M) ->
+  RawCodedPALocalFiniteDisjunctionPairFamily M context
+    (rawDynamicTruthLocalSigmaBranches M lowerPiApplication)
+    (rawDynamicTruthLocalPiBranches M lowerSigmaApplication)
+    (rawFormulaBotCode M).
+Proof.
+  intros M hPA context lowerPi lowerSigma hinputs
+    hpredecessor hfalseCell htrueCell left hleft right hright.
+  unfold rawDynamicTruthLocalSigmaBranches in hleft.
+  apply in_map_iff in hleft.
+  destruct hleft as [sigmaBranch [hleft _]].
+  subst left.
+  unfold rawDynamicTruthLocalPiBranches in hright.
+  apply in_map_iff in hright.
+  destruct hright as [piBranch [hright _]].
+  subst right.
+  exact (raw_dynamicTruthLocalCollisionMatrix_pair_guarded_imp
+    M hPA context lowerPi lowerSigma sigmaBranch piBranch hinputs
+    hpredecessor hfalseCell htrueCell).
 Qed.
 
 (** ------------------------------------------------------------------
@@ -1181,12 +1292,15 @@ Definition rawDynamicTruthLocalPiOr6Code
             (rawDynamicTruthPiExistentialEx8BranchCode M
               lowerSigmaApplication))))).
 
-Theorem raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom :
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom_of_pair_family :
     forall (M : RawPAModel), RawPASatisfies M -> forall
       context lowerPiApplication lowerSigmaApplication
       sigmaRowRoot piRowRoot,
-  RawDynamicTruthLocalCollisionMatrixInputs M context
-    lowerPiApplication lowerSigmaApplication ->
+  RawCodedPALocalFiniteDisjunctionPairFamily M context
+    (rawDynamicTruthLocalSigmaBranches M lowerPiApplication)
+    (rawDynamicTruthLocalPiBranches M lowerSigmaApplication)
+    (rawFormulaBotCode M) ->
   RawFiniteDisjunctionMatrixResources M
     (rawDynamicTruthLocalSigmaBranches M lowerPiApplication)
     (rawDynamicTruthLocalPiBranches M lowerSigmaApplication)
@@ -1201,7 +1315,7 @@ Theorem raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom :
     RawCodedPALocalProofOf M context (rawFormulaBotCode M) bottomRoot.
 Proof.
   intros M hPA context lowerPi lowerSigma sigmaRowRoot piRowRoot
-    hinputs hresources hsigmaRow hpiRow.
+    hpairs hresources hsigmaRow hpiRow.
   unfold rawDynamicTruthLocalSigmaBranches,
     dynamicTruthLocalSigmaBranchOrder,
     rawDynamicTruthLocalPiBranches,
@@ -1225,15 +1339,79 @@ Proof.
     sigmaRowRoot piRowRoot hresources).
   - exact hsigmaRow.
   - exact hpiRow.
-  - pose proof
-      (raw_dynamicTruthLocalCollisionMatrix_pair_family M hPA context
-        lowerPi lowerSigma hinputs) as hpairs.
-    unfold rawDynamicTruthLocalSigmaBranches,
+  - unfold rawDynamicTruthLocalSigmaBranches,
       dynamicTruthLocalSigmaBranchOrder,
       rawDynamicTruthLocalPiBranches,
       dynamicTruthLocalPiBranchOrder in hpairs.
     cbn [map] in hpairs.
     exact hpairs.
+Qed.
+
+Theorem raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      context lowerPiApplication lowerSigmaApplication
+      sigmaRowRoot piRowRoot,
+  RawDynamicTruthLocalCollisionMatrixInputs M context
+    lowerPiApplication lowerSigmaApplication ->
+  RawFiniteDisjunctionMatrixResources M
+    (rawDynamicTruthLocalSigmaBranches M lowerPiApplication)
+    (rawDynamicTruthLocalPiBranches M lowerSigmaApplication)
+    context ->
+  RawCodedPALocalProofOf M context
+    (rawDynamicTruthLocalSigmaOr7Code M lowerPiApplication)
+    sigmaRowRoot ->
+  RawCodedPALocalProofOf M context
+    (rawDynamicTruthLocalPiOr6Code M lowerSigmaApplication)
+    piRowRoot ->
+  exists bottomRoot : M,
+    RawCodedPALocalProofOf M context (rawFormulaBotCode M) bottomRoot.
+Proof.
+  intros M hPA context lowerPi lowerSigma sigmaRowRoot piRowRoot
+    hinputs hresources hsigmaRow hpiRow.
+  exact
+    (raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom_of_pair_family
+      M hPA context lowerPi lowerSigma sigmaRowRoot piRowRoot
+      (raw_dynamicTruthLocalCollisionMatrix_pair_family M hPA context
+        lowerPi lowerSigma hinputs)
+      hresources hsigmaRow hpiRow).
+Qed.
+
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom_guarded_imp :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      context lowerPiApplication lowerSigmaApplication
+      sigmaRowRoot piRowRoot,
+  RawDynamicTruthLocalCollisionMatrixInputs M context
+    lowerPiApplication lowerSigmaApplication ->
+  RawDynamicTruthLocalRootAt M context
+    (rawDynamicTruthImpGuardedPredecessorStateExclusivityCode M) ->
+  RawDynamicTruthLocalRootAt M context
+    (rawDynamicTruthImpFalseLeftGuardedConditionalCellCode M) ->
+  RawDynamicTruthLocalRootAt M context
+    (rawDynamicTruthImpTrueRightGuardedConditionalCellCode M) ->
+  RawFiniteDisjunctionMatrixResources M
+    (rawDynamicTruthLocalSigmaBranches M lowerPiApplication)
+    (rawDynamicTruthLocalPiBranches M lowerSigmaApplication)
+    context ->
+  RawCodedPALocalProofOf M context
+    (rawDynamicTruthLocalSigmaOr7Code M lowerPiApplication)
+    sigmaRowRoot ->
+  RawCodedPALocalProofOf M context
+    (rawDynamicTruthLocalPiOr6Code M lowerSigmaApplication)
+    piRowRoot ->
+  exists bottomRoot : M,
+    RawCodedPALocalProofOf M context (rawFormulaBotCode M) bottomRoot.
+Proof.
+  intros M hPA context lowerPi lowerSigma sigmaRowRoot piRowRoot
+    hinputs hpredecessor hfalseCell htrueCell
+    hresources hsigmaRow hpiRow.
+  exact
+    (raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom_of_pair_family
+      M hPA context lowerPi lowerSigma sigmaRowRoot piRowRoot
+      (raw_dynamicTruthLocalCollisionMatrix_pair_family_guarded_imp
+        M hPA context lowerPi lowerSigma hinputs
+        hpredecessor hfalseCell htrueCell)
+      hresources hsigmaRow hpiRow).
 Qed.
 
 End PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssembly.
