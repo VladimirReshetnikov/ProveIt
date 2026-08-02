@@ -617,6 +617,49 @@ Record RawDynamicTruthImpGuardedBranchRootsAt
 Arguments RawDynamicTruthImpGuardedBranchRootsAt
   M translation baseContext callerPrefix : clear implicits.
 
+(** Merge direct evidence production with an earlier parent package.
+
+    The evidence roots need not have been obtained through the selected-row
+    traversal interface above.  Any proof producer may choose a witnessed PA
+    extension, provided it returns both polarity roots under the unchanged
+    guarded prefix.  Transporting the traversal-free parent triple exactly
+    once is then sufficient to assemble all five guarded branch roots.
+
+    Keeping this adapter independent of the evidence producer is important
+    for the canonical rank-zero construction: there the two global
+    applications are compiled directly at the guarded root coordinates and
+    converted to the native evidence formulas by represented implications. *)
+Theorem
+    raw_dynamicTruthImpGuardedBranchRoots_of_parent_and_evidence_on_witnessed_extension :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      translation sourceWitnessList sourceContext
+      targetWitnessList targetContext callerPrefix,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedPAAxiomWitnessContext M targetWitnessList targetContext ->
+  RawContextListIncluded M sourceContext targetContext ->
+  RawDynamicTruthImpGuardedParentBranchRootsAt M translation
+    sourceContext callerPrefix ->
+  RawDynamicTruthImpGuardedEvidenceRootsAt M translation
+    targetContext callerPrefix ->
+  RawDynamicTruthImpGuardedBranchRootsAt M translation
+    targetContext callerPrefix.
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext
+    targetWitnessList targetContext callerPrefix hsource htarget hincluded
+    hparent hevidence.
+  pose proof
+    (raw_dynamicTruthImpGuardedParentBranchRoots_transport
+      M hPA translation sourceWitnessList sourceContext
+      targetWitnessList targetContext callerPrefix
+      hsource htarget hincluded hparent) as htransportedParent.
+  destruct hevidence as
+    [(sigmaRoot & hsigma) (piRoot & hpi)].
+  constructor.
+  - exact htransportedParent.
+  - exists sigmaRoot. exact hsigma.
+  - exists piRoot. exact hpi.
+Qed.
+
 (** Merge the traversal result with the already synchronized parent triple.
     Only the witnessed PA tail changes; all five roots preserve the same
     literal guarded template prefix. *)
