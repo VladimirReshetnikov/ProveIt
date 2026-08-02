@@ -31,6 +31,7 @@ From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Functions
 From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import Typed Coding.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Theory.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Basic.
+From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Typed.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -4702,3 +4703,10 @@ Check boot_provable.
 Print Assumptions boot_derivation_code_formula_set.
 Print Assumptions boot_derivation_code_conseq.
 Print Assumptions boot_derivation_code_nonzero.
+Print Assumptions boot_list_in_of_generic_list_member.
+Check boot_derivation2_quote.
+Print Assumptions boot_derivation2_quote_conseq.
+Print Assumptions boot_derivation2_quote_recognized.
+Print Assumptions boot_derivation2_quote_derivation.
+Print Assumptions boot_derivation2_quote_proof.
+Print Assumptions boot_derivable2_quote_provable.

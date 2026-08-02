@@ -24,6 +24,15 @@ Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
 
+Lemma boot_list_in_of_generic_list_member : forall (A : Type) (x : A) xs,
+  GenericAdjunctiveSet.generic_list_member x xs -> In x xs.
+Proof.
+  intros A x xs. induction xs as [|y ys IH]; simpl; [tauto|].
+  intros [Hxy | Hx].
+  - left. now symmetry.
+  - right. now apply IH.
+Qed.
+
 (** * Injective finite-list and sequent coding *)
 
 Fixpoint boot_nat_list_code (xs : list nat) : nat :=
