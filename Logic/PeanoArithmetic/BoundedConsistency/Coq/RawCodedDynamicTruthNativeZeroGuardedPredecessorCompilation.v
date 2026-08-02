@@ -914,36 +914,40 @@ Proof.
 Qed.
 
 (** Synchronize the normalized local-exclusivity source with both guarded
-    parent endpoints.  Endpoint compilation may append standard PA witnesses;
-    the source proof is transported once across that literal tail inclusion,
-    so the resulting three-root package has one exact deep context. *)
+    parent endpoints for a caller-selected direct translation.  Endpoint
+    compilation may append standard PA witnesses; the source proof is
+    transported once across that literal tail inclusion, so the resulting
+    three-root package has one exact deep context.
+
+    Accepting [inputs] rather than choosing it internally is the genuinely
+    reusable form: a later evidence producer may retain extra facts about the
+    same opaque selectors while still projecting the established local-
+    exclusivity identification consumed here. *)
 Theorem
-    raw_dynamicTruthImpGuardedParentBranchRoots_exists_of_zero_normalized_and_template_assumptions :
+    raw_dynamicTruthImpGuardedParentBranchRoots_of_zero_normalized_selected_identification_and_template_assumptions :
     forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
-      normalizedTranslation witnessList baseContext helperRoots callerPrefix,
+      inputs normalizedTranslation witnessList baseContext helperRoots
+      callerPrefix,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    (rawDynamicTruthZeroSigmaDomainCode M)
+    (rawDynamicTruthZeroPiDomainCode M)
+    (rawDynamicTruthZeroSigmaEvidenceCode M)
+    (rawDynamicTruthZeroPiEvidenceCode M) ->
   RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
     normalizedTranslation witnessList baseContext helperRoots ->
   In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
     callerPrefix ->
   In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
-  exists inputs : RawCodedTemplateDirectStructuralInputs M,
   exists targetWitnessList targetContext,
-    RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
-      (rawDynamicTruthZeroSigmaDomainCode M)
-      (rawDynamicTruthZeroPiDomainCode M)
-      (rawDynamicTruthZeroSigmaEvidenceCode M)
-      (rawDynamicTruthZeroPiEvidenceCode M) /\
     RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
     RawContextListIncluded M baseContext targetContext /\
     RawDynamicTruthImpGuardedParentBranchRootsAt M
       (rawDirectStructuralTemplateTranslation M hPA inputs)
       targetContext callerPrefix.
 Proof.
-  intros M hPA normalizedTranslation witnessList baseContext helperRoots
-    callerPrefix hnormalized hrestrictedIn hruleIn.
-  destruct
-    (raw_dynamicTruthZeroLocalExclusiveTemplateIdentification_exists M hPA)
-    as [inputs hidentification].
+  intros M hPA inputs normalizedTranslation witnessList baseContext
+    helperRoots callerPrefix hidentification hnormalized
+    hrestrictedIn hruleIn.
   destruct
     (rawDynamicTruthNativeLocalZeroGuardedNormalized_fields
       M normalizedTranslation witnessList baseContext helperRoots
@@ -975,14 +979,55 @@ Proof.
           coqDynamicTruthLocalExclusiveBodyTemplate))))
       sourceRoot hbaseWitnessed htargetWitnessed hincluded hsource)
     as [transportedSourceRoot htransportedSource].
-  exists inputs, targetWitnessList, targetContext.
-  split; [exact hidentification |].
+  exists targetWitnessList, targetContext.
   split; [exact htargetWitnessed |].
   split; [exact hincluded |].
   constructor.
   - exists transportedSourceRoot. exact htransportedSource.
   - exists atomicRoot. exact hatomic.
   - exists domainRoot. exact hdomain.
+Qed.
+
+(** Selector-forgetting compatibility endpoint.  It chooses the historical
+    rank-zero identification and delegates all synchronization to the
+    selected-input theorem above. *)
+Theorem
+    raw_dynamicTruthImpGuardedParentBranchRoots_exists_of_zero_normalized_and_template_assumptions :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      normalizedTranslation witnessList baseContext helperRoots callerPrefix,
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    normalizedTranslation witnessList baseContext helperRoots ->
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  exists inputs : RawCodedTemplateDirectStructuralInputs M,
+  exists targetWitnessList targetContext,
+    RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M) /\
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthImpGuardedParentBranchRootsAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      targetContext callerPrefix.
+Proof.
+  intros M hPA normalizedTranslation witnessList baseContext helperRoots
+    callerPrefix hnormalized hrestrictedIn hruleIn.
+  destruct
+    (raw_dynamicTruthZeroLocalExclusiveTemplateIdentification_exists M hPA)
+    as [inputs hidentification].
+  destruct
+    (raw_dynamicTruthImpGuardedParentBranchRoots_of_zero_normalized_selected_identification_and_template_assumptions
+      M hPA inputs normalizedTranslation witnessList baseContext helperRoots
+      callerPrefix hidentification hnormalized hrestrictedIn hruleIn)
+    as (targetWitnessList & targetContext & htargetWitnessed & hincluded &
+      hparent).
+  exists inputs, targetWitnessList, targetContext.
+  split; [exact hidentification |].
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded | exact hparent].
 Qed.
 
 (** Canonical rank-zero identification chooses direct inputs whose local
