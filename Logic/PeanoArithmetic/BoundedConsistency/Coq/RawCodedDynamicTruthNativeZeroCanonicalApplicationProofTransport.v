@@ -238,6 +238,148 @@ Proof.
   split; assumption.
 Qed.
 
+(** PA axioms are sentences, so an open implication theorem may be renamed
+    at all of its free coordinates without changing its axiom basis or its
+    empty assumption context.  This small formula-generic lemma is the
+    metatheoretic half of coordinate-parametric application transport. *)
+Theorem PA_proves_renamed_implication : forall
+    (renaming : nat -> nat) sourceFormula targetFormula,
+  Formula.BProv Formula.Ax_s nil
+    (pImp sourceFormula targetFormula) ->
+  Formula.BProv Formula.Ax_s nil
+    (pImp (Formula.rename renaming sourceFormula)
+      (Formula.rename renaming targetFormula)).
+Proof.
+  intros renaming sourceFormula targetFormula himplication.
+  change (Formula.BProv Formula.Ax_s
+    (map (Formula.rename renaming) nil)
+    (Formula.rename renaming
+      (pImp sourceFormula targetFormula))).
+  exact (Formula.BProv_rename_of_sentences
+    Formula.Ax_s Formula.sentence_ax_s nil
+    (pImp sourceFormula targetFormula) himplication renaming).
+Qed.
+
+(** Dependency-ordered implication transport after a shared free-variable
+    renaming.  The source roots are already expressed at the caller's chosen
+    coordinates; the two ordinary PA implications are renamed before being
+    compiled, so no proof-code renaming under the temporary context is
+    assumed.  This distinction is essential when that context itself
+    mentions the selected variables. *)
+Theorem
+    raw_codedPALocalProofOf_pair_of_renamed_PA_implications_under_prefix :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall (renaming : nat -> nat)
+      sourceWitnessList sourceContext prefix
+      sigmaSourceFormula sigmaTargetFormula
+      piSourceFormula piTargetFormula sigmaSourceRoot piSourceRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  Formula.BProv Formula.Ax_s nil
+    (pImp sigmaSourceFormula sigmaTargetFormula) ->
+  Formula.BProv Formula.Ax_s nil
+    (pImp piSourceFormula piTargetFormula) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M
+      (Formula.rename renaming sigmaSourceFormula)) sigmaSourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M
+      (Formula.rename renaming piSourceFormula)) piSourceRoot ->
+  exists targetWitnessList targetContext sigmaTargetRoot piTargetRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawQuotedFormulaCode M
+        (Formula.rename renaming sigmaTargetFormula)) sigmaTargetRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawQuotedFormulaCode M
+        (Formula.rename renaming piTargetFormula)) piTargetRoot.
+Proof.
+  intros M hPA translation hagreement renaming
+    sourceWitnessList sourceContext prefix
+    sigmaSourceFormula sigmaTargetFormula
+    piSourceFormula piTargetFormula sigmaSourceRoot piSourceRoot
+    hprefix hsource hsigmaImplication hpiImplication
+    hsigmaSource hpiSource.
+  exact
+    (raw_codedPALocalProofOf_pair_of_PA_implications_under_prefix
+      M hPA translation hagreement sourceWitnessList sourceContext prefix
+      (Formula.rename renaming sigmaSourceFormula)
+      (Formula.rename renaming sigmaTargetFormula)
+      (Formula.rename renaming piSourceFormula)
+      (Formula.rename renaming piTargetFormula)
+      sigmaSourceRoot piSourceRoot hprefix hsource
+      (PA_proves_renamed_implication renaming
+        sigmaSourceFormula sigmaTargetFormula hsigmaImplication)
+      (PA_proves_renamed_implication renaming
+        piSourceFormula piTargetFormula hpiImplication)
+      hsigmaSource hpiSource).
+Qed.
+
+(** Canonical rank-zero specialization of the preceding generic transport.
+    A single renaming is shared by both polarities, ensuring that their
+    application and evidence coordinates remain synchronized on the final
+    witnessed PA tail. *)
+Theorem
+    raw_dynamicTruthZeroNativeEvidenceRoots_of_renamed_canonicalApplicationRoots_under_prefix :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall (renaming : nat -> nat)
+      sourceWitnessList sourceContext prefix sigmaApplicationRoot
+      piApplicationRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M
+      (Formula.rename renaming
+        dynamicTruthZeroInputGlobalSigmaApplicationFormula))
+    sigmaApplicationRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawQuotedFormulaCode M
+      (Formula.rename renaming
+        dynamicTruthZeroInputGlobalPiApplicationFormula))
+    piApplicationRoot ->
+  exists targetWitnessList targetContext sigmaEvidenceRoot piEvidenceRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawQuotedFormulaCode M
+        (Formula.rename renaming dynamicTruthZeroSigmaEvidenceFormula))
+      sigmaEvidenceRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      (rawQuotedFormulaCode M
+        (Formula.rename renaming dynamicTruthZeroPiEvidenceFormula))
+      piEvidenceRoot.
+Proof.
+  intros M hPA translation hagreement renaming
+    sourceWitnessList sourceContext prefix
+    sigmaApplicationRoot piApplicationRoot hprefix hsource
+    hsigmaApplication hpiApplication.
+  exact
+    (raw_codedPALocalProofOf_pair_of_renamed_PA_implications_under_prefix
+      M hPA translation hagreement renaming
+      sourceWitnessList sourceContext prefix
+      dynamicTruthZeroInputGlobalSigmaApplicationFormula
+      dynamicTruthZeroSigmaEvidenceFormula
+      dynamicTruthZeroInputGlobalPiApplicationFormula
+      dynamicTruthZeroPiEvidenceFormula
+      sigmaApplicationRoot piApplicationRoot hprefix hsource
+      PA_proves_dynamicTruthZeroInputGlobalSigmaApplicationNativeForwardFormula
+      PA_proves_dynamicTruthZeroInputGlobalPiApplicationNativeForwardFormula
+      hsigmaApplication hpiApplication).
+Qed.
+
 (** Transport a pair of canonical application roots to the native evidence
     roots on one common witnessed extension.  The temporary prefix is kept
     completely abstract; only its ordinary atomic-adequacy invariant is
