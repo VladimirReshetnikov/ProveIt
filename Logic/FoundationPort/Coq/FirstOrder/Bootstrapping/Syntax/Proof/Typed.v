@@ -72,6 +72,13 @@ Proof.
   intros. destruct d; apply boot_proof_conseq_node.
 Qed.
 
+Lemma boot_derivation2_quote_cast : forall L T Gamma Delta EL ET
+    (d : first_order_derivation2 L T Gamma) (e : Gamma = Delta),
+  @boot_derivation2_quote L T Delta EL ET
+      (first_order_derivation2_cast d e) =
+  @boot_derivation2_quote L T Gamma EL ET d.
+Proof. intros L T Gamma Delta EL ET d e. destruct e. reflexivity. Qed.
+
 Theorem boot_derivation2_quote_recognized : forall L T Gamma EL ET
     (d : first_order_derivation2 L T Gamma),
   @boot_derivation_code L EL T ET

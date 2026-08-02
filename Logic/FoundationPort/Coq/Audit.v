@@ -4707,6 +4707,7 @@ Print Assumptions boot_derivation_code_nonzero.
 Print Assumptions boot_list_in_of_generic_list_member.
 Check boot_derivation2_quote.
 Print Assumptions boot_derivation2_quote_conseq.
+Print Assumptions boot_derivation2_quote_cast.
 Print Assumptions boot_derivation2_quote_recognized.
 Print Assumptions boot_derivation2_quote_derivation.
 Print Assumptions boot_derivation2_quote_proof.
@@ -4720,3 +4721,8 @@ Print Assumptions boot_sequent_decode_quote.
 Print Assumptions boot_sequent_decode_complete.
 Print Assumptions boot_sequent_decode_some_iff.
 Print Assumptions boot_derivation_code_typed_consequence.
+Print Assumptions boot_derivation_code_sound.
+Print Assumptions boot_derivation_sound.
+Print Assumptions boot_proof_sound.
+Print Assumptions boot_provable_sound.
+Print Assumptions boot_provable_quote_iff.
