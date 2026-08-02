@@ -39,6 +39,7 @@ From Foundation.FirstOrder.Bootstrapping Require Import FixedPoint.
 From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
   D1 D2 D3.
 From Foundation.FirstOrder.Basic Require Import BinderNotation.
+From Foundation.FirstOrder Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
