@@ -10,12 +10,14 @@
 
 From Stdlib Require Import Arith.PeanoNat Logic.FunctionalExtensionality
   Vectors.Fin.
-From Foundation.Vorspiel Require Import Arithmetic.
+From Foundation.Vorspiel Require Import Arithmetic BetaEncoding Matrix Part.
 From Foundation.Syntax.Predicate Require Import Language Term.
+From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Operator.
 From Foundation.FirstOrder.Basic.Semantics Require Import Semantics.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Model.
-From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy Misc Model.
+From Foundation.FirstOrder.Arithmetic.R0 Require Import
+  Basic CodeGraph CodeGraphSemantics.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -122,4 +124,108 @@ Proof.
       * apply primitive_recursive1_mul.
       * apply IH.
       * apply IH.
+Qed.
+
+(** * Constructive representation of certified computations *)
+
+(** A predicate is arithmetically semidecidable when it is exactly the
+    domain of a function in the checked partial-arithmetic closure calculus.
+    Unlike the generic step-indexed [semidecidable] interface, this premise
+    contains precisely the certificate needed to compile a formula. *)
+Definition arithmetically_semidecidable {n}
+    (P : (Fin.t n -> nat) -> Prop) : Prop :=
+  exists f : arith_partial_function n,
+    arith_part1 n f /\
+    forall v, P v <-> partial_dom (f v).
+
+(** Existentially hide the output coordinate of a code graph. *)
+Definition r0_arith_code_domain_formula {n} (c : arith_code n) :
+    arithmetic_semisentence n :=
+  Semiformula_exists (r0_arith_code_graph_semisentence c).
+
+Theorem r0_arith_code_domain_formula_sigma_one : forall n
+    (c : arith_code n),
+  arithmetic_hierarchy Empty_set arithmetic_sigma 1 n
+    (r0_arith_code_domain_formula c).
+Proof.
+  intros. apply AH_exists.
+  apply r0_arith_code_graph_semisentence_sigma_one.
+Qed.
+
+Theorem r0_arith_code_domain_formula_eval : forall n
+    (c : arith_code n) (f : arith_partial_function n),
+  arith_code_evaluates n c f ->
+  forall v : Fin.t n -> nat,
+    semiformula_eval nat_standard_structure v
+        (fun x : Empty_set => match x with end)
+        (r0_arith_code_domain_formula c) <->
+    partial_dom (f v).
+Proof.
+  intros n c f Hcode v.
+  unfold r0_arith_code_domain_formula, partial_dom.
+  change
+    ((exists y,
+       semiformula_eval nat_standard_structure (matrix_vec_cons y v)
+         (fun x : Empty_set => match x with end)
+         (r0_arith_code_graph_semisentence c)) <->
+     exists y, partial_member (f v) y).
+  split; intros [y Hy]; exists y.
+  - now apply (proj1 (r0_arith_code_graph_semisentence_eval Hcode y v)).
+  - now apply (proj2 (r0_arith_code_graph_semisentence_eval Hcode y v)).
+Qed.
+
+(** Constructive replacement for the source's choice-based
+    [codeOfPartrec'].  It exposes exactly the graph formula and specification
+    that clients need, without eliminating a proposition into data. *)
+Theorem r0_arith_part1_graph_representation : forall n
+    (f : arith_partial_function n),
+  arith_part1 n f ->
+  exists p : arithmetic_semisentence (S n),
+    arithmetic_hierarchy Empty_set arithmetic_sigma 1 (S n) p /\
+    forall y (v : Fin.t n -> nat),
+      semiformula_eval nat_standard_structure (matrix_vec_cons y v)
+          (fun x : Empty_set => match x with end) p <->
+      partial_member (f v) y.
+Proof.
+  intros n f Hf.
+  destruct (arith_part1_has_code n f Hf) as [c Hcode].
+  exists (r0_arith_code_graph_semisentence c). split.
+  - apply r0_arith_code_graph_semisentence_sigma_one.
+  - intros. now apply r0_arith_code_graph_semisentence_eval.
+Qed.
+
+Corollary r0_partial_recursive1_graph_representation : forall n
+    (f : arith_partial_function n),
+  partial_recursive1 n f ->
+  exists p : arithmetic_semisentence (S n),
+    arithmetic_hierarchy Empty_set arithmetic_sigma 1 (S n) p /\
+    forall y (v : Fin.t n -> nat),
+      semiformula_eval nat_standard_structure (matrix_vec_cons y v)
+          (fun x : Empty_set => match x with end) p <->
+      partial_member (f v) y.
+Proof.
+  intros n f Hf. apply r0_arith_part1_graph_representation.
+  exact (arith_part1_of_partial_recursive1
+    concrete_beta_sequence_encoder n f Hf).
+Qed.
+
+(** Weak representation of every predicate carrying an arithmetic
+    semidecision certificate. *)
+Theorem r0_arithmetically_semidecidable_representation : forall n
+    (P : (Fin.t n -> nat) -> Prop),
+  arithmetically_semidecidable P ->
+  exists p : arithmetic_semisentence n,
+    arithmetic_hierarchy Empty_set arithmetic_sigma 1 n p /\
+    forall v,
+      semiformula_eval nat_standard_structure v
+          (fun x : Empty_set => match x with end) p <->
+      P v.
+Proof.
+  intros n P [f [Hf Hspec]].
+  destruct (arith_part1_has_code n f Hf) as [c Hcode].
+  exists (r0_arith_code_domain_formula c). split.
+  - apply r0_arith_code_domain_formula_sigma_one.
+  - intro v. transitivity (partial_dom (f v)).
+    + now apply r0_arith_code_domain_formula_eval.
+    + symmetry. apply Hspec.
 Qed.

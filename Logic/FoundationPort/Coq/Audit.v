@@ -3223,6 +3223,13 @@ Print Assumptions r0_sigma_one_provable_iff.
 Print Assumptions primitive_recursive1_constant.
 Print Assumptions primitive_recursive1_compose_binary.
 Print Assumptions r0_semiterm_primitive_recursive.
+Check arithmetically_semidecidable.
+Check r0_arith_code_domain_formula.
+Print Assumptions r0_arith_code_domain_formula_sigma_one.
+Print Assumptions r0_arith_code_domain_formula_eval.
+Print Assumptions r0_arith_part1_graph_representation.
+Print Assumptions r0_partial_recursive1_graph_representation.
+Print Assumptions r0_arithmetically_semidecidable_representation.
 Check r0_arith_code_graph.
 Check r0_arith_code_graph_open.
 Check r0_arith_code_graph_semisentence.
