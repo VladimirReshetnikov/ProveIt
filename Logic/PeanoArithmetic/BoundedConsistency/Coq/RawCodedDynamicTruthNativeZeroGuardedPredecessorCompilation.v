@@ -21,6 +21,7 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedTargetTemplateContext
   RawCodedPALocalProofExistential
   RawCodedPALocalProofExistentialEliminationChain
+  RawCodedPALocalProofUniversalIntroductionChain
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
@@ -36,6 +37,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
   RawCodedDynamicTruthImpDirectChildAdmissibilityProofCompilation
   RawCodedDynamicTruthImpGuardedBranchExclusivity
+  RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthLocalCollisionMatrixAssembly
   RawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
@@ -62,6 +64,7 @@ Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import PABoundedRawCodedRestrictedTargetTemplateContext.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -78,6 +81,8 @@ Import PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
 Import
   PABoundedRawCodedDynamicTruthImpDirectChildAdmissibilityProofCompilation.
 Import PABoundedRawCodedDynamicTruthImpGuardedBranchExclusivity.
+Import
+  PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 Import PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssembly.
 Import
   PABoundedRawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation.
@@ -183,6 +188,181 @@ Proof.
        coqRestrictedPASoundnessUpperLevelTerm) in hlevel.
   fold (rawDirectTemplateTerm inputs).
   now rewrite hlevel.
+Qed.
+
+(** Normalize the real guarded branch context into the fixed branch-local
+    prefix followed by the caller assumptions shifted through all five
+    binders.  Keeping this equality explicit prevents later proof transport
+    from depending on reductions of nested context maps. *)
+Definition coqDynamicTruthImpGuardedFixedDeepPrefix : TemplateContext :=
+  [coqDynamicTruthImpGuardedDirectChildTemplate;
+   coqDynamicTruthImpGuardedShapeTemplate] ++
+  templateContextShiftMany 2
+    coqDynamicTruthPredecessorStateTemplateContext.
+
+Lemma coqDynamicTruthImpGuardedDeepPrefix_split : forall callerPrefix,
+  coqDynamicTruthImpGuardedDeepPrefix callerPrefix =
+  coqDynamicTruthImpGuardedFixedDeepPrefix ++
+  templateContextShiftMany 5 callerPrefix.
+Proof.
+  intro callerPrefix.
+  unfold coqDynamicTruthImpGuardedDeepPrefix,
+    coqDynamicTruthImpGuardedFixedDeepPrefix.
+  cbn [templateContextShiftMany templateContextShift
+    templateContextRename].
+  reflexivity.
+Qed.
+
+(** Folding an outer translated prefix over an already folded inner prefix
+    is just folding their concatenation over the original raw tail.  This
+    small structural lemma is independent of guarded truth and is stated
+    here to factor both endpoint-root transports below. *)
+Lemma rawTemplateContextCodeOnTail_app_finite : forall
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    baseContext outer inner,
+  rawTemplateContextCodeOnTail translation baseContext (outer ++ inner) =
+  rawTemplateContextCodeOnTail translation
+    (rawTemplateContextCodeOnTail translation baseContext inner) outer.
+Proof.
+  intros M translation baseContext outer.
+  induction outer as [|formula tail ih]; intro inner.
+  - reflexivity.
+  - simpl (rawTemplateContextCodeOnTail translation baseContext
+      ((formula :: tail) ++ inner)).
+    simpl (rawTemplateContextCodeOnTail translation
+      (rawTemplateContextCodeOnTail translation baseContext inner)
+      (formula :: tail)).
+    f_equal. apply ih.
+Qed.
+
+(** Compile the two parent invariants directly from the caller's restricted
+    proof and endpoint-rule assumptions, then retain the literal guard and
+    predecessor-state prefix.  The theorem is prefix-general and grows the
+    witnessed PA tail only through the two reusable endpoint compilers. *)
+Theorem raw_dynamicTruthImpGuardedParentEndpointRoots_of_template_assumptions :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      baseWitnessList baseContext callerPrefix,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  exists targetWitnessList targetContext atomicRoot domainRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+      (rawDirectTemplateFormula inputs
+        (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+          coqDynamicTruthImpGuardedLevelTerm
+          coqDynamicTruthImpGuardedParentTerm
+          coqDynamicTruthImpGuardedLeftTerm
+          coqDynamicTruthImpGuardedRightTerm
+          coqDynamicTruthImpGuardedChildTerm)) atomicRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+      (rawDirectTemplateFormula inputs
+        (coqDynamicTruthImpDirectChildDomainPremiseTemplate
+          coqDynamicTruthImpGuardedLevelTerm
+          coqDynamicTruthImpGuardedParentTerm
+          coqDynamicTruthImpGuardedLeftTerm
+          coqDynamicTruthImpGuardedRightTerm
+          coqDynamicTruthImpGuardedChildTerm)) domainRoot.
+Proof.
+  intros M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    baseWitnessList baseContext callerPrefix hidentification hbase
+    hrestrictedIn hruleIn.
+  set (translation :=
+    rawDirectStructuralTemplateTranslation M hPA inputs).
+  set (shiftedCaller := templateContextShiftMany 5 callerPrefix).
+  destruct
+    (raw_codedPALocalProof_strongStepEndpointEvidence_of_template_assumptions_after_binders_on_witnessed_tail
+      M hPA inputs 5 baseWitnessList baseContext callerPrefix
+      (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
+        M hPA inputs shiftedCaller)
+      hbase hrestrictedIn hruleIn)
+    as (targetWitnessList & targetContext & atomicRoot & domainRoot &
+      htarget & hincluded & hatomic & hdomain).
+  assert (htargetRealizable : RawContextListRealizable M targetContext).
+  {
+    exact (raw_codedPAAxiomWitnessContext_context_realizable
+      M targetWitnessList targetContext htarget).
+  }
+  assert (hshiftedRealizable : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation targetContext
+        shiftedCaller)).
+  {
+    exact (raw_templateContextOnTail_realizable M hPA translation
+      targetContext shiftedCaller htargetRealizable).
+  }
+  destruct (raw_codedPALocalProof_templatePrefix M hPA translation
+    (rawTemplateContextCodeOnTail translation targetContext shiftedCaller)
+    coqDynamicTruthImpGuardedFixedDeepPrefix
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyConclusion))
+    atomicRoot hshiftedRealizable
+    (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
+      M hPA inputs coqDynamicTruthImpGuardedFixedDeepPrefix)
+    hatomic) as [atomicDeepRoot hatomicDeep].
+  destruct (raw_codedPALocalProof_templatePrefix M hPA translation
+    (rawTemplateContextCodeOnTail translation targetContext shiftedCaller)
+    coqDynamicTruthImpGuardedFixedDeepPrefix
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointQuantifierBoundedConclusion))
+    domainRoot hshiftedRealizable
+    (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
+      M hPA inputs coqDynamicTruthImpGuardedFixedDeepPrefix)
+    hdomain) as [domainDeepRoot hdomainDeep].
+  assert (hcontext :
+      rawTemplateContextCodeOnTail translation targetContext
+        (coqDynamicTruthImpGuardedDeepPrefix callerPrefix) =
+      rawTemplateContextCodeOnTail translation
+        (rawTemplateContextCodeOnTail translation targetContext
+          shiftedCaller)
+        coqDynamicTruthImpGuardedFixedDeepPrefix).
+  {
+    unfold shiftedCaller.
+    rewrite coqDynamicTruthImpGuardedDeepPrefix_split.
+    apply rawTemplateContextCodeOnTail_app_finite.
+  }
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation
+      (rawTemplateContextCodeOnTail translation targetContext shiftedCaller)
+      coqDynamicTruthImpGuardedFixedDeepPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyConclusion))
+    atomicDeepRoot) in hatomicDeep.
+  rewrite <- hcontext in hatomicDeep.
+  rewrite <- coqDynamicTruthImpGuardedParentAtomicTemplate_eq_endpoint_shift5
+    in hatomicDeep.
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation
+      (rawTemplateContextCodeOnTail translation targetContext shiftedCaller)
+      coqDynamicTruthImpGuardedFixedDeepPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointQuantifierBoundedConclusion))
+    domainDeepRoot) in hdomainDeep.
+  rewrite <- hcontext in hdomainDeep.
+  rewrite <- (raw_coqDynamicTruthImpGuardedParentDomain_eq_endpoint_shift5
+    M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    hidentification) in hdomainDeep.
+  exists targetWitnessList, targetContext, atomicDeepRoot, domainDeepRoot.
+  split; [exact htarget |].
+  split; [exact hincluded |].
+  split; assumption.
 Qed.
 
 (** All five roots inhabit the same deepest branch context.  Existential

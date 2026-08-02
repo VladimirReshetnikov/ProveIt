@@ -14,6 +14,11 @@ Check coqDynamicTruthImpGuardedParentDomainTemplate_view.
 Check
   coqStrongStepProofEndpointQuantifierBoundedConclusion_shift5_view.
 Check raw_coqDynamicTruthImpGuardedParentDomain_eq_endpoint_shift5.
+Check coqDynamicTruthImpGuardedFixedDeepPrefix.
+Check coqDynamicTruthImpGuardedDeepPrefix_split.
+Check rawTemplateContextCodeOnTail_app_finite.
+Check
+  raw_dynamicTruthImpGuardedParentEndpointRoots_of_template_assumptions.
 Check RawDynamicTruthImpGuardedBranchRootsAt.
 Check
   raw_dynamicTruthImpGuardedPredecessorRoot_on_witnessed_extension_of_branch_roots.
@@ -29,6 +34,8 @@ Check
 
 Print Assumptions
   raw_coqDynamicTruthImpGuardedParentDomain_eq_endpoint_shift5.
+Print Assumptions
+  raw_dynamicTruthImpGuardedParentEndpointRoots_of_template_assumptions.
 Print Assumptions
   raw_dynamicTruthImpGuardedPredecessorRoot_on_witnessed_extension_of_branch_roots.
 Print Assumptions raw_dynamicTruthImpGuardedBranchSource_of_zero_normalized.
