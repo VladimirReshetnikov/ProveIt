@@ -12,7 +12,10 @@
   matching Foundation's recursively defined [nth].
 *)
 
-From Stdlib Require Import Arith.PeanoNat Lia Lists.List NArith.NArith.
+From Stdlib Require Import Arith.PeanoNat Lia Lists.List NArith.NArith
+  Vectors.Fin.
+From Foundation.Vorspiel Require Import Arithmetic.
+From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq.
 
 Import ListNotations.
@@ -65,6 +68,99 @@ Proof.
     destruct H as [-> Htail]. f_equal. now apply IH.
 Qed.
 
+(** * Raw projections, ordering, and decoding *)
+
+(** Foundation projects a vector constructor by first removing its outer
+    successor and then unpairing. *)
+Definition hfs_vector_fst_code (z : hfs_code) : hfs_code :=
+  hfs_index_fst (N.pred z).
+
+Definition hfs_vector_snd_code (z : hfs_code) : hfs_code :=
+  hfs_index_snd (N.pred z).
+
+Lemma hfs_vector_fst_adjoin_code : forall x tail,
+  hfs_vector_fst_code (hfs_vector_adjoin_code x tail) = x.
+Proof.
+  intros x tail. unfold hfs_vector_fst_code, hfs_vector_adjoin_code.
+  now rewrite N.pred_succ, hfs_index_fst_pair.
+Qed.
+
+Lemma hfs_vector_snd_adjoin_code : forall x tail,
+  hfs_vector_snd_code (hfs_vector_adjoin_code x tail) = tail.
+Proof.
+  intros x tail. unfold hfs_vector_snd_code, hfs_vector_adjoin_code.
+  now rewrite N.pred_succ, hfs_index_snd_pair.
+Qed.
+
+Lemma hfs_vector_head_lt_adjoin_code : forall x tail,
+  (x < hfs_vector_adjoin_code x tail)%N.
+Proof.
+  intros x tail. unfold hfs_vector_adjoin_code.
+  apply N.lt_succ_r. apply hfs_index_pair_left_le.
+Qed.
+
+Lemma hfs_vector_tail_lt_adjoin_code : forall x tail,
+  (tail < hfs_vector_adjoin_code x tail)%N.
+Proof.
+  intros x tail. unfold hfs_vector_adjoin_code.
+  apply N.lt_succ_r. apply hfs_index_pair_right_le.
+Qed.
+
+Lemma hfs_vector_adjoin_code_monotone : forall x tail y rest,
+  (x <= y)%N -> (tail <= rest)%N ->
+  (hfs_vector_adjoin_code x tail <=
+   hfs_vector_adjoin_code y rest)%N.
+Proof.
+  intros x tail y rest Hx Htail. unfold hfs_vector_adjoin_code.
+  apply (proj1 (N.succ_le_mono _ _)).
+  now apply hfs_index_pair_monotone.
+Qed.
+
+Theorem hfs_vector_raw_cases : forall z,
+  z = hfs_empty \/
+  exists x tail, z = hfs_vector_adjoin_code x tail.
+Proof.
+  intro z. destruct (N.eq_dec z 0%N) as [-> | Hnonzero].
+  - now left.
+  - right. exists (hfs_index_fst (N.pred z)),
+      (hfs_index_snd (N.pred z)).
+    unfold hfs_vector_adjoin_code.
+    rewrite hfs_index_pair_projections. symmetry.
+    now apply N.succ_pred.
+Qed.
+
+Fixpoint hfs_vector_decode_nat (fuel code : nat) : list hfs_code :=
+  match fuel with
+  | 0 => []
+  | S fuel' =>
+      match code with
+      | 0 => []
+      | S paired =>
+          N.of_nat (nat_unpair1 paired) ::
+          hfs_vector_decode_nat fuel' (nat_unpair2 paired)
+      end
+  end.
+
+Lemma hfs_vector_code_decode_nat : forall fuel code,
+  code <= fuel ->
+  hfs_vector_code_list (hfs_vector_decode_nat fuel code) =
+  N.of_nat code.
+Proof.
+  induction fuel as [|fuel IH]; intros [|code] Hle; simpl.
+  - reflexivity.
+  - lia.
+  - reflexivity.
+  - assert (Htail : nat_unpair2 code <= fuel).
+    { pose proof
+        (nat_le_pair_right (nat_unpair1 code) (nat_unpair2 code))
+        as Hcomponent.
+      rewrite nat_pair_unpair in Hcomponent. lia. }
+    rewrite (IH _ Htail).
+    unfold hfs_vector_adjoin_code, hfs_index_pair.
+    rewrite !Nat2N.id, nat_pair_unpair.
+    symmetry. apply Nat2N.inj_succ.
+Qed.
+
 (** * Typed vector interface *)
 
 Record hfs_vector : Type := hfs_vector_of_list {
@@ -107,6 +203,28 @@ Proof.
   intros [xs] [ys] H. apply hfs_vector_eq. simpl in *.
   now apply hfs_vector_code_list_injective.
 Qed.
+
+Definition hfs_vector_decode (z : hfs_code) : hfs_vector :=
+  hfs_vector_of_list
+    (hfs_vector_decode_nat (N.to_nat z) (N.to_nat z)).
+
+Theorem hfs_vector_code_decode : forall z,
+  hfs_vector_code (hfs_vector_decode z) = z.
+Proof.
+  intro z. unfold hfs_vector_code, hfs_vector_decode. simpl.
+  rewrite hfs_vector_code_decode_nat by reflexivity. apply N2Nat.id.
+Qed.
+
+Theorem hfs_vector_decode_code : forall v,
+  hfs_vector_decode (hfs_vector_code v) = v.
+Proof.
+  intro v. apply hfs_vector_code_injective.
+  rewrite hfs_vector_code_decode. reflexivity.
+Qed.
+
+Corollary hfs_vector_code_surjective : forall z,
+  exists v, hfs_vector_code v = z.
+Proof. intro z. exists (hfs_vector_decode z). apply hfs_vector_code_decode. Qed.
 
 Lemma hfs_vector_empty_code :
   hfs_vector_code hfs_vector_empty = hfs_empty.
@@ -205,6 +323,171 @@ Proof.
   - exact Hnth.
 Qed.
 
+(** The source orders vectors by their raw nested-pair codes.  These bounds
+    connect the convenient typed length/index interface back to that order. *)
+Theorem hfs_vector_length_le_code : forall v,
+  (N.of_nat (hfs_vector_length v) <= hfs_vector_code v)%N.
+Proof.
+  induction v using hfs_vector_induction.
+  - rewrite hfs_vector_length_empty, hfs_vector_empty_code. reflexivity.
+  - rewrite hfs_vector_length_adjoin, hfs_vector_code_adjoin,
+      Nat2N.inj_succ.
+    apply (proj1 (N.succ_le_mono _ _)).
+    eapply N.le_trans.
+    + exact IHv.
+    + apply hfs_index_pair_right_le.
+Qed.
+
+Theorem hfs_vector_nth_lt_code : forall v i,
+  i < hfs_vector_length v ->
+  (hfs_vector_nth v i < hfs_vector_code v)%N.
+Proof.
+  induction v using hfs_vector_induction; intros i Hi.
+  - rewrite hfs_vector_length_empty in Hi. lia.
+  - destruct i as [|i].
+    + rewrite hfs_vector_nth_adjoin_zero, hfs_vector_code_adjoin.
+      apply hfs_vector_head_lt_adjoin_code.
+    + rewrite hfs_vector_nth_adjoin_succ, hfs_vector_code_adjoin.
+      eapply N.lt_trans.
+      * apply IHv. rewrite hfs_vector_length_adjoin in Hi. lia.
+      * apply hfs_vector_tail_lt_adjoin_code.
+Qed.
+
+Theorem hfs_vector_nth_le_code : forall v i,
+  (hfs_vector_nth v i <= hfs_vector_code v)%N.
+Proof.
+  intros v i. destruct (Nat.lt_ge_cases i (hfs_vector_length v))
+    as [Hin | Hout].
+  - apply N.lt_le_incl. now apply hfs_vector_nth_lt_code.
+  - rewrite hfs_vector_nth_out_of_range by lia. apply N.le_0_l.
+Qed.
+
+Theorem hfs_vector_code_pointwise_monotone : forall v w,
+  hfs_vector_length v = hfs_vector_length w ->
+  (forall i, i < hfs_vector_length v ->
+    (hfs_vector_nth v i <= hfs_vector_nth w i)%N) ->
+  (hfs_vector_code v <= hfs_vector_code w)%N.
+Proof.
+  induction v using hfs_vector_induction; intros w Hlength Hpointwise.
+  - assert (Hw : w = hfs_vector_empty).
+    { apply (proj1 (hfs_vector_length_zero_iff w)).
+      rewrite <- Hlength. apply hfs_vector_length_empty. }
+    subst w. reflexivity.
+  - destruct (hfs_vector_cases w) as [-> | [y [tail ->]]].
+    + rewrite hfs_vector_length_adjoin, hfs_vector_length_empty
+        in Hlength. lia.
+    + rewrite !hfs_vector_code_adjoin.
+      apply hfs_vector_adjoin_code_monotone.
+      * specialize (Hpointwise 0).
+        rewrite !hfs_vector_nth_adjoin_zero in Hpointwise.
+        apply Hpointwise. rewrite hfs_vector_length_adjoin. lia.
+      * apply IHv.
+        -- rewrite !hfs_vector_length_adjoin in Hlength. lia.
+        -- intros i Hi. specialize (Hpointwise (S i)).
+           rewrite !hfs_vector_nth_adjoin_succ in Hpointwise.
+           apply Hpointwise. rewrite hfs_vector_length_adjoin. lia.
+Qed.
+
+(** * Raw-code length and indexing *)
+
+Lemma hfs_vector_decode_empty :
+  hfs_vector_decode hfs_empty = hfs_vector_empty.
+Proof.
+  apply hfs_vector_code_injective.
+  rewrite hfs_vector_code_decode, hfs_vector_empty_code. reflexivity.
+Qed.
+
+Lemma hfs_vector_decode_adjoin_code : forall x tail,
+  hfs_vector_decode (hfs_vector_adjoin_code x tail) =
+  hfs_vector_adjoin x (hfs_vector_decode tail).
+Proof.
+  intros x tail. apply hfs_vector_code_injective.
+  rewrite hfs_vector_code_decode, hfs_vector_code_adjoin,
+    hfs_vector_code_decode. reflexivity.
+Qed.
+
+Definition hfs_vector_raw_length (z : hfs_code) : hfs_code :=
+  N.of_nat (hfs_vector_length (hfs_vector_decode z)).
+
+Definition hfs_vector_raw_nth (z : hfs_code) (i : nat) : hfs_code :=
+  hfs_vector_nth (hfs_vector_decode z) i.
+
+Lemma hfs_vector_raw_length_empty :
+  hfs_vector_raw_length hfs_empty = 0%N.
+Proof.
+  unfold hfs_vector_raw_length. rewrite hfs_vector_decode_empty,
+    hfs_vector_length_empty. reflexivity.
+Qed.
+
+Lemma hfs_vector_raw_length_adjoin : forall x tail,
+  hfs_vector_raw_length (hfs_vector_adjoin_code x tail) =
+  N.succ (hfs_vector_raw_length tail).
+Proof.
+  intros x tail. unfold hfs_vector_raw_length.
+  rewrite hfs_vector_decode_adjoin_code, hfs_vector_length_adjoin,
+    Nat2N.inj_succ. reflexivity.
+Qed.
+
+Lemma hfs_vector_raw_length_code : forall v,
+  hfs_vector_raw_length (hfs_vector_code v) =
+  N.of_nat (hfs_vector_length v).
+Proof.
+  intro v. unfold hfs_vector_raw_length. now rewrite hfs_vector_decode_code.
+Qed.
+
+Theorem hfs_vector_raw_length_zero_iff : forall z,
+  hfs_vector_raw_length z = 0%N <-> z = hfs_empty.
+Proof.
+  intro z. split.
+  - intro Hzero. unfold hfs_vector_raw_length in Hzero.
+    assert (Hlength : hfs_vector_length (hfs_vector_decode z) = 0).
+    { apply Nat2N.inj. exact Hzero. }
+    apply hfs_vector_length_zero_iff in Hlength.
+    apply (f_equal hfs_vector_code) in Hlength.
+    now rewrite hfs_vector_code_decode, hfs_vector_empty_code in Hlength.
+  - intros ->. apply hfs_vector_raw_length_empty.
+Qed.
+
+Lemma hfs_vector_raw_nth_empty : forall i,
+  hfs_vector_raw_nth hfs_empty i = hfs_empty.
+Proof.
+  intro i. unfold hfs_vector_raw_nth. rewrite hfs_vector_decode_empty.
+  apply hfs_vector_nth_empty.
+Qed.
+
+Lemma hfs_vector_raw_nth_adjoin_zero : forall x tail,
+  hfs_vector_raw_nth (hfs_vector_adjoin_code x tail) 0 = x.
+Proof.
+  intros x tail. unfold hfs_vector_raw_nth.
+  rewrite hfs_vector_decode_adjoin_code. apply hfs_vector_nth_adjoin_zero.
+Qed.
+
+Lemma hfs_vector_raw_nth_adjoin_succ : forall x tail i,
+  hfs_vector_raw_nth (hfs_vector_adjoin_code x tail) (S i) =
+  hfs_vector_raw_nth tail i.
+Proof.
+  intros x tail i. unfold hfs_vector_raw_nth.
+  rewrite hfs_vector_decode_adjoin_code. apply hfs_vector_nth_adjoin_succ.
+Qed.
+
+Theorem hfs_vector_raw_nth_le : forall z i,
+  (hfs_vector_raw_nth z i <= z)%N.
+Proof.
+  intros z i. unfold hfs_vector_raw_nth.
+  rewrite <- hfs_vector_code_decode. apply hfs_vector_nth_le_code.
+Qed.
+
+Theorem hfs_vector_raw_nth_lt_nonzero : forall z i,
+  z <> hfs_empty -> (hfs_vector_raw_nth z i < z)%N.
+Proof.
+  intros z i Hnonzero. unfold hfs_vector_raw_nth.
+  destruct (Nat.lt_ge_cases i
+    (hfs_vector_length (hfs_vector_decode z))) as [Hin | Hout].
+  - rewrite <- hfs_vector_code_decode. now apply hfs_vector_nth_lt_code.
+  - rewrite hfs_vector_nth_out_of_range by lia.
+    now apply (proj1 (N.neq_0_lt_0 z)).
+Qed.
+
 Definition hfs_vector_singleton (x : hfs_code) : hfs_vector :=
   hfs_vector_adjoin x hfs_vector_empty.
 
@@ -237,6 +520,54 @@ Proof.
         -- intro H. exists x, y. reflexivity.
         -- intros [a [b H]]. inversion H. reflexivity.
       * simpl. split; [discriminate|]. intros [a [b H]]. inversion H.
+Qed.
+
+(** * Constructive finite tabulation *)
+
+Definition hfs_vector_tabulate {n : nat} (f : Fin.t n -> hfs_code)
+    : hfs_vector :=
+  hfs_vector_of_list (map f (vorspiel_fin_enum n)).
+
+Theorem hfs_vector_tabulate_length : forall n
+    (f : Fin.t n -> hfs_code),
+  hfs_vector_length (hfs_vector_tabulate f) = n.
+Proof.
+  intros n f. unfold hfs_vector_length, hfs_vector_tabulate. simpl.
+  now rewrite length_map, vorspiel_fin_enum_length.
+Qed.
+
+Theorem hfs_vector_tabulate_nth : forall n
+    (f : Fin.t n -> hfs_code) (i : Fin.t n),
+  hfs_vector_nth (hfs_vector_tabulate f) (vorspiel_fin_value i) = f i.
+Proof.
+  intros n f i. unfold hfs_vector_nth, hfs_vector_tabulate. simpl.
+  apply nth_error_nth with
+    (l := map f (vorspiel_fin_enum n))
+    (n := vorspiel_fin_value i) (d := hfs_empty).
+  rewrite nth_error_map, vorspiel_fin_enum_nth_error. reflexivity.
+Qed.
+
+(** This strengthens the source's existential Skolem-vector statement by
+    accepting constructive witnesses.  The conclusion is still existential,
+    but no classical choice axiom is needed. *)
+Theorem hfs_vector_constructive_skolem : forall n
+    (R : nat -> hfs_code -> Prop),
+  (forall i, i < n -> {y : hfs_code | R i y}) ->
+  exists v,
+    hfs_vector_length v = n /\
+    forall i, i < n -> R i (hfs_vector_nth v i).
+Proof.
+  intros n R Hwitness.
+  set (choose := fun i : Fin.t n =>
+    proj1_sig
+      (Hwitness (vorspiel_fin_value i) (proj2_sig (Fin.to_nat i)))).
+  exists (hfs_vector_tabulate choose). split.
+  - apply hfs_vector_tabulate_length.
+  - intros i Hi. set (j := Fin.of_nat_lt Hi).
+    assert (Hvalue : vorspiel_fin_value j = i).
+    { unfold j, vorspiel_fin_value. now rewrite Fin.to_nat_of_nat. }
+    rewrite <- Hvalue, hfs_vector_tabulate_nth.
+    unfold choose. apply proj2_sig.
 Qed.
 
 (** * Generic structural vector recursion *)
@@ -543,6 +874,21 @@ Proof.
   - intros [i [Hi ->]]. now apply nth_In.
 Qed.
 
+Theorem hfs_vector_mem_lt_code : forall x v,
+  hfs_vector_mem x v -> (x < hfs_vector_code v)%N.
+Proof.
+  intros x v Hmem. apply hfs_vector_mem_iff_nth in Hmem.
+  destruct Hmem as [i [Hi Hx]]. rewrite Hx.
+  now apply hfs_vector_nth_lt_code.
+Qed.
+
+Corollary hfs_vector_mem_le_code : forall x v,
+  hfs_vector_mem x v -> (x <= hfs_vector_code v)%N.
+Proof.
+  intros x v Hmem. apply N.lt_le_incl.
+  now apply hfs_vector_mem_lt_code.
+Qed.
+
 Lemma hfs_vector_not_mem_empty : forall x,
   ~ hfs_vector_mem x hfs_vector_empty.
 Proof. intros x H. exact H. Qed.
@@ -646,6 +992,26 @@ Proof.
     + destruct k; simpl in Hmem; [contradiction | lia].
     + now apply repeat_spec in Hmem.
   - intros [Hpositive ->]. destruct k; [lia |]. simpl. now left.
+Qed.
+
+Corollary hfs_vector_repeat_length_le_code : forall x k,
+  (N.of_nat k <= hfs_vector_code (hfs_vector_repeat x k))%N.
+Proof.
+  intros x k.
+  pose proof (@hfs_vector_length_le_code (hfs_vector_repeat x k)) as H.
+  now rewrite hfs_vector_repeat_length in H.
+Qed.
+
+Theorem hfs_vector_code_le_repeat : forall v m,
+  (forall i, i < hfs_vector_length v ->
+    (hfs_vector_nth v i <= m)%N) ->
+  (hfs_vector_code v <=
+   hfs_vector_code (hfs_vector_repeat m (hfs_vector_length v)))%N.
+Proof.
+  intros v m Hbound. apply hfs_vector_code_pointwise_monotone.
+  - now rewrite hfs_vector_repeat_length.
+  - intros i Hi. rewrite hfs_vector_repeat_nth by exact Hi.
+    now apply Hbound.
 Qed.
 
 (** * Duplicate-erasing conversion to an HFS set *)

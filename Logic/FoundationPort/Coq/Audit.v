@@ -5005,9 +5005,23 @@ Check hfs_vector_adjoin_code.
 Check hfs_vector_code_list.
 Print Assumptions hfs_vector_adjoin_code_injective.
 Print Assumptions hfs_vector_code_list_injective.
+Check hfs_vector_fst_code.
+Check hfs_vector_snd_code.
+Print Assumptions hfs_vector_fst_adjoin_code.
+Print Assumptions hfs_vector_snd_adjoin_code.
+Print Assumptions hfs_vector_head_lt_adjoin_code.
+Print Assumptions hfs_vector_tail_lt_adjoin_code.
+Print Assumptions hfs_vector_adjoin_code_monotone.
+Print Assumptions hfs_vector_raw_cases.
+Check hfs_vector_decode_nat.
+Print Assumptions hfs_vector_code_decode_nat.
 Check hfs_vector.
 Check hfs_vector_code.
 Print Assumptions hfs_vector_code_adjoin.
+Check hfs_vector_decode.
+Print Assumptions hfs_vector_code_decode.
+Print Assumptions hfs_vector_decode_code.
+Print Assumptions hfs_vector_code_surjective.
 Check hfs_vector_empty.
 Check hfs_vector_adjoin.
 Check hfs_vector_head.
@@ -5024,10 +5038,28 @@ Print Assumptions hfs_vector_nth_adjoin_succ.
 Print Assumptions hfs_vector_length_zero_iff.
 Print Assumptions hfs_vector_nth_out_of_range.
 Print Assumptions hfs_vector_bounded_extensionality.
+Print Assumptions hfs_vector_length_le_code.
+Print Assumptions hfs_vector_nth_lt_code.
+Print Assumptions hfs_vector_nth_le_code.
+Print Assumptions hfs_vector_code_pointwise_monotone.
+Print Assumptions hfs_vector_decode_adjoin_code.
+Check hfs_vector_raw_length.
+Check hfs_vector_raw_nth.
+Print Assumptions hfs_vector_raw_length_adjoin.
+Print Assumptions hfs_vector_raw_length_code.
+Print Assumptions hfs_vector_raw_length_zero_iff.
+Print Assumptions hfs_vector_raw_nth_adjoin_zero.
+Print Assumptions hfs_vector_raw_nth_adjoin_succ.
+Print Assumptions hfs_vector_raw_nth_le.
+Print Assumptions hfs_vector_raw_nth_lt_nonzero.
 Check hfs_vector_singleton.
 Check hfs_vector_doubleton.
 Print Assumptions hfs_vector_length_one_iff.
 Print Assumptions hfs_vector_length_two_iff.
+Check hfs_vector_tabulate.
+Print Assumptions hfs_vector_tabulate_length.
+Print Assumptions hfs_vector_tabulate_nth.
+Print Assumptions hfs_vector_constructive_skolem.
 Check hfs_vector_recursion.
 Check hfs_vector_rec.
 Print Assumptions hfs_vector_rec_empty.
@@ -5051,6 +5083,7 @@ Print Assumptions hfs_vector_concat_nth_old.
 Print Assumptions hfs_vector_concat_nth_last.
 Check hfs_vector_mem.
 Print Assumptions hfs_vector_mem_iff_nth.
+Print Assumptions hfs_vector_mem_lt_code.
 Print Assumptions hfs_vector_nth_mem.
 Print Assumptions hfs_vector_mem_adjoin_iff.
 Check hfs_vector_subset.
@@ -5061,6 +5094,8 @@ Check hfs_vector_repeat.
 Print Assumptions hfs_vector_repeat_length.
 Print Assumptions hfs_vector_repeat_nth.
 Print Assumptions hfs_vector_mem_repeat_iff.
+Print Assumptions hfs_vector_repeat_length_le_code.
+Print Assumptions hfs_vector_code_le_repeat.
 Check hfs_vector_to_set.
 Print Assumptions hfs_vector_to_set_adjoin.
 Print Assumptions hfs_mem_vector_to_set_iff_nth.
