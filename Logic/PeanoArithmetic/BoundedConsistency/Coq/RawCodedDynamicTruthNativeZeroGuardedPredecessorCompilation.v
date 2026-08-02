@@ -469,6 +469,87 @@ Record RawDynamicTruthImpGuardedEvidenceRootsAt
 Arguments RawDynamicTruthImpGuardedEvidenceRootsAt
   M translation baseContext callerPrefix : clear implicits.
 
+(** Traversal production may itself append a finite standard-axiom batch
+    before either row selector runs.  This invocation-local package records
+    that first extension separately from the further extensions chosen by
+    Sigma and Pi selection. *)
+Definition RawDynamicTruthImpGuardedGrowingSelectedEvidenceTraversalAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (baseContext : M) (callerPrefix : TemplateContext) : Prop :=
+  exists traversalWitnessList traversalContext localSigma localPi,
+    RawCodedPAAxiomWitnessContext M
+      traversalWitnessList traversalContext /\
+    RawContextListIncluded M baseContext traversalContext /\
+    RawDynamicTruthImpGuardedSelectedEvidenceTraversalAt M translation
+      traversalContext callerPrefix localSigma localPi.
+
+Arguments RawDynamicTruthImpGuardedGrowingSelectedEvidenceTraversalAt
+  M translation baseContext callerPrefix : clear implicits.
+
+(** Transport the traversal-free triple across a witnessed PA-tail
+    inclusion while preserving the exact guarded prefix. *)
+Theorem raw_dynamicTruthImpGuardedParentBranchRoots_transport :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      translation sourceWitnessList sourceContext
+      targetWitnessList targetContext callerPrefix,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedPAAxiomWitnessContext M targetWitnessList targetContext ->
+  RawContextListIncluded M sourceContext targetContext ->
+  RawDynamicTruthImpGuardedParentBranchRootsAt M translation
+    sourceContext callerPrefix ->
+  RawDynamicTruthImpGuardedParentBranchRootsAt M translation
+    targetContext callerPrefix.
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext
+    targetWitnessList targetContext callerPrefix
+    hsourceWitnessed htargetWitnessed hincluded hparent.
+  destruct hparent as
+    [(sourceRoot & hsource) (atomicRoot & hatomic)
+      (domainRoot & hdomain)].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation sourceWitnessList sourceContext
+      targetWitnessList targetContext
+      (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+      (rawTemplateFormula translation
+        (tfAll (tfAll (tfAll
+          coqDynamicTruthLocalExclusiveBodyTemplate))))
+      sourceRoot hsourceWitnessed htargetWitnessed hincluded hsource)
+    as [transportedSourceRoot htransportedSource].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation sourceWitnessList sourceContext
+      targetWitnessList targetContext
+      (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+      (rawTemplateFormula translation
+        (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+          coqDynamicTruthImpGuardedLevelTerm
+          coqDynamicTruthImpGuardedParentTerm
+          coqDynamicTruthImpGuardedLeftTerm
+          coqDynamicTruthImpGuardedRightTerm
+          coqDynamicTruthImpGuardedChildTerm))
+      atomicRoot hsourceWitnessed htargetWitnessed hincluded hatomic)
+    as [transportedAtomicRoot htransportedAtomic].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation sourceWitnessList sourceContext
+      targetWitnessList targetContext
+      (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+      (rawTemplateFormula translation
+        (coqDynamicTruthImpDirectChildDomainPremiseTemplate
+          coqDynamicTruthImpGuardedLevelTerm
+          coqDynamicTruthImpGuardedParentTerm
+          coqDynamicTruthImpGuardedLeftTerm
+          coqDynamicTruthImpGuardedRightTerm
+          coqDynamicTruthImpGuardedChildTerm))
+      domainRoot hsourceWitnessed htargetWitnessed hincluded hdomain)
+    as [transportedDomainRoot htransportedDomain].
+  constructor.
+  - exists transportedSourceRoot. exact htransportedSource.
+  - exists transportedAtomicRoot. exact htransportedAtomic.
+  - exists transportedDomainRoot. exact htransportedDomain.
+Qed.
+
 (** Run both selected rows and retain their common witnessed extension. *)
 Theorem
     raw_dynamicTruthImpGuardedEvidenceRoots_on_witnessed_extension_of_traversal :
@@ -617,6 +698,51 @@ Proof.
     + exists transportedDomainRoot. exact htransportedDomain.
   - exists sigmaRoot. exact hsigma.
   - exists piRoot. exact hpi.
+Qed.
+
+(** Accept a traversal whose global sources were compiled only after their
+    own witnessed extension, synchronize the parent triple there, and then
+    run both selected row passes. *)
+Theorem
+    raw_dynamicTruthImpGuardedBranchRoots_on_witnessed_extension_of_parent_and_growing_traversal :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      translation baseWitnessList baseContext callerPrefix,
+  RawCodedTemplatePAAgreement M translation ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawDynamicTruthImpGuardedParentBranchRootsAt M translation
+    baseContext callerPrefix ->
+  RawDynamicTruthImpGuardedGrowingSelectedEvidenceTraversalAt M translation
+    baseContext callerPrefix ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthImpGuardedBranchRootsAt M translation
+      targetContext callerPrefix.
+Proof.
+  intros M hPA translation baseWitnessList baseContext callerPrefix
+    hagreement hbase hparent
+    (traversalWitnessList & traversalContext & localSigma & localPi &
+      htraversalWitnessed & hbaseTraversalIncluded & htraversal).
+  pose proof
+    (raw_dynamicTruthImpGuardedParentBranchRoots_transport
+      M hPA translation baseWitnessList baseContext
+      traversalWitnessList traversalContext callerPrefix
+      hbase htraversalWitnessed hbaseTraversalIncluded hparent)
+    as hparentOnTraversal.
+  destruct
+    (raw_dynamicTruthImpGuardedBranchRoots_on_witnessed_extension_of_parent_and_traversal
+      M hPA translation traversalWitnessList traversalContext callerPrefix
+      localSigma localPi hagreement htraversalWitnessed
+      hparentOnTraversal htraversal)
+    as (targetWitnessList & targetContext & htargetWitnessed &
+      htraversalTargetIncluded & hroots).
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (htraversalTargetIncluded member
+      (hbaseTraversalIncluded member hmember)).
+  - exact hroots.
 Qed.
 
 (** General closure adapter.  It is independent of rank zero and accepts any
