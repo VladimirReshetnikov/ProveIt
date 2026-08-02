@@ -12,6 +12,9 @@ Import
 Check RawDynamicTruthImpGuardedBranchRootsAt.
 Check
   raw_dynamicTruthImpGuardedPredecessorRoot_on_witnessed_extension_of_branch_roots.
+Check raw_dynamicTruthImpGuardedBranchSource_of_zero_normalized.
+Check
+  raw_dynamicTruthImpGuardedBranchSource_exists_of_zero_normalized.
 Check
   RawDynamicTruthNativeLocalZeroGrowingGuardedBranchRootsCompilerOnNormalizedResources.
 Check
@@ -21,6 +24,9 @@ Check
 
 Print Assumptions
   raw_dynamicTruthImpGuardedPredecessorRoot_on_witnessed_extension_of_branch_roots.
+Print Assumptions raw_dynamicTruthImpGuardedBranchSource_of_zero_normalized.
+Print Assumptions
+  raw_dynamicTruthImpGuardedBranchSource_exists_of_zero_normalized.
 Print Assumptions
   raw_dynamicTruthNativeLocalZeroGrowingGuardedPredecessorRootCompilerOnNormalizedResources_of_branch_roots.
 

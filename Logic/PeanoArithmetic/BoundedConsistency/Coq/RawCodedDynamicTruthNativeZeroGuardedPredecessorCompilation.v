@@ -24,16 +24,19 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplatePAEmbedding
   RawCodedTemplateDirectStructuralTranslation
+  RawCodedTemplateDirectStructuralPAAgreement
   RawCodedTemplateFormulaAtomicAdequacy
   RawCodedTemplateBottomDirectStructuralInputs
   RawCodedDynamicTruthNativeLocalPositiveGraph
+  RawCodedDynamicTruthLocalFieldProjectionCompilation
   RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
   RawCodedDynamicTruthImpDirectChildAdmissibilityProofCompilation
   RawCodedDynamicTruthImpGuardedBranchExclusivity
   RawCodedDynamicTruthLocalCollisionMatrixAssembly
   RawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation
   RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
-  RawCodedDynamicTruthNativeZeroGuardedNormalization.
+  RawCodedDynamicTruthNativeZeroGuardedNormalization
+  RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
 
 Import ListNotations.
 
@@ -54,9 +57,11 @@ Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedTemplateFormulaAtomicAdequacy.
 Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
+Import PABoundedRawCodedDynamicTruthLocalFieldProjectionCompilation.
 Import PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
 Import
   PABoundedRawCodedDynamicTruthImpDirectChildAdmissibilityProofCompilation.
@@ -67,6 +72,8 @@ Import
 Import
   PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
 Import PABoundedRawCodedDynamicTruthNativeZeroGuardedNormalization.
+Import
+  PABoundedRawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
 
 (** Local direct-translation adequacy avoids importing the substantially
     stronger global-row compiler merely for this elementary consequence of
@@ -167,6 +174,129 @@ Proof.
       hadequate hbase hsource hatomic hdomain hsigma hpi).
 Qed.
 
+(** The local-exclusivity member of the branch package is already present in
+    normalized resources.  Identify its concrete rank-zero body with the
+    chosen direct translation, then insert the entire deep branch prefix by
+    represented adequate-cons transplantation. *)
+Theorem raw_dynamicTruthImpGuardedBranchSource_of_zero_normalized : forall
+    (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      normalizedTranslation witnessList baseContext helperRoots callerPrefix,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    (rawDynamicTruthZeroSigmaDomainCode M)
+    (rawDynamicTruthZeroPiDomainCode M)
+    (rawDynamicTruthZeroSigmaEvidenceCode M)
+    (rawDynamicTruthZeroPiEvidenceCode M) ->
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    normalizedTranslation witnessList baseContext helperRoots ->
+  exists sourceRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        baseContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+      (rawTemplateFormula
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (tfAll (tfAll (tfAll
+          coqDynamicTruthLocalExclusiveBodyTemplate)))) sourceRoot.
+Proof.
+  intros M hPA inputs normalizedTranslation witnessList baseContext
+    helperRoots callerPrefix hidentification hnormalized.
+  destruct
+    (rawDynamicTruthNativeLocalZeroGuardedNormalized_localProjections
+      M normalizedTranslation witnessList baseContext helperRoots
+      hnormalized) as [fieldRoot hprojected].
+  pose proof (rawDynamicTruthLocalProjected_exclusive M baseContext
+    (rawDynamicTruthZeroSigmaDomainCode M)
+    (rawDynamicTruthZeroPiDomainCode M)
+    (rawDynamicTruthZeroSigmaEvidenceCode M)
+    (rawDynamicTruthZeroPiEvidenceCode M) fieldRoot hprojected)
+    as hexclusive.
+  assert (hsourceCode :
+      rawTemplateFormula
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (tfAll (tfAll (tfAll
+          coqDynamicTruthLocalExclusiveBodyTemplate))) =
+      rawDynamicTruthLocalFormulaAll3Code M
+        (rawDynamicTruthLocalExclusiveCode M
+          (rawDynamicTruthZeroSigmaDomainCode M)
+          (rawDynamicTruthZeroPiDomainCode M)
+          (rawDynamicTruthZeroSigmaEvidenceCode M)
+          (rawDynamicTruthZeroPiEvidenceCode M))).
+  {
+    unfold rawDynamicTruthLocalFormulaAll3Code.
+    rewrite !rawTemplateFormula_all.
+    repeat f_equal.
+    change (rawDirectTemplateFormula inputs
+      coqDynamicTruthLocalExclusiveBodyTemplate =
+      rawDynamicTruthLocalExclusiveCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M)).
+    exact (rawCoqDynamicTruthLocalExclusiveBodyTemplate_identified
+      M hPA inputs
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M) hidentification).
+  }
+  destruct (rawDynamicTruthNativeLocalZeroGuardedNormalized_fields
+    M normalizedTranslation witnessList baseContext helperRoots
+    hnormalized) as [hbaseWitnessed _].
+  destruct (raw_codedPALocalProof_templatePrefix M hPA
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    baseContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+    (rawDynamicTruthLocalFormulaAll3Code M
+      (rawDynamicTruthLocalExclusiveCode M
+        (rawDynamicTruthZeroSigmaDomainCode M)
+        (rawDynamicTruthZeroPiDomainCode M)
+        (rawDynamicTruthZeroSigmaEvidenceCode M)
+        (rawDynamicTruthZeroPiEvidenceCode M)))
+    (rawDynamicTruthLocalExclusiveProjectionRoot M baseContext
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M) fieldRoot)
+    (raw_codedPAAxiomWitnessContext_context_realizable
+      M witnessList baseContext hbaseWitnessed)
+    (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate M hPA
+      inputs (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+    hexclusive) as [sourceRoot hsource].
+  exists sourceRoot. rewrite hsourceCode. exact hsource.
+Qed.
+
+(** Canonical rank-zero identification chooses direct inputs whose local
+    coordinates agree with the normalized field.  Because the conclusion is
+    propositional, the selected structural record remains an honest
+    existential witness rather than a global choice. *)
+Corollary
+    raw_dynamicTruthImpGuardedBranchSource_exists_of_zero_normalized : forall
+    (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      normalizedTranslation witnessList baseContext helperRoots callerPrefix,
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    normalizedTranslation witnessList baseContext helperRoots ->
+  exists inputs : RawCodedTemplateDirectStructuralInputs M,
+  exists sourceRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        baseContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+      (rawTemplateFormula
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (tfAll (tfAll (tfAll
+          coqDynamicTruthLocalExclusiveBodyTemplate)))) sourceRoot.
+Proof.
+  intros M hPA normalizedTranslation witnessList baseContext helperRoots
+    callerPrefix hnormalized.
+  destruct
+    (raw_dynamicTruthZeroLocalExclusiveTemplateIdentification_exists M hPA)
+    as [inputs hidentification].
+  exists inputs.
+  exact (raw_dynamicTruthImpGuardedBranchSource_of_zero_normalized
+    M hPA inputs normalizedTranslation witnessList baseContext helperRoots
+    callerPrefix hidentification hnormalized).
+Qed.
+
 (** The only remaining normalized rank-zero producer: select the five branch
     roots on one witnessed extension.  The helper cells and all normalized
     local data are already carried by [resources]. *)
@@ -180,11 +310,12 @@ Definition
       witnessList baseContext helperRoots ->
     RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
       sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists inputs : RawCodedTemplateDirectStructuralInputs M,
     exists branchWitnessList branchContext,
       RawCodedPAAxiomWitnessContext M branchWitnessList branchContext /\
       RawContextListIncluded M baseContext branchContext /\
       RawDynamicTruthImpGuardedBranchRootsAt M
-        (rawBottomDirectStructuralTemplateTranslation M hPA)
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
         branchContext [].
 
 Arguments
@@ -225,15 +356,15 @@ Proof.
     sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace.
   destruct (hcompiler tail witnessList baseContext helperRoots
     sigmaDomain piDomain sigmaEvidence piEvidence hresources htrace) as
-    (branchWitnessList & branchContext & hbranchWitnessed &
+    (inputs & branchWitnessList & branchContext & hbranchWitnessed &
       hbaseBranchIncluded & hbranchRoots).
   destruct
     (raw_dynamicTruthImpGuardedPredecessorRoot_on_witnessed_extension_of_branch_roots
-      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
       branchWitnessList branchContext []
-      (rawBottomDirectStructuralTemplatePAAgreement M hPA)
+      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
       (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate M hPA
-        (rawBottomTemplateDirectStructuralInputs M hPA)
+        inputs
         (coqDynamicTruthImpGuardedDeepPrefix []))
       hbranchWitnessed hbranchRoots) as
     (targetWitnessList & targetContext & predecessorRoot &
