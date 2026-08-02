@@ -13,7 +13,7 @@
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lia Lists.List NArith.NArith.
-From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Seq.
+From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq.
 
 Import ListNotations.
 
@@ -139,7 +139,7 @@ Lemma hfs_vector_cases : forall v,
   exists x tail, v = hfs_vector_adjoin x tail.
 Proof.
   intros [[|x xs]].
-  - now left.
+  - left. now symmetry.
   - right. exists x, (hfs_vector_of_list xs). reflexivity.
 Qed.
 
@@ -517,6 +517,185 @@ Corollary hfs_vector_concat_nth_at_length : forall v z i,
   hfs_vector_length v = i ->
   hfs_vector_nth (hfs_vector_concat v z) i = z.
 Proof. intros v z i <-. apply hfs_vector_concat_nth_last. Qed.
+
+(** * Membership and subset *)
+
+Definition hfs_vector_mem (x : hfs_code) (v : hfs_vector) : Prop :=
+  In x (hfs_vector_values v).
+
+Lemma hfs_vector_mem_iff_nth_error : forall x v,
+  hfs_vector_mem x v <->
+  exists i, nth_error (hfs_vector_values v) i = Some x.
+Proof.
+  intros x [xs]. unfold hfs_vector_mem. simpl. apply In_iff_nth_error.
+Qed.
+
+Theorem hfs_vector_mem_iff_nth : forall x v,
+  hfs_vector_mem x v <->
+  exists i, i < hfs_vector_length v /\ x = hfs_vector_nth v i.
+Proof.
+  intros x [xs]. unfold hfs_vector_mem, hfs_vector_length,
+    hfs_vector_nth. simpl. split.
+  - intro Hmem. apply In_nth_error in Hmem.
+    destruct Hmem as [i Hi]. exists i. split.
+    + apply (proj1 (nth_error_Some xs i)). congruence.
+    + symmetry. now apply nth_error_nth with (l := xs) (n := i).
+  - intros [i [Hi ->]]. now apply nth_In.
+Qed.
+
+Lemma hfs_vector_not_mem_empty : forall x,
+  ~ hfs_vector_mem x hfs_vector_empty.
+Proof. intros x H. exact H. Qed.
+
+Theorem hfs_vector_nth_mem : forall v i,
+  i < hfs_vector_length v ->
+  hfs_vector_mem (hfs_vector_nth v i) v.
+Proof.
+  intros [xs] i Hi. unfold hfs_vector_mem, hfs_vector_nth,
+    hfs_vector_length in *. simpl in *. now apply nth_In.
+Qed.
+
+Lemma hfs_vector_mem_adjoin_head : forall x v,
+  hfs_vector_mem x (hfs_vector_adjoin x v).
+Proof. now intros x [xs]; left. Qed.
+
+Lemma hfs_vector_mem_adjoin_iff : forall x y v,
+  hfs_vector_mem x (hfs_vector_adjoin y v) <->
+  x = y \/ hfs_vector_mem x v.
+Proof.
+  intros x y [xs]. unfold hfs_vector_mem. simpl. split;
+    intros [H | H].
+  - now left.
+  - now right.
+  - left. now symmetry.
+  - now right.
+Qed.
+
+Definition hfs_vector_subset (v w : hfs_vector) : Prop :=
+  forall x, hfs_vector_mem x v -> hfs_vector_mem x w.
+
+Lemma hfs_vector_subset_empty : forall v,
+  hfs_vector_subset hfs_vector_empty v.
+Proof.
+  intros v x H. exfalso. now apply hfs_vector_not_mem_empty in H.
+Qed.
+
+Lemma hfs_vector_subset_refl : forall v,
+  hfs_vector_subset v v.
+Proof. firstorder. Qed.
+
+Lemma hfs_vector_subset_trans : forall u v w,
+  hfs_vector_subset u v ->
+  hfs_vector_subset v w ->
+  hfs_vector_subset u w.
+Proof. firstorder. Qed.
+
+Lemma hfs_vector_subset_adjoin_tail : forall x v,
+  hfs_vector_subset v (hfs_vector_adjoin x v).
+Proof.
+  intros x v y Hy. apply hfs_vector_mem_adjoin_iff. now right.
+Qed.
+
+Theorem hfs_vector_subset_adjoin_iff : forall x v w,
+  hfs_vector_subset (hfs_vector_adjoin x v) w <->
+  hfs_vector_mem x w /\ hfs_vector_subset v w.
+Proof.
+  intros x v w. split.
+  - intro Hsubset. split.
+    + apply Hsubset. apply hfs_vector_mem_adjoin_head.
+    + intros y Hy. apply Hsubset. apply hfs_vector_mem_adjoin_iff.
+      now right.
+  - intros [Hx Htail] y Hy. apply hfs_vector_mem_adjoin_iff in Hy.
+    destruct Hy as [-> | Hy]; [exact Hx | now apply Htail].
+Qed.
+
+(** * Repetition *)
+
+Definition hfs_vector_repeat (x : hfs_code) (k : nat) : hfs_vector :=
+  hfs_vector_of_list (repeat x k).
+
+Lemma hfs_vector_repeat_zero : forall x,
+  hfs_vector_repeat x 0 = hfs_vector_empty.
+Proof. reflexivity. Qed.
+
+Lemma hfs_vector_repeat_succ : forall x k,
+  hfs_vector_repeat x (S k) =
+  hfs_vector_adjoin x (hfs_vector_repeat x k).
+Proof. reflexivity. Qed.
+
+Theorem hfs_vector_repeat_length : forall x k,
+  hfs_vector_length (hfs_vector_repeat x k) = k.
+Proof.
+  intros x k. unfold hfs_vector_repeat, hfs_vector_length. simpl.
+  apply repeat_length.
+Qed.
+
+Theorem hfs_vector_repeat_nth : forall x k i,
+  i < k -> hfs_vector_nth (hfs_vector_repeat x k) i = x.
+Proof.
+  intros x k i Hi. unfold hfs_vector_repeat, hfs_vector_nth. simpl.
+  now apply nth_repeat_lt.
+Qed.
+
+Theorem hfs_vector_mem_repeat_iff : forall y x k,
+  hfs_vector_mem y (hfs_vector_repeat x k) <->
+  0 < k /\ y = x.
+Proof.
+  intros y x k. unfold hfs_vector_mem, hfs_vector_repeat. simpl. split.
+  - intro Hmem. split.
+    + destruct k; simpl in Hmem; [contradiction | lia].
+    + now apply repeat_spec in Hmem.
+  - intros [Hpositive ->]. destruct k; [lia |]. simpl. now left.
+Qed.
+
+(** * Duplicate-erasing conversion to an HFS set *)
+
+Definition hfs_vector_to_set (v : hfs_vector) : hfs_code :=
+  hfs_arithmetize_list (hfs_vector_values v).
+
+Lemma hfs_vector_to_set_empty :
+  hfs_vector_to_set hfs_vector_empty = hfs_empty.
+Proof. reflexivity. Qed.
+
+Lemma hfs_vector_to_set_adjoin : forall x v,
+  hfs_vector_to_set (hfs_vector_adjoin x v) =
+  hfs_insert x (hfs_vector_to_set v).
+Proof. reflexivity. Qed.
+
+Theorem hfs_mem_vector_to_set_iff : forall x v,
+  hfs_mem x (hfs_vector_to_set v) <-> hfs_vector_mem x v.
+Proof.
+  intros x [xs]. unfold hfs_vector_to_set, hfs_vector_mem. simpl.
+  apply hfs_mem_arithmetize_list_iff.
+Qed.
+
+Corollary hfs_mem_vector_to_set_iff_nth : forall x v,
+  hfs_mem x (hfs_vector_to_set v) <->
+  exists i, i < hfs_vector_length v /\ x = hfs_vector_nth v i.
+Proof.
+  intros x v. rewrite hfs_mem_vector_to_set_iff.
+  apply hfs_vector_mem_iff_nth.
+Qed.
+
+Corollary hfs_vector_nth_mem_to_set : forall v i,
+  i < hfs_vector_length v ->
+  hfs_mem (hfs_vector_nth v i) (hfs_vector_to_set v).
+Proof.
+  intros v i Hi. apply hfs_mem_vector_to_set_iff.
+  now apply hfs_vector_nth_mem.
+Qed.
+
+Theorem hfs_vector_to_set_subset_iff : forall v w,
+  hfs_subset (hfs_vector_to_set v) (hfs_vector_to_set w) <->
+  hfs_vector_subset v w.
+Proof.
+  intros v w. unfold hfs_subset, hfs_vector_subset. split;
+    intros Hsubset x Hx.
+  - apply hfs_mem_vector_to_set_iff. apply Hsubset.
+    now apply hfs_mem_vector_to_set_iff.
+  - apply hfs_mem_vector_to_set_iff. apply Hsubset.
+    now apply hfs_mem_vector_to_set_iff.
+Qed.
 
 (** * Conversion to the indexed sequence representation *)
 

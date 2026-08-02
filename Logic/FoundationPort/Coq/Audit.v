@@ -5037,6 +5037,23 @@ Print Assumptions hfs_vector_concat_adjoin.
 Print Assumptions hfs_vector_concat_length.
 Print Assumptions hfs_vector_concat_nth_old.
 Print Assumptions hfs_vector_concat_nth_last.
+Check hfs_vector_mem.
+Print Assumptions hfs_vector_mem_iff_nth.
+Print Assumptions hfs_vector_nth_mem.
+Print Assumptions hfs_vector_mem_adjoin_iff.
+Check hfs_vector_subset.
+Print Assumptions hfs_vector_subset_empty.
+Print Assumptions hfs_vector_subset_trans.
+Print Assumptions hfs_vector_subset_adjoin_iff.
+Check hfs_vector_repeat.
+Print Assumptions hfs_vector_repeat_length.
+Print Assumptions hfs_vector_repeat_nth.
+Print Assumptions hfs_vector_mem_repeat_iff.
+Check hfs_vector_to_set.
+Print Assumptions hfs_vector_to_set_adjoin.
+Print Assumptions hfs_mem_vector_to_set_iff_nth.
+Print Assumptions hfs_vector_nth_mem_to_set.
+Print Assumptions hfs_vector_to_set_subset_iff.
 Check hfs_vector_as_sequence.
 Print Assumptions hfs_vector_as_sequence_length.
 Print Assumptions hfs_vector_as_sequence_nth.
