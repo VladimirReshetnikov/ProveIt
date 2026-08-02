@@ -289,7 +289,7 @@ From Foundation.FirstOrder.Arithmetic.Basic Require Import Syntax.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.R0 Require Import
-  Basic CodeGraph Representation.
+  Basic CodeGraph Representation Semidecidability.
 From Foundation.FirstOrder.Arithmetic.Q Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Theory.
@@ -3231,6 +3231,11 @@ Print Assumptions r0_arith_code_graph_open_sigma_one.
 Print Assumptions r0_arith_code_graph_semisentence_sigma_one.
 Check r0_arith_code_graph_open_sorted.
 Check r0_arith_code_graph_semisentence_sorted.
+Print Assumptions semidecidable_ext.
+Print Assumptions semidecidable_prefix_recognizer_spec.
+Print Assumptions semidecidable_bounded_forall_nat.
+Print Assumptions r0_semiformula_eval_ball_lt.
+Print Assumptions r0_sigma_one_semidecidable.
 Check r0_omega_add_one.
 Check r0_omega_add_one_oring.
 Print Assumptions r0_omega_add_one_numeral.
