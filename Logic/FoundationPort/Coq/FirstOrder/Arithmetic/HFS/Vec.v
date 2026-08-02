@@ -243,11 +243,15 @@ Qed.
 
 Record hfs_vector_recursion (P : Type) : Type := {
   hfs_vector_rec_nil : P -> hfs_code;
-  hfs_vector_rec_adjoin : P -> hfs_code -> hfs_code -> hfs_code
+  (** The step sees the head, the raw code of the tail, and the recursive
+      result.  Exposing the tail code is essential for source constructions
+      such as [takeLast], whose branch condition inspects the tail length. *)
+  hfs_vector_rec_adjoin :
+    P -> hfs_code -> hfs_code -> hfs_code -> hfs_code
 }.
 
 Arguments hfs_vector_rec_nil {P} _ _.
-Arguments hfs_vector_rec_adjoin {P} _ _ _ _.
+Arguments hfs_vector_rec_adjoin {P} _ _ _ _ _.
 
 Fixpoint hfs_vector_rec_list {P} (r : hfs_vector_recursion P)
     (parameters : P) (xs : list hfs_code) : hfs_code :=
@@ -255,6 +259,7 @@ Fixpoint hfs_vector_rec_list {P} (r : hfs_vector_recursion P)
   | [] => hfs_vector_rec_nil r parameters
   | x :: tail =>
       hfs_vector_rec_adjoin r parameters x
+        (hfs_vector_code_list tail)
         (hfs_vector_rec_list r parameters tail)
   end.
 
@@ -269,15 +274,16 @@ Proof. reflexivity. Qed.
 Lemma hfs_vector_rec_adjoin_law : forall P
     (r : hfs_vector_recursion P) p x v,
   hfs_vector_rec r p (hfs_vector_adjoin x v) =
-  hfs_vector_rec_adjoin r p x (hfs_vector_rec r p v).
-Proof. reflexivity. Qed.
+  hfs_vector_rec_adjoin r p x (hfs_vector_code v)
+    (hfs_vector_rec r p v).
+Proof. intros P r p x [xs]. reflexivity. Qed.
 
 Theorem hfs_vector_rec_unique : forall P
     (r : hfs_vector_recursion P) p (f : hfs_vector -> hfs_code),
   f hfs_vector_empty = hfs_vector_rec_nil r p ->
   (forall x v,
     f (hfs_vector_adjoin x v) =
-    hfs_vector_rec_adjoin r p x (f v)) ->
+    hfs_vector_rec_adjoin r p x (hfs_vector_code v) (f v)) ->
   forall v, f v = hfs_vector_rec r p v.
 Proof.
   intros P r p f Hnil Hcons v.
