@@ -31,6 +31,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateProofCompiler
   RawCodedTemplatePAEmbedding
+  RawCodedTruthCertificateMasterBaseBridge
   RawCodedTruthCertificateMasterFixedHelperBatchExtension
   RawCodedTruthCertificateMasterHelperLookup
   RawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation
@@ -63,6 +64,7 @@ Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedTruthCertificateMasterBaseBridge.
 Import PABoundedRawCodedTruthCertificateMasterFixedHelperBatchExtension.
 Import PABoundedRawCodedTruthCertificateMasterHelperLookup.
 Import PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.
@@ -95,6 +97,29 @@ Proof.
     rawDynamicTruthGuardedImpCollisionFixedPAHelpers.
   rewrite length_app, rawDynamicTruthReadyAndAllMixedQFPAHelpers_length.
   reflexivity.
+Qed.
+
+(** Install the complete corrected batch around any six-field master in one
+    witnessed context.  This is deliberately stated for arbitrary carrier
+    fields; rank-zero normalization is a downstream specialization. *)
+Corollary
+    raw_sixFieldMasterCommonContextProofsWithReadyAndGuardedMixedQFHelpers :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall field1 field2 field3 field4 field5 finalField,
+  RawSixFieldMasterCommonContextProofsOf M
+    field1 field2 field3 field4 field5 finalField ->
+  RawSixFieldMasterCommonContextProofsWithFixedPAHelperBatchOf
+    M translation field1 field2 field3 field4 field5 finalField
+    rawDynamicTruthReadyAndGuardedMixedQFPAHelpers.
+Proof.
+  intros M hPA translation hagreement
+    field1 field2 field3 field4 field5 finalField hmaster.
+  exact (raw_sixFieldMasterCommonContextProofsWithFixedPAHelperBatch
+    M hPA translation hagreement
+    field1 field2 field3 field4 field5 finalField
+    rawDynamicTruthReadyAndGuardedMixedQFPAHelpers hmaster).
 Qed.
 
 (** A computational prefix projection for structurally indexed proof lists.

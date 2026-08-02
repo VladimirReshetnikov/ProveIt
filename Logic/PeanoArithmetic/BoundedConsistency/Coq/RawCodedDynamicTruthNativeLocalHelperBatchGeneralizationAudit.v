@@ -1,0 +1,29 @@
+(** Assumption audit for generalized native current-helper contexts. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeLocalHelperBatchGeneralization.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeLocalHelperBatchGeneralizationAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalHelperBatchGeneralization.
+
+Check RawDynamicTruthNativeLocalCurrentHelperBatchContextAt.
+Check raw_dynamicTruthNativeLocalCurrentHelperBatchContextAt_exists.
+Check raw_dynamicTruthNativeLocalCurrentHelperBatchContextAt_prefix.
+Check RawDynamicTruthNativeLocalCurrentGuardedHelperContextAt.
+Check raw_dynamicTruthNativeLocalCurrentGuardedHelperContextAt_exists.
+Check raw_dynamicTruthNativeLocalCurrentHelperContextAt_of_guarded.
+
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentHelperBatchContextAt_exists.
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentHelperBatchContextAt_prefix.
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentGuardedHelperContextAt_exists.
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentHelperContextAt_of_guarded.
+
+End
+  PABoundedRawCodedDynamicTruthNativeLocalHelperBatchGeneralizationAudit.
