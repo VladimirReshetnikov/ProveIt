@@ -564,6 +564,33 @@ Qed.
 Definition nat_pair (a b : nat) : nat :=
   if lt_dec a b then b * b + a else a * a + a + b.
 
+Lemma nat_le_pair_left : forall a b,
+  a <= nat_pair a b.
+Proof. intros a b. unfold nat_pair. destruct (lt_dec a b); nia. Qed.
+
+Lemma nat_le_pair_right : forall a b,
+  b <= nat_pair a b.
+Proof. intros a b. unfold nat_pair. destruct (lt_dec a b); nia. Qed.
+
+Lemma nat_pair_monotone : forall a b a' b',
+  a <= a' -> b <= b' -> nat_pair a b <= nat_pair a' b'.
+Proof.
+  intros a b a' b' Ha Hb. unfold nat_pair.
+  repeat destruct lt_dec; nia.
+Qed.
+
+Lemma nat_pair_strict_monotone_left : forall a a' b,
+  a < a' -> nat_pair a b < nat_pair a' b.
+Proof.
+  intros a a' b Ha. unfold nat_pair. repeat destruct lt_dec; nia.
+Qed.
+
+Lemma nat_pair_strict_monotone_right : forall a b b',
+  b < b' -> nat_pair a b < nat_pair a b'.
+Proof.
+  intros a b b' Hb. unfold nat_pair. repeat destruct lt_dec; nia.
+Qed.
+
 Lemma nat_truth_lt_branch : forall a b x y : nat,
   (if lt_dec 0 (nat_truth_lt a b) then x else y) =
   (if lt_dec a b then x else y).
@@ -760,6 +787,18 @@ Corollary nat_unpair2_pair : forall a b,
 Proof.
   intros a b. pose proof (nat_unpair_pair a b) as H.
   now injection H.
+Qed.
+
+(** The square pairing also has the converse round trip.  Together with
+    [nat_unpair_pair], this makes the computational representation a genuine
+    bijection rather than merely an embedding. *)
+Lemma nat_pair_unpair : forall n,
+  nat_pair (nat_unpair1 n) (nat_unpair2 n) = n.
+Proof.
+  intro n. unfold nat_unpair1, nat_unpair2, nat_square_remainder,
+    nat_pair.
+  pose proof (PeanoNat.Nat.sqrt_specif n).
+  repeat destruct lt_dec; nia.
 Qed.
 
 Theorem arithmetic1_unpair1 : arithmetic1_unary nat_unpair1.

@@ -840,6 +840,11 @@ Print Assumptions nat_sub_least_test.
 Print Assumptions arithmetic1_sub_test.
 Print Assumptions arithmetic1_sub.
 Check nat_pair.
+Print Assumptions nat_le_pair_left.
+Print Assumptions nat_le_pair_right.
+Print Assumptions nat_pair_monotone.
+Print Assumptions nat_pair_strict_monotone_left.
+Print Assumptions nat_pair_strict_monotone_right.
 Print Assumptions nat_truth_lt_branch.
 Print Assumptions arithmetic1_pair.
 Check nat_sqrt_test.
@@ -854,6 +859,7 @@ Check nat_unpair.
 Print Assumptions nat_unpair_pair.
 Print Assumptions nat_unpair1_pair.
 Print Assumptions nat_unpair2_pair.
+Print Assumptions nat_pair_unpair.
 Print Assumptions arithmetic1_unpair1.
 Print Assumptions arithmetic1_unpair2.
 Check arith_partial_cons.
@@ -4890,6 +4896,12 @@ Check hfs_index_snd.
 Print Assumptions hfs_index_fst_pair.
 Print Assumptions hfs_index_snd_pair.
 Print Assumptions hfs_index_pair_injective.
+Print Assumptions hfs_index_pair_projections.
+Print Assumptions hfs_index_pair_left_le.
+Print Assumptions hfs_index_pair_right_le.
+Print Assumptions hfs_index_pair_monotone.
+Print Assumptions hfs_index_fst_le.
+Print Assumptions hfs_index_snd_le.
 Check hfs_sequence_code_from.
 Check hfs_sequence_code_list.
 Print Assumptions hfs_mem_sequence_code_list_iff.

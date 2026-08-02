@@ -70,6 +70,65 @@ Proof.
   now intros [-> ->].
 Qed.
 
+Lemma hfs_index_pair_projections : forall p,
+  hfs_index_pair (hfs_index_fst p) (hfs_index_snd p) = p.
+Proof.
+  intro p. unfold hfs_index_pair, hfs_index_fst, hfs_index_snd.
+  rewrite !Nat2N.id, nat_pair_unpair, N2Nat.id. reflexivity.
+Qed.
+
+Local Lemma hfs_nat_to_N_le : forall a b,
+  a <= b -> (N.of_nat a <= N.of_nat b)%N.
+Proof.
+  intros a b Hle. unfold N.le. rewrite <- Nat2N.inj_compare.
+  now apply Nat.compare_le_iff.
+Qed.
+
+Local Lemma hfs_N_to_nat_le : forall a b,
+  (a <= b)%N -> N.to_nat a <= N.to_nat b.
+Proof.
+  intros a b Hle. apply (proj1 (Nat.compare_le_iff _ _)).
+  rewrite <- N2Nat.inj_compare. exact Hle.
+Qed.
+
+Lemma hfs_index_pair_left_le : forall i x,
+  (i <= hfs_index_pair i x)%N.
+Proof.
+  intros i x. unfold hfs_index_pair. rewrite <- (N2Nat.id i) at 1.
+  apply hfs_nat_to_N_le. apply nat_le_pair_left.
+Qed.
+
+Lemma hfs_index_pair_right_le : forall i x,
+  (x <= hfs_index_pair i x)%N.
+Proof.
+  intros i x. unfold hfs_index_pair. rewrite <- (N2Nat.id x) at 1.
+  apply hfs_nat_to_N_le. apply nat_le_pair_right.
+Qed.
+
+Lemma hfs_index_pair_monotone : forall i x j y,
+  (i <= j)%N -> (x <= y)%N ->
+  (hfs_index_pair i x <= hfs_index_pair j y)%N.
+Proof.
+  intros i x j y Hi Hx. unfold hfs_index_pair.
+  apply hfs_nat_to_N_le. apply nat_pair_monotone.
+  - now apply hfs_N_to_nat_le.
+  - now apply hfs_N_to_nat_le.
+Qed.
+
+Lemma hfs_index_fst_le : forall p,
+  (hfs_index_fst p <= p)%N.
+Proof.
+  intro p. rewrite <- (hfs_index_pair_projections p) at 2.
+  apply hfs_index_pair_left_le.
+Qed.
+
+Lemma hfs_index_snd_le : forall p,
+  (hfs_index_snd p <= p)%N.
+Proof.
+  intro p. rewrite <- (hfs_index_pair_projections p) at 2.
+  apply hfs_index_pair_right_le.
+Qed.
+
 (** * Raw HFS coding *)
 
 Fixpoint hfs_sequence_code_from (start : nat) (xs : list hfs_code)
