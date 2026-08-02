@@ -290,7 +290,7 @@ From Foundation.FirstOrder.Arithmetic.Basic Require Import Model.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
 From Foundation.FirstOrder.Arithmetic.R0 Require Import
   Basic CodeGraph CodeGraphSemantics Representation
-  RepresentationCompleteness Semidecidability.
+  RepresentationCompleteness Semidecidability CertifiedSigmaOne.
 From Foundation.FirstOrder.Arithmetic.Q Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Theory.
@@ -3252,6 +3252,11 @@ Print Assumptions semidecidable_prefix_recognizer_spec.
 Print Assumptions semidecidable_bounded_forall_nat.
 Print Assumptions r0_semiformula_eval_ball_lt.
 Print Assumptions r0_sigma_one_semidecidable.
+Check r0_sigma_one_witnessed.
+Print Assumptions concrete_beta_finite_choice.
+Print Assumptions r0_sigma_one_witness_normal_form.
+Print Assumptions arith_find_positive_on_dom_iff.
+Print Assumptions r0_sigma_one_arithmetically_semidecidable.
 Check r0_omega_add_one.
 Check r0_omega_add_one_oring.
 Print Assumptions r0_omega_add_one_numeral.
