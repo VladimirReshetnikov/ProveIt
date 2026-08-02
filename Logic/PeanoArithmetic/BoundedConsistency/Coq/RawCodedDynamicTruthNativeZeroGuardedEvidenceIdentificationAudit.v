@@ -1,0 +1,28 @@
+(** Assumption audit for guarded rank-zero evidence identification. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroGuardedEvidenceIdentification.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedEvidenceIdentificationAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedEvidenceIdentification.
+
+Check dynamicTruthZeroGuardedEvidenceRenaming.
+Check coqDynamicTruthImpGuardedLocalSigmaEvidenceTemplate_rename.
+Check coqDynamicTruthImpGuardedLocalPiEvidenceTemplate_rename.
+Check dynamicTruthZeroSigmaPredicateFormula_guarded_application.
+Check dynamicTruthZeroPiPredicateFormula_guarded_application.
+Check RawDynamicTruthZeroGuardedEvidenceIdentification.
+Check raw_dynamicTruthZeroGuardedEvidenceIdentification_exists.
+
+Print Assumptions
+  coqDynamicTruthImpGuardedLocalSigmaEvidenceTemplate_rename.
+Print Assumptions
+  coqDynamicTruthImpGuardedLocalPiEvidenceTemplate_rename.
+Print Assumptions
+  raw_dynamicTruthZeroGuardedEvidenceIdentification_exists.
+
+End
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedEvidenceIdentificationAudit.
