@@ -10,7 +10,7 @@ part of the trusted theorem boundary unless a proved checker connects them to
 the formal semantics.
 
 **Toolchains:** Lean `4.32.0` · mathlib `v4.32.0` · Rocq `>= 9.2`
-(developed against `9.0.1`) · MathComp boot `2.5.0` · [MIT-0 + Unlicense](LICENSE)
+(developed against `9.0.1`) · MathComp boot `2.5.0` · [MIT-0](LICENSE)
 
 ## Repository map
 
