@@ -27,6 +27,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthImpGuardedBranchExclusivity
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthNativeLocalProofCompilation
+  RawCodedDynamicTruthNativeLocalStagedRootCompilation
   RawCodedDynamicTruthNativeLocalStagedCallbackCompilation
   RawCodedDynamicTruthNativeLocalHelperBatchGeneralization
   RawCodedDynamicTruthNativeLocalGuardedNonImpPairCompilation
@@ -59,6 +60,7 @@ Import PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.
 Import PABoundedRawCodedDynamicTruthImpGuardedBranchExclusivity.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthNativeLocalProofCompilation.
+Import PABoundedRawCodedDynamicTruthNativeLocalStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeLocalStagedCallbackCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalHelperBatchGeneralization.
@@ -266,6 +268,256 @@ Proof.
   split; [exact hidentification |].
   split; [exact htargetWitnessed |].
   split; assumption.
+Qed.
+
+(** Literal callback boundary for the retained-prefix construction.  Unlike
+    the historical rank-zero callback above, this interface also returns the
+    selected direct inputs: the caller must know which translation represents
+    [callerPrefix] before it can consume the collision roots.  Keeping the
+    evidence identification beside those inputs prevents a later adapter from
+    silently identifying two independently selected translations. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnCurrentGuardedHelperContext
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      witnessList baseContext (helperRoots : list M)
+      inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence callerPrefix,
+    RawDynamicTruthNativeLocalCurrentGuardedHelperContextAt M
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      tail level currentLocal currentCrossLevel currentShift
+      currentSubstitution currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalProofTraceAt M tail level
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+      sigmaEvidence piEvidence ->
+    level = raw_zero M ->
+    In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+      callerPrefix ->
+    In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+    exists inputs : RawCodedTemplateDirectStructuralInputs M,
+    exists targetWitnessList targetContext,
+      RawDynamicTruthZeroGuardedEvidenceIdentification M inputs /\
+      RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+      RawContextListIncluded M baseContext targetContext /\
+      RawDynamicTruthLocalGuardedCollisionRootsUnderTemplatePrefixAt M
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext callerPrefix.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnCurrentGuardedHelperContext
+  M hPA : clear implicits.
+
+(** Normalize the actual guarded callback without discharging its caller.
+    This is the retained-prefix counterpart of the empty-prefix adapter below:
+    the state roots are reconstructed from the witnessed PA tail, the literal
+    zero trace is canonicalized once, and the weaker fixed-resource compiler
+    is invoked at the same [callerPrefix]. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnCurrentGuardedHelperContext_of_normalized_fixed_resources :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeLocalZeroGuardedCollisionFixedResourcesCompilerOnNormalizedResources
+    M hPA ->
+  RawDynamicTruthNativeLocalZeroGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnCurrentGuardedHelperContext
+    M hPA.
+Proof.
+  intros M hPA hresources tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain sigmaEvidence
+    piEvidence callerPrefix hcurrent htrace hlevel
+    hrestrictedIn hruleIn.
+  pose proof hcurrent as hcurrentForWitness.
+  unfold RawDynamicTruthNativeLocalCurrentGuardedHelperContextAt,
+    RawDynamicTruthNativeLocalCurrentHelperBatchContextAt
+    in hcurrentForWitness.
+  destruct hcurrentForWitness as
+    [_ (_ & _ & _ & _ & _ & _ & hbaseWitnessed & _)].
+  pose proof
+    (raw_dynamicTruthPredecessorStateProjectionRootsAt_of_realizable
+      M hPA baseContext
+      (raw_codedPAAxiomWitnessContext_context_realizable
+        M witnessList baseContext hbaseWitnessed)) as hstateRoots.
+  pose proof
+    (raw_dynamicTruthNativeLocalCurrentGuardedHelperContextAt_zero_normalized
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      tail level currentLocal currentCrossLevel currentShift
+      currentSubstitution currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots hcurrent hlevel hstateRoots)
+    as hnormalized.
+  subst level.
+  pose proof
+    (raw_dynamicTruthNativeLocalZeroFullTraceAt_canonical
+      M hPA tail inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      (proj1 (raw_dynamicTruthNativeLocalProofTraceAt_zero_iff M tail
+        inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+        sigmaEvidence piEvidence) htrace)) as hcanonicalTrace.
+  exact
+    (raw_dynamicTruthNativeLocalZeroGuardedCollisionRootsUnderCallerPrefixOnNormalizedResources_of_fixed_resources
+      M hPA hresources tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence callerPrefix
+      hnormalized hcanonicalTrace hrestrictedIn hruleIn).
+Qed.
+
+(** Positive-rank counterpart of the retained-prefix zero compiler.  The
+    aligned predecessor fixes all native values but may select its own direct
+    structural inputs.  Consequently the inputs are returned with the roots
+    instead of being quantified outside the producer.  No zero-specific
+    evidence identification is requested in this branch. *)
+Definition
+    RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnWitnessedBase
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  forall (tail : nat -> M) predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi
+      (aligned : RawDynamicTruthNativeLocalAlignedPredecessorAt M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi)
+      sourceWitnessList callerPrefix,
+    RawCodedPAAxiomWitnessContext M sourceWitnessList baseContext ->
+    In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+      callerPrefix ->
+    In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+    exists inputs : RawCodedTemplateDirectStructuralInputs M,
+    exists targetWitnessList targetContext,
+      RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+      RawContextListIncluded M baseContext targetContext /\
+      RawDynamicTruthLocalGuardedCollisionRootsUnderTemplatePrefixAt M
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext callerPrefix.
+
+Arguments
+  RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnWitnessedBase
+  M hPA : clear implicits.
+
+(** Prefix-preserving rank dispatcher.  This is the collision boundary that
+    can be placed below implication introduction: both branches retain the
+    same syntactic caller, although their direct structural witnesses may be
+    selected from branch-specific normalized data. *)
+Definition
+    RawDynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilderUnderCallerPrefix
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      witnessList baseContext (helperRoots : list M)
+      inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalCurrentGuardedHelperContextAt M
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      tail level currentLocal currentCrossLevel currentShift
+      currentSubstitution currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalProofTraceAt M tail level
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+      sigmaEvidence piEvidence ->
+    forall sigmaRowDomain piRowDomain
+        lowerPiApplication lowerSigmaApplication,
+      RawDynamicTruthNativeLocalExactRowParametersAt M level
+        inputGlobalSigma inputGlobalPi sigmaEvidence piEvidence
+        sigmaRowDomain piRowDomain
+        lowerPiApplication lowerSigmaApplication ->
+    forall callerPrefix,
+      In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+        callerPrefix ->
+      In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+      exists inputs : RawCodedTemplateDirectStructuralInputs M,
+      exists targetWitnessList targetContext,
+        RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+        RawContextListIncluded M baseContext targetContext /\
+        RawDynamicTruthLocalGuardedCollisionRootsUnderTemplatePrefixAt M
+          (rawDirectStructuralTemplateTranslation M hPA inputs)
+          targetContext callerPrefix.
+
+Arguments
+  RawDynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilderUnderCallerPrefix
+  M hPA : clear implicits.
+
+(** Extract the common retained-prefix rank split once.  Row parameters are
+    needed only to expose the native zero/successor dichotomy; neither branch
+    has to rebuild or transport them after the aligned predecessor has been
+    selected. *)
+Theorem
+    raw_dynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilderUnderCallerPrefix_of_zero_and_witnessed_aligned :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeLocalZeroGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnCurrentGuardedHelperContext
+    M hPA ->
+  RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnWitnessedBase
+    M hPA ->
+  RawDynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilderUnderCallerPrefix
+    M hPA.
+Proof.
+  intros M hPA hzero haligned tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain sigmaEvidence
+    piEvidence hcurrent htrace sigmaRowDomain piRowDomain
+    lowerPiApplication lowerSigmaApplication hrows callerPrefix
+    hrestrictedIn hruleIn.
+  pose proof
+    (raw_dynamicTruthNativeLocalCurrentHelperContextAt_of_guarded
+      M (rawBottomDirectStructuralTemplateTranslation M hPA)
+      tail level currentLocal currentCrossLevel currentShift
+      currentSubstitution currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots hcurrent) as hlegacyCurrent.
+  destruct
+    (raw_dynamicTruthNativeLocalCurrentHelperContextAt_exact_cases_aligned_with_next
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      tail level currentLocal currentCrossLevel currentShift
+      currentSubstitution currentAxiomSoundness currentFinal
+      witnessList baseContext
+      (firstn (length rawDynamicTruthReadyAndAllMixedQFPAHelpers)
+        helperRoots)
+      inputGlobalSigma inputGlobalPi sigmaDomain piDomain sigmaEvidence
+      piEvidence hlegacyCurrent htrace) as
+    [(_currentLocalRoot & hlevel & _hfield & _hcurrentRoot) |
+      (predecessorLevel & _hlevel & aligned & _halignedRows)].
+  - destruct
+      (hzero tail level
+        currentLocal currentCrossLevel currentShift currentSubstitution
+        currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+        inputGlobalSigma inputGlobalPi sigmaDomain piDomain sigmaEvidence
+        piEvidence callerPrefix hcurrent htrace hlevel
+        hrestrictedIn hruleIn) as
+      (inputs & targetWitnessList & targetContext & _hidentification &
+        htargetWitnessed & hincluded & hcollision).
+    exists inputs, targetWitnessList, targetContext.
+    split; [exact htargetWitnessed |].
+    split; [exact hincluded | exact hcollision].
+  - pose proof hcurrent as hfields.
+    unfold RawDynamicTruthNativeLocalCurrentGuardedHelperContextAt,
+      RawDynamicTruthNativeLocalCurrentHelperBatchContextAt in hfields.
+    destruct hfields as
+      [_ (_ & _ & _ & _ & _ & _ & hbaseWitnessed & _)].
+    exact
+      (haligned tail predecessorLevel baseContext currentLocal
+        inputGlobalSigma inputGlobalPi aligned witnessList callerPrefix
+        hbaseWitnessed hrestrictedIn hruleIn).
+Qed.
+
+(** Public retained-prefix dispatcher with the entire rank-zero normalization
+    route inlined.  The residuals now match the two genuine semantic cases:
+    normalized fixed collision producers at zero and an aligned collision
+    producer at positive rank. *)
+Corollary
+    raw_dynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilderUnderCallerPrefix_of_zero_normalized_fixed_resources_and_witnessed_aligned :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeLocalZeroGuardedCollisionFixedResourcesCompilerOnNormalizedResources
+    M hPA ->
+  RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnWitnessedBase
+    M hPA ->
+  RawDynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilderUnderCallerPrefix
+    M hPA.
+Proof.
+  intros M hPA hzeroResources haligned.
+  exact
+    (raw_dynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilderUnderCallerPrefix_of_zero_and_witnessed_aligned
+      M hPA
+      (raw_dynamicTruthNativeLocalZeroGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnCurrentGuardedHelperContext_of_normalized_fixed_resources
+        M hPA hzeroResources)
+      haligned).
 Qed.
 
 (** Normalize the literal guarded callback, canonicalize its zero trace, and
