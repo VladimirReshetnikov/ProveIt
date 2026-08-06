@@ -49,7 +49,9 @@ From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF Fi
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Vec.
 From Foundation.FirstOrder.Arithmetic Require Import HFS.
 From Foundation.FirstOrder.Arithmetic.Exponential Require Import
-  Pow2 PPow2 Exp Bit.
+  Pow2 PPow2 Exp Bit Log.
+From Foundation.FirstOrder.Arithmetic Require Import Exponential.
+From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
@@ -5067,6 +5069,97 @@ Print Assumptions nat_exp_succ.
 Print Assumptions nat_exp_even.
 Print Assumptions nat_exp_odd.
 Print Assumptions nat_exp_add.
+Print Assumptions N_succ_le_of_lt.
+Check nat_log.
+Print Assumptions nat_log_zero.
+Print Assumptions nat_log_one.
+Print Assumptions nat_log_two.
+Print Assumptions nat_log_le_self.
+Print Assumptions nat_log_lt_self_of_pos.
+Print Assumptions nat_log_bounds.
+Print Assumptions nat_log_unique.
+Print Assumptions nat_log_exp.
+Print Assumptions nat_exponential_log.
+Print Assumptions nat_exponential_of_pow2.
+Print Assumptions nat_log_two_mul_of_pos.
+Print Assumptions nat_log_two_mul_add_one_of_pos.
+Print Assumptions nat_log_monotone.
+Print Assumptions nat_log_mul_pow2.
+Print Assumptions nat_log_mul_exp.
+Print Assumptions nat_log_mul_pow2_add_of_lt.
+Print Assumptions nat_log_mul_exp_add_of_lt.
+Check nat_length.
+Print Assumptions nat_length_zero.
+Print Assumptions nat_length_one.
+Print Assumptions nat_length_of_nonzero.
+Print Assumptions nat_length_of_pos.
+Print Assumptions nat_length_pos_iff.
+Print Assumptions nat_length_eq_zero_iff.
+Print Assumptions nat_length_le_self.
+Print Assumptions nat_exponential_length.
+Print Assumptions nat_length_exp.
+Print Assumptions nat_length_two_mul_of_pos.
+Print Assumptions nat_length_two_mul_add_one.
+Print Assumptions nat_length_monotone.
+Print Assumptions nat_pos_of_lt_length.
+Print Assumptions nat_le_log_of_lt_length.
+Print Assumptions nat_exp_le_iff_le_log.
+Print Assumptions nat_exponential_le_iff_lt_length.
+Print Assumptions nat_exponential_lt_iff_length_le.
+Print Assumptions nat_lt_exp_length.
+Print Assumptions nat_length_mul_exp.
+Print Assumptions nat_length_mul_pow2_add_of_lt.
+Print Assumptions nat_length_mul_exp_add_of_lt.
+Check nat_bexp.
+Print Assumptions nat_bexp_of_lt.
+Print Assumptions nat_bexp_of_le.
+Print Assumptions nat_bexp_exponential_iff.
+Print Assumptions nat_bexp_le_self.
+Print Assumptions nat_bexp_monotone_iff.
+Print Assumptions nat_bexp_monotone_le_iff.
+Print Assumptions nat_bexp_eq_of_lt_length.
+Print Assumptions nat_bexp_pow2.
+Print Assumptions nat_bexp_pos.
+Print Assumptions nat_lt_bexp.
+Print Assumptions nat_log_bexp.
+Print Assumptions nat_length_bexp.
+Print Assumptions nat_bexp_zero.
+Print Assumptions nat_bexp_pos_zero.
+Print Assumptions nat_bexp_add.
+Check nat_fbit.
+Print Assumptions nat_fbit_le_one.
+Print Assumptions nat_fbit_lt_two.
+Print Assumptions nat_fbit_eq_one_iff.
+Print Assumptions nat_fbit_eq_zero_iff.
+Print Assumptions nat_fbit_eq_zero_of_le.
+Print Assumptions nat_fbit_zero.
+Print Assumptions nat_fbit_double_succ.
+Print Assumptions nat_fbit_double_add_one_succ.
+Print Assumptions nat_fbit_double_zero.
+Print Assumptions nat_fbit_double_add_one_zero.
+Check nat_omega1_holds.
+Print Assumptions standard_nat_omega1.
+Print Assumptions nat_exponential_square_length_exists_unique.
+Check nat_smash.
+Print Assumptions nat_exponential_smash.
+Print Assumptions nat_smash_exists_unique.
+Print Assumptions nat_exponential_smash_one.
+Print Assumptions nat_smash_pow2.
+Print Assumptions nat_smash_pos.
+Print Assumptions nat_smash_exponent_lt.
+Print Assumptions nat_length_smash.
+Print Assumptions nat_smash_zero_left.
+Print Assumptions nat_smash_zero_right.
+Print Assumptions nat_smash_comm.
+Print Assumptions nat_lt_smash_one.
+Print Assumptions nat_smash_one_le_double_add_one.
+Print Assumptions nat_lt_smash_iff.
+Print Assumptions nat_smash_le_iff.
+Print Assumptions nat_lt_smash_one_iff.
+Print Assumptions nat_smash_monotone.
+Print Assumptions nat_bexp_eq_smash.
+Print Assumptions nat_smash_two_mul.
+Print Assumptions nat_smash_two_mul_le_square.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.
