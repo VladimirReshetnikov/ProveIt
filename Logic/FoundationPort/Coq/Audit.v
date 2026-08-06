@@ -54,7 +54,7 @@ From Foundation.FirstOrder.Arithmetic Require Import Exponential.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
-From Foundation.FirstOrder.SetTheory.Basic Require Import Model Axioms.
+From Foundation.FirstOrder.SetTheory.Basic Require Import Model Misc Axioms.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -5207,6 +5207,51 @@ Print Assumptions membership_submodel_rel_iff.
 Print Assumptions membership_submodel_subset_iff.
 Print Assumptions membership_submodel_empty_iff.
 Print Assumptions membership_submodel_nonempty_iff.
+Check set_func.
+Check set_func_elim.
+Check set_rel.
+Check set_language.
+Check set_language_eq.
+Check set_language_mem.
+Print Assumptions set_language_relational.
+Print Assumptions set_rel_arity_two.
+Print Assumptions set_rel_elim.
+Check set_language_decidable_eq.
+Check set_rel_encode.
+Check set_rel_decode.
+Print Assumptions set_rel_decode_encode.
+Check set_language_func_encoding.
+Check set_language_rel_encoding.
+Check set_language_encodable.
+Check set_function_symbols.
+Check set_relation_symbols.
+Print Assumptions set_function_symbols_complete.
+Print Assumptions set_relation_symbols_complete.
+Check set_language_finite.
+Check set_theory_syntax.
+Check set_semiterm.
+Check set_term.
+Check set_semiformula.
+Check set_formula.
+Check set_semisentence.
+Check set_sentence.
+Check set_semiproposition.
+Check set_proposition.
+Check set_standard_func.
+Check set_standard_rel.
+Check set_standard_structure.
+Print Assumptions set_standard_structure_eq.
+Print Assumptions set_standard_structure_mem.
+Print Assumptions set_standard_structure_mem_two.
+Check membership_of_set_structure.
+Check set_structure_equality_correct.
+Check canonical_set_structure.
+Print Assumptions canonical_set_structure_mem_two.
+Print Assumptions canonical_set_structure_func.
+Print Assumptions canonical_set_structure_mem.
+Print Assumptions canonical_set_structure_eq.
+Print Assumptions canonical_set_structure_rel.
+Print Assumptions set_standard_structure_equality_correct.
 Check set_model_successor.
 Check set_axiom_code.
 Check set_axiom_holds.
