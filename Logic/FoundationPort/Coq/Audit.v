@@ -5725,6 +5725,12 @@ Print Assumptions hfs_list_is_mapping_restrict.
 Print Assumptions hfs_list_is_mapping_app.
 Print Assumptions hfs_list_skolem_exists.
 Print Assumptions hfs_list_mapping_fiber_existsUnique.
+Print Assumptions hfs_list_compose_In_iff.
+Print Assumptions hfs_mem_list_identity_iff.
+Print Assumptions hfs_list_is_mapping_identity.
+Print Assumptions hfs_list_is_injective_identity.
+Print Assumptions hfs_list_compose_is_mapping.
+Print Assumptions hfs_list_compose_is_injective.
 Check hfs_pr_construction.
 Check hfs_pr_result.
 Print Assumptions hfs_pr_result_zero.

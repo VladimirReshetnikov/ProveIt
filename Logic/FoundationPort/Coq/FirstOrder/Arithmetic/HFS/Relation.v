@@ -211,6 +211,117 @@ Proof.
   intros z Hz. eapply (@Hmap x y z); eassumption.
 Qed.
 
+(** * Finite composition and identity relations *)
+
+Definition hfs_list_compose (left right : list hfs_code) : list hfs_code :=
+  flat_map
+    (fun p =>
+      flat_map
+        (fun q =>
+          if N.eq_dec (hfs_index_snd p) (hfs_index_fst q)
+          then [hfs_index_pair (hfs_index_fst p) (hfs_index_snd q)]
+          else [])
+        right)
+    left.
+
+Lemma hfs_list_compose_In_iff : forall left right x z,
+  In (hfs_index_pair x z) (hfs_list_compose left right) <->
+  exists y,
+    In (hfs_index_pair x y) left /\
+    In (hfs_index_pair y z) right.
+Proof.
+  intros left right x z. unfold hfs_list_compose.
+  rewrite in_flat_map. split.
+  - intros [p [Hp Hpcomp]].
+    rewrite in_flat_map in Hpcomp.
+    destruct Hpcomp as [q [Hq Hpq]].
+    simpl in Hpq.
+    destruct (N.eq_dec (hfs_index_snd p) (hfs_index_fst q)) as [Hmatch | Hnomatch].
+    + simpl in Hpq. destruct Hpq as [Hpq | Hpq]; [|contradiction].
+      apply hfs_index_pair_injective in Hpq.
+      destruct Hpq as [Hx Hz].
+      exists (hfs_index_snd p). split.
+      * rewrite <- Hx. rewrite hfs_index_pair_projections. exact Hp.
+      * rewrite Hmatch. rewrite <- Hz.
+        rewrite hfs_index_pair_projections. exact Hq.
+    + contradiction.
+  - intros [y [Hleft Hright]].
+    exists (hfs_index_pair x y). split; [exact Hleft|].
+    rewrite in_flat_map. exists (hfs_index_pair y z). split; [exact Hright|].
+    repeat rewrite hfs_index_snd_pair.
+    repeat rewrite hfs_index_fst_pair.
+    destruct (N.eq_dec y y) as [Heq | Hneq].
+    + apply in_eq.
+    + contradiction.
+Qed.
+
+Definition hfs_list_identity (domain : list hfs_code) : list hfs_code :=
+  map (fun x => hfs_index_pair x x) domain.
+
+Lemma hfs_mem_list_identity_iff : forall domain x y,
+  In (hfs_index_pair x y) (hfs_list_identity domain) <->
+  In x domain /\ x = y.
+Proof.
+  intros domain x y. unfold hfs_list_identity.
+  rewrite in_map_iff. split.
+  - intros [u [Hu Hdom]].
+    apply hfs_index_pair_injective in Hu.
+    destruct Hu as [Hx Hy].
+    split.
+    + rewrite <- Hx. exact Hdom.
+    + congruence.
+  - intros [Hdom Hxy]. subst y.
+    exists x. split; [reflexivity|exact Hdom].
+Qed.
+
+Lemma hfs_list_is_mapping_identity : forall domain,
+  hfs_list_is_mapping (hfs_list_identity domain).
+Proof.
+  intros domain x y z Hy Hz.
+  apply hfs_mem_list_identity_iff in Hy, Hz.
+  destruct Hy as [_ ->]. destruct Hz as [_ ->]. reflexivity.
+Qed.
+
+Definition hfs_list_is_injective (relation : list hfs_code) : Prop :=
+  forall x y z,
+    In (hfs_index_pair x z) relation ->
+    In (hfs_index_pair y z) relation ->
+    x = y.
+
+Lemma hfs_list_is_injective_identity : forall domain,
+  hfs_list_is_injective (hfs_list_identity domain).
+Proof.
+  intros domain x y z Hx Hy.
+  apply hfs_mem_list_identity_iff in Hx, Hy.
+  now destruct Hx as [_ ->], Hy as [_ ->].
+Qed.
+
+Lemma hfs_list_compose_is_mapping : forall left right,
+  hfs_list_is_mapping left ->
+  hfs_list_is_mapping right ->
+  hfs_list_is_mapping (hfs_list_compose left right).
+Proof.
+  intros left right Hleft Hright x y z Hy Hz.
+  apply hfs_list_compose_In_iff in Hy, Hz.
+  destruct Hy as [u [Hxu Huy]], Hz as [v [Hxv Hvz]].
+  assert (Huv : u = v).
+  { exact (Hleft x u v Hxu Hxv). }
+  subst v. eapply Hright; eassumption.
+Qed.
+
+Lemma hfs_list_compose_is_injective : forall left right,
+  hfs_list_is_injective left ->
+  hfs_list_is_injective right ->
+  hfs_list_is_injective (hfs_list_compose left right).
+Proof.
+  intros left right Hleft Hright x y z Hxz Hyz.
+  apply hfs_list_compose_In_iff in Hxz, Hyz.
+  destruct Hxz as [u [Hxu Huz]], Hyz as [v [Hyv Hvz]].
+  assert (Huv : u = v).
+  { exact (Hright u v z Huz Hvz). }
+  subst v. eapply Hleft; eassumption.
+Qed.
+
 Print Assumptions hfs_mem_list_image_iff.
 Print Assumptions hfs_list_image_existsUnique.
 Print Assumptions hfs_list_restrict_In_iff.
@@ -219,3 +330,9 @@ Print Assumptions hfs_list_is_mapping_restrict.
 Print Assumptions hfs_list_is_mapping_app.
 Print Assumptions hfs_list_skolem_exists.
 Print Assumptions hfs_list_mapping_fiber_existsUnique.
+Print Assumptions hfs_list_compose_In_iff.
+Print Assumptions hfs_mem_list_identity_iff.
+Print Assumptions hfs_list_is_mapping_identity.
+Print Assumptions hfs_list_is_injective_identity.
+Print Assumptions hfs_list_compose_is_mapping.
+Print Assumptions hfs_list_compose_is_injective.
