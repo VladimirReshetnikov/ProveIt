@@ -27,6 +27,7 @@ From Foundation.FirstOrder.Incompleteness Require Import RosserProvability.
 From Foundation.FirstOrder.Incompleteness Require Import Jeroslow.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.FirstOrder.Incompleteness Require Import RestrictedProvability.
+From Foundation.FirstOrder.Incompleteness Require Import StandardProvability.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Functions.
@@ -5543,6 +5544,8 @@ Print Assumptions transitive_model_well_founded.
 Print Assumptions membership_well_founded_induction.
 Print Assumptions transitive_model_induction.
 Print Assumptions transitive_model_induction_ambient.
+Check membership_minimal_of_nonempty.
+Print Assumptions membership_minimal_of_nonempty.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.

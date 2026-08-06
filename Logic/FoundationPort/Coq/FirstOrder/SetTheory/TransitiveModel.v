@@ -6,7 +6,7 @@
     carrier predicate.  No transitivity or closure hypothesis on the
     predicate is needed for well-foundedness of the induced relation. *)
 
-From Stdlib Require Import Wellfounded.Inverse_Image.
+From Stdlib Require Import Logic.Classical_Prop Wellfounded.Inverse_Image.
 From Foundation.FirstOrder.SetTheory Require Import Basic.
 
 Set Implicit Arguments.
@@ -84,6 +84,44 @@ Proof.
   exact Hstep.
 Qed.
 
+(** A relation-generic version of Foundation's
+    [Universe.minimal_exists_of_isNonempty].  The proof starts with an
+    arbitrary member of the set and repeatedly descends to a member of that
+    member when one exists.  The only nonconstructive step is the source's
+    classical choice between having such a predecessor and not having one;
+    no extensionality, transitivity, or set-construction axiom is required. *)
+Theorem membership_minimal_of_nonempty : forall m,
+  membership_well_founded m ->
+  forall S : membership_carrier m,
+    set_model_is_nonempty S ->
+    exists z, membership_rel z S /\
+      forall x, membership_rel x S -> ~ membership_rel x z.
+Proof.
+  intros m Hwf S HS.
+  destruct HS as [x0 HxS].
+  assert (Hmin :
+      forall x, membership_rel x S ->
+        exists z, membership_rel z S /\
+          forall y, membership_rel y S -> ~ membership_rel y z).
+  {
+    apply (@well_founded_ind
+      (membership_carrier m) (@membership_rel m) Hwf
+      (fun x => membership_rel x S ->
+        exists z, membership_rel z S /\
+          forall y, membership_rel y S -> ~ membership_rel y z)).
+    intros x1 IH HxS'.
+    destruct (classic (exists y,
+      membership_rel y x1 /\ membership_rel y S)) as [Hpred | Hnone].
+    - destruct Hpred as [y [Hyx HyS]].
+      exact (IH y Hyx HyS).
+    - exists x1. split; [exact HxS' |].
+      intros y HyS Hyx.
+      apply Hnone. exists y. split; assumption.
+  }
+  exact (Hmin x0 HxS).
+Qed.
+
 Print Assumptions well_founded_predicate_subtype.
 Print Assumptions transitive_model_induction.
 Print Assumptions transitive_model_induction_ambient.
+Print Assumptions membership_minimal_of_nonempty.
