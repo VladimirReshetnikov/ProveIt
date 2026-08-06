@@ -552,7 +552,6 @@ Proof.
       M hPA parameters contextTruth conclusionTruth
       nextGlobalSigma sigmaApplicationSelector contextApplicationSelector
       hconclusionLeaf hcontextLeaf hremainingAfterAssumption
-      hconclusionLeaf hcontextLeaf hremainingAfterAssumption
       (rawCoqRestrictedPADirectClosureReplacement M)
       axiom closureCount hremainder)
     as [soundnessCertificate hsoundness].
