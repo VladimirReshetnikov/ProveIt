@@ -1,0 +1,17 @@
+(** Assumption audit for the guarded native zero/successor collision split. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeLocalGuardedCollisionCaseSplit.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalGuardedCollisionCaseSplit.
+
+Check
+  RawDynamicTruthNativeLocalZeroGrowingGuardedCollisionRootsCompilerOnCurrentGuardedHelperContext.
+Check
+  RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerOnWitnessedBase.
+Check
+  raw_dynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilder_of_zero_and_witnessed_aligned.
+
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilder_of_zero_and_witnessed_aligned.
