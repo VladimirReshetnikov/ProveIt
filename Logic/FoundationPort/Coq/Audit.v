@@ -5468,6 +5468,10 @@ Print Assumptions z_is_function_of_subset.
 Print Assumptions z_function_eq_of_subset.
 Print Assumptions z_function_ext.
 Print Assumptions z_is_function_insert.
+Print Assumptions z_exists_two_valued_function_for_subset.
+Print Assumptions z_exists_subset_for_two_valued_function.
+Print Assumptions z_two_val_function_mem_iff_not.
+Print Assumptions z_two_pow_card_eq_power.
 Print Assumptions z_function_empty_empty.
 Check z_identity.
 Print Assumptions z_identity_mem_iff.
