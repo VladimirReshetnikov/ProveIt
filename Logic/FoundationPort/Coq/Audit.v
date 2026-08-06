@@ -5967,3 +5967,13 @@ Check peano_minus_boot_lt_add_self_add_one.
 Print Assumptions peano_minus_boot_lt_add_self_add_one.
 Check peano_minus_boot_lt_succ_iff_eq_or_lt.
 Print Assumptions peano_minus_boot_lt_succ_iff_eq_or_lt.
+
+(* FirstOrder/Incompleteness/StandardProvability.v: finite-context
+   derivability-condition adapters. *)
+Check boot_context_proof.
+Check boot_context_provable.
+Print Assumptions boot_context_weaken.
+Print Assumptions boot_context_modus_ponens_raw.
+Print Assumptions boot_context_modus_ponens.
+Print Assumptions boot_context_D2.
+Print Assumptions boot_context_D3.
