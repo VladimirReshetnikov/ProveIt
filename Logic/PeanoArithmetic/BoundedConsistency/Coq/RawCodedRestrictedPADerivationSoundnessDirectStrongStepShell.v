@@ -32,6 +32,7 @@ From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedContextLists
   RawCodedContextShift
+  RawCodedRestrictedPAProof
   RawCodedProofImpIConstructor
   RawCodedProofAllIConstructor
   RawCodedPALocalProofExistential
@@ -40,8 +41,10 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofWitnessedContextMergeTransportComplete
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
+  RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplateDirectStructuralTranslation
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
   RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixInductionShell
   RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell
   RawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier.
@@ -59,6 +62,7 @@ Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedContextShift.
+Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedProofImpIConstructor.
 Import PABoundedRawCodedProofAllIConstructor.
 Import PABoundedRawCodedPALocalProofExistential.
@@ -67,8 +71,11 @@ Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedPALocalProofWitnessedContextMergeTransportComplete.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import
+  PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixInductionShell.
 Import
@@ -180,6 +187,117 @@ Arguments rawCoqRestrictedPADirectStrongStepFourBinderContext
   tail : clear implicits.
 Arguments rawCoqRestrictedPADirectStrongStepEndpointTail
   tail : clear implicits.
+
+(** The endpoint assumed by the direct derivation-soundness shell is exactly
+    the rule-validity premise used by the generic endpoint-evidence laws. *)
+Lemma raw_coqRestrictedPADirectStrongStep_endpoint_rule_premise_agree :
+  coqRestrictedPADerivationSoundnessEndpointTemplate =
+  coqStrongStepProofEndpointAtomicAdequacyRulePremise.
+Proof. reflexivity. Qed.
+
+(** The restricted-proof assumption is inherited from the endpoint tail and
+    therefore appears under exactly the eight witness renamings. *)
+Lemma
+    raw_coqRestrictedPADirectStrongStepDeepEndpointTail_restricted_member :
+    forall tail,
+  In (rawCoqTemplateRenameN 8
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+    (rawCoqRestrictedPADirectEndpointDeepTail
+      (rawCoqRestrictedPADirectStrongStepEndpointTail tail)).
+Proof.
+  intro tail.
+  apply raw_coqRestrictedPADirectEndpointDeepTail_member.
+  unfold rawCoqRestrictedPADirectStrongStepEndpointTail.
+  left. reflexivity.
+Qed.
+
+(** Rule validity has different provenance: it is the existential source
+    retained by every [Ex-E] step, not an element of the incoming endpoint
+    tail.  At the deepest body it nevertheless has the same eightfold-renamed
+    shape required by endpoint-evidence compilation. *)
+Lemma raw_coqRestrictedPADirectStrongStepDeepEndpointTail_rule_member :
+    forall tail,
+  In (rawCoqTemplateRenameN 8
+      coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+    (rawCoqRestrictedPADirectEndpointDeepTail
+      (rawCoqRestrictedPADirectStrongStepEndpointTail tail)).
+Proof.
+  intro tail.
+  rewrite <- raw_coqRestrictedPADirectStrongStep_endpoint_rule_premise_agree.
+  unfold rawCoqRestrictedPADirectEndpointDeepTail,
+    rawCoqRestrictedPADirectEndpointDeepContext.
+  cbn [rawCoqTemplateNestedExContext rawCoqTemplateExN
+    rawCoqTemplateRenameN].
+  unfold templateContextShift, templateContextRename.
+  apply in_map. right.
+  apply in_map. right.
+  apply in_map. right.
+  apply in_map. right.
+  apply in_map. right.
+  apply in_map. right.
+  apply in_map. right.
+  apply in_map. left. reflexivity.
+Qed.
+
+(** Compile both deep endpoint premises as canonical represented assumption
+    leaves over any witnessed PA tail.  This packages the two distinct
+    membership proofs above into the exact proof-root form needed by
+    prefix-preserving endpoint and guarded-collision compilers. *)
+Theorem raw_coqRestrictedPADirectStrongStepDeepEndpoint_premise_roots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      tail witnessList baseContext,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  exists restrictedRoot ruleRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        baseContext
+        (rawCoqRestrictedPADirectEndpointDeepTail
+          (rawCoqRestrictedPADirectStrongStepEndpointTail tail)))
+      (rawDirectTemplateFormula inputs
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate))
+      restrictedRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        baseContext
+        (rawCoqRestrictedPADirectEndpointDeepTail
+          (rawCoqRestrictedPADirectStrongStepEndpointTail tail)))
+      (rawDirectTemplateFormula inputs
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise))
+      ruleRoot.
+Proof.
+  intros M hPA inputs tail witnessList baseContext hbase.
+  set (translation :=
+    rawDirectStructuralTemplateTranslation M hPA inputs).
+  set (prefix := rawCoqRestrictedPADirectEndpointDeepTail
+    (rawCoqRestrictedPADirectStrongStepEndpointTail tail)).
+  set (restrictedFormula := rawCoqTemplateRenameN 8
+    coqRestrictedPADerivationSoundnessRestrictedProofTemplate).
+  set (ruleFormula := rawCoqTemplateRenameN 8
+    coqStrongStepProofEndpointAtomicAdequacyRulePremise).
+  exists
+    (rawTemplateProofCodeOnTail translation baseContext
+      (trpAss prefix restrictedFormula)),
+    (rawTemplateProofCodeOnTail translation baseContext
+      (trpAss prefix ruleFormula)).
+  split.
+  - exact
+      (raw_templateAssumptionOnPAAxiomContext_localProof
+        M hPA translation witnessList baseContext prefix restrictedFormula
+        hbase
+        (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_restricted_member
+          tail)).
+  - exact
+      (raw_templateAssumptionOnPAAxiomContext_localProof
+        M hPA translation witnessList baseContext prefix ruleFormula
+        hbase
+        (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_rule_member
+          tail)).
+Qed.
 
 (** The sharp residual.  Unfolding the imported deep-endpoint family shows
     exactly seventeen roots.  Every root lives below the endpoint witness
