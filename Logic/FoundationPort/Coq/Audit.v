@@ -5731,6 +5731,10 @@ Print Assumptions hfs_list_image_app.
 Print Assumptions hfs_list_image_subset_of_subset.
 Print Assumptions hfs_list_restrict_In_iff.
 Print Assumptions hfs_mem_list_restrict_code_iff.
+Print Assumptions hfs_list_restrict_code_empty.
+Print Assumptions hfs_list_restrict_code_subset.
+Print Assumptions hfs_list_domain_restrict_code.
+Print Assumptions hfs_list_domain_restrict_code_of_subset.
 Print Assumptions hfs_list_is_mapping_restrict.
 Print Assumptions hfs_list_is_mapping_app.
 Print Assumptions hfs_list_skolem_exists.

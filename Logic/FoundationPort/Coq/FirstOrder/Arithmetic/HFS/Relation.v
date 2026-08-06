@@ -121,6 +121,55 @@ Proof.
   intros relation domain p H. now apply hfs_list_restrict_In_iff in H.
 Qed.
 
+Lemma hfs_list_restrict_code_empty : forall relation,
+  hfs_list_restrict_code relation [] = hfs_empty.
+Proof.
+  intros relation. apply hfs_extensionality. intro p.
+  rewrite hfs_mem_list_restrict_code_iff,
+    hfs_mem_empty_iff.
+  split.
+  - intros [_ H].
+    rewrite hfs_arithmetize_list_nil, hfs_mem_empty_iff in H.
+    contradiction.
+  - intro H. contradiction.
+Qed.
+
+Lemma hfs_list_restrict_code_subset : forall relation domain,
+  hfs_subset (hfs_list_restrict_code relation domain)
+    (hfs_arithmetize_list relation).
+Proof.
+  intros relation domain p Hp.
+  now apply hfs_mem_list_restrict_code_iff in Hp.
+Qed.
+
+Lemma hfs_list_domain_restrict_code : forall relation domain,
+  hfs_list_domain (hfs_list_restrict relation domain) =
+  hfs_inter (hfs_list_domain relation)
+    (hfs_arithmetize_list domain).
+Proof.
+  intros relation domain. apply hfs_extensionality. intro x.
+  rewrite hfs_mem_list_domain_iff, hfs_mem_inter_iff,
+    hfs_mem_list_domain_iff, hfs_mem_arithmetize_list_iff.
+  split.
+  - intros [y Hy]. apply hfs_list_restrict_In_iff in Hy.
+    destruct Hy as [Hy Hdomain]. split.
+    + exists y. exact Hy.
+    + rewrite hfs_index_fst_pair in Hdomain. exact Hdomain.
+  - intros [[y Hy] Hdomain]. exists y.
+    apply hfs_list_restrict_In_iff. split; [exact Hy|].
+    rewrite hfs_index_fst_pair. exact Hdomain.
+Qed.
+
+Lemma hfs_list_domain_restrict_code_of_subset : forall relation domain,
+  hfs_subset (hfs_list_domain relation) (hfs_arithmetize_list domain) ->
+  hfs_list_domain (hfs_list_restrict relation domain) =
+  hfs_list_domain relation.
+Proof.
+  intros relation domain Hsubset.
+  rewrite hfs_list_domain_restrict_code.
+  apply hfs_inter_eq_left_of_subset. exact Hsubset.
+Qed.
+
 (** * Mappings *)
 
 Definition hfs_list_is_mapping (relation : list hfs_code) : Prop :=
