@@ -1,0 +1,9 @@
+(** Assumption audit for translation-generic temporary-assumption discharge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplateLocalProofAssumptionDischarge.
+
+Import PABoundedRawCodedTemplateLocalProofAssumptionDischarge.
+
+Check raw_codedPALocalProof_discharge_two_template_assumptions.
+Print Assumptions raw_codedPALocalProof_discharge_two_template_assumptions.
