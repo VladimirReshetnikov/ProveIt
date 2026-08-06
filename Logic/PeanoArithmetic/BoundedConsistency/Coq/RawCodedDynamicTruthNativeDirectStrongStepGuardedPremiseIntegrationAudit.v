@@ -1,0 +1,28 @@
+(** Kernel-facing audit for direct-shell guarded premise retention. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeDirectStrongStepGuardedPremiseIntegration.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeDirectStrongStepGuardedPremiseIntegrationAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeDirectStrongStepGuardedPremiseIntegration.
+
+Check
+  raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix.
+Check rawCoqRestrictedPADirectStrongStepDeepEndpointTail.
+Check RawCoqRestrictedPADirectStrongStepGuardedPremiseRootsAt.
+Check raw_coqRestrictedPADirectStrongStep_guardedPremiseRoots.
+Check raw_coqTemplateShiftFive_after_renameEight.
+
+(** The structural shift and membership theorem is closed.  The represented
+    assumption compiler and its six-root direct specialization inherit only
+    the project's established relational choice principles. *)
+Print Assumptions raw_coqTemplateShiftFive_after_renameEight.
+Print Assumptions
+  raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix.
+Print Assumptions raw_coqRestrictedPADirectStrongStep_guardedPremiseRoots.
+
+End
+  PABoundedRawCodedDynamicTruthNativeDirectStrongStepGuardedPremiseIntegrationAudit.
