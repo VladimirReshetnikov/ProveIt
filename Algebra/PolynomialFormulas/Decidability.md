@@ -1,4 +1,4 @@
-# Recursive decidability of radical solvability for integer quintics
+# Recursive decidability of radical solvability for integer quintics and sextics
 
 ## Statement
 
@@ -248,24 +248,65 @@ assumption audit and include the native compiler/runtime in their trust
 boundary. All symbolic bridge lemmas and the final semantic reductions are
 ordinary Lean proofs.
 
-The Rocq file
-[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v)
-independently checks the precise semantic endpoint:
+Rocq now checks the bounded coefficient algorithm as well.  In
+[`QuinticCanonicalDecision.v`](Coq/QuinticCanonicalDecision.v),
+`quintic_radicalb` first runs the complete bounded linear/quadratic factor
+search and, on the irreducible branch, runs the bounded rational-root test on
+the explicitly computed scalar Frobenius--Dummit resolvent.  The theorem
+`quintic_radicalP` reflects the exact `radical_formula_solves` predicate to
+that Boolean.  Its Chapman step is discharged from an explicitly constructed
+five-cycle automorphism of the canonical splitting field; theta-value
+injectivity is no longer an input hypothesis.
 
-- `integer_radical_decisionP` reflects the all-roots `algterm rat`
-  predicate for every size-six integer polynomial;
-- `quintic_radical_decision_codeP` packages this as a Boolean characteristic
-  function on natural-number encodings, rejecting malformed and non-quintic
-  codes;
-- the assumption audit reports these results closed under the global context.
+[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v) remains as
+an independent semantic route through MathComp-Abel's abstract `numfield`:
+`integer_radical_decisionP` handles every size-six integer polynomial, and
+`quintic_radical_decision_codeP` handles natural-number encodings.  The
+coefficient Boolean and the abstract semantic Boolean are separate checked
+implementations of the same all-roots radical predicate.
 
-The Rocq Boolean uses MathComp-Abel's abstract `numfield` splitting field. It
-remains a kernel-checked semantic reflector rather than an extracted version
-of the bounded coefficient algorithm: the construction is opaque, and direct
-standard extraction currently fails on MathComp sort polymorphism. Thus the
-two formalizations have complementary endpoints: Lean verifies the
-primitive-recursive coefficient criterion and machine existence, while Rocq
-independently verifies the radical-expression semantics of its reflector.
+## The sextic extension
+
+For seven signed coefficients
+
+$$
+(a_0,a_1,\ldots,a_6), \qquad a_6\ne0,
+$$
+
+the sextic development decides the analogous predicate that every complex
+root of $a_6X^6+\cdots+a_0$ has a radical expression over the rationals.
+Integral monicization preserves that predicate.  A bounded search for monic
+factors of degrees one through three is complete by Cauchy's bound and
+Gauss's lemma.  A nonlinear proper factor leaves only degree-at-most-four
+factors; a linear factor reduces the remaining factor to the verified
+quintic decision above.
+
+On the irreducible branch, the construction evaluates the two classical
+block-system resolvents of degrees fifteen and ten.  A separating
+specialization is found by enumerating nonnegative-integer parameter pairs and
+taking the least collision-free one.  Existence follows from the proved
+pair/triple descriptor separation theorem, so this is an honest terminating
+unbounded search.  Bounded rational-root tests on the two specialized
+resolvents then decide the solvable-subgroup criterion.
+
+Lean packages the resulting Boolean as
+`allRootsRadical_computablePred : ComputablePred AllRootsRadical` and derives
+`has_verified_sextic_radical_turing_machine`.  The proof is compositional:
+each arithmetic operation, bounded loop, and least-successful-parameter
+search is proved recursive from its definition.
+
+Rocq compiles the same layers to Coq-Library-Undecidability's explicit
+`recalg` syntax.  In
+[`SexticMuRecVerifiedDecision.v`](Coq/SexticMuRecVerifiedDecision.v), the
+theorems `encoded_raw_sextic_radical_relation_murec` and
+`encoded_raw_sextic_radical_code_relation_murec` establish recursive graph
+computability for a seven-vector and a one-natural encoding.  The definitions
+`encoded_raw_sextic_radical_decidable` and
+`encoded_raw_sextic_radical_code_decidable` have explicit decision sum types
+`{P} + {~ P}`.  Their semantic link uses the already documented classical
+splitting-field bridge, while the characteristic function itself is realized
+by an explicitly proved $\mu$-recursive program.  Thus the formal endpoint
+records both meanings of decidability needed here.
 
 ## Primary sources
 

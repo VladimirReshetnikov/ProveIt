@@ -133,14 +133,14 @@ No claim is made that the bounded implementation is optimized, or that the
 existential `PartrecToTM2` code has been printed as a standalone extracted
 solver.
 
-The Rocq file
-[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v) provides an
-independent kernel-checked semantic bridge. It reflects the exact all-roots
-`algterm rat` predicate to a Boolean for degree-five integer polynomials and
-their natural-number encodings. That reflector still uses MathComp-Abel's
-opaque abstract splitting field; it is semantic rather than an extracted
-implementation of the bounded coefficient procedure, and direct standard
-extraction remains unavailable because of MathComp sort polymorphism.
+Rocq independently verifies the same bounded coefficient procedure in
+[`QuinticCanonicalDecision.v`](Coq/QuinticCanonicalDecision.v).
+`quintic_radicalb` combines the complete bounded factor search with the
+computed scalar Frobenius--Dummit resolvent, and `quintic_radicalP` reflects
+the exact all-roots `algterm rat` predicate to that Boolean.  The earlier
+[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v) remains as
+a separate semantic implementation through MathComp-Abel's abstract
+splitting field and also supplies the natural-number-code reflector.
 
 ## Deciding an individual integer sextic
 
@@ -164,27 +164,31 @@ correctness, Mathlib recursive decidability, and existence of a verified
 from the definition of the function concerned; no function is marked
 recursive by a kernel special case.
 
-The Rocq development currently has a narrower end-to-end executable boundary.
-[`SexticRecursiveCore.v`](Coq/SexticRecursiveCore.v) gives a transparent
-Gallina monicization and bounded factor search, and
-[`SexticFactorCompleteness.v`](Coq/SexticFactorCompleteness.v) proves that
-search complete.  The transparent resolvent layer is developed in
-[`SexticSparsePolynomials.v`](Coq/SexticSparsePolynomials.v),
-[`SexticSparseResolvents.v`](Coq/SexticSparseResolvents.v), and
-[`SexticSparseSymmetricSearch.v`](Coq/SexticSparseSymmetricSearch.v): it
-constructs the degree-fifteen and degree-ten resolvents, proves their Horner
-evaluation equations, and verifies a surjective enumeration and checker for
-elementary-symmetric certificates.  The remaining Coq work is to prove
-certificate existence for those symmetric coefficients and connect the
-resulting unbounded search to the recursive-function interface.
+Rocq now verifies a direct recursive coefficient program for the same sextic
+predicate.  The files named `SexticMuRec*.v` compile signed arithmetic,
+integral monicization, bounded factor and rational-root searches, the quintic
+branch, and the compact pair/triple collision evaluators to the explicit
+`recalg` language from Coq-Library-Undecidability.  The separating parameters
+are selected by genuine unbounded minimization after a proof that a successful
+parameter exists.  Structural Newton, Möbius, mixed-radix, and homogeneous
+evaluation lemmas connect those programs to the degree-fifteen and degree-ten
+resolvents.
 
-[`SexticRadicalDecidability.v`](Coq/SexticRadicalDecidability.v)
-proves the exact all-roots proposition decidable in Coq's `{P} + {~ P}` sense
-by reflecting it through MathComp-Abel.  That semantic Boolean uses the opaque
-abstract `numfield` construction; unlike the Lean theorem, it is not claimed
-to be an extracted or recursively verified coefficient program.  The theorem
-names include `semantic` to prevent those two meanings of “decidable” from
-being confused.
+[`SexticMuRecVerifiedDecision.v`](Coq/SexticMuRecVerifiedDecision.v) exposes
+parameter-free Booleans and recursive programs on both seven zigzag-coded
+coefficients and a single natural-number encoding.  Its public graph theorems
+`encoded_raw_sextic_radical_relation_murec` and
+`encoded_raw_sextic_radical_code_relation_murec` prove `MuRec_computable`;
+`encoded_raw_sextic_radical_decidable` and
+`encoded_raw_sextic_radical_code_decidable` give the corresponding explicit
+`{P} + {~ P}` decisions for the exact all-roots predicate.  The computational
+endpoints are closed in the assumption audit.  The semantic reflectors use
+only the already documented classical splitting-field bridge.
+
+[`SexticRadicalDecidability.v`](Coq/SexticRadicalDecidability.v) remains as an
+independent semantic decision through MathComp-Abel's abstract `numfield`.
+The new `MuRec` development is the recursively verified coefficient route;
+the older file is useful as a separate semantic cross-check.
 
 ## Calculator interface and scope
 
@@ -220,6 +224,11 @@ opam install --yes --deps-only ./lib/MathComp-Abel/coq-mathcomp-abel.opam
 Push-Location Algebra/PolynomialFormulas/Coq
 rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
+
+# Direct Mu-recursive sextic certificate (uses the pinned
+# Coq-Library-Undecidability source tree).
+rocq makefile -f _CoqProject.murec -o Makefile.murec
+make -f Makefile.murec
 Pop-Location
 ```
 
