@@ -1,0 +1,27 @@
+(** Assumption audit for the split guarded local-builder boundary. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeLocalGuardedBuilderDecomposition.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeLocalGuardedBuilderDecompositionAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalGuardedBuilderDecomposition.
+
+Check
+  RawDynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilder.
+Check
+  RawDynamicTruthNativeLocalCurrentNonConditionalReducedStagedRemainderBuilder.
+Check
+  raw_dynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder_of_nonconditional.
+Check
+  raw_dynamicTruthNativeLocalCurrentGrowingGuardedReducedStagedRootBuilder_of_collision_and_nonconditional_remainder.
+
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentGrowingReducedStagedRemainderBuilder_of_nonconditional.
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentGrowingGuardedReducedStagedRootBuilder_of_collision_and_nonconditional_remainder.
+
+End
+  PABoundedRawCodedDynamicTruthNativeLocalGuardedBuilderDecompositionAudit.

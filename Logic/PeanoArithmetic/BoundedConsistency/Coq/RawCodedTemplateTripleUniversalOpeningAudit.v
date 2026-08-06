@@ -6,6 +6,9 @@ Import PABoundedRawCodedTemplateTripleUniversalOpening.
 Check TemplateTermScoped.
 Check TemplateTermsScoped.
 Check TemplateFormulaScoped.
+Check templateAll3Open.
+Check templateUniversalOpenMany_all3.
+Check raw_template_all3_elimination_chain.
 Check template_three_opening_substitutions_variable.
 Check template_three_opening_substitutions_term.
 Check template_three_opening_substitutions_formula.
@@ -14,3 +17,4 @@ Check raw_template_all3_variables_elimination_chain.
 
 Print Assumptions templateUniversalOpenMany_all3_variables.
 Print Assumptions raw_template_all3_variables_elimination_chain.
+Print Assumptions raw_template_all3_elimination_chain.

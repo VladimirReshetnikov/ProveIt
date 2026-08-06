@@ -1,0 +1,19 @@
+(** Assumption audit for growing represented disjunction elimination. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPAGrowingTemplateDisjunction.
+
+Import PABoundedRawCodedPAGrowingTemplateDisjunction.
+
+Check raw_codedPAGrowingTemplateLocalProofAt_orE.
+Check RawCodedPAGrowingTemplateBranchCompilerOnWitnessedExtensions.
+Check raw_codedPAGrowingTemplateLocalProofAt_and_of_head_left.
+Check raw_codedPAGrowingTemplateLocalProofAt_and_of_head_right.
+Check
+  raw_codedPAGrowingTemplateLocalProofAt_orE_of_branch_compiler_families.
+
+Print Assumptions raw_codedPAGrowingTemplateLocalProofAt_orE.
+Print Assumptions raw_codedPAGrowingTemplateLocalProofAt_and_of_head_left.
+Print Assumptions raw_codedPAGrowingTemplateLocalProofAt_and_of_head_right.
+Print Assumptions
+  raw_codedPAGrowingTemplateLocalProofAt_orE_of_branch_compiler_families.

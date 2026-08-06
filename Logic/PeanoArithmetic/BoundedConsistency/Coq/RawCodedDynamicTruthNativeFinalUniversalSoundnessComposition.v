@@ -42,6 +42,7 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAConsistencyShiftRealization
   RawCodedRestrictedPADynamicSoundnessComposition
   RawCodedRestrictedPAProjectedFieldRefutation
+  RawCodedDynamicTruthNativeFinalTargetRefutationCompilation
   RawCodedDynamicTruthNativeFinalStagedRootCompilation.
 
 Module PABoundedRawCodedDynamicTruthNativeFinalUniversalSoundnessComposition.
@@ -59,6 +60,7 @@ Import PABoundedRawCodedRestrictedPAConsistencyTripleExDescent.
 Import PABoundedRawCodedRestrictedPAConsistencyShiftRealization.
 Import PABoundedRawCodedRestrictedPADynamicSoundnessComposition.
 Import PABoundedRawCodedRestrictedPAProjectedFieldRefutation.
+Import PABoundedRawCodedDynamicTruthNativeFinalTargetRefutationCompilation.
 Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
 
 (** The completely explicit proof root built from the three missing links.
@@ -221,6 +223,93 @@ Proof.
         M baseContext successorNumeralCode)
       nextFinal soundnessCode soundnessRoot consistencyBridgeRoot
       targetRefutationRoot hsoundness hbridge hrefutation).
+Qed.
+
+(** A smaller, proof-producing seam obtained by discharging the target
+    refutation internally.  The older composition compiler exposed three
+    roots because the final target-opening theorem had not yet been connected
+    to this module.  [raw_dynamicTruthNativeFinalTargetRefutationRootCompiler]
+    is now an unconditional PA theorem at exactly the same trace and
+    prerequisite boundary.  Keeping this reduced interface separate is
+    useful: callers still need to provide the represented soundness root and
+    its consistency bridge, but no longer have to manufacture a duplicate
+    proof of [nextFinal -> Bot]. *)
+Definition
+    RawDynamicTruthNativeFinalUniversalSoundnessBridgeCompiler
+    (M : RawPAModel) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext,
+    RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode ->
+    RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+      witnessList baseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness ->
+    exists soundnessCode soundnessRoot consistencyBridgeRoot : M,
+      RawCodedPALocalProofOf M
+        (rawRestrictedPAFieldsContextCode M successorNumeralCode
+          (rawRestrictedPACanonicalShiftedProofContextCode
+            M baseContext successorNumeralCode))
+        soundnessCode soundnessRoot /\
+      RawCodedPALocalProofOf M
+        (rawRestrictedPAFieldsContextCode M successorNumeralCode
+          (rawRestrictedPACanonicalShiftedProofContextCode
+            M baseContext successorNumeralCode))
+        (rawFormulaImpCode M soundnessCode nextFinal)
+        consistencyBridgeRoot.
+
+Arguments
+  RawDynamicTruthNativeFinalUniversalSoundnessBridgeCompiler M
+  : clear implicits.
+
+(** The reduced seam is genuinely stronger than the old residual in the
+    useful direction: its only new input is the two-root package above, while
+    the target-refutation root is produced by the checked PA construction.
+    We first reinsert that canonical root and then invoke the already proved
+    three-root composition theorem. *)
+Theorem
+    raw_dynamicTruthNativeFinalSourceLinkedImplicationRootCompiler_of_bridge :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativeFinalUniversalSoundnessBridgeCompiler M ->
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+Proof.
+  intros M hPA hbridgeCompiler.
+  refine (raw_dynamicTruthNativeFinalSourceLinkedImplicationRootCompiler_of_universal_soundness
+    M hPA _).
+  intros tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites.
+  destruct (hbridgeCompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites) as
+    (soundnessCode & soundnessRoot & consistencyBridgeRoot &
+      hsoundness & hbridge).
+  pose proof (raw_dynamicTruthNativeFinalTargetRefutationRootCompiler
+    M hPA tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites) as hrefutation.
+  exists soundnessCode, soundnessRoot, consistencyBridgeRoot,
+    (rawDynamicTruthNativeFinalTargetRefutationRoot
+      M nextFinal successorNumeralCode baseContext).
+  split; [exact hsoundness |].
+  split; [exact hbridge | exact hrefutation].
 Qed.
 
 End PABoundedRawCodedDynamicTruthNativeFinalUniversalSoundnessComposition.

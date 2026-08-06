@@ -1,0 +1,19 @@
+(** Assumption audit for guarded predecessor exclusivity compilation. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation.
+
+Check coqDynamicTruthImpGuardedPredecessorFormulaTemplate_eq_embedPA.
+Check coqDynamicTruthImpGuardedChildAdmissibleConcreteTemplate_eq_local.
+Check raw_codedPALocalProofOf_close2_between.
+Check
+  raw_dynamicTruthImpGuardedPredecessorStateExclusivityRoot_of_branch_roots_under_template_prefix.
+
+Print Assumptions
+  coqDynamicTruthImpGuardedChildAdmissibleConcreteTemplate_eq_local.
+Print Assumptions raw_codedPALocalProofOf_close2_between.
+Print Assumptions
+  raw_dynamicTruthImpGuardedPredecessorStateExclusivityRoot_of_branch_roots_under_template_prefix.

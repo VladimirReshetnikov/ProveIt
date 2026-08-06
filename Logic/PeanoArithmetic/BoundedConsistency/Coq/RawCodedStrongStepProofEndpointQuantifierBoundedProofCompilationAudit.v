@@ -7,6 +7,12 @@ Import
   PABoundedRawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation.
 
 Check
+  rawDirect_strongStepProofEndpointQuantifierBoundedRenamedSourceBody_agreement.
+Check
+  rawDirect_strongStepProofEndpointQuantifierBoundedRenamedSource_substitution.
+Check
+  raw_codedPALocalProof_strongStepProofEndpointQuantifierBoundedRenamedLaw_on_witnessed_base.
+Check
   rawDirect_strongStepProofEndpointQuantifierBoundedSourceBody_agreement.
 Check
   rawDirect_strongStepProofEndpointQuantifierBoundedSource_substitution.
@@ -15,6 +21,10 @@ Check
 Check
   raw_codedPALocalProof_strongStepProofEndpointQuantifierBounded_of_roots_on_witnessed_extension.
 
+Print Assumptions
+  rawDirect_strongStepProofEndpointQuantifierBoundedRenamedSource_substitution.
+Print Assumptions
+  raw_codedPALocalProof_strongStepProofEndpointQuantifierBoundedRenamedLaw_on_witnessed_base.
 Print Assumptions
   rawDirect_strongStepProofEndpointQuantifierBoundedSource_substitution.
 Print Assumptions

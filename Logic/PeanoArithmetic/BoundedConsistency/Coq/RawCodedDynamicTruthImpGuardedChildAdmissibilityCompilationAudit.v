@@ -1,0 +1,19 @@
+(** Assumption audit for guarded implication-child admissibility. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthImpGuardedChildAdmissibilityCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthImpGuardedChildAdmissibilityCompilation.
+
+Check coqDynamicTruthImpGuardedChildShapeTemplate.
+Check coqDynamicTruthImpGuardedChildGuardTemplate.
+Check coqDynamicTruthImpGuardedChildAdmissibleTemplate.
+Check coqDynamicTruthImpDirectChildAdmissibilityCoreConclusionTemplate_shape.
+Check
+  raw_codedPALocalProofOf_dynamicTruthImpGuardedChildAdmissible_of_parent_roots_on_witnessed_extension_under_prefix.
+
+Print Assumptions
+  coqDynamicTruthImpDirectChildAdmissibilityCoreConclusionTemplate_shape.
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthImpGuardedChildAdmissible_of_parent_roots_on_witnessed_extension_under_prefix.

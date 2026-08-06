@@ -603,4 +603,32 @@ Proof.
   - exact hvalid.
 Qed.
 
+(** Compile a member of a finite template prefix as an ordinary represented
+    assumption leaf above an arbitrary witnessed PA tail.  A number of
+    staged compilers used to repeat the same three steps locally: construct
+    [trpAss], project validity from [templateRawDerives_assumption], and feed
+    the result to [raw_templateProofOnPAAxiomContext_localProof].  Keeping the
+    construction here makes the chosen proof code canonical and, more
+    importantly, exposes the weakest useful interface: membership in the
+    finite prefix is the only logical premise. *)
+Corollary raw_templateAssumptionOnPAAxiomContext_localProof : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    witnessList baseContext prefix formula,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  In formula prefix ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext prefix)
+    (rawTemplateFormula translation formula)
+    (rawTemplateProofCodeOnTail translation baseContext
+      (trpAss prefix formula)).
+Proof.
+  intros M hPA translation witnessList baseContext prefix formula
+    hwitness hin.
+  apply (raw_templateProofOnPAAxiomContext_localProof
+    M hPA translation witnessList baseContext (trpAss prefix formula)
+    hwitness).
+  exact (proj1 (templateRawDerives_assumption prefix formula hin)).
+Qed.
+
 End PABoundedRawCodedTemplateProofCompilerSelfShiftTail.

@@ -1,0 +1,18 @@
+(** Assumption audit for the guarded implication collision helper batch. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthImpGuardedCollisionHelperBatch.
+
+Import PABoundedRawCodedDynamicTruthImpGuardedCollisionHelperBatch.
+
+Check rawDynamicTruthFirstThreeGuardedCollisionFixedPAHelpers.
+Check rawDynamicTruthFirstThreeGuardedCollisionFixedPAHelperTargets_eq_quoted.
+Check raw_dynamicTruthGuardedBasicCollisionRoots_of_helper_batch.
+Check raw_dynamicTruthImpFalseLeftGuarded_pair.
+Check raw_dynamicTruthImpTrueRightGuarded_pair.
+
+Print Assumptions
+  rawDynamicTruthFirstThreeGuardedCollisionFixedPAHelperTargets_eq_quoted.
+Print Assumptions raw_dynamicTruthGuardedBasicCollisionRoots_of_helper_batch.
+Print Assumptions raw_dynamicTruthImpFalseLeftGuarded_pair.
+Print Assumptions raw_dynamicTruthImpTrueRightGuarded_pair.

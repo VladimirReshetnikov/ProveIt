@@ -1,0 +1,25 @@
+(** Assumption audit for guarded rank-zero normalization. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroGuardedNormalization.
+
+Module PABoundedRawCodedDynamicTruthNativeZeroGuardedNormalizationAudit.
+
+Import PABoundedRawCodedDynamicTruthNativeZeroGuardedNormalization.
+
+Check RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt.
+Check
+  raw_dynamicTruthNativeLocalCurrentGuardedHelperContextAt_zero_normalized.
+Check raw_dynamicTruthNativeLocalZeroNormalizedResourcesAt_of_guarded.
+Check RawDynamicTruthNativeLocalZeroGuardedCollisionCellRootsAt.
+Check
+  raw_dynamicTruthNativeLocalZeroGuardedCollisionCellRootsAt_of_normalized.
+
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentGuardedHelperContextAt_zero_normalized.
+Print Assumptions
+  raw_dynamicTruthNativeLocalZeroNormalizedResourcesAt_of_guarded.
+Print Assumptions
+  raw_dynamicTruthNativeLocalZeroGuardedCollisionCellRootsAt_of_normalized.
+
+End PABoundedRawCodedDynamicTruthNativeZeroGuardedNormalizationAudit.

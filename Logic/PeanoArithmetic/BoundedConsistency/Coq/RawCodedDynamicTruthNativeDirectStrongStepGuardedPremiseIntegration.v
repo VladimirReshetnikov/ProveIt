@@ -1,0 +1,1218 @@
+(**
+  Retain the direct strong-step premises below guarded truth binders.
+
+  The direct endpoint shell opens eight existential witnesses before rule
+  dispatch.  Its restricted-proof and rule-validity assumptions therefore
+  occur in the endpoint tail after eight shifts.  The implication and
+  Boolean guarded truth constructors then open five more witnesses.  This
+  module records that composition literally: the guarded assumption leaves
+  prove the fivefold shift of the already eightfold-renamed premises.
+
+  We deliberately compile fresh represented assumption leaves from context
+  membership.  Renaming an existing represented proof would require a much
+  stronger proof-code naturality theorem and would obscure the only fact
+  used here: shifted caller assumptions remain members of the shifted caller
+  suffix.
+*)
+
+From Stdlib Require Import List Lia.
+From PAHF Require Import PAHF.
+From PAFiniteBasisReduction Require Import
+  HierarchyReduction CanonicalSelectorPA.
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPAProof
+  RawCodedContextLists
+  RawCodedContextStructure
+  RawCodedLtSuccCasesProofCompilation
+  RawCodedPALocalProofExistential
+  RawCodedPALocalProofWitnessedContextInclusionWeakening
+  RawCodedPALocalProofWitnessedContextMerge
+  RawCodedPALocalProofExistentialEliminationChain
+  RawCodedPALocalProofUniversalIntroductionChain
+  RawCodedTemplateNumeralParameters
+  RawCodedTemplateSyntax
+  RawCodedTemplateProofCompiler
+  RawCodedTemplateProofCompilerSelfShiftTail
+  RawCodedTemplateLocalProofWitnessedTailTransport
+  RawCodedTemplateDirectStructuralTranslation
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
+  RawCodedStrongStepProofEndpointEvidenceCompilation
+  RawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation
+  RawCodedProofEndpointQuantifierBoundedProofCompilation
+  RawCodedRestrictedTargetTemplateContext
+  RawCodedRestrictedPAConsistencyFormulaCode
+  RawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier
+  RawCodedRestrictedPADerivationSoundnessDirectStrongStepShell
+  RawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation
+  RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
+  RawCodedDynamicTruthImpDirectChildAdmissibilityProofCompilation
+  RawCodedDynamicTruthBooleanGuardedBranchExclusivity
+  RawCodedDynamicTruthBooleanDirectChildAdmissibilityProofCompilation
+  RawCodedDynamicTruthBooleanGuardedDiagonalCompilation
+  RawCodedDynamicTruthNativeZeroGuardedPredecessorCompilation
+  RawCodedDynamicTruthNativeZeroBooleanGuardedParentCompilation.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeDirectStrongStepGuardedPremiseIntegration.
+
+Import ListNotations.
+Import PA.
+Import PAHierarchyReduction.
+Import PACanonicalSelectorPA.
+Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedContextLists.
+Import PABoundedRawCodedContextStructure.
+Import PABoundedRawCodedLtSuccCasesProofCompilation.
+Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofWitnessedContextInclusionWeakening.
+Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
+Import PABoundedRawCodedTemplateNumeralParameters.
+Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
+Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import
+  PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
+Import PABoundedRawCodedStrongStepProofEndpointEvidenceCompilation.
+Import PABoundedRawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation.
+Import PABoundedRawCodedProofEndpointQuantifierBoundedProofCompilation.
+Import PABoundedRawCodedRestrictedTargetTemplateContext.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectStrongStepShell.
+Import
+  PABoundedRawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation.
+Import PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
+Import
+  PABoundedRawCodedDynamicTruthImpDirectChildAdmissibilityProofCompilation.
+Import PABoundedRawCodedDynamicTruthBooleanGuardedBranchExclusivity.
+Import
+  PABoundedRawCodedDynamicTruthBooleanDirectChildAdmissibilityProofCompilation.
+Import PABoundedRawCodedDynamicTruthBooleanGuardedDiagonalCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedPredecessorCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroBooleanGuardedParentCompilation.
+
+(** A caller assumption remains directly compilable after any finite binder
+    block and below any fixed constructor-local prefix.  The output is put in
+    the standard growing-proof interface even though this canonical
+    assumption leaf does not enlarge the witnessed PA tail. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (translation : RawCodedTemplateTranslation M)
+      binderCount witnessList baseContext fixedPrefix callerPrefix formula,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  In formula callerPrefix ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    witnessList baseContext
+    (fixedPrefix ++ templateContextShiftMany binderCount callerPrefix)
+    (rawTemplateFormula translation
+      (templateFormulaShiftMany binderCount formula)).
+Proof.
+  intros M hPA translation binderCount witnessList baseContext
+    fixedPrefix callerPrefix formula hbase hmember.
+  exists witnessList, baseContext.
+  exists (rawTemplateProofCodeOnTail translation baseContext
+    (trpAss
+      (fixedPrefix ++ templateContextShiftMany binderCount callerPrefix)
+      (templateFormulaShiftMany binderCount formula))).
+  split; [exact hbase |].
+  split.
+  - intros member hmember'. exact hmember'.
+  - apply (raw_templateAssumptionOnPAAxiomContext_localProof
+      M hPA translation witnessList baseContext
+      (fixedPrefix ++ templateContextShiftMany binderCount callerPrefix)
+      (templateFormulaShiftMany binderCount formula) hbase).
+    apply in_or_app. right.
+    exact (templateContextShiftMany_member
+      binderCount callerPrefix formula hmember).
+Qed.
+
+(** The caller prefix present at the deepest direct strong-step endpoint.
+    Giving it a name keeps the 8+5 shift accounting visible in all six
+    guarded specializations below. *)
+Definition rawCoqRestrictedPADirectStrongStepDeepEndpointTail
+    (tail : TemplateContext) : TemplateContext :=
+  rawCoqRestrictedPADirectEndpointDeepTail
+    (rawCoqRestrictedPADirectStrongStepEndpointTail tail).
+
+Arguments rawCoqRestrictedPADirectStrongStepDeepEndpointTail
+  tail : clear implicits.
+
+(** All premise roots needed by the guarded collision constructor.  Each
+    field uses the literal constructor-specific prefix, because implication,
+    conjunction, and disjunction guards are not interchangeable. *)
+Record RawCoqRestrictedPADirectStrongStepGuardedPremiseRootsAt
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    (witnessList baseContext : M) (tail : TemplateContext) : Prop := {
+  rawCoqRestrictedPADirectStrongStepGuardedPremise_imp_restricted :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (coqDynamicTruthImpGuardedDeepPrefix
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqRestrictedPADerivationSoundnessRestrictedProofTemplate)));
+  rawCoqRestrictedPADirectStrongStepGuardedPremise_imp_rule :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (coqDynamicTruthImpGuardedDeepPrefix
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqStrongStepProofEndpointAtomicAdequacyRulePremise)));
+  rawCoqRestrictedPADirectStrongStepGuardedPremise_and_restricted :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (coqDynamicTruthBooleanGuardedDeepPrefix DTBooleanAnd
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqRestrictedPADerivationSoundnessRestrictedProofTemplate)));
+  rawCoqRestrictedPADirectStrongStepGuardedPremise_and_rule :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (coqDynamicTruthBooleanGuardedDeepPrefix DTBooleanAnd
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqStrongStepProofEndpointAtomicAdequacyRulePremise)));
+  rawCoqRestrictedPADirectStrongStepGuardedPremise_or_restricted :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (coqDynamicTruthBooleanGuardedDeepPrefix DTBooleanOr
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqRestrictedPADerivationSoundnessRestrictedProofTemplate)));
+  rawCoqRestrictedPADirectStrongStepGuardedPremise_or_rule :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (coqDynamicTruthBooleanGuardedDeepPrefix DTBooleanOr
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqStrongStepProofEndpointAtomicAdequacyRulePremise)))
+}.
+
+Arguments RawCoqRestrictedPADirectStrongStepGuardedPremiseRootsAt
+  M hPA inputs witnessList baseContext tail : clear implicits.
+
+(** The two endpoint membership facts are enough to build all six guarded
+    roots.  The proof has no semantic or rule-dispatch premise. *)
+Theorem raw_coqRestrictedPADirectStrongStep_guardedPremiseRoots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      tail witnessList baseContext,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCoqRestrictedPADirectStrongStepGuardedPremiseRootsAt
+    M hPA inputs witnessList baseContext tail.
+Proof.
+  intros M hPA inputs tail witnessList baseContext hbase.
+  constructor.
+  - rewrite coqDynamicTruthImpGuardedDeepPrefix_split.
+    apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext coqDynamicTruthImpGuardedFixedDeepPrefix
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+        hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_restricted_member
+        tail).
+  - rewrite coqDynamicTruthImpGuardedDeepPrefix_split.
+    apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext coqDynamicTruthImpGuardedFixedDeepPrefix
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise) hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_rule_member tail).
+  - rewrite coqDynamicTruthBooleanGuardedDeepPrefix_split.
+    apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext
+        (coqDynamicTruthBooleanGuardedFixedDeepPrefix DTBooleanAnd)
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+        hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_restricted_member
+        tail).
+  - rewrite coqDynamicTruthBooleanGuardedDeepPrefix_split.
+    apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext
+        (coqDynamicTruthBooleanGuardedFixedDeepPrefix DTBooleanAnd)
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise) hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_rule_member tail).
+  - rewrite coqDynamicTruthBooleanGuardedDeepPrefix_split.
+    apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext
+        (coqDynamicTruthBooleanGuardedFixedDeepPrefix DTBooleanOr)
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+        hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_restricted_member
+        tail).
+  - rewrite coqDynamicTruthBooleanGuardedDeepPrefix_split.
+    apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext
+        (coqDynamicTruthBooleanGuardedFixedDeepPrefix DTBooleanOr)
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise) hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_rule_member tail).
+Qed.
+
+(** For the two fixed binder counts used here, the nested shift is literally
+    the thirteenfold shift.  This is an explanatory normalization lemma; the
+    guarded root record retains the compositional 5-after-8 form because it
+    mirrors the two independently defined context layers. *)
+Lemma raw_coqTemplateShiftFive_after_renameEight : forall formula,
+  templateFormulaShiftMany 5 (rawCoqTemplateRenameN 8 formula) =
+    templateFormulaShiftMany 13 formula.
+Proof.
+  intro formula.
+  cbn [rawCoqTemplateRenameN templateFormulaShiftMany].
+  reflexivity.
+Qed.
+
+(** The guarded constructor has five local coordinates.  Lifting an already
+    guarded formula below the eight endpoint witnesses therefore uses the
+    cutoff-five shift: indices [0..4] stay local, while the older caller
+    coordinates move by eight. *)
+Definition rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    : nat -> nat := templateShiftRenamingBy 5 8.
+
+(** The finite uniform shift is just addition on variable indices.  Keeping
+    this arithmetic fact separate lets the following cutoff transport use
+    [templateFormulaRename_comp] instead of recurring over formula syntax. *)
+Lemma raw_templateShiftRenamingMany_eq_add : forall count index,
+  templateShiftRenamingMany count index = index + count.
+Proof.
+  induction count as [|count ih]; intro index.
+  - cbn [templateShiftRenamingMany]. lia.
+  - cbn [templateShiftRenamingMany].
+    rewrite ih. lia.
+Qed.
+
+Lemma raw_templateShiftRenamingBy_after_shiftMany : forall
+    cutoff amount index,
+  templateShiftRenamingBy cutoff amount
+    (templateShiftRenamingMany cutoff index) =
+  templateShiftRenamingMany cutoff index + amount.
+Proof.
+  intros cutoff amount index.
+  unfold templateShiftRenamingBy.
+  rewrite raw_templateShiftRenamingMany_eq_add.
+  destruct (Nat.ltb (index + cutoff) cutoff) eqn:hbelow.
+  - apply PeanoNat.Nat.ltb_lt in hbelow. lia.
+  - reflexivity.
+Qed.
+
+(** Moving an outer context below [count] newly introduced binders can be
+    expressed in either order: first shift the formula uniformly and then
+    apply a cutoff shift to the old coordinates, or first apply the old
+    renaming and then shift it through the binders. *)
+Lemma raw_templateFormulaRename_cutoff_after_shiftMany : forall
+    count amount formula,
+  templateFormulaRename (templateShiftRenamingBy count amount)
+    (templateFormulaShiftMany count formula) =
+  templateFormulaShiftMany count
+    (templateFormulaRename (fun index => index + amount) formula).
+Proof.
+  intros count amount formula.
+  rewrite !templateFormulaShiftMany_as_rename.
+  rewrite !templateFormulaRename_comp.
+  apply templateFormulaRename_ext.
+  intro index.
+  rewrite raw_templateShiftRenamingBy_after_shiftMany.
+  rewrite (raw_templateShiftRenamingMany_eq_add count index).
+  rewrite (raw_templateShiftRenamingMany_eq_add count (index + amount)).
+  lia.
+Qed.
+
+Lemma raw_templateContextShiftMany_map : forall count context,
+  templateContextShiftMany count context =
+  map (templateFormulaShiftMany count) context.
+Proof.
+  induction count as [|count ih]; intro context.
+  - cbn [templateContextShiftMany templateFormulaShiftMany].
+    induction context as [|head tail ihcontext].
+    + reflexivity.
+    + cbn. f_equal. exact ihcontext.
+  - cbn [templateContextShiftMany templateContextShift
+      templateContextRename].
+    rewrite ih.
+    unfold templateContextShift, templateContextRename.
+    rewrite map_map.
+    apply map_ext. intro formula.
+    reflexivity.
+Qed.
+
+Lemma raw_templateContextRename_cutoff_after_shiftMany : forall
+    count amount context,
+  templateContextRename (templateShiftRenamingBy count amount)
+    (templateContextShiftMany count context) =
+  templateContextShiftMany count
+    (templateContextRename (fun index => index + amount) context).
+Proof.
+  intros count amount context.
+  rewrite !raw_templateContextShiftMany_map.
+  unfold templateContextRename.
+  rewrite !map_map.
+  apply map_ext. intro formula.
+  apply raw_templateFormulaRename_cutoff_after_shiftMany.
+Qed.
+
+Lemma raw_coqTemplateRenameN_eight_eq_add : forall formula,
+  rawCoqTemplateRenameN 8 formula =
+  templateFormulaRename (fun index => index + 8) formula.
+Proof.
+  intro formula.
+  rewrite raw_coqTemplateRenameN_eq_shiftMany.
+  rewrite templateFormulaShiftMany_as_rename.
+  apply templateFormulaRename_ext. intro index.
+  rewrite raw_templateShiftRenamingMany_eq_add. reflexivity.
+Qed.
+
+Lemma raw_templateFormulaRename_outerLift_of_shiftFive : forall formula,
+  templateFormulaRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (templateFormulaShiftMany 5 formula) =
+  templateFormulaShiftMany 5 (rawCoqTemplateRenameN 8 formula).
+Proof.
+  intro formula.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming.
+  rewrite raw_templateFormulaRename_cutoff_after_shiftMany.
+  rewrite raw_coqTemplateRenameN_eight_eq_add.
+  reflexivity.
+Qed.
+
+(** The endpoint-lifted guarded prefixes are context renamings of the
+    ordinary five-binder prefixes.  The split lemmas expose the exact
+    relationship to the eight-renamed direct endpoint tail. *)
+Definition rawCoqRestrictedPADirectStrongStepGuardedLiftedImpDeepPrefix
+    (callerPrefix : TemplateContext) : TemplateContext :=
+  templateContextRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthImpGuardedDeepPrefix callerPrefix).
+
+Definition rawCoqRestrictedPADirectStrongStepGuardedLiftedBooleanDeepPrefix
+    (constructor : DynamicTruthBooleanConstructor)
+    (callerPrefix : TemplateContext) : TemplateContext :=
+  templateContextRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix).
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedLiftedImpDeepPrefix_split :
+  forall callerPrefix,
+  rawCoqRestrictedPADirectStrongStepGuardedLiftedImpDeepPrefix callerPrefix =
+  templateContextRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    coqDynamicTruthImpGuardedFixedDeepPrefix ++
+  templateContextShiftMany 5
+    (templateContextRename (fun index => index + 8) callerPrefix).
+Proof.
+  intro callerPrefix.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedLiftedImpDeepPrefix.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming.
+  rewrite coqDynamicTruthImpGuardedDeepPrefix_split.
+  unfold templateContextRename.
+  rewrite map_app.
+  pose proof (raw_templateContextRename_cutoff_after_shiftMany
+    5 8 callerPrefix) as hshift.
+  unfold templateContextRename in hshift.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    in hshift.
+  rewrite hshift.
+  reflexivity.
+Qed.
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedLiftedBooleanDeepPrefix_split :
+  forall constructor callerPrefix,
+  rawCoqRestrictedPADirectStrongStepGuardedLiftedBooleanDeepPrefix
+      constructor callerPrefix =
+  templateContextRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthBooleanGuardedFixedDeepPrefix constructor) ++
+  templateContextShiftMany 5
+    (templateContextRename (fun index => index + 8) callerPrefix).
+Proof.
+  intros constructor callerPrefix.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedLiftedBooleanDeepPrefix.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming.
+  rewrite coqDynamicTruthBooleanGuardedDeepPrefix_split.
+  unfold templateContextRename.
+  rewrite map_app.
+  pose proof (raw_templateContextRename_cutoff_after_shiftMany
+    5 8 callerPrefix) as hshift.
+  unfold templateContextRename in hshift.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    in hshift.
+  rewrite hshift.
+  reflexivity.
+Qed.
+
+(** The endpoint-facing variant keeps the eight-witness tail fixed and lifts
+    only the five-binder guard prefix.  This is the context actually used
+    when the direct endpoint shell is entered before guarded truth is
+    compiled; renaming the whole already-eightfold tail would shift it twice.
+ *)
+Definition rawCoqRestrictedPADirectStrongStepGuardedEndpointImpFixedPrefix
+    : TemplateContext :=
+  templateContextRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    coqDynamicTruthImpGuardedFixedDeepPrefix.
+
+Definition rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanFixedPrefix
+    (constructor : DynamicTruthBooleanConstructor) : TemplateContext :=
+  templateContextRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthBooleanGuardedFixedDeepPrefix constructor).
+
+Definition rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix
+    (tail : TemplateContext) : TemplateContext :=
+  rawCoqRestrictedPADirectStrongStepGuardedEndpointImpFixedPrefix ++
+  templateContextShiftMany 5
+    (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail).
+
+Definition rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+    (constructor : DynamicTruthBooleanConstructor)
+    (tail : TemplateContext) : TemplateContext :=
+  rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanFixedPrefix
+    constructor ++
+  templateContextShiftMany 5
+    (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail).
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix_restricted_member :
+  forall tail,
+  In
+    (templateFormulaShiftMany 5
+      (rawCoqTemplateRenameN 8
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate))
+    (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail).
+Proof.
+  intro tail.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix.
+  apply in_or_app. right.
+  apply templateContextShiftMany_member.
+  apply raw_coqRestrictedPADirectStrongStepDeepEndpointTail_restricted_member.
+Qed.
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix_rule_member :
+  forall tail,
+  In
+    (templateFormulaShiftMany 5
+      (rawCoqTemplateRenameN 8
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise))
+    (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail).
+Proof.
+  intro tail.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix.
+  apply in_or_app. right.
+  apply templateContextShiftMany_member.
+  apply raw_coqRestrictedPADirectStrongStepDeepEndpointTail_rule_member.
+Qed.
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix_restricted_member :
+  forall constructor tail,
+  In
+    (templateFormulaShiftMany 5
+      (rawCoqTemplateRenameN 8
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate))
+    (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+      constructor tail).
+Proof.
+  intros constructor tail.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix.
+  apply in_or_app. right.
+  apply templateContextShiftMany_member.
+  apply raw_coqRestrictedPADirectStrongStepDeepEndpointTail_restricted_member.
+Qed.
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix_rule_member :
+  forall constructor tail,
+  In
+    (templateFormulaShiftMany 5
+      (rawCoqTemplateRenameN 8
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise))
+    (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+      constructor tail).
+Proof.
+  intros constructor tail.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix.
+  apply in_or_app. right.
+  apply templateContextShiftMany_member.
+  apply raw_coqRestrictedPADirectStrongStepDeepEndpointTail_rule_member.
+Qed.
+
+Record RawCoqRestrictedPADirectStrongStepGuardedEndpointPremiseRootsAt
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    (witnessList baseContext : M) (tail : TemplateContext) : Prop := {
+  rawCoqRestrictedPADirectStrongStepGuardedEndpointPremise_imp_restricted :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqRestrictedPADerivationSoundnessRestrictedProofTemplate)));
+  rawCoqRestrictedPADirectStrongStepGuardedEndpointPremise_imp_rule :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqStrongStepProofEndpointAtomicAdequacyRulePremise)));
+  rawCoqRestrictedPADirectStrongStepGuardedEndpointPremise_and_restricted :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+        DTBooleanAnd tail)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqRestrictedPADerivationSoundnessRestrictedProofTemplate)));
+  rawCoqRestrictedPADirectStrongStepGuardedEndpointPremise_and_rule :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+        DTBooleanAnd tail)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqStrongStepProofEndpointAtomicAdequacyRulePremise)));
+  rawCoqRestrictedPADirectStrongStepGuardedEndpointPremise_or_restricted :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+        DTBooleanOr tail)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqRestrictedPADerivationSoundnessRestrictedProofTemplate)));
+  rawCoqRestrictedPADirectStrongStepGuardedEndpointPremise_or_rule :
+    RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+        DTBooleanOr tail)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaShiftMany 5
+          (rawCoqTemplateRenameN 8
+            coqStrongStepProofEndpointAtomicAdequacyRulePremise)))
+}.
+
+Arguments RawCoqRestrictedPADirectStrongStepGuardedEndpointPremiseRootsAt
+  M hPA inputs witnessList baseContext tail : clear implicits.
+
+Theorem raw_coqRestrictedPADirectStrongStep_guardedEndpointPremiseRoots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      tail witnessList baseContext,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCoqRestrictedPADirectStrongStepGuardedEndpointPremiseRootsAt
+    M hPA inputs witnessList baseContext tail.
+Proof.
+  intros M hPA inputs tail witnessList baseContext hbase.
+  constructor.
+  - apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext
+        rawCoqRestrictedPADirectStrongStepGuardedEndpointImpFixedPrefix
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+        hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_restricted_member
+        tail).
+  - apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext
+        rawCoqRestrictedPADirectStrongStepGuardedEndpointImpFixedPrefix
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise) hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_rule_member tail).
+  - apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanFixedPrefix
+          DTBooleanAnd)
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+        hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_restricted_member
+        tail).
+  - apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanFixedPrefix
+          DTBooleanAnd)
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise) hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_rule_member tail).
+  - apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanFixedPrefix
+          DTBooleanOr)
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+        hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_restricted_member
+        tail).
+  - apply
+      (raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix
+        M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+        5 witnessList baseContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanFixedPrefix
+          DTBooleanOr)
+        (rawCoqRestrictedPADirectStrongStepDeepEndpointTail tail)
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise) hbase).
+    exact
+      (raw_coqRestrictedPADirectStrongStepDeepEndpointTail_rule_member tail).
+Qed.
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedEndpointPremise_shift13_eq_renamed13 :
+  forall formula,
+  templateFormulaShiftMany 5 (rawCoqTemplateRenameN 8 formula) =
+  templateFormulaRename (templateShiftRenamingMany 13) formula.
+Proof.
+  intro formula.
+  rewrite raw_coqTemplateShiftFive_after_renameEight.
+  apply templateFormulaShiftMany_as_rename.
+Qed.
+
+(** The endpoint evidence compiler consumes the six roots above after
+    identifying their compositional 5-after-8 syntax with one renaming of
+    thirteen.  This first endpoint-facing result exposes the atomic parent
+    root; the domain root is added below once the level-identification
+    equality has been lifted through the same cutoff. *)
+Lemma raw_coqRestrictedPADirectStrongStepGuardedOuterLift_atomic_shape_pre :
+  templateFormulaRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+      coqDynamicTruthImpGuardedLevelTerm
+      coqDynamicTruthImpGuardedParentTerm
+      coqDynamicTruthImpGuardedLeftTerm
+      coqDynamicTruthImpGuardedRightTerm
+      coqDynamicTruthImpGuardedChildTerm) =
+  templateFormulaRename (templateShiftRenamingMany 13)
+    coqStrongStepProofEndpointAtomicAdequacyConclusion.
+Proof. vm_compute. reflexivity. Qed.
+
+Theorem
+    raw_coqRestrictedPADirectStrongStepGuardedEndpointImpAtomicRoot_of_premise_roots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      tail witnessList baseContext restrictedRoot ruleRoot,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedTemplatePrefixAtomicallyAdequate M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaShiftMany 5
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)))
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaShiftMany 5
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise)))
+    ruleRoot ->
+  exists targetWitnessList targetContext atomicRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename
+          rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+          (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+            coqDynamicTruthImpGuardedLevelTerm
+            coqDynamicTruthImpGuardedParentTerm
+            coqDynamicTruthImpGuardedLeftTerm
+            coqDynamicTruthImpGuardedRightTerm
+            coqDynamicTruthImpGuardedChildTerm)))
+      atomicRoot.
+Proof.
+  intros M hPA inputs tail witnessList baseContext restrictedRoot ruleRoot
+    hbase hprefix hrestricted hrule.
+  set (renaming := templateShiftRenamingMany 13).
+  assert (hrestrictedRenamed := hrestricted).
+  unfold renaming in hrestrictedRenamed.
+  rewrite raw_coqRestrictedPADirectStrongStepGuardedEndpointPremise_shift13_eq_renamed13
+    in hrestrictedRenamed.
+  assert (hruleRenamed := hrule).
+  unfold renaming in hruleRenamed.
+  rewrite raw_coqRestrictedPADirectStrongStepGuardedEndpointPremise_shift13_eq_renamed13
+    in hruleRenamed.
+  destruct
+    (raw_codedPALocalProof_strongStepEndpointEvidence_renamed_of_restricted_and_rule_roots_on_witnessed_tail_under_prefix
+      M hPA inputs renaming witnessList baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail)
+      restrictedRoot ruleRoot
+      hprefix hbase hrestrictedRenamed hruleRenamed)
+    as (targetWitnessList & targetContext & atomicRoot & rankRoot &
+      htarget & hincluded & hatomic & _hrank).
+  exists targetWitnessList, targetContext, atomicRoot.
+  split; [exact htarget |].
+  split; [exact hincluded |].
+  change (RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      targetContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointAtomicAdequacyConclusion)) atomicRoot) in
+    hatomic.
+  unfold renaming in hatomic.
+  rewrite <- raw_coqRestrictedPADirectStrongStepGuardedOuterLift_atomic_shape_pre
+    in hatomic.
+  exact hatomic.
+Qed.
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedOuterLift_atomic_shape :
+  templateFormulaRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+      coqDynamicTruthImpGuardedLevelTerm
+      coqDynamicTruthImpGuardedParentTerm
+      coqDynamicTruthImpGuardedLeftTerm
+      coqDynamicTruthImpGuardedRightTerm
+      coqDynamicTruthImpGuardedChildTerm) =
+  templateFormulaRename (templateShiftRenamingMany 13)
+    coqStrongStepProofEndpointAtomicAdequacyConclusion.
+Proof. vm_compute. reflexivity. Qed.
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedOuterLift_boolean_atomic_shape :
+  forall constructor,
+  templateFormulaRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthBooleanDirectChildAtomicPremiseTemplate constructor
+      coqDynamicTruthBooleanGuardedLevelTerm
+      coqDynamicTruthBooleanGuardedParentTerm
+      coqDynamicTruthBooleanGuardedLeftTerm
+      coqDynamicTruthBooleanGuardedRightTerm
+      coqDynamicTruthBooleanGuardedChildTerm) =
+  templateFormulaRename (templateShiftRenamingMany 13)
+    coqStrongStepProofEndpointAtomicAdequacyConclusion.
+Proof.
+  intro constructor.
+  rewrite coqDynamicTruthBooleanDirectChildAtomicPremiseTemplate_eq_imp.
+  apply raw_coqRestrictedPADirectStrongStepGuardedOuterLift_atomic_shape.
+Qed.
+
+Definition rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDomainFormula
+    : TemplateFormula :=
+  templateFormulaRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthImpDirectChildDomainPremiseTemplate
+      coqDynamicTruthImpGuardedLevelTerm
+      coqDynamicTruthImpGuardedParentTerm
+      coqDynamicTruthImpGuardedLeftTerm
+      coqDynamicTruthImpGuardedRightTerm
+      coqDynamicTruthImpGuardedChildTerm).
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedEndpointImpDomain_eq_endpoint13 :
+    forall (M : RawPAModel)
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  rawDirectTemplateFormula inputs
+    rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDomainFormula =
+  rawDirectTemplateFormula inputs
+    (templateFormulaRename (templateShiftRenamingMany 13)
+      coqStrongStepProofEndpointQuantifierBoundedConclusion).
+Proof.
+  intros M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    hidentification.
+  pose proof
+    (rawCoqDynamicTruthLocalExclusive_levelAlignment
+      M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+      hidentification) as hlevel.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDomainFormula,
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming.
+  rewrite coqDynamicTruthImpGuardedParentDomainTemplate_view.
+  rewrite coqStrongStepProofEndpointQuantifierBoundedConclusion_view.
+  change (rawDirectTemplateFormula inputs
+    (restrictedTargetTemplateFormulaContext
+      coqRestrictedPASoundnessUpperLevelTerm
+      (restrictedTargetFormulaQuantifierBoundedContext (tVar 15))) =
+    rawDirectTemplateFormula inputs
+    (restrictedTargetTemplateFormulaContext
+      coqRestrictedPASoundnessLowerLevelTerm
+      (restrictedTargetFormulaQuantifierBoundedContext (tVar 15)))).
+  unfold rawDirectTemplateFormula.
+  rewrite !rawStructuralWith_restrictedTargetTemplateFormulaContext.
+  change
+    (rawDirectTemplateTerm inputs
+       coqRestrictedPASoundnessLowerLevelTerm =
+     rawDirectTemplateTerm inputs
+       coqRestrictedPASoundnessUpperLevelTerm) in hlevel.
+  fold (rawDirectTemplateTerm inputs).
+  now rewrite hlevel.
+Qed.
+
+Theorem
+    raw_coqRestrictedPADirectStrongStepGuardedEndpointImpAtomicAndDomainRoots_of_premise_roots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      tail witnessList baseContext restrictedRoot ruleRoot,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedTemplatePrefixAtomicallyAdequate M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaShiftMany 5
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)))
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaShiftMany 5
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise)))
+    ruleRoot ->
+  exists targetWitnessList targetContext atomicRoot domainRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename
+          rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+          (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+            coqDynamicTruthImpGuardedLevelTerm
+            coqDynamicTruthImpGuardedParentTerm
+            coqDynamicTruthImpGuardedLeftTerm
+            coqDynamicTruthImpGuardedRightTerm
+            coqDynamicTruthImpGuardedChildTerm))) atomicRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+      (rawDirectTemplateFormula inputs
+        rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDomainFormula)
+      domainRoot.
+Proof.
+  intros M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    tail witnessList baseContext restrictedRoot ruleRoot
+    hidentification hbase hprefix hrestricted hrule.
+  set (renaming := templateShiftRenamingMany 13).
+  assert (hrestrictedRenamed := hrestricted).
+  unfold renaming in hrestrictedRenamed.
+  rewrite raw_coqRestrictedPADirectStrongStepGuardedEndpointPremise_shift13_eq_renamed13
+    in hrestrictedRenamed.
+  assert (hruleRenamed := hrule).
+  unfold renaming in hruleRenamed.
+  rewrite raw_coqRestrictedPADirectStrongStepGuardedEndpointPremise_shift13_eq_renamed13
+    in hruleRenamed.
+  destruct
+    (raw_codedPALocalProof_strongStepEndpointEvidence_renamed_of_restricted_and_rule_roots_on_witnessed_tail_under_prefix
+      M hPA inputs renaming witnessList baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail)
+      restrictedRoot ruleRoot hprefix hbase hrestrictedRenamed hruleRenamed)
+    as (targetWitnessList & targetContext & atomicRoot & domainRoot &
+      htarget & hincluded & hatomic & hdomain).
+  exists targetWitnessList, targetContext, atomicRoot, domainRoot.
+  split; [exact htarget |].
+  split; [exact hincluded |].
+  split.
+  - change (RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointAtomicAdequacyConclusion)) atomicRoot)
+      in hatomic.
+    unfold renaming in hatomic.
+    rewrite <- raw_coqRestrictedPADirectStrongStepGuardedOuterLift_atomic_shape_pre
+      in hatomic.
+    exact hatomic.
+  - change (RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointQuantifierBoundedConclusion)) domainRoot)
+      in hdomain.
+    unfold renaming in hdomain.
+    pose proof
+      (raw_coqRestrictedPADirectStrongStepGuardedEndpointImpDomain_eq_endpoint13
+        M inputs sigmaDomain piDomain sigmaEvidence piEvidence hidentification)
+      as hdomainEq.
+    rewrite <- hdomainEq in hdomain.
+    exact hdomain.
+Qed.
+
+Definition rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDomainFormula
+    (constructor : DynamicTruthBooleanConstructor) : TemplateFormula :=
+  templateFormulaRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthBooleanDirectChildDomainPremiseTemplate constructor
+      coqDynamicTruthBooleanGuardedLevelTerm
+      coqDynamicTruthBooleanGuardedParentTerm
+      coqDynamicTruthBooleanGuardedLeftTerm
+      coqDynamicTruthBooleanGuardedRightTerm
+      coqDynamicTruthBooleanGuardedChildTerm).
+
+Lemma
+    raw_coqRestrictedPADirectStrongStepGuardedEndpointBooleanDomain_eq_endpoint13 :
+    forall (constructor : DynamicTruthBooleanConstructor)
+      (M : RawPAModel)
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  rawDirectTemplateFormula inputs
+    (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDomainFormula
+      constructor) =
+  rawDirectTemplateFormula inputs
+    (templateFormulaRename (templateShiftRenamingMany 13)
+      coqStrongStepProofEndpointQuantifierBoundedConclusion).
+Proof.
+  intros constructor M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    hidentification.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDomainFormula,
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming.
+  rewrite
+    (coqDynamicTruthBooleanDirectChildDomainPremiseTemplate_eq_imp
+      constructor
+      coqDynamicTruthBooleanGuardedLevelTerm
+      coqDynamicTruthBooleanGuardedParentTerm
+      coqDynamicTruthBooleanGuardedLeftTerm
+      coqDynamicTruthBooleanGuardedRightTerm
+      coqDynamicTruthBooleanGuardedChildTerm).
+  unfold coqDynamicTruthBooleanGuardedLevelTerm,
+    coqDynamicTruthBooleanGuardedParentTerm,
+    coqDynamicTruthBooleanGuardedLeftTerm,
+    coqDynamicTruthBooleanGuardedRightTerm,
+    coqDynamicTruthBooleanGuardedChildTerm.
+  apply
+    (raw_coqRestrictedPADirectStrongStepGuardedEndpointImpDomain_eq_endpoint13
+      M inputs sigmaDomain piDomain sigmaEvidence piEvidence hidentification).
+Qed.
+
+Theorem
+    raw_coqRestrictedPADirectStrongStepGuardedEndpointBooleanAtomicAndDomainRoots_of_premise_roots :
+    forall (constructor : DynamicTruthBooleanConstructor)
+      (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      tail witnessList baseContext restrictedRoot ruleRoot,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedTemplatePrefixAtomicallyAdequate M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+      constructor tail) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+        constructor tail))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaShiftMany 5
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)))
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+        constructor tail))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaShiftMany 5
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise)))
+    ruleRoot ->
+  exists targetWitnessList targetContext atomicRoot domainRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+          constructor tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename
+          rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+          (coqDynamicTruthBooleanDirectChildAtomicPremiseTemplate constructor
+            coqDynamicTruthBooleanGuardedLevelTerm
+            coqDynamicTruthBooleanGuardedParentTerm
+            coqDynamicTruthBooleanGuardedLeftTerm
+            coqDynamicTruthBooleanGuardedRightTerm
+            coqDynamicTruthBooleanGuardedChildTerm))) atomicRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+          constructor tail))
+      (rawDirectTemplateFormula inputs
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDomainFormula
+          constructor)) domainRoot.
+Proof.
+  intros constructor M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    tail witnessList baseContext restrictedRoot ruleRoot
+    hidentification hbase hprefix hrestricted hrule.
+  set (renaming := templateShiftRenamingMany 13).
+  assert (hrestrictedRenamed := hrestricted).
+  unfold renaming in hrestrictedRenamed.
+  rewrite raw_coqRestrictedPADirectStrongStepGuardedEndpointPremise_shift13_eq_renamed13
+    in hrestrictedRenamed.
+  assert (hruleRenamed := hrule).
+  unfold renaming in hruleRenamed.
+  rewrite raw_coqRestrictedPADirectStrongStepGuardedEndpointPremise_shift13_eq_renamed13
+    in hruleRenamed.
+  destruct
+    (raw_codedPALocalProof_strongStepEndpointEvidence_renamed_of_restricted_and_rule_roots_on_witnessed_tail_under_prefix
+      M hPA inputs renaming witnessList baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+        constructor tail)
+      restrictedRoot ruleRoot hprefix hbase hrestrictedRenamed hruleRenamed)
+    as (targetWitnessList & targetContext & atomicRoot & domainRoot &
+      htarget & hincluded & hatomic & hdomain).
+  exists targetWitnessList, targetContext, atomicRoot, domainRoot.
+  split; [exact htarget |].
+  split; [exact hincluded |].
+  split.
+  - change (RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+          constructor tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointAtomicAdequacyConclusion)) atomicRoot)
+      in hatomic.
+    unfold renaming in hatomic.
+    rewrite <-
+      (raw_coqRestrictedPADirectStrongStepGuardedOuterLift_boolean_atomic_shape
+        constructor) in hatomic.
+    exact hatomic.
+  - change (RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix
+          constructor tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointQuantifierBoundedConclusion)) domainRoot)
+      in hdomain.
+    unfold renaming in hdomain.
+    pose proof
+      (raw_coqRestrictedPADirectStrongStepGuardedEndpointBooleanDomain_eq_endpoint13
+        constructor M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+        hidentification) as hdomainEq.
+    rewrite <- hdomainEq in hdomain.
+    exact hdomain.
+Qed.
+
+End
+  PABoundedRawCodedDynamicTruthNativeDirectStrongStepGuardedPremiseIntegration.

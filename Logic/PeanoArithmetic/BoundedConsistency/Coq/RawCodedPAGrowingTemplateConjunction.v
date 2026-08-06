@@ -47,6 +47,121 @@ Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 
+(** Two independently growing proofs synchronized without discarding their
+    common temporary template prefix.  This is the correct package for
+    clients whose conclusions genuinely depend on assumptions above the
+    witnessed PA tail. *)
+Definition RawCodedPAGrowingTemplateLocalProofPairAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (sourceContext : M) (prefix : TemplateContext)
+    (leftConclusion rightConclusion : M) : Prop :=
+  exists targetWitnessList targetContext leftRoot rightRoot : M,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      leftConclusion leftRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext prefix)
+      rightConclusion rightRoot.
+
+Arguments RawCodedPAGrowingTemplateLocalProofPairAt
+  M translation sourceContext prefix leftConclusion rightConclusion
+  : clear implicits.
+
+(** Merge the two selected witnessed tails and transport each proof beneath
+    the unchanged prefix.  This factors the context synchronization needed
+    by state-dependent dual-polarity traversal; no equality between prefix
+    codes and no contraction back to either input tail is required. *)
+Theorem raw_codedPAGrowingTemplateLocalProofAt_pair_at_prefix : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext prefix leftConclusion rightConclusion,
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix leftConclusion ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix rightConclusion ->
+  RawCodedPAGrowingTemplateLocalProofPairAt M translation sourceContext
+    prefix leftConclusion rightConclusion.
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext prefix
+    leftConclusion rightConclusion
+    (leftWitnessList & leftContext & leftRoot &
+      hleftWitnessed & hsourceLeft & hleftProof)
+    (rightWitnessList & rightContext & rightRoot &
+      hrightWitnessed & _hsourceRight & hrightProof).
+  destruct
+    (raw_codedPAAxiomWitnessContext_prefixMerge M hPA
+      leftWitnessList leftContext rightWitnessList rightContext
+      hleftWitnessed hrightWitnessed)
+    as (targetWitnessList & targetContext & htargetWitnessed &
+      _hleftWitnessIncluded & hleftIncluded &
+      _hrightWitnessIncluded & hrightIncluded & _hrightTransport).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation leftWitnessList leftContext
+      targetWitnessList targetContext prefix leftConclusion leftRoot
+      hleftWitnessed htargetWitnessed hleftIncluded hleftProof)
+    as [transportedLeftRoot htransportedLeft].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation rightWitnessList rightContext
+      targetWitnessList targetContext prefix rightConclusion rightRoot
+      hrightWitnessed htargetWitnessed hrightIncluded hrightProof)
+    as [transportedRightRoot htransportedRight].
+  exists targetWitnessList, targetContext,
+    transportedLeftRoot, transportedRightRoot.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hleftIncluded member (hsourceLeft member hmember)).
+  - split; assumption.
+Qed.
+
+(** Rebase an already synchronized pair onto an arbitrary witnessed caller
+    tail.  The two final proofs are weakened through one witnessed-context
+    merge while their shared finite prefix is preserved verbatim. *)
+Theorem raw_codedPAGrowingTemplateLocalProofPairAt_rebase : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    producerSourceContext prefix leftConclusion rightConclusion
+    baseWitnessList baseContext,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPAGrowingTemplateLocalProofPairAt M translation
+    producerSourceContext prefix leftConclusion rightConclusion ->
+  RawCodedPAGrowingTemplateLocalProofPairAt M translation
+    baseContext prefix leftConclusion rightConclusion.
+Proof.
+  intros M hPA translation producerSourceContext prefix
+    leftConclusion rightConclusion baseWitnessList baseContext hbase
+    (producerWitnessList & producerContext & leftRoot & rightRoot &
+      hproducerWitnessed & _hproducerSourceIncluded & hleft & hright).
+  destruct
+    (raw_codedPAAxiomWitnessContext_prefixMerge M hPA
+      producerWitnessList producerContext baseWitnessList baseContext
+      hproducerWitnessed hbase)
+    as (targetWitnessList & targetContext & htargetWitnessed &
+      _hproducerWitnessIncluded & hproducerIncluded &
+      _hbaseWitnessIncluded & hbaseIncluded & _hbaseTransport).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation producerWitnessList producerContext
+      targetWitnessList targetContext prefix leftConclusion leftRoot
+      hproducerWitnessed htargetWitnessed hproducerIncluded hleft)
+    as [transportedLeftRoot htransportedLeft].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation producerWitnessList producerContext
+      targetWitnessList targetContext prefix rightConclusion rightRoot
+      hproducerWitnessed htargetWitnessed hproducerIncluded hright)
+    as [transportedRightRoot htransportedRight].
+  exists targetWitnessList, targetContext,
+    transportedLeftRoot, transportedRightRoot.
+  split; [exact htargetWitnessed |].
+  split; [exact hbaseIncluded |].
+  split; assumption.
+Qed.
+
 (** A pair of independently growing empty-prefix proofs after synchronization.
     The package keeps the original-tail inclusion because later clients must
     also transport roots which were compiled before either growing branch. *)
@@ -80,28 +195,22 @@ Theorem raw_codedPAGrowingTemplateLocalProofAt_pair_at_empty : forall
     leftConclusion rightConclusion.
 Proof.
   intros M hPA translation sourceWitnessList sourceContext
-    leftConclusion rightConclusion
-    (leftWitnessList & leftContext & leftRoot &
-      hleftWitnessed & hsourceLeft & hleftProof)
-    (rightWitnessList & rightContext & rightRoot &
-      hrightWitnessed & hsourceRight & hrightProof).
-  cbn [rawTemplateContextCodeOnTail] in hleftProof, hrightProof.
+    leftConclusion rightConclusion hleft hright.
   destruct
-    (raw_codedPALocalProof_twoWitnessedContexts_commonContext_with_inclusions_complete
-      M hPA leftWitnessList leftContext leftConclusion leftRoot
-      rightWitnessList rightContext rightConclusion rightRoot
-      hleftWitnessed hleftProof hrightWitnessed hrightProof) as
-    (targetWitnessList & targetContext &
+    (raw_codedPAGrowingTemplateLocalProofAt_pair_at_prefix
+      M hPA translation sourceWitnessList sourceContext nil
+      leftConclusion rightConclusion hleft hright)
+    as (targetWitnessList & targetContext &
       transportedLeftRoot & transportedRightRoot &
-      htargetWitnessed & hleftIncluded & hrightIncluded &
+      htargetWitnessed & hincluded &
       hleftTransported & hrightTransported).
+  cbn [rawTemplateContextCodeOnTail]
+    in hleftTransported, hrightTransported.
   exists targetWitnessList, targetContext,
     transportedLeftRoot, transportedRightRoot.
   split; [exact htargetWitnessed |].
-  split.
-  - intros member hmember.
-    exact (hleftIncluded member (hsourceLeft member hmember)).
-  - split; assumption.
+  split; [exact hincluded |].
+  split; assumption.
 Qed.
 
 (** Assemble a right-associated seven-field record once all component proofs

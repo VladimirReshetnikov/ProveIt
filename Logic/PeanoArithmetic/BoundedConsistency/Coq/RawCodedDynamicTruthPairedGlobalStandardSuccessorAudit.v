@@ -1,0 +1,14 @@
+(** Assumption audit for standard paired dynamic-truth successors. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPairedGlobalStandardSuccessor.
+
+Import PABoundedRawCodedDynamicTruthPairedGlobalStandardSuccessor.
+
+Check raw_dynamicTruthPiRowInstantiatedDomain_standard.
+Check raw_dynamicTruthPiSuccessorRow_standard.
+Check raw_dynamicTruthPairedGlobalSuccessor_standard.
+
+Print Assumptions raw_dynamicTruthPiRowInstantiatedDomain_standard.
+Print Assumptions raw_dynamicTruthPiSuccessorRow_standard.
+Print Assumptions raw_dynamicTruthPairedGlobalSuccessor_standard.

@@ -65,6 +65,137 @@ Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedProofEndpointQuantifierBoundedProofCompilation.
 
+(** Direct quotation of the reified, arbitrarily renamed source body. *)
+Lemma
+    rawDirect_strongStepProofEndpointQuantifierBoundedRenamedSourceBody_agreement :
+  forall (M : RawPAModel)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) renaming,
+  rawDirectTemplateFormula inputs
+    (embedPAFormula
+      (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+        renaming)) =
+  rawQuotedFormulaCode M
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+      renaming).
+Proof.
+  intros M inputs renaming.
+  unfold rawDirectTemplateFormula.
+  apply rawStructuralTemplateFormulaWith_embedPA.
+Qed.
+
+(** The represented [All-E] trace commutes with ambient renaming because the
+    level parameter is abstracted only after that renaming has been applied. *)
+Theorem
+    rawDirect_strongStepProofEndpointQuantifierBoundedRenamedSource_substitution :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M) renaming,
+  RawCodedFormulaSingleSubstitution M
+    (rawDirectTemplateTerm inputs
+      coqRestrictedPASoundnessLowerLevelTerm)
+    (rawQuotedFormulaCode M
+      (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+        renaming))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointQuantifierBoundedLawTemplate)).
+Proof.
+  intros M hPA inputs renaming.
+  pose proof (rawDirectTemplateFormula_open M hPA inputs
+    (embedPAFormula
+      (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+        renaming))
+    coqRestrictedPASoundnessLowerLevelTerm) as hopen.
+  rewrite
+    rawDirect_strongStepProofEndpointQuantifierBoundedRenamedSourceBody_agreement
+    in hopen.
+  rewrite
+    coqStrongStepProofEndpointQuantifierBoundedRenamedSource_open in hopen.
+  exact hopen.
+Qed.
+
+(** Compile the quantifier-bounded endpoint law after any ambient variable
+    renaming.  This is the proof-producing resource required beneath nested
+    direct-shell binders; no independently postulated renamed law root is
+    needed. *)
+Theorem
+    raw_codedPALocalProof_strongStepProofEndpointQuantifierBoundedRenamedLaw_on_witnessed_base :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M) renaming
+    baseWitnessList baseContext,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointQuantifierBoundedLawTemplate))
+      root.
+Proof.
+  intros M hPA inputs renaming baseWitnessList baseContext hbase.
+  set (translation :=
+    rawDirectStructuralTemplateTranslation M hPA inputs).
+  destruct (raw_codedTemplatePALocalProofOf_of_BProv_on_witnessed_tail
+    M hPA translation
+    (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+    baseWitnessList baseContext
+    (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula
+      renaming)
+    hbase
+    (PA_proves_coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula
+      renaming))
+    as (witnesses & sourceRoot & hextended & hsource).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext).
+  assert (hall : RawCodedPALocalProofOf M extendedContext
+      (rawFormulaAllCode M
+        (rawQuotedFormulaCode M
+          (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+            renaming)))
+      sourceRoot).
+  {
+    unfold extendedContext, translation in *.
+    change (RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext)
+      (rawQuotedFormulaCode M
+        (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula
+          renaming))
+      sourceRoot).
+    rewrite <- (rawTemplateFormula_embedPA
+      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+      (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceFormula
+        renaming)).
+    exact hsource.
+  }
+  pose proof (raw_codedPALocalProofOf_allE M hPA extendedContext
+    (rawQuotedFormulaCode M
+      (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+        renaming))
+    (rawDirectTemplateTerm inputs
+      coqRestrictedPASoundnessLowerLevelTerm)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename renaming
+        coqStrongStepProofEndpointQuantifierBoundedLawTemplate))
+    sourceRoot hall
+    (rawDirect_strongStepProofEndpointQuantifierBoundedRenamedSource_substitution
+      M hPA inputs renaming)) as hinstance.
+  exists witnesses,
+    (rawProofAllERoot M extendedContext
+      (rawQuotedFormulaCode M
+        (coqStrongStepProofEndpointQuantifierBoundedRenamedSourceBodyFormula
+          renaming))
+      (rawDirectTemplateTerm inputs
+        coqRestrictedPASoundnessLowerLevelTerm)
+      sourceRoot).
+  split; [exact hextended | exact hinstance].
+Qed.
+
 (** Direct structural translation agrees with ordinary PA quotation on the
     fixed abstracted source body. *)
 Lemma rawDirect_strongStepProofEndpointQuantifierBoundedSourceBody_agreement :
@@ -130,53 +261,14 @@ Theorem
       root.
 Proof.
   intros M hPA inputs baseWitnessList baseContext hbase.
-  set (translation :=
-    rawDirectStructuralTemplateTranslation M hPA inputs).
-  destruct (raw_codedTemplatePALocalProofOf_of_BProv_on_witnessed_tail
-    M hPA translation
-    (rawDirectStructuralTemplatePAAgreement M hPA inputs)
-    baseWitnessList baseContext
-    coqStrongStepProofEndpointQuantifierBoundedSourceFormula
-    hbase PA_proves_coqStrongStepProofEndpointQuantifierBoundedSourceFormula)
-    as (witnesses & sourceRoot & hextended & hsource).
-  set (extendedContext :=
-    rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext).
-  assert (hall : RawCodedPALocalProofOf M extendedContext
-      (rawFormulaAllCode M
-        (rawQuotedFormulaCode M
-          coqStrongStepProofEndpointQuantifierBoundedSourceBodyFormula))
-      sourceRoot).
-  {
-    unfold extendedContext, translation in *.
-    change (RawCodedPALocalProofOf M
-      (rawStandardPAAxiomWitnessPrefixContextCode M
-        witnesses baseContext)
-      (rawQuotedFormulaCode M
-        coqStrongStepProofEndpointQuantifierBoundedSourceFormula)
-      sourceRoot).
-    rewrite <- (rawTemplateFormula_embedPA
-      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
-      coqStrongStepProofEndpointQuantifierBoundedSourceFormula).
-    exact hsource.
-  }
-  pose proof (raw_codedPALocalProofOf_allE M hPA extendedContext
-    (rawQuotedFormulaCode M
-      coqStrongStepProofEndpointQuantifierBoundedSourceBodyFormula)
-    (rawDirectTemplateTerm inputs
-      coqRestrictedPASoundnessLowerLevelTerm)
-    (rawDirectTemplateFormula inputs
-      coqStrongStepProofEndpointQuantifierBoundedLawTemplate)
-    sourceRoot hall
-    (rawDirect_strongStepProofEndpointQuantifierBoundedSource_substitution
-      M hPA inputs)) as hinstance.
-  exists witnesses,
-    (rawProofAllERoot M extendedContext
-      (rawQuotedFormulaCode M
-        coqStrongStepProofEndpointQuantifierBoundedSourceBodyFormula)
-      (rawDirectTemplateTerm inputs
-        coqRestrictedPASoundnessLowerLevelTerm)
-      sourceRoot).
-  split; [exact hextended | exact hinstance].
+  destruct
+    (raw_codedPALocalProof_strongStepProofEndpointQuantifierBoundedRenamedLaw_on_witnessed_base
+      M hPA inputs (fun index => index)
+      baseWitnessList baseContext hbase)
+    as (witnesses & root & hextended & hroot).
+  rewrite templateFormulaRename_id in hroot.
+  exists witnesses, root.
+  split; assumption.
 Qed.
 
 (** Apply the concrete law to caller-owned roots.  Both roots are moved to

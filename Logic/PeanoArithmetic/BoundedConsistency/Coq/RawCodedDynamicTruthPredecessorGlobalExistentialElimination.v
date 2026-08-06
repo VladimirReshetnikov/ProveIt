@@ -216,6 +216,22 @@ Definition coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
   | None => []
   end.
 
+(** Fully prefix-parametric spelling of the ten opened witnesses.  The
+    predecessor-state wrappers below are useful clients, but existential
+    elimination itself only needs a finite template context.  Keeping this
+    weaker definition public is important for guarded branches, where the
+    two state assumptions have already been renamed through constructor
+    binders and are therefore not literally the historical state prefix. *)
+Definition coqDynamicTruthGlobalExistentialDeepContextOn
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    (sourcePrefix : TemplateContext) : TemplateContext :=
+  match templateExistentialEliminationContext 10
+    (coqDynamicTruthGlobalExistentialSource rootMode localSigma localPi)
+    sourcePrefix with
+  | Some context => context
+  | None => []
+  end.
+
 Lemma coqDynamicTruthGlobalExistentialDeepContext_success : forall
     rootMode localSigma localPi,
   templateExistentialEliminationContext 10
@@ -235,6 +251,30 @@ Lemma coqDynamicTruthGlobalExistentialDeepContextUnderPrefix_success :
     (coqDynamicTruthPredecessorStateTemplateContext ++ prefix) =
   Some (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
     rootMode localSigma localPi prefix).
+Proof.
+  intros rootMode localSigma localPi prefix.
+  reflexivity.
+Qed.
+
+Lemma coqDynamicTruthGlobalExistentialDeepContextOn_success : forall
+    rootMode localSigma localPi sourcePrefix,
+  templateExistentialEliminationContext 10
+    (coqDynamicTruthGlobalExistentialSource rootMode localSigma localPi)
+    sourcePrefix =
+  Some (coqDynamicTruthGlobalExistentialDeepContextOn
+    rootMode localSigma localPi sourcePrefix).
+Proof.
+  intros rootMode localSigma localPi sourcePrefix.
+  reflexivity.
+Qed.
+
+Lemma coqDynamicTruthGlobalExistentialDeepContextUnderPrefix_as_on : forall
+    rootMode localSigma localPi prefix,
+  coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
+      rootMode localSigma localPi prefix =
+  coqDynamicTruthGlobalExistentialDeepContextOn
+      rootMode localSigma localPi
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix).
 Proof.
   intros rootMode localSigma localPi prefix.
   reflexivity.
@@ -285,6 +325,51 @@ Proof.
   reflexivity.
 Qed.
 
+(** Complete ten-step elimination under an arbitrary finite template
+    prefix.  This is the actual structural theorem: it requires neither PA
+    agreement nor any semantic description of the assumptions.  Specialized
+    predecessor-state clients below merely rewrite their concrete raw
+    context into this form. *)
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthGlobal_existential_elimination_under_template_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  forall witnessList baseContext sourcePrefix rootMode localSigma localPi
+      conclusion sourceRoot deepRoot,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext sourcePrefix)
+    (rawTemplateFormula translation
+      (coqDynamicTruthGlobalExistentialSource
+        rootMode localSigma localPi)) sourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation baseContext
+      (coqDynamicTruthGlobalExistentialDeepContextOn
+        rootMode localSigma localPi sourcePrefix))
+    (rawTemplateFormula translation
+      (templateFormulaShiftMany 10 conclusion)) deepRoot ->
+  exists root,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext sourcePrefix)
+      (rawTemplateFormula translation conclusion) root.
+Proof.
+  intros M hPA translation witnessList baseContext sourcePrefix
+    rootMode localSigma localPi conclusion sourceRoot deepRoot
+    hwitnessed hsource hdeep.
+  exact
+    (raw_codedPALocalProofOf_existential_elimination_chain_on_witnessed_tail
+      M hPA translation witnessList baseContext 10
+      (coqDynamicTruthGlobalExistentialSource
+        rootMode localSigma localPi)
+      sourcePrefix conclusion
+      (coqDynamicTruthGlobalExistentialDeepContextOn
+        rootMode localSigma localPi sourcePrefix)
+      sourceRoot deepRoot hwitnessed
+      (coqDynamicTruthGlobalExistentialDeepContextOn_success
+        rootMode localSigma localPi sourcePrefix)
+      hsource hdeep).
+Qed.
+
 (** Complete ten-step elimination beneath predecessor state plus an arbitrary
     caller prefix.  The witnessed tail remains the only raw context on which
     the generic elimination compiler relies. *)
@@ -328,18 +413,14 @@ Proof.
       M translation hagreement baseContext prefix).
     exact hsource.
   }
+  rewrite coqDynamicTruthGlobalExistentialDeepContextUnderPrefix_as_on
+    in hdeep.
   destruct
-    (raw_codedPALocalProofOf_existential_elimination_chain_on_witnessed_tail
-      M hPA translation witnessList baseContext 10
-      (coqDynamicTruthGlobalExistentialSource
-        rootMode localSigma localPi)
-      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix) conclusion
-      (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix
-        rootMode localSigma localPi prefix)
-      sourceRoot deepRoot hwitnessed
-      (coqDynamicTruthGlobalExistentialDeepContextUnderPrefix_success
-        rootMode localSigma localPi prefix)
-      hsourceOnTemplateContext hdeep) as [root hroot].
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_existential_elimination_under_template_prefix
+      M hPA translation witnessList baseContext
+      (coqDynamicTruthPredecessorStateTemplateContext ++ prefix)
+      rootMode localSigma localPi conclusion sourceRoot deepRoot
+      hwitnessed hsourceOnTemplateContext hdeep) as [root hroot].
   exists root.
   rewrite <- (raw_dynamicTruthPredecessorStateTemplateContext_app_code
     M translation hagreement baseContext prefix).

@@ -1,0 +1,18 @@
+(** Assumption audit for the rank-zero canonical counterexample. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroCanonicalApplicationNonprovability.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroCanonicalApplicationNonprovability.
+
+Check raw_natModel_satisfies_PA.
+Check dynamicTruthZeroSigmaBottomCounterenvironment.
+Check dynamicTruthZeroInputGlobalSigmaApplicationFormula_not_nat_valid.
+Check PA_not_proves_dynamicTruthZeroInputGlobalSigmaApplicationFormula.
+
+Print Assumptions raw_natModel_satisfies_PA.
+Print Assumptions
+  dynamicTruthZeroInputGlobalSigmaApplicationFormula_not_nat_valid.
+Print Assumptions
+  PA_not_proves_dynamicTruthZeroInputGlobalSigmaApplicationFormula.

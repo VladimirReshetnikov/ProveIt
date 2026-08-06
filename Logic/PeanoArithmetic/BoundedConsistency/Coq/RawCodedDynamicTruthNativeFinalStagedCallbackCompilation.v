@@ -27,7 +27,8 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeStagedPositiveSuccessor
   RawCodedDynamicTruthNativeFinalStagedRootCompilation
-  RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.
+  RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation
+  RawCodedDynamicTruthNativeFinalUniversalSoundnessComposition.
 
 Module PABoundedRawCodedDynamicTruthNativeFinalStagedCallbackCompilation.
 
@@ -38,6 +39,7 @@ Import PAFiniteBetaCoding.
 Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
 Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.
+Import PABoundedRawCodedDynamicTruthNativeFinalUniversalSoundnessComposition.
 
 (** The exact public final callback follows from the one source-linked
     implication-root compiler.  All intermediate existential witnesses below
@@ -182,6 +184,23 @@ Proof.
     finalWitnessList finalContext
     hcurrentGraphs hnextLocalGraph hnextCrossGraph hnextShiftGraph
     hnextSubstitutionGraph hnextAxiomGraph hfinalPrerequisitesOn).
+Qed.
+
+(** Public callback adapter using the reduced universal-soundness seam.  The
+    target-opening proof is supplied by the final target-refutation compiler,
+    so this theorem exposes only the genuinely remaining two-root package
+    (represented universal soundness and its consistency bridge). *)
+Theorem
+    raw_dynamicTruthNativeStagedNextFinalCompiler_of_universal_soundness_bridge
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativeFinalUniversalSoundnessBridgeCompiler M ->
+  RawDynamicTruthNativeStagedNextFinalCompiler M.
+Proof.
+  intros M hPA hbridge.
+  exact (raw_dynamicTruthNativeStagedNextFinalCompiler_of_source_linked_implication
+    M hPA
+    (raw_dynamicTruthNativeFinalSourceLinkedImplicationRootCompiler_of_bridge
+      M hPA hbridge)).
 Qed.
 
 End PABoundedRawCodedDynamicTruthNativeFinalStagedCallbackCompilation.
