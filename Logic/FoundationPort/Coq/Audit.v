@@ -54,7 +54,7 @@ From Foundation.FirstOrder.Arithmetic Require Import Exponential.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
-From Foundation.FirstOrder.SetTheory.Basic Require Import Model.
+From Foundation.FirstOrder.SetTheory.Basic Require Import Model Axioms.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -5207,6 +5207,34 @@ Print Assumptions membership_submodel_rel_iff.
 Print Assumptions membership_submodel_subset_iff.
 Print Assumptions membership_submodel_empty_iff.
 Print Assumptions membership_submodel_nonempty_iff.
+Check set_model_successor.
+Check set_axiom_code.
+Check set_axiom_holds.
+Check set_axiom_family.
+Check set_axiom_family_subset.
+Check set_axiom_family_union.
+Check set_theory_model.
+Print Assumptions set_axiom_family_subset_refl.
+Print Assumptions set_axiom_family_subset_trans.
+Print Assumptions set_theory_model_of_subset.
+Print Assumptions set_theory_model_union_iff.
+Check zermelo_axiom.
+Check zf_axiom.
+Check choice_axiom.
+Check zermelo_choice_axiom.
+Check zfc_axiom.
+Print Assumptions zermelo_axiom_subset_zf.
+Print Assumptions zermelo_axiom_subset_zc.
+Print Assumptions zf_axiom_subset_zfc.
+Print Assumptions choice_axiom_subset_zc.
+Print Assumptions choice_axiom_subset_zfc.
+Print Assumptions zermelo_choice_axiom_subset_zfc.
+Print Assumptions set_zf_model_is_zermelo.
+Print Assumptions set_zc_model_iff_zermelo_and_choice.
+Print Assumptions set_zfc_model_iff_zf_and_choice.
+Print Assumptions set_zfc_model_is_zc.
+Print Assumptions set_zermelo_choice_model.
+Print Assumptions set_zf_choice_model.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.
