@@ -5598,6 +5598,9 @@ Print Assumptions nat_bit_remove_lt_of_mem.
 Print Assumptions nat_bit_pos_of_nonempty.
 Print Assumptions nat_bit_mem_insert.
 Print Assumptions nat_bit_insert_eq_self_of_mem.
+Print Assumptions nat_bit_absent_land_pow.
+Print Assumptions nat_bit_insert_add_of_not_mem.
+Print Assumptions nat_bit_insert_le_of_le_of_le.
 Print Assumptions nat_bit_subset_iff.
 Print Assumptions nat_bit_subset_refl.
 Print Assumptions nat_bit_subset_trans.

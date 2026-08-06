@@ -10,7 +10,8 @@
     bounded-comprehension principles remain outside this module.  No formula
     graph or model-theoretic adapter is assumed here. *)
 
-From Stdlib Require Import Bool.Bool Lia NArith.NArith.
+From Stdlib Require Import Bool.Bool Lia NArith.NArith
+  Numbers.Natural.Abstract.NBits.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic.
 
 Open Scope N_scope.
@@ -209,6 +210,59 @@ Proof.
   rewrite hfs_mem_insert_iff. split.
   - intros [-> | Hj]; assumption.
   - intro Hj. now right.
+Qed.
+
+(** An absent bit is disjoint from its corresponding singleton power. *)
+Lemma nat_bit_absent_land_pow : forall i a,
+  ~ nat_bit i a -> N.land a (2 ^ i) = 0.
+Proof.
+  intros i a H.
+  assert (Ha : N.testbit a i = false).
+  { destruct (N.testbit a i) eqn:Ht.
+    - exfalso. apply H. apply (proj2 (nat_bit_mem_iff i a)). exact Ht.
+    - reflexivity. }
+  apply N.bits_inj_0. intro j.
+  rewrite N.land_spec.
+  destruct (N.eq_dec j i) as [-> | Hji].
+  - rewrite Ha, N.pow2_bits_true. reflexivity.
+  - assert (Hji' : i <> j).
+    { intro E. apply Hji. symmetry. exact E. }
+    rewrite (N.pow2_bits_false i j Hji').
+    destruct (N.testbit a j); reflexivity.
+Qed.
+
+(** Inserting an absent bit is ordinary addition by its power of two. *)
+Lemma nat_bit_insert_add_of_not_mem : forall i a,
+  ~ nat_bit i a -> nat_bit_insert i a = a + 2 ^ i.
+Proof.
+  intros i a H.
+  unfold nat_bit_insert, hfs_insert.
+  rewrite N.setbit_spec'.
+  pose proof (@nat_bit_absent_land_pow i a H) as Hland.
+  pose proof (N.lxor_lor a (2 ^ i) Hland) as Hxor.
+  pose proof (N.add_nocarry_lxor a (2 ^ i) Hland) as Hadd.
+  rewrite <- Hxor. symmetry. exact Hadd.
+Qed.
+
+(** Foundation's insertion estimate, specialized to executable N codes. *)
+Lemma nat_bit_insert_le_of_le_of_le : forall i j a b,
+  i <= j -> a <= b -> nat_bit_insert i a <= b + 2 ^ j.
+Proof.
+  intros i j a b Hij Hab.
+  destruct (N.testbit a i) eqn:Ht.
+  - assert (Hmem : nat_bit i a).
+    { apply (proj2 (nat_bit_mem_iff i a)); exact Ht. }
+    rewrite nat_bit_insert_eq_self_of_mem by exact Hmem.
+    eapply N.le_trans; [exact Hab|].
+    apply N.le_add_r.
+  - assert (Hnot : ~ nat_bit i a).
+    { intro Hmem.
+      rewrite (proj1 (nat_bit_mem_iff i a) Hmem) in Ht.
+      discriminate. }
+    rewrite (@nat_bit_insert_add_of_not_mem i a Hnot).
+    apply N.add_le_mono.
+    + exact Hab.
+    + apply N.pow_le_mono_r; [discriminate | exact Hij].
 Qed.
 
 Lemma nat_bit_subset_iff : forall a b,
