@@ -28,6 +28,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativePositiveLocalProofTotals
   RawCodedDynamicTruthNativeMasterEndpoint
   RawCodedDynamicTruthNativeMasterSuccessorFromProofTotals
+  RawCodedPALocalProofWitnessedContextMergeTransportComplete
   RawCodedPALocalProofEmptyContextTransport.
 
 Module
@@ -45,6 +46,7 @@ Import PABoundedRawCodedDynamicTruthNativeAxiomSoundnessProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativePositiveLocalProofTotals.
 Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
 Import PABoundedRawCodedDynamicTruthNativeMasterSuccessorFromProofTotals.
+Import PABoundedRawCodedPALocalProofWitnessedContextMergeTransportComplete.
 Import PABoundedRawCodedPALocalProofEmptyContextTransport.
 
 (** The exact proof-total adapter with its formerly explicit transport input
@@ -61,6 +63,27 @@ Proof.
     (raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_local_proof_totals_and_empty_context_transport
       M hPA htotals hconsistencySuccessor
       (raw_codedPAEmptyContextToWitnessedContextTransport M hPA)).
+Qed.
+
+(** The ordinary-proof route has the same context seam, but its six
+    certificates are not restricted to the five empty-context roots.  The
+    completed witnessed-context merge theorem discharges that lift directly,
+    so callers now need only the genuine proof-total and compact-successor
+    premises. *)
+Theorem
+    raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_proof_totals :
+  forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativePositiveProofTotals M ->
+  RawRestrictedPAConsistencyCertificateSuccessor M ->
+  RawDynamicTruthNativeSplicedMasterPositiveComponentSuccessor M.
+Proof.
+  intros M hPA htotals hconsistencySuccessor.
+  apply
+    raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_ordinary_and_common_context_lift.
+  - exact
+      (raw_dynamicTruthNativeSplicedMasterPositiveOrdinaryComponentSuccessor_of_proof_totals
+        M hPA htotals hconsistencySuccessor).
+  - exact (raw_sixFieldMasterOrdinaryProofsCommonContextLift_complete M hPA).
 Qed.
 
 (** Direct form consumed by the five native proof-compilation layers.  Every
