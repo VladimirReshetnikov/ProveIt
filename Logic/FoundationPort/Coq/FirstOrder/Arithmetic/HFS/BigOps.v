@@ -89,6 +89,44 @@ Definition hfs_list_domain (relation : list hfs_code) : hfs_code :=
 Definition hfs_list_range (relation : list hfs_code) : hfs_code :=
   hfs_arithmetize_list (map hfs_index_snd relation).
 
+Lemma hfs_list_domain_empty :
+  hfs_list_domain [] = hfs_empty.
+Proof. reflexivity. Qed.
+
+Lemma hfs_list_range_empty :
+  hfs_list_range [] = hfs_empty.
+Proof. reflexivity. Qed.
+
+Lemma hfs_list_domain_app : forall left right,
+  hfs_list_domain (left ++ right) =
+  hfs_union (hfs_list_domain left) (hfs_list_domain right).
+Proof.
+  intros left right. unfold hfs_list_domain.
+  rewrite map_app, hfs_arithmetize_list_app. reflexivity.
+Qed.
+
+Lemma hfs_list_range_app : forall left right,
+  hfs_list_range (left ++ right) =
+  hfs_union (hfs_list_range left) (hfs_list_range right).
+Proof.
+  intros left right. unfold hfs_list_range.
+  rewrite map_app, hfs_arithmetize_list_app. reflexivity.
+Qed.
+
+Lemma hfs_list_domain_singleton : forall x y,
+  hfs_list_domain [hfs_index_pair x y] = hfs_singleton x.
+Proof.
+  intros x y. unfold hfs_list_domain, hfs_singleton.
+  simpl. rewrite hfs_index_fst_pair. reflexivity.
+Qed.
+
+Lemma hfs_list_range_singleton : forall x y,
+  hfs_list_range [hfs_index_pair x y] = hfs_singleton y.
+Proof.
+  intros x y. unfold hfs_list_range, hfs_singleton.
+  simpl. rewrite hfs_index_snd_pair. reflexivity.
+Qed.
+
 Lemma hfs_mem_list_domain_iff : forall relation x,
   hfs_mem x (hfs_list_domain relation) <->
   exists y, In (hfs_index_pair x y) relation.

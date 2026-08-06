@@ -49,6 +49,36 @@ Proof.
     rewrite Ht, hfs_mem_list_image_iff. reflexivity.
 Qed.
 
+Lemma hfs_list_image_empty : forall f,
+  hfs_list_image f [] = hfs_empty.
+Proof. reflexivity. Qed.
+
+Lemma hfs_list_image_cons : forall f x xs,
+  hfs_list_image f (x :: xs) =
+  hfs_insert (f x) (hfs_list_image f xs).
+Proof. reflexivity. Qed.
+
+Lemma hfs_list_image_app : forall f xs ys,
+  hfs_list_image f (xs ++ ys) =
+  hfs_union (hfs_list_image f xs) (hfs_list_image f ys).
+Proof.
+  intros f xs ys. unfold hfs_list_image.
+  rewrite map_app, hfs_arithmetize_list_app. reflexivity.
+Qed.
+
+Lemma hfs_list_image_subset_of_subset : forall f xs ys,
+  hfs_subset (hfs_arithmetize_list xs) (hfs_arithmetize_list ys) ->
+  hfs_subset (hfs_list_image f xs) (hfs_list_image f ys).
+Proof.
+  intros f xs ys Hsubset y Hy.
+  apply hfs_mem_list_image_iff in Hy.
+  destruct Hy as [x [Hx ->]].
+  apply hfs_mem_list_image_iff.
+  exists x. split; [|reflexivity].
+  apply hfs_mem_arithmetize_list_iff.
+  apply Hsubset. apply hfs_mem_arithmetize_list_iff. exact Hx.
+Qed.
+
 (** * Restriction *)
 
 Definition hfs_list_restrict (relation domain : list hfs_code)
