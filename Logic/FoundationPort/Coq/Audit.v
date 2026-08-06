@@ -54,7 +54,7 @@ From Foundation.FirstOrder.Arithmetic Require Import Exponential.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
-From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z Function.
+From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z Function Ordinal.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -5837,3 +5837,27 @@ Print Assumptions hfs_vector_to_set_subset_iff.
 Check hfs_vector_as_sequence.
 Print Assumptions hfs_vector_as_sequence_length.
 Print Assumptions hfs_vector_as_sequence_nth.
+
+(* SetTheory/Ordinal.v: generalized transitive-set and ordinal surface. *)
+Check z_is_transitive.
+Check z_is_transitive_mem_trans.
+Print Assumptions z_is_transitive_successor.
+Print Assumptions z_is_transitive_union.
+Print Assumptions z_is_transitive_sunion.
+Print Assumptions z_is_transitive_sinter.
+Print Assumptions z_is_transitive_omega.
+Check z_is_ordinal.
+Print Assumptions z_ordinal_of_mem.
+Print Assumptions z_is_ordinal_successor.
+Print Assumptions z_ordinal_nat.
+Print Assumptions z_ordinal_mem_of_strict_subset.
+Print Assumptions z_ordinal_strict_subset_iff.
+Print Assumptions z_ordinal_subset_iff.
+Print Assumptions z_ordinal_mem_iff_subset_and_not_subset.
+Print Assumptions z_ordinal_subset_or_supset.
+Print Assumptions z_ordinal_mem_trichotomy.
+Print Assumptions z_ordinal_of_transitive.
+Print Assumptions z_is_ordinal_omega.
+Print Assumptions z_ordinal_sunion.
+Print Assumptions z_ordinal_sinter.
+Print Assumptions z_ordinal_empty_mem_iff_nonempty.
