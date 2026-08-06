@@ -5861,3 +5861,23 @@ Print Assumptions z_is_ordinal_omega.
 Print Assumptions z_ordinal_sunion.
 Print Assumptions z_ordinal_sinter.
 Print Assumptions z_ordinal_empty_mem_iff_nonempty.
+Check z_ordinal.
+Check z_ordinal_lt.
+Check z_ordinal_le.
+Print Assumptions z_ordinal_lt_irrefl.
+Print Assumptions z_ordinal_lt_trans.
+Print Assumptions z_ordinal_le_antisym.
+Print Assumptions z_ordinal_le_total.
+Print Assumptions z_ordinal_lt_iff_le_and_not_ge.
+Print Assumptions z_ordinal_le_iff_eq_or_lt.
+Print Assumptions z_ordinal_pos_iff_nonempty.
+Print Assumptions z_ordinal_eq_bottom_or_pos.
+Print Assumptions z_ordinal_lt_succ.
+Print Assumptions z_ordinal_sinter_mem.
+Print Assumptions z_ordinal_minimal_prop_of_exists_aux.
+Print Assumptions z_ordinal_minimal_lt_of_exists.
+Print Assumptions z_ordinal_minimal_prop_of_exists.
+Print Assumptions z_ordinal_minimal_le_of_exists_aux.
+Print Assumptions z_ordinal_minimal_le_of_exists.
+Print Assumptions z_ordinal_exists_minimal.
+Print Assumptions z_ordinal_transfinite_induction.

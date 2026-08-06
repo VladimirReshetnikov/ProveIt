@@ -9,7 +9,7 @@
     definability witness is needed by any theorem below.
 *)
 
-From Stdlib Require Import Logic.Classical_Prop.
+From Stdlib Require Import Logic.Classical_Prop Logic.ProofIrrelevance.
 From Foundation.FirstOrder.SetTheory Require Import Basic Z.
 
 Set Implicit Arguments.
@@ -468,4 +468,386 @@ Proof.
     + subst alpha. destruct Hnonempty as [x Hx].
       exfalso. now apply (@z_not_mem_empty m O x Hx).
     + exact Hmem.
+Qed.
+
+(** Bundled ordinals and the order laws carried by their underlying sets. *)
+Record z_ordinal (m : membership_structure) : Type := {
+  z_ordinal_val : membership_carrier m;
+  z_ordinal_ord : z_is_ordinal z_ordinal_val
+}.
+
+Arguments z_ordinal_val {m} _.
+Arguments z_ordinal_ord {m} _.
+Coercion z_ordinal_val : z_ordinal >-> membership_carrier.
+
+Definition z_ordinal_of_set {m : membership_structure}
+    (x : membership_carrier m) (H : z_is_ordinal x) : z_ordinal m :=
+  {| z_ordinal_val := x; z_ordinal_ord := H |}.
+
+Lemma z_ordinal_ext : forall m (alpha beta : z_ordinal m),
+  z_ordinal_val alpha = z_ordinal_val beta -> alpha = beta.
+Proof.
+  intros m [x Hx] [y Hy] Heq. simpl in Heq. subst y. f_equal.
+  apply proof_irrelevance.
+Qed.
+
+Definition z_ordinal_lt {m : membership_structure}
+    (alpha beta : z_ordinal m) : Prop :=
+  membership_rel (z_ordinal_val alpha) (z_ordinal_val beta).
+
+Definition z_ordinal_le {m : membership_structure}
+    (alpha beta : z_ordinal m) : Prop :=
+  set_model_subset (z_ordinal_val alpha) (z_ordinal_val beta).
+
+Lemma z_ordinal_lt_def : forall m (alpha beta : z_ordinal m),
+  z_ordinal_lt alpha beta <->
+  membership_rel (z_ordinal_val alpha) (z_ordinal_val beta).
+Proof. intros; split; trivial. Qed.
+
+Lemma z_ordinal_le_def : forall m (alpha beta : z_ordinal m),
+  z_ordinal_le alpha beta <->
+  set_model_subset (z_ordinal_val alpha) (z_ordinal_val beta).
+Proof. intros; split; trivial. Qed.
+
+Lemma z_ordinal_lt_irrefl : forall m (O : zermelo_operations m)
+    (alpha : z_ordinal m),
+  ~ z_ordinal_lt alpha alpha.
+Proof.
+  intros m O alpha H. exact (@z_mem_irrefl m O (z_ordinal_val alpha) H).
+Qed.
+
+Lemma z_ordinal_lt_trans : forall m (O : zermelo_operations m)
+    (alpha beta gamma : z_ordinal m),
+  z_ordinal_lt alpha beta -> z_ordinal_lt beta gamma ->
+  z_ordinal_lt alpha gamma.
+Proof.
+  intros m O alpha beta gamma Hab Hbc.
+  exact ((proj1 (z_ordinal_ord gamma)) _ Hbc _ Hab).
+Qed.
+
+Lemma z_ordinal_le_refl : forall m (alpha : z_ordinal m),
+  z_ordinal_le alpha alpha.
+Proof. intros m alpha; apply set_model_subset_refl. Qed.
+
+Lemma z_ordinal_le_trans : forall m (alpha beta gamma : z_ordinal m),
+  z_ordinal_le alpha beta -> z_ordinal_le beta gamma ->
+  z_ordinal_le alpha gamma.
+Proof. intros m alpha beta gamma; apply set_model_subset_trans. Qed.
+
+Lemma z_ordinal_le_antisym : forall m (O : zermelo_operations m)
+    (alpha beta : z_ordinal m),
+  z_ordinal_le alpha beta -> z_ordinal_le beta alpha -> alpha = beta.
+Proof.
+  intros m O alpha beta Hab Hba. apply z_ordinal_ext.
+  apply (@z_subset_antisym m O (z_ordinal_val alpha) (z_ordinal_val beta));
+    assumption.
+Qed.
+
+Lemma z_ordinal_le_total : forall m (O : zermelo_operations m)
+    (alpha beta : z_ordinal m),
+  z_ordinal_le alpha beta \/ z_ordinal_le beta alpha.
+Proof.
+  intros m O alpha beta.
+  apply (@z_ordinal_subset_or_supset m O
+    (z_ordinal_val alpha) (z_ordinal_val beta)
+    (z_ordinal_ord alpha) (z_ordinal_ord beta)).
+Qed.
+
+Lemma z_ordinal_lt_iff_le_and_not_ge : forall m (O : zermelo_operations m)
+    (alpha beta : z_ordinal m),
+  z_ordinal_lt alpha beta <->
+  z_ordinal_le alpha beta /\ ~ z_ordinal_le beta alpha.
+Proof.
+  intros m O alpha beta.
+  apply (@z_ordinal_mem_iff_subset_and_not_subset m O
+    (z_ordinal_val alpha) (z_ordinal_val beta)
+    (z_ordinal_ord alpha) (z_ordinal_ord beta)).
+Qed.
+
+Lemma z_ordinal_le_iff_eq_or_lt : forall m (O : zermelo_operations m)
+    (alpha beta : z_ordinal m),
+  z_ordinal_le alpha beta <->
+  alpha = beta \/ z_ordinal_lt alpha beta.
+Proof.
+  intros m O alpha beta.
+  destruct (z_ordinal_ord alpha) as [Hta Hca].
+  destruct (z_ordinal_ord beta) as [Htb Hcb].
+  split.
+  - intro Hab.
+    destruct (proj1 (@z_ordinal_subset_iff m O
+      (z_ordinal_val alpha) (z_ordinal_val beta)
+      (conj Hta Hca) (conj Htb Hcb)) Hab) as [Heq | Hmem].
+    + left. apply z_ordinal_ext. exact Heq.
+    + right. exact Hmem.
+  - intros [Heq | Hlt].
+    + subst beta. apply z_ordinal_le_refl.
+    + exact ((proj1 (z_ordinal_ord beta)) _ Hlt).
+Qed.
+
+Definition z_ordinal_bottom {m : membership_structure}
+    (O : zermelo_operations m) : z_ordinal m :=
+  @z_ordinal_of_set m (z_empty O) (@z_is_ordinal_empty m O).
+
+Lemma z_ordinal_bottom_val : forall m (O : zermelo_operations m),
+  z_ordinal_val (z_ordinal_bottom O) = z_empty O.
+Proof. intros; reflexivity. Qed.
+
+Lemma z_ordinal_pos_iff_nonempty : forall m (O : zermelo_operations m)
+    (alpha : z_ordinal m),
+  z_ordinal_lt (z_ordinal_bottom O) alpha <->
+  set_model_is_nonempty (z_ordinal_val alpha).
+Proof.
+  intros m O alpha.
+  apply (@z_ordinal_empty_mem_iff_nonempty m O
+    (z_ordinal_val alpha) (z_ordinal_ord alpha)).
+Qed.
+
+Lemma z_ordinal_eq_bottom_or_pos : forall m (O : zermelo_operations m)
+    (alpha : z_ordinal m),
+  alpha = z_ordinal_bottom O \/ z_ordinal_lt (z_ordinal_bottom O) alpha.
+Proof.
+  intros m O alpha.
+  destruct (proj1 (@z_ordinal_subset_iff m O
+    (z_empty O) (z_ordinal_val alpha)
+    (@z_is_ordinal_empty m O) (z_ordinal_ord alpha))
+    (@z_empty_subset m O (z_ordinal_val alpha))) as [Heq | Hmem].
+  - left. apply z_ordinal_ext. symmetry; exact Heq.
+  - right. exact Hmem.
+Qed.
+
+Definition z_ordinal_succ {m : membership_structure}
+    (O : zermelo_operations m) (alpha : z_ordinal m) : z_ordinal m :=
+  @z_ordinal_of_set m (z_successor O (z_ordinal_val alpha))
+    (@z_is_ordinal_successor m O (z_ordinal_val alpha) (z_ordinal_ord alpha)).
+
+Lemma z_ordinal_succ_val : forall m (O : zermelo_operations m)
+    (alpha : z_ordinal m),
+  z_ordinal_val (z_ordinal_succ O alpha) =
+  z_successor O (z_ordinal_val alpha).
+Proof. intros; reflexivity. Qed.
+
+Lemma z_ordinal_lt_succ : forall m (O : zermelo_operations m)
+    (alpha : z_ordinal m),
+  z_ordinal_lt alpha (z_ordinal_succ O alpha).
+Proof. intros; apply z_mem_successor_self. Qed.
+
+Definition z_ordinal_omega {m : membership_structure}
+    (O : zermelo_operations m) : z_ordinal m :=
+  @z_ordinal_of_set m (z_omega O) (@z_is_ordinal_omega m O).
+
+Lemma z_ordinal_separate_member_ord : forall m (O : zermelo_operations m)
+    (alpha : z_ordinal m) (P : membership_carrier m -> Prop)
+    (x : membership_carrier m),
+  membership_rel x (z_separate O P (z_ordinal_val alpha)) ->
+  z_is_ordinal x.
+Proof.
+  intros m O alpha P x Hx.
+  apply (@z_ordinal_of_mem m O (z_ordinal_val alpha) x
+    (z_ordinal_ord alpha)).
+  apply (@z_separate_mem_iff m O P
+    (z_ordinal_val alpha) x) in Hx.
+  exact (proj1 Hx).
+Qed.
+
+Lemma z_ordinal_sinter_mem : forall m (O : zermelo_operations m)
+    (X : membership_carrier m),
+  (forall x, membership_rel x X -> z_is_ordinal x) ->
+  set_model_is_nonempty X ->
+  membership_rel (z_sinter O X) X.
+Proof.
+  intros m O X Hord HX.
+  destruct (classic (membership_rel (z_sinter O X) X)) as [Hmem | Hnot].
+  - exact Hmem.
+  - exfalso.
+    destruct HX as [x0 Hx0].
+    assert (Hself : membership_rel (z_sinter O X) (z_sinter O X)).
+    {
+      apply z_sinter_mem_iff. split.
+      - exists x0. exact Hx0.
+      - intros x HxX.
+        pose proof (@z_sinter_subset_of_mem m O
+          x X HxX) as Hsub.
+        destruct (proj1 (@z_ordinal_subset_iff m O
+          (z_sinter O X) x
+          (@z_ordinal_sinter m O X Hord) (Hord x HxX)) Hsub)
+          as [Heq | Hlt].
+        + subst x. exfalso. apply Hnot. exact HxX.
+        + exact Hlt.
+    }
+    exact (@z_mem_irrefl m O (z_sinter O X) Hself).
+Qed.
+
+Definition z_ordinal_minimal {m : membership_structure}
+    (O : zermelo_operations m) (alpha : z_ordinal m)
+    (P : membership_carrier m -> Prop) : z_ordinal m :=
+  @z_ordinal_of_set m
+    (z_sinter O (z_separate O P (z_ordinal_val alpha)))
+    (@z_ordinal_sinter m O (z_separate O P (z_ordinal_val alpha))
+      (@z_ordinal_separate_member_ord m O alpha P)).
+
+Lemma z_ordinal_minimal_val : forall m (O : zermelo_operations m)
+    (alpha : z_ordinal m) (P : membership_carrier m -> Prop),
+  z_ordinal_val (z_ordinal_minimal O alpha P) =
+  z_sinter O (z_separate O P (z_ordinal_val alpha)).
+Proof. intros; reflexivity. Qed.
+
+Lemma z_ordinal_minimal_bottom_eq : forall m (O : zermelo_operations m)
+    (P : membership_carrier m -> Prop),
+  z_ordinal_minimal O (z_ordinal_bottom O) P =
+  z_ordinal_bottom O.
+Proof.
+  intros m O P. apply z_ordinal_ext.
+  unfold z_ordinal_minimal, z_ordinal_bottom.
+  simpl. rewrite z_separate_empty, z_sinter_empty. reflexivity.
+Qed.
+
+Lemma z_ordinal_minimal_prop_of_exists_aux :
+  forall m (O : zermelo_operations m) (alpha : z_ordinal m)
+    (P : membership_carrier m -> Prop),
+  (exists beta : z_ordinal m,
+    z_ordinal_lt beta alpha /\ P (z_ordinal_val beta)) ->
+  z_ordinal_lt (z_ordinal_minimal O alpha P) alpha /\
+  P (z_ordinal_val (z_ordinal_minimal O alpha P)) /\
+  forall xi : z_ordinal m,
+    z_ordinal_lt xi alpha -> P (z_ordinal_val xi) ->
+    z_ordinal_le (z_ordinal_minimal O alpha P) xi.
+Proof.
+  intros m O alpha P H.
+  set (X := z_separate O P (z_ordinal_val alpha)).
+  assert (HXord : forall x, membership_rel x X -> z_is_ordinal x).
+  {
+    intros x Hx. unfold X in Hx.
+    apply (@z_ordinal_separate_member_ord m O alpha P x Hx).
+  }
+  assert (HXnonempty : set_model_is_nonempty X).
+  {
+    destruct H as [beta [Hlt HP]].
+    exists (z_ordinal_val beta). unfold X.
+    apply z_separate_mem_iff. split; assumption.
+  }
+  pose proof (@z_ordinal_sinter_mem m O X HXord HXnonempty) as HminX.
+  change (membership_rel
+    (z_ordinal_val (z_ordinal_minimal O alpha P)) X) in HminX.
+  apply z_separate_mem_iff in HminX.
+  destruct HminX as [Hmin_alpha HminP].
+  split.
+  - exact Hmin_alpha.
+  - split.
+    + exact HminP.
+    + intros xi Hxi_lt HxiP.
+      change (set_model_subset
+        (z_ordinal_val (z_ordinal_minimal O alpha P))
+        (z_ordinal_val xi)).
+      apply (@z_sinter_subset_of_mem m O
+        (z_ordinal_val xi) X).
+      apply z_separate_mem_iff. split; assumption.
+Qed.
+
+Lemma z_ordinal_minimal_lt_of_exists :
+  forall m (O : zermelo_operations m) (alpha : z_ordinal m)
+    (P : membership_carrier m -> Prop),
+  (exists beta : z_ordinal m,
+    z_ordinal_lt beta alpha /\ P (z_ordinal_val beta)) ->
+  z_ordinal_lt (z_ordinal_minimal O alpha P) alpha.
+Proof.
+  intros m O alpha P H.
+  exact (proj1 (@z_ordinal_minimal_prop_of_exists_aux m O alpha P H)).
+Qed.
+
+Lemma z_ordinal_minimal_prop_of_exists :
+  forall m (O : zermelo_operations m) (alpha : z_ordinal m)
+    (P : membership_carrier m -> Prop),
+  (exists beta : z_ordinal m,
+    z_ordinal_lt beta alpha /\ P (z_ordinal_val beta)) ->
+  P (z_ordinal_val (z_ordinal_minimal O alpha P)).
+Proof.
+  intros m O alpha P H.
+  exact (proj1 (proj2
+    (@z_ordinal_minimal_prop_of_exists_aux m O alpha P H))).
+Qed.
+
+Lemma z_ordinal_minimal_le_of_exists_aux :
+  forall m (O : zermelo_operations m) (alpha : z_ordinal m)
+    (P : membership_carrier m -> Prop),
+  (exists beta : z_ordinal m,
+    z_ordinal_lt beta alpha /\ P (z_ordinal_val beta)) ->
+  forall xi : z_ordinal m,
+    z_ordinal_lt xi alpha -> P (z_ordinal_val xi) ->
+    z_ordinal_le (z_ordinal_minimal O alpha P) xi.
+Proof.
+  intros m O alpha P H.
+  exact (proj2 (proj2
+    (@z_ordinal_minimal_prop_of_exists_aux m O alpha P H))).
+Qed.
+
+Lemma z_ordinal_minimal_le_of_exists :
+  forall m (O : zermelo_operations m) (alpha : z_ordinal m)
+    (P : membership_carrier m -> Prop),
+  (exists beta : z_ordinal m,
+    z_ordinal_lt beta alpha /\ P (z_ordinal_val beta)) ->
+  forall xi : z_ordinal m,
+    P (z_ordinal_val xi) ->
+    z_ordinal_le (z_ordinal_minimal O alpha P) xi.
+Proof.
+  intros m O alpha P H xi HPxi.
+  destruct (classic (z_ordinal_lt xi alpha)) as [Hlt | Hnotlt].
+  - apply (@z_ordinal_minimal_le_of_exists_aux m O alpha P H xi Hlt HPxi).
+  - destruct (@z_ordinal_le_total m O xi alpha) as [Hxi_alpha | Halpha_xi].
+    + destruct (proj1 (@z_ordinal_le_iff_eq_or_lt m O xi alpha)
+        Hxi_alpha) as [Heq | Hlt].
+      * subst xi.
+        apply (proj1 (@z_ordinal_lt_iff_le_and_not_ge m O
+          (z_ordinal_minimal O alpha P) alpha)).
+        apply (@z_ordinal_minimal_lt_of_exists m O alpha P H).
+      * contradiction.
+    + apply z_ordinal_le_trans with alpha; [| exact Halpha_xi].
+      apply (proj1 (@z_ordinal_lt_iff_le_and_not_ge m O
+        (z_ordinal_minimal O alpha P) alpha)).
+      apply (@z_ordinal_minimal_lt_of_exists m O alpha P H).
+Qed.
+
+Lemma z_ordinal_exists_minimal :
+  forall m (O : zermelo_operations m)
+    (P : membership_carrier m -> Prop),
+  (exists alpha : z_ordinal m, P (z_ordinal_val alpha)) ->
+  exists beta : z_ordinal m,
+    P (z_ordinal_val beta) /\
+    forall xi : z_ordinal m, P (z_ordinal_val xi) ->
+      z_ordinal_le beta xi.
+Proof.
+  intros m O P H.
+  destruct H as [alpha Halpha].
+  set (alpha_succ := z_ordinal_succ O alpha).
+  assert (Hex : exists beta : z_ordinal m,
+      z_ordinal_lt beta alpha_succ /\ P (z_ordinal_val beta)).
+  {
+    exists alpha. split; [exact (z_ordinal_lt_succ O alpha) | exact Halpha].
+  }
+  exists (z_ordinal_minimal O alpha_succ P). split.
+  - apply (@z_ordinal_minimal_prop_of_exists m O alpha_succ P Hex).
+  - apply (@z_ordinal_minimal_le_of_exists m O alpha_succ P Hex).
+Qed.
+
+Lemma z_ordinal_transfinite_induction :
+  forall m (O : zermelo_operations m)
+    (P : membership_carrier m -> Prop),
+  (forall alpha : z_ordinal m,
+    (forall beta : z_ordinal m,
+      z_ordinal_lt beta alpha -> P (z_ordinal_val beta)) ->
+    P (z_ordinal_val alpha)) ->
+  forall alpha : z_ordinal m, P (z_ordinal_val alpha).
+Proof.
+  intros m O P IH alpha.
+  destruct (classic (P (z_ordinal_val alpha))) as [Halpha | Hnot].
+  - exact Halpha.
+  - pose proof (@z_ordinal_exists_minimal m O
+      (fun x => ~ P x)
+      (ex_intro _ alpha Hnot)) as Hbad.
+    destruct Hbad as [beta [Hnotbeta Hminimal]].
+    exfalso. apply Hnotbeta. apply IH. intros xi Hlt.
+    destruct (classic (P (z_ordinal_val xi))) as [Hxi | Hnotxi].
+    + exact Hxi.
+    + exfalso.
+      apply (proj2 (proj1 (@z_ordinal_lt_iff_le_and_not_ge m O xi beta) Hlt)).
+      apply Hminimal; exact Hnotxi.
 Qed.
