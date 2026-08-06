@@ -601,3 +601,181 @@ Print Assumptions z_mem_compose_iff.
 Print Assumptions z_kpair_mem_compose_iff.
 Print Assumptions z_compose_function.
 Print Assumptions z_compose_injective.
+
+Definition z_value {m} (O : zermelo_operations m)
+    (f x : membership_carrier m) : membership_carrier m :=
+  z_separate O
+    (fun z => exists y, membership_rel z y /\
+      membership_rel (z_kpair O x y) f)
+    (z_sunion O (z_range O f)).
+
+Lemma z_value_mem_iff : forall m (O : zermelo_operations m)
+    (f x z : membership_carrier m),
+  membership_rel z (z_value O f x) <->
+  membership_rel z (z_sunion O (z_range O f)) /\
+  exists y, membership_rel z y /\ membership_rel (z_kpair O x y) f.
+Proof.
+  intros m O f x z. unfold z_value. apply z_separate_mem_iff.
+Qed.
+
+Lemma z_value_eq_of_mem_function : forall m (O : zermelo_operations m)
+    (f X Y x : membership_carrier m),
+  membership_rel f (z_function O Y X) -> membership_rel x X ->
+  exists y, membership_rel (z_kpair O x y) f /\
+    z_value O f x = y.
+Proof.
+  intros m O f X Y x Hf Hx.
+  destruct (@z_exists_unique_of_mem_function m O f X Y Hf x Hx)
+    as [y [Hxy Hunique]].
+  exists y. split; [exact Hxy |]. apply (z_extensionality O). intro z. split.
+  - intro Hz. apply z_value_mem_iff in Hz. destruct Hz as [_ [y' [Hzy' Hxy']]].
+    assert (Heq : y' = y). { apply Hunique. exact Hxy'. }
+    now subst y'.
+  - intro Hzy. apply z_value_mem_iff. split.
+    + apply z_sunion_mem_iff. exists y. split.
+      * exact (@z_mem_range_of_kpair_mem m O f x y Hxy).
+      * exact Hzy.
+    + now exists y.
+Qed.
+
+Lemma z_value_mem_range : forall m (O : zermelo_operations m)
+    (f X Y x : membership_carrier m),
+  membership_rel f (z_function O Y X) -> membership_rel x X ->
+  membership_rel (z_value O f x) (z_range O f).
+Proof.
+  intros m O f X Y x Hf Hx.
+  destruct (z_value_eq_of_mem_function Hf Hx) as [y [Hxy Heq]].
+  rewrite Heq. exact (@z_mem_range_of_kpair_mem m O f x y Hxy).
+Qed.
+
+Definition z_restrict {m} (O : zermelo_operations m)
+    (R A : membership_carrier m) : membership_carrier m :=
+  z_inter O R (z_product O A (z_range O R)).
+
+Lemma z_restrict_mem_iff : forall m (O : zermelo_operations m)
+    (R A p : membership_carrier m),
+  membership_rel p (z_restrict O R A) <->
+  membership_rel p R /\
+  exists x, membership_rel x A /\ exists y, p = z_kpair O x y.
+Proof.
+  intros m O R A p. unfold z_restrict. rewrite z_inter_mem_iff. split.
+  - intros [HpR HpProd]. apply z_product_mem_iff in HpProd.
+    destruct HpProd as [x [Hx [y [Hy Heq]]]].
+    split; [exact HpR |]. exists x. split; [exact Hx |]. exists y. exact Heq.
+  - intros [HpR [x [Hx [y Heq]]]]. subst p. split; [exact HpR |].
+    apply z_kpair_mem_product_iff. split; [exact Hx |].
+    exact (@z_mem_range_of_kpair_mem m O R x y HpR).
+Qed.
+
+Lemma z_restrict_subset : forall m (O : zermelo_operations m)
+    (R A : membership_carrier m),
+  set_model_subset (z_restrict O R A) R.
+Proof. intros m O R A p Hp. now apply z_restrict_mem_iff in Hp. Qed.
+
+Lemma z_domain_restrict_eq : forall m (O : zermelo_operations m)
+    (R A : membership_carrier m),
+  z_domain O (z_restrict O R A) =
+  z_inter O (z_domain O R) A.
+Proof.
+  intros m O R A. apply (z_extensionality O). intro x. split.
+  - intro Hx. apply z_domain_mem_iff in Hx. destruct Hx as [y Hy].
+    apply z_restrict_mem_iff in Hy.
+    destruct Hy as [HpR [x' [HxA [y' Heq]]]].
+    apply z_kpair_injective in Heq. destruct Heq as [Hxx Hyy].
+    apply z_inter_mem_iff. split.
+    + exact (@z_mem_domain_of_kpair_mem m O R x y HpR).
+    + rewrite <- Hxx in HxA. exact HxA.
+  - intro Hx. apply z_inter_mem_iff in Hx. apply z_domain_mem_iff.
+    destruct (z_domain_mem_iff O R x) as [Hdom _].
+    destruct (Hdom (proj1 Hx)) as [y Hy]. exists y.
+    apply z_restrict_mem_iff. split; [exact Hy |].
+    exists x. split; [exact (proj2 Hx) |]. exists y. reflexivity.
+Qed.
+
+Lemma z_kpair_mem_restrict_iff : forall m (O : zermelo_operations m)
+    (R A x y : membership_carrier m),
+  membership_rel (z_kpair O x y) (z_restrict O R A) <->
+  membership_rel (z_kpair O x y) R /\ membership_rel x A.
+Proof.
+  intros m O R A x y. split.
+  - intro H. apply z_restrict_mem_iff in H. destruct H as [HR [x' [Hx' [y' Heq]]]].
+    apply z_kpair_injective in Heq. now destruct Heq as [-> ->].
+  - intros [HR Hx]. apply z_restrict_mem_iff. split; [exact HR |].
+    exists x. split; [exact Hx |]. exists y. reflexivity.
+Qed.
+
+Lemma z_restrict_restrict_eq_restrict_inter : forall m (O : zermelo_operations m)
+    (R A B : membership_carrier m),
+  z_restrict O (z_restrict O R A) B =
+  z_restrict O R (z_inter O A B).
+Proof.
+  intros m O R A B. apply (z_extensionality O). intro p. split.
+  - intro Hp. apply z_restrict_mem_iff in Hp.
+    destruct Hp as [HpInner [x [HxB [y Heq]]]].
+    apply z_restrict_mem_iff in HpInner.
+    destruct HpInner as [HpR [x' [HxA [y' HeqInner]]]].
+    assert (Hkp : z_kpair O x y = z_kpair O x' y').
+    { rewrite <- Heq. exact HeqInner. }
+    apply z_kpair_injective in Hkp. destruct Hkp as [Hxx Hyy].
+    subst x'. subst y'.
+    subst p. apply z_restrict_mem_iff. split; [exact HpR |].
+    exists x. split.
+    + apply z_inter_mem_iff. split; [exact HxA | exact HxB].
+    + exists y. reflexivity.
+  - intro Hp. apply z_restrict_mem_iff in Hp.
+    destruct Hp as [HpR [x [HxAB [y Heq]]]].
+    apply z_inter_mem_iff in HxAB. destruct HxAB as [HxA HxB].
+    subst p. apply z_restrict_mem_iff. split.
+    + apply z_restrict_mem_iff. split; [exact HpR |].
+      exists x. split; [exact HxA |]. exists y. reflexivity.
+    + exists x. split; [exact HxB |]. exists y. reflexivity.
+Qed.
+
+Lemma z_restrict_restrict_of_subset : forall m (O : zermelo_operations m)
+    (R A B : membership_carrier m),
+  set_model_subset B A -> z_restrict O (z_restrict O R A) B = z_restrict O R B.
+Proof.
+  intros m O R A B HBA. apply (z_extensionality O). intro p. split;
+    intro Hp; apply z_restrict_mem_iff in Hp.
+  - destruct Hp as [HpInner [x [HxB [y Heq]]]].
+    apply z_restrict_mem_iff in HpInner.
+    destruct HpInner as [HpR [x' [HxA [y' HeqInner]]]].
+    assert (Hkp : z_kpair O x y = z_kpair O x' y').
+    { rewrite <- Heq. exact HeqInner. }
+    apply z_kpair_injective in Hkp. destruct Hkp as [Hxx Hyy].
+    subst x'. subst y'.
+    subst p. apply z_restrict_mem_iff. split; [exact HpR |].
+    exists x. split; [exact HxB |]. exists y. reflexivity.
+  - destruct Hp as [HpR [x [HxB [y Heq]]]]. subst p. apply z_restrict_mem_iff.
+    split.
+    + apply z_restrict_mem_iff. split; [exact HpR |].
+      exists x. split; [exact (HBA x HxB) |]. exists y. reflexivity.
+    + exists x. split; [exact HxB |]. exists y. reflexivity.
+Qed.
+
+Definition z_image {m} (O : zermelo_operations m)
+    (R A : membership_carrier m) : membership_carrier m :=
+  z_range O (z_restrict O R A).
+
+Lemma z_image_mem_iff : forall m (O : zermelo_operations m)
+    (R A y : membership_carrier m),
+  membership_rel y (z_image O R A) <->
+  exists x, membership_rel x A /\ membership_rel (z_kpair O x y) R.
+Proof.
+  intros m O R A y. unfold z_image. rewrite z_range_mem_iff. split.
+  - intros [x Hx]. apply z_restrict_mem_iff in Hx.
+    destruct Hx as [HpR [x' [HxA [y' Heq]]]]. apply z_kpair_injective in Heq.
+    destruct Heq as [Hxx Hyy].
+    rewrite <- Hxx in HxA.
+    exists x. split; [exact HxA | exact HpR].
+  - intros [x [HxA Hxy]]. exists x.
+    apply z_restrict_mem_iff. split; [exact Hxy |].
+    exists x. split; [exact HxA |]. exists y. reflexivity.
+Qed.
+
+Print Assumptions z_value_mem_iff.
+Print Assumptions z_value_mem_range.
+Print Assumptions z_restrict_mem_iff.
+Print Assumptions z_domain_restrict_eq.
+Print Assumptions z_restrict_restrict_eq_restrict_inter.
+Print Assumptions z_image_mem_iff.
