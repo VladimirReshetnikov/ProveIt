@@ -52,6 +52,7 @@ From Foundation.FirstOrder.Arithmetic.Exponential Require Import
   Pow2 PPow2 Exp Bit Log.
 From Foundation.FirstOrder.Arithmetic Require Import Exponential.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
@@ -5160,6 +5161,25 @@ Print Assumptions nat_smash_monotone.
 Print Assumptions nat_bexp_eq_smash.
 Print Assumptions nat_smash_two_mul.
 Print Assumptions nat_smash_two_mul_le_square.
+Check positive_nuon.
+Check nat_nuon.
+Check nat_Nuon.
+Print Assumptions positive_nuon_pos.
+Print Assumptions positive_nuon_le_size.
+Print Assumptions nat_nuon_zero.
+Print Assumptions nat_nuon_one.
+Print Assumptions nat_nuon_double.
+Print Assumptions nat_nuon_double_add_one.
+Print Assumptions nat_nuon_pos_iff.
+Print Assumptions nat_nuon_eq_zero_iff.
+Print Assumptions nat_nuon_le_length.
+Print Assumptions nat_nuon_le_self.
+Print Assumptions nat_Nuon_exists_unique.
+Print Assumptions nat_Nuon_functional.
+Print Assumptions nat_Nuon_graph.
+Print Assumptions nat_nuon_pow2.
+Print Assumptions nat_nuon_under.
+Print Assumptions nat_nuon_singleton.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.
