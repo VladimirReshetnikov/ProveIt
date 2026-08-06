@@ -5477,9 +5477,21 @@ Print Assumptions z_kpair_mem_compose_iff.
 Print Assumptions z_compose_subset_product.
 Print Assumptions z_compose_function.
 Check z_injective.
-Print Assumptions z_injective_empty.
-Print Assumptions z_compose_injective.
-Check membership_well_founded.
+  Print Assumptions z_injective_empty.
+  Print Assumptions z_compose_injective.
+  Check z_value.
+  Print Assumptions z_value_mem_iff.
+  Print Assumptions z_value_mem_range.
+  Check z_restrict.
+  Print Assumptions z_restrict_mem_iff.
+  Print Assumptions z_restrict_subset.
+  Print Assumptions z_domain_restrict_eq.
+  Print Assumptions z_kpair_mem_restrict_iff.
+  Print Assumptions z_restrict_restrict_eq_restrict_inter.
+  Print Assumptions z_restrict_restrict_of_subset.
+  Check z_image.
+  Print Assumptions z_image_mem_iff.
+  Check membership_well_founded.
 Check transitive_model.
 Print Assumptions well_founded_predicate_subtype.
 Print Assumptions transitive_model_well_founded.
