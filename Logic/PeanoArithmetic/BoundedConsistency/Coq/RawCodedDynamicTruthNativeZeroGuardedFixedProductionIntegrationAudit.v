@@ -1,0 +1,17 @@
+(** Assumption audit for fixed guarded rows through native branch roots. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroGuardedFixedProductionIntegration.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedFixedProductionIntegration.
+
+Check
+  raw_dynamicTruthImpGuardedEvidenceRoots_on_witnessed_extension_of_identified_fixed_productions_or_refutations.
+Check
+  raw_dynamicTruthImpGuardedBranchRoots_on_witnessed_extension_of_parent_and_identified_fixed_productions_or_refutations.
+
+Print Assumptions
+  raw_dynamicTruthImpGuardedEvidenceRoots_on_witnessed_extension_of_identified_fixed_productions_or_refutations.
+Print Assumptions
+  raw_dynamicTruthImpGuardedBranchRoots_on_witnessed_extension_of_parent_and_identified_fixed_productions_or_refutations.
