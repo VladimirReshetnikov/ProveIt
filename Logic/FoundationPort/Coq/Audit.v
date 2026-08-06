@@ -54,6 +54,7 @@ From Foundation.FirstOrder.Arithmetic Require Import Exponential.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
+From Foundation.FirstOrder.SetTheory.Basic Require Import Model.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -5180,6 +5181,32 @@ Print Assumptions nat_Nuon_graph.
 Print Assumptions nat_nuon_pow2.
 Print Assumptions nat_nuon_under.
 Print Assumptions nat_nuon_singleton.
+Check membership_structure.
+Check membership_carrier.
+Check membership_rel.
+Check set_model_subset.
+Check set_model_is_empty.
+Check set_model_is_nonempty.
+Check set_model_strict_subset.
+Check membership_extensional.
+Print Assumptions set_model_subset_def.
+Print Assumptions set_model_subset_refl.
+Print Assumptions set_model_subset_trans.
+Print Assumptions set_model_subset_antisym.
+Print Assumptions set_model_empty_not_nonempty.
+Print Assumptions set_model_nonempty_not_empty.
+Print Assumptions set_model_not_nonempty_iff_empty.
+Print Assumptions set_model_not_empty_iff_nonempty.
+Print Assumptions set_model_strict_subset_def.
+Print Assumptions set_model_strict_subset_irrefl.
+Print Assumptions set_model_strict_subset_subset.
+Print Assumptions set_model_strict_subset_asym.
+Print Assumptions set_model_strict_subset_trans.
+Check membership_submodel.
+Print Assumptions membership_submodel_rel_iff.
+Print Assumptions membership_submodel_subset_iff.
+Print Assumptions membership_submodel_empty_iff.
+Print Assumptions membership_submodel_nonempty_iff.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.
