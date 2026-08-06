@@ -5,7 +5,8 @@ From PolynomialFormulas Require Import
   SexticFactorCompleteness
   QuinticRecursiveFactor QuinticArithmeticFactorSearch SexticFactorSelector
   QuinticF20Data QuinticSolvableCriterion QuinticThetaOrbit
-  QuinticThetaValues QuinticChapman QuinticGaloisAction QuinticGaloisCriterion
+  QuinticThetaValues QuinticChapman QuinticGaloisAction QuinticFiveCycle
+  QuinticGaloisCriterion
   QuinticThetaGaloisBridge
   SexticSparsePolynomials SexticSparseResolvents SexticSparseSymmetricSearch
   SexticPowerSumSymmetric SexticNewtonPowerSums SexticResolventSymmetry
@@ -21,7 +22,8 @@ From PolynomialFormulas Require Import
   SexticVietaBridge
   SexticDescriptorGaloisCriterion
   SexticReducibleSemantics SexticMonicizationSemantics
-  ReducibleRadicalSemantics SexticReducibleDecision SexticMonicDecision
+  ReducibleRadicalSemantics QuinticCanonicalDecision
+  SexticReducibleDecision SexticMonicDecision SexticConcreteDecision
   SexticRadicalDecidability.
 
 (** Kernel-assumption audit for the degree-one-through-four solver theorems
@@ -46,6 +48,7 @@ Import PolynomialFormulasQuinticThetaOrbit.
 Import PolynomialFormulasQuinticThetaValues.
 Import PolynomialFormulasQuinticChapman.
 Import PolynomialFormulasQuinticGaloisAction.
+Import PolynomialFormulasQuinticFiveCycle.
 Import PolynomialFormulasQuinticGaloisCriterion.
 Import PolynomialFormulasQuinticThetaGaloisBridge.
 Import PolynomialFormulasSexticSparsePolynomials.
@@ -70,8 +73,10 @@ Import PolynomialFormulasSexticDescriptorGaloisCriterion.
 Import PolynomialFormulasSexticReducibleSemantics.
 Import PolynomialFormulasSexticMonicizationSemantics.
 Import PolynomialFormulasReducibleRadicalSemantics.
+Import PolynomialFormulasQuinticCanonicalDecision.
 Import PolynomialFormulasSexticReducibleDecision.
 Import PolynomialFormulasSexticMonicDecision.
+Import PolynomialFormulasSexticConcreteDecision.
 Import PolynomialFormulasSexticRadicalDecidability.
 
 Check solve_linear_correct.
@@ -117,12 +122,17 @@ Check theta_table_orbit_exhaustive_exists.
 Check quintic_scalar_resolvent_permute.
 Check quintic_scalar_resolvent_rootP.
 Check quintic_theta_value_injective_of_five_cycle_automorphism.
+Check transitive_S5_contains_conjugate_five_cycle.
+Check irreducible_quintic_five_cycle_automorphism.
 Check quintic_root_tuple_injective.
 Check quintic_galois_image_transitive.
 Check quintic_galois_image_solvableE.
 Check quintic_galois_solvable_F20b.
 Check contained_in_conjugate_F20b_theta_orbitE.
 Check quintic_galois_solvable_iff_stable_theta_orbit.
+Check canonical_quintic_theta_value_injective.
+Check canonical_irreducible_quintic_scaled_resolvent_solvableP.
+Check quintic_radicalP.
 Check sparse_equivalentbP.
 Check sparse_equivalentb_eval.
 Check size_pair_sparse_resolvent.
@@ -217,6 +227,10 @@ Check irreducible_sextic_radical_branchP.
 Check monic_sextic_radical_decisionP.
 Check integer_sextic_radical_decisionP.
 Check all_roots_radical_sextic_int_decidable.
+Check PolynomialFormulasSexticConcreteDecision.monic_sextic_radicalP.
+Check PolynomialFormulasSexticConcreteDecision.integer_sextic_radicalP.
+Check PolynomialFormulasSexticConcreteDecision.integer_polynomial_is_radical_solvable_sexticP.
+Check PolynomialFormulasSexticConcreteDecision.integer_polynomial_is_radical_solvable_sextic_decidable.
 Check all_roots_radical_sextic_int_semantic_decidable.
 Check sextic_radical_semantic_codeP.
 
@@ -263,12 +277,17 @@ Print Assumptions theta_table_orbit_exhaustive_exists.
 Print Assumptions quintic_scalar_resolvent_permute.
 Print Assumptions quintic_scalar_resolvent_rootP.
 Print Assumptions quintic_theta_value_injective_of_five_cycle_automorphism.
+Print Assumptions transitive_S5_contains_conjugate_five_cycle.
+Print Assumptions irreducible_quintic_five_cycle_automorphism.
 Print Assumptions quintic_root_tuple_injective.
 Print Assumptions quintic_galois_image_transitive.
 Print Assumptions quintic_galois_image_solvableE.
 Print Assumptions quintic_galois_solvable_F20b.
 Print Assumptions contained_in_conjugate_F20b_theta_orbitE.
 Print Assumptions quintic_galois_solvable_iff_stable_theta_orbit.
+Print Assumptions canonical_quintic_theta_value_injective.
+Print Assumptions canonical_irreducible_quintic_scaled_resolvent_solvableP.
+Print Assumptions quintic_radicalP.
 Print Assumptions sparse_equivalentbP.
 Print Assumptions sparse_equivalentb_eval.
 Print Assumptions size_pair_sparse_resolvent.
@@ -363,5 +382,9 @@ Print Assumptions irreducible_sextic_radical_branchP.
 Print Assumptions monic_sextic_radical_decisionP.
 Print Assumptions integer_sextic_radical_decisionP.
 Print Assumptions all_roots_radical_sextic_int_decidable.
+Print Assumptions PolynomialFormulasSexticConcreteDecision.monic_sextic_radicalP.
+Print Assumptions PolynomialFormulasSexticConcreteDecision.integer_sextic_radicalP.
+Print Assumptions PolynomialFormulasSexticConcreteDecision.integer_polynomial_is_radical_solvable_sexticP.
+Print Assumptions PolynomialFormulasSexticConcreteDecision.integer_polynomial_is_radical_solvable_sextic_decidable.
 Print Assumptions all_roots_radical_sextic_int_semantic_decidable.
 Print Assumptions sextic_radical_semantic_codeP.
