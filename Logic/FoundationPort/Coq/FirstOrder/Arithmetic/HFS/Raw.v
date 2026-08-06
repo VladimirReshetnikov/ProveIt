@@ -105,6 +105,25 @@ Proof.
     rewrite Hu, hfs_mem_code_big_union_iff. reflexivity.
 Qed.
 
+Lemma hfs_code_big_union_empty :
+  hfs_code_big_union hfs_empty = hfs_empty.
+Proof.
+  apply hfs_extensionality. intro x.
+  rewrite hfs_mem_code_big_union_iff, hfs_mem_empty_iff. split.
+  - intros [t [Ht _]]. now apply hfs_not_mem_empty in Ht.
+  - intro H. contradiction.
+Qed.
+
+Lemma hfs_code_big_union_subset_of_subset : forall left right,
+  hfs_subset left right ->
+  hfs_subset (hfs_code_big_union left) (hfs_code_big_union right).
+Proof.
+  intros left right Hsub x Hx.
+  apply hfs_mem_code_big_union_iff in Hx.
+  destruct Hx as [t [Ht Hxt]]. apply hfs_mem_code_big_union_iff.
+  exists t. split; [apply (Hsub t); exact Ht|exact Hxt].
+Qed.
+
 Definition hfs_code_big_inter (s : hfs_code) : hfs_code :=
   match hfs_code_elements s with
   | [] => hfs_empty
@@ -197,6 +216,24 @@ Proof.
     rewrite Hu, hfs_mem_code_product_iff. reflexivity.
 Qed.
 
+Lemma hfs_code_product_empty_left : forall right,
+  hfs_code_product hfs_empty right = hfs_empty.
+Proof.
+  intro right. apply hfs_extensionality. intro p.
+  rewrite hfs_mem_code_product_iff, hfs_mem_empty_iff. split.
+  - intros [x [Hx _]]. now apply hfs_not_mem_empty in Hx.
+  - intro H. exact (False_rect _ H).
+Qed.
+
+Lemma hfs_code_product_empty_right : forall left,
+  hfs_code_product left hfs_empty = hfs_empty.
+Proof.
+  intro left. apply hfs_extensionality. intro p.
+  rewrite hfs_mem_code_product_iff, hfs_mem_empty_iff. split.
+  - intros [x [_ [y [Hy _]]]]. now apply hfs_not_mem_empty in Hy.
+  - intro H. exact (False_rect _ H).
+Qed.
+
 Definition hfs_code_domain (relation : hfs_code) : hfs_code :=
   hfs_list_domain (hfs_code_elements relation).
 
@@ -225,6 +262,15 @@ Proof.
     rewrite Hd, hfs_mem_code_domain_iff. reflexivity.
 Qed.
 
+Lemma hfs_code_domain_empty :
+  hfs_code_domain hfs_empty = hfs_empty.
+Proof.
+  apply hfs_extensionality. intro x. rewrite hfs_mem_code_domain_iff.
+  rewrite hfs_mem_empty_iff. split.
+  - intros [y Hy]. now apply hfs_not_mem_empty in Hy.
+  - intro H. exact (False_rect _ H).
+Qed.
+
 Definition hfs_code_range (relation : hfs_code) : hfs_code :=
   hfs_list_range (hfs_code_elements relation).
 
@@ -251,6 +297,15 @@ Proof.
   - intro y. apply hfs_mem_code_range_iff.
   - intros r Hr. apply hfs_extensionality. intro y.
     rewrite Hr, hfs_mem_code_range_iff. reflexivity.
+Qed.
+
+Lemma hfs_code_range_empty :
+  hfs_code_range hfs_empty = hfs_empty.
+Proof.
+  apply hfs_extensionality. intro y. rewrite hfs_mem_code_range_iff.
+  rewrite hfs_mem_empty_iff. split.
+  - intros [x Hx]. now apply hfs_not_mem_empty in Hx.
+  - intro H. exact (False_rect _ H).
 Qed.
 
 (** * Raw relation restriction, images, and mappings *)
@@ -612,14 +667,20 @@ Print Assumptions hfs_mem_code_elements.
 Print Assumptions hfs_code_elements_nodup.
 Print Assumptions hfs_mem_code_big_union_iff.
 Print Assumptions hfs_code_big_union_existsUnique.
+Print Assumptions hfs_code_big_union_empty.
+Print Assumptions hfs_code_big_union_subset_of_subset.
 Print Assumptions hfs_mem_code_big_inter_iff.
 Print Assumptions hfs_code_big_inter_existsUnique.
 Print Assumptions hfs_mem_code_product_iff.
 Print Assumptions hfs_code_product_existsUnique.
+Print Assumptions hfs_code_product_empty_left.
+Print Assumptions hfs_code_product_empty_right.
 Print Assumptions hfs_mem_code_domain_iff.
 Print Assumptions hfs_code_domain_existsUnique.
+Print Assumptions hfs_code_domain_empty.
 Print Assumptions hfs_mem_code_range_iff.
 Print Assumptions hfs_code_range_existsUnique.
+Print Assumptions hfs_code_range_empty.
 Print Assumptions hfs_mem_code_image_iff.
 Print Assumptions hfs_code_image_existsUnique.
 Print Assumptions hfs_code_image_empty.
