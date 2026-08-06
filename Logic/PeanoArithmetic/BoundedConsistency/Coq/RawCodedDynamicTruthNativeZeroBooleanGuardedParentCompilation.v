@@ -236,6 +236,62 @@ Proof.
   split; assumption.
 Qed.
 
+(** Proof-root counterpart of the preceding endpoint assembly.  The two
+    shell premises have already been renamed through the five constructor
+    binders and proved under an arbitrary adequate prefix.  Their endpoint
+    laws may grow independent finite PA witness tails; the synchronized
+    renaming-natural compiler merges those tails internally. *)
+Theorem
+    raw_guardedParentEndpointShift5Roots_under_prefix_of_renamed_roots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      baseWitnessList baseContext prefix restrictedRoot ruleRoot,
+  RawCodedTemplatePrefixAtomicallyAdequate M
+    (rawDirectStructuralTemplateTranslation M hPA inputs) prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext prefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate))
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext prefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise))
+    ruleRoot ->
+  exists targetWitnessList targetContext atomicRoot domainRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext prefix)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename (templateShiftRenamingMany 5)
+          coqStrongStepProofEndpointAtomicAdequacyConclusion)) atomicRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext prefix)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename (templateShiftRenamingMany 5)
+          coqStrongStepProofEndpointQuantifierBoundedConclusion)) domainRoot.
+Proof.
+  intros M hPA inputs baseWitnessList baseContext prefix
+    restrictedRoot ruleRoot hprefix hbase hrestricted hrule.
+  exact
+    (raw_codedPALocalProof_strongStepEndpointEvidence_renamed_of_restricted_and_rule_roots_on_witnessed_tail_under_prefix
+      M hPA inputs (templateShiftRenamingMany 5)
+      baseWitnessList baseContext prefix restrictedRoot ruleRoot
+      hprefix hbase hrestricted hrule).
+Qed.
+
 (** The Boolean parent formulas are the implication parent formulas at the
     same coordinates.  Only the two guard assumptions in the context differ. *)
 Theorem raw_dynamicTruthBooleanGuardedParentEndpointRoots_of_template_assumptions :
@@ -289,6 +345,112 @@ Proof.
       htarget & hincluded & hatomic & hdomain).
   rewrite <- coqDynamicTruthBooleanGuardedDeepPrefix_split
     in hatomic, hdomain.
+  rewrite
+    (coqDynamicTruthBooleanDirectChildAtomicPremiseTemplate_eq_imp
+      constructor
+      coqDynamicTruthBooleanGuardedLevelTerm
+      coqDynamicTruthBooleanGuardedParentTerm
+      coqDynamicTruthBooleanGuardedLeftTerm
+      coqDynamicTruthBooleanGuardedRightTerm
+      coqDynamicTruthBooleanGuardedChildTerm).
+  unfold coqDynamicTruthBooleanGuardedLevelTerm,
+    coqDynamicTruthBooleanGuardedParentTerm,
+    coqDynamicTruthBooleanGuardedLeftTerm,
+    coqDynamicTruthBooleanGuardedRightTerm,
+    coqDynamicTruthBooleanGuardedChildTerm.
+  rewrite coqDynamicTruthImpGuardedParentAtomicTemplate_eq_endpoint_shift5.
+  exists targetWitnessList, targetContext, atomicRoot, domainRoot.
+  split; [exact htarget |].
+  split; [exact hincluded |].
+  split; [exact hatomic |].
+  rewrite
+    (coqDynamicTruthBooleanDirectChildDomainPremiseTemplate_eq_imp
+      constructor
+      coqDynamicTruthImpGuardedLevelTerm
+      coqDynamicTruthImpGuardedParentTerm
+      coqDynamicTruthImpGuardedLeftTerm
+      coqDynamicTruthImpGuardedRightTerm
+      coqDynamicTruthImpGuardedChildTerm).
+  rewrite
+    (raw_coqDynamicTruthImpGuardedParentDomain_eq_endpoint_shift5
+      M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+      hidentification).
+  exact hdomain.
+Qed.
+
+(** Boolean specialization of the renamed proof-root endpoint.  Unlike the
+    assumption-membership wrapper, this theorem remains valid after the
+    surrounding direct shell has projected and transported its premise roots
+    through the five constructor binders. *)
+Theorem
+    raw_dynamicTruthBooleanGuardedParentEndpointRoots_of_renamed_restricted_and_rule_roots :
+    forall constructor (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      baseWitnessList baseContext restrictedRoot ruleRoot,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext
+      (coqDynamicTruthBooleanGuardedDeepPrefix constructor []))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate))
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext
+      (coqDynamicTruthBooleanGuardedDeepPrefix constructor []))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise))
+    ruleRoot ->
+  exists targetWitnessList targetContext atomicRoot domainRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (coqDynamicTruthBooleanGuardedDeepPrefix constructor []))
+      (rawDirectTemplateFormula inputs
+        (coqDynamicTruthBooleanDirectChildAtomicPremiseTemplate constructor
+          coqDynamicTruthBooleanGuardedLevelTerm
+          coqDynamicTruthBooleanGuardedParentTerm
+          coqDynamicTruthBooleanGuardedLeftTerm
+          coqDynamicTruthBooleanGuardedRightTerm
+          coqDynamicTruthBooleanGuardedChildTerm)) atomicRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (coqDynamicTruthBooleanGuardedDeepPrefix constructor []))
+      (rawDirectTemplateFormula inputs
+        (coqDynamicTruthBooleanDirectChildDomainPremiseTemplate constructor
+          coqDynamicTruthBooleanGuardedLevelTerm
+          coqDynamicTruthBooleanGuardedParentTerm
+          coqDynamicTruthBooleanGuardedLeftTerm
+          coqDynamicTruthBooleanGuardedRightTerm
+          coqDynamicTruthBooleanGuardedChildTerm)) domainRoot.
+Proof.
+  intros constructor M hPA inputs sigmaDomain piDomain sigmaEvidence
+    piEvidence baseWitnessList baseContext restrictedRoot ruleRoot
+    hidentification hbase hrestricted hrule.
+  destruct
+    (raw_guardedParentEndpointShift5Roots_under_prefix_of_renamed_roots
+      M hPA inputs baseWitnessList baseContext
+      (coqDynamicTruthBooleanGuardedDeepPrefix constructor [])
+      restrictedRoot ruleRoot
+      (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
+        M hPA inputs
+        (coqDynamicTruthBooleanGuardedDeepPrefix constructor []))
+      hbase hrestricted hrule) as
+    (targetWitnessList & targetContext & atomicRoot & domainRoot &
+      htarget & hincluded & hatomic & hdomain).
   rewrite
     (coqDynamicTruthBooleanDirectChildAtomicPremiseTemplate_eq_imp
       constructor
