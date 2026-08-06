@@ -14,14 +14,21 @@ From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA.
 From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
+  RawCodedContextLists
+  RawCodedSyntaxConstructors
   RawCodedPALocalProofWitnessedContextMerge
+  RawCodedPAGrowingTemplateRebase
   RawCodedLtSuccCasesProofCompilation
   RawCodedTemplateProofCompiler
+  RawCodedTemplateFormulaAtomicAdequacy
+  RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateBottomDirectStructuralInputs
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
+  RawCodedStrongStepPredecessorGlobalRowEvidenceCompilation
   RawCodedDynamicTruthLocalCollisionMatrixAssembly
+  RawCodedDynamicTruthBooleanBranchExclusivity
   RawCodedDynamicTruthPredecessorStateProjectionCompilation
   RawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation
   RawCodedDynamicTruthImpGuardedBranchExclusivity
@@ -47,14 +54,21 @@ Import PA.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedContextLists.
+Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import PABoundedRawCodedPAGrowingTemplateRebase.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateFormulaAtomicAdequacy.
+Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
+Import PABoundedRawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
 Import PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssembly.
+Import PABoundedRawCodedDynamicTruthBooleanBranchExclusivity.
 Import PABoundedRawCodedDynamicTruthPredecessorStateProjectionCompilation.
 Import PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.
 Import PABoundedRawCodedDynamicTruthImpGuardedBranchExclusivity.
@@ -391,6 +405,83 @@ Definition
 Arguments
   RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnWitnessedBase
   M hPA : clear implicits.
+
+(** Any historical aligned producer can be consumed at the retained-prefix
+    boundary by ordinary weakening.  This compatibility direction is valid
+    because the producer has already selected a witnessed target PA context;
+    adding translated caller assumptions only enlarges that context.  It is
+    extracted here so the three root transports are not repeated by every
+    dependency-package adapter. *)
+Theorem
+    raw_dynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnWitnessedBase_of_plain :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerOnWitnessedBase
+    M ->
+  RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnWitnessedBase
+    M hPA.
+Proof.
+  intros M hPA haligned tail predecessorLevel baseContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi aligned sourceWitnessList
+    callerPrefix hsourceWitnessed _hrestrictedIn _hruleIn.
+  destruct
+    (haligned tail predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned sourceWitnessList
+      hsourceWitnessed) as
+    (targetWitnessList & targetContext & htargetWitnessed & hincluded &
+      hboolean & himp).
+  destruct hboolean as [(andRoot & hand) (orRoot & hor)].
+  destruct himp as [impRoot himp].
+  set (inputs := rawBottomTemplateDirectStructuralInputs M hPA).
+  set (translation :=
+    rawDirectStructuralTemplateTranslation M hPA inputs).
+  assert (htargetRealizable : RawContextListRealizable M targetContext).
+  {
+    exact
+      (raw_codedPAAxiomWitnessContext_context_realizable
+        M targetWitnessList targetContext htargetWitnessed).
+  }
+  assert (hprefixAdequate : RawCodedTemplatePrefixAtomicallyAdequate M
+      translation ([] ++ callerPrefix)).
+  {
+    exact
+      (raw_directStructuralTemplatePrefix_atomically_adequate
+        M hPA inputs ([] ++ callerPrefix)).
+  }
+  destruct
+    (raw_codedPALocalProof_templateSuffix M hPA translation
+      targetContext [] callerPrefix
+      (rawFormulaImpCode M
+        (rawDynamicTruthSigmaAndEx8BranchCode M)
+        (rawFormulaImpCode M
+          (rawDynamicTruthPiAndEx8BranchCode M)
+          (rawFormulaBotCode M)))
+      andRoot htargetRealizable hprefixAdequate hand) as
+    [prefixedAndRoot hprefixedAnd].
+  destruct
+    (raw_codedPALocalProof_templateSuffix M hPA translation
+      targetContext [] callerPrefix
+      (rawFormulaImpCode M
+        (rawDynamicTruthSigmaOrEx8BranchCode M)
+        (rawFormulaImpCode M
+          (rawDynamicTruthPiOrEx8BranchCode M)
+          (rawFormulaBotCode M)))
+      orRoot htargetRealizable hprefixAdequate hor) as
+    [prefixedOrRoot hprefixedOr].
+  destruct
+    (raw_codedPALocalProof_templateSuffix M hPA translation
+      targetContext [] callerPrefix
+      (rawDynamicTruthImpGuardedPredecessorStateExclusivityCode M)
+      impRoot htargetRealizable hprefixAdequate himp) as
+    [prefixedImpRoot hprefixedImp].
+  exists inputs, targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  constructor.
+  - constructor.
+    + exists prefixedAndRoot. exact hprefixedAnd.
+    + exists prefixedOrRoot. exact hprefixedOr.
+  - exists prefixedImpRoot. exact hprefixedImp.
+Qed.
 
 (** Prefix-preserving rank dispatcher.  This is the collision boundary that
     can be placed below implication introduction: both branches retain the

@@ -279,6 +279,144 @@ Arguments
   RawDynamicTruthNativeGuardedDependencyOrderedNormalizedCollisionResourceSplitGrowingKernelCompilers
   M hPA : clear implicits.
 
+(** Assumption-retaining replacement for the split guarded dependency
+    package.  Its local collision coordinate is deliberately not coercible to
+    [RawDynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilder]:
+    doing so would erase [callerPrefix] before the direct strong-step shell
+    has introduced its two implications.  The translation agreement and the
+    six predecessor-independent coordinates remain exactly the old ones. *)
+Definition
+    RawDynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingSplitGrowingKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  RawCodedTemplatePAAgreement M
+    (rawBottomDirectStructuralTemplateTranslation M hPA) /\
+  RawDynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilderUnderCallerPrefix
+    M hPA /\
+  RawDynamicTruthNativeLocalCurrentNonConditionalReducedStagedRemainderBuilder
+    M (rawBottomDirectStructuralTemplateTranslation M hPA) /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingSplitGrowingKernelCompilers
+  M hPA : clear implicits.
+
+(** Honest proof-resource boundary for the preceding package.  Compared with
+    the historical normalized collision bundle, the rank-zero coordinate has
+    forgotten both global premise-root producers and the aligned coordinate
+    retains the same prefix at positive rank.  No unrelated dependency field
+    is strengthened. *)
+Definition
+    RawDynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingNormalizedCollisionResourceSplitGrowingKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  RawDynamicTruthNativeLocalZeroGuardedCollisionFixedResourcesCompilerOnNormalizedResources
+    M hPA /\
+  RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnWitnessedBase
+    M hPA /\
+  RawDynamicTruthNativeLocalCurrentNonConditionalReducedStagedRemainderBuilder
+    M (rawBottomDirectStructuralTemplateTranslation M hPA) /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingNormalizedCollisionResourceSplitGrowingKernelCompilers
+  M hPA : clear implicits.
+
+(** Compatibility projection from the historical normalized bundle.  The
+    zero proof roots are forgotten, while each already-compiled aligned root
+    is weakened under the arbitrary caller prefix on its witnessed target.
+    Thus the new package is formally no stronger than the old one even though
+    its assumption lifetime is represented more accurately. *)
+Theorem
+    raw_dynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingNormalizedCollisionResourceSplitGrowingKernelCompilers_of_legacy :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeGuardedDependencyOrderedNormalizedCollisionResourceSplitGrowingKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingNormalizedCollisionResourceSplitGrowingKernelCompilers
+    M hPA.
+Proof.
+  intros M hPA
+    (hzero & haligned & hremainder & hcrossLevel & hshift &
+      hsubstitution & haxiomSoundness & hfinal).
+  split.
+  - exact
+      (raw_dynamicTruthNativeLocalZeroGuardedCollisionFixedResourcesCompilerOnNormalizedResources_of_proof_resources
+        M hPA hzero).
+  - split.
+    + exact
+        (raw_dynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerUnderCallerPrefixOnWitnessedBase_of_plain
+          M hPA haligned).
+    + split; [exact hremainder |].
+      split; [exact hcrossLevel |].
+      split; [exact hshift |].
+      split; [exact hsubstitution |].
+      split; [exact haxiomSoundness | exact hfinal].
+Qed.
+
+(** Assemble the retained-prefix local coordinate and pass every independent
+    coordinate through definitionally.  This theorem is intentionally one-way:
+    recovering the old split bundle would require contracting represented
+    proofs out of the caller prefix. *)
+Theorem
+    raw_dynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingSplitGrowingKernelCompilers_of_normalized_collision_resources :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingNormalizedCollisionResourceSplitGrowingKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingSplitGrowingKernelCompilers
+    M hPA.
+Proof.
+  intros M hPA
+    (hzero & haligned & hremainder & hcrossLevel & hshift &
+      hsubstitution & haxiomSoundness & hfinal).
+  split.
+  - exact (rawBottomDirectStructuralTemplatePAAgreement M hPA).
+  - split.
+    + exact
+        (raw_dynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilderUnderCallerPrefix_of_zero_normalized_fixed_resources_and_witnessed_aligned
+          M hPA hzero haligned).
+    + split; [exact hremainder |].
+      split; [exact hcrossLevel |].
+      split; [exact hshift |].
+      split; [exact hsubstitution |].
+      split; [exact haxiomSoundness | exact hfinal].
+Qed.
+
+(** One-step compatibility adapter for clients of the former resource
+    package.  Keeping this composition named makes the strict weakening
+    visible at the dependency boundary and avoids reopening the eight-field
+    conjunction in downstream integrations. *)
+Corollary
+    raw_dynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingSplitGrowingKernelCompilers_of_legacy_normalized_collision_resources :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeGuardedDependencyOrderedNormalizedCollisionResourceSplitGrowingKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingSplitGrowingKernelCompilers
+    M hPA.
+Proof.
+  intros M hPA hlegacy.
+  exact
+    (raw_dynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingSplitGrowingKernelCompilers_of_normalized_collision_resources
+      M hPA
+      (raw_dynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingNormalizedCollisionResourceSplitGrowingKernelCompilers_of_legacy
+        M hPA hlegacy)).
+Qed.
+
+(** Model-uniform retained-prefix boundary.  It is the dependency package to
+    be consumed inside, rather than before, the direct strong-step rule-case
+    shell. *)
+Definition
+    RawDynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingNormalizedCollisionResourceSplitGrowingKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    RawDynamicTruthNativeGuardedDependencyOrderedAssumptionRetainingNormalizedCollisionResourceSplitGrowingKernelCompilers
+      M hPA.
+
 (** Assemble the exact split bundle from the normalized collision resources.
     Every non-local dependency coordinate is passed through definitionally. *)
 Theorem
