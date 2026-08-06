@@ -115,6 +115,51 @@ Proof.
     rewrite Ht, hfs_mem_list_product_iff. reflexivity.
 Qed.
 
+Lemma hfs_list_product_empty_left : forall right,
+  hfs_list_product [] right = hfs_empty.
+Proof. reflexivity. Qed.
+
+Lemma hfs_list_product_empty_right : forall left,
+  hfs_list_product left [] = hfs_empty.
+Proof.
+  intros left. apply hfs_extensionality. intro p.
+  rewrite hfs_mem_list_product_iff, hfs_mem_empty_iff.
+  split.
+  - intros [x [Hx [y [Hy Hp]]]]. simpl in Hy. contradiction.
+  - intro H. contradiction.
+Qed.
+
+Lemma hfs_list_product_app_left : forall left₁ left₂ right,
+  hfs_list_product (left₁ ++ left₂) right =
+  hfs_union (hfs_list_product left₁ right)
+    (hfs_list_product left₂ right).
+Proof.
+  intros left₁ left₂ right. apply hfs_extensionality. intro p.
+  rewrite hfs_mem_list_product_iff, hfs_mem_union_iff,
+    !hfs_mem_list_product_iff.
+  setoid_rewrite in_app_iff.
+  firstorder.
+Qed.
+
+Lemma hfs_list_product_app_right : forall left right₁ right₂,
+  hfs_list_product left (right₁ ++ right₂) =
+  hfs_union (hfs_list_product left right₁)
+    (hfs_list_product left right₂).
+Proof.
+  intros left right₁ right₂. apply hfs_extensionality. intro p.
+  rewrite hfs_mem_list_product_iff, hfs_mem_union_iff,
+    !hfs_mem_list_product_iff.
+  setoid_rewrite in_app_iff.
+  firstorder.
+Qed.
+
+Lemma hfs_list_product_singleton : forall x y,
+  hfs_list_product [x] [y] = hfs_singleton (hfs_index_pair x y).
+Proof.
+  intros x y. unfold hfs_list_product, hfs_singleton.
+  simpl. reflexivity.
+Qed.
+
 (** * Domains and ranges of finite relations *)
 
 Definition hfs_list_domain (relation : list hfs_code) : hfs_code :=
@@ -223,5 +268,10 @@ Print Assumptions hfs_mem_list_range_iff.
 Print Assumptions hfs_list_big_union_existsUnique.
 Print Assumptions hfs_list_big_inter_existsUnique.
 Print Assumptions hfs_list_product_existsUnique.
+Print Assumptions hfs_list_product_empty_left.
+Print Assumptions hfs_list_product_empty_right.
+Print Assumptions hfs_list_product_app_left.
+Print Assumptions hfs_list_product_app_right.
+Print Assumptions hfs_list_product_singleton.
 Print Assumptions hfs_list_domain_existsUnique.
 Print Assumptions hfs_list_range_existsUnique.

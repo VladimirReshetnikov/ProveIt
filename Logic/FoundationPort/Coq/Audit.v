@@ -5720,6 +5720,11 @@ Print Assumptions hfs_mem_list_range_iff.
 Print Assumptions hfs_list_big_union_existsUnique.
 Print Assumptions hfs_list_big_inter_existsUnique.
 Print Assumptions hfs_list_product_existsUnique.
+Print Assumptions hfs_list_product_empty_left.
+Print Assumptions hfs_list_product_empty_right.
+Print Assumptions hfs_list_product_app_left.
+Print Assumptions hfs_list_product_app_right.
+Print Assumptions hfs_list_product_singleton.
 Print Assumptions hfs_list_domain_existsUnique.
 Print Assumptions hfs_list_range_existsUnique.
 Print Assumptions hfs_list_domain_empty.
