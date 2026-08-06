@@ -49,7 +49,7 @@ From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF Fi
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Vec.
 From Foundation.FirstOrder.Arithmetic Require Import HFS.
 From Foundation.FirstOrder.Arithmetic.Exponential Require Import
-  Pow2 PPow2 Bit.
+  Pow2 PPow2 Exp Bit.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
@@ -5034,6 +5034,39 @@ Print Assumptions nat_ppow2_square_ne_four.
 Print Assumptions nat_ppow2_square_le_of_lt.
 Print Assumptions nat_ppow2_square_interval_unique.
 Print Assumptions nat_ppow2_double_square_interval_unique.
+Check nat_exponential.
+Check nat_exp.
+Print Assumptions nat_exponential_graph.
+Print Assumptions nat_exponential_zero_one.
+Print Assumptions nat_exponential_one_two.
+Print Assumptions nat_exponential_two_four.
+Print Assumptions nat_exponential_range_pow2.
+Print Assumptions nat_exponential_range_iff_pow2.
+Print Assumptions nat_exponential_range_pos.
+Print Assumptions nat_exponential_lt.
+Print Assumptions nat_not_exponential_of_le.
+Print Assumptions nat_exponential_even_intro.
+Print Assumptions nat_exponential_even.
+Print Assumptions nat_exponential_even_square.
+Print Assumptions nat_exponential_odd_intro.
+Print Assumptions nat_exponential_odd.
+Print Assumptions nat_exponential_succ.
+Print Assumptions nat_exponential_succ_double.
+Print Assumptions nat_exponential_elim.
+Print Assumptions nat_exponential_zero_unique.
+Print Assumptions nat_exponential_functional.
+Print Assumptions nat_exponential_injective.
+Print Assumptions nat_exponential_monotone_iff.
+Print Assumptions nat_exponential_monotone_le_iff.
+Print Assumptions nat_exponential_add_mul.
+Print Assumptions nat_exponential_exists_unique.
+Print Assumptions nat_exp_spec.
+Print Assumptions nat_exp_injective.
+Print Assumptions nat_exp_zero.
+Print Assumptions nat_exp_succ.
+Print Assumptions nat_exp_even.
+Print Assumptions nat_exp_odd.
+Print Assumptions nat_exp_add.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.
