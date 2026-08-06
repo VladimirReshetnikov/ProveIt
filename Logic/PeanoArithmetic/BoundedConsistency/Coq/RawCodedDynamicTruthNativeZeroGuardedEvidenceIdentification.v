@@ -35,6 +35,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeLocalPositiveGraph
   RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
   RawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification
+  RawCodedDynamicTruthSuccessorRowsAppendNormalization
   RawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation.
 
 Module
@@ -61,6 +62,8 @@ Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
 Import PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
 Import
   PABoundedRawCodedDynamicTruthZeroLocalExclusiveTemplateIdentification.
+Import
+  PABoundedRawCodedDynamicTruthSuccessorRowsAppendNormalization.
 Import
   PABoundedRawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation.
 
@@ -148,6 +151,14 @@ Record RawDynamicTruthZeroGuardedEvidenceIdentification
       (rawQuotedFormulaCode M dynamicTruthZeroPiDomainFormula)
       (rawQuotedFormulaCode M dynamicTruthZeroSigmaEvidenceFormula)
       (rawQuotedFormulaCode M dynamicTruthZeroPiEvidenceFormula);
+  (** The append traversal reserves parameter name six.  Every successor
+      parameter name is interpreted by the shared upper-level numeral, so
+      retaining its rank-zero code is enough to run the vacuous inherited
+      row compiler under this same selector-bearing translation. *)
+  rawDynamicTruthZeroGuardedEvidence_appendBoundZero :
+    rawDirectTemplateTerm inputs
+      (ttParameter coqDynamicTruthAppendRowBoundParameterName) =
+    rawQuotedTermCode M tZero;
   rawDynamicTruthZeroGuardedEvidence_sigma :
     rawDirectTemplateFormula inputs
         coqDynamicTruthImpGuardedLocalSigmaEvidenceTemplate =
@@ -302,6 +313,7 @@ Proof.
         (rawQuotedFormulaCode M dynamicTruthZeroPiEvidenceFormula)
         (raw_dynamicTruthZeroPiEvidence_application M hPA)).
     + reflexivity.
+  - reflexivity.
   - change
       (rawTernaryApplicationOutput sigmaSelector
         (rawQuotedTermCode M (tVar 2))
