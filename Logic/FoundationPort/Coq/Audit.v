@@ -55,6 +55,7 @@ From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z Function Ordinal.
+From Foundation.FirstOrder.Skolemization Require Import Hull.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -5887,3 +5888,20 @@ Check z_set_like.
 Print Assumptions z_set_like_left_exists_unique.
 Print Assumptions z_set_like_left_exists.
 Print Assumptions z_set_like_mem_left.
+
+(* FirstOrder/Skolemization/Hull.v: semantic Skolem functions and hull. *)
+Check skolem_language.
+Check skolem_structure.
+Print Assumptions skolem_structure_func_spec.
+Check skolem_hull.
+Print Assumptions skolem_hull_subset.
+Print Assumptions skolem_hull_closed.
+Print Assumptions skolem_graph_exists.
+Print Assumptions skolem_hull_closed_func.
+Check skolem_hull_structure.
+Print Assumptions skolem_hull_semiterm_val.
+Print Assumptions skolem_hull_closed_semiterm_val.
+Print Assumptions skolem_hull_semiformula_eval.
+Print Assumptions skolem_hull_nonempty.
+Print Assumptions skolem_hull_elementary_equiv.
+Print Assumptions skolem_hull_structure_interprets_eq.
