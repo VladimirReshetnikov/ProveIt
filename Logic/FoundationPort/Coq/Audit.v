@@ -5576,6 +5576,8 @@ Print Assumptions nat_bit_mem_iff.
 Print Assumptions nat_bit_exp_le_of_mem.
 Print Assumptions nat_bit_lt_of_mem.
 Print Assumptions nat_bit_not_mem_of_lt_exp.
+Print Assumptions nat_bit_mem_iff_mul_pow2_add.
+Print Assumptions nat_bit_not_mem_iff_mul_pow2_add.
 Print Assumptions nat_bit_empty_eq_zero.
 Print Assumptions nat_bit_not_mem_empty.
 Print Assumptions nat_bit_not_mem_zero.
@@ -5621,6 +5623,7 @@ Check nat_bit_under.
 Print Assumptions nat_bit_le_under.
 Print Assumptions nat_bit_under_lt_pow.
 Print Assumptions nat_bit_mem_under_iff.
+Print Assumptions nat_bit_mem_exp_add_succ_sub_one.
 Print Assumptions nat_bit_not_mem_under_self.
 Print Assumptions nat_bit_under_injective.
 Print Assumptions nat_bit_under_zero.

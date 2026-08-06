@@ -10,7 +10,7 @@
     bounded-comprehension principles remain outside this module.  No formula
     graph or model-theoretic adapter is assumed here. *)
 
-From Stdlib Require Import Bool.Bool NArith.NArith.
+From Stdlib Require Import Bool.Bool Lia NArith.NArith.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic.
 
 Open Scope N_scope.
@@ -60,6 +60,60 @@ Proof.
   intros i a Hlt Hmem.
   exact (N.lt_irrefl (2 ^ i)
     (N.le_lt_trans _ _ _ (@nat_bit_exp_le_of_mem i a Hmem) Hlt)).
+Qed.
+
+(** The selected bit is exactly the middle bit in a low/high binary
+    decomposition.  These are the standard-model counterparts of the two
+    source [LenBit] decomposition lemmas. *)
+Lemma nat_bit_mem_iff_mul_pow2_add : forall i a,
+  nat_bit i a <->
+  exists k r, r < 2 ^ i /\
+    a = k * 2 ^ (i + 1) + 2 ^ i + r.
+Proof.
+  intros i a. split.
+  - intro H.
+    unfold nat_bit, hfs_mem in H.
+    destruct (N.testbit_spec a i) as [l [h [Hl Heq]]].
+    rewrite H in Heq.
+    change (a = l + (1 + 2 * h) * 2 ^ i) in Heq.
+    exists h, l. split; [exact (proj2 Hl)|].
+    rewrite N.add_1_r, N.pow_succ_r'. nia.
+  - intros [k [r [Hr Heq]]].
+    unfold nat_bit, hfs_mem.
+    apply (N.testbit_unique a i true r k).
+    + exact Hr.
+    + rewrite N.add_1_r in Heq.
+      rewrite N.pow_succ_r' in Heq.
+      change (a = r + (1 + 2 * k) * 2 ^ i).
+      nia.
+Qed.
+
+Lemma nat_bit_not_mem_iff_mul_pow2_add : forall i a,
+  ~ nat_bit i a <->
+  exists k r, r < 2 ^ i /\
+    a = k * 2 ^ (i + 1) + r.
+Proof.
+  intros i a. split.
+  - intro H.
+    unfold nat_bit, hfs_mem in H.
+    destruct (N.testbit_spec a i) as [l [h [Hl Heq]]].
+    assert (Hb : N.testbit a i = false).
+    { destruct (N.testbit a i);
+      [exfalso; apply H; reflexivity | reflexivity]. }
+    rewrite Hb in Heq.
+    change (a = l + (0 + 2 * h) * 2 ^ i) in Heq.
+    exists h, l. split; [exact (proj2 Hl)|].
+    rewrite N.add_1_r, N.pow_succ_r'. nia.
+  - intros [k [r [Hr Heq]]] Hbit.
+    unfold nat_bit, hfs_mem in Hbit.
+    assert (Hfalse : N.testbit a i = false).
+    { apply (N.testbit_unique a i false r k).
+      - exact Hr.
+      - rewrite N.add_1_r in Heq.
+        rewrite N.pow_succ_r' in Heq.
+        change (a = r + (0 + 2 * k) * 2 ^ i).
+        nia. }
+    rewrite Hfalse in Hbit. discriminate.
 Qed.
 
 Lemma nat_bit_empty_eq_zero : nat_bit_empty = 0.
@@ -361,6 +415,17 @@ Lemma nat_bit_mem_under_iff : forall i j,
 Proof.
   intros i j. unfold nat_bit, nat_bit_under, hfs_mem.
   apply N.ones_spec_iff.
+Qed.
+
+Lemma nat_bit_mem_exp_add_succ_sub_one : forall i j,
+  nat_bit i (2 ^ (i + j + 1) - 1).
+Proof.
+  intros i j.
+  assert (E : 2 ^ (i + j + 1) - 1 = nat_bit_under (i + j + 1)).
+  { unfold nat_bit_under. rewrite N.ones_equiv. apply N.sub_1_r. }
+  rewrite E.
+  apply (proj2 (nat_bit_mem_under_iff i (i + j + 1))).
+  lia.
 Qed.
 
 Lemma nat_bit_not_mem_under_self : forall i,
