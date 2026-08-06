@@ -42,7 +42,7 @@ From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Coding.
 From Foundation.FirstOrder.Bootstrapping Require Import Syntax.
 From Foundation.FirstOrder.Bootstrapping Require Import FixedPoint.
 From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
-  D1 D2 D3.
+  D1 D2 D3 EquationalTheory PeanoMinus.
 From Foundation.FirstOrder.Basic Require Import BinderNotation.
 From Foundation.FirstOrder Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF FixedPoint.
@@ -5934,3 +5934,18 @@ Print Assumptions direct_translation_model_semiterm_val_domain.
 Print Assumptions direct_translation_model_atomic_iff.
 Print Assumptions direct_translation_model_nonempty.
 Print Assumptions direct_translation_model_interprets_eq.
+
+(* FirstOrder/Bootstrapping/DerivabilityCondition/EquationalTheory.v:
+   semantic equality replacement core. *)
+Check bootstrapping_term_replace.
+Print Assumptions bootstrapping_term_replace.
+Check bootstrapping_formula_replace.
+Print Assumptions bootstrapping_formula_replace.
+Check bootstrapping_formula_replace_forward.
+
+(* FirstOrder/Bootstrapping/DerivabilityCondition/PeanoMinus.v:
+   semantic PA-minus order lemmas used by numeral bootstrapping. *)
+Check peano_minus_boot_lt_add_self_add_one.
+Print Assumptions peano_minus_boot_lt_add_self_add_one.
+Check peano_minus_boot_lt_succ_iff_eq_or_lt.
+Print Assumptions peano_minus_boot_lt_succ_iff_eq_or_lt.
