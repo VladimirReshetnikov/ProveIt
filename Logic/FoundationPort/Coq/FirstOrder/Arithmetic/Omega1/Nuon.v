@@ -46,6 +46,51 @@ Proof.
   exact Hi.
 Qed.
 
+(** Incrementing a dividend either advances the quotient or the remainder.
+    This is the executable standard-natural form of Foundation's
+    [div_mod_succ] lemma. *)
+Lemma nat_div_mod_succ : forall a b : N,
+  ((a + 1) / b = a / b + 1 /\
+   (a + 1) mod b = 0 /\
+   a mod b + 1 = b) \/
+  ((a + 1) / b = a / b /\
+   (a + 1) mod b = a mod b + 1).
+Proof.
+  intros a b.
+  destruct (N.eq_dec b 0) as [-> | Hb].
+  - right. rewrite !N.div_0_r, !N.mod_0_r. repeat split; reflexivity.
+  - set (q := a / b).
+    set (r := a mod b).
+    assert (Hdiv : a = b * q + r).
+    { unfold q, r. apply N.div_mod. exact Hb. }
+    assert (Hr : r < b).
+    { unfold r. apply N.mod_lt. exact Hb. }
+    destruct (N.lt_trichotomy (r + 1) b) as [Hlt | [Heq | Hgt]].
+    + right.
+      assert (Hnext : a + 1 = b * q + (r + 1)) by nia.
+      assert (Hremnext : (a + 1) mod b < b).
+      { apply N.mod_lt. exact Hb. }
+      pose proof (N.div_mod' (a + 1) b) as Hspec.
+      pose proof (N.div_mod_unique b q ((a + 1) / b)
+        (r + 1) ((a + 1) mod b) Hlt Hremnext
+        (eq_trans (eq_sym Hnext) Hspec)) as Huniq.
+      destruct Huniq as [Hq Hrem].
+      split; [symmetry; exact Hq | symmetry; exact Hrem].
+    + left.
+      assert (Hnext : a + 1 = b * (q + 1) + 0) by nia.
+      assert (Hremnext : (a + 1) mod b < b).
+      { apply N.mod_lt. exact Hb. }
+      pose proof (N.div_mod' (a + 1) b) as Hspec.
+      pose proof (N.div_mod_unique b (q + 1) ((a + 1) / b)
+        0 ((a + 1) mod b)
+        (proj1 (N.neq_0_lt_0 b) Hb) Hremnext
+        (eq_trans (eq_sym Hnext) Hspec)) as Huniq.
+      destruct Huniq as [Hq Hrem].
+      split; [symmetry; exact Hq |].
+      split; [symmetry; exact Hrem | exact Heq].
+    + exfalso. nia.
+Qed.
+
 (** Executable standard-model versions of the polynomial parameters used by
     the source Nuon construction. *)
 Definition nat_polyI (A : N) : N :=

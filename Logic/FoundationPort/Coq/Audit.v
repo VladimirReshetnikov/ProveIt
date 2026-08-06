@@ -5203,6 +5203,7 @@ Print Assumptions nat_nuon_zero.
 Print Assumptions nat_nuon_one.
 Print Assumptions nat_mul_length_lt_length_smash.
 Print Assumptions nat_mul_length_lt_length_smash_length.
+Print Assumptions nat_div_mod_succ.
 Check nat_polyI.
 Check nat_polyL.
 Check nat_polyU.
