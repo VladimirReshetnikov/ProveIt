@@ -1,0 +1,28 @@
+(** Assumptions audit for constructor-parametric guarded Boolean cells. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthBooleanGuardedBranchExclusivity.
+
+Import
+  PABoundedRawCodedDynamicTruthBooleanGuardedBranchExclusivity.
+
+Check DynamicTruthBooleanConstructor.
+Check dynamicTruthBooleanGuardedPredecessorStateExclusivityFormula.
+Check RawDynamicTruthBooleanGuardedPredecessorStateExclusiveAt.
+Check
+  raw_sat_dynamicTruthBooleanGuardedPredecessorStateExclusivityFormula_iff.
+Check dynamicTruthBooleanGuardedConditionalCellFormula.
+Check dynamicTruthBooleanGuardedConditionalCellFormula_raw_valid.
+Check PA_proves_dynamicTruthBooleanGuardedConditionalCellFormula.
+Check rawDynamicTruthBooleanGuardedPredecessorStateExclusivityCode.
+Check rawDynamicTruthBooleanGuardedConditionalCellCode.
+Check raw_codedPAProofOf_dynamicTruthBooleanGuardedConditionalCell.
+Check raw_dynamicTruthBooleanGuarded_pair.
+
+Print Assumptions
+  dynamicTruthBooleanGuardedConditionalCellFormula_raw_valid.
+Print Assumptions
+  PA_proves_dynamicTruthBooleanGuardedConditionalCellFormula.
+Print Assumptions
+  raw_codedPAProofOf_dynamicTruthBooleanGuardedConditionalCell.
+Print Assumptions raw_dynamicTruthBooleanGuarded_pair.

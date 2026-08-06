@@ -1,0 +1,24 @@
+(** Assumptions audit for exact guarded Boolean diagonal production. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthBooleanGuardedDiagonalCompilation.
+
+Import PABoundedRawCodedDynamicTruthBooleanGuardedDiagonalCompilation.
+
+Check coqDynamicTruthBooleanGuardedPredecessorFormulaTemplate_eq_embedPA.
+Check coqDynamicTruthBooleanGuardedChildAdmissibleConcreteTemplate_eq_local.
+Check RawDynamicTruthBooleanGuardedBranchRootsAt.
+Check
+  raw_dynamicTruthBooleanGuardedPredecessorRoot_of_branch_roots_under_template_prefix.
+Check raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension.
+Check
+  raw_dynamicTruthLocalBooleanDiagonalPairRootsAt_of_guarded_branch_roots.
+
+Print Assumptions
+  coqDynamicTruthBooleanGuardedPredecessorFormulaTemplate_eq_embedPA.
+Print Assumptions
+  raw_dynamicTruthBooleanGuardedPredecessorRoot_of_branch_roots_under_template_prefix.
+Print Assumptions
+  raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension.
+Print Assumptions
+  raw_dynamicTruthLocalBooleanDiagonalPairRootsAt_of_guarded_branch_roots.
