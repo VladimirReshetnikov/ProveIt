@@ -5723,6 +5723,7 @@ Print Assumptions hfs_list_restrict_In_iff.
 Print Assumptions hfs_mem_list_restrict_code_iff.
 Print Assumptions hfs_list_is_mapping_restrict.
 Print Assumptions hfs_list_is_mapping_app.
+Print Assumptions hfs_list_skolem_exists.
 Print Assumptions hfs_list_mapping_fiber_existsUnique.
 Check hfs_pr_construction.
 Check hfs_pr_result.

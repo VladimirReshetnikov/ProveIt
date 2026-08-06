@@ -137,6 +137,65 @@ Qed.
 Lemma hfs_list_is_mapping_empty : hfs_list_is_mapping [].
 Proof. intros x y z H; inversion H. Qed.
 
+(** Finite-list counterpart of Foundation's [sigmaOne_skolem].  [NoDup]
+    expresses the fact that an HFS domain is a set rather than a list with
+    repeated indices.  The strengthened graph clause records that every pair
+    in the constructed mapping has its first coordinate in the domain. *)
+Theorem hfs_list_skolem_exists : forall
+    (domain : list hfs_code)
+    (R : hfs_code -> hfs_code -> Prop),
+  NoDup domain ->
+  (forall x, In x domain -> exists y, R x y) ->
+  exists relation,
+    hfs_list_is_mapping relation /\
+    (forall x, In x domain ->
+      exists y, In (hfs_index_pair x y) relation) /\
+    (forall x y, In (hfs_index_pair x y) relation ->
+      In x domain /\ R x y).
+Proof.
+  induction domain as [|a domain IH]; intros R Hnodup H.
+  - exists []. split.
+    + apply hfs_list_is_mapping_empty.
+    + split.
+      * intros u Hu. simpl in Hu. contradiction.
+      * intros u v Huv. simpl in Huv. contradiction.
+  - pose proof (proj1 (@NoDup_cons_iff hfs_code a domain) Hnodup)
+      as [Hfresh Hnodup_tail].
+    destruct (H a (or_introl eq_refl)) as [b Hb].
+    assert (Htail : forall x, In x domain -> exists y, R x y).
+    { intros x Hx. apply H. right. exact Hx. }
+    destruct (IH R Hnodup_tail Htail) as [relation
+      [Hmapping [Hcover Hgraph]]].
+    exists (hfs_index_pair a b :: relation). split.
+    + unfold hfs_list_is_mapping in Hmapping |-.
+      intros x y z Hy Hz. simpl in Hy, Hz.
+      destruct Hy as [Hy | Hy], Hz as [Hz | Hz].
+      * destruct (hfs_index_pair_injective Hy) as [Hax Hby].
+        destruct (hfs_index_pair_injective Hz) as [Hax' Hbz].
+        congruence.
+      * destruct (hfs_index_pair_injective Hy) as [Hax Hby].
+        exfalso. apply Hfresh.
+        pose proof (proj1 (Hgraph x z Hz)) as Hxdom.
+        rewrite <- Hax in Hxdom. exact Hxdom.
+      * destruct (hfs_index_pair_injective Hz) as [Hax Hbz].
+        exfalso. apply Hfresh.
+        pose proof (proj1 (Hgraph x y Hy)) as Hxdom.
+        rewrite <- Hax in Hxdom. exact Hxdom.
+      * apply (@Hmapping x y z); assumption.
+    + split.
+      { intros x Hx. simpl.
+        destruct Hx as [-> | Hx].
+        - exists b. left. reflexivity.
+        - destruct (Hcover x Hx) as [y Hy].
+          exists y. right. exact Hy. }
+      { intros x y Hxy. simpl in Hxy.
+        destruct Hxy as [Hxy | Hxy].
+        - destruct (hfs_index_pair_injective Hxy) as [Hax Hby].
+          subst x. subst y. split; [left; reflexivity|exact Hb].
+        - destruct (Hgraph x y Hxy) as [Hxdom HR].
+          split; [right; exact Hxdom|exact HR]. }
+Qed.
+
 (** A finite relation with unique fibers is a mapping in the source sense:
     every element of its computed domain has a witness, and that witness is
     unique. *)
@@ -158,4 +217,5 @@ Print Assumptions hfs_list_restrict_In_iff.
 Print Assumptions hfs_mem_list_restrict_code_iff.
 Print Assumptions hfs_list_is_mapping_restrict.
 Print Assumptions hfs_list_is_mapping_app.
+Print Assumptions hfs_list_skolem_exists.
 Print Assumptions hfs_list_mapping_fiber_existsUnique.
