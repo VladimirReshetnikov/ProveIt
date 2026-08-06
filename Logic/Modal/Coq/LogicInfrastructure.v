@@ -610,14 +610,6 @@ Qed.
 
 (** * Letterless formulas and logics *)
 
-Fixpoint formula_letterless {AtomType} (p : formula AtomType) : Prop :=
-  match p with
-  | Atom _ => False
-  | Bottom => True
-  | Imp q r => formula_letterless q /\ formula_letterless r
-  | Box q => formula_letterless q
-  end.
-
 Definition logic_letterless {AtomType}
     (L : modal_logic_set AtomType) : Prop :=
   forall p, L p -> formula_letterless p.

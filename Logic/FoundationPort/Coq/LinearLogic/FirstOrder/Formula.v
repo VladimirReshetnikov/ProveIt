@@ -1,6 +1,7 @@
 (** Core first-order linear-logic syntax and negation. *)
 
 From Stdlib Require Import Arith.PeanoNat Lia Program.Equality Vectors.Fin.
+From Stdlib Require Import Logic.Eqdep_dec.
 From Foundation.Syntax.Predicate Require Import Language Term.
 From Foundation.LinearLogic Require Import LogicSymbol.
 
@@ -188,6 +189,140 @@ Proof.
   intros L X n phi. induction phi; simpl; now rewrite ?IHphi1, ?IHphi2, ?IHphi.
 Qed.
 
+(** Equality of formulas is decidable whenever equality of language symbols
+    and free variables is decidable.  The two payload projections below keep
+    the dependent relation arity explicit, so equality of atoms can first
+    recover the common arity and then compare their argument vectors. *)
+
+Definition llfo_rel_payload (L : language) (X : Type) (n : nat) :=
+  {k : nat & (language_rel L k * (Fin.t k -> semiterm L X n))%type}.
+
+Definition llfo_outer_rel_payload {L X n} (phi : llfo_semiformula L X n) :
+    option (llfo_rel_payload L X n) :=
+  match phi with
+  | @LLRel _ _ _ k R v => Some (existT _ k (R, v))
+  | _ => None
+  end.
+
+Definition llfo_outer_nrel_payload {L X n} (phi : llfo_semiformula L X n) :
+    option (llfo_rel_payload L X n) :=
+  match phi with
+  | @LLNRel _ _ _ k R v => Some (existT _ k (R, v))
+  | _ => None
+  end.
+
+Lemma llfo_rel_injective_same_arity : forall L X n k
+    (R S : language_rel L k)
+    (v w : Fin.t k -> semiterm L X n),
+  LLRel R v = LLRel S w -> R = S /\ v = w.
+Proof.
+  intros L X n k R S v w H.
+  pose proof (f_equal llfo_outer_rel_payload H) as Hp; simpl in Hp.
+  apply option_some_injective in Hp.
+  apply (@inj_pair2_eq_dec nat Nat.eq_dec
+    (fun j => (language_rel L j *
+      (Fin.t j -> semiterm L X n))%type)
+    k (R, v) (S, w)) in Hp.
+  now injection Hp.
+Qed.
+
+Lemma llfo_nrel_injective_same_arity : forall L X n k
+    (R S : language_rel L k)
+    (v w : Fin.t k -> semiterm L X n),
+  LLNRel R v = LLNRel S w -> R = S /\ v = w.
+Proof.
+  intros L X n k R S v w H.
+  pose proof (f_equal llfo_outer_nrel_payload H) as Hp; simpl in Hp.
+  apply option_some_injective in Hp.
+  apply (@inj_pair2_eq_dec nat Nat.eq_dec
+    (fun j => (language_rel L j *
+      (Fin.t j -> semiterm L X n))%type)
+    k (R, v) (S, w)) in Hp.
+  now injection Hp.
+Qed.
+
+Definition llfo_semiformula_eq_dec {L X n}
+    (D : language_decidable_eq L)
+    (free_eq_dec : forall x y : X, {x = y} + {x <> y})
+    (phi psi : llfo_semiformula L X n) : {phi = psi} + {phi <> psi}.
+Proof.
+  revert psi.
+  refine (@llfo_semiformula_rect L X
+    (fun n phi => forall psi : llfo_semiformula L X n,
+      {phi = psi} + {phi <> psi})
+    _ _ _ _ _ _ _ _ _ _ _ _ _ _ n phi); clear phi n.
+  - intros n k R v psi. destruct psi as [n l S w | | | | | | | | | | | | | ];
+      try (right; discriminate).
+    destruct (Nat.eq_dec k l) as [Hkl | Hkl].
+    + subst l. destruct (@language_rel_eq_dec L D k R S) as [-> | HRS].
+      * destruct (@fin_function_pointwise_eq_dec k (semiterm L X n) v w
+          (fun i => semiterm_eq_dec (language_func_eq_dec D) free_eq_dec
+            (v i) (w i))) as [-> | Hvw].
+        { left; reflexivity. }
+        { right; intro H. apply Hvw.
+          exact (proj2 (llfo_rel_injective_same_arity H)). }
+      * right; intro H. apply HRS.
+        exact (proj1 (llfo_rel_injective_same_arity H)).
+    + right; intro H. apply Hkl.
+      pose proof (f_equal llfo_outer_rel_payload H) as Hp; simpl in Hp.
+      apply option_some_injective in Hp. now injection Hp.
+  - intros n k R v psi. destruct psi as [| n l S w | | | | | | | | | | | | ];
+      try (right; discriminate).
+    destruct (Nat.eq_dec k l) as [Hkl | Hkl].
+    + subst l. destruct (@language_rel_eq_dec L D k R S) as [-> | HRS].
+      * destruct (@fin_function_pointwise_eq_dec k (semiterm L X n) v w
+          (fun i => semiterm_eq_dec (language_func_eq_dec D) free_eq_dec
+            (v i) (w i))) as [-> | Hvw].
+        { left; reflexivity. }
+        { right; intro H. apply Hvw.
+          exact (proj2 (llfo_nrel_injective_same_arity H)). }
+      * right; intro H. apply HRS.
+        exact (proj1 (llfo_nrel_injective_same_arity H)).
+    + right; intro H. apply Hkl.
+      pose proof (f_equal llfo_outer_nrel_payload H) as Hp; simpl in Hp.
+      apply option_some_injective in Hp. now injection Hp.
+  - intros n psi. destruct psi; try (right; discriminate); left; reflexivity.
+  - intros n psi. destruct psi; try (right; discriminate); left; reflexivity.
+  - intros n a IHa b IHb psi. destruct psi; try (right; discriminate).
+    destruct (IHa psi1) as [-> | Ha].
+    2: { right; intro H. apply Ha. now dependent destruction H. }
+    destruct (IHb psi2) as [-> | Hb]; [left; reflexivity |].
+    right; intro H. apply Hb. now dependent destruction H.
+  - intros n a IHa b IHb psi. destruct psi; try (right; discriminate).
+    destruct (IHa psi1) as [-> | Ha].
+    2: { right; intro H. apply Ha. now dependent destruction H. }
+    destruct (IHb psi2) as [-> | Hb]; [left; reflexivity |].
+    right; intro H. apply Hb. now dependent destruction H.
+  - intros n psi. destruct psi; try (right; discriminate); left; reflexivity.
+  - intros n psi. destruct psi; try (right; discriminate); left; reflexivity.
+  - intros n a IHa b IHb psi. destruct psi; try (right; discriminate).
+    destruct (IHa psi1) as [-> | Ha].
+    2: { right; intro H. apply Ha. now dependent destruction H. }
+    destruct (IHb psi2) as [-> | Hb]; [left; reflexivity |].
+    right; intro H. apply Hb. now dependent destruction H.
+  - intros n a IHa b IHb psi. destruct psi; try (right; discriminate).
+    destruct (IHa psi1) as [-> | Ha].
+    2: { right; intro H. apply Ha. now dependent destruction H. }
+    destruct (IHb psi2) as [-> | Hb]; [left; reflexivity |].
+    right; intro H. apply Hb. now dependent destruction H.
+  - intros n a IHa psi. destruct psi; try (right; discriminate).
+    destruct (IHa psi) as [-> | Ha]; [left; reflexivity |].
+    right; intro H. apply Ha. now dependent destruction H.
+  - intros n a IHa psi. destruct psi; try (right; discriminate).
+    destruct (IHa psi) as [-> | Ha]; [left; reflexivity |].
+    right; intro H. apply Ha. now dependent destruction H.
+  - intros n a IHa psi. destruct psi; try (right; discriminate).
+    destruct (IHa psi) as [-> | Ha]; [left; reflexivity |].
+    right; intro H. apply Ha. now dependent destruction H.
+  - intros n a IHa psi. destruct psi; try (right; discriminate).
+    destruct (IHa psi) as [-> | Ha]; [left; reflexivity |].
+    right; intro H. apply Ha. now dependent destruction H.
+Defined.
+
+Definition llfo_proposition_eq_dec {L} (D : language_decidable_eq L) :
+    forall phi psi : llfo_proposition L, {phi = psi} + {phi <> psi} :=
+  @llfo_semiformula_eq_dec L nat 0 D Nat.eq_dec.
+
 Inductive llfo_is_quest {L X n} : llfo_semiformula L X n -> Prop :=
 | llfo_is_quest_intro : forall phi, llfo_is_quest (LLQuest phi).
 
@@ -351,6 +486,70 @@ Proof.
   - intro H. dependent destruction H. assumption.
   - now constructor.
 Qed.
+
+Definition llfo_negative_dec {L X n} (phi : llfo_semiformula L X n) :
+    {llfo_negative n phi} + {~ llfo_negative n phi}.
+Proof.
+  refine (@llfo_semiformula_rect L X
+    (fun n phi => {llfo_negative n phi} + {~ llfo_negative n phi})
+    _ _ _ _ _ _ _ _ _ _ _ _ _ _ n phi).
+  - intros. right. intro Hneg. inversion Hneg.
+  - intros. right. intro Hneg. inversion Hneg.
+  - intros. right. intro Hneg. inversion Hneg.
+  - intros. left. constructor.
+  - intros. right. intro Hneg. inversion Hneg.
+  - intros m a Ha b Hb. destruct Ha as [Ha | Ha], Hb as [Hb | Hb].
+    + left. now constructor.
+    + right. intro H. apply Hb. dependent destruction H. assumption.
+    + right. intro H. apply Ha. dependent destruction H. assumption.
+    + right. intro H. apply Ha. dependent destruction H. assumption.
+  - intros. left. constructor.
+  - intros. right. intro Hneg. inversion Hneg.
+  - intros m a Ha b Hb. destruct Ha as [Ha | Ha], Hb as [Hb | Hb].
+    + left. now constructor.
+    + right. intro H. apply Hb. dependent destruction H. assumption.
+    + right. intro H. apply Ha. dependent destruction H. assumption.
+    + right. intro H. apply Ha. dependent destruction H. assumption.
+  - intros. right. intro Hneg. inversion Hneg.
+  - intros. right. intro Hneg. inversion Hneg.
+  - intros. left. constructor.
+  - intros m a Ha. destruct Ha as [Ha | Ha].
+    + left. now constructor.
+    + right. intro H. apply Ha. dependent destruction H. assumption.
+  - intros. right. intro Hneg. inversion Hneg.
+Defined.
+
+Definition llfo_positive_dec {L X n} (phi : llfo_semiformula L X n) :
+    {llfo_positive n phi} + {~ llfo_positive n phi}.
+Proof.
+  refine (@llfo_semiformula_rect L X
+    (fun n phi => {llfo_positive n phi} + {~ llfo_positive n phi})
+    _ _ _ _ _ _ _ _ _ _ _ _ _ _ n phi).
+  - intros. right. intro Hpos. inversion Hpos.
+  - intros. right. intro Hpos. inversion Hpos.
+  - intros. left. constructor.
+  - intros. right. intro Hpos. inversion Hpos.
+  - intros m a Ha b Hb. destruct Ha as [Ha | Ha], Hb as [Hb | Hb].
+    + left. now constructor.
+    + right. intro H. apply Hb. dependent destruction H. assumption.
+    + right. intro H. apply Ha. dependent destruction H. assumption.
+    + right. intro H. apply Ha. dependent destruction H. assumption.
+  - intros. right. intro Hpos. inversion Hpos.
+  - intros. right. intro Hpos. inversion Hpos.
+  - intros. left. constructor.
+  - intros. right. intro Hpos. inversion Hpos.
+  - intros m a Ha b Hb. destruct Ha as [Ha | Ha], Hb as [Hb | Hb].
+    + left. now constructor.
+    + right. intro H. apply Hb. dependent destruction H. assumption.
+    + right. intro H. apply Ha. dependent destruction H. assumption.
+    + right. intro H. apply Ha. dependent destruction H. assumption.
+  - intros. left. constructor.
+  - intros. right. intro Hpos. inversion Hpos.
+  - intros. right. intro Hpos. inversion Hpos.
+  - intros m a Ha. destruct Ha as [Ha | Ha].
+    + left. now constructor.
+    + right. intro H. apply Ha. dependent destruction H. assumption.
+Defined.
 
 Theorem llfo_neg_positive_iff_negative : forall L X n
     (phi : llfo_semiformula L X n),

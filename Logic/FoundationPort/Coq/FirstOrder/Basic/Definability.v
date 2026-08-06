@@ -55,6 +55,67 @@ Definition first_order_defined_function {L M k}
   first_order_defined Str
     (fun v => v Fin.F1 = f (fun i => v (Fin.FS i))) p.
 
+Definition first_order_defined_predicate {L M}
+    (Str : first_order_structure L M) (P : M -> Prop)
+    (p : semisentence L 1) : Prop :=
+  first_order_defined Str (fun v : Fin.t 1 -> M => P (v Fin.F1)) p.
+
+Definition first_order_defined_relation {L M}
+    (Str : first_order_structure L M) (R : M -> M -> Prop)
+    (p : semisentence L 2) : Prop :=
+  first_order_defined Str
+    (fun v : Fin.t 2 -> M => R (v Fin.F1) (v (Fin.FS Fin.F1))) p.
+
+Definition first_order_defined_relation3 {L M}
+    (Str : first_order_structure L M) (R : M -> M -> M -> Prop)
+    (p : semisentence L 3) : Prop :=
+  first_order_defined Str (fun v : Fin.t 3 -> M =>
+    R (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))) p.
+
+Definition first_order_defined_relation4 {L M}
+    (Str : first_order_structure L M) (R : M -> M -> M -> M -> Prop)
+    (p : semisentence L 4) : Prop :=
+  first_order_defined Str (fun v : Fin.t 4 -> M =>
+    R (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+      (v (Fin.FS (Fin.FS (Fin.FS Fin.F1))))) p.
+
+Definition first_order_defined_constant {L M}
+    (Str : first_order_structure L M) (c : M)
+    (p : semisentence L 1) : Prop :=
+  first_order_defined_function Str (fun _ : Fin.t 0 -> M => c) p.
+
+Definition first_order_defined_unary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M)
+    (p : semisentence L 2) : Prop :=
+  first_order_defined_function Str (fun v : Fin.t 1 -> M => F (v Fin.F1)) p.
+
+Definition first_order_defined_binary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M -> M)
+    (p : semisentence L 3) : Prop :=
+  first_order_defined_function Str (fun v : Fin.t 2 -> M =>
+    F (v Fin.F1) (v (Fin.FS Fin.F1))) p.
+
+Definition first_order_defined_ternary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M -> M -> M)
+    (p : semisentence L 4) : Prop :=
+  first_order_defined_function Str (fun v : Fin.t 3 -> M =>
+    F (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))) p.
+
+Definition first_order_defined_quaternary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M -> M -> M -> M)
+    (p : semisentence L 5) : Prop :=
+  first_order_defined_function Str (fun v : Fin.t 4 -> M =>
+    F (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+      (v (Fin.FS (Fin.FS (Fin.FS Fin.F1))))) p.
+
+Definition first_order_defined_quinary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M -> M -> M -> M -> M)
+    (p : semisentence L 6) : Prop :=
+  first_order_defined_function Str (fun v : Fin.t 5 -> M =>
+    F (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+      (v (Fin.FS (Fin.FS (Fin.FS Fin.F1))))
+      (v (Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1)))))) p.
+
 Definition first_order_definable_function {L M k}
     (Str : first_order_structure L M) (f : (Fin.t k -> M) -> M) : Type :=
   first_order_definable Str
@@ -69,6 +130,34 @@ Definition first_order_definable_relation {L M}
     (Str : first_order_structure L M) (R : M -> M -> Prop) : Type :=
   first_order_definable Str
     (fun v : Fin.t 2 -> M => R (v Fin.F1) (v (Fin.FS Fin.F1))).
+
+Definition first_order_definable_relation3 {L M}
+    (Str : first_order_structure L M) (R : M -> M -> M -> Prop) : Type :=
+  first_order_definable Str (fun v : Fin.t 3 -> M =>
+    R (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))).
+
+Definition first_order_definable_relation4 {L M}
+    (Str : first_order_structure L M) (R : M -> M -> M -> M -> Prop) : Type :=
+  first_order_definable Str (fun v : Fin.t 4 -> M =>
+    R (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+      (v (Fin.FS (Fin.FS (Fin.FS Fin.F1))))).
+
+Definition first_order_definable_relation5 {L M}
+    (Str : first_order_structure L M)
+    (R : M -> M -> M -> M -> M -> Prop) : Type :=
+  first_order_definable Str (fun v : Fin.t 5 -> M =>
+    R (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+      (v (Fin.FS (Fin.FS (Fin.FS Fin.F1))))
+      (v (Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1)))))).
+
+Definition first_order_definable_relation6 {L M}
+    (Str : first_order_structure L M)
+    (R : M -> M -> M -> M -> M -> M -> Prop) : Type :=
+  first_order_definable Str (fun v : Fin.t 6 -> M =>
+    R (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+      (v (Fin.FS (Fin.FS (Fin.FS Fin.F1))))
+      (v (Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1)))))
+      (v (Fin.FS (Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1))))))).
 
 Definition semiformula_embed_empty {L X n}
     (p : semiformula L Empty_set n) : semiformula L X n :=
@@ -596,6 +685,113 @@ Definition first_order_definable_binary_function {L M}
   first_order_definable_function Str
     (fun v : Fin.t 2 -> M => F (v Fin.F1) (v (Fin.FS Fin.F1))).
 
+Definition first_order_definable_constant {L M}
+    (Str : first_order_structure L M) (c : M) : Type :=
+  first_order_definable_function Str (fun _ : Fin.t 0 -> M => c).
+
+Definition first_order_definable_ternary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M -> M -> M) : Type :=
+  first_order_definable_function Str (fun v : Fin.t 3 -> M =>
+    F (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))).
+
+Definition first_order_definable_quaternary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M -> M -> M -> M) : Type :=
+  first_order_definable_function Str (fun v : Fin.t 4 -> M =>
+    F (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+      (v (Fin.FS (Fin.FS (Fin.FS Fin.F1))))).
+
+Definition first_order_definable_quinary_function {L M}
+    (Str : first_order_structure L M) (F : M -> M -> M -> M -> M -> M) : Type :=
+  first_order_definable_function Str (fun v : Fin.t 5 -> M =>
+    F (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+      (v (Fin.FS (Fin.FS (Fin.FS Fin.F1))))
+      (v (Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1)))))).
+
+Definition definability_fin_nil {A} : Fin.t 0 -> A :=
+  fun i => match i with end.
+
+Definition definability_fin_three {A} (x1 x2 x3 : A) : Fin.t 3 -> A :=
+  fin_env_cons x1 (fin_env_cons x2 (fin_env_cons x3 definability_fin_nil)).
+
+Definition definability_fin_four {A} (x1 x2 x3 x4 : A) : Fin.t 4 -> A :=
+  fin_env_cons x1 (fin_env_cons x2
+    (fin_env_cons x3 (fin_env_cons x4 definability_fin_nil))).
+
+Definition definability_fin_five {A} (x1 x2 x3 x4 x5 : A) : Fin.t 5 -> A :=
+  fin_env_cons x1 (fin_env_cons x2 (fin_env_cons x3
+    (fin_env_cons x4 (fin_env_cons x5 definability_fin_nil)))).
+
+Definition first_order_definable_function_family_cons {L M l k}
+    {Str : first_order_structure L M}
+    (f : (Fin.t l -> M) -> M)
+    (fs : Fin.t k -> (Fin.t l -> M) -> M)
+    (Hf : first_order_definable_function Str f)
+    (Hfs : forall i, first_order_definable_function Str (fs i)) :
+    forall i, first_order_definable_function Str (fin_env_cons f fs i).
+Proof.
+  intro i. refine (@Fin.caseS' k i (fun j =>
+    first_order_definable_function Str (fin_env_cons f fs j)) Hf _).
+  exact Hfs.
+Defined.
+
+Definition first_order_definable_function_family_nil {L M l}
+    {Str : first_order_structure L M} :
+    forall i : Fin.t 0,
+      first_order_definable_function Str
+        (@definability_fin_nil ((Fin.t l -> M) -> M) i).
+Proof. intros i; inversion i. Defined.
+
+Definition first_order_definable_function_family_three {L M l}
+    {Str : first_order_structure L M}
+    (f1 f2 f3 : (Fin.t l -> M) -> M)
+    (Hf1 : first_order_definable_function Str f1)
+    (Hf2 : first_order_definable_function Str f2)
+    (Hf3 : first_order_definable_function Str f3) :
+    forall i, first_order_definable_function Str
+      (definability_fin_three f1 f2 f3 i).
+Proof.
+  apply first_order_definable_function_family_cons; [exact Hf1|].
+  apply first_order_definable_function_family_cons; [exact Hf2|].
+  apply first_order_definable_function_family_cons; [exact Hf3|].
+  apply first_order_definable_function_family_nil.
+Defined.
+
+Definition first_order_definable_function_family_four {L M l}
+    {Str : first_order_structure L M}
+    (f1 f2 f3 f4 : (Fin.t l -> M) -> M)
+    (Hf1 : first_order_definable_function Str f1)
+    (Hf2 : first_order_definable_function Str f2)
+    (Hf3 : first_order_definable_function Str f3)
+    (Hf4 : first_order_definable_function Str f4) :
+    forall i, first_order_definable_function Str
+      (definability_fin_four f1 f2 f3 f4 i).
+Proof.
+  apply first_order_definable_function_family_cons; [exact Hf1|].
+  apply first_order_definable_function_family_cons; [exact Hf2|].
+  apply first_order_definable_function_family_cons; [exact Hf3|].
+  apply first_order_definable_function_family_cons; [exact Hf4|].
+  apply first_order_definable_function_family_nil.
+Defined.
+
+Definition first_order_definable_function_family_five {L M l}
+    {Str : first_order_structure L M}
+    (f1 f2 f3 f4 f5 : (Fin.t l -> M) -> M)
+    (Hf1 : first_order_definable_function Str f1)
+    (Hf2 : first_order_definable_function Str f2)
+    (Hf3 : first_order_definable_function Str f3)
+    (Hf4 : first_order_definable_function Str f4)
+    (Hf5 : first_order_definable_function Str f5) :
+    forall i, first_order_definable_function Str
+      (definability_fin_five f1 f2 f3 f4 f5 i).
+Proof.
+  apply first_order_definable_function_family_cons; [exact Hf1|].
+  apply first_order_definable_function_family_cons; [exact Hf2|].
+  apply first_order_definable_function_family_cons; [exact Hf3|].
+  apply first_order_definable_function_family_cons; [exact Hf4|].
+  apply first_order_definable_function_family_cons; [exact Hf5|].
+  apply first_order_definable_function_family_nil.
+Defined.
+
 Definition fin_two_definable_function_family {L M l}
     {Str : first_order_structure L M}
     (f g : (Fin.t l -> M) -> M)
@@ -644,6 +840,90 @@ Proof.
   intro z. reflexivity.
 Defined.
 
+Definition first_order_definable_relation3_comp {L M l}
+    {Str : first_order_structure L M} (R : M -> M -> M -> Prop)
+    (f1 f2 f3 : (Fin.t l -> M) -> M)
+    (HR : first_order_definable_relation3 Str R)
+    (Hf1 : first_order_definable_function Str f1)
+    (Hf2 : first_order_definable_function Str f2)
+    (Hf3 : first_order_definable_function Str f3) :
+    first_order_definable Str (fun z => R (f1 z) (f2 z) (f3 z)).
+Proof.
+  refine (first_order_definable_of_iff
+    (first_order_definable_substitution
+      (P := fun v : Fin.t 3 -> M =>
+        R (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1))))
+      (f := definability_fin_three f1 f2 f3) HR
+      (first_order_definable_function_family_three
+        (f1 := f1) (f2 := f2) (f3 := f3) Hf1 Hf2 Hf3)) _).
+  intro z. reflexivity.
+Defined.
+
+Definition first_order_definable_relation4_comp {L M l}
+    {Str : first_order_structure L M} (R : M -> M -> M -> M -> Prop)
+    (f1 f2 f3 f4 : (Fin.t l -> M) -> M)
+    (HR : first_order_definable_relation4 Str R)
+    (Hf1 : first_order_definable_function Str f1)
+    (Hf2 : first_order_definable_function Str f2)
+    (Hf3 : first_order_definable_function Str f3)
+    (Hf4 : first_order_definable_function Str f4) :
+    first_order_definable Str (fun z =>
+      R (f1 z) (f2 z) (f3 z) (f4 z)).
+Proof.
+  refine (first_order_definable_of_iff
+    (first_order_definable_substitution
+      (P := fun v : Fin.t 4 -> M =>
+        R (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+          (v (Fin.FS (Fin.FS (Fin.FS Fin.F1)))))
+      (f := definability_fin_four f1 f2 f3 f4) HR
+      (first_order_definable_function_family_four
+        (f1 := f1) (f2 := f2) (f3 := f3) (f4 := f4)
+        Hf1 Hf2 Hf3 Hf4)) _).
+  intro z. reflexivity.
+Defined.
+
+Definition first_order_definable_relation5_comp {L M l}
+    {Str : first_order_structure L M}
+    (R : M -> M -> M -> M -> M -> Prop)
+    (f1 f2 f3 f4 f5 : (Fin.t l -> M) -> M)
+    (HR : first_order_definable_relation5 Str R)
+    (Hf1 : first_order_definable_function Str f1)
+    (Hf2 : first_order_definable_function Str f2)
+    (Hf3 : first_order_definable_function Str f3)
+    (Hf4 : first_order_definable_function Str f4)
+    (Hf5 : first_order_definable_function Str f5) :
+    first_order_definable Str (fun z =>
+      R (f1 z) (f2 z) (f3 z) (f4 z) (f5 z)).
+Proof.
+  refine (first_order_definable_of_iff
+    (first_order_definable_substitution
+      (P := fun v : Fin.t 5 -> M =>
+        R (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+          (v (Fin.FS (Fin.FS (Fin.FS Fin.F1))))
+          (v (Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1))))))
+      (f := definability_fin_five f1 f2 f3 f4 f5) HR
+      (first_order_definable_function_family_five
+        (f1 := f1) (f2 := f2) (f3 := f3) (f4 := f4) (f5 := f5)
+        Hf1 Hf2 Hf3 Hf4 Hf5)) _).
+  intro z. reflexivity.
+Defined.
+
+Definition first_order_definable_unary_function_graph {L M}
+    {Str : first_order_structure L M} (F : M -> M)
+    (HF : first_order_definable_unary_function Str F) :
+    first_order_definable_relation Str (fun y x => y = F x) := HF.
+
+Definition first_order_definable_binary_function_graph {L M}
+    {Str : first_order_structure L M} (F : M -> M -> M)
+    (HF : first_order_definable_binary_function Str F) :
+    first_order_definable_relation3 Str (fun y x1 x2 => y = F x1 x2) := HF.
+
+Definition first_order_definable_ternary_function_graph {L M}
+    {Str : first_order_structure L M} (F : M -> M -> M -> M)
+    (HF : first_order_definable_ternary_function Str F) :
+    first_order_definable_relation4 Str
+      (fun y x1 x2 x3 => y = F x1 x2 x3) := HF.
+
 Definition first_order_definable_unary_function_comp {L M l}
     {Str : first_order_structure L M} (F : M -> M)
     (f : (Fin.t l -> M) -> M)
@@ -669,6 +949,67 @@ Proof.
       F (v Fin.F1) (v (Fin.FS Fin.F1)))
     (f := fin_two f g) HF
     (fin_two_definable_function_family (f := f) (g := g) Hf Hg)).
+Defined.
+
+Definition first_order_definable_ternary_function_comp {L M l}
+    {Str : first_order_structure L M} (F : M -> M -> M -> M)
+    (f1 f2 f3 : (Fin.t l -> M) -> M)
+    (HF : first_order_definable_ternary_function Str F)
+    (Hf1 : first_order_definable_function Str f1)
+    (Hf2 : first_order_definable_function Str f2)
+    (Hf3 : first_order_definable_function Str f3) :
+    first_order_definable_function Str (fun z => F (f1 z) (f2 z) (f3 z)).
+Proof.
+  refine (first_order_definable_function_substitution
+    (F := fun v : Fin.t 3 -> M =>
+      F (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1))))
+    (f := definability_fin_three f1 f2 f3) HF
+    (first_order_definable_function_family_three
+      (f1 := f1) (f2 := f2) (f3 := f3) Hf1 Hf2 Hf3)).
+Defined.
+
+Definition first_order_definable_quaternary_function_comp {L M l}
+    {Str : first_order_structure L M} (F : M -> M -> M -> M -> M)
+    (f1 f2 f3 f4 : (Fin.t l -> M) -> M)
+    (HF : first_order_definable_quaternary_function Str F)
+    (Hf1 : first_order_definable_function Str f1)
+    (Hf2 : first_order_definable_function Str f2)
+    (Hf3 : first_order_definable_function Str f3)
+    (Hf4 : first_order_definable_function Str f4) :
+    first_order_definable_function Str (fun z =>
+      F (f1 z) (f2 z) (f3 z) (f4 z)).
+Proof.
+  refine (first_order_definable_function_substitution
+    (F := fun v : Fin.t 4 -> M =>
+      F (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+        (v (Fin.FS (Fin.FS (Fin.FS Fin.F1)))))
+    (f := definability_fin_four f1 f2 f3 f4) HF
+    (first_order_definable_function_family_four
+      (f1 := f1) (f2 := f2) (f3 := f3) (f4 := f4)
+      Hf1 Hf2 Hf3 Hf4)).
+Defined.
+
+Definition first_order_definable_quinary_function_comp {L M l}
+    {Str : first_order_structure L M} (F : M -> M -> M -> M -> M -> M)
+    (f1 f2 f3 f4 f5 : (Fin.t l -> M) -> M)
+    (HF : first_order_definable_quinary_function Str F)
+    (Hf1 : first_order_definable_function Str f1)
+    (Hf2 : first_order_definable_function Str f2)
+    (Hf3 : first_order_definable_function Str f3)
+    (Hf4 : first_order_definable_function Str f4)
+    (Hf5 : first_order_definable_function Str f5) :
+    first_order_definable_function Str (fun z =>
+      F (f1 z) (f2 z) (f3 z) (f4 z) (f5 z)).
+Proof.
+  refine (first_order_definable_function_substitution
+    (F := fun v : Fin.t 5 -> M =>
+      F (v Fin.F1) (v (Fin.FS Fin.F1)) (v (Fin.FS (Fin.FS Fin.F1)))
+        (v (Fin.FS (Fin.FS (Fin.FS Fin.F1))))
+        (v (Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1))))))
+    (f := definability_fin_five f1 f2 f3 f4 f5) HF
+    (first_order_definable_function_family_five
+      (f1 := f1) (f2 := f2) (f3 := f3) (f4 := f4) (f5 := f5)
+      Hf1 Hf2 Hf3 Hf4 Hf5)).
 Defined.
 
 (** * Primitive and arbitrary relation operators *)

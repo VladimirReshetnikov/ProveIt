@@ -10,10 +10,11 @@
 From Foundation.Syntax.Predicate Require Import Language Term Quantifier Rew.
 From Stdlib Require Import Logic.FunctionalExtensionality.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
-From Foundation.FirstOrder.Basic Require Import Operator.
+From Foundation.FirstOrder.Basic Require Import Operator Calculus Eq Soundness.
 From Foundation.FirstOrder.Basic.Semantics Require Import
-  Semantics OperatorSemantics.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
+  Semantics RewriteClosure OperatorSemantics ModelTheory.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import
+  Misc Syntax Model Hierarchy.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -453,6 +454,76 @@ Definition arithmetic_sorted_all {X : Type} {n rank}
     (Semiformula_all (arithmetic_sorted_formula_val p))
     (AH_all (arithmetic_sorted_pi_prop p)).
 
+(** In the uniqueness presentation of a function graph, the quantified
+    candidate output is the head coordinate, the distinguished output is the
+    next coordinate, and the original parameters form the remaining tail. *)
+Definition arithmetic_sorted_graph_uniqueness_reindex {k} :
+    Fin.t (S k) -> Fin.t (S (S k)) :=
+  fun i => @Fin.caseS' k i (fun _ => Fin.t (S (S k)))
+    Fin.F1 (fun j => Fin.FS (Fin.FS j)).
+
+Lemma arithmetic_sorted_graph_uniqueness_reindex_head : forall k,
+  @arithmetic_sorted_graph_uniqueness_reindex k Fin.F1 = Fin.F1.
+Proof. reflexivity. Qed.
+
+Lemma arithmetic_sorted_graph_uniqueness_reindex_tail : forall k
+    (i : Fin.t k),
+  arithmetic_sorted_graph_uniqueness_reindex (Fin.FS i) =
+  Fin.FS (Fin.FS i).
+Proof. reflexivity. Qed.
+
+Definition arithmetic_sorted_graph_uniqueness_body {X : Type} {k rank}
+    (p : arithmetic_sorted_formula X (S k)
+      (arithmetic_sigma_symbol (S rank))) :
+    arithmetic_sorted_formula X (S (S k))
+      (arithmetic_pi_symbol (S rank)).
+Proof.
+  apply (ArithmeticSortedPi (S rank)
+    (semiformula_imp
+      (semiformula_rewrite
+        (rew_map arithmetic_sorted_graph_uniqueness_reindex (fun x => x))
+        (arithmetic_sorted_formula_val p))
+      (arithmetic_eq_formula
+        (@Semiterm_bvar oring_language X (S (S k)) Fin.F1)
+        (@Semiterm_bvar oring_language X (S (S k)) (Fin.FS Fin.F1))))).
+  apply (proj2 (@arithmetic_hierarchy_imp_iff X arithmetic_pi
+    (S rank) (S (S k))
+    (semiformula_rewrite
+      (rew_map arithmetic_sorted_graph_uniqueness_reindex (fun x => x))
+      (arithmetic_sorted_formula_val p))
+    (arithmetic_eq_formula
+      (@Semiterm_bvar oring_language X (S (S k)) Fin.F1)
+      (@Semiterm_bvar oring_language X (S (S k)) (Fin.FS Fin.F1))))).
+  split.
+  - exact (arithmetic_hierarchy_rewrite
+      (arithmetic_sorted_sigma_prop p)
+      (rew_map arithmetic_sorted_graph_uniqueness_reindex (fun x => x))).
+  - apply arithmetic_hierarchy_eq.
+Defined.
+
+(** Turn a Sigma function-graph candidate into the source's raw Delta graph
+    syntax.  Semantic properness is intentionally separate: it follows from
+    functional uniqueness of the represented graph. *)
+Definition arithmetic_sorted_graph_delta {X : Type} {k rank}
+    (p : arithmetic_sorted_formula X (S k)
+      (arithmetic_sigma_symbol rank)) :
+    arithmetic_sorted_formula X (S k) (arithmetic_delta_symbol rank).
+Proof.
+  destruct rank as [|rank].
+  - exact (arithmetic_sorted_of_zero p (arithmetic_delta_symbol 0)).
+  - exact (ArithmeticSortedDelta (S rank) p
+      (arithmetic_sorted_all
+        (arithmetic_sorted_graph_uniqueness_body p))).
+Defined.
+
+Lemma arithmetic_sorted_graph_delta_val : forall
+    (X : Type) k rank
+    (p : arithmetic_sorted_formula X (S k)
+      (arithmetic_sigma_symbol rank)),
+  arithmetic_sorted_formula_val (arithmetic_sorted_graph_delta p) =
+  arithmetic_sorted_formula_val p.
+Proof. intros X k [|rank] p; reflexivity. Qed.
+
 Definition arithmetic_sorted_exists_iter {X : Type} {k n rank}
     (p : arithmetic_sorted_formula X (k + n)
       (arithmetic_sigma_symbol (S rank))) :
@@ -586,6 +657,79 @@ Definition arithmetic_sorted_delta_proper_on {M : Type} {n rank}
       (arithmetic_delta_symbol rank)) : Prop :=
   arithmetic_sorted_delta_proper Str
     (fun x : Empty_set => match x with end) p.
+
+(** The universally closed equivalence between the Sigma and Pi faces of a
+    Delta formula is the exact proposition used by the source's
+    [ProvablyProperOn] interface. *)
+Definition arithmetic_sorted_delta_proper_sentence {n rank}
+    (p : arithmetic_sorted_formula Empty_set n
+      (arithmetic_delta_symbol rank)) : sentence oring_language :=
+  first_all_closure
+    (semiformula_universal_quantifier oring_language Empty_set) n
+    (semiformula_iff
+      (arithmetic_sorted_formula_val (arithmetic_sorted_delta_sigma p))
+      (arithmetic_sorted_formula_val (arithmetic_sorted_delta_pi p))).
+
+Definition arithmetic_sorted_delta_provably_proper {n rank}
+    (T : theory oring_language)
+    (p : arithmetic_sorted_formula Empty_set n
+      (arithmetic_delta_symbol rank)) : Prop :=
+  first_order_theory_provable T
+    (arithmetic_sorted_delta_proper_sentence p).
+
+Lemma arithmetic_sorted_delta_proper_sentence_eval : forall
+    (M : Type) n rank (Str : first_order_structure oring_language M)
+    (p : arithmetic_sorted_formula Empty_set n
+      (arithmetic_delta_symbol rank)),
+  sentence_realize Str (arithmetic_sorted_delta_proper_sentence p) <->
+  arithmetic_sorted_delta_proper_on Str p.
+Proof.
+  intros M n rank Str p.
+  unfold sentence_realize, formula_eval,
+    arithmetic_sorted_delta_proper_sentence,
+    arithmetic_sorted_delta_proper_on, arithmetic_sorted_delta_proper.
+  rewrite semiformula_eval_all_closure.
+  setoid_rewrite semiformula_eval_iff. reflexivity.
+Qed.
+
+Theorem arithmetic_sorted_delta_provably_proper_of_semantic : forall
+    n rank (T : theory oring_language)
+    (p : arithmetic_sorted_formula Empty_set n
+      (arithmetic_delta_symbol rank)),
+  first_order_theory_proves_equality T oring_language_eq_operator ->
+  (forall (m : first_order_model oring_language)
+          (O : oring_carrier (first_order_model_domain m)),
+    structure_interprets_oring (first_order_model_structure m)
+      oring_language_structure O ->
+    first_order_models_theory m T ->
+    arithmetic_sorted_delta_proper_on
+      (first_order_model_structure m) p) ->
+  arithmetic_sorted_delta_provably_proper T p.
+Proof.
+  intros n rank T p Hequality Hproper.
+  unfold arithmetic_sorted_delta_provably_proper.
+  apply (arithmetic_theory_proof_complete Hequality).
+  intros m O Horing Hmodels.
+  apply (proj2 (arithmetic_sorted_delta_proper_sentence_eval
+    (first_order_model_structure m) p)).
+  exact (Hproper m O Horing Hmodels).
+Qed.
+
+Theorem arithmetic_sorted_delta_provably_proper_on_model : forall
+    n rank (T : theory oring_language)
+    (p : arithmetic_sorted_formula Empty_set n
+      (arithmetic_delta_symbol rank))
+    (m : first_order_model oring_language),
+  arithmetic_sorted_delta_provably_proper T p ->
+  first_order_models_theory m T ->
+  arithmetic_sorted_delta_proper_on
+    (first_order_model_structure m) p.
+Proof.
+  intros n rank T p m Hproof Hmodels.
+  apply (proj1 (arithmetic_sorted_delta_proper_sentence_eval
+    (first_order_model_structure m) p)).
+  exact (first_order_models_of_provable Hmodels Hproof).
+Qed.
 
 Definition arithmetic_sorted_delta_proper_with_params_on {M : Type} {n rank}
     (Str : first_order_structure oring_language M)

@@ -15,7 +15,8 @@ From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic Require Import Operator Definability.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics RewriteClosure OperatorSemantics.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Hierarchy.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Syntax Hierarchy.
+From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Hierarchy.
 
 Set Implicit Arguments.
@@ -612,6 +613,97 @@ Proof.
         (H := arithmetic_eq_operator) HEq t u)).
 Defined.
 
+Definition arithmetic_sorted_definable_lt_terms {M : Type} {k}
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Horing : structure_interprets_oring Str oring_language_structure O)
+    (symbol : arithmetic_hierarchy_symbol)
+    (t u : semiterm oring_language M k) :
+    arithmetic_sorted_definable Str symbol
+      (fun v => oring_lt O
+        (semiterm_val Str v (fun x => x) t)
+        (semiterm_val Str v (fun x => x) u)).
+Proof.
+  destruct symbol as [class rank].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_of_zero
+      (ArithmeticSortedSigma 0 (arithmetic_lt_formula t u)
+        (arithmetic_hierarchy_lt arithmetic_sigma 0 t u))
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := rank |} |}. split.
+  - destruct class; simpl; trivial. intro v; reflexivity.
+  - intro v. rewrite arithmetic_sorted_of_zero_val.
+    apply (@arithmetic_lt_formula_eval M M k Str v (fun x => x) O
+      t u Horing).
+Defined.
+
+Definition arithmetic_sorted_definable_le_terms {M : Type} {k}
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Horing : structure_interprets_oring Str oring_language_structure O)
+    (symbol : arithmetic_hierarchy_symbol)
+    (t u : semiterm oring_language M k) :
+    arithmetic_sorted_definable Str symbol
+      (fun v => peano_minus_le O
+        (semiterm_val Str v (fun x => x) t)
+        (semiterm_val Str v (fun x => x) u)).
+Proof.
+  destruct symbol as [class rank].
+  refine {| arithmetic_sorted_definable_formula :=
+    arithmetic_sorted_of_zero
+      (ArithmeticSortedSigma 0 (arithmetic_le_formula t u)
+        (arithmetic_hierarchy_le arithmetic_sigma 0 t u))
+      {| arithmetic_hierarchy_symbol_class := class;
+         arithmetic_hierarchy_symbol_rank := rank |} |}. split.
+  - destruct class; simpl; trivial. intro v; reflexivity.
+  - intro v. rewrite arithmetic_sorted_of_zero_val.
+    apply (@arithmetic_le_formula_eval M M k Str v (fun x => x) O
+      t u Horing).
+Defined.
+
+(** Source-style concrete relation witnesses.  The weak-order formula only
+    needs the interpretation of equality and strict order; no Peano-minus
+    algebraic law is required. *)
+Definition arithmetic_sorted_definable_eq_relation {M : Type}
+    (Str : first_order_structure oring_language M)
+    (HEq : structure_interprets_eq Str arithmetic_eq_operator)
+    (symbol : arithmetic_hierarchy_symbol) :
+    arithmetic_sorted_definable_relation Str symbol eq.
+Proof.
+  unfold arithmetic_sorted_definable_relation.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_eq_terms (Str := Str) HEq symbol
+      (@Semiterm_bvar oring_language M 2 Fin.F1)
+      (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)))).
+  intro v. reflexivity.
+Defined.
+
+Definition arithmetic_sorted_definable_lt_relation {M : Type}
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Horing : structure_interprets_oring Str oring_language_structure O)
+    (symbol : arithmetic_hierarchy_symbol) :
+    arithmetic_sorted_definable_relation Str symbol (oring_lt O).
+Proof.
+  unfold arithmetic_sorted_definable_relation.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_lt_terms (Str := Str) Horing symbol
+      (@Semiterm_bvar oring_language M 2 Fin.F1)
+      (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)))).
+  intro v. reflexivity.
+Defined.
+
+Definition arithmetic_sorted_definable_le_relation {M : Type}
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Horing : structure_interprets_oring Str oring_language_structure O)
+    (symbol : arithmetic_hierarchy_symbol) :
+    arithmetic_sorted_definable_relation Str symbol (peano_minus_le O).
+Proof.
+  unfold arithmetic_sorted_definable_relation.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_le_terms (Str := Str) Horing symbol
+      (@Semiterm_bvar oring_language M 2 Fin.F1)
+      (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)))).
+  intro v. reflexivity.
+Defined.
+
 Definition arithmetic_sorted_definable_term_graph {M : Type} {k}
     (Str : first_order_structure oring_language M)
     (HEq : structure_interprets_eq Str arithmetic_eq_operator)
@@ -644,6 +736,52 @@ Definition arithmetic_sorted_definable_parameter_constant {M : Type} {k}
       (fun _ : Fin.t k -> M => c) :=
   arithmetic_sorted_definable_term_graph (Str := Str) HEq symbol
     (@Semiterm_fvar oring_language M k c).
+
+Definition arithmetic_sorted_definable_add_function {M : Type}
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Horing : structure_interprets_oring Str oring_language_structure O)
+    (symbol : arithmetic_hierarchy_symbol) :
+    arithmetic_sorted_definable_function Str symbol
+      (fun v : Fin.t 2 -> M =>
+        oring_add O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  unfold arithmetic_sorted_definable_function.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_term_graph (Str := Str)
+      (structure_oring_eq Horing) symbol
+      (arithmetic_add_term
+        (@Semiterm_bvar oring_language M 2 Fin.F1)
+        (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1))))).
+  intro w.
+  rewrite (@arithmetic_add_term_val M M 2 Str
+    (fun i => w (Fin.FS i)) (fun x => x) O
+    (@Semiterm_bvar oring_language M 2 Fin.F1)
+    (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)) Horing).
+  reflexivity.
+Defined.
+
+Definition arithmetic_sorted_definable_mul_function {M : Type}
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (Horing : structure_interprets_oring Str oring_language_structure O)
+    (symbol : arithmetic_hierarchy_symbol) :
+    arithmetic_sorted_definable_function Str symbol
+      (fun v : Fin.t 2 -> M =>
+        oring_mul O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  unfold arithmetic_sorted_definable_function.
+  apply (arithmetic_sorted_definable_of_iff
+    (arithmetic_sorted_definable_term_graph (Str := Str)
+      (structure_oring_eq Horing) symbol
+      (arithmetic_mul_term
+        (@Semiterm_bvar oring_language M 2 Fin.F1)
+        (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1))))).
+  intro w.
+  rewrite (@arithmetic_mul_term_val M M 2 Str
+    (fun i => w (Fin.FS i)) (fun x => x) O
+    (@Semiterm_bvar oring_language M 2 Fin.F1)
+    (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)) Horing).
+  reflexivity.
+Defined.
 
 (** * Bound-variable substitution and quantifier closure *)
 

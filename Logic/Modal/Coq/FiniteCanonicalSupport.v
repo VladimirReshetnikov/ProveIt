@@ -17,7 +17,7 @@
 From Stdlib Require Import Lists.List Bool.Bool.
 From Stdlib Require Import Logic.Classical_Prop.
 From FoundationModal Require Import
-  Syntax Complement HilbertK NormalHilbert CanonicalExtensions
+  Syntax Complement Axioms HilbertK NormalHilbert CanonicalExtensions
   FiniteMaximalContext.
 
 Import ListNotations.
@@ -121,6 +121,24 @@ Proof.
     now symmetry.
 Qed.
 
+(** Pointwise modal iteration on a predicate theory.  This is the direct Coq
+    counterpart of Foundation's set image under iterated box. *)
+Definition box_iter_theory (n : nat) (Gamma : theory nat) : theory nat :=
+  fun p => exists q, Gamma q /\ p = box_iter n q.
+
+Lemma finite_theory_box_iter_extensional :
+  forall n Gamma p,
+    finite_theory (map (box_iter n) Gamma) p <->
+    box_iter_theory n (finite_theory Gamma) p.
+Proof.
+  intros n Gamma p. unfold finite_theory, box_iter_theory.
+  rewrite in_map_iff. split.
+  - intros [q [Hqeq Hq]]. exists q. split; [exact Hq |].
+    now symmetry.
+  - intros [q [Hq Hqeq]]. exists q. split; [|exact Hq].
+    now symmetry.
+Qed.
+
 (** * Context lifting for finite lists *)
 
 Lemma normal_derives_finite_weaken :
@@ -149,6 +167,39 @@ Proof.
   - eapply ND_mp; eauto.
 Qed.
 
+(** Any normal calculus proving every Four instance may replace double-boxed
+    assumptions by their singly boxed predecessors.  This strictly
+    generalizes the source set theorem: neither finiteness nor a separate
+    injectivity assumption for [Box] is needed. *)
+Lemma normal_derives_box_iter_two_context_to_box :
+  forall Ax Gamma p,
+    (forall q : formula nat, @normal_proves Ax nat (Four q)) ->
+    normal_derives Ax (box_iter_theory 2 Gamma) p ->
+    normal_derives Ax (boxed_theory Gamma) p.
+Proof.
+  intros Ax Gamma p HFour Hp.
+  eapply normal_derives_context_cut; [|exact Hp].
+  intros r [q [Hq ->]]. cbn [box_iter].
+  eapply ND_mp.
+  - apply ND_theorem. exact (HFour q).
+  - apply ND_assumption. exists q. now split.
+Qed.
+
+(** Two successive box images are the preceding theorem's second iterate.
+    Constructor injectivity is carried by the explicit image witnesses. *)
+Corollary normal_derives_boxbox_context_to_box :
+  forall Ax Gamma p,
+    (forall q : formula nat, @normal_proves Ax nat (Four q)) ->
+    normal_derives Ax (boxed_theory (boxed_theory Gamma)) p ->
+    normal_derives Ax (boxed_theory Gamma) p.
+Proof.
+  intros Ax Gamma p HFour Hp.
+  apply normal_derives_box_iter_two_context_to_box; [exact HFour |].
+  eapply normal_derives_weaken; [|exact Hp].
+  intros r [q [[s [Hs Hq]] Hr]]. subst q. subst r.
+  exists s. split; [exact Hs | reflexivity].
+Qed.
+
 Lemma normal_derives_finite_context_cut :
   forall Ax Gamma Delta p,
     (forall q, In q Gamma ->
@@ -159,6 +210,27 @@ Proof.
   intros Ax Gamma Delta p Hreplace Hp.
   eapply normal_derives_context_cut; [|exact Hp].
   intros q Hq. now apply Hreplace.
+Qed.
+
+(** Duplicate-tolerant list form of Foundation's finite-set K4 context
+    lowering theorem.  The list need not be normalized and formula equality
+    need not be decided. *)
+Lemma normal_derives_finite_box_iter_two_context_to_box :
+  forall Ax Gamma p,
+    (forall q : formula nat, @normal_proves Ax nat (Four q)) ->
+    normal_derives Ax (finite_theory (map (box_iter 2) Gamma)) p ->
+    normal_derives Ax (finite_theory (formula_list_box Gamma)) p.
+Proof.
+  intros Ax Gamma p HFour Hp.
+  eapply normal_derives_weaken with
+    (Gamma := boxed_theory (finite_theory Gamma)).
+  - intros q Hq.
+    now apply (proj2 (finite_theory_boxed_extensional Gamma q)).
+  - apply normal_derives_box_iter_two_context_to_box; [exact HFour |].
+    eapply normal_derives_weaken with
+      (Gamma := finite_theory (map (box_iter 2) Gamma)); [|exact Hp].
+    intros q Hq.
+    now apply (proj1 (finite_theory_box_iter_extensional 2 Gamma q)).
 Qed.
 
 Lemma normal_derives_finite_box :
