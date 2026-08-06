@@ -51,6 +51,12 @@ Check
   raw_coqRestrictedPADirectStrongStepGuardedEndpointImpDomain_eq_endpoint13.
 Check
   raw_coqRestrictedPADirectStrongStepGuardedEndpointImpAtomicAndDomainRoots_of_premise_roots.
+Check
+  rawCoqRestrictedPADirectStrongStepGuardedEndpointBooleanDomainFormula.
+Check
+  raw_coqRestrictedPADirectStrongStepGuardedEndpointBooleanDomain_eq_endpoint13.
+Check
+  raw_coqRestrictedPADirectStrongStepGuardedEndpointBooleanAtomicAndDomainRoots_of_premise_roots.
 
 (** The structural shift and membership theorem is closed.  The represented
     assumption compiler and its six-root direct specialization inherit only
@@ -75,6 +81,10 @@ Print Assumptions
   raw_coqRestrictedPADirectStrongStepGuardedEndpointImpDomain_eq_endpoint13.
 Print Assumptions
   raw_coqRestrictedPADirectStrongStepGuardedEndpointImpAtomicAndDomainRoots_of_premise_roots.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepGuardedEndpointBooleanDomain_eq_endpoint13.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepGuardedEndpointBooleanAtomicAndDomainRoots_of_premise_roots.
 Print Assumptions
   raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix.
 Print Assumptions raw_coqRestrictedPADirectStrongStep_guardedPremiseRoots.
