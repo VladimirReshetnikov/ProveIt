@@ -1,0 +1,19 @@
+(** Assumption audit for predecessor root synchronization. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPredecessorAtomicDomainGlobalRootsSynchronization.
+
+Import
+  PABoundedRawCodedDynamicTruthPredecessorAtomicDomainGlobalRootsSynchronization.
+
+Check RawDynamicTruthPredecessorAtomicDomainGlobalRootsAt.
+Check
+  raw_dynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom_of_rebased_growing_pair.
+Check
+  raw_dynamicTruthPredecessorAtomicDomainGlobalRootsAt_of_growing_global_roots.
+
+Print Assumptions RawDynamicTruthPredecessorAtomicDomainGlobalRootsAt.
+Print Assumptions
+  raw_dynamicTruthPredecessorGlobalRootsOnWitnessedExtensionFrom_of_rebased_growing_pair.
+Print Assumptions
+  raw_dynamicTruthPredecessorAtomicDomainGlobalRootsAt_of_growing_global_roots.

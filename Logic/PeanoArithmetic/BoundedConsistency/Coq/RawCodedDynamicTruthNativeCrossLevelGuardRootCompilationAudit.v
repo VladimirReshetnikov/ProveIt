@@ -9,6 +9,9 @@ Import
 (** One coherence-body root is sufficient for both polarity guards, over a
     base context which remains syntactically visible. *)
 Check RawDynamicTruthNativeCrossLevelBodyRootOn.
+Check raw_dynamicTruthNativeCrossLevelBodyRootOn_of_polarity_roots_on.
+Check RawDynamicTruthNativeCrossLevelLinkedGuardRootCompilerOn.
+Check raw_dynamicTruthNativeCrossLevelLinkedBodyRootCompilerOn_of_guard_roots.
 Check raw_dynamicTruthNativeCrossLevelGuardRootsOn_of_body_root.
 Check RawDynamicTruthNativeCrossLevelLinkedBodyRootCompilerOn.
 Check
@@ -26,6 +29,10 @@ Check
 Check
   raw_dynamicTruthNativeCrossLevelStagedGuardRoots_of_body_implication.
 
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelBodyRootOn_of_polarity_roots_on.
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelLinkedBodyRootCompilerOn_of_guard_roots.
 Print Assumptions
   raw_dynamicTruthNativeCrossLevelGuardRootsOn_of_body_root.
 Print Assumptions

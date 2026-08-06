@@ -6,8 +6,11 @@ From BoundedPAConsistency Require Import
 Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 
 Check templateFormulaShiftMany.
+Check templateShiftRenamingMany.
+Check templateFormulaShiftMany_as_rename.
 Check templateExistentialEliminationContext.
 Check templateExistentialBodyMany.
 Check raw_codedPALocalProofOf_existential_elimination_chain.
 
+Print Assumptions templateFormulaShiftMany_as_rename.
 Print Assumptions raw_codedPALocalProofOf_existential_elimination_chain.

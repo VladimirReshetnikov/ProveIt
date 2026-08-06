@@ -143,6 +143,26 @@ Proof.
   reflexivity.
 Qed.
 
+(** Beneath the predecessor clause's three local binders the new variables
+    are, from outside to inside, the Sigma-row index, the Pi-row index, and
+    the common child code.  The enclosing assignment code and step have
+    consequently shifted to [#4] and [#3].  This concrete equation records
+    the child layout explicitly and prevents the row index [#2] from being
+    mistaken for the recursive formula code. *)
+Lemma coqAssignmentUniversalDefinednessInstanceTemplate_predecessor_child :
+  coqAssignmentUniversalDefinednessInstanceTemplate
+    (ttVar 4) (ttVar 3) (ttVar 0) =
+  embedPAFormula
+    (codedAssignmentDefinedThroughTermAt (tVar 4) (tVar 3) (tVar 0)).
+Proof.
+  unfold coqAssignmentUniversalDefinednessInstanceTemplate,
+    templateUniversalOpenManyOrBot,
+    codedAssignmentUniversalDefinednessFormula.
+  cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst].
+  reflexivity.
+Qed.
+
 (** Compile the closed theorem once, choose one finite standard axiom
     prefix, and perform all three represented [All-E] steps there. *)
 Theorem
@@ -174,6 +194,76 @@ Proof.
       hbase PA_proves_codedAssignmentUniversalDefinednessFormula
       (coqAssignmentUniversalDefinednessInstanceTemplate_open
         code step bound)).
+Qed.
+
+(** Compile four arbitrary defined-through instances from the shared closed
+    PA theorem on one witnessed tail.  Four-state append is the first client,
+    but the statement deliberately allows four unrelated bounds so other
+    synchronized beta-table constructions can reuse it.  Selecting the PA
+    witness batch once is strictly weaker than asking four callers to choose
+    and subsequently merge independent batches. *)
+Theorem
+    raw_codedPALocalProofOf_assignmentUniversalDefinedness_four_instances_on_witnessed_tail :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall
+    baseWitnessList baseContext
+    code1 step1 bound1 code2 step2 bound2
+    code3 step3 bound3 code4 step4 bound4,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix)
+      root1 root2 root3 root4,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
+      (rawTemplateFormula translation
+        (coqAssignmentUniversalDefinednessInstanceTemplate
+          code1 step1 bound1)) root1 /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
+      (rawTemplateFormula translation
+        (coqAssignmentUniversalDefinednessInstanceTemplate
+          code2 step2 bound2)) root2 /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
+      (rawTemplateFormula translation
+        (coqAssignmentUniversalDefinednessInstanceTemplate
+          code3 step3 bound3)) root3 /\
+    RawCodedPALocalProofOf M
+      (rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext)
+      (rawTemplateFormula translation
+        (coqAssignmentUniversalDefinednessInstanceTemplate
+          code4 step4 bound4)) root4.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    code1 step1 bound1 code2 step2 bound2
+    code3 step3 bound3 code4 step4 bound4 hbase.
+  destruct
+    (raw_codedTemplatePALocalProofOf_of_BProv_open_many_list_on_witnessed_tail
+      M hPA translation hagreement baseWitnessList baseContext
+      codedAssignmentUniversalDefinednessFormula
+      [[code1; step1; bound1]; [code2; step2; bound2];
+       [code3; step3; bound3]; [code4; step4; bound4]]
+      [coqAssignmentUniversalDefinednessInstanceTemplate code1 step1 bound1;
+       coqAssignmentUniversalDefinednessInstanceTemplate code2 step2 bound2;
+       coqAssignmentUniversalDefinednessInstanceTemplate code3 step3 bound3;
+       coqAssignmentUniversalDefinednessInstanceTemplate code4 step4 bound4]
+      hbase PA_proves_codedAssignmentUniversalDefinednessFormula)
+    as (witnesses & roots & hextended & hroots).
+  - repeat constructor;
+      apply coqAssignmentUniversalDefinednessInstanceTemplate_open.
+  - repeat match goal with
+      | h : Forall2 _ (_ :: _) _ |- _ => inversion h; subst; clear h
+    end.
+    exists witnesses, y, y0, y1, y2.
+    split; [exact hextended |].
+    split; [eassumption |].
+    split; [eassumption |].
+    split; eassumption.
 Qed.
 
 (** Prefix-general form for use beneath temporary assumptions and
@@ -326,6 +416,50 @@ Proof.
   rewrite (rawTemplateFormula_embedPA hagreement
     (codedAssignmentDefinedThroughTermAt
       (tVar 1) (tVar 0) (tVar 2))) in hproof.
+  rewrite rawQuotedFormulaCode_standard in hproof by exact hPA.
+  exists witnesses, root. split; assumption.
+Qed.
+
+(** Exact assignment coverage for the common child while the three
+    predecessor indices are in scope.  The temporary prefix may already
+    contain the other predecessor-state premises. *)
+Corollary
+    raw_codedPALocalProofOf_assignmentDefinedThrough_predecessor_child_numeral_on_witnessed_tail_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext prefix,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation prefix ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) root,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext) prefix)
+      (rawNumeralValue M
+        (formulaCode
+          (codedAssignmentDefinedThroughTermAt
+            (tVar 4) (tVar 3) (tVar 0)))) root.
+Proof.
+  intros M hPA translation hagreement baseWitnessList baseContext
+    prefix hprefix hbase.
+  destruct
+    (raw_codedPALocalProofOf_assignmentUniversalDefinedness_instance_on_witnessed_tail_under_prefix
+      M hPA translation hagreement baseWitnessList baseContext prefix
+      (ttVar 4) (ttVar 3) (ttVar 0)
+      hprefix hbase)
+    as (witnesses & root & hextended & hproof).
+  rewrite
+    coqAssignmentUniversalDefinednessInstanceTemplate_predecessor_child
+    in hproof.
+  rewrite (rawTemplateFormula_embedPA hagreement
+    (codedAssignmentDefinedThroughTermAt
+      (tVar 4) (tVar 3) (tVar 0))) in hproof.
   rewrite rawQuotedFormulaCode_standard in hproof by exact hPA.
   exists witnesses, root. split; assumption.
 Qed.

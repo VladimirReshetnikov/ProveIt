@@ -607,6 +607,200 @@ Proof.
     exact hselected.
 Qed.
 
+(** Arbitrary-prefix selector.  The predecessor-state formulae play no role
+    in mode selection: the opened traversal head, the two closed numeral
+    contradictions, and realizability of the witnessed tail are sufficient.
+    This weaker endpoint is the one needed after a guarded branch has
+    renamed its state assumptions through additional binders. *)
+Theorem
+    raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_selected_on_template_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall witnessList baseContext sourcePrefix rootMode localSigma localPi,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  rootMode = 0 \/ rootMode = 1 ->
+  exists witnesses selectedRoot,
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses witnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawContextListIncluded M baseContext
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext)
+        (coqDynamicTruthGlobalExistentialDeepContextOn
+          rootMode localSigma localPi sourcePrefix))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowSelectedPayload
+          rootMode localSigma localPi)) selectedRoot.
+Proof.
+  intros M hPA translation hagreement witnessList baseContext
+    sourcePrefix rootMode localSigma localPi hwitnessed hrootMode.
+  destruct
+    (raw_codedZeroOneDistinctness_roots_on_witnessed_extension
+      M hPA translation hagreement witnessList baseContext hwitnessed)
+    as (witnesses & zeroNotOneRoot & oneNotZeroRoot &
+      hextended & hincluded & hzeroNotOne & honeNotZero).
+  set (extendedContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M witnesses baseContext).
+  set (deepPrefix := coqDynamicTruthGlobalExistentialDeepContextOn
+    rootMode localSigma localPi sourcePrefix).
+  assert (hextendedRealizable : RawContextListRealizable M extendedContext).
+  {
+    exact (raw_codedPAAxiomWitnessContext_context_realizable M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses witnessList)
+      extendedContext hextended).
+  }
+  assert (hdeepPrefixAdequate :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation deepPrefix).
+  {
+    intros input _.
+    exact (raw_codedTemplateFormula_atomically_adequate_core
+      M hPA translation input).
+  }
+  destruct (raw_codedPALocalProof_templatePrefix M hPA translation
+    extendedContext deepPrefix _ zeroNotOneRoot hextendedRealizable
+    hdeepPrefixAdequate hzeroNotOne)
+    as [deepZeroNotOneRoot hdeepZeroNotOne].
+  destruct (raw_codedPALocalProof_templatePrefix M hPA translation
+    extendedContext deepPrefix _ oneNotZeroRoot hextendedRealizable
+    hdeepPrefixAdequate honeNotZero)
+    as [deepOneNotZeroRoot hdeepOneNotZero].
+  destruct
+    (raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_choice_on_template_prefix
+      M hPA translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses witnessList)
+      extendedContext sourcePrefix rootMode localSigma localPi
+      hextended hrootMode)
+    as [choiceRoot hchoice].
+  assert (hdeepRealizable : RawContextListRealizable M
+      (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)).
+  {
+    exact (raw_templateContextOnTail_realizable M hPA translation
+      extendedContext deepPrefix hextendedRealizable).
+  }
+  destruct hrootMode as [hzero | hone].
+  - subst rootMode.
+    assert (hchoiceZero := hchoice).
+    rewrite coqDynamicTruthGlobalOpenedRootRowChoice_tagged_shape,
+      rawTemplateFormula_or, !rawTemplateFormula_and in hchoiceZero.
+    assert (hnotRight : RawCodedPALocalProofOf M
+        (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)
+        (rawFormulaImpCode M
+          (rawTemplateFormula translation
+            (coqDynamicTruthGlobalOpenedRootRowRightTag
+              0 localSigma localPi))
+          (rawFormulaBotCode M)) deepZeroNotOneRoot).
+    {
+      change (RawCodedPALocalProofOf M
+        (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)
+        (rawTemplateFormula translation
+          (tfImp (embedPAFormula zeroEqualsOneFormula) tfBot))
+        deepZeroNotOneRoot) in hdeepZeroNotOne.
+      rewrite rawTemplateFormula_imp, rawTemplateFormula_bot
+        in hdeepZeroNotOne.
+      rewrite coqDynamicTruthGlobalOpenedRootRowRightTag_zero.
+      exact hdeepZeroNotOne.
+    }
+    assert (hrightAdequate : RawCodedFormulaAtomicallyAdequate M
+        (rawFormulaAndCode M
+          (rawTemplateFormula translation
+            (coqDynamicTruthGlobalOpenedRootRowRightTag
+              0 localSigma localPi))
+          (rawTemplateFormula translation
+            (coqDynamicTruthGlobalOpenedRootRowRightPayload
+              0 localSigma localPi)))).
+    {
+      rewrite <- rawTemplateFormula_and.
+      exact (raw_codedTemplateFormula_atomically_adequate_core
+        M hPA translation
+        (tfAnd
+          (coqDynamicTruthGlobalOpenedRootRowRightTag
+            0 localSigma localPi)
+          (coqDynamicTruthGlobalOpenedRootRowRightPayload
+            0 localSigma localPi))).
+    }
+    destruct (raw_codedPALocalProofOf_taggedChoice_left M hPA
+      (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowLeftTag 0 localSigma localPi))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowLeftPayload 0 localSigma localPi))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowRightTag 0 localSigma localPi))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowRightPayload 0 localSigma localPi))
+      choiceRoot deepZeroNotOneRoot hdeepRealizable hrightAdequate
+      hchoiceZero hnotRight) as [selectedRoot hselected].
+    exists witnesses, selectedRoot.
+    split; [exact hextended |].
+    split; [exact hincluded |].
+    exact hselected.
+  - subst rootMode.
+    assert (hchoiceOne := hchoice).
+    rewrite coqDynamicTruthGlobalOpenedRootRowChoice_tagged_shape,
+      rawTemplateFormula_or, !rawTemplateFormula_and in hchoiceOne.
+    assert (hnotLeft : RawCodedPALocalProofOf M
+        (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)
+        (rawFormulaImpCode M
+          (rawTemplateFormula translation
+            (coqDynamicTruthGlobalOpenedRootRowLeftTag
+              1 localSigma localPi))
+          (rawFormulaBotCode M)) deepOneNotZeroRoot).
+    {
+      change (RawCodedPALocalProofOf M
+        (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)
+        (rawTemplateFormula translation
+          (tfImp (embedPAFormula oneEqualsZeroFormula) tfBot))
+        deepOneNotZeroRoot) in hdeepOneNotZero.
+      rewrite rawTemplateFormula_imp, rawTemplateFormula_bot
+        in hdeepOneNotZero.
+      rewrite coqDynamicTruthGlobalOpenedRootRowLeftTag_one.
+      exact hdeepOneNotZero.
+    }
+    assert (hleftAdequate : RawCodedFormulaAtomicallyAdequate M
+        (rawFormulaAndCode M
+          (rawTemplateFormula translation
+            (coqDynamicTruthGlobalOpenedRootRowLeftTag
+              1 localSigma localPi))
+          (rawTemplateFormula translation
+            (coqDynamicTruthGlobalOpenedRootRowLeftPayload
+              1 localSigma localPi)))).
+    {
+      rewrite <- rawTemplateFormula_and.
+      exact (raw_codedTemplateFormula_atomically_adequate_core
+        M hPA translation
+        (tfAnd
+          (coqDynamicTruthGlobalOpenedRootRowLeftTag
+            1 localSigma localPi)
+          (coqDynamicTruthGlobalOpenedRootRowLeftPayload
+            1 localSigma localPi))).
+    }
+    destruct (raw_codedPALocalProofOf_taggedChoice_right M hPA
+      (rawTemplateContextCodeOnTail translation extendedContext deepPrefix)
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowLeftTag 1 localSigma localPi))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowLeftPayload 1 localSigma localPi))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowRightTag 1 localSigma localPi))
+      (rawTemplateFormula translation
+        (coqDynamicTruthGlobalOpenedRootRowRightPayload 1 localSigma localPi))
+      choiceRoot deepOneNotZeroRoot hdeepRealizable hleftAdequate
+      hchoiceOne hnotLeft) as [selectedRoot hselected].
+    exists witnesses, selectedRoot.
+    split; [exact hextended |].
+    split; [exact hincluded |].
+    exact hselected.
+Qed.
+
 (** Original state-only selector, obtained by choosing no caller prefix. *)
 Corollary
     raw_codedPALocalProofOf_dynamicTruthGlobal_opened_root_row_selected :

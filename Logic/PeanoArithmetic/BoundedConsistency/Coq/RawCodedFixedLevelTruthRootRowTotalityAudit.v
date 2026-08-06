@@ -1,0 +1,19 @@
+(** Assumption audit for closed positive root-row totality. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFixedLevelTruthRootRowTotality.
+
+Import PABoundedRawCodedFixedLevelTruthRootRowTotality.
+
+Check RawFixedLevelPositiveCertificateRootRowAt.
+Check RawFixedLevelPositiveCertificateRootRowDecisionAt.
+Check raw_fixedLevelSigmaTruthCertificate_succ_root_row_at.
+Check raw_fixedLevelPiFalsityCertificate_succ_root_row_at.
+Check raw_fixedLevelInputTruthCertificateTotalityAt_root_row_decision.
+Check raw_fixedLevelInputTruthCertificate_root_row_decision.
+
+Print Assumptions raw_fixedLevelSigmaTruthCertificate_succ_root_row_at.
+Print Assumptions raw_fixedLevelPiFalsityCertificate_succ_root_row_at.
+Print Assumptions
+  raw_fixedLevelInputTruthCertificateTotalityAt_root_row_decision.
+Print Assumptions raw_fixedLevelInputTruthCertificate_root_row_decision.

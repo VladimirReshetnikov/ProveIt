@@ -7,6 +7,8 @@ Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 
 Check templateContextShiftMany.
 Check templateFormulaAllMany.
+Check templateContextShiftMany_member.
 Check raw_codedPALocalProofOf_universal_introduction_chain.
 
+Print Assumptions templateContextShiftMany_member.
 Print Assumptions raw_codedPALocalProofOf_universal_introduction_chain.

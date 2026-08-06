@@ -1,0 +1,19 @@
+(** Assumptions audit for the growing guarded reduced callback. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeLocalGuardedGrowingStagedCallbackCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalGuardedGrowingStagedCallbackCompilation.
+
+Check
+  RawDynamicTruthNativeLocalCurrentGrowingGuardedReducedStagedRootBuilder.
+Check
+  raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_growing_guarded_reduced_current_builder.
+Check
+  raw_dynamicTruthNativeStagedNextLocalCompiler_of_growing_guarded_reduced_current_builder.
+
+Print Assumptions
+  raw_dynamicTruthNativeLocalDecisionExclusiveProofCompilerAt_of_growing_guarded_reduced_current_builder.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextLocalCompiler_of_growing_guarded_reduced_current_builder.

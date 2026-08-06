@@ -82,6 +82,46 @@ Arguments TemplateTermScoped scope input : clear implicits.
 Arguments TemplateTermsScoped scope inputs : clear implicits.
 Arguments TemplateFormulaScoped scope input : clear implicits.
 
+(** Open a literal three-binder tower at arbitrary template terms.  Unlike
+    the variable-preserving specialization below, this operation also
+    covers clients that instantiate a theorem beneath unrelated binders. *)
+Definition templateAll3Open (body : TemplateFormula)
+    (outer middle inner : TemplateTerm) : TemplateFormula :=
+  templateUniversalOpenManyOrBot
+    (tfAll (tfAll (tfAll body))) [outer; middle; inner].
+
+(** A syntactic tower containing three leading universals cannot take the
+    failure branch of [templateUniversalOpenManyOrBot], independently of
+    the body and replacement terms. *)
+Lemma templateUniversalOpenMany_all3 : forall body outer middle inner,
+  templateUniversalOpenMany (tfAll (tfAll (tfAll body)))
+    [outer; middle; inner] =
+  Some (templateAll3Open body outer middle inner).
+Proof.
+  intros body outer middle inner.
+  unfold templateAll3Open, templateUniversalOpenManyOrBot.
+  cbn [templateUniversalOpenMany].
+  reflexivity.
+Qed.
+
+(** General represented three-step [All-E] chain.  No scoping premise is
+    needed: capture-avoiding opening itself determines the target. *)
+Corollary raw_template_all3_elimination_chain : forall
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    body outer middle inner,
+  RawCodedUniversalEliminationChain M
+    (rawTemplateFormula translation (tfAll (tfAll (tfAll body))))
+    (rawTemplateFormula translation
+      (templateAll3Open body outer middle inner)).
+Proof.
+  intros M translation body outer middle inner.
+  exact (raw_templateUniversalOpenMany_elimination_chain
+    M translation (tfAll (tfAll (tfAll body)))
+    [outer; middle; inner]
+    (templateAll3Open body outer middle inner)
+    (templateUniversalOpenMany_all3 body outer middle inner)).
+Qed.
+
 (** Iterating [up] records the additional binders traversed while a formula
     substitution descends. *)
 Fixpoint templateIterateUpSubst

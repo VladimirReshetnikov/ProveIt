@@ -29,6 +29,7 @@ Check raw_templateProofOnTail_localProof.
 
 (** Specialization to any carrier-coded PA-axiom witness context. *)
 Check raw_templateProofOnPAAxiomContext_localProof.
+Check raw_templateAssumptionOnPAAxiomContext_localProof.
 
 Print Assumptions raw_templateContextOnTail_realizable.
 Print Assumptions raw_templateContextOnTail_member.
@@ -37,3 +38,4 @@ Print Assumptions raw_templateProofOnTail_endpoint.
 Print Assumptions raw_templateProofOnTail_ruleCoverage.
 Print Assumptions raw_templateProofOnTail_localProof.
 Print Assumptions raw_templateProofOnPAAxiomContext_localProof.
+Print Assumptions raw_templateAssumptionOnPAAxiomContext_localProof.

@@ -5,6 +5,17 @@ From BoundedPAConsistency Require Import
 
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 
+Check coqNoLtZeroFormula.
+Check coqNoLtZeroInstanceTemplate.
+Check coqNoLtZeroAntecedentTemplate.
+Check coqNoLtZeroFormula_bprov.
+Check coqNoLtZeroInstanceTemplate_open.
+Check coqNoLtZeroInstanceTemplate_shape.
+Check raw_codedPALocalProofOf_no_lt_zero_on_witnessed_tail.
+Check
+  raw_codedPALocalProofOf_no_lt_zero_on_witnessed_tail_under_prefix.
+Check
+  raw_codedPALocalProofOf_below_zero_imp_ignored_imp_on_witnessed_tail_under_prefix.
 Check coqLtSuccCasesInstanceTemplate.
 Check coqLtSuccCasesAntecedentTemplate.
 Check coqLtSuccCasesResultTemplate.
@@ -28,6 +39,14 @@ Check
 Check
   raw_codedPALocalProofOf_lt_succ_cases_eliminate_on_base_included_growing_witnessed_tail_under_prefix.
 
+Print Assumptions coqNoLtZeroFormula_bprov.
+Print Assumptions coqNoLtZeroInstanceTemplate_open.
+Print Assumptions coqNoLtZeroInstanceTemplate_shape.
+Print Assumptions raw_codedPALocalProofOf_no_lt_zero_on_witnessed_tail.
+Print Assumptions
+  raw_codedPALocalProofOf_no_lt_zero_on_witnessed_tail_under_prefix.
+Print Assumptions
+  raw_codedPALocalProofOf_below_zero_imp_ignored_imp_on_witnessed_tail_under_prefix.
 Print Assumptions coqLtSuccCasesInstanceTemplate_open.
 Print Assumptions coqLtSuccCasesInstanceTemplate_shape.
 Print Assumptions

@@ -5340,8 +5340,8 @@ headline consequently assumes a plain all-model family of the same eight
 proof-producing coordinates—there is no existential translation or input
 witness left in its statement.
 
-The rank-zero coordinate has now been reduced to its logical content as
-well.  Four explicit ordinary PA formulas name the zero-level Sigma/Pi
+The rank-zero coordinate has now been reduced to its guarded logical content
+as well.  Four explicit ordinary PA formulas name the zero-level Sigma/Pi
 domains and level-one evidence predicates.  Reversing the three predicate
 variables and applying the generic protected ternary operation recovers the
 literal native evidence applications; executable scope checks establish the
@@ -5349,29 +5349,70 @@ required deep closure.  These facts give a concrete direct-template
 identification of the entire zero local field.  A new adapter projects the
 carried base field's exclusivity conjunct, transports it to the traversal's
 witnessed extension, and closes the predecessor implication from only three
-logical roots (admissibility, Sigma evidence, and Pi evidence).  The sharpest
-canonical compact headline therefore no longer assumes a completed zero
-predecessor compiler.  Its remaining first coordinate is the substantially
-smaller compiler for those three fixed rank-zero roots on an arbitrary
-witnessed PA base.  Its type mentions no native trace, orbit level, global
-predicate code, or successor witness; the other seven coordinates remain the
-permuted-append strong-step resources, reduced staged remainder, and five
-linked staged implication compilers.
+logical roots (admissibility, Sigma evidence, and Pi evidence).
 
-That fixed compiler is in turn generated from one ordinary PA derivation.
-The law curries the Sigma- and Pi-state assumptions around a conjunction of
-admissibility, Sigma evidence, and Pi evidence.  Its raw compiler realizes
-the ordinary proof over an arbitrary witnessed tail, inserts the two state
-assumptions, performs two implication eliminations, and projects all three
-roots on the same witnessed extension.  Consequently the sharpest headline's
-first coordinate is now the ordinary `Formula.BProv` statement for this
-single fixed law, rather than any model-indexed proof-code callback.
+An intermediate sufficient-condition theorem still shows how a proof of one
+open ordinary PA formula would generate those three roots.  That formula
+curries the Sigma- and Pi-state assumptions around their conjunction.  It is
+not used by the headline: the state atoms contain free table variables and,
+without the global traversal hypotheses, do not say that the tables encode
+the canonical truth construction.  Treating this open law as the remaining
+PA theorem would therefore hide rather than solve the traversal obligation.
 
-The native zero trace has also been normalized to the exact global data that
-this smaller compiler must use.  Its adequate orbit at level one inverts to
-one successor edge whose predecessor is forced by the zero orbit equation to
-be the two literal globally wrapped rank-zero base quotations.  The inversion
-retains root closure of both base predicates and atomic adequacy of both
-level-one outputs.  Thus the remaining zero compiler no longer needs to
-inspect an opaque orbit or choose a predecessor pair: it starts from a fixed
-root-closed base, its actual successor edge, and adequate successor outputs.
+The native zero trace can also be normalized to useful first-step global
+data.  Its adequate orbit at level one inverts to one successor edge whose
+predecessor is forced by the zero orbit equation to be the two literal
+globally wrapped rank-zero base quotations.  The inversion retains root
+closure of both base predicates and atomic adequacy of both level-one
+outputs.  This gives a valid stronger one-step adapter, but it is not the
+headline premise: the original trace additionally carries the next global
+successor, its represented numeral substitution, and both final ternary
+applications, and discarding those facts would force the concrete compiler
+to reconstruct information already available at its call site.
+
+The headline therefore retains the complete native zero trace while
+factoring its output into exactly four direct roots—atomic adequacy of the
+current formula, the zero-level Sigma/Pi domain disjunction, and the two
+level-one evidence formulas.  A shared direct-evidence handoff constructs
+admissibility on a common witnessed extension and is reused by both the full
+trace and stronger one-step interfaces.  The full trace is normalized at the
+literal carrier zero, eliminating the redundant arbitrary-level parameter
+and equality while preserving both successors, both substitutions, and both
+applications.
+
+The first headline coordinate is now restricted further to the actual zero
+callback.  In addition to the trace, that callback already carries one
+witnessed context containing represented proofs of all six current master
+fields and the synchronized forty-helper batch.  A compiler quantified over
+arbitrary witnessed tails and traces discarded these proof resources and was
+strictly stronger than necessary.  The call-site-aligned compiler retains
+the complete current helper package; a formal one-way adapter proves that
+every former tail-only compiler supplies the new interface.  The common
+field projection, witnessed transport, and direct-template closure have also
+been extracted into one pointwise lemma shared by both routes.  Thus the
+remaining rank-zero construction may use the proof resources genuinely
+available at its invocation, while still returning only the four direct
+roots.  A single zero-field normalization theorem additionally inverts all
+five spliced graph coordinates and the compact final graph, rewriting all six
+carried roots to exact targets: rank-zero local totality/exclusivity,
+level-zero cross-level coherence, shift transport, substitution transport,
+axiom soundness, and the literal code of `Con_0(PA)`.  Later leaf compilers can
+therefore consume these exact proof targets without repeating graph inversion
+or formula-code functionality.  The direct-evidence interface consequently
+drops the duplicate local-field equality and proof-root arguments: they are
+derivable from the retained current package and zero equality.  It also
+receives the four represented atoms obtained structurally from the two joint
+predecessor assumptions: both strict row bounds and both synchronized table
+lookups.  Their compiler needs only realizability of the witnessed tail, so
+an adapter installs them unconditionally before invoking the residual
+traversal completion.  The headline now packages these projections with the
+six literal current-field roots and the ordered forty-helper proof batch in a
+single normalized resource record.  That record also carries the two exact
+decision/exclusivity projections of the local base theorem, already aligned
+with the four literal zero leaves, so later work need not repeat quotation
+alignment or conjunction elimination.  Its residual sees the exact
+rank-zero full trace directly; arbitrary current field codes, five spliced
+graph witnesses, and the carrier-valued level equation are eliminated by one
+adapter before proof construction begins.  The other seven coordinates remain
+the permuted-append strong-step resources, the reduced staged remainder, and
+five linked staged implication compilers.

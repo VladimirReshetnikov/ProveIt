@@ -1,0 +1,14 @@
+(** Assumption audit for positive-certificate root-row projection. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedFixedLevelTruthRootRowProjection.
+
+Import PABoundedRawCodedFixedLevelTruthRootRowProjection.
+
+Check raw_fixedLevelSuccessorTruthTraversal_root_closed_row.
+Check raw_fixedLevelSigmaTruthCertificate_succ_root_closed_row.
+Check raw_fixedLevelPiFalsityCertificate_succ_root_closed_row.
+
+Print Assumptions raw_fixedLevelSuccessorTruthTraversal_root_closed_row.
+Print Assumptions raw_fixedLevelSigmaTruthCertificate_succ_root_closed_row.
+Print Assumptions raw_fixedLevelPiFalsityCertificate_succ_root_closed_row.

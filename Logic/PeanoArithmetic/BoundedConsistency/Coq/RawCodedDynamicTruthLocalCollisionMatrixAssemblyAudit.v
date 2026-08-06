@@ -158,11 +158,18 @@ Check rawDynamicTruthLocalCollision_mixed_replay_root.
 Check rawDynamicTruthLocalCollision_mixed_cell_roots.
 
 (** Exact endpoints: all 42 pair implications, then bottom from Or7/Or6. *)
+Check raw_dynamicTruthLocalCollisionMatrix_pair_of_imp_pairs.
 Check raw_dynamicTruthLocalCollisionMatrix_pair.
+Check raw_dynamicTruthLocalCollisionMatrix_pair_guarded_imp.
 Check raw_dynamicTruthLocalCollisionMatrix_pair_family.
+Check raw_dynamicTruthLocalCollisionMatrix_pair_family_guarded_imp.
 Check rawDynamicTruthLocalSigmaOr7Code.
 Check rawDynamicTruthLocalPiOr6Code.
+Check
+  raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom_of_pair_family.
 Check raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom.
+Check
+  raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom_guarded_imp.
 
 Goal forall (M : RawPAModel), RawPASatisfies M -> forall
     context lowerPi lowerSigma,
@@ -174,9 +181,16 @@ Goal forall (M : RawPAModel), RawPASatisfies M -> forall
     (rawFormulaBotCode M).
 Proof. exact raw_dynamicTruthLocalCollisionMatrix_pair_family. Qed.
 
+Print Assumptions raw_dynamicTruthLocalCollisionMatrix_pair_of_imp_pairs.
 Print Assumptions raw_dynamicTruthLocalCollisionMatrix_pair.
+Print Assumptions raw_dynamicTruthLocalCollisionMatrix_pair_guarded_imp.
 Print Assumptions raw_dynamicTruthLocalCollisionMatrix_pair_family.
+Print Assumptions raw_dynamicTruthLocalCollisionMatrix_pair_family_guarded_imp.
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom_of_pair_family.
 Print Assumptions
   raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom.
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthLocalCollisionMatrix_bottom_guarded_imp.
 
 End PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssemblyAudit.

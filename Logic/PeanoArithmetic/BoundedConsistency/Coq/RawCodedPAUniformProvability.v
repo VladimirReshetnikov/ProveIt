@@ -175,6 +175,47 @@ Proof.
         hcompiler).
 Qed.
 
+(** The compiler premise is also necessary.  This converse is a useful
+    boundary audit: an object-level proof of the sealed uniform sentence is
+    semantically true in every raw PA model, and opening [sealPA] exposes the
+    very same arbitrary-carrier witness package demanded by the compiler.
+
+    In particular, this theorem does not manufacture the missing compiler.
+    It proves that replacing the compiler premise by the headline theorem
+    would be circular: the two propositions have exactly the same strength
+    for this concrete graph representation. *)
+Theorem raw_restrictedPAConsistencyProvabilityCompiler_of_BProv :
+  Formula.BProv Formula.Ax_s []
+    uniformRestrictedPAConsistencyProvabilityFormula ->
+  RawRestrictedPAConsistencyProvabilityCompilerInAllModels.
+Proof.
+  intros hprov M hPA tail.
+  pose proof (raw_sat_of_BProv_axs M
+    uniformRestrictedPAConsistencyProvabilityFormula hPA hprov tail)
+    as hsealed.
+  pose proof (proj1
+    (raw_formula_sat_sealPA_iff_valid M
+      uniformRestrictedPAConsistencyProvabilityBodyFormula tail)
+    hsealed) as hbody.
+  apply (proj1
+    (@raw_sat_uniformRestrictedPAConsistencyProvabilityBodyFormula_iff
+      M tail)).
+  exact (hbody tail).
+Qed.
+
+(** Exact characterization of the remaining Coq obligation.  The forward
+    direction is the semantic converse above; the reverse direction is the
+    constructive reduction proved earlier. *)
+Theorem PA_BProv_uniformRestrictedPAConsistencyProvabilityFormula_iff_compiler :
+  Formula.BProv Formula.Ax_s []
+      uniformRestrictedPAConsistencyProvabilityFormula <->
+    RawRestrictedPAConsistencyProvabilityCompilerInAllModels.
+Proof.
+  split.
+  - exact raw_restrictedPAConsistencyProvabilityCompiler_of_BProv.
+  - exact PA_BProv_uniformRestrictedPAConsistencyProvabilityFormula_of_compiler.
+Qed.
+
 (** The currently available standard-instance derivability condition.  This
     theorem is useful evidence for every numeral, but its [forall] remains
     metatheoretic and therefore is not the conditional theorem's compiler

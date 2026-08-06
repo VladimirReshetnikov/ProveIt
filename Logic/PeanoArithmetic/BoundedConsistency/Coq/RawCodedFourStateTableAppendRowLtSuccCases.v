@@ -1340,6 +1340,37 @@ Arguments RawFourStateTableAppendInheritedLocalRootsAt
   M translation context prefix inheritedTraversal oldLookup
   : clear implicits.
 
+(** The inherited traversal and old-row lookup are often literal members of
+    the finite row prefix.  Package both canonical assumption leaves at once
+    instead of making every append client spell out two [trpAss] compilers.
+    The prefix may contain arbitrary additional hypotheses and the witnessed
+    PA tail is left completely abstract. *)
+Theorem raw_fourStateTableAppendInheritedLocalRootsAt_of_template_assumptions :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    witnessList baseContext prefix inheritedTraversal oldLookup,
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  In inheritedTraversal prefix ->
+  In oldLookup prefix ->
+  RawFourStateTableAppendInheritedLocalRootsAt M translation
+    baseContext prefix inheritedTraversal oldLookup.
+Proof.
+  intros M hPA translation witnessList baseContext prefix
+    inheritedTraversal oldLookup hwitness hinherited holdLookup.
+  exists
+    (rawTemplateProofCodeOnTail translation baseContext
+      (trpAss prefix inheritedTraversal)),
+    (rawTemplateProofCodeOnTail translation baseContext
+      (trpAss prefix oldLookup)).
+  split.
+  - exact (raw_templateAssumptionOnPAAxiomContext_localProof
+      M hPA translation witnessList baseContext prefix inheritedTraversal
+      hwitness hinherited).
+  - exact (raw_templateAssumptionOnPAAxiomContext_localProof
+      M hPA translation witnessList baseContext prefix oldLookup
+      hwitness holdLookup).
+Qed.
+
 (** Transport the two roots chosen before the arithmetic case split to the
     current dependency-ordered witnessed-tail extension. *)
 Theorem raw_fourStateTableAppendInheritedLocalRootsAt_transport :
@@ -2792,9 +2823,70 @@ Proof.
 Qed.
 
 (** Normalize the generic dependency-ordered existential chain to the eight
-    synchronized table-append witnesses.  The append source proof remains on
-    the initial witnessed tail; any helper batches selected by the deep
-    continuation are reconciled before the eight [Ex-E] nodes are built. *)
+    synchronized table-append witnesses while preserving an arbitrary
+    caller prefix.  This is the form required when append traversal runs
+    beneath predecessor-state assumptions. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M)
+    sourceWitnessList sourceContext prefix conclusion appendRoot
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep,
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext prefix)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)) appendRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext
+    (coqFourStateTableAppendWitnessContext
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep prefix)
+    (rawTemplateFormula translation
+      (templateFormulaShiftMany 8 conclusion)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix
+    (rawTemplateFormula translation conclusion).
+Proof.
+  intros M hPA translation sourceWitnessList sourceContext prefix conclusion
+    appendRoot modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep
+    hsource happend hcontinuation.
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_existential_elimination_chain
+      M hPA translation sourceWitnessList sourceContext 8
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)
+      prefix conclusion
+      (coqFourStateTableAppendWitnessContext
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep prefix)
+      appendRoot hsource
+      (coqFourStateTableAppendWitnessContext_success
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep prefix)
+      happend hcontinuation).
+Qed.
+
+(** Empty-prefix compatibility specialization. *)
 Corollary
     raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination :
   forall (M : RawPAModel), RawPASatisfies M -> forall
@@ -2832,26 +2924,13 @@ Proof.
     bound mode formula assignmentCode assignmentStep
     hsource happend hcontinuation.
   exact
-    (raw_codedPAGrowingTemplateLocalProofAt_existential_elimination_chain
-      M hPA translation sourceWitnessList sourceContext 8
-      (coqFourStateTableAppendExistsTemplate
-        modeCode modeStep formulaCode formulaStep
-        assignmentCodeCode assignmentCodeStep
-        assignmentStepCode assignmentStepStep
-        bound mode formula assignmentCode assignmentStep)
-      [] conclusion
-      (coqFourStateTableAppendWitnessContext
-        modeCode modeStep formulaCode formulaStep
-        assignmentCodeCode assignmentCodeStep
-        assignmentStepCode assignmentStepStep
-        bound mode formula assignmentCode assignmentStep [])
-      appendRoot hsource
-      (coqFourStateTableAppendWitnessContext_success
-        modeCode modeStep formulaCode formulaStep
-        assignmentCodeCode assignmentCodeStep
-        assignmentStepCode assignmentStepStep
-        bound mode formula assignmentCode assignmentStep [])
-      happend hcontinuation).
+    (raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination_under_prefix
+      M hPA translation sourceWitnessList sourceContext [] conclusion
+      appendRoot modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      bound mode formula assignmentCode assignmentStep
+      hsource happend hcontinuation).
 Qed.
 
 (** Agreement on embedded PA syntax identifies the metatheoretic witnessed

@@ -33,6 +33,7 @@ From BoundedPAConsistency Require Import
   RawCodedContextStructure
   RawCodedProofAssumptionLeaf
   RawCodedProofBinaryConstructors
+  RawCodedProofImpIConstructor
   RawCodedProofAndIConstructor
   RawCodedProofAndEConstructors
   RawCodedPALocalProofExistential
@@ -41,6 +42,7 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofAndIntroduction
   RawCodedPALocalProofContextInsertUnconditional
   RawCodedPALocalProofWitnessedContextMerge
+  RawCodedPALocalProofPropositionalRules
   RawCodedTruthCertificateFinalProjection
   RawCodedTruthCertificateMasterIntroduction
   RawCodedFixedLevelTruthCoherence
@@ -70,6 +72,7 @@ Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedContextStructure.
 Import PABoundedRawCodedProofAssumptionLeaf.
 Import PABoundedRawCodedProofBinaryConstructors.
+Import PABoundedRawCodedProofImpIConstructor.
 Import PABoundedRawCodedProofAndIConstructor.
 Import PABoundedRawCodedProofAndEConstructors.
 Import PABoundedRawCodedPALocalProofExistential.
@@ -78,6 +81,7 @@ Import PABoundedRawCodedPALocalProofConjunction.
 Import PABoundedRawCodedPALocalProofAndIntroduction.
 Import PABoundedRawCodedPALocalProofContextInsertUnconditional.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedTruthCertificateFinalProjection.
 Import PABoundedRawCodedTruthCertificateMasterIntroduction.
 Import PABoundedRawCodedFixedLevelTruthCoherence.
@@ -203,6 +207,30 @@ Definition RawDynamicTruthNativeCrossLevelLinkedBodyRootCompilerOn
       sigmaDomain piDomain currentSigma currentPi nextSigma nextPi.
 
 Arguments RawDynamicTruthNativeCrossLevelLinkedBodyRootCompilerOn
+  M baseContext : clear implicits.
+
+(** The context-preserving counterpart of the original empty-base guard
+    compiler.  Keeping this interface explicit lets staged constructions
+    move between a body compiler and a pair of guarded roots without hiding
+    the witnessed base context. *)
+Definition RawDynamicTruthNativeCrossLevelLinkedGuardRootCompilerOn
+    (M : RawPAModel) (baseContext : M) : Prop :=
+  forall (tail : nat -> M) predecessorLevel
+      currentGlobalSigma currentGlobalPi
+      sigmaDomain piDomain currentSigma currentPi nextSigma nextPi
+      sigmaRowDomain piRowDomain
+      lowerPiApplication lowerSigmaApplication,
+    RawDynamicTruthNativeCrossLevelLinkedRowsAt M tail predecessorLevel
+      currentGlobalSigma currentGlobalPi sigmaDomain piDomain
+      currentSigma currentPi nextSigma nextPi
+      sigmaRowDomain piRowDomain
+      lowerPiApplication lowerSigmaApplication ->
+    RawDynamicTruthNativeCrossLevelSigmaGuardRootOn M baseContext
+      sigmaDomain piDomain currentSigma nextSigma /\
+    RawDynamicTruthNativeCrossLevelPiGuardRootOn M baseContext
+      sigmaDomain piDomain currentPi nextPi.
+
+Arguments RawDynamicTruthNativeCrossLevelLinkedGuardRootCompilerOn
   M baseContext : clear implicits.
 
 Theorem
@@ -344,6 +372,236 @@ Arguments RawDynamicTruthNativeCrossLevelStagedBodyImplicationRootOn
     currentAxiomSoundness currentFinal nextLocal
     sigmaDomain piDomain currentSigma currentPi nextSigma nextPi
   : clear implicits.
+
+(**
+    The empty-context proof compiler in
+    [RawCodedDynamicTruthNativeCrossLevelProofCompilation] is useful for the
+    original four-leaf interface, but staged callbacks retain a witnessed
+    base context.  This generalized variant performs the same propositional
+    shell compilation without changing that context.  The two local-root
+    packages already contain the directional leaves under the exact cons
+    contexts needed by implication introduction; hence the proof is entirely
+    structural and requires no realizability or adequacy hypothesis.
+*)
+Theorem raw_dynamicTruthNativeCrossLevelBodyRootOn_of_polarity_roots_on :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      baseContext sigmaDomain piDomain currentSigma currentPi nextSigma nextPi,
+  RawDynamicTruthNativeCrossLevelSigmaLocalRootsOn M baseContext
+      sigmaDomain piDomain currentSigma nextSigma ->
+  RawDynamicTruthNativeCrossLevelPiLocalRootsOn M baseContext
+      sigmaDomain piDomain currentPi nextPi ->
+  RawDynamicTruthNativeCrossLevelBodyRootOn M baseContext
+      sigmaDomain piDomain currentSigma currentPi nextSigma nextPi.
+Proof.
+  intros M hPA baseContext sigmaDomain piDomain currentSigma currentPi
+    nextSigma nextPi
+    (sigmaForward & sigmaBackward & hsigmaForward & hsigmaBackward)
+    (piForward & piBackward & hpiForward & hpiBackward).
+  set (admissibleContext :=
+    rawDynamicTruthNativeCrossLevelAdmissibleContextOn M
+      baseContext sigmaDomain piDomain).
+  set (sigmaDomainContext :=
+    rawDynamicTruthNativeCrossLevelDomainContextOn M
+      baseContext sigmaDomain piDomain sigmaDomain).
+  set (piDomainContext :=
+    rawDynamicTruthNativeCrossLevelDomainContextOn M
+      baseContext sigmaDomain piDomain piDomain).
+  set (sigmaGuard :=
+    rawDynamicTruthNativeCrossLevelGuardedEquivalenceCode M
+      sigmaDomain currentSigma nextSigma).
+  set (piGuard :=
+    rawDynamicTruthNativeCrossLevelGuardedEquivalenceCode M
+      piDomain currentPi nextPi).
+  set (sigmaPairCode := rawFormulaAndCode M
+    (rawFormulaImpCode M currentSigma nextSigma)
+    (rawFormulaImpCode M nextSigma currentSigma)).
+  set (piPairCode := rawFormulaAndCode M
+    (rawFormulaImpCode M currentPi nextPi)
+    (rawFormulaImpCode M nextPi currentPi)).
+  set (pairCode := rawFormulaAndCode M sigmaGuard piGuard).
+  set (admissible :=
+    rawDynamicTruthLocalAdmissibleCode M sigmaDomain piDomain).
+  change (RawCodedPALocalProofOf M
+    (rawListNode M currentSigma sigmaDomainContext)
+    nextSigma sigmaForward) in hsigmaForward.
+  change (RawCodedPALocalProofOf M
+    (rawListNode M nextSigma sigmaDomainContext)
+    currentSigma sigmaBackward) in hsigmaBackward.
+  change (RawCodedPALocalProofOf M
+    (rawListNode M currentPi piDomainContext)
+    nextPi piForward) in hpiForward.
+  change (RawCodedPALocalProofOf M
+    (rawListNode M nextPi piDomainContext)
+    currentPi piBackward) in hpiBackward.
+  pose proof (raw_codedPALocalProofOf_impI M hPA sigmaDomainContext
+    currentSigma nextSigma
+    sigmaForward
+    hsigmaForward) as hsigmaForwardImp.
+  pose proof (raw_codedPALocalProofOf_impI M hPA sigmaDomainContext
+    nextSigma currentSigma
+    sigmaBackward
+    hsigmaBackward) as hsigmaBackwardImp.
+  pose proof (raw_codedPALocalProofOf_andI M hPA sigmaDomainContext
+    (rawFormulaImpCode M currentSigma nextSigma)
+    (rawFormulaImpCode M nextSigma currentSigma)
+    (rawProofImpIRoot M sigmaDomainContext currentSigma nextSigma sigmaForward)
+    (rawProofImpIRoot M sigmaDomainContext nextSigma currentSigma sigmaBackward)
+    hsigmaForwardImp hsigmaBackwardImp) as hsigmaPair.
+  change (RawCodedPALocalProofOf M
+    (rawListNode M sigmaDomain admissibleContext) sigmaPairCode
+    (rawProofAndIRoot M sigmaDomainContext
+      (rawFormulaImpCode M currentSigma nextSigma)
+      (rawFormulaImpCode M nextSigma currentSigma)
+      (rawProofImpIRoot M sigmaDomainContext currentSigma nextSigma sigmaForward)
+      (rawProofImpIRoot M sigmaDomainContext nextSigma currentSigma sigmaBackward)))
+    in hsigmaPair.
+  pose proof (raw_codedPALocalProofOf_impI M hPA admissibleContext
+    sigmaDomain sigmaPairCode
+    (rawProofAndIRoot M sigmaDomainContext
+      (rawFormulaImpCode M currentSigma nextSigma)
+      (rawFormulaImpCode M nextSigma currentSigma)
+      (rawProofImpIRoot M sigmaDomainContext currentSigma nextSigma sigmaForward)
+      (rawProofImpIRoot M sigmaDomainContext nextSigma currentSigma sigmaBackward))
+    hsigmaPair) as hsigmaGuard.
+  pose proof (raw_codedPALocalProofOf_impI M hPA piDomainContext
+    currentPi nextPi
+    piForward
+    hpiForward) as hpiForwardImp.
+  pose proof (raw_codedPALocalProofOf_impI M hPA piDomainContext
+    nextPi currentPi
+    piBackward
+    hpiBackward) as hpiBackwardImp.
+  pose proof (raw_codedPALocalProofOf_andI M hPA piDomainContext
+    (rawFormulaImpCode M currentPi nextPi)
+    (rawFormulaImpCode M nextPi currentPi)
+    (rawProofImpIRoot M piDomainContext currentPi nextPi piForward)
+    (rawProofImpIRoot M piDomainContext nextPi currentPi piBackward)
+    hpiForwardImp hpiBackwardImp) as hpiPair.
+  change (RawCodedPALocalProofOf M
+    (rawListNode M piDomain admissibleContext) piPairCode
+    (rawProofAndIRoot M piDomainContext
+      (rawFormulaImpCode M currentPi nextPi)
+      (rawFormulaImpCode M nextPi currentPi)
+      (rawProofImpIRoot M piDomainContext currentPi nextPi piForward)
+      (rawProofImpIRoot M piDomainContext nextPi currentPi piBackward)))
+    in hpiPair.
+  pose proof (raw_codedPALocalProofOf_impI M hPA admissibleContext
+    piDomain piPairCode
+    (rawProofAndIRoot M piDomainContext
+      (rawFormulaImpCode M currentPi nextPi)
+      (rawFormulaImpCode M nextPi currentPi)
+      (rawProofImpIRoot M piDomainContext currentPi nextPi piForward)
+      (rawProofImpIRoot M piDomainContext nextPi currentPi piBackward))
+    hpiPair) as hpiGuard.
+  pose proof (raw_codedPALocalProofOf_andI M hPA admissibleContext
+    sigmaGuard piGuard
+    (rawProofImpIRoot M admissibleContext sigmaDomain sigmaPairCode
+      (rawProofAndIRoot M sigmaDomainContext
+        (rawFormulaImpCode M currentSigma nextSigma)
+        (rawFormulaImpCode M nextSigma currentSigma)
+        (rawProofImpIRoot M sigmaDomainContext currentSigma nextSigma sigmaForward)
+        (rawProofImpIRoot M sigmaDomainContext nextSigma currentSigma sigmaBackward)))
+    (rawProofImpIRoot M admissibleContext piDomain piPairCode
+      (rawProofAndIRoot M piDomainContext
+        (rawFormulaImpCode M currentPi nextPi)
+        (rawFormulaImpCode M nextPi currentPi)
+        (rawProofImpIRoot M piDomainContext currentPi nextPi piForward)
+        (rawProofImpIRoot M piDomainContext nextPi currentPi piBackward)))
+    hsigmaGuard hpiGuard) as hguards.
+  pose proof (raw_codedPALocalProofOf_impI M hPA baseContext
+    admissible pairCode
+    (rawProofAndIRoot M admissibleContext sigmaGuard piGuard
+      (rawProofImpIRoot M admissibleContext sigmaDomain sigmaPairCode
+        (rawProofAndIRoot M sigmaDomainContext
+          (rawFormulaImpCode M currentSigma nextSigma)
+          (rawFormulaImpCode M nextSigma currentSigma)
+          (rawProofImpIRoot M sigmaDomainContext currentSigma nextSigma sigmaForward)
+          (rawProofImpIRoot M sigmaDomainContext nextSigma currentSigma sigmaBackward)))
+      (rawProofImpIRoot M admissibleContext piDomain piPairCode
+        (rawProofAndIRoot M piDomainContext
+          (rawFormulaImpCode M currentPi nextPi)
+          (rawFormulaImpCode M nextPi currentPi)
+          (rawProofImpIRoot M piDomainContext currentPi nextPi piForward)
+          (rawProofImpIRoot M piDomainContext nextPi currentPi piBackward))))
+    hguards) as hbody.
+  exists (rawProofImpIRoot M baseContext admissible pairCode
+    (rawProofAndIRoot M admissibleContext sigmaGuard piGuard
+      (rawProofImpIRoot M admissibleContext sigmaDomain sigmaPairCode
+        (rawProofAndIRoot M sigmaDomainContext
+          (rawFormulaImpCode M currentSigma nextSigma)
+          (rawFormulaImpCode M nextSigma currentSigma)
+          (rawProofImpIRoot M sigmaDomainContext currentSigma nextSigma sigmaForward)
+          (rawProofImpIRoot M sigmaDomainContext nextSigma currentSigma sigmaBackward)))
+      (rawProofImpIRoot M admissibleContext piDomain piPairCode
+        (rawProofAndIRoot M piDomainContext
+          (rawFormulaImpCode M currentPi nextPi)
+          (rawFormulaImpCode M nextPi currentPi)
+          (rawProofImpIRoot M piDomainContext currentPi nextPi piForward)
+          (rawProofImpIRoot M piDomainContext nextPi currentPi piBackward))))).
+  exact hbody.
+Qed.
+
+(** Conversely, a linked two-guard compiler is enough to build the complete
+    coherence body in the same base context.  This adapter is useful when a
+    predecessor construction naturally produces guarded roots first: the
+    linked-row adequacy theorem supplies exactly the atomic-adequacy premises
+    needed by the directional-root transport, after which the propositional
+    shell above closes the body. *)
+Theorem
+    raw_dynamicTruthNativeCrossLevelLinkedBodyRootCompilerOn_of_guard_roots :
+    forall (M : RawPAModel), RawPASatisfies M -> forall baseContext,
+  RawContextListRealizable M baseContext ->
+  RawDynamicTruthNativeCrossLevelLinkedGuardRootCompilerOn M baseContext ->
+  RawDynamicTruthNativeCrossLevelLinkedBodyRootCompilerOn M baseContext.
+Proof.
+  intros M hPA baseContext hbase hguards tail predecessorLevel
+    currentGlobalSigma currentGlobalPi sigmaDomain piDomain
+    currentSigma currentPi nextSigma nextPi
+    sigmaRowDomain piRowDomain lowerPi lowerSigma hlinked.
+  destruct (raw_dynamicTruthNativeCrossLevelLinkedRowsAt_adequacy
+    M hPA tail predecessorLevel currentGlobalSigma currentGlobalPi
+    sigmaDomain piDomain currentSigma currentPi nextSigma nextPi
+    sigmaRowDomain piRowDomain lowerPi lowerSigma hlinked) as
+    (nextGlobalSigma & nextGlobalPi & hadequacy).
+  destruct (hguards tail predecessorLevel
+    currentGlobalSigma currentGlobalPi sigmaDomain piDomain
+    currentSigma currentPi nextSigma nextPi
+    sigmaRowDomain piRowDomain lowerPi lowerSigma hlinked) as
+    [hsigmaGuard hpiGuard].
+  apply (raw_dynamicTruthNativeCrossLevelBodyRootOn_of_polarity_roots_on
+    M hPA baseContext sigmaDomain piDomain currentSigma currentPi
+    nextSigma nextPi).
+  - apply (raw_dynamicTruthNativeCrossLevelSigmaLocalRootsOn_of_guard_root
+      M hPA baseContext sigmaDomain piDomain currentSigma nextSigma hbase).
+    + exact (rawDynamicTruthNativeCrossLevel_sigmaDomain_adequate
+        M currentGlobalSigma currentGlobalPi nextGlobalSigma nextGlobalPi
+        sigmaDomain piDomain currentSigma currentPi nextSigma nextPi
+        hadequacy).
+    + exact (rawDynamicTruthNativeCrossLevel_currentSigma_adequate
+        M currentGlobalSigma currentGlobalPi nextGlobalSigma nextGlobalPi
+        sigmaDomain piDomain currentSigma currentPi nextSigma nextPi
+        hadequacy).
+    + exact (rawDynamicTruthNativeCrossLevel_nextSigma_adequate
+        M currentGlobalSigma currentGlobalPi nextGlobalSigma nextGlobalPi
+        sigmaDomain piDomain currentSigma currentPi nextSigma nextPi
+        hadequacy).
+    + exact hsigmaGuard.
+  - apply (raw_dynamicTruthNativeCrossLevelPiLocalRootsOn_of_guard_root
+      M hPA baseContext sigmaDomain piDomain currentPi nextPi hbase).
+    + exact (rawDynamicTruthNativeCrossLevel_piDomain_adequate
+        M currentGlobalSigma currentGlobalPi nextGlobalSigma nextGlobalPi
+        sigmaDomain piDomain currentSigma currentPi nextSigma nextPi
+        hadequacy).
+    + exact (rawDynamicTruthNativeCrossLevel_currentPi_adequate
+        M currentGlobalSigma currentGlobalPi nextGlobalSigma nextGlobalPi
+        sigmaDomain piDomain currentSigma currentPi nextSigma nextPi
+        hadequacy).
+    + exact (rawDynamicTruthNativeCrossLevel_nextPi_adequate
+        M currentGlobalSigma currentGlobalPi nextGlobalSigma nextGlobalPi
+        sigmaDomain piDomain currentSigma currentPi nextSigma nextPi
+        hadequacy).
+    + exact hpiGuard.
+Qed.
 
 (** The residual compiler is trace-linked and context-preserving.  Its
     conclusion must mention the exact [baseContext] from the seven supplied
