@@ -318,6 +318,7 @@ From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Absoluteness.
 From Foundation.FirstOrder.Arithmetic.TA Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.TA Require Import Nonstandard.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
@@ -2472,6 +2473,23 @@ Check first_order_true_arithmetic.
 Check first_order_true_arithmetic_models.
 Check first_order_true_arithmetic_provable_iff.
 Check arithmetic_theory_weaker_than_true_arithmetic.
+(* FirstOrder/Arithmetic/TA/Nonstandard.v: compactness nonstandard model. *)
+Check nonstandard_language.
+Check nonstandard_arithmetic_embedding.
+Check nonstandard_star_symbol.
+Check nonstandard_star_bound_sentence.
+Check nonstandard_star_unbounded_theory.
+Check nonstandard_bounded_theory.
+Check nonstandard_union_theory.
+Check nonstandard_model_structure.
+Print Assumptions nonstandard_model_models_arithmetic.
+Print Assumptions nonstandard_model_models_equality.
+Print Assumptions nonstandard_bound_realize_iff.
+Print Assumptions nonstandard_finite_satisfiable.
+Print Assumptions nonstandard_union_satisfiable.
+Print Assumptions nonstandard_reduct_models_true_arithmetic.
+Print Assumptions nonstandard_reduct_models_peano_minus.
+Print Assumptions nonstandard_star_unbounded.
 Check first_order_structure_monotone.
 Check structure_func_monotone.
 Check semiterm_val_monotone.
