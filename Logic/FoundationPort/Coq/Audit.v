@@ -46,7 +46,7 @@ From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
   D1 D2 D3 EquationalTheory PeanoMinus.
 From Foundation.FirstOrder.Basic Require Import BinderNotation.
 From Foundation.FirstOrder Require Import Basic.
-From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq SeqChoice PRF FixedPoint.
+From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq SeqChoice BigOps PRF FixedPoint.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Vec.
 From Foundation.FirstOrder.Arithmetic Require Import HFS.
 From Foundation.FirstOrder.Arithmetic.Exponential Require Import
@@ -5712,6 +5712,11 @@ Check hfs_relation_choice_vector.
 Print Assumptions hfs_relation_choice_vector_spec.
 Print Assumptions hfs_sequence_exists_for_relation.
 Print Assumptions hfs_sequence_existsUnique_for_relation.
+Print Assumptions hfs_mem_list_big_union_iff.
+Print Assumptions hfs_mem_list_big_inter_iff.
+Print Assumptions hfs_mem_list_product_iff.
+Print Assumptions hfs_mem_list_domain_iff.
+Print Assumptions hfs_mem_list_range_iff.
 Check hfs_pr_construction.
 Check hfs_pr_result.
 Print Assumptions hfs_pr_result_zero.
