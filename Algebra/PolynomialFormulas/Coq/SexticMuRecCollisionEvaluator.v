@@ -642,11 +642,302 @@ Proof.
     + exact: ra_pair_projected_x1_correct.
 Qed.
 
+(* --------------------------------------------------------------------- *)
+(* Triple-descriptor terms and the compact ordered collision product.    *)
+
+Definition triple_member_table
+    (block : 'I_2) (slot : 'I_3) : list nat :=
+  List.map
+    (fun partition =>
+      val
+        (PolynomialFormulasSexticSparseResolvents.triple_member
+          partition block slot))
+    (enum PolynomialFormulasSexticSparseResolvents.triple_partition).
+
+Definition recursive_triple_member {arity}
+    (partition : recursive_expression arity)
+    (block : 'I_2) (slot : 'I_3) : recursive_expression arity :=
+  recursive_lookup_list (triple_member_table block slot) partition.
+
+Definition triple_outer_digit {arity}
+    (term_index : recursive_expression arity) (block : nat) :
+    recursive_expression arity :=
+  RecRemSucc
+    (RecDivSucc term_index (Nat.pred (Nat.pow 9 block))) 8.
+
+Definition triple_inner_bit {arity}
+    (outer_digit : recursive_expression arity) (slot : nat) :
+    recursive_expression arity :=
+  RecRemSucc
+    (RecDivSucc (RecMinus outer_digit (RecConst 1))
+      (Nat.pred (Nat.pow 2 slot))) 1.
+
+Definition triple_block_coefficient_from {arity}
+    (term_index x0 x1 : recursive_expression arity) (block : nat) :
+    recursive_signed_expression arity :=
+  let digit := triple_outer_digit term_index block in
+  let bit0 := triple_inner_bit digit 0 in
+  let bit1 := triple_inner_bit digit 1 in
+  let bit2 := triple_inner_bit digit 2 in
+  recursive_signed_if_zero digit (recursive_signed_of_nat x0)
+    (recursive_signed_mult
+      (recursive_signed_negate recursive_signed_one)
+      (recursive_signed_mult
+        (recursive_signed_if_zero bit0 (recursive_signed_of_nat x1)
+          (recursive_signed_negate recursive_signed_one))
+        (recursive_signed_mult
+          (recursive_signed_if_zero bit1 (recursive_signed_of_nat x1)
+            (recursive_signed_negate recursive_signed_one))
+          (recursive_signed_if_zero bit2 (recursive_signed_of_nat x1)
+            (recursive_signed_negate recursive_signed_one))))).
+
+Definition triple_descriptor_coefficient_from {arity}
+    (term_index x0 x1 : recursive_expression arity) :
+    recursive_signed_expression arity :=
+  recursive_signed_mult
+    (triple_block_coefficient_from term_index x0 x1 0)
+    (triple_block_coefficient_from term_index x0 x1 1).
+
+Definition triple_selected_root_indicator_from {arity}
+    (partition term_index : recursive_expression arity)
+    (coordinate : nat) (block : 'I_2) (slot : 'I_3) :
+    recursive_expression arity :=
+  let digit := triple_outer_digit term_index (val block) in
+  let bit := triple_inner_bit digit (val slot) in
+  RecMult (RecIfZero digit (RecConst 0) (RecConst 1))
+    (RecMult bit
+      (recursive_equal_indicator
+        (recursive_triple_member partition block slot)
+        (RecConst coordinate))).
+
+Definition triple_descriptor_exponent_from {arity}
+    (partition term_index : recursive_expression arity)
+    (coordinate : nat) : recursive_expression arity :=
+  RecPlus
+    (triple_selected_root_indicator_from partition term_index coordinate
+      ord0 ord0)
+    (RecPlus
+      (triple_selected_root_indicator_from partition term_index coordinate
+        ord0 (@Ordinal 3 1 isT))
+      (RecPlus
+        (triple_selected_root_indicator_from partition term_index coordinate
+          ord0 ord_max)
+        (RecPlus
+          (triple_selected_root_indicator_from partition term_index coordinate
+            ord_max ord0)
+          (RecPlus
+            (triple_selected_root_indicator_from partition term_index coordinate
+              ord_max (@Ordinal 3 1 isT))
+            (triple_selected_root_indicator_from partition term_index coordinate
+              ord_max ord_max))))).
+
+Definition triple_collision_factor_coefficient_from {arity}
+    (left_partition right_partition digit x0 x1 :
+      recursive_expression arity) : recursive_signed_expression arity :=
+  let right_branch :=
+    recursive_signed_negate
+      (triple_descriptor_coefficient_from
+        (RecMinus digit (RecConst 81)) x0 x1) in
+  let left_branch := triple_descriptor_coefficient_from digit x0 x1 in
+  recursive_signed_if_zero (RecMinus (RecConst 81) digit)
+    right_branch left_branch.
+
+Definition triple_collision_factor_exponent_from {arity}
+    (left_partition right_partition digit : recursive_expression arity)
+    (coordinate : nat) : recursive_expression arity :=
+  RecIfZero (RecMinus (RecConst 81) digit)
+    (triple_descriptor_exponent_from right_partition
+      (RecMinus digit (RecConst 81)) coordinate)
+    (triple_descriptor_exponent_from left_partition digit coordinate).
+
+Definition triple_collision_state_step_from {arity}
+    (state x0 x1 : recursive_expression arity) :
+    recursive_expression arity :=
+  let factor := recursive_project9 pos0 state in
+  let remaining := recursive_project9 pos1 state in
+  let coefficient_code := recursive_project9 pos2 state in
+  let exponent0 := recursive_project9 pos3 state in
+  let exponent1 := recursive_project9 pos4 state in
+  let exponent2 := recursive_project9 pos5 state in
+  let exponent3 := recursive_project9 pos6 state in
+  let exponent4 := recursive_project9 pos7 state in
+  let exponent5 := recursive_project9 pos8 state in
+  let left_partition := RecDivSucc factor 9 in
+  let right_partition := RecRemSucc factor 9 in
+  let digit := RecRemSucc remaining 161 in
+  let next_remaining := RecDivSucc remaining 161 in
+  let factor_coefficient :=
+    triple_collision_factor_coefficient_from left_partition right_partition
+      digit x0 x1 in
+  let next_coefficient :=
+    recursive_signed_code
+      (recursive_signed_mult (recursive_signed_decode coefficient_code)
+        factor_coefficient) in
+  let next_exponent coordinate previous :=
+    RecPlus previous
+      (triple_collision_factor_exponent_from left_partition right_partition
+        digit coordinate) in
+  let diagonal_state :=
+    recursive_inject9 (RecSucc factor) remaining coefficient_code
+      exponent0 exponent1 exponent2 exponent3 exponent4 exponent5 in
+  let off_diagonal_state :=
+    recursive_inject9 (RecSucc factor) next_remaining next_coefficient
+      (next_exponent 0 exponent0) (next_exponent 1 exponent1)
+      (next_exponent 2 exponent2) (next_exponent 3 exponent3)
+      (next_exponent 4 exponent4) (next_exponent 5 exponent5) in
+  RecIfZero (recursive_equal_distance left_partition right_partition)
+    diagonal_state off_diagonal_state.
+
+Definition triple_collision_term_state_from {arity}
+    (term_index x0 x1 : recursive_expression arity) :
+    recursive_expression arity :=
+  RecIter (RecConst 100)
+    (recursive_inject9 (RecConst 0) term_index
+      (recursive_signed_code recursive_signed_one)
+      (RecConst 0) (RecConst 0) (RecConst 0)
+      (RecConst 0) (RecConst 0) (RecConst 0))
+    (triple_collision_state_step_from (RecVar pos0)
+      (recursive_weaken x0) (recursive_weaken x1)).
+
+Definition triple_collision_term_count_from {arity} :
+    recursive_expression arity :=
+  RecIter (RecConst 90) (RecConst 1)
+    (RecMult (RecVar pos0) (RecConst 162)).
+
+Definition triple_collision_term_code_from {arity}
+    (term_index x0 x1 : recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : recursive_signed_expression arity) :
+    recursive_expression arity :=
+  RecIter (RecConst 1)
+    (triple_collision_term_state_from term_index x0 x1)
+    (recursive_signed_code
+      (recursive_signed_mult
+        (recursive_signed_decode
+          (recursive_project9 pos2 (RecVar pos0)))
+        (recursive_newton_mobius_from
+          (recursive_project9 pos3 (RecVar pos0))
+          (recursive_project9 pos4 (RecVar pos0))
+          (recursive_project9 pos5 (RecVar pos0))
+          (recursive_project9 pos6 (RecVar pos0))
+          (recursive_project9 pos7 (RecVar pos0))
+          (recursive_project9 pos8 (RecVar pos0))
+          (recursive_signed_weaken e1) (recursive_signed_weaken e2)
+          (recursive_signed_weaken e3) (recursive_signed_weaken e4)
+          (recursive_signed_weaken e5) (recursive_signed_weaken e6)))).
+
+(** Inputs are zigzag codes [f0,...,f5] followed by the two natural
+    descriptor parameters [x0,x1]. *)
+Definition triple_scaled_collision_signed_expression :
+    recursive_signed_expression 8 :=
+  recursive_signed_bounded_sum triple_collision_term_count_from
+    (recursive_signed_decode
+      (triple_collision_term_code_from (RecVar pos0)
+        (RecVar pos7) (RecVar pos8)
+        (recursive_signed_negate (recursive_signed_input pos6))
+        (recursive_signed_input pos5)
+        (recursive_signed_negate (recursive_signed_input pos4))
+        (recursive_signed_input pos3)
+        (recursive_signed_negate (recursive_signed_input pos2))
+        (recursive_signed_input pos1))).
+
+Definition triple_scaled_collision_code_expression :
+    recursive_expression 8 :=
+  recursive_signed_code triple_scaled_collision_signed_expression.
+
+Definition encoded_triple_scaled_collision_value
+    (values : Vector.t nat 8) : nat :=
+  eval_recursive_expression triple_scaled_collision_code_expression values.
+
+Definition ra_triple_scaled_collision_value : recalg 8 :=
+  compile_recursive_expression triple_scaled_collision_code_expression.
+
+Theorem ra_triple_scaled_collision_value_correct values :
+  ⟦ra_triple_scaled_collision_value⟧ values
+    (encoded_triple_scaled_collision_value values).
+Proof. exact: compile_recursive_expression_correct. Qed.
+
+Theorem ra_triple_scaled_collision_value_primitive_recursive :
+  prim_rec ra_triple_scaled_collision_value.
+Proof. exact: compile_recursive_expression_primitive_recursive. Qed.
+
+Definition encoded_triple_collision_test (values : Vector.t nat 8) : nat :=
+  ite_rel (encoded_triple_scaled_collision_value values) 0 1.
+
+Definition triple_collision_test_expression : recursive_expression 8 :=
+  RecIfZero triple_scaled_collision_code_expression
+    (RecConst 0) (RecConst 1).
+
+Definition ra_triple_collision_test : recalg 8 :=
+  ra_comp ra_ite
+    (ra_triple_scaled_collision_value ##
+     ra_cst_n 8 0 ## ra_cst_n 8 1 ## vec_nil).
+
+Theorem ra_triple_collision_test_correct values :
+  ⟦ra_triple_collision_test⟧ values (encoded_triple_collision_test values).
+Proof.
+  unfold ra_triple_collision_test, encoded_triple_collision_test.
+  eapply ra_comp3_val.
+  - exact: ra_triple_scaled_collision_value_correct.
+  - exact: ra_cst_n_val.
+  - exact: ra_cst_n_val.
+  - exact: ra_ite_val.
+Qed.
+
+Theorem ra_triple_collision_test_primitive_recursive :
+  prim_rec ra_triple_collision_test.
+Proof.
+  unfold ra_triple_collision_test.
+  change
+    (prim_rec ra_ite /\
+      forall variable,
+        prim_rec
+          (vec_pos
+            (ra_triple_scaled_collision_value ##
+             ra_cst_n 8 0 ## ra_cst_n 8 1 ## vec_nil)
+            variable)).
+  split; [exact ra_ite_prim_rec|].
+  intro variable; analyse pos variable; cbn [vec_pos pos_S_inv].
+  - exact ra_triple_scaled_collision_value_primitive_recursive.
+  - exact (ra_cst_n_prim 8 0).
+  - exact (ra_cst_n_prim 8 1).
+Qed.
+
+Definition triple_projected_collision_arguments :=
+  pair_projected_collision_arguments.
+
+Definition ra_triple_projected_collision_test : recalg 7 :=
+  ra_comp ra_triple_collision_test ra_pair_projected_collision_arguments.
+
+Theorem ra_triple_projected_collision_test_correct index values :
+  ⟦ra_triple_projected_collision_test⟧ (index ## values)
+    (encoded_triple_collision_test
+      (triple_projected_collision_arguments index values)).
+Proof.
+  unfold ra_triple_projected_collision_test,
+    triple_projected_collision_arguments.
+  exists (pair_projected_collision_arguments index values); split.
+  - exact: ra_triple_collision_test_correct.
+  - intro variable; analyse pos variable;
+      cbn [ra_pair_projected_collision_arguments
+        pair_projected_collision_arguments vec_pos pos_S_inv].
+    + exact: ra_proj_val.
+    + exact: ra_proj_val.
+    + exact: ra_proj_val.
+    + exact: ra_proj_val.
+    + exact: ra_proj_val.
+    + exact: ra_proj_val.
+    + exact: ra_pair_projected_x0_correct.
+    + exact: ra_pair_projected_x1_correct.
+Qed.
+
 Print Assumptions ra_newton_sparse_term_correct.
 Print Assumptions newton_sparse_term_relation_murec.
 Print Assumptions decode_encoded_newton_sparse_term.
 Print Assumptions ra_pair_scaled_collision_value_correct.
 Print Assumptions ra_pair_collision_test_correct.
 Print Assumptions ra_pair_projected_collision_test_correct.
+Print Assumptions ra_triple_scaled_collision_value_correct.
+Print Assumptions ra_triple_collision_test_correct.
+Print Assumptions ra_triple_projected_collision_test_correct.
 
 End PolynomialFormulasSexticMuRecCollisionEvaluator.
