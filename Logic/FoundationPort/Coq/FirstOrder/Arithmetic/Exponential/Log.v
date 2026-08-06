@@ -211,6 +211,25 @@ Lemma nat_length_exp : forall x,
   nat_length (nat_exp x) = x + 1.
 Proof. intro x. apply nat_exponential_length. apply nat_exp_spec. Qed.
 
+(** Two elementary square-root estimates used by the standard Nuon bounds. *)
+Lemma nat_two_mul_sqrt_le_self : forall a,
+  2 * N.sqrt a <= a + 1.
+Proof.
+  intro a. pose proof (proj1 (N.sqrt_spec a (N.le_0_l _))) as Hlow.
+  simpl in Hlow. nia.
+Qed.
+
+Lemma nat_sqrt_pos_iff : forall a,
+  0 < N.sqrt a <-> 0 < a.
+Proof.
+  intro a. split.
+  - intro H. pose proof (proj1 (N.sqrt_spec a (N.le_0_l _))) as Hlow.
+    simpl in Hlow. nia.
+  - intro H. destruct (N.eq_dec (N.sqrt a) 0) as [Hz | Hz]; [|lia].
+    pose proof (proj2 (N.sqrt_spec a (N.le_0_l _))) as Hhi.
+    simpl in Hhi. lia.
+Qed.
+
 Lemma nat_length_two_mul_of_pos : forall a,
   0 < a -> nat_length (2 * a) = nat_length a + 1.
 Proof.
@@ -329,6 +348,34 @@ Proof.
     [now rewrite nat_log_exp | exact Ha | apply nat_pow2_power | exact Hb].
 Qed.
 
+(** The standard-model form of Foundation's [sq_len_le_three_mul].  Binary
+    induction exposes the same even/odd decomposition used by the source's
+    polynomial induction, while [nat_length_le_self] supplies the only
+    numerical estimate needed in each successor branch. *)
+Lemma nat_sq_length_le_three_mul : forall a,
+  nat_length a ^ 2 <= 3 * a.
+Proof.
+  intro a.
+  induction a using N.binary_induction.
+  - simpl. lia.
+  - destruct (N.eq_dec a 0) as [-> | Hn].
+    + simpl. lia.
+    + assert (Hpos : 0 < a) by
+        (apply (proj1 (N.neq_0_lt_0 a)); exact Hn).
+      rewrite nat_length_two_mul_of_pos by exact Hpos.
+      pose proof (@nat_length_le_self a) as Hlen.
+      assert (Hone : 1 <= a) by lia.
+      nia.
+  - destruct (N.eq_dec a 0) as [-> | Hn].
+    + simpl. lia.
+    + assert (Hpos : 0 < a) by
+        (apply (proj1 (N.neq_0_lt_0 a)); exact Hn).
+      rewrite nat_length_two_mul_add_one.
+      pose proof (@nat_length_le_self a) as Hlen.
+      assert (Hone : 1 <= a) by lia.
+      nia.
+Qed.
+
 (** [nat_bexp a x] is [2^x] inside the binary length of [a], and zero
     outside it.  Unlike the source choice construction, it is executable. *)
 Definition nat_bexp (a x : N) : N :=
@@ -383,6 +430,100 @@ Lemma nat_bexp_monotone_le_iff : forall a i j,
 Proof.
   intros a i j Hi Hj. rewrite !nat_bexp_of_lt by assumption.
   symmetry. apply N.pow_le_mono_r_iff. reflexivity.
+Qed.
+
+(** Cross-base comparison: once both bounded exponents are in range, the
+    bases are irrelevant and order is exactly order of the indices. *)
+Lemma nat_bexp_monotone_cross_iff : forall a1 i1 a2 i2,
+  i1 < nat_length a1 -> i2 < nat_length a2 ->
+  (nat_bexp a1 i1 < nat_bexp a2 i2 <-> i1 < i2).
+Proof.
+  intros a1 i1 a2 i2 H1 H2.
+  rewrite !nat_bexp_of_lt by assumption.
+  unfold nat_exp.
+  symmetry. apply N.pow_lt_mono_r_iff. reflexivity.
+Qed.
+
+Lemma nat_bexp_monotone_cross_le_iff : forall a1 i1 a2 i2,
+  i1 < nat_length a1 -> i2 < nat_length a2 ->
+  (nat_bexp a1 i1 <= nat_bexp a2 i2 <-> i1 <= i2).
+Proof.
+  intros a1 i1 a2 i2 H1 H2.
+  rewrite !nat_bexp_of_lt by assumption.
+  unfold nat_exp.
+  symmetry. apply N.pow_le_mono_r_iff. reflexivity.
+Qed.
+
+Lemma nat_bexp_two_mul : forall a a' x,
+  2 * x < nat_length a -> x < nat_length a' ->
+  nat_bexp a (2 * x) = (nat_bexp a' x) ^ 2.
+Proof.
+  intros a a' x Ha Ha'.
+  rewrite nat_bexp_of_lt by exact Ha.
+  rewrite nat_bexp_of_lt by exact Ha'.
+  unfold nat_exp.
+  rewrite <- N.pow_mul_r.
+  f_equal. lia.
+Qed.
+
+Lemma nat_bexp_two_mul_succ : forall a i,
+  nat_bexp (2 * a) (i + 1) = 2 * nat_bexp a i.
+Proof.
+  intros a i.
+  destruct (N.eq_dec a 0) as [Ha | Ha].
+  - subst a.
+    change (nat_bexp 0 (i + 1) = 2 * nat_bexp 0 i).
+    assert (H1 : nat_length 0 <= i + 1).
+    { rewrite nat_length_zero. lia. }
+    assert (H0 : nat_length 0 <= i).
+    { rewrite nat_length_zero. apply N.le_0_l. }
+    rewrite (nat_bexp_of_le H1), (nat_bexp_of_le H0).
+    reflexivity.
+  - destruct (N.lt_ge_cases i (nat_length a)) as [Hi | Hi].
+    + rewrite nat_bexp_of_lt.
+      2:{ rewrite nat_length_two_mul_of_pos; lia. }
+      rewrite nat_bexp_of_lt by exact Hi.
+      unfold nat_exp.
+      rewrite N.add_1_r, N.pow_succ_r'.
+      reflexivity.
+    + rewrite nat_bexp_of_le by (rewrite nat_length_two_mul_of_pos; lia).
+      rewrite nat_bexp_of_le by exact Hi.
+      reflexivity.
+Qed.
+
+Lemma nat_bexp_two_mul_add_one_succ : forall a i,
+  nat_bexp (2 * a + 1) (i + 1) = 2 * nat_bexp a i.
+Proof.
+  intros a i.
+  destruct (N.lt_ge_cases i (nat_length a)) as [Hi | Hi].
+  - rewrite nat_bexp_of_lt.
+    2:{ rewrite nat_length_two_mul_add_one; lia. }
+    rewrite nat_bexp_of_lt by exact Hi.
+    unfold nat_exp.
+    rewrite N.add_1_r, N.pow_succ_r'.
+    reflexivity.
+  - rewrite nat_bexp_of_le by (rewrite nat_length_two_mul_add_one; lia).
+    rewrite nat_bexp_of_le by exact Hi.
+    reflexivity.
+Qed.
+
+Lemma nat_pow_four_le_pow_four : forall a b,
+  a ^ 4 <= b ^ 4 <-> a <= b.
+Proof.
+  intros a b. symmetry.
+  apply (N.pow_le_mono_l_iff a b 4). discriminate.
+Qed.
+
+Lemma nat_bexp_four_mul : forall a a' x,
+  4 * x < nat_length a -> x < nat_length a' ->
+  nat_bexp a (4 * x) = (nat_bexp a' x) ^ 4.
+Proof.
+  intros a a' x Ha Ha'.
+  rewrite nat_bexp_of_lt by exact Ha.
+  rewrite nat_bexp_of_lt by exact Ha'.
+  unfold nat_exp.
+  rewrite <- N.pow_mul_r.
+  f_equal. lia.
 Qed.
 
 Lemma nat_bexp_eq_of_lt_length : forall a b i,

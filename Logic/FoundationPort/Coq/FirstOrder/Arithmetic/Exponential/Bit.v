@@ -10,7 +10,8 @@
     bounded-comprehension principles remain outside this module.  No formula
     graph or model-theoretic adapter is assumed here. *)
 
-From Stdlib Require Import Bool.Bool NArith.NArith.
+From Stdlib Require Import Bool.Bool Lia NArith.NArith
+  Numbers.Natural.Abstract.NBits.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic.
 
 Open Scope N_scope.
@@ -28,6 +29,26 @@ Definition nat_bit_subset (a b : N) : Prop := hfs_subset a b.
 Lemma nat_bit_mem_iff : forall i a,
   nat_bit i a <-> N.testbit a i = true.
 Proof. reflexivity. Qed.
+
+(** The source [LenBit.iff_rem] normal form, specialized to binary N codes. *)
+Lemma nat_bit_mem_iff_div_pow2_mod_two : forall i a,
+  nat_bit i a <-> (a / 2 ^ i) mod 2 = 1.
+Proof.
+  intros i a. rewrite nat_bit_mem_iff. apply N.testbit_true.
+Qed.
+
+Lemma nat_bit_not_mem_iff_div_pow2_mod_two : forall i a,
+  ~ nat_bit i a <-> (a / 2 ^ i) mod 2 = 0.
+Proof.
+  intros i a. unfold nat_bit, hfs_mem.
+  destruct (N.testbit a i) eqn:Ht.
+  - split.
+    + intro H. exfalso. apply H. reflexivity.
+    + intro H. pose proof (proj1 (N.testbit_true a i) Ht) as Hone. nia.
+  - split.
+    + intro Hdummy. apply (proj1 (N.testbit_false a i)); exact Ht.
+    + intro Hzero. discriminate.
+Qed.
 
 (** A present bit contributes its full power of two to the code. *)
 Lemma nat_bit_exp_le_of_mem : forall i a,
@@ -60,6 +81,60 @@ Proof.
   intros i a Hlt Hmem.
   exact (N.lt_irrefl (2 ^ i)
     (N.le_lt_trans _ _ _ (@nat_bit_exp_le_of_mem i a Hmem) Hlt)).
+Qed.
+
+(** The selected bit is exactly the middle bit in a low/high binary
+    decomposition.  These are the standard-model counterparts of the two
+    source [LenBit] decomposition lemmas. *)
+Lemma nat_bit_mem_iff_mul_pow2_add : forall i a,
+  nat_bit i a <->
+  exists k r, r < 2 ^ i /\
+    a = k * 2 ^ (i + 1) + 2 ^ i + r.
+Proof.
+  intros i a. split.
+  - intro H.
+    unfold nat_bit, hfs_mem in H.
+    destruct (N.testbit_spec a i) as [l [h [Hl Heq]]].
+    rewrite H in Heq.
+    change (a = l + (1 + 2 * h) * 2 ^ i) in Heq.
+    exists h, l. split; [exact (proj2 Hl)|].
+    rewrite N.add_1_r, N.pow_succ_r'. nia.
+  - intros [k [r [Hr Heq]]].
+    unfold nat_bit, hfs_mem.
+    apply (N.testbit_unique a i true r k).
+    + exact Hr.
+    + rewrite N.add_1_r in Heq.
+      rewrite N.pow_succ_r' in Heq.
+      change (a = r + (1 + 2 * k) * 2 ^ i).
+      nia.
+Qed.
+
+Lemma nat_bit_not_mem_iff_mul_pow2_add : forall i a,
+  ~ nat_bit i a <->
+  exists k r, r < 2 ^ i /\
+    a = k * 2 ^ (i + 1) + r.
+Proof.
+  intros i a. split.
+  - intro H.
+    unfold nat_bit, hfs_mem in H.
+    destruct (N.testbit_spec a i) as [l [h [Hl Heq]]].
+    assert (Hb : N.testbit a i = false).
+    { destruct (N.testbit a i);
+      [exfalso; apply H; reflexivity | reflexivity]. }
+    rewrite Hb in Heq.
+    change (a = l + (0 + 2 * h) * 2 ^ i) in Heq.
+    exists h, l. split; [exact (proj2 Hl)|].
+    rewrite N.add_1_r, N.pow_succ_r'. nia.
+  - intros [k [r [Hr Heq]]] Hbit.
+    unfold nat_bit, hfs_mem in Hbit.
+    assert (Hfalse : N.testbit a i = false).
+    { apply (N.testbit_unique a i false r k).
+      - exact Hr.
+      - rewrite N.add_1_r in Heq.
+        rewrite N.pow_succ_r' in Heq.
+        change (a = r + (0 + 2 * k) * 2 ^ i).
+        nia. }
+    rewrite Hfalse in Hbit. discriminate.
 Qed.
 
 Lemma nat_bit_empty_eq_zero : nat_bit_empty = 0.
@@ -155,6 +230,84 @@ Proof.
   rewrite hfs_mem_insert_iff. split.
   - intros [-> | Hj]; assumption.
   - intro Hj. now right.
+Qed.
+
+(** An absent bit is disjoint from its corresponding singleton power. *)
+Lemma nat_bit_absent_land_pow : forall i a,
+  ~ nat_bit i a -> N.land a (2 ^ i) = 0.
+Proof.
+  intros i a H.
+  assert (Ha : N.testbit a i = false).
+  { destruct (N.testbit a i) eqn:Ht.
+    - exfalso. apply H. apply (proj2 (nat_bit_mem_iff i a)). exact Ht.
+    - reflexivity. }
+  apply N.bits_inj_0. intro j.
+  rewrite N.land_spec.
+  destruct (N.eq_dec j i) as [-> | Hji].
+  - rewrite Ha, N.pow2_bits_true. reflexivity.
+  - assert (Hji' : i <> j).
+    { intro E. apply Hji. symmetry. exact E. }
+    rewrite (N.pow2_bits_false i j Hji').
+    destruct (N.testbit a j); reflexivity.
+Qed.
+
+(** Inserting an absent bit is ordinary addition by its power of two. *)
+Lemma nat_bit_insert_add_of_not_mem : forall i a,
+  ~ nat_bit i a -> nat_bit_insert i a = a + 2 ^ i.
+Proof.
+  intros i a H.
+  unfold nat_bit_insert, hfs_insert.
+  rewrite N.setbit_spec'.
+  pose proof (@nat_bit_absent_land_pow i a H) as Hland.
+  pose proof (N.lxor_lor a (2 ^ i) Hland) as Hxor.
+  pose proof (N.add_nocarry_lxor a (2 ^ i) Hland) as Hadd.
+  rewrite <- Hxor. symmetry. exact Hadd.
+Qed.
+
+(** Foundation's insertion estimate, specialized to executable N codes. *)
+Lemma nat_bit_insert_le_of_le_of_le : forall i j a b,
+  i <= j -> a <= b -> nat_bit_insert i a <= b + 2 ^ j.
+Proof.
+  intros i j a b Hij Hab.
+  destruct (N.testbit a i) eqn:Ht.
+  - assert (Hmem : nat_bit i a).
+    { apply (proj2 (nat_bit_mem_iff i a)); exact Ht. }
+    rewrite nat_bit_insert_eq_self_of_mem by exact Hmem.
+    eapply N.le_trans; [exact Hab|].
+    apply N.le_add_r.
+  - assert (Hnot : ~ nat_bit i a).
+    { intro Hmem.
+      rewrite (proj1 (nat_bit_mem_iff i a) Hmem) in Ht.
+      discriminate. }
+    rewrite (@nat_bit_insert_add_of_not_mem i a Hnot).
+    apply N.add_le_mono.
+    + exact Hab.
+    + apply N.pow_le_mono_r; [discriminate | exact Hij].
+Qed.
+
+(** Adding a multiple of the full period [2^(i+1)] does not change bit [i]. *)
+Lemma nat_bit_mem_add_period_iff : forall i a k,
+  nat_bit i (a + k * 2 ^ (i + 1)) <-> nat_bit i a.
+Proof.
+  intros i a k.
+  rewrite !nat_bit_mem_iff_div_pow2_mod_two.
+  rewrite N.add_1_r, N.pow_succ_r'.
+  replace (k * (2 * 2 ^ i)) with ((k * 2) * 2 ^ i) by nia.
+  rewrite N.div_add by (apply N.pow_nonzero; discriminate).
+  rewrite N.mod_add by discriminate.
+  reflexivity.
+Qed.
+
+(** A low block followed by its power has the selected bit set. *)
+Lemma nat_bit_mem_add_pow2_of_lt : forall i a,
+  a < 2 ^ i -> nat_bit i (a + 2 ^ i).
+Proof.
+  intros i a Hlt.
+  rewrite nat_bit_mem_iff_div_pow2_mod_two.
+  replace (a + 2 ^ i) with (a + 1 * 2 ^ i) by nia.
+  rewrite N.div_add by (apply N.pow_nonzero; discriminate).
+  rewrite (N.div_small a (2 ^ i) Hlt).
+  reflexivity.
 Qed.
 
 Lemma nat_bit_subset_iff : forall a b,
@@ -361,6 +514,17 @@ Lemma nat_bit_mem_under_iff : forall i j,
 Proof.
   intros i j. unfold nat_bit, nat_bit_under, hfs_mem.
   apply N.ones_spec_iff.
+Qed.
+
+Lemma nat_bit_mem_exp_add_succ_sub_one : forall i j,
+  nat_bit i (2 ^ (i + j + 1) - 1).
+Proof.
+  intros i j.
+  assert (E : 2 ^ (i + j + 1) - 1 = nat_bit_under (i + j + 1)).
+  { unfold nat_bit_under. rewrite N.ones_equiv. apply N.sub_1_r. }
+  rewrite E.
+  apply (proj2 (nat_bit_mem_under_iff i (i + j + 1))).
+  lia.
 Qed.
 
 Lemma nat_bit_not_mem_under_self : forall i,

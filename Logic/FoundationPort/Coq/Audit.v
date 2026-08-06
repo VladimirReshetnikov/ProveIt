@@ -27,6 +27,7 @@ From Foundation.FirstOrder.Incompleteness Require Import RosserProvability.
 From Foundation.FirstOrder.Incompleteness Require Import Jeroslow.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.FirstOrder.Incompleteness Require Import RestrictedProvability.
+From Foundation.FirstOrder.Incompleteness Require Import StandardProvability.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Functions.
@@ -42,10 +43,10 @@ From Foundation.FirstOrder.Bootstrapping.Syntax.Proof Require Import Coding.
 From Foundation.FirstOrder.Bootstrapping Require Import Syntax.
 From Foundation.FirstOrder.Bootstrapping Require Import FixedPoint.
 From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import
-  D1 D2 D3.
+  D1 D2 D3 EquationalTheory PeanoMinus.
 From Foundation.FirstOrder.Basic Require Import BinderNotation.
 From Foundation.FirstOrder Require Import Basic.
-From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF FixedPoint.
+From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq SeqChoice BigOps Relation PRF FixedPoint Raw.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Vec.
 From Foundation.FirstOrder.Arithmetic Require Import HFS.
 From Foundation.FirstOrder.Arithmetic.Exponential Require Import
@@ -54,7 +55,10 @@ From Foundation.FirstOrder.Arithmetic Require Import Exponential.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
-From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z Function.
+From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z Function Ordinal Universe.
+From Foundation.FirstOrder.Skolemization Require Import Hull.
+From Foundation.FirstOrder.SetTheory Require Import LoewenheimSkolem.
+From Foundation.FirstOrder Require Import Interpretation.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -315,6 +319,7 @@ From Foundation.FirstOrder.Arithmetic.Definability Require Import Definable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import BoundedDefinable.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import Absoluteness.
 From Foundation.FirstOrder.Arithmetic.TA Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.TA Require Import Nonstandard.
 From Foundation.FirstOrder.Arithmetic.Basic Require Import Monotone.
 From Foundation.FirstOrder.Basic Require Import Soundness.
 From Foundation.FirstOrder.Basic Require Import CutFree.
@@ -2469,6 +2474,23 @@ Check first_order_true_arithmetic.
 Check first_order_true_arithmetic_models.
 Check first_order_true_arithmetic_provable_iff.
 Check arithmetic_theory_weaker_than_true_arithmetic.
+(* FirstOrder/Arithmetic/TA/Nonstandard.v: compactness nonstandard model. *)
+Check nonstandard_language.
+Check nonstandard_arithmetic_embedding.
+Check nonstandard_star_symbol.
+Check nonstandard_star_bound_sentence.
+Check nonstandard_star_unbounded_theory.
+Check nonstandard_bounded_theory.
+Check nonstandard_union_theory.
+Check nonstandard_model_structure.
+Print Assumptions nonstandard_model_models_arithmetic.
+Print Assumptions nonstandard_model_models_equality.
+Print Assumptions nonstandard_bound_realize_iff.
+Print Assumptions nonstandard_finite_satisfiable.
+Print Assumptions nonstandard_union_satisfiable.
+Print Assumptions nonstandard_reduct_models_true_arithmetic.
+Print Assumptions nonstandard_reduct_models_peano_minus.
+Print Assumptions nonstandard_star_unbounded.
 Check first_order_structure_monotone.
 Check structure_func_monotone.
 Check semiterm_val_monotone.
@@ -5112,6 +5134,9 @@ Print Assumptions nat_lt_exp_length.
 Print Assumptions nat_length_mul_exp.
 Print Assumptions nat_length_mul_pow2_add_of_lt.
 Print Assumptions nat_length_mul_exp_add_of_lt.
+Print Assumptions nat_sq_length_le_three_mul.
+Print Assumptions nat_two_mul_sqrt_le_self.
+Print Assumptions nat_sqrt_pos_iff.
 Check nat_bexp.
 Print Assumptions nat_bexp_of_lt.
 Print Assumptions nat_bexp_of_le.
@@ -5119,6 +5144,13 @@ Print Assumptions nat_bexp_exponential_iff.
 Print Assumptions nat_bexp_le_self.
 Print Assumptions nat_bexp_monotone_iff.
 Print Assumptions nat_bexp_monotone_le_iff.
+Print Assumptions nat_bexp_monotone_cross_iff.
+Print Assumptions nat_bexp_monotone_cross_le_iff.
+Print Assumptions nat_bexp_two_mul.
+Print Assumptions nat_bexp_two_mul_succ.
+Print Assumptions nat_bexp_two_mul_add_one_succ.
+Print Assumptions nat_pow_four_le_pow_four.
+Print Assumptions nat_bexp_four_mul.
 Print Assumptions nat_bexp_eq_of_lt_length.
 Print Assumptions nat_bexp_pow2.
 Print Assumptions nat_bexp_pos.
@@ -5169,6 +5201,18 @@ Print Assumptions positive_nuon_pos.
 Print Assumptions positive_nuon_le_size.
 Print Assumptions nat_nuon_zero.
 Print Assumptions nat_nuon_one.
+Print Assumptions nat_mul_length_lt_length_smash.
+Print Assumptions nat_mul_length_lt_length_smash_length.
+Print Assumptions nat_div_mod_succ.
+Check nat_polyI.
+Check nat_polyL.
+Check nat_polyU.
+Print Assumptions nat_length_polyI.
+Print Assumptions nat_polyI_le.
+Print Assumptions nat_four_mul_smash_self.
+Print Assumptions nat_polyI_smash_self_polybounded.
+Print Assumptions nat_polyI_smash_polyL_polybounded.
+Print Assumptions nat_sq_polyI_smash_polyL_polybounded.
 Print Assumptions nat_nuon_double.
 Print Assumptions nat_nuon_double_add_one.
 Print Assumptions nat_nuon_pos_iff.
@@ -5522,6 +5566,10 @@ Print Assumptions transitive_model_well_founded.
 Print Assumptions membership_well_founded_induction.
 Print Assumptions transitive_model_induction.
 Print Assumptions transitive_model_induction_ambient.
+Check membership_minimal_of_nonempty.
+Print Assumptions membership_minimal_of_nonempty.
+Check universe_choice_data.
+Print Assumptions universe_choice_existsUnique.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.
@@ -5529,9 +5577,13 @@ Check nat_bit_insert.
 Check nat_bit_remove.
 Check nat_bit_subset.
 Print Assumptions nat_bit_mem_iff.
+Print Assumptions nat_bit_mem_iff_div_pow2_mod_two.
+Print Assumptions nat_bit_not_mem_iff_div_pow2_mod_two.
 Print Assumptions nat_bit_exp_le_of_mem.
 Print Assumptions nat_bit_lt_of_mem.
 Print Assumptions nat_bit_not_mem_of_lt_exp.
+Print Assumptions nat_bit_mem_iff_mul_pow2_add.
+Print Assumptions nat_bit_not_mem_iff_mul_pow2_add.
 Print Assumptions nat_bit_empty_eq_zero.
 Print Assumptions nat_bit_not_mem_empty.
 Print Assumptions nat_bit_not_mem_zero.
@@ -5549,6 +5601,11 @@ Print Assumptions nat_bit_remove_lt_of_mem.
 Print Assumptions nat_bit_pos_of_nonempty.
 Print Assumptions nat_bit_mem_insert.
 Print Assumptions nat_bit_insert_eq_self_of_mem.
+Print Assumptions nat_bit_absent_land_pow.
+Print Assumptions nat_bit_insert_add_of_not_mem.
+Print Assumptions nat_bit_insert_le_of_le_of_le.
+Print Assumptions nat_bit_mem_add_period_iff.
+Print Assumptions nat_bit_mem_add_pow2_of_lt.
 Print Assumptions nat_bit_subset_iff.
 Print Assumptions nat_bit_subset_refl.
 Print Assumptions nat_bit_subset_trans.
@@ -5577,6 +5634,7 @@ Check nat_bit_under.
 Print Assumptions nat_bit_le_under.
 Print Assumptions nat_bit_under_lt_pow.
 Print Assumptions nat_bit_mem_under_iff.
+Print Assumptions nat_bit_mem_exp_add_succ_sub_one.
 Print Assumptions nat_bit_not_mem_under_self.
 Print Assumptions nat_bit_under_injective.
 Print Assumptions nat_bit_under_zero.
@@ -5682,6 +5740,107 @@ Print Assumptions vorspiel_fin_enum_nth_error.
 Print Assumptions hfs_vector_to_sequence_length.
 Print Assumptions hfs_vector_to_sequence_nth.
 Print Assumptions hfs_vector_to_sequence_mem.
+Check hfs_relation_choice_vector.
+Print Assumptions hfs_relation_choice_vector_spec.
+Print Assumptions hfs_sequence_exists_for_relation.
+Print Assumptions hfs_sequence_existsUnique_for_relation.
+Print Assumptions hfs_mem_list_big_union_iff.
+Print Assumptions hfs_mem_list_big_inter_iff.
+Print Assumptions hfs_list_big_union_empty.
+Print Assumptions hfs_list_big_union_cons.
+Print Assumptions hfs_list_big_union_app.
+Print Assumptions hfs_list_big_union_subset_of_subset.
+Print Assumptions hfs_list_big_inter_singleton.
+Print Assumptions hfs_list_big_inter_cons.
+Print Assumptions hfs_list_big_inter_subset_head.
+Print Assumptions hfs_list_big_inter_subset_member.
+Print Assumptions hfs_mem_list_product_iff.
+Print Assumptions hfs_mem_list_domain_iff.
+Print Assumptions hfs_mem_list_range_iff.
+Print Assumptions hfs_list_big_union_existsUnique.
+Print Assumptions hfs_list_big_inter_existsUnique.
+Print Assumptions hfs_list_product_existsUnique.
+Print Assumptions hfs_list_product_empty_left.
+Print Assumptions hfs_list_product_empty_right.
+Print Assumptions hfs_list_product_app_left.
+Print Assumptions hfs_list_product_app_right.
+Print Assumptions hfs_list_product_singleton.
+Print Assumptions hfs_list_domain_existsUnique.
+Print Assumptions hfs_list_range_existsUnique.
+Print Assumptions hfs_list_domain_empty.
+Print Assumptions hfs_list_range_empty.
+Print Assumptions hfs_list_domain_app.
+Print Assumptions hfs_list_range_app.
+Print Assumptions hfs_list_domain_singleton.
+Print Assumptions hfs_list_range_singleton.
+Print Assumptions hfs_mem_list_image_iff.
+Print Assumptions hfs_list_image_existsUnique.
+Print Assumptions hfs_list_image_empty.
+Print Assumptions hfs_list_image_cons.
+Print Assumptions hfs_list_image_app.
+Print Assumptions hfs_list_image_subset_of_subset.
+Print Assumptions hfs_list_restrict_In_iff.
+Print Assumptions hfs_mem_list_restrict_code_iff.
+Print Assumptions hfs_list_restrict_code_empty.
+Print Assumptions hfs_list_restrict_code_subset.
+Print Assumptions hfs_list_domain_restrict_code.
+Print Assumptions hfs_list_domain_restrict_code_of_subset.
+Print Assumptions hfs_list_is_mapping_restrict.
+Print Assumptions hfs_list_is_mapping_app.
+Print Assumptions hfs_list_is_mapping_singleton.
+Print Assumptions hfs_list_is_mapping_of_subset.
+Print Assumptions hfs_list_is_mapping_cons_fresh.
+Print Assumptions hfs_list_skolem_exists.
+Print Assumptions hfs_list_mapping_fiber_existsUnique.
+Print Assumptions hfs_list_compose_In_iff.
+Print Assumptions hfs_mem_list_identity_iff.
+Print Assumptions hfs_list_is_mapping_identity.
+Print Assumptions hfs_list_is_injective_identity.
+Print Assumptions hfs_list_compose_is_mapping.
+Print Assumptions hfs_list_compose_is_injective.
+Print Assumptions hfs_list_compose_assoc_In_iff.
+Print Assumptions hfs_mem_code_elements_iff.
+Print Assumptions hfs_code_elements_arithmetize.
+Print Assumptions hfs_code_elements_nonempty_of_mem.
+Print Assumptions hfs_mem_code_elements.
+Print Assumptions hfs_code_elements_nodup.
+Print Assumptions hfs_mem_code_big_union_iff.
+Print Assumptions hfs_code_big_union_existsUnique.
+Print Assumptions hfs_code_big_union_empty.
+Print Assumptions hfs_code_big_union_subset_of_subset.
+Print Assumptions hfs_mem_code_big_inter_iff.
+Print Assumptions hfs_code_big_inter_existsUnique.
+Print Assumptions hfs_mem_code_product_iff.
+Print Assumptions hfs_code_product_existsUnique.
+Print Assumptions hfs_code_product_empty_left.
+Print Assumptions hfs_code_product_empty_right.
+Print Assumptions hfs_mem_code_domain_iff.
+Print Assumptions hfs_code_domain_existsUnique.
+Print Assumptions hfs_code_domain_empty.
+Print Assumptions hfs_mem_code_range_iff.
+Print Assumptions hfs_code_range_existsUnique.
+Print Assumptions hfs_code_range_empty.
+Print Assumptions hfs_mem_code_image_iff.
+Print Assumptions hfs_code_image_existsUnique.
+Print Assumptions hfs_code_image_empty.
+Print Assumptions hfs_code_image_union.
+Print Assumptions hfs_code_image_insert.
+Print Assumptions hfs_code_image_subset_of_subset.
+Print Assumptions hfs_mem_code_image2_iff.
+Print Assumptions hfs_code_image2_existsUnique.
+Print Assumptions hfs_mem_code_restrict_iff.
+Print Assumptions hfs_code_restrict_subset.
+Print Assumptions hfs_code_restrict_empty.
+Print Assumptions hfs_code_domain_restrict.
+Print Assumptions hfs_code_domain_restrict_of_subset.
+Print Assumptions hfs_code_domain_union.
+Print Assumptions hfs_code_is_mapping_union_of_disjoint.
+Print Assumptions hfs_code_is_mapping_insert_fresh.
+Print Assumptions hfs_code_is_mapping_empty.
+Print Assumptions hfs_code_is_mapping_singleton.
+Print Assumptions hfs_code_is_mapping_of_subset.
+Print Assumptions hfs_code_is_mapping_restrict.
+Print Assumptions hfs_code_skolem_exists.
 Check hfs_pr_construction.
 Check hfs_pr_result.
 Print Assumptions hfs_pr_result_zero.
@@ -5837,3 +5996,126 @@ Print Assumptions hfs_vector_to_set_subset_iff.
 Check hfs_vector_as_sequence.
 Print Assumptions hfs_vector_as_sequence_length.
 Print Assumptions hfs_vector_as_sequence_nth.
+
+(* SetTheory/Ordinal.v: generalized transitive-set and ordinal surface. *)
+Check z_is_transitive.
+Check z_is_transitive_mem_trans.
+Print Assumptions z_is_transitive_successor.
+Print Assumptions z_is_transitive_union.
+Print Assumptions z_is_transitive_sunion.
+Print Assumptions z_is_transitive_sinter.
+Print Assumptions z_is_transitive_omega.
+Check z_is_ordinal.
+Print Assumptions z_ordinal_of_mem.
+Print Assumptions z_is_ordinal_successor.
+Print Assumptions z_ordinal_nat.
+Print Assumptions z_ordinal_mem_of_strict_subset.
+Print Assumptions z_ordinal_strict_subset_iff.
+Print Assumptions z_ordinal_subset_iff.
+Print Assumptions z_ordinal_mem_iff_subset_and_not_subset.
+Print Assumptions z_ordinal_subset_or_supset.
+Print Assumptions z_ordinal_mem_trichotomy.
+Print Assumptions z_ordinal_of_transitive.
+Print Assumptions z_is_ordinal_omega.
+Print Assumptions z_ordinal_sunion.
+Print Assumptions z_ordinal_sinter.
+Print Assumptions z_ordinal_empty_mem_iff_nonempty.
+Check z_ordinal.
+Check z_ordinal_lt.
+Check z_ordinal_le.
+Print Assumptions z_ordinal_lt_irrefl.
+Print Assumptions z_ordinal_lt_trans.
+Print Assumptions z_ordinal_le_antisym.
+Print Assumptions z_ordinal_le_total.
+Print Assumptions z_ordinal_lt_iff_le_and_not_ge.
+Print Assumptions z_ordinal_le_iff_eq_or_lt.
+Print Assumptions z_ordinal_pos_iff_nonempty.
+Print Assumptions z_ordinal_eq_bottom_or_pos.
+Print Assumptions z_ordinal_lt_succ.
+Print Assumptions z_ordinal_sinter_mem.
+Print Assumptions z_ordinal_minimal_prop_of_exists_aux.
+Print Assumptions z_ordinal_minimal_lt_of_exists.
+Print Assumptions z_ordinal_minimal_prop_of_exists.
+Print Assumptions z_ordinal_minimal_le_of_exists_aux.
+Print Assumptions z_ordinal_minimal_le_of_exists.
+Print Assumptions z_ordinal_exists_minimal.
+Print Assumptions z_ordinal_transfinite_induction.
+Check z_is_well_founded_rel.
+Print Assumptions z_membership_well_founded.
+Check z_set_like.
+Print Assumptions z_set_like_left_exists_unique.
+Print Assumptions z_set_like_left_exists.
+Print Assumptions z_set_like_mem_left.
+
+(* FirstOrder/Skolemization/Hull.v: semantic Skolem functions and hull. *)
+Check skolem_language.
+Check skolem_structure.
+Print Assumptions skolem_structure_func_spec.
+Check skolem_hull.
+Print Assumptions skolem_hull_subset.
+Print Assumptions skolem_hull_closed.
+Print Assumptions skolem_graph_exists.
+Print Assumptions skolem_hull_closed_func.
+Check skolem_hull_structure.
+Print Assumptions skolem_hull_semiterm_val.
+Print Assumptions skolem_hull_closed_semiterm_val.
+Print Assumptions skolem_hull_semiformula_eval.
+Print Assumptions skolem_hull_nonempty.
+Print Assumptions skolem_hull_elementary_equiv.
+Print Assumptions skolem_hull_structure_interprets_eq.
+
+(* FirstOrder/SetTheory/LoewenheimSkolem.v: set-theoretic hull wrappers. *)
+Check set_theory_eq_operator.
+Print Assumptions set_standard_structure_interprets_eq.
+Check set_hull.
+Print Assumptions set_hull_subset.
+Print Assumptions set_hull_closed.
+Print Assumptions set_hull_models_iff.
+Print Assumptions set_hull_nonempty.
+Print Assumptions set_hull_elementary_equiv.
+
+(* FirstOrder/Interpretation.v: semantic direct-interpretation core. *)
+Check direct_translation.
+Check direct_translation_realization.
+Print Assumptions direct_translation_domain_nonempty.
+Print Assumptions direct_translation_func_defined.
+Print Assumptions direct_translation_preserve_eq.
+Check direct_translation_model_carrier.
+Print Assumptions direct_translation_model_func_val_spec.
+Check direct_translation_model_structure.
+Print Assumptions direct_translation_model_structure_rel.
+Print Assumptions direct_translation_model_func_iff.
+Print Assumptions direct_translation_model_func_iff'.
+Print Assumptions direct_translation_model_semiterm_val_domain.
+Print Assumptions direct_translation_model_atomic_iff.
+Print Assumptions direct_translation_model_nonempty.
+Print Assumptions direct_translation_model_interprets_eq.
+
+(* FirstOrder/Bootstrapping/DerivabilityCondition/EquationalTheory.v:
+   semantic equality replacement core. *)
+Check bootstrapping_term_replace.
+Print Assumptions bootstrapping_term_replace.
+Check bootstrapping_formula_replace.
+Print Assumptions bootstrapping_formula_replace.
+Check bootstrapping_formula_replace_forward.
+
+(* FirstOrder/Bootstrapping/DerivabilityCondition/PeanoMinus.v:
+   semantic PA-minus order lemmas used by numeral bootstrapping. *)
+Check peano_minus_boot_lt_add_self_add_one.
+Print Assumptions peano_minus_boot_lt_add_self_add_one.
+Check peano_minus_boot_lt_succ_iff_eq_or_lt.
+Print Assumptions peano_minus_boot_lt_succ_iff_eq_or_lt.
+
+(* FirstOrder/Incompleteness/StandardProvability.v: finite-context
+   derivability-condition adapters. *)
+Check boot_standard_provability.
+Print Assumptions boot_standard_provability_of_code.
+Print Assumptions boot_standard_provability_of_code_iff_theory.
+Print Assumptions boot_standard_sigma_one_provable_iff.
+Check boot_context_proof.
+Check boot_context_provable.
+Print Assumptions boot_context_weaken.
+Print Assumptions boot_context_modus_ponens_raw.
+Print Assumptions boot_context_modus_ponens.
+Print Assumptions boot_context_D2.
+Print Assumptions boot_context_D3.
