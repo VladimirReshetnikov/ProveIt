@@ -419,6 +419,89 @@ case hv: (v == 0).
     (CV.canonical_monic_sextic_vieta f) hvnz).
 Qed.
 
+Lemma homogeneous_eval_zero_one cs :
+  SRR.homogeneous_eval cs 0 1 = SRR.constant_coefficient cs.
+Proof.
+case: cs=> [|constant coefficients] //=.
+by rewrite expr1n mulr1 mul0r addr0.
+Qed.
+
+(* --------------------------------------------------------------------- *)
+(* Abstract semantic contract for a direct homogeneous-value builder.    *)
+
+Definition recursive_parameter_values {arity}
+    (x0 x1 : SE.recursive_expression arity) values : SR.parameter :=
+  [tuple
+    SE.eval_recursive_expression x0 values;
+    SE.eval_recursive_expression x1 values].
+
+Definition recursive_homogeneous_builder_sparse_correct
+    (builder : RE.recursive_homogeneous_builder)
+    (sparse_product : int -> int -> SR.parameter -> SP.sparse_polynomial) :
+    Prop :=
+  forall arity
+    (x0 x1 denominator : SE.recursive_expression arity)
+    (numerator e1 e2 e3 e4 e5 e6 :
+      SE.recursive_signed_expression arity) values,
+  CS.eval_mathcomp_recursive_signed_expression
+      (@builder arity x0 x1 denominator numerator e1 e2 e3 e4 e5 e6)
+      values =
+  NPS.sparse_eval_ring
+    (CS.recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+    (NPS.newton_symmetrize
+      (sparse_product
+        (CS.eval_mathcomp_recursive_signed_expression numerator values)
+        (SE.eval_recursive_expression denominator values)%:Z
+        (recursive_parameter_values x0 x1 values))).
+
+Lemma eval_recursive_weaken2 {arity}
+    (expression : SE.recursive_expression arity)
+    first second values :
+  SE.eval_recursive_expression (RE.recursive_weaken2 expression)
+      (first ## second ## values) =
+  SE.eval_recursive_expression expression values.
+Proof.
+by rewrite /RE.recursive_weaken2 !CS.eval_recursive_weaken.
+Qed.
+
+Lemma eval_recursive_signed_weaken2 {arity}
+    (expression : SE.recursive_signed_expression arity)
+    first second values :
+  CS.eval_mathcomp_recursive_signed_expression
+      (RE.recursive_signed_weaken2 expression)
+      (first ## second ## values) =
+  CS.eval_mathcomp_recursive_signed_expression expression values.
+Proof.
+by rewrite /RE.recursive_signed_weaken2 !CS.eval_recursive_signed_weaken.
+Qed.
+
+Lemma recursive_elementary_values_weaken2 {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    first second values :
+  CS.recursive_elementary_values
+      (RE.recursive_signed_weaken2 e1)
+      (RE.recursive_signed_weaken2 e2)
+      (RE.recursive_signed_weaken2 e3)
+      (RE.recursive_signed_weaken2 e4)
+      (RE.recursive_signed_weaken2 e5)
+      (RE.recursive_signed_weaken2 e6)
+      (first ## second ## values) =
+  CS.recursive_elementary_values e1 e2 e3 e4 e5 e6 values.
+Proof.
+by rewrite /CS.recursive_elementary_values
+  !eval_recursive_signed_weaken2.
+Qed.
+
+Lemma recursive_parameter_values_weaken2 {arity}
+    (x0 x1 : SE.recursive_expression arity) first second values :
+  recursive_parameter_values
+      (RE.recursive_weaken2 x0) (RE.recursive_weaken2 x1)
+      (first ## second ## values) =
+  recursive_parameter_values x0 x1 values.
+Proof.
+by rewrite /recursive_parameter_values !eval_recursive_weaken2.
+Qed.
+
 (* --------------------------------------------------------------------- *)
 (* Generic semantics of the two-level bounded root search.               *)
 
@@ -698,6 +781,61 @@ rewrite (@mathcomp_fixed_root_semantics_existing_iff
 by rewrite SHR.bounded_homogeneous_rootbE.
 Qed.
 
+(* --------------------------------------------------------------------- *)
+(* Canonical projected inputs decode to the mathematical sextic data.    *)
+
+Definition projected_core_values (f : SRC.monic_sextic) index :
+    Vector.t nat 8 :=
+  IA.projected_core_arguments index
+    (FD.encode_monic_sextic_coefficients f).
+
+Lemma projected_core_recursive_elementary_values f index :
+  CS.recursive_elementary_values
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos5))
+    (SE.recursive_signed_input pos4)
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos3))
+    (SE.recursive_signed_input pos2)
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos1))
+    (SE.recursive_signed_input pos0)
+    (projected_core_values f index) =
+  CR.monic_elementary_values f.
+Proof.
+rewrite /projected_core_values /CS.recursive_elementary_values
+  /CR.monic_elementary_values /IA.projected_core_arguments
+  /FD.encode_monic_sextic_coefficients.
+rewrite !CS.eval_mathcomp_recursive_signed_negate
+  !CS.eval_mathcomp_recursive_signed_input
+  !mathcomp_zigzag_decode_encode.
+reflexivity.
+Qed.
+
+Lemma projected_core_recursive_parameter_values f index :
+  recursive_parameter_values (SE.RecVar pos6) (SE.RecVar pos7)
+      (projected_core_values f index) =
+  SSI.projected_parameter index.
+Proof.
+rewrite /recursive_parameter_values /projected_core_values
+  /IA.projected_core_arguments /SSI.projected_parameter /=.
+reflexivity.
+Qed.
+
+Lemma eval_recursive_resolvent_numerator {arity}
+    (constant : SE.recursive_signed_expression arity)
+    denominator_index numerator_index values :
+  CS.eval_mathcomp_recursive_signed_expression
+      {| SE.recursive_positive := SE.RecVar pos1;
+         SE.recursive_negative := RE.recursive_weaken2
+           (RE.recursive_signed_absolute_magnitude constant) |}
+      (denominator_index ## numerator_index ## values) =
+  numerator_index%:Z -
+    (absz (CS.eval_mathcomp_recursive_signed_expression
+      constant values))%:Z.
+Proof.
+rewrite /CS.eval_mathcomp_recursive_signed_expression
+  eval_recursive_weaken2 eval_recursive_signed_absolute_magnitude.
+reflexivity.
+Qed.
+
 Definition pair_resolvent_root_candidate_expression :
     SE.recursive_signed_expression 10 :=
   recursive_resolvent_root_candidate_from
@@ -723,6 +861,196 @@ Definition triple_resolvent_root_candidate_expression :
     (SE.recursive_signed_input pos2)
     (SE.recursive_signed_negate (SE.recursive_signed_input pos1))
     (SE.recursive_signed_input pos0).
+
+Lemma pair_scaled_constant_projectedE
+    (hbuilder : recursive_homogeneous_builder_sparse_correct
+      RE.pair_scaled_homogeneous_from pair_sparse_homogeneous_product)
+    f index :
+  CS.eval_mathcomp_recursive_signed_expression
+      RE.pair_scaled_constant_signed_expression
+      (projected_core_values f index) =
+  vec_pos
+    (RC.pair_scaled_resolvent_vector f (SSI.projected_parameter index))
+    pos0.
+Proof.
+rewrite /recursive_homogeneous_builder_sparse_correct in hbuilder.
+have hsemantic := hbuilder 8
+  (SE.RecVar pos6) (SE.RecVar pos7) (SE.RecConst 1)
+  SE.recursive_signed_zero
+  (SE.recursive_signed_negate (SE.recursive_signed_input pos5))
+  (SE.recursive_signed_input pos4)
+  (SE.recursive_signed_negate (SE.recursive_signed_input pos3))
+  (SE.recursive_signed_input pos2)
+  (SE.recursive_signed_negate (SE.recursive_signed_input pos1))
+  (SE.recursive_signed_input pos0)
+  (projected_core_values f index).
+rewrite projected_core_recursive_elementary_values
+  projected_core_recursive_parameter_values in hsemantic.
+cbn [SE.recursive_signed_zero SE.eval_recursive_expression
+  CS.eval_mathcomp_recursive_signed_expression] in hsemantic.
+change (
+  CS.eval_mathcomp_recursive_signed_expression
+      RE.pair_scaled_constant_signed_expression
+      (projected_core_values f index) =
+  pair_scaled_homogeneous_sparse_value f
+    (SSI.projected_parameter index) 0 1) in hsemantic.
+rewrite pair_scaled_homogeneous_sparse_valueE
+  homogeneous_eval_zero_one
+  -RC.vec_list_pair_scaled_resolvent_vector
+  constant_coefficient_vec_list in hsemantic.
+exact hsemantic.
+Qed.
+
+Lemma triple_scaled_constant_projectedE
+    (hbuilder : recursive_homogeneous_builder_sparse_correct
+      RE.triple_scaled_homogeneous_from triple_sparse_homogeneous_product)
+    f index :
+  CS.eval_mathcomp_recursive_signed_expression
+      RE.triple_scaled_constant_signed_expression
+      (projected_core_values f index) =
+  vec_pos
+    (RC.triple_scaled_resolvent_vector f (SSI.projected_parameter index))
+    pos0.
+Proof.
+rewrite /recursive_homogeneous_builder_sparse_correct in hbuilder.
+have hsemantic := hbuilder 8
+  (SE.RecVar pos6) (SE.RecVar pos7) (SE.RecConst 1)
+  SE.recursive_signed_zero
+  (SE.recursive_signed_negate (SE.recursive_signed_input pos5))
+  (SE.recursive_signed_input pos4)
+  (SE.recursive_signed_negate (SE.recursive_signed_input pos3))
+  (SE.recursive_signed_input pos2)
+  (SE.recursive_signed_negate (SE.recursive_signed_input pos1))
+  (SE.recursive_signed_input pos0)
+  (projected_core_values f index).
+rewrite projected_core_recursive_elementary_values
+  projected_core_recursive_parameter_values in hsemantic.
+cbn [SE.recursive_signed_zero SE.eval_recursive_expression
+  CS.eval_mathcomp_recursive_signed_expression] in hsemantic.
+change (
+  CS.eval_mathcomp_recursive_signed_expression
+      RE.triple_scaled_constant_signed_expression
+      (projected_core_values f index) =
+  triple_scaled_homogeneous_sparse_value f
+    (SSI.projected_parameter index) 0 1) in hsemantic.
+rewrite triple_scaled_homogeneous_sparse_valueE
+  homogeneous_eval_zero_one
+  -RC.vec_list_triple_scaled_resolvent_vector
+  constant_coefficient_vec_list in hsemantic.
+exact hsemantic.
+Qed.
+
+Lemma pair_resolvent_root_candidate_projectedE
+    (hbuilder : recursive_homogeneous_builder_sparse_correct
+      RE.pair_scaled_homogeneous_from pair_sparse_homogeneous_product)
+    f index numerator_index denominator_index :
+  CS.eval_mathcomp_recursive_signed_expression
+      pair_resolvent_root_candidate_expression
+      (denominator_index ## numerator_index ##
+        projected_core_values f index) =
+  mathcomp_fixed_homogeneous_value
+    (RC.pair_scaled_resolvent_vector f (SSI.projected_parameter index))
+    numerator_index denominator_index.
+Proof.
+have hconstant := pair_scaled_constant_projectedE hbuilder f index.
+rewrite /recursive_homogeneous_builder_sparse_correct in hbuilder.
+have hsemantic := hbuilder 10
+  (RE.recursive_weaken2 (SE.RecVar pos6))
+  (RE.recursive_weaken2 (SE.RecVar pos7))
+  (SE.RecSucc (SE.RecVar pos0))
+  {| SE.recursive_positive := SE.RecVar pos1;
+     SE.recursive_negative := RE.recursive_weaken2
+       (RE.recursive_signed_absolute_magnitude
+         RE.pair_scaled_constant_signed_expression) |}
+  (RE.recursive_signed_weaken2
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos5)))
+  (RE.recursive_signed_weaken2 (SE.recursive_signed_input pos4))
+  (RE.recursive_signed_weaken2
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos3)))
+  (RE.recursive_signed_weaken2 (SE.recursive_signed_input pos2))
+  (RE.recursive_signed_weaken2
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos1)))
+  (RE.recursive_signed_weaken2 (SE.recursive_signed_input pos0))
+  (denominator_index ## numerator_index ## projected_core_values f index).
+rewrite recursive_elementary_values_weaken2
+  projected_core_recursive_elementary_values in hsemantic.
+rewrite eval_recursive_resolvent_numerator hconstant in hsemantic.
+rewrite recursive_parameter_values_weaken2
+  projected_core_recursive_parameter_values in hsemantic.
+cbn [SE.eval_recursive_expression] in hsemantic.
+change (
+  CS.eval_mathcomp_recursive_signed_expression
+      pair_resolvent_root_candidate_expression
+      (denominator_index ## numerator_index ##
+        projected_core_values f index) =
+  pair_scaled_homogeneous_sparse_value f
+    (SSI.projected_parameter index)
+    (numerator_index%:Z -
+      (absz (vec_pos
+        (RC.pair_scaled_resolvent_vector f
+          (SSI.projected_parameter index)) pos0))%:Z)
+    (S denominator_index)%:Z) in hsemantic.
+rewrite pair_scaled_homogeneous_sparse_valueE in hsemantic.
+rewrite /mathcomp_fixed_homogeneous_value
+  RC.vec_list_pair_scaled_resolvent_vector.
+exact hsemantic.
+Qed.
+
+Lemma triple_resolvent_root_candidate_projectedE
+    (hbuilder : recursive_homogeneous_builder_sparse_correct
+      RE.triple_scaled_homogeneous_from triple_sparse_homogeneous_product)
+    f index numerator_index denominator_index :
+  CS.eval_mathcomp_recursive_signed_expression
+      triple_resolvent_root_candidate_expression
+      (denominator_index ## numerator_index ##
+        projected_core_values f index) =
+  mathcomp_fixed_homogeneous_value
+    (RC.triple_scaled_resolvent_vector f (SSI.projected_parameter index))
+    numerator_index denominator_index.
+Proof.
+have hconstant := triple_scaled_constant_projectedE hbuilder f index.
+rewrite /recursive_homogeneous_builder_sparse_correct in hbuilder.
+have hsemantic := hbuilder 10
+  (RE.recursive_weaken2 (SE.RecVar pos6))
+  (RE.recursive_weaken2 (SE.RecVar pos7))
+  (SE.RecSucc (SE.RecVar pos0))
+  {| SE.recursive_positive := SE.RecVar pos1;
+     SE.recursive_negative := RE.recursive_weaken2
+       (RE.recursive_signed_absolute_magnitude
+         RE.triple_scaled_constant_signed_expression) |}
+  (RE.recursive_signed_weaken2
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos5)))
+  (RE.recursive_signed_weaken2 (SE.recursive_signed_input pos4))
+  (RE.recursive_signed_weaken2
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos3)))
+  (RE.recursive_signed_weaken2 (SE.recursive_signed_input pos2))
+  (RE.recursive_signed_weaken2
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos1)))
+  (RE.recursive_signed_weaken2 (SE.recursive_signed_input pos0))
+  (denominator_index ## numerator_index ## projected_core_values f index).
+rewrite recursive_elementary_values_weaken2
+  projected_core_recursive_elementary_values in hsemantic.
+rewrite eval_recursive_resolvent_numerator hconstant in hsemantic.
+rewrite recursive_parameter_values_weaken2
+  projected_core_recursive_parameter_values in hsemantic.
+cbn [SE.eval_recursive_expression] in hsemantic.
+change (
+  CS.eval_mathcomp_recursive_signed_expression
+      triple_resolvent_root_candidate_expression
+      (denominator_index ## numerator_index ##
+        projected_core_values f index) =
+  triple_scaled_homogeneous_sparse_value f
+    (SSI.projected_parameter index)
+    (numerator_index%:Z -
+      (absz (vec_pos
+        (RC.triple_scaled_resolvent_vector f
+          (SSI.projected_parameter index)) pos0))%:Z)
+    (S denominator_index)%:Z) in hsemantic.
+rewrite triple_scaled_homogeneous_sparse_valueE in hsemantic.
+rewrite /mathcomp_fixed_homogeneous_value
+  RC.vec_list_triple_scaled_resolvent_vector.
+exact hsemantic.
+Qed.
 
 Lemma pair_resolvent_root_test_expressionE :
   RE.pair_resolvent_root_test_expression =
@@ -804,6 +1132,34 @@ rewrite (@eval_recursive_root_search_fixed_rational_true_iff 8 10
   (RC.triple_scaled_resolvent_vector_final f x)
   (RC.triple_scaled_resolvent_vector_leading_identity f x)).
 by rewrite RC.vec_list_triple_scaled_resolvent_vector.
+Qed.
+
+Theorem pair_resolvent_root_core_exact_from
+    (hbuilder : recursive_homogeneous_builder_sparse_correct
+      RE.pair_scaled_homogeneous_from pair_sparse_homogeneous_product) :
+  IA.pair_root_core_exact RE.encoded_pair_resolvent_rootb.
+Proof.
+move=> f index _.
+change (
+  RE.encoded_pair_resolvent_rootb (projected_core_values f index) =
+  SRR.pair_scaled_rational_rootb f (SSI.projected_parameter index)).
+apply: encoded_pair_resolvent_rootb_semantics_from.
+- exact: pair_scaled_constant_projectedE.
+- exact: pair_resolvent_root_candidate_projectedE.
+Qed.
+
+Theorem triple_resolvent_root_core_exact_from
+    (hbuilder : recursive_homogeneous_builder_sparse_correct
+      RE.triple_scaled_homogeneous_from triple_sparse_homogeneous_product) :
+  IA.triple_root_core_exact RE.encoded_triple_resolvent_rootb.
+Proof.
+move=> f index _.
+change (
+  RE.encoded_triple_resolvent_rootb (projected_core_values f index) =
+  SRR.triple_scaled_rational_rootb f (SSI.projected_parameter index)).
+apply: encoded_triple_resolvent_rootb_semantics_from.
+- exact: triple_scaled_constant_projectedE.
+- exact: triple_resolvent_root_candidate_projectedE.
 Qed.
 
 Print Assumptions pair_scaled_homogeneous_sparse_value_correct.
