@@ -178,6 +178,38 @@ rewrite /eval_mathcomp_recursive_signed_expression
 by case: (SE.eval_recursive_expression test values).
 Qed.
 
+Lemma eval_recursive_if_zero {arity}
+    (test if_zero if_nonzero : SE.recursive_expression arity) values :
+  SE.eval_recursive_expression
+      (SE.RecIfZero test if_zero if_nonzero) values =
+    match SE.eval_recursive_expression test values with
+    | 0%nat => SE.eval_recursive_expression if_zero values
+    | S _ => SE.eval_recursive_expression if_nonzero values
+    end.
+Proof. reflexivity. Qed.
+
+Lemma eval_recursive_minus {arity}
+    (left right : SE.recursive_expression arity) values :
+  SE.eval_recursive_expression (SE.RecMinus left right) values =
+    (SE.eval_recursive_expression left values -
+      SE.eval_recursive_expression right values)%nat.
+Proof. reflexivity. Qed.
+
+Lemma eval_recursive_const {arity} constant values :
+  SE.eval_recursive_expression (@SE.RecConst arity constant) values =
+    constant.
+Proof. reflexivity. Qed.
+
+Lemma eval_recursive_iter {arity}
+    (count initial : SE.recursive_expression arity)
+    (step : SE.recursive_expression (S arity)) values :
+  SE.eval_recursive_expression (SE.RecIter count initial step) values =
+    prim_min.iter
+      (fun state => SE.eval_recursive_expression step (state ## values))
+      (SE.eval_recursive_expression count values)
+      (SE.eval_recursive_expression initial values).
+Proof. reflexivity. Qed.
+
 Lemma Posz_lsum_map_sub (indices : list nat)
     (positive negative : nat -> nat) :
   (lsum (List.map positive indices))%:Z -
@@ -367,6 +399,649 @@ Lemma eval_recursive_project9 {arity} (index : pos 9)
   vec_pos
     (project 9 (SE.eval_recursive_expression code values)) index.
 Proof. exact: SE.eval_recursive_project. Qed.
+
+(* --------------------------------------------------------------------- *)
+(* The recursive Newton engine denotes the sparse Newton construction.    *)
+
+Lemma eval_mathcomp_recursive_signed_minus {arity}
+    (left right : SE.recursive_signed_expression arity) values :
+  eval_mathcomp_recursive_signed_expression
+      (SE.recursive_signed_minus left right) values =
+    eval_mathcomp_recursive_signed_expression left values -
+    eval_mathcomp_recursive_signed_expression right values.
+Proof.
+rewrite /SE.recursive_signed_minus
+  eval_mathcomp_recursive_signed_plus
+  eval_mathcomp_recursive_signed_negate.
+reflexivity.
+Qed.
+
+Lemma eval_mathcomp_recursive_signed_nat {arity} constant values :
+  eval_mathcomp_recursive_signed_expression
+      (@SE.recursive_signed_nat arity constant) values = constant%:Z.
+Proof.
+by rewrite /SE.recursive_signed_nat
+  eval_mathcomp_recursive_signed_of_nat.
+Qed.
+
+Lemma decode_eval_recursive_signed_code_mathcomp {arity}
+    (expression : SE.recursive_signed_expression arity) values :
+  mathcomp_zigzag_decode
+      (SE.eval_recursive_expression
+        (SE.recursive_signed_code expression) values) =
+    eval_mathcomp_recursive_signed_expression expression values.
+Proof.
+by rewrite eval_recursive_signed_code_mathcomp
+  mathcomp_zigzag_decode_encode.
+Qed.
+
+Definition recursive_elementary_values {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    (values : Vector.t nat arity) : 6.-tuple int :=
+  [tuple
+    eval_mathcomp_recursive_signed_expression e1 values;
+    eval_mathcomp_recursive_signed_expression e2 values;
+    eval_mathcomp_recursive_signed_expression e3 values;
+    eval_mathcomp_recursive_signed_expression e4 values;
+    eval_mathcomp_recursive_signed_expression e5 values;
+    eval_mathcomp_recursive_signed_expression e6 values].
+
+Definition recursive_sparse_exponent {arity}
+    (x0 x1 x2 x3 x4 x5 : SE.recursive_expression arity)
+    (values : Vector.t nat arity) : SP.sparse_exponent :=
+  [tuple
+    SE.eval_recursive_expression x0 values;
+    SE.eval_recursive_expression x1 values;
+    SE.eval_recursive_expression x2 values;
+    SE.eval_recursive_expression x3 values;
+    SE.eval_recursive_expression x4 values;
+    SE.eval_recursive_expression x5 values].
+
+Lemma sparse_eval_ring_recursive_newton_e1 {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_e1 =
+    eval_mathcomp_recursive_signed_expression e1 values.
+Proof. by rewrite /NPS.newton_e1 NPS.sparse_eval_ring_var. Qed.
+
+Lemma sparse_eval_ring_recursive_newton_e2 {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_e2 =
+    eval_mathcomp_recursive_signed_expression e2 values.
+Proof.
+by rewrite /NPS.newton_e2 NPS.sparse_eval_ring_var
+  (tnth_nth 0) inordK.
+Qed.
+
+Lemma sparse_eval_ring_recursive_newton_e3 {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_e3 =
+    eval_mathcomp_recursive_signed_expression e3 values.
+Proof.
+by rewrite /NPS.newton_e3 NPS.sparse_eval_ring_var
+  (tnth_nth 0) inordK.
+Qed.
+
+Lemma sparse_eval_ring_recursive_newton_e4 {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_e4 =
+    eval_mathcomp_recursive_signed_expression e4 values.
+Proof.
+by rewrite /NPS.newton_e4 NPS.sparse_eval_ring_var
+  (tnth_nth 0) inordK.
+Qed.
+
+Lemma sparse_eval_ring_recursive_newton_e5 {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_e5 =
+    eval_mathcomp_recursive_signed_expression e5 values.
+Proof.
+by rewrite /NPS.newton_e5 NPS.sparse_eval_ring_var
+  (tnth_nth 0) inordK.
+Qed.
+
+Lemma sparse_eval_ring_recursive_newton_e6 {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_e6 =
+    eval_mathcomp_recursive_signed_expression e6 values.
+Proof.
+by rewrite /NPS.newton_e6 NPS.sparse_eval_ring_var
+  (tnth_nth 0) inordK.
+Qed.
+
+Lemma eval_recursive_newton_p1_from {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  eval_mathcomp_recursive_signed_expression
+      (SE.newton_p1_from e1) values =
+    NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_p1.
+Proof.
+by rewrite /SE.newton_p1_from /NPS.newton_p1
+  sparse_eval_ring_recursive_newton_e1.
+Qed.
+
+Lemma eval_recursive_newton_p2_from {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  eval_mathcomp_recursive_signed_expression
+      (SE.newton_p2_from e1 e2) values =
+    NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_p2.
+Proof.
+rewrite /SE.newton_p2_from /NPS.newton_p2
+  eval_mathcomp_recursive_signed_minus
+  !eval_mathcomp_recursive_signed_mult
+  eval_mathcomp_recursive_signed_nat
+  NPS.sparse_eval_ring_sub NPS.sparse_eval_ring_mul
+  NPS.sparse_eval_ring_nsmul
+  sparse_eval_ring_recursive_newton_e1
+  sparse_eval_ring_recursive_newton_e2
+  (@eval_recursive_newton_p1_from arity
+    e1 e2 e3 e4 e5 e6 values).
+reflexivity.
+Qed.
+
+Lemma eval_recursive_newton_p3_from {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  eval_mathcomp_recursive_signed_expression
+      (SE.newton_p3_from e1 e2 e3) values =
+    NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_p3.
+Proof.
+rewrite /SE.newton_p3_from /NPS.newton_p3
+  eval_mathcomp_recursive_signed_plus
+  eval_mathcomp_recursive_signed_minus
+  !eval_mathcomp_recursive_signed_mult
+  eval_mathcomp_recursive_signed_nat
+  NPS.sparse_eval_ring_add NPS.sparse_eval_ring_sub
+  !NPS.sparse_eval_ring_mul NPS.sparse_eval_ring_nsmul
+  sparse_eval_ring_recursive_newton_e1
+  sparse_eval_ring_recursive_newton_e2
+  sparse_eval_ring_recursive_newton_e3
+  (@eval_recursive_newton_p1_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  (@eval_recursive_newton_p2_from arity
+    e1 e2 e3 e4 e5 e6 values).
+reflexivity.
+Qed.
+
+Lemma eval_recursive_newton_p4_from {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  eval_mathcomp_recursive_signed_expression
+      (SE.newton_p4_from e1 e2 e3 e4) values =
+    NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_p4.
+Proof.
+rewrite /SE.newton_p4_from /NPS.newton_p4.
+rewrite eval_mathcomp_recursive_signed_minus
+  eval_mathcomp_recursive_signed_plus
+  eval_mathcomp_recursive_signed_minus
+  !eval_mathcomp_recursive_signed_mult
+  eval_mathcomp_recursive_signed_nat.
+rewrite NPS.sparse_eval_ring_sub NPS.sparse_eval_ring_add
+  NPS.sparse_eval_ring_sub !NPS.sparse_eval_ring_mul
+  NPS.sparse_eval_ring_nsmul.
+rewrite (@eval_recursive_newton_p3_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  (@eval_recursive_newton_p2_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  (@eval_recursive_newton_p1_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  sparse_eval_ring_recursive_newton_e1
+  sparse_eval_ring_recursive_newton_e2
+  sparse_eval_ring_recursive_newton_e3
+  sparse_eval_ring_recursive_newton_e4.
+reflexivity.
+Qed.
+
+Lemma eval_recursive_newton_p5_from {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  eval_mathcomp_recursive_signed_expression
+      (SE.newton_p5_from e1 e2 e3 e4 e5) values =
+    NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_p5.
+Proof.
+rewrite /SE.newton_p5_from /NPS.newton_p5.
+rewrite eval_mathcomp_recursive_signed_plus
+  eval_mathcomp_recursive_signed_minus
+  eval_mathcomp_recursive_signed_plus
+  eval_mathcomp_recursive_signed_minus
+  !eval_mathcomp_recursive_signed_mult
+  eval_mathcomp_recursive_signed_nat.
+rewrite NPS.sparse_eval_ring_add NPS.sparse_eval_ring_sub
+  NPS.sparse_eval_ring_add NPS.sparse_eval_ring_sub
+  !NPS.sparse_eval_ring_mul NPS.sparse_eval_ring_nsmul.
+rewrite (@eval_recursive_newton_p4_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  (@eval_recursive_newton_p3_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  (@eval_recursive_newton_p2_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  (@eval_recursive_newton_p1_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  sparse_eval_ring_recursive_newton_e1
+  sparse_eval_ring_recursive_newton_e2
+  sparse_eval_ring_recursive_newton_e3
+  sparse_eval_ring_recursive_newton_e4
+  sparse_eval_ring_recursive_newton_e5.
+reflexivity.
+Qed.
+
+Lemma eval_recursive_newton_p6_from {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  eval_mathcomp_recursive_signed_expression
+      (SE.newton_p6_from e1 e2 e3 e4 e5 e6) values =
+    NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      NPS.newton_p6.
+Proof.
+rewrite /SE.newton_p6_from /NPS.newton_p6.
+rewrite eval_mathcomp_recursive_signed_minus
+  eval_mathcomp_recursive_signed_plus
+  eval_mathcomp_recursive_signed_minus
+  eval_mathcomp_recursive_signed_plus
+  eval_mathcomp_recursive_signed_minus
+  !eval_mathcomp_recursive_signed_mult
+  eval_mathcomp_recursive_signed_nat.
+rewrite NPS.sparse_eval_ring_sub NPS.sparse_eval_ring_add
+  NPS.sparse_eval_ring_sub NPS.sparse_eval_ring_add
+  NPS.sparse_eval_ring_sub !NPS.sparse_eval_ring_mul
+  NPS.sparse_eval_ring_nsmul.
+rewrite (@eval_recursive_newton_p5_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  (@eval_recursive_newton_p4_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  (@eval_recursive_newton_p3_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  (@eval_recursive_newton_p2_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  (@eval_recursive_newton_p1_from arity
+    e1 e2 e3 e4 e5 e6 values)
+  sparse_eval_ring_recursive_newton_e1
+  sparse_eval_ring_recursive_newton_e2
+  sparse_eval_ring_recursive_newton_e3
+  sparse_eval_ring_recursive_newton_e4
+  sparse_eval_ring_recursive_newton_e5
+  sparse_eval_ring_recursive_newton_e6.
+reflexivity.
+Qed.
+
+Definition decode_recursive_newton_state_component
+    (state : nat) (index : pos 6) : int :=
+  mathcomp_zigzag_decode (vec_pos (project 6 state) index).
+
+Definition recursive_newton_state_semantics
+    (state : nat) (elementary : 6.-tuple int)
+    (sparse_state : NPS.newton_state) : Prop :=
+  decode_recursive_newton_state_component state pos0 =
+      NPS.sparse_eval_ring elementary (NPS.newton_s1 sparse_state) /\
+  decode_recursive_newton_state_component state pos1 =
+      NPS.sparse_eval_ring elementary (NPS.newton_s2 sparse_state) /\
+  decode_recursive_newton_state_component state pos2 =
+      NPS.sparse_eval_ring elementary (NPS.newton_s3 sparse_state) /\
+  decode_recursive_newton_state_component state pos3 =
+      NPS.sparse_eval_ring elementary (NPS.newton_s4 sparse_state) /\
+  decode_recursive_newton_state_component state pos4 =
+      NPS.sparse_eval_ring elementary (NPS.newton_s5 sparse_state) /\
+  decode_recursive_newton_state_component state pos5 =
+      NPS.sparse_eval_ring elementary (NPS.newton_s6 sparse_state).
+
+Lemma eval_recursive_newton_initial_state_from {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  recursive_newton_state_semantics
+    (SE.eval_recursive_expression
+      (SE.newton_initial_state_from e1 e2 e3 e4 e5 e6) values)
+    (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+    NPS.newton_initial_state.
+Proof.
+rewrite /recursive_newton_state_semantics
+  /decode_recursive_newton_state_component
+  /NPS.newton_initial_state.
+rewrite !SE.eval_recursive_inject6 !project_inject.
+cbn [vec_pos NPS.newton_s1 NPS.newton_s2 NPS.newton_s3
+  NPS.newton_s4 NPS.newton_s5 NPS.newton_s6].
+repeat split.
+- rewrite decode_eval_recursive_signed_code_mathcomp.
+  exact: eval_recursive_newton_p1_from.
+- rewrite decode_eval_recursive_signed_code_mathcomp.
+  exact: eval_recursive_newton_p2_from.
+- rewrite decode_eval_recursive_signed_code_mathcomp.
+  exact: eval_recursive_newton_p3_from.
+- rewrite decode_eval_recursive_signed_code_mathcomp.
+  exact: eval_recursive_newton_p4_from.
+- rewrite decode_eval_recursive_signed_code_mathcomp.
+  exact: eval_recursive_newton_p5_from.
+- rewrite decode_eval_recursive_signed_code_mathcomp.
+  exact: eval_recursive_newton_p6_from.
+Qed.
+
+Lemma eval_recursive_newton_state_signed_from {arity}
+    (state : SE.recursive_expression arity) (index : pos 6) values :
+  eval_mathcomp_recursive_signed_expression
+      (SE.newton_state_signed_from state index) values =
+    decode_recursive_newton_state_component
+      (SE.eval_recursive_expression state values) index.
+Proof.
+rewrite /SE.newton_state_signed_from /SE.newton_state_code_from
+  eval_mathcomp_recursive_signed_decode SE.eval_recursive_project
+  /decode_recursive_newton_state_component.
+reflexivity.
+Qed.
+
+Lemma eval_recursive_newton_recurrence_from {arity}
+    (state : SE.recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    values sparse_state :
+  recursive_newton_state_semantics
+      (SE.eval_recursive_expression state values)
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      sparse_state ->
+  eval_mathcomp_recursive_signed_expression
+      (SE.newton_recurrence_from state e1 e2 e3 e4 e5 e6) values =
+    NPS.sparse_eval_ring
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      (NPS.newton_next sparse_state).
+Proof.
+move=> [h0 [h1 [h2 [h3 [h4 h5]]]]].
+rewrite /SE.newton_recurrence_from /NPS.newton_next.
+rewrite eval_mathcomp_recursive_signed_minus
+  eval_mathcomp_recursive_signed_plus
+  eval_mathcomp_recursive_signed_minus
+  eval_mathcomp_recursive_signed_plus
+  eval_mathcomp_recursive_signed_minus
+  !eval_mathcomp_recursive_signed_mult.
+rewrite NPS.sparse_eval_ring_sub NPS.sparse_eval_ring_add
+  NPS.sparse_eval_ring_sub NPS.sparse_eval_ring_add
+  NPS.sparse_eval_ring_sub !NPS.sparse_eval_ring_mul.
+rewrite !eval_recursive_newton_state_signed_from
+  h0 h1 h2 h3 h4 h5
+  sparse_eval_ring_recursive_newton_e1
+  sparse_eval_ring_recursive_newton_e2
+  sparse_eval_ring_recursive_newton_e3
+  sparse_eval_ring_recursive_newton_e4
+  sparse_eval_ring_recursive_newton_e5
+  sparse_eval_ring_recursive_newton_e6.
+reflexivity.
+Qed.
+
+Lemma eval_recursive_newton_step_from {arity}
+    (state : SE.recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    values sparse_state :
+  recursive_newton_state_semantics
+      (SE.eval_recursive_expression state values)
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      sparse_state ->
+  recursive_newton_state_semantics
+    (SE.eval_recursive_expression
+      (SE.newton_step_from state e1 e2 e3 e4 e5 e6) values)
+    (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+    (NPS.newton_step sparse_state).
+Proof.
+move=> hstate.
+have hnext := eval_recursive_newton_recurrence_from hstate.
+move: hstate=> [h0 [h1 [h2 [h3 [h4 h5]]]]].
+rewrite /recursive_newton_state_semantics
+  /decode_recursive_newton_state_component
+  /SE.newton_step_from /NPS.newton_step.
+rewrite !SE.eval_recursive_inject6 !project_inject.
+cbn [vec_pos NPS.newton_s1 NPS.newton_s2 NPS.newton_s3
+  NPS.newton_s4 NPS.newton_s5 NPS.newton_s6].
+repeat split.
+- rewrite /SE.newton_state_code_from SE.eval_recursive_project.
+  exact h1.
+- rewrite /SE.newton_state_code_from SE.eval_recursive_project.
+  exact h2.
+- rewrite /SE.newton_state_code_from SE.eval_recursive_project.
+  exact h3.
+- rewrite /SE.newton_state_code_from SE.eval_recursive_project.
+  exact h4.
+- rewrite /SE.newton_state_code_from SE.eval_recursive_project.
+  exact h5.
+- rewrite decode_eval_recursive_signed_code_mathcomp.
+  exact hnext.
+Qed.
+
+Lemma recursive_elementary_values_weakened {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    state values :
+  recursive_elementary_values
+      (CE.recursive_signed_weaken e1)
+      (CE.recursive_signed_weaken e2)
+      (CE.recursive_signed_weaken e3)
+      (CE.recursive_signed_weaken e4)
+      (CE.recursive_signed_weaken e5)
+      (CE.recursive_signed_weaken e6)
+      (state ## values) =
+    recursive_elementary_values e1 e2 e3 e4 e5 e6 values.
+Proof.
+rewrite /recursive_elementary_values
+  !eval_recursive_signed_weaken.
+reflexivity.
+Qed.
+
+Definition recursive_newton_state_step_value {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    (values : Vector.t nat arity) (state : nat) : nat :=
+  SE.eval_recursive_expression
+    (SE.newton_step_from (SE.RecVar pos0)
+      (CE.recursive_signed_weaken e1)
+      (CE.recursive_signed_weaken e2)
+      (CE.recursive_signed_weaken e3)
+      (CE.recursive_signed_weaken e4)
+      (CE.recursive_signed_weaken e5)
+      (CE.recursive_signed_weaken e6))
+    (state ## values).
+
+Lemma recursive_newton_state_step_value_semantics {arity}
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    values state sparse_state :
+  recursive_newton_state_semantics state
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      sparse_state ->
+  recursive_newton_state_semantics
+      (recursive_newton_state_step_value
+        e1 e2 e3 e4 e5 e6 values state)
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      (NPS.newton_step sparse_state).
+Proof.
+move=> hstate.
+have hstep := @eval_recursive_newton_step_from (S arity)
+  (SE.RecVar pos0)
+  (CE.recursive_signed_weaken e1)
+  (CE.recursive_signed_weaken e2)
+  (CE.recursive_signed_weaken e3)
+  (CE.recursive_signed_weaken e4)
+  (CE.recursive_signed_weaken e5)
+  (CE.recursive_signed_weaken e6)
+  (state ## values) sparse_state.
+cbn [SE.eval_recursive_expression] in hstep.
+rewrite !recursive_elementary_values_weakened in hstep.
+exact: hstep hstate.
+Qed.
+
+Lemma recursive_newton_state_iter_semantics {arity} iterations
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    values state sparse_state :
+  recursive_newton_state_semantics state
+      (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+      sparse_state ->
+  recursive_newton_state_semantics
+    (prim_min.iter
+      (recursive_newton_state_step_value e1 e2 e3 e4 e5 e6 values)
+      iterations state)
+    (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+    (NPS.newton_iterate iterations sparse_state).
+Proof.
+revert state sparse_state.
+induction iterations as [|iterations ih]; intros state sparse_state hstate.
+- exact hstate.
+- rewrite prim_min.iter_S /=.
+  apply ih.
+  exact: recursive_newton_state_step_value_semantics hstate.
+Qed.
+
+(** The dynamic recursive Newton program computes exactly the sparse
+    polynomial [newton_sparse_power], for arbitrary recursively supplied
+    elementary coordinates. *)
+Lemma eval_recursive_newton_sparse_power_from {arity}
+    (power : SE.recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  mathcomp_zigzag_decode
+    (SE.eval_recursive_expression
+      (CE.newton_sparse_power_from power e1 e2 e3 e4 e5 e6) values) =
+  NPS.sparse_eval_ring
+    (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+    (NPS.newton_sparse_power
+      (SE.eval_recursive_expression power values)).
+Proof.
+remember (SE.eval_recursive_expression power values) as power_value
+  eqn:hpower.
+case: power_value hpower=> [|previous] hpower.
+- rewrite /CE.newton_sparse_power_from
+    eval_recursive_if_zero -hpower.
+  rewrite decode_eval_recursive_signed_code_mathcomp
+    eval_mathcomp_recursive_signed_nat
+    /NPS.newton_sparse_power NPS.sparse_eval_ring_nsmul
+    NPS.sparse_eval_ring_const rmorph1 mulr1.
+  reflexivity.
+- have hinitial := eval_recursive_newton_initial_state_from
+      e1 e2 e3 e4 e5 e6 values.
+  have hiter := recursive_newton_state_iter_semantics previous hinitial.
+  move: hiter=> [hfirst _].
+  rewrite /CE.newton_sparse_power_from
+    eval_recursive_if_zero -hpower
+    SE.eval_recursive_project eval_recursive_iter
+    eval_recursive_minus eval_recursive_const -hpower subn1
+    /NPS.newton_sparse_power /=.
+  change
+    (decode_recursive_newton_state_component
+      (prim_min.iter
+        (recursive_newton_state_step_value
+          e1 e2 e3 e4 e5 e6 values)
+        previous
+        (SE.eval_recursive_expression
+          (SE.newton_initial_state_from e1 e2 e3 e4 e5 e6) values))
+      pos0 =
+     NPS.sparse_eval_ring
+       (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+       (NPS.newton_s1
+         (NPS.newton_iterate previous NPS.newton_initial_state))).
+  exact hfirst.
+Qed.
+
+(* --------------------------------------------------------------------- *)
+(* The table-driven Möbius evaluator denotes the sparse orbit polynomial. *)
+
+(** Looking up a block mask in the recursive table is the same operation as
+    first looking up the corresponding canonical partition code. *)
+Lemma eval_recursive_partition_mask {arity} block
+    (partition : SE.recursive_expression arity) values :
+  (SE.eval_recursive_expression partition values < 203)%N ->
+  SE.eval_recursive_expression
+      (CE.recursive_partition_mask block partition) values =
+    CE.partition_block_mask
+      (nth [::] PS.partition_codes
+        (SE.eval_recursive_expression partition values)) block.
+Proof.
+move=> hpartition.
+have hsize :
+    (SE.eval_recursive_expression partition values <
+      size PS.partition_codes)%N.
+  by rewrite -/PS.partition_count PS.partition_count_is_203.
+rewrite /CE.recursive_partition_mask eval_recursive_lookup_list
+  /CE.partition_block_mask_table.
+change
+  (nth 0%N
+      (map (fun labels => CE.partition_block_mask labels block)
+        PS.partition_codes)
+      (SE.eval_recursive_expression partition values) =
+   CE.partition_block_mask
+      (nth [::] PS.partition_codes
+        (SE.eval_recursive_expression partition values)) block).
+by rewrite (nth_map [::] 0%N
+  (fun labels => CE.partition_block_mask labels block) hsize).
+Qed.
+
+(** The two natural-valued lookup tables are exactly the positive and
+    negative parts of the MathComp integer Möbius weight. *)
+Lemma eval_recursive_partition_weight {arity}
+    (partition : SE.recursive_expression arity) values :
+  (SE.eval_recursive_expression partition values < 203)%N ->
+  eval_mathcomp_recursive_signed_expression
+      (CE.recursive_partition_weight partition) values =
+    (PS.partition_mobius_positive
+      (nth [::] PS.partition_codes
+        (SE.eval_recursive_expression partition values)))%:Z -
+    (PS.partition_mobius_negative
+      (nth [::] PS.partition_codes
+        (SE.eval_recursive_expression partition values)))%:Z.
+Proof.
+move=> hpartition.
+have hsize :
+    (SE.eval_recursive_expression partition values <
+      size PS.partition_codes)%N.
+  by rewrite -/PS.partition_count PS.partition_count_is_203.
+rewrite /eval_mathcomp_recursive_signed_expression
+  /CE.recursive_partition_weight
+  !eval_recursive_lookup_list
+  /CE.partition_mobius_positive_table
+  /CE.partition_mobius_negative_table.
+change
+  ((nth 0%N (map PS.partition_mobius_positive PS.partition_codes)
+      (SE.eval_recursive_expression partition values))%:Z -
+   (nth 0%N (map PS.partition_mobius_negative PS.partition_codes)
+      (SE.eval_recursive_expression partition values))%:Z =
+   (PS.partition_mobius_positive
+      (nth [::] PS.partition_codes
+        (SE.eval_recursive_expression partition values)))%:Z -
+   (PS.partition_mobius_negative
+      (nth [::] PS.partition_codes
+        (SE.eval_recursive_expression partition values)))%:Z).
+rewrite (nth_map [::] 0%N PS.partition_mobius_positive hsize).
+by rewrite (nth_map [::] 0%N PS.partition_mobius_negative hsize).
+Qed.
+
+(** A block factor is one for an inactive block and the already-verified
+    Newton sparse power for an active one. *)
+Lemma eval_recursive_newton_block_factor_from {arity}
+    (mask exponent : SE.recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  eval_mathcomp_recursive_signed_expression
+      (CE.recursive_newton_block_factor_from mask exponent
+        e1 e2 e3 e4 e5 e6) values =
+    match SE.eval_recursive_expression mask values with
+    | 0%nat => 1
+    | S _ =>
+        NPS.sparse_eval_ring
+          (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+          (NPS.newton_sparse_power
+            (SE.eval_recursive_expression exponent values))
+    end.
+Proof.
+rewrite /CE.recursive_newton_block_factor_from
+  eval_mathcomp_recursive_signed_decode eval_recursive_if_zero.
+case hmask: (SE.eval_recursive_expression mask values)=> [|mask_value].
+- rewrite decode_eval_recursive_signed_code_mathcomp
+    eval_mathcomp_recursive_signed_nat.
+  reflexivity.
+- exact: eval_recursive_newton_sparse_power_from.
+Qed.
 
 Print Assumptions eval_recursive_signed_code_mathcomp.
 Print Assumptions eval_mathcomp_recursive_signed_bounded_sum.
