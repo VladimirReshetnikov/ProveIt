@@ -5445,6 +5445,19 @@ Print Assumptions z_domain_inter_subset.
 Print Assumptions z_range_inter_subset.
 Print Assumptions z_domain_insert_kpair.
 Print Assumptions z_range_insert_kpair.
+Check z_function.
+Print Assumptions z_mem_function_iff.
+Print Assumptions z_mem_function_intro.
+Print Assumptions z_subset_product_of_mem_function.
+Print Assumptions z_mem_of_mem_function.
+Print Assumptions z_function_subset_power_product.
+Print Assumptions z_exists_unique_of_mem_function.
+Print Assumptions z_exists_of_mem_function.
+Print Assumptions z_domain_eq_of_mem_function.
+Print Assumptions z_range_subset_of_mem_function.
+Print Assumptions z_mem_function_range_of_mem_function.
+Print Assumptions z_mem_function_of_mem_function_of_subset.
+Print Assumptions z_function_subset_function_of_subset.
 Check membership_well_founded.
 Check transitive_model.
 Print Assumptions well_founded_predicate_subtype.

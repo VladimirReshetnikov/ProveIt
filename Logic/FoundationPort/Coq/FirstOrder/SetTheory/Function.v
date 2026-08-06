@@ -216,3 +216,144 @@ Print Assumptions z_domain_mem_iff.
 Print Assumptions z_range_mem_iff.
 Print Assumptions z_domain_insert_kpair.
 Print Assumptions z_range_insert_kpair.
+
+(** Total single-valued relations. *)
+Definition z_function {m} (O : zermelo_operations m)
+    (Y X : membership_carrier m) : membership_carrier m :=
+  z_separate O
+    (fun f => forall x, membership_rel x X ->
+      exists y, membership_rel (z_kpair O x y) f /\
+        forall y', membership_rel (z_kpair O x y') f -> y' = y)
+    (z_power O (z_product O X Y)).
+
+Lemma z_mem_function_iff : forall m (O : zermelo_operations m)
+    (f Y X : membership_carrier m),
+  membership_rel f (z_function O Y X) <->
+  set_model_subset f (z_product O X Y) /\
+  forall x, membership_rel x X ->
+    exists y, membership_rel (z_kpair O x y) f /\
+      forall y', membership_rel (z_kpair O x y') f -> y' = y.
+Proof.
+  intros m O f Y X. unfold z_function. rewrite z_separate_mem_iff. split.
+  - intros [Hbase Htotal]. apply z_power_mem_iff in Hbase. now split.
+  - intros [Hsub Htotal]. split.
+    + exact (proj2 (@z_power_mem_iff m O (z_product O X Y) f) Hsub).
+    + exact Htotal.
+Qed.
+
+Lemma z_mem_function_intro : forall m (O : zermelo_operations m)
+    (f X Y : membership_carrier m),
+  set_model_subset f (z_product O X Y) ->
+  (forall x, membership_rel x X ->
+    exists y, membership_rel (z_kpair O x y) f /\
+      forall y', membership_rel (z_kpair O x y') f -> y' = y) ->
+  membership_rel f (z_function O Y X).
+Proof. intros. apply z_mem_function_iff. now split. Qed.
+
+Lemma z_subset_product_of_mem_function : forall m (O : zermelo_operations m)
+    (f X Y : membership_carrier m),
+  membership_rel f (z_function O Y X) ->
+  set_model_subset f (z_product O X Y).
+Proof. intros. apply z_mem_function_iff in H. exact (proj1 H). Qed.
+
+Lemma z_mem_of_mem_function : forall m (O : zermelo_operations m)
+    (f X Y x y : membership_carrier m),
+  membership_rel f (z_function O Y X) ->
+  membership_rel (z_kpair O x y) f ->
+  membership_rel x X /\ membership_rel y Y.
+Proof.
+  intros m O f X Y x y Hf Hxy.
+  pose proof (z_subset_product_of_mem_function Hf) as Hsub.
+  apply Hsub in Hxy.
+  now apply z_kpair_mem_product_iff in Hxy.
+Qed.
+
+Lemma z_function_subset_power_product : forall m (O : zermelo_operations m)
+    (X Y : membership_carrier m),
+  set_model_subset (z_function O Y X) (z_power O (z_product O X Y)).
+Proof.
+  intros m O X Y f Hf. apply z_mem_function_iff in Hf.
+  apply z_power_mem_iff. exact (proj1 Hf).
+Qed.
+
+Lemma z_exists_unique_of_mem_function : forall m (O : zermelo_operations m)
+    (f X Y : membership_carrier m),
+  membership_rel f (z_function O Y X) ->
+  forall x, membership_rel x X ->
+    exists y, membership_rel (z_kpair O x y) f /\
+      forall y', membership_rel (z_kpair O x y') f -> y' = y.
+Proof. intros. apply z_mem_function_iff in H. exact (proj2 H x H0). Qed.
+
+Lemma z_exists_of_mem_function : forall m (O : zermelo_operations m)
+    (f X Y x : membership_carrier m),
+  membership_rel f (z_function O Y X) -> membership_rel x X ->
+  exists y, membership_rel y Y /\ membership_rel (z_kpair O x y) f.
+Proof.
+  intros m O f X Y x Hf Hx.
+  destruct (@z_exists_unique_of_mem_function m O f X Y Hf x Hx)
+    as [y [Hy Hunique]].
+  exists y. split; [|exact Hy].
+  exact (proj2 (@z_mem_of_mem_function m O f X Y x y Hf Hy)).
+Qed.
+
+Lemma z_domain_eq_of_mem_function : forall m (O : zermelo_operations m)
+    (f X Y : membership_carrier m),
+  membership_rel f (z_function O Y X) -> z_domain O f = X.
+Proof.
+  intros m O f X Y Hf. apply (z_extensionality O). intro x. split.
+  - intro Hx. apply z_domain_mem_iff in Hx. destruct Hx as [y Hy].
+    exact (proj1 (z_mem_of_mem_function Hf Hy)).
+  - intro Hx. apply z_domain_mem_iff. destruct (@z_exists_of_mem_function m O f X Y x Hf Hx)
+      as [y [_ Hy]]. now exists y.
+Qed.
+
+Lemma z_range_subset_of_mem_function : forall m (O : zermelo_operations m)
+    (f X Y : membership_carrier m),
+  membership_rel f (z_function O Y X) -> set_model_subset (z_range O f) Y.
+Proof.
+  intros m O f X Y Hf y Hy. apply z_range_mem_iff in Hy. destruct Hy as [x Hxy].
+  exact (proj2 (z_mem_of_mem_function Hf Hxy)).
+Qed.
+
+Lemma z_mem_function_range_of_mem_function : forall m (O : zermelo_operations m)
+    (f X Y : membership_carrier m),
+  membership_rel f (z_function O Y X) ->
+  membership_rel f (z_function O (z_range O f) X).
+Proof.
+  intros m O f X Y Hf. apply z_mem_function_intro.
+  - intros p Hpf. pose proof (z_subset_product_of_mem_function Hf) as Hsub.
+    pose proof (Hsub p Hpf) as Hp. apply z_product_mem_iff in Hp.
+    destruct Hp as [x [Hx [y [Hy Heq]]]]. subst p.
+    apply z_kpair_mem_product_iff. split; [exact Hx |].
+    exact (@z_mem_range_of_kpair_mem m O f x y Hpf).
+  - intros x Hx. destruct (@z_exists_unique_of_mem_function m O f X Y Hf x Hx)
+      as [y [Hy Hunique]]. exists y. split; [exact Hy | exact Hunique].
+Qed.
+
+Lemma z_mem_function_of_mem_function_of_subset :
+  forall m (O : zermelo_operations m) (f X Y1 Y2 : membership_carrier m),
+  membership_rel f (z_function O Y1 X) -> set_model_subset Y1 Y2 ->
+  membership_rel f (z_function O Y2 X).
+Proof.
+  intros m O f X Y1 Y2 Hf H12. apply z_mem_function_intro.
+  - intros p Hp. pose proof (z_subset_product_of_mem_function Hf) as Hsub.
+    apply Hsub in Hp.
+    assert (Hprod : set_model_subset (z_product O X Y1)
+        (z_product O X Y2)).
+    { apply z_product_monotone; [exact (@set_model_subset_refl m X) | exact H12]. }
+    exact (Hprod p Hp).
+  - intros x Hx. apply (@z_exists_unique_of_mem_function m O f X Y1 Hf x Hx).
+Qed.
+
+Lemma z_function_subset_function_of_subset : forall m (O : zermelo_operations m)
+    (Y1 Y2 X : membership_carrier m),
+  set_model_subset Y1 Y2 ->
+  set_model_subset (z_function O Y1 X) (z_function O Y2 X).
+Proof.
+  intros m O Y1 Y2 X H12 f Hf.
+  exact (@z_mem_function_of_mem_function_of_subset m O f X Y1 Y2 Hf H12).
+Qed.
+
+Print Assumptions z_mem_function_iff.
+Print Assumptions z_domain_eq_of_mem_function.
+Print Assumptions z_mem_function_range_of_mem_function.
