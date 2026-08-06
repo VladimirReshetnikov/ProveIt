@@ -449,6 +449,18 @@ Proof.
   subst v. eapply Hleft; eassumption.
 Qed.
 
+Lemma hfs_list_compose_assoc_In_iff : forall first second third x z,
+  In (hfs_index_pair x z)
+    (hfs_list_compose (hfs_list_compose first second) third) <->
+  In (hfs_index_pair x z)
+    (hfs_list_compose first (hfs_list_compose second third)).
+Proof.
+  intros first second third x z.
+  setoid_rewrite hfs_list_compose_In_iff.
+  setoid_rewrite hfs_list_compose_In_iff.
+  firstorder.
+Qed.
+
 Print Assumptions hfs_mem_list_image_iff.
 Print Assumptions hfs_list_image_existsUnique.
 Print Assumptions hfs_list_restrict_In_iff.
@@ -463,3 +475,4 @@ Print Assumptions hfs_list_is_mapping_identity.
 Print Assumptions hfs_list_is_injective_identity.
 Print Assumptions hfs_list_compose_is_mapping.
 Print Assumptions hfs_list_compose_is_injective.
+Print Assumptions hfs_list_compose_assoc_In_iff.

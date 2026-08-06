@@ -5766,6 +5766,7 @@ Print Assumptions hfs_list_is_mapping_identity.
 Print Assumptions hfs_list_is_injective_identity.
 Print Assumptions hfs_list_compose_is_mapping.
 Print Assumptions hfs_list_compose_is_injective.
+Print Assumptions hfs_list_compose_assoc_In_iff.
 Check hfs_pr_construction.
 Check hfs_pr_result.
 Print Assumptions hfs_pr_result_zero.
