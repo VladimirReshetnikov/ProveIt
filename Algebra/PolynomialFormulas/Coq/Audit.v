@@ -1,14 +1,16 @@
 From PolynomialFormulas Require Import
   Basic Cubic CubicComplex Quartic AbelRuffini AbelRuffiniRootwise
   LowDegreeRadicals
-  QuinticRadicalDecidability SexticRecursiveCore SexticFactorCompleteness
-  QuinticRecursiveFactor SexticFactorSelector
+  QuinticRadicalDecidability SexticRecursiveCore SexticArithmeticFactorSearch
+  SexticFactorCompleteness
+  QuinticRecursiveFactor QuinticArithmeticFactorSearch SexticFactorSelector
   QuinticF20Data QuinticSolvableCriterion QuinticThetaOrbit
-  QuinticThetaValues QuinticGaloisAction QuinticGaloisCriterion
+  QuinticThetaValues QuinticChapman QuinticGaloisAction QuinticGaloisCriterion
   QuinticThetaGaloisBridge
   SexticSparsePolynomials SexticSparseResolvents SexticSparseSymmetricSearch
   SexticPowerSumSymmetric SexticNewtonPowerSums SexticResolventSymmetry
-  SexticComputedResolvents SexticRationalRootSearch
+  SexticComputedResolvents QuinticPaddedSymmetrization
+  SexticRationalRootSearch SexticHomogeneousRootSearch
   SexticComputedResolventBridge
   SexticSeparatingSearch
   SexticSeparatingExistence
@@ -18,8 +20,8 @@ From PolynomialFormulas Require Import
   SexticGaloisAction
   SexticVietaBridge
   SexticDescriptorGaloisCriterion
-  SexticReducibleSemantics
-  ReducibleRadicalSemantics
+  SexticReducibleSemantics SexticMonicizationSemantics
+  ReducibleRadicalSemantics SexticReducibleDecision SexticMonicDecision
   SexticRadicalDecidability.
 
 (** Kernel-assumption audit for the degree-one-through-four solver theorems
@@ -33,13 +35,16 @@ Import PolynomialFormulasAbelRuffiniRootwise.
 Import PolynomialFormulasLowDegreeRadicals.
 Import PolynomialFormulasQuinticRadicalDecidability.
 Import PolynomialFormulasSexticRecursiveCore.
+Import PolynomialFormulasSexticArithmeticFactorSearch.
 Import PolynomialFormulasSexticFactorCompleteness.
 Import PolynomialFormulasQuinticRecursiveFactor.
+Import PolynomialFormulasQuinticArithmeticFactorSearch.
 Import PolynomialFormulasSexticFactorSelector.
 Import PolynomialFormulasQuinticF20Data.
 Import PolynomialFormulasQuinticSolvableCriterion.
 Import PolynomialFormulasQuinticThetaOrbit.
 Import PolynomialFormulasQuinticThetaValues.
+Import PolynomialFormulasQuinticChapman.
 Import PolynomialFormulasQuinticGaloisAction.
 Import PolynomialFormulasQuinticGaloisCriterion.
 Import PolynomialFormulasQuinticThetaGaloisBridge.
@@ -50,7 +55,9 @@ Import PolynomialFormulasSexticPowerSumSymmetric.
 Import PolynomialFormulasSexticNewtonPowerSums.
 Import PolynomialFormulasSexticResolventSymmetry.
 Import PolynomialFormulasSexticComputedResolvents.
+Import PolynomialFormulasQuinticPaddedSymmetrization.
 Import PolynomialFormulasSexticRationalRootSearch.
+Import PolynomialFormulasSexticHomogeneousRootSearch.
 Import PolynomialFormulasSexticComputedResolventBridge.
 Import PolynomialFormulasSexticSeparatingSearch.
 Import PolynomialFormulasSexticSeparatingExistence.
@@ -61,7 +68,10 @@ Import PolynomialFormulasSexticGaloisAction.
 Import PolynomialFormulasSexticVietaBridge.
 Import PolynomialFormulasSexticDescriptorGaloisCriterion.
 Import PolynomialFormulasSexticReducibleSemantics.
+Import PolynomialFormulasSexticMonicizationSemantics.
 Import PolynomialFormulasReducibleRadicalSemantics.
+Import PolynomialFormulasSexticReducibleDecision.
+Import PolynomialFormulasSexticMonicDecision.
 Import PolynomialFormulasSexticRadicalDecidability.
 
 Check solve_linear_correct.
@@ -94,12 +104,19 @@ Check integer_radical_decisionP.
 Check quintic_radical_decision_codeK.
 Check quintic_radical_decision_codeP.
 Check has_bounded_proper_factorP.
+Check has_arithmetic_linear_factorE.
+Check has_arithmetic_quadratic_factorE.
+Check has_arithmetic_cubic_factorE.
+Check quintic_linear_remainder_zerob_dvdp.
+Check quintic_quadratic_remainder_zerob_dvdp.
+Check has_arithmetic_quintic_proper_factorE.
 Check selected_sextic_linear_factorization_quintic.
 Check theta_stabilizerE.
 Check solvable_transitive_S5_criterion.
 Check theta_table_orbit_exhaustive_exists.
 Check quintic_scalar_resolvent_permute.
 Check quintic_scalar_resolvent_rootP.
+Check quintic_theta_value_injective_of_five_cycle_automorphism.
 Check quintic_root_tuple_injective.
 Check quintic_galois_image_transitive.
 Check quintic_galois_image_solvableE.
@@ -117,6 +134,10 @@ Check elementary_certificate_eventually.
 Check injective_assignment_sum_power_formula.
 Check newton_sparse_power_correct.
 Check newton_symmetrize_invariant_correct.
+Check coefficient_list_poly_quintic_resolvent_take.
+Check card_fixed_injective_assignments.
+Check newton_symmetrized_weighted_coefficient_correct.
+Check quintic_scaled_resolvent_coefficient_correct.
 Check pair_sparse_resolvent_coefficient_invariant.
 Check triple_sparse_resolvent_coefficient_invariant.
 Check pair_scaled_resolvent_coefficient_correct_unconditional.
@@ -127,6 +148,8 @@ Check has_bounded_rational_root_of_rational.
 Check rational_rootP.
 Check pair_scaled_rational_rootP.
 Check triple_scaled_rational_rootP.
+Check bounded_homogeneous_rootbE.
+Check homogeneous_rational_rootP.
 Check pair_scaled_resolvent_poly_correct.
 Check triple_scaled_resolvent_poly_correct.
 Check pair_scaled_semantic_rational_rootP.
@@ -182,9 +205,18 @@ Check radical_formula_solves_mul.
 Check radical_formula_solves_scale.
 Check all_roots_radical_int_mul.
 Check all_roots_radical_int_scale.
+Check mapped_monicization_horner.
+Check all_roots_radical_int_monicize.
 Check reducible_quintic_radical_formula.
 Check bounded_linear_factor_radical_formula.
 Check bounded_nonlinear_factor_radical_formula.
+Check bounded_nonlinear_branch_radical_formula.
+Check selected_linear_branch_radical_formula_iff.
+Check reducible_sextic_radical_branchP.
+Check irreducible_sextic_radical_branchP.
+Check monic_sextic_radical_decisionP.
+Check integer_sextic_radical_decisionP.
+Check all_roots_radical_sextic_int_decidable.
 Check all_roots_radical_sextic_int_semantic_decidable.
 Check sextic_radical_semantic_codeP.
 
@@ -218,12 +250,19 @@ Print Assumptions integer_radical_decisionP.
 Print Assumptions quintic_radical_decision_codeK.
 Print Assumptions quintic_radical_decision_codeP.
 Print Assumptions has_bounded_proper_factorP.
+Print Assumptions has_arithmetic_linear_factorE.
+Print Assumptions has_arithmetic_quadratic_factorE.
+Print Assumptions has_arithmetic_cubic_factorE.
+Print Assumptions quintic_linear_remainder_zerob_dvdp.
+Print Assumptions quintic_quadratic_remainder_zerob_dvdp.
+Print Assumptions has_arithmetic_quintic_proper_factorE.
 Print Assumptions selected_sextic_linear_factorization_quintic.
 Print Assumptions theta_stabilizerE.
 Print Assumptions solvable_transitive_S5_criterion.
 Print Assumptions theta_table_orbit_exhaustive_exists.
 Print Assumptions quintic_scalar_resolvent_permute.
 Print Assumptions quintic_scalar_resolvent_rootP.
+Print Assumptions quintic_theta_value_injective_of_five_cycle_automorphism.
 Print Assumptions quintic_root_tuple_injective.
 Print Assumptions quintic_galois_image_transitive.
 Print Assumptions quintic_galois_image_solvableE.
@@ -241,6 +280,10 @@ Print Assumptions elementary_certificate_eventually.
 Print Assumptions injective_assignment_sum_power_formula.
 Print Assumptions newton_sparse_power_correct.
 Print Assumptions newton_symmetrize_invariant_correct.
+Print Assumptions coefficient_list_poly_quintic_resolvent_take.
+Print Assumptions card_fixed_injective_assignments.
+Print Assumptions newton_symmetrized_weighted_coefficient_correct.
+Print Assumptions quintic_scaled_resolvent_coefficient_correct.
 Print Assumptions pair_sparse_resolvent_coefficient_invariant.
 Print Assumptions triple_sparse_resolvent_coefficient_invariant.
 Print Assumptions pair_scaled_resolvent_coefficient_correct_unconditional.
@@ -251,6 +294,8 @@ Print Assumptions has_bounded_rational_root_of_rational.
 Print Assumptions rational_rootP.
 Print Assumptions pair_scaled_rational_rootP.
 Print Assumptions triple_scaled_rational_rootP.
+Print Assumptions bounded_homogeneous_rootbE.
+Print Assumptions homogeneous_rational_rootP.
 Print Assumptions pair_scaled_resolvent_poly_correct.
 Print Assumptions triple_scaled_resolvent_poly_correct.
 Print Assumptions pair_scaled_semantic_rational_rootP.
@@ -306,8 +351,17 @@ Print Assumptions radical_formula_solves_mul.
 Print Assumptions radical_formula_solves_scale.
 Print Assumptions all_roots_radical_int_mul.
 Print Assumptions all_roots_radical_int_scale.
+Print Assumptions mapped_monicization_horner.
+Print Assumptions all_roots_radical_int_monicize.
 Print Assumptions reducible_quintic_radical_formula.
 Print Assumptions bounded_linear_factor_radical_formula.
 Print Assumptions bounded_nonlinear_factor_radical_formula.
+Print Assumptions bounded_nonlinear_branch_radical_formula.
+Print Assumptions selected_linear_branch_radical_formula_iff.
+Print Assumptions reducible_sextic_radical_branchP.
+Print Assumptions irreducible_sextic_radical_branchP.
+Print Assumptions monic_sextic_radical_decisionP.
+Print Assumptions integer_sextic_radical_decisionP.
+Print Assumptions all_roots_radical_sextic_int_decidable.
 Print Assumptions all_roots_radical_sextic_int_semantic_decidable.
 Print Assumptions sextic_radical_semantic_codeP.
