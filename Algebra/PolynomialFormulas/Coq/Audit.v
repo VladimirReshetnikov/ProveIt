@@ -1,6 +1,8 @@
 From PolynomialFormulas Require Import
   Basic Cubic CubicComplex Quartic AbelRuffini AbelRuffiniRootwise
+  LowDegreeRadicals
   QuinticRadicalDecidability SexticRecursiveCore SexticFactorCompleteness
+  QuinticRecursiveFactor SexticFactorSelector
   SexticSparsePolynomials SexticSparseResolvents SexticSparseSymmetricSearch
   SexticPowerSumSymmetric SexticNewtonPowerSums SexticResolventSymmetry
   SexticComputedResolvents SexticRationalRootSearch
@@ -14,6 +16,7 @@ From PolynomialFormulas Require Import
   SexticVietaBridge
   SexticDescriptorGaloisCriterion
   SexticReducibleSemantics
+  ReducibleRadicalSemantics
   SexticRadicalDecidability.
 
 (** Kernel-assumption audit for the degree-one-through-four solver theorems
@@ -24,9 +27,12 @@ Import LeanProofs.PolynomialFormulasCubic.
 Import LeanProofs.PolynomialFormulasQuartic.
 Import LeanProofs.PolynomialFormulasAbelRuffini.
 Import PolynomialFormulasAbelRuffiniRootwise.
+Import PolynomialFormulasLowDegreeRadicals.
 Import PolynomialFormulasQuinticRadicalDecidability.
 Import PolynomialFormulasSexticRecursiveCore.
 Import PolynomialFormulasSexticFactorCompleteness.
+Import PolynomialFormulasQuinticRecursiveFactor.
+Import PolynomialFormulasSexticFactorSelector.
 Import PolynomialFormulasSexticSparsePolynomials.
 Import PolynomialFormulasSexticSparseResolvents.
 Import PolynomialFormulasSexticSparseSymmetricSearch.
@@ -45,6 +51,7 @@ Import PolynomialFormulasSexticGaloisAction.
 Import PolynomialFormulasSexticVietaBridge.
 Import PolynomialFormulasSexticDescriptorGaloisCriterion.
 Import PolynomialFormulasSexticReducibleSemantics.
+Import PolynomialFormulasReducibleRadicalSemantics.
 Import PolynomialFormulasSexticRadicalDecidability.
 
 Check solve_linear_correct.
@@ -69,6 +76,7 @@ Check monic_padded_counterexample.
 Check degree_gt_four_counterexample.
 Check not_every_degree_gt_four_solvable_by_radicals.
 Check no_radical_formula_degree_gt_four.
+Check low_degree_radical_formula.
 Check galois_solvableP.
 Check every_root_has_radical_expressionP.
 Check quintic_every_root_has_radical_expressionP.
@@ -76,6 +84,7 @@ Check integer_radical_decisionP.
 Check quintic_radical_decision_codeK.
 Check quintic_radical_decision_codeP.
 Check has_bounded_proper_factorP.
+Check selected_sextic_linear_factorization_quintic.
 Check sparse_equivalentbP.
 Check sparse_equivalentb_eval.
 Check size_pair_sparse_resolvent.
@@ -148,6 +157,9 @@ Check radical_formula_solves_mul.
 Check radical_formula_solves_scale.
 Check all_roots_radical_int_mul.
 Check all_roots_radical_int_scale.
+Check reducible_quintic_radical_formula.
+Check bounded_linear_factor_radical_formula.
+Check bounded_nonlinear_factor_radical_formula.
 Check all_roots_radical_sextic_int_semantic_decidable.
 Check sextic_radical_semantic_codeP.
 
@@ -173,6 +185,7 @@ Print Assumptions monic_padded_counterexample.
 Print Assumptions degree_gt_four_counterexample.
 Print Assumptions not_every_degree_gt_four_solvable_by_radicals.
 Print Assumptions no_radical_formula_degree_gt_four.
+Print Assumptions low_degree_radical_formula.
 Print Assumptions galois_solvableP.
 Print Assumptions every_root_has_radical_expressionP.
 Print Assumptions quintic_every_root_has_radical_expressionP.
@@ -180,6 +193,7 @@ Print Assumptions integer_radical_decisionP.
 Print Assumptions quintic_radical_decision_codeK.
 Print Assumptions quintic_radical_decision_codeP.
 Print Assumptions has_bounded_proper_factorP.
+Print Assumptions selected_sextic_linear_factorization_quintic.
 Print Assumptions sparse_equivalentbP.
 Print Assumptions sparse_equivalentb_eval.
 Print Assumptions size_pair_sparse_resolvent.
@@ -252,5 +266,8 @@ Print Assumptions radical_formula_solves_mul.
 Print Assumptions radical_formula_solves_scale.
 Print Assumptions all_roots_radical_int_mul.
 Print Assumptions all_roots_radical_int_scale.
+Print Assumptions reducible_quintic_radical_formula.
+Print Assumptions bounded_linear_factor_radical_formula.
+Print Assumptions bounded_nonlinear_factor_radical_formula.
 Print Assumptions all_roots_radical_sextic_int_semantic_decidable.
 Print Assumptions sextic_radical_semantic_codeP.
