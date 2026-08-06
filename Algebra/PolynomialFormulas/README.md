@@ -47,17 +47,21 @@ the preceding degree-at-most-four result; `solve_factorization_of_a5_eq_zero` an
 For `a5 ≠ 0`, it classically selects an invariant and radical certificate
 package required by `LazardQuintic.solveGeneral`, if one exists.  Its
 invariants are certified first over the Gaussian-rational coefficient field
-and then embedded into the radical closure.  The five Lazard values are
-noncomputably reified as `RadicalExpression` trees.  Because the present
-Lazard certificate assumes nonzero denominators and therefore excludes
-singular solvable inputs such as `X^5`, a missing Lazard package falls back to
-a classically selected `CompleteRadicalSolution`, if one exists.  The finite
-five-entry vectors are kept in distinct `lazardCandidates` and
-`completeRadical` result constructors; `unsupported` is returned only when
-neither package exists.  The genuine Lazard branch is deliberately not
-accompanied by a correctness theorem: the Lazard
-transcription's soundness and certificate-existence results remain future
-work.
+and then embedded into the radical closure.  Raw invariant and radical-choice
+equations alone are not treated as a soundness proof: the package also requires
+proofs of the four cyclic Fourier identities for the concrete components
+produced by the formula.  The generic inverse-Fourier theorem then proves that
+all five values are roots, and they are noncomputably reified as `RadicalExpression`
+trees.  Because the present Lazard certificate assumes nonzero denominators
+and therefore excludes singular solvable inputs such as `X^5`, a missing
+Lazard package falls back to a classically selected
+`CompleteRadicalSolution`, if one exists.  The finite five-entry vectors are
+kept in distinct `lazardCandidates` and `completeRadical` result constructors;
+both are proof-carrying.  `solve_allReturnedRootsSatisfy` proves that every
+expression returned by either quintic branch or the delegated lower-degree
+branch satisfies the input equation.  `unsupported` is returned only when
+neither package exists.  Completeness of the genuine quintic output and
+automatic construction of its certificate remain future work.
 
 Every returned `ExplicitRadical` can additionally be passed to
 `ExplicitRadical.boundingBox`.  For a rational `ε > 0`, it returns a rectangle

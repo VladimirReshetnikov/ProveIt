@@ -24,6 +24,7 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\ii}[1]{i_{#1}}
 \newcommand{\codepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuintic.lean}}
+\newcommand{\fouriercodepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuinticFourier.lean}}
 \setlength{\emergencystretch}{3em}
 
 \title{A Lean Transcription of the Corrected Lazard Formula\\
@@ -46,25 +47,30 @@ algebraic witnesses have been supplied: normalization and depression,
 Lazard's degree-six resolvent, the four equations recovering
 $\ii4,\ldots,\ii8$, all auxiliary invariants $D,\ldots,K$, both coherent
 sign-selection stages, the corrected $P_{22}$, and inverse Fourier
-reconstruction of five candidate outputs.  It proves the normalization identity, the
-equivalence of the monic and fraction-free resolvent equations, preservation of
-$\eps^2$ by the correction, nonvanishing consequences of the branch
-certificates, coherence of all four quadratic sign branches, and soundness of
-finite branch selection.  It does \emph{not} prove that the five displayed
-outputs are roots, nor that the needed certificates exist.  Pointwise
-soundness and full five-factor completeness are recorded as separate
-propositions, not as axioms.
+reconstruction of five candidate outputs.  It proves the normalization
+identity, the equivalence of the monic and fraction-free resolvent equations,
+preservation of $\eps^2$ by the correction, nonvanishing consequences of the
+branch certificates, coherence of all four quadratic sign branches, and
+soundness of finite branch selection.  A separate generic theorem proves that
+all five outputs are roots once four cyclic Fourier identities are supplied.
+The development does \emph{not} yet derive those identities from the raw
+Lazard invariant/radical data, construct the required certificates, or prove
+the five-factor completeness statement.
 \end{abstract}
 
 \tableofcontents
 
 \section{Purpose, sources, and claim boundary}
 
-The formal source is
+The core transcription is
 \begin{center}
   \codepath.
 \end{center}
-It is imported by the public \lean{PolynomialFormulas} module.  The source
+The generic Fourier soundness proof is in
+\begin{center}
+  \fouriercodepath.
+\end{center}
+Both are imported by the public \lean{PolynomialFormulas} module.  The source
 materials were reviewed at Smithereens commit
 \lean{da7026ec1369ade49bb6d964019a4c124fdd5091}.  The principal references are:
 
@@ -94,10 +100,11 @@ resolvent and is not an exact implementation of the formula documented here.
 The present claim is deliberately limited:
 
 \begin{quote}
-The Lean definitions are an exact, type-correct transcription of the corrected
-algebraic algorithm, organized so that its eventual correctness proof can be
-stated without changing the API.  No theorem in this contribution asserts the
-unproved final root identity.
+The Lean definitions are a type-correct transcription of the corrected
+algebraic algorithm.  The kernel proves the final root identity from four
+explicit cyclic Fourier relations.  Deriving those relations from the raw
+Lazard certificates, constructing certificates from solvable coefficients,
+and proving complete root coverage remain outside the present claim.
 \end{quote}
 
 This distinction matters.  Lean accepts division by zero as a total field
@@ -123,14 +130,16 @@ $(\ii4,\ldots,\ii8)$ is first certified in $\Q$ and only then mapped to a
 radical extension.  The abstract generic API remains useful for algebraic
 lemmas.
 
-The generic propositions \lean{FormulaSound} and \lean{FormulaFactors} are
-deliberately stronger \emph{conditional algebraic targets}: they quantify over
-an arbitrary characteristic-zero field, but only after every displayed
-invariant and radical certificate has been supplied.  They do not assert
-existence of those certificates.  Thus Lazard's sourced irreducibility and
-$-1$ nonsquare hypotheses remain obligations for the applicability/existence
-bridge, while the rational specialization fixes the coefficient field to
-$\Q$ and performs radical calculations in an extension field.
+The older propositions \lean{FormulaSound} and \lean{FormulaFactors} quantify
+over an arbitrary characteristic-zero field after the displayed invariant and
+radical certificates have been supplied.  Audit showed that these hypotheses
+still admit extraneous invariant tuples, so the propositions are over-strong:
+they are retained definitions, not theorems or valid proof targets.  The sound
+interface is \lean{FourierRelations}, whose four cyclic equations are exactly
+the additional evidence used by
+\lean{solveGeneral_root_of_fourierRelations}.  Lazard's sourced irreducibility
+and $-1$ nonsquare hypotheses remain relevant to deriving that evidence and to
+the applicability/existence bridge.
 
 For a complete solver on arbitrary quintics, reducible inputs must be factored
 first.  Every proper factor has degree at most four and can in principle be
@@ -218,9 +227,10 @@ The rational metacyclic basis used to express these quantities is
 \ii7&=\sum_C x_0^3(x_1^2x_4^2+x_2^2x_3^2),\\
 \ii8&=\sum_C x_0^4(x_1^2x_4^2+x_2^2x_3^2).&&
 \end{align*}
-Lean stores their values in \lean{Invariants}.  Their origin in a root tuple
-will be established only in a later correctness bridge; this formula module
-uses the exact resolvent and linear relations as its semantic interface.
+Lean stores their values in \lean{Invariants}.  The exact resolvent and linear
+relations are useful algebraic data, but do not by themselves certify that a
+supplied tuple came from roots.  Establishing that origin, or directly deriving
+the four \lean{FourierRelations}, remains part of the Lazard-specific bridge.
 
 \section{The sextic resolvent}
 
@@ -477,7 +487,7 @@ For one primitive fifth root $\omega$, all five depressed candidates are
                    \omega^{3k}P_3+\omega^{4k}P_4}{5},
  \qquad k=0,1,2,3,4.
 \end{equation}
-The original roots are
+The translated candidate values are
 \[
  x_k=y_k-\frac{b}{5a}.
 \]
@@ -486,6 +496,9 @@ Lean represents $\omega$ by \lean{FifthRootOfUnity}; its field
 single indexed formula \lean{solveDepressed} replaces five branch-sensitive
 Mathematica expressions.  \lean{solveGeneral} performs the final translation,
 and \lean{solveRational} keeps the rational invariant certificate visible.
+When the four \lean{FourierRelations} hold, the proved theorem
+\lean{solveGeneral_root_of_fourierRelations} establishes that every $x_k$
+annihilates the original quintic.
 
 \section{Lean-to-paper crosswalk}
 
@@ -532,8 +545,11 @@ Lean declaration & Lazard notation/source & Role \\
 \lean{solveDepressed} & inverse Fourier formula & All five depressed candidates.\\
 \lean{solveGeneral} & $x_k=y_k-b/(5a)$ & Undo translation.\\
 \lean{RationalInvariantCertificate} & rational $\ii4,\ldots,\ii8$ & A supplied witness over $\Q$; it is not a search procedure.\\
-\lean{FormulaSound}, \lean{RationalFormulaSound} & pointwise root identity & Unproved propositions; not axioms and not asserted.\\
-\lean{FormulaFactors}, \lean{RationalFormulaFactors} & full five-factor identity & Stronger unproved completeness targets.\\
+\lean{FourierRelations} & four cyclic coefficient identities & Formula-specific soundness evidence.\\
+\lean{FourierRelations.inverseFourier_root} & inverse Fourier root identity & Proved generic algebraic theorem.\\
+\lean{solveGeneral_root_of_fourierRelations} & translated root identity & Proved pointwise soundness from \lean{FourierRelations}.\\
+\lean{FormulaSound}, \lean{RationalFormulaSound} & raw pointwise claim & Over-strong retained propositions; not theorems.\\
+\lean{FormulaFactors}, \lean{RationalFormulaFactors} & raw five-factor claim & Over-strong retained propositions; not theorems.\\
 \bottomrule
 \end{longtable}
 \normalsize
@@ -547,8 +563,8 @@ The following denominators occur in the formula:
 The formalization treats their nonvanishing as follows.
 
 \begin{itemize}
-\item $a\ne0$ is an explicit hypothesis of \lean{depress_eval} and of the
-  future soundness and factorization targets.
+\item $a\ne0$ is an explicit hypothesis of \lean{depress_eval} and
+  \lean{solveGeneral_root_of_fourierRelations}.
 \item The field \lean{epsilon0_nonzero} records the sourced irreducible-case
   fact; the theorem \lean{epsilon_nonzero} in the
   \lean{RadicalCertificate} namespace proves that sign correction preserves it.
@@ -570,24 +586,33 @@ or fractional-power convention.
 
 \section{What remains to prove}
 
-The generic target \lean{FormulaSound} says that, for a valid leading
-coefficient, an invariant tuple satisfying \lean{InvariantRelations}, a valid
-radical certificate, and a primitive fifth root of unity, every indexed value
-from \lean{solveGeneral} annihilates the original quintic.  Its rational
-specialization \lean{RationalFormulaSound} additionally requires that the
-invariant tuple be supplied and certified in $\Q$ before scalar extension.
-Neither proposition asserts that such witnesses can be found.
+The formula-independent endgame is now proved.  For components
+$P_1,\ldots,P_4$ satisfying \lean{FourierRelations},
+\lean{FourierRelations.inverseFourier_root} proves that each inverse Fourier
+value annihilates the depressed quintic, and
+\lean{solveGeneral_root_of_fourierRelations} transports that result through
+the Tschirnhaus translation.  This proof uses only symbolic field identities.
 
-Pointwise soundness alone does not express that all five roots, with their
-multiplicities, have been recovered.  The separate targets
-\lean{FormulaFactors} and \lean{RationalFormulaFactors} state the stronger
-polynomial identity
+The main remaining Lazard-specific soundness task is to derive those four
+cyclic identities for the concrete components computed from the intended
+invariants and radical choices.  The raw \lean{InvariantRelations} and
+\lean{RadicalCertificate} interfaces are insufficient on their own because
+they admit extraneous solutions.  Accordingly, the older
+\lean{FormulaSound}, \lean{RationalFormulaSound}, \lean{FormulaFactors}, and
+\lean{RationalFormulaFactors} definitions are not asserted: their present
+hypotheses omit necessary evidence.
+
+Pointwise soundness also does not express that all five roots, with their
+multiplicities, have been recovered.  A future completeness result should
+establish the polynomial identity
 \[
  \text{\lean{GeneralQuintic.polynomial}}
    =a\prod_{k=0}^{4}\bigl(X-\text{\lean{solveGeneral}}(k)\bigr).
 \]
-Thus the API cleanly separates conditional root soundness, five-root
-completeness, and the still-absent existence/search layer.
+The proof-carrying Gaussian quintic dispatcher already uses the proved
+pointwise theorem by requiring \lean{FourierRelations} in every Lazard witness.
+It makes no degree-five completeness claim, and automatic witness construction
+remains absent.
 
 A complete proof can be decomposed into the following independent lemmas:
 
@@ -601,13 +626,16 @@ A complete proof can be decomposed into the following independent lemmas:
 \item derive the displayed $D,\ldots,K$ reductions;
 \item prove that the two quadratic stages recover the cyclic projections;
 \item prove that one of the four coherent $Q_1$ values is nonzero;
-\item identify $P_1,\ldots,P_4$ with the four Fourier sums; and
-\item apply Fourier inversion and \lean{depress_eval}.
+\item identify $P_1,\ldots,P_4$ with the four Fourier sums, or equivalently
+  prove their four \lean{FourierRelations};
+\item construct the required proof-carrying witness from solvable input
+  coefficients; and
+\item prove a five-factor identity for completeness and multiplicities.
 \end{enumerate}
 
-The factorization target then gives exhaustiveness and, under irreducibility
-and separability, pairwise distinctness.  None of these unfinished statements
-is admitted with \lean{axiom},
+Such a factorization theorem would give exhaustiveness and, under
+irreducibility and separability, pairwise distinctness.  None of these
+unfinished statements is admitted with \lean{axiom},
 \lean{sorry}, or an opaque external oracle.
 
 \section{Regression evidence and source cautions}
@@ -645,6 +673,8 @@ with
 \begin{verbatim}
 lake env lean \
   Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuintic.lean
+lake env lean \
+  Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuinticFourier.lean
 
 LEAN_NUM_THREADS=0 lake build +PolynomialFormulas
 \end{verbatim}

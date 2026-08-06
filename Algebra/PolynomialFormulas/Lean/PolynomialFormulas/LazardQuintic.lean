@@ -14,9 +14,11 @@ The formula is deliberately split into named stages.  The four linear
 invariant equations, radical choices, and every nonzero denominator are
 visible in the API.  The rational entry point accepts a supplied rational
 invariant witness; it does not implement factorization or rational-root
-search.  No soundness or completeness theorem for the quintic formula is
-claimed here.  `FormulaSound` and `FormulaFactors` below record those distinct
-future proof targets without introducing axioms.
+search.  The raw `InvariantRelations` and `RadicalCertificate` hypotheses do
+not by themselves imply soundness.  `FormulaSound` and `FormulaFactors` below
+retain those over-strong raw-certificate claims for audit; they are definitions
+of propositions, not theorems or axioms.  Pointwise soundness from the
+additional cyclic identities is proved in `LazardQuinticFourier`.
 -/
 
 open Polynomial
@@ -771,7 +773,7 @@ def solveDepressed [DecidableEq K]
     omega.value ^ (3 * n) * fourierP3 c i v d.p1 +
     omega.value ^ (4 * n) * fourierP4 c i v d.p1) / 5
 
-/-- The five candidate roots of the original general quintic. -/
+/-- The five candidate values for the original general quintic. -/
 def solveGeneral [DecidableEq K]
     (c : GeneralQuintic K) (i : Invariants K)
     (d : RadicalCertificate (depress c) i) (omega : FifthRootOfUnity K) :
@@ -817,12 +819,12 @@ omit [CharZero K] in
         fourierP3 c i d.chosen d.p1 + fourierP4 c i d.chosen d.p1) / 5 := by
   simp [solveDepressed]
 
-/-- The still-unproved pointwise soundness target for the transcription.  It
-is a definition of a proposition, not an axiom or theorem: it says that every
-candidate produced from valid supplied certificates is a root.  This is
-intentionally a conditional algebraic target over every characteristic-zero
-field.  Lazard's irreducibility and `-1` nonsquare hypotheses belong to the
-future theorem producing the certificates, not to this implication. -/
+/-- The over-strong raw-certificate pointwise claim, retained as a proposition
+for audit.  It is not a theorem and does not follow from the stated
+hypotheses: `InvariantRelations` and `RadicalCertificate` do not ensure that
+the computed components are Fourier components of roots.  The proved theorem
+`solveGeneral_root_of_fourierRelations` additionally assumes the four cyclic
+`FourierRelations`. -/
 def FormulaSound [DecidableEq K] : Prop :=
   ∀ (c : GeneralQuintic K) (_ha : c.a ≠ 0) (i : Invariants K),
     InvariantRelations (depress c) i →
@@ -830,10 +832,9 @@ def FormulaSound [DecidableEq K] : Prop :=
       (k : Fin 5),
       c.eval (solveGeneral c i d omega k) = 0
 
-/-- Stronger completeness target: the five candidates give the entire
-degree-five polynomial with multiplicity.  This is separate from pointwise
-soundness so the public API does not overstate what has been proved.  It has
-the same deliberately conditional scope as `FormulaSound`. -/
+/-- The analogous over-strong raw-certificate factorization claim.  It is
+retained for audit, not asserted as a theorem; its hypotheses omit the same
+Fourier evidence as `FormulaSound`. -/
 def FormulaFactors [DecidableEq K] : Prop :=
   ∀ (c : GeneralQuintic K) (_ha : c.a ≠ 0) (i : Invariants K),
     InvariantRelations (depress c) i →
@@ -841,9 +842,9 @@ def FormulaFactors [DecidableEq K] : Prop :=
       c.polynomial =
         C c.a * ∏ k : Fin 5, (X - C (solveGeneral c i d omega k))
 
-/-- Rational specialization of the pointwise soundness target.  The supplied
-invariant tuple is certified over `ℚ` before extension to the radical field;
-this definition does not claim that a rational-root search has been run. -/
+/-- Rational specialization of the over-strong raw-certificate pointwise
+claim.  Mapping the supplied relations out of `ℚ` does not add the missing
+Fourier evidence, so this too is only a retained proposition, not a theorem. -/
 def RationalFormulaSound : Prop :=
   ∀ {L : Type*} [Field L] [CharZero L] [DecidableEq L] [Algebra ℚ L]
     (c : GeneralQuintic ℚ) (_ha : c.a ≠ 0)
@@ -854,7 +855,8 @@ def RationalFormulaSound : Prop :=
     (omega : FifthRootOfUnity L) (k : Fin 5),
     (c.map (algebraMap ℚ L)).eval (solveRational c w d omega k) = 0
 
-/-- Rational specialization of the five-factor completeness target. -/
+/-- Rational specialization of the over-strong raw-certificate factorization
+claim, retained for audit and not asserted as a theorem. -/
 def RationalFormulaFactors : Prop :=
   ∀ {L : Type*} [Field L] [CharZero L] [DecidableEq L] [Algebra ℚ L]
     (c : GeneralQuintic ℚ) (_ha : c.a ≠ 0)

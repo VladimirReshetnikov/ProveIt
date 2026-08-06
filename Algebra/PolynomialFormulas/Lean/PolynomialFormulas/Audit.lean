@@ -23,13 +23,20 @@ open LeanProofs.PolynomialFormulas
 #check GaussianPolynomialSolver.eval_eq_zero_iff_contains
 #check GaussianPolynomialSolver.solve_rootCount
 #check GaussianQuinticSolver.solve
+#check LazardQuintic.FourierRelations.inverseFourier_root
+#check LazardQuintic.solveDepressed_eq_inverseFourier
+#check LazardQuintic.solveGeneral_root_of_fourierRelations
 #check GaussianQuinticSolver.LazardWitness.invariantRelations
+#check GaussianQuinticSolver.LazardWitness.eval_root
 #check GaussianQuinticSolver.Result.productValue_completeRadical
+#check GaussianQuinticSolver.Result.allReturnedRootsSatisfy
 #check GaussianQuinticSolver.solve_of_a5_eq_zero
 #check GaussianQuinticSolver.solve_rootCount_of_a5_ne_zero_of_lazardWitness
 #check GaussianQuinticSolver.solve_rootCount_of_a5_ne_zero_of_completeRadicalSolution
 #check GaussianQuinticSolver.solve_factorization_of_a5_eq_zero
 #check GaussianQuinticSolver.eval_eq_zero_iff_contains_of_a5_eq_zero
+#check GaussianQuinticSolver.solve_allReturnedRootsSatisfy
+#check GaussianQuinticSolver.solve_contains_implies_eval_eq_zero
 #check RationalBox.enclose_spec
 #check RadicalExpression.boundingBox_spec
 #check ExplicitRadical.boundingBox_spec
@@ -113,11 +120,18 @@ open LeanProofs.PolynomialFormulas
 #print axioms GaussianPolynomialSolver.solve_factorization
 #print axioms GaussianPolynomialSolver.eval_eq_zero_iff_contains
 #print axioms GaussianPolynomialSolver.solve_rootCount
+#print axioms LazardQuintic.FourierRelations.inverseFourier_root
+#print axioms LazardQuintic.solveDepressed_eq_inverseFourier
+#print axioms LazardQuintic.solveGeneral_root_of_fourierRelations
 #print axioms GaussianQuinticSolver.LazardWitness.invariantRelations
+#print axioms GaussianQuinticSolver.LazardWitness.eval_root
 #print axioms GaussianQuinticSolver.Result.productValue_completeRadical
+#print axioms GaussianQuinticSolver.Result.allReturnedRootsSatisfy
 #print axioms GaussianQuinticSolver.solve_of_a5_eq_zero
 #print axioms GaussianQuinticSolver.solve_factorization_of_a5_eq_zero
 #print axioms GaussianQuinticSolver.eval_eq_zero_iff_contains_of_a5_eq_zero
+#print axioms GaussianQuinticSolver.solve_allReturnedRootsSatisfy
+#print axioms GaussianQuinticSolver.solve_contains_implies_eval_eq_zero
 #print axioms RationalBox.enclose_spec
 #print axioms RadicalExpression.boundingBox_spec
 #print axioms ExplicitRadical.boundingBox_spec
