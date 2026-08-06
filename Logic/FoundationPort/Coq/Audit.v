@@ -5464,6 +5464,10 @@ Print Assumptions z_is_function_of_mem.
 Print Assumptions z_is_function_mem_function.
 Print Assumptions z_is_function_mem_kpair.
 Print Assumptions z_is_function_unique.
+Print Assumptions z_is_function_of_subset.
+Print Assumptions z_function_eq_of_subset.
+Print Assumptions z_function_ext.
+Print Assumptions z_is_function_insert.
 Print Assumptions z_function_empty_empty.
 Check z_identity.
 Print Assumptions z_identity_mem_iff.
@@ -5477,21 +5481,37 @@ Print Assumptions z_kpair_mem_compose_iff.
 Print Assumptions z_compose_subset_product.
 Print Assumptions z_compose_function.
 Check z_injective.
-  Print Assumptions z_injective_empty.
-  Print Assumptions z_compose_injective.
-  Check z_value.
-  Print Assumptions z_value_mem_iff.
-  Print Assumptions z_value_mem_range.
-  Check z_restrict.
-  Print Assumptions z_restrict_mem_iff.
-  Print Assumptions z_restrict_subset.
-  Print Assumptions z_domain_restrict_eq.
-  Print Assumptions z_kpair_mem_restrict_iff.
-  Print Assumptions z_restrict_restrict_eq_restrict_inter.
-  Print Assumptions z_restrict_restrict_of_subset.
-  Check z_image.
-  Print Assumptions z_image_mem_iff.
-  Check membership_well_founded.
+Print Assumptions z_injective_empty.
+Print Assumptions z_compose_injective.
+Check z_value.
+Print Assumptions z_value_mem_iff.
+Print Assumptions z_value_mem_range.
+Check z_restrict.
+Print Assumptions z_restrict_mem_iff.
+Print Assumptions z_restrict_subset.
+Print Assumptions z_is_function_restrict.
+Print Assumptions z_is_function_restrict_eq_self.
+Print Assumptions z_domain_restrict_eq.
+Print Assumptions z_kpair_mem_restrict_iff.
+Print Assumptions z_restrict_restrict_eq_restrict_inter.
+Print Assumptions z_restrict_restrict_of_subset.
+Print Assumptions z_restrict_insert_kpair_eq_restrict_of_not_mem.
+Check z_image.
+Print Assumptions z_image_mem_iff.
+Check z_card_le.
+Print Assumptions z_card_le_of_subset.
+Print Assumptions z_card_le_empty.
+Print Assumptions z_card_le_refl.
+Print Assumptions z_card_le_trans.
+Check z_card_lt.
+Print Assumptions z_card_lt_power.
+Check z_card_eq.
+Print Assumptions z_card_eq_refl.
+Print Assumptions z_card_eq_symm.
+Print Assumptions z_card_eq_trans.
+Print Assumptions z_mem_two_iff.
+Print Assumptions z_two_val_function_mem_iff_not.
+Check membership_well_founded.
 Check transitive_model.
 Print Assumptions well_founded_predicate_subtype.
 Print Assumptions transitive_model_well_founded.

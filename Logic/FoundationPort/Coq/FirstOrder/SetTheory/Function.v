@@ -411,6 +411,98 @@ Proof.
   now transitivity y; [apply Hunique; exact H1 | symmetry; apply Hunique; exact H2].
 Qed.
 
+Lemma z_is_function_of_subset : forall m (O : zermelo_operations m)
+    (f g : membership_carrier m),
+  z_is_function O f -> set_model_subset g f -> z_is_function O g.
+Proof.
+  intros m O f g Hf Hgf. apply z_is_function_iff. apply z_mem_function_intro.
+  - intros p Hp.
+    pose proof (z_is_function_mem_function Hf) as Hfm.
+    pose proof (z_subset_product_of_mem_function Hfm) as Hsub.
+    pose proof (Hsub p (Hgf p Hp)) as Hprod.
+    apply z_product_mem_iff in Hprod.
+    destruct Hprod as [x [Hx [y [Hy Heq]]]]. subst p.
+    apply z_kpair_mem_product_iff. split.
+    + exact (@z_mem_domain_of_kpair_mem m O g x y Hp).
+    + exact (@z_mem_range_of_kpair_mem m O g x y Hp).
+  - intros x Hx. apply z_domain_mem_iff in Hx. destruct Hx as [y Hxy].
+    exists y. split; [exact Hxy |].
+    intros y' Hy'.
+    symmetry. exact (@z_is_function_unique m O f x y y' Hf (Hgf _ Hxy) (Hgf _ Hy')).
+Qed.
+
+Lemma z_function_eq_of_subset : forall m (O : zermelo_operations m)
+    (X Y f g : membership_carrier m),
+  membership_rel f (z_function O Y X) ->
+  membership_rel g (z_function O Y X) ->
+  set_model_subset f g -> f = g.
+Proof.
+  intros m O X Y f g Hf Hg Hfg. apply (z_extensionality O). intro p. split.
+  - exact (Hfg p).
+  - intro Hp.
+    pose proof (z_subset_product_of_mem_function Hg) as Hsub.
+    pose proof (Hsub p Hp) as Hprod.
+    apply z_product_mem_iff in Hprod.
+    destruct Hprod as [x [Hx [y [Hy Heq]]]]. subst p.
+    destruct (@z_exists_of_mem_function m O f X Y x Hf Hx)
+      as [y' [_ Hxy']].
+    pose proof (Hfg _ Hxy') as Hxy'g.
+    destruct (@z_exists_unique_of_mem_function m O g X Y Hg x Hx)
+      as [z [Hxz Hunique]].
+    assert (Hyy' : y = y').
+    { transitivity z.
+      - exact (Hunique y Hp).
+      - symmetry. exact (Hunique y' Hxy'g). }
+    subst y. exact Hxy'.
+Qed.
+
+Lemma z_function_ext : forall m (O : zermelo_operations m)
+    (X Y f g : membership_carrier m),
+  membership_rel f (z_function O Y X) ->
+  membership_rel g (z_function O Y X) ->
+  (forall x, membership_rel x X -> forall y, membership_rel y Y ->
+    membership_rel (z_kpair O x y) f ->
+    membership_rel (z_kpair O x y) g) ->
+  f = g.
+Proof.
+  intros m O X Y f g Hf Hg H.
+  apply (@z_function_eq_of_subset m O X Y f g Hf Hg).
+  intros p Hp.
+  pose proof (z_subset_product_of_mem_function Hf) as Hsub.
+  pose proof (Hsub p Hp) as Hprod.
+  apply z_product_mem_iff in Hprod.
+  destruct Hprod as [x [Hx [y [Hy Heq]]]]. subst p.
+  exact (H x Hx y Hy Hp).
+Qed.
+
+Lemma z_is_function_insert : forall m (O : zermelo_operations m)
+    (f x y : membership_carrier m),
+  z_is_function O f ->
+  ~ membership_rel x (z_domain O f) ->
+  z_is_function O (z_insert O (z_kpair O x y) f).
+Proof.
+  intros m O f x y Hf Hx. apply z_is_function_iff. apply z_mem_function_intro.
+  - rewrite (@z_domain_insert_kpair m O x y f).
+    rewrite (@z_range_insert_kpair m O x y f).
+    apply (@z_insert_kpair_subset_insert_product m O f (z_domain O f) (z_range O f)).
+    exact (z_subset_product_of_mem_function (z_is_function_mem_function Hf)).
+  - intros z Hz. rewrite (@z_domain_insert_kpair m O x y f) in Hz.
+    apply z_insert_mem_iff in Hz. destruct Hz as [-> | Hz].
+    + exists y. split; [apply z_insert_mem_iff; now left |].
+      intros y' Hy'. apply z_insert_mem_iff in Hy'.
+      destruct Hy' as [Heq | Hy'f].
+      * apply z_kpair_injective in Heq. destruct Heq as [_ Hyy]. exact Hyy.
+      * exfalso. apply Hx. exact (@z_mem_domain_of_kpair_mem m O f x y' Hy'f).
+    + apply z_domain_mem_iff in Hz. destruct Hz as [v Hzv].
+      exists v. split; [apply z_insert_mem_iff; now right |].
+      intros w Hw. apply z_insert_mem_iff in Hw.
+      destruct Hw as [Heq | Hwf].
+      * apply z_kpair_injective in Heq. destruct Heq as [Hzx Hwy].
+        exfalso. apply Hx. rewrite <- Hzx.
+        exact (@z_mem_domain_of_kpair_mem m O f z v Hzv).
+      * symmetry. exact (@z_is_function_unique m O f z v w Hf Hzv Hwf).
+Qed.
+
 Lemma z_function_empty_empty : forall m (O : zermelo_operations m),
   z_function O (z_empty O) (z_empty O) = z_singleton O (z_empty O).
 Proof.
@@ -672,6 +764,30 @@ Lemma z_restrict_subset : forall m (O : zermelo_operations m)
   set_model_subset (z_restrict O R A) R.
 Proof. intros m O R A p Hp. now apply z_restrict_mem_iff in Hp. Qed.
 
+Lemma z_is_function_restrict : forall m (O : zermelo_operations m)
+    (f A : membership_carrier m),
+  z_is_function O f -> z_is_function O (z_restrict O f A).
+Proof.
+  intros m O f A Hf.
+  apply (@z_is_function_of_subset m O f (z_restrict O f A)); [exact Hf |].
+  exact (@z_restrict_subset m O f A).
+Qed.
+
+Lemma z_is_function_restrict_eq_self : forall m (O : zermelo_operations m)
+    (f A : membership_carrier m),
+  z_is_function O f -> set_model_subset (z_domain O f) A ->
+  z_restrict O f A = f.
+Proof.
+  intros m O f A Hf Hdom. apply (z_extensionality O). intro p. split.
+  - intro Hp. apply z_restrict_mem_iff in Hp. exact (proj1 Hp).
+  - intro Hp. pose proof (z_is_function_mem_function Hf) as Hfm.
+    pose proof (z_subset_product_of_mem_function Hfm) as Hsub.
+    pose proof (Hsub p Hp) as Hprod. apply z_product_mem_iff in Hprod.
+    destruct Hprod as [x [Hx [y [Hy Heq]]]]. subst p.
+    apply z_restrict_mem_iff. split; [exact Hp |].
+    exists x. split; [exact (Hdom x Hx) |]. exists y. reflexivity.
+Qed.
+
 Lemma z_domain_restrict_eq : forall m (O : zermelo_operations m)
     (R A : membership_carrier m),
   z_domain O (z_restrict O R A) =
@@ -753,6 +869,28 @@ Proof.
     + exists x. split; [exact HxB |]. exists y. reflexivity.
 Qed.
 
+Lemma z_restrict_insert_kpair_eq_restrict_of_not_mem :
+  forall m (O : zermelo_operations m)
+    (f x y A : membership_carrier m),
+  ~ membership_rel x A ->
+  z_restrict O (z_insert O (z_kpair O x y) f) A = z_restrict O f A.
+Proof.
+  intros m O f x y A HxA. apply (z_extensionality O). intro p. split.
+  - intro Hp. apply z_restrict_mem_iff in Hp.
+    destruct Hp as [Hp' [a [HaA [b Heq]]]].
+    subst p.
+    apply z_insert_mem_iff in Hp'. destruct Hp' as [Hkp | Hf].
+    + apply z_kpair_injective in Hkp. destruct Hkp as [Hax Hby].
+      exfalso. apply HxA. rewrite <- Hax. exact HaA.
+    + apply z_restrict_mem_iff. split; [exact Hf |].
+      exists a. split; [exact HaA |]. exists b. reflexivity.
+  - intro Hp. apply z_restrict_mem_iff in Hp.
+    destruct Hp as [Hf [a [HaA [b Heq]]]].
+    apply z_restrict_mem_iff. split.
+    + apply z_insert_mem_iff. now right.
+    + exists a. split; [exact HaA |]. exists b. exact Heq.
+Qed.
+
 Definition z_image {m} (O : zermelo_operations m)
     (R A : membership_carrier m) : membership_carrier m :=
   z_range O (z_restrict O R A).
@@ -771,6 +909,172 @@ Proof.
   - intros [x [HxA Hxy]]. exists x.
     apply z_restrict_mem_iff. split; [exact Hxy |].
     exists x. split; [exact HxA |]. exists y. reflexivity.
+Qed.
+
+Definition z_card_le {m} (O : zermelo_operations m)
+    (X Y : membership_carrier m) : Prop :=
+  exists f, membership_rel f (z_function O Y X) /\ z_injective O f.
+
+Definition z_card_lt {m} (O : zermelo_operations m)
+    (X Y : membership_carrier m) : Prop :=
+  z_card_le O X Y /\ ~ z_card_le O Y X.
+
+Definition z_card_eq {m} (O : zermelo_operations m)
+    (X Y : membership_carrier m) : Prop :=
+  z_card_le O X Y /\ z_card_le O Y X.
+
+Lemma z_card_le_of_subset : forall m (O : zermelo_operations m)
+    (X Y : membership_carrier m),
+  set_model_subset X Y -> z_card_le O X Y.
+Proof.
+  intros m O X Y HXY. exists (z_identity O X). split.
+  - apply (@z_mem_function_of_mem_function_of_subset m O (z_identity O X)
+      X X Y (@z_identity_mem_function m O X) HXY).
+  - exact (@z_identity_injective m O X).
+Qed.
+
+Lemma z_card_le_empty : forall m (O : zermelo_operations m)
+    (X : membership_carrier m), z_card_le O (z_empty O) X.
+Proof.
+  intros m O X. apply z_card_le_of_subset. exact (@z_empty_subset m O X).
+Qed.
+
+Lemma z_card_le_refl : forall m (O : zermelo_operations m)
+    (X : membership_carrier m), z_card_le O X X.
+Proof.
+  intros m O X. apply z_card_le_of_subset. exact (@set_model_subset_refl m X).
+Qed.
+
+Lemma z_card_le_trans : forall m (O : zermelo_operations m)
+    (X Y Z : membership_carrier m),
+  z_card_le O X Y -> z_card_le O Y Z -> z_card_le O X Z.
+Proof.
+  intros m O X Y Z [f [Hf Hfi]] [g [Hg Hgi]].
+  exists (z_compose O f g). split.
+  - exact (@z_compose_function m O X Y Z f g Hf Hg).
+  - exact (@z_compose_injective m O f g Hfi Hgi).
+Qed.
+
+Lemma z_card_eq_refl : forall m (O : zermelo_operations m)
+    (X : membership_carrier m), z_card_eq O X X.
+Proof. intros m O X. split; apply z_card_le_refl. Qed.
+
+Lemma z_card_eq_symm : forall m (O : zermelo_operations m)
+    (X Y : membership_carrier m), z_card_eq O X Y -> z_card_eq O Y X.
+Proof. intros m O X Y [HXY HYX]. now split. Qed.
+
+Lemma z_card_eq_trans : forall m (O : zermelo_operations m)
+    (X Y Z : membership_carrier m),
+  z_card_eq O X Y -> z_card_eq O Y Z -> z_card_eq O X Z.
+Proof.
+  intros m O X Y Z [HXY HYX] [HYZ HZY]. split.
+  - exact (@z_card_le_trans m O X Y Z HXY HYZ).
+  - exact (@z_card_le_trans m O Z Y X HZY HYX).
+Qed.
+
+Lemma z_card_lt_power : forall m (O : zermelo_operations m)
+    (X : membership_carrier m),
+  z_card_lt O X (z_power O X).
+Proof.
+  intros m O X. split.
+  - set (F := z_separate O
+      (fun p => exists x, membership_rel x X /\
+        p = z_kpair O x (z_singleton O x))
+      (z_product O X (z_power O X))).
+    exists F. split.
+    + apply z_mem_function_intro.
+      * intros p Hp. exact (@z_separate_subset m O _ _ p Hp).
+      * intros x Hx. exists (z_singleton O x). split.
+        -- apply z_separate_mem_iff. split.
+           ++ apply z_kpair_mem_product_iff. split; [exact Hx |].
+              apply z_power_mem_iff.
+              apply (proj2 (@z_singleton_subset_iff_mem m O x X)). exact Hx.
+           ++ now exists x.
+        -- intros y Hy. apply z_separate_mem_iff in Hy.
+           destruct Hy as [_ [x' [Hx' Heq]]].
+           apply z_kpair_injective in Heq. destruct Heq as [Hxx Hyy].
+           rewrite <- Hxx in Hyy. exact Hyy.
+    + unfold z_injective. intros x1 x2 s H1 H2.
+      apply z_separate_mem_iff in H1, H2.
+      destruct H1 as [_ [a [Ha H1]]].
+      destruct H2 as [_ [b [Hb H2]]].
+      apply z_kpair_injective in H1, H2.
+      destruct H1 as [Hx1 Hs1]. destruct H2 as [Hx2 Hs2].
+      assert (Hab : a = b).
+      { apply (@z_singleton_injective m O a b).
+        rewrite <- Hs1. exact Hs2. }
+      transitivity a; [exact Hx1 |].
+      transitivity b; [exact Hab |]. exact (eq_sym Hx2).
+  - intro Hbad. destruct Hbad as [G [HG HGi]].
+    set (D := z_separate O
+      (fun d => exists s, membership_rel s (z_power O X) /\
+        membership_rel (z_kpair O s d) G /\
+        ~ membership_rel d s) X).
+    assert (HDX : set_model_subset D X).
+    { exact (@z_separate_subset m O _ _). }
+    assert (HDpow : membership_rel D (z_power O X)).
+    { apply z_power_mem_iff. exact HDX. }
+    destruct (@z_exists_of_mem_function m O G (z_power O X) X D HG HDpow)
+      as [d [HdX HdG]].
+    assert (Hiff : membership_rel d D <->
+        ~ membership_rel d D).
+    { split.
+      - intro Hd.
+        apply z_separate_mem_iff in Hd.
+        destruct Hd as [_ [s [HsPow [HsG Hdns]]]].
+        intro Hd'.
+        assert (Hds : membership_rel d s).
+        { rewrite <- (HGi D s d HdG HsG).
+          exact Hd'. }
+        exact (Hdns Hds).
+      - intro Hdnot. apply z_separate_mem_iff. split; [exact HdX |].
+        exists D. split; [exact HDpow |]. split; [exact HdG | exact Hdnot]. }
+    assert (Hdnot : ~ membership_rel d D).
+    { intro Hd. exact ((proj1 Hiff Hd) Hd). }
+    exact (Hdnot (proj2 Hiff Hdnot)).
+Qed.
+
+Lemma z_mem_two_iff : forall m (O : zermelo_operations m)
+    (i : membership_carrier m),
+  membership_rel i (z_of_nat O 2) <->
+  i = z_of_nat O 0 \/ i = z_of_nat O 1.
+Proof.
+  intros m O i.
+  change (membership_rel i (z_successor O (z_successor O (z_empty O))) <->
+    i = z_empty O \/ i = z_successor O (z_empty O)).
+  split.
+  - intro Hi. apply z_successor_mem_iff in Hi.
+    destruct Hi as [Hi | Hi].
+    + right. exact Hi.
+    + apply z_successor_mem_iff in Hi. destruct Hi as [Hi | Hi].
+      * left. exact Hi.
+      * exfalso. exact (@z_not_mem_empty m O i Hi).
+  - intros [Hi | Hi].
+    + apply z_successor_mem_iff. right.
+      apply z_successor_mem_iff. left. exact Hi.
+    + apply z_successor_mem_iff. left. exact Hi.
+Qed.
+
+Lemma z_two_val_function_mem_iff_not : forall m (O : zermelo_operations m)
+    (X f x : membership_carrier m),
+  membership_rel f (z_function O (z_of_nat O 2) X) ->
+  membership_rel x X ->
+  membership_rel (z_kpair O x (z_of_nat O 0)) f <->
+  ~ membership_rel (z_kpair O x (z_of_nat O 1)) f.
+Proof.
+  intros m O X f x Hf Hx. split.
+  - intros H0 H1.
+    pose proof (@z_is_function_unique m O f x (z_of_nat O 0) (z_of_nat O 1)
+      (@z_is_function_of_mem m O f X (z_of_nat O 2) Hf) H0 H1) as Heq.
+    pose proof (@z_of_nat_injective m O 0 1 Heq) as Hnat.
+    discriminate Hnat.
+  - intro H1.
+    destruct (@z_exists_unique_of_mem_function m O f X (z_of_nat O 2) Hf x Hx)
+      as [i [Hi Hunique]].
+    pose proof (@z_mem_of_mem_function m O f X (z_of_nat O 2) x i Hf Hi) as [_ Hi2].
+    apply (@z_mem_two_iff m O i) in Hi2. destruct Hi2 as [-> | ->].
+    + exact Hi.
+    + exfalso. apply H1. exact Hi.
 Qed.
 
 Print Assumptions z_value_mem_iff.
