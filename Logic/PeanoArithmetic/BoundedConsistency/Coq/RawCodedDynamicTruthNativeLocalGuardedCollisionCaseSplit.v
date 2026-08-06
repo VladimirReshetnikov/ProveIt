@@ -170,6 +170,104 @@ Arguments
   RawDynamicTruthNativeLocalZeroGuardedCollisionProofResourcesCompilerOnNormalizedResources
   M hPA : clear implicits.
 
+(** Honest retained-assumption rank-zero resources.  Restricted-proof and
+    rule-validity formulas are free-variable shell premises, not PA theorems;
+    they therefore do not belong in the proof-producing resource bundle when
+    the collision is still compiled below the caller prefix.  Only evidence
+    identification and the constructor-indexed fixed append residues remain. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGuardedCollisionFixedResourcesCompilerOnNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists inputs : RawCodedTemplateDirectStructuralInputs M,
+      RawDynamicTruthZeroGuardedEvidenceIdentification M inputs /\
+      RawDynamicTruthZeroCanonicalIdentifiedGuardedCollisionFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+        M hPA inputs.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGuardedCollisionFixedResourcesCompilerOnNormalizedResources
+  M hPA : clear implicits.
+
+(** The older post-discharge bundle projects to the weaker retained-prefix
+    bundle by forgetting its two proof roots.  The converse is intentionally
+    absent: those roots need not be PA-provable outside the direct shell. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGuardedCollisionFixedResourcesCompilerOnNormalizedResources_of_proof_resources :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeLocalZeroGuardedCollisionProofResourcesCompilerOnNormalizedResources
+    M hPA ->
+  RawDynamicTruthNativeLocalZeroGuardedCollisionFixedResourcesCompilerOnNormalizedResources
+    M hPA.
+Proof.
+  intros M hPA hresources tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence hnormalized htrace.
+  destruct
+    (hresources tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hnormalized htrace) as
+    (inputs & hidentification & _hrestricted & _hrule & hfixed).
+  exists inputs. split; assumption.
+Qed.
+
+(** Compile the exact guarded collision while the two direct-shell premises
+    remain in scope.  This endpoint strictly relaxes the post-discharge
+    compiler: no proof of either premise is requested, and every resulting
+    root records the unchanged caller prefix in its represented context. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGuardedCollisionRootsUnderCallerPrefixOnNormalizedResources_of_fixed_resources :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeLocalZeroGuardedCollisionFixedResourcesCompilerOnNormalizedResources
+    M hPA ->
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence callerPrefix,
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    (rawBottomDirectStructuralTemplateTranslation M hPA)
+    witnessList baseContext helperRoots ->
+  RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    callerPrefix ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise callerPrefix ->
+  exists inputs : RawCodedTemplateDirectStructuralInputs M,
+  exists targetWitnessList targetContext,
+    RawDynamicTruthZeroGuardedEvidenceIdentification M inputs /\
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthLocalGuardedCollisionRootsUnderTemplatePrefixAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      targetContext callerPrefix.
+Proof.
+  intros M hPA hresources tail witnessList baseContext helperRoots
+    sigmaDomain piDomain sigmaEvidence piEvidence callerPrefix
+    hnormalized htrace hrestrictedIn hruleIn.
+  destruct
+    (hresources tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence hnormalized htrace) as
+    (inputs & hidentification & hfixed).
+  destruct
+    (raw_dynamicTruthZeroCanonicalIdentified_guardedCollisionAppendRowKernelPayloadPairsForCaller_of_fixed
+      M hPA inputs hidentification hfixed callerPrefix) as
+    (himpPayload & handPayload & horPayload).
+  destruct
+    (raw_dynamicTruthLocalGuardedCollisionRootsUnderTemplatePrefixAt_on_witnessed_extension_of_zero_normalized_and_canonical_append_kernel_payload_pairs
+      M hPA inputs
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext helperRoots callerPrefix
+      hidentification hnormalized hrestrictedIn hruleIn
+      himpPayload handPayload horPayload) as
+    (targetWitnessList & targetContext & htargetWitnessed & hincluded &
+      hcollision).
+  exists inputs, targetWitnessList, targetContext.
+  split; [exact hidentification |].
+  split; [exact htargetWitnessed |].
+  split; assumption.
+Qed.
+
 (** Normalize the literal guarded callback, canonicalize its zero trace, and
     invoke the relaxed collision endpoint.  State-projection roots are
     reconstructed from realizability of the witnessed PA context, so the
