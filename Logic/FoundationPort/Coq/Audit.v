@@ -54,7 +54,7 @@ From Foundation.FirstOrder.Arithmetic Require Import Exponential.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
-From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel.
+From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -5280,6 +5280,97 @@ Print Assumptions set_zfc_model_iff_zf_and_choice.
 Print Assumptions set_zfc_model_is_zc.
 Print Assumptions set_zermelo_choice_model.
 Print Assumptions set_zf_choice_model.
+Check zermelo_operations.
+Check z_ops_extensional.
+Check z_empty.
+Check z_empty_spec.
+Check z_pair.
+Check z_pair_spec.
+Check z_sunion.
+Check z_sunion_spec.
+Check z_power.
+Check z_power_spec.
+Check z_separate.
+Check z_separate_spec.
+Check z_infinity.
+Check z_infinity_spec.
+Check z_foundation_spec.
+Check z_singleton.
+Check z_union.
+Check z_insert.
+Check z_sinter.
+Check z_inter.
+Check z_sdiff.
+Check z_successor.
+Print Assumptions z_extensionality.
+Print Assumptions z_subset_antisym.
+Print Assumptions z_not_mem_empty.
+Print Assumptions z_empty_unique.
+Print Assumptions z_eq_empty_or_nonempty.
+Print Assumptions z_empty_subset.
+Print Assumptions z_subset_empty_iff_eq_empty.
+Print Assumptions z_pair_mem_iff.
+Print Assumptions z_pair_unique.
+Print Assumptions z_pair_nonempty.
+Print Assumptions z_singleton_mem_iff.
+Print Assumptions z_singleton_injective.
+Print Assumptions z_singleton_nonempty.
+Print Assumptions z_singleton_subset_iff_mem.
+Print Assumptions z_sunion_mem_iff.
+Print Assumptions z_subset_sunion_of_mem.
+Print Assumptions z_sunion_empty.
+Print Assumptions z_sunion_singleton.
+Print Assumptions z_sunion_nonempty_iff.
+Print Assumptions z_union_mem_iff.
+Print Assumptions z_union_comm.
+Print Assumptions z_union_assoc.
+Print Assumptions z_union_self.
+Print Assumptions z_union_empty_left.
+Print Assumptions z_union_empty_right.
+Print Assumptions z_union_nonempty_iff.
+Print Assumptions z_subset_union_left.
+Print Assumptions z_subset_union_right.
+Print Assumptions z_union_eq_iff_right_subset.
+Print Assumptions z_union_eq_iff_left_subset.
+Print Assumptions z_insert_mem_iff.
+Print Assumptions z_union_insert.
+Print Assumptions z_insert_empty.
+Print Assumptions z_insert_nonempty.
+Print Assumptions z_subset_insert.
+Print Assumptions z_sunion_insert.
+Print Assumptions z_insert_union.
+Print Assumptions z_power_mem_iff.
+Print Assumptions z_power_unique.
+Print Assumptions z_separate_mem_iff.
+Print Assumptions z_separate_subset.
+Print Assumptions z_sinter_mem_iff.
+Print Assumptions z_sinter_subset_of_mem.
+Print Assumptions z_inter_mem_iff.
+Print Assumptions z_inter_comm.
+Print Assumptions z_inter_assoc.
+Print Assumptions z_inter_subset_left.
+Print Assumptions z_inter_subset_right.
+Print Assumptions z_sdiff_mem_iff.
+Print Assumptions z_sdiff_subset.
+Print Assumptions z_strict_subset_iff_difference_witness.
+Print Assumptions z_sdiff_nonempty_of_strict_subset.
+Print Assumptions z_successor_mem_iff.
+Print Assumptions z_successor_is_successor.
+Print Assumptions z_foundation_inter_empty.
+Print Assumptions z_mem_irrefl.
+Print Assumptions z_ne_of_mem.
+Print Assumptions z_mem_asym.
+Print Assumptions z_mem_asym3.
+Check z_kpair.
+Print Assumptions z_kpair_mem_iff.
+Print Assumptions z_pair_right_injective.
+Print Assumptions z_kpair_injective.
+Print Assumptions z_kpair_in_power_power_union.
+Check z_product.
+Print Assumptions z_product_mem_iff.
+Print Assumptions z_product_monotone.
+Print Assumptions z_product_union_left.
+Print Assumptions zermelo_operations_model.
 Check membership_well_founded.
 Check transitive_model.
 Print Assumptions well_founded_predicate_subtype.
