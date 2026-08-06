@@ -5737,6 +5737,9 @@ Print Assumptions hfs_list_domain_restrict_code.
 Print Assumptions hfs_list_domain_restrict_code_of_subset.
 Print Assumptions hfs_list_is_mapping_restrict.
 Print Assumptions hfs_list_is_mapping_app.
+Print Assumptions hfs_list_is_mapping_singleton.
+Print Assumptions hfs_list_is_mapping_of_subset.
+Print Assumptions hfs_list_is_mapping_cons_fresh.
 Print Assumptions hfs_list_skolem_exists.
 Print Assumptions hfs_list_mapping_fiber_existsUnique.
 Print Assumptions hfs_list_compose_In_iff.

@@ -216,6 +216,54 @@ Qed.
 Lemma hfs_list_is_mapping_empty : hfs_list_is_mapping [].
 Proof. intros x y z H; inversion H. Qed.
 
+Lemma hfs_list_is_mapping_singleton : forall x y,
+  hfs_list_is_mapping [hfs_index_pair x y].
+Proof.
+  intros x y a b c Hb Hc. simpl in Hb, Hc.
+  destruct Hb as [Hb | Hb], Hc as [Hc | Hc].
+  - apply hfs_index_pair_injective in Hb.
+    apply hfs_index_pair_injective in Hc.
+    destruct Hb as [Hax Hby], Hc as [Hax' Hcy].
+    congruence.
+  - contradiction.
+  - contradiction.
+  - contradiction.
+Qed.
+
+Lemma hfs_list_is_mapping_of_subset : forall relation sub,
+  hfs_list_is_mapping relation ->
+  (forall p, In p sub -> In p relation) ->
+  hfs_list_is_mapping sub.
+Proof.
+  intros relation sub Hmap Hsub x y z Hy Hz.
+  apply (@Hmap x y z); [apply Hsub|apply Hsub]; assumption.
+Qed.
+
+Lemma hfs_list_is_mapping_cons_fresh : forall relation x y,
+  hfs_list_is_mapping relation ->
+  ~ hfs_mem x (hfs_list_domain relation) ->
+  hfs_list_is_mapping (hfs_index_pair x y :: relation).
+Proof.
+  intros relation x y Hmap Hfresh a b c Hb Hc.
+  simpl in Hb, Hc.
+  destruct Hb as [Hb | Hb], Hc as [Hc | Hc].
+  - apply hfs_index_pair_injective in Hb.
+    apply hfs_index_pair_injective in Hc.
+    destruct Hb as [Hax Hby], Hc as [Hax' Hcy].
+    congruence.
+  - apply hfs_index_pair_injective in Hb.
+    destruct Hb as [Hax Hby].
+    exfalso. apply Hfresh.
+    apply hfs_mem_list_domain_iff.
+    exists c. rewrite Hax. exact Hc.
+  - apply hfs_index_pair_injective in Hc.
+    destruct Hc as [Hax Hcy].
+    exfalso. apply Hfresh.
+    apply hfs_mem_list_domain_iff.
+    exists b. rewrite Hax. exact Hb.
+  - apply (@Hmap a b c); assumption.
+Qed.
+
 (** Finite-list counterpart of Foundation's [sigmaOne_skolem].  [NoDup]
     expresses the fact that an HFS domain is a set rather than a list with
     repeated indices.  The strengthened graph clause records that every pair
