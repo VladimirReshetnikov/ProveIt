@@ -285,6 +285,19 @@ Proof.
     + apply N.pow_le_mono_r; [discriminate | exact Hij].
 Qed.
 
+(** Adding a multiple of the full period [2^(i+1)] does not change bit [i]. *)
+Lemma nat_bit_mem_add_period_iff : forall i a k,
+  nat_bit i (a + k * 2 ^ (i + 1)) <-> nat_bit i a.
+Proof.
+  intros i a k.
+  rewrite !nat_bit_mem_iff_div_pow2_mod_two.
+  rewrite N.add_1_r, N.pow_succ_r'.
+  replace (k * (2 * 2 ^ i)) with ((k * 2) * 2 ^ i) by nia.
+  rewrite N.div_add by (apply N.pow_nonzero; discriminate).
+  rewrite N.mod_add by discriminate.
+  reflexivity.
+Qed.
+
 Lemma nat_bit_subset_iff : forall a b,
   nat_bit_subset a b <-> forall i, nat_bit i a -> nat_bit i b.
 Proof. reflexivity. Qed.
