@@ -553,6 +553,193 @@ Lemma z_successor_is_successor : forall m (O : zermelo_operations m)
   set_model_successor (z_successor O x) x.
 Proof. intros m O x y. apply z_successor_mem_iff. Qed.
 
+(** Foundation rules out membership cycles without assuming global
+    well-foundedness of the ambient relation. *)
+Lemma z_foundation_inter_empty : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  set_model_is_nonempty x ->
+  exists y, membership_rel y x /\ z_inter O x y = z_empty O.
+Proof.
+  intros m O x Hx.
+  destruct (z_foundation_spec O x Hx) as [y [Hy Hminimal]].
+  exists y. split; [exact Hy |]. apply z_empty_unique.
+  intros z Hz. apply z_inter_mem_iff in Hz.
+  exact (Hminimal z (proj1 Hz) (proj2 Hz)).
+Qed.
+
+Lemma z_mem_irrefl : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  ~ membership_rel x x.
+Proof.
+  intros m O x Hxx.
+  destruct (z_foundation_spec O (z_singleton O x)
+    (@z_singleton_nonempty m O x)) as [y [Hy Hminimal]].
+  apply z_singleton_mem_iff in Hy. subst y.
+  apply (Hminimal x); [apply z_singleton_mem_iff; reflexivity | exact Hxx].
+Qed.
+
+Lemma z_ne_of_mem : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  membership_rel x y -> x <> y.
+Proof.
+  intros m O x y Hxy Heq. subst y.
+  exact (@z_mem_irrefl m O x Hxy).
+Qed.
+
+Lemma z_mem_asym : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  membership_rel x y -> ~ membership_rel y x.
+Proof.
+  intros m O x y Hxy Hyx.
+  destruct (z_foundation_spec O (z_pair O x y)
+    (@z_pair_nonempty m O x y)) as [w [Hw Hminimal]].
+  apply z_pair_mem_iff in Hw. destruct Hw as [-> | ->].
+  - apply (Hminimal y); [apply z_pair_mem_iff; now right | exact Hyx].
+  - apply (Hminimal x); [apply z_pair_mem_iff; now left | exact Hxy].
+Qed.
+
+Lemma z_mem_asym3 : forall m (O : zermelo_operations m)
+    (x y z : membership_carrier m),
+  membership_rel x y -> membership_rel y z -> ~ membership_rel z x.
+Proof.
+  intros m O x y z Hxy Hyz Hzx.
+  destruct (z_foundation_spec O (z_insert O x (z_pair O y z))
+    (@z_insert_nonempty m O x (z_pair O y z)))
+    as [w [Hw Hminimal]].
+  apply z_insert_mem_iff in Hw. destruct Hw as [-> | Hw].
+  - apply (Hminimal z); [apply z_insert_mem_iff; right;
+      apply z_pair_mem_iff; now right | exact Hzx].
+  - apply z_pair_mem_iff in Hw. destruct Hw as [-> | ->].
+    + apply (Hminimal x); [apply z_insert_mem_iff; now left | exact Hxy].
+    + apply (Hminimal y); [apply z_insert_mem_iff; right;
+        apply z_pair_mem_iff; now left | exact Hyz].
+Qed.
+
+(** Kuratowski ordered pairs and the set-theoretic Cartesian product. *)
+Definition z_kpair {m} (O : zermelo_operations m)
+    (x y : membership_carrier m) : membership_carrier m :=
+  z_pair O (z_singleton O x) (z_pair O x y).
+
+Lemma z_kpair_mem_iff : forall m (O : zermelo_operations m)
+    (x y z : membership_carrier m),
+  membership_rel z (z_kpair O x y) <->
+  z = z_singleton O x \/ z = z_pair O x y.
+Proof. intros. unfold z_kpair. apply z_pair_mem_iff. Qed.
+
+Lemma z_pair_right_injective : forall m (O : zermelo_operations m)
+    (x y z : membership_carrier m),
+  z_pair O x y = z_pair O x z -> y = z.
+Proof.
+  intros m O x y z H.
+  assert (Hy : membership_rel y (z_pair O x z)).
+  { rewrite <- H. apply z_pair_mem_iff. now right. }
+  assert (Hz : membership_rel z (z_pair O x y)).
+  { rewrite H. apply z_pair_mem_iff. now right. }
+  apply z_pair_mem_iff in Hy. apply z_pair_mem_iff in Hz.
+  destruct Hy as [Hy | Hy], Hz as [Hz | Hz]; congruence.
+Qed.
+
+Lemma z_kpair_injective : forall m (O : zermelo_operations m)
+    (x1 x2 y1 y2 : membership_carrier m),
+  z_kpair O x1 x2 = z_kpair O y1 y2 -> x1 = y1 /\ x2 = y2.
+Proof.
+  intros m O x1 x2 y1 y2 Hpair.
+  assert (Hsx : membership_rel (z_singleton O x1) (z_kpair O y1 y2)).
+  { rewrite <- Hpair. apply z_kpair_mem_iff. now left. }
+  apply z_kpair_mem_iff in Hsx.
+  assert (Hfirst : x1 = y1).
+  { destruct Hsx as [Hss | Hsp].
+    - now apply z_singleton_injective in Hss.
+    - assert (Hy1 : membership_rel y1 (z_pair O x1 x1)).
+      { change (membership_rel y1 (z_singleton O x1)).
+        rewrite Hsp. apply z_pair_mem_iff. now left. }
+      now apply z_singleton_mem_iff in Hy1. }
+  subst y1. split; [reflexivity |].
+  assert (Hpx : membership_rel (z_pair O x1 x2) (z_kpair O x1 y2)).
+  { rewrite <- Hpair. apply z_kpair_mem_iff. now right. }
+  apply z_kpair_mem_iff in Hpx. destruct Hpx as [Hsingle | Hequal].
+  - assert (Hpy : membership_rel (z_pair O x1 y2) (z_kpair O x1 x2)).
+    { rewrite Hpair. apply z_kpair_mem_iff. now right. }
+    apply z_kpair_mem_iff in Hpy. destruct Hpy as [Hsingle' | Hequal'];
+      apply (@z_pair_right_injective m O x1 x2 y2).
+    + now rewrite Hsingle, Hsingle'.
+    + symmetry. exact Hequal'.
+  - now apply (@z_pair_right_injective m O x1 x2 y2).
+Qed.
+
+Lemma z_kpair_in_power_power_union : forall m (O : zermelo_operations m)
+    (X Y x y : membership_carrier m),
+  membership_rel x X -> membership_rel y Y ->
+  membership_rel (z_kpair O x y) (z_power O (z_power O (z_union O X Y))).
+Proof.
+  intros m O X Y x y Hx Hy. apply z_power_mem_iff.
+  intros s Hs. apply z_kpair_mem_iff in Hs. apply z_power_mem_iff.
+  intros w Hw. destruct Hs as [-> | ->].
+  - apply z_singleton_mem_iff in Hw. subst w.
+    apply z_union_mem_iff. now left.
+  - apply z_pair_mem_iff in Hw. destruct Hw as [-> | ->];
+      apply z_union_mem_iff; [now left | now right].
+Qed.
+
+Definition z_product {m} (O : zermelo_operations m)
+    (X Y : membership_carrier m) : membership_carrier m :=
+  z_separate O
+    (fun p => exists x, membership_rel x X /\
+      exists y, membership_rel y Y /\ p = z_kpair O x y)
+    (z_power O (z_power O (z_union O X Y))).
+
+Lemma z_product_mem_iff : forall m (O : zermelo_operations m)
+    (X Y p : membership_carrier m),
+  membership_rel p (z_product O X Y) <->
+  exists x, membership_rel x X /\
+    exists y, membership_rel y Y /\ p = z_kpair O x y.
+Proof.
+  intros m O X Y p. unfold z_product. rewrite z_separate_mem_iff. split.
+  - now intros [_ H].
+  - intros H. split; [| exact H].
+    destruct H as [x [Hx [y [Hy ->]]]].
+    now apply (@z_kpair_in_power_power_union m O X Y x y).
+Qed.
+
+Lemma z_product_monotone : forall m (O : zermelo_operations m)
+    (X1 X2 Y1 Y2 : membership_carrier m),
+  set_model_subset X1 X2 -> set_model_subset Y1 Y2 ->
+  set_model_subset (z_product O X1 Y1) (z_product O X2 Y2).
+Proof.
+  intros m O X1 X2 Y1 Y2 HX HY p Hp.
+  apply z_product_mem_iff in Hp. apply z_product_mem_iff.
+  destruct Hp as [x [Hx [y [Hy ->]]]].
+  exists x. split; [now apply HX |]. exists y. split; [now apply HY | reflexivity].
+Qed.
+
+Lemma z_product_union_left : forall m (O : zermelo_operations m)
+    (X Y Z : membership_carrier m),
+  z_product O (z_union O X Y) Z =
+  z_union O (z_product O X Z) (z_product O Y Z).
+Proof.
+  intros m O X Y Z. apply (z_extensionality O). intro p.
+  split.
+  - intro Hp. apply z_product_mem_iff in Hp.
+    destruct Hp as [x [Hx [z [Hz ->]]]]. apply z_union_mem_iff in Hx.
+    destruct Hx as [Hx | Hx].
+    + apply z_union_mem_iff. left. apply z_product_mem_iff.
+      exists x. split; [exact Hx |].
+      exists z. now split.
+    + apply z_union_mem_iff. right. apply z_product_mem_iff.
+      exists x. split; [exact Hx |].
+      exists z. now split.
+  - intro Hp. apply z_union_mem_iff in Hp. apply z_product_mem_iff.
+    destruct Hp as [Hp | Hp].
+    + apply z_product_mem_iff in Hp.
+      destruct Hp as [x [Hx [z [Hz ->]]]].
+      exists x. split; [apply z_union_mem_iff; now left |].
+      exists z. now split.
+    + apply z_product_mem_iff in Hp.
+      destruct Hp as [x [Hx [z [Hz ->]]]].
+      exists x. split; [apply z_union_mem_iff; now right |].
+      exists z. now split.
+Qed.
+
 (** The operations record realizes the semantic Zermelo axiom family. *)
 Theorem zermelo_operations_model : forall m (O : zermelo_operations m),
   @set_theory_model m zermelo_axiom.
@@ -572,4 +759,7 @@ Qed.
 Print Assumptions z_union_assoc.
 Print Assumptions z_sinter_mem_iff.
 Print Assumptions z_strict_subset_iff_difference_witness.
+Print Assumptions z_kpair_injective.
+Print Assumptions z_product_union_left.
+Print Assumptions z_mem_asym3.
 Print Assumptions zermelo_operations_model.

@@ -5356,6 +5356,20 @@ Print Assumptions z_strict_subset_iff_difference_witness.
 Print Assumptions z_sdiff_nonempty_of_strict_subset.
 Print Assumptions z_successor_mem_iff.
 Print Assumptions z_successor_is_successor.
+Print Assumptions z_foundation_inter_empty.
+Print Assumptions z_mem_irrefl.
+Print Assumptions z_ne_of_mem.
+Print Assumptions z_mem_asym.
+Print Assumptions z_mem_asym3.
+Check z_kpair.
+Print Assumptions z_kpair_mem_iff.
+Print Assumptions z_pair_right_injective.
+Print Assumptions z_kpair_injective.
+Print Assumptions z_kpair_in_power_power_union.
+Check z_product.
+Print Assumptions z_product_mem_iff.
+Print Assumptions z_product_monotone.
+Print Assumptions z_product_union_left.
 Print Assumptions zermelo_operations_model.
 Check membership_well_founded.
 Check transitive_model.
