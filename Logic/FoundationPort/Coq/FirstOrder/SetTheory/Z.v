@@ -413,6 +413,15 @@ Proof.
     z_insert_mem_iff, z_union_mem_iff. tauto.
 Qed.
 
+Lemma z_insert_eq_self_of_mem : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  membership_rel x y -> z_insert O x y = y.
+Proof.
+  intros m O x y Hxy. apply (z_extensionality O). intro z.
+  rewrite z_insert_mem_iff. split; [intros [-> | Hz]; assumption |].
+  intro Hz. now right.
+Qed.
+
 Lemma z_power_mem_iff : forall m (O : zermelo_operations m)
     (x z : membership_carrier m),
   membership_rel z (z_power O x) <-> set_model_subset z x.
@@ -428,6 +437,29 @@ Proof.
   rewrite Hp, z_power_mem_iff. split; trivial.
 Qed.
 
+Lemma z_empty_mem_power : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  membership_rel (z_empty O) (z_power O x).
+Proof. intros. apply z_power_mem_iff. apply z_empty_subset. Qed.
+
+Lemma z_self_mem_power : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  membership_rel x (z_power O x).
+Proof. intros. apply z_power_mem_iff. apply set_model_subset_refl. Qed.
+
+Lemma z_power_empty : forall m (O : zermelo_operations m),
+  z_power O (z_empty O) = z_singleton O (z_empty O).
+Proof.
+  intros m O. apply (z_extensionality O). intro z.
+  rewrite z_power_mem_iff, z_singleton_mem_iff,
+    z_subset_empty_iff_eq_empty. reflexivity.
+Qed.
+
+Lemma z_power_nonempty : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  set_model_is_nonempty (z_power O x).
+Proof. intros. exists x. apply z_self_mem_power. Qed.
+
 Lemma z_separate_mem_iff : forall m (O : zermelo_operations m)
     (P : membership_carrier m -> Prop) (x z : membership_carrier m),
   membership_rel z (z_separate O P x) <-> membership_rel z x /\ P z.
@@ -437,6 +469,14 @@ Lemma z_separate_subset : forall m (O : zermelo_operations m)
     (P : membership_carrier m -> Prop) (x : membership_carrier m),
   set_model_subset (z_separate O P x) x.
 Proof. intros m O P x z Hz. now apply z_separate_mem_iff in Hz. Qed.
+
+Lemma z_separate_empty : forall m (O : zermelo_operations m)
+    (P : membership_carrier m -> Prop),
+  z_separate O P (z_empty O) = z_empty O.
+Proof.
+  intros m O P. apply z_empty_unique. intros z Hz.
+  apply z_separate_mem_iff in Hz. now apply (z_not_mem_empty O z (proj1 Hz)).
+Qed.
 
 Lemma z_sinter_mem_iff : forall m (O : zermelo_operations m)
     (x z : membership_carrier m),
@@ -460,6 +500,38 @@ Lemma z_sinter_subset_of_mem : forall m (O : zermelo_operations m)
 Proof.
   intros m O x y Hxy z Hz. apply z_sinter_mem_iff in Hz.
   now apply (proj2 Hz x).
+Qed.
+
+Lemma z_sinter_empty : forall m (O : zermelo_operations m),
+  z_sinter O (z_empty O) = z_empty O.
+Proof.
+  intros m O. apply z_empty_unique. intros z Hz.
+  apply z_sinter_mem_iff in Hz. destruct (proj1 Hz) as [x Hx].
+  now apply (z_not_mem_empty O x Hx).
+Qed.
+
+Lemma z_sinter_singleton : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  z_sinter O (z_singleton O x) = x.
+Proof.
+  intros m O x. apply (z_extensionality O). intro z.
+  rewrite z_sinter_mem_iff. split.
+  - intros [_ Hall]. apply Hall. apply z_singleton_mem_iff. reflexivity.
+  - intro Hz. split; [apply z_singleton_nonempty |].
+    intros y Hy. apply z_singleton_mem_iff in Hy. now subst.
+Qed.
+
+Lemma z_subset_sinter_iff : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  set_model_is_nonempty y ->
+  (set_model_subset x (z_sinter O y) <->
+    forall z, membership_rel z y -> set_model_subset x z).
+Proof.
+  intros m O x y Hy. split.
+  - intros H z Hz. eapply set_model_subset_trans; [exact H |].
+    now apply z_sinter_subset_of_mem.
+  - intros H z Hz. apply z_sinter_mem_iff. split; [exact Hy |].
+    intros w Hw. exact (H w Hw z Hz).
 Qed.
 
 Lemma z_inter_mem_iff : forall m (O : zermelo_operations m)
@@ -496,6 +568,96 @@ Lemma z_inter_subset_right : forall m (O : zermelo_operations m)
     (x y : membership_carrier m),
   set_model_subset (z_inter O x y) y.
 Proof. intros m O x y z Hz. now apply z_inter_mem_iff in Hz. Qed.
+
+Lemma z_inter_self : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  z_inter O x x = x.
+Proof.
+  intros m O x. apply (z_extensionality O). intro z.
+  rewrite z_inter_mem_iff. tauto.
+Qed.
+
+Lemma z_inter_empty_left : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  z_inter O (z_empty O) x = z_empty O.
+Proof.
+  intros m O x. apply z_empty_unique. intros z Hz.
+  apply z_inter_mem_iff in Hz. now apply (z_not_mem_empty O z (proj1 Hz)).
+Qed.
+
+Lemma z_inter_empty_right : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  z_inter O x (z_empty O) = z_empty O.
+Proof. intros. rewrite z_inter_comm. apply z_inter_empty_left. Qed.
+
+Lemma z_inter_eq_left_of_subset : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  set_model_subset x y -> z_inter O x y = x.
+Proof.
+  intros m O x y H. apply (z_extensionality O). intro z.
+  rewrite z_inter_mem_iff. split; [tauto | intro Hz; now split; [|apply H]].
+Qed.
+
+Lemma z_inter_eq_right_of_subset : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  set_model_subset y x -> z_inter O x y = y.
+Proof. intros. rewrite z_inter_comm. now apply z_inter_eq_left_of_subset. Qed.
+
+Lemma z_sinter_insert : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  set_model_is_nonempty y ->
+  z_sinter O (z_insert O x y) = z_inter O x (z_sinter O y).
+Proof.
+  intros m O x y Hy. apply (z_extensionality O). intro z.
+  rewrite z_sinter_mem_iff, z_inter_mem_iff, z_sinter_mem_iff. split.
+  - intros [_ Hall]. split.
+    + apply Hall. apply z_insert_mem_iff. now left.
+    + split; [exact Hy |]. intros w Hw. apply Hall.
+      apply z_insert_mem_iff. now right.
+  - intros [Hzx [_ Hall]]. split; [apply z_insert_nonempty |].
+    intros w Hw. apply z_insert_mem_iff in Hw.
+    destruct Hw as [-> | Hw]; [exact Hzx | now apply Hall].
+Qed.
+
+Lemma z_insert_inter_of_mem : forall m (O : zermelo_operations m)
+    (x y z : membership_carrier m),
+  membership_rel x z ->
+  z_inter O (z_insert O x y) z = z_insert O x (z_inter O y z).
+Proof.
+  intros m O x y z Hxz. apply (z_extensionality O). intro w.
+  rewrite z_inter_mem_iff, !z_insert_mem_iff, z_inter_mem_iff. split.
+  - intros [[-> | Hwy] Hwz]; [now left | right; now split].
+  - intros [-> | [Hwy Hwz]]; [split; [now left | exact Hxz] |].
+    split; [now right | exact Hwz].
+Qed.
+
+Lemma z_insert_inter_of_not_mem : forall m (O : zermelo_operations m)
+    (x y z : membership_carrier m),
+  ~ membership_rel x z ->
+  z_inter O (z_insert O x y) z = z_inter O y z.
+Proof.
+  intros m O x y z Hnxz. apply (z_extensionality O). intro w.
+  rewrite !z_inter_mem_iff, z_insert_mem_iff. split.
+  - intros [[-> | Hwy] Hwz]; [contradiction | now split].
+  - intros [Hwy Hwz]. split; [now right | exact Hwz].
+Qed.
+
+Lemma z_singleton_inter_of_mem : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  membership_rel x y -> z_inter O (z_singleton O x) y = z_singleton O x.
+Proof.
+  intros m O x y Hxy. apply z_inter_eq_left_of_subset.
+  now apply z_singleton_subset_iff_mem.
+Qed.
+
+Lemma z_singleton_inter_of_not_mem : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  ~ membership_rel x y -> z_inter O (z_singleton O x) y = z_empty O.
+Proof.
+  intros m O x y Hnxy. apply z_empty_unique. intros z Hz.
+  apply z_inter_mem_iff in Hz. destruct Hz as [Hzx Hzy].
+  apply z_singleton_mem_iff in Hzx. subst z. contradiction.
+Qed.
 
 Lemma z_sdiff_mem_iff : forall m (O : zermelo_operations m)
     (x y z : membership_carrier m),
@@ -544,6 +706,64 @@ Proof.
   apply z_sdiff_mem_iff. now split.
 Qed.
 
+Lemma z_sdiff_empty_right : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  z_sdiff O x (z_empty O) = x.
+Proof.
+  intros m O x. apply (z_extensionality O). intro z.
+  rewrite z_sdiff_mem_iff. split; [tauto |].
+  intro Hz. split; [exact Hz | apply z_not_mem_empty].
+Qed.
+
+Lemma z_sdiff_empty_left : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  z_sdiff O (z_empty O) x = z_empty O.
+Proof.
+  intros m O x. apply z_empty_unique. intros z Hz.
+  apply z_sdiff_mem_iff in Hz. now apply (z_not_mem_empty O z (proj1 Hz)).
+Qed.
+
+Lemma z_singleton_sdiff_of_mem : forall m (O : zermelo_operations m)
+    (x z : membership_carrier m),
+  membership_rel x z -> z_sdiff O (z_singleton O x) z = z_empty O.
+Proof.
+  intros m O x z Hxz. apply z_empty_unique. intros w Hw.
+  apply z_sdiff_mem_iff in Hw. destruct Hw as [Hwx Hnwz].
+  apply z_singleton_mem_iff in Hwx. subst w. contradiction.
+Qed.
+
+Lemma z_singleton_sdiff_of_not_mem : forall m (O : zermelo_operations m)
+    (x z : membership_carrier m),
+  ~ membership_rel x z ->
+  z_sdiff O (z_singleton O x) z = z_singleton O x.
+Proof.
+  intros m O x z Hnxz. apply (z_extensionality O). intro w.
+  rewrite z_sdiff_mem_iff. split; [tauto |].
+  intro Hw. split; [exact Hw |]. apply z_singleton_mem_iff in Hw. now subst.
+Qed.
+
+Lemma z_insert_sdiff_of_mem : forall m (O : zermelo_operations m)
+    (x y z : membership_carrier m),
+  membership_rel x z -> z_sdiff O (z_insert O x y) z = z_sdiff O y z.
+Proof.
+  intros m O x y z Hxz. apply (z_extensionality O). intro w.
+  rewrite !z_sdiff_mem_iff, z_insert_mem_iff. split.
+  - intros [[-> | Hwy] Hnwz]; [contradiction | now split].
+  - intros [Hwy Hnwz]. split; [now right | exact Hnwz].
+Qed.
+
+Lemma z_insert_sdiff_of_not_mem : forall m (O : zermelo_operations m)
+    (x y z : membership_carrier m),
+  ~ membership_rel x z ->
+  z_sdiff O (z_insert O x y) z = z_insert O x (z_sdiff O y z).
+Proof.
+  intros m O x y z Hnxz. apply (z_extensionality O). intro w.
+  rewrite z_sdiff_mem_iff, !z_insert_mem_iff, z_sdiff_mem_iff. split.
+  - intros [[-> | Hwy] Hnwz]; [now left | right; now split].
+  - intros [-> | [Hwy Hnwz]]; [split; [now left | exact Hnxz] |].
+    split; [now right | exact Hnwz].
+Qed.
+
 Lemma z_successor_mem_iff : forall m (O : zermelo_operations m)
     (x y : membership_carrier m),
   membership_rel y (z_successor O x) <-> y = x \/ membership_rel y x.
@@ -553,6 +773,16 @@ Lemma z_successor_is_successor : forall m (O : zermelo_operations m)
     (x : membership_carrier m),
   set_model_successor (z_successor O x) x.
 Proof. intros m O x y. apply z_successor_mem_iff. Qed.
+
+Lemma z_mem_successor_self : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  membership_rel x (z_successor O x).
+Proof. intros. apply z_successor_mem_iff. now left. Qed.
+
+Lemma z_subset_successor : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  set_model_subset x (z_successor O x).
+Proof. intros m O x y Hy. apply z_successor_mem_iff. now right. Qed.
 
 (** The least inductive set, obtained by bounded separation from the chosen
     infinity witness. *)
@@ -750,6 +980,15 @@ Proof.
         apply z_pair_mem_iff; now left | exact Hyz].
 Qed.
 
+Lemma z_ne_successor : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  x <> z_successor O x.
+Proof.
+  intros m O x H. apply (@z_mem_irrefl m O x).
+  pose proof (@z_mem_successor_self m O x) as Hmem.
+  now rewrite <- H in Hmem.
+Qed.
+
 (** Kuratowski ordered pairs and the set-theoretic Cartesian product. *)
 Definition z_kpair {m} (O : zermelo_operations m)
     (x y : membership_carrier m) : membership_carrier m :=
@@ -800,6 +1039,14 @@ Proof.
     + now rewrite Hsingle, Hsingle'.
     + symmetry. exact Hequal'.
   - now apply (@z_pair_right_injective m O x1 x2 y2).
+Qed.
+
+Lemma z_kpair_eq_iff : forall m (O : zermelo_operations m)
+    (x1 x2 y1 y2 : membership_carrier m),
+  z_kpair O x1 x2 = z_kpair O y1 y2 <-> x1 = y1 /\ x2 = y2.
+Proof.
+  intros m O x1 x2 y1 y2. split; [apply z_kpair_injective |].
+  now intros [-> ->].
 Qed.
 
 Lemma z_kpair_in_power_power_union : forall m (O : zermelo_operations m)
@@ -875,6 +1122,69 @@ Proof.
       exists z. now split.
 Qed.
 
+Lemma z_product_empty_right : forall m (O : zermelo_operations m)
+    (X : membership_carrier m),
+  z_product O X (z_empty O) = z_empty O.
+Proof.
+  intros m O X. apply z_empty_unique. intros p Hp.
+  apply z_product_mem_iff in Hp. destruct Hp as [x [_ [y [Hy _]]]].
+  now apply (z_not_mem_empty O y Hy).
+Qed.
+
+Lemma z_product_empty_left : forall m (O : zermelo_operations m)
+    (Y : membership_carrier m),
+  z_product O (z_empty O) Y = z_empty O.
+Proof.
+  intros m O Y. apply z_empty_unique. intros p Hp.
+  apply z_product_mem_iff in Hp. destruct Hp as [x [Hx _]].
+  now apply (z_not_mem_empty O x Hx).
+Qed.
+
+Lemma z_kpair_mem_product_iff : forall m (O : zermelo_operations m)
+    (x y X Y : membership_carrier m),
+  membership_rel (z_kpair O x y) (z_product O X Y) <->
+  membership_rel x X /\ membership_rel y Y.
+Proof.
+  intros m O x y X Y. split.
+  - intro H. apply z_product_mem_iff in H.
+    destruct H as [a [Ha [b [Hb Heq]]]].
+    apply z_kpair_injective in Heq. destruct Heq as [-> ->]. now split.
+  - intros [Hx Hy]. apply z_product_mem_iff.
+    exists x. split; [exact Hx |]. exists y. now split.
+Qed.
+
+Lemma z_product_singletons : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  z_product O (z_singleton O x) (z_singleton O y) =
+  z_singleton O (z_kpair O x y).
+Proof.
+  intros m O x y. apply (z_extensionality O). intro p. split.
+  - intro Hp. apply z_product_mem_iff in Hp.
+    destruct Hp as [a [Ha [b [Hb ->]]]].
+    apply z_singleton_mem_iff in Ha. apply z_singleton_mem_iff in Hb.
+    subst a. subst b. apply z_singleton_mem_iff. reflexivity.
+  - intro Hp. apply z_singleton_mem_iff in Hp. subst p.
+    apply z_kpair_mem_product_iff. split;
+      apply z_singleton_mem_iff; reflexivity.
+Qed.
+
+Lemma z_insert_kpair_subset_insert_product :
+  forall m (O : zermelo_operations m)
+    (R X Y : membership_carrier m),
+  set_model_subset R (z_product O X Y) ->
+  forall x y,
+  set_model_subset (z_insert O (z_kpair O x y) R)
+    (z_product O (z_insert O x X) (z_insert O y Y)).
+Proof.
+  intros m O R X Y HR x y p Hp. apply z_insert_mem_iff in Hp.
+  destruct Hp as [-> | Hp].
+  - apply z_kpair_mem_product_iff. split;
+      apply z_insert_mem_iff; now left.
+  - apply (@z_product_monotone m O X (z_insert O x X)
+      Y (z_insert O y Y)); [apply z_subset_insert | apply z_subset_insert |].
+    now apply HR.
+Qed.
+
 (** The operations record realizes the semantic Zermelo axiom family. *)
 Theorem zermelo_operations_model : forall m (O : zermelo_operations m),
   @set_theory_model m zermelo_axiom.
@@ -899,4 +1209,7 @@ Print Assumptions z_product_union_left.
 Print Assumptions z_mem_asym3.
 Print Assumptions z_of_nat_mem_iff.
 Print Assumptions z_omega_induction.
+Print Assumptions z_subset_sinter_iff.
+Print Assumptions z_insert_sdiff_of_not_mem.
+Print Assumptions z_kpair_mem_product_iff.
 Print Assumptions zermelo_operations_model.

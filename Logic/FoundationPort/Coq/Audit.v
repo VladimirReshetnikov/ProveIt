@@ -5339,23 +5339,50 @@ Print Assumptions z_insert_nonempty.
 Print Assumptions z_subset_insert.
 Print Assumptions z_sunion_insert.
 Print Assumptions z_insert_union.
+Print Assumptions z_insert_eq_self_of_mem.
 Print Assumptions z_power_mem_iff.
 Print Assumptions z_power_unique.
+Print Assumptions z_empty_mem_power.
+Print Assumptions z_self_mem_power.
+Print Assumptions z_power_empty.
+Print Assumptions z_power_nonempty.
 Print Assumptions z_separate_mem_iff.
 Print Assumptions z_separate_subset.
+Print Assumptions z_separate_empty.
 Print Assumptions z_sinter_mem_iff.
 Print Assumptions z_sinter_subset_of_mem.
+Print Assumptions z_sinter_empty.
+Print Assumptions z_sinter_singleton.
+Print Assumptions z_subset_sinter_iff.
 Print Assumptions z_inter_mem_iff.
 Print Assumptions z_inter_comm.
 Print Assumptions z_inter_assoc.
 Print Assumptions z_inter_subset_left.
 Print Assumptions z_inter_subset_right.
+Print Assumptions z_inter_self.
+Print Assumptions z_inter_empty_left.
+Print Assumptions z_inter_empty_right.
+Print Assumptions z_inter_eq_left_of_subset.
+Print Assumptions z_inter_eq_right_of_subset.
+Print Assumptions z_sinter_insert.
+Print Assumptions z_insert_inter_of_mem.
+Print Assumptions z_insert_inter_of_not_mem.
+Print Assumptions z_singleton_inter_of_mem.
+Print Assumptions z_singleton_inter_of_not_mem.
 Print Assumptions z_sdiff_mem_iff.
 Print Assumptions z_sdiff_subset.
 Print Assumptions z_strict_subset_iff_difference_witness.
 Print Assumptions z_sdiff_nonempty_of_strict_subset.
+Print Assumptions z_sdiff_empty_right.
+Print Assumptions z_sdiff_empty_left.
+Print Assumptions z_singleton_sdiff_of_mem.
+Print Assumptions z_singleton_sdiff_of_not_mem.
+Print Assumptions z_insert_sdiff_of_mem.
+Print Assumptions z_insert_sdiff_of_not_mem.
 Print Assumptions z_successor_mem_iff.
 Print Assumptions z_successor_is_successor.
+Print Assumptions z_mem_successor_self.
+Print Assumptions z_subset_successor.
 Check z_is_inductive.
 Print Assumptions z_infinity_inductive.
 Check z_omega.
@@ -5374,15 +5401,22 @@ Print Assumptions z_mem_irrefl.
 Print Assumptions z_ne_of_mem.
 Print Assumptions z_mem_asym.
 Print Assumptions z_mem_asym3.
+Print Assumptions z_ne_successor.
 Check z_kpair.
 Print Assumptions z_kpair_mem_iff.
 Print Assumptions z_pair_right_injective.
 Print Assumptions z_kpair_injective.
+Print Assumptions z_kpair_eq_iff.
 Print Assumptions z_kpair_in_power_power_union.
 Check z_product.
 Print Assumptions z_product_mem_iff.
 Print Assumptions z_product_monotone.
 Print Assumptions z_product_union_left.
+Print Assumptions z_product_empty_right.
+Print Assumptions z_product_empty_left.
+Print Assumptions z_kpair_mem_product_iff.
+Print Assumptions z_product_singletons.
+Print Assumptions z_insert_kpair_subset_insert_product.
 Print Assumptions zermelo_operations_model.
 Check membership_well_founded.
 Check transitive_model.
