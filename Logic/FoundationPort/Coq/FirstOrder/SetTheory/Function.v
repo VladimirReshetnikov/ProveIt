@@ -1,6 +1,7 @@
 (** Set-theoretic relations and functions over chosen Zermelo operations. *)
 
 From Foundation.FirstOrder.SetTheory Require Import Basic Z.
+From Stdlib Require Import Logic.Classical_Prop.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -1055,6 +1056,89 @@ Proof.
     + apply z_successor_mem_iff. left. exact Hi.
 Qed.
 
+Lemma z_exists_two_valued_function_for_subset :
+  forall m (O : zermelo_operations m)
+    (X s : membership_carrier m),
+  set_model_subset s X ->
+  exists f, membership_rel f (z_function O (z_of_nat O 2) X) /\
+    forall x, membership_rel (z_kpair O x (z_of_nat O 1)) f <->
+      membership_rel x s.
+Proof.
+  intros m O X s HsX.
+  set (f := z_separate O
+    (fun p => exists x,
+      (membership_rel x s /\ p = z_kpair O x (z_of_nat O 1)) \/
+      (~ membership_rel x s /\ p = z_kpair O x (z_of_nat O 0)))
+    (z_product O X (z_of_nat O 2))).
+  assert (H01 : z_of_nat O 0 <> z_of_nat O 1).
+  { intro Heq. pose proof (@z_of_nat_injective m O 0 1 Heq). discriminate. }
+  assert (Hf : membership_rel f (z_function O (z_of_nat O 2) X)).
+  { apply z_mem_function_intro.
+    - intros p Hp. exact (@z_separate_subset m O _ _ p Hp).
+    - intros x Hx. destruct (classic (membership_rel x s)) as [Hxs | Hnxs].
+      + exists (z_of_nat O 1). split.
+        * apply z_separate_mem_iff. split.
+          -- apply z_kpair_mem_product_iff. split; [exact Hx |].
+             apply z_mem_two_iff. right. reflexivity.
+          -- exists x. left. split; [exact Hxs |]. reflexivity.
+        * intros y Hy. apply z_separate_mem_iff in Hy.
+          destruct Hy as [_ [x' [Hcase | Hcase]]].
+          -- destruct Hcase as [Hx's Heq]. apply z_kpair_injective in Heq.
+             destruct Heq as [Hxx Hyy]. exact Hyy.
+          -- destruct Hcase as [Hnxs' Heq]. apply z_kpair_injective in Heq.
+             destruct Heq as [Hxx Hyy]. exfalso. apply Hnxs'.
+             rewrite <- Hxx. exact Hxs.
+      + exists (z_of_nat O 0). split.
+        * apply z_separate_mem_iff. split.
+          -- apply z_kpair_mem_product_iff. split; [exact Hx |].
+             apply z_mem_two_iff. left. reflexivity.
+          -- exists x. right. split; [exact Hnxs |]. reflexivity.
+        * intros y Hy. apply z_separate_mem_iff in Hy.
+          destruct Hy as [_ [x' [Hcase | Hcase]]].
+          -- destruct Hcase as [Hxs' Heq]. apply z_kpair_injective in Heq.
+             destruct Heq as [Hxx Hyy]. exfalso. apply Hnxs.
+             rewrite <- Hxx in Hxs'. exact Hxs'.
+          -- destruct Hcase as [Hnxs' Heq]. apply z_kpair_injective in Heq.
+             destruct Heq as [Hxx Hyy]. exact Hyy. }
+  assert (Hchar : forall x,
+      membership_rel (z_kpair O x (z_of_nat O 1)) f <->
+      membership_rel x s).
+  { intro x. split.
+    - intro Hx1. apply z_separate_mem_iff in Hx1.
+      destruct Hx1 as [_ [x' [Hcase | Hcase]]].
+      + destruct Hcase as [Hx's Heq]. apply z_kpair_injective in Heq.
+        destruct Heq as [Hxx Hyy]. rewrite <- Hxx in Hx's. exact Hx's.
+      + destruct Hcase as [Hnxs Heq]. apply z_kpair_injective in Heq.
+        destruct Heq as [Hxx Hyy]. exfalso. apply H01.
+        symmetry. exact Hyy.
+    - intro Hxs. apply z_separate_mem_iff. split.
+      + apply z_kpair_mem_product_iff. split; [exact (HsX x Hxs) |].
+        apply z_mem_two_iff. right. reflexivity.
+      + exists x. left. split; [exact Hxs |]. reflexivity. }
+  exists f. now split.
+Qed.
+
+Lemma z_exists_subset_for_two_valued_function :
+  forall m (O : zermelo_operations m)
+    (X f : membership_carrier m),
+  membership_rel f (z_function O (z_of_nat O 2) X) ->
+  exists s, set_model_subset s X /\
+    forall x, membership_rel x s <->
+      membership_rel (z_kpair O x (z_of_nat O 1)) f.
+Proof.
+  intros m O X f Hf.
+  set (s := z_separate O
+    (fun x => membership_rel (z_kpair O x (z_of_nat O 1)) f) X).
+  exists s. split.
+  - exact (@z_separate_subset m O _ _).
+  - intro x. split.
+    + intro Hxs. apply z_separate_mem_iff in Hxs. exact (proj2 Hxs).
+    + intro Hx1. apply z_separate_mem_iff. split.
+      * apply (z_subset_product_of_mem_function Hf) in Hx1.
+        apply z_kpair_mem_product_iff in Hx1. exact (proj1 Hx1).
+      * exact Hx1.
+Qed.
+
 Lemma z_two_val_function_mem_iff_not : forall m (O : zermelo_operations m)
     (X f x : membership_carrier m),
   membership_rel f (z_function O (z_of_nat O 2) X) ->
@@ -1075,6 +1159,103 @@ Proof.
     apply (@z_mem_two_iff m O i) in Hi2. destruct Hi2 as [-> | ->].
     + exact Hi.
     + exfalso. apply H1. exact Hi.
+Qed.
+
+Lemma z_two_pow_card_eq_power : forall m (O : zermelo_operations m)
+    (X : membership_carrier m),
+  z_card_eq O (z_function O (z_of_nat O 2) X) (z_power O X).
+Proof.
+  intros m O X. split.
+  - set (F := z_separate O
+      (fun p => exists f s, p = z_kpair O f s /\
+        forall x, membership_rel x s <->
+          membership_rel (z_kpair O x (z_of_nat O 1)) f)
+      (z_product O (z_function O (z_of_nat O 2) X) (z_power O X))).
+    exists F. split.
+    + apply z_mem_function_intro.
+      * intros p Hp. exact (@z_separate_subset m O _ _ p Hp).
+      * intros f Hf.
+        destruct (@z_exists_subset_for_two_valued_function m O X f Hf)
+          as [s [HsX Hchar]].
+        exists s. split.
+        -- apply z_separate_mem_iff. split.
+           ++ apply z_kpair_mem_product_iff. split; [exact Hf |].
+              apply z_power_mem_iff. exact HsX.
+           ++ exists f, s. split; [reflexivity | exact Hchar].
+        -- intros s' Hs'. apply z_separate_mem_iff in Hs'.
+           destruct Hs' as [_ [f' [s0 [Heq Hchar']]]].
+           apply z_kpair_injective in Heq. destruct Heq as [Hff Hss].
+           rewrite <- Hff in Hchar'. rewrite <- Hss in Hchar'.
+           apply (z_extensionality O). intro x. split.
+           ++ intro Hx. apply (proj2 (Hchar x)).
+              apply (proj1 (Hchar' x)). exact Hx.
+           ++ intro Hx. apply (proj2 (Hchar' x)).
+              apply (proj1 (Hchar x)). exact Hx.
+    + unfold z_injective. intros f1 f2 s H1 H2.
+      apply z_separate_mem_iff in H1, H2.
+      destruct H1 as [Hbase1 [a [b [Heq1 Hchar1]]]].
+      destruct H2 as [Hbase2 [c [d [Heq2 Hchar2]]]].
+      apply z_kpair_mem_product_iff in Hbase1, Hbase2.
+      destruct Hbase1 as [Hf1 Hs1]. destruct Hbase2 as [Hf2 Hs2].
+      apply z_kpair_injective in Heq1, Heq2.
+      destruct Heq1 as [Hf1a Hsb]. destruct Heq2 as [Hf2c Hsd].
+      rewrite <- Hf1a in Hchar1. rewrite <- Hsb in Hchar1.
+      rewrite <- Hf2c in Hchar2. rewrite <- Hsd in Hchar2.
+      apply (@z_function_ext m O X (z_of_nat O 2) f1 f2 Hf1 Hf2).
+      intros x Hx i Hi Hpi. apply (@z_mem_two_iff m O i) in Hi.
+      destruct Hi as [-> | ->].
+      * pose proof (@z_two_val_function_mem_iff_not m O X f1 x Hf1 Hx) as Hcomp1.
+        pose proof (proj1 Hcomp1 Hpi) as Hnot1.
+        assert (HnotS : ~ membership_rel x s).
+        { intro Hxs. apply Hnot1. apply (proj1 (Hchar1 x)). exact Hxs. }
+        apply (proj2 (@z_two_val_function_mem_iff_not m O X f2 x Hf2 Hx)).
+        intro Hone2. apply HnotS. apply (proj2 (Hchar2 x)). exact Hone2.
+      * apply (proj1 (Hchar2 x)). apply (proj2 (Hchar1 x)). exact Hpi.
+  - set (F := z_separate O
+      (fun p => exists s f, p = z_kpair O s f /\
+        forall x, membership_rel (z_kpair O x (z_of_nat O 1)) f <->
+          membership_rel x s)
+      (z_product O (z_power O X) (z_function O (z_of_nat O 2) X))).
+    exists F. split.
+    + apply z_mem_function_intro.
+      * intros p Hp. exact (@z_separate_subset m O _ _ p Hp).
+      * intros s Hs.
+        pose proof ((proj1 (@z_power_mem_iff m O X s)) Hs) as HsX.
+        destruct (@z_exists_two_valued_function_for_subset m O X s HsX)
+          as [f [Hf Hchar]].
+        exists f. split.
+        -- apply z_separate_mem_iff. split.
+           ++ apply z_kpair_mem_product_iff. split; [exact Hs | exact Hf].
+           ++ exists s, f. split; [reflexivity | exact Hchar].
+        -- intros f' Hf'. apply z_separate_mem_iff in Hf'.
+           destruct Hf' as [Hbase [s' [f0 [Heq Hchar']]]].
+           apply z_kpair_mem_product_iff in Hbase.
+           destruct Hbase as [Hs' Hf0].
+           apply z_kpair_injective in Heq. destruct Heq as [Hss Hff].
+           rewrite <- Hss in Hchar'. rewrite <- Hff in Hchar'.
+           apply (@z_function_ext m O X (z_of_nat O 2) f' f Hf0 Hf).
+           intros x Hx i Hi Hpi. apply (@z_mem_two_iff m O i) in Hi.
+           destruct Hi as [-> | ->].
+           ++ pose proof (@z_two_val_function_mem_iff_not m O X f' x Hf0 Hx) as Hcomp'.
+              pose proof (proj1 Hcomp' Hpi) as Hnot1.
+              assert (HnotS : ~ membership_rel x s).
+              { intro Hxs. apply Hnot1. apply (proj2 (Hchar' x)). exact Hxs. }
+              apply (proj2 (@z_two_val_function_mem_iff_not m O X f x Hf Hx)).
+              intro Hf1. apply HnotS. apply (proj1 (Hchar x)). exact Hf1.
+           ++ apply (proj2 (Hchar x)). apply (proj1 (Hchar' x)). exact Hpi.
+    + unfold z_injective. intros s1 s2 f H1 H2.
+      apply z_separate_mem_iff in H1, H2.
+      destruct H1 as [_ [a [b [Heq1 Hchar1]]]].
+      destruct H2 as [_ [c [d [Heq2 Hchar2]]]].
+      apply z_kpair_injective in Heq1, Heq2.
+      destruct Heq1 as [Hs1a Hfab]. destruct Heq2 as [Hs2c Hfdb].
+      rewrite <- Hs1a in Hchar1. rewrite <- Hfab in Hchar1.
+      rewrite <- Hs2c in Hchar2. rewrite <- Hfdb in Hchar2.
+      apply (z_extensionality O). intro x. split.
+      * intro Hx. apply (proj1 (Hchar2 x)).
+        apply (proj2 (Hchar1 x)). exact Hx.
+      * intro Hx. apply (proj1 (Hchar1 x)).
+        apply (proj2 (Hchar2 x)). exact Hx.
 Qed.
 
 Print Assumptions z_value_mem_iff.
