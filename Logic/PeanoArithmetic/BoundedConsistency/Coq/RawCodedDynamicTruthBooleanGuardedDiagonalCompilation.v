@@ -714,23 +714,29 @@ Proof.
   exact hclosedTemplate.
 Qed.
 
-(** Compile the fixed guarded cell after closing its predecessor, transport
-    the predecessor through that same standard-axiom prefix, and apply one
-    modus ponens.  The empty caller prefix is the native staged boundary. *)
-Theorem raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension :
+(** Compile the fixed guarded cell after closing its predecessor, retain an
+    arbitrary caller prefix, transport the predecessor through the cell's
+    standard-axiom extension, and apply one modus ponens.  Keeping this form
+    prefix-general is essential in the strong-step shell: its restricted-
+    proof and endpoint-rule assumptions are still live when the guarded
+    predecessor is constructed. *)
+Theorem
+    raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension_under_caller_prefix :
   forall constructor (M : RawPAModel), RawPASatisfies M -> forall
     (translation : RawCodedTemplateTranslation M),
   RawCodedTemplatePAAgreement M translation ->
-  forall baseWitnessList baseContext,
+  forall baseWitnessList baseContext callerPrefix,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation callerPrefix ->
   RawCodedTemplatePrefixAtomicallyAdequate M translation
-    (coqDynamicTruthBooleanGuardedDeepPrefix constructor []) ->
+    (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix) ->
   RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
   RawDynamicTruthBooleanGuardedBranchRootsAt constructor M translation
-    baseContext [] ->
+    baseContext callerPrefix ->
   exists targetWitnessList targetContext pairRoot,
     RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
     RawContextListIncluded M baseContext targetContext /\
-    RawCodedPALocalProofOf M targetContext
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation targetContext callerPrefix)
       (rawFormulaImpCode M
         (rawDynamicTruthBooleanSigmaEx8BranchCode M constructor)
         (rawFormulaImpCode M
@@ -738,14 +744,14 @@ Theorem raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension :
           (rawFormulaBotCode M))) pairRoot.
 Proof.
   intros constructor M hPA translation hagreement
-    baseWitnessList baseContext hadequate hbase hroots.
+    baseWitnessList baseContext callerPrefix hcallerAdequate hadequate
+    hbase hroots.
   destruct
     (raw_dynamicTruthBooleanGuardedPredecessorRoot_of_branch_roots_under_template_prefix
       constructor M hPA translation hagreement
-      baseWitnessList baseContext [] hadequate hbase hroots)
+      baseWitnessList baseContext callerPrefix hadequate hbase hroots)
     as (predecessorWitnessList & predecessorContext & predecessorRoot &
       hpredecessorWitnessed & hbasePredecessorIncluded & hpredecessor).
-  cbn [rawTemplateContextCodeOnTail] in hpredecessor.
   destruct
     (raw_codedTemplatePALocalProofOf_of_BProv_on_witnessed_tail
       M hPA translation hagreement
@@ -773,28 +779,79 @@ Proof.
   }
   pose proof
     (raw_codedPAAxiomWitnessContext_context_realizable M
-      predecessorWitnessList predecessorContext hpredecessorWitnessed)
-    as hpredecessorRealizable.
+      targetWitnessList targetContext hcellWitnessed)
+    as htargetRealizable.
+  destruct (raw_codedPALocalProof_templatePrefix M hPA translation
+    targetContext callerPrefix
+    (rawDynamicTruthBooleanGuardedConditionalCellCode M constructor)
+    cellRoot htargetRealizable hcallerAdequate hcellNative)
+    as [prefixedCellRoot hprefixedCell].
+  assert (hpredecessorTargetIncluded :
+      RawContextListIncluded M predecessorContext targetContext).
+  {
+    unfold targetContext.
+    apply raw_standardPAAxiomWitnessPrefixContextCode_target_included.
+    exact hPA.
+  }
   destruct
-    (raw_codedPALocalProofOf_standardPAAxiomWitnessPrefix
-      M hPA cellWitnesses predecessorContext
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation predecessorWitnessList predecessorContext
+      targetWitnessList targetContext callerPrefix
       (rawDynamicTruthBooleanGuardedPredecessorStateExclusivityCode
         M constructor)
-      predecessorRoot hpredecessorRealizable hpredecessor)
+      predecessorRoot hpredecessorWitnessed hcellWitnessed
+      hpredecessorTargetIncluded hpredecessor)
     as [transportedPredecessorRoot htransportedPredecessor].
   destruct
-    (raw_dynamicTruthBooleanGuarded_pair constructor M hPA targetContext
-      cellRoot transportedPredecessorRoot hcellNative
+    (raw_dynamicTruthBooleanGuarded_pair constructor M hPA
+      (rawTemplateContextCodeOnTail translation targetContext callerPrefix)
+      prefixedCellRoot transportedPredecessorRoot hprefixedCell
       htransportedPredecessor) as [pairRoot hpair].
   exists targetWitnessList, targetContext, pairRoot.
   split; [exact hcellWitnessed |].
   split.
   - intros member hmember.
-    apply
-      (raw_standardPAAxiomWitnessPrefixContextCode_target_included
-        M hPA cellWitnesses predecessorContext).
-    exact (hbasePredecessorIncluded member hmember).
+    exact (hpredecessorTargetIncluded member
+      (hbasePredecessorIncluded member hmember)).
   - exact hpair.
+Qed.
+
+(** Empty-prefix compatibility endpoint used by the existing local matrix. *)
+Theorem raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension :
+  forall constructor (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall baseWitnessList baseContext,
+  RawCodedTemplatePrefixAtomicallyAdequate M translation
+    (coqDynamicTruthBooleanGuardedDeepPrefix constructor []) ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawDynamicTruthBooleanGuardedBranchRootsAt constructor M translation
+    baseContext [] ->
+  exists targetWitnessList targetContext pairRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M targetContext
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M constructor)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M constructor)
+          (rawFormulaBotCode M))) pairRoot.
+Proof.
+  intros constructor M hPA translation hagreement
+    baseWitnessList baseContext hadequate hbase hroots.
+  destruct
+    (raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension_under_caller_prefix
+      constructor M hPA translation hagreement
+      baseWitnessList baseContext []
+      (fun formula hin => False_rect _ (in_nil hin))
+      hadequate hbase hroots)
+    as (targetWitnessList & targetContext & pairRoot &
+      htargetWitnessed & hincluded & hpair).
+  exists targetWitnessList, targetContext, pairRoot.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  cbn [rawTemplateContextCodeOnTail] in hpair.
+  exact hpair.
 Qed.
 
 (** Exact two-root endpoint consumed by the predecessor-free matrix.  Each

@@ -145,17 +145,17 @@ Qed.
 
 (** Compile both synchronized guarded payloads, merge the independently
     growing conclusions, and rebase the resulting pair onto an arbitrary
-    witnessed caller tail.  The exact guarded deep prefix is retained at
-    every step. *)
+    witnessed caller tail.  Nothing in this construction inspects the
+    surrounding assumptions, so the strongest reusable statement keeps the
+    entire prefix abstract. *)
 Theorem
-    raw_dynamicTruthZeroCanonicalGuardedGlobalApplicationRoots_on_witnessed_extension_of_kernel_payload_pair :
+    raw_dynamicTruthZeroCanonicalGuardedGlobalApplicationRoots_on_witnessed_extension_of_kernel_payload_pair_under_prefix :
     forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
       (inputs : RawCodedTemplateDirectStructuralInputs M)
-      sourceWitnessList sourceContext callerPrefix,
+      sourceWitnessList sourceContext prefix,
   RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
   RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
-    M (rawDirectStructuralTemplateTranslation M hPA inputs)
-      (coqDynamicTruthImpGuardedDeepPrefix callerPrefix) ->
+    M (rawDirectStructuralTemplateTranslation M hPA inputs) prefix ->
   exists targetWitnessList targetContext sigmaApplicationRoot
       piApplicationRoot,
     RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
@@ -163,7 +163,7 @@ Theorem
     RawCodedPALocalProofOf M
       (rawTemplateContextCodeOnTail
         (rawDirectStructuralTemplateTranslation M hPA inputs)
-        targetContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+        targetContext prefix)
       (rawQuotedFormulaCode M
         (Formula.rename dynamicTruthZeroGuardedEvidenceRenaming
           dynamicTruthZeroInputGlobalSigmaApplicationFormula))
@@ -171,35 +171,34 @@ Theorem
     RawCodedPALocalProofOf M
       (rawTemplateContextCodeOnTail
         (rawDirectStructuralTemplateTranslation M hPA inputs)
-        targetContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+        targetContext prefix)
       (rawQuotedFormulaCode M
         (Formula.rename dynamicTruthZeroGuardedEvidenceRenaming
           dynamicTruthZeroInputGlobalPiApplicationFormula))
       piApplicationRoot.
 Proof.
-  intros M hPA inputs sourceWitnessList sourceContext callerPrefix
+  intros M hPA inputs sourceWitnessList sourceContext prefix
     hsource (appendWitnesses & hsigmaPayload & hpiPayload).
   set (translation := rawDirectStructuralTemplateTranslation M hPA inputs).
-  set (deepPrefix := coqDynamicTruthImpGuardedDeepPrefix callerPrefix).
   pose proof
     (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_zero_canonical_guarded_global_of_kernel_payload_under_prefix
       M hPA translation (rawDirectStructuralTemplatePAAgreement M hPA inputs)
-      0 deepPrefix appendWitnesses (or_introl eq_refl)
+      0 prefix appendWitnesses (or_introl eq_refl)
       (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
-        M hPA inputs deepPrefix) hsigmaPayload) as hsigmaGrowing.
+        M hPA inputs prefix) hsigmaPayload) as hsigmaGrowing.
   pose proof
     (raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_zero_canonical_guarded_global_of_kernel_payload_under_prefix
       M hPA translation (rawDirectStructuralTemplatePAAgreement M hPA inputs)
-      1 deepPrefix appendWitnesses (or_intror eq_refl)
+      1 prefix appendWitnesses (or_intror eq_refl)
       (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
-        M hPA inputs deepPrefix) hpiPayload) as hpiGrowing.
+        M hPA inputs prefix) hpiPayload) as hpiGrowing.
   pose proof
     (raw_codedPAGrowingTemplateLocalProofAt_pair_at_prefix
       M hPA translation
       (rawStandardPAAxiomWitnessPrefixWitnessListCode M
         appendWitnesses (raw_zero M))
       (rawStandardPAAxiomWitnessPrefixContextCode M
-        appendWitnesses (raw_zero M)) deepPrefix
+        appendWitnesses (raw_zero M)) prefix
       (rawTemplateFormula translation
         (coqFourStateTableAppendTemplateGlobalSourceAtRootTerms 0
           (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
@@ -215,7 +214,7 @@ Proof.
     (raw_codedPAGrowingTemplateLocalProofPairAt_rebase
       M hPA translation
       (rawStandardPAAxiomWitnessPrefixContextCode M
-        appendWitnesses (raw_zero M)) deepPrefix
+        appendWitnesses (raw_zero M)) prefix
       (rawTemplateFormula translation
         (coqFourStateTableAppendTemplateGlobalSourceAtRootTerms 0
           (embedPAFormula dynamicTruthZeroCanonicalSigmaRowFormula)
@@ -247,33 +246,93 @@ Proof.
   split; assumption.
 Qed.
 
-(** Transport the common guarded applications to the two renamed native
-    evidence formulas, then identify those formulas with the guarded evidence
-    templates of the same selected direct inputs. *)
+(** Implication-specific compatibility wrapper.  The abstract-prefix theorem
+    above is also used by the Boolean guarded branches. *)
 Theorem
-    raw_dynamicTruthImpGuardedEvidenceRoots_on_witnessed_extension_of_canonical_append_kernel_payload_pair :
+    raw_dynamicTruthZeroCanonicalGuardedGlobalApplicationRoots_on_witnessed_extension_of_kernel_payload_pair :
     forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
       (inputs : RawCodedTemplateDirectStructuralInputs M)
       sourceWitnessList sourceContext callerPrefix,
-  RawDynamicTruthZeroGuardedEvidenceIdentification M inputs ->
   RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
   RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
     M (rawDirectStructuralTemplateTranslation M hPA inputs)
       (coqDynamicTruthImpGuardedDeepPrefix callerPrefix) ->
+  exists targetWitnessList targetContext sigmaApplicationRoot
+      piApplicationRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+      (rawQuotedFormulaCode M
+        (Formula.rename dynamicTruthZeroGuardedEvidenceRenaming
+          dynamicTruthZeroInputGlobalSigmaApplicationFormula))
+      sigmaApplicationRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+      (rawQuotedFormulaCode M
+        (Formula.rename dynamicTruthZeroGuardedEvidenceRenaming
+          dynamicTruthZeroInputGlobalPiApplicationFormula))
+      piApplicationRoot.
+Proof.
+  intros M hPA inputs sourceWitnessList sourceContext callerPrefix
+    hsource hpayloads.
+  exact
+    (raw_dynamicTruthZeroCanonicalGuardedGlobalApplicationRoots_on_witnessed_extension_of_kernel_payload_pair_under_prefix
+      M hPA inputs sourceWitnessList sourceContext
+      (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+      hsource hpayloads).
+Qed.
+
+(** The two native evidence roots under a caller-selected prefix.  Separating
+    this prefix-generic record from the implication branch record lets the
+    same append compiler feed conjunction and disjunction. *)
+Record RawDynamicTruthGuardedEvidenceRootsUnderPrefixAt
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
+    (baseContext : M) (prefix : TemplateContext) : Prop := {
+  rawDynamicTruthGuardedEvidenceUnderPrefix_sigma : exists sigmaRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext prefix)
+      (rawTemplateFormula translation
+        coqDynamicTruthImpGuardedLocalSigmaEvidenceTemplate) sigmaRoot;
+  rawDynamicTruthGuardedEvidenceUnderPrefix_pi : exists piRoot,
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail translation baseContext prefix)
+      (rawTemplateFormula translation
+        coqDynamicTruthImpGuardedLocalPiEvidenceTemplate) piRoot
+}.
+
+Arguments RawDynamicTruthGuardedEvidenceRootsUnderPrefixAt
+  M translation baseContext prefix : clear implicits.
+
+(** Transport common guarded applications to the two renamed native evidence
+    formulas and identify those formulas with the guarded templates of the
+    same selected direct inputs.  The prefix remains completely abstract. *)
+Theorem
+    raw_dynamicTruthGuardedEvidenceRootsUnderPrefix_on_witnessed_extension_of_canonical_append_kernel_payload_pair :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sourceWitnessList sourceContext prefix,
+  RawDynamicTruthZeroGuardedEvidenceIdentification M inputs ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs) prefix ->
   exists targetWitnessList targetContext,
     RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
     RawContextListIncluded M sourceContext targetContext /\
-    RawDynamicTruthImpGuardedEvidenceRootsAt M
+    RawDynamicTruthGuardedEvidenceRootsUnderPrefixAt M
       (rawDirectStructuralTemplateTranslation M hPA inputs)
-      targetContext callerPrefix.
+      targetContext prefix.
 Proof.
-  intros M hPA inputs sourceWitnessList sourceContext callerPrefix
+  intros M hPA inputs sourceWitnessList sourceContext prefix
     hidentification hsource hpayloads.
   set (translation := rawDirectStructuralTemplateTranslation M hPA inputs).
-  set (deepPrefix := coqDynamicTruthImpGuardedDeepPrefix callerPrefix).
   destruct
-    (raw_dynamicTruthZeroCanonicalGuardedGlobalApplicationRoots_on_witnessed_extension_of_kernel_payload_pair
-      M hPA inputs sourceWitnessList sourceContext callerPrefix
+    (raw_dynamicTruthZeroCanonicalGuardedGlobalApplicationRoots_on_witnessed_extension_of_kernel_payload_pair_under_prefix
+      M hPA inputs sourceWitnessList sourceContext prefix
       hsource hpayloads) as
     (applicationWitnessList & applicationContext & sigmaApplicationRoot &
       piApplicationRoot & happlicationWitnessed & hsourceApplicationIncluded &
@@ -282,10 +341,10 @@ Proof.
     (raw_dynamicTruthZeroNativeEvidenceRoots_of_renamed_canonicalApplicationRoots_under_prefix
       M hPA translation (rawDirectStructuralTemplatePAAgreement M hPA inputs)
       dynamicTruthZeroGuardedEvidenceRenaming
-      applicationWitnessList applicationContext deepPrefix
+      applicationWitnessList applicationContext prefix
       sigmaApplicationRoot piApplicationRoot
       (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
-        M hPA inputs deepPrefix)
+        M hPA inputs prefix)
       happlicationWitnessed hsigmaApplication hpiApplication) as
     (evidenceWitnessList & evidenceContext & sigmaEvidenceRoot &
       piEvidenceRoot & hevidenceWitnessed &
@@ -324,13 +383,50 @@ Proof.
   split; [exact hsourceEvidenceIncluded |].
   constructor.
   - exists sigmaEvidenceRoot.
-    fold deepPrefix in hsigmaEvidence.
     rewrite hsigmaIdentification.
     exact hsigmaEvidence.
   - exists piEvidenceRoot.
-    fold deepPrefix in hpiEvidence.
     rewrite hpiIdentification.
     exact hpiEvidence.
+Qed.
+
+(** Implication-specific compatibility wrapper around the abstract-prefix
+    evidence compiler. *)
+Theorem
+    raw_dynamicTruthImpGuardedEvidenceRoots_on_witnessed_extension_of_canonical_append_kernel_payload_pair :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sourceWitnessList sourceContext callerPrefix,
+  RawDynamicTruthZeroGuardedEvidenceIdentification M inputs ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthImpGuardedDeepPrefix callerPrefix) ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawDynamicTruthImpGuardedEvidenceRootsAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      targetContext callerPrefix.
+Proof.
+  intros M hPA inputs sourceWitnessList sourceContext callerPrefix
+    hidentification hsource hpayloads.
+  destruct
+    (raw_dynamicTruthGuardedEvidenceRootsUnderPrefix_on_witnessed_extension_of_canonical_append_kernel_payload_pair
+      M hPA inputs sourceWitnessList sourceContext
+      (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+      hidentification hsource hpayloads) as
+    (targetWitnessList & targetContext & htargetWitnessed & hincluded &
+      hevidence).
+  destruct hevidence as
+    [(sigmaEvidenceRoot & hsigmaEvidence)
+      (piEvidenceRoot & hpiEvidence)].
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  constructor.
+  - exists sigmaEvidenceRoot. exact hsigmaEvidence.
+  - exists piEvidenceRoot. exact hpiEvidence.
 Qed.
 
 (** Attach the guarded evidence pair to an already synchronized parent
