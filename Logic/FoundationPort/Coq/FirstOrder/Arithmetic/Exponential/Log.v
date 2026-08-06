@@ -211,6 +211,25 @@ Lemma nat_length_exp : forall x,
   nat_length (nat_exp x) = x + 1.
 Proof. intro x. apply nat_exponential_length. apply nat_exp_spec. Qed.
 
+(** Two elementary square-root estimates used by the standard Nuon bounds. *)
+Lemma nat_two_mul_sqrt_le_self : forall a,
+  2 * N.sqrt a <= a + 1.
+Proof.
+  intro a. pose proof (proj1 (N.sqrt_spec a (N.le_0_l _))) as Hlow.
+  simpl in Hlow. nia.
+Qed.
+
+Lemma nat_sqrt_pos_iff : forall a,
+  0 < N.sqrt a <-> 0 < a.
+Proof.
+  intro a. split.
+  - intro H. pose proof (proj1 (N.sqrt_spec a (N.le_0_l _))) as Hlow.
+    simpl in Hlow. nia.
+  - intro H. destruct (N.eq_dec (N.sqrt a) 0) as [Hz | Hz]; [|lia].
+    pose proof (proj2 (N.sqrt_spec a (N.le_0_l _))) as Hhi.
+    simpl in Hhi. lia.
+Qed.
+
 Lemma nat_length_two_mul_of_pos : forall a,
   0 < a -> nat_length (2 * a) = nat_length a + 1.
 Proof.
@@ -433,6 +452,25 @@ Proof.
   rewrite !nat_bexp_of_lt by assumption.
   unfold nat_exp.
   symmetry. apply N.pow_le_mono_r_iff. reflexivity.
+Qed.
+
+Lemma nat_pow_four_le_pow_four : forall a b,
+  a ^ 4 <= b ^ 4 <-> a <= b.
+Proof.
+  intros a b. symmetry.
+  apply (N.pow_le_mono_l_iff a b 4). discriminate.
+Qed.
+
+Lemma nat_bexp_four_mul : forall a a' x,
+  4 * x < nat_length a -> x < nat_length a' ->
+  nat_bexp a (4 * x) = (nat_bexp a' x) ^ 4.
+Proof.
+  intros a a' x Ha Ha'.
+  rewrite nat_bexp_of_lt by exact Ha.
+  rewrite nat_bexp_of_lt by exact Ha'.
+  unfold nat_exp.
+  rewrite <- N.pow_mul_r.
+  f_equal. lia.
 Qed.
 
 Lemma nat_bexp_eq_of_lt_length : forall a b i,
