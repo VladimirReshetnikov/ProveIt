@@ -23,6 +23,7 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   CodedProof
   RawCodedRestrictedPAProof
+  RawCodedRestrictedProofStandardAdequacy
   RawCodedPAProvability
   RawCodedPALocalProofExistential
   RawCodedSyntaxConstructors
@@ -54,6 +55,7 @@ Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PABoundedCodedProof.
 Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedRestrictedProofStandardAdequacy.
 Import PABoundedRawCodedPAProvability.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedSyntaxConstructors.
@@ -277,13 +279,17 @@ Proof.
     (rawTemplateContextCode
       (rawDirectStructuralTemplateTranslation M hPA inputs)
       (coqRestrictedPADirectStrongStepOrIntroductionLeftReadyContext tail))
-    (rawDirectTemplateFormula inputs
-      coqRestrictedPADirectOrIntroductionLeftDynamicTruthLawTemplate)
+    (rawCoqRestrictedPADirectOrIntroductionLeftNativeTruthLawCode
+      M parameters inputs sigmaCode sigmaSelector)
     root).
   pose proof
     (raw_coqRestrictedPADirectOrIntroductionLeftNativeTruthLaw_code
       M hPA parameters contextTruth conclusionTruth sigmaCode sigmaSelector
       hconclusion) as hlaw.
+  change (rawDirectTemplateFormula inputs
+      coqRestrictedPADirectOrIntroductionLeftDynamicTruthLawTemplate =
+    rawCoqRestrictedPADirectOrIntroductionLeftNativeTruthLawCode
+      M parameters inputs sigmaCode sigmaSelector) in hlaw.
   rewrite <- hlaw.
   exact hroot.
 Qed.
@@ -345,11 +351,12 @@ Proof.
       hconclusion (embedPAContext (map witnessedAxiom witnesses)) hnative).
 Qed.
 
-(** The preceding rewrite can be applied at the selected witnessed tail
-    produced by the unconditional dynamic reroot compiler.  This is the
-    useful interface for the native direct-truth package: its conclusion
-    leaf equation supplies [hconclusion], while the dynamic source supplies
-    the actual local proof root. *)
+(** A direct dynamic-law root can be transported to the native law at a
+    witnessed tail.  The separate reroot theorem produces a
+    [DynamicRestrictedRerootLawRoot], whose coverage context and formula are
+    intentionally different from the public [DynamicTruthLawRoot]; it is
+    therefore not silently coerced here.  The remaining dynamic-law root is
+    the honest proof-producing seam. *)
 Theorem raw_selectedNativeOrIntroductionLeftTruthTail_of_dynamic_reroot :
   forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
     (parameters : RawCodedTemplateNumeralParameters M)
@@ -371,23 +378,35 @@ Theorem raw_selectedNativeOrIntroductionLeftTruthTail_of_dynamic_reroot :
         M parameters fourth)
       (rawCoqRestrictedPADerivationSoundnessTemplateTermView
         M parameters fifth)) ->
+  (forall tail,
+    RawCoqRestrictedPADirectOrIntroductionLeftDynamicTruthLawRoot
+      M hPA inputs tail) ->
   RawCoqRestrictedPADirectSelectedNativeOrIntroductionLeftTruthTail
     M hPA parameters inputs sigmaCode sigmaSelector.
 Proof.
   intros M hPA parameters contextTruth conclusionTruth inputs
-    sigmaCode sigmaSelector hconclusion.
-  destruct
-    (raw_dynamicRestrictedRerootLawRoot_on_selected_witnessed_tail
-      M hPA inputs) as
-    (witnesses & hdynamicWitnessed & hdynamicRoot).
-  exists witnesses. split; [exact hdynamicWitnessed |].
-  apply
-    (raw_nativeOrIntroductionLeftTruthLawRoot_of_dynamic_reroot
-      M hPA parameters contextTruth conclusionTruth sigmaCode sigmaSelector
-      hconclusion
-      (embedPAContext (map witnessedAxiom witnesses))).
-  exact hdynamicRoot.
+    sigmaCode sigmaSelector hconclusion hdynamicCompiler.
+  exists []. split.
+  - pose proof (raw_codedPAAxiomWitnessContext_standard M hPA []) as h.
+    cbn [rawQuotedPAAxiomWitnessList rawQuotedContextCode map] in h.
+    exact h.
+  - apply
+      (raw_nativeOrIntroductionLeftTruthLawRoot_of_dynamic_reroot
+        M hPA parameters contextTruth conclusionTruth sigmaCode sigmaSelector
+        hconclusion
+        (embedPAContext (map witnessedAxiom []))).
+    exact (hdynamicCompiler (embedPAContext (map witnessedAxiom []))).
 Qed.
+
+Definition RawCoqRestrictedPADirectDynamicTruthLawCompiler
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
+  forall tail,
+  RawCoqRestrictedPADirectOrIntroductionLeftDynamicTruthLawRoot
+    M hPA inputs tail.
+
+Arguments RawCoqRestrictedPADirectDynamicTruthLawCompiler
+  M hPA inputs : clear implicits.
 
 (** Smallest linked proof-producing boundary.  Unlike a universal callback
     over arbitrary predicates, this compiler receives the actual paired
@@ -454,10 +473,10 @@ Proof.
       nextGlobalSigma nextGlobalPi sigmaApplicationSelector hsuccessor).
 Qed.
 
-(** Native direct-truth inputs now need no separate linked Or-I-left
-    compiler.  The selected conclusion leaf equation and the dynamic reroot
-    source suffice to build the native tail directly; the successor edge is
-    still retained by the input package for the other native fields. *)
+(** Native direct-truth inputs no longer need the linked successor-edge
+    callback.  They still require the public dynamic-law compiler above; the
+    reroot source cannot discharge that premise because it proves a distinct
+    restricted-core formula under a coverage eigencontext. *)
 Theorem
     raw_selectedPublicOrIntroductionLeftTruthTail_of_nativeDirectTruthInputsWithClosureAt_of_dynamic_reroot
     : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
@@ -465,13 +484,17 @@ Theorem
       currentGlobalSigma currentGlobalPi predecessorLevel nextSigmaEvidence,
   RawCoqRestrictedPANativeDirectTruthInputsWithClosureAt M hPA parameters
     currentGlobalSigma currentGlobalPi predecessorLevel nextSigmaEvidence ->
+  (forall contextTruth conclusionTruth,
+    RawCoqRestrictedPADirectDynamicTruthLawCompiler M hPA
+      (rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
+        M hPA parameters contextTruth conclusionTruth)) ->
   exists contextTruth conclusionTruth,
     RawCoqRestrictedPADirectSelectedOrIntroductionLeftTruthTail M hPA
       (rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
         M hPA parameters contextTruth conclusionTruth).
 Proof.
   intros M hPA parameters currentGlobalSigma currentGlobalPi
-    predecessorLevel nextSigmaEvidence hinputs.
+    predecessorLevel nextSigmaEvidence hinputs hdynamicCompiler.
   unfold RawCoqRestrictedPANativeDirectTruthInputsWithClosureAt in hinputs.
   destruct hinputs as
     (nextGlobalSigma & nextGlobalPi & sigmaApplicationSelector &
@@ -489,13 +512,15 @@ Proof.
   exact
     (raw_selectedNativeOrIntroductionLeftTruthTail_of_dynamic_reroot
       M hPA parameters contextTruth conclusionTruth nextGlobalSigma
-      sigmaApplicationSelector hconclusionLeaf).
+      sigmaApplicationSelector hconclusionLeaf
+      (hdynamicCompiler contextTruth conclusionTruth)).
 Qed.
 
-(** End-to-end endpoint after the dynamic reroot transport.  Compared with
+(** End-to-end endpoint after direct dynamic-law transport.  Compared with
     the linked endpoint below, this version exposes no Or-I-left successor
     callback: the native package's conclusion leaf is rewritten directly to
-    the dynamic reroot root, and only the post-Or continuation remains. *)
+    a supplied public dynamic-law root, and only the post-Or continuation
+    remains. *)
 Theorem
     raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeDirectTruthInputsWithClosureAt_of_dynamic_reroot
     : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
@@ -503,6 +528,10 @@ Theorem
       currentGlobalSigma currentGlobalPi predecessorLevel nextSigmaEvidence,
   RawCoqRestrictedPANativeDirectTruthInputsWithClosureAt M hPA parameters
     currentGlobalSigma currentGlobalPi predecessorLevel nextSigmaEvidence ->
+  (forall contextTruth conclusionTruth,
+    RawCoqRestrictedPADirectDynamicTruthLawCompiler M hPA
+      (rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
+        M hPA parameters contextTruth conclusionTruth)) ->
   (forall contextTruth conclusionTruth,
     RawCoqRestrictedPADirectRemainingAfterOrIntroductionLeftTruthStandardTailCompiler
       M hPA
@@ -516,7 +545,7 @@ Theorem
       soundnessCertificate.
 Proof.
   intros M hPA parameters currentGlobalSigma currentGlobalPi
-    predecessorLevel nextSigmaEvidence hinputs hremaining.
+    predecessorLevel nextSigmaEvidence hinputs hdynamicCompiler hremaining.
   unfold RawCoqRestrictedPANativeDirectTruthInputsWithClosureAt in hinputs.
   destruct hinputs as
     (nextGlobalSigma & nextGlobalPi & sigmaApplicationSelector &
@@ -538,7 +567,8 @@ Proof.
     exact
       (raw_selectedNativeOrIntroductionLeftTruthTail_of_dynamic_reroot
         M hPA parameters contextTruth conclusionTruth nextGlobalSigma
-        sigmaApplicationSelector hconclusionLeaf).
+        sigmaApplicationSelector hconclusionLeaf
+        (hdynamicCompiler contextTruth conclusionTruth)).
   }
   pose proof
     (raw_remainingAfterAssumptionCompiler_of_selectedOrIntroductionLeftTruth
