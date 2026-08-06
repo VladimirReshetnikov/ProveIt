@@ -1,0 +1,14 @@
+(** Assumption audit for the synchronized guarded collision package. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeZeroGuardedCollisionCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedCollisionCompilation.
+
+Check RawDynamicTruthLocalGuardedCollisionRootsUnderTemplatePrefixAt.
+Check
+  raw_dynamicTruthLocalGuardedCollisionRootsUnderTemplatePrefixAt_on_witnessed_extension_of_zero_normalized_and_canonical_append_kernel_payload_pairs.
+
+Print Assumptions
+  raw_dynamicTruthLocalGuardedCollisionRootsUnderTemplatePrefixAt_on_witnessed_extension_of_zero_normalized_and_canonical_append_kernel_payload_pairs.
