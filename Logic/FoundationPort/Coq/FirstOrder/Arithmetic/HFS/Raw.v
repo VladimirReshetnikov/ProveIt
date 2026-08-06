@@ -65,6 +65,15 @@ Proof.
   intros s x H. now apply (proj1 (hfs_mem_code_elements_iff s x)).
 Qed.
 
+Lemma hfs_code_elements_nodup : forall s,
+  NoDup (hfs_code_elements s).
+Proof.
+  intro s. unfold hfs_code_elements.
+  apply NoDup_map_NoDup_ForallPairs.
+  - intros i j _ _ Hij. apply Nat2N.inj. exact Hij.
+  - apply NoDup_filter. apply seq_NoDup.
+Qed.
+
 (** * Raw big operations *)
 
 Definition hfs_code_big_union (s : hfs_code) : hfs_code :=
@@ -315,6 +324,86 @@ Definition hfs_code_is_mapping (relation : hfs_code) : Prop :=
   forall x, hfs_mem x (hfs_code_domain relation) ->
     exists! y, hfs_mem (hfs_index_pair x y) relation.
 
+Lemma hfs_code_domain_union : forall left right,
+  hfs_code_domain (hfs_union left right) =
+  hfs_union (hfs_code_domain left) (hfs_code_domain right).
+Proof.
+  intros left right. apply hfs_extensionality. intro x.
+  rewrite hfs_mem_code_domain_iff, hfs_mem_union_iff,
+    hfs_mem_code_domain_iff, hfs_mem_code_domain_iff.
+  setoid_rewrite hfs_mem_union_iff.
+  split.
+  - intros [y [Hy | Hy]].
+    + left. exists y. exact Hy.
+    + right. exists y. exact Hy.
+  - intros [[y Hy] | [y Hy]].
+    + exists y. left. exact Hy.
+    + exists y. right. exact Hy.
+Qed.
+
+Definition hfs_code_domains_disjoint (left right : hfs_code) : Prop :=
+  forall x,
+    ~ (hfs_mem x (hfs_code_domain left) /\
+       hfs_mem x (hfs_code_domain right)).
+
+Lemma hfs_code_is_mapping_union_of_disjoint : forall left right,
+  hfs_code_is_mapping left ->
+  hfs_code_is_mapping right ->
+  hfs_code_domains_disjoint left right ->
+  hfs_code_is_mapping (hfs_union left right).
+Proof.
+  intros left right Hleft Hright Hdisjoint x Hx.
+  apply hfs_mem_code_domain_iff in Hx. destruct Hx as [y Hy].
+  rewrite hfs_mem_union_iff in Hy.
+  destruct Hy as [Hyleft | Hyright].
+  - assert (Hxleft : hfs_mem x (hfs_code_domain left)).
+    { apply hfs_mem_code_domain_iff. exists y. exact Hyleft. }
+    destruct (Hleft x Hxleft) as [z [Hz Huniq]]. exists z. split.
+    + apply hfs_mem_union_iff. left. exact Hz.
+    + intros w Hw. apply hfs_mem_union_iff in Hw.
+      destruct Hw as [Hwleft | Hwright].
+      * pose proof (Huniq w Hwleft) as Hzw. congruence.
+      * exfalso. apply (Hdisjoint x). split; [exact Hxleft|].
+        apply hfs_mem_code_domain_iff. exists w. exact Hwright.
+  - assert (Hxright : hfs_mem x (hfs_code_domain right)).
+    { apply hfs_mem_code_domain_iff. exists y. exact Hyright. }
+    destruct (Hright x Hxright) as [z [Hz Huniq]]. exists z. split.
+    + apply hfs_mem_union_iff. right. exact Hz.
+    + intros w Hw. apply hfs_mem_union_iff in Hw.
+      destruct Hw as [Hwleft | Hwright].
+      * exfalso. apply (Hdisjoint x). split.
+        -- apply hfs_mem_code_domain_iff. exists w. exact Hwleft.
+        -- exact Hxright.
+      * pose proof (Huniq w Hwright) as Hzw. congruence.
+Qed.
+
+Lemma hfs_code_is_mapping_insert_fresh : forall relation x y,
+  hfs_code_is_mapping relation ->
+  ~ hfs_mem x (hfs_code_domain relation) ->
+  hfs_code_is_mapping (hfs_insert (hfs_index_pair x y) relation).
+Proof.
+  intros relation x y Hmap Hfresh a Ha.
+  apply hfs_mem_code_domain_iff in Ha. destruct Ha as [b Hab].
+  rewrite hfs_mem_insert_iff in Hab. destruct Hab as [Habnew | Habold].
+  - destruct (hfs_index_pair_injective Habnew) as [Hax Hby].
+    subst a. subst b. exists y. split.
+    + apply hfs_mem_insert_iff. left. reflexivity.
+    + intros z Hz. apply hfs_mem_insert_iff in Hz.
+      destruct Hz as [Hznew | Hzold].
+      * destruct (hfs_index_pair_injective Hznew) as [_ Hzy]. exact (eq_sym Hzy).
+      * exfalso. apply Hfresh. apply hfs_mem_code_domain_iff.
+        exists z. exact Hzold.
+  - assert (Had : hfs_mem a (hfs_code_domain relation)).
+    { apply hfs_mem_code_domain_iff. exists b. exact Habold. }
+    destruct (Hmap a Had) as [z [Hz Huniq]]. exists z. split.
+    + apply hfs_mem_insert_iff. right. exact Hz.
+    + intros w Hw. apply hfs_mem_insert_iff in Hw.
+      destruct Hw as [Hwnew | Hwold].
+      * destruct (hfs_index_pair_injective Hwnew) as [Hax _].
+        exfalso. apply Hfresh. rewrite <- Hax. exact Had.
+      * pose proof (Huniq w Hwold) as Hzw. congruence.
+Qed.
+
 Lemma hfs_code_is_mapping_empty : hfs_code_is_mapping hfs_empty.
 Proof.
   intros x Hx. apply hfs_mem_code_domain_iff in Hx.
@@ -360,10 +449,54 @@ Proof.
   - apply hfs_code_restrict_subset.
 Qed.
 
+Theorem hfs_code_skolem_exists : forall
+    (domain : hfs_code)
+    (R : hfs_code -> hfs_code -> Prop),
+  (forall x, hfs_mem x domain -> exists y, R x y) ->
+  exists relation,
+    hfs_code_is_mapping relation /\
+    hfs_code_domain relation = domain /\
+    (forall x y, hfs_mem (hfs_index_pair x y) relation -> R x y).
+Proof.
+  intros domain R H.
+  assert (Hlist : forall x, In x (hfs_code_elements domain) -> exists y, R x y).
+  { intros x Hx. apply H.
+    apply (proj1 (hfs_mem_code_elements_iff domain x)). exact Hx. }
+  destruct (@hfs_list_skolem_exists (hfs_code_elements domain) R
+    (hfs_code_elements_nodup domain) Hlist)
+    as [relation_list [Hmapping [Hcover Hgraph]]].
+  exists (hfs_arithmetize_list relation_list). split.
+  - assert (Hmap_code :
+      hfs_code_is_mapping (hfs_arithmetize_list relation_list)).
+    { intros x Hx.
+      apply hfs_mem_code_domain_iff in Hx. destruct Hx as [y Hy].
+      apply hfs_mem_arithmetize_list_iff in Hy.
+      assert (Hxd : hfs_mem x (hfs_list_domain relation_list)).
+      { apply hfs_mem_list_domain_iff. exists y. exact Hy. }
+      destruct (@hfs_list_mapping_fiber_existsUnique relation_list x
+        Hmapping Hxd) as [z [Hz Huniq]].
+      exists z. split.
+      - apply hfs_mem_arithmetize_list_iff. exact Hz.
+      - intros z0 Hz0.
+        apply hfs_mem_arithmetize_list_iff in Hz0.
+        exact (Huniq z0 Hz0). }
+    exact Hmap_code.
+  - split.
+    + apply hfs_extensionality. intro x.
+      rewrite hfs_mem_code_domain_iff.
+      setoid_rewrite hfs_mem_arithmetize_list_iff.
+      rewrite <- hfs_mem_code_elements_iff. split.
+      * intros [y Hy]. exact (proj1 (Hgraph x y Hy)).
+      * intro Hx. destruct (Hcover x Hx) as [y Hy]. exists y. exact Hy.
+    + intros x y Hxy. apply hfs_mem_arithmetize_list_iff in Hxy.
+      exact (proj2 (Hgraph x y Hxy)).
+Qed.
+
 Print Assumptions hfs_mem_code_elements_iff.
 Print Assumptions hfs_code_elements_arithmetize.
 Print Assumptions hfs_code_elements_nonempty_of_mem.
 Print Assumptions hfs_mem_code_elements.
+Print Assumptions hfs_code_elements_nodup.
 Print Assumptions hfs_mem_code_big_union_iff.
 Print Assumptions hfs_code_big_union_existsUnique.
 Print Assumptions hfs_mem_code_big_inter_iff.
@@ -379,7 +512,11 @@ Print Assumptions hfs_code_image_existsUnique.
 Print Assumptions hfs_mem_code_restrict_iff.
 Print Assumptions hfs_code_restrict_subset.
 Print Assumptions hfs_code_domain_restrict.
+Print Assumptions hfs_code_domain_union.
+Print Assumptions hfs_code_is_mapping_union_of_disjoint.
+Print Assumptions hfs_code_is_mapping_insert_fresh.
 Print Assumptions hfs_code_is_mapping_empty.
 Print Assumptions hfs_code_is_mapping_singleton.
 Print Assumptions hfs_code_is_mapping_of_subset.
 Print Assumptions hfs_code_is_mapping_restrict.
+Print Assumptions hfs_code_skolem_exists.

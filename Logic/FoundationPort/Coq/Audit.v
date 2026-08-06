@@ -5771,6 +5771,7 @@ Print Assumptions hfs_mem_code_elements_iff.
 Print Assumptions hfs_code_elements_arithmetize.
 Print Assumptions hfs_code_elements_nonempty_of_mem.
 Print Assumptions hfs_mem_code_elements.
+Print Assumptions hfs_code_elements_nodup.
 Print Assumptions hfs_mem_code_big_union_iff.
 Print Assumptions hfs_code_big_union_existsUnique.
 Print Assumptions hfs_mem_code_big_inter_iff.
@@ -5786,10 +5787,14 @@ Print Assumptions hfs_code_image_existsUnique.
 Print Assumptions hfs_mem_code_restrict_iff.
 Print Assumptions hfs_code_restrict_subset.
 Print Assumptions hfs_code_domain_restrict.
+Print Assumptions hfs_code_domain_union.
+Print Assumptions hfs_code_is_mapping_union_of_disjoint.
+Print Assumptions hfs_code_is_mapping_insert_fresh.
 Print Assumptions hfs_code_is_mapping_empty.
 Print Assumptions hfs_code_is_mapping_singleton.
 Print Assumptions hfs_code_is_mapping_of_subset.
 Print Assumptions hfs_code_is_mapping_restrict.
+Print Assumptions hfs_code_skolem_exists.
 Check hfs_pr_construction.
 Check hfs_pr_result.
 Print Assumptions hfs_pr_result_zero.
