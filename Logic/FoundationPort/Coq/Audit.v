@@ -54,7 +54,7 @@ From Foundation.FirstOrder.Arithmetic Require Import Exponential.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
-From Foundation.FirstOrder.SetTheory.Basic Require Import Model Misc Axioms.
+From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -5280,6 +5280,13 @@ Print Assumptions set_zfc_model_iff_zf_and_choice.
 Print Assumptions set_zfc_model_is_zc.
 Print Assumptions set_zermelo_choice_model.
 Print Assumptions set_zf_choice_model.
+Check membership_well_founded.
+Check transitive_model.
+Print Assumptions well_founded_predicate_subtype.
+Print Assumptions transitive_model_well_founded.
+Print Assumptions membership_well_founded_induction.
+Print Assumptions transitive_model_induction.
+Print Assumptions transitive_model_induction_ambient.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.
