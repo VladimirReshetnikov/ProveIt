@@ -413,6 +413,28 @@ Proof.
   symmetry. apply N.pow_le_mono_r_iff. reflexivity.
 Qed.
 
+(** Cross-base comparison: once both bounded exponents are in range, the
+    bases are irrelevant and order is exactly order of the indices. *)
+Lemma nat_bexp_monotone_cross_iff : forall a1 i1 a2 i2,
+  i1 < nat_length a1 -> i2 < nat_length a2 ->
+  (nat_bexp a1 i1 < nat_bexp a2 i2 <-> i1 < i2).
+Proof.
+  intros a1 i1 a2 i2 H1 H2.
+  rewrite !nat_bexp_of_lt by assumption.
+  unfold nat_exp.
+  symmetry. apply N.pow_lt_mono_r_iff. reflexivity.
+Qed.
+
+Lemma nat_bexp_monotone_cross_le_iff : forall a1 i1 a2 i2,
+  i1 < nat_length a1 -> i2 < nat_length a2 ->
+  (nat_bexp a1 i1 <= nat_bexp a2 i2 <-> i1 <= i2).
+Proof.
+  intros a1 i1 a2 i2 H1 H2.
+  rewrite !nat_bexp_of_lt by assumption.
+  unfold nat_exp.
+  symmetry. apply N.pow_le_mono_r_iff. reflexivity.
+Qed.
+
 Lemma nat_bexp_eq_of_lt_length : forall a b i,
   i < nat_length a -> i < nat_length b ->
   nat_bexp a i = nat_bexp b i.

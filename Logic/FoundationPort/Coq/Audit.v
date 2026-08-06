@@ -5142,6 +5142,8 @@ Print Assumptions nat_bexp_exponential_iff.
 Print Assumptions nat_bexp_le_self.
 Print Assumptions nat_bexp_monotone_iff.
 Print Assumptions nat_bexp_monotone_le_iff.
+Print Assumptions nat_bexp_monotone_cross_iff.
+Print Assumptions nat_bexp_monotone_cross_le_iff.
 Print Assumptions nat_bexp_eq_of_lt_length.
 Print Assumptions nat_bexp_pow2.
 Print Assumptions nat_bexp_pos.
