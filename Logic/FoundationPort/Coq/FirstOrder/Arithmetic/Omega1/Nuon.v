@@ -20,6 +20,32 @@ Open Scope N_scope.
 Set Implicit Arguments.
 Unset Strict Implicit.
 
+(** Length bounds used by the source Nuon segment construction.  The
+    executable smash length is one more than the product of its factors, so
+    the source's nonstandard arithmetic induction collapses to monotonicity
+    of multiplication followed by the successor bound. *)
+Lemma nat_mul_length_lt_length_smash : forall i I L,
+  i <= nat_length I ->
+  i * nat_length L < nat_length (nat_smash I L).
+Proof.
+  intros i I L Hi.
+  rewrite nat_length_smash.
+  replace (nat_length I * nat_length L + 1) with
+      (N.succ (nat_length I * nat_length L)) by lia.
+  apply (proj2 (N.lt_succ_r _ _)).
+  apply N.mul_le_mono_nonneg_r; [apply N.le_0_l | exact Hi].
+Qed.
+
+Lemma nat_mul_length_lt_length_smash_length : forall i z K,
+  i <= nat_length z ->
+  i * nat_length (nat_length K) <
+    nat_length (nat_smash z (nat_length K)).
+Proof.
+  intros i z K Hi.
+  apply nat_mul_length_lt_length_smash.
+  exact Hi.
+Qed.
+
 Fixpoint positive_nuon (p : positive) : N :=
   match p with
   | xH => 1

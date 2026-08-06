@@ -5192,6 +5192,8 @@ Print Assumptions positive_nuon_pos.
 Print Assumptions positive_nuon_le_size.
 Print Assumptions nat_nuon_zero.
 Print Assumptions nat_nuon_one.
+Print Assumptions nat_mul_length_lt_length_smash.
+Print Assumptions nat_mul_length_lt_length_smash_length.
 Print Assumptions nat_nuon_double.
 Print Assumptions nat_nuon_double_add_one.
 Print Assumptions nat_nuon_pos_iff.
