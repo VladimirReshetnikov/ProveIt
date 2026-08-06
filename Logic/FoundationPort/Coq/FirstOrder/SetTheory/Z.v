@@ -994,11 +994,93 @@ Definition z_kpair {m} (O : zermelo_operations m)
     (x y : membership_carrier m) : membership_carrier m :=
   z_pair O (z_singleton O x) (z_pair O x y).
 
+Definition z_kpair_fst {m} (O : zermelo_operations m)
+    (p : membership_carrier m) : membership_carrier m :=
+  z_sunion O (z_sinter O p).
+
+Definition z_kpair_snd {m} (O : zermelo_operations m)
+    (p : membership_carrier m) : membership_carrier m :=
+  z_sunion O
+    (z_separate O
+      (fun z => membership_rel z (z_sinter O p) ->
+        z_sunion O p = z_sinter O p)
+      (z_sunion O p)).
+
 Lemma z_kpair_mem_iff : forall m (O : zermelo_operations m)
     (x y z : membership_carrier m),
   membership_rel z (z_kpair O x y) <->
   z = z_singleton O x \/ z = z_pair O x y.
 Proof. intros. unfold z_kpair. apply z_pair_mem_iff. Qed.
+
+Lemma z_sunion_kpair : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  z_sunion O (z_kpair O x y) = z_pair O x y.
+Proof.
+  intros m O x y. apply (z_extensionality O). intro z. split.
+  - intro Hz. apply z_sunion_mem_iff in Hz.
+    destruct Hz as [s [Hs Hzs]]. apply z_kpair_mem_iff in Hs.
+    destruct Hs as [-> | ->].
+    + apply z_singleton_mem_iff in Hzs. subst z.
+      apply z_pair_mem_iff. now left.
+    + exact Hzs.
+  - intro Hz. apply z_sunion_mem_iff. exists (z_pair O x y).
+    split; [apply z_kpair_mem_iff; now right | exact Hz].
+Qed.
+
+Lemma z_sinter_kpair : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  z_sinter O (z_kpair O x y) = z_singleton O x.
+Proof.
+  intros m O x y. apply (z_extensionality O). intro z. split.
+  - intro Hz. apply z_sinter_mem_iff in Hz.
+    apply z_singleton_mem_iff.
+    pose proof (proj2 Hz (z_singleton O x)
+      (proj2 (@z_kpair_mem_iff m O x y (z_singleton O x)) (or_introl eq_refl)))
+      as Hzx.
+    exact (proj1 (@z_singleton_mem_iff m O x z) Hzx).
+  - intro Hz. apply z_sinter_mem_iff. split; [apply z_pair_nonempty |].
+    intros s Hs. apply z_kpair_mem_iff in Hs.
+    destruct Hs as [-> | ->]; [exact Hz |].
+    apply z_pair_mem_iff. left. now apply z_singleton_mem_iff in Hz.
+Qed.
+
+Lemma z_kpair_fst_eval : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  z_kpair_fst O (z_kpair O x y) = x.
+Proof.
+  intros. unfold z_kpair_fst. rewrite z_sinter_kpair.
+  apply z_sunion_singleton.
+Qed.
+
+Lemma z_kpair_snd_separation : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  z_separate O
+      (fun z => membership_rel z (z_singleton O x) ->
+        z_pair O x y = z_singleton O x)
+      (z_pair O x y) =
+    z_singleton O y.
+Proof.
+  intros m O x y. apply (z_extensionality O). intro z.
+  rewrite z_separate_mem_iff, !z_pair_mem_iff, !z_singleton_mem_iff. split.
+  - intros [[Hzx | Hzy] Hcondition]; [|exact Hzy].
+    subst z. assert (Heq : z_pair O x y = z_singleton O x).
+    { apply Hcondition. reflexivity. }
+    assert (Hy : membership_rel y (z_singleton O x)).
+    { rewrite <- Heq. apply z_pair_mem_iff. now right. }
+    apply z_singleton_mem_iff in Hy. now symmetry.
+  - intro Hzy. subst z. split; [now right |].
+    intro Hyx. subst y.
+    unfold z_singleton. reflexivity.
+Qed.
+
+Lemma z_kpair_snd_eval : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  z_kpair_snd O (z_kpair O x y) = y.
+Proof.
+  intros m O x y. unfold z_kpair_snd.
+  rewrite z_sunion_kpair, z_sinter_kpair, z_kpair_snd_separation.
+  apply z_sunion_singleton.
+Qed.
 
 Lemma z_pair_right_injective : forall m (O : zermelo_operations m)
     (x y z : membership_carrier m),
@@ -1212,4 +1294,6 @@ Print Assumptions z_omega_induction.
 Print Assumptions z_subset_sinter_iff.
 Print Assumptions z_insert_sdiff_of_not_mem.
 Print Assumptions z_kpair_mem_product_iff.
+Print Assumptions z_kpair_fst_eval.
+Print Assumptions z_kpair_snd_eval.
 Print Assumptions zermelo_operations_model.

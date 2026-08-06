@@ -5403,7 +5403,14 @@ Print Assumptions z_mem_asym.
 Print Assumptions z_mem_asym3.
 Print Assumptions z_ne_successor.
 Check z_kpair.
+Check z_kpair_fst.
+Check z_kpair_snd.
 Print Assumptions z_kpair_mem_iff.
+Print Assumptions z_sunion_kpair.
+Print Assumptions z_sinter_kpair.
+Print Assumptions z_kpair_fst_eval.
+Print Assumptions z_kpair_snd_separation.
+Print Assumptions z_kpair_snd_eval.
 Print Assumptions z_pair_right_injective.
 Print Assumptions z_kpair_injective.
 Print Assumptions z_kpair_eq_iff.
