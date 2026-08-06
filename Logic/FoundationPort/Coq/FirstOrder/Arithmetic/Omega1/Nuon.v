@@ -46,6 +46,67 @@ Proof.
   exact Hi.
 Qed.
 
+(** Executable standard-model versions of the polynomial parameters used by
+    the source Nuon construction. *)
+Definition nat_polyI (A : N) : N :=
+  nat_bexp (2 * A) (N.sqrt (nat_length A)).
+
+Definition nat_polyL (A : N) : N :=
+  nat_length (nat_polyI A) ^ 2.
+
+Definition nat_polyU (A : N) : N :=
+  (2 * A + 1) ^ 128.
+
+Lemma nat_length_polyI : forall A,
+  0 < A ->
+  nat_length (nat_polyI A) = N.sqrt (nat_length A) + 1.
+Proof.
+  intros A HA. unfold nat_polyI.
+  apply nat_length_bexp.
+  rewrite nat_length_two_mul_of_pos by exact HA.
+  pose proof (N.sqrt_le_lin (nat_length A)) as Hsqrt.
+  lia.
+Qed.
+
+Lemma nat_polyI_le : forall A,
+  0 < A ->
+  nat_length A < nat_length (nat_polyI A) ^ 2.
+Proof.
+  intros A HA. rewrite nat_length_polyI by exact HA.
+  pose proof (proj2 (N.sqrt_spec (nat_length A) (N.le_0_l _))) as Hroot.
+  simpl in Hroot.
+  nia.
+Qed.
+
+Lemma nat_four_mul_smash_self : forall a,
+  nat_smash (4 * a) (4 * a) <= (nat_smash a a) ^ 16.
+Proof.
+  intro a.
+  destruct (N.eq_dec a 0) as [-> | Ha].
+  - simpl. reflexivity.
+  - pose proof (proj1 (N.neq_0_lt_0 a) Ha) as Hpos.
+    apply (proj2 (@nat_smash_le_iff
+      ((nat_smash a a) ^ 16) (4 * a) (4 * a))).
+    unfold nat_smash.
+    replace ((nat_exp (nat_length a * nat_length a)) ^ 16) with
+        (nat_exp (nat_length a * nat_length a * 16)) by
+      (unfold nat_exp; rewrite <- N.pow_mul_r; reflexivity).
+    rewrite nat_length_exp.
+    assert (Hlen4 : nat_length (4 * a) = nat_length a + 2).
+    { replace (4 * a) with (2 * (2 * a)) by nia.
+      rewrite nat_length_two_mul_of_pos.
+      - rewrite nat_length_two_mul_of_pos by exact Hpos.
+        lia.
+      - nia. }
+    rewrite Hlen4.
+    replace (nat_length a * nat_length a * 16 + 1) with
+        (N.succ (nat_length a * nat_length a * 16)) by lia.
+    assert (Hone : 1 <= nat_length a).
+    { pose proof (@nat_length_pos_iff a) as H. lia. }
+    apply (proj2 (N.lt_succ_r _ _)).
+    nia.
+Qed.
+
 Fixpoint positive_nuon (p : positive) : N :=
   match p with
   | xH => 1
