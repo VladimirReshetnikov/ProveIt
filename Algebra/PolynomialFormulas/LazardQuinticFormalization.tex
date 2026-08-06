@@ -1,0 +1,699 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[a4paper,margin=26mm]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\allowdisplaybreaks
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!60!black,
+  pdftitle={A Lean transcription of the corrected Lazard quintic formula},
+  pdfauthor={ProveIt project}
+}
+
+\newcommand{\lean}[1]{\nolinkurl{#1}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ii}[1]{i_{#1}}
+\newcommand{\codepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuintic.lean}}
+\setlength{\emergencystretch}{3em}
+
+\title{A Lean Transcription of the Corrected Lazard Formula\\
+for Solvable Quintics}
+\author{ProveIt project}
+\date{August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Daniel Lazard gave an explicit radical formula for every irreducible solvable
+quintic.  This note documents a Lean 4 transcription of the formula, including
+Vladimir Reshetnikov's correction of two terms in the printed expression
+$P_{22}$ and Valeriy Zapodovnikov's restoration of the exceptional sign choice
+needed when the first determination of $\eps$ would make $T=0$.
+
+The Lean development formalizes the conditional data flow after the required
+algebraic witnesses have been supplied: normalization and depression,
+Lazard's degree-six resolvent, the four equations recovering
+$\ii4,\ldots,\ii8$, all auxiliary invariants $D,\ldots,K$, both coherent
+sign-selection stages, the corrected $P_{22}$, and inverse Fourier
+reconstruction of five candidate outputs.  It proves the normalization identity, the
+equivalence of the monic and fraction-free resolvent equations, preservation of
+$\eps^2$ by the correction, nonvanishing consequences of the branch
+certificates, coherence of all four quadratic sign branches, and soundness of
+finite branch selection.  It does \emph{not} prove that the five displayed
+outputs are roots, nor that the needed certificates exist.  Pointwise
+soundness and full five-factor completeness are recorded as separate
+propositions, not as axioms.
+\end{abstract}
+
+\tableofcontents
+
+\section{Purpose, sources, and claim boundary}
+
+The formal source is
+\begin{center}
+  \codepath.
+\end{center}
+It is imported by the public \lean{PolynomialFormulas} module.  The source
+materials were reviewed at Smithereens commit
+\lean{da7026ec1369ade49bb6d964019a4c124fdd5091}.  The principal references are:
+
+\begin{enumerate}[label=(\arabic*)]
+\item Lazard's chapter \emph{Solving Quintics by Radicals}, especially the
+  explicit formula on printed pp.~219--222 \cite{Lazard2004};
+\item Lazard's original Maple worksheet, version 3 (March 2002), distributed
+  with those materials;
+\item Reshetnikov's Wolfram-language transcription and warning about the two
+  printed $P_{22}$ errors \cite{MSE};
+\item Zapodovnikov's corrected 2025 version on the same page, especially
+  \lean{If[(g+h/F)==0,F=-F]}; and
+\item Dummit's independent solvability resolvent \cite{Dummit1991}, together
+  with Chapman's repair of the specialized-distinctness step
+  \cite{ChapmanNote}.
+\end{enumerate}
+
+The expanded review also covered every text-readable document under
+\lean{src/Polynomial} whose path or contents mention ``quintic'', including the
+Reshetnikov notebooks, the Wolfram notebooks, the independent
+\lean{solving-quintics} package, Dummit's paper, and the corpus reports.  These
+additional files provide useful examples and independent checks, but they do
+not supersede Lazard's formula.  In particular, the
+\lean{solving-quintics} package switches to numerical root matching after the
+resolvent and is not an exact implementation of the formula documented here.
+
+The present claim is deliberately limited:
+
+\begin{quote}
+The Lean definitions are an exact, type-correct transcription of the corrected
+algebraic algorithm, organized so that its eventual correctness proof can be
+stated without changing the API.  No theorem in this contribution asserts the
+unproved final root identity.
+\end{quote}
+
+This distinction matters.  Lean accepts division by zero as a total field
+operation, and so a raw expression alone would not faithfully express
+Lazard's partial algebraic construction.  The formalization therefore records
+every required denominator condition and every shared radical determination in
+\lean{RadicalCertificate}.
+
+\section{Mathematical scope}
+
+Lazard begins with an irreducible quintic over a field of characteristic
+different from $2$ and $5$.  His compact expanded formula uses a particular
+fourth projection whose invertibility is justified when $-1$ is not a square;
+this is harmless over $\Q$.  The paper also sketches an alternate projection
+for more general fields, but does not print its expanded formula.
+
+The Lean expressions are polymorphic over a field $K$ with
+\lean{CharZero K}.  This is a slightly stronger characteristic assumption and
+ensures that all displayed rational denominators are meaningful.  The actual
+rational front end is made explicit by
+\lean{RationalInvariantCertificate}: the tuple
+$(\ii4,\ldots,\ii8)$ is first certified in $\Q$ and only then mapped to a
+radical extension.  The abstract generic API remains useful for algebraic
+lemmas.
+
+The generic propositions \lean{FormulaSound} and \lean{FormulaFactors} are
+deliberately stronger \emph{conditional algebraic targets}: they quantify over
+an arbitrary characteristic-zero field, but only after every displayed
+invariant and radical certificate has been supplied.  They do not assert
+existence of those certificates.  Thus Lazard's sourced irreducibility and
+$-1$ nonsquare hypotheses remain obligations for the applicability/existence
+bridge, while the rational specialization fixes the coefficient field to
+$\Q$ and performs radical calculations in an extension field.
+
+For a complete solver on arbitrary quintics, reducible inputs must be factored
+first.  Every proper factor has degree at most four and can in principle be
+handled by the existing low-degree formulas.  This module implements neither
+that factor search nor the rational-root search for the sextic: its rational
+entry point accepts a supplied \lean{RationalInvariantCertificate}.  Lazard's
+core is the irreducible branch; the formalization does not misrepresent it as
+a total reducer for arbitrary degree-five polynomials.
+
+\section{The algorithm at a glance}
+
+For an irreducible rational quintic, the corrected construction is:
+
+\begin{enumerate}
+\item normalize and translate to $Y^5+pY^3+qY^2+rY+s$;
+\item find the rational root $\ii4$ of Lazard's sextic resolvent;
+\item solve the four linear equations of Figure~3 for
+  $\ii5,\ii6,\ii7,\ii8$;
+\item calculate $D,E,F,G$ and choose $\eps^2=5D$;
+\item if $E+F/\eps=0$, replace $\eps$ by $-\eps$;
+\item choose $T^2=\frac52(E+F/\eps)$ and set $U=5G/(T\eps)$;
+\item among four coherent sign triples $(\eps,T,U)$, choose one for which
+  $Q_1\ne0$;
+\item choose one shared fifth root $P_1^5=Q_1$, calculate the corrected
+  $P_2,P_3,P_4$, and apply the inverse discrete Fourier transform;
+\item translate every resulting root back by $-b/(5a)$.
+\end{enumerate}
+
+The group-theoretic tower behind these steps is
+\[
+ C_5\subset D_5\subset F_{20}\subset S_5,
+ \qquad [D_5:C_5]=2,\quad [F_{20}:D_5]=2,\quad [S_5:F_{20}]=6.
+\]
+The sextic selects a conjugate of the maximal solvable subgroup $F_{20}$;
+the two square roots descend through the two index-two inclusions; one fifth
+root resolves the remaining cyclic action.
+
+\section{Normalization and depression}
+
+Write
+\[
+ f_0(X)=aX^5+bX^4+cX^3+dX^2+eX+f,\qquad a\ne0.
+\]
+Under $X=Y-b/(5a)$ and division by $a$, one obtains
+\[
+ f(Y)=Y^5+pY^3+qY^2+rY+s,
+\]
+where
+\begin{align*}
+p&=\frac{5ac-2b^2}{5a^2},\\
+q&=\frac{25a^2d-15abc+4b^3}{25a^3},\\
+r&=\frac{125a^3e-50a^2bd+15ab^2c-3b^4}{125a^4},\\
+s&=\frac{3125a^4f-625a^3be+125a^2b^2d-25ab^3c+4b^5}
+        {3125a^5}.
+\end{align*}
+
+These are \lean{depress}.  Lean proves, for every $Y$,
+\[
+ f_0\!\left(Y-\frac{b}{5a}\right)=a\,f(Y)
+\]
+as \lean{depress_eval}.  It also proves that depression commutes with a field
+homomorphism (\lean{depress_map}), which is the bridge from rational
+certificates to the radical field.
+
+\section{Fourier invariants and metacyclic data}
+
+Let $x_0,\ldots,x_4$ be an ordering of the roots and let $\omega$ be a
+primitive fifth root of unity.  Lazard uses the Fourier sums
+\[
+ s_k=\sum_{j=0}^{4}\omega^{kj}x_j,\qquad k=0,\ldots,4.
+\]
+The depressed condition gives $s_0=0$.  Define cyclic invariants
+\[
+ S_1=s_1^5,\qquad S_2=s_2s_1^3,\qquad
+ S_3=s_3s_1^2,\qquad S_4=s_4s_1.
+\]
+Once $P_1^5=S_1$ is chosen with $P_1\ne0$, the remaining Fourier components
+are $P_2=S_2/P_1^3$, $P_3=S_3/P_1^2$, and $P_4=S_4/P_1$.
+
+The rational metacyclic basis used to express these quantities is
+\begin{align*}
+\ii4&=\sum_C x_0^2(x_1x_4+x_2x_3),&
+\ii5&=\sum_C x_0^3(x_1x_4+x_2x_3),\\
+\ii6&=\sum_C x_0^4(x_1x_4+x_2x_3),&
+\ii7&=\sum_C x_0^3(x_1^2x_4^2+x_2^2x_3^2),\\
+\ii8&=\sum_C x_0^4(x_1^2x_4^2+x_2^2x_3^2).&&
+\end{align*}
+Lean stores their values in \lean{Invariants}.  Their origin in a root tuple
+will be established only in a later correctness bridge; this formula module
+uses the exact resolvent and linear relations as its semantic interface.
+
+\section{The sextic resolvent}
+
+The discriminant of $X^5+pX^3+qX^2+rX+s$ is
+\begin{align*}
+\Delta={}&108p^5s^2-72p^4qrs+16p^4r^3+16p^3q^3s-4p^3q^2r^2
+ -900p^3rs^2\\
+&+825p^2q^2s^2+560p^2qr^2s-128p^2r^4-630pq^3rs
+ +144pq^2r^3\\
+&-3750pqs^3+2000pr^2s^2+108q^5s-27q^4r^2
+ +2250q^2rs^2\\
+&-1600qr^3s+256r^5+3125s^4.
+\end{align*}
+This is \lean{discriminant}; it was independently compared with a computer
+algebra discriminant on all $625$ tuples $p,q,r,s\in\{-2,-1,0,1,2\}$ during
+the source audit.
+
+For a variable $z=\ii4$, put
+\begin{align*}
+A(z)={}&2z^3+8rz^2+(-6p^2r+2pq^2-50qs+24r^2)z\\
+&-15p^2qs-16p^2r^2+13pq^2r+125ps^2
+-2q^4-200qrs+64r^3.
+\end{align*}
+Then Lazard's monic sextic is
+\begin{equation}\label{eq:resolvent}
+ R(z)=\left(\frac{A(z)}2\right)^2-
+ \left(z+3r+\frac{p^2}{4}\right)\Delta.
+\end{equation}
+The fraction-free equation used by the corrected Wolfram code is
+\begin{equation}\label{eq:resolvent-ff}
+ A(z)^2=(4z+p^2+12r)\Delta.
+\end{equation}
+Lean's two definitions are \lean{resolventEval} and
+\lean{resolventPolynomial}.  Their agreement under evaluation is the theorem
+\lean{resolventPolynomial_eval}.  The theorem
+\lean{resolventEval_eq_zero_iff} proves the equivalence of
+\eqref{eq:resolvent} and \eqref{eq:resolvent-ff}.
+
+There is a notation trap in the printed sources.  Cayley's earlier invariant is
+\[
+ \Theta=(V-W)^2=4\ii4+p^2+12r,
+\]
+whereas the section-7 sextic variable is $z=\ii4$.  Lean uses separate names
+\lean{cayleyTheta} and \lean{resolventCore}, preventing this collision.
+
+For an irreducible solvable rational quintic, the sextic has a rational root.
+Dummit's independent $F_{20}$ resolvent is the same invariant and gives the
+same criterion.  A future proof must not infer specialized distinctness from
+generic transitivity alone: Chapman's note supplies the missing argument, and
+Lazard gives a separability proof for the Cayley resolvent.
+
+\section[Recovering i5 through i8]{Recovering $\ii5,\ldots,\ii8$}
+
+After choosing $\ii4$, Lazard's Figure~3 gives four equations linear in
+$\ii5,\ldots,\ii8$.  They are transcribed as
+\lean{i4SquareRhs}, \lean{i4CubeRhs}, \lean{i4FourthRhs}, and
+\lean{i4FifthRhs}; together with the sextic equation they form
+\lean{InvariantRelations}.
+
+\begin{align*}
+\ii4^2={}&5\ii8-2p\ii6+4q\ii5-2p^2\ii4-6p^2r+2pq^2+10qs+4r^2,\\
+\ii4^3={}&\frac12\bigl[(3p^2-20r)\ii8+(-pq-50s)\ii7
+ +(-3p^3+28pr-12q^2)\ii6\\
+& +(3p^2q-45ps-6qr)\ii5
+ +(-3p^4+36p^2r-15pq^2+60qs-32r^2)\ii4\\
+& -6p^4r+3p^3q^2+41p^2qs+52p^2r^2-54pq^2r-250ps^2
+ +14q^4+140qrs-80r^3\bigr],\\
+\ii4^4={}&(19p^2r-9pq^2+225qs-60r^2)\ii8
+ +(15p^2s-8pqr+3q^3+100rs)\ii7\\
+&+(-4p^3r+4p^2q^2-105pqs-16pr^2+29q^2r+125s^2)\ii6\\
+&+(-9p^3s+17p^2qr-8pq^3+140prs+155q^2s-68qr^2)\ii5\\
+&+(-4p^4r+4p^3q^2-79p^2qs-16p^2r^2+15pq^2r-25ps^2
+  +4q^4+80qrs)\ii4\\
+&+6p^4qs-22p^4r^2+16p^3q^2r-4p^2q^4-404p^2qrs+68p^2r^3\\
+&+132pq^3s+42pq^2r^2+550prs^2-30q^4r-50q^2s^2+20qr^2s+16r^4,
+\end{align*}
+and
+{\small
+\begin{align*}
+2\ii4^5={}&
+(15p^4r-5p^3q^2+290p^2qs-152p^2r^2-27pq^2r-1375ps^2
+ +22q^4-700qrs+240r^3)\ii8\\
+&+(18p^4s-11p^3qr+3p^2q^3-530p^2rs+110pq^2s+124pqr^2
+ -41q^3r-2375qs^2+200r^2s)\ii7\\
+&+(-15p^5r+5p^4q^2-212p^3qs+168p^3r^2-83p^2q^2r
+ +325p^2s^2+10pq^4+1560pqrs\\
+&\qquad-176pr^3-620q^3s-12q^2r^2-1500rs^2)\ii6\\
+&+(15p^4qr-5p^3q^3-147p^3rs+351p^2q^2s-90p^2qr^2
+ -43pq^3r-3175pqs^2\\
+&\qquad-420pr^2s+20q^5+215q^2rs+152qr^3+625s^3)\ii5\\
+&+(-15p^6r+5p^5q^2-200p^4qs+200p^4r^2-110p^3q^2r
+ +355p^3s^2+15p^2q^4\\
+&\qquad+1728p^2qrs-432p^2r^3-752pq^3s+220pq^2r^2-200prs^2
+ -43q^4r+1825q^2s^2\\
+&\qquad-2640qr^2s+512r^4)\ii4\\
+&-30p^6r^2+25p^5q^2r+198p^5s^2-5p^4q^4-491p^4qrs+364p^4r^3
+ +181p^3q^3s\\
+&-286p^3q^2r^2-810p^3rs^2+95p^2q^4r+3005p^2q^2s^2
+ +4120p^2qr^2s-1088p^2r^4\\
+&-12pq^6-4095pq^3rs+612pq^2r^3-15875pqs^3+900pr^2s^2
+ +858q^5s-34q^4r^2\\
+&+10700q^2rs^2-6240qr^3s+960r^5\\
+&\qquad+6250s^4.
+\end{align*}
+}
+
+Retaining these as equations, instead of embedding the enormous pre-solved
+rational functions, is intentional.  It is exactly the finite linear-system
+interface needed for a later proof of existence and uniqueness.
+
+\section{The two quadratic stages}
+
+The explicit metacyclic invariants on Lazard p.~221 are:
+\begin{align*}
+D={}&40p\ii8-120q\ii7+(-24p^2+100r)\ii6+(88pq-300s)\ii5\\
+&+(-24p^3+100pr+24q^2)\ii4-80p^3r+40p^2q^2-480pqs
+ +160pr^2+332q^2r+125s^2,\\
+E={}&(3p^2+20r)\ii6+(-pq-50s)\ii5+(3p^3+12pr+3q^2)\ii4\\
+&+4p^3r-3p^2q^2+40pqs+16pr^2-21q^2r+125s^2,\\
+F={}&(-65p^2q+875ps-550qr)\ii8+(-58p^2r+41pq^2-275qs+440r^2)\ii7\\
+&+(85p^3q-520p^2s-298pqr+366q^3+2100rs)\ii6\\
+&+(4p^3r-73p^2q^2+2095pqs-56pr^2-748q^2r-4875s^2)\ii5\\
+&+(85p^4q-418p^3s-440p^2qr+419pq^3+1590prs-1040q^2s+524qr^2)\ii4\\
+&-12p^5s+158p^4qr-85p^3q^3-1462p^3rs-159p^2q^2s
+ +142p^2qr^2\\
+&+896pq^3r+175pqs^2+2900pr^2s-402q^5-1925q^2rs-448qr^3-1875s^3,\\
+G={}&(-35p^2q-250ps-200qr)\ii8+(-22p^2r+19pq^2+650qs-40r^2)\ii7\\
+&+(15p^3q+195p^2s+68pqr-6q^3-1100rs)\ii6\\
+&+(-4p^3r-27p^2q^2-270pqs+96pr^2-182q^2r+3000s^2)\ii5\\
+&+(15p^4q+213p^3s+50p^2qr+pq^3-940prs+515q^2s-184qr^2)\ii4\\
+&+12p^5s+42p^4qr-15p^3q^3+492p^3rs-156p^2q^2s+358p^2qr^2\\
+&-246pq^3r+2825pqs^2-1400pr^2s+42q^5+550q^2rs-232qr^3-1250s^3.
+\end{align*}
+They are \lean{invariantD}, \lean{invariantE}, \lean{invariantF}, and
+\lean{invariantG}.
+
+Choose $\eps_0$ with $\eps_0^2=5D$.  The corrected choice is
+\begin{equation}\label{eq:eps-correct}
+ \eps=\begin{cases}
+ -\eps_0,&E+F/\eps_0=0,\\
+ \eps_0,&E+F/\eps_0\ne0.
+ \end{cases}
+\end{equation}
+\begin{samepage}
+This is literally \lean{correctEpsilon}.  Lean proves
+\lean{correctEpsilon_sq}.  Under the sourced assertion that at least one of
+$E+F/\eps_0$ and $E-F/\eps_0$ is nonzero, the theorem
+\begin{center}
+\lean{correctedTRadicand_ne_zero}
+\end{center}
+proves that the corrected radicand is nonzero.  One then chooses
+\begin{equation}\label{eq:TU}
+ T^2=\frac52\left(E+\frac F\eps\right),\qquad
+ U=\frac{5G}{T\eps}.
+\end{equation}
+\end{samepage}
+The factor $5/2$ is the one used in section~7, Maple, and both Wolfram ports;
+an earlier prose passage in Lazard omits the relevant scaling.
+
+The records \lean{EpsilonChoice}, \lean{TChoice}, and
+\lean{RadicalCertificate} expose the equations and nondegeneracy assumptions.
+In particular, the certificate stores the complementary equation
+$U^2=\frac52(E-F/\eps)$.  The theorem
+\lean{RadicalCertificate.t_nonzero} derives $T\ne0$ from the corrected
+radicand rather than trusting total field division, and
+\lean{RadicalCertificate.initial_relations} proves $TU\eps=5G$ from the
+definition of $U$.
+
+\section{The fifth-root radicand and coherent signs}
+
+Define
+\begin{align*}
+H={}&25(2\ii5-pq-5s),\\
+I={}&25\bigl[40p\ii8-70q\ii7+(-24p^2+100r)\ii6+(68pq-300s)\ii5\\
+&\qquad+(-24p^3+100pr-46q^2)\ii4-80p^3r+20p^2q^2-255pqs
+ +160pr^2-28q^2r+125s^2\bigr],\\
+J={}&-25p\ii8-25q\ii7+(-9p^2-60r)\ii6+(-7pq+525s)\ii5\\
+&+(-p^3-96pr+11q^2)\ii4+50p^3r-7p^2q^2-145pqs-308pr^2
+ +128q^2r-1000s^2,\\
+K={}&-125p\ii8+75q\ii7+(67p^2-420r)\ii6+(-109pq+1175s)\ii5\\
+&+(63p^3-412pr+27q^2)\ii4+210p^3r-79p^2q^2-415pqs-676pr^2
+ +496q^2r-750s^2.
+\end{align*}
+These are \lean{invariantH} through \lean{invariantK}.  For a coherent
+triple $(\eps,T,U)$, set
+\begin{equation}\label{eq:q1}
+ Q_1=\frac54\left(H+\frac I\eps+\frac{TJ+UK}{E}\right).
+\end{equation}
+
+The four allowed triples are
+\[
+(\eps,T,U),\quad(\eps,-T,-U),\quad(-\eps,U,-T),\quad(-\eps,-U,T).
+\]
+They are the four constructors handled by \lean{branchTriple}.  The selector
+\lean{selectSignBranch} returns the first branch with $Q_1\ne0$, or
+\lean{none} if the mathematical existence hypothesis has not been supplied.
+Its theorem \lean{selectSignBranch_sound} proves that a returned branch is
+indeed nonzero.  Quadratic coherence is the separate theorem
+\begin{center}
+\lean{QuadraticRelations.of_branchTriple}.
+\end{center}
+It proves that each transformation preserves both square equations and
+$TU\eps=5G$.  A \lean{RadicalCertificate} stores the chosen branch, the
+nonzero fact, and one shared $P_1$ satisfying $P_1^5=Q_1$; Lean derives
+$P_1\ne0$ in \lean{RadicalCertificate.p1_nonzero}.
+
+This finite branch mechanism is the algebraic content of the corrected
+algorithm.  Domen's later use of Mathematica's \lean{Together} merely repairs
+syntactic evaluation of fractional powers during root matching.  Since Lean
+uses a single $\omega$ and field expressions, it has no mathematical analogue
+here.
+
+\section[The corrected P22 and Fourier reconstruction]
+  {The corrected $P_{22}$ and Fourier reconstruction}
+
+Lazard's remaining numerators are transcribed one per Lean definition:
+\begin{align*}
+P_{41}&=-5p,\\
+P_{42}&=5(10\ii7-4p\ii5-14q\ii4-4p^2q+45ps-72qr),\\
+P_{31}&=-25q,\\
+P_{32}&=25(-10\ii8+2p\ii6-22q\ii5+2p^2\ii4+20p^2r+2pq^2-35qs-40r^2),\\
+P_{33}&=5(35\ii8-4p\ii6+23q\ii5+(-6p^2+12r)\ii4
+ -58p^2r+14pq^2-105qs+76r^2),\\
+P_{34}&=5(5\ii8-22p\ii6+14q\ii5+(-18p^2+16r)\ii4
+ -34p^2r+22pq^2-140qs+68r^2),\\
+P_{21}&=5(3\ii4+2p^2-16r),\\
+P_{22}&=25\bigl(-10q\ii6+(8p^2-50r)\ii5+(-2pq-25s)\ii4\\
+&\hspace{35mm}+\boxed{8p^3q}+\boxed{70q^3}-20p^2s-26pqr+50rs\bigr),\\
+P_{23}&=25(-4p\ii7-q\ii6+4r\ii5+(-3pq+15s)\ii4
+ +26p^2s-26pqr+7q^3-40rs),\\
+P_{24}&=25(3p\ii7-18q\ii6+22r\ii5+(-14pq+20s)\ii4
+ +18p^2s-33pqr+21q^3+30rs).
+\end{align*}
+
+The boxed terms are Reshetnikov's corrections.  Lazard p.~222 prints $8p^3$
+and $70q^3q$; the corrected terms are independently confirmed by the original
+Maple worksheet, which has $200p^3q$ and $1750q^3$ after distributing the
+outer factor $25$.  Lean makes the corrected formula conspicuous in
+\lean{p22}.
+
+With the selected $(\eps,T,U)$ and shared $P_1$, define
+\begin{align*}
+P_4={}&\frac{P_{41}}{2P_1}+\frac{P_{42}}{2\eps P_1},\\
+P_3={}&\frac{P_{31}}{4P_1^2}+\frac{P_{32}}{4\eps P_1^2}
+ +\frac{P_{33}T+P_{34}U}{10EP_1^2},\\
+P_2={}&\frac{P_{21}}{4P_1^3}+\frac{P_{22}}{4\eps P_1^3}
+ +\frac{P_{23}T+P_{24}U}{10EP_1^3}.
+\end{align*}
+These are \lean{fourierP4}, \lean{fourierP3}, and \lean{fourierP2}.
+
+For one primitive fifth root $\omega$, all five depressed candidates are
+\begin{equation}\label{eq:dft}
+ y_k=\frac{\omega^kP_1+\omega^{2k}P_2+
+                   \omega^{3k}P_3+\omega^{4k}P_4}{5},
+ \qquad k=0,1,2,3,4.
+\end{equation}
+The original roots are
+\[
+ x_k=y_k-\frac{b}{5a}.
+\]
+Lean represents $\omega$ by \lean{FifthRootOfUnity}; its field
+\lean{primitive} certifies that \lean{value} is a primitive fifth root.  The
+single indexed formula \lean{solveDepressed} replaces five branch-sensitive
+Mathematica expressions.  \lean{solveGeneral} performs the final translation,
+and \lean{solveRational} keeps the rational invariant certificate visible.
+
+\section{Lean-to-paper crosswalk}
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.34\textwidth}
+                  >{\raggedright\arraybackslash}p{0.22\textwidth}
+                  >{\raggedright\arraybackslash}p{0.35\textwidth}}
+\toprule
+Lean declaration & Lazard notation/source & Role \\
+\midrule
+\endfirsthead
+\toprule
+Lean declaration & Lazard notation/source & Role \\
+\midrule
+\endhead
+\lean{GeneralQuintic}, \lean{GeneralQuintic.polynomial} & $a,b,c,d,e,f$ & Original polynomial and its coefficient representation.\\
+\lean{GeneralQuintic.polynomial_eval} & evaluation at $x$ & Proved agreement of polynomial and scalar evaluation.\\
+\lean{DepressedQuintic}, \lean{depress} & $p,q,r,s$; p.~219 & Normalize and depress.\\
+\lean{depress_eval} & $X=Y-b/(5a)$ & Kernel-checked translation identity.\\
+\lean{discriminant} & $\Delta$; pp.~219--220 & Explicit depressed-quintic discriminant.\\
+\lean{resolventCore} & $A(z)$ & Cubic whose square enters the sextic.\\
+\lean{cayleyTheta} & $\Theta=4\ii4+p^2+12r$; p.~219 & Keeps Cayley $\Theta$ distinct from $z=\ii4$.\\
+\lean{resolventPolynomial} & $R(z)$; pp.~219--220 & Monic degree-six polynomial.\\
+\lean{resolventEval_eq_zero_iff} & fraction-free Stack Exchange equation & Proved equivalence of the two displays.\\
+\lean{Invariants} & $\ii4,\ldots,\ii8$; pp.~217--220 & Metacyclic invariant values.\\
+\lean{i4SquareRhs}--\lean{i4FifthRhs} & Figure~3; pp.~220--221 & Linear system for $\ii5,\ldots,\ii8$.\\
+\lean{InvariantRelations}, \lean{InvariantRelations.map} & sextic plus Figure~3 & Exact rational-stage certificate, proved stable under scalar extension.\\
+\lean{invariantD}--\lean{invariantG} & $D,E,F,G$; p.~221 & Quadratic-stage invariant polynomials.\\
+\lean{correctEpsilon} & $\eps\mapsto-\eps$ if $T=0$; p.~221 and Zapodovnikov & Corrected first sign choice.\\
+\lean{squareBranchAvailable} & not both $E\pm F/\eps_0$ zero & Explicit nondegeneracy obligation.\\
+\lean{correctedTRadicand_ne_zero} & p.~221 nonvanishing argument & Proved consequence of the obligation.\\
+\lean{radicalU} & $U=5G/(T\eps)$ & Second quadratic-stage value.\\
+\lean{invariantH}--\lean{invariantK} & $H,I,J,K$; pp.~221--222 & Projections defining $Q_1$.\\
+\lean{QuadraticRelations} & equations for $\eps,T,U$ & Records both squares and $TU\eps=5G$.\\
+\lean{SignBranch}, \lean{branchTriple} & four coherent triples & Finite shared-sign orbit.\\
+\lean{QuadraticRelations.of_branchTriple} & coherent sign action & Proves all four transformations preserve the equations.\\
+\lean{selectSignBranch} & paper's $Q_1\ne0$ choice & Honest \lean{Option}; no unsafe list indexing.\\
+\lean{q1} & $Q_1$ & Fifth-root radicand.\\
+\lean{p22} & corrected $P_{22}$; p.~222/MSE & Contains $8p^3q$ and $70q^3$.\\
+\lean{fourierP2}--\lean{fourierP4} & $P_2,P_3,P_4$; p.~222 & Remaining Fourier components.\\
+\lean{RadicalCertificate} & shared $\eps,T,U,P_1$ & Equations and nonzero obligations stored once.\\
+\lean{RadicalCertificate.initial_relations}, \lean{RadicalCertificate.chosen_relations} & quadratic coherence & Connect the certificate to both the initial and selected triples.\\
+\lean{FifthRootOfUnity} & primitive $\omega$ & Shared fifth root of unity.\\
+\lean{solveDepressed} & inverse Fourier formula & All five depressed candidates.\\
+\lean{solveGeneral} & $x_k=y_k-b/(5a)$ & Undo translation.\\
+\lean{RationalInvariantCertificate} & rational $\ii4,\ldots,\ii8$ & A supplied witness over $\Q$; it is not a search procedure.\\
+\lean{FormulaSound}, \lean{RationalFormulaSound} & pointwise root identity & Unproved propositions; not axioms and not asserted.\\
+\lean{FormulaFactors}, \lean{RationalFormulaFactors} & full five-factor identity & Stronger unproved completeness targets.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\section{Why the certificates are part of the algorithm}
+
+The following denominators occur in the formula:
+\[
+ a,\qquad \eps,\qquad T,\qquad E,\qquad P_1.
+\]
+The formalization treats their nonvanishing as follows.
+
+\begin{itemize}
+\item $a\ne0$ is an explicit hypothesis of \lean{depress_eval} and of the
+  future soundness and factorization targets.
+\item The field \lean{epsilon0_nonzero} records the sourced irreducible-case
+  fact; the theorem \lean{epsilon_nonzero} in the
+  \lean{RadicalCertificate} namespace proves that sign correction preserves it.
+\item \lean{epsilon_branches}, the square equation for $T$, and
+  \lean{correctedTRadicand_ne_zero} imply $T\ne0$.
+\item The stored square equation for $U$, together with the definition
+  $U=5G/(T\eps)$, yields \lean{RadicalCertificate.initial_relations};
+  \lean{QuadraticRelations.of_branchTriple} proves that all four coherent
+  sign choices preserve the two square equations and $TU\eps=5G$.
+\item \lean{invariantE_nonzero} records Lazard's $E=T^2+U^2\ne0$ argument in
+  the rational case.
+\item \lean{branch_nonzero} and $P_1^5=Q_1$ imply $P_1\ne0$.
+\end{itemize}
+
+This organization is intentionally relational.  A later executable algebraic-
+number layer may compute the certificates, but the mathematical formula is not
+made dependent on a particular computer algebra system's analytic square-root
+or fractional-power convention.
+
+\section{What remains to prove}
+
+The generic target \lean{FormulaSound} says that, for a valid leading
+coefficient, an invariant tuple satisfying \lean{InvariantRelations}, a valid
+radical certificate, and a primitive fifth root of unity, every indexed value
+from \lean{solveGeneral} annihilates the original quintic.  Its rational
+specialization \lean{RationalFormulaSound} additionally requires that the
+invariant tuple be supplied and certified in $\Q$ before scalar extension.
+Neither proposition asserts that such witnesses can be found.
+
+Pointwise soundness alone does not express that all five roots, with their
+multiplicities, have been recovered.  The separate targets
+\lean{FormulaFactors} and \lean{RationalFormulaFactors} state the stronger
+polynomial identity
+\[
+ \text{\lean{GeneralQuintic.polynomial}}
+   =a\prod_{k=0}^{4}\bigl(X-\text{\lean{solveGeneral}}(k)\bigr).
+\]
+Thus the API cleanly separates conditional root soundness, five-root
+completeness, and the still-absent existence/search layer.
+
+A complete proof can be decomposed into the following independent lemmas:
+
+\begin{enumerate}
+\item identify the sextic with the $F_{20}$ orbit resolvent and prove the
+  rational-root solvability criterion;
+\item prove specialized separability/distinctness, using Lazard's Cayley
+  argument or Chapman's repair rather than the invalid transitivity shortcut;
+\item derive the Figure~3 linear system from the root-defined invariants and
+  prove its determinant nonzero;
+\item derive the displayed $D,\ldots,K$ reductions;
+\item prove that the two quadratic stages recover the cyclic projections;
+\item prove that one of the four coherent $Q_1$ values is nonzero;
+\item identify $P_1,\ldots,P_4$ with the four Fourier sums; and
+\item apply Fourier inversion and \lean{depress_eval}.
+\end{enumerate}
+
+The factorization target then gives exhaustiveness and, under irreducibility
+and separability, pairwise distinctness.  None of these unfinished statements
+is admitted with \lean{axiom},
+\lean{sorry}, or an opaque external oracle.
+
+\section{Regression evidence and source cautions}
+
+The wider Smithereens review found useful future regression cases, but also
+showed why notebook output is not a proof oracle.
+
+\begin{itemize}
+\item The corrected zero-$T$ branch is exercised by
+  $X^5-10X^2-10X-6$, for which the audited source gives $\ii4=30$.
+\item An older direct notebook records a failure on $X^5-5X-12$ when it
+  omits an adequate branch fallback.  This is a valuable all-five-roots case.
+\item Reshetnikov's strongest stored exact harness checks five values,
+  substitution residuals, and distinctness for six polynomials, including the
+  very large target polynomial from the Stack Exchange question.
+\item Some other notebook runs abort after ten cases, some use
+  \lean{PossibleZeroQ}, and the independent package checks high-precision
+  residuals without proving symbolic identities or complete root coverage.
+\item The label of $X^5+20X+32$ as $F_{20}$ in one newer document is
+  incorrect; its group is dihedral.  It should not be used as an $F_{20}$
+  classification fixture.
+\item Dummit's printed examples have later corrections, and his original
+  factorization proof needs Chapman's specialized-distinctness lemma.
+\end{itemize}
+
+Consequently the committed Lean module uses source formulas and algebraic
+certificates, not notebook success labels.  Future regression computations are
+useful checks against transcription errors, but kernel-checked symbolic
+identities will remain the correctness criterion.
+
+\section{Reproducibility and audit}
+
+From the repository root, the module and its public import surface are checked
+with
+\begin{verbatim}
+lake env lean \
+  Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuintic.lean
+
+LEAN_NUM_THREADS=0 lake build +PolynomialFormulas
+\end{verbatim}
+The document is rendered by first changing to its directory and then running
+the following command three times (for the table of contents, citations, and
+cross-references):
+\begin{verbatim}
+cd Algebra/PolynomialFormulas
+pdflatex -interaction=nonstopmode -halt-on-error \
+  LazardQuinticFormalization.tex
+\end{verbatim}
+
+For the present contribution, an audit should additionally verify:
+\begin{enumerate}
+\item no occurrence of \lean{sorry}, \lean{admit}, or a new \lean{axiom};
+\item the displayed corrected terms occur as
+  \lean{8 * c.p ^ 3 * c.q} and \lean{70 * c.q ^ 3};
+\item \lean{correctEpsilon} precedes construction of $T$ and $U$;
+\item \lean{solveDepressed} uses one stored $P_1$ and one primitive $\omega$;
+  and
+\item the PDF is built from the committed \LaTeX{} source without errors.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{Lazard2004}
+Daniel Lazard,
+\emph{Solving Quintics by Radicals},
+in Olav Arnfinn Laudal and Ragni Piene (eds.),
+\emph{The Legacy of Niels Henrik Abel}, Springer, 2004, pp.~207--225.
+\url{https://doi.org/10.1007/978-3-642-18908-1_6}.
+
+\bibitem{Dummit1991}
+David S. Dummit,
+\emph{Solving Solvable Quintics},
+Mathematics of Computation 57 (1991), no.~195, 387--401.
+
+\bibitem{ChapmanNote}
+Robin Chapman,
+\emph{Note on Solving Solvable Quintics},
+one-page correction note hosted with Dummit's source materials.
+\url{https://site.uvm.edu/ddummit/files/2021/04/Solving_Solvable_Quintics_note_by_Robin_Chapman.pdf}.
+
+\bibitem{MSE}
+Vladimir Reshetnikov and Valeriy Zapodovnikov,
+\emph{Solving quintic in radicals},
+Mathematica Stack Exchange question 133550 and answers, 2016--2025.
+\url{https://mathematica.stackexchange.com/questions/133550/solving-quintic-in-radicals}.
+
+\end{thebibliography}
+
+\end{document}
