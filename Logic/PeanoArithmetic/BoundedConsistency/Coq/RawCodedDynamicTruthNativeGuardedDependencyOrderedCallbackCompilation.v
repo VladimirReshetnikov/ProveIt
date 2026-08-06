@@ -25,7 +25,8 @@ From BoundedPAConsistency Require Import
   RawCodedTemplatePAEmbedding
   RawCodedDynamicTruthNativeMasterEndpoint
   RawCodedDynamicTruthNativeStagedPositiveSuccessor
-  RawCodedDynamicTruthNativeLocalGuardedGrowingStagedCallbackCompilation.
+  RawCodedDynamicTruthNativeLocalGuardedGrowingStagedCallbackCompilation
+  RawCodedDynamicTruthNativeLocalGuardedBuilderDecomposition.
 From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeCrossLevelGuardRootCompilation
   RawCodedDynamicTruthNativeShiftStagedRootCompilation
@@ -52,6 +53,8 @@ Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
 Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalGuardedGrowingStagedCallbackCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalGuardedBuilderDecomposition.
 Import
   PABoundedRawCodedDynamicTruthNativeCrossLevelGuardRootCompilation.
 Import
@@ -183,6 +186,82 @@ Proof.
     (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_dependency_ordered_callbacks
       (raw_dynamicTruthNativeDependencyOrderedPositiveCallbacksInAllModels_of_guarded_growing_kernel_compilers
         hkernels)).
+Qed.
+
+(** Refined dependency bundle with the local coordinate split at its honest
+    proof boundary.  The collision producer owns exactly the Boolean pair and
+    guarded predecessor; the nonconditional producer owns the inherited
+    structural remainder.  The other five dependency-ordered coordinates are
+    unchanged. *)
+Definition
+    RawDynamicTruthNativeGuardedDependencyOrderedSplitGrowingKernelCompilers
+    (M : RawPAModel)
+    (translation : RawCodedTemplateTranslation M) : Prop :=
+  RawCodedTemplatePAAgreement M translation /\
+  RawDynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilder
+    M translation /\
+  RawDynamicTruthNativeLocalCurrentNonConditionalReducedStagedRemainderBuilder
+    M translation /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeGuardedDependencyOrderedSplitGrowingKernelCompilers
+  M translation : clear implicits.
+
+(** Reassemble only the local field, leaving every downstream callback
+    coordinate definitionally untouched. *)
+Theorem
+    raw_dynamicTruthNativeGuardedDependencyOrderedGrowingKernelCompilers_of_split :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  forall (translation : RawCodedTemplateTranslation M),
+  RawDynamicTruthNativeGuardedDependencyOrderedSplitGrowingKernelCompilers
+    M translation ->
+  RawDynamicTruthNativeGuardedDependencyOrderedGrowingKernelCompilers
+    M translation.
+Proof.
+  intros M hPA translation
+    (hagreement & hcollision & hremainder & hcrossLevel & hshift &
+      hsubstitution & haxiomSoundness & hfinal).
+  split; [exact hagreement |].
+  split.
+  - exact
+      (raw_dynamicTruthNativeLocalCurrentGrowingGuardedReducedStagedRootBuilder_of_collision_and_nonconditional_remainder
+        M hPA translation hagreement hcollision hremainder).
+  - split; [exact hcrossLevel |].
+    split; [exact hshift |].
+    split; [exact hsubstitution |].
+    split; [exact haxiomSoundness | exact hfinal].
+Qed.
+
+(** Model-dependent translation selection for the refined bundle. *)
+Definition
+    RawDynamicTruthNativeGuardedDependencyOrderedSplitGrowingKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel), RawPASatisfies M ->
+    exists translation : RawCodedTemplateTranslation M,
+      RawDynamicTruthNativeGuardedDependencyOrderedSplitGrowingKernelCompilers
+        M translation.
+
+(** Exact compact object theorem from the split boundary. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_guarded_dependency_ordered_split_growing_kernel_compilers :
+  RawDynamicTruthNativeGuardedDependencyOrderedSplitGrowingKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hsplit.
+  apply
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_guarded_dependency_ordered_growing_kernel_compilers.
+  intros M hPA.
+  destruct (hsplit M hPA) as [translation htranslation].
+  exists translation.
+  exact
+    (raw_dynamicTruthNativeGuardedDependencyOrderedGrowingKernelCompilers_of_split
+      M hPA translation htranslation).
 Qed.
 
 End
