@@ -54,7 +54,7 @@ From Foundation.FirstOrder.Arithmetic Require Import Exponential.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
-From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z.
+From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z Function.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -5425,6 +5425,26 @@ Print Assumptions z_kpair_mem_product_iff.
 Print Assumptions z_product_singletons.
 Print Assumptions z_insert_kpair_subset_insert_product.
 Print Assumptions zermelo_operations_model.
+Check z_domain.
+Check z_range.
+Print Assumptions z_mem_sunion_sunion_of_kpair_mem_left.
+Print Assumptions z_mem_sunion_sunion_of_kpair_mem_right.
+Print Assumptions z_domain_mem_iff.
+Print Assumptions z_range_mem_iff.
+Print Assumptions z_mem_domain_of_kpair_mem.
+Print Assumptions z_mem_range_of_kpair_mem.
+Print Assumptions z_domain_empty.
+Print Assumptions z_range_empty.
+Print Assumptions z_domain_product.
+Print Assumptions z_range_product.
+Print Assumptions z_domain_subset_of_subset_product.
+Print Assumptions z_range_subset_of_subset_product.
+Print Assumptions z_domain_union.
+Print Assumptions z_range_union.
+Print Assumptions z_domain_inter_subset.
+Print Assumptions z_range_inter_subset.
+Print Assumptions z_domain_insert_kpair.
+Print Assumptions z_range_insert_kpair.
 Check membership_well_founded.
 Check transitive_model.
 Print Assumptions well_founded_predicate_subtype.
