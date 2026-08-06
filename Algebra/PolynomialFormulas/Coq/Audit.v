@@ -3,6 +3,9 @@ From PolynomialFormulas Require Import
   LowDegreeRadicals
   QuinticRadicalDecidability SexticRecursiveCore SexticFactorCompleteness
   QuinticRecursiveFactor SexticFactorSelector
+  QuinticF20Data QuinticSolvableCriterion QuinticThetaOrbit
+  QuinticThetaValues QuinticGaloisAction QuinticGaloisCriterion
+  QuinticThetaGaloisBridge
   SexticSparsePolynomials SexticSparseResolvents SexticSparseSymmetricSearch
   SexticPowerSumSymmetric SexticNewtonPowerSums SexticResolventSymmetry
   SexticComputedResolvents SexticRationalRootSearch
@@ -33,6 +36,13 @@ Import PolynomialFormulasSexticRecursiveCore.
 Import PolynomialFormulasSexticFactorCompleteness.
 Import PolynomialFormulasQuinticRecursiveFactor.
 Import PolynomialFormulasSexticFactorSelector.
+Import PolynomialFormulasQuinticF20Data.
+Import PolynomialFormulasQuinticSolvableCriterion.
+Import PolynomialFormulasQuinticThetaOrbit.
+Import PolynomialFormulasQuinticThetaValues.
+Import PolynomialFormulasQuinticGaloisAction.
+Import PolynomialFormulasQuinticGaloisCriterion.
+Import PolynomialFormulasQuinticThetaGaloisBridge.
 Import PolynomialFormulasSexticSparsePolynomials.
 Import PolynomialFormulasSexticSparseResolvents.
 Import PolynomialFormulasSexticSparseSymmetricSearch.
@@ -85,6 +95,17 @@ Check quintic_radical_decision_codeK.
 Check quintic_radical_decision_codeP.
 Check has_bounded_proper_factorP.
 Check selected_sextic_linear_factorization_quintic.
+Check theta_stabilizerE.
+Check solvable_transitive_S5_criterion.
+Check theta_table_orbit_exhaustive_exists.
+Check quintic_scalar_resolvent_permute.
+Check quintic_scalar_resolvent_rootP.
+Check quintic_root_tuple_injective.
+Check quintic_galois_image_transitive.
+Check quintic_galois_image_solvableE.
+Check quintic_galois_solvable_F20b.
+Check contained_in_conjugate_F20b_theta_orbitE.
+Check quintic_galois_solvable_iff_stable_theta_orbit.
 Check sparse_equivalentbP.
 Check sparse_equivalentb_eval.
 Check size_pair_sparse_resolvent.
@@ -147,6 +168,10 @@ Check triple_partition_action_fixedP.
 Check sextic_galois_image_transitive.
 Check sextic_galois_image_solvableE.
 Check fixed_iff_rational.
+Check quintic_theta_value_gal.
+Check quintic_theta_value_fixed_iff_stable.
+Check exists_rational_quintic_theta_value_iff_galois_solvable.
+Check quintic_scalar_resolvent_has_rational_root_iff_galois_solvable.
 Check prod_XsubC_sixE.
 Check monic_sextic_vieta.
 Check pair_descriptor_rational_iff_stabilizer.
@@ -194,6 +219,17 @@ Print Assumptions quintic_radical_decision_codeK.
 Print Assumptions quintic_radical_decision_codeP.
 Print Assumptions has_bounded_proper_factorP.
 Print Assumptions selected_sextic_linear_factorization_quintic.
+Print Assumptions theta_stabilizerE.
+Print Assumptions solvable_transitive_S5_criterion.
+Print Assumptions theta_table_orbit_exhaustive_exists.
+Print Assumptions quintic_scalar_resolvent_permute.
+Print Assumptions quintic_scalar_resolvent_rootP.
+Print Assumptions quintic_root_tuple_injective.
+Print Assumptions quintic_galois_image_transitive.
+Print Assumptions quintic_galois_image_solvableE.
+Print Assumptions quintic_galois_solvable_F20b.
+Print Assumptions contained_in_conjugate_F20b_theta_orbitE.
+Print Assumptions quintic_galois_solvable_iff_stable_theta_orbit.
 Print Assumptions sparse_equivalentbP.
 Print Assumptions sparse_equivalentb_eval.
 Print Assumptions size_pair_sparse_resolvent.
@@ -256,6 +292,10 @@ Print Assumptions triple_partition_action_fixedP.
 Print Assumptions sextic_galois_image_transitive.
 Print Assumptions sextic_galois_image_solvableE.
 Print Assumptions fixed_iff_rational.
+Print Assumptions quintic_theta_value_gal.
+Print Assumptions quintic_theta_value_fixed_iff_stable.
+Print Assumptions exists_rational_quintic_theta_value_iff_galois_solvable.
+Print Assumptions quintic_scalar_resolvent_has_rational_root_iff_galois_solvable.
 Print Assumptions prod_XsubC_sixE.
 Print Assumptions monic_sextic_vieta.
 Print Assumptions pair_descriptor_rational_iff_stabilizer.
