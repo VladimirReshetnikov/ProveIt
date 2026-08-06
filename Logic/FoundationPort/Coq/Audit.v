@@ -56,6 +56,7 @@ From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z Function Ordinal.
 From Foundation.FirstOrder.Skolemization Require Import Hull.
+From Foundation.FirstOrder.SetTheory Require Import LoewenheimSkolem.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -5905,3 +5906,13 @@ Print Assumptions skolem_hull_semiformula_eval.
 Print Assumptions skolem_hull_nonempty.
 Print Assumptions skolem_hull_elementary_equiv.
 Print Assumptions skolem_hull_structure_interprets_eq.
+
+(* FirstOrder/SetTheory/LoewenheimSkolem.v: set-theoretic hull wrappers. *)
+Check set_theory_eq_operator.
+Print Assumptions set_standard_structure_interprets_eq.
+Check set_hull.
+Print Assumptions set_hull_subset.
+Print Assumptions set_hull_closed.
+Print Assumptions set_hull_models_iff.
+Print Assumptions set_hull_nonempty.
+Print Assumptions set_hull_elementary_equiv.
