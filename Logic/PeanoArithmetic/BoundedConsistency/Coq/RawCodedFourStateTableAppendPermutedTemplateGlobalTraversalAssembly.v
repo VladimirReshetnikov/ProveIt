@@ -8,9 +8,10 @@
   [RawCodedDynamicTruthNativeGlobalEvidencePermutation].
 
   All lower append compilers are already parametric in the root formula and
-  assignment terms.  This file therefore reuses them with the reversed tuple,
-  proves the corresponding finite opened-body shape, introduces the ten
-  global witnesses, and eliminates the eight append witnesses.  No general
+  assignment terms.  This file therefore first builds a capture-safe source
+  for arbitrary root terms, proves its finite opened-body shape, introduces
+  the ten global witnesses, and eliminates the eight append witnesses.  The
+  reversed tuple remains as the historical specialization.  No general
   proof-code renaming principle is assumed.
 *)
 
@@ -24,6 +25,11 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplatePAEmbedding
+  RawCodedTemplateRenamingSubstitution
+  RawCodedTemplateTripleUniversalOpening
+  RawCodedAssignment
+  RawCodedFixedLevelTruth
+  RawCodedFixedLevelTruthTotality
   RawCodedTemplateLocalProofStandardWitnessTailTransport
   RawCodedPAAxiomWitnessPrefix
   RawCodedPALocalProofExistential
@@ -39,6 +45,7 @@ From BoundedPAConsistency Require Import
   RawCodedFourStateTableAppendRowLtSuccCases
   RawCodedFourStateTableAppendGlobalTraversalAssembly
   RawCodedFourStateTableAppendTemplateGlobalTraversalAssembly
+  RawCodedDynamicTruthPairedGlobalSuccessorGraph
   RawCodedDynamicTruthPredecessorGlobalExistentialElimination
   RawCodedDynamicTruthSuccessorRowsAppendNormalization
   RawCodedDynamicTruthNativeGlobalEvidencePermutation.
@@ -56,6 +63,11 @@ Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedTemplateRenamingSubstitution.
+Import PABoundedRawCodedTemplateTripleUniversalOpening.
+Import PABoundedRawCodedAssignment.
+Import PABoundedRawCodedFixedLevelTruth.
+Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedTemplateLocalProofStandardWitnessTailTransport.
 Import PABoundedRawCodedPAAxiomWitnessPrefix.
 Import PABoundedRawCodedPALocalProofExistential.
@@ -72,11 +84,124 @@ Import PABoundedRawCodedFourStateTableAppendRowLtSuccCases.
 Import PABoundedRawCodedFourStateTableAppendGlobalTraversalAssembly.
 Import
   PABoundedRawCodedFourStateTableAppendTemplateGlobalTraversalAssembly.
+Import PABoundedRawCodedDynamicTruthPairedGlobalSuccessorGraph.
 Import
   PABoundedRawCodedDynamicTruthPredecessorGlobalExistentialElimination.
 Import PABoundedRawCodedDynamicTruthSuccessorRowsAppendNormalization.
 Import
   PABoundedRawCodedDynamicTruthNativeGlobalEvidencePermutation.
+
+(** A normal form for capture-safe outer-to-inner binder opening.  The
+    recursive substitution first installs the outer witness below all
+    remaining binders, then composes the opening substitution for the tail.
+    Keeping this syntax algebra independent of append avoids any induction
+    over the three arbitrary root terms. *)
+Fixpoint templateOpeningSubstitution
+    (witnesses : list TemplateTerm) : nat -> TemplateTerm :=
+  match witnesses with
+  | [] => fun index => ttVar index
+  | outer :: remaining =>
+      fun index =>
+        templateTermSubst (templateOpeningSubstitution remaining)
+          (templateIterateUpSubst (length remaining)
+            (templateInstTerm outer) index)
+  end.
+
+Lemma templateIterateUpSubst_up_commute : forall depth substitution index,
+  templateIterateUpSubst depth (templateTermUpSubst substitution) index =
+  templateTermUpSubst
+    (templateIterateUpSubst depth substitution) index.
+Proof.
+  induction depth as [|depth ih]; intros substitution [|index]; cbn;
+    try reflexivity.
+  now rewrite ih.
+Qed.
+
+Lemma templateFormulaSubst_all_many : forall depth substitution body,
+  templateFormulaSubst substitution
+      (templateFormulaAllMany depth body) =
+  templateFormulaAllMany depth
+    (templateFormulaSubst
+      (templateIterateUpSubst depth substitution) body).
+Proof.
+  induction depth as [|depth ih]; intros substitution body; cbn.
+  - reflexivity.
+  - rewrite ih.
+    assert (hsub :
+      templateFormulaSubst
+        (templateIterateUpSubst depth
+          (templateTermUpSubst substitution)) body =
+      templateFormulaSubst
+        (templateTermUpSubst
+          (templateIterateUpSubst depth substitution)) body).
+    {
+      apply templateFormulaSubst_ext.
+      apply templateIterateUpSubst_up_commute.
+    }
+    now rewrite hsub.
+Qed.
+
+Lemma templateFormulaSubst_ex_many : forall depth substitution body,
+  templateFormulaSubst substitution
+      (templateFormulaExMany depth body) =
+  templateFormulaExMany depth
+    (templateFormulaSubst
+      (templateIterateUpSubst depth substitution) body).
+Proof.
+  induction depth as [|depth ih]; intros substitution body; cbn.
+  - reflexivity.
+  - rewrite ih.
+    assert (hsub :
+      templateFormulaSubst
+        (templateIterateUpSubst depth
+          (templateTermUpSubst substitution)) body =
+      templateFormulaSubst
+        (templateTermUpSubst
+          (templateIterateUpSubst depth substitution)) body).
+    {
+      apply templateFormulaSubst_ext.
+      apply templateIterateUpSubst_up_commute.
+    }
+    now rewrite hsub.
+Qed.
+
+Lemma templateUniversalOpenMany_all_many_normal_form : forall
+    witnesses body,
+  templateUniversalOpenMany
+      (templateFormulaAllMany (length witnesses) body) witnesses =
+  Some (templateFormulaSubst
+    (templateOpeningSubstitution witnesses) body).
+Proof.
+  induction witnesses as [|outer remaining ih]; intro body.
+  - cbn. now rewrite templateFormulaSubst_id.
+  - cbv beta iota zeta delta
+      [length templateFormulaAllMany templateUniversalOpenMany].
+    unfold templateFormulaOpen.
+    rewrite templateFormulaSubst_all_many.
+    rewrite ih.
+    f_equal.
+    rewrite templateFormulaSubst_comp.
+    reflexivity.
+Qed.
+
+Lemma templateExistentialOpenMany_ex_many_normal_form : forall
+    witnesses body,
+  templateExistentialOpenMany
+      (templateFormulaExMany (length witnesses) body) witnesses =
+  Some (templateFormulaSubst
+    (templateOpeningSubstitution witnesses) body).
+Proof.
+  induction witnesses as [|outer remaining ih]; intro body.
+  - cbn. now rewrite templateFormulaSubst_id.
+  - cbv beta iota zeta delta
+      [length templateFormulaExMany templateExistentialOpenMany].
+    unfold templateFormulaOpen.
+    rewrite templateFormulaSubst_ex_many.
+    rewrite ih.
+    f_equal.
+    rewrite templateFormulaSubst_comp.
+    reflexivity.
+Qed.
 
 Definition coqFourStateTableAppendPermutedTemplateGlobalSource
     (rootMode : nat) (localSigma localPi : TemplateFormula)
@@ -84,6 +209,403 @@ Definition coqFourStateTableAppendPermutedTemplateGlobalSource
   templateFormulaRename templateReverseFirstThreeRenaming
     (coqDynamicTruthGlobalExistentialSource
       rootMode localSigma localPi).
+
+(** Simultaneous substitution of the three free global-interface variables.
+
+    [coqDynamicTruthGlobalExistentialSource] has ten existential binders,
+    but its root formula, assignment-code, and assignment-step arguments are
+    the three variables free outside those binders.  Formula substitution
+    preserves every [tfEx] constructor and repeatedly lifts the supplied
+    terms while crossing them, so arbitrary compound terms remain capture
+    safe.  Indices above the three-slot interface are deliberately fixed:
+    unlike sequential ternary opening, this operation does not lower an
+    unrelated outer coordinate. *)
+Definition coqFourStateTableAppendRootTermsSubstitution
+    (rootFormula rootAssignmentCode rootAssignmentStep : TemplateTerm)
+    (index : nat) : TemplateTerm :=
+  match index with
+  | 0 => rootFormula
+  | 1 => rootAssignmentCode
+  | 2 => rootAssignmentStep
+  | S (S (S outer)) => ttVar (S (S (S outer)))
+  end.
+
+Definition coqFourStateTableAppendTemplateGlobalSourceAtRootTerms
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    (rootFormula rootAssignmentCode rootAssignmentStep : TemplateTerm)
+    : TemplateFormula :=
+  templateFormulaSubst
+    (coqFourStateTableAppendRootTermsSubstitution
+      rootFormula rootAssignmentCode rootAssignmentStep)
+    (coqDynamicTruthGlobalExistentialSource
+      rootMode localSigma localPi).
+
+(** The historical permuted source is the variable-only instance
+    [formula, assignmentCode, assignmentStep] = [#2,#1,#0]. *)
+Lemma coqFourStateTableAppendTemplateGlobalSourceAtRootTerms_reverse :
+  forall rootMode localSigma localPi,
+  coqFourStateTableAppendTemplateGlobalSourceAtRootTerms
+      rootMode localSigma localPi (ttVar 2) (ttVar 1) (ttVar 0) =
+  coqFourStateTableAppendPermutedTemplateGlobalSource
+      rootMode localSigma localPi.
+Proof.
+  intros rootMode localSigma localPi.
+  unfold coqFourStateTableAppendTemplateGlobalSourceAtRootTerms,
+    coqFourStateTableAppendPermutedTemplateGlobalSource.
+  transitivity
+    (templateFormulaSubst
+      (fun index => ttVar (templateReverseFirstThreeRenaming index))
+      (coqDynamicTruthGlobalExistentialSource
+        rootMode localSigma localPi)).
+  - apply templateFormulaSubst_ext.
+    intros [|[|[|index]]]; reflexivity.
+  - apply templateFormulaSubst_variables.
+Qed.
+
+Definition coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    (rootFormula rootAssignmentCode rootAssignmentStep bound : TemplateTerm)
+    : TemplateFormula :=
+  match templateExistentialOpenMany
+    (templateFormulaShiftMany 8
+      (coqFourStateTableAppendTemplateGlobalSourceAtRootTerms
+        rootMode localSigma localPi
+        rootFormula rootAssignmentCode rootAssignmentStep))
+    (coqFourStateTableAppendGlobalTraversalWitnesses bound) with
+  | Some body => body
+  | None => tfBot
+  end.
+
+Lemma
+    coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms_success :
+  forall rootMode localSigma localPi
+    rootFormula rootAssignmentCode rootAssignmentStep bound,
+  templateExistentialOpenMany
+    (templateFormulaShiftMany 8
+      (coqFourStateTableAppendTemplateGlobalSourceAtRootTerms
+        rootMode localSigma localPi
+        rootFormula rootAssignmentCode rootAssignmentStep))
+    (coqFourStateTableAppendGlobalTraversalWitnesses bound) =
+  Some (coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms
+    rootMode localSigma localPi
+    rootFormula rootAssignmentCode rootAssignmentStep bound).
+Proof. intros. reflexivity. Qed.
+
+Definition coqFourStateTableAppendOpenedTemplateGlobalRowsAtRootTerms
+    (rootMode : nat) (localSigma localPi : TemplateFormula)
+    (rootFormula rootAssignmentCode rootAssignmentStep bound : TemplateTerm)
+    : TemplateFormula :=
+  templateAnd7Seventh
+    (coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms
+      rootMode localSigma localPi
+      rootFormula rootAssignmentCode rootAssignmentStep bound).
+
+(** Opening the ten witnesses always exposes the same literal seven-field
+    conjunction spine.  Keeping this fact separate lets the six stable
+    append fields be normalized independently of the opaque row field. *)
+Lemma
+    coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms_and7_shape :
+  forall rootMode localSigma localPi
+    rootFormula rootAssignmentCode rootAssignmentStep bound,
+  let source :=
+    coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms
+      rootMode localSigma localPi
+      rootFormula rootAssignmentCode rootAssignmentStep bound in
+  source = tfAnd (templateAnd7First source)
+    (tfAnd (templateAnd7Second source)
+      (tfAnd (templateAnd7Third source)
+        (tfAnd (templateAnd7Fourth source)
+          (tfAnd (templateAnd7Fifth source)
+            (tfAnd (templateAnd7Sixth source)
+              (templateAnd7Seventh source)))))).
+Proof. intros. reflexivity. Qed.
+
+(** A substitution which is pointwise a variable renaming acts as that
+    renaming on every term.  This small extensional bridge is useful below:
+    it lets us normalize the maps induced by ten existential openings and
+    eight surrounding append variables without inspecting an arbitrary root
+    term. *)
+Lemma templateTermSubst_eq_rename_of_pointwise : forall
+    substitution renaming input,
+  (forall index, substitution index = ttVar (renaming index)) ->
+  templateTermSubst substitution input =
+  templateTermRename renaming input.
+Proof.
+  intros substitution renaming input hext.
+  rewrite <- templateTermSubst_variables.
+  apply templateTermSubst_ext. exact hext.
+Qed.
+
+(** Rename the four free coordinates of the canonical beta lookup.  Unused
+    coordinates deliberately map to [codeVariable], so formula-substitution
+    extensionality below requires no irrelevant side conditions. *)
+Definition betaLookupVariableRenaming
+    (codeVariable stepVariable indexVariable valueVariable index : nat)
+    : nat :=
+  match index with
+  | 0 => indexVariable
+  | 1 => stepVariable
+  | 2 => codeVariable
+  | 3 => codeVariable
+  | 4 => valueVariable
+  | S (S (S (S (S _)))) => codeVariable
+  end.
+
+(** Two embedded beta-lookups are equal after substitution whenever their
+    four meaningful coordinates agree.  Factoring through the canonical
+    lookup at variables [2,1,0,4] avoids unfolding the beta formula or doing
+    case analysis on any compound replacement term. *)
+Lemma templateFormulaSubst_codedAssignmentLookup_variables_ext : forall
+    first second
+    firstCode firstStep firstIndex firstValue
+    secondCode secondStep secondIndex secondValue,
+  first firstCode = second secondCode ->
+  first firstStep = second secondStep ->
+  first firstIndex = second secondIndex ->
+  first firstValue = second secondValue ->
+  templateFormulaSubst first
+    (embedPAFormula (codedAssignmentLookupTermAt
+      (tVar firstCode) (tVar firstStep)
+      (tVar firstIndex) (tVar firstValue))) =
+  templateFormulaSubst second
+    (embedPAFormula (codedAssignmentLookupTermAt
+      (tVar secondCode) (tVar secondStep)
+      (tVar secondIndex) (tVar secondValue))).
+Proof.
+  intros first second
+    firstCode firstStep firstIndex firstValue
+    secondCode secondStep secondIndex secondValue
+    hcode hstep hindex hvalue.
+  assert (hfirst :
+    embedPAFormula (codedAssignmentLookupTermAt
+      (tVar firstCode) (tVar firstStep)
+      (tVar firstIndex) (tVar firstValue)) =
+    templateFormulaRename
+      (betaLookupVariableRenaming
+        firstCode firstStep firstIndex firstValue)
+      (embedPAFormula (codedAssignmentLookupTermAt
+        (tVar 2) (tVar 1) (tVar 0) (tVar 4)))).
+  {
+    rewrite <- embedPAFormula_rename.
+    unfold codedAssignmentLookupTermAt.
+    rewrite Formula.rename_betaTermTermAt.
+    reflexivity.
+  }
+  assert (hsecond :
+    embedPAFormula (codedAssignmentLookupTermAt
+      (tVar secondCode) (tVar secondStep)
+      (tVar secondIndex) (tVar secondValue)) =
+    templateFormulaRename
+      (betaLookupVariableRenaming
+        secondCode secondStep secondIndex secondValue)
+      (embedPAFormula (codedAssignmentLookupTermAt
+        (tVar 2) (tVar 1) (tVar 0) (tVar 4)))).
+  {
+    rewrite <- embedPAFormula_rename.
+    unfold codedAssignmentLookupTermAt.
+    rewrite Formula.rename_betaTermTermAt.
+    reflexivity.
+  }
+  rewrite hfirst, hsecond, !templateFormulaSubst_rename.
+  apply templateFormulaSubst_ext.
+  intros [|[|[|[|[|index]]]]]; cbn [betaLookupVariableRenaming];
+    assumption.
+Qed.
+
+(** The source-level simultaneous substitution and the append templates use
+    extensionally equal maps.  The first five fields normalize directly.
+    The sixth contains three beta-lookups; the preceding lemma reduces those
+    formula equalities to their four coordinates, after which pointwise term
+    map equality completes the proof.  No scoping premise on the arbitrary
+    root terms or on the opaque row leaves is needed. *)
+Lemma
+    coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms_field_shapes :
+  forall rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    rootFormula rootAssignmentCode rootAssignmentStep,
+  rootMode = 0 \/ rootMode = 1 ->
+  let source :=
+    coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms
+      rootMode localSigma localPi
+      rootFormula rootAssignmentCode rootAssignmentStep
+      (ttParameter boundName) in
+  templateAnd7First source =
+    coqFourStateTableAppendModeDefinedTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      rootFormula rootAssignmentCode rootAssignmentStep /\
+  templateAnd7Second source =
+    coqFourStateTableAppendFormulaDefinedTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      rootFormula rootAssignmentCode rootAssignmentStep /\
+  templateAnd7Third source =
+    coqFourStateTableAppendAssignmentCodeDefinedTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      rootFormula rootAssignmentCode rootAssignmentStep /\
+  templateAnd7Fourth source =
+    coqFourStateTableAppendAssignmentStepDefinedTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      rootFormula rootAssignmentCode rootAssignmentStep /\
+  templateAnd7Fifth source =
+    coqFourStateTableAppendRootBoundTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      rootFormula rootAssignmentCode rootAssignmentStep /\
+  templateAnd7Sixth source =
+    coqFourStateTableAppendNewStateLookupTemplate
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      rootFormula rootAssignmentCode rootAssignmentStep.
+Proof.
+  intros rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    rootFormula rootAssignmentCode rootAssignmentStep [-> | ->];
+    cbn zeta;
+    unfold
+      coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms,
+      coqFourStateTableAppendTemplateGlobalSourceAtRootTerms,
+      coqDynamicTruthGlobalExistentialSource,
+      coqDynamicTruthGlobalTraversalBodyTemplate in *;
+    cbn [templateFormulaShiftMany templateExistentialOpenMany
+      templateFormulaOpen templateFormulaRename templateUpRenaming
+      coqFourStateTableAppendGlobalTraversalWitnesses
+      templateFormulaSubst templateTermUpSubst templateInstTerm] in *;
+    repeat rewrite templateFormulaRename_comp;
+    repeat rewrite templateFormulaSubst_comp;
+    repeat rewrite templateFormulaSubst_rename.
+  all: repeat split.
+  all: unfold templateAnd7First, templateAnd7Second,
+    templateAnd7Third, templateAnd7Fourth,
+    templateAnd7Fifth, templateAnd7Sixth,
+    coqFourStateTableAppendModeDefinedTemplate,
+    coqFourStateTableAppendFormulaDefinedTemplate,
+    coqFourStateTableAppendAssignmentCodeDefinedTemplate,
+    coqFourStateTableAppendAssignmentStepDefinedTemplate,
+    coqFourStateTableAppendRootBoundTemplate,
+    coqFourStateTableAppendNewStateLookupTemplate,
+    coqFourStateTableAppendModeLookupTemplate,
+    coqFourStateTableAppendFormulaLookupTemplate,
+    coqFourStateTableAppendAssignmentCodeLookupTemplate,
+    coqFourStateTableAppendAssignmentStepLookupTemplate,
+    coqFourStateTableAppendExtensionBodyTemplate,
+    coqFourStateTableAppendExistsTemplate,
+    coqFourStateTableAppendInstanceTemplate,
+    codedFourStateTableAppendFormula,
+    fourStateTableAppendRepeatedAll,
+    fourStateTableAppendExtensionBody,
+    codedAssignmentAppendAtTermAt,
+    codedAssignmentAppendPrefixTermAt,
+    fixedLevelEx8, fixedLevelAnd4,
+    templateAndFirst, templateAndSecond,
+    templateAnd4First, templateAnd4Second,
+    templateAnd4Third, templateAnd4Fourth.
+  all: cbn [templateUniversalOpenMany embedPAFormula
+    templateFormulaOpen templateFormulaSubst
+    templateExistentialBodyMany].
+  all: repeat rewrite templateFormulaSubst_comp.
+  all: unfold dynamicTruthGlobalModeDefinedFormula,
+    dynamicTruthGlobalFormulaDefinedFormula,
+    dynamicTruthGlobalAssignmentCodeDefinedFormula,
+    dynamicTruthGlobalAssignmentStepDefinedFormula,
+    dynamicTruthGlobalRootBoundFormula,
+    dynamicTruthGlobalRootLookupFormula,
+    codedAssignmentDefinedThroughTermAt.
+  all: cbn [embedPAFormula templateFormulaSubst templateTermSubst
+    templateTermUpSubst templateInstTerm templateUpRenaming].
+  all: try reflexivity.
+  all: unfold fixedLevelStateLookupTermAt, fixedLevelAnd4.
+  all: cbn [embedPAFormula templateFormulaSubst].
+  all: repeat match goal with
+    | |- tfAnd _ _ = tfAnd _ _ => f_equal
+    end.
+  all: try reflexivity.
+  all: eapply templateFormulaSubst_codedAssignmentLookup_variables_ext.
+  all: try reflexivity.
+  all: repeat first
+    [ rewrite templateTermSubst_comp
+    | rewrite templateTermSubst_rename ].
+  all: cbn [coqFourStateTableAppendRootTermsSubstitution
+    templateTermSubst templateTermRename
+    templateTermUpSubst templateInstTerm templateUpRenaming].
+  all: repeat rewrite templateTermSubst_rename.
+  all: repeat rewrite templateTermRename_comp.
+  all: first
+    [ apply templateTermSubst_ext
+    | apply templateTermSubst_eq_rename_of_pointwise ].
+  all: intro index.
+  all: cbn [templateTermSubst templateTermUpSubst
+    templateInstTerm templateUpRenaming].
+  all: reflexivity.
+Qed.
+
+Lemma
+    coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms_shape :
+  forall rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    rootFormula rootAssignmentCode rootAssignmentStep,
+  rootMode = 0 \/ rootMode = 1 ->
+  coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms
+    rootMode localSigma localPi
+    rootFormula rootAssignmentCode rootAssignmentStep
+    (ttParameter boundName) =
+  coqFourStateTableAppendTraversalBodyTemplate
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    (ttParameter boundName)
+    (embedPATerm (Term.numeral rootMode))
+    rootFormula rootAssignmentCode rootAssignmentStep
+    (coqFourStateTableAppendOpenedTemplateGlobalRowsAtRootTerms
+      rootMode localSigma localPi
+      rootFormula rootAssignmentCode rootAssignmentStep
+      (ttParameter boundName)).
+Proof.
+  intros rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    rootFormula rootAssignmentCode rootAssignmentStep hrootMode.
+  pose proof
+    (coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms_and7_shape
+      rootMode localSigma localPi
+      rootFormula rootAssignmentCode rootAssignmentStep
+      (ttParameter boundName)) as hshape.
+  destruct
+    (coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms_field_shapes
+      rootMode localSigma localPi boundName
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      rootFormula rootAssignmentCode rootAssignmentStep hrootMode)
+    as [hmode [hformula [hassignmentCode
+      [hassignmentStep [hbound hlookup]]]]].
+  rewrite hshape.
+  unfold coqFourStateTableAppendTraversalBodyTemplate,
+    coqFourStateTableAppendOpenedTemplateGlobalRowsAtRootTerms.
+  rewrite hmode, hformula, hassignmentCode, hassignmentStep, hbound, hlookup.
+    reflexivity.
+Qed.
 
 Definition coqFourStateTableAppendOpenedPermutedTemplateGlobalFormula
     (rootMode : nat) (localSigma localPi : TemplateFormula)
@@ -439,6 +961,177 @@ Proof.
       hrowOpened) as hall5.
   rewrite coqFourStateTableAppendOpenedTemplateGlobalRows_shape.
   exact hall5.
+Qed.
+
+(** Close a capture-safe instantiated global formula from its seventh
+    traversal field.  Unlike the historical permuted endpoint below, the
+    three root coordinates are arbitrary terms and the caller may retain an
+    arbitrary context prefix.  All shifts across the ten global witnesses
+    are already accounted for by formula substitution in the source. *)
+Theorem
+    raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_template_global_at_root_terms_of_append_rows_under_prefix :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation ->
+  forall rootMode (localSigma localPi : TemplateFormula) boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    rootFormula rootAssignmentCode rootAssignmentStep
+    outerPrefix witnesses appendRoot,
+  rootMode = 0 \/ rootMode = 1 ->
+  let sourceWitnessList :=
+    rawStandardPAAxiomWitnessPrefixWitnessListCode M
+      witnesses (raw_zero M) in
+  let sourceContext :=
+    rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M) in
+  let bound := ttParameter boundName in
+  let mode := embedPATerm (Term.numeral rootMode) in
+  let formula := rootFormula in
+  let assignmentCode := rootAssignmentCode in
+  let assignmentStep := rootAssignmentStep in
+  let prefix := coqFourStateTableAppendWitnessContext
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    bound mode formula assignmentCode assignmentStep outerPrefix in
+  let opened :=
+    coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms
+      rootMode localSigma localPi
+      rootFormula rootAssignmentCode rootAssignmentStep bound in
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail translation sourceContext outerPrefix)
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendExistsTemplate
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        bound mode formula assignmentCode assignmentStep)) appendRoot ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext prefix
+    (rawTemplateFormula translation (templateAnd7Seventh opened)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    sourceWitnessList sourceContext outerPrefix
+    (rawTemplateFormula translation
+      (coqFourStateTableAppendTemplateGlobalSourceAtRootTerms
+        rootMode localSigma localPi
+        rootFormula rootAssignmentCode rootAssignmentStep)).
+Proof.
+  intros M hPA translation hagreement
+    rootMode localSigma localPi boundName
+    modeCode modeStep formulaCode formulaStep
+    assignmentCodeCode assignmentCodeStep
+    assignmentStepCode assignmentStepStep
+    rootFormula rootAssignmentCode rootAssignmentStep
+    outerPrefix witnesses appendRoot hrootMode
+    sourceWitnessList sourceContext bound mode formula
+    assignmentCode assignmentStep prefix opened happend hrows.
+  cbn zeta in *.
+  assert (hsource : RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))).
+  {
+    pose proof (raw_templateEmbeddedPAAxiomWitnessContext
+      M hPA translation hagreement witnesses) as hwitnessed.
+    rewrite (raw_templateContextCode_embedPAAxiomWitnesses
+      M translation hagreement witnesses) in hwitnessed.
+    exact hwitnessed.
+  }
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_traversal_body_under_prefix
+      M hPA translation hagreement
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      rootFormula rootAssignmentCode rootAssignmentStep
+      outerPrefix witnesses
+      (coqFourStateTableAppendOpenedTemplateGlobalRowsAtRootTerms
+        rootMode localSigma localPi
+        rootFormula rootAssignmentCode rootAssignmentStep
+        (ttParameter boundName)) hrows)
+    as hbody.
+  pose proof
+    (coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms_shape
+      rootMode localSigma localPi boundName
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      rootFormula rootAssignmentCode rootAssignmentStep hrootMode)
+    as hopenedShape.
+  rewrite <- hopenedShape in hbody.
+  destruct hbody as
+    (finalWitnessList & finalContext & bodyRoot &
+      hfinal & hincluded & hbody).
+  destruct
+    (raw_codedPALocalProofOf_templateExistentialOpenMany
+      M hPA translation
+      (rawTemplateContextCodeOnTail translation finalContext
+        (coqFourStateTableAppendWitnessContext
+          modeCode modeStep formulaCode formulaStep
+          assignmentCodeCode assignmentCodeStep
+          assignmentStepCode assignmentStepStep
+          (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+          rootFormula rootAssignmentCode rootAssignmentStep outerPrefix))
+      (templateFormulaShiftMany 8
+        (coqFourStateTableAppendTemplateGlobalSourceAtRootTerms
+          rootMode localSigma localPi
+          rootFormula rootAssignmentCode rootAssignmentStep))
+      (coqFourStateTableAppendGlobalTraversalWitnesses
+        (ttParameter boundName))
+      (coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms
+        rootMode localSigma localPi
+        rootFormula rootAssignmentCode rootAssignmentStep
+        (ttParameter boundName))
+      bodyRoot
+      (coqFourStateTableAppendOpenedTemplateGlobalFormulaAtRootTerms_success
+        rootMode localSigma localPi
+        rootFormula rootAssignmentCode rootAssignmentStep
+        (ttParameter boundName)) hbody)
+    as [globalRoot hglobal].
+  assert (hcontinuation : RawCodedPAGrowingTemplateLocalProofAt M translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      (coqFourStateTableAppendWitnessContext
+        modeCode modeStep formulaCode formulaStep
+        assignmentCodeCode assignmentCodeStep
+        assignmentStepCode assignmentStepStep
+        (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+        rootFormula rootAssignmentCode rootAssignmentStep outerPrefix)
+      (rawTemplateFormula translation
+        (templateFormulaShiftMany 8
+          (coqFourStateTableAppendTemplateGlobalSourceAtRootTerms
+            rootMode localSigma localPi
+            rootFormula rootAssignmentCode rootAssignmentStep)))).
+  {
+    unfold RawCodedPAGrowingTemplateLocalProofAt.
+    exists finalWitnessList, finalContext, globalRoot.
+    split; [exact hfinal |].
+    split; [exact hincluded | exact hglobal].
+  }
+  exact
+    (raw_codedPAGrowingTemplateLocalProofAt_four_state_table_append_ex8_elimination_under_prefix
+      M hPA translation
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses (raw_zero M))
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses (raw_zero M))
+      outerPrefix
+      (coqFourStateTableAppendTemplateGlobalSourceAtRootTerms
+        rootMode localSigma localPi
+        rootFormula rootAssignmentCode rootAssignmentStep)
+      appendRoot
+      modeCode modeStep formulaCode formulaStep
+      assignmentCodeCode assignmentCodeStep
+      assignmentStepCode assignmentStepStep
+      (ttParameter boundName) (embedPATerm (Term.numeral rootMode))
+      rootFormula rootAssignmentCode rootAssignmentStep
+      hsource happend hcontinuation).
 Qed.
 
 (** Close the reversed global formula from its seventh traversal field.  The
