@@ -282,6 +282,63 @@ Proof.
     rewrite Ht, hfs_mem_code_image_iff. reflexivity.
 Qed.
 
+Lemma hfs_code_image_empty : forall f,
+  hfs_code_image f hfs_empty = hfs_empty.
+Proof.
+  intro f. apply hfs_extensionality. intro y.
+  rewrite hfs_mem_code_image_iff. split.
+  - intros [x [Hx _]].
+    exfalso. now apply hfs_not_mem_empty in Hx.
+  - intro Hy. apply hfs_mem_empty_iff in Hy. contradiction.
+Qed.
+
+Lemma hfs_code_image_union : forall f left right,
+  hfs_code_image f (hfs_union left right) =
+  hfs_union (hfs_code_image f left) (hfs_code_image f right).
+Proof.
+  intros f left right. apply hfs_extensionality. intro y.
+  rewrite hfs_mem_code_image_iff.
+  setoid_rewrite hfs_mem_union_iff.
+  setoid_rewrite hfs_mem_code_image_iff.
+  split.
+  - intros [x [Hx Hy]].
+    destruct Hx as [Hleft | Hright].
+    + left. exists x. split; assumption.
+    + right. exists x. split; assumption.
+  - intros [Hleft | Hright].
+    + destruct Hleft as [x [Hx Hy]]. exists x. split.
+      * left. exact Hx.
+      * exact Hy.
+    + destruct Hright as [x [Hx Hy]]. exists x. split.
+      * right. exact Hx.
+      * exact Hy.
+Qed.
+
+Lemma hfs_code_image_insert : forall f x s,
+  hfs_code_image f (hfs_insert x s) =
+  hfs_insert (f x) (hfs_code_image f s).
+Proof.
+  intros f x s. apply hfs_extensionality. intro y.
+  rewrite hfs_mem_code_image_iff.
+  setoid_rewrite hfs_mem_insert_iff.
+  setoid_rewrite hfs_mem_code_image_iff. split.
+  - intros [z [[-> | Hz] Hy]].
+    + left. exact Hy.
+    + right. exists z. split; assumption.
+  - intros [Hy | [z [Hz Hy]]].
+    + exists x. split; [left; reflexivity|exact Hy].
+    + exists z. split; [right; exact Hz|exact Hy].
+Qed.
+
+Lemma hfs_code_image_subset_of_subset : forall f s t,
+  hfs_subset s t ->
+  hfs_subset (hfs_code_image f s) (hfs_code_image f t).
+Proof.
+  intros f s t Hsub y Hy. apply hfs_mem_code_image_iff in Hy.
+  destruct Hy as [x [Hx ->]]. apply hfs_mem_code_image_iff.
+  exists x. split; [apply (Hsub x); exact Hx|reflexivity].
+Qed.
+
 Definition hfs_code_restrict (relation domain : hfs_code) : hfs_code :=
   hfs_list_restrict_code (hfs_code_elements relation)
     (hfs_code_elements domain).
@@ -302,6 +359,15 @@ Proof.
   apply hfs_mem_code_restrict_iff in Hp. exact (proj1 Hp).
 Qed.
 
+Lemma hfs_code_restrict_empty : forall relation,
+  hfs_code_restrict relation hfs_empty = hfs_empty.
+Proof.
+  intro relation. apply hfs_extensionality. intro p.
+  rewrite hfs_mem_code_restrict_iff. split.
+  - intros [_ Hdomain]. now apply hfs_not_mem_empty in Hdomain.
+  - intro H. apply hfs_mem_empty_iff in H. contradiction.
+Qed.
+
 Lemma hfs_code_domain_restrict : forall relation domain,
   hfs_code_domain (hfs_code_restrict relation domain) =
   hfs_inter (hfs_code_domain relation) domain.
@@ -318,6 +384,14 @@ Proof.
   - intros [[y Hpair] Hdomain]. exists y.
     apply hfs_mem_code_restrict_iff. split; [exact Hpair|].
     rewrite hfs_index_fst_pair. exact Hdomain.
+Qed.
+
+Lemma hfs_code_domain_restrict_of_subset : forall relation domain,
+  hfs_subset domain (hfs_code_domain relation) ->
+  hfs_code_domain (hfs_code_restrict relation domain) = domain.
+Proof.
+  intros relation domain Hsubset. rewrite hfs_code_domain_restrict.
+  rewrite hfs_inter_comm. apply hfs_inter_eq_left_of_subset. exact Hsubset.
 Qed.
 
 Definition hfs_code_is_mapping (relation : hfs_code) : Prop :=
@@ -509,9 +583,15 @@ Print Assumptions hfs_mem_code_range_iff.
 Print Assumptions hfs_code_range_existsUnique.
 Print Assumptions hfs_mem_code_image_iff.
 Print Assumptions hfs_code_image_existsUnique.
+Print Assumptions hfs_code_image_empty.
+Print Assumptions hfs_code_image_union.
+Print Assumptions hfs_code_image_insert.
+Print Assumptions hfs_code_image_subset_of_subset.
 Print Assumptions hfs_mem_code_restrict_iff.
 Print Assumptions hfs_code_restrict_subset.
+Print Assumptions hfs_code_restrict_empty.
 Print Assumptions hfs_code_domain_restrict.
+Print Assumptions hfs_code_domain_restrict_of_subset.
 Print Assumptions hfs_code_domain_union.
 Print Assumptions hfs_code_is_mapping_union_of_disjoint.
 Print Assumptions hfs_code_is_mapping_insert_fresh.

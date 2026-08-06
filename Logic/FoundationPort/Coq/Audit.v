@@ -5784,9 +5784,15 @@ Print Assumptions hfs_mem_code_range_iff.
 Print Assumptions hfs_code_range_existsUnique.
 Print Assumptions hfs_mem_code_image_iff.
 Print Assumptions hfs_code_image_existsUnique.
+Print Assumptions hfs_code_image_empty.
+Print Assumptions hfs_code_image_union.
+Print Assumptions hfs_code_image_insert.
+Print Assumptions hfs_code_image_subset_of_subset.
 Print Assumptions hfs_mem_code_restrict_iff.
 Print Assumptions hfs_code_restrict_subset.
+Print Assumptions hfs_code_restrict_empty.
 Print Assumptions hfs_code_domain_restrict.
+Print Assumptions hfs_code_domain_restrict_of_subset.
 Print Assumptions hfs_code_domain_union.
 Print Assumptions hfs_code_is_mapping_union_of_disjoint.
 Print Assumptions hfs_code_is_mapping_insert_fresh.
