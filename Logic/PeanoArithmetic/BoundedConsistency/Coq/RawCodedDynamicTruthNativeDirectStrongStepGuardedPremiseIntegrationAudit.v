@@ -43,6 +43,10 @@ Check
   raw_coqRestrictedPADirectStrongStepGuardedEndpointBooleanDeepPrefix_rule_member.
 Check RawCoqRestrictedPADirectStrongStepGuardedEndpointPremiseRootsAt.
 Check raw_coqRestrictedPADirectStrongStep_guardedEndpointPremiseRoots.
+Check raw_coqRestrictedPADirectStrongStepGuardedEndpointPremise_shift13_eq_renamed13.
+Check raw_coqRestrictedPADirectStrongStepGuardedOuterLift_atomic_shape_pre.
+Check
+  raw_coqRestrictedPADirectStrongStepGuardedEndpointImpAtomicRoot_of_premise_roots.
 
 (** The structural shift and membership theorem is closed.  The represented
     assumption compiler and its six-root direct specialization inherit only
@@ -61,6 +65,8 @@ Print Assumptions
   raw_coqRestrictedPADirectStrongStepGuardedLiftedBooleanDeepPrefix_split.
 Print Assumptions
   raw_coqRestrictedPADirectStrongStep_guardedEndpointPremiseRoots.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepGuardedEndpointImpAtomicRoot_of_premise_roots.
 Print Assumptions
   raw_codedPAGrowingTemplateLocalProofAt_of_shifted_assumption_under_fixed_prefix.
 Print Assumptions raw_coqRestrictedPADirectStrongStep_guardedPremiseRoots.
