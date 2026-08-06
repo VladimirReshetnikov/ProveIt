@@ -18,13 +18,59 @@ From FoundationModal Require Import GenericCalculus.
 From Foundation.Syntax.Predicate Require Import Language.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Calculus Calculus2.
-From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import D2.
+From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Theory.
+From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import D1 D2 D3.
 
 Import ListNotations.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
+
+(** At the standard natural numbers, raw proof-code provability is an
+    external proposition.  This record packages exactly the theorem-level
+    interface used by the source's [Theory.standardProvability] object,
+    without claiming that its internal Delta-one predicate has been
+    reconstructed. *)
+Record boot_standard_provability (L : language) (T : theory L)
+    (EL : language_encodable L) (ET : boot_theory_encoding EL T) : Type := {
+  boot_standard_prov : sentence L -> Prop;
+  boot_standard_D1 : forall sigma,
+    first_order_theory_provable T sigma -> boot_standard_prov sigma;
+  boot_standard_sound : forall sigma,
+    boot_standard_prov sigma -> first_order_theory_provable T sigma;
+  boot_standard_modus_ponens : forall sigma tau,
+    boot_standard_prov (semiformula_imp sigma tau) ->
+    boot_standard_prov sigma -> boot_standard_prov tau
+}.
+
+Arguments boot_standard_prov {L T EL ET} _ _.
+Arguments boot_standard_D1 {L T EL ET} _ _ _.
+Arguments boot_standard_sound {L T EL ET} _ _ _.
+Arguments boot_standard_modus_ponens {L T EL ET} _ _ _ _ _.
+
+(** The checked executable proof predicate realizes the bundled interface. *)
+Definition boot_standard_provability_of_code : forall L T EL ET,
+    @boot_standard_provability L T EL ET.
+Proof.
+  intros L T EL ET.
+  refine {| boot_standard_prov := @boot_sentence_provable L EL T ET;
+            boot_standard_D1 := fun sigma =>
+              @boot_internalize_provability L T EL ET sigma;
+            boot_standard_sound := fun sigma =>
+              @boot_sentence_provable_sound L T EL ET sigma;
+            boot_standard_modus_ponens := fun sigma tau =>
+              @boot_provability_modus_ponens L T EL ET sigma tau |}.
+Defined.
+
+Lemma boot_standard_provability_of_code_iff_theory : forall L T EL ET
+    (sigma : sentence L),
+  boot_standard_prov (@boot_standard_provability_of_code L T EL ET) sigma <->
+  first_order_theory_provable T sigma.
+Proof.
+  intros L T EL ET sigma.
+  exact (@boot_sentence_provable_iff_theory L T EL ET sigma).
+Qed.
 
 (** A finite-context proof of a proposition in the ambient theory. *)
 Definition boot_context_proof {L : language} (T : theory L)

@@ -5970,6 +5970,9 @@ Print Assumptions peano_minus_boot_lt_succ_iff_eq_or_lt.
 
 (* FirstOrder/Incompleteness/StandardProvability.v: finite-context
    derivability-condition adapters. *)
+Check boot_standard_provability.
+Print Assumptions boot_standard_provability_of_code.
+Print Assumptions boot_standard_provability_of_code_iff_theory.
 Check boot_context_proof.
 Check boot_context_provable.
 Print Assumptions boot_context_weaken.
