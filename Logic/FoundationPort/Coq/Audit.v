@@ -5714,6 +5714,14 @@ Print Assumptions hfs_sequence_exists_for_relation.
 Print Assumptions hfs_sequence_existsUnique_for_relation.
 Print Assumptions hfs_mem_list_big_union_iff.
 Print Assumptions hfs_mem_list_big_inter_iff.
+Print Assumptions hfs_list_big_union_empty.
+Print Assumptions hfs_list_big_union_cons.
+Print Assumptions hfs_list_big_union_app.
+Print Assumptions hfs_list_big_union_subset_of_subset.
+Print Assumptions hfs_list_big_inter_singleton.
+Print Assumptions hfs_list_big_inter_cons.
+Print Assumptions hfs_list_big_inter_subset_head.
+Print Assumptions hfs_list_big_inter_subset_member.
 Print Assumptions hfs_mem_list_product_iff.
 Print Assumptions hfs_mem_list_domain_iff.
 Print Assumptions hfs_mem_list_range_iff.

@@ -21,6 +21,15 @@ Unset Strict Implicit.
 Definition hfs_list_big_union (families : list hfs_code) : hfs_code :=
   fold_right hfs_union hfs_empty families.
 
+Lemma hfs_list_big_union_empty :
+  hfs_list_big_union [] = hfs_empty.
+Proof. reflexivity. Qed.
+
+Lemma hfs_list_big_union_cons : forall family families,
+  hfs_list_big_union (family :: families) =
+  hfs_union family (hfs_list_big_union families).
+Proof. reflexivity. Qed.
+
 Lemma hfs_mem_list_big_union_iff : forall families x,
   hfs_mem x (hfs_list_big_union families) <->
   exists s, In s families /\ hfs_mem x s.
@@ -48,10 +57,41 @@ Proof.
     rewrite Ht, hfs_mem_list_big_union_iff. reflexivity.
 Qed.
 
+Lemma hfs_list_big_union_app : forall left right,
+  hfs_list_big_union (left ++ right) =
+  hfs_union (hfs_list_big_union left) (hfs_list_big_union right).
+Proof.
+  intros left right. apply hfs_extensionality. intro x.
+  rewrite hfs_mem_list_big_union_iff, hfs_mem_union_iff,
+    !hfs_mem_list_big_union_iff.
+  setoid_rewrite in_app_iff.
+  firstorder.
+Qed.
+
+Lemma hfs_list_big_union_subset_of_subset : forall left right,
+  (forall s, In s left -> In s right) ->
+  hfs_subset (hfs_list_big_union left) (hfs_list_big_union right).
+Proof.
+  intros left right Hsubset x Hx.
+  apply hfs_mem_list_big_union_iff in Hx.
+  destruct Hx as [s [Hs Hsx]].
+  apply hfs_mem_list_big_union_iff.
+  exists s. split; [apply Hsubset|exact Hsx]. exact Hs.
+Qed.
+
 (** A nonempty finite intersection is represented by its head and tail. *)
 Definition hfs_list_big_inter (head : hfs_code)
     (tail : list hfs_code) : hfs_code :=
   fold_right hfs_inter head tail.
+
+Lemma hfs_list_big_inter_singleton : forall head,
+  hfs_list_big_inter head [] = head.
+Proof. reflexivity. Qed.
+
+Lemma hfs_list_big_inter_cons : forall head family families,
+  hfs_list_big_inter head (family :: families) =
+  hfs_inter family (hfs_list_big_inter head families).
+Proof. reflexivity. Qed.
 
 Lemma hfs_mem_list_big_inter_iff : forall head tail x,
   hfs_mem x (hfs_list_big_inter head tail) <->
@@ -77,6 +117,22 @@ Proof.
   - intro x. apply hfs_mem_list_big_inter_iff.
   - intros t Ht. apply hfs_extensionality. intro x.
     rewrite Ht, hfs_mem_list_big_inter_iff. reflexivity.
+Qed.
+
+Lemma hfs_list_big_inter_subset_head : forall head tail,
+  hfs_subset (hfs_list_big_inter head tail) head.
+Proof.
+  intros head tail x Hx.
+  apply hfs_mem_list_big_inter_iff in Hx. exact (proj1 Hx).
+Qed.
+
+Lemma hfs_list_big_inter_subset_member : forall head tail family,
+  In family tail ->
+  hfs_subset (hfs_list_big_inter head tail) family.
+Proof.
+  intros head tail family Hfamily x Hx.
+  apply hfs_mem_list_big_inter_iff in Hx.
+  now apply (proj2 Hx family Hfamily).
 Qed.
 
 (** * Cartesian products *)
@@ -262,6 +318,14 @@ Qed.
 
 Print Assumptions hfs_mem_list_big_union_iff.
 Print Assumptions hfs_mem_list_big_inter_iff.
+Print Assumptions hfs_list_big_union_empty.
+Print Assumptions hfs_list_big_union_cons.
+Print Assumptions hfs_list_big_union_app.
+Print Assumptions hfs_list_big_union_subset_of_subset.
+Print Assumptions hfs_list_big_inter_singleton.
+Print Assumptions hfs_list_big_inter_cons.
+Print Assumptions hfs_list_big_inter_subset_head.
+Print Assumptions hfs_list_big_inter_subset_member.
 Print Assumptions hfs_mem_list_product_iff.
 Print Assumptions hfs_mem_list_domain_iff.
 Print Assumptions hfs_mem_list_range_iff.
