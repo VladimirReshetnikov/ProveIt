@@ -10,6 +10,7 @@
     changing any proof whose predicate is in that restricted family. *)
 
 From Foundation.FirstOrder.SetTheory Require Import Basic.
+From Stdlib Require Import Lia.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -553,6 +554,140 @@ Lemma z_successor_is_successor : forall m (O : zermelo_operations m)
   set_model_successor (z_successor O x) x.
 Proof. intros m O x y. apply z_successor_mem_iff. Qed.
 
+(** The least inductive set, obtained by bounded separation from the chosen
+    infinity witness. *)
+Definition z_is_inductive {m} (O : zermelo_operations m)
+    (I : membership_carrier m) : Prop :=
+  membership_rel (z_empty O) I /\
+  forall x, membership_rel x I -> membership_rel (z_successor O x) I.
+
+Lemma z_infinity_inductive : forall m (O : zermelo_operations m),
+  z_is_inductive O (z_infinity O).
+Proof.
+  intros m O. split.
+  - apply (proj1 (z_infinity_spec O)). exact (z_empty_spec O).
+  - intros x Hx. apply (proj2 (z_infinity_spec O) x Hx).
+    apply z_successor_is_successor.
+Qed.
+
+Definition z_omega {m} (O : zermelo_operations m) : membership_carrier m :=
+  z_separate O
+    (fun x => forall I, z_is_inductive O I -> membership_rel x I)
+    (z_infinity O).
+
+Lemma z_omega_mem_iff : forall m (O : zermelo_operations m)
+    (x : membership_carrier m),
+  membership_rel x (z_omega O) <->
+  forall I, z_is_inductive O I -> membership_rel x I.
+Proof.
+  intros m O x. unfold z_omega. rewrite z_separate_mem_iff. split.
+  - now intros [_ Hall].
+  - intro Hall. split; [apply Hall; apply z_infinity_inductive | exact Hall].
+Qed.
+
+Lemma z_omega_inductive : forall m (O : zermelo_operations m),
+  z_is_inductive O (z_omega O).
+Proof.
+  intros m O. split.
+  - apply z_omega_mem_iff. intros I HI. exact (proj1 HI).
+  - intros x Hx. apply z_omega_mem_iff. intros I HI.
+    apply (proj2 HI x).
+    exact (proj1 (@z_omega_mem_iff m O x) Hx I HI).
+Qed.
+
+Lemma z_omega_subset_inductive : forall m (O : zermelo_operations m)
+    (I : membership_carrier m),
+  z_is_inductive O I -> set_model_subset (z_omega O) I.
+Proof.
+  intros m O I HI x Hx.
+  exact (proj1 (@z_omega_mem_iff m O x) Hx I HI).
+Qed.
+
+Fixpoint z_of_nat {m} (O : zermelo_operations m) (n : nat)
+    : membership_carrier m :=
+  match n with
+  | 0 => z_empty O
+  | S k => z_successor O (z_of_nat O k)
+  end.
+
+Lemma z_of_nat_in_omega : forall m (O : zermelo_operations m) n,
+  membership_rel (z_of_nat O n) (z_omega O).
+Proof.
+  intros m O n. induction n as [|n IH]; simpl.
+  - exact (proj1 (@z_omega_inductive m O)).
+  - exact (proj2 (@z_omega_inductive m O) (z_of_nat O n) IH).
+Qed.
+
+Lemma z_successor_injective : forall m (O : zermelo_operations m)
+    (x y : membership_carrier m),
+  z_successor O x = z_successor O y -> x = y.
+Proof.
+  intros m O x y H.
+  assert (Hx : membership_rel x (z_successor O y)).
+  { rewrite <- H. apply z_successor_mem_iff. now left. }
+  assert (Hy : membership_rel y (z_successor O x)).
+  { rewrite H. apply z_successor_mem_iff. now left. }
+  apply z_successor_mem_iff in Hx. apply z_successor_mem_iff in Hy.
+  destruct Hx as [Hxy | Hxy]; [exact Hxy |].
+  destruct Hy as [Hyx | Hyx]; [now symmetry |].
+  exfalso.
+  destruct (z_foundation_spec O (z_pair O x y)
+    (@z_pair_nonempty m O x y)) as [w [Hw Hminimal]].
+  apply z_pair_mem_iff in Hw. destruct Hw as [-> | ->].
+  - apply (Hminimal y); [apply z_pair_mem_iff; now right | exact Hyx].
+  - apply (Hminimal x); [apply z_pair_mem_iff; now left | exact Hxy].
+Qed.
+
+Lemma z_of_nat_injective : forall m (O : zermelo_operations m) n k,
+  z_of_nat O n = z_of_nat O k -> n = k.
+Proof.
+  intros m O n. induction n as [|n IH]; intros [|k] H; simpl in H.
+  - reflexivity.
+  - exfalso. apply (@z_not_mem_empty m O (z_of_nat O k)).
+    rewrite H. apply z_successor_mem_iff. now left.
+  - exfalso. apply (@z_not_mem_empty m O (z_of_nat O n)).
+    rewrite <- H. apply z_successor_mem_iff. now left.
+  - f_equal. apply IH. now apply (@z_successor_injective m O).
+Qed.
+
+Lemma z_of_nat_eq_iff : forall m (O : zermelo_operations m) n k,
+  z_of_nat O n = z_of_nat O k <-> n = k.
+Proof.
+  intros m O n k. split; [apply z_of_nat_injective | now intros ->].
+Qed.
+
+Lemma z_of_nat_mem_iff : forall m (O : zermelo_operations m) n k,
+  membership_rel (z_of_nat O n) (z_of_nat O k) <-> n < k.
+Proof.
+  intros m O n k. induction k as [|k IH]; simpl.
+  - split.
+    + intro H. now exfalso; apply (@z_not_mem_empty m O (z_of_nat O n)).
+    + lia.
+  - rewrite z_successor_mem_iff, z_of_nat_eq_iff, IH. lia.
+Qed.
+
+Theorem z_omega_induction : forall m (O : zermelo_operations m)
+    (P : membership_carrier m -> Prop),
+  P (z_empty O) ->
+  (forall x, membership_rel x (z_omega O) ->
+    P x -> P (z_successor O x)) ->
+  forall x, membership_rel x (z_omega O) -> P x.
+Proof.
+  intros m O P Hzero Hstep x Hx.
+  set (I := z_separate O P (z_omega O)).
+  assert (HI : z_is_inductive O I).
+  { split.
+    - unfold I. apply z_separate_mem_iff. split.
+      + exact (proj1 (@z_omega_inductive m O)).
+      + exact Hzero.
+    - intros y Hy. unfold I in Hy |- *. apply z_separate_mem_iff in Hy.
+      apply z_separate_mem_iff. split.
+      + exact (proj2 (@z_omega_inductive m O) y (proj1 Hy)).
+      + now apply Hstep. }
+  pose proof (proj1 (@z_omega_mem_iff m O x) Hx I HI) as HxI.
+  unfold I in HxI. now apply z_separate_mem_iff in HxI.
+Qed.
+
 (** Foundation rules out membership cycles without assuming global
     well-foundedness of the ambient relation. *)
 Lemma z_foundation_inter_empty : forall m (O : zermelo_operations m)
@@ -762,4 +897,6 @@ Print Assumptions z_strict_subset_iff_difference_witness.
 Print Assumptions z_kpair_injective.
 Print Assumptions z_product_union_left.
 Print Assumptions z_mem_asym3.
+Print Assumptions z_of_nat_mem_iff.
+Print Assumptions z_omega_induction.
 Print Assumptions zermelo_operations_model.

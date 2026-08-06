@@ -5356,6 +5356,19 @@ Print Assumptions z_strict_subset_iff_difference_witness.
 Print Assumptions z_sdiff_nonempty_of_strict_subset.
 Print Assumptions z_successor_mem_iff.
 Print Assumptions z_successor_is_successor.
+Check z_is_inductive.
+Print Assumptions z_infinity_inductive.
+Check z_omega.
+Print Assumptions z_omega_mem_iff.
+Print Assumptions z_omega_inductive.
+Print Assumptions z_omega_subset_inductive.
+Check z_of_nat.
+Print Assumptions z_of_nat_in_omega.
+Print Assumptions z_successor_injective.
+Print Assumptions z_of_nat_injective.
+Print Assumptions z_of_nat_eq_iff.
+Print Assumptions z_of_nat_mem_iff.
+Print Assumptions z_omega_induction.
 Print Assumptions z_foundation_inter_empty.
 Print Assumptions z_mem_irrefl.
 Print Assumptions z_ne_of_mem.
