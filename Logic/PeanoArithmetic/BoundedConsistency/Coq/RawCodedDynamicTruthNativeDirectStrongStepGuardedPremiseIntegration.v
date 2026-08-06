@@ -15,7 +15,7 @@
   suffix.
 *)
 
-From Stdlib Require Import List.
+From Stdlib Require Import List Lia.
 From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA.
@@ -24,6 +24,7 @@ From BoundedPAConsistency Require Import
   RawCodedLtSuccCasesProofCompilation
   RawCodedPALocalProofExistentialEliminationChain
   RawCodedPALocalProofUniversalIntroductionChain
+  RawCodedTemplateNumeralParameters
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
@@ -33,7 +34,9 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier
   RawCodedRestrictedPADerivationSoundnessDirectStrongStepShell
   RawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation
+  RawCodedDynamicTruthImpDirectChildAdmissibilityProofCompilation
   RawCodedDynamicTruthBooleanGuardedBranchExclusivity
+  RawCodedDynamicTruthBooleanDirectChildAdmissibilityProofCompilation
   RawCodedDynamicTruthBooleanGuardedDiagonalCompilation
   RawCodedDynamicTruthNativeZeroGuardedPredecessorCompilation
   RawCodedDynamicTruthNativeZeroBooleanGuardedParentCompilation.
@@ -49,6 +52,7 @@ Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
+Import PABoundedRawCodedTemplateNumeralParameters.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
@@ -62,7 +66,11 @@ Import
   PABoundedRawCodedRestrictedPADerivationSoundnessDirectStrongStepShell.
 Import
   PABoundedRawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation.
+Import
+  PABoundedRawCodedDynamicTruthImpDirectChildAdmissibilityProofCompilation.
 Import PABoundedRawCodedDynamicTruthBooleanGuardedBranchExclusivity.
+Import
+  PABoundedRawCodedDynamicTruthBooleanDirectChildAdmissibilityProofCompilation.
 Import PABoundedRawCodedDynamicTruthBooleanGuardedDiagonalCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroGuardedPredecessorCompilation.
@@ -283,6 +291,125 @@ Proof.
   intro formula.
   cbn [rawCoqTemplateRenameN templateFormulaShiftMany].
   reflexivity.
+Qed.
+
+(** The guarded constructor has five local coordinates.  Lifting an already
+    guarded formula below the eight endpoint witnesses therefore uses the
+    cutoff-five shift: indices [0..4] stay local, while the older caller
+    coordinates move by eight. *)
+Definition rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    : nat -> nat := templateShiftRenamingBy 5 8.
+
+(** The finite uniform shift is just addition on variable indices.  Keeping
+    this arithmetic fact separate lets the following cutoff transport use
+    [templateFormulaRename_comp] instead of recurring over formula syntax. *)
+Lemma raw_templateShiftRenamingMany_eq_add : forall count index,
+  templateShiftRenamingMany count index = index + count.
+Proof.
+  induction count as [|count ih]; intro index.
+  - cbn [templateShiftRenamingMany]. lia.
+  - cbn [templateShiftRenamingMany].
+    rewrite ih. lia.
+Qed.
+
+Lemma raw_templateShiftRenamingBy_after_shiftMany : forall
+    cutoff amount index,
+  templateShiftRenamingBy cutoff amount
+    (templateShiftRenamingMany cutoff index) =
+  templateShiftRenamingMany cutoff index + amount.
+Proof.
+  intros cutoff amount index.
+  unfold templateShiftRenamingBy.
+  rewrite raw_templateShiftRenamingMany_eq_add.
+  destruct (Nat.ltb (index + cutoff) cutoff) eqn:hbelow.
+  - apply PeanoNat.Nat.ltb_lt in hbelow. lia.
+  - reflexivity.
+Qed.
+
+(** Moving an outer context below [count] newly introduced binders can be
+    expressed in either order: first shift the formula uniformly and then
+    apply a cutoff shift to the old coordinates, or first apply the old
+    renaming and then shift it through the binders. *)
+Lemma raw_templateFormulaRename_cutoff_after_shiftMany : forall
+    count amount formula,
+  templateFormulaRename (templateShiftRenamingBy count amount)
+    (templateFormulaShiftMany count formula) =
+  templateFormulaShiftMany count
+    (templateFormulaRename (fun index => index + amount) formula).
+Proof.
+  intros count amount formula.
+  rewrite !templateFormulaShiftMany_as_rename.
+  rewrite !templateFormulaRename_comp.
+  apply templateFormulaRename_ext.
+  intro index.
+  rewrite raw_templateShiftRenamingBy_after_shiftMany.
+  rewrite (raw_templateShiftRenamingMany_eq_add count index).
+  rewrite (raw_templateShiftRenamingMany_eq_add count (index + amount)).
+  lia.
+Qed.
+
+Lemma raw_templateContextShiftMany_map : forall count context,
+  templateContextShiftMany count context =
+  map (templateFormulaShiftMany count) context.
+Proof.
+  induction count as [|count ih]; intro context.
+  - cbn [templateContextShiftMany templateFormulaShiftMany].
+    induction context as [|head tail ihcontext].
+    + reflexivity.
+    + cbn. f_equal. exact ihcontext.
+  - cbn [templateContextShiftMany templateContextShift
+      templateContextRename].
+    rewrite ih.
+    unfold templateContextShift, templateContextRename.
+    rewrite map_map.
+    apply map_ext. intro formula.
+    reflexivity.
+Qed.
+
+Lemma raw_templateContextRename_cutoff_after_shiftMany : forall
+    count amount context,
+  templateContextRename (templateShiftRenamingBy count amount)
+    (templateContextShiftMany count context) =
+  templateContextShiftMany count
+    (templateContextRename (fun index => index + amount) context).
+Proof.
+  intros count amount context.
+  rewrite !raw_templateContextShiftMany_map.
+  unfold templateContextRename.
+  rewrite !map_map.
+  apply map_ext. intro formula.
+  apply raw_templateFormulaRename_cutoff_after_shiftMany.
+Qed.
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedOuterLift_atomic_shape :
+  templateFormulaRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+      coqDynamicTruthImpGuardedLevelTerm
+      coqDynamicTruthImpGuardedParentTerm
+      coqDynamicTruthImpGuardedLeftTerm
+      coqDynamicTruthImpGuardedRightTerm
+      coqDynamicTruthImpGuardedChildTerm) =
+  templateFormulaRename (templateShiftRenamingMany 13)
+    coqStrongStepProofEndpointAtomicAdequacyConclusion.
+Proof. vm_compute. reflexivity. Qed.
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedOuterLift_boolean_atomic_shape :
+  forall constructor,
+  templateFormulaRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthBooleanDirectChildAtomicPremiseTemplate constructor
+      coqDynamicTruthBooleanGuardedLevelTerm
+      coqDynamicTruthBooleanGuardedParentTerm
+      coqDynamicTruthBooleanGuardedLeftTerm
+      coqDynamicTruthBooleanGuardedRightTerm
+      coqDynamicTruthBooleanGuardedChildTerm) =
+  templateFormulaRename (templateShiftRenamingMany 13)
+    coqStrongStepProofEndpointAtomicAdequacyConclusion.
+Proof.
+  intro constructor.
+  rewrite coqDynamicTruthBooleanDirectChildAtomicPremiseTemplate_eq_imp.
+  apply raw_coqRestrictedPADirectStrongStepGuardedOuterLift_atomic_shape.
 Qed.
 
 End
