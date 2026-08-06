@@ -329,6 +329,34 @@ Proof.
     [now rewrite nat_log_exp | exact Ha | apply nat_pow2_power | exact Hb].
 Qed.
 
+(** The standard-model form of Foundation's [sq_len_le_three_mul].  Binary
+    induction exposes the same even/odd decomposition used by the source's
+    polynomial induction, while [nat_length_le_self] supplies the only
+    numerical estimate needed in each successor branch. *)
+Lemma nat_sq_length_le_three_mul : forall a,
+  nat_length a ^ 2 <= 3 * a.
+Proof.
+  intro a.
+  induction a using N.binary_induction.
+  - simpl. lia.
+  - destruct (N.eq_dec a 0) as [-> | Hn].
+    + simpl. lia.
+    + assert (Hpos : 0 < a) by
+        (apply (proj1 (N.neq_0_lt_0 a)); exact Hn).
+      rewrite nat_length_two_mul_of_pos by exact Hpos.
+      pose proof (@nat_length_le_self a) as Hlen.
+      assert (Hone : 1 <= a) by lia.
+      nia.
+  - destruct (N.eq_dec a 0) as [-> | Hn].
+    + simpl. lia.
+    + assert (Hpos : 0 < a) by
+        (apply (proj1 (N.neq_0_lt_0 a)); exact Hn).
+      rewrite nat_length_two_mul_add_one.
+      pose proof (@nat_length_le_self a) as Hlen.
+      assert (Hone : 1 <= a) by lia.
+      nia.
+Qed.
+
 (** [nat_bexp a x] is [2^x] inside the binary length of [a], and zero
     outside it.  Unlike the source choice construction, it is executable. *)
 Definition nat_bexp (a x : N) : N :=

@@ -5134,6 +5134,7 @@ Print Assumptions nat_lt_exp_length.
 Print Assumptions nat_length_mul_exp.
 Print Assumptions nat_length_mul_pow2_add_of_lt.
 Print Assumptions nat_length_mul_exp_add_of_lt.
+Print Assumptions nat_sq_length_le_three_mul.
 Check nat_bexp.
 Print Assumptions nat_bexp_of_lt.
 Print Assumptions nat_bexp_of_le.
