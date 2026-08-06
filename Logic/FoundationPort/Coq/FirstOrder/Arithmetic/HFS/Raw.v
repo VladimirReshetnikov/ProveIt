@@ -10,7 +10,7 @@
 
 From Stdlib Require Import Bool.Bool Arith.PeanoNat Lia Lists.List NArith.NArith.
 From Foundation.FirstOrder.Arithmetic.Exponential Require Import Bit.
-From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq BigOps.
+From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq BigOps Relation.
 
 Import ListNotations.
 
@@ -244,6 +244,122 @@ Proof.
     rewrite Hr, hfs_mem_code_range_iff. reflexivity.
 Qed.
 
+(** * Raw relation restriction, images, and mappings *)
+
+Definition hfs_code_image (f : hfs_code -> hfs_code) (s : hfs_code) : hfs_code :=
+  hfs_list_image f (hfs_code_elements s).
+
+Lemma hfs_mem_code_image_iff : forall f s y,
+  hfs_mem y (hfs_code_image f s) <->
+  exists x, hfs_mem x s /\ y = f x.
+Proof.
+  intros f s y. unfold hfs_code_image.
+  rewrite hfs_mem_list_image_iff. split.
+  - intros [x [Hx Hy]]. exists x. split.
+    + apply (proj1 (hfs_mem_code_elements_iff s x)). exact Hx.
+    + exact Hy.
+  - intros [x [Hx Hy]]. exists x. split.
+    + apply (proj2 (hfs_mem_code_elements_iff s x)). exact Hx.
+    + exact Hy.
+Qed.
+
+Theorem hfs_code_image_existsUnique : forall f s,
+  exists! t, forall y,
+    hfs_mem y t <-> exists x, hfs_mem x s /\ y = f x.
+Proof.
+  intros f s. exists (hfs_code_image f s). split.
+  - intro y. apply hfs_mem_code_image_iff.
+  - intros t Ht. apply hfs_extensionality. intro y.
+    rewrite Ht, hfs_mem_code_image_iff. reflexivity.
+Qed.
+
+Definition hfs_code_restrict (relation domain : hfs_code) : hfs_code :=
+  hfs_list_restrict_code (hfs_code_elements relation)
+    (hfs_code_elements domain).
+
+Lemma hfs_mem_code_restrict_iff : forall relation domain p,
+  hfs_mem p (hfs_code_restrict relation domain) <->
+  hfs_mem p relation /\ hfs_mem (hfs_index_fst p) domain.
+Proof.
+  intros relation domain p. unfold hfs_code_restrict.
+  rewrite hfs_mem_list_restrict_code_iff, !hfs_code_elements_arithmetize.
+  reflexivity.
+Qed.
+
+Lemma hfs_code_restrict_subset : forall relation domain,
+  hfs_subset (hfs_code_restrict relation domain) relation.
+Proof.
+  intros relation domain p Hp.
+  apply hfs_mem_code_restrict_iff in Hp. exact (proj1 Hp).
+Qed.
+
+Lemma hfs_code_domain_restrict : forall relation domain,
+  hfs_code_domain (hfs_code_restrict relation domain) =
+  hfs_inter (hfs_code_domain relation) domain.
+Proof.
+  intros relation domain. apply hfs_extensionality. intro x.
+  rewrite hfs_mem_code_domain_iff, hfs_mem_inter_iff,
+    hfs_mem_code_domain_iff. split.
+  - intros [y Hpair].
+    apply hfs_mem_code_restrict_iff in Hpair.
+    split.
+    + exists y. exact (proj1 Hpair).
+    + pose proof (proj2 Hpair) as Hdomain.
+      rewrite hfs_index_fst_pair in Hdomain. exact Hdomain.
+  - intros [[y Hpair] Hdomain]. exists y.
+    apply hfs_mem_code_restrict_iff. split; [exact Hpair|].
+    rewrite hfs_index_fst_pair. exact Hdomain.
+Qed.
+
+Definition hfs_code_is_mapping (relation : hfs_code) : Prop :=
+  forall x, hfs_mem x (hfs_code_domain relation) ->
+    exists! y, hfs_mem (hfs_index_pair x y) relation.
+
+Lemma hfs_code_is_mapping_empty : hfs_code_is_mapping hfs_empty.
+Proof.
+  intros x Hx. apply hfs_mem_code_domain_iff in Hx.
+  destruct Hx as [y Hy]. exfalso. now apply hfs_not_mem_empty in Hy.
+Qed.
+
+Lemma hfs_code_is_mapping_singleton : forall x y,
+  hfs_code_is_mapping (hfs_singleton (hfs_index_pair x y)).
+Proof.
+  intros x y z Hz. apply hfs_mem_code_domain_iff in Hz.
+  destruct Hz as [w Hw]. apply hfs_mem_singleton_iff in Hw.
+  destruct (hfs_index_pair_injective Hw) as [Hzx Hwy].
+  subst z. subst w. exists y. split.
+  - apply hfs_mem_singleton_iff. reflexivity.
+  - intros z Hz'. apply hfs_mem_singleton_iff in Hz'.
+    now apply (proj2 (hfs_index_pair_injective (eq_sym Hz'))).
+Qed.
+
+Lemma hfs_code_is_mapping_of_subset : forall relation sub,
+  hfs_code_is_mapping relation ->
+  hfs_subset sub relation ->
+  hfs_code_is_mapping sub.
+Proof.
+  intros relation sub Hmap Hsub x Hx.
+  apply hfs_mem_code_domain_iff in Hx. destruct Hx as [y Hy].
+  assert (Hxd : hfs_mem x (hfs_code_domain relation)).
+  { apply hfs_mem_code_domain_iff. exists y. apply Hsub. exact Hy. }
+  destruct (Hmap x Hxd) as [z [Hz Huniq]]. exists y. split.
+  - exact Hy.
+  - intros z0 Hz0.
+    pose proof (Huniq y (Hsub (hfs_index_pair x y) Hy)) as Hyz.
+    pose proof (Huniq z0 (Hsub (hfs_index_pair x z0) Hz0)) as Hz0z.
+    congruence.
+Qed.
+
+Lemma hfs_code_is_mapping_restrict : forall relation domain,
+  hfs_code_is_mapping relation ->
+  hfs_code_is_mapping (hfs_code_restrict relation domain).
+Proof.
+  intros relation domain Hmap.
+  apply hfs_code_is_mapping_of_subset with (relation := relation).
+  - exact Hmap.
+  - apply hfs_code_restrict_subset.
+Qed.
+
 Print Assumptions hfs_mem_code_elements_iff.
 Print Assumptions hfs_code_elements_arithmetize.
 Print Assumptions hfs_code_elements_nonempty_of_mem.
@@ -258,3 +374,12 @@ Print Assumptions hfs_mem_code_domain_iff.
 Print Assumptions hfs_code_domain_existsUnique.
 Print Assumptions hfs_mem_code_range_iff.
 Print Assumptions hfs_code_range_existsUnique.
+Print Assumptions hfs_mem_code_image_iff.
+Print Assumptions hfs_code_image_existsUnique.
+Print Assumptions hfs_mem_code_restrict_iff.
+Print Assumptions hfs_code_restrict_subset.
+Print Assumptions hfs_code_domain_restrict.
+Print Assumptions hfs_code_is_mapping_empty.
+Print Assumptions hfs_code_is_mapping_singleton.
+Print Assumptions hfs_code_is_mapping_of_subset.
+Print Assumptions hfs_code_is_mapping_restrict.
