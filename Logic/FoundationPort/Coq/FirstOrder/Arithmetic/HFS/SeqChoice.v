@@ -75,4 +75,67 @@ Proof.
       rewrite Hnone in Hmem. discriminate.
 Qed.
 
+(** Unique pointwise witnesses force a unique exact-length sequence.  This
+    is the standard-model counterpart of Foundation's
+    [sigmaOne_skolem_seq!] corollary. *)
+Theorem hfs_sequence_existsUnique_for_relation : forall n
+    (R : nat -> hfs_code -> Prop),
+  (forall i, i < n -> exists! y, R i y) ->
+  exists! s,
+    hfs_sequence_length s = n /\
+    forall i x,
+      hfs_mem (hfs_index_pair (N.of_nat i) x)
+        (hfs_sequence_code s) ->
+      R i x.
+Proof.
+  intros n R H.
+  assert (Hex : forall i, i < n -> exists y, R i y).
+  { intros i Hi. destruct (H i Hi) as [y [Hy _]].
+    exists y. exact Hy. }
+  destruct (@hfs_sequence_exists_for_relation n R Hex)
+    as [s [Hslen Hsrel]].
+  exists s. split; [exact (conj Hslen Hsrel) |].
+  intros t [Htlen Htrel].
+  apply hfs_sequence_extensionality. intro i.
+  destruct (hfs_sequence_nth s i) as [x |] eqn:Hsx.
+  - assert (Hi : i < n).
+    { assert (Hilen : i < length (hfs_sequence_values s)).
+      { apply (proj1 (@nth_error_Some hfs_code
+          (hfs_sequence_values s) i)).
+        unfold hfs_sequence_nth in Hsx. rewrite Hsx. discriminate. }
+      unfold hfs_sequence_length in Hslen. lia. }
+    assert (Hty_some : hfs_sequence_nth t i <> None).
+    { apply (proj2 (@nth_error_Some hfs_code
+        (hfs_sequence_values t) i)).
+      unfold hfs_sequence_length in Htlen. lia. }
+    destruct (hfs_sequence_nth t i) as [y |] eqn:Hty.
+    2: { contradiction. }
+    assert (Hmems : hfs_mem
+        (hfs_index_pair (N.of_nat i) x)
+        (hfs_sequence_code s)).
+    { unfold hfs_sequence_code. rewrite hfs_mem_sequence_index_iff.
+      exact Hsx. }
+    assert (Hmemt : hfs_mem
+        (hfs_index_pair (N.of_nat i) y)
+        (hfs_sequence_code t)).
+    { unfold hfs_sequence_code. rewrite hfs_mem_sequence_index_iff.
+      exact Hty. }
+    destruct (H i Hi) as [w [Hw Huniq]].
+    assert (Hxw : x = w).
+    { symmetry. apply Huniq. apply Hsrel. exact Hmems. }
+    assert (Hyw : y = w).
+    { symmetry. apply Huniq. apply Htrel. exact Hmemt. }
+    congruence.
+  - assert (Hout : hfs_sequence_length s <= i).
+    { apply (proj1 (@nth_error_None hfs_code
+        (hfs_sequence_values s) i)).
+      exact Hsx. }
+    assert (Hty : hfs_sequence_nth t i = None).
+    { apply (proj2 (@nth_error_None hfs_code
+        (hfs_sequence_values t) i)).
+      unfold hfs_sequence_length in Hslen, Htlen, Hout. lia. }
+    now symmetry.
+Qed.
+
 Print Assumptions hfs_sequence_exists_for_relation.
+Print Assumptions hfs_sequence_existsUnique_for_relation.

@@ -5711,6 +5711,7 @@ Print Assumptions hfs_vector_to_sequence_mem.
 Check hfs_relation_choice_vector.
 Print Assumptions hfs_relation_choice_vector_spec.
 Print Assumptions hfs_sequence_exists_for_relation.
+Print Assumptions hfs_sequence_existsUnique_for_relation.
 Check hfs_pr_construction.
 Check hfs_pr_result.
 Print Assumptions hfs_pr_result_zero.
