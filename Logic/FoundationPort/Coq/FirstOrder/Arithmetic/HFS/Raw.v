@@ -339,6 +339,45 @@ Proof.
   exists x. split; [apply (Hsub x); exact Hx|reflexivity].
 Qed.
 
+Definition hfs_code_image2
+    (f : hfs_code -> hfs_code -> hfs_code)
+    (left right : hfs_code) : hfs_code :=
+  hfs_code_image
+    (fun p => f (hfs_index_fst p) (hfs_index_snd p))
+    (hfs_code_product left right).
+
+Lemma hfs_mem_code_image2_iff : forall f left right y,
+  hfs_mem y (hfs_code_image2 f left right) <->
+  exists x, hfs_mem x left /\ exists z, hfs_mem z right /\
+    y = f x z.
+Proof.
+  intros f left right y. unfold hfs_code_image2.
+  rewrite hfs_mem_code_image_iff. split.
+  - intros [p [Hp Hy]].
+    apply hfs_mem_code_product_iff in Hp.
+    destruct Hp as [x [Hx [z [Hz Heq]]]].
+    exists x. split; [exact Hx|]. exists z. split; [exact Hz|].
+    subst p. rewrite hfs_index_fst_pair, hfs_index_snd_pair in Hy.
+    exact Hy.
+  - intros [x [Hx [z [Hz Hy]]]].
+    exists (hfs_index_pair x z). split.
+    + apply hfs_mem_code_product_iff. exists x. split; [exact Hx|].
+      exists z. split; [exact Hz|reflexivity].
+    + rewrite hfs_index_fst_pair, hfs_index_snd_pair. exact Hy.
+Qed.
+
+Theorem hfs_code_image2_existsUnique : forall f left right,
+  exists! t, forall y,
+    hfs_mem y t <->
+    exists x, hfs_mem x left /\ exists z, hfs_mem z right /\
+      y = f x z.
+Proof.
+  intros f left right. exists (hfs_code_image2 f left right). split.
+  - intro y. apply hfs_mem_code_image2_iff.
+  - intros t Ht. apply hfs_extensionality. intro y.
+    rewrite Ht, hfs_mem_code_image2_iff. reflexivity.
+Qed.
+
 Definition hfs_code_restrict (relation domain : hfs_code) : hfs_code :=
   hfs_list_restrict_code (hfs_code_elements relation)
     (hfs_code_elements domain).
@@ -587,6 +626,8 @@ Print Assumptions hfs_code_image_empty.
 Print Assumptions hfs_code_image_union.
 Print Assumptions hfs_code_image_insert.
 Print Assumptions hfs_code_image_subset_of_subset.
+Print Assumptions hfs_mem_code_image2_iff.
+Print Assumptions hfs_code_image2_existsUnique.
 Print Assumptions hfs_mem_code_restrict_iff.
 Print Assumptions hfs_code_restrict_subset.
 Print Assumptions hfs_code_restrict_empty.

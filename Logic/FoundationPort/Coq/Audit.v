@@ -5788,6 +5788,8 @@ Print Assumptions hfs_code_image_empty.
 Print Assumptions hfs_code_image_union.
 Print Assumptions hfs_code_image_insert.
 Print Assumptions hfs_code_image_subset_of_subset.
+Print Assumptions hfs_mem_code_image2_iff.
+Print Assumptions hfs_code_image2_existsUnique.
 Print Assumptions hfs_mem_code_restrict_iff.
 Print Assumptions hfs_code_restrict_subset.
 Print Assumptions hfs_code_restrict_empty.
