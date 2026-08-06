@@ -48,7 +48,8 @@ From Foundation.FirstOrder Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Basic Coding Seq PRF FixedPoint.
 From Foundation.FirstOrder.Arithmetic.HFS Require Import Vec.
 From Foundation.FirstOrder.Arithmetic Require Import HFS.
-From Foundation.FirstOrder.Arithmetic.Exponential Require Import Bit.
+From Foundation.FirstOrder.Arithmetic.Exponential Require Import
+  Pow2 PPow2 Bit.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
@@ -4984,6 +4985,55 @@ Check semiformula_nest_func.
 Print Assumptions semiformula_nest_func_argument_terms_eval.
 Print Assumptions semiformula_nest_func_result_terms_eval.
 Print Assumptions semiformula_eval_nest_func.
+Check nat_pow2.
+Print Assumptions nat_pow2_iff_exponent.
+Print Assumptions nat_pow2_power.
+Print Assumptions nat_pow2_exponent_unique.
+Print Assumptions nat_pow2_pos.
+Print Assumptions nat_pow2_nonzero.
+Print Assumptions nat_pow2_one.
+Print Assumptions nat_pow2_two.
+Print Assumptions nat_pow2_not_zero.
+Print Assumptions nat_pow2_double_iff.
+Print Assumptions nat_pow2_four_mul_iff.
+Print Assumptions nat_pow2_elim.
+Print Assumptions nat_pow2_elim_strict.
+Print Assumptions nat_pow2_two_divides.
+Print Assumptions nat_pow2_div2.
+Print Assumptions nat_pow2_double_div2.
+Print Assumptions nat_pow2_mul.
+Print Assumptions nat_pow2_square.
+Print Assumptions nat_pow2_le_iff_divide.
+Print Assumptions nat_pow2_two_le.
+Print Assumptions nat_pow2_le_iff_lt_double.
+Print Assumptions nat_pow2_lt_iff_double_le.
+Print Assumptions nat_pow2_not_three.
+Print Assumptions nat_pow2_four_le.
+Print Assumptions nat_pow2_square_or_double_square.
+Check nat_ppow2.
+Print Assumptions nat_ppow2_iff_index.
+Print Assumptions nat_ppow2_power.
+Print Assumptions nat_ppow2_index_unique.
+Print Assumptions nat_ppow2_pow2.
+Print Assumptions nat_ppow2_pos.
+Print Assumptions nat_ppow2_one_lt.
+Print Assumptions nat_ppow2_two.
+Print Assumptions nat_ppow2_four.
+Print Assumptions nat_ppow2_not_zero.
+Print Assumptions nat_ppow2_not_one.
+Print Assumptions nat_ppow2_not_three.
+Print Assumptions nat_ppow2_square_index.
+Print Assumptions nat_ppow2_square.
+Print Assumptions nat_ppow2_elim.
+Print Assumptions nat_ppow2_two_le.
+Print Assumptions nat_ppow2_two_lt.
+Print Assumptions nat_ppow2_four_le.
+Print Assumptions nat_ppow2_four_lt.
+Print Assumptions nat_ppow2_square_ne_two.
+Print Assumptions nat_ppow2_square_ne_four.
+Print Assumptions nat_ppow2_square_le_of_lt.
+Print Assumptions nat_ppow2_square_interval_unique.
+Print Assumptions nat_ppow2_double_square_interval_unique.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.
