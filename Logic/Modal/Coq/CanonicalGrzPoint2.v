@@ -135,15 +135,6 @@ Lemma GrzPoint2_proves_Point2 :
   forall p : formula nat, GrzPoint2_proves (Point2 p).
 Proof. intro p. apply Np_extra. right. now exists p. Qed.
 
-Fixpoint formula_atoms {AtomType : Type} (p : formula AtomType)
-    : list AtomType :=
-  match p with
-  | Atom a => [a]
-  | Bottom => []
-  | Imp q r => formula_atoms q ++ formula_atoms r
-  | Box q => formula_atoms q
-  end.
-
 Lemma atom_subformula_in_formula_atoms :
   forall (AtomType : Type) (p : formula AtomType) (a : AtomType),
     In (Atom a) (subformulas p) -> In a (formula_atoms p).

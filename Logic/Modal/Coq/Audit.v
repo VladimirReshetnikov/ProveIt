@@ -4,7 +4,7 @@ From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
   GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
-  PropositionalFormula PropositionalNNFormula PropositionalTranslation
+  PropositionalFormula FormulaPropositional PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalKripkePreservation PropositionalKripkeCanonical
   PropositionalKripkeFinite PropositionalGlivenko PropositionalDialectica
@@ -30,8 +30,8 @@ From FoundationModal Require Import
   CanonicalK HilbertNNFormula Loeb
   FrameProperties
   RelationProperties ConverseWellFounded WeakConverseWellFounded
-  CorrespondenceExtensions NormalHilbert LogicInfrastructure
-  HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentKT EntailmentK4 EntailmentS4
+  CorrespondenceExtensions NormalHilbert LogicInfrastructure ComplementEntailment
+  HilbertAxiom EntailmentExtensions EntailmentNamedExtensions EntailmentBasicFull EntailmentKT EntailmentK4 EntailmentS4
   GodelTranslation
   StandardModalCompanions
   EntailmentS5 HilbertWithRE HilbertNormal AlgebraicSemantics
@@ -50,24 +50,30 @@ From FoundationModal Require Import
   HilbertWithREUnarySystems HilbertWithRETKSystems HilbertWithREFourSystems
   HilbertWithRESystems HilbertWithRESymmetrySystems
   HilbertWithRENormal HilbertWithREEquivalences
-  KripkeSemantics KripkeHilbert CanonicalExtensions
+  KripkeSemantics KripkeHilbert CanonicalExtensions MaximalTheoryLaws
   FiniteMaximalContext Modality CanonicalDB5 StandardTranslation Preservation Root
   FrameTransformations GLGrzDerivations FiniteCanonicalSupport CanonicalGL
   GLUnnecessitation GLModalDisjunction GLIndependence QuasiNormalS QuasiNormalD
   GLPlusBoxBot
   KHenIncompleteness GLAlternativeSystems HilbertRuleSystemBridges
-  CanonicalGrz StructuralFrames FiniteCWFFrameRank
+  CanonicalGrz StructuralFrames TreeFinite FiniteCWFFrameRank
   WeakCorrespondence CanonicalCombinations KD4Point3Z KTMkFiniteModelFailure
   CanonicalTB Boxdot CanonicalPoint2
   CanonicalPoint3 JerabekBoxdot CanonicalGLPoint3 CanonicalPoint4 CanonicalS4H CanonicalS5 CanonicalMcK
   CanonicalGrzMcK CanonicalTrivVer MaximalTranslations Makinson GLPoint3PlusBoxBot CanonicalS5Grz
-  CanonicalK4n CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
+  CanonicalK4n MaximalCanonicalLaws CanonicalGeach
+  CanonicalPoint2McK CanonicalGrzPoint2 CanonicalGrzPoint3Strict
   CanonicalPoint3McK CanonicalPoint4McK
   Undefinability.
 
 Check substitute_comp.
 Check satisfies_substitute.
 Check valid_K.
+Check multinecessitation.
+Check multiunnecessitation.
+Check lift_unary_schema.
+Check lift_binary_schema.
+Check modal_disjunctive_iff_unnecessitation_under_disjunction.
 
 (** The complete sixty-seven-declaration Logic/Semantics.lean surface:
     generic Tarski clauses, ordinary and singleton-normalized finite folds,
@@ -1548,6 +1554,10 @@ Check phf_deducible_of_provable.
 Check phf_deduction_empty_iff.
 Check phf_deduction_weaken.
 Check phf_weak_deduction_iff.
+Check phf_list_conj2.
+Check phf_provable_list_conj2_elim.
+Check phf_deduction_list_conj2.
+Check phf_deduction_list_iff.
 Check phf_deduction_finite_list_support.
 Print Assumptions phf_provable_imp_trans.
 Print Assumptions phf_proof_rule_C.
@@ -1564,6 +1574,9 @@ Print Assumptions phf_F_Rfl_disjunctive.
 Print Assumptions phf_F_Tra1_disjunctive.
 Print Assumptions phf_deduction_empty_iff.
 Print Assumptions phf_weak_deduction_iff.
+Print Assumptions phf_provable_list_conj2_elim.
+Print Assumptions phf_deduction_list_conj2.
+Print Assumptions phf_deduction_list_iff.
 Print Assumptions phf_deduction_finite_list_support.
 
 (** Formula-indexed rooted semantics and elementary NT-seriality. *)
@@ -3822,9 +3835,42 @@ Print Assumptions stable_compose.
 Print Assumptions stable_identity_compose.
 Print Assumptions stable_compose_associative.
 
+(** Shared modal-formula structure, freshness, and the exact boundary between
+    propositional formulas and formulas of modal degree zero. *)
+Check formula_eq_dec.
+Check formula_is_box.
+Check formula_negated.
+Check formula_letterless.
+Check formula_atoms.
+Check formula_fresh_atom.
+Check pformula_to_modal.
+Check modal_to_pformula.
+Print Assumptions formula_imp_injective.
+Print Assumptions formula_neg_injective.
+Print Assumptions formula_or_injective.
+Print Assumptions formula_and_injective.
+Print Assumptions formula_box_injective.
+Print Assumptions formula_dia_injective.
+Print Assumptions formula_negated_iff.
+Print Assumptions formula_not_negated_iff.
+Print Assumptions formula_atom_in_atoms_iff_subformula.
+Print Assumptions formula_atom_lt_fresh.
+Print Assumptions formula_fresh_atom_not_in.
+Print Assumptions formula_fresh_atom_not_subformula.
+Print Assumptions pformula_to_modal_degree_zero.
+Print Assumptions pformula_to_modal_letterless.
+Print Assumptions modal_to_pformula_to_modal.
+Print Assumptions modal_degree_zero_iff_propositional.
+
 Check nnformula_eq_dec.
+Check nnformula_encode_with.
+Check nnformula_decode_with.
+Check nnformula_enum_with.
 Check nn_neg_involutive.
 Check nn_neg_injective.
+Check nn_imp_injective.
+Check nn_is_prebox_iff.
+Check nn_is_predia_iff.
 Check nn_degree_neg.
 Check nn_degree_to_formula.
 Check nn_dnf_part_degree_zero.
@@ -3845,6 +3891,15 @@ Check modal_formula_decode_code.
 Check modal_formula_enum_surjective.
 Check nnformula_decode_code.
 Check nnformula_enum_surjective.
+Print Assumptions nn_or_injective.
+Print Assumptions nn_and_injective.
+Print Assumptions nn_box_injective.
+Print Assumptions nn_dia_injective.
+Print Assumptions nn_imp_injective.
+Print Assumptions nn_is_prebox_iff.
+Print Assumptions nn_is_predia_iff.
+Print Assumptions nnformula_decode_encode_with.
+Print Assumptions nnformula_enum_with_surjective.
 
 Check plon_satisfies_box.
 Check plon_not_satisfies_box.
@@ -4536,6 +4591,11 @@ Check iff_Boxdot_BoxdotBoxdot_raw.
 Check iff_boxdot_boxdotboxdot.
 Check boxdot_axiomFour_raw.
 Check boxdot_axiomFour.
+Check box_iter_theory.
+Check finite_theory_box_iter_extensional.
+Check normal_derives_box_iter_two_context_to_box.
+Check normal_derives_boxbox_context_to_box.
+Check normal_derives_finite_box_iter_two_context_to_box.
 Check s4_entailment.
 Check Diadot.
 Check iff_box_boxdot_raw.
@@ -5802,6 +5862,34 @@ Check S4Point3_strictly_weaker_GrzPoint3.
 (** Canonical weak-n transitivity and the infinite strict K4n hierarchy. *)
 Check schema_FourN_substitution_closed.
 Check normal_canonical_rel_iter_iff_box_iter.
+Check normal_canonical_truth_neg_iff.
+Check normal_canonical_truth_pair.
+Check normal_canonical_model_valid_iff_provable.
+Check normal_mct_box_iter_rel_iff.
+Check normal_mct_box_rel_iff.
+Check normal_mct_box_iter_negneg_iff.
+Check normal_mct_box_negneg_iff.
+Check normal_mct_box_iter_dual.
+Check normal_mct_box_dual.
+Check normal_mct_dia_iter_dual.
+Check normal_mct_dia_dual.
+Check normal_mct_dia_iter_rel_iff.
+Check normal_mct_dia_rel_iff.
+Check normal_canonical_rel_iter_iff_dia_iter.
+Check normal_canonical_rel_iter_iff_neg_box_iter.
+Check normal_canonical_rel_iter_iff_neg_dia_iter.
+Check normal_canonical_relation_iff_box_mem.
+Check normal_canonical_relation_iff_neg_box_mem.
+Check normal_canonical_relation_iff_dia_mem.
+Check normal_canonical_relation_iff_neg_dia_mem.
+Check normal_canonical_rel_iter_iff_box_iter_satisfies.
+Check normal_canonical_rel_iter_iff_dia_iter_satisfies.
+Check normal_canonical_relation_iff_box_satisfies.
+Check normal_canonical_relation_iff_dia_satisfies.
+Check normal_mct_box_iter_list_conj_iff.
+Check normal_mct_box_iter_list_conj2_iff.
+Check normal_mct_box_list_conj_iff.
+Check normal_mct_box_list_conj2_iff.
 Check normal_canonical_weakly_transitive_of_schema_FourN.
 Check K4n_canonical_frame.
 Check K4n_sound_complete.
@@ -6004,6 +6092,48 @@ Check complementary_member_cases.
 Check complementary_mem_box.
 Check satisfies_complement_incompatible.
 Check satisfies_neg_complement_incompatible.
+Check classical_logic_double_neg_elim.
+Check classical_logic_double_neg_intro.
+Check logic_complement_bottom.
+Check logic_neg_complement_bottom.
+Check logic_of_neg_complement.
+Check logic_neg_of_complement.
+
+(** Atom-polymorphic algebraic core of maximal consistent theories. *)
+Check generic_maximal_classical_theory.
+Check gmct_not_both.
+Check gmct_bottom_absent.
+Check gmct_neg_iff.
+Check gmct_tautology_mem.
+Check gmct_top_mem.
+Check gmct_imp_iff.
+Check gmct_negneg_iff.
+Check gmct_and_iff.
+Check gmct_or_iff.
+Check gmct_iff_iff.
+Check gmct_classical_truth_lemma.
+Check gmct_mdp.
+Check gmct_iff_congr.
+Check gmct_inclusion_extensional.
+Check gmct_neg_imp.
+Check gmct_neg_congr.
+Check gmct_list_conj_iff.
+Check gmct_list_conj2_iff.
+Check gmct_list_conj_members_iff.
+Check gmct_list_conj2_members_iff.
+Check gmct_list_disj2_iff.
+Check normal_mct_classical_logic.
+Check normal_mct_as_generic.
+Check normal_mct_top_mem.
+Check normal_mct_negneg_iff.
+Check normal_mct_and_iff.
+Check normal_mct_or_iff.
+Check normal_mct_iff_iff.
+Check normal_mct_list_conj_iff.
+Check normal_mct_list_conj2_iff.
+Check normal_mct_list_conj_members_iff.
+Check normal_mct_list_conj2_members_iff.
+Check normal_mct_list_disj2_iff.
 
 (** Schema-generic finite consistency and complement-complete contexts over
     natural-number atoms. *)
@@ -6072,6 +6202,11 @@ Check finest_tc_rooted_is_piecewise_strongly_convergent.
 Check finest_tc_rooted_is_piecewise_strongly_connected.
 
 Check valid_Geach_atom_iff_geach_convergent.
+Check schema_Geach.
+Check normal_geach_seed.
+Check normal_canonical_dia_iter_mem_of_rel_iter.
+Check normal_canonical_geach_convergent.
+Check schema_Geach_canonical_frame.
 Check valid_T_iff_reflexive.
 Check valid_D_iff_serial.
 Check valid_B_iff_symmetric.
@@ -6268,6 +6403,26 @@ Check fin_le_finite.
 Check nat_lt_validates_Z.
 Check nat_le_validates_Dum.
 Check trans_tree_is_tree.
+Check tree_step_snoc.
+Check tree_immediate_snoc_of_eq.
+Check rooted_path_nodes_length.
+Check rooted_path_nodes_end.
+Check rooted_path_nodes_start.
+Check tree_nodes_injective.
+Check tree_immediate_nodes_iff.
+Check tree_rel_iter_nodes_iff.
+Check trans_tree_rel_nodes_iff.
+Check rooted_path_nodes_nodup.
+Check lists_exact.
+Check lists_upto.
+Check lists_exact_complete.
+Check lists_upto_complete.
+Check tree_nodes_realized_unique.
+Check tree_unravelling_cover.
+Check tree_unravelling_cover_complete.
+Check trans_tree_unravelling_finite.
+Check frame_is_finite_tree.
+Check trans_tree_is_finite_tree.
 Check trans_tree_unravelling_truth_at_root.
 Check rank_eq_iff_iter_terminal.
 Check rank_lt_iff_satisfies_box_bottom.
@@ -6460,6 +6615,9 @@ Print Assumptions normal_consistent_of_sound_frame_class.
 Print Assumptions normal_consistent_of_sound_frame.
 Print Assumptions normal_weaker_than_of_subset_frame_class.
 Print Assumptions nn_neg_involutive.
+Print Assumptions nn_imp_injective.
+Print Assumptions nn_is_prebox_iff.
+Print Assumptions nn_is_predia_iff.
 Print Assumptions nn_degree_to_formula.
 Print Assumptions nn_dnf_part_degree_zero.
 Print Assumptions nn_satisfies_atom.
@@ -6471,6 +6629,8 @@ Print Assumptions modal_formula_decode_code.
 Print Assumptions modal_formula_enum_surjective.
 Print Assumptions nnformula_decode_code.
 Print Assumptions nnformula_enum_surjective.
+Print Assumptions nnformula_decode_encode_with.
+Print Assumptions nnformula_enum_with_surjective.
 Print Assumptions plon_satisfies_box.
 Print Assumptions plon_not_satisfies_box.
 Print Assumptions plon_model_valid_elim_contra.
@@ -6726,6 +6886,10 @@ Print Assumptions iff_Box_BoxBoxdot_raw.
 Print Assumptions iff_Box_BoxdotBox_raw.
 Print Assumptions iff_Boxdot_BoxdotBoxdot_raw.
 Print Assumptions boxdot_axiomFour_raw.
+Print Assumptions finite_theory_box_iter_extensional.
+Print Assumptions normal_derives_box_iter_two_context_to_box.
+Print Assumptions normal_derives_boxbox_context_to_box.
+Print Assumptions normal_derives_finite_box_iter_two_context_to_box.
 Print Assumptions iff_box_boxdot_raw.
 Print Assumptions iff_dia_diadot_raw.
 Print Assumptions godel_translate_rename.
@@ -7347,6 +7511,20 @@ Print Assumptions GrzPoint2_strictly_weaker_GrzPoint3.
 Print Assumptions S4Point3_strictly_weaker_GrzPoint3.
 Print Assumptions schema_FourN_substitution_closed.
 Print Assumptions normal_canonical_rel_iter_iff_box_iter.
+Print Assumptions normal_canonical_truth_pair.
+Print Assumptions normal_canonical_model_valid_iff_provable.
+Print Assumptions normal_mct_box_iter_rel_iff.
+Print Assumptions normal_mct_box_iter_negneg_iff.
+Print Assumptions normal_mct_box_iter_dual.
+Print Assumptions normal_mct_dia_iter_dual.
+Print Assumptions normal_mct_dia_iter_rel_iff.
+Print Assumptions normal_canonical_rel_iter_iff_dia_iter.
+Print Assumptions normal_canonical_rel_iter_iff_neg_box_iter.
+Print Assumptions normal_canonical_rel_iter_iff_neg_dia_iter.
+Print Assumptions normal_canonical_rel_iter_iff_box_iter_satisfies.
+Print Assumptions normal_canonical_rel_iter_iff_dia_iter_satisfies.
+Print Assumptions normal_mct_box_iter_list_conj_iff.
+Print Assumptions normal_mct_box_iter_list_conj2_iff.
 Print Assumptions normal_canonical_weakly_transitive_of_schema_FourN.
 Print Assumptions K4n_complete.
 Print Assumptions K4n_zero_equiv_KTc.
@@ -7459,6 +7637,29 @@ Print Assumptions s5_modal_reduction.
 Print Assumptions complement_cases.
 Print Assumptions complementary_mem_box.
 Print Assumptions satisfies_complement_incompatible.
+Print Assumptions classical_logic_double_neg_elim.
+Print Assumptions classical_logic_double_neg_intro.
+Print Assumptions logic_complement_bottom.
+Print Assumptions logic_neg_complement_bottom.
+Print Assumptions logic_of_neg_complement.
+Print Assumptions logic_neg_of_complement.
+Print Assumptions gmct_not_both.
+Print Assumptions gmct_neg_iff.
+Print Assumptions gmct_imp_iff.
+Print Assumptions gmct_and_iff.
+Print Assumptions gmct_or_iff.
+Print Assumptions gmct_classical_truth_lemma.
+Print Assumptions gmct_inclusion_extensional.
+Print Assumptions gmct_neg_congr.
+Print Assumptions gmct_list_conj_iff.
+Print Assumptions gmct_list_conj2_iff.
+Print Assumptions gmct_list_conj_members_iff.
+Print Assumptions gmct_list_conj2_members_iff.
+Print Assumptions gmct_list_disj2_iff.
+Print Assumptions normal_mct_classical_logic.
+Print Assumptions normal_mct_and_iff.
+Print Assumptions normal_mct_list_conj_iff.
+Print Assumptions normal_mct_list_conj_members_iff.
 Print Assumptions normal_derives_complement_bottom.
 Print Assumptions normal_derives_neg_complement_bottom.
 Print Assumptions normal_derives_of_neg_complement.
@@ -7544,15 +7745,28 @@ Print Assumptions extend_root_T_conjunction_witness.
     extensionality and proof irrelevance; duplicate-free bounded-subtype
     enumeration uses only proof irrelevance.  Filtering a finite cover into a
     point-generated subtype uses informative excluded middle, classical
-    description, and proof irrelevance.  Cluster classification, linear-frame
-    semantics, and corrected balloon maximality use classical propositional
-    logic. *)
+    description, and proof irrelevance.  The finite tree cover likewise uses
+    definite description to recover the unique intrinsic path represented by
+    each realized node list; its length bound and relation normal forms are
+    constructive.  Cluster classification, linear-frame semantics, and
+    corrected balloon maximality use classical propositional logic. *)
 Print Assumptions point_generated_frame_finite.
 Print Assumptions cluster_shape_trichotomy.
 Print Assumptions skeleton_partial_order.
 Print Assumptions skeleton_finite.
 Print Assumptions bounded_nat_finite_cover.
 Print Assumptions nat_lt_validates_Z.
+Print Assumptions tree_nodes_injective.
+Print Assumptions tree_immediate_nodes_iff.
+Print Assumptions tree_rel_iter_nodes_iff.
+Print Assumptions trans_tree_rel_nodes_iff.
+Print Assumptions rooted_path_nodes_nodup.
+Print Assumptions lists_exact_complete.
+Print Assumptions lists_upto_complete.
+Print Assumptions tree_nodes_realized_unique.
+Print Assumptions tree_unravelling_cover_complete.
+Print Assumptions trans_tree_unravelling_finite.
+Print Assumptions trans_tree_is_finite_tree.
 Print Assumptions trans_tree_unravelling_truth_at_root.
 Print Assumptions rank_eq_iff_iter_terminal.
 Print Assumptions point_generated_rank_spec.
@@ -7694,6 +7908,11 @@ Print Assumptions
     middle. *)
 Print Assumptions satisfies_dia_elim.
 Print Assumptions valid_Geach_atom_iff_geach_convergent.
+Print Assumptions schema_Geach_substitution_closed.
+Print Assumptions normal_geach_seed_finite_split.
+Print Assumptions normal_geach_seed_consistent.
+Print Assumptions normal_canonical_geach_convergent.
+Print Assumptions schema_Geach_canonical_frame.
 Print Assumptions valid_Point3_iff_piecewise_strong_connected.
 Print Assumptions valid_Loeb_atom_iff_transitive_cwf.
 Print Assumptions standard_translation_diamond_is_existential.

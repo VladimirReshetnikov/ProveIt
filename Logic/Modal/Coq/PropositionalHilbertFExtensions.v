@@ -4,12 +4,12 @@
     Foundation/Propositional/Hilbert/F/Disjunctive and the independently
     proved portion of Hilbert/F/Deduction.  Finite support is generalized from
     finite sets requiring formula equality to duplicate-tolerant lists.  The
-    source's list-conjunction deduction theorem contains two [sorry] blocks;
-    it is not imported as an axiom. *)
+    source's admitted list-conjunction deduction theorem is proved here from
+    the primitive F rules, without importing either admission. *)
 
 From Stdlib Require Import Lists.List.
 From FoundationModal Require Import
-  PropositionalFormula PropositionalHilbert PropositionalSlash
+  GenericSemantics PropositionalFormula PropositionalHilbert PropositionalSlash
   PropositionalKripke2 PropositionalKripke2Correspondence
   PropositionalKripke2Hilbert.
 
@@ -391,6 +391,61 @@ Proof.
     + now apply phf_provable_imp_and.
   - intro Hpq. eapply PHFDModusPonens; [exact Hpq |].
     apply PHFDCtx. reflexivity.
+Qed.
+
+(** * Exact deduction over a normalized finite conjunction *)
+
+Definition phf_list_conj2 {Atom : Type}
+    (gamma : list (pformula Atom)) : pformula Atom :=
+  generic_list_conj2 (pformula_connectives Atom) gamma.
+
+Lemma phf_provable_list_conj2_elim :
+  forall (Atom : Type) (H : phf_hilbert Atom) gamma p,
+    In p gamma ->
+    phf_provable H (PImp (phf_list_conj2 gamma) p).
+Proof.
+  intros Atom H gamma. induction gamma as [|q gamma IH]; intros p Hp.
+  - contradiction.
+  - destruct gamma as [|r gamma].
+    + simpl in Hp. destruct Hp as [<- | Hp]; [|contradiction].
+      unfold phf_list_conj2. simpl. constructor. apply PHFPIdentity.
+    + simpl in Hp. destruct Hp as [<- | Hp].
+      * unfold phf_list_conj2. simpl. constructor. apply PHFPAndElimL.
+      * eapply phf_provable_imp_trans.
+        -- unfold phf_list_conj2. simpl. constructor. apply PHFPAndElimR.
+        -- apply IH. exact Hp.
+Qed.
+
+Lemma phf_deduction_list_conj2 :
+  forall (Atom : Type) (H : phf_hilbert Atom) gamma,
+    phf_deduction H (fun p => In p gamma) (phf_list_conj2 gamma).
+Proof.
+  intros Atom H gamma. induction gamma as [|p gamma IH].
+  - unfold phf_list_conj2. simpl. apply PHFDTheorem.
+    constructor. apply PHFPIdentity.
+  - destruct gamma as [|q gamma].
+    + unfold phf_list_conj2. simpl. apply PHFDCtx. now left.
+    + unfold phf_list_conj2 in *. simpl in *.
+      apply PHFDAndRule.
+      * apply PHFDCtx. now left.
+      * eapply phf_deduction_weaken; [|exact IH].
+        intros r Hr. now right.
+Qed.
+
+Theorem phf_deduction_list_iff :
+  forall (Atom : Type) (H : phf_hilbert Atom) gamma p,
+    phf_deduction H (fun q => In q gamma) p <->
+    phf_provable H (PImp (phf_list_conj2 gamma) p).
+Proof.
+  intros Atom H gamma p; split.
+  - intro d. induction d as
+      [q Hq | q Hq | q r Hqr Hq IHr | q r Hq IHq Hr IHr].
+    + now apply phf_provable_list_conj2_elim.
+    + now apply phf_provable_afortiori.
+    + eapply phf_provable_imp_trans; [exact IHr | exact Hqr].
+    + now apply phf_provable_imp_and.
+  - intro Himp. eapply PHFDModusPonens; [exact Himp |].
+    apply phf_deduction_list_conj2.
 Qed.
 
 Theorem phf_deduction_finite_list_support :

@@ -61,6 +61,26 @@ Definition nn_iff {AtomType} (p q : nnformula AtomType)
     : nnformula AtomType :=
   NAnd (nn_imp p q) (nn_imp q p).
 
+Lemma nn_or_injective :
+  forall (AtomType : Type) (p q r s : nnformula AtomType),
+    NOr p q = NOr r s <-> p = r /\ q = s.
+Proof. intros; split; [injection 1; auto | intros [-> ->]; reflexivity]. Qed.
+
+Lemma nn_and_injective :
+  forall (AtomType : Type) (p q r s : nnformula AtomType),
+    NAnd p q = NAnd r s <-> p = r /\ q = s.
+Proof. intros; split; [injection 1; auto | intros [-> ->]; reflexivity]. Qed.
+
+Lemma nn_box_injective :
+  forall (AtomType : Type) (p q : nnformula AtomType),
+    NBox p = NBox q <-> p = q.
+Proof. intros; split; [injection 1; auto | intros ->; reflexivity]. Qed.
+
+Lemma nn_dia_injective :
+  forall (AtomType : Type) (p q : nnformula AtomType),
+    NDia p = NDia q <-> p = q.
+Proof. intros; split; [injection 1; auto | intros ->; reflexivity]. Qed.
+
 Lemma nn_neg_atom :
   forall (AtomType : Type) (a : AtomType),
     nn_neg (NAtom a) = NNegAtom a.
@@ -106,6 +126,14 @@ Proof.
   - intro H. apply (f_equal nn_neg) in H.
     now rewrite !nn_neg_involutive in H.
   - now intros ->.
+Qed.
+
+Lemma nn_imp_injective :
+  forall (AtomType : Type) (p q r s : nnformula AtomType),
+    nn_imp p q = nn_imp r s <-> p = r /\ q = s.
+Proof.
+  intros AtomType p q r s. unfold nn_imp.
+  rewrite nn_or_injective, nn_neg_injective. tauto.
 Qed.
 
 (** Forget the normal-form representation and recover an ordinary modal
@@ -185,12 +213,30 @@ Proof.
   eauto.
 Qed.
 
+Lemma nn_is_prebox_iff :
+  forall (AtomType : Type) (p : nnformula AtomType),
+    nn_is_prebox p <-> exists q, p = NBox q.
+Proof.
+  intros AtomType p. split.
+  - apply nn_is_prebox_exists.
+  - intros [q ->]. exact I.
+Qed.
+
 Lemma nn_is_predia_exists :
   forall (AtomType : Type) (p : nnformula AtomType),
     nn_is_predia p -> exists q, p = NDia q.
 Proof.
   intros AtomType p H; destruct p; simpl in H; try contradiction.
   eauto.
+Qed.
+
+Lemma nn_is_predia_iff :
+  forall (AtomType : Type) (p : nnformula AtomType),
+    nn_is_predia p <-> exists q, p = NDia q.
+Proof.
+  intros AtomType p. split.
+  - apply nn_is_predia_exists.
+  - intros [q ->]. exact I.
 Qed.
 
 Fixpoint nn_degree {AtomType} (p : nnformula AtomType) : nat :=

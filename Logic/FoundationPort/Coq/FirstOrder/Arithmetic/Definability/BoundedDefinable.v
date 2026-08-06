@@ -14,7 +14,8 @@ From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic Require Import Operator Definability.
 From Foundation.FirstOrder.Basic.Semantics Require Import
   Semantics RewriteClosure OperatorSemantics.
-From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Hierarchy Monotone.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import
+  Misc Syntax Hierarchy Monotone.
 From Foundation.FirstOrder.Arithmetic.PeanoMinus Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Definability Require Import
   Hierarchy Definable.
@@ -715,4 +716,83 @@ Proof.
     (P := fun _ x => P x) (f := f) Hf).
   apply (arithmetic_sorted_definable_retraction HP
     (fun _ : Fin.t 1 => Fin.F1)).
+Defined.
+
+(** * Primitive arithmetic operations *)
+
+(** The source derives these witnesses from Peano-minus.  In fact, a
+    primitive operation is bounded by its own term in every interpreted
+    arithmetic structure, for every reflexive comparison relation. *)
+Definition arithmetic_bounded_add {M : Type}
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (le : M -> M -> Prop) (Hrefl : forall x, le x x)
+    (Horing : structure_interprets_oring Str oring_language_structure O) :
+    arithmetic_bounded_function_two Str le (oring_add O).
+Proof.
+  refine {| arithmetic_bounded_term :=
+    arithmetic_add_term
+      (@Semiterm_bvar oring_language M 2 Fin.F1)
+      (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)) |}.
+  intro v.
+  rewrite (@arithmetic_add_term_val M M 2 Str v (fun x => x) O
+    (@Semiterm_bvar oring_language M 2 Fin.F1)
+    (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)) Horing).
+  apply Hrefl.
+Defined.
+
+Definition arithmetic_bounded_mul {M : Type}
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (le : M -> M -> Prop) (Hrefl : forall x, le x x)
+    (Horing : structure_interprets_oring Str oring_language_structure O) :
+    arithmetic_bounded_function_two Str le (oring_mul O).
+Proof.
+  refine {| arithmetic_bounded_term :=
+    arithmetic_mul_term
+      (@Semiterm_bvar oring_language M 2 Fin.F1)
+      (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)) |}.
+  intro v.
+  rewrite (@arithmetic_mul_term_val M M 2 Str v (fun x => x) O
+    (@Semiterm_bvar oring_language M 2 Fin.F1)
+    (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)) Horing).
+  apply Hrefl.
+Defined.
+
+Definition arithmetic_definably_bounded_add {M : Type}
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (le : M -> M -> Prop) (Hrefl : forall x, le x x)
+    (Horing : structure_interprets_oring Str oring_language_structure O) :
+    arithmetic_definably_bounded_function Str le
+      (fun v : Fin.t 2 -> M =>
+        oring_add O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  apply (arithmetic_definably_bounded_of_pointwise_eq
+    (arithmetic_definably_bounded_term (Str := Str) (le := le) Hrefl
+      (structure_oring_eq Horing)
+      (arithmetic_add_term
+        (@Semiterm_bvar oring_language M 2 Fin.F1)
+        (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1))))).
+  intro v.
+  apply (@arithmetic_add_term_val M M 2 Str v (fun x => x) O
+    (@Semiterm_bvar oring_language M 2 Fin.F1)
+    (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)) Horing).
+Defined.
+
+Definition arithmetic_definably_bounded_mul {M : Type}
+    (Str : first_order_structure oring_language M) (O : oring_carrier M)
+    (le : M -> M -> Prop) (Hrefl : forall x, le x x)
+    (Horing : structure_interprets_oring Str oring_language_structure O) :
+    arithmetic_definably_bounded_function Str le
+      (fun v : Fin.t 2 -> M =>
+        oring_mul O (v Fin.F1) (v (Fin.FS Fin.F1))).
+Proof.
+  apply (arithmetic_definably_bounded_of_pointwise_eq
+    (arithmetic_definably_bounded_term (Str := Str) (le := le) Hrefl
+      (structure_oring_eq Horing)
+      (arithmetic_mul_term
+        (@Semiterm_bvar oring_language M 2 Fin.F1)
+        (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1))))).
+  intro v.
+  apply (@arithmetic_mul_term_val M M 2 Str v (fun x => x) O
+    (@Semiterm_bvar oring_language M 2 Fin.F1)
+    (@Semiterm_bvar oring_language M 2 (Fin.FS Fin.F1)) Horing).
 Defined.
