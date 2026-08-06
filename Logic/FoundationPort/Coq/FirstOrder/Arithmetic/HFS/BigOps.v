@@ -37,6 +37,17 @@ Proof.
       * right. exists u. split; assumption.
 Qed.
 
+Theorem hfs_list_big_union_existsUnique : forall families,
+  exists! t, forall x,
+    hfs_mem x t <->
+    exists s, In s families /\ hfs_mem x s.
+Proof.
+  intros families. exists (hfs_list_big_union families). split.
+  - intro x. apply hfs_mem_list_big_union_iff.
+  - intros t Ht. apply hfs_extensionality. intro x.
+    rewrite Ht, hfs_mem_list_big_union_iff. reflexivity.
+Qed.
+
 (** A nonempty finite intersection is represented by its head and tail. *)
 Definition hfs_list_big_inter (head : hfs_code)
     (tail : list hfs_code) : hfs_code :=
@@ -55,6 +66,17 @@ Proof.
       * apply Hall. left. reflexivity.
       * split; [exact Hhead|].
         intros u Hu. apply Hall. right. exact Hu.
+Qed.
+
+Theorem hfs_list_big_inter_existsUnique : forall head tail,
+  exists! t, forall x,
+    hfs_mem x t <->
+    hfs_mem x head /\ forall s, In s tail -> hfs_mem x s.
+Proof.
+  intros head tail. exists (hfs_list_big_inter head tail). split.
+  - intro x. apply hfs_mem_list_big_inter_iff.
+  - intros t Ht. apply hfs_extensionality. intro x.
+    rewrite Ht, hfs_mem_list_big_inter_iff. reflexivity.
 Qed.
 
 (** * Cartesian products *)
@@ -79,6 +101,18 @@ Proof.
   - intros [x [Hx [y [Hy Hp]]]]. apply in_flat_map.
     exists x. split; [exact Hx|].
     apply in_map_iff. exists y. split; [symmetry; exact Hp|exact Hy].
+Qed.
+
+Theorem hfs_list_product_existsUnique : forall left right,
+  exists! t, forall p,
+    hfs_mem p t <->
+    exists x, In x left /\ exists y, In y right /\
+      p = hfs_index_pair x y.
+Proof.
+  intros left right. exists (hfs_list_product left right). split.
+  - intro p. apply hfs_mem_list_product_iff.
+  - intros t Ht. apply hfs_extensionality. intro p.
+    rewrite Ht, hfs_mem_list_product_iff. reflexivity.
 Qed.
 
 (** * Domains and ranges of finite relations *)
@@ -143,6 +177,17 @@ Proof.
     + exact Hp.
 Qed.
 
+Theorem hfs_list_domain_existsUnique : forall relation,
+  exists! t, forall x,
+    hfs_mem x t <->
+    exists y, In (hfs_index_pair x y) relation.
+Proof.
+  intros relation. exists (hfs_list_domain relation). split.
+  - intro x. apply hfs_mem_list_domain_iff.
+  - intros t Ht. apply hfs_extensionality. intro x.
+    rewrite Ht, hfs_mem_list_domain_iff. reflexivity.
+Qed.
+
 Lemma hfs_mem_list_range_iff : forall relation y,
   hfs_mem y (hfs_list_range relation) <->
   exists x, In (hfs_index_pair x y) relation.
@@ -159,8 +204,24 @@ Proof.
     + exact Hp.
 Qed.
 
+Theorem hfs_list_range_existsUnique : forall relation,
+  exists! t, forall y,
+    hfs_mem y t <->
+    exists x, In (hfs_index_pair x y) relation.
+Proof.
+  intros relation. exists (hfs_list_range relation). split.
+  - intro y. apply hfs_mem_list_range_iff.
+  - intros t Ht. apply hfs_extensionality. intro y.
+    rewrite Ht, hfs_mem_list_range_iff. reflexivity.
+Qed.
+
 Print Assumptions hfs_mem_list_big_union_iff.
 Print Assumptions hfs_mem_list_big_inter_iff.
 Print Assumptions hfs_mem_list_product_iff.
 Print Assumptions hfs_mem_list_domain_iff.
 Print Assumptions hfs_mem_list_range_iff.
+Print Assumptions hfs_list_big_union_existsUnique.
+Print Assumptions hfs_list_big_inter_existsUnique.
+Print Assumptions hfs_list_product_existsUnique.
+Print Assumptions hfs_list_domain_existsUnique.
+Print Assumptions hfs_list_range_existsUnique.

@@ -5717,6 +5717,11 @@ Print Assumptions hfs_mem_list_big_inter_iff.
 Print Assumptions hfs_mem_list_product_iff.
 Print Assumptions hfs_mem_list_domain_iff.
 Print Assumptions hfs_mem_list_range_iff.
+Print Assumptions hfs_list_big_union_existsUnique.
+Print Assumptions hfs_list_big_inter_existsUnique.
+Print Assumptions hfs_list_product_existsUnique.
+Print Assumptions hfs_list_domain_existsUnique.
+Print Assumptions hfs_list_range_existsUnique.
 Print Assumptions hfs_list_domain_empty.
 Print Assumptions hfs_list_range_empty.
 Print Assumptions hfs_list_domain_app.
