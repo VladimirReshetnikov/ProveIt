@@ -21,6 +21,7 @@ From Foundation.FirstOrder.Incompleteness Require Import Height.
 From Foundation.FirstOrder.Incompleteness Require Import Tarski.
 From Foundation.FirstOrder.Incompleteness Require Import Dense.
 From Foundation.FirstOrder.Incompleteness Require Import First.
+From Foundation.FirstOrder.Incompleteness Require Import Halting.
 From Foundation.FirstOrder.Incompleteness Require Import WitnessComparison.
 From Foundation.FirstOrder.Incompleteness Require Import RosserProvability.
 From Foundation.FirstOrder.Incompleteness Require Import Jeroslow.
@@ -4462,6 +4463,20 @@ Check r0_arithmetically_semidecidable_predicate.
 Print Assumptions
   r0_arithmetically_semidecidable_iff_sigma_one_definable.
 Print Assumptions r0_re_iff_sigma_one.
+Print Assumptions semidecidable_iff_transport.
+Check decoded_predicate.
+Print Assumptions decoded_predicate_encode_iff.
+Print Assumptions semidecidable_decoded_predicate_iff.
+Print Assumptions decidable_predicate_decoded.
+Print Assumptions decidable_predicate_of_decoded.
+Print Assumptions independent_instance_of_not_cosemidecidable.
+Print Assumptions incomplete_of_not_cosemidecidable.
+Check halting_unary_vector.
+Print Assumptions halting_unary_vector_f1.
+Check halting_arithmetic_instance.
+Check arithmetic_negative_instance_semidecidable.
+Print Assumptions r0_independent_instance_of_not_cosemidecidable.
+Print Assumptions r0_incomplete_of_not_cosemidecidable.
 Check boot_provability_comparison_le.
 Check boot_provability_comparison_lt.
 Print Assumptions boot_provability_comparison_le_of_lt.
