@@ -1043,9 +1043,438 @@ case hmask: (SE.eval_recursive_expression mask values)=> [|mask_value].
 - exact: eval_recursive_newton_sparse_power_from.
 Qed.
 
+(** The division implementation used by the recursive-function library is
+    the ordinary Euclidean quotient and remainder.  This is proved from the
+    two specifications, rather than by unfolding either implementation. *)
+Lemma gcd_div_rem_nat q p : p <> 0%N ->
+  gcd.div q p = PeanoNat.Nat.div q p /\
+  gcd.rem q p = PeanoNat.Nat.modulo q p.
+Proof.
+move=> hp.
+refine (gcd.div_rem_uniq (p:=p)
+  (gcd.div q p) (r1:=gcd.rem q p)
+  (PeanoNat.Nat.div q p) (r2:=PeanoNat.Nat.modulo q p) hp _ _ _).
+- have hg := gcd.div_rem_spec1 q p.
+  have hn := PeanoNat.Nat.div_mod_eq q p.
+  lia.
+- exact (gcd.div_rem_spec2 q hp).
+- exact (PeanoNat.Nat.mod_upper_bound q p hp).
+Qed.
+
+Definition recursive_mask_bit_value (mask bit : nat) : nat :=
+  gcd.rem
+    (gcd.div mask (S (Nat.pred (Nat.pow 2 bit)))) 2.
+
+(** Thus the evaluator really reads the indicated binary digit. *)
+Lemma recursive_mask_bit_value_testbit mask bit :
+  recursive_mask_bit_value mask bit =
+  PeanoNat.Nat.b2n (PeanoNat.Nat.testbit mask bit).
+Proof.
+rewrite /recursive_mask_bit_value.
+have hpow : Nat.pow 2 bit <> 0%N.
+  apply PeanoNat.Nat.pow_nonzero; discriminate.
+have hpred : S (Nat.pred (Nat.pow 2 bit)) = Nat.pow 2 bit.
+  exact: PeanoNat.Nat.succ_pred hpow.
+have htwo : 2%N <> 0%N by discriminate.
+rewrite hpred.
+rewrite (gcd_div_rem_nat mask hpow).1.
+rewrite (gcd_div_rem_nat
+  (PeanoNat.Nat.div mask (Nat.pow 2 bit)) htwo).2.
+exact: esym (PeanoNat.Nat.testbit_spec' mask bit).
+Qed.
+
+Definition recursive_block_exponent_value
+    (mask : nat) (exponent : SP.sparse_exponent) : nat :=
+  (recursive_mask_bit_value mask 0 * nth 0%N exponent 0 +
+  (recursive_mask_bit_value mask 1 * nth 0%N exponent 1 +
+  (recursive_mask_bit_value mask 2 * nth 0%N exponent 2 +
+  (recursive_mask_bit_value mask 3 * nth 0%N exponent 3 +
+  (recursive_mask_bit_value mask 4 * nth 0%N exponent 4 +
+   recursive_mask_bit_value mask 5 * nth 0%N exponent 5)))))%N.
+
+Lemma eval_recursive_block_exponent {arity}
+    (mask x0 x1 x2 x3 x4 x5 : SE.recursive_expression arity) values :
+  SE.eval_recursive_expression
+      (CE.recursive_block_exponent mask x0 x1 x2 x3 x4 x5) values =
+  recursive_block_exponent_value
+    (SE.eval_recursive_expression mask values)
+    (recursive_sparse_exponent x0 x1 x2 x3 x4 x5 values).
+Proof. reflexivity. Qed.
+
+Lemma nat_eqb_mathcomp a b : Nat.eqb a b = (a == b).
+Proof.
+case hab: (a == b).
+- move/eqP: hab=> ->. exact: PeanoNat.Nat.eqb_refl.
+- have hne : a <> b by move=> heq; subst b; rewrite eqxx in hab.
+  exact (proj2 (PeanoNat.Nat.eqb_neq a b) hne).
+Qed.
+
+Lemma six_list_form (s : seq nat) : size s = 6%N ->
+  exists a0 a1 a2 a3 a4 a5,
+    s = [:: a0; a1; a2; a3; a4; a5].
+Proof.
+case: s=> [|a0 s] //=.
+case: s=> [|a1 s] //=.
+case: s=> [|a2 s] //=.
+case: s=> [|a3 s] //=.
+case: s=> [|a4 s] //=.
+case: s=> [|a5 s] //=.
+case: s=> [|a6 s] //=.
+move=> _. by exists a0, a1, a2, a3, a4, a5.
+Qed.
+
+Lemma block_exponent_sum_six (exponent : SP.sparse_exponent)
+    (a0 a1 a2 a3 a4 a5 block : nat) :
+  \sum_(i : 'I_6 |
+      nth 0%N [:: a0; a1; a2; a3; a4; a5] i == block)
+      tnth exponent i =
+  ((if a0 == block then nth 0%N exponent 0 else 0) +
+  ((if a1 == block then nth 0%N exponent 1 else 0) +
+  ((if a2 == block then nth 0%N exponent 2 else 0) +
+  ((if a3 == block then nth 0%N exponent 3 else 0) +
+  ((if a4 == block then nth 0%N exponent 4 else 0) +
+   (if a5 == block then nth 0%N exponent 5 else 0))))))%N.
+Proof.
+rewrite big_mkcond.
+rewrite !big_ord_recl big_ord0 /=.
+rewrite !(tnth_nth 0%N) /= /bump /=.
+repeat rewrite addn0.
+cbn.
+repeat rewrite addn0.
+cbn.
+reflexivity.
+Qed.
+
+Lemma partition_mask_exponent_six (exponent : SP.sparse_exponent)
+    (a0 a1 a2 a3 a4 a5 block : nat) :
+  recursive_block_exponent_value
+      (CE.partition_block_mask [:: a0; a1; a2; a3; a4; a5] block)
+      exponent =
+  \sum_(i : 'I_6 |
+      nth 0%N [:: a0; a1; a2; a3; a4; a5] i == block)
+    tnth exponent i.
+Proof.
+rewrite block_exponent_sum_six /recursive_block_exponent_value.
+rewrite !recursive_mask_bit_value_testbit.
+rewrite /CE.partition_block_mask /= !nat_eqb_mathcomp.
+destruct (a0 == block) eqn:h0.
+all: destruct (a1 == block) eqn:h1.
+all: destruct (a2 == block) eqn:h2.
+all: destruct (a3 == block) eqn:h3.
+all: destruct (a4 == block) eqn:h4.
+all: destruct (a5 == block) eqn:h5.
+all: rewrite ?h0 ?h1 ?h2 ?h3 ?h4 ?h5 /=.
+all: repeat first
+  [rewrite mul1n | rewrite mul0n | rewrite add0n | rewrite addn0].
+all: reflexivity.
+Qed.
+
+Lemma partition_block_mask_eq0_six
+    (a0 a1 a2 a3 a4 a5 block : nat) :
+  (CE.partition_block_mask [:: a0; a1; a2; a3; a4; a5] block == 0%N) =
+  (block \notin [:: a0; a1; a2; a3; a4; a5]).
+Proof.
+rewrite /CE.partition_block_mask /= !nat_eqb_mathcomp.
+rewrite !in_cons in_nil !orbF.
+rewrite [block == a0]eq_sym [block == a1]eq_sym
+  [block == a2]eq_sym [block == a3]eq_sym
+  [block == a4]eq_sym [block == a5]eq_sym.
+destruct (a0 == block) eqn:h0.
+all: destruct (a1 == block) eqn:h1.
+all: destruct (a2 == block) eqn:h2.
+all: destruct (a3 == block) eqn:h3.
+all: destruct (a4 == block) eqn:h4.
+all: destruct (a5 == block) eqn:h5.
+all: reflexivity.
+Qed.
+
+Lemma partition_mask_exponent_size6 exponent s block :
+  size s = 6%N ->
+  recursive_block_exponent_value
+      (CE.partition_block_mask s block) exponent =
+  \sum_(i : 'I_6 | nth 0%N s i == block) tnth exponent i.
+Proof.
+move=> hsize.
+move: (six_list_form hsize)=>
+  [a0 [a1 [a2 [a3 [a4 [a5 ->]]]]]].
+exact: partition_mask_exponent_six.
+Qed.
+
+Lemma partition_block_mask_eq0_size6 s block :
+  size s = 6%N ->
+  (CE.partition_block_mask s block == 0%N) = (block \notin s).
+Proof.
+move=> hsize.
+move: (six_list_form hsize)=>
+  [a0 [a1 [a2 [a3 [a4 [a5 ->]]]]]].
+exact: partition_block_mask_eq0_six.
+Qed.
+
+Definition partition_block_factor_value (power_value : nat -> int)
+    (exponent : SP.sparse_exponent) s block : int :=
+  match CE.partition_block_mask s block with
+  | 0%nat => 1
+  | S _ => power_value
+      (recursive_block_exponent_value
+        (CE.partition_block_mask s block) exponent)
+  end.
+
+Lemma partition_block_factor_value_size6
+    (power_value : nat -> int) (exponent : SP.sparse_exponent) s block :
+  size s = 6%N ->
+  partition_block_factor_value power_value exponent s block =
+  if block \in s
+  then power_value
+    (\sum_(i : 'I_6 | nth 0%N s i == block) tnth exponent i)
+  else 1.
+Proof.
+move=> hsize.
+have hzero := partition_block_mask_eq0_size6 block hsize.
+have hexponent := partition_mask_exponent_size6 exponent block hsize.
+rewrite /partition_block_factor_value.
+case hmask: (CE.partition_block_mask s block)=> [|mask_value];
+case hmember: (block \in s).
+- move: hzero. by rewrite hmask hmember /=.
+- reflexivity.
+- f_equal. rewrite -hmask. exact hexponent.
+- move: hzero. by rewrite hmask hmember /=.
+Qed.
+
+Lemma active_block_product (power_value : nat -> int)
+    (exponent : SP.sparse_exponent) s :
+  \prod_(j : PS.active_block s)
+      power_value (PS.block_exponent exponent j) =
+  \prod_(j : 'I_6 | val j \in s)
+    power_value
+      (\sum_(i : 'I_6 | nth 0%N s i == val j) tnth exponent i).
+Proof.
+symmetry.
+rewrite big_sub.
+apply: eq_bigr=> j _.
+rewrite /PS.block_exponent.
+reflexivity.
+Qed.
+
+Definition six_index0 : 'I_6 := ord0.
+Definition six_index1 : 'I_6 := lift ord0 ord0.
+Definition six_index2 : 'I_6 := lift ord0 (lift ord0 ord0).
+Definition six_index3 : 'I_6 := lift ord0 (lift ord0 (lift ord0 ord0)).
+Definition six_index4 : 'I_6 :=
+  lift ord0 (lift ord0 (lift ord0 (lift ord0 ord0))).
+Definition six_index5 : 'I_6 :=
+  lift ord0 (lift ord0 (lift ord0 (lift ord0 (lift ord0 ord0)))).
+
+Lemma big_ord6_int (function : 'I_6 -> int) :
+  \prod_(index : 'I_6) function index =
+  function six_index0 *
+  (function six_index1 *
+  (function six_index2 *
+  (function six_index3 *
+  (function six_index4 * function six_index5)))).
+Proof.
+by rewrite /six_index0 /six_index1 /six_index2 /six_index3
+  /six_index4 /six_index5 !big_ord_recl big_ord0 mulr1.
+Qed.
+
+Definition partition_six_factor_product_value
+    (power_value : nat -> int) (exponent : SP.sparse_exponent) s : int :=
+  partition_block_factor_value power_value exponent s 0 *
+  (partition_block_factor_value power_value exponent s 1 *
+  (partition_block_factor_value power_value exponent s 2 *
+  (partition_block_factor_value power_value exponent s 3 *
+  (partition_block_factor_value power_value exponent s 4 *
+   partition_block_factor_value power_value exponent s 5)))).
+
+(** The evaluator's six fixed block slots are exactly the product over the
+    dependent finite type of active blocks. *)
+Lemma partition_six_factor_product_value_size6
+    (power_value : nat -> int) (exponent : SP.sparse_exponent) s :
+  size s = 6%N ->
+  partition_six_factor_product_value power_value exponent s =
+  \prod_(j : PS.active_block s)
+    power_value (PS.block_exponent exponent j).
+Proof.
+move=> hsize.
+rewrite /partition_six_factor_product_value.
+rewrite active_block_product.
+rewrite !partition_block_factor_value_size6 //.
+rewrite [RHS]big_mkcond [RHS]big_ord6_int /=.
+rewrite /six_index0 /six_index1 /six_index2 /six_index3
+  /six_index4 /six_index5 /bump /=.
+cbn.
+reflexivity.
+Qed.
+
+(** Each fixed block slot in the recursive partition evaluator denotes the
+    corresponding active-block Newton factor. *)
+Lemma eval_recursive_partition_factor_from {arity}
+    (partition x0 x1 x2 x3 x4 x5 : SE.recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    block values :
+  (SE.eval_recursive_expression partition values < 203)%N ->
+  eval_mathcomp_recursive_signed_expression
+    (CE.recursive_partition_factor_from partition block
+      x0 x1 x2 x3 x4 x5 e1 e2 e3 e4 e5 e6) values =
+  partition_block_factor_value
+    (fun power =>
+      NPS.sparse_eval_ring
+        (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+        (NPS.newton_sparse_power power))
+    (recursive_sparse_exponent x0 x1 x2 x3 x4 x5 values)
+    (nth [::] PS.partition_codes
+      (SE.eval_recursive_expression partition values)) block.
+Proof.
+move=> hpartition.
+rewrite /CE.recursive_partition_factor_from
+  eval_recursive_newton_block_factor_from.
+rewrite eval_recursive_partition_mask //.
+rewrite eval_recursive_block_exponent.
+rewrite eval_recursive_partition_mask //.
+Qed.
+
+(** A recursively selected partition term is exactly its weighted sparse
+    Newton polynomial.  The only integer-representation bridge here is
+    MathComp's proved theorem [natz] for natural casts into [int]. *)
+Lemma eval_recursive_mobius_partition_from {arity}
+    (partition x0 x1 x2 x3 x4 x5 : SE.recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    values :
+  (SE.eval_recursive_expression partition values < 203)%N ->
+  eval_mathcomp_recursive_signed_expression
+    (CE.recursive_mobius_partition_from partition
+      x0 x1 x2 x3 x4 x5 e1 e2 e3 e4 e5 e6) values =
+  NPS.sparse_eval_ring
+    (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+    (NPS.newton_weighted_partition
+      (recursive_sparse_exponent x0 x1 x2 x3 x4 x5 values)
+      (nth [::] PS.partition_codes
+        (SE.eval_recursive_expression partition values))).
+Proof.
+move=> hpartition.
+have hindex :
+    (SE.eval_recursive_expression partition values <
+      size PS.partition_codes)%N.
+  by rewrite -/PS.partition_count PS.partition_count_is_203.
+have hcode_member :
+    nth [::] PS.partition_codes
+      (SE.eval_recursive_expression partition values) \in PS.partition_codes.
+  apply: mem_nth. exact hindex.
+have hcode_size :
+    size (nth [::] PS.partition_codes
+      (SE.eval_recursive_expression partition values)) = 6%N.
+  exact: PS.partition_code_size hcode_member.
+rewrite /CE.recursive_mobius_partition_from.
+rewrite !eval_mathcomp_recursive_signed_mult.
+rewrite eval_recursive_partition_weight //.
+rewrite !eval_recursive_partition_factor_from //.
+set code := nth [::] PS.partition_codes
+  (SE.eval_recursive_expression partition values).
+set elementary := recursive_elementary_values e1 e2 e3 e4 e5 e6 values.
+set exponent := recursive_sparse_exponent x0 x1 x2 x3 x4 x5 values.
+set power_value := fun power =>
+  NPS.sparse_eval_ring elementary (NPS.newton_sparse_power power).
+change
+  ((((PS.partition_mobius_positive code)%:Z : int) -
+    ((PS.partition_mobius_negative code)%:Z : int)) *
+   partition_six_factor_product_value power_value exponent code =
+   NPS.sparse_eval_ring elementary
+     (NPS.newton_weighted_partition exponent code)).
+have hsize : size code = 6%N by exact hcode_size.
+rewrite (partition_six_factor_product_value_size6
+  power_value exponent hsize).
+rewrite /NPS.newton_weighted_partition NPS.sparse_eval_ring_sub
+  !NPS.sparse_eval_ring_nsmul
+  /NPS.newton_partition_product NPS.sparse_eval_ring_product big_map.
+rewrite mulrBl.
+rewrite /power_value !natz.
+reflexivity.
+Qed.
+
+(** Enumerating all valid list indices and looking each one up reconstructs
+    the original list.  This is the symbolic bridge from [RecBoundedSum] to
+    MathComp's partition-code big operator. *)
+Lemma map_nth_list_an (T : Type) (default : T) (xs : list T) :
+  List.map (nth default xs) (list_an 0 (List.length xs)) = xs.
+Proof.
+elim: xs=> [|x xs ih] //=.
+rewrite -map_S_list_an List.map_map /=.
+by rewrite ih.
+Qed.
+
+(** The recursive-function library deliberately uses Stdlib's [List.map].
+    This small fold lemma bridges it to MathComp's sequence big operator. *)
+Lemma big_sum_List_map (I J : Type) (function : I -> J)
+    (term : J -> int) xs :
+  \sum_(output <- List.map function xs) term output =
+  \sum_(input <- xs) term (function input).
+Proof.
+elim: xs=> [|input xs ih].
+- by rewrite /= !big_nil.
+- by rewrite /= !big_cons ih.
+Qed.
+
+Lemma mem_implies_List_In (T : eqType) (x : T) xs :
+  x \in xs -> List.In x xs.
+Proof.
+elim: xs=> [|head tail ih] //=.
+move/orP=> [/eqP -> | hmember].
+- by left.
+- right. exact: ih hmember.
+Qed.
+
+Lemma recursive_sparse_exponent_weakened {arity}
+    (x0 x1 x2 x3 x4 x5 : SE.recursive_expression arity)
+    state values :
+  recursive_sparse_exponent
+      (CE.recursive_weaken x0) (CE.recursive_weaken x1)
+      (CE.recursive_weaken x2) (CE.recursive_weaken x3)
+      (CE.recursive_weaken x4) (CE.recursive_weaken x5)
+      (state ## values) =
+  recursive_sparse_exponent x0 x1 x2 x3 x4 x5 values.
+Proof.
+rewrite /recursive_sparse_exponent !eval_recursive_weaken.
+reflexivity.
+Qed.
+
+(** The complete recursive bounded sum denotes the sparse Newton--Möbius
+    orbit polynomial. *)
+Lemma eval_recursive_newton_mobius_from {arity}
+    (x0 x1 x2 x3 x4 x5 : SE.recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity)
+    values :
+  eval_mathcomp_recursive_signed_expression
+    (CE.recursive_newton_mobius_from
+      x0 x1 x2 x3 x4 x5 e1 e2 e3 e4 e5 e6) values =
+  NPS.sparse_eval_ring
+    (recursive_elementary_values e1 e2 e3 e4 e5 e6 values)
+    (NPS.newton_mobius_orbit
+      (recursive_sparse_exponent x0 x1 x2 x3 x4 x5 values)).
+Proof.
+rewrite /CE.recursive_newton_mobius_from
+  eval_mathcomp_recursive_signed_bounded_sum eval_recursive_const.
+rewrite /NPS.newton_mobius_orbit NPS.sparse_eval_ring_sum big_map.
+have hlength : List.length PS.partition_codes = 203%N.
+  exact PS.partition_count_is_203.
+rewrite -(map_nth_list_an [::] PS.partition_codes).
+rewrite hlength big_sum_List_map.
+apply: eq_big_seq=> index hmember.
+have hin : List.In index (list_an 0 203) :=
+  mem_implies_List_In hmember.
+have hlt : (index < 203)%N.
+  apply/ltP.
+  apply list_an_spec in hin.
+  lia.
+rewrite eval_recursive_mobius_partition_from //.
+rewrite recursive_elementary_values_weakened
+  recursive_sparse_exponent_weakened.
+reflexivity.
+Qed.
+
 Print Assumptions eval_recursive_signed_code_mathcomp.
 Print Assumptions eval_mathcomp_recursive_signed_bounded_sum.
 Print Assumptions eval_recursive_rename.
 Print Assumptions eval_recursive_lookup_list.
+Print Assumptions eval_recursive_mobius_partition_from.
+Print Assumptions eval_recursive_newton_mobius_from.
 
 End PolynomialFormulasSexticMuRecCollisionSemantics.
