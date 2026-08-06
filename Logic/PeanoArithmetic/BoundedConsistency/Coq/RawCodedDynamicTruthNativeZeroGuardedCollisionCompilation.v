@@ -24,6 +24,8 @@ From BoundedPAConsistency Require Import
   RawCodedContextLists
   RawCodedPALocalProofExistential
   RawCodedPALocalProofWitnessedContextMerge
+  RawCodedLtSuccCasesProofCompilation
+  RawCodedPAGrowingTemplateConjunction
   RawCodedTemplateLocalProofWitnessedTailTransport
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
@@ -60,6 +62,8 @@ Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedContextLists.
 Import PABoundedRawCodedPALocalProofExistential.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import PABoundedRawCodedLtSuccCasesProofCompilation.
+Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -463,6 +467,209 @@ Proof.
       M hPA inputs normalizedTranslation witnessList baseContext helperRoots
       restrictedRoot ruleRoot hidentification hnormalized
       hrestricted hrule himpPayload handPayload horPayload).
+Qed.
+
+(** Producer-facing relaxation of the preceding endpoint.  Restricted-proof
+    analysis, rule validation, and guarded collision construction may each
+    append their own finite batch of PA witnesses.  The three computations
+    are synchronized only after they have selected their natural endpoints;
+    the generic growing two-assumption cut then closes the live shell for
+    each constructor independently.
+
+    This formulation is strictly weaker than requiring the two premise roots
+    in [baseContext].  It is also the form needed by the dependency-ordered
+    callback boundary, whose proof analyses deliberately expose growing
+    template proofs rather than equating independently generated tails. *)
+Theorem
+    raw_dynamicTruthLocalGuardedCollisionRootsAt_on_witnessed_extension_of_zero_normalized_independently_growing_restricted_rule_roots_and_guarded_collision_fixed_productions_or_refutations :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      normalizedTranslation witnessList baseContext helperRoots,
+  RawDynamicTruthZeroGuardedEvidenceIdentification M inputs ->
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    normalizedTranslation witnessList baseContext helperRoots ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext []
+    (rawDirectTemplateFormula inputs
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate) ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext []
+    (rawDirectTemplateFormula inputs
+      coqStrongStepProofEndpointAtomicAdequacyRulePremise) ->
+  RawDynamicTruthZeroCanonicalIdentifiedGuardedCollisionFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+    M hPA inputs ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthLocalBooleanDiagonalPairRootsAt M targetContext /\
+    RawDynamicTruthLocalRootAt M targetContext
+      (rawDynamicTruthImpGuardedPredecessorStateExclusivityCode M).
+Proof.
+  intros M hPA inputs normalizedTranslation witnessList baseContext
+    helperRoots hidentification hnormalized hrestricted hrule hfixed.
+  set (translation :=
+    rawDirectStructuralTemplateTranslation M hPA inputs).
+  set (callerPrefix :=
+    coqDynamicTruthGuardedCollisionEndpointAssumptionPrefix).
+  destruct
+    (raw_dynamicTruthZeroCanonicalIdentified_guardedCollisionAppendRowKernelPayloadPairsForCaller_of_fixed
+      M hPA inputs hidentification hfixed callerPrefix) as
+    (himpPayload & handPayload & horPayload).
+  destruct
+    (raw_dynamicTruthLocalGuardedCollisionRootsUnderTemplatePrefixAt_on_witnessed_extension_of_zero_normalized_and_canonical_append_kernel_payload_pairs
+      M hPA inputs normalizedTranslation witnessList baseContext helperRoots
+      callerPrefix hidentification hnormalized
+      (or_introl eq_refl) (or_intror (or_introl eq_refl))
+      himpPayload handPayload horPayload) as
+    (collisionWitnessList & collisionContext & hcollisionWitnessed &
+      hbaseCollisionIncluded & hcollision).
+  destruct hcollision as
+    [[(andRoot & hand) (orRoot & hor)] (impRoot & himp)].
+  assert (hprefixAdequate :
+      RawCodedTemplatePrefixAtomicallyAdequate M translation callerPrefix).
+  {
+    unfold translation, callerPrefix,
+      coqDynamicTruthGuardedCollisionEndpointAssumptionPrefix.
+    exact (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
+      M hPA inputs
+      [coqRestrictedPADerivationSoundnessRestrictedProofTemplate;
+       coqStrongStepProofEndpointAtomicAdequacyRulePremise]).
+  }
+  assert (handGrowing : RawCodedPAGrowingTemplateLocalProofAt M translation
+      witnessList baseContext callerPrefix
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanAnd)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanAnd)
+          (rawFormulaBotCode M)))).
+  {
+    exists collisionWitnessList, collisionContext, andRoot.
+    split; [exact hcollisionWitnessed |].
+    split; [exact hbaseCollisionIncluded | exact hand].
+  }
+  assert (horGrowing : RawCodedPAGrowingTemplateLocalProofAt M translation
+      witnessList baseContext callerPrefix
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanOr)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanOr)
+          (rawFormulaBotCode M)))).
+  {
+    exists collisionWitnessList, collisionContext, orRoot.
+    split; [exact hcollisionWitnessed |].
+    split; [exact hbaseCollisionIncluded | exact hor].
+  }
+  assert (himpGrowing : RawCodedPAGrowingTemplateLocalProofAt M translation
+      witnessList baseContext callerPrefix
+      (rawDynamicTruthImpGuardedPredecessorStateExclusivityCode M)).
+  {
+    exists collisionWitnessList, collisionContext, impRoot.
+    split; [exact hcollisionWitnessed |].
+    split; [exact hbaseCollisionIncluded | exact himp].
+  }
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_discharge_two_template_assumptions
+      M hPA translation witnessList baseContext
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+      coqStrongStepProofEndpointAtomicAdequacyRulePremise
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanAnd)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanAnd)
+          (rawFormulaBotCode M)))
+      hprefixAdequate hrestricted hrule handGrowing) as handDischarged.
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_discharge_two_template_assumptions
+      M hPA translation witnessList baseContext
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+      coqStrongStepProofEndpointAtomicAdequacyRulePremise
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanOr)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanOr)
+          (rawFormulaBotCode M)))
+      hprefixAdequate hrestricted hrule horGrowing) as horDischarged.
+  pose proof
+    (raw_codedPAGrowingTemplateLocalProofAt_discharge_two_template_assumptions
+      M hPA translation witnessList baseContext
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+      coqStrongStepProofEndpointAtomicAdequacyRulePremise
+      (rawDynamicTruthImpGuardedPredecessorStateExclusivityCode M)
+      hprefixAdequate hrestricted hrule himpGrowing) as himpDischarged.
+  destruct
+    (raw_codedPAGrowingTemplateLocalProofAt_pair_at_prefix
+      M hPA translation witnessList baseContext []
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanAnd)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanAnd)
+          (rawFormulaBotCode M)))
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanOr)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanOr)
+          (rawFormulaBotCode M)))
+      handDischarged horDischarged) as
+    (booleanWitnessList & booleanContext & dischargedAndRoot &
+      dischargedOrRoot & hbooleanWitnessed & hbaseBooleanIncluded &
+      hdischargedAnd & hdischargedOr).
+  destruct himpDischarged as
+    (impWitnessList & impContext & dischargedImpRoot & himpWitnessed &
+      hbaseImpIncluded & hdischargedImp).
+  destruct
+    (raw_codedPAAxiomWitnessContext_prefixMerge M hPA
+      booleanWitnessList booleanContext impWitnessList impContext
+      hbooleanWitnessed himpWitnessed) as
+    (targetWitnessList & targetContext & htargetWitnessed &
+      _hbooleanWitnessIncluded & hbooleanIncluded &
+      _himpWitnessIncluded & himpIncluded & _htransport).
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation booleanWitnessList booleanContext
+      targetWitnessList targetContext []
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanAnd)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanAnd)
+          (rawFormulaBotCode M)))
+      dischargedAndRoot hbooleanWitnessed htargetWitnessed
+      hbooleanIncluded hdischargedAnd) as
+    [transportedAndRoot htransportedAnd].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation booleanWitnessList booleanContext
+      targetWitnessList targetContext []
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanOr)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanOr)
+          (rawFormulaBotCode M)))
+      dischargedOrRoot hbooleanWitnessed htargetWitnessed
+      hbooleanIncluded hdischargedOr) as
+    [transportedOrRoot htransportedOr].
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA translation impWitnessList impContext
+      targetWitnessList targetContext []
+      (rawDynamicTruthImpGuardedPredecessorStateExclusivityCode M)
+      dischargedImpRoot himpWitnessed htargetWitnessed
+      himpIncluded hdischargedImp) as
+    [transportedImpRoot htransportedImp].
+  cbn [rawTemplateContextCodeOnTail] in
+    htransportedAnd, htransportedOr, htransportedImp.
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hbooleanIncluded member
+      (hbaseBooleanIncluded member hmember)).
+  - split.
+    + split.
+      * exists transportedAndRoot. exact htransportedAnd.
+      * exists transportedOrRoot. exact htransportedOr.
+    + exists transportedImpRoot. exact htransportedImp.
 Qed.
 
 End

@@ -15,8 +15,14 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
   RawCodedPALocalProofWitnessedContextMerge
+  RawCodedLtSuccCasesProofCompilation
   RawCodedTemplateProofCompiler
+  RawCodedTemplateDirectStructuralTranslation
+  RawCodedTemplateBottomDirectStructuralInputs
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation
   RawCodedDynamicTruthLocalCollisionMatrixAssembly
+  RawCodedDynamicTruthPredecessorStateProjectionCompilation
   RawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation
   RawCodedDynamicTruthImpGuardedBranchExclusivity
   RawCodedDynamicTruthNativeLocalPositiveGraph
@@ -25,18 +31,30 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeLocalHelperBatchGeneralization
   RawCodedDynamicTruthNativeLocalGuardedNonImpPairCompilation
   RawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation
-  RawCodedDynamicTruthNativeLocalGuardedBuilderDecomposition.
+  RawCodedDynamicTruthNativeLocalGuardedBuilderDecomposition
+  RawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation
+  RawCodedDynamicTruthNativeZeroGuardedNormalization
+  RawCodedDynamicTruthNativeZeroGuardedEvidenceIdentification
+  RawCodedDynamicTruthNativeZeroGuardedFixedProductionBoundary
+  RawCodedDynamicTruthNativeZeroGuardedCollisionCompilation.
 
 Module
   PABoundedRawCodedDynamicTruthNativeLocalGuardedCollisionCaseSplit.
 
+Import ListNotations.
 Import PA.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
+Import PABoundedRawCodedLtSuccCasesProofCompilation.
 Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import PABoundedRawCodedStrongStepProofEndpointAtomicAdequacyProofCompilation.
 Import PABoundedRawCodedDynamicTruthLocalCollisionMatrixAssembly.
+Import PABoundedRawCodedDynamicTruthPredecessorStateProjectionCompilation.
 Import PABoundedRawCodedDynamicTruthMixedQFOpaqueQuantifierCellCompilation.
 Import PABoundedRawCodedDynamicTruthImpGuardedBranchExclusivity.
 Import PABoundedRawCodedDynamicTruthNativeLocalPositiveGraph.
@@ -50,6 +68,15 @@ Import
   PABoundedRawCodedDynamicTruthNativeLocalGrowingPredecessorStagedCallbackCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalGuardedBuilderDecomposition.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroPredecessorLogicalRootsCompilation.
+Import PABoundedRawCodedDynamicTruthNativeZeroGuardedNormalization.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedEvidenceIdentification.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedFixedProductionBoundary.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedCollisionCompilation.
 
 (** Rank-zero producer at the literal guarded callback interface. *)
 Definition
@@ -105,6 +132,100 @@ Arguments
   RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerOnWitnessedBase
   M : clear implicits.
 
+(** Invocation-local proof resources for the rank-zero collision.  Both
+    direct-shell premises may grow independently from the normalized
+    callback's witnessed PA tail.  The constructor-specific fixed producers
+    may also depend on the normalized invocation and canonical trace; this is
+    weaker than demanding a single model-global producer for every callback.
+
+    The selected direct inputs are returned together with their evidence
+    identification, so all three constructor branches use one translation
+    without imposing that translation on the normalization phase. *)
+Definition
+    RawDynamicTruthNativeLocalZeroGuardedCollisionProofResourcesCompilerOnNormalizedResources
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  forall (tail : nat -> M) witnessList baseContext (helperRoots : list M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+    RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext helperRoots ->
+    RawDynamicTruthNativeLocalZeroCanonicalFullTraceAt M tail
+      sigmaDomain piDomain sigmaEvidence piEvidence ->
+    exists inputs : RawCodedTemplateDirectStructuralInputs M,
+      RawDynamicTruthZeroGuardedEvidenceIdentification M inputs /\
+      RawCodedPAGrowingTemplateLocalProofAt M
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        witnessList baseContext []
+        (rawDirectTemplateFormula inputs
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate) /\
+      RawCodedPAGrowingTemplateLocalProofAt M
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        witnessList baseContext []
+        (rawDirectTemplateFormula inputs
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise) /\
+      RawDynamicTruthZeroCanonicalIdentifiedGuardedCollisionFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+        M hPA inputs.
+
+Arguments
+  RawDynamicTruthNativeLocalZeroGuardedCollisionProofResourcesCompilerOnNormalizedResources
+  M hPA : clear implicits.
+
+(** Normalize the literal guarded callback, canonicalize its zero trace, and
+    invoke the relaxed collision endpoint.  State-projection roots are
+    reconstructed from realizability of the witnessed PA context, so the
+    producer interface does not repeat that derived resource. *)
+Theorem
+    raw_dynamicTruthNativeLocalZeroGrowingGuardedCollisionRootsCompilerOnCurrentGuardedHelperContext_of_normalized_proof_resources :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeLocalZeroGuardedCollisionProofResourcesCompilerOnNormalizedResources
+    M hPA ->
+  RawDynamicTruthNativeLocalZeroGrowingGuardedCollisionRootsCompilerOnCurrentGuardedHelperContext
+    M hPA (rawBottomDirectStructuralTemplateTranslation M hPA).
+Proof.
+  intros M hPA hresources tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal witnessList baseContext helperRoots
+    inputGlobalSigma inputGlobalPi sigmaDomain piDomain sigmaEvidence
+    piEvidence hcurrent htrace hlevel.
+  pose proof hcurrent as hcurrentForWitness.
+  unfold RawDynamicTruthNativeLocalCurrentGuardedHelperContextAt,
+    RawDynamicTruthNativeLocalCurrentHelperBatchContextAt
+    in hcurrentForWitness.
+  destruct hcurrentForWitness as
+    [_ (_ & _ & _ & _ & _ & _ & hbaseWitnessed & _)].
+  pose proof
+    (raw_dynamicTruthPredecessorStateProjectionRootsAt_of_realizable
+      M hPA baseContext
+      (raw_codedPAAxiomWitnessContext_context_realizable
+        M witnessList baseContext hbaseWitnessed)) as hstateRoots.
+  pose proof
+    (raw_dynamicTruthNativeLocalCurrentGuardedHelperContextAt_zero_normalized
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      tail level currentLocal currentCrossLevel currentShift
+      currentSubstitution currentAxiomSoundness currentFinal
+      witnessList baseContext helperRoots hcurrent hlevel hstateRoots)
+    as hnormalized.
+  subst level.
+  pose proof
+    (raw_dynamicTruthNativeLocalZeroFullTraceAt_canonical
+      M hPA tail inputGlobalSigma inputGlobalPi
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      (proj1 (raw_dynamicTruthNativeLocalProofTraceAt_zero_iff M tail
+        inputGlobalSigma inputGlobalPi sigmaDomain piDomain
+        sigmaEvidence piEvidence) htrace)) as hcanonicalTrace.
+  destruct
+    (hresources tail witnessList baseContext helperRoots
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      hnormalized hcanonicalTrace) as
+    (inputs & hidentification & hrestricted & hrule & hfixed).
+  exact
+    (raw_dynamicTruthLocalGuardedCollisionRootsAt_on_witnessed_extension_of_zero_normalized_independently_growing_restricted_rule_roots_and_guarded_collision_fixed_productions_or_refutations
+      M hPA inputs
+      (rawBottomDirectStructuralTemplateTranslation M hPA)
+      witnessList baseContext helperRoots hidentification hnormalized
+      hrestricted hrule hfixed).
+Qed.
+
 (** Structural assembly into the public collision builder.  No collision
     formula is proved here; the theorem only routes the exact zero or aligned
     successor resources to the corresponding producer. *)
@@ -155,6 +276,28 @@ Proof.
     exact
       (haligned tail predecessorLevel baseContext currentLocal
         inputGlobalSigma inputGlobalPi aligned witnessList hbaseWitnessed).
+Qed.
+
+(** Public collision builder with the entire rank-zero normalization adapter
+    inlined.  Only the honest normalized proof resources and the independent
+    aligned positive producer remain as premises. *)
+Corollary
+    raw_dynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilder_of_zero_normalized_proof_resources_and_witnessed_aligned :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeLocalZeroGuardedCollisionProofResourcesCompilerOnNormalizedResources
+    M hPA ->
+  RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerOnWitnessedBase
+    M ->
+  RawDynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilder
+    M (rawBottomDirectStructuralTemplateTranslation M hPA).
+Proof.
+  intros M hPA hzeroResources haligned.
+  exact
+    (raw_dynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilder_of_zero_and_witnessed_aligned
+      M hPA (rawBottomDirectStructuralTemplateTranslation M hPA)
+      (raw_dynamicTruthNativeLocalZeroGrowingGuardedCollisionRootsCompilerOnCurrentGuardedHelperContext_of_normalized_proof_resources
+        M hPA hzeroResources)
+      haligned).
 Qed.
 
 End

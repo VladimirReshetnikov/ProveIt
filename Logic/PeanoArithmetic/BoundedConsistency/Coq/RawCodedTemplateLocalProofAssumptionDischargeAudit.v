@@ -7,3 +7,8 @@ Import PABoundedRawCodedTemplateLocalProofAssumptionDischarge.
 
 Check raw_codedPALocalProof_discharge_two_template_assumptions.
 Print Assumptions raw_codedPALocalProof_discharge_two_template_assumptions.
+
+Check
+  raw_codedPAGrowingTemplateLocalProofAt_discharge_two_template_assumptions.
+Print Assumptions
+  raw_codedPAGrowingTemplateLocalProofAt_discharge_two_template_assumptions.

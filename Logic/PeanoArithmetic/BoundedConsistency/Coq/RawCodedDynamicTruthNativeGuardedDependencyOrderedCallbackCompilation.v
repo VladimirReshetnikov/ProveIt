@@ -23,10 +23,13 @@ From BoundedPAConsistency Require Import
   CompactPAUniformProvability
   RawCodedTemplateProofCompiler
   RawCodedTemplatePAEmbedding
+  RawCodedTemplateDirectStructuralPAAgreement
+  RawCodedTemplateBottomDirectStructuralInputs
   RawCodedDynamicTruthNativeMasterEndpoint
   RawCodedDynamicTruthNativeStagedPositiveSuccessor
   RawCodedDynamicTruthNativeLocalGuardedGrowingStagedCallbackCompilation
-  RawCodedDynamicTruthNativeLocalGuardedBuilderDecomposition.
+  RawCodedDynamicTruthNativeLocalGuardedBuilderDecomposition
+  RawCodedDynamicTruthNativeLocalGuardedCollisionCaseSplit.
 From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeCrossLevelGuardRootCompilation
   RawCodedDynamicTruthNativeShiftStagedRootCompilation
@@ -49,12 +52,16 @@ Import PACanonicalSelectorPA.
 Import PABoundedCompactPAUniformProvability.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
+Import PABoundedRawCodedTemplateBottomDirectStructuralInputs.
 Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
 Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalGuardedGrowingStagedCallbackCompilation.
 Import
   PABoundedRawCodedDynamicTruthNativeLocalGuardedBuilderDecomposition.
+Import
+  PABoundedRawCodedDynamicTruthNativeLocalGuardedCollisionCaseSplit.
 Import
   PABoundedRawCodedDynamicTruthNativeCrossLevelGuardRootCompilation.
 Import
@@ -246,6 +253,67 @@ Definition
       RawDynamicTruthNativeGuardedDependencyOrderedSplitGrowingKernelCompilers
         M translation.
 
+(** Proof-resource refinement of the split dependency bundle.  The bottom
+    direct translation and its PA agreement are derived, while the collision
+    coordinate is decomposed into the invocation-local normalized zero
+    resources and the witnessed aligned positive producer.  Thus callers no
+    longer have to implement the rank case split, helper projection, zero
+    normalization, canonical-trace conversion, premise-tail synchronization,
+    or final collision-tail merge themselves. *)
+Definition
+    RawDynamicTruthNativeGuardedDependencyOrderedNormalizedCollisionResourceSplitGrowingKernelCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M) : Prop :=
+  RawDynamicTruthNativeLocalZeroGuardedCollisionProofResourcesCompilerOnNormalizedResources
+    M hPA /\
+  RawDynamicTruthNativeLocalAlignedGrowingGuardedCollisionRootsCompilerOnWitnessedBase
+    M /\
+  RawDynamicTruthNativeLocalCurrentNonConditionalReducedStagedRemainderBuilder
+    M (rawBottomDirectStructuralTemplateTranslation M hPA) /\
+  RawDynamicTruthNativeCrossLevelLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeShiftLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeSubstitutionLinkedStagedBodyImplicationRootCompiler M /\
+  RawDynamicTruthNativeAxiomLinkedStagedKernelImplicationRootCompiler M /\
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M.
+
+Arguments
+  RawDynamicTruthNativeGuardedDependencyOrderedNormalizedCollisionResourceSplitGrowingKernelCompilers
+  M hPA : clear implicits.
+
+(** Assemble the exact split bundle from the normalized collision resources.
+    Every non-local dependency coordinate is passed through definitionally. *)
+Theorem
+    raw_dynamicTruthNativeGuardedDependencyOrderedSplitGrowingKernelCompilers_of_normalized_collision_resources :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M),
+  RawDynamicTruthNativeGuardedDependencyOrderedNormalizedCollisionResourceSplitGrowingKernelCompilers
+    M hPA ->
+  RawDynamicTruthNativeGuardedDependencyOrderedSplitGrowingKernelCompilers
+    M (rawBottomDirectStructuralTemplateTranslation M hPA).
+Proof.
+  intros M hPA
+    (hzero & haligned & hremainder & hcrossLevel & hshift &
+      hsubstitution & haxiomSoundness & hfinal).
+  split.
+  - exact (rawBottomDirectStructuralTemplatePAAgreement M hPA).
+  - split.
+    + exact
+        (raw_dynamicTruthNativeLocalCurrentGrowingGuardedCollisionRootsBuilder_of_zero_normalized_proof_resources_and_witnessed_aligned
+          M hPA hzero haligned).
+    + split; [exact hremainder |].
+      split; [exact hcrossLevel |].
+      split; [exact hshift |].
+      split; [exact hsubstitution |].
+      split; [exact haxiomSoundness | exact hfinal].
+Qed.
+
+(** Model-uniform form of the proof-resource boundary.  Its translation is
+    canonical, so no existential translation choice remains. *)
+Definition
+    RawDynamicTruthNativeGuardedDependencyOrderedNormalizedCollisionResourceSplitGrowingKernelCompilersInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M),
+    RawDynamicTruthNativeGuardedDependencyOrderedNormalizedCollisionResourceSplitGrowingKernelCompilers
+      M hPA.
+
 (** Exact compact object theorem from the split boundary. *)
 Corollary
     PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_guarded_dependency_ordered_split_growing_kernel_compilers :
@@ -262,6 +330,25 @@ Proof.
   exact
     (raw_dynamicTruthNativeGuardedDependencyOrderedGrowingKernelCompilers_of_split
       M hPA translation htranslation).
+Qed.
+
+(** Exact compact object theorem from the normalized collision-resource
+    boundary.  This corollary records that closing this smaller residual is
+    sufficient for the requested internal uniform-provability statement. *)
+Corollary
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_guarded_normalized_collision_resources :
+  RawDynamicTruthNativeGuardedDependencyOrderedNormalizedCollisionResourceSplitGrowingKernelCompilersInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intro hresources.
+  apply
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_guarded_dependency_ordered_split_growing_kernel_compilers.
+  intros M hPA.
+  exists (rawBottomDirectStructuralTemplateTranslation M hPA).
+  exact
+    (raw_dynamicTruthNativeGuardedDependencyOrderedSplitGrowingKernelCompilers_of_normalized_collision_resources
+      M hPA (hresources M hPA)).
 Qed.
 
 End
