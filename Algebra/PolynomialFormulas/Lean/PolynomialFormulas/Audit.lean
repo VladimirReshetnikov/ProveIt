@@ -50,6 +50,10 @@ open LeanProofs.PolynomialFormulas
 #check QuinticRadicalDecision.quinticRadicalDecision_correct
 #check QuinticRadicalDecision.allRootsRadical_computablePred
 #check QuinticRadicalDecision.has_verified_quinticRadicalDecision_turingMachine
+#check SexticRadicalDecision.sexticRadicalDecision_computable
+#check SexticRadicalDecision.sexticRadicalDecision_correct
+#check SexticRadicalDecision.allRootsRadical_computablePred
+#check SexticRadicalDecision.has_verified_sextic_radical_turing_machine
 #check SelmerAbelRuffini.iSup_inertia_eq_top
 #synth NumberField (SelmerAbelRuffini.splittingField 5)
 #check SelmerAbelRuffini.pQ_gal_not_solvable
@@ -107,6 +111,10 @@ open LeanProofs.PolynomialFormulas
 #print axioms QuinticRadicalDecision.quinticRadicalDecision_correct
 #print axioms QuinticRadicalDecision.allRootsRadical_computablePred
 #print axioms QuinticRadicalDecision.has_verified_quinticRadicalDecision_turingMachine
+#print axioms SexticRadicalDecision.sexticRadicalDecision_computable
+#print axioms SexticRadicalDecision.sexticRadicalDecision_correct
+#print axioms SexticRadicalDecision.allRootsRadical_computablePred
+#print axioms SexticRadicalDecision.has_verified_sextic_radical_turing_machine
 #print axioms SelmerAbelRuffini.iSup_inertia_eq_top
 #print axioms SelmerAbelRuffini.pQ_gal_not_solvable
 #print axioms SelmerAbelRuffini.pQ_rootSet_complex_card

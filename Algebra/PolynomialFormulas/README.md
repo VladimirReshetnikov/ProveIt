@@ -133,14 +133,62 @@ No claim is made that the bounded implementation is optimized, or that the
 existential `PartrecToTM2` code has been printed as a standalone extracted
 solver.
 
-The Rocq file
-[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v) provides an
-independent kernel-checked semantic bridge. It reflects the exact all-roots
-`algterm rat` predicate to a Boolean for degree-five integer polynomials and
-their natural-number encodings. That reflector still uses MathComp-Abel's
-opaque abstract splitting field; it is semantic rather than an extracted
-implementation of the bounded coefficient procedure, and direct standard
-extraction remains unavailable because of MathComp sort polymorphism.
+Rocq independently verifies the same bounded coefficient procedure in
+[`QuinticCanonicalDecision.v`](Coq/QuinticCanonicalDecision.v).
+`quintic_radicalb` combines the complete bounded factor search with the
+computed scalar Frobenius--Dummit resolvent, and `quintic_radicalP` reflects
+the exact all-roots `algterm rat` predicate to that Boolean.  The earlier
+[`QuinticRadicalDecidability.v`](Coq/QuinticRadicalDecidability.v) remains as
+a separate semantic implementation through MathComp-Abel's abstract
+splitting field and also supplies the natural-number-code reflector.
+
+## Deciding an individual integer sextic
+
+Lean also formalizes a recursive decision for exact degree-six integer
+polynomials.  After integral monicization, a finite search for monic factors
+of degrees one through three decides reducibility.  A nonlinear factor leaves
+only factors of degree at most four; a linear factor reduces the question to
+the verified quintic criterion.  On the irreducible branch, two separating
+block-system resolvents of degrees fifteen and ten detect whether the Galois
+group is solvable.  Their integer coefficients are computed from sparse
+symmetric polynomials, and bounded rational-root searches decide the two
+tests.
+
+The separating parameters are obtained by a proved terminating unbounded
+search.  Accordingly the assembled Boolean is proved `Computable`, rather
+than `Primrec`.  The public results
+`sexticRadicalDecision_correct`, `allRootsRadical_computablePred`, and
+`has_verified_sextic_radical_turing_machine` respectively prove semantic
+correctness, Mathlib recursive decidability, and existence of a verified
+`PartrecToTM2` program.  Each computability fact is derived compositionally
+from the definition of the function concerned; no function is marked
+recursive by a kernel special case.
+
+Rocq now verifies a direct recursive coefficient program for the same sextic
+predicate.  The files named `SexticMuRec*.v` compile signed arithmetic,
+integral monicization, bounded factor and rational-root searches, the quintic
+branch, and the compact pair/triple collision evaluators to the explicit
+`recalg` language from Coq-Library-Undecidability.  The separating parameters
+are selected by genuine unbounded minimization after a proof that a successful
+parameter exists.  Structural Newton, Möbius, mixed-radix, and homogeneous
+evaluation lemmas connect those programs to the degree-fifteen and degree-ten
+resolvents.
+
+[`SexticMuRecVerifiedDecision.v`](Coq/SexticMuRecVerifiedDecision.v) exposes
+parameter-free Booleans and recursive programs on both seven zigzag-coded
+coefficients and a single natural-number encoding.  Its public graph theorems
+`encoded_raw_sextic_radical_relation_murec` and
+`encoded_raw_sextic_radical_code_relation_murec` prove `MuRec_computable`;
+`encoded_raw_sextic_radical_decidable` and
+`encoded_raw_sextic_radical_code_decidable` give the corresponding explicit
+`{P} + {~ P}` decisions for the exact all-roots predicate.  The computational
+endpoints are closed in the assumption audit.  The semantic reflectors use
+only the already documented classical splitting-field bridge.
+
+[`SexticRadicalDecidability.v`](Coq/SexticRadicalDecidability.v) remains as an
+independent semantic decision through MathComp-Abel's abstract `numfield`.
+The new `MuRec` development is the recursively verified coefficient route;
+the older file is useful as a separate semantic cross-check.
 
 ## Calculator interface and scope
 
@@ -176,6 +224,11 @@ opam install --yes --deps-only ./lib/MathComp-Abel/coq-mathcomp-abel.opam
 Push-Location Algebra/PolynomialFormulas/Coq
 rocq makefile -f _CoqProject -o Makefile.coq
 make -f Makefile.coq
+
+# Direct Mu-recursive sextic certificate (uses the pinned
+# Coq-Library-Undecidability source tree).
+rocq makefile -f _CoqProject.murec -o Makefile.murec
+make -f Makefile.murec
 Pop-Location
 ```
 
