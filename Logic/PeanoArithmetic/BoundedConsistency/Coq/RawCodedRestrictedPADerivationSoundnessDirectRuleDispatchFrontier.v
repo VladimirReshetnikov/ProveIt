@@ -43,6 +43,8 @@ From BoundedPAConsistency Require Import
   RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofFiniteDisjunction
   RawCodedPALocalProofFiniteDisjunctionDerivedCases
+  RawCodedPALocalProofExistentialEliminationChain
+  RawCodedPALocalProofUniversalIntroductionChain
   RawCodedTemplateSyntax
   RawCodedTemplatePAEmbedding
   RawCodedTemplateProofCompiler
@@ -82,6 +84,8 @@ Import PABoundedRawCodedPALocalProofConjunction.
 Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofFiniteDisjunction.
 Import PABoundedRawCodedPALocalProofFiniteDisjunctionDerivedCases.
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateProofCompiler.
@@ -817,6 +821,96 @@ Lemma raw_coqRestrictedPADirectEndpointDeepContext_shape : forall tail,
   rawCoqRestrictedPADirectEndpointWitnessBodyTemplate ::
     rawCoqRestrictedPADirectEndpointDeepTail tail.
 Proof. reflexivity. Qed.
+
+(** Context shifting distributes over concatenation.  This small structural
+    lemma is kept next to the direct endpoint because the exact affine shape
+    below must not depend on the much larger table-append development. *)
+Lemma raw_coqTemplateContextShiftMany_app : forall count left right,
+  templateContextShiftMany count (left ++ right) =
+  templateContextShiftMany count left ++
+    templateContextShiftMany count right.
+Proof.
+  induction count as [|remaining ih]; intros left right.
+  - reflexivity.
+  - cbn [templateContextShiftMany].
+    unfold templateContextShift, templateContextRename.
+    rewrite map_app. apply ih.
+Qed.
+
+(** The nested existential context is affine in its incoming tail.  All
+    temporary existential bodies form a fixed finite prefix, while every
+    formula inherited from [tail] is shifted exactly [count] times. *)
+Lemma raw_coqTemplateNestedExContext_affine : forall count body tail,
+  rawCoqTemplateNestedExContext count body tail =
+  rawCoqTemplateNestedExContext count body [] ++
+    templateContextShiftMany count tail.
+Proof.
+  induction count as [|remaining ih]; intros body tail.
+  - reflexivity.
+  - cbn [rawCoqTemplateNestedExContext].
+    rewrite (ih body
+      (templateContextShift
+        (rawCoqTemplateExN (S remaining) body :: tail))).
+    rewrite (ih body
+      (templateContextShift
+        [rawCoqTemplateExN (S remaining) body])).
+    cbn [templateContextShiftMany].
+    replace
+      (templateContextShift
+        (rawCoqTemplateExN (S remaining) body :: tail))
+      with
+      (templateContextShift
+        [rawCoqTemplateExN (S remaining) body] ++
+       templateContextShift tail) by reflexivity.
+    rewrite raw_coqTemplateContextShiftMany_app.
+    rewrite app_assoc. reflexivity.
+Qed.
+
+(** The two independently defined finite shift iterators coincide.  The
+    direct dispatcher uses [rawCoqTemplateRenameN] for conclusions, whereas
+    the general binder library uses [templateFormulaShiftMany] for inherited
+    assumptions. *)
+Lemma raw_coqTemplateRenameN_eq_shiftMany : forall count formula,
+  rawCoqTemplateRenameN count formula =
+    templateFormulaShiftMany count formula.
+Proof.
+  induction count as [|remaining ih]; intro formula.
+  - reflexivity.
+  - cbn [rawCoqTemplateRenameN templateFormulaShiftMany].
+    apply ih.
+Qed.
+
+(** Exact eight-witness specialization.  This equation is the shell-facing
+    fact needed by retained-prefix semantic compilers: the deep endpoint tail
+    consists of a fixed existential-elimination prefix followed by the
+    eightfold shift of the original endpoint tail. *)
+Lemma raw_coqRestrictedPADirectEndpointDeepTail_affine : forall tail,
+  rawCoqRestrictedPADirectEndpointDeepTail tail =
+  rawCoqRestrictedPADirectEndpointDeepTail [] ++
+    templateContextShiftMany 8 tail.
+Proof.
+  intro tail.
+  unfold rawCoqRestrictedPADirectEndpointDeepTail,
+    rawCoqRestrictedPADirectEndpointDeepContext.
+  rewrite raw_coqTemplateNestedExContext_affine.
+  cbn [rawCoqTemplateNestedExContext List.app].
+  reflexivity.
+Qed.
+
+(** An outer direct-shell assumption is therefore inherited only under its
+    eightfold renaming.  In particular, consumers must not search the deep
+    endpoint context for the original free-variable formula. *)
+Lemma raw_coqRestrictedPADirectEndpointDeepTail_member : forall tail formula,
+  In formula tail ->
+  In (rawCoqTemplateRenameN 8 formula)
+    (rawCoqRestrictedPADirectEndpointDeepTail tail).
+Proof.
+  intros tail formula hmember.
+  rewrite raw_coqRestrictedPADirectEndpointDeepTail_affine.
+  apply in_or_app. right.
+  rewrite raw_coqTemplateRenameN_eq_shiftMany.
+  exact (templateContextShiftMany_member 8 tail formula hmember).
+Qed.
 
 Lemma raw_coqTemplateExN_eight : forall body,
   rawCoqTemplateExN 8 body = rawCoqTemplateEx8 body.
