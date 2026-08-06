@@ -40,6 +40,8 @@ From BoundedPAConsistency Require Import
   RawCodedStrongStepProofEndpointEvidenceCompilation
   RawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation
   RawCodedProofEndpointQuantifierBoundedProofCompilation
+  RawCodedRestrictedTargetTemplateContext
+  RawCodedRestrictedPAConsistencyFormulaCode
   RawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier
   RawCodedRestrictedPADerivationSoundnessDirectStrongStepShell
   RawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation
@@ -79,6 +81,8 @@ Import
 Import PABoundedRawCodedStrongStepProofEndpointEvidenceCompilation.
 Import PABoundedRawCodedStrongStepProofEndpointQuantifierBoundedProofCompilation.
 Import PABoundedRawCodedProofEndpointQuantifierBoundedProofCompilation.
+Import PABoundedRawCodedRestrictedTargetTemplateContext.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier.
 Import
@@ -874,6 +878,170 @@ Proof.
   intro constructor.
   rewrite coqDynamicTruthBooleanDirectChildAtomicPremiseTemplate_eq_imp.
   apply raw_coqRestrictedPADirectStrongStepGuardedOuterLift_atomic_shape.
+Qed.
+
+Definition rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDomainFormula
+    : TemplateFormula :=
+  templateFormulaRename
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+    (coqDynamicTruthImpDirectChildDomainPremiseTemplate
+      coqDynamicTruthImpGuardedLevelTerm
+      coqDynamicTruthImpGuardedParentTerm
+      coqDynamicTruthImpGuardedLeftTerm
+      coqDynamicTruthImpGuardedRightTerm
+      coqDynamicTruthImpGuardedChildTerm).
+
+Lemma raw_coqRestrictedPADirectStrongStepGuardedEndpointImpDomain_eq_endpoint13 :
+    forall (M : RawPAModel)
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  rawDirectTemplateFormula inputs
+    rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDomainFormula =
+  rawDirectTemplateFormula inputs
+    (templateFormulaRename (templateShiftRenamingMany 13)
+      coqStrongStepProofEndpointQuantifierBoundedConclusion).
+Proof.
+  intros M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    hidentification.
+  pose proof
+    (rawCoqDynamicTruthLocalExclusive_levelAlignment
+      M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+      hidentification) as hlevel.
+  unfold rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDomainFormula,
+    rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming.
+  rewrite coqDynamicTruthImpGuardedParentDomainTemplate_view.
+  rewrite coqStrongStepProofEndpointQuantifierBoundedConclusion_view.
+  change (rawDirectTemplateFormula inputs
+    (restrictedTargetTemplateFormulaContext
+      coqRestrictedPASoundnessUpperLevelTerm
+      (restrictedTargetFormulaQuantifierBoundedContext (tVar 15))) =
+    rawDirectTemplateFormula inputs
+    (restrictedTargetTemplateFormulaContext
+      coqRestrictedPASoundnessLowerLevelTerm
+      (restrictedTargetFormulaQuantifierBoundedContext (tVar 15)))).
+  unfold rawDirectTemplateFormula.
+  rewrite !rawStructuralWith_restrictedTargetTemplateFormulaContext.
+  change
+    (rawDirectTemplateTerm inputs
+       coqRestrictedPASoundnessLowerLevelTerm =
+     rawDirectTemplateTerm inputs
+       coqRestrictedPASoundnessUpperLevelTerm) in hlevel.
+  fold (rawDirectTemplateTerm inputs).
+  now rewrite hlevel.
+Qed.
+
+Theorem
+    raw_coqRestrictedPADirectStrongStepGuardedEndpointImpAtomicAndDomainRoots_of_premise_roots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      tail witnessList baseContext restrictedRoot ruleRoot,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawCodedPAAxiomWitnessContext M witnessList baseContext ->
+  RawCodedTemplatePrefixAtomicallyAdequate M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail) ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaShiftMany 5
+        (rawCoqTemplateRenameN 8
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate)))
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaShiftMany 5
+        (rawCoqTemplateRenameN 8
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise)))
+    ruleRoot ->
+  exists targetWitnessList targetContext atomicRoot domainRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename
+          rawCoqRestrictedPADirectStrongStepGuardedOuterLiftRenaming
+          (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+            coqDynamicTruthImpGuardedLevelTerm
+            coqDynamicTruthImpGuardedParentTerm
+            coqDynamicTruthImpGuardedLeftTerm
+            coqDynamicTruthImpGuardedRightTerm
+            coqDynamicTruthImpGuardedChildTerm))) atomicRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+      (rawDirectTemplateFormula inputs
+        rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDomainFormula)
+      domainRoot.
+Proof.
+  intros M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    tail witnessList baseContext restrictedRoot ruleRoot
+    hidentification hbase hprefix hrestricted hrule.
+  set (renaming := templateShiftRenamingMany 13).
+  assert (hrestrictedRenamed := hrestricted).
+  unfold renaming in hrestrictedRenamed.
+  rewrite raw_coqRestrictedPADirectStrongStepGuardedEndpointPremise_shift13_eq_renamed13
+    in hrestrictedRenamed.
+  assert (hruleRenamed := hrule).
+  unfold renaming in hruleRenamed.
+  rewrite raw_coqRestrictedPADirectStrongStepGuardedEndpointPremise_shift13_eq_renamed13
+    in hruleRenamed.
+  destruct
+    (raw_codedPALocalProof_strongStepEndpointEvidence_renamed_of_restricted_and_rule_roots_on_witnessed_tail_under_prefix
+      M hPA inputs renaming witnessList baseContext
+      (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail)
+      restrictedRoot ruleRoot hprefix hbase hrestrictedRenamed hruleRenamed)
+    as (targetWitnessList & targetContext & atomicRoot & domainRoot &
+      htarget & hincluded & hatomic & hdomain).
+  exists targetWitnessList, targetContext, atomicRoot, domainRoot.
+  split; [exact htarget |].
+  split; [exact hincluded |].
+  split.
+  - change (RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointAtomicAdequacyConclusion)) atomicRoot)
+      in hatomic.
+    unfold renaming in hatomic.
+    rewrite <- raw_coqRestrictedPADirectStrongStepGuardedOuterLift_atomic_shape_pre
+      in hatomic.
+    exact hatomic.
+  - change (RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext
+        (rawCoqRestrictedPADirectStrongStepGuardedEndpointImpDeepPrefix tail))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename renaming
+          coqStrongStepProofEndpointQuantifierBoundedConclusion)) domainRoot)
+      in hdomain.
+    unfold renaming in hdomain.
+    pose proof
+      (raw_coqRestrictedPADirectStrongStepGuardedEndpointImpDomain_eq_endpoint13
+        M inputs sigmaDomain piDomain sigmaEvidence piEvidence hidentification)
+      as hdomainEq.
+    rewrite <- hdomainEq in hdomain.
+    exact hdomain.
 Qed.
 
 End
