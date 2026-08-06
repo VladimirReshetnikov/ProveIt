@@ -5458,6 +5458,27 @@ Print Assumptions z_range_subset_of_mem_function.
 Print Assumptions z_mem_function_range_of_mem_function.
 Print Assumptions z_mem_function_of_mem_function_of_subset.
 Print Assumptions z_function_subset_function_of_subset.
+Check z_is_function.
+Print Assumptions z_is_function_iff.
+Print Assumptions z_is_function_of_mem.
+Print Assumptions z_is_function_mem_function.
+Print Assumptions z_is_function_mem_kpair.
+Print Assumptions z_is_function_unique.
+Print Assumptions z_function_empty_empty.
+Check z_identity.
+Print Assumptions z_identity_mem_iff.
+Print Assumptions z_kpair_mem_identity_iff.
+Print Assumptions z_identity_mem_function.
+Print Assumptions z_identity_is_function.
+Print Assumptions z_identity_injective.
+Check z_compose.
+Print Assumptions z_mem_compose_iff.
+Print Assumptions z_kpair_mem_compose_iff.
+Print Assumptions z_compose_subset_product.
+Print Assumptions z_compose_function.
+Check z_injective.
+Print Assumptions z_injective_empty.
+Print Assumptions z_compose_injective.
 Check membership_well_founded.
 Check transitive_model.
 Print Assumptions well_founded_predicate_subtype.
