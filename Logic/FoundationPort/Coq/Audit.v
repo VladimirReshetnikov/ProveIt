@@ -55,7 +55,7 @@ From Foundation.FirstOrder.Arithmetic Require Import Exponential.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Nuon.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
-From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z Function Ordinal.
+From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z Function Ordinal Universe.
 From Foundation.FirstOrder.Skolemization Require Import Hull.
 From Foundation.FirstOrder.SetTheory Require Import LoewenheimSkolem.
 From Foundation.FirstOrder Require Import Interpretation.
@@ -5546,6 +5546,8 @@ Print Assumptions transitive_model_induction.
 Print Assumptions transitive_model_induction_ambient.
 Check membership_minimal_of_nonempty.
 Print Assumptions membership_minimal_of_nonempty.
+Check universe_choice_data.
+Print Assumptions universe_choice_existsUnique.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.
