@@ -633,10 +633,185 @@ rewrite resolvent_root_test_expression_fromE.
 exact: eval_recursive_root_search_expression_true_iff.
 Qed.
 
+Theorem eval_recursive_root_search_fixed_true_iff {arity degree}
+    (constant : SE.recursive_signed_expression arity)
+    (candidate : SE.recursive_signed_expression (S (S arity)))
+    (values : Vector.t nat arity)
+    (coefficients : Vector.t int (S degree))
+    (hconstant :
+      CS.eval_mathcomp_recursive_signed_expression constant values =
+      vec_pos coefficients pos0)
+    (hcandidate : forall numerator_index denominator_index,
+      CS.eval_mathcomp_recursive_signed_expression candidate
+        (denominator_index ## numerator_index ## values) =
+      mathcomp_fixed_homogeneous_value
+        coefficients numerator_index denominator_index)
+    (hfinal : vec_pos coefficients (final_position degree) = 720) :
+  SE.eval_recursive_expression
+      (recursive_root_search_expression
+        (RE.recursive_signed_absolute_magnitude constant) candidate) values =
+    1 <->
+  mathcomp_fixed_has_bounded_homogeneous_root coefficients.
+Proof.
+rewrite eval_recursive_root_search_expression_true_iff
+  eval_recursive_signed_absolute_magnitude hconstant.
+setoid_rewrite hcandidate.
+rewrite /mathcomp_fixed_has_bounded_homogeneous_root hfinal absz_nat.
+rewrite !mulnE !addnE Nat.add_1_r.
+have habsz_zero : absz (vec_pos coefficients pos0) = 0 <->
+    vec_pos coefficients pos0 = 0.
+  split.
+  - move=> hzero; apply/eqP; move/eqP: hzero.
+    by rewrite absz_eq0.
+  - move=> ->; reflexivity.
+rewrite habsz_zero.
+reflexivity.
+Qed.
+
+Theorem eval_recursive_root_search_fixed_rational_true_iff {arity degree}
+    (constant : SE.recursive_signed_expression arity)
+    (candidate : SE.recursive_signed_expression (S (S arity)))
+    (values : Vector.t nat arity)
+    (coefficients : Vector.t int (S degree))
+    (hconstant :
+      CS.eval_mathcomp_recursive_signed_expression constant values =
+      vec_pos coefficients pos0)
+    (hcandidate : forall numerator_index denominator_index,
+      CS.eval_mathcomp_recursive_signed_expression candidate
+        (denominator_index ## numerator_index ## values) =
+      mathcomp_fixed_homogeneous_value
+        coefficients numerator_index denominator_index)
+    (hfinal : vec_pos coefficients (final_position degree) = 720)
+    (hleading : SRR.leading_coefficient (vec_list coefficients) =
+      vec_pos coefficients (final_position degree)) :
+  SE.eval_recursive_expression
+      (recursive_root_search_expression
+        (RE.recursive_signed_absolute_magnitude constant) candidate) values =
+    1 <->
+  SRR.bounded_rational_rootb (vec_list coefficients) = true.
+Proof.
+rewrite (@eval_recursive_root_search_fixed_true_iff
+  arity degree constant candidate values coefficients
+  hconstant hcandidate hfinal).
+rewrite (@mathcomp_fixed_root_semantics_existing_iff
+  degree coefficients hleading).
+by rewrite SHR.bounded_homogeneous_rootbE.
+Qed.
+
+Definition pair_resolvent_root_candidate_expression :
+    SE.recursive_signed_expression 10 :=
+  recursive_resolvent_root_candidate_from
+    RE.pair_scaled_homogeneous_from
+    RE.pair_scaled_constant_signed_expression
+    (SE.RecVar pos6) (SE.RecVar pos7)
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos5))
+    (SE.recursive_signed_input pos4)
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos3))
+    (SE.recursive_signed_input pos2)
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos1))
+    (SE.recursive_signed_input pos0).
+
+Definition triple_resolvent_root_candidate_expression :
+    SE.recursive_signed_expression 10 :=
+  recursive_resolvent_root_candidate_from
+    RE.triple_scaled_homogeneous_from
+    RE.triple_scaled_constant_signed_expression
+    (SE.RecVar pos6) (SE.RecVar pos7)
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos5))
+    (SE.recursive_signed_input pos4)
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos3))
+    (SE.recursive_signed_input pos2)
+    (SE.recursive_signed_negate (SE.recursive_signed_input pos1))
+    (SE.recursive_signed_input pos0).
+
+Lemma pair_resolvent_root_test_expressionE :
+  RE.pair_resolvent_root_test_expression =
+  recursive_root_search_expression
+    (RE.recursive_signed_absolute_magnitude
+      RE.pair_scaled_constant_signed_expression)
+    pair_resolvent_root_candidate_expression.
+Proof. reflexivity. Qed.
+
+Lemma triple_resolvent_root_test_expressionE :
+  RE.triple_resolvent_root_test_expression =
+  recursive_root_search_expression
+    (RE.recursive_signed_absolute_magnitude
+      RE.triple_scaled_constant_signed_expression)
+    triple_resolvent_root_candidate_expression.
+Proof. reflexivity. Qed.
+
+Lemma bool_eq_from_true_iff left right :
+  (left = true <-> right = true) -> left = right.
+Proof.
+case: left; case: right=> //= hiff.
+- have hfalse : false = true := proj1 hiff erefl.
+  discriminate.
+- have hfalse : false = true := proj2 hiff erefl.
+  discriminate.
+Qed.
+
+Theorem encoded_pair_resolvent_rootb_semantics_from values f x
+    (hconstant : CS.eval_mathcomp_recursive_signed_expression
+      RE.pair_scaled_constant_signed_expression values =
+      vec_pos (RC.pair_scaled_resolvent_vector f x) pos0)
+    (hcandidate : forall numerator_index denominator_index,
+      CS.eval_mathcomp_recursive_signed_expression
+        pair_resolvent_root_candidate_expression
+        (denominator_index ## numerator_index ## values) =
+      mathcomp_fixed_homogeneous_value
+        (RC.pair_scaled_resolvent_vector f x)
+        numerator_index denominator_index) :
+  RE.encoded_pair_resolvent_rootb values =
+  SRR.pair_scaled_rational_rootb f x.
+Proof.
+apply: bool_eq_from_true_iff.
+rewrite /RE.encoded_pair_resolvent_rootb Nat.eqb_eq
+  /RE.encoded_pair_resolvent_root_indicator
+  pair_resolvent_root_test_expressionE.
+rewrite (@eval_recursive_root_search_fixed_rational_true_iff 8 15
+  RE.pair_scaled_constant_signed_expression
+  pair_resolvent_root_candidate_expression values
+  (RC.pair_scaled_resolvent_vector f x)
+  hconstant hcandidate
+  (RC.pair_scaled_resolvent_vector_final f x)
+  (RC.pair_scaled_resolvent_vector_leading_identity f x)).
+by rewrite RC.vec_list_pair_scaled_resolvent_vector.
+Qed.
+
+Theorem encoded_triple_resolvent_rootb_semantics_from values f x
+    (hconstant : CS.eval_mathcomp_recursive_signed_expression
+      RE.triple_scaled_constant_signed_expression values =
+      vec_pos (RC.triple_scaled_resolvent_vector f x) pos0)
+    (hcandidate : forall numerator_index denominator_index,
+      CS.eval_mathcomp_recursive_signed_expression
+        triple_resolvent_root_candidate_expression
+        (denominator_index ## numerator_index ## values) =
+      mathcomp_fixed_homogeneous_value
+        (RC.triple_scaled_resolvent_vector f x)
+        numerator_index denominator_index) :
+  RE.encoded_triple_resolvent_rootb values =
+  SRR.triple_scaled_rational_rootb f x.
+Proof.
+apply: bool_eq_from_true_iff.
+rewrite /RE.encoded_triple_resolvent_rootb Nat.eqb_eq
+  /RE.encoded_triple_resolvent_root_indicator
+  triple_resolvent_root_test_expressionE.
+rewrite (@eval_recursive_root_search_fixed_rational_true_iff 8 10
+  RE.triple_scaled_constant_signed_expression
+  triple_resolvent_root_candidate_expression values
+  (RC.triple_scaled_resolvent_vector f x)
+  hconstant hcandidate
+  (RC.triple_scaled_resolvent_vector_final f x)
+  (RC.triple_scaled_resolvent_vector_leading_identity f x)).
+by rewrite RC.vec_list_triple_scaled_resolvent_vector.
+Qed.
+
 Print Assumptions pair_scaled_homogeneous_sparse_value_correct.
 Print Assumptions triple_scaled_homogeneous_sparse_value_correct.
 Print Assumptions pair_scaled_homogeneous_sparse_valueE.
 Print Assumptions triple_scaled_homogeneous_sparse_valueE.
 Print Assumptions eval_resolvent_root_test_expression_from_true_iff.
+Print Assumptions encoded_pair_resolvent_rootb_semantics_from.
+Print Assumptions encoded_triple_resolvent_rootb_semantics_from.
 
 End PolynomialFormulasSexticMuRecResolventRootSemantics.
