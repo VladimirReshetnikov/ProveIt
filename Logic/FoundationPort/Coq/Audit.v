@@ -57,6 +57,7 @@ From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.FirstOrder.SetTheory Require Import Basic TransitiveModel Z Function Ordinal.
 From Foundation.FirstOrder.Skolemization Require Import Hull.
 From Foundation.FirstOrder.SetTheory Require Import LoewenheimSkolem.
+From Foundation.FirstOrder Require Import Interpretation.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
 From Foundation.Vorspiel.Finset Require Import Card.
@@ -5916,3 +5917,20 @@ Print Assumptions set_hull_closed.
 Print Assumptions set_hull_models_iff.
 Print Assumptions set_hull_nonempty.
 Print Assumptions set_hull_elementary_equiv.
+
+(* FirstOrder/Interpretation.v: semantic direct-interpretation core. *)
+Check direct_translation.
+Check direct_translation_realization.
+Print Assumptions direct_translation_domain_nonempty.
+Print Assumptions direct_translation_func_defined.
+Print Assumptions direct_translation_preserve_eq.
+Check direct_translation_model_carrier.
+Print Assumptions direct_translation_model_func_val_spec.
+Check direct_translation_model_structure.
+Print Assumptions direct_translation_model_structure_rel.
+Print Assumptions direct_translation_model_func_iff.
+Print Assumptions direct_translation_model_func_iff'.
+Print Assumptions direct_translation_model_semiterm_val_domain.
+Print Assumptions direct_translation_model_atomic_iff.
+Print Assumptions direct_translation_model_nonempty.
+Print Assumptions direct_translation_model_interprets_eq.
