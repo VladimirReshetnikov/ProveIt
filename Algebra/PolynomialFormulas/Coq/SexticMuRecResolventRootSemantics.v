@@ -419,9 +419,224 @@ case hv: (v == 0).
     (CV.canonical_monic_sextic_vieta f) hvnz).
 Qed.
 
+(* --------------------------------------------------------------------- *)
+(* Generic semantics of the two-level bounded root search.               *)
+
+Lemma eval_recursive_bounded_sum_nonzero_iff {arity}
+    (upper : SE.recursive_expression arity)
+    (body : SE.recursive_expression (S arity)) values :
+  SE.eval_recursive_expression (SE.RecBoundedSum upper body) values <> 0 <->
+  exists index,
+    Nat.lt index (SE.eval_recursive_expression upper values) /\
+    SE.eval_recursive_expression body (index ## values) <> 0.
+Proof.
+cbn [SE.eval_recursive_expression].
+rewrite lsum_map_nonzero_iff.
+split.
+- move=> [index [hindex hnonzero]].
+  exists index; split=> //.
+  apply list_an_spec in hindex; lia.
+- move=> [index [hindex hnonzero]].
+  exists index; split=> //.
+  apply list_an_spec; lia.
+Qed.
+
+Lemma eval_recursive_nonzero_indicator_eq1_iff {arity}
+    (test : SE.recursive_expression arity) values :
+  SE.eval_recursive_expression
+      (SE.RecIfZero test (SE.RecConst 0) (SE.RecConst 1)) values = 1 <->
+  SE.eval_recursive_expression test values <> 0.
+Proof.
+rewrite CS.eval_recursive_if_zero.
+case heval: (SE.eval_recursive_expression test values)=> [|result] /=.
+- split.
+  + discriminate.
+  + move=> h; exfalso; apply h; reflexivity.
+- split.
+  + move=> _; discriminate.
+  + move=> _; reflexivity.
+Qed.
+
+Lemma eval_recursive_nonzero_indicator_nonzero_iff {arity}
+    (test : SE.recursive_expression arity) values :
+  SE.eval_recursive_expression
+      (SE.RecIfZero test (SE.RecConst 0) (SE.RecConst 1)) values <> 0 <->
+  SE.eval_recursive_expression test values <> 0.
+Proof.
+rewrite CS.eval_recursive_if_zero.
+case heval: (SE.eval_recursive_expression test values)=> [|result] /=.
+- split=> h; exfalso; apply h; reflexivity.
+- split=> _; discriminate.
+Qed.
+
+Lemma eval_recursive_zero_indicator_nonzero_iff {arity}
+    (test : SE.recursive_expression arity) values :
+  SE.eval_recursive_expression
+      (SE.RecIfZero test (SE.RecConst 1) (SE.RecConst 0)) values <> 0 <->
+  SE.eval_recursive_expression test values = 0.
+Proof.
+rewrite CS.eval_recursive_if_zero.
+case heval: (SE.eval_recursive_expression test values)=> [|result] /=.
+- split.
+  + move=> _; reflexivity.
+  + move=> _ contra; discriminate contra.
+- split.
+  + move=> h; exfalso; apply h; reflexivity.
+  + discriminate.
+Qed.
+
+Lemma eval_recursive_signed_code_zero_iff {arity}
+    (expression : SE.recursive_signed_expression arity) values :
+  SE.eval_recursive_expression
+      (SE.recursive_signed_code expression) values = 0 <->
+  CS.eval_mathcomp_recursive_signed_expression expression values = 0.
+Proof.
+rewrite CS.eval_recursive_signed_code_mathcomp.
+split=> hzero.
+- have hdecode := congr1 mathcomp_zigzag_decode hzero.
+  rewrite mathcomp_zigzag_decode_encode in hdecode.
+  have hz0 : mathcomp_zigzag_decode 0 = 0.
+    change (mathcomp_zigzag_decode (mathcomp_zigzag_encode 0) = 0).
+    exact: mathcomp_zigzag_decode_encode.
+  by rewrite hz0 in hdecode.
+- by rewrite hzero /mathcomp_zigzag_encode /=.
+Qed.
+
+Lemma eval_recursive_signed_absolute_magnitude {arity}
+    (expression : SE.recursive_signed_expression arity) values :
+  SE.eval_recursive_expression
+      (RE.recursive_signed_absolute_magnitude expression) values =
+  absz (CS.eval_mathcomp_recursive_signed_expression expression values).
+Proof.
+rewrite /RE.recursive_signed_absolute_magnitude
+  /CS.eval_mathcomp_recursive_signed_expression /=.
+remember (SE.eval_recursive_expression
+  (SE.recursive_positive expression) values) as positive.
+remember (SE.eval_recursive_expression
+  (SE.recursive_negative expression) values) as negative.
+case: (leqP negative positive)=> hle.
+- have hzero : (negative - positive)%N = 0%N.
+    by apply/eqP; rewrite subn_eq0 hle.
+  rewrite hzero addn0 distnEl //.
+- have hle' : (positive <= negative)%N := ltnW hle.
+  have hzero : (positive - negative)%N = 0%N.
+    by apply/eqP; rewrite subn_eq0 hle'.
+  rewrite hzero add0n distnEr //.
+Qed.
+
+Definition recursive_root_search_expression {arity}
+    (magnitude : SE.recursive_expression arity)
+    (candidate : SE.recursive_signed_expression (S (S arity))) :
+    SE.recursive_expression arity :=
+  SE.RecIfZero magnitude (SE.RecConst 1)
+    (SE.RecIfZero
+      (SE.RecBoundedSum
+        (SE.RecSucc (SE.RecMult (SE.RecConst 2) magnitude))
+        (SE.RecIfZero
+          (SE.RecBoundedSum (SE.RecConst 720)
+            (SE.RecIfZero (SE.recursive_signed_code candidate)
+              (SE.RecConst 1) (SE.RecConst 0)))
+          (SE.RecConst 0) (SE.RecConst 1)))
+      (SE.RecConst 0) (SE.RecConst 1)).
+
+Theorem eval_recursive_root_search_expression_true_iff {arity}
+    (magnitude : SE.recursive_expression arity)
+    (candidate : SE.recursive_signed_expression (S (S arity))) values :
+  SE.eval_recursive_expression
+      (recursive_root_search_expression magnitude candidate) values = 1 <->
+  SE.eval_recursive_expression magnitude values = 0 \/
+  exists numerator_index,
+    Nat.lt numerator_index
+      (S (2 * SE.eval_recursive_expression magnitude values)) /\
+  exists denominator_index,
+    Nat.lt denominator_index 720 /\
+    CS.eval_mathcomp_recursive_signed_expression candidate
+      (denominator_index ## numerator_index ## values) = 0.
+Proof.
+unfold recursive_root_search_expression.
+rewrite CS.eval_recursive_if_zero.
+case hmagnitude:
+    (SE.eval_recursive_expression magnitude values)=> [|magnitude_value].
+- cbn; split=> // _. by left.
+- rewrite eval_recursive_nonzero_indicator_eq1_iff
+    eval_recursive_bounded_sum_nonzero_iff.
+  setoid_rewrite eval_recursive_nonzero_indicator_nonzero_iff.
+  setoid_rewrite eval_recursive_bounded_sum_nonzero_iff.
+  setoid_rewrite eval_recursive_zero_indicator_nonzero_iff.
+  setoid_rewrite eval_recursive_signed_code_zero_iff.
+  cbn [SE.eval_recursive_expression].
+  rewrite hmagnitude.
+  split.
+  + move=> hwitness; right; exact hwitness.
+  + move=> [himpossible | hwitness].
+    * discriminate.
+    * exact hwitness.
+Qed.
+
+Definition recursive_resolvent_root_candidate_from {arity}
+    (homogeneous : RE.recursive_homogeneous_builder)
+    (constant : SE.recursive_signed_expression arity)
+    (x0 x1 : SE.recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) :
+    SE.recursive_signed_expression (S (S arity)) :=
+  let magnitude := RE.recursive_signed_absolute_magnitude constant in
+  let numerator : SE.recursive_signed_expression (S (S arity)) :=
+    {| SE.recursive_positive := SE.RecVar pos1;
+       SE.recursive_negative := RE.recursive_weaken2 magnitude |} in
+  let denominator : SE.recursive_expression (S (S arity)) :=
+    SE.RecSucc (SE.RecVar pos0) in
+  @homogeneous (S (S arity))
+    (RE.recursive_weaken2 x0) (RE.recursive_weaken2 x1)
+    denominator numerator
+    (RE.recursive_signed_weaken2 e1)
+    (RE.recursive_signed_weaken2 e2)
+    (RE.recursive_signed_weaken2 e3)
+    (RE.recursive_signed_weaken2 e4)
+    (RE.recursive_signed_weaken2 e5)
+    (RE.recursive_signed_weaken2 e6).
+
+Lemma resolvent_root_test_expression_fromE {arity}
+    (homogeneous : RE.recursive_homogeneous_builder)
+    (constant : SE.recursive_signed_expression arity)
+    (x0 x1 : SE.recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) :
+  RE.resolvent_root_test_expression_from homogeneous constant x0 x1
+      e1 e2 e3 e4 e5 e6 =
+  recursive_root_search_expression
+    (RE.recursive_signed_absolute_magnitude constant)
+    (recursive_resolvent_root_candidate_from homogeneous constant x0 x1
+      e1 e2 e3 e4 e5 e6).
+Proof. reflexivity. Qed.
+
+Theorem eval_resolvent_root_test_expression_from_true_iff {arity}
+    (homogeneous : RE.recursive_homogeneous_builder)
+    (constant : SE.recursive_signed_expression arity)
+    (x0 x1 : SE.recursive_expression arity)
+    (e1 e2 e3 e4 e5 e6 : SE.recursive_signed_expression arity) values :
+  SE.eval_recursive_expression
+      (RE.resolvent_root_test_expression_from homogeneous constant x0 x1
+        e1 e2 e3 e4 e5 e6) values = 1 <->
+  SE.eval_recursive_expression
+      (RE.recursive_signed_absolute_magnitude constant) values = 0 \/
+  exists numerator_index,
+    Nat.lt numerator_index
+      (S (2 * SE.eval_recursive_expression
+        (RE.recursive_signed_absolute_magnitude constant) values)) /\
+  exists denominator_index,
+    Nat.lt denominator_index 720 /\
+    CS.eval_mathcomp_recursive_signed_expression
+      (recursive_resolvent_root_candidate_from homogeneous constant x0 x1
+        e1 e2 e3 e4 e5 e6)
+      (denominator_index ## numerator_index ## values) = 0.
+Proof.
+rewrite resolvent_root_test_expression_fromE.
+exact: eval_recursive_root_search_expression_true_iff.
+Qed.
+
 Print Assumptions pair_scaled_homogeneous_sparse_value_correct.
 Print Assumptions triple_scaled_homogeneous_sparse_value_correct.
 Print Assumptions pair_scaled_homogeneous_sparse_valueE.
 Print Assumptions triple_scaled_homogeneous_sparse_valueE.
+Print Assumptions eval_resolvent_root_test_expression_from_true_iff.
 
 End PolynomialFormulasSexticMuRecResolventRootSemantics.
