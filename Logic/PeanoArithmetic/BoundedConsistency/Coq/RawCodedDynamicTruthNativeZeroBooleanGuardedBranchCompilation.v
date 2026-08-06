@@ -17,11 +17,14 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
   RawCodedSyntaxConstructors
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofExistentialEliminationChain
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplateLocalProofWitnessedTailTransport
+  RawCodedLtSuccCasesProofCompilation
+  RawCodedPAGrowingTemplateConjunction
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateDirectStructuralPAAgreement
   RawCodedDynamicTruthLocalExclusiveTemplateDirectInputs
@@ -47,11 +50,14 @@ Import PACanonicalSelectorPA.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofExistentialEliminationChain.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
+Import PABoundedRawCodedLtSuccCasesProofCompilation.
+Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
 Import PABoundedRawCodedDynamicTruthLocalExclusiveTemplateDirectInputs.
@@ -273,6 +279,69 @@ Proof.
   - exact hbranch.
 Qed.
 
+(** Constructor-local Boolean branch from independently growing, already
+    renamed direct-shell premise roots.  This is the proof-root counterpart
+    of the membership-based wrapper above and retains every live caller
+    assumption through the parent and append-evidence stages. *)
+Theorem
+    raw_dynamicTruthBooleanGuardedBranchRoots_on_witnessed_extension_of_zero_normalized_and_independently_growing_renamed_roots_and_canonical_append_kernel_payload_pair :
+    forall constructor (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      normalizedTranslation witnessList baseContext helperRoots callerPrefix,
+  RawDynamicTruthZeroGuardedEvidenceIdentification M inputs ->
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    normalizedTranslation witnessList baseContext helperRoots ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext
+    (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext
+    (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise)) ->
+  RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix) ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthBooleanGuardedBranchRootsAt constructor M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      targetContext callerPrefix.
+Proof.
+  intros constructor M hPA inputs normalizedTranslation witnessList
+    baseContext helperRoots callerPrefix hidentification hnormalized
+    hrestrictedGrowing hruleGrowing hpayloads.
+  destruct
+    (raw_dynamicTruthBooleanGuardedParentBranchRoots_of_zero_normalized_selected_identification_and_independently_growing_renamed_roots
+      constructor M hPA inputs normalizedTranslation witnessList baseContext
+      helperRoots callerPrefix
+      (rawDynamicTruthZeroGuardedEvidence_localExclusive
+        M inputs hidentification)
+      hnormalized hrestrictedGrowing hruleGrowing) as
+    (parentWitnessList & parentContext & hparentWitnessed &
+      hbaseParentIncluded & hparent).
+  destruct
+    (raw_dynamicTruthBooleanGuardedBranchRoots_on_witnessed_extension_of_parent_and_canonical_append_kernel_payload_pair
+      constructor M hPA inputs parentWitnessList parentContext callerPrefix
+      hidentification hparentWitnessed hparent hpayloads) as
+    (targetWitnessList & targetContext & htargetWitnessed &
+      hparentTargetIncluded & hbranch).
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hparentTargetIncluded member
+      (hbaseParentIncluded member hmember)).
+  - exact hbranch.
+Qed.
+
 (** Apply the constructor-local guarded cell without discarding the caller
     assumptions.  This is the exact output needed inside a strong-step rule
     case before its assumptions are discharged. *)
@@ -336,6 +405,80 @@ Proof.
   - exact hpair.
 Qed.
 
+(** Diagonal consequence of the growing renamed-root branch.  Keeping this
+    wrapper separate makes the five-root branch package independently useful
+    while centralizing the final constructor-local implication elimination. *)
+Theorem
+    raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension_of_zero_normalized_and_independently_growing_renamed_roots_and_canonical_append_kernel_payload_pair :
+    forall constructor (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      normalizedTranslation witnessList baseContext helperRoots callerPrefix,
+  RawDynamicTruthZeroGuardedEvidenceIdentification M inputs ->
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    normalizedTranslation witnessList baseContext helperRoots ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext
+    (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext
+    (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise)) ->
+  RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix) ->
+  exists targetWitnessList targetContext pairRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext callerPrefix)
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M constructor)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M constructor)
+          (rawFormulaBotCode M))) pairRoot.
+Proof.
+  intros constructor M hPA inputs normalizedTranslation witnessList
+    baseContext helperRoots callerPrefix hidentification hnormalized
+    hrestrictedGrowing hruleGrowing hpayloads.
+  destruct
+    (raw_dynamicTruthBooleanGuardedBranchRoots_on_witnessed_extension_of_zero_normalized_and_independently_growing_renamed_roots_and_canonical_append_kernel_payload_pair
+      constructor M hPA inputs normalizedTranslation witnessList baseContext
+      helperRoots callerPrefix hidentification hnormalized
+      hrestrictedGrowing hruleGrowing hpayloads) as
+    (branchWitnessList & branchContext & hbranchWitnessed &
+      hbaseBranchIncluded & hbranch).
+  destruct
+    (raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension_under_caller_prefix
+      constructor M hPA
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (rawDirectStructuralTemplatePAAgreement M hPA inputs)
+      branchWitnessList branchContext callerPrefix
+      (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
+        M hPA inputs callerPrefix)
+      (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
+        M hPA inputs
+        (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix))
+      hbranchWitnessed hbranch) as
+    (targetWitnessList & targetContext & pairRoot & htargetWitnessed &
+      hbranchTargetIncluded & hpair).
+  exists targetWitnessList, targetContext, pairRoot.
+  split; [exact htargetWitnessed |].
+  split.
+  - intros member hmember.
+    exact (hbranchTargetIncluded member
+      (hbaseBranchIncluded member hmember)).
+  - exact hpair.
+Qed.
+
 (** The two diagonal pair roots under a still-live template prefix. *)
 Record RawDynamicTruthLocalBooleanDiagonalPairRootsUnderTemplatePrefixAt
     (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
@@ -360,6 +503,59 @@ Record RawDynamicTruthLocalBooleanDiagonalPairRootsUnderTemplatePrefixAt
 
 Arguments RawDynamicTruthLocalBooleanDiagonalPairRootsUnderTemplatePrefixAt
   M translation baseContext prefix : clear implicits.
+
+(** Synchronize two independently growing Boolean diagonal roots.  This is
+    connective-agnostic tail bookkeeping: clients need not manually merge
+    the And and Or witness batches after each constructor-local compiler. *)
+Theorem
+    raw_dynamicTruthLocalBooleanDiagonalPairRootsUnderTemplatePrefixAt_of_independently_growing_roots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      translation witnessList baseContext callerPrefix,
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    witnessList baseContext callerPrefix
+    (rawFormulaImpCode M
+      (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanAnd)
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanAnd)
+        (rawFormulaBotCode M))) ->
+  RawCodedPAGrowingTemplateLocalProofAt M translation
+    witnessList baseContext callerPrefix
+    (rawFormulaImpCode M
+      (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanOr)
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanOr)
+        (rawFormulaBotCode M))) ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthLocalBooleanDiagonalPairRootsUnderTemplatePrefixAt M
+      translation targetContext callerPrefix.
+Proof.
+  intros M hPA translation witnessList baseContext callerPrefix
+    handGrowing horGrowing.
+  destruct
+    (raw_codedPAGrowingTemplateLocalProofAt_pair_at_prefix
+      M hPA translation witnessList baseContext callerPrefix
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanAnd)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanAnd)
+          (rawFormulaBotCode M)))
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanOr)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanOr)
+          (rawFormulaBotCode M)))
+      handGrowing horGrowing) as
+    (targetWitnessList & targetContext & andRoot & orRoot &
+      htargetWitnessed & hincluded & hand & hor).
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split; [exact hincluded |].
+  constructor.
+  - exists andRoot. exact hand.
+  - exists orRoot. exact hor.
+Qed.
 
 (** Build both Boolean diagonals independently, merge their witnessed PA
     tails, and transport both prefixed proofs to the common target. *)
@@ -443,6 +639,110 @@ Proof.
   - constructor.
     + exists transportedAndRoot. exact htransportedAnd.
     + exists transportedOrRoot. exact htransportedOr.
+Qed.
+
+(** Build both Boolean diagonals from four independent renamed premise-root
+    computations.  Each constructor and each premise may choose its own PA
+    witness extension; only the final diagonal roots are synchronized. *)
+Theorem
+    raw_dynamicTruthLocalBooleanDiagonalPairRootsUnderTemplatePrefixAt_on_witnessed_extension_of_zero_normalized_independently_growing_renamed_roots_and_canonical_append_kernel_payload_pairs :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      normalizedTranslation witnessList baseContext helperRoots callerPrefix,
+  RawDynamicTruthZeroGuardedEvidenceIdentification M inputs ->
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    normalizedTranslation witnessList baseContext helperRoots ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext
+    (coqDynamicTruthBooleanGuardedDeepPrefix DTBooleanAnd callerPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext
+    (coqDynamicTruthBooleanGuardedDeepPrefix DTBooleanAnd callerPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext
+    (coqDynamicTruthBooleanGuardedDeepPrefix DTBooleanOr callerPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext
+    (coqDynamicTruthBooleanGuardedDeepPrefix DTBooleanOr callerPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise)) ->
+  RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthBooleanGuardedDeepPrefix
+        DTBooleanAnd callerPrefix) ->
+  RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthBooleanGuardedDeepPrefix
+        DTBooleanOr callerPrefix) ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthLocalBooleanDiagonalPairRootsUnderTemplatePrefixAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      targetContext callerPrefix.
+Proof.
+  intros M hPA inputs normalizedTranslation witnessList baseContext
+    helperRoots callerPrefix hidentification hnormalized
+    handRestrictedGrowing handRuleGrowing
+    horRestrictedGrowing horRuleGrowing handPayload horPayload.
+  destruct
+    (raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension_of_zero_normalized_and_independently_growing_renamed_roots_and_canonical_append_kernel_payload_pair
+      DTBooleanAnd M hPA inputs normalizedTranslation witnessList baseContext
+      helperRoots callerPrefix hidentification hnormalized
+      handRestrictedGrowing handRuleGrowing handPayload) as
+    (andWitnessList & andContext & andRoot & handWitnessed &
+      hbaseAndIncluded & hand).
+  destruct
+    (raw_dynamicTruthBooleanGuardedDiagonalPair_on_witnessed_extension_of_zero_normalized_and_independently_growing_renamed_roots_and_canonical_append_kernel_payload_pair
+      DTBooleanOr M hPA inputs normalizedTranslation witnessList baseContext
+      helperRoots callerPrefix hidentification hnormalized
+      horRestrictedGrowing horRuleGrowing horPayload) as
+    (orWitnessList & orContext & orRoot & horWitnessed &
+      hbaseOrIncluded & hor).
+  assert (handGrowing : RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext callerPrefix
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanAnd)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanAnd)
+          (rawFormulaBotCode M)))).
+  {
+    exists andWitnessList, andContext, andRoot.
+    split; [exact handWitnessed |].
+    split; [exact hbaseAndIncluded | exact hand].
+  }
+  assert (horGrowing : RawCodedPAGrowingTemplateLocalProofAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext callerPrefix
+      (rawFormulaImpCode M
+        (rawDynamicTruthBooleanSigmaEx8BranchCode M DTBooleanOr)
+        (rawFormulaImpCode M
+          (rawDynamicTruthBooleanPiEx8BranchCode M DTBooleanOr)
+          (rawFormulaBotCode M)))).
+  {
+    exists orWitnessList, orContext, orRoot.
+    split; [exact horWitnessed |].
+    split; [exact hbaseOrIncluded | exact hor].
+  }
+  exact
+    (raw_dynamicTruthLocalBooleanDiagonalPairRootsUnderTemplatePrefixAt_of_independently_growing_roots
+      M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext callerPrefix handGrowing horGrowing).
 Qed.
 
 End

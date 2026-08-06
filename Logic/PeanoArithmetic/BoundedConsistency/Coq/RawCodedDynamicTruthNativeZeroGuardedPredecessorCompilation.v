@@ -27,6 +27,8 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateProofCompiler
   RawCodedTemplateProofCompilerSelfShiftTail
   RawCodedTemplateLocalProofWitnessedTailTransport
+  RawCodedLtSuccCasesProofCompilation
+  RawCodedPAGrowingTemplateConjunction
   RawCodedTemplatePAEmbedding
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateDirectStructuralPAAgreement
@@ -71,6 +73,8 @@ Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
 Import PABoundedRawCodedTemplateLocalProofWitnessedTailTransport.
+Import PABoundedRawCodedLtSuccCasesProofCompilation.
+Import PABoundedRawCodedPAGrowingTemplateConjunction.
 Import PABoundedRawCodedTemplatePAEmbedding.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
@@ -367,6 +371,86 @@ Proof.
   split; assumption.
 Qed.
 
+(** Proof-root form of the implication parent endpoint.  The surrounding
+    shell has already renamed its two premises through the five constructor
+    binders, so endpoint compilation needs neither list membership nor an
+    empty caller prefix. *)
+Theorem
+    raw_dynamicTruthImpGuardedParentEndpointRoots_of_renamed_restricted_and_rule_roots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      baseWitnessList baseContext callerPrefix restrictedRoot ruleRoot,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate))
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise))
+    ruleRoot ->
+  exists targetWitnessList targetContext atomicRoot domainRoot,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+      (rawDirectTemplateFormula inputs
+        (coqDynamicTruthImpDirectChildAtomicPremiseTemplate
+          coqDynamicTruthImpGuardedLevelTerm
+          coqDynamicTruthImpGuardedParentTerm
+          coqDynamicTruthImpGuardedLeftTerm
+          coqDynamicTruthImpGuardedRightTerm
+          coqDynamicTruthImpGuardedChildTerm)) atomicRoot /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        targetContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+      (rawDirectTemplateFormula inputs
+        (coqDynamicTruthImpDirectChildDomainPremiseTemplate
+          coqDynamicTruthImpGuardedLevelTerm
+          coqDynamicTruthImpGuardedParentTerm
+          coqDynamicTruthImpGuardedLeftTerm
+          coqDynamicTruthImpGuardedRightTerm
+          coqDynamicTruthImpGuardedChildTerm)) domainRoot.
+Proof.
+  intros M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    baseWitnessList baseContext callerPrefix restrictedRoot ruleRoot
+    hidentification hbase hrestricted hrule.
+  destruct
+    (raw_codedPALocalProof_strongStepEndpointEvidence_renamed_of_restricted_and_rule_roots_on_witnessed_tail_under_prefix
+      M hPA inputs (templateShiftRenamingMany 5)
+      baseWitnessList baseContext
+      (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+      restrictedRoot ruleRoot
+      (raw_guardedDirectStructuralTemplatePrefix_atomically_adequate
+        M hPA inputs (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+      hbase hrestricted hrule) as
+    (targetWitnessList & targetContext & atomicRoot & domainRoot &
+      htarget & hincluded & hatomic & hdomain).
+  rewrite <- coqDynamicTruthImpGuardedParentAtomicTemplate_eq_endpoint_shift5
+    in hatomic.
+  rewrite <- (raw_coqDynamicTruthImpGuardedParentDomain_eq_endpoint_shift5
+    M inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    hidentification) in hdomain.
+  exists targetWitnessList, targetContext, atomicRoot, domainRoot.
+  split; [exact htarget |].
+  split; [exact hincluded |].
+  split; assumption.
+Qed.
+
 (** The local source and the two parent invariants form the traversal-free
     part of the guarded branch.  Separating this triple from selected row
     evidence lets endpoint compilation grow and synchronize its witnessed
@@ -407,6 +491,91 @@ Record RawDynamicTruthImpGuardedParentBranchRootsAt
 
 Arguments RawDynamicTruthImpGuardedParentBranchRootsAt
   M translation baseContext callerPrefix : clear implicits.
+
+(** Merge a local-exclusive source with renamed implication endpoint roots
+    compiled on a possibly larger witnessed tail.  Endpoint compilation may
+    grow once more; composing inclusions before transporting the source keeps
+    all three parent proofs on one literal deep context. *)
+Theorem
+    raw_dynamicTruthImpGuardedParentBranchRoots_of_source_and_renamed_roots_on_witnessed_extension :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      sigmaDomain piDomain sigmaEvidence piEvidence
+      sourceWitnessList sourceContext endpointWitnessList endpointContext
+      callerPrefix sourceRoot restrictedRoot ruleRoot,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    sigmaDomain piDomain sigmaEvidence piEvidence ->
+  RawCodedPAAxiomWitnessContext M sourceWitnessList sourceContext ->
+  RawCodedPAAxiomWitnessContext M endpointWitnessList endpointContext ->
+  RawContextListIncluded M sourceContext endpointContext ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      sourceContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+    (rawTemplateFormula
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (tfAll (tfAll (tfAll coqDynamicTruthLocalExclusiveBodyTemplate))))
+    sourceRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      endpointContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate))
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      endpointContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise))
+    ruleRoot ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M sourceContext targetContext /\
+    RawDynamicTruthImpGuardedParentBranchRootsAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      targetContext callerPrefix.
+Proof.
+  intros M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+    sourceWitnessList sourceContext endpointWitnessList endpointContext
+    callerPrefix sourceRoot restrictedRoot ruleRoot hidentification
+    hsourceWitnessed hendpointWitnessed hsourceEndpointIncluded
+    hsource hrestricted hrule.
+  destruct
+    (raw_dynamicTruthImpGuardedParentEndpointRoots_of_renamed_restricted_and_rule_roots
+      M hPA inputs sigmaDomain piDomain sigmaEvidence piEvidence
+      endpointWitnessList endpointContext callerPrefix restrictedRoot ruleRoot
+      hidentification hendpointWitnessed hrestricted hrule) as
+    (targetWitnessList & targetContext & atomicRoot & domainRoot &
+      htargetWitnessed & hendpointTargetIncluded & hatomic & hdomain).
+  assert (hsourceTargetIncluded :
+      RawContextListIncluded M sourceContext targetContext).
+  {
+    intros member hmember.
+    exact (hendpointTargetIncluded member
+      (hsourceEndpointIncluded member hmember)).
+  }
+  destruct
+    (raw_codedPALocalProof_sameTemplatePrefix_witnessedTail_transport
+      M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+      sourceWitnessList sourceContext targetWitnessList targetContext
+      (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+      (rawTemplateFormula
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (tfAll (tfAll (tfAll coqDynamicTruthLocalExclusiveBodyTemplate))))
+      sourceRoot hsourceWitnessed htargetWitnessed hsourceTargetIncluded
+      hsource) as [transportedSourceRoot htransportedSource].
+  exists targetWitnessList, targetContext.
+  split; [exact htargetWitnessed |].
+  split; [exact hsourceTargetIncluded |].
+  constructor.
+  - exists transportedSourceRoot. exact htransportedSource.
+  - exists atomicRoot. exact hatomic.
+  - exists domainRoot. exact hdomain.
+Qed.
 
 (** The traversal-specific half of a guarded branch.  Both global sources,
     both payload callbacks, and both conclusions use the literal guarded
@@ -911,6 +1080,136 @@ Proof.
       inputs (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
     hexclusive) as [sourceRoot hsource].
   exists sourceRoot. rewrite hsourceCode. exact hsource.
+Qed.
+
+(** Fixed renamed-root wrapper for normalized rank zero. *)
+Theorem
+    raw_dynamicTruthImpGuardedParentBranchRoots_of_zero_normalized_selected_identification_and_renamed_roots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      inputs normalizedTranslation witnessList baseContext helperRoots
+      callerPrefix restrictedRoot ruleRoot,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    (rawDynamicTruthZeroSigmaDomainCode M)
+    (rawDynamicTruthZeroPiDomainCode M)
+    (rawDynamicTruthZeroSigmaEvidenceCode M)
+    (rawDynamicTruthZeroPiEvidenceCode M) ->
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    normalizedTranslation witnessList baseContext helperRoots ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate))
+    restrictedRoot ->
+  RawCodedPALocalProofOf M
+    (rawTemplateContextCodeOnTail
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      baseContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix))
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise))
+    ruleRoot ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthImpGuardedParentBranchRootsAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      targetContext callerPrefix.
+Proof.
+  intros M hPA inputs normalizedTranslation witnessList baseContext
+    helperRoots callerPrefix restrictedRoot ruleRoot hidentification
+    hnormalized hrestricted hrule.
+  destruct
+    (rawDynamicTruthNativeLocalZeroGuardedNormalized_fields
+      M normalizedTranslation witnessList baseContext helperRoots hnormalized)
+    as [hbaseWitnessed _].
+  destruct
+    (raw_dynamicTruthImpGuardedBranchSource_of_zero_normalized
+      M hPA inputs normalizedTranslation witnessList baseContext helperRoots
+      callerPrefix hidentification hnormalized) as [sourceRoot hsource].
+  exact
+    (raw_dynamicTruthImpGuardedParentBranchRoots_of_source_and_renamed_roots_on_witnessed_extension
+      M hPA inputs
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M)
+      witnessList baseContext witnessList baseContext callerPrefix
+      sourceRoot restrictedRoot ruleRoot hidentification hbaseWitnessed
+      hbaseWitnessed (fun member hmember => hmember)
+      hsource hrestricted hrule).
+Qed.
+
+(** Independently growing renamed-root wrapper.  The restricted-proof and
+    rule analyses select their PA tails separately and are synchronized only
+    beneath the unchanged guarded implication prefix. *)
+Theorem
+    raw_dynamicTruthImpGuardedParentBranchRoots_of_zero_normalized_selected_identification_and_independently_growing_renamed_roots :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      inputs normalizedTranslation witnessList baseContext helperRoots
+      callerPrefix,
+  RawCoqDynamicTruthLocalExclusiveTemplateIdentification M inputs
+    (rawDynamicTruthZeroSigmaDomainCode M)
+    (rawDynamicTruthZeroPiDomainCode M)
+    (rawDynamicTruthZeroSigmaEvidenceCode M)
+    (rawDynamicTruthZeroPiEvidenceCode M) ->
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    normalizedTranslation witnessList baseContext helperRoots ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqRestrictedPADerivationSoundnessRestrictedProofTemplate)) ->
+  RawCodedPAGrowingTemplateLocalProofAt M
+    (rawDirectStructuralTemplateTranslation M hPA inputs)
+    witnessList baseContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+    (rawDirectTemplateFormula inputs
+      (templateFormulaRename (templateShiftRenamingMany 5)
+        coqStrongStepProofEndpointAtomicAdequacyRulePremise)) ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthImpGuardedParentBranchRootsAt M
+      (rawDirectStructuralTemplateTranslation M hPA inputs)
+      targetContext callerPrefix.
+Proof.
+  intros M hPA inputs normalizedTranslation witnessList baseContext
+    helperRoots callerPrefix hidentification hnormalized
+    hrestrictedGrowing hruleGrowing.
+  destruct
+    (rawDynamicTruthNativeLocalZeroGuardedNormalized_fields
+      M normalizedTranslation witnessList baseContext helperRoots hnormalized)
+    as [hbaseWitnessed _].
+  destruct
+    (raw_dynamicTruthImpGuardedBranchSource_of_zero_normalized
+      M hPA inputs normalizedTranslation witnessList baseContext helperRoots
+      callerPrefix hidentification hnormalized) as [sourceRoot hsource].
+  destruct
+    (raw_codedPAGrowingTemplateLocalProofAt_pair_at_prefix
+      M hPA (rawDirectStructuralTemplateTranslation M hPA inputs)
+      witnessList baseContext (coqDynamicTruthImpGuardedDeepPrefix callerPrefix)
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename (templateShiftRenamingMany 5)
+          coqRestrictedPADerivationSoundnessRestrictedProofTemplate))
+      (rawDirectTemplateFormula inputs
+        (templateFormulaRename (templateShiftRenamingMany 5)
+          coqStrongStepProofEndpointAtomicAdequacyRulePremise))
+      hrestrictedGrowing hruleGrowing) as
+    (endpointWitnessList & endpointContext & restrictedRoot & ruleRoot &
+      hendpointWitnessed & hbaseEndpointIncluded & hrestricted & hrule).
+  exact
+    (raw_dynamicTruthImpGuardedParentBranchRoots_of_source_and_renamed_roots_on_witnessed_extension
+      M hPA inputs
+      (rawDynamicTruthZeroSigmaDomainCode M)
+      (rawDynamicTruthZeroPiDomainCode M)
+      (rawDynamicTruthZeroSigmaEvidenceCode M)
+      (rawDynamicTruthZeroPiEvidenceCode M)
+      witnessList baseContext endpointWitnessList endpointContext callerPrefix
+      sourceRoot restrictedRoot ruleRoot hidentification hbaseWitnessed
+      hendpointWitnessed hbaseEndpointIncluded hsource hrestricted hrule).
 Qed.
 
 (** Synchronize the normalized local-exclusivity source with both guarded
