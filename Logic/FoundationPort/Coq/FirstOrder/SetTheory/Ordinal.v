@@ -9,7 +9,8 @@
     definability witness is needed by any theorem below.
 *)
 
-From Stdlib Require Import Logic.Classical_Prop Logic.ProofIrrelevance.
+From Stdlib Require Import Logic.Classical_Prop Logic.ClassicalEpsilon
+  Logic.ProofIrrelevance.
 From Foundation.FirstOrder.SetTheory Require Import Basic Z.
 
 Set Implicit Arguments.
@@ -850,4 +851,77 @@ Proof.
     + exfalso.
       apply (proj2 (proj1 (@z_ordinal_lt_iff_le_and_not_ge m O xi beta) Hlt)).
       apply Hminimal; exact Hnotxi.
+Qed.
+
+(** Well-founded membership and set-like predicate packaging. *)
+Record z_is_well_founded_rel {m : membership_structure}
+    (D : membership_carrier m -> Prop)
+    (R : membership_carrier m -> membership_carrier m -> Prop) : Prop := {
+  z_well_founded :
+    forall S : membership_carrier m,
+      (forall x, membership_rel x S -> D x) ->
+      set_model_is_nonempty S ->
+      exists z, membership_rel z S /\
+        forall x, membership_rel x S -> ~ R x z
+}.
+
+Lemma z_membership_well_founded : forall m (O : zermelo_operations m),
+  z_is_well_founded_rel (fun _ : membership_carrier m => True)
+    (@membership_rel m).
+Proof.
+  intros m O. constructor. intros S _ HS.
+  exact (@z_foundation_spec m O S HS).
+Qed.
+
+Record z_set_like {m : membership_structure}
+    (R : membership_carrier m -> membership_carrier m -> Prop) : Prop := {
+  z_set_like_left :
+    forall x, exists y : membership_carrier m,
+      forall z, membership_rel z y <-> R z x
+}.
+
+Lemma z_set_like_left_exists_unique : forall m (O : zermelo_operations m)
+    (R : membership_carrier m -> membership_carrier m -> Prop)
+    (H : z_set_like R) (x : membership_carrier m),
+  exists! s : membership_carrier m,
+    forall z, membership_rel z s <-> R z x.
+Proof.
+  intros m O R H x.
+  destruct (z_set_like_left H x) as [s Hs].
+  exists s. split.
+  - exact Hs.
+  - intros t Ht. apply (@z_extensionality m O s t). intro z. split.
+    + intro Hz. apply (proj2 (Ht z)). apply (proj1 (Hs z)). exact Hz.
+    + intro Hz. apply (proj2 (Hs z)). apply (proj1 (Ht z)). exact Hz.
+Qed.
+
+Lemma z_set_like_left_exists : forall m (O : zermelo_operations m)
+    (R : membership_carrier m -> membership_carrier m -> Prop)
+    (H : z_set_like R) (x : membership_carrier m),
+  exists s : membership_carrier m,
+    forall z, membership_rel z s <-> R z x.
+Proof.
+  intros m O R H x.
+  destruct (@z_set_like_left_exists_unique m O R H x) as [s Hs].
+  exists s. exact (proj1 Hs).
+Qed.
+
+Definition z_set_like_left_set {m : membership_structure}
+    (O : zermelo_operations m)
+    (R : membership_carrier m -> membership_carrier m -> Prop)
+    (H : z_set_like R) (x : membership_carrier m) :
+    membership_carrier m :=
+  proj1_sig (constructive_indefinite_description
+    (fun s => forall z, membership_rel z s <-> R z x)
+    (@z_set_like_left_exists m O R H x)).
+
+Lemma z_set_like_mem_left : forall m (O : zermelo_operations m)
+    (R : membership_carrier m -> membership_carrier m -> Prop)
+    (H : z_set_like R) (x z : membership_carrier m),
+  membership_rel z (@z_set_like_left_set m O R H x) <-> R z x.
+Proof.
+  intros m O R H x z. unfold z_set_like_left_set.
+  exact (proj2_sig (constructive_indefinite_description
+    (fun s => forall q, membership_rel q s <-> R q x)
+    (@z_set_like_left_exists m O R H x)) z).
 Qed.

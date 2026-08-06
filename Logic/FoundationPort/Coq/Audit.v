@@ -5881,3 +5881,9 @@ Print Assumptions z_ordinal_minimal_le_of_exists_aux.
 Print Assumptions z_ordinal_minimal_le_of_exists.
 Print Assumptions z_ordinal_exists_minimal.
 Print Assumptions z_ordinal_transfinite_induction.
+Check z_is_well_founded_rel.
+Print Assumptions z_membership_well_founded.
+Check z_set_like.
+Print Assumptions z_set_like_left_exists_unique.
+Print Assumptions z_set_like_left_exists.
+Print Assumptions z_set_like_mem_left.
