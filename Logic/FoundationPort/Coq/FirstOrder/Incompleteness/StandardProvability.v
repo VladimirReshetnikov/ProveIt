@@ -14,12 +14,15 @@
 *)
 
 From Stdlib Require Import Lists.List.
-From FoundationModal Require Import GenericCalculus.
+From FoundationModal Require Import GenericCalculus GenericEntailment.
 From Foundation.Syntax.Predicate Require Import Language.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Calculus Calculus2.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Theory.
 From Foundation.FirstOrder.Bootstrapping.DerivabilityCondition Require Import D1 D2 D3.
+From Foundation.FirstOrder.Arithmetic.R0 Require Import Basic.
+From Foundation.FirstOrder.Arithmetic.Basic Require Import Misc Syntax Model Hierarchy.
+From Foundation.FirstOrder.Basic.Semantics Require Import ModelTheory.
 
 Import ListNotations.
 
@@ -70,6 +73,27 @@ Lemma boot_standard_provability_of_code_iff_theory : forall L T EL ET
 Proof.
   intros L T EL ET sigma.
   exact (@boot_sentence_provable_iff_theory L T EL ET sigma).
+Qed.
+
+(** The standard-natural Sigma-one completeness/soundness theorem is the
+    executable counterpart of the source's arithmetic [provable_complete]
+    adapter. *)
+Theorem boot_standard_sigma_one_provable_iff : forall T EL ET,
+  generic_weaker_than
+    (first_order_theory_entailment oring_language)
+    (first_order_theory_entailment oring_language) r0_axiom T ->
+  arithmetic_theory_sound_on_hierarchy T arithmetic_sigma 1 ->
+  forall sigma : sentence oring_language,
+    arithmetic_hierarchy Empty_set arithmetic_sigma 1 0 sigma ->
+    (first_order_model_realize nat_standard_model sigma <->
+     boot_standard_prov
+       (@boot_standard_provability_of_code oring_language T EL ET) sigma).
+Proof.
+  intros T EL ET Hweak Hsound sigma Hsigma.
+  change (first_order_model_realize nat_standard_model sigma <->
+    @boot_sentence_provable oring_language EL T ET sigma).
+  exact (@boot_r0_sigma_one_provable_iff T EL ET
+    Hweak Hsound sigma Hsigma).
 Qed.
 
 (** A finite-context proof of a proposition in the ambient theory. *)
