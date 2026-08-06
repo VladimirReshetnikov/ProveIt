@@ -44,6 +44,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeZeroGuardedEvidenceIdentification
   RawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification
   RawCodedDynamicTruthNativeZeroGuardedCanonicalAppendIntegration
+  RawCodedDynamicTruthNativeZeroGuardedFixedProductionBoundary
   RawCodedDynamicTruthNativeZeroGuardedPredecessorCompilation
   RawCodedDynamicTruthNativeZeroBooleanGuardedBranchCompilation.
 
@@ -84,6 +85,8 @@ Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroGuardedCanonicalAppendIntegration.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroGuardedFixedProductionBoundary.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroGuardedPredecessorCompilation.
 Import
@@ -416,6 +419,50 @@ Proof.
     + exists dischargedAndRoot. exact hdischargedAnd.
     + exists dischargedOrRoot. exact hdischargedOr.
   - exists dischargedImpRoot. exact hdischargedImp.
+Qed.
+
+(** Fixed-production-facing spelling of the preceding endpoint.  The three
+    payload hypotheses collapse to one explicit constructor-indexed fixed
+    bundle; suffix insertion and payload synchronization are internal. *)
+Corollary
+    raw_dynamicTruthLocalGuardedCollisionRootsAt_on_witnessed_extension_of_zero_normalized_restricted_rule_roots_and_guarded_collision_fixed_productions_or_refutations :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      normalizedTranslation witnessList baseContext helperRoots
+      restrictedRoot ruleRoot,
+  RawDynamicTruthZeroGuardedEvidenceIdentification M inputs ->
+  RawDynamicTruthNativeLocalZeroGuardedNormalizedResourcesAt M
+    normalizedTranslation witnessList baseContext helperRoots ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDirectTemplateFormula inputs
+      coqRestrictedPADerivationSoundnessRestrictedProofTemplate)
+    restrictedRoot ->
+  RawCodedPALocalProofOf M baseContext
+    (rawDirectTemplateFormula inputs
+      coqStrongStepProofEndpointAtomicAdequacyRulePremise)
+    ruleRoot ->
+  RawDynamicTruthZeroCanonicalIdentifiedGuardedCollisionFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+    M hPA inputs ->
+  exists targetWitnessList targetContext,
+    RawCodedPAAxiomWitnessContext M targetWitnessList targetContext /\
+    RawContextListIncluded M baseContext targetContext /\
+    RawDynamicTruthLocalBooleanDiagonalPairRootsAt M targetContext /\
+    RawDynamicTruthLocalRootAt M targetContext
+      (rawDynamicTruthImpGuardedPredecessorStateExclusivityCode M).
+Proof.
+  intros M hPA inputs normalizedTranslation witnessList baseContext
+    helperRoots restrictedRoot ruleRoot hidentification hnormalized
+    hrestricted hrule hfixed.
+  destruct
+    (raw_dynamicTruthZeroCanonicalIdentified_guardedCollisionAppendRowKernelPayloadPairsForCaller_of_fixed
+      M hPA inputs hidentification hfixed
+      coqDynamicTruthGuardedCollisionEndpointAssumptionPrefix) as
+    (himpPayload & handPayload & horPayload).
+  exact
+    (raw_dynamicTruthLocalGuardedCollisionRootsAt_on_witnessed_extension_of_zero_normalized_restricted_rule_roots_and_canonical_append_kernel_payload_pairs
+      M hPA inputs normalizedTranslation witnessList baseContext helperRoots
+      restrictedRoot ruleRoot hidentification hnormalized
+      hrestricted hrule himpPayload handPayload horPayload).
 Qed.
 
 End

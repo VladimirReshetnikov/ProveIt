@@ -51,6 +51,9 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthImpGuardedPredecessorExclusivityCompilation
   RawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification
   RawCodedDynamicTruthNativeZeroGuardedEvidenceIdentification
+  RawCodedDynamicTruthBooleanGuardedBranchExclusivity
+  RawCodedDynamicTruthBooleanGuardedDiagonalCompilation
+  RawCodedDynamicTruthNativeZeroBooleanGuardedParentCompilation
   RawCodedStrongStepPredecessorGlobalRowEvidenceCompilation
   RawCodedDynamicTruthNativeZeroGuardedPredecessorCompilation.
 
@@ -92,6 +95,10 @@ Import
   PABoundedRawCodedDynamicTruthNativeZeroCanonicalAppendSourceIdentification.
 Import
   PABoundedRawCodedDynamicTruthNativeZeroGuardedEvidenceIdentification.
+Import PABoundedRawCodedDynamicTruthBooleanGuardedBranchExclusivity.
+Import PABoundedRawCodedDynamicTruthBooleanGuardedDiagonalCompilation.
+Import
+  PABoundedRawCodedDynamicTruthNativeZeroBooleanGuardedParentCompilation.
 Import
   PABoundedRawCodedStrongStepPredecessorGlobalRowEvidenceCompilation.
 Import
@@ -702,6 +709,124 @@ Proof.
   exact
     (raw_dynamicTruthZeroCanonicalIdentified_guardedDeepIndependentGrowingFixedProductionOrRefutationCompilersForAllCallers_of_fixed
       M hPA inputs hfixed).
+Qed.
+
+(** Boolean analogue of the selected fixed implication residue.  The outer
+    prefix is constructor-specific; keeping [constructor] explicit prevents
+    accidental transport between conjunction and disjunction guards. *)
+Definition
+    RawDynamicTruthZeroCanonicalIdentifiedBooleanGuardedFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+    (constructor : DynamicTruthBooleanConstructor)
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
+  RawDynamicTruthZeroCanonicalGuardedIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthBooleanGuardedFixedDeepPrefix constructor).
+
+Arguments
+  RawDynamicTruthZeroCanonicalIdentifiedBooleanGuardedFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+  constructor M hPA inputs : clear implicits.
+
+(** The exact fixed collision payload boundary: implication, conjunction, and
+    disjunction each own their two mode compilers under their literal guard. *)
+Record
+    RawDynamicTruthZeroCanonicalIdentifiedGuardedCollisionFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop := {
+  rawDynamicTruthZeroGuardedCollisionFixed_imp :
+    RawDynamicTruthZeroCanonicalIdentifiedGuardedFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+      M hPA inputs;
+  rawDynamicTruthZeroGuardedCollisionFixed_and :
+    RawDynamicTruthZeroCanonicalIdentifiedBooleanGuardedFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+      DTBooleanAnd M hPA inputs;
+  rawDynamicTruthZeroGuardedCollisionFixed_or :
+    RawDynamicTruthZeroCanonicalIdentifiedBooleanGuardedFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+      DTBooleanOr M hPA inputs
+}.
+
+Arguments
+  RawDynamicTruthZeroCanonicalIdentifiedGuardedCollisionFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+  M hPA inputs : clear implicits.
+
+(** Insert an arbitrary shifted caller suffix below a fixed Boolean guard. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalIdentified_booleanGuardedDeepIndependentGrowingFixedProductionOrRefutationCompilersForCaller_of_fixed :
+    forall constructor (M : RawPAModel) (hPA : RawPASatisfies M)
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthZeroCanonicalIdentifiedBooleanGuardedFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+    constructor M hPA inputs ->
+  forall callerPrefix,
+  RawDynamicTruthZeroCanonicalGuardedIndependentGrowingFixedProductionOrRefutationCompilersUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix).
+Proof.
+  intros constructor M hPA inputs hfixed callerPrefix.
+  rewrite coqDynamicTruthBooleanGuardedDeepPrefix_split.
+  exact
+    (raw_dynamicTruthZeroCanonicalDirect_independentGrowingFixedProductionOrRefutationCompilersAtRootTermsUnderPrefix_app
+      M hPA inputs
+      (coqDynamicTruthBooleanGuardedFixedDeepPrefix constructor)
+      (templateContextShiftMany 5 callerPrefix)
+      (ttVar 2) (ttVar 6) (ttVar 5) hfixed).
+Qed.
+
+(** Compile the synchronized Boolean append payload from its one fixed
+    constructor-local residue. *)
+Corollary
+    raw_dynamicTruthZeroCanonicalIdentified_booleanGuardedDeepAppendRowKernelPayloadPairForCaller_of_fixed :
+    forall constructor (M : RawPAModel) (hPA : RawPASatisfies M)
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthZeroGuardedEvidenceIdentification M inputs ->
+  RawDynamicTruthZeroCanonicalIdentifiedBooleanGuardedFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+    constructor M hPA inputs ->
+  forall callerPrefix,
+  RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix).
+Proof.
+  intros constructor M hPA inputs hidentification hfixed callerPrefix.
+  exact
+    (raw_dynamicTruthZeroCanonicalIdentified_guardedAppendRowKernelPayloadPairUnderPrefix_of_independent_growing_fixed_productions_or_refutations
+      M hPA inputs hidentification
+      (coqDynamicTruthBooleanGuardedDeepPrefix constructor callerPrefix)
+      (raw_dynamicTruthZeroCanonicalIdentified_booleanGuardedDeepIndependentGrowingFixedProductionOrRefutationCompilersForCaller_of_fixed
+        constructor M hPA inputs hfixed callerPrefix)).
+Qed.
+
+(** Produce all three payload pairs needed by the guarded collision compiler
+    for one caller prefix.  This theorem is merely synchronization at the
+    interface level: each field is compiled from its own honest fixed guard. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalIdentified_guardedCollisionAppendRowKernelPayloadPairsForCaller_of_fixed :
+    forall (M : RawPAModel) (hPA : RawPASatisfies M)
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthZeroGuardedEvidenceIdentification M inputs ->
+  RawDynamicTruthZeroCanonicalIdentifiedGuardedCollisionFixedDeepIndependentGrowingFixedProductionOrRefutationCompilers
+    M hPA inputs ->
+  forall callerPrefix,
+  RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthImpGuardedDeepPrefix callerPrefix) /\
+  RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthBooleanGuardedDeepPrefix DTBooleanAnd callerPrefix) /\
+  RawDynamicTruthZeroCanonicalGuardedAppendRowKernelPayloadPairUnderPrefix
+    M (rawDirectStructuralTemplateTranslation M hPA inputs)
+      (coqDynamicTruthBooleanGuardedDeepPrefix DTBooleanOr callerPrefix).
+Proof.
+  intros M hPA inputs hidentification
+    [himpFixed handFixed horFixed] callerPrefix.
+  split.
+  - exact
+      (raw_dynamicTruthZeroCanonicalIdentified_guardedDeepAppendRowKernelPayloadPairForAllCallers_of_fixed
+        M hPA inputs hidentification himpFixed callerPrefix).
+  - split.
+    + exact
+        (raw_dynamicTruthZeroCanonicalIdentified_booleanGuardedDeepAppendRowKernelPayloadPairForCaller_of_fixed
+          DTBooleanAnd M hPA inputs hidentification handFixed callerPrefix).
+    + exact
+        (raw_dynamicTruthZeroCanonicalIdentified_booleanGuardedDeepAppendRowKernelPayloadPairForCaller_of_fixed
+          DTBooleanOr M hPA inputs hidentification horFixed callerPrefix).
 Qed.
 
 (** Name the two temporary contexts before comparing them.  All append
