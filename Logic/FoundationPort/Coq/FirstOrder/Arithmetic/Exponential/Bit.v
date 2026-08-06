@@ -298,6 +298,18 @@ Proof.
   reflexivity.
 Qed.
 
+(** A low block followed by its power has the selected bit set. *)
+Lemma nat_bit_mem_add_pow2_of_lt : forall i a,
+  a < 2 ^ i -> nat_bit i (a + 2 ^ i).
+Proof.
+  intros i a Hlt.
+  rewrite nat_bit_mem_iff_div_pow2_mod_two.
+  replace (a + 2 ^ i) with (a + 1 * 2 ^ i) by nia.
+  rewrite N.div_add by (apply N.pow_nonzero; discriminate).
+  rewrite (N.div_small a (2 ^ i) Hlt).
+  reflexivity.
+Qed.
+
 Lemma nat_bit_subset_iff : forall a b,
   nat_bit_subset a b <-> forall i, nat_bit i a -> nat_bit i b.
 Proof. reflexivity. Qed.
