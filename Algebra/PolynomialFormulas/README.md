@@ -30,6 +30,72 @@ proves the cubic-resolvent parameter equations imply a difference-of-squares
 factorization, and uses quadratic exhaustiveness to prove the corresponding
 `quartic_eq_zero_iff` theorem for all four entries.
 
+Lean also supplies a coefficient-only specialization over the Gaussian
+rationals `Q[I]`.  `GaussianPolynomialSolver.solve` accepts five coefficients
+without assuming that the nominal quartic coefficient is nonzero.  It selects
+the required square and cube radicals, returns genuine `RadicalExpression`
+trees for every root, and dispatches through quartic, cubic, quadratic,
+linear, and constant cases.  A nonzero constant returns an empty finite list;
+the all-zero polynomial has a separate `identicallyZero` result.  The theorem
+`solve_factorization` proves the exact ordered product, preserving repeated
+roots, and `eval_eq_zero_iff_contains` proves soundness and exhaustiveness.
+
+`GaussianQuinticSolver.solve` accepts one additional Gaussian-rational
+coefficient.  If `a5 = 0`, its `lowerDegree` constructor delegates exactly to
+the preceding degree-at-most-four result; `solve_factorization_of_a5_eq_zero` and
+`eval_eq_zero_iff_contains_of_a5_eq_zero` inherit its complete correctness.
+For `a5 ≠ 0`, it classically selects an invariant and radical certificate
+package required by `LazardQuintic.solveGeneral`, if one exists.  Its
+invariants are certified first over the Gaussian-rational coefficient field
+and then embedded into the radical closure.  The five Lazard values are
+noncomputably reified as `RadicalExpression` trees.  Because the present
+Lazard certificate assumes nonzero denominators and therefore excludes
+singular solvable inputs such as `X^5`, a missing Lazard package falls back to
+a classically selected `CompleteRadicalSolution`, if one exists.  The finite
+five-entry vectors are kept in distinct `lazardCandidates` and
+`completeRadical` result constructors; `unsupported` is returned only when
+neither package exists.  The genuine Lazard branch is deliberately not
+accompanied by a correctness theorem: the Lazard
+transcription's soundness and certificate-existence results remain future
+work.
+
+Every returned `ExplicitRadical` can additionally be passed to
+`ExplicitRadical.boundingBox`.  For a rational `ε > 0`, it returns a rectangle
+whose four endpoints are rational.  `boundingBox_spec` proves that the exact
+complex value lies in the rectangle, that both coordinate intervals are
+ordered, and that its width and height are at most `ε` (in fact both are
+exactly `ε`).  The solver bridge theorems `returnedRoot_boundingBox_spec` and
+`root_has_boundingBox` connect these enclosures to soundness and exhaustiveness
+of the original polynomial solver.
+
+Lean now also supplies a distinct, fully executable approximation API.
+`GaussianPolynomialApproximation.approximations` accepts the same five
+Gaussian-rational coefficients (so leading coefficients may be zero), a proof
+that they are not all zero, and a rational `ε > 0`. It returns
+`List.Vector GaussianRat d`, where `d` is the actual degree of the input.
+A nonzero constant therefore returns the empty vector. Each entry is a
+literal pair of rational real and imaginary coordinates.
+
+The implementation normalizes the polynomial over `Q[I]`, searches for four
+monic separable factor layers, and exhaustively enumerates exact rational
+contraction-disk certificates. Repeated irreducible factors remain in separate
+layers, so repeated roots retain their multiplicities. Every test performed
+by the search is a finite Boolean test involving only natural numbers and
+Gaussian-rational arithmetic. The analytic and factorization arguments prove
+that a valid certificate exists and are used only as the erased termination
+proof for `Nat.find`; no chosen complex root or real-number operation occurs
+in the returned-data computation.
+
+`GaussianPolynomialApproximation.approximations_correct` proves that there is
+a position-matched list containing exactly the original polynomial's complex
+root multiset and that the Manhattan distance from every returned Gaussian
+rational to its corresponding exact root is at most `ε`. Thus soundness,
+exhaustiveness, order matching, and multiplicity are all covered by one
+theorem. The generic exhaustive search is a correctness-first implementation,
+not an optimized numerical root finder; constant, linear, and small-integer
+split quadratic/quartic inputs have fast seed certificates and are exercised
+by native evaluation tests.
+
 For the negative result, both developments use the explicit rational quintic
 
 ```text
@@ -190,7 +256,7 @@ independent semantic decision through MathComp-Abel's abstract `numfield`.
 The new `MuRec` development is the recursively verified coefficient route;
 the older file is useful as a separate semantic cross-check.
 
-## Calculator interface and scope
+## Formula interfaces and scope
 
 The solver functions are ordinary reducible definitions.  For example, the
 committed examples evaluate
@@ -210,6 +276,26 @@ nonreal roots. Once certified radical values are supplied, the functions
 compute fixed-size root collections; the biconditional theorems prove both
 that every entry is correct and that every root occurs. No unproved radical
 oracle or hidden branch convention is introduced.
+
+The Gaussian-rational API removes those radical arguments from the caller.
+It uses exact, decidable arithmetic in `QuadraticAlgebra Q (-1) 0` for all
+coefficient-dependent branches, including Cardano's `p = 0` case, Ferrari's
+`q = 0` case, and every zero leading coefficient.  Chosen roots in `C` use
+the proved fundamental theorem of algebra and classical choice, and their
+power equations are stored in the returned typed syntax.  Consequently this
+API is a total noncomputable Lean function, not code-generatable numerical
+software and not a kernel special case for radical operations. This statement
+refers to `GaussianPolynomialSolver.solve`, which returns exact radical syntax;
+the independent `GaussianPolynomialApproximation.approximations` function
+described above is code-generatable and returns Gaussian rationals.
+
+The rational bounding-box operation is likewise noncomputable: it applies
+mathlib's noncomputable floor operation to the real and imaginary parts of the
+exact complex value.  It is a fully proved mathematical enclosure function,
+but it does not turn the opaque `Classical.choose` roots into printable
+numerical approximations. The executable approximation API avoids evaluating
+those opaque values: it searches coefficient-level rational contraction
+certificates and proves afterward that their centers match every exact root.
 
 ## Checking
 

@@ -92,6 +92,38 @@ theorem ferrari_parameters_of_resolvent {p q r m s : K}
     rw [hquot, hq]
     field_simp [hs0]
 
+/-- A depressed quartic factors exactly through the four values returned by
+`solveDepressedQuartic`. -/
+theorem solveDepressedQuartic_factorization {p q r m s t ρ σ y : K}
+    (hs : s ^ 2 = 2 * m - p) (hst : 2 * s * t = -q)
+    (ht : t ^ 2 = m ^ 2 - r)
+    (hρ : ρ ^ 2 = s ^ 2 - 4 * (m - t))
+    (hσ : σ ^ 2 = s ^ 2 - 4 * (m + t)) :
+    depressedQuartic p q r y =
+      (y - solveDepressedQuartic m s t ρ σ 0) *
+      (y - solveDepressedQuartic m s t ρ σ 1) *
+      (y - solveDepressedQuartic m s t ρ σ 2) *
+      (y - solveDepressedQuartic m s t ρ σ 3) := by
+  rw [ferrari_factorization hs hst ht]
+  have hρ' : ρ ^ 2 = (-s) ^ 2 - 4 * (1 : K) * (m - t) := by
+    simpa using hρ
+  have hσ' : σ ^ 2 = s ^ 2 - 4 * (1 : K) * (m + t) := by
+    simpa using hσ
+  have hfirst :
+      y ^ 2 - s * y + (m - t) =
+        (y - (s + ρ) / 2) * (y - (s - ρ) / 2) := by
+    simpa [quadratic, sub_eq_add_neg] using
+      (quadratic_formula_factorization (a := (1 : K)) (b := -s)
+        (c := m - t) (s := ρ) (x := y) one_ne_zero hρ')
+  have hsecond :
+      y ^ 2 + s * y + (m + t) =
+        (y - (-s + σ) / 2) * (y - (-s - σ) / 2) := by
+    simpa [quadratic] using
+      (quadratic_formula_factorization (a := (1 : K)) (b := s)
+        (c := m + t) (s := σ) (x := y) one_ne_zero hσ')
+  rw [hfirst, hsecond]
+  simp [solveDepressedQuartic, mul_assoc]
+
 /-- Every entry of the depressed-quartic solver is a root. -/
 theorem solveDepressedQuartic_correct {p q r m s t ρ σ : K}
     (hs : s ^ 2 = 2 * m - p) (hst : 2 * s * t = -q)
@@ -156,6 +188,33 @@ theorem solveQuartic_correct {a b c d e m s t ρ σ : K} (ha : a ≠ 0)
   simp only [solveQuartic]
   rw [depress_monic_quartic]
   rw [solveDepressedQuartic_correct hs hst ht hρ hσ i]
+  ring
+
+/-- A general quartic factors exactly through the four values returned by
+`solveQuartic`. -/
+theorem quartic_factorization {a b c d e m s t ρ σ x : K} (ha : a ≠ 0)
+    (hs : s ^ 2 = 2 * m - quarticP (b / a) (c / a))
+    (hst : 2 * s * t = -quarticQ (b / a) (c / a) (d / a))
+    (ht : t ^ 2 = m ^ 2 - quarticR (b / a) (c / a) (d / a) (e / a))
+    (hρ : ρ ^ 2 = s ^ 2 - 4 * (m - t))
+    (hσ : σ ^ 2 = s ^ 2 - 4 * (m + t)) :
+    quartic a b c d e x =
+      a * ((x - solveQuartic a b c d e m s t ρ σ 0) *
+        (x - solveQuartic a b c d e m s t ρ σ 1) *
+        (x - solveQuartic a b c d e m s t ρ σ 2) *
+        (x - solveQuartic a b c d e m s t ρ σ 3)) := by
+  rw [quartic_normalization ha]
+  have htranslate :
+      monicQuartic (b / a) (c / a) (d / a) (e / a) x =
+        depressedQuartic (quarticP (b / a) (c / a))
+          (quarticQ (b / a) (c / a) (d / a))
+          (quarticR (b / a) (c / a) (d / a) (e / a))
+          (x + (b / a) / 4) := by
+    rw [← depress_monic_quartic]
+    congr 1
+    ring
+  rw [htranslate, solveDepressedQuartic_factorization hs hst ht hρ hσ]
+  simp only [solveQuartic]
   ring
 
 /-- Every root of the input quartic occurs in `solveQuartic`. -/

@@ -1,4 +1,6 @@
-import PolynomialFormulas.Quartic
+import PolynomialFormulas.GaussianRadicalBounds
+import PolynomialFormulas.GaussianPolynomialApproximation
+import PolynomialFormulas.GaussianQuinticSolver
 import Mathlib.RingTheory.RootsOfUnity.Complex
 
 /-!
@@ -72,5 +74,130 @@ example (x : ℚ) :
       ∃ i, solveQuartic 1 0 (-5) 0 4 2 3 0 1 1 i = x := by
   apply quartic_eq_zero_iff (ha := by norm_num)
   all_goals norm_num [quarticP, quarticQ, quarticR]
+
+/-! The total Gaussian-rational solver chooses all required radicals itself. -/
+
+open GaussianPolynomialSolver
+
+/-- Zero quartic and cubic coefficients dispatch to the quadratic solver. -/
+example :
+    (solve
+      { a4 := 0
+        a3 := 0
+        a2 := 1
+        a1 := 0
+        a0 := -1 }).rootCount = some 2 := by
+  rw [solve_rootCount]
+  norm_num
+
+/-- Gaussian, rather than merely rational, coefficients are accepted.  This
+is `(x - I)² = x² - 2Ix - 1`; the theorem states that the returned explicit
+radical list contains exactly all its complex roots. -/
+example (x : ℂ) :
+    let c : Coefficients :=
+      { a4 := 0
+        a3 := 0
+        a2 := 1
+        a1 := ⟨0, -2⟩
+        a0 := -1 }
+    c.eval x = 0 ↔ (solve c).Contains x := by
+  intro c
+  exact eval_eq_zero_iff_contains c x
+
+/-! The quintic dispatcher literally reuses that solver when `a₅ = 0`. -/
+
+/-- A nominal quintic with zero leading coefficient dispatches to the same
+quadratic result as above. -/
+example :
+    let c : GaussianQuinticSolver.Coefficients :=
+      { a5 := 0
+        a4 := 0
+        a3 := 0
+        a2 := 1
+        a1 := 0
+        a0 := -1 }
+    (GaussianQuinticSolver.solve c).rootCount = some 2 := by
+  intro c
+  rw [GaussianQuinticSolver.solve_of_a5_eq_zero c rfl]
+  change (GaussianPolynomialSolver.solve c.toQuartic).rootCount = some 2
+  rw [GaussianPolynomialSolver.solve_rootCount]
+  norm_num [c, GaussianQuinticSolver.Coefficients.toQuartic]
+
+/-- The complete-radical fallback contract ensures that the singular but
+solvable genuine quintic `x⁵` is not mistaken for an unsupported input. -/
+example :
+    let c : GaussianQuinticSolver.Coefficients :=
+      { a5 := 1
+        a4 := 0
+        a3 := 0
+        a2 := 0
+        a1 := 0
+        a0 := 0 }
+    (GaussianQuinticSolver.solve c).rootCount = some 5 := by
+  intro c
+  apply
+    GaussianQuinticSolver.solve_rootCount_of_a5_ne_zero_of_completeRadicalSolution
+      c (by norm_num [c])
+  exact ⟨{
+    roots := fun _ => 0
+    factorization := by
+      intro x
+      simp [c, GaussianQuinticSolver.Coefficients.eval,
+        GaussianQuinticSolver.Coefficients.toQuartic,
+        GaussianPolynomialSolver.Coefficients.eval, quartic] }⟩
+
+/-- The all-zero tuple is represented separately because every complex value
+is then a root. -/
+example (x : ℂ) :
+    let c : Coefficients :=
+      { a4 := 0, a3 := 0, a2 := 0, a1 := 0, a0 := 0 }
+    (solve c).Contains x := by
+  simp [solve, RootDescription.Contains]
+
+/-! Every proof-carrying radical value also has an arbitrarily small certified
+rational rectangle. -/
+
+example (r : ExplicitRadical) (ε : ℚ) (hε : 0 < ε) :
+    (r.boundingBox ε hε).IsEnclosure r.value ε :=
+  r.boundingBox_spec ε hε
+
+example (c : Coefficients) (data : FiniteRoots)
+    (hsolve : solve c = .finite data) (r : ExplicitRadical)
+    (hr : r ∈ data.roots) :
+    c.eval r.value = 0 ∧
+      (r.boundingBox (1 / 100) (by norm_num)).IsEnclosure r.value (1 / 100) :=
+  returnedRoot_boundingBox_spec c data hsolve r hr (1 / 100) (by norm_num)
+
+/-! The separate certificate-search API returns literal, executable Gaussian
+rationals and does not evaluate the theorem-side chosen radical values. -/
+
+namespace ExecutableApproximationExample
+
+open GaussianPolynomialApproximationNormalization
+open GaussianPolynomialApproximation
+
+private def linearCoefficients : Coefficients where
+  a4 := 0
+  a3 := 0
+  a2 := 0
+  a1 := 1
+  a0 := -2
+
+private theorem linearCoefficients_nonzero : Nonzero linearCoefficients := by
+  unfold Nonzero
+  native_decide
+
+/-- The leading-zero input `x - 2` executes to the one-entry vector `[2]`. -/
+example :
+    (approximations linearCoefficients 1 linearCoefficients_nonzero
+      (by norm_num)).toList = [(2 : GaussianRat)] := by
+  native_decide
+
+/-- The general theorem supplies a position-matched list of all exact complex
+roots and the Manhattan error bound. -/
+example := approximations_correct linearCoefficients 1
+  linearCoefficients_nonzero (by norm_num)
+
+end ExecutableApproximationExample
 
 end LeanProofs.PolynomialFormulas
