@@ -5146,6 +5146,9 @@ Print Assumptions nat_bexp_monotone_iff.
 Print Assumptions nat_bexp_monotone_le_iff.
 Print Assumptions nat_bexp_monotone_cross_iff.
 Print Assumptions nat_bexp_monotone_cross_le_iff.
+Print Assumptions nat_bexp_two_mul.
+Print Assumptions nat_bexp_two_mul_succ.
+Print Assumptions nat_bexp_two_mul_add_one_succ.
 Print Assumptions nat_pow_four_le_pow_four.
 Print Assumptions nat_bexp_four_mul.
 Print Assumptions nat_bexp_eq_of_lt_length.

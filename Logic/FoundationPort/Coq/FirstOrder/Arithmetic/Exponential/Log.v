@@ -454,6 +454,59 @@ Proof.
   symmetry. apply N.pow_le_mono_r_iff. reflexivity.
 Qed.
 
+Lemma nat_bexp_two_mul : forall a a' x,
+  2 * x < nat_length a -> x < nat_length a' ->
+  nat_bexp a (2 * x) = (nat_bexp a' x) ^ 2.
+Proof.
+  intros a a' x Ha Ha'.
+  rewrite nat_bexp_of_lt by exact Ha.
+  rewrite nat_bexp_of_lt by exact Ha'.
+  unfold nat_exp.
+  rewrite <- N.pow_mul_r.
+  f_equal. lia.
+Qed.
+
+Lemma nat_bexp_two_mul_succ : forall a i,
+  nat_bexp (2 * a) (i + 1) = 2 * nat_bexp a i.
+Proof.
+  intros a i.
+  destruct (N.eq_dec a 0) as [Ha | Ha].
+  - subst a.
+    change (nat_bexp 0 (i + 1) = 2 * nat_bexp 0 i).
+    assert (H1 : nat_length 0 <= i + 1).
+    { rewrite nat_length_zero. lia. }
+    assert (H0 : nat_length 0 <= i).
+    { rewrite nat_length_zero. apply N.le_0_l. }
+    rewrite (nat_bexp_of_le H1), (nat_bexp_of_le H0).
+    reflexivity.
+  - destruct (N.lt_ge_cases i (nat_length a)) as [Hi | Hi].
+    + rewrite nat_bexp_of_lt.
+      2:{ rewrite nat_length_two_mul_of_pos; lia. }
+      rewrite nat_bexp_of_lt by exact Hi.
+      unfold nat_exp.
+      rewrite N.add_1_r, N.pow_succ_r'.
+      reflexivity.
+    + rewrite nat_bexp_of_le by (rewrite nat_length_two_mul_of_pos; lia).
+      rewrite nat_bexp_of_le by exact Hi.
+      reflexivity.
+Qed.
+
+Lemma nat_bexp_two_mul_add_one_succ : forall a i,
+  nat_bexp (2 * a + 1) (i + 1) = 2 * nat_bexp a i.
+Proof.
+  intros a i.
+  destruct (N.lt_ge_cases i (nat_length a)) as [Hi | Hi].
+  - rewrite nat_bexp_of_lt.
+    2:{ rewrite nat_length_two_mul_add_one; lia. }
+    rewrite nat_bexp_of_lt by exact Hi.
+    unfold nat_exp.
+    rewrite N.add_1_r, N.pow_succ_r'.
+    reflexivity.
+  - rewrite nat_bexp_of_le by (rewrite nat_length_two_mul_add_one; lia).
+    rewrite nat_bexp_of_le by exact Hi.
+    reflexivity.
+Qed.
+
 Lemma nat_pow_four_le_pow_four : forall a b,
   a ^ 4 <= b ^ 4 <-> a <= b.
 Proof.
