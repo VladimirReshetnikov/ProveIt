@@ -30,6 +30,26 @@ Lemma nat_bit_mem_iff : forall i a,
   nat_bit i a <-> N.testbit a i = true.
 Proof. reflexivity. Qed.
 
+(** The source [LenBit.iff_rem] normal form, specialized to binary N codes. *)
+Lemma nat_bit_mem_iff_div_pow2_mod_two : forall i a,
+  nat_bit i a <-> (a / 2 ^ i) mod 2 = 1.
+Proof.
+  intros i a. rewrite nat_bit_mem_iff. apply N.testbit_true.
+Qed.
+
+Lemma nat_bit_not_mem_iff_div_pow2_mod_two : forall i a,
+  ~ nat_bit i a <-> (a / 2 ^ i) mod 2 = 0.
+Proof.
+  intros i a. unfold nat_bit, hfs_mem.
+  destruct (N.testbit a i) eqn:Ht.
+  - split.
+    + intro H. exfalso. apply H. reflexivity.
+    + intro H. pose proof (proj1 (N.testbit_true a i) Ht) as Hone. nia.
+  - split.
+    + intro Hdummy. apply (proj1 (N.testbit_false a i)); exact Ht.
+    + intro Hzero. discriminate.
+Qed.
+
 (** A present bit contributes its full power of two to the code. *)
 Lemma nat_bit_exp_le_of_mem : forall i a,
   nat_bit i a -> 2 ^ i <= a.

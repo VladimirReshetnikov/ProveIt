@@ -5577,6 +5577,8 @@ Check nat_bit_insert.
 Check nat_bit_remove.
 Check nat_bit_subset.
 Print Assumptions nat_bit_mem_iff.
+Print Assumptions nat_bit_mem_iff_div_pow2_mod_two.
+Print Assumptions nat_bit_not_mem_iff_div_pow2_mod_two.
 Print Assumptions nat_bit_exp_le_of_mem.
 Print Assumptions nat_bit_lt_of_mem.
 Print Assumptions nat_bit_not_mem_of_lt_exp.
