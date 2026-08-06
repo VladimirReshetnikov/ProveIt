@@ -50,6 +50,8 @@ From Foundation.FirstOrder.Arithmetic.HFS Require Import Vec.
 From Foundation.FirstOrder.Arithmetic Require Import HFS.
 From Foundation.FirstOrder.Arithmetic.Exponential Require Import
   Pow2 PPow2 Exp Bit Log.
+From Foundation.FirstOrder.Arithmetic Require Import Exponential.
+From Foundation.FirstOrder.Arithmetic.Omega1 Require Import Basic.
 From Foundation.FirstOrder.Arithmetic Require Import Induction.
 From Foundation.Vorspiel.Fin Require Import Basic.
 From Foundation.Vorspiel.Fin Require Import Matrix.
@@ -5088,6 +5090,7 @@ Print Assumptions nat_log_mul_pow2_add_of_lt.
 Print Assumptions nat_log_mul_exp_add_of_lt.
 Check nat_length.
 Print Assumptions nat_length_zero.
+Print Assumptions nat_length_one.
 Print Assumptions nat_length_of_nonzero.
 Print Assumptions nat_length_of_pos.
 Print Assumptions nat_length_pos_iff.
@@ -5134,6 +5137,29 @@ Print Assumptions nat_fbit_double_succ.
 Print Assumptions nat_fbit_double_add_one_succ.
 Print Assumptions nat_fbit_double_zero.
 Print Assumptions nat_fbit_double_add_one_zero.
+Check nat_omega1_holds.
+Print Assumptions standard_nat_omega1.
+Print Assumptions nat_exponential_square_length_exists_unique.
+Check nat_smash.
+Print Assumptions nat_exponential_smash.
+Print Assumptions nat_smash_exists_unique.
+Print Assumptions nat_exponential_smash_one.
+Print Assumptions nat_smash_pow2.
+Print Assumptions nat_smash_pos.
+Print Assumptions nat_smash_exponent_lt.
+Print Assumptions nat_length_smash.
+Print Assumptions nat_smash_zero_left.
+Print Assumptions nat_smash_zero_right.
+Print Assumptions nat_smash_comm.
+Print Assumptions nat_lt_smash_one.
+Print Assumptions nat_smash_one_le_double_add_one.
+Print Assumptions nat_lt_smash_iff.
+Print Assumptions nat_smash_le_iff.
+Print Assumptions nat_lt_smash_one_iff.
+Print Assumptions nat_smash_monotone.
+Print Assumptions nat_bexp_eq_smash.
+Print Assumptions nat_smash_two_mul.
+Print Assumptions nat_smash_two_mul_le_square.
 Check nat_bit.
 Check nat_bit_empty.
 Check nat_bit_singleton.

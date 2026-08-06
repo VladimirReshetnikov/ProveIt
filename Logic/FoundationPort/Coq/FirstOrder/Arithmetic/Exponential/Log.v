@@ -156,6 +156,9 @@ Definition nat_length (a : N) : N := N.size a.
 Lemma nat_length_zero : nat_length 0 = 0.
 Proof. reflexivity. Qed.
 
+Lemma nat_length_one : nat_length 1 = 1.
+Proof. reflexivity. Qed.
+
 Lemma nat_length_of_nonzero : forall a,
   a <> 0 -> nat_length a = N.succ (nat_log a).
 Proof. intros a Ha. unfold nat_length, nat_log. apply N.size_log2. exact Ha. Qed.
