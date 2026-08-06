@@ -5471,6 +5471,14 @@ Print Assumptions z_kpair_mem_identity_iff.
 Print Assumptions z_identity_mem_function.
 Print Assumptions z_identity_is_function.
 Print Assumptions z_identity_injective.
+Check z_compose.
+Print Assumptions z_mem_compose_iff.
+Print Assumptions z_kpair_mem_compose_iff.
+Print Assumptions z_compose_subset_product.
+Print Assumptions z_compose_function.
+Check z_injective.
+Print Assumptions z_injective_empty.
+Print Assumptions z_compose_injective.
 Check membership_well_founded.
 Check transitive_model.
 Print Assumptions well_founded_predicate_subtype.
