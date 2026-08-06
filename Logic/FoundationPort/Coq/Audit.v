@@ -5202,6 +5202,9 @@ Check nat_polyU.
 Print Assumptions nat_length_polyI.
 Print Assumptions nat_polyI_le.
 Print Assumptions nat_four_mul_smash_self.
+Print Assumptions nat_polyI_smash_self_polybounded.
+Print Assumptions nat_polyI_smash_polyL_polybounded.
+Print Assumptions nat_sq_polyI_smash_polyL_polybounded.
 Print Assumptions nat_nuon_double.
 Print Assumptions nat_nuon_double_add_one.
 Print Assumptions nat_nuon_pos_iff.

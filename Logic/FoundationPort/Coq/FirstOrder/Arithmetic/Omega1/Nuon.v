@@ -107,6 +107,77 @@ Proof.
     nia.
 Qed.
 
+Lemma nat_polyI_smash_self_polybounded : forall A,
+  0 < A ->
+  nat_smash (nat_polyI A) (nat_polyI A) <= (2 * A + 1) ^ 4.
+Proof.
+  intros A HA.
+  assert (Hsmall : nat_smash (nat_polyI A) (nat_polyI A) <=
+      (nat_smash A 1) ^ 4).
+  { apply (proj2 (@nat_smash_le_iff ((nat_smash A 1) ^ 4)
+        (nat_polyI A) (nat_polyI A))).
+    rewrite nat_length_polyI by exact HA.
+    unfold nat_smash.
+    rewrite nat_length_one, N.mul_1_r.
+    replace ((nat_exp (nat_length A)) ^ 4) with
+        (nat_exp (nat_length A * 4)) by
+      (unfold nat_exp; rewrite <- N.pow_mul_r; reflexivity).
+    rewrite nat_length_exp.
+    replace (nat_length A * 4 + 1) with
+        (N.succ (nat_length A * 4)) by lia.
+    apply (proj2 (N.lt_succ_r _ _)).
+    pose proof (proj1 (N.sqrt_spec (nat_length A) (N.le_0_l _))) as Hlow.
+    simpl in Hlow.
+    pose proof (N.sqrt_le_lin (nat_length A)) as Hsqrt.
+    pose proof (@nat_length_pos_iff A) as Hlenpos.
+    assert (Hone : 1 <= nat_length A) by lia.
+    nia.
+  }
+  eapply N.le_trans; [exact Hsmall |].
+  apply N.pow_le_mono_l.
+  apply nat_smash_one_le_double_add_one.
+Qed.
+
+Lemma nat_polyI_smash_polyL_polybounded : forall A,
+  0 < A ->
+  nat_smash (nat_polyI A) (nat_polyL A) <= (2 * A + 1) ^ 64.
+Proof.
+  intros A HA.
+  assert (Hlen : nat_polyL A <= 3 * nat_polyI A).
+  { unfold nat_polyL.
+    exact (@nat_sq_length_le_three_mul (nat_polyI A)). }
+  assert (Hfirst : nat_smash (nat_polyI A) (nat_polyL A) <=
+      nat_smash (nat_polyI A) (3 * nat_polyI A)).
+  { apply nat_smash_monotone; [apply N.le_refl | exact Hlen]. }
+  assert (Hsecond : nat_smash (nat_polyI A) (3 * nat_polyI A) <=
+      nat_smash (4 * nat_polyI A) (4 * nat_polyI A)).
+  { apply nat_smash_monotone; nia. }
+  assert (Hfour := @nat_four_mul_smash_self (nat_polyI A)).
+  assert (Hself := @nat_polyI_smash_self_polybounded A HA).
+  eapply N.le_trans; [exact Hfirst |].
+  eapply N.le_trans; [exact Hsecond |].
+  eapply N.le_trans; [exact Hfour |].
+  replace ((2 * A + 1) ^ 64) with
+      (((2 * A + 1) ^ 4) ^ 16) by
+    (rewrite <- N.pow_mul_r; reflexivity).
+  apply N.pow_le_mono_l.
+  exact Hself.
+Qed.
+
+Lemma nat_sq_polyI_smash_polyL_polybounded : forall A,
+  0 < A ->
+  (nat_smash (nat_polyI A) (nat_polyL A)) ^ 2 <= nat_polyU A.
+Proof.
+  intros A HA.
+  assert (H := @nat_polyI_smash_polyL_polybounded A HA).
+  unfold nat_polyU.
+  replace ((2 * A + 1) ^ 128) with
+      (((2 * A + 1) ^ 64) ^ 2) by
+    (rewrite <- N.pow_mul_r; reflexivity).
+  apply N.pow_le_mono_l.
+  exact H.
+Qed.
+
 Fixpoint positive_nuon (p : positive) : N :=
   match p with
   | xH => 1
