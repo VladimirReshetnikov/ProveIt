@@ -1,0 +1,91 @@
+(**
+  Public-surface audit for the same-context unary recursive-child compiler.
+
+  The three final implications deliberately retain one premise: an exact
+  represented child-interface root in the branch's ready context.  That is
+  the only branch-specific arithmetic compiler still required.  In
+  particular, none of the public recursive-child law roots is assumed.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessRecursiveChildInterface
+  RawCodedRestrictedPADerivationSoundnessDirectAndEliminationLeftCase
+  RawCodedRestrictedPADerivationSoundnessDirectAndEliminationRightCase
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionRightCase
+  RawCodedRestrictedPADerivationSoundnessSameContextUnaryRecursiveChildCompilation.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessSameContextUnaryRecursiveChildCompilationAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessRecursiveChildInterface.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndEliminationLeftCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndEliminationRightCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionRightCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessSameContextUnaryRecursiveChildCompilation.
+
+(** The constructor-table calculation is shared across each two-way family. *)
+Check raw_recursive_constructor_child_interface.
+Check raw_andElimination_recursive_child_data.
+Check raw_orIntroduction_recursive_child_data.
+Check raw_andElimination_child_interface.
+Check raw_andEliminationLeft_child_interface.
+Check raw_andEliminationRight_child_interface.
+Check raw_orIntroduction_child_interface.
+Check raw_orIntroductionRight_child_interface.
+
+(** The represented proof is factored before context truth is consumed, and
+    the unused displayed endpoint is inserted by a checked K tree. *)
+Check raw_codedPALocalProofOf_sameContextUnaryChildContinuation.
+Check coqRestrictedPASameContextUnaryKRoot.
+Check coqRestrictedPASameContextUnaryKRoot_valid.
+Check raw_codedPALocalProofOf_sameContextUnary_add_unused_antecedent.
+Check raw_codedPALocalProofOf_sameContextUnaryRecursiveChildLaw.
+Check RawCoqRestrictedPASameContextUnaryChildInterfaceRootAt.
+Check raw_sameContextUnary_recursiveChildLawRootAt_of_interface.
+
+(** Exact literal slot agreements and ready-context prefix locations. *)
+Check coqRestrictedPADirectAndElimination_child_context_truth_agreement.
+Check coqRestrictedPADirectAndElimination_child_truth_agreement.
+Check coqRestrictedPADirectAndEliminationRight_child_truth_agreement.
+Check coqRestrictedPADirectOrIntroductionRight_child_context_truth_agreement.
+Check coqRestrictedPADirectOrIntroductionRight_child_truth_agreement.
+Check coqRestrictedPASameContextUnary_deep_prefix_in.
+Check coqRestrictedPADirectAndEliminationLeft_ready_prefix_in.
+Check coqRestrictedPADirectAndEliminationRight_ready_prefix_in.
+Check coqRestrictedPADirectOrIntroductionRight_ready_prefix_in.
+
+(** These are the three exact remaining branch-specific inputs. *)
+Check RawCoqRestrictedPADirectAndEliminationLeftChildInterfaceRoot.
+Check RawCoqRestrictedPADirectAndEliminationRightChildInterfaceRoot.
+Check RawCoqRestrictedPADirectOrIntroductionRightChildInterfaceRoot.
+
+(** Each generic instantiation concludes the pre-existing public residual,
+    rather than introducing a parallel substitute predicate. *)
+Check RawCoqRestrictedPADirectAndEliminationLeftRecursiveChildLawRoot.
+Check RawCoqRestrictedPADirectAndEliminationRightRecursiveChildLawRoot.
+Check RawCoqRestrictedPADirectOrIntroductionRightRecursiveChildLawRoot.
+Check raw_andEliminationLeft_recursiveChildLawRoot_of_sameContextInterface.
+Check raw_andEliminationRight_recursiveChildLawRoot_of_sameContextInterface.
+Check raw_orIntroductionRight_recursiveChildLawRoot_of_sameContextInterface.
+
+Print Assumptions raw_andElimination_child_interface.
+Print Assumptions raw_orIntroduction_child_interface.
+Print Assumptions
+  raw_codedPALocalProofOf_sameContextUnaryChildContinuation.
+Print Assumptions coqRestrictedPASameContextUnaryKRoot_valid.
+Print Assumptions
+  raw_codedPALocalProofOf_sameContextUnaryRecursiveChildLaw.
+Print Assumptions
+  raw_andEliminationLeft_recursiveChildLawRoot_of_sameContextInterface.
+Print Assumptions
+  raw_andEliminationRight_recursiveChildLawRoot_of_sameContextInterface.
+Print Assumptions
+  raw_orIntroductionRight_recursiveChildLawRoot_of_sameContextInterface.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessSameContextUnaryRecursiveChildCompilationAudit.
