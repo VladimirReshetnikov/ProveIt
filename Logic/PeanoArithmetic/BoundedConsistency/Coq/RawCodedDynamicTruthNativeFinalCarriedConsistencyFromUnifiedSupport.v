@@ -24,6 +24,7 @@ From BoundedPAConsistency Require Import
   RawCodedFixedLevelTruthTotality
   RawCodedRestrictedPAProof
   RawCodedPALocalProofExistential
+  RawCodedPALocalProofPropositionalRules
   RawCodedPALocalProofWitnessedContextMerge
   RawCodedTemplateNumeralParameters
   RawCodedTemplateTernaryApplication
@@ -51,6 +52,7 @@ Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofPropositionalRules.
 Import PABoundedRawCodedPALocalProofWitnessedContextMerge.
 Import PABoundedRawCodedTemplateNumeralParameters.
 Import PABoundedRawCodedTemplateTernaryApplication.
@@ -72,7 +74,150 @@ Import
 Import PABoundedRawCodedRestrictedPABottomTruthNativeDirectRefutationLink.
 Import PABoundedRawCodedRestrictedPANativeFinalUnifiedTruthLink.
 
+(** Pointwise assembly is the context-flexible core.  In particular, a
+    bottom-refutation compiler may first enlarge the witnessed PA base,
+    transport the other resources to that base, and then pass its one
+    checked direct-code root here. *)
 Theorem
+    raw_dynamicTruthNativeFinalCarriedConsistencyCodeBridge_of_unified_support_arithmetic_and_bottom_root
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (parameters : RawCodedTemplateNumeralParameters M)
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode
+      currentGlobalSigma currentGlobalPi sigmaDomain piDomain
+      nextSigmaEvidence nextGlobalSigma nextGlobalPi
+      (sigmaApplicationSelector :
+        RawCodedTernaryApplicationSelector M nextGlobalSigma)
+      (contextApplicationSelector :
+        RawCodedTernaryApplicationSelector M
+          (rawDynamicContextAllSigmaCode sigmaApplicationSelector))
+      closureCount axiom sourceBaseContext
+      finalWitnessList finalBaseContext
+      coherenceRoot bottomRoot admissibleRoot contextBoundedRoot
+      contextAdequateRoot,
+  RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode ->
+  RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+    finalWitnessList finalBaseContext
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution
+    nextAxiomSoundness ->
+  RawContextListIncluded M sourceBaseContext finalBaseContext ->
+  rawDirectTemplateTerm inputs
+    coqRestrictedPASoundnessLowerLevelTerm = successorNumeralCode ->
+  RawCoqRestrictedPANativeFinalUnifiedTruthLinkAt
+    M parameters inputs tail level
+    currentGlobalSigma currentGlobalPi sigmaDomain piDomain
+    nextSigmaEvidence nextAxiomSoundness nextGlobalSigma nextGlobalPi
+    sigmaApplicationSelector contextApplicationSelector
+    closureCount axiom ->
+  RawCodedPALocalProofOf M
+    (rawCoqRestrictedPAConsistencyBridgeContextCode
+      M successorNumeralCode finalBaseContext)
+    (rawFormulaImpCode M nextAxiomSoundness
+      (rawCoqRestrictedPAAxiomContextsTruthDirectCode M inputs))
+    coherenceRoot ->
+  RawCoqRestrictedPAOpenShellArithmeticResidual M inputs
+    (rawCoqRestrictedPAConsistencyBridgeBodyDirectContextCode
+      M inputs successorNumeralCode finalBaseContext)
+    admissibleRoot contextBoundedRoot contextAdequateRoot ->
+  RawCodedPALocalProofOf M
+    (rawCoqRestrictedPAConsistencyBridgeContextCode
+      M successorNumeralCode finalBaseContext)
+    (rawCoqRestrictedPABottomTruthRefutationDirectCode M inputs)
+    bottomRoot ->
+  RawDynamicTruthNativeFinalCarriedConsistencyCodeBridgeAt M
+    (rawCoqRestrictedPADerivationSoundnessUniversalDirectCode M inputs)
+    tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode sourceBaseContext.
+Proof.
+  intros M hPA parameters inputs tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode
+    currentGlobalSigma currentGlobalPi sigmaDomain piDomain
+    nextSigmaEvidence nextGlobalSigma nextGlobalPi
+    sigmaApplicationSelector contextApplicationSelector
+    closureCount axiom sourceBaseContext
+    finalWitnessList finalBaseContext
+    coherenceRoot bottomRoot admissibleRoot contextBoundedRoot
+    contextAdequateRoot
+    htrace hfinalPrerequisites hincluded hlevel hunified hcoherence
+    harithmetic hbottom.
+  destruct hunified as [haxiomLink [_ hremainder]].
+  set (bridgeContext :=
+    rawCoqRestrictedPAConsistencyBridgeContextCode
+      M successorNumeralCode finalBaseContext).
+  pose proof
+    (raw_dynamicTruthNativeFinalBridgeFieldsHeadAdequacyCompiler M hPA
+      tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode finalWitnessList finalBaseContext
+      htrace hfinalPrerequisites) as hfieldsAdequate.
+  destruct
+    (raw_coqRestrictedPASelectedAxiomContextTruthDirectSupport_of_residual
+      M hPA inputs tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode finalWitnessList finalBaseContext
+      coherenceRoot bottomRoot htrace hfinalPrerequisites hfieldsAdequate
+      (conj hcoherence hbottom))
+    as [nextAxiomSoundnessRoot hsupport].
+  destruct
+    (raw_coqRestrictedPAConsistencyFromUniversalSoundnessDirect_child_of_arithmetic
+      M hPA inputs successorNumeralCode finalWitnessList finalBaseContext
+      nextAxiomSoundness nextAxiomSoundnessRoot coherenceRoot bottomRoot
+      admissibleRoot contextBoundedRoot contextAdequateRoot
+      hlevel hsupport harithmetic) as [child hchild].
+  set (bridgeRoot :=
+    rawCoqRestrictedPAConsistencyFromSoundnessBridgeDirectRoot
+      M inputs successorNumeralCode finalBaseContext child).
+  assert (hbridge : RawCodedPALocalProofOf M bridgeContext
+      (rawCoqRestrictedPAConsistencyFromSoundnessBridgeDirectCode M inputs)
+      bridgeRoot).
+  {
+    unfold bridgeRoot,
+      rawCoqRestrictedPAConsistencyFromSoundnessBridgeDirectRoot.
+    rewrite raw_coqRestrictedPAConsistencyFromSoundnessBridgeDirectCode_view,
+      hlevel.
+    exact (raw_codedPALocalProofOf_impI M hPA bridgeContext
+      (rawCoqRestrictedPADerivationSoundnessUniversalDirectCode M inputs)
+      (rawRestrictedTargetFormulaContextCode M successorNumeralCode
+        restrictedPAConsistencyFormulaContext)
+      child hchild).
+  }
+  pose proof htrace as htraceCopy.
+  destruct htraceCopy as [_ _ _ _ _ _ _ hsource].
+  destruct hsource as [_ _ hnextTarget _].
+  exists finalWitnessList, finalBaseContext, bridgeRoot.
+  split; [exact hfinalPrerequisites |].
+  split; [exact hincluded |].
+  unfold bridgeContext in hbridge |- *.
+  rewrite raw_coqRestrictedPAConsistencyFromSoundnessBridgeDirectCode_view,
+    hlevel in hbridge.
+  now rewrite <- hnextTarget in hbridge.
+Qed.
+
+(** Backward-compatible wrapper for callers which already provide a global
+    selected-Sigma refutation compiler.  Selection and the native/direct
+    code rewrite happen here; all consistency assembly is delegated to the
+    pointwise theorem above. *)
+Corollary
     raw_dynamicTruthNativeFinalCarriedConsistencyCodeBridge_of_unified_support_and_arithmetic
     : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
       (parameters : RawCodedTemplateNumeralParameters M)
@@ -144,7 +289,8 @@ Proof.
     coherenceRoot admissibleRoot contextBoundedRoot contextAdequateRoot
     htrace hfinalPrerequisites hincluded hlevel hunified hcoherence
     harithmetic hbottomCompiler.
-  destruct hunified as [haxiomLink [hbottomLink hremainder]].
+  pose proof hunified as hunifiedCopy.
+  destruct hunifiedCopy as [_ [hbottomLink _]].
   set (bridgeContext :=
     rawCoqRestrictedPAConsistencyBridgeContextCode
       M successorNumeralCode finalBaseContext).
@@ -162,57 +308,21 @@ Proof.
         (proj2 (proj2 hbottomLink))).
     exact hbottomSelected.
   }
-  pose proof
-    (raw_dynamicTruthNativeFinalBridgeFieldsHeadAdequacyCompiler M hPA
-      tail level
+  exact
+    (raw_dynamicTruthNativeFinalCarriedConsistencyCodeBridge_of_unified_support_arithmetic_and_bottom_root
+      M hPA parameters inputs tail level
       currentLocal currentCrossLevel currentShift currentSubstitution
       currentAxiomSoundness currentFinal
-      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
-      nextFinal successorNumeralCode finalWitnessList finalBaseContext
-      htrace hfinalPrerequisites) as hfieldsAdequate.
-  destruct
-    (raw_coqRestrictedPASelectedAxiomContextTruthDirectSupport_of_residual
-      M hPA inputs tail level
-      currentLocal currentCrossLevel currentShift currentSubstitution
-      currentAxiomSoundness currentFinal
-      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
-      nextFinal successorNumeralCode finalWitnessList finalBaseContext
-      coherenceRoot bottomRoot htrace hfinalPrerequisites hfieldsAdequate
-      (conj hcoherence hbottom))
-    as [nextAxiomSoundnessRoot hsupport].
-  destruct
-    (raw_coqRestrictedPAConsistencyFromUniversalSoundnessDirect_child_of_arithmetic
-      M hPA inputs successorNumeralCode finalWitnessList finalBaseContext
-      nextAxiomSoundness nextAxiomSoundnessRoot coherenceRoot bottomRoot
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness nextFinal successorNumeralCode
+      currentGlobalSigma currentGlobalPi sigmaDomain piDomain
+      nextSigmaEvidence nextGlobalSigma nextGlobalPi
+      sigmaApplicationSelector contextApplicationSelector
+      closureCount axiom sourceBaseContext
+      finalWitnessList finalBaseContext coherenceRoot bottomRoot
       admissibleRoot contextBoundedRoot contextAdequateRoot
-      hlevel hsupport harithmetic) as [child hchild].
-  set (bridgeRoot :=
-    rawCoqRestrictedPAConsistencyFromSoundnessBridgeDirectRoot
-      M inputs successorNumeralCode finalBaseContext child).
-  assert (hbridge : RawCodedPALocalProofOf M bridgeContext
-      (rawCoqRestrictedPAConsistencyFromSoundnessBridgeDirectCode M inputs)
-      bridgeRoot).
-  {
-    unfold bridgeRoot,
-      rawCoqRestrictedPAConsistencyFromSoundnessBridgeDirectRoot.
-    rewrite raw_coqRestrictedPAConsistencyFromSoundnessBridgeDirectCode_view,
-      hlevel.
-    exact (raw_codedPALocalProofOf_impI M hPA bridgeContext
-      (rawCoqRestrictedPADerivationSoundnessUniversalDirectCode M inputs)
-      (rawRestrictedTargetFormulaContextCode M successorNumeralCode
-        restrictedPAConsistencyFormulaContext)
-      child hchild).
-  }
-  pose proof htrace as htraceCopy.
-  destruct htraceCopy as [_ _ _ _ _ _ _ hsource].
-  destruct hsource as [_ _ hnextTarget _].
-  exists finalWitnessList, finalBaseContext, bridgeRoot.
-  split; [exact hfinalPrerequisites |].
-  split; [exact hincluded |].
-  unfold bridgeContext in hbridge |- *.
-  rewrite raw_coqRestrictedPAConsistencyFromSoundnessBridgeDirectCode_view,
-    hlevel in hbridge.
-  now rewrite hnextTarget in hbridge.
+      htrace hfinalPrerequisites hincluded hlevel hunified hcoherence
+      harithmetic hbottom).
 Qed.
 
 End
