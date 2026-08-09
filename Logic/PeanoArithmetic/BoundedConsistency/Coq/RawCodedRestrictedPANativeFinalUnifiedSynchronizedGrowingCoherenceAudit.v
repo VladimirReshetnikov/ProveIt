@@ -1,0 +1,19 @@
+(** Audit surface for unified native truth plus growing row coherence. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPANativeFinalUnifiedSynchronizedGrowingCoherence.
+
+Import
+  PABoundedRawCodedRestrictedPANativeFinalUnifiedSynchronizedGrowingCoherence.
+
+Check RawCoqRestrictedPANativeFinalUnifiedSynchronizedTruthLinkAt.
+Check
+  raw_dynamicTruthNativeFinalStagedGraphTrace_unified_synchronized_truth_link_exists.
+Check RawCoqRestrictedPANativeFinalUnifiedSynchronizedGrowingCoherenceAt.
+Check
+  raw_dynamicTruthNativeFinalStagedGraphTrace_unified_synchronized_growing_coherence_exists.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedGraphTrace_unified_synchronized_truth_link_exists.
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedGraphTrace_unified_synchronized_growing_coherence_exists.
