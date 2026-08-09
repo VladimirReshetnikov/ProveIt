@@ -852,6 +852,71 @@ Definition coqDynamicTruthZeroCanonicalGuardedFixedProductionContext
       (embedPATerm (Term.numeral rootMode))
       (ttVar 2) (ttVar 6) (ttVar 5) []).
 
+(** The coordinate change itself is a renaming of the three outer root
+    arguments: the formula coordinate stays at [#2], while assignment code
+    and step move from [#1,#0] to [#6,#5]. *)
+Definition coqDynamicTruthZeroCanonicalGuardedRootRenaming
+    (index : nat) : nat :=
+  match index with
+  | 0 => 5
+  | 1 => 6
+  | other => other
+  end.
+
+(** Lift an outer renaming through a fixed number of locally bound
+    coordinates.  The append proof has eight existential witnesses and five
+    row binders, hence its root arguments live below thirteen protected
+    coordinates in the final temporary context. *)
+Fixpoint templateLiftRenamingMany (count : nat)
+    (renaming : nat -> nat) : nat -> nat :=
+  match count with
+  | 0 => renaming
+  | S smaller =>
+      templateUpRenaming (templateLiftRenamingMany smaller renaming)
+  end.
+
+Definition coqDynamicTruthZeroCanonicalGuardedFixedProductionRenaming
+    : nat -> nat :=
+  templateLiftRenamingMany 13
+    coqDynamicTruthZeroCanonicalGuardedRootRenaming.
+
+(** This computation identifies the exact syntax transformation a future
+    represented proof-code renamer would have to implement.  It fixes every
+    append/row-local coordinate and changes only the two outer assignment
+    roots. *)
+Lemma coqDynamicTruthZeroCanonicalPermutedFixedProductionContext_rename :
+  forall rootMode,
+  templateContextRename
+    coqDynamicTruthZeroCanonicalGuardedFixedProductionRenaming
+    (coqDynamicTruthZeroCanonicalPermutedFixedProductionContext rootMode) =
+  coqDynamicTruthZeroCanonicalGuardedFixedProductionContext rootMode.
+Proof.
+  intro rootMode.
+  vm_compute.
+  reflexivity.
+Qed.
+
+(** The selected closed-row conclusion is unaffected by the same renaming.
+    Thus the missing proof transport has no target-formula conversion left
+    to solve: it must transform the proof tree and its temporary context. *)
+Lemma coqDynamicTruthZeroCanonicalFixedProductionConclusion_rename :
+  forall rootMode,
+  templateFormulaRename
+    coqDynamicTruthZeroCanonicalGuardedFixedProductionRenaming
+    (templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+      (coqFourStateTableAppendEmbeddedModeProductionMotive
+        dynamicTruthZeroCanonicalSigmaRowFormula
+        dynamicTruthZeroCanonicalPiRowFormula)) =
+  templateFormulaOpen (embedPATerm (Term.numeral rootMode))
+    (coqFourStateTableAppendEmbeddedModeProductionMotive
+      dynamicTruthZeroCanonicalSigmaRowFormula
+      dynamicTruthZeroCanonicalPiRowFormula).
+Proof.
+  intro rootMode.
+  vm_compute.
+  reflexivity.
+Qed.
+
 (** A kernel computation at either canonical mode exposes the differing
     assignment-code lookup.  This rules out definitional conversion and the
     equality-based conclusion rewrites used by the permuted append path. *)

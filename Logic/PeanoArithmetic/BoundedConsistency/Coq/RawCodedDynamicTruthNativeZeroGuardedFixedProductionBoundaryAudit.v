@@ -60,6 +60,13 @@ Check
     definitional conversion at either canonical mode. *)
 Check coqDynamicTruthZeroCanonicalPermutedFixedProductionContext.
 Check coqDynamicTruthZeroCanonicalGuardedFixedProductionContext.
+Check coqDynamicTruthZeroCanonicalGuardedRootRenaming.
+Check templateLiftRenamingMany.
+Check coqDynamicTruthZeroCanonicalGuardedFixedProductionRenaming.
+Check
+  coqDynamicTruthZeroCanonicalPermutedFixedProductionContext_rename.
+Check
+  coqDynamicTruthZeroCanonicalFixedProductionConclusion_rename.
 Check
   coqDynamicTruthZeroCanonicalPermutedFixedProductionContext_neq_guarded_zero.
 Check
@@ -73,6 +80,10 @@ Print Assumptions
   raw_dynamicTruthZeroCanonicalIdentified_guardedDeepAppendRowKernelPayloadPairForAllCallers_of_fixed.
 Print Assumptions
   raw_dynamicTruthZeroCanonicalIdentified_guardedCollisionAppendRowKernelPayloadPairsForCaller_of_fixed.
+Print Assumptions
+  coqDynamicTruthZeroCanonicalPermutedFixedProductionContext_rename.
+Print Assumptions
+  coqDynamicTruthZeroCanonicalFixedProductionConclusion_rename.
 Print Assumptions
   coqDynamicTruthZeroCanonicalPermutedFixedProductionContext_neq_guarded_zero.
 Print Assumptions
