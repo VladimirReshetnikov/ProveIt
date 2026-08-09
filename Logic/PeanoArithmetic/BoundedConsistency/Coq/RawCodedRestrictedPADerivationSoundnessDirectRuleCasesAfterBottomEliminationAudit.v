@@ -1,0 +1,48 @@
+(** Audit surface for the Bottom-E contradiction-core integration. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectBottomEliminationCase
+  RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterBottomElimination.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterBottomEliminationAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectBottomEliminationCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterBottomElimination.
+
+(** The selected primitive is exactly witness-context truth implying bottom;
+    it is not the public five-antecedent residual. *)
+Check RawCoqRestrictedPADirectBottomContradictionCoreLawRoot.
+Check coqRestrictedPADirectBottomCorePromotionRoot.
+Check coqRestrictedPADirectBottomCorePromotionRoot_valid.
+Check raw_bottomRecursiveContradictionLawRoot_of_coreLawRoot.
+
+(** The successor constructor starts with excluded middle, making deletion
+    of the Bottom-E target field visible in its checked type. *)
+Check RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterBottomElimination.
+Check
+  Build_RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterBottomElimination.
+Check raw_afterImpElimination_of_afterBottomElimination.
+
+Check RawCoqRestrictedPADirectSelectedBottomContradictionCoreTail.
+Check coqRestrictedPADirectBottomCaseContext_app_witnesses.
+Check raw_bottomContradictionCoreLawRoot_surround_witnessed_tail.
+Check
+  RawCoqRestrictedPADirectRemainingAfterBottomEliminationStandardTailCompiler.
+Check raw_remainingAfterImpEliminationCompiler_of_selectedBottomCore.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterBottomElimination.
+
+Print Assumptions coqRestrictedPADirectBottomCorePromotionRoot_valid.
+Print Assumptions raw_bottomRecursiveContradictionLawRoot_of_coreLawRoot.
+Print Assumptions
+  raw_bottomContradictionCoreLawRoot_surround_witnessed_tail.
+Print Assumptions
+  raw_remainingAfterImpEliminationCompiler_of_selectedBottomCore.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterBottomElimination.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterBottomEliminationAudit.
