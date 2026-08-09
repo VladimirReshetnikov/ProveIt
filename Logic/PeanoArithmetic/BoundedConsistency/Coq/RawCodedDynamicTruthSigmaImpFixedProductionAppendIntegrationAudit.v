@@ -1,0 +1,22 @@
+(** Assumption audit for the selected Sigma implication append handoff. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthSigmaImpFixedProductionAppendIntegration.
+
+Import
+  PABoundedRawCodedDynamicTruthSigmaImpFixedProductionAppendIntegration.
+
+Check CoqDynamicTruthSigmaImpSelectedRow.
+Check coqDynamicTruthSigmaImpSelectFalseLeft.
+Check coqDynamicTruthSigmaImpSelectTrueRight.
+Check coqDynamicTruthSigmaImpSelectedLeaf.
+Check coqDynamicTruthSigmaImpSelectedIndex.
+Check coqDynamicTruthSigmaImpSelectedOpenedLeafAt_shape.
+Check coqDynamicTruthSigmaImpSelectedOpenedLeafAt_nth.
+Check
+  raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_shared_sigma_global_of_append_inherited_and_selected_sigma_imp_roots.
+
+Print Assumptions coqDynamicTruthSigmaImpSelectedOpenedLeafAt_shape.
+Print Assumptions coqDynamicTruthSigmaImpSelectedOpenedLeafAt_nth.
+Print Assumptions
+  raw_codedPAGrowingTemplateLocalProofAt_dynamic_truth_shared_sigma_global_of_append_inherited_and_selected_sigma_imp_roots.
