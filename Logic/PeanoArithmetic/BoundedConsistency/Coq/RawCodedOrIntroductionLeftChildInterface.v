@@ -27,7 +27,8 @@ From BoundedPAConsistency Require Import
   RawCodedProofFormulaCoverage
   RawCodedProofRuleCoverage
   RawCodedRestrictedProofAdmissibility
-  RawCodedCarrierRestrictedProofReroot.
+  RawCodedCarrierRestrictedProofReroot
+  RawCodedRestrictedPADerivationSoundnessRecursiveChildInterface.
 
 Import ListNotations.
 
@@ -54,6 +55,8 @@ Import PABoundedRawCodedProofFormulaCoverage.
 Import PABoundedRawCodedProofRuleCoverage.
 Import PABoundedRawCodedRestrictedProofAdmissibility.
 Import PABoundedRawCodedCarrierRestrictedProofReroot.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessRecursiveChildInterface.
 
 (** The literal constructor data expected by each generic recursive-child
     preservation theorem.  Isolating it here avoids repeating the tag row,
@@ -136,42 +139,15 @@ Proof.
   destruct (raw_orIntroductionLeft_recursive_child_data M root context
     leftFormula rightFormula child hcode) as
     [hconstructor [hentry [hfields hchild]]].
-
-  destruct (raw_proofAtomicallyAdequate_recursive_child M hPA
-    root hatomic context leftFormula rightFormula
-    (raw_zero M) (raw_zero M) child (raw_zero M) (raw_zero M)
-    hconstructor _ _ hentry hfields child hchild) as
-    [hchildAtomic hbelow].
-  destruct (raw_proofFormulaCoverage_public_recursive_child M hPA
-    root coverageBound hformulaCoverage context leftFormula rightFormula
-    (raw_zero M) (raw_zero M) child (raw_zero M) (raw_zero M)
-    hconstructor _ _ hentry hfields child hchild) as
-    [hchildFormulaCoverage _].
-  destruct (raw_proofRuleCoverage_public_recursive_child M hPA
-    root hruleCoverage context leftFormula rightFormula
-    (raw_zero M) (raw_zero M) child (raw_zero M) (raw_zero M)
-    hconstructor _ _ hentry hfields child hchild) as
-    [hchildRuleCoverage _].
-  pose proof (raw_carrierRestrictedProofAt_orI_left_child M hPA
-    tail level root context leftFormula rightFormula child
-    hrestricted hcode) as hchildRestricted.
-  pose proof (raw_proofRuleCoverage_public_root_complete M hPA
-    child hchildRuleCoverage context leftFormula hendpoint)
-    as hchildRuleValid.
-  pose proof (raw_proofAtomicallyAdequate_root_endpoint M hPA
-    child hchildAtomic context leftFormula hendpoint) as
-    [_ hleftAtomic].
-  pose proof (raw_proofFormulaCoverage_public_root_endpoint M hPA
-    child coverageBound hchildFormulaCoverage
-    context leftFormula hendpoint) as [_ hleftBelowCoverage].
-  pose proof (raw_codedAssignmentDefinedThrough_of_lt M hPA
-    assignmentCode assignmentStep leftFormula coverageBound
-    hleftBelowCoverage hassignmentCoverage) as hleftDefined.
-  pose proof (raw_carrierRestrictedProofAt_endpoint_bounded M hPA
-    tail level child context leftFormula hchildRestricted hendpoint)
-    as hleftBounded.
-
-  repeat split; assumption.
+  exact
+    (raw_recursive_constructor_child_interface
+      M hPA tail level root coverageBound context
+      leftFormula rightFormula (raw_zero M) (raw_zero M)
+      child (raw_zero M) (raw_zero M)
+      [rawNumeralValue M 8; context; leftFormula; rightFormula; child]
+      [child] child leftFormula assignmentCode assignmentStep
+      hrestricted hatomic hformulaCoverage hruleCoverage
+      hconstructor hentry hfields hchild hendpoint hassignmentCoverage).
 Qed.
 
 End PABoundedRawCodedOrIntroductionLeftChildInterface.
