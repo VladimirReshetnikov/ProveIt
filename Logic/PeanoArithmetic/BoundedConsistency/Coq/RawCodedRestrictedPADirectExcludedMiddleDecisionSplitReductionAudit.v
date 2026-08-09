@@ -1,0 +1,16 @@
+(** Assumption audit for the direct excluded-middle evidence split. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADirectExcludedMiddleDecisionSplitReduction.
+
+Import
+  PABoundedRawCodedRestrictedPADirectExcludedMiddleDecisionSplitReduction.
+
+Check RawCoqRestrictedPADirectExcludedMiddleDecisionSplitRoots.
+Check raw_excludedMiddleTruthCoreLawRoot_of_decision_split_roots.
+Check raw_selectedExcludedMiddleTruthCoreTail_of_standard_decision_split.
+
+Print Assumptions
+  raw_excludedMiddleTruthCoreLawRoot_of_decision_split_roots.
+Print Assumptions
+  raw_selectedExcludedMiddleTruthCoreTail_of_standard_decision_split.
