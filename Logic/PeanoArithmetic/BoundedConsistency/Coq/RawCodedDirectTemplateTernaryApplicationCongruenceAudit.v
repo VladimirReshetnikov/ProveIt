@@ -1,0 +1,27 @@
+From BoundedPAConsistency Require Import
+  RawCodedDirectTemplateTernaryApplicationCongruence.
+
+Import PABoundedRawCodedDirectTemplateTernaryApplicationCongruence.
+
+Check templateTermRename_zero_shift_twice.
+Check coqDirectTemplateTernarySubstitution.
+Check templateTermSubst_after_zero_shift_one.
+Check templateTermRename_zero_shift_one_twice.
+Check templateTermSubst_after_zero_shift_two.
+Check templateTermSubst_ext_scoped.
+Check templateTermsSubst_ext_scoped.
+Check templateFormulaSubst_ext_scoped.
+Check templateTermRename_scoped.
+Check templateTermsRename_scoped.
+Check templateFormulaRename_scoped.
+Check coqRestrictedPATemplateTernaryApplication_eq_subst.
+Check raw_directTemplateTerm_first_protected_shift.
+Check raw_directTemplateTerm_second_protected_shift.
+Check raw_directTemplateTernaryApplication_trace.
+Check raw_directTemplateTernaryApplication_congr.
+
+Print Assumptions templateFormulaSubst_ext_scoped.
+Print Assumptions templateFormulaRename_scoped.
+Print Assumptions coqRestrictedPATemplateTernaryApplication_eq_subst.
+Print Assumptions raw_directTemplateTernaryApplication_trace.
+Print Assumptions raw_directTemplateTernaryApplication_congr.
