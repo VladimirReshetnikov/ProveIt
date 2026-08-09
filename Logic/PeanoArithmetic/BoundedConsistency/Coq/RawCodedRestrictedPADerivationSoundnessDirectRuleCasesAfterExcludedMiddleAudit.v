@@ -1,0 +1,49 @@
+(** Audit surface for the excluded-middle positive-truth core increment. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectExcludedMiddleCase
+  RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterExcludedMiddle.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterExcludedMiddleAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExcludedMiddleCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterExcludedMiddle.
+
+(** The boundary is the post-row positive truth implication, not the public
+    residual containing the three constructor-row antecedents. *)
+Check coqRestrictedPADirectExcludedMiddleTruthCoreTemplate.
+Check RawCoqRestrictedPADirectExcludedMiddleTruthCoreLawRoot.
+Check coqRestrictedPADirectExcludedMiddleCorePromotionRoot.
+Check coqRestrictedPADirectExcludedMiddleCorePromotionRoot_valid.
+Check raw_excludedMiddleTruthLawRoot_of_coreLawRoot.
+
+(** The successor constructor begins with And-I and exposes all fifteen
+    remaining fields. *)
+Check RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterExcludedMiddle.
+Check Build_RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterExcludedMiddle.
+Check raw_afterBottomElimination_of_afterExcludedMiddle.
+
+Check RawCoqRestrictedPADirectSelectedExcludedMiddleTruthCoreTail.
+Check coqRestrictedPADirectExcludedMiddleCaseContext_app_witnesses.
+Check raw_excludedMiddleTruthCoreLawRoot_surround_witnessed_tail.
+Check
+  RawCoqRestrictedPADirectRemainingAfterExcludedMiddleStandardTailCompiler.
+Check raw_remainingAfterBottomEliminationCompiler_of_selectedExcludedCore.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterExcludedMiddle.
+
+Print Assumptions
+  coqRestrictedPADirectExcludedMiddleCorePromotionRoot_valid.
+Print Assumptions raw_excludedMiddleTruthLawRoot_of_coreLawRoot.
+Print Assumptions
+  raw_excludedMiddleTruthCoreLawRoot_surround_witnessed_tail.
+Print Assumptions
+  raw_remainingAfterBottomEliminationCompiler_of_selectedExcludedCore.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterExcludedMiddle.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterExcludedMiddleAudit.
