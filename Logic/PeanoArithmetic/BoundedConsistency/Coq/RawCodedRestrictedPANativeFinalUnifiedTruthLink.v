@@ -34,6 +34,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthPairedGlobalOrbitFunctionality
   RawCodedDynamicTruthNativeAxiomSoundnessProofCompilation
   RawCodedDynamicTruthNativeFinalStagedRootCompilation
+  RawCodedRestrictedPAConsistencyFormulaCode
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell
   RawCodedRestrictedPADerivationSoundnessNativeDirectClosureRemainder
@@ -53,6 +54,7 @@ Import PABoundedRawCodedDynamicContextTruthSelector.
 Import PABoundedRawCodedDynamicTruthPairedGlobalOrbitFunctionality.
 Import PABoundedRawCodedDynamicTruthNativeAxiomSoundnessProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell.
@@ -133,6 +135,8 @@ Theorem
     rawNumeralTemplateParameterBound parameters
       coqRestrictedPASoundnessUpperLevelParameterName =
       raw_succ M (raw_succ M level) /\
+    rawDirectTemplateTerm inputs
+      coqRestrictedPASoundnessLowerLevelTerm = successorNumeralCode /\
     RawCoqRestrictedPANativeFinalUnifiedTruthLinkAt
       M parameters inputs tail level
       currentGlobalSigma currentGlobalPi sigmaDomain piDomain
@@ -149,6 +153,7 @@ Proof.
   destruct hstagedCopy as
     [hcurrent hnextLocal hnextCrossLevel hnextShift hnextSubstitution
       hnextAxiomSoundness hnextFinal hsource].
+  destruct hsource as [hsourceFormula hsuccessorNumeral hnextTarget hsourceGraph].
   pose proof
     (raw_dynamicTruthNativeFivePositiveGraphs_orbit_coherent M hPA
       tail level nextLocal nextCrossLevel nextShift nextSubstitution
@@ -180,6 +185,24 @@ Proof.
       hinputs & hcontextOutput & hconclusionOutput & hcontextLeaf &
       hconclusionLeaf & hselectorNative & hconclusionNative &
       happlication & hremainder).
+  assert (hlowerCode :
+      rawDirectTemplateTerm inputs
+        coqRestrictedPASoundnessLowerLevelTerm =
+      rawNumeralTemplateParameterCode parameters
+        coqRestrictedPASoundnessLowerLevelParameterName).
+  {
+    rewrite hinputs.
+    reflexivity.
+  }
+  pose proof (rawNumeralTemplateParameter_valid parameters
+    coqRestrictedPASoundnessLowerLevelParameterName) as hparameterNumeral.
+  rewrite hlower in hparameterNumeral.
+  pose proof (raw_numeralTermCodeAt_functional M hPA
+    (raw_succ M level)
+    (rawNumeralTemplateParameterCode parameters
+      coqRestrictedPASoundnessLowerLevelParameterName)
+    successorNumeralCode hparameterNumeral hsuccessorNumeral)
+    as hlowerFunctional.
   destruct (raw_dynamicTruthPairedGlobalSuccessorAt_functional M hPA
     currentGlobalSigma currentGlobalPi currentLevel
     traceNextGlobalSigma traceNextGlobalPi
@@ -195,15 +218,17 @@ Proof.
     inputs, closureCount, axiom.
   split; [exact hlower |].
   split; [exact hupper |].
-  unfold RawCoqRestrictedPANativeFinalUnifiedTruthLinkAt.
   split.
-  - split; [exact horbitAgain |].
-    exists currentLevel, currentLevelNumeral.
-    repeat split; try assumption.
-  - split.
-    + split; [exact hnativeSuccessor |].
-      split; [exact hsigmaDeep | exact hconclusionLeaf].
-    + exact hremainder.
+  - rewrite hlowerCode. exact hlowerFunctional.
+  - unfold RawCoqRestrictedPANativeFinalUnifiedTruthLinkAt.
+    split.
+    + split; [exact horbitAgain |].
+      exists currentLevel, currentLevelNumeral.
+      repeat split; try assumption.
+    + split.
+      * split; [exact hnativeSuccessor |].
+        split; [exact hsigmaDeep | exact hconclusionLeaf].
+      * exact hremainder.
 Qed.
 
 End PABoundedRawCodedRestrictedPANativeFinalUnifiedTruthLink.
