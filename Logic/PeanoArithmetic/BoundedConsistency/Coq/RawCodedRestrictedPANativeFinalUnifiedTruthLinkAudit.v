@@ -1,0 +1,13 @@
+(** Audit surface for unified final native truth selection. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPANativeFinalUnifiedTruthLink.
+
+Import PABoundedRawCodedRestrictedPANativeFinalUnifiedTruthLink.
+
+Check RawCoqRestrictedPANativeFinalUnifiedTruthLinkAt.
+Check
+  raw_dynamicTruthNativeFinalStagedGraphTrace_unified_native_truth_link_exists.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedGraphTrace_unified_native_truth_link_exists.
