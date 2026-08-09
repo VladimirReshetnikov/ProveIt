@@ -1,0 +1,59 @@
+(**
+  Kernel audit for the fixed seven-branch refutation compiler.
+
+  The principal-refutation computation is deliberately checked for the
+  whole finite branch type, not only for one representative constructor.
+  The final assumption print covers the cumulative witness-prefix endpoint.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplateParameterAbstraction
+  RawCodedRestrictedPASelectedSigmaBottomGlobalOpenedBranchRefutations.
+
+Import PABoundedRawCodedTemplateParameterAbstraction.
+Import
+  PABoundedRawCodedRestrictedPASelectedSigmaBottomGlobalOpenedBranchRefutations.
+
+Check coqRestrictedPASelectedSigmaBottomOpenedBranchPrincipal.
+Check coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutation.
+Check coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutationPA.
+Check
+  coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutation_reifies.
+Check
+  coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutation_embeds.
+Check
+  coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutationPA_raw_valid.
+Check
+  PA_proves_coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutation.
+
+Check rawRestrictedPASelectedSigmaBottomOpenedRefutationHelpers.
+Check raw_fixedPAHelperBatch_on_witnessed_tail.
+Check raw_fixedPAHelperBatchLocalProofs_member.
+Check
+  raw_codedPALocalProofOf_selectedSigmaBottom_opened_branch_refutation_of_principal.
+Check
+  raw_restrictedPASelectedSigmaBottomGlobalOpenedSevenCaseSupport_growing.
+Check
+  raw_codedPALocalProofOf_selectedSigmaBottom_native_applied_refutation_compiled_growing.
+
+(** All seven reflected principal implications reify to ordinary PA syntax. *)
+Goal forall branch,
+  templateFormulaAsPAFormula
+    (coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutation branch) =
+  Some
+    (coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutationPA branch).
+Proof.
+  exact
+    coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutation_reifies.
+Qed.
+
+Print Assumptions
+  coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutationPA_raw_valid.
+Print Assumptions
+  PA_proves_coqRestrictedPASelectedSigmaBottomOpenedPrincipalRefutation.
+Print Assumptions
+  raw_codedPALocalProofOf_selectedSigmaBottom_opened_branch_refutation_of_principal.
+Print Assumptions
+  raw_restrictedPASelectedSigmaBottomGlobalOpenedSevenCaseSupport_growing.
+Print Assumptions
+  raw_codedPALocalProofOf_selectedSigmaBottom_native_applied_refutation_compiled_growing.
