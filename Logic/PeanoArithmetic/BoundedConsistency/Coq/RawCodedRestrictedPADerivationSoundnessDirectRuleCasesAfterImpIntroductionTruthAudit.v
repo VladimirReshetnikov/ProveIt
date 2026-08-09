@@ -1,0 +1,57 @@
+(** Kernel audit for the post-Imp-I-dynamic-truth growing-tail boundary. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots
+  RawCodedDynamicTruthSigmaOrFixedProductionAppendIntegration
+  RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterImpIntroductionTruth.
+
+Import
+  PABoundedRawCodedDynamicTruthPredecessorDirectEvidenceLogicalRoots.
+Import
+  PABoundedRawCodedDynamicTruthSigmaOrFixedProductionAppendIntegration.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterImpIntroductionTruth.
+
+(** This is the reusable represented predecessor-decision producer.  Its
+    output is the [Sigma(left) \/ Pi(left)] root consumed by the new split
+    compiler after the caller reroots the native evidence into the Imp-I
+    ready context. *)
+Check
+  raw_dynamicTruthPredecessorEvidenceDecision_of_projected_decision_under_prefix_atomic_and_domain.
+
+(** The existing positive fixed-production compiler is specific to the
+    Sigma/Or leaf.  Hence the two analogous positive implication row roots,
+    rather than the target Tarski law, are the exact remaining boundary. *)
+Check
+  raw_codedPALocalProofOf_dynamic_truth_sigma_or_fixed_production_of_four_roots.
+
+Check raw_codedPALocalProofOf_impTruth_of_predecessor_split.
+Check RawCoqRestrictedPADirectImpIntroductionFixedRowSplitRoots.
+Check raw_impIntroductionDynamicTruthLawRoot_of_fixedRowSplitRoots.
+
+Check
+  RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterImpIntroductionTruth.
+Check raw_afterImpIntroductionRecursive_of_afterImpIntroductionTruth.
+Check
+  RawCoqRestrictedPADirectSelectedImpIntroductionFixedRowSplitTail.
+Check RawCoqRestrictedPADirectSelectedImpIntroductionTruthTail.
+Check raw_selectedImpIntroductionTruthTail_of_fixedRowSplit.
+Check raw_impIntroductionTruthLawRoot_surround_witnessed_tail.
+Check
+  RawCoqRestrictedPADirectRemainingAfterImpIntroductionTruthStandardTailCompiler.
+Check
+  raw_remainingAfterImpIntroductionRecursiveCompiler_of_selectedImpIntroductionTruth.
+Check
+  raw_remainingAfterImpIntroductionRecursiveCompiler_of_fixedRowSplit.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterImpIntroductionTruth.
+
+Print Assumptions raw_codedPALocalProofOf_impTruth_of_predecessor_split.
+Print Assumptions
+  raw_impIntroductionDynamicTruthLawRoot_of_fixedRowSplitRoots.
+Print Assumptions raw_selectedImpIntroductionTruthTail_of_fixedRowSplit.
+Print Assumptions raw_impIntroductionTruthLawRoot_surround_witnessed_tail.
+Print Assumptions
+  raw_remainingAfterImpIntroductionRecursiveCompiler_of_fixedRowSplit.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterImpIntroductionTruth.
