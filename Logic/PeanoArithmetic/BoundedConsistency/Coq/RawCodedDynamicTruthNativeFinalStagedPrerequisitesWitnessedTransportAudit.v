@@ -1,0 +1,13 @@
+(** Assumption audit for simultaneous final-prerequisite transport. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalStagedPrerequisitesWitnessedTransport.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalStagedPrerequisitesWitnessedTransport.
+
+Check
+  raw_dynamicTruthNativeFinalStagedPrerequisites_witnessed_context_transport.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedPrerequisites_witnessed_context_transport.
