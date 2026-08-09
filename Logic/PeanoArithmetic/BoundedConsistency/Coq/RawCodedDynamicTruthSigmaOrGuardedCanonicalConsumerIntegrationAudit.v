@@ -1,0 +1,24 @@
+(** Public-surface and assumption audit for the guarded append consumer. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthSigmaOrGuardedCanonicalConsumerIntegration.
+
+Module
+  PABoundedRawCodedDynamicTruthSigmaOrGuardedCanonicalConsumerIntegrationAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthSigmaOrGuardedCanonicalConsumerIntegration.
+
+Check coqDynamicTruthSigmaOrGuardedCanonicalModeZeroRowPrefix.
+Check
+  RawDynamicTruthSigmaOrGuardedCanonicalGrowingThreeRootCompilerUnderPrefixAt.
+Check
+  RawDynamicTruthSigmaOrGuardedCanonicalGrowingFixedProductionConsumerUnderPrefixAt.
+Check
+  raw_dynamicTruthSigmaOrGuardedCanonical_growingFixedProductionCompilerUnderPrefixAt_of_three_roots.
+
+Print Assumptions
+  raw_dynamicTruthSigmaOrGuardedCanonical_growingFixedProductionCompilerUnderPrefixAt_of_three_roots.
+
+End
+  PABoundedRawCodedDynamicTruthSigmaOrGuardedCanonicalConsumerIntegrationAudit.
