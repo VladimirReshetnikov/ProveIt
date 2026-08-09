@@ -1,0 +1,21 @@
+(** Audit surface for the aligned excluded-middle truth producer. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectExcludedMiddleAlignedTruthProduction.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExcludedMiddleAlignedTruthProductionAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExcludedMiddleAlignedTruthProduction.
+
+Check raw_excludedMiddle_mode_zero_parent_source_aligned.
+Check
+  raw_selectedExcludedMiddleTruthCoreTail_of_aligned_append_concrete_row.
+
+Print Assumptions raw_excludedMiddle_mode_zero_parent_source_aligned.
+Print Assumptions
+  raw_selectedExcludedMiddleTruthCoreTail_of_aligned_append_concrete_row.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExcludedMiddleAlignedTruthProductionAudit.
