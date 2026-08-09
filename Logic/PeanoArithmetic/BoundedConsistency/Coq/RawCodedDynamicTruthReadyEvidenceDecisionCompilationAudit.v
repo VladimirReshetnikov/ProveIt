@@ -1,0 +1,12 @@
+(** Assumption audit for the direct ready-context evidence decision. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthReadyEvidenceDecisionCompilation.
+
+Import PABoundedRawCodedDynamicTruthReadyEvidenceDecisionCompilation.
+
+Check
+  raw_dynamicTruthReadyEvidenceDecision_on_standard_witness_extension_under_prefix.
+
+Print Assumptions
+  raw_dynamicTruthReadyEvidenceDecision_on_standard_witness_extension_under_prefix.
