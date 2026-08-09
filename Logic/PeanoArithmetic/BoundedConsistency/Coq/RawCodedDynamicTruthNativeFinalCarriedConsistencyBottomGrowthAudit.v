@@ -1,0 +1,18 @@
+(** Assumption audit for the final bottom-context growth adapter. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalCarriedConsistencyBottomGrowth.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalCarriedConsistencyBottomGrowth.
+
+Check RawDynamicTruthNativeFinalDirectBottomGrowthAt.
+Check raw_dynamicTruthNativeFinalStagedPrerequisites_witnessed.
+Check raw_contextListIncluded_trans.
+Check
+  raw_dynamicTruthNativeFinalCarriedConsistencyCodeBridge_of_bottom_growth.
+
+Print Assumptions raw_dynamicTruthNativeFinalStagedPrerequisites_witnessed.
+Print Assumptions raw_contextListIncluded_trans.
+Print Assumptions
+  raw_dynamicTruthNativeFinalCarriedConsistencyCodeBridge_of_bottom_growth.
