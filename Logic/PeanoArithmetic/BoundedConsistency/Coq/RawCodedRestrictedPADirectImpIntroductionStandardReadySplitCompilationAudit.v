@@ -1,0 +1,17 @@
+(** Assumption audit for the standard-tail direct Imp-I split. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADirectImpIntroductionStandardReadySplitCompilation.
+
+Import
+  PABoundedRawCodedRestrictedPADirectImpIntroductionStandardReadySplitCompilation.
+
+Check
+  raw_impIntroductionFixedRowSplitRoots_of_ready_decision_and_positive_bodies.
+Check
+  raw_selectedImpIntroductionFixedRowSplitTail_of_standard_ready_decision_and_positive_bodies.
+
+Print Assumptions
+  raw_impIntroductionFixedRowSplitRoots_of_ready_decision_and_positive_bodies.
+Print Assumptions
+  raw_selectedImpIntroductionFixedRowSplitTail_of_standard_ready_decision_and_positive_bodies.
