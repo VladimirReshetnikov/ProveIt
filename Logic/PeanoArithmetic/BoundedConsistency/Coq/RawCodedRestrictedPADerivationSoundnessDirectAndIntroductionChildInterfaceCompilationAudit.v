@@ -1,0 +1,80 @@
+(**
+  Audit surface for genuine conjunction-introduction child compilation.
+
+  This low-memory audit checks only the reusable child compiler.  Dynamic
+  truth of the outer conjunction and the large post-And-I continuation live
+  behind the separate [ChildInterfaceIntegration] audit.  In particular,
+  neither public child-interface law occurs as a hypothesis of the selected
+  child-tail theorem.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessRecursiveChildInterface
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceSemanticCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildCoreExtraction
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailCompilation.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceCompilationAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessRecursiveChildInterface.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceSemanticCompilation.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceCompilation.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildCoreExtraction.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailCompilation.
+
+(** Carrier descent is generic; the next two results instantiate it for the
+    literal left and right members of the And-I recursive row. *)
+Check raw_carrierRestrictedProofAt_recursive_constructor_child.
+Check raw_recursive_constructor_child_interface.
+Check raw_andIntroduction_recursive_child_data.
+Check raw_carrierRestrictedProofAt_andIntroduction_child.
+Check raw_andIntroduction_child_interface.
+
+(** A single opened coverage witness semantically produces the ordered pair
+    of exact child-interface results. *)
+Check coqRestrictedPADirectAndIntroductionLeftInterfaceResultTemplate.
+Check coqRestrictedPADirectAndIntroductionRightInterfaceResultTemplate.
+Check coqRestrictedPADirectAndIntroductionChildInterfacePairTemplate.
+Check coqRestrictedPADirectAndIntroductionOpenedCoverageCompilerLawTemplate.
+Check RawCoqRestrictedPADirectAndIntroductionOpenedCoverageCompilerLawRoot.
+Check raw_coqRestrictedPADirectAndIntroductionOpenedCoverageLaw_valid.
+
+(** The valid arithmetic law is reified as a fixed PA theorem and then used
+    by represented Ex-E/And-E compilation to expose both roots. *)
+Check coqRestrictedPADirectAndIntroductionOpenedCoverageSourceFormula.
+Check raw_coqRestrictedPADirectAndIntroductionOpenedCoverageSource_valid.
+Check PA_proves_coqRestrictedPADirectAndIntroductionOpenedCoverageSource.
+Check RawCoqRestrictedPADirectAndIntroductionChildCoreRoots.
+Check raw_andIntroductionChildCoreRoots_of_openedCoverageCompiler.
+
+(** One certified standard-PA witness tail contains both child roots. *)
+Check
+  raw_codedPALocalProof_andIntroductionOpenedCoverageLaw_on_witnessed_base.
+Check RawCoqRestrictedPADirectSelectedAndIntroductionChildCoreTail.
+Check raw_selectedAndIntroductionChildCoreTail.
+
+Print Assumptions
+  raw_carrierRestrictedProofAt_recursive_constructor_child.
+Print Assumptions raw_recursive_constructor_child_interface.
+Print Assumptions raw_carrierRestrictedProofAt_andIntroduction_child.
+Print Assumptions raw_andIntroduction_child_interface.
+Print Assumptions
+  raw_coqRestrictedPADirectAndIntroductionOpenedCoverageLaw_valid.
+Print Assumptions
+  PA_proves_coqRestrictedPADirectAndIntroductionOpenedCoverageSource.
+Print Assumptions
+  raw_andIntroductionChildCoreRoots_of_openedCoverageCompiler.
+Print Assumptions raw_selectedAndIntroductionChildCoreTail.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceCompilationAudit.

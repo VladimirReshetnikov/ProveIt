@@ -1,0 +1,48 @@
+(**
+  Audit surface for the low-memory And-I child/truth integration boundary.
+
+  The structural child compiler has its own independent audit.  These checks
+  deliberately load the large post-And-I continuation only here, where the
+  two synchronized child roots are merged with the single remaining outer-
+  conjunction truth root.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceSemanticCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildCoreExtraction
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceIntegration.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceIntegrationAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceSemanticCompilation.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceCompilation.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildCoreExtraction.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailCompilation.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceIntegration.
+
+(** The first two declarations are supplied by the low-memory core. *)
+Check RawCoqRestrictedPADirectSelectedAndIntroductionChildCoreTail.
+Check raw_selectedAndIntroductionChildCoreTail.
+
+(** This is the exact remaining boundary and its three-root merger. *)
+Check
+  RawCoqRestrictedPADirectAndIntroductionTruthCoreStandardTailCompiler.
+Check raw_selectedAndIntroductionCoreTail_of_children_and_truth.
+
+Print Assumptions
+  RawCoqRestrictedPADirectAndIntroductionTruthCoreStandardTailCompiler.
+Print Assumptions raw_selectedAndIntroductionCoreTail_of_children_and_truth.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceIntegrationAudit.

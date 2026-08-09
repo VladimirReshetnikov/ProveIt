@@ -1,0 +1,185 @@
+(**
+  Represented production of the opened And-I coverage law on a witnessed tail.
+
+  This module owns only the universal-source instantiation proof.  Its input
+  context is the synchronized witnessed base normalized by the preceding
+  context-alignment boundary.
+*)
+
+From Stdlib Require Import List Lia.
+From FirstOrder Require Import Fol.
+From PAHF Require Import PAHF.
+From PAListCoding Require Import Representability.
+From PAFiniteBasisReduction Require Import
+  HierarchyReduction CanonicalSelector CanonicalSelectorPA FiniteBetaCoding.
+From BoundedPAConsistency Require Import
+  CodedProof
+  PolynomialPairInjectivity
+  RawModelCompleteness
+  RawCodedAssignment
+  RawCodedSyntaxConstructors
+  RawCodedFormulaOperations
+  RawCodedContextLists
+  RawCodedProofConstructors
+  RawCodedProofDescent
+  RawCodedProofTraversal
+  RawCodedProofEndpoints
+  RawCodedProofRules
+  RawCodedProofAndIConstructor
+  RawCodedProofAtomicAdequacy
+  RawCodedProofFormulaCoverage
+  RawCodedProofRuleCoverage
+  RawCodedFixedLevelTruthTotality
+  RawCodedFixedLevelTruthAdmissibleLowering
+  RawCodedRestrictedPAProof
+  RawCodedRestrictedProofAdmissibility
+  RawCodedCarrierRestrictedProofReroot
+  RawCodedRestrictedPADerivationSoundnessRecursiveChildInterface
+  RawCodedRestrictedPAConsistencyFormulaCode
+  RawCodedRestrictedTargetTemplateContext
+  RawCodedRestrictedTargetTemplateSemantics
+  RawCodedPALocalProofExistential
+  RawCodedPALocalProofConjunction
+  RawCodedPALocalProofUniversalIntroductionChain
+  RawCodedPALocalProofUniversalSourceInstance
+  RawCodedPAAxiomWitnessPrefix
+  RawCodedTemplateSyntax
+  RawCodedTemplateSemantics
+  RawCodedTemplateProofCompiler
+  RawCodedTemplatePAEmbedding
+  RawCodedTemplateParameterAbstraction
+  RawCodedTemplateDirectStructuralTranslation
+  RawCodedTemplateStructuralPAAgreement
+  RawCodedTemplateDirectStructuralPAAgreement
+  RawCodedTemplateProofCompilerSelfShiftTail
+  RawCodedTemplatePAEmbeddingSelfShiftTail
+  RawCodedFourStateTableAppendExistentialElimination
+  RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixInductionShell
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier
+  RawCodedRestrictedPADerivationSoundnessDirectStrongStepShell
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftRecursiveChildCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootValidity
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageValidity
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageCompilation.
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceSemanticCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildCoreExtraction
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailContextAlignment.
+
+Import ListNotations.
+
+Module PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailSourceProduction.
+
+Import PA.
+Import PAListRepresentability.
+Import PAHierarchyReduction.
+Import PACanonicalSelector.
+Import PACanonicalSelectorPA.
+Import PAFiniteBetaCoding.
+Import PABoundedCodedProof.
+Import PABoundedPolynomialPairInjectivity.
+Import PABoundedRawModelCompleteness.
+Import PABoundedRawCodedAssignment.
+Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedFormulaOperations.
+Import PABoundedRawCodedContextLists.
+Import PABoundedRawCodedProofConstructors.
+Import PABoundedRawCodedProofDescent.
+Import PABoundedRawCodedProofTraversal.
+Import PABoundedRawCodedProofEndpoints.
+Import PABoundedRawCodedProofRules.
+Import PABoundedRawCodedProofAndIConstructor.
+Import PABoundedRawCodedProofAtomicAdequacy.
+Import PABoundedRawCodedProofFormulaCoverage.
+Import PABoundedRawCodedProofRuleCoverage.
+Import PABoundedRawCodedFixedLevelTruthTotality.
+Import PABoundedRawCodedFixedLevelTruthAdmissibleLowering.
+Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedRestrictedProofAdmissibility.
+Import PABoundedRawCodedCarrierRestrictedProofReroot.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessRecursiveChildInterface.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
+Import PABoundedRawCodedRestrictedTargetTemplateContext.
+Import PABoundedRawCodedRestrictedTargetTemplateSemantics.
+Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofConjunction.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
+Import PABoundedRawCodedPALocalProofUniversalSourceInstance.
+Import PABoundedRawCodedPAAxiomWitnessPrefix.
+Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateSemantics.
+Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedTemplateParameterAbstraction.
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+Import PABoundedRawCodedTemplateStructuralPAAgreement.
+Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
+Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
+Import PABoundedRawCodedTemplatePAEmbeddingSelfShiftTail.
+Import PABoundedRawCodedFourStateTableAppendExistentialElimination.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixInductionShell.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectStrongStepShell.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftRecursiveChildCompilation.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageCompilation.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceSemanticCompilation.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceCompilation.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildCoreExtraction.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailContextAlignment.
+
+Theorem
+    raw_codedPALocalProof_andIntroductionOpenedCoverageLaw_on_witnessed_base :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    baseWitnessList baseContext,
+  RawCodedPAAxiomWitnessContext M baseWitnessList baseContext ->
+  exists (witnesses : StandardPAAxiomWitnessPrefix) (root : M),
+    RawCodedPAAxiomWitnessContext M
+      (rawStandardPAAxiomWitnessPrefixWitnessListCode M
+        witnesses baseWitnessList)
+      (rawStandardPAAxiomWitnessPrefixContextCode M
+        witnesses baseContext) /\
+    RawCodedPALocalProofOf M
+      (rawTemplateContextCodeOnTail
+        (rawDirectStructuralTemplateTranslation M hPA inputs)
+        (rawStandardPAAxiomWitnessPrefixContextCode M
+          witnesses baseContext)
+        (coqRestrictedPADirectAndIntroductionCoverageEigenContext []))
+      (rawDirectTemplateFormula inputs
+        coqRestrictedPADirectAndIntroductionOpenedCoverageCompilerLawTemplate)
+      root.
+Proof.
+  intros M hPA inputs baseWitnessList baseContext hbase.
+  exact
+    (raw_codedPALocalProof_universalSourceInstance_under_directPrefix
+      M hPA inputs baseWitnessList baseContext
+      coqRestrictedPADirectAndIntroductionOpenedCoverageSourceBodyFormula
+      (rawDirectTemplateTerm inputs
+        coqRestrictedPASoundnessLowerLevelTerm)
+      (rawDirectTemplateFormula inputs
+        coqRestrictedPADirectAndIntroductionOpenedCoverageCompilerLawTemplate)
+      (coqRestrictedPADirectAndIntroductionCoverageEigenContext [])
+      hbase
+      PA_proves_coqRestrictedPADirectAndIntroductionOpenedCoverageSource
+      (rawDirect_andIntroductionOpenedCoverageSource_substitution
+        M hPA inputs)).
+Qed.
+
+End PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailSourceProduction.

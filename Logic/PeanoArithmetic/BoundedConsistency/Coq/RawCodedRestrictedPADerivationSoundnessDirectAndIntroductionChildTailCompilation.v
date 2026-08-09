@@ -1,0 +1,20 @@
+(**
+  Compatibility umbrella for the split witnessed-tail And-I child compiler.
+
+  The former monolithic proof is partitioned into three acyclic owner modules.
+  Importing this historical module continues to expose every public identifier,
+  while strict verification can check each proof family independently.
+*)
+
+From BoundedPAConsistency Require Export
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailContextAlignment
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailSourceProduction
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailSelection.
+
+Module PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailCompilation.
+
+Export PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailContextAlignment.
+Export PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailSourceProduction.
+Export PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailSelection.
+
+End PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailCompilation.

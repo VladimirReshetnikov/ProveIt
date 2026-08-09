@@ -1,0 +1,197 @@
+(**
+  Context alignment for synchronized witnessed And-I child tails.
+
+  These small syntactic lemmas isolate all tail-affinity and witnessed-code
+  normalization needed by the represented source and final tail selection.
+  Keeping them in their own owner module gives strict checking a compact,
+  acyclic boundary before either represented proof is constructed.
+*)
+
+From Stdlib Require Import List Lia.
+From FirstOrder Require Import Fol.
+From PAHF Require Import PAHF.
+From PAListCoding Require Import Representability.
+From PAFiniteBasisReduction Require Import
+  HierarchyReduction CanonicalSelector CanonicalSelectorPA FiniteBetaCoding.
+From BoundedPAConsistency Require Import
+  CodedProof
+  PolynomialPairInjectivity
+  RawModelCompleteness
+  RawCodedAssignment
+  RawCodedSyntaxConstructors
+  RawCodedFormulaOperations
+  RawCodedContextLists
+  RawCodedProofConstructors
+  RawCodedProofDescent
+  RawCodedProofTraversal
+  RawCodedProofEndpoints
+  RawCodedProofRules
+  RawCodedProofAndIConstructor
+  RawCodedProofAtomicAdequacy
+  RawCodedProofFormulaCoverage
+  RawCodedProofRuleCoverage
+  RawCodedFixedLevelTruthTotality
+  RawCodedFixedLevelTruthAdmissibleLowering
+  RawCodedRestrictedPAProof
+  RawCodedRestrictedProofAdmissibility
+  RawCodedCarrierRestrictedProofReroot
+  RawCodedRestrictedPADerivationSoundnessRecursiveChildInterface
+  RawCodedRestrictedPAConsistencyFormulaCode
+  RawCodedRestrictedTargetTemplateContext
+  RawCodedRestrictedTargetTemplateSemantics
+  RawCodedPALocalProofExistential
+  RawCodedPALocalProofConjunction
+  RawCodedPALocalProofUniversalIntroductionChain
+  RawCodedPALocalProofUniversalSourceInstance
+  RawCodedPAAxiomWitnessPrefix
+  RawCodedTemplateSyntax
+  RawCodedTemplateSemantics
+  RawCodedTemplateProofCompiler
+  RawCodedTemplatePAEmbedding
+  RawCodedTemplateParameterAbstraction
+  RawCodedTemplateDirectStructuralTranslation
+  RawCodedTemplateStructuralPAAgreement
+  RawCodedTemplateDirectStructuralPAAgreement
+  RawCodedTemplateProofCompilerSelfShiftTail
+  RawCodedTemplatePAEmbeddingSelfShiftTail
+  RawCodedFourStateTableAppendExistentialElimination
+  RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixInductionShell
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier
+  RawCodedRestrictedPADerivationSoundnessDirectStrongStepShell
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftRecursiveChildCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootValidity
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageValidity
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterAndIntroduction.
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceSemanticCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildCoreExtraction.
+
+Import ListNotations.
+
+Module PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailContextAlignment.
+
+Import PA.
+Import PAListRepresentability.
+Import PAHierarchyReduction.
+Import PACanonicalSelector.
+Import PACanonicalSelectorPA.
+Import PAFiniteBetaCoding.
+Import PABoundedCodedProof.
+Import PABoundedPolynomialPairInjectivity.
+Import PABoundedRawModelCompleteness.
+Import PABoundedRawCodedAssignment.
+Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedFormulaOperations.
+Import PABoundedRawCodedContextLists.
+Import PABoundedRawCodedProofConstructors.
+Import PABoundedRawCodedProofDescent.
+Import PABoundedRawCodedProofTraversal.
+Import PABoundedRawCodedProofEndpoints.
+Import PABoundedRawCodedProofRules.
+Import PABoundedRawCodedProofAndIConstructor.
+Import PABoundedRawCodedProofAtomicAdequacy.
+Import PABoundedRawCodedProofFormulaCoverage.
+Import PABoundedRawCodedProofRuleCoverage.
+Import PABoundedRawCodedFixedLevelTruthTotality.
+Import PABoundedRawCodedFixedLevelTruthAdmissibleLowering.
+Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedRestrictedProofAdmissibility.
+Import PABoundedRawCodedCarrierRestrictedProofReroot.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessRecursiveChildInterface.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
+Import PABoundedRawCodedRestrictedTargetTemplateContext.
+Import PABoundedRawCodedRestrictedTargetTemplateSemantics.
+Import PABoundedRawCodedPALocalProofExistential.
+Import PABoundedRawCodedPALocalProofConjunction.
+Import PABoundedRawCodedPALocalProofUniversalIntroductionChain.
+Import PABoundedRawCodedPALocalProofUniversalSourceInstance.
+Import PABoundedRawCodedPAAxiomWitnessPrefix.
+Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateSemantics.
+Import PABoundedRawCodedTemplateProofCompiler.
+Import PABoundedRawCodedTemplatePAEmbedding.
+Import PABoundedRawCodedTemplateParameterAbstraction.
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+Import PABoundedRawCodedTemplateStructuralPAAgreement.
+Import PABoundedRawCodedTemplateDirectStructuralPAAgreement.
+Import PABoundedRawCodedTemplateProofCompilerSelfShiftTail.
+Import PABoundedRawCodedTemplatePAEmbeddingSelfShiftTail.
+Import PABoundedRawCodedFourStateTableAppendExistentialElimination.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixInductionShell.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleDispatchFrontier.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectStrongStepShell.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftRecursiveChildCompilation.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootCompilation.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageCompilation.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildInterfaceSemanticCompilation.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceCompilation.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildCoreExtraction.
+
+(** The ready-context affine law was already proved and kernel-checked at the
+    post-And-I continuation boundary.  Reusing it here avoids rebuilding the
+    very large endpoint-renaming conversion; this shard owns only the new
+    one-binder coverage-eigencontext calculation. *)
+Lemma coqRestrictedPADirectAndIntroductionCoverageEigenContext_app_witnesses :
+    forall witnesses,
+  coqRestrictedPADirectAndIntroductionCoverageEigenContext
+      (embedPAContext (map witnessedAxiom witnesses)) =
+  coqRestrictedPADirectAndIntroductionCoverageEigenContext [] ++
+    embedPAContext (map witnessedAxiom witnesses).
+Proof.
+  intro witnesses.
+  unfold coqRestrictedPADirectAndIntroductionCoverageEigenContext.
+  rewrite
+    (PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterAndIntroduction.coqRestrictedPADirectAndIntroductionReadyContext_app_witnesses
+      witnesses).
+  rewrite templateContextShift_app,
+    templateContextShift_embedPAAxiomWitnesses_fixed.
+  reflexivity.
+Qed.
+
+Lemma raw_andIntroductionCoverageEigenContext_witnessed_code : forall
+    (M : RawPAModel) (translation : RawCodedTemplateTranslation M),
+  RawCodedTemplatePAAgreement M translation -> forall witnesses,
+  rawTemplateContextCode translation
+    (coqRestrictedPADirectAndIntroductionCoverageEigenContext
+      (embedPAContext (map witnessedAxiom witnesses))) =
+  rawTemplateContextCodeOnTail translation
+    (rawStandardPAAxiomWitnessPrefixContextCode M
+      witnesses (raw_zero M))
+    (coqRestrictedPADirectAndIntroductionCoverageEigenContext []).
+Proof.
+  intros M translation hagreement witnesses.
+  rewrite
+    coqRestrictedPADirectAndIntroductionCoverageEigenContext_app_witnesses.
+  rewrite rawTemplateContextCode_app_on_tail.
+  assert (htail : rawTemplateContextCode translation
+      (embedPAContext (map witnessedAxiom witnesses)) =
+    rawStandardPAAxiomWitnessPrefixContextCode M witnesses (raw_zero M)).
+  {
+    rewrite rawTemplateContextCode_as_on_tail.
+    apply (raw_templateContextCodeOnTail_embedPAAxiomWitnesses
+      M translation hagreement witnesses (raw_zero M)).
+  }
+  now rewrite htail.
+Qed.
+
+End PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionChildTailContextAlignment.

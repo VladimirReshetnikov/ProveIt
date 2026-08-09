@@ -1,0 +1,56 @@
+(** Raw-model validity of the fixed opened And-I coverage source. *)
+
+From Stdlib Require Import List.
+From FirstOrder Require Import Fol.
+From PAHF Require Import PAHF.
+From PAFiniteBasisReduction Require Import
+  HierarchyReduction CanonicalSelectorPA.
+From BoundedPAConsistency Require Import
+  RawModelCompleteness
+  RawCodedTemplateSyntax
+  RawCodedTemplateSemantics
+  RawCodedTemplateEmbeddedUniversalValidity
+  RawCodedTemplateParameterAbstraction
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceDefinitions
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceEmbedding
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceTemplateValidity.
+
+Import ListNotations.
+
+Module PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceSemanticValidity.
+
+Import PA.
+Import PAHierarchyReduction.
+Import PACanonicalSelectorPA.
+Import PABoundedRawModelCompleteness.
+Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateSemantics.
+Import PABoundedRawCodedTemplateEmbeddedUniversalValidity.
+Import PABoundedRawCodedTemplateParameterAbstraction.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceDefinitions.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceEmbedding.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceTemplateValidity.
+
+Theorem
+    raw_coqRestrictedPADirectAndIntroductionOpenedCoverageSource_valid :
+  forall (M : RawPAModel), RawPASatisfies M -> forall variables,
+  raw_formula_sat M variables
+    coqRestrictedPADirectAndIntroductionOpenedCoverageSourceFormula.
+Proof.
+  intros M hPA variables.
+  unfold coqRestrictedPADirectAndIntroductionOpenedCoverageSourceFormula.
+  apply (raw_formula_sat_all_of_embedded_template_validity M
+    coqRestrictedPADirectAndIntroductionOpenedCoverageSourceBodyFormula
+    (fun _ : TemplateParameterName => raw_zero M)
+    (fun (_ : TemplatePredicateName) (_ : list M) => True)).
+  intros inner level.
+  exact
+    (rawTemplateFormulaSat_coqRestrictedPADirectAndIntroductionOpenedCoverageSourceBody
+      M hPA inner level).
+Qed.
+
+End PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageSourceSemanticValidity.
