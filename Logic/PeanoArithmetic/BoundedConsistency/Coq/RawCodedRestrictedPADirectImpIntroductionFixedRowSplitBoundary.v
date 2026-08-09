@@ -1,5 +1,5 @@
 (**
-  Exact pre-Imp-I boundary for the direct implication truth split.
+  Diagnostic pre-Imp-I boundary for the direct implication truth split.
 
   The native predecessor decision is initially compiled under literal Pi and
   Sigma state assumptions.  Represented proofs of those state atoms reroot it
@@ -9,9 +9,12 @@
   truth assumptions.  Two ordinary Imp-I nodes then build each row law.
 
   Consequently this boundary assumes neither the target implication truth law
-  nor either fixed-row implication law.  Its remaining positive-body premises
-  are the exact endpoints to be supplied by selected row lookup and append
-  traversal.
+  nor either fixed-row implication law.  It is deliberately retained as a
+  checked decomposition lemma, but it is not the final producer interface:
+  predecessor-state exclusivity makes simultaneous ready-context proofs of
+  Pi state and Sigma state impossible.  The non-vacuous compiler therefore
+  bypasses this joint wrapper and invokes the elimination chain directly in
+  the ready context.
 *)
 
 From PAHF Require Import PAHF.
@@ -63,10 +66,12 @@ Import
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterImpIntroductionTruth.
 
-(** Package the exact three roots needed by the represented propositional
+(** Package the three roots needed by the represented propositional
     split.  The false and true body contexts spell the discharge order
     literally: the child truth is the outer head and the formula relation is
-    the next head above the ready context. *)
+    the next head above the ready context.  The two state premises make this
+    theorem useful for structural auditing, but not directly instantiable in
+    the intended consistent predecessor context. *)
 Theorem
     raw_impIntroductionFixedRowSplitRoots_of_joint_decision_and_positive_bodies :
   forall (M : RawPAModel) (hPA : RawPASatisfies M), forall

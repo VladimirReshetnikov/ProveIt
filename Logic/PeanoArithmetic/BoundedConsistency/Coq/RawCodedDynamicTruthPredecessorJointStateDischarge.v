@@ -1,11 +1,16 @@
 (**
-  Remove the native predecessor-state prefix by represented cuts.
+  Remove a hypothetical native predecessor-state prefix by represented cuts.
 
   Native predecessor evidence is compiled under two literal state
-  assumptions: Pi is the outer head and Sigma is the next head.  Direct rule
-  cases instead need the evidence in their unchanged ready context.  When
-  actual proofs of both state atoms are available there, the generic
-  two-assumption discharge theorem performs exactly the required rerooting.
+  assumptions: Pi is the outer head and Sigma is the next head.  If proofs of
+  both state atoms are supplied in a base context, the generic two-assumption
+  discharge theorem performs the corresponding rerooting.
+
+  This is a structural cut lemma, not a producer for the native Imp-I branch.
+  The predecessor-state exclusivity compiler proves that Sigma and Pi state
+  evidence cannot coexist in a consistent ready context.  Consequently the
+  real branch compiler must construct its decision directly in that ready
+  context instead of trying to instantiate this theorem with both roots.
 
   This theorem is deliberately conclusion-generic.  In particular it can
   reroot the predecessor decision disjunction without assuming any dynamic
@@ -46,7 +51,7 @@ Import
 Import
   PABoundedRawCodedDynamicTruthPredecessorAdmissibilityAssignmentCompilation.
 
-(** The order of the two source roots follows the literal context order:
+(** The order of the two hypothetical source roots follows the literal context order:
     Pi first, then Sigma.  The raw/template code equalities are consequences
     of PA agreement, so no carrier-code identification premise leaks into
     the public boundary. *)
