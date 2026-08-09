@@ -1,0 +1,13 @@
+(** Strict assumption audit for the generic recursive-child interface. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessRecursiveChildInterface.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessRecursiveChildInterface.
+
+Check raw_carrierRestrictedProofAt_recursive_constructor_child.
+Check raw_recursive_constructor_child_interface.
+
+Print Assumptions raw_carrierRestrictedProofAt_recursive_constructor_child.
+Print Assumptions raw_recursive_constructor_child_interface.
