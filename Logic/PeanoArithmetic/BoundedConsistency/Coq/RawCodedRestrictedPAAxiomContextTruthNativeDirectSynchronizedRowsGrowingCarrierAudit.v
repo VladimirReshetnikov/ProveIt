@@ -1,0 +1,22 @@
+(** Assumption audit for the honest growing synchronized-row carrier. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPAAxiomContextTruthNativeDirectSynchronizedRowsGrowingCarrier.
+
+Import
+  PABoundedRawCodedRestrictedPAAxiomContextTruthNativeDirectSynchronizedRowsGrowingCarrier.
+
+Check coqRestrictedPANativeAxiomRowsGrowingRowPrefix.
+Check raw_coqRestrictedPANativeAxiomRows_directTemplatePrefix.
+Check RawCoqRestrictedPANativeAxiomRowsGrowingIdentificationOn.
+Check raw_coqRestrictedPANativeAxiomRowsGrowingRowPrefix_code.
+Check RawCoqRestrictedPANativeAxiomContextTruthGrowingRowsCompiler.
+Check
+  raw_coqRestrictedPANativeAxiomContextTruthGrowingRowsCompiler_compiled.
+
+Print Assumptions
+  raw_coqRestrictedPANativeAxiomRows_directTemplatePrefix.
+Print Assumptions
+  raw_coqRestrictedPANativeAxiomRowsGrowingRowPrefix_code.
+Print Assumptions
+  raw_coqRestrictedPANativeAxiomContextTruthGrowingRowsCompiler_compiled.
