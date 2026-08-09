@@ -42,6 +42,8 @@ Check
 
 Check RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeAt.
 Check
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeCompiler.
+Check
   raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_ordinary.
 Check
   raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_ordinary_complete_fields.
@@ -50,6 +52,8 @@ Check
   raw_dynamicTruthNativeFinalGrowingStagedLocalProof_of_direct_bridge.
 Check
   raw_dynamicTruthNativeFinalGrowingStagedNextFinalProof_of_direct_bridge.
+Check
+  raw_dynamicTruthNativeFinalStagedTraceProofCompiler_of_growing_direct_bridge.
 
 Print Assumptions
   raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_open_and_axiom_support.
@@ -73,3 +77,5 @@ Print Assumptions
   raw_dynamicTruthNativeFinalGrowingStagedLocalProof_of_direct_bridge.
 Print Assumptions
   raw_dynamicTruthNativeFinalGrowingStagedNextFinalProof_of_direct_bridge.
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedTraceProofCompiler_of_growing_direct_bridge.

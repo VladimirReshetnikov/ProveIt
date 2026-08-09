@@ -745,6 +745,41 @@ Arguments RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeAt
     nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
     nextFinal successorNumeralCode : clear implicits.
 
+(** Uniform pointwise producer used by the public callback adapter below.
+    The compiler may grow [baseContext] internally; that grown base is hidden
+    in [RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeAt]
+    and is recovered only by its checked consumer. *)
+Definition
+    RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeCompiler
+    (M : RawPAModel)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext,
+    RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode ->
+    RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+      witnessList baseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness ->
+    RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeAt
+      M inputs tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode.
+
+Arguments
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeCompiler
+  M inputs : clear implicits.
+
 Theorem
     raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_ordinary
     : forall (M : RawPAModel), RawPASatisfies M -> forall
@@ -1033,6 +1068,37 @@ Proof.
   exact (raw_codedPAProofOf_dynamicTruthNativeFinal_of_carried_root
     M mergedWitnessList mergedBaseContext nextFinal finalRoot
     hmergedWitnessed hfinalRoot).
+Qed.
+
+(** A uniform grown-bridge producer therefore implements the generic
+    pointwise sixth-stage interface. *)
+Theorem
+    raw_dynamicTruthNativeFinalStagedTraceProofCompiler_of_growing_direct_bridge
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalStagedTraceProofCompiler M.
+Proof.
+  intros M hPA inputs hcompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites.
+  exact
+    (raw_dynamicTruthNativeFinalGrowingStagedNextFinalProof_of_direct_bridge
+      M hPA inputs tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode htrace
+      (hcompiler tail level
+        currentLocal currentCrossLevel currentShift currentSubstitution
+        currentAxiomSoundness currentFinal
+        nextLocal nextCrossLevel nextShift nextSubstitution
+        nextAxiomSoundness nextFinal successorNumeralCode witnessList
+        baseContext htrace hprerequisites)).
 Qed.
 
 End

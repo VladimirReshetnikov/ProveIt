@@ -666,6 +666,36 @@ Definition RawDynamicTruthNativeFinalStagedLocalProofAt
 Arguments RawDynamicTruthNativeFinalStagedLocalProofAt
   M tail level baseContext target root : clear implicits.
 
+(** Pointwise proof-producing interface for the sixth public stage.  Unlike
+    [RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler], this
+    interface permits the returned ordinary proof to use any witnessed base
+    carried by the premise.  That flexibility is what an accumulated
+    ordinary soundness certificate requires. *)
+Definition RawDynamicTruthNativeFinalStagedTraceProofCompiler
+    (M : RawPAModel) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext,
+    RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode ->
+    RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+      witnessList baseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness ->
+  exists finalCertificate : M,
+    RawDynamicTruthNativeStagedNextFinalProofAt M
+      tail level nextFinal finalCertificate.
+
+Arguments RawDynamicTruthNativeFinalStagedTraceProofCompiler M
+  : clear implicits.
+
 (** Pointwise form of the main structural closing theorem.  Keeping the
     source-linked implication proof as a premise at the selected trace is
     important for context-growing callers: an ordinary certificate may have
@@ -781,6 +811,65 @@ Proof.
   exact hclosed.
 Qed.
 
+(** Close and package one already selected source-linked implication as the
+    exact ordinary graph/proof pair used by the public callback. *)
+Theorem
+    raw_dynamicTruthNativeFinalStagedNextFinalProof_of_source_linked_implication_at
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext,
+    RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode ->
+    RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+      witnessList baseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness ->
+    RawRestrictedPADynamicSoundnessImplicationProof M
+      successorNumeralCode
+      (rawRestrictedPACanonicalShiftedProofContextCode
+        M baseContext successorNumeralCode) ->
+  exists finalCertificate : M,
+    RawDynamicTruthNativeStagedNextFinalProofAt M
+      tail level nextFinal finalCertificate.
+Proof.
+  intros M hPA tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    hgraphTrace hprerequisites hsourceLinked.
+  destruct
+    (raw_dynamicTruthNativeFinalStagedLocalProof_of_source_linked_implication_at
+      M hPA tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext
+      hgraphTrace hprerequisites hsourceLinked)
+    as [finalRoot [hfinalGraph hfinalRoot]].
+  pose proof hprerequisites as hprerequisitesCopy.
+  destruct hprerequisitesCopy as
+    (currentLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+      currentSubstitutionRoot & currentAxiomSoundnessRoot & currentFinalRoot &
+      nextLocalRoot & nextCrossLevelRoot & nextShiftRoot &
+      nextSubstitutionRoot & nextAxiomSoundnessRoot & [hprefix _]).
+  destruct hprefix as [hwitness _ _ _ _ _ _ _ _ _ _].
+  exists (rawCodeList3 M (rawNumeralValue M 0) witnessList finalRoot).
+  split; [exact hfinalGraph |].
+  destruct hfinalRoot as [hcoverage hendpoint].
+  exists witnessList, finalRoot, baseContext.
+  split; [reflexivity |].
+  repeat split; assumption.
+Qed.
+
 (** Compiler form used by the existing staged callback.  All proof-tree
     work is delegated to the pointwise theorem above; the global compiler is
     invoked exactly once to obtain its final premise. *)
@@ -816,6 +905,36 @@ Proof.
     hgraphTrace hprerequisites.
   exact
     (raw_dynamicTruthNativeFinalStagedLocalProof_of_source_linked_implication_at
+      M hPA tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext
+      hgraphTrace hprerequisites
+      (hcompiler tail level
+        currentLocal currentCrossLevel currentShift currentSubstitution
+        currentAxiomSoundness currentFinal
+        nextLocal nextCrossLevel nextShift nextSubstitution
+        nextAxiomSoundness nextFinal successorNumeralCode witnessList
+        baseContext hgraphTrace hprerequisites)).
+Qed.
+
+(** A global source-linked compiler induces the more flexible pointwise
+    public proof interface without adding any premise. *)
+Theorem
+    raw_dynamicTruthNativeFinalStagedTraceProofCompiler_of_source_linked_implication
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M ->
+  RawDynamicTruthNativeFinalStagedTraceProofCompiler M.
+Proof.
+  intros M hPA hcompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    hgraphTrace hprerequisites.
+  exact
+    (raw_dynamicTruthNativeFinalStagedNextFinalProof_of_source_linked_implication_at
       M hPA tail level
       currentLocal currentCrossLevel currentShift currentSubstitution
       currentAxiomSoundness currentFinal

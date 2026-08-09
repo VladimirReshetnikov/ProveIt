@@ -25,10 +25,13 @@ From PAHF Require Import PAHF.
 From PAFiniteBasisReduction Require Import
   HierarchyReduction CanonicalSelectorPA FiniteBetaCoding.
 From BoundedPAConsistency Require Import
+  CompactRestrictedPAConsistencyFormulaCodeGraph
+  RawCodedTemplateDirectStructuralTranslation
   RawCodedDynamicTruthNativeStagedPositiveSuccessor
   RawCodedDynamicTruthNativeFinalStagedRootCompilation
   RawCodedDynamicTruthNativeStagedPrerequisiteAccumulation
-  RawCodedDynamicTruthNativeFinalUniversalSoundnessComposition.
+  RawCodedDynamicTruthNativeFinalUniversalSoundnessComposition
+  RawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridgeDirect.
 
 Module PABoundedRawCodedDynamicTruthNativeFinalStagedCallbackCompilation.
 
@@ -36,22 +39,28 @@ Import PA.
 Import PAHierarchyReduction.
 Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
+Import PABoundedCompactRestrictedPAConsistencyFormulaCodeGraph.
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
 Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
 Import PABoundedRawCodedDynamicTruthNativeStagedPrerequisiteAccumulation.
 Import PABoundedRawCodedDynamicTruthNativeFinalUniversalSoundnessComposition.
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridgeDirect.
 
-(** The exact public final callback follows from the one source-linked
-    implication-root compiler.  All intermediate existential witnesses below
-    are contexts and transported roots returned by proved accumulation
-    theorems, not additional hypotheses. *)
+(** The exact public final callback follows from a pointwise trace-proof
+    compiler.  All intermediate existential witnesses below are contexts and
+    transported roots returned by proved accumulation theorems, not
+    additional hypotheses.  Abstracting this last pointwise step lets an
+    implementation grow the accumulated context before returning its
+    ordinary proof. *)
 Theorem
-    raw_dynamicTruthNativeStagedNextFinalCompiler_of_source_linked_implication
+    raw_dynamicTruthNativeStagedNextFinalCompiler_of_trace_proof
     : forall (M : RawPAModel), RawPASatisfies M ->
-  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M ->
+  RawDynamicTruthNativeFinalStagedTraceProofCompiler M ->
   RawDynamicTruthNativeStagedNextFinalCompiler M.
 Proof.
-  intros M hPA hsourceLinked.
+  intros M hPA htraceProof.
   intros tail level
     currentLocal currentCrossLevel currentShift currentSubstitution
     currentAxiomSoundness currentFinal
@@ -176,14 +185,40 @@ Proof.
       finalNextSubstitutionRoot, finalNextAxiomSoundnessRoot.
     exact hfinalPrerequisitesAt.
   }
-  exact (raw_dynamicTruthNativeFinalStagedNextFinalProof_exists
-    M hPA hsourceLinked tail level
+  destruct (compactRestrictedPAConsistencyFormulaCodeGraph_raw_total
+    M hPA tail (raw_succ M level)) as [nextFinal hnextFinalGraph].
+  destruct (raw_dynamicTruthNativeFinalStagedGraphTrace_of_graphs
+    M hPA tail level
     currentLocal currentCrossLevel currentShift currentSubstitution
     currentAxiomSoundness currentFinal
     nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
-    finalWitnessList finalContext
     hcurrentGraphs hnextLocalGraph hnextCrossGraph hnextShiftGraph
-    hnextSubstitutionGraph hnextAxiomGraph hfinalPrerequisitesOn).
+    hnextSubstitutionGraph hnextAxiomGraph hnextFinalGraph) as
+    [successorNumeralCode htrace].
+  destruct (htraceProof tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode finalWitnessList finalContext
+    htrace hfinalPrerequisitesOn) as [finalCertificate hfinal].
+  exists nextFinal, finalCertificate.
+  exact hfinal.
+Qed.
+
+(** Backward-compatible specialization to the original global
+    source-linked implication compiler. *)
+Theorem
+    raw_dynamicTruthNativeStagedNextFinalCompiler_of_source_linked_implication
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M ->
+  RawDynamicTruthNativeStagedNextFinalCompiler M.
+Proof.
+  intros M hPA hsourceLinked.
+  exact
+    (raw_dynamicTruthNativeStagedNextFinalCompiler_of_trace_proof
+      M hPA
+      (raw_dynamicTruthNativeFinalStagedTraceProofCompiler_of_source_linked_implication
+        M hPA hsourceLinked)).
 Qed.
 
 (** Public callback adapter using the reduced universal-soundness seam.  The
@@ -201,6 +236,26 @@ Proof.
     M hPA
     (raw_dynamicTruthNativeFinalSourceLinkedImplicationRootCompiler_of_bridge
       M hPA hbridge)).
+Qed.
+
+(** Context-flexible public adapter for the direct soundness architecture.
+    The supplied compiler may merge an ordinary direct soundness certificate
+    into the staged base before producing its two bridge roots; the generic
+    trace interface hides that merge from the public callback. *)
+Theorem
+    raw_dynamicTruthNativeStagedNextFinalCompiler_of_growing_direct_bridge :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeCompiler
+    M inputs ->
+  RawDynamicTruthNativeStagedNextFinalCompiler M.
+Proof.
+  intros M hPA inputs hbridge.
+  exact
+    (raw_dynamicTruthNativeStagedNextFinalCompiler_of_trace_proof
+      M hPA
+      (raw_dynamicTruthNativeFinalStagedTraceProofCompiler_of_growing_direct_bridge
+        M hPA inputs hbridge)).
 Qed.
 
 End PABoundedRawCodedDynamicTruthNativeFinalStagedCallbackCompilation.
