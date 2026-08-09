@@ -1,0 +1,27 @@
+(** Audit surface for the direct consistency-from-soundness proof shell. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPAConsistencyFromUniversalSoundnessDirectOpenShell.
+
+Import
+  PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundnessDirectOpenShell.
+
+Check coqRestrictedPAOpenShellSoundnessInstanceTemplate.
+Check coqRestrictedPAOpenShellContextTruthLawInstanceTemplate.
+Check coqRestrictedPAOpenShell_soundness_instance_shape.
+Check coqRestrictedPAOpenShell_context_truth_instance_shape.
+Check coqRestrictedPAOpenShell_bottom_refutation_shape.
+Check coqRestrictedPAOpenShell_bottom_derives.
+Check coqRestrictedPAOpenShell_closed_derives.
+
+Check rawCoqRestrictedPAOpenShellTheoremCode.
+Check raw_codedPALocalProofOf_coqRestrictedPAOpenShell.
+Check RawCoqRestrictedPAOpenShellRoots.
+Check raw_coqRestrictedPAOpenShell_bottom_of_roots.
+
+Print Assumptions coqRestrictedPAOpenShell_soundness_instance_shape.
+Print Assumptions coqRestrictedPAOpenShell_context_truth_instance_shape.
+Print Assumptions coqRestrictedPAOpenShell_bottom_refutation_shape.
+Print Assumptions coqRestrictedPAOpenShell_closed_derives.
+Print Assumptions raw_codedPALocalProofOf_coqRestrictedPAOpenShell.
+Print Assumptions raw_coqRestrictedPAOpenShell_bottom_of_roots.
