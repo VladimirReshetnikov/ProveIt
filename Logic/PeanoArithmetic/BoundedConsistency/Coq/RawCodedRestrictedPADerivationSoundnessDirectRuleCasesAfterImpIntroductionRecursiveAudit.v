@@ -1,0 +1,37 @@
+(** Kernel audit for the post-Imp-I-recursive growing-tail boundary. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectRenamedChildTruth
+  RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterImpIntroductionRecursive.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRenamedChildTruth.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterImpIntroductionRecursive.
+
+(** The strongest reusable child compiler is generic, but its Imp-I child
+    interface and context-cons truth inputs are not yet produced. *)
+Check
+  raw_codedPALocalProofOf_coqRestrictedPADirectAndIntroductionChildTruth_renamed.
+
+Check
+  RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterImpIntroductionRecursive.
+Check raw_afterOrIntroductionLeftTruth_of_afterImpIntroductionRecursive.
+Check RawCoqRestrictedPADirectSelectedImpIntroductionRecursiveTail.
+Check coqRestrictedPADirectImpIntroductionReadyContext_app_witnesses.
+Check raw_impIntroductionRecursiveChildLawRoot_surround_witnessed_tail.
+Check
+  RawCoqRestrictedPADirectRemainingAfterImpIntroductionRecursiveStandardTailCompiler.
+Check
+  raw_remainingAfterOrIntroductionLeftTruthCompiler_of_selectedImpIntroductionRecursive.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterImpIntroductionRecursive.
+
+Print Assumptions
+  coqRestrictedPADirectImpIntroductionReadyContext_app_witnesses.
+Print Assumptions
+  raw_impIntroductionRecursiveChildLawRoot_surround_witnessed_tail.
+Print Assumptions
+  raw_remainingAfterOrIntroductionLeftTruthCompiler_of_selectedImpIntroductionRecursive.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterImpIntroductionRecursive.
