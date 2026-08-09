@@ -1,0 +1,26 @@
+(** Audit surface for the carried synchronized-row/body-shell adapter. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPAAxiomContextTruthNativeDirectSynchronizedRowsGrowingBodyShell.
+
+Import
+  PABoundedRawCodedRestrictedPAAxiomContextTruthNativeDirectSynchronizedRowsGrowingBodyShell.
+
+Check
+  raw_coqRestrictedPAConsistencyBridgeContext_all_atomically_adequate_of_witnessed.
+Check raw_coqRestrictedPAConsistencyBridgeContext_base_included.
+Check
+  raw_coqRestrictedPANativeAxiomContextTruth_growing_bridge_root_of_synchronized_link.
+Check
+  raw_coqRestrictedPANativeAxiomContextTruth_growing_bridge_root_compiled.
+Check
+  raw_dynamicTruthNativeFinalStagedGraphTrace_growing_selected_axiom_context_root_exists.
+
+Print Assumptions
+  raw_coqRestrictedPAConsistencyBridgeContext_all_atomically_adequate_of_witnessed.
+Print Assumptions
+  raw_coqRestrictedPANativeAxiomContextTruth_growing_bridge_root_of_synchronized_link.
+Print Assumptions
+  raw_coqRestrictedPANativeAxiomContextTruth_growing_bridge_root_compiled.
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedGraphTrace_growing_selected_axiom_context_root_exists.
