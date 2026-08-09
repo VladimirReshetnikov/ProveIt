@@ -24,6 +24,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateSyntax
   RawCodedTemplateProofCompiler
   RawCodedTemplateDirectStructuralTranslation
+  RawCodedDynamicTruthNativeStagedPositiveSuccessor
   RawCodedDynamicTruthNativeFinalStagedRootCompilation
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell
@@ -41,6 +42,7 @@ Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
 Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import
@@ -114,6 +116,73 @@ Proof.
       nextFinal successorNumeralCode stagedWitnessList stagedBaseContext
       soundnessCertificate htrace hprerequisites hsoundness
       hlevel hconsistencyCompiler).
+Qed.
+
+(** The grown bridge is now consumable all the way to the public sixth-stage
+    graph/proof pair.  This corollary makes that connection explicit for the
+    witnessed direct rule-case producer: the caller supplies neither an
+    ordinary soundness certificate nor any final proof root. *)
+Corollary
+    raw_dynamicTruthNativeFinalGrowingStagedNextFinalProof_of_witnessed_rule_case_semantic_roots
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      (ruleTail : TemplateContext)
+      replacement axiom closureCount ruleBaseWitnessList,
+  RawCodedPAAxiomWitnessContext M ruleBaseWitnessList
+    (rawTemplateContextCode
+      (rawDirectStructuralTemplateTranslation M hPA inputs) ruleTail) ->
+  RawCoqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder
+    M inputs replacement axiom closureCount ->
+  RawCoqRestrictedPADirectRuleCaseSemanticRoots M hPA inputs ruleTail ->
+  forall (stagedTail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode stagedWitnessList stagedBaseContext,
+  RawDynamicTruthNativeFinalStagedGraphTraceAt M stagedTail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode ->
+  RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+    stagedWitnessList stagedBaseContext
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness ->
+  rawDirectTemplateTerm inputs
+    coqRestrictedPASoundnessLowerLevelTerm = successorNumeralCode ->
+  RawDynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler
+    M inputs ->
+  exists finalCertificate : M,
+    RawDynamicTruthNativeStagedNextFinalProofAt M
+      stagedTail level nextFinal finalCertificate.
+Proof.
+  intros M hPA inputs ruleTail replacement axiom closureCount
+    ruleBaseWitnessList hruleBase hremainder hsemantic
+    stagedTail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode stagedWitnessList stagedBaseContext
+    htrace hprerequisites hlevel hconsistencyCompiler.
+  pose proof
+    (raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_witnessed_rule_case_semantic_roots
+      M hPA inputs ruleTail replacement axiom closureCount
+      ruleBaseWitnessList hruleBase hremainder hsemantic
+      stagedTail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode stagedWitnessList stagedBaseContext
+      htrace hprerequisites hlevel hconsistencyCompiler)
+    as hbridge.
+  exact
+    (raw_dynamicTruthNativeFinalGrowingStagedNextFinalProof_of_direct_bridge
+      M hPA inputs stagedTail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode htrace hbridge).
 Qed.
 
 End
