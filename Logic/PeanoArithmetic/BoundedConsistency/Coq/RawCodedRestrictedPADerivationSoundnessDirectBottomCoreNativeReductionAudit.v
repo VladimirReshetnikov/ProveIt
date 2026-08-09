@@ -1,0 +1,34 @@
+(** Assumption audit for the honest native Bottom-E core reduction. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectBottomCoreNativeReduction.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectBottomCoreNativeReductionAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectBottomCoreNativeReduction.
+
+Check coqRestrictedPADirectBottomClosedTruthTemplate.
+Check RawCoqRestrictedPADirectBottomNativeSourceIdentification.
+Check raw_bottomNativeSourceIdentification_of_selector_application.
+
+Check RawCoqRestrictedPADirectSelectedBottomTruthRefutationTail.
+Check raw_selectedBottomTruthRefutationTail_of_native_identification.
+
+Check RawCoqRestrictedPADirectBottomRecursiveClosedTruthLawRoot.
+Check
+  RawCoqRestrictedPADirectBottomRecursiveClosedTruthStandardTailCompiler.
+
+Check coqRestrictedPADirectBottomCompositionRoot_valid.
+Check raw_selectedBottomContradictionCoreTail_of_native_reduction.
+
+Print Assumptions
+  raw_bottomNativeSourceIdentification_of_selector_application.
+Print Assumptions
+  raw_selectedBottomTruthRefutationTail_of_native_identification.
+Print Assumptions coqRestrictedPADirectBottomCompositionRoot_valid.
+Print Assumptions raw_selectedBottomContradictionCoreTail_of_native_reduction.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectBottomCoreNativeReductionAudit.
