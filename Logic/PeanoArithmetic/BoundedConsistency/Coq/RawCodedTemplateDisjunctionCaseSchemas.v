@@ -49,6 +49,76 @@ Definition templateRightDisjunctionBranches
   prefix ++ [tail].
 
 (** ------------------------------------------------------------------
+    Introduction at a selected branch.
+
+    Dynamic truth rows repeatedly need the dual of the case eliminator
+    below: starting with a proof of one known branch, inject it through a
+    fixed right-associated disjunction.  Keeping the branch index explicit
+    makes the proof term computational and avoids duplicating nests of
+    [trpOrI2] before a final [trpOrI1] at every constructor row. *)
+
+Fixpoint templateRightDisjunctionBranchAt
+    (prefix : list TemplateFormula) (tail : TemplateFormula) (index : nat)
+    : option TemplateFormula :=
+  match prefix, index with
+  | [], 0 => Some tail
+  | [], S _ => None
+  | head :: _, 0 => Some head
+  | _ :: rest, S smaller =>
+      templateRightDisjunctionBranchAt rest tail smaller
+  end.
+
+Fixpoint templateRightDisjunctionIntroductionAt
+    (context : TemplateContext)
+    (prefix : list TemplateFormula) (tail : TemplateFormula) (index : nat)
+    (sourceProof : TemplateRawProof) : TemplateRawProof :=
+  match prefix, index with
+  | [], _ => sourceProof
+  | head :: rest, 0 =>
+      trpOrI1 context head (templateRightDisjunction rest tail) sourceProof
+  | head :: rest, S smaller =>
+      trpOrI2 context head (templateRightDisjunction rest tail)
+        (templateRightDisjunctionIntroductionAt
+          context rest tail smaller sourceProof)
+  end.
+
+Theorem templateRightDisjunctionIntroductionAt_derives : forall
+    context prefix tail index branch sourceProof,
+  templateRightDisjunctionBranchAt prefix tail index = Some branch ->
+  TemplateRawDerives context branch sourceProof ->
+  TemplateRawDerives context
+    (templateRightDisjunction prefix tail)
+    (templateRightDisjunctionIntroductionAt
+      context prefix tail index sourceProof).
+Proof.
+  intros context prefix.
+  revert context.
+  induction prefix as [|head rest ih];
+    intros context tail index branch sourceProof hbranch hsource.
+  - destruct index as [|index]; cbn in hbranch.
+    + inversion hbranch; subst. exact hsource.
+    + discriminate hbranch.
+  - destruct index as [|index].
+    + cbn [templateRightDisjunctionBranchAt] in hbranch.
+      inversion hbranch; subst branch.
+      destruct hsource as [hvalid [hcontext hconclusion]].
+      unfold TemplateRawDerives.
+      cbn [templateRightDisjunction
+        templateRightDisjunctionIntroductionAt
+        TemplateRawProofValid templateRawContext templateRawConclusion].
+      repeat split; assumption.
+    + cbn [templateRightDisjunctionBranchAt] in hbranch.
+      pose proof (ih context tail index branch sourceProof
+        hbranch hsource) as hright.
+      destruct hright as [hvalid [hcontext hconclusion]].
+      unfold TemplateRawDerives.
+      cbn [templateRightDisjunction
+        templateRightDisjunctionIntroductionAt
+        TemplateRawProofValid templateRawContext templateRawConclusion].
+      repeat split; assumption.
+Qed.
+
+(** ------------------------------------------------------------------
     Elimination under already available branch implications.
 
     Recursive calls add the right disjunct to the front of the context.  This

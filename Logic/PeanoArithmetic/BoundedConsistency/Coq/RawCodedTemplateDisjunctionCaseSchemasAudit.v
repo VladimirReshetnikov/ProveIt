@@ -7,6 +7,9 @@ Import PABoundedRawCodedTemplateDisjunctionCaseSchemas.
 
 Check templateRightDisjunction.
 Check templateRightDisjunctionBranches.
+Check templateRightDisjunctionBranchAt.
+Check templateRightDisjunctionIntroductionAt.
+Check templateRightDisjunctionIntroductionAt_derives.
 Check templateRightDisjunctionCasesFrom.
 Check templateRightDisjunctionCasesFrom_derives.
 Check templateCaseImplicationChain.
@@ -21,6 +24,7 @@ Check templateOr7CaseRuleProof_derives.
 Check templateOr6CaseRuleProof_derives.
 
 Print Assumptions templateRightDisjunctionCasesFrom_derives.
+Print Assumptions templateRightDisjunctionIntroductionAt_derives.
 Print Assumptions templateRightDisjunctionCaseImplicationsFrom_derives.
 Print Assumptions templateRightDisjunctionCaseRuleProof_derives.
 Print Assumptions templateOr7CaseRuleProof_derives.
