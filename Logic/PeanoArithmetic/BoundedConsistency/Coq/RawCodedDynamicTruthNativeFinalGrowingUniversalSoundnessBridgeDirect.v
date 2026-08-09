@@ -231,6 +231,189 @@ Arguments
   RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler
   M inputs : clear implicits.
 
+(** The two roots in the residual package are logically independent, but
+    they share a long and important indexing discipline: both must be
+    produced for the direct truth inputs selected by the same final graph
+    trace, and both must live in the bridge context assembled from the same
+    staged prerequisites.  Abstract that common spine once.  The
+    [formulaAt] argument may inspect the selected axiom-soundness code; this
+    covers the coherence implication, while a constant family covers the
+    bottom-refutation law. *)
+Definition RawDynamicTruthNativeFinalDirectBridgeFormulaRootCompiler
+    (M : RawPAModel)
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    (formulaAt : M -> M) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext,
+    RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode ->
+    RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+      witnessList baseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness ->
+    rawDirectTemplateTerm inputs
+      coqRestrictedPASoundnessLowerLevelTerm = successorNumeralCode ->
+    exists root : M,
+      RawCodedPALocalProofOf M
+        (rawCoqRestrictedPAConsistencyBridgeContextCode
+          M successorNumeralCode baseContext)
+        (formulaAt nextAxiomSoundness) root.
+
+Arguments RawDynamicTruthNativeFinalDirectBridgeFormulaRootCompiler
+  M inputs formulaAt : clear implicits.
+
+(** First honest residual: the selected axiom-soundness formula entails the
+    witnessed-context truth statement for the same native truth selector. *)
+Definition RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectCoherenceCompiler
+    (M : RawPAModel)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
+  RawDynamicTruthNativeFinalDirectBridgeFormulaRootCompiler M inputs
+    (fun nextAxiomSoundness =>
+      rawFormulaImpCode M nextAxiomSoundness
+        (rawCoqRestrictedPAAxiomContextsTruthDirectCode M inputs)).
+
+Arguments
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectCoherenceCompiler
+  M inputs : clear implicits.
+
+(** Second honest residual: truth of object-level falsity is refutable for
+    the selected successor truth predicate.  This formula does not inspect
+    [nextAxiomSoundness], but retaining the common compiler spine guarantees
+    that its proof is synchronized with the same trace and bridge context. *)
+Definition RawDynamicTruthNativeFinalBottomTruthDirectRefutationCompiler
+    (M : RawPAModel)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
+  RawDynamicTruthNativeFinalDirectBridgeFormulaRootCompiler M inputs
+    (fun _ => rawCoqRestrictedPABottomTruthRefutationDirectCode M inputs).
+
+Arguments RawDynamicTruthNativeFinalBottomTruthDirectRefutationCompiler
+  M inputs : clear implicits.
+
+(** Assemble the historical two-root residual from independently reusable
+    compilers.  No choice or semantic proof-to-code principle is used: both
+    compilers are invoked at the literal same trace and prerequisite
+    package, and their checked roots are paired directly. *)
+Theorem
+    raw_dynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler_of_split
+    : forall (M : RawPAModel)
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectCoherenceCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalBottomTruthDirectRefutationCompiler M inputs ->
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler
+    M inputs.
+Proof.
+  intros M inputs hcoherence hbottom tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites hlevel.
+  destruct (hcoherence tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites hlevel) as [coherenceRoot hcoherenceRoot].
+  destruct (hbottom tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites hlevel) as
+    [bottomRefutationRoot hbottomRefutationRoot].
+  exists coherenceRoot, bottomRefutationRoot.
+  split; assumption.
+Qed.
+
+(** Conversely, the old joint compiler projects to either independent
+    coordinate.  Together with the preceding theorem this records an exact
+    boundary refinement, not a strengthening of the mathematical premise. *)
+Theorem
+    raw_dynamicTruthNativeFinalSelectedAxiomContextTruthDirectCoherenceCompiler_of_residual
+    : forall (M : RawPAModel)
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectCoherenceCompiler
+    M inputs.
+Proof.
+  intros M inputs hresidual tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites hlevel.
+  destruct (hresidual tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites hlevel) as
+    (coherenceRoot & bottomRefutationRoot & hcoherenceRoot & _).
+  exists coherenceRoot.
+  exact hcoherenceRoot.
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeFinalBottomTruthDirectRefutationCompiler_of_residual
+    : forall (M : RawPAModel)
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalBottomTruthDirectRefutationCompiler M inputs.
+Proof.
+  intros M inputs hresidual tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites hlevel.
+  destruct (hresidual tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites hlevel) as
+    (coherenceRoot & bottomRefutationRoot & _ & hbottomRefutationRoot).
+  exists bottomRefutationRoot.
+  exact hbottomRefutationRoot.
+Qed.
+
+Corollary
+    raw_dynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler_iff_split
+    : forall (M : RawPAModel)
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler
+      M inputs <->
+    RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectCoherenceCompiler
+      M inputs /\
+    RawDynamicTruthNativeFinalBottomTruthDirectRefutationCompiler M inputs.
+Proof.
+  intros M inputs.
+  split.
+  - intro hresidual.
+    split.
+    + exact
+        (raw_dynamicTruthNativeFinalSelectedAxiomContextTruthDirectCoherenceCompiler_of_residual
+          M inputs hresidual).
+    + exact
+        (raw_dynamicTruthNativeFinalBottomTruthDirectRefutationCompiler_of_residual
+          M inputs hresidual).
+  - intros [hcoherence hbottom].
+    exact
+      (raw_dynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler_of_split
+        M inputs hcoherence hbottom).
+Qed.
+
 (** Reconstruct the older three-root support compiler without exposing the
     purely syntactic fields-head premise.  The graph-selected numeral trace
     discharges that premise unconditionally. *)
@@ -378,6 +561,30 @@ Proof.
       M hPA inputs hopen
       (raw_dynamicTruthNativeFinalSelectedAxiomContextTruthDirectSupportCompiler_of_residual
         M hPA inputs hresidual)).
+Qed.
+
+(** Split form of the preferred reduction.  This is the interface used by
+    independent native coherence and falsum-row compilers: either component
+    can now be discharged without manufacturing the other root in the same
+    implementation. *)
+Corollary
+    raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_open_and_split_truth_support
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawCoqRestrictedPAConsistencyFromUniversalSoundnessDirectOpenCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectCoherenceCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalBottomTruthDirectRefutationCompiler M inputs ->
+  RawDynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler
+    M inputs.
+Proof.
+  intros M hPA inputs hopen hcoherence hbottom.
+  exact
+    (raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_open_and_residual
+      M hPA inputs hopen
+      (raw_dynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler_of_split
+        M inputs hcoherence hbottom)).
 Qed.
 
 (** ------------------------------------------------------------------
