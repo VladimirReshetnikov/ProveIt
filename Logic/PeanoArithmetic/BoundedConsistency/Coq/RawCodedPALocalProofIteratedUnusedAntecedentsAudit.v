@@ -1,0 +1,15 @@
+(** Audit surface for the represented iterated-K compiler. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPALocalProofIteratedUnusedAntecedents.
+
+Module PABoundedRawCodedPALocalProofIteratedUnusedAntecedentsAudit.
+
+Import PABoundedRawCodedPALocalProofIteratedUnusedAntecedents.
+
+Check coqTemplateImpChain.
+Check raw_codedPALocalProofOf_iterated_unused_antecedents.
+
+Print Assumptions raw_codedPALocalProofOf_iterated_unused_antecedents.
+
+End PABoundedRawCodedPALocalProofIteratedUnusedAntecedentsAudit.
