@@ -36,6 +36,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeFinalStagedRootCompilation
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedRestrictedPAConsistencyFromUniversalSoundnessDirect
+  RawCodedDynamicTruthNativeFinalSelectedAxiomSupportTransport
   RawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridge
   RawCodedDynamicTruthNativeFinalBridgeFieldsHeadAdequacy.
 
@@ -61,6 +62,8 @@ Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import
   PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundnessDirect.
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalSelectedAxiomSupportTransport.
 Import
   PABoundedRawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessBridge.
 Import PABoundedRawCodedDynamicTruthNativeFinalBridgeFieldsHeadAdequacy.
@@ -100,6 +103,181 @@ Definition
 Arguments
   RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectSupportCompiler
   M inputs : clear implicits.
+
+(** The direct analogue of the refined structural support boundary.  The
+    staged prerequisite package already contains the proof of the selected
+    [nextAxiomSoundness] field.  Consequently a producer should not be asked
+    to return that root a second time: its only mathematical obligations are
+    the implication from the selected field to witnessed-context truth and
+    the refutation of truth at bottom. *)
+Definition RawCoqRestrictedPASelectedAxiomContextTruthDirectResidualSupport
+    (M : RawPAModel) (inputs : RawCodedTemplateDirectStructuralInputs M)
+    (numeralCode baseContext nextAxiomSoundness
+      coherenceRoot bottomRefutationRoot : M) : Prop :=
+  RawCodedPALocalProofOf M
+    (rawCoqRestrictedPAConsistencyBridgeContextCode
+      M numeralCode baseContext)
+    (rawFormulaImpCode M nextAxiomSoundness
+      (rawCoqRestrictedPAAxiomContextsTruthDirectCode M inputs))
+    coherenceRoot /\
+  RawCodedPALocalProofOf M
+    (rawCoqRestrictedPAConsistencyBridgeContextCode
+      M numeralCode baseContext)
+    (rawCoqRestrictedPABottomTruthRefutationDirectCode M inputs)
+    bottomRefutationRoot.
+
+Arguments RawCoqRestrictedPASelectedAxiomContextTruthDirectResidualSupport
+  M inputs numeralCode baseContext nextAxiomSoundness
+    coherenceRoot bottomRefutationRoot : clear implicits.
+
+(** Transport the staged axiom-soundness root once, then combine it with the
+    two direct residual roots.  The transport is representation-neutral: it
+    depends only on the staged graph, the represented context shifts, and
+    atomic adequacy of the seven projected restricted-proof fields. *)
+Theorem
+    raw_coqRestrictedPASelectedAxiomContextTruthDirectSupport_of_residual :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext
+      coherenceRoot bottomRefutationRoot,
+    RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode ->
+    RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+      witnessList baseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness ->
+    RawCodedFormulaAtomicallyAdequate M
+      (rawRestrictedPAProofFieldsCode M successorNumeralCode) ->
+    RawCoqRestrictedPASelectedAxiomContextTruthDirectResidualSupport
+      M inputs successorNumeralCode baseContext nextAxiomSoundness
+      coherenceRoot bottomRefutationRoot ->
+    exists nextAxiomSoundnessRoot : M,
+      RawCoqRestrictedPASelectedAxiomContextTruthDirectSupport M inputs
+        successorNumeralCode witnessList baseContext nextAxiomSoundness
+        nextAxiomSoundnessRoot coherenceRoot bottomRefutationRoot.
+Proof.
+  intros M hPA inputs tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    coherenceRoot bottomRefutationRoot
+    htrace hprerequisites hfieldsAdequate hresidual.
+  destruct
+    (raw_dynamicTruthNativeFinal_nextAxiomSoundnessRoot_to_bridge
+      M hPA tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext
+      htrace hprerequisites hfieldsAdequate)
+    as [nextAxiomSoundnessRoot hnextAxiomSoundnessRoot].
+  pose proof hprerequisites as hprerequisitesCopy.
+  destruct hprerequisitesCopy as
+    (currentLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+      currentSubstitutionRoot & currentAxiomSoundnessRoot & currentFinalRoot &
+      nextLocalRoot & nextCrossLevelRoot & nextShiftRoot &
+      nextSubstitutionRoot & oldNextAxiomSoundnessRoot &
+      [hprefix _]).
+  destruct hprefix as [hwitness _ _ _ _ _ _ _ _ _ _].
+  destruct hresidual as [hcoherence hbottomRefutation].
+  exists nextAxiomSoundnessRoot.
+  unfold RawCoqRestrictedPASelectedAxiomContextTruthDirectSupport.
+  exact (conj hwitness
+    (conj hnextAxiomSoundnessRoot
+      (conj hcoherence hbottomRefutation))).
+Qed.
+
+(** Compiler form of the two honest direct truth obligations.  It retains
+    the exact graph trace and staged base used downstream, so the two roots
+    cannot be supplied for an unrelated truth selector or context. *)
+Definition
+    RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler
+    (M : RawPAModel)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext,
+    RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode ->
+    RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+      witnessList baseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness ->
+    rawDirectTemplateTerm inputs
+      coqRestrictedPASoundnessLowerLevelTerm = successorNumeralCode ->
+    exists coherenceRoot bottomRefutationRoot : M,
+      RawCoqRestrictedPASelectedAxiomContextTruthDirectResidualSupport
+        M inputs successorNumeralCode baseContext nextAxiomSoundness
+        coherenceRoot bottomRefutationRoot.
+
+Arguments
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler
+  M inputs : clear implicits.
+
+(** Reconstruct the older three-root support compiler without exposing the
+    purely syntactic fields-head premise.  The graph-selected numeral trace
+    discharges that premise unconditionally. *)
+Theorem
+    raw_dynamicTruthNativeFinalSelectedAxiomContextTruthDirectSupportCompiler_of_residual
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectSupportCompiler
+    M inputs.
+Proof.
+  intros M hPA inputs hresidualCompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites hlevel.
+  pose proof
+    (raw_dynamicTruthNativeFinalBridgeFieldsHeadAdequacyCompiler M hPA
+      tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext
+      htrace hprerequisites)
+    as hfieldsAdequate.
+  destruct (hresidualCompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites hlevel)
+    as (coherenceRoot & bottomRefutationRoot & hresidual).
+  destruct
+    (raw_coqRestrictedPASelectedAxiomContextTruthDirectSupport_of_residual
+      M hPA inputs tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext
+      coherenceRoot bottomRefutationRoot htrace hprerequisites
+      hfieldsAdequate hresidual)
+    as [nextAxiomSoundnessRoot hsupport].
+  exists nextAxiomSoundnessRoot, coherenceRoot, bottomRefutationRoot.
+  exact hsupport.
+Qed.
 
 (** The middle root needed by the final three-root composition, now fixed to
     the same direct universal-soundness code produced by strong induction. *)
@@ -178,6 +356,28 @@ Proof.
     raw_coqRestrictedPAConsistencyFromSoundnessBridgeDirectCode_view,
     hlevel in hbridge.
   now rewrite hnextTarget.
+Qed.
+
+(** Preferred reduction of the direct consistency bridge.  Compared with
+    the historical theorem above, the caller no longer transports the staged
+    axiom root or proves adequacy of the projected fields. *)
+Corollary
+    raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_open_and_residual
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawCoqRestrictedPAConsistencyFromUniversalSoundnessDirectOpenCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectResidualSupportCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler
+    M inputs.
+Proof.
+  intros M hPA inputs hopen hresidual.
+  exact
+    (raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_open_and_axiom_support
+      M hPA inputs hopen
+      (raw_dynamicTruthNativeFinalSelectedAxiomContextTruthDirectSupportCompiler_of_residual
+        M hPA inputs hresidual)).
 Qed.
 
 (** ------------------------------------------------------------------
