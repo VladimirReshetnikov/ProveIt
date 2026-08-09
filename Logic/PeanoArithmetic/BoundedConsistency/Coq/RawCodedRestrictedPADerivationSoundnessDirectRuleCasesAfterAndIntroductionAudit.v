@@ -1,0 +1,67 @@
+(**
+  Audit surface for the conjunction-introduction three-core increment.
+
+  The removed public slot is a bundle.  These checks deliberately expose
+  the three strictly smaller represented roots from which that bundle is
+  reconstructed: the two recursive-child interface results and the dynamic
+  truth of the displayed conjunction.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase
+  RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterAndIntroduction.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterAndIntroductionAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterAndIntroduction.
+
+(** Checked finite promotions from one child result and one conjunction
+    truth result to the corresponding public semantic laws. *)
+Check coqRestrictedPADirectAndIntroductionChildCorePromotionRoot.
+Check coqRestrictedPADirectAndIntroductionChildCorePromotionRoot_valid.
+Check raw_andIntroductionChildInterfaceLawRoot_of_coreRoot.
+Check coqRestrictedPADirectAndIntroductionTruthCorePromotionRoot.
+Check coqRestrictedPADirectAndIntroductionTruthCorePromotionRoot_valid.
+Check raw_andIntroductionTruthLawRoot_of_coreRoot.
+
+(** The exact replacement boundary and reconstruction of the old bundle. *)
+Check RawCoqRestrictedPADirectAndIntroductionSemanticCoreRootsAt.
+Check RawCoqRestrictedPADirectAndIntroductionSemanticCoreRoots.
+Check raw_andIntroductionSemanticRoots_of_coreRoots.
+
+(** The successor continuation begins at And-E-left and has fourteen fields. *)
+Check RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterAndIntroduction.
+Check Build_RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterAndIntroduction.
+Check raw_afterExcludedMiddle_of_afterAndIntroduction.
+
+(** One certified standard-PA tail selects and transports all three roots. *)
+Check RawCoqRestrictedPADirectSelectedAndIntroductionCoreTail.
+Check coqRestrictedPADirectAndIntroductionReadyContext_app_witnesses.
+Check raw_andIntroductionReadyRoot_surround_witnessed_tail.
+Check raw_andIntroductionSemanticCoreRoots_surround_witnessed_tail.
+Check
+  RawCoqRestrictedPADirectRemainingAfterAndIntroductionStandardTailCompiler.
+Check raw_remainingAfterExcludedMiddleCompiler_of_selectedAndICores.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterAndIntroduction.
+
+Print Assumptions
+  coqRestrictedPADirectAndIntroductionChildCorePromotionRoot_valid.
+Print Assumptions raw_andIntroductionChildInterfaceLawRoot_of_coreRoot.
+Print Assumptions
+  coqRestrictedPADirectAndIntroductionTruthCorePromotionRoot_valid.
+Print Assumptions raw_andIntroductionTruthLawRoot_of_coreRoot.
+Print Assumptions raw_andIntroductionSemanticRoots_of_coreRoots.
+Print Assumptions
+  raw_andIntroductionSemanticCoreRoots_surround_witnessed_tail.
+Print Assumptions
+  raw_remainingAfterExcludedMiddleCompiler_of_selectedAndICores.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterAndIntroduction.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterAndIntroductionAudit.
