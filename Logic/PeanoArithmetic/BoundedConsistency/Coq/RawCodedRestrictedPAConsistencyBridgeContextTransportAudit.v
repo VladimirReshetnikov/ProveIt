@@ -7,6 +7,8 @@ Import
   PABoundedRawCodedRestrictedPAConsistencyBridgeContextTransport.
 
 Check raw_codedPALocalProof_contextInclusionWeakening_shared_head.
+Check
+  raw_codedPALocalProof_coqRestrictedPANativeAxiomContextTruthRowContext_transport.
 Check raw_coqRestrictedPAConsistencyBridgeContext_included.
 Check
   raw_codedPALocalProof_coqRestrictedPAConsistencyBridgeContext_transport.
@@ -15,6 +17,8 @@ Check
 
 Print Assumptions
   raw_codedPALocalProof_contextInclusionWeakening_shared_head.
+Print Assumptions
+  raw_codedPALocalProof_coqRestrictedPANativeAxiomContextTruthRowContext_transport.
 Print Assumptions raw_coqRestrictedPAConsistencyBridgeContext_included.
 Print Assumptions
   raw_codedPALocalProof_coqRestrictedPAConsistencyBridgeContext_transport.

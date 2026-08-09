@@ -35,6 +35,8 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAConsistencyShiftOrbit
   RawCodedRestrictedPAProjectedFieldRefutation
   RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell
+  RawCodedRestrictedPAAxiomContextTruthNativeDirectBodyShell
+  RawCodedRestrictedPAAxiomContextTruthNativeDirectTraversalLeaf
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedRestrictedPAConsistencyFromUniversalSoundnessDirect.
 
@@ -57,6 +59,10 @@ Import PABoundedRawCodedRestrictedPAConsistencyShiftOrbit.
 Import PABoundedRawCodedRestrictedPAProjectedFieldRefutation.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell.
+Import
+  PABoundedRawCodedRestrictedPAAxiomContextTruthNativeDirectBodyShell.
+Import
+  PABoundedRawCodedRestrictedPAAxiomContextTruthNativeDirectTraversalLeaf.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundnessDirect.
 
@@ -90,6 +96,158 @@ Proof.
   - exact (raw_contextBinderReady_cons M hPA
       source target head hsource htarget hready).
   - exact hproof.
+Qed.
+
+(** The synchronized axiom row has four common temporary heads.  This
+    specialization lifts any binder-ready tail transport through that exact
+    row shape, independently of the formula proved at the row.  It is the
+    missing transport used when the growing row carrier is compiled over a
+    witnessed base and its leaf is then consumed below the two body-shell
+    binders. *)
+Lemma
+    raw_codedPALocalProof_coqRestrictedPANativeAxiomContextTruthRowContext_transport
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      shiftedAxiomSoundness sourceTail targetTail conclusion root,
+  RawContextListRealizable M sourceTail ->
+  RawContextListRealizable M targetTail ->
+  RawContextListIncluded M sourceTail targetTail ->
+  RawContextBinderReady M sourceTail targetTail ->
+  RawCodedPALocalProofOf M
+    (rawCoqRestrictedPANativeAxiomContextTruthRowContext
+      M inputs shiftedAxiomSoundness sourceTail)
+    conclusion root ->
+  exists transportedRoot : M,
+    RawCodedPALocalProofOf M
+      (rawCoqRestrictedPANativeAxiomContextTruthRowContext
+        M inputs shiftedAxiomSoundness targetTail)
+      conclusion transportedRoot.
+Proof.
+  intros M hPA inputs shiftedAxiomSoundness sourceTail targetTail
+    conclusion root hsource htarget hincluded hready hproof.
+  set (field := shiftedAxiomSoundness).
+  set (witness :=
+    rawCoqRestrictedPANativeAxiomContextWitnessCode M inputs).
+  set (bounded :=
+    rawCoqRestrictedPANativeAxiomContextBoundedCode M inputs).
+  set (adequate :=
+    rawCoqRestrictedPANativeAxiomContextAdequacyCode M inputs).
+  assert (hsourceField : RawContextListRealizable M
+      (rawListNode M field sourceTail)).
+  {
+    exact (raw_contextList_cons_realizable M hPA
+      sourceTail field hsource).
+  }
+  assert (htargetField : RawContextListRealizable M
+      (rawListNode M field targetTail)).
+  {
+    exact (raw_contextList_cons_realizable M hPA
+      targetTail field htarget).
+  }
+  assert (hincludedField : RawContextListIncluded M
+      (rawListNode M field sourceTail)
+      (rawListNode M field targetTail)).
+  {
+    exact (raw_contextListIncluded_cons M hPA
+      sourceTail targetTail field field
+      hsource htarget eq_refl hincluded).
+  }
+  assert (hreadyField : RawContextBinderReady M
+      (rawListNode M field sourceTail)
+      (rawListNode M field targetTail)).
+  {
+    exact (raw_contextBinderReady_cons M hPA
+      sourceTail targetTail field hsource htarget hready).
+  }
+  assert (hsourceWitness : RawContextListRealizable M
+      (rawListNode M witness (rawListNode M field sourceTail))).
+  {
+    exact (raw_contextList_cons_realizable M hPA
+      (rawListNode M field sourceTail) witness hsourceField).
+  }
+  assert (htargetWitness : RawContextListRealizable M
+      (rawListNode M witness (rawListNode M field targetTail))).
+  {
+    exact (raw_contextList_cons_realizable M hPA
+      (rawListNode M field targetTail) witness htargetField).
+  }
+  assert (hincludedWitness : RawContextListIncluded M
+      (rawListNode M witness (rawListNode M field sourceTail))
+      (rawListNode M witness (rawListNode M field targetTail))).
+  {
+    exact (raw_contextListIncluded_cons M hPA
+      (rawListNode M field sourceTail)
+      (rawListNode M field targetTail) witness witness
+      hsourceField htargetField eq_refl hincludedField).
+  }
+  assert (hreadyWitness : RawContextBinderReady M
+      (rawListNode M witness (rawListNode M field sourceTail))
+      (rawListNode M witness (rawListNode M field targetTail))).
+  {
+    exact (raw_contextBinderReady_cons M hPA
+      (rawListNode M field sourceTail)
+      (rawListNode M field targetTail) witness
+      hsourceField htargetField hreadyField).
+  }
+  assert (hsourceBounded : RawContextListRealizable M
+      (rawListNode M bounded
+        (rawListNode M witness (rawListNode M field sourceTail)))).
+  {
+    exact (raw_contextList_cons_realizable M hPA
+      (rawListNode M witness (rawListNode M field sourceTail))
+      bounded hsourceWitness).
+  }
+  assert (htargetBounded : RawContextListRealizable M
+      (rawListNode M bounded
+        (rawListNode M witness (rawListNode M field targetTail)))).
+  {
+    exact (raw_contextList_cons_realizable M hPA
+      (rawListNode M witness (rawListNode M field targetTail))
+      bounded htargetWitness).
+  }
+  assert (hincludedBounded : RawContextListIncluded M
+      (rawListNode M bounded
+        (rawListNode M witness (rawListNode M field sourceTail)))
+      (rawListNode M bounded
+        (rawListNode M witness (rawListNode M field targetTail)))).
+  {
+    exact (raw_contextListIncluded_cons M hPA
+      (rawListNode M witness (rawListNode M field sourceTail))
+      (rawListNode M witness (rawListNode M field targetTail))
+      bounded bounded hsourceWitness htargetWitness eq_refl
+      hincludedWitness).
+  }
+  assert (hreadyBounded : RawContextBinderReady M
+      (rawListNode M bounded
+        (rawListNode M witness (rawListNode M field sourceTail)))
+      (rawListNode M bounded
+        (rawListNode M witness (rawListNode M field targetTail)))).
+  {
+    exact (raw_contextBinderReady_cons M hPA
+      (rawListNode M witness (rawListNode M field sourceTail))
+      (rawListNode M witness (rawListNode M field targetTail))
+      bounded hsourceWitness htargetWitness hreadyWitness).
+  }
+  change (RawCodedPALocalProofOf M
+    (rawListNode M adequate
+      (rawListNode M bounded
+        (rawListNode M witness (rawListNode M field sourceTail))))
+    conclusion root) in hproof.
+  change (exists transportedRoot : M,
+    RawCodedPALocalProofOf M
+      (rawListNode M adequate
+        (rawListNode M bounded
+          (rawListNode M witness (rawListNode M field targetTail))))
+      conclusion transportedRoot).
+  exact
+    (raw_codedPALocalProof_contextInclusionWeakening_shared_head
+      M hPA
+      (rawListNode M bounded
+        (rawListNode M witness (rawListNode M field sourceTail)))
+      (rawListNode M bounded
+        (rawListNode M witness (rawListNode M field targetTail)))
+      adequate conclusion root
+      hsourceBounded htargetBounded hincludedBounded hreadyBounded hproof).
 Qed.
 
 (** The canonical bridge prefix has the same literal heads for both bases.
