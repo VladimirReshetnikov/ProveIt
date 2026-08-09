@@ -1,0 +1,17 @@
+(** Assumption audit for staged arithmetic-context growth. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPAOpenShellArithmeticFinalPrerequisitesIntegration.
+
+Import
+  PABoundedRawCodedRestrictedPAOpenShellArithmeticFinalPrerequisitesIntegration.
+
+Check
+  raw_dynamicTruthNativeFinalStagedPrerequisites_openShell_arithmetic_growing.
+Check
+  raw_dynamicTruthNativeFinalStagedPrerequisites_openShell_arithmetic_of_trace.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedPrerequisites_openShell_arithmetic_growing.
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedPrerequisites_openShell_arithmetic_of_trace.
