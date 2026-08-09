@@ -33,7 +33,10 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAConsistencyOpenDescent
   RawCodedTemplateDirectStructuralTranslation
   RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell
+  RawCodedDynamicTruthNativeStagedPositiveSuccessor
   RawCodedDynamicTruthNativeFinalStagedRootCompilation
+  RawCodedDynamicTruthNativeFinalTargetRefutationCompilation
+  RawCodedDynamicTruthNativeFinalUniversalSoundnessComposition
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedRestrictedPAConsistencyFromUniversalSoundnessDirect
   RawCodedDynamicTruthNativeFinalSelectedAxiomSupportTransport
@@ -58,7 +61,10 @@ Import PABoundedRawCodedRestrictedPAConsistencyOpenDescent.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell.
+Import PABoundedRawCodedDynamicTruthNativeStagedPositiveSuccessor.
 Import PABoundedRawCodedDynamicTruthNativeFinalStagedRootCompilation.
+Import PABoundedRawCodedDynamicTruthNativeFinalTargetRefutationCompilation.
+Import PABoundedRawCodedDynamicTruthNativeFinalUniversalSoundnessComposition.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
 Import
   PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundnessDirect.
@@ -864,6 +870,169 @@ Proof.
       nextFinal successorNumeralCode witnessList baseContext
       soundnessCertificate htrace hprerequisites hsoundnessCertificate
       hfieldsAdequate hlevel hconsistencyCompiler).
+Qed.
+
+(** ------------------------------------------------------------------
+    Consume the grown bridge in the final structural closer. *)
+
+(** Context growth is semantically relevant, so its result must expose the
+    merged witnessed base alongside the final local root.  This pointwise
+    package is the exact context-flexible counterpart of
+    [RawDynamicTruthNativeFinalStagedLocalProofAt]. *)
+Definition RawDynamicTruthNativeFinalGrowingStagedLocalProofAt
+    (M : RawPAModel) (tail : nat -> M) (level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal : M) : Prop :=
+  exists mergedWitnessList mergedBaseContext finalRoot : M,
+    RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+      mergedWitnessList mergedBaseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness /\
+    RawDynamicTruthNativeFinalStagedLocalProofAt M tail level
+      mergedBaseContext nextFinal finalRoot.
+
+Arguments RawDynamicTruthNativeFinalGrowingStagedLocalProofAt
+  M tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal : clear implicits.
+
+(** The direct grown bridge already contains universal soundness and the
+    soundness-to-target implication in the literal merged fields context.
+    The independently checked target-refutation compiler supplies the third
+    root there.  Two implication eliminations then give the source-linked
+    proof expected by the pointwise final closer. *)
+Theorem
+    raw_dynamicTruthNativeFinalGrowingStagedLocalProof_of_direct_bridge :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode,
+  RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode ->
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeAt
+    M inputs tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode ->
+  RawDynamicTruthNativeFinalGrowingStagedLocalProofAt M tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal.
+Proof.
+  intros M hPA inputs tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode htrace hbridge.
+  unfold RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeAt,
+    RawDynamicTruthNativeFinalGrowingUniversalSoundnessCodeBridgeAt
+    in hbridge.
+  destruct hbridge as
+    (mergedWitnessList & mergedBaseContext & soundnessRoot &
+      consistencyBridgeRoot & hmergedPrerequisites & hsoundness & hbridge).
+  pose proof
+    (raw_dynamicTruthNativeFinalTargetRefutationRootCompiler
+      M hPA tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode mergedWitnessList mergedBaseContext
+      htrace hmergedPrerequisites)
+    as hrefutation.
+  pose proof
+    (raw_restrictedPADynamicSoundnessImplicationProof_of_universal_soundness
+      M hPA successorNumeralCode
+      (rawRestrictedPACanonicalShiftedProofContextCode
+        M mergedBaseContext successorNumeralCode)
+      nextFinal
+      (rawCoqRestrictedPADerivationSoundnessUniversalDirectCode M inputs)
+      soundnessRoot consistencyBridgeRoot
+      (rawDynamicTruthNativeFinalTargetRefutationRoot
+        M nextFinal successorNumeralCode mergedBaseContext)
+      hsoundness hbridge hrefutation)
+    as hsourceLinked.
+  destruct
+    (raw_dynamicTruthNativeFinalStagedLocalProof_of_source_linked_implication_at
+      M hPA tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode mergedWitnessList mergedBaseContext
+      htrace hmergedPrerequisites hsourceLinked)
+    as [finalRoot hfinal].
+  exists mergedWitnessList, mergedBaseContext, finalRoot.
+  split; assumption.
+Qed.
+
+(** Package the grown carried root as the exact ordinary graph/proof pair
+    expected at the sixth public successor stage.  In particular, merging an
+    ordinary soundness certificate no longer strands the proof one layer
+    below the public callback interface. *)
+Corollary
+    raw_dynamicTruthNativeFinalGrowingStagedNextFinalProof_of_direct_bridge :
+    forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M)
+      (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode,
+  RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode ->
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeAt
+    M inputs tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode ->
+  exists finalCertificate : M,
+    RawDynamicTruthNativeStagedNextFinalProofAt M
+      tail level nextFinal finalCertificate.
+Proof.
+  intros M hPA inputs tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode htrace hbridge.
+  destruct
+    (raw_dynamicTruthNativeFinalGrowingStagedLocalProof_of_direct_bridge
+      M hPA inputs tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode htrace hbridge)
+    as (mergedWitnessList & mergedBaseContext & finalRoot &
+      hmergedPrerequisites & hfinalGraph & hfinalRoot).
+  pose proof hmergedPrerequisites as hprerequisitesCopy.
+  destruct hprerequisitesCopy as
+    (currentLocalRoot & currentCrossLevelRoot & currentShiftRoot &
+      currentSubstitutionRoot & currentAxiomSoundnessRoot & currentFinalRoot &
+      nextLocalRoot & nextCrossLevelRoot & nextShiftRoot &
+      nextSubstitutionRoot & nextAxiomSoundnessRoot & [hprefix _]).
+  destruct hprefix as [hmergedWitnessed _ _ _ _ _ _ _ _ _ _].
+  exists (rawCodeList3 M (rawNumeralValue M 0)
+    mergedWitnessList finalRoot).
+  split; [exact hfinalGraph |].
+  exact (raw_codedPAProofOf_dynamicTruthNativeFinal_of_carried_root
+    M mergedWitnessList mergedBaseContext nextFinal finalRoot
+    hmergedWitnessed hfinalRoot).
 Qed.
 
 End

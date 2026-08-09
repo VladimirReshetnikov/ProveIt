@@ -666,11 +666,14 @@ Definition RawDynamicTruthNativeFinalStagedLocalProofAt
 Arguments RawDynamicTruthNativeFinalStagedLocalProofAt
   M tail level baseContext target root : clear implicits.
 
-(** The main structural theorem for an already selected successor target. *)
+(** Pointwise form of the main structural closing theorem.  Keeping the
+    source-linked implication proof as a premise at the selected trace is
+    important for context-growing callers: an ordinary certificate may have
+    to be merged into [baseContext] first, so the resulting proof cannot in
+    general inhabit the caller's original context. *)
 Theorem
-    raw_dynamicTruthNativeFinalStagedLocalProof_of_source_linked_implication :
+    raw_dynamicTruthNativeFinalStagedLocalProof_of_source_linked_implication_at :
     forall (M : RawPAModel), RawPASatisfies M ->
-  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M ->
   forall (tail : nat -> M) level
       currentLocal currentCrossLevel currentShift currentSubstitution
       currentAxiomSoundness currentFinal
@@ -687,22 +690,20 @@ Theorem
       currentAxiomSoundness currentFinal
       nextLocal nextCrossLevel nextShift nextSubstitution
       nextAxiomSoundness ->
+    RawRestrictedPADynamicSoundnessImplicationProof M
+      successorNumeralCode
+      (rawRestrictedPACanonicalShiftedProofContextCode
+        M baseContext successorNumeralCode) ->
   exists finalRoot : M,
     RawDynamicTruthNativeFinalStagedLocalProofAt M tail level
       baseContext nextFinal finalRoot.
 Proof.
-  intros M hPA hcompiler tail level
+  intros M hPA tail level
     currentLocal currentCrossLevel currentShift currentSubstitution
     currentAxiomSoundness currentFinal
     nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
     nextFinal successorNumeralCode witnessList baseContext
-    hgraphTrace hprerequisites.
-  pose proof (hcompiler tail level
-    currentLocal currentCrossLevel currentShift currentSubstitution
-    currentAxiomSoundness currentFinal
-    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
-    nextFinal successorNumeralCode witnessList baseContext
-    hgraphTrace hprerequisites) as hsoundness.
+    hgraphTrace hprerequisites hsoundness.
   pose proof hgraphTrace as hgraphTraceCopy.
   destruct hgraphTraceCopy as
     [hcurrentGraph hnextLocalGraph hnextCrossGraph hnextShiftGraph
@@ -778,6 +779,55 @@ Proof.
   rewrite hnextTarget.
   rewrite raw_restrictedPAConsistencyTargetCode_view.
   exact hclosed.
+Qed.
+
+(** Compiler form used by the existing staged callback.  All proof-tree
+    work is delegated to the pointwise theorem above; the global compiler is
+    invoked exactly once to obtain its final premise. *)
+Theorem
+    raw_dynamicTruthNativeFinalStagedLocalProof_of_source_linked_implication :
+    forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativeFinalSourceLinkedImplicationRootCompiler M ->
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext,
+    RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode ->
+    RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+      witnessList baseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness ->
+  exists finalRoot : M,
+    RawDynamicTruthNativeFinalStagedLocalProofAt M tail level
+      baseContext nextFinal finalRoot.
+Proof.
+  intros M hPA hcompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    hgraphTrace hprerequisites.
+  exact
+    (raw_dynamicTruthNativeFinalStagedLocalProof_of_source_linked_implication_at
+      M hPA tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext
+      hgraphTrace hprerequisites
+      (hcompiler tail level
+        currentLocal currentCrossLevel currentShift currentSubstitution
+        currentAxiomSoundness currentFinal
+        nextLocal nextCrossLevel nextShift nextSubstitution
+        nextAxiomSoundness nextFinal successorNumeralCode witnessList
+        baseContext hgraphTrace hprerequisites)).
 Qed.
 
 (** Total graph selection adds no proof-theoretic premise: the compact graph
