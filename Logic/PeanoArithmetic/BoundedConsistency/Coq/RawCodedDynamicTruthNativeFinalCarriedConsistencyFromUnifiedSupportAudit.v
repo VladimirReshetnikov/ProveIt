@@ -1,0 +1,13 @@
+(** Assumption audit for carried consistency assembly from unified support. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalCarriedConsistencyFromUnifiedSupport.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalCarriedConsistencyFromUnifiedSupport.
+
+Check
+  raw_dynamicTruthNativeFinalCarriedConsistencyCodeBridge_of_unified_support_and_arithmetic.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalCarriedConsistencyCodeBridge_of_unified_support_and_arithmetic.
