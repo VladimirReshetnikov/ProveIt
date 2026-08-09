@@ -1,0 +1,25 @@
+(** Public-surface and assumption audit for canonical production identity. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthSigmaOrCanonicalProductionIdentification.
+
+Module
+  PABoundedRawCodedDynamicTruthSigmaOrCanonicalProductionIdentificationAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthSigmaOrCanonicalProductionIdentification.
+
+Check rawTemplateFormula_dynamicTruthSigmaOr_named_zeroCanonical_eq.
+Check raw_codedPALocalProofOf_dynamicTruthSigmaOr_mode_zero_of_term_eq.
+Check
+  raw_dynamicTruthZeroCanonicalFixedProductionRoot_of_sigma_or_three_roots_and_atomic_identifications.
+
+Print Assumptions
+  rawTemplateFormula_dynamicTruthSigmaOr_named_zeroCanonical_eq.
+Print Assumptions
+  raw_codedPALocalProofOf_dynamicTruthSigmaOr_mode_zero_of_term_eq.
+Print Assumptions
+  raw_dynamicTruthZeroCanonicalFixedProductionRoot_of_sigma_or_three_roots_and_atomic_identifications.
+
+End
+  PABoundedRawCodedDynamicTruthSigmaOrCanonicalProductionIdentificationAudit.
