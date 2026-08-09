@@ -1,0 +1,50 @@
+(** Audit surface for the Imp-E semantic-core integration boundary. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectImpEliminationCase
+  RawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterImpElimination.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterImpEliminationAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectImpEliminationCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterImpElimination.
+
+(** The producer input is the semantic core, not the public recursive
+    modus-ponens target. *)
+Check RawCoqRestrictedPADirectImpECoreLawRoot.
+Check coqRestrictedPADirectImpECorePromotionRoot.
+Check coqRestrictedPADirectImpECorePromotionRoot_valid.
+Check raw_impERecursiveModusPonensLawRoot_of_coreLawRoot.
+
+(** The successor interface starts at Bottom-E and therefore contains no
+    Imp-E target field. *)
+Check RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterImpElimination.
+Check Build_RawCoqRestrictedPADirectRuleCaseSemanticRootsAfterImpElimination.
+Check raw_afterImpIntroductionTruth_of_afterImpElimination.
+
+(** Selection is synchronized with an actual standard PA-axiom witness
+    context, and transport/merge use the same growing-tail discipline as the
+    preceding rule-case increments. *)
+Check RawCoqRestrictedPADirectSelectedImpECoreTail.
+Check coqRestrictedPADirectImpECaseContext_app_witnesses.
+Check raw_impECoreLawRoot_surround_witnessed_tail.
+Check
+  RawCoqRestrictedPADirectRemainingAfterImpEliminationStandardTailCompiler.
+Check
+  raw_remainingAfterImpIntroductionTruthCompiler_of_selectedImpECore.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterImpElimination.
+
+Print Assumptions coqRestrictedPADirectImpECorePromotionRoot_valid.
+Print Assumptions raw_impERecursiveModusPonensLawRoot_of_coreLawRoot.
+Print Assumptions raw_impECoreLawRoot_surround_witnessed_tail.
+Print Assumptions
+  raw_remainingAfterImpIntroductionTruthCompiler_of_selectedImpECore.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_of_nativeInputs_afterImpElimination.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectRuleCasesAfterImpEliminationAudit.
