@@ -1,0 +1,17 @@
+(** Assumption audit for direct rule cases through the carried bridge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalGrowingFromDirectRuleCasesCarried.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalGrowingFromDirectRuleCasesCarried.
+
+Check
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_witnessed_rule_cases_carried.
+Check
+  raw_dynamicTruthNativeFinalGrowingStagedNextFinalProof_of_witnessed_rule_cases_carried.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_witnessed_rule_cases_carried.
+Print Assumptions
+  raw_dynamicTruthNativeFinalGrowingStagedNextFinalProof_of_witnessed_rule_cases_carried.
