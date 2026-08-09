@@ -1,0 +1,32 @@
+(** Public-surface and assumption audit for the corrected translation. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthSigmaOrCanonicalTranslationCorrection.
+
+Module
+  PABoundedRawCodedDynamicTruthSigmaOrCanonicalTranslationCorrectionAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthSigmaOrCanonicalTranslationCorrection.
+
+Check coqDynamicTruthParameterSelect_upper_mode_collision.
+Check coqDynamicTruthParameterSelect_cannot_separate_upper_and_mode.
+Check coqDynamicTruthSigmaOrCanonicalParameterSelect.
+Check rawDynamicTruthSigmaOrCanonicalNumeralParameters.
+Check rawDynamicTruthSigmaOrCanonicalParameters_lower_zero.
+Check rawDynamicTruthSigmaOrCanonicalParameters_upper_one.
+Check rawDynamicTruthSigmaOrCanonicalParameters_mode_zero.
+Check raw_dynamicTruthSigmaOrCanonicalTranslation_exists.
+
+Print Assumptions
+  coqDynamicTruthParameterSelect_upper_mode_collision.
+Print Assumptions
+  coqDynamicTruthParameterSelect_cannot_separate_upper_and_mode.
+Print Assumptions
+  rawDynamicTruthSigmaOrCanonicalParameters_upper_one.
+Print Assumptions
+  rawDynamicTruthSigmaOrCanonicalParameters_mode_zero.
+Print Assumptions raw_dynamicTruthSigmaOrCanonicalTranslation_exists.
+
+End
+  PABoundedRawCodedDynamicTruthSigmaOrCanonicalTranslationCorrectionAudit.
