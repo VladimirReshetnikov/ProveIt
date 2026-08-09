@@ -1,0 +1,15 @@
+(** Public API and assumption audit for cross-translation application
+    congruence. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDirectTemplateTernaryApplicationCrossTranslationCongruence.
+
+Import
+  PABoundedRawCodedDirectTemplateTernaryApplicationCrossTranslationCongruence.
+
+Check raw_directTemplateTernaryApplication_congr_across.
+Check raw_directTemplateTernaryApplication_congr_across_at_variables.
+
+Print Assumptions raw_directTemplateTernaryApplication_congr_across.
+Print Assumptions
+  raw_directTemplateTernaryApplication_congr_across_at_variables.
