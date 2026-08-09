@@ -40,6 +40,7 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAConsistencyFromUniversalSoundnessDirectOpenIntegration
   RawCodedRestrictedPAAxiomContextTruthNativeDirectCoherenceLink
   RawCodedRestrictedPAAxiomContextTruthNativeDirectBodyShell
+  RawCodedRestrictedPAAxiomContextTruthNativeDirectTraversalLeaf
   RawCodedRestrictedPABottomTruthNativeDirectRefutationLink.
 
 Module
@@ -68,6 +69,8 @@ Import
   PABoundedRawCodedRestrictedPAAxiomContextTruthNativeDirectCoherenceLink.
 Import
   PABoundedRawCodedRestrictedPAAxiomContextTruthNativeDirectBodyShell.
+Import
+  PABoundedRawCodedRestrictedPAAxiomContextTruthNativeDirectTraversalLeaf.
 Import PABoundedRawCodedRestrictedPABottomTruthNativeDirectRefutationLink.
 
 (** Assemble the exact existing consistency compiler from the three refined
@@ -81,14 +84,14 @@ Theorem
   RawCoqRestrictedPAConsistencyFromUniversalSoundnessDirectArithmeticCompiler
     M inputs ->
   RawDynamicTruthNativeFinalAxiomContextTruthNativeLinkCompiler M inputs ->
-  RawCoqRestrictedPANativeAxiomContextTruthTraversalLeafCompiler M ->
+  RawCoqRestrictedPANativeAxiomContextTruthSynchronizedRowsCompiler M ->
   RawDynamicTruthNativeFinalBottomTruthNativeSelectorLinkCompiler M inputs ->
   RawDynamicTruthNativeFinalSelectedSigmaBottomRefutationRootCompiler
     M inputs ->
   RawDynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler
     M inputs.
 Proof.
-  intros M hPA inputs harithmetic haxiomLink haxiomTraversal
+  intros M hPA inputs harithmetic haxiomLink haxiomRows
     hbottomLink hbottomRoot.
   apply
     (raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_open_and_split_truth_support
@@ -99,8 +102,8 @@ Proof.
   - exact
       (raw_dynamicTruthNativeFinalSelectedAxiomContextTruthDirectCoherenceCompiler_of_native_link
         M inputs haxiomLink
-        (raw_dynamicTruthNativeFinalSelectedAxiomContextTruthRootCompiler_of_traversal_leaf
-          M hPA inputs haxiomTraversal)).
+        (raw_dynamicTruthNativeFinalSelectedAxiomContextTruthRootCompiler_of_synchronized_rows
+          M hPA inputs haxiomRows)).
   - exact
       (raw_dynamicTruthNativeFinalBottomTruthDirectRefutationCompiler_of_native_selector
         M inputs hbottomLink hbottomRoot).
@@ -124,7 +127,7 @@ Theorem
   RawCoqRestrictedPAConsistencyFromUniversalSoundnessDirectArithmeticCompiler
     M inputs ->
   RawDynamicTruthNativeFinalAxiomContextTruthNativeLinkCompiler M inputs ->
-  RawCoqRestrictedPANativeAxiomContextTruthTraversalLeafCompiler M ->
+  RawCoqRestrictedPANativeAxiomContextTruthSynchronizedRowsCompiler M ->
   RawDynamicTruthNativeFinalBottomTruthNativeSelectorLinkCompiler M inputs ->
   RawDynamicTruthNativeFinalSelectedSigmaBottomRefutationRootCompiler
     M inputs ->
@@ -154,7 +157,7 @@ Theorem
 Proof.
   intros M hPA inputs ruleTail replacement axiom closureCount
     ruleBaseWitnessList hruleBase hremainder hsemantic
-    harithmetic haxiomLink haxiomTraversal hbottomLink hbottomRoot
+    harithmetic haxiomLink haxiomRows hbottomLink hbottomRoot
     stagedTail level
     currentLocal currentCrossLevel currentShift currentSubstitution
     currentAxiomSoundness currentFinal
@@ -172,7 +175,7 @@ Proof.
       nextFinal successorNumeralCode stagedWitnessList stagedBaseContext
       htrace hprerequisites hlevel
       (raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_refined_resources
-        M hPA inputs harithmetic haxiomLink haxiomTraversal
+        M hPA inputs harithmetic haxiomLink haxiomRows
         hbottomLink hbottomRoot)).
 Qed.
 
@@ -193,7 +196,7 @@ Corollary
   RawCoqRestrictedPAConsistencyFromUniversalSoundnessDirectArithmeticCompiler
     M inputs ->
   RawDynamicTruthNativeFinalAxiomContextTruthNativeLinkCompiler M inputs ->
-  RawCoqRestrictedPANativeAxiomContextTruthTraversalLeafCompiler M ->
+  RawCoqRestrictedPANativeAxiomContextTruthSynchronizedRowsCompiler M ->
   RawDynamicTruthNativeFinalBottomTruthNativeSelectorLinkCompiler M inputs ->
   RawDynamicTruthNativeFinalSelectedSigmaBottomRefutationRootCompiler
     M inputs ->
@@ -220,7 +223,7 @@ Corollary
 Proof.
   intros M hPA inputs ruleTail replacement axiom closureCount
     ruleBaseWitnessList hruleBase hremainder hsemantic
-    harithmetic haxiomLink haxiomTraversal hbottomLink hbottomRoot
+    harithmetic haxiomLink haxiomRows hbottomLink hbottomRoot
     stagedTail level
     currentLocal currentCrossLevel currentShift currentSubstitution
     currentAxiomSoundness currentFinal
@@ -238,7 +241,7 @@ Proof.
     (raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_witnessed_rule_cases_and_refined_resources
       M hPA inputs ruleTail replacement axiom closureCount
       ruleBaseWitnessList hruleBase hremainder hsemantic
-      harithmetic haxiomLink haxiomTraversal hbottomLink hbottomRoot
+      harithmetic haxiomLink haxiomRows hbottomLink hbottomRoot
       stagedTail level
       currentLocal currentCrossLevel currentShift currentSubstitution
       currentAxiomSoundness currentFinal
