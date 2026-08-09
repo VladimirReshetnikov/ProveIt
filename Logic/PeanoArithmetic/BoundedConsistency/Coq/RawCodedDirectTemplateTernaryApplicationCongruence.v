@@ -22,6 +22,7 @@ From PAFiniteBasisReduction Require Import
 From BoundedPAConsistency Require Import
   RawCodedSyntaxConstructors
   RawCodedFormulaOperations
+  RawCodedFormulaSubstitutionAtomSourceSyntax
   RawCodedTermShiftAmountComposition
   RawCodedTemplateSyntax
   RawCodedTemplateRenamingSubstitution
@@ -30,6 +31,7 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateStructuralTranslation
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateTripleUniversalOpening
+  RawCodedFixedLevelTruthTotality
   RawCodedTemplateTernaryApplication
   RawCodedTemplateTernaryApplicationFunctionality
   RawCodedRestrictedPATemplateTernaryApplicationCompilation.
@@ -43,6 +45,7 @@ Import PACanonicalSelectorPA.
 Import PAFiniteBetaCoding.
 Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedFormulaOperations.
+Import PABoundedRawCodedFormulaSubstitutionAtomSourceSyntax.
 Import PABoundedRawCodedTermShiftAmountComposition.
 Import PABoundedRawCodedTemplateSyntax.
 Import PABoundedRawCodedTemplateRenamingSubstitution.
@@ -51,6 +54,7 @@ Import PABoundedRawCodedTemplateProofCompiler.
 Import PABoundedRawCodedTemplateStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateTripleUniversalOpening.
+Import PABoundedRawCodedFixedLevelTruthTotality.
 Import PABoundedRawCodedTemplateTernaryApplication.
 Import PABoundedRawCodedTemplateTernaryApplicationFunctionality.
 Import
@@ -429,6 +433,55 @@ Proof.
         M hPA inputs first)
       (raw_directTemplateTerm_second_protected_shift
         M hPA inputs second)).
+Qed.
+
+(** Direct structural inputs already contain a unit shift trace for every
+    term.  Source-syntax recovery therefore shows that each translated
+    template term is honest represented term syntax, with no numeral-
+    interpreter or concrete-selector hypothesis. *)
+Lemma raw_directTemplateTerm_syntax : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M) input,
+  RawCodedTermSyntax M (rawDirectTemplateTerm inputs input).
+Proof.
+  intros M hPA inputs input.
+  apply (raw_codedTermShift_source_syntax M hPA
+    (raw_zero M) (rawNumeralValue M 1)
+    (rawDirectTemplateTerm inputs input)
+    (rawDirectTemplateTerm inputs
+      (templateTermRename (templateShiftRenamingAt 0) input))).
+  exact (rawDirectTemplateTermShiftAt inputs 0 input).
+Qed.
+
+(** Atomic adequacy is preserved by the compiled application.  This is the
+    form needed when a rerooted native Pi atom becomes the [piLeft] argument
+    of the Imp-I ready decision. *)
+Corollary
+    raw_directTemplateTernaryApplication_target_atomically_adequate : forall
+    (M : RawPAModel), RawPASatisfies M -> forall
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    predicate first second third,
+  RawCodedFormulaAtomicallyAdequate M
+    (rawDirectTemplateFormula inputs predicate) ->
+  RawCodedFormulaAtomicallyAdequate M
+    (rawDirectTemplateFormula inputs
+      (coqRestrictedPATemplateTernaryApplication
+        predicate first second third)).
+Proof.
+  intros M hPA inputs predicate first second third hpredicate.
+  exact (raw_codedTernaryApplication_target_atomically_adequate
+    M hPA
+    (rawDirectTemplateFormula inputs predicate)
+    (rawDirectTemplateTerm inputs first)
+    (rawDirectTemplateTerm inputs second)
+    (rawDirectTemplateTerm inputs third)
+    (rawDirectTemplateFormula inputs
+      (coqRestrictedPATemplateTernaryApplication
+        predicate first second third))
+    hpredicate
+    (raw_directTemplateTerm_syntax M hPA inputs third)
+    (raw_directTemplateTernaryApplication_trace
+      M hPA inputs predicate first second third)).
 Qed.
 
 (** Extensionality at the represented predicate code.  Formula equality is
