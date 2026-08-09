@@ -23,6 +23,8 @@ Check
   RawDynamicTruthNativeFinalSelectedSigmaBottomRefutationRootCompiler.
 Check
   raw_dynamicTruthNativeFinalBottomTruthDirectRefutationCompiler_of_native_selector.
+Check
+  raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_open_coherence_and_native_bottom.
 
 Print Assumptions
   raw_coqRestrictedPABottomTruthRefutationDirectCode_native_view.
@@ -32,6 +34,8 @@ Print Assumptions
   raw_coqRestrictedPANativeDirectTruthInputsWithClosure_bottom_refutation_of_selected_sigma.
 Print Assumptions
   raw_dynamicTruthNativeFinalBottomTruthDirectRefutationCompiler_of_native_selector.
+Print Assumptions
+  raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_open_coherence_and_native_bottom.
 
 End
   PABoundedRawCodedRestrictedPABottomTruthNativeDirectRefutationLinkAudit.

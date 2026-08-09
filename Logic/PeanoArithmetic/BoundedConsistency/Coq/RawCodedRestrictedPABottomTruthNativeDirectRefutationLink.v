@@ -432,4 +432,30 @@ Proof.
   exact hroot.
 Qed.
 
+(** Feed the native-linked bottom row directly into the preferred split
+    consistency bridge.  This keeps the arbitrary opaque bottom law out of
+    downstream interfaces: the only bottom premises now name the exact
+    successor Sigma selector and its selected application root. *)
+Corollary
+    raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_open_coherence_and_native_bottom
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawCoqRestrictedPAConsistencyFromUniversalSoundnessDirectOpenCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalSelectedAxiomContextTruthDirectCoherenceCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalBottomTruthNativeSelectorLinkCompiler M inputs ->
+  RawDynamicTruthNativeFinalSelectedSigmaBottomRefutationRootCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler
+    M inputs.
+Proof.
+  intros M hPA inputs hopen hcoherence hlink hbottom.
+  exact
+    (raw_dynamicTruthNativeFinalConsistencyFromUniversalSoundnessDirectCompiler_of_open_and_split_truth_support
+      M hPA inputs hopen hcoherence
+      (raw_dynamicTruthNativeFinalBottomTruthDirectRefutationCompiler_of_native_selector
+        M inputs hlink hbottom)).
+Qed.
+
 End PABoundedRawCodedRestrictedPABottomTruthNativeDirectRefutationLink.
