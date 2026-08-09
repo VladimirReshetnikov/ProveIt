@@ -780,6 +780,66 @@ Arguments
   RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeCompiler
   M inputs : clear implicits.
 
+(** Native truth inputs contain level-indexed numeral parameters, so a
+    genuine uniform successor construction may choose a different direct
+    input record at each graph trace.  This dependent family is therefore
+    the preferred public boundary; the fixed-input compiler above remains a
+    convenient specialization for pointwise developments. *)
+Definition
+    RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeFamilyCompiler
+    (M : RawPAModel) : Prop :=
+  forall (tail : nat -> M) level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode witnessList baseContext,
+    RawDynamicTruthNativeFinalStagedGraphTraceAt M tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode ->
+    RawDynamicTruthNativeFinalStagedPrerequisitesOn M
+      witnessList baseContext
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution
+      nextAxiomSoundness ->
+  exists inputs : RawCodedTemplateDirectStructuralInputs M,
+    RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeAt
+      M inputs tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode.
+
+Arguments
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeFamilyCompiler
+  M : clear implicits.
+
+Theorem
+    raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeFamilyCompiler_of_fixed
+    : forall (M : RawPAModel)
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeCompiler
+    M inputs ->
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeFamilyCompiler
+    M.
+Proof.
+  intros M inputs hfixed tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites.
+  exists inputs.
+  exact (hfixed tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites).
+Qed.
+
 Theorem
     raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_ordinary
     : forall (M : RawPAModel), RawPASatisfies M -> forall
@@ -1099,6 +1159,35 @@ Proof.
         nextLocal nextCrossLevel nextShift nextSubstitution
         nextAxiomSoundness nextFinal successorNumeralCode witnessList
         baseContext htrace hprerequisites)).
+Qed.
+
+(** Preferred trace-proof adapter with level-dependent direct inputs. *)
+Theorem
+    raw_dynamicTruthNativeFinalStagedTraceProofCompiler_of_growing_direct_bridge_family
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeFamilyCompiler
+    M ->
+  RawDynamicTruthNativeFinalStagedTraceProofCompiler M.
+Proof.
+  intros M hPA hcompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites.
+  destruct (hcompiler tail level
+    currentLocal currentCrossLevel currentShift currentSubstitution
+    currentAxiomSoundness currentFinal
+    nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+    nextFinal successorNumeralCode witnessList baseContext
+    htrace hprerequisites) as [inputs hbridge].
+  exact
+    (raw_dynamicTruthNativeFinalGrowingStagedNextFinalProof_of_direct_bridge
+      M hPA inputs tail level
+      currentLocal currentCrossLevel currentShift currentSubstitution
+      currentAxiomSoundness currentFinal
+      nextLocal nextCrossLevel nextShift nextSubstitution nextAxiomSoundness
+      nextFinal successorNumeralCode htrace hbridge).
 Qed.
 
 End

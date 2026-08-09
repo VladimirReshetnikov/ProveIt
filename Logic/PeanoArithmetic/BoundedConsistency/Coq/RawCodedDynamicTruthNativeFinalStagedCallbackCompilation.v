@@ -258,4 +258,22 @@ Proof.
         M hPA inputs hbridge)).
 Qed.
 
+(** Preferred public adapter: the direct input record may depend on the
+    selected successor trace, as its represented lower/upper numeral
+    parameters do in the native construction. *)
+Theorem
+    raw_dynamicTruthNativeStagedNextFinalCompiler_of_growing_direct_bridge_family
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridgeFamilyCompiler
+    M ->
+  RawDynamicTruthNativeStagedNextFinalCompiler M.
+Proof.
+  intros M hPA hbridge.
+  exact
+    (raw_dynamicTruthNativeStagedNextFinalCompiler_of_trace_proof
+      M hPA
+      (raw_dynamicTruthNativeFinalStagedTraceProofCompiler_of_growing_direct_bridge_family
+        M hPA hbridge)).
+Qed.
+
 End PABoundedRawCodedDynamicTruthNativeFinalStagedCallbackCompilation.

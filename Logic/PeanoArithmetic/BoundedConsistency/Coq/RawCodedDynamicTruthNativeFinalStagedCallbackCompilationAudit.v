@@ -16,6 +16,8 @@ Check
   raw_dynamicTruthNativeStagedNextFinalCompiler_of_universal_soundness_bridge.
 Check
   raw_dynamicTruthNativeStagedNextFinalCompiler_of_growing_direct_bridge.
+Check
+  raw_dynamicTruthNativeStagedNextFinalCompiler_of_growing_direct_bridge_family.
 
 Print Assumptions
   raw_dynamicTruthNativeStagedNextFinalCompiler_of_trace_proof.
@@ -25,3 +27,5 @@ Print Assumptions
   raw_dynamicTruthNativeStagedNextFinalCompiler_of_universal_soundness_bridge.
 Print Assumptions
   raw_dynamicTruthNativeStagedNextFinalCompiler_of_growing_direct_bridge.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextFinalCompiler_of_growing_direct_bridge_family.
