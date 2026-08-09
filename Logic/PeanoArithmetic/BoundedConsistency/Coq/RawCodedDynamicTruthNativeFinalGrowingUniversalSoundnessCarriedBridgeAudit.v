@@ -1,0 +1,18 @@
+(** Assumption audit for the twice-growing final bridge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessCarriedBridge.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalGrowingUniversalSoundnessCarriedBridge.
+
+Check RawDynamicTruthNativeFinalCarriedConsistencyCodeBridgeAt.
+Check
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessCodeBridge_of_ordinary_carried.
+Check
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_ordinary_carried.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessCodeBridge_of_ordinary_carried.
+Print Assumptions
+  raw_dynamicTruthNativeFinalGrowingUniversalSoundnessDirectBridge_of_ordinary_carried.
