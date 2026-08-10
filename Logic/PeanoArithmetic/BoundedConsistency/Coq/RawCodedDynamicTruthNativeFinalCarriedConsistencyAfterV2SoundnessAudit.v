@@ -1,0 +1,23 @@
+(** Audit surface for the V2-soundness carried-consistency handoff. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalCarriedConsistencyAfterV2Soundness.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeFinalCarriedConsistencyAfterV2SoundnessAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalCarriedConsistencyAfterV2Soundness.
+
+Check
+  raw_dynamicTruthNativeFinalStagedNextFinalProof_of_remaining_v2_carried_code_equalities.
+Check
+  raw_dynamicTruthNativeFinalStagedNextFinalProof_of_extended_remaining_v2_and_basic_carried.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedNextFinalProof_of_remaining_v2_carried_code_equalities.
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedNextFinalProof_of_extended_remaining_v2_and_basic_carried.
+
+End
+  PABoundedRawCodedDynamicTruthNativeFinalCarriedConsistencyAfterV2SoundnessAudit.
