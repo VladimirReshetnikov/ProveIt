@@ -1,0 +1,30 @@
+(** Shared semantic imports for independently checked Eq-E child descent. *)
+
+From BoundedPAConsistency Require Export
+  RawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageShapeSupport
+  RawCodedProofEqElimConstructor
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationCase
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageDefinitions
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageEqualityChildSemanticView
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageMotiveChildSemanticView.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageValiditySupport.
+
+(** Re-export the generic raw-model environment as well as the Eq-E
+    constructor facts.  Downstream ParentData modules can therefore remain
+    small and need not reconstruct the long semantic import frontier. *)
+Export
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageShapeSupport.
+Export PABoundedRawCodedProofEqElimConstructor.
+Export
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationCase.
+Export
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageDefinitions.
+Export
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageEqualityChildSemanticView.
+Export
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageMotiveChildSemanticView.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageValiditySupport.

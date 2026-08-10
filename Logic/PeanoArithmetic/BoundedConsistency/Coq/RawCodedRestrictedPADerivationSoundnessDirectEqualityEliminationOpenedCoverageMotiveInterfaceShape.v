@@ -1,0 +1,28 @@
+(** The complete Eq-E motive-child interface shape, isolated for checking. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageMotiveShapeDefinitions.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageMotiveInterfaceShape.
+
+Import PA.
+Import PABoundedRawCodedTemplateSyntax.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageDefinitions.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageMotiveShapeDefinitions.
+
+Lemma coqRestrictedPADirectEqE_motive_child_interface_shape :
+  coqRestrictedPADirectEqualityEliminationMotiveChildInterfaceTemplate =
+  tfAnd
+    (coqRestrictedPADirectAndIntroductionChildBelowTemplate (ttVar 1))
+    (tfAnd coqRestrictedPADirectEqEMotiveChildRestrictedTemplate
+      (tfAnd coqRestrictedPADirectEqEMotiveChildEndpointTemplate
+        coqRestrictedPADirectEqEMotiveChildAdmissibleTemplate)).
+Proof. reflexivity. Qed.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageMotiveInterfaceShape.

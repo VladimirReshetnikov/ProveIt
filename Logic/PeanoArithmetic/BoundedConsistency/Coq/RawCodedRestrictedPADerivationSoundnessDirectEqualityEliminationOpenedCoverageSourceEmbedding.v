@@ -1,0 +1,46 @@
+(** PA embedding and parameter-opening laws for the fixed Eq-E source. *)
+
+From PAHF Require Import PAHF.
+From BoundedPAConsistency Require Import
+  RawCodedTemplateSyntax
+  RawCodedTemplateParameterAbstraction
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageDefinitions
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageSourceReification.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageSourceEmbedding.
+
+Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateParameterAbstraction.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageDefinitions.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageSourceReification.
+
+(** Soundness of reification identifies the explicit PA body with the
+    abstracted template assembled in the preceding module. *)
+Theorem coqRestrictedPADirectEqualityEliminationOpenedCoverageSource_embed :
+  embedPAFormula
+    coqRestrictedPADirectEqualityEliminationOpenedCoverageSourceBodyFormula =
+  coqRestrictedPADirectEqualityEliminationOpenedCoverageSourceBodyTemplate.
+Proof.
+  apply templateFormulaAsPAFormula_sound.
+  apply coqRestrictedPADirectEqualityEliminationOpenedCoverageSource_reifies.
+Qed.
+
+(** Opening the one abstracted lower-level parameter recovers the Eq-E law
+    used by the direct structural compiler. *)
+Theorem coqRestrictedPADirectEqualityEliminationOpenedCoverageSource_open :
+  templateFormulaOpen coqRestrictedPASoundnessLowerLevelTerm
+    (embedPAFormula
+      coqRestrictedPADirectEqualityEliminationOpenedCoverageSourceBodyFormula) =
+  coqRestrictedPADirectEqualityEliminationOpenedCoverageLawTemplate.
+Proof.
+  rewrite coqRestrictedPADirectEqualityEliminationOpenedCoverageSource_embed.
+  apply templateFormulaAbstractParameter_open.
+Qed.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageSourceEmbedding.

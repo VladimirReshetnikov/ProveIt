@@ -1,0 +1,47 @@
+(**
+  Stable component names for the Eq-E motive child.
+
+  The motive child is proof variable [#1], is checked in the constructor's
+  witness context [#7], and concludes the source instance [#0].  Keeping
+  these three derived templates in a computation-free module lets each
+  large reflexive shape equality be checked in its own Rocq process.
+*)
+
+From BoundedPAConsistency Require Export
+  RawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreDefinitions
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageDefinitions.
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationCase.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageMotiveShapeDefinitions.
+
+Import PA.
+Import PABoundedRawCodedTemplateSyntax.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageDefinitions.
+
+Definition coqRestrictedPADirectEqEMotiveChildRestrictedTemplate :=
+  coqRestrictedPADirectAndIntroductionChildRestrictedTemplate
+    coqRestrictedPADirectEqualityEliminationMotiveChildTerm
+    coqRestrictedPADirectEqualityEliminationWitnessContextTerm
+    coqRestrictedPADirectEqualityEliminationSourceInstanceTerm.
+
+Definition coqRestrictedPADirectEqEMotiveChildEndpointTemplate :=
+  coqRestrictedPADirectAndIntroductionChildEndpointTemplate
+    coqRestrictedPADirectEqualityEliminationMotiveChildTerm
+    coqRestrictedPADirectEqualityEliminationWitnessContextTerm
+    coqRestrictedPADirectEqualityEliminationSourceInstanceTerm.
+
+Definition coqRestrictedPADirectEqEMotiveChildAdmissibleTemplate :=
+  coqRestrictedPADirectAndIntroductionChildAdmissibleTemplate
+    coqRestrictedPADirectEqualityEliminationMotiveChildTerm
+    coqRestrictedPADirectEqualityEliminationWitnessContextTerm
+    coqRestrictedPADirectEqualityEliminationSourceInstanceTerm.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectEqualityEliminationOpenedCoverageMotiveShapeDefinitions.
