@@ -13,7 +13,9 @@
   compiler to arbitrary root terms, subject to its honest syntactic row
   stability premise.  A small rule index then shares all remaining proof
   code between the two projections.  The two literal append resources remain
-  independent and may select different standard PA witness suffixes.
+  independent and may select different standard PA witness suffixes; the
+  final paired compiler synchronizes those suffixes before exposing them to
+  later continuation assembly.
 *)
 
 From Stdlib Require Import List.
@@ -38,6 +40,7 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPADerivationSoundnessDirectAndEliminationRightCase
   RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootCompilation
   RawCodedPALocalProofIteratedUnusedAntecedents
+  RawCodedTemplateLocalProofAffineStandardWitnessTailTransport
   RawCodedRestrictedPADerivationSoundnessSameContextUnaryRecursiveChildStandardTailCompilation
   RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionAlignedTruthProduction
   RawCodedRestrictedPADerivationSoundnessDirectUniversalRulesAlignedTruthProduction.
@@ -73,6 +76,7 @@ Import
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootCompilation.
 Import PABoundedRawCodedPALocalProofIteratedUnusedAntecedents.
+Import PABoundedRawCodedTemplateLocalProofAffineStandardWitnessTailTransport.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessSameContextUnaryRecursiveChildStandardTailCompilation.
 Import
@@ -522,6 +526,198 @@ Proof.
     nextInputGlobalSigma nextInputGlobalPi aligned inputLevelNumeral
     inputs hstructural hleftResources hrightResources.
   constructor.
+  - exact
+      (raw_andEliminationLeftDynamicTruthStandardTailCompiler_of_aligned_append_concrete_row
+        M hPA tail predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned inputLevelNumeral
+        inputs hstructural hleftResources).
+  - exact
+      (raw_andEliminationRightDynamicTruthStandardTailCompiler_of_aligned_append_concrete_row
+        M hPA tail predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned inputLevelNumeral
+        inputs hstructural hrightResources).
+Qed.
+
+(** ------------------------------------------------------------------
+    Synchronize the two truth roots on one witnessed tail. *)
+
+(** The earlier compiler record deliberately leaves the two suffix choices
+    independent.  Continuation composition instead needs both represented
+    roots at one concrete context, so this record packages the exact pair at
+    a shared template tail. *)
+Record RawCoqRestrictedPADirectAndEliminationDynamicTruthRoots
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    (tail : TemplateContext) : Prop := {
+  rawCoqRestrictedPADirectAndEliminationRoots_leftTruth :
+    RawCoqRestrictedPADirectAndEliminationLeftDynamicTruthLawRoot
+      M hPA inputs tail;
+  rawCoqRestrictedPADirectAndEliminationRoots_rightTruth :
+    RawCoqRestrictedPADirectAndEliminationRightDynamicTruthLawRoot
+      M hPA inputs tail
+}.
+
+Arguments RawCoqRestrictedPADirectAndEliminationDynamicTruthRoots
+  M hPA inputs tail : clear implicits.
+
+Definition RawCoqRestrictedPADirectAndEliminationDynamicTruthRootsAtWitnesses
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    (witnesses : StandardPAAxiomWitnessPrefix) : Prop :=
+  RawCoqRestrictedPADirectAndEliminationDynamicTruthRoots
+    M hPA inputs (embedPAContext (map witnessedAxiom witnesses)).
+
+Definition
+    RawCoqRestrictedPADirectAndEliminationDynamicTruthRootsStandardTailCompiler
+    (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M) : Prop :=
+  RawCoqStandardWitnessTailCompiler
+    (RawCoqRestrictedPADirectAndEliminationDynamicTruthRootsAtWitnesses
+      M hPA inputs).
+
+Arguments RawCoqRestrictedPADirectAndEliminationDynamicTruthRootsAtWitnesses
+  M hPA inputs witnesses : clear implicits.
+Arguments
+  RawCoqRestrictedPADirectAndEliminationDynamicTruthRootsStandardTailCompiler
+  M hPA inputs : clear implicits.
+
+(** Each projection root is affine in the standard-witness tail.  These
+    exported transports are intentionally stated for arbitrary surrounding
+    prefixes as well as suffixes, matching the dependency-ordered pairing
+    combinator used below. *)
+Lemma raw_andEliminationLeftDynamicTruthLawRoot_surround_witnessed_tail :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    prefix witnesses suffix,
+  RawCoqRestrictedPADirectAndEliminationLeftDynamicTruthLawRoot
+    M hPA inputs (embedPAContext (map witnessedAxiom witnesses)) ->
+  RawCoqRestrictedPADirectAndEliminationLeftDynamicTruthLawRoot
+    M hPA inputs
+    (embedPAContext
+      (map witnessedAxiom (prefix ++ (witnesses ++ suffix)))).
+Proof.
+  intros M hPA inputs prefix witnesses suffix hroot.
+  exact
+    (raw_directReadyFormulaRoot_surround_witnessed_tail
+      M hPA inputs
+      coqRestrictedPADirectStrongStepAndEliminationLeftReadyContext
+      coqRestrictedPADirectSameContextUnary_andEliminationLeft_readyContext_app_witnesses
+      prefix witnesses suffix
+      coqRestrictedPADirectAndEliminationLeftDynamicTruthLawTemplate
+      hroot).
+Qed.
+
+Lemma raw_andEliminationRightDynamicTruthLawRoot_surround_witnessed_tail :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M)
+    prefix witnesses suffix,
+  RawCoqRestrictedPADirectAndEliminationRightDynamicTruthLawRoot
+    M hPA inputs (embedPAContext (map witnessedAxiom witnesses)) ->
+  RawCoqRestrictedPADirectAndEliminationRightDynamicTruthLawRoot
+    M hPA inputs
+    (embedPAContext
+      (map witnessedAxiom (prefix ++ (witnesses ++ suffix)))).
+Proof.
+  intros M hPA inputs prefix witnesses suffix hroot.
+  exact
+    (raw_directReadyFormulaRoot_surround_witnessed_tail
+      M hPA inputs
+      coqRestrictedPADirectStrongStepAndEliminationRightReadyContext
+      coqRestrictedPADirectSameContextUnary_andEliminationRight_readyContext_app_witnesses
+      prefix witnesses suffix
+      coqRestrictedPADirectAndEliminationRightDynamicTruthLawTemplate
+      hroot).
+Qed.
+
+(** Once the two roots have been synchronized, later compilers may extend
+    the witness batch without breaking their shared context. *)
+Theorem raw_andEliminationDynamicTruthRootsAtWitnesses_append_stable :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawCoqStandardWitnessTailAppendStable
+    (RawCoqRestrictedPADirectAndEliminationDynamicTruthRootsAtWitnesses
+      M hPA inputs).
+Proof.
+  intros M hPA inputs witnesses suffix hroots.
+  destruct hroots as [hleft hright].
+  constructor.
+  - pose proof
+      (raw_andEliminationLeftDynamicTruthLawRoot_surround_witnessed_tail
+        M hPA inputs [] witnesses suffix hleft) as htransported.
+    cbn [List.app] in htransported.
+    exact htransported.
+  - pose proof
+      (raw_andEliminationRightDynamicTruthLawRoot_surround_witnessed_tail
+        M hPA inputs [] witnesses suffix hright) as htransported.
+    cbn [List.app] in htransported.
+    exact htransported.
+Qed.
+
+(** Run the right compiler after the left compiler's selected suffix, then
+    transport the left root once.  No equality between separately generated
+    model context codes is required. *)
+Theorem
+    raw_andEliminationDynamicTruthRootsStandardTailCompiler_of_standalone :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M)
+    (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawCoqRestrictedPADirectAndEliminationLeftDynamicTruthStandardTailCompiler
+    M hPA inputs ->
+  RawCoqRestrictedPADirectAndEliminationRightDynamicTruthStandardTailCompiler
+    M hPA inputs ->
+  RawCoqRestrictedPADirectAndEliminationDynamicTruthRootsStandardTailCompiler
+    M hPA inputs.
+Proof.
+  intros M hPA inputs hleft hright.
+  pose proof
+    (raw_standardWitnessTailCompiler_pair
+      (RawCoqRestrictedPADirectAndEliminationLeftDynamicTruthLawRoot
+        M hPA inputs)
+      (RawCoqRestrictedPADirectAndEliminationRightDynamicTruthLawRoot
+        M hPA inputs)
+      (raw_andEliminationLeftDynamicTruthLawRoot_surround_witnessed_tail
+        M hPA inputs)
+      hleft hright) as hpair.
+  intros baseWitnesses.
+  destruct (hpair baseWitnesses) as [suffix [hleftRoot hrightRoot]].
+  exists suffix.
+  constructor; assumption.
+Qed.
+
+(** Public aligned producer for the synchronized pair.  The two literal row
+    resources remain separate because their result formula roots and ready
+    contexts differ, while alignment supplies the shared semantic source. *)
+Corollary
+    raw_andEliminationDynamicTruthRootsStandardTailCompiler_of_aligned_append_concrete_rows :
+  forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+    (tail : nat -> M) predecessorLevel baseContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi
+    (aligned : RawDynamicTruthNativeLocalAlignedPredecessorAt M tail
+      predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi)
+    inputLevelNumeral
+    (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeAlignedStrongStepStructuralInputsAt
+      M hPA tail predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned
+      inputLevelNumeral inputs ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAssumptionWitnessFormulaTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepAndEliminationLeftReadyContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAndEliminationRightResultFormulaTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepAndEliminationRightReadyContext []) ->
+  RawCoqRestrictedPADirectAndEliminationDynamicTruthRootsStandardTailCompiler
+    M hPA inputs.
+Proof.
+  intros M hPA tail predecessorLevel baseContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi aligned inputLevelNumeral
+    inputs hstructural hleftResources hrightResources.
+  apply
+    raw_andEliminationDynamicTruthRootsStandardTailCompiler_of_standalone.
   - exact
       (raw_andEliminationLeftDynamicTruthStandardTailCompiler_of_aligned_append_concrete_row
         M hPA tail predecessorLevel baseContext currentLocal
