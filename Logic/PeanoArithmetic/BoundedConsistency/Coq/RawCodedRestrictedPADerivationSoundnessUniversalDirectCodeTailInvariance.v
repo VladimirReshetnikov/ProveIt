@@ -25,12 +25,15 @@ From BoundedPAConsistency Require Import
   RawCodedTemplateDirectStructuralTranslation
   RawCodedTemplateNumeralParameters
   RawCodedTemplateTernaryApplication
+  RawCodedPAProvability
   RawCodedDynamicTruthTemplateDirectInputs
   RawCodedRestrictedTargetTemplateContext
   RawCodedRestrictedPAConsistencyFromUniversalSoundness
   RawCodedRestrictedPADerivationSoundnessTemplateDirectInputs
   RawCodedRestrictedPADerivationSoundnessExtendedDirectInputs
   RawCodedRestrictedPADerivationSoundnessExtendedRowIdentification
+  RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixInductionShell
+  RawCodedFormulaBoundAllCarrierBoundary
   RawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell.
 
 Module
@@ -45,6 +48,7 @@ Import PABoundedRawCodedTemplateStructuralTranslation.
 Import PABoundedRawCodedTemplateDirectStructuralTranslation.
 Import PABoundedRawCodedTemplateNumeralParameters.
 Import PABoundedRawCodedTemplateTernaryApplication.
+Import PABoundedRawCodedPAProvability.
 Import PABoundedRawCodedDynamicTruthTemplateDirectInputs.
 Import PABoundedRawCodedRestrictedTargetTemplateContext.
 Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
@@ -54,6 +58,9 @@ Import
   PABoundedRawCodedRestrictedPADerivationSoundnessExtendedDirectInputs.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessExtendedRowIdentification.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixInductionShell.
+Import PABoundedRawCodedFormulaBoundAllCarrierBoundary.
 Import
   PABoundedRawCodedRestrictedPADerivationSoundnessCarrierStrongPrefixDirectInductionShell.
 
@@ -246,6 +253,36 @@ Proof.
     exact IHcontext.
 Qed.
 
+(** Renaming and term substitution change only arguments of opaque leaves,
+    never their predicate names.  These two closure lemmas let larger
+    compiler templates inherit a small opaque support proof from their
+    unshifted source without reopening their term-level definitions. *)
+Lemma rawTemplateFormulaOpaqueNamesBelow_rename : forall
+    bound renaming formula,
+  RawTemplateFormulaOpaqueNamesBelow bound formula ->
+  RawTemplateFormulaOpaqueNamesBelow bound
+    (templateFormulaRename renaming formula).
+Proof.
+  intros bound renaming formula.
+  revert renaming.
+  induction formula; intros renaming hbelow;
+    cbn [templateFormulaRename RawTemplateFormulaOpaqueNamesBelow]
+      in hbelow |- *; intuition.
+Qed.
+
+Lemma rawTemplateFormulaOpaqueNamesBelow_subst : forall
+    bound substitution formula,
+  RawTemplateFormulaOpaqueNamesBelow bound formula ->
+  RawTemplateFormulaOpaqueNamesBelow bound
+    (templateFormulaSubst substitution formula).
+Proof.
+  intros bound substitution formula.
+  revert substitution.
+  induction formula; intros substitution hbelow;
+    cbn [templateFormulaSubst RawTemplateFormulaOpaqueNamesBelow]
+      in hbelow |- *; intuition.
+Qed.
+
 (** ------------------------------------------------------------------
     The two-name support theorem for restricted derivation soundness. *)
 
@@ -272,6 +309,68 @@ Proof.
     try apply rawTemplateFormulaOpaqueNamesBelow_embedPA;
     try apply rawTemplateFormulaOpaqueNamesBelow_restrictedTarget;
     lia.
+Qed.
+
+(** The closure-induction body used to manufacture the universal soundness
+    certificate has the same two-name support.  The shifted and opened
+    carrier prefixes inherit support from the generic preservation lemmas
+    above. *)
+Lemma
+    coqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyTemplate_opaque_names_below_two
+    : RawTemplateFormulaOpaqueNamesBelow 2
+        coqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyTemplate.
+Proof.
+  assert (hpredicate : RawTemplateFormulaOpaqueNamesBelow 2
+      coqRestrictedPADerivationSoundnessPredicateTemplate).
+  {
+    pose proof
+      coqRestrictedPADerivationSoundnessUniversalTemplate_opaque_names_below_two
+      as huniversal.
+    unfold coqRestrictedPADerivationSoundnessUniversalTemplate
+      in huniversal.
+    exact huniversal.
+  }
+  assert (hprefix : RawTemplateFormulaOpaqueNamesBelow 2
+      coqRestrictedPADerivationSoundnessCarrierStrongPrefixTemplate).
+  {
+    unfold
+      coqRestrictedPADerivationSoundnessCarrierStrongPrefixTemplate,
+      coqRestrictedPADerivationSoundnessCarrierPredicateTemplate.
+    cbn [RawTemplateFormulaOpaqueNamesBelow].
+    split.
+    - apply rawTemplateFormulaOpaqueNamesBelow_embedPA.
+    - exact hpredicate.
+  }
+  assert (hshifted : RawTemplateFormulaOpaqueNamesBelow 2
+      coqRestrictedPADerivationSoundnessCarrierStrongPrefixShiftedTemplate).
+  {
+    unfold
+      coqRestrictedPADerivationSoundnessCarrierStrongPrefixShiftedTemplate.
+    apply rawTemplateFormulaOpaqueNamesBelow_rename.
+    exact hprefix.
+  }
+  assert (hsuccessor : RawTemplateFormulaOpaqueNamesBelow 2
+      coqRestrictedPADerivationSoundnessCarrierStrongPrefixSuccessorTemplate).
+  {
+    unfold
+      coqRestrictedPADerivationSoundnessCarrierStrongPrefixSuccessorTemplate,
+      templateFormulaOpen.
+    apply rawTemplateFormulaOpaqueNamesBelow_subst.
+    exact hshifted.
+  }
+  assert (hzero : RawTemplateFormulaOpaqueNamesBelow 2
+      coqRestrictedPADerivationSoundnessCarrierStrongPrefixZeroTemplate).
+  {
+    unfold
+      coqRestrictedPADerivationSoundnessCarrierStrongPrefixZeroTemplate,
+      templateFormulaOpen.
+    apply rawTemplateFormulaOpaqueNamesBelow_subst.
+    exact hprefix.
+  }
+  unfold
+    coqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyTemplate.
+  cbn [RawTemplateFormulaOpaqueNamesBelow].
+  intuition.
 Qed.
 
 (** Installing an arbitrary tail at names [2 + p] preserves every formula
@@ -329,6 +428,117 @@ Proof.
     rawCoqRestrictedPADerivationSoundnessExtendedDirectFormula_below_two_eq_basic.
   exact
     coqRestrictedPADerivationSoundnessUniversalTemplate_opaque_names_below_two.
+Qed.
+
+(** The same invariance transports the closure-induction body.  This is
+    needed because the carried package chooses its closure witnesses for the
+    basic two-selector inputs, whereas represented rule cases are compiled
+    against the extended row inputs. *)
+Theorem
+    raw_coqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyDirectCode_extended_eq_basic
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M)
+      (parameters : RawCodedTemplateNumeralParameters M)
+      (contextTruth conclusionTruth :
+        RawCoqRestrictedPATruthDirectSelector M parameters)
+      (tail : RawCoqRestrictedPAOpaqueTailDirectSelector M parameters),
+  rawCoqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyDirectCode M
+    (rawCoqRestrictedPADerivationSoundnessExtendedDirectStructuralInputs
+      M hPA parameters contextTruth conclusionTruth tail) =
+  rawCoqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyDirectCode M
+    (rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
+      M hPA parameters contextTruth conclusionTruth).
+Proof.
+  intros M hPA parameters contextTruth conclusionTruth tail.
+  rewrite
+    !raw_coqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyDirectCode_view.
+  apply
+    rawCoqRestrictedPADerivationSoundnessExtendedDirectFormula_below_two_eq_basic.
+  exact
+    coqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyTemplate_opaque_names_below_two.
+Qed.
+
+(** Closure data depends on [inputs] only through the carrier-body code.
+    State that transport once at the most general code-equality boundary. *)
+Theorem
+    raw_coqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder_transport
+    : forall (M : RawPAModel)
+      (first second : RawCodedTemplateDirectStructuralInputs M)
+      replacement axiom closureCount,
+  rawCoqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyDirectCode
+      M first =
+    rawCoqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyDirectCode
+      M second ->
+  RawCoqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder
+      M first replacement axiom closureCount ->
+  RawCoqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder
+      M second replacement axiom closureCount.
+Proof.
+  intros M first second replacement axiom closureCount hcode hremainder.
+  unfold
+    RawCoqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder
+    in hremainder |- *.
+  rewrite <- hcode.
+  exact hremainder.
+Qed.
+
+Corollary
+    raw_coqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder_extended_iff_basic
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M)
+      (parameters : RawCodedTemplateNumeralParameters M)
+      (contextTruth conclusionTruth :
+        RawCoqRestrictedPATruthDirectSelector M parameters)
+      (tail : RawCoqRestrictedPAOpaqueTailDirectSelector M parameters)
+      replacement axiom closureCount,
+  RawCoqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder M
+      (rawCoqRestrictedPADerivationSoundnessExtendedDirectStructuralInputs
+        M hPA parameters contextTruth conclusionTruth tail)
+      replacement axiom closureCount <->
+  RawCoqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder M
+      (rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
+        M hPA parameters contextTruth conclusionTruth)
+      replacement axiom closureCount.
+Proof.
+  intros M hPA parameters contextTruth conclusionTruth tail
+    replacement axiom closureCount.
+  pose proof
+    (raw_coqRestrictedPADerivationSoundnessCarrierStrongPrefixBodyDirectCode_extended_eq_basic
+      M hPA parameters contextTruth conclusionTruth tail) as hcode.
+  split; intro hremainder.
+  - exact
+      (raw_coqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder_transport
+        M _ _ replacement axiom closureCount hcode hremainder).
+  - exact
+      (raw_coqRestrictedPADerivationSoundnessStrongPrefixDirectClosureRemainder_transport
+        M _ _ replacement axiom closureCount (eq_sym hcode) hremainder).
+Qed.
+
+(** An already constructed proof certificate can be retargeted along the
+    code equality without changing its proof tree. *)
+Corollary
+    raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_basic_of_extended
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M)
+      (parameters : RawCodedTemplateNumeralParameters M)
+      (contextTruth conclusionTruth :
+        RawCoqRestrictedPATruthDirectSelector M parameters)
+      (tail : RawCoqRestrictedPAOpaqueTailDirectSelector M parameters)
+      certificate,
+  RawCodedPAProofOf M
+      (rawCoqRestrictedPADerivationSoundnessUniversalDirectCode M
+        (rawCoqRestrictedPADerivationSoundnessExtendedDirectStructuralInputs
+          M hPA parameters contextTruth conclusionTruth tail))
+      certificate ->
+  RawCodedPAProofOf M
+      (rawCoqRestrictedPADerivationSoundnessUniversalDirectCode M
+        (rawCoqRestrictedPADerivationSoundnessTemplateDirectStructuralInputs
+          M hPA parameters contextTruth conclusionTruth))
+      certificate.
+Proof.
+  intros M hPA parameters contextTruth conclusionTruth tail certificate
+    hcertificate.
+  rewrite <-
+    (raw_coqRestrictedPADerivationSoundnessUniversalDirectCode_extended_eq_basic
+      M hPA parameters contextTruth conclusionTruth tail).
+  exact hcertificate.
 Qed.
 
 (** Concrete specialization to the two dynamic-truth successor rows. *)
