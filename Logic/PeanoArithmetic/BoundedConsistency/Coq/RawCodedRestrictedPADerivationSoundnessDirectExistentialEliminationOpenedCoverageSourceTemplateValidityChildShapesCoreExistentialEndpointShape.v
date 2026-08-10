@@ -1,0 +1,21 @@
+(** The existential-child endpoint shape, isolated for strict checking. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreDefinitions.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreExistentialEndpointShape.
+
+Import PA.
+Import PABoundedRawCodedProofRules.
+Import PABoundedRawCodedTemplateSyntax.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreDefinitions.
+
+Lemma coqRestrictedPADirectExE_existential_child_endpoint_shape :
+  coqRestrictedPADirectExEExistentialChildEndpointTemplate =
+  embedPAFormula (proofRuleValidTermAt (tVar 2) (tVar 7) (tVar 0)).
+Proof. reflexivity. Qed.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreExistentialEndpointShape.

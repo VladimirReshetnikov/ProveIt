@@ -1,0 +1,28 @@
+(** The body-child interface shape, isolated for strict checking. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreDefinitions.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreBodyInterfaceShape.
+
+Import PA.
+Import PABoundedRawCodedTemplateSyntax.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreDefinitions.
+
+Lemma coqRestrictedPADirectExE_body_child_interface_shape :
+  coqRestrictedPADirectExistentialEliminationBodyChildInterfaceTemplate =
+  tfAnd
+    (coqRestrictedPADirectAndIntroductionChildBelowTemplate (ttVar 1))
+    (tfAnd coqRestrictedPADirectExEBodyChildRestrictedTemplate
+      (tfAnd coqRestrictedPADirectExEBodyChildEndpointTemplate
+        coqRestrictedPADirectExEBodyChildAdmissibleTemplate)).
+Proof. reflexivity. Qed.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreBodyInterfaceShape.

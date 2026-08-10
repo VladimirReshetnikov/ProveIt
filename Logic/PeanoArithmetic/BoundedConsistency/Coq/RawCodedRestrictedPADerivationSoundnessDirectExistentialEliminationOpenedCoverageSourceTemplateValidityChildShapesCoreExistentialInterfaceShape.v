@@ -1,0 +1,28 @@
+(** The existential-child interface shape, isolated for strict checking. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreDefinitions.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreExistentialInterfaceShape.
+
+Import PA.
+Import PABoundedRawCodedTemplateSyntax.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreDefinitions.
+
+Lemma coqRestrictedPADirectExE_existential_child_interface_shape :
+  coqRestrictedPADirectExistentialEliminationExistentialChildInterfaceTemplate =
+  tfAnd
+    (coqRestrictedPADirectAndIntroductionChildBelowTemplate (ttVar 2))
+    (tfAnd coqRestrictedPADirectExEExistentialChildRestrictedTemplate
+      (tfAnd coqRestrictedPADirectExEExistentialChildEndpointTemplate
+        coqRestrictedPADirectExEExistentialChildAdmissibleTemplate)).
+Proof. reflexivity. Qed.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectExistentialEliminationOpenedCoverageSourceTemplateValidityChildShapesCoreExistentialInterfaceShape.
