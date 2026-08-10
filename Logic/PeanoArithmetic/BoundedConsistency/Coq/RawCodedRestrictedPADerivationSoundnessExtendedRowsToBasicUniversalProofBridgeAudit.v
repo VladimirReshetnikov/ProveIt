@@ -1,0 +1,23 @@
+(** Audit surface for the extended-row to basic universal proof bridge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessExtendedRowsToBasicUniversalProofBridge.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessExtendedRowsToBasicUniversalProofBridgeAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessExtendedRowsToBasicUniversalProofBridge.
+
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_basic_of_extended_remaining_v2.
+Check
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_basic_of_extended_rows_remaining_v2.
+
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_basic_of_extended_remaining_v2.
+Print Assumptions
+  raw_codedPAProofOf_coqRestrictedPADerivationSoundnessUniversalDirect_basic_of_extended_rows_remaining_v2.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessExtendedRowsToBasicUniversalProofBridgeAudit.
