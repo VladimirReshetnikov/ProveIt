@@ -1,0 +1,38 @@
+(** PA embedding and parameter-opening laws for the fixed Or-E source. *)
+
+From PAHF Require Import PAHF.
+From BoundedPAConsistency Require Import
+  RawCodedTemplateSyntax
+  RawCodedTemplateParameterAbstraction
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageDefinitions
+  RawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageSourceReification.
+
+Module PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageSourceEmbedding.
+
+Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateParameterAbstraction.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageDefinitions.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageSourceReification.
+
+Theorem coqRestrictedPADirectOrEliminationOpenedCoverageSource_embed :
+  embedPAFormula
+    coqRestrictedPADirectOrEliminationOpenedCoverageSourceBodyFormula =
+  coqRestrictedPADirectOrEliminationOpenedCoverageSourceBodyTemplate.
+Proof.
+  apply templateFormulaAsPAFormula_sound.
+  apply coqRestrictedPADirectOrEliminationOpenedCoverageSource_reifies.
+Qed.
+
+Theorem coqRestrictedPADirectOrEliminationOpenedCoverageSource_open :
+  templateFormulaOpen coqRestrictedPASoundnessLowerLevelTerm
+    (embedPAFormula
+      coqRestrictedPADirectOrEliminationOpenedCoverageSourceBodyFormula) =
+  coqRestrictedPADirectOrEliminationOpenedCoverageLawTemplate.
+Proof.
+  rewrite coqRestrictedPADirectOrEliminationOpenedCoverageSource_embed.
+  apply templateFormulaAbstractParameter_open.
+Qed.
+
+End PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageSourceEmbedding.

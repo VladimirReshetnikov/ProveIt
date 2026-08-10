@@ -1,0 +1,13 @@
+(** Compatibility umbrella for the split Or-E indexed validity proof. *)
+
+From BoundedPAConsistency Require Export
+  RawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageIndexedValidityCore.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageIndexedValidity.
+
+Export
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageIndexedValidityCore.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageIndexedValidity.

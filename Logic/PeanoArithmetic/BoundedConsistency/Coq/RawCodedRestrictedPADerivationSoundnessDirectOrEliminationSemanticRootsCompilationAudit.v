@@ -1,0 +1,61 @@
+(**
+  Audit the exact Or-E semantic-root compiler.
+
+  The checks deliberately expose both layers:
+
+  - the unconditional append-stable package of three genuine recursive
+    child laws, whose branch contexts are [left :: Gamma] and
+    [right :: Gamma];
+  - the exact existing four-field Or-E residual, compiled from structural
+    alignment and one literal mode-zero result row only.
+
+  In particular there is no hidden context-cons or mode-one row premise.
+*)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectOrEliminationSemanticRootsCompilation.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationSemanticRootsCompilation.
+
+Check coqRestrictedPADirectOrEliminationChildEndpointTemplate.
+Check coqRestrictedPADirectOrEliminationRecursiveChildLawTemplate.
+Check coqRestrictedPADirectOrElimination_disjunction_recursive_law_agreement.
+
+Check
+  RawCoqRestrictedPADirectOrEliminationOpenedCoverageCompilerLawRoot.
+Check RawCoqRestrictedPADirectOrEliminationChildInterfacesRootAt.
+Check raw_orEliminationChildInterfacesRoot_of_openedCoverageCompiler.
+Check
+  RawCoqRestrictedPADirectOrEliminationChildInterfacesStandardTailCompiler.
+Check raw_orEliminationChildInterfaces_standardTailCompiler.
+
+Check
+  RawCoqRestrictedPADirectOrEliminationRecursiveChildLawRootsAtWitnesses.
+Check
+  RawCoqRestrictedPADirectOrEliminationRecursiveChildLawRootsStandardTailCompiler.
+Check raw_orEliminationRecursiveChildLawRoots_standardTailCompiler.
+Check raw_orEliminationRecursiveChildLawRootsAtWitnesses_append_stable.
+
+Check
+  RawCoqRestrictedPADirectOrEliminationResultTruthStandardTailCompiler.
+Check raw_orElimination_mode_zero_result_source_aligned.
+Check
+  raw_orEliminationResultTruth_standardTailCompiler_of_aligned_append_concrete_row.
+Check raw_orEliminationLeftChildLaw_standardTailCompiler_of_result_truth.
+Check raw_orEliminationRightChildLaw_standardTailCompiler_of_result_truth.
+Check raw_orEliminationDynamicTruthLaw_standardTailCompiler_of_result_truth.
+
+Check RawCoqRestrictedPADirectOrEliminationSemanticRootsAtWitnesses.
+Check
+  RawCoqRestrictedPADirectOrEliminationSemanticRootsStandardTailCompiler.
+Check raw_orEliminationSemanticRootsAtWitnesses_append_stable.
+Check
+  raw_orEliminationSemanticRoots_standardTailCompiler_of_aligned_append_concrete_row.
+
+Print Assumptions raw_orEliminationChildInterfaces_standardTailCompiler.
+Print Assumptions raw_orEliminationRecursiveChildLawRoots_standardTailCompiler.
+Print Assumptions
+  raw_orEliminationResultTruth_standardTailCompiler_of_aligned_append_concrete_row.
+Print Assumptions
+  raw_orEliminationSemanticRoots_standardTailCompiler_of_aligned_append_concrete_row.

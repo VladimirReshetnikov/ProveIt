@@ -1,0 +1,149 @@
+(** Semantic equation for the conclusion-admissibility component of an
+    Or-E child.  It is isolated because its existential calculation is the
+    largest of the four component equations. *)
+
+From Stdlib Require Import List Lia.
+From FirstOrder Require Import Fol.
+From PAHF Require Import PAHF.
+From PAListCoding Require Import Representability ListFormulas.
+From PAFiniteBasisReduction Require Import
+  HierarchyReduction CanonicalSelector CanonicalSelectorPA FiniteBetaCoding.
+From BoundedPAConsistency Require Import
+  RawModelCompleteness
+  RawCodedAssignment
+  RawCodedSyntaxConstructors
+  RawCodedFormulaOperations
+  RawCodedProofConstructors
+  RawCodedProofDescent
+  RawCodedProofEndpoints
+  RawCodedProofRules
+  RawCodedProofAtomicAdequacy
+  RawCodedProofFormulaCoverage
+  RawCodedProofRuleCoverage
+  RawCodedRestrictedPAProof
+  RawCodedFixedLevelTruthTotality
+  RawCodedRestrictedPAConsistencyFormulaCode
+  RawCodedTemplateSyntax
+  RawCodedTemplateSemantics
+  RawCodedTemplateEmbeddedUniversalValidity
+  RawCodedTemplateStructuralTranslation
+  RawCodedTemplateStructuralPAAgreement
+  RawCodedTemplateParameterAbstraction
+  RawCodedTemplateDirectStructuralTranslation
+  RawCodedRestrictedTargetTemplateContext
+  RawCodedRestrictedTargetTemplateSemantics
+  RawCodedCarrierRestrictedProofReroot
+  RawCodedRestrictedPAConsistencyFromUniversalSoundness
+  RawCodedRestrictedPADerivationSoundnessDirectAssumptionCase
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftRecursiveChildCompilation
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootValidity
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageValidity
+  RawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity
+  RawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageDefinitions
+  RawCodedRestrictedPADerivationSoundnessRecursiveChildInterface
+  RawCodedRestrictedPADerivationSoundnessRecursiveChildEndpointContextInterface
+  RawCodedRestrictedPADerivationSoundnessSameContextUnaryChildInterfaceOpenedCoverageSource
+  RawCodedProofOrEConstructor
+  RawCodedRestrictedPADerivationSoundnessDirectOrEliminationCase
+  RawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageSharedShapesCore.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageChildAdmissibleSatIff.
+
+Import PA.
+Import PAListRepresentability.
+Import PAListFormulas.
+Import PAHierarchyReduction.
+Import PACanonicalSelector.
+Import PACanonicalSelectorPA.
+Import PAFiniteBetaCoding.
+Import PABoundedRawModelCompleteness.
+Import PABoundedRawCodedAssignment.
+Import PABoundedRawCodedSyntaxConstructors.
+Import PABoundedRawCodedFormulaOperations.
+Import PABoundedRawCodedProofConstructors.
+Import PABoundedRawCodedProofDescent.
+Import PABoundedRawCodedProofEndpoints.
+Import PABoundedRawCodedProofRules.
+Import PABoundedRawCodedProofAtomicAdequacy.
+Import PABoundedRawCodedProofFormulaCoverage.
+Import PABoundedRawCodedProofRuleCoverage.
+Import PABoundedRawCodedRestrictedPAProof.
+Import PABoundedRawCodedFixedLevelTruthTotality.
+Import PABoundedRawCodedRestrictedPAConsistencyFormulaCode.
+Import PABoundedRawCodedTemplateSyntax.
+Import PABoundedRawCodedTemplateSemantics.
+Import PABoundedRawCodedTemplateEmbeddedUniversalValidity.
+Import PABoundedRawCodedTemplateStructuralTranslation.
+Import PABoundedRawCodedTemplateStructuralPAAgreement.
+Import PABoundedRawCodedTemplateParameterAbstraction.
+Import PABoundedRawCodedTemplateDirectStructuralTranslation.
+Import PABoundedRawCodedRestrictedTargetTemplateContext.
+Import PABoundedRawCodedRestrictedTargetTemplateSemantics.
+Import PABoundedRawCodedCarrierRestrictedProofReroot.
+Import PABoundedRawCodedRestrictedPAConsistencyFromUniversalSoundness.
+Import PABoundedRawCodedRestrictedPADerivationSoundnessDirectAssumptionCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftRecursiveChildCompilation.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftDynamicRerootValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionLeftOpenedCoverageValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectAndIntroductionOpenedCoverageValidity.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageDefinitions.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessRecursiveChildInterface.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessRecursiveChildEndpointContextInterface.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessSameContextUnaryChildInterfaceOpenedCoverageSource.
+Import PABoundedRawCodedProofOrEConstructor.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationCase.
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageSharedShapesCore.
+
+Lemma raw_orElimination_child_admissible_sat_iff : forall
+    child (M : RawPAModel) variables parameters predicates,
+  rawTemplateFormulaSat M variables parameters predicates
+    (coqRestrictedPADirectOrEliminationChildAdmissibleTemplate child) <->
+  let childCode := raw_term_eval M variables
+    (coqRestrictedPADirectOrEliminationChildPATerm child) in
+  let childConclusion := raw_term_eval M variables
+    (coqRestrictedPADirectOrEliminationChildConclusionPATerm child) in
+  RawCodedFormulaAtomicallyAdequate M childConclusion /\
+  RawCodedAssignmentDefinedThrough M
+    (variables 9) (variables 8) childConclusion /\
+  RawCarrierFormulaQuantifierBounded M
+    (parameters coqRestrictedPASoundnessLowerLevelParameterName)
+    childConclusion /\
+  exists coverageBound,
+    RawProofFormulaCoverage M childCode coverageBound /\
+    RawCodedAssignmentDefinedThrough M
+      (variables 9) (variables 8) coverageBound.
+Proof.
+  intros child M variables parameters predicates.
+  rewrite coqRestrictedPADirectOrElimination_child_admissible_shape.
+  cbn [rawTemplateFormulaSat].
+  repeat rewrite rawTemplateFormulaSat_embedPA.
+  rewrite raw_sat_codedFormulaAtomicallyAdequateTermAt_iff,
+    raw_sat_codedAssignmentDefinedThroughTermAt_iff.
+  unfold coqRestrictedPASoundnessLowerLevelTerm.
+  rewrite rawTemplateFormulaSat_restrictedTarget_parameter;
+    [|apply restrictedTargetFormulaQuantifierBoundedContext_seal_free].
+  rewrite raw_restrictedTargetFormulaQuantifierBoundedContextSat_iff.
+  cbn [raw_formula_sat].
+  setoid_rewrite raw_sat_proofFormulaCoverageTermAt_iff.
+  setoid_rewrite raw_sat_codedAssignmentDefinedThroughTermAt_iff.
+  destruct child; cbn [coqRestrictedPADirectOrEliminationChildPATerm
+    coqRestrictedPADirectOrEliminationChildConclusionPATerm raw_term_eval
+    scons]; tauto.
+Qed.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrEliminationOpenedCoverageChildAdmissibleSatIff.
