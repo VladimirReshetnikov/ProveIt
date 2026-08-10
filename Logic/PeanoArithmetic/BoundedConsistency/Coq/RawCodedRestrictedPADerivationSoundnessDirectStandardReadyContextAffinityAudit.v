@@ -1,0 +1,32 @@
+(** Public surface and kernel-assumption audit for the generic direct-rule
+    ready-context affine spine. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectStandardReadyContextAffinity.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectStandardReadyContextAffinityAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectStandardReadyContextAffinity.
+
+Check raw_coqTemplateContextShiftN_eq_templateContextShiftMany.
+Check raw_coqRestrictedPADirectStrongStepEndpointTail_affine.
+Check raw_templateContextShiftMany_compose.
+Check raw_coqRestrictedPADirectStrongEndpointDeepTail_affine.
+Check coqRestrictedPADirectStandardReadyContext.
+Check coqRestrictedPADirectStandardReadyContext_affine.
+Check coqRestrictedPADirectStandardReadyContext_app_witnesses.
+
+Print Assumptions
+  raw_coqTemplateContextShiftN_eq_templateContextShiftMany.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongStepEndpointTail_affine.
+Print Assumptions raw_templateContextShiftMany_compose.
+Print Assumptions
+  raw_coqRestrictedPADirectStrongEndpointDeepTail_affine.
+Print Assumptions coqRestrictedPADirectStandardReadyContext_affine.
+Print Assumptions coqRestrictedPADirectStandardReadyContext_app_witnesses.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectStandardReadyContextAffinityAudit.

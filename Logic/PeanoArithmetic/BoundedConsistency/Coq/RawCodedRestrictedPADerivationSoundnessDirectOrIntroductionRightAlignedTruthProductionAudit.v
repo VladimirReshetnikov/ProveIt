@@ -1,0 +1,26 @@
+(** Audit surface for aligned Or-I-right dynamic-truth production. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessDirectOrIntroductionRightAlignedTruthProduction.
+
+Module
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionRightAlignedTruthProductionAudit.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionRightAlignedTruthProduction.
+
+Check coqRestrictedPADirectOrIntroductionRightReadyContext_app_witnesses.
+Check raw_orIntroductionRight_mode_zero_parent_source_aligned.
+Check
+  RawCoqRestrictedPADirectOrIntroductionRightDynamicTruthStandardTailCompiler.
+Check
+  raw_orIntroductionRightDynamicTruthStandardTailCompiler_of_aligned_append_concrete_row.
+
+Print Assumptions
+  coqRestrictedPADirectOrIntroductionRightReadyContext_app_witnesses.
+Print Assumptions raw_orIntroductionRight_mode_zero_parent_source_aligned.
+Print Assumptions
+  raw_orIntroductionRightDynamicTruthStandardTailCompiler_of_aligned_append_concrete_row.
+
+End
+  PABoundedRawCodedRestrictedPADerivationSoundnessDirectOrIntroductionRightAlignedTruthProductionAudit.

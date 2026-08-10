@@ -1,0 +1,25 @@
+(** Audit surface for affine witnessed-tail transport and composition. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedTemplateLocalProofAffineStandardWitnessTailTransport.
+
+Module PABoundedRawCodedTemplateLocalProofAffineStandardWitnessTailTransportAudit.
+
+Import
+  PABoundedRawCodedTemplateLocalProofAffineStandardWitnessTailTransport.
+
+Check RawCoqStandardWitnessTailAppendStable.
+Check RawCoqStandardWitnessTailCompiler.
+Check raw_coqStandardWitnessTailCompiler_and.
+Check raw_coqStandardWitnessTailCompiler_apply.
+Check
+  raw_codedPALocalProof_standardWitnessTail_surround_under_affine_context.
+Check raw_codedPALocalProof_affine_context_root_append_stable.
+
+Print Assumptions raw_coqStandardWitnessTailCompiler_and.
+Print Assumptions raw_coqStandardWitnessTailCompiler_apply.
+Print Assumptions
+  raw_codedPALocalProof_standardWitnessTail_surround_under_affine_context.
+Print Assumptions raw_codedPALocalProof_affine_context_root_append_stable.
+
+End PABoundedRawCodedTemplateLocalProofAffineStandardWitnessTailTransportAudit.
