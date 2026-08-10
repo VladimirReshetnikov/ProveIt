@@ -62,6 +62,20 @@ Definition RawCoqStandardWitnessTailCompiler
 Arguments RawCoqStandardWitnessTailAppendStable P : clear implicits.
 Arguments RawCoqStandardWitnessTailCompiler P : clear implicits.
 
+(** Append-stability is closed under conjunction.  This lets a synchronized
+    batch of already compiled roots be transported as one continuation input. *)
+Theorem raw_coqStandardWitnessTailAppendStable_and : forall P Q,
+  RawCoqStandardWitnessTailAppendStable P ->
+  RawCoqStandardWitnessTailAppendStable Q ->
+  RawCoqStandardWitnessTailAppendStable
+    (fun witnesses => P witnesses /\ Q witnesses).
+Proof.
+  intros P Q hP hQ witnesses suffix [hp hq].
+  split.
+  - exact (hP witnesses suffix hp).
+  - exact (hQ witnesses suffix hq).
+Qed.
+
 (** Synchronize two independently chosen suffixes.  Only the earlier
     predicate needs append-stability: the second compiler is run after the
     first suffix has already been selected. *)

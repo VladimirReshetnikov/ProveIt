@@ -10,12 +10,14 @@ Import
 
 Check RawCoqStandardWitnessTailAppendStable.
 Check RawCoqStandardWitnessTailCompiler.
+Check raw_coqStandardWitnessTailAppendStable_and.
 Check raw_coqStandardWitnessTailCompiler_and.
 Check raw_coqStandardWitnessTailCompiler_apply.
 Check
   raw_codedPALocalProof_standardWitnessTail_surround_under_affine_context.
 Check raw_codedPALocalProof_affine_context_root_append_stable.
 
+Print Assumptions raw_coqStandardWitnessTailAppendStable_and.
 Print Assumptions raw_coqStandardWitnessTailCompiler_and.
 Print Assumptions raw_coqStandardWitnessTailCompiler_apply.
 Print Assumptions
