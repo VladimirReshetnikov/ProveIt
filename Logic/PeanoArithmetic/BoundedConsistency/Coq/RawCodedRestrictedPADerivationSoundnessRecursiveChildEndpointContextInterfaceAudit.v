@@ -1,0 +1,12 @@
+(** Strict assumption audit for endpoint-context recursive-child descent. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessRecursiveChildEndpointContextInterface.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessRecursiveChildEndpointContextInterface.
+
+Check raw_recursive_constructor_child_interface_at_endpoint_context.
+
+Print Assumptions
+  raw_recursive_constructor_child_interface_at_endpoint_context.
