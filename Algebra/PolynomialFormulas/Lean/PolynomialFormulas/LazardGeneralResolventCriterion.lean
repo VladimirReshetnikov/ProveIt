@@ -57,13 +57,15 @@ section OrbitPolynomial
 
 variable {A : Type uA} [Group A]
 variable (G : Subgroup A) [Fintype (Cosets G)]
-variable {L : Type uL} [Field L]
+variable {R : Type uL} [CommRing R]
 
 /-- The specialized orbit resolvent: it has one linear factor for every
 coset in `A/G`.  Thus equal values are retained as repeated factors rather
 than silently deduplicated. -/
-noncomputable def orbitResolvent (value : Cosets G → L) : L[X] :=
+noncomputable def orbitResolvent (value : Cosets G → R) : R[X] :=
   ∏ c : Cosets G, (X - C (value c))
+
+variable {L : Type uL} [Field L]
 
 /-- Root semantics of the specialized orbit resolvent.  This statement does
 not require the coset values to be distinct. -/
