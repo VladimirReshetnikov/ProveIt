@@ -6,6 +6,7 @@ import PolynomialFormulas.GaussianRadicalBounds
 import PolynomialFormulas.GaussianPolynomialApproximation
 import PolynomialFormulas.LazardQuintic
 import PolynomialFormulas.LazardQuinticFourier
+import PolynomialFormulas.LazardQuinticSectionFiveCombinedAction
 import PolynomialFormulas.GaussianQuinticSolver
 import PolynomialFormulas.AbelRuffini
 import PolynomialFormulas.QuinticRadicalDecision
