@@ -1,22 +1,92 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,a4paper,oneside]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=22mm,headheight=15pt,footskip=28pt]{geometry}
+\usepackage{microtype}
 \usepackage{amsmath,amssymb,mathtools}
-\usepackage[a4paper,margin=26mm]{geometry}
-\usepackage{booktabs,longtable,array}
+\usepackage{booktabs,longtable,tabularx,array}
 \usepackage{enumitem}
-\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{xurl}
+\usepackage[table]{xcolor}
 \usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage[most]{tcolorbox}
 \allowdisplaybreaks
+
+\definecolor{Ink}{HTML}{17212B}
+\definecolor{DeepBlue}{HTML}{214E78}
+\definecolor{MidBlue}{HTML}{2A6F97}
+\definecolor{SoftBlue}{HTML}{EAF3F8}
+\definecolor{DeepGreen}{HTML}{3D6B47}
+\definecolor{SoftGreen}{HTML}{EEF6EF}
+\definecolor{DeepGold}{HTML}{8C6A12}
+\definecolor{SoftGold}{HTML}{FBF6E6}
+\definecolor{DeepRed}{HTML}{8D3A3A}
+\definecolor{SoftRed}{HTML}{FBEDED}
+\definecolor{DeepGray}{HTML}{48545F}
+\definecolor{SoftGray}{HTML}{F4F6F7}
+\definecolor{RuleGray}{HTML}{C7CED4}
 
 \hypersetup{
   colorlinks=true,
-  linkcolor=blue!55!black,
-  citecolor=blue!55!black,
-  urlcolor=blue!60!black,
+  linkcolor=DeepBlue,
+  citecolor=DeepGreen,
+  urlcolor=MidBlue,
   pdftitle={A Lean transcription of the corrected Lazard quintic formula},
-  pdfauthor={ProveIt project}
+  pdfauthor={ProveIt project},
+  pdfsubject={Formalization status, corrected formulas, kernel boundary, and restart plan},
+  pdfkeywords={Lean, Lazard, quintic, radicals, formalization, proof audit}
 }
+\urlstyle{tt}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=2pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1pt minus 1pt}
+\emergencystretch=2.2em
+
+\titleformat{\section}{\Large\bfseries\color{DeepBlue}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{DeepGreen}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{DeepGray}}{\thesubsubsection}{0.7em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small Lazard quintic formalization}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\newtcolorbox{statusbox}[1][]{
+  enhanced,breakable,colback=SoftBlue,colframe=MidBlue,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  fonttitle=\bfseries,title={Claim boundary},#1}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{DeepBlue},
+  commentstyle=\itshape\color{DeepGreen},
+  stringstyle=\color{DeepRed},
+  frame=single,
+  rulecolor=\color{RuleGray},
+  backgroundcolor=\color{SoftGray},
+  breaklines=true,
+  keepspaces=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  xleftmargin=0.5em,xrightmargin=0.5em,
+  aboveskip=6pt,belowskip=6pt
+}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \newcommand{\lean}[1]{\nolinkurl{#1}}
 \newcommand{\Q}{\mathbb{Q}}
@@ -28,17 +98,39 @@
 \newcommand{\vietacodepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuinticVieta.lean}}
 \newcommand{\solvercodepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/GaussianQuinticSolver.lean}}
 \newcommand{\completenesscodepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/GaussianQuinticCompleteness.lean}}
-\setlength{\emergencystretch}{3em}
-
-\title{A Lean Transcription of the Corrected Lazard Formula\\
-for Solvable Quintics}
-\author{ProveIt project}
-\date{11 August 2026}
-
 \begin{document}
-\maketitle
-
-\begin{abstract}
+\color{Ink}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+\vspace*{0.8in}
+{\Huge\bfseries\color{Ink} A Lean Transcription of the Corrected Lazard Formula\par}
+\vspace{0.25in}
+{\LARGE\color{DeepBlue} for Solvable Quintics\par}
+\vspace{0.2in}
+{\large Corrected formulas, proof boundaries, and a restart plan\par}
+\vspace{0.8in}
+\begin{tcolorbox}[width=0.86\textwidth,colback=SoftGray,colframe=RuleGray,boxrule=0.7pt,arc=1mm]
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.20\textwidth}Y@{}}
+\textbf{Development} & Lean 4 transcription and audit of Lazard's solvable-quintic algorithm. \\
+\textbf{Formula source} & Lazard's 2004 chapter, with the Reshetnikov and Zapodovnikov corrections. \\
+\textbf{Checkpoint} & 11 August 2026. \\
+\textbf{Status} & Most active ongoing work; completed, local-build, and open claims are separated explicitly. \\
+\end{tabularx}
+\end{tcolorbox}
+\vfill
+{\large ProveIt project\par}
+\vspace{0.25in}
+{\small This is an audit-centered formalization report.  The presence of a source file is never treated as kernel acceptance.\par}
+\end{titlepage}
+\clearpage
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\section*{Abstract}
+\markboth{Abstract}{Abstract}
+\addcontentsline{toc}{section}{Abstract}
 Daniel Lazard gave an explicit radical formula for every irreducible solvable
 quintic.  This note documents a Lean 4 transcription of the formula, including
 Vladimir Reshetnikov's correction of two terms in the printed expression
@@ -73,9 +165,11 @@ Lazard's paper has been formalized.  Several printed assertions require
 correction or are false as stated, and several sound replacement theorems have
 source proofs whose complete Lean dependency closures have not yet been
 rebuilt.  The dated status section below separates those cases precisely.
-\end{abstract}
 
+\clearpage
 \tableofcontents
+\clearpage
+\pagenumbering{arabic}
 
 \section{Purpose, sources, and claim boundary}
 
@@ -93,7 +187,8 @@ The generic Vieta endgame is in
 \end{center}
 and the Gaussian-rational dispatcher and completeness specification are in
 \begin{center}
-  \solvercodepath\quad and\quad \completenesscodepath.
+  {\small\solvercodepath}\\[2pt]
+  {\small\completenesscodepath}.
 \end{center}
 These files describe the intended interface.  Some are already on the public
 import surface and some remain worktree checkpoints awaiting the fresh public
@@ -125,9 +220,10 @@ not supersede Lazard's formula.  In particular, the
 \lean{solving-quintics} package switches to numerical root matching after the
 resolvent and is not an exact implementation of the formula documented here.
 
+\Needspace{10\baselineskip}
 The present status claim is deliberately limited:
 
-\begin{quote}
+\begin{statusbox}
 The reusable kernel-checked interface proves the final root identity from four
 explicit cyclic Fourier relations and the exact five-factor identity from five
 explicit Vieta relations.  Separate root-origin proof sources derive those
@@ -138,7 +234,7 @@ for every nonzero Gaussian-rational coefficient tuple, a finite returned vector
 is equivalent to radical solvability and contains exactly the roots.  That
 dispatcher specification is not yet a freshly rebuilt public theorem and is
 not an executable decision procedure.
-\end{quote}
+\end{statusbox}
 
 This distinction matters.  Lean accepts division by zero as a total field
 operation, and so a raw expression alone would not faithfully express
@@ -321,7 +417,7 @@ certificates.  Both provers also expose the literal converse: exact relative
 stabilizer is equivalent to generation of the subgroup fixed field, and a
 second theorem bundles this with the ordinary orbit-product/minimal-polynomial
 identity.  The reverse proof uses Galois correspondence (respectively
-\texttt{gal\_fixedField}) and only the generator equality; the minpoly
+\lean{gal_fixedField}) and only the generator equality; the minpoly
 conjunct is therefore explicitly documented as redundant in that direction.
 The Coq bridge now transports this converse through the concrete symmetric
 rational-function presentation, so its endpoint concerns the exact stabilizer
@@ -350,18 +446,18 @@ The formerly missing named adapter is now present at source level in both
 provers.  Lean's
 \texttt{LazardGeneralResolventThetaAdapter.lean} defines the rational
 ten-term theta polynomial, proves its exact renaming stabilizer, and proves
-\texttt{paperRootTupleResolvent\_map\_eq\_scalarResolvent}; the realized file
+\lean{paperRootTupleResolvent_map_eq_scalarResolvent}; the realized file
 then invokes the generic corrected criterion literally in
-\texttt{RealizedFixedSubgroupCounterexample.literal\_correctedTheoremOne},
+\lean{RealizedFixedSubgroupCounterexample.literal_correctedTheoremOne},
 with a closed cyclic-quintic bundle.  Coq's
 \texttt{LazardGeneralResolventThetaAdapter.v} packages the exponent table as a
 multivariate polynomial, proves its exact stabilizer, makes the forced
 inverse-representative right-coset orientation explicit, and proves
-\texttt{lazard\_paper\_ordered\_theta\_resolvent\_map\_eq\_scalar\_resolvent}.
+\lean{lazard_paper_ordered_theta_resolvent_map_eq_scalar_resolvent}.
 The realized Coq file constructs the required base and splitting subfields,
 transports the scalar root and separability, and invokes the generic corrected
 theorem in
-\texttt{cyclic\_paper\_theta\_resolvent\_has\_root\_iff\_image\_sub\_conjugate}.
+\lean{cyclic_paper_theta_resolvent_has_root_iff_image_sub_conjugate}.
 The Lean theta adapter and finite coset counterexample are kernel-green.  The
 polynomial realization has the separate source-checkpoint status recorded
 below because it still depends on the unfinished Dummit certificate closure.
@@ -832,15 +928,19 @@ Vieta, factorization, or correctness certificate is accepted from the caller.
 \section{Lean-to-paper crosswalk}
 
 \small
+\arrayrulecolor{RuleGray}
+\rowcolors{3}{white}{SoftGray}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.34\textwidth}
                   >{\raggedright\arraybackslash}p{0.22\textwidth}
                   >{\raggedright\arraybackslash}p{0.35\textwidth}}
 \toprule
-Lean declaration & Lazard notation/source & Role \\
+\rowcolor{SoftBlue}
+\textbf{Lean declaration} & \textbf{Lazard notation/source} & \textbf{Role} \\
 \midrule
 \endfirsthead
 \toprule
-Lean declaration & Lazard notation/source & Role \\
+\rowcolor{SoftBlue}
+\textbf{Lean declaration} & \textbf{Lazard notation/source} & \textbf{Role} \\
 \midrule
 \endhead
 \lean{GeneralQuintic}, \lean{GeneralQuintic.polynomial} & $a,b,c,d,e,f$ & Original polynomial and its coefficient representation.\\
@@ -896,6 +996,8 @@ Lean declaration & Lazard notation/source & Role \\
 \lean{FormulaFactors}, \lean{RationalFormulaFactors} & raw five-factor claim & Over-strong retained propositions; not theorems.\\
 \bottomrule
 \end{longtable}
+\rowcolors{2}{white}{white}
+\arrayrulecolor{black}
 \normalsize
 
 \section{Why the legacy certificates are explicit}
@@ -1414,7 +1516,7 @@ identities will remain the correctness criterion.
 
 From the repository root, the freshly checked focused targets at this pause
 include
-\begin{verbatim}
+\begin{lstlisting}
 lake env lean \
   Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuintic.lean
 lake env lean \
@@ -1426,18 +1528,18 @@ lake build +PolynomialFormulas.LazardGeneralResolventConjugacyCounterexample:ole
 lake build +PolynomialFormulas.LazardGeneralResolventMinpoly:olean
 lake build \
   +PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125Certificate:olean
-\end{verbatim}
+\end{lstlisting}
 The Gaussian completeness targets and the full \lean{PolynomialFormulas}
 aggregate belong to the ordered restart plan; listing their eventual commands
 would not be evidence that the present worktree has passed those builds.
 The document is rendered by first changing to its directory and then running
 the following command three times (for the table of contents, citations, and
 cross-references):
-\begin{verbatim}
+\begin{lstlisting}
 cd Algebra/PolynomialFormulas
 pdflatex -interaction=nonstopmode -halt-on-error \
   LazardQuinticFormalization.tex
-\end{verbatim}
+\end{lstlisting}
 
 For the present contribution, an audit should additionally verify:
 \begin{enumerate}
