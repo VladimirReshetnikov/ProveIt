@@ -80,6 +80,56 @@ namespace DepressedQuintic
 def eval (c : DepressedQuintic K) (x : K) : K :=
   x ^ 5 + c.p * x ^ 3 + c.q * x ^ 2 + c.r * x + c.s
 
+/-- Polynomial represented by the four depressed coefficients. -/
+noncomputable def polynomial (c : DepressedQuintic K) : K[X] :=
+  X ^ 5 + C c.p * X ^ 3 + C c.q * X ^ 2 + C c.r * X + C c.s
+
+omit [CharZero K] in
+@[simp] theorem polynomial_eval (c : DepressedQuintic K) (x : K) :
+    c.polynomial.eval x = c.eval x := by
+  simp [polynomial, eval]
+
+omit [CharZero K] in
+@[simp] theorem polynomial_coeff_zero (c : DepressedQuintic K) :
+    c.polynomial.coeff 0 = c.s := by
+  simp [polynomial]
+
+omit [CharZero K] in
+@[simp] theorem polynomial_coeff_one (c : DepressedQuintic K) :
+    c.polynomial.coeff 1 = c.r := by
+  simp [polynomial]
+
+omit [CharZero K] in
+@[simp] theorem polynomial_coeff_two (c : DepressedQuintic K) :
+    c.polynomial.coeff 2 = c.q := by
+  simp [polynomial]
+
+omit [CharZero K] in
+@[simp] theorem polynomial_coeff_three (c : DepressedQuintic K) :
+    c.polynomial.coeff 3 = c.p := by
+  simp [polynomial]
+
+omit [CharZero K] in
+@[simp] theorem polynomial_coeff_four (c : DepressedQuintic K) :
+    c.polynomial.coeff 4 = 0 := by
+  simp [polynomial]
+
+omit [CharZero K] in
+@[simp] theorem polynomial_coeff_five (c : DepressedQuintic K) :
+    c.polynomial.coeff 5 = 1 := by
+  simp [polynomial]
+
+omit [CharZero K] in
+theorem polynomial_monic (c : DepressedQuintic K) : c.polynomial.Monic := by
+  simp only [polynomial]
+  monicity!
+
+omit [CharZero K] in
+@[simp] theorem polynomial_natDegree (c : DepressedQuintic K) :
+    c.polynomial.natDegree = 5 := by
+  simp only [polynomial]
+  compute_degree!
+
 /-- Map the four depressed coefficients into a field extension. -/
 def map {L : Type*} [Field L] (c : DepressedQuintic K) (phi : K →+* L) :
     DepressedQuintic L :=
@@ -161,6 +211,13 @@ noncomputable def resolventPolynomial (c : DepressedQuintic K) : K[X] :=
         2 * c.q ^ 4 - 200 * c.q * c.r * c.s + 64 * c.r ^ 3)
   (Polynomial.C (1 / 2) * A) ^ 2 -
     (z + Polynomial.C (3 * c.r + c.p ^ 2 / 4)) * Polynomial.C (discriminant c)
+
+/-- The displayed Lazard polynomial is literally monic, not only associated
+to a monic scalar resolvent after a coefficient-dependent rescaling. -/
+theorem resolventPolynomial_monic (c : DepressedQuintic K) :
+    (resolventPolynomial c).Monic := by
+  simp only [resolventPolynomial]
+  monicity!
 
 @[simp] theorem resolventPolynomial_eval (c : DepressedQuintic K) (z : K) :
     (resolventPolynomial c).eval z = resolventEval c z := by
