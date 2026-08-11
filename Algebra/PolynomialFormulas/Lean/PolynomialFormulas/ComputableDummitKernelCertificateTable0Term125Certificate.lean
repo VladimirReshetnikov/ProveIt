@@ -1,0 +1,32 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125State0Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125State1Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125State2Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125State3Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125State4Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125State5Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125State6Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125State7Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125State8Certificate
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+set_option maxHeartbeats 20000000
+
+theorem table0_term125_certificate :
+    SparseTerm.substitute ⟨-13, ⟨0, 1, 6, 1, 0⟩⟩ elementaryPolynomials = table0Term125Normal := by
+  change SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.const (-13)) (elementaryPolynomials 1)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 3) = table0Term125Normal
+  rw [table0_term125_state0_certificate, table0_term125_state1_certificate, table0_term125_state2_certificate, table0_term125_state3_certificate, table0_term125_state4_certificate, table0_term125_state5_certificate, table0_term125_state6_certificate, table0_term125_state7_certificate, table0_term125_state8_certificate]
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
