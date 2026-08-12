@@ -1,0 +1,17 @@
+(** Public checks for the standard selector-package bridge. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedPAStandardSelectorPackage.
+
+Import PABoundedRawCodedPAStandardSelectorPackage.
+
+Check standardSelectorPackageFormula.
+Check standardSelectorPackageFormula_sentence.
+Check raw_sat_standardSelectorPackageFormula_iff.
+Check PA_BProv_standardSelectorPackageFormula.
+Check raw_standardSelectorPackage_standard.
+
+Print Assumptions standardSelectorPackageFormula_sentence.
+Print Assumptions raw_sat_standardSelectorPackageFormula_iff.
+Print Assumptions PA_BProv_standardSelectorPackageFormula.
+Print Assumptions raw_standardSelectorPackage_standard.
