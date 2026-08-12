@@ -1,0 +1,20 @@
+(** Audit for the producer-to-final-source adapter. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalSourceLinkedFromDynamicSoundnessProducer
+  RawCodedRestrictedPADynamicSoundnessProducer.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalSourceLinkedFromDynamicSoundnessProducer.
+Import PABoundedRawCodedRestrictedPADynamicSoundnessProducer.
+
+Check
+  raw_dynamicTruthNativeFinalSourceLinkedImplicationRootCompiler_of_dynamicSoundnessProducer.
+Check RawRestrictedPADynamicSoundnessProducerInAllModels.
+Check
+  raw_dynamicTruthNativeFinalSourceLinkedImplicationRootCompilerInAllModels_of_dynamicSoundnessProducer.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalSourceLinkedImplicationRootCompiler_of_dynamicSoundnessProducer.
+Print Assumptions
+  raw_dynamicTruthNativeFinalSourceLinkedImplicationRootCompilerInAllModels_of_dynamicSoundnessProducer.
