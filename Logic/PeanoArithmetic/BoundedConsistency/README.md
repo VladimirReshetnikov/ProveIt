@@ -4187,6 +4187,17 @@ opam exec --switch=proofs-rocq92 -- rocq compile \
 The audit modules, rather than this README, are the authority for the exact
 kernel assumptions and public theorem surface.
 
+When using the generated `Makefile.coq`, pin its `ROCQ` variable to the same
+Rocq switch used to build the `.vos`/`.vok` dependencies.  A machine with both
+Rocq 9.0 and 9.2 installed can otherwise report a misleading “bad version
+number” while parsing an otherwise valid compiled library:
+
+```bash
+ROCQ="$(opam var bin --switch=proofs-rocq92)/rocq" \
+  make -f Makefile.coq \
+  Logic/PeanoArithmetic/BoundedConsistency/Coq/RawCodedDynamicTruthNativeMasterEndpointWithTransportAudit.vok
+```
+
 The Coq append-table layer also exposes a predecessor-row compiler below the
 five traversal binders.  It opens the four shifted preservation laws, shares
 the current-bound and old-bound proofs across all four columns, and transports
