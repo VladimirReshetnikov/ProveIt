@@ -1,22 +1,92 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,a4paper,oneside]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=22mm,headheight=15pt,footskip=28pt]{geometry}
+\usepackage{microtype}
 \usepackage{amsmath,amssymb,mathtools}
-\usepackage[a4paper,margin=26mm]{geometry}
-\usepackage{booktabs,longtable,array}
+\usepackage{booktabs,longtable,tabularx,array}
 \usepackage{enumitem}
-\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{xurl}
+\usepackage[table]{xcolor}
 \usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage[most]{tcolorbox}
 \allowdisplaybreaks
+
+\definecolor{Ink}{HTML}{17212B}
+\definecolor{DeepBlue}{HTML}{214E78}
+\definecolor{MidBlue}{HTML}{2A6F97}
+\definecolor{SoftBlue}{HTML}{EAF3F8}
+\definecolor{DeepGreen}{HTML}{3D6B47}
+\definecolor{SoftGreen}{HTML}{EEF6EF}
+\definecolor{DeepGold}{HTML}{8C6A12}
+\definecolor{SoftGold}{HTML}{FBF6E6}
+\definecolor{DeepRed}{HTML}{8D3A3A}
+\definecolor{SoftRed}{HTML}{FBEDED}
+\definecolor{DeepGray}{HTML}{48545F}
+\definecolor{SoftGray}{HTML}{F4F6F7}
+\definecolor{RuleGray}{HTML}{C7CED4}
 
 \hypersetup{
   colorlinks=true,
-  linkcolor=blue!55!black,
-  citecolor=blue!55!black,
-  urlcolor=blue!60!black,
+  linkcolor=DeepBlue,
+  citecolor=DeepGreen,
+  urlcolor=MidBlue,
   pdftitle={A Lean transcription of the corrected Lazard quintic formula},
-  pdfauthor={ProveIt project}
+  pdfauthor={ProveIt project},
+  pdfsubject={Formalization status, corrected formulas, kernel boundary, and restart plan},
+  pdfkeywords={Lean, Lazard, quintic, radicals, formalization, proof audit}
 }
+\urlstyle{tt}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=2pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1pt minus 1pt}
+\emergencystretch=2.2em
+
+\titleformat{\section}{\Large\bfseries\color{DeepBlue}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{DeepGreen}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{DeepGray}}{\thesubsubsection}{0.7em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small Lazard quintic formalization}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\newtcolorbox{statusbox}[1][]{
+  enhanced,breakable,colback=SoftBlue,colframe=MidBlue,
+  boxrule=0.6pt,arc=1.2mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  fonttitle=\bfseries,title={Claim boundary},#1}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{DeepBlue},
+  commentstyle=\itshape\color{DeepGreen},
+  stringstyle=\color{DeepRed},
+  frame=single,
+  rulecolor=\color{RuleGray},
+  backgroundcolor=\color{SoftGray},
+  breaklines=true,
+  keepspaces=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  xleftmargin=0.5em,xrightmargin=0.5em,
+  aboveskip=6pt,belowskip=6pt
+}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \newcommand{\lean}[1]{\nolinkurl{#1}}
 \newcommand{\Q}{\mathbb{Q}}
@@ -25,40 +95,81 @@
 \newcommand{\ii}[1]{i_{#1}}
 \newcommand{\codepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuintic.lean}}
 \newcommand{\fouriercodepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuinticFourier.lean}}
-\setlength{\emergencystretch}{3em}
-
-\title{A Lean Transcription of the Corrected Lazard Formula\\
-for Solvable Quintics}
-\author{ProveIt project}
-\date{August 2026}
-
+\newcommand{\vietacodepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuinticVieta.lean}}
+\newcommand{\solvercodepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/GaussianQuinticSolver.lean}}
+\newcommand{\completenesscodepath}{\lean{Algebra/PolynomialFormulas/Lean/PolynomialFormulas/GaussianQuinticCompleteness.lean}}
 \begin{document}
-\maketitle
-
-\begin{abstract}
+\color{Ink}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+\vspace*{0.8in}
+{\Huge\bfseries\color{Ink} A Lean Transcription of the Corrected Lazard Formula\par}
+\vspace{0.25in}
+{\LARGE\color{DeepBlue} for Solvable Quintics\par}
+\vspace{0.2in}
+{\large Corrected formulas, proof boundaries, and a restart plan\par}
+\vspace{0.8in}
+\begin{tcolorbox}[width=0.86\textwidth,colback=SoftGray,colframe=RuleGray,boxrule=0.7pt,arc=1mm]
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.20\textwidth}Y@{}}
+\textbf{Development} & Lean 4 transcription and audit of Lazard's solvable-quintic algorithm. \\
+\textbf{Formula source} & Lazard's 2004 chapter, with the Reshetnikov and Zapodovnikov corrections. \\
+\textbf{Checkpoint} & 11 August 2026. \\
+\textbf{Status} & Most active ongoing work; completed, local-build, and open claims are separated explicitly. \\
+\end{tabularx}
+\end{tcolorbox}
+\vfill
+{\large ProveIt project\par}
+\vspace{0.25in}
+{\small This is an audit-centered formalization report.  The presence of a source file is never treated as kernel acceptance.\par}
+\end{titlepage}
+\clearpage
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\section*{Abstract}
+\markboth{Abstract}{Abstract}
+\addcontentsline{toc}{section}{Abstract}
 Daniel Lazard gave an explicit radical formula for every irreducible solvable
 quintic.  This note documents a Lean 4 transcription of the formula, including
 Vladimir Reshetnikov's correction of two terms in the printed expression
 $P_{22}$ and Valeriy Zapodovnikov's restoration of the exceptional sign choice
 needed when the first determination of $\eps$ would make $T=0$.
 
-The Lean development formalizes the conditional data flow after the required
-algebraic witnesses have been supplied: normalization and depression,
-Lazard's degree-six resolvent, the four equations recovering
-$\ii4,\ldots,\ii8$, all auxiliary invariants $D,\ldots,K$, both coherent
-sign-selection stages, the corrected $P_{22}$, and inverse Fourier
-reconstruction of five candidate outputs.  It proves the normalization
-identity, the equivalence of the monic and fraction-free resolvent equations,
-preservation of $\eps^2$ by the correction, nonvanishing consequences of the
-branch certificates, coherence of all four quadratic sign branches, and
-soundness of finite branch selection.  A separate generic theorem proves that
-all five outputs are roots once four cyclic Fourier identities are supplied.
-The development does \emph{not} yet derive those identities from the raw
-Lazard invariant/radical data, construct the required certificates, or prove
-the five-factor completeness statement.
-\end{abstract}
+The Lean development contains two interfaces.  The older, reusable
+proof-carrying interface accepts four Fourier relations, derives the five
+Vieta relations from them, and proves the root and factorization endgames.
+The newer root-origin development
+constructs the ordered roots, derives the Fourier and Vieta identities from
+those roots, proves the corrected displayed numerator identities, and feeds
+them into radical reconstruction.  A denominator-safe alternate path recovers
+all four fifth powers through coherent projection branches and then adjoins
+four fifth roots; this avoids all four printed quotients by the possibly zero
+invariant $E$.  These newer files still await a fresh complete public
+dependency build, so their exact status is recorded in the claim
+crosswalk rather than overstated here.
 
+The Gaussian-rational dispatcher source still exposes the older certificate
+API and proves, classically, that it returns a finite radical vector exactly when a
+nonzero input is semantically solvable by radicals.  Every returned vector is
+exhaustive, but this dispatcher specification is noncomputable and is not yet
+a freshly rebuilt public endpoint.  This note
+also records that two printed terms in $P_{22}$ are erroneous and that the
+paper's Theorems~3 and~4 are false under its own Definition~1; the corrected
+formal development proves counterexamples rather than asserting those literal
+claims.
+
+This is a paused research checkpoint, not a claim that every assertion in
+Lazard's paper has been formalized.  Several printed assertions require
+correction or are false as stated, and several sound replacement theorems have
+source proofs whose complete Lean dependency closures have not yet been
+rebuilt.  The dated status section below separates those cases precisely.
+
+\clearpage
 \tableofcontents
+\clearpage
+\pagenumbering{arabic}
 
 \section{Purpose, sources, and claim boundary}
 
@@ -70,7 +181,19 @@ The generic Fourier soundness proof is in
 \begin{center}
   \fouriercodepath.
 \end{center}
-Both are imported by the public \lean{PolynomialFormulas} module.  The source
+The generic Vieta endgame is in
+\begin{center}
+  \vietacodepath,
+\end{center}
+and the Gaussian-rational dispatcher and completeness specification are in
+\begin{center}
+  {\small\solvercodepath}\\[2pt]
+  {\small\completenesscodepath}.
+\end{center}
+These files describe the intended interface.  Some are already on the public
+import surface and some remain worktree checkpoints awaiting the fresh public
+build described below; this note states that distinction explicitly rather
+than inferring it from the presence of a source file.  The source
 materials were reviewed at Smithereens commit
 \lean{da7026ec1369ade49bb6d964019a4c124fdd5091}.  The principal references are:
 
@@ -97,21 +220,31 @@ not supersede Lazard's formula.  In particular, the
 \lean{solving-quintics} package switches to numerical root matching after the
 resolvent and is not an exact implementation of the formula documented here.
 
-The present claim is deliberately limited:
+\Needspace{10\baselineskip}
+The present status claim is deliberately limited:
 
-\begin{quote}
-The Lean definitions are a type-correct transcription of the corrected
-algebraic algorithm.  The kernel proves the final root identity from four
-explicit cyclic Fourier relations.  Deriving those relations from the raw
-Lazard certificates, constructing certificates from solvable coefficients,
-and proving complete root coverage remain outside the present claim.
-\end{quote}
+\begin{statusbox}
+The reusable kernel-checked interface proves the final root identity from four
+explicit cyclic Fourier relations and the exact five-factor identity from five
+explicit Vieta relations.  Separate root-origin proof sources derive those
+relations from the actual ordered roots and reconstruct the whole root tuple;
+their focused checks and their complete public dependency checks are recorded
+separately.  The worktree also contains a classical specification saying that,
+for every nonzero Gaussian-rational coefficient tuple, a finite returned vector
+is equivalent to radical solvability and contains exactly the roots.  That
+dispatcher specification is not yet a freshly rebuilt public theorem and is
+not an executable decision procedure.
+\end{statusbox}
 
 This distinction matters.  Lean accepts division by zero as a total field
 operation, and so a raw expression alone would not faithfully express
-Lazard's partial algebraic construction.  The formalization therefore records
-every required denominator condition and every shared radical determination in
-\lean{RadicalCertificate}.
+Lazard's partial algebraic construction.  The legacy formalization therefore
+records every required denominator condition and every shared radical
+determination in \lean{RadicalCertificate}.  The root-origin theorems instead
+construct the relevant relations from a labelled complete root tuple.  The
+alternate reconstruction adds separate fifth roots for all four nonzero
+Fourier modes and therefore does not pretend that replacing only the first
+printed quotient resolves the $E=0$ case.
 
 \section{Mathematical scope}
 
@@ -130,24 +263,231 @@ $(\ii4,\ldots,\ii8)$ is first certified in $\Q$ and only then mapped to a
 radical extension.  The abstract generic API remains useful for algebraic
 lemmas.
 
+The same characteristic correction is already necessary in Sect.~4.2.
+Lazard's global exclusions permit characteristic three, but the printed
+Cardano display divides by $3$ and uses a primitive third root of unity.
+The paired Lean and Coq counterexamples use the separable irreducible cubic
+$X^3-X-1$ over $\mathbb F_3$.  More strongly, their generic obstruction
+theorems show that division by three collapses and that
+$X^3-1=(X-1)^3$ in \emph{every} characteristic-three field, so passing to an
+extension cannot repair the missing primitive root.  In the corrected scope,
+the formalizations transcribe the printed values
+
+\[
+ \frac{s_1}{3}-\frac p{s_1},\qquad
+ \frac{j^2s_1}{3}-\frac{jp}{s_1},\qquad
+ \frac{js_1}{3}-\frac{j^2p}{s_1},
+ \quad
+ s_1=3\sqrt[3]{-q/2+\sqrt{p^3/27+q^2/4}},
+\]
+
+including their printed order.  The cyclotomic equation
+$j^2+j+1=0$ is proved equivalent to genuine third-root primitivity when
+$3\ne0$.  For an irreducible cubic the new aggregate endpoints no longer ask
+the caller to certify $s_1\ne0$: when $p\ne0$ it follows from the product of
+the two Cardano radicands, and when $p=0$ the proved sign-selection branch
+uses irreducibility to obtain $q\ne0$ and chooses the safe square-root sign.
+The endpoints then derive the compatible second radical, the exact
+three-linear factorization, pointwise soundness, and all-root exhaustiveness.
+Existence of the square and cube radicals remains an explicit ambient-field
+requirement, rather than an unproved total radical operation.
+The new Lean exact-scope bridge, like the corresponding Coq development,
+uses only the explicit hypotheses $2\ne0$ and $3\ne0$.  The Lean bridge
+remains source-level.  The focused Coq kernels have accepted
+\texttt{CubicField}, the literal Fourier formula, and the generic and
+concrete characteristic-three obstruction with closed assumption reports;
+the enlarged public audit is still pending.
+
+There is an independent characteristic gap in the Sect.~3 alternating
+example.  The paper infers a nonzero discriminant from irreducibility and
+therefore calls the Vandermonde quadratic resolvent automatically separable.
+This is false over imperfect fields.  Both developments now prove the exact
+criterion
+
+\[
+  X^2-\Delta\text{ is separable}
+  \quad\Longleftrightarrow\quad
+  2\ne0\ \text{ and }\ \Delta\ne0.
+\]
+
+They also prove that separability of the source polynomial gives a nonzero
+derivative resultant, which is the premise irreducibility alone fails to
+supply; the Lean development additionally bridges a monic positive-degree
+source to its standard discriminant and the actual discriminant resolvent.
+Each prover exposes one premise-free theorem packaging the whole
+counterexample.  It is constructed internally over
+$\mathbb F_3(t)$: degree at infinity proves that $t$ is not a cube, hence
+$X^3-t$ is irreducible; its derivative and discriminant vanish, so it is
+inseparable and its alternating resolvent is $X^2$.  Characteristic three
+still satisfies the paper's printed exclusions of characteristics two and
+five.  Thus the corrected statement requires a separable source polynomial
+(automatic over a perfect, in particular characteristic-zero, field) and
+characteristic different from two.
+
+The preceding root-resolvent paragraph in Sect.~4.2 is now transcribed
+literally as well.  Its sole root-side input is an explicit complete labelled
+root presentation, represented by the three depressed Vieta relations for
+$x_0,x_1,x_2$; it does not accept a discriminant, resolvent, Fourier, or
+action certificate.  Both provers define
+
+\[
+ V=(x_0-x_1)(x_1-x_2)(x_2-x_0),\qquad
+ \Delta=4p^3+27q^2
+\]
+
+and derive $V^2=-\Delta$ by polynomial algebra.  Genuine primitivity of
+$j$ gives $j^2+j+1=0$, from which they derive
+$(j-j^2)^2=-3$ and hence $((j-j^2)V)^2=3\Delta$.  These are not supplied
+certificates: the developments prove the actual two-factor polynomial and
+evaluation identities for $X^2+\Delta$ and $X^2-3\Delta$.  They also prove
+that simultaneously exchanging $j$ with $j^2$ and $x_1$ with $x_2$ fixes
+the modified invariant.  The paper-facing aggregate retains the explicit
+hypothesis $3\ne0$, matching the corrected Cardano scope.  These new modules
+are publicly registered.  The focused Coq module is kernel-green with all
+six assumption reports closed under the ambient field; the Lean module and
+both enlarged public audits remain pending.
+
+The nearby printed sentence that $S_3$ has only one subgroup
+$A_3=C_3$ is false on its literal reading: a transposition generates a
+subgroup of order two.  Lean and Coq now contain that explicit counterexample,
+prove $A_3=C_3$, and prove the strongest intended correction: this common
+subgroup is the unique \emph{proper transitive} subgroup of $S_3$ (indeed by
+equality, not merely up to conjugacy).  The Coq proof is structural---it uses
+transitivity, Lagrange, Cauchy, parity, and cardinality rather than enumerating
+all subgroups---and is now kernel-green with closed assumption reports.  The
+Lean module and both public audits remain pending.
+
+There is a separate modular issue in the paper's arbitrary-degree Theorem~2.
+The paper carries its global assumption ``characteristic different from $2$
+and $5$'' into a statement for every $d$ and every subgroup of $S_d$, while
+the proof averages by the group order.  That generality is false: permutation
+invariant rings need not be Cohen--Macaulay, hence need not be free over the
+symmetric parameters, in modular characteristic
+\cite{BlumSmithMarques2018}.  A small finite counterexample is the regular
+$C_6$ action on six variables over $\mathbb F_3$.  In degree seven, Lean
+constructs $17$ linearly independent classes in the quotient by the
+positive-degree elementary symmetric parameters, while the Molien/Hilbert
+calculation forces coefficient $16$ under a homogeneous freeness assumption.
+Thus the contradiction needs only quotient dimension at least $17$; the
+stronger diagnostic assertion that the dimension is exactly $17$ is not a
+formal theorem.  The corrected generic endpoints deliberately assume the
+sufficient nonmodular hypothesis that the subgroup order is nonzero in the
+coefficient field, equivalently that it is invertible.  This is the exact
+hypothesis used by Reynolds averaging, but it is not necessary for every
+individual modular permutation action.  The Lean source proves
+that
+the displayed permutation has order six, identifies its orbit sums with the
+actual fixed homogeneous spaces, derives the forced count $16$ from an
+arbitrary hypothetical bounded homogeneous basis, and uses an explicit
+seventeen-class dual certificate in the literal quotient.  The Coq source
+proves the same group and semantic identifications, derives the same Hilbert
+convolution from an arbitrary actual finite-free decomposition, and checks
+the closed $132$-column/rank-$115$ product matrix with kernel reduction.
+Neither final contradiction assumes an orbit count, quotient dimension, or
+Hilbert coefficient.  These source chains remain a completion gate only in
+the sense that their focused and public kernel builds have not yet accepted
+them; this modular defect does not affect the rational quintic formula or the
+nonmodular $M_5$ computation.
+
+Theorem~1 also needs an orientation and labelling correction.  The Lean
+development uses left cosets $aG$, left multiplication, and the formal rename
+by $a$, whose stabilizer is $aGa^{-1}$.  The Coq development uses right
+cosets $Gx$, right translation, and the inverse rename $x^{-1}\!\cdot P$,
+whose stabilizer is $x^{-1}Gx$.  Both prove the same corrected criterion: the
+fixed displayed containment gives a base-field resolvent root without a
+separability premise, whereas an arbitrary base-field root of a separable
+specialized resolvent gives containment only in a conjugate of $G$.  Their
+paper-facing wrappers derive the root action, equivariance, and specialized
+orbit factorization from an exact stabilizer and a duplicate-free exact root
+factorization.  The generic specialization is parametrized by an ambient
+finite Galois extension; the rational-quintic application obtains that
+structure from the canonical characteristic-zero splitting field rather than
+accepting a fixed-field or action certificate.  The separate
+rational-function bridges derive fixed-field
+generation and the ordinary minimal-polynomial identity; those are not
+caller-provided certificates.  On the Lean side the arbitrary-base fixed-field
+module now also names the derived degree $d!$, the Galois property, and an
+explicit equivalence from $S_d$ to the complete automorphism group.  The Coq
+side obtains the same conclusions by localizing the proved reverse-Artin
+basis, constructing a splitting polynomial from its permutation orbits, and
+identifying the faithful permutation image with the full Galois group.  Thus
+neither symmetric rational-function endpoint accepts finite-extension,
+Galois-group, fixed-field, generation, action, or minimal-polynomial
+certificates.  Both provers also expose the literal converse: exact relative
+stabilizer is equivalent to generation of the subgroup fixed field, and a
+second theorem bundles this with the ordinary orbit-product/minimal-polynomial
+identity.  The reverse proof uses Galois correspondence (respectively
+\lean{gal_fixedField}) and only the generator equality; the minpoly
+conjunct is therefore explicitly documented as redundant in that direction.
+The Coq bridge now transports this converse through the concrete symmetric
+rational-function presentation, so its endpoint concerns the exact stabilizer
+of the original formal multivariate polynomial rather than only an abstract
+Galois element.  Lean's source-level direct aggregate
+\lean{sectionThreeAndTheoremOne_exactInvariantRootCriterion} composes the
+fixed-field identity, degree, Galois property, ordinary minimal polynomial,
+fixed-field generation, derived root action, and corrected
+conjugate-containment criterion in one theorem.  The generic criterion, its
+explicit invariant construction, and the theta adapter are committed and
+freshly kernel-checked.  The universal rational-function minimal-polynomial
+bridge is a separate module; it does not assert that every specialized theta
+sextic remains minimal after root substitution.  The larger aggregate and the
+polynomial-realized counterexample remain source-level checkpoints pending
+their own dependency builds.
+Beyond the finite-group coset witness, both
+provers now realize the obstruction on the explicit irreducible depressed
+cyclic rational quintic.  They give a duplicate-free exact ordering and a
+literal five-factor presentation of its roots in the splitting field, derive
+the genuine Galois permutation action, and preserve a base-field root and
+separability of the scalar resolvent under an explicit three-cycle
+relabelling.  The resulting image lies in the selected conjugate of
+$F_{20}$ but not in the displayed standard $F_{20}$.  Thus the displayed
+subgroup cannot replace its conjugacy class even for an actual polynomial.
+The formerly missing named adapter is now present at source level in both
+provers.  Lean's
+\texttt{LazardGeneralResolventThetaAdapter.lean} defines the rational
+ten-term theta polynomial, proves its exact renaming stabilizer, and proves
+\lean{paperRootTupleResolvent_map_eq_scalarResolvent}; the realized file
+then invokes the generic corrected criterion literally in
+\lean{RealizedFixedSubgroupCounterexample.literal_correctedTheoremOne},
+with a closed cyclic-quintic bundle.  Coq's
+\texttt{LazardGeneralResolventThetaAdapter.v} packages the exponent table as a
+multivariate polynomial, proves its exact stabilizer, makes the forced
+inverse-representative right-coset orientation explicit, and proves
+\lean{lazard_paper_ordered_theta_resolvent_map_eq_scalar_resolvent}.
+The realized Coq file constructs the required base and splitting subfields,
+transports the scalar root and separability, and invokes the generic corrected
+theorem in
+\lean{cyclic_paper_theta_resolvent_has_root_iff_image_sub_conjugate}.
+The Lean theta adapter and finite coset counterexample are kernel-green.  The
+polynomial realization has the separate source-checkpoint status recorded
+below because it still depends on the unfinished Dummit certificate closure.
+
 The older propositions \lean{FormulaSound} and \lean{FormulaFactors} quantify
 over an arbitrary characteristic-zero field after the displayed invariant and
 radical certificates have been supplied.  Audit showed that these hypotheses
 still admit extraneous invariant tuples, so the propositions are over-strong:
 they are retained definitions, not theorems or valid proof targets.  The sound
-interface is \lean{FourierRelations}, whose four cyclic equations are exactly
-the additional evidence used by
-\lean{solveGeneral_root_of_fourierRelations}.  Lazard's sourced irreducibility
-and $-1$ nonsquare hypotheses remain relevant to deriving that evidence and to
-the applicability/existence bridge.
+legacy certificate interface consists of \lean{FourierRelations}, whose four cyclic
+equations are the additional evidence used by
+\lean{solveGeneral_root_of_fourierRelations}.  The generic development derives
+\lean{FiveRootRelations} from those equations; its five
+elementary-symmetric conclusions imply an exact factorization.  The Gaussian
+\lean{LazardWitness} stores the Fourier family, not an independent Vieta
+certificate.  Lazard's
+sourced irreducibility and $-1$ nonsquare hypotheses remain relevant to
+deriving that evidence and to the applicability/existence bridge.  In the
+newer root-origin path, the relation families are intermediate theorem
+conclusions rather than caller-provided correctness assumptions.
 
-For a complete solver on arbitrary quintics, reducible inputs must be factored
-first.  Every proper factor has degree at most four and can in principle be
-handled by the existing low-degree formulas.  This module implements neither
-that factor search nor the rational-root search for the sextic: its rational
-entry point accepts a supplied \lean{RationalInvariantCertificate}.  Lazard's
-core is the irreducible branch; the formalization does not misrepresent it as
-a total reducer for arbitrary degree-five polynomials.
+An executable complete solver on arbitrary quintics would need to factor
+reducible inputs and search for the rational root of the sextic.  Every proper
+factor has degree at most four and can in principle be handled by the existing
+low-degree formulas.  The Lazard core implements neither search: its rational
+entry point accepts a supplied \lean{RationalInvariantCertificate}.  The
+Gaussian dispatcher covers arbitrary solvable inputs only as a classical
+specification, using a chosen \lean{CompleteRadicalSolution} when no Lazard
+witness is available.  It therefore does not misrepresent Lazard's
+irreducible branch as an executable total reducer.
 
 \section{The algorithm at a glance}
 
@@ -168,14 +508,24 @@ For an irreducible rational quintic, the corrected construction is:
 \item translate every resulting root back by $-b/(5a)$.
 \end{enumerate}
 
+Step~8 is the compact printed branch and requires the standard projection
+denominator $E$ to be nonzero.  When it is zero, the formal fallback keeps the
+same quadratic data but uses the corrected coherent projection matrix to
+recover $s_1^5,s_2^5,s_4^5,s_3^5$ separately.  It adjoins a fifth root of each
+value and reconstructs all roots directly by inverse Fourier transform.  No
+claim is made that this larger explicit tower is minimal.
+
 The group-theoretic tower behind these steps is
 \[
  C_5\subset D_5\subset F_{20}\subset S_5,
  \qquad [D_5:C_5]=2,\quad [F_{20}:D_5]=2,\quad [S_5:F_{20}]=6.
 \]
 The sextic selects a conjugate of the maximal solvable subgroup $F_{20}$;
-the two square roots descend through the two index-two inclusions; one fifth
-root resolves the remaining cyclic action.
+the two index-two inclusions explain two square layers, and Kummer theory
+explains the terminal cyclic degree-five layer once a primitive fifth root is
+present.  This field-theoretic presentation is distinct from the
+denominator-safe formula implementation, which may adjoin four explicitly
+chosen fifth roots without asserting minimality.
 
 \section{Normalization and depression}
 
@@ -219,6 +569,26 @@ The depressed condition gives $s_0=0$.  Define cyclic invariants
 Once $P_1^5=S_1$ is chosen with $P_1\ne0$, the remaining Fourier components
 are $P_2=S_2/P_1^3$, $P_3=S_3/P_1^2$, and $P_4=S_4/P_1$.
 
+There is a sign error in the printed combined-action discussion.  If
+$\phi(x_i)=x_{2i}$, the displayed definitions give
+\[
+  \phi(T)=-U_{\mathrm{printed}},\qquad
+  \phi(U_{\mathrm{printed}})=T,
+\]
+not $\phi(U_{\mathrm{printed}})=-T$.  Figure~3 instead uses the convention
+$U_{\mathrm{formula}}=-U_{\mathrm{printed}}$, for which
+$\phi(U_{\mathrm{formula}})=-T$.  The Lean and Coq developments keep those
+two conventions distinct.  They prove that the literal forward source
+\[
+  [P_1^5,P_3^5,P_4^5,P_2^5]
+\]
+is the actual four-term $\phi$-orbit, and that the formula-convention
+projection tuple is exactly $[I_1,I_2,I_3,-I_4]$.  They also prove the
+commutation of $\phi$ with $\psi(\omega)=\omega^2$, the resulting fixedness,
+and independence from the choice of primitive fifth-root generator.  Both
+focused modules have been accepted by their kernels; rebuilding the enlarged
+public aggregate audits remains a separate completion gate.
+
 The rational metacyclic basis used to express these quantities is
 \begin{align*}
 \ii4&=\sum_C x_0^2(x_1x_4+x_2x_3),&
@@ -228,9 +598,11 @@ The rational metacyclic basis used to express these quantities is
 \ii8&=\sum_C x_0^4(x_1^2x_4^2+x_2^2x_3^2).&&
 \end{align*}
 Lean stores their values in \lean{Invariants}.  The exact resolvent and linear
-relations are useful algebraic data, but do not by themselves certify that a
-supplied tuple came from roots.  Establishing that origin, or directly deriving
-the four \lean{FourierRelations}, remains part of the Lazard-specific bridge.
+relations do not by themselves certify that an arbitrary supplied tuple came
+from roots.  The root-origin modules close that distinction by constructing
+the tuple from an ordered complete root presentation and deriving the Fourier
+relations from the resulting Fourier sums.  The public audit still checks the
+entire dependency chain separately from the generic certificate endgame.
 
 \section{The sextic resolvent}
 
@@ -244,9 +616,11 @@ The discriminant of $X^5+pX^3+qX^2+rX+s$ is
  +2250q^2rs^2\\
 &-1600qr^3s+256r^5+3125s^4.
 \end{align*}
-This is \lean{discriminant}; it was independently compared with a computer
-algebra discriminant on all $625$ tuples $p,q,r,s\in\{-2,-1,0,1,2\}$ during
-the source audit.
+This is \lean{discriminant}.  The theorem
+\lean{discriminant_eq_polynomial_discr} proves symbolically, for every
+depressed quintic in the stated characteristic-zero field scope, that this
+display is Mathlib's polynomial discriminant; the proof is not a finite
+sample comparison.
 
 For a variable $z=\ii4$, put
 \begin{align*}
@@ -267,7 +641,9 @@ Lean's two definitions are \lean{resolventEval} and
 \lean{resolventPolynomial}.  Their agreement under evaluation is the theorem
 \lean{resolventPolynomial_eval}.  The theorem
 \lean{resolventEval_eq_zero_iff} proves the equivalence of
-\eqref{eq:resolvent} and \eqref{eq:resolvent-ff}.
+\eqref{eq:resolvent} and \eqref{eq:resolvent-ff}, while
+\lean{resolventPolynomial_monic} proves literal monicity before any comparison
+with a scaled executable resolvent.
 
 There is a notation trap in the printed sources.  Cayley's earlier invariant is
 \[
@@ -276,11 +652,29 @@ There is a notation trap in the printed sources.  Cayley's earlier invariant is
 whereas the section-7 sextic variable is $z=\ii4$.  Lean uses separate names
 \lean{cayleyTheta} and \lean{resolventCore}, preventing this collision.
 
-For an irreducible solvable rational quintic, the sextic has a rational root.
-Dummit's independent $F_{20}$ resolvent is the same invariant and gives the
-same criterion.  A future proof must not infer specialized distinctness from
-generic transitivity alone: Chapman's note supplies the missing argument, and
-Lazard gives a separability proof for the Cayley resolvent.
+The source theorem
+\lean{resolventPolynomial_has_rational_root_iff_gal_isSolvable} states that,
+for an irreducible depressed rational quintic, the sextic has a rational root
+if and only if its Galois group is solvable.  The generic theta orbit product
+is freshly proved equal, after scalar extension, to Dummit's independent
+$F_{20}$ sextic.  The specialized coefficient theorem still depends on the
+unfinished fresh rebuild of the Dummit certificate closure, so this note does
+not yet promote the rational-root equivalence to the current public
+kernel-checked boundary.  Specialized distinctness must not be inferred from generic
+transitivity alone.  The new field-generic Chapman endpoints derive it from
+$5\ne0$, irreducibility, the base-field root sum, and an explicit five-cycle
+endomorphism, and conclude separability of the six-factor scalar resolvent.
+Their new splitting-field specializations now derive those hypotheses for an
+arbitrary irreducible degree-five polynomial.  Degree five and $5\ne0$ make
+the derivative nonzero, hence the polynomial separable; irreducibility makes
+the Galois action on the five roots transitive; and Cauchy's theorem supplies
+an order-five element.  After an existential reindexing, that element acts as
+the literal standard five-cycle used by Chapman's argument.  Lean uses the
+canonical \texttt{p.SplittingField}; Coq states the corresponding
+\texttt{splittingFieldFor} generation hypothesis explicitly.  These root
+orderings and automorphisms are noncanonical witnesses, not executable
+selection functions.  Both expanded specializations remain source-level
+until their focused and public kernel builds accept them.
 
 \section[Recovering i5 through i8]{Recovering $\ii5,\ldots,\ii8$}
 
@@ -496,22 +890,57 @@ Lean represents $\omega$ by \lean{FifthRootOfUnity}; its field
 single indexed formula \lean{solveDepressed} replaces five branch-sensitive
 Mathematica expressions.  \lean{solveGeneral} performs the final translation,
 and \lean{solveRational} keeps the rational invariant certificate visible.
-When the four \lean{FourierRelations} hold, the proved theorem
+In the reusable interface, when the four \lean{FourierRelations} hold, the proved theorem
 \lean{solveGeneral_root_of_fourierRelations} establishes that every $x_k$
-annihilates the original quintic.
+annihilates the original quintic, and
+\lean{solveGeneral_fiveRootRelations} derives \lean{FiveRootRelations} for
+these five concrete values.  Their five conclusions are the scaled Vieta
+identities
+\begin{align*}
+b&=-a\sum_k x_k,&
+c&=a\sum_{j<k}x_jx_k,&
+d&=-a\sum_{i<j<k}x_ix_jx_k,\\
+e&=a\sum_{i<j<k<\ell}x_ix_jx_kx_\ell,&
+f&=-a\prod_k x_k.
+\end{align*}
+The theorem \lean{FiveRootRelations.factorization} expands those compact
+identities and proves in the kernel that
+\[
+ aX^5+bX^4+cX^3+dX^2+eX+f
+   =a\prod_{k=0}^{4}(X-x_k).
+\]
+Thus \lean{LazardWitness.factorization} preserves multiplicities and proves
+exhaustiveness when $a\ne0$; the five identities are not supplied as witness
+fields.  The separate root-origin chain also derives the required Fourier
+premise from the actual root tuple: inverse Fourier reconstruction
+identifies every output with a reordered root, and root-derived elementary
+symmetric identities supply the Vieta factorization.  Those source modules
+must still pass the final public builds before this note calls the integration
+complete.  The Coq root-origin bridge now exposes the same composition by
+name: \lean{lazard_root_fourier_vieta},
+\lean{lazard_root_fourier_eval_factorization},
+\lean{lazard_root_fourier_output_root},
+\lean{lazard_root_fourier_output_complete}, and
+\lean{lazard_root_fourier_output_root_iff}.  Their only root-side input is the
+actual ordered tuple together with its depressed sum equation; no Fourier,
+Vieta, factorization, or correctness certificate is accepted from the caller.
 
 \section{Lean-to-paper crosswalk}
 
 \small
+\arrayrulecolor{RuleGray}
+\rowcolors{3}{white}{SoftGray}
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.34\textwidth}
                   >{\raggedright\arraybackslash}p{0.22\textwidth}
                   >{\raggedright\arraybackslash}p{0.35\textwidth}}
 \toprule
-Lean declaration & Lazard notation/source & Role \\
+\rowcolor{SoftBlue}
+\textbf{Lean declaration} & \textbf{Lazard notation/source} & \textbf{Role} \\
 \midrule
 \endfirsthead
 \toprule
-Lean declaration & Lazard notation/source & Role \\
+\rowcolor{SoftBlue}
+\textbf{Lean declaration} & \textbf{Lazard notation/source} & \textbf{Role} \\
 \midrule
 \endhead
 \lean{GeneralQuintic}, \lean{GeneralQuintic.polynomial} & $a,b,c,d,e,f$ & Original polynomial and its coefficient representation.\\
@@ -521,7 +950,7 @@ Lean declaration & Lazard notation/source & Role \\
 \lean{discriminant} & $\Delta$; pp.~219--220 & Explicit depressed-quintic discriminant.\\
 \lean{resolventCore} & $A(z)$ & Cubic whose square enters the sextic.\\
 \lean{cayleyTheta} & $\Theta=4\ii4+p^2+12r$; p.~219 & Keeps Cayley $\Theta$ distinct from $z=\ii4$.\\
-\lean{resolventPolynomial} & $R(z)$; pp.~219--220 & Monic degree-six polynomial.\\
+\lean{resolventPolynomial}, \lean{resolventPolynomial_monic} & $R(z)$; pp.~219--220 & Literal monic degree-six polynomial.\\
 \lean{resolventEval_eq_zero_iff} & fraction-free Stack Exchange equation & Proved equivalence of the two displays.\\
 \lean{Invariants} & $\ii4,\ldots,\ii8$; pp.~217--220 & Metacyclic invariant values.\\
 \lean{i4SquareRhs}--\lean{i4FifthRhs} & Figure~3; pp.~220--221 & Linear system for $\ii5,\ldots,\ii8$.\\
@@ -548,13 +977,30 @@ Lean declaration & Lazard notation/source & Role \\
 \lean{FourierRelations} & four cyclic coefficient identities & Formula-specific soundness evidence.\\
 \lean{FourierRelations.inverseFourier_root} & inverse Fourier root identity & Proved generic algebraic theorem.\\
 \lean{solveGeneral_root_of_fourierRelations} & translated root identity & Proved pointwise soundness from \lean{FourierRelations}.\\
+\lean{FiveRootRelations} & five scaled Vieta identities & Formula-independent coefficient certificate for five displayed values.\\
+\lean{FiveRootRelations.factorization} & $f=a\prod_{k=0}^4(X-x_k)$ & Exact generic factorization derived from the Vieta certificate.\\
+\lean{LazardWitness} & invariant, radical, and Fourier evidence & Conditional proof-carrying invocation; Vieta relations and factorization are derived rather than stored as witness fields.\\
+\lean{LazardWitness.factorization} & exact product for formula outputs & Multiplicity-preserving specialization of the generic Vieta theorem.\\
+\lean{rootFourierNumeratorRelations}, root reconstruction modules & root-defined $P_{ij}$ and Fourier sums & Derive the formula relations from an actual ordered root tuple rather than accepting them from a caller.\\
+\lean{rootCoherentAlternate_radical_contains_and_reconstructs} & denominator-safe alternate projection & Four coherent recoveries, four fifth adjunctions, and exact inverse-Fourier reconstruction; source-level pending public audit.\\
+\lean{rootCoherentAlternateFourierCertificate_eval_eq_zero_iff} & alternate-output correctness & Root-derived Vieta data, exact factorization, pointwise soundness, and exhaustion with no $E\ne0$ premise; source-level pending public audit.\\
+\lean{exists_general_commonCompositum_coherentAlternate_completeRootVector} & corrected general rational wrapper & Translates the common-compositum alternate outputs to an arbitrary nondegenerate irreducible rational quintic and returns radical membership, injectivity, exact factorization, and root-set equivalence; source-level pending public audit.\\
+\lean{CompleteRadicalSolution} & five radical expressions plus product identity & Classical fallback certificate for genuine quintics.\\
+\lean{Result.rootVector?} & optional finite output vector & Uniform view of delegated, Lazard, and fallback results.\\
+\lean{solve_hasRootVector_iff_completelySolvableByRadicals} & semantic existence equivalence & For nonzero Gaussian-rational inputs; classical and noncomputable.\\
+\lean{solve_eval_eq_zero_iff_returnedVector_contains} & exact root membership & Soundness and exhaustiveness of every returned vector.\\
+\lean{cyclicLazard_theoremThree_counterexample}; Coq \lean{lazard_theorem3_no_isomorphic_subextension_counterexample} & printed Theorem~3 & Source-level unconditional cyclic-quintic counterexample: the polynomial is monic and irreducible, the literal radical competitor contains every root (the Coq package also exposes its exact linear-factor product), the actual formula field and competitor contain the same selected root, and the radical formula field has degree $20$ but admits no rational algebra embedding into the degree-$10$ competitor.  Both provers also negate the literal existence of an isomorphic radical subextension; all endpoints are registered for the complete public audit build.\\
+\lean{lazard_theorem4_counterexample}; Coq \lean{lazard_theorem4_counterexample} & printed Theorem~4 & Source-level unconditional irreducible cyclic-quintic/all-roots counterexample: a literal Definition~1 radical extension contains every root but not the primitive fifth root, refuting the printed leastness claim.  Coq extracts the proved factor list, proves the universal property of its all-root splitting field, adjoins the displayed primitive fifth root, and proves that exact generated field is not least; it also retains the stronger uniform leastness refutation.  All endpoints are registered for the complete public audit build.\\
+\lean{exists_solvable_F20_commonCompositum_exact_paper_count}; Coq \lean{exists_lazard_actual_F20_kummer_common_compositum_compressed} & corrected degree/radical-count part of Theorem~4 & From only irreducibility, degree five, and solvability of the actual Galois group, the source-level endpoints derive the $F_{20}$ subgroup tower and explicitly return $|\operatorname{Gal}|=5\cdot2^{e_{\Q}}$ with its normal order-five subgroup.  They construct a primitive fifth root in the product splitting field, prove and return its primitivity and containment in the exact two-square field $\Q(\omega)$, distinguish the compressed exponent $e_\omega\le e_{\Q}$, identify the top field with the embedded quintic splitting field joined with $\Q(\omega)$, and prove radicality, degree $5\cdot2^{2+e_\omega}$, relative Galois order $5\cdot2^{e_\omega}$, and an exact $2+e_\omega$ square/one-fifth presentation.  Coq derives the formerly explicit nonzero-polynomial premise from the quintic-size hypothesis.  Kernel checking of these expanded endpoints remains pending.\\
 \lean{FormulaSound}, \lean{RationalFormulaSound} & raw pointwise claim & Over-strong retained propositions; not theorems.\\
 \lean{FormulaFactors}, \lean{RationalFormulaFactors} & raw five-factor claim & Over-strong retained propositions; not theorems.\\
 \bottomrule
 \end{longtable}
+\rowcolors{2}{white}{white}
+\arrayrulecolor{black}
 \normalsize
 
-\section{Why the certificates are part of the algorithm}
+\section{Why the legacy certificates are explicit}
 
 The following denominators occur in the formula:
 \[
@@ -574,69 +1020,469 @@ The formalization treats their nonvanishing as follows.
   $U=5G/(T\eps)$, yields \lean{RadicalCertificate.initial_relations};
   \lean{QuadraticRelations.of_branchTriple} proves that all four coherent
   sign choices preserve the two square equations and $TU\eps=5G$.
-\item \lean{invariantE_nonzero} records Lazard's $E=T^2+U^2\ne0$ argument in
-  the rational case.
+\item \lean{invariantE_nonzero} records Lazard's nonvanishing argument; for
+  the formula-stage variables the proved normalization is
+  $T^2+U^2=5E$.
 \item \lean{branch_nonzero} and $P_1^5=Q_1$ imply $P_1\ne0$.
 \end{itemize}
+
+The printed formulas for $P_1,P_2,P_3,P_4$ all use the standard projection
+denominator $E$.  Consequently, replacing only the $P_1$ row cannot justify
+the case $E=0$.  The corrected fallback instead uses one coherent invertible
+projection vector to recover each of the four Fourier fifth powers under a
+matching sign branch, then adjoins four fifth roots and applies inverse
+Fourier reconstruction.  It is a larger radical tower, but it has no hidden
+division by $E$.  The explicit Gaussian-integer tuple in
+\lean{LazardQuinticActualRootEZeroExample} has five distinct depressed
+roots, nonzero root epsilon, and coefficient invariant $E=0$; on that tuple
+the standard denominator and matrix determinant are zero while the
+coherent-alternate denominator and matrix determinant are nonzero.  The
+example now also specializes the root-derived Vieta chain
+to an exact alternate-output factorization, pointwise soundness, and
+root-set exhaustion.
 
 This organization is intentionally relational.  A later executable algebraic-
 number layer may compute the certificates, but the mathematical formula is not
 made dependent on a particular computer algebra system's analytic square-root
 or fractional-power convention.
 
-\section{What remains to prove}
+\section{What is proved, and what remains}
 
-The formula-independent endgame is now proved.  For components
+\subsection{Paused Lean checkpoint: 11 August 2026}
+
+The project is paused at this commit.  The following vocabulary is used in
+this section.
+
+\begin{description}[style=nextline,leftmargin=3.4cm]
+\item[Committed and kernel-checked]
+  The named source is in Git, its focused Lean target was rebuilt from the
+  current source, and representative exported theorems were checked with
+  \texttt{\#print axioms}.  Standard logical dependencies such as
+  \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} are not
+  treated as proof gaps.
+\item[Source or local-build checkpoint]
+  The mathematical construction is present, and in some cases the root file
+  has elaborated, but the complete current dependency closure and public
+  aggregate have not both been rebuilt.  Such an item is not counted as a
+  completed public theorem.
+\item[Open]
+  A proof bridge, bounded certificate frontier, fresh dependency build, or
+  executable construction is still required.
+\end{description}
+
+The principal \emph{committed and freshly checked} results at the pause are:
+
+\begin{enumerate}
+\item The reusable algebraic endgames are proved: inverse Fourier
+  reconstruction gives roots from the four cyclic relations, and the five
+  Vieta identities give the exact linear-factor product and root exhaustion
+  when the polynomial is not identically zero.  The established degree-at-most
+  four solvers return explicit radical expressions and have soundness and
+  exhaustiveness theorems.  These statements should not be confused with an
+  executable complete quintic solver.
+\item \texttt{LazardGeneralResolventCriterion.lean} proves the corrected
+  orbit-resolvent criterion.  Containment in the displayed stabilizer implies
+  a base-field root without a separability premise.  Conversely, an injective
+  specialized orbit (equivalently the required separability condition) gives
+  containment in a \emph{conjugate} stabilizer, which is the label-invariant
+  conclusion.
+\item \texttt{LazardGeneralResolventExplicit.lean} constructs the rename
+  action, universal coset values and their specialization, derives Galois
+  equivariance from an exact ordered-root presentation, proves coefficient
+  descent, and produces a base-field resolvent whose scalar extension is the
+  orbit product.  These are derived objects, not supplied equivariance or
+  coefficient certificates.
+\item \texttt{LazardGeneralResolventThetaAdapter.lean} proves the exact
+  $F_{20}$ stabilizer of the ten-term theta invariant and identifies its
+  six-coset orbit product, after scalar extension, with the existing
+  Frobenius--Dummit/Lazard sextic.  This closes the generic identification; it
+  does not by itself freshly rebuild all specialized integer coefficient
+  computations.
+\item The unconditional alternating-resolvent assertion in characteristic
+  three has a committed kernel-checked counterexample.  More generally, the
+  formal audit replaces false printed statements by corrected theorems or
+  explicit counterexamples rather than silently strengthening hypotheses.
+\item \texttt{LazardGeneralResolventConjugacyCounterexample.lean} gives the
+  finite $S_5/F_{20}$ witness to the labelling error.  A conjugate of the
+  standard $F_{20}$ fixes the selected non-base coset although it is not
+  contained in the displayed standard subgroup.  Its terminal theorem has
+  only the standard assumptions \lean{propext}, \lean{Classical.choice}, and
+  \lean{Quot.sound}.
+\item One previously intractable coefficient leaf of the executable Dummit
+  decision procedure is now a bounded, deterministic certificate graph.
+  Table~0 term~125 is decomposed into $358$ Lean modules, with $143$ ordinary
+  \lean{decide} leaves.  All $358$ modules were rebuilt; the terminal theorem
+  has assumption report \lean{[propext]} and its state-zero leaf has none.
+  There is no \lean{native_decide}, admission, unsafe implementation, or
+  external proof oracle in this graph.  This completes one frontier node, not
+  the full coefficient table.
+\end{enumerate}
+
+The following substantial pieces are \emph{source or local-build
+checkpoints}, not yet a single clean public theorem graph:
+
+\begin{enumerate}
+\item \texttt{LazardGeneralResolventMinpoly.lean} is a buildable prefix
+  checkpoint.  It proves the fraction-action/rename stabilizer identity, the
+  stabilizer of a simple fixed-field adjunction, fixed-field generation from
+  an exact rename stabilizer, and the converse generation criterion.  Those
+  five exported endpoints have only standard logical assumptions.  The
+  product reindexing needed for the ordinary minimal-polynomial identity still
+  has a quotient-\lean{Fintype} instance mismatch; that theorem and its three
+  dependents are preserved verbatim in labeled comments, with no
+  \lean{sorry}, axiom, or placeholder.  The result is therefore not yet the
+  promised minimal-polynomial theorem.
+\item The Dummit coefficient implementation has been rewritten so that the
+  large finite identities are intended to be checked by bounded ordinary
+  kernel reductions.  Hundreds of generated table/root modules still await
+  their serial build, and the top \lean{ComputableDummitCoefficients} artifact
+  is stale relative to that rewrite.  Consequently downstream assumption
+  reports can still display four legacy \lean{native_decide} constants even
+  though the current source no longer contains them.
+\item The root-origin Lazard chain constructs a labelled complete root tuple,
+  derives the cyclic Fourier and Vieta identities, checks the corrected
+  displayed numerators, and feeds them to inverse Fourier reconstruction.
+  The denominator-safe alternate construction coherently recovers all four
+  nonzero Fourier modes without dividing by $E$.  Focused root files and the
+  explicit $E=0$ Gaussian-integer example have elaborated locally, but they
+  were checked against the stale top Dummit artifact and therefore require a
+  fresh transitive rebuild before being promoted here.
+\item The Section~7 aggregate packages pointwise soundness, exact
+  factorization, and exhaustion from its root-origin data.  Its own source
+  elaborates, but its present cached assumption report inherits the four stale
+  Dummit constants just described.
+\item The classical Gaussian-rational dispatcher specifies that every vector
+  it returns is an exact exhaustive root vector and that a nonzero input has
+  such a vector exactly when all roots are radical-solvable.  The solvable
+  genuine-quintic branch uses classical choice of a proof-carrying solution;
+  no exact algebraic-number program presently computes those expressions.
+  Its changed source and the public import/audit surface have not received the
+  final clean build.
+\item The modular audit of printed Theorem~2 has a concrete regular
+  $C_6/\mathbb F_3$ contradiction under development.  The formal lower bound
+  is $17$ independent quotient classes, not a proof that the quotient has
+  exact dimension $17$.  The corrected nonmodular theorem uses invertibility
+  of the group order as a sufficient Reynolds-averaging hypothesis.
+\item The polynomial-realized fixed-subgroup counterexample is written, but
+  its exact-root and scalar-resolvent dependencies run through the unfinished
+  Dummit closure.  It must not be advertised merely on the strength of an old
+  cached artifact.
+\item Rocq/Coq contains many parallel proofs and bounded-certificate drafts.
+  That work has been checkpointed separately and is explicitly postponed;
+  this paused status and the restart plan below concern Lean first.
+\end{enumerate}
+
+Accordingly, this repository does \emph{not} yet contain a complete formal
+proof of every claim in Lazard's paper.  Such a claim would in any event be
+incorrect: some printed claims (including the literal subgroup conclusion of
+Theorem~1 in an arbitrary labelling, the arbitrary-characteristic version of
+Theorem~2, and the minimality assertions in Theorems~3 and~4 under the paper's
+Definition~1) require correction or are false.  Nor is there yet a Lean
+function which, for every Gaussian-rational quintic, computes either explicit
+radical expressions or a proof of nonsolvability.  What exists is a mixture of
+an honest primitive-recursive solvability decision proof, a noncomputable
+proof-carrying expression specification, and a growing kernel-checked
+transcription of Lazard's explicit construction.
+
+\subsection{Ordered next steps}
+
+When work resumes, the shortest dependable path is:
+
+\begin{enumerate}
+\item Continue the bounded Dummit certificate frontier immediately after
+  table~0 term~125, building one generated module or small bounded aggregate
+  at a time.  Finish all four coefficient tables and the root-state
+  certificates.
+\item Rebuild \lean{ComputableDummitCoefficients} and its public decision
+  theorem from that source closure, then verify that the four stale
+  \lean{native_decide} constants disappear from \texttt{\#print axioms}.
+\item Rebuild, in dependency order, the scalar resolvent criterion, root
+  ordering, root-reduction bridge, Section~7 aggregate, coherent alternate
+  tower, and the actual-root $E=0$ example.  Repeat the endpoint assumption
+  audits only after this fresh chain exists.
+\item Resolve the quotient-\lean{Fintype} reindexing in the universal
+  minimal-polynomial module, restore its three dependent endpoints, and then
+  rebuild the realized polynomial counterexample.  Keep the universal
+  rational-function minimal polynomial distinct from specialized sextic
+  minimality, which can fail when specialization collides.
+\item Complete and kernel-check the modular Theorem~2 contradiction and the
+  corrected nonmodular invariant-module theorem, retaining only the proved
+  quotient-rank lower bound.
+\item Finish the bounded coefficient certificates for the displayed
+  $P_2$ and $P_3$ Fourier numerators, then integrate the root-derived
+  Fourier/Vieta graph and both the standard and alternate reconstruction
+  paths.
+\item Integrate and rebuild the Gaussian dispatcher/completeness
+  specification and the root/public audit modules.  If executable radical
+  output is required, add a separate exact algebraic-number witness-selection
+  layer rather than treating classical choice as computation.
+\item Run the complete public Lean build and audit every exported endpoint for
+  \lean{sorry}, new \lean{axiom}s, \lean{native_decide},
+  \lean{implemented_by}, \lean{unsafe}, and \lean{exact_no_check}.  Only then
+  update this checkpoint from ``source/local-build'' to ``completed public
+  theorem.''
+\end{enumerate}
+
+Proof scripts exist for both formula-independent endgames.  For components
 $P_1,\ldots,P_4$ satisfying \lean{FourierRelations},
 \lean{FourierRelations.inverseFourier_root} proves that each inverse Fourier
 value annihilates the depressed quintic, and
 \lean{solveGeneral_root_of_fourierRelations} transports that result through
-the Tschirnhaus translation.  This proof uses only symbolic field identities.
+the Tschirnhaus translation.  For five values satisfying
+\lean{FiveRootRelations}, \lean{FiveRootRelations.factorization} proves the
+exact polynomial product, and
+\lean{FiveRootRelations.exists_eq_of_eval_eq_zero} proves root exhaustiveness
+when the leading coefficient is nonzero.  These proofs use only symbolic field
+identities.  The depressed specialization now factors the repeated endgame
+into \lean{DepressedFiveRootRelations.eval_root},
+\lean{DepressedFiveRootRelations.exists_eq_of_eval_eq_zero}, and
+\lean{DepressedFiveRootRelations.eval_eq_zero_iff}.  The Lean Section~7
+aggregate exposes the resulting pointwise soundness and all-root exhaustion
+as fields derived from its root-origin Vieta data, matching the corresponding
+Coq aggregate.  Coq now factors the same general implication through
+\lean{lazard_depressed_vieta_root},
+\lean{lazard_depressed_vieta_complete}, and
+\lean{lazard_depressed_vieta_root_iff}; neither package accepts those
+conclusions as premises.
 
-The main remaining Lazard-specific soundness task is to derive those four
-cyclic identities for the concrete components computed from the intended
-invariants and radical choices.  The raw \lean{InvariantRelations} and
-\lean{RadicalCertificate} interfaces are insufficient on their own because
-they admit extraneous solutions.  Accordingly, the older
+The source-level general-rational composition is now explicit in both
+provers.  In Lean, the older printed-quotient route uses
+\lean{completelySolvableByRadicals_polynomial_iff_depress_polynomial},
+which transports semantic solvability through the affine root bijection, and
+\lean{exists_radicalFormula_completeRootVector_of_completelySolvableByRadicals}
+composes that transport with the rational-resolvent criterion and the five-root
+Lazard output.  The separate corrected theorem
+\lean{exists_general_commonCompositum_coherentAlternate_completeRootVector_of_completelySolvableByRadicals}
+uses the common-compositum four-fifth alternate construction and has no
+$E\ne0$ proof dependency.  The shared affine transport and resolvent-root
+consequence now live in
+\texttt{LazardQuinticGeneralSolvabilityTransport.lean}, while the two shared
+Figure--3 scalar-transport lemmas live in
+\texttt{LazardQuinticInvariantSystemMap.lean}.  A recursive source import
+audit of the corrected endpoint reaches those foundational modules but not
+the standard solvability/end-to-end wrappers, printed Section~7 root-origin
+modules, or the $E$-nonzero module.  In Coq,
+\texttt{LazardQuinticGeneralRationalEndToEnd.v}
+defines the literal nonmonic polynomial and its monic depressed translate,
+proves the polynomial identity, root bijection, irreducibility transport, and
+explicit \texttt{algterm rat} translation, then composes the denominator-safe
+common-compositum adapter.  Its resolvent, explicit-radical, and
+original-Galois-solvability entry points retain only the necessary nonzero
+leading coefficient and irreducibility hypotheses.  The corrected Lean and
+Coq packages both record injectivity of the five translated values and the exact
+leading-coefficient-scaled linear-factor product for the original polynomial,
+so both endpoints are multiplicity-sensitive rather than merely exhaustive
+at the level of root support.  These newly registered
+endpoints remain source-level until the complete Lean and Coq public builds
+accept them.
+
+The raw \lean{InvariantRelations} and \lean{RadicalCertificate} interfaces are
+insufficient on their own because they admit extraneous solutions.
+Accordingly, the older
 \lean{FormulaSound}, \lean{RationalFormulaSound}, \lean{FormulaFactors}, and
 \lean{RationalFormulaFactors} definitions are not asserted: their present
-hypotheses omit necessary evidence.
+hypotheses omit necessary evidence.  The newer root-origin modules derive the
+cyclic Fourier and Vieta identities from a complete ordered root tuple and
+therefore avoid that defect.  The remaining work is integration and kernel
+validation of that derivation, not another request that the caller postulate
+the identities.
 
-Pointwise soundness also does not express that all five roots, with their
-multiplicities, have been recovered.  A future completeness result should
-establish the polynomial identity
+The proof-carrying Gaussian quintic dispatcher requires both relation families
+in every Lazard witness, packages that witness as an exact
+\lean{CompleteRadicalSolution}, and proves completeness for every vector it
+returns.  More generally, for a Gaussian-rational tuple $c$ with
+\lean{c.Nonzero},
+\lean{solve_hasRootVector_iff_completelySolvableByRadicals} proves
 \[
- \text{\lean{GeneralQuintic.polynomial}}
-   =a\prod_{k=0}^{4}\bigl(X-\text{\lean{solveGeneral}}(k)\bigr).
+ \text{\lean{(solve c).HasRootVector}}
+ \quad\Longleftrightarrow\quad
+ \forall x\in\mathbb C,\ c(x)=0\Longrightarrow
+ x\in\text{\lean{solvableByRad Q C}}.
 \]
-The proof-carrying Gaussian quintic dispatcher already uses the proved
-pointwise theorem by requiring \lean{FourierRelations} in every Lazard witness.
-It makes no degree-five completeness claim, and automatic witness construction
-remains absent.
+The all-zero tuple is excluded because its root set is infinite.  Whenever
+\lean{rootVector?} returns a vector, the stronger theorem
+\lean{solve_eval_eq_zero_iff_returnedVector_contains} characterizes its entries
+exactly as the complex roots; the stored product identity also accounts for
+multiplicity.
 
-A complete proof can be decomposed into the following independent lemmas:
+This dispatcher theorem is an existence specification, not an executable
+decision procedure.  For a semantically solvable genuine quintic, Lean uses
+the complex root multiset and classical choice to build a
+\lean{CompleteRadicalSolution}; it also classically tests the propositions that
+the Lazard and fallback packages are inhabited.  Thus automatic construction
+of a Lazard witness and executable selection of radical expressions remain
+absent even though the finite-output equivalence is proved.
+
+The Section~5 degree audit also needs two distinctions which are easy to
+lose in an informal argument.  First, the claims that the least degrees of
+exact $C_5$- and $D_5$-stabilizer invariants are three and two concern
+arbitrary polynomial degree, not only a preselected homogeneous component;
+the paired sources now obtain the arbitrary statements by homogeneous
+decomposition.  Second, a collision modulo $C_5$ need not remain a collision
+modulo $D_5$.  Separate Lean and Coq theorems therefore prove repeated
+factors in the literal $S_5/C_5$ and $S_5/D_5$ orbit products.  Finally, since
+Lazard defines ``always separable'' by quantifying over irreducible inputs,
+the new paired witness modules prove $X^5-2$ irreducible by Eisenstein,
+construct its distinct five-root tuple in an algebraically closed extension,
+prove that its exact monic factorization is the product of the five displayed
+linear factors, prove the corresponding root-membership iff/exhaustion
+statement, and instantiate both nonseparability results there.  These statements remain
+source-level until the focused and public kernel builds accept them.
+
+This necessary degree bound is logically independent of Lazard's next
+sharpness claim.  The paper exhibits the degree-five products $T'$ and $U'$
+and epsilon, and also observes that $T'U'$ is a square root of the
+discriminant.  The paired root-radical sources now define the ordered
+Vandermonde product
+\[
+  \Delta=\prod_{0\le i<j<5}(x_i-x_j)
+\]
+and prove the orientation-sensitive identity $T'U'=-\Delta$, hence
+$(T'U')^2=\Delta^2$, as well as nonvanishing for distinct roots.  The paired
+relative-resolvent sources package this intermediate invariant on
+$D_5<F_{20}$, identify the signed quotient value with the actual root action
+for every representative, and derive separability; irreducible-rational
+wrappers derive distinctness and $2\ne0$ internally.  Here ``discriminant''
+is the paper's root discriminant $\Delta^2$; no coefficient-level library
+discriminant identity is being silently substituted.
+
+The paper further says that the two-valued relative resolvents for
+$C_5<D_5$ and $D_5<F_{20}$ are always separable.  The paired developments
+already prove the relevant root products nonzero and record their sign changes
+under the nontrivial quotient representatives.  The new paired
+\texttt{LazardSection5DegreeFiveRelativeResolvents} modules now package those
+ingredients as literal two-coset orbit products.  They prove the two cosets
+and their inequality internally and derive $t\ne-t$ from $t\ne0$ and the
+explicit hypothesis $2\ne0$; no separability or coset-distinctness certificate
+is supplied by the caller.  New rational-quintic wrappers for $T'$ and $U'$
+also derive duplicate-freeness of the ordered roots and $2\ne0$ directly from
+irreducibility and characteristic zero, so their paper-facing statements do
+not leave a root-separability certificate with the caller.  Each development
+also exposes one combined endpoint for all three candidates on a single
+irreducible depressed rational quintic/selected ordering.  Coq additionally
+has an arbitrary-rational monic depressed wrapper: the existing denominator
+adapter supplies a complete rescaled root tuple, the new source proves that
+epsilon is homogeneous of degree five under root dilation, and nonzero
+denominator cancellation transports both injectivity and canonical epsilon
+nonvanishing back to the caller's polynomial.  Thus its combined endpoint no
+longer stops at the integral-coded coefficient representation and accepts no
+epsilon or separability certificate.  These wrappers remain source-level until the
+focused and public kernel builds accept them.  This composition is neither
+used by nor silently assumed in the proof that every degree-below-five
+candidate fails.  The combined epsilon endpoints still take a primitive
+fifth root in the chosen ambient field; they do not infer that such a root
+lies in the bare quintic splitting field.  A premise-free existence wrapper
+must instead use a common cyclotomic or algebraically closed extension.  Coq
+now supplies that composition over \texttt{algC}: it maps the complete
+rational root tuple through the canonical embedding, constructs a primitive
+fifth root there, transports epsilon-product nonvanishing, and concludes all
+three relative resolvents are separable.  Lean now supplies the matching
+composition over $\mathbb C$: it embeds the canonical splitting-field root
+tuple, transports injectivity and the elementary-symmetric coefficient
+identity, uses the explicit two-square-root primitive fifth root, derives
+epsilon nonvanishing from irreducibility, and concludes that all three
+relative resolvents are separable.  Neither common-field endpoint asserts
+cyclotomic containment in the bare quintic splitting field.
+
+For reference, the earlier fine-grained source audit recorded the following
+backlog.  It is more expansive than the Lean-first restart order above.  The
+existence of source files for these items must not be confused with acceptance
+by a current public kernel build:
 
 \begin{enumerate}
-\item identify the sextic with the $F_{20}$ orbit resolvent and prove the
-  rational-root solvability criterion;
-\item prove specialized separability/distinctness, using Lazard's Cayley
-  argument or Chapman's repair rather than the invalid transitivity shortcut;
-\item derive the Figure~3 linear system from the root-defined invariants and
-  prove its determinant nonzero;
-\item derive the displayed $D,\ldots,K$ reductions;
-\item prove that the two quadratic stages recover the cyclic projections;
-\item prove that one of the four coherent $Q_1$ values is nonzero;
-\item identify $P_1,\ldots,P_4$ with the four Fourier sums, or equivalently
-  prove their four \lean{FourierRelations};
-\item construct the required proof-carrying witness from solvable input
-  coefficients; and
-\item prove a five-factor identity for completeness and multiplicities.
+\item kernel-check the field-generic Lean Fourier soundness, root-origin
+  inversion, derived five Vieta relations, exact polynomial factorization,
+  soundness, and exhaustive-root endpoints under the exact hypothesis
+  $5\ne0$, together with the matching Coq Fourier/Vieta graph;
+\item finish and kernel-check the symmetric rational-function fixed-field,
+  finite-extension, Galois-group, and minimal-polynomial bridges in both
+  provers;
+\item kernel-check the arbitrary-base-field Chapman no-collision endpoints
+  under $5\ne0$ and the new splitting-field specializations that derive their
+  root-sum and five-cycle-action hypotheses from a general irreducible
+  degree-five polynomial;
+\item kernel-check the corrected exact nonmodular form of Theorem~2 (together
+  with its characteristic-zero convenience wrapper) and
+  the explicit, semantically closed modular $C_6/\mathbb F_3$ counterexample
+  to its printed arbitrary-characteristic form, including the proved group
+  cardinality and public no-assumption endpoint;
+\item kernel-check the Lean generic quadratic and Cardano formulas, the
+  exceptional $p=0$ branch, both literal cubic root resolvents and their
+  simultaneous action, the corrected $S_3$ subgroup statement and its
+  order-two counterexample, and the characteristic-three obstruction, then
+  rebuild both enlarged public audits.  The corresponding focused Coq
+  Section~4 modules are kernel-green with closed assumption reports.  Also
+  kernel-check the exact Sect.~3 criterion
+  $\operatorname{Sep}(X^2-\Delta)\leftrightarrow(2\ne0\wedge\Delta\ne0)$
+  and the closed irreducible-inseparable $X^3-t$ counterexample over
+  $\mathbb F_3(t)$;
+\item kernel-check the complete five-class transitive-subgroup classification,
+  the conjugacy correction to Theorem~1, including both its finite
+  $S_5/F_{20}$ witness and the explicit irreducible-rational polynomial
+  realization with exact roots, genuine splitting-field Galois action,
+  separable base-root resolvent, corrected conjugate containment, and failed
+  displayed containment; kernel-check the exact $C_5/D_5$ stabilizers and
+  the arbitrary-polynomial minimum-degree theorems, the separate literal
+  $S_5/C_5$ and $S_5/D_5$ low-degree collision theorems, and their
+  irreducible $X^5-2$ instantiations, and the newly packaged displayed
+  degree-five $T'$, $U'$, $T'U'$, and epsilon literal two-coset relative resolvents
+  whose separability is derived from the existing nonvanishing and sign
+  identities under the exact hypothesis $2\ne0$, including the combined
+  irreducible-rational endpoints which derive root injectivity internally;
+\item kernel-check all four literal Figure~3 identities, their four-by-four
+  coefficient matrix, and the irreducible-rational determinant-nonvanishing
+  chains in both provers.  The new Coq rational transport proves the exact
+  diagonal matrix scaling and determinant weight $D^{30}$.  Canonical Vieta
+  and the denominator adapter identify the rescaled complete-root
+  coefficient record with the scalar extension of the original literal
+  rational record $(p_3,p_2,p_1,p_0)$, while the matrix and determinant
+  commute with that extension.  The resulting base-rational and root-level
+  terminal theorems derive determinant nonvanishing and invariant uniqueness
+  for an arbitrary rational monic depressed irreducible quintic without a
+  caller-supplied separability or determinant certificate.  Thus the former
+  source-scope mismatch is closed, but the gate remains open until this
+  transport and its canonical determinant dependencies pass the focused and
+  public kernels;
+\item kernel-check the source-level literal displayed Gr\"obner basis for
+  arbitrary degree and every admissible block order, and the corresponding
+  intrinsic-to-combined leading-term descent.  Both provers now derive the
+  support, division/normal-form, and leading-term data internally rather than
+  accepting them as certificates.  Lean's literal Lemma~2 bridge currently
+  assumes characteristic zero, while Coq exposes the precise nonzero image of
+  $|G|$.  Also kernel-check both direct Molien numerator-series bridges and
+  the concrete six-element bases through the public imports.  The Coq source
+  now proves coefficientwise that multiplication by the symmetric denominator
+  gives $1+t^4+t^5+t^6+t^7+t^8$ and identifies this polynomial with the
+  actual six displayed basis degrees; this closes the former source gap, but
+  the new dependency graph still awaits its focused and public kernel builds;
+\item kernel-check the corrected $P_{22}$, all remaining displayed numerator
+  identities, and the root-derived Fourier/Vieta aggregate in both provers;
+\item kernel-check the newly registered general-rational Lean/Coq wrappers
+  that connect original-polynomial solvability, depression, rational-resolvent
+  root selection, $F_{20}$ Galois action, coefficient descent, and the
+  denominator-safe four-fifth radical tower in a common overfield containing
+  the roots and a primitive fifth root;
+\item kernel-check the explicit counterexamples to every false printed claim,
+  including Theorems~3 and~4, and validate the corrected
+  subgroup/fixed-field/Kummer degree statement that replaces their invalid
+  minimality conclusions;
+\item after Lean is complete and Rocq work resumes, run both public builds,
+  print assumptions for the exported theorems, and audit for admissions, new
+  axioms, and unsafe computation escapes.
 \end{enumerate}
 
-Such a factorization theorem would give exhaustiveness and, under
-irreducibility and separability, pairwise distinctness.  None of these
-unfinished statements is admitted with \lean{axiom},
-\lean{sorry}, or an opaque external oracle.
+Separately, classical certificate selection can be replaced by an executable
+exact algebraic-number implementation if computational output, rather than a
+formal existence theorem, is desired.  That engineering task is not a
+substitute for any of the mathematical kernel gates above.
+
+The generic Vieta theorem already gives factorization and exhaustiveness from
+its certificate; it does not assert pairwise distinctness, which would require
+separability.  The freshly audited committed modules listed in the dated
+checkpoint contain no \lean{sorry}, new \lean{axiom}, \lean{native_decide},
+unsafe implementation, or opaque external proof oracle.  That statement is
+deliberately not extended to a stale cached dependency closure before the
+final rebuild and assumption audit.
 
 \section{Regression evidence and source cautions}
 
@@ -668,24 +1514,32 @@ identities will remain the correctness criterion.
 
 \section{Reproducibility and audit}
 
-From the repository root, the module and its public import surface are checked
-with
-\begin{verbatim}
+From the repository root, the freshly checked focused targets at this pause
+include
+\begin{lstlisting}
 lake env lean \
   Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuintic.lean
 lake env lean \
   Algebra/PolynomialFormulas/Lean/PolynomialFormulas/LazardQuinticFourier.lean
-
-LEAN_NUM_THREADS=0 lake build +PolynomialFormulas
-\end{verbatim}
+lake build +PolynomialFormulas.LazardGeneralResolventCriterion:olean
+lake build +PolynomialFormulas.LazardGeneralResolventExplicit:olean
+lake build +PolynomialFormulas.LazardGeneralResolventThetaAdapter:olean
+lake build +PolynomialFormulas.LazardGeneralResolventConjugacyCounterexample:olean
+lake build +PolynomialFormulas.LazardGeneralResolventMinpoly:olean
+lake build \
+  +PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125Certificate:olean
+\end{lstlisting}
+The Gaussian completeness targets and the full \lean{PolynomialFormulas}
+aggregate belong to the ordered restart plan; listing their eventual commands
+would not be evidence that the present worktree has passed those builds.
 The document is rendered by first changing to its directory and then running
 the following command three times (for the table of contents, citations, and
 cross-references):
-\begin{verbatim}
+\begin{lstlisting}
 cd Algebra/PolynomialFormulas
 pdflatex -interaction=nonstopmode -halt-on-error \
   LazardQuinticFormalization.tex
-\end{verbatim}
+\end{lstlisting}
 
 For the present contribution, an audit should additionally verify:
 \begin{enumerate}
@@ -694,7 +1548,11 @@ For the present contribution, an audit should additionally verify:
   \lean{8 * c.p ^ 3 * c.q} and \lean{70 * c.q ^ 3};
 \item \lean{correctEpsilon} precedes construction of $T$ and $U$;
 \item \lean{solveDepressed} uses one stored $P_1$ and one primitive $\omega$;
-  and
+\item \lean{LazardWitness} stores the Fourier relation family, while the
+  generic development derives both the Vieta relations and the polynomial
+  identity;
+\item the public finite-vector equivalence retains its \lean{c.Nonzero}
+  hypothesis and is documented as classical and noncomputable; and
 \item the PDF is built from the committed \LaTeX{} source without errors.
 \end{enumerate}
 
@@ -717,6 +1575,12 @@ Robin Chapman,
 \emph{Note on Solving Solvable Quintics},
 one-page correction note hosted with Dummit's source materials.
 \url{https://site.uvm.edu/ddummit/files/2021/04/Solving_Solvable_Quintics_note_by_Robin_Chapman.pdf}.
+
+\bibitem{BlumSmithMarques2018}
+Ben Blum-Smith and Sophie Marques,
+\emph{When are permutation invariants Cohen--Macaulay over all fields?},
+Algebra \& Number Theory 12 (2018), no.~7, 1787--1820.
+\url{https://doi.org/10.2140/ant.2018.12.1787}.
 
 \bibitem{MSE}
 Vladimir Reshetnikov and Valeriy Zapodovnikov,

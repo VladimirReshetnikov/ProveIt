@@ -9,6 +9,11 @@ or complementary checks. Generated data and exploratory computations are not
 part of the trusted theorem boundary unless a proved checker connects them to
 the formal semantics.
 
+> **Most active ongoing work:** [Lean formalization and audit of Lazard's
+> solvable-quintic algorithm](Algebra/PolynomialFormulas/LazardQuinticFormalization.pdf),
+> including a detailed checkpoint of completed proofs, open obligations, and
+> the ordered plan for resuming the development.
+
 **Toolchains:** Lean `4.32.0` · mathlib `v4.32.0` · Rocq `>= 9.2`
 (developed against `9.0.1`) · MathComp boot `2.5.0` · [MIT-0](LICENSE)
 
