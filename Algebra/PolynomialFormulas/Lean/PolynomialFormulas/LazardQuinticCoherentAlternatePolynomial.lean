@@ -319,6 +319,38 @@ theorem exists_coherentDescendPolynomial_of_cyclic_generator
     (fun z hz => coherent_fixed_mem_range_of_cyclic_generator
       sigma hgenerator hz) j
 
+/-- Package the four coordinatewise descent witnesses into one family.  This
+form is convenient for the later reconstruction layer, where all corrected
+alternate coordinates are consumed together. -/
+theorem exists_coherentDescendCoordinateFamily_of_fixed_coefficients
+    (sigma : K ≃ₐ[F] K) (omega : FifthRootOfUnity K)
+    (homega : sigma omega.value = omega.value ^ 2)
+    (hfixed : ∀ z : K, sigma z = z → z ∈ Set.range (algebraMap F K)) :
+    ∃ p : Fin 4 → MvPolynomial (Fin 5) F, ∀ j,
+      MvPolynomial.map (algebraMap F K) (p j) =
+        coherentRootCoordinatePolynomial omega j := by
+  classical
+  choose p hp using fun j ↦
+    exists_coherentDescendPolynomial_of_fixed_coefficients
+      sigma omega homega hfixed j
+  exact ⟨p, hp⟩
+
+/-- The same family-level interface under the finite-Galois cyclic-generator
+hypothesis. -/
+theorem exists_coherentDescendCoordinateFamily_of_cyclic_generator
+    [FiniteDimensional F K] [IsGalois F K]
+    (sigma : K ≃ₐ[F] K)
+    (hgenerator : ∀ tau : K ≃ₐ[F] K, ∃ n : ℕ, tau = sigma ^ n)
+    (omega : FifthRootOfUnity K)
+    (homega : sigma omega.value = omega.value ^ 2) :
+    ∃ p : Fin 4 → MvPolynomial (Fin 5) F, ∀ j,
+      MvPolynomial.map (algebraMap F K) (p j) =
+        coherentRootCoordinatePolynomial omega j := by
+  exact exists_coherentDescendCoordinateFamily_of_fixed_coefficients
+    sigma omega homega
+    (fun z hz => coherent_fixed_mem_range_of_cyclic_generator
+      sigma hgenerator hz)
+
 end CoefficientwiseDescent
 
 end
