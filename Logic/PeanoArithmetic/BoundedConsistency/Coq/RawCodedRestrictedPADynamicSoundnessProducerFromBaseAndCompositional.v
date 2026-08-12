@@ -249,5 +249,36 @@ Proof.
       hbase).
 Qed.
 
+(** The closed theorem also supplies the exact model-internal successor
+    transformer used by [CompactPAUniformProvability].  This adapter is
+    deliberately independent of the incoming lower certificate: once PA has
+    proved the sealed uniform sentence, soundness supplies a package at the
+    successor level for every carrier element, including nonstandard ones.
+    Keeping this result next to the producer reduction makes the route from
+    the four guarded context insertions to the compact induction interface
+    explicit. *)
+Theorem
+    raw_restrictedPAConsistencyProofSuccessorInAllModels_of_baseProof_and_compositional
+    : RawRestrictedPADynamicSoundnessBaseProofInAllModels ->
+  RawRestrictedPAConsistencyProofSuccessorInAllModels.
+Proof.
+  intro hbase.
+  pose proof
+    (PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_baseProof_and_compositional
+      hbase) as hprov.
+  intros M hPA level target certificate htarget hcertificate.
+  pose (tail := fun _ : nat => raw_zero M).
+  pose proof
+    (raw_sat_of_BProv_axs M
+      compactUniformRestrictedPAConsistencyProvabilityFormula hPA hprov tail)
+    as hsealed.
+  pose proof
+    (proj1 (raw_sat_compactUniformRestrictedPAConsistencyProvabilityFormula_iff
+      M tail) hsealed tail (raw_succ M level)) as hpackage.
+  destruct hpackage as [nextTarget [nextCertificate [hnextTarget hnextCertificate]]].
+  exists nextTarget, nextCertificate.
+  split; assumption.
+Qed.
+
 End
   PABoundedRawCodedRestrictedPADynamicSoundnessProducerFromBaseAndCompositional.
