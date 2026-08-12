@@ -816,6 +816,9 @@ Check nat_truth_inv.
 Check nat_truth_pos.
 Check nat_truth_and.
 Check nat_truth_or.
+Print Assumptions nat_truth_and_eq.
+Print Assumptions nat_truth_and_eq_one_iff.
+Print Assumptions nat_truth_or_eq.
 Print Assumptions nat_truth_inv_eq_zero_iff.
 Print Assumptions nat_truth_and_positive_iff.
 Print Assumptions nat_truth_or_positive_iff.
@@ -885,7 +888,26 @@ Print Assumptions arithmetic1_unpair1.
 Print Assumptions arithmetic1_unpair2.
 Check arith_partial_cons.
 Print Assumptions arith_part1_partial_cons.
+Print Assumptions arith_part1_bind.
+Print Assumptions arith_part1_comp_total.
+Print Assumptions arith_part1_comp1_total.
+Print Assumptions arith_part1_comp2_total.
 Print Assumptions arith_part1_map_total.
+Check arith_find_curried_on.
+Print Assumptions arith_part1_find_curried.
+Check arith_find_curried1_on.
+Print Assumptions arith_part1_find_curried1.
+Check arith_find_positive_curried_on.
+Print Assumptions arith_part1_find_positive_curried.
+Check arith_find_positive_curried1_on.
+Print Assumptions arith_part1_find_positive_curried1.
+Print Assumptions arithmetic1_increment_head.
+Check nat_interval_test.
+Print Assumptions nat_interval_test_positive_iff.
+Check arith_interval_find_on.
+Print Assumptions arith_interval_find_on_member_iff.
+Print Assumptions arith_part1_interval_find.
+Print Assumptions arith_part1_inverse_find.
 Print Assumptions nat_least_decidable_bound.
 Check nat_dvd_witness_test.
 Print Assumptions nat_dvd_witness_test_positive_iff.
