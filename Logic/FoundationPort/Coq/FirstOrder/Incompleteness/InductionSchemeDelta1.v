@@ -8,15 +8,153 @@
 *)
 
 From Stdlib Require Import Arith.PeanoNat Lia Lists.List.
-From Foundation.Syntax.Predicate Require Import Language Term Rew.
+From Foundation.Syntax.Predicate Require Import Language Term Quantifier Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 From Foundation.FirstOrder.Basic Require Import Coding.
+From Foundation.FirstOrder.Bootstrapping.Syntax.Formula Require Import
+  Basic Typed Coding.
 
 Import ListNotations.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
 Set Universe Polymorphism.
+
+(** * Iterated universal-code constructor *)
+
+(** Standard-natural counterpart of the source's internally defined
+    [qqAlls].  The nonstandard-model primitive-recursion and definability
+    wrappers are intentionally outside this executable boundary. *)
+Fixpoint boot_qq_alls (p k : nat) : nat :=
+  match k with
+  | 0 => p
+  | S k' => boot_qq_all (boot_qq_alls p k')
+  end.
+
+Lemma boot_qq_alls_zero : forall p,
+  boot_qq_alls p 0 = p.
+Proof. reflexivity. Qed.
+
+Lemma boot_qq_alls_succ : forall p k,
+  boot_qq_alls p (S k) = boot_qq_all (boot_qq_alls p k).
+Proof. reflexivity. Qed.
+
+Corollary boot_qq_alls_add_one : forall p k,
+  boot_qq_alls p (k + 1) = boot_qq_all (boot_qq_alls p k).
+Proof. intros p k. now rewrite Nat.add_1_r. Qed.
+
+(** One universal constructor commutes through an iterated closure. *)
+Lemma boot_qq_alls_all : forall p k,
+  boot_qq_alls (boot_qq_all p) k =
+  boot_qq_all (boot_qq_alls p k).
+Proof.
+  intros p k. induction k as [|k IH]; simpl; [reflexivity |].
+  now rewrite IH.
+Qed.
+
+(** Source theorem [qqAlls_succ']; this orientation is convenient when
+    quoting [first_all_closure]. *)
+Lemma boot_qq_alls_push_all : forall p k,
+  boot_qq_alls p (S k) = boot_qq_alls (boot_qq_all p) k.
+Proof.
+  intros p k. rewrite boot_qq_alls_succ.
+  symmetry. apply boot_qq_alls_all.
+Qed.
+
+(** Cantor pairing makes each universal code at least as large as its body. *)
+Lemma boot_qq_all_body_le : forall p,
+  p <= boot_qq_all p.
+Proof.
+  intro p. unfold boot_qq_all.
+  pose proof (Cantor.to_nat_non_decreasing 6 p). lia.
+Qed.
+
+Lemma boot_qq_all_body_succ_le : forall p,
+  S p <= boot_qq_all p.
+Proof.
+  intro p. unfold boot_qq_all.
+  pose proof (Cantor.to_nat_non_decreasing 6 p). lia.
+Qed.
+
+Lemma boot_qq_alls_body_le : forall p k,
+  p <= boot_qq_alls p k.
+Proof.
+  intros p k. induction k as [|k IH]; simpl; [apply Nat.le_refl |].
+  eapply Nat.le_trans; [exact IH | apply boot_qq_all_body_le].
+Qed.
+
+(** The iteration index is bounded by the resulting code. *)
+Lemma boot_qq_alls_index_le : forall p k,
+  k <= boot_qq_alls p k.
+Proof.
+  intros p k. induction k as [|k IH]; simpl; [apply Nat.le_0_l |].
+  exact (Nat.le_trans (S k) (S (boot_qq_alls p k))
+    (boot_qq_all (boot_qq_alls p k))
+    (le_n_S k (boot_qq_alls p k) IH)
+    (boot_qq_all_body_succ_le (boot_qq_alls p k))).
+Qed.
+
+(** The arity-indexed recognizer internalizes the source's [bv] calculation:
+    closing [k] variables of a [(k+n)]-semiformula produces an
+    [n]-semiformula. *)
+Theorem boot_is_semiformula_qq_alls : forall L
+    (EL : language_encodable L) k n p,
+  boot_is_semiformula EL (k + n) p ->
+  boot_is_semiformula EL n (boot_qq_alls p k).
+Proof.
+  intros L EL k. induction k as [|k IH]; intros n p Hp; simpl in *.
+  - exact Hp.
+  - apply Boot_formula_all.
+    apply IH.
+    replace (k + S n) with (S (k + n)) by lia.
+    exact Hp.
+Qed.
+
+Corollary boot_is_uformula_qq_alls : forall L
+    (EL : language_encodable L) k n p,
+  boot_is_semiformula EL (k + n) p ->
+  boot_is_uformula EL (boot_qq_alls p k).
+Proof.
+  intros L EL k n p Hp. exists n.
+  now apply boot_is_semiformula_qq_alls.
+Qed.
+
+(** Exact structural quotation of universal closure, generalized to every
+    free-variable type and verified encoding. *)
+Theorem semiformula_code_all_closure : forall L X n
+    (EL : language_encodable L) (EX : encoding X)
+    (p : semiformula L X n),
+  semiformula_code EL EX
+      (first_all_closure (semiformula_universal_quantifier L X) n p) =
+  boot_qq_alls (semiformula_code EL EX p) n.
+Proof.
+  intros L X n. induction n as [|n IH]; intros EL EX p.
+  - reflexivity.
+  - rewrite first_all_closure_succ, IH.
+    change (boot_qq_alls
+      (semiformula_code EL EX (Semiformula_all p)) n =
+      boot_qq_alls (semiformula_code EL EX p) (S n)).
+    rewrite boot_qq_all_quote.
+    symmetry. apply boot_qq_alls_push_all.
+Qed.
+
+(** Source theorem [quote_allClosure] at the standard-natural typed-code
+    boundary. *)
+Corollary boot_typed_formula_quote_all_closure : forall L n
+    (EL : language_encodable L) (p : boot_typed_semiformula L n),
+  boot_typed_formula_quote EL
+      (first_all_closure (semiformula_universal_quantifier L nat) n p) =
+  boot_qq_alls (boot_typed_formula_quote EL p) n.
+Proof.
+  intros L n. induction n as [|n IH]; intros EL p.
+  - reflexivity.
+  - rewrite first_all_closure_succ, IH.
+    change (boot_qq_alls
+      (boot_typed_formula_quote EL (Semiformula_all p)) n =
+      boot_qq_alls (boot_typed_formula_quote EL p) (S n)).
+    rewrite boot_typed_formula_quote_all.
+    symmetry. apply boot_qq_alls_push_all.
+Qed.
 
 (** The upper free-variable bound is attained whenever the list is nonempty.
     This list-level fact exposes the only combinatorics needed by the formula

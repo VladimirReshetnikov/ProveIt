@@ -3,7 +3,8 @@
 From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
-  GenericEmbedding GenericLogicSymbol PropositionalLiteral GenericModalLogicSymbol
+  GenericEmbedding GenericQuotationList GenericLogicSymbol
+  PropositionalLiteral GenericModalLogicSymbol
   PropositionalFormula FormulaPropositional PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalKripkePreservation PropositionalKripkeCanonical
@@ -505,6 +506,11 @@ Check generic_faithfully_embeddable_trans.
 Print Assumptions generic_faithfully_embeddable_fun_exists.
 Print Assumptions generic_faithfully_embeddable_refl.
 Print Assumptions generic_faithfully_embeddable_trans.
+
+(** Meta/Qq's only proof-level declarations. *)
+Print Assumptions generic_quotation_list_mem_of_eq.
+Print Assumptions generic_quotation_list_mem_of_mem.
+Print Assumptions generic_quotation_list_mem_singleton_of_eq.
 
 (** The foundational LogicSymbol core centralizes independently consumable
     connective laws and the full homomorphism API.  Pointwise homomorphism
