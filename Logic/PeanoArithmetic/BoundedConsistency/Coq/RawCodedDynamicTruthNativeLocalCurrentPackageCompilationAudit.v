@@ -1,0 +1,21 @@
+(** Authoritative API and assumption audit for the local call-site cut. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeLocalCurrentPackageCompilation.
+
+Import PABoundedRawCodedDynamicTruthNativeLocalCurrentPackageCompilation.
+
+Check RawDynamicTruthNativeLocalCurrentPackageProofCompiler.
+Check
+  raw_dynamicTruthNativeLocalCurrentPackageProofCompiler_of_reduced_current_builder.
+Check
+  raw_dynamicTruthNativeStagedNextLocalCompiler_of_currentPackageProofCompiler.
+Check
+  raw_dynamicTruthNativeStagedNextLocalCompiler_of_reduced_current_builder_via_currentPackage.
+
+Print Assumptions
+  raw_dynamicTruthNativeLocalCurrentPackageProofCompiler_of_reduced_current_builder.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextLocalCompiler_of_currentPackageProofCompiler.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextLocalCompiler_of_reduced_current_builder_via_currentPackage.

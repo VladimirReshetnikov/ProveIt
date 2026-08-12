@@ -1,0 +1,22 @@
+(** Authoritative API and assumption audit for the axiom call-site cut. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeAxiomSoundnessCurrentPackageCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeAxiomSoundnessCurrentPackageCompilation.
+
+Check RawDynamicTruthNativeAxiomSoundnessCurrentPackageProofCompiler.
+Check
+  raw_dynamicTruthNativeAxiomSoundnessCurrentPackageProofCompiler_of_kernel_implication.
+Check
+  raw_dynamicTruthNativeStagedNextAxiomSoundnessCompiler_of_currentPackageProofCompiler.
+Check
+  raw_dynamicTruthNativeStagedNextAxiomSoundnessCompiler_of_kernel_implication_via_currentPackage.
+
+Print Assumptions
+  raw_dynamicTruthNativeAxiomSoundnessCurrentPackageProofCompiler_of_kernel_implication.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextAxiomSoundnessCompiler_of_currentPackageProofCompiler.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextAxiomSoundnessCompiler_of_kernel_implication_via_currentPackage.

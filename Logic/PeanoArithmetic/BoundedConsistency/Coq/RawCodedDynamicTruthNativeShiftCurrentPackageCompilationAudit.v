@@ -1,0 +1,22 @@
+(** Authoritative API and assumption audit for the call-site shift cut. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeShiftCurrentPackageCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeShiftCurrentPackageCompilation.
+
+Check RawDynamicTruthNativeShiftCurrentPackageProofCompiler.
+Check
+  raw_dynamicTruthNativeShiftCurrentPackageProofCompiler_of_body_implication.
+Check
+  raw_dynamicTruthNativeStagedNextShiftCompiler_of_currentPackageProofCompiler.
+Check
+  raw_dynamicTruthNativeStagedNextShiftCompiler_of_body_implication_via_currentPackage.
+
+Print Assumptions
+  raw_dynamicTruthNativeShiftCurrentPackageProofCompiler_of_body_implication.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextShiftCompiler_of_currentPackageProofCompiler.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextShiftCompiler_of_body_implication_via_currentPackage.
