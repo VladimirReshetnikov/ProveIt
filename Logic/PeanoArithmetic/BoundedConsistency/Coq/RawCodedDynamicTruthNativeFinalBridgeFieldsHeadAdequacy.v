@@ -180,7 +180,7 @@ Qed.
 Theorem raw_restrictedPAOccurrenceBoundFieldCode_atomically_adequate :
     forall (M : RawPAModel), RawPASatisfies M -> forall
     level successorNumeralCode,
-  RawNumeralTermCodeAt M (raw_succ M level) successorNumeralCode ->
+  RawNumeralTermCodeAt M level successorNumeralCode ->
   RawCodedFormulaAtomicallyAdequate M
     (rawRestrictedPAOccurrenceBoundFieldCode M successorNumeralCode).
 Proof.
@@ -197,7 +197,7 @@ Proof.
   }
   pose proof
     (raw_codedFormulaShift_restrictedTargetContext_iterated
-      M hPA (raw_succ M level) successorNumeralCode 3 0
+      M hPA level successorNumeralCode 3 0
       (restrictedTargetProofContext (tVar 1)) hnumeral hsupport)
     as hshift.
   pose proof (raw_codedFormulaShift_target_atomically_adequate
@@ -224,7 +224,7 @@ Qed.
 Theorem raw_restrictedPAProofFieldsCode_atomically_adequate :
     forall (M : RawPAModel), RawPASatisfies M -> forall
     level successorNumeralCode,
-  RawNumeralTermCodeAt M (raw_succ M level) successorNumeralCode ->
+  RawNumeralTermCodeAt M level successorNumeralCode ->
   RawCodedFormulaAtomicallyAdequate M
     (rawRestrictedPAProofFieldsCode M successorNumeralCode).
 Proof.
@@ -270,7 +270,7 @@ Proof.
   destruct htrace as [_ _ _ _ _ _ _ hsource].
   destruct hsource as [_ hnumeral _ _].
   exact (raw_restrictedPAProofFieldsCode_atomically_adequate
-    M hPA level successorNumeralCode hnumeral).
+    M hPA (raw_succ M level) successorNumeralCode hnumeral).
 Qed.
 
 End PABoundedRawCodedDynamicTruthNativeFinalBridgeFieldsHeadAdequacy.
