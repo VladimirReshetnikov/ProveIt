@@ -1,0 +1,232 @@
+import PolynomialFormulas.LazardQuinticRootRadicals
+import PolynomialFormulas.LazardQuinticSectionFiveCombinedAction
+import Mathlib.Algebra.MvPolynomial.Funext
+import Mathlib.Algebra.CharZero.Infinite
+
+/-!
+# Polynomial form of the corrected alternate projections
+
+The root-level alternate projections are explicit functions of an ordered
+five-tuple.  This file lifts them to actual multivariate polynomials over the
+ambient field, proves the evaluation equations by kernel reduction, and proves
+the generator-change invariance coefficientwise.  The later descent to the
+coefficient field is kept as a separate theorem with an explicit fixed-field
+hypothesis.
+-/
+
+open scoped BigOperators
+open MvPolynomial
+
+namespace LeanProofs.PolynomialFormulas.LazardQuintic
+
+set_option autoImplicit false
+
+noncomputable section
+
+variable {K : Type*} [Field K] [CharZero K]
+
+def coherentRootProjectionValues
+    (omega : FifthRootOfUnity K) (x : Fin 5 → K) : Fin 4 → K :=
+  coherentAlternateProjections (rootEpsilon omega x) (rootT omega x)
+    (rootFormulaU omega x) (rootFourierFifthOrbit omega x)
+
+theorem rootCoherentAlternateProjectionValues_squared
+    (omega : FifthRootOfUnity K) (x : Fin 5 → K) :
+    coherentRootProjectionValues omega.squared x =
+      coherentRootProjectionValues omega x := by
+  change
+    coherentAlternateProjections
+        (rootQuadraticTriple omega.squared x).epsilon
+        (rootQuadraticTriple omega.squared x).t
+        (rootQuadraticTriple omega.squared x).u
+        (rootFourierFifthOrbit omega.squared x) = _
+  rw [rootQuadraticTriple_squared, rootFourierFifthOrbit_squared]
+  exact coherentAlternateProjections_branchTriple_sourceForBranch
+    (rootQuadraticTriple omega x) (rootFourierFifthOrbit omega x)
+    .rotateNegate
+
+abbrev CoherentRootPolynomial (K : Type*) [CommRing K] :=
+  MvPolynomial (Fin 5) K
+
+def coherentRootTPrimePolynomial : CoherentRootPolynomial K :=
+  (X 0 - X 1) * (X 1 - X 2) * (X 2 - X 3) *
+    (X 3 - X 4) * (X 4 - X 0)
+
+def coherentRootUPrimePolynomial : CoherentRootPolynomial K :=
+  (X 0 - X 2) * (X 1 - X 3) * (X 2 - X 4) *
+    (X 3 - X 0) * (X 4 - X 1)
+
+def coherentRootEpsilonProductPolynomial : CoherentRootPolynomial K :=
+  (X 1 - X 2 - X 3 + X 4) *
+    (X 2 - X 3 - X 4 + X 0) *
+    (X 3 - X 4 - X 0 + X 1) *
+    (X 4 - X 0 - X 1 + X 2) *
+    (X 0 - X 1 - X 2 + X 3)
+
+def coherentRootEpsilonPolynomial
+    (omega : FifthRootOfUnity K) : CoherentRootPolynomial K :=
+  C (fifthRootDiscriminantFactor omega) *
+    coherentRootEpsilonProductPolynomial
+
+def coherentRootTPolynomial
+    (omega : FifthRootOfUnity K) : CoherentRootPolynomial K :=
+  C (omega.value - omega.value ^ 4) * coherentRootTPrimePolynomial +
+    C (omega.value ^ 2 - omega.value ^ 3) * coherentRootUPrimePolynomial
+
+def coherentRootFormulaUPolynomial
+    (omega : FifthRootOfUnity K) : CoherentRootPolynomial K :=
+  -(C (omega.value ^ 2 - omega.value ^ 3) *
+      coherentRootTPrimePolynomial -
+    C (omega.value - omega.value ^ 4) * coherentRootUPrimePolynomial)
+
+def coherentRootFourierP1Polynomial
+    (omega : FifthRootOfUnity K) : CoherentRootPolynomial K :=
+  X 0 + C omega.value * X 1 + C (omega.value ^ 2) * X 2 +
+    C (omega.value ^ 3) * X 3 + C (omega.value ^ 4) * X 4
+
+def coherentRootFourierP2Polynomial
+    (omega : FifthRootOfUnity K) : CoherentRootPolynomial K :=
+  X 0 + C (omega.value ^ 2) * X 1 + C (omega.value ^ 4) * X 2 +
+    C omega.value * X 3 + C (omega.value ^ 3) * X 4
+
+def coherentRootFourierP3Polynomial
+    (omega : FifthRootOfUnity K) : CoherentRootPolynomial K :=
+  X 0 + C (omega.value ^ 3) * X 1 + C omega.value * X 2 +
+    C (omega.value ^ 4) * X 3 + C (omega.value ^ 2) * X 4
+
+def coherentRootFourierP4Polynomial
+    (omega : FifthRootOfUnity K) : CoherentRootPolynomial K :=
+  X 0 + C (omega.value ^ 4) * X 1 + C (omega.value ^ 3) * X 2 +
+    C (omega.value ^ 2) * X 3 + C omega.value * X 4
+
+def coherentRootCoordinatePolynomial
+    (omega : FifthRootOfUnity K) : Fin 4 → CoherentRootPolynomial K :=
+  let epsilon := coherentRootEpsilonPolynomial omega
+  let t := coherentRootTPolynomial omega
+  let u := coherentRootFormulaUPolynomial omega
+  let s0 := coherentRootFourierP1Polynomial omega ^ 5
+  let s1 := coherentRootFourierP2Polynomial omega ^ 5
+  let s2 := coherentRootFourierP4Polynomial omega ^ 5
+  let s3 := coherentRootFourierP3Polynomial omega ^ 5
+  ![s0 + s1 + s2 + s3,
+    epsilon * (s0 - s1 + s2 - s3),
+    t * s0 - u * s1 - t * s2 + u * s3,
+    epsilon * ((-t + 2 * u) * s0 + (-2 * t - u) * s1 +
+      (t - 2 * u) * s2 + (2 * t + u) * s3)]
+
+@[simp] theorem eval_coherentRootTPrimePolynomial (x : Fin 5 → K) :
+    eval x coherentRootTPrimePolynomial = rootTPrime x := by
+  simp [coherentRootTPrimePolynomial, rootTPrime]
+
+@[simp] theorem eval_coherentRootUPrimePolynomial (x : Fin 5 → K) :
+    eval x coherentRootUPrimePolynomial = rootUPrime x := by
+  simp [coherentRootUPrimePolynomial, rootUPrime]
+
+@[simp] theorem eval_coherentRootEpsilonProductPolynomial
+    (x : Fin 5 → K) :
+    eval x coherentRootEpsilonProductPolynomial = rootEpsilonProduct x := by
+  simp [coherentRootEpsilonProductPolynomial, rootEpsilonProduct]
+
+@[simp] theorem eval_coherentRootEpsilonPolynomial
+    (omega : FifthRootOfUnity K) (x : Fin 5 → K) :
+    eval x (coherentRootEpsilonPolynomial omega) = rootEpsilon omega x := by
+  simp [coherentRootEpsilonPolynomial, rootEpsilon]
+
+@[simp] theorem eval_coherentRootTPolynomial
+    (omega : FifthRootOfUnity K) (x : Fin 5 → K) :
+    eval x (coherentRootTPolynomial omega) = rootT omega x := by
+  simp [coherentRootTPolynomial, rootT]
+
+@[simp] theorem eval_coherentRootFormulaUPolynomial
+    (omega : FifthRootOfUnity K) (x : Fin 5 → K) :
+    eval x (coherentRootFormulaUPolynomial omega) =
+      rootFormulaU omega x := by
+  simp [coherentRootFormulaUPolynomial, rootFormulaU, rootU]
+
+@[simp] theorem eval_coherentRootFourierP1Polynomial
+    (omega : FifthRootOfUnity K) (x : Fin 5 → K) :
+    eval x (coherentRootFourierP1Polynomial omega) = rootFourierP1 omega x := by
+  simp [coherentRootFourierP1Polynomial, rootFourierP1]
+
+@[simp] theorem eval_coherentRootFourierP2Polynomial
+    (omega : FifthRootOfUnity K) (x : Fin 5 → K) :
+    eval x (coherentRootFourierP2Polynomial omega) = rootFourierP2 omega x := by
+  simp [coherentRootFourierP2Polynomial, rootFourierP2]
+
+@[simp] theorem eval_coherentRootFourierP3Polynomial
+    (omega : FifthRootOfUnity K) (x : Fin 5 → K) :
+    eval x (coherentRootFourierP3Polynomial omega) = rootFourierP3 omega x := by
+  simp [coherentRootFourierP3Polynomial, rootFourierP3]
+
+@[simp] theorem eval_coherentRootFourierP4Polynomial
+    (omega : FifthRootOfUnity K) (x : Fin 5 → K) :
+    eval x (coherentRootFourierP4Polynomial omega) = rootFourierP4 omega x := by
+  simp [coherentRootFourierP4Polynomial, rootFourierP4]
+
+@[simp] theorem eval_coherentRootCoordinatePolynomial
+    (omega : FifthRootOfUnity K) (x : Fin 5 → K) (j : Fin 4) :
+    eval x (coherentRootCoordinatePolynomial omega j) =
+      coherentRootProjectionValues omega x j := by
+  fin_cases j <;>
+    simp [coherentRootCoordinatePolynomial,
+      coherentRootProjectionValues, coherentAlternateProjections,
+      coherentAlternateProjectionMatrix, Matrix.mulVec, dotProduct,
+      Fin.sum_univ_succ, rootFourierFifthOrbit] <;> ring
+
+theorem coherentRootCoordinatePolynomial_squared
+    (omega : FifthRootOfUnity K) (j : Fin 4) :
+    coherentRootCoordinatePolynomial omega.squared j =
+      coherentRootCoordinatePolynomial omega j := by
+  apply MvPolynomial.funext
+  intro x
+  rw [eval_coherentRootCoordinatePolynomial,
+    eval_coherentRootCoordinatePolynomial]
+  exact congrFun (rootCoherentAlternateProjectionValues_squared omega x) j
+
+theorem map_coherentRootCoordinatePolynomial
+    {L : Type*} [Field L] [CharZero L]
+    (f : K →+* L) (omegaK : FifthRootOfUnity K)
+    (omegaL : FifthRootOfUnity L)
+    (homega : f omegaK.value = omegaL.value) (j : Fin 4) :
+    MvPolynomial.map f (coherentRootCoordinatePolynomial omegaK j) =
+      coherentRootCoordinatePolynomial omegaL j := by
+  fin_cases j <;>
+    simp [coherentRootCoordinatePolynomial,
+      coherentRootEpsilonPolynomial,
+      coherentRootEpsilonProductPolynomial,
+      coherentRootTPolynomial, coherentRootFormulaUPolynomial,
+      coherentRootTPrimePolynomial, coherentRootUPrimePolynomial,
+      coherentRootFourierP1Polynomial, coherentRootFourierP2Polynomial,
+      coherentRootFourierP3Polynomial, coherentRootFourierP4Polynomial,
+      fifthRootDiscriminantFactor, homega] <;> ring
+
+theorem map_coherentRootCoordinatePolynomial_eq_self
+    {F : Type*} [Field F] [Algebra F K]
+    (sigma : K ≃ₐ[F] K) (omega : FifthRootOfUnity K)
+    (homega : sigma omega.value = omega.value ^ 2) (j : Fin 4) :
+    MvPolynomial.map sigma.toRingHom
+        (coherentRootCoordinatePolynomial omega j) =
+      coherentRootCoordinatePolynomial omega j := by
+  calc
+    MvPolynomial.map sigma.toRingHom
+        (coherentRootCoordinatePolynomial omega j) =
+        coherentRootCoordinatePolynomial omega.squared j :=
+      map_coherentRootCoordinatePolynomial sigma.toRingHom omega
+        omega.squared homega j
+    _ = coherentRootCoordinatePolynomial omega j :=
+      coherentRootCoordinatePolynomial_squared omega j
+
+theorem coherentRootCoordinateCoefficient_fixed
+    {F : Type*} [Field F] [Algebra F K]
+    (sigma : K ≃ₐ[F] K) (omega : FifthRootOfUnity K)
+    (homega : sigma omega.value = omega.value ^ 2)
+    (j : Fin 4) (d : Fin 5 →₀ ℕ) :
+    sigma (MvPolynomial.coeff d (coherentRootCoordinatePolynomial omega j)) =
+      MvPolynomial.coeff d (coherentRootCoordinatePolynomial omega j) := by
+  have h := congrArg (MvPolynomial.coeff d)
+    (map_coherentRootCoordinatePolynomial_eq_self sigma omega homega j)
+  simpa [MvPolynomial.coeff_map] using h
+
+end
+
+end LeanProofs.PolynomialFormulas.LazardQuintic
