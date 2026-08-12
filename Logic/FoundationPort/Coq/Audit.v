@@ -28,6 +28,7 @@ From Foundation.FirstOrder.Incompleteness Require Import Jeroslow.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.FirstOrder.Incompleteness Require Import RestrictedProvability.
 From Foundation.FirstOrder.Incompleteness Require Import StandardProvability.
+From Foundation.FirstOrder.Incompleteness Require Import InductionSchemeDelta1.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Functions.
@@ -6144,3 +6145,14 @@ Print Assumptions boot_context_modus_ponens_raw.
 Print Assumptions boot_context_modus_ponens.
 Print Assumptions boot_context_D2.
 Print Assumptions boot_context_D3.
+
+(* FirstOrder/Incompleteness/InductionSchemeDelta1.v: the first independent
+   structural cluster needed by the internal induction-scheme recognizer. *)
+Print Assumptions nat_free_bound_pred_in.
+Print Assumptions semiformula_free_occurs_free_bound_pred.
+Print Assumptions fin_nat_code_pointwise.
+Print Assumptions semiterm_code_rew_cast_le.
+Print Assumptions semiterm_free_variable_list_rew_cast_le.
+Print Assumptions semiformula_code_rew_cast_le.
+Print Assumptions semiformula_free_variable_list_rew_cast_le.
+Print Assumptions semiformula_free_occurs_rew_cast_le.
