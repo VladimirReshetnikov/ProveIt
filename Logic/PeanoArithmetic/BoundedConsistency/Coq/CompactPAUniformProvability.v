@@ -342,6 +342,27 @@ Proof.
   exists nextTarget, nextCertificate. split; assumption.
 Qed.
 
+(** External induction over [nat] packages the preceding standard-level
+    adapter into the ordinary numeralwise family.  The induction variable is
+    deliberately a metatheoretic natural: this theorem therefore proves only
+    the standard orbit of the compact selector and is not used by
+    [raw_compactSelectorPackages_all], whose represented induction reaches
+    arbitrary carrier elements.  Keeping this bridge explicit is useful for
+    clients that consume the already established numeralwise PA theorem while
+    making the nonstandard gap impossible to overlook. *)
+Theorem raw_compactSelectorPackages_standard_by_external_induction : forall
+    (M : RawPAModel), RawPASatisfies M -> forall tail (standardLevel : nat),
+  RawCompactSelectorPackageAt M tail (rawNumeralValue M standardLevel).
+Proof.
+  intros M hPA tail standardLevel.
+  induction standardLevel as [|standardLevel IH].
+  - exact (raw_compactSelectorPackage_zero M hPA tail).
+  - change (RawCompactSelectorPackageAt M tail
+      (raw_succ M (rawNumeralValue M standardLevel))).
+    exact (raw_compactSelectorPackage_successor_of_standard_carrier_level
+      M hPA standardLevel tail IH).
+Qed.
+
 Lemma raw_compactSelectorPackage_successor : forall
     (M : RawPAModel), RawRestrictedPAConsistencyProofSuccessor M ->
     forall tail level,
