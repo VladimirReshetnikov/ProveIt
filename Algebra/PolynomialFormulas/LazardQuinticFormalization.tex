@@ -429,10 +429,10 @@ fixed-field generation, derived root action, and corrected
 conjugate-containment criterion in one theorem.  The generic criterion, its
 explicit invariant construction, and the theta adapter are committed and
 freshly kernel-checked.  The universal rational-function minimal-polynomial
-bridge is a separate module; it does not assert that every specialized theta
+  bridge is now also focused kernel-checked; it does not assert that every specialized theta
 sextic remains minimal after root substitution.  The larger aggregate and the
-polynomial-realized counterexample remain source-level checkpoints pending
-their own dependency builds.
+  polynomial-realized counterexample now compiles directly, while its final
+  assumptions remain cache-gated by the Dummit closure.
 Beyond the finite-group coset witness, both
 provers now realize the obstruction on the explicit irreducible depressed
 cyclic rational quintic.  They give a duplicate-free exact ordering and a
@@ -1129,20 +1129,19 @@ The following substantial pieces are \emph{source or local-build
 checkpoints}, not yet a single clean public theorem graph:
 
 \begin{enumerate}
-\item \texttt{LazardGeneralResolventMinpoly.lean} is a buildable prefix
-  checkpoint.  It proves the fraction-action/rename stabilizer identity, the
-  stabilizer of a simple fixed-field adjunction, fixed-field generation from
-  an exact rename stabilizer, and the converse generation criterion.  Those
-  five exported endpoints have only standard logical assumptions.  The
-  product reindexing needed for the ordinary minimal-polynomial identity still
-  has a quotient-\lean{Fintype} instance mismatch; that theorem and its three
-  dependents are preserved verbatim in labeled comments, with no
-  \lean{sorry}, axiom, or placeholder.  The result is therefore not yet the
-  promised minimal-polynomial theorem.
+\item \texttt{LazardGeneralResolventMinpoly.lean} is now a focused
+  kernel-checked module.  Its fraction-action/rename stabilizer identity,
+  orbit-product reindexing, fixed-field minimal-polynomial identity, ordinary
+  minimal-polynomial bridge, and generator/minpoly iff all compile from the
+  current source.  Representative endpoints audit to
+  \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound}.  This is the
+  universal rational-function statement; it does not assert specialized
+  minimality after theta substitution.
 \item The Dummit coefficient implementation has been rewritten so that the
   large finite identities are intended to be checked by bounded ordinary
   kernel reductions.  Hundreds of generated table/root modules still await
-  their serial build, and the top \lean{ComputableDummitCoefficients} artifact
+  their serial build; Table~0 tail~31 and term~120 have now also passed, and
+  the top \lean{ComputableDummitCoefficients} artifact
   is stale relative to that rewrite.  Consequently downstream assumption
   reports can still display four legacy \lean{native_decide} constants even
   though the current source no longer contains them.
@@ -1209,11 +1208,11 @@ When work resumes, the shortest dependable path is:
   ordering, root-reduction bridge, Section~7 aggregate, coherent alternate
   tower, and the actual-root $E=0$ example.  Repeat the endpoint assumption
   audits only after this fresh chain exists.
-\item Resolve the quotient-\lean{Fintype} reindexing in the universal
-  minimal-polynomial module, restore its three dependent endpoints, and then
-  rebuild the realized polynomial counterexample.  Keep the universal
-  rational-function minimal polynomial distinct from specialized sextic
-  minimality, which can fail when specialization collides.
+\item Finish the remaining Dummit closure, then rebuild the realized
+  polynomial counterexample and its public aggregate against the fresh
+  coefficient certificates.  Keep the now-proved universal rational-function
+  minimal polynomial distinct from specialized sextic minimality, which can
+  fail when specialization collides.
 \item Complete and kernel-check the modular Theorem~2 contradiction and the
   corrected nonmodular invariant-module theorem, retaining only the proved
   quotient-rank lower bound.
