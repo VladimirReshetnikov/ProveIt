@@ -1,17 +1,27 @@
 (** Public checks for the standard selector-package bridge. *)
 
 From BoundedPAConsistency Require Import
+  CompactPAUniformProvability
   RawCodedPAStandardSelectorPackage.
 
+Import PABoundedCompactPAUniformProvability.
 Import PABoundedRawCodedPAStandardSelectorPackage.
 
 Check standardSelectorPackageFormula.
 Check standardSelectorPackageFormula_sentence.
 Check raw_sat_standardSelectorPackageFormula_iff.
+Check raw_codedPAProofOf_standardRestrictedPAConsistencyTarget.
 Check PA_BProv_standardSelectorPackageFormula.
 Check raw_standardSelectorPackage_standard.
+Check raw_compactRestrictedPAConsistencyGraph_standard_iff.
+Check raw_compactSelectorPackage_standard_iff_standardSelectorPackage.
+Check raw_sat_compactSelectorInductionSuccessorFormula_standard.
 
 Print Assumptions standardSelectorPackageFormula_sentence.
 Print Assumptions raw_sat_standardSelectorPackageFormula_iff.
+Print Assumptions raw_codedPAProofOf_standardRestrictedPAConsistencyTarget.
 Print Assumptions PA_BProv_standardSelectorPackageFormula.
 Print Assumptions raw_standardSelectorPackage_standard.
+Print Assumptions raw_compactRestrictedPAConsistencyGraph_standard_iff.
+Print Assumptions raw_compactSelectorPackage_standard_iff_standardSelectorPackage.
+Print Assumptions raw_sat_compactSelectorInductionSuccessorFormula_standard.

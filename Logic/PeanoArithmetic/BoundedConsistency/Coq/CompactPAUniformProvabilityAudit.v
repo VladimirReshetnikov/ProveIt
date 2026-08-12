@@ -16,6 +16,7 @@ Check RawRestrictedPAConsistencyCertificateSuccessorInAllModels.
 Check raw_restrictedPAConsistencyProofSuccessor_of_certificate.
 Check raw_restrictedPAConsistencyCertificateSuccessor_of_proof.
 Check raw_restrictedPAConsistencySuccessor_interfaces_equivalent.
+Check raw_codedPAProofOf_standardRestrictedPAConsistencyTarget.
 Check raw_restrictedPAConsistencyCertificateSuccessor_standard.
 Check raw_compactSelectorPackage_successor.
 Check raw_compactSelectorPackages_all.
@@ -36,6 +37,7 @@ Print Assumptions raw_compactSelectorPackage_standard.
 Print Assumptions raw_compactSelectorPackages_all.
 Print Assumptions
   raw_restrictedPAConsistencySuccessor_interfaces_equivalent.
+Print Assumptions raw_codedPAProofOf_standardRestrictedPAConsistencyTarget.
 Print Assumptions
   raw_restrictedPAConsistencyCertificateSuccessor_standard.
 Print Assumptions
