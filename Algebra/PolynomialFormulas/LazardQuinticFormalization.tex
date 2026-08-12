@@ -1049,7 +1049,7 @@ or fractional-power convention.
 
 \section{What is proved, and what remains}
 
-\subsection{Paused Lean checkpoint: 11 August 2026}
+\subsection{Paused Lean checkpoint: 12 August 2026}
 
 The project is paused at this commit.  The following vocabulary is used in
 this section.
@@ -1118,10 +1118,20 @@ The principal \emph{committed and freshly checked} results at the pause are:
   external proof oracle in this graph.  This completes one frontier node, not
   the full coefficient table.
 \item The modular $C_6/\mathbb F_3$ product reconstruction now has a committed
-  degree-seven orbit-index transport lemma.  Its executable coefficient
-  leaves for product blocks~7 through~11 were also rebuilt serially as
-  ordinary kernel \lean{decide} certificates.  These are bounded worktree
-  checkpoints, not yet a clean public product-bridge aggregate.
+  Lean source closure for all $159$ degree-seven product rows.  The formerly
+  infeasible quotient-backed tail was replaced by bounded coefficient
+  certificates: rows~120--145 use staged interval certificates and rows
+  $146$--$158$ use seven chunked certificate modules.  The public bridge
+  elaborates directly from this source closure; the old monolithic blocks
+  $12$--$15$ are intentionally excluded rather than trusted.
+\item The committed
+  \texttt{LazardInvariantModularQuotientObstruction.lean} transports the
+  seventeen dual-certificate classes through the faithful literal quotient
+  map and proves that no sixteen prescribed quotient classes can contain all
+  seventeen in their span.  This is the kernel-checked semantic obstruction
+  needed for the characteristic-three counterexample.  The larger
+  hypothetical tower-basis contradiction remains an open integration task,
+  because its current draft still has independent API and type errors.
 \item The denominator-safe alternate root-recovery layer and its general
   rational wrapper now compile as focused Lean modules.  They recover all
   four nonzero Fourier modes without dividing by $E$, and the general endpoint
@@ -1170,17 +1180,17 @@ checkpoints}, not yet a single clean public theorem graph:
   no exact algebraic-number program presently computes those expressions.
   Its changed source and the public import/audit surface have not received the
   final clean build.
-\item The modular audit of printed Theorem~2 has a concrete regular
-  $C_6/\mathbb F_3$ contradiction under development.  The formal lower bound
-  is $17$ independent quotient classes, not a proof that the quotient has
-  exact dimension $17$.  The corrected nonmodular theorem uses invertibility
-  of the group order as a sufficient Reynolds-averaging hypothesis.  Four
-  remaining legacy product leaves (blocks~12--15) currently fail their direct
-  polynomial-level \lean{decide}: quotient-backed \lean{MvPolynomial} equality
-  does not reduce to a Boolean decision.  The correct continuation is to
-  split these rows into coefficient certificates, prove the generic
-  coefficient-to-polynomial reconstruction theorem once, and assemble the
-  blocks without trusting an opaque computation.
+\item The modular audit of printed Theorem~2 now has the complete finite
+  product-row bridge and the transported $17$-class quotient obstruction.
+  The formal lower bound is $17$ independent quotient classes, not a proof
+  that the quotient has exact dimension $17$.  The corrected nonmodular
+  theorem uses invertibility of the group order as a sufficient
+  Reynolds-averaging hypothesis.  The former blocks~12--15 failed because
+  quotient-backed \lean{MvPolynomial} equality does not reduce to a Boolean
+  decision; they have been removed from the public dependency graph and
+  replaced by the staged coefficient certificates above.  What remains is
+  the semantic bridge from an arbitrary hypothetical homogeneous free basis
+  to a sixteen-generator quotient span, not another opaque computation.
 \item The polynomial-realized fixed-subgroup counterexample is now committed
   and its source compiles directly.  Its finite group certificate has only
   standard logical assumptions; the exact-root and scalar-resolvent terminal
@@ -1224,11 +1234,14 @@ When work resumes, the shortest dependable path is:
   coefficient certificates.  Keep the now-proved universal rational-function
   minimal polynomial distinct from specialized sextic minimality, which can
   fail when specialization collides.
-\item Complete and kernel-check the modular Theorem~2 contradiction and the
-  corrected nonmodular invariant-module theorem, retaining only the proved
-  quotient-rank lower bound.  First finish the block~12--15 coefficient
-  shards just described; only then rebuild the product-bridge aggregate and
-  the final forced-free contradiction, one large generated module at a time.
+\item Complete and kernel-check the remaining semantic half of the modular
+  Theorem~2 contradiction.  The product bridge and literal $17$-class
+  obstruction are now proved; the next task is to repair the hypothetical
+  tower-basis API and prove that its degree-seven free part is generated by
+  exactly the sixteen degree-seven basis vectors.  Then combine that span
+  bound with the committed quotient obstruction.  Keep the corrected
+  nonmodular invariant-module theorem separate and retain only the proved
+  quotient-rank lower bound.
 \item Finish the bounded coefficient certificates for the displayed
   $P_2$ and $P_3$ Fourier numerators, then integrate the root-derived
   Fourier/Vieta graph and both the standard and alternate reconstruction
