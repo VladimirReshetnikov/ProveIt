@@ -1,0 +1,13 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Tail35Data
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+theorem table0_tail35_certificate :
+    SparsePolynomial.substitute table0Tail35 elementaryPolynomials = table0Tail35Normal := by
+  rfl
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate

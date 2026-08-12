@@ -1,13 +1,14 @@
 import PolynomialFormulas.LazardInvariantGradedReynolds
 
 /-!
-# The sharp nonmodular invariant-basis construction
+# A nonmodular invariant-basis construction
 
 This module isolates the general Reynolds-basis construction from the
 computational modular counterexample.  For a finite permutation subgroup,
-nonvanishing of its order in the ground field is exactly the hypothesis used
-to invert the averaging denominator.  No orbit-count computation is part of
-this dependency.
+nonvanishing of its order in the ground field is the sufficient hypothesis
+used here to invert the averaging denominator.  It is not claimed to be
+necessary for every individual modular permutation action.  No orbit-count
+computation is part of this dependency.
 -/
 
 namespace LeanProofs.PolynomialFormulas.LazardInvariantModularCounterexample

@@ -1,0 +1,11 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0RowData
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+def table0Tail35Normal : SparsePolynomial := []
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
