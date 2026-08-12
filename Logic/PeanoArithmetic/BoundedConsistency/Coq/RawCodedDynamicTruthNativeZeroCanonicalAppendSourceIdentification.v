@@ -1240,6 +1240,63 @@ Arguments
   M translation outerPrefix rootFormula rootAssignmentCode
   rootAssignmentStep : clear implicits.
 
+(** A fixed-production callback is a special case of the relaxed
+    production-or-refutation callback.  Keeping this direction explicit is
+    useful when an older caller already constructs the row proof: it can be
+    injected into the newer interface without choosing a fake bottom proof.
+    The statement is fully parametric in the carrier translation, the
+    guarded prefix, and the three root terms, so it is reusable beyond the
+    canonical rank-zero instance. *)
+Theorem
+    raw_dynamicTruthZeroCanonicalGrowingFixedProductionCompilerAtRootTermsUnderPrefixAt_to_production_or_refutation
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M) rootMode outerPrefix
+      rootFormula rootAssignmentCode rootAssignmentStep,
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionCompilerAtRootTermsUnderPrefixAt
+    M translation rootMode outerPrefix
+    rootFormula rootAssignmentCode rootAssignmentStep ->
+  RawDynamicTruthZeroCanonicalGrowingFixedProductionOrRefutationCompilerAtRootTermsUnderPrefixAt
+    M translation rootMode outerPrefix
+    rootFormula rootAssignmentCode rootAssignmentStep.
+Proof.
+  intros M hPA translation rootMode outerPrefix
+    rootFormula rootAssignmentCode rootAssignmentStep hcompiler
+    sourceWitnessList sourceContext hsource.
+  destruct (hcompiler sourceWitnessList sourceContext hsource) as
+    (witnesses & fixedProductionRoot & hextended & hproduction).
+  exists witnesses, fixedProductionRoot.
+  split; [exact hextended |].
+  left. exact hproduction.
+Qed.
+
+(** Pair the preceding injection at the two canonical modes.  This wrapper
+    preserves independent witness growth for Sigma and Pi while exposing a
+    single theorem for clients that migrate an existing pair of producers. *)
+Corollary
+    raw_dynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersAtRootTermsUnderPrefix_to_production_or_refutation
+    : forall (M : RawPAModel), RawPASatisfies M -> forall
+      (translation : RawCodedTemplateTranslation M) outerPrefix
+      rootFormula rootAssignmentCode rootAssignmentStep,
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersAtRootTermsUnderPrefix
+    M translation outerPrefix
+    rootFormula rootAssignmentCode rootAssignmentStep ->
+  RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionOrRefutationCompilersAtRootTermsUnderPrefix
+    M translation outerPrefix
+    rootFormula rootAssignmentCode rootAssignmentStep.
+Proof.
+  intros M hPA translation outerPrefix
+    rootFormula rootAssignmentCode rootAssignmentStep [hsigma hpi].
+  split.
+  - exact
+      (raw_dynamicTruthZeroCanonicalGrowingFixedProductionCompilerAtRootTermsUnderPrefixAt_to_production_or_refutation
+        M hPA translation 0 outerPrefix
+        rootFormula rootAssignmentCode rootAssignmentStep hsigma).
+  - exact
+      (raw_dynamicTruthZeroCanonicalGrowingFixedProductionCompilerAtRootTermsUnderPrefixAt_to_production_or_refutation
+        M hPA translation 1 outerPrefix
+        rootFormula rootAssignmentCode rootAssignmentStep hpi).
+Qed.
+
 Definition
     RawDynamicTruthZeroCanonicalIndependentGrowingFixedProductionCompilersUnderPrefix
     (M : RawPAModel) (translation : RawCodedTemplateTranslation M)
