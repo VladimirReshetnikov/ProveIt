@@ -1,0 +1,19 @@
+(** Assumption audit for the specialized four-head transplant. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADynamicSoundnessProducerFromBaseAndCompositional.
+
+Import
+  PABoundedRawCodedRestrictedPADynamicSoundnessProducerFromBaseAndCompositional.
+
+Check raw_restrictedPAProofAfterProofIteratedShiftCode_atomically_adequate.
+Check raw_restrictedPAProofAfterWitnessIteratedShiftCode_atomically_adequate.
+Check raw_restrictedPAProofAssumptionIteratedShiftCode_atomically_adequate.
+Check raw_restrictedPADynamicSoundnessProducer_of_baseProof_and_compositional.
+Check
+  raw_restrictedPADynamicSoundnessProducerInAllModels_of_baseProof_and_compositional.
+
+Print Assumptions
+  raw_restrictedPADynamicSoundnessProducer_of_baseProof_and_compositional.
+Print Assumptions
+  raw_restrictedPADynamicSoundnessProducerInAllModels_of_baseProof_and_compositional.
