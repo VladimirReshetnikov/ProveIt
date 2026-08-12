@@ -331,6 +331,36 @@ by rewrite canonical_quintic_numfield_factorization
   root_prod_XsubC mem_tnth.
 Qed.
 
+(** The converse direction is just as important for a root-producing
+    formula: every root in the canonical splitting field occurs in the
+    five-entry tuple.  This is multiplicity-aware through the exact monic
+    factorization above; irreducibility is not needed for the set-level
+    statement. *)
+Theorem canonical_quintic_root_iff_exists_index (x : L) :
+  root (map_poly ratrL p) x <->
+    exists k : 'I_5, x = tnth roots k.
+Proof.
+rewrite canonical_quintic_numfield_factorization root_prod_XsubC.
+split.
+- by move=> /tnthP [k hx]; exists k.
+- by move=> [k hx]; apply/tnthP; exists k.
+Qed.
+
+(** Public soundness-and-completeness package for the canonical root vector.
+    The first conjunct says that every displayed entry is a root; the second
+    says that the vector omits no root of the quintic in its splitting
+    field. *)
+Theorem canonical_quintic_root_vector_correct :
+  (forall k : 'I_5, root (map_poly ratrL p) (tnth roots k)) /\
+  (forall x : L, root (map_poly ratrL p) x ->
+    exists k : 'I_5, x = tnth roots k).
+Proof.
+split.
+- exact: canonical_quintic_all_roots.
+- move=> x.
+  exact: (proj1 (canonical_quintic_root_iff_exists_index x)).
+Qed.
+
 Theorem canonical_quintic_theta_value_injective
     (p_irr : irreducible_poly p) :
   injective (quintic_theta_value roots).
