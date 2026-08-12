@@ -1,0 +1,22 @@
+(** Audit surface for the resource-level V2/final handoff. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalCarriedConsistencyAfterV2ResourceHandoff.
+
+Module
+  PABoundedRawCodedDynamicTruthNativeFinalCarriedConsistencyAfterV2ResourceHandoffAudit.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalCarriedConsistencyAfterV2ResourceHandoff.
+
+Check RawDynamicTruthNativeFinalV2ResourceBundle.
+Check raw_remainingRuleCasesV2Compiler_of_resource_bundle.
+Check
+  raw_dynamicTruthNativeFinalStagedNextFinalProof_of_v2_resource_bundle_and_carried_consistency.
+
+Print Assumptions raw_remainingRuleCasesV2Compiler_of_resource_bundle.
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedNextFinalProof_of_v2_resource_bundle_and_carried_consistency.
+
+End
+  PABoundedRawCodedDynamicTruthNativeFinalCarriedConsistencyAfterV2ResourceHandoffAudit.
