@@ -13,6 +13,8 @@ Check
   raw_remainingRuleCasesV2Compiler_of_aligned_thirteen_rows_equalityChildren_and_frontier.
 Check
   raw_remainingRuleCasesV2Compiler_of_aligned_thirteen_rows_and_frontier.
+Check
+  raw_remainingRuleCasesV2Compiler_of_aligned_thirteen_rows_and_four_frontiers_of_nativeClosureAtFor.
 
 Print Assumptions
   raw_threeFieldEqualityEliminationChildren_standardTailCompiler.
@@ -24,3 +26,5 @@ Print Assumptions
   raw_remainingRuleCasesV2Compiler_of_aligned_thirteen_rows_equalityChildren_and_frontier.
 Print Assumptions
   raw_remainingRuleCasesV2Compiler_of_aligned_thirteen_rows_and_frontier.
+Print Assumptions
+  raw_remainingRuleCasesV2Compiler_of_aligned_thirteen_rows_and_four_frontiers_of_nativeClosureAtFor.
