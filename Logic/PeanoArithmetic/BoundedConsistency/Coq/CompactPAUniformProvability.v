@@ -291,6 +291,57 @@ Proof.
   exact hnextTarget.
 Qed.
 
+(** The preceding theorem is often consumed by a traversal whose level is
+    already a carrier value.  Make the standardness seam explicit instead of
+    forcing every caller to perform the same dependent rewrite by hand.  The
+    equality is intentionally an input: this adapter does not decode an
+    arbitrary carrier element and therefore makes no claim about
+    nonstandard levels. *)
+Theorem raw_restrictedPAConsistencyCertificateSuccessor_of_standard_carrier_level :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (standardLevel : nat) (level target certificate nextTarget : M),
+  level = rawNumeralValue M standardLevel ->
+  RawRestrictedPAConsistencyFormulaCodeAt M level target ->
+  RawCodedPAProofOf M target certificate ->
+  RawRestrictedPAConsistencyFormulaCodeAt
+    M (raw_succ M level) nextTarget ->
+  exists nextCertificate : M,
+    RawCodedPAProofOf M nextTarget nextCertificate.
+Proof.
+  intros M hPA standardLevel level target certificate nextTarget hlevel
+    htarget hcertificate hnextTarget.
+  subst level.
+  exact
+    (raw_restrictedPAConsistencyCertificateSuccessor_standard
+      M hPA standardLevel target certificate nextTarget
+      htarget hcertificate hnextTarget).
+Qed.
+
+(** The same carrier-level adapter at the package boundary.  It is useful for
+    standard-orbit sanity checks: once the input package is at a quoted
+    natural, the compact graph supplies the successor target and the fixed
+    metatheoretic theorem supplies its proof certificate.  The all-model
+    successor remains deliberately separate below. *)
+Theorem raw_compactSelectorPackage_successor_of_standard_carrier_level :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (standardLevel : nat) tail,
+  RawCompactSelectorPackageAt M tail
+    (rawNumeralValue M standardLevel) ->
+  RawCompactSelectorPackageAt M tail
+    (raw_succ M (rawNumeralValue M standardLevel)).
+Proof.
+  intros M hPA standardLevel tail
+    [target [certificate [htarget hcertificate]]].
+  destruct (raw_restrictedPAConsistencyFormulaCodeAt_total M hPA
+    (raw_succ M (rawNumeralValue M standardLevel)))
+    as [nextTarget hnextTarget].
+  destruct
+    (raw_restrictedPAConsistencyCertificateSuccessor_standard
+      M hPA standardLevel target certificate nextTarget
+      htarget hcertificate hnextTarget) as [nextCertificate hnextCertificate].
+  exists nextTarget, nextCertificate. split; assumption.
+Qed.
+
 Lemma raw_compactSelectorPackage_successor : forall
     (M : RawPAModel), RawRestrictedPAConsistencyProofSuccessor M ->
     forall tail level,
