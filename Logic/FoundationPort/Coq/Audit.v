@@ -776,6 +776,9 @@ Print Assumptions matrix_vec_foldr_succ.
 Print Assumptions matrix_vec_foldl_succ.
 Print Assumptions matrix_vec_forall_iff.
 Print Assumptions matrix_vec_exists_iff.
+Check matrix_vec_applicative_sequence.
+Print Assumptions matrix_vec_applicative_sequence_pure.
+Check matrix_option_ap.
 Check matrix_vec_option_sequence.
 Print Assumptions matrix_vec_option_sequence_some.
 Print Assumptions matrix_vec_cons_injective.
