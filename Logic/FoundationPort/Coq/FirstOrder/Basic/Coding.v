@@ -10,6 +10,7 @@
 
 From Stdlib Require Import Arith.Compare_dec Arith.PeanoNat Cantor Lia Vectors.Fin.
 From Stdlib Require Import Logic.FunctionalExtensionality.
+From Foundation.Vorspiel Require Import Matrix.
 From Foundation.Syntax.Predicate Require Import Language Term Rew.
 From Foundation.FirstOrder.Basic.Syntax Require Import Formula.
 
@@ -96,34 +97,19 @@ Proof.
     pose proof (IH (fun u => v (Fin.FS u)) j). lia.
 Qed.
 
-Fixpoint fin_option_sequence (k : nat) {A : Type} :
-    (Fin.t k -> option A) -> option (Fin.t k -> A) :=
-  match k as j return
-      (Fin.t j -> option A) -> option (Fin.t j -> A) with
-  | 0 => fun _ => Some (fun i : Fin.t 0 => match i with end)
-  | S j => fun v =>
-      match v Fin.F1,
-            @fin_option_sequence j A (fun i => v (Fin.FS i)) with
-      | Some x, Some xs => Some (fin_coding_cons x xs)
-      | _, _ => None
-      end
-  end.
+(* The source decoder uses the generic vector sequencer from Matrix.  Reuse
+   the shared dependent Option specialization instead of maintaining a second
+   homogeneous recursion and proof. *)
+Definition fin_option_sequence (k : nat) {A : Type}
+    (v : Fin.t k -> option A) : option (Fin.t k -> A) :=
+  @matrix_vec_option_sequence k (fun _ => A) v.
 
 Lemma fin_option_sequence_some : forall k A
     (v : Fin.t k -> option A) (w : Fin.t k -> A),
   (forall i, v i = Some (w i)) -> @fin_option_sequence k A v = Some w.
 Proof.
-  induction k as [|k IH]; intros A v w H.
-  - cbn [fin_option_sequence]. f_equal.
-    apply functional_extensionality. intro i. inversion i.
-  - cbn [fin_option_sequence]. rewrite H.
-    rewrite (IH A (fun i => v (Fin.FS i))
-      (fun i => w (Fin.FS i)) (fun i => H (Fin.FS i))).
-    f_equal. apply functional_extensionality. intro i.
-    refine (@Fin.caseS' k i
-      (fun j => fin_coding_cons (w Fin.F1)
-        (fun u => w (Fin.FS u)) j = w j) eq_refl _).
-    reflexivity.
+  intros k A v w H. unfold fin_option_sequence.
+  now apply matrix_vec_option_sequence_some.
 Qed.
 
 Fixpoint semiterm_code {L X n}
