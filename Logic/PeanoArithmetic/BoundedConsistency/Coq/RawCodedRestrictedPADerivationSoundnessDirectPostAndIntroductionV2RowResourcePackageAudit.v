@@ -1,8 +1,0 @@
-From BoundedPAConsistency Require Import
-  RawCodedRestrictedPADerivationSoundnessDirectPostAndIntroductionV2RowResourcePackage.
-
-Check RawCoqRestrictedPADirectRemainingRuleCasesV2RowResources.
-Check raw_remainingRuleCasesV2Compiler_of_aligned_row_resource_package.
-
-Print Assumptions
-  raw_remainingRuleCasesV2Compiler_of_aligned_row_resource_package.

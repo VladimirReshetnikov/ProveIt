@@ -2,6 +2,7 @@ import PolynomialFormulas.LazardQuinticRootRadicals
 import PolynomialFormulas.LazardQuinticSectionFiveCombinedAction
 import Mathlib.Algebra.MvPolynomial.Funext
 import Mathlib.Algebra.CharZero.Infinite
+import Mathlib.FieldTheory.Galois.Basic
 
 /-!
 # Polynomial form of the corrected alternate projections
@@ -226,6 +227,60 @@ theorem coherentRootCoordinateCoefficient_fixed
   have h := congrArg (MvPolynomial.coeff d)
     (map_coherentRootCoordinatePolynomial_eq_self sigma omega homega j)
   simpa [MvPolynomial.coeff_map] using h
+
+section CoefficientwiseDescent
+
+variable {F : Type*} [Field F] [Algebra F K]
+
+/-- A cyclic generator of a finite Galois group identifies its fixed elements
+with the coefficient field.  This is the exact fixed-field hypothesis needed
+for coefficientwise descent; it does not assume a concrete basis. -/
+theorem coherent_fixed_mem_range_of_cyclic_generator
+    [FiniteDimensional F K] [IsGalois F K]
+    (sigma : K ≃ₐ[F] K)
+    (hgenerator : ∀ tau : K ≃ₐ[F] K, ∃ n : ℕ, tau = sigma ^ n)
+    {z : K} (hz : sigma z = z) :
+    z ∈ Set.range (algebraMap F K) := by
+  rw [IsGalois.mem_range_algebraMap_iff_fixed]
+  intro tau
+  obtain ⟨n, rfl⟩ := hgenerator tau
+  induction n with
+  | zero => simp
+  | succ n ih => simp [pow_succ, hz, ih]
+
+/-- Choose a coefficient-field representative for every coefficient known to
+lie in the range of the scalar extension map. -/
+noncomputable def coherentDescendedCoefficient
+    (p : MvPolynomial (Fin 5) K)
+    (hcoeff : ∀ d, ∃ a : F, algebraMap F K a = p.coeff d)
+    (d : Fin 5 →₀ ℕ) : F :=
+  Classical.choose (hcoeff d)
+
+theorem algebraMap_coherentDescendedCoefficient
+    (p : MvPolynomial (Fin 5) K)
+    (hcoeff : ∀ d, ∃ a : F, algebraMap F K a = p.coeff d)
+    (d : Fin 5 →₀ ℕ) :
+    algebraMap F K (coherentDescendedCoefficient p hcoeff d) = p.coeff d :=
+  Classical.choose_spec (hcoeff d)
+
+/-- Coefficientwise descent of a finite multivariate polynomial. -/
+noncomputable def coherentDescendPolynomial
+    (p : MvPolynomial (Fin 5) K)
+    (hcoeff : ∀ d, ∃ a : F, algebraMap F K a = p.coeff d) :
+    MvPolynomial (Fin 5) F :=
+  ∑ d ∈ p.support, monomial d (coherentDescendedCoefficient p hcoeff d)
+
+theorem map_coherentDescendPolynomial
+    (p : MvPolynomial (Fin 5) K)
+    (hcoeff : ∀ d, ∃ a : F, algebraMap F K a = p.coeff d) :
+    MvPolynomial.map (algebraMap F K) (coherentDescendPolynomial p hcoeff) = p := by
+  classical
+  rw [coherentDescendPolynomial]
+  simp only [map_sum, map_monomial,
+    algebraMap_coherentDescendedCoefficient]
+  exact p.support_sum_monomial_coeff
+
+end CoefficientwiseDescent
 
 end
 
