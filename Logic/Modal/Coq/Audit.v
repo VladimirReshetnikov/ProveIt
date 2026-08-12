@@ -22,7 +22,8 @@ From FoundationModal Require Import
   GenericCalculus PropositionalEntailmentAxioms
   PropositionalEntailmentLukasiewicz
   PropositionalEntailmentMinimal PropositionalEntailmentInt
-  PropositionalEntailmentClassical PropositionalTait
+  PropositionalEntailmentClassical PropositionalTwoSided
+  PropositionalTwoSidedTableau PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness CorsiVF Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -3036,6 +3037,79 @@ Print Assumptions ph_hilbert_cl_double_neg_iff.
 Print Assumptions ph_hilbert_cl_neg_and_iff_or_neg.
 Print Assumptions ph_hilbert_cl_imp_iff_neg_or.
 Print Assumptions ph_hilbert_cl_neg_disj2_map_to_conj2.
+
+(** Meta/TwoSided: bottom-terminated succedent sequents, structural rules,
+    and every source propositional connective rule.  Raw derivations remain
+    proof-relevant; theoremhood is exposed through inhabited wrappers. *)
+Check generic_raw_list_subset.
+Check generic_classical_list_derivation.
+Check generic_two_sided_derivation.
+Check generic_two_sided_derivable.
+Print Assumptions generic_minimal_bottom_to_list_disj_raw.
+Print Assumptions generic_list_disj_subset_raw.
+Print Assumptions generic_two_sided_weakening_raw.
+Print Assumptions generic_two_sided_remove_left_raw.
+Print Assumptions generic_two_sided_remove_right_raw.
+Print Assumptions generic_two_sided_rotate_right_raw.
+Print Assumptions generic_two_sided_rotate_left_raw.
+Print Assumptions generic_two_sided_rotate_right_inv_raw.
+Print Assumptions generic_two_sided_rotate_left_inv_raw.
+Print Assumptions generic_two_sided_to_proof_raw.
+Print Assumptions generic_two_sided_add_hyp_raw.
+Print Assumptions generic_two_sided_right_closed_raw.
+Print Assumptions generic_two_sided_left_closed_raw.
+Print Assumptions generic_two_sided_verum_right_raw.
+Print Assumptions generic_two_sided_falsum_left_raw.
+Print Assumptions generic_two_sided_falsum_right_raw.
+Print Assumptions generic_two_sided_verum_left_raw.
+Print Assumptions generic_two_sided_and_right_raw.
+Print Assumptions generic_two_sided_or_left_raw.
+Print Assumptions generic_two_sided_or_right_raw.
+Print Assumptions generic_two_sided_and_left_raw.
+Print Assumptions generic_two_sided_neg_right_int_raw.
+Print Assumptions generic_two_sided_neg_right_cl_raw.
+Print Assumptions generic_two_sided_neg_left_int_raw.
+Print Assumptions generic_two_sided_neg_left_raw.
+Print Assumptions generic_two_sided_imply_left_int_raw.
+Print Assumptions generic_two_sided_imply_left_raw.
+Print Assumptions generic_two_sided_imply_right_int_raw.
+Print Assumptions generic_two_sided_imply_right_cl_raw.
+Print Assumptions generic_two_sided_iff_right_cl_raw.
+Print Assumptions generic_two_sided_iff_left_raw.
+
+(** The complete Tableaux portion of Meta/TwoSided: proof-relevant validity,
+    membership/subset transport, and all lifted structural/connective rules. *)
+Check generic_two_sided_sequent.
+Check generic_two_sided_tableau.
+Check generic_two_sided_tableau_validity.
+Check generic_two_sided_tableau_valid.
+Print Assumptions generic_two_sided_tableau_valid_not_nil.
+Print Assumptions generic_two_sided_tableau_valid_of_member_raw.
+Print Assumptions generic_two_sided_tableau_valid_of_subset_raw.
+Print Assumptions generic_two_sided_tableau_valid_of_single_uppercedent_raw.
+Print Assumptions generic_two_sided_tableau_valid_of_double_uppercedent_raw.
+Print Assumptions generic_two_sided_tableau_valid_remove_raw.
+Print Assumptions generic_two_sided_tableau_valid_to_proof_raw.
+Print Assumptions generic_two_sided_tableau_valid_right_closed_raw.
+Print Assumptions generic_two_sided_tableau_valid_left_closed_raw.
+Print Assumptions generic_two_sided_tableau_valid_remove_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_remove_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_rotate_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_rotate_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_verum_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_falsum_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_falsum_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_verum_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_and_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_or_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_or_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_and_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_neg_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_neg_right_prime_raw.
+Print Assumptions generic_two_sided_tableau_valid_neg_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_imply_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_imply_right_prime_raw.
+Print Assumptions generic_two_sided_tableau_valid_imply_left_raw.
 
 (** Propositional/Entailment/Cl/Łukasiewicz: the K/S/elimination-of-
     contraposition basis derives DNE, DNI, and contradiction explosion over
