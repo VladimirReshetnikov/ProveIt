@@ -30,6 +30,7 @@ From BoundedPAConsistency Require Import
   RawCodedDynamicTruthNativeShiftProofCompilation
   RawCodedDynamicTruthNativeSubstitutionProofCompilation
   RawCodedDynamicTruthNativeAxiomSoundnessProofCompilation
+  RawCodedDynamicTruthNativePositiveLocalProofTotals
   RawCodedDynamicTruthNativeMasterSuccessorFromProofTotals
   RawCodedDynamicTruthNativeMasterEndpoint
   RawCodedDynamicTruthNativeMasterSuccessorTransportComplete.
@@ -51,6 +52,7 @@ Import PABoundedRawCodedDynamicTruthNativeCrossLevelProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeShiftProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeSubstitutionProofCompilation.
 Import PABoundedRawCodedDynamicTruthNativeAxiomSoundnessProofCompilation.
+Import PABoundedRawCodedDynamicTruthNativePositiveLocalProofTotals.
 Import PABoundedRawCodedDynamicTruthNativeMasterSuccessorFromProofTotals.
 Import PABoundedRawCodedDynamicTruthNativeMasterEndpoint.
 Import PABoundedRawCodedDynamicTruthNativeMasterSuccessorTransportComplete.
@@ -61,6 +63,16 @@ Definition RawDynamicTruthNativePositiveProofTotalsInAllModels : Prop :=
     RawDynamicTruthNativePositiveProofTotals M.
 
 Arguments RawDynamicTruthNativePositiveProofTotalsInAllModels : clear implicits.
+
+(** The sharper local-proof totals route.  Each of the five roots is already
+    over the empty context, so the completed empty-to-witnessed transport
+    theorem can move it into the context selected by the sixth certificate. *)
+Definition RawDynamicTruthNativePositiveLocalProofTotalsInAllModels : Prop :=
+  forall (M : RawPAModel), RawPASatisfies M ->
+    RawDynamicTruthNativePositiveLocalProofTotals M.
+
+Arguments RawDynamicTruthNativePositiveLocalProofTotalsInAllModels
+  : clear implicits.
 
 (** The direct five-root interface is the corresponding leaf-compiler form. *)
 Definition RawDynamicTruthNativeLocalRootCompilersInAllModels : Prop :=
@@ -84,6 +96,18 @@ Proof.
   intros htotals hconsistency M hPA.
   exact
     (raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_proof_totals
+      M hPA (htotals M hPA) (hconsistency M hPA)).
+Qed.
+
+Theorem
+    raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessorInAllModels_of_local_proof_totals
+    : RawDynamicTruthNativePositiveLocalProofTotalsInAllModels ->
+  RawRestrictedPAConsistencyCertificateSuccessorInAllModels ->
+  RawDynamicTruthNativeSplicedMasterPositiveComponentSuccessorInAllModels.
+Proof.
+  intros htotals hconsistency M hPA.
+  exact
+    (raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessor_of_local_proof_totals
       M hPA (htotals M hPA) (hconsistency M hPA)).
 Qed.
 
@@ -116,6 +140,21 @@ Proof.
     PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_native_compiler.
   exact
     (raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessorInAllModels_of_proof_totals
+      htotals hconsistency).
+Qed.
+
+Theorem
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_local_proof_totals
+    : RawDynamicTruthNativePositiveLocalProofTotalsInAllModels ->
+  RawRestrictedPAConsistencyCertificateSuccessorInAllModels ->
+  Formula.BProv Formula.Ax_s []
+    compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intros htotals hconsistency.
+  apply
+    PA_BProv_compactUniformRestrictedPAConsistencyProvabilityFormula_of_native_compiler.
+  exact
+    (raw_dynamicTruthNativeSplicedMasterPositiveComponentSuccessorInAllModels_of_local_proof_totals
       htotals hconsistency).
 Qed.
 
