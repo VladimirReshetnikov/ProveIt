@@ -5475,3 +5475,11 @@ local roots.  A one-way adapter from the historical implication compiler and
 a direct dependency-ordered compact headline formally expose this premise
 reduction; an unconditional arbitrary-carrier cross-level construction is
 still outstanding.
+
+The reduced cross-level and final coordinates also compose directly.  The
+combined dependency bundle keeps local/shift/substitution/axiom unchanged,
+uses the actual-current-package cross-level compiler in its third field, and
+uses the trace-indexed V2/carried compiler in its final field.  Its audited
+compact endpoint is the strongest currently checked Coq headline, while its
+sole all-model premise still displays every outstanding proof-producing
+resource rather than presenting the result as unconditional.
