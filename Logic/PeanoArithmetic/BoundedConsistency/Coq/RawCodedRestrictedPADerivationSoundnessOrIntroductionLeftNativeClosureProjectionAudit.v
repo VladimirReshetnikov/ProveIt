@@ -1,0 +1,11 @@
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessOrIntroductionLeftNativeClosureProjection.
+
+Import
+  PABoundedRawCodedRestrictedPADerivationSoundnessOrIntroductionLeftNativeClosureProjection.
+
+Check
+  raw_selectedOrIntroductionLeftTruthTail_of_nativeDirectTruthInputsWithClosureAtFor_of_dynamicLawAtEmpty.
+
+Print Assumptions
+  raw_selectedOrIntroductionLeftTruthTail_of_nativeDirectTruthInputsWithClosureAtFor_of_dynamicLawAtEmpty.
