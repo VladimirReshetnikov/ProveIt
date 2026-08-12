@@ -151,6 +151,16 @@ theorem thetaValue_rootTuple_injective
     Polynomial.separable_prod_X_sub_C_iff] at hsep
   exact hsep
 
+/-- The specialized six-factor Frobenius--Dummit resolvent is separable for
+every irreducible rational quintic.  The collision-free orbit is derived by
+the preceding Chapman argument, not supplied by the caller. -/
+theorem scalarResolvent_rootTuple_separable
+    (p : ℚ[X]) (hp : Irreducible p) (hdeg : p.natDegree = 5) :
+    (scalarResolvent (rootTuple p hp hdeg)).Separable := by
+  rw [scalarResolvent_eq_prod,
+    Polynomial.separable_prod_X_sub_C_iff]
+  exact thetaValue_rootTuple_injective p hp hdeg
+
 theorem gal_fixes_thetaValue_iff_fixed_coset
     (p : ℚ[X]) (hp : Irreducible p) (hdeg : p.natDegree = 5)
     (htheta : Function.Injective
