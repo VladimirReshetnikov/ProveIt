@@ -1,0 +1,7 @@
+From BoundedPAConsistency Require Import
+  RawCodedRestrictedPADerivationSoundnessAssumptionNativeClosureProjection.
+
+Check raw_selectedAssumptionTail_of_nativeDirectTruthInputsWithClosureAt.
+
+Print Assumptions
+  raw_selectedAssumptionTail_of_nativeDirectTruthInputsWithClosureAt.

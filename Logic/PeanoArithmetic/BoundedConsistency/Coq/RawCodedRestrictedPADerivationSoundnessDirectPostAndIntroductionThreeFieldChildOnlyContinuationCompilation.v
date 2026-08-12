@@ -603,5 +603,139 @@ Proof.
       hassumption horTruth himpRecursive hsplit himpE hbottom).
 Qed.
 
+(**
+  Bottom-E is already a consequence of aligned structural input.  Keep the
+  thirteen literal rows and the five genuinely residual frontiers explicit,
+  then synthesize the sixth frontier with the checked admissibility-aware
+  Bottom completion.  This is the preferred V2 entry point for clients that
+  have an aligned structural package but no separate Bottom callback.
+*)
+Theorem
+    raw_remainingRuleCasesV2Compiler_of_aligned_thirteen_rows_and_five_frontiers
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall
+      (tail : nat -> M) predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi
+      (aligned : RawDynamicTruthNativeLocalAlignedPredecessorAt M tail
+        predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi)
+      inputLevelNumeral
+      (inputs : RawCodedTemplateDirectStructuralInputs M),
+  RawDynamicTruthNativeAlignedStrongStepStructuralInputsAt
+      M hPA tail predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned
+      inputLevelNumeral inputs ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAssumptionOuterConclusionTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepAndIntroductionReadyContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAssumptionOuterConclusionTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectExcludedMiddleCaseContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectOrEliminationResultFormulaTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepOrEliminationReadyContext []) ->
+  RawCoqRestrictedPADirectModeOneAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectExistentialEliminationBinderContextTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepExistentialEliminationReadyContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectExistentialEliminationResultFormulaTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepExistentialEliminationReadyContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAssumptionWitnessFormulaTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepAndEliminationLeftReadyContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAndEliminationRightResultFormulaTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepAndEliminationRightReadyContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAssumptionOuterConclusionTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepOrIntroductionRightReadyContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAssumptionOuterConclusionTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectEqualityReflexivitySemanticContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAssumptionOuterConclusionTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepUniversalIntroductionReadyContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAssumptionOuterConclusionTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepUniversalEliminationReadyContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAssumptionOuterConclusionTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepExistentialIntroductionReadyContext []) ->
+  RawCoqRestrictedPADirectModeZeroAppendConcreteRowStandardTailCompilerAt
+    M hPA inputs coqDynamicTruthAppendRowBoundParameterName
+      coqRestrictedPADirectAssumptionOuterConclusionTerm
+      (ttVar 9) (ttVar 8)
+      (coqRestrictedPADirectStrongStepEqualityEliminationReadyContext []) ->
+  RawCoqRestrictedPADirectSelectedAssumptionTail M hPA inputs ->
+  RawCoqRestrictedPADirectSelectedOrIntroductionLeftTruthTail M hPA inputs ->
+  RawCoqRestrictedPADirectSelectedImpIntroductionRecursiveTail M hPA inputs ->
+  RawCoqRestrictedPADirectSelectedImpIntroductionFixedRowSplitTail
+    M hPA inputs ->
+  RawCoqRestrictedPADirectSelectedImpECoreTail M hPA inputs ->
+  RawCoqRestrictedPADirectRemainingRuleCasesV2StandardTailCompiler
+    M hPA inputs.
+Proof.
+  intros M hPA tail predecessorLevel baseContext currentLocal
+    nextInputGlobalSigma nextInputGlobalPi aligned inputLevelNumeral inputs
+    hstructural handIntroductionResources hexcludedMiddleResources
+    horEliminationResources hexBinderResources hexResultResources
+    handLeftResources handRightResources horIntroductionResources
+    hequalityReflexivityResources huniversalIntroductionResources
+    huniversalEliminationResources hexistentialIntroductionResources
+    hequalityEliminationResources hassumption horTruth himpRecursive
+    hsplit himpE.
+  eapply
+    (raw_remainingRuleCasesV2Compiler_of_aligned_thirteen_rows_and_frontier
+      M hPA tail predecessorLevel baseContext currentLocal
+      nextInputGlobalSigma nextInputGlobalPi aligned inputLevelNumeral inputs).
+  - exact hstructural.
+  - exact handIntroductionResources.
+  - exact hexcludedMiddleResources.
+  - exact horEliminationResources.
+  - exact hexBinderResources.
+  - exact hexResultResources.
+  - exact handLeftResources.
+  - exact handRightResources.
+  - exact horIntroductionResources.
+  - exact hequalityReflexivityResources.
+  - exact huniversalIntroductionResources.
+  - exact huniversalEliminationResources.
+  - exact hexistentialIntroductionResources.
+  - exact hequalityEliminationResources.
+  - exact hassumption.
+  - exact horTruth.
+  - exact himpRecursive.
+  - exact hsplit.
+  - exact himpE.
+  - exact
+      (raw_bottomAdmissibilityAwareCase_standardTail_of_aligned
+        M hPA tail predecessorLevel baseContext currentLocal
+        nextInputGlobalSigma nextInputGlobalPi aligned inputLevelNumeral
+        inputs hstructural).
+Qed.
+
 End
   PABoundedRawCodedRestrictedPADerivationSoundnessDirectPostAndIntroductionThreeFieldChildOnlyContinuationCompilation.
