@@ -1,5 +1,6 @@
 import PolynomialFormulas.GaussianPolynomialSolver
-import PolynomialFormulas.LazardQuinticFourier
+import PolynomialFormulas.LazardQuinticVieta
+import PolynomialFormulas.LazardQuinticPrimitiveFifthRoot
 
 /-!
 # A coefficient-only Gaussian-rational quintic dispatcher
@@ -8,15 +9,19 @@ This module extends `GaussianPolynomialSolver.solve` by one nominal
 coefficient.  When the quintic coefficient is zero, it delegates literally to
 the already verified degree-at-most-four solver.
 
-For a genuine quintic, the current Lazard development is certificate-driven:
+For a genuine quintic, this legacy dispatcher interface is certificate-driven:
 it does not search for the invariant and radical certificates, and their raw
-equations do not imply soundness.  A `LazardWitness` therefore includes the
-four compact Fourier identities for its particular
-certified invocation of `LazardQuintic.solveGeneral`.  The generic Fourier
-reconstruction theorem derives pointwise root soundness from those identities.
+equations do not imply soundness or completeness.  A `LazardWitness` therefore
+includes the four compact Fourier identities for its particular certified
+invocation of `LazardQuintic.solveGeneral`.  Generic algebraic theorems derive
+both pointwise root soundness and the five Vieta identities—and hence exact,
+multiplicity-preserving factorization—from those Fourier identities.
 The raw invariant relations and `RadicalCertificate` equations alone do not
-establish that the displayed candidates are roots; the four additional
-identities are the checked, instance-specific soundness certificate.
+establish either conclusion; the additional identities are the checked,
+instance-specific certificates.
+Separate root-origin modules construct those identities from an ordered tuple
+of actual roots; their larger proof graph is tracked independently in the
+paper-claim crosswalk.
 The nondegenerate branch uses classical choice on the existence of such a
 witness, runs the formula in the radical closure of `ℚ` in `ℂ`, and
 noncomputably reifies the five resulting values as `RadicalExpression`s.
@@ -26,13 +31,14 @@ denominators, so it does not cover singular solvable inputs such as `X⁵`.  If
 no Lazard witness exists, the dispatcher therefore falls back to a classically
 selected `CompleteRadicalSolution`, when one exists.  Only when neither package
 exists does it return the separate `Result.unsupported` constructor.  Both
-five-entry result constructors carry enough evidence to prove every returned
-value is a root.
+five-entry result constructors carry an exact factorization, proving that every
+returned value is a root and every root is returned.
 
 At `a₅ = 0`, the result, factorization, and complete root-set characterization
 are those of `GaussianPolynomialSolver.solve`.  For every coefficient tuple,
 `solve_allReturnedRootsSatisfy` proves pointwise soundness of every expression
-the dispatcher returns; no degree-five completeness claim is made.
+the dispatcher returns.  The separate `GaussianQuinticCompleteness` module
+states the full root-set and radical-solvability specifications.
 -/
 
 namespace LeanProofs.PolynomialFormulas
@@ -132,15 +138,49 @@ abbrev LazardFourierRelations (c : Coefficients)
     (LazardQuintic.fourierP4
       (LazardQuintic.depress c.toLazard) i d.chosen d.p1)
 
+/-- A fixed primitive fifth root of unity in `ℂ`, using Lazard's two-square-root
+expression rather than treating a fifth root of `1` as one radical step. -/
+noncomputable def complexPrimitiveFifthRoot : ℂ :=
+  squareRadicalPrimitiveFifthRoot
+
+theorem complexPrimitiveFifthRoot_primitive :
+    IsPrimitiveRoot complexPrimitiveFifthRoot 5 := by
+  exact squareRadicalPrimitiveFifthRoot_primitive
+
+/-- Literal radical syntax for the chosen primitive fifth root, containing
+exactly the two square-root constructors in the classical formula. -/
+noncomputable def complexPrimitiveFifthRootExpression :
+    RadicalExpression complexPrimitiveFifthRoot :=
+  squareRadicalPrimitiveFifthRootExpression
+
+/-- The fixed primitive root packaged as an explicit radical expression. -/
+noncomputable def explicitPrimitiveFifthRoot : ExplicitRadical :=
+  ⟨complexPrimitiveFifthRoot, complexPrimitiveFifthRootExpression⟩
+
+/-- The fixed root of unity belongs to the radical closure of `ℚ`, as a
+direct consequence of its displayed expression. -/
+theorem complexPrimitiveFifthRoot_mem_solvableByRad :
+    complexPrimitiveFifthRoot ∈ solvableByRad ℚ ℂ := by
+  exact complexPrimitiveFifthRootExpression.eval_mem_solvableByRad
+
+/-- The canonical primitive fifth root used by every Lazard invocation. -/
+noncomputable def radicalFifthRootOfUnity :
+    LazardQuintic.FifthRootOfUnity RadicalField where
+  value := ⟨complexPrimitiveFifthRoot,
+    complexPrimitiveFifthRoot_mem_solvableByRad⟩
+  primitive := by
+    rw [← IsPrimitiveRoot.coe_submonoidClass_iff]
+    exact complexPrimitiveFifthRoot_primitive
+
 /-- All non-coefficient inputs required by the existing Lazard formula.
 
 `invariantCertificate` records the resolvent and linear-system equations
 satisfied by the supplied invariant tuple;
 `radicalCertificate` fixes the coherent square- and fifth-root choices; and
-`omega` fixes the primitive fifth root of unity shared by all five outputs;
 `fourierRelations` certifies the four cyclic coefficient identities for
-the computed Fourier components.  Pointwise soundness is derived from those
-independent algebraic identities rather than stored as a field.
+the computed Fourier components.  Pointwise soundness, the five Vieta
+identities, and exact factorization are derived from that compact certificate
+rather than stored as fields.
 In particular, the raw invariant and radical relations by themselves are not
 treated as evidence that the formula output is a root.
 The present library does not yet construct this witness from coefficients. -/
@@ -150,7 +190,6 @@ structure LazardWitness (c : Coefficients) where
     LazardQuintic.RadicalCertificate
       (LazardQuintic.depress c.toLazard)
       (invariantCertificate.values.map gaussianToRadicalField)
-  omega : LazardQuintic.FifthRootOfUnity RadicalField
   fourierRelations :
     LazardFourierRelations c
       (invariantCertificate.values.map gaussianToRadicalField)
@@ -189,30 +228,35 @@ def LazardWitness.roots {c : Coefficients} (w : LazardWitness c) :
     Fin 5 → ExplicitRadical :=
   fun k => explicitOfRadicalField
     (LazardQuintic.solveGeneral c.toLazard w.invariants
-      w.radicalCertificate w.omega k)
+      w.radicalCertificate radicalFifthRootOfUnity k)
 
 @[simp]
 theorem LazardWitness.roots_value {c : Coefficients} (w : LazardWitness c)
     (k : Fin 5) :
     (w.roots k).value =
       (LazardQuintic.solveGeneral c.toLazard w.invariants
-        w.radicalCertificate w.omega k).1 := rfl
+        w.radicalCertificate radicalFifthRootOfUnity k).1 := rfl
+
+/-- A nonzero Gaussian-rational leading coefficient remains nonzero after
+embedding into the radical closure. -/
+theorem Coefficients.toLazard_a_ne_zero {c : Coefficients}
+    (h5 : c.a5 ≠ 0) : c.toLazard.a ≠ 0 := by
+  intro hzero
+  apply h5
+  apply GaussianRat.toComplex_injective
+  have h := congrArg Subtype.val hzero
+  simpa [Coefficients.toLazard, Coefficients.toGaussianLazard,
+    LazardQuintic.GeneralQuintic.map, gaussianToRadicalField,
+    toRadicalField] using h
 
 /-- Every value reified from a proof-carrying Lazard invocation satisfies the
 original Gaussian-rational quintic. -/
 theorem LazardWitness.eval_root {c : Coefficients} (w : LazardWitness c)
     (h5 : c.a5 ≠ 0) (k : Fin 5) :
     c.eval (w.roots k).value = 0 := by
-  have ha : c.toLazard.a ≠ 0 := by
-    intro hzero
-    apply h5
-    apply GaussianRat.toComplex_injective
-    have h := congrArg Subtype.val hzero
-    simpa [Coefficients.toLazard, Coefficients.toGaussianLazard,
-      LazardQuintic.GeneralQuintic.map, gaussianToRadicalField,
-      toRadicalField] using h
+  have ha := c.toLazard_a_ne_zero h5
   have hGeneral := LazardQuintic.solveGeneral_root_of_fourierRelations
-    c.toLazard ha w.invariants w.radicalCertificate w.omega
+    c.toLazard ha w.invariants w.radicalCertificate radicalFifthRootOfUnity
       w.fourierRelations k
   have h := congrArg Subtype.val hGeneral
   simp [LazardWitness.roots, Coefficients.eval,
@@ -224,16 +268,47 @@ theorem LazardWitness.eval_root {c : Coefficients} (w : LazardWitness c)
   ring_nf at h ⊢
   exact h
 
+/-- The five values reified from a Fourier-certified Lazard invocation give
+an exact multiplicity-preserving factorization of the original quintic. -/
+theorem LazardWitness.factorization {c : Coefficients} (w : LazardWitness c)
+    (h5 : c.a5 ≠ 0) (x : ℂ) :
+    c.eval x = GaussianRat.toComplex c.a5 *
+      ∏ k : Fin 5, (x - (w.roots k).value) := by
+  have hRadical := LazardQuintic.solveGeneral_fiveRootRelations
+    c.toLazard (c.toLazard_a_ne_zero h5) w.invariants
+      w.radicalCertificate radicalFifthRootOfUnity w.fourierRelations
+  have hComplex := hRadical.map (solvableByRad ℚ ℂ).toSubfield.subtype
+  have h := hComplex.eval_factorization x
+  have hsubtype (z : RadicalField) :
+      (solvableByRad ℚ ℂ).toSubfield.subtype z = z.1 := rfl
+  simp [Coefficients.toLazard, Coefficients.toGaussianLazard,
+    LazardQuintic.GeneralQuintic.map, LazardQuintic.GeneralQuintic.eval,
+    Coefficients.eval, Coefficients.toQuartic,
+    GaussianPolynomialSolver.Coefficients.eval, quartic,
+    LazardWitness.roots, LazardWitness.invariants,
+    gaussianToRadicalField, toRadicalField, hsubtype] at h ⊢
+  ring_nf at h ⊢
+  exact h
+
 /-- A complete explicit radical factorization of a genuine quintic.
 
 This package is the fallback for solvable inputs outside the nonzero-
 denominator scope of the current Lazard certificate, for example repeated or
 singular quintics. -/
 structure CompleteRadicalSolution (c : Coefficients) where
+  leading_ne_zero : c.a5 ≠ 0
   roots : Fin 5 → ExplicitRadical
   factorization : ∀ x : ℂ,
     c.eval x = GaussianRat.toComplex c.a5 *
       ∏ k : Fin 5, (x - (roots k).value)
+
+/-- Package a Fourier-certified Lazard invocation as a complete explicit
+radical solution. -/
+def LazardWitness.completeRadicalSolution {c : Coefficients}
+    (w : LazardWitness c) (h5 : c.a5 ≠ 0) : CompleteRadicalSolution c where
+  leading_ne_zero := h5
+  roots := w.roots
+  factorization := w.factorization h5
 
 /-- Each entry of a complete radical factorization is a root. -/
 theorem CompleteRadicalSolution.eval_root {c : Coefficients}
@@ -248,14 +323,13 @@ theorem CompleteRadicalSolution.eval_root {c : Coefficients}
 /-- Output of the quintic dispatcher.
 
 The constructors deliberately distinguish the verified lower-degree result,
-pointwise-verified Lazard outputs, a complete explicit fallback, and the
-absence of either degree-five package.  The Lazard constructor stores its
-pointwise proof, so even a `Result` built independently of `solve` cannot
-contain an unverified returned value. -/
+Fourier-certified Lazard outputs, a complete explicit fallback, and the absence
+of either degree-five package.  Both five-entry constructors store an exact
+factorization, so even a `Result` built independently of `solve` cannot contain
+an incomplete or unsound returned vector. -/
 inductive Result (c : Coefficients) where
   | lowerDegree (leadingZero : c.a5 = 0)
-  | lazardCandidates (roots : Fin 5 → ExplicitRadical)
-      (sound : ∀ k, c.eval (roots k).value = 0)
+  | lazardCandidates (solution : CompleteRadicalSolution c)
   | completeRadical (solution : CompleteRadicalSolution c)
   | unsupported
 
@@ -264,7 +338,7 @@ namespace Result
 /-- Membership in the returned collection. -/
 def Contains {c : Coefficients} : Result c → ℂ → Prop
   | .lowerDegree _, x => (GaussianPolynomialSolver.solve c.toQuartic).Contains x
-  | .lazardCandidates roots _, x => ∃ k, (roots k).value = x
+  | .lazardCandidates solution, x => ∃ k, (solution.roots k).value = x
   | .completeRadical solution, x => ∃ k, (solution.roots k).value = x
   | .unsupported, _ => False
 
@@ -272,20 +346,18 @@ def Contains {c : Coefficients} : Result c → ℂ → Prop
 polynomial's “every complex value” result. -/
 def rootCount {c : Coefficients} : Result c → Option ℕ
   | .lowerDegree _ => (GaussianPolynomialSolver.solve c.toQuartic).rootCount
-  | .lazardCandidates _ _ => some 5
+  | .lazardCandidates _ => some 5
   | .completeRadical _ => some 5
   | .unsupported => some 0
 
-/-- Product represented by a result and its input coefficients.  The
-lower-degree and `completeRadical` cases have factorization proofs.  The
-Lazard case currently has pointwise root soundness but not the stronger
-multiplicity-preserving factorization theorem, so this remains its formal
-product. -/
+/-- Product represented by a result and its input coefficients.  Every
+constructor that returns a finite vector has an exact factorization proof. -/
 def productValue {c : Coefficients} : Result c → ℂ → ℂ
   | .lowerDegree _, x =>
       (GaussianPolynomialSolver.solve c.toQuartic).productValue x
-  | .lazardCandidates roots _, x =>
-      GaussianRat.toComplex c.a5 * ∏ k : Fin 5, (x - (roots k).value)
+  | .lazardCandidates solution, x =>
+      GaussianRat.toComplex c.a5 *
+        ∏ k : Fin 5, (x - (solution.roots k).value)
   | .completeRadical solution, x =>
       GaussianRat.toComplex c.a5 *
         ∏ k : Fin 5, (x - (solution.roots k).value)
@@ -295,6 +367,12 @@ def productValue {c : Coefficients} : Result c → ℂ → ℂ
 theorem productValue_completeRadical {c : Coefficients}
     (solution : CompleteRadicalSolution c) (x : ℂ) :
     (Result.completeRadical solution).productValue x = c.eval x := by
+  exact (solution.factorization x).symm
+
+/-- The Lazard constructor retains its exact factorization proof. -/
+theorem productValue_lazardCandidates {c : Coefficients}
+    (solution : CompleteRadicalSolution c) (x : ℂ) :
+    (Result.lazardCandidates solution).productValue x = c.eval x := by
   exact (solution.factorization x).symm
 
 /-- Pointwise soundness of all expressions represented by a result. -/
@@ -311,9 +389,9 @@ theorem allReturnedRootsSatisfy {c : Coefficients} (result : Result c) :
       rw [c.eval_eq_toQuartic_eval_of_a5_eq_zero h5]
       exact
         (GaussianPolynomialSolver.eval_eq_zero_iff_contains c.toQuartic x).mpr hx
-  | lazardCandidates roots sound =>
+  | lazardCandidates solution =>
       rintro x ⟨k, rfl⟩
-      exact sound k
+      exact solution.eval_root k
   | completeRadical solution =>
       rintro x ⟨k, rfl⟩
       exact solution.eval_root k
@@ -340,7 +418,7 @@ def lazardBackend : Backend := by
   classical
   exact if hLazard : Nonempty (LazardWitness c) then
     let w := Classical.choice hLazard
-    .lazardCandidates w.roots (w.eval_root h5)
+    .lazardCandidates (w.completeRadicalSolution h5)
   else if hSolution : Nonempty (CompleteRadicalSolution c) then
     .completeRadical (Classical.choice hSolution)
   else
