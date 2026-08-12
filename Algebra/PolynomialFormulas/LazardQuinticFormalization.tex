@@ -982,14 +982,15 @@ Vieta, factorization, or correctness certificate is accepted from the caller.
 \lean{LazardWitness} & invariant, radical, and Fourier evidence & Conditional proof-carrying invocation; Vieta relations and factorization are derived rather than stored as witness fields.\\
 \lean{LazardWitness.factorization} & exact product for formula outputs & Multiplicity-preserving specialization of the generic Vieta theorem.\\
 \lean{rootFourierNumeratorRelations}, root reconstruction modules & root-defined $P_{ij}$ and Fourier sums & Derive the formula relations from an actual ordered root tuple rather than accepting them from a caller.\\
-\lean{rootCoherentAlternate_radical_contains_and_reconstructs} & denominator-safe alternate projection & Four coherent recoveries, four fifth adjunctions, and exact inverse-Fourier reconstruction; source-level pending public audit.\\
-\lean{rootCoherentAlternateFourierCertificate_eval_eq_zero_iff} & alternate-output correctness & Root-derived Vieta data, exact factorization, pointwise soundness, and exhaustion with no $E\ne0$ premise; source-level pending public audit.\\
-\lean{exists_general_commonCompositum_coherentAlternate_completeRootVector} & corrected general rational wrapper & Translates the common-compositum alternate outputs to an arbitrary nondegenerate irreducible rational quintic and returns radical membership, injectivity, exact factorization, and root-set equivalence; source-level pending public audit.\\
+\lean{rootCoherentAlternate_radical_contains_and_reconstructs} & denominator-safe alternate projection & Four coherent recoveries, four fifth adjunctions, and exact inverse-Fourier reconstruction; focused Lean compilation is green, with the public closure still gated by the Dummit rebuild.\\
+\lean{rootCoherentAlternateFourierCertificate_eval_eq_zero_iff} & alternate-output correctness & Root-derived Vieta data, exact factorization, pointwise soundness, and exhaustion with no $E\ne0$ premise; focused Lean compilation is green, with the public closure still gated by the Dummit rebuild.\\
+\lean{exists_general_commonCompositum_coherentAlternate_completeRootVector} & corrected general rational wrapper & Translates the common-compositum alternate outputs to an arbitrary nondegenerate irreducible rational quintic and returns radical membership, injectivity, exact factorization, and root-set equivalence; the focused endpoint compiles, while its transitive Dummit assumptions remain cache-gated.\\
 \lean{CompleteRadicalSolution} & five radical expressions plus product identity & Classical fallback certificate for genuine quintics.\\
 \lean{Result.rootVector?} & optional finite output vector & Uniform view of delegated, Lazard, and fallback results.\\
 \lean{solve_hasRootVector_iff_completelySolvableByRadicals} & semantic existence equivalence & For nonzero Gaussian-rational inputs; classical and noncomputable.\\
 \lean{solve_eval_eq_zero_iff_returnedVector_contains} & exact root membership & Soundness and exhaustiveness of every returned vector.\\
 \lean{cyclicLazard_theoremThree_counterexample}; Coq \lean{lazard_theorem3_no_isomorphic_subextension_counterexample} & printed Theorem~3 & Source-level unconditional cyclic-quintic counterexample: the polynomial is monic and irreducible, the literal radical competitor contains every root (the Coq package also exposes its exact linear-factor product), the actual formula field and competitor contain the same selected root, and the radical formula field has degree $20$ but admits no rational algebra embedding into the degree-$10$ competitor.  Both provers also negate the literal existence of an isomorphic radical subextension; all endpoints are registered for the complete public audit build.\\
+\lean{cyclicQuintic_realizes_fixed_displayed_subgroup_failure} & printed Theorem~1 fixed-copy converse & Committed Lean polynomial realization of the relabelling counterexample: an actual cyclic quintic with an exact ordered root presentation and intrinsic Galois action whose resolvent root fixes a conjugate of $F_{20}$ but not the displayed copy.  The source compiles; final polynomial endpoints await the fresh Dummit closure because the cached wrapper still exposes four legacy constants.\\
 \lean{lazard_theorem4_counterexample}; Coq \lean{lazard_theorem4_counterexample} & printed Theorem~4 & Source-level unconditional irreducible cyclic-quintic/all-roots counterexample: a literal Definition~1 radical extension contains every root but not the primitive fifth root, refuting the printed leastness claim.  Coq extracts the proved factor list, proves the universal property of its all-root splitting field, adjoins the displayed primitive fifth root, and proves that exact generated field is not least; it also retains the stronger uniform leastness refutation.  All endpoints are registered for the complete public audit build.\\
 \lean{exists_solvable_F20_commonCompositum_exact_paper_count}; Coq \lean{exists_lazard_actual_F20_kummer_common_compositum_compressed} & corrected degree/radical-count part of Theorem~4 & From only irreducibility, degree five, and solvability of the actual Galois group, the source-level endpoints derive the $F_{20}$ subgroup tower and explicitly return $|\operatorname{Gal}|=5\cdot2^{e_{\Q}}$ with its normal order-five subgroup.  They construct a primitive fifth root in the product splitting field, prove and return its primitivity and containment in the exact two-square field $\Q(\omega)$, distinguish the compressed exponent $e_\omega\le e_{\Q}$, identify the top field with the embedded quintic splitting field joined with $\Q(\omega)$, and prove radicality, degree $5\cdot2^{2+e_\omega}$, relative Galois order $5\cdot2^{e_\omega}$, and an exact $2+e_\omega$ square/one-fifth presentation.  Coq derives the formerly explicit nonzero-polynomial premise from the quintic-size hypothesis.  Kernel checking of these expanded endpoints remains pending.\\
 \lean{FormulaSound}, \lean{RationalFormulaSound} & raw pointwise claim & Over-strong retained propositions; not theorems.\\
@@ -1116,6 +1117,12 @@ The principal \emph{committed and freshly checked} results at the pause are:
   There is no \lean{native_decide}, admission, unsafe implementation, or
   external proof oracle in this graph.  This completes one frontier node, not
   the full coefficient table.
+\item The denominator-safe alternate root-recovery layer and its general
+  rational wrapper now compile as focused Lean modules.  They recover all
+  four nonzero Fourier modes without dividing by $E$, and the general endpoint
+  returns radical membership, injectivity, exact factorization, and root-set
+  equivalence.  Their final specialized endpoints remain cache-gated by the
+  stale top Dummit artifact.
 \end{enumerate}
 
 The following substantial pieces are \emph{source or local-build
@@ -1144,9 +1151,10 @@ checkpoints}, not yet a single clean public theorem graph:
   displayed numerators, and feeds them to inverse Fourier reconstruction.
   The denominator-safe alternate construction coherently recovers all four
   nonzero Fourier modes without dividing by $E$.  Focused root files and the
-  explicit $E=0$ Gaussian-integer example have elaborated locally, but they
-  were checked against the stale top Dummit artifact and therefore require a
-  fresh transitive rebuild before being promoted here.
+  explicit $E=0$ Gaussian-integer example have elaborated locally, but their
+  final specialized endpoints were checked against the stale top Dummit
+  artifact and therefore require a fresh transitive rebuild before being
+  promoted here.
 \item The Section~7 aggregate packages pointwise soundness, exact
   factorization, and exhaustion from its root-origin data.  Its own source
   elaborates, but its present cached assumption report inherits the four stale
@@ -1163,10 +1171,11 @@ checkpoints}, not yet a single clean public theorem graph:
   is $17$ independent quotient classes, not a proof that the quotient has
   exact dimension $17$.  The corrected nonmodular theorem uses invertibility
   of the group order as a sufficient Reynolds-averaging hypothesis.
-\item The polynomial-realized fixed-subgroup counterexample is written, but
-  its exact-root and scalar-resolvent dependencies run through the unfinished
-  Dummit closure.  It must not be advertised merely on the strength of an old
-  cached artifact.
+\item The polynomial-realized fixed-subgroup counterexample is now committed
+  and its source compiles directly.  Its finite group certificate has only
+  standard logical assumptions; the exact-root and scalar-resolvent terminal
+  assumptions still run through the unfinished Dummit closure, so it is not
+  yet advertised as a clean public theorem.
 \item Rocq/Coq contains many parallel proofs and bounded-certificate drafts.
   That work has been checkpointed separately and is explicitly postponed;
   this paused status and the restart plan below concern Lean first.
