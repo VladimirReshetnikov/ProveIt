@@ -28,10 +28,12 @@ From BoundedPAConsistency Require Import
   RawModelCompleteness
   RawCodedSyntaxConstructors
   RawCodedFixedLevelTruth
-  RawCodedFixedLevelTruthTraversal
-  RawCodedFixedLevelTruthTotality
-  RawCodedFixedLevelTruthAdmissibleCoherence
-  RawCodedDynamicTruthNativeCrossLevelPositiveGraph.
+    RawCodedFixedLevelTruthTraversal
+    RawCodedFixedLevelTruthTotality
+    RawCodedFixedLevelTruthCoherence
+    RawCodedFixedLevelTruthAdmissibleCoherence
+    RawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph
+    RawCodedDynamicTruthNativeCrossLevelPositiveGraph.
 
 Module PABoundedRawCodedDynamicTruthNativeCrossLevelStandardProofBridge.
 
@@ -46,7 +48,9 @@ Import PABoundedRawCodedSyntaxConstructors.
 Import PABoundedRawCodedFixedLevelTruth.
 Import PABoundedRawCodedFixedLevelTruthTraversal.
 Import PABoundedRawCodedFixedLevelTruthTotality.
+Import PABoundedRawCodedFixedLevelTruthCoherence.
 Import PABoundedRawCodedFixedLevelTruthAdmissibleCoherence.
+Import PABoundedRawCodedDynamicTruthPairedGlobalFormulaCodeOrbitGraph.
 Import PABoundedRawCodedDynamicTruthNativeCrossLevelPositiveGraph.
 
 (** The carrier value obtained by instantiating the native field polynomial
@@ -76,6 +80,23 @@ Definition rawDynamicTruthNativeCrossLevelStandardFieldCode
 
 Arguments rawDynamicTruthNativeCrossLevelStandardFieldCode M predecessor
   : clear implicits.
+
+(** The named carrier code is not merely semantically related to the fixed
+    source: PA proves the exact code equality.  Keeping this rewrite as a
+    theorem makes standard-trace adapters independent of the large six-field
+    expression above. *)
+Theorem
+    raw_dynamicTruthNativeCrossLevelStandardFieldCode_eq_quoted_fixedLevel_coherence
+    : forall (M : RawPAModel), RawPASatisfies M -> forall predecessor,
+  rawDynamicTruthNativeCrossLevelStandardFieldCode M predecessor =
+  rawQuotedFormulaCode M
+    (fixedLevelAdmissibleTruthCertificateCoherenceFormula (S predecessor)).
+Proof.
+  intros M hPA predecessor.
+  unfold rawDynamicTruthNativeCrossLevelStandardFieldCode.
+  exact (rawDynamicTruthNativeCrossLevelCoherenceFieldCode_quoted_successor_levels
+    M hPA predecessor).
+Qed.
 
 (** A proof-producing standard-level package.  This is a Prop-valued
     compiler, not a function selecting a unique certificate; the raw PA
@@ -136,6 +157,43 @@ Proof.
   subst fieldCode.
   exact (raw_dynamicTruthNativeCrossLevelStandardFieldProofCompiler_of_PA
     M hPA predecessor).
+Qed.
+
+(** Exact standard-indexed counterpart of the open native compiler seam.
+    The orbit and transform hypotheses are retained in the interface so a
+    caller can pass this compiler to the same dependency-ordered shell used
+    for arbitrary carrier predecessors.  The canonical-output equality is
+    explicit: semantic graph satisfaction alone does not identify an output
+    with the standard fixed-level code. *)
+Definition
+    RawDynamicTruthNativeCrossLevelStandardCoherenceProofCompiler
+    (M : RawPAModel) : Prop :=
+  forall (tail : nat -> M) predecessor
+      currentGlobalSigma currentGlobalPi fieldCode,
+    RawDynamicTruthPairedGlobalFormulaCodeAdequateOrbitAt M tail
+      (raw_succ M (rawNumeralValue M predecessor))
+      currentGlobalSigma currentGlobalPi ->
+    RawDynamicTruthNativeCrossLevelFieldTransformAt M
+      currentGlobalSigma currentGlobalPi
+      (rawNumeralValue M predecessor) fieldCode ->
+    RawDynamicTruthNativeCrossLevelStandardCanonicalOutputAt
+      M predecessor fieldCode ->
+    exists certificate : M,
+      RawCodedPAProofOf M fieldCode certificate.
+
+Arguments RawDynamicTruthNativeCrossLevelStandardCoherenceProofCompiler M
+  : clear implicits.
+
+Theorem
+    raw_dynamicTruthNativeCrossLevelStandardCoherenceProofCompiler_of_PA :
+  forall (M : RawPAModel), RawPASatisfies M ->
+  RawDynamicTruthNativeCrossLevelStandardCoherenceProofCompiler M.
+Proof.
+  intros M hPA tail predecessor currentGlobalSigma currentGlobalPi fieldCode
+    _horbit _htransform hcanonical.
+  exact
+    (raw_dynamicTruthNativeCrossLevelStandardCanonicalOutputProofCompiler_of_PA
+      M hPA predecessor fieldCode hcanonical).
 Qed.
 
 (** The full transform trace can be retained alongside the canonical-output
