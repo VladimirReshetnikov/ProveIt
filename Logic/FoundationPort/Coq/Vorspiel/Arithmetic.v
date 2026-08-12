@@ -49,6 +49,32 @@ Definition nat_truth_pos (n : nat) : nat := nat_truth_lt 0 n.
 Definition nat_truth_and (n m : nat) : nat := nat_truth_lt 0 (n * m).
 Definition nat_truth_or (n m : nat) : nat := nat_truth_lt 0 (n + m).
 
+(** Conditional normal forms for the arithmetic truth connectives.  Nested
+    decisions avoid packaging conjunction and disjunction decisions and are
+    computationally equivalent to the source's proposition-valued [if]. *)
+Lemma nat_truth_and_eq : forall n m,
+  nat_truth_and n m =
+  if lt_dec 0 n then if lt_dec 0 m then 1 else 0 else 0.
+Proof.
+  intros n m. unfold nat_truth_and, nat_truth_lt.
+  repeat destruct lt_dec; nia.
+Qed.
+
+Lemma nat_truth_and_eq_one_iff : forall n m,
+  nat_truth_and n m = 1 <-> 0 < n /\ 0 < m.
+Proof.
+  intros n m. rewrite nat_truth_and_eq.
+  repeat destruct lt_dec; lia.
+Qed.
+
+Lemma nat_truth_or_eq : forall n m,
+  nat_truth_or n m =
+  if lt_dec 0 n then 1 else if lt_dec 0 m then 1 else 0.
+Proof.
+  intros n m. unfold nat_truth_or, nat_truth_lt.
+  repeat destruct lt_dec; lia.
+Qed.
+
 Lemma nat_truth_inv_zero : nat_truth_inv 0 = 1.
 Proof. reflexivity. Qed.
 
@@ -842,6 +868,104 @@ Proof.
   intro j. apply arith_part1_proj.
 Qed.
 
+(** Bind a partial argument into a partial arithmetic computation.  This is
+    the source [ArithPart1.bind], generalized to make the retained parameter
+    vector explicit. *)
+Theorem arith_part1_bind : forall n
+    (f : (Fin.t n -> nat) -> nat -> partial_value nat)
+    (g : arith_partial_function n),
+  arith_part1 (S n)
+    (fun w => f (matrix_vec_tail w) (matrix_vec_head w)) ->
+  arith_part1 n g ->
+  arith_part1 n (fun v => partial_bind (g v) (f v)).
+Proof.
+  intros n f g Hf Hg.
+  eapply arith_part1_ext with
+    (f := arith_partial_comp
+      (fun w => f (matrix_vec_tail w) (matrix_vec_head w))
+      (arith_partial_cons g)).
+  - apply arith_part1_comp.
+    + exact Hf.
+    + now apply arith_part1_partial_cons.
+  - intros v x. unfold arith_partial_comp, partial_bind. simpl.
+    split.
+    + intros [w [Hw Hx]]. exists (matrix_vec_head w). split.
+      * exact (Hw Fin.F1).
+      * assert (Htail : matrix_vec_tail w = v).
+        { apply functional_extensionality. intro i.
+          exact (Hw (Fin.FS i)). }
+        now rewrite Htail in Hx.
+    + intros [a [Ha Hfa]]. exists (matrix_vec_cons a v). split.
+      * intro i. unfold arith_partial_cons.
+        refine (@Fin.caseS' n i
+          (fun j => partial_member
+            (@Fin.caseS' n j (fun _ => arith_partial_function n)
+              g (fun k u => partial_some (u k)) v)
+            (matrix_vec_cons a v j)) Ha _).
+        intro j. apply matrix_vec_cons_succ.
+      * exact Hfa.
+Qed.
+
+(** Compose a partial result with any finite family of total arithmetic
+    arguments.  Unary and binary source helpers are short specializations. *)
+Theorem arith_part1_comp_total : forall m n
+    (f : arith_partial_function n)
+    (g : Fin.t n -> (Fin.t m -> nat) -> nat),
+  arith_part1 n f ->
+  (forall i, arithmetic1 (g i)) ->
+  arith_part1 m (fun v => f (fun i => g i v)).
+Proof.
+  intros m n f g Hf Hg.
+  eapply arith_part1_ext with
+    (f := arith_partial_comp f
+      (fun i v => partial_some (g i v))).
+  - apply arith_part1_comp.
+    + exact Hf.
+    + exact Hg.
+  - intros v x. unfold arith_partial_comp, partial_bind. simpl.
+    split.
+    + intros [w [Hw Hx]].
+      assert (Heq : w = fun i => g i v).
+      { apply functional_extensionality. intro i. exact (Hw i). }
+      now rewrite Heq in Hx.
+    + intro Hx. exists (fun i => g i v). split.
+      * intro i. reflexivity.
+      * exact Hx.
+Qed.
+
+Theorem arith_part1_comp1_total : forall n
+    (f : nat -> partial_value nat)
+    (g : (Fin.t n -> nat) -> nat),
+  arith_part1 1 (fun v => f (v Fin.F1)) ->
+  arithmetic1 g ->
+  arith_part1 n (fun v => f (g v)).
+Proof.
+  intros n f g Hf Hg.
+  eapply arith_part1_comp_total with
+    (f := fun w => f (w Fin.F1)) (g := fun _ => g).
+  - exact Hf.
+  - intro. exact Hg.
+Qed.
+
+Theorem arith_part1_comp2_total : forall n
+    (f : nat -> nat -> partial_value nat)
+    (g h : (Fin.t n -> nat) -> nat),
+  arith_part1 2 (fun v => f (v Fin.F1) (v (Fin.FS Fin.F1))) ->
+  arithmetic1 g -> arithmetic1 h ->
+  arith_part1 n (fun v => f (g v) (h v)).
+Proof.
+  intros n f g h Hf Hg Hh.
+  eapply arith_part1_comp_total with
+    (f := fun w => f (w Fin.F1) (w (Fin.FS Fin.F1)))
+    (g := fun i => @Fin.caseS' 1 i
+      (fun _ => (Fin.t n -> nat) -> nat) g (fun _ => h)).
+  - exact Hf.
+  - intro i. refine (@Fin.caseS' 1 i
+      (fun j => arithmetic1 (@Fin.caseS' 1 j
+        (fun _ => (Fin.t n -> nat) -> nat) g (fun _ => h))) Hg _).
+    intro j. exact Hh.
+Qed.
+
 Theorem arith_part1_map_total : forall n
     (f : (Fin.t n -> nat) -> nat -> nat)
     (g : arith_partial_function n),
@@ -851,34 +975,187 @@ Theorem arith_part1_map_total : forall n
   arith_part1 n
     (fun v => partial_map (fun x => f v x) (g v)).
 Proof.
-  intros n f g Hf Hg.
-  eapply arith_part1_ext with
-    (f := arith_partial_comp
-      (fun w => partial_some (f (matrix_vec_tail w) (matrix_vec_head w)))
-      (arith_partial_cons g)).
-  - apply arith_part1_comp.
-    + exact Hf.
-    + now apply arith_part1_partial_cons.
-  - intros v x. rewrite partial_map_member_iff.
-    unfold arith_partial_comp, partial_bind. simpl.
-    split.
-    + intros [w [Hw Hx]].
-      exists (matrix_vec_head w). split.
-      * exact (Hw Fin.F1).
-      * assert (Htail : matrix_vec_tail w = v).
-        { apply functional_extensionality. intro i.
-          exact (Hw (Fin.FS i)). }
-        now rewrite Htail in Hx.
-    + intros [a [Ha Hfa]].
-      exists (matrix_vec_cons a v). split.
-      * intro i. unfold arith_partial_cons.
-        refine (@Fin.caseS' n i
-          (fun j => partial_member
-            (@Fin.caseS' n j (fun _ => arith_partial_function n)
-              g (fun k u => partial_some (u k)) v)
-            (matrix_vec_cons a v j)) Ha _).
-        intro j. apply matrix_vec_cons_succ.
-      * change (x = f v a). now symmetry.
+  intros n f g Hf Hg. unfold partial_map.
+  now apply arith_part1_bind.
+Qed.
+
+(** Curried least-search adapters corresponding to the source [rfind'] and
+    [rfindPos] helpers. *)
+Definition arith_find_curried_on {n}
+    (f : nat -> (Fin.t n -> nat) -> nat)
+    (v : Fin.t n -> nat) : partial_value nat :=
+  partial_find_zero (fun k => f k v).
+
+Theorem arith_part1_find_curried : forall n
+    (f : nat -> (Fin.t n -> nat) -> nat),
+  arithmetic1
+    (fun w => f (matrix_vec_head w) (matrix_vec_tail w)) ->
+  arith_part1 n (arith_find_curried_on f).
+Proof.
+  intros n f Hf. change (arith_part1 n
+    (arith_find_on (fun w => f (matrix_vec_head w) (matrix_vec_tail w)))).
+  now apply arith_part1_find.
+Qed.
+
+Definition arith_find_curried1_on {n} (i : Fin.t n)
+    (f : nat -> nat -> nat) (v : Fin.t n -> nat) : partial_value nat :=
+  arith_find_curried_on (fun k _ => f k (v i)) v.
+
+Theorem arith_part1_find_curried1 : forall n (i : Fin.t n)
+    (f : nat -> nat -> nat),
+  arithmetic1_binary f ->
+  arith_part1 n (arith_find_curried1_on i f).
+Proof.
+  intros n i f Hf. unfold arith_find_curried1_on.
+  apply arith_part1_find_curried.
+  eapply arithmetic1_comp2 with (f := f).
+  - exact Hf.
+  - apply arith_part1_proj.
+  - apply arith_part1_proj.
+Qed.
+
+Definition arith_find_positive_curried_on {n}
+    (f : nat -> (Fin.t n -> nat) -> nat)
+    (v : Fin.t n -> nat) : partial_value nat :=
+  partial_find_zero (fun k => nat_truth_inv (f k v)).
+
+Theorem arith_part1_find_positive_curried : forall n
+    (f : nat -> (Fin.t n -> nat) -> nat),
+  arithmetic1
+    (fun w => f (matrix_vec_head w) (matrix_vec_tail w)) ->
+  arith_part1 n (arith_find_positive_curried_on f).
+Proof.
+  intros n f Hf. change (arith_part1 n
+    (arith_find_positive_on
+      (fun w => f (matrix_vec_head w) (matrix_vec_tail w)))).
+  now apply arith_part1_find_positive.
+Qed.
+
+Definition arith_find_positive_curried1_on {n} (i : Fin.t n)
+    (f : nat -> nat -> nat) (v : Fin.t n -> nat) : partial_value nat :=
+  arith_find_positive_curried_on (fun k _ => f k (v i)) v.
+
+Theorem arith_part1_find_positive_curried1 : forall n (i : Fin.t n)
+    (f : nat -> nat -> nat),
+  arithmetic1_binary f ->
+  arith_part1 n (arith_find_positive_curried1_on i f).
+Proof.
+  intros n i f Hf. unfold arith_find_positive_curried1_on.
+  apply arith_part1_find_positive_curried.
+  eapply arithmetic1_comp2 with (f := f).
+  - exact Hf.
+  - apply arith_part1_proj.
+  - apply arith_part1_proj.
+Qed.
+
+(** Substitution that increments only the leading argument.  Factoring this
+    vector transformation keeps the interval-search proof independent of
+    arity-specific bookkeeping. *)
+Theorem arithmetic1_increment_head : forall n
+    (f : (Fin.t (S n) -> nat) -> nat),
+  arithmetic1 f ->
+  arithmetic1 (fun v => f
+    (matrix_vec_cons (S (matrix_vec_head v)) (matrix_vec_tail v))).
+Proof.
+  intros n f Hf.
+  eapply arithmetic1_comp with
+    (g := fun i v => matrix_vec_cons
+      (S (matrix_vec_head v)) (matrix_vec_tail v) i).
+  - exact Hf.
+  - intro i. refine (@Fin.caseS' n i
+      (fun j => arithmetic1
+        (fun v => matrix_vec_cons
+          (S (matrix_vec_head v)) (matrix_vec_tail v) j)) _ _).
+    + apply arithmetic1_comp1; [exact arithmetic1_succ |].
+      apply arithmetic1_proj.
+    + intro j. apply arithmetic1_proj.
+Qed.
+
+Definition nat_interval_test {n} (i : Fin.t n)
+    (f : (Fin.t n -> nat) -> nat -> nat)
+    (v : Fin.t n -> nat) (k : nat) : nat :=
+  nat_truth_and
+    (nat_truth_le (f v k) (v i))
+    (nat_truth_lt (v i) (f v (S k))).
+
+Lemma nat_interval_test_positive_iff : forall n (i : Fin.t n) f v k,
+  0 < nat_interval_test i f v k <->
+  f v k <= v i /\ v i < f v (S k).
+Proof.
+  intros n i f v k. unfold nat_interval_test.
+  rewrite nat_truth_and_positive_iff, nat_truth_le_positive_iff,
+    nat_truth_lt_positive_iff. reflexivity.
+Qed.
+
+Definition arith_interval_find_on {n} (i : Fin.t n)
+    (f : (Fin.t n -> nat) -> nat -> nat)
+    (v : Fin.t n -> nat) : partial_value nat :=
+  partial_find_zero (fun k => nat_truth_inv (nat_interval_test i f v k)).
+
+Lemma arith_interval_find_on_member_iff : forall n (i : Fin.t n) f v k,
+  partial_member (arith_interval_find_on i f v) k <->
+  (f v k <= v i /\ v i < f v (S k)) /\
+  forall m, m < k -> ~ (f v m <= v i /\ v i < f v (S m)).
+Proof.
+  intros n i f v k. unfold arith_interval_find_on.
+  rewrite partial_find_zero_member_iff. split.
+  - intros [Hk Hleast]. split.
+    + apply nat_interval_test_positive_iff.
+      now apply nat_truth_inv_eq_zero_iff in Hk.
+    + intros m Hm Hint. apply (Hleast m Hm).
+      apply nat_truth_inv_eq_zero_iff.
+      now apply nat_interval_test_positive_iff.
+  - intros [Hk Hleast]. split.
+    + apply nat_truth_inv_eq_zero_iff.
+      now apply nat_interval_test_positive_iff.
+    + intros m Hm Hinv. apply (Hleast m Hm).
+      apply nat_interval_test_positive_iff.
+      now apply nat_truth_inv_eq_zero_iff in Hinv.
+Qed.
+
+Theorem arith_part1_interval_find : forall n (i : Fin.t n)
+    (f : (Fin.t n -> nat) -> nat -> nat),
+  arithmetic1
+    (fun w => f (matrix_vec_tail w) (matrix_vec_head w)) ->
+  arith_part1 n (arith_interval_find_on i f).
+Proof.
+  intros n i f Hf.
+  assert (Hsucc : arithmetic1
+      (fun w => f (matrix_vec_tail w) (S (matrix_vec_head w)))).
+  { pose proof (@arithmetic1_increment_head n
+      (fun w => f (matrix_vec_tail w) (matrix_vec_head w)) Hf) as H.
+    exact H. }
+  assert (Htest : arithmetic1
+      (fun w => nat_interval_test i f
+        (matrix_vec_tail w) (matrix_vec_head w))).
+  { unfold nat_interval_test.
+    eapply arithmetic1_comp2 with (f := nat_truth_and).
+    - exact arithmetic1_and.
+    - eapply arithmetic1_comp2 with (f := nat_truth_le).
+      + exact arithmetic1_le.
+      + exact Hf.
+      + apply arithmetic1_proj.
+    - eapply arithmetic1_comp2 with (f := nat_truth_lt).
+      + unfold arithmetic1_binary. apply arithmetic1_lt.
+      + apply arithmetic1_proj.
+      + exact Hsucc. }
+  change (arith_part1 n (arith_find_positive_on
+    (fun w => nat_interval_test i f
+      (matrix_vec_tail w) (matrix_vec_head w)))).
+  now apply arith_part1_find_positive.
+Qed.
+
+(** The unary inverse-search source theorem is the parameter-independent
+    specialization of the generalized interval search. *)
+Corollary arith_part1_inverse_find : forall n (i : Fin.t n)
+    (f : nat -> nat),
+  arithmetic1_unary f ->
+  arith_part1 n (arith_interval_find_on i (fun _ k => f k)).
+Proof.
+  intros n i f Hf. apply arith_part1_interval_find.
+  eapply arithmetic1_comp1 with (f := f).
+  - exact Hf.
+  - apply arithmetic1_proj.
 Qed.
 
 Lemma nat_least_decidable_bound : forall (P : nat -> Prop),

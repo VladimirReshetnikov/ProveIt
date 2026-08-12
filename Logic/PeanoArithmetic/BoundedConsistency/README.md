@@ -5433,3 +5433,45 @@ graph witnesses, and the carrier-valued level equation are eliminated by one
 adapter before proof construction begins.  The other seven coordinates remain
 the permuted-append strong-step resources, the reduced staged remainder, and
 five linked staged implication compilers.
+
+The ordinary derivation-soundness branch has since been tightened through
+the exact recursive equality-elimination case.  Its equality and motive
+children are compiled from their opened semantic interfaces, synchronized
+with the already compiled Or- and existential-elimination children, and then
+threaded through the post-And-I continuation.  The resulting V2 endpoint no
+longer treats the Eq-E child pair as a residual premise; its caller-facing
+rule resources are the thirteen literal append rows plus the remaining
+Assumption/Or-I-left/Imp/Bottom frontiers, with Assumption, Or-I-left, and
+Bottom discharged by the native closure, empty-tail dynamic law, and aligned
+structural package respectively.
+
+`RawCodedDynamicTruthNativeFinalV2CarriedTraceProofCompilation.v` now connects
+that exact V2 dispatcher to the public sixth staged callback.  At each final
+graph trace, an explicit resource record chooses the basic and extended
+direct translations, proves the two code equalities relating them, supplies
+the V2 rule bundle and strong-prefix closure remainder, and carries the
+consistency implication.  The checked adapter turns precisely this record
+into `RawDynamicTruthNativeFinalStagedTraceProofCompiler`; it performs no
+model-truth-to-proof conversion.  A dependency-ordered conditional headline
+therefore exposes the current final-coordinate boundary at the actual compact
+object-language target.  Coq remains conditional until this arbitrary-model
+resource compiler and the other non-final callback coordinates are closed.
+
+The rank-zero residual is now factored at its model-global source-selection
+boundary.  An unconditional evidence-identification theorem chooses one
+selector-bearing direct input package for each raw PA model; the remaining
+zero obligation is exactly the six guarded fixed-production-or-refutation
+compilers for that package.  This selected source supplies every normalized
+zero invocation without asserting the known-false bare canonical application
+theorem.  Componentwise adapters install it in the retained-prefix guarded
+dependency bundle while leaving all later coordinates unchanged.
+
+The cross-level coordinate has likewise been weakened to its real callback
+domain.  Its new compiler receives only the graph-linked current six-field
+package and the actual graph-linked next-local proof, then chooses one
+adequate paired orbit/transform and returns the corresponding represented PA
+proof.  It no longer has to compile every arbitrary tuple of seven unrelated
+local roots.  A one-way adapter from the historical implication compiler and
+a direct dependency-ordered compact headline formally expose this premise
+reduction; an unconditional arbitrary-carrier cross-level construction is
+still outstanding.

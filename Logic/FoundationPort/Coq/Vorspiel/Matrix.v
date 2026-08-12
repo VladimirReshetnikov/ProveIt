@@ -168,20 +168,57 @@ Proof.
   - intros [a [tail H]]. now exists (matrix_vec_cons a tail).
 Qed.
 
-Fixpoint matrix_vec_option_sequence {n} {A : Fin.t n -> Type} :
-    (forall i, option (A i)) -> option (forall i, A i) :=
+(* Foundation states vector sequencing for an arbitrary lawful monad.  The
+   construction actually uses only [pure], applicative application, and the
+   pure-application law.  Keeping precisely that weaker interface makes the
+   reusable dependency explicit and admits effects that need not expose a
+   monadic bind. *)
+Fixpoint matrix_vec_applicative_sequence
+    (M : Type -> Type)
+    (pure : forall X : Type, X -> M X)
+    (ap : forall X Y : Type, M (X -> Y) -> M X -> M Y)
+    {n} {A : Fin.t n -> Type}
+    (v : forall i, M (A i)) : M (forall i, A i) :=
   match n as k return
-    forall A : Fin.t k -> Type,
-      (forall i, option (A i)) -> option (forall i, A i) with
-  | 0 => fun A _ => Some (@dvec_empty A)
+      forall A : Fin.t k -> Type,
+        (forall i, M (A i)) -> M (forall i, A i) with
+  | 0 => fun A _ => pure _ (@dvec_empty A)
   | S k => fun A v =>
-      match v Fin.F1,
-        @matrix_vec_option_sequence k (fun i => A (Fin.FS i))
-          (fun i => v (Fin.FS i)) with
-      | Some head, Some tail => Some (dvec_cons head tail)
-      | _, _ => None
-      end
-  end A.
+      ap _ _
+        (ap _ _ (pure _ (@dvec_cons k A)) (v Fin.F1))
+        (@matrix_vec_applicative_sequence M pure ap k
+          (fun i => A (Fin.FS i)) (fun i => v (Fin.FS i)))
+  end A v.
+
+Theorem matrix_vec_applicative_sequence_pure : forall
+    (M : Type -> Type)
+    (pure : forall X : Type, X -> M X)
+    (ap : forall X Y : Type, M (X -> Y) -> M X -> M Y),
+  (forall X Y (f : X -> Y) (x : X),
+    ap X Y (pure (X -> Y) f) (pure X x) = pure Y (f x)) ->
+  forall n (A : Fin.t n -> Type) (v : forall i, A i),
+    @matrix_vec_applicative_sequence M pure ap n A
+      (fun i => pure _ (v i)) = pure _ v.
+Proof.
+  intros M pure ap Hap n. induction n as [|n IH]; intros A v.
+  - cbn [matrix_vec_applicative_sequence]. f_equal.
+    apply functional_extensionality_dep. intro i. inversion i.
+  - cbn [matrix_vec_applicative_sequence].
+    rewrite Hap, IH, Hap. f_equal. symmetry. apply dvec_eta.
+Qed.
+
+Definition matrix_option_ap {A B}
+    (mf : option (A -> B)) (mx : option A) : option B :=
+  match mf, mx with
+  | Some f, Some x => Some (f x)
+  | _, _ => None
+  end.
+
+Definition matrix_vec_option_sequence {n} {A : Fin.t n -> Type} :
+    (forall i, option (A i)) -> option (forall i, A i) :=
+  @matrix_vec_applicative_sequence option
+    (fun X x => @Some X x)
+    (fun X Y => @matrix_option_ap X Y) n A.
 
 Theorem matrix_vec_option_sequence_some : forall n
     (A : Fin.t n -> Type) (v : forall i, option (A i))
@@ -189,13 +226,14 @@ Theorem matrix_vec_option_sequence_some : forall n
   (forall i, v i = Some (w i)) ->
   matrix_vec_option_sequence v = Some w.
 Proof.
-  induction n as [|n IH]; intros A v w H.
-  - cbn [matrix_vec_option_sequence]. f_equal.
-    apply functional_extensionality_dep. intro i. inversion i.
-  - cbn [matrix_vec_option_sequence]. rewrite H.
-    rewrite (IH (fun i => A (Fin.FS i)) (fun i => v (Fin.FS i))
-      (fun i => w (Fin.FS i)) (fun i => H (Fin.FS i))).
-    f_equal. symmetry. apply dvec_eta.
+  intros n A v w H.
+  assert (Hv : v = fun i => Some (w i)).
+  { apply functional_extensionality_dep. exact H. }
+  rewrite Hv. unfold matrix_vec_option_sequence.
+  apply (matrix_vec_applicative_sequence_pure
+    (M := option) (pure := fun X x => @Some X x)
+    (ap := fun X Y => @matrix_option_ap X Y)).
+  intros X Y f x. reflexivity.
 Qed.
 
 Theorem matrix_vec_cons_injective : forall A n (f : Fin.t n -> A) a,
