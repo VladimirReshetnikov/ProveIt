@@ -38,6 +38,13 @@ abbrev LiteralDegreeSevenProductSubspace :
 abbrev LiteralDegreeSevenQuotient :=
   MvPolynomial (Fin 6) F3 ⧸ LiteralDegreeSevenProductSubspace
 
+/-- The printed exclusions `char ≠ 2, 5` hold in characteristic three, while
+the cyclic group order is zero.  Thus those exclusions cannot substitute for
+the group-order invertibility hypothesis required by Reynolds averaging. -/
+theorem printed_exclusions_but_group_order_vanishes :
+    (2 : F3) ≠ 0 ∧ (5 : F3) ≠ 0 ∧ (6 : F3) = 0 := by
+  decide
+
 def coordinateQuotientToLiteralQuotient :
     (DegreeSevenCoordinates ⧸ degreeSevenProductSubspace) →ₗ[F3]
       LiteralDegreeSevenQuotient :=
