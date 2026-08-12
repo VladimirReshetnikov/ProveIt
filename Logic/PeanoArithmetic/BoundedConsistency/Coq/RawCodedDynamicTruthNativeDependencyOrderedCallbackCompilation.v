@@ -1455,6 +1455,36 @@ Definition
     RawDynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
       M hPA.
 
+(** Model-uniform spelling of the retained-prefix predecessor endpoint.  The
+    two [In] hypotheses are intentionally quantified after the caller prefix:
+    they express that the direct strong-step shell assumptions are available
+    at the renamed prefix seen below three newly introduced variables. *)
+Definition
+    RawDynamicTruthNativeDependencyOrderedAssumptionRetainingLogicalZeroGrowingPredecessorRootUnderCallerPrefixInAllModels
+    : Prop :=
+  forall (M : RawPAModel) (hPA : RawPASatisfies M) callerPrefix,
+  RawDynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+    M hPA ->
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    (templateContextShiftMany 3 callerPrefix) ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise
+    (templateContextShiftMany 3 callerPrefix) ->
+  RawDynamicTruthNativeLocalZeroGrowingPredecessorRootCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+
+(** The uniform endpoint is just the model-local adapter applied pointwise;
+    naming it here keeps downstream source compilers from duplicating this
+    quantifier plumbing. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedAssumptionRetainingLogicalZeroGrowingPredecessorRootUnderCallerPrefixInAllModels_of_local
+    : RawDynamicTruthNativeDependencyOrderedAssumptionRetainingLogicalZeroGrowingPredecessorRootUnderCallerPrefixInAllModels.
+Proof.
+  intros M hPA callerPrefix hpackage hrestrictedIn hruleIn.
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedAssumptionRetainingLogicalZeroGrowingPredecessorRootUnderCallerPrefix
+      M hPA callerPrefix hpackage hrestrictedIn hruleIn).
+Qed.
+
 (** All-model compatibility projection corresponding to the model-local
     coordinate deletion above. *)
 Theorem
