@@ -363,6 +363,31 @@ Proof.
       M hPA standardLevel tail IH).
 Qed.
 
+(** A standard-carrier model has no nonstandard level at which the selector
+    could fail.  This theorem is intentionally stated with the carrier
+    generation property as an explicit premise: a PA model may contain
+    nonstandard elements, so external induction alone cannot be promoted to
+    the all-carrier result used by [raw_compactSelectorPackages_all]. *)
+Definition RawCarrierGeneratedByStandardNumerals (M : RawPAModel) : Prop :=
+  forall level : M,
+    exists standardLevel : nat,
+      level = rawNumeralValue M standardLevel.
+
+Arguments RawCarrierGeneratedByStandardNumerals M : clear implicits.
+
+Theorem raw_compactSelectorPackages_all_of_standard_carrier : forall
+    (M : RawPAModel), RawPASatisfies M ->
+  RawCarrierGeneratedByStandardNumerals M ->
+  forall tail level,
+    RawCompactSelectorPackageAt M tail level.
+Proof.
+  intros M hPA hstandard tail level.
+  destruct (hstandard level) as [standardLevel hlevel].
+  subst level.
+  exact (raw_compactSelectorPackages_standard_by_external_induction
+    M hPA tail standardLevel).
+Qed.
+
 Lemma raw_compactSelectorPackage_successor : forall
     (M : RawPAModel), RawRestrictedPAConsistencyProofSuccessor M ->
     forall tail level,
@@ -465,6 +490,30 @@ Proof.
       (raw_sat_compactUniformRestrictedPAConsistencyProvabilityBodyFormula_iff
         M tail)).
     exact (hall tail).
+Qed.
+
+(** The corresponding semantic statement for the sealed object-language
+    sentence follows by opening [sealPA] and applying the carrier theorem at
+    every ambient tail.  It is useful to compare this honest restricted
+    result with [compactUniformRestrictedPAConsistencyProvabilityFormula_raw_valid],
+    whose premise must handle arbitrary (including nonstandard) carriers. *)
+Theorem compactUniformRestrictedPAConsistencyProvabilityFormula_raw_valid_of_standard_carrier
+    : forall (M : RawPAModel), RawPASatisfies M ->
+  RawCarrierGeneratedByStandardNumerals M -> forall e,
+    raw_formula_sat M e
+      compactUniformRestrictedPAConsistencyProvabilityFormula.
+Proof.
+  intros M hPA hstandard e.
+  unfold compactUniformRestrictedPAConsistencyProvabilityFormula.
+  apply raw_formula_sat_sealPA_of_valid.
+  intro tail.
+  unfold compactUniformRestrictedPAConsistencyProvabilityBodyFormula.
+  cbn [raw_formula_sat].
+  intro level.
+  apply (proj2
+    (@raw_sat_compactSelectorPackageFormula_iff M tail level)).
+  exact (raw_compactSelectorPackages_all_of_standard_carrier
+    M hPA hstandard tail level).
 Qed.
 
 Theorem compactUniformRestrictedPAConsistencyProvabilityFormula_sentence :
