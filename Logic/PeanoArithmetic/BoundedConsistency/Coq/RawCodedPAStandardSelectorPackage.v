@@ -29,7 +29,9 @@ From BoundedPAConsistency Require Import
   RawCodedRestrictedPAProof
   RawCodedPAProvability
   CompactPAUniformProvability
-  CompactRestrictedPAConsistencyFormulaCodeGraph.
+  CompactRestrictedPAConsistencyFormulaCodeGraph
+  RawCodedCompactSelectorInductionSyntax
+  RawCodedCompactSelectorInductionCases.
 
 Import ListNotations.
 
@@ -48,6 +50,8 @@ Import PABoundedRawCodedRestrictedPAProof.
 Import PABoundedRawCodedPAProvability.
 Import PABoundedCompactPAUniformProvability.
 Import PABoundedCompactRestrictedPAConsistencyFormulaCodeGraph.
+Import PABoundedRawCodedCompactSelectorInductionSyntax.
+Import PABoundedRawCodedCompactSelectorInductionCases.
 
 (** The package relation for one fixed standard level.  The existential
     binder captures the proof certificate; the equality graph forces its
@@ -229,6 +233,26 @@ Proof.
         (raw_compactRestrictedPAConsistencyGraph_standard_iff
           M hPA tail level target) htarget).
     + exact hcertificate.
+Qed.
+
+(** The successor case of the represented selector induction is also
+    constructively available at every external level.  The [change] below
+    is the definitional arithmetic fact that the raw successor of a standard
+    numeral is the next standard numeral. *)
+Corollary raw_sat_compactSelectorInductionSuccessorFormula_standard :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (tail : nat -> M) (level : nat),
+  raw_formula_sat M
+    (scons M (rawNumeralValue M level) tail)
+    compactSelectorInductionSuccessorFormula.
+Proof.
+  intros M hPA tail level.
+  apply (proj2
+    (raw_sat_compactSelectorInductionSuccessorFormula_iff M tail
+      (rawNumeralValue M level))).
+  change (RawCompactSelectorPackageAt M tail
+    (rawNumeralValue M (S level))).
+  exact (raw_compactSelectorPackage_standard M hPA tail (S level)).
 Qed.
 
 End PABoundedRawCodedPAStandardSelectorPackage.
