@@ -39,11 +39,17 @@ namespace LeanProofs.PolynomialFormulas.LazardGeneralResolventExplicit
 
 universe uF uA uI
 
+noncomputable local instance quotientSubgroupDecidablePred
+    {A : Type uA} [Group A] [Fintype A] (G : Subgroup A) :
+    DecidablePred (fun x : A => x ∈ G) := Classical.decPred _
+
+noncomputable local instance quotientDecidableRel
+    {A : Type uA} [Group A] [Fintype A] (G : Subgroup A) :
+    DecidableRel (QuotientGroup.leftRel G) := QuotientGroup.leftRelDecidable G
+
 noncomputable local instance quotientFintype
     {A : Type uA} [Group A] [Fintype A] (G : Subgroup A) :
-    Fintype (A ⧸ G) := by
-  letI := Classical.decRel (QuotientGroup.leftRel G)
-  exact QuotientGroup.fintype G
+    Fintype (A ⧸ G) := QuotientGroup.fintype G
 
 section FractionFieldAction
 
@@ -155,11 +161,10 @@ theorem fraction_stabilizer_eq_of_exactRenameStabilizer
       (hp.rename_eq_iff_mem a).mpr ha
     rw [← algebraMap.coe_smul', polynomialRename_smul, hrename]
 
-/-
-CHECKPOINT: the product-reindexing proof below is preserved verbatim while its
-quotient `Fintype` instance transport is being finished.  The two subsequent
-minimal-polynomial declarations depend on it, so all three remain commented
-out together; no placeholder is introduced.
+/-! The product-reindexing proof uses Mathlib's canonical quotient relation
+decidability, so the source and target `Fintype` instances can be named
+explicitly.  The resulting identity feeds the two minimal-polynomial bridges
+below. -/
 
 /-- Scalar extension of the universal orbit product to the rational-function
 field is Mathlib's product over the distinct orbit of the embedded
@@ -181,13 +186,29 @@ theorem universalInvariantResolvent_map_fraction_eq_prodXSubSMul
     LazardGeneralResolventCriterion.orbitResolvent,
     Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X,
     Polynomial.map_C]
-  apply Fintype.prod_equiv (Subgroup.quotientEquivOfEq hG.symm)
+  refine @Fintype.prod_equiv _ _ _ (quotientFintype G)
+    (QuotientGroup.fintype
+      (MulAction.stabilizer A
+        (algebraMap (MvPolynomial ι F)
+          (FractionRing (MvPolynomial ι F)) p))) _
+    (Subgroup.quotientEquivOfEq hG.symm)
+    (fun c => Polynomial.X - Polynomial.C
+      ((algebraMap (MvPolynomial ι F)
+        (FractionRing (MvPolynomial ι F)))
+        (universalOrbitValue G p hp.invariantUnder c)))
+    (fun g => Polynomial.X - Polynomial.C
+      (MulAction.ofQuotientStabilizer A
+        (algebraMap (MvPolynomial ι F)
+          (FractionRing (MvPolynomial ι F)) p) g)) ?_
   intro c
   induction c using QuotientGroup.induction_on with
   | _ a =>
       simp only [Subgroup.quotientEquivOfEq_mk, universalOrbitValue_mk,
         MulAction.ofQuotientStabilizer_mk]
-      rw [← polynomialRename_smul, algebraMap.coe_smul']
+      apply congrArg (fun z : FractionRing (MvPolynomial ι F) =>
+        Polynomial.X - Polynomial.C z)
+      rw [← polynomialRename_smul]
+      exact algebraMap.coe_smul' a p _
 
 /-- The universal orbit product is the scalar extension of Mathlib's
 `FixedPoints.minpoly` over the `A`-fixed rational-function field. -/
@@ -227,8 +248,6 @@ theorem universalInvariantResolvent_map_fraction_eq_minpoly
   rw [← FixedPoints.minpoly_eq_minpoly]
   exact universalInvariantResolvent_map_fraction_eq_fixedPoints_minpoly
     G p hp
--/
-
 end ExactStabilizerAndMinpoly
 
 section FixedFieldGeneration
@@ -346,10 +365,8 @@ theorem hasExactRenameStabilizer_iff_adjoin_eq_fixedPoints
         (L := FractionRing (MvPolynomial ι F))
         (H := G)
 
-/-
-CHECKPOINT: this combined endpoint depends on the commented minimal-polynomial
-bridge above.  Its complete statement and proof are preserved verbatim until
-that dependency is restored.
+/-! This combined endpoint packages the fixed-field and minimal-polynomial
+clauses after the product reindexing bridge above has been established. -/
 
 /-- Lazard's two literal resolvent clauses, as an iff.  The forward direction
 derives both fixed-field generation and the ordinary minimal-polynomial
@@ -384,8 +401,6 @@ theorem hasExactRenameStabilizer_iff_generator_and_minpoly
     exact universalInvariantResolvent_map_fraction_eq_minpoly G p hp
   · rintro ⟨hgenerate, _⟩
     exact (hasExactRenameStabilizer_iff_adjoin_eq_fixedPoints G p).2 hgenerate
--/
-
 end FixedFieldGeneration
 
 end LeanProofs.PolynomialFormulas.LazardGeneralResolventExplicit
