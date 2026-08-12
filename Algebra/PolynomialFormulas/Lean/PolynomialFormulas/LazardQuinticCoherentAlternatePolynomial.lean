@@ -280,6 +280,45 @@ theorem map_coherentDescendPolynomial
     algebraMap_coherentDescendedCoefficient]
   exact p.support_sum_monomial_coeff
 
+/-- A fixed-coefficient coordinate polynomial has an explicit descent to the
+coefficient field.  The theorem is deliberately conditional on the fixed
+field range statement, so it can be reused for concrete extensions without
+smuggling in a particular presentation of that field. -/
+theorem exists_coherentDescendPolynomial_of_fixed_coefficients
+    (sigma : K ≃ₐ[F] K) (omega : FifthRootOfUnity K)
+    (homega : sigma omega.value = omega.value ^ 2)
+    (hfixed : ∀ z : K, sigma z = z → z ∈ Set.range (algebraMap F K))
+    (j : Fin 4) :
+    ∃ p : MvPolynomial (Fin 5) F,
+      MvPolynomial.map (algebraMap F K) p =
+        coherentRootCoordinatePolynomial omega j := by
+  let q : MvPolynomial (Fin 5) K := coherentRootCoordinatePolynomial omega j
+  have hcoeff : ∀ d, ∃ a : F, algebraMap F K a = q.coeff d := by
+    intro d
+    exact hfixed _
+      (coherentRootCoordinateCoefficient_fixed sigma omega homega j d)
+  refine ⟨coherentDescendPolynomial q hcoeff, ?_⟩
+  exact map_coherentDescendPolynomial q hcoeff
+
+/- The cyclic-generator form is the concrete entry point for the usual
+   finite Galois situation.  Its conclusion is still only coefficient
+   descent; the later invariant-basis and radical-reconstruction steps remain
+   separate obligations. -/
+theorem exists_coherentDescendPolynomial_of_cyclic_generator
+    [FiniteDimensional F K] [IsGalois F K]
+    (sigma : K ≃ₐ[F] K)
+    (hgenerator : ∀ tau : K ≃ₐ[F] K, ∃ n : ℕ, tau = sigma ^ n)
+    (omega : FifthRootOfUnity K)
+    (homega : sigma omega.value = omega.value ^ 2)
+    (j : Fin 4) :
+    ∃ p : MvPolynomial (Fin 5) F,
+      MvPolynomial.map (algebraMap F K) p =
+        coherentRootCoordinatePolynomial omega j := by
+  exact exists_coherentDescendPolynomial_of_fixed_coefficients
+    sigma omega homega
+    (fun z hz => coherent_fixed_mem_range_of_cyclic_generator
+      sigma hgenerator hz) j
+
 end CoefficientwiseDescent
 
 end
