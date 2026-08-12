@@ -139,12 +139,13 @@ Proof.
   - intros M hPA e.
     apply (proj2
       (raw_sat_standardSelectorPackageFormula_iff M e level)).
-    destruct (raw_codedPAProofOf_of_BProv M hPA
-      (restrictedPAConsistencyFormula level)
-      (PA_BProv_restrictedPAConsistencyFormula level)) as
-      [certificate hcertificate].
-    exists (rawNumeralValue M
-      (formulaCode (restrictedPAConsistencyFormula level))), certificate.
+    set (target := rawNumeralValue M
+      (formulaCode (restrictedPAConsistencyFormula level))).
+    destruct (raw_codedPAProofOf_standardRestrictedPAConsistencyTarget
+      M hPA level target
+      (raw_restrictedPAConsistencyFormulaCodeAt_standard M hPA level))
+      as [certificate hcertificate].
+    exists target, certificate.
     split.
     + rewrite rawQuotedFormulaCode_standard by exact hPA.
       reflexivity.
@@ -159,12 +160,13 @@ Corollary raw_standardSelectorPackage_standard : forall
 Proof.
   intros M hPA level e.
   apply (proj2 (raw_sat_standardSelectorPackageFormula_iff M e level)).
-  destruct (raw_codedPAProofOf_of_BProv M hPA
-    (restrictedPAConsistencyFormula level)
-    (PA_BProv_restrictedPAConsistencyFormula level)) as
-    [certificate hcertificate].
-  exists (rawNumeralValue M
-    (formulaCode (restrictedPAConsistencyFormula level))), certificate.
+  set (target := rawNumeralValue M
+    (formulaCode (restrictedPAConsistencyFormula level))).
+  destruct (raw_codedPAProofOf_standardRestrictedPAConsistencyTarget
+    M hPA level target
+    (raw_restrictedPAConsistencyFormulaCodeAt_standard M hPA level))
+    as [certificate hcertificate].
+  exists target, certificate.
   split.
   - rewrite rawQuotedFormulaCode_standard by exact hPA.
     reflexivity.

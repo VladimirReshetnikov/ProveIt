@@ -229,6 +229,42 @@ Proof.
       (raw_restrictedPAConsistencyProofSuccessor_of_certificate M hPA).
 Qed.
 
+(** A reusable standard-target bridge.  The graph may present an arbitrary
+    carrier element [target], rather than the canonical quotation selected by
+    [raw_restrictedPAConsistencyFormulaCodeAt_standard].  Functionality of
+    the graph identifies that supplied target with the canonical code, after
+    which the already proved fixed-level PA theorem supplies its certificate.
+
+    Keeping the target abstract is important for downstream compiler stages:
+    they should consume the graph witness they already have instead of
+    reopening the graph and duplicating this functionality argument. *)
+Theorem raw_codedPAProofOf_standardRestrictedPAConsistencyTarget :
+  forall (M : RawPAModel), RawPASatisfies M -> forall
+    (level : nat) target,
+  RawRestrictedPAConsistencyFormulaCodeAt M
+    (rawNumeralValue M level) target ->
+  exists certificate : M,
+    RawCodedPAProofOf M target certificate.
+Proof.
+  intros M hPA level target htarget.
+  destruct (raw_codedPAProofOf_of_BProv M hPA
+    (restrictedPAConsistencyFormula level)
+    (PA_BProv_restrictedPAConsistencyFormula level))
+    as [certificate hcertificate].
+  assert (target =
+      rawNumeralValue M
+        (formulaCode (restrictedPAConsistencyFormula level)))
+    as ->.
+  {
+    apply (raw_restrictedPAConsistencyFormulaCodeAt_functional M hPA
+      (rawNumeralValue M level) target
+      (rawNumeralValue M
+        (formulaCode (restrictedPAConsistencyFormula level))) htarget).
+    exact (raw_restrictedPAConsistencyFormulaCodeAt_standard M hPA level).
+  }
+  exists certificate. exact hcertificate.
+Qed.
+
 (** At every metatheoretic level the certificate successor is already
     constructible.  The proof ignores the incoming certificate and quotes
     the existing standard derivation at the next level.  This theorem cannot
@@ -248,24 +284,11 @@ Theorem raw_restrictedPAConsistencyCertificateSuccessor_standard : forall
 Proof.
   intros M hPA level target certificate nextTarget
     _ _ hnextTarget.
-  destruct (raw_codedPAProofOf_of_BProv M hPA
-    (restrictedPAConsistencyFormula (S level))
-    (PA_BProv_restrictedPAConsistencyFormula (S level)))
-    as [nextCertificate hnextCertificate].
-  assert (nextTarget =
-      rawNumeralValue M
-        (formulaCode (restrictedPAConsistencyFormula (S level))))
-    as ->.
-  {
-    apply (raw_restrictedPAConsistencyFormulaCodeAt_functional M hPA
-      (raw_succ M (rawNumeralValue M level))).
-    - exact hnextTarget.
-    - change (raw_succ M (rawNumeralValue M level)) with
-        (rawNumeralValue M (S level)).
-      exact (raw_restrictedPAConsistencyFormulaCodeAt_standard
-        M hPA (S level)).
-  }
-  exists nextCertificate. exact hnextCertificate.
+  apply (raw_codedPAProofOf_standardRestrictedPAConsistencyTarget
+    M hPA (S level) nextTarget).
+  change (raw_succ M (rawNumeralValue M level)) with
+    (rawNumeralValue M (S level)) in hnextTarget.
+  exact hnextTarget.
 Qed.
 
 Lemma raw_compactSelectorPackage_successor : forall
