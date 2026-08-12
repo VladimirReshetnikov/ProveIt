@@ -600,6 +600,37 @@ Proof.
       M hPA callerPrefix hrestrictedIn hruleIn hsources).
 Qed.
 
+(** Close the three predecessor binders at the retained-assumption boundary.
+    The logical-root theorem above is intentionally stated for the prefix
+    visible at the point where the two direct-shell premises are used.  When
+    it is consumed below an implication introducing three more variables,
+    that visible prefix is [templateContextShiftMany 3 callerPrefix].  We
+    therefore ask for membership of the renamed premises in that shifted
+    prefix explicitly.  This avoids the invalid shortcut of treating an
+    assumption formula as unchanged under de Bruijn renaming, while the
+    generic predecessor adapter supplies the exact outer context. *)
+Theorem
+    raw_dynamicTruthNativeDependencyOrderedAssumptionRetainingLogicalZeroGrowingPredecessorRootUnderCallerPrefix
+    : forall (M : RawPAModel) (hPA : RawPASatisfies M), forall callerPrefix,
+  RawDynamicTruthNativeDependencyOrderedCanonicalAssumptionRetainingLogicalZeroGrowingFixedProductionOrRefutationProofResourceStrongStepKernelCompilers
+    M hPA ->
+  In coqRestrictedPADerivationSoundnessRestrictedProofTemplate
+    (templateContextShiftMany 3 callerPrefix) ->
+  In coqStrongStepProofEndpointAtomicAdequacyRulePremise
+    (templateContextShiftMany 3 callerPrefix) ->
+  RawDynamicTruthNativeLocalZeroGrowingPredecessorRootCompilerUnderCallerPrefixOnCanonicalNormalizedResources
+    M hPA callerPrefix.
+Proof.
+  intros M hPA callerPrefix hpackage hrestrictedIn hruleIn.
+  apply
+    (raw_dynamicTruthNativeLocalZeroGrowingPredecessorRootCompilerUnderCallerPrefixOnCanonicalNormalizedResources_of_shifted_logical_roots
+      M hPA callerPrefix).
+  exact
+    (raw_dynamicTruthNativeDependencyOrderedAssumptionRetainingLogicalZeroGrowingLogicalRootsUnderCallerPrefix
+      M hPA (templateContextShiftMany 3 callerPrefix) hpackage
+      hrestrictedIn hruleIn).
+Qed.
+
 (** Compatibility projection from the older nine-coordinate package.  It
     forgets the now-redundant independent restricted/rule root producers and
     preserves every remaining field definitionally. *)
