@@ -3,7 +3,7 @@
 From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
-  GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
+  GenericEmbedding GenericLogicSymbol PropositionalLiteral GenericModalLogicSymbol
   PropositionalFormula FormulaPropositional PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalKripkePreservation PropositionalKripkeCanonical
@@ -23,7 +23,8 @@ From FoundationModal Require Import
   PropositionalEntailmentLukasiewicz
   PropositionalEntailmentMinimal PropositionalEntailmentInt
   PropositionalEntailmentClassical PropositionalTwoSided
-  PropositionalTwoSidedTableau PropositionalTait
+  PropositionalTwoSidedTableau PropositionalClassicalProverTheorems
+  PropositionalIntuitionisticProverTheorems PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness CorsiVF Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -536,6 +537,21 @@ Print Assumptions generic_neg_equal_iff.
 Print Assumptions generic_connective_hom_iff.
 Print Assumptions generic_connective_hom_id.
 Print Assumptions generic_connective_hom_compose.
+
+(** Meta/Lit's mathematical core, generalized from quoted Lean expressions
+    to arbitrary atoms and arbitrary target connective algebras. *)
+Check generic_literal_formula.
+Check generic_literal_connectives.
+Check generic_literal_denote.
+Check generic_literal_denote_hom.
+Print Assumptions generic_literal_denote_iff.
+Check generic_literal_complexity.
+Print Assumptions generic_literal_complexity_child_left.
+Print Assumptions generic_literal_complexity_child_right.
+Print Assumptions generic_literal_complexity_neg_child.
+Check generic_literal_map.
+Print Assumptions generic_literal_denote_map.
+Print Assumptions generic_literal_complexity_map.
 Check generic_conj_lt.
 Check generic_conj_lt_zero.
 Check generic_conj_lt_succ.
@@ -3110,6 +3126,57 @@ Print Assumptions generic_two_sided_tableau_valid_neg_left_raw.
 Print Assumptions generic_two_sided_tableau_valid_imply_right_raw.
 Print Assumptions generic_two_sided_tableau_valid_imply_right_prime_raw.
 Print Assumptions generic_two_sided_tableau_valid_imply_left_raw.
+
+(** Meta/ClProver's complete kernel theorem namespace.  The Lean quotation
+    engine consumes these wrappers but is not itself mathematical content. *)
+Print Assumptions generic_classical_prover_to_provable.
+Print Assumptions generic_classical_prover_rotate_right.
+Print Assumptions generic_classical_prover_rotate_left.
+Print Assumptions generic_classical_prover_add_hyp.
+Print Assumptions generic_classical_prover_right_closed.
+Print Assumptions generic_classical_prover_left_closed.
+Print Assumptions generic_classical_prover_verum_right.
+Print Assumptions generic_classical_prover_falsum_left.
+Print Assumptions generic_classical_prover_falsum_right.
+Print Assumptions generic_classical_prover_verum_left.
+Print Assumptions generic_classical_prover_and_right.
+Print Assumptions generic_classical_prover_or_left.
+Print Assumptions generic_classical_prover_or_right.
+Print Assumptions generic_classical_prover_and_left.
+Print Assumptions generic_classical_prover_neg_right.
+Print Assumptions generic_classical_prover_neg_left.
+Print Assumptions generic_classical_prover_imply_right.
+Print Assumptions generic_classical_prover_imply_left.
+Print Assumptions generic_classical_prover_iff_right.
+Print Assumptions generic_classical_prover_iff_left.
+
+(** Meta/IntProver's complete kernel theorem namespace, retaining the
+    append-oriented tableau shapes used by its proof-search engine. *)
+Print Assumptions generic_intuitionistic_prover_to_two_sided_raw.
+Print Assumptions generic_intuitionistic_prover_to_proof_raw.
+Print Assumptions generic_intuitionistic_prover_add_hyp_raw.
+Print Assumptions generic_intuitionistic_prover_right_closed_raw.
+Print Assumptions generic_intuitionistic_prover_left_closed_raw.
+Print Assumptions generic_intuitionistic_prover_remove_raw.
+Print Assumptions generic_intuitionistic_prover_rotate_raw.
+Print Assumptions generic_intuitionistic_prover_remove_right_raw.
+Print Assumptions generic_intuitionistic_prover_rotate_right_raw.
+Print Assumptions generic_intuitionistic_prover_verum_right_raw.
+Print Assumptions generic_intuitionistic_prover_falsum_right_raw.
+Print Assumptions generic_intuitionistic_prover_and_right_raw.
+Print Assumptions generic_intuitionistic_prover_or_right_raw.
+Print Assumptions generic_intuitionistic_prover_neg_right_raw.
+Print Assumptions generic_intuitionistic_prover_imply_right_raw.
+Print Assumptions generic_intuitionistic_prover_iff_right_raw.
+Print Assumptions generic_intuitionistic_prover_remove_left_raw.
+Print Assumptions generic_intuitionistic_prover_rotate_left_raw.
+Print Assumptions generic_intuitionistic_prover_verum_left_raw.
+Print Assumptions generic_intuitionistic_prover_falsum_left_raw.
+Print Assumptions generic_intuitionistic_prover_or_left_raw.
+Print Assumptions generic_intuitionistic_prover_and_left_raw.
+Print Assumptions generic_intuitionistic_prover_neg_left_raw.
+Print Assumptions generic_intuitionistic_prover_imply_left_raw.
+Print Assumptions generic_intuitionistic_prover_iff_left_raw.
 
 (** Propositional/Entailment/Cl/Łukasiewicz: the K/S/elimination-of-
     contraposition basis derives DNE, DNI, and contradiction explosion over
