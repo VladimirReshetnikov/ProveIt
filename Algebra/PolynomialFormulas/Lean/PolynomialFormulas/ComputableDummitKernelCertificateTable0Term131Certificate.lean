@@ -1,0 +1,32 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131State0Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131State1Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131State2Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131State3Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131State4Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131State5Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131State6Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131State7Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131State8Certificate
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+set_option maxHeartbeats 20000000
+
+theorem table0_term131_certificate :
+    SparseTerm.substitute ⟨1, ⟨0, 0, 8, 0, 0⟩⟩ elementaryPolynomials = table0Term131Normal := by
+  change SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.const 1) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2) = table0Term131Normal
+  rw [table0_term131_state0_certificate, table0_term131_state1_certificate, table0_term131_state2_certificate, table0_term131_state3_certificate, table0_term131_state4_certificate, table0_term131_state5_certificate, table0_term131_state6_certificate, table0_term131_state7_certificate, table0_term131_state8_certificate]
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate

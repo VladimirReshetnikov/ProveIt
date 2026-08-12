@@ -1,0 +1,23 @@
+(** Authoritative API and assumption audit for the call-site cross-level
+    compiler reduction. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeCrossLevelCurrentPackageCompilation.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeCrossLevelCurrentPackageCompilation.
+
+Check RawDynamicTruthNativeCrossLevelCurrentPackageProofCompiler.
+Check
+  raw_dynamicTruthNativeCrossLevelCurrentPackageProofCompiler_of_body_implication.
+Check
+  raw_dynamicTruthNativeStagedNextCrossLevelCompiler_of_currentPackageProofCompiler.
+Check
+  raw_dynamicTruthNativeStagedNextCrossLevelCompiler_of_body_implication_via_currentPackage.
+
+Print Assumptions
+  raw_dynamicTruthNativeCrossLevelCurrentPackageProofCompiler_of_body_implication.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextCrossLevelCompiler_of_currentPackageProofCompiler.
+Print Assumptions
+  raw_dynamicTruthNativeStagedNextCrossLevelCompiler_of_body_implication_via_currentPackage.
