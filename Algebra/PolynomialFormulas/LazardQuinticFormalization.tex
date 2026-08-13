@@ -448,16 +448,19 @@ fixed-field identity, degree, Galois property, ordinary minimal polynomial,
 fixed-field generation, derived root action, and corrected
 conjugate-containment criterion in one theorem.  The generic criterion, its
 explicit invariant construction, and the theta adapter are committed and
-freshly kernel-checked.  The universal rational-function bridge has a focused,
-kernel-checked prefix: the fraction-action stabilizer, fixed-field generation,
-and exact-stabilizer iff generation statements are proved.  Four stronger
-orbit-product/minimal-polynomial endpoints remain preserved as commented
-proof checkpoints because their quotient products use definitionally
-different \lean{Fintype} instances.  This checkpoint therefore does not yet
-claim the universal product equals the ordinary minimal polynomial, nor that
-a specialized theta sextic remains minimal after root substitution.  The
-larger aggregate and polynomial-realized counterexample compile directly,
-while their final assumptions remain cache-gated by the Dummit closure.
+freshly kernel-checked.  The universal rational-function bridge is also
+focused-kernel-checked.  It explicitly reindexes the universal coset product
+onto Mathlib's distinct-orbit product by fixing the two canonical quotient
+\lean{Fintype} instances, identifies that product with both
+\lean{FixedPoints.minpoly} and the ordinary minimal polynomial, and combines
+this identity with fixed-field generation in
+\lean{hasExactRenameStabilizer_iff_generator_and_minpoly}.  All four restored
+endpoints audit to \lean{propext}, \lean{Classical.choice}, and
+\lean{Quot.sound}.  This is a universal rational-function theorem; it does not
+assert that a specialized theta sextic remains minimal after root
+substitution.  The larger aggregate and polynomial-realized counterexample
+compile directly, while their final assumptions remain cache-gated by the
+Dummit closure.
 Beyond the finite-group coset witness, both
 provers now realize the obstruction on the explicit irreducible depressed
 cyclic rational quintic.  They give a duplicate-free exact ordering and a
@@ -1189,15 +1192,14 @@ The following substantial pieces are \emph{source or local-build
 checkpoints}, not yet a single clean public theorem graph:
 
 \begin{enumerate}
-\item \texttt{LazardGeneralResolventMinpoly.lean} has a focused
-  kernel-checked prefix.  Five exported stabilizer/fixed-field endpoints---up
-  through \lean{hasExactRenameStabilizer_iff_adjoin_eq_fixedPoints}---audit to
-  \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound}.  The four
-  stronger orbit-product/minimal-polynomial endpoints are block-commented with
-  their proof text preserved: their remaining elaboration problem is a
-  mismatch between two propositionally equal quotient \lean{Fintype}
-  instances.  The universal minpoly identity is therefore still open, and no
-  specialized theta-minimality claim is made.
+\item \texttt{LazardGeneralResolventMinpoly.lean} is a focused
+  kernel-checked module.  It proves the fraction-action/rename stabilizer
+  identity, fixed-field generation, the universal product reindexing,
+  fixed-points and ordinary minimal-polynomial identities, and the combined
+  generator/minpoly iff.  Explicit canonical quotient \lean{Fintype}
+  instances remove the former elaboration mismatch.  The restored endpoints
+  audit to only \lean{propext}, \lean{Classical.choice}, and
+  \lean{Quot.sound}; no specialized theta-minimality claim is made.
 \item The Dummit coefficient implementation has been rewritten so that the
   large finite identities are intended to be checked by bounded ordinary
   kernel reductions.  Hundreds of generated table/root modules still await
@@ -1261,10 +1263,6 @@ When work resumes, the shortest dependable path is:
 \item Rebuild \lean{ComputableDummitCoefficients} and its public decision
   theorem from that source closure, then verify that the four stale
   \lean{native_decide} constants disappear from \texttt{\#print axioms}.
-\item Finish the quotient-\lean{Fintype} reindexing in
-  \texttt{LazardGeneralResolventMinpoly.lean}; keep the universal
-  rational-function result distinct from specialized sextic minimality, which
-  can fail when specialization collides.
 \item Rebuild, in dependency order, the scalar resolvent criterion, root
   ordering, root-reduction bridge, Section~7 aggregate, coherent alternate
   tower, actual-root $E=0$ example, and polynomial-realized conjugacy
