@@ -1,0 +1,34 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term85State0Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term85State1Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term85State2Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term85State3Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term85State4Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term85State5Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term85State6Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term85State7Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term85State8Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term85State9Certificate
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+set_option maxHeartbeats 20000000
+
+theorem table0_term85_certificate :
+    SparseTerm.substitute ⟨44, ⟨1, 4, 1, 3, 0⟩⟩ elementaryPolynomials = table0Term85Normal := by
+  change SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.const (44)) (elementaryPolynomials 0)) (elementaryPolynomials 1)) (elementaryPolynomials 1)) (elementaryPolynomials 1)) (elementaryPolynomials 1)) (elementaryPolynomials 2)) (elementaryPolynomials 3)) (elementaryPolynomials 3)) (elementaryPolynomials 3) = table0Term85Normal
+  rw [table0_term85_state0_certificate, table0_term85_state1_certificate, table0_term85_state2_certificate, table0_term85_state3_certificate, table0_term85_state4_certificate, table0_term85_state5_certificate, table0_term85_state6_certificate, table0_term85_state7_certificate, table0_term85_state8_certificate, table0_term85_state9_certificate]
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
