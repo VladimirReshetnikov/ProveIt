@@ -1,0 +1,19 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term71State7NormalizeRawLeftChunk8Data
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term71State7NormalizeRawChunk8Data
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+set_option maxHeartbeats 20000000
+
+set_option maxRecDepth 1000000 in
+set_option maxHeartbeats 20000000 in
+theorem table0_term71_state7_normalize_raw_chunk8_certificate :
+    SparsePolynomial.rawMul table0Term71State7NormalizeRawLeftChunk8Normal (elementaryPolynomials 2) = table0Term71State7NormalizeRawChunk8Normal := by
+  decide
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
