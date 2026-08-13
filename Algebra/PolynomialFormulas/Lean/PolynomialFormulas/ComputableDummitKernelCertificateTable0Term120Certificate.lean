@@ -1,0 +1,32 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term120State0Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term120State1Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term120State2Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term120State3Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term120State4Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term120State5Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term120State6Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term120State7Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term120State8Certificate
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+set_option maxHeartbeats 20000000
+
+theorem table0_term120_certificate :
+    SparseTerm.substitute ⟨65, ⟨0, 2, 4, 2, 0⟩⟩ elementaryPolynomials = table0Term120Normal := by
+  change SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.mul (SparsePolynomial.const (65)) (elementaryPolynomials 1)) (elementaryPolynomials 1)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 2)) (elementaryPolynomials 3)) (elementaryPolynomials 3) = table0Term120Normal
+  rw [table0_term120_state0_certificate, table0_term120_state1_certificate, table0_term120_state2_certificate, table0_term120_state3_certificate, table0_term120_state4_certificate, table0_term120_state5_certificate, table0_term120_state6_certificate, table0_term120_state7_certificate, table0_term120_state8_certificate]
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate

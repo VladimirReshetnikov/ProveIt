@@ -56,7 +56,7 @@ TERM_STATE_SHARD_TOTAL_THRESHOLD = 40000
 # long e₃ accumulator chain has empirically exceeded the available memory as
 # one reduction.  Keep the exception explicit and target-scoped: lowering the
 # global threshold would needlessly shard several already-tractable terms.
-FORCE_SHARDED_TABLE_TERMS = {(0, 51), (0, 125)}
+FORCE_SHARDED_TABLE_TERMS = {(0, 51), (0, 120), (0, 125)}
 
 
 def add(*polynomials: Polynomial) -> Polynomial:
