@@ -1,0 +1,23 @@
+(** Kernel-facing audit for the reduced final V2 residual. *)
+
+From BoundedPAConsistency Require Import
+  RawCodedDynamicTruthNativeFinalV2UnifiedCarriedResidualReduction.
+
+Import
+  PABoundedRawCodedDynamicTruthNativeFinalV2UnifiedCarriedResidualReduction.
+
+Check
+  RawDynamicTruthNativeFinalV2CanonicalExtendedRemainingRuleCasesCompiler.
+Check
+  raw_dynamicTruthNativeFinalStagedNextFinalProof_canonical_extended_remaining_v2_reduction.
+Check
+  raw_dynamicTruthNativeFinalStagedNextFinalProof_of_canonical_extended_remaining_v2.
+Check
+  raw_dynamicTruthNativeFinalStagedTraceProofCompiler_of_canonical_extended_remaining_v2.
+
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedNextFinalProof_canonical_extended_remaining_v2_reduction.
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedNextFinalProof_of_canonical_extended_remaining_v2.
+Print Assumptions
+  raw_dynamicTruthNativeFinalStagedTraceProofCompiler_of_canonical_extended_remaining_v2.

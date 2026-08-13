@@ -1,0 +1,52 @@
+import KlarnerConstant.Certificate
+import KlarnerConstant.Convolution
+import KlarnerConstant.Recurrence
+import KlarnerConstant.BuiSystem
+import KlarnerConstant.CoefficientSystem
+import KlarnerConstant.Growth
+import KlarnerConstant.Main
+import KlarnerConstant.PublishedSystem
+import KlarnerConstant.Polyomino
+import KlarnerConstant.Patterns
+import KlarnerConstant.Counting
+import KlarnerConstant.TranslationClasses
+import KlarnerConstant.SeededPartition
+import KlarnerConstant.GeometricLinear
+import KlarnerConstant.GeometricDeletion
+import KlarnerConstant.GeometricProfile
+import KlarnerConstant.Concatenation
+import KlarnerConstant.Asymptotic
+import KlarnerConstant.GeometricPBasics
+import KlarnerConstant.GeometricPCore
+import KlarnerConstant.GeometricPGeometry
+import KlarnerConstant.GeometricPEndpoint
+import KlarnerConstant.GeometricPPartition
+import KlarnerConstant.GeometricQCore
+import KlarnerConstant.GeometricQGeometry
+import KlarnerConstant.GeometricQEndpoint
+import KlarnerConstant.GeometricQ
+import KlarnerConstant.GeometricFourFiveCore
+import KlarnerConstant.GeometricFourFiveGeometryCore
+import KlarnerConstant.GeometricFourFiveGeometry
+import KlarnerConstant.GeometricFourFive
+import KlarnerConstant.GeometricUCore
+import KlarnerConstant.GeometricUGeometry
+import KlarnerConstant.GeometricU
+import KlarnerConstant.GeometricVCore
+import KlarnerConstant.GeometricVGeometryCore
+import KlarnerConstant.GeometricVGeometry
+import KlarnerConstant.GeometricV
+import KlarnerConstant.GeometricWCore
+import KlarnerConstant.GeometricWGeometryCore
+import KlarnerConstant.GeometricWGeometry
+import KlarnerConstant.GeometricW
+import KlarnerConstant.GeometricVW
+import KlarnerConstant.GeometricTwoDeletion
+import KlarnerConstant.GeometricComplete
+
+/-!
+# Klarner's polyomino growth constant
+
+Facade for the square-lattice geometry, Bui recurrence majorant, exact
+`4.5235` rational supersolution certificate, and growth-rate endpoint.
+-/

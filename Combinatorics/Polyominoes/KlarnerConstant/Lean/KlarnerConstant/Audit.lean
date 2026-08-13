@@ -1,0 +1,32 @@
+import KlarnerConstant
+
+/-!
+# Assumption audit for the Klarner-constant certificate
+
+These commands make the kernel assumptions of both the reusable conditional
+theorems and the unconditional fixed-polyomino endpoints visible in build
+logs.  Ordinary theorem parameters of the generic recurrence API are not
+global assumptions; `GeometricComplete` discharges them for the concrete
+finite counting sequence.
+-/
+
+#print axioms LeanProofs.KlarnerConstant.certificate_isSupersolution
+#print axioms LeanProofs.KlarnerConstant.WeightedBuiRecurrences.dominatedCoefficient_le_9047_div_2000_pow
+#print axioms LeanProofs.KlarnerConstant.BuiCoefficientRecurrences.dominatedCoefficient_le_9047_div_2000_pow
+#print axioms LeanProofs.KlarnerConstant.growthSup_le_9047_div_2000_of_buiCoefficientRecurrences
+#print axioms LeanProofs.KlarnerConstant.PublishedBuiRecurrences.toBuiCoefficientRecurrences
+#print axioms LeanProofs.KlarnerConstant.PublishedBuiRecurrences.growthSup_le_9047_div_2000
+#print axioms LeanProofs.KlarnerConstant.growthSup_le_of_le_pow
+#print axioms LeanProofs.KlarnerConstant.improvedBase_eq
+#print axioms LeanProofs.KlarnerConstant.one_le_gOccurrenceCount_normalize
+#print axioms LeanProofs.KlarnerConstant.fixedPolyominoCount_le_gCount
+#print axioms LeanProofs.KlarnerConstant.geometricBuiGaps
+#print axioms LeanProofs.KlarnerConstant.geometricPublishedBuiRecurrences
+#print axioms LeanProofs.KlarnerConstant.fixedPolyominoCount_le_9047_div_2000_pow
+#print axioms LeanProofs.KlarnerConstant.fixedPolyominoCount_real_le_9047_div_2000_pow
+#print axioms LeanProofs.KlarnerConstant.growthSup_fixedPolyominoCount_le_9047_div_2000
+#print axioms LeanProofs.KlarnerConstant.tendsto_realNthRoot_fixedPolyominoCount_growthSup
+#print axioms LeanProofs.KlarnerConstant.translationClassEquivNormalizedPolyomino
+#print axioms LeanProofs.KlarnerConstant.fixedPolyominoCount_eq_card_translationClasses
+#print axioms LeanProofs.KlarnerConstant.fixedPolyominoCount_supermultiplicative
+#print axioms LeanProofs.KlarnerConstant.fixedPolyominoCount_pos

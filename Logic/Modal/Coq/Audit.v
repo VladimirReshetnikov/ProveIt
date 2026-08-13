@@ -3,7 +3,8 @@
 From FoundationModal Require Import
   Syntax GenericSemantics GenericAdjunctiveSet GenericForcingRelation
   GenericEntailment GenericDecidability GenericDisjunctive
-  GenericEmbedding GenericLogicSymbol GenericModalLogicSymbol
+  GenericEmbedding GenericQuotationList GenericLogicSymbol
+  PropositionalLiteral GenericModalLogicSymbol
   PropositionalFormula FormulaPropositional PropositionalNNFormula PropositionalTranslation
   PropositionalLogic PropositionalHilbert PropositionalKripke
   PropositionalKripkePreservation PropositionalKripkeCanonical
@@ -22,7 +23,9 @@ From FoundationModal Require Import
   GenericCalculus PropositionalEntailmentAxioms
   PropositionalEntailmentLukasiewicz
   PropositionalEntailmentMinimal PropositionalEntailmentInt
-  PropositionalEntailmentClassical PropositionalTait
+  PropositionalEntailmentClassical PropositionalTwoSided
+  PropositionalTwoSidedTableau PropositionalClassicalProverTheorems
+  PropositionalIntuitionisticProverTheorems PropositionalTait
   NNFormula FormulaEncoding PLoN Axioms HilbertK PLoNCompleteness CorsiVF Kripke
   KripkeAlgebra ModalAlgebra CoherenceSpace CoherenceStableFunction
   NNFormulaSemantics HilbertKSoundness Complement ComplexityLimited Filtration
@@ -504,6 +507,11 @@ Print Assumptions generic_faithfully_embeddable_fun_exists.
 Print Assumptions generic_faithfully_embeddable_refl.
 Print Assumptions generic_faithfully_embeddable_trans.
 
+(** Meta/Qq's only proof-level declarations. *)
+Print Assumptions generic_quotation_list_mem_of_eq.
+Print Assumptions generic_quotation_list_mem_of_mem.
+Print Assumptions generic_quotation_list_mem_singleton_of_eq.
+
 (** The foundational LogicSymbol core centralizes independently consumable
     connective laws and the full homomorphism API.  Pointwise homomorphism
     equality avoids functional and proof extensionality. *)
@@ -535,6 +543,21 @@ Print Assumptions generic_neg_equal_iff.
 Print Assumptions generic_connective_hom_iff.
 Print Assumptions generic_connective_hom_id.
 Print Assumptions generic_connective_hom_compose.
+
+(** Meta/Lit's mathematical core, generalized from quoted Lean expressions
+    to arbitrary atoms and arbitrary target connective algebras. *)
+Check generic_literal_formula.
+Check generic_literal_connectives.
+Check generic_literal_denote.
+Check generic_literal_denote_hom.
+Print Assumptions generic_literal_denote_iff.
+Check generic_literal_complexity.
+Print Assumptions generic_literal_complexity_child_left.
+Print Assumptions generic_literal_complexity_child_right.
+Print Assumptions generic_literal_complexity_neg_child.
+Check generic_literal_map.
+Print Assumptions generic_literal_denote_map.
+Print Assumptions generic_literal_complexity_map.
 Check generic_conj_lt.
 Check generic_conj_lt_zero.
 Check generic_conj_lt_succ.
@@ -3036,6 +3059,130 @@ Print Assumptions ph_hilbert_cl_double_neg_iff.
 Print Assumptions ph_hilbert_cl_neg_and_iff_or_neg.
 Print Assumptions ph_hilbert_cl_imp_iff_neg_or.
 Print Assumptions ph_hilbert_cl_neg_disj2_map_to_conj2.
+
+(** Meta/TwoSided: bottom-terminated succedent sequents, structural rules,
+    and every source propositional connective rule.  Raw derivations remain
+    proof-relevant; theoremhood is exposed through inhabited wrappers. *)
+Check generic_raw_list_subset.
+Check generic_classical_list_derivation.
+Check generic_two_sided_derivation.
+Check generic_two_sided_derivable.
+Print Assumptions generic_minimal_bottom_to_list_disj_raw.
+Print Assumptions generic_list_disj_subset_raw.
+Print Assumptions generic_two_sided_weakening_raw.
+Print Assumptions generic_two_sided_remove_left_raw.
+Print Assumptions generic_two_sided_remove_right_raw.
+Print Assumptions generic_two_sided_rotate_right_raw.
+Print Assumptions generic_two_sided_rotate_left_raw.
+Print Assumptions generic_two_sided_rotate_right_inv_raw.
+Print Assumptions generic_two_sided_rotate_left_inv_raw.
+Print Assumptions generic_two_sided_to_proof_raw.
+Print Assumptions generic_two_sided_add_hyp_raw.
+Print Assumptions generic_two_sided_right_closed_raw.
+Print Assumptions generic_two_sided_left_closed_raw.
+Print Assumptions generic_two_sided_verum_right_raw.
+Print Assumptions generic_two_sided_falsum_left_raw.
+Print Assumptions generic_two_sided_falsum_right_raw.
+Print Assumptions generic_two_sided_verum_left_raw.
+Print Assumptions generic_two_sided_and_right_raw.
+Print Assumptions generic_two_sided_or_left_raw.
+Print Assumptions generic_two_sided_or_right_raw.
+Print Assumptions generic_two_sided_and_left_raw.
+Print Assumptions generic_two_sided_neg_right_int_raw.
+Print Assumptions generic_two_sided_neg_right_cl_raw.
+Print Assumptions generic_two_sided_neg_left_int_raw.
+Print Assumptions generic_two_sided_neg_left_raw.
+Print Assumptions generic_two_sided_imply_left_int_raw.
+Print Assumptions generic_two_sided_imply_left_raw.
+Print Assumptions generic_two_sided_imply_right_int_raw.
+Print Assumptions generic_two_sided_imply_right_cl_raw.
+Print Assumptions generic_two_sided_iff_right_cl_raw.
+Print Assumptions generic_two_sided_iff_left_raw.
+
+(** The complete Tableaux portion of Meta/TwoSided: proof-relevant validity,
+    membership/subset transport, and all lifted structural/connective rules. *)
+Check generic_two_sided_sequent.
+Check generic_two_sided_tableau.
+Check generic_two_sided_tableau_validity.
+Check generic_two_sided_tableau_valid.
+Print Assumptions generic_two_sided_tableau_valid_not_nil.
+Print Assumptions generic_two_sided_tableau_valid_of_member_raw.
+Print Assumptions generic_two_sided_tableau_valid_of_subset_raw.
+Print Assumptions generic_two_sided_tableau_valid_of_single_uppercedent_raw.
+Print Assumptions generic_two_sided_tableau_valid_of_double_uppercedent_raw.
+Print Assumptions generic_two_sided_tableau_valid_remove_raw.
+Print Assumptions generic_two_sided_tableau_valid_to_proof_raw.
+Print Assumptions generic_two_sided_tableau_valid_right_closed_raw.
+Print Assumptions generic_two_sided_tableau_valid_left_closed_raw.
+Print Assumptions generic_two_sided_tableau_valid_remove_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_remove_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_rotate_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_rotate_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_verum_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_falsum_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_falsum_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_verum_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_and_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_or_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_or_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_and_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_neg_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_neg_right_prime_raw.
+Print Assumptions generic_two_sided_tableau_valid_neg_left_raw.
+Print Assumptions generic_two_sided_tableau_valid_imply_right_raw.
+Print Assumptions generic_two_sided_tableau_valid_imply_right_prime_raw.
+Print Assumptions generic_two_sided_tableau_valid_imply_left_raw.
+
+(** Meta/ClProver's complete kernel theorem namespace.  The Lean quotation
+    engine consumes these wrappers but is not itself mathematical content. *)
+Print Assumptions generic_classical_prover_to_provable.
+Print Assumptions generic_classical_prover_rotate_right.
+Print Assumptions generic_classical_prover_rotate_left.
+Print Assumptions generic_classical_prover_add_hyp.
+Print Assumptions generic_classical_prover_right_closed.
+Print Assumptions generic_classical_prover_left_closed.
+Print Assumptions generic_classical_prover_verum_right.
+Print Assumptions generic_classical_prover_falsum_left.
+Print Assumptions generic_classical_prover_falsum_right.
+Print Assumptions generic_classical_prover_verum_left.
+Print Assumptions generic_classical_prover_and_right.
+Print Assumptions generic_classical_prover_or_left.
+Print Assumptions generic_classical_prover_or_right.
+Print Assumptions generic_classical_prover_and_left.
+Print Assumptions generic_classical_prover_neg_right.
+Print Assumptions generic_classical_prover_neg_left.
+Print Assumptions generic_classical_prover_imply_right.
+Print Assumptions generic_classical_prover_imply_left.
+Print Assumptions generic_classical_prover_iff_right.
+Print Assumptions generic_classical_prover_iff_left.
+
+(** Meta/IntProver's complete kernel theorem namespace, retaining the
+    append-oriented tableau shapes used by its proof-search engine. *)
+Print Assumptions generic_intuitionistic_prover_to_two_sided_raw.
+Print Assumptions generic_intuitionistic_prover_to_proof_raw.
+Print Assumptions generic_intuitionistic_prover_add_hyp_raw.
+Print Assumptions generic_intuitionistic_prover_right_closed_raw.
+Print Assumptions generic_intuitionistic_prover_left_closed_raw.
+Print Assumptions generic_intuitionistic_prover_remove_raw.
+Print Assumptions generic_intuitionistic_prover_rotate_raw.
+Print Assumptions generic_intuitionistic_prover_remove_right_raw.
+Print Assumptions generic_intuitionistic_prover_rotate_right_raw.
+Print Assumptions generic_intuitionistic_prover_verum_right_raw.
+Print Assumptions generic_intuitionistic_prover_falsum_right_raw.
+Print Assumptions generic_intuitionistic_prover_and_right_raw.
+Print Assumptions generic_intuitionistic_prover_or_right_raw.
+Print Assumptions generic_intuitionistic_prover_neg_right_raw.
+Print Assumptions generic_intuitionistic_prover_imply_right_raw.
+Print Assumptions generic_intuitionistic_prover_iff_right_raw.
+Print Assumptions generic_intuitionistic_prover_remove_left_raw.
+Print Assumptions generic_intuitionistic_prover_rotate_left_raw.
+Print Assumptions generic_intuitionistic_prover_verum_left_raw.
+Print Assumptions generic_intuitionistic_prover_falsum_left_raw.
+Print Assumptions generic_intuitionistic_prover_or_left_raw.
+Print Assumptions generic_intuitionistic_prover_and_left_raw.
+Print Assumptions generic_intuitionistic_prover_neg_left_raw.
+Print Assumptions generic_intuitionistic_prover_imply_left_raw.
+Print Assumptions generic_intuitionistic_prover_iff_left_raw.
 
 (** Propositional/Entailment/Cl/Łukasiewicz: the K/S/elimination-of-
     contraposition basis derives DNE, DNI, and contradiction explosion over

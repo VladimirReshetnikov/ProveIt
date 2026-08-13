@@ -5475,3 +5475,72 @@ local roots.  A one-way adapter from the historical implication compiler and
 a direct dependency-ordered compact headline formally expose this premise
 reduction; an unconditional arbitrary-carrier cross-level construction is
 still outstanding.
+
+The shift and substitution coordinates have now received the same call-site
+reduction as cross-level.  The shift compiler is invoked only on the genuine
+current six-field package and the selected local and cross-level graph/proof
+pairs; substitution additionally receives the selected shift pair.  Each
+reduced compiler retains one adequate paired orbit, the literal field
+transform selected from it, and an ordinary represented PA proof of that
+selected output.  Direct adapters reconstruct the corresponding public
+callbacks structurally, without strengthening either premise back to a
+compiler over independently chosen root packages and without converting
+model truth into proof syntax.  One-way adapters from the historical linked
+implication compilers formally verify that both new domains are weaker.
+
+The final coordinate is narrower as well.  The synchronized carried
+construction already selects the canonical numeral parameters and truth
+selectors, retains their literal provenance, supplies the strong-prefix
+closure remainder, and compiles the carried-consistency bridge on the
+incoming base.  Consequently the final caller now supplies only
+`RawDynamicTruthNativeFinalV2CanonicalExtendedRemainingRuleCasesCompiler`:
+for the selected canonical coordinates it chooses an opaque extended tail
+with the outstanding ordinary V2 rule-case compiler.  The two translation
+code equalities, the closure remainder, and the consistency bridge are no
+longer independent fields of the final residual.
+
+These reductions compose in
+`RawCodedDynamicTruthNativeDependencyOrderedCurrentPackageCrossLevelShiftSubstitutionAxiomCanonicalV2Boundary.v`.
+Its conditional compact headline uses current-package compilers for
+cross-level, shift, substitution, and axiom soundness and the
+canonical-extended V2 residual for final.  At axiom soundness the genuine
+current package is followed by the four graph/proof pairs selected by the
+preceding callbacks; its reduced compiler retains the selected adequate
+orbit, exact axiom transform, and represented proof instead of accepting an
+arbitrary linked ten-root package.  Its sole all-model premise still
+requires, in dependency order: template-translation agreement; the reduced
+current-local builder; the current-package cross-level compiler; the
+current-package shift compiler; the current-package substitution compiler;
+the current-package axiom-soundness compiler; and the canonical-extended
+remaining-rule-cases V2 compiler.  Coq therefore remains conditional: the
+development proves that this arbitrary-model compiler family implies the
+compact object-language PA theorem, but does not yet construct the family or
+prove the compact headline unconditionally.
+
+The local coordinate has now been cut at its literal public call site as
+well.  `RawDynamicTruthNativeLocalCurrentPackageProofCompiler` consumes one
+genuine current six-field package, chooses one adequate paired-global orbit
+and its exact local transform, and returns the represented proof of that
+selected target.  The reduced local builder implies this compiler, and the
+compiler reconstructs the public local callback without graph functionality
+or a truth-to-proof conversion.  Consequently
+`RawCodedDynamicTruthNativeDependencyOrderedAllCurrentPackagesCanonicalV2Boundary.v`
+packages exactly six call-site compilers—local, cross-level, shift,
+substitution, axiom soundness, and canonical-extended V2 final—and removes
+the last existential template translation and agreement hypothesis from its
+all-model boundary.  This is a premise reduction, not an unconditional
+construction of those six compiler families.
+
+The retained-prefix guarded positive coordinate has also been reduced past
+its closure machinery.  Its predecessor-state logical roots occupy fixed
+predecessor child coordinates and cannot honestly be renamed into the three
+constructor-specific deep prefixes.  The exact remaining continuation is
+therefore a producer of complete guarded branch-root packages for
+implication, conjunction, and disjunction, each on a witnessed extension of
+the same logical context and under the literal same caller prefix.  The
+checked adapter closes each branch, synchronizes the two Boolean diagonals,
+and merges them with the guarded implication predecessor; no caller-prefix
+contraction and no bare canonical-application theorem is used.  Coq remains
+conditional because this three-branch producer, together with the other
+arbitrary-model call-site compiler families above, has not yet been
+constructed unconditionally.

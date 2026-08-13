@@ -1,5 +1,6 @@
 (** Public surface and kernel-assumption audit for the generic Foundation port. *)
 
+From Foundation Require Import Init.
 From Foundation.Vorspiel Require Import ExistsUnique.
 From Foundation.Vorspiel Require Import Basic.
 From Foundation.Vorspiel Require Import NotationClass.
@@ -28,6 +29,8 @@ From Foundation.FirstOrder.Incompleteness Require Import Jeroslow.
 From Foundation.FirstOrder.Incompleteness Require Import Consistency.
 From Foundation.FirstOrder.Incompleteness Require Import RestrictedProvability.
 From Foundation.FirstOrder.Incompleteness Require Import StandardProvability.
+From Foundation.FirstOrder.Incompleteness Require Import InductionSchemeDelta1.
+From Foundation.FirstOrder.Incompleteness Require Import Examples.
 From Foundation.FirstOrder.Bootstrapping.Syntax Require Import Language.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Basic.
 From Foundation.FirstOrder.Bootstrapping.Syntax.Term Require Import Functions.
@@ -80,7 +83,8 @@ From Foundation.Vorspiel.Order Require Import Ideal.
 From Foundation.Vorspiel.Order Require Import LowerSet.
 From Foundation.Vorspiel.Order Require Import Regular.
 From Foundation.Modal Require Import
-  MaximalConsistentSet MaximalCanonical Tableau ComplementClosedConsistentList.
+  MaximalConsistentSet MaximalCanonical Tableau ComplementClosedConsistentList
+  Kripke.
 
 Check partial_order_laws.
 Check order_chain.
@@ -6144,3 +6148,45 @@ Print Assumptions boot_context_modus_ponens_raw.
 Print Assumptions boot_context_modus_ponens.
 Print Assumptions boot_context_D2.
 Print Assumptions boot_context_D3.
+
+(* FirstOrder/Incompleteness/InductionSchemeDelta1.v: independent executable
+   and structural clusters needed by the internal induction-scheme recognizer. *)
+Check boot_qq_alls.
+Print Assumptions boot_qq_alls_zero.
+Print Assumptions boot_qq_alls_succ.
+Print Assumptions boot_qq_alls_add_one.
+Print Assumptions boot_qq_alls_all.
+Print Assumptions boot_qq_alls_push_all.
+Print Assumptions boot_qq_all_body_le.
+Print Assumptions boot_qq_all_body_succ_le.
+Print Assumptions boot_qq_alls_body_le.
+Print Assumptions boot_qq_alls_index_le.
+Print Assumptions boot_is_semiformula_qq_alls.
+Print Assumptions boot_is_uformula_qq_alls.
+Print Assumptions semiformula_code_all_closure.
+Print Assumptions boot_typed_formula_quote_all_closure.
+Print Assumptions nat_free_bound_pred_in.
+Print Assumptions semiformula_free_occurs_free_bound_pred.
+Print Assumptions fin_nat_code_pointwise.
+Print Assumptions semiterm_code_rew_cast_le.
+Print Assumptions semiterm_free_variable_list_rew_cast_le.
+Print Assumptions semiformula_code_rew_cast_le.
+Print Assumptions semiformula_free_variable_list_rew_cast_le.
+Print Assumptions semiformula_free_occurs_rew_cast_le.
+
+(* FirstOrder/Incompleteness/Examples.v: all seven source strict-theory
+   instances factored through explicit concrete-coding adapters. *)
+Check pa_examples_coding_adapter.
+Check pa_examples_extension.
+Check pa_examples_truth_adapter.
+Print Assumptions pa_examples_strict_consistency_extension.
+Print Assumptions pa_examples_strict_inconsistency_extension.
+Print Assumptions pa_examples_strictly_weaker_than_truth.
+Print Assumptions pa_examples_isigma1_strict_consistency_extension.
+Print Assumptions pa_examples_isigma1_consistency_extension_strict_truth.
+Print Assumptions pa_examples_isigma1_strict_inconsistency_extension.
+Print Assumptions pa_examples_peano_strict_consistency_extension.
+Print Assumptions pa_examples_peano_consistency_extension_strict_truth.
+Print Assumptions pa_examples_peano_strict_inconsistency_extension.
+Print Assumptions
+  pa_examples_peano_consistency_extension_strict_own_inconsistency_extension.
