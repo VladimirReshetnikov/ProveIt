@@ -1,0 +1,28 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term72State9NormalizeRawCertificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term72State9NormalizeRadix4Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term72State9NormalizeRadix3Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term72State9NormalizeRadix2Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term72State9NormalizeRadix1Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term72State9NormalizeRadix0Certificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term72State9NormalizeCombineCertificate
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+set_option maxHeartbeats 20000000
+
+theorem table0_term72_state9_certificate :
+    SparsePolynomial.mul table0Term72State8Normal (elementaryPolynomials 3) = table0Term72Normal := by
+  change SparsePolynomial.combine (SparsePolynomial.radixPass (fun t ↦ t.powers.p0) (SparsePolynomial.radixPass (fun t ↦ t.powers.p1) (SparsePolynomial.radixPass (fun t ↦ t.powers.p2) (SparsePolynomial.radixPass (fun t ↦ t.powers.p3) (SparsePolynomial.radixPass (fun t ↦ t.powers.p4) (SparsePolynomial.rawMul table0Term72State8Normal (elementaryPolynomials 3))))))) = table0Term72Normal
+  rw [table0_term72_state9_normalize_raw_certificate, table0_term72_state9_normalize_radix4_certificate, table0_term72_state9_normalize_radix3_certificate, table0_term72_state9_normalize_radix2_certificate, table0_term72_state9_normalize_radix1_certificate, table0_term72_state9_normalize_radix0_certificate, table0_term72_state9_normalize_combine_certificate]
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
