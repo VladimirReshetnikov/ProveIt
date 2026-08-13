@@ -63,6 +63,17 @@ TERM_STATE_SHARD_TOTAL_THRESHOLD = 40000
 # global threshold would needlessly shard several already-tractable terms.
 FORCE_SHARDED_TABLE_TERMS = {(0, 51), (0, 120), (0, 125)}
 
+# Tail merge sharding is an explicitly targeted recovery mode.  It is not
+# selected by --write-all: direct tail output remains the default and stays
+# byte-for-byte stable.  Each authorized target has four terms, hence three
+# materialized intermediate sums and one final sum into the public normal.
+AUTHORIZED_SHARDED_TABLE_TAILS = frozenset({
+    (0, 0), (0, 4), (0, 11), (0, 15),
+})
+TAIL_MERGE_RAW_LIMIT = 16000
+TAIL_MERGE_LITERAL_LIMIT = 9000
+TAIL_SHARD_MODULE_COUNT = 9
+
 # Root elementary-symmetric products have the opposite shape from table-term
 # products: the left theta polynomial has only ten terms while the right child
 # can have thousands.  Split the right operand, and only at the three exact
@@ -614,6 +625,39 @@ def table_tail_normal(index: int, group: int) -> str:
 
 def table_tail_certificate(index: int, group: int) -> str:
     return f"table{index}_tail{group}_certificate"
+
+
+def table_tail_merge_step_data_module(
+        index: int, group: int, step: int) -> str:
+    return f"{PREFIX}Table{index}Tail{group}MergeStep{step}Data"
+
+
+def table_tail_merge_step_certificate_module(
+        index: int, group: int, step: int) -> str:
+    return f"{PREFIX}Table{index}Tail{group}MergeStep{step}Certificate"
+
+
+def table_tail_merge_step_normal(
+        index: int, group: int, step: int) -> str:
+    return f"table{index}Tail{group}MergeStep{step}Normal"
+
+
+def table_tail_merge_step_certificate(
+        index: int, group: int, step: int) -> str:
+    return f"table{index}_tail{group}_merge_step{step}_certificate"
+
+
+def table_tail_target_prefix(index: int, group: int) -> str:
+    return f"{PREFIX}Table{index}Tail{group}"
+
+
+def owns_table_tail_target(name: str, index: int, group: int) -> bool:
+    """Whether a module or filename belongs to one exact table tail."""
+    target_prefix = table_tail_target_prefix(index, group)
+    if not name.startswith(target_prefix):
+        return False
+    suffix = name[len(target_prefix):]
+    return not suffix or suffix[0] not in ASCII_DIGITS
 
 
 RAW_MUL_APPEND_MODULE = f"{PREFIX}RawMulAppend"
@@ -1171,6 +1215,596 @@ def write_table_final(index: int, row: list[Term], row_data: str) -> str:
         f"  rw [{row_certificate}, {table_tail_certificate(index, 0)}]",
     ])
     return module
+
+
+@lru_cache(maxsize=None)
+def tail_direct_term_polynomial(term: Term) -> Polynomial:
+    """Cached direct expansion used only by targeted tail rendering."""
+    return substitute_term(term)
+
+
+@lru_cache(maxsize=None)
+def tail_accum_term_polynomial(term: Term) -> Polynomial:
+    """Independent factor-at-a-time expansion for tail validation."""
+    return substitute_term_accum(term)
+
+
+def independent_polynomial_add(
+        left: Polynomial, right: Polynomial) -> Polynomial:
+    """Add two sparse maps without calling the generator's variadic add."""
+    result = dict(right)
+    for exponent, coefficient in left.items():
+        combined = result.get(exponent, 0) + coefficient
+        if combined:
+            result[exponent] = combined
+        else:
+            result.pop(exponent, None)
+    return result
+
+
+@dataclass(frozen=True)
+class TailMergeShardPlan:
+    index: int
+    group: int
+    positions: tuple[int, int, int, int]
+    terms: tuple[Term, Term, Term, Term]
+    term_normals: tuple[Polynomial, Polynomial, Polynomial, Polynomial]
+    next_normal: Polynomial
+    stage_normals: tuple[Polynomial, Polynomial, Polynomial, Polynomial]
+    raw_sizes: tuple[int, int, int, int]
+
+
+def require_authorized_tail_shard_target(index: int, group: int) -> None:
+    if (index, group) not in AUTHORIZED_SHARDED_TABLE_TAILS:
+        allowed = ", ".join(
+            f"({table}, {tail})"
+            for table, tail in sorted(AUTHORIZED_SHARDED_TABLE_TAILS))
+        raise RuntimeError(
+            f"unauthorized sharded table tail ({index}, {group}); "
+            f"allowed targets: {allowed}")
+
+
+def tail_merge_shard_plan(
+        index: int, group: int, row: list[Term]) -> TailMergeShardPlan:
+    """Plan one authorized four-add tail merge entirely in memory."""
+    require_authorized_tail_shard_target(index, group)
+    start = group * TABLE_BLOCK_SIZE
+    stop = start + TABLE_BLOCK_SIZE
+    if stop > len(row):
+        raise RuntimeError(
+            f"table {index} tail {group} must contain exactly "
+            f"{TABLE_BLOCK_SIZE} terms")
+    positions = tuple(range(start, stop))
+    if len(positions) != TABLE_BLOCK_SIZE:
+        raise RuntimeError("tail shard position count changed")
+    terms = tuple(row[position] for position in positions)
+    term_normals = tuple(
+        tail_direct_term_polynomial(term) for term in terms)
+    next_normal: Polynomial = {}
+    for term in row[stop:]:
+        next_normal = add(next_normal, tail_direct_term_polynomial(term))
+
+    stages: list[Polynomial | None] = [None] * TABLE_BLOCK_SIZE
+    raw_sizes: list[int] = [0] * TABLE_BLOCK_SIZE
+    accumulator = next_normal
+    for step in reversed(range(TABLE_BLOCK_SIZE)):
+        raw_sizes[step] = len(term_normals[step]) + len(accumulator)
+        accumulator = add(term_normals[step], accumulator)
+        stages[step] = accumulator
+    if any(stage is None for stage in stages):
+        raise RuntimeError("incomplete tail merge shard stages")
+    stage_normals = tuple(stage for stage in stages if stage is not None)
+    if len(stage_normals) != TABLE_BLOCK_SIZE:
+        raise RuntimeError("tail merge shard stage count changed")
+    plan = TailMergeShardPlan(
+        index=index,
+        group=group,
+        positions=positions,
+        terms=terms,
+        term_normals=term_normals,
+        next_normal=next_normal,
+        stage_normals=stage_normals,
+        raw_sizes=tuple(raw_sizes),
+    )
+    validate_tail_merge_shard_plan(plan, row)
+    return plan
+
+
+def validate_tail_merge_shard_plan(
+        plan: TailMergeShardPlan, row: list[Term]) -> None:
+    """Independently recheck every finite addition and resource bound."""
+    require_authorized_tail_shard_target(plan.index, plan.group)
+    start = plan.group * TABLE_BLOCK_SIZE
+    expected_positions = tuple(range(start, start + TABLE_BLOCK_SIZE))
+    if plan.positions != expected_positions:
+        raise RuntimeError("tail merge shard positions changed")
+    if start + TABLE_BLOCK_SIZE > len(row):
+        raise RuntimeError("tail merge shard target is not a full block")
+    expected_terms = tuple(row[position] for position in expected_positions)
+    if plan.terms != expected_terms:
+        raise RuntimeError("tail merge shard terms changed")
+    if (len(plan.term_normals) != TABLE_BLOCK_SIZE or
+            len(plan.stage_normals) != TABLE_BLOCK_SIZE or
+            len(plan.raw_sizes) != TABLE_BLOCK_SIZE):
+        raise RuntimeError("tail merge shard trace must have four stages")
+
+    expected_term_normals = tuple(
+        tail_accum_term_polynomial(term) for term in expected_terms)
+    if plan.term_normals != expected_term_normals:
+        raise RuntimeError("tail merge direct and accumulator expansions differ")
+
+    expected_next: Polynomial = {}
+    for term in row[start + TABLE_BLOCK_SIZE:]:
+        expected_next = independent_polynomial_add(
+            expected_next, tail_accum_term_polynomial(term))
+    if plan.next_normal != expected_next:
+        raise RuntimeError("tail merge next-tail normal changed")
+
+    accumulator = expected_next
+    for step in reversed(range(TABLE_BLOCK_SIZE)):
+        raw_size = len(expected_term_normals[step]) + len(accumulator)
+        if plan.raw_sizes[step] != raw_size:
+            raise RuntimeError(
+                f"tail merge step {step} raw size changed")
+        if raw_size > TAIL_MERGE_RAW_LIMIT:
+            raise RuntimeError(
+                f"tail merge step {step} raw size {raw_size} exceeds "
+                f"limit {TAIL_MERGE_RAW_LIMIT}")
+        accumulator = independent_polynomial_add(
+            expected_term_normals[step], accumulator)
+        if plan.stage_normals[step] != accumulator:
+            raise RuntimeError(
+                f"tail merge step {step} arithmetic changed")
+        if len(accumulator) > TAIL_MERGE_LITERAL_LIMIT:
+            raise RuntimeError(
+                f"tail merge step {step} literal size {len(accumulator)} "
+                f"exceeds limit {TAIL_MERGE_LITERAL_LIMIT}")
+        if any(coefficient == 0 for coefficient in accumulator.values()):
+            raise RuntimeError(
+                f"tail merge step {step} contains a zero coefficient")
+
+
+def expected_tail_shard_modules(index: int, group: int) -> tuple[str, ...]:
+    require_authorized_tail_shard_target(index, group)
+    modules = (
+        table_tail_data_module(index, group),
+        *(table_tail_merge_step_data_module(index, group, step)
+          for step in (3, 2, 1)),
+        *(table_tail_merge_step_certificate_module(index, group, step)
+          for step in (3, 2, 1, 0)),
+        table_tail_certificate_module(index, group),
+    )
+    if (len(modules) != TAIL_SHARD_MODULE_COUNT or
+            len(set(modules)) != len(modules)):
+        raise RuntimeError(
+            f"tail shard target must own exactly {TAIL_SHARD_MODULE_COUNT} "
+            f"distinct modules")
+    return modules
+
+
+def tail_public_certificate_declaration(
+        index: int, group: int, row: list[Term],
+        positions: tuple[int, int, int, int]) -> str:
+    source_terms = [
+        f"(SparseTerm.substitute {lean_term(row[position])} "
+        "elementaryPolynomials)"
+        for position in positions
+    ]
+    changed = nested_add(
+        source_terms,
+        f"SparsePolynomial.substitute table{index}Tail{group + 1} "
+        "elementaryPolynomials")
+    rewrites = [table_term_certificate(index, position)
+                for position in positions]
+    rewrites.append(table_tail_certificate(index, group + 1))
+    return (
+        f"theorem {table_tail_certificate(index, group)} :\n"
+        f"    SparsePolynomial.substitute table{index}Tail{group} "
+        f"elementaryPolynomials = {table_tail_normal(index, group)} := by\n"
+        f"  change {changed} = {table_tail_normal(index, group)}\n"
+        f"  rw [{', '.join(rewrites)}]\n"
+        f"  exact table{index}_tail{group}_merge_certificate")
+
+
+def render_tail_shard_target(
+        index: int, group: int, row: list[Term]
+        ) -> tuple[dict[str, str], dict[str, tuple[str, ...]]]:
+    """Render and validate one nine-module tail shard graph in memory."""
+    plan = tail_merge_shard_plan(index, group, row)
+    rendered: dict[str, str] = {}
+    imports_by_module: dict[str, tuple[str, ...]] = {}
+
+    def collect(name: str, imports: list[str], declarations: list[str]) -> None:
+        if name in rendered:
+            raise RuntimeError(f"duplicate generated tail module: {name}")
+        rendered[name] = module_text(imports, declarations)
+        imports_by_module[name] = tuple(imports)
+
+    positions = plan.positions
+    tail_data = table_tail_data_module(index, group)
+    tail_normal = table_tail_normal(index, group)
+    next_normal = table_tail_normal(index, group + 1)
+    normal_terms = [table_term_normal(index, position)
+                    for position in positions]
+    candidate = nested_add(normal_terms, next_normal)
+    data_imports = [
+        f"{PREFIX}Table{index}RowData",
+        table_tail_certificate_module(index, group + 1),
+        *(table_term_certificate_module(index, position)
+          for position in positions),
+    ]
+    collect(tail_data, data_imports, [
+        lean_polynomial(tail_normal, plan.stage_normals[0]),
+        f"def table{index}Tail{group}Candidate : SparsePolynomial :=\n"
+        f"  {candidate}",
+    ])
+
+    for step in (3, 2, 1):
+        collect(
+            table_tail_merge_step_data_module(index, group, step),
+            [tail_data],
+            [lean_polynomial(
+                table_tail_merge_step_normal(index, group, step),
+                plan.stage_normals[step])])
+
+    for step in (3, 2, 1, 0):
+        left = table_term_normal(index, positions[step])
+        right = (next_normal if step == 3 else
+                 table_tail_merge_step_normal(index, group, step + 1))
+        result = (tail_normal if step == 0 else
+                  table_tail_merge_step_normal(index, group, step))
+        if step == 3:
+            imports = [
+                table_tail_merge_step_data_module(index, group, 3)]
+        elif step == 0:
+            imports = [
+                tail_data,
+                table_tail_merge_step_data_module(index, group, 1),
+            ]
+        else:
+            imports = [
+                table_tail_merge_step_data_module(index, group, step),
+                table_tail_merge_step_data_module(index, group, step + 1),
+            ]
+        collect(
+            table_tail_merge_step_certificate_module(index, group, step),
+            imports,
+            [decide_theorem(
+                table_tail_merge_step_certificate(index, group, step),
+                f"SparsePolynomial.add {left} {right} = {result}")])
+
+    merge_name = f"table{index}_tail{group}_merge_certificate"
+    merge_certificates = [
+        table_tail_merge_step_certificate(index, group, step)
+        for step in (3, 2, 1, 0)
+    ]
+    merge_declaration = (
+        f"theorem {merge_name} :\n"
+        f"    table{index}Tail{group}Candidate = {tail_normal} := by\n"
+        f"  change {candidate} = {tail_normal}\n"
+        f"  rw [{', '.join(merge_certificates)}]")
+    tail_certificate = table_tail_certificate_module(index, group)
+    collect(
+        tail_certificate,
+        [tail_data,
+         *(table_tail_merge_step_certificate_module(index, group, step)
+           for step in (3, 2, 1, 0))],
+        [merge_declaration,
+         tail_public_certificate_declaration(
+             index, group, row, positions)])
+
+    validate_tail_shard_graph(plan, row, rendered, imports_by_module)
+    return rendered, imports_by_module
+
+
+def expected_tail_shard_imports(
+        index: int, group: int,
+        positions: tuple[int, int, int, int]
+        ) -> dict[str, tuple[str, ...]]:
+    tail_data = table_tail_data_module(index, group)
+    result: dict[str, tuple[str, ...]] = {
+        tail_data: (
+            f"{PREFIX}Table{index}RowData",
+            table_tail_certificate_module(index, group + 1),
+            *(table_term_certificate_module(index, position)
+              for position in positions),
+        ),
+    }
+    for step in (3, 2, 1):
+        result[table_tail_merge_step_data_module(index, group, step)] = (
+            tail_data,)
+    result[table_tail_merge_step_certificate_module(index, group, 3)] = (
+        table_tail_merge_step_data_module(index, group, 3),)
+    for step in (2, 1):
+        result[table_tail_merge_step_certificate_module(
+            index, group, step)] = (
+                table_tail_merge_step_data_module(index, group, step),
+                table_tail_merge_step_data_module(index, group, step + 1),
+            )
+    result[table_tail_merge_step_certificate_module(index, group, 0)] = (
+        tail_data,
+        table_tail_merge_step_data_module(index, group, 1),
+    )
+    result[table_tail_certificate_module(index, group)] = (
+        tail_data,
+        *(table_tail_merge_step_certificate_module(index, group, step)
+          for step in (3, 2, 1, 0)),
+    )
+    return result
+
+
+def validate_tail_shard_graph(
+        plan: TailMergeShardPlan, row: list[Term],
+        rendered: dict[str, str],
+        imports_by_module: dict[str, tuple[str, ...]]) -> None:
+    """Fail closed on names, bytes, imports, DAG, trust, and public API."""
+    validate_tail_merge_shard_plan(plan, row)
+    expected = set(expected_tail_shard_modules(plan.index, plan.group))
+    if (set(rendered) != expected or
+            set(imports_by_module) != expected):
+        raise RuntimeError(
+            "rendered tail module set does not match its owner set")
+    expected_imports = expected_tail_shard_imports(
+        plan.index, plan.group, plan.positions)
+    if imports_by_module != expected_imports:
+        raise RuntimeError("rendered tail import graph changed")
+    duplicate_imports = sorted(
+        module for module, imports in imports_by_module.items()
+        if len(imports) != len(set(imports)))
+    if duplicate_imports:
+        raise RuntimeError(
+            "duplicate generated tail imports: "
+            + ", ".join(duplicate_imports))
+
+    allowed_external = set(expected_imports[
+        table_tail_data_module(plan.index, plan.group)])
+    external = {
+        dependency
+        for imports in imports_by_module.values()
+        for dependency in imports
+        if dependency not in expected
+    }
+    if external != allowed_external:
+        raise RuntimeError(
+            "unexpected tail external imports: "
+            + ", ".join(sorted(external ^ allowed_external)))
+
+    visited: set[str] = set()
+    active: set[str] = set()
+
+    def visit(module: str) -> None:
+        if module in active:
+            raise RuntimeError(f"cycle in generated tail imports at {module}")
+        if module in visited:
+            return
+        active.add(module)
+        for dependency in imports_by_module[module]:
+            if dependency in expected:
+                visit(dependency)
+        active.remove(module)
+        visited.add(module)
+
+    aggregate = table_tail_certificate_module(plan.index, plan.group)
+    visit(aggregate)
+    if visited != expected:
+        unreachable = ", ".join(sorted(expected - visited))
+        raise RuntimeError(
+            f"generated tail modules unreachable from aggregate: "
+            f"{unreachable}")
+
+    forbidden = re.compile(
+        r"\b(?:sorry|admit|axiom|unsafe|native_decide)\b|"
+        r"implemented_by|Lean\.ofReduceBool")
+    declared_by_module: dict[str, tuple[str, ...]] = {}
+    for module, payload in rendered.items():
+        heartbeats = [int(value) for value in re.findall(
+            r"set_option maxHeartbeats (\d+)", payload)]
+        if (not heartbeats or
+                any(value <= 0 or value > 20000000
+                    for value in heartbeats)):
+            raise RuntimeError(
+                f"tail module {module} lacks a finite heartbeat bound")
+        if forbidden.search(payload):
+            raise RuntimeError(f"untrusted tail proof text in {module}")
+        declarations = tuple(re.findall(
+            r"(?m)^(?:def|theorem)\s+([A-Za-z_][A-Za-z0-9_']*)\b",
+            payload))
+        if len(declarations) != len(set(declarations)):
+            raise RuntimeError(
+                f"duplicate declarations in generated tail module {module}")
+        declared_by_module[module] = declarations
+
+    index, group = plan.index, plan.group
+    tail_data = table_tail_data_module(index, group)
+    expected_declarations: dict[str, tuple[str, ...]] = {
+        tail_data: (
+            table_tail_normal(index, group),
+            f"table{index}Tail{group}Candidate",
+        ),
+        **{
+            table_tail_merge_step_data_module(index, group, step): (
+                table_tail_merge_step_normal(index, group, step),)
+            for step in (3, 2, 1)
+        },
+        **{
+            table_tail_merge_step_certificate_module(index, group, step): (
+                table_tail_merge_step_certificate(index, group, step),)
+            for step in (3, 2, 1, 0)
+        },
+        table_tail_certificate_module(index, group): (
+            f"table{index}_tail{group}_merge_certificate",
+            table_tail_certificate(index, group),
+        ),
+    }
+    if declared_by_module != expected_declarations:
+        raise RuntimeError("generated tail declaration names changed")
+    all_declarations = [
+        declaration
+        for declarations in declared_by_module.values()
+        for declaration in declarations
+    ]
+    if len(all_declarations) != len(set(all_declarations)):
+        raise RuntimeError("generated tail declarations are not unique")
+
+    if lean_polynomial(
+            table_tail_normal(index, group),
+            plan.stage_normals[0]) not in rendered[tail_data]:
+        raise RuntimeError("public tail result literal changed")
+    for step in (3, 2, 1):
+        module = table_tail_merge_step_data_module(index, group, step)
+        literal = lean_polynomial(
+            table_tail_merge_step_normal(index, group, step),
+            plan.stage_normals[step])
+        if literal not in rendered[module]:
+            raise RuntimeError(
+                f"tail merge step {step} result literal changed")
+
+    certificate_module = table_tail_certificate_module(index, group)
+    public_payload = rendered[certificate_module]
+    merge_statement = (
+        f"theorem table{index}_tail{group}_merge_certificate :\n"
+        f"    table{index}Tail{group}Candidate = "
+        f"{table_tail_normal(index, group)} := by")
+    final_declaration = tail_public_certificate_declaration(
+        index, group, row, plan.positions)
+    if merge_statement not in public_payload:
+        raise RuntimeError("public tail merge endpoint changed")
+    if final_declaration not in public_payload:
+        raise RuntimeError("public tail certificate endpoint changed")
+    if "  decide" in public_payload:
+        raise RuntimeError("public tail merge must compose isolated proofs")
+    ordered_rw = ", ".join(
+        table_tail_merge_step_certificate(index, group, step)
+        for step in (3, 2, 1, 0))
+    if f"  rw [{ordered_rw}]" not in public_payload:
+        raise RuntimeError("public tail merge rewrite chain changed")
+
+
+def tail_shard_manifest_name(index: int, group: int) -> str:
+    return f"{table_tail_target_prefix(index, group)}GeneratedFiles.txt"
+
+
+def tail_shard_manifest_bytes(rendered: dict[str, str]) -> bytes:
+    return ("".join(f"{module}.lean\n" for module in sorted(rendered))
+            .encode("utf-8"))
+
+
+def existing_owned_tail_paths(
+        index: int, group: int, lean_dir: Path = LEAN_DIR) -> set[Path]:
+    """Existing source paths owned by one exact decimal-bounded tail."""
+    prefix = table_tail_target_prefix(index, group)
+    paths = {
+        path for path in lean_dir.glob(f"{prefix}*.lean")
+        if owns_table_tail_target(path.name, index, group)
+    }
+    manifest = lean_dir / tail_shard_manifest_name(index, group)
+    if manifest.exists() or manifest.is_symlink():
+        paths.add(manifest)
+    return paths
+
+
+def validate_existing_tail_paths(
+        index: int, group: int, expected: set[str],
+        lean_dir: Path = LEAN_DIR) -> set[Path]:
+    paths = existing_owned_tail_paths(index, group, lean_dir)
+    for filename in expected:
+        path = lean_dir / filename
+        if path.is_symlink():
+            paths.add(path)
+    invalid = sorted(
+        str(path) for path in paths
+        if path.is_symlink() or not path.is_file())
+    if invalid:
+        raise RuntimeError(
+            "refusing non-regular generated tail paths:\n  "
+            + "\n  ".join(invalid))
+    return paths
+
+
+def tail_shard_file_payloads(rendered: dict[str, str],
+                             index: int, group: int) -> dict[str, bytes]:
+    expected_modules = set(expected_tail_shard_modules(index, group))
+    if set(rendered) != expected_modules:
+        raise RuntimeError("tail shard payload module set changed")
+    payloads = {
+        f"{module}.lean": rendered[module].encode("utf-8")
+        for module in rendered
+    }
+    payloads[tail_shard_manifest_name(index, group)] = \
+        tail_shard_manifest_bytes(rendered)
+    return payloads
+
+
+def tail_shard_differences(
+        rendered: dict[str, str], index: int, group: int,
+        lean_dir: Path = LEAN_DIR
+        ) -> tuple[list[str], list[str], list[str]]:
+    """Return missing, unexpected, and byte-stale target filenames."""
+    payloads = tail_shard_file_payloads(rendered, index, group)
+    expected = set(payloads)
+    paths = validate_existing_tail_paths(index, group, expected, lean_dir)
+    existing = {path.name for path in paths}
+    missing = sorted(expected - existing)
+    unexpected = sorted(existing - expected)
+    stale = sorted(
+        filename for filename in expected & existing
+        if (lean_dir / filename).read_bytes() != payloads[filename])
+    return missing, unexpected, stale
+
+
+def format_tail_shard_differences(
+        index: int, group: int, missing: list[str],
+        unexpected: list[str], stale: list[str]) -> str:
+    lines = [f"table {index} tail {group} shard check failed"]
+    for label, filenames in (
+            ("missing", missing),
+            ("unexpected", unexpected),
+            ("stale-content", stale)):
+        if filenames:
+            lines.append(f"  {label} ({len(filenames)}):")
+            lines.extend(f"    {filename}" for filename in filenames)
+    return "\n".join(lines)
+
+
+def tail_shard_digest(rendered: dict[str, str]) -> str:
+    digest = hashlib.sha256()
+    for module in sorted(rendered):
+        digest.update(module.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(rendered[module].encode("utf-8"))
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def check_tail_shard_target(
+        index: int, group: int, row: list[Term],
+        lean_dir: Path = LEAN_DIR) -> str:
+    rendered, _ = render_tail_shard_target(index, group, row)
+    missing, unexpected, stale = tail_shard_differences(
+        rendered, index, group, lean_dir)
+    if missing or unexpected or stale:
+        raise RuntimeError(format_tail_shard_differences(
+            index, group, missing, unexpected, stale))
+    return tail_shard_digest(rendered)
+
+
+def write_tail_shard_target(
+        index: int, group: int, row: list[Term],
+        lean_dir: Path = LEAN_DIR) -> str:
+    """Reconcile one target after full in-memory render and preflight."""
+    rendered, _ = render_tail_shard_target(index, group, row)
+    payloads = tail_shard_file_payloads(rendered, index, group)
+    _, unexpected, _ = tail_shard_differences(
+        rendered, index, group, lean_dir)
+    if unexpected:
+        raise RuntimeError(format_tail_shard_differences(
+            index, group, [], unexpected, []))
+    for filename in sorted(payloads):
+        path = lean_dir / filename
+        payload = payloads[filename]
+        if not path.exists() or path.read_bytes() != payload:
+            path.write_bytes(payload)
+    return check_tail_shard_target(index, group, row, lean_dir)
 
 
 def theta_suffix_expression(start: int) -> str:
@@ -2264,6 +2898,14 @@ def main() -> None:
         metavar=("TABLE_INDEX", "TERM_POSITION"),
         help="regenerate one table-term certificate using accumulator shards")
     modes.add_argument(
+        "--write-tail-shards", nargs=2, type=int,
+        metavar=("TABLE_INDEX", "TAIL_INDEX"),
+        help="write one explicitly authorized stagewise tail-merge graph")
+    modes.add_argument(
+        "--check-tail-shards", nargs=2, type=int,
+        metavar=("TABLE_INDEX", "TAIL_INDEX"),
+        help="check one explicitly authorized stagewise tail-merge graph")
+    modes.add_argument(
         "--write-root", action="store_true",
         help=("write only the exact generated shared root closure "
               f"({EXPECTED_ROOT_MODULE_COUNT} modules)"))
@@ -2290,6 +2932,30 @@ def main() -> None:
         write_table_term_certificate_files(
             index, position, rows[index][position], force_sharded=True)
         write_target_manifest_and_check(index, position)
+        return
+    if args.write_tail_shards or args.check_tail_shards:
+        index, group = (args.write_tail_shards or args.check_tail_shards)
+        rows = parse_table()
+        if not 0 <= index < 4:
+            parser.error("TABLE_INDEX must be between 0 and 3")
+        group_count = (len(rows[index]) + TABLE_BLOCK_SIZE - 1) // \
+            TABLE_BLOCK_SIZE
+        if not 0 <= group < group_count:
+            parser.error(
+                f"TAIL_INDEX must be between 0 and {group_count - 1} "
+                f"for table {index}")
+        try:
+            require_authorized_tail_shard_target(index, group)
+            if args.write_tail_shards:
+                digest = write_tail_shard_target(index, group, rows[index])
+                action = "written"
+            else:
+                digest = check_tail_shard_target(index, group, rows[index])
+                action = "check passed"
+        except (OSError, RuntimeError) as error:
+            parser.exit(1, f"{error}\n")
+        print(f"table {index} tail {group} shard graph {action}: "
+              f"{TAIL_SHARD_MODULE_COUNT} modules, sha256 {digest}")
         return
     if args.write_root:
         try:
