@@ -16,6 +16,8 @@ import hashlib
 import re
 from collections import defaultdict
 from collections.abc import Callable
+from dataclasses import dataclass
+from functools import lru_cache
 from itertools import combinations
 from pathlib import Path
 
@@ -60,6 +62,26 @@ TERM_STATE_SHARD_TOTAL_THRESHOLD = 40000
 # one reduction.  Keep the exception explicit and target-scoped: lowering the
 # global threshold would needlessly shard several already-tractable terms.
 FORCE_SHARDED_TABLE_TERMS = {(0, 51), (0, 120), (0, 125)}
+
+# Root elementary-symmetric products have the opposite shape from table-term
+# products: the left theta polynomial has only ten terms while the right child
+# can have thousands.  Split the right operand, and only at the three exact
+# product frontiers that cross the same 10,000-row normalization threshold.
+ROOT_PRODUCT_NORMALIZE_SHARD_THRESHOLD = 10000
+ROOT_RAW_RIGHT_CHUNK_SIZE = 1000
+EXPECTED_SHARDED_ROOT_PRODUCTS = ((1, 5), (0, 5), (0, 6))
+EXPECTED_ROOT_PRODUCT_MODULE_COUNTS = {
+    (1, 5): 139,
+    (0, 5): 160,
+    (0, 6): 212,
+}
+EXPECTED_ROOT_PRODUCT_SHAPES = {
+    # child terms, raw terms, right chunks, buckets per radix coordinate
+    (1, 5): (1583, 15830, 2, (11, 11, 11, 11, 11)),
+    (0, 5): (2135, 21350, 3, (11, 11, 11, 11, 11)),
+    (0, 6): (4011, 40110, 5, (13, 13, 13, 13, 13)),
+}
+EXPECTED_ROOT_MODULE_COUNT = 563
 
 
 def add(*polynomials: Polynomial) -> Polynomial:
@@ -1176,21 +1198,676 @@ def root_table_final_module(index: int) -> str:
     return f"{PREFIX}Table{index}Final"
 
 
+ROOT_NORMALIZE_SUPPORT_MODULE = f"{PREFIX}RootNormalizeSupport"
+ROOT_RAW_MUL_APPEND_LEFT_CERTIFICATE = "root_rawMul_append_left"
+ROOT_RAW_MUL_SINGLETON_APPEND_RIGHT_CERTIFICATE = \
+    "root_rawMul_singleton_append_right"
+ROOT_FLATTEN_BUCKETS_APPEND_CERTIFICATE = "root_flattenBuckets_append"
+ROOT_FLATTEN_BUCKETS_SINGLETON_CERTIFICATE = "root_flattenBuckets_singleton"
+
+
+def root_product_module(start: int, degree: int, suffix: str) -> str:
+    return f"{PREFIX}RootState{start}Degree{degree}Product{suffix}"
+
+
+def root_product_normal(start: int, degree: int, suffix: str) -> str:
+    return f"rootState{start}Degree{degree}Product{suffix}Normal"
+
+
+def root_product_aux_certificate(
+        start: int, degree: int, suffix: str) -> str:
+    return (f"root_state{start}_degree{degree}_product_"
+            f"{suffix}_certificate")
+
+
+def root_state_product_certificate(start: int, degree: int) -> str:
+    """The pre-existing theorem name consumed by root-state recurrence."""
+    return f"root_state{start}_degree{degree}_product_certificate"
+
+
+def root_product_left_normal(start: int, degree: int, left: int) -> str:
+    return root_product_normal(start, degree, f"RawLeft{left}")
+
+
+def root_product_right_module(
+        start: int, degree: int, right: int) -> str:
+    return root_product_module(start, degree, f"RawRightChunk{right}Data")
+
+
+def root_product_right_normal(
+        start: int, degree: int, right: int) -> str:
+    return root_product_normal(start, degree, f"RawRightChunk{right}")
+
+
+def root_product_pair_module(
+        start: int, degree: int, left: int, right: int,
+        suffix: str) -> str:
+    return root_product_module(
+        start, degree, f"RawChunkLeft{left}Right{right}{suffix}")
+
+
+def root_product_pair_normal(
+        start: int, degree: int, left: int, right: int) -> str:
+    return root_product_normal(
+        start, degree, f"RawChunkLeft{left}Right{right}")
+
+
+def root_product_pair_certificate(
+        start: int, degree: int, left: int, right: int) -> str:
+    return root_product_aux_certificate(
+        start, degree, f"raw_chunk_left{left}_right{right}")
+
+
+def root_product_radix_bucket_module(
+        start: int, degree: int, coordinate: int, bucket: int) -> str:
+    return root_product_module(
+        start, degree,
+        f"NormalizeRadix{coordinate}Bucket{bucket}Data")
+
+
+def root_product_radix_bucket_normal(
+        start: int, degree: int, coordinate: int, bucket: int) -> str:
+    return root_product_normal(
+        start, degree, f"NormalizeRadix{coordinate}Bucket{bucket}")
+
+
+def root_nested_append(expressions: list[str]) -> str:
+    """Right-associated append used only by the fail-closed root emitter."""
+    if not expressions:
+        raise RuntimeError("cannot render an empty root append expression")
+    result = expressions[-1]
+    for expression in reversed(expressions[:-1]):
+        result = f"({expression} ++ {result})"
+    return result
+
+
+@dataclass(frozen=True)
+class RootProductShardPlan:
+    start: int
+    degree: int
+    theta_terms: TermList
+    child_terms: TermList
+    right_chunks: list[TermList]
+    pair_chunks: list[list[TermList]]
+    raw_terms: TermList
+    radix_stages: list[tuple[int, list[TermList], TermList]]
+    product: Polynomial
+
+
+def validate_root_product_shard_plan(plan: RootProductShardPlan) -> None:
+    """Recheck a shard trace independently, including cached mutable data."""
+    key = (plan.start, plan.degree)
+    if key not in EXPECTED_SHARDED_ROOT_PRODUCTS:
+        raise RuntimeError(f"unexpected sharded root product {key}")
+    expected_child_terms, expected_raw_terms, expected_right_chunks, \
+        expected_bucket_counts = EXPECTED_ROOT_PRODUCT_SHAPES[key]
+    theta_terms = polynomial_terms(THETAS[plan.start])
+    child = esymm_state(plan.start + 1, plan.degree - 1)
+    child_terms = polynomial_terms(child)
+    if plan.theta_terms != theta_terms or len(theta_terms) != 10:
+        raise RuntimeError(f"root product {key} theta trace changed")
+    if (plan.child_terms != child_terms or
+            len(child_terms) != expected_child_terms):
+        raise RuntimeError(f"root product {key} child trace changed")
+    if (len(plan.right_chunks) != expected_right_chunks or
+            any(not chunk or len(chunk) > ROOT_RAW_RIGHT_CHUNK_SIZE
+                for chunk in plan.right_chunks) or
+            [term for chunk in plan.right_chunks for term in chunk] !=
+            child_terms):
+        raise RuntimeError(f"root product {key} right-chunk trace changed")
+    if len(plan.pair_chunks) != len(theta_terms):
+        raise RuntimeError(f"root product {key} pair-row count changed")
+    for left, (term, row) in enumerate(
+            zip(theta_terms, plan.pair_chunks)):
+        if len(row) != expected_right_chunks:
+            raise RuntimeError(
+                f"root product {key} pair-row {left} width changed")
+        for right, (right_chunk, pair_chunk) in enumerate(
+                zip(plan.right_chunks, row)):
+            if (len(pair_chunk) > ROOT_RAW_RIGHT_CHUNK_SIZE or
+                    pair_chunk != raw_mul_term_lists([term], right_chunk)):
+                raise RuntimeError(
+                    f"root product {key} raw pair ({left}, {right}) changed")
+    expected_raw = raw_mul_term_lists(theta_terms, child_terms)
+    reconstructed_raw = [
+        term
+        for row in plan.pair_chunks
+        for pair_chunk in row
+        for term in pair_chunk
+    ]
+    if (plan.raw_terms != reconstructed_raw or
+            plan.raw_terms != expected_raw or
+            len(plan.raw_terms) != expected_raw_terms or
+            len(plan.raw_terms) < ROOT_PRODUCT_NORMALIZE_SHARD_THRESHOLD):
+        raise RuntimeError(f"root product {key} raw trace changed")
+    if len(plan.radix_stages) != 5:
+        raise RuntimeError(f"root product {key} radix stage count changed")
+    terms = plan.raw_terms
+    for stage_index, (coordinate, buckets, flattened) in enumerate(
+            plan.radix_stages):
+        expected_coordinate = 4 - stage_index
+        expected_buckets = bucketize_terms(terms, expected_coordinate)
+        expected_flattened = radix_pass_terms(terms, expected_coordinate)
+        if (coordinate != expected_coordinate or
+                len(buckets) != expected_bucket_counts[stage_index] or
+                buckets != expected_buckets or
+                flattened != expected_flattened or
+                flattened != [term for bucket in buckets for term in bucket]):
+            raise RuntimeError(
+                f"root product {key} radix-{expected_coordinate} trace changed")
+        terms = flattened
+    expected_product = mul(THETAS[plan.start], child)
+    if (plan.product != expected_product or
+            combine_terms(terms) != expected_product):
+        raise RuntimeError(f"root product {key} combine trace changed")
+
+
+@lru_cache(maxsize=1)
+def sharded_root_product_keys() -> tuple[tuple[int, int], ...]:
+    """Select and independently pin the expensive reachable root products."""
+    cache: dict[tuple[int, int], Polynomial] = {}
+    selected = tuple(
+        (start, degree)
+        for start, degree in root_state_keys()
+        if start < 6 and degree > 0 and
+        len(THETAS[start]) *
+        len(esymm_state(start + 1, degree - 1, cache)) >=
+        ROOT_PRODUCT_NORMALIZE_SHARD_THRESHOLD
+    )
+    if selected != EXPECTED_SHARDED_ROOT_PRODUCTS:
+        raise RuntimeError(
+            "root-product shard frontier changed: expected "
+            f"{sorted(EXPECTED_SHARDED_ROOT_PRODUCTS)}, got "
+            f"{sorted(selected)}")
+    return selected
+
+
+@lru_cache(maxsize=None)
+def root_product_shard_plan(start: int, degree: int) -> RootProductShardPlan:
+    """Compute and validate every finite stage of one root product shard."""
+    if (start, degree) not in EXPECTED_SHARDED_ROOT_PRODUCTS:
+        raise RuntimeError(
+            f"unexpected sharded root product ({start}, {degree})")
+    theta_terms = polynomial_terms(THETAS[start])
+    child = esymm_state(start + 1, degree - 1)
+    child_terms = polynomial_terms(child)
+    expected_child_terms, expected_raw_terms, expected_right_chunks, \
+        expected_bucket_counts = EXPECTED_ROOT_PRODUCT_SHAPES[(start, degree)]
+    if len(theta_terms) != 10 or len(child_terms) != expected_child_terms:
+        raise RuntimeError(
+            f"root product ({start}, {degree}) source shape changed: "
+            f"theta={len(theta_terms)}, child={len(child_terms)}")
+    right_chunks = [
+        child_terms[offset:offset + ROOT_RAW_RIGHT_CHUNK_SIZE]
+        for offset in range(0, len(child_terms), ROOT_RAW_RIGHT_CHUNK_SIZE)
+    ]
+    if not right_chunks or any(
+            not chunk or len(chunk) > ROOT_RAW_RIGHT_CHUNK_SIZE
+            for chunk in right_chunks):
+        raise RuntimeError(
+            f"invalid right chunks for root product ({start}, {degree})")
+    if [term for chunk in right_chunks for term in chunk] != child_terms:
+        raise RuntimeError(
+            f"right chunks do not reconstruct root product ({start}, {degree})")
+    if len(right_chunks) != expected_right_chunks:
+        raise RuntimeError(
+            f"root product ({start}, {degree}) must have exactly "
+            f"{expected_right_chunks} right chunks, got {len(right_chunks)}")
+
+    pair_chunks = [
+        [raw_mul_term_lists([term], right_chunk)
+         for right_chunk in right_chunks]
+        for term in theta_terms
+    ]
+    raw_terms = [
+        term
+        for left_row in pair_chunks
+        for pair_chunk in left_row
+        for term in pair_chunk
+    ]
+    expected_raw = raw_mul_term_lists(theta_terms, child_terms)
+    if raw_terms != expected_raw:
+        raise RuntimeError(
+            f"raw chunks do not reconstruct root product ({start}, {degree})")
+    if len(raw_terms) != expected_raw_terms:
+        raise RuntimeError(
+            f"root product ({start}, {degree}) raw size changed: expected "
+            f"{expected_raw_terms}, got {len(raw_terms)}")
+    if any(len(chunk) > ROOT_RAW_RIGHT_CHUNK_SIZE
+           for row in pair_chunks for chunk in row):
+        raise RuntimeError(
+            f"raw chunk bound exceeded for root product ({start}, {degree})")
+
+    radix_stages: list[tuple[int, list[TermList], TermList]] = []
+    terms = raw_terms
+    for coordinate in reversed(range(5)):
+        buckets = bucketize_terms(terms, coordinate)
+        flattened = [term for bucket in buckets for term in bucket]
+        if flattened != radix_pass_terms(terms, coordinate):
+            raise RuntimeError(
+                "radix buckets do not reconstruct coordinate "
+                f"{coordinate} for root product ({start}, {degree})")
+        radix_stages.append((coordinate, buckets, flattened))
+        terms = flattened
+    coordinates = tuple(stage[0] for stage in radix_stages)
+    bucket_counts = tuple(len(stage[1]) for stage in radix_stages)
+    if coordinates != (4, 3, 2, 1, 0) or \
+            bucket_counts != expected_bucket_counts:
+        raise RuntimeError(
+            f"root product ({start}, {degree}) radix shape changed: "
+            f"coordinates={coordinates}, buckets={bucket_counts}")
+
+    product = mul(THETAS[start], child)
+    if combine_terms(terms) != product:
+        raise RuntimeError(
+            f"radix/combine trace failed for root product ({start}, {degree})")
+    if len(raw_terms) < ROOT_PRODUCT_NORMALIZE_SHARD_THRESHOLD:
+        raise RuntimeError(
+            f"sharded root product below trigger ({start}, {degree})")
+    plan = RootProductShardPlan(
+        start, degree, theta_terms, child_terms, right_chunks,
+        pair_chunks, raw_terms, radix_stages, product)
+    validate_root_product_shard_plan(plan)
+    return plan
+
+
+def root_product_shard_modules(plan: RootProductShardPlan) -> tuple[str, ...]:
+    """Enumerate one shard graph independently of the module emitter."""
+    validate_root_product_shard_plan(plan)
+    start, degree = plan.start, plan.degree
+    modules: list[str] = [
+        root_product_module(start, degree, "RawLeftData")]
+    modules.extend(
+        root_product_right_module(start, degree, right)
+        for right in range(len(plan.right_chunks)))
+    for left, row in enumerate(plan.pair_chunks):
+        for right in range(len(row)):
+            modules.extend([
+                root_product_pair_module(
+                    start, degree, left, right, "Data"),
+                root_product_pair_module(
+                    start, degree, left, right, "Certificate"),
+            ])
+    modules.extend([
+        root_product_module(start, degree, "RawLeftSplitCertificate"),
+        root_product_module(start, degree, "RawRightSplitCertificate"),
+    ])
+    modules.extend(
+        root_product_module(start, degree, f"RawLeft{left}Certificate")
+        for left in range(len(plan.theta_terms)))
+    modules.extend([
+        root_product_module(start, degree, "NormalizeRawData"),
+        root_product_module(start, degree, "NormalizeRawCertificate"),
+    ])
+    for coordinate, buckets, _ in plan.radix_stages:
+        modules.extend(
+            root_product_radix_bucket_module(
+                start, degree, coordinate, bucket)
+            for bucket in range(len(buckets)))
+        modules.extend([
+            root_product_module(
+                start, degree, f"NormalizeRadix{coordinate}BucketsData"),
+            root_product_module(
+                start, degree, f"NormalizeRadix{coordinate}Data"),
+            root_product_module(
+                start, degree,
+                f"NormalizeRadix{coordinate}BucketizeCertificate"),
+            root_product_module(
+                start, degree,
+                f"NormalizeRadix{coordinate}FlattenCertificate"),
+            root_product_module(
+                start, degree, f"NormalizeRadix{coordinate}Certificate"),
+        ])
+    modules.extend([
+        root_product_module(start, degree, "NormalizeCombineCertificate"),
+        root_product_module(start, degree, "Certificate"),
+    ])
+    expected_count = EXPECTED_ROOT_PRODUCT_MODULE_COUNTS[(start, degree)]
+    if len(modules) != expected_count or len(set(modules)) != len(modules):
+        raise RuntimeError(
+            f"root product ({start}, {degree}) must own exactly "
+            f"{expected_count} distinct modules, got {len(modules)}")
+    return tuple(modules)
+
+
 def expected_root_modules() -> tuple[str, ...]:
     """All and only the generated modules owned by root-only generation."""
-    modules = (
+    modules: list[str] = [
+        ROOT_NORMALIZE_SUPPORT_MODULE,
         f"{PREFIX}RootThetaData",
         f"{PREFIX}RootThetaCertificate",
         f"{PREFIX}RootStateData",
-        *(root_state_certificate_module(start, degree)
-          for start, degree in root_state_keys()),
-        *(f"{PREFIX}Root{index}Final" for index in range(4)),
-        f"{PREFIX}s",
-    )
-    if len(modules) != 51 or len(set(modules)) != len(modules):
+    ]
+    sharded = set(sharded_root_product_keys())
+    for start, degree in root_state_keys():
+        if (start, degree) in sharded:
+            modules.extend(root_product_shard_modules(
+                root_product_shard_plan(start, degree)))
+        modules.append(root_state_certificate_module(start, degree))
+    modules.extend(
+        f"{PREFIX}Root{index}Final" for index in range(4))
+    modules.append(f"{PREFIX}s")
+    if (len(modules) != EXPECTED_ROOT_MODULE_COUNT or
+            len(set(modules)) != len(modules)):
         raise RuntimeError(
-            "root closure must contain exactly 51 distinct modules")
-    return modules
+            f"root closure must contain exactly {EXPECTED_ROOT_MODULE_COUNT} "
+            f"distinct modules, got {len(modules)}")
+    return tuple(modules)
+
+
+def write_root_normalize_support(
+        emit: ModuleEmitter | None = None) -> str:
+    """Emit root-local structural list lemmas without table dependencies."""
+    if emit is None:
+        emit = write_module
+    emit(
+        ROOT_NORMALIZE_SUPPORT_MODULE,
+        ["ComputableDummitCoefficientsCore"],
+        [
+            f"theorem {ROOT_RAW_MUL_APPEND_LEFT_CERTIFICATE} "
+            "(p r q : SparsePolynomial) :\n"
+            "    SparsePolynomial.rawMul (p ++ r) q =\n"
+            "      SparsePolynomial.rawMul p q ++\n"
+            "        SparsePolynomial.rawMul r q := by\n"
+            "  induction p with\n"
+            "  | nil => rfl\n"
+            "  | cons t p ih =>\n"
+            "      change q.map (SparseTerm.mul t) ++\n"
+            "          SparsePolynomial.rawMul (p ++ r) q =\n"
+            "        (q.map (SparseTerm.mul t) ++\n"
+            "          SparsePolynomial.rawMul p q) ++\n"
+            "            SparsePolynomial.rawMul r q\n"
+            "      rw [ih, List.append_assoc]",
+            f"theorem {ROOT_RAW_MUL_SINGLETON_APPEND_RIGHT_CERTIFICATE} "
+            "(t : SparseTerm) (q r : SparsePolynomial) :\n"
+            "    SparsePolynomial.rawMul [t] (q ++ r) =\n"
+            "      SparsePolynomial.rawMul [t] q ++\n"
+            "        SparsePolynomial.rawMul [t] r := by\n"
+            "  simp [SparsePolynomial.rawMul, List.map_append]",
+            f"theorem {ROOT_FLATTEN_BUCKETS_APPEND_CERTIFICATE} "
+            "(p r : List SparsePolynomial) :\n"
+            "    SparsePolynomial.flattenBuckets (p ++ r) =\n"
+            "      SparsePolynomial.flattenBuckets p ++\n"
+            "        SparsePolynomial.flattenBuckets r := by\n"
+            "  induction p with\n"
+            "  | nil => rfl\n"
+            "  | cons b p ih =>\n"
+            "      change b ++ SparsePolynomial.flattenBuckets (p ++ r) =\n"
+            "        (b ++ SparsePolynomial.flattenBuckets p) ++\n"
+            "          SparsePolynomial.flattenBuckets r\n"
+            "      rw [ih, List.append_assoc]",
+            f"theorem {ROOT_FLATTEN_BUCKETS_SINGLETON_CERTIFICATE} "
+            "(p : SparsePolynomial) :\n"
+            "    SparsePolynomial.flattenBuckets [p] = p := by\n"
+            "  simp [SparsePolynomial.flattenBuckets]",
+        ])
+    return ROOT_NORMALIZE_SUPPORT_MODULE
+
+
+def write_root_product_shards(
+        plan: RootProductShardPlan, state_data: str,
+        theta_certificate: str,
+        emit: ModuleEmitter | None = None) -> str:
+    """Emit one bounded raw/radix/combine trace for a root product."""
+    validate_root_product_shard_plan(plan)
+    if emit is None:
+        emit = write_module
+    start, degree = plan.start, plan.degree
+    child_normal = root_state_normal(start + 1, degree - 1)
+    product_normal = root_state_product(start, degree)
+
+    left_data = root_product_module(start, degree, "RawLeftData")
+    left_normals = [
+        root_product_left_normal(start, degree, left)
+        for left in range(len(plan.theta_terms))
+    ]
+    emit(
+        left_data,
+        ["ComputableDummitCoefficientsCore"],
+        [lean_term_list(name, [term])
+         for name, term in zip(left_normals, plan.theta_terms)])
+
+    right_modules: list[str] = []
+    right_normals: list[str] = []
+    for right, terms in enumerate(plan.right_chunks):
+        module = root_product_right_module(start, degree, right)
+        normal = root_product_right_normal(start, degree, right)
+        emit(module, ["ComputableDummitCoefficientsCore"], [
+            lean_term_list(normal, terms),
+        ])
+        right_modules.append(module)
+        right_normals.append(normal)
+
+    pair_modules: list[list[str]] = []
+    pair_data_modules: list[str] = []
+    pair_normals: list[list[str]] = []
+    pair_certificates: list[list[str]] = []
+    for left, row in enumerate(plan.pair_chunks):
+        row_modules: list[str] = []
+        row_normals: list[str] = []
+        row_certificates: list[str] = []
+        for right, terms in enumerate(row):
+            data_module = root_product_pair_module(
+                start, degree, left, right, "Data")
+            certificate_module = root_product_pair_module(
+                start, degree, left, right, "Certificate")
+            normal = root_product_pair_normal(
+                start, degree, left, right)
+            certificate = root_product_pair_certificate(
+                start, degree, left, right)
+            emit(data_module, ["ComputableDummitCoefficientsCore"], [
+                lean_term_list(normal, terms),
+            ])
+            emit(certificate_module,
+                 [left_data, right_modules[right], data_module], [
+                decide_theorem(
+                    certificate,
+                    f"SparsePolynomial.rawMul {left_normals[left]} "
+                    f"{right_normals[right]} = {normal}"),
+            ])
+            pair_data_modules.append(data_module)
+            row_modules.append(certificate_module)
+            row_normals.append(normal)
+            row_certificates.append(certificate)
+        pair_modules.append(row_modules)
+        pair_normals.append(row_normals)
+        pair_certificates.append(row_certificates)
+
+    left_split_module = root_product_module(
+        start, degree, "RawLeftSplitCertificate")
+    left_split_certificate = root_product_aux_certificate(
+        start, degree, "raw_left_split")
+    emit(left_split_module, [theta_certificate, left_data], [
+        decide_theorem(
+            left_split_certificate,
+            f"theta{start}Normal = {root_nested_append(left_normals)}"),
+    ])
+
+    right_split_module = root_product_module(
+        start, degree, "RawRightSplitCertificate")
+    right_split_certificate = root_product_aux_certificate(
+        start, degree, "raw_right_split")
+    emit(right_split_module, [state_data, *right_modules], [
+        decide_theorem(
+            right_split_certificate,
+            f"{child_normal} = {root_nested_append(right_normals)}"),
+    ])
+
+    row_certificate_modules: list[str] = []
+    row_certificate_names: list[str] = []
+    row_normal_expressions: list[str] = []
+    right_append_rewrites = [
+        ROOT_RAW_MUL_SINGLETON_APPEND_RIGHT_CERTIFICATE
+    ] * (len(right_normals) - 1)
+    for left, term in enumerate(plan.theta_terms):
+        module = root_product_module(
+            start, degree, f"RawLeft{left}Certificate")
+        certificate = root_product_aux_certificate(
+            start, degree, f"raw_left{left}")
+        row_expression = root_nested_append(pair_normals[left])
+        rewrites = right_append_rewrites + pair_certificates[left]
+        emit(
+            module,
+            [ROOT_NORMALIZE_SUPPORT_MODULE, right_split_module,
+             *pair_modules[left]],
+            [f"theorem {certificate} :\n"
+             f"    SparsePolynomial.rawMul {left_normals[left]} "
+             f"{child_normal} = {row_expression} := by\n"
+             f"  rw [{right_split_certificate}]\n"
+             "  change SparsePolynomial.rawMul "
+             f"[{lean_term(term)}] {root_nested_append(right_normals)} =\n"
+             f"    {row_expression}\n"
+             f"  rw [{', '.join(rewrites)}]"])
+        row_certificate_modules.append(module)
+        row_certificate_names.append(certificate)
+        row_normal_expressions.append(row_expression)
+
+    raw_data = root_product_module(start, degree, "NormalizeRawData")
+    raw_normal = root_product_normal(start, degree, "NormalizeRaw")
+    raw_expression = root_nested_append(row_normal_expressions)
+    emit(raw_data, pair_data_modules, [
+        f"def {raw_normal} : SparsePolynomial :=\n"
+        f"  {raw_expression}",
+    ])
+
+    raw_certificate_module = root_product_module(
+        start, degree, "NormalizeRawCertificate")
+    raw_certificate = root_product_aux_certificate(
+        start, degree, "normalize_raw")
+    left_append_rewrites = [ROOT_RAW_MUL_APPEND_LEFT_CERTIFICATE] * \
+        (len(left_normals) - 1)
+    emit(
+        raw_certificate_module,
+        [raw_data, left_split_module, ROOT_NORMALIZE_SUPPORT_MODULE,
+         *row_certificate_modules],
+        [f"theorem {raw_certificate} :\n"
+         f"    SparsePolynomial.rawMul theta{start}Normal "
+         f"{child_normal} = {raw_normal} := by\n"
+         f"  rw [{left_split_certificate}]\n"
+         "  change SparsePolynomial.rawMul "
+         f"{root_nested_append(left_normals)} {child_normal} =\n"
+         f"    {raw_expression}\n"
+         f"  rw [{', '.join(left_append_rewrites + row_certificate_names)}]"])
+
+    previous_data = raw_data
+    previous_normal = raw_normal
+    stage_certificate_modules: list[str] = [raw_certificate_module]
+    stage_certificates: list[str] = [raw_certificate]
+    for coordinate, buckets, _ in plan.radix_stages:
+        bucket_modules: list[str] = []
+        bucket_normals: list[str] = []
+        for bucket, terms in enumerate(buckets):
+            module = root_product_radix_bucket_module(
+                start, degree, coordinate, bucket)
+            normal = root_product_radix_bucket_normal(
+                start, degree, coordinate, bucket)
+            emit(module, ["ComputableDummitCoefficientsCore"], [
+                lean_term_list(normal, terms),
+            ])
+            bucket_modules.append(module)
+            bucket_normals.append(normal)
+
+        bucket_list_expression = root_nested_append(
+            [f"[{normal}]" for normal in bucket_normals])
+        flattened_expression = root_nested_append(bucket_normals)
+        buckets_data = root_product_module(
+            start, degree, f"NormalizeRadix{coordinate}BucketsData")
+        buckets_normal = root_product_normal(
+            start, degree, f"NormalizeRadix{coordinate}Buckets")
+        emit(buckets_data, bucket_modules, [
+            f"def {buckets_normal} : List SparsePolynomial :=\n"
+            f"  {bucket_list_expression}",
+        ])
+
+        stage_data = root_product_module(
+            start, degree, f"NormalizeRadix{coordinate}Data")
+        stage_normal = root_product_normal(
+            start, degree, f"NormalizeRadix{coordinate}")
+        emit(stage_data, bucket_modules, [
+            f"def {stage_normal} : SparsePolynomial :=\n"
+            f"  {flattened_expression}",
+        ])
+
+        bucketize_module = root_product_module(
+            start, degree,
+            f"NormalizeRadix{coordinate}BucketizeCertificate")
+        bucketize_certificate = root_product_aux_certificate(
+            start, degree, f"normalize_radix{coordinate}_bucketize")
+        emit(bucketize_module, [previous_data, buckets_data], [
+            decide_theorem(
+                bucketize_certificate,
+                "SparsePolynomial.bucketize "
+                f"(fun t ↦ t.powers.p{coordinate}) {previous_normal} = "
+                f"{buckets_normal}"),
+        ])
+
+        flatten_module = root_product_module(
+            start, degree,
+            f"NormalizeRadix{coordinate}FlattenCertificate")
+        flatten_certificate = root_product_aux_certificate(
+            start, degree, f"normalize_radix{coordinate}_flatten")
+        flatten_rewrites = [ROOT_FLATTEN_BUCKETS_APPEND_CERTIFICATE] * \
+            (len(bucket_normals) - 1)
+        flatten_rewrites.extend(
+            [ROOT_FLATTEN_BUCKETS_SINGLETON_CERTIFICATE] *
+            len(bucket_normals))
+        emit(
+            flatten_module,
+            [ROOT_NORMALIZE_SUPPORT_MODULE, buckets_data, stage_data],
+            [f"theorem {flatten_certificate} :\n"
+             "    SparsePolynomial.flattenBuckets "
+             f"{buckets_normal} = {stage_normal} := by\n"
+             "  change SparsePolynomial.flattenBuckets "
+             f"{bucket_list_expression} =\n"
+             f"    {flattened_expression}\n"
+             f"  rw [{', '.join(flatten_rewrites)}]"])
+
+        certificate_module = root_product_module(
+            start, degree, f"NormalizeRadix{coordinate}Certificate")
+        certificate = root_product_aux_certificate(
+            start, degree, f"normalize_radix{coordinate}")
+        emit(certificate_module, [bucketize_module, flatten_module], [
+            f"theorem {certificate} :\n"
+            "    SparsePolynomial.radixPass "
+            f"(fun t ↦ t.powers.p{coordinate}) {previous_normal} = "
+            f"{stage_normal} := by\n"
+            "  change SparsePolynomial.flattenBuckets\n"
+            "    (SparsePolynomial.bucketize "
+            f"(fun t ↦ t.powers.p{coordinate}) {previous_normal}) = _\n"
+            f"  rw [{bucketize_certificate}, {flatten_certificate}]",
+        ])
+        stage_certificate_modules.append(certificate_module)
+        stage_certificates.append(certificate)
+        previous_data = stage_data
+        previous_normal = stage_normal
+
+    combine_module = root_product_module(
+        start, degree, "NormalizeCombineCertificate")
+    combine_certificate = root_product_aux_certificate(
+        start, degree, "normalize_combine")
+    emit(combine_module, [state_data, previous_data], [
+        decide_theorem(
+            combine_certificate,
+            f"SparsePolynomial.combine {previous_normal} = {product_normal}"),
+    ])
+    stage_certificate_modules.append(combine_module)
+    stage_certificates.append(combine_certificate)
+
+    source = (f"SparsePolynomial.rawMul theta{start}Normal "
+              f"{child_normal}")
+    for coordinate in reversed(range(5)):
+        source = ("SparsePolynomial.radixPass "
+                  f"(fun t ↦ t.powers.p{coordinate}) ({source})")
+    source = f"SparsePolynomial.combine ({source})"
+    endpoint_module = root_product_module(start, degree, "Certificate")
+    emit(endpoint_module, stage_certificate_modules, [
+        f"theorem {root_state_product_certificate(start, degree)} :\n"
+        f"    SparsePolynomial.mul theta{start}Normal {child_normal} = "
+        f"{product_normal} := by\n"
+        f"  change {source} = {product_normal}\n"
+        f"  rw [{', '.join(stage_certificates)}]",
+    ])
+    return endpoint_module
 
 
 def write_root_data(
@@ -1235,6 +1912,7 @@ def write_root_state_certificates(theta_certificate: str,
                                   emit: ModuleEmitter | None = None) -> None:
     if emit is None:
         emit = write_module
+    sharded = set(sharded_root_product_keys())
     for start, degree in root_state_keys():
         # The four large public coefficient certificates begin at
         # (start, degree) = (0, 3), ..., (0, 6).  Each recurrence step
@@ -1254,15 +1932,21 @@ def write_root_state_certificates(theta_certificate: str,
         high_module = root_state_certificate_module(start + 1, degree)
         low_module = root_state_certificate_module(start + 1, degree - 1)
         product = root_state_product(start, degree)
-        product_certificate = (
-            f"root_state{start}_degree{degree}_product_certificate")
+        product_certificate = root_state_product_certificate(start, degree)
         merge_certificate = (
             f"root_state{start}_degree{degree}_merge_certificate")
-        declarations = [
-            decide_theorem(
+        imports = [state_data, theta_certificate, high_module, low_module]
+        declarations: list[str] = []
+        if (start, degree) in sharded:
+            imports.append(write_root_product_shards(
+                root_product_shard_plan(start, degree), state_data,
+                theta_certificate, emit))
+        else:
+            declarations.append(decide_theorem(
                 product_certificate,
                 f"SparsePolynomial.mul theta{start}Normal "
-                f"{root_state_normal(start + 1, degree - 1)} = {product}"),
+                f"{root_state_normal(start + 1, degree - 1)} = {product}"))
+        declarations.extend([
             decide_theorem(
                 merge_certificate,
                 f"SparsePolynomial.add {root_state_normal(start + 1, degree)} "
@@ -1279,10 +1963,8 @@ def write_root_state_certificates(theta_certificate: str,
             f"    {root_state_certificate(start + 1, degree)},\n"
             f"    {root_state_certificate(start + 1, degree - 1)},\n"
             f"    {product_certificate}, {merge_certificate}]",
-        ]
-        emit(module,
-             [state_data, theta_certificate, high_module, low_module],
-             declarations)
+        ])
+        emit(module, imports, declarations)
 
 
 def write_root_final(index: int, table_final: str,
@@ -1325,6 +2007,7 @@ def emit_root_closure(table_finals: list[str] | tuple[str, ...],
             "root closure requires the four canonical table-final imports")
     if emit is None:
         emit = write_module
+    write_root_normalize_support(emit)
     theta_certificate, state_data = write_root_data(emit)
     write_root_state_certificates(theta_certificate, state_data, emit)
     root_finals = [
@@ -1571,7 +2254,8 @@ def main() -> None:
         help="regenerate one table-term certificate using accumulator shards")
     modes.add_argument(
         "--write-root", action="store_true",
-        help="write only the exact 51-module shared root closure")
+        help=("write only the exact generated shared root closure "
+              f"({EXPECTED_ROOT_MODULE_COUNT} modules)"))
     modes.add_argument(
         "--check-root", action="store_true",
         help="check the exact root closure without writing any source")
@@ -1601,14 +2285,16 @@ def main() -> None:
             digest = write_root_closure()
         except (OSError, RuntimeError) as error:
             parser.exit(1, f"{error}\n")
-        print(f"root closure written: 51 modules, sha256 {digest}")
+        print("root closure written: "
+              f"{EXPECTED_ROOT_MODULE_COUNT} modules, sha256 {digest}")
         return
     if args.check_root:
         try:
             digest = check_root_closure()
         except (OSError, RuntimeError) as error:
             parser.exit(1, f"{error}\n")
-        print(f"root closure check passed: 51 modules, sha256 {digest}")
+        print("root closure check passed: "
+              f"{EXPECTED_ROOT_MODULE_COUNT} modules, sha256 {digest}")
         return
     if args.write_all:
         write_all_certificates()
