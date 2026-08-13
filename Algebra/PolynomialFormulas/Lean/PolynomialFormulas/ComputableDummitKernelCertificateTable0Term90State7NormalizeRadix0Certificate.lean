@@ -1,0 +1,19 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term90State7NormalizeRadix0BucketizeCertificate
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term90State7NormalizeRadix0FlattenCertificate
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+set_option maxHeartbeats 20000000
+
+theorem table0_term90_state7_normalize_radix0_certificate :
+    SparsePolynomial.radixPass (fun t ↦ t.powers.p0) table0Term90State7NormalizeRadix1Normal = table0Term90State7NormalizeRadix0Normal := by
+  change SparsePolynomial.flattenBuckets
+    (SparsePolynomial.bucketize (fun t ↦ t.powers.p0) table0Term90State7NormalizeRadix1Normal) = _
+  rw [table0_term90_state7_normalize_radix0bucketize_certificate, table0_term90_state7_normalize_radix0flatten_certificate]
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate

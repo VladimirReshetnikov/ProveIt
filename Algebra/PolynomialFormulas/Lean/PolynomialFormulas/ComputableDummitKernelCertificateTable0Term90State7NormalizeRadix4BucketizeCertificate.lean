@@ -1,0 +1,19 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term90State7NormalizeRadix4BucketsData
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term90State7NormalizeRawData
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+set_option maxHeartbeats 20000000
+
+set_option maxRecDepth 1000000 in
+set_option maxHeartbeats 20000000 in
+theorem table0_term90_state7_normalize_radix4bucketize_certificate :
+    SparsePolynomial.bucketize (fun t ↦ t.powers.p4) table0Term90State7NormalizeRawNormal = table0Term90State7NormalizeRadix4BucketsNormal := by
+  decide
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
