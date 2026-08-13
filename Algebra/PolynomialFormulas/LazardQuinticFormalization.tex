@@ -1,10 +1,19 @@
 \documentclass[11pt,a4paper,oneside]{article}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\usepackage{iftex}
+\ifLuaTeX\else
+  \PackageError{LazardQuinticFormalization}
+    {This report must be compiled with LuaLaTeX}
+    {Run lualatex instead of pdflatex so the OpenType Latin Modern fonts are embedded.}
+\fi
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+\setmathfont{Latin Modern Math}
 \usepackage[a4paper,margin=22mm,headheight=15pt,footskip=28pt]{geometry}
 \usepackage{microtype}
-\usepackage{amsmath,amssymb,mathtools}
 \usepackage{booktabs,longtable,tabularx,array}
 \usepackage{enumitem}
 \usepackage{listings}
@@ -116,7 +125,7 @@
 \begin{tabularx}{\textwidth}{@{}L{0.20\textwidth}Y@{}}
 \textbf{Development} & Lean 4 transcription and audit of Lazard's solvable-quintic algorithm. \\
 \textbf{Formula source} & Lazard's 2004 chapter, with the Reshetnikov and Zapodovnikov corrections. \\
-\textbf{Checkpoint} & 11 August 2026. \\
+\textbf{Checkpoint} & 12 August 2026. \\
 \textbf{Status} & Most active ongoing work; completed, local-build, and open claims are separated explicitly. \\
 \end{tabularx}
 \end{tcolorbox}
@@ -154,11 +163,16 @@ The Gaussian-rational dispatcher source still exposes the older certificate
 API and proves, classically, that it returns a finite radical vector exactly when a
 nonzero input is semantically solvable by radicals.  Every returned vector is
 exhaustive, but this dispatcher specification is noncomputable and is not yet
-a freshly rebuilt public endpoint.  This note
-also records that two printed terms in $P_{22}$ are erroneous and that the
-paper's Theorems~3 and~4 are false under its own Definition~1; the corrected
-formal development proves counterexamples rather than asserting those literal
-claims.
+a freshly rebuilt public endpoint.  This note also records that two printed
+terms in $P_{22}$ are erroneous, that the paper's unrestricted modular
+Theorem~2 fails for the regular $C_6$ action over $\mathbb F_3$, and that
+Theorems~3 and~4 are false under the paper's own Definition~1.  The corrected
+development proves explicit counterexamples rather than asserting those
+literal claims.  It now also proves, by exact complex and rational
+counterexamples, that the four old raw contracts \lean{FormulaSound},
+\lean{RationalFormulaSound}, \lean{FormulaFactors}, and
+\lean{RationalFormulaFactors} are false: the equation-only invariant interface
+admits an extraneous tuple unless Fourier or root-origin evidence is added.
 
 This is a paused research checkpoint, not a claim that every assertion in
 Lazard's paper has been formalized.  Several printed assertions require
@@ -384,10 +398,16 @@ proves the same group and semantic identifications, derives the same Hilbert
 convolution from an arbitrary actual finite-free decomposition, and checks
 the closed $132$-column/rank-$115$ product matrix with kernel reduction.
 Neither final contradiction assumes an orbit count, quotient dimension, or
-Hilbert coefficient.  These source chains remain a completion gate only in
-the sense that their focused and public kernel builds have not yet accepted
-them; this modular defect does not affect the rational quintic formula or the
-nonmodular $M_5$ computation.
+Hilbert coefficient.  The Lean semantic chain is now committed and
+focused-kernel-checked.  It extends a hypothetical homogeneous basis along
+the elementary-symmetric tower, computes the fixed-space dimensions through
+degree seven, forces exactly sixteen degree-seven basis vectors, and proves
+that they would span all seventeen certified quotient classes---the required
+contradiction.  Its audited endpoints use only the standard assumptions
+\lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound}.  Registration
+in the broad public aggregate remains separate work.  Coq is explicitly
+postponed at this checkpoint; this modular defect does not affect the rational
+quintic formula or the nonmodular $M_5$ computation.
 
 Theorem~1 also needs an orientation and labelling correction.  The Lean
 development uses left cosets $aG$, left multiplication, and the formal rename
@@ -428,11 +448,16 @@ fixed-field identity, degree, Galois property, ordinary minimal polynomial,
 fixed-field generation, derived root action, and corrected
 conjugate-containment criterion in one theorem.  The generic criterion, its
 explicit invariant construction, and the theta adapter are committed and
-freshly kernel-checked.  The universal rational-function minimal-polynomial
-  bridge is now also focused kernel-checked; it does not assert that every specialized theta
-sextic remains minimal after root substitution.  The larger aggregate and the
-  polynomial-realized counterexample now compiles directly, while its final
-  assumptions remain cache-gated by the Dummit closure.
+freshly kernel-checked.  The universal rational-function bridge has a focused,
+kernel-checked prefix: the fraction-action stabilizer, fixed-field generation,
+and exact-stabilizer iff generation statements are proved.  Four stronger
+orbit-product/minimal-polynomial endpoints remain preserved as commented
+proof checkpoints because their quotient products use definitionally
+different \lean{Fintype} instances.  This checkpoint therefore does not yet
+claim the universal product equals the ordinary minimal polynomial, nor that
+a specialized theta sextic remains minimal after root substitution.  The
+larger aggregate and polynomial-realized counterexample compile directly,
+while their final assumptions remain cache-gated by the Dummit closure.
 Beyond the finite-group coset witness, both
 provers now realize the obstruction on the explicit irreducible depressed
 cyclic rational quintic.  They give a duplicate-free exact ordering and a
@@ -465,8 +490,20 @@ below because it still depends on the unfinished Dummit certificate closure.
 The older propositions \lean{FormulaSound} and \lean{FormulaFactors} quantify
 over an arbitrary characteristic-zero field after the displayed invariant and
 radical certificates have been supplied.  Audit showed that these hypotheses
-still admit extraneous invariant tuples, so the propositions are over-strong:
-they are retained definitions, not theorems or valid proof targets.  The sound
+still admit extraneous invariant tuples, so the propositions are false, not
+merely unproved.  Two committed Lean modules construct one exact rational
+invariant tuple, extend it to a genuine complex radical certificate, and
+certify nonzero elements in the quadratic tower $\Q(\eps,T)$ by iterated
+norms.  The first proves \lean{not_FormulaFactors_complex} and
+\lean{not_RationalFormulaFactors}: the inverse-Fourier output has the wrong
+quadratic Vieta coefficient and cannot have the claimed five-factor product.
+The second uses a Newton sum of the five polynomial residuals to prove
+\lean{not_FormulaSound_complex} and \lean{not_RationalFormulaSound}: the five
+displayed values cannot all be roots.  These universe-zero rational
+specializations and their complex endpoints audit to only \lean{propext},
+\lean{Classical.choice}, and \lean{Quot.sound}; they use no floating-point or
+native evaluation.  The raw contracts are retained as definitions documenting
+the disproved interface.  The sound
 legacy certificate interface consists of \lean{FourierRelations}, whose four cyclic
 equations are the additional evidence used by
 \lean{solveGeneral_root_of_fourierRelations}.  The generic development derives
@@ -993,8 +1030,8 @@ Vieta, factorization, or correctness certificate is accepted from the caller.
 \lean{cyclicQuintic_realizes_fixed_displayed_subgroup_failure} & printed Theorem~1 fixed-copy converse & Committed Lean polynomial realization of the relabelling counterexample: an actual cyclic quintic with an exact ordered root presentation and intrinsic Galois action whose resolvent root fixes a conjugate of $F_{20}$ but not the displayed copy.  The source compiles; final polynomial endpoints await the fresh Dummit closure because the cached wrapper still exposes four legacy constants.\\
 \lean{lazard_theorem4_counterexample}; Coq \lean{lazard_theorem4_counterexample} & printed Theorem~4 & Source-level unconditional irreducible cyclic-quintic/all-roots counterexample: a literal Definition~1 radical extension contains every root but not the primitive fifth root, refuting the printed leastness claim.  Coq extracts the proved factor list, proves the universal property of its all-root splitting field, adjoins the displayed primitive fifth root, and proves that exact generated field is not least; it also retains the stronger uniform leastness refutation.  All endpoints are registered for the complete public audit build.\\
 \lean{exists_solvable_F20_commonCompositum_exact_paper_count}; Coq \lean{exists_lazard_actual_F20_kummer_common_compositum_compressed} & corrected degree/radical-count part of Theorem~4 & From only irreducibility, degree five, and solvability of the actual Galois group, the source-level endpoints derive the $F_{20}$ subgroup tower and explicitly return $|\operatorname{Gal}|=5\cdot2^{e_{\Q}}$ with its normal order-five subgroup.  They construct a primitive fifth root in the product splitting field, prove and return its primitivity and containment in the exact two-square field $\Q(\omega)$, distinguish the compressed exponent $e_\omega\le e_{\Q}$, identify the top field with the embedded quintic splitting field joined with $\Q(\omega)$, and prove radicality, degree $5\cdot2^{2+e_\omega}$, relative Galois order $5\cdot2^{e_\omega}$, and an exact $2+e_\omega$ square/one-fifth presentation.  Coq derives the formerly explicit nonzero-polynomial premise from the quintic-size hypothesis.  Kernel checking of these expanded endpoints remains pending.\\
-\lean{FormulaSound}, \lean{RationalFormulaSound} & raw pointwise claim & Over-strong retained propositions; not theorems.\\
-\lean{FormulaFactors}, \lean{RationalFormulaFactors} & raw five-factor claim & Over-strong retained propositions; not theorems.\\
+\lean{not_FormulaSound_complex}, \lean{not_RationalFormulaSound} & raw pointwise claim & Kernel-checked counterexample: the sum of the five alleged root evaluations is an explicit nonzero quadratic-tower element, so the five displayed values cannot all be roots.\\
+\lean{not_FormulaFactors_complex}, \lean{not_RationalFormulaFactors} & raw five-factor claim & Kernel-checked counterexample: the returned Fourier tuple has the wrong quadratic Vieta coefficient, contradicting the claimed product.\\
 \bottomrule
 \end{longtable}
 \rowcolors{2}{white}{white}
@@ -1107,16 +1144,17 @@ The principal \emph{committed and freshly checked} results at the pause are:
   finite $S_5/F_{20}$ witness to the labelling error.  A conjugate of the
   standard $F_{20}$ fixes the selected non-base coset although it is not
   contained in the displayed standard subgroup.  Its terminal theorem has
-  only the standard assumptions \lean{propext}, \lean{Classical.choice}, and
-  \lean{Quot.sound}.
-\item One previously intractable coefficient leaf of the executable Dummit
-  decision procedure is now a bounded, deterministic certificate graph.
-  Table~0 term~125 is decomposed into $358$ Lean modules, with $143$ ordinary
-  \lean{decide} leaves.  All $358$ modules were rebuilt; the terminal theorem
-  has assumption report \lean{[propext]} and its state-zero leaf has none.
-  There is no \lean{native_decide}, admission, unsafe implementation, or
-  external proof oracle in this graph.  This completes one frontier node, not
-  the full coefficient table.
+  only the standard logical assumptions listed above.
+\item Three formerly difficult coefficient leaves of the executable Dummit
+  decision procedure now have bounded deterministic certificate graphs.
+  Table~0 terms~125, 131, and 120 use respectively $358$, $346$, and $204$
+  generated Lean modules.  Term~125 has $143$ ordinary \lean{decide} leaves;
+  term~120 has $82$.  Every module in these graphs was rebuilt, and their
+  exported endpoint audits contain at most \lean{propext}.  There is no
+  \lean{native_decide}, admission, unsafe implementation, or external proof
+  oracle in these graphs.  The serial merge chain has consequently advanced
+  through Table~0 tails~35 down to 30; lower tails and the other tables remain
+  open, so this is not yet the public coefficient theorem.
 \item The modular $C_6/\mathbb F_3$ product reconstruction now has a committed
   Lean source closure for all $159$ degree-seven product rows.  The formerly
   infeasible quotient-backed tail was replaced by bounded coefficient
@@ -1124,14 +1162,21 @@ The principal \emph{committed and freshly checked} results at the pause are:
   $146$--$158$ use seven chunked certificate modules.  The public bridge
   elaborates directly from this source closure; the old monolithic blocks
   $12$--$15$ are intentionally excluded rather than trusted.
-\item The committed
-  \texttt{LazardInvariantModularQuotientObstruction.lean} transports the
-  seventeen dual-certificate classes through the faithful literal quotient
-  map and proves that no sixteen prescribed quotient classes can contain all
-  seventeen in their span.  This is the kernel-checked semantic obstruction
-  needed for the characteristic-three counterexample.  The larger
-  hypothetical tower-basis contradiction remains an open integration task,
-  because its current draft still has independent API and type errors.
+\item The modular characteristic-three counterexample is now semantically
+  closed in three committed modules.  The orbit-count/Hilbert layer forces the
+  hypothetical basis degree counts $1,0,2,5,8,11,17,16$.  The tower-coordinate
+  layer splits a degree-seven invariant into zero and positive elementary
+  exponent parts, shows that the positive part vanishes in the literal
+  quotient, and puts every residue in the span of the sixteen forced vectors.
+  Applying this to the seventeen independent certified classes proves
+  \lean{no_lazardHomogeneousInvariantBasis}.  The endpoint audit is exactly
+  \lean{[propext, Classical.choice, Quot.sound]}.
+\item The false raw \lean{FormulaFactors} and \lean{FormulaSound} contracts,
+  together with their rational variants, now have committed exact
+  counterexamples.  The factorization proof detects a wrong cyclic/Vieta
+  coefficient; the stronger pointwise proof detects a nonzero sum of the five
+  polynomial residuals.  Both reduce to explicit quadratic-tower norms and
+  use only the standard logical assumptions.
 \item The denominator-safe alternate root-recovery layer and its general
   rational wrapper now compile as focused Lean modules.  They recover all
   four nonzero Fourier modes without dividing by $E$, and the general endpoint
@@ -1144,18 +1189,20 @@ The following substantial pieces are \emph{source or local-build
 checkpoints}, not yet a single clean public theorem graph:
 
 \begin{enumerate}
-\item \texttt{LazardGeneralResolventMinpoly.lean} is now a focused
-  kernel-checked module.  Its fraction-action/rename stabilizer identity,
-  orbit-product reindexing, fixed-field minimal-polynomial identity, ordinary
-  minimal-polynomial bridge, and generator/minpoly iff all compile from the
-  current source.  Representative endpoints audit to
-  \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound}.  This is the
-  universal rational-function statement; it does not assert specialized
-  minimality after theta substitution.
+\item \texttt{LazardGeneralResolventMinpoly.lean} has a focused
+  kernel-checked prefix.  Five exported stabilizer/fixed-field endpoints---up
+  through \lean{hasExactRenameStabilizer_iff_adjoin_eq_fixedPoints}---audit to
+  \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound}.  The four
+  stronger orbit-product/minimal-polynomial endpoints are block-commented with
+  their proof text preserved: their remaining elaboration problem is a
+  mismatch between two propositionally equal quotient \lean{Fintype}
+  instances.  The universal minpoly identity is therefore still open, and no
+  specialized theta-minimality claim is made.
 \item The Dummit coefficient implementation has been rewritten so that the
   large finite identities are intended to be checked by bounded ordinary
   kernel reductions.  Hundreds of generated table/root modules still await
-  their serial build; Table~0 tail~31 and term~120 have now also passed, and
+  their serial build; Table~0 terms~120, 125, and 131 and tails~32 through 30
+  have passed, and
   the top \lean{ComputableDummitCoefficients} artifact
   is stale relative to that rewrite.  Consequently downstream assumption
   reports can still display four legacy \lean{native_decide} constants even
@@ -1180,17 +1227,6 @@ checkpoints}, not yet a single clean public theorem graph:
   no exact algebraic-number program presently computes those expressions.
   Its changed source and the public import/audit surface have not received the
   final clean build.
-\item The modular audit of printed Theorem~2 now has the complete finite
-  product-row bridge and the transported $17$-class quotient obstruction.
-  The formal lower bound is $17$ independent quotient classes, not a proof
-  that the quotient has exact dimension $17$.  The corrected nonmodular
-  theorem uses invertibility of the group order as a sufficient
-  Reynolds-averaging hypothesis.  The former blocks~12--15 failed because
-  quotient-backed \lean{MvPolynomial} equality does not reduce to a Boolean
-  decision; they have been removed from the public dependency graph and
-  replaced by the staged coefficient certificates above.  What remains is
-  the semantic bridge from an arbitrary hypothetical homogeneous free basis
-  to a sixteen-generator quotient span, not another opaque computation.
 \item The polynomial-realized fixed-subgroup counterexample is now committed
   and its source compiles directly.  Its finite group certificate has only
   standard logical assumptions; the exact-root and scalar-resolvent terminal
@@ -1218,38 +1254,37 @@ transcription of Lazard's explicit construction.
 When work resumes, the shortest dependable path is:
 
 \begin{enumerate}
-\item Continue the bounded Dummit certificate frontier immediately after
-  table~0 term~125, building one generated module or small bounded aggregate
-  at a time.  Finish all four coefficient tables and the root-state
-  certificates.
+\item Continue the bounded Dummit certificate frontier below Table~0
+  tail~30, building each missing term certificate and then one tail merge at a
+  time.  Finish all four coefficient tables and the root-state certificates;
+  force-shard only a term that actually exceeds the resource bound.
 \item Rebuild \lean{ComputableDummitCoefficients} and its public decision
   theorem from that source closure, then verify that the four stale
   \lean{native_decide} constants disappear from \texttt{\#print axioms}.
+\item Finish the quotient-\lean{Fintype} reindexing in
+  \texttt{LazardGeneralResolventMinpoly.lean}; keep the universal
+  rational-function result distinct from specialized sextic minimality, which
+  can fail when specialization collides.
 \item Rebuild, in dependency order, the scalar resolvent criterion, root
   ordering, root-reduction bridge, Section~7 aggregate, coherent alternate
-  tower, and the actual-root $E=0$ example.  Repeat the endpoint assumption
-  audits only after this fresh chain exists.
-\item Finish the remaining Dummit closure, then rebuild the realized
-  polynomial counterexample and its public aggregate against the fresh
-  coefficient certificates.  Keep the now-proved universal rational-function
-  minimal polynomial distinct from specialized sextic minimality, which can
-  fail when specialization collides.
-\item Complete and kernel-check the remaining semantic half of the modular
-  Theorem~2 contradiction.  The product bridge and literal $17$-class
-  obstruction are now proved; the next task is to repair the hypothetical
-  tower-basis API and prove that its degree-seven free part is generated by
-  exactly the sixteen degree-seven basis vectors.  Then combine that span
-  bound with the committed quotient obstruction.  Keep the corrected
-  nonmodular invariant-module theorem separate and retain only the proved
-  quotient-rank lower bound.
+  tower, actual-root $E=0$ example, and polynomial-realized conjugacy
+  counterexample.  Repeat endpoint assumption audits only after this fresh
+  chain exists.
+\item Register and rebuild the now-complete focused modular
+  characteristic-three contradiction in the broad public import/audit
+  surface.  Keep the corrected nonmodular invariant-module theorem separate
+  and retain only the proved quotient-rank lower bound, not the unproved claim
+  that the entire literal quotient has dimension exactly seventeen.
 \item Finish the bounded coefficient certificates for the displayed
   $P_2$ and $P_3$ Fourier numerators, then integrate the root-derived
   Fourier/Vieta graph and both the standard and alternate reconstruction
   paths.
-\item Integrate and rebuild the Gaussian dispatcher/completeness
-  specification and the root/public audit modules.  If executable radical
-  output is required, add a separate exact algebraic-number witness-selection
-  layer rather than treating classical choice as computation.
+\item Import the completed modular counterexample and the four raw-contract
+  refutations into the intended public audit surface.  Rebuild the Gaussian
+  dispatcher/completeness specification and root/public audit modules.  If
+  executable radical output is required, add a separate exact algebraic-number
+  witness-selection layer rather than treating classical choice as
+  computation.
 \item Run the complete public Lean build and audit every exported endpoint for
   \lean{sorry}, new \lean{axiom}s, \lean{native_decide},
   \lean{implemented_by}, \lean{unsafe}, and \lean{exact_no_check}.  Only then
@@ -1311,11 +1346,15 @@ endpoints remain source-level until the complete Lean and Coq public builds
 accept them.
 
 The raw \lean{InvariantRelations} and \lean{RadicalCertificate} interfaces are
-insufficient on their own because they admit extraneous solutions.
-Accordingly, the older
-\lean{FormulaSound}, \lean{RationalFormulaSound}, \lean{FormulaFactors}, and
-\lean{RationalFormulaFactors} definitions are not asserted: their present
-hypotheses omit necessary evidence.  The newer root-origin modules derive the
+insufficient on their own because they admit extraneous solutions.  This is
+now a theorem, not merely an API concern:
+\lean{LazardQuinticRawFormulaCounterexample.lean} refutes the complex and
+rational factorization contracts, and
+\lean{LazardQuinticRawFormulaSoundCounterexample.lean} refutes their pointwise
+soundness contracts.  Both use exact iterated norms in $\Q(\eps,T)$.  The
+older \lean{FormulaSound}, \lean{RationalFormulaSound},
+\lean{FormulaFactors}, and \lean{RationalFormulaFactors} names remain only as
+the disproved specifications.  The newer root-origin modules derive the
 cyclic Fourier and Vieta identities from a complete ordered root tuple and
 therefore avoid that defect.  The remaining work is integration and kernel
 validation of that derivation, not another request that the caller postulate
@@ -1436,10 +1475,9 @@ by a current public kernel build:
   root-sum and five-cycle-action hypotheses from a general irreducible
   degree-five polynomial;
 \item kernel-check the corrected exact nonmodular form of Theorem~2 (together
-  with its characteristic-zero convenience wrapper) and
-  the explicit, semantically closed modular $C_6/\mathbb F_3$ counterexample
-  to its printed arbitrary-characteristic form, including the proved group
-  cardinality and public no-assumption endpoint;
+  with its characteristic-zero convenience wrapper), and register the now
+  focused-kernel-checked, semantically closed modular $C_6/\mathbb F_3$
+  counterexample in the public aggregate;
 \item kernel-check the Lean generic quadratic and Cardano formulas, the
   exceptional $p=0$ branch, both literal cubic root resolvents and their
   simultaneous action, the corrected $S_3$ subgroup statement and its
@@ -1512,7 +1550,7 @@ substitute for any of the mathematical kernel gates above.
 
 The generic Vieta theorem already gives factorization and exhaustiveness from
 its certificate; it does not assert pairwise distinctness, which would require
-separability.  The freshly audited committed modules listed in the dated
+separability.  The focused committed modules explicitly listed in the dated
 checkpoint contain no \lean{sorry}, new \lean{axiom}, \lean{native_decide},
 unsafe implementation, or opaque external proof oracle.  That statement is
 deliberately not extended to a stale cached dependency closure before the
@@ -1562,6 +1600,15 @@ lake build +PolynomialFormulas.LazardGeneralResolventConjugacyCounterexample:ole
 lake build +PolynomialFormulas.LazardGeneralResolventMinpoly:olean
 lake build \
   +PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125Certificate:olean
+lake build \
+  +PolynomialFormulas.ComputableDummitKernelCertificateTable0Term120Certificate:olean
+lake build \
+  +PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131Certificate:olean
+lake build \
+  +PolynomialFormulas.ComputableDummitKernelCertificateTable0Tail30Certificate:olean
+lake build +PolynomialFormulas.LazardInvariantModularHomogeneousBasisObstruction:olean
+lake build +PolynomialFormulas.LazardQuinticRawFormulaCounterexample:olean
+lake build +PolynomialFormulas.LazardQuinticRawFormulaSoundCounterexample:olean
 \end{lstlisting}
 The Gaussian completeness targets and the full \lean{PolynomialFormulas}
 aggregate belong to the ordered restart plan; listing their eventual commands
@@ -1571,7 +1618,7 @@ the following command three times (for the table of contents, citations, and
 cross-references):
 \begin{lstlisting}
 cd Algebra/PolynomialFormulas
-pdflatex -interaction=nonstopmode -halt-on-error \
+lualatex -interaction=nonstopmode -halt-on-error \
   LazardQuinticFormalization.tex
 \end{lstlisting}
 
