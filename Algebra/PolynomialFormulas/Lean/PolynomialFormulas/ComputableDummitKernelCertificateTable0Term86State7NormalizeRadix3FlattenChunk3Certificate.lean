@@ -1,0 +1,17 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term86State7NormalizeRadix3FlattenChunk3Data
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+set_option maxHeartbeats 20000000
+
+set_option maxRecDepth 1000000 in
+set_option maxHeartbeats 20000000 in
+theorem table0_term86_state7_normalize_radix3_flatten_chunk3_certificate :
+    SparsePolynomial.flattenBuckets table0Term86State7NormalizeRadix3FlattenChunk3BucketsNormal = table0Term86State7NormalizeRadix3FlattenChunk3Normal := by
+  decide
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
