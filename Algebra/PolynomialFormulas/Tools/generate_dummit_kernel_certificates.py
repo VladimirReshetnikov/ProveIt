@@ -395,11 +395,21 @@ def module_text(imports: list[str], declarations: list[str]) -> str:
 
 
 WRITTEN_MODULES: set[str] = set()
+ASCII_DIGITS = "0123456789"
 
 
 def write_module(name: str, imports: list[str], declarations: list[str]) -> None:
     (LEAN_DIR / f"{name}.lean").write_text(module_text(imports, declarations))
     WRITTEN_MODULES.add(name)
+
+
+def owns_table_term_target(name: str, index: int, position: int) -> bool:
+    """Whether a module or filename belongs to one exact table term."""
+    target_prefix = f"{PREFIX}Table{index}Term{position}"
+    if not name.startswith(target_prefix):
+        return False
+    suffix = name[len(target_prefix):]
+    return not suffix or suffix[0] not in ASCII_DIGITS
 
 
 def write_target_manifest_and_check(index: int, position: int) -> None:
@@ -412,12 +422,13 @@ def write_target_manifest_and_check(index: int, position: int) -> None:
     target_prefix = f"{PREFIX}Table{index}Term{position}"
     expected = sorted(
         f"{module}.lean" for module in WRITTEN_MODULES
-        if module.startswith(target_prefix)
+        if owns_table_term_target(module, index, position)
     )
     manifest = LEAN_DIR / f"{target_prefix}GeneratedFiles.txt"
     manifest.write_text("\n".join(expected) + "\n")
     existing = {
         path.name for path in LEAN_DIR.glob(f"{target_prefix}*.lean")
+        if owns_table_term_target(path.name, index, position)
     }
     unexpected = sorted(existing.difference(expected))
     missing = sorted(set(expected).difference(existing))
@@ -2096,7 +2107,7 @@ def existing_owned_root_paths(lean_dir: Path = LEAN_DIR) -> set[Path]:
     """Root sources owned by this mode; table sources are deliberately out."""
     return {
         *lean_dir.glob(f"{PREFIX}Root*.lean"),
-        *lean_dir.glob(f"{PREFIX}s*.lean"),
+        *lean_dir.glob(f"{PREFIX}s.lean"),
     }
 
 
