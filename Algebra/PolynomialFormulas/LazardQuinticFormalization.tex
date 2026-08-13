@@ -1152,6 +1152,18 @@ The principal \emph{committed and freshly checked} results at the pause are:
   standard $F_{20}$ fixes the selected non-base coset although it is not
   contained in the displayed standard subgroup.  Its terminal theorem has
   only the standard logical assumptions listed above.
+\item \texttt{Fin5TransitiveClassification.lean} now gives the generic
+  five-class classification of transitive subgroups of $S_5$ and the
+  four-class corollary for proper transitive subgroups.  Its finite core is a
+  bounded certificate stack built from eight double-coset representatives,
+  rather than one unbounded classification reduction.  The companion
+  \lean{LazardSection5ClassificationResolventBridge.lean} combines this
+  classification with the solvability/resolvent criterion.  Both focused
+  modules are committed and kernel-green, and their endpoint audits contain
+  only the standard logical assumptions.  This is focused evidence: neither
+  the broad public aggregate nor the Dummit-dependent polynomial realization
+  is thereby freshly rebuilt, and the corresponding Coq work remains
+  pending.
 \item Three formerly difficult coefficient leaves of the executable Dummit
   decision procedure now have bounded deterministic certificate graphs.
   Table~0 terms~125, 131, and 120 use respectively $358$, $346$, and $204$
@@ -1160,8 +1172,12 @@ The principal \emph{committed and freshly checked} results at the pause are:
   exported endpoint audits contain at most \lean{propext}.  There is no
   \lean{native_decide}, admission, unsafe implementation, or external proof
   oracle in these graphs.  Subsequent committed focused builds have advanced
-  the verified Table~0 merge chain through tail~25.  Lower tails and the other
-  tables remain open, so this is not yet the public coefficient theorem.
+  the verified and published Table~0 merge chain through tail~22, and
+  term~84 is also published.  Deterministic manifests and bounded shard
+  graphs for terms~85--87 are prepared and form the current serial kernel
+  frontier.  Tail~21 is the next merge checkpoint once all three term
+  endpoints are fresh.  Lower tails and the other tables remain open, so this
+  is not yet the public coefficient theorem.
 \item The modular $C_6/\mathbb F_3$ product reconstruction now has a committed
   Lean source closure for all $159$ degree-seven product rows.  The formerly
   infeasible quotient-backed tail was replaced by bounded coefficient
@@ -1206,13 +1222,24 @@ checkpoints}, not yet a single clean public theorem graph:
   \lean{Quot.sound}; no specialized theta-minimality claim is made.
 \item The Dummit coefficient implementation has been rewritten so that the
   large finite identities are intended to be checked by bounded ordinary
-  kernel reductions.  Hundreds of generated table/root modules still await
-  their serial build; the verified Table~0 merge chain now reaches tail~25,
-  and
-  the top \lean{ComputableDummitCoefficients} artifact
+  kernel reductions.  The verified and published Table~0 merge chain now
+  reaches tail~22 and term~84 is published.  Terms~85--87 have deterministic
+  target manifests and bounded shard graphs and form the current serial kernel
+  frontier.  Tail~21 follows once all three term endpoints are fresh.  The
+  remaining table modules still await their serial build, and the top
+  \lean{ComputableDummitCoefficients} artifact
   is stale relative to that rewrite.  Consequently downstream assumption
   reports can still display four legacy \lean{native_decide} constants even
   though the current source no longer contains them.
+\item The scoped Dummit root generator now deterministically plans an exact
+  $563$-module closure.  Three large elementary-symmetric products are split
+  into bounded raw-product and radix certificates, while the public
+  root-state theorem names are preserved.  This is presently generator
+  evidence, not a completed root proof: the new $563$-module root source set
+  has not yet been emitted or kernel-built.  The still-monolithic
+  \lean{ComputableDummitKernelCertificateRootStateData} module is the first
+  monitored elaboration gate; further literal-data splitting is deferred
+  unless that observed build requires it.
 \item The root-origin Lazard chain constructs a labelled complete root tuple,
   derives the cyclic Fourier and Vieta identities, checks the corrected
   displayed numerators, and feeds them to inverse Fourier reconstruction.
@@ -1260,11 +1287,14 @@ transcription of Lazard's explicit construction.
 When work resumes, the shortest dependable path is:
 
 \begin{enumerate}
-\item Continue the bounded Dummit certificate frontier below Table~0
-  tail~25, beginning with tail~24 and building each missing term certificate
-  followed by one tail merge at a time.  Finish all four coefficient tables
-  and the root-state certificates;
-  force-shard only a term that actually exceeds the resource bound.
+\item Finish the prepared bounded graphs for Table~0 terms~85--87, then build
+  tail~21 and continue downward one missing term certificate and one tail
+  merge at a time.  Finish all four coefficient tables; force-shard only a
+  term that actually exceeds the resource bound.
+\item Emit and exact-check the deterministic $563$-module root closure, test
+  the monolithic \lean{RootStateData} module as the first resource gate, and
+  then build the three bounded product graphs, recursive state certificates,
+  four root finals, and their aggregate in dependency order.
 \item Rebuild \lean{ComputableDummitCoefficients} and its public decision
   theorem from that source closure, then verify that the four stale
   \lean{native_decide} constants disappear from \texttt{\#print axioms}.
@@ -1273,6 +1303,12 @@ When work resumes, the shortest dependable path is:
   tower, actual-root $E=0$ example, and polynomial-realized conjugacy
   counterexample.  Repeat endpoint assumption audits only after this fresh
   chain exists.
+\item Commit the existing registrations for the focused-kernel-green
+  five-class classifier, proper four-class corollary, and
+  classification/resolvent bridge, then rebuild the broad public aggregate
+  and audit.  Keep this generic integration distinct from the
+  polynomial-realized bridge, whose clean terminal audit still requires the
+  current Dummit closure.
 \item Register and rebuild the now-complete focused modular
   characteristic-three contradiction in the broad public import/audit
   surface.  Keep the corrected nonmodular invariant-module theorem separate
@@ -1389,6 +1425,17 @@ the Lazard and fallback packages are inhabited.  Thus automatic construction
 of a Lazard witness and executable selection of radical expressions remain
 absent even though the finite-output equivalence is proved.
 
+The generic Section~5 subgroup frontier is now closed at focused Lean scope.
+The classifier proves that a transitive subgroup of $S_5$ is conjugate to one
+of the standard groups $C_5,D_5,F_{20},A_5,S_5$, and its proper-transitive
+corollary removes the final $S_5$ case.  The computational part is factored
+through eight bounded double-coset certificates.  A separate bridge combines
+the classification with the quintic solvability/resolvent criterion.  These
+committed modules are focused-kernel-green with standard-only assumption
+reports.  They have not yet been rebuilt through the broad public aggregate;
+moreover, the polynomial-realized specialization remains gated by the current
+Dummit-source rebuild.  No corresponding Coq completion is claimed here.
+
 The Section~5 degree audit also needs two distinctions which are easy to
 lose in an informal argument.  First, the claims that the least degrees of
 exact $C_5$- and $D_5$-stabilizer invariants are three and two concern
@@ -1498,19 +1545,25 @@ by a current public kernel build:
   $\operatorname{Sep}(X^2-\Delta)\leftrightarrow(2\ne0\wedge\Delta\ne0)$
   and the closed irreducible-inseparable $X^3-t$ counterexample over
   $\mathbb F_3(t)$;
-\item kernel-check the complete five-class transitive-subgroup classification,
-  the conjugacy correction to Theorem~1, including both its finite
-  $S_5/F_{20}$ witness and the explicit irreducible-rational polynomial
-  realization with exact roots, genuine splitting-field Galois action,
-  separable base-root resolvent, corrected conjugate containment, and failed
-  displayed containment; rebuild the committed, focused-kernel-checked Lean
+\item retain the committed, focused-kernel-checked generic five-class
+  transitive-subgroup classifier, its proper four-class corollary, and the
+  classification/resolvent bridge, whose finite computation is already split
+  across eight bounded double-coset certificates; rebuild these modules
+  through the public aggregate and keep that task distinct from the
+  Dummit-gated polynomial realization.  Then rebuild the conjugacy correction
+  to Theorem~1, including both its finite $S_5/F_{20}$ witness and the explicit
+  irreducible-rational polynomial realization with exact roots, genuine
+  splitting-field Galois action, separable base-root resolvent, corrected
+  conjugate containment, and failed displayed containment; rebuild the
+  committed, focused-kernel-checked Lean
   exact $C_5/D_5$ stabilizers, arbitrary-polynomial minimum-degree theorems,
   separate literal $S_5/C_5$ and $S_5/D_5$ low-degree collision theorems, and
   irreducible $X^5-2$ instantiations through the public audit, and kernel-check
   their matching Coq modules; rebuild the committed, focused-kernel-checked
   Lean degree-five $T'$, $U'$, $T'U'$, and epsilon two-coset relative-resolvent
   modules through the public audit, and kernel-check the matching Coq
-  relative-resolvent and common-field wrappers;
+  relative-resolvent and common-field wrappers.  The matching Coq
+  classification and bridge remain pending;
 \item kernel-check all four literal Figure~3 identities, their four-by-four
   coefficient matrix, and the irreducible-rational determinant-nonvanishing
   chains in both provers.  The new Coq rational transport proves the exact
@@ -1585,9 +1638,11 @@ showed why notebook output is not a proof oracle.
 \item Lean now proves that $X^5+20X+32$ is irreducible, that $40$ is a root
   of its Frobenius--Dummit sextic, that its discriminant is $64000^2$, and
   that its Galois group has order ten and is conjugate to $D_5$, not
-  $F_{20}$.  The finite and discriminant submodules are trust-clean; the final
-  solvability and classification endpoints remain cache-gated by the four
-  legacy \lean{native_decide} constants in the stale top Dummit artifact.
+  $F_{20}$.  The generic five-class classifier is separately committed and
+  focused-kernel-green.  The finite and discriminant submodules for this
+  polynomial are trust-clean, but its final solvability and polynomial-realized
+  classification endpoints remain cache-gated by the four legacy
+  \lean{native_decide} constants in the stale top Dummit artifact.
 \item Dummit's printed examples have later corrections, and his original
   factorization proof needs Chapman's specialized-distinctness lemma.
 \end{itemize}
@@ -1611,6 +1666,9 @@ lake build +PolynomialFormulas.LazardGeneralResolventExplicit:olean
 lake build +PolynomialFormulas.LazardGeneralResolventThetaAdapter:olean
 lake build +PolynomialFormulas.LazardGeneralResolventConjugacyCounterexample:olean
 lake build +PolynomialFormulas.LazardGeneralResolventMinpoly:olean
+lake build +PolynomialFormulas.Fin5TransitiveClassification:olean
+lake build \
+  +PolynomialFormulas.LazardSection5ClassificationResolventBridge:olean
 lake build \
   +PolynomialFormulas.ComputableDummitKernelCertificateTable0Term125Certificate:olean
 lake build \
@@ -1618,7 +1676,9 @@ lake build \
 lake build \
   +PolynomialFormulas.ComputableDummitKernelCertificateTable0Term131Certificate:olean
 lake build \
-  +PolynomialFormulas.ComputableDummitKernelCertificateTable0Tail30Certificate:olean
+  +PolynomialFormulas.ComputableDummitKernelCertificateTable0Tail22Certificate:olean
+lake build \
+  +PolynomialFormulas.ComputableDummitKernelCertificateTable0Term84Certificate:olean
 lake build +PolynomialFormulas.LazardInvariantModularHomogeneousBasisObstruction:olean
 lake build +PolynomialFormulas.LazardQuinticRawFormulaCounterexample:olean
 lake build +PolynomialFormulas.LazardQuinticRawFormulaSoundCounterexample:olean
