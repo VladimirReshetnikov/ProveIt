@@ -125,7 +125,7 @@
 \begin{tabularx}{\textwidth}{@{}L{0.20\textwidth}Y@{}}
 \textbf{Development} & Lean 4 transcription and audit of Lazard's solvable-quintic algorithm. \\
 \textbf{Formula source} & Lazard's 2004 chapter, with the Reshetnikov and Zapodovnikov corrections. \\
-\textbf{Checkpoint} & 12 August 2026. \\
+\textbf{Checkpoint} & 13 August 2026. \\
 \textbf{Status} & Most active ongoing work; completed, local-build, and open claims are separated explicitly. \\
 \end{tabularx}
 \end{tcolorbox}
@@ -442,21 +442,23 @@ conjunct is therefore explicitly documented as redundant in that direction.
 The Coq bridge now transports this converse through the concrete symmetric
 rational-function presentation, so its endpoint concerns the exact stabilizer
 of the original formal multivariate polynomial rather than only an abstract
-Galois element.  Lean's source-level direct aggregate
+Galois element.  Lean's direct aggregate
 \lean{sectionThreeAndTheoremOne_exactInvariantRootCriterion} composes the
 fixed-field identity, degree, Galois property, ordinary minimal polynomial,
 fixed-field generation, derived root action, and corrected
-conjugate-containment criterion in one theorem.  The generic criterion, its
-explicit invariant construction, and the theta adapter are committed and
-freshly kernel-checked.  The universal rational-function bridge is also
-focused-kernel-checked.  It explicitly reindexes the universal coset product
+conjugate-containment criterion in one theorem.  The two field-generic Lean
+modules, the generic criterion, its explicit invariant construction, and the
+theta adapter are committed and focused-kernel-checked.  The universal
+rational-function bridge explicitly reindexes the universal coset product
 onto Mathlib's distinct-orbit product by fixing the two canonical quotient
 \lean{Fintype} instances, identifies that product with both
 \lean{FixedPoints.minpoly} and the ordinary minimal polynomial, and combines
 this identity with fixed-field generation in
-\lean{hasExactRenameStabilizer_iff_generator_and_minpoly}.  All four restored
-endpoints audit to \lean{propext}, \lean{Classical.choice}, and
-\lean{Quot.sound}.  This is a universal rational-function theorem; it does not
+\lean{hasExactRenameStabilizer_iff_generator_and_minpoly}.  All fourteen
+audited field-generic endpoints report exactly \lean{propext},
+\lean{Classical.choice}, and
+\lean{Quot.sound}.  The matching Coq source and both public aggregate audits
+remain pending.  This is a universal rational-function theorem; it does not
 assert that a specialized theta sextic remains minimal after root
 substitution.  The larger aggregate and polynomial-realized counterexample
 compile directly, while their final assumptions remain cache-gated by the
@@ -713,8 +715,10 @@ the literal standard five-cycle used by Chapman's argument.  Lean uses the
 canonical \texttt{p.SplittingField}; Coq states the corresponding
 \texttt{splittingFieldFor} generation hypothesis explicitly.  These root
 orderings and automorphisms are noncanonical witnesses, not executable
-selection functions.  Both expanded specializations remain source-level
-until their focused and public kernel builds accept them.
+selection functions.  The Lean arbitrary-base specialization is committed
+and focused-kernel-checked; all ten audited endpoints report exactly
+\lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound}.  The matching
+Coq specialization and both enlarged public aggregate audits remain pending.
 
 \section[Recovering i5 through i8]{Recovering $\ii5,\ldots,\ii8$}
 
@@ -1089,7 +1093,7 @@ or fractional-power convention.
 
 \section{What is proved, and what remains}
 
-\subsection{Paused Lean checkpoint: 12 August 2026}
+\subsection{Paused Lean checkpoint: 13 August 2026}
 
 The project is paused at this commit.  The following vocabulary is used in
 this section.
@@ -1155,9 +1159,9 @@ The principal \emph{committed and freshly checked} results at the pause are:
   term~120 has $82$.  Every module in these graphs was rebuilt, and their
   exported endpoint audits contain at most \lean{propext}.  There is no
   \lean{native_decide}, admission, unsafe implementation, or external proof
-  oracle in these graphs.  The serial merge chain has consequently advanced
-  through Table~0 tails~35 down to 30; lower tails and the other tables remain
-  open, so this is not yet the public coefficient theorem.
+  oracle in these graphs.  Subsequent committed focused builds have advanced
+  the verified Table~0 merge chain through tail~25.  Lower tails and the other
+  tables remain open, so this is not yet the public coefficient theorem.
 \item The modular $C_6/\mathbb F_3$ product reconstruction now has a committed
   Lean source closure for all $159$ degree-seven product rows.  The formerly
   infeasible quotient-backed tail was replaced by bounded coefficient
@@ -1203,8 +1207,8 @@ checkpoints}, not yet a single clean public theorem graph:
 \item The Dummit coefficient implementation has been rewritten so that the
   large finite identities are intended to be checked by bounded ordinary
   kernel reductions.  Hundreds of generated table/root modules still await
-  their serial build; Table~0 terms~120, 125, and 131 and tails~32 through 30
-  have passed, and
+  their serial build; the verified Table~0 merge chain now reaches tail~25,
+  and
   the top \lean{ComputableDummitCoefficients} artifact
   is stale relative to that rewrite.  Consequently downstream assumption
   reports can still display four legacy \lean{native_decide} constants even
@@ -1257,8 +1261,9 @@ When work resumes, the shortest dependable path is:
 
 \begin{enumerate}
 \item Continue the bounded Dummit certificate frontier below Table~0
-  tail~30, building each missing term certificate and then one tail merge at a
-  time.  Finish all four coefficient tables and the root-state certificates;
+  tail~25, beginning with tail~24 and building each missing term certificate
+  followed by one tail merge at a time.  Finish all four coefficient tables
+  and the root-state certificates;
   force-shard only a term that actually exceeds the resource bound.
 \item Rebuild \lean{ComputableDummitCoefficients} and its public decision
   theorem from that source closure, then verify that the four stale
@@ -1397,8 +1402,11 @@ the new paired witness modules prove $X^5-2$ irreducible by Eisenstein,
 construct its distinct five-root tuple in an algebraically closed extension,
 prove that its exact monic factorization is the product of the five displayed
 linear factors, prove the corresponding root-membership iff/exhaustion
-statement, and instantiate both nonseparability results there.  These statements remain
-source-level until the focused and public kernel builds accept them.
+statement, and instantiate both nonseparability results there.  The Lean
+exact-stabilizer module and both Lean low-degree modules are committed and
+focused-kernel-checked; their audited endpoints report exactly
+\lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound}.  The matching
+Coq sources and both public aggregate audits remain pending.
 
 This necessary degree bound is logically independent of Lazard's next
 sharpness claim.  The paper exhibits the degree-five products $T'$ and $U'$
@@ -1437,8 +1445,12 @@ epsilon is homogeneous of degree five under root dilation, and nonzero
 denominator cancellation transports both injectivity and canonical epsilon
 nonvanishing back to the caller's polynomial.  Thus its combined endpoint no
 longer stops at the integral-coded coefficient representation and accepts no
-epsilon or separability certificate.  These wrappers remain source-level until the
-focused and public kernel builds accept them.  This composition is neither
+epsilon or separability certificate.  The Lean generic, rational, combined,
+and common-complex endpoints are committed and focused-kernel-checked;
+fourteen audited inclusion, index, and separability endpoints report exactly
+\lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound}.  The matching
+Coq wrappers and both public aggregate audits remain pending.  This
+composition is neither
 used by nor silently assumed in the proof that every degree-below-five
 candidate fails.  The combined epsilon endpoints still take a primitive
 fifth root in the chosen ambient field; they do not infer that such a root
@@ -1465,13 +1477,13 @@ by a current public kernel build:
   inversion, derived five Vieta relations, exact polynomial factorization,
   soundness, and exhaustive-root endpoints under the exact hypothesis
   $5\ne0$, together with the matching Coq Fourier/Vieta graph;
-\item finish and kernel-check the symmetric rational-function fixed-field,
-  finite-extension, Galois-group, and minimal-polynomial bridges in both
-  provers;
-\item kernel-check the arbitrary-base-field Chapman no-collision endpoints
-  under $5\ne0$ and the new splitting-field specializations that derive their
-  root-sum and five-cycle-action hypotheses from a general irreducible
-  degree-five polynomial;
+\item retain the committed, focused-kernel-checked Lean arbitrary-field
+  symmetric rational-function fixed-field and resolvent bridge and rebuild it
+  through the public aggregate; finish and kernel-check the corresponding Coq
+  fixed-field, finite-extension, Galois-group, and minimal-polynomial bridges;
+\item rebuild the committed, focused-kernel-checked Lean arbitrary-base-field
+  Chapman no-collision and splitting-field endpoints through the public audit,
+  and kernel-check the matching Coq specialization;
 \item kernel-check the corrected exact nonmodular form of Theorem~2 (together
   with its characteristic-zero convenience wrapper), and register the now
   focused-kernel-checked, semantically closed modular $C_6/\mathbb F_3$
@@ -1491,14 +1503,14 @@ by a current public kernel build:
   $S_5/F_{20}$ witness and the explicit irreducible-rational polynomial
   realization with exact roots, genuine splitting-field Galois action,
   separable base-root resolvent, corrected conjugate containment, and failed
-  displayed containment; kernel-check the exact $C_5/D_5$ stabilizers and
-  the arbitrary-polynomial minimum-degree theorems, the separate literal
-  $S_5/C_5$ and $S_5/D_5$ low-degree collision theorems, and their
-  irreducible $X^5-2$ instantiations, and the newly packaged displayed
-  degree-five $T'$, $U'$, $T'U'$, and epsilon literal two-coset relative resolvents
-  whose separability is derived from the existing nonvanishing and sign
-  identities under the exact hypothesis $2\ne0$, including the combined
-  irreducible-rational endpoints which derive root injectivity internally;
+  displayed containment; rebuild the committed, focused-kernel-checked Lean
+  exact $C_5/D_5$ stabilizers, arbitrary-polynomial minimum-degree theorems,
+  separate literal $S_5/C_5$ and $S_5/D_5$ low-degree collision theorems, and
+  irreducible $X^5-2$ instantiations through the public audit, and kernel-check
+  their matching Coq modules; rebuild the committed, focused-kernel-checked
+  Lean degree-five $T'$, $U'$, $T'U'$, and epsilon two-coset relative-resolvent
+  modules through the public audit, and kernel-check the matching Coq
+  relative-resolvent and common-field wrappers;
 \item kernel-check all four literal Figure~3 identities, their four-by-four
   coefficient matrix, and the irreducible-rational determinant-nonvanishing
   chains in both provers.  The new Coq rational transport proves the exact
@@ -1570,9 +1582,12 @@ showed why notebook output is not a proof oracle.
 \item Some other notebook runs abort after ten cases, some use
   \lean{PossibleZeroQ}, and the independent package checks high-precision
   residuals without proving symbolic identities or complete root coverage.
-\item The label of $X^5+20X+32$ as $F_{20}$ in one newer document is
-  incorrect; its group is dihedral.  It should not be used as an $F_{20}$
-  classification fixture.
+\item Lean now proves that $X^5+20X+32$ is irreducible, that $40$ is a root
+  of its Frobenius--Dummit sextic, that its discriminant is $64000^2$, and
+  that its Galois group has order ten and is conjugate to $D_5$, not
+  $F_{20}$.  The finite and discriminant submodules are trust-clean; the final
+  solvability and classification endpoints remain cache-gated by the four
+  legacy \lean{native_decide} constants in the stale top Dummit artifact.
 \item Dummit's printed examples have later corrections, and his original
   factorization proof needs Chapman's specialized-distinctness lemma.
 \end{itemize}
