@@ -1,0 +1,19 @@
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term110State4Data
+
+import PolynomialFormulas.ComputableDummitKernelCertificateTable0Term110State3Data
+
+namespace LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
+
+open LeanProofs.PolynomialFormulas.ComputableDummitCoefficients
+
+set_option maxRecDepth 1000000
+
+set_option maxHeartbeats 20000000
+
+set_option maxRecDepth 1000000 in
+set_option maxHeartbeats 20000000 in
+theorem table0_term110_state4_certificate :
+    SparsePolynomial.mul table0Term110State3Normal (elementaryPolynomials 1) = table0Term110State4Normal := by
+  decide
+
+end LeanProofs.PolynomialFormulas.ComputableDummitCoefficients.KernelCertificate
