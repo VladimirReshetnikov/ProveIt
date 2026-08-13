@@ -12,8 +12,10 @@ source expression inside Lean.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import re
 from collections import defaultdict
+from collections.abc import Callable
 from itertools import combinations
 from pathlib import Path
 
@@ -22,6 +24,7 @@ Exponent = tuple[int, int, int, int, int]
 Polynomial = dict[Exponent, int]
 Term = tuple[int, Exponent]
 TermList = list[Term]
+ModuleEmitter = Callable[[str, list[str], list[str]], None]
 
 ZERO: Exponent = (0, 0, 0, 0, 0)
 ROOT = Path(__file__).resolve().parents[3]
@@ -1159,16 +1162,50 @@ def root_state_certificate(start: int, degree: int) -> str:
     return f"root_state{start}_degree{degree}_certificate"
 
 
-def write_root_data() -> tuple[str, str]:
+def root_state_keys() -> tuple[tuple[int, int], ...]:
+    """The exact dependency closure of the four public root coefficients."""
+    return tuple(
+        (start, degree)
+        for start in reversed(range(7))
+        for degree in range(7)
+        if degree >= max(0, 3 - start)
+    )
+
+
+def root_table_final_module(index: int) -> str:
+    return f"{PREFIX}Table{index}Final"
+
+
+def expected_root_modules() -> tuple[str, ...]:
+    """All and only the generated modules owned by root-only generation."""
+    modules = (
+        f"{PREFIX}RootThetaData",
+        f"{PREFIX}RootThetaCertificate",
+        f"{PREFIX}RootStateData",
+        *(root_state_certificate_module(start, degree)
+          for start, degree in root_state_keys()),
+        *(f"{PREFIX}Root{index}Final" for index in range(4)),
+        f"{PREFIX}s",
+    )
+    if len(modules) != 51 or len(set(modules)) != len(modules):
+        raise RuntimeError(
+            "root closure must contain exactly 51 distinct modules")
+    return modules
+
+
+def write_root_data(
+        emit: ModuleEmitter | None = None) -> tuple[str, str]:
+    if emit is None:
+        emit = write_module
     theta_data = f"{PREFIX}RootThetaData"
     theta_certificate = f"{PREFIX}RootThetaCertificate"
     theta_declarations = [
         lean_polynomial(f"theta{index}Normal", THETAS[index])
         for index in range(6)
     ]
-    write_module(theta_data, ["ComputableDummitCoefficientsCore"],
-                 theta_declarations)
-    write_module(theta_certificate, [theta_data], [
+    emit(theta_data, ["ComputableDummitCoefficientsCore"],
+         theta_declarations)
+    emit(theta_certificate, [theta_data], [
         decide_theorem(
             f"thetaPolynomial_{index}_certificate",
             f"thetaPolynomial {index} = theta{index}Normal",
@@ -1189,66 +1226,69 @@ def write_root_data() -> tuple[str, str]:
                     root_state_product(start, degree),
                     mul(THETAS[start],
                         esymm_state(start + 1, degree - 1, cache))))
-    write_module(state_data, [theta_certificate], declarations)
+    emit(state_data, [theta_certificate], declarations)
     return theta_certificate, state_data
 
 
 def write_root_state_certificates(theta_certificate: str,
-                                  state_data: str) -> None:
-    for start in reversed(range(7)):
-        for degree in range(7):
-            # The four large public coefficient certificates begin at
-            # (start, degree) = (0, 3), ..., (0, 6).  Each recurrence step
-            # either preserves or lowers the degree by one, so these are the
-            # only unreachable low-degree states in the dependency closure.
-            if degree < max(0, 3 - start):
-                continue
-            module = root_state_certificate_module(start, degree)
-            normal = root_state_normal(start, degree)
-            statement = (
-                f"SparsePolynomial.esymm {theta_suffix_expression(start)} "
-                f"{degree} = {normal}")
-            if start == 6 or degree == 0:
-                write_module(module, [state_data], [
-                    decide_theorem(root_state_certificate(start, degree),
-                                   statement, depth=100000),
-                ])
-                continue
-            high_module = root_state_certificate_module(start + 1, degree)
-            low_module = root_state_certificate_module(start + 1, degree - 1)
-            product = root_state_product(start, degree)
-            product_certificate = (
-                f"root_state{start}_degree{degree}_product_certificate")
-            merge_certificate = (
-                f"root_state{start}_degree{degree}_merge_certificate")
-            declarations = [
-                decide_theorem(
-                    product_certificate,
-                    f"SparsePolynomial.mul theta{start}Normal "
-                    f"{root_state_normal(start + 1, degree - 1)} = {product}"),
-                decide_theorem(
-                    merge_certificate,
-                    f"SparsePolynomial.add {root_state_normal(start + 1, degree)} "
-                    f"{product} = {normal}"),
-                f"theorem {root_state_certificate(start, degree)} :\n"
-                f"    {statement} := by\n"
-                "  change SparsePolynomial.add\n"
-                f"    (SparsePolynomial.esymm {theta_suffix_expression(start + 1)} "
-                f"{degree})\n"
-                f"    (SparsePolynomial.mul (thetaPolynomial {start})\n"
-                f"      (SparsePolynomial.esymm {theta_suffix_expression(start + 1)} "
-                f"{degree - 1})) = {normal}\n"
-                f"  rw [thetaPolynomial_{start}_certificate,\n"
-                f"    {root_state_certificate(start + 1, degree)},\n"
-                f"    {root_state_certificate(start + 1, degree - 1)},\n"
-                f"    {product_certificate}, {merge_certificate}]",
-            ]
-            write_module(module,
-                         [state_data, theta_certificate, high_module, low_module],
-                         declarations)
+                                  state_data: str,
+                                  emit: ModuleEmitter | None = None) -> None:
+    if emit is None:
+        emit = write_module
+    for start, degree in root_state_keys():
+        # The four large public coefficient certificates begin at
+        # (start, degree) = (0, 3), ..., (0, 6).  Each recurrence step
+        # either preserves or lowers the degree by one, so these are the
+        # only unreachable low-degree states in the dependency closure.
+        module = root_state_certificate_module(start, degree)
+        normal = root_state_normal(start, degree)
+        statement = (
+            f"SparsePolynomial.esymm {theta_suffix_expression(start)} "
+            f"{degree} = {normal}")
+        if start == 6 or degree == 0:
+            emit(module, [state_data], [
+                decide_theorem(root_state_certificate(start, degree),
+                               statement, depth=100000),
+            ])
+            continue
+        high_module = root_state_certificate_module(start + 1, degree)
+        low_module = root_state_certificate_module(start + 1, degree - 1)
+        product = root_state_product(start, degree)
+        product_certificate = (
+            f"root_state{start}_degree{degree}_product_certificate")
+        merge_certificate = (
+            f"root_state{start}_degree{degree}_merge_certificate")
+        declarations = [
+            decide_theorem(
+                product_certificate,
+                f"SparsePolynomial.mul theta{start}Normal "
+                f"{root_state_normal(start + 1, degree - 1)} = {product}"),
+            decide_theorem(
+                merge_certificate,
+                f"SparsePolynomial.add {root_state_normal(start + 1, degree)} "
+                f"{product} = {normal}"),
+            f"theorem {root_state_certificate(start, degree)} :\n"
+            f"    {statement} := by\n"
+            "  change SparsePolynomial.add\n"
+            f"    (SparsePolynomial.esymm {theta_suffix_expression(start + 1)} "
+            f"{degree})\n"
+            f"    (SparsePolynomial.mul (thetaPolynomial {start})\n"
+            f"      (SparsePolynomial.esymm {theta_suffix_expression(start + 1)} "
+            f"{degree - 1})) = {normal}\n"
+            f"  rw [thetaPolynomial_{start}_certificate,\n"
+            f"    {root_state_certificate(start + 1, degree)},\n"
+            f"    {root_state_certificate(start + 1, degree - 1)},\n"
+            f"    {product_certificate}, {merge_certificate}]",
+        ]
+        emit(module,
+             [state_data, theta_certificate, high_module, low_module],
+             declarations)
 
 
-def write_root_final(index: int, table_final: str) -> str:
+def write_root_final(index: int, table_final: str,
+                     emit: ModuleEmitter | None = None) -> str:
+    if emit is None:
+        emit = write_module
     degree = 6 - index
     sign = -1 if degree % 2 else 1
     word = table_word(index)
@@ -1257,8 +1297,8 @@ def write_root_final(index: int, table_final: str) -> str:
     final_certificate = f"root_coefficient_{word}_final_certificate"
     source_certificate = f"sparseRootCoefficient_{word}_certificate"
     common = table_tail_normal(index, 0)
-    write_module(module,
-        [table_final, root_state_certificate_module(0, degree)], [
+    emit(module,
+         [table_final, root_state_certificate_module(0, degree)], [
         f"def {candidate} : SparsePolynomial :=\n"
         f"  SparsePolynomial.mul (SparsePolynomial.const {sign}) "
         f"{root_state_normal(0, degree)}",
@@ -1275,6 +1315,185 @@ def write_root_final(index: int, table_final: str) -> str:
     return module
 
 
+def emit_root_closure(table_finals: list[str] | tuple[str, ...],
+                      emit: ModuleEmitter | None = None) -> None:
+    """Emit the shared root closure without generating any table modules."""
+    expected_table_finals = tuple(
+        root_table_final_module(index) for index in range(4))
+    if tuple(table_finals) != expected_table_finals:
+        raise RuntimeError(
+            "root closure requires the four canonical table-final imports")
+    if emit is None:
+        emit = write_module
+    theta_certificate, state_data = write_root_data(emit)
+    write_root_state_certificates(theta_certificate, state_data, emit)
+    root_finals = [
+        write_root_final(index, table_finals[index], emit)
+        for index in range(4)
+    ]
+    emit(f"{PREFIX}s", root_finals, [])
+
+
+def render_root_closure() -> tuple[dict[str, str],
+                                   dict[str, tuple[str, ...]]]:
+    """Render and validate the exact root closure entirely in memory."""
+    rendered: dict[str, str] = {}
+    imports_by_module: dict[str, tuple[str, ...]] = {}
+
+    def collect(name: str, imports: list[str], declarations: list[str]) -> None:
+        if name in rendered:
+            raise RuntimeError(f"duplicate generated root module: {name}")
+        rendered[name] = module_text(imports, declarations)
+        imports_by_module[name] = tuple(imports)
+
+    emit_root_closure(
+        tuple(root_table_final_module(index) for index in range(4)), collect)
+    validate_root_closure(rendered, imports_by_module)
+    return rendered, imports_by_module
+
+
+def validate_root_closure(
+        rendered: dict[str, str],
+        imports_by_module: dict[str, tuple[str, ...]]) -> None:
+    """Fail closed on a malformed root module set or import graph."""
+    expected = set(expected_root_modules())
+    if set(rendered) != expected or set(imports_by_module) != expected:
+        raise RuntimeError("rendered root module set does not match its owner set")
+
+    allowed_external = {
+        "ComputableDummitCoefficientsCore",
+        *(root_table_final_module(index) for index in range(4)),
+    }
+    external = {
+        dependency
+        for imports in imports_by_module.values()
+        for dependency in imports
+        if dependency not in expected
+    }
+    if external != allowed_external:
+        raise RuntimeError(
+            "unexpected root external imports: "
+            + ", ".join(sorted(external ^ allowed_external)))
+
+    visited: set[str] = set()
+    active: set[str] = set()
+
+    def visit(module: str) -> None:
+        if module in active:
+            raise RuntimeError(f"cycle in generated root imports at {module}")
+        if module in visited:
+            return
+        active.add(module)
+        for dependency in imports_by_module[module]:
+            if dependency in expected:
+                visit(dependency)
+        active.remove(module)
+        visited.add(module)
+
+    aggregate = f"{PREFIX}s"
+    visit(aggregate)
+    if visited != expected:
+        unreachable = ", ".join(sorted(expected - visited))
+        raise RuntimeError(
+            f"generated root modules unreachable from aggregate: {unreachable}")
+
+
+def root_closure_digest(rendered: dict[str, str]) -> str:
+    """A stable digest over module names and exact generated bytes."""
+    digest = hashlib.sha256()
+    for module in sorted(rendered):
+        digest.update(module.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(rendered[module].encode("utf-8"))
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def existing_owned_root_paths(lean_dir: Path = LEAN_DIR) -> set[Path]:
+    """Root sources owned by this mode; table sources are deliberately out."""
+    return {
+        *lean_dir.glob(f"{PREFIX}Root*.lean"),
+        *lean_dir.glob(f"{PREFIX}s*.lean"),
+    }
+
+
+def existing_owned_root_modules(lean_dir: Path = LEAN_DIR) -> set[str]:
+    """Validate and return existing generator-owned root module names."""
+    paths = existing_owned_root_paths(lean_dir)
+    invalid = sorted(
+        str(path) for path in paths
+        if path.is_symlink() or not path.is_file()
+    )
+    for module in expected_root_modules():
+        path = lean_dir / f"{module}.lean"
+        if path.is_symlink():
+            invalid.append(str(path))
+    if invalid:
+        raise RuntimeError(
+            "refusing non-regular generated root paths:\n  "
+            + "\n  ".join(sorted(set(invalid))))
+    return {path.stem for path in paths}
+
+
+def root_closure_differences(
+        rendered: dict[str, str], lean_dir: Path = LEAN_DIR
+        ) -> tuple[list[str], list[str], list[str]]:
+    """Return missing, unexpected, and byte-stale root module names."""
+    expected = set(rendered)
+    existing = existing_owned_root_modules(lean_dir)
+    missing = sorted(expected - existing)
+    unexpected = sorted(existing - expected)
+    stale = sorted(
+        module for module in expected & existing
+        if (lean_dir / f"{module}.lean").read_bytes()
+        != rendered[module].encode("utf-8")
+    )
+    return missing, unexpected, stale
+
+
+def format_root_closure_differences(
+        missing: list[str], unexpected: list[str], stale: list[str]) -> str:
+    lines = ["root closure check failed"]
+    for label, modules in (
+            ("missing", missing),
+            ("unexpected", unexpected),
+            ("stale-content", stale)):
+        if modules:
+            lines.append(f"  {label} ({len(modules)}):")
+            lines.extend(f"    {module}.lean" for module in modules)
+    return "\n".join(lines)
+
+
+def check_root_closure(lean_dir: Path = LEAN_DIR) -> str:
+    """Check the root closure without writing generated sources."""
+    core = lean_dir / "ComputableDummitCoefficientsCore.lean"
+    if not core.is_file():
+        raise RuntimeError(f"missing required root input: {core}")
+    rendered, _ = render_root_closure()
+    missing, unexpected, stale = root_closure_differences(rendered, lean_dir)
+    if missing or unexpected or stale:
+        raise RuntimeError(
+            format_root_closure_differences(missing, unexpected, stale))
+    return root_closure_digest(rendered)
+
+
+def write_root_closure(lean_dir: Path = LEAN_DIR) -> str:
+    """Write only the expected root sources, refusing to delete orphans."""
+    core = lean_dir / "ComputableDummitCoefficientsCore.lean"
+    if not core.is_file():
+        raise RuntimeError(f"missing required root input: {core}")
+    rendered, _ = render_root_closure()
+    _, unexpected, _ = root_closure_differences(rendered, lean_dir)
+    if unexpected:
+        raise RuntimeError(format_root_closure_differences([], unexpected, []))
+    for module in expected_root_modules():
+        path = lean_dir / f"{module}.lean"
+        payload = rendered[module].encode("utf-8")
+        if not path.exists() or path.read_bytes() != payload:
+            path.write_bytes(payload)
+    return check_root_closure(lean_dir)
+
+
 def write_all_certificates() -> None:
     rows = parse_table()
     table_finals: list[str] = []
@@ -1284,11 +1503,7 @@ def write_all_certificates() -> None:
         row_data, group_count = write_table_row_data(index, row)
         write_table_tail_certificates(index, row, row_data, group_count)
         table_finals.append(write_table_final(index, row, row_data))
-    theta_certificate, state_data = write_root_data()
-    write_root_state_certificates(theta_certificate, state_data)
-    root_finals = [write_root_final(index, table_finals[index])
-                   for index in range(4)]
-    write_module(f"{PREFIX}s", root_finals, [])
+    emit_root_closure(table_finals)
 
 
 def write_probe() -> None:
@@ -1346,13 +1561,20 @@ def stats() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--stats", action="store_true")
-    parser.add_argument("--write-probe", action="store_true")
-    parser.add_argument("--write-all", action="store_true")
-    parser.add_argument(
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--stats", action="store_true")
+    modes.add_argument("--write-probe", action="store_true")
+    modes.add_argument("--write-all", action="store_true")
+    modes.add_argument(
         "--write-term-shards", nargs=2, type=int,
         metavar=("TABLE_INDEX", "TERM_POSITION"),
         help="regenerate one table-term certificate using accumulator shards")
+    modes.add_argument(
+        "--write-root", action="store_true",
+        help="write only the exact 51-module shared root closure")
+    modes.add_argument(
+        "--check-root", action="store_true",
+        help="check the exact root closure without writing any source")
     args = parser.parse_args()
     if args.stats:
         stats()
@@ -1373,6 +1595,20 @@ def main() -> None:
         write_table_term_certificate_files(
             index, position, rows[index][position], force_sharded=True)
         write_target_manifest_and_check(index, position)
+        return
+    if args.write_root:
+        try:
+            digest = write_root_closure()
+        except (OSError, RuntimeError) as error:
+            parser.exit(1, f"{error}\n")
+        print(f"root closure written: 51 modules, sha256 {digest}")
+        return
+    if args.check_root:
+        try:
+            digest = check_root_closure()
+        except (OSError, RuntimeError) as error:
+            parser.exit(1, f"{error}\n")
+        print(f"root closure check passed: 51 modules, sha256 {digest}")
         return
     if args.write_all:
         write_all_certificates()
