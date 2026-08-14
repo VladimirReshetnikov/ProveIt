@@ -2680,6 +2680,134 @@ def render_root_closure() -> tuple[dict[str, str],
     return rendered, imports_by_module
 
 
+def expected_root_key_declarations(
+        ) -> dict[str, tuple[tuple[str, str], ...]]:
+    """Exact declarations for the root closure's public/support modules."""
+    declarations: dict[str, tuple[tuple[str, str], ...]] = {
+        ROOT_NORMALIZE_SUPPORT_MODULE: tuple(
+            ("theorem", name) for name in (
+                ROOT_RAW_MUL_APPEND_LEFT_CERTIFICATE,
+                ROOT_RAW_MUL_SINGLETON_APPEND_RIGHT_CERTIFICATE,
+                ROOT_FLATTEN_BUCKETS_APPEND_CERTIFICATE,
+                ROOT_FLATTEN_BUCKETS_SINGLETON_CERTIFICATE,
+            )
+        ),
+        f"{PREFIX}RootThetaData": tuple(
+            ("def", f"theta{index}Normal") for index in range(6)),
+        f"{PREFIX}RootThetaCertificate": tuple(
+            ("theorem", f"thetaPolynomial_{index}_certificate")
+            for index in range(6)),
+        f"{PREFIX}RootStateData": tuple(
+            ("def", declaration)
+            for start in reversed(range(7))
+            for degree in range(7)
+            for declaration in (
+                (root_state_normal(start, degree),
+                 root_state_product(start, degree))
+                if start < 6 and degree > 0
+                else (root_state_normal(start, degree),)
+            )
+        ),
+        f"{PREFIX}s": (),
+    }
+    sharded = set(sharded_root_product_keys())
+    for start, degree in root_state_keys():
+        names: list[str] = []
+        if start < 6 and degree > 0:
+            if (start, degree) not in sharded:
+                names.append(root_state_product_certificate(start, degree))
+            names.append(
+                f"root_state{start}_degree{degree}_merge_certificate")
+        names.append(root_state_certificate(start, degree))
+        declarations[root_state_certificate_module(start, degree)] = \
+            tuple(("theorem", name) for name in names)
+    for start, degree in sharded:
+        declarations[root_product_module(start, degree, "Certificate")] = (
+            ("theorem", root_state_product_certificate(start, degree)),)
+    for index in range(4):
+        word = table_word(index)
+        declarations[f"{PREFIX}Root{index}Final"] = (
+            ("def", f"rootCoefficient{index}Candidate"),
+            ("theorem", f"root_coefficient_{word}_final_certificate"),
+            ("theorem", f"sparseRootCoefficient_{word}_certificate"),
+        )
+    return declarations
+
+
+def root_module_declarations(
+        module: str, payload: str) -> tuple[tuple[str, str], ...]:
+    """Validate one rendered root module's trust envelope and declarations."""
+    # Root rendering deliberately emits neither comments nor string literals.
+    # Reject those forms instead of letting a textual heartbeat directive in
+    # non-code lexical context satisfy this fail-closed validation.
+    if re.search(r'--|/-|-/|"', payload):
+        raise RuntimeError(
+            f"root module {module} contains unsupported comments or strings")
+    heartbeat_mentions = tuple(
+        match.start() for match in re.finditer(r"\bmaxHeartbeats\b", payload))
+    heartbeat_pattern = re.compile(
+        r"(?m)^[ \t]*set_option[ \t]+(maxHeartbeats)[ \t]+"
+        r"([0-9](?:_?[0-9])*)(?:[ \t]+in)?[ \t]*$")
+    heartbeat_matches = tuple(heartbeat_pattern.finditer(payload))
+    parsed_mentions = tuple(match.start(1) for match in heartbeat_matches)
+    heartbeats = tuple(
+        int(match.group(2).replace("_", ""))
+        for match in heartbeat_matches)
+    if (not heartbeats or heartbeat_mentions != parsed_mentions or
+            any(value <= 0 or value > 20000000 for value in heartbeats)):
+        raise RuntimeError(
+            f"root module {module} lacks a finite heartbeat bound")
+    forbidden = re.compile(
+        r"\b(?:sorry|admit|axiom|constant|unsafe|partial|native_decide|"
+        r"sorryAx|ofReduceBool|implemented_by)\b")
+    if forbidden.search(payload):
+        raise RuntimeError(f"untrusted root proof text in {module}")
+    declarations = tuple(re.findall(
+        r"(?m)^(def|theorem)\s+([A-Za-z_][A-Za-z0-9_']*)\b",
+        payload))
+    declaration_names = tuple(name for _, name in declarations)
+    if len(declaration_names) != len(set(declaration_names)):
+        raise RuntimeError(
+            f"duplicate declarations in generated root module {module}")
+    if module != f"{PREFIX}s" and not declarations:
+        raise RuntimeError(
+            f"generated root module {module} has no declaration")
+    return declarations
+
+
+def validate_root_rendered_text(rendered: dict[str, str]) -> None:
+    """Fail closed on root proof trust and stable public/support names."""
+    declared_by_module = {
+        module: root_module_declarations(module, payload)
+        for module, payload in rendered.items()
+    }
+    expected_key_declarations = expected_root_key_declarations()
+    for module, expected in expected_key_declarations.items():
+        if declared_by_module.get(module) != expected:
+            raise RuntimeError(
+                f"generated root declarations changed in {module}")
+    all_declaration_names = [
+        name
+        for declarations in declared_by_module.values()
+        for _, name in declarations
+    ]
+    if len(all_declaration_names) != len(set(all_declaration_names)):
+        raise RuntimeError("generated root declarations are not unique")
+    declared = set(all_declaration_names)
+    undeclared_root_names = sorted({
+        name
+        for payload in rendered.values()
+        for name in re.findall(
+            r"\b(?:root_[A-Za-z0-9_]+|"
+            r"thetaPolynomial_[A-Za-z0-9_]*)\b", payload)
+        if name not in declared
+    })
+    if undeclared_root_names:
+        raise RuntimeError(
+            "rendered root text references undeclared certificates: "
+            + ", ".join(undeclared_root_names))
+
+
 def validate_root_closure(
         rendered: dict[str, str],
         imports_by_module: dict[str, tuple[str, ...]]) -> None:
@@ -2702,6 +2830,13 @@ def validate_root_closure(
         raise RuntimeError(
             "unexpected root external imports: "
             + ", ".join(sorted(external ^ allowed_external)))
+    duplicate_imports = sorted(
+        module for module, imports in imports_by_module.items()
+        if len(imports) != len(set(imports)))
+    if duplicate_imports:
+        raise RuntimeError(
+            "duplicate generated root imports: "
+            + ", ".join(duplicate_imports))
 
     visited: set[str] = set()
     active: set[str] = set()
@@ -2724,6 +2859,7 @@ def validate_root_closure(
         unreachable = ", ".join(sorted(expected - visited))
         raise RuntimeError(
             f"generated root modules unreachable from aggregate: {unreachable}")
+    validate_root_rendered_text(rendered)
 
 
 def root_closure_digest(rendered: dict[str, str]) -> str:
@@ -2763,6 +2899,27 @@ def existing_owned_root_modules(lean_dir: Path = LEAN_DIR) -> set[str]:
     return {path.stem for path in paths}
 
 
+def required_root_input_paths(lean_dir: Path = LEAN_DIR) -> tuple[Path, ...]:
+    """External sources required before checking or writing root modules."""
+    return (
+        lean_dir / "ComputableDummitCoefficientsCore.lean",
+        *(lean_dir / f"{root_table_final_module(index)}.lean"
+          for index in range(4)),
+    )
+
+
+def validate_required_root_inputs(lean_dir: Path = LEAN_DIR) -> None:
+    """Require all external root inputs to be regular, nonsymlink files."""
+    invalid = [
+        path for path in required_root_input_paths(lean_dir)
+        if path.is_symlink() or not path.is_file()
+    ]
+    if invalid:
+        raise RuntimeError(
+            "missing or non-regular required root inputs:\n  "
+            + "\n  ".join(str(path) for path in invalid))
+
+
 def root_closure_differences(
         rendered: dict[str, str], lean_dir: Path = LEAN_DIR
         ) -> tuple[list[str], list[str], list[str]]:
@@ -2794,9 +2951,7 @@ def format_root_closure_differences(
 
 def check_root_closure(lean_dir: Path = LEAN_DIR) -> str:
     """Check the root closure without writing generated sources."""
-    core = lean_dir / "ComputableDummitCoefficientsCore.lean"
-    if not core.is_file():
-        raise RuntimeError(f"missing required root input: {core}")
+    validate_required_root_inputs(lean_dir)
     rendered, _ = render_root_closure()
     missing, unexpected, stale = root_closure_differences(rendered, lean_dir)
     if missing or unexpected or stale:
@@ -2807,9 +2962,7 @@ def check_root_closure(lean_dir: Path = LEAN_DIR) -> str:
 
 def write_root_closure(lean_dir: Path = LEAN_DIR) -> str:
     """Write only the expected root sources, refusing to delete orphans."""
-    core = lean_dir / "ComputableDummitCoefficientsCore.lean"
-    if not core.is_file():
-        raise RuntimeError(f"missing required root input: {core}")
+    validate_required_root_inputs(lean_dir)
     rendered, _ = render_root_closure()
     _, unexpected, _ = root_closure_differences(rendered, lean_dir)
     if unexpected:
