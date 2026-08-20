@@ -102,7 +102,7 @@ theorem rational_of_two_three_five_rpow_integer {x : ℝ}
   exact not_not.mp (not_irrational_of_three_prime_rpows_integer h₂ h₃ h₅)
 
 /-- A rational exponent whose power of two is an integer must itself be an integer. -/
-private theorem integer_of_rational_of_two_rpow_integer
+theorem integer_of_rational_of_two_rpow_integer
     {x : ℝ} (hxrat : x ∈ Set.range ((↑) : ℚ → ℝ))
     (h₂ : ∃ z : ℤ, (z : ℝ) = (2 : ℝ) ^ x) :
     x ∈ Set.range ((↑) : ℤ → ℝ) := by
