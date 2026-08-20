@@ -1,2 +1,3 @@
 import ExponentialIdentities.IntegerExponent
 import ExponentialIdentities.TinyExponentTower
+import ExponentialIdentities.TwoBaseIntegerExponent
