@@ -1,1 +1,2 @@
+import ExponentialIdentities.IntegerExponent
 import ExponentialIdentities.TinyExponentTower
