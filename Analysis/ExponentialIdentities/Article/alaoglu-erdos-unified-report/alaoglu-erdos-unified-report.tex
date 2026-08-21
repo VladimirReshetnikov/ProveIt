@@ -84,6 +84,11 @@ methods, and research directions}
 \newcommand{\vpp}[2]{v_{#1}\!\left(#2\right)}
 \newcommand{\fall}[2]{\left(#1\right)_{\!\underline{#2}}}
 \newcommand{\clog}{\operatorname{clog}}
+\newcommand{\Apos}{\Abar_{>0}}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\GammaSat}{\Gamma}
+\newcommand{\PGL}{\operatorname{PGL}}
+\newcommand{\Qbar}{\Abar}
 \newcommand{\sha}[1]{\texttt{\detokenize{#1}}}
 \newcommand{\lean}[1]{\texttt{\detokenize{#1}}}
 \newcommand{\commit}[1]{\texttt{#1}}
@@ -262,7 +267,7 @@ not interchangeable with a Lean certificate.
 A classical theorem quoted from the literature.
 \end{description}
 
-An earlier audit, performed against commit \commit{423ac24}, correctly observed that three
+An earlier audit, performed against \commit{423ac24}, correctly observed that three
 modules cited by the survey --- \lean{FiniteCheck4096}, \lean{OddCore}
 and \lean{FractionalPartDensity} --- were absent then.  That discrepancy is
 resolved: the three modules were subsequently committed in \commit{98646b455} and are
@@ -1028,7 +1033,7 @@ in $T$, against the quadratic global bound.
 \lean{twoBaseNaturalCandidatesInDyadicBlock_card_le} in \lean{OddCore}.}
 \end{statusbox}
 
-The logarithmic-square order cannot be improved by counting alone: if a candidate with an
+The logarithmic-square order resists improvement by counting alone: if a candidate with an
 odd prime factor exists, multiplicative closure generates injective boxes $2^ia^j$, so the
 count below $2^ka^l$ is at least $kl$
 (\lean{twoBaseNaturalCandidatesBelow_card_ge_box},
@@ -3717,6 +3722,1505 @@ transcendental and $1,\thetaq,\thetaq_5$ are $\Q$-independent by unique factoriz
 present method excludes a quadratic relation between them.  So
 Definition~\ref{lp:def-independence} is a theorem for two primes, open from three onwards,
 and the Alaoglu--Erd\H{o}s conjecture sits exactly on that boundary.
+\section{The algebraic auxiliary-base spectrum}\label{sec:spectrum}
+
+Section~\ref{sec:smooth} classified the \emph{natural} auxiliary bases whose $x$-th powers
+remain algebraic, and had to tag the transcendence half of that classification as classical
+background: the repository's interpolation determinant carried integer entries, so it could
+prove $B^x\notin\Q$ but not $B^x\notin\Qbar$.  That boundary has moved.  The same square
+determinant now accepts algebraic entries of bounded height inside a number field, and the
+resulting classification is exact over \emph{all} positive real algebraic bases.  A
+hypothetical nonintegral solution turns out to have one fixed, explicitly described set of
+good bases --- a dense but very thin subgroup of $\R_{>0}$ --- and every positive algebraic
+base outside it produces a transcendental value.
+
+\subsection{The saturated group of positive two-three units}
+
+The multiplicative group $\Apos$ of positive real algebraic numbers is a vector space over
+$\Q$ once rational scalars act through the unique positive real root:
+\[
+  q\cdot\alpha=\alpha^{q},
+  \qquad q\in\Q,\quad \alpha\in\Apos.
+\]
+For multiplicatively independent $a,b\in\Apos$ define the \emph{saturated group}
+\[
+  \GammaSat(a,b)=\{a^{r}b^{s}:r,s\in\Q\}.
+\]
+The map $\Q^{2}\to\GammaSat(a,b)$, $(r,s)\mapsto a^{r}b^{s}$, is an isomorphism of
+$\Q$-vector spaces; injectivity is exactly multiplicative independence after clearing
+denominators.  For the original problem write
+\[
+  \GammaSat=\GammaSat(2,3)=\{2^{r}3^{s}:r,s\in\Q\}.
+\]
+
+This group has a second description that is the one the Lean development actually uses.  Let
+$\langle2,3\rangle_{\Z}=\{2^{i}3^{j}/(2^{k}3^{\ell}):i,j,k,\ell\in\Nzero\}$ be the group of
+positive rational $2,3$-units, and let
+\[
+  \sqrt[\infty]{\langle2,3\rangle_{\Z}}
+  :=\{\gamma>0:\exists\,n\ge1,\ \gamma^{n}\in\langle2,3\rangle_{\Z}\}
+\]
+be its divisible hull inside $\R_{>0}$.
+
+\begin{observation}\label{sp:hull-equals-gamma}
+$\sqrt[\infty]{\langle2,3\rangle_{\Z}}=\GammaSat$.  In particular every element of the
+divisible hull is automatically algebraic.
+\end{observation}
+
+Indeed, if $\gamma^{n}=2^{i}3^{j}/(2^{k}3^{\ell})$ then $\gamma$ is the unique positive real
+$n$-th root of a positive rational, hence $\gamma=2^{(i-k)/n}3^{(j-\ell)/n}\in\GammaSat$;
+conversely $2^{r}3^{s}$ raised to a common denominator of $r,s$ lands in
+$\langle2,3\rangle_{\Z}$.  The Lean predicate \lean{HasPositiveTwoThreeUnitPower} is the
+literal transcription of membership in the hull, so it and membership in $\GammaSat$ may be
+used interchangeably below.
+
+\subsection{The exact spectrum theorem}
+
+The kernel-verified corpus contains the determinant in fully symmetric form: three positive
+algebraic bases with injective nonnegative monomials cannot all have algebraic $x$-th powers
+when $x$ is irrational.  The next theorem is the coordinate-free synthesis for an arbitrary
+independent pair; its proof is a direct application of the same classical six-exponentials
+input, and it is stated here at paper level because the Lean development fixes the pair
+$(2,3)$.
+
+\begin{theorem}[Exact algebraic-base spectrum]\label{sp:general-spectrum}
+Let $a,b\in\Apos$ be multiplicatively independent, let $x\in\R\setminus\Q$, and assume
+$a^{x},b^{x}\in\Qbar$.  Then, for every $\alpha\in\Apos$,
+\[
+  \alpha^{x}\in\Qbar
+  \quad\Longleftrightarrow\quad
+  \alpha\in\GammaSat(a,b).
+\]
+\statusnew
+\end{theorem}
+
+\begin{proof}
+If $\alpha=a^{r}b^{s}$ with $r,s\in\Q$, positivity gives $\alpha^{x}=(a^{x})^{r}(b^{x})^{s}$,
+which is algebraic.
+
+Conversely, suppose $\alpha\notin\GammaSat(a,b)$.  Then $\log a$, $\log b$, $\log\alpha$ are
+linearly independent over $\Q$: a rational relation clears to an integer multiplicative
+relation, and if the coefficient of $\log\alpha$ vanishes it contradicts the multiplicative
+independence of $a,b$, while otherwise it places $\alpha$ in the saturated group.  The pair
+$1,x$ is linearly independent over $\Q$ because $x$ is irrational.  Apply the six
+exponentials theorem (Theorem~\ref{sm:six-exp}) to the three rows $\log a,\log b,\log\alpha$
+and the two columns $1,x$.  Five of the six exponential values,
+\[
+  a,\quad b,\quad \alpha,\quad a^{x},\quad b^{x},
+\]
+are algebraic.  Therefore the sixth, $\alpha^{x}$, is transcendental.
+\end{proof}
+
+Conceptually this says more than any list of good auxiliary bases: two algebraic outputs have
+already exhausted the maximum algebraic multiplicative rank that six exponentials permits.
+
+Specializing to $a=2$, $b=3$ gives the statement the repository proves outright.
+
+\begin{corollary}[Complete algebraic spectrum of a counterexample]\label{sp:AE-spectrum}
+Let $x\in\Sol\setminus\Z$.  For every $\alpha\in\Apos$,
+\[
+  \alpha^{x}\in\Qbar
+  \quad\Longleftrightarrow\quad
+  \alpha\in\GammaSat.
+\]
+In particular the spectrum does not depend on which hypothetical nonintegral solution is
+chosen.  \statuslean
+\end{corollary}
+
+A rational solution is integral, so $x$ is irrational and Theorem~\ref{sp:general-spectrum}
+applies; the formal route is the divisible-hull equivalence of the next subsection together
+with Observation~\ref{sp:hull-equals-gamma}.
+
+\begin{statusbox}{\statuslean{} --- the divisible-hull equivalence lives in
+\lean{AlgebraicBaseUnitPower}.}
+Its two forms are
+\begin{center}
+\lean{real_rpow_isAlgebraic_iff_integer_or_hasPositiveTwoThreeUnitPower}
+\end{center}
+together with its counterexample-relative form
+\begin{center}
+\lean{real_rpow_isAlgebraic_iff_hasPositiveTwoThreeUnitPower}
+\end{center}
+in the \lean{TwoBaseNonintegerSolution} namespace, both resting on the injectivity criterion
+\lean{real_two_three_gamma_monomial_injective_iff}.
+The natural-base and rational-base specializations are
+\lean{rpow_isAlgebraic_iff_integer_or_eq_two_pow_mul_three_pow} in \lean{AlgebraicThirdBase}
+and \lean{rat_rpow_isAlgebraic_iff_isTwoThreeUnit_of_not_integer} in
+\lean{AlgebraicRationalBase}; the half-plane, mixed-iterate and rank-one ratio consequences
+are in \lean{AlgebraicOutputLocus}; and the simultaneous exclusion of both canonical radicals
+from the entire hull is in \lean{CanonicalRadicalDivisibleHull}.
+\end{statusbox}
+
+The group $\GammaSat$ is countable, divisible, of rational rank two, and dense in $\R_{>0}$
+--- density already follows from the subgroup $\{2^{r}:r\in\Q\}$.  A counterexample would
+therefore possess a dense set of algebraic bases with algebraic output, while every algebraic
+base outside that exact dense subgroup would give a transcendental one.
+
+\begin{corollary}[Rank bound for any family of algebraic outputs]\label{sp:rank-bound}
+Let $x\in\Sol\setminus\Z$ and let $\alpha_{1},\ldots,\alpha_{t}\in\Apos$ satisfy
+$\alpha_{i}^{x}\in\Qbar$.  Then every $\alpha_{i}$ lies in $\GammaSat$ and the multiplicative
+rank of $\alpha_{1},\ldots,\alpha_{t}$ is at most two.  \statusnew
+\end{corollary}
+
+Both ingredients are kernel-verified --- membership in the hull by
+\lean{AlgebraicBaseUnitPower} and the rank ceiling by \lean{AlgebraicRankThreeEquivalence} ---
+but the combined family statement is recorded here at paper level.
+
+\subsection{The divisible-hull formulation}
+
+Stated without reference to a fixed counterexample, the kernel-verified form is a single
+biconditional valid for every positive real algebraic base.  For $\gamma\in\Apos$, under
+$2^{x},3^{x}\in\Z$,
+\begin{equation}
+  \gamma^{x}\in\Qbar
+  \quad\Longleftrightarrow\quad
+  x\in\Z
+  \quad\text{or}\quad
+  \gamma\in\sqrt[\infty]{\langle2,3\rangle_{\Z}}.
+\label{sp:eq-hull}
+\end{equation}
+The arithmetic core is an exact combinatorial equivalence: $\gamma$ has \emph{no} positive
+natural power in $\langle2,3\rangle_{\Z}$ precisely when the monomial map
+$(i,j,k)\mapsto2^{i}3^{j}\gamma^{k}$ is injective on $\Nzero^{3}$.  The forward implication of
+\eqref{sp:eq-hull} then feeds that injectivity into the generic algebraic determinant, and the
+reverse implication descends algebraicity from a positive integral power.  Specializing
+$\gamma$ to a natural number recovers the $3$-smooth classification of
+Section~\ref{sec:smooth} with ``rational'' upgraded to ``algebraic'', so for a hypothetical
+nonintegral solution the three properties $a^{x}\in\Z$, $a^{x}\in\Q$ and $a^{x}\in\Qbar$
+coincide for $a\in\N_{>0}$, and hold exactly at $2,3$-smooth $a$.  Specializing to a positive
+rational $q$ gives $q^{x}\in\Qbar\iff q\in\langle2,3\rangle_{\Z}$; there is no
+algebraic-irrational middle case anywhere in the picture.
+
+\subsection{The determinant engines behind the spectrum}
+
+Two generic determinant theorems, neither of which mentions the bases $2,3$, carry the whole
+classification.  The rational one states that if $a,b,c\in\Q_{>0}$ have injective nonnegative
+monomials $(i,j,k)\mapsto a^{i}b^{j}c^{k}$ and $a^{x},b^{x},c^{x}\in\Q$, then $x\in\Q$.  The
+algebraic one removes both restrictions: if $a,b,c$ are positive real algebraic numbers with
+injective nonnegative monomials and $a^{x},b^{x},c^{x}$ are all algebraic, then $x\in\Q$.
+Both allow bases below $1$ and negative exponents, and both use $1+|x|$ in the size estimate.
+
+\begin{statusbox}{\statuslean{} ---
+\lean{rational_of_three_rat_rpows_rational_of_monomial_injective} in
+\lean{RationalSixExponentials}, and
+\lean{rational_of_three_real_rpows_isAlgebraic_of_monomial_injective} in
+\lean{AlgebraicSixExponentials}.}
+\end{statusbox}
+
+The step from rational to algebraic outputs is exactly the replacement of the trivial bound
+$|D|\ge1$ for a nonzero integer determinant by a field-norm bound for a nonzero algebraic
+integer determinant, which is the extension anticipated in Section~\ref{sec:smooth}.  The six
+input and output values are placed in one number field $K$ with one common nonzero natural
+scale $s$ making every entry lie in $\mathcal O_{K}$.  For side parameter $n$ the square
+matrix has size $n^{6}$ and each entry acquires the factor $s^{n^{5}}$, so the determinant
+acquires $s^{n^{11}}$; at every embedding other than the distinguished one the six factor
+groups in an entry are bounded by $T^{6n^{5}}$, and the norm of the nonzero algebraic-integer
+determinant gives
+\[
+  \frac{1}{\bigl((n^{6})!\,T^{6n^{11}}\bigr)^{[K:\Q]-1}}
+  \ \le\ \bigl|\sigma(\det A)\bigr|.
+\]
+The verified estimates $(n^{6})!\le2^{n^{11}}$ and
+$\bigl((n^{6})!\,T^{6n^{11}}\bigr)^{[K:\Q]-1}\le\bigl((2T^{6})^{[K:\Q]-1}\bigr)^{n^{11}}$ put
+the entire conjugate and degree loss on the same $n^{11}$ scale as the old rational
+denominator loss, where the existing explicit analytic margin already absorbs it.  No new
+analytic estimate was required --- only honest bookkeeping.
+
+\begin{statusbox}{\statuslean{} ---
+\lean{one_div_conjugate_entry_bound_le_norm_det} and
+\lean{one_div_entry_bound_le_scaled_norm_det} in \lean{AlgebraicIntegerDeterminant}, with the
+number-field realizations \lean{AlgebraicOutputBridge.ofRealIsAlgebraic} and
+\lean{FiniteAlgebraicOutputBridge.ofFinSixIsAlgebraic}.}
+\end{statusbox}
+
+\subsection{The strong spectrum via Baker and Roy}
+
+Let $\LL$ denote the $\Qbar$-vector space generated by $1$ and by all logarithms of nonzero
+algebraic numbers, with arbitrary complex branches allowed; for positive real algebraic
+numbers we use the real logarithm, which is one of those branches.  Roy's strong six
+exponentials theorem \cite{Roy1992,Waldschmidt2005} states that if three complex numbers are
+linearly independent over $\Qbar$ and two more are linearly independent over $\Qbar$, then at
+least one of the six pairwise products lies outside $\LL$.
+
+\begin{theorem}[Strong algebraic-base spectrum]\label{sp:strong-spectrum}
+Under the hypotheses of Theorem~\ref{sp:general-spectrum}, if
+$\alpha\notin\GammaSat(a,b)$, then
+\[
+  x\log\alpha\notin\LL.
+\]
+In particular $\alpha^{x}$ is transcendental.  \statusnew
+\end{theorem}
+
+\begin{proof}
+As in Theorem~\ref{sp:general-spectrum}, the logarithms $\log a,\log b,\log\alpha$ are
+$\Q$-linearly independent, and Baker's homogeneous theorem \cite{Baker1975} upgrades that to
+linear independence over $\Qbar$.  The number $x$ is transcendental: were it algebraic, its
+irrationality together with $a\ne0,1$ would make $a^{x}$ transcendental by
+Gelfond--Schneider.  Hence $1,x$ are linearly independent over $\Qbar$.  Apply Roy's theorem
+to the rows $\log a,\log b,\log\alpha$ and the columns $1,x$.  Five products lie in $\LL$,
+namely $\log a$, $\log b$, $\log\alpha$, $x\log a=\log(a^{x})$ and $x\log b=\log(b^{x})$.
+Therefore the sixth product $x\log\alpha$ lies outside $\LL$.
+\end{proof}
+
+\begin{definition}\label{sp:log-strong}
+Call a positive exponential value $e^{z}$ \emph{log-strongly transcendental} when
+$z\notin\LL$.  This implies ordinary transcendence of $e^{z}$, since the logarithm of a
+positive algebraic number belongs to $\LL$.
+\end{definition}
+
+So outside $\GammaSat$ the failure is not merely that $\alpha^{x}$ is transcendental: the
+number $x\log\alpha$ is not even a $\Qbar$-linear combination of $1$ and logarithms of
+algebraic numbers.  This is a genuinely stronger exclusion than
+Corollary~\ref{sp:AE-spectrum}, and it is the form in which the spectrum interacts with
+linear forms in logarithms.
+
+\subsection{One base is enough: detectors and rank equivalences}
+
+Because the spectrum is the same for every hypothetical nonintegral solution, a
+\emph{single} auxiliary base outside $\GammaSat$ already decides the whole conjecture.
+
+\begin{theorem}[Algebraic detector equivalence]\label{sp:detector}
+Fix $\alpha\in\Apos\setminus\GammaSat$.  Then the Alaoglu--Erd\H{o}s conjecture is equivalent
+to
+\[
+  \forall x\in\R,\quad 2^{x},3^{x}\in\Z\Longrightarrow \alpha^{x}\in\Qbar,
+\]
+and equally to the assertion that every such $x$ satisfies $x\log\alpha\in\LL$.  \statusnew
+\end{theorem}
+
+\begin{proof}
+If the conjecture holds, every solution is a nonnegative integer and $\alpha^{x}$ is
+algebraic, with $x\log\alpha\in\LL$.  Conversely a nonintegral solution would make
+$\alpha^{x}$ transcendental by Corollary~\ref{sp:AE-spectrum} and would put $x\log\alpha$
+outside $\LL$ by Theorem~\ref{sp:strong-spectrum}.
+\end{proof}
+
+This is a paper-level universalization of a pointwise locus that the kernel already knows.
+Valid detectors include, for instance,
+\[
+  5,\qquad \sqrt5,\qquad 1+\sqrt2,\qquad \frac{7+3\sqrt5}{2},
+\]
+provided the chosen number does not accidentally lie in $\GammaSat$; for an algebraic integer
+with a prime divisor outside $\{2,3\}$ that exclusion is immediate, and in general it is a
+multiplicative independence check.  Nothing arithmetically special about $5$ is used.
+
+Four instances of this phenomenon are themselves kernel-verified, and they are the most
+quotable consequences of the whole algebraic-output layer.
+
+\begin{resultbox}
+\textbf{One-base equivalents of the conjecture.}  Each of the following is equivalent to the
+Alaoglu--Erd\H{o}s conjecture, and each equivalence is accepted by the Lean kernel.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every $x$ with $2^{x},3^{x}\in\Z$ has $5^{x}$ algebraic.
+\item Every $x$ with $2^{x},3^{x}\in\Z$ has $6^{x^{2}}$ algebraic.
+\item For every $x$ with $2^{x},3^{x}\in\Z$, the positive-algebraic output locus
+\[
+  \{\alpha\in\Apos:\alpha^{x}\in\Qbar\}
+\]
+has multiplicative rank three, i.e.\ contains $a,b,c$ with injective nonnegative monomials.
+\item For every $x$ with $2^{x},3^{x}\in\Z$, the rational squared-output ratio locus has rank
+two, i.e.\ contains algebraic members $(2^{i}/3^{j})^{x^{2}}$ and $(2^{k}/3^{\ell})^{x^{2}}$
+with $i\ell\ne kj$.
+\end{enumerate}
+A counterexample would collapse (iii) to rank at most two and confine the entire locus in
+(iv) to a single rational ray in the exponent lattice.  \statuslean
+\end{resultbox}
+
+\begin{statusbox}{\statuslean{} --- all four equivalences are accepted by the kernel; the
+Lean names follow.}
+Items (i) and (ii) are \lean{alaogluErdosConjecture_iff_five_rpow_isAlgebraic} and
+\lean{alaogluErdosConjecture_iff_six_squared_exponent_isAlgebraic} in
+\lean{AlgebraicConsequences}, which also carries the two-iterate variant
+\lean{alaogluErdosConjecture_iff_both_iterated_outputs_isAlgebraic}.  Item (iii) is
+\begin{center}
+\lean{alaogluErdosConjecture_iff_algebraicRpowOutputLocusHasRankThree}
+\end{center}
+in \lean{AlgebraicRankThreeEquivalence}, and item (iv) is
+\begin{center}
+\lean{alaogluErdosConjecture_iff_ratioSquaredAlgebraicLocusHasRankTwo}
+\end{center}
+in \lean{AlgebraicOutputLocus}.
+The same modules also record the pointwise forms
+\lean{ratioSquaredAlgebraicLocusHasRankTwo_iff_integer} and
+\lean{algebraicRpowOutputLocusHasRankThree_iff_integer}, and the explicit $p$-adic line
+\lean{exists_external_prime_algebraic_output_ratio_padic_line} on which a counterexample would
+force every algebraic ratio output to sit.
+\end{statusbox}
+
+There is a corresponding zero-one law: assuming the conjecture fails and fixing
+$\alpha\in\Apos$, exactly one of two things happens.  Either $\alpha\in\GammaSat$ and
+$\alpha^{x}$ is algebraic for \emph{every} nonintegral solution $x$, or
+$\alpha\notin\GammaSat$ and $\alpha^{x}$ is transcendental for every nonintegral solution.  No
+base can behave one way for one counterexample and the other way for another.
+
+\subsection{Why the exact spectrum does not settle the conjecture}
+
+It is worth being precise about what has and has not been gained.  The spectrum is an exact
+answer to the question ``which algebraic bases stay algebraic?'', and its answer is
+$\GammaSat=\{2^{r}3^{s}:r,s\in\Q\}$ --- but that is precisely the set of bases whose
+logarithms lie in the rational span of $\log2$ and $\log3$.  Every base the spectrum
+certifies is, logarithmically, a rational recombination of the two columns already present in
+the four-exponentials matrix of Section~\ref{sec:fourexp}.  Six exponentials needs a third
+row genuinely independent of $\log2,\log3$ together with algebraicity of its output; the
+spectrum theorem shows that a counterexample supplies algebraic outputs at exactly the bases
+that fail this requirement, and transcendental outputs at exactly the bases that would meet
+it.  The classification is therefore self-consistent with a counterexample rather than
+obstructive to one: it converts every attempt to manufacture a third independent base into
+the very transcendence statement one was trying to prove.  The kernel-verified radical work
+makes the same wall concrete: the simultaneous normalization of the two canonical radicals
+produces an explicit multiplicative relation among $2$, the primitive odd core, and the
+swapped radical, so that the most tempting three-base application of the algebraic
+six-exponentials theorem fails its monomial-injectivity hypothesis for a structural,
+kernel-verified reason (\lean{swappedRadical_relation_blocks_monomial_injectivity} in
+\lean{CanonicalRadicalFieldNorm}).  Closing the gap needs a new
+source of size --- nonarchimedean, or from a sharper five/six-exponentials interface --- not
+a wider supply of algebraic bases.  The conjecture remains open.
+
+\section{Rational and integral outputs inside the spectrum}\label{sec:valuationlattice}
+
+The algebraic spectrum identifies the divisible group
+\[
+\GammaSat=\{2^r3^s:r,s\in\Q\}
+\]
+as the exact set of positive algebraic bases whose powers at a hypothetical nonintegral
+solution remain algebraic: outside $\GammaSat$ every such power is transcendental, and inside
+$\GammaSat$ every such power is algebraic.  A finer arithmetic question survives inside the
+spectrum.  If $\alpha=2^r3^s\in\GammaSat$, when is $\alpha^x$ rational, and when is it a
+positive integer?
+
+For a fixed solution the answer is completely encoded by prime valuations of the output pair.
+Rationality becomes a congruence condition, integrality adds a cone condition, and the gap
+between the obvious rational bases $2^u3^v$ with $u,v\in\Z$ and the full rational locus is one
+explicit finite abelian group whose order is a single gcd of $2\times2$ minors.  This is a
+strict refinement of the divisible-hull description of the algebraic locus, and it is exact
+rather than asymptotic.
+
+\subsection{The valuation matrix of an output pair}
+
+Let $x\in\Sol\setminus\Z$ be a nonintegral solution and write
+\[
+  M=2^x\in\N,\qquad A=3^x\in\N .
+\]
+Let $P$ be the finite union of the prime supports of $M$ and $A$, and form the column vectors
+\[
+  \mathbf m=(\vpp{p}{M})_{p\in P},
+  \qquad
+  \mathbf a=(\vpp{p}{A})_{p\in P},
+  \qquad
+  V_x=\begin{pmatrix}\mathbf m&\mathbf a\end{pmatrix}\in M_{P\times2}(\Z).
+\]
+For a column $q=(r,s)^{T}\in\Q^2$ put $\alpha(q)=2^r3^s$, so that $\GammaSat$ is exactly the
+image of $q\mapsto\alpha(q)$.  Taking the unique positive real interpretation of the rational
+powers,
+\begin{equation}
+  \alpha(q)^x=\bigl(2^x\bigr)^r\bigl(3^x\bigr)^s=M^rA^s
+  =\prod_{p\in P}p^{\,r\vpp{p}{M}+s\vpp{p}{A}} .
+  \label{vl:eq-output}
+\end{equation}
+The exponent vector appearing in \eqref{vl:eq-output} is precisely $V_xq$.
+
+\begin{lemma}[The valuation matrix has rank two]
+\label{vl:lem-rank-two}
+The two columns of $V_x$ are linearly independent over $\Q$.
+\end{lemma}
+
+\begin{proof}
+Suppose $r\mathbf m+s\mathbf a=0$ with $r,s\in\Q$.  Then every prime exponent in
+\eqref{vl:eq-output} vanishes, so $M^rA^s=1$.  Taking real logarithms and using
+$\log M=x\log2$, $\log A=x\log3$ gives $x(r\log2+s\log3)=0$.  Since a solution with
+$M=2^x\in\N$, $M>1$ has $x>0$, and since $\thetaq=\log3/\log2$ is irrational, $r=s=0$.
+\end{proof}
+
+\begin{proposition}[Exact rational and integral auxiliary-output spectrum]
+\label{vl:prop-spectrum}
+Let $x\in\Sol\setminus\Z$, let $V_x$ be as above, and let $q\in\Q^2$.  Then
+\[
+ \alpha(q)^x\in\Q_{>0}
+ \iff V_xq\in\Z^{P},
+ \qquad\qquad
+ \alpha(q)^x\in\N
+ \iff V_xq\in\Nzero^{P}.
+\]
+Together with the algebraic spectrum, this classifies algebraic, rational and integral outputs
+for every positive algebraic auxiliary base.  \statusnew
+\end{proposition}
+
+\begin{proof}
+Equation \eqref{vl:eq-output} exhibits $\alpha(q)^x$ as a finite product of primes with
+rational exponents.  Choose a common denominator $d$ for the entries of $V_xq$.  If
+$\alpha(q)^x$ is rational, then raising to the $d$-th power gives a rational number whose
+ordinary $p$-adic valuation equals $d$ times the $p$-th entry of $V_xq$; comparing valuations
+of numerator and denominator shows every entry of $V_xq$ is an integer.  Conversely, integer
+exponents produce a positive rational number.  Such a rational number is a positive integer
+exactly when all of its prime valuations are nonnegative, which is the second equivalence.
+\end{proof}
+
+Three nested spectra therefore occur, all determined by $V_x$:
+\[
+ \begin{array}{rcl}
+ \mathcal B_{\mathrm{alg}}(x)
+  &=&\{\alpha(q):q\in\Q^2\}=\GammaSat,\\[2mm]
+ \mathcal B_{\mathrm{rat}}(x)
+  &=&\{\alpha(q):q\in\Lambda_x\},\\[1mm]
+ \mathcal B_{\mathrm{int}}(x)
+  &=&\{\alpha(q):q\in\Lambda_x^{+}\},
+ \end{array}
+ \qquad
+ \begin{aligned}
+ \Lambda_x&=\{q\in\Q^2:V_xq\in\Z^{P}\},\\[1mm]
+ \Lambda_x^{+}&=\{q\in\Lambda_x:V_xq\ge0\}.
+ \end{aligned}
+\]
+The outer spectrum does not depend on $x$; the two inner ones may.
+
+\subsection{Smith normal form and the finite rational-output defect}
+
+By Lemma~\ref{vl:lem-rank-two} the matrix $V_x$ has rank two, so $\Lambda_x$ is a rank-two
+lattice in $\Q^2$ containing $\Z^2$ with finite index.  Write
+\[
+ \delta_1(V_x)=\gcd\{\text{all entries of }V_x\},
+ \qquad
+ \delta_2(V_x)=\gcd\left\{
+  \left|\det\begin{pmatrix}
+   \vpp{p}{M}&\vpp{p}{A}\\
+   \vpp{p'}{M}&\vpp{p'}{A}
+  \end{pmatrix}\right|
+  :p,p'\in P\right\}
+\]
+for the two determinantal divisors.  The second is positive precisely because the rank is two.
+
+\begin{proposition}[Smith classification of the rational locus]
+\label{vl:prop-smith}
+Let $d_1\mid d_2$ be the Smith invariant factors of $V_x$, so that $d_1=\delta_1(V_x)$ and
+$d_1d_2=\delta_2(V_x)$.  After a unimodular change of coordinates in $\Q^2$,
+\[
+  \Lambda_x=\tfrac1{d_1}\Z\oplus\tfrac1{d_2}\Z ,
+\]
+and consequently
+\[
+  \Lambda_x/\Z^2\cong\Z/d_1\Z\oplus\Z/d_2\Z,
+  \qquad
+  \bigl|\Lambda_x/\Z^2\bigr|=\delta_2(V_x).
+  \qquad\statusnew
+\]
+\end{proposition}
+
+\begin{proof}
+Choose unimodular matrices $U\in\mathrm{GL}_P(\Z)$ and $W\in\mathrm{GL}_2(\Z)$ with
+\[
+ UV_xW=\begin{pmatrix}d_1&0\\0&d_2\\0&0\\\vdots&\vdots\end{pmatrix}.
+\]
+Since $U$ preserves $\Z^{P}$, the condition $V_xq\in\Z^{P}$ is equivalent to
+$UV_xq\in\Z^{P}$, and substituting $q=Wq'$ turns it into $d_1q'_1\in\Z$ and $d_2q'_2\in\Z$.
+Since $W$ preserves $\Z^2$, it identifies $\Lambda_x/\Z^2$ with the quotient computed in the
+primed coordinates, which is $\Z/d_1\Z\oplus\Z/d_2\Z$.  The identifications
+$d_1=\delta_1(V_x)$ and $d_1d_2=\delta_2(V_x)$ are the standard determinantal-divisor
+formulae for the Smith normal form.
+\end{proof}
+
+The first invariant factor has a direct output interpretation: $d_1$ is the largest integer
+$d$ such that $M$ and $A$ are both perfect $d$-th powers, because $d\mid\delta_1(V_x)$ says
+exactly that $d$ divides every prime valuation of $M$ and of $A$.  For the canonical least
+nonintegral solution $\beta$, primitivity of the least output pair (Section~\ref{sec:conditional})
+gives $d_1=1$, and then
+\[
+  \Lambda_\beta/\Z^2\cong\Z/\delta_2(V_\beta)\Z .
+\]
+Thus a single integer --- the gcd of all $2\times2$ valuation minors of the least output pair
+--- measures the entire finite defect between the rational $\beta$-outputs at algebraic
+$2,3$-radical bases and the obvious rational $2,3$-unit bases.  We call $\delta_2(V_\beta)$
+the \emph{rational-output defect}.  It is a finite, in principle computable, invariant of a
+hypothetical counterexample, and it equals $1$ exactly when no auxiliary base outside
+$\{2^u3^v:u,v\in\Z\}$ produces a rational output.
+
+The integral spectrum is the intersection of this lattice with the rational polyhedral cone
+$V_xq\ge0$.  By Gordan's lemma $\Lambda_x^{+}$ is a finitely generated normal affine
+semigroup, so $\mathcal B_{\mathrm{int}}(x)$ has a finite generating set of auxiliary bases.
+This is an exact structural replacement for attempting to enumerate algebraic auxiliary bases
+one at a time.
+
+\begin{statusbox}{\statuslean{} and \statusnew{}}
+The lattice statements themselves --- Lemma~\ref{vl:lem-rank-two},
+Proposition~\ref{vl:prop-spectrum}, Proposition~\ref{vl:prop-smith} and the Gordan
+consequence --- are \statusnew{}: they are proved on paper in this report and are not yet
+formalized in that form.  What \emph{is} kernel-verified is the arithmetic core on which they
+rest, in three modules.
+
+\lean{CanonicalRadicalValuation} proves the divisibility dictionary between perfect powers and
+valuations that underlies the meaning of $d_1$: a divisor of the odd-prime valuation gcd of a
+positive integer is an honest exponent of an exact power
+(\lean{exists_pow_eq_of_dvd_oddPrimeValuationGCD}), the least rational-power index is coprime
+to the joint gcd of the denominator exponent and the numerator's valuation gcd
+(\lean{rationalPowerIndex_gcd_denominator_valuationGCD_eq_one}), and every prime dividing that
+index leaves some prime valuation of the normalized numerator undivided, giving the exact
+radical degree together with the valuation restriction
+(\lean{exists_exact_radical_degree_and_valuation_restriction}).
+
+\lean{SimultaneousRadicalDegrees} kernel-verifies the exactness statements that the $d_1=1$
+normalization buys: under the simultaneous primitive normalization the displayed exponents are
+the least rational-power indices and hence the exact degrees over $\Q$
+(\lean{oddCoreRpow_exact_rationalPowerIndex_of_simultaneous_normalization} and
+\lean{threeFreeCoreRpow_exact_radical_degree_of_simultaneous_normalization}), and when both
+base-adic depths vanish the two indices are coprime and the mixed product has exact degree
+equal to their product (\lean{mixed_coreRpow_exact_radical_degree_of_zero_baseDepths}).  The
+descent used there is precisely the one behind $d_1=1$: a proper index divisor would make both
+outputs of the least nonintegral solution common perfect powers, which is excluded by
+\lean{IsLeastTwoBaseNonintegerSolution.no_common_perfect_power} in \lean{LeastSolution}
+(Section~\ref{sec:conditional}).  That exclusion is exactly the assertion $d_1=1$ for
+$V_\beta$.
+
+\lean{CanonicalRadicalMixedOutput} kernel-verifies the transcendence side of the mixed case: a
+genuinely mixed positive monomial in the two canonical radicals retains an external prime in
+every rational power, so all of its outputs at the least nonintegral solution are
+transcendental, and an algebraic mixed output is therefore forced onto a coordinate face.  The
+theorem is
+\begin{center}
+\lean{TwoBaseNonintegerSolution.transcendental_mixed_canonical_radical_output},
+\end{center}
+packaged under failure of the conjecture as
+\begin{center}
+\lean{exists_simultaneous_canonical_radical_mixed_output_transcendence}.
+\end{center}
+These are statements about the canonical radicals rather than about $\Lambda_x$ itself; they
+confirm the geometry of the lattice picture without yet formalizing it.
+\end{statusbox}
+
+\subsection{Two translated solutions remove the fractional defect}
+
+The algebraic spectrum is solution-independent, but the rational locus $\Lambda_x$ need not
+be.  Translation of the exponent by one gives a sharp intersection identity, and it shows that
+the defect cannot persist across the whole solution monoid.
+
+\begin{proposition}[Translation intersection]
+\label{vl:prop-translation}
+Let $x\in\Sol\setminus\Z$.  Then
+\[
+  \Lambda_x\cap\Lambda_{x+1}=\Z^2 .
+\]
+Equivalently, for $\alpha\in\Apos$, if $\alpha^x$ and $\alpha^{x+1}$ are both rational, then
+$\alpha=2^u3^v$ with $u,v\in\Z$.  \statusnew
+\end{proposition}
+
+\begin{proof}
+One inclusion is immediate: for $q\in\Z^2$ the base $\alpha(q)=2^u3^v$ has
+$\alpha(q)^y=M^uA^v\in\Q_{>0}$ for every solution $y$, in particular for $y=x$ and $y=x+1$.
+Conversely, suppose $\alpha^x$ and $\alpha^{x+1}$ are rational.  Both are algebraic, so the
+algebraic spectrum gives $\alpha=2^r3^s$ with $r,s\in\Q$, and
+\[
+  \alpha=\frac{\alpha^{x+1}}{\alpha^x}\in\Q_{>0}.
+\]
+A positive rational of the form $2^r3^s$ with $r,s\in\Q$ has $r,s\in\Z$, by comparing ordinary
+$2$-adic and $3$-adic valuations after clearing a common denominator.
+\end{proof}
+
+\begin{corollary}[Universal rational and integral spectra under failure]
+\label{vl:cor-universal}
+Assume Conjecture~\ref{conj:AE} fails and let $\alpha\in\Apos$.  \statusnew
+\begin{enumerate}
+\item $\alpha^y$ is rational for every nonintegral solution $y$ if and only if
+      $\alpha=2^u3^v$ with $u,v\in\Z$.
+\item $\alpha^y$ is a positive integer for every solution $y$ if and only if
+      $\alpha=2^u3^v$ with $u,v\in\Nzero$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+For the first part, apply Proposition~\ref{vl:prop-translation} to a nonintegral solution $x$
+and to $x+1$, which is again a nonintegral solution.  Conversely, rational $2,3$-units have
+rational outputs $M^uA^v$ at every solution.
+
+For the second part, assume $\alpha^y\in\N$ for every $y\in\Sol$.  Taking $y=x$ and $y=x+1$
+makes $\alpha=\alpha^{x+1}/\alpha^x$ a positive rational, say $a/b$ in lowest terms.  Put
+$z=\alpha^x\in\N$.  Every $x+n$ with $n\ge0$ is again a solution, so the number
+$z(a/b)^n=\alpha^{x+n}$ is an integer for every $n$, whence
+$b^n$ divides the fixed integer $z$ for every $n$, forcing $b=1$ and $\alpha\in\N$.  Since
+$\alpha^x$ is an integer, the algebraic spectrum gives $\alpha\in\GammaSat$, and an integer in
+$\GammaSat$ is exactly $2^u3^v$ with $u,v\in\Nzero$.  The converse is immediate.
+\end{proof}
+
+Corollary~\ref{vl:cor-universal} says that the rational-output defect is a genuinely
+per-solution phenomenon.  A base can enjoy a rational output at one nonintegral solution only
+by failing at the next one, unless it is a rational $2,3$-unit already.
+
+\subsection{The two smooth branches are mutually exclusive}
+
+The number of rows of $V_x$ is another exact invariant of a counterexample, and the smallest
+conceivable case is excluded outright.  Call a positive integer $\{2,3\}$-smooth (equivalently
+$3$-smooth) when it is divisible by no prime outside $\{2,3\}$.  In the notation above, $M$ is
+$\{2,3\}$-smooth exactly when the column $\mathbf m$ is supported on $\{2,3\}$, and both
+outputs are $\{2,3\}$-smooth exactly when $P\subseteq\{2,3\}$, that is, when $V_x$ is a
+$2\times2$ integer matrix.
+
+\begin{proposition}[The smooth cases are mutually exclusive]
+\label{vl:prop-not-both-smooth}
+For a nonintegral solution $x$, the outputs $M=2^x$ and $A=3^x$ cannot both be
+$\{2,3\}$-smooth.  Equivalently, the valuation matrix $V_x$ of a counterexample always has a
+row indexed by a prime $p\ge5$.  \statuslean
+\end{proposition}
+
+\begin{proof}
+Suppose $M=2^a3^b$ and $A=2^c3^e$ with $a,b,c,e\in\Nzero$.  Taking base-two logarithms of
+$2^x=M$ and of $3^x=A$ gives the two relations
+\[
+  x=a+b\thetaq,\qquad x\thetaq=c+e\thetaq ,\qquad \thetaq=\log_23 .
+\]
+Substituting the first into the second eliminates $x$ and leaves
+\[
+  b\,\thetaq^{2}+(a-e)\,\thetaq-c=0 .
+\]
+Were any of $b$, $a-e$, $c$ nonzero, this would exhibit $\thetaq$ as a root of a nonzero
+rational polynomial of degree at most two, contradicting its transcendence.  Hence $b=c=0$ and
+$a=e$, so $x=a\in\Z$, contrary to hypothesis.
+\end{proof}
+
+\begin{corollary}[A smooth output has a rough partner]
+\label{vl:cor-rough-partner}
+Let $x$ be a nonintegral solution with $M=2^x$ $\{2,3\}$-smooth.  Then $A=3^x$ has a prime
+divisor $p\ge5$.  \statuslean
+\end{corollary}
+
+\begin{proof}
+If every prime divisor of $A$ were $2$ or $3$, then $A$ would be $\{2,3\}$-smooth, and
+Proposition~\ref{vl:prop-not-both-smooth} would force $x\in\Z$.
+\end{proof}
+
+\begin{statusbox}{\statuslean{}}
+\lean{integer_of_threeSmooth_outputs} and
+\lean{exists_prime_five_le_dvd_of_threeSmooth_candidate} in \lean{SmoothOutputs}, with the
+integral restatement \lean{integer_of_two_three_rpow_integer_of_threeSmooth_outputs}.  The
+proofs use only the transcendence of $\thetaq$, itself kernel-verified in this corpus from
+Gelfond--Schneider.  The same statement is also derived independently at paper level in the
+research report by the identical degree-drop elimination, so the formalized and unformalized
+routes confirm each other.
+\end{statusbox}
+
+Two remarks fix the position of this exclusion.
+
+\emph{The two-sided hypothesis is essential.}  Assuming only that $M$ is $\{2,3\}$-smooth
+gives $x=a+b\thetaq$ and then requires $\bigl(3^{\thetaq}\bigr)^{b}$ to be rational up to a
+power of $3$, which is exactly the open localized-radical condition of
+Section~\ref{sec:radical}.  What the second smoothness hypothesis supplies is a \emph{second}
+linear relation between $x$ and $\thetaq$; two such relations eliminate $x$ and leave an
+algebraic equation in $\thetaq$ alone.  This degree drop is the entire mechanism, and it is
+worth isolating as a template: each independent multiplicative constraint on an output buys
+one linear relation, and two relations force algebraicity of $\thetaq$.  The difficulty of the
+general problem is precisely that a second constraint is never free.
+
+\emph{The exclusion feeds back into the lattice.}  Because $P\not\subseteq\{2,3\}$, the
+valuation matrix of a counterexample is never square, so $\delta_2(V_x)$ is a genuine gcd over
+at least three rows rather than a single determinant, and the rational locus $\Lambda_x$ is cut
+out by at least three congruences.  In particular the rational-output defect is bounded by the
+absolute value of any one $2\times2$ minor of $V_x$, and any two minors that are coprime force
+$\delta_2(V_x)=1$, in which case no auxiliary base outside $\{2^u3^v:u,v\in\Z\}$ has a rational
+output at $x$ at all.
+
+\section{The second-iterate kernel and multiplicative dependence}
+\label{sec:kernel}
+
+The algebraic spectrum of Section~\ref{sec:spectrum} controls one application of the exponent
+$x$.  Asking which bases of $\GammaSat$ \emph{return} to $\GammaSat$ after that application
+turns second iterates into finite-dimensional linear algebra, and --- as this section records
+--- into an entirely elementary statement about four integers.
+
+\subsection{The kernel and its invariance}
+
+For a nonintegral solution $x$ with outputs $M=2^x$ and $A=3^x$, set
+\begin{equation}
+  K_x=\bigl\{(r,s)\in\Q^2\ :\ M^rA^s\in\GammaSat\bigr\},
+  \qquad \GammaSat=\{2^u3^v:u,v\in\Q\}.
+  \label{eq:kn-def}
+\end{equation}
+Writing $\mathbf m_{\mathrm{ext}}=(\vpp pM)_{p\ne2,3}$ and
+$\mathbf a_{\mathrm{ext}}=(\vpp pA)_{p\ne2,3}$ for the external valuation vectors, membership
+of $M^rA^s$ in $\GammaSat$ is exactly the vanishing of every prime valuation outside
+$\{2,3\}$, so
+\begin{equation}
+  K_x=\ker\bigl((r,s)\mapsto r\,\mathbf m_{\mathrm{ext}}+s\,\mathbf a_{\mathrm{ext}}\bigr).
+  \label{eq:kn-valuations}
+\end{equation}
+
+\begin{proposition}[Kernel dimension]
+\label{kn:prop-dim}
+$\dim_\Q K_x\le1$; the kernel contains no vector with $rs>0$; it equals $\Q(1,0)$ exactly
+when $M$ is $3$-smooth and $\Q(0,1)$ exactly when $A$ is $3$-smooth.
+\end{proposition}
+
+\begin{proof}
+At least one external vector is nonzero: otherwise both $M$ and $A$ would be $3$-smooth,
+which Theorem~\ref{lp:thm-smooth} excludes.  Hence the map in \eqref{eq:kn-valuations} has
+rank at least one and its kernel has dimension at most one.  If $r,s>0$ then any external
+prime dividing $M$ or $A$ has positive valuation in $M^rA^s$, and if $r,s<0$ it has negative
+valuation, so no same-sign vector lies in the kernel.  The two smooth cases are immediate
+from \eqref{eq:kn-valuations} by testing $(1,0)$ and $(0,1)$.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} for the kernel formalism, with one exception: the input that
+$M$ and $A$ cannot both be $3$-smooth is \statuslean{} here
+(\lean{integer_of_threeSmooth_outputs} in \lean{SmoothOutputs}), so the dimension bound rests
+on a machine-checked foundation rather than an asserted one.}
+\end{statusbox}
+
+The kernel is not an artifact of the chosen counterexample.  If $x,y$ are two nonintegral
+solutions and $\alpha=2^r3^s$, then $B=\alpha^{x}$ is algebraic, and applying the spectrum
+theorem to $y$ gives $\alpha^{xy}=B^{y}\in\Qbar$ if and only if $B\in\GammaSat$, that is, if
+and only if $(r,s)\in K_x$.  The left-hand condition is symmetric in $x$ and $y$, so
+$K_x=K_y$: the kernel is an invariant of the problem, not of the solution.
+
+\subsection{Multiplicative dependence of four integers}
+
+The kernel condition has a formulation with no logarithms, no projective linear group, and no
+transcendence vocabulary at all.  It is the observation of this section.
+
+\begin{theorem}[Multiplicative form of the kernel dichotomy]
+\label{kn:thm-multiplicative}
+Let $x$ be a nonintegral solution with outputs $M=2^x$ and $A=3^x$.  The following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $K_x\ne\{0\}$;
+\item the four integers $M$, $A$, $2$, $3$ are multiplicatively dependent, that is,
+      \[
+        M^{a}A^{b}2^{c}3^{d}=1
+        \qquad\text{for some }(a,b,c,d)\in\Z^4\setminus\{0\};
+      \]
+\item $1$, $\thetaq$, $x$, $x\thetaq$ are linearly dependent over $\Q$;
+\item $x$ lies in the $\PGL_2(\Q)$-orbit of $\thetaq$, that is,
+      $x=(u+v\thetaq)/(r+s\thetaq)$ with rational $u,v,r,s$ and $us-vr\ne0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) implies (ii).  If $(r,s)\in K_x$ is nonzero then $M^rA^s=2^u3^v$ with $u,v\in\Q$; clearing
+a common denominator of $r,s,u,v$ produces integers with $M^aA^b2^{c}3^{d}=1$ and
+$(a,b)\ne(0,0)$.
+
+(ii) implies (i).  Given such a relation, note first that $(a,b)\ne(0,0)$: otherwise
+$2^c3^d=1$, and unique factorization forces $c=d=0$, contradicting nontriviality.  Then
+$M^aA^b=2^{-c}3^{-d}\in\GammaSat$, so $(a,b)\in K_x\setminus\{0\}$.
+
+(ii) is equivalent to (iii).  Taking logarithms of $M^aA^b2^c3^d=1$ and using
+$\log M=x\log2$ and $\log A=x\log3$ gives
+\[
+  (ax+c)\log2+(bx+d)\log3=0 ,
+\]
+and division by $\log2$ turns this into
+\begin{equation}
+  x\,(a+b\thetaq)+(c+d\thetaq)=0 ,
+  \label{eq:kn-linear}
+\end{equation}
+which is precisely a nontrivial rational linear relation among $1,\thetaq,x,x\thetaq$.  Each
+step reverses.
+
+(iii) is equivalent to (iv).  In \eqref{eq:kn-linear} the coefficient $a+b\thetaq$ cannot
+vanish, since $\thetaq$ is irrational and $(a,b)\ne(0,0)$; hence
+$x=-(c+d\thetaq)/(a+b\thetaq)$.  If the determinant $ad-bc$ vanished, numerator and
+denominator would be rationally proportional and $x$ would be rational, hence integral by
+Lemma~\ref{pr:rational}, contrary to hypothesis.  Conversely, any such expression
+cross-multiplies to \eqref{eq:kn-linear}.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} --- the equivalence of (i), (iii) and (iv) is the M\"obius
+criterion of the fourth source report; the equivalence with (ii) is recorded here.  It is
+elementary and self-contained, and is a natural Lean target: it needs only unique
+factorization, irrationality of $\thetaq$, and the rational-exponent lemma.}
+\end{statusbox}
+
+\subsection{Why the multiplicative form is worth having}
+
+Two consequences follow from stating the dichotomy multiplicatively.
+
+\emph{It removes the transcendence vocabulary from the branching.}  Every counterexample
+falls into exactly one of two cases, and the case distinction is a question about four
+ordinary integers: either they satisfy a multiplicative relation or they do not.  In the
+dependent branch Proposition~\ref{kn:prop-dim} says the relation is essentially unique up to
+scaling, and its exponents on $M$ and $A$ have opposite signs unless one of the outputs is
+$3$-smooth.
+
+\emph{It makes Baker's theorem applicable to the independent branch.}  This is the point that
+the Diophantine formulations obscure.  In the independent branch $M,A,2,3$ are
+multiplicatively independent, so $\log M,\log A,\log2,\log3$ are $\Q$-linearly independent
+\emph{logarithms of algebraic numbers} --- all four arguments are positive integers.  Baker's
+homogeneous theorem then gives more than $\Q$-linear independence: these four logarithms are
+linearly independent over $\Qbar$.  The corpus has not previously used this input.
+
+\begin{corollary}[Algebraic-coefficient rigidity in the independent branch]
+\label{kn:cor-baker}
+Suppose $x$ is a nonintegral solution for which $M,A,2,3$ are multiplicatively independent.
+Then no relation
+\[
+  \gamma_1\log M+\gamma_2\log A+\gamma_3\log2+\gamma_4\log3=0
+\]
+holds with algebraic $\gamma_1,\gamma_2,\gamma_3,\gamma_4$ not all zero.
+\end{corollary}
+
+\begin{statusbox}{\statusknown{} --- immediate from Baker's homogeneous theorem on
+$\Qbar$-linear independence of logarithms of algebraic numbers, applied to the four positive
+integers $M,A,2,3$.}
+\end{statusbox}
+
+It must be said plainly what this does and does not do.  It does \emph{not} close the
+independent branch: the defining relation $\log M\log3=\log A\log2$ has coefficients $\log3$
+and $-\log2$, which are transcendental by Lindemann, so it is not a $\Qbar$-linear relation
+and Corollary~\ref{kn:cor-baker} does not apply to it.  That is exactly the ``Baker is linear,
+not bilinear'' obstruction recorded in Appendix~\ref{app:falseshortcuts}.  What changes is
+that the independent branch is no longer structureless: it carries a genuine unconditional
+rigidity statement, and any future argument that manages to produce an algebraic-coefficient
+relation among these four logarithms --- for instance by clearing the transcendental
+coefficients against a second, independent relation --- would close it immediately.
+
+\section{Depth-three tower rigidity}
+\label{sec:tower}
+
+A hypothetical counterexample makes the first level of the tower $2\mapsto2^x$ integral by
+assumption.  This section answers the exact question that the corpus keeps circling: starting
+from an arbitrary positive algebraic base, how many times can one apply the same nonintegral
+exponent $x$ before transcendence is forced?  The answer is at most three, the bound is
+attained, and the depth at which the first transcendental value appears is determined by a
+single rational-linear invariant.
+
+For positive real bases there is no branch ambiguity between iterated powers and powers of
+powers, so the tower is unambiguous:
+\[
+ \bigl((\gamma^x)^x\bigr)^x=\gamma^{x^3}.
+\]
+Throughout this section $x$ denotes a hypothetical nonintegral solution, that is
+$x\in\Sol\setminus\Nzero$, and we write
+\[
+ m=2^x\in\N,\qquad n=3^x\in\N .
+\]
+The letter $\gamma$ is reserved for a positive algebraic base, matching the Lean naming in
+\lean{AlgebraicBaseUnitPower}.
+
+\subsection{The saturated spectrum and its strong form}
+
+Give $\Apos$ its structure of $\Q$-vector space, with rational scalars acting through the
+unique positive real root, $q\cdot\gamma=\gamma^q$, and set
+\[
+ \GammaSat=\{2^r3^s:r,s\in\Q\}\subset\R_{>0}.
+\]
+This is the divisible hull of the group generated by $2$ and $3$: a countable, divisible
+subgroup of rational rank two, dense in $\R_{>0}$ already through $\{2^r:r\in\Q\}$, and
+isomorphic to $\Q^2$ as a $\Q$-vector space via $(r,s)\mapsto2^r3^s$.  An \emph{integer} lies
+in $\GammaSat$ exactly when it is three-smooth, since clearing denominators in $N=2^r3^s$
+gives $N^k=2^p3^q$ with $p,q\in\Z$ and unique factorization then confines the primes of $N$
+to $\{2,3\}$.
+
+\begin{theorem}[Exact algebraic-base spectrum]
+\label{tw:spectrum}
+Let $x\in\Sol\setminus\Nzero$ and let $\gamma\in\Apos$.  Then
+\[
+ \gamma^x\in\Abar
+ \quad\Longleftrightarrow\quad
+ \gamma\in\GammaSat .
+\]
+In particular the algebraic spectrum of a counterexample does not depend on which nonintegral
+solution is used.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- in \lean{AlgebraicBaseUnitPower}, the pair
+\begin{center}
+{\scriptsize\lean{TwoBaseNonintegerSolution.real_rpow_isAlgebraic_iff_hasPositiveTwoThreeUnitPower}}
+\end{center}
+and
+\begin{center}
+{\scriptsize\lean{TwoBaseNonintegerSolution.transcendental_real_rpow_of_no_positiveTwoThreeUnitPower}}
+\end{center}
+}
+The Lean predicate is \lean{HasPositiveTwoThreeUnitPower}: some positive natural power of
+$\gamma$ is a positive rational $2,3$-unit.  For positive algebraic $\gamma$ this is exactly
+membership in $\GammaSat$ --- one direction raises $2^r3^s$ to a common denominator, the other
+takes the unique positive real root --- so the kernel-verified biconditional is the displayed
+spectrum verbatim.
+\end{statusbox}
+
+The spectrum is already a strong statement: two algebraic outputs exhaust the maximal
+algebraic multiplicative rank that the two-base configuration can support, and every positive
+algebraic base outside one explicit dense subgroup produces a transcendental value.  For the
+tower we need the sharper conclusion that the offending \emph{logarithm} is not merely
+irrational but escapes the algebraic span of all logarithms.
+
+Let $\LL$ denote the $\Abar$-vector space spanned by $1$ and by all logarithms of nonzero
+algebraic numbers, arbitrary complex branches allowed; for a positive real algebraic number
+the real logarithm is one of those branches.
+
+\begin{definition}
+\label{tw:def-logstrong}
+A positive real value $e^z$ is \emph{log-strongly transcendental} when $z\notin\LL$.  This
+implies ordinary transcendence, because the logarithm of a positive algebraic number lies in
+$\LL$ by definition.
+\end{definition}
+
+\begin{theorem}[Strong algebraic-base spectrum]
+\label{tw:strong-spectrum}
+Let $x\in\Sol\setminus\Nzero$ and let $\gamma\in\Apos\setminus\GammaSat$.  Then
+\[
+ x\log\gamma\notin\LL,
+\]
+so $\gamma^x$ is log-strongly transcendental.  The same conclusion holds with $2,3$ replaced
+by any multiplicatively independent pair $a,b\in\Apos$ with $a^x,b^x\in\Abar$, and
+$\GammaSat$ replaced by $\GammaSat(a,b)=\{a^rb^s:r,s\in\Q\}$.
+\end{theorem}
+
+\begin{proof}
+The logarithms $\log2,\log3,\log\gamma$ are linearly independent over $\Q$: a rational
+relation clears to an integral multiplicative relation, which either contradicts the
+multiplicative independence of $2$ and $3$ or places $\gamma$ in $\GammaSat$.  Baker's
+homogeneous theorem \cite{Baker1975} upgrades this to linear independence over $\Abar$.
+
+The exponent $x$ is transcendental: it is irrational by the kernel-verified rational-exponent
+lemma of Section~\ref{sec:corpus}, and an algebraic irrational $x$ would make $2^x$
+transcendental by Gelfond--Schneider \cite{Schneider1957}.  Hence $1$ and $x$ are linearly
+independent over $\Abar$.
+
+Apply Roy's strong six exponentials theorem \cite{Roy1992,Waldschmidt2005} to the three rows
+$\log2,\log3,\log\gamma$ and the two columns $1,x$.  Five of the six pairwise products lie in
+$\LL$, namely
+\[
+ \log2,\quad\log3,\quad\log\gamma,\quad x\log2=\log m,\quad x\log3=\log n .
+\]
+Therefore the sixth product $x\log\gamma$ lies outside $\LL$.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} --- paper proof in this report.  It rests on Baker's theorem
+and on Roy's strong form of the six exponentials theorem, neither of which is formalized in
+the repository; the repository's own interpolation determinant is specialized to integer
+entries.  Theorem~\ref{tw:spectrum}, the ordinary-transcendence shadow of this statement, is
+\statuslean{}.}
+\end{statusbox}
+
+\subsection{The return kernel}
+
+The spectrum controls one application of $x$.  The tower needs to know which bases
+\emph{inside} $\GammaSat$ come back to $\GammaSat$ after that application.  On prime
+valuations this is finite-dimensional linear algebra.
+
+\begin{proposition}[The two outputs are not both three-smooth]
+\label{tw:not-both-smooth}
+For $x\in\Sol\setminus\Nzero$, at most one of $m=2^x$ and $n=3^x$ is three-smooth.
+\end{proposition}
+
+\begin{proof}
+Suppose $m=2^a3^b$ and $n=2^c3^d$ with $a,b,c,d\in\Nzero$.  Taking logarithms in base $2$ and
+in base $3$ gives $x=a+b\thetaq$ and $x=d+c/\thetaq$; eliminating $x$ and clearing the
+denominator yields
+\begin{equation}
+ b\,\thetaq^2+(a-d)\,\thetaq-c=0 .
+ \label{tw:eq-quadratic}
+\end{equation}
+The kernel-verified transcendence of $\thetaq$ forces $b=c=0$ and $a=d$, hence $x=a\in\Nzero$,
+contrary to hypothesis.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} --- the only nonelementary input is the kernel-verified
+transcendence of $\thetaq$,
+\begin{center}
+\lean{transcendental_logThreeDivLogTwo}
+\end{center}
+in \lean{Transcendence}.  This is the same computation as the three-smooth output test of
+Section~\ref{sec:smooth}, restated here in the form the kernel below consumes.}
+\end{statusbox}
+
+For $x\in\Sol\setminus\Nzero$ define the \emph{return kernel}
+\begin{equation}
+ K_x=\{\gamma\in\GammaSat:\gamma^x\in\GammaSat\}
+ =\{2^r3^s:(r,s)\in\Q^2,\ m^rn^s\in\GammaSat\} .
+ \label{tw:eq-kernel}
+\end{equation}
+Under the coordinate isomorphism $\GammaSat\cong\Q^2$ this is a $\Q$-subspace, because
+$(2^r3^s)^x=m^rn^s$ is multiplicative in the coordinates.  Write
+\[
+ \mathbf m_{\mathrm{ext}}=\bigl(\vpp{p}{m}\bigr)_{p\ne2,3},
+ \qquad
+ \mathbf n_{\mathrm{ext}}=\bigl(\vpp{p}{n}\bigr)_{p\ne2,3},
+\]
+two finitely supported nonnegative integer vectors.
+
+\begin{proposition}[Kernel formula and dimension]
+\label{tw:kernel-dim}
+In the coordinates $(r,s)$,
+\begin{equation}
+ K_x=\ker\Bigl(\Q^2\longrightarrow\Q^{(\mathbb P\setminus\{2,3\})},\quad
+ (r,s)\longmapsto r\,\mathbf m_{\mathrm{ext}}+s\,\mathbf n_{\mathrm{ext}}\Bigr).
+ \label{tw:eq-kernel-valuations}
+\end{equation}
+Moreover:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\dim_\Q K_x\le1$;
+\item $K_x$ contains no $2^r3^s$ with $rs>0$;
+\item $K_x=\{2^r:r\in\Q\}$ exactly when $m$ is three-smooth;
+\item $K_x=\{3^s:s\in\Q\}$ exactly when $n$ is three-smooth.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Membership of $m^rn^s$ in $\GammaSat$ is precisely the vanishing of every prime valuation
+outside $\{2,3\}$, which is \eqref{tw:eq-kernel-valuations}.  By
+Proposition~\ref{tw:not-both-smooth} at least one of the two external vectors is nonzero, so
+the displayed linear map has rank at least one and its kernel has dimension at most one.
+
+If $r,s>0$, then any external prime $p$ occurring in $m$ or in $n$ has
+$r\vpp{p}{m}+s\vpp{p}{n}>0$, since both valuations are nonnegative and at least one is
+positive; the case $r,s<0$ is symmetric.  Hence no same-sign direction survives.
+
+Finally, if $m$ is three-smooth then $\mathbf m_{\mathrm{ext}}=0$ while
+$\mathbf n_{\mathrm{ext}}\ne0$, so the kernel is exactly the first coordinate axis; the
+converse follows by testing the direction $(1,0)$, which lies in $K_x$ exactly when
+$m\in\GammaSat$, that is, exactly when the integer $m$ is three-smooth.  The statement for
+$n$ is the mirror image.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} --- elementary given Proposition~\ref{tw:not-both-smooth}.  No
+transcendence input beyond the transcendence of $\thetaq$ enters the proof; the six
+exponentials theorem is used only to interpret $K_x$, not to compute it.}
+\end{statusbox}
+
+The dynamical content of the kernel is that it admits no nontrivial internal orbit of length
+two.
+
+\begin{lemma}[No two-step internal orbit]
+\label{tw:no-two-step}
+Let $x\in\Sol\setminus\Nzero$ and let $\gamma\in K_x\setminus\{1\}$.  Then
+$\gamma^x\notin K_x$; equivalently,
+\[
+ \gamma\in\GammaSat\ \text{and}\ \gamma^x\in\GammaSat
+ \quad\Longrightarrow\quad
+ \gamma^{x^2}\notin\GammaSat .
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose $\gamma$ and $\gamma_1=\gamma^x$ both lie in $K_x\setminus\{1\}$.  By
+Proposition~\ref{tw:kernel-dim}(i) the space $K_x$ is at most one-dimensional over $\Q$, so
+two of its nonzero elements are rational scalar multiples of one another in the additive
+notation: $\gamma_1=\gamma^q$ for some $q\in\Q$.  Since also $\gamma_1=\gamma^x$ and
+$\gamma\ne1$, comparing logarithms gives $x=q$, contradicting the irrationality of $x$.
+Hence $\gamma_1\notin K_x$, which by \eqref{tw:eq-kernel} says exactly that
+$\gamma_1^x=\gamma^{x^2}\notin\GammaSat$.
+\end{proof}
+
+There are therefore no cycles, no fixed rays, and no length-two paths lying entirely inside
+$\GammaSat$: a rational direction may survive one return to the algebraic spectrum, but the
+returned direction cannot itself survive.
+
+\subsection{Exact survival depth}
+
+\begin{theorem}[Depth-three algebraic-tower theorem]
+\label{tw:depth-three}
+Let $x\in\Sol\setminus\Nzero$ and let $\gamma\in\Apos\setminus\{1\}$.  Then at least one of
+\[
+ \gamma^x,\qquad\gamma^{x^2},\qquad\gamma^{x^3}
+\]
+is transcendental.  More precisely, the first transcendental term occurs at exactly one of
+the following three depths.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item \textbf{Depth one.}  If $\gamma\notin\GammaSat$, then $\gamma^x$ is log-strongly
+transcendental.
+\item \textbf{Depth two.}  If $\gamma\in\GammaSat\setminus K_x$, then
+$\gamma^x\in\Abar\setminus\GammaSat$ and $\gamma^{x^2}$ is log-strongly transcendental.
+\item \textbf{Depth three.}  If $\gamma\in K_x\setminus\{1\}$, then $\gamma^x\in\GammaSat$,
+$\gamma^{x^2}\in\Abar\setminus\GammaSat$, and $\gamma^{x^3}$ is log-strongly transcendental.
+\end{enumerate}
+Equivalently, for some $j\in\{1,2,3\}$ one has $x^j\log\gamma\notin\LL$.
+\end{theorem}
+
+\begin{proof}
+Depth one is Theorem~\ref{tw:strong-spectrum}.
+
+Assume $\gamma\in\GammaSat$, so that $\gamma_1=\gamma^x$ is algebraic by
+Theorem~\ref{tw:spectrum}.  If $\gamma\notin K_x$, then $\gamma_1\notin\GammaSat$ by
+\eqref{tw:eq-kernel}, and $\gamma_1$ is a positive algebraic base outside $\GammaSat$; the
+strong spectrum applied to $\gamma_1$ and the same exponent $x$ makes
+$\gamma_1^x=\gamma^{x^2}$ log-strongly transcendental.
+
+If instead $\gamma\in K_x\setminus\{1\}$, then $\gamma_1\in\GammaSat$, so
+$\gamma_2=\gamma_1^x=\gamma^{x^2}$ is algebraic.  By Lemma~\ref{tw:no-two-step} we have
+$\gamma_1\notin K_x$, hence $\gamma_2\notin\GammaSat$.  One last application of the strong
+spectrum, now to the base $\gamma_2$, gives $\gamma_2^x=\gamma^{x^3}$ log-strongly
+transcendental.
+
+The three cases are mutually exclusive and exhaustive, and in each case all earlier terms of
+the tower are algebraic, so the stated depth is exact rather than an upper bound.
+\end{proof}
+
+The classification is compact enough to tabulate.  For a nonintegral solution $x$ and a
+positive algebraic base $\gamma\ne1$, the first level of the tower whose logarithm escapes
+$\LL$ is:
+
+\begin{center}
+\begin{tabular}{@{}p{0.28\textwidth}p{0.20\textwidth}p{0.40\textwidth}@{}}
+\toprule
+Location of $\gamma$ & First log outside $\LL$ & Structural reason\\
+\midrule
+$\gamma\notin\GammaSat$ & $x\log\gamma$ & exact algebraic spectrum\\
+$\gamma\in\GammaSat\setminus K_x$ & $x^2\log\gamma$ & the first image leaves $\GammaSat$\\
+$\gamma\in K_x\setminus\{1\}$ & $x^3\log\gamma$ & no two-step internal orbit\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{statusbox}{\statusnew{} --- paper proof in this report, resting on
+Theorem~\ref{tw:strong-spectrum} and hence on Baker's theorem and Roy's strong six
+exponentials theorem.  The ordinary-transcendence version of depth one is \statuslean{}; the
+ordinary-transcendence version of depth two for the mixed integer bases $2^i3^j$ with
+$i,j>0$ is also \statuslean{}, as recorded below.}
+\end{statusbox}
+
+The theorem places a strict ceiling on how far an algebraic power tower can imitate the
+integral first level of a counterexample.  A counterexample buys two algebraic outputs; it
+never buys a third independent one, and the tower makes the deficit visible after at most
+three steps regardless of the base chosen.
+
+\subsection{Exact behaviour of the bases two, three, and six}
+
+\begin{corollary}[Base-two tower dichotomy]
+\label{tw:base2-tower}
+Let $x\in\Sol\setminus\Nzero$ and $m=2^x$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $m$ is not three-smooth, then $2^{x^2}$ is log-strongly transcendental.
+\item If $m$ is three-smooth, say $m=2^a3^b$ with $a,b\in\Nzero$, then
+\begin{equation}
+ 2^{x^2}=m^x=(2^x)^a(3^x)^b=m^an^b\in\N,
+ \label{tw:eq-base2-integer}
+\end{equation}
+and $2^{x^3}$ is log-strongly transcendental.
+\end{enumerate}
+The mirror statement holds with $2$ replaced by $3$ and $m$ by $n$.
+\end{corollary}
+
+\begin{proof}
+The base $2$ lies in $\GammaSat$, and its coordinate vector is $(1,0)$, which lies in $K_x$
+exactly when $m\in\GammaSat$, that is, by Proposition~\ref{tw:kernel-dim}(iii), exactly when
+the integer $m$ is three-smooth.  Now apply Theorem~\ref{tw:depth-three}: the non-smooth case
+is depth two and the smooth case is depth three.  In the smooth case the intermediate value
+is computed by \eqref{tw:eq-base2-integer}, where the middle equality is the identity
+$(2^a3^b)^x=(2^x)^a(3^x)^b$ for positive real bases and the last membership holds because
+$m,n\in\N$.
+\end{proof}
+
+Equation \eqref{tw:eq-base2-integer} is worth pausing on.  In the smooth branch the second
+level of the tower is not merely algebraic but an explicit positive integer, expressed in the
+two original outputs with the same exponents that describe the first output.  The tower does
+not become transcendental because the arithmetic runs out immediately; it becomes
+transcendental because the third level has nowhere left to land.
+
+\begin{corollary}[Base six always fails at depth two]
+\label{tw:base6}
+For every $x\in\Sol\setminus\Nzero$ and all $r,s\in\Q$ of the same nonzero sign,
+\[
+ x^2\bigl(r\log2+s\log3\bigr)\notin\LL .
+\]
+In particular $x^2\log6\notin\LL$, so $6^{x^2}$ is log-strongly transcendental.
+\end{corollary}
+
+\begin{proof}
+The base $\gamma=2^r3^s$ lies in $\GammaSat$, and its coordinate vector $(r,s)$ has positive
+coordinate product, so $\gamma\notin K_x$ by Proposition~\ref{tw:kernel-dim}(ii).  Its exact
+survival depth is therefore two, by Theorem~\ref{tw:depth-three}(2).  The case $r=s=1$ is
+$\gamma=6$.
+\end{proof}
+
+This recovers and strengthens a kernel-verified family.  The Lean theorem
+\begin{center}
+\lean{TwoBaseNonintegerSolution.transcendental_mixed_two_three_squared_exponents}
+\end{center}
+in \lean{AlgebraicOutputLocus} proves that $\bigl(2^i3^j\bigr)^{x^2}$ is transcendental for
+all natural $i,j>0$, which is exactly the statement that no genuinely mixed three-smooth
+integer base survives to the second level.  Corollary~\ref{tw:base6} extends that to all
+rational same-sign directions, including negative ones, and upgrades the conclusion from
+transcendence to escape from $\LL$; more importantly it explains \emph{why} the mixed bases
+fail, namely that the exceptional directions of $K_x$ are confined to the two coordinate
+axes, which the mixed monomials avoid by construction.  The kernel-verified case is the
+positive-integer corner of a statement that is really about a line in $\Q^2$.
+
+\begin{statusbox}{\statusnew{} for Corollaries~\ref{tw:base2-tower} and~\ref{tw:base6} as
+stated.  \statuslean{} for the ordinary transcendence of $\bigl(2^i3^j\bigr)^{x^2}$ with
+integer $i,j>0$, in \lean{AlgebraicOutputLocus}.  The gap between the two is exactly the
+general six exponentials input discussed in Section~\ref{sec:smooth}.}
+\end{statusbox}
+
+\subsection{One-base tower equivalences}
+
+The depth theorem converts into a reformulation of the conjecture that is striking in its
+indifference to the base.
+
+\begin{resultbox}
+\textbf{Universal three-level detector (Theorem~\ref{tw:universal-detector}).}
+Fix \emph{any} positive algebraic $\gamma\ne1$ --- $\gamma=5$, $\gamma=\sqrt2$, $\gamma=2$,
+$\gamma=3$, $\gamma=\tfrac12(7+3\sqrt5)$, anything at all.  Conjecture~\ref{conj:AE} is
+equivalent to
+\[
+ \forall x\in\R,\quad 2^x,3^x\in\Z
+ \ \Longrightarrow\
+ \gamma^x,\ \gamma^{x^2},\ \gamma^{x^3}\in\Abar,
+\]
+and equally to the assertion that all three numbers $x\log\gamma$, $x^2\log\gamma$,
+$x^3\log\gamma$ lie in $\LL$.  No arithmetic feature of the base is used: three levels of the
+tower detect a counterexample for every positive algebraic base simultaneously. \statusnew
+\end{resultbox}
+
+\begin{theorem}[Universal three-level detector]
+\label{tw:universal-detector}
+Fix $\gamma\in\Apos\setminus\{1\}$.  Then Conjecture~\ref{conj:AE} is equivalent to
+\begin{equation}
+ \forall x\in\R,\quad
+ 2^x,3^x\in\Z
+ \ \Longrightarrow\
+ \gamma^x,\gamma^{x^2},\gamma^{x^3}\in\Abar,
+ \label{tw:eq-three-level}
+\end{equation}
+and also to the same implication with $\Abar$-algebraicity replaced by the three membership
+conditions $x^j\log\gamma\in\LL$, $j=1,2,3$.
+\end{theorem}
+
+\begin{proof}
+If the conjecture holds, then $\Sol=\Nzero$, every exponent $x,x^2,x^3$ appearing in
+\eqref{tw:eq-three-level} is a nonnegative integer, and all three powers of the algebraic
+number $\gamma$ are algebraic, with logarithms in $\LL$.  If the conjecture fails, apply
+Theorem~\ref{tw:depth-three} to a nonintegral solution: one of the three values is log-strongly
+transcendental, so \eqref{tw:eq-three-level} fails and so does its $\LL$-version.
+\end{proof}
+
+Bases already inside $\GammaSat$ have their first level algebraic for free, which removes one
+of the three conditions and yields the shortest form of the equivalence.
+
+\begin{corollary}[Base-two cubic-tower equivalence]
+\label{tw:base2-equivalence}
+Conjecture~\ref{conj:AE} is equivalent to
+\begin{equation}
+ \forall x\in\R,\quad
+ 2^x,3^x\in\Z
+ \ \Longrightarrow\
+ 2^{x^2}\in\Abar\ \text{ and }\ 2^{x^3}\in\Abar .
+ \label{tw:eq-base2-cubic}
+\end{equation}
+The same statement holds with the base $3$ in place of the base $2$.
+\end{corollary}
+
+\begin{proof}
+Take $\gamma=2$ in Theorem~\ref{tw:universal-detector} and drop the first condition, which is
+automatic because $2^x$ is an integer under the hypothesis.
+\end{proof}
+
+This is a genuinely different equivalence from the second-level algebraicity tests of
+Section~\ref{sec:smooth}, which require \emph{both} $2^{x^2}$ and $3^{x^2}$ to be algebraic.
+One original base suffices if one is willing to climb a single extra level.  The trade is
+informative: a second base and a third tower level carry exactly the same amount of
+information, which is another way of seeing that the two-base configuration supplies only two
+independent logarithmic directions no matter how the exponent is iterated.
+
+\begin{statusbox}{\statusnew{} --- paper proof in this report.  Both equivalences inherit the
+classical inputs of Theorem~\ref{tw:strong-spectrum}; the ordinary-algebraicity forms
+\eqref{tw:eq-three-level} and \eqref{tw:eq-base2-cubic} need only the six exponentials
+theorem, since Theorem~\ref{tw:spectrum} is \statuslean{} and only the depth-two and
+depth-three steps require the general form.  Neither is a proof of
+Conjecture~\ref{conj:AE}, which remains open: the tower reformulations relocate the
+difficulty to the second and third levels without supplying a mechanism that produces
+algebraicity there.}
+\end{statusbox}
+
+\section{Symmetric tower constants}
+\label{sec:symmetric}
+
+The exponent $\thetaq=\log3/\log2$ and its reciprocal
+\[
+ \eta=\frac1{\thetaq}=\frac{\log2}{\log3}
+\]
+generate two symmetric ``next outputs'',
+\[
+ E_3=3^{\thetaq}=5.704522494691117635\ldots,
+ \qquad
+ E_2=2^{\eta}=1.548562652630242907\ldots
+\]
+The first is the canonical radical of Section~\ref{sec:radical} in the special branch where
+the primitive odd core equals $3$; the second is its base-swapped mirror.  Neither constant
+is known to be transcendental, and for $E_3$ even irrationality is open.  What is available
+unconditionally is a statement about the \emph{pair}, and what a counterexample would add is
+an exact classification of which of the two becomes algebraic.
+
+\subsection{An unconditional strong dichotomy}
+
+\begin{theorem}[At least one symmetric tower constant is strongly transcendental]
+\label{tw:symmetric-unconditional}
+At least one of the two numbers
+\[
+ \thetaq\log3=\log E_3,
+ \qquad
+ \eta\log2=\log E_2
+\]
+lies outside $\LL$.  In particular, at least one of $E_3$ and $E_2$ is transcendental.
+\end{theorem}
+
+\begin{proof}
+The three numbers $1,\thetaq,\eta$ are linearly independent over $\Abar$: a relation
+$a+b\thetaq+c\eta=0$ with algebraic coefficients, multiplied by $\thetaq$, becomes
+$b\thetaq^2+a\thetaq+c=0$, which is impossible for a transcendental $\thetaq$ unless
+$a=b=c=0$.  The two numbers $\log2,\log3$ are linearly independent over $\Q$ by unique
+factorization, hence over $\Abar$ by Baker's theorem \cite{Baker1975}.
+
+Apply Roy's strong six exponentials theorem \cite{Roy1992,Waldschmidt2005} to the three rows
+$1,\thetaq,\eta$ and the two columns $\log2,\log3$.  Four of the six pairwise products are
+already logarithms of algebraic numbers,
+\[
+ \log2,\qquad\log3,\qquad\thetaq\log2=\log3,\qquad\eta\log3=\log2,
+\]
+and therefore lie in $\LL$.  Hence at least one of the two remaining products,
+$\thetaq\log3$ and $\eta\log2$, lies outside $\LL$.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} --- paper proof in this report, using Baker's theorem and
+Roy's strong six exponentials theorem.  The ordinary six exponentials theorem gives the
+weaker dichotomy that one of $E_3,E_2$ is transcendental.  The strong form is worth the extra
+input because it survives verbatim into the conditional branches below.}
+\end{statusbox}
+
+Note what the theorem does not say.  It does not identify which constant is transcendental,
+and no known method identifies either one individually; that is precisely the wall described
+in Section~\ref{sec:radical}.  The value of the dichotomy is that a counterexample would
+resolve it, and would resolve it in a completely explicit way.
+
+\subsection{Exact conditional classification}
+
+Throughout this subsection $x\in\Sol\setminus\Nzero$, $m=2^x$, and $n=3^x$.
+
+\begin{theorem}[The $E_3$ equivalences]
+\label{tw:E3}
+The following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $E_3=3^{\thetaq}$ is algebraic;
+\item $\thetaq\log3\in\LL$;
+\item $m$ is three-smooth;
+\item there are $a,b\in\Nzero$ with $b>0$ such that $m=2^a3^b$ and $x=a+b\thetaq$;
+\item $x\in\Q+\Q\thetaq$.
+\end{enumerate}
+If these conditions fail, then $\thetaq\log3\notin\LL$ and $E_3$ is log-strongly
+transcendental.  If they hold, then
+\begin{equation}
+ E_3^{\,b}=\frac{n}{3^a}\in\Q_{>0},
+ \label{tw:eq-E3-radical}
+\end{equation}
+so $E_3$ is an explicit algebraic radical.
+\end{theorem}
+
+\begin{proof}
+(iv)$\Rightarrow$(iii)$\Rightarrow$(v): the first is trivial, and taking logarithms of
+$m=2^a3^b$ gives $x=a+b\thetaq$, which lies in $\Q+\Q\thetaq$.
+
+(v)$\Rightarrow$(iv): write $x=u+v\thetaq$ with $u,v\in\Q$ and clear a common positive
+denominator $d$, so that $m^d=2^p3^q$ with $p,q\in\Z$.  The left side is a positive integer,
+so prime valuations force $p,q\ge0$ and $d\mid p$, $d\mid q$.  Hence $u=a$ and $v=b$ with
+$a,b\in\Nzero$, and $b>0$ because $x\notin\Nzero$.
+
+(i)$\Rightarrow$(iv): apply the six exponentials theorem to the rows $1,x,\thetaq$ and the
+columns $\log2,\log3$.  The six exponential values are
+\[
+ 2,\quad3,\quad m,\quad n,\quad3,\quad E_3,
+\]
+all algebraic by hypothesis.  The theorem therefore forbids both independence conditions
+simultaneously; the columns $\log2,\log3$ are $\Q$-independent, so the rows are $\Q$-dependent
+and $x=u+v\thetaq$ for some $u,v\in\Q$.  Now (v)$\Rightarrow$(iv) applies.
+
+(iv)$\Rightarrow$(i): from $x=a+b\thetaq$ we get $n=3^x=3^aE_3^{\,b}$, which is
+\eqref{tw:eq-E3-radical} and exhibits $E_3$ as a positive real radical of a positive rational,
+hence algebraic.
+
+Finally the strong statement.  Suppose $m$ is not three-smooth.  Then $\log2,\log m,\log3$ are
+linearly independent over $\Q$: a rational relation with nonzero coefficient on $\log m$ would
+place $m$ in $\GammaSat$, and an integer in $\GammaSat$ is three-smooth, while a relation with
+zero coefficient on $\log m$ contradicts the independence of $\log2,\log3$.  Baker's theorem
+upgrades this to independence over $\Abar$, so after division by $\log2$ the three numbers
+$1,x,\thetaq$ are $\Abar$-linearly independent.  Apply Roy's theorem to the rows $1,x,\thetaq$
+and the columns $\log2,\log3$: five of the six products, namely
+$\log2,\log3,\log m,\log n$, and $\thetaq\log2=\log3$, lie in $\LL$, so
+$\thetaq\log3\notin\LL$.  Thus failure of (iii) implies failure of (ii); and (i) implies (ii)
+because $\log E_3=\thetaq\log3$ is then the logarithm of an algebraic number.
+\end{proof}
+
+\begin{theorem}[The $E_2$ equivalences]
+\label{tw:E2}
+The following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $E_2=2^{\eta}$ is algebraic;
+\item $\eta\log2\in\LL$;
+\item $n$ is three-smooth;
+\item there are $c,d\in\Nzero$ with $c>0$ such that $n=2^c3^d$ and $x=d+c\eta$;
+\item $x\in\Q+\Q\eta$.
+\end{enumerate}
+If these conditions fail, then $\eta\log2\notin\LL$ and $E_2$ is log-strongly transcendental.
+If they hold, then
+\begin{equation}
+ E_2^{\,c}=\frac{m}{2^d}\in\Q_{>0}.
+ \label{tw:eq-E2-radical}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Interchange the roles of $2$ and $3$, of $m$ and $n$, and of $\thetaq$ and $\eta$ in the proof
+of Theorem~\ref{tw:E3}.  For the strong step, use the $\Q$-linear independence of
+$\log3,\log n,\log2$ when $n$ is not three-smooth.
+\end{proof}
+
+\begin{corollary}[The two branches are mutually exclusive]
+\label{tw:not-both-algebraic}
+For a nonintegral solution, $E_3$ and $E_2$ cannot both be algebraic.  Equivalently, at least
+one of $\thetaq\log3$ and $\eta\log2$ lies outside $\LL$ under a counterexample as well as
+unconditionally.
+\end{corollary}
+
+\begin{proof}
+By Theorems~\ref{tw:E3} and~\ref{tw:E2}, algebraicity of $E_3$ is equivalent to
+three-smoothness of $m$ and algebraicity of $E_2$ to three-smoothness of $n$.
+Proposition~\ref{tw:not-both-smooth} forbids both, since eliminating $x$ from
+$x=a+b\thetaq$ and $x=d+c\eta$ produces the quadratic \eqref{tw:eq-quadratic} for the
+transcendental $\thetaq$.
+\end{proof}
+
+So under a counterexample the unconditional dichotomy of
+Theorem~\ref{tw:symmetric-unconditional} becomes a genuine classification rather than an
+alternative: at most one of the two constants is algebraic, and each is algebraic exactly in
+its own smooth-output branch, with an explicit radical description.
+
+\begin{center}
+\begin{tabular}{@{}p{0.24\textwidth}p{0.20\textwidth}p{0.44\textwidth}@{}}
+\toprule
+Smooth branch & Return kernel & Symmetric constants\\
+\midrule
+$m=2^a3^b$, $b>0$ & $\{2^r:r\in\Q\}$ &
+$E_3^{\,b}=n/3^a\in\Q_{>0}$; $E_2$ log-strongly transcendental\\
+$n=2^c3^d$, $c>0$ & $\{3^s:s\in\Q\}$ &
+$E_2^{\,c}=m/2^d\in\Q_{>0}$; $E_3$ log-strongly transcendental\\
+neither output smooth & no coordinate axis &
+both $E_3$ and $E_2$ log-strongly transcendental\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The three rows of the table are exactly the three surviving rows of the primitive-core
+trichotomy of Section~\ref{sec:smooth}: the first is the case $w=3$, in which the canonical
+radical $E=w^{\thetaq}$ of Section~\ref{sec:radical} degenerates to $E_3$ itself with index
+$d=b$; the second is its mirror $v=2$; and the third is the generic case with two independent
+external prime supports.  The missing fourth pattern, both outputs three-smooth, is the one
+excluded by Proposition~\ref{tw:not-both-smooth}.
+
+Two remarks are worth making about the direction of the implications.  First, nothing here
+proves that $E_3$ or $E_2$ is transcendental: a counterexample would make one of them an
+explicit algebraic radical, and Corollary~\ref{tw:not-both-algebraic} only says that it cannot
+make both algebraic.  The conjecture remains open, and the smallest instance --- irrationality
+of $E_3=3^{\log_23}$ --- is exactly the wall named in Section~\ref{sec:radical}.  Second, the
+implication that is usable in the other direction is the strong one: proving
+$\thetaq\log3\notin\LL$ would kill the entire $w=3$ branch, and proving $\eta\log2\notin\LL$
+would kill the $v=2$ branch, leaving only the generic case, in which both outputs carry prime
+support outside $\{2,3\}$ and the local determinant methods have two independent external
+primes to work with.
+
+\begin{statusbox}{\statusnew{} --- paper proofs in this report.
+Theorems~\ref{tw:E3} and~\ref{tw:E2} use the six exponentials theorem for the algebraicity
+equivalences and Baker's theorem together with Roy's strong six exponentials theorem for the
+$\LL$-statements; none of those classical inputs is formalized in the repository.
+Corollary~\ref{tw:not-both-algebraic} adds only Proposition~\ref{tw:not-both-smooth}, whose
+sole nonelementary ingredient is the kernel-verified transcendence of $\thetaq$, so the
+mutual exclusion of the two smooth branches --- as opposed to the transcendence conclusions
+attached to them --- is within immediate reach of the Lean development.}
+\end{statusbox}
+
 \section{Finite-difference obstructions}
 \label{sec:differences}
 
@@ -6202,7 +7706,7 @@ theorem det_rpowVandermonde_ne_zero {n : N} (x lam : Fin (n + 1) -> R)
     (rpowVandermonde x lam).det <> 0
 \end{lstlisting}
 
-A vanishing determinant produces a nonzero kernel vector, via the lemma
+A vanishing determinant yields a nonzero kernel vector, via
 \lean{Matrix.exists_mulVec_eq_zero_iff}, and it is a real combination of
 the functions $x\mapsto x^{\lambda_j}$ vanishing at $n+1$ distinct positive nodes.  So the
 determinant statement follows from the zero-count statement.
@@ -6620,6 +8124,10 @@ interval computation with a stated software trust boundary, which is not a kerne
 certificate.  \statusknown{} marks classical or open background.  No entry below asserts the
 full Alaoglu--Erd\H{o}s conjecture; it remains open.
 
+No row of the table carries \statusdraft{} any longer.  Every module that earlier revisions
+of this report listed as a pending draft has since been accepted by the kernel and placed on
+the aggregate import surface, so the tag survives only as a definition for future use.
+
 {\small
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.37\textwidth}
                   >{\raggedright\arraybackslash}p{0.22\textwidth}
@@ -6646,8 +8154,13 @@ Nonintegral solution irrational and transcendental & \statuslean &
 $\thetaq=\log3/\log2$ transcendental & \statuslean & \lean{Transcendence} \\
 Four-exponentials conjecture $\Rightarrow$ Conjecture~\ref{conj:AE} & \statuslean &
 \lean{FourExponentialsReduction} \\
-Prime-log-product independence $\Rightarrow$ Conjecture~\ref{conj:AE} & \statusdraft &
+Prime-log-product independence $\Rightarrow$ Conjecture~\ref{conj:AE} & \statuslean &
 Section~\ref{sec:logproduct}; \lean{LogProductIndependence} \\
+Prime-log-product independence $\Rightarrow$ the rational-output form
+\eqref{eq:lp-rational-form} & \statuslean &
+Section~\ref{sec:logproduct}; \lean{LogProductIndependence} \\
+Two-prime case of the independence criterion, and its sharpness & \statuslean &
+Section~\ref{lp:twoprime} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Zero-free regions and finite searches}}\\
 $2^x<100$ and $2^x<256\Rightarrow x\in\Z$ & \statuslean &
@@ -6655,6 +8168,8 @@ $2^x<100$ and $2^x<256\Rightarrow x\in\Z$ & \statuslean &
 $2^x<4096\Rightarrow x\in\Z$\ \ (so $x\ge12$) & \statuslean & \lean{FiniteCheck4096} \\
 No nonintegral candidate with $2^x<2^{20}$ & \statuscomp &
 Section~\ref{sec:finitecheck}, Appendix~\ref{app:interval} \\
+No nonintegral candidate with $2^x<2^{26}$ & \statuscomp &
+Section~\ref{sec:finitecheck}, Appendix~\ref{app:scanner} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Exact conditional structure}}\\
 Rank of candidate exponent vectors $\le2$ & \statuslean & \lean{MultiplicativeRank} \\
@@ -6675,8 +8190,111 @@ Canonical primitive generator; exact candidate monoid $\{2^nM^k\}$ & \statuslean
 \lean{PrimitiveGenerator} \\
 Denominator-controlled rational third output and determinant margin & \statuslean &
 \lean{RationalThirdBase} \\
-Unrestricted rational-third-output determinant grid & Open & not yet formalized \\
+Unrestricted rational-third-output determinant grid & \statuslean &
+\lean{RationalSixExponentials}, \lean{RationalBaseThird} \\
 $3$-smooth classification of further bases & \statuslean & \lean{ThreeSmooth} \\
+Both outputs $3$-smooth $\Rightarrow x\in\Z$ (unconditional exclusion) & \statuslean &
+\lean{SmoothOutputs} \\
+Sharp form: a $3$-smooth output forces a partner with a prime factor $\ge5$ & \statuslean &
+\lean{SmoothOutputs} \\
+Primitive output cores are never exactly $3$ and $2$; exact core rationality
+classification & \statuslean & \lean{CoreIndependence} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Algebraic auxiliary bases and output loci}}\\
+Six exponentials for three positive rational bases and rational outputs & \statuslean &
+\lean{RationalSixExponentials} \\
+Field-norm determinant bound over rings of integers & \statuslean &
+\lean{AlgebraicIntegerDeterminant} \\
+One number field and one natural denominator for a finite algebraic family & \statuslean &
+\lean{AlgebraicOutputBridge}, \lean{FiniteAlgebraicOutputBridge} \\
+Six exponentials for three positive algebraic real bases and algebraic outputs &
+\statuslean & \lean{AlgebraicSixExponentials} \\
+Algebraic output at a natural third base & \statuslean & \lean{AlgebraicThirdBase} \\
+Exact rational-base spectrum: $q^x\in\Q$ iff $x\in\Z$ or $q$ is a $2,3$-unit & \statuslean &
+\lean{RationalBaseThird} \\
+Exact algebraic-output form of the same classification & \statuslean &
+\lean{AlgebraicRationalBase} \\
+Divisible-hull criterion: an algebraic base with algebraic power has a positive
+$2,3$-unit power & \statuslean & \lean{AlgebraicBaseUnitPower} \\
+Pointwise algebraic natural-base classification and iterated-output transcendence &
+\statuslean & \lean{AlgebraicConsequences} \\
+Exact algebraic output monomial locus is a coordinate face or the origin & \statuslean &
+\lean{AlgebraicOutputLocus} \\
+Algebraic output ratios lie on one external $p$-adic line (lattice rank $\le1$) &
+\statuslean & \lean{AlgebraicOutputLocus} \\
+Common algebraic-output exponent plane: $y\in\Q+\Q x$ & \statuslean &
+\lean{AlgebraicExponentLocus} \\
+General two-base saturated spectrum $\GammaSat(a,b)=\{a^rb^s:r,s\in\Q\}$ & \statusnew &
+algebraic spectrum (this report) \\
+Strong spectrum: $x\log\alpha\notin\LL$ for $\alpha\in\Apos\setminus\GammaSat$ &
+\statusnew & algebraic spectrum (this report) \\
+Every $\alpha\in\Apos\setminus\GammaSat$ is a one-output detector for
+Conjecture~\ref{conj:AE} & \statusnew & algebraic spectrum (this report) \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{One-base equivalent formulations}}\\
+Conjecture~\ref{conj:AE} $\iff$ every solution has $5^x\in\Qbar$ & \statuslean &
+\lean{AlgebraicConsequences} \\
+Conjecture~\ref{conj:AE} $\iff$ every solution has $2^{x^2},3^{x^2}\in\Qbar$ &
+\statuslean & \lean{AlgebraicConsequences} \\
+Conjecture~\ref{conj:AE} $\iff$ every solution has $6^{x^2}\in\Qbar$ & \statuslean &
+\lean{AlgebraicConsequences} \\
+Conjecture~\ref{conj:AE} $\iff$ the algebraic locus among $(2^i/3^j)^{x^2}$ has rank two &
+\statuslean & \lean{AlgebraicOutputLocus} \\
+Conjecture~\ref{conj:AE} $\iff$ the algebraic real-power output locus has rank three &
+\statuslean & \lean{AlgebraicRankThreeEquivalence} \\
+Conjecture~\ref{conj:AE} $\iff$ no squared-monomial algebraic coordinate face &
+\statuslean & \lean{AlgebraicOutputLocus} \\
+Conjecture~\ref{conj:AE} $\iff$ $2^y,3^y\in\Qbar$ at every natural power $y=x^n$ &
+\statuslean & \lean{AlgebraicExponentLocus} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Canonical radical: valuation, degree, and hull}}\\
+Odd-prime valuation gcd; outer-power exponents of the canonical radical & \statuslean &
+\lean{CanonicalRadicalValuation} \\
+Exact rational outer-power criterion; the triple gcd is not replaceable by either
+pairwise gcd & \statuslean & \lean{CanonicalRadicalSharpness} \\
+Norm and trace of the pure-radical generator; the base-swapped relation blocks
+monomial injectivity & \statuslean & \lean{CanonicalRadicalFieldNorm} \\
+Algebraic integrality of the radical iff trivial reduced denominator & \statuslean &
+\lean{CanonicalRadicalThirdOutput} \\
+Algebraicity of the radical's $\beta$-th power iff $2,3$-smooth numerator & \statuslean &
+\lean{CanonicalRadicalAlgebraicOutput} \\
+External numerator prime excludes the positive $2,3$-unit divisible hull &
+\statuslean & \lean{CanonicalRadicalDivisibleHull} \\
+Mixed radical monomials retain an external prime; transcendental outputs & \statuslean &
+\lean{CanonicalRadicalMixedOutput} \\
+Exact rational-power indices and radical degrees of the simultaneous radicals; product
+degree $de$ & \statuslean & \lean{SimultaneousRadicalDegrees} \\
+Localized-radical conjecture target itself & Open & Section~\ref{sec:radical} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Valuation lattice, kernel, and towers}}\\
+Rational-output lattice $\Lambda_x$ of the prime-valuation matrix $V_x$ & \statusnew &
+valuation lattice (this report) \\
+Smith classification: $\Lambda_x/\Z^2\cong\Z/d_1\Z\oplus\Z/d_2\Z$ and the finite
+rational-output defect & \statusnew & valuation lattice (this report) \\
+Second-iterate kernel $K_x=\{(r,s)\in\Q^2:M^rA^s\in\GammaSat\}$; $\dim_\Q K_x\le1$ &
+\statusnew & second-iterate kernel (this report) \\
+Kernel invariance $K_x=K_y$ across nonintegral solutions & \statusnew &
+second-iterate kernel (this report) \\
+M\"obius criterion: $K\ne\{0\}$ iff $x\in\PGL_2(\Q)\cdot\thetaq$, iff
+$1,\thetaq,x,x\thetaq$ are $\Q$-dependent & \statusnew &
+second-iterate kernel (this report) \\
+Multiplicative-dependence form: $K\ne\{0\}$ iff $M^eA^{-d}\in\GammaSat$ for some
+$(d,e)\ne(0,0)$ & \statusnew & second-iterate kernel (this report) \\
+Four-type classification of counterexamples by external valuation rank & \statusnew &
+second-iterate kernel (this report) \\
+No nontrivial two-step return inside $\GammaSat$ & \statusnew &
+depth-three tower (this report) \\
+Depth-three tower rigidity: some $\alpha^{x^j}$, $j\le3$, is transcendental, with exact
+first depth & \statusnew & depth-three tower (this report) \\
+Universal three-level detector: Conjecture~\ref{conj:AE} $\iff$
+$\alpha^x,\alpha^{x^2},\alpha^{x^3}\in\Qbar$ for one fixed $\alpha\ne1$ & \statusnew &
+depth-three tower (this report) \\
+Base-$2$ cubic-tower equivalence: Conjecture~\ref{conj:AE} $\iff$
+$2^{x^2},2^{x^3}\in\Qbar$ & \statusnew & depth-three tower (this report) \\
+Symmetric tower constants: at least one of $\log E_3$, $\log E_2$ lies outside $\LL$ &
+\statusnew & symmetric tower constants (this report) \\
+Exact conditional classification of $E_3=3^{\thetaq}$ and $E_2=2^{1/\thetaq}$ &
+\statusnew & symmetric tower constants (this report) \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Counting, growth, and equidistribution}}\\
 Exact block counts and cumulative finite sum & \statuslean & \lean{ExactCounting} \\
@@ -6710,23 +8328,35 @@ Exact radical degree and binomial irreducibility & \statuslean & \lean{RadicalDe
 Candidate-form localization equivalence & \statuslean & \lean{Localization} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{New results of this report}}\\
+Exponential-polynomial zero count; generalized Vandermonde nonvanishing at ordered
+nodes & \statuslean & \lean{ExponentialPolynomialZeros} \\
 Generalized Vandermonde positivity (ordered chamber) & \statusnew &
-Section~\ref{sec:arbnode}, Appendix~\ref{app:gvproof};
-drafted as \lean{ExponentialPolynomialZeros} \\
-Arbitrary-node Vandermonde repulsion and corollaries & \statusnew &
-Section~\ref{sec:arbnode}; drafted as \lean{ArbitraryNodeDeterminant} \\
-Semigroup generalized-Vandermonde hierarchy (integrality half) & \statusnew &
-Section~\ref{sec:semigroup}; drafted as \lean{MixedExponentSemigroup},
-\lean{SemigroupDeterminant} \\
-Semigroup gap theorem & \statusnew &
-Section~\ref{sec:semigroup}; drafted as \lean{FallingFactorialBound} \\
+Section~\ref{sec:arbnode}, Appendix~\ref{app:gvproof} \\
+Arbitrary-node determinant integrality and divided-difference repulsion bound &
+\statuslean & \lean{ArbitraryNodeDeterminant} \\
+Arbitrary-node repulsion theorem with its analytic input, and corollaries & \statusnew &
+Section~\ref{sec:arbnode} \\
+Semigroup generalized-Vandermonde hierarchy (integrality half) & \statuslean &
+\lean{MixedExponentSemigroup}, \lean{SemigroupDeterminant} \\
+Falling-factorial coefficient bound; dyadic-strip divided-difference bound & \statuslean &
+\lean{FallingFactorialBound} \\
+Semigroup gap theorem in quantitative form & \statusnew & Section~\ref{sec:semigroup} \\
+Window-span counting bridge for mixed exponents & \statuslean &
+\lean{SemigroupWeightBound} \\
 Explicit dyadic $O((\log X)^2)$ bound from that hierarchy & \statusnew &
-Section~\ref{sec:semigroup}; drafted as \lean{SemigroupWeightBound} \\
+Section~\ref{sec:semigroup} \\
 One-logarithm deficit analysis & \statusnew & Section~\ref{sec:deficit} \\
-Compact synchronized-orbit reformulation & \statusnew &
-Section~\ref{sec:reform}; drafted as \lean{CompactOrbit} \\
-Block-growth reformulations (bounded, $o(T)$, $\liminf$, $\equiv1$) & \statusnew &
-Section~\ref{sec:reform}; drafted as \lean{BlockGrowthReformulations} \\
+Compact synchronized-orbit reformulation & \statuslean & \lean{CompactOrbit} \\
+Block-growth reformulations (bounded, $o(T)$, $\liminf$, $\equiv1$) & \statuslean &
+\lean{BlockGrowthReformulations} \\
+Rational-function rigidity, multiplication and quotient criteria, closure
+reformulations & \statusnew & Section~\ref{sec:rigidity} \\
+Perfect-power content, matched affine decompositions, primitive-output statistics &
+\statusnew & Section~\ref{sec:powers} \\
+Candidate gcd/lcm lattice and ambient root saturation index & \statusnew &
+Section~\ref{sec:lattice} \\
+Operator formulation on the prime-logarithm space & \statusnew &
+Section~\ref{rf:operator} \\
 \bottomrule
 \end{longtable}
 }
@@ -6736,14 +8366,15 @@ Section~\ref{sec:reform}; drafted as \lean{BlockGrowthReformulations} \\
 
 All modules live under
 \lean{Analysis/ExponentialIdentities/Lean/ExponentialIdentities/}, in namespace
-\lean{LeanProofs}.  The kernel-accepted modules listed first contain no \lean{sorry}, no
-extra axioms, and no \lean{native_decide}; certificate tables are replayed by the kernel.
+\lean{LeanProofs}.  Every module listed below is reachable from the aggregate import
+surface, and the merged tree builds with no errors.  None of them contains \lean{sorry}, an
+extra axiom, or \lean{native_decide}; certificate tables are replayed by the kernel.
 
 \subsection{Kernel-accepted modules}
 
 {\footnotesize
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.36\textwidth}
-                  >{\raggedright\arraybackslash}p{0.56\textwidth}}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.385\textwidth}
+                  >{\raggedright\arraybackslash}p{0.535\textwidth}}
 \toprule
 Module & Contents \\
 \midrule
@@ -6788,47 +8419,109 @@ Module & Contents \\
 \lean{.../Localization} & candidate-form localization equivalence \\
 \lean{.../FourExponentialsReduction} & four exponentials $\Rightarrow$ the conjecture \\
 \lean{GelfondSchneider/...} & Gelfond--Schneider theorem (port of Karatarakis) \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Rational and algebraic auxiliary bases}}\\
+\lean{.../RationalSixExponentials} & six exponentials for three positive rational bases and
+rational outputs \\
+\lean{.../RationalBaseThird} & specialization to bases $2,3$; exact $2,3$-unit
+classification of positive rational third bases \\
+\lean{.../AlgebraicOutputBridge} & a number field, an embedding, and one natural denominator
+clearing an algebraic value to an algebraic integer \\
+\lean{.../FiniteAlgebraicOutputBridge} & one common number field and one denominator for a
+finite family of algebraic values \\
+\lean{.../AlgebraicIntegerDeterminant} & field-norm lower bound for a nonzero
+algebraic-integer determinant; house and factorial bounds on the $n^{11}$ scale \\
+\lean{.../AlgebraicSixExponentials} & field-norm six-exponentials determinant for three
+positive algebraic real bases and three algebraic outputs \\
+\lean{.../AlgebraicThirdBase} & three-base determinant for algebraic output at a natural
+third base, first over a number field and then by clearing denominators \\
+\lean{.../AlgebraicRationalBase} & algebraic outputs at positive rational bases; the
+algebraic locus is exactly the $2,3$-units unless the exponent is integral \\
+\lean{.../AlgebraicBaseUnitPower} & positive $2,3$-unit powers and the multiplicative rank
+of an algebraic auxiliary base \\
+\lean{.../AlgebraicConsequences} & pointwise algebraic natural-base classification;
+iterated-output transcendence; the $5^x$, $6^{x^2}$ and both-iterate equivalences \\
+\lean{.../AlgebraicOutputLocus} & exact algebraic output monomial locus (coordinate face or
+origin); external $p$-adic line for output ratios; coordinate-face and rank-two
+equivalences \\
+\lean{.../AlgebraicRankThreeEquivalence} & rank three in the algebraic real-power output
+locus forces integrality; the resulting equivalence \\
+\lean{.../AlgebraicExponentLocus} & the common algebraic-output exponent plane
+$\Q+\Q x$, and its natural-power equivalence \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Canonical radical arithmetic}}\\
+\lean{.../CanonicalRadicalValuation} & odd-prime valuation gcd; divisors of the gcd are
+honest outer-power exponents \\
+\lean{.../CanonicalRadicalSharpness} & exact criterion for a reduced $c/3^a$ to be a
+rational outer power; the triple gcd resists both pairwise relaxations \\
+\lean{.../CanonicalRadicalFieldNorm} & norm and trace of the pure-radical generator; the
+base-swapped relation blocks monomial injectivity \\
+\lean{.../CanonicalRadicalThirdOutput} & algebraic integrality of the normalized radical is
+equivalent to a trivial reduced denominator \\
+\lean{.../CanonicalRadicalAlgebraicOutput} & algebraicity of the radical's $\beta$-th power
+is equivalent to $2,3$-smoothness of the normalized numerator \\
+\lean{.../CanonicalRadicalDivisibleHull} & an external numerator prime excludes the whole
+positive $2,3$-unit divisible hull \\
+\lean{.../CanonicalRadicalMixedOutput} & genuinely mixed radical monomials keep an external
+prime, so all their outputs are transcendental \\
+\lean{.../SimultaneousRadicalDegrees} & the displayed exponents are the least
+rational-power indices; exact radical degrees and the product degree $de$ \\
+\lean{.../CoreIndependence} & the two primitive output cores are never exactly $3$ and $2$;
+exact rationality classification of the simultaneous cores \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Smoothness and log-products}}\\
+\lean{.../SmoothOutputs} & both outputs $3$-smooth forces an integral exponent; sharp form
+supplying a partner with a prime factor $\ge5$ \\
+\lean{.../LogProductIndependence} & prime-log-product independence as a sufficient condition
+distinct from four exponentials, in both the integer-output and rational-output forms \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Determinant hierarchy and reformulations}}\\
+\lean{.../ArbitraryNodeDeterminant} & interpolation determinant at arbitrary ordered nodes;
+integrality and the divided-difference repulsion bound \\
+\lean{.../ExponentialPolynomialZeros} & zero-count theorem for real exponential polynomials
+and nonvanishing of the generalized Vandermonde determinant \\
+\lean{.../MixedExponentSemigroup} & pair-indexed exponent $a+b\thetaq$, injectivity, and
+integrality of $m^{a+b\thetaq}$ \\
+\lean{.../SemigroupDeterminant} & integrality half of the semigroup generalized-Vandermonde
+hierarchy, with $\lvert\det\rvert\ge1$ \\
+\lean{.../FallingFactorialBound} & falling-factorial coefficient bound and dyadic-strip
+divided-difference bound \\
+\lean{.../SemigroupWeightBound} & mixed-exponent family construction and the
+window-summation counting bridge \\
+\lean{.../BlockGrowthReformulations} & boundedness, $o(T)$, $\liminf$, and $\equiv1$
+reformulations of the conjecture \\
+\lean{.../CompactOrbit} & compact synchronized-orbit reformulation with shared floor
+exponent, in both directions \\
 \bottomrule
 \end{longtable}
 }
 
 \subsection{Drafted modules not yet accepted by the kernel}
+\label{st:no-drafts}
 
-The following sources exist in the repository tree for the new results of this report but
-have \emph{not} been accepted by the Lean kernel at the pinned state.  Every statement they
-contain carries status \statusdraft{} and must not be cited as machine-checked.
+There are none.  Earlier revisions of this report listed nine modules whose Lean sources
+existed in the repository but had not been accepted:
+\begin{center}
+\lean{ArbitraryNodeDeterminant}, \lean{ExponentialPolynomialZeros},
+\lean{MixedExponentSemigroup},\\
+\lean{SemigroupDeterminant}, \lean{FallingFactorialBound}, \lean{SemigroupWeightBound},\\
+\lean{BlockGrowthReformulations}, \lean{CompactOrbit}, \lean{LogProductIndependence}.
+\end{center}
+All nine have since been accepted by the kernel, placed on the aggregate import surface, and
+moved into the table above.  Statements that those modules actually contain are therefore
+\statuslean{}.
 
-{\footnotesize
-\begin{longtable}{>{\raggedright\arraybackslash}p{0.36\textwidth}
-                  >{\raggedright\arraybackslash}p{0.56\textwidth}}
-\toprule
-Drafted module & Intended contents \\
-\midrule
-\endhead
-\lean{.../ArbitraryNodeDeterminant} & interpolation determinant at arbitrary ordered nodes;
-algebraic half of the repulsion theorem \\
-\lean{.../ExponentialPolynomialZeros} & zero-count theorem for real exponential polynomials;
-analytic engine for generalized Vandermonde positivity \\
-\lean{.../MixedExponentSemigroup} & pair-indexed exponent $a+b\thetaq$, injectivity,
-integrality of $m^{a+b\thetaq}$ \\
-\lean{.../SemigroupDeterminant} & integrality half of the semigroup generalized-Vandermonde
-hierarchy \\
-\lean{.../FallingFactorialBound} & falling-factorial coefficient bound and dyadic-strip
-divided-difference bound \\
-\lean{.../SemigroupWeightBound} & crude mixed-exponent weight bound and window-summation
-counting bridge \\
-\lean{.../BlockGrowthReformulations} & boundedness, $o(T)$, $\liminf$, and $\equiv1$
-reformulations of the conjecture \\
-\lean{.../CompactOrbit} & compact synchronized-orbit reformulation with shared floor
-exponent \\
-\lean{.../LogProductIndependence} & prime-log-product independence as a sufficient condition
-distinct from four exponentials \\
-\bottomrule
-\end{longtable}
-}
+Two cautions survive that promotion, and the status matrix reflects both.  First, a module
+being accepted certifies exactly the theorems it states: \lean{ArbitraryNodeDeterminant} and
+\lean{SemigroupDeterminant} deliberately contain no analysis, so the analytic halves of the
+repulsion and gap theorems remain \statusnew{}, and \lean{ExponentialPolynomialZeros}
+delivers nonvanishing rather than the ordered-chamber positivity proved on paper in
+Appendix~\ref{app:gvproof}.  Second, the finite scans through $2^{20}$ and $2^{26}$ are
+\statuscomp{}, not kernel certificates; the kernel-verified exponent bound is still
+$x\ge12$ from \lean{FiniteCheck4096}.
 
-Each headline theorem in these modules should be added to the aggregate import surface and
-checked with \texttt{\#print axioms} before its status is promoted.  Numerical constants in the
+Each further headline theorem should be added to the aggregate import surface and checked
+with \texttt{\#print axioms} before its status is promoted.  Numerical constants in the
 tables of Appendix~\ref{app:constants} are explanatory only; the formal statements should use
 exact expressions or safe rational constants such as $1/24$ and $10000$.
 
@@ -7795,6 +9488,329 @@ directed inequality is certified.  Step nine is the one that would change the st
 result rather than its range, and it is the reason the scan is presented here as data for
 certificate generation --- in the sense of Section~\ref{sec:program} --- and not as an
 extension of the kernel-verified zero-free region.
+
+\section{Classical transcendence inputs and their exact roles}\label{app:classical}
+
+\begin{statusbox}{\statusknown{} --- this appendix states external theorems, not new ones.
+Exactly one of them, Gelfond--Schneider, is formalized in this repository
+(Theorem~\ref{co:thm-gs}); the remaining ones enter only through paper proofs, which are
+tagged \statusnew{} where they appear.  The corpus does not introduce any of them as an
+axiom: where a conjectural or unformalized statement is needed in Lean it is defined as a
+proposition and the implication is proved conditionally on it.  Deleting six exponentials,
+five exponentials, Baker's theorems, or Roy's theorem from the report would change which
+paper results stand, and would change none of the kernel-verified results catalogued in
+Appendix~\ref{app:status}.}
+\end{statusbox}
+
+The purpose of this appendix is auditability.  A reader who wants to know how much of the
+report is elementary consequence of the repository hypotheses, and how much rests on major
+transcendence theory, should be able to answer that question by looking in one place.  For
+each classical input below we give the statement in the form actually used, the exact
+places where the report uses it, and the exact reason it stops short of
+Conjecture~\ref{conj:AE}.  The last reason is the same in every case, seen from a different
+angle: every input listed here constrains a \emph{linear} configuration of logarithms or an
+\emph{algebraic} exponent, while the hypothetical counterexample is a \emph{bilinear}
+relation between logarithms with a transcendental exponent.
+
+\begin{description}[leftmargin=1.2em,style=nextline,itemsep=0.9em]
+
+\item[Gelfond--Schneider (Hilbert's seventh problem)]
+\emph{Statement.}  Let $\alpha,\beta\in\Qbar$ with $\alpha\ne0,1$ and $\beta\notin\Q$.  Then
+every value of $\alpha^{\beta}$ is transcendental \cite{Hua1982,Schneider1957,Baker1975}.
+\statusknown{}
+
+\emph{Role here.}  This is the one classical transcendence theorem the corpus proves rather
+than cites; the Lean proof follows the classical exposition \cite{Hua1982} and is recorded as
+Theorem~\ref{co:thm-gs}.  It is used twice.  First, a nonintegral solution $x$ is shown
+irrational by the elementary rational-exponent argument, and then must be transcendental
+because $2^{x}$ is an algebraic number; this is the algebraic--integral dichotomy of
+Corollary~\ref{co:cor-transcendental}, and it is what makes the conditional primitive
+generator $\beta$ and the odd-core exponent $\log_2 w$ transcendental throughout
+Section~\ref{sec:conditional} and Section~\ref{sec:radical}.  Second, $\thetaq=\log_2 3$ is
+irrational, hence transcendental, because $2^{\thetaq}=3$.
+
+\emph{Why it does not settle Conjecture~\ref{conj:AE}.}  The theorem speaks only about
+algebraic irrational exponents.  Once the dichotomy has removed algebraic exponents, the
+remaining hypothetical exponent is transcendental, and Gelfond--Schneider has nothing further
+to say about $2^{x}$ for transcendental $x$.  The theorem closes the easy half of the problem
+and defines the hard half.
+
+\item[Six exponentials]
+\emph{Statement.}  Let $u_1,u_2,u_3\in\C$ be linearly independent over $\Q$ and let
+$v_1,v_2\in\C$ be linearly independent over $\Q$.  Then at least one of the six numbers
+\[
+  e^{u_iv_j}\qquad(1\le i\le3,\ 1\le j\le2)
+\]
+is transcendental \cite{Waldschmidt2000,Waldschmidt2005,WaldschmidtSix}.  \statusknown{}
+
+\emph{Role here.}  It is the analytic engine behind every exact spectrum statement in the
+report.  The saturated algebraic-base spectrum --- for multiplicatively independent
+$a,b\in\Apos$ with $a^{x},b^{x}\in\Qbar$ and $x$ irrational, $\alpha^{x}\in\Qbar$ if and only
+if $\alpha\in\GammaSat(a,b)$ --- is the case with rows $\log a,\log b,\log\alpha$ and columns
+$1,x$.  The conditional classification of the symmetric constant $E_3=3^{\thetaq}$ is the
+case with rows $1,x,\thetaq$ and columns $\log2,\log3$, and the classification of
+$E_2=2^{\eta}$ is its mirror image under $\thetaq\mapsto\eta=1/\thetaq$.  The ordinary form
+of the unconditional $E_3/E_2$ dichotomy uses the same configuration.  The kernel-verified
+$3$-smooth classification of auxiliary bases and the three-base theorem
+$2^{x},3^{x},5^{x}\in\Z\Rightarrow x\in\Z$ are the formalized integer-level shadows of this
+theorem; the Lean proofs proceed by interpolation determinants and do not cite it.
+
+\emph{Why it does not settle Conjecture~\ref{conj:AE}.}  Six exponentials needs three
+independent directions on one side of the configuration.  The two-base problem supplies
+exactly two logarithmic directions, $\log2$ and $\log3$, and every auxiliary base built from
+$2$ and $3$ has logarithm in their rational span, so it creates no third column.  The
+remaining $2\times2$ configuration of Section~\ref{sec:fourexp} is precisely the four
+exponentials conjecture, which is open.
+
+\item[Five exponentials]
+\emph{Statement.}  Let $u_1,u_2$ be linearly independent over $\Q$, let $v_1,v_2$ be linearly
+independent over $\Q$, and let $\gamma\in\Qbar$ with $\gamma\ne0$.  Then at least one of the
+five numbers
+\[
+  e^{u_1v_1},\quad e^{u_1v_2},\quad e^{u_2v_1},\quad e^{u_2v_2},\quad e^{\gamma u_2/u_1}
+\]
+is transcendental \cite{Waldschmidt2005,Roy1992}.  \statusknown{}
+
+\emph{Role here.}  It supplies the two forbidden exponential rays of the hypothetical world:
+for a nonintegral solution $x$ and any nonzero algebraic $\gamma$, both $e^{\gamma x}$ and
+$e^{\gamma\thetaq}$ are transcendental.  For the first, apply the theorem to the independent
+pairs $(1,x)$ and $(\log2,\log3)$, whose four rectangular exponentials are the algebraic
+numbers $2,3,M,A$, leaving the fifth transcendental; the second is the same argument with the
+roles of the two logarithms exchanged.  Formalizing it would also upgrade the
+denominator-controlled auxiliary-base theorem in \lean{RationalThirdBase} from a controlled
+denominator to an unrestricted rational output, which is why it appears as a research
+priority in Section~\ref{sec:program}.
+
+\emph{Why it does not settle Conjecture~\ref{conj:AE}.}  The theorem does not remove the
+fifth exponential, so it does not prove four exponentials.  More concretely, the natural
+auxiliary quantities in this problem are $p^{x}=e^{x\log p}$ for a prime $p$, whose
+coefficient $\log p$ is transcendental rather than an admissible algebraic $\gamma$.  The
+forbidden rays therefore never convert a prime divisor of the integer outputs into a
+contradiction, as Section~\ref{sec:attempts} records.
+
+\item[Baker's theorem on linear forms in logarithms]
+\emph{Statement.}  Let $\gamma_1,\dots,\gamma_n$ be nonzero algebraic numbers of degree at
+most $d$ and height at most $H$, and let $\alpha_1,\dots,\alpha_n$ be algebraic numbers of
+height at most $B$, not all zero.  If
+\[
+  \Lambda=\alpha_1\log\gamma_1+\cdots+\alpha_n\log\gamma_n\ne0,
+\]
+then $|\Lambda|>B^{-C}$ for an effectively computable $C>0$ depending only on
+$n,d,H$ and the degree of the $\alpha_i$ \cite{Baker1975,Waldschmidt2000}.  \statusknown{}
+
+\emph{Role here.}  The effective form is used as a measuring stick rather than as a step in
+any proof.  In the rational-approximation analysis of Section~\ref{sec:attempts} it fixes the
+scale of what is available: Baker-type lower bounds are polynomial in the relevant heights,
+whereas the integer gaps produced by the hypotheses only assert $|\varepsilon|\gtrsim2^{-p}$,
+exponentially weaker, so the two scales are consistent and no contradiction arises.  It is
+also the theorem that effective irrationality measures for $\thetaq$ would refine.
+
+\emph{Why it does not settle Conjecture~\ref{conj:AE}.}  Baker's theory bounds forms whose
+coefficients are \emph{algebraic}.  The decisive relation under failure is
+$\log M\,\log3=\log A\,\log2$, and its radical form is
+$d\,\log w\,\log3=(\log A-a\log3)\log2$: each side is a product of two logarithms, so the
+coefficient of every logarithm is itself a logarithm.  Expanded over prime factorizations
+$m=\prod_p p^{m_p}$ and $A=\prod_p p^{a_p}$, failure is the nontrivial vanishing of
+\[
+  D=\sum_{p}\bigl(m_p\log3-a_p\log2\bigr)\log p,
+\]
+an integer-coefficient linear form in the \emph{products} $\log p\cdot\log2$ and
+$\log p\cdot\log3$.  No lower-bound technology exists for such forms, and even the
+$\Q$-linear independence of $\{\log p\cdot\log q\}$ is open; Section~\ref{sec:logproduct}
+turns exactly that independence into a sufficient condition.
+
+\item[Baker's homogeneous theorem]
+\emph{Statement.}  Let $\gamma_1,\dots,\gamma_n$ be nonzero algebraic numbers.  If
+$\log\gamma_1,\dots,\log\gamma_n$ are linearly independent over $\Q$, then
+$1,\log\gamma_1,\dots,\log\gamma_n$ are linearly independent over $\Qbar$.  The homogeneous
+consequence used here is the shorter one: logarithms of algebraic numbers that are linearly
+independent over $\Q$ are linearly independent over $\Qbar$
+\cite{Baker1975,Waldschmidt2000}.  \statusknown{}
+
+\emph{Role here.}  It is the bridge from a rational-independence hypothesis to the
+$\Qbar$-independence hypothesis that Roy's theorem requires.  In the strong spectrum, the
+three logarithms $\log a,\log b,\log\alpha$ are first shown $\Q$-independent by an elementary
+saturation argument, and Baker's homogeneous theorem upgrades them to $\Qbar$-independence;
+the same upgrade produces the logarithmic independence used in the strong forms of the $E_3$
+and $E_2$ classifications.  The ordinary spectrum does not need it, since rational
+independence already suffices for six exponentials.
+
+\emph{Why it does not settle Conjecture~\ref{conj:AE}.}  It is a statement about linear
+relations among logarithms.  No independence statement about the family $\{\log p\}$, over
+$\Q$ or over $\Qbar$, implies anything about the family of products $\{\log p\cdot\log q\}$,
+and it is the products that carry the obstruction.
+
+\item[Roy's strong and sharp six exponentials theorems]
+\emph{Statement.}  Let $\LL$ be the $\Qbar$-vector space spanned by $1$ together with all
+logarithms of nonzero algebraic numbers.  If $u_1,u_2,u_3$ are linearly independent over
+$\Qbar$ and $v_1,v_2$ are linearly independent over $\Qbar$, then at least one of the six
+products $u_iv_j$ lies outside $\LL$.  The sharp form replaces the independence hypotheses by
+a rank condition on a matrix whose entries are linear forms in logarithms of algebraic
+numbers \cite{Roy1992,Waldschmidt2005}.  \statusknown{}
+
+\emph{Role here.}  It produces the strengthened conclusions only.  Concretely: the strong
+auxiliary-base spectrum, which asserts $x\log\alpha\notin\LL$ for
+$\alpha\notin\GammaSat(a,b)$ rather than merely $\alpha^{x}\notin\Qbar$; the strong form of
+the symmetric-constant dichotomy, which places $\thetaq\log3$ and $\eta\log2$ outside $\LL$;
+and the log-strong transcendence clauses in the second-iterate kernel and depth-three tower
+theorems.
+
+\emph{Why it does not settle Conjecture~\ref{conj:AE}.}  Every ordinary transcendence
+conclusion in the report survives the removal of this theorem; only the ``lies outside
+$\LL$'' clauses disappear.  Structurally it inherits the six exponentials dimension count and
+still demands three independent directions on one side, so it does not reach the $2\times2$
+configuration where the conjecture actually lives.
+
+\item[Lindemann--Weierstrass]
+\emph{Statement.}  If $\alpha_1,\dots,\alpha_n$ are distinct algebraic numbers, then
+$e^{\alpha_1},\dots,e^{\alpha_n}$ are linearly independent over $\Qbar$.  The special case
+used here is Hermite--Lindemann: for algebraic $\alpha\ne0$ the value $e^{\alpha}$ is
+transcendental, equivalently every nonzero value of $\log\gamma$ is transcendental for
+algebraic $\gamma\ne0,1$ \cite{Baker1975}.  \statusknown{}
+
+\emph{Role here.}  It is the standing background fact that each $\log p$, and in particular
+$\log2$ and $\log3$, is transcendental.  That fact is what makes the coefficients in the
+log-product form $D$ above transcendental rather than algebraic, and therefore what places
+the wall outside Baker's reach; it is also the precise content of the audit warning against
+treating $\log2$ and $\log3$ as algebraic coefficients (Remark~\ref{a4:warn-bilinear}).
+
+\emph{Why it does not settle Conjecture~\ref{conj:AE}.}  Lindemann--Weierstrass constrains
+exponentials of \emph{algebraic} arguments.  Under failure the exponent $x$ is transcendental
+and the arguments $x\log2$ and $x\log3$ are transcendental, so none of the four corner
+exponentials $2,3,2^{x},3^{x}$ is within its scope, and it gives no information whatever
+about products of two logarithms.
+
+\end{description}
+
+\subsection{Logical dependency graph}
+
+The table records, for each family of results in the report, the classical input it actually
+consumes.  The rows whose input column reports no classical theorem are elementary or
+kernel-verified, and depend on no transcendence theory beyond the Gelfond--Schneider
+dichotomy that the corpus already formalizes.
+
+\begin{longtable}{p{0.45\textwidth}p{0.47\textwidth}}
+\caption{Classical transcendence input consumed by each family of results.}%
+\label{a4:tab:deps}\\
+\toprule
+Result & Required classical input \\
+\midrule
+\endfirsthead
+\toprule
+Result & Required classical input \\
+\midrule
+\endhead
+Nonintegral solution is transcendental &
+Rational-exponent lemma and Gelfond--Schneider; both kernel-verified \\
+Reduction to real four exponentials &
+None beyond $\Q$-independence of $1,x$ and of $\log2,\log3$; kernel-verified \\
+$3$-smooth auxiliary-base classification and the three-base theorem &
+None; interpolation determinants, kernel-verified \\
+Exact algebraic-base spectrum for an independent pair &
+Six exponentials \\
+Strong $\LL$ spectrum &
+Exact row independence, Baker's homogeneous theorem, and Roy \\
+Valuation lattice and Smith normal form of rational outputs &
+Exact spectrum and unique factorization \\
+Second-iterate kernel: dimension and the four branch types &
+Exact spectrum and elementary prime valuations \\
+Kernel invariance across all nonintegral solutions &
+Exact spectrum applied twice \\
+M\"obius orbit criterion &
+Kernel definition and real logarithms \\
+Depth-three tower theorem &
+Exact spectrum and kernel dimension; Roy only for the strong form \\
+Base-$2$ tower equivalence &
+Natural-base algebraicity classification and smooth branch algebra \\
+Symmetric constants $E_3$ and $E_2$ &
+Six exponentials; Baker's homogeneous theorem and Roy for the strong form \\
+Two forbidden exponential rays $e^{\gamma x}$, $e^{\gamma\thetaq}$ &
+Five exponentials \\
+Transcendence of the coefficients $\log p$ in the log-product form &
+Lindemann--Weierstrass, in its Hermite--Lindemann case \\
+\bottomrule
+\end{longtable}
+
+\section{Common false shortcuts and audit warnings}\label{app:falseshortcuts}
+
+\begin{statusbox}{\statusknown{} --- this appendix records negative facts and standard
+cautions.  Nothing in it is a new result, and nothing in it changes the status of any
+statement elsewhere in the report.}
+\end{statusbox}
+
+The problem attracts several plausible but invalid one-line arguments.  Recording them is
+part of the audit trail: each is a specific way in which a proposed proof can be circular,
+can silently assume the conclusion, or can mistake numerical evidence for exclusion.  Future
+paper and formal work should be checked against this list before a short argument is
+believed.
+
+\begin{remark}[Fractional-part error]
+\label{a4:warn-fract}
+Writing $x=n+\alpha$ with $n\in\Z$ and $0<\alpha<1$, and assuming $2^{x}\in\Z$, does
+\emph{not} imply $2^{\alpha}\in\Z$.  It implies only $2^{\alpha}\in\Ztwo$, and an irrational
+$\alpha$ is not an ordinary radical exponent $1/q$.  The integrality of the output does not
+descend to the fractional part.
+\end{remark}
+
+\begin{remark}[Rational-root circularity]
+\label{a4:warn-circular}
+From $M^{\thetaq}\in\Z$ one cannot conclude that $\thetaq$ is rational, nor that $M$ is a
+perfect power.  Gelfond--Schneider constrains algebraic irrational exponents, whereas
+$\thetaq$ is transcendental.  An argument that quietly treats $\thetaq$ as a rational
+exponent has assumed the conclusion.
+\end{remark}
+
+\begin{remark}[Baker is linear, not bilinear]
+\label{a4:warn-bilinear}
+The relation $\log M\,\log3=\log A\,\log2$ is not a Baker linear form.  Treating $\log2$ and
+$\log3$ as algebraic coefficients is invalid: by Hermite--Lindemann both are transcendental.
+The same objection applies to the radical form $d\,\log w\,\log3=(\log A-a\log3)\log2$ and to
+the prime-expanded log-product form of Section~\ref{sec:logproduct}.
+\end{remark}
+
+\begin{remark}[No modular real exponent]
+\label{a4:warn-modular}
+The expression $2^{x}\bmod p$ has no canonical meaning for a general real $x$.  A $p$-adic
+exponential requires a $p$-adic exponent and a unit in its convergence domain; the real
+equality $2^{x}\in\Z$ supplies neither.  Congruence arguments must therefore be stated for
+the integer outputs $M$ and $A$, never for the real exponent.
+\end{remark}
+
+\begin{remark}[Candidate quotients need not be candidates]
+\label{a4:warn-quotient}
+If $m_1,m_2\in\Cand$ and $m_1\mid m_2$, it does not follow that $m_2/m_1\in\Cand$, because
+the corresponding quotient of the outputs need not be integral.  Multiplication is safe;
+division requires a separate valuation check.  This is the reason $\Cand$ is treated as a
+multiplicative monoid rather than as a divisor-closed set.
+\end{remark}
+
+\begin{remark}[Density alone is compatible]
+\label{a4:warn-density}
+The orbit $\{kx\}$ is dense modulo one for irrational $x$, but the associated rational points
+have exponential height.  A sequence of $O(\log H)$ points up to height $H$ is compatible
+with generic transcendental-curve counting, so density by itself yields no contradiction
+without a denominator-sensitive refinement.
+\end{remark}
+
+\begin{remark}[Numerical tolerance is not exclusion]
+\label{a4:warn-tolerance}
+Computing $M^{\thetaq}$ in floating point and comparing its distance to the nearest integer
+against a fixed epsilon cannot certify a zero-free region, however wide.  Outward directed
+interval bounds or an exact certificate are required, which is why the finite scans in this
+report are tagged \statuscomp{} and the kernel-verified exponent bound remains $x\ge12$.
+\end{remark}
+
+\begin{remark}[Algebraicity of a power is branch-sensitive]
+\label{a4:warn-branch}
+From $z^{d}\in\Qbar$ with an integer $d>0$ one may conclude $z\in\Qbar$, but from
+$z^{x}\in\Qbar$ with transcendental $x$ no such algebraic closure argument is available.  The
+finite-degree argument uses the polynomial $X^{d}-z^{d}$, which has no analogue when the
+exponent is not an integer.
+\end{remark}
+
+Every warning above was re-derived independently during the preparation of the present
+unified report: each was proposed at some point as a short route to the conjecture, and each
+failed on exactly the ground stated here.
 
 \begin{thebibliography}{99}
 
