@@ -1,4 +1,5 @@
 import ExponentialIdentities.TwoBaseIntegerExponent.Transcendence
+import ExponentialIdentities.TwoBaseIntegerExponent.ThreeSmooth
 
 /-!
 # Three-smooth outputs force an integral exponent
@@ -129,5 +130,43 @@ theorem integer_of_two_three_rpow_integer_of_threeSmooth_outputs {x : ℝ}
   · rw [← hn, hcd]
     push_cast
     ring
+
+/-- **Sharp form: a three-smooth candidate has a rough partner.**  If `x` is a nonintegral
+two-base solution whose first output `2 ^ x` is `3`-smooth, then the second output `3 ^ x`
+must have a prime factor of at least `5`.
+
+Equivalently: the two integral outputs of a counterexample can never both be built from the
+primes `2` and `3`.  This is the exact frontier of the degree-drop argument --- one smoothness
+hypothesis alone yields only the open localized-radical condition, whereas the theorem below
+shows the second output must be genuinely rough. -/
+theorem exists_prime_five_le_dvd_of_threeSmooth_candidate {x : ℝ} {m n : ℕ}
+    (hm : (m : ℝ) = (2 : ℝ) ^ x) (hn : (n : ℝ) = (3 : ℝ) ^ x)
+    (hx : x ∉ Set.range ((↑) : ℤ → ℝ))
+    (hmsmooth : ∃ a b : ℕ, m = 2 ^ a * 3 ^ b) :
+    ∃ p : ℕ, p.Prime ∧ 5 ≤ p ∧ p ∣ n := by
+  by_contra hcon
+  have hnpos : 0 < n := by
+    have hpos : (0 : ℝ) < (n : ℝ) := by
+      rw [hn]
+      positivity
+    exact_mod_cast hpos
+  -- With no prime factor at least five, every prime factor of `n` is `2` or `3`.
+  have hsm : ∀ p : ℕ, p.Prime → p ∣ n → p = 2 ∨ p = 3 := by
+    intro p hp hpd
+    by_contra hne
+    have hne2 : p ≠ 2 := fun h => hne (Or.inl h)
+    have hne3 : p ≠ 3 := fun h => hne (Or.inr h)
+    have hp2 := hp.two_le
+    have h5 : 5 ≤ p := by
+      rcases Nat.lt_or_ge p 5 with hlt | hge
+      · interval_cases p
+        · exact absurd rfl hne2
+        · exact absurd rfl hne3
+        · exact absurd hp (by norm_num)
+      · exact hge
+    exact hcon ⟨p, hp, h5, hpd⟩
+  obtain ⟨c, d, hcd⟩ :=
+    (Nat.prime_dvd_eq_two_or_three_iff_eq_two_pow_mul_three_pow hnpos).mp hsm
+  exact hx (integer_of_two_three_rpow_integer_of_threeSmooth_outputs hm hn hmsmooth ⟨c, d, hcd⟩)
 
 end LeanProofs.TwoBaseIntegerExponent
