@@ -1,0 +1,2670 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{bookmark}
+\usepackage{url}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=MidnightBlue,
+  citecolor=OliveGreen,
+  urlcolor=RoyalBlue,
+  pdftitle={Further Progress on the Alaoglu--Erdos Two-Base Exponent Conjecture},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Exact conditional structure, new equivalent formulations, and certified finite exclusion}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Alaoglu--Erd\H{o}s: further progress}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1.5pt minus 1pt}
+\setlength{\emergencystretch}{3em}
+\setlist[itemize]{topsep=3pt,itemsep=2pt,parsep=0pt,leftmargin=1.6em}
+\setlist[enumerate]{topsep=3pt,itemsep=2pt,parsep=0pt,leftmargin=1.9em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Research question}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Qbar}{\overline{\mathbb Q}}
+\newcommand{\Sol}{\mathcal S}
+\newcommand{\Cand}{\mathcal C}
+\newcommand{\Smooth}{\mathcal H_{2,3}}
+\newcommand{\Sat}{\operatorname{Sat}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\clog}{\operatorname{clog}}
+\newcommand{\vpp}[2]{v_{#1}\!\left(#2\right)}
+\newcommand{\tagLean}{\textcolor{ForestGreen}{\textsf{[kernel-verified Lean]}}}
+\newcommand{\tagPaper}{\textcolor{MidnightBlue}{\textsf{[paper proof in this report]}}}
+\newcommand{\tagClassical}{\textcolor{Purple}{\textsf{[classical theorem used]}}}
+\newcommand{\tagComp}{\textcolor{BurntOrange}{\textsf{[directed-rounding computation]}}}
+\newcommand{\tagProposal}{\textcolor{BrickRed}{\textsf{[research direction]}}}
+\newcommand{\lean}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\commit}[1]{\texttt{#1}}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Z}{>{\centering\arraybackslash}p{24mm}}
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=false,
+  frame=single,
+  rulecolor=\color{black!25},
+  xleftmargin=2mm,
+  xrightmargin=2mm,
+  aboveskip=6pt,
+  belowskip=6pt,
+  literate={·}{{$\cdot$}}1
+}
+
+\title{\bfseries Further Progress on the Alaoglu--Erd\H{o}s\\
+Two-Base Exponent Conjecture\\[5pt]
+\large Multiplicative rigidity, transcendental product exponents,\\
+primitive-power statistics, ambient root saturation,\\
+and a certified search through $2^{26}$}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{20 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let
+\[
+  \Sol=\{x\in\R:2^x\in\Z,\ 3^x\in\Z\}.
+\]
+The Alaoglu--Erd\H{o}s conjecture asserts that \(\Sol=\Nzero\).  This report starts from
+the Lean development and the combined report in the \texttt{ProveIt} repository at commit
+\commit{5d3982ceb12644fdd3499569d9db5f62f9a31dc6}.  No unconditional proof of the
+conjecture is obtained.  Its final obstruction remains a special case of the unresolved
+four-exponentials problem.  The investigation nevertheless produces several new exact
+consequences and equivalent formulations.
+
+Conditional on a counterexample, the repository proves that there is a transcendental least
+noninteger solution \(\beta\) for which every solution has unique coordinates
+\[
+  \Sol=\{n+k\beta:n,k\in\Nzero\}.
+\]
+We prove that this monoid is rigid under every rational function with algebraic
+coefficients: if \(R\in\Qbar(T)\) is regular at \(\beta\), then
+\(R(\beta)\in\Sol\) exactly when \(R(T)=n+kT\) for some \(n,k\in\Nzero\).
+In particular, for arbitrary \(x,y\in\Sol\),
+\[
+  xy\in\Sol\quad\Longleftrightarrow\quad x\in\Nzero\ \text{or}\ y\in\Nzero.
+\]
+Thus the conjecture is equivalent to multiplicative closure of \(\Sol\), and even to
+closure under squaring alone.
+
+A second argument combines the repository's three-smooth-base theorem with the classical
+six-exponentials theorem.  If \(x,y\in\Sol\) are both nonintegral, then
+\(6^{xy}\) is transcendental; each of \(2^{xy}\) and \(3^{xy}\) is either an
+integer or transcendental, and at least one is transcendental.  Hence failure of
+multiplicative closure is not a one-unit integrality miss: it is witnessed by genuine
+transcendence.
+
+The exact coordinates also classify every common perfect-power and affine-descent pattern.
+If \(x=n+k\beta\), the two outputs are simultaneously perfect \(r\)-th powers exactly
+when \(r\mid n\) and \(r\mid k\); their maximal common power degree is
+\(\gcd(n,k)\).  Consequently the proportion of simultaneously power-primitive output
+pairs of height below \(T\) tends to \(1/\zeta(2)=6/\pi^2\), and the exact degree
+\(g\) occurs with limiting probability \(6/(\pi^2g^2)\).  We further identify the
+candidate divisibility lattice, prove unconditional closure under gcd and lcm, enumerate
+candidate divisors, and compute the ambient root saturation in terms of the primitive odd
+core and the rational-power index.
+
+Finally, a five-thread MPFR~4.2.2 verifier using 192-bit directed rounding checks every
+non-power of two below \(2^{26}\), a total of \(67{,}108{,}837\) inputs.  No candidate
+occurs.  At the explicitly stated software trust level, every hypothetical noninteger
+solution therefore satisfies \(x>26\).  A variable-order optimization of the formalized
+finite-difference obstruction explains quantitatively why that method, by itself, still
+falls short.  The report ends with a prioritized formalization and research program.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Executive summary}\label{sec:executive}
+
+\subsection{Bottom line}
+
+The conjecture remains unproved.  This conclusion is not a failure of effort but a precise
+mathematical diagnosis.  The repository already reduces any counterexample to a canonical
+primitive radical and a free rank-two solution monoid.  Every elementary counting,
+progression, descent, and equidistribution constraint currently known is internally
+consistent with that monoid.  To finish the proof one needs a new input at the
+four-exponentials boundary, or an argument that uses the special \emph{integrality and
+valuation structure} more strongly than general transcendence theory presently does.
+
+The strongest additions of this report are:
+\begin{enumerate}
+\item an exact rational-function intersection theorem for the canonical generator;
+\item unconditional multiplication, quotient, and power criteria inside \(\Sol\);
+\item algebraicity and transcendence reformulations based on six exponentials;
+\item a complete common-perfect-power and matched-affine-decomposition classification;
+\item primitive-output asymptotics and exact limiting degree statistics;
+\item a candidate gcd/lcm lattice and exact ambient root saturation;
+\item the optimized variable-order scale \(n/(\theta\log n)\) for the higher-difference
+method, together with a sharp quantitative explanation of its gap;
+\item a directed-rounding finite exclusion through \(2^{26}\).
+\end{enumerate}
+
+\subsection{Trust labels}
+
+The report keeps four proof levels separate.
+\begin{center}
+\begin{tabularx}{0.95\textwidth}{@{}Z Y@{}}
+\toprule
+\tagLean & Accepted by the Lean kernel in the inspected repository snapshot.\\
+\tagPaper & A conventional proof is supplied here; it has not yet been checked by Lean.\\
+\tagClassical & The proof invokes a named published theorem, principally six exponentials.\\
+\tagComp & A finite statement checked by directed-rounding software; this is not a kernel proof.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The finite search is useful evidence and a stronger explicit bound, but it does not change
+the logical status of the infinite conjecture.  The kernel-verified bound remains
+\(x\ge12\) for a noninteger solution; the new \(x>26\) bound carries the disclosed
+software trust boundary.
+
+\section{The problem and the audited repository snapshot}\label{sec:problem}
+
+\subsection{Original and candidate forms}
+
+\begin{conjecture}[Alaoglu--Erd\H{o}s, two-base integer form]\label{conj:AE}
+For every real number \(x\),
+\[
+  2^x\in\Z\quad\text{and}\quad 3^x\in\Z
+  \quad\Longrightarrow\quad x\in\Z.
+\]
+\end{conjecture}
+
+The hypotheses force \(x\ge0\), so the intended conclusion is \(x\in\Nzero\).  Put
+\[
+  \theta:=\log_2 3=\frac{\log3}{\log2}
+   =1.58496250072115618145\ldots
+\]
+and define the natural-candidate set
+\[
+  \Cand:=\{m\in\N_{>0}:m^\theta\in\N\}.
+\]
+The maps \(x\mapsto2^x\) and \(m\mapsto\log_2m\) give inverse bijections between
+\(\Sol\) and \(\Cand\), because
+\[
+  (2^x)^\theta=3^x.
+\]
+Integral solutions correspond exactly to powers of two.  Thus
+\[
+  \text{Conjecture~\ref{conj:AE}}
+  \quad\Longleftrightarrow\quad
+  \Cand=\{2^n:n\in\Nzero\}.
+\]
+
+A positive natural number will be called \emph{three-smooth} when all its prime factors
+belong to \(\{2,3\}\), equivalently when it has the form \(2^u3^v\).  The set of such
+numbers is denoted \(\Smooth\).
+
+\subsection{Repository snapshot}
+
+The inspected branch is \texttt{main} at commit
+\[
+  \commit{5d3982ceb12644fdd3499569d9db5f62f9a31dc6},
+\]
+whose commit time is 21 August 2026 at 02:43:24 UTC, still 20 August in Pacific time.  The
+starting document is
+\begin{center}
+\small
+\texttt{Analysis/ExponentialIdentities/Article/}\\
+\texttt{alaoglu-erdos-combined-report/}\\
+\texttt{alaoglu-erdos-combined-report.tex}.
+\end{center}
+Its accompanying formal development lies under
+\begin{center}
+\small
+\texttt{Analysis/ExponentialIdentities/Lean/}\\
+\texttt{ExponentialIdentities/}.
+\end{center}
+
+The combined report is already a substantial synthesis: it records the three-base theorem,
+Gelfond--Schneider consequences, exact finite certificates through \(4096\), rank-two and
+common-odd-core structure, the canonical primitive generator, exact counting and Fourier
+block averages, output normalization, localized-radical equivalences, exact radical degree,
+and arbitrary-order finite-difference obstructions.  The present report treats those facts
+as the established frontier and asks what further consequences can be forced from them.
+
+\subsection{Why this is a four-exponentials problem}
+
+If \(x\) were a noninteger solution, then \(1,x\) would be linearly independent over
+\(\Q\), and \(\log2,\log3\) would also be linearly independent over \(\Q\).  Yet all
+four exponentials
+\[
+  e^{\log2}=2,\qquad e^{\log3}=3,\qquad
+  e^{x\log2}=2^x,\qquad e^{x\log3}=3^x
+\]
+would be algebraic.  The four-exponentials conjecture would rule this out immediately.
+The six-exponentials theorem succeeds once a third independent logarithm or exponent is
+available, but the \(2\times2\) case remains open
+\cite{Ramachandra1968II,Roy1992,Waldschmidt2000,TheoremDB2026}.
+
+This observation is a methodological firewall.  A proposed argument that uses only the
+algebraicity of the four displayed values is, in effect, attempting a new proof of a
+four-exponentials case.  A more plausible route must exploit features absent from the
+general conjecture: positivity, integrality, prime valuations, exact denominator support,
+or the canonical least-output normalization.
+
+\section{The formalized frontier used in this report}\label{sec:audit}
+
+This section states the repository results that enter the new arguments.  It is deliberately
+selective: the combined report remains the detailed inventory, while the goal here is to
+make every dependency of the new theorems visible.
+
+\subsection{Elementary restrictions and transcendence}
+
+The development proves the following.
+\begin{itemize}
+\item \tagLean If \(2^x\in\Z\), then \(x\ge0\).
+\item \tagLean If \(x\in\Q\) and \(2^x\in\Z\), then \(x\in\Z\).  Hence every
+noninteger solution is irrational.
+\item \tagLean If \(2^x\in\Z\), then \(x\) is either an integer or transcendental over
+\(\Q\).  In particular every noninteger two-base solution is transcendental.  The
+headline theorem is
+\lean{transcendental_of_not_integer_of_two_three_rpow_integer} in
+\lean{Transcendence.lean}.
+\item \tagLean The constant \(\theta=\log_2 3\) is transcendental.  Indeed
+\(2^\theta=3\), while \(1<\theta<2\), so the same Gelfond--Schneider dichotomy applies.
+\end{itemize}
+
+The full Gelfond--Schneider theorem is formalized in the repository, following the Mathlib
+formalization of Karatarakis.  The new arguments below use only the two consequences just
+listed, not the internal auxiliary-function proof.
+
+\subsection{Kernel-verified finite region}
+
+\tagLean The finite-region proof is distributed across three modules:
+\begin{center}
+\small
+\lean{FiniteCheck.lean},\qquad
+\lean{FiniteCheck256.lean},\qquad
+\lean{FiniteCheck4096.lean}.
+\end{center}
+Together they establish
+\[
+  m\in\Cand,\quad m<4096=2^{12}
+  \quad\Longrightarrow\quad m\text{ is a power of }2.
+\]
+Equivalently,
+\[
+  x\in\Sol\setminus\Nzero\quad\Longrightarrow\quad x\ge12.
+\]
+The \(4096\) theorem is replayed by the kernel from a table of exact integer comparisons
+using rational enclosures for \(\theta\).  It contains no \lean{sorry} and does not use
+\lean{native_decide}.  This is a stronger trust model than an interval scan.
+
+The combined report also described an independent software-level scan through \(2^{20}\).
+\Cref{sec:computation} replaces it by a directed-rounding MPFR verifier and extends the
+range sixty-fourfold, through \(2^{26}\).
+
+\subsection{Rank two, the primitive odd core, and the exact solution monoid}
+
+The three-base determinant theorem implies that prime-valuation vectors of candidates have
+rational rank at most two.  Since \(2\) is already a candidate, every odd part lies on one
+rational ray.  The repository normalizes that ray to a unique primitive odd core.
+
+The decisive theorem for the present report is
+\begin{center}
+\small
+\lean{exists_canonical_primitiveGenerator_of_not_alaogluErdosConjecture}
+\end{center}
+from \lean{PrimitiveGenerator.lean}.
+
+\begin{theorem}[Canonical primitive generator, repository theorem]\label{thm:exact-monoid}
+\tagLean Assume that the conjecture fails.  Then there exist natural numbers
+\(w,d,a,A\) and a real number \(\beta\) such that:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(w>1\) is odd and its positive odd-prime valuations have gcd one;
+\item \(d>0\), \(A>0\), and \(a=0\) or \(3\nmid A\);
+\item with \(E=3^{\log_2w}=w^\theta\),
+\[
+  E^d=\frac{A}{3^a},
+  \qquad
+  E^j\in\Q\Longleftrightarrow d\mid j\quad(j\in\Z);
+\]
+\item
+\[
+  \beta=a+d\log_2w,\qquad
+  M:=2^\beta=2^aw^d\in\N,\qquad
+  3^\beta=A\in\N;
+\]
+\item \(\beta\) is the unique least noninteger solution and is irrational;
+\item every solution has a unique coordinate pair
+\[
+  \boxed{\quad x=n+k\beta,\qquad n,k\in\Nzero;\quad}
+\]
+\item every candidate has a unique coordinate pair
+\[
+  \boxed{\quad m=2^nM^k,
+    \qquad n,k\in\Nzero.\quad}
+\]
+\end{enumerate}
+\end{theorem}
+
+Combining the theorem with the formalized Gelfond--Schneider consequence gives:
+
+\begin{corollary}\label{cor:beta-trans}
+\tagLean Under failure, \(\beta\) is transcendental over \(\Q\), and hence also over
+\(\Qbar\).
+\end{corollary}
+
+The last implication uses transitivity of algebraicity: a number algebraic over the
+algebraic closure \(\Qbar\) would be algebraic over \(\Q\).
+
+The theorem says much more than ``rank at most two.''  It identifies the entire solution
+set with the free additive monoid on \(1,\beta\), the candidate set with the free
+multiplicative monoid on \(2,M\), and the output-pair monoid with the free monoid on
+\((2,3)\) and \((M,A)\).  There are no omitted lattice points or Frobenius gaps.
+
+\subsection{Least-output and simultaneous normalization}
+
+\tagLean The least solution is affinely primitive: if
+\[
+  M=2^rU^q,\qquad A=3^rV^q
+\]
+with \(q>0\), then \(r=0\) and \(q=1\).  In particular \(M,A\) are not both perfect
+\(q\)-th powers for any \(q\ge2\), and not both divisible by their distinguished bases.
+
+The stronger simultaneous normalization in \lean{OutputNormalization.lean} writes
+\[
+  M=2^aw^d,
+  \qquad
+  A=3^bv^e,
+\]
+where \(w\) is odd and power-primitive, \(v\) is not divisible by \(3\) and is
+power-primitive, \(d,e>0\), and
+\[
+  a=0\quad\text{or}\quad b=0,
+  \qquad
+  \gcd\bigl(\gcd(d,e),|b-a|\bigr)=1.
+\]
+The depths \(a,b\) and outer degrees \(d,e\) are intrinsic valuation invariants of the
+least output pair, not artifacts of a chosen factorization.
+
+\subsection{Exact radical endpoint}
+
+\tagLean The conjecture is equivalent to the localized-radical exclusion
+\[
+  u^\theta\notin\Z[1/3]
+  \qquad\text{for every odd }u>1.
+\]
+It suffices to consider power-primitive odd \(u\).  For the canonical core \(w\), the
+least index \(d\) above is also the exact degree of \(E=w^\theta\) over \(\Q\): the
+binomial
+\[
+  X^d-\frac{A}{3^a}
+\]
+is irreducible and is the minimal polynomial of \(E\).  Thus a counterexample creates a
+very special positive radical whose only rational-power denominator is supported at the
+prime \(3\).
+
+Taking logarithms gives the bilinear relation
+\begin{equation}\label{eq:bilinear-logs}
+  d\log w\log3=(\log A-a\log3)\log2.
+\end{equation}
+Baker's theory controls linear forms in logarithms with algebraic coefficients; it does not
+exclude this product-of-logarithms relation.  The four-exponentials conjecture does.
+
+\subsection{Three-smooth classification of auxiliary bases}
+
+The formalized three-base determinant argument has the following exact consequence.
+
+\begin{theorem}[Three-smooth-base theorem, repository theorem]\label{thm:three-smooth}
+\tagLean Let \(x\in\Sol\setminus\Nzero\), and let \(B\in\N_{>0}\).  Then
+\[
+  B^x\in\Z
+  \quad\Longleftrightarrow\quad
+  B=2^u3^v\text{ for some }u,v\in\Nzero.
+\]
+\end{theorem}
+
+The reverse implication is elementary.  The forward implication is a specialized
+six-exponentials determinant proof: a prime divisor of \(B\) outside \(\{2,3\}\) supplies
+a third multiplicatively independent base and forces \(x\) to be rational, hence integral.
+
+\subsection{Counting and local progression obstructions}
+
+\tagLean Exact coordinates give exact unit-block and dyadic-block counts.  In particular,
+if failure occurs then
+\begin{equation}\label{eq:total-asymptotic}
+  N_\beta(T):=
+  \#\{(n,k)\in\Nzero^2\setminus\{(0,0)\}:n+k\beta<T\}
+  =\frac{T^2}{2\beta}+O_\beta(T).
+\end{equation}
+The repository proves the corresponding sharp limit, an equivalence between the conjecture
+and subquadratic candidate growth below \(2^T\), and convergence of exact block averages
+for every finite trigonometric polynomial.  The continuous-test and interval-indicator
+extension is a paper-level Weyl consequence in the combined report.
+
+\tagLean For every \(r\ge2\), set
+\[
+  c_r(\theta):=
+  \left|\theta(\theta-1)\cdots(\theta-r+1)\right|.
+\]
+Candidates cannot occupy all points
+\[
+  n,n+h,\ldots,n+rh
+\]
+when
+\begin{equation}\label{eq:higher-difference-condition}
+  c_r(\theta)h^r<n^{r-\theta}.
+\end{equation}
+This is proved by an iterated mean-value theorem for forward differences: the \(r\)-th
+difference is a nonzero integer but has absolute value below one.  We optimize the order
+\(r\) in \cref{sec:finite-difference}.
+
+\section{Attempts at a full proof and their exact failure points}\label{sec:attempts}
+
+The following routes were pushed far enough to identify a precise obstruction.  Recording
+the obstruction is important: it prevents a reformulation already compatible with the
+exact monoid from being mistaken for a proof.
+
+\subsection{Shrinking the three-base determinant to two bases}
+
+The formalized determinant method has three independent logarithmic directions against two
+exponent directions.  Its arithmetic lower bound and analytic interpolation upper bound
+then have enough dimensional slack to force a contradiction.  With only \(\log2,\log3\),
+the balance lands at the classical four-exponentials threshold.  Repackaging the same grid,
+changing a few exponents, or using a larger square matrix does not create the missing
+dimension.  A successful two-base determinant must use additional arithmetic information,
+such as simultaneous non-Archimedean divisibility or the exact primitive normalization.
+
+\subsection{The radical endpoint}
+
+The reduction to an odd power-primitive \(w\) with \(w^\theta\in\overline\Q\), indeed with
+an exact binomial minimal polynomial, is extremely sharp.  It does not itself contradict a
+known theorem.  Even the first-looking special value
+\[
+  3^{\log_2 3}=e^{(\log3)^2/\log2}
+\]
+is not presently known to be irrational.  Gelfond--Schneider requires an algebraic
+irrational exponent; here \(\log_2 3\) is transcendental.  Linear forms in logarithms do
+not control the quadratic logarithmic expression.
+
+\subsection{Equidistribution against exponentially shrinking targets}
+
+A counterexample generates the irrational rotation orbit \(\{k\beta\}\), and the exact
+block description makes that orbit equidistributed.  The integrality gap at height \(k\),
+however, is exponentially small, of scale roughly \(M^{-k}\).  Ordinary discrepancy and
+Dirichlet approximation control fixed or polynomially shrinking intervals, not this
+exponential scale.  Equidistributed sequences with bounded partial quotients can avoid such
+targets indefinitely.  A contradiction would require Diophantine information special to a
+\(\beta\) satisfying \(2^\beta,3^\beta\in\N\), not generic rotation theory.
+
+\subsection{Counting and additive combinatorics}
+
+Under failure the candidate set has only \(O(\log X)\) points in \([X,2X)\).  This is far
+below the density regimes of Roth, Szemer\'edi, or standard quantitative progression
+results.  General \(S\)-unit theory can show finiteness of many projective additive
+patterns, but the required conclusion is nonexistence.  The optimized finite-difference
+analysis below makes the mismatch quantitative.
+
+\subsection{Descent and perfect powers}
+
+The least output pair has no common depth, common perfect-power degree, or matched affine
+decomposition.  Yet the exact monoid predicts infinitely many later pairs with such
+features.  Descent simply divides their coordinate pair by a common factor and returns to
+another allowed point.  To close the problem, descent must produce a point below the
+canonical least generator; the exact coordinate criteria in \cref{sec:perfect-powers}
+show exactly when that can and cannot happen.
+
+\subsection{A proof-audit criterion}
+
+Any claimed proof must add an ingredient not already implied by
+\(\Sol=\Nzero+\Nzero\beta\).  The following facts are all compatible with a
+counterexample and cannot alone settle the conjecture:
+\begin{itemize}
+\item zero density or logarithmic-square counting;
+\item equidistribution of fractional parts;
+\item uniqueness of the primitive odd core;
+\item transcendence of every noninteger solution;
+\item arbitrary but finite computational exclusion;
+\item fixed-order or variable-order local progression obstructions without a mechanism
+forcing the required progression.
+\end{itemize}
+
+\section{Rational-function rigidity and nonlinear closure}\label{sec:rational-rigidity}
+
+The exact generator theorem has a consequence not isolated in the starting report: a
+hypothetical solution monoid is rigid against every nonlinear rational operation over the
+algebraic numbers.
+
+\subsection{The rational-function intersection theorem}
+
+\begin{theorem}[Rational-function rigidity at the primitive generator]\label{thm:rational-rigidity}
+\tagPaper Assume failure, and let \(\beta\) be the canonical generator from
+\cref{thm:exact-monoid}.  Let \(R(T)\in\Qbar(T)\) have no pole at \(\beta\).  Then
+\[
+  \boxed{\quad
+  R(\beta)\in\Sol
+  \quad\Longleftrightarrow\quad
+  R(T)=n+kT\text{ in }\Qbar(T)
+  \text{ for some }n,k\in\Nzero.
+  \quad}
+\]
+\end{theorem}
+
+\begin{proof}
+The reverse implication follows from additive closure:
+\(R(\beta)=n+k\beta\in\Sol\).
+
+For the forward implication, write \(R=P/Q\) with \(P,Q\in\Qbar[T]\) and
+\(Q(\beta)\ne0\).  If \(R(\beta)\in\Sol\), exact coordinates give
+\(R(\beta)=n+k\beta\) for some \(n,k\in\Nzero\).  Therefore
+\[
+  P(\beta)-(n+k\beta)Q(\beta)=0.
+\]
+By \cref{cor:beta-trans}, evaluation at \(\beta\) is injective on \(\Qbar[T]\).  Hence
+\(P(T)-(n+kT)Q(T)\) is the zero polynomial, proving the claim.
+\end{proof}
+
+This theorem permits poles and cancellation and allows the full algebraic closure as
+coefficient field.  It can be read as the exact intersection
+\[
+  \Sol\cap\Qbar(\beta)=\Nzero+\Nzero\beta,
+\]
+with the additional information that every rational expression realizing an element of
+the intersection is identically the corresponding affine expression.
+
+\begin{corollary}[Rational self-maps]\label{cor:rational-selfmaps}
+\tagPaper Under failure, the rational functions over \(\Qbar\) that are regular on
+\(\Sol\) and map \(\Sol\) into itself are exactly
+\[
+  T\longmapsto n+kT,
+  \qquad n,k\in\Nzero.
+\]
+\end{corollary}
+
+\begin{proof}
+Such a function sends \(\beta\) to \(\Sol\), so
+\cref{thm:rational-rigidity} identifies it.  Conversely, natural translations and natural
+dilations preserve \(\Nzero+\Nzero\beta\).
+\end{proof}
+
+More generally, if \(x_i=n_i+k_i\beta\in\Sol\) and
+\(F\in\Qbar(X_1,\ldots,X_r)\) is regular at the tuple, then
+\[
+  F(x_1,\ldots,x_r)\in\Sol
+\]
+exactly when the one-variable specialization
+\[
+  F(n_1+k_1T,\ldots,n_r+k_rT)
+\]
+is identically \(p+qT\) with \(p,q\in\Nzero\).  Thus every rational operation on finitely
+many solutions is reduced to an elementary identity in one indeterminate.
+
+\subsection{Exact multiplication criterion}
+
+\begin{theorem}[Products of two solutions]\label{thm:product-criterion}
+\tagPaper For all \(x,y\in\Sol\), unconditionally,
+\[
+  \boxed{\quad
+  xy\in\Sol
+  \quad\Longleftrightarrow\quad
+  x\in\Nzero\ \text{or}\ y\in\Nzero.
+  \quad}
+\]
+\end{theorem}
+
+\begin{proof}
+If one factor, say \(x\), is a nonnegative integer, then \(xy\) is a natural-number
+multiple of a solution, so \(xy\in\Sol\).
+
+For the converse, there is nothing to prove if the conjecture is true.  Under failure write
+uniquely
+\[
+  x=n+k\beta,
+  \qquad y=m+\ell\beta.
+\]
+If both are nonintegral, then \(k,\ell>0\), and
+\[
+  xy=nm+(n\ell+mk)\beta+k\ell\beta^2.
+\]
+Membership in \(\Sol\) would make this equal to \(r+s\beta\), producing a nonzero
+quadratic polynomial over \(\Q\) that vanishes at the transcendental number \(\beta\).
+Equivalently, apply \cref{thm:rational-rigidity} to
+\((n+kT)(m+\ell T)\).  Both are impossible.
+\end{proof}
+
+\begin{corollary}[Finite products]\label{cor:finite-products}
+\tagPaper Let \(x_1,\ldots,x_r\in\Sol\) be positive.  Then
+\[
+  \prod_{i=1}^r x_i\in\Sol
+  \quad\Longleftrightarrow\quad
+  \text{at most one }x_i\text{ is nonintegral}.
+\]
+If zero factors are allowed, a zero product is of course a solution.
+\end{corollary}
+
+\begin{proof}
+Under failure, after removing positive integral factors, the product is a polynomial in
+\(\beta\).  Its degree equals the number of noninteger factors and its leading coefficient
+is positive.  A degree at least two is excluded by
+\cref{thm:rational-rigidity}; degree zero or one is preserved by natural dilation.
+\end{proof}
+
+\begin{corollary}[Internal power test]\label{cor:power-test}
+\tagPaper For \(x\in\Sol\) and every integer \(r\ge2\),
+\[
+  x^r\in\Sol\quad\Longleftrightarrow\quad x\in\Nzero.
+\]
+In particular, \(x\in\Nzero\) exactly when \(x^2\in\Sol\).
+\end{corollary}
+
+\subsection{Exact quotient criterion}
+
+The same evaluation argument classifies division, which is more delicate because even the
+true solution set \(\Nzero\) is not closed under arbitrary quotients.
+
+\begin{theorem}[Quotients of solutions]\label{thm:quotient-criterion}
+\tagPaper Assume failure and write
+\[
+  x=n+k\beta,\qquad y=m+\ell\beta>0.
+\]
+Then \(x/y\in\Sol\) if and only if exactly one of the following applicable conditions
+holds:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \(\ell=0\), so \(y=m\in\N_{>0}\), and \(m\mid n\) and \(m\mid k\);
+\item \(\ell>0\), and \(x=qy\) for some \(q\in\Nzero\), equivalently
+\(n=qm\) and \(k=q\ell\).
+\end{enumerate}
+In particular, if \(x,y\) are both noninteger, then
+\[
+  \frac{x}{y}\in\Sol
+  \quad\Longleftrightarrow\quad
+  \frac{x}{y}\in\Nzero.
+\]
+\end{theorem}
+
+\begin{proof}
+Suppose \(x/y=r+s\beta\) with \(r,s\in\Nzero\).  Clearing the denominator gives
+\[
+  n+k\beta
+  =mr+(ms+\ell r)\beta+\ell s\beta^2.
+\]
+Transcendence forces \(\ell s=0\) and equality of the remaining coefficients.
+If \(\ell=0\), then \(m>0\) and the equations are \(n=mr\), \(k=ms\).
+If \(\ell>0\), then \(s=0\) and \(n=mr\), \(k=\ell r\), so \(x=ry\).
+The converses follow by direct substitution.
+\end{proof}
+
+A useful special case is
+\[
+  x>0,
+\frac1x\in\Sol
+  \quad\Longleftrightarrow\quad x=1.
+\]
+Thus a hypothetical solution monoid is additively rich but almost maximally hostile to
+multiplication, powers, reciprocals, and quotients.
+
+\subsection{Closure formulations of the conjecture}
+
+\begin{theorem}[Multiplicative closure equivalences]\label{thm:closure-equivalences}
+\tagPaper The following statements are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The Alaoglu--Erd\H{o}s conjecture is true.
+\item \(\Sol\) is closed under multiplication.
+\item \(\Sol\) is closed under squaring.
+\item For every real \(x\),
+\[
+  2^x,3^x\in\Z
+  \quad\Longrightarrow\quad
+  2^{x^2},3^{x^2}\in\Z.
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+If the conjecture holds, \(\Sol=\Nzero\), which has the stated closure properties.
+Multiplicative closure implies square closure.  Conditions (iii) and (iv) are the same
+statement, and square closure plus \cref{cor:power-test} forces every solution to be
+integral.
+\end{proof}
+
+For positive reals define the commutative operation
+\[
+  m\star n
+  :=2^{(\log_2m)(\log_2n)}
+  =m^{\log_2n}=n^{\log_2m}.
+\]
+If \(m=2^x\) and \(n=2^y\), then \(m\star n=2^{xy}\).
+
+\begin{corollary}[Candidate star-product]\label{cor:star-product}
+\tagPaper For \(m,n\in\Cand\),
+\[
+  m\star n\in\Cand
+  \quad\Longleftrightarrow\quad
+  m\text{ is a power of }2\ \text{or}\ n\text{ is a power of }2.
+\]
+The conjecture is therefore equivalent both to closure of \(\Cand\) under \(\star\) and
+to the apparently weaker diagonal condition
+\[
+  m\in\Cand\quad\Longrightarrow\quad m\star m\in\Cand.
+\]
+\end{corollary}
+
+These are genuine equivalences, not a proof: there is presently no independent mechanism
+forcing the nonlinear closure.  Their value is that they identify the missing property as
+a single crisp failure of semiring-like structure.
+
+\subsection{Lean formalization cost}
+
+The multiplication, quotient, and power criteria should be inexpensive to formalize from
+\lean{PrimitiveGenerator.lean} and \lean{Transcendence.lean}.  A direct route avoids a
+general rational-function library:
+\begin{enumerate}
+\item split on \lean{AlaogluErdosConjecture};
+\item in the failure branch obtain the canonical generator and unique coordinates;
+\item expand the relevant equality as a polynomial of degree at most two in \(\beta\);
+\item invoke transcendence to show all rational coefficients vanish;
+\item discharge the remaining natural-number divisibility conditions with \lean{omega}.
+\end{enumerate}
+The full rational-function theorem needs evaluation injectivity over \(\Qbar\), but the
+core multiplication theorem only needs the already formalized transcendence over \(\Q\).
+
+\section{Three-smooth outputs and transcendental product exponents}\label{sec:smooth-output}
+
+The multiplication theorem above uses the exact monoid and is therefore close to Lean.  A
+second argument based on six exponentials gives more: when nonlinear closure fails, the
+relevant exponential values are usually not merely nonintegral but transcendental.
+
+\subsection{The two outputs cannot both be three-smooth}
+
+\begin{theorem}[Three-smooth output test]\label{thm:output-smooth}
+\tagPaper For every \(x\in\Sol\), the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(x\in\Nzero\);
+\item both \(2^x\) and \(3^x\) are three-smooth;
+\item \(6^x\) is three-smooth.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Condition (i) immediately implies (ii), and (ii) is equivalent to (iii) because
+\(2^x,3^x\) are positive integers and a product is three-smooth exactly when both factors
+are.
+
+For (ii)\(\Rightarrow\)(i), write
+\[
+  2^x=2^a3^b,
+  \qquad
+  3^x=2^c3^d
+\]
+with \(a,b,c,d\in\Nzero\).  Taking logarithms gives
+\[
+  x=a+b\theta,
+  \qquad
+  x=d+\frac c\theta.
+\]
+Therefore
+\[
+  b\theta^2+(a-d)\theta-c=0.
+\]
+The repository proves \(\theta\) transcendental, so every rational coefficient vanishes.
+Thus \(b=c=0\), \(a=d\), and \(x=a\in\Nzero\).
+\end{proof}
+
+This elementary-looking theorem uses the transcendence of \(\theta\), but not the exact
+conditional generator.  It is unconditional and should be straightforward to add to the
+Lean development.
+
+\begin{corollary}[Primitive-core trichotomy]\label{cor:core-trichotomy}
+\tagPaper In the simultaneous least-output normalization
+\[
+  M=2^aw^d,
+  \qquad A=3^bv^e,
+\]
+at most one of \(w=3\) and \(v=2\) can hold.  Equivalently, exactly one of the following
+three smoothness patterns occurs under failure:
+\begin{center}
+\begin{tabular}{@{}ccc@{}}
+\toprule
+\(M\) & \(A\) & primitive cores\\
+\midrule
+three-smooth & not three-smooth & \(w=3,\ v\ne2\)\\
+not three-smooth & three-smooth & \(w\ne3,\ v=2\)\\
+not three-smooth & not three-smooth & \(w\ne3,\ v\ne2\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The missing fourth pattern is impossible.
+\end{corollary}
+
+Indeed an odd, three-smooth, power-primitive integer greater than one is exactly \(3\), and
+a three-free, three-smooth, power-primitive integer greater than one is exactly \(2\).
+
+\subsection{A sharp third-base dichotomy from six exponentials}
+
+We use a standard form of the six-exponentials theorem
+\cite{Ramachandra1968II,Waldschmidt2000}: if \(u_1,u_2\) are linearly independent over
+\(\Q\) and \(v_1,v_2,v_3\) are linearly independent over \(\Q\), then at least one of
+the six numbers \(e^{u_iv_j}\) is transcendental.
+
+\begin{lemma}[Third-base transcendence]\label{lem:third-base-trans}
+\tagClassical Let \(y\in\Sol\setminus\Nzero\), and let \(B\in\N_{>0}\) be not
+three-smooth.  Then \(B^y\) is transcendental.
+\end{lemma}
+
+\begin{proof}
+The three logarithms \(\log2,\log3,\log B\) are linearly independent over \(\Q\): a
+rational relation would give a multiplicative relation among \(2,3,B\), impossible because
+\(B\) has a prime factor outside \(\{2,3\}\).  Also \(1,y\) are linearly independent
+over \(\Q\), since a rational solution is integral.  Apply six exponentials.  Five of the
+six values
+\[
+  2,\ 3,\ B,\ 2^y,\ 3^y,\ B^y
+\]
+are algebraic---indeed, the first five are integers.  Therefore \(B^y\) is
+transcendental.
+\end{proof}
+
+Together with \cref{thm:three-smooth}, this gives an exact algebraicity trichotomy for
+integer bases:
+\[
+  B^y\in\Qbar
+  \quad\Longleftrightarrow\quad
+  B^y\in\Z
+  \quad\Longleftrightarrow\quad
+  B\in\Smooth
+  \qquad(y\in\Sol\setminus\Nzero).
+\]
+There is no algebraic-irrational middle case.
+
+\subsection{Products of noninteger solutions}
+
+\begin{theorem}[Product-exponent dichotomy]\label{thm:product-trans}
+\tagClassical Let \(x,y\in\Sol\).
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If \(x\in\Nzero\) or \(y\in\Nzero\), then \(2^{xy},3^{xy}\in\N\).
+\item If both \(x\) and \(y\) are nonintegral, then each of \(2^{xy}\) and
+\(3^{xy}\) is either an integer or transcendental, at least one is transcendental, and
+\[
+  \boxed{\quad 6^{xy}\text{ is transcendental}.\quad}
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Part (a) is natural-number dilation of a solution.  For part (b), put
+\(M_x=2^x\) and \(A_x=3^x\).  Then
+\[
+  2^{xy}=M_x^y,
+  \qquad
+  3^{xy}=A_x^y.
+\]
+If \(M_x\) is three-smooth, \cref{thm:three-smooth} makes \(M_x^y\) an integer; if not,
+\cref{lem:third-base-trans} makes it transcendental.  The same holds for \(A_x^y\).
+By \cref{thm:output-smooth}, \(M_x,A_x\) cannot both be three-smooth, so at least one
+value is transcendental.
+
+Finally \(6^x=M_xA_x\) is an integer that is not three-smooth.  Applying
+\cref{lem:third-base-trans} with base \(6^x\) and exponent \(y\) gives
+\((6^x)^y=6^{xy}\) transcendental.
+\end{proof}
+
+\begin{corollary}[Diagonal transcendence]\label{cor:diagonal-trans}
+\tagClassical If \(x\in\Sol\setminus\Nzero\), then \(6^{x^2}\) is transcendental,
+and at least one of \(2^{x^2}\), \(3^{x^2}\) is transcendental.  More precisely,
+\[
+\begin{aligned}
+  2^{x^2}\in\N &\Longleftrightarrow 2^x\in\Smooth,\\
+  3^{x^2}\in\N &\Longleftrightarrow 3^x\in\Smooth,
+\end{aligned}
+\]
+and failure of either condition makes the corresponding value transcendental.
+\end{corollary}
+
+\begin{corollary}[Mixed three-smooth bases]\label{cor:mixed-base-trans}
+\tagClassical Let \(x,y\in\Sol\setminus\Nzero\), and let \(u,v\ge1\).  Then
+\[
+  (2^u3^v)^{xy}
+\]
+is transcendental.
+\end{corollary}
+
+\begin{proof}
+The integer
+\[
+  (2^u3^v)^x=(2^x)^u(3^x)^v
+\]
+has every prime occurring in either output.  At least one output has a prime outside
+\(\{2,3\}\), so this base is not three-smooth.  Apply
+\cref{lem:third-base-trans} with exponent \(y\).
+\end{proof}
+
+\subsection{A global second-level trichotomy}
+
+The prime-support theorem in \cref{sec:lattice} makes the preceding dichotomy uniform over
+all noninteger solutions, not dependent on a particular pair.
+
+\begin{theorem}[Uniform second-level pattern]\label{thm:uniform-second-level}
+\tagClassical Assume failure and let \(M=2^\beta\), \(A=3^\beta\).  For every
+\(x,y\in\Sol\setminus\Nzero\), exactly one of the following three global patterns holds:
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}cYY@{}}
+\toprule
+condition on \((M,A)\) & \(2^{xy}\) & \(3^{xy}\)\\
+\midrule
+\(M\in\Smooth,\ A\notin\Smooth\) & integer & transcendental\\
+\(M\notin\Smooth,\ A\in\Smooth\) & transcendental & integer\\
+\(M\notin\Smooth,\ A\notin\Smooth\) & transcendental & transcendental\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The chosen pattern is independent of \(x\) and \(y\).
+\end{theorem}
+
+\begin{proof}
+Write \(x=n+k\beta\) with \(k>0\).  Then
+\[
+  2^x=2^nM^k,
+  \qquad 3^x=3^nA^k.
+\]
+Multiplication by a power of the distinguished smooth prime cannot remove an outside prime,
+so \(2^x\) is three-smooth exactly when \(M\) is; similarly for \(A\).  Now apply
+\cref{thm:product-trans}.  The impossible fourth pattern is excluded by
+\cref{thm:output-smooth}.
+\end{proof}
+
+This theorem suggests a clean three-case research split.  The one-smooth-output cases reduce
+to the exceptional primitive cores \(w=3\) or \(v=2\); the generic case has both second
+iterates transcendental.
+
+\subsection{Algebraicity formulations equivalent to the conjecture}
+
+\begin{theorem}[Algebraicity tests]\label{thm:algebraicity-equivalences}
+\tagClassical Each of the following is equivalent to the Alaoglu--Erd\H{o}s conjecture.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every \(x\in\Sol\), \(6^{x^2}\) is algebraic.
+\item For every \(x\in\Sol\), both \(2^{x^2}\) and \(3^{x^2}\) are algebraic.
+\item For every \(x,y\in\Sol\), \(6^{xy}\) is algebraic.
+\item For one fixed pair \(u,v\ge1\), every \(x\in\Sol\) satisfies
+\((2^u3^v)^{x^2}\in\Qbar\).
+\item For every \(x\in\Sol\), the integer \(6^x\) is three-smooth.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+If the conjecture is true, all relevant exponents are nonnegative integers, and all listed
+values are integers; condition (v) is also immediate.  Conversely, a noninteger solution
+contradicts (i)--(iv) by \cref{cor:diagonal-trans,cor:mixed-base-trans}, and contradicts
+(v) by \cref{thm:output-smooth}.
+\end{proof}
+
+These formulations replace integrality by the apparently weaker target of algebraicity.
+Six exponentials makes them equivalent.  The exact missing step is now visible: one would
+need an independent reason that some nonlinear iterate such as \(6^{x^2}\) is algebraic
+from the original two integer values.
+
+\subsection{Formalization boundary}
+
+The output-smooth theorem and the integer/noninteger parts of the product trichotomy use
+only the already formalized transcendence of \(\theta\), unique factorization, and
+\cref{thm:three-smooth}.  The transcendence upgrade requires a general
+six-exponentials theorem.  The current repository determinant specializes to integer
+entries and proves the three-smooth classification.  A promising formal route is to
+replace the determinant lower bound \(|D|\ge1\) by a number-field norm bound for a nonzero
+algebraic determinant.  This would expose the same interpolation upper bound through an
+``algebraic entries of bounded height'' interface and recover
+\cref{lem:third-base-trans}.
+
+\section{Common perfect-power content and exact affine descent}\label{sec:perfect-powers}
+
+Assume failure throughout this section and fix the canonical generator \(\beta\), with
+\[
+  M=2^\beta,\qquad A=3^\beta.
+\]
+For \(x=n+k\beta\), exact coordinates give
+\begin{equation}\label{eq:output-coordinates}
+  2^x=2^nM^k,
+  \qquad
+  3^x=3^nA^k.
+\end{equation}
+The coordinate gcd is an intrinsic arithmetic invariant of this output pair.
+
+\subsection{Simultaneous perfect powers}
+
+\begin{theorem}[Exact common-power criterion]\label{thm:common-power}
+\tagPaper Let \(x=n+k\beta\in\Sol\), and let \(r\ge1\).  The following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item both \(2^x\) and \(3^x\) are perfect \(r\)-th powers in \(\N\);
+\item \(x/r\in\Sol\);
+\item \(r\mid n\) and \(r\mid k\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+If \(2^x=U^r\) and \(3^x=V^r\) with \(U,V>0\), uniqueness of positive real
+\(r\)-th roots gives
+\[
+  2^{x/r}=U,
+  \qquad 3^{x/r}=V,
+\]
+so \(x/r\in\Sol\).  The converse follows by raising the two integer values at \(x/r\)
+to the \(r\)-th power.
+
+Finally write \(x/r=p+q\beta\) in unique coordinates.  Then
+\[
+  n+k\beta=rp+rq\beta,
+\]
+so \(n=rp\), \(k=rq\).  This is exactly the pair of divisibility conditions, and the
+reverse construction is immediate.
+\end{proof}
+
+For \(x>0\), define the \emph{common output power degree}
+\[
+  g(x):=\max\{r\ge1:2^x\text{ and }3^x\text{ are both perfect }r\text{-th powers}\}.
+\]
+
+\begin{corollary}[Coordinate gcd]\label{cor:gcd-degree}
+\tagPaper If \(x=n+k\beta>0\), then
+\[
+  \boxed{\quad g(x)=\gcd(n,k).\quad}
+\]
+The output pair is simultaneously power-primitive exactly when \(\gcd(n,k)=1\).
+\end{corollary}
+
+Thus every nonzero output pair has a unique decomposition
+\[
+  (2^x,3^x)=(U^g,V^g),
+  \qquad g=\gcd(n,k),
+\]
+where \((U,V)\) is a simultaneously power-primitive output pair belonging to the solution
+\(x/g\).  The repository proves affine primitivity for the least pair; this corollary
+extends the intrinsic power degree to every point of the solution monoid.
+
+\subsection{Matched affine decompositions}
+
+A useful descent pattern strips the same distinguished-base depth and the same outer power
+from both outputs.
+
+\begin{theorem}[Matched affine decomposition criterion]\label{thm:affine-decomp}
+\tagPaper Let \(x=n+k\beta\in\Sol\), \(d\ge1\), and \(r\in\Nzero\).  The following
+are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item there exist \(U,V\in\N_{>0}\) such that
+\[
+  2^x=2^rU^d,
+  \qquad 3^x=3^rV^d;
+\]
+\item \((x-r)/d\in\Sol\);
+\item \(0\le r\le n\), \(d\mid k\), and \(d\mid(n-r)\).
+\end{enumerate}
+When these conditions hold,
+\[
+  \frac{x-r}{d}=\frac{n-r}{d}+\frac{k}{d}\beta,
+  \qquad
+  U=2^{(x-r)/d},\quad V=3^{(x-r)/d}.
+\]
+\end{theorem}
+
+\begin{proof}
+Conditions (i) and (ii) are equivalent by positive-root uniqueness after removing the common
+factor \(2^r\) or \(3^r\).  Expanding (ii) in unique coordinates gives
+\[
+  n+k\beta=r+d(p+q\beta)
+\]
+for some \(p,q\in\Nzero\).  Thus \(n=r+dp\) and \(k=dq\), which is exactly (iii).
+The same equations give the formulas and the converse.
+\end{proof}
+
+For a noninteger solution \(x=n+k\beta\) with \(k>0\), Euclidean division
+\(n=qk+r\), \(0\le r<k\), gives a canonical reduced affine presentation
+\begin{equation}\label{eq:euclidean-affine}
+  \boxed{\quad x=r+k(q+\beta),\quad}
+\end{equation}
+and hence
+\[
+  2^x=2^r(2^qM)^k,
+  \qquad
+  3^x=3^r(3^qA)^k.
+\]
+The normalization \(0\le r<k\) makes the presentation unique.  It separates the outer
+affine degree \(k\) from the reduced common base depth \(r\).
+
+\subsection{Why this does not yet descend below \texorpdfstring{\(\beta\)}{beta}}
+
+If \(n,k\) have a common divisor, \cref{thm:common-power} descends to
+\(x/\gcd(n,k)\).  If a matched decomposition exists, \cref{thm:affine-decomp} descends to
+\((x-r)/d\).  But exact coordinates ensure that the descended point remains
+\(p+q\beta\) with \(p,q\ge0\); it is below \(\beta\) only when \(q=0\), in which case
+it is integral.  The least noninteger point \(\beta\) is already primitive with respect
+to every such descent.  A successful descent argument therefore needs a transformation
+not captured by common powers and common distinguished-base depths.
+
+\section{Primitive-output statistics}\label{sec:primitive-counting}
+
+The common-power criterion translates ordinary coprimality statistics of lattice points
+into exact statistics of hypothetical integer-output pairs.
+
+\subsection{Total and primitive counts}
+
+For \(T>0\), let
+\[
+  N_\beta(T)
+  =\#\{(n,k)\in\Nzero^2\setminus\{(0,0)\}:n+k\beta<T\}
+\]
+and
+\[
+  P_\beta(T)
+  =\#\{(n,k)\in\Nzero^2:n+k\beta<T,\ \gcd(n,k)=1\}.
+\]
+The first counts nonzero solutions below \(T\); the second counts output pairs with no
+nontrivial common perfect-power degree.  Recall
+\[
+  N_\beta(T)=\frac{T^2}{2\beta}+O_\beta(T).
+\]
+
+\begin{theorem}[Primitive output pairs]\label{thm:primitive-asymptotic}
+\tagPaper As \(T\to\infty\),
+\[
+  \boxed{\quad
+  P_\beta(T)
+  =\frac{T^2}{2\beta\zeta(2)}+O_\beta(T\log T)
+  =\frac{3T^2}{\pi^2\beta}+O_\beta(T\log T).
+  \quad}
+\]
+Consequently,
+\[
+  \frac{P_\beta(T)}{N_\beta(T)}\longrightarrow\frac1{\zeta(2)}=\frac6{\pi^2}.
+\]
+\end{theorem}
+
+\begin{proof}
+Every nonzero coordinate pair has the unique factorization
+\[
+  (n,k)=d(n_0,k_0),
+  \qquad d=\gcd(n,k),\quad \gcd(n_0,k_0)=1.
+\]
+Hence
+\[
+  N_\beta(T)=\sum_{d\ge1}P_\beta(T/d),
+\]
+and M\"obius inversion gives
+\[
+  P_\beta(T)=\sum_{d\le T}\mu(d)N_\beta(T/d).
+\]
+The lattice estimate is uniform in the form
+\(N_\beta(U)=U^2/(2\beta)+O_\beta(U+1)\).  Therefore
+\[
+\begin{aligned}
+  P_\beta(T)
+  &=\frac{T^2}{2\beta}\sum_{d\le T}\frac{\mu(d)}{d^2}
+    +O_\beta\!\left(\sum_{d\le T}\left(\frac Td+1\right)\right)\\
+  &=\frac{T^2}{2\beta\zeta(2)}+O_\beta(T\log T).
+\end{aligned}
+\]
+Divide by the total asymptotic to obtain the limit.
+\end{proof}
+
+The universal constant \(6/\pi^2\) is independent of the hypothetical generator.
+Geometry contributes \(1/(2\beta)\); primitive lattice points contribute
+\(1/\zeta(2)\).
+
+\subsection{Distribution of maximal common power degree}
+
+For fixed \(g\ge1\), let
+\[
+  P_{\beta,g}(T)
+  :=\#\{x=n+k\beta:0<x<T,\ \gcd(n,k)=g\}.
+\]
+
+\begin{corollary}[Exact-degree distribution]\label{cor:degree-distribution}
+\tagPaper For fixed \(g\ge1\),
+\[
+  P_{\beta,g}(T)=P_\beta(T/g)
+  =\frac{3T^2}{\pi^2\beta g^2}
+   +O_\beta\!\left(\frac Tg\log\frac{2T}{g}\right).
+\]
+The limiting probability that an output pair has maximal common power degree exactly
+\(g\) is
+\[
+  \boxed{\quad \frac{6}{\pi^2g^2}.\quad}
+\]
+\end{corollary}
+
+The probabilities sum to one.  Likewise, the two outputs are both perfect \(r\)-th powers
+exactly when \(r\mid n,k\), so
+\begin{equation}\label{eq:rth-power-frequency}
+  \#\{0<x<T:2^x,3^x\text{ both perfect }r\text{-th powers}\}
+  =N_\beta(T/r),
+\end{equation}
+and the limiting proportion is \(1/r^2\).
+
+\subsection{Exact generating series}
+
+The coordinate monoid has the Laplace series
+\begin{equation}\label{eq:laplace-series}
+\begin{aligned}
+  Z_\beta(s)
+  &:=\sum_{x\in\Sol\setminus\{0\}}e^{-sx}\\
+  &=\sum_{n,k\ge0}e^{-s(n+k\beta)}-1\\
+  &=\boxed{\frac1{(1-e^{-s})(1-e^{-\beta s})}-1},
+  \qquad s>0.
+\end{aligned}
+\end{equation}
+The primitive-output series is
+\[
+  Z_\beta^{\rm prim}(s)=\sum_{d\ge1}\mu(d)Z_\beta(ds).
+\]
+At the candidate level one similarly has the Dirichlet series
+\[
+  \sum_{m\in\Cand}m^{-s}
+  =\frac1{(1-2^{-s})(1-M^{-s})},
+  \qquad \Re s>0.
+\]
+These identities make the two free generators visible and give clean starting points for
+weighted Tauberian refinements.
+
+\subsection{Interpretation}
+
+Roughly \(60.79\%\) of hypothetical output pairs would be simultaneously
+power-primitive.  This is not pressure toward a contradiction: it is exactly the expected
+primitive-lattice proportion for a free rank-two monoid.  Its value is diagnostic.  Any
+descent argument must act on the primitive majority, not merely on the exceptional pairs
+with a common outer power.
+
+\section{Candidate divisibility and ambient root saturation}\label{sec:lattice}
+
+The candidate monoid also has a simple valuation geometry.  It yields closure properties
+not visible from the defining condition \(m^\theta\in\N\).
+
+\subsection{A two-dimensional valuation cone}
+
+Under failure write
+\[
+  M=2^aU,
+  \qquad U>1\text{ odd}.
+\]
+A candidate with coordinates \((n,k)\) is
+\[
+  m(n,k)=2^nM^k=2^{n+ak}U^k.
+\]
+Set \(s=v_2(m)=n+ak\).  The map
+\[
+  m(n,k)\longmapsto(s,k)
+\]
+is a bijection from \(\Cand\) to
+\[
+  \Lambda_a:=\{(s,k)\in\Nzero^2:s\ge ak\}.
+\]
+Because \(U\) is odd and greater than one,
+\begin{equation}\label{eq:divisibility-coordinates}
+  m(n,k)\mid m(n',k')
+  \quad\Longleftrightarrow\quad
+  s\le s'\text{ and }k\le k'.
+\end{equation}
+Thus candidate divisibility is coordinatewise order on a lattice cone.
+
+\begin{theorem}[Candidate gcd/lcm lattice]\label{thm:gcd-lcm}
+\tagPaper Unconditionally, \(\Cand\) is closed under gcd and lcm.  Under failure, if
+\(m_i=m(n_i,k_i)\) and \(s_i=n_i+ak_i\), then
+\[
+\begin{aligned}
+  \gcd(m_1,m_2)
+  &=m\!\left(\min(s_1,s_2)-a\min(k_1,k_2),\ \min(k_1,k_2)\right),\\
+  \operatorname{lcm}(m_1,m_2)
+  &=m\!\left(\max(s_1,s_2)-a\max(k_1,k_2),\ \max(k_1,k_2)\right).
+\end{aligned}
+\]
+Candidate divisibility is therefore a distributive lattice.
+\end{theorem}
+
+\begin{proof}
+If the conjecture is true, candidates are powers of two.  Under failure, gcd and lcm take
+coordinatewise minima and maxima of the prime-valuation vectors of \(2^sU^k\).  The
+resulting points remain in \(\Lambda_a\); coordinatewise min and max form a distributive
+lattice.
+\end{proof}
+
+\begin{corollary}[Candidate divisors]\label{cor:candidate-divisors}
+\tagPaper The number of candidate divisors of \(m(n,k)\), including \(1\) and the number
+itself, is
+\[
+  \boxed{\quad
+  (k+1)(n+1)+\frac{ak(k+1)}2.
+  \quad}
+\]
+\end{corollary}
+
+\begin{proof}
+A candidate divisor corresponds to \((s',j)\in\Lambda_a\) with
+\(0\le j\le k\) and \(aj\le s'\le n+ak\).  There are \(n+ak-aj+1\) choices for
+\(s'\).  Sum this arithmetic progression over \(j=0,\ldots,k\).
+\end{proof}
+
+The gcd/lcm closure is compatible with failure, unlike the nonlinear star-product closure.
+It is therefore structural information rather than a direct proof route.
+
+\subsection{Fixed prime support}
+
+Use the simultaneous normalization
+\[
+  M=2^aw^d,
+  \qquad A=3^bv^e.
+\]
+For \(x=n+k\beta\),
+\[
+  2^x=2^{n+ak}w^{dk},
+  \qquad
+  3^x=3^{n+bk}v^{ek}.
+\]
+
+\begin{corollary}[Prime-support rigidity]\label{cor:prime-support}
+\tagPaper Every noninteger solution \((k>0)\) has exactly the same odd prime support in
+its base-\(2\) output, namely \(\supp(w)\), and exactly the same prime support away from
+\(3\) in its base-\(3\) output, namely \(\supp(v)\).  The only support variation is
+whether the distinguished primes \(2\) and \(3\) occur.
+\end{corollary}
+
+A counterexample would therefore lock the entire noninteger branch onto one fixed pair of
+finite prime sets.  Computational searches should exploit this by enumerating primitive
+supports or cores, not raw integers independently.
+
+\subsection{Ambient root saturation and the index \texorpdfstring{\(d\)}{d}}
+
+Use the canonical form \(M=2^aw^d\), where \(w>1\) is odd and the gcd of its positive
+prime valuations is one.  Reparameterizing by the exponent of \(w\) gives
+\begin{equation}\label{eq:candidate-cone}
+  \Cand
+  =\{2^sw^t:s,t\in\Nzero,\ d\mid t,\ ds\ge at\}.
+\end{equation}
+
+For a multiplicative monoid \(H\subseteq\N_{>0}\), define its \emph{ambient root
+saturation}
+\[
+  \Sat(H):=\{u\in\N_{>0}:u^r\in H\text{ for some }r\ge1\}.
+\]
+
+\begin{theorem}[Exact ambient root saturation]\label{thm:root-saturation}
+\tagPaper Under failure,
+\[
+  \boxed{\quad
+  \Sat(\Cand)=\{2^sw^t:s,t\in\Nzero,\ ds\ge at\}.
+  \quad}
+\]
+For \(u=2^sw^t\) in the saturation, the least positive \(r\) for which
+\(u^r\in\Cand\) is
+\[
+  \boxed{\quad r_{\min}(u)=\frac d{\gcd(d,t)}.\quad}
+\]
+\end{theorem}
+
+\begin{proof}
+Suppose first that \(u=2^sw^t\) and \(ds\ge at\).  Put
+\(r=d/\gcd(d,t)\).  Then \(d\mid rt\), and scaling the cone inequality gives
+\(d(rs)\ge a(rt)\).  Hence \(u^r\in\Cand\).  The divisibility condition
+\(d\mid rt\) proves minimality.
+
+Conversely suppose \(u^r\in\Cand\), so
+\[
+  u^r=2^Sw^{dk}
+\]
+with \(dS\ge adk\).  No prime outside \(\{2\}\cup\supp(w)\) divides \(u\).  Write
+\(c_p=v_p(w)\).  For every \(p\mid w\),
+\[
+  r v_p(u)=dkc_p.
+\]
+Since \(\gcd\{c_p:p\mid w\}=1\), B\'ezout gives \(dk/r\in\Z\); call it \(t\).
+The odd part of \(u\) is then \(w^t\), while \(S=rs\) with \(s=v_2(u)\).  Substitution
+in the cone inequality yields \(ds\ge at\).
+\end{proof}
+
+\begin{corollary}[Ambient saturation index]\label{cor:ambient-index}
+\tagPaper The candidate monoid equals its ambient root saturation exactly when \(d=1\).
+More generally,
+\[
+  d=\min\{r\ge1:\exists s\in\Nzero,\ (2^sw)^r\in\Cand\}.
+\]
+\end{corollary}
+
+A terminology caution is important.  In standard affine-semigroup theory, normality is
+measured relative to the group generated by the semigroup.  Here that group already has
+\(t\equiv0\pmod d\), and \(\Cand\) is normal in that intrinsic lattice for every \(d\).
+The theorem instead measures saturation in the larger ambient lattice containing every
+\(2^sw^t\).  Thus \(d\) is a finite-index \emph{over-lattice saturation defect}, not a
+failure of intrinsic semigroup normality.  This is precisely parallel to its field-theoretic
+meaning as the least rational-power index and exact radical degree.
+
+\section{Optimizing the higher-difference obstruction}\label{sec:finite-difference}
+
+The arbitrary-order theorem in \lean{HigherDifference.lean} permits the order to grow with
+the initial candidate size.  Optimizing that order strengthens every fixed-order corollary,
+but also quantifies why the method does not presently contradict the conditional monoid.
+
+\subsection{The exact derivative coefficient}
+
+For \(r\ge2\) and \(1<\theta<2\), set
+\[
+  c_r=\left|\theta(\theta-1)\cdots(\theta-r+1)\right|.
+\]
+Because the factors from \(2-\theta\) onward are positive after taking absolute values,
+\begin{equation}\label{eq:cr-gamma}
+  c_r
+  =\frac{\theta(\theta-1)}{\Gamma(2-\theta)}\Gamma(r-\theta).
+\end{equation}
+Stirling's formula gives
+\begin{equation}\label{eq:cr-root}
+  c_r^{1/r}
+  =\frac re\left(1+O\!\left(\frac{\log r}{r}\right)\right).
+\end{equation}
+
+The formalized progression theorem applies whenever
+\[
+  h<c_r^{-1/r}n^{1-\theta/r}.
+\]
+Using \eqref{eq:cr-root}, the right side is
+\begin{equation}\label{eq:threshold-approx}
+  \frac{en}{r}
+  \exp\!\left(-\frac{\theta\log n}{r}\right)
+  \left(1+O\!\left(\frac{\log r}{r}\right)\right).
+\end{equation}
+Ignoring the lower-order factor, the logarithmic derivative with respect to \(r\) is
+\[
+  -\frac1r+\frac{\theta\log n}{r^2},
+\]
+so the maximum occurs at \(r\sim\theta\log n\).  At that value the explicit factor \(e\)
+and the exponential \(e^{-1}\) cancel.
+
+\begin{theorem}[Optimized variable-order obstruction]\label{thm:optimized-difference}
+\tagPaper Let \(0<\varepsilon<1\).  For all sufficiently large \(n\), choose an integer
+\[
+  r_n=\theta\log n+O(1),\qquad r_n\ge2.
+\]
+Then candidates cannot occupy all terms of
+\[
+  n,n+h,\ldots,n+r_nh
+\]
+whenever
+\[
+  1\le h\le(1-\varepsilon)\frac{n}{\theta\log n}.
+\]
+Moreover, the largest leading-order step scale obtainable by optimizing the existing
+curvature condition over \(r\) is
+\[
+  \boxed{\quad h_{\max}(n)\sim\frac{n}{\theta\log n}.\quad}
+\]
+\end{theorem}
+
+\begin{proof}
+Choose \(r_n\) to be either nearest integer to \(\theta\log n\).  Then \(r_n\to\infty\),
+so \eqref{eq:threshold-approx} applies and its quotient by
+\(n/(\theta\log n)\) tends to one.  The fixed \((1-\varepsilon)\) margin absorbs the
+Stirling error and the \(O(1)\) integer rounding.  The formalized condition
+\eqref{eq:higher-difference-condition} then excludes the progression.
+
+For the optimality assertion, the leading approximation in
+\eqref{eq:threshold-approx} is a unimodal function of positive real \(r\), with its unique
+maximum at \(\theta\log n\).  Regimes where \(r\) remains bounded or grows outside a
+constant multiple of \(\log n\) give a strictly smaller order or leading constant.
+\end{proof}
+
+\subsection{Comparison with conditional candidate spacing}
+
+A dyadic block \([X,2X)\) is an interval of length one in exponent space.  Exact coordinates
+give
+\begin{equation}\label{eq:dyadic-count}
+  \#(\Cand\cap[X,2X))
+  =\frac{\log X}{\beta\log2}+O_\beta(1).
+\end{equation}
+The average arithmetic spacing in the block is therefore
+\[
+  \sim\beta\log2\,\frac{X}{\log X}.
+\]
+At \(n\asymp X\), the optimized curvature threshold is
+\[
+  \sim\frac1\theta\frac{X}{\log X}.
+\]
+The ratio is
+\begin{equation}\label{eq:spacing-ratio}
+  \frac{\beta\log2}{1/\theta}
+  =\boxed{\beta\log3}.
+\end{equation}
+The kernel-verified bound \(\beta\ge12\) already makes this ratio greater than
+\(13.18\); the software-level \(\beta>26\) bound makes it greater than \(28.56\).
+
+The same constant appears in a cardinality comparison.  The forbidden progression would
+require
+\[
+  r_n+1\sim\theta\log X
+\]
+candidates in one structured configuration, while the entire dyadic block contains only
+\[
+  \sim\frac{\log X}{\beta\log2}
+\]
+candidates.  Their ratio is again \(\beta\log3\).
+
+\begin{remark}[Quantified barrier]\label{rem:difference-barrier}
+The variable-order optimization materially strengthens the local theorem, but total
+candidate density is too small by a fixed factor of at least \(\beta\log3\).  No argument
+using only the number of candidates in a dyadic block can force the progression required
+by the current finite-difference functional.  A successful continuation must exploit
+additional arithmetic correlation---for example, valuation congruences that force a
+special progression---or find a different integer-valued functional with a better
+curvature-to-spacing constant.
+\end{remark}
+
+This is a limitation of the method, not evidence against the conjecture.  Its value is to
+replace the vague statement ``density seems too weak'' by a sharp asymptotic constant and
+a concrete target for any improved functional.
+
+\section{A directed-rounding exclusion through \texorpdfstring{\(2^{26}\)}{2 to the 26}}\label{sec:computation}
+
+This section records a new finite computation and its exact trust boundary.  It is not a
+substitute for Lean: its purpose is to strengthen the explicit zero-free region, test the
+conditional models, and provide data for future certificate generation.
+
+\subsection{What must be certified for each integer}
+
+For a non-power of two \(m\), let
+\[
+  y=m^\theta,
+  \qquad \theta=\frac{\log3}{\log2}.
+\]
+To prove that \(y\notin\N\), it suffices to find \(n\in\N\) and certify the strict pair
+\[
+  n<m^\theta<n+1.
+\]
+Avoiding direct exponentiation, these are equivalent to
+\begin{align}
+  \log m\,\log3-\log n\,\log2 &>0,
+    \label{eq:lower-log-gap}\\
+  \log(n+1)\,\log2-\log m\,\log3 &>0.
+    \label{eq:upper-log-gap}
+\end{align}
+All logarithms and products are positive in the scanned range, so interval directions are
+simple and monotone.
+
+The verifier uses ordinary \texttt{long double} only to propose
+\(n\approx\lfloor m^\theta\rfloor\).  It tests the offsets
+\[
+  0,-1,1,-2,2,-3,3.
+\]
+A proposal is accepted only when both \eqref{eq:lower-log-gap} and
+\eqref{eq:upper-log-gap} have a strictly positive \emph{directed lower bound} computed by
+MPFR.  Failure to locate an interval is reported as a failure, never silently classified as
+nonintegral.  Thus locator error can create a false alarm but cannot create a false proof.
+
+\subsection{Directed enclosures}
+
+At precision \(p=192\) bits, the program constructs
+\[
+\begin{aligned}
+  L_m^-&\le\log m\le L_m^+, &
+  L_2^-&\le\log2\le L_2^+, &
+  L_3^-&\le\log3\le L_3^+,\\
+  L_n^+&\ge\log n, &&
+  L_{n+1}^-&\le\log(n+1).&&
+\end{aligned}
+\]
+It then rounds downward in
+\[
+  \delta_-=L_m^-L_3^- - L_n^+L_2^+,
+  \qquad
+  \delta_+=L_{n+1}^-L_2^- - L_m^+L_3^+.
+\]
+Thus \(\delta_->0\) proves \eqref{eq:lower-log-gap}, and \(\delta_+>0\) proves
+\eqref{eq:upper-log-gap}.  The input integers are below \(2^{42}\) on the \(n\)-side and
+are exactly representable at 192-bit precision.
+
+Powers of two are skipped, not tested: if \(m=2^q\), then
+\(m^\theta=3^q\) is the known integral candidate.  Every other positive integer is tested.
+An exact integral value at a non-power of two could satisfy neither strict interval for any
+\(n\), so it would necessarily be reported as a failure.
+
+\subsection{Execution environment and source identity}
+
+The recorded run used:
+\begin{itemize}
+\item MPFR \(4.2.2\), linked as \texttt{libmpfr.so.6};
+\item GCC \(14.2.0\) with \texttt{-O3 -fopenmp};
+\item GNU OpenMP with five worker threads;
+\item Linux x86-64;
+\item 192-bit MPFR precision and directed modes \texttt{MPFR\_RNDD}/\texttt{MPFR\_RNDU}.
+\end{itemize}
+The exact executed C source is reproduced in \cref{app:scanner}.  Its SHA-256 digest is
+\begin{center}
+\small\ttfamily
+f888c0d89be9366f01e2d26f339dcbe446556d39d4c5dbcf8f579ec0d0052e1d
+\end{center}
+The execution image contained the MPFR shared library but not the development header, so
+the source has a guarded minimal declaration of the MPFR~4.x ABI.  On an ordinary system
+with \texttt{mpfr.h}, the standard header branch is used.  This ABI detail is part of the
+software trust boundary and is disclosed rather than hidden.
+
+\subsection{Result}
+
+There are \(2^{26}-1=67{,}108{,}863\) positive integers below \(2^{26}\).  Exactly
+\(26\) are powers of two, from \(2^0\) through \(2^{25}\).  Hence the verifier tests
+\[
+  67{,}108{,}863-26
+  =\boxed{67{,}108{,}837}
+\]
+non-powers.  The range was divided at multiples of \(2^{22}\) into one initial chunk
+\([1,2^{22})\) and fifteen chunks of width \(2^{22}\); all chunks
+returned zero failures.  The complete chunk audit appears in \cref{app:chunk-audit}.
+
+\begin{theorem}[Software-level finite exclusion]\label{thm:finite-26}
+\tagComp For every integer \(m\) with \(1\le m<2^{26}\),
+\[
+  m^\theta\in\N
+  \quad\Longrightarrow\quad
+  m\text{ is a power of }2.
+\]
+Consequently, at the stated software trust level,
+\[
+  x\in\Sol\setminus\Nzero
+  \quad\Longrightarrow\quad
+  \boxed{x>26}.
+\]
+\end{theorem}
+
+\begin{proof}[Explanation of the consequence]
+The verifier establishes the first implication for every non-power input; powers of two are
+the known candidates.  If \(x\) were nonintegral, then \(m=2^x\) would be an integer
+candidate but not a power of two.  The finite exclusion gives \(m\ge2^{26}\).  Equality is
+itself a power of two and would force \(x=26\), so in fact \(m>2^{26}\), hence \(x>26\).
+\end{proof}
+
+\subsection{Closest approaches}
+
+The smallest certified lower logarithmic margin over the full scan is
+\[
+  3.6447144482202515\times10^{-20}
+\]
+at
+\[
+  (m,n)=(58{,}570{,}438,\ 2{,}048{,}703{,}434{,}093).
+\]
+A separate 100-decimal evaluation gives
+\[
+  m^\theta-n
+  =1.07725158750919017548\ldots\times10^{-7}.
+\]
+
+The smallest certified upper logarithmic margin is
+\[
+  5.4132120119800561\times10^{-21}
+\]
+at
+\[
+  (m,n)=(29{,}411{,}704,\ 687{,}581{,}893{,}443),
+\]
+where
+\[
+  n+1-m^\theta
+  =5.36974926710988874953\ldots\times10^{-9}.
+\]
+The same logarithmic upper margin recurs at the scaled point
+\((58{,}823{,}408,2{,}062{,}745{,}680{,}331)\), as expected from multiplication of
+\(m\) by two and the identity \((2m)^\theta=3m^\theta\).
+
+Both extremal inequalities were independently reevaluated at 100 decimal digits.  This
+secondary check is not an independent proof system, but it is a useful guard against
+transcription and aggregation errors.  The certified margins are many orders of magnitude
+larger than the nominal 192-bit rounding scale of the logarithmic operations.
+
+\subsection{Trust boundary and route to a kernel theorem}
+
+The computation trusts the C source, GCC code generation, OpenMP scheduling, the MPFR and
+GMP shared libraries, the x86-64 arithmetic environment, and the operating system.  MPFR's
+correct-rounding contract makes the numerical reasoning crisp, but it does not remove
+those software assumptions.
+
+The natural next step is certificate extraction rather than a still larger blind scan.
+For each block, one can record rational lower and upper approximants to \(\theta\) and
+integer inequalities sufficient to replay every exclusion.  Compression should exploit
+monotonicity and convexity so that one certificate covers a run of consecutive \(m\),
+rather than storing one record per input.  The existing \(4096\) Lean proof provides the
+checker pattern.  A practical intermediate target is \(2^{16}\), followed by a generated
+hierarchical certificate through \(2^{26}\).
+
+\section{A consolidated catalogue of equivalent formulations}\label{sec:equivalences}
+
+The repository already contains many equivalences: candidate powers of two, odd localized
+radicals, primitive radicals, least-generator nonexistence, and subquadratic counting.  The
+new results add nonlinear closure and algebraicity tests.  The following theorem collects
+the most useful forms in one place.
+
+\begin{theorem}[Equivalent targets]\label{thm:equivalent-targets}
+The following assertions are equivalent.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item \tagLean The Alaoglu--Erd\H{o}s conjecture: \(\Sol=\Nzero\).
+\item \tagLean Every candidate is a power of two.
+\item \tagLean There is no odd \(u>1\) with \(u^\theta\in\Z[1/3]\); equivalently, none
+with \(u\) power-primitive.
+\item \tagPaper \(\Sol\) is closed under multiplication.
+\item \tagPaper \(\Sol\) is closed under squaring.
+\item \tagPaper \(\Cand\) is closed under the operation
+\(m\star n=2^{\log_2m\log_2n}\).
+\item \tagPaper Every \(m\in\Cand\) satisfies \(m\star m\in\Cand\).
+\item \tagPaper Every \(x\in\Sol\) has both outputs \(2^x,3^x\) three-smooth.
+\item \tagPaper Every \(x\in\Sol\) has \(6^x\) three-smooth.
+\item \tagClassical Every \(x\in\Sol\) has \(6^{x^2}\in\Qbar\).
+\item \tagClassical Every \(x\in\Sol\) has both \(2^{x^2},3^{x^2}\in\Qbar\).
+\item \tagClassical Every \(x,y\in\Sol\) has \(6^{xy}\in\Qbar\).
+\item \tagLean The candidate count below \(2^T\) is \(o(T^2)\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The repository proves the equivalence of (1)--(3) and (13).  The equivalence of (1) with
+(4)--(7) is \cref{thm:closure-equivalences,cor:star-product}.  The equivalence with
+(8)--(9) is \cref{thm:output-smooth}.  The equivalence with (10)--(12) is
+\cref{thm:algebraicity-equivalences}.
+\end{proof}
+
+The formulations are not equally promising.  Counting is very far from the final
+integrality statement; multiplication closure is exact but has no known independent
+source; the radical formulation is closest to established transcendence theory; and the
+three-smooth/algebraicity formulations offer a possible route through a third-base theorem.
+
+\subsection{A third-base manufacturing principle}
+
+\Cref{thm:three-smooth} suggests a particularly concrete target.  Given a hypothetical
+noninteger \(\beta\), it would suffice to construct \emph{one} positive integer
+\(B\notin\Smooth\) such that \(B^\beta\in\Z\).  This would immediately contradict the
+formalized three-smooth-base theorem.
+
+The obvious choices are \(B=M=2^\beta\), \(B=A=3^\beta\), or \(B=MA=6^\beta\).
+Their \(\beta\)-th powers are
+\[
+  2^{\beta^2},\qquad 3^{\beta^2},\qquad 6^{\beta^2}.
+\]
+Thus ``manufacture a third base'' is exactly the square-closure problem in a different
+language.  The six-exponentials result makes the stakes sharper: whenever the chosen base
+is not three-smooth, its \(\beta\)-th power is already known to be transcendental.  Any
+proof of algebraicity would therefore finish the conjecture at once.
+
+This framing is useful because it isolates the missing bridge:
+\[
+  \boxed{\text{derive one nonlinear algebraic value from the two linear integer values}.}
+\]
+Neither unique factorization, ordinary exponent laws, nor linear forms in logarithms
+currently supply that bridge.
+
+\section{Prioritized future research program}\label{sec:research}
+
+The following agenda is ordered by a combination of mathematical leverage, falsifiability,
+and formalization value.  It is intentionally technical rather than promotional.
+
+\subsection{Priority 1: formalize the new elementary rigidity theorems}
+
+\tagProposal Add Lean modules for:
+\begin{itemize}
+\item three-smooth output equivalence, \cref{thm:output-smooth};
+\item exact multiplication and power criteria,
+\cref{thm:product-criterion,cor:power-test};
+\item quotient classification, \cref{thm:quotient-criterion};
+\item common perfect-power and affine-decomposition criteria,
+\cref{thm:common-power,thm:affine-decomp};
+\item candidate gcd/lcm closure and divisor enumeration,
+\cref{thm:gcd-lcm,cor:candidate-divisors};
+\item ambient root saturation, with the intrinsic-lattice terminology caveat;
+\item primitive lattice asymptotics, initially as exact finite M\"obius identities and later
+through Mathlib asymptotics.
+\end{itemize}
+
+These proofs are short relative to the existing determinant and Gelfond--Schneider
+machinery.  Formalizing them would give the project a larger library of reusable
+``counterexample-world eliminators'' and guard against subtle sign, divisibility, or
+normalization errors.
+
+A suggested source split is:
+\begin{center}
+\begin{tabularx}{0.95\textwidth}{@{}lY@{}}
+\toprule
+module & contents\\
+\midrule
+\texttt{RationalOperationRigidity.lean} & products, powers, quotients, specialized polynomial evaluation\\
+\texttt{OutputSmoothness.lean} & three-smooth output test and primitive-core trichotomy\\
+\texttt{CommonPowerContent.lean} & exact common power degree and affine descent\\
+\texttt{CandidateDivisibility.lean} & gcd/lcm lattice, candidate divisors, support rigidity\\
+\texttt{AmbientRootSaturation.lean} & exact over-lattice saturation and least root exponent\\
+\texttt{PrimitiveOutputCounting.lean} & finite M\"obius identities and asymptotic wrappers\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Priority 2: turn the \texorpdfstring{\(2^{26}\)}{2-to-the-26} scan into replayable certificates}
+
+\tagProposal The next computational objective should not simply be \(2^{27}\).  It should
+be a compact certificate format accepted by a small Lean checker.  Useful compression
+mechanisms include:
+\begin{enumerate}
+\item rational bounds \(p/q<\theta<r/s\) proved once;
+\item monotonicity blocks in which the same floor candidate is controlled by endpoint
+inequalities;
+\item convexity bounds for \(m^\theta\) over integer intervals;
+\item fixed-point integer arithmetic after scaling logarithmic intervals;
+\item a hierarchy of block certificates, allowing local rechecking and parallel generation.
+\end{enumerate}
+
+A checker should verify the mathematical implication ``certificate \(\Rightarrow\) no
+integer value'' with no floating-point operations.  External MPFR code may generate the
+certificate but is then removed from the theorem's trust base.  The existing \(4096\)
+modules are the prototype; the open engineering problem is certificate compression.
+
+\subsection{Priority 3: exploit the uniform smoothness trichotomy}
+
+\tagProposal Split every hypothetical counterexample into the three cases of
+\cref{thm:uniform-second-level}.
+
+\paragraph{Case I: the base-$2$ output is three-smooth.}
+Then the primitive odd core is \(w=3\), so
+\[
+  \beta=a+d\theta,
+  \qquad
+  M=2^a3^d,
+\]
+and
+\[
+  A=3^\beta=3^a(3^\theta)^d\in\N.
+\]
+Thus \(3^\theta\) is a positive radical whose \(d\)-th power lies in \(\Z[1/3]\).
+This is the sharp exceptional target
+\[
+  3^{\log_2 3}.
+\]
+The output normalization, exact radical degree, and gcd condition should be specialized to
+this one-core case; they may impose stronger congruence or ramification restrictions than
+are visible in the generic notation.
+
+\paragraph{Case II: the base-$3$ output is three-smooth.}
+Symmetrically the three-free primitive core is \(v=2\), and
+\[
+  \beta=b+\frac e\theta,
+  \qquad
+  A=3^b2^e,
+\]
+so \(2^{1/\theta}=2^{\log_3 2}\) is a positive radical of a rational with denominator
+supported at \(2\).  This case deserves a formally symmetric normalization theorem;
+currently most of the repository is presented from the base-2 candidate side.
+
+\paragraph{Case III: neither output is three-smooth.}
+Then for every pair of noninteger solutions, both \(2^{xy}\) and \(3^{xy}\) are
+transcendental.  This is the generic case.  Its advantage is two independent outside-prime
+supports; a mixed Archimedean/non-Archimedean determinant may exploit both simultaneously.
+
+The three cases have genuinely different arithmetic.  Treating them separately is more
+promising than carrying a generic primitive core through every argument.
+
+\subsection{Priority 4: combine the Archimedean determinant with prime valuations}
+
+\tagProposal The current determinant lower bound uses only that a nonzero integer has
+absolute value at least one.  Candidate outputs contain much more information: their
+valuations at primes in \(\supp(w)\) and \(\supp(v)\) are exact linear functions of the
+coordinate \(k\).  A future determinant should be designed so that column or row
+differences force a large predictable divisor while interpolation still makes its
+Archimedean absolute value small.
+
+A concrete experimental template is:
+\begin{enumerate}
+\item choose entries from \(2^{n+k\beta}=2^nM^k\) and
+\(3^{n+k\beta}=3^nA^k\), or from monomials in both;
+\item arrange finite differences in \(k\) so that powers of \(M\), \(A\), or factors
+\(M^h-1\), \(A^h-1\) divide minors;
+\item use lifting-the-exponent lemmas at primes from fixed supports to quantify the
+non-Archimedean gain;
+\item normalize away trivial row factors before estimating the Archimedean determinant;
+\item seek a product-formula contradiction rather than the elementary \(|D|\ge1\).
+\end{enumerate}
+
+The danger is that the same large factors also enlarge the Archimedean determinant and
+cancel the gain.  Small symbolic and numerical models should be used to calculate the exact
+balance before investing in formalization.  The target is a genuine improvement over the
+three-by-two dimensional count, not a renamed form of the existing determinant.
+
+\subsection{Priority 5: local Kummer analysis of the exact radical}
+
+\tagProposal The canonical radical
+\[
+  E=w^\theta,
+  \qquad E^d=A/3^a,
+  \qquad [\Q(E):\Q]=d
+\]
+produces a pure extension with an exact rational-power index.  Apply local Kummer and
+binomial irreducibility theory prime by prime:
+\begin{itemize}
+\item classify possible ramification at primes dividing \(d\), \(A\), \(w\), and \(3\);
+\item combine the power-primitivity of \(w\) with Capelli-type conditions on
+\(X^d-A/3^a\);
+\item compare the splitting fields of \(E\) and the multiplicative relation
+\(E=3^{\log_2w}\);
+\item search for a local obstruction in the exceptional cases \(w=3\) or \(v=2\);
+\item formalize exact denominator and valuation consequences even when the global
+transcendence step remains open.
+\end{itemize}
+
+Pure-extension theory alone is unlikely to prove the conjecture, because arbitrary positive
+rational radicals certainly exist.  The extra datum is the logarithmic identity
+\eqref{eq:bilinear-logs}.  The research question is whether local restrictions on the
+radical can be made incompatible with that specific Archimedean logarithmic origin.
+
+\subsection{Priority 6: generalize the determinant from integer to algebraic entries}
+
+\tagProposal Formalize a six-exponentials theorem with algebraic, rather than merely
+integral, matrix entries.  If the entries lie in a number field \(K\), a nonzero determinant
+\(D\in K\) can be bounded below through
+\[
+  1\le |N_{K/\Q}(\mathfrak dD)|
+\]
+after clearing a controlled denominator \(\mathfrak d\).  The conjugates and heights then
+enter the upper bound.  This is technically substantial, but it would:
+\begin{itemize}
+\item formalize \cref{lem:third-base-trans} and all algebraicity equivalences;
+\item produce a reusable Mathlib-level six-exponentials component;
+\item clarify exactly which height losses prevent shrinking from three logarithms to two;
+\item create an interface for mixed algebraic auxiliary values, not only integers.
+\end{itemize}
+
+Even if this does not settle Alaoglu--Erd\H{o}s, it would turn the current informal
+transcendence upgrade into a kernel-checked theorem and expose the quantitative boundary in
+a reusable form.
+
+\subsection{Priority 7: support-first and normalization-first computation}
+
+\tagProposal Raw scanning treats each \(m\) independently.  Under failure, every
+noninteger candidate has the form
+\[
+  m=2^{n+ak}w^{dk}
+\]
+for one fixed primitive support.  A structured search should enumerate:
+\begin{enumerate}
+\item a primitive odd core \(w\) (valuation gcd one);
+\item the least rational-power index \(d\);
+\item the reduced depth \(a\);
+\item the nearest integer \(A\) to \(3^a w^{d\theta}\);
+\item the simultaneous base-3 primitive normalization and gcd obstruction.
+\end{enumerate}
+
+Cheap filters include parity, perfect-power primitivity, denominator support, the exact
+common-coordinate gcd condition, and the three-smooth-output trichotomy.  For a bounded
+range this is equivalent to the raw search, but it groups inputs by the hypothetical global
+structure and may reveal forbidden support patterns.  It also produces data aligned with
+the Lean theorems rather than a flat list of near misses.
+
+\subsection{Priority 8: seek arithmetic forcing for finite differences}
+
+\tagProposal The optimized higher-difference theorem is already near its analytic limit.
+Progress now requires a mechanism that \emph{forces} many candidates into a short additive
+pattern.  Potential sources are:
+\begin{itemize}
+\item congruences among candidates with the same \(k\)-coordinate;
+\item gcd/lcm lattice rectangles whose ordinary integer combinations have controlled size;
+\item valuation pigeonhole principles inside a dyadic block;
+\item polynomial rather than arithmetic progressions, paired with a matching integer-valued
+difference operator;
+\item mixed differences in \((n,k)\)-coordinates whose image under
+\(m=2^nM^k\) has stronger curvature constants.
+\end{itemize}
+
+Every proposal should be tested against the exact conditional monoid.  If the desired
+pattern is not forced in a generic free monoid \(\{2^nM^k\}\), then density alone will not
+supply it.
+
+\subsection{Priority 9: isolate a nonlinear algebraicity bridge}
+
+\tagProposal By \cref{thm:algebraicity-equivalences}, any proof that
+\(6^{\beta^2}\) is algebraic from the original hypotheses completes the conjecture.
+Equivalent targets are algebraicity of both \(2^{\beta^2},3^{\beta^2}\), or integrality of
+one non-three-smooth base raised to \(\beta\).  Possible sources of such a bridge include:
+\begin{itemize}
+\item an additional functional equation extracted from leastness or primitive
+normalization;
+\item an algebraic relation among \(M,A\) forced by matching prime valuations;
+\item a determinant whose vanishing yields algebraicity of a second iterate;
+\item a rigidity theorem for algebraic values of \(z\mapsto z^\beta\) on a finitely
+generated multiplicative group stronger than six exponentials.
+\end{itemize}
+
+This is the highest-risk direction but the one most directly aligned with the exact missing
+step.  The closure and transcendence theorems in this report provide clean tests: any
+claimed bridge must contradict the conditional monoid rather than merely restate it.
+
+\section{Conclusions}\label{sec:conclusion}
+
+The Alaoglu--Erd\H{o}s conjecture survives this investigation.  The existing Lean
+formalization already places a hypothetical counterexample in an extraordinarily narrow
+shape: a transcendental least generator, a unique primitive odd core, an exact radical
+degree, a free rank-two solution monoid, fixed output supports, and strong local
+progression exclusions.  None of these constraints alone is inconsistent.
+
+The new results sharpen that picture in directions not present in the starting report.
+A counterexample world would have exact rational-function rigidity: the only rational
+expressions in the generator that return to the solution set are its natural affine
+combinations.  Products of two noninteger solutions never return; quotients return only as
+natural multiples; common output powers are measured exactly by coordinate gcd; and
+candidate divisibility forms a distributive lattice with a computable ambient saturation.
+Six exponentials upgrades the nonlinear failure from nonintegrality to transcendence:
+\(6^{xy}\) is transcendental for every pair of noninteger solutions.
+
+These are meaningful advances, but they also make the final boundary cleaner.  To prove the
+conjecture one must either:
+\begin{enumerate}
+\item derive one nonlinear algebraic value from \(2^x,3^x\in\N\), thereby contradicting
+the new transcendence dichotomy;
+\item manufacture a non-three-smooth integer base with integral \(x\)-th power;
+\item find a local valuation obstruction to the exact canonical radical; or
+\item build a determinant or product-formula argument that uses integrality beyond the
+generic four-exponentials setup.
+\end{enumerate}
+
+The finite computation moves the explicit software-level frontier from \(x>20\) to
+\(x>26\), while the variable-order analysis explains why finite differences need new
+arithmetic forcing.  The most immediate durable gains are to formalize the elementary new
+theorems and convert the MPFR scan into replayable certificates.  The most promising
+mathematical split is the uniform three-case classification according to which least
+outputs are three-smooth, with separate local and transcendence attacks in each case.
+
+No hidden assumption in this report turns these partial results into a proof.  What has
+improved is the map of the remaining territory: the conjecture is now surrounded by a
+dense set of exact, checkable equivalences and obstructions, and the missing ingredient can
+be stated with considerably greater precision than before.
+
+\appendix
+
+\section{Dependency map and Lean-oriented proof sketches}\label{app:lean-sketches}
+
+This appendix records the shortest formalization routes for the new paper-level theorems.
+The snippets are schematic and are not claimed to compile unchanged; theorem names from the
+repository are shown where known.
+
+\subsection{Dependency map}
+
+\begin{center}
+\begin{tabularx}{0.97\textwidth}{@{}lYY@{}}
+\toprule
+new result & principal existing input & additional mathematics\\
+\midrule
+rational-function rigidity & canonical primitive generator; transcendence of \(\beta\) & injectivity of polynomial evaluation at a transcendental element\\
+product/power criteria & unique \((n,k)\)-coordinates & quadratic coefficient comparison\\
+quotient criterion & unique coordinates & denominator clearing and coefficient comparison\\
+three-smooth output test & transcendence of \(\theta\) & unique factorization in \(\N\)\\
+product transcendence & three-smooth-base theorem & classical six exponentials\\
+common power degree & unique coordinates & positive root uniqueness; divisibility\\
+primitive statistics & total lattice count & M\"obius inversion\\
+gcd/lcm lattice & exact candidate monoid & prime-valuation min/max\\
+ambient root saturation & primitive valuation gcd of \(w\) & B\'ezout and linear cone arithmetic\\
+optimized differences & arbitrary-order Lean theorem & gamma identity and Stirling\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Multiplication skeleton}
+
+A direct statement can use the repository predicate
+\lean{TwoBaseIntegralSolution}.
+
+\begin{lstlisting}[language={}]
+theorem product_solution_iff_integer_factor
+    {x y : R}
+    (hx : TwoBaseIntegralSolution x)
+    (hy : TwoBaseIntegralSolution y) :
+    TwoBaseIntegralSolution (x * y) <->
+      x in Set.range ((^) : Z -> R) /\
+      y in Set.range ((^) : Z -> R) := by
+  classical
+  constructor
+  · intro hxy
+    by_cases hAE : AlaogluErdosConjecture
+    · left
+      exact hAE x hx
+    · obtain <w, d, a, c, beta, ..., hcoord, ...> :=
+        exists_canonical_primitiveGenerator_of_not_alaogluErdosConjecture hAE
+      obtain <nx, kx, hxcoord> := (hcoord x).mp hx
+      obtain <ny, ky, hycoord> := (hcoord y).mp hy
+      obtain <np, kp, hpcoord> := (hcoord (x * y)).mp hxy
+      -- If kx,ky > 0, expansion gives a nonzero quadratic
+      -- polynomial over Q vanishing at beta, contradicting
+      -- transcendental beta.  Therefore kx = 0 or ky = 0.
+      ...
+  · rintro (hxint | hyint)
+    · exact solution_nsmul_left hxint hy
+    · exact solution_nsmul_right hyint hx
+\end{lstlisting}
+
+In the actual theorem, the integer range can be simplified to \(\Nzero\), because every
+solution is nonnegative.  The key algebraic lemma should be phrased independently:
+
+\begin{lstlisting}[language={}]
+lemma transcendental_quadratic_coeff_eq_zero
+    {beta a b c : R}
+    (hbeta : Transcendental Q beta)
+    (h : a * beta^2 + b * beta + c = 0) :
+    a = 0 /\ b = 0 /\ c = 0 := ...
+\end{lstlisting}
+
+Mathlib's polynomial evaluation API may make it cleaner to construct
+\(aX^2+bX+c\) and apply the definition of transcendence.
+
+\subsection{Output smoothness skeleton}
+
+Define a natural predicate
+\[
+  \operatorname{ThreeSmooth}(m):\Longleftrightarrow
+  \exists u,v:\N,\ m=2^u3^v.
+\]
+Then prove:
+
+\begin{lstlisting}[language={}]
+theorem integer_iff_outputs_threeSmooth
+    {x : R} (hx : TwoBaseIntegralSolution x) :
+    x in Set.range ((^) : Z -> R) <->
+      ThreeSmooth (natOutputTwo hx) /\
+      ThreeSmooth (natOutputThree hx) := by
+  constructor
+  · rintro <z, rfl>
+    ...
+  · rintro <<a,b,h2>, <c,d,h3>>
+    have hpoly :
+      b * logThreeDivLogTwo^2 +
+      (a-d) * logThreeDivLogTwo - c = 0 := by
+      -- take logarithms of h2 and h3
+      ...
+    have htheta := transcendental_logThreeDivLogTwo
+    have : b = 0 /\ a-d = 0 /\ c = 0 :=
+      transcendental_quadratic_coeff_eq_zero htheta hpoly
+    ...
+\end{lstlisting}
+
+A practical implementation should avoid partial ``natural output'' definitions by carrying
+explicit witnesses \(M,A:\N\) for the two integer powers.
+
+\subsection{Common-power skeleton}
+
+The formal theorem is most reusable if stated for explicit output witnesses.
+
+\begin{lstlisting}[language={}]
+theorem simultaneous_perfectPower_iff_divides_coordinates
+    (hfail : not AlaogluErdosConjecture)
+    {x beta : R} {n k r : N}
+    (hr : 0 < r)
+    (hbeta : CanonicalPrimitiveGenerator beta)
+    (hxcoord : x = n + k * beta) :
+    (Exists fun U : N => (U : R)^r = (2 : R)^x) /\
+    (Exists fun V : N => (V : R)^r = (3 : R)^x) <->
+      r dvd n /\ r dvd k := by
+  -- Convert perfect powers to a solution at x/r,
+  -- use unique coordinates, and compare.
+  ...
+\end{lstlisting}
+
+The positive-root step can use strict monotonicity of \(t\mapsto t^r\) on nonnegative
+reals or logarithmic injectivity.
+
+\subsection{Ambient saturation skeleton}
+
+The only nontrivial arithmetic lemma is the primitive valuation reconstruction:
+
+\begin{lstlisting}[language={}]
+lemma primitive_core_root
+    {w u q r : N}
+    (hw : oddPrimeValuationGCD w = 1)
+    (hr : 0 < r)
+    (hpow : u^r = w^q) :
+    Exists t : N, q = r*t /\ u = w^t := by
+  -- Compare every prime factorization coordinate.
+  -- Use a Bezout linear combination of the positive valuations of w
+  -- to prove r | q, then use factorization extensionality.
+  ...
+\end{lstlisting}
+
+The present report's proof uses \(q=dk\).  A general lemma of this form would also be
+useful in \lean{PrimitiveOddCore.lean} and \lean{OutputNormalization.lean}.
+
+\subsection{Suggested theorem-order for a pull request}
+
+A low-conflict sequence is:
+\begin{enumerate}
+\item add a small \lean{ThreeSmooth} API and output-smoothness theorem;
+\item add coordinate comparison lemmas for affine, quadratic, and quotient expressions;
+\item prove product, power, and quotient criteria;
+\item prove common-power and affine-descent criteria;
+\item add candidate divisibility and support results;
+\item add primitive-core root reconstruction and ambient saturation;
+\item only then add asymptotic and six-exponentials extensions.
+\end{enumerate}
+This ordering keeps the first several commits elementary and independently reviewable.
+
+\section{MPFR verifier source}\label{app:scanner}
+
+The following is the exact source whose SHA-256 digest is given in
+\cref{sec:computation}.
+
+\begin{lstlisting}[language=C]
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <math.h>
+#include <omp.h>
+
+#if defined(__has_include)
+#  if __has_include(<mpfr.h>)
+#    include <mpfr.h>
+#    define HAVE_SYSTEM_MPFR_HEADER 1
+#  endif
+#endif
+
+#ifndef HAVE_SYSTEM_MPFR_HEADER
+/* Minimal declarations for the MPFR 4.x ABI.  The execution environment had
+   libmpfr.so.6 but not the development header package.  A normal build with
+   libmpfr-dev installed takes the branch above instead. */
+typedef unsigned long mp_limb_t;
+typedef long mpfr_prec_t;
+typedef long mpfr_exp_t;
+typedef int mpfr_sign_t;
+typedef struct {
+  mpfr_prec_t _mpfr_prec;
+  mpfr_sign_t _mpfr_sign;
+  mpfr_exp_t _mpfr_exp;
+  mp_limb_t *_mpfr_d;
+} __mpfr_struct;
+typedef __mpfr_struct mpfr_t[1];
+typedef __mpfr_struct *mpfr_ptr;
+typedef const __mpfr_struct *mpfr_srcptr;
+typedef enum {
+  MPFR_RNDN = 0, MPFR_RNDZ = 1, MPFR_RNDU = 2,
+  MPFR_RNDD = 3, MPFR_RNDA = 4, MPFR_RNDF = 5,
+  MPFR_RNDNA = -1
+} mpfr_rnd_t;
+extern void mpfr_init2(mpfr_ptr, mpfr_prec_t);
+extern void mpfr_clear(mpfr_ptr);
+extern int mpfr_set_ui(mpfr_ptr, unsigned long, mpfr_rnd_t);
+extern int mpfr_log(mpfr_ptr, mpfr_srcptr, mpfr_rnd_t);
+extern int mpfr_mul(mpfr_ptr, mpfr_srcptr, mpfr_srcptr, mpfr_rnd_t);
+extern int mpfr_sub(mpfr_ptr, mpfr_srcptr, mpfr_srcptr, mpfr_rnd_t);
+extern int mpfr_cmp_ui(mpfr_srcptr, unsigned long);
+extern double mpfr_get_d(mpfr_srcptr, mpfr_rnd_t);
+extern const char *mpfr_get_version(void);
+#endif
+
+static inline int is_power_of_two_u64(uint64_t x) {
+  return x && ((x & (x - 1)) == 0);
+}
+
+typedef struct {
+  uint64_t checked;
+  uint64_t failures;
+  double min_lower;
+  double min_upper;
+  uint64_t min_lower_m, min_lower_n;
+  uint64_t min_upper_m, min_upper_n;
+  uint64_t first_fail_m, first_fail_guess;
+} Stats;
+
+int main(int argc, char **argv) {
+  uint64_t start = 1;
+  uint64_t limit = (1ULL << 20);
+  int bits = 192;
+  if (argc > 1) start = strtoull(argv[1], NULL, 0);
+  if (argc > 2) limit = strtoull(argv[2], NULL, 0);
+  if (argc > 3) bits = atoi(argv[3]);
+  if (start < 1 || limit <= start) {
+    fprintf(stderr, "bad range\n");
+    return 2;
+  }
+
+  int nt = omp_get_max_threads();
+  Stats *stats = calloc((size_t)nt, sizeof(Stats));
+  if (!stats) return 3;
+  for (int i = 0; i < nt; ++i) {
+    stats[i].min_lower = INFINITY;
+    stats[i].min_upper = INFINITY;
+  }
+
+  const long double theta = logl(3.0L) / logl(2.0L);
+  double t0 = omp_get_wtime();
+
+  mpfr_t two, three, ln2_lo, ln2_hi, ln3_lo, ln3_hi;
+  mpfr_init2(two, bits); mpfr_init2(three, bits);
+  mpfr_init2(ln2_lo, bits); mpfr_init2(ln2_hi, bits);
+  mpfr_init2(ln3_lo, bits); mpfr_init2(ln3_hi, bits);
+  mpfr_set_ui(two, 2, MPFR_RNDN);
+  mpfr_set_ui(three, 3, MPFR_RNDN);
+  mpfr_log(ln2_lo, two, MPFR_RNDD);
+  mpfr_log(ln2_hi, two, MPFR_RNDU);
+  mpfr_log(ln3_lo, three, MPFR_RNDD);
+  mpfr_log(ln3_hi, three, MPFR_RNDU);
+
+#pragma omp parallel
+  {
+    int tid = omp_get_thread_num();
+    Stats *st = &stats[tid];
+    mpfr_t xm, xn, xnp1;
+    mpfr_t logm_lo, logm_hi, logn_hi, lognp1_lo;
+    mpfr_t lhs_lo, lhs_hi, rhs_lo, rhs_hi, dl, du;
+    mpfr_init2(xm, bits); mpfr_init2(xn, bits); mpfr_init2(xnp1, bits);
+    mpfr_init2(logm_lo, bits); mpfr_init2(logm_hi, bits);
+    mpfr_init2(logn_hi, bits); mpfr_init2(lognp1_lo, bits);
+    mpfr_init2(lhs_lo, bits); mpfr_init2(lhs_hi, bits);
+    mpfr_init2(rhs_lo, bits); mpfr_init2(rhs_hi, bits);
+    mpfr_init2(dl, bits); mpfr_init2(du, bits);
+
+#pragma omp for schedule(static)
+    for (uint64_t m = start; m < limit; ++m) {
+      if (is_power_of_two_u64(m)) continue;
+
+      /* This is only a locator.  The MPFR inequalities below are the proof. */
+      uint64_t guess = (uint64_t)floorl(expl(theta * logl((long double)m)));
+
+      mpfr_set_ui(xm, (unsigned long)m, MPFR_RNDN);
+      mpfr_log(logm_lo, xm, MPFR_RNDD);
+      mpfr_log(logm_hi, xm, MPFR_RNDU);
+      mpfr_mul(lhs_lo, logm_lo, ln3_lo, MPFR_RNDD);
+      mpfr_mul(lhs_hi, logm_hi, ln3_hi, MPFR_RNDU);
+
+      int ok = 0;
+      uint64_t certn = 0;
+      double dl_d = 0.0, du_d = 0.0;
+      static const int offsets[7] = {0, -1, 1, -2, 2, -3, 3};
+      for (int oi = 0; oi < 7; ++oi) {
+        int off = offsets[oi];
+        if (off < 0 && guess < (uint64_t)(-off) + 1) continue;
+        uint64_t n = (uint64_t)((int64_t)guess + off);
+        if (n < 1) continue;
+
+        mpfr_set_ui(xn, (unsigned long)n, MPFR_RNDN);
+        mpfr_set_ui(xnp1, (unsigned long)(n + 1), MPFR_RNDN);
+
+        /* Directed lower bound for log(m)log(3)-log(n)log(2). */
+        mpfr_log(logn_hi, xn, MPFR_RNDU);
+        mpfr_mul(rhs_hi, logn_hi, ln2_hi, MPFR_RNDU);
+        mpfr_sub(dl, lhs_lo, rhs_hi, MPFR_RNDD);
+        if (mpfr_cmp_ui(dl, 0) <= 0) continue;
+
+        /* Directed lower bound for log(n+1)log(2)-log(m)log(3). */
+        mpfr_log(lognp1_lo, xnp1, MPFR_RNDD);
+        mpfr_mul(rhs_lo, lognp1_lo, ln2_lo, MPFR_RNDD);
+        mpfr_sub(du, rhs_lo, lhs_hi, MPFR_RNDD);
+        if (mpfr_cmp_ui(du, 0) <= 0) continue;
+
+        ok = 1;
+        certn = n;
+        dl_d = mpfr_get_d(dl, MPFR_RNDD);
+        du_d = mpfr_get_d(du, MPFR_RNDD);
+        break;
+      }
+
+      if (!ok) {
+        ++st->failures;
+        if (!st->first_fail_m || m < st->first_fail_m) {
+          st->first_fail_m = m;
+          st->first_fail_guess = guess;
+        }
+        continue;
+      }
+
+      ++st->checked;
+      if (dl_d < st->min_lower) {
+        st->min_lower = dl_d;
+        st->min_lower_m = m;
+        st->min_lower_n = certn;
+      }
+      if (du_d < st->min_upper) {
+        st->min_upper = du_d;
+        st->min_upper_m = m;
+        st->min_upper_n = certn;
+      }
+    }
+
+    mpfr_clear(xm); mpfr_clear(xn); mpfr_clear(xnp1);
+    mpfr_clear(logm_lo); mpfr_clear(logm_hi);
+    mpfr_clear(logn_hi); mpfr_clear(lognp1_lo);
+    mpfr_clear(lhs_lo); mpfr_clear(lhs_hi);
+    mpfr_clear(rhs_lo); mpfr_clear(rhs_hi);
+    mpfr_clear(dl); mpfr_clear(du);
+  }
+
+  Stats total = {0};
+  total.min_lower = INFINITY;
+  total.min_upper = INFINITY;
+  for (int i = 0; i < nt; ++i) {
+    Stats *s = &stats[i];
+    total.checked += s->checked;
+    total.failures += s->failures;
+    if (s->min_lower < total.min_lower) {
+      total.min_lower = s->min_lower;
+      total.min_lower_m = s->min_lower_m;
+      total.min_lower_n = s->min_lower_n;
+    }
+    if (s->min_upper < total.min_upper) {
+      total.min_upper = s->min_upper;
+      total.min_upper_m = s->min_upper_m;
+      total.min_upper_n = s->min_upper_n;
+    }
+    if (s->first_fail_m &&
+        (!total.first_fail_m || s->first_fail_m < total.first_fail_m)) {
+      total.first_fail_m = s->first_fail_m;
+      total.first_fail_guess = s->first_fail_guess;
+    }
+  }
+
+  double elapsed = omp_get_wtime() - t0;
+  printf("mpfr_version=%s\n", mpfr_get_version());
+  printf("range=[%" PRIu64 ",%" PRIu64 ")\n", start, limit);
+  printf("precision_bits=%d\nthreads=%d\n", bits, nt);
+  printf("checked_nonpowers=%" PRIu64 "\n", total.checked);
+  printf("failures=%" PRIu64 "\n", total.failures);
+  printf("min_lower_log_margin=%.17g at (m,n)=(%" PRIu64 ",%" PRIu64 ")\n",
+         total.min_lower, total.min_lower_m, total.min_lower_n);
+  printf("min_upper_log_margin=%.17g at (m,n)=(%" PRIu64 ",%" PRIu64 ")\n",
+         total.min_upper, total.min_upper_m, total.min_upper_n);
+  if (total.failures) {
+    printf("first_failure=(m,guess)=(%" PRIu64 ",%" PRIu64 ")\n",
+           total.first_fail_m, total.first_fail_guess);
+  }
+  printf("elapsed_seconds=%.6f\n", elapsed);
+
+  mpfr_clear(two); mpfr_clear(three);
+  mpfr_clear(ln2_lo); mpfr_clear(ln2_hi);
+  mpfr_clear(ln3_lo); mpfr_clear(ln3_hi);
+  free(stats);
+  return total.failures ? 1 : 0;
+}
+\end{lstlisting}
+
+A standard build on a system with MPFR development headers is
+\begin{lstlisting}[language=bash]
+gcc -O3 -fopenmp mpfr_scan.c -lmpfr -lm -o mpfr_scan
+OMP_NUM_THREADS=5 ./mpfr_scan 1 67108864 192
+\end{lstlisting}
+The recorded audit used sixteen shorter invocations to produce independently inspectable
+chunk logs.
+
+\section{Complete chunk audit}\label{app:chunk-audit}
+
+The canonical chunk log has SHA-256 digest
+\begin{center}
+\small\ttfamily
+dcaa7f3b7e5be44acaee9015a2045da14ee42d8fa2d96b9619cdd44c072a6fd7
+\end{center}
+and contains the full stdout of every invocation.  The table reports the exact scanned
+integer interval, number of non-powers certified, and the smallest directed lower and upper
+logarithmic margins in each chunk.  Every failure count was zero.
+
+\begin{longtable}{@{}r r r r r@{}}
+\caption{Directed-rounding audit through \(2^{26}\).}\label{tab:chunk-audit}\\
+\toprule
+chunk & integer range & checked & min. lower gap & min. upper gap\\
+\midrule
+\endfirsthead
+\toprule
+chunk & integer range & checked & min. lower gap & min. upper gap\\
+\midrule
+\endhead
+0 & 1--4{,}194{,}303 & 4{,}194{,}281 & $1.1539\times10^{-17}$ & $3.0076\times10^{-17}$ \\
+1 & 4{,}194{,}304--8{,}388{,}607 & 4{,}194{,}303 & $4.6319\times10^{-20}$ & $1.3515\times10^{-19}$ \\
+2 & 8{,}388{,}608--12{,}582{,}911 & 4{,}194{,}303 & $1.2811\times10^{-18}$ & $1.3515\times10^{-19}$ \\
+3 & 12{,}582{,}912--16{,}777{,}215 & 4{,}194{,}304 & $4.6319\times10^{-20}$ & $2.9082\times10^{-19}$ \\
+4 & 16{,}777{,}216--20{,}971{,}519 & 4{,}194{,}303 & $1.1898\times10^{-18}$ & $1.3515\times10^{-19}$ \\
+5 & 20{,}971{,}520--25{,}165{,}823 & 4{,}194{,}304 & $5.4212\times10^{-19}$ & $1.5111\times10^{-19}$ \\
+6 & 25{,}165{,}824--29{,}360{,}127 & 4{,}194{,}304 & $4.6319\times10^{-20}$ & $1.7669\times10^{-19}$ \\
+7 & 29{,}360{,}128--33{,}554{,}431 & 4{,}194{,}304 & $1.4439\times10^{-19}$ & $5.4132\times10^{-21}$ \\
+8 & 33{,}554{,}432--37{,}748{,}735 & 4{,}194{,}303 & $4.2839\times10^{-19}$ & $1.3515\times10^{-19}$ \\
+9 & 37{,}748{,}736--41{,}943{,}039 & 4{,}194{,}304 & $3.9292\times10^{-19}$ & $1.0460\times10^{-19}$ \\
+10 & 41{,}943{,}040--46{,}137{,}343 & 4{,}194{,}304 & $1.9177\times10^{-19}$ & $1.5111\times10^{-19}$ \\
+11 & 46{,}137{,}344--50{,}331{,}647 & 4{,}194{,}304 & $1.0117\times10^{-19}$ & $3.4145\times10^{-19}$ \\
+12 & 50{,}331{,}648--54{,}525{,}951 & 4{,}194{,}304 & $5.6927\times10^{-20}$ & $1.2322\times10^{-19}$ \\
+13 & 54{,}525{,}952--58{,}720{,}255 & 4{,}194{,}304 & $3.6447\times10^{-20}$ & $1.1345\times10^{-19}$ \\
+14 & 58{,}720{,}256--62{,}914{,}559 & 4{,}194{,}304 & $6.7779\times10^{-20}$ & $5.4132\times10^{-21}$ \\
+15 & 62{,}914{,}560--67{,}108{,}863 & 4{,}194{,}304 & $5.0923\times10^{-20}$ & $3.9197\times10^{-20}$ \\
+\midrule
+\multicolumn{2}{r}{\textbf{total}} & \textbf{67{,}108{,}837} & & \\
+\bottomrule
+\end{longtable}
+
+The global lower-gap record occurred at
+\((58{,}570{,}438,2{,}048{,}703{,}434{,}093)\); the global upper-gap record occurred at
+\((29{,}411{,}704,687{,}581{,}893{,}443)\).  The repeated upper gap in chunk~14 comes
+from exact scaling by two on the input and by three on its \(\theta\)-power.
+
+\section{Reproducibility checklist}\label{app:reproducibility}
+
+To reproduce the finite claim independently:
+\begin{enumerate}
+\item obtain MPFR~4.2.x and GMP on a 64-bit platform;
+\item save the source in \cref{app:scanner} and verify its SHA-256 digest;
+\item compile with optimization and OpenMP, or remove OpenMP pragmas for a serial run;
+\item run the sixteen half-open intervals listed in \cref{tab:chunk-audit} at 192 bits;
+\item verify that every invocation reports \texttt{failures=0};
+\item sum \texttt{checked\_nonpowers} and obtain \(67{,}108{,}837\);
+\item compare the two global extremal records;
+\item optionally rerun at 256 or 320 bits and on a second MPFR build;
+\item for a theorem-grade result, translate the intervals into exact rational certificates
+and replay them in Lean rather than trusting the executable.
+\end{enumerate}
+
+The finite statement is deterministic.  Thread count changes execution time and reduction
+order for the recorded minimum metadata, but not whether an individual directed inequality
+is certified.
+
+\begin{thebibliography}{99}
+
+\bibitem{AlaogluErdos1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock On highly composite and similar numbers,
+\newblock \emph{Transactions of the American Mathematical Society} \textbf{56} (1944),
+448--469.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{FousseEtAl2007}
+L.~Fousse, G.~Hanrot, V.~Lef\`evre, P.~P\'elissier, and P.~Zimmermann,
+\newblock MPFR: A multiple-precision binary floating-point library with correct rounding,
+\newblock \emph{ACM Transactions on Mathematical Software} \textbf{33} (2007), no.~2,
+article~13.
+
+\bibitem{Gelfond1934}
+A.~O.~Gel'fond,
+\newblock Sur le septi\`eme probl\`eme de Hilbert,
+\newblock \emph{Izvestiya Akademii Nauk SSSR} \textbf{7} (1934), 623--630.
+
+\bibitem{KuipersNiederreiter1974}
+L.~Kuipers and H.~Niederreiter,
+\newblock \emph{Uniform Distribution of Sequences},
+\newblock Wiley, 1974; reprinted by Dover, 2006.
+
+\bibitem{Lang1966}
+S.~Lang,
+\newblock \emph{Introduction to Transcendental Numbers},
+\newblock Addison--Wesley, 1966.
+
+\bibitem{Niven1956}
+I.~Niven,
+\newblock \emph{Irrational Numbers},
+\newblock Carus Mathematical Monographs, Mathematical Association of America, 1956.
+
+\bibitem{Ramachandra1968II}
+K.~Ramachandra,
+\newblock Contributions to the theory of transcendental numbers, II,
+\newblock \emph{Acta Arithmetica} \textbf{14} (1968), 73--88,
+\newblock DOI: \url{https://doi.org/10.4064/aa-14-1-73-88}.
+
+\bibitem{Roy1992}
+D.~Roy,
+\newblock Matrices whose coefficients are linear forms in logarithms,
+\newblock \emph{Journal of Number Theory} \textbf{41} (1992), 22--47,
+\newblock DOI: \url{https://doi.org/10.1016/0022-314X(92)90081-Y}.
+
+\bibitem{Schneider1934}
+T.~Schneider,
+\newblock Transzendenzuntersuchungen periodischer Funktionen, I--II,
+\newblock \emph{Journal f\"ur die reine und angewandte Mathematik} \textbf{172}
+(1934), 65--74 and 175--182.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\newblock Open Diophantine problems,
+\newblock \emph{Moscow Mathematical Journal} \textbf{4} (2004), 245--305;
+preprint \texttt{arXiv:math/0001155} (2000).
+
+\bibitem{TheoremDB2026}
+TheoremDB,
+\newblock Four exponentials conjecture, problem P4,
+\newblock state ``open'', reviewed 31 July 2026,
+\newblock \url{https://theoremdb.org/statements/P4/}.
+
+\bibitem{ProveItSnapshot}
+V.~Reshetnikov,
+\newblock \texttt{ProveIt}: machine-checked mathematics in Lean~4,
+\newblock repository snapshot at commit
+\commit{5d3982ceb12644fdd3499569d9db5f62f9a31dc6}, 20 August 2026,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{Mathlib}
+The Mathlib Community,
+\newblock \emph{Mathlib: the Lean mathematical library},
+\newblock \url{https://github.com/leanprover-community/mathlib4}.
+
+\end{thebibliography}
+
+\end{document}
