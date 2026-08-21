@@ -1,0 +1,3251 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=0.92in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{listings}
+\usepackage{seqsplit}
+
+\definecolor{LeanBlue}{RGB}{28,86,140}
+\definecolor{PaperGreen}{RGB}{20,112,72}
+\definecolor{NewViolet}{RGB}{99,56,150}
+\definecolor{ComputeOrange}{RGB}{166,86,20}
+\definecolor{CautionRed}{RGB}{150,42,42}
+\definecolor{MutedGray}{RGB}{88,96,105}
+\definecolor{CodeBg}{RGB}{247,248,250}
+\definecolor{RuleGray}{RGB}{95,103,112}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=LeanBlue,
+  citecolor=PaperGreen,
+  urlcolor=LeanBlue,
+  pdftitle={Continuing the Alaoglu--Erdos Program},
+  pdfauthor={OpenAI GPT-5.6 Pro; prepared for Vladimir Reshetnikov},
+  pdfsubject={Synchronized Sturmian dynamics, effective logarithmic separation, and sharp p-adic determinant ceilings}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s integer-exponent conjecture}
+\rhead{Continuation report}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.72em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.72em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.72em}{}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.27em,topsep=0.38em}
+\setlist[enumerate]{leftmargin=2.25em,itemsep=0.27em,topsep=0.38em}
+\setlist[description]{leftmargin=3.7cm,labelsep=0.6cm,itemsep=0.35em,topsep=0.4em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.53em}
+\setlength{\emergencystretch}{3.5em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{target}[theorem]{Research target}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Caution}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Qbar}{\overline{\mathbb Q}}
+\newcommand{\Sol}{\mathcal S}
+\newcommand{\Cand}{\mathcal C}
+\newcommand{\DeltaTri}{\mathcal T}
+\newcommand{\fract}[1]{\left\{#1\right\}}
+\newcommand{\distZ}[1]{\left\lVert #1\right\rVert_{\Z}}
+\newcommand{\vpp}[2]{v_{#1}\!\left(#2\right)}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\sha}[1]{\texttt{\seqsplit{#1}}}
+\newcommand{\lean}[1]{\texttt{#1}}
+\newcommand{\module}[1]{{\ttfamily\scriptsize\seqsplit{#1}}}
+\newcommand{\statuslean}{\textcolor{LeanBlue}{\textbf{[Lean]}}}
+\newcommand{\statusrepo}{\textcolor{LeanBlue}{\textbf{[repository build]}}}
+\newcommand{\statusnew}{\textcolor{NewViolet}{\textbf{[new paper proof]}}}
+\newcommand{\statusclassical}{\textcolor{MutedGray}{\textbf{[classical]}}}
+\newcommand{\statuscomp}{\textcolor{ComputeOrange}{\textbf{[computation]}}}
+\newcommand{\statusopen}{\textcolor{CautionRed}{\textbf{[open]}}}
+
+\newenvironment{statusbox}[1]
+{\begin{center}\begin{minipage}{0.95\textwidth}\raggedright\hrule\vspace{0.45em}\textbf{Status.} #1\par\vspace{0.35em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\newenvironment{resultbox}
+{\begin{center}\begin{minipage}{0.95\textwidth}\hrule\vspace{0.45em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{CodeBg},
+  frame=single,
+  rulecolor=\color{RuleGray},
+  numbers=left,
+  numberstyle=\tiny\color{RuleGray},
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4
+}
+\lstdefinestyle{leanstyle}{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{CodeBg},
+  frame=single,
+  rulecolor=\color{RuleGray},
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2
+}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{0.8cm}
+{\Huge\bfseries Continuing the Alaoglu--Erd\H{o}s Program\par}
+\vspace{0.55cm}
+{\LARGE Synchronized Sturmian Dynamics, Effective Logarithmic Separation,\par}
+\vspace{0.12cm}
+{\LARGE and Sharp $p$-Adic Determinant Ceilings\par}
+\vspace{0.9cm}
+{\large A continuation of the attached unified report on\par}
+\vspace{0.1cm}
+{\large \url{https://github.com/VladimirReshetnikov/ProveIt}\par}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Verdict.}
+I did not obtain an unconditional proof of the Alaoglu--Erd\H{o}s conjecture.  The exact
+$2\times2$ logarithmic determinant remains the terminal obstruction.  The continuation does,
+however, produce several rigorous advances and two fairly sharp no-go theorems for the most
+natural determinant strategies.
+
+A hypothetical primitive counterexample has a new exact description as one aperiodic
+Sturmian word simultaneously driving a dyadic and a triadic rational recurrence.  Baker's
+theory upgrades the elementary exponential continued-fraction bound in the source report to
+an effective polynomial irrationality measure for the primitive generator.  On the
+$p$-adic side, ordinary block Vandermonde valuations can be computed through all primes in the
+fixed supports, giving a depth-sensitive asymptotic and a universal $87.1049\ldots\%$ ceiling
+for the product of the input and output determinants.  For the balanced mixed-semigroup
+determinant, the exact asymptotic min-plus divisor is governed by a two-dimensional Gini norm.
+The resulting universal ceiling is $4/5$; it improves to $7/10$ in the cross-coprime branch,
+while the structural places $2$ and $3$ alone contribute only $3/10$ there.  Finally, using
+the complete triangular $(n,k)$ grid does not remove the termwise obstruction: optimal
+transport gives the universal ceiling $\pi/4$ relative to the sharp largest-term
+archimedean bound.
+
+These results identify the remaining opportunity precisely.  A determinant proof must obtain
+leading-order divisibility from genuine cancellation among equal-valuation terms, not merely
+from entrywise valuations; or it must beat the standard archimedean bound through the
+Harish--Chandra--Itzykson--Zuber free energy.  The report gives exact formalization targets for
+both possibilities.
+\end{minipage}
+\vfill
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.12cm}
+{\normalsize OpenAI GPT-5.6 Pro\par}
+\vspace{0.35cm}
+{\large August 21, 2026\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\begin{abstract}
+Let $\vartheta=\log 3/\log 2$.  The Alaoglu--Erd\H{o}s conjecture says that
+$2^x,3^x\in\Z$ for real $x$ forces $x\in\Z$.  The attached unified report develops an exact
+conditional structure: if the conjecture fails, there is a least nonintegral generator
+$\beta$, integers $M=2^\beta$ and $A=3^\beta$, and unique coordinate descriptions
+$\Sol=\Nzero+\Nzero\beta$ and $\Cand=\{2^nM^k:n,k\in\Nzero\}$.  It also gives local and mixed
+Vandermonde determinant bounds, but finds a missing logarithm between the number of nodes
+available in a dyadic block and the number required by a purely archimedean interpolation
+argument.
+
+This continuation first normalizes $\beta=B+\alpha$, $0<\alpha<1$, and proves that failure is
+equivalent to a single irrational lower mechanical word
+$s_k=\lfloor(k+1)\alpha\rfloor-\lfloor k\alpha\rfloor$ simultaneously driving
+\[
+ R_{k+1}=\frac{(M/2^B)R_k}{2^{s_k}},\qquad
+ S_{k+1}=\frac{(A/3^B)S_k}{3^{s_k}},
+\]
+with $R_k\in[1,2)$ and $S_k\in[1,3)$.  This is a synchronized dyadic--triadic Sturmian
+formulation, and the primitive-output theorem makes at least one denominator sequence attain
+its full base-power depth.  Next, Baker--W\"ustholz/Matveev lower bounds give effective
+constants $c(M)>0$ and $\mu(M)<\infty$ for which
+$|\beta-p/q|\ge c(M)q^{-\mu(M)}$; consequently the convergent denominators grow only
+polynomially from one stage to the next.  This is much stronger than the elementary
+single-exponential recurrence in the source report, although still compatible with the exact
+conditional block population.
+
+The main new work is a sharp $p$-adic audit.  For the ordinary Vandermonde on all conditional
+candidates in one dyadic block, all valuations at primes supporting $M$ can be evaluated
+exactly, and the analogous output formula is exact up to $O(T^2)$.  If
+$a=v_2(M)$, $b=v_3(A)$, $\delta_2=\beta-a$, and $\delta_3=\beta-b$, then the all-support
+termwise divisor of the product of the input and output Vandermondes occupies the asymptotic
+fraction
+\[
+ 1-\frac{\delta_2\log2+\delta_3\log3}{3\beta\log6}
+\]
+of the leading archimedean budget.  Since the primitive pair has $\min(a,b)=0$, this fraction
+is at most $1-\log2/(3\log6)=0.871049\ldots$.
+
+For the mixed-semigroup determinant, let $(u_j,v_j)$ be the first $N$ points of
+$\Nzero^2$ ordered by $u+\vartheta v$.  The first-order assignment minima at every prime admit
+an exact continuum limit.  If $X=(X_1,X_2)$ is uniform on the triangle
+$\{x,z\ge0:x+z\le1\}$, define the Gini norm
+$\mathfrak G(r,s)=\mathbb E|r(X_1-X_1')+s(X_2-X_2')|$.  Normalized prime-valuation slope
+vectors $c_p\in\R^2$ satisfy $\sum_pc_p=0$, and the termwise divisor fraction is
+\[
+ 1-\frac38\sum_p\mathfrak G(c_p)+o(1).
+\]
+The primitive condition and the triangle inequality give
+$\sum_p\mathfrak G(c_p)\ge8/15$, hence the universal ceiling $4/5$.  If
+$\gcd(MA,6)=1$, the ceiling improves to $7/10$; using only $p=2,3$ gives $3/10$.  The Gini norm
+is evaluated in closed form from the three vertex values $0,r,s$.  This corrects a subsequent
+repository note whose simultaneous base-depth normalization and proposed all-prime $2/3$
+ceiling are not valid in full generality.
+
+Finally, the complete triangular grid of all $(n,k)$ with $n+k\beta\le T$ supplies
+$\asymp T^2$ rows.  Nevertheless, termwise divisibility still has a universal transport
+ceiling.  The normalized row heights and mixed column weights both have quantile $Q(t)=\sqrt t$;
+therefore the smallest and largest assignment energies tend to $\pi/8$ and $1/2$,
+respectively.  Any all-prime min-plus divisor is bounded by the former, whereas the sharp
+largest-term determinant bound is governed by the latter.  Their ratio is $\pi/4$.  The only
+remaining determinant mechanism is thus genuine same-valuation cancellation or a sharper
+archimedean free-energy estimate.  The Harish--Chandra--Itzykson--Zuber identity is recorded
+as the natural analytic framework, and the report ends with a branch-sensitive research and
+Lean formalization program.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Executive answer, scope, and trust boundaries}
+
+\subsection{The requested goal and the outcome}
+
+The requested primary goal was to continue the attached research program and prove the
+following statement.
+
+\begin{conjecture}[Alaoglu--Erd\H{o}s]
+If $x\in\R$ and $2^x,3^x\in\Z$, then $x\in\Z$.
+\end{conjecture}
+
+I did not find an unconditional proof.  In particular, none of the arguments below converts
+\[
+  \log(2^x)\log3-\log(3^x)\log2=0
+\]
+into a forbidden linear form in logarithms of algebraic numbers.  The equality is bilinear in
+logarithms, and normalizing it gives exactly the unresolved $2\times2$ determinant behind the
+four exponentials conjecture.  Baker-type estimates control every \emph{nonzero} linear form
+that occurs after fixing integer coefficients; they do not prove that this special bilinear
+form cannot vanish.
+
+The continuation nevertheless changes the technical map in useful ways.  It obtains an exact
+symbolic-dynamical formulation, replaces an elementary continued-fraction estimate by an
+effective polynomial one, computes the full leading $p$-adic content of ordinary block
+Vandermondes, and gives sharp continuum formulas for the termwise divisibility of two much
+larger determinant constructions.  These calculations do more than say that a method ``seems
+too weak'': they quantify the leading constant that is available and isolate the precise
+kind of extra cancellation a successful proof would have to produce.
+
+\subsection{The principal new results}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.55\textwidth}>{\raggedright\arraybackslash}p{0.13\textwidth}@{}}
+\toprule
+Result & Content & Status\\
+\midrule
+\endfirsthead
+\toprule
+Result & Content & Status\\
+\midrule
+\endhead
+Synchronized Sturmian orbit & A counterexample is equivalent to one irrational mechanical word simultaneously controlling the dyadic and triadic denominator jumps of two compact rational recurrences. & \statusnew\\
+\addlinespace
+Effective irrationality of $\beta$ & Baker--W\"ustholz/Matveev gives $|\beta-p/q|\ge c(M)q^{-\mu(M)}$ and hence polynomial, rather than exponential, recurrence bounds for continued-fraction denominators. & \statusclassical{} plus \statusnew\\
+\addlinespace
+Ordinary Vandermonde audit & The valuations at every prime in the fixed supports of $M$ and $A$ are computed to leading order.  The product construction has universal ceiling $1-\log2/(3\log6)=0.871049\ldots$. & \statusnew\\
+\addlinespace
+Gini assignment formula & For the balanced mixed-semigroup determinant, the exact termwise all-prime divisor fraction is $1-\frac38\sum_p\mathfrak G(c_p)+o(1)$ for an explicit norm $\mathfrak G$. & \statusnew\\
+\addlinespace
+Universal $4/5$ ceiling & The primitive condition forces $\sum_p\mathfrak G(c_p)\ge8/15$.  Thus entrywise/min-plus divisibility can supply at most $80\%$ of the leading block determinant height. & \statusnew\\
+\addlinespace
+Cross-coprime constants & If $\gcd(MA,6)=1$, the all-prime ceiling is $7/10$, and the places $2$ and $3$ alone contribute exactly $3/10$ in the continuum limit. & \statusnew\\
+\addlinespace
+Full-grid transport ceiling & On the complete triangular $(n,k)$ grid, any termwise all-prime divisor is bounded by the countermonotone energy $\pi/8$, while the largest determinant term has energy $1/2$; the ratio is $\pi/4$. & \statusnew\\
+\addlinespace
+HCIZ reformulation & The full-grid archimedean problem is expressed by the Harish--Chandra--Itzykson--Zuber integral, identifying a concrete free-energy inequality as the remaining analytic target. & \statusclassical{} plus \statusnew\\
+\bottomrule
+\end{longtable}
+
+\subsection{Evidence labels}
+
+The labels used in this document are intentionally conservative.
+
+\begin{description}
+\item[\statuslean] The attached report says the statement has been accepted by the Lean kernel in the repository snapshot it audits.  I did not independently replay the entire Lean build in this environment.
+\item[\statusrepo] A current repository commit or report states that an aggregate build passed.  This is repository metadata, not an independently reproduced kernel audit here.
+\item[\statusnew] A complete mathematical argument is supplied in this report.  It has been algebraically and numerically stress-tested, but it is not yet formalized or peer-reviewed.
+\item[\statusclassical] The result is standard literature, used with an explicit citation.
+\item[\statuscomp] A finite calculation or convergence table checks formulas and constants; it is not used as a substitute for proof.
+\item[\statusopen] The statement is proposed as a precise target, not asserted.
+\end{description}
+
+\subsection{What the determinant ceilings do and do not prove}
+
+A ceiling such as $4/5$ has a specific meaning.  Given an integer determinant
+$D=\det(E_{ij})$, define at each prime $p$ the minimum valuation of a Leibniz term,
+\[
+  \tau_p=\min_{\sigma}\sum_i v_p(E_{i,\sigma(i)}).
+\]
+Every term, and therefore $D$, is divisible by $p^{\tau_p}$.  The product
+$\prod_pp^{\tau_p}$ is the \emph{termwise} or \emph{tropical} divisor.  It ignores extra
+valuation caused by cancellation among several terms attaining the same minimum.  The $4/5$
+theorem says that this automatic divisor cannot occupy more than four-fifths of the leading
+archimedean height for the balanced block construction.  It does \emph{not} say that the true
+valuation $v_p(D)$ is at most the tropical minimum; the opposite inequality holds, and extra
+cancellation may be large.  Thus the result retires only the naïve entrywise-divisibility
+version of the method.  It leaves a sharply defined cancellation problem.
+
+\section{Baseline inherited from the unified report}
+
+\subsection{Notation}
+
+Set
+\[
+  \vartheta=\frac{\log3}{\log2}.
+\]
+The solution and candidate sets are
+\[
+  \Sol=\{x\ge0:2^x,3^x\in\N\},
+  \qquad
+  \Cand=\{m\in\N:m^{\vartheta}\in\N\}.
+\]
+The map $x\mapsto2^x$ is a bijection $\Sol\to\Cand$.  Integer exponents give the obvious
+solutions $\Nzero\subseteq\Sol$ and candidates $2^{\Nzero}\subseteq\Cand$.
+
+Throughout the conditional sections, suppose the conjecture fails.  The exact structure
+proved in the source report then supplies a least nonintegral solution $\beta>0$ and primitive
+outputs
+\[
+  M=2^\beta\in\N,
+  \qquad
+  A=3^\beta\in\N.
+\]
+Every solution and candidate has a unique coordinate representation
+\begin{equation}\label{eq:exact-structure}
+  \Sol=\{n+k\beta:n,k\in\Nzero\},
+  \qquad
+  \Cand=\{2^nM^k:n,k\in\Nzero\}.
+\end{equation}
+The associated output is
+\[
+  (2^nM^k)^\vartheta=3^nA^k.
+\]
+We write
+\[
+  a=v_2(M),\qquad b=v_3(A),\qquad c=v_2(A),\qquad d=v_3(M).
+\]
+The inherited primitive-output theorem includes the crucial condition
+\begin{equation}\label{eq:no-matched-depth}
+  \min(a,b)=0.
+\end{equation}
+It is important not to silently strengthen \eqref{eq:no-matched-depth} to $a=b=0$.
+
+\subsection{Inherited results used here}
+
+The following facts are taken from the attached unified report and its referenced Lean
+modules.
+
+\begin{itemize}
+\item \statuslean{} A nonintegral solution, if it exists, is transcendental.  The constant
+      $\vartheta$ is transcendental, by Gelfond--Schneider.
+\item \statuslean{} Failure gives the exact free rank-two monoid structure
+      \eqref{eq:exact-structure}, including uniqueness of $(n,k)$.
+\item \statuslean{} In a dyadic exponent block $[T,T+1)$, the solutions are exactly
+      \[
+        T
+        \quad\text{and}\quad
+        T-\lfloor k\beta\rfloor+k\beta,
+        \qquad 1\le k\le\left\lfloor\frac{T+1}{\beta}\right\rfloor.
+      \]
+      Thus the block count is $1+\lfloor(T+1)/\beta\rfloor$.
+\item \statuslean{} The primitive pair obeys \eqref{eq:no-matched-depth}; both outputs cannot
+      simultaneously be $\{2,3\}$-smooth.
+\item \statuslean{} Mixed monomials $m^u(m^\vartheta)^v$ are integers for
+      $(u,v)\in\Nzero^2$, and generalized Vandermonde determinants built from distinct
+      candidate nodes and distinct exponents $u+\vartheta v$ are nonzero integers.
+\item \statuslean{} The kernel-checked finite exclusion in the attached report gives
+      $x\ge12$ for a nonintegral solution.  The report separately records a directed-rounding
+      software exclusion through $x\le26$.
+\end{itemize}
+
+The continuation does not reprove this large inherited corpus.  It restates every inherited
+fact at the point where it enters a new argument.
+
+\subsection{Repository reconciliation as of August 21, 2026}
+
+The attached source is internally newer than one bibliographic pin printed near its end: its
+body and status matrix already discuss the enlarged algebraic-output and determinant module
+surface, although a repository item still names commit
+\sha{5d3982ceb12644fdd3499569d9db5f62f9a31dc6}.  During this continuation I checked the
+current public repository history.  Commit
+\sha{78f80c5d3f6f9afd64ecb72ddb154c85e2036bc1} reports a successful aggregate build with
+$67$ imported modules and merges the later algebraic-output work.  Subsequent commits add a
+literature compass and a short $p$-adic priority note; the latest snapshot consulted while
+writing was \sha{ff9a9f5aa3a3f02599de93fc053e60918f269855}.
+
+\begin{statusbox}{\statusrepo}
+The build claims in the preceding paragraph are taken from repository commit messages and
+files.  I did not independently run all Lean jobs.  The mathematical arguments newly stated
+below are therefore labelled \statusnew, not \statuslean.
+\end{statusbox}
+
+\subsection{The exact remaining logarithmic wall}
+
+Writing $M=2^\beta$ and $A=3^\beta$ gives
+\[
+  \beta=\frac{\log M}{\log2}=\frac{\log A}{\log3}
+\]
+and hence
+\begin{equation}\label{eq:bilinear-wall}
+  \log M\,\log3-\log A\,\log2=0.
+\end{equation}
+The four numbers $\log2,\log3,\log M,\log A$ are logarithms of algebraic numbers.  Equation
+\eqref{eq:bilinear-wall} is a vanishing $2\times2$ determinant.  Four exponentials would
+exclude it because $2,3$ are multiplicatively independent and $1,\beta$ are linearly
+independent over $\Q$, but four exponentials remains open.  The new work below therefore
+pursues information that is invisible in the bare real logarithmic determinant: exact floor
+coding, effective separation, and valuations of large integer determinants.
+
+\section{A synchronized Sturmian model of a counterexample}
+\label{sec:sturmian}
+
+\subsection{Fractional-part normalization}
+
+Write
+\[
+  \beta=B+\alpha,
+  \qquad B=\lfloor\beta\rfloor\in\Nzero,
+  \qquad 0<\alpha<1.
+\]
+Since a nonintegral solution is transcendental, $\alpha$ is irrational.  Define the rational
+localized multipliers
+\begin{equation}\label{eq:UV}
+  U=\frac{M}{2^B}=2^\alpha\in\Q\cap(1,2),
+  \qquad
+  V=\frac{A}{3^B}=3^\alpha\in\Q\cap(1,3).
+\end{equation}
+For $k\ge0$, put
+\[
+  e_k=\lfloor k\alpha\rfloor,
+  \qquad
+  s_k=e_{k+1}-e_k\in\{0,1\}.
+\]
+The binary sequence $s=s_0s_1s_2\cdots$ is the lower mechanical word of slope $\alpha$.
+Define compact normalized orbits
+\begin{equation}\label{eq:normalized-orbits}
+  R_k=\frac{U^k}{2^{e_k}}=2^{\fract{k\alpha}}\in[1,2),
+  \qquad
+  S_k=\frac{V^k}{3^{e_k}}=3^{\fract{k\alpha}}\in[1,3).
+\end{equation}
+Both orbits use the \emph{same} fractional part and hence the same symbolic itinerary.
+
+\begin{theorem}[Synchronized dyadic--triadic Sturmian recurrence]\label{thm:sturmian-recurrence}
+Assume a primitive nonintegral solution $\beta$ exists.  Then the rational sequences
+$R_k,S_k$ in \eqref{eq:normalized-orbits} satisfy
+\begin{equation}\label{eq:sturmian-recurrence}
+  R_0=S_0=1,
+  \qquad
+  R_{k+1}=\frac{U R_k}{2^{s_k}},
+  \qquad
+  S_{k+1}=\frac{V S_k}{3^{s_k}},
+\end{equation}
+where
+\begin{equation}\label{eq:sturmian-threshold}
+  s_k=1
+  \quad\Longleftrightarrow\quad
+  \fract{k\alpha}\ge1-\alpha
+  \quad\Longleftrightarrow\quad
+  UR_k\ge2
+  \quad\Longleftrightarrow\quad
+  VS_k\ge3.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:prefix-count}
+  \sum_{j=0}^{N-1}s_j=\lfloor N\alpha\rfloor
+  \qquad(N\ge1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The recurrence follows by subtracting consecutive floor exponents:
+\[
+  R_{k+1}
+  =\frac{U^{k+1}}{2^{e_{k+1}}}
+  =\frac{U U^k}{2^{e_k+s_k}}
+  =\frac{UR_k}{2^{s_k}},
+\]
+and the same calculation with base $3$ gives the formula for $S_k$.  Since
+$e_{k+1}=e_k+1$ exactly when $\fract{k\alpha}+\alpha\ge1$, the first equivalence in
+\eqref{eq:sturmian-threshold} holds.  The identities
+$UR_k=2^{\alpha+\fract{k\alpha}}$ and
+$VS_k=3^{\alpha+\fract{k\alpha}}$ give the other two.  Finally,
+\eqref{eq:prefix-count} telescopes:
+$\sum_{j<N}s_j=e_N-e_0=\lfloor N\alpha\rfloor$.
+\end{proof}
+
+\subsection{Sturmian consequences}
+
+The following facts are classical consequences of irrational mechanical coding
+\cite{MorseHedlund1940,Lothaire2002}.
+
+\begin{corollary}[Aperiodicity, balance, and minimal complexity]\label{cor:sturmian}
+The word $s$ in Theorem~\ref{thm:sturmian-recurrence} is aperiodic.  Any two factors of equal
+length contain numbers of $1$'s differing by at most one, and the number of distinct factors
+of length $n$ is exactly $n+1$.
+\end{corollary}
+
+Aperiodicity has an elementary proof in this setting.  If $s$ were eventually periodic, then
+its limiting density of $1$'s would be rational.  Equation \eqref{eq:prefix-count} shows that
+this density is $\alpha$, contradicting irrationality.  Balance and factor complexity are the
+standard Sturmian characterization.
+
+The point is not merely terminological.  A hypothetical counterexample is no longer described
+only by two rational numbers $U,V$ satisfying a logarithmic equality.  It determines one
+minimal-complexity aperiodic word, and that same word must be realized by two rational
+piecewise-multiplicative systems with multiplicatively independent reset bases $2$ and $3$.
+This is a much more rigid synchronized object.
+
+\subsection{Exact reduced denominators}
+
+The primitive factor depths determine how much cancellation occurs in
+\eqref{eq:normalized-orbits}.  Write
+\[
+  M=2^aW,\quad W\text{ odd},
+  \qquad
+  A=3^bZ,\quad 3\nmid Z.
+\]
+Because $M$ is not a power of $2$ and $A$ is not a power of $3$, one has $W,Z>1$.
+
+\begin{proposition}[Denominator exponents and common jump word]\label{prop:denominators}
+In lowest terms,
+\begin{align}
+  R_k&=\frac{W^k}{2^{q^{(2)}_k}},
+  &q^{(2)}_k&=\lfloor k\beta\rfloor-ak
+              =k(B-a)+\lfloor k\alpha\rfloor,\label{eq:q2}\\
+  S_k&=\frac{Z^k}{3^{q^{(3)}_k}},
+  &q^{(3)}_k&=\lfloor k\beta\rfloor-bk
+              =k(B-b)+\lfloor k\alpha\rfloor.\label{eq:q3}
+\end{align}
+Consequently
+\[
+  q^{(2)}_{k+1}-q^{(2)}_k=B-a+s_k,
+  \qquad
+  q^{(3)}_{k+1}-q^{(3)}_k=B-b+s_k.
+\]
+At least one of the two sequences has baseline jump $B$, because $\min(a,b)=0$.
+\end{proposition}
+
+\begin{proof}
+Using $\lfloor k\beta\rfloor=kB+\lfloor k\alpha\rfloor$,
+\[
+ R_k=\frac{M^k}{2^{\lfloor k\beta\rfloor}}
+     =\frac{2^{ak}W^k}{2^{\lfloor k\beta\rfloor}}
+     =\frac{W^k}{2^{\lfloor k\beta\rfloor-ak}}.
+\]
+The numerator is odd, so this is reduced.  The base-$3$ calculation is identical.  Taking
+successive differences gives the jump formulas, and the last claim is the inherited
+primitive condition \eqref{eq:no-matched-depth}.
+\end{proof}
+
+Thus the same Sturmian bit $s_k$ records whether \emph{both} reduced denominators take their
+large or small permitted jump at time $k$.  One denominator can have a shallower constant
+baseline, but the aperiodic fluctuation is synchronized exactly.
+
+\subsection{An exact equivalent exclusion principle}
+
+The source report already contains localization reformulations such as
+$2^\alpha\in\Z[1/2]$ and $3^\alpha\in\Z[1/3]$.  The recurrence packages them into a symbolic
+statement.
+
+\begin{theorem}[Synchronized Sturmian exclusion is equivalent to Alaoglu--Erd\H{o}s]
+\label{thm:sturmian-equivalence}
+The Alaoglu--Erd\H{o}s conjecture is equivalent to the nonexistence of data
+\[
+  \alpha\in(0,1)\setminus\Q,
+  \qquad
+  U\in\Q\cap(1,2),
+  \qquad
+  V\in\Q\cap(1,3)
+\]
+such that, for the lower mechanical word
+$s_k=\lfloor(k+1)\alpha\rfloor-\lfloor k\alpha\rfloor$, the recurrences
+\[
+  R_0=S_0=1,
+  \qquad R_{k+1}=UR_k/2^{s_k},
+  \qquad S_{k+1}=VS_k/3^{s_k}
+\]
+remain in $[1,2)\cap\Q$ and $[1,3)\cap\Q$, respectively, for every $k$, with
+$U=2^\alpha$ and $V=3^\alpha$.
+Equivalently, it suffices to rule out irrational $\alpha$ for which
+\[
+  2^\alpha\in\Z[1/2],
+  \qquad
+  3^\alpha\in\Z[1/3].
+\]
+\end{theorem}
+
+\begin{proof}
+A counterexample $\beta=B+\alpha$ gives the data by
+Theorem~\ref{thm:sturmian-recurrence}.  Conversely, if such $\alpha,U,V$ exist, choose an
+integer $B$ at least as large as the powers of $2$ and $3$ occurring in the respective
+reduced denominators of $U$ and $V$.  Then
+\[
+  2^{B+\alpha}=2^BU\in\N,
+  \qquad
+  3^{B+\alpha}=3^BV\in\N,
+\]
+while $B+\alpha\notin\Z$.  The recurrence identities are equivalent to
+$R_k=2^{\fract{k\alpha}}$ and $S_k=3^{\fract{k\alpha}}$, so they add an exact dynamic coding
+but no hidden hypothesis.
+\end{proof}
+
+\subsection{Cobham-type and Mahler-type diagnostics}
+
+Cobham's theorem says that a sequence automatic in two multiplicatively independent integer
+bases is ultimately periodic \cite{Cobham1972,AlloucheShallit2003}.  Sturmian words of
+irrational slope are not automatic in any integer base.  Theorem~\ref{thm:sturmian-equivalence}
+therefore suggests a tempting strategy: show that the dyadic rational recurrence makes $s$
+$2$-automatic and that the triadic recurrence makes it $3$-automatic.
+
+That implication is \emph{not} presently available.  Rationality of the multiplier does not
+turn the compact rational state $R_k$ or $S_k$ into a finite-state object; the exact reduced
+denominators grow without bound.  Cobham's theorem becomes applicable only after proving a
+finite-kernel or finite-substitution property, and that is essentially a new arithmetic
+statement.  The synchronized formulation is useful because it identifies this missing lemma
+cleanly rather than treating ``automaticity'' as a metaphor.
+
+\begin{target}[Finite-kernel extraction]
+Show that simultaneous rational realizability of the same irrational mechanical word by
+\eqref{eq:sturmian-recurrence} forces a finite $2$-kernel and a finite $3$-kernel, or derive a
+weaker pair of incompatible substitutive structures.
+\end{target}
+
+A Mahler-function variant is also conceivable: encode the jump word by
+$F(z)=\sum_{k\ge0}s_kz^k$.  Aperiodicity and the finite coefficient set already imply, by
+classical results of Fatou type, that $F$ is transcendental over $\Q(z)$.  A proof would have
+to derive incompatible functional equations from the two rational recurrences.  No such
+equations were found here; the recurrence is multiplicative in the state, not self-similar in
+the index.
+
+\section{Effective logarithmic separation}
+\label{sec:baker}
+
+\subsection{From linear forms in two logarithms to an irrationality measure}
+
+The source report proves an elementary denominator-growth statement: a very good rational
+approximation to a hypothetical solution $\beta$ would force a correspondingly large output,
+and consecutive continued-fraction denominators obey a single-exponential recurrence.  Since
+$\beta$ is itself a ratio of logarithms of fixed integers, Baker's theory gives a substantially
+stronger conclusion.
+
+\begin{theorem}[Effective finite irrationality measure for the primitive generator]
+\label{thm:baker-beta}
+Assume a primitive counterexample $\beta$ exists, and put $M=2^\beta$.  There are effectively
+computable constants $c_M>0$ and $\mu_M<\infty$ such that, for every $p\in\Z$ and $q\ge2$,
+\begin{equation}\label{eq:beta-irrat-measure}
+  \left|\beta-\frac pq\right|\ge c_Mq^{-\mu_M}.
+\end{equation}
+One may choose $\mu_M$ bounded by an effectively computable absolute constant times
+$1+\log M$, hence by an absolute constant times $1+\beta$.  The same conclusion follows from
+$\beta=\log A/\log3$.
+\end{theorem}
+
+\begin{proof}
+Consider the linear form
+\[
+  \Lambda=q\log M-p\log2.
+\]
+It is nonzero: otherwise $M^q=2^p$, which would make $\beta=p/q$ rational; a rational solution
+is integral by the elementary rational-exponent classification already formalized in the
+source corpus.  The Baker--W\"ustholz theorem, or Matveev's explicit lower bound for a
+homogeneous linear form in logarithms of algebraic numbers, gives
+\[
+  \log|\Lambda|\ge-C\,(1+\log M)\log H-C'(1+\log M),
+\]
+where $H\ge\max(3,|p|,q)$ and $C,C'$ are effective absolute constants after the fixed number
+$2$ is absorbed.  For approximations with $|p|\le(\beta+1)q$, one has $H\ll_Mq$; for all other
+$p$ the desired inequality is trivial after decreasing $c_M$.  Since
+\[
+  \left|\beta-\frac pq\right|=\frac{|\Lambda|}{q\log2},
+\]
+absorbing fixed factors and one additional power of $q$ gives
+\eqref{eq:beta-irrat-measure}.  Matveev's dependence on the logarithmic heights is linear in
+$\log M=\beta\log2$ here, which gives the final scale assertion.
+\end{proof}
+
+\begin{statusbox}{\statusclassical{} plus \statusnew}
+The lower-bound theorem for logarithmic forms is classical
+\cite{Baker1975,BakerWustholz1993,Matveev2000}.  Its application to the primitive generator,
+the continued-fraction consequences below, and the comparison with the source report are
+new deductions in this continuation.  No useful small numerical value of $\mu_M$ is claimed;
+standard explicit constants are very large.
+\end{statusbox}
+
+\subsection{Polynomial recurrence for convergent denominators}
+
+Let $p_n/q_n$ be the continued-fraction convergents of $\beta$.  The standard upper bound
+\[
+  \left|\beta-\frac{p_n}{q_n}\right|<\frac1{q_nq_{n+1}}
+\]
+combined with \eqref{eq:beta-irrat-measure} gives the following.
+
+\begin{corollary}[Polynomial denominator growth]\label{cor:q-growth}
+There is an effective constant $C_M>0$ such that
+\begin{equation}\label{eq:q-growth}
+  q_{n+1}\le C_M q_n^{\mu_M-1}
+\end{equation}
+for every $n$ with $q_n\ge2$.  Consequently the next partial quotient satisfies
+$a_{n+1}=O_M(q_n^{\mu_M-2})$.
+\end{corollary}
+
+This is qualitatively stronger than the inherited elementary estimate
+$q_{n+1}<2M^{q_n}$.  It rules out Liouville behavior and says that the exceptionally long
+near-repetitions of the Sturmian word are polynomially controlled in the preceding standard
+word length.  The exponent depends on the unknown integer $M$, however, and may be enormous.
+
+\subsection{Polynomial spacing in conditional blocks}
+
+The irrationality measure also upgrades the separation of the block nodes.  From
+\eqref{eq:beta-irrat-measure}, for $d\ge1$ and the nearest integer $r$ to $d\beta$,
+\begin{equation}\label{eq:beta-mod-one}
+  \distZ{d\beta}=|d\beta-r|
+  \ge c_M d^{1-\mu_M}.
+\end{equation}
+
+For an integer $T\ge0$, put
+\[
+  K_T=\left\lfloor\frac{T+1}{\beta}\right\rfloor,
+  \qquad
+  x_{T,k}=T-\lfloor k\beta\rfloor+k\beta
+         =T+\fract{k\beta},
+  \quad 0\le k\le K_T.
+\]
+The associated candidate and output nodes are
+\begin{equation}\label{eq:block-pairs}
+  m_{T,k}=2^{x_{T,k}}=2^{T-\lfloor k\beta\rfloor}M^k,
+  \qquad
+  a_{T,k}=3^{x_{T,k}}=3^{T-\lfloor k\beta\rfloor}A^k.
+\end{equation}
+
+\begin{corollary}[Effective block separation]\label{cor:block-separation}
+For distinct $i,j\in\{0,\ldots,K_T\}$,
+\begin{align}
+ |x_{T,j}-x_{T,i}|&\ge c_MK_T^{1-\mu_M},\label{eq:x-sep}\\
+ |m_{T,j}-m_{T,i}|&\ge (\log2)c_M2^T K_T^{1-\mu_M},\label{eq:m-sep}\\
+ |a_{T,j}-a_{T,i}|&\ge (\log3)c_M3^T K_T^{1-\mu_M}.
+ \label{eq:a-sep}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+The ordinary distance between two fractional parts is at least their circular distance, so
+\[
+ |\fract{j\beta}-\fract{i\beta}|
+ \ge\distZ{(j-i)\beta}
+ \ge c_M|j-i|^{1-\mu_M}
+ \ge c_MK_T^{1-\mu_M},
+\]
+because $1-\mu_M<0$.  This proves \eqref{eq:x-sep}.  The mean value theorem applied to $2^x$
+and $3^x$ on $[T,T+1]$ gives the remaining inequalities.
+\end{proof}
+
+\subsection{Separation on the full \texorpdfstring{$(n,k)$}{(n,k)} lattice}
+
+The same estimate applies to the two-dimensional conditional exponent grid.
+
+\begin{corollary}[Polynomial separation of conditional exponents]\label{cor:grid-separation}
+There are effective $c_M,\mu_M>0$ such that, for distinct integer pairs
+$(n,k),(n',k')$ with $0\le k,k'\le H$,
+\[
+  |(n+k\beta)-(n'+k'\beta)|
+  \ge \min\{1,c_MH^{1-\mu_M}\}.
+\]
+\end{corollary}
+
+\begin{proof}
+If $k=k'$, the difference is a nonzero integer.  Otherwise divide the linear form
+$(n-n')+(k-k')\beta$ by $|k-k'|$ and apply
+\eqref{eq:beta-irrat-measure}.
+\end{proof}
+
+The column exponent lattice $u+\vartheta v$ has an analogous effective polynomial spacing
+with absolute constants, because $\vartheta=\log3/\log2$ is a fixed ratio of two logarithms.
+More refined explicit estimates are known for linear forms in $\log2$ and $\log3$; for
+example Wu's simultaneous linear-independence measure leads, in the usual normalization, to
+an irrationality exponent for $\vartheta$ below approximately $8.62$
+\cite{Wu2003}.  The exact convention-dependent numerical conversion is not needed below.
+
+\subsection{Why the Baker upgrade does not close the conjecture}
+
+The effective spacing is useful, but its scale is still compatible with the exact conditional
+population.  A dyadic exponent block contains only $K_T+1\asymp T$ nodes.  A polynomial lower
+bound on their minimum spacing imposes no contradiction on $T$ points in a fixed interval.
+Likewise, the full triangular grid has $\asymp T^2$ points in an interval of exponent length
+$T$, and polynomially small gaps are expected.
+
+Baker's theorem therefore strengthens compactness and determinant estimates but does not
+supply the missing logarithm by itself.  Its most promising roles are indirect:
+
+\begin{itemize}
+\item controlling the smallest row and column gaps in an exact Harish--Chandra--Itzykson--Zuber
+      factorization;
+\item bounding how often a $p$-adic assignment problem can be nearly degenerate;
+\item limiting the lengths of near-periodic Sturmian blocks that a congruence argument must
+      handle;
+\item making computational searches over continued-fraction branches provably finite once a
+      candidate output $M$ is fixed.
+\end{itemize}
+
+\section{Exact all-support valuations of ordinary block Vandermondes}
+
+\subsection{The block determinants}
+
+Fix an integer $T$ and abbreviate $K=K_T$.  Let $m_k=m_{T,k}$ and $a_k=a_{T,k}$ be the
+$K+1$ input--output pairs in \eqref{eq:block-pairs}.  Their ordinary Vandermonde determinants
+are
+\begin{align}
+  V_T^{(2)}&=\det(m_i^j)_{0\le i,j\le K}
+            =\prod_{0\le i<j\le K}(m_j-m_i),\label{eq:Vm}\\
+  V_T^{(3)}&=\det(a_i^j)_{0\le i,j\le K}
+            =\prod_{0\le i<j\le K}(a_j-a_i).
+  \label{eq:Va}
+\end{align}
+They are nonzero integers.  Since $m_k\in[2^T,2^{T+1})$ and
+$a_k\in[3^T,3^{T+1})$,
+\begin{align}
+  \log|V_T^{(2)}|&\le R_TT\log2,\label{eq:Vm-arch}\\
+  \log|V_T^{(3)}|&\le R_T(T\log3+\log2),\label{eq:Va-arch}
+\end{align}
+where
+\[
+  R_T=\binom{K+1}{2}=\frac{K(K+1)}2.
+\]
+The additive $R_T\log2$ in \eqref{eq:Va-arch} is lower order.
+
+\subsection{The input determinant: an exact formula at every support prime}
+
+Factor
+\[
+  M=2^aW,
+  \qquad W\text{ odd},
+  \qquad
+  \delta_2=\beta-a=\log_2W.
+\]
+As noted above, $W>1$, so $W\ge3$ and
+\begin{equation}\label{eq:delta2-gt1}
+  \delta_2\ge\log_2 3>1.
+\end{equation}
+Because $a$ is an integer,
+\begin{equation}\label{eq:m-delta-form}
+  m_k=2^{T-\lfloor k\delta_2\rfloor}W^k.
+\end{equation}
+The $2$-adic valuations in \eqref{eq:m-delta-form} strictly decrease with $k$, while every
+odd support-prime valuation strictly increases.
+
+\begin{proposition}[Exact support valuations for $V_T^{(2)}$]
+\label{prop:input-vander-valuations}
+For $0\le i<j\le K$,
+\begin{align}
+  v_2(m_j-m_i)&=T-\lfloor j\delta_2\rfloor,
+  \label{eq:v2-gap}\\
+  v_p(m_j-m_i)&=i\,v_p(W)
+  \qquad(p\mid W).
+  \label{eq:vp-gap}
+\end{align}
+Consequently
+\begin{align}
+ v_2(V_T^{(2)})
+ &=\sum_{j=1}^Kj\bigl(T-\lfloor j\delta_2\rfloor\bigr),
+ \label{eq:v2-V}\\
+ v_p(V_T^{(2)})
+ &=v_p(W)\sum_{i=0}^{K-1}i(K-i)
+ \qquad(p\mid W).
+ \label{eq:vp-V}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Put $\rho_k=T-\lfloor k\delta_2\rfloor$.  By
+\eqref{eq:delta2-gt1}, $\rho_i>\rho_j$ when $i<j$.  From
+\eqref{eq:m-delta-form},
+\[
+ m_j-m_i
+ =2^{\rho_j}W^i\left(W^{j-i}-2^{\rho_i-\rho_j}\right).
+\]
+The parenthesis is odd, proving \eqref{eq:v2-gap}.  For an odd prime $p\mid W$, the two terms
+$m_i$ and $m_j$ have distinct valuations $i v_p(W)<jv_p(W)$, so the ultrametric equality gives
+\eqref{eq:vp-gap}.  Summing over pairs gives \eqref{eq:v2-V}--\eqref{eq:vp-V}.
+\end{proof}
+
+Let $Q_T^{(2)}$ be the part of $V_T^{(2)}$ supported on the primes dividing $2M$.  Then
+Proposition~\ref{prop:input-vander-valuations} gives the exact identity
+\begin{equation}\label{eq:logQm-exact}
+ \log Q_T^{(2)}
+ =\log2\sum_{j=1}^Kj\bigl(T-\lfloor j\delta_2\rfloor\bigr)
+  +\log W\sum_{i=0}^{K-1}i(K-i).
+\end{equation}
+The two elementary sums have asymptotics
+\begin{align*}
+ \sum_{j=1}^Kj\bigl(T-\lfloor j\delta_2\rfloor\bigr)
+ &=\frac{TK^2}{2}-\frac{\delta_2K^3}{3}+O_\beta(T^2),\\
+ \sum_{i=0}^{K-1}i(K-i)&=\frac{K^3}{6}+O(K^2).
+\end{align*}
+Using $\log W=\delta_2\log2$ and $K/T\to1/\beta$ yields
+\begin{equation}\label{eq:Qm-ratio}
+ \frac{\log Q_T^{(2)}}{R_TT\log2}
+ \longrightarrow
+ 1-\frac{\delta_2}{3\beta}.
+\end{equation}
+This includes every prime appearing in the entries.  Any further prime divisor of the
+Vandermonde comes from subtraction and hence from genuine cancellation beyond termwise
+entry valuations.
+
+\subsection{The output determinant and bounded tie corrections}
+
+Factor
+\[
+  A=3^bZ,
+  \qquad 3\nmid Z,
+  \qquad
+  \delta_3=\beta-b=\log_3Z>0.
+\]
+Then
+\begin{equation}\label{eq:a-delta-form}
+  a_k=3^{T-\lfloor k\delta_3\rfloor}Z^k.
+\end{equation}
+Unlike $\delta_2$, the number $\delta_3$ can be smaller than $1$; for example the least
+possible base-free factor is $2$.  Equal consecutive $3$-adic valuations can therefore occur.
+They contribute only a lower-order correction.
+
+\begin{proposition}[Output support valuations]\label{prop:output-vander-valuations}
+For every prime $p\mid Z$ and $0\le i<j\le K$,
+\[
+  v_p(a_j-a_i)=i\,v_p(Z).
+\]
+At $p=3$,
+\[
+ v_3(a_j-a_i)=T-\lfloor j\delta_3\rfloor
+\]
+after adding a nonnegative correction that is zero whenever
+$\lfloor i\delta_3\rfloor<\lfloor j\delta_3\rfloor$.  The total correction over all pairs is
+$O_{A,\beta}(K^2)$.  Consequently, if $Q_T^{(3)}$ denotes the part of
+$V_T^{(3)}$ supported on primes dividing $3A$, then
+\begin{equation}\label{eq:Qa-ratio}
+  \frac{\log Q_T^{(3)}}{R_TT\log3}
+  \longrightarrow
+  1-\frac{\delta_3}{3\beta}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The assertion for $p\mid Z$ is the same distinct-valuation argument as before.  Put
+$\rho_k=T-\lfloor k\delta_3\rfloor$.  If $\rho_i>\rho_j$, then
+\[
+ a_j-a_i=3^{\rho_j}Z^i
+ \left(Z^{j-i}-3^{\rho_i-\rho_j}\right)
+\]
+and the parenthesis is not divisible by $3$, so the valuation is exactly $\rho_j$.  If
+$\rho_i=\rho_j$, then
+\[
+ v_3(a_j-a_i)=\rho_j+v_3(Z^{j-i}-1).
+\]
+Equality of the floors implies $(j-i)\delta_3<1$, so $j-i$ belongs to a fixed finite set
+depending only on $\delta_3$.  Hence the extra valuation is bounded by a constant depending on
+$A$ and $\beta$.  There are $O(K^2)$ pairs.  The asymptotic calculation is then identical to
+\eqref{eq:logQm-exact}.
+\end{proof}
+
+\subsection{The depth-sensitive product ceiling}
+
+Combining \eqref{eq:Vm-arch}, \eqref{eq:Va-arch},
+\eqref{eq:Qm-ratio}, and \eqref{eq:Qa-ratio} gives the principal conclusion of the ordinary
+Vandermonde audit.
+
+\begin{theorem}[All-support ordinary Vandermonde fraction]\label{thm:ordinary-fraction}
+For a hypothetical primitive counterexample,
+\begin{equation}\label{eq:ordinary-fraction}
+ \frac{\log(Q_T^{(2)}Q_T^{(3)})}{R_TT\log6}
+ \longrightarrow
+ 1-\frac{\delta_2\log2+\delta_3\log3}{3\beta\log6},
+ \qquad
+ \delta_2=\beta-a,
+ \quad
+ \delta_3=\beta-b.
+\end{equation}
+Because $\min(a,b)=0$, the limit is at most
+\begin{equation}\label{eq:ordinary-universal-ceiling}
+ 1-\frac{\log2}{3\log6}
+ =0.871049\,064\ldots.
+\end{equation}
+If $b=0$, the sharper ceiling is
+\[
+ 1-\frac{\log3}{3\log6}=0.795599\,921\ldots.
+\]
+If $a=b=0$, the limit is exactly $2/3$.
+\end{theorem}
+
+\begin{proof}
+Only the numerical ceiling remains to be shown.  If $a=0$, then $\delta_2=\beta$, so the
+deficit in \eqref{eq:ordinary-fraction} is at least $\log2/(3\log6)$.  If $b=0$, it is at
+least $\log3/(3\log6)$.  Taking the larger possible fraction gives
+\eqref{eq:ordinary-universal-ceiling}.  If both vanish, the numerator of the deficit is
+$\beta\log6$.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\caption{Leading termwise-divisor ceilings for ordinary block Vandermondes.}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Branch information & Exact/upper fraction & Decimal\\
+\midrule
+$a=b=0$ & $2/3$ & $0.666666\ldots$\\
+$b=0$ & $\le1-\log3/(3\log6)$ & $0.795599\ldots$\\
+No matched depth only & $\le1-\log2/(3\log6)$ & $0.871049\ldots$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Why even \texorpdfstring{$87\%$}{87 percent} is not enough}
+
+The deficit in Theorem~\ref{thm:ordinary-fraction} is a fixed positive fraction once the
+hypothetical primitive pair is fixed.  The archimedean height is $\asymp T^3$, whereas all
+factorial, spacing, and tie corrections are $O_\beta(T^2\log T)$.  Thus no lower-order
+refinement of the ordinary Vandermonde can close the remaining gap.
+
+This conclusion is stronger than the earlier observation that the $2$-adic valuation alone
+captures one third in the base-free case.  It includes every prime already present in the
+entries and every possible base depth.  A successful ordinary-Vandermonde proof would need a
+new leading-order source of divisibility in the prime factors of the \emph{differences}; the
+fixed-support valuations are completely accounted for by
+Theorem~\ref{thm:ordinary-fraction}.
+
+\section{The mixed-semigroup determinant and its Gini norm}
+\label{sec:mixed}
+
+\subsection{Balanced low-weight columns}
+
+Let
+\[
+  \Lambda=\{u+\vartheta v:(u,v)\in\Nzero^2\}.
+\]
+Because $\vartheta$ is irrational, every element has a unique pair $(u,v)$.  List the pairs
+in increasing order of $u+\vartheta v$:
+\[
+  (u_0,v_0),(u_1,v_1),\ldots.
+\]
+For $N\ge1$, let
+\[
+  L_N=\max_{0\le j<N}(u_j+\vartheta v_j).
+\]
+The elementary lattice count
+\begin{equation}\label{eq:semigroup-count}
+ \#\{(u,v)\in\Nzero^2:u+\vartheta v\le L\}
+ =\frac{L^2}{2\vartheta}+O_\vartheta(L)
+\end{equation}
+shows that
+\begin{equation}\label{eq:L-asymp}
+  L_N\sim\sqrt{2\vartheta N}.
+\end{equation}
+Moreover, the empirical distribution of
+\begin{equation}\label{eq:scaled-cols}
+  X_j=\left(\frac{u_j}{L_N},\frac{\vartheta v_j}{L_N}\right)
+\end{equation}
+converges to uniform area measure on the standard triangle
+\begin{equation}\label{eq:triangle}
+  \DeltaTri=\{(x,z)\in\R^2:x\ge0,
+  z\ge0,
+  x+z\le1\}.
+\end{equation}
+Here and below ``uniform'' means probability measure with density $2$ on this triangle.
+
+For the block at height $T$, set $K=K_T$ and $N=K+1$.  Define
+\begin{equation}\label{eq:mixed-D}
+  D_T=\det\left(m_{T,k}^{u_j}a_{T,k}^{v_j}\right)_{0\le k,j<N}.
+\end{equation}
+The generalized-Vandermonde theorem inherited from the source report implies that $D_T$ is a
+nonzero integer.  Put
+\[
+  B_j=2^{u_j}3^{v_j}.
+\]
+Since $m_{T,k}=2^{x_{T,k}}$ and $a_{T,k}=3^{x_{T,k}}$,
+\begin{equation}\label{eq:entry-B}
+  m_{T,k}^{u_j}a_{T,k}^{v_j}=B_j^{x_{T,k}}
+  =B_j^{T+\fract{k\beta}}.
+\end{equation}
+Thus the Leibniz expansion gives the clean archimedean bound
+\begin{equation}\label{eq:mixed-arch}
+  \log|D_T|
+  \le (T+1)\sum_{j<N}\log B_j+\log N!.
+\end{equation}
+The leading height is
+\begin{equation}\label{eq:HT}
+  H_T=T\sum_{j<N}\log B_j.
+\end{equation}
+By \eqref{eq:L-asymp} and the mean
+$\mathbb E(X_1+X_2)=2/3$ on $\DeltaTri$,
+\begin{equation}\label{eq:H-asymp}
+ H_T\sim \frac23\,TNL_N\log2
+ \asymp_\beta T^{5/2}.
+\end{equation}
+Both $\sum_j\log B_j$ and $\log N!$ in the error of \eqref{eq:mixed-arch} are
+$o(H_T)$.
+
+\subsection{The all-prime tropical divisor}
+
+For a prime $p$, define the assignment minimum
+\begin{equation}\label{eq:taup}
+ \tau_{p,T}
+ =\min_{\sigma\in S_N}
+   \sum_{k=0}^{N-1}
+   v_p\!\left(m_{T,k}^{u_{\sigma(k)}}a_{T,k}^{v_{\sigma(k)}}\right).
+\end{equation}
+Every Leibniz term is divisible by $p^{\tau_{p,T}}$, so
+\begin{equation}\label{eq:Qtrop}
+  Q_T^{\mathrm{trop}}=\prod_p p^{\tau_{p,T}}
+  \quad\text{divides}\quad D_T.
+\end{equation}
+Only primes dividing $6MA$ occur in the product.
+
+The problem is now to compute the leading asymptotic of
+$\log Q_T^{\mathrm{trop}}/H_T$.  A crude estimate ``minimum $\le$ average'' loses the precise
+branch dependence.  The exact answer is controlled by a simple probability norm.
+
+\subsection{Antimonotone assignment and the Gini norm}
+
+Let $X=(X_1,X_2)$ be uniform on $\DeltaTri$, and let $X'$ be an independent copy.  For
+$c=(r,s)\in\R^2$, define
+\begin{equation}\label{eq:Gini}
+  \mathfrak G(r,s)
+  =\mathbb E\left|r(X_1-X_1')+s(X_2-X_2')\right|.
+\end{equation}
+This is a norm on $\R^2$: homogeneity and the triangle inequality are immediate, and the
+support of $X-X'$ spans $\R^2$, so only $(r,s)=(0,0)$ has norm zero.
+
+Let $Y=rX_1+sX_2$, with ascending quantile $Q_Y(t)$.  Pairing an increasing uniform row
+parameter with the decreasing ordering of $Y$ gives the continuum assignment functional
+\begin{equation}\label{eq:Phi-def}
+  \Phi(r,s)=\int_0^1 t\,Q_Y(1-t)\,dt.
+\end{equation}
+
+\begin{lemma}[Gini formula for the minimum assignment]\label{lem:gini-assignment}
+For every $(r,s)\in\R^2$,
+\begin{equation}\label{eq:Phi-G}
+  \Phi(r,s)
+  =\frac12\,\mathbb E Y-\frac14\,\mathfrak G(r,s)
+  =\frac{r+s}{6}-\frac14\,\mathfrak G(r,s).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The rearrangement inequality says that the minimum scalar product pairs the increasing row
+parameter with the decreasing list of column values.  Changing variables $u=1-t$ in
+\eqref{eq:Phi-def} gives
+\[
+  \Phi=\int_0^1(1-u)Q_Y(u)\,du.
+\]
+If $Y'$ is an independent copy, the minimum of $Y,Y'$ has quantile density
+$2(1-u)$, so
+\[
+  \Phi=\frac12\mathbb E\min(Y,Y').
+\]
+Since
+$\min(Y,Y')=(Y+Y'-|Y-Y'|)/2$, this becomes
+$\frac12\mathbb EY-\frac14\mathbb E|Y-Y'|$.  Finally
+$\mathbb EX_1=\mathbb EX_2=1/3$.
+\end{proof}
+
+\subsection{Closed form of the Gini norm}
+
+The norm \eqref{eq:Gini} is elementary.  Sort the three vertex values
+\[
+  0,
+  \qquad r,
+  \qquad s
+\]
+as $\xi_0\le\xi_1\le\xi_2$, and put
+\[
+  A_0=\xi_1-\xi_0,
+  \qquad
+  B_0=\xi_2-\xi_1.
+\]
+
+\begin{proposition}[Explicit triangular Gini norm]\label{prop:G-explicit}
+If $A_0+B_0>0$, then
+\begin{equation}\label{eq:G-explicit}
+ \mathfrak G(r,s)
+ =\frac{2\left(2A_0^2+3A_0B_0+2B_0^2\right)}
+        {15(A_0+B_0)}.
+\end{equation}
+At $(r,s)=(0,0)$ the value is $0$.  In particular,
+\begin{equation}\label{eq:G-special}
+  \mathfrak G(1,0)=\mathfrak G(0,1)
+  =\mathfrak G(1,1)=\frac4{15},
+  \qquad
+  \mathfrak G(1,-1)=\frac7{15}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Translation of the three vertex values does not change a difference $Y-Y'$, so take
+$\xi_0=0$, $\xi_1=A_0$, and $\xi_2=A_0+B_0=L$.  Projection of uniform area measure on a
+triangle by a linear function has density
+\[
+ f(y)=
+ \begin{cases}
+ \displaystyle\frac{2y}{A_0L},&0\le y\le A_0,\\[6pt]
+ \displaystyle\frac{2(L-y)}{B_0L},&A_0\le y\le L.
+ \end{cases}
+\]
+Thus its distribution function is
+$F(y)=y^2/(A_0L)$ on the first interval and
+$F(y)=1-(L-y)^2/(B_0L)$ on the second.  The standard identity
+\[
+  \mathbb E|Y-Y'|=2\int_{-\infty}^{\infty}F(y)(1-F(y))\,dy
+\]
+gives \eqref{eq:G-explicit} after two polynomial integrations.  Cases with one gap zero
+follow by continuity.
+\end{proof}
+
+For later use, if $\gamma\ge0$, then
+\begin{equation}\label{eq:G-minus1gamma}
+ \mathfrak G(-1,\gamma)
+ =\frac{2(2+3\gamma+2\gamma^2)}{15(1+\gamma)}
+ =\frac4{15}+\frac{2\gamma(1+2\gamma)}{15(1+\gamma)}
+ \ge\frac4{15}.
+\end{equation}
+
+\subsection{Normalized prime-valuation slope vectors}
+
+Recall
+\[
+ a=v_2(M),\quad b=v_3(A),\quad c=v_2(A),\quad d=v_3(M).
+\]
+For each prime, define a normalized slope vector $c_p\in\R^2$ by
+\begin{align}
+ c_2&=\left(-1+\frac a\beta,\ \frac{c}{\beta\vartheta}\right),
+ \label{eq:c2}\\
+ c_3&=\left(\frac{\vartheta d}{\beta},\ -1+\frac b\beta\right),
+ \label{eq:c3}\\
+ c_p&=\left(
+  \frac{v_p(M)\log p}{\beta\log2},
+  \frac{v_p(A)\log p}{\beta\log3}
+ \right),\qquad p\ne2,3.
+ \label{eq:cp-external}
+\end{align}
+The logarithmic factorizations of $M$ and $A$ give the conservation law
+\begin{equation}\label{eq:slope-conservation}
+  \sum_p c_p=(0,0).
+\end{equation}
+Indeed, the first coordinate sum is
+\[
+ -1+\frac{a\log2+d\log3+
+   \sum_{p\ne2,3}v_p(M)\log p}{\beta\log2}=0,
+\]
+and similarly for the second coordinate.
+
+The meaning of these vectors can be read directly from the valuation matrices.  Put
+$s_k=\beta k/T$.  Up to $o(L_N)$ after division by $T$, the logarithmic $p$-adic cost of the
+entry indexed by a scaled column $(x,z)$ is
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Prime & Cost divided by $T L_N\log2$\\
+\midrule
+$2$ & $x+s_k\,c_2\mathbin{\cdot}(x,z)$\\
+$3$ & $z+s_k\,c_3\mathbin{\cdot}(x,z)$\\
+$p\ne2,3$ & $s_k\,c_p\mathbin{\cdot}(x,z)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example,
+\[
+ v_2(m_k^ua_k^v)=u\bigl(T-\lfloor k\beta\rfloor+ak\bigr)+vck,
+\]
+and substituting $u=L_Nx$, $v=L_Nz/\vartheta$, $k\sim Ts_k/\beta$ gives the first row.
+The $O(u)$ errors from the floors sum to $O(NL_N)=o(H_T)$.
+
+\subsection{The exact continuum limit}
+
+\begin{theorem}[All-prime tropical fraction for the mixed block determinant]
+\label{thm:mixed-gini}
+Under a hypothetical primitive counterexample, the determinant \eqref{eq:mixed-D} satisfies
+\begin{equation}\label{eq:mixed-gini-limit}
+ \frac{\log Q_T^{\mathrm{trop}}}{H_T}
+ \longrightarrow
+ 1-\frac38\sum_p\mathfrak G(c_p),
+\end{equation}
+where the finitely many slope vectors $c_p$ are given by
+\eqref{eq:c2}--\eqref{eq:cp-external}.
+\end{theorem}
+
+\begin{proof}
+The row parameters $s_k=\beta k/T$ become uniformly distributed on $[0,1]$, because
+$K_T\sim T/\beta$.  The scaled columns become uniformly distributed on $\DeltaTri$ by
+\eqref{eq:semigroup-count}.  The finite rearrangement inequality and Riemann-sum convergence
+therefore show that the assignment minimum at prime $p$, after normalization by
+$TL_NN\log2$, tends to its constant-column mean plus $\Phi(c_p)$.
+
+Only $p=2$ has constant part $x$, and only $p=3$ has constant part $z$.  Their combined mean is
+$2/3$.  By Lemma~\ref{lem:gini-assignment}, the sum of the slope contributions is
+\[
+ \sum_p\Phi(c_p)
+ =\frac16\sum_p(c_{p,1}+c_{p,2})
+  -\frac14\sum_p\mathfrak G(c_p).
+\]
+The first sum vanishes by \eqref{eq:slope-conservation}.  Hence
+\[
+ \frac{\log Q_T^{\mathrm{trop}}}{TL_NN\log2}
+ \longrightarrow
+ \frac23-\frac14\sum_p\mathfrak G(c_p).
+\]
+On the other hand, \eqref{eq:H-asymp} gives
+$H_T/(TL_NN\log2)\to2/3$.  Dividing proves
+\eqref{eq:mixed-gini-limit}.
+\end{proof}
+
+This theorem is exact at the level of minimum Leibniz-term valuations.  It replaces a family
+of separate $p$-adic estimates by one finite norm sum satisfying a conservation law.
+
+The four base and cross depths already give a useful branch-sensitive bound without knowing
+any external prime factorization.
+
+\begin{corollary}[Depth-sensitive three-vector bound]\label{cor:three-vector}
+For every hypothetical primitive counterexample,
+\begin{equation}\label{eq:three-vector}
+ \limsup_{T\to\infty}
+ \frac{\log Q_T^{\mathrm{trop}}}{H_T}
+ \le
+ 1-\frac38\Bigl(
+   \mathfrak G(c_2)+\mathfrak G(c_3)
+   +\mathfrak G(-c_2-c_3)\Bigr).
+\end{equation}
+Equality in this upper bound can occur only when all nonzero external slope vectors are
+positively collinear.
+\end{corollary}
+
+\begin{proof}
+The external vectors satisfy
+$\sum_{p\ne2,3}c_p=-c_2-c_3$.  Hence the triangle inequality gives
+\[
+ \sum_{p\ne2,3}\mathfrak G(c_p)
+ \ge\mathfrak G(-c_2-c_3).
+\]
+Substitute this in Theorem~\ref{thm:mixed-gini}.  Equality in a norm triangle inequality
+requires all summands to lie on one nonnegative ray.
+\end{proof}
+
+The equality condition detects exactly the second-iterate kernel branch reviewed in the source
+report.  Indeed the external vectors $c_p$ are rescaled versions of
+$(v_p(M),v_p(A))$.  They are all collinear if and only if the two external valuation vectors
+of $M$ and $A$ are rationally dependent, equivalently if the kernel $K_\beta$ is nonzero.
+Thus:
+
+\begin{corollary}[The tropical norm sees the kernel dichotomy]\label{cor:gini-kernel}
+In the multiplicatively independent branch $K_\beta=0$, the inequality in
+\eqref{eq:three-vector} is strict.  In the dependent branch $K_\beta\ne0$, the external
+triangle inequality is an equality (including the axis cases in which one output is
+$\{2,3\}$-smooth).  For fixed $M,A$, the strict gap in the independent branch is explicit:
+\begin{equation}\label{eq:external-angular-defect}
+ \Delta_{\rm ext}
+ =\sum_{p\ne2,3}\mathfrak G(c_p)
+  -\mathfrak G\left(\sum_{p\ne2,3}c_p\right)>0.
+\end{equation}
+\end{corollary}
+
+There is no uniform positive lower bound for $\Delta_{\rm ext}$: distinct rational rays can
+approach one another as the valuations grow.  Nevertheless, the quantity is a computable
+branch invariant and gives a sharper determinant threshold for every fixed hypothetical
+primitive pair.
+
+\subsection{The universal \texorpdfstring{$4/5$}{4/5} ceiling}
+
+\begin{theorem}[Sharp universal min-plus ceiling]\label{thm:four-fifths}
+For every hypothetical primitive counterexample,
+\begin{equation}\label{eq:G-lower}
+  \sum_p\mathfrak G(c_p)\ge\frac8{15}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:four-fifths}
+ \limsup_{T\to\infty}
+ \frac{\log Q_T^{\mathrm{trop}}}{H_T}
+ \le\frac45.
+\end{equation}
+The constant $4/5$ is the sharp supremum allowed by the normalized valuation constraints,
+although equality would require a degenerate boundary incompatible with a genuine
+nonintegral solution.
+\end{theorem}
+
+\begin{proof}
+By the primitive theorem, either $a=0$ or $b=0$.  Suppose first that $a=0$.  Then
+$c_2=(-1,\gamma)$ with $\gamma=c/(\beta\vartheta)\ge0$.  By
+\eqref{eq:G-minus1gamma}, $\mathfrak G(c_2)\ge4/15$.  Conservation and the triangle inequality
+for the norm give
+\[
+  \sum_{p\ne2}\mathfrak G(c_p)
+  \ge\mathfrak G\!\left(\sum_{p\ne2}c_p\right)
+  =\mathfrak G(-c_2)
+  =\mathfrak G(c_2).
+\]
+Thus the total is at least $8/15$.  If $b=0$, apply the same argument to
+$c_3=(\eta,-1)$, where $\eta=\vartheta d/\beta\ge0$.  Substitution in
+\eqref{eq:mixed-gini-limit} gives
+$1-(3/8)(8/15)=4/5$.
+\end{proof}
+
+The proof is short because the difficult arithmetic has been compressed into two facts: the
+slope vectors sum to zero, and one structural vector reaches from $-1$ to a nonnegative
+vertex.  No averaging estimate alone reveals this geometry.
+
+\subsection{Cross-coprime constants: \texorpdfstring{$7/10$ and $3/10$}{7/10 and 3/10}}
+
+Assume the stronger branch condition
+\begin{equation}\label{eq:cross-coprime}
+  \gcd(MA,6)=1.
+\end{equation}
+Then $a=b=c=d=0$,
+\[
+  c_2=(-1,0),
+  \qquad
+  c_3=(0,-1),
+  \qquad
+  \sum_{p\ne2,3}c_p=(1,1).
+\]
+
+\begin{corollary}[All-prime cross-coprime ceiling]\label{cor:seven-tenths}
+Under \eqref{eq:cross-coprime},
+\begin{equation}\label{eq:seven-tenths}
+ \limsup_{T\to\infty}
+ \frac{\log Q_T^{\mathrm{trop}}}{H_T}
+ \le\frac7{10}.
+\end{equation}
+If the external normalized valuation vectors are not all positively collinear, the inequality
+is strict by a branch-dependent positive amount.
+\end{corollary}
+
+\begin{proof}
+By \eqref{eq:G-special}, the structural vectors each contribute $4/15$.  The triangle
+inequality gives
+\[
+  \sum_{p\ne2,3}\mathfrak G(c_p)
+  \ge\mathfrak G(1,1)=\frac4{15}.
+\]
+Thus the total norm is at least $4/5$, and
+$1-(3/8)(4/5)=7/10$.  Equality in the triangle inequality requires positive collinearity.
+\end{proof}
+
+The places $2$ and $3$ alone have an even smaller exact continuum contribution.
+
+\begin{corollary}[The structural-place $3/10$ constant]\label{cor:three-tenths}
+Under \eqref{eq:cross-coprime}, let
+$Q_T^{(2,3)}=2^{\tau_{2,T}}3^{\tau_{3,T}}$.  Then
+\begin{equation}\label{eq:three-tenths}
+  \frac{\log Q_T^{(2,3)}}{H_T}\longrightarrow\frac3{10}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+For $c=(-1,0)$,
+\[
+ \Phi(c)=\frac{-1}{6}-\frac14\cdot\frac4{15}=-\frac7{30},
+\]
+and the same holds for $(0,-1)$.  Adding the constant mean $2/3$ gives
+$2/3-7/15=1/5$.  Dividing by the height mean $2/3$ gives $3/10$.
+\end{proof}
+
+Equivalently, one can compute this constant from quantiles.  The descending quantile of
+$X_1$ on $\DeltaTri$ is $1-\sqrt t$, so
+\[
+ \int_0^1t(1-\sqrt t)\,dt=\frac1{10},
+ \qquad
+ \mathbb EX_1=\frac13.
+\]
+The ratio is $(1/10)/(1/3)=3/10$ in each structural coordinate.
+
+\subsection{Correction and calibration of a later repository note}
+
+A short $p$-adic priority note added to the repository after the attached unified report makes
+the correct strategic observation that minimum Leibniz-term valuations leave a constant
+fraction of the archimedean height uncovered.  Two details require correction.
+
+First, the displayed structural valuation formulas in that note simultaneously omit the
+terms $kuv_2(M)$ and $kvv_3(A)$; they therefore assume both $a=0$ and $b=0$.  The inherited
+primitive theorem gives only $\min(a,b)=0$.  Equations
+\eqref{eq:c2}--\eqref{eq:c3} retain all four cross/base depths.
+
+Second, the proposed all-prime $2/3$ ceiling is not a valid universal consequence of
+``minimum $\le$ average.''  For an external positive weight proportional to $X_1+X_2$, the
+minimum assignment is $4/5$ of its average assignment, not at most $2/3$.  The exact Gini
+formula shows that the universal normalized ceiling is $4/5$, while the cross-coprime
+all-prime ceiling is $7/10$.  The note's qualitative conclusion survives---entrywise
+valuation is insufficient---but the constants and branch hypotheses are materially different.
+
+\begin{statusbox}{\statusnew}
+The correction is not based on a numerical counterexample to the Alaoglu--Erd\H{o}s
+conjecture.  It is an exact audit of the assignment inequality used in the method.  Rational
+external valuation directions can approximate the equality configurations arbitrarily well,
+so no stronger uniform constant follows merely from integrality of the valuation vectors.
+\end{statusbox}
+
+\subsection{Where extra divisibility can occur}
+
+The tropical minimum equals the true determinant valuation whenever its minimizing
+permutation is unique.
+
+\begin{proposition}[Unique tropical term forbids cancellation]\label{prop:unique-tropical}
+Let $D=\det(E_{ij})$ be a nonzero integer determinant.  Fix a prime $p$, and suppose a unique
+permutation $\sigma_0$ minimizes
+$\sum_i v_p(E_{i,\sigma(i)})$.  Then
+\[
+  v_p(D)=\sum_i v_p(E_{i,\sigma_0(i)}).
+\]
+\end{proposition}
+
+\begin{proof}
+Divide the Leibniz expansion by the corresponding power of $p$.  The term indexed by
+$\sigma_0$ is a $p$-adic unit, while every other term is divisible by $p$.  The sum is
+therefore a unit modulo $p$.
+\end{proof}
+
+Consequently, the missing $20\%$ or more can arise only from primes at which the assignment
+problem has several minimizers.  The tie geometry is explicit.
+
+\begin{itemize}
+\item For $p\ne2,3$, columns tie when
+      $v_p(M)(u-u')+v_p(A)(v-v')=0$, so ties lie on rational lines orthogonal to the external
+      valuation vector.
+\item In the cross-coprime branch, the $2$-adic cost depends only on $u$ and the $3$-adic cost
+      only on $v$.  Every vertical or horizontal column fiber creates many equal-cost
+      permutations.  Any leading extra valuation must be produced inside these fibers.
+\item Cross valuations $v_2(A)$ and $v_3(M)$ tilt the fibers.  The floor term in the row
+      profile perturbs the exact affine ordering but does not change the continuum slope
+      vector.
+\end{itemize}
+
+This turns ``look for $p$-adic cancellation'' into a concrete algebra problem: factor or
+control the residual determinants inside equal-slope column fibers, and show that their
+valuation supplies at least the missing Gini deficit.
+
+
+\section{The complete triangular grid and a \texorpdfstring{$\pi/4$}{pi/4} transport ceiling}
+\label{sec:fullgrid}
+
+The one-block determinant deliberately uses the exact $O(T)$ population in a unit interval of
+exponent space.  The source report also suggests exploiting the full two-dimensional
+coordinate grid rather than sorting only by magnitude.  Conditional on a counterexample, that
+proposal gives $\asymp T^2$ genuine integer rows below exponent height $T$, exactly the number
+that the mixed-semigroup interpolation argument seemed to be missing.  It is therefore
+important to determine whether entrywise $p$-adic divisibility becomes strong enough on this
+larger node set.
+
+The answer is again negative, but for a different and pleasantly universal reason.  Once all
+places are summed, the prime-by-prime assignment minima are bounded by one antimonotone
+transport problem for the logarithmic entry matrix.  Both the row heights and the balanced
+column weights have the same triangular distribution, and the ratio between antimonotone and
+monotone transport is exactly $\pi/4$.
+
+\subsection{Rows and columns}
+
+For $T>0$ define the complete conditional row set
+\begin{equation}\label{eq:grid-rows}
+ \mathcal R_T=
+ \{(n,k)\in\Nzero^2:n+k\beta\le T\},
+ \qquad N_T=\#\mathcal R_T.
+\end{equation}
+For $i=(n_i,k_i)\in\mathcal R_T$ put
+\begin{equation}\label{eq:grid-row-values}
+ x_i=n_i+k_i\beta,
+ \qquad m_i=2^{n_i}M^{k_i}=2^{x_i},
+ \qquad a_i=3^{n_i}A^{k_i}=3^{x_i}.
+\end{equation}
+Because $\beta$ is irrational, the $x_i$ are pairwise distinct.
+
+Let $\mathcal C_T$ be the first $N_T$ points $(u,v)\in\Nzero^2$ in increasing order of
+\[
+ \lambda=u+\vartheta v,
+ \qquad
+ y=\log(2^u3^v)=\lambda\log2.
+\]
+Write $L_T$ for the largest selected $\lambda$.  Standard lattice-point estimates for the two
+triangles give
+\begin{equation}\label{eq:grid-cardinality}
+ N_T=\frac{T^2}{2\beta}+O_\beta(T),
+ \qquad
+ L_T=\sqrt{2\vartheta N_T}+O_\vartheta(1)
+      =T\sqrt{\frac{\vartheta}{\beta}}+O_\beta(1).
+\end{equation}
+
+The associated square determinant is
+\begin{equation}\label{eq:grid-determinant}
+ D_T^{\triangle}
+ =\det\!\left(m_i^{u_j}a_i^{v_j}\right)_{i,j=1}^{N_T}
+ =\det\!\left(e^{x_i y_j}\right)_{i,j=1}^{N_T}.
+\end{equation}
+Every entry is an integer.  Ordering the $x_i$ and $y_j$ increasingly, strict total positivity
+of the exponential kernel makes $D_T^{\triangle}>0$; equivalently, this is the same
+exponential-polynomial zero theorem used by the generalized-Vandermonde part of the source
+report.
+
+\begin{statusbox}{\statusnew{} for the asymptotic transport statements below.  Integrality and
+nonvanishing are inherited from the mixed-semigroup determinant architecture
+\statuslean.}
+\end{statusbox}
+
+\subsection{The common triangular distribution}
+
+The normalized row heights $h_i=x_i/T$ and column weights $\ell_j=y_j/(L_T\log2)$ both live in
+$[0,1]$.  Their empirical measures have the same limit.
+
+\begin{lemma}[Triangular height law]\label{lem:triangular-law}
+For every continuous $f:[0,1]\to\R$,
+\begin{align}
+ \frac1{N_T}\sum_{i=1}^{N_T}f(h_i)
+   &\longrightarrow \int_0^1 2t f(t)\,dt, \label{eq:row-law}\\
+ \frac1{N_T}\sum_{j=1}^{N_T}f(\ell_j)
+   &\longrightarrow \int_0^1 2t f(t)\,dt. \label{eq:column-law}
+\end{align}
+Thus the common limiting distribution has cumulative distribution function $F(t)=t^2$ and
+quantile function
+\begin{equation}\label{eq:triangular-quantile}
+ Q(s)=\sqrt s,\qquad 0\le s\le1.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+After scaling $(n,k)$ to $(n/T,\beta k/T)$, the row lattice becomes equidistributed in the
+unit right triangle
+\[
+ \{(r,s):r,s\ge0,\ r+s\le1\}.
+\]
+The subtriangle on which $r+s\le t$ has area $t^2/2$, while the whole triangle has area
+$1/2$.  Hence the height $r+s$ has distribution function $t^2$.  Boundary discrepancies are
+$O(T)$ against $N_T\asymp T^2$, proving \eqref{eq:row-law}.
+
+For the columns, scale $(u,v)$ to $(u/L_T,\vartheta v/L_T)$.  The same unit triangle appears,
+and $\ell=(u+\vartheta v)/L_T$ is again the sum of the scaled coordinates.  The boundary shell
+created by taking the first exactly $N_T$ points has $O(L_T)$ points against
+$N_T\asymp L_T^2$, which proves \eqref{eq:column-law}.
+\end{proof}
+
+\subsection{Summing all primewise assignment minima}
+
+For each prime $p$, let
+\begin{equation}\label{eq:grid-tau}
+ \tau_{p,T}
+ =\min_{\sigma\in S_{N_T}}
+   \sum_{i=1}^{N_T}
+   v_p\!\left(m_i^{u_{\sigma(i)}}a_i^{v_{\sigma(i)}}\right),
+ \qquad
+ Q_T^{\triangle}=\prod_p p^{\tau_{p,T}}.
+\end{equation}
+As before, $Q_T^{\triangle}$ divides every Leibniz term and hence divides
+$D_T^{\triangle}$.  The key observation is that taking a separate minimizing permutation at
+each prime can only decrease the sum relative to using one permutation at all primes.
+
+\begin{lemma}[All-place transport domination]\label{lem:all-place-transport}
+For every $T$,
+\begin{equation}\label{eq:all-place-min}
+ \log Q_T^{\triangle}
+ \le
+ \min_{\sigma\in S_{N_T}}
+ \sum_{i=1}^{N_T}x_i y_{\sigma(i)}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For a permutation $\sigma$, put
+\[
+ C_p(\sigma)=
+ \sum_i v_p\!\left(m_i^{u_{\sigma(i)}}a_i^{v_{\sigma(i)}}\right)\log p.
+\]
+Then
+\[
+ \sum_p\min_\sigma C_p(\sigma)
+ \le \min_\sigma\sum_p C_p(\sigma).
+\]
+Unique factorization and \eqref{eq:grid-row-values} give, entry by entry,
+\[
+ \sum_p v_p(m_i^{u_j}a_i^{v_j})\log p
+ =\log(m_i^{u_j}a_i^{v_j})
+ =x_i y_j.
+\]
+Substitution proves \eqref{eq:all-place-min}.
+\end{proof}
+
+Notice how little arithmetic remains in the last inequality: it is valid in every valuation
+branch, includes all primes, and does not use the primitive-depth normalization.  The price is
+that it is only an upper bound for the common termwise divisor.  That is exactly what is needed
+for a no-go theorem.
+
+\subsection{Optimal transport and the \texorpdfstring{$\pi/4$}{pi/4} ratio}
+
+Let
+\begin{align}
+ E_T^-&=\min_{\sigma\in S_{N_T}}\sum_i x_i y_{\sigma(i)},
+ \label{eq:grid-Eminus}\\
+ E_T^+&=\max_{\sigma\in S_{N_T}}\sum_i x_i y_{\sigma(i)}.
+ \label{eq:grid-Eplus}
+\end{align}
+The rearrangement inequality pairs the two ordered lists oppositely for $E_T^-$ and in the
+same order for $E_T^+$.
+
+\begin{theorem}[Triangular-grid transport constants]\label{thm:grid-transport}
+As $T\to\infty$,
+\begin{align}
+ \frac{E_T^-}{N_TTL_T\log2}
+   &\longrightarrow
+     \int_0^1\sqrt{t(1-t)}\,dt
+      =\frac\pi8, \label{eq:grid-min-limit}\\
+ \frac{E_T^+}{N_TTL_T\log2}
+   &\longrightarrow
+     \int_0^1t\,dt
+      =\frac12. \label{eq:grid-max-limit}
+\end{align}
+Consequently
+\begin{equation}\label{eq:grid-ratio}
+ \frac{E_T^-}{E_T^+}\longrightarrow\frac\pi4
+ =0.7853981633\ldots .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:triangular-law}, the increasing empirical quantile functions of the two
+normalized lists converge in $L^1$ to $Q(t)=\sqrt t$.  The discrete rearrangement sums are
+Riemann sums for the monotone and antimonotone couplings.  Thus
+\[
+ \frac{E_T^-}{N_TTL_T\log2}
+ \longrightarrow\int_0^1Q(t)Q(1-t)\,dt,
+ \qquad
+ \frac{E_T^+}{N_TTL_T\log2}
+ \longrightarrow\int_0^1Q(t)^2\,dt.
+\]
+The first integral is the beta integral
+$B(3/2,3/2)=\Gamma(3/2)^2/\Gamma(3)=\pi/8$; the second is $1/2$.
+\end{proof}
+
+The determinant has $N_T!$ Leibniz terms, each at most $e^{E_T^+}$.
+Since $N_T\asymp T^2$ while $TL_TN_T\asymp T^4$,
+\begin{equation}\label{eq:grid-factorial-lower-order}
+ \log(N_T!)=O(T^2\log T)=o(N_TTL_T).
+\end{equation}
+Combining the preceding statements gives the promised ceiling.
+
+\begin{corollary}[Full-grid termwise-divisor ceiling]\label{cor:grid-pi-four}
+With the notation above,
+\begin{equation}\label{eq:grid-pi-four}
+ \limsup_{T\to\infty}
+ \frac{\log Q_T^{\triangle}}
+      {E_T^++\log(N_T!)}
+ \le\frac\pi4.
+\end{equation}
+Thus the complete $\asymp T^2$ row grid does not make the all-prime common divisor exceed the
+sharp largest-Leibniz-term archimedean bound.  Entrywise valuation alone leaves at least the
+fraction $1-\pi/4=0.2146018\ldots$ uncovered at leading order.
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:all-place-transport} gives
+$\log Q_T^{\triangle}\le E_T^-$.  Divide by the standard determinant upper bound
+$E_T^++\log(N_T!)$ and apply Theorem~\ref{thm:grid-transport} and
+\eqref{eq:grid-factorial-lower-order}.
+\end{proof}
+
+\begin{warning}[What the $\pi/4$ theorem does not exclude]\label{warn:grid-actual}
+The denominator in \eqref{eq:grid-pi-four} is the largest-term upper bound, not the true size
+of $D_T^{\triangle}$.  Generalized Vandermonde determinants exhibit substantial alternating
+cancellation.  A sufficiently sharp archimedean estimate could lower the relevant budget
+below $E_T^-$, in which case the termwise divisor might become decisive.  The theorem excludes
+the naive ``more rows plus the same Hadamard/Leibniz estimate'' route; it does not exclude a
+joint $p$-adic/free-energy argument.
+\end{warning}
+
+\subsection{The Harish--Chandra--Itzykson--Zuber identity}
+
+The exact analytic object behind that warning is classical.  For diagonal Hermitian matrices
+$X=\operatorname{diag}(x_1,\ldots,x_N)$ and
+$Y=\operatorname{diag}(y_1,\ldots,y_N)$ with distinct increasing entries, normalized Haar
+measure on the unitary group satisfies
+\begin{equation}\label{eq:hciz}
+ \int_{U(N)}
+   \exp\!\bigl(\operatorname{Tr}(XUYU^*)\bigr)\,dU
+ =\frac{\prod_{r=1}^{N-1}r!}{\Delta(x)\Delta(y)}
+   \det(e^{x_i y_j})_{i,j=1}^{N},
+\end{equation}
+where
+$\Delta(x)=\prod_{i<j}(x_j-x_i)$ and similarly for $\Delta(y)$
+\cite{HarishChandra1957,ItzyksonZuber1980,McSwiggen2018}.  Hence
+\begin{equation}\label{eq:hciz-det}
+ \log D_T^{\triangle}
+ =\log\Delta(x)+\log\Delta(y)
+  -\sum_{r=1}^{N_T-1}\log(r!)
+  +\log\mathcal I_T,
+\end{equation}
+with $\mathcal I_T$ the unitary integral in \eqref{eq:hciz}.
+
+The large powers of $T$ hidden separately in the two Vandermonde factors and the factorial
+product cancel at leading logarithmic scale.  What remains is a genuine free-energy problem
+for two triangular empirical measures.  The Baker separation theorem of
+Section~\ref{sec:baker} gives a polynomial lower bound for the spacings in $\Delta(x)$, so the
+row Vandermonde cannot collapse through anomalously close conditional exponents.  What is not
+known is a bound on the full combination \eqref{eq:hciz-det} strong enough to beat the
+primewise divisor.
+
+\begin{target}[HCIZ--valuation comparison]\label{target:hciz}
+Determine the $T^4$-scale limit, or a sufficiently sharp upper bound, of
+\[
+ \log D_T^{\triangle}-\log Q_T^{\triangle}
+\]
+for the conditional triangular row lattice and balanced mixed columns.  It would suffice to
+prove that this quantity is negative for all sufficiently large $T$.  Corollary
+\ref{cor:grid-pi-four} shows that such a result must use either the HCIZ/Vandermonde
+cancellation in \eqref{eq:hciz-det}, extra $p$-adic cancellation beyond the assignment minima,
+or both.
+\end{target}
+
+This formulation has a useful advantage over a generic interpolation determinant: both
+limiting measures and all lattice densities are explicit.  It is therefore suitable for
+numerical free-energy reconnaissance before attempting a proof.
+
+\section{The first tied \texorpdfstring{$p$}{p}-adic layer is lower order}
+\label{sec:firstlayer}
+
+Theorem~\ref{thm:four-fifths} says that extra divisibility must come from ties among
+minimum-valuation Leibniz terms.  Ties are especially abundant in the cross-coprime branch
+\eqref{eq:cross-coprime}: at $p=2$ all columns with the same $u$ have the same valuation
+profile, and at $p=3$ all columns with the same $v$ do.  It is natural to hope that cancellation
+inside those large fibers supplies the missing leading-order fraction.
+
+The present section computes that first cancellation layer exactly.  It factors into ordinary
+Vandermondes of the odd row parts.  Standard upper bounds for $p$-adic linear forms in two
+logarithms then show that the whole first layer is only
+$O(T^{3/2}(\log T)^C)$, whereas the mixed determinant has height $\asymp T^{5/2}$.  This does
+not bound the final determinant valuation---higher tropical layers may cancel again---but it
+rules out a one-step fiber explanation of the missing fraction.
+
+\subsection{Tropical initial form at two}
+
+Assume throughout this section that $\gcd(MA,6)=1$.  For the block rows, write
+\begin{equation}\label{eq:odd-output}
+ q_k=a_{T,k}=3^{n_k}A^k,
+ \qquad n_k=T-\lfloor k\beta\rfloor.
+\end{equation}
+Both $M$ and every $q_k$ are odd, and
+\begin{equation}\label{eq:two-entry-factor}
+ m_{T,k}^{u}a_{T,k}^{v}
+ =2^{u n_k}\,M^{ku}q_k^v.
+\end{equation}
+For each integer $u\ge0$, let
+\[
+ V_u=\{v:(u,v)\text{ is one of the selected }N\text{ columns}\},
+ \qquad s_u=\#V_u.
+\]
+Because columns are selected by the inequality $u+\vartheta v\le L_N$ up to one boundary
+shell, each nonempty $V_u$ is an initial interval of integers.  Sort the distinct $u$ values
+in increasing order.  Since $n_0>n_1>\cdots>n_{N-1}$, every minimizing assignment for the
+cost $un_k$ sends one consecutive row block $R_u$ of size $s_u$ to the columns in the fiber
+$\{u\}\times V_u$.
+
+Let $\tau_{2,T}$ be the minimum from \eqref{eq:taup}.  The sum of all Leibniz terms having
+exactly this valuation is the $2$-adic tropical initial form.  Up to an overall sign and an odd
+factor, it is
+\begin{equation}\label{eq:initial-two}
+ I_{2,T}
+ =\prod_u
+   \det\!\left(q_k^v\right)_{k\in R_u,\ v\in V_u}
+ =\prod_u\prod_{\substack{i<j\\i,j\in R_u}}(q_j-q_i).
+\end{equation}
+The first equality follows by grouping the optimal permutations by fibers and factoring the
+odd number $M^{ku}$ from each row in a fixed $u$ block; the second is the ordinary Vandermonde
+identity because $V_u$ is consecutive.
+
+\begin{proposition}[Exact first $2$-adic initial form]\label{prop:initial-two}
+There is an integer $Z_{2,T}$ and an integer gap $g_{2,T}\ge\lfloor\beta\rfloor$ such that
+\begin{equation}\label{eq:two-layer-expansion}
+ 2^{-\tau_{2,T}}D_T
+ =\varepsilon_{2,T} I_{2,T}+2^{g_{2,T}}Z_{2,T},
+\end{equation}
+where $\varepsilon_{2,T}$ is odd.  Consequently
+\begin{equation}\label{eq:two-layer-min}
+ v_2(D_T)-\tau_{2,T}
+ \ge \min\{v_2(I_{2,T}),g_{2,T}\},
+\end{equation}
+and equality holds whenever the two numbers inside the minimum are unequal.
+\end{proposition}
+
+\begin{proof}
+The rearrangement inequality with repeated column weights identifies the minimizing
+permutations exactly as above, and summing their signed unit parts gives
+\eqref{eq:initial-two}.  Any nonminimizing assignment must move at least one column across two
+adjacent $u$ fibers.  An exchange across the corresponding boundary changes the cost by
+\[
+ (u'-u)(n_i-n_j).
+\]
+Here $u'-u\ge1$, while consecutive row depths differ by
+$\lfloor(k+1)\beta\rfloor-\lfloor k\beta\rfloor\ge\lfloor\beta\rfloor$.  Hence every
+nonminimal Leibniz term has valuation at least $\tau_{2,T}+\lfloor\beta\rfloor$, proving the
+expansion.  The valuation statement follows from the ultrametric inequality.
+\end{proof}
+
+\subsection{The symmetric initial form at three}
+
+Put
+\begin{equation}\label{eq:three-unit-input}
+ r_k=m_{T,k}=2^{n_k}M^k.
+\end{equation}
+At $p=3$ the entry factors as
+\[
+ m_{T,k}^ua_{T,k}^v
+ =3^{vn_k}\,r_k^uA^{kv}.
+\]
+For a selected value of $v$, let $U_v$ be the consecutive set of selected $u$ values and let
+$R'_v$ be the corresponding consecutive block of rows in the minimum assignment.  The same
+argument gives
+\begin{equation}\label{eq:initial-three}
+ I_{3,T}
+ =\prod_v\prod_{\substack{i<j\\i,j\in R'_v}}(r_j-r_i)
+\end{equation}
+and
+\begin{equation}\label{eq:three-layer-expansion}
+ 3^{-\tau_{3,T}}D_T
+ =\varepsilon_{3,T}I_{3,T}+3^{g_{3,T}}Z_{3,T},
+ \qquad g_{3,T}\ge\lfloor\beta\rfloor,
+\end{equation}
+with $\varepsilon_{3,T}$ a $3$-adic unit.
+
+\subsection{Two-logarithm bounds inside the fibers}
+
+For $i<j$, set $d=j-i$ and
+$h=n_i-n_j=\lfloor j\beta\rfloor-\lfloor i\beta\rfloor$.  The common factors in the row
+values are units at the relevant place, so
+\begin{align}
+ v_2(q_j-q_i)&=v_2(A^d-3^h), \label{eq:qdiff-two}\\
+ v_3(r_j-r_i)&=v_3(M^d-2^h). \label{eq:rdiff-three}
+\end{align}
+Neither difference vanishes: $A^d=3^h$ or $M^d=2^h$ would give $d\beta=h$, contrary to the
+irrationality of $\beta$.
+
+A standard consequence of $p$-adic linear-form theory is that for fixed multiplicatively
+independent positive rationals $\alpha_1,\alpha_2$ and a fixed prime $p$, there are effectively
+computable constants $C_0,C_1$ such that
+\begin{equation}\label{eq:padic-two-log}
+ v_p(\alpha_1^d-\alpha_2^h)
+ \le C_0+C_1\bigl(\log(2+\max\{d,h\})\bigr)^2.
+\end{equation}
+Much sharper versions, with linear dependence on $\log B$, are known in important two-logarithm
+regimes; the square is more than sufficient here
+\cite{BugeaudLaurent1996,Bugeaud2002,Yu1998}.  Apply this to $(A,3,p=2)$ and
+$(M,2,p=3)$.  Since $d,h=O_\beta(N)$, each factor in
+\eqref{eq:initial-two}--\eqref{eq:initial-three} has valuation
+$O_{M,A}((\log N)^2)$.
+
+The number of pairs within the vertical fibers is
+\begin{equation}\label{eq:vertical-pairs}
+ \sum_u\binom{s_u}{2}
+ =\frac{L_N^3}{6\vartheta^2}+O_\vartheta(L_N^2)
+ =O_\vartheta(N^{3/2}),
+\end{equation}
+while the number within the horizontal fibers is
+\begin{equation}\label{eq:horizontal-pairs}
+ \sum_v\binom{\#U_v}{2}
+ =\frac{L_N^3}{6\vartheta}+O_\vartheta(L_N^2)
+ =O_\vartheta(N^{3/2}).
+\end{equation}
+We obtain the following rigorous scale separation.
+
+\begin{theorem}[First tied layer is lower order]\label{thm:first-layer-small}
+In the cross-coprime branch,
+\begin{equation}\label{eq:first-layer-small}
+ v_2(I_{2,T})+v_3(I_{3,T})
+ =O_{M,A}\!\left(N^{3/2}(\log N)^2\right)
+ =O_{M,A}\!\left(T^{3/2}(\log T)^2\right).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:first-layer-negligible}
+ \frac{v_2(I_{2,T})\log2+v_3(I_{3,T})\log3}{H_T}
+ \longrightarrow0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Sum \eqref{eq:padic-two-log} over the pairs in
+\eqref{eq:vertical-pairs} and \eqref{eq:horizontal-pairs}, using
+\eqref{eq:qdiff-two}--\eqref{eq:rdiff-three}.  Finally use
+$N\asymp_\beta T$ and $H_T\asymp_\beta T^{5/2}$.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} modulo the quoted classical $p$-adic linear-form estimate
+\eqref{eq:padic-two-log}.  The factorization of the tropical initial forms is elementary and
+is a particularly attractive Lean target.}
+\end{statusbox}
+
+\subsection{What a leading excess would have to do}
+
+Theorem~\ref{thm:first-layer-small} does not prove
+$v_2(D_T)-\tau_{2,T}=o(H_T)$ or its $3$-adic analogue.  If the initial form is divisible by a
+power exceeding the first tropical gap, terms from the next valuation layer enter; those can
+cancel, exposing another layer, and so on.  A leading-order excess is therefore possible only
+through a \emph{cascade} of cancellations across a number of tropical layers growing with
+$T$.  Cancellation confined to the minimum-permutation fibers is quantitatively negligible.
+
+This yields a more precise version of the $p$-adic research target.
+
+\begin{target}[No shallow-layer proof]\label{target:cascade}
+Either prove that the tropical cancellation cascade has total depth $o(H_T)$---which would
+retire the single-block $p$-adic strategy---or identify a structural identity forcing
+$\gg H_T$ cumulative cancellation across successively nonminimal assignments.  Pairwise
+congruences such as \eqref{eq:qdiff-two} and \eqref{eq:rdiff-three} cannot by themselves
+supply the latter, because $p$-adic logarithm bounds make each congruence only polylogarithmic
+in the row separation.
+\end{target}
+
+\section{Synthesis of the determinant audits}
+\label{sec:synthesis}
+
+The preceding calculations put several superficially different determinant proposals into the
+same currency: the fraction of the leading archimedean budget supplied automatically by
+valuations of the entries.  The numerical constants should not be compared as though the
+underlying determinants were identical---the ordinary, mixed-block, and complete-grid systems
+have different sizes and different upper bounds---but they do show which mechanism is closest
+to a contradiction before any genuine cancellation is used.
+
+\begin{table}[htbp]
+\centering
+\caption{Leading termwise-divisor ceilings obtained in this continuation.}
+\label{tab:ceilings}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}
+ >{\raggedright\arraybackslash}p{0.27\textwidth}
+ >{\raggedright\arraybackslash}X@{}}
+\toprule
+System & Ceiling or exact limit & Meaning \\
+\midrule
+Ordinary input/output Vandermonde product &
+$1-\dfrac{\delta_2\log2+\delta_3\log3}{3\beta\log6}
+ <0.8710491$ &
+Exact fixed-support divisor fraction; all primes already occurring in $M$ and $A$ included.\\[0.7em]
+Mixed single block, arbitrary branch &
+$1-\dfrac38\sum_p\mathfrak G(c_p)\le4/5$ &
+Exact all-prime tropical limit and universal primitive-depth ceiling.\\[0.7em]
+Mixed single block, cross-coprime &
+$\le7/10$ &
+Uses $c_2=(-1,0)$, $c_3=(0,-1)$ and the external sum $(1,1)$.\\[0.7em]
+Mixed single block, only structural primes in the cross-coprime branch &
+$3/10$ &
+Exact contribution of $p=2,3$ before external primes or cancellation.\\[0.7em]
+Complete triangular row grid &
+$\le\pi/4=0.7853982\ldots$ &
+All-prime common divisor versus the sharp largest-Leibniz-term transport upper bound.\\[0.7em]
+First tied fibers at $2$ and $3$ &
+$o(1)$ of the mixed-block budget &
+Their valuations are $O(T^{3/2}(\log T)^2)$ against $H_T\asymp T^{5/2}$.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Three conclusions survive every normalization.
+
+\begin{enumerate}
+\item Merely adding every prime in the fixed support does not close any determinant.  It does,
+      however, improve the diagnosis substantially: the universal mixed-block ceiling is
+      $4/5$, not a heuristic ``about one half''.
+\item The exact primitive theorem is quantitatively useful.  The condition
+      $\min(v_2(M),v_3(A))=0$ creates one structural slope vector of norm at least $4/15$; the
+      conservation law forces a second norm contribution of at least the same size.
+\item A successful $p$-adic proof must be a cancellation theorem, not a divisibility-by-every-
+      term theorem.  In the easiest branch, even the first large tied family contributes only
+      a lower-order amount.  The required phenomenon would have to repeat through many
+      tropical layers or interact with a much sharper archimedean free energy.
+\end{enumerate}
+
+\subsection{Correction of the post-attachment ``one half / two thirds'' note}
+\label{subsec:report7-correction}
+
+After the attached unified report was produced, the repository acquired a short exploratory
+note, \lean{Analysis/ExponentialIdentities/Article/new-reports/report-7.md}, at commit
+\sha{ff9a9f5aa3a3f02599de93fc053e60918f269855}.  That note correctly identified the distinction
+between termwise min-plus divisibility and cancellation beyond the tropical minimum, and its
+real/$p$-adic compatibility diagnosis remains valuable.  It proposed, however, a structural
+$1/2$ ceiling and an all-prime $2/3$ ceiling.  Neither constant is valid in the stated
+generality.
+
+The structural averaging argument omitted the base and cross depths that appear in
+\eqref{eq:c2}--\eqref{eq:c3}.  Even under $v_2(M)=0$, the terms
+$v_2(A)kv$ and $v_3(M)ku+v_3(A)kv$ do not disappear.  The exact structural contribution is
+obtained by retaining $c_2$ and $c_3$ in Theorem~\ref{thm:mixed-gini}; it can exceed one half
+of $H_T$.
+
+The all-prime step used the assertion that an oppositely sorted nonnegative triangular weight
+has assignment minimum at most two thirds of its mean.  For the weight $Y=X+Z$ on the standard
+triangle, the exact values from Lemma~\ref{prop:G-explicit} are
+\[
+ \mathbb E Y=\frac23,
+ \qquad
+ \Phi(1,1)=\frac4{15},
+ \qquad
+ \frac{\Phi(1,1)}{\mathbb EY/2}=\frac45.
+\]
+Thus $4/5$, not $2/3$, is already attained by the relaxed external rank-one grading.  The
+Gini-norm identity explains the general case and leads to the rigorous ceiling in
+Theorem~\ref{thm:four-fifths}.  This is a correction of a calculation in an exploratory note,
+not a criticism of the source report itself; the attached unified report did not contain the
+claim.
+
+\begin{statusbox}{\statusnew{} --- the correction follows from the exact transport formula,
+not from numerical experimentation.}
+\end{statusbox}
+
+
+\section{Directed-rounding extension through \texorpdfstring{$2^{27}$}{2\^{}27}}
+\label{sec:finite27}
+
+The attached report supplied a complete MPFR scan through $2^{26}$.  Because a finite
+extension is independent of the unresolved transcendence barrier and gives a useful stronger
+floor for every hypothetical generator, I extracted the literal C listing from its
+Appendix~``Directed-rounding verifier'', compiled it against MPFR~4.2.2, replayed an old audit
+chunk, and scanned the next full dyadic range.
+
+\subsection{Manifest audit}
+
+The literal extracted source has SHA-256 digest
+\begin{center}
+ \sha{f888c0d89be9366f01e2d26f339dcbe446556d39d4c5dbcf8f579ec0d0052e1d}.
+\end{center}
+This does \emph{not} equal the digest
+\sha{ec709623f812478fbb7fb5567aa59fbfe3df0ae639ca366bc7c72e278bcfee2f}
+printed in the attached report.  None of the ordinary line-ending, final-newline, or tab
+normalizations explains the discrepancy.  The report therefore contains a stale or
+externally generated source-identity hash.
+
+The semantic reproducibility check succeeds.  Replaying the old interval
+$[29{,}360{,}128,33{,}554{,}432)$ at $192$ bits gives exactly the report's records
+\[
+ \begin{split}
+ &\text{lower: }1.4439124872349507\times10^{-19}
+   \text{ at }(30{,}103{,}832,713{,}403{,}245{,}915),\\
+ &\text{upper: }5.4132120119800561\times10^{-21}
+   \text{ at }(29{,}411{,}704,687{,}581{,}893{,}443),
+ \end{split}
+\]
+with zero failures.  Thus the listing used here reproduces the old executable's mathematical
+behavior on an audited four-million-input overlap even though the printed file digest does not
+identify it.
+
+\begin{statusbox}{\statuscomp{} --- this section is a directed-rounding software result.  It
+is stronger numerically than the Lean theorem but is not a kernel proof.  The manifest hash
+mismatch is explicitly part of the trust boundary.}
+\end{statusbox}
+
+\subsection{The new range}
+
+The half-open interval $[2^{26},2^{27})$ was divided into sixteen chunks of width $2^{22}$.
+The executable used $192$-bit MPFR endpoints and outward rounding exactly as in the source
+report.  There are $2^{26}$ integers in the range; the first, $2^{26}$, is the sole power of
+two and is intentionally skipped.  Hence the required nonpower count is
+$2^{26}-1=67{,}108{,}863$.
+
+The concatenated canonical extension log has SHA-256 digest
+\begin{center}
+ \sha{b11843448cd8946442aba13758b5b666e4ac6eae50d2243fbdc32d83274cea8d}.
+\end{center}
+Every chunk reports zero failures, and the checked counts sum to the required total.
+
+{\small
+\begin{longtable}{@{}r p{0.27\textwidth} r r r@{}}
+\caption{Directed-rounding extension on $[2^{26},2^{27})$.}
+\label{tab:scan27}\\
+\toprule
+Chunk & Integer range & Checked & Smallest lower gap & Smallest upper gap \\
+\midrule
+\endfirsthead
+\toprule
+Chunk & Integer range & Checked & Smallest lower gap & Smallest upper gap \\
+\midrule
+\endhead
+0 & 67{,}108{,}864--71{,}303{,}167 & 4{,}194{,}303 & $4.2837\times10^{-20}$ & $1.7723\times10^{-19}$ \\
+1 & 71{,}303{,}168--75{,}497{,}471 & 4{,}194{,}304 & $2.2961\times10^{-20}$ & $1.1433\times10^{-20}$ \\
+2 & 75{,}497{,}472--79{,}691{,}775 & 4{,}194{,}304 & $1.2813\times10^{-19}$ & $1.6063\times10^{-20}$ \\
+3 & 79{,}691{,}776--83{,}886{,}079 & 4{,}194{,}304 & $2.5420\times10^{-20}$ & $5.2012\times10^{-20}$ \\
+4 & 83{,}886{,}080--88{,}080{,}383 & 4{,}194{,}304 & $2.6166\times10^{-20}$ & $3.8496\times10^{-20}$ \\
+5 & 88{,}080{,}384--92{,}274{,}687 & 4{,}194{,}304 & $1.0923\times10^{-19}$ & $5.7144\times10^{-20}$ \\
+6 & 92{,}274{,}688--96{,}468{,}991 & 4{,}194{,}304 & $1.1017\times10^{-20}$ & $2.3227\times10^{-20}$ \\
+7 & 96{,}468{,}992--100{,}663{,}295 & 4{,}194{,}304 & $3.0759\times10^{-20}$ & $7.4810\times10^{-20}$ \\
+8 & 100{,}663{,}296--104{,}857{,}599 & 4{,}194{,}304 & $5.6465\times10^{-20}$ & $6.4744\times10^{-20}$ \\
+9 & 104{,}857{,}600--109{,}051{,}903 & 4{,}194{,}304 & $8.8144\times10^{-20}$ & $8.3662\times10^{-21}$ \\
+10 & 109{,}051{,}904--113{,}246{,}207 & 4{,}194{,}304 & $3.8892\times10^{-20}$ & $7.0327\times10^{-21}$ \\
+11 & 113{,}246{,}208--117{,}440{,}511 & 4{,}194{,}304 & $9.9365\times10^{-21}$ & $2.1814\times10^{-20}$ \\
+12 & 117{,}440{,}512--121{,}634{,}815 & 4{,}194{,}304 & $4.4964\times10^{-20}$ & $5.4132\times10^{-21}$ \\
+13 & 121{,}634{,}816--125{,}829{,}119 & 4{,}194{,}304 & $1.0774\times10^{-20}$ & $3.4093\times10^{-20}$ \\
+14 & 125{,}829{,}120--130{,}023{,}423 & 4{,}194{,}304 & $4.3609\times10^{-20}$ & $8.3073\times10^{-22}$ \\
+15 & 130{,}023{,}424--134{,}217{,}727 & 4{,}194{,}304 & $5.9082\times10^{-21}$ & $5.1326\times10^{-20}$ \\
+\midrule
+\multicolumn{2}{@{}r}{\textbf{total}} & \textbf{67{,}108{,}863} & & \\
+\bottomrule
+\end{longtable}
+}
+
+\subsection{New extremal records and high-precision replay}
+
+The smallest lower logarithmic margin in the extension is
+\begin{equation}\label{eq:new-lower-record}
+ 5.9082259992879571\times10^{-21}
+ \quad\text{at}\quad
+ (m,n)=(132{,}833{,}765,7{,}501{,}348{,}219{,}569).
+\end{equation}
+A $120$-decimal-digit reevaluation gives
+\[
+ m^{\vartheta}-n
+ =6.3939754533470409837680125510\ldots\times10^{-8}.
+\]
+
+The smallest upper logarithmic margin is the new global record
+\begin{equation}\label{eq:new-upper-record}
+ 8.3073231820333117\times10^{-22}
+ \quad\text{at}\quad
+ (m,n)=(129{,}799{,}345,7{,}231{,}571{,}292{,}851),
+\end{equation}
+where
+\[
+ n+1-m^{\vartheta}
+ =8.6669904355818956853297952288\ldots\times10^{-9}.
+\]
+Both one-input cases were rerun independently at $320$ and $512$ bits.  The directed margins
+and nearest integer were unchanged in every displayed digit, and both replays reported zero
+failures.
+
+\begin{theorem}[Software-level finite exclusion through $2^{27}$]
+\label{thm:finite27}
+At the stated MPFR software-trust level, for every integer $1\le m<2^{27}$,
+\[
+ m^{\vartheta}\in\N
+ \quad\Longrightarrow\quad
+ m\text{ is a power of two}.
+\]
+Consequently every nonintegral real $x$ satisfying $2^x,3^x\in\Z$ obeys
+\begin{equation}\label{eq:x-gt-27}
+ x>27.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The attached report's complete scan covers $1\le m<2^{26}$, and the sixteen new chunks cover
+$2^{26}\le m<2^{27}$.  In each case the directed logarithmic interval for
+$\vartheta\log m$ lies strictly between the intervals for the logarithms of two consecutive
+integers, except when $m$ is a power of two.  If $m=2^x$ came from a nonintegral solution and
+$m<2^{27}$, then $m^\vartheta=3^x$ would be an integer at a non-power input, contradicting the
+scan.  The endpoint $m=2^{27}$ corresponds to the integral exponent $27$, so a nonintegral
+solution must have $m>2^{27}$ and hence $x>27$.
+\end{proof}
+
+This raises the software-level spacing ratio in the optimized finite-difference comparison
+from $26\log3$ to $27\log3=29.662531\ldots$.  It does not change any kernel-verified theorem;
+the formal floor remains $x\ge12$ until the finite certificates are replayed in Lean.
+
+\section{Additional proof routes pushed to their failure points}
+\label{sec:attempts}
+
+The determinant calculations were the main new line of attack, but they were not the only one.
+This section records four other routes in enough detail to prevent the same hidden loss from
+being rediscovered under different notation.
+
+\subsection{Transferring convergents of \texorpdfstring{$\beta$}{beta} to
+\texorpdfstring{$\vartheta$}{theta}}
+\label{subsec:transfer}
+
+Let $p/q$ be a continued-fraction convergent of a hypothetical primitive generator $\beta$ and
+put
+\[
+ \varepsilon=q\beta-p.
+\]
+For all sufficiently large $q$, $|\varepsilon|<1/2$.  Define the two nonzero integer gaps
+\begin{equation}\label{eq:D2D3}
+ D_2=M^q-2^p=2^p(2^\varepsilon-1),
+ \qquad
+ D_3=A^q-3^p=3^p(3^\varepsilon-1).
+\end{equation}
+They manufacture an exact rational approximation to $\vartheta$:
+\begin{equation}\label{eq:theta-transfer}
+ R_{p,q}:=
+ \frac{2^pD_3}{3^pD_2}
+ =\frac{3^\varepsilon-1}{2^\varepsilon-1}
+ \in\Q.
+\end{equation}
+Taylor expansion at zero gives
+\begin{equation}\label{eq:theta-transfer-error}
+ R_{p,q}=\vartheta+
+ \frac{\log3\,(\log3-\log2)}{2\log2}\,\varepsilon
+ +O(\varepsilon^2),
+\end{equation}
+so $|R_{p,q}-\vartheta|\ll|\varepsilon|$.
+
+This looks promising because $\vartheta$ has an explicit irrationality measure.  Wu's
+simultaneous linear-independence estimate for $1,\log2,\log3,\log5$ gives, after setting the
+unused coefficients to zero, a conservative exponent
+\begin{equation}\label{eq:wu-measure}
+ \left|\vartheta-\frac rs\right|
+ \ge c_\vartheta s^{-\mu_\vartheta},
+ \qquad \mu_\vartheta=8.616
+\end{equation}
+for all sufficiently large denominators $s$ \cite{Wu2003}.  The obstacle is the denominator
+created by \eqref{eq:theta-transfer}.  Before reduction it is at most
+\begin{equation}\label{eq:transfer-denominator}
+ 3^p|D_2|
+ \ll 3^p2^p|\varepsilon|
+ =6^p|\varepsilon|.
+\end{equation}
+Combining \eqref{eq:theta-transfer-error}--\eqref{eq:transfer-denominator} with
+\eqref{eq:wu-measure} gives only
+\begin{equation}\label{eq:transfer-lower}
+ |\varepsilon|
+ \gg 6^{-p\mu_\vartheta/(1+\mu_\vartheta)}.
+\end{equation}
+Since
+\[
+ 6^{-\mu_\vartheta/(1+\mu_\vartheta)}
+ =2^{-2.316\ldots},
+\]
+this is substantially weaker than the elementary bound
+$|\varepsilon|\gg2^{-p}$ obtained directly from $D_2\ne0$.  Sharper real irrationality
+measures cannot repair the architecture: every irrationality exponent is at least two, and
+the unreduced denominator already contains both $2^p$ and $3^p$.
+
+\begin{proposition}[Exact denominator-loss diagnosis]\label{prop:transfer-loss}
+The convergent-transfer construction can improve the elementary gap only if one proves an
+exponential lower bound for
+\begin{equation}\label{eq:transfer-gcd}
+ G_{p,q}=\gcd(2^pD_3,3^pD_2)
+\end{equation}
+that survives reduction of $R_{p,q}$.  In the absence of such a bound, every known
+irrationality measure for $\vartheta$ is defeated by the factor $6^p$ in
+\eqref{eq:transfer-denominator}.
+\end{proposition}
+
+No mechanism forcing $G_{p,q}$ to be exponentially large was found.  The two gaps share the
+same small real parameter $\varepsilon$, but real closeness does not impose a common prime
+divisor.
+
+\subsection{Two-row determinants and fixed-support \texorpdfstring{$S$}{S}-units}
+
+For two block rows $i<j$, put $d=j-i$ and
+$h=n_i-n_j=\lfloor j\beta\rfloor-\lfloor i\beta\rfloor$.  Their $2\times2$ determinant has
+the exact factorization
+\begin{equation}\label{eq:two-row-factor}
+ m_{T,i}a_{T,j}-m_{T,j}a_{T,i}
+ =6^{n_j}(MA)^i\bigl(2^hA^d-3^hM^d\bigr).
+\end{equation}
+Moreover
+\begin{equation}\label{eq:two-row-ratio}
+ \frac{2^hA^d}{3^hM^d}
+ =\left(\frac32\right)^{\beta d-h}.
+\end{equation}
+Thus a good rational approximation $h/d$ to $\beta$ makes the bracket in
+\eqref{eq:two-row-factor} a small \emph{relative} difference of two integers supported on the
+fixed prime set dividing $6MA$.
+
+Let
+\[
+ U=2^hA^d,
+ \qquad V=3^hM^d,
+ \qquad G=\gcd(U,V).
+\]
+The reduced nonzero integer $(U-V)/G$ gives
+\begin{equation}\label{eq:sunit-gap}
+ |\beta d-h|
+ \gg_{M,A}\frac{G}{\max\{U,V\}}.
+\end{equation}
+The exponent of the right-hand side can be written explicitly as the positive part of a
+valuation-vector difference:
+\begin{equation}\label{eq:sunit-rate}
+ \log\frac{U}{G}
+ =\sum_p
+ \max\!\left
+ \{h\mathbf1_{p=2}+d v_p(A)
+   -h\mathbf1_{p=3}-d v_p(M),0\right\}\log p.
+\end{equation}
+As $h/d\to\beta$, this is $\kappa_{M,A}d+o(d)$ for a positive constant
+$\kappa_{M,A}$.  Hence \eqref{eq:sunit-gap} is merely exponential in $d$, much weaker than the
+Baker--Matveev polynomial separation of Section~\ref{sec:baker}.
+
+The $abc$ conjecture applied to the reduced equation $U/G-V/G=(U-V)/G$ would make the
+difference nearly as large as a fixed positive power of $U/G$, but it would still allow a
+relative gap $e^{-\epsilon d}$.  Continued-fraction gaps of order $1/d$ are much larger.
+Thus this direct $S$-unit equation does not become a proof even after inserting $abc$; one
+would need an additional theorem controlling the prime support or radical of the difference.
+
+\subsection{Automaticity and the synchronized Sturmian word}
+
+The coding $s_k=\lfloor(k+1)\alpha\rfloor-\lfloor k\alpha\rfloor$ from
+Section~\ref{sec:sturmian} is aperiodic Sturmian.  A standard theorem in automatic-sequence
+theory says that no aperiodic Sturmian word is automatic in any integer base
+\cite{Cobham1972,AlloucheShallit2003}.  One quick obstruction is frequency: the frequency of
+$1$ in $s$ is the irrational number $\alpha$, whereas an automatic sequence having a letter
+frequency has rational frequency.
+
+This observation blocks a tempting but invalid shortcut.  The rationality of
+$U=2^\alpha$ does \emph{not} make the threshold itinerary of
+$R\mapsto UR/2^{\mathbf1_{UR\ge2}}$ finite-state; its exact rational denominators grow with
+time.  The same is true for $V$ in base three.  Therefore Cobham's theorem cannot be invoked
+merely because the same word is produced by a dyadic and a triadic rational system.  A viable
+automata proof would first have to manufacture genuine finite kernels in two multiplicatively
+independent bases, and doing so is already a new arithmetic theorem about $U$ and $V$.
+
+\subsection{Real and \texorpdfstring{$p$}{p}-adic logarithms}
+
+At the real place the counterexample is exactly
+\begin{equation}\label{eq:real-log-wall}
+ \log M\,\log3-\log A\,\log2=0.
+\end{equation}
+At $p=2$ or $3$, after stripping valuation and torsion parts, the units among
+$M,A,2,3$ admit $p$-adic logarithms.  The determinant entries then have unit parts whose
+$p$-adic logarithms are bilinear forms in the row and column coordinates.  This is the natural
+language for the cancellation cascade isolated in Section~\ref{sec:firstlayer}.
+
+What is missing is a transfer principle from \eqref{eq:real-log-wall} to a congruence or rank
+drop among those $p$-adic logarithms.  Real exponentiation by the transcendental number
+$\beta$ does not define a compatible $p$-adic exponent, and the equality $M=2^\beta$ has no
+$p$-adic meaning.  Known $p$-adic linear-form theorems control a nonzero form once its integer
+coefficients and algebraic bases are specified; they do not create a $p$-adic form from a real
+one.
+
+\begin{target}[Real/$p$-adic compatibility]\label{target:real-padic}
+Find an algebraic construction, valid for the integer pair $(M,A)$ alone, that converts
+\eqref{eq:real-log-wall} into either
+\begin{enumerate}
+\item a nontrivial congruence among $p$-adic unit logarithms with precision $\gg T$, repeated
+      over $\gg T^{3/2}$ fiber pairs; or
+\item a rank drop in the tropical initial matrices persisting through $\gg T$ valuation
+      layers.
+\end{enumerate}
+Without such a construction, ordinary $p$-adic logarithm bounds point in the opposite
+direction: they show that individual congruences are only polylogarithmically deep.
+\end{target}
+
+\subsection{Transcendental-curve point counting}
+
+The graph $y=x^\vartheta$ is definable in the real exponential field, so Pila--Wilkie type
+results~\cite{PilaWilkie2006} give subpolynomial bounds for rational points outside algebraic pieces.  Those generic
+bounds are far too weak here.  The curve already contains the infinite sequence
+$(2^n,3^n)$, giving $\asymp\log H$ integer points of height at most $H$, while a hypothetical
+second generator produces $\asymp(\log H)^2$ points globally.  A proof by point counting would
+therefore need a sharp $O(\log H)$ theorem with a structural classification of the extremal
+sequence, not merely $O(H^\epsilon)$.  Such a theorem would essentially be another form of the
+rank-one conclusion sought by the conjecture.
+
+\section{Exact sufficient conditions extracted from the new analysis}
+\label{sec:sufficient}
+
+A useful continuation should not stop at saying that the present determinant fails.  The
+calculations above isolate numerical thresholds which, if crossed by a future theorem, would
+settle the conjecture.  This section records those thresholds as precise implications.
+
+\subsection{The mixed-block cancellation-excess criterion}
+
+Let
+\[
+ \mathcal P=\{p:p\mid6MA\}
+\]
+be the fixed support of all determinant entries, and retain the mixed block determinant $D_T$,
+its tropical minima $\tau_{p,T}$, and the archimedean scale $H_T$.  Define the support-prime
+cancellation excess
+\begin{equation}\label{eq:cancellation-excess}
+ \mathcal E_T
+ =\sum_{p\in\mathcal P}
+   \bigl(v_p(D_T)-\tau_{p,T}\bigr)\log p
+ \ge0
+\end{equation}
+and the exact tropical deficit
+\begin{equation}\label{eq:tropical-deficit}
+ \delta(M,A)=\frac38\sum_{p\in\mathcal P}\mathfrak G(c_p).
+\end{equation}
+Theorem~\ref{thm:mixed-gini} says
+$\log Q_T^{\rm trop}=(1-\delta(M,A)+o(1))H_T$, while the elementary Leibniz upper bound is
+$\log D_T\le H_T+o(H_T)$.
+
+\begin{theorem}[Cancellation-excess criterion]\label{thm:excess-criterion}
+If a hypothetical primitive counterexample satisfies
+\begin{equation}\label{eq:excess-threshold}
+ \liminf_{T\to\infty}\frac{\mathcal E_T}{H_T}
+ >\delta(M,A),
+\end{equation}
+then no such counterexample exists.  In particular it is enough to prove an excess greater
+than $H_T/5$ uniformly in all primitive branches; in the cross-coprime branch the exact
+threshold is at least $3H_T/10$.
+\end{theorem}
+
+\begin{proof}
+The selected support primes alone give
+\[
+ \log D_T
+ \ge\sum_{p\in\mathcal P}v_p(D_T)\log p
+ =\log Q_T^{\rm trop}+\mathcal E_T.
+\]
+Under \eqref{eq:excess-threshold}, the right-hand side exceeds $H_T$ by a fixed positive
+multiple for all large $T$, contradicting the Leibniz upper bound.  The numerical thresholds
+follow from Theorem~\ref{thm:four-fifths} and Corollary~\ref{cor:seven-tenths}.
+\end{proof}
+
+This criterion is not tautological: it involves only valuations at the fixed finite set of
+primes already present in $6MA$, whereas $D_T$ can acquire arbitrary new prime factors.  It
+states exactly how much same-support cancellation is required.
+
+\subsection{A denominator-cancellation criterion}
+
+For the transferred approximant $R_{p,q}$ of Section~\ref{subsec:transfer}, let $s_{p,q}$ be
+its reduced denominator.  If one could prove along infinitely many convergents that
+\begin{equation}\label{eq:poly-reduced-denominator}
+ s_{p,q}\ll q^\eta
+ \qquad\text{for some }\eta<\frac{1+\mu_\vartheta}{\mu_\vartheta},
+\end{equation}
+then Wu's measure would give
+$|R_{p,q}-\vartheta|\gg q^{-\eta\mu_\vartheta}$, whereas
+\eqref{eq:theta-transfer-error} and the convergent bound give
+$|R_{p,q}-\vartheta|\ll q^{-1}$.  Since
+$\eta\mu_\vartheta<1+\mu_\vartheta$ is not by itself enough, one tracks
+$|\varepsilon|<1/q_{+}$ more precisely; a contradiction follows whenever
+$q_{+}\gg q^{\eta\mu_\vartheta+\epsilon}$ along the same subsequence.  A simpler sufficient
+condition is
+\begin{equation}\label{eq:very-small-reduced-denominator}
+ s_{p,q}=q^{o(1)}
+\end{equation}
+for infinitely many convergents with $q_{+}\ge q^{1+\epsilon}$.
+
+Equivalently, the gcd $G_{p,q}$ in \eqref{eq:transfer-gcd} would have to cancel essentially the
+entire exponential factor $6^p|\varepsilon|$, leaving a subpolynomial denominator.  This is a
+sharp formulation of the otherwise vague request for ``correlation between the two integer
+gaps.''
+
+\subsection{An automaticity criterion}
+
+The synchronized coding gives another exact, if presently inaccessible, implication.
+
+\begin{proposition}[Finite-kernel criterion]\label{prop:automatic-criterion}
+If under a hypothetical counterexample the common word
+$s_k=\lfloor(k+1)\alpha\rfloor-\lfloor k\alpha\rfloor$ were automatic in any integer base
+$q\ge2$, then the Alaoglu--Erd\H{o}s conjecture would follow.
+\end{proposition}
+
+\begin{proof}
+An automatic Sturmian word is ultimately periodic.  Its slope, equal to the frequency of the
+letter $1$, is therefore rational.  But $\alpha=\beta-\lfloor\beta\rfloor$ would then be
+rational, and the rational-exponent theorem would make $\beta$ integral.
+\end{proof}
+
+The missing step is not symbolic dynamics; it is proving automaticity from the two rational
+multipliers $U$ and $V$.  The growing denominators in \eqref{eq:normalized-orbits} show exactly why the
+obvious state space is infinite.
+
+\section{Branch-sensitive research program}
+\label{sec:program}
+
+The source report already classifies a hypothetical pair much more sharply than ``two
+integers on a curve.''  The next attack should exploit that classification rather than seek a
+single estimate that treats every branch identically.
+
+\subsection{Branch I: independent external valuation directions}
+
+Here the second-iterate kernel $K_\beta$ is zero, equivalently the external prime-valuation
+vectors of $M$ and $A$ are independent.  Corollary~\ref{cor:gini-kernel} gives a strict
+angular defect $\Delta_{\rm ext}>0$ in the all-prime tropical fraction.  That makes the
+termwise divisor farther from the archimedean upper bound, but the same independence also
+supplies at least two genuinely different external primes at which cancellation can be
+studied.
+
+The concrete target is a simultaneous $p$-adic rank theorem for the tropical initial matrices:
+show that if cancellation persists through $L$ layers at two non-collinear external primes,
+then an integer relation appears among the two external valuation vectors.  Such a theorem
+would contradict $K_\beta=0$.  Existing one-prime linear-form bounds do not compare the
+residue kernels at different primes; this is the genuinely new ingredient required.
+
+\subsection{Branch II: a common external valuation ray}
+
+When $K_\beta\ne0$, all external vectors are collinear and the source report gives the exact
+M\"obius-orbit condition
+\begin{equation}\label{eq:mobius-branch}
+ \beta=\frac{u+v\vartheta}{r+s\vartheta}
+ \qquad(u,v,r,s\in\Q,\\ us-vr\ne0).
+\end{equation}
+This is the branch in which the external triangle inequality can be an equality.  It is also
+arithmetically lower-dimensional: after clearing denominators, the external parts of $M$ and
+$A$ are powers of one common primitive core.
+
+The best next step is therefore not a generic all-prime determinant.  It is a mixed
+real/radical invariant built from the canonical core and the two binomial fields already
+formalized in the repository.  Useful intermediate targets are:
+\begin{enumerate}
+\item compare the field norms of the canonical radicals on the two sides of
+      \eqref{eq:mobius-branch};
+\item show that simultaneous radical degrees force an additional common perfect-power degree,
+      contradicting affine primitivity; or
+\item prove that the M\"obius coefficients in \eqref{eq:mobius-branch} cannot have the sign
+      pattern imposed by nonnegative prime valuations unless one output is $\{2,3\}$-smooth.
+\end{enumerate}
+The latest repository modules
+\module{CanonicalRadicalFieldNorm}, \module{CanonicalRadicalValuation},
+\module{CanonicalRadicalSharpness}, \module{CanonicalRadicalDivisibleHull}, and
+\module{SimultaneousRadicalDegrees} provide much of the algebraic plumbing for this branch.
+
+\subsection{Branch III: one smooth output}
+
+If $M$ is $\{2,3\}$-smooth, then $\beta=a+d\vartheta$ with $d>0$; if $A$ is smooth, there is a
+symmetric affine formula.  The source corpus proves that both outputs cannot be smooth and
+that the other output contains a prime at least five.  In the extreme case $M=3^d$, the
+problem is the localized radical assertion
+\[
+ (3^d)^\vartheta\notin\Z[1/3].
+\]
+
+This branch is the smallest transcendence-theoretic wall and deserves separate treatment.
+Potentially useful objects are the irreducible binomial for the least localized radical, its
+field norm, and reduction at primes over two and three.  A successful local argument must
+remain sensitive to the real identity defining $\vartheta$; ordinary ideal factorization
+alone is already exhausted by the canonical-radical modules.
+
+\subsection{Branch IV: cross-coprime primitive outputs}
+
+The cross-coprime branch has the strongest determinant constants and the cleanest residue
+matrices.  Here the exact first tropical forms are the fiber Vandermondes of
+Section~\ref{sec:firstlayer}.  This is the best laboratory for determining whether the
+cancellation cascade is real or illusory.
+
+The next computational experiment should not search for counterexamples.  For synthetic odd
+pairs $(M,A)$ and Beatty depths generated by $\beta=\log_2M$, compute
+\[
+ v_2(D_T)-\tau_{2,T},
+ \qquad
+ v_3(D_T)-\tau_{3,T}
+\]
+for increasing $T$, together with the histogram of tropical layers contributing at the final
+valuation.  Small exact experiments performed during this work show an excess compatible with
+$N^{3/2}$ rather than $N^{5/2}$, matching Theorem~\ref{thm:first-layer-small}; they are
+reconnaissance only, since a synthetic $A$ does not satisfy $A=3^\beta$.  A proof should seek a
+uniform $o(H_T)$ bound, probably through $p$-adic exponential-polynomial zero estimates.
+
+\subsection{Archimedean priority: solve the triangular HCIZ limit}
+
+The complete grid finally supplies the missing $T^2$ rows, and its empirical measures are
+explicit.  This makes Target~\ref{target:hciz} the highest-priority analytic problem.  The
+required calculation is a large-$N$ asymptotic for the HCIZ integral with both spectra having
+density $2t$ on $[0,1]$, under the coupled scaling $x_i y_j\asymp T^2$ and
+$N\asymp T^2$.  Even a nonsharp upper bound improving the largest-term energy by more than
+$1-\pi/4$ would materially change the $p$-adic comparison.
+
+A practical sequence is:
+\begin{enumerate}
+\item numerically evaluate $\log\det(e^{x_i y_j})$ using high-precision total-positive
+      algorithms for moderate $T$;
+\item subtract the exact Vandermonde/factorial terms in \eqref{eq:hciz-det} to estimate the
+      free-energy limit;
+\item derive the corresponding variational problem using known HCIZ large-deviation methods;
+\item only then reinsert the primewise valuation lower bounds.
+\end{enumerate}
+This route is attractive because the analytic limit does not depend on the unknown prime
+factorization of $M$ and $A$; only $\beta$ enters the overall scaling.
+
+\subsection{Finite verification priority}
+
+The software floor is now $x>27$.  The immediate formal target is not another raw doubling of
+the MPFR scan but a replayable certificate architecture.  A realistic hierarchy is:
+\begin{enumerate}
+\item a fast untrusted generator records only near-boundary pairs and rational interval data;
+\item a small verified checker proves each interval enclosure and the monotone coverage between
+      records;
+\item chunks are combined by a theorem whose statement mentions only integer endpoints;
+\item the final theorem is imported into the aggregate surface without
+      \lean{native\_decide} or an opaque external axiom.
+\end{enumerate}
+The source-hash discrepancy found in Section~\ref{sec:finite27} makes this especially
+worthwhile: mathematical replay is more robust than a manifest that identifies an external
+binary only by prose.
+
+\section{Lean formalization blueprint}
+\label{sec:formalization}
+
+The source corpus is already unusually strong on exact conditional structure.  The most useful
+continuation is therefore not a second informal reimplementation of those results, but a
+small collection of sharply separated modules whose statements expose the genuinely new
+invariants.  This section gives a dependency order designed to keep arithmetic, asymptotics,
+and transcendence inputs from leaking into one another.
+
+\subsection{Proposed module graph}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}@{}}
+\toprule
+Proposed module & Principal statement & Main dependencies \\
+\midrule
+\endfirsthead
+\toprule
+Proposed module & Principal statement & Main dependencies \\
+\midrule
+\endhead
+\module{SturmianNormalization} & Exact recurrences for $R_k,S_k$, common jump word $s_k$, and the exponent/output correspondence. & Existing primitive-generator and denominator-normalization modules; elementary floor arithmetic. \\
+\addlinespace
+\module{ReducedOrbitDenominators} & Lowest-term denominators $q_k^{(2)},q_k^{(3)}$ and the full-depth alternative from $\min(v_2(M),v_3(A))=0$. & \module{SturmianNormalization}; unique factorization and valuations. \\
+\addlinespace
+\module{EffectiveGeneratorSeparation} & An abstract interface turning a two-logarithm lower bound into $|\beta-p/q|\ge c q^{-\mu}$ and a polynomial recurrence for continued-fraction denominators. & A stated external Baker--Matveev hypothesis, plus existing continued-fraction lemmas. \\
+\addlinespace
+\module{BlockVandermondeValuation} & Exact $v_2$ and fixed-support $v_p$ formulas for the conditional block Vandermonde; output analogue. & Existing exact block parametrization; valuation of a difference with unequal valuations. \\
+\addlinespace
+\module{OrdinaryAdelicFraction} & The asymptotic fraction \eqref{eq:ordinary-fraction} and the universal $1-\log2/(3\log6)$ ceiling. & \module{BlockVandermondeValuation}; polynomial floor sums; primitive-output depth theorem. \\
+\addlinespace
+\module{TriangleGini} & $\mathfrak G$ is a norm and satisfies the explicit formula \eqref{eq:G-explicit}. & Elementary measure integration, or a finite polygonal integration library. \\
+\addlinespace
+\module{FiniteTropicalAssignment} & Exact rearrangement formula for a finite row list and a finite column-weight list. & Sorting/permutations; finite rearrangement inequality. \\
+\addlinespace
+\module{MixedColumnRiemannSums} & Lattice count \eqref{eq:semigroup-count} and convergence of scaled low-weight columns to uniform measure on $\DeltaTri$. & Two-dimensional lattice-point estimates and Riemann sums. \\
+\addlinespace
+\module{MixedAdelicGini} & The limit \eqref{eq:mixed-gini-limit}, conservation $\sum_pc_p=0$, and branch-sensitive three-vector bound. & Previous three modules; finite prime support. \\
+\addlinespace
+\module{MixedTropicalCeilings} & Universal $4/5$, cross-coprime $7/10$, and structural $3/10$ constants. & \module{MixedAdelicGini}; primitive-output depth theorem; explicit values from \module{TriangleGini}. \\
+\addlinespace
+\module{FullGridTransport} & Row/column empirical distributions, countermonotone energy $\pi/8$, maximum energy $1/2$, and the ratio $\pi/4$. & Triangular lattice sums, quantile integration, rearrangement. \\
+\addlinespace
+\module{TropicalInitialFibers} & Factorization of the first $2$- and $3$-adic initial forms into ordinary Vandermondes on column fibers. & Determinants over valued rings; stable sorting by valuations. \\
+\addlinespace
+\module{InitialFiberValuationBound} & Under a standard $p$-adic logarithm hypothesis, the first tied layer contributes $o(H_T)$. & \module{TropicalInitialFibers}; an abstract two-logarithm valuation bound. \\
+\addlinespace
+\module{FiniteCheck2Pow27} & A kernel-replayable certificate excluding non-powers of two below $2^{27}$. & Existing finite-check certificate architecture; generated chunk certificates. \\
+\bottomrule
+\end{longtable}
+
+The first two modules are almost entirely combinatorial.  The determinant modules should not
+import transcendence theory.  Conversely, the Baker and $p$-adic logarithm interfaces should
+be abstract propositions whose classical realization is documented outside the kernel unless
+and until Mathlib contains a suitable theorem.  This makes the trust boundary explicit.
+
+\subsection{Finite statements before asymptotics}
+
+The continuum notation in Sections~\ref{sec:mixed} and~\ref{sec:fullgrid} is compact, but Lean
+should first see finite inequalities.  For rows $0\le k<N$ and columns $z_j\in\R$, the finite
+rearrangement lemma should assert
+\begin{equation}\label{eq:finite-rearrangement}
+  \min_{\sigma\in S_N}\sum_{k=0}^{N-1} k z_{\sigma(k)}
+  =\sum_{k=0}^{N-1} k z_{N-1-k}^{\uparrow},
+\end{equation}
+where $z^{\uparrow}$ is the nondecreasing rearrangement.  Every tropical assignment in this
+report is an affine rescaling of \eqref{eq:finite-rearrangement}.  The limiting Gini identity
+can then be obtained by three auditable steps:
+\begin{enumerate}
+\item prove convergence of empirical distributions for the triangular lattice;
+\item prove convergence of the first moments and pairwise absolute-difference moments;
+\item invoke the finite identity
+\[
+ \frac1{N^2}\sum_{i,j}|z_i-z_j|
+ =\frac2{N^2}\sum_{j=0}^{N-1}(2j-N+1)z_j^{\uparrow}.
+\]
+\end{enumerate}
+This route avoids formalizing optimal transport as a general theory.
+
+\subsection{Exact theorem sketches}
+
+The intended public statements can be phrased close to the mathematics.
+
+\begin{lstlisting}[style=leanstyle]
+/-- A primitive counterexample determines one common lower mechanical word
+    driving both normalized rational orbits. -/
+theorem exists_synchronized_sturmian_data
+    (hfail : ExistsNonintegralSolution) :
+    Exists fun B : Nat => Exists fun alpha U V : Real =>
+      0 < alpha /\ alpha < 1 /\ Irrational alpha /\
+      U = 2 ^ alpha /\ V = 3 ^ alpha /\
+      (forall k : Nat,
+        let e := Int.floor (k * alpha)
+        normalizedTwo k = U ^ k / 2 ^ e /\
+        normalizedThree k = V ^ k / 3 ^ e) := by
+  ...
+
+/-- The automatic all-prime divisor of the balanced mixed determinant
+    cannot fill more than four fifths of its leading height. -/
+theorem mixed_tropical_divisor_limsup_le_four_fifths
+    (hprimitive : min (vTwo M) (vThree A) = 0) :
+    limsup (fun T => log (tropicalDivisor T) / leadingHeight T)
+      <= (4 : Real) / 5 := by
+  ...
+
+/-- The complete conditional grid has countermonotone/maximal transport
+    ratio pi/4. -/
+theorem full_grid_transport_ratio :
+    countermonotoneEnergy / maximalEnergy = Real.pi / 4 := by
+  ...
+\end{lstlisting}
+
+The actual APIs will need natural-valued denominator exponents rather than casts of negative
+integers, and the asymptotic statements will likely use \lean{Tendsto} and \lean{IsLittleO}
+rather than a custom \lean{limsup}.  The sketches are included to fix the mathematical
+interfaces, not Lean syntax.
+
+\subsection{Formalizing the first tied layer}
+
+A useful reusable notion is the initial form of a determinant at a prime.  For a matrix over
+$\Z$ and an assignment minimum $\tau_p$, reduce
+\[
+ p^{-\tau_p}\det(E_{ij})\pmod p.
+\]
+Only minimizing permutations survive.  In the cross-coprime branch the minimizing
+permutations preserve equal-$u$ fibers at $p=2$ and equal-$v$ fibers at $p=3$; the surviving
+sum is a product of smaller determinants.  This should be proved as a purely finite
+combinatorial determinant identity.  The later valuation estimate can then be stated
+separately:
+\begin{equation}\label{eq:initial-form-bound-formal}
+  v_2(I_{2,T})+v_3(I_{3,T})
+  =O\!\left(N^{3/2}(\log N)^2\right).
+\end{equation}
+The big-$O$ exponent is not sacred; any $o(T^{5/2})$ theorem is sufficient for the qualitative
+conclusion.
+
+\subsection{Certificate architecture for the new finite bound}
+
+The existing verified bound through $4096$ should remain the trusted baseline until a new
+certificate is accepted.  A practical route to $2^{27}$ is hierarchical:
+\begin{enumerate}
+\item partition $[1,2^{27})$ into fixed-width chunks;
+\item for each non-power-of-two $m$, store an integer nearest-value locator $n_m$ and rational
+      lower/upper enclosures proving either $m^\vartheta<n_m$ or $m^\vartheta>n_m$;
+\item hash each chunk and prove a small checker correct in Lean;
+\item combine the chunk theorems into one interval theorem.
+\end{enumerate}
+The MPFR run in Section~\ref{sec:finite27} is reconnaissance and a source of extremal cases;
+it is not the certificate itself.
+
+\section{Numerical sanity checks and reproducibility}
+\label{sec:numerics}
+
+None of the limiting constants in the determinant theorems depends on numerical evidence.
+The computations below were used to catch normalization errors, check convergence rates, and
+stress-test the closed forms before writing the proofs.
+
+\subsection{Balanced-block assignment constants}
+
+For each $N$, take the first $N$ pairs $(u,v)$ ordered by $u+\vartheta v$, pair them against
+$N$ equally spaced row parameters, and solve the one-dimensional assignment problems by
+sorting.  In the cross-coprime model, the structural places should tend to $3/10$ and the
+minimal all-prime three-vector model to $7/10$.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$N$ & structural $2,3$ fraction & all-prime three-vector fraction \\
+\midrule
+25   & 0.3224571184 & 0.7258906037 \\
+50   & 0.3135103379 & 0.7141968856 \\
+100  & 0.3050363664 & 0.7053583986 \\
+250  & 0.3024422068 & 0.7025311250 \\
+500  & 0.3012614628 & 0.7013136826 \\
+1000 & 0.3006780555 & 0.7006854844 \\
+2500 & 0.3002789586 & 0.7002894348 \\
+5000 & 0.3001354539 & 0.7001384826 \\
+\midrule
+Limit & $3/10$ & $7/10$ \\
+\bottomrule
+\end{tabular}
+\caption{Finite assignment sums converging to the exact mixed-block constants.}
+\label{tab:mixed-numerics}
+\end{table}
+
+The convergence from above is consistent with the $O(L^{-1})=O(N^{-1/2})$ boundary error in
+triangular lattice counting.  The table also exposes the error in the proposed $2/3$ ceiling:
+the finite all-prime ratio is already near $0.70$, and the exact limit is $7/10$.
+
+\subsection{Complete-grid transport ratio}
+
+For a representative hypothetical height parameter $\beta=27.314159$, form the row lattice
+$n+\beta k\le T$ and the matching low-weight column lattice.  Normalize the
+countermonotone assignment by the largest-term assignment.  The finite ratios are:
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rrc@{}}
+\toprule
+$T$ & number of rows & transport ratio \\
+\midrule
+50  & 73    & 0.7415113 \\
+100 & 237   & 0.7559915 \\
+200 & 841   & 0.7671191 \\
+400 & 3157  & 0.7750371 \\
+800 & 12210 & 0.7796781 \\
+\midrule
+Limit & --- & $\pi/4=0.7853981634\ldots$ \\
+\bottomrule
+\end{tabular}
+\caption{Finite full-grid countermonotone/maximal transport ratios.}
+\label{tab:grid-numerics}
+\end{table}
+
+The slow boundary convergence is expected: both empirical triangles have $O(T)$ boundary
+points against $O(T^2)$ bulk points, and the matching weight scale also grows with $T$.
+
+\subsection{Directed-rounding scan manifest}
+
+The scan in Section~\ref{sec:finite27} used the literal C listing extracted from the attached
+LaTeX source.  Its SHA-256 digest is
+\begin{center}
+\sha{f888c0d89be9366f01e2d26f339dcbe446556d39d4c5dbcf8f579ec0d0052e1d}.
+\end{center}
+This differs from the digest printed in the old report.  To ensure the discrepancy was only a
+manifest error, the extracted source was first rerun on the old overlap interval
+$[29{,}360{,}128,33{,}554{,}432)$; it reproduced the old extremal records and reported zero
+failures.
+
+The extension interval $[2^{26},2^{27})$ was split into sixteen chunks of width $2^{22}$ and
+run at $192$ bits.  The concatenated chunk log has SHA-256
+\begin{center}
+\sha{b11843448cd8946442aba13758b5b666e4ac6eae50d2243fbdc32d83274cea8d}.
+\end{center}
+The two new extremal records were replayed at $320$ and $512$ bits.  A representative build
+and invocation sequence was:
+\begin{lstlisting}[style=pythonstyle,language=bash]
+cc -O3 -std=c17 mpfr_scan.c \
+  /lib/x86_64-linux-gnu/libmpfr.so.6 -lgmp -lm -o mpfr_scan
+
+./mpfr_scan 67108864 71303168 192
+# repeat consecutive width-2^22 chunks through 134217728
+sha256sum extension-through-2pow27.log
+\end{lstlisting}
+The scanner excludes powers of two from the tested population because they are the known
+solutions.  Across the extension it checked $67{,}108{,}863$ non-powers of two and reported
+zero failures.
+
+\subsection{Extremal replay records}
+
+The narrowest new lower-directed separation was
+\[
+ m=132{,}833{,}765,
+ \qquad
+ n=7{,}501{,}348{,}219{,}569,
+ \qquad
+ \text{directed margin }5.9082259992879571\times10^{-21}.
+\]
+The corresponding high-precision ordinary difference is approximately
+\[
+ m^\vartheta-n=6.39397545334704\times10^{-8}.
+\]
+The narrowest new upper-directed separation was
+\[
+ m=129{,}799{,}345,
+ \qquad
+ n=7{,}231{,}571{,}292{,}851,
+ \qquad
+ \text{directed margin }8.3073231820333117\times10^{-22},
+\]
+with
+\[
+ n+1-m^\vartheta=8.666990435581896\times10^{-9}.
+\]
+These decimal differences are explanatory only.  The certification decision uses the MPFR
+outward-rounded interval endpoints and the scanner's locator checks.
+
+\section{Status matrix and dependency audit}
+\label{sec:status}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.35\textwidth}@{}}
+\toprule
+Statement & Status & Dependency or caveat \\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Dependency or caveat \\
+\midrule
+\endhead
+Exact primitive monoid $\Sol=\Nzero+\Nzero\beta$ and candidate monoid & \statuslean & Inherited from the attached report. \\
+\addlinespace
+Primitive-depth condition $\min(v_2(M),v_3(A))=0$ & \statuslean & Inherited; central to both universal ceilings. \\
+\addlinespace
+Synchronized dyadic--triadic Sturmian recurrence & \statusnew & Elementary from the exact monoid and floor normalization. \\
+\addlinespace
+Lowest-term denominator formulas and full-depth alternative & \statusnew & Unique factorization plus primitive depth. \\
+\addlinespace
+Effective polynomial irrationality measure for fixed $M$ & \statusclassical{} plus \statusnew & Baker--W"ustholz/Matveev; constants depend effectively on $M$. \\
+\addlinespace
+Polynomial recurrence of continued-fraction denominators & \statusnew & Standard convergent inequality applied to the previous row. \\
+\addlinespace
+Exact ordinary block valuations at all input-support primes & \statusnew & Unequal valuation of the two monomials in every difference. \\
+\addlinespace
+Ordinary product fraction \eqref{eq:ordinary-fraction} & \statusnew & Exact floor sums; output endpoint errors are $O(T^2)$. \\
+\addlinespace
+Universal ordinary ceiling $0.871049\ldots$ & \statusnew & Primitive depth only; not a bound on cancellation from new primes in differences. \\
+\addlinespace
+Explicit triangular Gini norm & \statusnew & Direct integration. \\
+\addlinespace
+Mixed all-prime tropical limit \eqref{eq:mixed-gini-limit} & \statusnew & Rearrangement plus triangular Riemann sums. \\
+\addlinespace
+Universal $4/5$ mixed ceiling & \statusnew & Conservation, Gini triangle inequality, primitive depth. \\
+\addlinespace
+Cross-coprime $7/10$ and structural $3/10$ & \statusnew & Specialization $a=b=c=d=0$. \\
+\addlinespace
+Full-grid $\pi/4$ ceiling & \statusnew & Countermonotone and comonotone transport for the common quantile $\sqrt t$. \\
+\addlinespace
+HCIZ determinant identity & \statusclassical & Exact finite identity; the needed large-$N$ inequality remains open. \\
+\addlinespace
+First tied-layer fiber factorization & \statusnew & Exact initial-form determinant algebra in the cross-coprime branch. \\
+\addlinespace
+First tied layer is $o(H_T)$ & \statusclassical{} plus \statusnew & Standard $p$-adic two-logarithm estimates; no claim about higher valuation layers. \\
+\addlinespace
+Mixed cancellation-excess criterion & \statusnew & Immediate sufficient condition from integrality and the Gini deficit. \\
+\addlinespace
+Software exclusion through $2^{27}$ & \statuscomp & Complete MPFR directed-rounding scan; not a Lean proof. \\
+\addlinespace
+Kernel exclusion through $4096$ & \statuslean & Remains the strongest formal finite theorem audited in the source report. \\
+\addlinespace
+The Alaoglu--Erd\H{o}s conjecture itself & \statusopen & Equivalent to the unresolved special four-exponentials determinant. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Logical dependency graph}
+
+The new deductions can be summarized as
+\[
+\begin{array}{c}
+\text{exact primitive monoid}\ +\ \text{primitive depth}
+\\[2pt]\Downarrow\\[-2pt]
+\text{synchronized Sturmian system}
+\qquad\text{and}\qquad
+\text{exact block valuation profiles}
+\\[2pt]\Downarrow\\[-2pt]
+\begin{array}{c}
+\text{ordinary all-prime fraction}\\[2pt]
+\text{mixed Gini conservation law}\\[2pt]
+\text{full-grid transport problem}
+\end{array}
+\\[2pt]\Downarrow\\[-2pt]
+\begin{array}{c}
+0.871049\ldots\text{ ordinary ceiling},\quad
+4/5\text{ mixed ceiling},\quad
+\pi/4\text{ full-grid ceiling}
+\end{array}
+\\[2pt]\Downarrow\\[-2pt]
+\text{only cancellation beyond tropical minima or a sharper HCIZ bound can finish these routes.}
+\end{array}
+\]
+Baker--Matveev separation and the finite scan are parallel inputs: they sharpen the possible
+counterexample but do not enter the determinant ceiling proofs.
+
+\section{Conclusions}
+\label{sec:conclusion}
+
+The Alaoglu--Erd\H{o}s conjecture remains unproved.  The continuation nevertheless changes the
+shape of the search in several concrete ways.
+
+First, the exact conditional monoid has a compact symbolic normal form.  After removing the
+integer part of the primitive generator, one irrational Sturmian word controls both the
+binary and ternary denominator jumps of two rational recurrences.  This exposes a possible
+route through finite-state rigidity, but it also prevents a false shortcut: rational
+multipliers do not by themselves make the word automatic.
+
+Second, ordinary transcendence theory gives more Diophantine separation than the source
+report's elementary argument records.  A fixed hypothetical generator is a ratio of two
+logarithms of integers, so Baker--W"ustholz/Matveev yields an effective polynomial
+irrationality measure.  Continued-fraction denominators therefore grow at most polynomially
+from one stage to the next.  This is useful quantitative structure, but it does not conflict
+with the $O(T)$ exact population of a dyadic block.
+
+Third, the most direct $p$-adic determinant plan can now be audited with exact constants.
+For ordinary block Vandermondes, every valuation at every prime already supporting the inputs
+is accounted for, and primitive depth leaves at least $12.8950\ldots\%$ of the leading
+archimedean budget uncovered.  For the balanced mixed determinant, all primes collapse into a
+finite family of slope vectors summing to zero.  The triangular Gini norm then proves that
+entrywise divisibility misses at least $20\%$ universally, at least $30\%$ in the
+cross-coprime branch, and at least $70\%$ if one uses only the structural places $2,3$ there.
+The complete two-dimensional grid improves the geometry but still leaves a termwise ceiling
+of $\pi/4$.
+
+These are no-go theorems for particular mechanisms, not evidence that the conjecture is false.
+They identify the exact remaining mechanisms:
+\begin{enumerate}
+\item a leading-order cascade of cancellations among many equal-valuation Leibniz terms;
+\item an archimedean determinant estimate substantially smaller than its largest-term bound,
+      most naturally through the HCIZ free energy;
+\item a genuinely mixed real/$p$-adic construction that turns
+      $\log M\log3=\log A\log2$ into deep congruences; or
+\item a rigidity theorem for the synchronized rational Sturmian system.
+\end{enumerate}
+The first cancellation layer is provably too small, so any successful $p$-adic proof must
+propagate through many valuation layers rather than extracting one convenient Vandermonde
+factor.
+
+Finally, the directed-rounding computation was extended by one full binary exponent.  At the
+software-trust level, no non-power-of-two candidate occurs below $2^{27}$, so a counterexample
+would satisfy $x>27$.  The formal Lean boundary remains $x\ge12$ until a generated certificate
+is checked by the kernel.  The old scanner-source hash printed in the attached report is
+incorrect; the literal source, overlap replay, new log hash, and high-precision extremal
+replays are recorded explicitly in this document.
+
+\begin{resultbox}
+\textbf{Bottom line.}
+The conjecture is still open, but the continuation produces new exact mathematics rather than
+only a list of ideas: a synchronized Sturmian equivalence; effective polynomial separation;
+closed all-prime Vandermonde asymptotics; a triangular Gini norm governing mixed tropical
+divisibility; universal $4/5$, $7/10$, $3/10$, and $\pi/4$ ceilings; a first-layer
+cancellation theorem; exact sufficient thresholds for future work; and a reproducible
+software exclusion through $2^{27}$.  The next decisive calculation is the triangular HCIZ
+free energy or, on the arithmetic side, a proof of a genuinely leading tropical cancellation
+cascade.
+\end{resultbox}
+
+\begin{thebibliography}{99}
+
+\bibitem{AlaogluErdos1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+\newblock DOI: \href{https://doi.org/10.1090/S0002-9947-1944-0011087-2}{10.1090/S0002-9947-1944-0011087-2}.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{BakerWustholz1993}
+A.~Baker and G.~W\"ustholz,
+\newblock \emph{Logarithmic forms and group varieties},
+\newblock Journal f\"ur die reine und angewandte Mathematik \textbf{442} (1993), 19--62.
+\newblock DOI: \href{https://doi.org/10.1515/crll.1993.442.19}{10.1515/crll.1993.442.19}.
+
+\bibitem{Matveev2000}
+E.~M.~Matveev,
+\newblock \emph{An explicit lower bound for a homogeneous rational linear form in the logarithms of algebraic numbers. II},
+\newblock Izvestiya: Mathematics \textbf{64}(6) (2000), 1217--1269.
+\newblock DOI: \href{https://doi.org/10.1070/IM2000v064n06ABEH000314}{10.1070/IM2000v064n06ABEH000314}.
+
+\bibitem{BugeaudLaurent1996}
+Y.~Bugeaud and M.~Laurent,
+\newblock \emph{Minoration effective de la distance $p$-adique entre puissances de nombres alg\'ebriques},
+\newblock Journal of Number Theory \textbf{61}(2) (1996), 311--342.
+\newblock DOI: \href{https://doi.org/10.1006/jnth.1996.0152}{10.1006/jnth.1996.0152}.
+
+\bibitem{Bugeaud2002}
+Y.~Bugeaud,
+\newblock \emph{Linear forms in two $m$-adic logarithms and applications to Diophantine problems},
+\newblock Compositio Mathematica \textbf{132}(2) (2002), 137--158.
+\newblock DOI: \href{https://doi.org/10.1023/A:1015825809661}{10.1023/A:1015825809661}.
+
+\bibitem{Yu1998}
+K.~Yu,
+\newblock \emph{$p$-adic logarithmic forms and group varieties I},
+\newblock Journal f\"ur die reine und angewandte Mathematik \textbf{502} (1998), 29--92.
+\newblock DOI: \href{https://doi.org/10.1515/crll.1998.090}{10.1515/crll.1998.090}.
+
+\bibitem{Wu2003}
+Q.~Wu,
+\newblock \emph{On the linear independence measure of logarithms of rational numbers},
+\newblock Mathematics of Computation \textbf{72}(242) (2003), 901--911.
+\newblock DOI: \href{https://doi.org/10.1090/S0025-5718-02-01442-4}{10.1090/S0025-5718-02-01442-4}.
+
+\bibitem{MorseHedlund1940}
+M.~Morse and G.~A.~Hedlund,
+\newblock \emph{Symbolic dynamics II. Sturmian trajectories},
+\newblock American Journal of Mathematics \textbf{62}(1) (1940), 1--42.
+\newblock DOI: \href{https://doi.org/10.2307/2371431}{10.2307/2371431}.
+
+\bibitem{Lothaire2002}
+M.~Lothaire,
+\newblock \emph{Algebraic Combinatorics on Words},
+\newblock Encyclopedia of Mathematics and its Applications 90, Cambridge University Press, 2002.
+
+\bibitem{Cobham1972}
+A.~Cobham,
+\newblock \emph{Uniform tag sequences},
+\newblock Mathematical Systems Theory \textbf{6} (1972), 164--192.
+\newblock DOI: \href{https://doi.org/10.1007/BF01706087}{10.1007/BF01706087}.
+
+\bibitem{AlloucheShallit2003}
+J.-P.~Allouche and J.~Shallit,
+\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
+\newblock Cambridge University Press, 2003.
+
+\bibitem{HarishChandra1957}
+Harish-Chandra,
+\newblock \emph{Differential operators on a semisimple Lie algebra},
+\newblock American Journal of Mathematics \textbf{79}(1) (1957), 87--120.
+\newblock DOI: \href{https://doi.org/10.2307/2372387}{10.2307/2372387}.
+
+\bibitem{ItzyksonZuber1980}
+C.~Itzykson and J.-B.~Zuber,
+\newblock \emph{The planar approximation. II},
+\newblock Journal of Mathematical Physics \textbf{21}(3) (1980), 411--421.
+\newblock DOI: \href{https://doi.org/10.1063/1.524438}{10.1063/1.524438}.
+
+\bibitem{McSwiggen2018}
+C.~McSwiggen,
+\newblock \emph{The Harish--Chandra integral: an introduction with examples},
+\newblock L'Enseignement Math\'ematique \textbf{67}(3--4) (2021), 229--299;
+preprint arXiv:1806.11155.
+\newblock DOI: \href{https://doi.org/10.4171/LEM/1017}{10.4171/LEM/1017}.
+
+\bibitem{PilaWilkie2006}
+J.~Pila and A.~J.~Wilkie,
+\newblock \emph{The rational points of a definable set},
+\newblock Duke Mathematical Journal \textbf{133}(3) (2006), 591--616.
+\newblock DOI: \href{https://doi.org/10.1215/S0012-7094-06-13336-7}{10.1215/S0012-7094-06-13336-7}.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\newblock \emph{Diophantine Approximation on Linear Algebraic Groups: Transcendence Properties of the Exponential Function in Several Variables},
+\newblock Grundlehren der mathematischen Wissenschaften 326, Springer, 2000.
+
+\bibitem{Roy1992}
+D.~Roy,
+\newblock \emph{Matrices whose coefficients are linear forms in logarithms},
+\newblock Journal of Number Theory \textbf{41}(1) (1992), 22--47.
+\newblock DOI: \href{https://doi.org/10.1016/0022-314X(92)90081-Y}{10.1016/0022-314X(92)90081-Y}.
+
+\bibitem{ProveIt}
+V.~Reshetnikov,
+\newblock \emph{ProveIt repository},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt},
+\newblock latest snapshot consulted for this report:
+\sha{ff9a9f5aa3a3f02599de93fc053e60918f269855}.
+
+\bibitem{UnifiedReport}
+The ProveIt project,
+\newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Unified Report},
+\newblock attached LaTeX source \path{alaoglu-erdos-unified-report.tex}, August 2026.
+
+\end{thebibliography}
+
+\end{document}
