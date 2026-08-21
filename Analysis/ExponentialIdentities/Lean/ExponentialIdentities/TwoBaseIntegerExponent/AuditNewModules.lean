@@ -12,6 +12,8 @@ import ExponentialIdentities.TwoBaseIntegerExponent.PerfectPowerContent
 import ExponentialIdentities.TwoBaseIntegerExponent.RootSaturation
 import ExponentialIdentities.TwoBaseIntegerExponent.ValuationLattice
 import ExponentialIdentities.TwoBaseIntegerExponent.RationalFunctionRigidity
+import ExponentialIdentities.TwoBaseIntegerExponent.MinPlusCeiling
+import ExponentialIdentities.TwoBaseIntegerExponent.ComplexSolutions
 
 /-!
 # Assumption audit for the newly formalized modules
@@ -90,5 +92,15 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms alaogluErdosConjecture_iff_solutions_closed_under_mul
 #print axioms alaogluErdosConjecture_iff_solutions_closed_under_sq
 #print axioms rationalFunction_rigidity_at_generator
+
+-- Min-plus ceiling
+#print axioms minPlusContent_le_of_le
+#print axioms minPlusContent_le_of_natAbs_le
+#print axioms primeContent_le_log
+#print axioms det_dvd_and_not_dvd_of_unique_min
+
+-- Complex exponents
+#print axioms im_eq_zero_of_complexTwoBaseIntegralSolution
+#print axioms twoBaseIntegralSolution_re_of_complex
 
 end LeanProofs.TwoBaseIntegerExponent

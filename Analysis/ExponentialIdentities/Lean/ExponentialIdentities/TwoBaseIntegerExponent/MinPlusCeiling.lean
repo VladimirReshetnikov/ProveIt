@@ -1,4 +1,5 @@
 import ExponentialIdentities.TwoBaseIntegerExponent.Localization
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
 /-!
 # The min-plus ceiling: term-wise valuation can never beat archimedean size
@@ -25,8 +26,14 @@ succeed when the archimedean bound used is genuinely *smaller* than the crude si
 entries — that is, when real cancellation (divided differences, Schur factors) has been
 exploited.  Term-wise divisibility alone contributes nothing beyond what `|D| ≥ 1` already gives.
 
-`minPlusContent_le_of_abs_le` is the statement in the form a determinant argument consumes it;
+`minPlusContent_le_of_natAbs_le` is the statement in the form a determinant argument consumes;
 `primeContent_le_log` is the same fact for an arbitrary finite set of primes.
+
+The complementary sharp statement is `det_dvd_and_not_dvd_of_unique_min`: when the assignment
+problem at `p` has a *unique* minimizing permutation, the term-wise bound is exactly attained
+and no cancellation is possible.  Extra divisibility beyond the tropical minimum can therefore
+live only at primes where the minimizer ties, which turns "look for p-adic cancellation" into
+a question about equal-cost fibers.
 -/
 
 namespace LeanProofs.TwoBaseIntegerExponent
@@ -54,58 +61,59 @@ theorem two_three_content_le_logb {n : ℕ} (hn : n ≠ 0) :
     exact_mod_cast hle
   have hposL : (0 : ℝ) < ((2 : ℝ) ^ n.factorization 2) * ((3 : ℝ) ^ n.factorization 3) := by
     positivity
-  have hmono := Real.logb_le_logb_right (b := 2) (by norm_num) hleR
+  have hmono := Real.logb_le_logb_of_le (b := 2) (by norm_num) hposL hleR
   refine le_trans (le_of_eq ?_) hmono
   rw [Real.logb_mul (by positivity) (by positivity), Real.logb_pow, Real.logb_pow,
-    Real.logb_self_eq_one (by norm_num) (by norm_num), logThreeDivLogTwo_eq_logb]
+    Real.logb_self_eq_one (by norm_num), logThreeDivLogTwo_eq_logb]
   ring
 
 /-- **The min-plus ceiling.**  If a term-wise divisibility argument certifies that `2 ^ V₂` and
-`3 ^ V₃` divide a nonzero integer `D`, and an archimedean argument certifies `|D| ≤ 2 ^ B`, then
-necessarily `V₂ + V₃ · θ ≤ B`.
+`3 ^ V₃` divide a positive natural number `n`, and an archimedean argument certifies
+`n ≤ 2 ^ B`, then necessarily `V₂ + V₃ · θ ≤ B`.
 
 So no pair of such estimates is ever contradictory.  Term-wise p-adic amplification cannot, by
 itself, close a determinant argument: whatever it certifies is already implied by the size of
-`D`. -/
-theorem minPlusContent_le_of_abs_le {D : ℤ} (hD : D ≠ 0) {V₂ V₃ : ℕ} {B : ℝ}
+`n`. -/
+theorem minPlusContent_le_of_le {n : ℕ} (hn : n ≠ 0) {V₂ V₃ : ℕ} {B : ℝ}
+    (h₂ : 2 ^ V₂ ∣ n) (h₃ : 3 ^ V₃ ∣ n) (hB : (n : ℝ) ≤ (2 : ℝ) ^ B) :
+    (V₂ : ℝ) + (V₃ : ℝ) * logThreeDivLogTwo ≤ B := by
+  have hV₂ : V₂ ≤ n.factorization 2 :=
+    (Nat.Prime.pow_dvd_iff_le_factorization (by norm_num) hn).mp h₂
+  have hV₃ : V₃ ≤ n.factorization 3 :=
+    (Nat.Prime.pow_dvd_iff_le_factorization (by norm_num) hn).mp h₃
+  have hcontent := two_three_content_le_logb hn
+  have hθpos : 0 < logThreeDivLogTwo := lt_trans zero_lt_one one_lt_logThreeDivLogTwo
+  have hstep : (V₂ : ℝ) + (V₃ : ℝ) * logThreeDivLogTwo
+      ≤ (n.factorization 2 : ℝ) + (n.factorization 3 : ℝ) * logThreeDivLogTwo := by
+    have h2 : (V₂ : ℝ) ≤ (n.factorization 2 : ℝ) := by exact_mod_cast hV₂
+    have h3 : (V₃ : ℝ) ≤ (n.factorization 3 : ℝ) := by exact_mod_cast hV₃
+    have := mul_le_mul_of_nonneg_right h3 hθpos.le
+    linarith
+  have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hn
+  have hbound : Real.logb 2 (n : ℝ) ≤ B := by
+    have hs := Real.logb_le_logb_of_le (b := 2) (by norm_num) hnpos hB
+    calc Real.logb 2 (n : ℝ) ≤ Real.logb 2 ((2 : ℝ) ^ B) := hs
+      _ = B := Real.logb_rpow (by norm_num) (by norm_num)
+  linarith [hstep, hcontent, hbound]
+
+/-- The min-plus ceiling for a nonzero integer determinant, in the shape an interpolation
+argument produces it. -/
+theorem minPlusContent_le_of_natAbs_le {D : ℤ} (hD : D ≠ 0) {V₂ V₃ : ℕ} {B : ℝ}
     (h₂ : (2 : ℤ) ^ V₂ ∣ D) (h₃ : (3 : ℤ) ^ V₃ ∣ D)
-    (hB : |(D : ℝ)| ≤ (2 : ℝ) ^ B) :
+    (hB : (D.natAbs : ℝ) ≤ (2 : ℝ) ^ B) :
     (V₂ : ℝ) + (V₃ : ℝ) * logThreeDivLogTwo ≤ B := by
   have hDn : D.natAbs ≠ 0 := Int.natAbs_ne_zero.mpr hD
   have h₂n : 2 ^ V₂ ∣ D.natAbs := by
-    have := Int.natAbs_dvd_natAbs.mpr h₂
-    simpa using this
+    have h := Int.natAbs_dvd_natAbs.mpr h₂
+    simpa using h
   have h₃n : 3 ^ V₃ ∣ D.natAbs := by
-    have := Int.natAbs_dvd_natAbs.mpr h₃
-    simpa using this
-  have hV₂ : V₂ ≤ D.natAbs.factorization 2 :=
-    (Nat.Prime.pow_dvd_iff_le_factorization (by norm_num) hDn).mp h₂n
-  have hV₃ : V₃ ≤ D.natAbs.factorization 3 :=
-    (Nat.Prime.pow_dvd_iff_le_factorization (by norm_num) hDn).mp h₃n
-  have hcontent := two_three_content_le_logb hDn
-  have hθpos : 0 < logThreeDivLogTwo := lt_trans zero_lt_one one_lt_logThreeDivLogTwo
-  have hstep : (V₂ : ℝ) + (V₃ : ℝ) * logThreeDivLogTwo
-      ≤ (D.natAbs.factorization 2 : ℝ)
-        + (D.natAbs.factorization 3 : ℝ) * logThreeDivLogTwo := by
-    have h2 : (V₂ : ℝ) ≤ (D.natAbs.factorization 2 : ℝ) := by exact_mod_cast hV₂
-    have h3 : (V₃ : ℝ) ≤ (D.natAbs.factorization 3 : ℝ) := by exact_mod_cast hV₃
-    have := mul_le_mul_of_nonneg_right h3 hθpos.le
-    linarith
-  have habs : ((D.natAbs : ℕ) : ℝ) = |(D : ℝ)| := by
-    rw [Int.cast_natAbs]
-    push_cast
-    rfl
-  have hbound : Real.logb 2 (D.natAbs : ℕ) ≤ B := by
-    rw [habs]
-    have hpos : (0 : ℝ) < |(D : ℝ)| := abs_pos.mpr (Int.cast_ne_zero.mpr hD)
-    have := Real.logb_le_logb_right (b := 2) (by norm_num) hB
-    calc Real.logb 2 |(D : ℝ)| ≤ Real.logb 2 ((2 : ℝ) ^ B) := this
-      _ = B := Real.logb_rpow (by norm_num)
-  linarith [hstep, hcontent, hbound]
+    have h := Int.natAbs_dvd_natAbs.mpr h₃
+    simpa using h
+  exact minPlusContent_le_of_le hDn h₂n h₃n hB
 
 /-- The same ceiling for an arbitrary finite set of primes: no enlargement of the prime set
 changes the conclusion, because the whole `S`-part of `n` still divides `n`. -/
-theorem prod_primePow_dvd {n : ℕ} (hn : n ≠ 0) {S : Finset ℕ} (hS : ∀ p ∈ S, p.Prime) :
+theorem prod_primePow_dvd (n : ℕ) {S : Finset ℕ} (hS : ∀ p ∈ S, p.Prime) :
     ∏ p ∈ S, p ^ n.factorization p ∣ n := by
   classical
   induction S using Finset.induction with
@@ -128,7 +136,7 @@ number over any finite set of primes is at most its logarithm. -/
 theorem primeContent_le_log {n : ℕ} (hn : n ≠ 0) {S : Finset ℕ} (hS : ∀ p ∈ S, p.Prime) :
     ∑ p ∈ S, (n.factorization p : ℝ) * Real.log p ≤ Real.log n := by
   classical
-  have hdvd := prod_primePow_dvd hn hS
+  have hdvd := prod_primePow_dvd n hS
   have hle : ∏ p ∈ S, p ^ n.factorization p ≤ n :=
     Nat.le_of_dvd (Nat.pos_of_ne_zero hn) hdvd
   have hleR : ((∏ p ∈ S, p ^ n.factorization p : ℕ) : ℝ) ≤ (n : ℝ) := by exact_mod_cast hle
@@ -150,5 +158,53 @@ theorem primeContent_le_log {n : ℕ} (hn : n ≠ 0) {S : Finset ℕ} (hS : ∀ 
       have hppos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast (hS p hp).pos
       positivity
     exact ne_of_gt this
+
+/-! ### Where cancellation can and cannot live -/
+
+/-- **A unique minimizing permutation forbids cancellation.**  If one Leibniz term of an
+integer determinant carries exactly `p ^ τ` and every other term carries `p ^ (τ + 1)`, then the
+determinant carries exactly `p ^ τ`.
+
+So the term-wise (tropical) bound is *tight* at every prime whose assignment problem has a
+unique minimizer.  Divisibility beyond the tropical minimum requires ties. -/
+theorem det_dvd_and_not_dvd_of_unique_min {n : Type*} [Fintype n] [DecidableEq n]
+    (E : Matrix n n ℤ) {q : ℤ} (τ : ℕ) (σ₀ : Equiv.Perm n)
+    (hmin : q ^ τ ∣ ∏ i, E (σ₀ i) i)
+    (hnot : ¬ (q ^ (τ + 1) ∣ ∏ i, E (σ₀ i) i))
+    (hother : ∀ σ : Equiv.Perm n, σ ≠ σ₀ → q ^ (τ + 1) ∣ ∏ i, E (σ i) i) :
+    q ^ τ ∣ E.det ∧ ¬ (q ^ (τ + 1) ∣ E.det) := by
+  classical
+  have hdet := Matrix.det_apply' E
+  have hrest : q ^ (τ + 1) ∣
+      ∑ σ ∈ Finset.univ.erase σ₀, (Equiv.Perm.sign σ : ℤ) * ∏ i, E (σ i) i := by
+    refine Finset.dvd_sum ?_
+    intro σ hσ
+    exact Dvd.dvd.mul_left (hother σ (Finset.ne_of_mem_erase hσ)) _
+  refine ⟨?_, ?_⟩
+  · rw [hdet]
+    refine Finset.dvd_sum ?_
+    intro σ _
+    by_cases h : σ = σ₀
+    · rw [h]
+      exact Dvd.dvd.mul_left hmin _
+    · exact Dvd.dvd.mul_left (dvd_trans (pow_dvd_pow q (Nat.le_succ τ)) (hother σ h)) _
+  · intro hcon
+    rw [hdet] at hcon
+    have hcon' : q ^ (τ + 1) ∣ ∑ σ : Equiv.Perm n,
+        (Equiv.Perm.sign σ : ℤ) * ∏ i, E (σ i) i := hcon
+    have hsum : (∑ σ : Equiv.Perm n, (Equiv.Perm.sign σ : ℤ) * ∏ i, E (σ i) i)
+        - ∑ σ ∈ Finset.univ.erase σ₀, (Equiv.Perm.sign σ : ℤ) * ∏ i, E (σ i) i
+        = (Equiv.Perm.sign σ₀ : ℤ) * ∏ i, E (σ₀ i) i := by
+      rw [Finset.sum_erase_eq_sub (Finset.mem_univ σ₀)]
+      ring
+    have hhead : q ^ (τ + 1) ∣ (Equiv.Perm.sign σ₀ : ℤ) * ∏ i, E (σ₀ i) i :=
+      hsum ▸ dvd_sub hcon' hrest
+    refine hnot ?_
+    rcases Int.units_eq_one_or (Equiv.Perm.sign σ₀) with h | h
+    · rw [h] at hhead
+      simpa using hhead
+    · rw [h] at hhead
+      have hneg : q ^ (τ + 1) ∣ -(∏ i, E (σ₀ i) i) := by simpa using hhead
+      exact dvd_neg.mp hneg
 
 end LeanProofs.TwoBaseIntegerExponent
