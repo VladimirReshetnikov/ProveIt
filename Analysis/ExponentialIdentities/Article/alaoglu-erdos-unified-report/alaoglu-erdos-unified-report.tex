@@ -3603,11 +3603,83 @@ The proof of Theorem~\ref{lp:thm-main} used only the pairs drawn from the prime 
 $MA$ together with $2$ and $3$.
 \end{proof}
 
-In particular, proving the single independence statement for $S=\{2,3\}$ would exclude every
-$3$-smooth counterexample --- equivalently, would show $3^{\thetaq}\notin\Zthree$, the case
-singled out in Section~\ref{sec:radical}.  This is a concrete, finite, and apparently
-approachable target whose resolution would remove the smallest and most stubborn family of
-hypothetical counterexamples.
+\subsection{The two-prime case is a theorem, and it is sharp}
+\label{lp:twoprime}
+
+The finite form is more than a bookkeeping device, because its smallest instance is
+\emph{provable}.
+
+\begin{proposition}[Two-prime log-product independence]
+\label{lp:prop-twoprime}
+Let $p\neq q$ be primes.  Then $(\log p)^2$, $\log p\,\log q$ and $(\log q)^2$ are linearly
+independent over $\Q$.
+\end{proposition}
+
+\begin{proof}
+A vanishing relation $a(\log p)^2+b\log p\log q+c(\log q)^2=0$ with rational $a,b,c$, divided
+by $(\log p)^2$, reads $a+bt+ct^2=0$ where $t=\log q/\log p$.  If $(a,b,c)\neq0$ this makes
+$t$ a root of a nonzero rational polynomial, hence algebraic.  But $t$ is transcendental:
+it is irrational by unique factorization, and were it algebraic irrational then
+Gelfond--Schneider applied to $p^{\,t}=q$ would make the integer $q$ transcendental.
+\end{proof}
+
+Consequently the hypothesis of Corollary~\ref{lp:cor-finite} is \emph{unconditionally true}
+for $S=\{2,3\}$, and the corollary becomes an unconditional exclusion.  Stated directly, and
+proved in Lean without any appeal to Definition~\ref{lp:def-independence}:
+
+\begin{theorem}[Three-smooth outputs force an integral exponent]
+\label{lp:thm-smooth}
+If $2^x\in\Z$ and $3^x\in\Z$ are both $3$-smooth --- divisible by no prime outside
+$\{2,3\}$ --- then $x\in\Z$.
+\end{theorem}
+
+\begin{proof}
+Write $2^x=2^a3^b$ and $3^x=2^c3^d$.  Taking base-two logarithms gives the two relations
+$x=a+b\thetaq$ and $x\thetaq=c+d\thetaq$.  Substituting the first into the second eliminates
+$x$ and leaves
+\[
+  b\,\thetaq^{2}+(a-d)\,\thetaq-c=0 .
+\]
+If $b\neq0$ this makes $\thetaq$ a root of a nonzero rational quadratic, contradicting its
+transcendence.  Hence $b=0$ and $x=a$.
+\end{proof}
+
+\begin{corollary}[A smooth candidate has a rough partner]
+\label{lp:cor-rough}
+If $x$ is a nonintegral solution and $2^x$ is $3$-smooth, then $3^x$ has a prime factor at
+least $5$.  The two outputs of a counterexample can never both be built from $\{2,3\}$.
+\end{corollary}
+
+\begin{statusbox}{\statuslean{} --- \lean{integer_of_threeSmooth_outputs} and
+\lean{exists_prime_five_le_dvd_of_threeSmooth_candidate} in \lean{SmoothOutputs}.  The proofs
+use only transcendence of $\thetaq$, itself kernel-verified in this corpus.}
+\end{statusbox}
+
+Two remarks fix the position of this result precisely.
+
+\emph{The two-sided hypothesis is essential.}  Assuming only that $2^x$ is $3$-smooth gives
+$x=a+b\thetaq$ and then requires $\bigl(3^{\thetaq}\bigr)^{b}\in\Q$, which is exactly the
+open localized-radical condition of Section~\ref{sec:radical}.  What the second smoothness
+hypothesis supplies is a \emph{second} linear relation between $x$ and $\thetaq$; two such
+relations eliminate $x$ and leave an algebraic equation in $\thetaq$ alone.  This degree drop
+is the whole mechanism, and it is worth isolating as a template: \emph{each independent
+multiplicative constraint on an output buys one linear relation, and two relations force
+algebraicity of $\thetaq$.}  The difficulty of the general problem is precisely that one
+never gets a second constraint for free.
+
+\emph{Three primes is where the criterion becomes conjectural.}
+Proposition~\ref{lp:prop-twoprime} exhausts what transcendence of a single logarithmic ratio
+can give.  For $S=\{2,3,5\}$ a vanishing relation among the six products, divided by
+$(\log2)^2$, reads
+\[
+  a+b\thetaq+c\thetaq_5+d\thetaq^{2}+e\thetaq\thetaq_5+f\thetaq_5^{2}=0,
+  \qquad \thetaq_5=\log_25,
+\]
+that is, the point $(\thetaq,\thetaq_5)$ lies on a rational conic.  Both coordinates are
+transcendental and $1,\thetaq,\thetaq_5$ are $\Q$-independent by unique factorization, but no
+present method excludes a quadratic relation between them.  So
+Definition~\ref{lp:def-independence} is a theorem for two primes, open from three onwards,
+and the Alaoglu--Erd\H{o}s conjecture sits exactly on that boundary.
 \section{Finite-difference obstructions}
 \label{sec:differences}
 
