@@ -1,0 +1,1697 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{margin=1in,headheight=14pt}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{url}
+
+\definecolor{leanblue}{RGB}{24,91,145}
+\definecolor{newgreen}{RGB}{15,105,68}
+\definecolor{computeviolet}{RGB}{98,55,145}
+\definecolor{rulegray}{RGB}{92,101,111}
+\definecolor{codegray}{RGB}{248,248,248}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=leanblue,
+  citecolor=newgreen,
+  urlcolor=leanblue,
+  pdftitle={The Alaoglu--Erdos Integer-Exponent Conjecture: Combined Report},
+  pdfauthor={The ProveIt project},
+  pdfsubject={Machine-checked partial results, exact conditional structure, and research directions}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s integer-exponent conjecture}
+\rhead{Combined report}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.75em}{}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.3em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.3em,topsep=0.4em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3.5em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Observation}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\fract}[1]{\left\{#1\right\}}
+\newcommand{\distZ}[1]{\left\lVert #1\right\rVert_{\Z}}
+\newcommand{\vpp}[2]{v_{#1}\!\left(#2\right)}
+\newcommand{\thetaq}{\vartheta}
+\newcommand{\Sol}{\mathcal S}
+\newcommand{\Cand}{\mathcal C}
+\newcommand{\Pair}{\mathcal P}
+\newcommand{\Zthree}{\Z[1/3]}
+\newcommand{\clog}{\operatorname{clog}}
+\newcommand{\sha}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\lean}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\commit}[1]{\texttt{#1}}
+\newcommand{\statuslean}{\textcolor{leanblue}{\textbf{[kernel-verified Lean]}}}
+\newcommand{\statusnew}{\textcolor{newgreen}{\textbf{[paper proof in this report]}}}
+\newcommand{\statuscomp}{\textcolor{computeviolet}{\textbf{[interval computation]}}}
+\newcommand{\statusknown}{\textcolor{rulegray}{\textbf{[classical theorem]}}}
+
+\newenvironment{statusbox}[1]
+{\begin{center}\begin{minipage}{0.94\textwidth}\raggedright\hbadness=10000\hrule\vspace{0.45em}\textbf{Status:} #1\par\vspace{0.35em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  numbers=left,
+  numberstyle=\tiny\color{rulegray},
+  stepnumber=1,
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4,
+  captionpos=b
+}
+\lstdefinestyle{leanstyle}{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  captionpos=b
+}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{1.0cm}
+{\Huge\bfseries The Alaoglu--Erd\H{o}s\par}
+\vspace{0.25cm}
+{\Huge\bfseries Integer-Exponent Conjecture\par}
+\vspace{0.65cm}
+{\LARGE Machine-Checked Partial Results,\par}
+\vspace{0.15cm}
+{\LARGE Exact Conditional Structure,\par}
+\vspace{0.15cm}
+{\LARGE and Research Directions\par}
+\vspace{1.05cm}
+{\large A combined survey and research report on the corpus in\par}
+\vspace{0.15cm}
+{\large \url{https://github.com/VladimirReshetnikov/ProveIt}\par}
+\vfill
+\begin{minipage}{0.88\textwidth}
+\small
+\textbf{Bottom line.}
+No unconditional proof of the two-base conjecture is obtained, and the reduction to the four
+exponentials conjecture explains why none should be expected from routine combination of the
+present methods.  The combined corpus does establish, in kernel-verified Lean: a zero-free
+region $2^x<4096$ (any nonintegral solution has $x\ge12$); transcendence of every hypothetical
+nonintegral solution; a common odd core $w$ with every candidate of the form $2^i w^j$;
+logarithmic counting and a linear dyadic-block bound; local progression obstructions with
+density zero; explicit Diophantine lower bounds; the classification of further integral bases
+as exactly the $3$-smooth numbers; and unconditional equivalences between the conjecture and
+fractional-part gap statements.  At the paper level this report sharpens the conditional
+picture to an exact rigidity theorem: if one counterexample exists, there is a unique least
+nonintegral solution $\beta$ and
+\[
+   \Sol=\{n+k\beta:n,k\in\Nzero\},
+\]
+with exact counts in every unit interval and Weyl equidistribution of fractional parts.  An
+independent interval computation excludes all nonintegral candidates with $2^x<2^{20}$; that
+computation is explicitly \emph{not} a Lean kernel proof.  The irreducible remainder is
+isolated as a radical statement: no odd $u>1$ has $u^{\log_2 3}\in\Z[1/3]$.
+\end{minipage}
+\vfill
+{\normalsize This document merges, updates, and extends two earlier AI-assisted reports\par
+(Claude Fable~5, Anthropic; GPT-5.6 Pro, OpenAI), against the repository state of\par
+commit \commit{716617d72}.  All Lean identifiers cited below are the authoritative
+statements.\par}
+\vspace{0.6cm}
+{\large August 20, 2026\par}
+\end{titlepage}
+\pagenumbering{roman}
+
+\begin{abstract}
+The Alaoglu--Erd\H{o}s conjecture asks whether a real $x$ satisfying $2^x,3^x\in\Z$ must be
+an integer.  It is a particularly concrete unresolved instance of the four exponentials
+problem: the three-base analogue with $5^x\in\Z$ added is a theorem, formalized in the
+repository by an interpolation-determinant argument, while the two-base statement sits exactly
+at the open $2\times2$ transcendence threshold.
+
+This report is the merged and expanded successor of two documents: a survey of the
+machine-checked partial results and an independent research report containing an audit and new
+conditional structure theory.  It serves four purposes.  First, it catalogues the
+kernel-verified Lean corpus --- zero-free regions through $2^x<4096$, Gelfond--Schneider
+transcendence restrictions, multiplicative rank at most two with a common odd core,
+progression obstructions and zero density, shrinking-target Diophantine bounds, the $3$-smooth
+classification of auxiliary bases, the four-exponentials reduction, and unconditional
+equivalences between the conjecture and fractional-part gap statements --- with the precise
+Lean identifiers and their verification status.  Second, it develops the exact conditional
+structure: if a counterexample exists, a canonical primitive odd core $w$, rational-power
+index $d$, and least nonintegral solution $\beta=a+d\log_2w$ exist, and the full solution set
+is the free additive monoid $\Nzero+\Nzero\beta$; exact dyadic-block counts and blockwise Weyl
+equidistribution follow.  Third, it records a sharper family of finite-difference obstructions
+for progressions of any length, and an independent 40-digit interval verification excluding
+all nonintegral candidates below $2^{20}$ under a stated software trust boundary.  Fourth, it
+consolidates the research program: the remaining obstruction is equivalent to the radical
+statement that $u^{\log_2 3}\notin\Z[1/3]$ for every odd $u>1$, and the report prioritizes
+formalization targets and genuinely new attack surfaces around that statement.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Executive summary}
+\label{sec:executive}
+
+\subsection{What is proved, and at what level of trust}
+
+The full conjecture remains open.  Several routes were pushed to their exact failure points:
+the three-base determinant method does not shrink to two bases without proving a case of the
+four exponentials conjecture; equidistribution of multiples does not defeat exponentially
+shrinking integrality gaps; local curvature obstructions cannot reach the sparse global
+structure; and every successful reduction terminates at the same transcendence-theoretic
+wall, now isolated in Conjecture~\ref{conj:radical-target}.
+
+To keep unlike kinds of evidence separate, every important statement in this report carries
+one of four labels.
+
+\begin{description}[leftmargin=3.9cm,style=nextline]
+\item[\statuslean]
+A proof source is committed in the repository, lies on the audited
+\lean{ExponentialIdentities.lean} import surface, and has been accepted by the Lean kernel in
+a full build of the cited modules (toolchain 4.31/4.32 series, Mathlib pinned by the
+repository manifest).  No \lean{sorry}, no extra axioms, no \lean{native_decide}.
+\item[\statusnew]
+A conventional mathematical proof is supplied in this document.  It is intended to be
+suitable for formalization, but no claim of kernel checking is made.
+\item[\statuscomp]
+A finite statement was checked by outward-rounded interval arithmetic.  The script,
+parameters, worst margins, and manifest hashes are recorded in
+Section~\ref{sec:finite-computation} and Appendix~\ref{app:interval-output}.  The trusted base includes CPython and
+\lean{mpmath}; this is not interchangeable with a Lean certificate.
+\item[\statusknown]
+A classical theorem quoted from the literature.
+\end{description}
+
+An earlier audit, performed against commit \commit{423ac24}, correctly observed that three
+modules cited by the survey (\lean{FiniteCheck4096}, \lean{OddCore},
+\lean{FractionalPartDensity}) were absent from that commit tree.  That discrepancy is
+resolved: the three modules were subsequently committed in \commit{98646b455} and are
+kernel-verified; the survey's temporary pending-verification remark was removed in
+\commit{716617d72}.  Statements from these modules are therefore labeled \statuslean{} below.
+
+\subsection{Headline results}
+
+\begin{enumerate}
+\item \textbf{Verified zero-free region.}  If $2^x,3^x\in\Z$ and $2^x<4096$, then $x\in\Z$;
+equivalently every nonintegral solution has $x\ge12$.  \statuslean{}  An independent interval
+scan extends the finite barrier to $2^x<2^{20}$, i.e.\ $x>20$.  \statuscomp
+\item \textbf{Transcendence.}  Every nonintegral solution is transcendental; for $x$ with
+$2^x\in\Z$, algebraicity of $x$ is \emph{equivalent} to integrality.  $\thetaq=\log_23$ is
+transcendental.  \statuslean
+\item \textbf{Structure.}  All candidate values $2^x$ lie in $\{2^iw^j\}$ for one odd $w>1$;
+candidate counts below $N$ are at most $\clog_2N\cdot\clog_3N$, and each dyadic block
+$[2^T,2^{T+1})$ holds at most $\clog_3(2^{T+1})$ candidates.  \statuslean{}  Conditional on a
+counterexample, this sharpens to an exact free-monoid classification
+$\Sol=\Nzero+\Nzero\beta$ with a canonical least generator, exact block counts
+$\lfloor(N+1)/\beta\rfloor$, and blockwise Weyl equidistribution.  \statusnew
+\item \textbf{Unconditional gap equivalences.}  The conjecture is equivalent to the existence
+of any nonempty open subinterval of $(0,1)$ free of fractional parts of nonintegral
+solutions, and to fractional parts being bounded away from $0$, or from $1$.  \statuslean
+\item \textbf{Sharper local combinatorics.}  A progression $n,n+h,\dots,n+rh$ of candidates
+is impossible whenever $|\thetaq(\thetaq-1)\cdots(\thetaq-r+1)|\,h^r<n^{r-\thetaq}$,
+strictly improving the committed three-term criterion $h^5\le n$ and extending it to all
+lengths.  \statusnew
+\item \textbf{The irreducible remainder.}  The conjecture is equivalent to: no odd integer
+$u>1$ satisfies $u^{\thetaq}\in\Zthree$.  \statusnew{} (equivalence); the statement itself is
+open even for $u=3$.
+\end{enumerate}
+
+\section{The problem and its equivalent forms}
+\label{sec:problem}
+
+\subsection{Original statement}
+
+\begin{conjecture}[Alaoglu--Erd\H{o}s, two-base integer form]
+\label{conj:AE}
+For every $x\in\R$,
+\[
+   2^x\in\Z\quad\text{and}\quad 3^x\in\Z
+   \qquad\Longrightarrow\qquad x\in\Z.
+\]
+\end{conjecture}
+
+\begin{statusbox}{recorded in Lean as the proposition \lean{AlaogluErdosConjecture}, without
+being asserted.}
+\end{statusbox}
+
+Since $2^x$ and $3^x$ are positive, the hypotheses actually put them in $\N$; and $2^x\in\N$
+forces $x\ge0$, since a negative exponent gives $0<2^x<1$.  All solutions therefore live in
+$[0,\infty)$ (\lean{nonneg_of_two_rpow_integer}).
+
+Questions of this type go back to the 1944 study of colossally abundant numbers by Alaoglu
+and Erd\H{o}s \cite{AE1944}, where the arithmetic nature of simultaneous rational powers
+$p^x,q^x$ of distinct primes controls the quotients of consecutive colossally abundant
+numbers --- a theme reaching back to Ramanujan's superior highly composite numbers
+\cite{Ram1915}.  The modern two-base integer form is elementary to state and is a direct
+special case of the four exponentials conjecture (Schneider's first problem
+\cite{Schneider1957}; see Waldschmidt \cite{Waldschmidt2000,Waldschmidt2023}).  As of the
+dated literature check for this report, the four exponentials conjecture remains open.
+
+\subsection{Candidate-base normalization}
+
+Put
+\[
+  \thetaq:=\frac{\log 3}{\log 2}=\log_2 3
+  =1.584962500721156\ldots
+\]
+and define the \emph{candidate set}
+\[
+ \Cand:=\{m\in\N_{>0}:m^{\thetaq}\in\N\}.
+\]
+
+\begin{lemma}[Exponent--candidate bijection]
+\label{lem:bijection}
+The maps $x\mapsto 2^x$ and $m\mapsto\log_2m$ are mutually inverse bijections between
+$\Sol:=\{x\in\R:2^x,3^x\in\Z\}$ and $\Cand$.  Under the bijection, $3^x=m^{\thetaq}$.
+\end{lemma}
+
+\begin{proof}
+If $x\in\Sol$, set $m=2^x\in\N$.  Then
+$m^{\thetaq}=\exp(\log m\cdot\log3/\log2)=\exp(x\log3)=3^x\in\N$.  Conversely, if
+$m\in\Cand$ and $x=\log_2m$, then $2^x=m$ and the same identity gives
+$3^x=m^{\thetaq}\in\N$.
+\end{proof}
+
+\begin{statusbox}{\statuslean{} --- \lean{exists_twoBaseNaturalCandidate_of_two_three_rpow_integer},
+\lean{TwoBaseNaturalCandidate.integer_powers}.}
+\end{statusbox}
+
+Integral solutions correspond exactly to powers of two\break
+(\lean{twoBaseCandidateExponent_isInteger_iff_isPowerOfTwo}), so the conjecture is
+equivalent to
+\[
+  \Cand=\{2^n:n\in\Nzero\}
+\]
+(\lean{alaogluErdosConjecture_iff_candidates_are_powers_of_two}).  The candidate formulation
+is well suited to unique factorization, finite certification, finite differences of
+$t^{\thetaq}$, and multiplicative-rank arguments, and it is the formulation in which most of
+the corpus is stated.
+
+Two closure properties of $\Sol$ are elementary but essential: $\Sol$ is closed under
+addition and under multiplication by positive naturals, so it is an additive submonoid of
+$[0,\infty)$ containing $\N$ (\lean{rpow_integer_add}, \lean{rpow_integer_nat_mul}).
+
+\subsection{The four-exponentials reduction}
+
+Suppose $x$ is nonintegral and $2^x,3^x$ are algebraic.  The rational-exponent argument
+(Lemma~\ref{lem:rational}) shows that $x$ cannot be rational, so $1,x$ are $\Q$-linearly
+independent; and $\log2,\log3$ are $\Q$-linearly independent since $2^a3^b=1$ forces
+$a=b=0$.  The four exponentials built from these two pairs are
+\[
+ e^{1\cdot\log2}=2,\quad e^{1\cdot\log3}=3,\quad e^{x\log2}=2^x,\quad e^{x\log3}=3^x,
+\]
+all four algebraic --- contrary to the four exponentials conjecture.  This reduction is
+formalized: \lean{alaogluErdosConjecture_of_realFourExponentialsConjecture}.  \statuslean
+
+The reduction is a diagnostic, not just context: any proposed elementary argument must
+exploit integrality, positivity, or arithmetic structure beyond bare algebraicity of those
+four values, or else it would prove a substantial case of the four exponentials conjecture
+by another name.  By contrast, three multiplicatively independent bases fall to the six
+exponentials mechanism, and the special case needed here is fully formalized:
+
+\begin{theorem}[Three-base theorem]
+\label{thm:threebase}
+If $2^x,3^x,5^x\in\Z$ for a real $x$, then $x\in\Z$.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- modules \lean{IntegerExponent},
+\lean{IntegerExponent.DeterminantBound}, \lean{IntegerExponent.ExponentialKernel},
+\lean{IntegerExponent.Grid}, following Waldschmidt's square-determinant proof
+\cite{WaldschmidtSix}.}
+\end{statusbox}
+
+In outline, for irrational $x$ one forms a large square matrix
+$\mathcal A_{ij}=\exp(a_ib_j)$, where row arguments encode monomials in $2,3,5$ and column
+arguments encode affine forms in $1,x$.  Irrationality makes the column parameters
+pairwise distinct, multiplicative independence the row parameters; a total-positivity
+argument gives $\det\mathcal A\ne0$; integrality of all entries forces
+$|\det\mathcal A|\ge1$; and an interpolation estimate with explicit size choices gives
+$|\det\mathcal A|<1$, a contradiction.  The dimension count is critical: with three
+independent row directions and two column directions the analytic bound beats the arithmetic
+bound, while in the $2\times2$ case the same balance lands exactly on the classical boundary
+where decay below one fails.  A successful two-base determinant would be a new
+four-exponentials argument.
+
+\subsection{Rational and algebraic exponents}
+
+\begin{lemma}[Rational exponent]
+\label{lem:rational}
+If $x\in\Q$ and $2^x\in\Z$, then $x\in\Z$.  Consequently every nonintegral solution is
+irrational.
+\end{lemma}
+
+\begin{proof}
+Write $x=a/b$ in lowest terms with $b>0$.  If $2^{a/b}=m\in\N$, then $2^a=m^b$; comparing
+the exponent of $2$ gives $a=b\,v_2(m)$, so $b\mid a$ and $b=1$.
+\end{proof}
+
+\begin{statusbox}{\statuslean{} --- \lean{IntegerExponent.integer_of_rational_of_two_rpow_integer},
+\lean{irrational_of_not_integer_of_two_rpow_integer}.}
+\end{statusbox}
+
+Gelfond--Schneider upgrades irrational to transcendental; see \cref{sec:transcendence}.
+
+\section{Repository timeline and verification status}
+\label{sec:commits}
+
+The formal development advanced in three waves plus documentation.  All commits are in the
+repository \cite{ProveItRepo}; the mathematical role of each is summarized below.
+
+\begin{longtable}{@{}p{0.13\textwidth}p{0.80\textwidth}@{}}
+\toprule
+Commit & Role \\
+\midrule
+\endfirsthead
+\toprule
+Commit & Role \\
+\midrule
+\endhead
+\commit{f492c18f1} & Three-base theorem via interpolation determinants
+(\lean{IntegerExponent} and submodules). \\
+\addlinespace
+\commit{5ed4e6185} & Merge of the three-base branch. \\
+\addlinespace
+\commit{a37d97f9d} & Basic two-base module: the conjecture as a proposition, closure under
+natural multiples, irrationality of nonintegral solutions, endpoint gaps, numerical bounds
+for $\thetaq$, the $2^x<10$ exclusion, second-difference obstruction, aligned-block $2/3$
+counting. \\
+\addlinespace
+\commit{4a9b03d12} & Major corpus: finite checks through $2^x<256$; arithmetic descent;
+multiplicative rank; candidate structure; zero density; shrinking targets; the $3$-smooth
+theorem; the four-exponentials reduction; transcendence consequences; and a complete
+Gelfond--Schneider port. \\
+\addlinespace
+\commit{18a85e6b8} & Merge of the two-base branch. \\
+\addlinespace
+\commit{423ac24f0} & First survey document (\lean{two-base-partial-results.tex}) with
+rendered PDF. \\
+\addlinespace
+\commit{98646b455} & Three further modules, kernel-verified:
+\lean{FractionalPartDensity} (density dichotomy and gap equivalences),
+\lean{OddCore} (common odd core, improved counting, dyadic blocks),
+\lean{FiniteCheck4096} (zero-free region to $2^x<4096$). \\
+\addlinespace
+\commit{716617d72} & Survey finalized after kernel acceptance of the $4096$ region. \\
+\addlinespace
+\commit{11ac3093f} & Independent research report (audit at \commit{423ac24f0}, exact
+conditional structure, interval scan to $2^{20}$); one of the two sources merged into the
+present document. \\
+\bottomrule
+\end{longtable}
+
+The audit performed in \commit{11ac3093f} treated results of the then-uncommitted modules as
+article-level claims; with \commit{98646b455} in the tree and kernel-verified, those results
+are now cited as committed Lean.  The interval scan to $2^{20}$ remains at the
+\statuscomp{} level by design.
+\section{The kernel-verified corpus}
+\label{sec:corpus}
+
+Throughout this section $x$ denotes a hypothetical nonintegral solution, $m=2^x\in\N$,
+$n=3^x\in\N$.  Every statement here is \statuslean{} unless labeled otherwise.
+
+\subsection{Fractional-part gaps and shrinking targets}
+\label{sec:gaps}
+
+An integral power caught strictly between consecutive integral powers of its base must clear
+both by at least one full unit; dividing through normalizes this to the fractional part.
+
+\begin{theorem}[Fractional-part gaps]
+\label{thm:gaps}
+Let $x\in(N,N+1)$ with $N\in\N$, $t=x-N$, and suppose $2^x,3^x\in\Z$.  Then
+\[
+1+2^{-N}\le 2^{t}\le 2-2^{-N},
+\qquad
+1+3^{-N}\le 3^{t}\le 3-3^{-N}.
+\]
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- \lean{two_three_fractional_part_gaps},
+\lean{two_three_rpow_gaps_near_nat}, from
+\lean{rpow_integer_gap_between_consecutive_powers}.}
+\end{statusbox}
+
+Near the endpoints the excluded zones have width $\asymp2^{-N}$: they \emph{shrink} as the
+integer part grows.  Applied to all multiples $kx$ (which are again solutions), this yields
+explicit Diophantine lower bounds.
+
+\begin{theorem}[Effective irrationality bound]
+\label{thm:shrinking}
+Let $x\notin\Z$ satisfy $2^x\in\Z$ and write $m=2^x$.  Then for all integers $p$ and all
+$k\ge1$,
+\[
+\Bigl|x-\frac pk\Bigr|\ \ge\ \frac1{2\,k\,m^{k}} .
+\]
+Exact (slightly stronger) radii, and two-base versions taking the better of the base-$2$ and
+base-$3$ radii, are formalized as well.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- \lean{rational_approximation_exponential_lower_bound},
+\lean{two_three_multiple_distance_to_integer_lower_bound},
+\lean{exists_natural_base_rational_approximation_lower_bound} in \lean{ShrinkingTarget}.}
+\end{statusbox}
+
+In shorthand, $\distZ{kx}\gtrsim2^{-kx}$.  This bound is compatible with ordinary Diophantine
+approximation: Dirichlet guarantees infinitely many $k$ with $\distZ{kx}<1/k$, and the
+shrinking radius $2^{-kx}$ is incomparably smaller.  The interplay between this exponential
+gap and equidistribution is discussed in \cref{sec:attempts}.
+
+\subsection{Verified zero-free regions and certificate architecture}
+\label{sec:finite}
+
+\begin{theorem}[Zero-free region]
+\label{thm:finite4096}
+If $2^x,3^x\in\Z$ and $2^x<4096$, then $x\in\Z$.  Equivalently, every nonintegral solution
+satisfies $x\ge12$, and every candidate that is not a power of two is at least $4096$.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} ---
+\lean{integer_of_two_three_rpow_integer_of_two_rpow_lt_4096},
+\lean{twelve_le_of_not_integer_of_two_three_rpow_integer},
+\lean{le_of_twoBaseNonintegerCandidate_4096} in \lean{FiniteCheck4096}, extending
+\lean{FiniteCheck} ($2^x<100$) and \lean{FiniteCheck256} ($2^x<256$, hence $x\ge8$).}
+\end{statusbox}
+
+The certificate architecture is worth recording, both because it is the repository's model
+of a trustworthy large computation and because scaling it is a named research direction.
+For each non-power-of-two $m$ the certificate is a pair of exact integer power comparisons
+against rational enclosures $L_p/L_q<\thetaq<U_p/U_q$ drawn from continued-fraction
+convergents of $\thetaq$: from
+\[
+a^{L_q}<m^{L_p}
+\quad\text{and}\quad
+m^{U_p}<(a+1)^{U_q}
+\]
+one traps $a<m^{\thetaq}<a+1$, so $m^{\thetaq}\notin\Z$.  The $2^x<256$ stage verifies
+per-value certificates by \lean{norm_num} with three enclosure tiers (exponent sizes
+${\sim}500$, ${\sim}1500$, ${\sim}25000$).  The extension to $4096$ verifies $3836$
+certificates through a single kernel-replayed \lean{decide} over a table generated by
+PARI/GP and revalidated independently with exact big-integer arithmetic in Python.  Five
+tiers suffice, with tier populations $78$, $488$, $3241$, $28$, $1$:
+
+\begin{center}
+\small
+\begin{tabular}{@{}crr@{}}
+\toprule
+tier & lower convergent $L_p/L_q$ & upper convergent $U_p/U_q$ \\
+\midrule
+0 & $569/359$ & $485/306$ \\
+1 & $1054/665$ & $1539/971$ \\
+2 & $25781/16266$ & $24727/15601$ \\
+3 & $50508/31867$ & $125743/79335$ \\
+4 & $176251/111202$ & $301994/190537$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Only the value $m=2762$, whose $\thetaq$-power is within $3\cdot10^{-9}$ of an integer in
+logarithmic scale, needs tier $4$; its certificate compares integers of roughly $90{,}000$
+digits, which the kernel's exact arithmetic replays without difficulty.  No axioms beyond
+the Lean kernel are involved; in particular no \lean{native_decide}.
+
+\subsection{Arithmetic descent}
+\label{sec:descent}
+
+\begin{theorem}[Affine descent]
+\label{thm:descent}
+If the two integral outputs factor simultaneously as $2^x=2^ru^k$ and $3^x=3^rv^k$ with
+$r\ge0$, $k\ge1$, then $(x-r)/k$ is again a solution.  Combined with the $x\ge8$ region this
+gives the unconditional constraint
+\[
+r+8k\le x
+\]
+for nonintegral $x$; in particular common perfect-power shapes of the two outputs are
+strongly restricted.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- \lean{affine_descent_integral_powers},
+\lean{base_depth_add_eight_mul_degree_le},
+\lean{min_output_base_factorization_add_eight_le} in \lean{ArithmeticRigidity}.  With the
+$4096$ region the constant $8$ improves to $12$ by bookkeeping; with the interval scan of
+\cref{sec:finite-computation} it would improve to $20$ at the \statuscomp{} level.}
+\end{statusbox}
+
+For the \emph{least} counterexample the same descent later becomes an exact primitivity
+statement (Corollary~\ref{cor:affine-primitive}): no nontrivial matched decomposition exists at all.
+
+\subsection{Local progression obstructions and zero density}
+\label{sec:ap}
+
+The function $t\mapsto t^{\thetaq}$ is strictly convex with second differences at moderate
+steps lying strictly between $0$ and $1$ --- hence never integers.
+
+\begin{theorem}[Committed AP obstruction]
+\label{thm:ap}
+Let $n,h\ge1$ with $h^5\le n$.  Then $n,n+h,n+2h$ are not all candidates.  In particular no
+three consecutive naturals are candidates, and among the positive integers up to $3N$ at
+most $2N$ are candidates.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} ---
+\lean{not_three_arithmetic_progression_twoBaseNaturalCandidates},
+\lean{not_three_consecutive_logThreeDivLogTwo_rpow_integers},
+\lean{twoBaseNaturalCandidate_Icc_card_le}.  The sharper criterion
+$\thetaq(\thetaq-1)h^2<n^{2-\thetaq}$ and its arbitrary-length generalization are proved in
+\cref{sec:higher-differences} at the \statusnew{} level.}
+\end{statusbox}
+
+The hypothesis bounding $h$ is essential: for steps comparable to $n$ the second difference
+is large and the obstruction vanishes.  This locality is a genuine barrier --- a
+\emph{global} progression obstruction would, for example, forbid candidates with odd part
+$2^s\pm1$ via progressions such as $(2^i,\,2^{i+t-1},\,2^i(2^t-1))$, but no such global
+statement is available; under a counterexample the exact monoid of
+\cref{sec:exact-structure} shows sparse candidates whose additive relations the curvature
+argument cannot see.
+
+Feeding the local obstruction into the theory of Roth numbers gives quantitative sparsity.
+
+\begin{theorem}[Zero density]
+\label{thm:density}
+For every $H\ge1$ the number of candidates below $N$ is at most
+$H^5+\lceil(N-H^5)/H\rceil\,r_3(H)$, where $r_3(H)$ is the maximal size of a $3$-AP-free
+subset of $\{0,\dots,H-1\}$.  Consequently the candidate counting function is $o(N)$: the
+candidates, and a fortiori the values $2^x$ of nonintegral solutions, have asymptotic
+density zero.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- \lean{twoBaseNaturalCandidatesBelow_card_le},
+\lean{twoBaseNaturalCandidatesBelow_isLittleO_id},
+\lean{tendsto_twoBaseNonintegerCandidatesBelow_density_zero} in \lean{ZeroDensity} and
+\lean{NonintegerDensity}.}
+\end{statusbox}
+
+\subsection{Multiplicative rank two and the common odd core}
+\label{sec:rank}
+
+\begin{theorem}[Rank two]
+\label{thm:rank2}
+The prime-exponent vectors $\mathbf v(a)=(v_p(a))_p$ of all candidates span a rational space
+of dimension at most two.  Consequently at most $(\clog_2N)^2$ candidates lie below $N$.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- \lean{finrank_span_primeExponentVectors_le_two},
+\lean{twoBaseNaturalCandidatesBelow_card_le_clog_sq} in \lean{MultiplicativeRank}.  The
+mechanism abstracts the determinant method: three candidates with independent exponent
+vectors would give three multiplicatively independent bases, contradicting
+Theorem~\ref{thm:threebase} through the irrationality of $\thetaq$
+(\lean{irrational_logThreeDivLogTwo}).}
+\end{statusbox}
+
+Since $2$ is itself a candidate, all odd parts lie on at most one further rational
+direction.  Pairwise this yields the cross-valuation identity, and globally a common odd
+core.
+
+\begin{lemma}[Cross-valuation identity]
+\label{lem:cross-input}
+Let $a,b\in\Cand$ and let $p$ be an odd prime with $\vpp{p}{a}>0$.  Then for every odd prime
+$q$,
+\[
+\vpp{p}{a}\,\vpp{q}{b}=\vpp{p}{b}\,\vpp{q}{a}.
+\]
+\end{lemma}
+
+\begin{statusbox}{\statuslean{} --- \lean{odd_factorization_cross_mul} in
+\lean{CandidateStructure}; the fixed-power relations
+\lean{fixed_power_relation_of_odd_prime_factor} follow.}
+\end{statusbox}
+
+\begin{theorem}[Common odd core]
+\label{thm:oddcore-lean}
+There is a single odd $w>1$ such that every candidate equals $2^iw^j$ for some
+$i,j\in\Nzero$; candidates that are not powers of two have $j\ge1$.  In exponent
+coordinates: every solution has the form $x=i+j\log_2w$ with $i,j\in\Nzero$.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- \lean{exists_common_odd_core},
+\lean{exists_common_odd_core_split}, \lean{exists_common_odd_core_exponent} in
+\lean{OddCore}.  The canonical (gcd-normalized) version with uniqueness of $w$ and of the
+representation is proved in Theorem~\ref{thm:odd-core} at the \statusnew{} level; formalizing that
+normalization is Priority~A of \cref{sec:program}.}
+\end{statusbox}
+
+\begin{corollary}[Improved counting]
+\label{cor:counting}
+The number of candidates below $N$ is at most $\clog_2N\cdot\clog_3N$, and each dyadic
+block $[2^T,2^{T+1})$ contains at most $\clog_3(2^{T+1})\approx0.631\,(T+1)$ candidates.
+In exponent coordinates, the number of solutions with $x\in[T,T+1)$ grows at most linearly
+in $T$, against the quadratic global bound.
+\end{corollary}
+
+\begin{statusbox}{\statuslean{} --- \lean{twoBaseNaturalCandidatesBelow_card_le_clog_mul_clog},
+\lean{twoBaseNonintegerCandidatesBelow_card_le_clog_mul_clog},
+\lean{twoBaseNaturalCandidatesInDyadicBlock_card_le} in \lean{OddCore}.}
+\end{statusbox}
+
+The logarithmic-square order cannot be improved by counting alone: if a candidate with an
+odd prime factor exists, multiplicative closure generates injective boxes $2^ia^j$, so the
+count below $2^ka^l$ is at least $kl$
+(\lean{twoBaseNaturalCandidatesBelow_card_ge_box},
+\lean{twoBaseNonintegerCandidatesBelow_card_ge_box}) --- a conditional lower bound of the
+same quadratic-in-logarithm shape, made exact in \cref{sec:counting}.
+
+\subsection{Transcendence}
+\label{sec:transcendence}
+
+The corpus contains a complete Lean proof of the Gelfond--Schneider theorem (Hilbert's
+seventh problem), following Hua's exposition \cite{Hua1982}, ported from Michail
+Karatarakis's Mathlib formalization (Mathlib PR \#42911, Apache~2.0).
+
+\begin{theorem}[Gelfond--Schneider]
+\label{thm:gs}
+If $\alpha,\beta$ are algebraic, $\alpha\ne0,1$, and $\beta$ is irrational, then
+$\alpha^\beta$ is transcendental.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} ---
+\lean{GelfondSchneider.transcendental_cpow_of_isAlgebraic_of_irrational}.}
+\end{statusbox}
+
+\begin{corollary}[Algebraic--integral dichotomy]
+\label{cor:transcendental}
+If $2^x\in\Z$ then $x$ is either an integer or transcendental; algebraicity of such $x$ is
+equivalent to integrality.  Every nonintegral two-base solution is transcendental, and
+$\thetaq=\log_23$ is transcendental.
+\end{corollary}
+
+\begin{statusbox}{\statuslean{} --- \lean{transcendental_of_not_integer_of_two_rpow_integer},
+\lean{isAlgebraic_iff_integer_of_two_rpow_integer},
+\lean{transcendental_of_not_integer_of_two_three_rpow_integer},
+\lean{transcendental_logThreeDivLogTwo}.}
+\end{statusbox}
+
+The dichotomy does not resolve the conjecture --- the unknown exponent is allowed to be
+transcendental --- but it constrains every construction below: the primitive generator
+$\beta$ of \cref{sec:exact-structure} is transcendental, as is $\log_2w$ for the odd core.
+
+\subsection{Classification of auxiliary bases: the \texorpdfstring{$3$}{3}-smooth theorem}
+\label{sec:threesmooth}
+
+\begin{theorem}[$3$-smooth classification]
+\label{thm:threesmooth}
+Suppose $x\notin\Z$ and $2^x,3^x\in\Z$.  Then for a positive natural $a$, the power $a^x$ is
+an integer if and only if $a=2^u3^v$ is $3$-smooth.  In particular a third base with any
+prime factor other than $2$ and $3$ forces $x\in\Z$.
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} ---
+\lean{rpow_integer_iff_eq_two_pow_mul_three_pow_of_not_integer},
+\lean{integer_of_two_three_a_rpow_integer_of_prime_factor} in \lean{ThreeSmooth}.}
+\end{statusbox}
+
+This is an exact classification of bases for a \emph{fixed} hypothetical counterexample.  It
+should not be confused with the classification of candidate values $2^x$ as $x$ ranges over
+all solutions, which is the subject of the next section.  Note also the scope limitation
+explained in \cref{sec:attempts}: the theorem controls the quantity $b^x$, not divisibility
+of the integer $2^x$ by $b$.
+
+\subsection{Unconditional gap equivalences}
+\label{sec:dichotomy}
+
+Because natural multiples of a solution are solutions, one nonintegral solution generates
+infinitely many, with irrational generator; Dirichlet approximation and a rotation-stepping
+argument spread their fractional parts densely.
+
+\begin{theorem}[Density dichotomy]
+\label{thm:dichotomy}
+If some $x\notin\Z$ satisfies $2^x,3^x\in\Z$, then for every $t\in[0,1]$ and
+$\varepsilon>0$ there is a nonintegral solution $y$ with $|\fract{y}-t|<\varepsilon$; and
+the set of nonintegral solutions is infinite.
+\end{theorem}
+
+\begin{theorem}[Gap equivalences]
+\label{thm:equiv}
+Each of the following is equivalent to Conjecture~\ref{conj:AE}:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item some nonempty open interval $(u,v)\subseteq(0,1)$ contains no fractional part of a
+nonintegral solution;
+\item the fractional parts of nonintegral solutions are bounded away from $1$;
+\item the fractional parts of nonintegral solutions are bounded away from $0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- \lean{dense_fract_of_noninteger_solution},
+\lean{infinite_noninteger_solutions_of_exists},
+\lean{alaogluErdosConjecture_iff_fract_avoids_interval},
+\lean{alaogluErdosConjecture_iff_fract_bounded_away_one},
+\lean{alaogluErdosConjecture_iff_fract_bounded_away_zero} in
+\lean{FractionalPartDensity}, built on the reusable
+\lean{exists_pos_nat_fract_close_of_irrational}.}
+\end{statusbox}
+
+\begin{remark}[Consistency pincer]
+\label{rem:pincer}
+Theorem~\ref{thm:gaps} bounds $\fract{x}$ away from $0$ and $1$ by margins
+$\asymp2^{-\lfloor x\rfloor}$ that decay with the height of the solution, while
+Theorem~\ref{thm:dichotomy} produces fractional parts arbitrarily close to $0$ and $1$ along
+multiples of unbounded height.  The two results meet edge-to-edge without contradiction, and
+Theorem~\ref{thm:equiv} shows the decay is essential: \emph{any} height-independent gap, however
+small and wherever located, is exactly as strong as the full conjecture.  The elementary gap
+bounds are therefore of optimal shape, and the fractional-part axis measures the entire
+remaining distance to Conjecture~\ref{conj:AE}.
+\end{remark}
+
+These equivalences are \emph{unconditional} biconditionals.  Conditional on failure, the
+exact structure of the next section strengthens density to blockwise Weyl equidistribution
+(Theorem~\ref{thm:block-equidist}).
+
+\section{Exact conditional structure of all solutions}
+\label{sec:exact-structure}
+
+This section develops, at the \statusnew{} level, the exact rigidity theory of a
+hypothetical counterexample.  It starts from the kernel-verified cross-valuation identity
+(Lemma~\ref{lem:cross-input}) and sharpens the verified odd-core theorem
+(Theorem~\ref{thm:oddcore-lean}) in two steps: a canonical (primitive) normalization of the core,
+and the removal of all residual freedom in the exponent pairs.
+
+\subsection{The primitive common odd core}
+
+\begin{theorem}[Primitive common odd core]
+\label{thm:odd-core}
+Assume $\Cand$ contains a non-power of two.  Then there is a unique odd integer $w>1$ that
+is power-free in the sense
+\[
+\gcd\{\vpp{p}{w}:p\mid w\}=1,
+\]
+and every candidate $b\in\Cand$ has a unique representation
+\[
+b=2^iw^j,\qquad i,j\in\Nzero.
+\]
+\end{theorem}
+
+\begin{proof}
+Choose a non-power-of-two candidate $a$.  Its odd valuation vector
+$A=(A_q)_{q\ne2}$, $A_q=\vpp qa$, is nonzero and finitely supported.  Let
+\[
+g=\gcd\{A_q:A_q>0\},\qquad c_q=A_q/g,\qquad w=\prod_{q\ne2}q^{c_q}.
+\]
+Then $w$ is odd, greater than one, and the positive $c_q$ have gcd one.
+
+Let $b\in\Cand$ and set $B_q=\vpp qb$.  Fix an odd prime $p$ with $A_p>0$.  By
+Lemma~\ref{lem:cross-input}, $A_pB_q=B_pA_q$ for all odd $q$.  If $A_q=0$, this forces $B_q=0$.
+On the support of $A$ it says
+\[
+B_q=\frac{B_p}{A_p}A_q=\Bigl(\frac{gB_p}{A_p}\Bigr)c_q .
+\]
+Put $t=gB_p/A_p\in\Q_{\ge0}$.  Every $tc_q$ is an integer.  Since the $c_q$ have gcd one,
+there are integers $r_q$, finitely many nonzero, with $\sum r_qc_q=1$; therefore
+$t=\sum_qr_q(tc_q)\in\Z$.  Writing $j=t\in\Nzero$, the odd part of $b$ is exactly $w^j$, so
+$b=2^iw^j$ with $i=v_2(b)$.
+
+Uniqueness of $(i,j)$ for fixed $w$ follows from odd valuations and the $2$-adic valuation.
+If $w'$ is another primitive common core, the odd valuation vectors of $w$ and $w'$ generate
+the same rational ray and are both primitive integer vectors, hence equal.
+\end{proof}
+
+The gcd normalization is what makes $w$ canonical: it prevents hidden perfect powers from
+being absorbed into the exponent.  The kernel-verified \lean{exists_common_odd_core}
+provides the existence of \emph{some} common core; the primitive normalization and
+uniqueness above are the part awaiting formalization.
+
+Set
+\[
+\alpha:=\log_2w,\qquad E:=3^{\alpha}=w^{\thetaq}.
+\]
+Every candidate exponent then has the form $x=i+j\alpha$.  The number $\alpha$ is
+irrational (else the rational-exponent lemma applied to $2^\alpha=w$ would make it integral,
+forcing the odd $w>1$ to be a power of two), and indeed transcendental by
+Corollary~\ref{cor:transcendental}.  The candidate condition becomes
+\[
+3^{i+j\alpha}=3^iE^j\in\N,
+\]
+and at this stage the admissible pairs $(i,j)$ still form an unknown subset of $\Nzero^2$.
+The next subsection shows this subset is completely rigid.
+
+\subsection{The rational-power index and the least generator}
+
+Because a non-power-of-two candidate exists, some $j>0$ has $E^j\in\Q$.  Let
+\[
+d:=\min\{j\in\N_{>0}:E^j\in\Q\}.
+\]
+
+\begin{lemma}[All rational powers are multiples of the least one]
+\label{lem:rational-power-index}
+For every $j\in\Z$:\quad $E^j\in\Q\iff d\mid j$.
+\end{lemma}
+
+\begin{proof}
+$J:=\{j\in\Z:E^j\in\Q\}$ is an additive subgroup of $\Z$ ($0\in J$; products add exponents;
+reciprocals negate them), and every nonzero subgroup of $\Z$ is $d\Z$ for its least positive
+element.
+\end{proof}
+
+Write the positive rational $E^d$ in lowest terms.  Its denominator has no prime other than
+$3$: taking a candidate with odd-core exponent $j=dk>0$ and $2$-exponent $i$, integrality of
+$3^i(E^d)^k$ shows any other prime in the reduced denominator would survive in the $k$-th
+power.  Hence there are unique integers $a\ge0$, $A\ge1$ with
+\begin{equation}
+E^d=\frac A{3^a},
+\label{eq:Ed}
+\end{equation}
+and $3\nmid A$ when $a>0$.  Define
+\begin{equation}
+\beta:=a+d\alpha=a+d\log_2w,\qquad
+M:=2^{\beta}=2^aw^d,\qquad
+A=3^{\beta}=3^aE^d .
+\label{eq:betaMA}
+\end{equation}
+Thus $\beta$ is itself a solution, irrational because $\alpha$ is.
+
+\begin{theorem}[Exact primitive-generator theorem]
+\label{thm:generator}
+Assume Conjecture~\ref{conj:AE} is false.  With $w,d,a,\beta,M,A$ as above:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item every solution has a unique representation $x=n+k\beta$ with $n,k\in\Nzero$;
+\item every candidate has a unique representation $m=2^nM^k$ with $n,k\in\Nzero$;
+\item every output pair has a unique representation $(2^x,3^x)=(2^nM^k,3^nA^k)$;
+\item $\beta$ is the unique least nonintegral solution.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let $x\in\Sol$.  By Theorem~\ref{thm:odd-core}, $2^x=2^iw^j$ for unique $i,j\in\Nzero$, so
+$x=i+j\alpha$.  From $3^x=3^iE^j\in\N$ we get $E^j\in\Q$, so
+Lemma~\ref{lem:rational-power-index} gives $j=dk$.  Using \eqref{eq:Ed},
+\[
+3^x=3^i(E^d)^k=3^{\,i-ak}A^k .
+\]
+Because $A/3^a$ is reduced, this is an integer exactly when $i\ge ak$.  Put
+$n=i-ak\in\Nzero$; then
+\[
+x=i+dk\alpha=n+k(a+d\alpha)=n+k\beta .
+\]
+Conversely, for any $n,k\in\Nzero$,
+\[
+2^{\,n+k\beta}=2^nM^k\in\N,\qquad 3^{\,n+k\beta}=3^nA^k\in\N,
+\]
+so $n+k\beta\in\Sol$.  If $n+k\beta=n'+k'\beta$ with $k\ne k'$, then
+$\beta=(n'-n)/(k-k')\in\Q$, a contradiction; hence the representation is unique.  This
+proves (i), and (ii)--(iii) follow by exponentiation.  A nonintegral solution has $k\ge1$;
+the least value is attained at $(n,k)=(0,1)$ and equals $\beta$, uniquely so by uniqueness
+of representation.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} --- the principal structural result of this report.  It
+sharpens the kernel-verified rank-two and odd-core theorems: conditional on failure, $\Sol$
+is not merely contained in a rank-two additive set --- it is the free additive monoid on $1$
+and one irrational generator $\beta$.  In particular the ``exponent semigroup'' degree of
+freedom contemplated in the earlier survey does not exist: the set of occurring odd-core
+exponents is exactly $d\,\Nzero$, with the power of two governed by one linear threshold.}
+\end{statusbox}
+
+Packaged algebraically: $(\Nzero^2,+)\xrightarrow{\ \sim\ }(\Sol,+)$ via
+$(n,k)\mapsto n+k\beta$, and $(\Nzero^2,+)\xrightarrow{\ \sim\ }(\Cand,\cdot)$ via
+$(n,k)\mapsto2^nM^k$; the output-pair monoid $\Pair$ is freely generated by $(2,3)$ and
+$(M,A)$.  Every multiplicative relation among candidates is the obvious coordinate
+relation.  This exact conditional model is the benchmark against which any future density,
+progression, or descent argument should be tested.
+
+\subsection{Primitivity of the least output pair}
+
+Leastness of $\beta$ upgrades the repository's descent inequalities to exact exclusions.
+
+\begin{corollary}[No matched base depth]
+\label{cor:no-depth}
+For the primitive pair $(M,A)=(2^{\beta},3^{\beta})$:
+$\min\{v_2(M),v_3(A)\}=0$; that is, $M$ is odd or $3\nmid A$ (possibly both).
+\end{corollary}
+
+\begin{proof}
+If both valuations were positive, then $2^{\beta-1}=M/2$ and $3^{\beta-1}=A/3$ would be
+integers, so $\beta-1$ would be a smaller nonintegral solution.
+\end{proof}
+
+\begin{corollary}[No common perfect-power degree]
+\label{cor:no-common-power}
+There is no $k\ge2$ for which both $M$ and $A$ are perfect $k$-th powers.
+\end{corollary}
+
+\begin{proof}
+If $M=U^k$, $A=V^k$, then $2^{\beta/k}=U$ and $3^{\beta/k}=V$, and $\beta/k$ is a smaller
+nonintegral solution.
+\end{proof}
+
+\begin{corollary}[Exact affine primitivity]
+\label{cor:affine-primitive}
+If $M=2^rU^k$ and $A=3^rV^k$ with $r\in\Nzero$, $k\in\N_{>0}$, $U,V\in\N$, then $r=0$ and
+$k=1$.
+\end{corollary}
+
+\begin{proof}
+Affine descent (Theorem~\ref{thm:descent}) gives the solution $(\beta-r)/k$, nonintegral since
+$\beta$ is irrational; if $r>0$ or $k>1$ it is strictly smaller than $\beta$.
+\end{proof}
+
+\subsection{Exact counting}
+\label{sec:counting}
+
+\begin{theorem}[Exact unit-block count]
+\label{thm:block-count}
+Assume a counterexample exists and let $\beta$ be the primitive generator.  For every
+$N\in\Nzero$, the nonintegral solutions in $[N,N+1)$ are precisely
+\[
+x_{N,k}=\lceil N-k\beta\rceil+k\beta,
+\qquad 1\le k\le\Bigl\lfloor\frac{N+1}{\beta}\Bigr\rfloor,
+\]
+so their number is exactly $\lfloor(N+1)/\beta\rfloor$, and
+\[
+\#\bigl(\Cand\cap[2^N,2^{N+1})\bigr)=1+\Bigl\lfloor\frac{N+1}{\beta}\Bigr\rfloor .
+\]
+\end{theorem}
+
+\begin{proof}
+For fixed $k\ge1$ there is at most one integer $n$ with $N\le n+k\beta<N+1$; such $n\ge0$
+exists iff $k\beta<N+1$, and then $n=\lceil N-k\beta\rceil$.  Irrationality of $\beta$ makes
+$(N+1)/\beta$ non-integral, giving the stated range; the one integral solution in the block
+is $N$.
+\end{proof}
+
+With the verified bound $\beta>12$ the block count is at most $\lfloor N/12\rfloor$
+(and at most $\lfloor N/20\rfloor$ under the interval scan).  Summing over blocks, the
+cumulative candidate count below $2^T$ is
+\begin{equation}
+C(T)=T+\sum_{r=1}^{T}\Bigl\lfloor\frac r\beta\Bigr\rfloor
+=\frac{T^2}{2\beta}+O(T).
+\label{eq:exact-cumulative}
+\end{equation}
+This is conditionally sharper than the verified universal bounds ($(\clog_2N)^2$ and
+$\clog_2N\cdot\clog_3N$) and matches the verified conditional lower boxes in leading order:
+with $\beta>12$ the leading coefficient is below $1/24$.
+
+\subsection{Blockwise equidistribution}
+
+The fractional part of $x_{N,k}$ is $\fract{k\beta}$: a high unit interval contains an
+initial segment of one irrational rotation orbit.
+
+\begin{theorem}[Blockwise Weyl equidistribution]
+\label{thm:block-equidist}
+Assume a counterexample exists.  For every interval $I\subseteq[0,1]$ whose boundary has
+measure zero,
+\[
+\frac{\#\{x\in(\Sol\setminus\Nzero)\cap[N,N+1):\fract x\in I\}}
+{\#\bigl((\Sol\setminus\Nzero)\cap[N,N+1)\bigr)}\longrightarrow|I|
+\qquad(N\to\infty).
+\]
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:block-count} the relevant fractional parts are
+$\fract\beta,\fract{2\beta},\dots,\fract{K_N\beta}$ with
+$K_N=\lfloor(N+1)/\beta\rfloor\to\infty$.  For every nonzero integer $h$ the Weyl sum is a
+finite geometric series,
+\[
+\frac1K\sum_{k=1}^{K}e^{2\pi ihk\beta}
+=\frac{e^{2\pi ih\beta}\bigl(1-e^{2\pi ihK\beta}\bigr)}{K\bigl(1-e^{2\pi ih\beta}\bigr)}
+\longrightarrow0,
+\]
+since $\beta$ is irrational.  Weyl's criterion \cite{KuipersNiederreiter} concludes.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} --- strictly stronger than the kernel-verified density
+statement of Theorem~\ref{thm:dichotomy}, conditional on failure.  No effective discrepancy rate
+follows without further Diophantine input on $\beta$: the geometric-sum proof controls each
+Fourier mode but not uniformly over many modes.}
+\end{statusbox}
+\section{Equivalent one-number and radical formulations}
+\label{sec:radical}
+
+\subsection{Localization at the prime three}
+
+\begin{theorem}[Localization reformulation]
+\label{thm:localization}
+Conjecture~\ref{conj:AE} is false if and only if there exists an odd integer $u>1$ with
+\[
+u^{\thetaq}\in\Zthree,
+\]
+equivalently, an odd $u>1$ and $a\in\Nzero$ with $3^au^{\thetaq}\in\N$.
+\end{theorem}
+
+\begin{proof}
+If $x$ is a counterexample, write $2^x=2^au$ with $u$ odd; since $2^x$ is not a power of
+two, $u>1$.  Using $(2^a)^{\thetaq}=3^a$,
+\[
+u^{\thetaq}=\frac{(2^x)^{\thetaq}}{(2^a)^{\thetaq}}=\frac{3^x}{3^a}\in\Zthree .
+\]
+Conversely, if $u^{\thetaq}=B/3^a$ with $B\in\N$, set $x=a+\log_2u$; then $2^x=2^au\in\N$
+and $3^x=3^au^{\thetaq}=B\in\N$, and $x\notin\Z$ since otherwise the odd $u>1$ would be a
+power of two.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} --- a compact target for future work: prove
+$u^{\log_23}\notin\Zthree$ for every odd $u>1$.  The allowance of $3$-power denominators is
+exactly the freedom created by shifting the exponent by an integer.}
+\end{statusbox}
+
+\subsection{Canonical radical algebraicity}
+
+In the notation of Theorem~\ref{thm:generator}, $E=3^{\log_2w}$ satisfies $E^d=A/3^a\in\Q$.
+Minimality of $d$ has an algebraic consequence.
+
+\begin{proposition}[Exact radical degree]
+\label{prop:radical-degree}
+The binomial $X^d-A/3^a$ is irreducible over $\Q$, and $E$ is algebraic of exact degree
+$d$.
+\end{proposition}
+
+\begin{proof}
+For a positive rational $q$, the binomial $X^d-q$ can be reducible only if $q$ is a $p$-th
+power in $\Q$ for some prime $p\mid d$ (the additional $4\mid d$ exceptional case concerns
+$-4$ times a fourth power and is irrelevant for $q>0$).  If $q=r^p$ with $p\mid d$, the
+positive real $E^{d/p}$ is the positive $p$-th root of $q$, hence rational, contradicting
+minimality of $d$.
+\end{proof}
+
+A counterexample therefore produces the very special algebraic number $E=3^{\log_2w}$,
+reached from a transcendental exponent.  Taking logarithms of $E^d=A/3^a$:
+\begin{equation}
+d\,\log w\,\log3=(\log A-a\log3)\log2 .
+\label{eq:quadratic-logs}
+\end{equation}
+This is a \emph{bilinear} relation among logarithms of integers.  Baker's theorem controls
+linear forms in logarithms with algebraic coefficients \cite{Baker1975}; it does not rule
+out \eqref{eq:quadratic-logs}.  The four exponentials conjecture does.  The equation is a
+precise description of the transcendence-theoretic wall, not a disguised elementary
+factorization problem.
+
+\subsection{Where the wall stands in the smallest case}
+
+The smallest structural question already meets the open core.  A $3$-smooth candidate
+$m=2^a3^b$ ($b\ge1$) would require $3^aE_3^{\,b}\in\N$ for
+\[
+E_3=3^{\log_23}=e^{(\log3)^2/\log2}=5.7045224946911176\ldots,
+\]
+and even the irrationality of $E_3$ is open: it is a ``three-logarithms'' quantity outside
+the reach of Gelfond--Schneider, Baker's method, and the six exponentials theorem.  No
+currently known technique excludes odd core $w=3$; this is why the corpus emphasizes
+counting, structure, and verified finite regions rather than infinite families of
+exclusions, and why Conjecture~\ref{conj:radical-target} below is the honest name of the obstruction.
+
+\begin{conjecture}[Radical four-exponentials target]
+\label{conj:radical-target}
+For every odd integer $u>1$, $u^{\log_23}\notin\Zthree$.  Equivalently, for every primitive
+odd $w>1$ and every $d\ge1$, $(3^{\log_2w})^d\notin\Zthree$.
+\end{conjecture}
+
+By Theorem~\ref{thm:localization} both formulations are exactly equivalent to Conjecture~\ref{conj:AE}.  A
+proof of the special case $u=3$ --- even of the weaker assertion that $3^{\log_23}$ is
+irrational --- by any genuinely new mechanism would already be a meaningful breakthrough.
+
+\section{Sharper finite-difference obstructions}
+\label{sec:higher-differences}
+
+The committed local theorem (Theorem~\ref{thm:ap}) forbids three candidates in progression under
+the convenient condition $h^5\le n$.  The curvature argument in fact yields a sharper
+natural exponent and extends to arbitrary length.
+
+For a function $f$ and step $h>0$ write $\Delta_hf(t)=f(t+h)-f(t)$ and
+$\Delta_h^r=\Delta_h\circ\cdots\circ\Delta_h$.  Iterating the fundamental theorem of
+calculus,
+\begin{equation}
+\Delta_h^rf(n)=\int_{[0,h]^r}f^{(r)}(n+t_1+\cdots+t_r)\,dt_1\cdots dt_r .
+\label{eq:finite-diff-integral}
+\end{equation}
+For $f(t)=t^{\thetaq}$ and $r\ge2$,
+$f^{(r)}(t)=\thetaq(\thetaq-1)\cdots(\thetaq-r+1)\,t^{\thetaq-r}$; since $1<\thetaq<2$ this
+has a fixed nonzero sign on $(0,\infty)$ and its absolute value decreases in $t$.
+
+\begin{theorem}[Higher-difference progression obstruction]
+\label{thm:higher-difference}
+Let $r\ge2$, $n,h\in\N_{>0}$, and $c_r=|\thetaq(\thetaq-1)\cdots(\thetaq-r+1)|$.  If all of
+$n,n+h,\dots,n+rh$ are candidates, then $1\le c_rh^rn^{\thetaq-r}$.  Such a progression is
+therefore impossible whenever
+\begin{equation}
+c_rh^r<n^{\,r-\thetaq}.
+\label{eq:progression-condition}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+If all $n+jh$ are candidates, every $(n+jh)^{\thetaq}$ is an integer, so the integer
+combination $\Delta_h^rf(n)$ is an integer; by \eqref{eq:finite-diff-integral} and the fixed
+sign of $f^{(r)}$ it is nonzero, hence of absolute value at least one.  Bounding
+$|f^{(r)}|$ by its value at $n$,
+\[
+1\le|\Delta_h^rf(n)|\le c_rh^rn^{\thetaq-r}. \qedhere
+\]
+\end{proof}
+
+\begin{statusbox}{\statusnew{} --- an attractive Lean target: the iterated-integral identity
+replaces nested mean-value constructions, and the numerical side reduces to monotonicity of
+a negative real power.}
+\end{statusbox}
+
+For $r=2$ this gives the sharp three-term criterion
+\begin{equation}
+\thetaq(\thetaq-1)h^2<n^{2-\thetaq},
+\qquad\text{i.e.}\qquad
+h<1.038547802\ldots\cdot n^{0.2075187\ldots},
+\label{eq:sharp-3ap}
+\end{equation}
+strictly weaker as a hypothesis than the committed $h\le n^{1/5}$.  The first thresholds
+$h<C_rn^{1-\thetaq/r}$, $C_r=c_r^{-1/r}$:
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$r$ & length $r+1$ & exponent $1-\thetaq/r$ & $C_r$ \\
+\midrule
+2 & 3 & 0.207518750 & 1.038547802 \\
+3 & 4 & 0.471679166 & 1.374849673 \\
+4 & 5 & 0.603759375 & 1.164124485 \\
+5 & 6 & 0.683007500 & 0.946705202 \\
+6 & 7 & 0.735839583 & 0.778537835 \\
+7 & 8 & 0.773576786 & 0.652646038 \\
+8 & 9 & 0.801879687 & 0.557368999 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+As $r$ grows the admissible step exponent approaches one.  This looks tantalizing but does
+not contradict the exact candidate monoid: in a dyadic block near $X$ the conditional number
+of candidates is $O(\log X)$, so the average additive gap is of order $X/\log X$, which for
+each fixed $r$ exceeds $X^{1-\thetaq/r}$.  Long-progression leverage would need $r$ growing
+with the height together with control of the rapidly growing $c_r$ and a combinatorial
+source of such progressions.
+
+\section{Independent finite verification through \texorpdfstring{$2^{20}$}{2\^{}20}}
+\label{sec:finite-computation}
+
+\begin{proposition}[Finite exclusion under interval-software trust]
+\label{prop:finite20}
+For every integer $1\le m<2^{20}$: if $m^{\thetaq}\in\Z$ then $m$ is a power of two.
+Equivalently, $2^x,3^x\in\Z$ and $2^x<2^{20}$ imply $x\in\Z$; a nonintegral solution
+satisfies $x>20$.
+\end{proposition}
+
+\begin{statusbox}{\statuscomp{} --- CPython 3.13.5, \lean{mpmath} 1.3.0 interval arithmetic
+at 40 decimal digits, outward endpoints.  Reproducible but \emph{not} replayed by the Lean
+kernel; not interchangeable with
+\lean{twelve_le_of_not_integer_of_two_three_rpow_integer}.}
+\end{statusbox}
+
+For each non-power of two $m$, a floating approximation proposes
+$n=\lfloor m^{\thetaq}\rfloor$; the proposal is then \emph{certified} by interval proofs of
+the two strict inequalities
+\begin{align}
+\log m\,\log3-\log n\,\log2&>0,\label{eq:lower-log}\\
+\log(n+1)\,\log2-\log m\,\log3&>0,\label{eq:upper-log}
+\end{align}
+which together say exactly $n<m^{\thetaq}<n+1$.  Once both interval lower endpoints are
+positive the floating proposal has no remaining logical role.  All $1{,}048{,}555$
+non-powers of two below $2^{20}$ passed, in two ranges:
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lrrX@{}}
+\toprule
+Range & Checked & Failures & Smallest certified log margins \\
+\midrule
+$1\le m<2^{19}$ & 524{,}268 & 0 &
+lower $1.4147\times10^{-15}$ at $(m,n)=(189427,231498127)$;\ \
+upper $3.0841\times10^{-15}$ at $(306982,497586055)$. \\
+\addlinespace
+$2^{19}\le m<2^{20}$ & 524{,}287 & 0 &
+lower $9.4902\times10^{-16}$ at $(958460,3023921230)$;\ \
+upper $2.3020\times10^{-15}$ at $(556061,1275861767)$. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+At the globally tightest case the 40-digit interval had width about $1.3\times10^{-54}$,
+some thirty-nine orders of magnitude below the certified positive margin; a separate
+100-digit computation gives
+$958460^{\thetaq}-3023921230=4.14020498680340526\times10^{-6}$.  The verification script,
+full outputs, and SHA-256 manifests are reproduced in Appendix~\ref{app:interval-output}.
+
+\paragraph{From scan to kernel certificate.}
+The repository's own architecture (\cref{sec:finite}) shows the stronger trust model:
+generate rational certificates externally, revalidate them independently, and replay only
+exact integer comparisons in Lean by \lean{decide}.  A scalable $2^{20}$ formal certificate
+should share convergent enclosures across ranges, chunk the data modules to bound
+elaboration memory, and rely on verified binary powering rather than giant literals; the
+worst cases identified by the scan (the four extremal pairs above) predict the required tier
+depth.
+
+\section{Attempts at a full proof and their exact failure points}
+\label{sec:attempts}
+
+\subsection{Collapse rank two to rank one}
+The rank argument leaves a perfectly coherent rank-two possibility, now known exactly:
+$\Cand=\langle2,M\rangle$.  Nothing in the rank machinery distinguishes this from the
+allowed monoid of powers of two; excluding the second generator \emph{is} the original
+transcendence problem.
+
+\subsection{Density of multiples against endpoint gaps}
+The orbit $k\beta\bmod1$ is equidistributed (Theorem~\ref{thm:block-equidist}), but the
+integrality gap at height $k$ is of exponential scale $M^{-k}$
+(Theorem~\ref{thm:shrinking}).  Equidistribution controls fixed intervals --- and with effective
+discrepancy, polynomially shrinking ones along subsequences --- but numbers with bounded
+partial quotients show that equidistributed multiples can avoid exponentially small targets
+forever.  Closing this route needs Diophantine information specific to the transcendental
+$\beta$ with $2^{\beta},3^{\beta}\in\N$, not generic metric theory.
+
+\subsection{Exact counts against local progression obstructions}
+Conditional failure gives $O(\log X)$ candidates per multiplicative block --- far below the
+positive-density regime of Roth-type theorems --- while
+Theorem~\ref{thm:higher-difference} reaches steps $X^{1-\thetaq/r}$ against average gaps
+$X/\log X$.  Sparse exact structure and local curvature are mutually consistent.  A
+three-term progression of candidates would solve the $S$-unit equation
+$2^{n_1}M^{k_1}+2^{n_3}M^{k_3}=2^{n_2+1}M^{k_2}$; general $S$-unit theory yields finiteness
+statements, not the required nonexistence.
+
+\subsection{Exploit the primitive output pair}
+The pair $(M,A)$ admits no matched depth, no common perfect power, and no nontrivial affine
+decomposition (Corollaries~\ref{cor:no-depth}, \ref{cor:no-common-power} and~\ref{cor:affine-primitive}).  What remains
+is exactly relation \eqref{eq:quadratic-logs}, a product of logarithms outside the scope of
+linear-forms machinery.
+
+\subsection{Force algebraicity of a forbidden auxiliary exponential}
+The five exponentials theorem \cite{WaldschmidtVariations,Roy1992} makes $e^{\gamma x}$
+transcendental for every nonzero algebraic $\gamma$, given the four algebraic corner
+exponentials.  The natural auxiliary quantities $p^x=e^{x\log p}$ have transcendental
+coefficient $\log p$, so the theorem does not directly convert divisors of $M$ or $A$ into
+a contradiction.  The six exponentials theorem shows $b^x$ is transcendental for any base
+$b$ multiplicatively independent of $2,3$; the committed Theorem~\ref{thm:threesmooth} is its
+formalized integer-level shadow.  Neither prevents $b$ from dividing the integer $2^x$;
+they control the distinct quantity $b^x$.
+
+\section{Consolidated research program}
+\label{sec:program}
+
+The two source documents proposed overlapping programs; the exact structure theory settles
+some directions and re-prioritizes the rest.  Ordered by leverage and feasibility:
+
+\subsection*{Priority A: formalize the exact conditional structure}
+Formalize the primitive normalization of the odd core, the rational-power index, and the
+primitive-generator theorem, with exact counting and blockwise equidistribution as
+corollaries.  A plausible module split:
+\lean{OddCore} (extend with primitivity and uniqueness),
+\lean{RationalPowerIndex}, \lean{PrimitiveGenerator}, \lean{ExactCounting},
+\lean{FractionalPartEquidistribution}.  Engineering pressure points: gcd and B\'ezout over
+a \lean{Finsupp} support; identifying $\{j:E^j\in\Q\}$ with $d\Z$; denominator-support
+lemmas over \lean{Rat}; and cast bookkeeping among $\N,\Z,\Q,\R$ powers.  No new
+transcendence theory is required.  This supersedes the earlier ``exponent semigroup''
+direction: there are no Frobenius-type gaps to study.
+
+\subsection*{Priority B: formalize the sharper finite differences}
+Formalize \eqref{eq:finite-diff-integral} as a reusable identity, then
+Theorem~\ref{thm:higher-difference}; replace $h^5\le n$ by the sharp \eqref{eq:sharp-3ap} in the
+density pipeline.  Schematic signature:
+\begin{lstlisting}[style=leanstyle]
+theorem no_candidate_arithmetic_progression_of_finiteDifference_lt_one
+    (r n h : Nat) (hr : 2 <= r) (hn : 0 < n) (hh : 0 < h)
+    (hsmall : fallingAbs theta r * h^r < n^(r - theta)) :
+    not (forall j : Fin (r + 1), TwoBaseNaturalCandidate (n + j * h))
+\end{lstlisting}
+
+\subsection*{Priority C: kernel-replay the \texorpdfstring{$2^{20}$}{2\^{}20} region}
+The scan shows the finite truth is computationally routine; the bottleneck is a compact
+kernel-replayable proof object.  Adaptive convergent enclosures, chunked certificate
+modules, and shared tiers along ranges are the ingredients; the target theorem is the
+$1048576$ analogue of Theorem~ef{thm:finite4096}.  Every descent constant then improves to $20$
+by bookkeeping.
+
+\subsection*{Priority D: isolate the radical target in a reusable API}
+Formalize Theorem~\ref{thm:localization} and Proposition~\ref{prop:radical-degree}: failure
+$\iff$ an odd $u>1$ with $u^{\thetaq}\in\Zthree$ $\iff$ a primitive odd $w$, index $d$,
+and reduced $q\in\Zthree$ with $(3^{\log_2w})^d=q$, plus irreducibility of $X^d-q$ and the
+symmetric base-swapped version (Appendix~\ref{app:symmetric}).  This creates a sharply stated
+endpoint for importing future transcendence results.
+
+\subsection*{Priority E: five and sharp six exponentials}
+Formalizing the five exponentials theorem or Roy's sharp six exponentials theorem
+\cite{Roy1992} would add restrictions such as transcendence of $e^{\gamma x}$ for algebraic
+$\gamma\ne0$.  The effort is comparable to the completed Gelfond--Schneider port and should
+be undertaken with a specific downstream lemma in mind.
+
+\subsection*{Priority F: auxiliary-function methods tailored to integrality}
+A route beyond four exponentials must exploit more than algebraicity: here all corner
+values are positive integers, all their powers remain integers, and the primitive pair is
+canonical.  Promising variants: use several non-Archimedean valuations simultaneously; use
+Corollary~\ref{cor:affine-primitive} to prevent determinant factors from sharing perfect powers;
+work with norms in the explicit radical field $\Q(E)$ of Proposition~\ref{prop:radical-degree},
+combining Archimedean smallness with denominator support only at $3$; search for a
+product-formula contradiction across all places of $\Q(E)$.  The last is the most
+structurally aligned with the radical formulation.
+
+\subsection*{Priority G: primitive-pair search instead of raw candidate scanning}
+A counterexample has a primitive pair $(M,A)$ with $M^{\thetaq}=A$,
+$\min(v_2M,v_3A)=0$, no common perfect power, and no matched affine decomposition.  Finite
+searches can reject candidates early on these conditions and record near misses keyed by
+odd core, revealing whether closest approaches cluster by smoothness pattern, denominator,
+or rational-power index $d$.
+
+\subsection*{Priority H: quantitative irrationality and discrepancy}
+Effective irrationality measures for $\thetaq$ (P\'ade/hypergeometric methods) would
+replace per-value certificate tiers by a uniform polynomial criterion and likely extend
+verified regions by orders of magnitude.  They do not directly control the generator
+$\beta=\log_2M$ for unknown $M$; that would require an effective measure derived from the
+relation \eqref{eq:quadratic-logs}, which lies beyond ordinary linear forms in logarithms.
+
+\subsection*{Downstream: the colossally abundant interface}
+Formalizing the original application --- the conjecture's rational-power form implies that
+quotients of consecutive colossally abundant numbers are prime \cite{AE1944} --- connects
+the corpus to its historical source.  It is logically downstream and should follow the core
+structure modules.
+
+\section{Conclusions}
+\label{sec:conclusion}
+
+The repository contains a broad, kernel-verified attack on the Alaoglu--Erd\H{o}s
+conjecture whose themes are complementary: interpolation determinants settle three
+independent bases; Gelfond--Schneider excludes algebraic irrational exponents; exact
+certificates create a growing zero-free region; unique factorization bounds multiplicative
+rank and now yields a common odd core; finite differences force local additive sparsity;
+descent constrains perfect-power structure; and unconditional equivalences show that the
+fractional-part axis measures the entire remaining distance to the conjecture.
+
+The conjecture does not fall to a combination of these results, and the reason can now be
+stated exactly.  A counterexample would not generate a messy exceptional set that density or
+semigroup arguments might squeeze; it would generate the perfectly rigid free monoid
+\[
+\Sol=\Nzero+\Nzero\beta,\qquad\Cand=\{2^nM^k:n,k\in\Nzero\},
+\]
+whose block counts, fractional parts, and multiplicative relations are explicit and
+internally consistent with every verified gap and density bound.  The remaining assertion is
+that the second generator cannot exist --- equivalently
+(Conjecture~\ref{conj:radical-target}), that no odd $u>1$ has $u^{\log_23}\in\Zthree$.
+
+That reformulation is progress rather than pessimism: it removes artificial degrees of
+freedom, supplies a canonical primitive object, upgrades density claims to exact theorems,
+and gives a focused interface for future transcendence methods.  The near-term program is
+listed in \cref{sec:program}; a complete proof still requires a new idea at the
+four-exponentials boundary, but the target is now narrow and the surrounding formal
+infrastructure is strong enough to test such an idea precisely.
+
+\appendix
+
+\section{Status matrix for major statements}
+\label{app:status}
+
+{\small
+\begin{longtable}{@{}p{0.38\textwidth}p{0.21\textwidth}p{0.34\textwidth}@{}}
+\toprule
+Statement & Status & Location \\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Location \\
+\midrule
+\endhead
+$2^x,3^x,5^x\in\Z\Rightarrow x\in\Z$ & \statuslean & \lean{IntegerExponent} \\
+Nonintegral solution irrational, transcendental & \statuslean &
+\lean{TwoBaseIntegerExponent}, \lean{Transcendence} \\
+$2^x<256\Rightarrow x\in\Z$ & \statuslean & \lean{FiniteCheck256} \\
+$2^x<4096\Rightarrow x\in\Z$\ \ ($x\ge12$) & \statuslean & \lean{FiniteCheck4096} \\
+Rank of candidate exponent vectors $\le2$ & \statuslean & \lean{MultiplicativeRank} \\
+Common odd core $2^iw^j$ (existence) & \statuslean & \lean{OddCore} \\
+Counting $\clog_2N\cdot\clog_3N$; linear dyadic blocks & \statuslean & \lean{OddCore} \\
+Density dichotomy; gap equivalences; infinitude & \statuslean &
+\lean{FractionalPartDensity} \\
+$3$-smooth classification of further bases & \statuslean & \lean{ThreeSmooth} \\
+Affine descent, $r+8k\le x$ & \statuslean & \lean{ArithmeticRigidity} \\
+Three-term AP obstruction under $h^5\le n$ & \statuslean & \lean{ZeroDensity} \\
+Shrinking-target Diophantine bounds & \statuslean & \lean{ShrinkingTarget} \\
+Gelfond--Schneider theorem & \statuslean & \lean{GelfondSchneider} \\
+$4$EC $\Rightarrow$ conjecture & \statuslean & \lean{FourExponentialsReduction} \\
+Primitive (canonical) odd core; uniqueness & \statusnew & Theorem~\ref{thm:odd-core} \\
+Exact solution monoid $\Nzero+\Nzero\beta$ & \statusnew & Theorem~\ref{thm:generator} \\
+Exact block counts; cumulative $T^2/(2\beta)$ & \statusnew & Theorem~\ref{thm:block-count} \\
+Blockwise Weyl equidistribution & \statusnew & Theorem~\ref{thm:block-equidist} \\
+Primitivity of least output pair & \statusnew &
+Corollaries~\ref{cor:no-depth}, \ref{cor:no-common-power} and~\ref{cor:affine-primitive} \\
+Sharp and higher-order AP obstructions & \statusnew & Theorem~\ref{thm:higher-difference} \\
+Localization and radical reformulations & \statusnew &
+Theorem~\ref{thm:localization}, Proposition~\ref{prop:radical-degree} \\
+No nonintegral candidate with $2^x<2^{20}$ & \statuscomp & Proposition~ef{prop:finite20} \\
+Full Alaoglu--Erd\H{o}s conjecture & open & reduced to Conjecture~\ref{conj:radical-target} \\
+\bottomrule
+\end{longtable}
+}
+
+\section{Formalization inventory}
+\label{app:inventory}
+
+All modules live under
+\lean{Analysis/ExponentialIdentities/Lean/ExponentialIdentities/}, in namespace
+\lean{LeanProofs}.  No \lean{sorry}, no extra axioms, no \lean{native_decide}; certificate
+tables are replayed by the kernel.
+
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Module & Contents \\
+\midrule
+\lean{IntegerExponent}(+3 submodules) & three-base theorem via interpolation determinants \\
+\lean{TwoBaseIntegerExponent} & conjecture statement, candidates, gaps, $2^x<10$ \\
+\lean{.../FiniteCheck}, \lean{FiniteCheck256} & zero-free regions $2^x<100$, $2^x<256$ \\
+\lean{.../FiniteCheck4096} & zero-free region $2^x<4096$ (kernel \lean{decide} table) \\
+\lean{.../ZeroDensity} & AP obstruction, Roth-number counting, $o(N)$ \\
+\lean{.../NonintegerDensity} & nonintegral candidate refinement, density zero \\
+\lean{.../MultiplicativeRank} & rank $\le2$, $\thetaq$ irrational, $(\clog_2N)^2$ \\
+\lean{.../CandidateStructure} & cross-valuation identity, conditional box growth \\
+\lean{.../OddCore} & common odd core, $\clog_2N\,\clog_3N$, dyadic blocks \\
+\lean{.../ArithmeticRigidity} & descent, $r+8k\le x$ \\
+\lean{.../ThreeSmooth} & $3$-smooth classification of further bases \\
+\lean{.../ShrinkingTarget} & fract shrinking targets, Diophantine lower bounds \\
+\lean{.../Transcendence} & GS applications: transcendence of solutions, of $\log_23$ \\
+\lean{.../FractionalPartDensity} & density dichotomy, gap equivalences, infinitude \\
+\lean{.../FourExponentialsReduction} & $4$EC $\Rightarrow$ conjecture \\
+\lean{GelfondSchneider/...} & Gelfond--Schneider theorem (port of Karatarakis) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{A symmetric formulation}
+\label{app:symmetric}
+
+Everything above has a base-swapped version.  Put $\eta=\log_32=1/\thetaq$.  Failure of the
+conjecture is also equivalent to the existence of an integer $v>1$ with $3\nmid v$ and
+\[
+v^{\eta}\in\Z[1/2].
+\]
+For the primitive pair $(M,A)$, factoring $A$ into a power of $3$ times a $3$-coprime part
+produces a symmetric primitive core and rational-power index; the two normalizations give
+the same least exponent $\beta$, and their compatibility condition is exactly
+$\log M\log3=\log A\log2$.  The symmetry is useful in formalization --- some divisibility
+arguments are easier on one side --- and confirms that Corollary~\ref{cor:no-depth} is not an
+artifact of privileging the base $2$.
+
+\section{Interval computation: script and outputs}
+\label{app:interval-output}
+
+\begin{lstlisting}[style=pythonstyle,caption={Interval verification for one range.  Set START to 1 or $2^{19}$ and LIMIT to $2^{19}$ or $2^{20}$.},label={lst:interval}]
+import math, time, hashlib
+import mpmath as mp
+
+START = 1
+LIMIT = 1 << 19
+DPS = 40
+
+mp.iv.dps = DPS
+ln2 = mp.iv.log(2)
+ln3 = mp.iv.log(3)
+theta_float = math.log(3.0) / math.log(2.0)
+
+checked = 0
+failures = []
+min_lower = (float("inf"), None, None)
+min_upper = (float("inf"), None, None)
+manifest = hashlib.sha256()
+start_time = time.time()
+
+for m in range(START, LIMIT):
+    if (m & (m - 1)) == 0:      # integral exponent: m is a power of two
+        continue
+
+    # Only proposes a neighboring integer.  The interval tests below certify it.
+    n = math.floor(math.exp(theta_float * math.log(m)))
+
+    lhs = mp.iv.log(m) * ln3
+    lower_diff = lhs - mp.iv.log(n) * ln2
+    upper_diff = mp.iv.log(n + 1) * ln2 - lhs
+
+    lower_lb = float(lower_diff.a)
+    upper_lb = float(upper_diff.a)
+    if not (lower_lb > 0.0 and upper_lb > 0.0):
+        failures.append((m, n, str(lower_diff), str(upper_diff)))
+        break
+
+    min_lower = min(min_lower, (lower_lb, m, n))
+    min_upper = min(min_upper, (upper_lb, m, n))
+    manifest.update(f"{m}:{n};".encode())
+    checked += 1
+
+print("checked_nonpowers=", checked)
+print("failures=", len(failures))
+print("min_lower_log_margin=", min_lower)
+print("min_upper_log_margin=", min_upper)
+print("sha256_m_n_manifest=", manifest.hexdigest())
+print("elapsed_seconds=", time.time() - start_time)
+assert not failures
+\end{lstlisting}
+
+The two 40-digit runs produced:
+
+\begin{lstlisting}[style=pythonstyle,numbers=none,caption={Lower half output.}]
+LIMIT=524288
+DPS=40
+checked_nonpowers=524268
+failures=0
+min_lower_log_margin=(1.4147089634746718e-15, 189427, 231498127)
+min_upper_log_margin=(3.0841010256409534e-15, 306982, 497586055)
+sha256_m_n_manifest=02b589461fa8c1721bc251575b98b1e3d58001f54cb7faa2cd6c59edb8c819a5
+elapsed_seconds=18.505
+\end{lstlisting}
+
+\begin{lstlisting}[style=pythonstyle,numbers=none,caption={Upper half output.}]
+LIMIT=1048576
+DPS=40
+checked_nonpowers=524287
+failures=0
+min_lower_log_margin=(9.490232037370244e-16, 958460, 3023921230)
+min_upper_log_margin=(2.3019781003173366e-15, 556061, 1275861767)
+sha256_m_n_manifest=fccccf5de8673379d37ff0fc840ab091d9ff7a2352ff64a93091f01c21bf4cb4
+elapsed_seconds=18.904
+\end{lstlisting}
+
+Elapsed times are machine-dependent sanity checks; the counts, zero-failure results,
+extremal tuples, and hashes are the reproducibility data.  The hashes cover the ASCII stream
+\lean{m:n;} of proposed-and-certified pairs and make accidental changes to the candidate
+sequence detectable across reruns.
+
+\begin{thebibliography}{99}
+
+\bibitem{AE1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+\newblock DOI: \href{https://doi.org/10.1090/S0002-9947-1944-0011087-2}{10.1090/S0002-9947-1944-0011087-2}.
+
+\bibitem{Ram1915}
+S.~Ramanujan,
+\newblock \emph{Highly composite numbers},
+\newblock Proceedings of the London Mathematical Society (2) \textbf{14} (1915), 347--409;
+annotated manuscript in Ramanujan Journal \textbf{1} (1997), 119--153.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{Hua1982}
+L.-K.~Hua,
+\newblock \emph{Introduction to Number Theory},
+\newblock Springer, 1982, Chapter~17.9.
+
+\bibitem{KuipersNiederreiter}
+L.~Kuipers and H.~Niederreiter,
+\newblock \emph{Uniform Distribution of Sequences},
+\newblock Wiley, 1974; Dover reprint, 2006.
+
+\bibitem{Roy1992}
+D.~Roy,
+\newblock \emph{Matrices whose coefficients are linear forms in logarithms},
+\newblock Journal of Number Theory \textbf{41}(1) (1992), 22--47.
+\newblock DOI: \href{https://doi.org/10.1016/0022-314X(92)90081-Y}{10.1016/0022-314X(92)90081-Y}.
+
+\bibitem{Schneider1957}
+Th.~Schneider,
+\newblock \emph{Einf\"uhrung in die transzendenten Zahlen},
+\newblock Springer, 1957.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\newblock \emph{Diophantine Approximation on Linear Algebraic Groups},
+\newblock Grundlehren der mathematischen Wissenschaften 326, Springer, 2000.
+\newblock DOI: \href{https://doi.org/10.1007/978-3-662-11569-5}{10.1007/978-3-662-11569-5}.
+
+\bibitem{WaldschmidtSix}
+M.~Waldschmidt,
+\newblock \emph{Six exponentials theorem --- irrationality},
+\newblock expository note.
+
+\bibitem{WaldschmidtVariations}
+M.~Waldschmidt,
+\newblock \emph{Variations on the Six Exponentials Theorem},
+\newblock in \emph{Algebra and Number Theory}, pp.~338--355.
+\newblock DOI: \href{https://doi.org/10.1007/978-93-86279-23-1_23}{10.1007/978-93-86279-23-1\_23}.
+
+\bibitem{Waldschmidt2023}
+M.~Waldschmidt,
+\newblock \emph{The Four Exponentials Problem and Schanuel's Conjecture},
+\newblock in \emph{Mathematics Going Forward}, Lecture Notes in Mathematics, 2023,
+pp.~579--592.
+\newblock DOI: \href{https://doi.org/10.1007/978-3-031-12244-6_39}{10.1007/978-3-031-12244-6\_39}.
+
+\bibitem{TheoremDB2026}
+TheoremDB contributors,
+\newblock \emph{Four exponentials conjecture}, problem P4, reviewed July 31, 2026.
+\newblock \url{https://theoremdb.org/statements/P4/}.
+
+\bibitem{ProveItRepo}
+\emph{ProveIt repository},
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{mpmath}
+F.~Johansson et al.,
+\newblock \emph{mpmath: a Python library for arbitrary-precision floating-point arithmetic},
+\newblock version 1.3.0.
+\newblock \url{https://mpmath.org/}.
+
+\end{thebibliography}
+
+\end{document}
