@@ -574,6 +574,18 @@ approximation: Dirichlet guarantees infinitely many $k$ with $\distZ{kx}<1/k$, a
 shrinking radius $2^{-kx}$ is incomparably smaller.  The interplay between this exponential
 gap and equidistribution is discussed in \cref{sec:attempts}.
 
+The bound dualizes into a growth constraint on the continued fraction of a solution: if
+$|x-p/q|<1/(qQ)$ with $q,Q\ge1$, then $Q<2m^{\,q}$.  Applied to consecutive convergent
+denominators, which satisfy $|x-p_n/q_n|<1/(q_nq_{n+1})$, this gives
+\[
+  q_{n+1}\;<\;2\,m^{\,q_n}:
+\]
+the partial quotients of a hypothetical nonintegral solution are capped by a single
+exponential in the preceding denominator, with base its own output $m=2^x$.
+\begin{statusbox}{\statuslean{} ---
+\lean{approximation_quality_lt_of_noninteger_solution} in \lean{DenominatorGrowth}.}
+\end{statusbox}
+
 \subsection{Verified zero-free regions and certificate architecture}
 \label{sec:finite}
 
@@ -1523,6 +1535,28 @@ $b$ multiplicatively independent of $2,3$; the committed Theorem~\ref{thm:threes
 formalized integer-level shadow.  Neither prevents $b$ from dividing the integer $2^x$;
 they control the distinct quantity $b^x$.
 
+\subsection{The linear-form-in-log-products formulation of the wall}
+
+The obstruction can be given one further exact name.  A counterexample is a pair of
+integers $m,A\ge2$ with $\log m\,\log3=\log A\,\log2$.  Expanding both integers over their
+prime factorizations $m=\prod_pp^{m_p}$, $A=\prod_pp^{a_p}$, failure of the conjecture is
+equivalent to the nontrivial vanishing of
+\[
+  D \;=\; \sum_{p}\bigl(m_p\log 3-a_p\log 2\bigr)\log p ,
+\]
+an \emph{integer-coefficient linear form in the products of two prime logarithms}
+$\{\log p\cdot\log2,\ \log p\cdot\log3\}$.  Baker's theory bounds linear forms in
+logarithms with \emph{algebraic} coefficients; here every coefficient of $\log p$ is itself
+a transcendental logarithm, and no lower-bound technology exists for such forms.  Indeed
+even the $\Q$-linear independence of the family $\{\log p\cdot\log q:p<q\text{ prime}\}$ is
+an open problem (it follows from, and is essentially a fragment of, the four exponentials
+circle of conjectures).  Every route examined in this report --- determinants, product
+formulas in the radical field $\Q(E)$, auxiliary exponentials, equidistribution against
+shrinking targets --- terminates at a special case of exactly this independence statement.
+A genuine proof therefore requires either a fundamentally new lower bound for linear forms
+in log-products, or a mechanism exploiting the positivity and integrality of the
+coefficients $(m_p,a_p)$ that has no analogue in the general four-exponentials setting.
+
 \section{Consolidated research program}
 \label{sec:program}
 
@@ -1709,6 +1743,7 @@ Exact radical degree and binomial irreducibility & \statuslean & \lean{RadicalDe
 Effective rational three-term criterion ($h^{400}\le n^{83}$) & \statuslean &
 \lean{SharpProgression} \\
 Candidate-form localization equivalence & \statuslean & \lean{Localization} \\
+Convergent-denominator growth $q_{n+1}<2m^{q_n}$ & \statuslean & \lean{DenominatorGrowth} \\
 No nonintegral candidate with $2^x<2^{20}$ & \statuscomp & Proposition~\ref{prop:finite20} \\
 Full Alaoglu--Erd\H{o}s conjecture & open & reduced to Conjecture~\ref{conj:radical-target} \\
 \bottomrule
@@ -1758,6 +1793,7 @@ Module & Contents \\
 \lean{.../ArithmeticRigidity} & descent, $r+8k\le x$ \\
 \lean{.../ThreeSmooth} & $3$-smooth classification of further bases \\
 \lean{.../ShrinkingTarget} & fract shrinking targets, Diophantine lower bounds \\
+\lean{.../DenominatorGrowth} & convergent-denominator growth cap $Q<2m^q$ \\
 \lean{.../Transcendence} & GS applications: transcendence of solutions, of $\log_23$ \\
 \lean{.../FractionalPartDensity} & density dichotomy, gap equivalences, infinitude \\
 \lean{.../Localization} & candidate-form localization equivalence \\
