@@ -3570,14 +3570,34 @@ matters and is easy to miss.  Collecting the relation \eqref{eq:lp-expanded} bac
 \]
 so the only products ever exercised are those of the form $\log2\log p$ and $\log3\log p$.
 Write $F$ for that sub-family.  A vanishing rational relation over $F$ factors as
-$\log2\,\log u+\log3\,\log v=0$ for positive rationals $u,v$, i.e.\ as
-$\thetaq=\log u/\log(1/v)$, which says precisely that some rational has a rational
-$\thetaq$-th power.  Hence $\Q$-linear independence of $F$ alone is \emph{equivalent} to
-Conjecture~\ref{conj:AE}, not weaker than it.  Theorem~\ref{lp:thm-main} is therefore a
-correct sufficient condition whose surplus strength --- independence of pairs $\log p\log q$
-with $p,q\ge5$ --- is never used by the problem.  Its genuine dividend is the two-prime case
-of Section~\ref{lp:twoprime}, which \emph{is} a theorem and does yield an unconditional
-exclusion.  One should not expect the criterion to be an easier route in general.
+$\log2\,\log u+\log3\,\log v=0$ for positive rationals $u,v$, i.e.\ says precisely that some
+positive rational $\ne1$ has a rational $\thetaq$-th power.  Equivalently, $\Q$-linear
+independence of $F$ is the \emph{rational-output} form of the problem:
+\begin{equation}
+  2^x\in\Q\ \text{ and }\ 3^x\in\Q
+  \qquad\Longrightarrow\qquad
+  x\in\Z .
+  \label{eq:lp-rational-form}
+\end{equation}
+This is worth separating from Conjecture~\ref{conj:AE}.  It implies the conjecture, since
+integers are rational, and it is \emph{a priori strictly stronger}: a rational counterexample
+such as $2^x=3/2$ is not an integer counterexample, and nothing in the corpus reduces one to
+the other.  Both follow from four exponentials, because rationals are algebraic.
+
+The proof of Theorem~\ref{lp:thm-main} establishes \eqref{eq:lp-rational-form} verbatim: for
+rational outputs the prime exponents $\alpha_p,\gamma_p$ are integers of either sign, and the
+argument never used their positivity.  So the criterion is not a restatement of the
+conjecture; it delivers the stronger rational-output form.  What the calibration does show is
+where its surplus lies: independence of pairs $\log p\log q$ with $p,q\ge5$ is never
+exercised, so one should not expect the full criterion to be easier than
+\eqref{eq:lp-rational-form}.  Its unconditional dividend is the two-prime case of
+Section~\ref{lp:twoprime}.
+
+\begin{statusbox}{\statuslean{} for the integer-output form
+(\lean{alaogluErdosConjecture_of_primeLogProductIndependence}); the rational-output
+strengthening \eqref{eq:lp-rational-form} is \statusnew{} and awaits a Lean version stated
+over \lean{Rat} valuations.}
+\end{statusbox}
 
 \emph{It is nevertheless of a different kind from four exponentials.}  The four exponentials conjecture is a
 statement about $2\times2$ matrices of logarithms and their exponentials; the present criterion
@@ -4971,6 +4991,71 @@ integer exponential grid cannot exist unless $(M,A)$ is a common integral power 
 This is the most natural starting point for a bespoke $2\times2$ interpolation determinant
 that uses more than the arbitrary-node geometry of Section~\ref{sec:arbnode}, and it is the
 structure the semigroup hierarchy of Section~\ref{sec:semigroup} exploits only partially.
+
+\subsection{An operator formulation on the prime-logarithm space}
+\label{rf:operator}
+
+All the reformulations above are Diophantine.  There is also a purely linear-algebraic one,
+which recasts the problem as a statement about multiplication by $\thetaq$ acting on a single
+$\Q$-vector space.
+
+Let
+\[
+  W:=\operatorname{span}_{\Q}\{\log p\ :\ p\ \text{prime}\}\subset\R ,
+\]
+a $\Q$-vector space of countably infinite dimension, with the $\log p$ as a basis by unique
+factorization.  Multiplication by $\thetaq$ does not preserve $W$, so consider the largest
+part of $W$ that it does return to $W$:
+\[
+  U:=\{\,w\in W\ :\ \thetaq\,w\in W\,\}.
+\]
+This is a $\Q$-subspace, and it is never zero: $\thetaq\log2=\log3\in W$, so
+$\Q\log2\subseteq U$.
+
+\begin{proposition}[Operator form]
+\label{rf:prop-operator}
+$\dim_{\Q}U=\operatorname{rank}K$, where
+$K=\{v\in\Q_{>0}:v^{\thetaq}\in\Q\}$ is the multiplicative group of
+Section~\ref{sec:logproduct}.  Consequently the rational-output form
+\eqref{eq:lp-rational-form} --- and hence Conjecture~\ref{conj:AE} --- is equivalent to
+\[
+  \boxed{\ \dim_{\Q}\{\,w\in W:\thetaq\,w\in W\,\}=1 .\ }
+\]
+\end{proposition}
+
+\begin{proof}
+An element of $W$ is $w=\sum_pc_p\log p$ with rational $c_p$, almost all zero.  Clearing a
+common denominator $N$ gives $Nw=\log v$ for a positive rational $v$.  Now $\thetaq w\in W$
+says $\thetaq\log v=\sum_pd_p\log p$ with rational $d_p$; clearing a denominator $M$ turns
+this into $\thetaq\log\bigl(v^{M}\bigr)=\log u$ with $u\in\Q_{>0}$, that is
+$\bigl(v^{M}\bigr)^{\thetaq}=u$, i.e.\ $v^{M}\in K$.  So $U$ is exactly the $\Q$-span of
+$\log K$ inside $W$, whence $\dim_{\Q}U=\operatorname{rank}K$.  The conjecture in its
+rational-output form says $K=\langle2\rangle$, of rank one.
+\end{proof}
+
+\begin{statusbox}{\statusnew{} --- an elementary translation, but a genuinely different
+framing: it replaces a Diophantine assertion by the statement that the operator ``multiply by
+$\thetaq$'' carries only a single line of $W$ back into $W$.}
+\end{statusbox}
+
+Two remarks on what this framing does and does not give.
+
+\emph{It explains why finite-dimensional arguments cannot apply directly.}  If some nonzero
+finite-dimensional subspace $V\subseteq W$ were $\thetaq$-\emph{stable}, then $\thetaq$ would
+be an eigenvalue of the rational matrix representing multiplication by $\thetaq$ on $V$, hence
+algebraic, contradicting transcendence.  So a proof cannot proceed by exhibiting an invariant
+finite-dimensional subspace: none exists, unconditionally.  The subspace $U$ above is not
+$\thetaq$-stable --- $\thetaq U\subseteq W$ but generally $\thetaq U\not\subseteq U$ --- and
+this failure of stability is precisely what blocks the eigenvalue argument.
+
+\emph{The natural stable candidate is empty for the same reason.}  Setting
+$U_\infty=\{w\in W:\thetaq^{k}w\in W\ \text{for all}\ k\ge0\}$ does produce a
+$\thetaq$-stable space, but it is either zero or infinite-dimensional, and infinite dimension
+is automatic whenever it is nonzero: if $0\ne w\in U_\infty$, the powers $\thetaq^{k}w$ are
+$\Q$-linearly independent, since a relation $\sum_kc_k\thetaq^{k}w=0$ with $w\ne0$ would make
+$\thetaq$ algebraic.  So the operator picture reproduces the transcendence barrier exactly,
+rather than circumventing it.  Its value is diagnostic: it shows the obstruction is not a
+missing estimate but the absence of any finite-dimensional invariant structure to work with.
 
 \section{A consolidated catalogue of equivalent formulations}\label{sec:catalogue}
 
