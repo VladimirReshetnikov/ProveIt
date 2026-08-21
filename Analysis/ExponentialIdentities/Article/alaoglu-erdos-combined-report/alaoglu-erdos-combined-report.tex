@@ -257,17 +257,21 @@ candidate counts below $N$ are at most $\clog_2N\cdot\clog_3N$, and each dyadic 
 $[2^T,2^{T+1})$ holds at most $\clog_3(2^{T+1})$ candidates.  \statuslean{}  Conditional on a
 counterexample, this sharpens to an exact free-monoid classification
 $\Sol=\Nzero+\Nzero\beta$ with a canonical least generator, exact block counts
-$\lfloor(N+1)/\beta\rfloor$, and blockwise Weyl equidistribution.  \statusnew
+$\lfloor(N+1)/\beta\rfloor$, and blockwise Weyl equidistribution.  The generator theorem
+itself is kernel-verified (\lean{exists_primitive_generator} in
+\lean{PrimitiveGenerator}); the exact counts and equidistribution corollaries remain
+\statusnew
 \item \textbf{Unconditional gap equivalences.}  The conjecture is equivalent to the existence
 of any nonempty open subinterval of $(0,1)$ free of fractional parts of nonintegral
 solutions, and to fractional parts being bounded away from $0$, or from $1$.  \statuslean
 \item \textbf{Sharper local combinatorics.}  A progression $n,n+h,\dots,n+rh$ of candidates
 is impossible whenever $|\thetaq(\thetaq-1)\cdots(\thetaq-r+1)|\,h^r<n^{r-\thetaq}$,
 strictly improving the committed three-term criterion $h^5\le n$ and extending it to all
-lengths.  \statusnew
+lengths.  The three-term case at exponent $83/400=0.2075$ is kernel-verified
+(\lean{SharpProgression}); the arbitrary-length family remains \statusnew
 \item \textbf{The irreducible remainder.}  The conjecture is equivalent to: no odd integer
-$u>1$ satisfies $u^{\thetaq}\in\Zthree$.  \statusnew{} (equivalence); the statement itself is
-open even for $u=3$.
+$u>1$ satisfies $u^{\thetaq}\in\Zthree$.  The equivalence is kernel-verified
+(\lean{Localization}); the statement itself is open even for $u=3$.
 \end{enumerate}
 
 \section{The problem and its equivalent forms}
@@ -810,7 +814,7 @@ exact structure of the next section strengthens density to blockwise Weyl equidi
 \section{Exact conditional structure of all solutions}
 \label{sec:exact-structure}
 
-This section develops, at the \statusnew{} level, the exact rigidity theory of a
+This section develops the exact rigidity theory of a
 hypothetical counterexample.  It starts from the kernel-verified cross-valuation identity
 (Lemma~\ref{lem:cross-input}) and sharpens the verified odd-core theorem
 (Theorem~\ref{thm:oddcore-lean}) in two steps: a canonical (primitive) normalization of the core,
@@ -943,7 +947,10 @@ the least value is attained at $(n,k)=(0,1)$ and equals $\beta$, uniquely so by 
 of representation.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} --- the principal structural result of this report.  It
+\begin{statusbox}{\statuslean{} --- \lean{exists_primitive_generator} in
+\lean{PrimitiveGenerator}, formalized from the kernel-verified common odd core (the proof
+does not need the canonical normalization).  The principal structural result of this
+report.  It
 sharpens the kernel-verified rank-two and odd-core theorems: conditional on failure, $\Sol$
 is not merely contained in a rank-two additive set --- it is the free additive monoid on $1$
 and one irrational generator $\beta$.  In particular the ``exponent semigroup'' degree of
@@ -1089,7 +1096,10 @@ and $3^x=3^au^{\thetaq}=B\in\N$, and $x\notin\Z$ since otherwise the odd $u>1$ w
 power of two.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} --- a compact target for future work: prove
+\begin{statusbox}{\statuslean{} ---
+\lean{alaogluErdosConjecture_iff_no_odd_multiple_candidate} and
+\lean{alaogluErdosConjecture_iff_odd_rpow_not_localized} in \lean{Localization}.  A compact
+target for future work: prove
 $u^{\log_23}\notin\Zthree$ for every odd $u>1$.  The allowance of $3$-power denominators is
 exactly the freedom created by shifting the exponent by an integer.}
 \end{statusbox}
@@ -1334,33 +1344,35 @@ The two source documents proposed overlapping programs; the exact structure theo
 some directions and re-prioritizes the rest.  Ordered by leverage and feasibility:
 
 \subsection*{Priority A: formalize the exact conditional structure}
-Formalize the primitive normalization of the odd core, the rational-power index, and the
-primitive-generator theorem, with exact counting and blockwise equidistribution as
-corollaries.  A plausible module split:
-\lean{OddCore} (extend with primitivity and uniqueness),
-\lean{RationalPowerIndex}, \lean{PrimitiveGenerator}, \lean{ExactCounting},
-\lean{FractionalPartEquidistribution}.  Engineering pressure points: gcd and B\'ezout over
-a \lean{Finsupp} support; identifying $\{j:E^j\in\Q\}$ with $d\Z$; denominator-support
-lemmas over \lean{Rat}; and cast bookkeeping among $\N,\Z,\Q,\R$ powers.  No new
-transcendence theory is required.  This supersedes the earlier ``exponent semigroup''
-direction: there are no Frobenius-type gaps to study.
+\emph{Substantially completed since the first version of this report.}  The module
+\lean{PrimitiveGenerator} formalizes the generator theorem itself
+(\lean{exists_primitive_generator}): conditional on a nonintegral solution, it constructs
+an irrational $\beta$ with $2^{\beta},3^{\beta}\in\N$ such that the solution set is exactly
+$\{n+k\beta\}$ with unique representations and $\beta$ least --- using the kernel-verified
+common odd core rather than the canonical normalization, which the proof turns out not to
+need.  The module \lean{Localization} formalizes the localization reformulation
+(\lean{alaogluErdosConjecture_iff_no_odd_multiple_candidate},
+\lean{alaogluErdosConjecture_iff_odd_rpow_not_localized}), giving
+Theorem~\ref{thm:localization} kernel-verified status.  Remaining from this priority:
+the canonical (gcd-primitive) core with uniqueness of $w$, exact counting formulas, and
+blockwise equidistribution (\lean{ExactCounting},
+\lean{FractionalPartEquidistribution}).
 
 \subsection*{Priority B: formalize the sharper finite differences}
-Formalize \eqref{eq:finite-diff-integral} as a reusable identity, then
-Theorem~\ref{thm:higher-difference}; replace $h^5\le n$ by the sharp \eqref{eq:sharp-3ap} in the
-density pipeline.  Schematic signature:
-\begin{lstlisting}[style=leanstyle]
-theorem no_candidate_arithmetic_progression_of_finiteDifference_lt_one
-    (r n h : Nat) (hr : 2 <= r) (hn : 0 < n) (hh : 0 < h)
-    (hsmall : fallingAbs theta r * h^r < n^(r - theta)) :
-    not (forall j : Fin (r + 1), TwoBaseNaturalCandidate (n + j * h))
-\end{lstlisting}
+\emph{The three-term case is now kernel-verified.}  The module \lean{SharpProgression}
+proves \lean{not_three_arithmetic_progression_twoBaseNaturalCandidates_sharp}: no three
+candidates in progression once $h^{400}\le n^{83}$, i.e.\ step exponent $83/400=0.2075$
+against the optimal $0.20751\ldots$ of \eqref{eq:sharp-3ap} --- replacing the committed
+$h^5\le n$ (exponent $0.2$).  The ingredients are the kernel-replayed enclosure
+$\thetaq<317/200$ (from $3^{200}<2^{317}$) and the committed second-difference bound.
+Remaining: the arbitrary-length family of Theorem~\ref{thm:higher-difference} via the
+iterated-integral identity \eqref{eq:finite-diff-integral}.
 
 \subsection*{Priority C: kernel-replay the \texorpdfstring{$2^{20}$}{2\^{}20} region}
 The scan shows the finite truth is computationally routine; the bottleneck is a compact
 kernel-replayable proof object.  Adaptive convergent enclosures, chunked certificate
 modules, and shared tiers along ranges are the ingredients; the target theorem is the
-$1048576$ analogue of Theorem~ef{thm:finite4096}.  Every descent constant then improves to $20$
+$1048576$ analogue of Theorem~\ref{thm:finite4096}.  Every descent constant then improves to $20$
 by bookkeeping.
 
 \subsection*{Priority D: isolate the radical target in a reusable API}
@@ -1467,15 +1479,19 @@ Shrinking-target Diophantine bounds & \statuslean & \lean{ShrinkingTarget} \\
 Gelfond--Schneider theorem & \statuslean & \lean{GelfondSchneider} \\
 $4$EC $\Rightarrow$ conjecture & \statuslean & \lean{FourExponentialsReduction} \\
 Primitive (canonical) odd core; uniqueness & \statusnew & Theorem~\ref{thm:odd-core} \\
-Exact solution monoid $\Nzero+\Nzero\beta$ & \statusnew & Theorem~\ref{thm:generator} \\
+Exact solution monoid $\Nzero+\Nzero\beta$ & \statuslean &
+Theorem~\ref{thm:generator}; \lean{PrimitiveGenerator} \\
 Exact block counts; cumulative $T^2/(2\beta)$ & \statusnew & Theorem~\ref{thm:block-count} \\
 Blockwise Weyl equidistribution & \statusnew & Theorem~\ref{thm:block-equidist} \\
 Primitivity of least output pair & \statusnew &
 Corollaries~\ref{cor:no-depth}, \ref{cor:no-common-power} and~\ref{cor:affine-primitive} \\
-Sharp and higher-order AP obstructions & \statusnew & Theorem~\ref{thm:higher-difference} \\
-Localization and radical reformulations & \statusnew &
-Theorem~\ref{thm:localization}, Proposition~\ref{prop:radical-degree} \\
-No nonintegral candidate with $2^x<2^{20}$ & \statuscomp & Proposition~ef{prop:finite20} \\
+Sharp three-term AP obstruction ($h^{400}\le n^{83}$) & \statuslean &
+\lean{SharpProgression} \\
+Higher-order AP obstructions & \statusnew & Theorem~\ref{thm:higher-difference} \\
+Localization reformulation & \statuslean &
+Theorem~\ref{thm:localization}; \lean{Localization} \\
+Radical-degree proposition & \statusnew & Proposition~\ref{prop:radical-degree} \\
+No nonintegral candidate with $2^x<2^{20}$ & \statuscomp & Proposition~\ref{prop:finite20} \\
 Full Alaoglu--Erd\H{o}s conjecture & open & reduced to Conjecture~\ref{conj:radical-target} \\
 \bottomrule
 \end{longtable}
@@ -1509,6 +1525,9 @@ Module & Contents \\
 \lean{.../ShrinkingTarget} & fract shrinking targets, Diophantine lower bounds \\
 \lean{.../Transcendence} & GS applications: transcendence of solutions, of $\log_23$ \\
 \lean{.../FractionalPartDensity} & density dichotomy, gap equivalences, infinitude \\
+\lean{.../Localization} & conjecture $\iff$ no odd $u>1$ with $u^{\thetaq}\in\Zthree$ \\
+\lean{.../SharpProgression} & sharp three-term AP obstruction, $\thetaq<317/200$ \\
+\lean{.../PrimitiveGenerator} & conditional exact generator: $\Sol=\Nzero+\Nzero\beta$ \\
 \lean{.../FourExponentialsReduction} & $4$EC $\Rightarrow$ conjecture \\
 \lean{GelfondSchneider/...} & Gelfond--Schneider theorem (port of Karatarakis) \\
 \bottomrule
