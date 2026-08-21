@@ -273,16 +273,28 @@ and \lean{FractionalPartDensity} --- were absent then.  That discrepancy is
 resolved: the three modules were subsequently committed in \commit{98646b455} and are
 kernel-verified; the survey's temporary pending-verification remark was removed in
 \commit{716617d72}.  Statements from these modules are therefore labeled \statuslean{} below.
-The kernel-checked feature wave also includes \lean{PrimitiveOddCore}, \lean{LeastSolution},
-\lean{ThreeDenominatorNormalization}, \lean{RationalPowerIndex}, \lean{PrimitiveGenerator},
-\lean{ExactCounting}, \lean{QuadraticAsymptotic}, \lean{BlockWeyl},
-\lean{BlockEquidistribution}, \lean{OutputNormalization}, \lean{RationalThirdBase},
-\lean{RadicalReformulation}, \lean{PrimitiveRadical}, \lean{RadicalDegree},
-\lean{SharperProgressions}, \lean{ThirdDifference}, and \lean{HigherDifference}.  Their public
-headline theorems were audited with \lean{#print axioms}; only the standard Mathlib axioms
-\lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} occur.  The new determinant and
-reformulation modules are still drafts; the per-statement ledger is
-Appendix~\ref{app:status} and the module inventory is Appendix~\ref{app:inventory}.
+The kernel-checked feature wave also includes
+\begin{center}
+\lean{PrimitiveOddCore}, \lean{LeastSolution}, \lean{ThreeDenominatorNormalization},\\
+\lean{RationalPowerIndex}, \lean{PrimitiveGenerator}, \lean{ExactCounting},\\
+\lean{QuadraticAsymptotic}, \lean{BlockWeyl}, \lean{BlockEquidistribution},\\
+\lean{OutputNormalization}, \lean{RationalThirdBase}, \lean{RadicalReformulation},\\
+\lean{PrimitiveRadical}, \lean{RadicalDegree}, \lean{SharperProgressions},\\
+\lean{ThirdDifference}, \lean{HigherDifference}.
+\end{center}
+The determinant and reformulation modules that earlier editions of this report listed as
+drafts have since been accepted, and a further round added
+\begin{center}
+\lean{CandidateLattice}, \lean{KernelDichotomy}, \lean{SecondIterateKernel},\\
+\lean{TowerRigidity}, \lean{SymmetricTowerConstants}, \lean{PrimeLogSpaceOperator},\\
+\lean{ArbitraryNodeRepulsion}, \lean{SemigroupGapBound}.
+\end{center}
+Public headline theorems throughout were audited with \lean{#print axioms}; only the standard
+Mathlib axioms \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} occur, and the
+audit for the most recent round is itself a module, \lean{AuditNewModules}.  The two analytic
+inputs still missing from the determinant chain are carried as named hypotheses of the
+theorems that use them, not as axioms.  The per-statement ledger is Appendix~\ref{app:status}
+and the module inventory is Appendix~\ref{app:inventory}.
 
 \subsection{Headline results}
 \label{ex:headline}
@@ -3179,8 +3191,12 @@ translation back to $(n,k)$ coordinates is the stated substitution $n=s-ak$.  A 
 product of chains is distributive.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} --- the proof uses only unique factorization in $\N$ together
-with the \statuslean{} exact primitive-generator theorem of Section~\ref{sec:conditional}.  No
+\begin{statusbox}{\statuslean{} --- \lean{twoBaseNaturalCandidate_gcd} and
+\lean{twoBaseNaturalCandidate_lcm} in \lean{CandidateLattice}, resting on the coordinatewise
+arithmetic lemmas \lean{gcd_two_pow_mul_odd_pow} and \lean{lcm_two_pow_mul_odd_pow} of the
+same module and on the \statuslean{} exact primitive-generator theorem of
+Section~\ref{sec:conditional}.  The formal statements are unconditional: the Lean proof splits
+on the conjecture and disposes of the affirmative branch through the powers of two.  No
 transcendence input and no analytic estimate enters.}
 \end{statusbox}
 
@@ -4454,10 +4470,14 @@ valuation, so no same-sign vector lies in the kernel.  The two smooth cases are 
 from \eqref{eq:kn-valuations} by testing $(1,0)$ and $(0,1)$.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} for the kernel formalism, with one exception: the input that
-$M$ and $A$ cannot both be $3$-smooth is \statuslean{} here
-(\lean{integer_of_threeSmooth_outputs} in \lean{SmoothOutputs}), so the dimension bound rests
-on a machine-checked foundation rather than an asserted one.}
+\begin{statusbox}{\statuslean{} --- \lean{SecondIterateKernel} carries the kernel as an
+integral subgroup \lean{kernelAddSubgroup} of $\Z^2$, with \lean{kernelPairs_mul_nonpos} for
+the absence of same-sign vectors, \lean{kernelPairs_det_eq_zero} and
+\lean{kernelPairs_prop_dim} for the rank bound, \lean{mem_kernelPairs_one_zero_iff} for the
+two smooth cases, and \lean{saturatedKernel_invariant} for $K_x=K_y$.  The input that $M$ and
+$A$ cannot both be $3$-smooth is \lean{integer_of_threeSmooth_outputs} in \lean{SmoothOutputs}.
+Clearing denominators lets the formal statement use integer rather than rational pairs, which
+is equivalent and lighter.}
 \end{statusbox}
 
 The kernel is not an artifact of the chosen counterexample.  If $x,y$ are two nonintegral
@@ -4518,10 +4538,15 @@ Lemma~\ref{pr:rational}, contrary to hypothesis.  Conversely, any such expressio
 cross-multiplies to \eqref{eq:kn-linear}.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} --- the equivalence of (i), (iii) and (iv) is the M\"obius
-criterion of the fourth source report; the equivalence with (ii) is recorded here.  It is
-elementary and self-contained, and is a natural Lean target: it needs only unique
-factorization, irrationality of $\thetaq$, and the rational-exponent lemma.}
+\begin{statusbox}{\statuslean{} --- \lean{KernelDichotomy} formalizes the equivalence of
+(ii), (iii) and (iv), as
+\lean{multiplicativelyDependentOutputs_iff_secondIterateKernelRelation} together with
+\lean{exists_moebius_of_multiplicativelyDependentOutputs} and
+\lean{multiplicativelyDependentOutputs_of_moebius}; the packaged branching is
+\lean{twoBaseNonintegerSolution_kernel_dichotomy}.  Clause (i) is
+\lean{SecondIterateKernel}.  The formalization is slightly stronger than the statement above:
+(ii) $\iff$ (iii) needs only irrationality of $\thetaq$, and nonintegrality of $x$ enters
+just for the nonvanishing of the M\"obius determinant.}
 \end{statusbox}
 
 \subsection{Why the multiplicative form is worth having}
@@ -8257,7 +8282,7 @@ monomial injectivity & \statuslean & \lean{CanonicalRadicalFieldNorm} \\
 Algebraic integrality of the radical iff trivial reduced denominator & \statuslean &
 \lean{CanonicalRadicalThirdOutput} \\
 Algebraicity of the radical's $\beta$-th power iff $2,3$-smooth numerator & \statuslean &
-\lean{CanonicalRadicalAlgebraicOutput} \\
+{\scriptsize\lean{CanonicalRadicalAlgebraicOutput}} \\
 External numerator prime excludes the positive $2,3$-unit divisible hull &
 \statuslean & \lean{CanonicalRadicalDivisibleHull} \\
 Mixed radical monomials retain an external prime; transcendental outputs & \statuslean &
@@ -8272,14 +8297,14 @@ valuation lattice (this report) \\
 Smith classification: $\Lambda_x/\Z^2\cong\Z/d_1\Z\oplus\Z/d_2\Z$ and the finite
 rational-output defect & \statusnew & valuation lattice (this report) \\
 Second-iterate kernel $K_x=\{(r,s)\in\Q^2:M^rA^s\in\GammaSat\}$; $\dim_\Q K_x\le1$ &
-\statusnew & second-iterate kernel (this report) \\
-Kernel invariance $K_x=K_y$ across nonintegral solutions & \statusnew &
-second-iterate kernel (this report) \\
+\statuslean & \lean{SecondIterateKernel} \\
+Kernel invariance $K_x=K_y$ across nonintegral solutions & \statuslean &
+\lean{SecondIterateKernel} \\
 M\"obius criterion: $K\ne\{0\}$ iff $x\in\PGL_2(\Q)\cdot\thetaq$, iff
-$1,\thetaq,x,x\thetaq$ are $\Q$-dependent & \statusnew &
-second-iterate kernel (this report) \\
-Multiplicative-dependence form: $K\ne\{0\}$ iff $M^eA^{-d}\in\GammaSat$ for some
-$(d,e)\ne(0,0)$ & \statusnew & second-iterate kernel (this report) \\
+$1,\thetaq,x,x\thetaq$ are $\Q$-dependent & \statuslean &
+\lean{KernelDichotomy} \\
+Multiplicative-dependence form: $K\ne\{0\}$ iff $M,A,2,3$ are multiplicatively
+dependent & \statuslean & \lean{KernelDichotomy} \\
 Four-type classification of counterexamples by external valuation rank & \statusnew &
 second-iterate kernel (this report) \\
 No nontrivial two-step return inside $\GammaSat$ & \statusnew &
@@ -8290,11 +8315,15 @@ Universal three-level detector: Conjecture~\ref{conj:AE} $\iff$
 $\alpha^x,\alpha^{x^2},\alpha^{x^3}\in\Qbar$ for one fixed $\alpha\ne1$ & \statusnew &
 depth-three tower (this report) \\
 Base-$2$ cubic-tower equivalence: Conjecture~\ref{conj:AE} $\iff$
-$2^{x^2},2^{x^3}\in\Qbar$ & \statusnew & depth-three tower (this report) \\
+$2^{x^2},2^{x^3}\in\Qbar$ & \statuslean & \lean{TowerRigidity} \\
+Base-$2$ depth-two dichotomy: $2^{x^2}\in\Qbar$ iff $2^x$ is $3$-smooth, and then
+$2^{x^2}\in\N$ while $2^{x^3}$ is transcendental & \statuslean & \lean{TowerRigidity} \\
 Symmetric tower constants: at least one of $\log E_3$, $\log E_2$ lies outside $\LL$ &
 \statusnew & symmetric tower constants (this report) \\
 Exact conditional classification of $E_3=3^{\thetaq}$ and $E_2=2^{1/\thetaq}$ &
-\statusnew & symmetric tower constants (this report) \\
+\statuslean & \lean{SymmetricTowerConstants} \\
+$E_3$ and $E_2$ are never both algebraic under a nonintegral solution & \statuslean &
+\lean{SymmetricTowerConstants} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Counting, growth, and equidistribution}}\\
 Exact block counts and cumulative finite sum & \statuslean & \lean{ExactCounting} \\
@@ -8334,17 +8363,23 @@ Generalized Vandermonde positivity (ordered chamber) & \statusnew &
 Section~\ref{sec:arbnode}, Appendix~\ref{app:gvproof} \\
 Arbitrary-node determinant integrality and divided-difference repulsion bound &
 \statuslean & \lean{ArbitraryNodeDeterminant} \\
-Arbitrary-node repulsion theorem with its analytic input, and corollaries & \statusnew &
-Section~\ref{sec:arbnode} \\
+Arbitrary-node repulsion theorem and its packing corollary & \statuslean &
+\lean{ArbitraryNodeRepulsion}, conditional on its named divided-difference mean-value
+hypothesis \\
+Newton divided-difference factorization of the interpolation determinant & \statuslean &
+\lean{ArbitraryNodeRepulsion}, unconditional \\
 Semigroup generalized-Vandermonde hierarchy (integrality half) & \statuslean &
 \lean{MixedExponentSemigroup}, \lean{SemigroupDeterminant} \\
 Falling-factorial coefficient bound; dyadic-strip divided-difference bound & \statuslean &
 \lean{FallingFactorialBound} \\
-Semigroup gap theorem in quantitative form & \statusnew & Section~\ref{sec:semigroup} \\
+Semigroup gap theorem in quantitative form & \statuslean & \lean{SemigroupGapBound} \\
+Leibniz determinant bound from separated row/column bounds & \statuslean &
+\lean{SemigroupGapBound}, unconditional \\
 Window-span counting bridge for mixed exponents & \statuslean &
 \lean{SemigroupWeightBound} \\
-Explicit dyadic $O((\log X)^2)$ bound from that hierarchy & \statusnew &
-Section~\ref{sec:semigroup} \\
+Explicit dyadic $O((\log X)^2)$ bound from that hierarchy & \statuslean &
+\lean{SemigroupGapBound}, conditional on the named hypothesis
+\lean{NewtonFactorization} \\
 One-logarithm deficit analysis & \statusnew & Section~\ref{sec:deficit} \\
 Compact synchronized-orbit reformulation & \statuslean & \lean{CompactOrbit} \\
 Block-growth reformulations (bounded, $o(T)$, $\liminf$, $\equiv1$) & \statuslean &
@@ -8353,10 +8388,11 @@ Rational-function rigidity, multiplication and quotient criteria, closure
 reformulations & \statusnew & Section~\ref{sec:rigidity} \\
 Perfect-power content, matched affine decompositions, primitive-output statistics &
 \statusnew & Section~\ref{sec:powers} \\
-Candidate gcd/lcm lattice and ambient root saturation index & \statusnew &
-Section~\ref{sec:lattice} \\
-Operator formulation on the prime-logarithm space & \statusnew &
-Section~\ref{rf:operator} \\
+Candidate gcd/lcm lattice; prime-support rigidity of the whole branch & \statuslean &
+\lean{CandidateLattice} \\
+Ambient root saturation index $d$ & \statusnew & Section~\ref{sec:lattice} \\
+Operator formulation on the prime-logarithm space & \statuslean &
+\lean{PrimeLogSpaceOperator} \\
 \bottomrule
 \end{longtable}
 }
@@ -8492,6 +8528,27 @@ window-summation counting bridge \\
 reformulations of the conjecture \\
 \lean{.../CompactOrbit} & compact synchronized-orbit reformulation with shared floor
 exponent, in both directions \\
+\lean{.../ArbitraryNodeRepulsion} & divided differences, the Newton factorization of the
+interpolation determinant, and the repulsion and packing bounds conditional on the named
+mean-value hypothesis \\
+\lean{.../SemigroupGapBound} & Leibniz determinant bound, semigroup span inequality, and the
+explicit dyadic $10^4(\log X)^2$ block bound conditional on the named Newton factorization \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Second iterates, towers, and the candidate lattice}}\\
+\lean{.../CandidateLattice} & coordinatewise gcd and lcm for $2^s w^t$; unconditional closure
+of the candidate set under gcd and lcm; prime-support rigidity of the branch \\
+\lean{.../KernelDichotomy} & multiplicative dependence of $M,A,2,3$ is equivalent to a
+rational linear relation among $1,\thetaq,x,x\thetaq$ and to the M\"obius orbit \\
+\lean{.../SecondIterateKernel} & the second-iterate kernel as a subgroup of $\Z^2$; no
+same-sign vectors, rank at most one, smooth coordinate cases, and solution-independence \\
+\lean{.../TowerRigidity} & base-two second iterate as a natural number; the depth-two
+algebraic dichotomy; the depth-three transcendence and the cubic-tower equivalence \\
+\lean{.../SymmetricTowerConstants} & $E_3=3^{\thetaq}$ and $E_2=2^{1/\thetaq}$, their
+conditional rational powers, and their mutual exclusion \\
+\lean{.../PrimeLogSpaceOperator} & the $\thetaq$-pullback of the prime-logarithm span is
+exactly $\Q\log2$ if and only if the rational-output conjecture holds \\
+\lean{.../AuditNewModules} & \texttt{\#print axioms} audit of the twenty headline theorems of
+this round \\
 \bottomrule
 \end{longtable}
 }
@@ -8511,11 +8568,20 @@ All nine have since been accepted by the kernel, placed on the aggregate import 
 moved into the table above.  Statements that those modules actually contain are therefore
 \statuslean{}.
 
-Two cautions survive that promotion, and the status matrix reflects both.  First, a module
-being accepted certifies exactly the theorems it states: \lean{ArbitraryNodeDeterminant} and
-\lean{SemigroupDeterminant} deliberately contain no analysis, so the analytic halves of the
-repulsion and gap theorems remain \statusnew{}, and \lean{ExponentialPolynomialZeros}
-delivers nonvanishing rather than the ordered-chamber positivity proved on paper in
+A second round has since added eight further modules: \lean{CandidateLattice},
+\lean{KernelDichotomy}, \lean{SecondIterateKernel}, \lean{TowerRigidity},
+\lean{SymmetricTowerConstants}, \lean{PrimeLogSpaceOperator}, \lean{ArbitraryNodeRepulsion}
+and \lean{SemigroupGapBound}, all on the aggregate import surface and all audited with
+\texttt{\#print axioms}.
+
+Two cautions survive both promotions, and the status matrix reflects them.  First, a module
+being accepted certifies exactly the theorems it states.  The analytic halves of the repulsion
+and gap theorems are now formal, but each carries its missing analytic input as an explicit,
+named \emph{hypothesis} --- \lean{RpowDividedDifferenceMeanValue} and
+\lean{NewtonFactorization} --- rather than as an axiom, so those two conclusions are
+conditional in a way the reader can see in the theorem statement; everything upstream and
+downstream of them is unconditional.  \lean{ExponentialPolynomialZeros} still delivers
+nonvanishing rather than the ordered-chamber positivity proved on paper in
 Appendix~\ref{app:gvproof}.  Second, the finite scans through $2^{20}$ and $2^{26}$ are
 \statuscomp{}, not kernel certificates; the kernel-verified exponent bound is still
 $x\ge12$ from \lean{FiniteCheck4096}.
