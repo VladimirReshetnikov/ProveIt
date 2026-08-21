@@ -6,6 +6,12 @@ import ExponentialIdentities.TwoBaseIntegerExponent.SymmetricTowerConstants
 import ExponentialIdentities.TwoBaseIntegerExponent.PrimeLogSpaceOperator
 import ExponentialIdentities.TwoBaseIntegerExponent.ArbitraryNodeRepulsion
 import ExponentialIdentities.TwoBaseIntegerExponent.SemigroupGapBound
+import ExponentialIdentities.TwoBaseIntegerExponent.OrderedChamberPositivity
+import ExponentialIdentities.TwoBaseIntegerExponent.ExternalRankClassification
+import ExponentialIdentities.TwoBaseIntegerExponent.PerfectPowerContent
+import ExponentialIdentities.TwoBaseIntegerExponent.RootSaturation
+import ExponentialIdentities.TwoBaseIntegerExponent.ValuationLattice
+import ExponentialIdentities.TwoBaseIntegerExponent.RationalFunctionRigidity
 
 /-!
 # Assumption audit for the newly formalized modules
@@ -58,5 +64,31 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms abs_det_le_of_abs_entry_le
 #print axioms det_semigroupMatrix_ne_zero
 #print axioms card_le_ten_thousand_log_sq
+
+-- Ordered-chamber positivity
+#print axioms det_rpowVandermonde_pos
+#print axioms det_semigroupMatrix_pos
+#print axioms one_le_det_semigroupMatrix_of_strictMono
+
+-- External-rank classification
+#print axioms existsUnique_hasExternalRankType
+#print axioms TwoBaseNonintegerSolution.externalRankClassification
+#print axioms hasExternalRankType_independent_iff_not_multiplicativelyDependentOutputs
+
+-- Perfect-power content
+#print axioms isCommonOutputPower_iff_twoBaseIntegralSolution_div
+
+-- Root saturation
+#print axioms exists_canonicalConeData_of_not_alaogluErdosConjecture
+
+-- Valuation lattice
+#print axioms finite_quotient_ratOutputLattice
+#print axioms closure_quotient_pair_eq_top
+
+-- Rational-function rigidity
+#print axioms twoBaseIntegralSolution_mul_iff
+#print axioms alaogluErdosConjecture_iff_solutions_closed_under_mul
+#print axioms alaogluErdosConjecture_iff_solutions_closed_under_sq
+#print axioms rationalFunction_rigidity_at_generator
 
 end LeanProofs.TwoBaseIntegerExponent
