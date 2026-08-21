@@ -220,4 +220,183 @@ theorem alaogluErdosConjecture_of_primeLogProductIndependence
   push_cast
   ring
 
+/-! ### The rational-output strengthening
+
+The argument above never used positivity of the prime exponents, only that they are integers.
+For rational outputs the exponents are integers of either sign, so the same criterion yields
+the formally stronger statement that `2 ^ x ∈ ℚ` and `3 ^ x ∈ ℚ` already force `x ∈ ℤ`.  That
+implication is stronger than the conjecture on its face: a rational counterexample need not be
+an integer counterexample, and nothing in this corpus reduces one to the other. -/
+
+/-- The logarithm of a positive rational expanded over any prime set containing the supports
+of its numerator and denominator.  Coefficients are differences of natural exponents, so they
+range over all of `ℤ`. -/
+theorem log_ratCast_eq_sum_of_subset {q : ℚ} (hq : 0 < q) {S : Finset ℕ}
+    (h1 : (q.num.toNat).primeFactors ⊆ S) (h2 : q.den.primeFactors ⊆ S) :
+    Real.log ((q : ℚ) : ℝ) =
+      ∑ p ∈ S, (((q.num.toNat).factorization p : ℝ) - (q.den.factorization p : ℝ)) *
+        Real.log p := by
+  have hnum : 0 < q.num := Rat.num_pos.mpr hq
+  have hNcast : ((q.num.toNat : ℕ) : ℤ) = q.num := Int.toNat_of_nonneg hnum.le
+  have hNpos : 0 < q.num.toNat := by omega
+  have hDpos : 0 < q.den := q.pos
+  have hNR : (0 : ℝ) < (q.num.toNat : ℕ) := by exact_mod_cast hNpos
+  have hDR : (0 : ℝ) < (q.den : ℕ) := by exact_mod_cast hDpos
+  have hqcast : ((q : ℚ) : ℝ) = ((q.num.toNat : ℕ) : ℝ) / ((q.den : ℕ) : ℝ) := by
+    rw [Rat.cast_def]
+    congr 1
+    exact_mod_cast congrArg (fun z : ℤ ↦ (z : ℝ)) hNcast.symm
+  have hNsum : (∑ p ∈ (q.num.toNat).primeFactors,
+        ((q.num.toNat).factorization p : ℝ) * Real.log p) =
+      ∑ p ∈ S, ((q.num.toNat).factorization p : ℝ) * Real.log p := by
+    refine Finset.sum_subset h1 ?_
+    intro p _ hp
+    have hz : (q.num.toNat).factorization p = 0 := by
+      by_contra hne
+      exact hp (Nat.support_factorization (n := q.num.toNat) ▸ Finsupp.mem_support_iff.mpr hne)
+    rw [hz]
+    simp
+  have hDsum : (∑ p ∈ (q.den).primeFactors, ((q.den).factorization p : ℝ) * Real.log p) =
+      ∑ p ∈ S, ((q.den).factorization p : ℝ) * Real.log p := by
+    refine Finset.sum_subset h2 ?_
+    intro p _ hp
+    have hz : (q.den).factorization p = 0 := by
+      by_contra hne
+      exact hp (Nat.support_factorization (n := q.den) ▸ Finsupp.mem_support_iff.mpr hne)
+    rw [hz]
+    simp
+  rw [hqcast, Real.log_div hNR.ne' hDR.ne',
+    log_natCast_eq_sum_primeFactors hNpos.ne', log_natCast_eq_sum_primeFactors hDpos.ne',
+    hNsum, hDsum, ← Finset.sum_sub_distrib]
+  exact Finset.sum_congr rfl fun p _ ↦ by ring
+
+/-- **Rational-output form of the criterion.**  Under prime-log-product independence,
+rationality of both powers already forces the exponent to be an integer.  This implies
+`AlaogluErdosConjecture` and is formally stronger than it. -/
+theorem integer_of_primeLogProductIndependence_of_rational_rpow
+    (hind : PrimeLogProductIndependence) {x : ℝ}
+    (h₂ : ∃ q : ℚ, 0 < q ∧ ((q : ℚ) : ℝ) = (2 : ℝ) ^ x)
+    (h₃ : ∃ r : ℚ, 0 < r ∧ ((r : ℚ) : ℝ) = (3 : ℝ) ^ x) :
+    x ∈ Set.range ((↑) : ℤ → ℝ) := by
+  classical
+  obtain ⟨qM, hqMpos, hqM⟩ := h₂
+  obtain ⟨qA, hqApos, hqA⟩ := h₃
+  set S : Finset ℕ :=
+    ((qM.num.toNat).primeFactors ∪ qM.den.primeFactors) ∪
+      ((qA.num.toNat).primeFactors ∪ qA.den.primeFactors) ∪ {2, 3} with hS
+  have h2S : (2 : ℕ) ∈ S := by simp [hS]
+  have h3S : (3 : ℕ) ∈ S := by simp [hS]
+  have hSprime : ∀ p ∈ S, Nat.Prime p := by
+    intro p hp
+    simp only [hS, Finset.mem_union, Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with ((hp | hp) | (hp | hp)) | hp
+    · exact Nat.prime_of_mem_primeFactors hp
+    · exact Nat.prime_of_mem_primeFactors hp
+    · exact Nat.prime_of_mem_primeFactors hp
+    · exact Nat.prime_of_mem_primeFactors hp
+    · rcases hp with rfl | rfl
+      · norm_num
+      · norm_num
+  -- Signed prime-exponent vectors of the two outputs.
+  set aM : ℕ → ℝ := fun p ↦
+    ((qM.num.toNat).factorization p : ℝ) - (qM.den.factorization p : ℝ) with haM
+  set aA : ℕ → ℝ := fun p ↦
+    ((qA.num.toNat).factorization p : ℝ) - (qA.den.factorization p : ℝ) with haA
+  have hlogM : Real.log ((qM : ℚ) : ℝ) = ∑ p ∈ S, aM p * Real.log p :=
+    log_ratCast_eq_sum_of_subset hqMpos
+      (fun p hp ↦ by simp [hS, Finset.mem_union, hp])
+      (fun p hp ↦ by simp [hS, Finset.mem_union, hp])
+  have hlogA : Real.log ((qA : ℚ) : ℝ) = ∑ p ∈ S, aA p * Real.log p :=
+    log_ratCast_eq_sum_of_subset hqApos
+      (fun p hp ↦ by simp [hS, Finset.mem_union, hp])
+      (fun p hp ↦ by simp [hS, Finset.mem_union, hp])
+  -- The defining relation, in the signed coordinates.
+  have hrel : Real.log ((qM : ℚ) : ℝ) * Real.log 3 -
+      Real.log ((qA : ℚ) : ℝ) * Real.log 2 = 0 := by
+    rw [hqM, hqA, Real.log_rpow (by norm_num : (0 : ℝ) < 2),
+      Real.log_rpow (by norm_num : (0 : ℝ) < 3)]
+    ring
+  -- Integer coefficient family for the independence hypothesis.
+  set c : ℕ → ℕ → ℤ := fun p q ↦
+    (if q = 3 then ((qM.num.toNat).factorization p : ℤ) - (qM.den.factorization p : ℤ) else 0) -
+    (if q = 2 then ((qA.num.toNat).factorization p : ℤ) - (qA.den.factorization p : ℤ) else 0)
+    with hc
+  have hcastM : ∀ p, ((c p 3 : ℤ) : ℝ) = aM p := by
+    intro p
+    simp [hc, haM]
+  have hcastA : ∀ p, ((c p 2 : ℤ) : ℝ) = -aA p := by
+    intro p
+    simp [hc, haA]
+  have hinner : ∀ p : ℕ, (∑ q ∈ S, (c p q : ℝ) * (Real.log p * Real.log q)) =
+      aM p * (Real.log p * Real.log 3) - aA p * (Real.log p * Real.log 2) := by
+    intro p
+    have hsub : ({2, 3} : Finset ℕ) ⊆ S := by
+      intro q hq
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hq
+      rcases hq with rfl | rfl
+      · exact h2S
+      · exact h3S
+    have hzero : ∀ q ∈ S, q ∉ ({2, 3} : Finset ℕ) →
+        (c p q : ℝ) * (Real.log p * Real.log q) = 0 := by
+      intro q _ hq
+      simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hq
+      have hz : c p q = 0 := by simp [hc, hq.1, hq.2]
+      rw [hz]
+      simp
+    rw [← Finset.sum_subset hsub hzero, Finset.sum_insert (by norm_num),
+      Finset.sum_singleton, hcastM p, hcastA p]
+    ring_nf
+  have houter : (∑ p ∈ S, ∑ q ∈ S, (c p q : ℝ) * (Real.log p * Real.log q)) = 0 := by
+    calc (∑ p ∈ S, ∑ q ∈ S, (c p q : ℝ) * (Real.log p * Real.log q))
+        = ∑ p ∈ S, (aM p * (Real.log p * Real.log 3) -
+            aA p * (Real.log p * Real.log 2)) :=
+          Finset.sum_congr rfl fun p _ ↦ hinner p
+      _ = (∑ p ∈ S, aM p * Real.log p) * Real.log 3 -
+            (∑ p ∈ S, aA p * Real.log p) * Real.log 2 := by
+          rw [Finset.sum_sub_distrib, Finset.sum_mul, Finset.sum_mul]
+          congr 1 <;> exact Finset.sum_congr rfl fun p _ ↦ by ring
+      _ = Real.log ((qM : ℚ) : ℝ) * Real.log 3 -
+            Real.log ((qA : ℚ) : ℝ) * Real.log 2 := by rw [hlogM, hlogA]
+      _ = 0 := hrel
+  have hvanish := hind S c hSprime houter
+  -- Every prime other than two has vanishing signed exponent in the first output.
+  have hMfact : ∀ p ∈ S, p ≠ 2 → aM p = 0 := by
+    intro p hpS hp2
+    by_cases hp3 : p = 3
+    · have h := hvanish p hpS p hpS
+      have hcpp : c p p = ((qM.num.toNat).factorization p : ℤ) -
+          (qM.den.factorization p : ℤ) := by
+        simp [hc, hp3]
+      rw [hcpp] at h
+      have : ((qM.num.toNat).factorization p : ℤ) - (qM.den.factorization p : ℤ) = 0 := by
+        omega
+      simp only [haM]
+      exact_mod_cast this
+    · have h := hvanish p hpS 3 h3S
+      have hc3p : c 3 p = 0 := by simp [hc, hp2, hp3]
+      have hcp3 : c p 3 = ((qM.num.toNat).factorization p : ℤ) -
+          (qM.den.factorization p : ℤ) := by simp [hc]
+      rw [hcp3, hc3p] at h
+      have : ((qM.num.toNat).factorization p : ℤ) - (qM.den.factorization p : ℤ) = 0 := by
+        omega
+      simp only [haM]
+      exact_mod_cast this
+  -- Hence the first output is a signed power of two, and `x` is that integer.
+  have hlogMval : Real.log ((qM : ℚ) : ℝ) = aM 2 * Real.log 2 := by
+    rw [hlogM]
+    rw [← Finset.sum_subset (Finset.singleton_subset_iff.mpr h2S)
+      (fun p hpS hp ↦ by
+        have hp2 : p ≠ 2 := by simpa using hp
+        rw [hMfact p hpS hp2]
+        ring)]
+    simp
+  have hxval : x * Real.log 2 = aM 2 * Real.log 2 := by
+    rw [← hlogMval, hqM, Real.log_rpow (by norm_num : (0 : ℝ) < 2)]
+  have hx : x = aM 2 :=
+    mul_right_cancel₀ (ne_of_gt (Real.log_pos (by norm_num : (1 : ℝ) < 2))) hxval
+  refine ⟨((qM.num.toNat).factorization 2 : ℤ) - (qM.den.factorization 2 : ℤ), ?_⟩
+  rw [hx, haM]
+  push_cast
+  ring
+
 end LeanProofs.TwoBaseIntegerExponent
