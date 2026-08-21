@@ -155,8 +155,10 @@ $\beta$ whose output pair is affinely primitive; and the exact conditional rigid
 together with logarithmic counting, a linear dyadic-block bound, sharp arbitrary-order
 progression obstructions, density zero, explicit Diophantine lower bounds, the $3$-smooth
 classification, the exact classification of positive rational auxiliary bases whose
-$x$-th powers are rational, the exclusion of algebraic outputs at independent natural
-auxiliary bases, and the equivalence with both fractional-part gaps and a localized-radical
+$x$-th powers are algebraic (equivalently rational), the exact divisible-hull classification
+for all positive algebraic auxiliary bases, the exclusion of algebraic outputs at three
+multiplicatively independent positive algebraic bases, a transcendental mixed-output half-plane and rank-one
+algebraic ratio locus for second iterates, and the equivalence with both fractional-part gaps and a localized-radical
 exclusion.  Exact unit-block counts, the sharp quadratic cumulative asymptotic, and
 block averages for every finite trigonometric polynomial are kernel-verified.  The stronger
 continuous-test-function and interval-counting forms of blockwise Weyl equidistribution are
@@ -190,7 +192,8 @@ kernel-verified Lean corpus --- zero-free regions through $2^x<4096$, Gelfond--S
 transcendence restrictions, multiplicative rank at most two, a canonical primitive odd core,
 an exact conditional solution monoid with least generator, simultaneous primitive
 normalizations of its two outputs, exact natural- and rational-third-base
-classifications, the number-field determinant theorem for algebraic third outputs,
+algebraic-output classifications, the divisible-hull classification for arbitrary positive
+algebraic bases, the number-field determinant theorem for algebraic third outputs,
 sharp arbitrary-order
 progression obstructions, zero density, shrinking-target Diophantine bounds, the $3$-smooth
 classification of auxiliary bases, the four-exponentials reduction, and unconditional
@@ -208,7 +211,7 @@ consolidates the research program: the conjecture is kernel-verified equivalent 
 statement that $u^{\log_2 3}\notin\Z[1/3]$ for every odd $u>1$.  Primitive-base reduction,
 exact radical degree, a generic rational six-exponentials theorem, denominator-unrestricted
 rational-third-output determinants, algebraic-third-output determinants under monomial
-injectivity, and the uniform finite-difference API now have
+injectivity, a generic positive-real algebraic six-exponentials theorem, and the uniform finite-difference API now have
 kernel-verified forms;
 the radical exclusion itself remains the open boundary.
 \end{abstract}
@@ -263,12 +266,18 @@ The current feature wave adds directly kernel-checked structural modules
 The counting and Fourier modules are \lean{ExactCounting}, \lean{QuadraticAsymptotic},
 \lean{BlockWeyl}, and \lean{BlockEquidistribution}.  The rational-output modules are
 \lean{RationalSixExponentials}, \lean{RationalThirdBase}, \lean{RationalBaseThird},
+\lean{AlgebraicRationalBase}, \lean{AlgebraicBaseUnitPower},
+\lean{AlgebraicRankThreeEquivalence},
 \lean{CoreIndependence}, and
 \lean{CanonicalRadicalThirdOutput}.
 The determinant layer is \lean{AlgebraicIntegerDeterminant}.  The algebraic-output
 bridges are \lean{AlgebraicOutputBridge} and \lean{FiniteAlgebraicOutputBridge}.
-The main theorem and its corollaries are in \lean{AlgebraicThirdBase} and
-\lean{AlgebraicConsequences}, respectively.
+The generic algebraic determinant is \lean{AlgebraicSixExponentials}; the specialized
+theorem and its corollaries are in \lean{AlgebraicThirdBase},
+\lean{AlgebraicConsequences}, and \lean{AlgebraicOutputLocus}; the canonical radical
+upgrades are \lean{CanonicalRadicalAlgebraicOutput} and
+\lean{CanonicalRadicalDivisibleHull}; the exact field diagnostics are in
+\lean{CanonicalRadicalFieldNorm}.
 The radical modules are \lean{RadicalReformulation}, \lean{PrimitiveRadical}, and
 \lean{RadicalDegree}, together with the exact valuation restrictions in
 \lean{CanonicalRadicalValuation} and \lean{CanonicalRadicalSharpness}; the progression
@@ -306,12 +315,17 @@ $i,j,k,\ell\in\Nzero$.  In the simultaneous primitive normalization, the odd cor
 rational $\beta$-th power exactly when it is $3$, the $3$-free core has rational
 $\beta$-th power exactly when it is $2$, and these two exceptional cases cannot occur
 together.  The natural-base statement remains exact with ``rational'' replaced by
-``algebraic''; outside the $2,3$-smooth monoid the output is transcendental.  In particular,
-at least one of $2^{x^2},3^{x^2}$ is transcendental, and in fact $6^{x^2}$ is
-transcendental.  \statuslean
+``algebraic''; for positive rational bases, algebraic outputs occur exactly at rational
+$2,3$-units, and for arbitrary positive algebraic bases they occur exactly in the radical
+hull of those units.  Outside these loci the output is transcendental.  In particular, at least one
+of $2^{x^2},3^{x^2}$ is transcendental, every $(2^i3^j)^{x^2}$ with $i,j>0$ is
+transcendental, and the algebraic ratio-output locus has lattice rank at most one.
+\statuslean
 \item \textbf{Algebraic-output reformulations.}  Under the two integrality hypotheses,
 $5^x$ is algebraic exactly when $x$ is integral; both first iterated outputs are algebraic
 exactly when $x$ is integral; and $6^{x^2}$ is algebraic exactly when $x$ is integral.
+The positive-algebraic output locus has multiplicative rank three exactly when $x$ is
+integral, and the rational squared-output ratio locus has rank two exactly then as well.
 Universalizing any one of these pointwise statements gives a kernel-verified equivalent
 formulation of the full Alaoglu--Erd\H{o}s conjecture.  \statuslean
 \item \textbf{Sharper local combinatorics.}  For every $r\ge2$, the sharp criterion
@@ -547,6 +561,64 @@ loss.  It is therefore absorbed by the existing explicit analytic margin.
 \lean{AlgebraicThirdBase}.}
 \end{statusbox}
 
+At the fully symmetric level, let $a,b,c$ be positive algebraic real numbers and suppose
+their nonnegative monomials are injective:
+\[
+ (i,j,k)\longmapsto a^i b^j c^k.
+\]
+If $a^x,b^x,c^x$ are all algebraic, then $x\in\Q$.  The theorem allows bases below one
+and negative $x$.  Its six input/output values are placed in one finite number field with
+one common integral scale; the same $n^{11}$ determinant bookkeeping absorbs the common
+denominator, every conjugate height, and the field degree.  This is the positive-real
+algebraic six-exponentials interface underlying all of the specialized output
+classifications.
+
+\begin{statusbox}{\statuslean{} ---
+\lean{rational_of_three_real_rpows_isAlgebraic_of_monomial_injective} in
+\lean{AlgebraicSixExponentials}, using
+\lean{FiniteAlgebraicOutputBridge.ofFinSixIsAlgebraic}.}
+\end{statusbox}
+
+The dependent case also has an exact arithmetic description.  Define the positive
+$2,3$-radical hull by
+\[
+ \sqrt[\infty]{\langle2,3\rangle_{\Z}}
+ :=\{\gamma>0:\exists n\ge1,\ \gamma^n\in\langle2,3\rangle_{\Z}\}.
+\]
+For every positive algebraic real $\gamma$, under the two integrality hypotheses,
+\begin{equation}
+ \operatorname{Alg}_{\Q}(\gamma^x)
+ \quad\Longleftrightarrow\quad
+ x\in\Z\quad\text{or}\quad
+ \gamma\in\sqrt[\infty]{\langle2,3\rangle_{\Z}}.
+\label{eq:algebraic-base-output-locus}
+\end{equation}
+In particular, for a hypothetical nonintegral solution the algebraic-output locus among
+all positive algebraic bases is \emph{exactly} this divisible hull.  The arithmetic core is
+the equivalence between absence of a positive $2,3$-unit power and injectivity of
+$(i,j,k)\mapsto2^i3^j\gamma^k$; the forward implication in
+\eqref{eq:algebraic-base-output-locus} then invokes the generic algebraic determinant,
+while the reverse implication descends algebraicity from a positive integral power.
+
+\begin{statusbox}{\statuslean{} --- \lean{HasPositiveTwoThreeUnitPower},
+\lean{real_two_three_gamma_monomial_injective_iff},
+\lean{TwoBaseNonintegerSolution.real_rpow_isAlgebraic_iff_hasPositiveTwoThreeUnitPower},
+and \lean{real_rpow_isAlgebraic_iff_integer_or_hasPositiveTwoThreeUnitPower} in
+\lean{AlgebraicBaseUnitPower}.}
+\end{statusbox}
+
+There is a coordinate-free rank version.  Let the algebraic output locus have rank three
+when there exist positive algebraic $a,b,c$ with injective nonnegative monomials and with
+$a^x,b^x,c^x$ all algebraic.  Under $2^x,3^x\in\Z$, this rank-three property holds if and
+only if $x\in\Z$: the difficult implication is the generic determinant theorem, while the
+reverse implication uses $2,3,5$.  Universalizing gives another exact equivalence with AE.
+
+\begin{statusbox}{\statuslean{} --- \lean{AlgebraicRpowOutputLocusHasRankThree},
+\lean{algebraicRpowOutputLocusHasRankThree_iff_integer}, and
+\lean{alaogluErdosConjecture_iff_algebraicRpowOutputLocusHasRankThree} in
+\lean{AlgebraicRankThreeEquivalence}.}
+\end{statusbox}
+
 Combining that determinant theorem with the elementary factorization of natural numbers
 gives the exact unconditional pointwise classification
 \begin{equation}
@@ -561,18 +633,53 @@ are all equivalent, and occur precisely for $2,3$-smooth bases.  The primitive o
 $3$-free cores consequently have algebraic $x$-th powers exactly in the exceptional cases
 $3$ and $2$, respectively; every other such core has transcendental output.
 
+For a positive rational base the exact statement is equally sharp:
+\[
+ \operatorname{Alg}_{\Q}(q^x)
+ \quad\Longleftrightarrow\quad
+ x\in\Z\ \ \text{or}\ \ q\in\langle2,3\rangle_{\Z}
+ \qquad(q\in\Q_{>0}),
+\]
+where $\langle2,3\rangle_{\Z}=\{2^i3^j/(2^k3^\ell):i,j,k,\ell\in\Nzero\}$.
+Thus for a hypothetical nonintegral solution, algebraicity and rationality of $q^x$
+are equivalent and characterize exactly the positive $2,3$-units.
+
+\begin{statusbox}{\statuslean{} ---
+\lean{rat_rpow_isAlgebraic_iff_isTwoThreeUnit_of_not_integer},
+\lean{twoBaseNonintegerSolution_rat_rpow_isAlgebraic_iff_isTwoThreeUnit}, and
+\lean{rat_rpow_isAlgebraic_iff_integer_or_isTwoThreeUnit} in
+\lean{AlgebraicRationalBase}.}
+\end{statusbox}
+
 The classification also constrains iteration.  A hypothetical nonintegral solution obeys
 \[
  \operatorname{Trans}_{\Q}(2^{x^2})
  \quad\text{or}\quad
  \operatorname{Trans}_{\Q}(3^{x^2}),
  \qquad
- \operatorname{Trans}_{\Q}(6^{x^2}).
+ \operatorname{Trans}_{\Q}\bigl((2^i3^j)^{x^2}\bigr)
+ \quad(i,j>0).
 \]
-For the second assertion, write $M=2^x$, $B=3^x$.  If
-$(MB)^x=6^{x^2}$ were algebraic, eqref{eq:natural-algebraic-output} would make $MB$
-$2,3$-smooth; its positive divisors $M$ and $B$ would then both be $2,3$-smooth, forcing
-both first iterates to be algebraic, contrary to the simultaneous-core obstruction.
+Indeed, write $M=2^x$, $B=3^x$.  One of the two complete monomial half-planes is
+transcendental: either every $(M^rB^s)^x$ with $r>0$ is transcendental, or every such
+output with $s>0$ is.  If a positive mixed monomial were $2,3$-smooth, both positive
+divisors $M$ and $B$ would be smooth, forcing both first iterates to be algebraic,
+contrary to the simultaneous-core obstruction.
+
+There is also a rank-one restriction on rational second-iterate ratios.  If
+$i\ell\ne kj$, the two numbers
+\[
+ \left(\frac{2^i}{3^j}\right)^{x^2},\qquad
+ \left(\frac{2^k}{3^\ell}\right)^{x^2}
+\]
+cannot both be algebraic.  Thus all algebraic members of this two-parameter family lie
+on one rational ray in the exponent lattice.  More precisely, a counterexample supplies
+positive outputs $M=2^x$, $B=3^x$ and a prime $p\notin\{2,3\}$ dividing $M$ or $B$ such that
+every algebraic ratio output satisfies the single nontrivial valuation equation
+\[
+ i\,v_p(M)=j\,v_p(B).
+\]
+This gives one explicit $p$-adic line containing the entire algebraic locus.
 
 Three concise equivalent formulations of the original conjecture result:
 \begin{align*}
@@ -588,6 +695,12 @@ Three concise equivalent formulations of the original conjecture result:
    \forall x,\ 2^x,3^x\in\Z\Longrightarrow
       \operatorname{Alg}_{\Q}(6^{x^2}).
 \end{align*}
+There is also an intrinsic rank formulation with no fixed auxiliary output.  Say that the
+rational squared-output locus has rank two when it contains two algebraic members
+$(2^i/3^j)^{x^2}$ and $(2^k/3^\ell)^{x^2}$ with $i\ell\ne kj$.  Under the two integrality
+hypotheses this happens if and only if $x\in\Z$.  Hence AE is equivalent to requiring this
+rank-two property for every solution.  A counterexample would force the entire algebraic
+locus onto a single rational ray.
 
 \begin{statusbox}{\statuslean{} ---
 \lean{rpow_isAlgebraic_iff_integer_or_eq_two_pow_mul_three_pow},
@@ -598,7 +711,15 @@ three equivalences
 \lean{alaogluErdosConjecture_iff_five_rpow_isAlgebraic},
 \lean{alaogluErdosConjecture_iff_both_iterated_outputs_isAlgebraic}, and
 \lean{alaogluErdosConjecture_iff_six_squared_exponent_isAlgebraic} in
-\lean{AlgebraicConsequences}.}
+\lean{AlgebraicConsequences}; the half-plane, all mixed powers, and rank-one ratio locus
+are \lean{exists_transcendental_output_monomial_halfplane},
+\lean{transcendental_mixed_two_three_squared_exponents}, and
+\lean{not_both_algebraic_two_three_ratio_squared_of_det_ne_zero} in
+\lean{AlgebraicOutputLocus}; the pointwise and global rank-two equivalences are
+\lean{ratioSquaredAlgebraicLocusHasRankTwo_iff_integer} and
+\lean{alaogluErdosConjecture_iff_ratioSquaredAlgebraicLocusHasRankTwo}, while the
+explicit valuation line is
+\lean{exists_external_prime_algebraic_output_ratio_padic_line}.}
 \end{statusbox}
 
 \subsection{Rational and algebraic exponents}
@@ -1587,14 +1708,59 @@ When $a>0$, reducedness gives $3\nmid A$, and the exact statement sharpens to
  (E^d)^\beta\in\Q\iff
  \exists u\in\Nzero,\quad A=2^u\ \text{ and }\ (E^d)^\beta=w^{du}\in\N.
 \]
-Notice that the classified quantity is $(E^d)^\beta$, not $E^\beta$.
+The algebraic-output determinant removes the apparent loss of the outer $d$-th power:
+\[
+ \operatorname{Alg}_{\Q}(E^\beta)
+ \iff \exists u,v\in\Nzero,\ A=2^u3^v.
+\]
+When $a>0$, this becomes the completely explicit statement
+\[
+ \operatorname{Alg}_{\Q}(E^\beta)
+ \iff \exists u\in\Nzero,\quad A=2^u\ \text{ and }\ E^\beta=w^u\in\N.
+\]
+Thus both $(E^d)^\beta$ and $E^\beta$ have exact classifications; the latter is stronger
+and uses positivity to descend equality of $d$-th powers.
 
 \begin{statusbox}{\statuslean{} ---
 \lean{oddCoreRpow_isIntegral_iff_denominator_trivial},
 \lean{normalizedRadical_rpow_rational_iff_numerator_threeSmooth},
 \lean{normalizedRadical_rpow_rational_iff_exists_twoPow_and_eq_corePow}, and the packaged
 \lean{exists_exact_radical_degree_and_thirdOutput_constraint} in
-\lean{CanonicalRadicalThirdOutput}.}
+\lean{CanonicalRadicalThirdOutput}; and
+\lean{oddCoreRpow_rpow_isAlgebraic_iff_numerator_threeSmooth},
+\lean{oddCoreRpow_rpow_isAlgebraic_iff_exists_twoPow_and_eq_corePow}, and the packaged
+\lean{exists_canonical_radical_rpow_algebraic_constraint} in
+\lean{CanonicalRadicalAlgebraicOutput}.}
+\end{statusbox}
+
+The exceptional smooth-numerator case for one radical cannot simply be discarded: the
+non-$3$ prime in $A$ may be $2$.  The simultaneous normalization nevertheless gives a
+strict disjunction.  Let
+\[
+ E=w^{\log_23},\qquad F=v^{\log_32},
+\]
+for the primitive odd core $w$ of $2^\beta$ and primitive $3$-free core $v$ of
+$3^\beta$.  Their rational powers are
+\[
+ E^d=\frac{3^b v^e}{3^a},\qquad
+ F^e=\frac{2^a w^d}{2^b}.
+\]
+At least one core has a prime divisor outside $\{2,3\}$.  On the opposite side this prime
+survives in the numerator of the displayed rational power.  Cross-multiplying any
+hypothetical positive $2,3$-unit power then gives an impossible divisibility.  Therefore
+\[
+ E\notin\sqrt[\infty]{\langle2,3\rangle_{\Z}}
+ \quad\text{or}\quad
+ F\notin\sqrt[\infty]{\langle2,3\rangle_{\Z}},
+\]
+and consequently $E^\beta$ or $F^\beta$ is transcendental.  This is an all-positive-powers
+exclusion on one side, stronger than merely knowing that one selected output is nonrational.
+
+\begin{statusbox}{\statuslean{} ---
+\lean{not_hasPositiveTwoThreeUnitPower_of_rational_power_external_prime},
+\lean{simultaneous_core_radical_power_normalization}, and the packaged
+\lean{exists_simultaneous_canonical_radical_divisibleHull_exclusion} in
+\lean{CanonicalRadicalDivisibleHull}.}
 \end{statusbox}
 
 A counterexample therefore produces the very special algebraic number $E=3^{\log_2w}$,
@@ -1608,6 +1774,35 @@ linear forms in logarithms with algebraic coefficients \cite{Baker1975}; it does
 out \eqref{eq:quadratic-logs}.  The four exponentials conjecture does.  The equation is a
 precise description of the transcendence-theoretic wall, not a disguised elementary
 factorization problem.
+
+The exact radical field makes the same wall visible algebraically.  If
+$q=A/3^a$ and $E$ has minimal polynomial $X^d-q$, then in $\Q(E)$
+\[
+ N_{\Q(E)/\Q}(E)=(-1)^d(-q),
+ \qquad \operatorname{Tr}_{\Q(E)/\Q}(E)=0\quad(d>1).
+\]
+These are the full product and sum of the conjugates, not estimates.  They do not create a
+new exponential corner: embeddings replace $E$ by roots $\zeta E$ but do not act on the
+transcendental exponent $\beta$.
+
+Nor does the symmetric radical $F$ supply an independent third base.  The normalization
+itself gives
+\[
+ 2^bF^e=2^aw^d,
+\]
+an explicit collision among nonnegative monomials in $2,w,F$.  The corresponding output
+identity $3^aE^d=3^bv^e$ is simply its $\log_23$-multiple.  Thus the most tempting use of
+the new algebraic six-exponentials theorem fails its essential monomial-injectivity
+hypothesis for a structural, kernel-verified reason.
+
+\begin{statusbox}{\statuslean{} ---
+\lean{swappedRadical_relation_blocks_monomial_injectivity},
+\lean{simultaneousNormalization_blocks_swapped_monomial_injectivity},
+\lean{exactRadical_adjoin_norm_gen},
+\lean{exactRadical_adjoin_trace_gen_eq_zero}, and
+\lean{oddCoreRpow_exact_field_norm_and_trace} in
+\lean{CanonicalRadicalFieldNorm}.}
+\end{statusbox}
 
 \subsection{Where the wall stands in the smallest case}
 
@@ -1904,7 +2099,13 @@ Proposition~\ref{prop:radical-degree}, including the exact minimal polynomial.
 \lean{CanonicalRadicalSharpness} identifies the exact rational-power criterion, proves
 the all-degree irreducibility equivalence, and forces a non-$3$ prime in the canonical numerator.
 \lean{CanonicalRadicalThirdOutput} also characterizes algebraic integrality of the radical
-and characterizes exactly when $(E^d)^\beta$ is rational in terms of the reduced numerator, while
+and characterizes exactly when $(E^d)^\beta$ is rational in terms of the reduced numerator;
+\lean{CanonicalRadicalAlgebraicOutput} upgrades this to an exact classification of
+algebraicity of $E^\beta$ itself; \lean{CanonicalRadicalDivisibleHull} proves that in the
+simultaneous normalization at least one of the two radicals lies outside the entire
+positive $2,3$-unit divisible hull; \lean{CanonicalRadicalFieldNorm} computes the exact
+norm and trace and exhibits the monomial collision that blocks a direct three-base use of
+the algebraic six-exponentials theorem, while
 \lean{CoreIndependence} rules out simultaneous smooth primitive cores.  The next target is a
 genuinely new number-field argument using this explicit extension; the radical exclusion
 itself remains equivalent to, and exactly as open as, the original conjecture.
@@ -1923,8 +2124,16 @@ stronger algebraic-third-output step is now complete for natural third bases:
 \lean{AlgebraicOutputBridge} clears an arbitrary algebraic output into a number-field
 integer, \lean{AlgebraicIntegerDeterminant} supplies the norm lower bound across all
 conjugates, and \lean{AlgebraicThirdBase} absorbs the resulting height and degree loss in the
-same interpolation margin.  The next extension is to algebraic outputs at arbitrary positive
-rational bases, and ultimately to a fully algebraic-base sharp six-exponentials interface.
+same interpolation margin.  The positive-rational-base extension is complete as well:
+\lean{AlgebraicRationalBase} proves that, for a hypothetical nonintegral solution,
+$q^x$ is algebraic exactly for rational $2,3$-units.  Finally,
+\lean{FiniteAlgebraicOutputBridge} and \lean{AlgebraicSixExponentials} treat three
+arbitrary positive algebraic real bases with injective nonnegative monomials and three
+algebraic outputs, allowing bases below one and negative exponents.
+\lean{AlgebraicBaseUnitPower} extracts the exact divisible-hull
+description of the dependent algebraic-output locus.  What remains beyond ordinary six
+exponentials is to formalize a genuinely sharp five/six-exponentials interface with a new
+downstream use.
 
 \subsection*{Priority F: auxiliary-function methods tailored to integrality}
 A route beyond four exponentials must exploit more than algebraicity: here all corner
@@ -1982,11 +2191,15 @@ that the second generator cannot exist --- equivalently
 The free-monoid classification, simultaneous primitive output normalization, exact block
 counts, sharp cumulative asymptotic, finite-trigonometric-polynomial block convergence,
 primitive localized-radical reduction, exact radical degree, denominator-unrestricted
-rational-output determinants under monomial injectivity, the exact rational-base and
-canonical-core classifications, and the uniform
+rational-output determinants under monomial injectivity, the exact natural- and
+rational-base algebraic-output classifications, the divisible-hull classification for all
+positive algebraic bases, the rank-one second-iterate output locus,
+the canonical-radical $E^\beta$ classification and simultaneous divisible-hull exclusion,
+the exact radical-field norm/trace and swapped-base rank obstruction, and the uniform
 higher-difference obstruction are kernel-verified.  Full blockwise equidistribution for
-arbitrary continuous tests and intervals remains a paper theorem; algebraic (rather than
-rational) third outputs remain beyond the determinant lower bound currently formalized.
+arbitrary continuous tests and intervals remains a paper theorem.  What remains at the
+transcendence frontier is not denominator clearing or a number-field determinant lower
+bound, but the two-base/four-exponentials boundary itself.
 
 That reformulation is progress rather than pessimism: it removes artificial degrees of
 freedom, supplies a canonical primitive object, yields exact conditional counting statements,
@@ -2044,15 +2257,25 @@ Full continuous-test/interval blockwise equidistribution & \statusnew &
 Theorem~\ref{thm:block-equidist} \\
 Generic rational six-exponentials theorem for three bases & \statuslean &
 \lean{RationalSixExponentials} \\
+Generic algebraic six-exponentials theorem for positive real bases & \statuslean &
+\lean{AlgebraicSixExponentials} \\
 Denominator-unrestricted rational output under monomial injectivity & \statuslean &
 \lean{RationalThirdBase} \\
 Positive rational-base $2,3$-unit classification & \statuslean &
 \lean{RationalBaseThird} \\
+Positive rational-base algebraic-output classification & \statuslean &
+\lean{AlgebraicRationalBase} \\
+Positive algebraic-base divisible-hull classification & \statuslean &
+\lean{AlgebraicBaseUnitPower} \\
+Rank-three positive-algebraic-output-locus equivalence & \statuslean &
+\lean{AlgebraicRankThreeEquivalence} \\
 Number-field determinant bound and finite-family algebraic-output bridge & \statuslean &
 \lean{AlgebraicIntegerDeterminant}, \lean{AlgebraicOutputBridge},
 \lean{FiniteAlgebraicOutputBridge} \\
 Natural-base algebraic-output classification and equivalent formulations & \statuslean &
 \lean{AlgebraicThirdBase}, \lean{AlgebraicConsequences} \\
+Mixed-output half-plane and ratio-locus rank-two equivalence & \statuslean &
+\lean{AlgebraicOutputLocus} \\
 Canonical-core rationality dichotomy and external prime & \statuslean &
 \lean{CoreIndependence} \\
 Sharp three-term and four-term AP obstructions ($r=2,3$) & \statuslean &
@@ -2066,6 +2289,12 @@ Least-index denominator/numerator valuation gcd restriction & \statuslean &
 \lean{CanonicalRadicalValuation}, \lean{CanonicalRadicalSharpness} \\
 Normalized-radical integrality and rational-output restrictions & \statuslean &
 \lean{CanonicalRadicalThirdOutput} \\
+Canonical radical $E^\beta$ algebraic-output classification & \statuslean &
+\lean{CanonicalRadicalAlgebraicOutput} \\
+Simultaneous canonical-radical divisible-hull exclusion & \statuslean &
+\lean{CanonicalRadicalDivisibleHull} \\
+Canonical radical norm, trace, and swapped-base rank obstruction & \statuslean &
+\lean{CanonicalRadicalFieldNorm} \\
 Effective rational three-term criterion ($h^{400}\le n^{83}$) & \statuslean &
 \lean{SharpProgression} \\
 Candidate-form localization equivalence & \statuslean & \lean{Localization} \\
@@ -2112,11 +2341,16 @@ Module & Contents \\
 \lean{.../RationalSixExponentials} & generic rational three-base determinant theorem \\
 \lean{.../RationalThirdBase} & denominator-unrestricted rational output under monomial injectivity \\
 \lean{.../RationalBaseThird} & exact positive-rational-base $2,3$-unit classification \\
+\lean{.../AlgebraicRationalBase} & exact positive-rational-base algebraic-output classification \\
+\lean{.../AlgebraicBaseUnitPower} & divisible-hull classification for positive algebraic bases \\
+\lean{.../AlgebraicRankThreeEquivalence} & rank-three algebraic-output-locus equivalence \\
 \lean{.../AlgebraicIntegerDeterminant} & number-field norm and conjugate determinant bounds \\
 \lean{.../AlgebraicOutputBridge} & finite-number-field realization and integral scaling \\
 \lean{.../FiniteAlgebraicOutputBridge} & shared number field and denominator for a finite algebraic family \\
+\lean{.../AlgebraicSixExponentials} & generic positive-real algebraic six-exponentials determinant \\
 \lean{.../AlgebraicThirdBase} & algebraic output at an independent natural third base \\
 \lean{.../AlgebraicConsequences} & exact natural-base classification, iterates, equivalent conjectures \\
+\lean{.../AlgebraicOutputLocus} & monomial half-plane, mixed iterates, rank-one ratio locus \\
 \lean{.../CoreIndependence} & canonical-core rationality dichotomy, external prime \\
 \lean{.../RadicalReformulation} & localized-radical equivalences, base-swapped form \\
 \lean{.../PrimitiveRadical} & canonical primitive-power reduction of radical target \\
@@ -2124,6 +2358,9 @@ Module & Contents \\
 \lean{.../CanonicalRadicalValuation} & least-index gcd and primewise valuation restrictions \\
 \lean{.../CanonicalRadicalSharpness} & exact power criterion, all-degree irreducibility, numerator prime \\
 \lean{.../CanonicalRadicalThirdOutput} & radical integrality and rational-output restrictions \\
+\lean{.../CanonicalRadicalAlgebraicOutput} & exact algebraic-output classification for $E^\beta$ \\
+\lean{.../CanonicalRadicalDivisibleHull} & simultaneous all-positive-powers hull exclusion \\
+\lean{.../CanonicalRadicalFieldNorm} & exact norm/trace and swapped-radical monomial collision \\
 \lean{.../SharperProgressions} & sharp three-candidate curvature obstruction \\
 \lean{.../ThirdDifference} & exact third difference, four-candidate obstruction \\
 \lean{.../HigherDifference} & uniform arbitrary-order forward-difference obstruction \\
