@@ -155,9 +155,10 @@ $\beta$ whose output pair is affinely primitive; and the exact conditional rigid
 together with logarithmic counting, a linear dyadic-block bound, sharp arbitrary-order
 progression obstructions, density zero, explicit Diophantine lower bounds, the $3$-smooth
 classification, and the equivalence with both fractional-part gaps and a localized-radical
-exclusion.  Exact unit-block counts and their cumulative finite sum are kernel-verified;
-blockwise Weyl equidistribution and the cumulative asymptotic are proved here at the paper
-level.  An independent interval computation excludes all nonintegral candidates with
+exclusion.  Exact unit-block counts, the sharp quadratic cumulative asymptotic, and
+block averages for every finite trigonometric polynomial are kernel-verified.  The stronger
+continuous-test-function and interval-counting forms of blockwise Weyl equidistribution are
+proved here only at the paper level.  An independent interval computation excludes all nonintegral candidates with
 $2^x<2^{20}$; that computation is explicitly \emph{not} a Lean kernel proof.  The irreducible
 remainder is the open radical assertion: no odd $u>1$ has
 $u^{\log_2 3}\in\Z[1/3]$.
@@ -185,7 +186,9 @@ machine-checked partial results and an independent research report containing an
 conditional structure theory.  It serves four purposes.  First, it catalogues the
 kernel-verified Lean corpus --- zero-free regions through $2^x<4096$, Gelfond--Schneider
 transcendence restrictions, multiplicative rank at most two, a canonical primitive odd core,
-an exact conditional solution monoid with least generator, sharp arbitrary-order
+an exact conditional solution monoid with least generator, simultaneous primitive
+normalizations of its two outputs, a denominator-controlled rational-third-base extension,
+sharp arbitrary-order
 progression obstructions, zero density, shrinking-target Diophantine bounds, the $3$-smooth
 classification of auxiliary bases, the four-exponentials reduction, and unconditional
 equivalences with both fractional-part gaps and a localized-radical exclusion --- with the
@@ -193,9 +196,9 @@ precise Lean identifiers and their verification status.  Second, it records the 
 kernel-verified conditional structure: if a counterexample exists, a canonical primitive odd
 core $w$, rational-power index $d$, and least nonintegral solution
 $\beta=a+d\log_2w$ exist, and the full solution set is the free additive monoid
-$\Nzero+\Nzero\beta$; exact dyadic-block counts and their cumulative finite sum are
-kernel-verified, while blockwise Weyl equidistribution and the cumulative asymptotic remain
-paper corollaries.  Third, it records the now kernel-verified general higher-difference
+$\Nzero+\Nzero\beta$; exact dyadic-block counts, their sharp quadratic asymptotic, and
+finite-trigonometric-polynomial block averages are kernel-verified.  Full equidistribution for
+arbitrary continuous tests or interval indicators remains a paper corollary.  Third, it records the now kernel-verified general higher-difference
 obstruction for arbitrary progression length and an independent 40-digit interval verification excluding all
 nonintegral candidates below $2^{20}$ under a stated software trust boundary.  Fourth, it
 consolidates the research program: the conjecture is kernel-verified equivalent to the radical
@@ -248,9 +251,11 @@ resolved: the three modules were subsequently committed in \commit{98646b455} an
 kernel-verified; the survey's temporary pending-verification remark was removed in
 \commit{716617d72}.  Statements from these modules are therefore labeled \statuslean{} below.
 
-The current feature wave adds directly kernel-checked structure modules
+The current feature wave adds directly kernel-checked modules
 \lean{PrimitiveOddCore}, \lean{LeastSolution}, \lean{ThreeDenominatorNormalization},
-\lean{RationalPowerIndex}, \lean{PrimitiveGenerator}, and \lean{ExactCounting}.
+\lean{RationalPowerIndex}, \lean{PrimitiveGenerator}, \lean{ExactCounting},
+\lean{QuadraticAsymptotic}, \lean{BlockWeyl}, \lean{BlockEquidistribution},
+\lean{OutputNormalization}, and \lean{RationalThirdBase}.
 The radical modules are \lean{RadicalReformulation}, \lean{PrimitiveRadical}, and
 \lean{RadicalDegree}; the progression modules are \lean{SharperProgressions},
 \lean{ThirdDifference}, and \lean{HigherDifference}.  Their public headline theorems were
@@ -271,9 +276,10 @@ odd core $w>1$, every candidate has unique coordinates $2^iw^j$, and the solutio
 exact free-monoid classification $\Sol=\Nzero+\Nzero\beta$ with a unique least nonintegral
 generator.  Candidate counts below $N$ are at most $\clog_2N\cdot\clog_3N$, and each dyadic
 block $[2^T,2^{T+1})$ holds at most $\clog_3(2^{T+1})$ candidates.  The exact block count
-$\lfloor(N+1)/\beta\rfloor$ and cumulative finite sum are kernel-verified.  \statuslean{}
-Blockwise Weyl equidistribution and the cumulative asymptotic are paper corollaries.
-\statusnew
+$\lfloor(N+1)/\beta\rfloor$, the limit $C(T)/T^2\to1/(2\beta)$, and the equivalence between
+the conjecture and subquadratic growth along $2^T$ are kernel-verified.  Exact block averages
+converge to the constant coefficient for every finite trigonometric polynomial.  \statuslean{}
+The extension to all continuous tests and interval indicators remains paper-level. \statusnew
 \item \textbf{Unconditional gap equivalences.}  The conjecture is equivalent to the existence
 of any nonempty open subinterval of $(0,1)$ free of fractional parts of nonintegral
 solutions, and to fractional parts being bounded away from $0$, or from $1$.  \statuslean
@@ -404,6 +410,36 @@ bound, while in the $2\times2$ case the same balance lands exactly on the classi
 where decay below one fails.  A successful two-base determinant would be a new
 four-exponentials argument.
 
+\paragraph{A denominator-controlled rational third output.}
+The rational-output extension now formalized is deliberately conditional.  Let $a>1$ and
+assume the monomial map
+\[
+ (i,j,k)\longmapsto 2^i3^ja^k
+\]
+is injective.  If $2^x=m_2$ and $3^x=m_3$ are natural numbers, $a^x=q\in\Q$, and for some
+$u,v\in\Nzero$ the reduced denominator satisfies
+\[
+ \operatorname{den}(q)\mid m_2^u m_3^v,
+\]
+then $x\in\Q$, and in fact $x\in\Z$ because $2^x$ is integral.  A concrete corollary obtains
+the monomial injectivity when $a$ has a prime divisor different from $2$ and $3$.
+
+On the determinant side, a nonzero $m\times m$ real determinant whose entries become integers
+after multiplication by a common positive denominator $Q$ satisfies
+$|\det A|\ge Q^{-m}$.  The explicit analytic estimate also retains a denominator margin:
+for $m=2r$, $r>2$, $192C\le r$, and $bs+2r<r^2$, the verified upper-bound expression remains
+strictly below $1$ even after multiplication by $b^s$.
+
+\begin{statusbox}{\statuslean{} ---
+\lean{one_div_pow_le_abs_det_of_common_denominator},
+\lean{exponential_det_numeric_bound_with_denominator},
+\lean{rational_of_two_three_a_rpow_rational_of_den_dvd_outputs}, and
+\lean{integer_of_two_three_a_rpow_rational_of_prime_factor_of_den_dvd_outputs} in
+\lean{RationalThirdBase}.  These are denominator-divisibility and explicit-margin results;
+the unrestricted determinant grid for an arbitrary rational third-base output has
+\emph{not} been completed.}
+\end{statusbox}
+
 \subsection{Rational and algebraic exponents}
 
 \begin{lemma}[Rational exponent]
@@ -470,19 +506,21 @@ conditional structure, interval scan to $2^{20}$); one of the two sources merged
 present document. \\
 \addlinespace
 \textit{current tree} & Kernel-checked feature modules formalizing the primitive common odd
-core, least-solution primitivity, power-of-three denominator normalization, rational-power
-index and exact primitive generator, exact conditional counting, primitive localized-radical
-reduction and exact radical degree, and uniform higher finite differences. \\
+core, least-solution primitivity, simultaneous output normalization, power-of-three denominator
+normalization, rational-power index and exact primitive generator, exact conditional counting
+and its quadratic asymptotic, finite-Fourier block averages, denominator-controlled rational
+third-base outputs, primitive localized-radical reduction and exact radical degree, and uniform
+higher finite differences. \\
 \bottomrule
 \end{longtable}
 
 The audit performed in \commit{11ac3093f} treated results of the then-uncommitted modules as
 article-level claims; with \commit{98646b455} in the tree and kernel-verified, those results
 are now cited as committed Lean.  The interval scan to $2^{20}$ remains at the
-\statuscomp{} level by design.  The later feature modules listed in the final row are
-distinguished from the still-paper-level cumulative asymptotic and blockwise
-equidistribution throughout this report; exact counts, radical irreducibility, and uniform
-higher differences have subsequently been kernel-verified.
+\statuscomp{} level by design.  The later feature modules listed in the final row prove the
+cumulative asymptotic and finite-trigonometric-polynomial block averages.  They do not yet
+formalize the stronger continuous-test-function or interval-counting equidistribution theorem;
+that distinction is maintained throughout this report.
 \section{The kernel-verified corpus}
 \label{sec:corpus}
 
@@ -833,7 +871,8 @@ remaining distance to Conjecture~\ref{conj:AE}.
 \end{remark}
 
 These equivalences are \emph{unconditional} biconditionals.  Conditional on failure, the
-exact structure of the next section yields the paper-level strengthening to blockwise Weyl
+exact structure of the next section gives kernel-verified convergence for every finite
+trigonometric polynomial and the paper-level strengthening to full blockwise Weyl
 equidistribution (Theorem~\ref{thm:block-equidist}).
 
 \section{Exact conditional structure of all solutions}
@@ -841,9 +880,10 @@ equidistribution (Theorem~\ref{thm:block-equidist}).
 
 This section develops the exact rigidity theory of a hypothetical counterexample.  The
 canonical primitive odd core, rational-power index, denominator normalization, unique least
-solution, affine primitivity, exact free-monoid classification, exact unit-block counts, and
-cumulative finite sum are now \statuslean{}.  The cumulative asymptotic and blockwise Weyl
-equidistribution deduced from that classification remain \statusnew{}.
+solution, simultaneous primitive output normalization, exact free-monoid classification,
+exact unit-block counts, the cumulative quadratic asymptotic, and finite-Fourier block averages
+are now \statuslean{}.  Full blockwise Weyl equidistribution for arbitrary continuous tests or
+interval indicators remains \statusnew{}.
 
 \subsection{The primitive common odd core}
 
@@ -1047,6 +1087,35 @@ $\beta$ is irrational; if $r>0$ or $k>1$ it is strictly smaller than $\beta$.
 \lean{IsLeastTwoBaseNonintegerSolution.affine_primitive} in \lean{LeastSolution}.}
 \end{statusbox}
 
+\begin{theorem}[Simultaneous primitive output normalization]
+\label{thm:simultaneous-output}
+If the conjecture fails, its least nonintegral solution $\beta$ admits simultaneous
+factorizations
+\[
+ 2^\beta=2^a w^d,\qquad 3^\beta=3^b v^e,
+\]
+where $w>1$ is odd and power-primitive, $v>1$ is power-primitive with $3\nmid v$, and
+$d,e>0$.  Moreover $a=0$ or $b=0$; $a$ and $b$ are the exact base-adic depths; $d$ and $e$
+are the valuation gcds of the corresponding base-free parts; and
+\[
+ \gcd\!\left(\gcd(d,e),\,|b-a|\right)=1.
+\]
+Since every counterexample has $\beta\ge12$, these normalizations also satisfy the size
+dichotomy
+\[
+ w^d\ge4096\qquad\text{or}\qquad v^e\ge3^{12}.
+\]
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} ---
+\lean{exists_simultaneous_primitive_output_normalization},
+\lean{IsLeastTwoBaseNonintegerSolution.simultaneousCoordinateGCD_eq_one}, and
+\lean{exists_large_primitiveCore_of_not_alaogluErdosConjecture} in
+\lean{OutputNormalization}.  The gcd-one statement simultaneously controls the two outer
+power degrees and the difference of the two base-adic depths; it is stronger than merely
+excluding a common perfect-power degree.}
+\end{statusbox}
+
 \subsection{Exact counting}
 \label{sec:counting}
 
@@ -1074,8 +1143,9 @@ is $N$.
 \begin{statusbox}{\statuslean{} --- \lean{ExactCounting} proves the explicit ceiling-image
 parametrization, \lean{twoBaseNonintegerSolutionsInUnitBlock_ncard},
 \lean{twoBaseNaturalCandidatesInDyadicBlock_card}, and the exact finite-sum identity
-\lean{cumulativeTwoBaseCandidateCount_eq}.  The final $T^2/(2\beta)+O(T)$ asymptotic in
-\eqref{eq:exact-cumulative} remains a paper corollary.}
+\lean{cumulativeTwoBaseCandidateCount_eq}.  \lean{QuadraticAsymptotic} identifies that
+cumulative count exactly with the candidate count below $2^T$ and proves the sharp bounds and
+limit in \eqref{eq:exact-cumulative}.}
 \end{statusbox}
 
 With the verified bound $\beta>12$ the block count is at most $\lfloor N/12\rfloor$
@@ -1086,14 +1156,51 @@ C(T)=T+\sum_{r=1}^{T}\Bigl\lfloor\frac r\beta\Bigr\rfloor
 =\frac{T^2}{2\beta}+O(T).
 \label{eq:exact-cumulative}
 \end{equation}
+More precisely, Lean proves
+\[
+ \frac{T(T+1)}{2\beta}\le C(T)\le
+ \frac{T(T+1)}{2\beta}+T,
+ \qquad
+ \frac{C(T)}{T^2}\longrightarrow\frac1{2\beta}.
+\]
 This is conditionally sharper than the verified universal bounds ($(\clog_2N)^2$ and
 $\clog_2N\cdot\clog_3N$) and matches the verified conditional lower boxes in leading order:
 with $\beta>12$ the leading coefficient is below $1/24$.
 
-\subsection{Blockwise equidistribution}
+There is also an unconditional growth reformulation.  The conjecture holds if and only if
+\[
+ \frac{\#\bigl(\Cand\cap[0,2^T)\bigr)}{T^2}\longrightarrow0.
+\]
+Indeed, under the conjecture the numerator is exactly $T$; under failure the preceding limit
+is the strictly positive constant $1/(2\beta)$.  This is
+\lean{alaogluErdosConjecture_iff_candidate_count_below_two_pow_subquadratic}. \statuslean
+
+\subsection{Block Fourier averages and equidistribution}
 
 The fractional part of $x_{N,k}$ is $\fract{k\beta}$: a high unit interval contains an
 initial segment of one irrational rotation orbit.
+
+\begin{theorem}[Finite Fourier tests on exact blocks]
+\label{thm:block-fourier}
+Assume a counterexample exists and let $\beta$ be its primitive generator.  For every finitely
+supported coefficient function $c:\Z\to\C$, put
+\[
+ P_c(t)=\sum_{h\in\Z}c(h)e^{2\pi iht},
+ \qquad K_N=\Bigl\lfloor\frac{N+1}{\beta}\Bigr\rfloor .
+\]
+On the exact ceiling-parametrized points
+$x_{N,k}=\lceil N-k\beta\rceil+k\beta$,
+\[
+ \frac1{K_N}\sum_{k=1}^{K_N}P_c(x_{N,k})\longrightarrow c(0).
+\]
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- \lean{BlockWeyl} proves vanishing of every nonzero
+normalized Fourier mode on the exact block points.  \lean{BlockEquidistribution} proves
+\lean{tendsto_primitiveUnitBlockTrigonometricAverage} for every finitely supported
+coefficient function, with limit \lean{c 0}.  This is finite
+trigonometric-polynomial convergence, not yet a theorem for arbitrary continuous tests.}
+\end{statusbox}
 
 \begin{theorem}[Blockwise Weyl equidistribution]
 \label{thm:block-equidist}
@@ -1119,10 +1226,11 @@ finite geometric series,
 since $\beta$ is irrational.  Weyl's criterion \cite{KuipersNiederreiter} concludes.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} --- strictly stronger than the kernel-verified density
-statement of Theorem~\ref{thm:dichotomy}, conditional on failure.  No effective discrepancy rate
-follows without further Diophantine input on $\beta$: the geometric-sum proof controls each
-Fourier mode but not uniformly over many modes.}
+\begin{statusbox}{\statusnew{} --- the finite-trigonometric-polynomial input is
+kernel-verified by Theorem~\ref{thm:block-fourier}, but the Stone--Weierstrass/Weyl-criterion
+extension to all continuous tests and then to interval indicators has not been formalized.
+No effective discrepancy rate follows without further Diophantine input on $\beta$: the
+geometric-sum proof controls each fixed Fourier mode but not uniformly over many modes.}
 \end{statusbox}
 \section{Equivalent one-number and radical formulations}
 \label{sec:radical}
@@ -1376,7 +1484,9 @@ allowed monoid of powers of two; excluding the second generator \emph{is} the or
 transcendence problem.
 
 \subsection{Density of multiples against endpoint gaps}
-The orbit $k\beta\bmod1$ is equidistributed (Theorem~\ref{thm:block-equidist}), but the
+At paper level the orbit $k\beta\bmod1$ is equidistributed
+(Theorem~\ref{thm:block-equidist}); the finite-Fourier convergence needed for Weyl's criterion
+is kernel-verified by Theorem~\ref{thm:block-fourier}.  The
 integrality gap at height $k$ is of exponential scale $M^{-k}$
 (Theorem~\ref{thm:shrinking}).  Equidistribution controls fixed intervals --- and with effective
 discrepancy, polynomially shrinking ones along subsequences --- but numbers with bounded
@@ -1417,14 +1527,16 @@ some directions and re-prioritizes the rest.  Ordered by leverage and feasibilit
 
 \subsection*{Priority A: finish the exact conditional consequences}
 The primitive normalization, uniqueness of the odd core and its coordinates, least
-noninteger solution and affine primitivity, rational-power index, denominator support, and
-exact primitive-generator theorem are now complete in \lean{PrimitiveOddCore},
-\lean{LeastSolution}, \lean{ThreeDenominatorNormalization}, \lean{RationalPowerIndex}, and
-\lean{PrimitiveGenerator}.  \lean{ExactCounting} now proves the exact unit-block and dyadic
-block counts and their cumulative finite sum.  The remaining work in this priority is the
-$T^2/(2\beta)+O(T)$ asymptotic and blockwise Weyl equidistribution in
-Theorem~\ref{thm:block-equidist}; a plausible module is
-\lean{FractionalPartEquidistribution}.  This supersedes the earlier
+noninteger solution and affine primitivity, simultaneous two-output normalization,
+rational-power index, denominator support, and exact primitive-generator theorem are complete
+in \lean{PrimitiveOddCore}, \lean{LeastSolution}, \lean{OutputNormalization},
+\lean{ThreeDenominatorNormalization}, \lean{RationalPowerIndex}, and
+\lean{PrimitiveGenerator}.  \lean{ExactCounting} and \lean{QuadraticAsymptotic} prove the exact
+unit-block and dyadic counts, the cumulative finite sum, its sharp quadratic limit, and the
+subquadratic-growth equivalence.  \lean{BlockWeyl} and \lean{BlockEquidistribution} prove every
+fixed Fourier mode and finite trigonometric polynomial.  The remaining work in this priority
+is the functional-analytic extension to arbitrary continuous tests and interval indicators in
+Theorem~\ref{thm:block-equidist}.  This supersedes the earlier
 ``exponent semigroup'' direction: the kernel-verified classification shows there are no
 Frobenius-type gaps to study.
 
@@ -1457,7 +1569,10 @@ exclusion itself remains equivalent to, and exactly as open as, the original con
 Formalizing the five exponentials theorem or Roy's sharp six exponentials theorem
 \cite{Roy1992} would add restrictions such as transcendence of $e^{\gamma x}$ for algebraic
 $\gamma\ne0$.  The effort is comparable to the completed Gelfond--Schneider port and should
-be undertaken with a specific downstream lemma in mind.
+be undertaken with a specific downstream lemma in mind.  \lean{RationalThirdBase} already
+handles a rational third output when its reduced denominator divides a product of powers of
+the two integral outputs, and proves a determinant lower bound and an explicit denominator
+margin.  Extending the interpolation grid to an unrestricted rational output remains open.
 
 \subsection*{Priority F: auxiliary-function methods tailored to integrality}
 A route beyond four exponentials must exploit more than algebraicity: here all corner
@@ -1512,10 +1627,12 @@ internally consistent with every verified gap and density bound.  The remaining 
 that the second generator cannot exist --- equivalently
 (Conjecture~\ref{conj:radical-target}), that no odd $u>1$ has $u^{\log_23}\in\Zthree$.
 
-The free-monoid classification, exact block counts and cumulative finite sum, primitive
-localized-radical reduction, exact radical degree, and uniform higher-difference obstruction
-are kernel-verified.  The cumulative asymptotic and blockwise-equidistribution consequence
-remain paper theorems.
+The free-monoid classification, simultaneous primitive output normalization, exact block
+counts, sharp cumulative asymptotic, finite-trigonometric-polynomial block convergence,
+primitive localized-radical reduction, exact radical degree, and uniform higher-difference
+obstruction are kernel-verified.  Full blockwise equidistribution for arbitrary continuous
+tests and intervals remains a paper theorem, as does any unrestricted rational-third-output
+determinant grid.
 
 That reformulation is progress rather than pessimism: it removes artificial degrees of
 freedom, supplies a canonical primitive object, yields exact conditional counting statements,
@@ -1558,14 +1675,22 @@ $4$EC $\Rightarrow$ conjecture & \statuslean & \lean{FourExponentialsReduction} 
 Primitive (canonical) odd core; unique coordinates & \statuslean &
 \lean{PrimitiveOddCore} \\
 Unique least solution; affine primitive output pair & \statuslean & \lean{LeastSolution} \\
+Simultaneous primitive output normalization; gcd one; size dichotomy & \statuslean &
+\lean{OutputNormalization} \\
 Power-of-three denominator normalization & \statuslean &
 \lean{ThreeDenominatorNormalization} \\
 Rational-power index and exact solution monoid $\Nzero+\Nzero\beta$ & \statuslean &
 \lean{RationalPowerIndex}, \lean{PrimitiveGenerator} \\
 Exact block counts and cumulative finite sum & \statuslean & \lean{ExactCounting} \\
-Cumulative $T^2/(2\beta)+O(T)$ asymptotic & \statusnew &
-Equation~\eqref{eq:exact-cumulative} \\
-Blockwise Weyl equidistribution & \statusnew & Theorem~\ref{thm:block-equidist} \\
+Cumulative $T^2/(2\beta)+O(T)$ asymptotic and subquadratic iff & \statuslean &
+\lean{QuadraticAsymptotic} \\
+Exact block averages for finite trigonometric polynomials & \statuslean &
+\lean{BlockWeyl}, \lean{BlockEquidistribution} \\
+Full continuous-test/interval blockwise equidistribution & \statusnew &
+Theorem~\ref{thm:block-equidist} \\
+Denominator-controlled rational third output and determinant margin & \statuslean &
+\lean{RationalThirdBase} \\
+Unrestricted rational-third-output determinant grid & open & not yet formalized \\
 Sharp three-term and four-term AP obstructions ($r=2,3$) & \statuslean &
 \lean{SharperProgressions}, \lean{ThirdDifference} \\
 Uniform higher-order AP obstruction ($r\ge2$) & \statuslean & \lean{HigherDifference} \\
@@ -1608,6 +1733,11 @@ Module & Contents \\
 \lean{.../RationalPowerIndex} & least rational-power index, exact solution monoid \\
 \lean{.../PrimitiveGenerator} & canonical primitive generator and unique coordinates \\
 \lean{.../ExactCounting} & exact unit/dyadic block counts and cumulative finite sum \\
+\lean{.../QuadraticAsymptotic} & sharp quadratic limit; subquadratic-growth equivalence \\
+\lean{.../BlockWeyl} & exact-block geometric sums and vanishing nonzero Fourier modes \\
+\lean{.../BlockEquidistribution} & finite trigonometric-polynomial block averages \\
+\lean{.../OutputNormalization} & simultaneous primitive outputs, gcd one, size dichotomy \\
+\lean{.../RationalThirdBase} & denominator divisibility and determinant margin \\
 \lean{.../RadicalReformulation} & localized-radical equivalences, base-swapped form \\
 \lean{.../PrimitiveRadical} & canonical primitive-power reduction of radical target \\
 \lean{.../RadicalDegree} & irreducible binomial, exact minpoly and degree \\
