@@ -147,25 +147,27 @@ No unconditional proof of the two-base conjecture is obtained, and the reduction
 exponentials conjecture explains why none should be expected from routine combination of the
 present methods.  The combined corpus does establish, in kernel-verified Lean: a zero-free
 region $2^x<4096$ (any nonintegral solution has $x\ge12$); transcendence of every hypothetical
-nonintegral solution; a common odd core $w$ with every candidate of the form $2^i w^j$;
-logarithmic counting and a linear dyadic-block bound; local progression obstructions with
-density zero; explicit Diophantine lower bounds; the classification of further integral bases
-as exactly the $3$-smooth numbers; and unconditional equivalences between the conjecture and
-fractional-part gap statements.  At the paper level this report sharpens the conditional
-picture to an exact rigidity theorem: if one counterexample exists, there is a unique least
-nonintegral solution $\beta$ and
+nonintegral solution; a canonical primitive odd core; a unique least nonintegral solution
+$\beta$ whose output pair is affinely primitive; and the exact conditional rigidity theorem
 \[
    \Sol=\{n+k\beta:n,k\in\Nzero\},
 \]
-with exact counts in every unit interval and Weyl equidistribution of fractional parts.  An
-independent interval computation excludes all nonintegral candidates with $2^x<2^{20}$; that
-computation is explicitly \emph{not} a Lean kernel proof.  The irreducible remainder is
-isolated as a radical statement: no odd $u>1$ has $u^{\log_2 3}\in\Z[1/3]$.
+together with logarithmic counting, a linear dyadic-block bound, sharp arbitrary-order
+progression obstructions, density zero, explicit Diophantine lower bounds, the $3$-smooth
+classification, and the equivalence with both fractional-part gaps and a localized-radical
+exclusion.  Exact unit-block counts, the sharp quadratic cumulative asymptotic, and
+block averages for every finite trigonometric polynomial are kernel-verified.  The stronger
+continuous-test-function and interval-counting forms of blockwise Weyl equidistribution are
+proved here only at the paper level.  An independent interval computation excludes all nonintegral candidates with
+$2^x<2^{20}$; that computation is explicitly \emph{not} a Lean kernel proof.  The irreducible
+remainder is the open radical assertion: no odd $u>1$ has
+$u^{\log_2 3}\in\Z[1/3]$.
 \end{minipage}
 \vfill
 {\normalsize This document merges, updates, and extends two earlier AI-assisted reports\par
 (Claude Fable~5, Anthropic; GPT-5.6 Pro, OpenAI), against the repository state of\par
-commit \commit{716617d72}.  All Lean identifiers cited below are the authoritative
+the combined-report base \commit{83ef82ab1} and the kernel-checked feature modules listed in
+Appendix~\ref{app:inventory}.  All Lean identifiers cited below are the authoritative
 statements.\par}
 \vspace{0.6cm}
 {\large August 20, 2026\par}
@@ -183,20 +185,26 @@ This report is the merged and expanded successor of two documents: a survey of t
 machine-checked partial results and an independent research report containing an audit and new
 conditional structure theory.  It serves four purposes.  First, it catalogues the
 kernel-verified Lean corpus --- zero-free regions through $2^x<4096$, Gelfond--Schneider
-transcendence restrictions, multiplicative rank at most two with a common odd core,
-progression obstructions and zero density, shrinking-target Diophantine bounds, the $3$-smooth
+transcendence restrictions, multiplicative rank at most two, a canonical primitive odd core,
+an exact conditional solution monoid with least generator, simultaneous primitive
+normalizations of its two outputs, a denominator-controlled rational-third-base extension,
+sharp arbitrary-order
+progression obstructions, zero density, shrinking-target Diophantine bounds, the $3$-smooth
 classification of auxiliary bases, the four-exponentials reduction, and unconditional
-equivalences between the conjecture and fractional-part gap statements --- with the precise
-Lean identifiers and their verification status.  Second, it develops the exact conditional
-structure: if a counterexample exists, a canonical primitive odd core $w$, rational-power
-index $d$, and least nonintegral solution $\beta=a+d\log_2w$ exist, and the full solution set
-is the free additive monoid $\Nzero+\Nzero\beta$; exact dyadic-block counts and blockwise Weyl
-equidistribution follow.  Third, it records a sharper family of finite-difference obstructions
-for progressions of any length, and an independent 40-digit interval verification excluding
-all nonintegral candidates below $2^{20}$ under a stated software trust boundary.  Fourth, it
-consolidates the research program: the remaining obstruction is equivalent to the radical
-statement that $u^{\log_2 3}\notin\Z[1/3]$ for every odd $u>1$, and the report prioritizes
-formalization targets and genuinely new attack surfaces around that statement.
+equivalences with both fractional-part gaps and a localized-radical exclusion --- with the
+precise Lean identifiers and their verification status.  Second, it records the now
+kernel-verified conditional structure: if a counterexample exists, a canonical primitive odd
+core $w$, rational-power index $d$, and least nonintegral solution
+$\beta=a+d\log_2w$ exist, and the full solution set is the free additive monoid
+$\Nzero+\Nzero\beta$; exact dyadic-block counts, their sharp quadratic asymptotic, and
+finite-trigonometric-polynomial block averages are kernel-verified.  Full equidistribution for
+arbitrary continuous tests or interval indicators remains a paper corollary.  Third, it records the now kernel-verified general higher-difference
+obstruction for arbitrary progression length and an independent 40-digit interval verification excluding all
+nonintegral candidates below $2^{20}$ under a stated software trust boundary.  Fourth, it
+consolidates the research program: the conjecture is kernel-verified equivalent to the radical
+statement that $u^{\log_2 3}\notin\Z[1/3]$ for every odd $u>1$.  Primitive-base reduction,
+exact radical degree, and the uniform finite-difference API now have kernel-verified forms;
+the radical exclusion itself remains the open boundary.
 \end{abstract}
 
 \tableofcontents
@@ -220,9 +228,9 @@ one of four labels.
 
 \begin{description}[leftmargin=3.9cm,style=nextline]
 \item[\statuslean]
-A proof source is committed in the repository, lies on the audited
+A proof source is present in the repository, lies on the audited
 \lean{ExponentialIdentities.lean} import surface, and has been accepted by the Lean kernel in
-a full build of the cited modules (toolchain 4.31/4.32 series, Mathlib pinned by the
+direct or full builds of the cited modules (toolchain 4.31/4.32 series, Mathlib pinned by the
 repository manifest).  No \lean{sorry}, no extra axioms, no \lean{native_decide}.
 \item[\statusnew]
 A conventional mathematical proof is supplied in this document.  It is intended to be
@@ -243,6 +251,17 @@ resolved: the three modules were subsequently committed in \commit{98646b455} an
 kernel-verified; the survey's temporary pending-verification remark was removed in
 \commit{716617d72}.  Statements from these modules are therefore labeled \statuslean{} below.
 
+The current feature wave adds directly kernel-checked modules
+\lean{PrimitiveOddCore}, \lean{LeastSolution}, \lean{ThreeDenominatorNormalization},
+\lean{RationalPowerIndex}, \lean{PrimitiveGenerator}, \lean{ExactCounting},
+\lean{QuadraticAsymptotic}, \lean{BlockWeyl}, \lean{BlockEquidistribution},
+\lean{OutputNormalization}, and \lean{RationalThirdBase}.
+The radical modules are \lean{RadicalReformulation}, \lean{PrimitiveRadical}, and
+\lean{RadicalDegree}; the progression modules are \lean{SharperProgressions},
+\lean{ThirdDifference}, and \lean{HigherDifference}.  Their public headline theorems were
+audited with \lean{#print axioms}; only the standard Mathlib axioms
+\lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} occur.
+
 \subsection{Headline results}
 
 \begin{enumerate}
@@ -252,26 +271,28 @@ scan extends the finite barrier to $2^x<2^{20}$, i.e.\ $x>20$.  \statuscomp
 \item \textbf{Transcendence.}  Every nonintegral solution is transcendental; for $x$ with
 $2^x\in\Z$, algebraicity of $x$ is \emph{equivalent} to integrality.  $\thetaq=\log_23$ is
 transcendental.  \statuslean
-\item \textbf{Structure.}  All candidate values $2^x$ lie in $\{2^iw^j\}$ for one odd $w>1$;
-candidate counts below $N$ are at most $\clog_2N\cdot\clog_3N$, and each dyadic block
-$[2^T,2^{T+1})$ holds at most $\clog_3(2^{T+1})$ candidates.  \statuslean{}  Conditional on a
-counterexample, this sharpens to an exact free-monoid classification
-$\Sol=\Nzero+\Nzero\beta$ with a canonical least generator, exact block counts
-$\lfloor(N+1)/\beta\rfloor$, and blockwise Weyl equidistribution.  The generator theorem
-itself is kernel-verified (\lean{exists_primitive_generator} in
-\lean{PrimitiveGenerator}); the exact counts and equidistribution corollaries remain
-\statusnew
+\item \textbf{Structure.}  Conditional on a counterexample there is a unique gcd-normalized
+odd core $w>1$, every candidate has unique coordinates $2^iw^j$, and the solution set has the
+exact free-monoid classification $\Sol=\Nzero+\Nzero\beta$ with a unique least nonintegral
+generator.  Candidate counts below $N$ are at most $\clog_2N\cdot\clog_3N$, and each dyadic
+block $[2^T,2^{T+1})$ holds at most $\clog_3(2^{T+1})$ candidates.  The exact block count
+$\lfloor(N+1)/\beta\rfloor$, the limit $C(T)/T^2\to1/(2\beta)$, and the equivalence between
+the conjecture and subquadratic growth along $2^T$ are kernel-verified.  Exact block averages
+converge to the constant coefficient for every finite trigonometric polynomial.  \statuslean{}
+The extension to all continuous tests and interval indicators remains paper-level. \statusnew
 \item \textbf{Unconditional gap equivalences.}  The conjecture is equivalent to the existence
 of any nonempty open subinterval of $(0,1)$ free of fractional parts of nonintegral
 solutions, and to fractional parts being bounded away from $0$, or from $1$.  \statuslean
-\item \textbf{Sharper local combinatorics.}  A progression $n,n+h,\dots,n+rh$ of candidates
-is impossible whenever $|\thetaq(\thetaq-1)\cdots(\thetaq-r+1)|\,h^r<n^{r-\thetaq}$,
-strictly improving the committed three-term criterion $h^5\le n$ and extending it to all
-lengths.  The three-term case at exponent $83/400=0.2075$ is kernel-verified
-(\lean{SharpProgression}); the arbitrary-length family remains \statusnew
+\item \textbf{Sharper local combinatorics.}  For every $r\ge2$, the sharp criterion
+$|\thetaq(\thetaq-1)\cdots(\thetaq-r+1)|h^r<n^{r-\thetaq}$ forbids $r+1$ candidates in
+arithmetic progression.  The underlying arbitrary-order forward-difference mean-value
+identity is formalized as well, and for the three-term case a rational effective criterion
+$h^{400}\le n^{83}$ (step exponent $83/400=0.2075$) is verified independently.  \statuslean
 \item \textbf{The irreducible remainder.}  The conjecture is equivalent to: no odd integer
-$u>1$ satisfies $u^{\thetaq}\in\Zthree$.  The equivalence is kernel-verified
-(\lean{Localization}); the statement itself is open even for $u=3$.
+$u>1$ satisfies $u^{\thetaq}\in\Zthree$, with a symmetric base-swapped formulation and an
+equivalent reduction to canonical power-primitive odd bases.  The least radical index gives
+an irreducible binomial and the exact algebraic degree.  \statuslean{}  The exclusion itself
+remains open even for $u=3$.
 \end{enumerate}
 
 \section{The problem and its equivalent forms}
@@ -390,6 +411,36 @@ bound, while in the $2\times2$ case the same balance lands exactly on the classi
 where decay below one fails.  A successful two-base determinant would be a new
 four-exponentials argument.
 
+\paragraph{A denominator-controlled rational third output.}
+The rational-output extension now formalized is deliberately conditional.  Let $a>1$ and
+assume the monomial map
+\[
+ (i,j,k)\longmapsto 2^i3^ja^k
+\]
+is injective.  If $2^x=m_2$ and $3^x=m_3$ are natural numbers, $a^x=q\in\Q$, and for some
+$u,v\in\Nzero$ the reduced denominator satisfies
+\[
+ \operatorname{den}(q)\mid m_2^u m_3^v,
+\]
+then $x\in\Q$, and in fact $x\in\Z$ because $2^x$ is integral.  A concrete corollary obtains
+the monomial injectivity when $a$ has a prime divisor different from $2$ and $3$.
+
+On the determinant side, a nonzero $m\times m$ real determinant whose entries become integers
+after multiplication by a common positive denominator $Q$ satisfies
+$|\det A|\ge Q^{-m}$.  The explicit analytic estimate also retains a denominator margin:
+for $m=2r$, $r>2$, $192C\le r$, and $bs+2r<r^2$, the verified upper-bound expression remains
+strictly below $1$ even after multiplication by $b^s$.
+
+\begin{statusbox}{\statuslean{} ---
+\lean{one_div_pow_le_abs_det_of_common_denominator},
+\lean{exponential_det_numeric_bound_with_denominator},
+\lean{rational_of_two_three_a_rpow_rational_of_den_dvd_outputs}, and
+\lean{integer_of_two_three_a_rpow_rational_of_prime_factor_of_den_dvd_outputs} in
+\lean{RationalThirdBase}.  These are denominator-divisibility and explicit-margin results;
+the unrestricted determinant grid for an arbitrary rational third-base output has
+\emph{not} been completed.}
+\end{statusbox}
+
 \subsection{Rational and algebraic exponents}
 
 \begin{lemma}[Rational exponent]
@@ -454,13 +505,23 @@ rendered PDF. \\
 \commit{11ac3093f} & Independent research report (audit at \commit{423ac24f0}, exact
 conditional structure, interval scan to $2^{20}$); one of the two sources merged into the
 present document. \\
+\addlinespace
+\textit{current tree} & Kernel-checked feature modules formalizing the primitive common odd
+core, least-solution primitivity, simultaneous output normalization, power-of-three denominator
+normalization, rational-power index and exact primitive generator, exact conditional counting
+and its quadratic asymptotic, finite-Fourier block averages, denominator-controlled rational
+third-base outputs, primitive localized-radical reduction and exact radical degree, and uniform
+higher finite differences. \\
 \bottomrule
 \end{longtable}
 
 The audit performed in \commit{11ac3093f} treated results of the then-uncommitted modules as
 article-level claims; with \commit{98646b455} in the tree and kernel-verified, those results
 are now cited as committed Lean.  The interval scan to $2^{20}$ remains at the
-\statuscomp{} level by design.
+\statuscomp{} level by design.  The later feature modules listed in the final row prove the
+cumulative asymptotic and finite-trigonometric-polynomial block averages.  They do not yet
+formalize the stronger continuous-test-function or interval-counting equidistribution theorem;
+that distinction is maintained throughout this report.
 \section{The kernel-verified corpus}
 \label{sec:corpus}
 
@@ -608,8 +669,11 @@ most $2N$ are candidates.
 \lean{not_three_arithmetic_progression_twoBaseNaturalCandidates},
 \lean{not_three_consecutive_logThreeDivLogTwo_rpow_integers},
 \lean{twoBaseNaturalCandidate_Icc_card_le}.  The sharper criterion
-$\thetaq(\thetaq-1)h^2<n^{2-\thetaq}$ and its arbitrary-length generalization are proved in
-\cref{sec:higher-differences} at the \statusnew{} level.}
+$\thetaq(\thetaq-1)h^2<n^{2-\thetaq}$ is kernel-verified in
+\lean{SharperProgressions}, and the analogous four-term criterion is kernel-verified in
+\lean{ThirdDifference}.  The arbitrary-order statement for every $r\ge2$ is
+\lean{not_arithmetic_progression_twoBaseNaturalCandidates_of_curvature} in
+\lean{HigherDifference}.}
 \end{statusbox}
 
 The hypothesis bounding $h$ is essential: for steps comparable to $n$ the second difference
@@ -681,9 +745,9 @@ coordinates: every solution has the form $x=i+j\log_2w$ with $i,j\in\Nzero$.
 
 \begin{statusbox}{\statuslean{} --- \lean{exists_common_odd_core},
 \lean{exists_common_odd_core_split}, \lean{exists_common_odd_core_exponent} in
-\lean{OddCore}.  The canonical (gcd-normalized) version with uniqueness of $w$ and of the
-representation is proved in Theorem~\ref{thm:odd-core} at the \statusnew{} level; formalizing that
-normalization is Priority~A of \cref{sec:program}.}
+\lean{OddCore}.  The canonical (gcd-normalized) version with uniqueness of $w$ and of each
+coordinate pair is \lean{existsUnique_primitive_common_odd_core} in
+\lean{PrimitiveOddCore}.}
 \end{statusbox}
 
 \begin{corollary}[Improved counting]
@@ -808,17 +872,19 @@ remaining distance to Conjecture~\ref{conj:AE}.
 \end{remark}
 
 These equivalences are \emph{unconditional} biconditionals.  Conditional on failure, the
-exact structure of the next section strengthens density to blockwise Weyl equidistribution
-(Theorem~\ref{thm:block-equidist}).
+exact structure of the next section gives kernel-verified convergence for every finite
+trigonometric polynomial and the paper-level strengthening to full blockwise Weyl
+equidistribution (Theorem~\ref{thm:block-equidist}).
 
 \section{Exact conditional structure of all solutions}
 \label{sec:exact-structure}
 
-This section develops the exact rigidity theory of a
-hypothetical counterexample.  It starts from the kernel-verified cross-valuation identity
-(Lemma~\ref{lem:cross-input}) and sharpens the verified odd-core theorem
-(Theorem~\ref{thm:oddcore-lean}) in two steps: a canonical (primitive) normalization of the core,
-and the removal of all residual freedom in the exponent pairs.
+This section develops the exact rigidity theory of a hypothetical counterexample.  The
+canonical primitive odd core, rational-power index, denominator normalization, unique least
+solution, simultaneous primitive output normalization, exact free-monoid classification,
+exact unit-block counts, the cumulative quadratic asymptotic, and finite-Fourier block averages
+are now \statuslean{}.  Full blockwise Weyl equidistribution for arbitrary continuous tests or
+interval indicators remains \statusnew{}.
 
 \subsection{The primitive common odd core}
 
@@ -859,10 +925,15 @@ If $w'$ is another primitive common core, the odd valuation vectors of $w$ and $
 the same rational ray and are both primitive integer vectors, hence equal.
 \end{proof}
 
+\begin{statusbox}{\statuslean{} --- \lean{existsUnique_primitive_common_odd_core} in
+\lean{PrimitiveOddCore}.  The module defines \lean{oddPrimeValuationGCD}, proves its
+equivalence with power-theoretic primitivity for $w>1$, and kernel-checks both uniqueness of
+the normalized core and uniqueness of every pair $(i,j)$.}
+\end{statusbox}
+
 The gcd normalization is what makes $w$ canonical: it prevents hidden perfect powers from
-being absorbed into the exponent.  The kernel-verified \lean{exists_common_odd_core}
-provides the existence of \emph{some} common core; the primitive normalization and
-uniqueness above are the part awaiting formalization.
+being absorbed into the exponent.  Thus the earlier existence theorem for an arbitrary
+common core and the normalization argument above now both have kernel-verified counterparts.
 
 Set
 \[
@@ -896,6 +967,11 @@ reciprocals negate them), and every nonzero subgroup of $\Z$ is $d\Z$ for its le
 element.
 \end{proof}
 
+\begin{statusbox}{\statuslean{} --- \lean{rationalPowerIndices},
+\lean{AddSubgroup.Int.exists_least_positive_generator}, and
+\lean{exists_rationalPowerIndex} in \lean{RationalPowerIndex}.}
+\end{statusbox}
+
 Write the positive rational $E^d$ in lowest terms.  Its denominator has no prime other than
 $3$: taking a candidate with odd-core exponent $j=dk>0$ and $2$-exponent $i$, integrality of
 $3^i(E^d)^k$ shows any other prime in the reduced denominator would survive in the $k$-th
@@ -912,6 +988,12 @@ A=3^{\beta}=3^aE^d .
 \label{eq:betaMA}
 \end{equation}
 Thus $\beta$ is itself a solution, irrational because $\alpha$ is.
+
+\begin{statusbox}{\statuslean{} --- the denominator-support step is
+\lean{exists_three_pow_denominator_of_rational_power} in
+\lean{ThreeDenominatorNormalization}; the normalized integrality criterion is
+\lean{three_pow_mul_normalized_pow_integer_iff} in \lean{RationalPowerIndex}.}
+\end{statusbox}
 
 \begin{theorem}[Exact primitive-generator theorem]
 \label{thm:generator}
@@ -947,14 +1029,12 @@ the least value is attained at $(n,k)=(0,1)$ and equals $\beta$, uniquely so by 
 of representation.
 \end{proof}
 
-\begin{statusbox}{\statuslean{} --- \lean{exists_primitive_generator} in
-\lean{PrimitiveGenerator}, formalized from the kernel-verified common odd core (the proof
-does not need the canonical normalization).  The principal structural result of this
-report.  It
-sharpens the kernel-verified rank-two and odd-core theorems: conditional on failure, $\Sol$
-is not merely contained in a rank-two additive set --- it is the free additive monoid on $1$
-and one irrational generator $\beta$.  In particular the ``exponent semigroup'' degree of
-freedom contemplated in the earlier survey does not exist: the set of occurring odd-core
+\begin{statusbox}{\statuslean{} ---
+\lean{exists_canonical_primitiveGenerator_of_not_alaogluErdosConjecture} in
+\lean{PrimitiveGenerator}, built from \lean{exists_exact_solution_monoid_of_fixed_common_oddCore}
+in \lean{RationalPowerIndex}.  Conditional on failure, $\Sol$ is not merely contained in a
+rank-two additive set: every solution has a unique pair of coordinates in the free additive
+monoid on $1$ and the irrational least generator $\beta$.  The set of occurring odd-core
 exponents is exactly $d\,\Nzero$, with the power of two governed by one linear threshold.}
 \end{statusbox}
 
@@ -1001,6 +1081,42 @@ Affine descent (Theorem~\ref{thm:descent}) gives the solution $(\beta-r)/k$, non
 $\beta$ is irrational; if $r>0$ or $k>1$ it is strictly smaller than $\beta$.
 \end{proof}
 
+\begin{statusbox}{\statuslean{} --- \lean{exists_least_twoBaseNonintegerSolution},
+\lean{IsLeastTwoBaseNonintegerSolution.unique},
+\lean{IsLeastTwoBaseNonintegerSolution.not_both_base_dvd_outputs},
+\lean{IsLeastTwoBaseNonintegerSolution.no_common_perfect_power}, and
+\lean{IsLeastTwoBaseNonintegerSolution.affine_primitive} in \lean{LeastSolution}.}
+\end{statusbox}
+
+\begin{theorem}[Simultaneous primitive output normalization]
+\label{thm:simultaneous-output}
+If the conjecture fails, its least nonintegral solution $\beta$ admits simultaneous
+factorizations
+\[
+ 2^\beta=2^a w^d,\qquad 3^\beta=3^b v^e,
+\]
+where $w>1$ is odd and power-primitive, $v>1$ is power-primitive with $3\nmid v$, and
+$d,e>0$.  Moreover $a=0$ or $b=0$; $a$ and $b$ are the exact base-adic depths; $d$ and $e$
+are the valuation gcds of the corresponding base-free parts; and
+\[
+ \gcd\!\left(\gcd(d,e),\,|b-a|\right)=1.
+\]
+Since every counterexample has $\beta\ge12$, these normalizations also satisfy the size
+dichotomy
+\[
+ w^d\ge4096\qquad\text{or}\qquad v^e\ge3^{12}.
+\]
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} ---
+\lean{exists_simultaneous_primitive_output_normalization},
+\lean{IsLeastTwoBaseNonintegerSolution.simultaneousCoordinateGCD_eq_one}, and
+\lean{exists_large_primitiveCore_of_not_alaogluErdosConjecture} in
+\lean{OutputNormalization}.  The gcd-one statement simultaneously controls the two outer
+power degrees and the difference of the two base-adic depths; it is stronger than merely
+excluding a common perfect-power degree.}
+\end{statusbox}
+
 \subsection{Exact counting}
 \label{sec:counting}
 
@@ -1025,6 +1141,14 @@ $(N+1)/\beta$ non-integral, giving the stated range; the one integral solution i
 is $N$.
 \end{proof}
 
+\begin{statusbox}{\statuslean{} --- \lean{ExactCounting} proves the explicit ceiling-image
+parametrization, \lean{twoBaseNonintegerSolutionsInUnitBlock_ncard},
+\lean{twoBaseNaturalCandidatesInDyadicBlock_card}, and the exact finite-sum identity
+\lean{cumulativeTwoBaseCandidateCount_eq}.  \lean{QuadraticAsymptotic} identifies that
+cumulative count exactly with the candidate count below $2^T$ and proves the sharp bounds and
+limit in \eqref{eq:exact-cumulative}.}
+\end{statusbox}
+
 With the verified bound $\beta>12$ the block count is at most $\lfloor N/12\rfloor$
 (and at most $\lfloor N/20\rfloor$ under the interval scan).  Summing over blocks, the
 cumulative candidate count below $2^T$ is
@@ -1033,14 +1157,51 @@ C(T)=T+\sum_{r=1}^{T}\Bigl\lfloor\frac r\beta\Bigr\rfloor
 =\frac{T^2}{2\beta}+O(T).
 \label{eq:exact-cumulative}
 \end{equation}
+More precisely, Lean proves
+\[
+ \frac{T(T+1)}{2\beta}\le C(T)\le
+ \frac{T(T+1)}{2\beta}+T,
+ \qquad
+ \frac{C(T)}{T^2}\longrightarrow\frac1{2\beta}.
+\]
 This is conditionally sharper than the verified universal bounds ($(\clog_2N)^2$ and
 $\clog_2N\cdot\clog_3N$) and matches the verified conditional lower boxes in leading order:
 with $\beta>12$ the leading coefficient is below $1/24$.
 
-\subsection{Blockwise equidistribution}
+There is also an unconditional growth reformulation.  The conjecture holds if and only if
+\[
+ \frac{\#\bigl(\Cand\cap[0,2^T)\bigr)}{T^2}\longrightarrow0.
+\]
+Indeed, under the conjecture the numerator is exactly $T$; under failure the preceding limit
+is the strictly positive constant $1/(2\beta)$.  This is\\
+\lean{alaogluErdosConjecture_iff_candidate_count_below_two_pow_subquadratic}. \statuslean
+
+\subsection{Block Fourier averages and equidistribution}
 
 The fractional part of $x_{N,k}$ is $\fract{k\beta}$: a high unit interval contains an
 initial segment of one irrational rotation orbit.
+
+\begin{theorem}[Finite Fourier tests on exact blocks]
+\label{thm:block-fourier}
+Assume a counterexample exists and let $\beta$ be its primitive generator.  For every finitely
+supported coefficient function $c:\Z\to\C$, put
+\[
+ P_c(t)=\sum_{h\in\Z}c(h)e^{2\pi iht},
+ \qquad K_N=\Bigl\lfloor\frac{N+1}{\beta}\Bigr\rfloor .
+\]
+On the exact ceiling-parametrized points
+$x_{N,k}=\lceil N-k\beta\rceil+k\beta$,
+\[
+ \frac1{K_N}\sum_{k=1}^{K_N}P_c(x_{N,k})\longrightarrow c(0).
+\]
+\end{theorem}
+
+\begin{statusbox}{\statuslean{} --- \lean{BlockWeyl} proves vanishing of every nonzero
+normalized Fourier mode on the exact block points.  \lean{BlockEquidistribution} proves
+\lean{tendsto_primitiveUnitBlockTrigonometricAverage} for every finitely supported
+coefficient function, with limit \lean{c 0}.  This is finite
+trigonometric-polynomial convergence, not yet a theorem for arbitrary continuous tests.}
+\end{statusbox}
 
 \begin{theorem}[Blockwise Weyl equidistribution]
 \label{thm:block-equidist}
@@ -1066,10 +1227,11 @@ finite geometric series,
 since $\beta$ is irrational.  Weyl's criterion \cite{KuipersNiederreiter} concludes.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} --- strictly stronger than the kernel-verified density
-statement of Theorem~\ref{thm:dichotomy}, conditional on failure.  No effective discrepancy rate
-follows without further Diophantine input on $\beta$: the geometric-sum proof controls each
-Fourier mode but not uniformly over many modes.}
+\begin{statusbox}{\statusnew{} --- the finite-trigonometric-polynomial input is
+kernel-verified by Theorem~\ref{thm:block-fourier}, but the Stone--Weierstrass/Weyl-criterion
+extension to all continuous tests and then to interval indicators has not been formalized.
+No effective discrepancy rate follows without further Diophantine input on $\beta$: the
+geometric-sum proof controls each fixed Fourier mode but not uniformly over many modes.}
 \end{statusbox}
 \section{Equivalent one-number and radical formulations}
 \label{sec:radical}
@@ -1097,11 +1259,14 @@ power of two.
 \end{proof}
 
 \begin{statusbox}{\statuslean{} ---
-\lean{alaogluErdosConjecture_iff_no_odd_multiple_candidate} and
-\lean{alaogluErdosConjecture_iff_odd_rpow_not_localized} in \lean{Localization}.  A compact
-target for future work: prove
-$u^{\log_23}\notin\Zthree$ for every odd $u>1$.  The allowance of $3$-power denominators is
-exactly the freedom created by shifting the exponent by an integer.}
+\lean{not_alaogluErdosConjecture_iff_exists_odd_localized_radical} and
+\lean{alaogluErdosConjecture_iff_oddLocalizedRadicalExclusion} in
+\lean{RadicalReformulation}; an equivalent candidate-level form,
+\lean{alaogluErdosConjecture_iff_no_odd_multiple_candidate} together with the analytic
+$\Zthree$-form, is proved independently in \lean{Localization}.  The equivalence is
+kernel-verified; the localized-radical exclusion on its right-hand side remains the open
+conjecture.  The allowance of $3$-power denominators is exactly the freedom created by
+shifting the exponent by an integer.}
 \end{statusbox}
 
 \subsection{Canonical radical algebraicity}
@@ -1122,6 +1287,13 @@ $-4$ times a fourth power and is irrelevant for $q>0$).  If $q=r^p$ with $p\mid 
 positive real $E^{d/p}$ is the positive $p$-th root of $q$, hence rational, contradicting
 minimality of $d$.
 \end{proof}
+
+\begin{statusbox}{\statuslean{} ---
+\lean{irreducible_X_pow_sub_C_of_least_rational_power} in \lean{RadicalDegree} proves the
+general norm argument, and \lean{oddCoreRpow_exact_radical_degree} specializes it to the
+least normalized radical index.  It identifies the minimal polynomial with
+$X^d-A/3^a$ and proves its degree is exactly $d$.}
+\end{statusbox}
 
 A counterexample therefore produces the very special algebraic number $E=3^{\log_2w}$,
 reached from a transcendental exponent.  Taking logarithms of $E^d=A/3^a$:
@@ -1154,6 +1326,12 @@ For every odd integer $u>1$, $u^{\log_23}\notin\Zthree$.  Equivalently, for ever
 odd $w>1$ and every $d\ge1$, $(3^{\log_2w})^d\notin\Zthree$.
 \end{conjecture}
 
+\begin{statusbox}{\statuslean{} --- \lean{PrimitiveRadical} proves unique
+primitive-power decomposition of every integer $u>1$ and the exact equivalence
+\lean{alaogluErdosConjecture_iff_primitiveOddLocalizedRadicalExclusion}.  Thus proper-power
+choices of $u$ introduce no genuinely new cases.}
+\end{statusbox}
+
 By Theorem~\ref{thm:localization} both formulations are exactly equivalent to Conjecture~\ref{conj:AE}.  A
 proof of the special case $u=3$ --- even of the weaker assertion that $3^{\log_23}$ is
 irrational --- by any genuinely new mechanism would already be a meaningful breakthrough.
@@ -1161,9 +1339,9 @@ irrational --- by any genuinely new mechanism would already be a meaningful brea
 \section{Sharper finite-difference obstructions}
 \label{sec:higher-differences}
 
-The committed local theorem (Theorem~\ref{thm:ap}) forbids three candidates in progression under
-the convenient condition $h^5\le n$.  The curvature argument in fact yields a sharper
-natural exponent and extends to arbitrary length.
+The earlier local theorem (Theorem~\ref{thm:ap}) forbids three candidates in progression
+under the convenient condition $h^5\le n$.  The sharp arbitrary-order curvature theorem is
+now kernel-verified for every $r\ge2$, including the three- and four-term special cases.
 
 For a function $f$ and step $h>0$ write $\Delta_hf(t)=f(t+h)-f(t)$ and
 $\Delta_h^r=\Delta_h\circ\cdots\circ\Delta_h$.  Iterating the fundamental theorem of
@@ -1197,9 +1375,12 @@ $|f^{(r)}|$ by its value at $n$,
 \]
 \end{proof}
 
-\begin{statusbox}{\statusnew{} --- an attractive Lean target: the iterated-integral identity
-replaces nested mean-value constructions, and the numerical side reduces to monotonicity of
-a negative real power.}
+\begin{statusbox}{\statuslean{} --- \lean{HigherDifference} proves the generic iterated
+mean-value identity \lean{exists_iterated_fwdDiff_eq_pow_mul}, its real-power specialization
+\lean{exists_iterated_fwdDiff_rpow_point}, integrality of the binomial forward difference,
+and \lean{not_arithmetic_progression_twoBaseNaturalCandidates_of_curvature} uniformly for
+every $r\ge2$.  The displayed iterated-integral identity \eqref{eq:finite-diff-integral} is
+not used by the Lean proof; the formal argument instead iterates the mean-value theorem.}
 \end{statusbox}
 
 For $r=2$ this gives the sharp three-term criterion
@@ -1209,7 +1390,10 @@ For $r=2$ this gives the sharp three-term criterion
 h<1.038547802\ldots\cdot n^{0.2075187\ldots},
 \label{eq:sharp-3ap}
 \end{equation}
-strictly weaker as a hypothesis than the committed $h\le n^{1/5}$.  The first thresholds
+strictly weaker as a hypothesis than $h\le n^{1/5}$; this sharp criterion is the theorem
+\lean{second_difference_logThreeDivLogTwo_ap_of_curvature} in
+\lean{SharperProgressions}.  For $r=3$, \lean{ThirdDifference} kernel-checks the exact
+third-difference identity and the corresponding four-candidate obstruction.  The first thresholds
 $h<C_rn^{1-\thetaq/r}$, $C_r=c_r^{-1/r}$:
 
 \begin{center}
@@ -1304,7 +1488,9 @@ allowed monoid of powers of two; excluding the second generator \emph{is} the or
 transcendence problem.
 
 \subsection{Density of multiples against endpoint gaps}
-The orbit $k\beta\bmod1$ is equidistributed (Theorem~\ref{thm:block-equidist}), but the
+At paper level the orbit $k\beta\bmod1$ is equidistributed
+(Theorem~\ref{thm:block-equidist}); the finite-Fourier convergence needed for Weyl's criterion
+is kernel-verified by Theorem~\ref{thm:block-fourier}.  The
 integrality gap at height $k$ is of exponential scale $M^{-k}$
 (Theorem~\ref{thm:shrinking}).  Equidistribution controls fixed intervals --- and with effective
 discrepancy, polynomially shrinking ones along subsequences --- but numbers with bounded
@@ -1343,30 +1529,32 @@ they control the distinct quantity $b^x$.
 The two source documents proposed overlapping programs; the exact structure theory settles
 some directions and re-prioritizes the rest.  Ordered by leverage and feasibility:
 
-\subsection*{Priority A: formalize the exact conditional structure}
-\emph{Substantially completed since the first version of this report.}  The module
-\lean{PrimitiveGenerator} formalizes the generator theorem itself
-(\lean{exists_primitive_generator}): conditional on a nonintegral solution, it constructs
-an irrational $\beta$ with $2^{\beta},3^{\beta}\in\N$ such that the solution set is exactly
-$\{n+k\beta\}$ with unique representations and $\beta$ least --- using the kernel-verified
-common odd core rather than the canonical normalization, which the proof turns out not to
-need.  The module \lean{Localization} formalizes the localization reformulation
-(\lean{alaogluErdosConjecture_iff_no_odd_multiple_candidate},
-\lean{alaogluErdosConjecture_iff_odd_rpow_not_localized}), giving
-Theorem~\ref{thm:localization} kernel-verified status.  Remaining from this priority:
-the canonical (gcd-primitive) core with uniqueness of $w$, exact counting formulas, and
-blockwise equidistribution (\lean{ExactCounting},
-\lean{FractionalPartEquidistribution}).
+\subsection*{Priority A: finish the exact conditional consequences}
+The primitive normalization, uniqueness of the odd core and its coordinates, least
+noninteger solution and affine primitivity, simultaneous two-output normalization,
+rational-power index, denominator support, and exact primitive-generator theorem are complete
+in \lean{PrimitiveOddCore}, \lean{LeastSolution}, \lean{OutputNormalization},
+\lean{ThreeDenominatorNormalization}, \lean{RationalPowerIndex}, and
+\lean{PrimitiveGenerator}.  \lean{ExactCounting} and \lean{QuadraticAsymptotic} prove the exact
+unit-block and dyadic counts, the cumulative finite sum, its sharp quadratic limit, and the
+subquadratic-growth equivalence.  \lean{BlockWeyl} and \lean{BlockEquidistribution} prove every
+fixed Fourier mode and finite trigonometric polynomial.  The remaining work in this priority
+is the functional-analytic extension to arbitrary continuous tests and interval indicators in
+Theorem~\ref{thm:block-equidist}.  This supersedes the earlier
+``exponent semigroup'' direction: the kernel-verified classification shows there are no
+Frobenius-type gaps to study.
 
-\subsection*{Priority B: formalize the sharper finite differences}
-\emph{The three-term case is now kernel-verified.}  The module \lean{SharpProgression}
-proves \lean{not_three_arithmetic_progression_twoBaseNaturalCandidates_sharp}: no three
-candidates in progression once $h^{400}\le n^{83}$, i.e.\ step exponent $83/400=0.2075$
-against the optimal $0.20751\ldots$ of \eqref{eq:sharp-3ap} --- replacing the committed
-$h^5\le n$ (exponent $0.2$).  The ingredients are the kernel-replayed enclosure
-$\thetaq<317/200$ (from $3^{200}<2^{317}$) and the committed second-difference bound.
-Remaining: the arbitrary-length family of Theorem~\ref{thm:higher-difference} via the
-iterated-integral identity \eqref{eq:finite-diff-integral}.
+\subsection*{Priority B: exploit the uniform higher-difference theorem}
+\lean{HigherDifference} now formalizes a generic iterated forward-difference mean-value
+identity and proves Theorem~\ref{thm:higher-difference} uniformly for every $r\ge2$.  The
+remaining problem is no longer analytic formalization but combinatorial leverage: propagate
+the sharp variable-order criterion through sparse-set arguments, with $r$ allowed to grow
+with height, and determine whether the rapidly growing falling coefficient still permits a
+contradiction with the exact conditional monoid.  For concrete finite verification, the
+rational effective three-term criterion $h^{400}\le n^{83}$
+(\lean{not_three_arithmetic_progression_twoBaseNaturalCandidates_sharp} in
+\lean{SharpProgression}, with the kernel-replayed enclosure $\thetaq<317/200$ from
+$3^{200}<2^{317}$) complements the exact-curvature form.
 
 \subsection*{Priority C: kernel-replay the \texorpdfstring{$2^{20}$}{2\^{}20} region}
 The scan shows the finite truth is computationally routine; the bottleneck is a compact
@@ -1375,18 +1563,24 @@ modules, and shared tiers along ranges are the ingredients; the target theorem i
 $1048576$ analogue of Theorem~\ref{thm:finite4096}.  Every descent constant then improves to $20$
 by bookkeeping.
 
-\subsection*{Priority D: isolate the radical target in a reusable API}
-Formalize Theorem~\ref{thm:localization} and Proposition~\ref{prop:radical-degree}: failure
-$\iff$ an odd $u>1$ with $u^{\thetaq}\in\Zthree$ $\iff$ a primitive odd $w$, index $d$,
-and reduced $q\in\Zthree$ with $(3^{\log_2w})^d=q$, plus irreducibility of $X^d-q$ and the
-symmetric base-swapped version (Appendix~\ref{app:symmetric}).  This creates a sharply stated
-endpoint for importing future transcendence results.
+\subsection*{Priority D: use the exact radical field}
+\lean{RadicalReformulation} now formalizes Theorem~\ref{thm:localization} and its symmetric
+base-swapped version, \lean{PrimitiveRadical} reduces it canonically to power-primitive odd
+bases, while \lean{PrimitiveGenerator} and
+\lean{ThreeDenominatorNormalization} supply the primitive odd $w$, least index $d$, and
+reduced $q\in\Zthree$ with $(3^{\log_2w})^d=q$.  \lean{RadicalDegree} proves
+Proposition~\ref{prop:radical-degree}, including the exact minimal polynomial.  The next
+target is a genuinely new number-field argument using this explicit extension; the radical
+exclusion itself remains equivalent to, and exactly as open as, the original conjecture.
 
 \subsection*{Priority E: five and sharp six exponentials}
 Formalizing the five exponentials theorem or Roy's sharp six exponentials theorem
 \cite{Roy1992} would add restrictions such as transcendence of $e^{\gamma x}$ for algebraic
 $\gamma\ne0$.  The effort is comparable to the completed Gelfond--Schneider port and should
-be undertaken with a specific downstream lemma in mind.
+be undertaken with a specific downstream lemma in mind.  \lean{RationalThirdBase} already
+handles a rational third output when its reduced denominator divides a product of powers of
+the two integral outputs, and proves a determinant lower bound and an explicit denominator
+margin.  Extending the interpolation grid to an unrestricted rational output remains open.
 
 \subsection*{Priority F: auxiliary-function methods tailored to integrality}
 A route beyond four exponentials must exploit more than algebraicity: here all corner
@@ -1424,10 +1618,11 @@ structure modules.
 The repository contains a broad, kernel-verified attack on the Alaoglu--Erd\H{o}s
 conjecture whose themes are complementary: interpolation determinants settle three
 independent bases; Gelfond--Schneider excludes algebraic irrational exponents; exact
-certificates create a growing zero-free region; unique factorization bounds multiplicative
-rank and now yields a common odd core; finite differences force local additive sparsity;
-descent constrains perfect-power structure; and unconditional equivalences show that the
-fractional-part axis measures the entire remaining distance to the conjecture.
+certificates create a growing zero-free region; unique factorization yields a canonical
+primitive odd core and an exact conditional solution monoid; arbitrary-order forward
+differences force sharp local additive sparsity; leastness gives exact affine primitivity;
+and unconditional equivalences with fractional-part gaps and localized radicals identify the
+entire remaining distance to the conjecture.
 
 The conjecture does not fall to a combination of these results, and the reason can now be
 stated exactly.  A counterexample would not generate a messy exceptional set that density or
@@ -1440,8 +1635,15 @@ internally consistent with every verified gap and density bound.  The remaining 
 that the second generator cannot exist --- equivalently
 (Conjecture~\ref{conj:radical-target}), that no odd $u>1$ has $u^{\log_23}\in\Zthree$.
 
+The free-monoid classification, simultaneous primitive output normalization, exact block
+counts, sharp cumulative asymptotic, finite-trigonometric-polynomial block convergence,
+primitive localized-radical reduction, exact radical degree, and uniform higher-difference
+obstruction are kernel-verified.  Full blockwise equidistribution for arbitrary continuous
+tests and intervals remains a paper theorem, as does any unrestricted rational-third-output
+determinant grid.
+
 That reformulation is progress rather than pessimism: it removes artificial degrees of
-freedom, supplies a canonical primitive object, upgrades density claims to exact theorems,
+freedom, supplies a canonical primitive object, yields exact conditional counting statements,
 and gives a focused interface for future transcendence methods.  The near-term program is
 listed in \cref{sec:program}; a complete proof still requires a new idea at the
 four-exponentials boundary, but the target is now narrow and the surrounding formal
@@ -1478,19 +1680,35 @@ Three-term AP obstruction under $h^5\le n$ & \statuslean & \lean{ZeroDensity} \\
 Shrinking-target Diophantine bounds & \statuslean & \lean{ShrinkingTarget} \\
 Gelfond--Schneider theorem & \statuslean & \lean{GelfondSchneider} \\
 $4$EC $\Rightarrow$ conjecture & \statuslean & \lean{FourExponentialsReduction} \\
-Primitive (canonical) odd core; uniqueness & \statusnew & Theorem~\ref{thm:odd-core} \\
-Exact solution monoid $\Nzero+\Nzero\beta$ & \statuslean &
-Theorem~\ref{thm:generator}; \lean{PrimitiveGenerator} \\
-Exact block counts; cumulative $T^2/(2\beta)$ & \statusnew & Theorem~\ref{thm:block-count} \\
-Blockwise Weyl equidistribution & \statusnew & Theorem~\ref{thm:block-equidist} \\
-Primitivity of least output pair & \statusnew &
-Corollaries~\ref{cor:no-depth}, \ref{cor:no-common-power} and~\ref{cor:affine-primitive} \\
-Sharp three-term AP obstruction ($h^{400}\le n^{83}$) & \statuslean &
+Primitive (canonical) odd core; unique coordinates & \statuslean &
+\lean{PrimitiveOddCore} \\
+Unique least solution; affine primitive output pair & \statuslean & \lean{LeastSolution} \\
+Simultaneous primitive output normalization; gcd one; size dichotomy & \statuslean &
+\lean{OutputNormalization} \\
+Power-of-three denominator normalization & \statuslean &
+\lean{ThreeDenominatorNormalization} \\
+Rational-power index and exact solution monoid $\Nzero+\Nzero\beta$ & \statuslean &
+\lean{RationalPowerIndex}, \lean{PrimitiveGenerator} \\
+Exact block counts and cumulative finite sum & \statuslean & \lean{ExactCounting} \\
+Cumulative $T^2/(2\beta)+O(T)$ asymptotic and subquadratic iff & \statuslean &
+\lean{QuadraticAsymptotic} \\
+Exact block averages for finite trigonometric polynomials & \statuslean &
+\lean{BlockWeyl}, \lean{BlockEquidistribution} \\
+Full continuous-test/interval blockwise equidistribution & \statusnew &
+Theorem~\ref{thm:block-equidist} \\
+Denominator-controlled rational third output and determinant margin & \statuslean &
+\lean{RationalThirdBase} \\
+Unrestricted rational-third-output determinant grid & open & not yet formalized \\
+Sharp three-term and four-term AP obstructions ($r=2,3$) & \statuslean &
+\lean{SharperProgressions}, \lean{ThirdDifference} \\
+Uniform higher-order AP obstruction ($r\ge2$) & \statuslean & \lean{HigherDifference} \\
+Localized-radical and symmetric reformulations & \statuslean &
+\lean{RadicalReformulation} \\
+Primitive localized-radical reduction & \statuslean & \lean{PrimitiveRadical} \\
+Exact radical degree and binomial irreducibility & \statuslean & \lean{RadicalDegree} \\
+Effective rational three-term criterion ($h^{400}\le n^{83}$) & \statuslean &
 \lean{SharpProgression} \\
-Higher-order AP obstructions & \statusnew & Theorem~\ref{thm:higher-difference} \\
-Localization reformulation & \statuslean &
-Theorem~\ref{thm:localization}; \lean{Localization} \\
-Radical-degree proposition & \statusnew & Proposition~\ref{prop:radical-degree} \\
+Candidate-form localization equivalence & \statuslean & \lean{Localization} \\
 No nonintegral candidate with $2^x<2^{20}$ & \statuscomp & Proposition~\ref{prop:finite20} \\
 Full Alaoglu--Erd\H{o}s conjecture & open & reduced to Conjecture~\ref{conj:radical-target} \\
 \bottomrule
@@ -1506,12 +1724,12 @@ All modules live under
 tables are replayed by the kernel.
 
 \begin{center}
-\small
+\footnotesize
 \begin{tabular}{@{}ll@{}}
 \toprule
 Module & Contents \\
 \midrule
-\lean{IntegerExponent}(+3 submodules) & three-base theorem via interpolation determinants \\
+\lean{IntegerExponent} (+3 modules) & three-base theorem, interpolation determinants \\
 \lean{TwoBaseIntegerExponent} & conjecture statement, candidates, gaps, $2^x<10$ \\
 \lean{.../FiniteCheck}, \lean{FiniteCheck256} & zero-free regions $2^x<100$, $2^x<256$ \\
 \lean{.../FiniteCheck4096} & zero-free region $2^x<4096$ (kernel \lean{decide} table) \\
@@ -1520,14 +1738,30 @@ Module & Contents \\
 \lean{.../MultiplicativeRank} & rank $\le2$, $\thetaq$ irrational, $(\clog_2N)^2$ \\
 \lean{.../CandidateStructure} & cross-valuation identity, conditional box growth \\
 \lean{.../OddCore} & common odd core, $\clog_2N\,\clog_3N$, dyadic blocks \\
+\lean{.../PrimitiveOddCore} & gcd-normalized canonical core, unique coordinates \\
+\lean{.../LeastSolution} & unique positive least solution, exact affine primitivity \\
+\lean{.../ThreeDenominatorNormalization} & reduced denominator supported at $3$ \\
+\lean{.../RationalPowerIndex} & least rational-power index, exact solution monoid \\
+\lean{.../PrimitiveGenerator} & canonical primitive generator and unique coordinates \\
+\lean{.../ExactCounting} & exact unit/dyadic block counts and cumulative finite sum \\
+\lean{.../QuadraticAsymptotic} & sharp quadratic limit; subquadratic-growth equivalence \\
+\lean{.../BlockWeyl} & exact-block geometric sums and vanishing nonzero Fourier modes \\
+\lean{.../BlockEquidistribution} & finite trigonometric-polynomial block averages \\
+\lean{.../OutputNormalization} & simultaneous primitive outputs, gcd one, size dichotomy \\
+\lean{.../RationalThirdBase} & denominator divisibility and determinant margin \\
+\lean{.../RadicalReformulation} & localized-radical equivalences, base-swapped form \\
+\lean{.../PrimitiveRadical} & canonical primitive-power reduction of radical target \\
+\lean{.../RadicalDegree} & irreducible binomial, exact minpoly and degree \\
+\lean{.../SharperProgressions} & sharp three-candidate curvature obstruction \\
+\lean{.../ThirdDifference} & exact third difference, four-candidate obstruction \\
+\lean{.../HigherDifference} & uniform arbitrary-order forward-difference obstruction \\
 \lean{.../ArithmeticRigidity} & descent, $r+8k\le x$ \\
 \lean{.../ThreeSmooth} & $3$-smooth classification of further bases \\
 \lean{.../ShrinkingTarget} & fract shrinking targets, Diophantine lower bounds \\
 \lean{.../Transcendence} & GS applications: transcendence of solutions, of $\log_23$ \\
 \lean{.../FractionalPartDensity} & density dichotomy, gap equivalences, infinitude \\
-\lean{.../Localization} & conjecture $\iff$ no odd $u>1$ with $u^{\thetaq}\in\Zthree$ \\
-\lean{.../SharpProgression} & sharp three-term AP obstruction, $\thetaq<317/200$ \\
-\lean{.../PrimitiveGenerator} & conditional exact generator: $\Sol=\Nzero+\Nzero\beta$ \\
+\lean{.../Localization} & candidate-form localization equivalence \\
+\lean{.../SharpProgression} & effective rational three-term criterion \\
 \lean{.../FourExponentialsReduction} & $4$EC $\Rightarrow$ conjecture \\
 \lean{GelfondSchneider/...} & Gelfond--Schneider theorem (port of Karatarakis) \\
 \bottomrule
@@ -1542,6 +1776,11 @@ conjecture is also equivalent to the existence of an integer $v>1$ with $3\nmid 
 \[
 v^{\eta}\in\Z[1/2].
 \]
+\begin{statusbox}{\statuslean{} ---
+\lean{not_alaogluErdosConjecture_iff_exists_threeFree_localized_radical} and
+\lean{alaogluErdosConjecture_iff_threeFreeLocalizedRadicalExclusion} in
+\lean{RadicalReformulation}.}
+\end{statusbox}
 For the primitive pair $(M,A)$, factoring $A$ into a power of $3$ times a $3$-coprime part
 produces a symmetric primitive core and rational-power index; the two normalizations give
 the same least exponent $\beta$, and their compatibility condition is exactly
