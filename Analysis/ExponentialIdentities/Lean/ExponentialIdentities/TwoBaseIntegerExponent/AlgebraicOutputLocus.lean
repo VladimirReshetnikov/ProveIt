@@ -8,8 +8,13 @@ This module sharpens the algebraic-output restrictions on a hypothetical noninte
 two-base solution in two complementary directions.
 
 For the positive natural outputs `M = 2^x` and `B = 3^x`, one entire monomial
-half-plane has transcendental `x`-th powers. Consequently every genuinely mixed
-`2,3`-smooth natural base has transcendental `x^2`-th power.
+half-plane has transcendental `x`-th powers.  In fact the algebraic locus of
+`(M^i B^j)^x` is exactly one coordinate axis or the origin, according to which
+outputs are `2,3`-smooth.  Intrinsically, the same trichotomy holds for
+`(2^i 3^j)^(x^2)`.  Consequently every genuinely mixed `2,3`-smooth natural
+base has transcendental `x^2`-th power.  The coordinate-face property is
+pointwise equivalent to nonintegrality and gives a further reformulation of the
+Alaoglu--Erdős conjecture.
 
 For rational ratios of output monomials, algebraic `x`-th powers have lattice rank
 at most one. Equivalently, two algebraic members of the intrinsic family
@@ -172,6 +177,255 @@ theorem TwoBaseNonintegerSolution.transcendental_mixed_two_three_squared_exponen
             rw [Nat.cast_mul, Nat.cast_pow, Nat.cast_pow, Nat.cast_ofNat,
               Nat.cast_ofNat]
   simpa only [heq] using htrans
+
+private theorem twoThreeSmooth_pow {A : ℕ}
+    (hA : TwoThreeSmooth A) (i : ℕ) :
+    TwoThreeSmooth (A ^ i) := by
+  obtain ⟨u, v, rfl⟩ := hA
+  refine ⟨u * i, v * i, ?_⟩
+  simp only [mul_pow, pow_mul]
+
+private theorem algebraic_output_monomial_iff_smooth
+    {x : ℝ} (hx : TwoBaseNonintegerSolution x)
+    {M B i j : ℕ} (hMpos : 0 < M) (hBpos : 0 < B) :
+    IsAlgebraic ℚ (((M ^ i * B ^ j : ℕ) : ℝ) ^ x) ↔
+      TwoThreeSmooth (M ^ i * B ^ j) := by
+  calc
+    IsAlgebraic ℚ (((M ^ i * B ^ j : ℕ) : ℝ) ^ x) ↔
+        x ∈ Set.range ((↑) : ℤ → ℝ) ∨
+          TwoThreeSmooth (M ^ i * B ^ j) :=
+      rpow_isAlgebraic_iff_integer_or_eq_two_pow_mul_three_pow
+        hx.1.1 hx.1.2 (mul_pos (pow_pos hMpos i) (pow_pos hBpos j))
+    _ ↔ TwoThreeSmooth (M ^ i * B ^ j) := by
+      simp only [hx.2, false_or]
+
+private theorem left_factor_dvd_monomial {M B i j : ℕ} (hi : 0 < i) :
+    M ∣ M ^ i * B ^ j := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hi.ne'
+  refine ⟨M ^ k * B ^ j, ?_⟩
+  simp only [pow_succ]
+  ring
+
+private theorem right_factor_dvd_monomial {M B i j : ℕ} (hj : 0 < j) :
+    B ∣ M ^ i * B ^ j := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hj.ne'
+  refine ⟨B ^ k * M ^ i, ?_⟩
+  simp only [pow_succ]
+  ring
+
+private theorem algebraic_output_monomial_iff_right_zero
+    {x : ℝ} (hx : TwoBaseNonintegerSolution x)
+    {M B : ℕ} (hMpos : 0 < M) (hBpos : 0 < B)
+    (hMsmooth : TwoThreeSmooth M) (hBnonsmooth : ¬ TwoThreeSmooth B) :
+    ∀ i j : ℕ,
+      IsAlgebraic ℚ (((M ^ i * B ^ j : ℕ) : ℝ) ^ x) ↔ j = 0 := by
+  intro i j
+  rw [algebraic_output_monomial_iff_smooth hx hMpos hBpos]
+  constructor
+  · intro hsmooth
+    by_contra hj
+    have hjpos : 0 < j := Nat.pos_of_ne_zero hj
+    exact hBnonsmooth (twoThreeSmooth_of_dvd hBpos
+      (mul_pos (pow_pos hMpos i) (pow_pos hBpos j))
+      (right_factor_dvd_monomial hjpos) hsmooth)
+  · rintro rfl
+    simpa only [pow_zero, mul_one] using twoThreeSmooth_pow hMsmooth i
+
+private theorem algebraic_output_monomial_iff_left_zero
+    {x : ℝ} (hx : TwoBaseNonintegerSolution x)
+    {M B : ℕ} (hMpos : 0 < M) (hBpos : 0 < B)
+    (hMnonsmooth : ¬ TwoThreeSmooth M) (hBsmooth : TwoThreeSmooth B) :
+    ∀ i j : ℕ,
+      IsAlgebraic ℚ (((M ^ i * B ^ j : ℕ) : ℝ) ^ x) ↔ i = 0 := by
+  intro i j
+  rw [algebraic_output_monomial_iff_smooth hx hMpos hBpos]
+  constructor
+  · intro hsmooth
+    by_contra hi
+    have hipos : 0 < i := Nat.pos_of_ne_zero hi
+    exact hMnonsmooth (twoThreeSmooth_of_dvd hMpos
+      (mul_pos (pow_pos hMpos i) (pow_pos hBpos j))
+      (left_factor_dvd_monomial hipos) hsmooth)
+  · rintro rfl
+    simpa only [pow_zero, one_mul] using twoThreeSmooth_pow hBsmooth j
+
+private theorem algebraic_output_monomial_iff_origin
+    {x : ℝ} (hx : TwoBaseNonintegerSolution x)
+    {M B : ℕ} (hMpos : 0 < M) (hBpos : 0 < B)
+    (hMnonsmooth : ¬ TwoThreeSmooth M) (hBnonsmooth : ¬ TwoThreeSmooth B) :
+    ∀ i j : ℕ,
+      IsAlgebraic ℚ (((M ^ i * B ^ j : ℕ) : ℝ) ^ x) ↔
+        i = 0 ∧ j = 0 := by
+  intro i j
+  rw [algebraic_output_monomial_iff_smooth hx hMpos hBpos]
+  constructor
+  · intro hsmooth
+    constructor
+    · by_contra hi
+      exact hMnonsmooth (twoThreeSmooth_of_dvd hMpos
+        (mul_pos (pow_pos hMpos i) (pow_pos hBpos j))
+        (left_factor_dvd_monomial (Nat.pos_of_ne_zero hi)) hsmooth)
+    · by_contra hj
+      exact hBnonsmooth (twoThreeSmooth_of_dvd hBpos
+        (mul_pos (pow_pos hMpos i) (pow_pos hBpos j))
+        (right_factor_dvd_monomial (Nat.pos_of_ne_zero hj)) hsmooth)
+  · rintro ⟨rfl, rfl⟩
+    exact ⟨0, 0, by norm_num⟩
+
+/-- Exact counterexample trichotomy for the actual positive natural outputs.
+The algebraic locus of `(M^i B^j)^x` is precisely the `M`-axis, the `B`-axis,
+or the origin; in particular it is never merely an unspecified subset of a
+coordinate half-plane. -/
+theorem TwoBaseNonintegerSolution.exists_exact_algebraic_output_monomial_locus
+    {x : ℝ} (hx : TwoBaseNonintegerSolution x) :
+    ∃ M B : ℕ,
+      0 < M ∧ 0 < B ∧
+      (M : ℝ) = (2 : ℝ) ^ x ∧
+      (B : ℝ) = (3 : ℝ) ^ x ∧
+      (((∃ u v : ℕ, M = 2 ^ u * 3 ^ v) ∧
+          (¬ ∃ u v : ℕ, B = 2 ^ u * 3 ^ v) ∧
+          ∀ i j : ℕ,
+            IsAlgebraic ℚ (((M ^ i * B ^ j : ℕ) : ℝ) ^ x) ↔ j = 0) ∨
+       ((¬ ∃ u v : ℕ, M = 2 ^ u * 3 ^ v) ∧
+          (∃ u v : ℕ, B = 2 ^ u * 3 ^ v) ∧
+          ∀ i j : ℕ,
+            IsAlgebraic ℚ (((M ^ i * B ^ j : ℕ) : ℝ) ^ x) ↔ i = 0) ∨
+       ((¬ ∃ u v : ℕ, M = 2 ^ u * 3 ^ v) ∧
+          (¬ ∃ u v : ℕ, B = 2 ^ u * 3 ^ v) ∧
+          ∀ i j : ℕ,
+            IsAlgebraic ℚ (((M ^ i * B ^ j : ℕ) : ℝ) ^ x) ↔
+              i = 0 ∧ j = 0)) := by
+  obtain ⟨M, B, hMpos, hBpos, hM, hB, hhalf⟩ :=
+    hx.exists_transcendental_output_monomial_halfplane
+  refine ⟨M, B, hMpos, hBpos, hM, hB, ?_⟩
+  rcases hhalf with hMnonsmooth | hBnonsmooth
+  · by_cases hBsmooth : TwoThreeSmooth B
+    · exact Or.inr (Or.inl ⟨hMnonsmooth.1, hBsmooth,
+        algebraic_output_monomial_iff_left_zero
+          hx hMpos hBpos hMnonsmooth.1 hBsmooth⟩)
+    · exact Or.inr (Or.inr ⟨hMnonsmooth.1, hBsmooth,
+        algebraic_output_monomial_iff_origin
+          hx hMpos hBpos hMnonsmooth.1 hBsmooth⟩)
+  · by_cases hMsmooth : TwoThreeSmooth M
+    · exact Or.inl ⟨hMsmooth, hBnonsmooth.1,
+        algebraic_output_monomial_iff_right_zero
+          hx hMpos hBpos hMsmooth hBnonsmooth.1⟩
+    · exact Or.inr (Or.inr ⟨hMsmooth, hBnonsmooth.1,
+        algebraic_output_monomial_iff_origin
+          hx hMpos hBpos hMsmooth hBnonsmooth.1⟩)
+
+private theorem output_monomial_rpow_eq_base_monomial_squared
+    {x : ℝ} {M B i j : ℕ} (hM : (M : ℝ) = (2 : ℝ) ^ x)
+    (hB : (B : ℝ) = (3 : ℝ) ^ x) :
+    (((M ^ i * B ^ j : ℕ) : ℝ) ^ x) =
+      (((2 ^ i * 3 ^ j : ℕ) : ℝ) ^ (x * x)) := by
+  calc
+    (((M ^ i * B ^ j : ℕ) : ℝ) ^ x) =
+        (((M : ℝ) ^ i * (B : ℝ) ^ j) ^ x) := by
+          rw [Nat.cast_mul, Nat.cast_pow, Nat.cast_pow]
+    _ = (((M : ℝ) ^ i) ^ x) * (((B : ℝ) ^ j) ^ x) := by
+          rw [Real.mul_rpow (pow_nonneg (Nat.cast_nonneg M) i)
+            (pow_nonneg (Nat.cast_nonneg B) j)]
+    _ = (((M : ℝ) ^ x) ^ i) * (((B : ℝ) ^ x) ^ j) := by
+          rw [Real.rpow_pow_comm (Nat.cast_nonneg M) x i,
+            Real.rpow_pow_comm (Nat.cast_nonneg B) x j]
+    _ = ((((2 : ℝ) ^ x) ^ x) ^ i) * ((((3 : ℝ) ^ x) ^ x) ^ j) := by
+          rw [hM, hB]
+    _ = (((2 : ℝ) ^ (x * x)) ^ i) * (((3 : ℝ) ^ (x * x)) ^ j) := by
+          rw [Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 2) x x,
+            Real.rpow_mul (by norm_num : (0 : ℝ) ≤ 3) x x]
+    _ = (((2 : ℝ) ^ i) ^ (x * x)) * (((3 : ℝ) ^ j) ^ (x * x)) := by
+          rw [Real.rpow_pow_comm (by norm_num : (0 : ℝ) ≤ 2) (x * x) i,
+            Real.rpow_pow_comm (by norm_num : (0 : ℝ) ≤ 3) (x * x) j]
+    _ = (((2 : ℝ) ^ i * (3 : ℝ) ^ j) ^ (x * x)) := by
+          rw [Real.mul_rpow (pow_nonneg (by norm_num : (0 : ℝ) ≤ 2) i)
+            (pow_nonneg (by norm_num : (0 : ℝ) ≤ 3) j)]
+    _ = (((2 ^ i * 3 ^ j : ℕ) : ℝ) ^ (x * x)) := by
+          rw [Nat.cast_mul, Nat.cast_pow, Nat.cast_pow, Nat.cast_ofNat,
+            Nat.cast_ofNat]
+
+/-- Intrinsic exact trichotomy.  For a hypothetical noninteger solution, the
+algebraic members of `((2^i 3^j) : ℕ) ^ (x^2)` form exactly the horizontal
+axis, exactly the vertical axis, or only the origin. -/
+theorem TwoBaseNonintegerSolution.algebraic_two_three_squared_monomial_locus_trichotomy
+    {x : ℝ} (hx : TwoBaseNonintegerSolution x) :
+    ((∀ i j : ℕ,
+        IsAlgebraic ℚ (((2 ^ i * 3 ^ j : ℕ) : ℝ) ^ (x * x)) ↔ j = 0) ∨
+     (∀ i j : ℕ,
+        IsAlgebraic ℚ (((2 ^ i * 3 ^ j : ℕ) : ℝ) ^ (x * x)) ↔ i = 0) ∨
+     (∀ i j : ℕ,
+        IsAlgebraic ℚ (((2 ^ i * 3 ^ j : ℕ) : ℝ) ^ (x * x)) ↔
+          i = 0 ∧ j = 0)) := by
+  obtain ⟨M, B, _hMpos, _hBpos, hM, hB, hcases⟩ :=
+    hx.exists_exact_algebraic_output_monomial_locus
+  rcases hcases with hhorizontal | hvertical | horigin
+  · left
+    intro i j
+    rw [← output_monomial_rpow_eq_base_monomial_squared hM hB]
+    exact hhorizontal.2.2 i j
+  · right
+    left
+    intro i j
+    rw [← output_monomial_rpow_eq_base_monomial_squared hM hB]
+    exact hvertical.2.2 i j
+  · right
+    right
+    intro i j
+    rw [← output_monomial_rpow_eq_base_monomial_squared hM hB]
+    exact horigin.2.2 i j
+
+/-- The intrinsic squared `2,3`-monomial algebraic-output locus is exactly one
+coordinate axis or the origin. -/
+def SquaredTwoThreeMonomialAlgebraicLocusIsCoordinateFace (x : ℝ) : Prop :=
+  ((∀ i j : ℕ,
+      IsAlgebraic ℚ (((2 ^ i * 3 ^ j : ℕ) : ℝ) ^ (x * x)) ↔ j = 0) ∨
+   (∀ i j : ℕ,
+      IsAlgebraic ℚ (((2 ^ i * 3 ^ j : ℕ) : ℝ) ^ (x * x)) ↔ i = 0) ∨
+   (∀ i j : ℕ,
+      IsAlgebraic ℚ (((2 ^ i * 3 ^ j : ℕ) : ℝ) ^ (x * x)) ↔
+        i = 0 ∧ j = 0))
+
+/-- Under the two original integrality hypotheses, the exact coordinate-face
+shape of the squared monomial algebraic locus is equivalent to nonintegrality. -/
+theorem squaredTwoThreeMonomialAlgebraicLocusIsCoordinateFace_iff_not_integer
+    {x : ℝ}
+    (h₂ : ∃ z : ℤ, (z : ℝ) = (2 : ℝ) ^ x)
+    (h₃ : ∃ z : ℤ, (z : ℝ) = (3 : ℝ) ^ x) :
+    SquaredTwoThreeMonomialAlgebraicLocusIsCoordinateFace x ↔
+      x ∉ Set.range ((↑) : ℤ → ℝ) := by
+  constructor
+  · intro hface hxint
+    have hSix :
+        IsAlgebraic ℚ (((2 ^ 1 * 3 ^ 1 : ℕ) : ℝ) ^ (x * x)) := by
+      norm_num only [pow_one, Nat.cast_ofNat]
+      simpa using
+        (six_squared_exponent_isAlgebraic_iff_integer h₂ h₃).mpr hxint
+    rcases hface with hface | hface | hface
+    · have := (hface 1 1).mp hSix
+      omega
+    · have := (hface 1 1).mp hSix
+      omega
+    · have := (hface 1 1).mp hSix
+      omega
+  · intro hxint
+    exact (show TwoBaseNonintegerSolution x from
+      ⟨⟨h₂, h₃⟩, hxint⟩).algebraic_two_three_squared_monomial_locus_trichotomy
+
+/-- Alaoglu--Erdős is equivalent to excluding the coordinate-axis/origin
+trichotomy for every two-base integral-power solution. -/
+theorem alaogluErdosConjecture_iff_no_squaredTwoThreeMonomial_coordinateFace :
+    AlaogluErdosConjecture ↔
+      ∀ {x : ℝ}, TwoBaseIntegralSolution x →
+        ¬ SquaredTwoThreeMonomialAlgebraicLocusIsCoordinateFace x := by
+  constructor
+  · intro hAE x hx hface
+    exact (squaredTwoThreeMonomialAlgebraicLocusIsCoordinateFace_iff_not_integer
+      hx.1 hx.2).mp hface (hAE hx.1 hx.2)
+  · intro hNoFace x h₂ h₃
+    by_contra hxint
+    exact hNoFace ⟨h₂, h₃⟩
+      ((squaredTwoThreeMonomialAlgebraicLocusIsCoordinateFace_iff_not_integer
+        h₂ h₃).mpr hxint)
 
 private theorem padicValRat_eq_zero_of_isTwoThreeUnit
     {q : ℚ} (hunit : IsTwoThreeUnit q)
