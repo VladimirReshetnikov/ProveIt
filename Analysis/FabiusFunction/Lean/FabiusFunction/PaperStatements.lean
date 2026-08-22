@@ -1,5 +1,6 @@
 import FabiusFunction.Basic
 import FabiusFunction.Differential
+import FabiusFunction.DyadicAnalytic
 import FabiusFunction.DyadicClosedForm
 import FabiusFunction.DyadicCorrectness
 import FabiusFunction.GlobalExtension
@@ -377,12 +378,6 @@ theorem halfMomentNumerator_odd_index (n : ℕ) :
   sorry
 
 /-! ## Correctness specifications for the executable dyadic evaluator -/
-
-/-- Equation (32) really evaluates the bounded Fabius function on its dyadic grid. -/
-theorem fabiusDyadic_cast (F : BoundedFabius) (hF : IsFabius F)
-    (n a : ℕ) (ha : a ≤ 2 ^ n) :
-    (fabiusDyadic n a : ℝ) = fabiusReal F (a / (2 : ℝ) ^ n) := by
-  sorry
 
 /-- Equation (32) on its full `[0,2]` range, using the signed extension. -/
 theorem fabiusDyadic_cast_extended (F : BoundedFabius) (hF : IsFabius F)
